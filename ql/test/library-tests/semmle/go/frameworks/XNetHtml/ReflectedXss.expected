@@ -1,6 +1,6 @@
 edges
-| test.go:10:15:10:42 | call to Cookie : tuple type | test.go:14:15:14:55 | type conversion |
-| test.go:10:15:10:42 | call to Cookie : tuple type | test.go:14:42:14:47 | implicit dereference : Cookie |
+| test.go:10:2:10:42 | ... := ...[0] : pointer type | test.go:14:15:14:55 | type conversion |
+| test.go:10:2:10:42 | ... := ...[0] : pointer type | test.go:14:42:14:47 | implicit dereference : Cookie |
 | test.go:14:42:14:47 | implicit dereference : Cookie | test.go:14:15:14:55 | type conversion |
 | test.go:14:42:14:47 | implicit dereference : Cookie | test.go:14:42:14:47 | implicit dereference : Cookie |
 | test.go:16:24:16:35 | selection of Body : ReadCloser | test.go:17:15:17:31 | type conversion |
@@ -29,7 +29,7 @@ edges
 | test.go:30:33:30:44 | selection of Body : ReadCloser | test.go:36:22:36:38 | call to Token : Token |
 | test.go:36:22:36:38 | call to Token : Token | test.go:36:15:36:44 | type conversion |
 nodes
-| test.go:10:15:10:42 | call to Cookie : tuple type | semmle.label | call to Cookie : tuple type |
+| test.go:10:2:10:42 | ... := ...[0] : pointer type | semmle.label | ... := ...[0] : pointer type |
 | test.go:14:15:14:55 | type conversion | semmle.label | type conversion |
 | test.go:14:42:14:47 | implicit dereference : Cookie | semmle.label | implicit dereference : Cookie |
 | test.go:16:24:16:35 | selection of Body : ReadCloser | semmle.label | selection of Body : ReadCloser |
@@ -53,7 +53,7 @@ nodes
 | test.go:36:15:36:44 | type conversion | semmle.label | type conversion |
 | test.go:36:22:36:38 | call to Token : Token | semmle.label | call to Token : Token |
 #select
-| test.go:14:15:14:55 | type conversion | test.go:10:15:10:42 | call to Cookie : tuple type | test.go:14:15:14:55 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:10:15:10:42 | call to Cookie | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:14:15:14:55 | type conversion | test.go:10:2:10:42 | ... := ...[0] : pointer type | test.go:14:15:14:55 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:10:2:10:42 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
 | test.go:17:15:17:31 | type conversion | test.go:16:24:16:35 | selection of Body : ReadCloser | test.go:17:15:17:31 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:16:24:16:35 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
 | test.go:20:15:20:32 | type conversion | test.go:19:36:19:47 | selection of Body : ReadCloser | test.go:20:15:20:32 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:19:36:19:47 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
 | test.go:23:15:23:35 | type conversion | test.go:22:33:22:44 | selection of Body : ReadCloser | test.go:23:15:23:35 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:22:33:22:44 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
