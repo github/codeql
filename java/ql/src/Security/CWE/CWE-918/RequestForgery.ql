@@ -1,7 +1,7 @@
 /**
- * @name Server-Side Request Forgery (SSRF)
+ * @name Server-side request forgery
  * @description Making web requests based on unvalidated user-input
- *              may cause server to communicate with malicious servers.
+ *              may cause the server to communicate with malicious servers.
  * @kind path-problem
  * @problem.severity error
  * @precision high

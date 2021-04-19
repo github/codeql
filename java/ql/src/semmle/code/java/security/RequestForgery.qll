@@ -1,4 +1,4 @@
-/** Provides classes to reason about Server-side Request Forgery attacks. */
+/** Provides classes to reason about server-side request forgery (SSRF) attacks. */
 
 import java
 import semmle.code.java.frameworks.Networking
@@ -58,11 +58,11 @@ private class DefaultRequestForgeryAdditionalTaintStep extends RequestForgeryAdd
   }
 }
 
-/** A data flow sink for request forgery vulnerabilities. */
+/** A data flow sink for server-side request forgery (SSRF) vulnerabilities. */
 abstract class RequestForgerySink extends DataFlow::Node { }
 
 /**
- * An argument to an url `openConnection` or `openStream` call
+ * An argument to a url `openConnection` or `openStream` call
  *  taken as a sink for request forgery vulnerabilities.
  */
 private class UrlOpen extends RequestForgerySink {
@@ -92,7 +92,7 @@ private class ApacheSetUri extends RequestForgerySink {
 }
 
 /**
- * An argument to any Apache Request Instantiation call taken as a
+ * An argument to any Apache `HttpRequest` instantiation taken as a
  *   sink for request forgery vulnerabilities.
  */
 private class ApacheHttpRequestInstantiation extends RequestForgerySink {
@@ -104,7 +104,7 @@ private class ApacheHttpRequestInstantiation extends RequestForgerySink {
 }
 
 /**
- * An argument to a Apache RequestBuilder method call taken as a
+ * An argument to an Apache `RequestBuilder` method call taken as a
  *   sink for request forgery vulnerabilities.
  */
 private class ApacheHttpRequestBuilderArgument extends RequestForgerySink {
@@ -119,14 +119,14 @@ private class ApacheHttpRequestBuilderArgument extends RequestForgerySink {
 }
 
 /**
- * An argument to any Java.net.http.request Instantiation call taken as a
+ * An argument to any `java.net.http.HttpRequest` Instantiation taken as a
  *   sink for request forgery vulnerabilities.
  */
 private class HttpRequestNewBuilder extends RequestForgerySink {
   HttpRequestNewBuilder() {
     exists(MethodAccess call |
       call.getCallee().hasName("newBuilder") and
-      call.getMethod().getDeclaringType().getName() = "HttpRequest"
+      call.getMethod().getDeclaringType().hasQualifiedName("java.net.http", "HttpRequest")
     |
       this.asExpr() = call.getArgument(0)
     )
@@ -134,7 +134,7 @@ private class HttpRequestNewBuilder extends RequestForgerySink {
 }
 
 /**
- * An argument to an Http Builder `uri` call taken as a
+ * An argument to an `HttpBuilder` `uri` call taken as a
  *   sink for request forgery vulnerabilities.
  */
 private class HttpBuilderUriArgument extends RequestForgerySink {
@@ -146,7 +146,7 @@ private class HttpBuilderUriArgument extends RequestForgerySink {
 }
 
 /**
- * An argument to a Spring Rest Template method call taken as a
+ * An argument to a Spring `RestTemplate` method call taken as a
  *   sink for request forgery vulnerabilities.
  */
 private class SpringRestTemplateArgument extends RequestForgerySink {
@@ -158,7 +158,7 @@ private class SpringRestTemplateArgument extends RequestForgerySink {
 }
 
 /**
- * An argument to `javax.ws.rs.Client`s `target` method call taken as a
+ * An argument to a `javax.ws.rs.Client` `target` method call taken as a
  *   sink for request forgery vulnerabilities.
  */
 private class JaxRsClientTarget extends RequestForgerySink {
@@ -173,7 +173,7 @@ private class JaxRsClientTarget extends RequestForgerySink {
 }
 
 /**
- * An argument to `org.springframework.http.RequestEntity`s constructor call
+ * An argument to an `org.springframework.http.RequestEntity` constructor call
  *   which is an URI taken as a sink for request forgery vulnerabilities.
  */
 private class RequestEntityUriArg extends RequestForgerySink {
@@ -188,11 +188,11 @@ private class RequestEntityUriArg extends RequestForgerySink {
 }
 
 /**
- * A class representing all Spring Rest Template methods
- * which take an URL as an argument.
+ * A Spring Rest Template method
+ * which take a URL as an argument.
  */
-private class SpringRestTemplateUrlMethods extends Method {
-  SpringRestTemplateUrlMethods() {
+private class SpringRestTemplateUrlMethod extends Method {
+  SpringRestTemplateUrlMethod() {
     this.getDeclaringType() instanceof SpringRestTemplate and
     this.hasName([
         "doExecute", "postForEntity", "postForLocation", "postForObject", "put", "exchange",
@@ -305,7 +305,7 @@ private class HostnameSanitizedExpr extends Expr {
     |
       formatString = unique(FormatString fs | fs = formatCall.getAFormatString()) and
       (
-        // An argument that sanitizes will be come before this:
+        // A sanitizing argument comes before this:
         exists(int argIdx |
           formatCall.getArgumentToBeFormatted(argIdx) = prefix and
           sanitizedFromOffset = formatString.getAnArgUsageOffset(argIdx)

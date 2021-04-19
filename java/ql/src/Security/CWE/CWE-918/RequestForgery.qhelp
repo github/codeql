@@ -6,7 +6,7 @@
 
 <overview>
 <p>Directly incorporating user input into an HTTP request without validating the input
-can facilitate Server-Side Request Forgery (SSRF) attacks. In these attacks, the server
+can facilitate server-side request forgery (SSRF) attacks. In these attacks, the server
 may be tricked into making a request and interacting with an attacker-controlled server.
 </p>
 
