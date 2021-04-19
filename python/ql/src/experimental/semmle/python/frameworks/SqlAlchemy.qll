@@ -11,43 +11,29 @@ private import semmle.python.Concepts
 
 private module SqlAlchemy {
   /**
-   * An instantization of a SqlAlchemy Session object.
+   * Returns an instantization of a SqlAlchemy Session object.
    * See https://docs.sqlalchemy.org/en/14/orm/session_api.html#sqlalchemy.orm.Session and
    * https://docs.sqlalchemy.org/en/14/orm/session_api.html#sqlalchemy.orm.sessionmaker
    */
-  private class SqlAlchemySessionInstance extends API::Node {
-    SqlAlchemySessionInstance() {
-      this in [
-          API::moduleImport("sqlalchemy.orm").getMember("Session").getReturn(),
-          API::moduleImport("sqlalchemy.orm").getMember("sessionmaker").getReturn().getReturn()
-        ]
-    }
-
-    override string toString() { result = "Use of SqlAlchemy Session instantization" }
+  private API::Node getSqlAlchemySessionInstance() {
+    result = API::moduleImport("sqlalchemy.orm").getMember("Session").getReturn() or
+    result = API::moduleImport("sqlalchemy.orm").getMember("sessionmaker").getReturn().getReturn()
   }
 
   /**
-   * An instantization of a SqlAlchemy Engine object.
+   * Returns an instantization of a SqlAlchemy Engine object.
    * See https://docs.sqlalchemy.org/en/14/core/engines.html#sqlalchemy.create_engine
    */
-  private class SqlAlchemyEngineInstance extends API::Node {
-    SqlAlchemyEngineInstance() {
-      this = API::moduleImport("sqlalchemy").getMember("create_engine").getReturn()
-    }
-
-    override string toString() { result = "Use of SqlAlchemy create_engine member" }
+  private API::Node getSqlAlchemyEngineInstance() {
+    result = API::moduleImport("sqlalchemy").getMember("create_engine").getReturn()
   }
 
   /**
-   * An instantization of a SqlAlchemy Query object.
+   * Returns an instantization of a SqlAlchemy Query object.
    * See https://docs.sqlalchemy.org/en/14/orm/query.html?highlight=query#sqlalchemy.orm.Query
    */
-  private class SqlAlchemyQueryInstance extends API::Node {
-    SqlAlchemyQueryInstance() {
-      this = any(SqlAlchemySessionInstance sessionInstance).getMember("query").getReturn()
-    }
-
-    override string toString() { result = "Use of SqlAlchemy Session Query member" }
+  private API::Node getSqlAlchemyQueryInstance() {
+    result = getSqlAlchemySessionInstance().getMember("query").getReturn()
   }
 
   /**
@@ -59,11 +45,14 @@ private module SqlAlchemy {
    */
   private class SqlAlchemyExecuteCall extends DataFlow::CallCfgNode, SqlExecution::Range {
     SqlAlchemyExecuteCall() {
-      exists(SqlAlchemySessionInstance sessionInstance, SqlAlchemyEngineInstance engineInstance |
-        this = sessionInstance.getMember("execute").getACall() or
-        this = engineInstance.getMember("connect").getReturn().getMember("execute").getACall() or
-        this = engineInstance.getMember("begin").getReturn().getMember("execute").getACall()
-      )
+      // new way
+      this = getSqlAlchemySessionInstance().getMember("execute").getACall() or
+      this =
+        getSqlAlchemyEngineInstance()
+            .getMember(["connect", "begin"])
+            .getReturn()
+            .getMember("execute")
+            .getACall()
     }
 
     override DataFlow::Node getSql() { result = this.getArg(0) }
@@ -76,8 +65,10 @@ private module SqlAlchemy {
    */
   private class SqlAlchemyScalarCall extends DataFlow::CallCfgNode, SqlExecution::Range {
     SqlAlchemyScalarCall() {
-      this = any(SqlAlchemySessionInstance sessionInstance).getMember("scalar").getACall() or
-      this = any(SqlAlchemyEngineInstance engineInstance).getMember("scalar").getACall()
+      this =
+        [getSqlAlchemySessionInstance(), getSqlAlchemyEngineInstance()]
+            .getMember("scalar")
+            .getACall()
     }
 
     override DataFlow::Node getSql() { result = this.getArg(0) }
@@ -88,9 +79,7 @@ private module SqlAlchemy {
    * See https://docs.sqlalchemy.org/en/14/orm/query.html?highlight=query#sqlalchemy.orm.Query
    */
   private class SqlAlchemyQueryCall extends DataFlow::CallCfgNode, SqlExecution::Range {
-    SqlAlchemyQueryCall() {
-      this = any(SqlAlchemyQueryInstance queryInstance).getAMember().getACall()
-    }
+    SqlAlchemyQueryCall() { this = getSqlAlchemyQueryInstance().getAMember().getACall() }
 
     override DataFlow::Node getSql() { result = this.getArg(0) }
   }
