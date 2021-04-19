@@ -449,60 +449,68 @@ var (
 // extractError extracts the message and location of a frontend error
 func (extraction *Extraction) extractError(tw *trap.Writer, err packages.Error, pkglbl trap.Label, idx int) {
 	var (
-		lbl  = tw.Labeler.FreshID()
-		tag  = dbscheme.ErrorTags[err.Kind]
-		kind = dbscheme.ErrorTypes[err.Kind].Index()
-		pos  = err.Pos
-		file = ""
-		line = 0
-		col  = 0
-		e    error
+		lbl       = tw.Labeler.FreshID()
+		tag       = dbscheme.ErrorTags[err.Kind]
+		kind      = dbscheme.ErrorTypes[err.Kind].Index()
+		pos       = err.Pos
+		file      = ""
+		line, col int
+		e         error
 	)
 
-	if parts := threePartPos.FindStringSubmatch(pos); parts != nil {
-		// "file:line:col"
-		col, e = strconv.Atoi(parts[3])
+	if pos == "" {
+		// extract a dummy file
+		file, e = filepath.Abs(filepath.Join(".", "-"))
 		if e != nil {
-			log.Printf("Warning: malformed column number `%s`: %v", parts[3], e)
+			file = filepath.Join(".", "-")
+			log.Printf("Warning: failed to get absolute path for for %s", file)
 		}
-		line, e = strconv.Atoi(parts[2])
+	} else {
+		var rawfile string
+		if parts := threePartPos.FindStringSubmatch(pos); parts != nil {
+			// "file:line:col"
+			col, e = strconv.Atoi(parts[3])
+			if e != nil {
+				log.Printf("Warning: malformed column number `%s`: %v", parts[3], e)
+			}
+			line, e = strconv.Atoi(parts[2])
+			if e != nil {
+				log.Printf("Warning: malformed line number `%s`: %v", parts[2], e)
+			}
+			rawfile = parts[1]
+		} else if parts := twoPartPos.FindStringSubmatch(pos); parts != nil {
+			// "file:line"
+			line, e = strconv.Atoi(parts[2])
+			if e != nil {
+				log.Printf("Warning: malformed line number `%s`: %v", parts[2], e)
+			}
+			rawfile = parts[1]
+		} else if pos != "" && pos != "-" {
+			log.Printf("Warning: malformed error position `%s`", pos)
+		}
+		afile, e := filepath.Abs(rawfile)
 		if e != nil {
-			log.Printf("Warning: malformed line number `%s`: %v", parts[2], e)
+			log.Printf("Warning: failed to get absolute path for for %s", file)
+			afile = file
 		}
-		file = parts[1]
-	} else if parts := twoPartPos.FindStringSubmatch(pos); parts != nil {
-		// "file:line"
-		line, e = strconv.Atoi(parts[2])
+		file, e = filepath.EvalSymlinks(afile)
 		if e != nil {
-			log.Printf("Warning: malformed line number `%s`: %v", parts[2], e)
+			log.Printf("Warning: failed to evaluate symlinks for %s", afile)
+			file = afile
 		}
-		file = parts[1]
-	} else if pos != "" && pos != "-" {
-		log.Printf("Warning: malformed error position `%s`", pos)
-	}
-	afile, e := filepath.Abs(file)
-	if e != nil {
-		log.Printf("Warning: failed to get absolute path for for %s", file)
-		afile = file
-	}
-	ffile, e := filepath.EvalSymlinks(afile)
-	if e != nil {
-		log.Printf("Warning: failed to evaluate symlinks for %s", afile)
-		ffile = afile
-	}
-	transformed := filepath.ToSlash(srcarchive.TransformPath(ffile))
 
-	extraction.extractFileInfo(tw, ffile)
+		extraction.extractFileInfo(tw, file)
+	}
 
 	extraction.Lock.Lock()
-
+	flbl := extraction.StatWriter.Labeler.FileLabelFor(file)
 	diagLbl := extraction.StatWriter.Labeler.FreshID()
-	flbl := extraction.StatWriter.Labeler.FileLabelFor(ffile)
 	dbscheme.DiagnosticsTable.Emit(
 		extraction.StatWriter, diagLbl, 1, tag, err.Msg, err.Msg,
 		emitLocation(extraction.StatWriter, flbl, line, col, line, col))
 	dbscheme.DiagnosticForTable.Emit(extraction.StatWriter, diagLbl, extraction.Label, extraction.GetFileIdx(file), extraction.GetNextErr(file))
 	extraction.Lock.Unlock()
+	transformed := filepath.ToSlash(srcarchive.TransformPath(file))
 	dbscheme.ErrorsTable.Emit(tw, lbl, kind, err.Msg, pos, transformed, line, col, pkglbl, idx)
 }
 
