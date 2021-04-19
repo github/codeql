@@ -78,10 +78,13 @@ query predicate argumentToEnsureNotTaintedNotMarkedAsSpurious(
   )
 }
 
-query predicate untaintedArgumentToEnsureTaintedNotMarkedAsMissing(Location location, string error) {
+query predicate untaintedArgumentToEnsureTaintedNotMarkedAsMissing(
+  Location location, string error, string element
+) {
   error = "ERROR, you should add `# $ MISSING: tainted` annotation" and
   exists(DataFlow::Node sink |
     sink = shouldBeTainted() and
+    element = prettyExp(sink.asExpr()) and
     not any(TestTaintTrackingConfiguration config).hasFlow(_, sink) and
     location = sink.getLocation() and
     not exists(FalseNegativeExpectation missingResult |
