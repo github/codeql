@@ -78,6 +78,7 @@ class Test {
         public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
             BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream()));
             String filename = br.readLine();
+            // BAD: construct a file path with user input
             BufferedWriter bw = new BufferedWriter(new FileWriter("dir/"+filename, true));
         }
     }

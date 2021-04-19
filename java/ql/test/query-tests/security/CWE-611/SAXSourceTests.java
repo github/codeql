@@ -17,7 +17,7 @@ public class SAXSourceTests {
     SAXSource source = new SAXSource(reader, new InputSource(sock.getInputStream()));
     JAXBContext jc = JAXBContext.newInstance(Object.class);
     Unmarshaller um = jc.createUnmarshaller();
-    um.unmarshal(source); //unsafe
+    um.unmarshal(source); // BAD
   }
 
   public void explicitlySafeSource1(Socket sock) throws Exception {
@@ -25,7 +25,7 @@ public class SAXSourceTests {
     reader.setFeature("http://xml.org/sax/features/external-general-entities", false);
     reader.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
     reader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd",false);
-    SAXSource source = new SAXSource(reader, new InputSource(sock.getInputStream())); //safe
+    SAXSource source = new SAXSource(reader, new InputSource(sock.getInputStream())); // GOOD
   }
 
   public void createdSafeSource(Socket sock) throws Exception {
@@ -35,7 +35,7 @@ public class SAXSourceTests {
     factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
     SAXParser parser = factory.newSAXParser();
     XMLReader reader = parser.getXMLReader();
-    SAXSource source = new SAXSource(parser.getXMLReader(), new InputSource(sock.getInputStream())); //safe
-    SAXSource source2 = new SAXSource(reader, new InputSource(sock.getInputStream())); //safe
+    SAXSource source = new SAXSource(parser.getXMLReader(), new InputSource(sock.getInputStream())); // GOOD
+    SAXSource source2 = new SAXSource(reader, new InputSource(sock.getInputStream())); // GOOD
   }
 }
