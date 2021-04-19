@@ -165,4 +165,19 @@ class File extends Container, @file {
 
   /** Gets the URL of this file. */
   override string getURL() { result = "file://" + this.getAbsolutePath() + ":0:0:0:0" }
+
+  /** Gets the metric file. */
+  MetricFile getMetrics() { result = this }
+}
+
+/** A wrapper providing metrics for a file */
+class MetricFile extends File {
+  /** Gets the number of lines in this file. */
+  int getNumberOfLines() { numlines(this, result, _, _) }
+
+  /** Gets the number of lines of code in this file. */
+  int getNumberOfLinesOfCode() { numlines(this, _, result, _) }
+
+  /** Gets the number of lines of comments in this file. */
+  int getNumberOfLinesOfComments() { numlines(this, _, _, result) }
 }
