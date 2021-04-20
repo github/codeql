@@ -1623,11 +1623,19 @@ func extractNumLines(tw *trap.Writer, fileName string, ast *ast.File) {
 		pos, tok, lit := s.Scan()
 		if tok == token.EOF {
 			break
-		} else if tok != token.ILLEGAL {
+		} else if tok != token.ILLEGAL && !(tok == token.SEMICOLON && lit == "\n") {
+			// specifically exclude newlines that are treated as semicolons
 			tkStartLine := f.Position(pos).Line
 			tkEndLine := tkStartLine + strings.Count(lit, "\n")
 			if tkEndLine > lastCodeLine {
-				linesOfCode += tkEndLine - tkStartLine + 1
+				if tkStartLine <= lastCodeLine {
+					// if the start line is the same as the last code line we've seen we don't want to double
+					// count it
+					// note tkStartLine < lastCodeLine should not be possible
+					linesOfCode += tkEndLine - lastCodeLine
+				} else {
+					linesOfCode += tkEndLine - tkStartLine + 1
+				}
 				lastCodeLine = tkEndLine
 			}
 		}
