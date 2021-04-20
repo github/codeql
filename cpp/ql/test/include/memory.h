@@ -126,6 +126,8 @@ namespace std {
 
     T& operator*() const { return *ptr; }
 
+    T* get() const noexcept { return ptr; }
+
     ~shared_ptr() { dec(); }
   };
 
