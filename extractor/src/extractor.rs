@@ -81,25 +81,6 @@ impl TrapWriter {
         file_label
     }
 
-    fn populate_numlines(&mut self, file_label: Label, tree: &Tree) {
-        let root_node = tree.root_node();
-        let start_line = root_node.start_position().row;
-        let end_line = root_node.end_position().row;
-        let total_line_count = end_line - start_line + 1;
-
-        // TODO: the code and comment counts are completely wrong
-
-        self.add_tuple(
-            "numlines",
-            vec![
-                Arg::Label(file_label),
-                Arg::Int(total_line_count),
-                Arg::Int(total_line_count),
-                Arg::Int(total_line_count),
-            ],
-        );
-    }
-
     fn populate_parent_folders(&mut self, child_label: Label, path: Option<&Path>) {
         let mut path = path;
         let mut child_label = child_label;
@@ -192,7 +173,6 @@ pub fn extract(
     let mut trap_writer = new_trap_writer();
     trap_writer.comment(format!("Auto-generated TRAP file for {}", path.display()));
     let file_label = &trap_writer.populate_file(path);
-    &trap_writer.populate_numlines(*file_label, &tree);
     let mut visitor = Visitor {
         source: &source,
         trap_writer: trap_writer,
