@@ -42,8 +42,8 @@ private class JwtParserParseHandlerMethod extends Method {
 }
 
 /** The `parse(token)`, `parseClaimsJwt(token)` and `parsePlaintextJwt(token)` methods defined in `JwtParser`. */
-private class JwtParserInsecureParseMethods extends Method {
-  JwtParserInsecureParseMethods() {
+private class JwtParserInsecureParseMethod extends Method {
+  JwtParserInsecureParseMethod() {
     this.hasName(["parse", "parseClaimsJwt", "parsePlaintextJwt"]) and
     this.getNumberOfParameters() = 1 and
     this.getDeclaringType() instanceof TypeJwtParser
@@ -51,8 +51,8 @@ private class JwtParserInsecureParseMethods extends Method {
 }
 
 /** The `on(Claims|Plaintext)Jwt` methods defined in `JwtHandler`. */
-private class JwtHandlerOnJwtMethods extends Method {
-  JwtHandlerOnJwtMethods() {
+private class JwtHandlerOnJwtMethod extends Method {
+  JwtHandlerOnJwtMethod() {
     this.hasName(["onClaimsJwt", "onPlaintextJwt"]) and
     this.getNumberOfParameters() = 1 and
     this.getDeclaringType() instanceof TypeJwtHandler
@@ -60,8 +60,8 @@ private class JwtHandlerOnJwtMethods extends Method {
 }
 
 /** The `on(Claims|Plaintext)Jwt` methods defined in `JwtHandlerAdapter`. */
-private class JwtHandlerAdapterOnJwtMethods extends Method {
-  JwtHandlerAdapterOnJwtMethods() {
+private class JwtHandlerAdapterOnJwtMethod extends Method {
+  JwtHandlerAdapterOnJwtMethod() {
     this.hasName(["onClaimsJwt", "onPlaintextJwt"]) and
     this.getNumberOfParameters() = 1 and
     this.getDeclaringType() instanceof TypeJwtHandlerAdapter
@@ -70,8 +70,8 @@ private class JwtHandlerAdapterOnJwtMethods extends Method {
 
 /**
  * Holds if `parseHandlerExpr` is an insecure `JwtHandler`.
- * That is, it overrides a method from `JwtHandlerOnJwtMethods` and the overridden method is not a method from `JwtHandlerAdapterOnJwtMethods`.
- * A overridden method which is a method from `JwtHandlerAdapterOnJwtMethods` is safe, because these always throw an exception.
+ * That is, it overrides a method from `JwtHandlerOnJwtMethod` and the overridden method is not a method from `JwtHandlerAdapterOnJwtMethod`.
+ * A overridden method which is a method from `JwtHandlerAdapterOnJwtMethod` is safe, because these always throw an exception.
  */
 private predicate isInsecureParseHandler(Expr parseHandlerExpr) {
   exists(RefType t |
@@ -79,8 +79,8 @@ private predicate isInsecureParseHandler(Expr parseHandlerExpr) {
     t.getASourceSupertype*() instanceof TypeJwtHandler and
     exists(Method m |
       m = t.getAMethod() and
-      m.getASourceOverriddenMethod+() instanceof JwtHandlerOnJwtMethods and
-      not m.getSourceDeclaration() instanceof JwtHandlerAdapterOnJwtMethods
+      m.getASourceOverriddenMethod+() instanceof JwtHandlerOnJwtMethod and
+      not m.getSourceDeclaration() instanceof JwtHandlerAdapterOnJwtMethod
     )
   )
 }
@@ -92,7 +92,7 @@ private predicate isInsecureParseHandler(Expr parseHandlerExpr) {
  */
 private class JwtParserInsecureParseMethodAccess extends MethodAccess {
   JwtParserInsecureParseMethodAccess() {
-    this.getMethod().getASourceOverriddenMethod*() instanceof JwtParserInsecureParseMethods
+    this.getMethod().getASourceOverriddenMethod*() instanceof JwtParserInsecureParseMethod
     or
     this.getMethod().getASourceOverriddenMethod*() instanceof JwtParserParseHandlerMethod and
     isInsecureParseHandler(this.getArgument(1))
