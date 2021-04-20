@@ -1693,7 +1693,7 @@ module DataFlow {
       parameter.flowsTo(call.getArgument(i))
       or
       parameter.isRestParameter() and
-      parameter.flowsTo(call.asExpr().(CallExpr).getArgument(i).(SpreadElement).getOperand().flow())
+      parameter.flowsTo(call.getASpreadArgument())
     )
   }
 
