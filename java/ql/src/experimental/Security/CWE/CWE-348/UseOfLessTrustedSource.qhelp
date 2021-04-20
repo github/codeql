@@ -3,7 +3,7 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>The software obtains the original client IP address through the http header (<code>X-Forwarded-For</code> or <code>X-Real-IP</code> or <code>Proxy-Client-IP</code> 
+<p>An original client IP address is retrieved from an http header (<code>X-Forwarded-For</code> or <code>X-Real-IP</code> or <code>Proxy-Client-IP</code> 
 etc.), which is used to ensure security or track it in the log for statistical or other reasons. Attackers can forge the value of these identifiers to attack the 
 software.</p>
 
