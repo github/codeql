@@ -10,7 +10,7 @@ bypass a ban-list, for example.</p>
 </overview>
 <recommendation>
 
-<p>When the software is not using a proxy server, get the last ip.</p>
+<p>Do not trust the values of HTTP headers allegedly identifying the originating IP. If you are aware your application will run behind some reverse proxies then the last entry of a <code>X-Forwarded-For</code> header value may be more trustworthy than the rest of it because some reverse proxies append the IP address they observed to the end of any remote-supplied header.</p>
 
 </recommendation>
 <example>
