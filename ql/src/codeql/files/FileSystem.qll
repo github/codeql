@@ -1,5 +1,8 @@
 /** Provides classes for working with files and folders. */
 
+private import codeql_ruby.ast.internal.TreeSitter
+private import codeql.Locations
+
 /** A file or folder. */
 abstract class Container extends @container {
   /** Gets a file or sub-folder in this container. */
@@ -173,11 +176,46 @@ class File extends Container, @file {
 /** A wrapper providing metrics for a file */
 class MetricFile extends File {
   /** Gets the number of lines in this file. */
-  int getNumberOfLines() { numlines(this, result, _, _) }
+  int getNumberOfLines() { result = max(getAToken().getLocation().getEndLine()) }
+
+  /** Get a token in this file. */
+  Generated::Token getAToken() { result.getLocation().getFile() = this }
+
+  /** Get a comment token in this file. */
+  Generated::Token getACommentToken() { result = getAToken() and result instanceof @token_comment }
+
+  /** Get a non-comment token in this file. */
+  Generated::Token getANonCommentToken() {
+    result = getAToken() and not result instanceof @token_comment
+  }
+
+  predicate isTokenStartingAtLine(Generated::Token t, int startLine) {
+    t = getANonCommentToken() and
+    t.getLocation().getStartLine() = startLine
+  }
 
   /** Gets the number of lines of code in this file. */
-  int getNumberOfLinesOfCode() { numlines(this, _, result, _) }
+  int getNumberOfLinesOfCode() {
+    /*
+     * For each line with at least one non-comment token, select a token with
+     * the greatest length in terms of lines and sum all lengths per startLine.
+     */
+
+    result =
+      sum(int startLine, int numLines |
+        exists(Generated::Token t |
+          isTokenStartingAtLine(t, startLine) and
+          t.getLocation().getNumLines() = numLines and
+          not exists(Generated::Token t2 |
+            isTokenStartingAtLine(t2, startLine) and
+            t2.getLocation().getNumLines() > numLines
+          )
+        )
+      |
+        numLines
+      )
+  }
 
   /** Gets the number of lines of comments in this file. */
-  int getNumberOfLinesOfComments() { numlines(this, _, _, result) }
+  int getNumberOfLinesOfComments() { result = count(getACommentToken()) }
 }
