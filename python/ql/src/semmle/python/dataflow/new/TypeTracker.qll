@@ -51,8 +51,8 @@ module StepSummary {
    * heap and/or inter-procedural step from `nodeFrom` to `nodeTo`.
    */
   cached
-  predicate step(LocalSourceNode nodeFrom, Node nodeTo, StepSummary summary) {
-    exists(Node mid | typePreservingStep*(nodeFrom, mid) and smallstep(mid, nodeTo, summary))
+  predicate step(LocalSourceNode nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
+    exists(Node mid | nodeFrom.flowsTo(mid) and smallstep(mid, nodeTo, summary))
   }
 
   /**
@@ -63,7 +63,7 @@ module StepSummary {
    * type-preserving steps.
    */
   predicate smallstep(Node nodeFrom, Node nodeTo, StepSummary summary) {
-    typePreservingStep(nodeFrom, nodeTo) and
+    jumpStep(nodeFrom, nodeTo) and
     summary = LevelStep()
     or
     callStep(nodeFrom, nodeTo) and summary = CallStep()
@@ -78,12 +78,6 @@ module StepSummary {
       basicLoadStep(nodeFrom, nodeTo, attr) and summary = LoadStep(attr)
     )
   }
-}
-
-/** Holds if it's reasonable to expect the data flow step from `nodeFrom` to `nodeTo` to preserve types. */
-private predicate typePreservingStep(Node nodeFrom, Node nodeTo) {
-  simpleLocalFlowStep(nodeFrom, nodeTo) or
-  jumpStep(nodeFrom, nodeTo)
 }
 
 /**
@@ -274,10 +268,10 @@ class TypeTracker extends TTypeTracker {
    * heap and/or inter-procedural step from `nodeFrom` to `nodeTo`.
    */
   pragma[inline]
-  TypeTracker step(LocalSourceNode nodeFrom, Node nodeTo) {
+  TypeTracker step(LocalSourceNode nodeFrom, LocalSourceNode nodeTo) {
     exists(StepSummary summary |
-      StepSummary::step(nodeFrom, nodeTo, summary) and
-      result = this.append(summary)
+      StepSummary::step(nodeFrom, pragma[only_bind_out](nodeTo), pragma[only_bind_into](summary)) and
+      result = this.append(pragma[only_bind_into](summary))
     )
   }
 
@@ -312,7 +306,7 @@ class TypeTracker extends TTypeTracker {
       result = this.append(summary)
     )
     or
-    typePreservingStep(nodeFrom, nodeTo) and
+    simpleLocalFlowStep(nodeFrom, nodeTo) and
     result = this
   }
 }
@@ -453,7 +447,7 @@ class TypeBackTracker extends TTypeBackTracker {
       this = result.prepend(summary)
     )
     or
-    typePreservingStep(nodeFrom, nodeTo) and
+    simpleLocalFlowStep(nodeFrom, nodeTo) and
     this = result
   }
 }

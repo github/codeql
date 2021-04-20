@@ -41,7 +41,6 @@ class LocalSourceNode extends Node {
   cached
   LocalSourceNode() {
     not comes_from_cfgnode(this) and
-    not this instanceof ModuleVariableNode and
     // Currently, we create synthetic post-update nodes for
     // - arguments to calls that may modify said argument
     // - direct reads a writes of object attributes
