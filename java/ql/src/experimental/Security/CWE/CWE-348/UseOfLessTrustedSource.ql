@@ -16,7 +16,7 @@ import semmle.code.java.dataflow.FlowSources
 import DataFlow::PathGraph
 
 /**
- * Taint-tracking configuration tracing flow from obtain client ip to use the client ip.
+ * Taint-tracking configuration tracing flow from obtaining a client ip from an HTTP header to a sensitive use.
  */
 class UseOfLessTrustedSourceConfig extends TaintTracking::Configuration {
   UseOfLessTrustedSourceConfig() { this = "UseOfLessTrustedSourceConfig" }
