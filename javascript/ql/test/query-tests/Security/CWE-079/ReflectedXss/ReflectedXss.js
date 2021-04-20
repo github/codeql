@@ -90,8 +90,15 @@ const markdownIt = require('markdown-it')({
 });
 const markdownIt2 = require('markdown-it')({});
 
+const markdownIt3 = require('markdown-it')({html: true})
+  .use(require('markdown-it-highlightjs'));
+
 app.get('/user/:id', function (req, res) {
   res.send(req.body); // NOT OK
   res.send(markdownIt.render(req.body)); // NOT OK
   res.send(markdownIt2.render(req.body)); // OK - no html
+  res.send(markdownIt3.render(req.body)); // NOT OK
+
+  res.send(markdownIt.use(require('markdown-it-sanitizer')).render(req.body)); // OK - HTML is sanitized. 
+  res.send(markdownIt.use(require('markdown-it-abbr')).use(unknown).render(req.body)); // NOT OK
 });
