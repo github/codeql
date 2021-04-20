@@ -1,7 +1,8 @@
 /**
  * @name IP address spoofing
- * @description The software obtains the client ip through `X-Forwarded-For`,
- *              and the attacker can modify the value of `X-Forwarded-For` to forge the ip.
+ * @description The software obtains the client ip from the remote endpoint identifier specified (`X-Forwarded-For`,
+ *              `X-Real-IP`, `Proxy-Client-IP`, etc.) in the header and uses it. Attackers can modify these The value
+ *              of the identifier to forge the client ip.
  * @kind path-problem
  * @problem.severity error
  * @precision high
@@ -12,12 +13,12 @@
 
 import java
 import UseOfLessTrustedSourceLib
-import semmle.code.java.dataflow.DataFlow2
-import semmle.code.java.dataflow.TaintTracking2
 import semmle.code.java.dataflow.FlowSources
 import DataFlow::PathGraph
 
-/** Taint-tracking configuration tracing flow from get method request sources to output jsonp data. */
+/**
+ * Taint-tracking configuration tracing flow from obtain client ip to use the client ip.
+ */
 class UseOfLessTrustedSourceConfig extends TaintTracking::Configuration {
   UseOfLessTrustedSourceConfig() { this = "UseOfLessTrustedSourceConfig" }
 

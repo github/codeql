@@ -3,8 +3,9 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>The software obtains the original client IP address through the http header <code>X-Forwarded-For</code>, which is used to ensure 
-security or track it in the log for statistical or other reasons. Attackers can use <code>X-Forwarded-For </code> Spoofing software.</p>
+<p>The software obtains the original client IP address through the http header (<code>X-Forwarded-For</code> or <code>X-Real-IP</code> or <code>Proxy-Client-IP</code> 
+etc.), which is used to ensure security or track it in the log for statistical or other reasons. Attackers can forge the value of these identifiers to attack the 
+software.</p>
 
 </overview>
 <recommendation>
@@ -15,9 +16,10 @@ security or track it in the log for statistical or other reasons. Attackers can 
 <example>
 
 <p>The following examples show the bad case and the good case respectively. Bad case, such as <code>bad1</code> to <code>bad2</code>. 
-In the <code>bad1</code> method, the value of <code>X-Forwarded-For</code> in <code>header</code> is split, and the first value of 
-the split array is obtained. Good case, such as <code>good1</code>, split the value of <code>X-Forwarded-For</code> in <code>header</code> 
-and get the last value of the split array.</p>
+In the <code>bad1</code> method, obtain the client ip according to the specified identifier from the <code>header</code> for local 
+output and logging. In the <code>bad2</code> method, the client ip is obtained and judged according to the specified identifier 
+from the <code>header</code>. When used for permission verification, it can be bypassed by forging the ip. Good case, such as 
+<code>good1</code>, split the value of <code>X-Forwarded-For</code> in <code>header</code> and get the last value of the split array.</p>
 
 <sample src="UseOfLessTrustedSource.java" />
 

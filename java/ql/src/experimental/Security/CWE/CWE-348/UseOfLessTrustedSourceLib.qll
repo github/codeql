@@ -1,12 +1,11 @@
 import java
 import DataFlow
-import semmle.code.java.dataflow.TaintTracking2
 import semmle.code.java.security.QueryInjection
 import experimental.semmle.code.java.Logging
 
 /**
  * A data flow source of the client ip obtained according to the remote endpoint identifier specified
- * in the header (`X-Forwarded-For`, `X-Real-IP`, `Proxy-Client-IP`, etc.).
+ * (`X-Forwarded-For`, `X-Real-IP`, `Proxy-Client-IP`, etc.) in the header.
  *
  * For example: `ServletRequest.getHeader("X-Forwarded-For")`.
  */
