@@ -3,6 +3,7 @@
  * @description Using a multiplication result that may overflow in the size of an allocation may lead to buffer overflows when the allocated memory is used.
  * @kind path-problem
  * @problem.severity warning
+ * @problem.security-severity 8.1
  * @precision low
  * @tags security
  *       correctness

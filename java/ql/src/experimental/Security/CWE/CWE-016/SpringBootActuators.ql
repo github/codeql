@@ -4,6 +4,7 @@
  *              or even to remote code execution.
  * @kind problem
  * @problem.severity error
+ * @problem.security-severity 7.1
  * @precision high
  * @id java/spring-boot-exposed-actuators
  * @tags security

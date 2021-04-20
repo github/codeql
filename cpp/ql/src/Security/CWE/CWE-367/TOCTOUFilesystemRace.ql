@@ -5,6 +5,7 @@
  *              the two operations.
  * @kind problem
  * @problem.severity warning
+ * @problem.security-severity 7.0
  * @precision medium
  * @id cpp/toctou-race-condition
  * @tags security

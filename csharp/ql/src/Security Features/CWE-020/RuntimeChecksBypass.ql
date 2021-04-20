@@ -4,6 +4,7 @@
  * @kind problem
  * @id cs/serialization-check-bypass
  * @problem.severity warning
+ * @problem.security-severity 8.6
  * @precision medium
  * @tags security
  *       external/cwe/cwe-20

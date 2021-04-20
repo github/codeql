@@ -4,6 +4,7 @@
  *              makes code vulnerable to attack by header splitting.
  * @kind path-problem
  * @problem.severity error
+ * @problem.security-severity 8.8
  * @precision high
  * @id java/http-response-splitting
  * @tags security

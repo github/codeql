@@ -4,6 +4,7 @@
  *              database can expose it to an attacker.
  * @kind path-problem
  * @problem.severity warning
+ * @problem.security-severity 6.5
  * @precision medium
  * @id cpp/cleartext-storage-database
  * @tags security

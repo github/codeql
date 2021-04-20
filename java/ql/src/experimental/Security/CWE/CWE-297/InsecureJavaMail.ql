@@ -5,6 +5,7 @@
  *              ensure that it is actually associated with that host.
  * @kind problem
  * @problem.severity warning
+ * @problem.security-severity 6.8
  * @precision medium
  * @id java/insecure-smtp-ssl
  * @tags security

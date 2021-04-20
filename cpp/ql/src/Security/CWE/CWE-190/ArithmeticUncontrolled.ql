@@ -4,6 +4,7 @@
  *              validated can cause overflows.
  * @kind path-problem
  * @problem.severity warning
+ * @problem.security-severity 8.1
  * @precision medium
  * @id cpp/uncontrolled-arithmetic
  * @tags security

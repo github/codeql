@@ -4,6 +4,7 @@
  *              malicious user providing an unintended resource.
  * @kind path-problem
  * @problem.severity error
+ * @problem.security-severity 9.8
  * @precision high
  * @id cs/resource-injection
  * @tags security

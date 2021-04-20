@@ -6,6 +6,7 @@
  * @kind path-problem
  * @id js/zipslip
  * @problem.severity error
+ * @problem.security-severity 8.8
  * @precision high
  * @tags security
  *       external/cwe/cwe-022

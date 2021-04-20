@@ -4,6 +4,7 @@
  *              overlay their own UI on top of the site by using an iframe.
  * @kind problem
  * @problem.severity error
+ * @problem.security-severity 8.1
  * @precision low
  * @id js/missing-x-frame-options
  * @tags security

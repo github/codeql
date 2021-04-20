@@ -3,6 +3,7 @@
  * @description A sanitizer that removes a sequence of characters may reintroduce the dangerous sequence.
  * @kind problem
  * @problem.severity warning
+ * @problem.security-severity 8.6
  * @precision high
  * @id js/incomplete-multi-character-sanitization
  * @tags correctness

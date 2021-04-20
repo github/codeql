@@ -3,6 +3,7 @@
  * @description Enabling `nodeIntegration` or `nodeIntegrationInWorker` can expose the application to remote code execution.
  * @kind problem
  * @problem.severity warning
+ * @problem.security-severity 9.8
  * @precision low
  * @id js/enabling-electron-renderer-node-integration
  * @tags security

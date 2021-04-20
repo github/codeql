@@ -4,6 +4,7 @@
  *              information disclosure or execution of arbitrary code.
  * @kind path-problem
  * @problem.severity error
+ * @problem.security-severity 9.8
  * @precision high
  * @id java/xslt-injection
  * @tags security

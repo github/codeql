@@ -5,6 +5,7 @@
  *              privileges or unexpected exposure from chained vulnerabilities.
  * @kind problem
  * @problem.severity warning
+ * @problem.security-severity 7.5
  * @precision medium
  * @id java/android/cleartext-storage-shared-prefs
  * @tags security

@@ -5,6 +5,7 @@
  *              to SQL Injection.
  * @kind path-problem
  * @problem.severity error
+ * @problem.security-severity 9.8
  * @precision high
  * @id cpp/sql-injection
  * @tags security

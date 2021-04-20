@@ -3,6 +3,7 @@
  * @description Use of a cryptographic key that is too small may allow the encryption to be broken.
  * @kind problem
  * @problem.severity error
+ * @problem.security-severity 8.4
  * @precision high
  * @id py/weak-crypto-key
  * @tags security

@@ -4,6 +4,7 @@
  *              and cause a denial of service.
  * @kind path-problem
  * @problem.severity error
+ * @problem.security-severity 9.8
  * @precision high
  * @id cs/uncontrolled-format-string
  * @tags security

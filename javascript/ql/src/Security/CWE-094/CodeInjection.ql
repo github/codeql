@@ -4,6 +4,7 @@
  *              code execution.
  * @kind path-problem
  * @problem.severity error
+ * @problem.security-severity 6.1
  * @precision high
  * @id js/code-injection
  * @tags security

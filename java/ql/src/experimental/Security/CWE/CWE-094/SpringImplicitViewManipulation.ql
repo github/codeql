@@ -3,6 +3,7 @@
  * @description Untrusted input in a Spring View Controller can lead to RCE.
  * @kind problem
  * @problem.severity error
+ * @problem.security-severity 9.8
  * @precision high
  * @id java/spring-view-manipulation-implicit
  * @tags security

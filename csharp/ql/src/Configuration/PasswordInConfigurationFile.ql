@@ -3,6 +3,7 @@
  * @description Finds passwords in configuration files.
  * @kind problem
  * @problem.severity warning
+ * @problem.security-severity 6.5
  * @precision medium
  * @id cs/password-in-configuration
  * @tags security

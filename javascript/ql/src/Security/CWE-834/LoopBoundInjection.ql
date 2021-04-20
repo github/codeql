@@ -4,6 +4,7 @@
  *              property can cause indefinite looping.
  * @kind path-problem
  * @problem.severity warning
+ * @problem.security-severity 7.5
  * @id js/loop-bound-injection
  * @tags security
  *       external/cwe/cwe-834

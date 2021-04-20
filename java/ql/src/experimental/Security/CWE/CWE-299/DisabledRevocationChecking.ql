@@ -4,6 +4,7 @@
  *              Therefore, revocation status of certificates in a chain should be checked.
  * @kind path-problem
  * @problem.severity error
+ * @problem.security-severity 6.4
  * @precision high
  * @id java/disabled-certificate-revocation-checking
  * @tags security

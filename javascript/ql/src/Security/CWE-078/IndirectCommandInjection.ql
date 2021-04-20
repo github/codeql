@@ -5,6 +5,7 @@
  *              command-line injection vulnerabilities.
  * @kind path-problem
  * @problem.severity warning
+ * @problem.security-severity 9.8
  * @precision medium
  * @id js/indirect-command-line-injection
  * @tags correctness

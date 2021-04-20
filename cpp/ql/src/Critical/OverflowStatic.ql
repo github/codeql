@@ -4,6 +4,7 @@
  *              may result in a buffer overflow.
  * @kind problem
  * @problem.severity warning
+ * @problem.security-severity 8.8
  * @precision medium
  * @id cpp/static-buffer-overflow
  * @tags reliability

@@ -3,6 +3,7 @@
  * @description Misconfiguration of CORS HTTP headers allows for leaks of secret credentials.
  * @kind path-problem
  * @problem.severity error
+ * @problem.security-severity 7.8
  * @precision high
  * @id js/cors-misconfiguration-for-credentials
  * @tags security

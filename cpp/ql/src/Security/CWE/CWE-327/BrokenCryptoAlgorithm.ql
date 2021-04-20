@@ -4,6 +4,7 @@
  *              an attacker to compromise security.
  * @kind problem
  * @problem.severity error
+ * @problem.security-severity 7.5
  * @precision medium
  * @id cpp/weak-cryptographic-algorithm
  * @tags security

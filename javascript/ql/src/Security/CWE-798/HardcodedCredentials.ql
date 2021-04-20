@@ -4,6 +4,7 @@
  *              to gain unauthorized access.
  * @kind path-problem
  * @problem.severity warning
+ * @problem.security-severity 9.8
  * @precision high
  * @id js/hardcoded-credentials
  * @tags security

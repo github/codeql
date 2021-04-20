@@ -4,6 +4,7 @@
  *              permissions being granted.
  * @kind path-problem
  * @problem.severity error
+ * @problem.security-severity 7.7
  * @precision high
  * @id java/tainted-permissions-check
  * @tags security

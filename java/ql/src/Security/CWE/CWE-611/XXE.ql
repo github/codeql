@@ -4,6 +4,7 @@
  * references may lead to disclosure of confidential data or denial of service.
  * @kind path-problem
  * @problem.severity error
+ * @problem.security-severity 8.8
  * @precision high
  * @id java/xxe
  * @tags security

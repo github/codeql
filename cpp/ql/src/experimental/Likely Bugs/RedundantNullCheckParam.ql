@@ -6,6 +6,7 @@
  * @kind problem
  * @id cpp/redundant-null-check-param
  * @problem.severity recommendation
+ * @problem.security-severity 7.5
  * @tags reliability
  *       security
  *       external/cwe/cwe-476

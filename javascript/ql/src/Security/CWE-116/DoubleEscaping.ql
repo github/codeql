@@ -5,6 +5,7 @@
  *              and conversely it has to be unescaped last to avoid double-unescaping.
  * @kind problem
  * @problem.severity warning
+ * @problem.security-severity 8.6
  * @precision high
  * @id js/double-escaping
  * @tags correctness

@@ -4,6 +4,7 @@
  * @kind problem
  * @id cpp/unsigned-difference-expression-compared-zero
  * @problem.severity warning
+ * @problem.security-severity 8.2
  * @precision medium
  * @tags security
  *       correctness

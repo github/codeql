@@ -3,6 +3,7 @@
  * @description Hashed passwords without a salt are vulnerable to dictionary attacks.
  * @kind path-problem
  * @problem.severity warning
+ * @problem.security-severity 7.2
  * @precision low
  * @id java/hash-without-salt
  * @tags security

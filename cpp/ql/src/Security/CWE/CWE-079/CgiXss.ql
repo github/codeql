@@ -4,6 +4,7 @@
  *              allows for a cross-site scripting vulnerability.
  * @kind path-problem
  * @problem.severity error
+ * @problem.security-severity 6.1
  * @precision high
  * @id cpp/cgi-xss
  * @tags security

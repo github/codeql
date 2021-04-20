@@ -4,6 +4,7 @@
  *              attacks and leak password reset tokens.
  * @kind path-problem
  * @problem.severity error
+ * @problem.security-severity 9.8
  * @precision high
  * @id js/host-header-forgery-in-email-generation
  * @tags security

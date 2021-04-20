@@ -5,6 +5,7 @@
  * @kind problem
  * @id cpp/offset-use-before-range-check
  * @problem.severity warning
+ * @problem.security-severity 8.1
  * @precision medium
  * @tags reliability
  *       security
