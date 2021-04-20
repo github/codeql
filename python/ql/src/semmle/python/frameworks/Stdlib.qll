@@ -948,7 +948,7 @@ private module Stdlib {
       typePreservingCall(nodeFrom, result)
     )
     or
-    // Type-preserving attribute
+    // Type-preserving attribute access
     exists(DataFlow::Node nodeFrom, DataFlow::TypeTracker t2 |
       nodeFrom.getALocalSource() = pathlibPath(t2) and
       t2.end()
