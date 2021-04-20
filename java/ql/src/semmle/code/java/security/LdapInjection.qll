@@ -45,12 +45,12 @@ private class DefaultLdapInjectionSinkModel extends SinkModelCsv {
         "com.unboundid.ldap.sdk;LDAPConnection;false;search;(SearchRequest);;Argument[0];ldap",
         "com.unboundid.ldap.sdk;LDAPConnection;false;search;(SearchResultListener,String,SearchScope,DereferencePolicy,int,int,boolean,Filter,String[]);;Argument[0..7];ldap",
         "com.unboundid.ldap.sdk;LDAPConnection;false;search;(SearchResultListener,String,SearchScope,DereferencePolicy,int,int,boolean,String,String[]);;Argument[0..7];ldap",
-        "com.unboundid.ldap.sdk;LDAPConnection;false;search;(SearchResultListener,String,SearchScope,Filter,String[]]);;Argument[0..3];ldap",
-        "com.unboundid.ldap.sdk;LDAPConnection;false;search;(SearchResultListener,String,SearchScope,String,String[]]);;Argument[0..3];ldap",
-        "com.unboundid.ldap.sdk;LDAPConnection;false;search;(String,SearchScope,DereferencePolicy,int,int,boolean,Filter,String[]]);;Argument[0..6];ldap",
-        "com.unboundid.ldap.sdk;LDAPConnection;false;search;(String,SearchScope,DereferencePolicy,int,int,boolean,String,String[]]);;Argument[0..6];ldap",
-        "com.unboundid.ldap.sdk;LDAPConnection;false;search;(String,SearchScope,Filter,String[]]);;Argument[0..2];ldap",
-        "com.unboundid.ldap.sdk;LDAPConnection;false;search;(String,SearchScope,String,String[]]);;Argument[0..2];ldap",
+        "com.unboundid.ldap.sdk;LDAPConnection;false;search;(SearchResultListener,String,SearchScope,Filter,String[]);;Argument[0..3];ldap",
+        "com.unboundid.ldap.sdk;LDAPConnection;false;search;(SearchResultListener,String,SearchScope,String,String[]);;Argument[0..3];ldap",
+        "com.unboundid.ldap.sdk;LDAPConnection;false;search;(String,SearchScope,DereferencePolicy,int,int,boolean,Filter,String[]);;Argument[0..6];ldap",
+        "com.unboundid.ldap.sdk;LDAPConnection;false;search;(String,SearchScope,DereferencePolicy,int,int,boolean,String,String[]);;Argument[0..6];ldap",
+        "com.unboundid.ldap.sdk;LDAPConnection;false;search;(String,SearchScope,Filter,String[]);;Argument[0..2];ldap",
+        "com.unboundid.ldap.sdk;LDAPConnection;false;search;(String,SearchScope,String,String[]);;Argument[0..2];ldap",
         // UnboundID: searchForEntry
         "com.unboundid.ldap.sdk;LDAPConnection;false;searchForEntry;(ReadOnlySearchRequest);;Argument[0];ldap",
         "com.unboundid.ldap.sdk;LDAPConnection;false;searchForEntry;(SearchRequest);;Argument[0];ldap",
@@ -66,15 +66,15 @@ private class DefaultLdapInjectionSinkModel extends SinkModelCsv {
         "org.springframework.ldap.core;LdapTemplate;false;search;;;Argument[0..1];ldap",
         "org.springframework.ldap.core;LdapTemplate;false;searchForContext;;;Argument[0..1];ldap",
         "org.springframework.ldap.core;LdapTemplate;false;searchForObject;;;Argument[0..1];ldap",
-        "org.springframework.ldap.core;LdapTemplate;false;authenticate;;;Argument[0];ldap",
-        "org.springframework.ldap.core;LdapTemplate;false;authenticate;(Name,String,String);;Argument[1];ldap",
-        "org.springframework.ldap.core;LdapTemplate;false;authenticate;(Name,String,String,AuthenticatedLdapEntryContextCallback);;Argument[1];ldap",
-        "org.springframework.ldap.core;LdapTemplate;false;authenticate;(Name,String,String,AuthenticatedLdapEntryContextCallback,AuthenticationErrorCallback);;Argument[1];ldap",
-        "org.springframework.ldap.core;LdapTemplate;false;authenticate;(Name,String,String,AuthenticationErrorCallback);;Argument[1];ldap",
-        "org.springframework.ldap.core;LdapTemplate;false;authenticate;(String,String,String);;Argument[1];ldap",
-        "org.springframework.ldap.core;LdapTemplate;false;authenticate;(String,String,String,AuthenticatedLdapEntryContextCallback);;Argument[1];ldap",
-        "org.springframework.ldap.core;LdapTemplate;false;authenticate;(String,String,String,AuthenticatedLdapEntryContextCallback,AuthenticationErrorCallback);;Argument[1];ldap",
-        "org.springframework.ldap.core;LdapTemplate;false;authenticate;(String,String,String,AuthenticationErrorCallback);;Argument[1];ldap"
+        "org.springframework.ldap.core;LdapTemplate;false;authenticate;(LdapQuery,String);;Argument[0];ldap",
+        "org.springframework.ldap.core;LdapTemplate;false;authenticate;(Name,String,String);;Argument[0..1];ldap",
+        "org.springframework.ldap.core;LdapTemplate;false;authenticate;(Name,String,String,AuthenticatedLdapEntryContextCallback);;Argument[0..1];ldap",
+        "org.springframework.ldap.core;LdapTemplate;false;authenticate;(Name,String,String,AuthenticatedLdapEntryContextCallback,AuthenticationErrorCallback);;Argument[0..1];ldap",
+        "org.springframework.ldap.core;LdapTemplate;false;authenticate;(Name,String,String,AuthenticationErrorCallback);;Argument[0..1];ldap",
+        "org.springframework.ldap.core;LdapTemplate;false;authenticate;(String,String,String);;Argument[0..1];ldap",
+        "org.springframework.ldap.core;LdapTemplate;false;authenticate;(String,String,String,AuthenticatedLdapEntryContextCallback);;Argument[0..1];ldap",
+        "org.springframework.ldap.core;LdapTemplate;false;authenticate;(String,String,String,AuthenticatedLdapEntryContextCallback,AuthenticationErrorCallback);;Argument[0..1];ldap",
+        "org.springframework.ldap.core;LdapTemplate;false;authenticate;(String,String,String,AuthenticationErrorCallback);;Argument[0..1];ldap"
       ]
   }
 }
