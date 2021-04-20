@@ -102,8 +102,7 @@ private class PrintSink extends UseOfLessTrustedSink {
     exists(MethodAccess ma |
       ma.getMethod().getName() in ["print", "println"] and
       (
-        ma.getMethod().getDeclaringType().hasQualifiedName("java.io", "PrintWriter") or
-        ma.getMethod().getDeclaringType().hasQualifiedName("java.io", "PrintStream")
+        ma.getMethod().getDeclaringType().hasQualifiedName("java.io", ["PrintWriter", "PrintStream"])
       ) and
       ma.getAnArgument() = this.asExpr()
     )
