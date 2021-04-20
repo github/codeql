@@ -13,6 +13,9 @@
 import java
 import TempDirUtils
 
+/**
+ * A MethodAccess against a method that creates a temporary file or directory in a shared temporary directory.
+ */
 abstract class MethodAccessInsecureFileCreation extends MethodAccess {
   /**
    * Gets the type of entity created (e.g. `file`, `directory`, ...).
@@ -21,7 +24,7 @@ abstract class MethodAccessInsecureFileCreation extends MethodAccess {
 }
 
 /**
- * An insecure call to `java.io.File::createTempFile`.
+ * An insecure call to `java.io.File.createTempFile`.
  */
 class MethodAccessInsecureFileCreateTempFile extends MethodAccessInsecureFileCreation {
   MethodAccessInsecureFileCreateTempFile() {
@@ -35,7 +38,7 @@ class MethodAccessInsecureFileCreateTempFile extends MethodAccessInsecureFileCre
     )
   }
 
-  override string getFileSystemType() { result = "file" }
+  override string getFileSystemEntityType() { result = "file" }
 }
 
 /**
@@ -56,10 +59,10 @@ class MethodAccessInsecureGuavaFilesCreateTempFile extends MethodAccessInsecureF
     getMethod() instanceof MethodGuavaFilesCreateTempFile
   }
 
-  override string getFileSystemType() { result = "directory" }
+  override string getFileSystemEntityType() { result = "directory" }
 }
 
 from MethodAccessInsecureFileCreation methodAccess
 select methodAccess,
-  "Local information disclosure vulnerability due to use of " + methodAccess.getFileSystemType() +
+  "Local information disclosure vulnerability due to use of " + methodAccess.getFileSystemEntityType() +
     " readable by other local users."
