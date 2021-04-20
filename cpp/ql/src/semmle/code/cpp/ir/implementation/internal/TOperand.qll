@@ -36,10 +36,9 @@ private module Internal {
       useInstr.getOpcode().hasOperand(tag)
     } or
     TUnaliasedPhiOperand(
-      Unaliased::PhiInstruction useInstr, Unaliased::Instruction defInstr,
-      Unaliased::IRBlock predecessorBlock, Overlap overlap
+      Unaliased::PhiInstruction useInstr, Unaliased::IRBlock predecessorBlock, Overlap overlap
     ) {
-      defInstr = UnaliasedConstruction::getPhiOperandDefinition(useInstr, predecessorBlock, overlap)
+      exists(UnaliasedConstruction::getPhiOperandDefinition(useInstr, predecessorBlock, overlap))
     } or
     //// ALIASED
     ////
@@ -50,10 +49,9 @@ private module Internal {
     // important that we use the same definition of "is variable aliased" across
     // the phases.
     TAliasedPhiOperand(
-      TAliasedSSAPhiInstruction useInstr, Aliased::Instruction defInstr,
-      Aliased::IRBlock predecessorBlock, Overlap overlap
+      TAliasedSSAPhiInstruction useInstr, Aliased::IRBlock predecessorBlock, Overlap overlap
     ) {
-      defInstr = AliasedConstruction::getPhiOperandDefinition(useInstr, predecessorBlock, overlap)
+      exists(AliasedConstruction::getPhiOperandDefinition(useInstr, predecessorBlock, overlap))
     } or
     TAliasedChiOperand(TAliasedSSAChiInstruction useInstr, ChiOperandTag tag) { any() }
 }
@@ -144,7 +142,8 @@ module UnaliasedSSAOperands {
     Unaliased::PhiInstruction useInstr, Unaliased::Instruction defInstr,
     Unaliased::IRBlock predecessorBlock, Overlap overlap
   ) {
-    result = Internal::TUnaliasedPhiOperand(useInstr, defInstr, predecessorBlock, overlap)
+    defInstr = UnaliasedConstruction::getPhiOperandDefinition(useInstr, predecessorBlock, overlap) and
+    result = Internal::TUnaliasedPhiOperand(useInstr, predecessorBlock, overlap)
   }
 
   TPhiOperand reusedPhiOperand(
@@ -182,7 +181,8 @@ module AliasedSSAOperands {
     Aliased::PhiInstruction useInstr, Aliased::Instruction defInstr,
     Aliased::IRBlock predecessorBlock, Overlap overlap
   ) {
-    result = Internal::TAliasedPhiOperand(useInstr, defInstr, predecessorBlock, overlap)
+    defInstr = AliasedConstruction::getPhiOperandDefinition(useInstr, predecessorBlock, overlap) and
+    result = Internal::TAliasedPhiOperand(useInstr, predecessorBlock, overlap)
   }
 
   /**
@@ -193,8 +193,9 @@ module AliasedSSAOperands {
     Aliased::IRBlock predecessorBlock, Overlap overlap
   ) {
     exists(Unaliased::IRBlock oldBlock |
-      predecessorBlock.getFirstInstruction() = oldBlock.getFirstInstruction() and
-      result = Internal::TUnaliasedPhiOperand(useInstr, defInstr, oldBlock, overlap)
+      predecessorBlock = AliasedConstruction::getNewBlock(oldBlock) and
+      result = Internal::TUnaliasedPhiOperand(useInstr, oldBlock, _) and
+      defInstr = AliasedConstruction::getPhiOperandDefinition(useInstr, predecessorBlock, overlap)
     )
   }
 

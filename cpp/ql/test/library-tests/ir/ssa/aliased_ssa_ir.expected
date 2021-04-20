@@ -1802,7 +1802,7 @@ ssa.cpp:
 #-----|   Goto -> Block 4
 
 #  398|   Block 4
-#  398|     m398_1(int)         = Phi                      : from 1:m388_4
+#  398|     m398_1(int)         = Phi                      : from 1:m388_4, from 3:m391_4
 #  398|     r398_2(glval<int>)  = VariableAddress[#return] : 
 #  398|     r398_3(glval<int>)  = VariableAddress[ret]     : 
 #  398|     r398_4(int)         = Load[ret]                : &:r398_3, m398_1

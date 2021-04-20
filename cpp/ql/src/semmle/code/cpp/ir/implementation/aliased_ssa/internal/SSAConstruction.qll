@@ -68,8 +68,22 @@ private module Cached {
     instr instanceof TUnreachedInstruction
   }
 
-  private IRBlock getNewBlock(OldBlock oldBlock) {
-    result.getFirstInstruction() = getNewInstruction(oldBlock.getFirstInstruction())
+  cached IRBlock getNewBlock(OldBlock oldBlock) {
+    exists(Instruction newEnd, OldIR::Instruction oldEnd |
+      (
+      result.getLastInstruction() = newEnd and
+      not newEnd instanceof ChiInstruction
+      or
+      newEnd = result.getLastInstruction().(ChiInstruction).getAPredecessor() // does this work?
+      ) and
+      (
+        oldBlock.getLastInstruction() = oldEnd and
+        not oldEnd instanceof OldIR::ChiInstruction
+        or
+        oldEnd = oldBlock.getLastInstruction().(OldIR::ChiInstruction).getAPredecessor() // does this work?
+      ) and
+      oldEnd = getNewInstruction(newEnd)
+    )
   }
 
   /**
@@ -164,7 +178,7 @@ private module Cached {
       (
         result = getNewInstruction(oldOperand.getAnyDef()) and
         overlap = originalOverlap
-         or
+        or
         exists(OldIR::PhiInputOperand phiOperand, Overlap phiOperandOverlap |
           phiOperand = getDegeneratePhiOperand(oldOperand.getAnyDef()) and
           result = getNewDefinitionFromOldSSA(phiOperand, phiOperandOverlap) and
