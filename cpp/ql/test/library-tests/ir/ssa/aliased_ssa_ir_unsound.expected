@@ -1608,7 +1608,7 @@ ssa.cpp:
 #  340|     m340_4(int)        = Store[ret]               : &:r340_3, r340_2
 #  345|     r345_1(glval<int>) = VariableAddress[#return] : 
 #  345|     r345_2(glval<int>) = VariableAddress[ret]     : 
-#  345|     r345_3(int)        = Load[ret]                : &:r345_2
+#  345|     r345_3(int)        = Load[ret]                : &:r345_2, m340_4
 #  345|     m345_4(int)        = Store[#return]           : &:r345_1, r345_3
 #  335|     r335_9(glval<int>) = VariableAddress[#return] : 
 #  335|     v335_10(void)      = ReturnValue              : &:r335_9, m345_4

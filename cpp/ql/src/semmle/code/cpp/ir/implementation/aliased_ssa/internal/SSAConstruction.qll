@@ -43,11 +43,25 @@ private module Cached {
   class TStageInstruction =
     TRawInstruction or TPhiInstruction or TChiInstruction or TUnreachedInstruction;
 
+  /**
+   * If `oldInstruction` is a `Phi` instruction that has exactly one reachable predecessor block,
+   * this predicate returns the `PhiInputOperand` corresponding to that predecessor block.
+   * Otherwise, this predicate does not hold.
+   */
+  private OldIR::PhiInputOperand getDegeneratePhiOperand(OldInstruction oldInstruction) {
+    result =
+      unique(OldIR::PhiInputOperand operand |
+        operand = oldInstruction.(OldIR::PhiInstruction).getAnInputOperand() and
+        operand.getPredecessorBlock() instanceof OldBlock
+      )
+  }
+
   cached
   predicate hasInstruction(TStageInstruction instr) {
     instr instanceof TRawInstruction and instr instanceof OldInstruction
     or
-    instr instanceof TPhiInstruction
+    instr instanceof TPhiInstruction and 
+    not exists(getDegeneratePhiOperand(instr))
     or
     instr instanceof TChiInstruction
     or
@@ -150,16 +164,13 @@ private module Cached {
       (
         result = getNewInstruction(oldOperand.getAnyDef()) and
         overlap = originalOverlap
-        /*
-         * or
-         *        exists(OldIR::PhiInputOperand phiOperand, Overlap phiOperandOverlap |
-         *          phiOperand = getDegeneratePhiOperand(oldOperand.getAnyDef()) and
-         *          result = getNewDefinitionFromOldSSA(phiOperand, phiOperandOverlap) and
-         *          overlap = combineOverlap(phiOperandOverlap, originalOverlap)
-         *        )
-         */
-
+         or
+        exists(OldIR::PhiInputOperand phiOperand, Overlap phiOperandOverlap |
+          phiOperand = getDegeneratePhiOperand(oldOperand.getAnyDef()) and
+          result = getNewDefinitionFromOldSSA(phiOperand, phiOperandOverlap) and
+          overlap = combineOverlap(phiOperandOverlap, originalOverlap)
         )
+      )
     )
   }
 
