@@ -15,11 +15,10 @@ bypass a ban-list, for example.</p>
 </recommendation>
 <example>
 
-<p>The following examples show the bad case and the good case respectively. Bad case, such as <code>bad1</code> to <code>bad2</code>. 
-In the <code>bad1</code> method, obtain the client ip according to the specified identifier from the <code>header</code> for local 
-output and logging. In the <code>bad2</code> method, the client ip is obtained and judged according to the specified identifier 
-from the <code>header</code>. When used for permission verification, it can be bypassed by forging the ip. Good case, such as 
-<code>good1</code>, split the value of <code>X-Forwarded-For</code> in <code>header</code> and get the last value of the split array.</p>
+<p>The following examples show the bad case and the good case respectively.
+In the <code>bad1</code> method, the client ip is obtained from an HTTP header for local 
+output and logging. In the <code>bad2</code> method, the client ip the <code>X-Forwarded-For</code> is split into comma-separated values, but the less-trustworthy first one is used. Both of these examples could be deceived by providing a forged HTTP header. The method
+<code>good1</code> similarly splits an <code>X-Forwarded-For</code> value, but uses the last, more-trustworthy entry.</p>
 
 <sample src="UseOfLessTrustedSource.java" />
 
