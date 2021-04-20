@@ -103,9 +103,7 @@ private class EvalMethod extends Method {
 private class EvalMethodAccess extends MethodAccess {
   EvalMethodAccess() { this.getMethod() instanceof EvalMethod }
 
-  Expr getArgumentExpr() {
-    result = this.getArgument(this.getNumArgument() - 1)
-  }
+  Expr getArgumentExpr() { result = this.getArgument(this.getNumArgument() - 1) }
 }
 
 /**
