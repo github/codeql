@@ -70,8 +70,8 @@ private class JwtHandlerAdapterOnJwtMethods extends Method {
 
 /**
  * Holds if `parseHandlerExpr` is an insecure `JwtHandler`.
- * That is, it overrides a method from `JwtHandlerOnJwtMethods` and the overriden method is not a method from `JwtHandlerAdapterOnJwtMethods`.
- * A overriden method which is a method from `JwtHandlerAdapterOnJwtMethods` is safe, because these always throw an exception.
+ * That is, it overrides a method from `JwtHandlerOnJwtMethods` and the overridden method is not a method from `JwtHandlerAdapterOnJwtMethods`.
+ * A overridden method which is a method from `JwtHandlerAdapterOnJwtMethods` is safe, because these always throw an exception.
  */
 private predicate isInsecureParseHandler(Expr parseHandlerExpr) {
   exists(RefType t |
@@ -155,7 +155,7 @@ private class SigningToExprDataFlow extends DataFlow::Configuration {
   }
 }
 
-/** An access to the `setSigningKey` or `setSigningKeyResolver` method (or an overriden method) defined in `JwtParser` and `JwtParserBuilder`. */
+/** An access to the `setSigningKey` or `setSigningKeyResolver` method (or an overridden method) defined in `JwtParser` and `JwtParserBuilder`. */
 private class SigningKeyMethodAccess extends MethodAccess {
   SigningKeyMethodAccess() {
     exists(Method m |
