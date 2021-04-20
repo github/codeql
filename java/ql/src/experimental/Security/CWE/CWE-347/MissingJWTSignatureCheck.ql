@@ -50,7 +50,7 @@ private class JwtParserInsecureParseMethods extends Method {
   }
 }
 
-/** The `onClaimsJwt(jwt)` and `onPlaintextJwt(jwt)` methods defined in `JwtHandler`. */
+/** The `on(Claims|Plaintext)Jwt` methods defined in `JwtHandler`. */
 private class JwtHandlerOnJwtMethods extends Method {
   JwtHandlerOnJwtMethods() {
     this.hasName(["onClaimsJwt", "onPlaintextJwt"]) and
@@ -59,7 +59,7 @@ private class JwtHandlerOnJwtMethods extends Method {
   }
 }
 
-/** The `onClaimsJwt(jwt)` and `onPlaintextJwt(jwt)` methods defined in `JwtHandlerAdapter`. */
+/** The `on(Claims|Plaintext)Jwt` methods defined in `JwtHandlerAdapter`. */
 private class JwtHandlerAdapterOnJwtMethods extends Method {
   JwtHandlerAdapterOnJwtMethods() {
     this.hasName(["onClaimsJwt", "onPlaintextJwt"]) and
