@@ -171,7 +171,21 @@ private class SigningKeyMethodAccess extends MethodAccess {
   }
 }
 
+/**
+ * Holds if the `MethodAccess` `ma` occurs in a test file. A test file is any file that
+ * is a direct or indirect child of a directory named `test`, ignoring case.
+ */
+private predicate isInTestFile(MethodAccess ma) {
+  exists(string lowerCasedAbsolutePath |
+    lowerCasedAbsolutePath = ma.getLocation().getFile().getAbsolutePath().toLowerCase()
+  |
+    lowerCasedAbsolutePath.matches("%/test/%") and
+    not lowerCasedAbsolutePath
+        .matches("%/ql/test/experimental/query-tests/security/CWE-347/%".toLowerCase())
+  )
+}
+
 from JwtParserInsecureParseMethodAccess ma, JwtParserWithSigningKeyExpr parserExpr
-where ma.getQualifier() = parserExpr
+where ma.getQualifier() = parserExpr and not isInTestFile(ma)
 select ma, "A signing key is set $@, but the signature is not verified.",
   parserExpr.getSigningMethodAccess(), "here"
