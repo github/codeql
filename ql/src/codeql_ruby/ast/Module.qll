@@ -14,12 +14,6 @@ class Module extends TModule {
   /** Gets the super class of this module, if any. */
   Module getSuperClass() { result = getSuperClass(this) }
 
-  /** Gets a method defined in this module by name. */
-  Method getMethod(string name) { result.getName() = name and result.getModule() = this }
-
-  /** Look up a method in this module's ancestor chain. */
-  Method lookupMethod(string name) { result = lookupMethod(this, name) }
-
   /** Gets a `prepend`ed module. */
   Module getAPrependedModule() { result = getAPrependedModule(this) }
 

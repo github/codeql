@@ -1,13 +1,6 @@
 import ruby
+import codeql_ruby.ast.internal.Module as M
 
-query Method method() { any() }
+query MethodBase getMethod(Module m, string name) { result = M::getMethod(m, name) }
 
-query MethodBase getADeclaration(Method m) { result = m.getADeclaration() }
-
-query string getName(Method m) { result = m.getName() }
-
-query Module getModule(Method m) { result = m.getModule() }
-
-query Method getMethod(Module m, string name) { result = m.getMethod(name) }
-
-query Method lookupMethod(Module m, string name) { result = m.lookupMethod(name) }
+query MethodBase lookupMethod(Module m, string name) { result = M::lookupMethod(m, name) }
