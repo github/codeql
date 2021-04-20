@@ -422,9 +422,9 @@ module API {
     }
 
     /**
-     * Gets a data-flow node to which `nd`, which is a use of an API-graph node, flows.
+     * Gets a data-flow node to which `src`, which is a use of an API-graph node, flows.
      *
-     * The flow from `nd` to that node may be inter-procedural.
+     * The flow from `src` to that node may be inter-procedural.
      */
     private DataFlow::LocalSourceNode trackUseNode(
       DataFlow::LocalSourceNode src, DataFlow::TypeTracker t
@@ -436,9 +436,16 @@ module API {
       exists(DataFlow::TypeTracker t2 | result = trackUseNode(src, t2).track(t2, t))
     }
 
+    /**
+     * Gets a data-flow node to which `src`, which is a use of an API-graph node, flows.
+     *
+     * The flow from `src` to that node may be inter-procedural.
+     */
     cached
     DataFlow::LocalSourceNode trackUseNode(DataFlow::LocalSourceNode src) {
-      result = trackUseNode(src, DataFlow::TypeTracker::end())
+      result = trackUseNode(src, DataFlow::TypeTracker::end()) and
+      // We exclude module variable nodes, as these do not correspond to real uses.
+      not result instanceof DataFlow::ModuleVariableNode
     }
 
     /**
