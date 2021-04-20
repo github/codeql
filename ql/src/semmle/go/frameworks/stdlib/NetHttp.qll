@@ -23,18 +23,20 @@ module NetHttp {
     }
   }
 
-  private class UserControlledRequestMethod extends UntrustedFlowSource::Range,
-    DataFlow::MethodCallNode {
+  private class UserControlledRequestMethod extends UntrustedFlowSource::Range {
     UserControlledRequestMethod() {
-      exists(string methName | this.getTarget().hasQualifiedName("net/http", "Request", methName) |
-        methName = "Cookie" or
-        methName = "Cookies" or
-        methName = "FormFile" or
-        methName = "FormValue" or
-        methName = "MultipartReader" or
-        methName = "PostFormValue" or
-        methName = "Referer" or
-        methName = "UserAgent"
+      exists(DataFlow::MethodCallNode callNode, string methName, int resultIdx |
+        callNode.getTarget().hasQualifiedName("net/http", "Request", methName) and
+        this = callNode.getResult(resultIdx)
+      |
+        methName =
+          [
+            "Cookie", "Cookies", "FormValue", "MultipartReader", "PostFormValue", "Referer",
+            "UserAgent"
+          ] and
+        resultIdx = 0
+        or
+        methName = "FormFile" and resultIdx = [0, 1]
       )
     }
   }
@@ -255,7 +257,7 @@ module NetHttp {
       or
       exists(Method m, string methName |
         m.hasQualifiedName("net/http", "Request", methName) and
-        this = m.getACall()
+        this = m.getACall().getResult(0)
       |
         methName = ["Cookie", "Cookies", "MultipartReader", "PostFormValue", "Referer", "UserAgent"]
       )

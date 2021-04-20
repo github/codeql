@@ -34,6 +34,14 @@ module MimeMultipart {
       hasQualifiedName("mime/multipart", "FileHeader", "Open") and
       (inp.isReceiver() and outp.isResult(0))
       or
+      // signature: func (*Part).FileName() string
+      hasQualifiedName("mime/multipart", "Part", "FileName") and
+      (inp.isReceiver() and outp.isResult(0))
+      or
+      // signature: func (*Part).FormName() string
+      hasQualifiedName("mime/multipart", "Part", "FormName") and
+      (inp.isReceiver() and outp.isResult(0))
+      or
       // signature: func (*Reader).NextPart() (*Part, error)
       hasQualifiedName("mime/multipart", "Reader", "NextPart") and
       (inp.isReceiver() and outp.isResult(0))
