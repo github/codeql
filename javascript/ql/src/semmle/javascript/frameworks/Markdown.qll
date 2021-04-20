@@ -139,7 +139,7 @@ private module MarkdownIt {
     exists(API::CallNode call |
       call = markdownIt().getMember(["use", "set", "configure", "enable", "disable"]).getACall() and
       result = call.getReturn() and
-      not call.getParameter(0).getARhs().getALocalSource() =
+      not call.getParameter(0).getAValueReachingRhs() =
         DataFlow::moduleImport("markdown-it-sanitizer")
     )
   }
