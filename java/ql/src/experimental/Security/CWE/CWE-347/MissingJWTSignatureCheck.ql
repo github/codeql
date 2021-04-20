@@ -14,57 +14,57 @@ import semmle.code.java.dataflow.DataFlow
 
 /** The interface `io.jsonwebtoken.JwtParser`. */
 class TypeJwtParser extends Interface {
-  TypeJwtParser() { hasQualifiedName("io.jsonwebtoken", "JwtParser") }
+  TypeJwtParser() { this.hasQualifiedName("io.jsonwebtoken", "JwtParser") }
 }
 
 /** The interface `io.jsonwebtoken.JwtParserBuilder`. */
 class TypeJwtParserBuilder extends Interface {
-  TypeJwtParserBuilder() { hasQualifiedName("io.jsonwebtoken", "JwtParserBuilder") }
+  TypeJwtParserBuilder() { this.hasQualifiedName("io.jsonwebtoken", "JwtParserBuilder") }
 }
 
 /** The interface `io.jsonwebtoken.JwtHandler`. */
 class TypeJwtHandler extends Interface {
-  TypeJwtHandler() { hasQualifiedName("io.jsonwebtoken", "JwtHandler") }
+  TypeJwtHandler() { this.hasQualifiedName("io.jsonwebtoken", "JwtHandler") }
 }
 
 /** The class `io.jsonwebtoken.JwtHandlerAdapter`. */
 class TypeJwtHandlerAdapter extends Class {
-  TypeJwtHandlerAdapter() { hasQualifiedName("io.jsonwebtoken", "JwtHandlerAdapter") }
+  TypeJwtHandlerAdapter() { this.hasQualifiedName("io.jsonwebtoken", "JwtHandlerAdapter") }
 }
 
 /** The `parse(token, handler)` method defined in `TypeJwtParser`. */
 private class JwtParserParseHandlerMethod extends Method {
   JwtParserParseHandlerMethod() {
-    hasName("parse") and
-    getDeclaringType() instanceof TypeJwtParser and
-    getNumberOfParameters() = 2
+    this.hasName("parse") and
+    this.getDeclaringType() instanceof TypeJwtParser and
+    this.getNumberOfParameters() = 2
   }
 }
 
 /** The `parse(token)`, `parseClaimsJwt(token)` and `parsePlaintextJwt(token)` methods defined in `TypeJwtParser`. */
 private class JwtParserInsecureParseMethods extends Method {
   JwtParserInsecureParseMethods() {
-    hasName(["parse", "parseClaimsJwt", "parsePlaintextJwt"]) and
-    getNumberOfParameters() = 1 and
-    getDeclaringType() instanceof TypeJwtParser
+    this.hasName(["parse", "parseClaimsJwt", "parsePlaintextJwt"]) and
+    this.getNumberOfParameters() = 1 and
+    this.getDeclaringType() instanceof TypeJwtParser
   }
 }
 
 /** The `onClaimsJwt(jwt)` and `onPlaintextJwt(jwt)` methods defined in `TypeJwtHandler`. */
 private class JwtHandlerOnJwtMethods extends Method {
   JwtHandlerOnJwtMethods() {
-    hasName(["onClaimsJwt", "onPlaintextJwt"]) and
-    getNumberOfParameters() = 1 and
-    getDeclaringType() instanceof TypeJwtHandler
+    this.hasName(["onClaimsJwt", "onPlaintextJwt"]) and
+    this.getNumberOfParameters() = 1 and
+    this.getDeclaringType() instanceof TypeJwtHandler
   }
 }
 
 /** The `onClaimsJwt(jwt)` and `onPlaintextJwt(jwt)` methods defined in `TypeJwtHandlerAdapter`. */
 private class JwtHandlerAdapterOnJwtMethods extends Method {
   JwtHandlerAdapterOnJwtMethods() {
-    hasName(["onClaimsJwt", "onPlaintextJwt"]) and
-    getNumberOfParameters() = 1 and
-    getDeclaringType() instanceof TypeJwtHandlerAdapter
+    this.hasName(["onClaimsJwt", "onPlaintextJwt"]) and
+    this.getNumberOfParameters() = 1 and
+    this.getDeclaringType() instanceof TypeJwtHandlerAdapter
   }
 }
 
@@ -92,9 +92,9 @@ private predicate isInsecureParseHandler(Expr parseHandlerExpr) {
  */
 private class JwtParserInsecureParseMethodAccess extends MethodAccess {
   JwtParserInsecureParseMethodAccess() {
-    getMethod().getASourceOverriddenMethod*() instanceof JwtParserInsecureParseMethods
+    this.getMethod().getASourceOverriddenMethod*() instanceof JwtParserInsecureParseMethods
     or
-    getMethod().getASourceOverriddenMethod*() instanceof JwtParserParseHandlerMethod and
+    this.getMethod().getASourceOverriddenMethod*() instanceof JwtParserParseHandlerMethod and
     isInsecureParseHandler(this.getArgument(1))
   }
 }
