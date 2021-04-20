@@ -7,6 +7,7 @@
  * @id cs/sensitive-data-transmission
  * @tags security
  *       external/cwe/cwe-201
+ *       security-severity/4.3
  */
 
 import csharp

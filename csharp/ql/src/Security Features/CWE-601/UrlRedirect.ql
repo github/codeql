@@ -8,6 +8,7 @@
  * @id cs/web/unvalidated-url-redirection
  * @tags security
  *       external/cwe/cwe-601
+ *       security-severity/6.1
  */
 
 import csharp

@@ -7,6 +7,7 @@
  * @id java/unvalidated-cors-origin-set
  * @tags security
  *       external/cwe/cwe-346
+ *       security-severity/7.8
  */
 
 import java

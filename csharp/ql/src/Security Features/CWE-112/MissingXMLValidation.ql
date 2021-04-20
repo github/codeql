@@ -8,6 +8,7 @@
  * @id cs/xml/missing-validation
  * @tags security
  *       external/cwe/cwe-112
+ *       security-severity/4.3
  */
 
 import csharp

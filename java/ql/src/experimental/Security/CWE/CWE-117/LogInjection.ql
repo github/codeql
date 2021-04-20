@@ -8,6 +8,7 @@
  * @id java/log-injection
  * @tags security
  *       external/cwe/cwe-117
+ *       security-severity/5.3
  */
 
 import java

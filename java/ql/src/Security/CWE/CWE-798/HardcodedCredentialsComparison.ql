@@ -7,6 +7,7 @@
  * @id java/hardcoded-credential-comparison
  * @tags security
  *       external/cwe/cwe-798
+ *       security-severity/9.8
  */
 
 import java

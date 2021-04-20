@@ -9,6 +9,7 @@
  *       external/cwe/cwe-13
  *       external/cwe/cwe-256
  *       external/cwe/cwe-313
+ *       security-severity/6.5
  */
 
 import csharp

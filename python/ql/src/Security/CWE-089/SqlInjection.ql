@@ -9,6 +9,7 @@
  * @tags security
  *       external/cwe/cwe-089
  *       external/owasp/owasp-a1
+ *       security-severity/9.8
  */
 
 import python

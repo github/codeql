@@ -7,6 +7,7 @@
  * @problem.severity warning
  * @tags security
  *       external/cwe/cwe-170
+ *       security-severity/5.5
  */
 
 import cpp

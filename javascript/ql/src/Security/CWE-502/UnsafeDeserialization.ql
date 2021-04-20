@@ -8,6 +8,7 @@
  * @id js/unsafe-deserialization
  * @tags security
  *       external/cwe/cwe-502
+ *       security-severity/9.8
  */
 
 import javascript

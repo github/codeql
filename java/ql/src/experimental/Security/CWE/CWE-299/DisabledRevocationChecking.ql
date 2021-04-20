@@ -8,6 +8,7 @@
  * @id java/disabled-certificate-revocation-checking
  * @tags security
  *       external/cwe/cwe-299
+ *       security-severity/6.4
  */
 
 import java

@@ -7,6 +7,7 @@
  * @id java/tainted-format-string
  * @tags security
  *       external/cwe/cwe-134
+ *       security-severity/9.8
  */
 
 import java

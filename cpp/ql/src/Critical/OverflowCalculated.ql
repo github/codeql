@@ -8,6 +8,7 @@
  *       security
  *       external/cwe/cwe-131
  *       external/cwe/cwe-120
+ *       security-severity/9.8
  */
 
 import cpp

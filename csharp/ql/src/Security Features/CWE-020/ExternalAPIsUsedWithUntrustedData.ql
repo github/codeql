@@ -6,6 +6,7 @@
  * @id csharp/count-untrusted-data-external-api
  * @kind table
  * @tags security external/cwe/cwe-20
+ *       security-severity/8.6
  */
 
 import csharp

@@ -8,6 +8,7 @@
  * @id js/insecure-download
  * @tags security
  *       external/cwe/cwe-829
+ *       security-severity/8.1
  */
 
 import javascript

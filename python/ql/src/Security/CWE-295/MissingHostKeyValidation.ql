@@ -7,6 +7,7 @@
  * @id py/paramiko-missing-host-key-validation
  * @tags security
  *       external/cwe/cwe-295
+ *       security-severity/7.5
  */
 
 import python

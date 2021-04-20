@@ -7,6 +7,7 @@
  * @id cpp/world-writable-file-creation
  * @tags security
  *       external/cwe/cwe-732
+ *       security-severity/7.8
  */
 
 import cpp

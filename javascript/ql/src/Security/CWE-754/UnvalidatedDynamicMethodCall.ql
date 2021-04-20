@@ -8,6 +8,7 @@
  * @id js/unvalidated-dynamic-method-call
  * @tags security
  *       external/cwe/cwe-754
+ *       security-severity/7.8
  */
 
 import javascript

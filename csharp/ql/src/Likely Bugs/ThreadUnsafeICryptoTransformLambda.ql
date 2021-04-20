@@ -11,6 +11,7 @@
  * @tags concurrency
  *       security
  *       external/cwe/cwe-362
+ *       security-severity/7.0
  */
 
 import csharp

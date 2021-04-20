@@ -9,6 +9,7 @@
  * @id cpp/user-controlled-bypass
  * @tags security
  *       external/cwe/cwe-290
+ *       security-severity/7.7
  */
 
 import semmle.code.cpp.security.TaintTracking

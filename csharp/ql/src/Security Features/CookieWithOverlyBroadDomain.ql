@@ -7,6 +7,7 @@
  * @id cs/web/broad-cookie-domain
  * @tags security
  *       external/cwe/cwe-287
+ *       security-severity/9.8
  */
 
 import csharp

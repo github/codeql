@@ -9,6 +9,7 @@
  * @tags external/cwe/cwe-502
  *       security
  *       serialization
+ *       security-severity/9.8
  */
 
 import python

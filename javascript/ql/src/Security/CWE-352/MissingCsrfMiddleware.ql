@@ -8,6 +8,7 @@
  * @id js/missing-token-validation
  * @tags security
  *       external/cwe/cwe-352
+ *       security-severity/8.8
  */
 
 import javascript

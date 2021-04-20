@@ -8,6 +8,7 @@
  * @id cs/sql-injection
  * @tags security
  *       external/cwe/cwe-089
+ *       security-severity/9.8
  */
 
 import csharp

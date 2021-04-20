@@ -12,6 +12,7 @@
  *       correctness
  *       security
  *       external/cwe/cwe-134
+ *       security-severity/9.8
  */
 
 import semmle.code.cpp.dataflow.TaintTracking

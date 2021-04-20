@@ -7,6 +7,7 @@
  * @id js/insufficient-password-hash
  * @tags security
  *       external/cwe/cwe-916
+ *       security-severity/7.5
  */
 
 import javascript

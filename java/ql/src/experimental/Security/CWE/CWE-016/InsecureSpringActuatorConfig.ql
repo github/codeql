@@ -6,6 +6,7 @@
  * @id java/insecure-spring-actuator-config
  * @tags security
  *       external/cwe-016
+ *       security-severity/7.1
  */
 
 /*

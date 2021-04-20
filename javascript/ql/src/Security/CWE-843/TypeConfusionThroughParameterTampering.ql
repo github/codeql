@@ -7,6 +7,7 @@
  * @id js/type-confusion-through-parameter-tampering
  * @tags security
  *       external/cwe/cwe-843
+ *       security-severity/8.8
  */
 
 import javascript

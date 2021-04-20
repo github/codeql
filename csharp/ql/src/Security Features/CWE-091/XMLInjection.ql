@@ -8,6 +8,7 @@
  * @precision high
  * @tags security
  *       external/cwe/cwe-091
+ *       security-severity/9.8
  */
 
 import csharp

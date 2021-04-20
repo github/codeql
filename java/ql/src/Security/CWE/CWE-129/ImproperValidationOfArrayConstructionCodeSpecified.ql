@@ -8,6 +8,7 @@
  * @id java/improper-validation-of-array-construction-code-specified
  * @tags security
  *       external/cwe/cwe-129
+ *       security-severity/9.8
  */
 
 import java

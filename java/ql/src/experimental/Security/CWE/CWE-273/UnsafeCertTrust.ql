@@ -10,6 +10,7 @@
  * @id java/unsafe-cert-trust
  * @tags security
  *       external/cwe-273
+ *       security-severity/9.8
  */
 
 import java

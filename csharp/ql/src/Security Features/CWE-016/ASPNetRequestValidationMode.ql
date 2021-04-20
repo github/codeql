@@ -8,6 +8,7 @@
  * @problem.severity warning
  * @tags security
  *       external/cwe/cwe-016
+ *       security-severity/7.1
  */
 
 import csharp

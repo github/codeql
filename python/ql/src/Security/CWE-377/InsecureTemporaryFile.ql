@@ -8,6 +8,7 @@
  * @precision high
  * @tags external/cwe/cwe-377
  *       security
+ *       security-severity/7.0
  */
 
 import python

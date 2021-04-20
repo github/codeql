@@ -9,6 +9,7 @@
  *       frameworks/angularjs
  *       external/cwe/cwe-183
  *       external/cwe/cwe-625
+ *       security-severity/7.5
  */
 
 import javascript

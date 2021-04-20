@@ -9,6 +9,7 @@
  * @id cs/session-reuse
  * @tags security
  *       external/cwe/cwe-384
+ *       security-severity/8.8
  */
 
 import csharp

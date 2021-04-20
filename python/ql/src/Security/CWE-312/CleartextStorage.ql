@@ -10,6 +10,7 @@
  *       external/cwe/cwe-312
  *       external/cwe/cwe-315
  *       external/cwe/cwe-359
+ *       security-severity/7.5
  */
 
 import python

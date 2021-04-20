@@ -8,6 +8,7 @@
  * @id java/world-writable-file-read
  * @tags security
  *       external/cwe/cwe-732
+ *       security-severity/7.8
  */
 
 import java

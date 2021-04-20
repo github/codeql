@@ -12,6 +12,7 @@
  *       security
  *       external/cwe/cwe-119
  *       external/cwe/cwe-843
+ *       security-severity/8.8
  * @id cpp/upcast-array-pointer-arithmetic
  */
 

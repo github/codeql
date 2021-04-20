@@ -7,6 +7,7 @@
  * @id js/file-access-to-http
  * @tags security
  *       external/cwe/cwe-200
+ *       security-severity/6.8
  */
 
 import javascript

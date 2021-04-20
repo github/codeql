@@ -8,6 +8,7 @@
  * @precision high
  * @tags security
  *       external/cwe/cwe-327
+ *       security-severity/7.5
  */
 
 // Connections are generally created based on a context which controls the range of acceptable

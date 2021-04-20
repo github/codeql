@@ -10,6 +10,7 @@
  *       external/cwe/cwe-319
  *       external/cwe/cwe-494
  *       external/cwe/cwe-829
+ *       security-severity/8.8
  */
 
 import java

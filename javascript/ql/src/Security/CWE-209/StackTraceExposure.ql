@@ -9,6 +9,7 @@
  * @id js/stack-trace-exposure
  * @tags security
  *       external/cwe/cwe-209
+ *       security-severity/5.3
  */
 
 import javascript

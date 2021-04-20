@@ -8,6 +8,7 @@
  * @id java/spring-disabled-csrf-protection
  * @tags security
  *       external/cwe/cwe-352
+ *       security-severity/8.8
  */
 
 import java

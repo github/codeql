@@ -7,6 +7,7 @@
  * @id java/insufficient-key-size
  * @tags security
  *       external/cwe/cwe-326
+ *       security-severity/8.4
  */
 
 import java

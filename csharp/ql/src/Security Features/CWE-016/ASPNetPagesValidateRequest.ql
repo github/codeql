@@ -7,6 +7,7 @@
  * @tags security
  *       frameworks/asp.net
  *       external/cwe/cwe-16
+ *       security-severity/7.1
  */
 
 import csharp

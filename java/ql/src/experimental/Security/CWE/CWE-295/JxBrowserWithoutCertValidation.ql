@@ -9,6 +9,7 @@
  * @id java/jxbrowser/disabled-certificate-validation
  * @tags security
  *       external/cwe/cwe-295
+ *       security-severity/7.5
  */
 
 import java

@@ -7,6 +7,7 @@
  * @id java/hash-without-salt
  * @tags security
  *       external/cwe-759
+ *       security-severity/7.2
  */
 
 import java

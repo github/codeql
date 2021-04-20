@@ -9,6 +9,7 @@
  * @id java/unreachable-exit-in-loop
  * @tags security
  *       external/cwe/cwe-835
+ *       security-severity/7.5
  */
 
 import java

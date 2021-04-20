@@ -8,6 +8,7 @@
  *       correctness
  *       external/cwe/cwe-190
  *       external/cwe/cwe-128
+ *       security-severity/8.1
  * @id cpp/multiplication-overflow-in-alloc
  */
 

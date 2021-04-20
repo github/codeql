@@ -8,6 +8,7 @@
  * @id java/jndi-injection
  * @tags security
  *       external/cwe/cwe-074
+ *       security-severity/9.8
  */
 
 import java

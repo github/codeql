@@ -7,6 +7,7 @@
  * @id js/jwt-missing-verification
  * @tags security
  *       external/cwe/cwe-347
+ *       security-severity/7.8
  */
 
 import javascript

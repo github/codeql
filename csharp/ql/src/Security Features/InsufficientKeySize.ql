@@ -7,6 +7,7 @@
  * @id cs/insufficient-key-size
  * @tags security
  *       external/cwe/cwe-327
+ *       security-severity/7.5
  */
 
 import csharp

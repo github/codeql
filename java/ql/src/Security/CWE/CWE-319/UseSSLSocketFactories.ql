@@ -8,6 +8,7 @@
  * @id java/non-ssl-socket-factory
  * @tags security
  *       external/cwe/cwe-319
+ *       security-severity/7.5
  */
 
 import java

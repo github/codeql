@@ -7,6 +7,7 @@
  * @id js/resource-exhaustion-from-deep-object-traversal
  * @tags security
  *       external/cwe/cwe-400
+ *       security-severity/7.5
  */
 
 import javascript

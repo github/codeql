@@ -7,6 +7,7 @@
  * @id java/non-https-url
  * @tags security
  *       external/cwe/cwe-319
+ *       security-severity/7.5
  */
 
 import java

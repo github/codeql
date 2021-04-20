@@ -12,6 +12,7 @@
  *       external/cwe/cwe-120
  *       external/cwe/cwe-787
  *       external/cwe/cwe-805
+ *       security-severity/9.1
  */
 
 import semmle.code.cpp.security.BufferWrite

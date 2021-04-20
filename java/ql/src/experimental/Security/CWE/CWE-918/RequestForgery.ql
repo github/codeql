@@ -8,6 +8,7 @@
  * @id java/ssrf
  * @tags security
  *       external/cwe/cwe-918
+ *       security-severity/8.2
  */
 
 import java

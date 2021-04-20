@@ -9,6 +9,7 @@
  * @id cs/insecure-randomness
  * @tags security
  *       external/cwe/cwe-338
+ *       security-severity/9.8
  */
 
 import csharp

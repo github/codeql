@@ -9,6 +9,7 @@
  * @id java/unsafe-deserialization-spring-exporter-in-xml-configuration
  * @tags security
  *       external/cwe/cwe-502
+ *       security-severity/9.8
  */
 
 import java

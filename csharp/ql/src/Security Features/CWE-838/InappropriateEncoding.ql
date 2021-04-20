@@ -8,6 +8,7 @@
  * @id cs/inappropriate-encoding
  * @tags security
  *       external/cwe/cwe-838
+ *       security-severity/4.3
  */
 
 import csharp

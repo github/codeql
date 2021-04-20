@@ -11,6 +11,7 @@
  * @tags security
  *       external/cwe-522
  *       external/cwe-319
+ *       security-severity/7.8
  */
 
 import java

@@ -8,6 +8,7 @@
  * @tags security
  *       external/cwe/cwe-346
  *       external/cwe/cwe-639
+ *       security-severity/7.8
  */
 
 import javascript

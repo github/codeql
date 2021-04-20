@@ -7,6 +7,7 @@
  * @id js/request-forgery
  * @tags security
  *       external/cwe/cwe-918
+ *       security-severity/8.2
  */
 
 import javascript

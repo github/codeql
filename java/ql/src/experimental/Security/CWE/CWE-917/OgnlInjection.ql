@@ -8,6 +8,7 @@
  * @id java/ognl-injection
  * @tags security
  *       external/cwe/cwe-917
+ *       security-severity/9.8
  */
 
 import java

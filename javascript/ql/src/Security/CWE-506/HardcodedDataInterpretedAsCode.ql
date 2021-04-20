@@ -9,6 +9,7 @@
  * @id js/hardcoded-data-interpreted-as-code
  * @tags security
  *       external/cwe/cwe-506
+ *       security-severity/9.1
  */
 
 import javascript

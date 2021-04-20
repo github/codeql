@@ -7,6 +7,7 @@
  * @tags efficiency
  *       security
  *       external/cwe/cwe-401
+ *       security-severity/7.5
  */
 
 import MemoryFreed

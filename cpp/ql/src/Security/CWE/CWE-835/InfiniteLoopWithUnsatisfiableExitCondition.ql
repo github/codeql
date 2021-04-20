@@ -8,6 +8,7 @@
  * @problem.severity warning
  * @tags security
  *       external/cwe/cwe-835
+ *       security-severity/7.5
  */
 
 import cpp

@@ -8,6 +8,7 @@
  * @id cs/log-forging
  * @tags security
  *       external/cwe/cwe-117
+ *       security-severity/5.3
  */
 
 import csharp

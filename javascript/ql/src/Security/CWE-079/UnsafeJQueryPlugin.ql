@@ -9,6 +9,7 @@
  *       external/cwe/cwe-079
  *       external/cwe/cwe-116
  *       frameworks/jquery
+ *       security-severity/6.1
  */
 
 import javascript

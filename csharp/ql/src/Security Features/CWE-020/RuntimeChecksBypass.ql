@@ -7,6 +7,7 @@
  * @precision medium
  * @tags security
  *       external/cwe/cwe-20
+ *       security-severity/8.6
  */
 
 import semmle.code.csharp.serialization.Serialization

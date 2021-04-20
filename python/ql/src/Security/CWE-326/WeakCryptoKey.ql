@@ -7,6 +7,7 @@
  * @id py/weak-crypto-key
  * @tags security
  *       external/cwe/cwe-326
+ *       security-severity/8.4
  */
 
 import python

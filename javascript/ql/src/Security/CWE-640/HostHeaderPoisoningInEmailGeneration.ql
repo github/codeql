@@ -8,6 +8,7 @@
  * @id js/host-header-forgery-in-email-generation
  * @tags security
  *       external/cwe/cwe-640
+ *       security-severity/9.8
  */
 
 import javascript

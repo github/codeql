@@ -10,6 +10,7 @@
  * @tags security
  *       external/cwe/cwe-209
  *       external/cwe/cwe-497
+ *       security-severity/5.3
  */
 
 import csharp

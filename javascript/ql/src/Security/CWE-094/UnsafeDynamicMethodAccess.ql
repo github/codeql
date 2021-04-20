@@ -7,6 +7,7 @@
  * @id js/unsafe-dynamic-method-access
  * @tags security
  *       external/cwe/cwe-094
+ *       security-severity/9.8
  */
 
 import javascript

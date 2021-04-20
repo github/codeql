@@ -9,6 +9,7 @@
  * @id cpp/drop-linux-privileges-outoforder
  * @tags security
  *       external/cwe/cwe-273
+ *       security-severity/9.8
  * @precision medium
  */
 

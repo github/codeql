@@ -8,6 +8,7 @@
  * @id py/jinja2/autoescape-false
  * @tags security
  *       external/cwe/cwe-079
+ *       security-severity/6.1
  */
 
 import python

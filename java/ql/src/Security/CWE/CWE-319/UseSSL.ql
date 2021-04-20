@@ -7,6 +7,7 @@
  * @id java/non-ssl-connection
  * @tags security
  *       external/cwe/cwe-319
+ *       security-severity/7.5
  */
 
 import java

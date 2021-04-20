@@ -9,6 +9,7 @@
  * @id cpp/toctou-race-condition
  * @tags security
  *       external/cwe/cwe-367
+ *       security-severity/7.0
  */
 
 import cpp

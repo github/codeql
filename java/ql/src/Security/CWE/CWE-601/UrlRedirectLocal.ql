@@ -8,6 +8,7 @@
  * @id java/unvalidated-url-redirection-local
  * @tags security
  *       external/cwe/cwe-601
+ *       security-severity/6.1
  */
 
 import java

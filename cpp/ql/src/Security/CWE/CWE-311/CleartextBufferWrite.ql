@@ -8,6 +8,7 @@
  * @id cpp/cleartext-storage-buffer
  * @tags security
  *       external/cwe/cwe-312
+ *       security-severity/7.5
  */
 
 import cpp

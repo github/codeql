@@ -10,6 +10,7 @@
  * @tags actions
  *       security
  *       external/cwe/cwe-094
+ *       security-severity/9.8
  */
 
 import javascript

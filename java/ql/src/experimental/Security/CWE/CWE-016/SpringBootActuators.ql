@@ -8,6 +8,7 @@
  * @id java/spring-boot-exposed-actuators
  * @tags security
  *       external/cwe/cwe-16
+ *       security-severity/7.1
  */
 
 import java

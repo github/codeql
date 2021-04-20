@@ -10,6 +10,7 @@
  * @id java/android/nfe-local-android-dos
  * @tags security
  *       external/cwe/cwe-755
+ *       security-severity/7.5
  */
 
 import java

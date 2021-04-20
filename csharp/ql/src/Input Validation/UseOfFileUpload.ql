@@ -9,6 +9,7 @@
  *       maintainability
  *       frameworks/asp.net
  *       external/cwe/cwe-434
+ *       security-severity/8.8
  */
 
 import csharp

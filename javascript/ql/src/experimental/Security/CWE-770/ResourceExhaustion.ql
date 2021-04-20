@@ -8,6 +8,7 @@
  * @precision high
  * @tags security
  *       external/cwe/cwe-770
+ *       security-severity/7.5
  */
 
 import javascript

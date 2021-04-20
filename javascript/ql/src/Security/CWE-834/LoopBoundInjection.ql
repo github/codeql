@@ -7,6 +7,7 @@
  * @id js/loop-bound-injection
  * @tags security
  *       external/cwe/cwe-834
+ *       security-severity/7.5
  * @precision high
  */
 

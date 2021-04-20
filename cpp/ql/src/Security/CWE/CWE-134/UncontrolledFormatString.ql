@@ -10,6 +10,7 @@
  * @tags reliability
  *       security
  *       external/cwe/cwe-134
+ *       security-severity/9.8
  */
 
 import cpp

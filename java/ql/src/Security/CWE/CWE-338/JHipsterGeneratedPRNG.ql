@@ -7,6 +7,7 @@
  * @id java/jhipster-prng
  * @tags security
  *       external/cwe/cwe-338
+ *       security-severity/9.8
  */
 
 import java

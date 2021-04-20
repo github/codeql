@@ -9,6 +9,7 @@
  * @id cpp/uncontrolled-process-operation
  * @tags security
  *       external/cwe/cwe-114
+ *       security-severity/8.2
  */
 
 import cpp

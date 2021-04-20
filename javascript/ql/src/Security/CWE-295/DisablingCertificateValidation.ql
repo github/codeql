@@ -7,6 +7,7 @@
  * @id js/disabling-certificate-validation
  * @tags security
  *       external/cwe-295
+ *       security-severity/7.5
  */
 
 import javascript

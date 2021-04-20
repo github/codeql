@@ -8,6 +8,7 @@
  * @tags correctness
  *       security
  *       external/cwe/cwe-020
+ *       security-severity/8.6
  */
 
 import javascript

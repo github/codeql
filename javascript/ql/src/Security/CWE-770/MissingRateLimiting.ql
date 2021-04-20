@@ -11,6 +11,7 @@
  *       external/cwe/cwe-770
  *       external/cwe/cwe-307
  *       external/cwe/cwe-400
+ *       security-severity/7.5
  */
 
 import javascript

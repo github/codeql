@@ -8,6 +8,7 @@
  * @id java/sensitiveinfo-in-logfile
  * @tags security
  *       external/cwe-532
+ *       security-severity/6.5
  */
 
 import java

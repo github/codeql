@@ -14,6 +14,7 @@
  *       external/cwe/cwe-192
  *       external/cwe/cwe-197
  *       external/cwe/cwe-681
+ *       security-severity/8.1
  */
 
 import cpp

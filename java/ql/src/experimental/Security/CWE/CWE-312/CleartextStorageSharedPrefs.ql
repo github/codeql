@@ -9,6 +9,7 @@
  * @id java/android/cleartext-storage-shared-prefs
  * @tags security
  *       external/cwe/cwe-312
+ *       security-severity/7.5
  */
 
 import java

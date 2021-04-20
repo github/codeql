@@ -9,6 +9,7 @@
  * @tags security
  *       external/cwe/cwe-428
  *       external/microsoft/C6277
+ *       security-severity/7.8
  */
 
 import cpp
