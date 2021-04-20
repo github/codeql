@@ -5,6 +5,71 @@ private import AliasAnalysisImports
 private class IntValue = Ints::IntValue;
 
 /**
+ * If `instr` is a `SideEffectInstruction`, gets the primary `CallInstruction` that caused the side
+ * effect. If `instr` is a `CallInstruction`, gets that same `CallInstruction`.
+ */
+private CallInstruction getPrimaryCall(Instruction instr) {
+  result = instr.(CallInstruction)
+  or
+  result = instr.(SideEffectInstruction).getPrimaryInstruction()
+}
+
+/**
+ * Holds if `operand` serves as an input argument (or indirection) to `call`, in the position
+ * specified by `input`.
+ */
+private predicate isCallInput(
+  CallInstruction call, Operand operand, AliasModels::FunctionInput input
+) {
+  call = getPrimaryCall(operand.getUse()) and
+  (
+    exists(int index |
+      input.isParameterOrQualifierAddress(index) and
+      operand = call.getArgumentOperand(index)
+    )
+    or
+    exists(int index, ReadSideEffectInstruction read |
+      input.isParameterDerefOrQualifierObject(index) and
+      read = call.getAParameterSideEffect(index) and
+      operand = read.getSideEffectOperand()
+    )
+  )
+}
+
+/**
+ * Holds if `instr` serves as a return value or output argument indirection for `call`, in the
+ * position specified by `output`.
+ */
+private predicate isCallOutput(
+  CallInstruction call, Instruction instr, AliasModels::FunctionOutput output
+) {
+  call = getPrimaryCall(instr) and
+  (
+    output.isReturnValue() and instr = call
+    or
+    exists(int index, WriteSideEffectInstruction write |
+      output.isParameterDerefOrQualifierObject(index) and
+      write = call.getAParameterSideEffect(index) and
+      instr = write
+    )
+  )
+}
+
+/**
+ * Holds if the address in `operand` flows directly to the result of `resultInstr` due to modeled
+ * address flow through a function call.
+ */
+private predicate hasAddressFlowThroughCall(Operand operand, Instruction resultInstr) {
+  exists(
+    CallInstruction call, AliasModels::FunctionInput input, AliasModels::FunctionOutput output
+  |
+    call.getStaticCallTarget().(AliasModels::AliasFunction).hasAddressFlow(input, output) and
+    isCallInput(call, operand, input) and
+    isCallOutput(call, resultInstr, output)
+  )
+}
+
+/**
  * Holds if the operand `tag` of instruction `instr` is used in a way that does
  * not result in any address held in that operand from escaping beyond the
  * instruction.
@@ -74,6 +139,10 @@ IntValue getPointerBitOffset(PointerOffsetInstruction instr) {
  * be a constant, then `bitOffset` is `unknown()`.
  */
 private predicate operandIsPropagated(Operand operand, IntValue bitOffset, Instruction instr) {
+  // Some functions are known to propagate an argument
+  hasAddressFlowThroughCall(operand, instr) and
+  bitOffset = 0
+  or
   instr = operand.getUse() and
   (
     // Converting to a non-virtual base class adds the offset of the base class.
@@ -118,9 +187,6 @@ private predicate operandIsPropagated(Operand operand, IntValue bitOffset, Instr
     or
     // A copy propagates the source value.
     operand = instr.(CopyInstruction).getSourceValueOperand() and bitOffset = 0
-    or
-    // Some functions are known to propagate an argument
-    isAlwaysReturnedArgument(operand) and bitOffset = 0
   )
 }
 
@@ -215,13 +281,6 @@ private predicate isArgumentForParameter(
   )
 }
 
-private predicate isAlwaysReturnedArgument(Operand operand) {
-  exists(AliasModels::AliasFunction f |
-    f = operand.getUse().(CallInstruction).getStaticCallTarget() and
-    f.parameterIsAlwaysReturned(operand.(PositionalArgumentOperand).getIndex())
-  )
-}
-
 private predicate isOnlyEscapesViaReturnArgument(Operand operand) {
   exists(AliasModels::AliasFunction f |
     f = operand.getUse().(CallInstruction).getStaticCallTarget() and
@@ -271,7 +330,9 @@ predicate allocationEscapes(Configuration::Allocation allocation) {
 /**
  * Equivalent to `operandIsPropagated()`, but includes interprocedural propagation.
  */
-private predicate operandIsPropagatedIncludingByCall(Operand operand, IntValue bitOffset, Instruction instr) {
+private predicate operandIsPropagatedIncludingByCall(
+  Operand operand, IntValue bitOffset, Instruction instr
+) {
   operandIsPropagated(operand, bitOffset, instr)
   or
   exists(CallInstruction call, Instruction init |

@@ -105,7 +105,21 @@ class DynamicAllocation extends Allocation, TDynamicAllocation {
   DynamicAllocation() { this = TDynamicAllocation(call) }
 
   final override string toString() {
-    result = call.toString() + " at " + call.getLocation() // This isn't performant, but it's only used in test/dump code right now.
+    // This isn't performant, but it's only used in test/dump code right now.
+    // Dynamic allocations within a function are numbered in the order by start
+    // line number. This keeps them stable when the function moves within the
+    // file, or when non-allocating lines are added and removed within the
+    // function.
+    exists(int i |
+      result = "dynamic{" + i.toString() + "}" and
+      call =
+        rank[i](CallInstruction rangeCall |
+          exists(TDynamicAllocation(rangeCall)) and
+          rangeCall.getEnclosingIRFunction() = call.getEnclosingIRFunction()
+        |
+          rangeCall order by rangeCall.getLocation().getStartLine()
+        )
+    )
   }
 
   final override CallInstruction getABaseInstruction() { result = call }
