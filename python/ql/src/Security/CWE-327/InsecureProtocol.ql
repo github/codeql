@@ -25,6 +25,8 @@ class ProtocolConfiguration extends DataFlow::Node {
     or
     unsafe_context_creation(this, _)
   }
+
+  AstNode getNode() { result = this.asCfgNode().(CallNode).getFunction().getNode() }
 }
 
 // Helper for pretty printer `callName`.
@@ -36,9 +38,7 @@ class ProtocolConfiguration extends DataFlow::Node {
 // we have to extend @py_ast_node.
 class Nameable extends @py_ast_node {
   Nameable() {
-    exists(ProtocolConfiguration protocolConfiguration |
-      this = protocolConfiguration.asCfgNode().(CallNode).getFunction().getNode()
-    )
+    this = any(ProtocolConfiguration pc).getNode()
     or
     exists(Nameable attr | this = attr.(Attribute).getObject())
   }
