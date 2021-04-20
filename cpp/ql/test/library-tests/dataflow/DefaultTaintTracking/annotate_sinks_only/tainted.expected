@@ -1,2 +1,0 @@
-| defaulttainttracking.cpp:190:14:190:24 | // $ ast,ir | Missing result:ir= |
-| defaulttainttracking.cpp:193:14:193:24 | // $ ast,ir | Missing result:ir= |
