@@ -50,3 +50,9 @@ func test10(xs []int) (keys int, vals int) {
 	}
 	return
 }
+
+func testch() {
+	var ch chan bool
+	ch <- true
+	<-ch
+}
