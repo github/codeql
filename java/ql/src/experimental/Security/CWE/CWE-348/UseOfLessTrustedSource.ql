@@ -27,7 +27,8 @@ class UseOfLessTrustedSourceConfig extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { sink instanceof UseOfLessTrustedSink }
 
   /**
-   * When using `,` split request data and not taking the first value of the array, it is considered as `good`.
+   * Splitting a header value by `,` and taking an entry other than the first is sanitizing, because
+   * later entries may originate from more-trustworthy intermediate proxies, not the original client.
    */
   override predicate isSanitizer(DataFlow::Node node) {
     exists(ArrayAccess aa, MethodAccess ma | aa.getArray() = ma |
