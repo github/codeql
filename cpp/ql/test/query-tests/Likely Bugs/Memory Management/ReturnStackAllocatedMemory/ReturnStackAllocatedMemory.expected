@@ -6,3 +6,4 @@
 | test.cpp:112:2:112:12 | return ... | May return stack-allocated memory from $@. | test.cpp:112:9:112:11 | arr | arr |
 | test.cpp:119:2:119:19 | return ... | May return stack-allocated memory from $@. | test.cpp:119:11:119:13 | arr | arr |
 | test.cpp:171:3:171:24 | return ... | May return stack-allocated memory from $@. | test.cpp:170:35:170:41 | myLocal | myLocal |
+| test.cpp:217:3:217:13 | return ... | May return stack-allocated memory from $@. | test.cpp:216:14:216:17 | port | port |
