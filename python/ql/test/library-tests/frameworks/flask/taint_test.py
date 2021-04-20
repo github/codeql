@@ -38,6 +38,7 @@ def test_taint(name = "World!", number="0", foo="foo"):  # $requestHandler route
         # By default werkzeug.datastructures.ImmutableMultiDict -- although can be changed :\
         request.args,
         request.args['key'],
+        request.args.get('key'),
         request.args.getlist('key'),
 
         # werkzeug.datastructures.Authorization (a dict, with some properties)
@@ -69,6 +70,9 @@ def test_taint(name = "World!", number="0", foo="foo"):  # $requestHandler route
         request.files['key'],
         request.files['key'].filename,
         request.files['key'].stream,
+        request.files.get('key'),
+        request.files.get('key').filename,
+        request.files.get('key').stream,
         request.files.getlist('key'),
         request.files.getlist('key')[0].filename,
         request.files.getlist('key')[0].stream,
@@ -76,6 +80,7 @@ def test_taint(name = "World!", number="0", foo="foo"):  # $requestHandler route
         # By default werkzeug.datastructures.ImmutableMultiDict -- although can be changed :\
         request.form,
         request.form['key'],
+        request.form.get('key'),
         request.form.getlist('key'),
 
         request.get_data(),
@@ -88,6 +93,7 @@ def test_taint(name = "World!", number="0", foo="foo"):  # $requestHandler route
         # which has same interface as werkzeug.datastructures.Headers
         request.headers,
         request.headers['key'],
+        request.headers.get('key'),
         request.headers.get_all('key'),
         request.headers.getlist('key'),
         list(request.headers), # (k, v) list
@@ -127,11 +133,13 @@ def test_taint(name = "World!", number="0", foo="foo"):  # $requestHandler route
         # werkzeug.datastructures.CombinedMultiDict, which is basically just a werkzeug.datastructures.MultiDict
         request.values,
         request.values['key'],
+        request.values.get('key'),
         request.values.getlist('key'),
 
         # dict
         request.view_args,
         request.view_args['key'],
+        request.view_args.get('key'),
     )
 
     ensure_not_tainted(
