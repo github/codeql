@@ -16,7 +16,9 @@ class PyOpenSSLContextCreation extends ContextCreation, DataFlow::CallCfgNode {
     exists(ControlFlowNode protocolArg, PyOpenSSL pyo |
       protocolArg in [node.getArg(0), node.getArgByName("method")]
     |
-      protocolArg = [pyo.specific_version(result), pyo.unspecific_version(result)].asCfgNode()
+      protocolArg =
+        [pyo.specific_version(result).getAUse(), pyo.unspecific_version(result).getAUse()]
+            .asCfgNode()
     )
   }
 }

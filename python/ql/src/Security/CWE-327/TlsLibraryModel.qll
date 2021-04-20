@@ -91,26 +91,26 @@ abstract class TlsLibrary extends string {
   /** Gets a name, which is a member of `version_constants`,  that can be used to specify the protocol family `family`. */
   abstract string unspecific_version_name(ProtocolFamily family);
 
-  /** The module or class holding the version constants. */
+  /** Gets an API node representing the module or class holding the version constants. */
   abstract API::Node version_constants();
 
-  /** A dataflow node representing a specific protocol version. */
-  DataFlow::Node specific_version(ProtocolVersion version) {
-    result = version_constants().getMember(specific_version_name(version)).getAUse()
+  /** Gets an API node representing a specific protocol version. */
+  API::Node specific_version(ProtocolVersion version) {
+    result = version_constants().getMember(specific_version_name(version))
   }
 
-  /** Gets a dataflow node representing the protocol family `family`. */
-  DataFlow::Node unspecific_version(ProtocolFamily family) {
-    result = version_constants().getMember(unspecific_version_name(family)).getAUse()
+  /** Gets an API node representing the protocol family `family`. */
+  API::Node unspecific_version(ProtocolFamily family) {
+    result = version_constants().getMember(unspecific_version_name(family))
   }
 
-  /** The creation of a context with a default protocol. */
+  /** Gets a creation of a context with a default protocol. */
   abstract ContextCreation default_context_creation();
 
-  /** The creation of a context with a specific protocol. */
+  /** Gets a creation of a context with a specific protocol. */
   abstract ContextCreation specific_context_creation();
 
-  /** The creation of a context with a specific protocol version, known to be insecure. */
+  /** Gets a creation of a context with a specific protocol version, known to be insecure. */
   ContextCreation insecure_context_creation(ProtocolVersion version) {
     result in [specific_context_creation(), default_context_creation()] and
     result.getProtocol() = version and
@@ -123,15 +123,15 @@ abstract class TlsLibrary extends string {
     result.getProtocol() = family
   }
 
-  /** A connection is created in an insecure manner, not from a context. */
+  /** Gets a dataflow node representing a connection being created in an insecure manner, not from a context. */
   abstract DataFlow::Node insecure_connection_creation(ProtocolVersion version);
 
-  /** A connection is created from a context. */
+  /** Gets a dataflow node representing a connection being created from a context. */
   abstract ConnectionCreation connection_creation();
 
-  /** A context is being restricted on which protocols it can accepts. */
+  /** Gets a dataflow node representing a context being restricted on which protocols it can accepts. */
   abstract ProtocolRestriction protocol_restriction();
 
-  /** A context is being relaxed on which protocols it can accepts. */
+  /** Gets a dataflow node representing a context being relaxed on which protocols it can accepts. */
   abstract ProtocolUnrestriction protocol_unrestriction();
 }

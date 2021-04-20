@@ -14,7 +14,9 @@ class SSLContextCreation extends ContextCreation, DataFlow::CallCfgNode {
     exists(ControlFlowNode protocolArg, Ssl ssl |
       protocolArg in [node.getArg(0), node.getArgByName("protocol")]
     |
-      protocolArg = [ssl.specific_version(result), ssl.unspecific_version(result)].asCfgNode()
+      protocolArg =
+        [ssl.specific_version(result).getAUse(), ssl.unspecific_version(result).getAUse()]
+            .asCfgNode()
     )
     or
     not exists(node.getAnArg()) and
@@ -188,7 +190,7 @@ class Ssl extends TlsLibrary {
 
   override DataFlow::CallCfgNode insecure_connection_creation(ProtocolVersion version) {
     result = API::moduleImport("ssl").getMember("wrap_socket").getACall() and
-    this.specific_version(version) = result.getArgByName("ssl_version") and
+    this.specific_version(version).getAUse() = result.getArgByName("ssl_version") and
     version.isInsecure()
   }
 
