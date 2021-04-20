@@ -1,8 +1,12 @@
 /**
- * @id java/incorrect-url-verification
  * @name Incorrect URL verification
- * @description Apps that rely on URL parsing to verify that a given URL is pointing to a trusted server are susceptible to wrong ways of URL parsing and verification.
+ * @description Apps that rely on URL parsing to verify that a given URL is
+ *              pointing to a trusted server are susceptible to wrong ways of
+ *              URL parsing and verification.
  * @kind problem
+ * @problem.severity warning
+ * @precision medium
+ * @id java/incorrect-url-verification
  * @tags security
  *       external/cwe-939
  */

@@ -385,21 +385,23 @@ For more information, see ":ref:`monotonic-aggregates`."
 Binding sets
 ============
 
-**Available for**: |characteristic predicates|, |member predicates|, |non-member predicates|
+**Available for**: |classes|, |characteristic predicates|, |member predicates|, |non-member predicates|
 
 ``bindingset[...]``
 -------------------
 
-You can use this annotation to explicitly state the binding sets for a predicate. A binding set
-is a subset of the predicate's arguments such that, if those arguments are constrained to a
-finite set of values, then the predicate itself is finite (that is, it evaluates to a finite 
+You can use this annotation to explicitly state the binding sets for a predicate or class. A binding set
+is a subset of a predicate's or class body's arguments such that, if those arguments are constrained to a
+finite set of values, then the predicate or class itself is finite (that is, it evaluates to a finite 
 set of tuples).
 
-The ``bindingset`` annotation takes a comma-separated list of variables. Each variable must be
-an argument of the predicate, possibly including ``this`` (for characteristic predicates and 
-member predicates) and ``result`` (for predicates that return a result).
+The ``bindingset`` annotation takes a comma-separated list of variables.
 
-For more information, see ":ref:`predicate-binding`."
+- When you annotate a predicate, each variable must be an argument of the predicate, possibly including ``this``
+  (for characteristic predicates and member predicates) and ``result`` (for predicates that return a result). 
+  For more information, see ":ref:`predicate-binding`."
+- When you annotate a class, each variable must be ``this`` or a field in the class. 
+  Binding sets for classes are supported from release 2.3.0 of the CodeQL CLI, and release 1.26 of LGTM Enterprise.
 
 .. Links to use in substitutions
 

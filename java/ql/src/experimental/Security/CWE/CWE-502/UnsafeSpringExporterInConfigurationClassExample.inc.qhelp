@@ -1,0 +1,14 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<example>
+<p>
+The following example shows how a vulnerable HTTP endpoint can be defined
+using <code>HttpInvokerServiceExporter</code> and Spring annotations:
+</p>
+<sample src="SpringExporterUnsafeDeserialization.java" />
+</example>
+
+</qhelp>

@@ -96,6 +96,7 @@ module DataFlow {
     predicate accessesGlobal(string g) { globalVarRef(g).flowsTo(this) }
 
     /** Holds if this node may evaluate to the string `s`, possibly through local data flow. */
+    pragma[nomagic]
     predicate mayHaveStringValue(string s) {
       getAPredecessor().mayHaveStringValue(s)
       or
@@ -492,6 +493,7 @@ module DataFlow {
      * Gets the data flow node corresponding to the base object
      * whose property is read from or written to.
      */
+    cached
     abstract Node getBase();
 
     /**
@@ -530,6 +532,13 @@ module DataFlow {
      */
     predicate isPrivateField() {
       getPropertyName().charAt(0) = "#" and getPropertyNameExpr() instanceof Label
+    }
+
+    /**
+     * Gets an accessor (`get` or `set` method) that may be invoked by this property reference.
+     */
+    final DataFlow::FunctionNode getAnAccessorCallee() {
+      result = CallGraph::getAnAccessorCallee(this)
     }
   }
 
@@ -588,7 +597,10 @@ module DataFlow {
 
     PropLValueAsPropWrite() { astNode instanceof LValue }
 
-    override Node getBase() { result = valueNode(astNode.getBase()) }
+    override Node getBase() {
+      result = valueNode(astNode.getBase()) and
+      Stages::DataFlowStage::ref()
+    }
 
     override Expr getPropertyNameExpr() { result = astNode.getPropertyNameExpr() }
 
@@ -717,7 +729,7 @@ module DataFlow {
     override ParameterField prop;
 
     override Node getBase() {
-      result = thisNode(prop.getDeclaringClass().getConstructor().getBody())
+      thisNode(result, prop.getDeclaringClass().getConstructor().getBody())
     }
 
     override Expr getPropertyNameExpr() {
@@ -751,7 +763,7 @@ module DataFlow {
     }
 
     override Node getBase() {
-      result = thisNode(prop.getDeclaringClass().getConstructor().getBody())
+      thisNode(result, prop.getDeclaringClass().getConstructor().getBody())
     }
 
     override Expr getPropertyNameExpr() { result = prop.getNameExpr() }
@@ -1672,4 +1684,59 @@ module DataFlow {
   import TypeTracking
 
   predicate localTaintStep = TaintTracking::localTaintStep/2;
+
+  /**
+   * Holds if the function in `succ` forwards all its arguments to a call to `pred` and returns
+   * its result. This can thus be seen as a step `pred -> succ` used for tracking function values
+   * through "wrapper functions", since the `succ` function partially replicates behavior of `pred`.
+   *
+   * Examples:
+   * ```js
+   * function f(x) {
+   *   return g(x); // step: g -> f
+   * }
+   *
+   * function doExec(x) {
+   *   console.log(x);
+   *   return exec(x); // step: exec -> doExec
+   * }
+   *
+   * function doEither(x, y) {
+   *   if (x > y) {
+   *     return foo(x, y); // step: foo -> doEither
+   *   } else {
+   *     return bar(x, y); // step: bar -> doEither
+   *   }
+   * }
+   *
+   * function wrapWithLogging(f) {
+   *   return (x) => {
+   *     console.log(x);
+   *     return f(x); // step: f -> anonymous function
+   *   }
+   * }
+   * wrapWithLogging(g); // step: g -> wrapWithLogging(g)
+   * ```
+   */
+  predicate functionForwardingStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(DataFlow::FunctionNode function, DataFlow::CallNode call |
+      call.flowsTo(function.getReturnNode()) and
+      forall(int i | exists([call.getArgument(i), function.getParameter(i)]) |
+        function.getParameter(i).flowsTo(call.getArgument(i))
+      ) and
+      pred = call.getCalleeNode() and
+      succ = function
+    )
+    or
+    // Given a generic wrapper function like,
+    //
+    //   function wrap(f) { return (x, y) => f(x, y) };
+    //
+    // add steps through calls to that function: `g -> wrap(g)`
+    exists(DataFlow::FunctionNode wrapperFunction, SourceNode param, Node paramUse |
+      FlowSteps::argumentPassing(succ, pred, wrapperFunction.getFunction(), param) and
+      param.flowsTo(paramUse) and
+      functionForwardingStep(paramUse, wrapperFunction.getReturnNode().getALocalSource())
+    )
+  }
 }

@@ -2133,11 +2133,8 @@ private module Stage4 {
 
   bindingset[node, cc, config]
   private LocalCc getLocalCc(Node node, Cc cc, Configuration config) {
-    exists(Cc cc0 |
-      cc = pragma[only_bind_into](cc0) and
-      localFlowEntry(node, config) and
-      result = getLocalCallContext(cc0, getNodeEnclosingCallable(node))
-    )
+    localFlowEntry(node, config) and
+    result = getLocalCallContext(pragma[only_bind_out](cc), getNodeEnclosingCallable(node))
   }
 
   private predicate localStep(
@@ -3132,7 +3129,7 @@ private predicate pathStep(PathNodeMid mid, Node node, CallContext cc, SummaryCt
     conf = mid.getConfiguration() and
     cc = mid.getCallContext() and
     sc = mid.getSummaryCtx() and
-    localCC = getLocalCallContext(cc, getNodeEnclosingCallable(midnode)) and
+    localCC = getLocalCallContext(pragma[only_bind_out](cc), getNodeEnclosingCallable(midnode)) and
     ap0 = mid.getAp()
   |
     localFlowBigStep(midnode, node, true, _, conf, localCC) and

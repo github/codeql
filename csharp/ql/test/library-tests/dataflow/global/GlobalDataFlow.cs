@@ -474,6 +474,18 @@ public class DataFlow
         var sink45 = awaiter.GetResult();
         Check(sink45);
     }
+
+    void M5(bool b)
+    {
+        void Inner(Action<string> a, bool b, string arg)
+        {
+            if (b)
+                a = s => Check(s);
+            a(arg);
+        }
+
+        Inner(_ => {}, b, "taint source");
+    }
 }
 
 static class IEnumerableExtensions

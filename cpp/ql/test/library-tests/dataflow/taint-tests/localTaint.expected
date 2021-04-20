@@ -3223,52 +3223,224 @@
 | smart_pointer.cpp:11:30:11:50 | call to make_shared | smart_pointer.cpp:12:11:12:11 | p |  |
 | smart_pointer.cpp:11:30:11:50 | call to make_shared | smart_pointer.cpp:13:10:13:10 | p |  |
 | smart_pointer.cpp:11:52:11:57 | call to source | smart_pointer.cpp:11:30:11:50 | call to make_shared | TAINT |
-| smart_pointer.cpp:12:11:12:11 | p | smart_pointer.cpp:12:10:12:10 | call to operator* | TAINT |
+| smart_pointer.cpp:12:11:12:11 | p | smart_pointer.cpp:12:10:12:10 | call to operator* |  |
 | smart_pointer.cpp:12:11:12:11 | ref arg p | smart_pointer.cpp:13:10:13:10 | p |  |
 | smart_pointer.cpp:17:32:17:54 | call to make_shared | smart_pointer.cpp:18:11:18:11 | p |  |
 | smart_pointer.cpp:17:32:17:54 | call to make_shared | smart_pointer.cpp:19:10:19:10 | p |  |
+| smart_pointer.cpp:18:10:18:10 | ref arg call to operator* | smart_pointer.cpp:18:11:18:11 | p [inner post update] |  |
+| smart_pointer.cpp:18:10:18:10 | ref arg call to operator* | smart_pointer.cpp:19:10:19:10 | p |  |
 | smart_pointer.cpp:18:11:18:11 | p | smart_pointer.cpp:18:10:18:10 | call to operator* | TAINT |
+| smart_pointer.cpp:18:11:18:11 | ref arg p | smart_pointer.cpp:18:11:18:11 | p [inner post update] |  |
 | smart_pointer.cpp:18:11:18:11 | ref arg p | smart_pointer.cpp:19:10:19:10 | p |  |
 | smart_pointer.cpp:23:30:23:50 | call to make_unique | smart_pointer.cpp:24:11:24:11 | p |  |
 | smart_pointer.cpp:23:30:23:50 | call to make_unique | smart_pointer.cpp:25:10:25:10 | p |  |
 | smart_pointer.cpp:23:52:23:57 | call to source | smart_pointer.cpp:23:30:23:50 | call to make_unique | TAINT |
-| smart_pointer.cpp:24:11:24:11 | p | smart_pointer.cpp:24:10:24:10 | call to operator* | TAINT |
+| smart_pointer.cpp:24:11:24:11 | p | smart_pointer.cpp:24:10:24:10 | call to operator* |  |
 | smart_pointer.cpp:24:11:24:11 | ref arg p | smart_pointer.cpp:25:10:25:10 | p |  |
 | smart_pointer.cpp:29:32:29:54 | call to make_unique | smart_pointer.cpp:30:11:30:11 | p |  |
 | smart_pointer.cpp:29:32:29:54 | call to make_unique | smart_pointer.cpp:31:10:31:10 | p |  |
+| smart_pointer.cpp:30:10:30:10 | ref arg call to operator* | smart_pointer.cpp:30:11:30:11 | p [inner post update] |  |
+| smart_pointer.cpp:30:10:30:10 | ref arg call to operator* | smart_pointer.cpp:31:10:31:10 | p |  |
 | smart_pointer.cpp:30:11:30:11 | p | smart_pointer.cpp:30:10:30:10 | call to operator* | TAINT |
+| smart_pointer.cpp:30:11:30:11 | ref arg p | smart_pointer.cpp:30:11:30:11 | p [inner post update] |  |
 | smart_pointer.cpp:30:11:30:11 | ref arg p | smart_pointer.cpp:31:10:31:10 | p |  |
 | smart_pointer.cpp:35:30:35:50 | call to make_shared | smart_pointer.cpp:37:6:37:6 | p |  |
 | smart_pointer.cpp:35:30:35:50 | call to make_shared | smart_pointer.cpp:38:10:38:10 | p |  |
 | smart_pointer.cpp:35:30:35:50 | call to make_shared | smart_pointer.cpp:39:11:39:11 | p |  |
+| smart_pointer.cpp:37:5:37:5 | call to operator* [post update] | smart_pointer.cpp:37:6:37:6 | p [inner post update] |  |
+| smart_pointer.cpp:37:5:37:5 | call to operator* [post update] | smart_pointer.cpp:38:10:38:10 | p |  |
+| smart_pointer.cpp:37:5:37:5 | call to operator* [post update] | smart_pointer.cpp:39:11:39:11 | p |  |
 | smart_pointer.cpp:37:5:37:17 | ... = ... | smart_pointer.cpp:37:5:37:5 | call to operator* [post update] |  |
-| smart_pointer.cpp:37:6:37:6 | p | smart_pointer.cpp:37:5:37:5 | call to operator* | TAINT |
+| smart_pointer.cpp:37:6:37:6 | p | smart_pointer.cpp:37:5:37:5 | call to operator* |  |
+| smart_pointer.cpp:37:6:37:6 | ref arg p | smart_pointer.cpp:37:6:37:6 | p [inner post update] |  |
 | smart_pointer.cpp:37:6:37:6 | ref arg p | smart_pointer.cpp:38:10:38:10 | p |  |
 | smart_pointer.cpp:37:6:37:6 | ref arg p | smart_pointer.cpp:39:11:39:11 | p |  |
 | smart_pointer.cpp:37:10:37:15 | call to source | smart_pointer.cpp:37:5:37:17 | ... = ... |  |
 | smart_pointer.cpp:38:10:38:10 | ref arg p | smart_pointer.cpp:39:11:39:11 | p |  |
-| smart_pointer.cpp:39:11:39:11 | p | smart_pointer.cpp:39:10:39:10 | call to operator* | TAINT |
+| smart_pointer.cpp:39:11:39:11 | p | smart_pointer.cpp:39:10:39:10 | call to operator* |  |
 | smart_pointer.cpp:43:29:43:51 | call to unique_ptr | smart_pointer.cpp:45:6:45:6 | p |  |
 | smart_pointer.cpp:43:29:43:51 | call to unique_ptr | smart_pointer.cpp:46:10:46:10 | p |  |
 | smart_pointer.cpp:43:29:43:51 | call to unique_ptr | smart_pointer.cpp:47:11:47:11 | p |  |
+| smart_pointer.cpp:45:5:45:5 | call to operator* [post update] | smart_pointer.cpp:45:6:45:6 | p [inner post update] |  |
+| smart_pointer.cpp:45:5:45:5 | call to operator* [post update] | smart_pointer.cpp:46:10:46:10 | p |  |
+| smart_pointer.cpp:45:5:45:5 | call to operator* [post update] | smart_pointer.cpp:47:11:47:11 | p |  |
 | smart_pointer.cpp:45:5:45:17 | ... = ... | smart_pointer.cpp:45:5:45:5 | call to operator* [post update] |  |
-| smart_pointer.cpp:45:6:45:6 | p | smart_pointer.cpp:45:5:45:5 | call to operator* | TAINT |
+| smart_pointer.cpp:45:6:45:6 | p | smart_pointer.cpp:45:5:45:5 | call to operator* |  |
+| smart_pointer.cpp:45:6:45:6 | ref arg p | smart_pointer.cpp:45:6:45:6 | p [inner post update] |  |
 | smart_pointer.cpp:45:6:45:6 | ref arg p | smart_pointer.cpp:46:10:46:10 | p |  |
 | smart_pointer.cpp:45:6:45:6 | ref arg p | smart_pointer.cpp:47:11:47:11 | p |  |
 | smart_pointer.cpp:45:10:45:15 | call to source | smart_pointer.cpp:45:5:45:17 | ... = ... |  |
 | smart_pointer.cpp:46:10:46:10 | ref arg p | smart_pointer.cpp:47:11:47:11 | p |  |
-| smart_pointer.cpp:47:11:47:11 | p | smart_pointer.cpp:47:10:47:10 | call to operator* | TAINT |
+| smart_pointer.cpp:47:11:47:11 | p | smart_pointer.cpp:47:10:47:10 | call to operator* |  |
 | smart_pointer.cpp:51:30:51:50 | call to make_shared | smart_pointer.cpp:52:10:52:10 | p |  |
 | smart_pointer.cpp:51:52:51:57 | call to source | smart_pointer.cpp:51:30:51:50 | call to make_shared | TAINT |
-| smart_pointer.cpp:52:10:52:10 | p | smart_pointer.cpp:52:12:52:14 | call to get | TAINT |
+| smart_pointer.cpp:52:10:52:10 | p | smart_pointer.cpp:52:12:52:14 | call to get |  |
+| smart_pointer.cpp:52:12:52:14 | ref arg call to get | smart_pointer.cpp:52:10:52:10 | ref arg p | TAINT |
 | smart_pointer.cpp:56:30:56:50 | call to make_unique | smart_pointer.cpp:57:10:57:10 | p |  |
 | smart_pointer.cpp:56:52:56:57 | call to source | smart_pointer.cpp:56:30:56:50 | call to make_unique | TAINT |
-| smart_pointer.cpp:57:10:57:10 | p | smart_pointer.cpp:57:12:57:14 | call to get | TAINT |
+| smart_pointer.cpp:57:10:57:10 | p | smart_pointer.cpp:57:12:57:14 | call to get |  |
+| smart_pointer.cpp:57:12:57:14 | ref arg call to get | smart_pointer.cpp:57:10:57:10 | ref arg p | TAINT |
 | smart_pointer.cpp:65:28:65:46 | call to make_unique | smart_pointer.cpp:66:10:66:10 | p |  |
 | smart_pointer.cpp:65:28:65:46 | call to make_unique | smart_pointer.cpp:67:10:67:10 | p |  |
 | smart_pointer.cpp:65:48:65:53 | call to source | smart_pointer.cpp:65:28:65:46 | call to make_unique | TAINT |
 | smart_pointer.cpp:65:58:65:58 | 0 | smart_pointer.cpp:65:28:65:46 | call to make_unique | TAINT |
+| smart_pointer.cpp:66:10:66:10 | p | smart_pointer.cpp:66:11:66:11 | call to operator-> |  |
 | smart_pointer.cpp:66:10:66:10 | ref arg p | smart_pointer.cpp:67:10:67:10 | p |  |
+| smart_pointer.cpp:67:10:67:10 | p | smart_pointer.cpp:67:11:67:11 | call to operator-> |  |
+| smart_pointer.cpp:70:37:70:39 | ptr | smart_pointer.cpp:70:37:70:39 | ptr |  |
+| smart_pointer.cpp:70:37:70:39 | ptr | smart_pointer.cpp:71:4:71:6 | ptr |  |
+| smart_pointer.cpp:71:3:71:3 | call to operator* [post update] | smart_pointer.cpp:70:37:70:39 | ptr |  |
+| smart_pointer.cpp:71:3:71:3 | call to operator* [post update] | smart_pointer.cpp:71:4:71:6 | ptr [inner post update] |  |
+| smart_pointer.cpp:71:3:71:17 | ... = ... | smart_pointer.cpp:71:3:71:3 | call to operator* [post update] |  |
+| smart_pointer.cpp:71:4:71:6 | ptr | smart_pointer.cpp:71:3:71:3 | call to operator* |  |
+| smart_pointer.cpp:71:4:71:6 | ref arg ptr | smart_pointer.cpp:70:37:70:39 | ptr |  |
+| smart_pointer.cpp:71:4:71:6 | ref arg ptr | smart_pointer.cpp:71:4:71:6 | ptr [inner post update] |  |
+| smart_pointer.cpp:71:10:71:15 | call to source | smart_pointer.cpp:71:3:71:17 | ... = ... |  |
+| smart_pointer.cpp:75:26:75:33 | call to shared_ptr | smart_pointer.cpp:76:13:76:13 | p |  |
+| smart_pointer.cpp:75:26:75:33 | call to shared_ptr | smart_pointer.cpp:77:9:77:9 | p |  |
+| smart_pointer.cpp:76:13:76:13 | p | smart_pointer.cpp:76:13:76:13 | call to shared_ptr |  |
+| smart_pointer.cpp:76:13:76:13 | ref arg call to shared_ptr | smart_pointer.cpp:76:13:76:13 | p [inner post update] |  |
+| smart_pointer.cpp:76:13:76:13 | ref arg call to shared_ptr | smart_pointer.cpp:77:9:77:9 | p |  |
+| smart_pointer.cpp:76:13:76:13 | ref arg p | smart_pointer.cpp:76:13:76:13 | p [inner post update] |  |
+| smart_pointer.cpp:76:13:76:13 | ref arg p | smart_pointer.cpp:77:9:77:9 | p |  |
+| smart_pointer.cpp:77:9:77:9 | p | smart_pointer.cpp:77:8:77:8 | call to operator* |  |
+| smart_pointer.cpp:86:45:86:45 | p | smart_pointer.cpp:86:45:86:45 | p |  |
+| smart_pointer.cpp:86:45:86:45 | p | smart_pointer.cpp:87:3:87:3 | p |  |
+| smart_pointer.cpp:86:45:86:45 | p | smart_pointer.cpp:88:8:88:8 | p |  |
+| smart_pointer.cpp:86:45:86:45 | p | smart_pointer.cpp:89:8:89:8 | p |  |
+| smart_pointer.cpp:86:67:86:67 | q | smart_pointer.cpp:86:67:86:67 | q |  |
+| smart_pointer.cpp:86:67:86:67 | q | smart_pointer.cpp:91:3:91:3 | q |  |
+| smart_pointer.cpp:86:67:86:67 | q | smart_pointer.cpp:92:8:92:8 | q |  |
+| smart_pointer.cpp:86:67:86:67 | q | smart_pointer.cpp:93:8:93:8 | q |  |
+| smart_pointer.cpp:86:67:86:67 | q | smart_pointer.cpp:94:8:94:8 | q |  |
+| smart_pointer.cpp:87:3:87:3 | p | smart_pointer.cpp:87:4:87:4 | call to operator-> |  |
+| smart_pointer.cpp:87:3:87:3 | ref arg p | smart_pointer.cpp:86:45:86:45 | p |  |
+| smart_pointer.cpp:87:3:87:3 | ref arg p | smart_pointer.cpp:88:8:88:8 | p |  |
+| smart_pointer.cpp:87:3:87:3 | ref arg p | smart_pointer.cpp:89:8:89:8 | p |  |
+| smart_pointer.cpp:87:3:87:17 | ... = ... | smart_pointer.cpp:87:6:87:6 | x [post update] |  |
+| smart_pointer.cpp:87:3:87:17 | ... = ... | smart_pointer.cpp:88:11:88:11 | x |  |
+| smart_pointer.cpp:87:4:87:4 | call to operator-> [post update] | smart_pointer.cpp:87:3:87:3 | ref arg p | TAINT |
+| smart_pointer.cpp:87:10:87:15 | call to source | smart_pointer.cpp:87:3:87:17 | ... = ... |  |
+| smart_pointer.cpp:88:8:88:8 | p | smart_pointer.cpp:88:9:88:9 | call to operator-> |  |
+| smart_pointer.cpp:88:8:88:8 | ref arg p | smart_pointer.cpp:86:45:86:45 | p |  |
+| smart_pointer.cpp:88:8:88:8 | ref arg p | smart_pointer.cpp:89:8:89:8 | p |  |
+| smart_pointer.cpp:89:8:89:8 | p | smart_pointer.cpp:89:9:89:9 | call to operator-> |  |
+| smart_pointer.cpp:89:8:89:8 | ref arg p | smart_pointer.cpp:86:45:86:45 | p |  |
+| smart_pointer.cpp:91:3:91:3 | q | smart_pointer.cpp:91:4:91:4 | call to operator-> |  |
+| smart_pointer.cpp:91:3:91:3 | ref arg q | smart_pointer.cpp:86:67:86:67 | q |  |
+| smart_pointer.cpp:91:3:91:3 | ref arg q | smart_pointer.cpp:92:8:92:8 | q |  |
+| smart_pointer.cpp:91:3:91:3 | ref arg q | smart_pointer.cpp:93:8:93:8 | q |  |
+| smart_pointer.cpp:91:3:91:3 | ref arg q | smart_pointer.cpp:94:8:94:8 | q |  |
+| smart_pointer.cpp:91:3:91:20 | ... = ... | smart_pointer.cpp:91:9:91:9 | x [post update] |  |
+| smart_pointer.cpp:91:3:91:20 | ... = ... | smart_pointer.cpp:92:14:92:14 | x |  |
+| smart_pointer.cpp:91:4:91:4 | call to operator-> [post update] | smart_pointer.cpp:91:3:91:3 | ref arg q | TAINT |
+| smart_pointer.cpp:91:13:91:18 | call to source | smart_pointer.cpp:91:3:91:20 | ... = ... |  |
+| smart_pointer.cpp:92:8:92:8 | q | smart_pointer.cpp:92:9:92:9 | call to operator-> |  |
+| smart_pointer.cpp:92:8:92:8 | ref arg q | smart_pointer.cpp:86:67:86:67 | q |  |
+| smart_pointer.cpp:92:8:92:8 | ref arg q | smart_pointer.cpp:93:8:93:8 | q |  |
+| smart_pointer.cpp:92:8:92:8 | ref arg q | smart_pointer.cpp:94:8:94:8 | q |  |
+| smart_pointer.cpp:93:8:93:8 | q | smart_pointer.cpp:93:9:93:9 | call to operator-> |  |
+| smart_pointer.cpp:93:8:93:8 | ref arg q | smart_pointer.cpp:86:67:86:67 | q |  |
+| smart_pointer.cpp:93:8:93:8 | ref arg q | smart_pointer.cpp:94:8:94:8 | q |  |
+| smart_pointer.cpp:94:8:94:8 | q | smart_pointer.cpp:94:9:94:9 | call to operator-> |  |
+| smart_pointer.cpp:94:8:94:8 | ref arg q | smart_pointer.cpp:86:67:86:67 | q |  |
+| smart_pointer.cpp:97:17:97:18 | pa | smart_pointer.cpp:98:5:98:6 | pa |  |
+| smart_pointer.cpp:98:5:98:20 | ... = ... | smart_pointer.cpp:98:9:98:9 | x [post update] |  |
+| smart_pointer.cpp:98:13:98:18 | call to source | smart_pointer.cpp:98:5:98:20 | ... = ... |  |
+| smart_pointer.cpp:102:25:102:50 | call to unique_ptr | smart_pointer.cpp:103:11:103:11 | p |  |
+| smart_pointer.cpp:102:25:102:50 | call to unique_ptr | smart_pointer.cpp:104:8:104:8 | p |  |
+| smart_pointer.cpp:103:11:103:11 | p | smart_pointer.cpp:103:13:103:15 | call to get |  |
+| smart_pointer.cpp:103:11:103:11 | ref arg p | smart_pointer.cpp:104:8:104:8 | p |  |
+| smart_pointer.cpp:103:13:103:15 | ref arg call to get | smart_pointer.cpp:103:11:103:11 | ref arg p | TAINT |
+| smart_pointer.cpp:104:8:104:8 | p | smart_pointer.cpp:104:9:104:9 | call to operator-> |  |
+| smart_pointer.cpp:112:40:112:42 | ptr | smart_pointer.cpp:112:40:112:42 | ptr |  |
+| smart_pointer.cpp:112:40:112:42 | ptr | smart_pointer.cpp:113:2:113:4 | ptr |  |
+| smart_pointer.cpp:113:2:113:4 | ptr | smart_pointer.cpp:113:5:113:5 | call to operator-> |  |
+| smart_pointer.cpp:113:2:113:4 | ref arg ptr | smart_pointer.cpp:112:40:112:42 | ptr |  |
+| smart_pointer.cpp:113:2:113:18 | ... = ... | smart_pointer.cpp:113:7:113:7 | x [post update] |  |
+| smart_pointer.cpp:113:5:113:5 | call to operator-> [post update] | smart_pointer.cpp:113:2:113:4 | ref arg ptr | TAINT |
+| smart_pointer.cpp:113:11:113:16 | call to source | smart_pointer.cpp:113:2:113:18 | ... = ... |  |
+| smart_pointer.cpp:116:52:116:54 | ptr | smart_pointer.cpp:116:52:116:54 | ptr |  |
+| smart_pointer.cpp:116:52:116:54 | ptr | smart_pointer.cpp:117:2:117:4 | ptr |  |
+| smart_pointer.cpp:117:2:117:4 | ptr | smart_pointer.cpp:117:5:117:5 | call to operator-> |  |
+| smart_pointer.cpp:117:2:117:4 | ref arg ptr | smart_pointer.cpp:116:52:116:54 | ptr |  |
+| smart_pointer.cpp:117:2:117:18 | ... = ... | smart_pointer.cpp:117:7:117:7 | x [post update] |  |
+| smart_pointer.cpp:117:5:117:5 | call to operator-> [post update] | smart_pointer.cpp:117:2:117:4 | ref arg ptr | TAINT |
+| smart_pointer.cpp:117:11:117:16 | call to source | smart_pointer.cpp:117:2:117:18 | ... = ... |  |
+| smart_pointer.cpp:120:48:120:50 | ptr | smart_pointer.cpp:120:48:120:50 | ptr |  |
+| smart_pointer.cpp:120:48:120:50 | ptr | smart_pointer.cpp:121:4:121:6 | ptr |  |
+| smart_pointer.cpp:121:3:121:3 | call to operator* [post update] | smart_pointer.cpp:120:48:120:50 | ptr |  |
+| smart_pointer.cpp:121:3:121:3 | call to operator* [post update] | smart_pointer.cpp:121:4:121:6 | ptr [inner post update] |  |
+| smart_pointer.cpp:121:3:121:17 | ... = ... | smart_pointer.cpp:121:3:121:3 | call to operator* [post update] |  |
+| smart_pointer.cpp:121:4:121:6 | ptr | smart_pointer.cpp:121:3:121:3 | call to operator* |  |
+| smart_pointer.cpp:121:4:121:6 | ref arg ptr | smart_pointer.cpp:120:48:120:50 | ptr |  |
+| smart_pointer.cpp:121:4:121:6 | ref arg ptr | smart_pointer.cpp:121:4:121:6 | ptr [inner post update] |  |
+| smart_pointer.cpp:121:10:121:15 | call to source | smart_pointer.cpp:121:3:121:17 | ... = ... |  |
+| smart_pointer.cpp:124:48:124:49 | p1 | smart_pointer.cpp:124:48:124:49 | p1 |  |
+| smart_pointer.cpp:124:48:124:49 | p1 | smart_pointer.cpp:125:18:125:19 | p1 |  |
+| smart_pointer.cpp:124:48:124:49 | p1 | smart_pointer.cpp:126:8:126:9 | p1 |  |
+| smart_pointer.cpp:124:90:124:91 | p2 | smart_pointer.cpp:124:90:124:91 | p2 |  |
+| smart_pointer.cpp:124:90:124:91 | p2 | smart_pointer.cpp:128:14:128:15 | p2 |  |
+| smart_pointer.cpp:124:90:124:91 | p2 | smart_pointer.cpp:129:10:129:11 | p2 |  |
+| smart_pointer.cpp:125:18:125:19 | p1 | smart_pointer.cpp:125:20:125:20 | call to operator-> |  |
+| smart_pointer.cpp:125:18:125:19 | ref arg p1 | smart_pointer.cpp:124:48:124:49 | p1 |  |
+| smart_pointer.cpp:125:18:125:19 | ref arg p1 | smart_pointer.cpp:126:8:126:9 | p1 |  |
+| smart_pointer.cpp:125:18:125:22 | ref arg call to shared_ptr | smart_pointer.cpp:125:22:125:22 | q [inner post update] |  |
+| smart_pointer.cpp:125:20:125:20 | call to operator-> [post update] | smart_pointer.cpp:125:18:125:19 | ref arg p1 | TAINT |
+| smart_pointer.cpp:125:22:125:22 | q | smart_pointer.cpp:125:18:125:22 | call to shared_ptr |  |
+| smart_pointer.cpp:125:22:125:22 | ref arg q | smart_pointer.cpp:125:22:125:22 | q [inner post update] |  |
+| smart_pointer.cpp:126:8:126:9 | p1 | smart_pointer.cpp:126:10:126:10 | call to operator-> |  |
+| smart_pointer.cpp:126:8:126:9 | ref arg p1 | smart_pointer.cpp:124:48:124:49 | p1 |  |
+| smart_pointer.cpp:126:10:126:10 | call to operator-> [post update] | smart_pointer.cpp:126:8:126:9 | ref arg p1 | TAINT |
+| smart_pointer.cpp:126:12:126:12 | q | smart_pointer.cpp:126:13:126:13 | call to operator-> |  |
+| smart_pointer.cpp:128:13:128:13 | call to operator* | smart_pointer.cpp:128:13:128:15 | call to shared_ptr | TAINT |
+| smart_pointer.cpp:128:13:128:13 | ref arg call to operator* | smart_pointer.cpp:124:90:124:91 | p2 |  |
+| smart_pointer.cpp:128:13:128:13 | ref arg call to operator* | smart_pointer.cpp:128:13:128:13 | call to operator* [inner post update] |  |
+| smart_pointer.cpp:128:13:128:13 | ref arg call to operator* | smart_pointer.cpp:128:14:128:15 | p2 [inner post update] |  |
+| smart_pointer.cpp:128:13:128:13 | ref arg call to operator* | smart_pointer.cpp:129:10:129:11 | p2 |  |
+| smart_pointer.cpp:128:13:128:15 | ref arg call to shared_ptr | smart_pointer.cpp:124:90:124:91 | p2 |  |
+| smart_pointer.cpp:128:13:128:15 | ref arg call to shared_ptr | smart_pointer.cpp:128:13:128:13 | call to operator* [inner post update] |  |
+| smart_pointer.cpp:128:13:128:15 | ref arg call to shared_ptr | smart_pointer.cpp:128:14:128:15 | p2 [inner post update] |  |
+| smart_pointer.cpp:128:13:128:15 | ref arg call to shared_ptr | smart_pointer.cpp:129:10:129:11 | p2 |  |
+| smart_pointer.cpp:128:14:128:15 | p2 | smart_pointer.cpp:128:13:128:13 | call to operator* | TAINT |
+| smart_pointer.cpp:128:14:128:15 | ref arg p2 | smart_pointer.cpp:124:90:124:91 | p2 |  |
+| smart_pointer.cpp:128:14:128:15 | ref arg p2 | smart_pointer.cpp:128:14:128:15 | p2 [inner post update] |  |
+| smart_pointer.cpp:128:14:128:15 | ref arg p2 | smart_pointer.cpp:129:10:129:11 | p2 |  |
+| smart_pointer.cpp:129:9:129:9 | call to operator* | smart_pointer.cpp:129:8:129:8 | call to operator* | TAINT |
+| smart_pointer.cpp:129:9:129:9 | ref arg call to operator* | smart_pointer.cpp:124:90:124:91 | p2 |  |
+| smart_pointer.cpp:129:9:129:9 | ref arg call to operator* | smart_pointer.cpp:129:10:129:11 | p2 [inner post update] |  |
+| smart_pointer.cpp:129:10:129:11 | p2 | smart_pointer.cpp:129:8:129:8 | call to operator* |  |
+| smart_pointer.cpp:129:10:129:11 | p2 | smart_pointer.cpp:129:9:129:9 | call to operator* | TAINT |
+| smart_pointer.cpp:129:10:129:11 | ref arg p2 | smart_pointer.cpp:124:90:124:91 | p2 |  |
+| smart_pointer.cpp:129:10:129:11 | ref arg p2 | smart_pointer.cpp:129:10:129:11 | p2 [inner post update] |  |
+| smart_pointer.cpp:132:53:132:54 | p1 | smart_pointer.cpp:132:53:132:54 | p1 |  |
+| smart_pointer.cpp:132:53:132:54 | p1 | smart_pointer.cpp:133:23:133:24 | p1 |  |
+| smart_pointer.cpp:132:53:132:54 | p1 | smart_pointer.cpp:134:8:134:9 | p1 |  |
+| smart_pointer.cpp:132:95:132:96 | p2 | smart_pointer.cpp:132:95:132:96 | p2 |  |
+| smart_pointer.cpp:132:95:132:96 | p2 | smart_pointer.cpp:136:18:136:19 | p2 |  |
+| smart_pointer.cpp:132:95:132:96 | p2 | smart_pointer.cpp:137:10:137:11 | p2 |  |
+| smart_pointer.cpp:133:23:133:24 | p1 | smart_pointer.cpp:133:25:133:25 | call to operator-> |  |
+| smart_pointer.cpp:133:23:133:24 | ref arg p1 | smart_pointer.cpp:132:53:132:54 | p1 |  |
+| smart_pointer.cpp:133:23:133:24 | ref arg p1 | smart_pointer.cpp:134:8:134:9 | p1 |  |
+| smart_pointer.cpp:133:25:133:25 | call to operator-> [post update] | smart_pointer.cpp:133:23:133:24 | ref arg p1 | TAINT |
+| smart_pointer.cpp:134:8:134:9 | p1 | smart_pointer.cpp:134:10:134:10 | call to operator-> |  |
+| smart_pointer.cpp:134:8:134:9 | ref arg p1 | smart_pointer.cpp:132:53:132:54 | p1 |  |
+| smart_pointer.cpp:134:10:134:10 | call to operator-> [post update] | smart_pointer.cpp:134:8:134:9 | ref arg p1 | TAINT |
+| smart_pointer.cpp:134:12:134:12 | q | smart_pointer.cpp:134:13:134:13 | call to operator-> |  |
+| smart_pointer.cpp:136:17:136:17 | ref arg call to operator* | smart_pointer.cpp:132:95:132:96 | p2 |  |
+| smart_pointer.cpp:136:17:136:17 | ref arg call to operator* | smart_pointer.cpp:136:18:136:19 | p2 [inner post update] |  |
+| smart_pointer.cpp:136:17:136:17 | ref arg call to operator* | smart_pointer.cpp:137:10:137:11 | p2 |  |
+| smart_pointer.cpp:136:18:136:19 | p2 | smart_pointer.cpp:136:17:136:17 | call to operator* | TAINT |
+| smart_pointer.cpp:136:18:136:19 | ref arg p2 | smart_pointer.cpp:132:95:132:96 | p2 |  |
+| smart_pointer.cpp:136:18:136:19 | ref arg p2 | smart_pointer.cpp:136:18:136:19 | p2 [inner post update] |  |
+| smart_pointer.cpp:136:18:136:19 | ref arg p2 | smart_pointer.cpp:137:10:137:11 | p2 |  |
+| smart_pointer.cpp:137:9:137:9 | call to operator* | smart_pointer.cpp:137:8:137:8 | call to operator* | TAINT |
+| smart_pointer.cpp:137:9:137:9 | ref arg call to operator* | smart_pointer.cpp:132:95:132:96 | p2 |  |
+| smart_pointer.cpp:137:9:137:9 | ref arg call to operator* | smart_pointer.cpp:137:10:137:11 | p2 [inner post update] |  |
+| smart_pointer.cpp:137:10:137:11 | p2 | smart_pointer.cpp:137:8:137:8 | call to operator* |  |
+| smart_pointer.cpp:137:10:137:11 | p2 | smart_pointer.cpp:137:9:137:9 | call to operator* | TAINT |
+| smart_pointer.cpp:137:10:137:11 | ref arg p2 | smart_pointer.cpp:132:95:132:96 | p2 |  |
+| smart_pointer.cpp:137:10:137:11 | ref arg p2 | smart_pointer.cpp:137:10:137:11 | p2 [inner post update] |  |
 | standalone_iterators.cpp:39:45:39:51 | source1 | standalone_iterators.cpp:39:45:39:51 | source1 |  |
 | standalone_iterators.cpp:39:45:39:51 | source1 | standalone_iterators.cpp:40:11:40:17 | source1 |  |
 | standalone_iterators.cpp:39:45:39:51 | source1 | standalone_iterators.cpp:41:12:41:18 | source1 |  |
@@ -3388,125 +3560,125 @@
 | stl.h:292:30:292:40 | call to allocator | stl.h:292:21:292:41 | noexcept(...) | TAINT |
 | stl.h:292:30:292:40 | call to allocator | stl.h:292:21:292:41 | noexcept(...) | TAINT |
 | stl.h:292:53:292:63 | 0 | stl.h:292:46:292:64 | (no string representation) | TAINT |
-| stl.h:388:9:388:9 | Unknown literal | stl.h:388:9:388:9 | constructor init of field first | TAINT |
-| stl.h:388:9:388:9 | Unknown literal | stl.h:388:9:388:9 | constructor init of field first | TAINT |
-| stl.h:388:9:388:9 | Unknown literal | stl.h:388:9:388:9 | constructor init of field first | TAINT |
-| stl.h:388:9:388:9 | Unknown literal | stl.h:388:9:388:9 | constructor init of field first | TAINT |
-| stl.h:388:9:388:9 | Unknown literal | stl.h:388:9:388:9 | constructor init of field first | TAINT |
-| stl.h:388:9:388:9 | Unknown literal | stl.h:388:9:388:9 | constructor init of field second | TAINT |
-| stl.h:388:9:388:9 | Unknown literal | stl.h:388:9:388:9 | constructor init of field second | TAINT |
-| stl.h:388:9:388:9 | Unknown literal | stl.h:388:9:388:9 | constructor init of field second | TAINT |
-| stl.h:388:9:388:9 | Unknown literal | stl.h:388:9:388:9 | constructor init of field second | TAINT |
-| stl.h:388:9:388:9 | Unknown literal | stl.h:388:9:388:9 | constructor init of field second | TAINT |
-| stl.h:388:9:388:9 | constructor init of field first [post-this] | stl.h:388:9:388:9 | constructor init of field second [pre-this] |  |
-| stl.h:388:9:388:9 | constructor init of field first [post-this] | stl.h:388:9:388:9 | constructor init of field second [pre-this] |  |
-| stl.h:388:9:388:9 | constructor init of field first [post-this] | stl.h:388:9:388:9 | constructor init of field second [pre-this] |  |
-| stl.h:388:9:388:9 | constructor init of field first [post-this] | stl.h:388:9:388:9 | constructor init of field second [pre-this] |  |
-| stl.h:388:9:388:9 | constructor init of field first [post-this] | stl.h:388:9:388:9 | constructor init of field second [pre-this] |  |
-| stl.h:388:9:388:9 | constructor init of field first [pre-this] | stl.h:388:9:388:9 | constructor init of field second [pre-this] |  |
-| stl.h:388:9:388:9 | constructor init of field first [pre-this] | stl.h:388:9:388:9 | constructor init of field second [pre-this] |  |
-| stl.h:388:9:388:9 | constructor init of field first [pre-this] | stl.h:388:9:388:9 | constructor init of field second [pre-this] |  |
-| stl.h:388:9:388:9 | constructor init of field first [pre-this] | stl.h:388:9:388:9 | constructor init of field second [pre-this] |  |
-| stl.h:388:9:388:9 | constructor init of field first [pre-this] | stl.h:388:9:388:9 | constructor init of field second [pre-this] |  |
-| stl.h:388:9:388:9 | this | stl.h:388:9:388:9 | constructor init of field first [pre-this] |  |
-| stl.h:388:9:388:9 | this | stl.h:388:9:388:9 | constructor init of field first [pre-this] |  |
-| stl.h:388:9:388:9 | this | stl.h:388:9:388:9 | constructor init of field first [pre-this] |  |
-| stl.h:388:9:388:9 | this | stl.h:388:9:388:9 | constructor init of field first [pre-this] |  |
-| stl.h:388:9:388:9 | this | stl.h:388:9:388:9 | constructor init of field first [pre-this] |  |
-| stl.h:395:3:395:3 | this | stl.h:395:36:395:43 | constructor init of field first [pre-this] |  |
-| stl.h:395:3:395:3 | this | stl.h:395:36:395:43 | constructor init of field first [pre-this] |  |
-| stl.h:395:3:395:3 | this | stl.h:395:36:395:43 | constructor init of field first [pre-this] |  |
-| stl.h:395:3:395:3 | this | stl.h:395:36:395:43 | constructor init of field first [pre-this] |  |
-| stl.h:395:3:395:3 | this | stl.h:395:36:395:43 | constructor init of field first [pre-this] |  |
-| stl.h:395:3:395:6 | this | stl.h:395:36:395:43 | constructor init of field first [pre-this] |  |
-| stl.h:395:18:395:18 | x | stl.h:395:42:395:42 | x |  |
-| stl.h:395:18:395:18 | x | stl.h:395:42:395:42 | x |  |
-| stl.h:395:18:395:18 | x | stl.h:395:42:395:42 | x |  |
-| stl.h:395:18:395:18 | x | stl.h:395:42:395:42 | x |  |
-| stl.h:395:18:395:18 | x | stl.h:395:42:395:42 | x |  |
-| stl.h:395:18:395:18 | x | stl.h:395:42:395:42 | x |  |
-| stl.h:395:31:395:31 | y | stl.h:395:53:395:53 | y |  |
-| stl.h:395:31:395:31 | y | stl.h:395:53:395:53 | y |  |
-| stl.h:395:31:395:31 | y | stl.h:395:53:395:53 | y |  |
-| stl.h:395:31:395:31 | y | stl.h:395:53:395:53 | y |  |
-| stl.h:395:31:395:31 | y | stl.h:395:53:395:53 | y |  |
-| stl.h:395:31:395:31 | y | stl.h:395:53:395:53 | y |  |
-| stl.h:395:36:395:43 | call to unknown function | stl.h:395:36:395:43 | constructor init of field first | TAINT |
-| stl.h:395:36:395:43 | constructor init of field first [post-this] | stl.h:395:46:395:54 | constructor init of field second [pre-this] |  |
-| stl.h:395:36:395:43 | constructor init of field first [post-this] | stl.h:395:46:395:54 | constructor init of field second [pre-this] |  |
-| stl.h:395:36:395:43 | constructor init of field first [post-this] | stl.h:395:46:395:54 | constructor init of field second [pre-this] |  |
-| stl.h:395:36:395:43 | constructor init of field first [post-this] | stl.h:395:46:395:54 | constructor init of field second [pre-this] |  |
-| stl.h:395:36:395:43 | constructor init of field first [post-this] | stl.h:395:46:395:54 | constructor init of field second [pre-this] |  |
-| stl.h:395:36:395:43 | constructor init of field first [post-this] | stl.h:395:46:395:54 | constructor init of field second [pre-this] |  |
-| stl.h:395:36:395:43 | constructor init of field first [pre-this] | stl.h:395:46:395:54 | constructor init of field second [pre-this] |  |
-| stl.h:395:36:395:43 | constructor init of field first [pre-this] | stl.h:395:46:395:54 | constructor init of field second [pre-this] |  |
-| stl.h:395:36:395:43 | constructor init of field first [pre-this] | stl.h:395:46:395:54 | constructor init of field second [pre-this] |  |
-| stl.h:395:36:395:43 | constructor init of field first [pre-this] | stl.h:395:46:395:54 | constructor init of field second [pre-this] |  |
-| stl.h:395:36:395:43 | constructor init of field first [pre-this] | stl.h:395:46:395:54 | constructor init of field second [pre-this] |  |
-| stl.h:395:36:395:43 | constructor init of field first [pre-this] | stl.h:395:46:395:54 | constructor init of field second [pre-this] |  |
-| stl.h:395:42:395:42 | x | stl.h:395:36:395:43 | constructor init of field first | TAINT |
-| stl.h:395:42:395:42 | x | stl.h:395:36:395:43 | constructor init of field first | TAINT |
-| stl.h:395:42:395:42 | x | stl.h:395:36:395:43 | constructor init of field first | TAINT |
-| stl.h:395:42:395:42 | x | stl.h:395:36:395:43 | constructor init of field first | TAINT |
-| stl.h:395:42:395:42 | x | stl.h:395:36:395:43 | constructor init of field first | TAINT |
-| stl.h:395:46:395:54 | call to unknown function | stl.h:395:46:395:54 | constructor init of field second | TAINT |
-| stl.h:395:53:395:53 | y | stl.h:395:46:395:54 | constructor init of field second | TAINT |
-| stl.h:395:53:395:53 | y | stl.h:395:46:395:54 | constructor init of field second | TAINT |
-| stl.h:395:53:395:53 | y | stl.h:395:46:395:54 | constructor init of field second | TAINT |
-| stl.h:395:53:395:53 | y | stl.h:395:46:395:54 | constructor init of field second | TAINT |
-| stl.h:395:53:395:53 | y | stl.h:395:46:395:54 | constructor init of field second | TAINT |
-| stl.h:401:87:401:87 | x | stl.h:401:87:401:87 | x |  |
-| stl.h:401:87:401:87 | x | stl.h:401:87:401:87 | x |  |
-| stl.h:401:87:401:87 | x | stl.h:401:87:401:87 | x |  |
-| stl.h:401:87:401:87 | x | stl.h:401:87:401:87 | x |  |
-| stl.h:401:87:401:87 | x | stl.h:401:87:401:87 | x |  |
-| stl.h:401:87:401:87 | x | stl.h:401:87:401:87 | x |  |
-| stl.h:401:87:401:87 | x | stl.h:401:87:401:87 | x |  |
-| stl.h:401:87:401:87 | x | stl.h:402:58:402:58 | x |  |
-| stl.h:401:87:401:87 | x | stl.h:402:58:402:58 | x |  |
-| stl.h:401:87:401:87 | x | stl.h:402:58:402:58 | x |  |
-| stl.h:401:87:401:87 | x | stl.h:402:58:402:58 | x |  |
-| stl.h:401:87:401:87 | x | stl.h:402:58:402:58 | x |  |
-| stl.h:401:87:401:87 | x | stl.h:402:58:402:58 | x |  |
-| stl.h:401:87:401:87 | x | stl.h:402:58:402:58 | x |  |
-| stl.h:401:95:401:95 | y | stl.h:401:95:401:95 | y |  |
-| stl.h:401:95:401:95 | y | stl.h:401:95:401:95 | y |  |
-| stl.h:401:95:401:95 | y | stl.h:401:95:401:95 | y |  |
-| stl.h:401:95:401:95 | y | stl.h:401:95:401:95 | y |  |
-| stl.h:401:95:401:95 | y | stl.h:401:95:401:95 | y |  |
-| stl.h:401:95:401:95 | y | stl.h:401:95:401:95 | y |  |
-| stl.h:401:95:401:95 | y | stl.h:401:95:401:95 | y |  |
-| stl.h:401:95:401:95 | y | stl.h:402:79:402:79 | y |  |
-| stl.h:401:95:401:95 | y | stl.h:402:79:402:79 | y |  |
-| stl.h:401:95:401:95 | y | stl.h:402:79:402:79 | y |  |
-| stl.h:401:95:401:95 | y | stl.h:402:79:402:79 | y |  |
-| stl.h:401:95:401:95 | y | stl.h:402:79:402:79 | y |  |
-| stl.h:401:95:401:95 | y | stl.h:402:79:402:79 | y |  |
-| stl.h:401:95:401:95 | y | stl.h:402:79:402:79 | y |  |
-| stl.h:402:58:402:58 | x | stl.h:402:41:402:56 | call to forward |  |
-| stl.h:402:58:402:58 | x | stl.h:402:41:402:56 | call to forward |  |
-| stl.h:402:58:402:58 | x | stl.h:402:41:402:56 | call to forward |  |
-| stl.h:402:58:402:58 | x | stl.h:402:41:402:56 | call to forward |  |
-| stl.h:402:58:402:58 | x | stl.h:402:41:402:56 | call to forward |  |
-| stl.h:402:58:402:58 | x | stl.h:402:41:402:56 | call to forward |  |
-| stl.h:402:62:402:77 | call to forward | stl.h:402:3:402:82 | call to pair | TAINT |
-| stl.h:402:62:402:77 | call to forward | stl.h:402:3:402:82 | call to pair | TAINT |
-| stl.h:402:62:402:77 | call to forward | stl.h:402:3:402:82 | call to pair | TAINT |
-| stl.h:402:62:402:77 | call to forward | stl.h:402:3:402:82 | call to pair | TAINT |
-| stl.h:402:62:402:77 | call to forward | stl.h:402:3:402:82 | call to pair | TAINT |
-| stl.h:402:62:402:77 | call to forward | stl.h:402:3:402:82 | call to pair | TAINT |
-| stl.h:402:79:402:79 | y | stl.h:402:3:402:82 | call to pair | TAINT |
-| stl.h:402:79:402:79 | y | stl.h:402:3:402:82 | call to pair | TAINT |
-| stl.h:402:79:402:79 | y | stl.h:402:3:402:82 | call to pair | TAINT |
-| stl.h:402:79:402:79 | y | stl.h:402:3:402:82 | call to pair | TAINT |
-| stl.h:402:79:402:79 | y | stl.h:402:3:402:82 | call to pair | TAINT |
-| stl.h:402:79:402:79 | y | stl.h:402:3:402:82 | call to pair | TAINT |
-| stl.h:402:79:402:79 | y | stl.h:402:62:402:77 | call to forward |  |
-| stl.h:402:79:402:79 | y | stl.h:402:62:402:77 | call to forward |  |
-| stl.h:402:79:402:79 | y | stl.h:402:62:402:77 | call to forward |  |
-| stl.h:402:79:402:79 | y | stl.h:402:62:402:77 | call to forward |  |
-| stl.h:402:79:402:79 | y | stl.h:402:62:402:77 | call to forward |  |
-| stl.h:402:79:402:79 | y | stl.h:402:62:402:77 | call to forward |  |
+| stl.h:389:9:389:9 | Unknown literal | stl.h:389:9:389:9 | constructor init of field first | TAINT |
+| stl.h:389:9:389:9 | Unknown literal | stl.h:389:9:389:9 | constructor init of field first | TAINT |
+| stl.h:389:9:389:9 | Unknown literal | stl.h:389:9:389:9 | constructor init of field first | TAINT |
+| stl.h:389:9:389:9 | Unknown literal | stl.h:389:9:389:9 | constructor init of field first | TAINT |
+| stl.h:389:9:389:9 | Unknown literal | stl.h:389:9:389:9 | constructor init of field first | TAINT |
+| stl.h:389:9:389:9 | Unknown literal | stl.h:389:9:389:9 | constructor init of field second | TAINT |
+| stl.h:389:9:389:9 | Unknown literal | stl.h:389:9:389:9 | constructor init of field second | TAINT |
+| stl.h:389:9:389:9 | Unknown literal | stl.h:389:9:389:9 | constructor init of field second | TAINT |
+| stl.h:389:9:389:9 | Unknown literal | stl.h:389:9:389:9 | constructor init of field second | TAINT |
+| stl.h:389:9:389:9 | Unknown literal | stl.h:389:9:389:9 | constructor init of field second | TAINT |
+| stl.h:389:9:389:9 | constructor init of field first [post-this] | stl.h:389:9:389:9 | constructor init of field second [pre-this] |  |
+| stl.h:389:9:389:9 | constructor init of field first [post-this] | stl.h:389:9:389:9 | constructor init of field second [pre-this] |  |
+| stl.h:389:9:389:9 | constructor init of field first [post-this] | stl.h:389:9:389:9 | constructor init of field second [pre-this] |  |
+| stl.h:389:9:389:9 | constructor init of field first [post-this] | stl.h:389:9:389:9 | constructor init of field second [pre-this] |  |
+| stl.h:389:9:389:9 | constructor init of field first [post-this] | stl.h:389:9:389:9 | constructor init of field second [pre-this] |  |
+| stl.h:389:9:389:9 | constructor init of field first [pre-this] | stl.h:389:9:389:9 | constructor init of field second [pre-this] |  |
+| stl.h:389:9:389:9 | constructor init of field first [pre-this] | stl.h:389:9:389:9 | constructor init of field second [pre-this] |  |
+| stl.h:389:9:389:9 | constructor init of field first [pre-this] | stl.h:389:9:389:9 | constructor init of field second [pre-this] |  |
+| stl.h:389:9:389:9 | constructor init of field first [pre-this] | stl.h:389:9:389:9 | constructor init of field second [pre-this] |  |
+| stl.h:389:9:389:9 | constructor init of field first [pre-this] | stl.h:389:9:389:9 | constructor init of field second [pre-this] |  |
+| stl.h:389:9:389:9 | this | stl.h:389:9:389:9 | constructor init of field first [pre-this] |  |
+| stl.h:389:9:389:9 | this | stl.h:389:9:389:9 | constructor init of field first [pre-this] |  |
+| stl.h:389:9:389:9 | this | stl.h:389:9:389:9 | constructor init of field first [pre-this] |  |
+| stl.h:389:9:389:9 | this | stl.h:389:9:389:9 | constructor init of field first [pre-this] |  |
+| stl.h:389:9:389:9 | this | stl.h:389:9:389:9 | constructor init of field first [pre-this] |  |
+| stl.h:396:3:396:3 | this | stl.h:396:36:396:43 | constructor init of field first [pre-this] |  |
+| stl.h:396:3:396:3 | this | stl.h:396:36:396:43 | constructor init of field first [pre-this] |  |
+| stl.h:396:3:396:3 | this | stl.h:396:36:396:43 | constructor init of field first [pre-this] |  |
+| stl.h:396:3:396:3 | this | stl.h:396:36:396:43 | constructor init of field first [pre-this] |  |
+| stl.h:396:3:396:3 | this | stl.h:396:36:396:43 | constructor init of field first [pre-this] |  |
+| stl.h:396:3:396:6 | this | stl.h:396:36:396:43 | constructor init of field first [pre-this] |  |
+| stl.h:396:18:396:18 | x | stl.h:396:42:396:42 | x |  |
+| stl.h:396:18:396:18 | x | stl.h:396:42:396:42 | x |  |
+| stl.h:396:18:396:18 | x | stl.h:396:42:396:42 | x |  |
+| stl.h:396:18:396:18 | x | stl.h:396:42:396:42 | x |  |
+| stl.h:396:18:396:18 | x | stl.h:396:42:396:42 | x |  |
+| stl.h:396:18:396:18 | x | stl.h:396:42:396:42 | x |  |
+| stl.h:396:31:396:31 | y | stl.h:396:53:396:53 | y |  |
+| stl.h:396:31:396:31 | y | stl.h:396:53:396:53 | y |  |
+| stl.h:396:31:396:31 | y | stl.h:396:53:396:53 | y |  |
+| stl.h:396:31:396:31 | y | stl.h:396:53:396:53 | y |  |
+| stl.h:396:31:396:31 | y | stl.h:396:53:396:53 | y |  |
+| stl.h:396:31:396:31 | y | stl.h:396:53:396:53 | y |  |
+| stl.h:396:36:396:43 | call to unknown function | stl.h:396:36:396:43 | constructor init of field first | TAINT |
+| stl.h:396:36:396:43 | constructor init of field first [post-this] | stl.h:396:46:396:54 | constructor init of field second [pre-this] |  |
+| stl.h:396:36:396:43 | constructor init of field first [post-this] | stl.h:396:46:396:54 | constructor init of field second [pre-this] |  |
+| stl.h:396:36:396:43 | constructor init of field first [post-this] | stl.h:396:46:396:54 | constructor init of field second [pre-this] |  |
+| stl.h:396:36:396:43 | constructor init of field first [post-this] | stl.h:396:46:396:54 | constructor init of field second [pre-this] |  |
+| stl.h:396:36:396:43 | constructor init of field first [post-this] | stl.h:396:46:396:54 | constructor init of field second [pre-this] |  |
+| stl.h:396:36:396:43 | constructor init of field first [post-this] | stl.h:396:46:396:54 | constructor init of field second [pre-this] |  |
+| stl.h:396:36:396:43 | constructor init of field first [pre-this] | stl.h:396:46:396:54 | constructor init of field second [pre-this] |  |
+| stl.h:396:36:396:43 | constructor init of field first [pre-this] | stl.h:396:46:396:54 | constructor init of field second [pre-this] |  |
+| stl.h:396:36:396:43 | constructor init of field first [pre-this] | stl.h:396:46:396:54 | constructor init of field second [pre-this] |  |
+| stl.h:396:36:396:43 | constructor init of field first [pre-this] | stl.h:396:46:396:54 | constructor init of field second [pre-this] |  |
+| stl.h:396:36:396:43 | constructor init of field first [pre-this] | stl.h:396:46:396:54 | constructor init of field second [pre-this] |  |
+| stl.h:396:36:396:43 | constructor init of field first [pre-this] | stl.h:396:46:396:54 | constructor init of field second [pre-this] |  |
+| stl.h:396:42:396:42 | x | stl.h:396:36:396:43 | constructor init of field first | TAINT |
+| stl.h:396:42:396:42 | x | stl.h:396:36:396:43 | constructor init of field first | TAINT |
+| stl.h:396:42:396:42 | x | stl.h:396:36:396:43 | constructor init of field first | TAINT |
+| stl.h:396:42:396:42 | x | stl.h:396:36:396:43 | constructor init of field first | TAINT |
+| stl.h:396:42:396:42 | x | stl.h:396:36:396:43 | constructor init of field first | TAINT |
+| stl.h:396:46:396:54 | call to unknown function | stl.h:396:46:396:54 | constructor init of field second | TAINT |
+| stl.h:396:53:396:53 | y | stl.h:396:46:396:54 | constructor init of field second | TAINT |
+| stl.h:396:53:396:53 | y | stl.h:396:46:396:54 | constructor init of field second | TAINT |
+| stl.h:396:53:396:53 | y | stl.h:396:46:396:54 | constructor init of field second | TAINT |
+| stl.h:396:53:396:53 | y | stl.h:396:46:396:54 | constructor init of field second | TAINT |
+| stl.h:396:53:396:53 | y | stl.h:396:46:396:54 | constructor init of field second | TAINT |
+| stl.h:402:87:402:87 | x | stl.h:402:87:402:87 | x |  |
+| stl.h:402:87:402:87 | x | stl.h:402:87:402:87 | x |  |
+| stl.h:402:87:402:87 | x | stl.h:402:87:402:87 | x |  |
+| stl.h:402:87:402:87 | x | stl.h:402:87:402:87 | x |  |
+| stl.h:402:87:402:87 | x | stl.h:402:87:402:87 | x |  |
+| stl.h:402:87:402:87 | x | stl.h:402:87:402:87 | x |  |
+| stl.h:402:87:402:87 | x | stl.h:402:87:402:87 | x |  |
+| stl.h:402:87:402:87 | x | stl.h:403:58:403:58 | x |  |
+| stl.h:402:87:402:87 | x | stl.h:403:58:403:58 | x |  |
+| stl.h:402:87:402:87 | x | stl.h:403:58:403:58 | x |  |
+| stl.h:402:87:402:87 | x | stl.h:403:58:403:58 | x |  |
+| stl.h:402:87:402:87 | x | stl.h:403:58:403:58 | x |  |
+| stl.h:402:87:402:87 | x | stl.h:403:58:403:58 | x |  |
+| stl.h:402:87:402:87 | x | stl.h:403:58:403:58 | x |  |
+| stl.h:402:95:402:95 | y | stl.h:402:95:402:95 | y |  |
+| stl.h:402:95:402:95 | y | stl.h:402:95:402:95 | y |  |
+| stl.h:402:95:402:95 | y | stl.h:402:95:402:95 | y |  |
+| stl.h:402:95:402:95 | y | stl.h:402:95:402:95 | y |  |
+| stl.h:402:95:402:95 | y | stl.h:402:95:402:95 | y |  |
+| stl.h:402:95:402:95 | y | stl.h:402:95:402:95 | y |  |
+| stl.h:402:95:402:95 | y | stl.h:402:95:402:95 | y |  |
+| stl.h:402:95:402:95 | y | stl.h:403:79:403:79 | y |  |
+| stl.h:402:95:402:95 | y | stl.h:403:79:403:79 | y |  |
+| stl.h:402:95:402:95 | y | stl.h:403:79:403:79 | y |  |
+| stl.h:402:95:402:95 | y | stl.h:403:79:403:79 | y |  |
+| stl.h:402:95:402:95 | y | stl.h:403:79:403:79 | y |  |
+| stl.h:402:95:402:95 | y | stl.h:403:79:403:79 | y |  |
+| stl.h:402:95:402:95 | y | stl.h:403:79:403:79 | y |  |
+| stl.h:403:58:403:58 | x | stl.h:403:41:403:56 | call to forward |  |
+| stl.h:403:58:403:58 | x | stl.h:403:41:403:56 | call to forward |  |
+| stl.h:403:58:403:58 | x | stl.h:403:41:403:56 | call to forward |  |
+| stl.h:403:58:403:58 | x | stl.h:403:41:403:56 | call to forward |  |
+| stl.h:403:58:403:58 | x | stl.h:403:41:403:56 | call to forward |  |
+| stl.h:403:58:403:58 | x | stl.h:403:41:403:56 | call to forward |  |
+| stl.h:403:62:403:77 | call to forward | stl.h:403:3:403:82 | call to pair | TAINT |
+| stl.h:403:62:403:77 | call to forward | stl.h:403:3:403:82 | call to pair | TAINT |
+| stl.h:403:62:403:77 | call to forward | stl.h:403:3:403:82 | call to pair | TAINT |
+| stl.h:403:62:403:77 | call to forward | stl.h:403:3:403:82 | call to pair | TAINT |
+| stl.h:403:62:403:77 | call to forward | stl.h:403:3:403:82 | call to pair | TAINT |
+| stl.h:403:62:403:77 | call to forward | stl.h:403:3:403:82 | call to pair | TAINT |
+| stl.h:403:79:403:79 | y | stl.h:403:3:403:82 | call to pair | TAINT |
+| stl.h:403:79:403:79 | y | stl.h:403:3:403:82 | call to pair | TAINT |
+| stl.h:403:79:403:79 | y | stl.h:403:3:403:82 | call to pair | TAINT |
+| stl.h:403:79:403:79 | y | stl.h:403:3:403:82 | call to pair | TAINT |
+| stl.h:403:79:403:79 | y | stl.h:403:3:403:82 | call to pair | TAINT |
+| stl.h:403:79:403:79 | y | stl.h:403:3:403:82 | call to pair | TAINT |
+| stl.h:403:79:403:79 | y | stl.h:403:62:403:77 | call to forward |  |
+| stl.h:403:79:403:79 | y | stl.h:403:62:403:77 | call to forward |  |
+| stl.h:403:79:403:79 | y | stl.h:403:62:403:77 | call to forward |  |
+| stl.h:403:79:403:79 | y | stl.h:403:62:403:77 | call to forward |  |
+| stl.h:403:79:403:79 | y | stl.h:403:62:403:77 | call to forward |  |
+| stl.h:403:79:403:79 | y | stl.h:403:62:403:77 | call to forward |  |
 | string.cpp:25:12:25:17 | call to source | string.cpp:29:7:29:7 | a |  |
 | string.cpp:26:16:26:20 | 123 | string.cpp:26:16:26:21 | call to basic_string | TAINT |
 | string.cpp:26:16:26:21 | call to basic_string | string.cpp:30:7:30:7 | b |  |

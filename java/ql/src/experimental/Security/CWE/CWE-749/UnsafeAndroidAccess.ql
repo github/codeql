@@ -1,8 +1,11 @@
 /**
  * @name Unsafe resource fetching in Android webview
- * @id java/android/unsafe-android-webview-fetch
- * @description JavaScript rendered inside WebViews can access any protected application file and web resource from any origin
+ * @description JavaScript rendered inside WebViews can access any protected
+ *              application file and web resource from any origin
  * @kind path-problem
+ * @problem.severity warning
+ * @precision medium
+ * @id java/android/unsafe-android-webview-fetch
  * @tags security
  *       external/cwe/cwe-749
  *       external/cwe/cwe-079

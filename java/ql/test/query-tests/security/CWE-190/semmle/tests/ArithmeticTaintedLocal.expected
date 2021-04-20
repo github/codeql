@@ -1,13 +1,23 @@
 edges
-| ArithmeticTainted.java:17:46:17:54 | System.in : InputStream | ArithmeticTainted.java:32:17:32:20 | data |
-| ArithmeticTainted.java:17:46:17:54 | System.in : InputStream | ArithmeticTainted.java:40:17:40:20 | data |
-| ArithmeticTainted.java:17:46:17:54 | System.in : InputStream | ArithmeticTainted.java:50:17:50:20 | data |
-| ArithmeticTainted.java:17:46:17:54 | System.in : InputStream | ArithmeticTainted.java:64:20:64:23 | data : Number |
-| ArithmeticTainted.java:17:46:17:54 | System.in : InputStream | ArithmeticTainted.java:95:37:95:40 | data |
-| ArithmeticTainted.java:17:46:17:54 | System.in : InputStream | ArithmeticTainted.java:118:9:118:12 | data : Number |
-| ArithmeticTainted.java:17:46:17:54 | System.in : InputStream | ArithmeticTainted.java:119:10:119:13 | data : Number |
-| ArithmeticTainted.java:17:46:17:54 | System.in : InputStream | ArithmeticTainted.java:120:10:120:13 | data : Number |
-| ArithmeticTainted.java:17:46:17:54 | System.in : InputStream | ArithmeticTainted.java:121:10:121:13 | data : Number |
+| ArithmeticTainted.java:17:24:17:64 | new InputStreamReader(...) : InputStreamReader | ArithmeticTainted.java:18:40:18:56 | readerInputStream : InputStreamReader |
+| ArithmeticTainted.java:17:24:17:64 | new InputStreamReader(...) : InputStreamReader | ArithmeticTainted.java:18:40:18:56 | readerInputStream : InputStreamReader |
+| ArithmeticTainted.java:17:46:17:54 | System.in : InputStream | ArithmeticTainted.java:17:24:17:64 | new InputStreamReader(...) : InputStreamReader |
+| ArithmeticTainted.java:17:46:17:54 | System.in : InputStream | ArithmeticTainted.java:17:24:17:64 | new InputStreamReader(...) : InputStreamReader |
+| ArithmeticTainted.java:18:21:18:57 | new BufferedReader(...) : BufferedReader | ArithmeticTainted.java:19:26:19:39 | readerBuffered : BufferedReader |
+| ArithmeticTainted.java:18:21:18:57 | new BufferedReader(...) : BufferedReader | ArithmeticTainted.java:19:26:19:39 | readerBuffered : BufferedReader |
+| ArithmeticTainted.java:18:40:18:56 | readerInputStream : InputStreamReader | ArithmeticTainted.java:18:21:18:57 | new BufferedReader(...) : BufferedReader |
+| ArithmeticTainted.java:18:40:18:56 | readerInputStream : InputStreamReader | ArithmeticTainted.java:18:21:18:57 | new BufferedReader(...) : BufferedReader |
+| ArithmeticTainted.java:19:26:19:39 | readerBuffered : BufferedReader | ArithmeticTainted.java:19:26:19:50 | readLine(...) : String |
+| ArithmeticTainted.java:19:26:19:39 | readerBuffered : BufferedReader | ArithmeticTainted.java:19:26:19:50 | readLine(...) : String |
+| ArithmeticTainted.java:19:26:19:50 | readLine(...) : String | ArithmeticTainted.java:32:17:32:20 | data |
+| ArithmeticTainted.java:19:26:19:50 | readLine(...) : String | ArithmeticTainted.java:40:17:40:20 | data |
+| ArithmeticTainted.java:19:26:19:50 | readLine(...) : String | ArithmeticTainted.java:50:17:50:20 | data |
+| ArithmeticTainted.java:19:26:19:50 | readLine(...) : String | ArithmeticTainted.java:64:20:64:23 | data : Number |
+| ArithmeticTainted.java:19:26:19:50 | readLine(...) : String | ArithmeticTainted.java:95:37:95:40 | data |
+| ArithmeticTainted.java:19:26:19:50 | readLine(...) : String | ArithmeticTainted.java:118:9:118:12 | data : Number |
+| ArithmeticTainted.java:19:26:19:50 | readLine(...) : String | ArithmeticTainted.java:119:10:119:13 | data : Number |
+| ArithmeticTainted.java:19:26:19:50 | readLine(...) : String | ArithmeticTainted.java:120:10:120:13 | data : Number |
+| ArithmeticTainted.java:19:26:19:50 | readLine(...) : String | ArithmeticTainted.java:121:10:121:13 | data : Number |
 | ArithmeticTainted.java:64:4:64:10 | tainted [post update] [dat] : Number | ArithmeticTainted.java:66:18:66:24 | tainted [dat] : Number |
 | ArithmeticTainted.java:64:20:64:23 | data : Number | ArithmeticTainted.java:64:4:64:10 | tainted [post update] [dat] : Number |
 | ArithmeticTainted.java:66:18:66:24 | tainted [dat] : Number | ArithmeticTainted.java:66:18:66:34 | getData(...) : Number |
@@ -21,8 +31,18 @@ edges
 | ArithmeticTainted.java:133:27:133:34 | data : Number | ArithmeticTainted.java:135:3:135:6 | data |
 | ArithmeticTainted.java:137:27:137:34 | data : Number | ArithmeticTainted.java:139:5:139:8 | data |
 nodes
+| ArithmeticTainted.java:17:24:17:64 | new InputStreamReader(...) : InputStreamReader | semmle.label | new InputStreamReader(...) : InputStreamReader |
+| ArithmeticTainted.java:17:24:17:64 | new InputStreamReader(...) : InputStreamReader | semmle.label | new InputStreamReader(...) : InputStreamReader |
 | ArithmeticTainted.java:17:46:17:54 | System.in : InputStream | semmle.label | System.in : InputStream |
 | ArithmeticTainted.java:17:46:17:54 | System.in : InputStream | semmle.label | System.in : InputStream |
+| ArithmeticTainted.java:18:21:18:57 | new BufferedReader(...) : BufferedReader | semmle.label | new BufferedReader(...) : BufferedReader |
+| ArithmeticTainted.java:18:21:18:57 | new BufferedReader(...) : BufferedReader | semmle.label | new BufferedReader(...) : BufferedReader |
+| ArithmeticTainted.java:18:40:18:56 | readerInputStream : InputStreamReader | semmle.label | readerInputStream : InputStreamReader |
+| ArithmeticTainted.java:18:40:18:56 | readerInputStream : InputStreamReader | semmle.label | readerInputStream : InputStreamReader |
+| ArithmeticTainted.java:19:26:19:39 | readerBuffered : BufferedReader | semmle.label | readerBuffered : BufferedReader |
+| ArithmeticTainted.java:19:26:19:39 | readerBuffered : BufferedReader | semmle.label | readerBuffered : BufferedReader |
+| ArithmeticTainted.java:19:26:19:50 | readLine(...) : String | semmle.label | readLine(...) : String |
+| ArithmeticTainted.java:19:26:19:50 | readLine(...) : String | semmle.label | readLine(...) : String |
 | ArithmeticTainted.java:32:17:32:20 | data | semmle.label | data |
 | ArithmeticTainted.java:40:17:40:20 | data | semmle.label | data |
 | ArithmeticTainted.java:50:17:50:20 | data | semmle.label | data |

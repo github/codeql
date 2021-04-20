@@ -81,7 +81,7 @@ module ClientWebSocket {
   /**
    * A client WebSocket instance.
    */
-  class ClientSocket extends EventEmitter::Range, DataFlow::SourceNode {
+  class ClientSocket extends EventEmitter::Range, DataFlow::NewNode, ClientRequest::Range {
     SocketClass socketClass;
 
     ClientSocket() { this = socketClass.getAnInstantiation() }
@@ -90,6 +90,26 @@ module ClientWebSocket {
      * Gets the WebSocket library name.
      */
     LibraryName getLibrary() { result = socketClass.getLibrary() }
+
+    override DataFlow::Node getUrl() { result = getArgument(0) }
+
+    override DataFlow::Node getHost() { none() }
+
+    override DataFlow::Node getADataNode() {
+      exists(SendNode send |
+        send.getEmitter() = this and
+        result = send.getSentItem(_)
+      )
+    }
+
+    override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
+      responseType = "json" and
+      promise = false and
+      exists(WebSocketReceiveNode receiver |
+        receiver.getEmitter() = this and
+        result = receiver.getReceivedItem(_)
+      )
+    }
   }
 
   /**
@@ -181,24 +201,70 @@ module ServerWebSocket {
   }
 
   /**
+   * Gets a `socket.on("connection", (msg, req) => {})` call.
+   */
+  private DataFlow::CallNode getAConnectionCall(LibraryName library) {
+    result = getAServer(library).getAMemberCall(EventEmitter::on()) and
+    result.getArgument(0).mayHaveStringValue("connection")
+  }
+
+  /**
    * A server WebSocket instance.
    */
   class ServerSocket extends EventEmitter::Range, DataFlow::SourceNode {
     LibraryName library;
 
-    ServerSocket() {
-      exists(DataFlow::CallNode onCall |
-        onCall = getAServer(library).getAMemberCall(EventEmitter::on()) and
-        onCall.getArgument(0).mayHaveStringValue("connection")
-      |
-        this = onCall.getCallback(1).getParameter(0)
-      )
-    }
+    ServerSocket() { this = getAConnectionCall(library).getCallback(1).getParameter(0) }
 
     /**
      * Gets the name of the library that created this server socket.
      */
     LibraryName getLibrary() { result = library }
+  }
+
+  /**
+   * A `socket.on("connection", (msg, req) => {})` call seen as a HTTP route handler.
+   * `req` is a `HTTP::IncomingMessage` instance.
+   */
+  class ConnectionCallAsRouteHandler extends HTTP::RouteHandler, DataFlow::CallNode {
+    ConnectionCallAsRouteHandler() { this = getAConnectionCall(_) }
+
+    override HTTP::HeaderDefinition getAResponseHeader(string name) { none() }
+  }
+
+  /**
+   * The `req` parameter of a `socket.on("connection", (msg, req) => {})` call.
+   */
+  class ServerHTTPRequest extends HTTP::Servers::RequestSource {
+    ConnectionCallAsRouteHandler handler;
+
+    ServerHTTPRequest() { this = handler.getCallback(1).getParameter(1) }
+
+    override HTTP::RouteHandler getRouteHandler() { result = handler }
+  }
+
+  /**
+   * An access user-controlled HTTP request input in a request to a WebSocket server.
+   */
+  class WebSocketRequestInput extends HTTP::RequestInputAccess {
+    ServerHTTPRequest request;
+    string kind;
+
+    WebSocketRequestInput() {
+      kind = "url" and
+      this = request.ref().getAPropertyRead("url")
+      or
+      kind = "header" and
+      this = request.ref().getAPropertyRead(["headers", "rawHeaders"]).getAPropertyRead()
+      or
+      // req.headers.cookie
+      kind = "cookie" and
+      this = request.ref().getAPropertyRead("headers").getAPropertyRead("cookie")
+    }
+
+    override string getKind() { result = kind }
+
+    override HTTP::RouteHandler getRouteHandler() { result = request.getRouteHandler() }
   }
 
   /**

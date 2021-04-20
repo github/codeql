@@ -32,26 +32,30 @@
  * 7. The `input` column specifies how data enters the element selected by the
  *    first 6 columns, and the `output` column specifies how data leaves the
  *    element selected by the first 6 columns. An `input` can be either "",
- *    "Argument", "Argument[n]", "ReturnValue":
+ *    "Argument[n]", "Argument[n1..n2]", "ReturnValue":
  *    - "": Selects a write to the selected element in case this is a field.
- *    - "Argument": Selects any argument in a call to the selected element.
- *    - "Argument[n]": Similar to "Argument" but restricted to a specific numbered
- *      argument (zero-indexed, and `-1` specifies the qualifier).
+ *    - "Argument[n]": Selects an argument in a call to the selected element.
+ *      The arguments are zero-indexed, and `-1` specifies the qualifier.
+ *    - "Argument[n1..n2]": Similar to "Argument[n]" but select any argument in
+ *      the given range. The range is inclusive at both ends.
  *    - "ReturnValue": Selects a value being returned by the selected element.
  *      This requires that the selected element is a method with a body.
  *
- *    An `output` can be either "", "Argument", "Argument[n]", "Parameter",
- *    "Parameter[n]", or "ReturnValue":
+ *    An `output` can be either "", "Argument[n]", "Argument[n1..n2]", "Parameter",
+ *    "Parameter[n]", "Parameter[n1..n2]", or "ReturnValue":
  *    - "": Selects a read of a selected field, or a selected parameter.
- *    - "Argument": Selects the post-update value of an argument in a call to the
+ *    - "Argument[n]": Selects the post-update value of an argument in a call to the
  *      selected element. That is, the value of the argument after the call returns.
- *    - "Argument[n]": Similar to "Argument" but restricted to a specific numbered
- *      argument (zero-indexed, and `-1` specifies the qualifier).
+ *      The arguments are zero-indexed, and `-1` specifies the qualifier.
+ *    - "Argument[n1..n2]": Similar to "Argument[n]" but select any argument in
+ *      the given range. The range is inclusive at both ends.
  *    - "Parameter": Selects the value of a parameter of the selected element.
  *      "Parameter" is also allowed in case the selected element is already a
  *      parameter itself.
  *    - "Parameter[n]": Similar to "Parameter" but restricted to a specific
  *      numbered parameter (zero-indexed, and `-1` specifies the value of `this`).
+ *    - "Parameter[n1..n2]": Similar to "Parameter[n]" but selects any parameter
+ *      in the given range. The range is inclusive at both ends.
  *    - "ReturnValue": Selects the return value of a call to the selected element.
  * 8. The `kind` column is a tag that can be referenced from QL to determine to
  *    which classes the interpreted elements should be added. For example, for
@@ -63,6 +67,7 @@
 import java
 private import semmle.code.java.dataflow.DataFlow::DataFlow
 private import internal.DataFlowPrivate
+private import FlowSummary
 
 /**
  * A module importing the frameworks that provide external flow data,
@@ -368,6 +373,60 @@ private predicate summaryModel(
   )
 }
 
+private predicate relevantPackage(string package) {
+  sourceModel(package, _, _, _, _, _, _, _) or
+  sinkModel(package, _, _, _, _, _, _, _) or
+  summaryModel(package, _, _, _, _, _, _, _, _)
+}
+
+private predicate packageLink(string shortpkg, string longpkg) {
+  relevantPackage(shortpkg) and
+  relevantPackage(longpkg) and
+  longpkg.prefix(longpkg.indexOf(".")) = shortpkg
+}
+
+private predicate canonicalPackage(string package) {
+  relevantPackage(package) and not packageLink(_, package)
+}
+
+private predicate canonicalPkgLink(string package, string subpkg) {
+  canonicalPackage(package) and
+  (subpkg = package or packageLink(package, subpkg))
+}
+
+/**
+ * Holds if CSV framework coverage of `package` is `n` api endpoints of the
+ * kind `(kind, part)`.
+ */
+predicate modelCoverage(string package, int pkgs, string kind, string part, int n) {
+  pkgs = strictcount(string subpkg | canonicalPkgLink(package, subpkg)) and
+  (
+    part = "source" and
+    n =
+      strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
+        string ext, string output |
+        canonicalPkgLink(package, subpkg) and
+        sourceModel(subpkg, type, subtypes, name, signature, ext, output, kind)
+      )
+    or
+    part = "sink" and
+    n =
+      strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
+        string ext, string input |
+        canonicalPkgLink(package, subpkg) and
+        sinkModel(subpkg, type, subtypes, name, signature, ext, input, kind)
+      )
+    or
+    part = "summary" and
+    n =
+      strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
+        string ext, string input, string output |
+        canonicalPkgLink(package, subpkg) and
+        summaryModel(subpkg, type, subtypes, name, signature, ext, input, output, kind)
+      )
+  )
+}
+
 /** Provides a query predicate to check the CSV data for validation errors. */
 module CsvValidation {
   /** Holds if some row in a CSV-based flow model appears to contain typos. */
@@ -401,7 +460,8 @@ module CsvValidation {
       summaryModel(_, _, _, _, _, _, input, _, _) and pred = "summary"
     |
       specSplit(input, part, _) and
-      not part.regexpMatch("|Argument|ReturnValue") and
+      not part.regexpMatch("|ReturnValue|ArrayElement|Element|MapKey|MapValue") and
+      not (part = "Argument" and pred = "sink") and
       not parseArg(part, _) and
       msg = "Unrecognized input specification \"" + part + "\" in " + pred + " model."
     )
@@ -412,7 +472,8 @@ module CsvValidation {
       summaryModel(_, _, _, _, _, _, _, output, _) and pred = "summary"
     |
       specSplit(output, part, _) and
-      not part.regexpMatch("|Argument|Parameter|ReturnValue") and
+      not part.regexpMatch("|ReturnValue|ArrayElement|Element|MapKey|MapValue") and
+      not (part = ["Argument", "Parameter"] and pred = "source") and
       not parseArg(part, _) and
       not parseParam(part, _) and
       msg = "Unrecognized output specification \"" + part + "\" in " + pred + " model."
@@ -554,11 +615,29 @@ private string getLast(string s) {
 }
 
 private predicate parseParam(string c, int n) {
-  specSplit(_, c, _) and c.regexpCapture("Parameter\\[([-0-9]+)\\]", 1).toInt() = n
+  specSplit(_, c, _) and
+  (
+    c.regexpCapture("Parameter\\[([-0-9]+)\\]", 1).toInt() = n
+    or
+    exists(int n1, int n2 |
+      c.regexpCapture("Parameter\\[([-0-9]+)\\.\\.([0-9]+)\\]", 1).toInt() = n1 and
+      c.regexpCapture("Parameter\\[([-0-9]+)\\.\\.([0-9]+)\\]", 2).toInt() = n2 and
+      n = [n1 .. n2]
+    )
+  )
 }
 
 private predicate parseArg(string c, int n) {
-  specSplit(_, c, _) and c.regexpCapture("Argument\\[([-0-9]+)\\]", 1).toInt() = n
+  specSplit(_, c, _) and
+  (
+    c.regexpCapture("Argument\\[([-0-9]+)\\]", 1).toInt() = n
+    or
+    exists(int n1, int n2 |
+      c.regexpCapture("Argument\\[([-0-9]+)\\.\\.([0-9]+)\\]", 1).toInt() = n1 and
+      c.regexpCapture("Argument\\[([-0-9]+)\\.\\.([0-9]+)\\]", 2).toInt() = n2 and
+      n = [n1 .. n2]
+    )
+  )
 }
 
 private predicate inputNeedsReference(string c) {
@@ -597,6 +676,75 @@ private predicate summaryElementRef(Top ref, string input, string output, string
     then ref.(Call).getCallee().getSourceDeclaration() = e
     else ref = e
   )
+}
+
+private SummaryComponent interpretComponent(string c) {
+  specSplit(_, c, _) and
+  (
+    exists(int pos | parseArg(c, pos) and result = SummaryComponent::argument(pos))
+    or
+    exists(int pos | parseParam(c, pos) and result = SummaryComponent::parameter(pos))
+    or
+    c = "ReturnValue" and result = SummaryComponent::return()
+    or
+    c = "ArrayElement" and result = SummaryComponent::content(any(ArrayContent c0))
+    or
+    c = "Element" and result = SummaryComponent::content(any(CollectionContent c0))
+    or
+    c = "MapKey" and result = SummaryComponent::content(any(MapKeyContent c0))
+    or
+    c = "MapValue" and result = SummaryComponent::content(any(MapValueContent c0))
+  )
+}
+
+private predicate interpretSpec(string spec, int idx, SummaryComponentStack stack) {
+  exists(string c |
+    summaryElement(_, spec, _, _) or
+    summaryElement(_, _, spec, _)
+  |
+    len(spec, idx + 1) and
+    specSplit(spec, c, idx) and
+    stack = SummaryComponentStack::singleton(interpretComponent(c))
+  )
+  or
+  exists(SummaryComponent head, SummaryComponentStack tail |
+    interpretSpec(spec, idx, head, tail) and
+    stack = SummaryComponentStack::push(head, tail)
+  )
+}
+
+private predicate interpretSpec(
+  string output, int idx, SummaryComponent head, SummaryComponentStack tail
+) {
+  exists(string c |
+    interpretSpec(output, idx + 1, tail) and
+    specSplit(output, c, idx) and
+    head = interpretComponent(c)
+  )
+}
+
+private class MkStack extends RequiredSummaryComponentStack {
+  MkStack() { interpretSpec(_, _, _, this) }
+
+  override predicate required(SummaryComponent c) { interpretSpec(_, _, c, this) }
+}
+
+private class SummarizedCallableExternal extends SummarizedCallable {
+  SummarizedCallableExternal() { summaryElement(this, _, _, _) }
+
+  override predicate propagatesFlow(
+    SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
+  ) {
+    exists(string inSpec, string outSpec, string kind |
+      summaryElement(this, inSpec, outSpec, kind) and
+      interpretSpec(inSpec, 0, input) and
+      interpretSpec(outSpec, 0, output)
+    |
+      kind = "value" and preservesValue = true
+      or
+      kind = "taint" and preservesValue = false
+    )
+  }
 }
 
 private newtype TAstOrNode =
@@ -683,17 +831,5 @@ predicate sinkNode(Node node, string kind) {
   exists(Top ref, string input |
     sinkElementRef(ref, input, kind) and
     interpretInput(input, 0, ref, TNode(node))
-  )
-}
-
-/**
- * Holds if `node1` to `node2` is specified as a flow step with the given kind
- * in a CSV flow model.
- */
-predicate summaryStep(Node node1, Node node2, string kind) {
-  exists(Top ref, string input, string output |
-    summaryElementRef(ref, input, output, kind) and
-    interpretInput(input, 0, ref, TNode(node1)) and
-    interpretOutput(output, 0, ref, TNode(node2))
   )
 }

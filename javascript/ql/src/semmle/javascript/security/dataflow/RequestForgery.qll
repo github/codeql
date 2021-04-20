@@ -31,5 +31,9 @@ module RequestForgery {
     override predicate isSanitizerEdge(DataFlow::Node source, DataFlow::Node sink) {
       sanitizingPrefixEdge(source, sink)
     }
+
+    override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+      isAdditionalRequestForgeryStep(pred, succ)
+    }
   }
 }
