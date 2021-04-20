@@ -1303,7 +1303,7 @@ private module PrivateDjango {
         }
 
         /** Gets a reference to the `django.http.response.HttpResponse.write` function. */
-        private DataFlow::Node write(
+        private DataFlow::LocalSourceNode write(
           django::http::response::HttpResponse::InstanceSource instance, DataFlow::TypeTracker t
         ) {
           t.startInAttr("write") and
@@ -1315,7 +1315,7 @@ private module PrivateDjango {
 
         /** Gets a reference to the `django.http.response.HttpResponse.write` function. */
         DataFlow::Node write(django::http::response::HttpResponse::InstanceSource instance) {
-          result = write(instance, DataFlow::TypeTracker::end())
+          write(instance, DataFlow::TypeTracker::end()).flowsTo(result)
         }
 
         /**
