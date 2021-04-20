@@ -32,7 +32,7 @@ class TypeJwtHandlerAdapter extends Class {
   TypeJwtHandlerAdapter() { this.hasQualifiedName("io.jsonwebtoken", "JwtHandlerAdapter") }
 }
 
-/** The `parse(token, handler)` method defined in `TypeJwtParser`. */
+/** The `parse(token, handler)` method defined in `JwtParser`. */
 private class JwtParserParseHandlerMethod extends Method {
   JwtParserParseHandlerMethod() {
     this.hasName("parse") and
@@ -41,7 +41,7 @@ private class JwtParserParseHandlerMethod extends Method {
   }
 }
 
-/** The `parse(token)`, `parseClaimsJwt(token)` and `parsePlaintextJwt(token)` methods defined in `TypeJwtParser`. */
+/** The `parse(token)`, `parseClaimsJwt(token)` and `parsePlaintextJwt(token)` methods defined in `JwtParser`. */
 private class JwtParserInsecureParseMethods extends Method {
   JwtParserInsecureParseMethods() {
     this.hasName(["parse", "parseClaimsJwt", "parsePlaintextJwt"]) and
@@ -50,7 +50,7 @@ private class JwtParserInsecureParseMethods extends Method {
   }
 }
 
-/** The `onClaimsJwt(jwt)` and `onPlaintextJwt(jwt)` methods defined in `TypeJwtHandler`. */
+/** The `onClaimsJwt(jwt)` and `onPlaintextJwt(jwt)` methods defined in `JwtHandler`. */
 private class JwtHandlerOnJwtMethods extends Method {
   JwtHandlerOnJwtMethods() {
     this.hasName(["onClaimsJwt", "onPlaintextJwt"]) and
@@ -59,7 +59,7 @@ private class JwtHandlerOnJwtMethods extends Method {
   }
 }
 
-/** The `onClaimsJwt(jwt)` and `onPlaintextJwt(jwt)` methods defined in `TypeJwtHandlerAdapter`. */
+/** The `onClaimsJwt(jwt)` and `onPlaintextJwt(jwt)` methods defined in `JwtHandlerAdapter`. */
 private class JwtHandlerAdapterOnJwtMethods extends Method {
   JwtHandlerAdapterOnJwtMethods() {
     this.hasName(["onClaimsJwt", "onPlaintextJwt"]) and
@@ -100,24 +100,24 @@ private class JwtParserInsecureParseMethodAccess extends MethodAccess {
 }
 
 /**
- * Holds if `signingMa` directly or indirectly sets a signing key for `expr`, which is a `TypeJwtParser`.
- * The `setSigningKey` and `setSigningKeyResolver` methods set a signing key for a `TypeJwtParser`.
+ * Holds if `signingMa` directly or indirectly sets a signing key for `expr`, which is a `JwtParser`.
+ * The `setSigningKey` and `setSigningKeyResolver` methods set a signing key for a `JwtParser`.
  * Directly means code like this:
  * ```java
  * Jwts.parser().setSigningKey(key).parse(token);
  * ```
- * Here the signing key is set directly on a `TypeJwtParser`.
+ * Here the signing key is set directly on a `JwtParser`.
  * Indirectly means code like this:
  * ```java
  * Jwts.parserBuilder().setSigningKey(key).build().parse(token);
  * ```
- * In this case, the signing key is set on a `TypeJwtParserBuilder` indirectly setting the key of `TypeJwtParser` that is created by the call to `build`.
+ * In this case, the signing key is set on a `JwtParserBuilder` indirectly setting the key of `JwtParser` that is created by the call to `build`.
  */
 private predicate isSigningKeySet(Expr expr, MethodAccess signingMa) {
   any(SigningToExprDataFlow s).hasFlow(DataFlow::exprNode(signingMa), DataFlow::exprNode(expr))
 }
 
-/** An expr that is a `TypeJwtParser` for which a signing key has been set. */
+/** An expr that is a `JwtParser` for which a signing key has been set. */
 private class JwtParserWithSigningKeyExpr extends Expr {
   MethodAccess signingMa;
 
@@ -131,8 +131,8 @@ private class JwtParserWithSigningKeyExpr extends Expr {
 }
 
 /**
- * Models flow from `SigningKeyMethodAccess`es to expressions that are a (sub-type of) `TypeJwtParser`.
- * This is used to determine whether a `TypeJwtParser` has a signing key set.
+ * Models flow from `SigningKeyMethodAccess`es to expressions that are a (sub-type of) `JwtParser`.
+ * This is used to determine whether a `JwtParser` has a signing key set.
  */
 private class SigningToExprDataFlow extends DataFlow::Configuration {
   SigningToExprDataFlow() { this = "SigningToExprDataFlow" }
@@ -145,7 +145,7 @@ private class SigningToExprDataFlow extends DataFlow::Configuration {
     sink.asExpr().getType().(RefType).getASourceSupertype*() instanceof TypeJwtParser
   }
 
-  /** Models the builder style of `TypeJwtParser` and `TypeJwtParserBuilder`. */
+  /** Models the builder style of `JwtParser` and `JwtParserBuilder`. */
   override predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
     (
       pred.asExpr().getType().(RefType).getASourceSupertype*() instanceof TypeJwtParser or
@@ -155,7 +155,7 @@ private class SigningToExprDataFlow extends DataFlow::Configuration {
   }
 }
 
-/** An access to the `setSigningKey` or `setSigningKeyResolver` method (or an overriden method) defined in `TypeJwtParser` and `TypeJwtParserBuilder`. */
+/** An access to the `setSigningKey` or `setSigningKeyResolver` method (or an overriden method) defined in `JwtParser` and `JwtParserBuilder`. */
 private class SigningKeyMethodAccess extends MethodAccess {
   SigningKeyMethodAccess() {
     exists(Method m |
