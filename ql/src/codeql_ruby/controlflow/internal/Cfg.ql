@@ -1,5 +1,6 @@
 /**
  * @kind graph
+ * @id rb/test/cfg
  */
 
 import codeql_ruby.CFG

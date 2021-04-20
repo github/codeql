@@ -1,5 +1,6 @@
 /**
  * @kind graph
+ * @id rb/test/ancestors
  */
 
 import ruby
