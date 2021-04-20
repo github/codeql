@@ -51,9 +51,7 @@ class FromDataDictToSink extends TaintTracking2::Configuration {
 
   override predicate isSource(DataFlow::Node source) { source instanceof DataToDictSink }
 
-  override predicate isSink(DataFlow::Node sink) {
-    sink = any(NoSQLQuery noSQLQuery).getQueryNode()
-  }
+  override predicate isSink(DataFlow::Node sink) { sink = any(NoSQLQuery noSQLQuery).getQuery() }
 
   override predicate isSanitizer(DataFlow::Node sanitizer) {
     sanitizer = any(NoSQLSanitizer noSQLSanitizer).getSanitizerNode()

@@ -16,7 +16,7 @@ private import experimental.semmle.python.Frameworks
 
 module NoSQLQuery {
   abstract class Range extends DataFlow::Node {
-    abstract DataFlow::Node getQueryNode();
+    abstract DataFlow::Node getQuery();
   }
 }
 
@@ -25,7 +25,7 @@ class NoSQLQuery extends DataFlow::Node {
 
   NoSQLQuery() { this = range }
 
-  DataFlow::Node getQueryNode() { result = range.getQueryNode() }
+  DataFlow::Node getQuery() { result = range.getQuery() }
 }
 
 module NoSQLSanitizer {

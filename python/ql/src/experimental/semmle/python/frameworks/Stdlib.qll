@@ -32,7 +32,7 @@ private module NoSQL {
             .getACall()
     }
 
-    override DataFlow::Node getQueryNode() { result = this.getArg(0) }
+    override DataFlow::Node getQuery() { result = this.getArg(0) }
   }
 
   private class PyMongoFlaskMethods extends string {
@@ -50,7 +50,7 @@ private module NoSQL {
             .getACall()
     }
 
-    override DataFlow::Node getQueryNode() { result = this.getArg(0) }
+    override DataFlow::Node getQuery() { result = this.getArg(0) }
   }
 
   private class MongoEngineObjectsCall extends DataFlow::CallCfgNode, NoSQLQuery::Range {
@@ -63,7 +63,7 @@ private module NoSQL {
             .getACall()
     }
 
-    override DataFlow::Node getQueryNode() { result = this.getArgByName(any(string name)) }
+    override DataFlow::Node getQuery() { result = this.getArgByName(any(string name)) }
   }
 
   private class MongoEngineObjectsFlaskCall extends DataFlow::CallCfgNode, NoSQLQuery::Range {
@@ -78,7 +78,7 @@ private module NoSQL {
             .getACall()
     }
 
-    override DataFlow::Node getQueryNode() { result = this.getArgByName(any(string name)) }
+    override DataFlow::Node getQuery() { result = this.getArgByName(any(string name)) }
   }
 
   private class MongoSanitizerCall extends DataFlow::CallCfgNode, NoSQLSanitizer::Range {
