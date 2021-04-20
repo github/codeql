@@ -25,7 +25,7 @@ a Groovy script (see the article "Abusing Meta Programming for Unauthenticated R
 
 Groovy's <code>SecureASTCustomizer</code> allows securing source code by controlling what code constructs are permitted. 
 This is typically done when using Groovy for its scripting or domain specific language (DSL) features.
-The fundamental problem is that Groovy is a dynamic language, yet SecureASTCustomizer works by looking at Groovy AST statically.
+The fundamental problem is that Groovy is a dynamic language, yet <code>SecureASTCustomizer</code> works by looking at Groovy AST statically.
 
 This makes it very easy for an attacker to bypass many of the intended checks
 (see https://kohsuke.org/2012/04/27/groovy-secureastcustomizer-is-harmful/).
