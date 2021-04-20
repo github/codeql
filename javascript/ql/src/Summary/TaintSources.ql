@@ -2,7 +2,7 @@
  * @name Taint sources
  * @description Sources of untrusted input.
  * @kind problem
- * @problem.severity informational
+ * @problem.severity info
  * @id js/summary/taint-sources
  * @tags summary
  * @precision medium

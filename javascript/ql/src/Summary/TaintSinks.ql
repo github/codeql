@@ -2,7 +2,7 @@
  * @name Taint sinks
  * @description Expressions that are vulnerable if containing untrusted data.
  * @kind problem
- * @problem.severity informational
+ * @problem.severity info
  * @id js/summary/taint-sinks
  * @tags summary
  * @precision medium
