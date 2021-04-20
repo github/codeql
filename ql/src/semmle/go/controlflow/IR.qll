@@ -751,6 +751,18 @@ module IR {
         result = tae.getType().(TupleType).getComponentType(pragma[only_bind_into](i))
       )
       or
+      exists(Instruction mapBase | this.getBase().readsElement(mapBase, _) |
+        i = 0 and result = mapBase.getResultType().getUnderlyingType().(MapType).getValueType()
+        or
+        i = 1 and result = any(BoolExprType b)
+      )
+      or
+      exists(RecvExpr re | this.getBase() = evalExprInstruction(re) |
+        i = 0 and result = re.getOperand().getType().getUnderlyingType().(ChanType).getElementType()
+        or
+        i = 1 and result = any(BoolExprType b)
+      )
+      or
       exists(Type rangeType | rangeType = s.(RangeStmt).getDomain().getType().getUnderlyingType() |
         exists(Type baseType |
           baseType = rangeType.(ArrayType).getElementType() or
