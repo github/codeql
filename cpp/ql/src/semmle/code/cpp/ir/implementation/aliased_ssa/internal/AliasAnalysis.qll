@@ -34,7 +34,7 @@ private predicate operandIsConsumedWithoutEscaping(Operand operand) {
 
 private predicate operandEscapesDomain(Operand operand) {
   not operandIsConsumedWithoutEscaping(operand) and
-  not operandIsPropagated(operand, _) and
+  not operandIsPropagated(operand, _, _) and
   not isArgumentForParameter(_, operand, _) and
   not isOnlyEscapesViaReturnArgument(operand) and
   not operand.getUse() instanceof ReturnValueInstruction and
@@ -69,67 +69,66 @@ IntValue getPointerBitOffset(PointerOffsetInstruction instr) {
 }
 
 /**
- * Holds if any address held in operand `tag` of instruction `instr` is
- * propagated to the result of `instr`, offset by the number of bits in
- * `bitOffset`. If the address is propagated, but the offset is not known to be
- * a constant, then `bitOffset` is unknown.
+ * Holds if any address held in operand `operand` is propagated to the result of `instr`, offset by
+ * the number of bits in `bitOffset`. If the address is propagated, but the offset is not known to
+ * be a constant, then `bitOffset` is `unknown()`.
  */
-private predicate operandIsPropagated(Operand operand, IntValue bitOffset) {
-  exists(Instruction instr |
-    instr = operand.getUse() and
-    (
-      // Converting to a non-virtual base class adds the offset of the base class.
-      exists(ConvertToNonVirtualBaseInstruction convert |
-        convert = instr and
-        bitOffset = Ints::mul(convert.getDerivation().getByteOffset(), 8)
-      )
-      or
-      // Conversion using dynamic_cast results in an unknown offset
-      instr instanceof CheckedConvertOrNullInstruction and
-      bitOffset = Ints::unknown()
-      or
-      // Converting to a derived class subtracts the offset of the base class.
-      exists(ConvertToDerivedInstruction convert |
-        convert = instr and
-        bitOffset = Ints::neg(Ints::mul(convert.getDerivation().getByteOffset(), 8))
-      )
-      or
-      // Converting to a virtual base class adds an unknown offset.
-      instr instanceof ConvertToVirtualBaseInstruction and
-      bitOffset = Ints::unknown()
-      or
-      // Conversion to another pointer type propagates the source address.
-      exists(ConvertInstruction convert, IRType resultType |
-        convert = instr and
-        resultType = convert.getResultIRType() and
-        resultType instanceof IRAddressType and
-        bitOffset = 0
-      )
-      or
-      // Adding an integer to or subtracting an integer from a pointer propagates
-      // the address with an offset.
-      exists(PointerOffsetInstruction ptrOffset |
-        ptrOffset = instr and
-        operand = ptrOffset.getLeftOperand() and
-        bitOffset = getPointerBitOffset(ptrOffset)
-      )
-      or
-      // Computing a field address from a pointer propagates the address plus the
-      // offset of the field.
-      bitOffset = Language::getFieldBitOffset(instr.(FieldAddressInstruction).getField())
-      or
-      // A copy propagates the source value.
-      operand = instr.(CopyInstruction).getSourceValueOperand() and bitOffset = 0
-      or
-      // Some functions are known to propagate an argument
-      isAlwaysReturnedArgument(operand) and bitOffset = 0
+private predicate operandIsPropagated(Operand operand, IntValue bitOffset, Instruction instr) {
+  instr = operand.getUse() and
+  (
+    // Converting to a non-virtual base class adds the offset of the base class.
+    exists(ConvertToNonVirtualBaseInstruction convert |
+      convert = instr and
+      bitOffset = Ints::mul(convert.getDerivation().getByteOffset(), 8)
     )
+    or
+    // Conversion using dynamic_cast results in an unknown offset
+    instr instanceof CheckedConvertOrNullInstruction and
+    bitOffset = Ints::unknown()
+    or
+    // Converting to a derived class subtracts the offset of the base class.
+    exists(ConvertToDerivedInstruction convert |
+      convert = instr and
+      bitOffset = Ints::neg(Ints::mul(convert.getDerivation().getByteOffset(), 8))
+    )
+    or
+    // Converting to a virtual base class adds an unknown offset.
+    instr instanceof ConvertToVirtualBaseInstruction and
+    bitOffset = Ints::unknown()
+    or
+    // Conversion to another pointer type propagates the source address.
+    exists(ConvertInstruction convert, IRType resultType |
+      convert = instr and
+      resultType = convert.getResultIRType() and
+      resultType instanceof IRAddressType and
+      bitOffset = 0
+    )
+    or
+    // Adding an integer to or subtracting an integer from a pointer propagates
+    // the address with an offset.
+    exists(PointerOffsetInstruction ptrOffset |
+      ptrOffset = instr and
+      operand = ptrOffset.getLeftOperand() and
+      bitOffset = getPointerBitOffset(ptrOffset)
+    )
+    or
+    // Computing a field address from a pointer propagates the address plus the
+    // offset of the field.
+    bitOffset = Language::getFieldBitOffset(instr.(FieldAddressInstruction).getField())
+    or
+    // A copy propagates the source value.
+    operand = instr.(CopyInstruction).getSourceValueOperand() and bitOffset = 0
+    or
+    // Some functions are known to propagate an argument
+    isAlwaysReturnedArgument(operand) and bitOffset = 0
   )
 }
 
 private predicate operandEscapesNonReturn(Operand operand) {
-  // The address is propagated to the result of the instruction, and that result itself is returned
-  operandIsPropagated(operand, _) and resultEscapesNonReturn(operand.getUse())
+  exists(Instruction instr |
+    // The address is propagated to the result of the instruction, and that result itself is returned
+    operandIsPropagated(operand, _, instr) and resultEscapesNonReturn(instr)
+  )
   or
   // The operand is used in a function call which returns it, and the return value is then returned
   exists(CallInstruction ci, Instruction init |
@@ -151,9 +150,11 @@ private predicate operandEscapesNonReturn(Operand operand) {
 }
 
 private predicate operandMayReachReturn(Operand operand) {
-  // The address is propagated to the result of the instruction, and that result itself is returned
-  operandIsPropagated(operand, _) and
-  resultMayReachReturn(operand.getUse())
+  exists(Instruction instr |
+    // The address is propagated to the result of the instruction, and that result itself is returned
+    operandIsPropagated(operand, _, instr) and
+    resultMayReachReturn(instr)
+  )
   or
   // The operand is used in a function call which returns it, and the return value is then returned
   exists(CallInstruction ci, Instruction init |
@@ -173,9 +174,9 @@ private predicate operandMayReachReturn(Operand operand) {
 
 private predicate operandReturned(Operand operand, IntValue bitOffset) {
   // The address is propagated to the result of the instruction, and that result itself is returned
-  exists(IntValue bitOffset1, IntValue bitOffset2 |
-    operandIsPropagated(operand, bitOffset1) and
-    resultReturned(operand.getUse(), bitOffset2) and
+  exists(Instruction instr, IntValue bitOffset1, IntValue bitOffset2 |
+    operandIsPropagated(operand, bitOffset1, instr) and
+    resultReturned(instr, bitOffset2) and
     bitOffset = Ints::add(bitOffset1, bitOffset2)
   )
   or
@@ -270,12 +271,13 @@ predicate allocationEscapes(Configuration::Allocation allocation) {
 /**
  * Equivalent to `operandIsPropagated()`, but includes interprocedural propagation.
  */
-private predicate operandIsPropagatedIncludingByCall(Operand operand, IntValue bitOffset) {
-  operandIsPropagated(operand, bitOffset)
+private predicate operandIsPropagatedIncludingByCall(Operand operand, IntValue bitOffset, Instruction instr) {
+  operandIsPropagated(operand, bitOffset, instr)
   or
   exists(CallInstruction call, Instruction init |
     isArgumentForParameter(call, operand, init) and
-    resultReturned(init, bitOffset)
+    resultReturned(init, bitOffset) and
+    instr = call
   )
 }
 
@@ -292,8 +294,7 @@ private predicate hasBaseAndOffset(AddressOperand addrOperand, Instruction base,
     // We already have an offset from `middle`.
     hasBaseAndOffset(addrOperand, middle, previousBitOffset) and
     // `middle` is propagated from `base`.
-    middleOperand = middle.getAnOperand() and
-    operandIsPropagatedIncludingByCall(middleOperand, additionalBitOffset) and
+    operandIsPropagatedIncludingByCall(middleOperand, additionalBitOffset, middle) and
     base = middleOperand.getDef() and
     bitOffset = Ints::add(previousBitOffset, additionalBitOffset)
   )
