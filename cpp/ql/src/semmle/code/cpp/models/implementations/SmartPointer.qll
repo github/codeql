@@ -1,6 +1,7 @@
 import semmle.code.cpp.models.interfaces.Taint
 import semmle.code.cpp.models.interfaces.DataFlow
 import semmle.code.cpp.models.interfaces.PointerWrapper
+import semmle.code.cpp.models.interfaces.Alias
 
 /**
  * The `std::shared_ptr` and `std::unique_ptr` template classes.
@@ -18,7 +19,7 @@ private class UniqueOrSharedPtr extends Class, PointerWrapper {
 }
 
 /** Any function that unwraps a pointer wrapper class to reveal the underlying pointer. */
-private class PointerWrapperFlow extends TaintFunction, DataFlowFunction {
+private class PointerWrapperFlow extends TaintFunction, DataFlowFunction, AliasFunction {
   PointerWrapperFlow() {
     this = any(PointerWrapper wrapper).getAnUnwrapperFunction() and
     not this.getUnspecifiedType() instanceof ReferenceType
@@ -32,6 +33,12 @@ private class PointerWrapperFlow extends TaintFunction, DataFlowFunction {
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     input.isQualifierObject() and output.isReturnValue()
   }
+
+  override predicate parameterNeverEscapes(int index) { index = -1 }
+
+  override predicate parameterEscapesOnlyViaReturn(int index) { none() }
+
+  override predicate parameterIsAlwaysReturned(int index) { none() }
 }
 
 /**

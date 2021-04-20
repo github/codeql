@@ -13,6 +13,7 @@
  */
 
 private import cpp
+private import semmle.code.cpp.models.interfaces.Alias
 
 /**
  * Holds if `f` is an instantiation of the `std::move` or `std::forward`
@@ -185,14 +186,31 @@ private predicate referenceFromVariableAccess(VariableAccess va, Expr reference)
   )
 }
 
+/**
+ * Holds if we have an alias model for the target of `call` that specifies
+ * that the `index`'th parameter of `call` never escapes.
+ */
+private predicate argumentNeverEscapes(Call call, int index) {
+  exists(AliasFunction aliasFunction | aliasFunction = call.getTarget() |
+    aliasFunction.parameterNeverEscapes(index)
+    or
+    call instanceof ExprInVoidContext and
+    aliasFunction.parameterEscapesOnlyViaReturn(index)
+  )
+}
+
 private predicate addressMayEscapeAt(Expr e) {
   exists(Call call |
-    e = call.getAnArgument().getFullyConverted() and
-    not stdIdentityFunction(call.getTarget()) and
-    not stdAddressOf(call.getTarget())
+    exists(int i |
+      e = call.getArgument(i).getFullyConverted() and
+      not stdIdentityFunction(call.getTarget()) and
+      not stdAddressOf(call.getTarget()) and
+      not argumentNeverEscapes(call, i)
+    )
     or
     e = call.getQualifier().getFullyConverted() and
-    e.getUnderlyingType() instanceof PointerType
+    e.getUnderlyingType() instanceof PointerType and
+    not argumentNeverEscapes(call, -1)
   )
   or
   exists(AssignExpr assign | e = assign.getRValue().getFullyConverted())
@@ -239,6 +257,7 @@ private predicate lvalueMayEscapeAt(Expr e) {
   // `q` escapes even though `q` is not a pointer or a reference.
   exists(Call call |
     e = call.getQualifier().getFullyConverted() and
+    not argumentNeverEscapes(call, -1) and
     e.getType().getUnspecifiedType() instanceof Class
   )
 }
