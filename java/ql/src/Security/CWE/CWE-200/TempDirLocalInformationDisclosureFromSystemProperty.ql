@@ -36,8 +36,8 @@ private class FileFileCreationSink extends FileCreationSink {
 }
 
 /**
- * The argument to 
- a call to one of `Files` file-creating or directory-creating methods, treated as a sink by `TempDirSystemGetPropertyToCreateConfig`.
+ * The argument to
+ * a call to one of `Files` file-creating or directory-creating methods, treated as a sink by `TempDirSystemGetPropertyToCreateConfig`.
  */
 private class FilesFileCreationSink extends FileCreationSink {
   FilesFileCreationSink() {
@@ -81,6 +81,12 @@ private class TempDirSystemGetPropertyToCreateConfig extends TaintTracking::Conf
     source.asExpr() instanceof MethodAccessSystemGetPropertyTempDirTainted
   }
 
+  /**
+   * Find dataflow from the temp directory system property to the `File` constructor.
+   * Examples:
+   *  - `new File(System.getProperty("java.io.tmpdir"))`
+   *  - `new File(new File(System.getProperty("java.io.tmpdir")), "/child")`
+   */
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
     isAdditionalFileTaintStep(node1, node2)
   }

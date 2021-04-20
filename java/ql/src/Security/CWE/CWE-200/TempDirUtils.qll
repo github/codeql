@@ -44,10 +44,7 @@ class MethodFileCreateTempFile extends Method {
 }
 
 /**
- * Find dataflow from the temp directory system property to the `File` constructor.
- * Examples:
- *  - `new File(System.getProperty("java.io.tmpdir"))`
- *  - `new File(new File(System.getProperty("java.io.tmpdir")), "/child")`
+ * Holds if `expDest` is some constructor call `new java.io.File(x)` and `expSource` is `x`.
  */
 private predicate isFileConstructorArgument(Expr expSource, Expr exprDest) {
   exists(ConstructorCall construtorCall |
@@ -69,7 +66,7 @@ private class TaintFollowingFileMethod extends Method {
 
 private predicate isTaintPropagatingFileTransformation(Expr expSource, Expr exprDest) {
   exists(MethodAccess fileMethodAccess |
-    fileMethodAccess.getMethod() instanceof TaintPropagatingFileMethod and
+    fileMethodAccess.getMethod() instanceof TaintFollowingFileMethod and
     fileMethodAccess.getQualifier() = expSource and
     fileMethodAccess = exprDest
   )
@@ -80,6 +77,6 @@ private predicate isTaintPropagatingFileTransformation(Expr expSource, Expr expr
  * For example, `taintedFile.getCanonicalFile()` is itself tainted.
  */
 predicate isAdditionalFileTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-  isTaintedFileCreation(node1.asExpr(), node2.asExpr()) or
-  isTaintFollowingFileTransformation(node1.asExpr(), node2.asExpr())
+  isFileConstructorArgument(node1.asExpr(), node2.asExpr()) or
+  isTaintPropagatingFileTransformation(node1.asExpr(), node2.asExpr())
 }
