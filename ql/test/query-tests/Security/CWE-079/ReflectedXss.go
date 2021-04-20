@@ -66,5 +66,12 @@ func ErrTest(w http.ResponseWriter, r http.Request) {
 	w.Write(byteSlice)                                              // BAD: part contents are user-controlled
 	w.Write([]byte(fmt.Sprintf("MultipartReader error: %v", err)))  // GOOD: MultipartReader's err return is harmless
 	w.Write([]byte(fmt.Sprintf("MultipartReader error: %v", err2))) // GOOD: NextPart's err return is harmless
+}
 
+func QueryMapTest(w http.ResponseWriter, r http.Request) {
+	keys, ok := r.URL.Query()["data_id"]
+	if ok && len(keys[0]) > 0 {
+		key := keys[0]
+		w.Write([]byte(key))
+	}
 }
