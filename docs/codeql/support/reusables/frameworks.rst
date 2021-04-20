@@ -28,6 +28,7 @@ C# built-in support
    Json.NET, Serialization
    NHibernate, Database ORM
    WinForms, User interface
+   Dapper, Database ORM
 
 Go built-in support
 ================================
