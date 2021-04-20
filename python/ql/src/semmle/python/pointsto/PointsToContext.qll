@@ -100,10 +100,14 @@ private int total_call_cost(CallNode call) {
   if call_to_init_or_del(call) then result = 1 else result = call_cost(call) + splay_cost(call)
 }
 
+pragma[nomagic]
+private int relevant_call_cost(PointsToContext ctx, CallNode call) {
+  ctx.appliesTo(call) and result = total_call_cost(call)
+}
+
 pragma[noinline]
 private int total_cost(CallNode call, PointsToContext ctx) {
-  ctx.appliesTo(call) and
-  result = total_call_cost(call) + context_cost(ctx)
+  result = relevant_call_cost(ctx, call) + context_cost(ctx)
 }
 
 cached
