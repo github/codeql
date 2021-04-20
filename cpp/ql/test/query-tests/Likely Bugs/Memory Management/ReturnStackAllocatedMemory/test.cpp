@@ -214,5 +214,5 @@ auto make_read_port()
 {
   auto port = std::shared_ptr<int>(new int);
   auto ptr = port.get();
-  return ptr; // GOOD [FALSE POSITIVE]
+  return ptr; // GOOD
 }
