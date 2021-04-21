@@ -142,8 +142,6 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
   or
   node2.asExpr().(AssignExpr).getSource() = node1.asExpr()
   or
-  summaryStep(node1, node2, "value")
-  or
   exists(MethodAccess ma, ValuePreservingMethod m, int argNo |
     ma.getCallee().getSourceDeclaration() = m and m.returnsValue(argNo)
   |
@@ -152,6 +150,14 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
   )
   or
   FlowSummaryImpl::Private::Steps::summaryLocalStep(node1, node2, true)
+  or
+  // If flow through a method updates a parameter from some input A, and that
+  // parameter also is returned through B, then we'd like a combined flow from A
+  // to B as well. As an example, this simplifies modeling of fluent methods:
+  // for `StringBuilder.append(x)` with a specified value flow from qualifier to
+  // return value and taint flow from argument 0 to the qualifier, then this
+  // allows us to infer taint flow from argument 0 to the return value.
+  node1.(SummaryNode).(PostUpdateNode).getPreUpdateNode().(ParameterNode) = node2
 }
 
 /**
