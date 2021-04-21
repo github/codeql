@@ -9,7 +9,7 @@ private class IntValue = Ints::IntValue;
  * effect. If `instr` is a `CallInstruction`, gets that same `CallInstruction`.
  */
 private CallInstruction getPrimaryCall(Instruction instr) {
-  result = instr.(CallInstruction)
+  result = instr
   or
   result = instr.(SideEffectInstruction).getPrimaryInstruction()
 }
