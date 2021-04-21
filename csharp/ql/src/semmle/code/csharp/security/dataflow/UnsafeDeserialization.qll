@@ -48,7 +48,7 @@ module UnsafeDeserialization {
   class RemoteSource extends Source {
     RemoteSource() { this instanceof RemoteFlowSource }
   }
-  
+
   class LocalSource extends Source {
     LocalSource() { this instanceof LocalFlowSource }
   }
@@ -145,14 +145,14 @@ module UnsafeDeserialization {
   private predicate isBinaryFormatterCall(MethodCall mc, Method m) {
     m = mc.getTarget() and
     (
-      m instanceof BinaryFormatterDeserializeMethod and
-      not mc.getArgument(0).hasValue()
-      or
-      m instanceof BinaryFormatterUnsafeDeserializeMethod and
-      not mc.getArgument(0).hasValue()
-      or
-      m instanceof BinaryFormatterUnsafeDeserializeMethodResponseMethod and
-      not mc.getArgument(0).hasValue()
+      not mc.getArgument(0).hasValue() and
+      (
+        m instanceof BinaryFormatterDeserializeMethod
+        or
+        m instanceof BinaryFormatterUnsafeDeserializeMethod
+        or
+        m instanceof BinaryFormatterUnsafeDeserializeMethodResponseMethod
+      )
     )
   }
 
@@ -207,10 +207,11 @@ module UnsafeDeserialization {
   private predicate isNetDataContractSerializerCall(MethodCall mc, Method m) {
     m = mc.getTarget() and
     (
-      m instanceof NetDataContractSerializerDeserializeMethod and
-      not mc.getArgument(0).hasValue()
-      or
-      m instanceof NetDataContractSerializerReadObjectMethod and
+      (
+        m instanceof NetDataContractSerializerDeserializeMethod
+        or
+        m instanceof NetDataContractSerializerReadObjectMethod
+      ) and
       not mc.getArgument(0).hasValue()
     )
   }
@@ -250,10 +251,15 @@ module UnsafeDeserialization {
     }
 
     override predicate isSource(DataFlow::Node source) {
-      source.asExpr().(ObjectCreation).getTarget().getDeclaringType() instanceof
-        DataContractJsonSerializerClass and
-      source.asExpr().(ObjectCreation).getTarget().getNumberOfParameters() > 0 and
-      source.asExpr().(ObjectCreation).getArgument(0) instanceof TypeofExpr
+      exists(ObjectCreation oc |
+        oc = source.asExpr() and
+        exists(Constructor c |
+          c = oc.getTarget() and
+          c.getDeclaringType() instanceof DataContractJsonSerializerClass and
+          c.getNumberOfParameters() > 0 and
+          oc.getArgument(0) instanceof TypeofExpr
+        )
+      )
     }
 
     override predicate isSink(DataFlow::Node sink) {
@@ -268,10 +274,11 @@ module UnsafeDeserialization {
   private predicate isJavaScriptSerializerCall(MethodCall mc, Method m) {
     m = mc.getTarget() and
     (
-      m instanceof JavaScriptSerializerClassDeserializeMethod and
-      not mc.getArgument(0).hasValue()
-      or
-      m instanceof JavaScriptSerializerClassDeserializeObjectMethod and
+      (
+        m instanceof JavaScriptSerializerClassDeserializeMethod
+        or
+        m instanceof JavaScriptSerializerClassDeserializeObjectMethod
+      ) and
       not mc.getArgument(0).hasValue()
     )
   }
@@ -293,9 +300,14 @@ module UnsafeDeserialization {
     }
 
     override predicate isSource(DataFlow::Node source) {
-      source.asExpr().(ObjectCreation).getTarget().getDeclaringType() instanceof
-        JavaScriptSerializerClass and
-      source.asExpr().(ObjectCreation).getTarget().getNumberOfParameters() = 0
+      exists(ObjectCreation oc |
+        oc = source.asExpr() and
+        exists(Constructor c |
+          c = oc.getTarget() and
+          c.getDeclaringType() instanceof JavaScriptSerializerClass and
+          c.getNumberOfParameters() = 0
+        )
+      )
     }
 
     override predicate isSink(DataFlow::Node sink) {
@@ -331,13 +343,16 @@ module UnsafeDeserialization {
     }
 
     override predicate isSource(DataFlow::Node source) {
-      source.asExpr().(ObjectCreation).getTarget().getDeclaringType().getABaseType+() instanceof
-        XmlObjectSerializerClass and
-      not (
-        source.asExpr().(ObjectCreation).getTarget().getDeclaringType() instanceof
-          DataContractSerializerClass or
-        source.asExpr().(ObjectCreation).getTarget().getDeclaringType() instanceof
-          NetDataContractSerializerClass
+      exists(ObjectCreation oc |
+        oc = source.asExpr() and
+        exists(ValueOrRefType declaringType |
+          declaringType = oc.getTarget().getDeclaringType() and
+          declaringType.getABaseType+() instanceof XmlObjectSerializerClass and
+          not (
+            declaringType instanceof DataContractSerializerClass or
+            declaringType instanceof NetDataContractSerializerClass
+          )
+        )
       )
     }
 
@@ -373,9 +388,15 @@ module UnsafeDeserialization {
     }
 
     override predicate isSource(DataFlow::Node source) {
-      source.asExpr().(ObjectCreation).getTarget().getDeclaringType() instanceof XmlSerializerClass and
-      source.asExpr().(ObjectCreation).getTarget().getNumberOfParameters() > 0 and
-      source.asExpr().(ObjectCreation).getArgument(0) instanceof TypeofExpr
+      exists(ObjectCreation oc |
+        oc = source.asExpr() and
+        exists(Constructor c |
+          c = oc.getTarget() and
+          c.getDeclaringType() instanceof XmlSerializerClass and
+          c.getNumberOfParameters() > 0 and
+          oc.getArgument(0) instanceof TypeofExpr
+        )
+      )
     }
 
     override predicate isSink(DataFlow::Node sink) {
@@ -414,10 +435,15 @@ module UnsafeDeserialization {
     }
 
     override predicate isSource(DataFlow::Node source) {
-      source.asExpr().(ObjectCreation).getTarget().getDeclaringType() instanceof
-        DataContractSerializerClass and
-      source.asExpr().(ObjectCreation).getTarget().getNumberOfParameters() > 0 and
-      source.asExpr().(ObjectCreation).getArgument(0) instanceof TypeofExpr
+      exists(ObjectCreation oc |
+        oc = source.asExpr() and
+        exists(Constructor c |
+          c = oc.getTarget() and
+          c.getDeclaringType() instanceof DataContractSerializerClass and
+          c.getNumberOfParameters() > 0 and
+          oc.getArgument(0) instanceof TypeofExpr
+        )
+      )
     }
 
     override predicate isSink(DataFlow::Node sink) {
@@ -452,10 +478,15 @@ module UnsafeDeserialization {
     }
 
     override predicate isSource(DataFlow::Node source) {
-      source.asExpr().(ObjectCreation).getTarget().getDeclaringType() instanceof
-        XmlMessageFormatterClass and
-      source.asExpr().(ObjectCreation).getTarget().getNumberOfParameters() > 0 and
-      source.asExpr().(ObjectCreation).getArgument(0) instanceof TypeofExpr
+      exists(ObjectCreation oc |
+        oc = source.asExpr() and
+        exists(Constructor c |
+          c = oc.getTarget() and
+          c.getDeclaringType() instanceof XmlMessageFormatterClass and
+          c.getNumberOfParameters() > 0 and
+          oc.getArgument(0) instanceof TypeofExpr
+        )
+      )
     }
 
     override predicate isSink(DataFlow::Node sink) {
@@ -635,9 +666,12 @@ module UnsafeDeserialization {
           or
           m instanceof ServiceStackTextJsonSerializerDeserializeFromStreamMethod
         ) and
-        not mc.getAnArgument().hasValue() and
-        not mc.getAnArgument() instanceof TypeofExpr and
-        this.asExpr() = mc.getAnArgument()
+        exists(Expr arg |
+          arg = mc.getAnArgument() and
+          not arg.hasValue() and
+          not arg instanceof TypeofExpr and
+          this.asExpr() = arg
+        )
       )
     }
   }
@@ -657,9 +691,12 @@ module UnsafeDeserialization {
           or
           m instanceof ServiceStackTextTypeSerializerDeserializeFromStreamMethod
         ) and
-        not mc.getAnArgument().hasValue() and
-        not mc.getAnArgument() instanceof TypeofExpr and
-        this.asExpr() = mc.getAnArgument()
+        exists(Expr arg |
+          arg = mc.getAnArgument() and
+          not arg.hasValue() and
+          not arg instanceof TypeofExpr and
+          this.asExpr() = arg
+        )
       )
     }
   }
@@ -678,9 +715,12 @@ module UnsafeDeserialization {
           or
           m instanceof ServiceStackTextCsvSerializerDeserializeFromStreamMethod
         ) and
-        not mc.getAnArgument().hasValue() and
-        not mc.getAnArgument() instanceof TypeofExpr and
-        this.asExpr() = mc.getAnArgument()
+        exists(Expr arg |
+          arg = mc.getAnArgument() and
+          not arg.hasValue() and
+          not arg instanceof TypeofExpr and
+          this.asExpr() = arg
+        )
       )
     }
   }
@@ -699,9 +739,12 @@ module UnsafeDeserialization {
           or
           m instanceof ServiceStackTextXmlSerializerDeserializeFromStreamMethod
         ) and
-        not mc.getAnArgument().hasValue() and
-        not mc.getAnArgument() instanceof TypeofExpr and
-        this.asExpr() = mc.getAnArgument()
+        exists(Expr arg |
+          arg = mc.getAnArgument() and
+          not arg.hasValue() and
+          not arg instanceof TypeofExpr and
+          this.asExpr() = arg
+        )
       )
     }
   }
