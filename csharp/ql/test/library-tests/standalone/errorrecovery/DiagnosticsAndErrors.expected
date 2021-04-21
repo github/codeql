@@ -1,2 +1,3 @@
 compilationMessages
 extractorMessages
+| file://:0:0:0:0 | Extracting default argument value 'object RecordNumber = default' instead of 'object RecordNumber = -1'. The latter is not supported in C#. |
