@@ -27,10 +27,12 @@ module UnsafeDeserialization {
   abstract private class InstanceMethodSink extends Sink {
     InstanceMethodSink() {
       not exists(
-        SafeConstructorTrackingConfig safeConstructorTracking, DataFlow::Node safeTypeUsage
+        SafeConstructorTrackingConfig safeConstructorTracking, DataFlow::Node safeTypeUsage,
+        MethodCall mc
       |
         safeConstructorTracking.hasFlow(_, safeTypeUsage) and
-        safeTypeUsage.asExpr().getParent() = this.asExpr().getParent()
+        mc.getQualifier() = safeTypeUsage.asExpr() and
+        mc.getAnArgument() = this.asExpr()
       )
     }
   }
