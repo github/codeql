@@ -13,16 +13,6 @@
 import csharp
 import semmle.code.csharp.security.dataflow.UnsafeDeserialization::UnsafeDeserialization
 import DataFlow::PathGraph
-import semmle.code.csharp.security.dataflow.flowsources.Remote
-import semmle.code.csharp.security.dataflow.flowsources.Local
-
-class RemoteSource extends Source {
-  RemoteSource() { this instanceof RemoteFlowSource }
-}
-
-class LocalSource extends Source {
-  LocalSource() { this instanceof LocalFlowSource }
-}
 
 from DataFlow::PathNode userInput, DataFlow::PathNode deserializeCallArg
 where

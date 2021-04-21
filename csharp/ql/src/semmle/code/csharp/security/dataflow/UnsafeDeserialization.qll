@@ -8,6 +8,8 @@ import csharp
 module UnsafeDeserialization {
   private import semmle.code.csharp.serialization.Deserializers
   private import semmle.code.csharp.dataflow.TaintTracking2
+  private import semmle.code.csharp.security.dataflow.flowsources.Remote
+  private import semmle.code.csharp.security.dataflow.flowsources.Local
 
   /**
    * A data flow source for unsafe deserialization vulnerabilities.
@@ -42,6 +44,14 @@ module UnsafeDeserialization {
    * A sanitizer for unsafe deserialization vulnerabilities.
    */
   abstract class Sanitizer extends DataFlow::Node { }
+
+  class RemoteSource extends Source {
+    RemoteSource() { this instanceof RemoteFlowSource }
+  }
+  
+  class LocalSource extends Source {
+    LocalSource() { this instanceof LocalFlowSource }
+  }
 
   /**
    * User input to object method call deserialization flow tracking.
