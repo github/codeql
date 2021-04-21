@@ -21,20 +21,37 @@ class RegexSink extends DataFlow::ExprNode {
   RegexSink() {
     exists(MethodAccess ma, Method m | m = ma.getMethod() |
       (
-        ma.getArgument(0) = this.asExpr() and
+        m.getDeclaringType().hasQualifiedName("java.lang", "String") and
         (
-          m.getDeclaringType().hasQualifiedName("java.lang", "String") and
+          ma.getArgument(0) = this.asExpr() and
           (
             m.hasName("matches") or
             m.hasName("split") or
             m.hasName("replaceFirst") or
             m.hasName("replaceAll")
           )
-          or
-          m.getDeclaringType().hasQualifiedName("java.util.regex", "Pattern") and
+        )
+        or
+        m.getDeclaringType().hasQualifiedName("java.util.regex", "Pattern") and
+        (
+          ma.getArgument(0) = this.asExpr() and
           (
             m.hasName("compile") or
             m.hasName("matches")
+          )
+        )
+        or
+        m.getDeclaringType().hasQualifiedName("org.apache.commons.lang3", "RegExUtils") and
+        (
+          ma.getArgument(1) = this.asExpr() and
+          m.getParameterType(1).(Class).hasQualifiedName("java.lang", "String") and
+          (
+            m.hasName("removeAll") or
+            m.hasName("removeFirst") or
+            m.hasName("removePattern") or
+            m.hasName("replaceAll") or
+            m.hasName("replaceFirst") or
+            m.hasName("replacePattern")
           )
         )
       )
@@ -51,7 +68,9 @@ class RegExpSanitizationCall extends Sanitizer {
       sanitize = "(?:escape|saniti[sz]e)" and
       regexp = "regexp?"
     |
-      calleeName.regexpMatch("(?i)(" + sanitize + ".*" + regexp + ".*)" + "|(" + regexp + ".*" + sanitize + ".*)")
+      calleeName
+          .regexpMatch("(?i)(" + sanitize + ".*" + regexp + ".*)" + "|(" + regexp + ".*" + sanitize +
+              ".*)")
     )
   }
 }

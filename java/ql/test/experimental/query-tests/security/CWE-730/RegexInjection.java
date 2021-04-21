@@ -6,6 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletException;
 
+import org.apache.commons.lang3.RegExUtils;
+
 public class RegexInjection extends HttpServlet {
   public boolean string1(javax.servlet.http.HttpServletRequest request) {
     String pattern = request.getParameter("pattern");
@@ -82,5 +84,55 @@ public class RegexInjection extends HttpServlet {
 
   String escapeSpecialRegexChars(String str) {
     return SPECIAL_REGEX_CHARS.matcher(str).replaceAll("\\\\$0");
+  }
+
+  public boolean apache1(javax.servlet.http.HttpServletRequest request) {
+    String pattern = request.getParameter("pattern");
+    String input = request.getParameter("input");
+
+    return RegExUtils.removeAll(input, pattern).length() > 0;  // BAD
+  }
+
+  public boolean apache2(javax.servlet.http.HttpServletRequest request) {
+    String pattern = request.getParameter("pattern");
+    String input = request.getParameter("input");
+
+    return RegExUtils.removeFirst(input, pattern).length() > 0;  // BAD
+  }
+
+  public boolean apache3(javax.servlet.http.HttpServletRequest request) {
+    String pattern = request.getParameter("pattern");
+    String input = request.getParameter("input");
+
+    return RegExUtils.removePattern(input, pattern).length() > 0;  // BAD
+  }
+
+  public boolean apache4(javax.servlet.http.HttpServletRequest request) {
+    String pattern = request.getParameter("pattern");
+    String input = request.getParameter("input");
+
+    return RegExUtils.replaceAll(input, pattern, "").length() > 0;  // BAD
+  }
+
+  public boolean apache5(javax.servlet.http.HttpServletRequest request) {
+    String pattern = request.getParameter("pattern");
+    String input = request.getParameter("input");
+
+    return RegExUtils.replaceFirst(input, pattern, "").length() > 0;  // BAD
+  }
+
+  public boolean apache6(javax.servlet.http.HttpServletRequest request) {
+    String pattern = request.getParameter("pattern");
+    String input = request.getParameter("input");
+
+    Pattern pt = (Pattern)(Object) pattern;
+    return RegExUtils.replaceFirst(input, pt, "").length() > 0;  // GOOD, Pattern compile is the sink instead
+  }
+
+  public boolean apache7(javax.servlet.http.HttpServletRequest request) {
+    String pattern = request.getParameter("pattern");
+    String input = request.getParameter("input");
+
+    return RegExUtils.replacePattern(input, pattern, "").length() > 0;  // BAD
   }
 }
