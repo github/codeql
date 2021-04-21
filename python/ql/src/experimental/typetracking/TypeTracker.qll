@@ -1,6 +1,6 @@
 /** Step Summaries and Type Tracking */
 
-private import TypeTrackerPrivate
+private import TypeTrackerSpecific
 
 /**
  * Any string that may appear as the name of a piece of content. This will usually include things like:

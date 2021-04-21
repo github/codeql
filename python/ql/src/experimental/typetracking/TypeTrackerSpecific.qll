@@ -1,3 +1,7 @@
+/**
+ * Provides Python-specific definitions for use in the type tracker library.
+ */
+
 private import python
 private import semmle.python.dataflow.new.internal.DataFlowPublic as DataFlowPublic
 private import semmle.python.dataflow.new.internal.DataFlowPrivate as DataFlowPrivate
