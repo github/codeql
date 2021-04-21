@@ -10,67 +10,7 @@
  */
 
 import javascript
-
-/**
- * Provides heuristics for identifying names related to sensitive information.
- *
- * INTERNAL: Do not use directly.
- */
-module HeuristicNames {
-  /**
-   * Gets a regular expression that identifies strings that may indicate the presence of secret
-   * or trusted data.
-   */
-  string maybeSecret() { result = "(?is).*((?<!is)secret|(?<!un|is)trusted).*" }
-
-  /**
-   * Gets a regular expression that identifies strings that may indicate the presence of
-   * user names or other account information.
-   */
-  string maybeAccountInfo() {
-    result = "(?is).*acc(ou)?nt.*" or
-    result = "(?is).*(puid|username|userid).*"
-  }
-
-  /**
-   * Gets a regular expression that identifies strings that may indicate the presence of
-   * a password or an authorization key.
-   */
-  string maybePassword() {
-    result = "(?is).*pass(wd|word|code|phrase)(?!.*question).*" or
-    result = "(?is).*(auth(entication|ori[sz]ation)?)key.*"
-  }
-
-  /**
-   * Gets a regular expression that identifies strings that may indicate the presence of
-   * a certificate.
-   */
-  string maybeCertificate() { result = "(?is).*(cert)(?!.*(format|name)).*" }
-
-  /**
-   * Gets a regular expression that identifies strings that may indicate the presence
-   * of sensitive data, with `classification` describing the kind of sensitive data involved.
-   */
-  string maybeSensitive(SensitiveExpr::Classification classification) {
-    result = maybeSecret() and classification = SensitiveExpr::secret()
-    or
-    result = maybeAccountInfo() and classification = SensitiveExpr::id()
-    or
-    result = maybePassword() and classification = SensitiveExpr::password()
-    or
-    result = maybeCertificate() and classification = SensitiveExpr::certificate()
-  }
-
-  /**
-   * Gets a regular expression that identifies strings that may indicate the presence of data
-   * that is hashed or encrypted, and hence rendered non-sensitive, or contains special characters
-   * suggesting nouns within the string do not represent the meaning of the whole string (e.g. a URL or a SQL query).
-   */
-  string notSensitive() {
-    result = "(?is).*([^\\w$.-]|redact|censor|obfuscate|hash|md5|sha|((?<!un)(en))?(crypt|code)).*"
-  }
-}
-
+import semmle.javascript.security.internal.SensitiveDataHeuristics
 private import HeuristicNames
 
 /** An expression that might contain sensitive data. */
@@ -82,33 +22,22 @@ abstract class SensitiveExpr extends Expr {
   abstract SensitiveExpr::Classification getClassification();
 }
 
-module SensitiveExpr {
-  /**
-   * A classification of different kinds of sensitive data:
-   *
-   *   - secret: generic secret or trusted data;
-   *   - id: a user name or other account information;
-   *   - password: a password or authorization key;
-   *   - certificate: a certificate.
-   *
-   * While classifications are represented as strings, this should not be relied upon.
-   * Instead, use the predicates below to work with classifications.
-   */
-  class Classification extends string {
-    Classification() { this = "secret" or this = "id" or this = "password" or this = "certificate" }
-  }
+/** DEPRECATED: Use `SensitiveDataClassification` and helpers instead. */
+deprecated module SensitiveExpr {
+  /** DEPRECATED: Use `SensitiveDataClassification` instead. */
+  deprecated class Classification = SensitiveDataClassification;
 
-  /** Gets the classification for secret or trusted data. */
-  Classification secret() { result = "secret" }
+  /** DEPRECATED: Use `SensitiveDataClassification::secret` instead. */
+  deprecated predicate secret = SensitiveDataClassification::secret/0;
 
-  /** Gets the classification for user names or other account information. */
-  Classification id() { result = "id" }
+  /** DEPRECATED: Use `SensitiveDataClassification::id` instead. */
+  deprecated predicate id = SensitiveDataClassification::id/0;
 
-  /** Gets the classification for passwords or authorization keys. */
-  Classification password() { result = "password" }
+  /** DEPRECATED: Use `SensitiveDataClassification::password` instead. */
+  deprecated predicate password = SensitiveDataClassification::password/0;
 
-  /** Gets the classification for certificates. */
-  Classification certificate() { result = "certificate" }
+  /** DEPRECATED: Use `SensitiveDataClassification::certificate` instead. */
+  deprecated predicate certificate = SensitiveDataClassification::certificate/0;
 }
 
 /** A function call that might produce sensitive data. */
