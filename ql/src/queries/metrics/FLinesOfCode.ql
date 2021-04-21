@@ -5,7 +5,6 @@
  *              contain only comments or whitespace.
  * @metricType file
  * @id rb/lines-of-code-in-files
- * @tags maintainability
  */
 
 import ruby

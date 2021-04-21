@@ -4,7 +4,6 @@
  * @description Measures the number of lines of comments in each file.
  * @metricType file
  * @id rb/lines-of-comments-in-files
- * @tags documentation
  */
 
 import ruby
