@@ -93,10 +93,11 @@ module HeuristicNames {
 
   /**
    * Gets a regular expression that identifies strings that may indicate the presence of data
-   * that is hashed or encrypted, and hence rendered non-sensitive.
+   * that is hashed or encrypted, and hence rendered non-sensitive, or contains special characters
+   * suggesting nouns within the string do not represent the meaning of the whole string (e.g. a URL or a SQL query).
    */
   string notSensitiveRegexp() {
-    result = "(?is).*(redact|censor|obfuscate|hash|md5|sha|((?<!un)(en))?(crypt|code)).*"
+    result = "(?is).*([^\\w$.-]|redact|censor|obfuscate|hash|md5|sha|((?<!un)(en))?(crypt|code)).*"
   }
 
   /**
@@ -113,8 +114,9 @@ module HeuristicNames {
 
   /**
    * Holds if `name` may indicate the presence of sensitive data, and
-   * `name` does not indicate the presence of data that is hashed or encrypted, which would have
-   * rendered the data non-sensitive. `classification` describes the kind of sensitive data involved.
+   * `name` does not indicate that the data is in fact non-sensitive (for example since
+   * it is hashed or encrypted). `classification` describes the kind of sensitive data
+   * involved.
    *
    * That is, one of the rexeps from `maybeSensitiveRegexp` matches `name` (with the
    * given classification), and none of the regexps from `notSensitiveRegexp` matches
