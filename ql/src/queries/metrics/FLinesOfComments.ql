@@ -1,7 +1,7 @@
 /**
  * @name Lines of comments in files
  * @kind metric
- * @description Files with few lines of comment might not have sufficient documentation to make them understandable.
+ * @description Measures the number of lines of comments in each file.
  * @metricType file
  * @id rb/lines-of-comments-in-files
  * @tags documentation
