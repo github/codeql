@@ -17,6 +17,9 @@ import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
 import DataFlow::PathGraph
 
+/**
+ * A data flow sink for untrusted user input used to construct regular expressions.
+ */
 class RegexSink extends DataFlow::ExprNode {
   RegexSink() {
     exists(MethodAccess ma, Method m | m = ma.getMethod() |
@@ -61,6 +64,10 @@ class RegexSink extends DataFlow::ExprNode {
 
 abstract class Sanitizer extends DataFlow::ExprNode { }
 
+/**
+ * A call to a function whose name suggests that it escapes regular
+ * expression meta-characters.
+ */
 class RegExpSanitizationCall extends Sanitizer {
   RegExpSanitizationCall() {
     exists(string calleeName, string sanitize, string regexp |
@@ -75,6 +82,9 @@ class RegExpSanitizationCall extends Sanitizer {
   }
 }
 
+/**
+ * A taint-tracking configuration for untrusted user input used to construct regular expressions.
+ */
 class RegexInjectionConfiguration extends TaintTracking::Configuration {
   RegexInjectionConfiguration() { this = "RegexInjectionConfiguration" }
 
