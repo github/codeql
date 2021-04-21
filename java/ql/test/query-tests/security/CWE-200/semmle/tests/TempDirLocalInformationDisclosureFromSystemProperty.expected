@@ -1,46 +1,111 @@
 edges
+| Files.java:10:24:10:69 | new File(...) : File | Files.java:14:37:14:43 | baseDir : File |
+| Files.java:10:24:10:69 | new File(...) : File | Files.java:15:17:15:23 | tempDir |
+| Files.java:10:33:10:68 | getProperty(...) : String | Files.java:10:24:10:69 | new File(...) : File |
+| Files.java:10:33:10:68 | getProperty(...) : String | Files.java:14:37:14:43 | baseDir : File |
 | Files.java:10:33:10:68 | getProperty(...) : String | Files.java:15:17:15:23 | tempDir |
+| Files.java:14:28:14:64 | new File(...) : File | Files.java:15:17:15:23 | tempDir |
+| Files.java:14:37:14:43 | baseDir : File | Files.java:14:28:14:64 | new File(...) : File |
+| Test.java:23:24:23:69 | new File(...) : File | Test.java:24:59:24:65 | tempDir |
+| Test.java:23:33:23:68 | getProperty(...) : String | Test.java:23:24:23:69 | new File(...) : File |
 | Test.java:23:33:23:68 | getProperty(...) : String | Test.java:24:59:24:65 | tempDir |
+| Test.java:28:29:28:94 | new File(...) : File | Test.java:29:59:29:70 | tempDirChild |
+| Test.java:28:38:28:83 | new File(...) : File | Test.java:28:29:28:94 | new File(...) : File |
+| Test.java:28:38:28:83 | new File(...) : File | Test.java:29:59:29:70 | tempDirChild |
+| Test.java:28:47:28:82 | getProperty(...) : String | Test.java:28:38:28:83 | new File(...) : File |
 | Test.java:28:47:28:82 | getProperty(...) : String | Test.java:29:59:29:70 | tempDirChild |
+| Test.java:33:24:33:69 | new File(...) : File | Test.java:34:59:34:65 | tempDir |
+| Test.java:33:33:33:68 | getProperty(...) : String | Test.java:33:24:33:69 | new File(...) : File |
 | Test.java:33:33:33:68 | getProperty(...) : String | Test.java:34:59:34:65 | tempDir |
+| Test.java:38:24:38:69 | new File(...) : File | Test.java:39:59:39:65 | tempDir |
+| Test.java:38:33:38:68 | getProperty(...) : String | Test.java:38:24:38:69 | new File(...) : File |
 | Test.java:38:33:38:68 | getProperty(...) : String | Test.java:39:59:39:65 | tempDir |
+| Test.java:53:29:53:84 | new File(...) : File | Test.java:54:9:54:20 | tempDirChild |
+| Test.java:53:38:53:73 | getProperty(...) : String | Test.java:53:29:53:84 | new File(...) : File |
 | Test.java:53:38:53:73 | getProperty(...) : String | Test.java:54:9:54:20 | tempDirChild |
+| Test.java:58:29:58:84 | new File(...) : File | Test.java:59:9:59:20 | tempDirChild |
+| Test.java:58:38:58:73 | getProperty(...) : String | Test.java:58:29:58:84 | new File(...) : File |
 | Test.java:58:38:58:73 | getProperty(...) : String | Test.java:59:9:59:20 | tempDirChild |
-| Test.java:63:38:63:73 | getProperty(...) : String | Test.java:64:21:64:41 | toPath(...) |
-| Test.java:68:38:68:73 | getProperty(...) : String | Test.java:71:21:71:41 | toPath(...) |
-| Test.java:75:38:75:73 | getProperty(...) : String | Test.java:76:33:76:53 | toPath(...) |
-| Test.java:80:38:80:73 | getProperty(...) : String | Test.java:81:31:81:51 | toPath(...) |
-| Test.java:85:38:85:73 | getProperty(...) : String | Test.java:86:26:86:46 | toPath(...) |
-| Test.java:99:38:99:73 | getProperty(...) : String | Test.java:100:31:100:51 | toPath(...) |
-| Test.java:104:38:104:73 | getProperty(...) : String | Test.java:105:33:105:53 | toPath(...) |
+| Test.java:63:29:63:88 | new File(...) : File | Test.java:64:21:64:32 | tempDirChild : File |
+| Test.java:63:38:63:73 | getProperty(...) : String | Test.java:63:29:63:88 | new File(...) : File |
+| Test.java:63:38:63:73 | getProperty(...) : String | Test.java:64:21:64:32 | tempDirChild : File |
+| Test.java:64:21:64:32 | tempDirChild : File | Test.java:64:21:64:41 | toPath(...) |
+| Test.java:68:29:68:88 | new File(...) : File | Test.java:71:21:71:32 | tempDirChild : File |
+| Test.java:68:38:68:73 | getProperty(...) : String | Test.java:68:29:68:88 | new File(...) : File |
+| Test.java:68:38:68:73 | getProperty(...) : String | Test.java:71:21:71:32 | tempDirChild : File |
+| Test.java:71:21:71:32 | tempDirChild : File | Test.java:71:21:71:41 | toPath(...) |
+| Test.java:75:29:75:104 | new File(...) : File | Test.java:76:33:76:44 | tempDirChild : File |
+| Test.java:75:38:75:73 | getProperty(...) : String | Test.java:75:29:75:104 | new File(...) : File |
+| Test.java:75:38:75:73 | getProperty(...) : String | Test.java:76:33:76:44 | tempDirChild : File |
+| Test.java:76:33:76:44 | tempDirChild : File | Test.java:76:33:76:53 | toPath(...) |
+| Test.java:80:29:80:102 | new File(...) : File | Test.java:81:31:81:42 | tempDirChild : File |
+| Test.java:80:38:80:73 | getProperty(...) : String | Test.java:80:29:80:102 | new File(...) : File |
+| Test.java:80:38:80:73 | getProperty(...) : String | Test.java:81:31:81:42 | tempDirChild : File |
+| Test.java:81:31:81:42 | tempDirChild : File | Test.java:81:31:81:51 | toPath(...) |
+| Test.java:85:29:85:100 | new File(...) : File | Test.java:86:26:86:37 | tempDirChild : File |
+| Test.java:85:38:85:73 | getProperty(...) : String | Test.java:85:29:85:100 | new File(...) : File |
+| Test.java:85:38:85:73 | getProperty(...) : String | Test.java:86:26:86:37 | tempDirChild : File |
+| Test.java:86:26:86:37 | tempDirChild : File | Test.java:86:26:86:46 | toPath(...) |
+| Test.java:99:29:99:101 | new File(...) : File | Test.java:100:31:100:42 | tempDirChild : File |
+| Test.java:99:38:99:73 | getProperty(...) : String | Test.java:99:29:99:101 | new File(...) : File |
+| Test.java:99:38:99:73 | getProperty(...) : String | Test.java:100:31:100:42 | tempDirChild : File |
+| Test.java:100:31:100:42 | tempDirChild : File | Test.java:100:31:100:51 | toPath(...) |
+| Test.java:104:29:104:109 | new File(...) : File | Test.java:105:33:105:44 | tempDirChild : File |
+| Test.java:104:38:104:73 | getProperty(...) : String | Test.java:104:29:104:109 | new File(...) : File |
+| Test.java:104:38:104:73 | getProperty(...) : String | Test.java:105:33:105:44 | tempDirChild : File |
+| Test.java:105:33:105:44 | tempDirChild : File | Test.java:105:33:105:53 | toPath(...) |
 nodes
+| Files.java:10:24:10:69 | new File(...) : File | semmle.label | new File(...) : File |
 | Files.java:10:33:10:68 | getProperty(...) : String | semmle.label | getProperty(...) : String |
+| Files.java:14:28:14:64 | new File(...) : File | semmle.label | new File(...) : File |
+| Files.java:14:37:14:43 | baseDir : File | semmle.label | baseDir : File |
 | Files.java:15:17:15:23 | tempDir | semmle.label | tempDir |
+| Test.java:23:24:23:69 | new File(...) : File | semmle.label | new File(...) : File |
 | Test.java:23:33:23:68 | getProperty(...) : String | semmle.label | getProperty(...) : String |
 | Test.java:24:59:24:65 | tempDir | semmle.label | tempDir |
+| Test.java:28:29:28:94 | new File(...) : File | semmle.label | new File(...) : File |
+| Test.java:28:38:28:83 | new File(...) : File | semmle.label | new File(...) : File |
 | Test.java:28:47:28:82 | getProperty(...) : String | semmle.label | getProperty(...) : String |
 | Test.java:29:59:29:70 | tempDirChild | semmle.label | tempDirChild |
+| Test.java:33:24:33:69 | new File(...) : File | semmle.label | new File(...) : File |
 | Test.java:33:33:33:68 | getProperty(...) : String | semmle.label | getProperty(...) : String |
 | Test.java:34:59:34:65 | tempDir | semmle.label | tempDir |
+| Test.java:38:24:38:69 | new File(...) : File | semmle.label | new File(...) : File |
 | Test.java:38:33:38:68 | getProperty(...) : String | semmle.label | getProperty(...) : String |
 | Test.java:39:59:39:65 | tempDir | semmle.label | tempDir |
+| Test.java:53:29:53:84 | new File(...) : File | semmle.label | new File(...) : File |
 | Test.java:53:38:53:73 | getProperty(...) : String | semmle.label | getProperty(...) : String |
 | Test.java:54:9:54:20 | tempDirChild | semmle.label | tempDirChild |
+| Test.java:58:29:58:84 | new File(...) : File | semmle.label | new File(...) : File |
 | Test.java:58:38:58:73 | getProperty(...) : String | semmle.label | getProperty(...) : String |
 | Test.java:59:9:59:20 | tempDirChild | semmle.label | tempDirChild |
+| Test.java:63:29:63:88 | new File(...) : File | semmle.label | new File(...) : File |
 | Test.java:63:38:63:73 | getProperty(...) : String | semmle.label | getProperty(...) : String |
+| Test.java:64:21:64:32 | tempDirChild : File | semmle.label | tempDirChild : File |
 | Test.java:64:21:64:41 | toPath(...) | semmle.label | toPath(...) |
+| Test.java:68:29:68:88 | new File(...) : File | semmle.label | new File(...) : File |
 | Test.java:68:38:68:73 | getProperty(...) : String | semmle.label | getProperty(...) : String |
+| Test.java:71:21:71:32 | tempDirChild : File | semmle.label | tempDirChild : File |
 | Test.java:71:21:71:41 | toPath(...) | semmle.label | toPath(...) |
+| Test.java:75:29:75:104 | new File(...) : File | semmle.label | new File(...) : File |
 | Test.java:75:38:75:73 | getProperty(...) : String | semmle.label | getProperty(...) : String |
+| Test.java:76:33:76:44 | tempDirChild : File | semmle.label | tempDirChild : File |
 | Test.java:76:33:76:53 | toPath(...) | semmle.label | toPath(...) |
+| Test.java:80:29:80:102 | new File(...) : File | semmle.label | new File(...) : File |
 | Test.java:80:38:80:73 | getProperty(...) : String | semmle.label | getProperty(...) : String |
+| Test.java:81:31:81:42 | tempDirChild : File | semmle.label | tempDirChild : File |
 | Test.java:81:31:81:51 | toPath(...) | semmle.label | toPath(...) |
+| Test.java:85:29:85:100 | new File(...) : File | semmle.label | new File(...) : File |
 | Test.java:85:38:85:73 | getProperty(...) : String | semmle.label | getProperty(...) : String |
+| Test.java:86:26:86:37 | tempDirChild : File | semmle.label | tempDirChild : File |
 | Test.java:86:26:86:46 | toPath(...) | semmle.label | toPath(...) |
+| Test.java:99:29:99:101 | new File(...) : File | semmle.label | new File(...) : File |
 | Test.java:99:38:99:73 | getProperty(...) : String | semmle.label | getProperty(...) : String |
+| Test.java:100:31:100:42 | tempDirChild : File | semmle.label | tempDirChild : File |
 | Test.java:100:31:100:51 | toPath(...) | semmle.label | toPath(...) |
+| Test.java:104:29:104:109 | new File(...) : File | semmle.label | new File(...) : File |
 | Test.java:104:38:104:73 | getProperty(...) : String | semmle.label | getProperty(...) : String |
+| Test.java:105:33:105:44 | tempDirChild : File | semmle.label | tempDirChild : File |
 | Test.java:105:33:105:53 | toPath(...) | semmle.label | toPath(...) |
 #select
 | Files.java:10:33:10:68 | getProperty(...) | Files.java:10:33:10:68 | getProperty(...) : String | Files.java:15:17:15:23 | tempDir | Local information disclosure vulnerability from $@ due to use of file or directory readable by other local users. | Files.java:10:33:10:68 | getProperty(...) | system temp directory |
