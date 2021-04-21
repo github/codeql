@@ -1,8 +1,13 @@
 # frozen_string_literal: true
 
+=begin
+some preprocessing here
+and here
+=end
+
 class FLinesTest
 
-    def foo
+    def foo(bar)
       # This is a comment
       # and another
 
@@ -16,9 +21,13 @@ how many lines of code in this heredoc?
 
 ESCAPE
 
-      p some_string
+      some_other_string = "line 1
+      line" + bar
 
-      7
+      p some_string
+      p some_other_string
+
+      some_string + some_other_string
     end
 
 
