@@ -1,11 +1,8 @@
 /**
  * @name Number of lines
- * @kind treemap
+ * @kind metric
  * @description The number of lines in each file.
- * @treemap.warnOn highValues
  * @metricType file
- * @metricAggregate avg sum max
- * @precision very-high
  * @id rb/lines-per-file
  * @tags maintainability
  */
