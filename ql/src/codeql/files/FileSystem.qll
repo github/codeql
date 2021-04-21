@@ -169,7 +169,7 @@ class File extends Container, @file {
   /** Gets the URL of this file. */
   override string getURL() { result = "file://" + this.getAbsolutePath() + ":0:0:0:0" }
 
-  /** Get a token in this file. */
+  /** Gets a token in this file. */
   private Generated::Token getAToken() { result.getLocation().getFile() = this }
 
   /** Holds if `line` contains a token. */
