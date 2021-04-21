@@ -4,9 +4,12 @@ import semmle.code.java.JDK
 import semmle.code.java.frameworks.apache.Exec
 
 /**
- * A method that executes a command.
+ * A callable that executes a command.
  */
 abstract class ExecCallable extends Callable {
+  /**
+   * Gets the index of an argument that will be part of the command that is executed.
+   */
   abstract int getAnExecutedArgument();
 }
 

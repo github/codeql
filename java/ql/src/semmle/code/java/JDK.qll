@@ -178,7 +178,7 @@ class TypeFile extends Class {
 
 // --- Standard methods ---
 /**
- * Any of the methods named `command` on class `java.lang.ProcessBuilder`.
+ * Any constructor of class `java.lang.ProcessBuilder`.
  */
 class ProcessBuilderConstructor extends Constructor, ExecCallable {
   ProcessBuilderConstructor() { this.getDeclaringType() instanceof TypeProcessBuilder }

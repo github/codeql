@@ -2,11 +2,13 @@
 import semmle.code.java.Type
 import semmle.code.java.security.ExternalProcess
 
-library class TypeCommandLine extends Class {
+/** The class `org.apache.commons.exec.CommandLine`. */
+private class TypeCommandLine extends Class {
   TypeCommandLine() { hasQualifiedName("org.apache.commons.exec", "CommandLine") }
 }
 
-library class MethodCommandLineParse extends Method, ExecCallable {
+/** The `parse()` method of the class `org.apache.commons.exec.CommandLine`. */
+private class MethodCommandLineParse extends Method, ExecCallable {
   MethodCommandLineParse() {
     getDeclaringType() instanceof TypeCommandLine and
     hasName("parse")
@@ -15,7 +17,8 @@ library class MethodCommandLineParse extends Method, ExecCallable {
   override int getAnExecutedArgument() { result = 0 }
 }
 
-library class MethodCommandLineAddArguments extends Method, ExecCallable {
+/** The `addArguments()` method of the class `org.apache.commons.exec.CommandLine`. */
+private class MethodCommandLineAddArguments extends Method, ExecCallable {
   MethodCommandLineAddArguments() {
     getDeclaringType() instanceof TypeCommandLine and
     hasName("addArguments")
