@@ -173,17 +173,17 @@ class File extends Container, @file {
   int getNumberOfLines() { result = max(getAToken().getLocation().getEndLine()) }
 
   /** Get a token in this file. */
-  Generated::Token getAToken() { result.getLocation().getFile() = this }
+  private Generated::Token getAToken() { result.getLocation().getFile() = this }
 
   /** Get a comment token in this file. */
-  Generated::Token getACommentToken() { result = getAToken() and result instanceof @token_comment }
+  private Generated::Token getACommentToken() { result = getAToken() and result instanceof @token_comment }
 
   /** Get a non-comment token in this file. */
-  Generated::Token getANonCommentToken() {
+  private Generated::Token getANonCommentToken() {
     result = getAToken() and not result instanceof @token_comment
   }
 
-  predicate isTokenStartingAtLine(Generated::Token t, int startLine) {
+  private predicate isTokenStartingAtLine(Generated::Token t, int startLine) {
     t = getANonCommentToken() and
     t.getLocation().getStartLine() = startLine
   }
