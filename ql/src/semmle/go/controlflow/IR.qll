@@ -747,20 +747,8 @@ module IR {
         result = c.getTarget().getResultType(i)
       )
       or
-      exists(TypeAssertExpr tae | this.getBase() = evalExprInstruction(tae) |
-        result = tae.getType().(TupleType).getComponentType(pragma[only_bind_into](i))
-      )
-      or
-      exists(Instruction mapBase | this.getBase().readsElement(mapBase, _) |
-        i = 0 and result = mapBase.getResultType().getUnderlyingType().(MapType).getValueType()
-        or
-        i = 1 and result = any(BoolExprType b)
-      )
-      or
-      exists(RecvExpr re | this.getBase() = evalExprInstruction(re) |
-        i = 0 and result = re.getOperand().getType().getUnderlyingType().(ChanType).getElementType()
-        or
-        i = 1 and result = any(BoolExprType b)
+      exists(Expr e | this.getBase() = evalExprInstruction(e) |
+        result = e.getType().(TupleType).getComponentType(pragma[only_bind_into](i))
       )
       or
       exists(Type rangeType | rangeType = s.(RangeStmt).getDomain().getType().getUnderlyingType() |
