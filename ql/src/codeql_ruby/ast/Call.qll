@@ -86,6 +86,21 @@ class MethodCall extends Call, TMethodCall {
   Expr getReceiver() { none() }
 
   /**
+   * Holds if the receiver is `self` or there is no receiver, which has the same
+   * meaning as an explict `self`. For example:
+   *
+   * ```rb
+   * self.foo
+   * foo
+   * ```
+   */
+  predicate receiverIsSelf() {
+    this.getReceiver() instanceof Self
+    or
+    not exists(this.getReceiver())
+  }
+
+  /**
    * Gets the name of the method being called. For example, in:
    *
    * ```rb

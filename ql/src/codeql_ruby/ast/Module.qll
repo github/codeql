@@ -8,8 +8,17 @@ private import internal.TreeSitter
  * A representation of a run-time `module` or `class` value.
  */
 class Module extends TModule {
-  /** Get a declaration of this module, if any. */
+  /** Gets a declaration of this module, if any. */
   ModuleBase getADeclaration() { result.getModule() = this }
+
+  /** Gets the super class of this module, if any. */
+  Module getSuperClass() { result = getSuperClass(this) }
+
+  /** Gets a `prepend`ed module. */
+  Module getAPrependedModule() { result = getAPrependedModule(this) }
+
+  /** Gets an `include`d module. */
+  Module getAnIncludedModule() { result = getAnIncludedModule(this) }
 
   /** Gets a textual representation of this module. */
   string toString() {

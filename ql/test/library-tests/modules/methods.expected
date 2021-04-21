@@ -1,0 +1,26 @@
+getMethod
+| hello.rb:1:1:8:3 | EnglishWords | hello | hello.rb:2:5:4:7 | hello |
+| hello.rb:1:1:8:3 | EnglishWords | world | hello.rb:5:5:7:7 | world |
+| hello.rb:11:1:16:3 | Greeting | message | hello.rb:13:5:15:7 | message |
+| hello.rb:18:1:22:3 | HelloWorld | message | hello.rb:19:5:21:7 | message |
+| modules.rb:4:1:24:3 | Foo | method_in_another_definition_of_foo | modules.rb:27:3:28:5 | method_in_another_definition_of_foo |
+| modules.rb:4:1:24:3 | Foo | method_in_foo | modules.rb:16:3:17:5 | method_in_foo |
+| modules.rb:5:3:14:5 | Foo::Bar | method_in_another_definition_of_foo_bar | modules.rb:52:3:53:5 | method_in_another_definition_of_foo_bar |
+| modules.rb:5:3:14:5 | Foo::Bar | method_in_foo_bar | modules.rb:9:5:10:7 | method_in_foo_bar |
+| modules.rb:37:1:46:3 | Bar | method_a | modules.rb:38:3:39:5 | method_a |
+| modules.rb:37:1:46:3 | Bar | method_b | modules.rb:41:3:42:5 | method_b |
+lookupMethod
+| hello.rb:1:1:8:3 | EnglishWords | hello | hello.rb:2:5:4:7 | hello |
+| hello.rb:1:1:8:3 | EnglishWords | world | hello.rb:5:5:7:7 | world |
+| hello.rb:11:1:16:3 | Greeting | hello | hello.rb:2:5:4:7 | hello |
+| hello.rb:11:1:16:3 | Greeting | message | hello.rb:13:5:15:7 | message |
+| hello.rb:11:1:16:3 | Greeting | world | hello.rb:5:5:7:7 | world |
+| hello.rb:18:1:22:3 | HelloWorld | hello | hello.rb:2:5:4:7 | hello |
+| hello.rb:18:1:22:3 | HelloWorld | message | hello.rb:19:5:21:7 | message |
+| hello.rb:18:1:22:3 | HelloWorld | world | hello.rb:5:5:7:7 | world |
+| modules.rb:4:1:24:3 | Foo | method_in_another_definition_of_foo | modules.rb:27:3:28:5 | method_in_another_definition_of_foo |
+| modules.rb:4:1:24:3 | Foo | method_in_foo | modules.rb:16:3:17:5 | method_in_foo |
+| modules.rb:5:3:14:5 | Foo::Bar | method_in_another_definition_of_foo_bar | modules.rb:52:3:53:5 | method_in_another_definition_of_foo_bar |
+| modules.rb:5:3:14:5 | Foo::Bar | method_in_foo_bar | modules.rb:9:5:10:7 | method_in_foo_bar |
+| modules.rb:37:1:46:3 | Bar | method_a | modules.rb:38:3:39:5 | method_a |
+| modules.rb:37:1:46:3 | Bar | method_b | modules.rb:41:3:42:5 | method_b |

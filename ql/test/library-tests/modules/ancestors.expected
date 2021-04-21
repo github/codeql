@@ -1,0 +1,96 @@
+#-----| Object
+#-----| include -> Kernel
+#-----| super -> BasicObject
+
+#-----| Class
+#-----| super -> Module
+
+#-----| Kernel
+
+#-----| Module
+#-----| super -> Object
+
+#-----| BasicObject
+
+hello.rb:
+#    1| EnglishWords
+
+#   11| Greeting
+#-----| super -> Object
+#-----| include -> EnglishWords
+
+#   18| HelloWorld
+#-----| super -> Greeting
+
+modules.rb:
+#    1| Empty
+
+#    4| Foo
+
+#   37| Bar
+#-----| super -> Object
+
+#   60| MyModuleInGlobalScope
+
+#   63| Test
+
+#   83| Other
+
+#   88| IncludeTest
+#-----| include -> Test
+
+#   95| IncludeTest2
+#-----| include -> Test
+
+#  101| PrependTest
+#-----| prepend -> Test
+
+#  107| MM
+
+#  112| YY
+#-----| super -> Object
+
+#  115| XX
+
+#    5| Foo::Bar
+
+#   19| Foo::ClassInFoo
+#-----| super -> Object
+
+#   30| Foo::ClassInAnotherDefinitionOfFoo
+#-----| super -> Object
+
+#   65| Test::Foo1
+
+#   70| Test::Foo2
+
+#   76| Test::Foo3
+
+#   84| Other::Foo1
+
+#  116| XX::YY
+#-----| super -> YY
+
+#    6| Foo::Bar::ClassInFooBar
+#-----| super -> Object
+
+#   71| Test::Foo2::Foo2
+
+#  108| MM::MM
+
+#   49| Foo::Bar::ClassInAnotherDefinitionOfFooBar
+#-----| super -> Object
+
+#   66| Test::Foo1::Bar
+#-----| super -> Object
+
+#   91| Test::Foo1::Y
+
+#   97| Test::Foo1::Z
+
+#  103| Test::Foo2::Y
+
+#   72| Test::Foo2::Foo2::Bar
+#-----| super -> Object
+
+#  120| Test::Foo1::Bar::Baz
