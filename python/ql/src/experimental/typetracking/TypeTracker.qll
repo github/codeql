@@ -71,8 +71,8 @@ module StepSummary {
    * Unlike `StepSummary::step`, this predicate does not compress
    * type-preserving steps.
    */
-  predicate smallstep(Node nodeFrom, Node nodeTo, StepSummary summary) {
-    typePreservingStep(nodeFrom, nodeTo) and
+  predicate smallstep(Node nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
+    jumpStep(nodeFrom, nodeTo) and
     summary = LevelStep()
     or
     callStep(nodeFrom, nodeTo) and summary = CallStep()
@@ -225,7 +225,7 @@ class TypeTracker extends TTypeTracker {
    * heap and/or inter-procedural step from `nodeFrom` to `nodeTo`.
    */
   pragma[inline]
-  TypeTracker step(LocalSourceNode nodeFrom, Node nodeTo) {
+  TypeTracker step(LocalSourceNode nodeFrom, LocalSourceNode nodeTo) {
     exists(StepSummary summary |
       StepSummary::step(nodeFrom, nodeTo, summary) and
       result = this.append(summary)
@@ -263,7 +263,7 @@ class TypeTracker extends TTypeTracker {
       result = this.append(summary)
     )
     or
-    typePreservingStep(nodeFrom, nodeTo) and
+    simpleLocalFlowStep(nodeFrom, nodeTo) and
     result = this
   }
 }
@@ -406,7 +406,7 @@ class TypeBackTracker extends TTypeBackTracker {
       this = result.prepend(summary)
     )
     or
-    typePreservingStep(nodeFrom, nodeTo) and
+    simpleLocalFlowStep(nodeFrom, nodeTo) and
     this = result
   }
 }

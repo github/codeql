@@ -6,11 +6,9 @@ class Node = DataFlowPublic::Node;
 
 class LocalSourceNode = DataFlowPublic::LocalSourceNode;
 
-/** Holds if it's reasonable to expect the data flow step from `nodeFrom` to `nodeTo` to preserve types. */
-predicate typePreservingStep(Node nodeFrom, Node nodeTo) {
-  DataFlowPrivate::simpleLocalFlowStep(nodeFrom, nodeTo) or
-  DataFlowPrivate::jumpStep(nodeFrom, nodeTo)
-}
+predicate simpleLocalFlowStep = DataFlowPrivate::simpleLocalFlowStep/2;
+
+predicate jumpStep = DataFlowPrivate::jumpStep/2;
 
 /**
  * Gets the name of a possible piece of content. For Python, this is currently only attribute names,
