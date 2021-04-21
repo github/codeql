@@ -43,19 +43,58 @@ private module Cached {
   class TStageInstruction =
     TRawInstruction or TPhiInstruction or TChiInstruction or TUnreachedInstruction;
 
+  /**
+   * If `oldInstruction` is a `Phi` instruction that has exactly one reachable predecessor block,
+   * this predicate returns the `PhiInputOperand` corresponding to that predecessor block.
+   * Otherwise, this predicate does not hold.
+   */
+  private OldIR::PhiInputOperand getDegeneratePhiOperand(OldInstruction oldInstruction) {
+    result =
+      unique(OldIR::PhiInputOperand operand |
+        operand = oldInstruction.(OldIR::PhiInstruction).getAnInputOperand() and
+        operand.getPredecessorBlock() instanceof OldBlock
+      )
+  }
+
   cached
   predicate hasInstruction(TStageInstruction instr) {
     instr instanceof TRawInstruction and instr instanceof OldInstruction
     or
-    instr instanceof TPhiInstruction
+    instr = phiInstruction(_, _)
+    or
+    instr = reusedPhiInstruction(_) and
+    // Check that the phi instruction is *not* degenerate, but we can't use
+    // getDegeneratePhiOperand in the first stage with phi instyructions
+    exists(OldIR::PhiInputOperand operand1, OldIR::PhiInputOperand operand2, OldInstruction oldInstruction |
+      oldInstruction = instr and
+      operand1 = oldInstruction.(OldIR::PhiInstruction).getAnInputOperand() and
+      operand1.getPredecessorBlock() instanceof OldBlock and
+      operand2 = oldInstruction.(OldIR::PhiInstruction).getAnInputOperand() and
+      operand2.getPredecessorBlock() instanceof OldBlock and
+      operand1 != operand2
+    )
     or
     instr instanceof TChiInstruction
     or
     instr instanceof TUnreachedInstruction
   }
 
-  private IRBlock getNewBlock(OldBlock oldBlock) {
-    result.getFirstInstruction() = getNewInstruction(oldBlock.getFirstInstruction())
+  cached IRBlock getNewBlock(OldBlock oldBlock) {
+    exists(Instruction newEnd, OldIR::Instruction oldEnd |
+      (
+      result.getLastInstruction() = newEnd and
+      not newEnd instanceof ChiInstruction
+      or
+      newEnd = result.getLastInstruction().(ChiInstruction).getAPredecessor() // does this work?
+      ) and
+      (
+        oldBlock.getLastInstruction() = oldEnd and
+        not oldEnd instanceof OldIR::ChiInstruction
+        or
+        oldEnd = oldBlock.getLastInstruction().(OldIR::ChiInstruction).getAPredecessor() // does this work?
+      ) and
+      oldEnd = getNewInstruction(newEnd)
+    )
   }
 
   /**
@@ -150,16 +189,13 @@ private module Cached {
       (
         result = getNewInstruction(oldOperand.getAnyDef()) and
         overlap = originalOverlap
-        /*
-         * or
-         *        exists(OldIR::PhiInputOperand phiOperand, Overlap phiOperandOverlap |
-         *          phiOperand = getDegeneratePhiOperand(oldOperand.getAnyDef()) and
-         *          result = getNewDefinitionFromOldSSA(phiOperand, phiOperandOverlap) and
-         *          overlap = combineOverlap(phiOperandOverlap, originalOverlap)
-         *        )
-         */
-
+        or
+        exists(OldIR::PhiInputOperand phiOperand, Overlap phiOperandOverlap |
+          phiOperand = getDegeneratePhiOperand(oldOperand.getAnyDef()) and
+          result = getNewDefinitionFromOldSSA(phiOperand, phiOperandOverlap) and
+          overlap = combineOverlap(phiOperandOverlap, originalOverlap)
         )
+      )
     )
   }
 

@@ -133,7 +133,7 @@ abstract class MemoryLocation extends TMemoryLocation {
    */
   predicate isAlwaysAllocatedOnStack() { none() }
 
-  final predicate canReuseSSA() { any() }
+  final predicate canReuseSSA() { none() }
 }
 
 /**
