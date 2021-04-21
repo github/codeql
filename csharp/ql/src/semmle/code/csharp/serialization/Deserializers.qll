@@ -143,7 +143,7 @@ class WeakTypeDeserializer extends Class {
  * An unsafe deserializer method that calls any unsafe deserializer on any of
  * the parameters.
  */
-class WrapperDeserializer extends UnsafeDeserializerCallable, UnsafeDeserializer {
+private class WrapperDeserializer extends UnsafeDeserializerCallable, UnsafeDeserializer {
   WrapperDeserializer() {
     exists(Call call |
       call.getEnclosingCallable() = this and
@@ -154,7 +154,7 @@ class WrapperDeserializer extends UnsafeDeserializerCallable, UnsafeDeserializer
 }
 
 /** BinaryFormatter */
-class BinaryFormatterClass extends Class {
+private class BinaryFormatterClass extends Class {
   BinaryFormatterClass() {
     this.hasQualifiedName("System.Runtime.Serialization.Formatters.Binary.BinaryFormatter")
   }
@@ -182,7 +182,7 @@ class BinaryFormatterUnsafeDeserializeMethodResponseMethod extends Method, Unsaf
 }
 
 /** SoapFormatter */
-class SoapFormatterClass extends Class {
+private class SoapFormatterClass extends Class {
   SoapFormatterClass() {
     this.hasQualifiedName("System.Runtime.Serialization.Formatters.Soap.SoapFormatter")
   }
@@ -196,7 +196,7 @@ class SoapFormatterDeserializeMethod extends Method, UnsafeDeserializer {
 }
 
 /** ObjectStateFormatter */
-class ObjectStateFormatterClass extends Class {
+private class ObjectStateFormatterClass extends Class {
   ObjectStateFormatterClass() { this.hasQualifiedName("System.Web.UI.ObjectStateFormatter") }
 }
 
@@ -316,7 +316,7 @@ class XmlMessageFormatterReadMethod extends Method, UnsafeDeserializer {
 }
 
 /** LosFormatter */
-class LosFormatterClass extends Class {
+private class LosFormatterClass extends Class {
   LosFormatterClass() { this.hasQualifiedName("System.Web.UI.LosFormatter") }
 }
 
@@ -328,7 +328,7 @@ class LosFormatterDeserializeMethod extends Method, UnsafeDeserializer {
 }
 
 /** fastJSON */
-class FastJsonClass extends Class {
+private class FastJsonClass extends Class {
   FastJsonClass() { this.hasQualifiedName("fastJSON.JSON") }
 }
 
@@ -341,7 +341,7 @@ class FastJsonClassToObjectMethod extends Method, UnsafeDeserializer {
 }
 
 /** Activity */
-class ActivityClass extends Class {
+private class ActivityClass extends Class {
   ActivityClass() { this.hasQualifiedName("System.Workflow.ComponentModel.Activity") }
 }
 
@@ -353,7 +353,7 @@ class ActivityLoadMethod extends Method, UnsafeDeserializer {
 }
 
 /** ResourceReader */
-class ResourceReaderClass extends Class {
+private class ResourceReaderClass extends Class {
   ResourceReaderClass() { this.hasQualifiedName("System.Resources.ResourceReader") }
 }
 
@@ -365,7 +365,7 @@ class ResourceReaderConstructor extends Constructor, UnsafeDeserializer {
 }
 
 /** BinaryMessageFormatter */
-class BinaryMessageFormatterClass extends Class {
+private class BinaryMessageFormatterClass extends Class {
   BinaryMessageFormatterClass() { this.hasQualifiedName("System.Messaging.BinaryMessageFormatter") }
 }
 
@@ -377,7 +377,7 @@ class BinaryMessageFormatterReadMethod extends Method, UnsafeDeserializer {
 }
 
 /** XamlReader */
-class XamlReaderClass extends Class {
+private class XamlReaderClass extends Class {
   XamlReaderClass() { this.hasQualifiedName("System.Windows.Markup.XamlReader") }
 }
 
@@ -405,7 +405,7 @@ class XamlReaderLoadAsyncMethod extends Method, UnsafeDeserializer {
 }
 
 /** ProxyObject */
-class ProxyObjectClass extends Class {
+private class ProxyObjectClass extends Class {
   ProxyObjectClass() { this.hasQualifiedName("Microsoft.Web.Design.Remote.ProxyObject") }
 }
 
@@ -424,7 +424,7 @@ class ProxyObjectDecodeSerializedObjectMethod extends Method, UnsafeDeserializer
 }
 
 /** SweetJayson */
-class JaysonConverterClass extends Class {
+private class JaysonConverterClass extends Class {
   JaysonConverterClass() { this.hasQualifiedName("Sweet.Jayson.JaysonConverter") }
 }
 
@@ -437,7 +437,7 @@ class JaysonConverterToObjectMethod extends Method, UnsafeDeserializer {
 }
 
 /** ServiceStack.Text.JsonSerializer */
-class ServiceStackTextJsonSerializerClass extends Class {
+private class ServiceStackTextJsonSerializerClass extends Class {
   ServiceStackTextJsonSerializerClass() {
     this.hasQualifiedName("ServiceStack.Text.JsonSerializer")
   }
@@ -468,7 +468,7 @@ class ServiceStackTextJsonSerializerDeserializeFromStreamMethod extends Method, 
 }
 
 /** ServiceStack.Text.TypeSerializer */
-class ServiceStackTextTypeSerializerClass extends Class {
+private class ServiceStackTextTypeSerializerClass extends Class {
   ServiceStackTextTypeSerializerClass() {
     this.hasQualifiedName("ServiceStack.Text.TypeSerializer")
   }
@@ -499,7 +499,7 @@ class ServiceStackTextTypeSerializerDeserializeFromStreamMethod extends Method, 
 }
 
 /** ServiceStack.Text.CsvSerializer */
-class ServiceStackTextCsvSerializerClass extends Class {
+private class ServiceStackTextCsvSerializerClass extends Class {
   ServiceStackTextCsvSerializerClass() { this.hasQualifiedName("ServiceStack.Text.CsvSerializer") }
 }
 
@@ -528,7 +528,7 @@ class ServiceStackTextCsvSerializerDeserializeFromStreamMethod extends Method, U
 }
 
 /** ServiceStack.Text.XmlSerializer */
-class ServiceStackTextXmlSerializerClass extends Class {
+private class ServiceStackTextXmlSerializerClass extends Class {
   ServiceStackTextXmlSerializerClass() { this.hasQualifiedName("ServiceStack.Text.XmlSerializer") }
 }
 
