@@ -11,5 +11,5 @@
 import ruby
 
 from File f, int n
-where n = f.getMetrics().getNumberOfLinesOfCode()
+where n = f.getNumberOfLinesOfCode()
 select f, n order by n desc

@@ -10,5 +10,5 @@
 import ruby
 
 from File f, int n
-where n = f.getMetrics().getNumberOfLinesOfComments()
+where n = f.getNumberOfLinesOfComments()
 select f, n order by n desc
