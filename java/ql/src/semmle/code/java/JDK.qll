@@ -353,7 +353,7 @@ class EqualsMethod extends Method {
 class HashCodeMethod extends Method {
   HashCodeMethod() {
     this.hasName("hashCode") and
-    this.getNumberOfParameters() = 0
+    this.hasNoParameters()
   }
 }
 
@@ -361,6 +361,14 @@ class HashCodeMethod extends Method {
 class CloneMethod extends Method {
   CloneMethod() {
     this.hasName("clone") and
+    this.hasNoParameters()
+  }
+}
+
+/** A method with the same signature as `java.lang.Object.toString`. */
+class ToStringMethod extends Method {
+  ToStringMethod() {
+    this.hasName("toString") and
     this.hasNoParameters()
   }
 }

@@ -4,19 +4,14 @@
  */
 
 private import javascript
+private import semmle.javascript.Unit
 private import semmle.javascript.internal.CachedStages
-
-private newtype TUnit = MkUnit()
-
-private class Unit extends TUnit {
-  string toString() { result = "unit" }
-}
 
 /**
  * Internal extension point for adding flow edges prior to call graph construction
  * and type tracking.
  *
- * Steps added here will be added to both `AdditionalFlowStep` and `AdditionalTypeTrackingStep`.
+ * Steps added here will be added to both `SharedFlowStep` and `SharedTypeTrackingStep`.
  *
  * Contributing steps that rely on type tracking will lead to negative recursion.
  */
@@ -40,6 +35,15 @@ class PreCallGraphStep extends Unit {
    * Holds if there is a step from the `prop` property of `pred` to the same property in `succ`.
    */
   predicate loadStoreStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) { none() }
+
+  /**
+   * Holds if there is a step from the `loadProp` property of `pred` to the `storeProp` property in `succ`.
+   */
+  predicate loadStoreStep(
+    DataFlow::Node pred, DataFlow::SourceNode succ, string loadProp, string storeProp
+  ) {
+    none()
+  }
 }
 
 module PreCallGraphStep {
@@ -75,62 +79,61 @@ module PreCallGraphStep {
   predicate loadStoreStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
     any(PreCallGraphStep s).loadStoreStep(pred, succ, prop)
   }
-}
 
-private class NodeWithPreCallGraphStep extends DataFlow::Node {
-  NodeWithPreCallGraphStep() {
-    PreCallGraphStep::step(this, _)
-    or
-    PreCallGraphStep::storeStep(this, _, _)
-    or
-    PreCallGraphStep::loadStep(this, _, _)
-    or
-    PreCallGraphStep::loadStoreStep(this, _, _)
+  /**
+   * Holds if there is a step from the `loadProp` property of `pred` to the `storeProp` property in `succ`.
+   */
+  predicate loadStoreStep(
+    DataFlow::Node pred, DataFlow::SourceNode succ, string loadProp, string storeProp
+  ) {
+    any(PreCallGraphStep s).loadStoreStep(pred, succ, loadProp, storeProp)
   }
 }
 
-private class AdditionalFlowStepFromPreCallGraph extends NodeWithPreCallGraphStep,
-  DataFlow::AdditionalFlowStep {
+private class SharedFlowStepFromPreCallGraph extends DataFlow::SharedFlowStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-    pred = this and
-    PreCallGraphStep::step(this, succ)
+    PreCallGraphStep::step(pred, succ)
   }
 
   override predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
-    pred = this and
-    PreCallGraphStep::storeStep(this, succ, prop)
+    PreCallGraphStep::storeStep(pred, succ, prop)
   }
 
   override predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
-    pred = this and
-    PreCallGraphStep::loadStep(this, succ, prop)
+    PreCallGraphStep::loadStep(pred, succ, prop)
   }
 
   override predicate loadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
-    pred = this and
-    PreCallGraphStep::loadStoreStep(this, succ, prop)
+    PreCallGraphStep::loadStoreStep(pred, succ, prop)
+  }
+
+  override predicate loadStoreStep(
+    DataFlow::Node pred, DataFlow::Node succ, string loadProp, string storeProp
+  ) {
+    PreCallGraphStep::loadStoreStep(pred, succ, loadProp, storeProp)
   }
 }
 
-private class AdditionalTypeTrackingStepFromPreCallGraph extends NodeWithPreCallGraphStep,
-  DataFlow::AdditionalTypeTrackingStep {
+private class SharedTypeTrackingStepFromPreCallGraph extends DataFlow::SharedTypeTrackingStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-    pred = this and
-    PreCallGraphStep::step(this, succ)
+    PreCallGraphStep::step(pred, succ)
   }
 
   override predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
-    pred = this and
-    PreCallGraphStep::storeStep(this, succ, prop)
+    PreCallGraphStep::storeStep(pred, succ, prop)
   }
 
   override predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
-    pred = this and
-    PreCallGraphStep::loadStep(this, succ, prop)
+    PreCallGraphStep::loadStep(pred, succ, prop)
   }
 
   override predicate loadStoreStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
-    pred = this and
-    PreCallGraphStep::loadStoreStep(this, succ, prop)
+    PreCallGraphStep::loadStoreStep(pred, succ, prop)
+  }
+
+  override predicate loadStoreStep(
+    DataFlow::Node pred, DataFlow::SourceNode succ, string loadProp, string storeProp
+  ) {
+    PreCallGraphStep::loadStoreStep(pred, succ, loadProp, storeProp)
   }
 }

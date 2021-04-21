@@ -8,6 +8,8 @@ import Element
 class Modifier extends Element, @modifier {
   /** Gets the element to which this modifier applies. */
   Element getElement() { hasModifier(result, this) }
+
+  override string getAPrimaryQlClass() { result = "Modifier" }
 }
 
 /** An element of the Java syntax tree that may have a modifier. */

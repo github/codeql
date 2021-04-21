@@ -214,13 +214,6 @@ module PromiseTypeTracking {
       result = PromiseTypeTracking::promiseStep(mid, summary)
     )
   }
-
-  /**
-   * A class enabling the use of the `resolveField` as a pseudo-property in type-tracking predicates.
-   */
-  private class ResolveFieldAsTypeTrackingProperty extends TypeTrackingPseudoProperty {
-    ResolveFieldAsTypeTrackingProperty() { this = Promises::valueProp() }
-  }
 }
 
 private import semmle.javascript.dataflow.internal.PreCallGraphStep
@@ -596,6 +589,7 @@ private module ClosurePromise {
    * A promise created by a call `goog.Promise.resolve(value)`.
    */
   private class ResolvedClosurePromiseDefinition extends ResolvedPromiseDefinition {
+    pragma[noinline]
     ResolvedClosurePromiseDefinition() {
       this = Closure::moduleImport("goog.Promise.resolve").getACall()
     }

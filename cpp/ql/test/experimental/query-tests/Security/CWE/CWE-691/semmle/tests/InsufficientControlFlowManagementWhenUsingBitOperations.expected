@@ -1,0 +1,2 @@
+| test.c:8:6:8:51 | ... & ... | This bitwise operation appears in a context where a Boolean operation is expected. |
+| test.c:10:6:10:30 | ... & ... | This bitwise operation appears in a context where a Boolean operation is expected. |

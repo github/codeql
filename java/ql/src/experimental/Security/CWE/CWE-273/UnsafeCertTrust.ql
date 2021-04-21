@@ -1,7 +1,12 @@
 /**
  * @name Unsafe certificate trust
- * @description Unsafe implementation of the interface X509TrustManager and SSLSocket/SSLEngine ignores all SSL certificate validation errors when establishing an HTTPS connection, thereby making the app vulnerable to man-in-the-middle attacks.
+ * @description Unsafe implementation of the interface X509TrustManager and
+ *              SSLSocket/SSLEngine ignores all SSL certificate validation
+ *              errors when establishing an HTTPS connection, thereby making
+ *              the app vulnerable to man-in-the-middle attacks.
  * @kind problem
+ * @problem.severity warning
+ * @precision medium
  * @id java/unsafe-cert-trust
  * @tags security
  *       external/cwe-273

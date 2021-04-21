@@ -408,3 +408,84 @@ module.exports.sanitizer3 = function (name) {
 	var sanitized = yetAnohterSanitizer(name);
 	cp.exec("rm -rf " + sanitized); // OK
 }
+
+const cp = require("child_process");
+const spawn = cp.spawn;
+module.exports.shellOption = function (name) {
+	cp.exec("rm -rf " + name); // NOT OK
+
+	cp.execFile("rm", ["-rf", name], {shell: true}, (err, out) => {}); // NOT OK
+	cp.spawn("rm", ["-rf", name], {shell: true}); // NOT OK
+	cp.execFileSync("rm", ["-rf", name], {shell: true}); // NOT OK
+	cp.spawnSync("rm", ["-rf", name], {shell: true}); // NOT OK
+
+	const SPAWN_OPT = {shell: true};
+
+	spawn("rm", ["first", name], SPAWN_OPT); // NOT OK
+	var arr = [];
+	arr.push(name); // NOT OK
+	spawn("rm", arr, SPAWN_OPT); 
+	spawn("rm", build("node", (name ? name + ':' : '') + '-'), SPAWN_OPT);  // This is bad, but the alert location is down in `build`.
+}
+
+function build(first, last) {
+	var arr = [];
+	if (something() === 'gm')
+		arr.push('convert');
+	first && arr.push(first);
+	last && arr.push(last); // NOT OK
+	return arr;
+};
+
+var asyncExec = require("async-execute");
+module.exports.asyncStuff = function (name) {
+	asyncExec("rm -rf " + name); // NOT OK
+}
+
+const myFuncs = {
+	myFunc: function (name) {
+		asyncExec("rm -rf " + name); // NOT OK
+	}
+};
+
+module.exports.blabity = {};
+
+Object.defineProperties(
+	module.exports.blabity,
+	Object.assign(
+		{},
+		Object.entries(myFuncs).reduce(
+			(props, [ key, value ]) => Object.assign(
+				props,
+				{
+					[key]: {
+						value,
+						configurable: true,
+					},
+				},
+			),
+			{}
+		)
+	)
+);
+
+const path = require('path');
+const {promisify} = require('util');
+
+const exec = promisify(require('child_process').exec);
+
+module.exports = function check(config) {
+    const cmd = path.join(config.installedPath, 'myBinary -v'); // NOT OK
+    return exec(cmd);
+}
+
+module.exports.splitConcat = function (name) {
+	let args = ' my name is ' + name; // NOT OK
+	let cmd = 'echo';
+	cp.exec(cmd + args);
+}
+
+module.exports.myCommand = function (myCommand) {
+	let cmd = `cd ${cwd} ; ${myCommand}`; // OK - the parameter name suggests that it is purposely a shell command.
+	cp.exec(cmd);
+}

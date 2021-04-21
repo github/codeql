@@ -9,6 +9,7 @@ private import semmle.code.csharp.frameworks.system.data.Entity
 private import semmle.code.csharp.frameworks.system.collections.Generic
 private import semmle.code.csharp.frameworks.Sql
 private import semmle.code.csharp.dataflow.FlowSummary
+private import semmle.code.csharp.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 
 /**
  * Definitions relating to the `System.ComponentModel.DataAnnotations`
@@ -74,7 +75,7 @@ module EntityFramework {
     DbSet() { this.getName() = "DbSet<>" }
 
     /** Gets a method that adds or updates entities in a DB set. */
-    SummarizableMethod getAnAddOrUpdateMethod(boolean range) {
+    Method getAnAddOrUpdateMethod(boolean range) {
       exists(string name | result = this.getAMethod(name) |
         name in ["Add", "AddAsync", "Attach", "Update"] and
         range = false
@@ -88,23 +89,31 @@ module EntityFramework {
   /** A flow summary for EntityFramework. */
   abstract class EFSummarizedCallable extends SummarizedCallable { }
 
+  private class DbSetAddOrUpdateRequiredSummaryComponentStack extends RequiredSummaryComponentStack {
+    private SummaryComponent head;
+
+    DbSetAddOrUpdateRequiredSummaryComponentStack() {
+      this = SummaryComponentStack::argument([-1, 0]) and
+      head = SummaryComponent::element()
+    }
+
+    override predicate required(SummaryComponent c) { c = head }
+  }
+
   private class DbSetAddOrUpdate extends EFSummarizedCallable {
     private boolean range;
 
     DbSetAddOrUpdate() { this = any(DbSet c).getAnAddOrUpdateMethod(range) }
 
     override predicate propagatesFlow(
-      SummaryInput input, ContentList inputContents, SummaryOutput output,
-      ContentList outputContents, boolean preservesValue
+      SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
     ) {
-      input = SummaryInput::parameter(0) and
       (
         if range = true
-        then inputContents = ContentList::element()
-        else inputContents = ContentList::empty()
+        then input = SummaryComponentStack::elementOf(SummaryComponentStack::argument(0))
+        else input = SummaryComponentStack::argument(0)
       ) and
-      output = SummaryOutput::thisParameter() and
-      outputContents = ContentList::element() and
+      output = SummaryComponentStack::elementOf(SummaryComponentStack::argument(-1)) and
       preservesValue = true
     }
   }
@@ -165,27 +174,27 @@ module EntityFramework {
   }
 
   private class RawSqlStringSummarizedCallable extends EFSummarizedCallable {
-    private SummaryInput input_;
-    private SummaryOutput output_;
+    private SummaryComponentStack input_;
+    private SummaryComponentStack output_;
     private boolean preservesValue_;
 
     RawSqlStringSummarizedCallable() {
       exists(RawSqlStringStruct s |
         this = s.getAConstructor() and
-        input_ = SummaryInput::parameter(0) and
+        input_ = SummaryComponentStack::argument(0) and
         this.getNumberOfParameters() > 0 and
-        output_ = SummaryOutput::return() and
+        output_ = SummaryComponentStack::return() and
         preservesValue_ = false
         or
         this = s.getAConversionTo() and
-        input_ = SummaryInput::parameter(0) and
-        output_ = SummaryOutput::return() and
+        input_ = SummaryComponentStack::argument(0) and
+        output_ = SummaryComponentStack::return() and
         preservesValue_ = false
       )
     }
 
     override predicate propagatesFlow(
-      SummaryInput input, SummaryOutput output, boolean preservesValue
+      SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
     ) {
       input = input_ and
       output = output_ and
@@ -295,15 +304,17 @@ module EntityFramework {
      * If `t2` is a column type, `c2` will be included in the model (see
      * https://docs.microsoft.com/en-us/ef/core/modeling/entity-types?tabs=data-annotations).
      */
-    private predicate step(Content c1, Type t1, Content c2, Type t2) {
+    private predicate step(Content c1, Type t1, Content c2, Type t2, int dist) {
       exists(Property p1 |
         p1 = this.getADbSetProperty(t2) and
         c1.(PropertyContent).getProperty() = p1 and
         t1 = p1.getType() and
-        c2 instanceof ElementContent
+        c2 instanceof ElementContent and
+        dist = 0
       )
       or
-      step(_, _, c1, t1) and
+      step(_, _, c1, t1, dist - 1) and
+      dist < DataFlowPrivate::accessPathLimit() - 1 and
       not isNotMapped(t2) and
       (
         // Navigation property (https://docs.microsoft.com/en-us/ef/ef6/fundamentals/relationships)
@@ -350,52 +361,61 @@ module EntityFramework {
      * }
      * ```
      */
-    private Property getAColumnProperty() {
+    Property getAColumnProperty(int dist) {
       exists(PropertyContent c, Type t |
-        this.step(_, _, c, t) and
+        this.step(_, _, c, t, dist) and
         c.getProperty() = result and
         isColumnType(t)
       )
     }
 
+    private predicate stepRev(Content c1, Type t1, Content c2, Type t2, int dist) {
+      step(c1, t1, c2, t2, dist) and
+      c2.(PropertyContent).getProperty() = getAColumnProperty(dist)
+      or
+      stepRev(c2, t2, _, _, dist + 1) and
+      step(c1, t1, c2, t2, dist)
+    }
+
     /** Gets a `SaveChanges[Async]` method. */
     pragma[nomagic]
-    SummarizableMethod getASaveChanges() {
+    Method getASaveChanges() {
       this.hasMethod(result) and
       result.getName().matches("SaveChanges%")
     }
 
-    /** Holds if content list `head :: tail` is required. */
-    predicate requiresContentList(
-      Content head, Type headType, ContentList tail, Type tailType, Property last
+    /** Holds if component stack `head :: tail` is required for the input specification. */
+    predicate requiresComponentStackIn(
+      Content head, Type headType, SummaryComponentStack tail, int dist
     ) {
-      exists(PropertyContent p |
-        last = this.getAColumnProperty() and
-        p.getProperty() = last and
-        tail = ContentList::singleton(p) and
-        this.step(head, headType, p, tailType)
-      )
+      tail = SummaryComponentStack::qualifier() and
+      this.stepRev(head, headType, _, _, 0) and
+      dist = -1
       or
-      exists(Content tailHead, ContentList tailTail |
-        this.requiresContentList(tailHead, tailType, tailTail, _, last) and
-        tail = ContentList::cons(tailHead, tailTail) and
-        this.step(head, headType, tailHead, tailType)
+      exists(Content tailHead, Type tailType, SummaryComponentStack tailTail |
+        this.requiresComponentStackIn(tailHead, tailType, tailTail, dist - 1) and
+        tail = SummaryComponentStack::push(SummaryComponent::content(tailHead), tailTail) and
+        this.stepRev(tailHead, tailType, head, headType, dist)
       )
     }
 
-    /**
-     * Holds if the access path obtained by concatenating `head` onto `tail`
-     * is a path from `dbSet` (which is a `DbSet<T>` property belonging to
-     * this DB context) to `last`, which is a property that is mapped directly
-     * to a column in the underlying DB.
-     */
-    pragma[noinline]
-    predicate pathFromDbSetToDbProperty(
-      Property dbSet, PropertyContent head, ContentList tail, Property last
+    /** Holds if component stack `head :: tail` is required for the output specification. */
+    predicate requiresComponentStackOut(
+      Content head, Type headType, SummaryComponentStack tail, int dist
     ) {
-      this.requiresContentList(head, _, tail, _, last) and
-      head.getProperty() = dbSet and
-      dbSet = this.getADbSetProperty(_)
+      exists(Property dbSetProp, PropertyContent c1 |
+        dbSetProp = this.getADbSetProperty(headType) and
+        this.stepRev(c1, _, head, headType, 0) and
+        c1.getProperty() = dbSetProp and
+        tail = SummaryComponentStack::jump(dbSetProp.getGetter()) and
+        dist = 0
+      )
+      or
+      exists(Content tailHead, SummaryComponentStack tailTail, Type tailType |
+        this.requiresComponentStackOut(tailHead, tailType, tailTail, dist - 1) and
+        tail = SummaryComponentStack::push(SummaryComponent::content(tailHead), tailTail) and
+        this.stepRev(tailHead, tailType, head, headType, dist)
+      )
     }
   }
 
@@ -404,26 +424,46 @@ module EntityFramework {
 
     DbContextSaveChanges() { this = c.getASaveChanges() }
 
-    override predicate requiresContentList(Content head, ContentList tail) {
-      c.requiresContentList(head, _, tail, _, _)
+    pragma[noinline]
+    private predicate input(SummaryComponentStack input, Property mapped) {
+      exists(PropertyContent head, SummaryComponentStack tail |
+        c.requiresComponentStackIn(head, _, tail, _) and
+        head.getProperty() = mapped and
+        mapped = c.getAColumnProperty(_) and
+        input = SummaryComponentStack::push(SummaryComponent::content(head), tail)
+      )
+    }
+
+    pragma[noinline]
+    private predicate output(SummaryComponentStack output, Property mapped) {
+      exists(PropertyContent head, SummaryComponentStack tail |
+        c.requiresComponentStackOut(head, _, tail, _) and
+        head.getProperty() = mapped and
+        mapped = c.getAColumnProperty(_) and
+        output = SummaryComponentStack::push(SummaryComponent::content(head), tail)
+      )
     }
 
     override predicate propagatesFlow(
-      SummaryInput input, ContentList inputContents, SummaryOutput output,
-      ContentList outputContents, boolean preservesValue
+      SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
     ) {
       exists(Property mapped |
         preservesValue = true and
-        exists(PropertyContent sourceHead, ContentList sourceTail |
-          input = SummaryInput::thisParameter() and
-          c.pathFromDbSetToDbProperty(_, sourceHead, sourceTail, mapped) and
-          inputContents = ContentList::cons(sourceHead, sourceTail)
-        ) and
-        exists(Property dbSetProp |
-          output = SummaryOutput::jump(dbSetProp.getGetter(), SummaryOutput::return()) and
-          c.pathFromDbSetToDbProperty(dbSetProp, _, outputContents, mapped)
-        )
+        input(input, mapped) and
+        output(output, mapped)
       )
     }
+  }
+
+  private class DbContextSaveChangesRequiredSummaryComponentStack extends RequiredSummaryComponentStack {
+    private Content head;
+
+    DbContextSaveChangesRequiredSummaryComponentStack() {
+      any(DbContextClass c).requiresComponentStackIn(head, _, this, _)
+      or
+      any(DbContextClass c).requiresComponentStackOut(head, _, this, _)
+    }
+
+    override predicate required(SummaryComponent c) { c = SummaryComponent::content(head) }
   }
 }

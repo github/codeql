@@ -10,6 +10,9 @@
 
 import javascript
 
-from DataFlow::InvokeNode invoke, Function f
-where invoke.getACallee() = f
-select invoke, "Call to $@", f, f.describe()
+from DataFlow::Node invoke, Function f, string kind
+where
+  invoke.(DataFlow::InvokeNode).getACallee() = f and kind = "Call"
+  or
+  invoke.(DataFlow::PropRef).getAnAccessorCallee().getFunction() = f and kind = "Accessor call"
+select invoke, kind + " to $@", f, f.describe()
