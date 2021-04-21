@@ -13,9 +13,7 @@
 import csharp
 import semmle.code.csharp.security.dataflow.UnsafeDeserialization::UnsafeDeserialization
 
-from Call deserializeCall, DataFlow::Node sink
-where
-  deserializeCall.getAnArgument() = sink.asExpr() and
-  sink instanceof Sink
+from Call deserializeCall, Sink sink
+where deserializeCall.getAnArgument() = sink.asExpr()
 select deserializeCall,
   "Unsafe deserializer is used. Make sure the value being deserialized comes from a trusted source."
