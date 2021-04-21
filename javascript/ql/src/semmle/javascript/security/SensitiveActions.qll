@@ -169,7 +169,9 @@ class ProtectCall extends DataFlow::CallNode {
 
 /** An expression that might contain a clear-text password. */
 class CleartextPasswordExpr extends SensitiveExpr {
-  CleartextPasswordExpr() { this.(SensitiveExpr).getClassification() = SensitiveExpr::password() }
+  CleartextPasswordExpr() {
+    this.(SensitiveExpr).getClassification() = SensitiveDataClassification::password()
+  }
 
   override string describe() { none() }
 
