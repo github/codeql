@@ -36,24 +36,24 @@ modulesWithGlobalNameScopeExprs
 | modules.rb:60:1:61:3 | MyModuleInGlobalScope |
 exprsInModules
 | modules.rb:4:1:24:3 | Foo | 0 | modules.rb:5:3:14:5 | Bar | ModuleDeclaration |
-| modules.rb:4:1:24:3 | Foo | 1 | modules.rb:16:3:17:5 | method_in_foo | MethodDeclaration |
+| modules.rb:4:1:24:3 | Foo | 1 | modules.rb:16:3:17:5 | method_in_foo | Method |
 | modules.rb:4:1:24:3 | Foo | 2 | modules.rb:19:3:20:5 | ClassInFoo | ClassDeclaration |
 | modules.rb:4:1:24:3 | Foo | 3 | modules.rb:22:3:22:19 | call to puts | MethodCall |
 | modules.rb:4:1:24:3 | Foo | 4 | modules.rb:23:3:23:17 | ... = ... | AssignExpr |
 | modules.rb:5:3:14:5 | Bar | 0 | modules.rb:6:5:7:7 | ClassInFooBar | ClassDeclaration |
-| modules.rb:5:3:14:5 | Bar | 1 | modules.rb:9:5:10:7 | method_in_foo_bar | MethodDeclaration |
+| modules.rb:5:3:14:5 | Bar | 1 | modules.rb:9:5:10:7 | method_in_foo_bar | Method |
 | modules.rb:5:3:14:5 | Bar | 2 | modules.rb:12:5:12:26 | call to puts | MethodCall |
 | modules.rb:5:3:14:5 | Bar | 3 | modules.rb:13:5:13:19 | ... = ... | AssignExpr |
-| modules.rb:26:1:35:3 | Foo | 0 | modules.rb:27:3:28:5 | method_in_another_definition_of_foo | MethodDeclaration |
+| modules.rb:26:1:35:3 | Foo | 0 | modules.rb:27:3:28:5 | method_in_another_definition_of_foo | Method |
 | modules.rb:26:1:35:3 | Foo | 1 | modules.rb:30:3:31:5 | ClassInAnotherDefinitionOfFoo | ClassDeclaration |
 | modules.rb:26:1:35:3 | Foo | 2 | modules.rb:33:3:33:25 | call to puts | MethodCall |
 | modules.rb:26:1:35:3 | Foo | 3 | modules.rb:34:3:34:17 | ... = ... | AssignExpr |
-| modules.rb:37:1:46:3 | Bar | 0 | modules.rb:38:3:39:5 | method_a | MethodDeclaration |
-| modules.rb:37:1:46:3 | Bar | 1 | modules.rb:41:3:42:5 | method_b | MethodDeclaration |
+| modules.rb:37:1:46:3 | Bar | 0 | modules.rb:38:3:39:5 | method_a | Method |
+| modules.rb:37:1:46:3 | Bar | 1 | modules.rb:41:3:42:5 | method_b | Method |
 | modules.rb:37:1:46:3 | Bar | 2 | modules.rb:44:3:44:19 | call to puts | MethodCall |
 | modules.rb:37:1:46:3 | Bar | 3 | modules.rb:45:3:45:17 | ... = ... | AssignExpr |
 | modules.rb:48:1:57:3 | Bar | 0 | modules.rb:49:3:50:5 | ClassInAnotherDefinitionOfFooBar | ClassDeclaration |
-| modules.rb:48:1:57:3 | Bar | 1 | modules.rb:52:3:53:5 | method_in_another_definition_of_foo_bar | MethodDeclaration |
+| modules.rb:48:1:57:3 | Bar | 1 | modules.rb:52:3:53:5 | method_in_another_definition_of_foo_bar | Method |
 | modules.rb:48:1:57:3 | Bar | 2 | modules.rb:55:3:55:30 | call to puts | MethodCall |
 | modules.rb:48:1:57:3 | Bar | 3 | modules.rb:56:3:56:17 | ... = ... | AssignExpr |
 | modules.rb:63:1:81:3 | Test | 0 | modules.rb:65:3:68:5 | Foo1 | ModuleDeclaration |

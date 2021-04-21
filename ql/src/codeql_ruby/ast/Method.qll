@@ -32,12 +32,12 @@ class MethodBase extends Callable, BodyStmt, Scope, TMethodBase {
 }
 
 /** A normal method. */
-class MethodDeclaration extends MethodBase, TMethodDeclaration {
+class Method extends MethodBase, TMethod {
   private Generated::Method g;
 
-  MethodDeclaration() { this = TMethodDeclaration(g) }
+  Method() { this = TMethod(g) }
 
-  final override string getAPrimaryQlClass() { result = "MethodDeclaration" }
+  final override string getAPrimaryQlClass() { result = "Method" }
 
   final override string getName() {
     result = g.getName().(Generated::Token).getValue() or

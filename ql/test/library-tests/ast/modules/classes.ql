@@ -12,7 +12,7 @@ query predicate exprsInClasses(ClassDeclaration c, int i, Expr e, string eClass)
   e = c.getStmt(i) and eClass = e.getAPrimaryQlClass()
 }
 
-query predicate methodsInClasses(ClassDeclaration c, MethodDeclaration m, string name) {
+query predicate methodsInClasses(ClassDeclaration c, Method m, string name) {
   m = c.getMethod(name)
 }
 

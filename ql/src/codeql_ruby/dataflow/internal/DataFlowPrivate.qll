@@ -269,11 +269,7 @@ private module ReturnNodes {
       scope = node.getScope()
     |
       stmt instanceof ReturnStmt and
-      (
-        scope instanceof MethodDeclaration or
-        scope instanceof SingletonMethod or
-        scope instanceof Lambda
-      )
+      (scope instanceof Method or scope instanceof SingletonMethod or scope instanceof Lambda)
       or
       stmt instanceof NextStmt and
       (scope instanceof Block or scope instanceof Lambda)

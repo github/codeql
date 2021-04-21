@@ -28,7 +28,7 @@ query predicate optionalParams(OptionalParameter op, string name, AstNode defaul
 
 ////////////////////////////////////////////////////////////////////////////////
 // Query predicates for various contexts of parameters
-query predicate paramsInMethods(MethodDeclaration m, int i, Parameter p, string pClass) {
+query predicate paramsInMethods(Method m, int i, Parameter p, string pClass) {
   p = m.getParameter(i) and pClass = p.getAPrimaryQlClass()
 }
 

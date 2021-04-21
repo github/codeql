@@ -34,9 +34,9 @@ calls/calls.rb:
 #   26|       getStmt: [AddExpr] ... + ...
 #   26|         getAnOperand/getLeftOperand: [LocalVariableAccess] x
 #   26|         getAnOperand/getRightOperand: [IntegerLiteral] 1
-#   30|   getStmt: [MethodDeclaration] method_that_yields
+#   30|   getStmt: [Method] method_that_yields
 #   31|     getStmt: [YieldCall] yield ...
-#   35|   getStmt: [MethodDeclaration] another_method_that_yields
+#   35|   getStmt: [Method] another_method_that_yields
 #   36|     getStmt: [YieldCall] yield ...
 #   36|       getArgument: [IntegerLiteral] 100
 #   36|       getArgument: [IntegerLiteral] 200
@@ -145,7 +145,7 @@ calls/calls.rb:
 #  131|       getReceiver: [ConstantReadAccess] X
 #  132|     getStmt: [MethodCall] call to bar
 #  132|       getReceiver: [ConstantReadAccess] X
-#  136|   getStmt: [MethodDeclaration] some_method
+#  136|   getStmt: [Method] some_method
 #  137|     getStmt: [MethodCall] call to foo
 #  138|     getStmt: [MethodCall] call to bar
 #  138|       getReceiver: [ConstantReadAccess] X
@@ -154,20 +154,20 @@ calls/calls.rb:
 #  143|     getStmt: [MethodCall] call to bar
 #  144|     getStmt: [MethodCall] call to baz
 #  144|       getReceiver: [ConstantReadAccess] X
-#  148|   getStmt: [MethodDeclaration] method_with_keyword_param
+#  148|   getStmt: [Method] method_with_keyword_param
 #  148|     getParameter: [KeywordParameter] keyword
 #  148|       getDefiningAccess: [LocalVariableAccess] keyword
 #  148|       getDefaultValue: [MethodCall] call to foo
-#  150|   getStmt: [MethodDeclaration] method_with_keyword_param2
+#  150|   getStmt: [Method] method_with_keyword_param2
 #  150|     getParameter: [KeywordParameter] keyword
 #  150|       getDefiningAccess: [LocalVariableAccess] keyword
 #  150|       getDefaultValue: [MethodCall] call to foo
 #  150|         getReceiver: [ConstantReadAccess] X
-#  154|   getStmt: [MethodDeclaration] method_with_optional_param
+#  154|   getStmt: [Method] method_with_optional_param
 #  154|     getParameter: [OptionalParameter] param
 #  154|       getDefiningAccess: [LocalVariableAccess] param
 #  154|       getDefaultValue: [MethodCall] call to foo
-#  156|   getStmt: [MethodDeclaration] method_with_optional_param2
+#  156|   getStmt: [Method] method_with_optional_param2
 #  156|     getParameter: [OptionalParameter] param
 #  156|       getDefiningAccess: [LocalVariableAccess] param
 #  156|       getDefaultValue: [MethodCall] call to foo
@@ -377,7 +377,7 @@ calls/calls.rb:
 #  279|       getValue: [MethodCall] call to bar
 #  279|         getReceiver: [ConstantReadAccess] X
 #  284|   getStmt: [ClassDeclaration] MyClass
-#  285|     getStmt: [MethodDeclaration] my_method
+#  285|     getStmt: [Method] my_method
 #  286|       getStmt: [SuperCall] call to super
 #  287|       getStmt: [SuperCall] call to super
 #  288|       getStmt: [SuperCall] call to super
@@ -420,7 +420,7 @@ calls/calls.rb:
 #  293|             getAnOperand/getLeftOperand: [LocalVariableAccess] x
 #  293|             getAnOperand/getRightOperand: [IntegerLiteral] 200
 #  301|   getStmt: [ClassDeclaration] AnotherClass
-#  302|     getStmt: [MethodDeclaration] another_method
+#  302|     getStmt: [Method] another_method
 #  303|       getStmt: [MethodCall] call to super
 #  303|         getReceiver: [MethodCall] call to foo
 #  304|       getStmt: [MethodCall] call to super
@@ -532,11 +532,11 @@ modules/classes.rb:
 #   16|   getStmt: [ClassDeclaration] MyClass
 #   16|     getScopeExpr: [ConstantReadAccess] MyModule
 #   20|   getStmt: [ClassDeclaration] Wibble
-#   21|     getStmt: [MethodDeclaration] method_a
+#   21|     getStmt: [Method] method_a
 #   22|       getStmt: [MethodCall] call to puts
 #   22|         getArgument: [StringLiteral] "a"
 #   22|           getComponent: [StringTextComponent] a
-#   25|     getStmt: [MethodDeclaration] method_b
+#   25|     getStmt: [Method] method_b
 #   26|       getStmt: [MethodCall] call to puts
 #   26|         getArgument: [StringLiteral] "b"
 #   26|           getComponent: [StringTextComponent] b
@@ -552,11 +552,11 @@ modules/classes.rb:
 #   40|       getComponent: [StringTextComponent] hello
 #   41|   getStmt: [ClassDeclaration] class << ...
 #   41|     getValue: [LocalVariableAccess] x
-#   42|     getStmt: [MethodDeclaration] length
+#   42|     getStmt: [Method] length
 #   43|       getStmt: [MulExpr] ... * ...
 #   43|         getAnOperand/getLeftOperand: [IntegerLiteral] 100
 #   43|         getAnOperand/getRightOperand: [SuperCall] call to super
-#   46|     getStmt: [MethodDeclaration] wibble
+#   46|     getStmt: [Method] wibble
 #   47|       getStmt: [MethodCall] call to puts
 #   47|         getArgument: [StringLiteral] "wibble"
 #   47|           getComponent: [StringTextComponent] wibble
@@ -700,7 +700,7 @@ constants/constants.rb:
 #   14|     getAnOperand/getLeftOperand: [ConstantAssignment] GREETING
 #   14|     getAnOperand/getRightOperand: [StringLiteral] "Hello"
 #   14|       getComponent: [StringTextComponent] Hello
-#   16|   getStmt: [MethodDeclaration] foo
+#   16|   getStmt: [Method] foo
 #   17|     getStmt: [AssignExpr] ... = ...
 #   17|       getAnOperand/getLeftOperand: [ConstantAssignment] Names
 #   17|       getAnOperand/getRightOperand: [ArrayLiteral] [...]
@@ -1096,7 +1096,7 @@ literals/literals.rb:
 #  154|         getStmt: [MethodCall] call to name
 #  154|       getComponent: [StringTextComponent] 
 #  154|       
-#  157|   getStmt: [MethodDeclaration] m
+#  157|   getStmt: [Method] m
 #  158|     getStmt: [AssignExpr] ... = ...
 #  158|       getAnOperand/getLeftOperand: [LocalVariableAccess] query
 #  158|       getAnOperand/getRightOperand: [HereDoc] <<-BLA
@@ -1326,14 +1326,14 @@ modules/modules.rb:
 #    4|   getStmt: [ModuleDeclaration] Foo
 #    5|     getStmt: [ModuleDeclaration] Bar
 #    6|       getStmt: [ClassDeclaration] ClassInFooBar
-#    9|       getStmt: [MethodDeclaration] method_in_foo_bar
+#    9|       getStmt: [Method] method_in_foo_bar
 #   12|       getStmt: [MethodCall] call to puts
 #   12|         getArgument: [StringLiteral] "module Foo::Bar"
 #   12|           getComponent: [StringTextComponent] module Foo::Bar
 #   13|       getStmt: [AssignExpr] ... = ...
 #   13|         getAnOperand/getLeftOperand: [GlobalVariableAccess] $global_var
 #   13|         getAnOperand/getRightOperand: [IntegerLiteral] 0
-#   16|     getStmt: [MethodDeclaration] method_in_foo
+#   16|     getStmt: [Method] method_in_foo
 #   19|     getStmt: [ClassDeclaration] ClassInFoo
 #   22|     getStmt: [MethodCall] call to puts
 #   22|       getArgument: [StringLiteral] "module Foo"
@@ -1342,7 +1342,7 @@ modules/modules.rb:
 #   23|       getAnOperand/getLeftOperand: [GlobalVariableAccess] $global_var
 #   23|       getAnOperand/getRightOperand: [IntegerLiteral] 1
 #   26|   getStmt: [ModuleDeclaration] Foo
-#   27|     getStmt: [MethodDeclaration] method_in_another_definition_of_foo
+#   27|     getStmt: [Method] method_in_another_definition_of_foo
 #   30|     getStmt: [ClassDeclaration] ClassInAnotherDefinitionOfFoo
 #   33|     getStmt: [MethodCall] call to puts
 #   33|       getArgument: [StringLiteral] "module Foo again"
@@ -1351,8 +1351,8 @@ modules/modules.rb:
 #   34|       getAnOperand/getLeftOperand: [GlobalVariableAccess] $global_var
 #   34|       getAnOperand/getRightOperand: [IntegerLiteral] 2
 #   37|   getStmt: [ModuleDeclaration] Bar
-#   38|     getStmt: [MethodDeclaration] method_a
-#   41|     getStmt: [MethodDeclaration] method_b
+#   38|     getStmt: [Method] method_a
+#   41|     getStmt: [Method] method_b
 #   44|     getStmt: [MethodCall] call to puts
 #   44|       getArgument: [StringLiteral] "module Bar"
 #   44|         getComponent: [StringTextComponent] module Bar
@@ -1362,7 +1362,7 @@ modules/modules.rb:
 #   48|   getStmt: [ModuleDeclaration] Bar
 #   48|     getScopeExpr: [ConstantReadAccess] Foo
 #   49|     getStmt: [ClassDeclaration] ClassInAnotherDefinitionOfFooBar
-#   52|     getStmt: [MethodDeclaration] method_in_another_definition_of_foo_bar
+#   52|     getStmt: [Method] method_in_another_definition_of_foo_bar
 #   55|     getStmt: [MethodCall] call to puts
 #   55|       getArgument: [StringLiteral] "module Foo::Bar again"
 #   55|         getComponent: [StringTextComponent] module Foo::Bar again
@@ -1603,7 +1603,7 @@ operations/operations.rb:
 #   84|     getAnOperand/getRightOperand: [LocalVariableAccess] qux
 params/params.rb:
 #    1| [Toplevel] params.rb
-#    4|   getStmt: [MethodDeclaration] identifier_method_params
+#    4|   getStmt: [Method] identifier_method_params
 #    4|     getParameter: [SimpleParameter] foo
 #    4|       getDefiningAccess: [LocalVariableAccess] foo
 #    4|     getParameter: [SimpleParameter] bar
@@ -1637,7 +1637,7 @@ params/params.rb:
 #   14|       getStmt: [AddExpr] ... + ...
 #   14|         getAnOperand/getLeftOperand: [LocalVariableAccess] foo
 #   14|         getAnOperand/getRightOperand: [LocalVariableAccess] bar
-#   17|   getStmt: [MethodDeclaration] destructured_method_param
+#   17|   getStmt: [Method] destructured_method_param
 #   17|     getParameter: [TuplePatternParameter] (..., ...)
 #   17|       getElement: [LocalVariableAccess] a
 #   17|       getElement: [LocalVariableAccess] b
@@ -1671,7 +1671,7 @@ params/params.rb:
 #   26|             getAnOperand/getRightOperand: [LocalVariableAccess] second
 #   26|           getAnOperand/getRightOperand: [LocalVariableAccess] third
 #   26|         getAnOperand/getRightOperand: [LocalVariableAccess] fourth
-#   30|   getStmt: [MethodDeclaration] method_with_splat
+#   30|   getStmt: [Method] method_with_splat
 #   30|     getParameter: [SimpleParameter] wibble
 #   30|       getDefiningAccess: [LocalVariableAccess] wibble
 #   30|     getParameter: [SplatParameter] *splat
@@ -1696,7 +1696,7 @@ params/params.rb:
 #   38|         getDefiningAccess: [LocalVariableAccess] blah
 #   38|       getParameter: [HashSplatParameter] **wibble
 #   38|         getDefiningAccess: [LocalVariableAccess] wibble
-#   41|   getStmt: [MethodDeclaration] method_with_keyword_params
+#   41|   getStmt: [Method] method_with_keyword_params
 #   41|     getParameter: [SimpleParameter] x
 #   41|       getDefiningAccess: [LocalVariableAccess] x
 #   41|     getParameter: [KeywordParameter] foo
@@ -1709,7 +1709,7 @@ params/params.rb:
 #   42|         getAnOperand/getLeftOperand: [LocalVariableAccess] x
 #   42|         getAnOperand/getRightOperand: [LocalVariableAccess] foo
 #   42|       getAnOperand/getRightOperand: [LocalVariableAccess] bar
-#   46|   getStmt: [MethodDeclaration] use_block_with_keyword
+#   46|   getStmt: [Method] use_block_with_keyword
 #   46|     getParameter: [BlockParameter] &block
 #   46|       getDefiningAccess: [LocalVariableAccess] block
 #   47|     getStmt: [MethodCall] call to puts
@@ -1746,7 +1746,7 @@ params/params.rb:
 #   54|           getAnOperand/getLeftOperand: [LocalVariableAccess] x
 #   54|           getAnOperand/getRightOperand: [LocalVariableAccess] y
 #   54|         getAnOperand/getRightOperand: [LocalVariableAccess] z
-#   58|   getStmt: [MethodDeclaration] method_with_optional_params
+#   58|   getStmt: [Method] method_with_optional_params
 #   58|     getParameter: [SimpleParameter] val1
 #   58|       getDefiningAccess: [LocalVariableAccess] val1
 #   58|     getParameter: [OptionalParameter] val2
@@ -1755,7 +1755,7 @@ params/params.rb:
 #   58|     getParameter: [OptionalParameter] val3
 #   58|       getDefiningAccess: [LocalVariableAccess] val3
 #   58|       getDefaultValue: [IntegerLiteral] 100
-#   62|   getStmt: [MethodDeclaration] use_block_with_optional
+#   62|   getStmt: [Method] use_block_with_optional
 #   62|     getParameter: [BlockParameter] &block
 #   62|       getDefiningAccess: [LocalVariableAccess] block
 #   63|     getStmt: [MethodCall] call to call

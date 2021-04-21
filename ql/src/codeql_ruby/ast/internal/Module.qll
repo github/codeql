@@ -301,11 +301,11 @@ private Module getAncestors(Module m) {
   result = getAncestors(m.getAPrependedModule())
 }
 
-MethodDeclaration getMethod(TModule owner, string name) {
+Method getMethod(TModule owner, string name) {
   exists(ModuleBase m | m.getModule() = owner and result = m.getMethod(name))
 }
 
-private MethodDeclaration lookupMethod0(Module m, string name) {
+private Method lookupMethod0(Module m, string name) {
   result = lookupMethod0(m.getAPrependedModule(), name)
   or
   not exists(getMethod(getAncestors(m.getAPrependedModule()), name)) and
@@ -316,7 +316,7 @@ private MethodDeclaration lookupMethod0(Module m, string name) {
   )
 }
 
-MethodDeclaration lookupMethod(Module m, string name) {
+Method lookupMethod(Module m, string name) {
   result = lookupMethod0(m, name)
   or
   not exists(lookupMethod0(m, name)) and
