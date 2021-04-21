@@ -105,6 +105,9 @@
 | main.go:48:3:48:11 | ... += ... | main.go:48:3:48:6 | definition of vals |
 | main.go:49:3:49:6 | definition of keys | main.go:47:20:47:20 | keys = phi(def@46:24, def@49:3) |
 | main.go:49:3:49:11 | ... += ... | main.go:49:3:49:6 | definition of keys |
+| main.go:55:6:55:7 | definition of ch | main.go:56:2:56:3 | ch |
+| main.go:55:6:55:7 | definition of ch | main.go:57:4:57:5 | ch |
+| main.go:55:6:55:7 | zero value for ch | main.go:55:6:55:7 | definition of ch |
 | strings.go:8:12:8:12 | argument corresponding to s | strings.go:8:12:8:12 | definition of s |
 | strings.go:8:12:8:12 | definition of s | strings.go:9:24:9:24 | s |
 | strings.go:8:12:8:12 | definition of s | strings.go:10:27:10:27 | s |

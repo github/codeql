@@ -747,8 +747,8 @@ module IR {
         result = c.getTarget().getResultType(i)
       )
       or
-      exists(TypeAssertExpr tae | this.getBase() = evalExprInstruction(tae) |
-        result = tae.getType().(TupleType).getComponentType(pragma[only_bind_into](i))
+      exists(Expr e | this.getBase() = evalExprInstruction(e) |
+        result = e.getType().(TupleType).getComponentType(pragma[only_bind_into](i))
       )
       or
       exists(Type rangeType | rangeType = s.(RangeStmt).getDomain().getType().getUnderlyingType() |
