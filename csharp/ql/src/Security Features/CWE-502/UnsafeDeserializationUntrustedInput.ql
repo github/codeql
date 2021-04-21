@@ -39,14 +39,6 @@ where
       mc.getQualifier() = taintedTypeUsage.asExpr() and
       mc.getAnArgument() = deserializeCallArg.getNode().asExpr()
     )
-  ) and
-  // exclude deserialization flows with safe instances (i.e. JavaScriptSerializer without resolver)
-  not exists(
-    SafeConstructorTrackingConfig safeConstructorTracking, DataFlow::Node safeCreation,
-    DataFlow::Node safeTypeUsage
-  |
-    safeConstructorTracking.hasFlow(safeCreation, safeTypeUsage) and
-    safeTypeUsage.asExpr().getParent() = deserializeCallArg.getNode().asExpr().getParent()
   )
   or
   // no type check needed - straightforward taint -> sink
