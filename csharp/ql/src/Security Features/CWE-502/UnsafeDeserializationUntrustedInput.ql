@@ -24,18 +24,20 @@ where
   (
     exists(
       DataFlow::Node weakTypeCreation, DataFlow::Node weakTypeUsage,
-      WeakTypeCreationToUsageTrackingConfig weakTypeDeserializerTracking
+      WeakTypeCreationToUsageTrackingConfig weakTypeDeserializerTracking, MethodCall mc
     |
       weakTypeDeserializerTracking.hasFlow(weakTypeCreation, weakTypeUsage) and
-      weakTypeUsage.asExpr().getParent() = deserializeCallArg.getNode().asExpr().getParent()
+      mc.getQualifier() = weakTypeUsage.asExpr() and
+      mc.getAnArgument() = deserializeCallArg.getNode().asExpr()
     )
     or
     exists(
       TaintToObjectTypeTrackingConfig userControlledTypeTracking, DataFlow::Node taintedTypeUsage,
-      DataFlow::Node userInput2
+      DataFlow::Node userInput2, MethodCall mc
     |
       userControlledTypeTracking.hasFlow(userInput2, taintedTypeUsage) and
-      taintedTypeUsage.asExpr().getParent() = deserializeCallArg.getNode().asExpr().getParent()
+      mc.getQualifier() = taintedTypeUsage.asExpr() and
+      mc.getAnArgument() = deserializeCallArg.getNode().asExpr()
     )
   ) and
   // exclude deserialization flows with safe instances (i.e. JavaScriptSerializer without resolver)
