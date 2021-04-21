@@ -165,6 +165,19 @@ String matching
 -  x.\ `regexpMatch <https://codeql.github.com/codeql-standard-libraries/javascript/predicate.string$regexpMatch.1.html>`__\ ("(?i).*escape.*") -- holds if x contains
    "escape" (case insensitive)
 
+Access paths
+------------
+
+When multiple property accesses are chained together they form what's called an "access path".
+
+To identify nodes based on access paths, use the following predicates in `AccessPath <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/GlobalAccessPaths.qll/module.GlobalAccessPaths$AccessPath.html>`__ module:
+
+- AccessPath::`getAReferenceTo <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/GlobalAccessPaths.qll/predicate.GlobalAccessPaths$AccessPath$getAReferenceTo.2.html>`__ -- find nodes that refer to the given access path
+- AccessPath::`getAnAssignmentTo <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/GlobalAccessPaths.qll/predicate.GlobalAccessPaths$AccessPath$getAnAssignmentTo.2.html>`__ -- finds nodes that are assigned to the given access path
+- AccessPath::`getAnAliasedSourceNode <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/GlobalAccessPaths.qll/predicate.GlobalAccessPaths$AccessPath$getAnAliasedSourceNode.1.html>`__ -- finds nodes that refer to the same access path
+
+``getAReferenceTo`` and ``getAnAssignmentTo`` have a 1-argument version for global access paths, and a 2-argument version for access paths starting at a given node.
+
 Type tracking
 -------------
 
