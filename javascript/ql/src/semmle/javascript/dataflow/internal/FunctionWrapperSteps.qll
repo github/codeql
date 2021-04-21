@@ -1,5 +1,4 @@
 private import javascript
-
 private import FlowSteps as FlowSteps
 private import semmle.javascript.internal.CachedStages
 
@@ -21,9 +20,7 @@ private module Cached {
   private module Stage {
     // Forces the module to be computed as part of the type-tracking stage.
     cached
-    predicate forceStage() {
-      Stages::TypeTracking::ref()
-    }
+    predicate forceStage() { Stages::TypeTracking::ref() }
   }
 
   /**
@@ -75,7 +72,9 @@ private module Cached {
     //   function wrap(f) { return (x, y) => f(x, y) };
     //
     // add steps through calls to that function: `g -> wrap(g)`
-    exists(DataFlow::FunctionNode wrapperFunction, DataFlow::SourceNode param, DataFlow::Node paramUse |
+    exists(
+      DataFlow::FunctionNode wrapperFunction, DataFlow::SourceNode param, DataFlow::Node paramUse
+    |
       FlowSteps::argumentPassing(succ, pred, wrapperFunction.getFunction(), param) and
       param.flowsTo(paramUse) and
       functionForwardingStep(paramUse, wrapperFunction.getReturnNode().getALocalSource())
@@ -133,7 +132,9 @@ private module Cached {
     //   function wrap(f) { return (x, y) => f(x, y) };
     //
     // add steps through calls to that function: `g -> wrap(g)`
-    exists(DataFlow::FunctionNode wrapperFunction, DataFlow::SourceNode param, DataFlow::Node paramUse |
+    exists(
+      DataFlow::FunctionNode wrapperFunction, DataFlow::SourceNode param, DataFlow::Node paramUse
+    |
       FlowSteps::argumentPassing(succ, pred, wrapperFunction.getFunction(), param) and
       param.flowsTo(paramUse) and
       functionOneWayForwardingStep(paramUse, wrapperFunction.getReturnNode().getALocalSource())
