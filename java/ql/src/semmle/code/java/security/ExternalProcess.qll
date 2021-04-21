@@ -18,7 +18,7 @@ abstract class ExecCallable extends Callable {
 class ArgumentToExec extends Expr {
   ArgumentToExec() {
     exists(Call execCall, ExecCallable execCallable, int i |
-      execCall.getArgument(i) = this and
+      execCall.getArgument(pragma[only_bind_into](i)) = this and
       execCallable = execCall.getCallee() and
       i = execCallable.getAnExecutedArgument()
     )
