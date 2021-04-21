@@ -51,6 +51,6 @@ func QueryMapTest(w http.ResponseWriter, r http.Request) {
 	keys, ok := r.URL.Query()["data_id"]
 	if ok && len(keys[0]) > 0 {
 		key := keys[0]
-		w.Write([]byte(key)) // BAD
+		w.Write([]byte(key)) // BAD: query string is user-controlled
 	}
 }
