@@ -38,6 +38,7 @@ def test_taint(name = "World!", number="0", foo="foo"):  # $requestHandler route
         # By default werkzeug.datastructures.ImmutableMultiDict -- although can be changed :\
         request.args, # $ tainted
         request.args['key'], # $ tainted
+        request.args.get('key'), # $ tainted
         request.args.getlist('key'), # $ tainted
 
         # werkzeug.datastructures.Authorization (a dict, with some properties)
@@ -69,6 +70,9 @@ def test_taint(name = "World!", number="0", foo="foo"):  # $requestHandler route
         request.files['key'], # $ tainted
         request.files['key'].filename, # $ MISSING: tainted
         request.files['key'].stream, # $ MISSING: tainted
+        request.files.get('key'), # $ tainted
+        request.files.get('key').filename, # $ MISSING: tainted
+        request.files.get('key').stream, # $ MISSING: tainted
         request.files.getlist('key'), # $ tainted
         request.files.getlist('key')[0].filename, # $ MISSING: tainted
         request.files.getlist('key')[0].stream, # $ MISSING: tainted
@@ -76,6 +80,7 @@ def test_taint(name = "World!", number="0", foo="foo"):  # $requestHandler route
         # By default werkzeug.datastructures.ImmutableMultiDict -- although can be changed :\
         request.form, # $ tainted
         request.form['key'], # $ tainted
+        request.form.get('key'), # $ tainted
         request.form.getlist('key'), # $ tainted
 
         request.get_data(), # $ tainted
@@ -88,6 +93,7 @@ def test_taint(name = "World!", number="0", foo="foo"):  # $requestHandler route
         # which has same interface as werkzeug.datastructures.Headers
         request.headers, # $ tainted
         request.headers['key'], # $ tainted
+        request.headers.get('key'), # $ tainted
         request.headers.get_all('key'), # $ MISSING: tainted
         request.headers.getlist('key'), # $ MISSING: tainted
         # two ways to get (k, v) lists
@@ -128,11 +134,13 @@ def test_taint(name = "World!", number="0", foo="foo"):  # $requestHandler route
         # werkzeug.datastructures.CombinedMultiDict, which is basically just a werkzeug.datastructures.MultiDict
         request.values, # $ tainted
         request.values['key'], # $ tainted
+        request.values.get('key'), # $ tainted
         request.values.getlist('key'), # $ tainted
 
         # dict
         request.view_args, # $ tainted
         request.view_args['key'], # $ tainted
+        request.view_args.get('key'), # $ tainted
     )
 
     ensure_not_tainted(

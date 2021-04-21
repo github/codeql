@@ -298,54 +298,7 @@ private module PrivateDjango {
   // django
   // ---------------------------------------------------------------------------
   /** Gets a reference to the `django` module. */
-  private DataFlow::Node django(DataFlow::TypeTracker t) {
-    t.start() and
-    result = DataFlow::importNode("django")
-    or
-    exists(DataFlow::TypeTracker t2 | result = django(t2).track(t2, t))
-  }
-
-  /** Gets a reference to the `django` module. */
-  DataFlow::Node django() { result = django(DataFlow::TypeTracker::end()) }
-
-  /**
-   * Gets a reference to the attribute `attr_name` of the `django` module.
-   * WARNING: Only holds for a few predefined attributes.
-   */
-  private DataFlow::Node django_attr(DataFlow::TypeTracker t, string attr_name) {
-    attr_name in ["db", "urls", "http", "conf", "views", "shortcuts"] and
-    (
-      t.start() and
-      result = DataFlow::importNode("django" + "." + attr_name)
-      or
-      t.startInAttr(attr_name) and
-      result = DataFlow::importNode("django")
-    )
-    or
-    // Due to bad performance when using normal setup with `django_attr(t2, attr_name).track(t2, t)`
-    // we have inlined that code and forced a join
-    exists(DataFlow::TypeTracker t2 |
-      exists(DataFlow::StepSummary summary |
-        django_attr_first_join(t2, attr_name, result, summary) and
-        t = t2.append(summary)
-      )
-    )
-  }
-
-  pragma[nomagic]
-  private predicate django_attr_first_join(
-    DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res, DataFlow::StepSummary summary
-  ) {
-    DataFlow::StepSummary::step(django_attr(t2, attr_name), res, summary)
-  }
-
-  /**
-   * Gets a reference to the attribute `attr_name` of the `django` module.
-   * WARNING: Only holds for a few predefined attributes.
-   */
-  private DataFlow::Node django_attr(string attr_name) {
-    result = django_attr(DataFlow::TypeTracker::end(), attr_name)
-  }
+  API::Node django() { result = API::moduleImport("django") }
 
   /** Provides models for the `django` module. */
   module django {
@@ -353,7 +306,7 @@ private module PrivateDjango {
     // django.db
     // -------------------------------------------------------------------------
     /** Gets a reference to the `django.db` module. */
-    DataFlow::Node db() { result = django_attr("db") }
+    API::Node db() { result = django().getMember("db") }
 
     /**
      * `django.db` implements PEP249, providing ways to execute SQL statements against a database.
@@ -365,39 +318,17 @@ private module PrivateDjango {
     /** Provides models for the `django.db` module. */
     module db {
       /** Gets a reference to the `django.db.connection` object. */
-      private DataFlow::Node connection(DataFlow::TypeTracker t) {
-        t.start() and
-        result = DataFlow::importNode("django.db.connection")
-        or
-        t.startInAttr("connection") and
-        result = db()
-        or
-        exists(DataFlow::TypeTracker t2 | result = connection(t2).track(t2, t))
-      }
-
-      /** Gets a reference to the `django.db.connection` object. */
-      DataFlow::Node connection() { result = connection(DataFlow::TypeTracker::end()) }
+      API::Node connection() { result = db().getMember("connection") }
 
       class DjangoDbConnection extends Connection::InstanceSource {
-        DjangoDbConnection() { this = connection() }
+        DjangoDbConnection() { this = connection().getAUse() }
       }
 
       // -------------------------------------------------------------------------
       // django.db.models
       // -------------------------------------------------------------------------
       /** Gets a reference to the `django.db.models` module. */
-      private DataFlow::Node models(DataFlow::TypeTracker t) {
-        t.start() and
-        result = DataFlow::importNode("django.db.models")
-        or
-        t.startInAttr("models") and
-        result = django()
-        or
-        exists(DataFlow::TypeTracker t2 | result = models(t2).track(t2, t))
-      }
-
-      /** Gets a reference to the `django.db.models` module. */
-      DataFlow::Node models() { result = models(DataFlow::TypeTracker::end()) }
+      API::Node models() { result = db().getMember("models") }
 
       /** Provides models for the `django.db.models` module. */
       module models {
@@ -448,48 +379,28 @@ private module PrivateDjango {
         API::Node querySet() { result = querySetReturningMethod(_).getReturn() }
 
         /** Gets a reference to the `django.db.models.expressions` module. */
-        private DataFlow::Node expressions(DataFlow::TypeTracker t) {
-          t.start() and
-          result = DataFlow::importNode("django.db.models.expressions")
-          or
-          t.startInAttr("expressions") and
-          result = models()
-          or
-          exists(DataFlow::TypeTracker t2 | result = expressions(t2).track(t2, t))
-        }
-
-        /** Gets a reference to the `django.db.models.expressions` module. */
-        DataFlow::Node expressions() { result = expressions(DataFlow::TypeTracker::end()) }
+        API::Node expressions() { result = models().getMember("expressions") }
 
         /** Provides models for the `django.db.models.expressions` module. */
         module expressions {
           /** Provides models for the `django.db.models.expressions.RawSQL` class. */
           module RawSQL {
-            /** Gets a reference to the `django.db.models.expressions.RawSQL` class. */
-            private DataFlow::Node classRef(DataFlow::TypeTracker t) {
-              t.start() and
-              result = DataFlow::importNode("django.db.models.expressions.RawSQL")
-              or
-              t.start() and
-              result = DataFlow::importNode("django.db.models.RawSQL") // Commonly used alias
-              or
-              t.startInAttr("RawSQL") and
-              result = expressions()
-              or
-              exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
-            }
-
             /**
              * Gets a reference to the `django.db.models.expressions.RawSQL` class.
              */
-            DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
+            API::Node classRef() {
+              result = expressions().getMember("RawSQL")
+              or
+              // Commonly used alias
+              result = models().getMember("RawSQL")
+            }
 
             /** Gets an instance of the `django.db.models.expressions.RawSQL` class. */
-            private DataFlow::Node instance(DataFlow::TypeTracker t, ControlFlowNode sql) {
+            private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t, ControlFlowNode sql) {
               t.start() and
-              exists(CallNode c | result.asCfgNode() = c |
-                c.getFunction() = classRef().asCfgNode() and
-                c.getArg(0) = sql
+              exists(DataFlow::CallCfgNode c | result = c |
+                c = classRef().getACall() and
+                c.getArg(0).asCfgNode() = sql
               )
               or
               exists(DataFlow::TypeTracker t2 | result = instance(t2, sql).track(t2, t))
@@ -497,7 +408,7 @@ private module PrivateDjango {
 
             /** Gets an instance of the `django.db.models.expressions.RawSQL` class. */
             DataFlow::Node instance(ControlFlowNode sql) {
-              result = instance(DataFlow::TypeTracker::end(), sql)
+              instance(DataFlow::TypeTracker::end(), sql).flowsTo(result)
             }
           }
         }
@@ -556,112 +467,45 @@ private module PrivateDjango {
     // django.urls
     // -------------------------------------------------------------------------
     /** Gets a reference to the `django.urls` module. */
-    DataFlow::Node urls() { result = django_attr("urls") }
+    API::Node urls() { result = django().getMember("urls") }
 
     /** Provides models for the `django.urls` module */
     module urls {
       /**
-       * Gets a reference to the attribute `attr_name` of the `urls` module.
-       * WARNING: Only holds for a few predefined attributes.
-       */
-      private DataFlow::Node urls_attr(DataFlow::TypeTracker t, string attr_name) {
-        attr_name in ["path", "re_path"] and
-        (
-          t.start() and
-          result = DataFlow::importNode("django.urls" + "." + attr_name)
-          or
-          t.startInAttr(attr_name) and
-          result = DataFlow::importNode("django.urls")
-          or
-          t.startInAttr(attr_name) and
-          result = django::urls()
-        )
-        or
-        // Due to bad performance when using normal setup with `urls_attr(t2, attr_name).track(t2, t)`
-        // we have inlined that code and forced a join
-        exists(DataFlow::TypeTracker t2 |
-          exists(DataFlow::StepSummary summary |
-            urls_attr_first_join(t2, attr_name, result, summary) and
-            t = t2.append(summary)
-          )
-        )
-      }
-
-      pragma[nomagic]
-      private predicate urls_attr_first_join(
-        DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
-        DataFlow::StepSummary summary
-      ) {
-        DataFlow::StepSummary::step(urls_attr(t2, attr_name), res, summary)
-      }
-
-      /**
-       * Gets a reference to the attribute `attr_name` of the `urls` module.
-       * WARNING: Only holds for a few predefined attributes.
-       */
-      private DataFlow::Node urls_attr(string attr_name) {
-        result = urls_attr(DataFlow::TypeTracker::end(), attr_name)
-      }
-
-      /**
        * Gets a reference to the `django.urls.path` function.
        * See https://docs.djangoproject.com/en/3.0/ref/urls/#path
        */
-      DataFlow::Node path() { result = urls_attr("path") }
+      API::Node path() { result = urls().getMember("path") }
 
       /**
        * Gets a reference to the `django.urls.re_path` function.
        * See https://docs.djangoproject.com/en/3.0/ref/urls/#re_path
        */
-      DataFlow::Node re_path() { result = urls_attr("re_path") }
+      API::Node re_path() { result = urls().getMember("re_path") }
     }
 
     // -------------------------------------------------------------------------
     // django.conf
     // -------------------------------------------------------------------------
     /** Gets a reference to the `django.conf` module. */
-    DataFlow::Node conf() { result = django_attr("conf") }
+    API::Node conf() { result = django().getMember("conf") }
 
     /** Provides models for the `django.conf` module */
     module conf {
-      // -------------------------------------------------------------------------
-      // django.conf.urls
-      // -------------------------------------------------------------------------
-      /** Gets a reference to the `django.conf.urls` module. */
-      private DataFlow::Node urls(DataFlow::TypeTracker t) {
-        t.start() and
-        result = DataFlow::importNode("django.conf.urls")
-        or
-        t.startInAttr("urls") and
-        result = conf()
-        or
-        exists(DataFlow::TypeTracker t2 | result = urls(t2).track(t2, t))
-      }
-
-      // NOTE: had to rename due to shadowing rules in QL
-      /** Gets a reference to the `django.conf.urls` module. */
-      DataFlow::Node conf_urls() { result = urls(DataFlow::TypeTracker::end()) }
-
-      // NOTE: had to rename due to shadowing rules in QL
-      /** Provides models for the `django.conf.urls` module */
       module conf_urls {
-        /** Gets a reference to the `django.conf.urls.url` function. */
-        private DataFlow::Node url(DataFlow::TypeTracker t) {
-          t.start() and
-          result = DataFlow::importNode("django.conf.urls.url")
-          or
-          t.startInAttr("url") and
-          result = conf_urls()
-          or
-          exists(DataFlow::TypeTracker t2 | result = url(t2).track(t2, t))
-        }
+        // -------------------------------------------------------------------------
+        // django.conf.urls
+        // -------------------------------------------------------------------------
+        // NOTE: had to rename due to shadowing rules in QL
+        /** Gets a reference to the `django.conf.urls` module. */
+        API::Node conf_urls() { result = conf().getMember("urls") }
 
         /**
          * Gets a reference to the `django.conf.urls.url` function.
          *
          * See https://docs.djangoproject.com/en/1.11/ref/urls/#django.conf.urls.url
          */
-        DataFlow::Node url() { result = url(DataFlow::TypeTracker::end()) }
+        API::Node url() { result = conf_urls().getMember("url") }
       }
     }
 
@@ -669,109 +513,18 @@ private module PrivateDjango {
     // django.http
     // -------------------------------------------------------------------------
     /** Gets a reference to the `django.http` module. */
-    DataFlow::Node http() { result = django_attr("http") }
+    API::Node http() { result = django().getMember("http") }
 
     /** Provides models for the `django.http` module */
     module http {
-      /**
-       * Gets a reference to the attribute `attr_name` of the `django.http` module.
-       * WARNING: Only holds for a few predefined attributes.
-       */
-      private DataFlow::Node http_attr(DataFlow::TypeTracker t, string attr_name) {
-        attr_name in [
-            // request
-            "request", "HttpRequest",
-            // response
-            "response", "HttpResponse",
-            // HttpResponse subclasses
-            "HttpResponseRedirect", "HttpResponsePermanentRedirect", "HttpResponseNotModified",
-            "HttpResponseBadRequest", "HttpResponseNotFound", "HttpResponseForbidden",
-            "HttpResponseNotAllowed", "HttpResponseGone", "HttpResponseServerError", "JsonResponse",
-            // HttpResponse-like classes
-            "StreamingHttpResponse", "FileResponse"
-          ] and
-        (
-          t.start() and
-          result = DataFlow::importNode("django.http" + "." + attr_name)
-          or
-          t.startInAttr(attr_name) and
-          result = django::http()
-        )
-        or
-        // Due to bad performance when using normal setup with `http_attr(t2, attr_name).track(t2, t)`
-        // we have inlined that code and forced a join
-        exists(DataFlow::TypeTracker t2 |
-          exists(DataFlow::StepSummary summary |
-            http_attr_first_join(t2, attr_name, result, summary) and
-            t = t2.append(summary)
-          )
-        )
-      }
-
-      pragma[nomagic]
-      private predicate http_attr_first_join(
-        DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
-        DataFlow::StepSummary summary
-      ) {
-        DataFlow::StepSummary::step(http_attr(t2, attr_name), res, summary)
-      }
-
-      /**
-       * Gets a reference to the attribute `attr_name` of the `django.http` module.
-       * WARNING: Only holds for a few predefined attributes.
-       */
-      private DataFlow::Node http_attr(string attr_name) {
-        result = http_attr(DataFlow::TypeTracker::end(), attr_name)
-      }
-
       // ---------------------------------------------------------------------------
       // django.http.request
       // ---------------------------------------------------------------------------
       /** Gets a reference to the `django.http.request` module. */
-      DataFlow::Node request() { result = http_attr("request") }
+      API::Node request() { result = http().getMember("request") }
 
       /** Provides models for the `django.http.request` module. */
       module request {
-        /**
-         * Gets a reference to the attribute `attr_name` of the `django.http.request` module.
-         * WARNING: Only holds for a few predefined attributes.
-         */
-        private DataFlow::Node request_attr(DataFlow::TypeTracker t, string attr_name) {
-          attr_name in ["HttpRequest"] and
-          (
-            t.start() and
-            result = DataFlow::importNode("django.http.request" + "." + attr_name)
-            or
-            t.startInAttr(attr_name) and
-            result = django::http::request()
-          )
-          or
-          // Due to bad performance when using normal setup with `request_attr(t2, attr_name).track(t2, t)`
-          // we have inlined that code and forced a join
-          exists(DataFlow::TypeTracker t2 |
-            exists(DataFlow::StepSummary summary |
-              request_attr_first_join(t2, attr_name, result, summary) and
-              t = t2.append(summary)
-            )
-          )
-        }
-
-        pragma[nomagic]
-        private predicate request_attr_first_join(
-          DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
-          DataFlow::StepSummary summary
-        ) {
-          DataFlow::StepSummary::step(request_attr(t2, attr_name), res, summary)
-        }
-
-        /**
-         * Gets a reference to the attribute `attr_name` of the `django.http.request` module.
-         * WARNING: Only holds for a few predefined attributes.
-         */
-        private DataFlow::Node request_attr(string attr_name) {
-          result = request_attr(DataFlow::TypeTracker::end(), attr_name)
-        }
-
         /**
          * Provides models for the `django.http.request.HttpRequest` class
          *
@@ -779,19 +532,12 @@ private module PrivateDjango {
          */
         module HttpRequest {
           /** Gets a reference to the `django.http.request.HttpRequest` class. */
-          private DataFlow::Node classRef(DataFlow::TypeTracker t) {
-            t.start() and
-            result = request_attr("HttpRequest")
+          API::Node classRef() {
+            result = request().getMember("HttpRequest")
             or
             // handle django.http.HttpRequest alias
-            t.start() and
-            result = http_attr("HttpRequest")
-            or
-            exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
+            result = http().getMember("HttpRequest")
           }
-
-          /** Gets a reference to the `django.http.request.HttpRequest` class. */
-          DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
 
           /**
            * A source of instances of `django.http.request.HttpRequest`, extend this class to model new instances.
@@ -806,7 +552,7 @@ private module PrivateDjango {
           abstract class InstanceSource extends DataFlow::Node { }
 
           /** Gets a reference to an instance of `django.http.request.HttpRequest`. */
-          private DataFlow::Node instance(DataFlow::TypeTracker t) {
+          private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
             t.start() and
             result instanceof InstanceSource
             or
@@ -814,7 +560,7 @@ private module PrivateDjango {
           }
 
           /** Gets a reference to an instance of `django.http.request.HttpRequest`. */
-          DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
+          DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
         }
       }
 
@@ -822,82 +568,25 @@ private module PrivateDjango {
       // django.http.response
       // -------------------------------------------------------------------------
       /** Gets a reference to the `django.http.response` module. */
-      DataFlow::Node response() { result = http_attr("response") }
+      API::Node response() { result = http().getMember("response") }
 
       /** Provides models for the `django.http.response` module */
       module response {
-        /**
-         * Gets a reference to the attribute `attr_name` of the `django.http.response` module.
-         * WARNING: Only holds for a few predefined attributes.
-         */
-        private DataFlow::Node response_attr(DataFlow::TypeTracker t, string attr_name) {
-          attr_name in [
-              "HttpResponse",
-              // HttpResponse subclasses
-              "HttpResponseRedirect", "HttpResponsePermanentRedirect", "HttpResponseNotModified",
-              "HttpResponseBadRequest", "HttpResponseNotFound", "HttpResponseForbidden",
-              "HttpResponseNotAllowed", "HttpResponseGone", "HttpResponseServerError",
-              "JsonResponse",
-              // HttpResponse-like classes
-              "StreamingHttpResponse", "FileResponse"
-            ] and
-          (
-            t.start() and
-            result = DataFlow::importNode("django.http.response" + "." + attr_name)
-            or
-            t.startInAttr(attr_name) and
-            result = response()
-          )
-          or
-          // Due to bad performance when using normal setup with `response_attr(t2, attr_name).track(t2, t)`
-          // we have inlined that code and forced a join
-          exists(DataFlow::TypeTracker t2 |
-            exists(DataFlow::StepSummary summary |
-              response_attr_first_join(t2, attr_name, result, summary) and
-              t = t2.append(summary)
-            )
-          )
-        }
-
-        pragma[nomagic]
-        private predicate response_attr_first_join(
-          DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
-          DataFlow::StepSummary summary
-        ) {
-          DataFlow::StepSummary::step(response_attr(t2, attr_name), res, summary)
-        }
-
-        /**
-         * Gets a reference to the attribute `attr_name` of the `django.http.response` module.
-         * WARNING: Only holds for a few predefined attributes.
-         */
-        private DataFlow::Node response_attr(string attr_name) {
-          result = response_attr(DataFlow::TypeTracker::end(), attr_name)
-        }
-
         /**
          * Provides models for the `django.http.response.HttpResponse` class
          *
          * See https://docs.djangoproject.com/en/3.1/ref/request-response/#django.http.HttpResponse.
          */
         module HttpResponse {
-          /** Gets a reference to the `django.http.response.HttpResponse` class. */
-          private DataFlow::Node classRef(DataFlow::TypeTracker t) {
-            t.start() and
-            result = response_attr("HttpResponse")
+          API::Node baseClassRef() {
+            result = response().getMember("HttpResponse")
             or
             // Handle `django.http.HttpResponse` alias
-            t.start() and
-            result = http_attr("HttpResponse")
-            or
-            // subclass
-            result.asExpr().(ClassExpr).getABase() = classRef(t.continue()).asExpr()
-            or
-            exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
+            result = http().getMember("HttpResponse")
           }
 
           /** Gets a reference to the `django.http.response.HttpResponse` class. */
-          DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
+          API::Node classRef() { result = baseClassRef().getASubclass*() }
 
           /**
            * A source of instances of `django.http.response.HttpResponse`, extend this class to model new instances.
@@ -912,10 +601,8 @@ private module PrivateDjango {
           }
 
           /** A direct instantiation of `django.http.response.HttpResponse`. */
-          private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
-            override CallNode node;
-
-            ClassInstantiation() { node.getFunction() = classRef().asCfgNode() }
+          private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
+            ClassInstantiation() { this = classRef().getACall() }
 
             override DataFlow::Node getBody() {
               result.asCfgNode() in [node.getArg(0), node.getArgByName("content")]
@@ -930,7 +617,7 @@ private module PrivateDjango {
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponse`. */
-          private DataFlow::Node instance(DataFlow::TypeTracker t) {
+          private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
             t.start() and
             result instanceof InstanceSource
             or
@@ -938,7 +625,7 @@ private module PrivateDjango {
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponse`. */
-          DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
+          DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
         }
 
         // ---------------------------------------------------------------------------
@@ -952,22 +639,15 @@ private module PrivateDjango {
          */
         module HttpResponseRedirect {
           /** Gets a reference to the `django.http.response.HttpResponseRedirect` class. */
-          private DataFlow::Node classRef(DataFlow::TypeTracker t) {
-            t.start() and
-            result = response_attr("HttpResponseRedirect")
+          API::Node baseClassRef() {
+            result = response().getMember("HttpResponseRedirect")
             or
             // Handle `django.http.HttpResponseRedirect` alias
-            t.start() and
-            result = http_attr("HttpResponseRedirect")
-            or
-            // subclass
-            result.asExpr().(ClassExpr).getABase() = classRef(t.continue()).asExpr()
-            or
-            exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
+            result = http().getMember("HttpResponseRedirect")
           }
 
-          /** Gets a reference to the `django.http.response.HttpResponseRedirect` class. */
-          DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
+          /** Gets a reference to a subclass of the `django.http.response.HttpResponseRedirect` class. */
+          API::Node classRef() { result = baseClassRef().getASubclass*() }
 
           /**
            * A source of instances of `django.http.response.HttpResponseRedirect`, extend this class to model new instances.
@@ -982,10 +662,8 @@ private module PrivateDjango {
             HTTP::Server::HttpRedirectResponse::Range, DataFlow::Node { }
 
           /** A direct instantiation of `django.http.response.HttpResponseRedirect`. */
-          private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
-            override CallNode node;
-
-            ClassInstantiation() { node.getFunction() = classRef().asCfgNode() }
+          private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
+            ClassInstantiation() { this = classRef().getACall() }
 
             override DataFlow::Node getBody() {
               // note that even though browsers like Chrome usually doesn't fetch the
@@ -1005,7 +683,7 @@ private module PrivateDjango {
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponseRedirect`. */
-          private DataFlow::Node instance(DataFlow::TypeTracker t) {
+          private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
             t.start() and
             result instanceof InstanceSource
             or
@@ -1013,7 +691,7 @@ private module PrivateDjango {
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponseRedirect`. */
-          DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
+          DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
         }
 
         /**
@@ -1023,22 +701,15 @@ private module PrivateDjango {
          */
         module HttpResponsePermanentRedirect {
           /** Gets a reference to the `django.http.response.HttpResponsePermanentRedirect` class. */
-          private DataFlow::Node classRef(DataFlow::TypeTracker t) {
-            t.start() and
-            result = response_attr("HttpResponsePermanentRedirect")
+          API::Node baseClassRef() {
+            result = response().getMember("HttpResponsePermanentRedirect")
             or
             // Handle `django.http.HttpResponsePermanentRedirect` alias
-            t.start() and
-            result = http_attr("HttpResponsePermanentRedirect")
-            or
-            // subclass
-            result.asExpr().(ClassExpr).getABase() = classRef(t.continue()).asExpr()
-            or
-            exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
+            result = http().getMember("HttpResponsePermanentRedirect")
           }
 
           /** Gets a reference to the `django.http.response.HttpResponsePermanentRedirect` class. */
-          DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
+          API::Node classRef() { result = baseClassRef().getASubclass*() }
 
           /**
            * A source of instances of `django.http.response.HttpResponsePermanentRedirect`, extend this class to model new instances.
@@ -1053,10 +724,8 @@ private module PrivateDjango {
             HTTP::Server::HttpRedirectResponse::Range, DataFlow::Node { }
 
           /** A direct instantiation of `django.http.response.HttpResponsePermanentRedirect`. */
-          private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
-            override CallNode node;
-
-            ClassInstantiation() { node.getFunction() = classRef().asCfgNode() }
+          private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
+            ClassInstantiation() { this = classRef().getACall() }
 
             override DataFlow::Node getBody() {
               // note that even though browsers like Chrome usually doesn't fetch the
@@ -1076,7 +745,7 @@ private module PrivateDjango {
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponsePermanentRedirect`. */
-          private DataFlow::Node instance(DataFlow::TypeTracker t) {
+          private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
             t.start() and
             result instanceof InstanceSource
             or
@@ -1084,7 +753,7 @@ private module PrivateDjango {
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponsePermanentRedirect`. */
-          DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
+          DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
         }
 
         /**
@@ -1094,23 +763,16 @@ private module PrivateDjango {
          */
         module HttpResponseNotModified {
           /** Gets a reference to the `django.http.response.HttpResponseNotModified` class. */
-          private DataFlow::Node classRef(DataFlow::TypeTracker t) {
-            t.start() and
-            result = response_attr("HttpResponseNotModified")
+          API::Node baseClassRef() {
+            result = response().getMember("HttpResponseNotModified")
             or
             // TODO: remove/expand this part of the template as needed
             // Handle `django.http.HttpResponseNotModified` alias
-            t.start() and
-            result = http_attr("HttpResponseNotModified")
-            or
-            // subclass
-            result.asExpr().(ClassExpr).getABase() = classRef(t.continue()).asExpr()
-            or
-            exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
+            result = http().getMember("HttpResponseNotModified")
           }
 
           /** Gets a reference to the `django.http.response.HttpResponseNotModified` class. */
-          DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
+          API::Node classRef() { result = baseClassRef().getASubclass*() }
 
           /**
            * A source of instances of `django.http.response.HttpResponseNotModified`, extend this class to model new instances.
@@ -1124,10 +786,8 @@ private module PrivateDjango {
           abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
 
           /** A direct instantiation of `django.http.response.HttpResponseNotModified`. */
-          private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
-            override CallNode node;
-
-            ClassInstantiation() { node.getFunction() = classRef().asCfgNode() }
+          private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
+            ClassInstantiation() { this = classRef().getACall() }
 
             override DataFlow::Node getBody() { none() }
 
@@ -1138,7 +798,7 @@ private module PrivateDjango {
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponseNotModified`. */
-          private DataFlow::Node instance(DataFlow::TypeTracker t) {
+          private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
             t.start() and
             result instanceof InstanceSource
             or
@@ -1146,7 +806,7 @@ private module PrivateDjango {
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponseNotModified`. */
-          DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
+          DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
         }
 
         /**
@@ -1156,22 +816,15 @@ private module PrivateDjango {
          */
         module HttpResponseBadRequest {
           /** Gets a reference to the `django.http.response.HttpResponseBadRequest` class. */
-          private DataFlow::Node classRef(DataFlow::TypeTracker t) {
-            t.start() and
-            result = response_attr("HttpResponseBadRequest")
+          API::Node baseClassRef() {
+            result = response().getMember("HttpResponseBadRequest")
             or
             // Handle `django.http.HttpResponseBadRequest` alias
-            t.start() and
-            result = http_attr("HttpResponseBadRequest")
-            or
-            // subclass
-            result.asExpr().(ClassExpr).getABase() = classRef(t.continue()).asExpr()
-            or
-            exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
+            result = http().getMember("HttpResponseBadRequest")
           }
 
           /** Gets a reference to the `django.http.response.HttpResponseBadRequest` class. */
-          DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
+          API::Node classRef() { result = baseClassRef().getASubclass*() }
 
           /**
            * A source of instances of `django.http.response.HttpResponseBadRequest`, extend this class to model new instances.
@@ -1185,10 +838,8 @@ private module PrivateDjango {
           abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
 
           /** A direct instantiation of `django.http.response.HttpResponseBadRequest`. */
-          private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
-            override CallNode node;
-
-            ClassInstantiation() { node.getFunction() = classRef().asCfgNode() }
+          private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
+            ClassInstantiation() { this = classRef().getACall() }
 
             override DataFlow::Node getBody() {
               result.asCfgNode() in [node.getArg(0), node.getArgByName("content")]
@@ -1201,7 +852,7 @@ private module PrivateDjango {
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponseBadRequest`. */
-          private DataFlow::Node instance(DataFlow::TypeTracker t) {
+          private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
             t.start() and
             result instanceof InstanceSource
             or
@@ -1209,7 +860,7 @@ private module PrivateDjango {
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponseBadRequest`. */
-          DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
+          DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
         }
 
         /**
@@ -1219,22 +870,15 @@ private module PrivateDjango {
          */
         module HttpResponseNotFound {
           /** Gets a reference to the `django.http.response.HttpResponseNotFound` class. */
-          private DataFlow::Node classRef(DataFlow::TypeTracker t) {
-            t.start() and
-            result = response_attr("HttpResponseNotFound")
+          API::Node baseClassRef() {
+            result = response().getMember("HttpResponseNotFound")
             or
             // Handle `django.http.HttpResponseNotFound` alias
-            t.start() and
-            result = http_attr("HttpResponseNotFound")
-            or
-            // subclass
-            result.asExpr().(ClassExpr).getABase() = classRef(t.continue()).asExpr()
-            or
-            exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
+            result = http().getMember("HttpResponseNotFound")
           }
 
           /** Gets a reference to the `django.http.response.HttpResponseNotFound` class. */
-          DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
+          API::Node classRef() { result = baseClassRef().getASubclass*() }
 
           /**
            * A source of instances of `django.http.response.HttpResponseNotFound`, extend this class to model new instances.
@@ -1248,10 +892,8 @@ private module PrivateDjango {
           abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
 
           /** A direct instantiation of `django.http.response.HttpResponseNotFound`. */
-          private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
-            override CallNode node;
-
-            ClassInstantiation() { node.getFunction() = classRef().asCfgNode() }
+          private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
+            ClassInstantiation() { this = classRef().getACall() }
 
             override DataFlow::Node getBody() {
               result.asCfgNode() in [node.getArg(0), node.getArgByName("content")]
@@ -1264,7 +906,7 @@ private module PrivateDjango {
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponseNotFound`. */
-          private DataFlow::Node instance(DataFlow::TypeTracker t) {
+          private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
             t.start() and
             result instanceof InstanceSource
             or
@@ -1272,7 +914,7 @@ private module PrivateDjango {
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponseNotFound`. */
-          DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
+          DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
         }
 
         /**
@@ -1282,22 +924,15 @@ private module PrivateDjango {
          */
         module HttpResponseForbidden {
           /** Gets a reference to the `django.http.response.HttpResponseForbidden` class. */
-          private DataFlow::Node classRef(DataFlow::TypeTracker t) {
-            t.start() and
-            result = response_attr("HttpResponseForbidden")
+          API::Node baseClassRef() {
+            result = response().getMember("HttpResponseForbidden")
             or
             // Handle `django.http.HttpResponseForbidden` alias
-            t.start() and
-            result = http_attr("HttpResponseForbidden")
-            or
-            // subclass
-            result.asExpr().(ClassExpr).getABase() = classRef(t.continue()).asExpr()
-            or
-            exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
+            result = http().getMember("HttpResponseForbidden")
           }
 
           /** Gets a reference to the `django.http.response.HttpResponseForbidden` class. */
-          DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
+          API::Node classRef() { result = baseClassRef().getASubclass*() }
 
           /**
            * A source of instances of `django.http.response.HttpResponseForbidden`, extend this class to model new instances.
@@ -1311,10 +946,8 @@ private module PrivateDjango {
           abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
 
           /** A direct instantiation of `django.http.response.HttpResponseForbidden`. */
-          private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
-            override CallNode node;
-
-            ClassInstantiation() { node.getFunction() = classRef().asCfgNode() }
+          private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
+            ClassInstantiation() { this = classRef().getACall() }
 
             override DataFlow::Node getBody() {
               result.asCfgNode() in [node.getArg(0), node.getArgByName("content")]
@@ -1327,7 +960,7 @@ private module PrivateDjango {
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponseForbidden`. */
-          private DataFlow::Node instance(DataFlow::TypeTracker t) {
+          private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
             t.start() and
             result instanceof InstanceSource
             or
@@ -1335,7 +968,7 @@ private module PrivateDjango {
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponseForbidden`. */
-          DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
+          DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
         }
 
         /**
@@ -1345,22 +978,15 @@ private module PrivateDjango {
          */
         module HttpResponseNotAllowed {
           /** Gets a reference to the `django.http.response.HttpResponseNotAllowed` class. */
-          private DataFlow::Node classRef(DataFlow::TypeTracker t) {
-            t.start() and
-            result = response_attr("HttpResponseNotAllowed")
+          API::Node baseClassRef() {
+            result = response().getMember("HttpResponseNotAllowed")
             or
             // Handle `django.http.HttpResponseNotAllowed` alias
-            t.start() and
-            result = http_attr("HttpResponseNotAllowed")
-            or
-            // subclass
-            result.asExpr().(ClassExpr).getABase() = classRef(t.continue()).asExpr()
-            or
-            exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
+            result = http().getMember("HttpResponseNotAllowed")
           }
 
           /** Gets a reference to the `django.http.response.HttpResponseNotAllowed` class. */
-          DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
+          API::Node classRef() { result = baseClassRef().getASubclass*() }
 
           /**
            * A source of instances of `django.http.response.HttpResponseNotAllowed`, extend this class to model new instances.
@@ -1374,10 +1000,8 @@ private module PrivateDjango {
           abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
 
           /** A direct instantiation of `django.http.response.HttpResponseNotAllowed`. */
-          private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
-            override CallNode node;
-
-            ClassInstantiation() { node.getFunction() = classRef().asCfgNode() }
+          private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
+            ClassInstantiation() { this = classRef().getACall() }
 
             override DataFlow::Node getBody() {
               // First argument is permitted methods
@@ -1391,7 +1015,7 @@ private module PrivateDjango {
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponseNotAllowed`. */
-          private DataFlow::Node instance(DataFlow::TypeTracker t) {
+          private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
             t.start() and
             result instanceof InstanceSource
             or
@@ -1399,7 +1023,7 @@ private module PrivateDjango {
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponseNotAllowed`. */
-          DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
+          DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
         }
 
         /**
@@ -1409,22 +1033,15 @@ private module PrivateDjango {
          */
         module HttpResponseGone {
           /** Gets a reference to the `django.http.response.HttpResponseGone` class. */
-          private DataFlow::Node classRef(DataFlow::TypeTracker t) {
-            t.start() and
-            result = response_attr("HttpResponseGone")
+          API::Node baseClassRef() {
+            result = response().getMember("HttpResponseGone")
             or
             // Handle `django.http.HttpResponseGone` alias
-            t.start() and
-            result = http_attr("HttpResponseGone")
-            or
-            // subclass
-            result.asExpr().(ClassExpr).getABase() = classRef(t.continue()).asExpr()
-            or
-            exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
+            result = http().getMember("HttpResponseGone")
           }
 
           /** Gets a reference to the `django.http.response.HttpResponseGone` class. */
-          DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
+          API::Node classRef() { result = baseClassRef().getASubclass*() }
 
           /**
            * A source of instances of `django.http.response.HttpResponseGone`, extend this class to model new instances.
@@ -1438,10 +1055,8 @@ private module PrivateDjango {
           abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
 
           /** A direct instantiation of `django.http.response.HttpResponseGone`. */
-          private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
-            override CallNode node;
-
-            ClassInstantiation() { node.getFunction() = classRef().asCfgNode() }
+          private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
+            ClassInstantiation() { this = classRef().getACall() }
 
             override DataFlow::Node getBody() {
               result.asCfgNode() in [node.getArg(0), node.getArgByName("content")]
@@ -1454,7 +1069,7 @@ private module PrivateDjango {
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponseGone`. */
-          private DataFlow::Node instance(DataFlow::TypeTracker t) {
+          private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
             t.start() and
             result instanceof InstanceSource
             or
@@ -1462,7 +1077,7 @@ private module PrivateDjango {
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponseGone`. */
-          DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
+          DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
         }
 
         /**
@@ -1472,22 +1087,15 @@ private module PrivateDjango {
          */
         module HttpResponseServerError {
           /** Gets a reference to the `django.http.response.HttpResponseServerError` class. */
-          private DataFlow::Node classRef(DataFlow::TypeTracker t) {
-            t.start() and
-            result = response_attr("HttpResponseServerError")
+          API::Node baseClassRef() {
+            result = response().getMember("HttpResponseServerError")
             or
             // Handle `django.http.HttpResponseServerError` alias
-            t.start() and
-            result = http_attr("HttpResponseServerError")
-            or
-            // subclass
-            result.asExpr().(ClassExpr).getABase() = classRef(t.continue()).asExpr()
-            or
-            exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
+            result = http().getMember("HttpResponseServerError")
           }
 
           /** Gets a reference to the `django.http.response.HttpResponseServerError` class. */
-          DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
+          API::Node classRef() { result = baseClassRef().getASubclass*() }
 
           /**
            * A source of instances of `django.http.response.HttpResponseServerError`, extend this class to model new instances.
@@ -1501,10 +1109,8 @@ private module PrivateDjango {
           abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
 
           /** A direct instantiation of `django.http.response.HttpResponseServerError`. */
-          private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
-            override CallNode node;
-
-            ClassInstantiation() { node.getFunction() = classRef().asCfgNode() }
+          private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
+            ClassInstantiation() { this = classRef().getACall() }
 
             override DataFlow::Node getBody() {
               result.asCfgNode() in [node.getArg(0), node.getArgByName("content")]
@@ -1517,7 +1123,7 @@ private module PrivateDjango {
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponseServerError`. */
-          private DataFlow::Node instance(DataFlow::TypeTracker t) {
+          private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
             t.start() and
             result instanceof InstanceSource
             or
@@ -1525,7 +1131,7 @@ private module PrivateDjango {
           }
 
           /** Gets a reference to an instance of `django.http.response.HttpResponseServerError`. */
-          DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
+          DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
         }
 
         /**
@@ -1535,22 +1141,15 @@ private module PrivateDjango {
          */
         module JsonResponse {
           /** Gets a reference to the `django.http.response.JsonResponse` class. */
-          private DataFlow::Node classRef(DataFlow::TypeTracker t) {
-            t.start() and
-            result = response_attr("JsonResponse")
+          API::Node baseClassRef() {
+            result = response().getMember("JsonResponse")
             or
             // Handle `django.http.JsonResponse` alias
-            t.start() and
-            result = http_attr("JsonResponse")
-            or
-            // subclass
-            result.asExpr().(ClassExpr).getABase() = classRef(t.continue()).asExpr()
-            or
-            exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
+            result = http().getMember("JsonResponse")
           }
 
           /** Gets a reference to the `django.http.response.JsonResponse` class. */
-          DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
+          API::Node classRef() { result = baseClassRef().getASubclass*() }
 
           /**
            * A source of instances of `django.http.response.JsonResponse`, extend this class to model new instances.
@@ -1564,10 +1163,8 @@ private module PrivateDjango {
           abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
 
           /** A direct instantiation of `django.http.response.JsonResponse`. */
-          private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
-            override CallNode node;
-
-            ClassInstantiation() { node.getFunction() = classRef().asCfgNode() }
+          private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
+            ClassInstantiation() { this = classRef().getACall() }
 
             override DataFlow::Node getBody() {
               result.asCfgNode() in [node.getArg(0), node.getArgByName("data")]
@@ -1580,7 +1177,7 @@ private module PrivateDjango {
           }
 
           /** Gets a reference to an instance of `django.http.response.JsonResponse`. */
-          private DataFlow::Node instance(DataFlow::TypeTracker t) {
+          private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
             t.start() and
             result instanceof InstanceSource
             or
@@ -1588,7 +1185,7 @@ private module PrivateDjango {
           }
 
           /** Gets a reference to an instance of `django.http.response.JsonResponse`. */
-          DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
+          DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
         }
 
         // ---------------------------------------------------------------------------
@@ -1601,22 +1198,15 @@ private module PrivateDjango {
          */
         module StreamingHttpResponse {
           /** Gets a reference to the `django.http.response.StreamingHttpResponse` class. */
-          private DataFlow::Node classRef(DataFlow::TypeTracker t) {
-            t.start() and
-            result = response_attr("StreamingHttpResponse")
+          API::Node baseClassRef() {
+            result = response().getMember("StreamingHttpResponse")
             or
             // Handle `django.http.StreamingHttpResponse` alias
-            t.start() and
-            result = http_attr("StreamingHttpResponse")
-            or
-            // subclass
-            result.asExpr().(ClassExpr).getABase() = classRef(t.continue()).asExpr()
-            or
-            exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
+            result = http().getMember("StreamingHttpResponse")
           }
 
           /** Gets a reference to the `django.http.response.StreamingHttpResponse` class. */
-          DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
+          API::Node classRef() { result = baseClassRef().getASubclass*() }
 
           /**
            * A source of instances of `django.http.response.StreamingHttpResponse`, extend this class to model new instances.
@@ -1630,10 +1220,8 @@ private module PrivateDjango {
           abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
 
           /** A direct instantiation of `django.http.response.StreamingHttpResponse`. */
-          private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
-            override CallNode node;
-
-            ClassInstantiation() { node.getFunction() = classRef().asCfgNode() }
+          private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
+            ClassInstantiation() { this = classRef().getACall() }
 
             override DataFlow::Node getBody() {
               result.asCfgNode() in [node.getArg(0), node.getArgByName("streaming_content")]
@@ -1646,7 +1234,7 @@ private module PrivateDjango {
           }
 
           /** Gets a reference to an instance of `django.http.response.StreamingHttpResponse`. */
-          private DataFlow::Node instance(DataFlow::TypeTracker t) {
+          private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
             t.start() and
             result instanceof InstanceSource
             or
@@ -1654,7 +1242,7 @@ private module PrivateDjango {
           }
 
           /** Gets a reference to an instance of `django.http.response.StreamingHttpResponse`. */
-          DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
+          DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
         }
 
         /**
@@ -1664,22 +1252,15 @@ private module PrivateDjango {
          */
         module FileResponse {
           /** Gets a reference to the `django.http.response.FileResponse` class. */
-          private DataFlow::Node classRef(DataFlow::TypeTracker t) {
-            t.start() and
-            result = response_attr("FileResponse")
+          API::Node baseClassRef() {
+            result = response().getMember("FileResponse")
             or
             // Handle `django.http.FileResponse` alias
-            t.start() and
-            result = http_attr("FileResponse")
-            or
-            // subclass
-            result.asExpr().(ClassExpr).getABase() = classRef(t.continue()).asExpr()
-            or
-            exists(DataFlow::TypeTracker t2 | result = classRef(t2).track(t2, t))
+            result = http().getMember("FileResponse")
           }
 
           /** Gets a reference to the `django.http.response.FileResponse` class. */
-          DataFlow::Node classRef() { result = classRef(DataFlow::TypeTracker::end()) }
+          API::Node classRef() { result = baseClassRef().getASubclass*() }
 
           /**
            * A source of instances of `django.http.response.FileResponse`, extend this class to model new instances.
@@ -1693,10 +1274,8 @@ private module PrivateDjango {
           abstract class InstanceSource extends HttpResponse::InstanceSource, DataFlow::Node { }
 
           /** A direct instantiation of `django.http.response.FileResponse`. */
-          private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
-            override CallNode node;
-
-            ClassInstantiation() { node.getFunction() = classRef().asCfgNode() }
+          private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
+            ClassInstantiation() { this = classRef().getACall() }
 
             override DataFlow::Node getBody() {
               result.asCfgNode() in [node.getArg(0), node.getArgByName("streaming_content")]
@@ -1712,7 +1291,7 @@ private module PrivateDjango {
           }
 
           /** Gets a reference to an instance of `django.http.response.FileResponse`. */
-          private DataFlow::Node instance(DataFlow::TypeTracker t) {
+          private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
             t.start() and
             result instanceof InstanceSource
             or
@@ -1720,7 +1299,7 @@ private module PrivateDjango {
           }
 
           /** Gets a reference to an instance of `django.http.response.FileResponse`. */
-          DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
+          DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
         }
 
         /** Gets a reference to the `django.http.response.HttpResponse.write` function. */
@@ -1767,56 +1346,16 @@ private module PrivateDjango {
     // django.shortcuts
     // -------------------------------------------------------------------------
     /** Gets a reference to the `django.shortcuts` module. */
-    DataFlow::Node shortcuts() { result = django_attr("shortcuts") }
+    API::Node shortcuts() { result = django().getMember("shortcuts") }
 
     /** Provides models for the `django.shortcuts` module */
     module shortcuts {
-      /**
-       * Gets a reference to the attribute `attr_name` of the `django.shortcuts` module.
-       * WARNING: Only holds for a few predefined attributes.
-       */
-      private DataFlow::Node shortcuts_attr(DataFlow::TypeTracker t, string attr_name) {
-        attr_name in ["redirect"] and
-        (
-          t.start() and
-          result = DataFlow::importNode("django.shortcuts" + "." + attr_name)
-          or
-          t.startInAttr(attr_name) and
-          result = shortcuts()
-        )
-        or
-        // Due to bad performance when using normal setup with `shortcuts_attr(t2, attr_name).track(t2, t)`
-        // we have inlined that code and forced a join
-        exists(DataFlow::TypeTracker t2 |
-          exists(DataFlow::StepSummary summary |
-            shortcuts_attr_first_join(t2, attr_name, result, summary) and
-            t = t2.append(summary)
-          )
-        )
-      }
-
-      pragma[nomagic]
-      private predicate shortcuts_attr_first_join(
-        DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
-        DataFlow::StepSummary summary
-      ) {
-        DataFlow::StepSummary::step(shortcuts_attr(t2, attr_name), res, summary)
-      }
-
-      /**
-       * Gets a reference to the attribute `attr_name` of the `django.shortcuts` module.
-       * WARNING: Only holds for a few predefined attributes.
-       */
-      private DataFlow::Node shortcuts_attr(string attr_name) {
-        result = shortcuts_attr(DataFlow::TypeTracker::end(), attr_name)
-      }
-
       /**
        * Gets a reference to the `django.shortcuts.redirect` function
        *
        * See https://docs.djangoproject.com/en/3.1/topics/http/shortcuts/#redirect
        */
-      DataFlow::Node redirect() { result = shortcuts_attr("redirect") }
+      API::Node redirect() { result = shortcuts().getMember("redirect") }
     }
   }
 
@@ -1840,7 +1379,7 @@ private module PrivateDjango {
      * Note: TODO: This doesn't take MRO into account
      * Note: TODO: This doesn't take staticmethod/classmethod into account
      */
-    private DataFlow::Node getASelfRef(DataFlow::TypeTracker t) {
+    private DataFlow::LocalSourceNode getASelfRef(DataFlow::TypeTracker t) {
       t.start() and
       result.(DataFlow::ParameterNode).getParameter() = this.getAMethod().getArg(0)
       or
@@ -1854,7 +1393,7 @@ private module PrivateDjango {
      * Note: TODO: This doesn't take MRO into account
      * Note: TODO: This doesn't take staticmethod/classmethod into account
      */
-    DataFlow::Node getASelfRef() { result = this.getASelfRef(DataFlow::TypeTracker::end()) }
+    DataFlow::Node getASelfRef() { this.getASelfRef(DataFlow::TypeTracker::end()).flowsTo(result) }
   }
 
   // ---------------------------------------------------------------------------
@@ -1931,7 +1470,9 @@ private module PrivateDjango {
    * route, but currently it just tracks all functions, since we can't do type-tracking
    * backwards yet (TODO).
    */
-  private DataFlow::Node djangoRouteHandlerFunctionTracker(DataFlow::TypeTracker t, Function func) {
+  private DataFlow::LocalSourceNode djangoRouteHandlerFunctionTracker(
+    DataFlow::TypeTracker t, Function func
+  ) {
     t.start() and
     (
       not exists(func.getADecorator()) and
@@ -1959,7 +1500,7 @@ private module PrivateDjango {
    * backwards yet (TODO).
    */
   private DataFlow::Node djangoRouteHandlerFunctionTracker(Function func) {
-    result = djangoRouteHandlerFunctionTracker(DataFlow::TypeTracker::end(), func)
+    djangoRouteHandlerFunctionTracker(DataFlow::TypeTracker::end(), func).flowsTo(result)
   }
 
   /**
@@ -1972,7 +1513,7 @@ private module PrivateDjango {
    */
   class DjangoViewClassHelper extends Class {
     /** Gets a reference to this class. */
-    private DataFlow::Node getARef(DataFlow::TypeTracker t) {
+    private DataFlow::LocalSourceNode getARef(DataFlow::TypeTracker t) {
       t.start() and
       result.asExpr().(ClassExpr) = this.getParent()
       or
@@ -1980,10 +1521,10 @@ private module PrivateDjango {
     }
 
     /** Gets a reference to this class. */
-    DataFlow::Node getARef() { result = this.getARef(DataFlow::TypeTracker::end()) }
+    DataFlow::Node getARef() { this.getARef(DataFlow::TypeTracker::end()).flowsTo(result) }
 
     /** Gets a reference to the `as_view` classmethod of this class. */
-    private DataFlow::Node asViewRef(DataFlow::TypeTracker t) {
+    private DataFlow::LocalSourceNode asViewRef(DataFlow::TypeTracker t) {
       t.startInAttr("as_view") and
       result = this.getARef()
       or
@@ -1991,10 +1532,10 @@ private module PrivateDjango {
     }
 
     /** Gets a reference to the `as_view` classmethod of this class. */
-    DataFlow::Node asViewRef() { result = this.asViewRef(DataFlow::TypeTracker::end()) }
+    DataFlow::Node asViewRef() { this.asViewRef(DataFlow::TypeTracker::end()).flowsTo(result) }
 
     /** Gets a reference to the result of calling the `as_view` classmethod of this class. */
-    private DataFlow::Node asViewResult(DataFlow::TypeTracker t) {
+    private DataFlow::LocalSourceNode asViewResult(DataFlow::TypeTracker t) {
       t.start() and
       result.asCfgNode().(CallNode).getFunction() = this.asViewRef().asCfgNode()
       or
@@ -2002,7 +1543,7 @@ private module PrivateDjango {
     }
 
     /** Gets a reference to the result of calling the `as_view` classmethod of this class. */
-    DataFlow::Node asViewResult() { result = asViewResult(DataFlow::TypeTracker::end()) }
+    DataFlow::Node asViewResult() { asViewResult(DataFlow::TypeTracker::end()).flowsTo(result) }
   }
 
   /** A class that we consider a django View class. */
@@ -2142,10 +1683,8 @@ private module PrivateDjango {
    *
    * See https://docs.djangoproject.com/en/3.0/ref/urls/#path
    */
-  private class DjangoUrlsPathCall extends DjangoRouteSetup {
-    override CallNode node;
-
-    DjangoUrlsPathCall() { node.getFunction() = django::urls::path().asCfgNode() }
+  private class DjangoUrlsPathCall extends DjangoRouteSetup, DataFlow::CallCfgNode {
+    DjangoUrlsPathCall() { this = django::urls::path().getACall() }
 
     override DataFlow::Node getUrlPatternArg() {
       result.asCfgNode() = [node.getArg(0), node.getArgByName("route")]
@@ -2228,11 +1767,9 @@ private module PrivateDjango {
    *
    * See https://docs.djangoproject.com/en/3.0/ref/urls/#re_path
    */
-  private class DjangoUrlsRePathCall extends DjangoRegexRouteSetup {
-    override CallNode node;
-
+  private class DjangoUrlsRePathCall extends DjangoRegexRouteSetup, DataFlow::CallCfgNode {
     DjangoUrlsRePathCall() {
-      node.getFunction() = django::urls::re_path().asCfgNode() and
+      this = django::urls::re_path().getACall() and
       // `django.conf.urls.url` (which we support directly with
       // `DjangoConfUrlsUrlCall`), is implemented in Django 2+ as backward compatibility
       // using `django.urls.re_path`. See
@@ -2263,10 +1800,8 @@ private module PrivateDjango {
    *
    * See https://docs.djangoproject.com/en/1.11/ref/urls/#django.conf.urls.url
    */
-  private class DjangoConfUrlsUrlCall extends DjangoRegexRouteSetup {
-    override CallNode node;
-
-    DjangoConfUrlsUrlCall() { node.getFunction() = django::conf::conf_urls::url().asCfgNode() }
+  private class DjangoConfUrlsUrlCall extends DjangoRegexRouteSetup, DataFlow::CallCfgNode {
+    DjangoConfUrlsUrlCall() { this = django::conf::conf_urls::url().getACall() }
 
     override DataFlow::Node getUrlPatternArg() {
       result.asCfgNode() = [node.getArg(0), node.getArgByName("regex")]
@@ -2374,10 +1909,8 @@ private module PrivateDjango {
    * See https://docs.djangoproject.com/en/3.1/topics/http/shortcuts/#redirect
    */
   private class DjangoShortcutsRedirectCall extends HTTP::Server::HttpRedirectResponse::Range,
-    DataFlow::CfgNode {
-    override CallNode node;
-
-    DjangoShortcutsRedirectCall() { node.getFunction() = django::shortcuts::redirect().asCfgNode() }
+    DataFlow::CallCfgNode {
+    DjangoShortcutsRedirectCall() { this = django::shortcuts::redirect().getACall() }
 
     /**
      * Gets the data-flow node that specifies the location of this HTTP redirect response.
