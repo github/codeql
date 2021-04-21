@@ -50,8 +50,7 @@ class SensitiveCall extends SensitiveExpr, InvokeExpr {
     // This is particularly to pick up methods with an argument like "password", which
     // may indicate a lookup.
     exists(string s | this.getAnArgument().mayHaveStringValue(s) |
-      s.regexpMatch(maybeSensitive(classification)) and
-      not s.regexpMatch(notSensitive())
+      nameIndicatesSensitiveData(s, classification)
     )
   }
 
@@ -84,10 +83,7 @@ private class BasicSensitiveWrite extends SensitiveWrite {
   SensitiveDataClassification classification;
 
   BasicSensitiveWrite() {
-    exists(string name |
-      name.regexpMatch(maybeSensitive(classification)) and
-      not name.regexpMatch(notSensitive())
-    |
+    exists(string name | nameIndicatesSensitiveData(name, classification) |
       exists(DataFlow::PropWrite pwn |
         pwn.getPropertyName() = name and
         pwn.getRhs() = this
@@ -109,9 +105,7 @@ private class BasicSensitiveWrite extends SensitiveWrite {
 private class BasicSensitiveVariableAccess extends SensitiveVariableAccess {
   SensitiveDataClassification classification;
 
-  BasicSensitiveVariableAccess() {
-    name.regexpMatch(maybeSensitive(classification)) and not name.regexpMatch(notSensitive())
-  }
+  BasicSensitiveVariableAccess() { nameIndicatesSensitiveData(name, classification) }
 
   override SensitiveDataClassification getClassification() { result = classification }
 }
@@ -135,7 +129,11 @@ abstract class SensitiveDataFunctionName extends SensitiveFunctionName {
 class CredentialsFunctionName extends SensitiveDataFunctionName {
   SensitiveDataClassification classification;
 
-  CredentialsFunctionName() { this.regexpMatch(maybeSensitive(classification)) }
+  CredentialsFunctionName() {
+    // TODO: is it by purpose that we don't check whether `this` does not
+    // match the regexps in `notSensitive`?
+    this.regexpMatch(maybeSensitive(classification))
+  }
 
   override SensitiveDataClassification getClassification() { result = classification }
 }
