@@ -28,10 +28,19 @@ private class SmartPtr extends Class, PointerWrapper {
  * - `std::shared_ptr<T>::operator->()`
  * - `std::weak_ptr<T>::operator*()`
  */
-private class PointerUnwrapperFunction extends MemberFunction, AliasFunction, DataFlowFunction,
-  SideEffectFunction, TaintFunction {
+private class PointerUnwrapperFunction extends MemberFunction, TaintFunction, DataFlowFunction,
+  SideEffectFunction, AliasFunction {
   PointerUnwrapperFunction() {
     exists(PointerWrapper wrapper | wrapper.getAnUnwrapperFunction() = this)
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    input.isReturnValueDeref() and
+    output.isQualifierObject()
+  }
+
+  override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
+    input.isQualifierObject() and output.isReturnValue()
   }
 
   override predicate hasOnlySpecificReadSideEffects() { any() }
@@ -49,20 +58,6 @@ private class PointerUnwrapperFunction extends MemberFunction, AliasFunction, Da
 
   override predicate hasAddressFlow(FunctionInput input, FunctionOutput output) {
     input.isQualifierObject() and output.isReturnValue()
-  }
-
-  override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
-    input.isQualifierAddress() and output.isReturnValue()
-    or
-    input.isQualifierObject() and output.isReturnValueDeref()
-    or
-    input.isReturnValueDeref() and
-    output.isQualifierObject()
-  }
-
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    input.isQualifierObject() and
-    output.isReturnValue()
   }
 }
 
