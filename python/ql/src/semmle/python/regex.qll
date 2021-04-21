@@ -82,21 +82,7 @@ private DataFlow::LocalSourceNode re_flag_tracker(string flag_name, DataFlow::Ty
     result.asCfgNode() = binop
   )
   or
-  // Due to bad performance when using normal setup with `re_flag_tracker(t2, attr_name).track(t2, t)`
-  // we have inlined that code and forced a join
-  exists(DataFlow::TypeTracker t2 |
-    exists(DataFlow::StepSummary summary |
-      re_flag_tracker_first_join(t2, flag_name, result, summary) and
-      t = t2.append(summary)
-    )
-  )
-}
-
-pragma[nomagic]
-private predicate re_flag_tracker_first_join(
-  DataFlow::TypeTracker t2, string flag_name, DataFlow::Node res, DataFlow::StepSummary summary
-) {
-  DataFlow::StepSummary::step(re_flag_tracker(flag_name, t2), res, summary)
+  exists(DataFlow::TypeTracker t2 | result = re_flag_tracker(flag_name, t2).track(t2, t))
 }
 
 /**
