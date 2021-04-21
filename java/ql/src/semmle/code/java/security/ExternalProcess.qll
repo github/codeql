@@ -6,7 +6,9 @@ import semmle.code.java.frameworks.apache.Exec
 /**
  * A method that executes a command.
  */
-abstract class ExecMethod extends Method { }
+abstract class ExecCallable extends Callable {
+  abstract int getAnExecutedArgument();
+}
 
 /**
  * An expression used as an argument to a call that executes an external command. For calls to
@@ -15,15 +17,10 @@ abstract class ExecMethod extends Method { }
  */
 class ArgumentToExec extends Expr {
   ArgumentToExec() {
-    exists(MethodAccess execCall, ExecMethod method |
-      execCall.getArgument(0) = this and
-      method = execCall.getMethod()
-    )
-    or
-    exists(ConstructorCall expr, Constructor cons |
-      expr.getConstructor() = cons and
-      cons.getDeclaringType().hasQualifiedName("java.lang", "ProcessBuilder") and
-      expr.getArgument(0) = this
+    exists(Call execCall, ExecCallable execCallable, int i |
+      execCall.getArgument(i) = this and
+      execCallable = execCall.getCallee() and
+      i = execCallable.getAnExecutedArgument()
     )
   }
 }
