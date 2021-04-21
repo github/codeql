@@ -19,7 +19,7 @@ abstract class SensitiveExpr extends Expr {
   abstract string describe();
 
   /** Gets a classification of the kind of sensitive data this expression might contain. */
-  abstract SensitiveExpr::Classification getClassification();
+  abstract SensitiveDataClassification getClassification();
 }
 
 /** DEPRECATED: Use `SensitiveDataClassification` and helpers instead. */
@@ -42,7 +42,7 @@ deprecated module SensitiveExpr {
 
 /** A function call that might produce sensitive data. */
 class SensitiveCall extends SensitiveExpr, InvokeExpr {
-  SensitiveExpr::Classification classification;
+  SensitiveDataClassification classification;
 
   SensitiveCall() {
     classification = this.getCalleeName().(SensitiveDataFunctionName).getClassification()
@@ -57,7 +57,7 @@ class SensitiveCall extends SensitiveExpr, InvokeExpr {
 
   override string describe() { result = "a call to " + getCalleeName() }
 
-  override SensitiveExpr::Classification getClassification() { result = classification }
+  override SensitiveDataClassification getClassification() { result = classification }
 }
 
 /** An access to a variable or property that might contain sensitive data. */
@@ -81,7 +81,7 @@ abstract class SensitiveWrite extends DataFlow::Node { }
 
 /** A write to a variable or property that might contain sensitive data. */
 private class BasicSensitiveWrite extends SensitiveWrite {
-  SensitiveExpr::Classification classification;
+  SensitiveDataClassification classification;
 
   BasicSensitiveWrite() {
     exists(string name |
@@ -102,18 +102,18 @@ private class BasicSensitiveWrite extends SensitiveWrite {
   }
 
   /** Gets a classification of the kind of sensitive data the write might handle. */
-  SensitiveExpr::Classification getClassification() { result = classification }
+  SensitiveDataClassification getClassification() { result = classification }
 }
 
 /** An access to a variable or property that might contain sensitive data. */
 private class BasicSensitiveVariableAccess extends SensitiveVariableAccess {
-  SensitiveExpr::Classification classification;
+  SensitiveDataClassification classification;
 
   BasicSensitiveVariableAccess() {
     name.regexpMatch(maybeSensitive(classification)) and not name.regexpMatch(notSensitive())
   }
 
-  override SensitiveExpr::Classification getClassification() { result = classification }
+  override SensitiveDataClassification getClassification() { result = classification }
 }
 
 /** A function name that suggests it may be sensitive. */
@@ -128,16 +128,16 @@ abstract class SensitiveFunctionName extends string {
 /** A function name that suggests it may produce sensitive data. */
 abstract class SensitiveDataFunctionName extends SensitiveFunctionName {
   /** Gets a classification of the kind of sensitive data this function may produce. */
-  abstract SensitiveExpr::Classification getClassification();
+  abstract SensitiveDataClassification getClassification();
 }
 
 /** A method that might return sensitive data, based on the name. */
 class CredentialsFunctionName extends SensitiveDataFunctionName {
-  SensitiveExpr::Classification classification;
+  SensitiveDataClassification classification;
 
   CredentialsFunctionName() { this.regexpMatch(maybeSensitive(classification)) }
 
-  override SensitiveExpr::Classification getClassification() { result = classification }
+  override SensitiveDataClassification getClassification() { result = classification }
 }
 
 /**
@@ -173,7 +173,7 @@ class CleartextPasswordExpr extends SensitiveExpr {
 
   override string describe() { none() }
 
-  override SensitiveExpr::Classification getClassification() { none() }
+  override SensitiveDataClassification getClassification() { none() }
 }
 
 /**
