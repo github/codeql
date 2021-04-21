@@ -170,21 +170,21 @@ class File extends Container, @file {
   override string getURL() { result = "file://" + this.getAbsolutePath() + ":0:0:0:0" }
 
   /** Gets the number of lines in this file. */
-  int getNumberOfLines() { result = max(getAToken().getLocation().getEndLine()) }
+  int getNumberOfLines() { result = max(this.getAToken().getLocation().getEndLine()) }
 
   /** Get a token in this file. */
   private Generated::Token getAToken() { result.getLocation().getFile() = this }
 
   /** Get a comment token in this file. */
-  private Generated::Token getACommentToken() { result = getAToken() and result instanceof @token_comment }
+  private Generated::Token getACommentToken() { result = this.getAToken() and result instanceof @token_comment }
 
   /** Get a non-comment token in this file. */
   private Generated::Token getANonCommentToken() {
-    result = getAToken() and not result instanceof @token_comment
+    result = this.getAToken() and not result instanceof @token_comment
   }
 
   private predicate isTokenStartingAtLine(Generated::Token t, int startLine) {
-    t = getANonCommentToken() and
+    t = this.getANonCommentToken() and
     t.getLocation().getStartLine() = startLine
   }
 
@@ -198,10 +198,10 @@ class File extends Container, @file {
     result =
       sum(int startLine, int numLines |
         exists(Generated::Token t |
-          isTokenStartingAtLine(t, startLine) and
+          this.isTokenStartingAtLine(t, startLine) and
           t.getLocation().getNumLines() = numLines and
           not exists(Generated::Token t2 |
-            isTokenStartingAtLine(t2, startLine) and
+            this.isTokenStartingAtLine(t2, startLine) and
             t2.getLocation().getNumLines() > numLines
           )
         )
@@ -211,5 +211,5 @@ class File extends Container, @file {
   }
 
   /** Gets the number of lines of comments in this file. */
-  int getNumberOfLinesOfComments() { result = count(getACommentToken()) }
+  int getNumberOfLinesOfComments() { result = count(this.getACommentToken()) }
 }
