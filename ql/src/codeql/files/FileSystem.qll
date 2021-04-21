@@ -1,5 +1,8 @@
 /** Provides classes for working with files and folders. */
 
+private import codeql_ruby.ast.internal.TreeSitter
+private import codeql.Locations
+
 /** A file or folder. */
 abstract class Container extends @container {
   /** Gets a file or sub-folder in this container. */
@@ -165,4 +168,26 @@ class File extends Container, @file {
 
   /** Gets the URL of this file. */
   override string getURL() { result = "file://" + this.getAbsolutePath() + ":0:0:0:0" }
+
+  /** Gets a token in this file. */
+  private Generated::Token getAToken() { result.getLocation().getFile() = this }
+
+  /** Holds if `line` contains a token. */
+  private predicate line(int line, boolean comment) {
+    exists(Generated::Token token, Location l |
+      token = this.getAToken() and
+      l = token.getLocation() and
+      line in [l.getStartLine() .. l.getEndLine()] and
+      if token instanceof @token_comment then comment = true else comment = false
+    )
+  }
+
+  /** Gets the number of lines in this file. */
+  int getNumberOfLines() { result = max([0, this.getAToken().getLocation().getEndLine()]) }
+
+  /** Gets the number of lines of code in this file. */
+  int getNumberOfLinesOfCode() { result = count(int line | this.line(line, false)) }
+
+  /** Gets the number of lines of comments in this file. */
+  int getNumberOfLinesOfComments() { result = count(int line | this.line(line, true)) }
 }
