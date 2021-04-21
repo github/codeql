@@ -11,8 +11,13 @@
 import csharp
 import semmle.code.csharp.commons.Diagnostics
 
+private string getLocation(ExtractorError error) {
+  if error.getLocation().getFile().fromSource()
+  then result = " in " + error.getLocation().getFile()
+  else result = ""
+}
+
 from ExtractorError error
 where not exists(CompilerError ce | ce.getLocation().getFile() = error.getLocation().getFile())
 select error,
-  "Unexpected " + error.getOrigin() + " error: " + error.getText() + " in " +
-    error.getLocation().getFile(), 3
+  "Unexpected " + error.getOrigin() + " error" + getLocation(error) + ": " + error.getText(), 3
