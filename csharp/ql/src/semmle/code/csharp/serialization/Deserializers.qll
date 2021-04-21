@@ -87,7 +87,7 @@ class UnsafeDeserializerCallable extends Callable {
   }
 }
 
-/** Deserializer exploitable only if user controls the expected object type. */
+/** A deserializer exploitable only if user controls the expected object type. */
 class StrongTypeDeserializer extends Class {
   StrongTypeDeserializer() {
     this instanceof XmlSerializerClass
@@ -100,7 +100,7 @@ class StrongTypeDeserializer extends Class {
   }
 }
 
-/** Deserializer that doesn't make strong expected type check. */
+/** A deserializer that doesn't make strong expected type check. */
 class WeakTypeDeserializer extends Class {
   WeakTypeDeserializer() {
     this instanceof BinaryFormatterClass
