@@ -227,8 +227,8 @@ class TypeTracker extends TTypeTracker {
   pragma[inline]
   TypeTracker step(LocalSourceNode nodeFrom, LocalSourceNode nodeTo) {
     exists(StepSummary summary |
-      StepSummary::step(nodeFrom, nodeTo, summary) and
-      result = this.append(summary)
+      StepSummary::step(nodeFrom, pragma[only_bind_out](nodeTo), pragma[only_bind_into](summary)) and
+      result = this.append(pragma[only_bind_into](summary))
     )
   }
 
@@ -370,8 +370,8 @@ class TypeBackTracker extends TTypeBackTracker {
   pragma[inline]
   TypeBackTracker step(LocalSourceNode nodeFrom, LocalSourceNode nodeTo) {
     exists(StepSummary summary |
-      StepSummary::step(nodeFrom, nodeTo, summary) and
-      this = result.prepend(summary)
+      StepSummary::step(pragma[only_bind_out](nodeFrom), nodeTo, pragma[only_bind_into](summary)) and
+      this = result.prepend(pragma[only_bind_into](summary))
     )
   }
 
