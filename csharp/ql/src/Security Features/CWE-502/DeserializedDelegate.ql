@@ -16,7 +16,7 @@ import semmle.code.csharp.serialization.Deserializers
 
 from Call deserialization, Cast cast
 where
-  deserialization.getTarget() instanceof UnsafeDeserializerCallable and
+  deserialization.getTarget() instanceof UnsafeDeserializer and
   cast.getExpr() = deserialization and
   cast.getTargetType() instanceof SystemLinqExpressions::DelegateExtType
 select deserialization, "Deserialization of delegate type."

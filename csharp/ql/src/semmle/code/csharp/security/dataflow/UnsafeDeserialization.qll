@@ -89,7 +89,7 @@ module UnsafeDeserialization {
 
     override predicate isSink(DataFlow::Node sink) {
       exists(MethodCall mc |
-        mc.getTarget() instanceof UnsafeDeserializerCallable and
+        mc.getTarget() instanceof UnsafeDeserializer and
         sink.asExpr() = mc.getQualifier()
       )
     }
@@ -127,7 +127,7 @@ module UnsafeDeserialization {
 
     override predicate isSink(DataFlow::Node sink) {
       exists(MethodCall mc |
-        mc.getTarget() instanceof UnsafeDeserializerCallable and
+        mc.getTarget() instanceof UnsafeDeserializer and
         sink.asExpr() = mc.getQualifier()
       )
     }

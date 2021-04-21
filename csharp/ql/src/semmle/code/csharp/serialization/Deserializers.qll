@@ -8,85 +8,6 @@ import csharp
 /** An unsafe deserializer. */
 abstract class UnsafeDeserializer extends Callable { }
 
-/** Unsafe deserialization calls. */
-class UnsafeDeserializerCallable extends Callable {
-  UnsafeDeserializerCallable() {
-    this instanceof BinaryFormatterDeserializeMethod
-    or
-    this instanceof BinaryFormatterUnsafeDeserializeMethod
-    or
-    this instanceof BinaryFormatterUnsafeDeserializeMethodResponseMethod
-    or
-    this instanceof SoapFormatterDeserializeMethod
-    or
-    this instanceof ObjectStateFormatterDeserializeMethod
-    or
-    this instanceof NetDataContractSerializerDeserializeMethod
-    or
-    this instanceof NetDataContractSerializerReadObjectMethod
-    or
-    this instanceof DataContractJsonSerializerReadObjectMethod
-    or
-    this instanceof JavaScriptSerializerClassDeserializeMethod
-    or
-    this instanceof JavaScriptSerializerClassDeserializeObjectMethod
-    or
-    this instanceof XmlObjectSerializerReadObjectMethod
-    or
-    this instanceof XmlSerializerDeserializeMethod
-    or
-    this instanceof DataContractSerializerReadObjectMethod
-    or
-    this instanceof XmlMessageFormatterReadMethod
-    or
-    this instanceof LosFormatterDeserializeMethod
-    or
-    this instanceof FastJsonClassToObjectMethod
-    or
-    this instanceof ActivityLoadMethod
-    or
-    this instanceof ResourceReaderConstructor
-    or
-    this instanceof BinaryMessageFormatterReadMethod
-    or
-    this instanceof XamlReaderParseMethod
-    or
-    this instanceof XamlReaderLoadMethod
-    or
-    this instanceof XamlReaderLoadAsyncMethod
-    or
-    this instanceof ProxyObjectDecodeValueMethod
-    or
-    this instanceof ProxyObjectDecodeSerializedObjectMethod
-    or
-    this instanceof JaysonConverterToObjectMethod
-    or
-    this instanceof ServiceStackTextJsonSerializerDeserializeFromStringMethod
-    or
-    this instanceof ServiceStackTextJsonSerializerDeserializeFromReaderMethod
-    or
-    this instanceof ServiceStackTextJsonSerializerDeserializeFromStreamMethod
-    or
-    this instanceof ServiceStackTextTypeSerializerDeserializeFromStringMethod
-    or
-    this instanceof ServiceStackTextTypeSerializerDeserializeFromReaderMethod
-    or
-    this instanceof ServiceStackTextTypeSerializerDeserializeFromStreamMethod
-    or
-    this instanceof ServiceStackTextCsvSerializerDeserializeFromStringMethod
-    or
-    this instanceof ServiceStackTextCsvSerializerDeserializeFromReaderMethod
-    or
-    this instanceof ServiceStackTextCsvSerializerDeserializeFromStreamMethod
-    or
-    this instanceof ServiceStackTextXmlSerializerDeserializeFromStringMethod
-    or
-    this instanceof ServiceStackTextXmlSerializerDeserializeFromReaderMethod
-    or
-    this instanceof ServiceStackTextXmlSerializerDeserializeFromStreamMethod
-  }
-}
-
 /** A deserializer exploitable only if user controls the expected object type. */
 class StrongTypeDeserializer extends Class {
   StrongTypeDeserializer() {
@@ -143,12 +64,12 @@ class WeakTypeDeserializer extends Class {
  * An unsafe deserializer method that calls any unsafe deserializer on any of
  * the parameters.
  */
-private class WrapperDeserializer extends UnsafeDeserializerCallable, UnsafeDeserializer {
+private class WrapperDeserializer extends UnsafeDeserializer {
   WrapperDeserializer() {
     exists(Call call |
       call.getEnclosingCallable() = this and
       call.getAnArgument() instanceof ParameterAccess and
-      call.getTarget() instanceof UnsafeDeserializerCallable
+      call.getTarget() instanceof UnsafeDeserializer
     )
   }
 }
