@@ -169,47 +169,25 @@ class File extends Container, @file {
   /** Gets the URL of this file. */
   override string getURL() { result = "file://" + this.getAbsolutePath() + ":0:0:0:0" }
 
-  /** Gets the number of lines in this file. */
-  int getNumberOfLines() { result = max(this.getAToken().getLocation().getEndLine()) }
-
   /** Get a token in this file. */
   private Generated::Token getAToken() { result.getLocation().getFile() = this }
 
-  /** Get a comment token in this file. */
-  private Generated::Token getACommentToken() { result = this.getAToken() and result instanceof @token_comment }
-
-  /** Get a non-comment token in this file. */
-  private Generated::Token getANonCommentToken() {
-    result = this.getAToken() and not result instanceof @token_comment
+  /** Holds if `line` contains a token. */
+  private predicate line(int line, boolean comment) {
+    exists(Generated::Token token, Location l |
+      token = this.getAToken() and
+      l = token.getLocation() and
+      line in [l.getStartLine() .. l.getEndLine()] and
+      if token instanceof @token_comment then comment = true else comment = false
+    )
   }
 
-  private predicate isTokenStartingAtLine(Generated::Token t, int startLine) {
-    t = this.getANonCommentToken() and
-    t.getLocation().getStartLine() = startLine
-  }
+  /** Gets the number of lines in this file. */
+  int getNumberOfLines() { result = max(this.getAToken().getLocation().getEndLine()) }
 
   /** Gets the number of lines of code in this file. */
-  int getNumberOfLinesOfCode() {
-    /*
-     * For each line with at least one non-comment token, select a token with
-     * the greatest length in terms of lines and sum all lengths per startLine.
-     */
-
-    result =
-      sum(int startLine, int numLines |
-        exists(Generated::Token t |
-          this.isTokenStartingAtLine(t, startLine) and
-          t.getLocation().getNumLines() = numLines and
-          not exists(Generated::Token t2 |
-            this.isTokenStartingAtLine(t2, startLine) and
-            t2.getLocation().getNumLines() > numLines
-          )
-        )
-      |
-        numLines
-      )
-  }
+  int getNumberOfLinesOfCode() { result = count(int line | this.line(line, false)) }
 
   /** Gets the number of lines of comments in this file. */
-  int getNumberOfLinesOfComments() { result = count(this.getACommentToken()) }
+  int getNumberOfLinesOfComments() { result = count(int line | this.line(line, true)) }
 }
