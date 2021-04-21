@@ -1,3 +1,4 @@
+/** Provides predicates for tracking functions through wrapper functions. */
 private import javascript
 private import FlowSteps as FlowSteps
 private import semmle.javascript.internal.CachedStages
