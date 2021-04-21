@@ -21,9 +21,11 @@ private import semmle.code.csharp.frameworks.system.threading.Tasks
 
 abstract class NodeImpl extends Node {
   /** Do not call: use `getEnclosingCallable()` instead. */
+  cached
   abstract DataFlowCallable getEnclosingCallableImpl();
 
   /** Do not call: use `getType()` instead. */
+  cached
   abstract DotNet::Type getTypeImpl();
 
   /** Gets the type of this node used for type pruning. */
@@ -39,27 +41,39 @@ abstract class NodeImpl extends Node {
   }
 
   /** Do not call: use `getControlFlowNode()` instead. */
+  cached
   abstract ControlFlow::Node getControlFlowNodeImpl();
 
   /** Do not call: use `getLocation()` instead. */
+  cached
   abstract Location getLocationImpl();
 
   /** Do not call: use `toString()` instead. */
+  cached
   abstract string toStringImpl();
 }
 
 private class ExprNodeImpl extends ExprNode, NodeImpl {
   override DataFlowCallable getEnclosingCallableImpl() {
+    Stages::DataFlowStage::forceCachingInSameStage() and
     result = this.getExpr().getEnclosingCallable()
   }
 
-  override DotNet::Type getTypeImpl() { result = this.getExpr().getType() }
+  override DotNet::Type getTypeImpl() {
+    Stages::DataFlowStage::forceCachingInSameStage() and
+    result = this.getExpr().getType()
+  }
 
-  override ControlFlow::Nodes::ElementNode getControlFlowNodeImpl() { this = TExprNode(result) }
+  override ControlFlow::Nodes::ElementNode getControlFlowNodeImpl() {
+    Stages::DataFlowStage::forceCachingInSameStage() and this = TExprNode(result)
+  }
 
-  override Location getLocationImpl() { result = this.getExpr().getLocation() }
+  override Location getLocationImpl() {
+    Stages::DataFlowStage::forceCachingInSameStage() and result = this.getExpr().getLocation()
+  }
 
   override string toStringImpl() {
+    Stages::DataFlowStage::forceCachingInSameStage() and
     result = this.getControlFlowNode().toString()
     or
     exists(CIL::Expr e |
@@ -967,6 +981,16 @@ private module Cached {
     or
     n.asExpr() = any(WithExpr we).getInitializer()
   }
+
+  cached
+  predicate parameterNode(Node n, DataFlowCallable c, int i) {
+    n.(ParameterNodeImpl).isParameterOf(c, i)
+  }
+
+  cached
+  predicate argumentNode(Node n, DataFlowCall call, int pos) {
+    n.(ArgumentNodeImpl).argumentOf(call, pos)
+  }
 }
 
 import Cached
@@ -992,8 +1016,6 @@ class SsaDefinitionNode extends NodeImpl, TSsaDefinitionNode {
 }
 
 abstract class ParameterNodeImpl extends NodeImpl {
-  abstract DotNet::Parameter getParameter();
-
   abstract predicate isParameterOf(DataFlowCallable c, int i);
 }
 
@@ -1010,10 +1032,8 @@ private module ParameterNodes {
     /** Gets the SSA definition corresponding to this parameter, if any. */
     Ssa::ExplicitDefinition getSsaDefinition() {
       result.getADefinition().(AssignableDefinitions::ImplicitParameterDefinition).getParameter() =
-        this.getParameter()
+        parameter
     }
-
-    override DotNet::Parameter getParameter() { result = parameter }
 
     override predicate isParameterOf(DataFlowCallable c, int i) { c.getParameter(i) = parameter }
 
@@ -1036,8 +1056,6 @@ private module ParameterNodes {
 
     /** Gets the callable containing this implicit instance parameter. */
     Callable getCallable() { result = callable }
-
-    override DotNet::Parameter getParameter() { none() }
 
     override predicate isParameterOf(DataFlowCallable c, int pos) { callable = c and pos = -1 }
 
@@ -1113,8 +1131,6 @@ private module ParameterNodes {
     /** Gets the captured variable that this implicit parameter models. */
     LocalScopeVariable getVariable() { result = def.getVariable() }
 
-    override DotNet::Parameter getParameter() { none() }
-
     override predicate isParameterOf(DataFlowCallable c, int i) {
       i = getParameterPosition(def) and
       c = this.getEnclosingCallable()
@@ -1125,13 +1141,15 @@ private module ParameterNodes {
 import ParameterNodes
 
 /** A data-flow node that represents a call argument. */
-abstract class ArgumentNode extends Node {
-  /** Holds if this argument occurs at the given position in the given call. */
-  cached
-  abstract predicate argumentOf(DataFlowCall call, int pos);
+class ArgumentNode extends Node {
+  ArgumentNode() { argumentNode(this, _, _) }
 
-  /** Gets the call in which this node is an argument. */
-  final DataFlowCall getCall() { this.argumentOf(result, _) }
+  /** Holds if this argument occurs at the given position in the given call. */
+  final predicate argumentOf(DataFlowCall call, int pos) { argumentNode(this, call, pos) }
+}
+
+abstract private class ArgumentNodeImpl extends Node {
+  abstract predicate argumentOf(DataFlowCall call, int pos);
 }
 
 private module ArgumentNodes {
@@ -1149,7 +1167,7 @@ private module ArgumentNodes {
   }
 
   /** A data-flow node that represents an explicit call argument. */
-  class ExplicitArgumentNode extends ArgumentNode {
+  class ExplicitArgumentNode extends ArgumentNodeImpl {
     ExplicitArgumentNode() {
       this.asExpr() instanceof Argument
       or
@@ -1157,7 +1175,6 @@ private module ArgumentNodes {
     }
 
     override predicate argumentOf(DataFlowCall call, int pos) {
-      Stages::DataFlowStage::forceCachingInSameStage() and
       exists(ArgumentConfiguration x, Expr c, Argument arg |
         arg = this.asExpr() and
         c = call.getExpr() and
@@ -1189,7 +1206,8 @@ private module ArgumentNodes {
    * }                                }
    * ```
    */
-  class ImplicitCapturedArgumentNode extends ArgumentNode, NodeImpl, TImplicitCapturedArgumentNode {
+  class ImplicitCapturedArgumentNode extends ArgumentNodeImpl, NodeImpl,
+    TImplicitCapturedArgumentNode {
     private LocalScopeVariable v;
     private ControlFlow::Nodes::ElementNode cfn;
 
@@ -1231,7 +1249,7 @@ private module ArgumentNodes {
    * A node that corresponds to the value of an object creation (`new C()`) before
    * the constructor has run.
    */
-  class MallocNode extends ArgumentNode, NodeImpl, TMallocNode {
+  class MallocNode extends ArgumentNodeImpl, NodeImpl, TMallocNode {
     private ControlFlow::Nodes::ElementNode cfn;
 
     MallocNode() { this = TMallocNode(cfn) }
@@ -1266,7 +1284,7 @@ private module ArgumentNodes {
    * and that argument is itself a compatible array, for example
    * `Foo(new[] { "a", "b", "c" })`.
    */
-  class ParamsArgumentNode extends ArgumentNode, NodeImpl, TParamsArgumentNode {
+  class ParamsArgumentNode extends ArgumentNodeImpl, NodeImpl, TParamsArgumentNode {
     private ControlFlow::Node callCfn;
 
     ParamsArgumentNode() { this = TParamsArgumentNode(callCfn) }
@@ -1291,7 +1309,7 @@ private module ArgumentNodes {
     override string toStringImpl() { result = "[implicit array creation] " + callCfn }
   }
 
-  private class SummaryArgumentNode extends SummaryNode, ArgumentNode {
+  private class SummaryArgumentNode extends SummaryNode, ArgumentNodeImpl {
     private DataFlowCall c;
     private int i;
 
@@ -1324,10 +1342,7 @@ private module ReturnNodes {
       )
     }
 
-    override NormalReturnKind getKind() {
-      any(DotNet::Callable c).canReturn(this.getExpr()) and
-      exists(result)
-    }
+    override NormalReturnKind getKind() { exists(result) }
   }
 
   /**
@@ -1744,7 +1759,10 @@ class DataFlowType extends Gvn::GvnType {
 }
 
 /** Gets the type of `n` used for type pruning. */
-DataFlowType getNodeType(NodeImpl n) { result = n.getDataFlowType() }
+pragma[inline]
+Gvn::GvnType getNodeType(NodeImpl n) {
+  pragma[only_bind_into](result) = pragma[only_bind_out](n).getDataFlowType()
+}
 
 /** Gets a string representation of a `DataFlowType`. */
 string ppReprType(DataFlowType t) { result = t.toString() }
@@ -1819,7 +1837,8 @@ private module PostUpdateNodes {
    * Such a node acts as both a post-update node for the `MallocNode`, as well as
    * a pre-update node for the `ObjectCreationNode`.
    */
-  class ObjectInitializerNode extends PostUpdateNode, NodeImpl, ArgumentNode, TObjectInitializerNode {
+  class ObjectInitializerNode extends PostUpdateNode, NodeImpl, ArgumentNodeImpl,
+    TObjectInitializerNode {
     private ObjectCreation oc;
     private ControlFlow::Nodes::ElementNode cfn;
 
