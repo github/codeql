@@ -129,11 +129,7 @@ abstract class SensitiveDataFunctionName extends SensitiveFunctionName {
 class CredentialsFunctionName extends SensitiveDataFunctionName {
   SensitiveDataClassification classification;
 
-  CredentialsFunctionName() {
-    // TODO: is it by purpose that we don't check whether `this` does not
-    // match the regexps in `notSensitive`?
-    this.regexpMatch(maybeSensitive(classification))
-  }
+  CredentialsFunctionName() { nameIndicatesSensitiveData(this, classification) }
 
   override SensitiveDataClassification getClassification() { result = classification }
 }
