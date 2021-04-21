@@ -38,49 +38,53 @@ private class IfConditionSink extends UseOfLessTrustedSink {
   IfConditionSink() {
     exists(IfStmt is |
       is.getCondition() = this.asExpr() and
-      not exists(EQExpr eqe |
-        eqe.getAnOperand() instanceof NullLiteral and
-        is.getCondition() = eqe.getParent*()
-      ) and
-      not exists(NEExpr nee |
-        nee.getAnOperand() instanceof NullLiteral and
-        is.getCondition() = nee.getParent*()
-      ) and
-      not exists(MethodAccess ma |
-        ma.getMethod().hasName("equals") and
-        ma.getMethod().getNumberOfParameters() = 1 and
-        (
-          ma.getQualifier().(CompileTimeConstantExpr).getStringValue() = "" or
-          ma.getArgument(0).(CompileTimeConstantExpr).getStringValue() = ""
-        ) and
-        is.getCondition() = ma.getParent*()
-      ) and
-      not exists(MethodAccess ma |
-        ma.getMethod().hasName("equalsIgnoreCase") and
-        ma.getMethod().getNumberOfParameters() = 1 and
-        (
-          ma.getQualifier().(CompileTimeConstantExpr).getStringValue() = "unknown" or
-          ma.getArgument(0).(CompileTimeConstantExpr).getStringValue() = "unknown"
-        ) and
-        is.getCondition() = ma.getParent*()
-      ) and
-      not exists(MethodAccess ma |
-        ma.getMethod().getName() in ["isEmpty", "isNotEmpty"] and
-        ma.getMethod().getNumberOfParameters() = 1 and
-        is.getCondition() = ma.getParent*()
-      ) and
-      not exists(MethodAccess ma |
-        (
-          ma.getMethod().hasQualifiedName("org.apache.commons.lang3", "StringUtils", "isBlank") or
-          ma.getMethod().hasQualifiedName("org.apache.commons.lang3", "StringUtils", "isNotBlank")
-        ) and
-        is.getCondition() = ma.getParent*()
-      ) and
-      not exists(MethodAccess ma |
-        ma.getMethod()
-            .hasQualifiedName("org.apache.commons.lang3", "StringUtils", "equalsIgnoreCase") and
-        ma.getAnArgument().(CompileTimeConstantExpr).getStringValue() = "unknown" and
-        is.getCondition() = ma.getParent*()
+      (
+        exists(MethodAccess ma |
+          ma.getMethod().getName() in ["equals", "equalsIgnoreCase"] and
+          ma.getMethod().getDeclaringType() instanceof TypeString and
+          ma.getMethod().getNumberOfParameters() = 1 and
+          not ma.getQualifier().(CompileTimeConstantExpr).getStringValue().toLowerCase() in [
+              "", "unknown", ":"
+            ] and
+          not ma.getArgument(0).(CompileTimeConstantExpr).getStringValue().toLowerCase() in [
+              "", "unknown", ":"
+            ] and
+          is.getCondition() = ma.getParent*()
+        )
+        or
+        exists(MethodAccess ma |
+          ma.getMethod().hasName("contains") and
+          ma.getMethod().getDeclaringType() instanceof TypeString and
+          ma.getMethod().getNumberOfParameters() = 1 and
+          ma.getAnArgument().(CompileTimeConstantExpr).getStringValue().toLowerCase() in [
+              "", "unknown"
+            ] and
+          is.getCondition() = ma.getParent*()
+        )
+        or
+        exists(MethodAccess ma |
+          ma.getMethod().hasName("startsWith") and
+          ma.getMethod()
+              .getDeclaringType()
+              .hasQualifiedName(["org.apache.commons.lang3", "org.apache.commons.lang"],
+                "StringUtils") and
+          ma.getMethod().getNumberOfParameters() = 2 and
+          ma.getAnArgument().(CompileTimeConstantExpr).getStringValue() != "" and
+          is.getCondition() = ma.getParent*()
+        )
+        or
+        exists(MethodAccess ma |
+          ma.getMethod().getName() in ["equals", "equalsIgnoreCase"] and
+          ma.getMethod()
+              .getDeclaringType()
+              .hasQualifiedName(["org.apache.commons.lang3", "org.apache.commons.lang"],
+                "StringUtils") and
+          ma.getMethod().getNumberOfParameters() = 2 and
+          not ma.getAnArgument().(CompileTimeConstantExpr).getStringValue().toLowerCase() in [
+              "", "unknown", ":"
+            ] and
+          is.getCondition() = ma.getParent*()
+        )
       )
     )
   }
@@ -101,9 +105,7 @@ private class PrintSink extends UseOfLessTrustedSink {
   PrintSink() {
     exists(MethodAccess ma |
       ma.getMethod().getName() in ["print", "println"] and
-      (
-        ma.getMethod().getDeclaringType().hasQualifiedName("java.io", ["PrintWriter", "PrintStream"])
-      ) and
+      ma.getMethod().getDeclaringType().hasQualifiedName("java.io", ["PrintWriter", "PrintStream"]) and
       ma.getAnArgument() = this.asExpr()
     )
   }
