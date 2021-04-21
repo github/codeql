@@ -132,6 +132,7 @@ System and Network
 - `PersistentReadAccess <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Concepts.qll/type.Concepts$PersistentReadAccess.html>`__ -- reading from persistent storage, like cookies
 - `PersistentWriteAccess <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Concepts.qll/type.Concepts$PersistentWriteAccess.html>`__ -- writing to persistent storage
 - `RemoteFlowSource <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/security/dataflow/RemoteFlowSources.qll/type.RemoteFlowSources$Cached$RemoteFlowSource.html>`__ -- source of untrusted user input
+    - `isUserControlledObject` -- is the input deserialized to a JSON-like object? (as opposed to just being a string)
 - `SystemCommandExecution <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Concepts.qll/type.Concepts$SystemCommandExecution.html>`__ -- execution of a system command
 
 Files
