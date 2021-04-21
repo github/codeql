@@ -183,11 +183,7 @@ class File extends Container, @file {
   }
 
   /** Gets the number of lines in this file. */
-  int getNumberOfLines() {
-    if exists(this.getAToken())
-    then result = max(this.getAToken().getLocation().getEndLine())
-    else result = 0
-  }
+  int getNumberOfLines() { result = max([0, this.getAToken().getLocation().getEndLine()]) }
 
   /** Gets the number of lines of code in this file. */
   int getNumberOfLinesOfCode() { result = count(int line | this.line(line, false)) }
