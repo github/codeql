@@ -1,0 +1,11 @@
+| FilePermissions.rb:4:3:4:32 | call to chmod | Overly permissive mask sets file to 0222. |
+| FilePermissions.rb:5:3:5:32 | call to chmod | Overly permissive mask sets file to 0622. |
+| FilePermissions.rb:6:3:6:32 | call to chmod | Overly permissive mask sets file to 0755. |
+| FilePermissions.rb:7:3:7:32 | call to chmod | Overly permissive mask sets file to 0777. |
+| FilePermissions.rb:24:3:24:26 | call to chmod | Overly permissive mask sets file to 0755. |
+| FilePermissions.rb:44:3:44:32 | call to chmod | Overly permissive mask sets file to perm. |
+| FilePermissions.rb:46:3:46:33 | call to chmod | Overly permissive mask sets file to perm2. |
+| FilePermissions.rb:50:3:50:33 | call to chmod | Overly permissive mask sets file to perm2. |
+| FilePermissions.rb:51:3:51:39 | call to chmod | Overly permissive mask sets file to "u=rwx,o+r". |
+| FilePermissions.rb:53:3:53:34 | call to chmod | Overly permissive mask sets file to "a+rw". |
+| FilePermissions.rb:57:3:57:29 | call to chmod_R | Overly permissive mask sets file to 0755. |
