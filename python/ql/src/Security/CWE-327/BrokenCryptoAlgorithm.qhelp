@@ -46,10 +46,10 @@
 
           <p>
                NOTICE: the original
-               <a href="https://pypi.org/project/pycrypto/"><code>pycrypto</code></a>
+               <code><a href="https://pypi.org/project/pycrypto/">pycrypto</a></code>
                PyPI package that provided the <code>Crypto</code> module is not longer
                actively maintained, so you should use the
-               <a href="https://pypi.org/project/pycryptodome/"><code>pycryptodome</code></a>
+               <code><a href="https://pypi.org/project/pycryptodome/">pycryptodome</a></code>
                PyPI package instead (which has a compatible API).
           </p>
 
