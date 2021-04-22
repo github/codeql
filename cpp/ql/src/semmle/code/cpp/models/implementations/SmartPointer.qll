@@ -106,9 +106,9 @@ private class SmartPtrSetterFunction extends MemberFunction, AliasFunction, Side
     )
   }
 
-  override predicate hasOnlySpecificReadSideEffects() { this instanceof Constructor }
+  override predicate hasOnlySpecificReadSideEffects() { none() }
 
-  override predicate hasOnlySpecificWriteSideEffects() { this instanceof ConstMemberFunction }
+  override predicate hasOnlySpecificWriteSideEffects() { none() }
 
   override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
     // Always write to the destination smart pointer itself.
