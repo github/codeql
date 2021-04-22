@@ -17,6 +17,11 @@ class TypeJwtParser extends Interface {
   TypeJwtParser() { this.hasQualifiedName("io.jsonwebtoken", "JwtParser") }
 }
 
+/** The interface `io.jsonwebtoken.JwtParser` or a type derived from it. */
+class TypeDerivedJwtParser extends RefType {
+  TypeDerivedJwtParser() { this.getASourceSupertype*() instanceof TypeJwtParser }
+}
+
 /** The interface `io.jsonwebtoken.JwtParserBuilder`. */
 class TypeJwtParserBuilder extends Interface {
   TypeJwtParserBuilder() { this.hasQualifiedName("io.jsonwebtoken", "JwtParserBuilder") }
@@ -122,7 +127,7 @@ private class JwtParserWithSigningKeyExpr extends Expr {
   MethodAccess signingMa;
 
   JwtParserWithSigningKeyExpr() {
-    this.getType().(RefType).getASourceSupertype*() instanceof TypeJwtParser and
+    this.getType() instanceof TypeDerivedJwtParser and
     isSigningKeySetter(this, signingMa)
   }
 
@@ -142,13 +147,13 @@ private class SigningToExprDataFlow extends DataFlow::Configuration {
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    sink.asExpr().getType().(RefType).getASourceSupertype*() instanceof TypeJwtParser
+    sink.asExpr().getType() instanceof TypeDerivedJwtParser
   }
 
   /** Models the builder style of `JwtParser` and `JwtParserBuilder`. */
   override predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
     (
-      pred.asExpr().getType().(RefType).getASourceSupertype*() instanceof TypeJwtParser or
+      pred.asExpr().getType() instanceof TypeDerivedJwtParser or
       pred.asExpr().getType().(RefType).getASourceSupertype*() instanceof TypeJwtParserBuilder
     ) and
     succ.asExpr().(MethodAccess).getQualifier() = pred.asExpr()
