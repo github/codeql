@@ -1,9 +1,16 @@
-from cryptography.hazmat.primitives.ciphers import Cipher, algorithms
-from secrets_store import get_password
+# snippet from python/ql/test/experimental/library-tests/frameworks/cryptography/test_rc4.py
+from cryptography.hazmat.primitives.ciphers import algorithms, Cipher
+import os
 
-def get_badly_encrypted_password():
-    dangerous = get_password()
-    cipher = Cipher(algorithms.ARC4(key), _, _)
-    encryptor = cipher.encryptor()
-    return encryptor.update(dangerous) + encryptor.finalize()
+key = os.urandom(256//8)
 
+algorithm = algorithms.ARC4(key)
+cipher = Cipher(algorithm, mode=None)
+
+secret_message = b"secret message"
+
+encryptor = cipher.encryptor()
+encrypted = encryptor.update(secret_message) # NOT OK
+encrypted += encryptor.finalize()
+
+print(secret_message, encrypted)
