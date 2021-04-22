@@ -41,6 +41,21 @@ class JSONValue extends @json_value, Locatable {
     )
   }
 
+  /** If this is an object, gets the value of property `name`. */
+  JSONValue getPropValue(string name) { json_properties(this, name, result) }
+
+  /** If this is an array, gets the value of the `i`th element. */
+  JSONValue getElementValue(int i) { result = this.(JSONArray).getChild(i) }
+
+  /** If this is a string constant, gets the value of the string. */
+  string getStringValue() { result = this.(JSONString).getValue() }
+
+  /** If this is an integer constant, gets its numeric value. */
+  int getIntValue() { result = this.(JSONNumber).getValue().toInt() }
+
+  /** If this is a boolean constant, gets its boolean value. */
+  boolean getBooleanValue() { result.toString() = this.(JSONBoolean).getValue() }
+
   override string getAPrimaryQlClass() { result = "JSONValue" }
 }
 
@@ -129,13 +144,10 @@ class JSONString extends @json_string, JSONPrimitiveValue {
  * ```
  */
 class JSONArray extends @json_array, JSONValue {
-  /** Gets the value of the `i`th element of this array. */
-  JSONValue getElementValue(int i) { result = getChild(i) }
+  override string getAPrimaryQlClass() { result = "JSONArray" }
 
   /** Gets the string value of the `i`th element of this array. */
-  string getElementStringValue(int i) { result = getElementValue(i).(JSONString).getValue() }
-
-  override string getAPrimaryQlClass() { result = "JSONArray" }
+  string getElementStringValue(int i) { result = getElementValue(i).getStringValue() }
 }
 
 /**
@@ -148,13 +160,10 @@ class JSONArray extends @json_array, JSONValue {
  * ```
  */
 class JSONObject extends @json_object, JSONValue {
-  /** Gets the value of property `name` of this object. */
-  JSONValue getPropValue(string name) { json_properties(this, name, result) }
+  override string getAPrimaryQlClass() { result = "JSONObject" }
 
   /** Gets the string value of property `name` of this object. */
-  string getPropStringValue(string name) { result = getPropValue(name).(JSONString).getValue() }
-
-  override string getAPrimaryQlClass() { result = "JSONObject" }
+  string getPropStringValue(string name) { result = getPropValue(name).getStringValue() }
 }
 
 /**

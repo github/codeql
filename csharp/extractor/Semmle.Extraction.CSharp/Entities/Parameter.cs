@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.Entities;
 using System.IO;
+using System;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -124,6 +125,17 @@ namespace Semmle.Extraction.CSharp.Entities
                 trapFile.param_location(this, Context.CreateLocation());
             }
 
+            if (Symbol.HasExplicitDefaultValue && Context.Defines(Symbol))
+            {
+                var defaultValueSyntax = GetDefaultValueFromSyntax(Symbol);
+
+                Action defaultValueExpressionCreation = defaultValueSyntax is not null
+                    ? () => Expression.Create(Context, defaultValueSyntax.Value, this, 0)
+                    : () => Expression.CreateGenerated(Context, Symbol, this, 0, Location);
+
+                Context.PopulateLater(defaultValueExpressionCreation);
+            }
+
             if (!IsSourceDeclaration || !Symbol.FromSource())
                 return;
 
@@ -139,36 +151,28 @@ namespace Semmle.Extraction.CSharp.Entities
                     TypeMention.Create(Context, syntax.Type!, this, type);
                 }
             }
+        }
 
-            if (Symbol.HasExplicitDefaultValue && Context.Defines(Symbol))
+        private static EqualsValueClauseSyntax? GetDefaultValueFromSyntax(IParameterSymbol symbol)
+        {
+            // This is a slight bug in the dbscheme
+            // We should really define param_default(param, string)
+            // And use parameter child #0 to encode the default expression.
+            var defaultValue = GetParameterDefaultValue(symbol);
+            if (defaultValue is null)
             {
-                // This is a slight bug in the dbscheme
-                // We should really define param_default(param, string)
-                // And use parameter child #0 to encode the default expression.
-                var defaultValue = GetParameterDefaultValue(Symbol);
-                if (defaultValue is null)
+                // In case this parameter belongs to an accessor of an indexer, we need
+                // to get the default value from the corresponding parameter belonging
+                // to the indexer itself
+                if (symbol.ContainingSymbol is IMethodSymbol method)
                 {
-                    // In case this parameter belongs to an accessor of an indexer, we need
-                    // to get the default value from the corresponding parameter belonging
-                    // to the indexer itself
-                    var method = (IMethodSymbol)Symbol.ContainingSymbol;
-                    if (method is not null)
-                    {
-                        var i = method.Parameters.IndexOf(Symbol);
-                        var indexer = (IPropertySymbol?)method.AssociatedSymbol;
-                        if (indexer is not null)
-                            defaultValue = GetParameterDefaultValue(indexer.Parameters[i]);
-                    }
-                }
-
-                if (defaultValue is not null)
-                {
-                    Context.PopulateLater(() =>
-                    {
-                        Expression.Create(Context, defaultValue.Value, this, 0);
-                    });
+                    var i = method.Parameters.IndexOf(symbol);
+                    if (method.AssociatedSymbol is IPropertySymbol indexer)
+                        defaultValue = GetParameterDefaultValue(indexer.Parameters[i]);
                 }
             }
+
+            return defaultValue;
         }
 
         public override bool IsSourceDeclaration => Symbol.IsSourceDeclaration();

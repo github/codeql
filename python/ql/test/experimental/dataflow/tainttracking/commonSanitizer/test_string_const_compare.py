@@ -15,32 +15,32 @@ def test_eq():
     if ts == "safe":
         ensure_not_tainted(ts)
     else:
-        ensure_tainted(ts)
+        ensure_tainted(ts) # $ tainted
     # ts should still be tainted after exiting the if block
-    ensure_tainted(ts)
+    ensure_tainted(ts) # $ tainted
 
 
 def test_eq_unsafe(x="foo"):
     """This test-case might seem strange, but it was a FP in our old points-to based analysis."""
     ts = TAINTED_STRING
     if ts == ts:
-        ensure_tainted(ts)
+        ensure_tainted(ts) # $ tainted
     if ts == x:
-        ensure_tainted(ts)
+        ensure_tainted(ts) # $ tainted
 
 
 def test_eq_with_or():
     ts = TAINTED_STRING
     if ts == "safe" or ts == "also_safe":
-        ensure_not_tainted(ts)
+        ensure_not_tainted(ts) # $ SPURIOUS: tainted
     else:
-        ensure_tainted(ts)
+        ensure_tainted(ts) # $ tainted
 
 
 def test_non_eq1():
     ts = TAINTED_STRING
     if ts != "safe":
-        ensure_tainted(ts)
+        ensure_tainted(ts) # $ tainted
     else:
         ensure_not_tainted(ts)
 
@@ -48,9 +48,9 @@ def test_non_eq1():
 def test_non_eq2():
     ts = TAINTED_STRING
     if not ts == "safe":
-        ensure_tainted(ts)
+        ensure_tainted(ts) # $ tainted
     else:
-        ensure_not_tainted(ts)
+        ensure_not_tainted(ts) # $ SPURIOUS: tainted
 
 
 def test_in_list():
@@ -58,7 +58,7 @@ def test_in_list():
     if ts in ["safe", "also_safe"]:
         ensure_not_tainted(ts)
     else:
-        ensure_tainted(ts)
+        ensure_tainted(ts) # $ tainted
 
 
 def test_in_tuple():
@@ -66,7 +66,7 @@ def test_in_tuple():
     if ts in ("safe", "also_safe"):
         ensure_not_tainted(ts)
     else:
-        ensure_tainted(ts)
+        ensure_tainted(ts) # $ tainted
 
 
 def test_in_set():
@@ -74,29 +74,29 @@ def test_in_set():
     if ts in {"safe", "also_safe"}:
         ensure_not_tainted(ts)
     else:
-        ensure_tainted(ts)
+        ensure_tainted(ts) # $ tainted
 
 
 def test_in_unsafe1(xs):
     ts = TAINTED_STRING
     if ts in xs:
-        ensure_tainted(ts)
+        ensure_tainted(ts) # $ tainted
     else:
-        ensure_tainted(ts)
+        ensure_tainted(ts) # $ tainted
 
 
 def test_in_unsafe2(x):
     ts = TAINTED_STRING
     if ts in ["safe", x]:
-        ensure_tainted(ts)
+        ensure_tainted(ts) # $ tainted
     else:
-        ensure_tainted(ts)
+        ensure_tainted(ts) # $ tainted
 
 
 def test_not_in1():
     ts = TAINTED_STRING
     if ts not in ["safe", "also_safe"]:
-        ensure_tainted(ts)
+        ensure_tainted(ts) # $ tainted
     else:
         ensure_not_tainted(ts)
 
@@ -104,9 +104,9 @@ def test_not_in1():
 def test_not_in2():
     ts = TAINTED_STRING
     if not ts in ["safe", "also_safe"]:
-        ensure_tainted(ts)
+        ensure_tainted(ts) # $ tainted
     else:
-        ensure_not_tainted(ts)
+        ensure_not_tainted(ts) # $ SPURIOUS: tainted
 
 
 def is_safe(x):
@@ -116,9 +116,9 @@ def is_safe(x):
 def test_eq_thorugh_func():
     ts = TAINTED_STRING
     if is_safe(ts):
-        ensure_not_tainted(ts)
+        ensure_not_tainted(ts) # $ SPURIOUS: tainted
     else:
-        ensure_tainted(ts)
+        ensure_tainted(ts) # $ tainted
 
 
 # Make tests runable

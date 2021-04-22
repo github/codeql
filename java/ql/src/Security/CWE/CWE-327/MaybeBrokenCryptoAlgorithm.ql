@@ -33,9 +33,8 @@ class InsecureAlgoLiteral extends ShortStringLiteral {
 }
 
 predicate objectToString(MethodAccess ma) {
-  exists(Method m |
+  exists(ToStringMethod m |
     m = ma.getMethod() and
-    m.hasName("toString") and
     m.getDeclaringType() instanceof TypeObject and
     variableTrack(ma.getQualifier()).getType().getErasure() instanceof TypeObject
   )

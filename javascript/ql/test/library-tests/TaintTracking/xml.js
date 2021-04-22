@@ -35,3 +35,26 @@
     parser.end();
 
 })();
+
+(function () {
+    var libxml = require("libxmljs");
+    var xml = source();
+    var xmlDoc = libxml.parseXmlString(xml);
+    var gchild = xmlDoc.get('//grandchild');
+    sink(gchild.text()); // NOT OK
+
+    var children = xmlDoc.root().childNodes();
+    var child = children[0];
+
+    sink(child.attr('foo').value()); // NOT OK
+
+    var child2 = xmlDoc.root().child()
+    sink(child2.attr('foo').name()); // NOT OK
+
+    const SaxPushParser = libxml.SaxPushParser;
+    var parser = new SaxPushParser();
+    parser.push(xml);
+    parser.on('characters', function (str) {
+      sink(str); // NOT OK
+    })    
+});

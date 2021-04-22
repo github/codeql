@@ -58,7 +58,7 @@ def redirect_shortcut(request):
 class CustomRedirectView(RedirectView):
 
     def get_redirect_url(self, foo): # $ requestHandler routedParameter=foo
-        ensure_tainted(foo)
+        ensure_tainted(foo) # $ tainted
         next = "https://example.com/{}".format(foo)
         return next # $ HttpResponse HttpRedirectResponse redirectLocation=next
 
