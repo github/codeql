@@ -50,7 +50,7 @@ class TrustAllHostnameVerifierConfiguration extends DataFlow::Configuration {
     source.asExpr().(ClassInstanceExpr).getConstructedType() instanceof TrustAllHostnameVerifier
   }
 
-  override predicate isSink(DataFlow::Node sink) { sinkNode(sink, "set-hostname") }
+  override predicate isSink(DataFlow::Node sink) { sinkNode(sink, "set-hostname-verifier") }
 
   override predicate isBarrier(DataFlow::Node barrier) {
     // ignore nodes that are in functions that intentionally disable hostname verification
