@@ -200,7 +200,7 @@ private Field getAField(Class c, int startBit, int endBit) {
 }
 
 private newtype TContent =
-  TFieldContent(Class c, int startBit, int endBit) { exists(getAField(c, startBit, endBit)) } or
+  TFieldContent(Field f) or
   TCollectionContent() or
   TArrayContent()
 
@@ -218,18 +218,14 @@ class Content extends TContent {
 }
 
 private class FieldContent extends Content, TFieldContent {
-  Class c;
-  int startBit;
-  int endBit;
+  Field f;
 
-  FieldContent() { this = TFieldContent(c, startBit, endBit) }
+  FieldContent() { this = TFieldContent(f) }
 
   // Ensure that there's just 1 result for `toString`.
-  override string toString() { result = min(Field f | f = getAField() | f.toString()) }
+  override string toString() { result = f.toString() }
 
-  predicate hasOffset(Class cl, int start, int end) { cl = c and start = startBit and end = endBit }
-
-  Field getAField() { result = getAField(c, startBit, endBit) }
+  Field getAField() { result = f }
 }
 
 private class CollectionContent extends Content, TCollectionContent {
@@ -242,69 +238,40 @@ private class ArrayContent extends Content, TArrayContent {
   override string toString() { result = "array content" }
 }
 
-private predicate fieldStoreStepNoChi(Node node1, FieldContent f, PostUpdateNode node2) {
-  exists(StoreInstruction store, Class c |
-    store = node2.asInstruction() and
-    store.getSourceValueOperand() = node1.asOperand() and
-    getWrittenField(store, f.(FieldContent).getAField(), c) and
-    f.hasOffset(c, _, _)
-  )
-}
-
-private FieldAddressInstruction getFieldInstruction(Instruction instr) {
-  result = instr or
-  result = instr.(CopyValueInstruction).getUnary()
-}
-
-pragma[noinline]
-private predicate getWrittenField(Instruction instr, Field f, Class c) {
-  exists(FieldAddressInstruction fa |
-    fa =
-      getFieldInstruction([
-          instr.(StoreInstruction).getDestinationAddress(),
-          instr.(WriteSideEffectInstruction).getDestinationAddress()
-        ]) and
-    f = fa.getField() and
-    c = f.getDeclaringType()
-  )
-}
-
-private predicate fieldStoreStepChi(Node node1, FieldContent f, PostUpdateNode node2) {
-  exists(ChiPartialOperand operand, ChiInstruction chi |
-    chi.getPartialOperand() = operand and
-    node1.asOperand() = operand and
-    node2.asInstruction() = chi and
-    exists(Class c |
-      c = chi.getResultType() and
-      exists(int startBit, int endBit |
-        chi.getUpdatedInterval(startBit, endBit) and
-        f.hasOffset(c, startBit, endBit)
-      )
-      or
-      getWrittenField(operand.getDef(), f.getAField(), c) and
-      f.hasOffset(c, _, _)
+private predicate hasAddressInstructionWithNoIntermediateFields(Instruction i) {
+  exists(Instruction addr |
+    not addr.isGLValue() and
+    addr.getResultIRType() instanceof IRAddressType and
+    addressFlowInstrRTC(addr, i) and
+    not exists(FieldAddressInstruction fai |
+      addressFlowInstrRTC(addr, fai) and
+      addressFlowInstrRTC(fai, i)
     )
   )
 }
 
-private predicate arrayStoreStepChi(Node node1, ArrayContent a, PostUpdateNode node2) {
+private predicate arrayStoreStepChi(Node node1, ArrayContent a, AddressNodeStore node2) {
   a = TArrayContent() and
-  exists(ChiPartialOperand operand, ChiInstruction chi, StoreInstruction store |
+  exists(ChiPartialOperand operand, ChiInstruction chi, Instruction store |
     chi.getPartialOperand() = operand and
     store = operand.getDef() and
     node1.asOperand() = operand and
-    // This `ChiInstruction` will always have a non-conflated result because both `ArrayStoreNode`
-    // and `PointerStoreNode` require it in their characteristic predicates.
-    node2.asInstruction() = chi and
+    not chi.isResultConflated() and
     (
-      // `x[i] = taint()`
-      // This matches the characteristic predicate in `ArrayStoreNode`.
-      store.getDestinationAddress() instanceof PointerAddInstruction
-      or
       // `*p = taint()`
-      // This matches the characteristic predicate in `PointerStoreNode`.
-      store.getDestinationAddress().(CopyValueInstruction).getUnary() instanceof LoadInstruction
+      // Search backwards through `CopyValue` instructions and check if there's an address instruction
+      // that is not just a glvalue.
+      hasAddressInstructionWithNoIntermediateFields(getDestinationAddress(store)) and
+      node2.getInstruction() = getDestinationAddress(store)
     )
+  )
+}
+
+private predicate fieldStoreStep(AddressNodeStore node1, FieldContent f, AddressNodeStore node2) {
+  exists(FieldAddressInstruction fai |
+    node1.getInstruction() = fai and
+    node2.getInstruction() = fai.getObjectAddress() and
+    f.getAField() = fai.getField()
   )
 }
 
@@ -313,146 +280,37 @@ private predicate arrayStoreStepChi(Node node1, ArrayContent a, PostUpdateNode n
  * Thus, `node2` references an object with a field `f` that contains the
  * value of `node1`.
  */
-predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
-  fieldStoreStepNoChi(node1, f, node2) or
-  fieldStoreStepChi(node1, f, node2) or
-  arrayStoreStepChi(node1, f, node2) or
-  fieldStoreStepAfterArraySuppression(node1, f, node2)
-}
-
-// This predicate pushes the correct `FieldContent` onto the access path when the
-// `suppressArrayRead` predicate has popped off an `ArrayContent`.
-private predicate fieldStoreStepAfterArraySuppression(
-  Node node1, FieldContent f, PostUpdateNode node2
-) {
-  exists(WriteSideEffectInstruction write, ChiInstruction chi, Class c |
-    not chi.isResultConflated() and
-    node1.asInstruction() = chi and
-    node2.asInstruction() = chi and
-    chi.getPartial() = write and
-    getWrittenField(write, f.getAField(), c) and
-    f.hasOffset(c, _, _)
-  )
-}
-
-bindingset[result, i]
-private int unbindInt(int i) { i <= result and i >= result }
-
-pragma[noinline]
-private predicate getLoadedField(LoadInstruction load, Field f, Class c) {
-  exists(FieldAddressInstruction fa |
-    fa = load.getSourceAddress() and
-    f = fa.getField() and
-    c = f.getDeclaringType()
-  )
-}
-
-/**
- * Holds if data can flow from `node1` to `node2` via a read of `f`.
- * Thus, `node1` references an object with a field `f` whose value ends up in
- * `node2`.
- */
-private predicate fieldReadStep(Node node1, FieldContent f, Node node2) {
-  exists(LoadOperand operand |
-    node2.asOperand() = operand and
-    node1.asInstruction() = operand.getAnyDef() and
-    exists(Class c |
-      c = operand.getAnyDef().getResultType() and
-      exists(int startBit, int endBit |
-        operand.getUsedInterval(unbindInt(startBit), unbindInt(endBit)) and
-        f.hasOffset(c, startBit, endBit)
-      )
-      or
-      getLoadedField(operand.getUse(), f.getAField(), c) and
-      f.hasOffset(c, _, _)
-    )
-  )
-}
-
-/**
- * When a store step happens in a function that looks like an array write such as:
- * ```cpp
- * void f(int* pa) {
- *   pa = source();
- * }
- * ```
- * it can be a write to an array, but it can also happen that `f` is called as `f(&a.x)`. If that is
- * the case, the `ArrayContent` that was written by the call to `f` should be popped off the access
- * path, and a `FieldContent` containing `x` should be pushed instead.
- * So this case pops `ArrayContent` off the access path, and the `fieldStoreStepAfterArraySuppression`
- * predicate in `storeStep` ensures that we push the right `FieldContent` onto the access path.
- */
-predicate suppressArrayRead(Node node1, ArrayContent a, Node node2) {
-  a = TArrayContent() and
-  exists(WriteSideEffectInstruction write, ChiInstruction chi |
-    node1.asInstruction() = write and
-    node2.asInstruction() = chi and
-    chi.getPartial() = write and
-    getWrittenField(write, _, _)
-  )
-}
-
-private class ArrayToPointerConvertInstruction extends ConvertInstruction {
-  ArrayToPointerConvertInstruction() {
-    this.getUnary().getResultType() instanceof ArrayType and
-    this.getResultType() instanceof PointerType
-  }
-}
-
-private Instruction skipOneCopyValueInstructionRec(CopyValueInstruction copy) {
-  copy.getUnary() = result and not result instanceof CopyValueInstruction
+predicate storeStep(Node node1, Content c, Node node2) {
+  fieldStoreStep(node1, c, node2)
   or
-  result = skipOneCopyValueInstructionRec(copy.getUnary())
+  arrayStoreStepChi(node1, c, node2)
 }
 
-private Instruction skipCopyValueInstructions(Operand op) {
-  not result instanceof CopyValueInstruction and result = op.getDef()
-  or
-  result = skipOneCopyValueInstructionRec(op.getDef())
-}
-
-private predicate arrayReadStep(Node node1, ArrayContent a, Node node2) {
+predicate arrayReadStep(Node node1, ArrayContent a, AddressNodeRead node2) {
   a = TArrayContent() and
   // Explicit dereferences such as `*p` or `p[i]` where `p` is a pointer or array.
-  exists(LoadOperand operand, Instruction address |
+  // Note that we don't register read side effects as read steps since we have dataflow from the
+  // side effect operand's definition to the side effect operand even without a read step. So we only
+  // use `LoadInstruction`s here.
+  exists(Operand operand, LoadInstruction load |
+    operand.getAnyDef() = pragma[only_bind_out](getSourceValue(load)) and
     operand.isDefinitionInexact() and
     node1.asInstruction() = operand.getAnyDef() and
-    operand = node2.asOperand() and
-    address = skipCopyValueInstructions(operand.getAddressOperand()) and
+    // `use(p[i])`
     (
-      address instanceof LoadInstruction or
-      address instanceof ArrayToPointerConvertInstruction or
-      address instanceof PointerOffsetInstruction
+      // Search backwards through `CopyValue` instructions and check if there's an address instruction
+      // that is not just a glvalue.
+      hasAddressInstructionWithNoIntermediateFields(getSourceAddress(load)) and
+      node2.getInstruction() = getSourceAddress(load)
     )
   )
 }
 
-/**
- * In cases such as:
- * ```cpp
- * void f(int* pa) {
- *   *pa = source();
- * }
- * ...
- * int x;
- * f(&x);
- * use(x);
- * ```
- * the load on `x` in `use(x)` will exactly overlap with its definition (in this case the definition
- * is a `WriteSideEffect`). This predicate pops the `ArrayContent` (pushed by the store in `f`)
- * from the access path.
- */
-private predicate exactReadStep(Node node1, ArrayContent a, Node node2) {
-  a = TArrayContent() and
-  exists(WriteSideEffectInstruction write, ChiInstruction chi |
-    not chi.isResultConflated() and
-    chi.getPartial() = write and
-    node1.asInstruction() = write and
-    node2.asInstruction() = chi and
-    // To distinquish this case from the `arrayReadStep` case we require that the entire variable was
-    // overwritten by the `WriteSideEffectInstruction` (i.e., there is a load that reads the
-    // entire variable).
-    exists(LoadInstruction load | load.getSourceValue() = chi)
+private predicate fieldReadStep(AddressNodeRead node1, FieldContent f, AddressNodeRead node2) {
+  exists(FieldAddressInstruction fai |
+    node1.getInstruction() = fai.getObjectAddress() and
+    node2.getInstruction() = fai and
+    f.getAField() = fai.getField()
   )
 }
 
@@ -461,11 +319,11 @@ private predicate exactReadStep(Node node1, ArrayContent a, Node node2) {
  * Thus, `node1` references an object with a field `f` whose value ends up in
  * `node2`.
  */
+cached
 predicate readStep(Node node1, Content f, Node node2) {
-  fieldReadStep(node1, f, node2) or
-  arrayReadStep(node1, f, node2) or
-  exactReadStep(node1, f, node2) or
-  suppressArrayRead(node1, f, node2)
+  fieldReadStep(node1, f, node2)
+  or
+  arrayReadStep(node1, f, node2)
 }
 
 /**
@@ -547,7 +405,13 @@ predicate isImmutableOrUnobservable(Node n) {
 }
 
 /** Holds if `n` should be hidden from path explanations. */
-predicate nodeIsHidden(Node n) { n instanceof OperandNode and not n instanceof ArgumentNode }
+predicate nodeIsHidden(Node n) {
+  n instanceof OperandNode and not n instanceof ArgumentNode
+  or
+  n instanceof AddressNodeStore
+  or
+  n instanceof AddressNodeRead
+}
 
 class LambdaCallKind = Unit;
 
