@@ -135,7 +135,7 @@ System and Network
 
 .. _data-flow-cheat-sheet-for-javascript--untrusted-data:
 
-Untrusted Data
+Untrusted data
 --------------
 
 - `RemoteFlowSource <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/security/dataflow/RemoteFlowSources.qll/type.RemoteFlowSources$Cached$RemoteFlowSource.html>`__ -- source of untrusted user input
