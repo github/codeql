@@ -25,7 +25,8 @@
           <p>
                In cases with a limited input space, such as for passwords, the hash
                function also needs to be computationally expensive to be resistant to
-               brute-force attacks.
+               brute-force attacks. Passwords should also have an unique salt applied
+               before hashing, but that is not considered by this query.
           </p>
 
           <p>
