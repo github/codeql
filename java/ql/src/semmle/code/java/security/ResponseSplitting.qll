@@ -8,8 +8,10 @@ import semmle.code.java.frameworks.JaxWS
 private import semmle.code.java.dataflow.ExternalFlow
 
 /** A sink that is vulnerable to an HTTP header splitting attack. */
-class HeaderSplittingSink extends DataFlow::Node {
-  HeaderSplittingSink() { sinkNode(this, "header-splitting") }
+abstract class HeaderSplittingSink extends DataFlow::Node { }
+
+private class DefaultHeaderSplittingSink extends HeaderSplittingSink {
+  DefaultHeaderSplittingSink() { sinkNode(this, "header-splitting") }
 }
 
 private class HeaderSplittingSinkModel extends SinkModelCsv {
