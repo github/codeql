@@ -28,7 +28,19 @@ class Node extends TIRDataFlowNode {
   /**
    * INTERNAL: Do not use.
    */
-  Declaration getEnclosingCallable() { none() } // overridden in subclasses
+  cached
+  final Declaration getEnclosingCallable() { result = this.getEnclosingCallableImpl() }
+
+  final private Declaration getEnclosingCallableImpl() {
+    result = this.asInstruction().getEnclosingFunction() or
+    result = this.asOperand().getUse().getEnclosingFunction() or
+    // When flow crosses from one _enclosing callable_ to another, the
+    // interprocedural data-flow library discards call contexts and inserts a
+    // node in the big-step relation used for human-readable path explanations.
+    // Therefore we want a distinct enclosing callable for each `VariableNode`,
+    // and that can be the `Variable` itself.
+    result = this.asVariable()
+  }
 
   /** Gets the function to which this node belongs, if any. */
   Function getFunction() { none() } // overridden in subclasses
@@ -133,8 +145,6 @@ class InstructionNode extends Node, TInstructionNode {
   /** Gets the instruction corresponding to this node. */
   Instruction getInstruction() { result = instr }
 
-  override Declaration getEnclosingCallable() { result = this.getFunction() }
-
   override Function getFunction() { result = instr.getEnclosingFunction() }
 
   override IRType getType() { result = instr.getResultIRType() }
@@ -158,8 +168,6 @@ class OperandNode extends Node, TOperandNode {
 
   /** Gets the operand corresponding to this node. */
   Operand getOperand() { result = op }
-
-  override Declaration getEnclosingCallable() { result = this.getFunction() }
 
   override Function getFunction() { result = op.getUse().getEnclosingFunction() }
 
@@ -516,15 +524,6 @@ class VariableNode extends Node, TVariableNode {
   Variable getVariable() { result = v }
 
   override Function getFunction() { none() }
-
-  override Declaration getEnclosingCallable() {
-    // When flow crosses from one _enclosing callable_ to another, the
-    // interprocedural data-flow library discards call contexts and inserts a
-    // node in the big-step relation used for human-readable path explanations.
-    // Therefore we want a distinct enclosing callable for each `VariableNode`,
-    // and that can be the `Variable` itself.
-    result = v
-  }
 
   override IRType getType() { result.getCanonicalLanguageType().hasUnspecifiedType(v.getType(), _) }
 
