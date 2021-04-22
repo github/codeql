@@ -119,10 +119,14 @@ private class JwtParserInsecureParseMethodAccess extends MethodAccess {
  * In this case, the signing key is set on a `JwtParserBuilder` indirectly setting the key of `JwtParser` that is created by the call to `build`.
  */
 private predicate isSigningKeySetter(Expr expr, MethodAccess signingMa) {
-  any(SigningToExprDataFlow s).hasFlow(DataFlow::exprNode(signingMa), DataFlow::exprNode(expr))
+  any(SigningToInsecureMethodAccessDataFlow s)
+      .hasFlow(DataFlow::exprNode(signingMa), DataFlow::exprNode(expr))
 }
 
-/** An expr that is a `JwtParser` for which a signing key has been set. */
+/**
+ * An expr that is a `JwtParser` for which a signing key has been set and which is used as
+ * the qualifier to a `JwtParserInsecureParseMethodAccess`.
+ */
 private class JwtParserWithSigningKeyExpr extends Expr {
   MethodAccess signingMa;
 
@@ -136,18 +140,20 @@ private class JwtParserWithSigningKeyExpr extends Expr {
 }
 
 /**
- * Models flow from `SigningKeyMethodAccess`es to expressions that are a (sub-type of) `JwtParser`.
+ * Models flow from `SigningKeyMethodAccess`es to expressions that are a
+ * (sub-type of) `JwtParser` and which are also the qualifier to a `JwtParserInsecureParseMethodAccess`.
  * This is used to determine whether a `JwtParser` has a signing key set.
  */
-private class SigningToExprDataFlow extends DataFlow::Configuration {
-  SigningToExprDataFlow() { this = "SigningToExprDataFlow" }
+private class SigningToInsecureMethodAccessDataFlow extends DataFlow::Configuration {
+  SigningToInsecureMethodAccessDataFlow() { this = "SigningToExprDataFlow" }
 
   override predicate isSource(DataFlow::Node source) {
     source.asExpr() instanceof SigningKeyMethodAccess
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    sink.asExpr().getType() instanceof TypeDerivedJwtParser
+    sink.asExpr().getType() instanceof TypeDerivedJwtParser and
+    any(JwtParserInsecureParseMethodAccess ma).getQualifier() = sink.asExpr()
   }
 
   /** Models the builder style of `JwtParser` and `JwtParserBuilder`. */
