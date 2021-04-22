@@ -2,7 +2,7 @@
 <qhelp>
 
 <overview>
-<p> A JWT consists of three parts: header, payload, and signature.
+<p> A JSON Web Token (JWT) consists of three parts: header, payload, and signature.
 The <code>io.jsonwebtoken.jjwt</code> library is one of many libraries used for working with JWTs.
 It offers different methods for parsing tokens like <code>parse</code>, <code>parseClaimsJws</code>, and <code>parsePlaintextJws</code>.
 The last two correctly verify that the JWT is properly signed.
@@ -12,7 +12,7 @@ comparing the locally computed signature with the signature part of the JWT.
 <p>
 Therefore it is necessary to provide the <code>JwtParser</code> with a key that is used for signature validation.
 Unfortunately the <code>parse</code> method <b>accepts</b> a JWT whose signature is empty although a signing key has been set for the parser.
-This means that an attacker can create arbitrary JWTs that will be accepted.
+This means that an attacker can create arbitrary JWTs that will be accepted if this method is used.
 </p>
 </overview>
 <recommendation>

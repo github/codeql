@@ -70,10 +70,10 @@ private class JwtHandlerAdapterOnJwtMethod extends Method {
 
 /**
  * Holds if `parseHandlerExpr` is an insecure `JwtHandler`.
- * That is, it overrides a method from `JwtHandlerOnJwtMethod` and the overridden method is not a method from `JwtHandlerAdapterOnJwtMethod`.
- * A overridden method which is a method from `JwtHandlerAdapterOnJwtMethod` is safe, because these always throw an exception.
+ * That is, it overrides a method from `JwtHandlerOnJwtMethod` and the override is not defined on `JwtHandlerAdapter`.
+ * `JwtHandlerAdapter`'s overrides are safe since they always throw an exception.
  */
-private predicate isInsecureParseHandler(Expr parseHandlerExpr) {
+private predicate isInsecureJwtHandler(Expr parseHandlerExpr) {
   exists(RefType t |
     parseHandlerExpr.getType() = t and
     t.getASourceSupertype*() instanceof TypeJwtHandler and
@@ -95,7 +95,7 @@ private class JwtParserInsecureParseMethodAccess extends MethodAccess {
     this.getMethod().getASourceOverriddenMethod*() instanceof JwtParserInsecureParseMethod
     or
     this.getMethod().getASourceOverriddenMethod*() instanceof JwtParserParseHandlerMethod and
-    isInsecureParseHandler(this.getArgument(1))
+    isInsecureJwtHandler(this.getArgument(1))
   }
 }
 
@@ -113,7 +113,7 @@ private class JwtParserInsecureParseMethodAccess extends MethodAccess {
  * ```
  * In this case, the signing key is set on a `JwtParserBuilder` indirectly setting the key of `JwtParser` that is created by the call to `build`.
  */
-private predicate isSigningKeySet(Expr expr, MethodAccess signingMa) {
+private predicate isSigningKeySetter(Expr expr, MethodAccess signingMa) {
   any(SigningToExprDataFlow s).hasFlow(DataFlow::exprNode(signingMa), DataFlow::exprNode(expr))
 }
 
@@ -123,7 +123,7 @@ private class JwtParserWithSigningKeyExpr extends Expr {
 
   JwtParserWithSigningKeyExpr() {
     this.getType().(RefType).getASourceSupertype*() instanceof TypeJwtParser and
-    isSigningKeySet(this, signingMa)
+    isSigningKeySetter(this, signingMa)
   }
 
   /** Gets the method access that sets the signing key for this parser. */
