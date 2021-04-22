@@ -133,6 +133,8 @@ System and Network
 - `PersistentWriteAccess <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Concepts.qll/type.Concepts$PersistentWriteAccess.html>`__ -- writing to persistent storage
 - `SystemCommandExecution <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Concepts.qll/type.Concepts$SystemCommandExecution.html>`__ -- execution of a system command
 
+.. _data-flow-cheat-sheet-for-javascript--untrusted-data:
+
 Untrusted Data
 --------------
 
