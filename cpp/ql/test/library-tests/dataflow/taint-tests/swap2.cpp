@@ -75,7 +75,7 @@ void test_copy_assignment_operator()
 
     y = x;
 
-    sink(y.data1); // $ ir ast=71:15 SPURIOUS: ast=69:23
+    sink(y.data1); // $ ast=71:15 ir SPURIOUS: ast=69:23
     sink(x.data1); // $ ast,ir
 
     IntWrapper::Class z1, z2;
@@ -99,7 +99,7 @@ void test_move_assignment_operator()
 
     y = std::move(x);
 
-    sink(y.data1); // $ ir ast=95:15 SPURIOUS: ast=93:23
+    sink(y.data1); // $ ast=95:15 ir SPURIOUS: ast=93:23
     sink(x.data1); // $ ast,ir
 }
 
@@ -126,7 +126,7 @@ void test_copy_assignment_method()
 
     y.copy_assign(x);
 
-    sink(y.data1); // $ ir ast=122:15 SPURIOUS: ast=120:23
+    sink(y.data1); // $ ast=122:15 ir SPURIOUS: ast=120:23
     sink(x.data1); // $ ast,ir
 }
 
@@ -141,7 +141,7 @@ void test_move_assignment_method()
 
     y.move_assign(std::move(x));
 
-    sink(y.data1); // $ ir ast=137:15 SPURIOUS: ast=135:23
+    sink(y.data1); // $ ast=137:15 ir SPURIOUS: ast=135:23
     sink(x.data1); // $ ast,ir
 }
 

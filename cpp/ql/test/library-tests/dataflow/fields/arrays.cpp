@@ -40,12 +40,12 @@ void nested_array_1(outer o) {
 
 void nested_array_2(outer o) {
   o.indirect->arr[1].data = user_input();
-  sink(o.indirect->arr[1].data); // $ ast MISSING: ir
-  sink(o.indirect->arr[0].data); // $ SPURIOUS: ast
+  sink(o.indirect->arr[1].data); // $ ast,ir
+  sink(o.indirect->arr[0].data); // $ SPURIOUS: ast,ir
 }
 
 void nested_array_3(outer o) {
   o.indirect->ptr[1].data = user_input();
-  sink(o.indirect->ptr[1].data); // $ MISSING: ir,ast
-  sink(o.indirect->ptr[0].data);
+  sink(o.indirect->ptr[1].data); // $ ir MISSING: ast
+  sink(o.indirect->ptr[0].data); // $ SPURIOUS: ir
 }

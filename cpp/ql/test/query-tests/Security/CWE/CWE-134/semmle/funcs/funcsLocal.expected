@@ -1,10 +1,15 @@
 edges
+| funcsLocal.c:16:8:16:9 | Chi [array content] | funcsLocal.c:58:9:58:10 | (const char *)... |
+| funcsLocal.c:16:8:16:9 | Chi [array content] | funcsLocal.c:58:9:58:10 | e1 |
+| funcsLocal.c:16:8:16:9 | Chi [array content] | funcsLocal.c:58:9:58:10 | e1 indirection |
+| funcsLocal.c:16:8:16:9 | fread output argument | funcsLocal.c:16:8:16:9 | Chi [array content] |
 | funcsLocal.c:16:8:16:9 | fread output argument | funcsLocal.c:17:9:17:10 | (const char *)... |
 | funcsLocal.c:16:8:16:9 | fread output argument | funcsLocal.c:17:9:17:10 | i1 |
 | funcsLocal.c:16:8:16:9 | fread output argument | funcsLocal.c:17:9:17:10 | i1 indirection |
 | funcsLocal.c:16:8:16:9 | fread output argument | funcsLocal.c:58:9:58:10 | (const char *)... |
 | funcsLocal.c:16:8:16:9 | fread output argument | funcsLocal.c:58:9:58:10 | e1 |
 | funcsLocal.c:16:8:16:9 | fread output argument | funcsLocal.c:58:9:58:10 | e1 indirection |
+| funcsLocal.c:16:8:16:9 | i1 | funcsLocal.c:16:8:16:9 | Chi [array content] |
 | funcsLocal.c:16:8:16:9 | i1 | funcsLocal.c:17:9:17:10 | (const char *)... |
 | funcsLocal.c:16:8:16:9 | i1 | funcsLocal.c:17:9:17:10 | i1 |
 | funcsLocal.c:16:8:16:9 | i1 | funcsLocal.c:17:9:17:10 | i1 indirection |
@@ -52,8 +57,11 @@ edges
 | funcsLocal.c:41:18:41:20 | i61 | funcsLocal.c:42:9:42:10 | i6 |
 | funcsLocal.c:41:18:41:20 | i61 | funcsLocal.c:42:9:42:10 | i6 indirection |
 nodes
+| funcsLocal.c:16:8:16:9 | Chi [array content] | semmle.label | Chi [array content] |
+| funcsLocal.c:16:8:16:9 | ChiPartial | semmle.label | ChiPartial |
 | funcsLocal.c:16:8:16:9 | fread output argument | semmle.label | fread output argument |
 | funcsLocal.c:16:8:16:9 | i1 | semmle.label | i1 |
+| funcsLocal.c:16:8:16:9 | store address [array content] | semmle.label | store address [array content] |
 | funcsLocal.c:17:9:17:10 | (const char *)... | semmle.label | (const char *)... |
 | funcsLocal.c:17:9:17:10 | (const char *)... | semmle.label | (const char *)... |
 | funcsLocal.c:17:9:17:10 | i1 | semmle.label | i1 |
@@ -95,6 +103,7 @@ nodes
 | funcsLocal.c:42:9:42:10 | i6 | semmle.label | i6 |
 | funcsLocal.c:42:9:42:10 | i6 indirection | semmle.label | i6 indirection |
 | funcsLocal.c:42:9:42:10 | i6 indirection | semmle.label | i6 indirection |
+| funcsLocal.c:57:10:57:14 | read address | semmle.label | read address |
 | funcsLocal.c:58:9:58:10 | (const char *)... | semmle.label | (const char *)... |
 | funcsLocal.c:58:9:58:10 | (const char *)... | semmle.label | (const char *)... |
 | funcsLocal.c:58:9:58:10 | e1 | semmle.label | e1 |

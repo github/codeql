@@ -12,7 +12,7 @@ struct Outer {
 };
 
 void absink(struct AB *ab) {
-  sink(ab->a); //$ ast,ir=20:20 ast,ir=27:7 ast=40:20 MISSING: ir
+  sink(ab->a); //$ ast,ir=20:20 ast,ir=27:7 ast=40:20
   sink(ab->b); // no flow
 }
 

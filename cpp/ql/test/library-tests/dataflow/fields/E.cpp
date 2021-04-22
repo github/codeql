@@ -29,6 +29,6 @@ void f(buf* b)
     argument_source(b->buffer);
     argument_source(p.data.buffer);
     sink(raw); // $ ast MISSING: ir
-    sink(b->buffer); // $ ast MISSING: ir
+    sink(b->buffer); // $ ast,ir
     handlePacket(&p);
 }

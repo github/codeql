@@ -107,7 +107,7 @@ void test_myarray_method_assignment()
 
 	ma.get(0) = source();
 
-	sink(ma.get(0)); // $ MISSING: ast,ir
+	sink(ma.get(0)); // $ ir MISSING: ast
 }
 
 void test_myarray_overloaded_assignment()

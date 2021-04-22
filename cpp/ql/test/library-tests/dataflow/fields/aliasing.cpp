@@ -99,7 +99,7 @@ void addressOfField() {
 
   S s_copy = s;
   int* px = &s_copy.m1;
-  sink(*px); // $ ir MISSING: ast
+  sink(*px); // $ MISSING: ast,ir
 }
 
 void taint_a_ptr(int* pa) {
@@ -124,7 +124,7 @@ void pointer_deref(int* xs) {
 
 void pointer_deref_sub(int* xs) {
   taint_a_ptr(xs - 2);
-  sink(*(xs - 2)); // $ MISSING: ast,ir
+  sink(*(xs - 2)); // $ ir MISSING: ast
 }
 
 void pointer_many_addrof_and_deref(int* xs) {
@@ -140,7 +140,7 @@ void pointer_unary_plus(int* xs) {
 void pointer_member_index(S_with_pointer s) {
   taint_a_ptr(s.data);
   // `s.data` is points to all-aliased-memory
-  sink(s.data[0]); // $ MISSING: ir,ast
+  sink(s.data[0]); // $ ir MISSING: ast
 }
 
 void member_array_different_field(S_with_pointer* s) {
@@ -156,13 +156,13 @@ struct S_with_array {
 void pointer_member_deref() {
   S_with_array s;
   taint_a_ptr(s.data);
-  sink(*s.data); // $ ast MISSING: ir
+  sink(*s.data); // $ ast,ir
 }
 
 void array_member_deref() {
   S_with_array s;
   taint_a_ptr(s.data);
-  sink(s.data[0]); // $ ast MISSING: ir
+  sink(s.data[0]); // $ ast,ir
 }
 
 struct S2 {

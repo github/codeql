@@ -669,6 +669,6 @@ void test_argument_source_field_to_obj() {
 	argument_source(s.x);
 
 	sink(s); // $ SPURIOUS: ast
-	sink(s.x); // $ ast MISSING: ir
+	sink(s.x); // $ ast,ir
 	sink(s.y); // clean
 }

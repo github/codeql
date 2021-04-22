@@ -7,7 +7,7 @@ void test_unique_ptr_int() {
 	std::unique_ptr<int> p1(new int(source()));
 	std::unique_ptr<int> p2 = std::make_unique<int>(source());
 	
-	sink(*p1); // $ MISSING: ast,ir
+	sink(*p1); // $ ir MISSING: ast
 	sink(*p2); // $ ast ir=8:50
 }
 
@@ -31,7 +31,7 @@ void test_shared_ptr_int() {
 	std::shared_ptr<int> p1(new int(source()));
 	std::shared_ptr<int> p2 = std::make_shared<int>(source());
 	
-	sink(*p1); // $ ast
+	sink(*p1); // $ ast,ir
 	sink(*p2); // $ ast ir=32:50 
 }
 

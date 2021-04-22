@@ -39,8 +39,8 @@ void sink(int x)
 
 void bar(Outer &b)
 {
-  sink(b.inner.f.a()); // $ ast=53:19 ast=55:19 ir=53:19 ir=55:19
-  sink(b.inner.f.b()); // $ ast=54:19 ast=56:19 ir=54:19 ir=56:19
+  sink(b.inner.f.a()); // $ ast,ir=53:19 ast,ir=55:19
+  sink(b.inner.f.b()); // $ ast,ir=54:19 ast,ir=56:19
 }
 
 void foo()
