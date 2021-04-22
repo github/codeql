@@ -11,15 +11,14 @@ import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.StringFormat
 
 /**
- * A unit class for adding additional taint steps that are specific to Server-side
- * Request Forgery (SSRF) attacks.
+ * A unit class for adding additional taint steps that are specific to server-side request forgery (SSRF) attacks.
  *
  * Extend this class to add additional taint steps to the SSRF query.
  */
 class RequestForgeryAdditionalTaintStep extends Unit {
   /**
    * Holds if the step from `pred` to `succ` should be considered a taint
-   * step for Server-side Request Forgery.
+   * step for server-side request forgery.
    */
   abstract predicate propagatesTaint(DataFlow::Node pred, DataFlow::Node succ);
 }
@@ -119,7 +118,7 @@ private class ApacheHttpRequestBuilderArgument extends RequestForgerySink {
 }
 
 /**
- * An argument to any `java.net.http.HttpRequest` Instantiation taken as a
+ * An argument to any `java.net.http.HttpRequest` instantiation taken as a
  *   sink for request forgery vulnerabilities.
  */
 private class HttpRequestNewBuilder extends RequestForgerySink {
