@@ -27,65 +27,58 @@ class UseOfLessTrustedSource extends DataFlow::Node {
 abstract class UseOfLessTrustedSink extends DataFlow::Node { }
 
 /**
- * A data flow sink for the if condition, which does not include the null judgment of the remote client ip address.
+ * A data flow sink for remote client ip comparison.
  *
  * For example: `if (!StringUtils.startsWith(ipAddr, "192.168.")){...` determine whether the client ip starts
  * with `192.168.`, and the program can be deceived by forging the ip address.
- * `if (remoteAddr == null || "".equals(remoteAddr)) {...` judging whether the client ip is a null value,
- * it needs to be excluded
  */
-private class IfConditionSink extends UseOfLessTrustedSink {
-  IfConditionSink() {
-    exists(IfStmt is |
-      is.getCondition() = this.asExpr() and
+private class CompareSink extends UseOfLessTrustedSink {
+  CompareSink() {
+    exists(MethodAccess ma |
+      ma.getMethod().getName() in ["equals", "equalsIgnoreCase"] and
+      ma.getMethod().getDeclaringType() instanceof TypeString and
+      ma.getMethod().getNumberOfParameters() = 1 and
       (
-        exists(MethodAccess ma |
-          ma.getMethod().getName() in ["equals", "equalsIgnoreCase"] and
-          ma.getMethod().getDeclaringType() instanceof TypeString and
-          ma.getMethod().getNumberOfParameters() = 1 and
-          not ma.getQualifier().(CompileTimeConstantExpr).getStringValue().toLowerCase() in [
-              "", "unknown", ":"
-            ] and
-          not ma.getArgument(0).(CompileTimeConstantExpr).getStringValue().toLowerCase() in [
-              "", "unknown", ":"
-            ] and
-          is.getCondition() = ma.getParent*()
-        )
+        ma.getArgument(0) = this.asExpr() and
+        not ma.getQualifier().(CompileTimeConstantExpr).getStringValue().toLowerCase() in [
+            "", "unknown", ":"
+          ]
         or
-        exists(MethodAccess ma |
-          ma.getMethod().hasName("contains") and
-          ma.getMethod().getDeclaringType() instanceof TypeString and
-          ma.getMethod().getNumberOfParameters() = 1 and
-          ma.getAnArgument().(CompileTimeConstantExpr).getStringValue().toLowerCase() in [
-              "", "unknown"
-            ] and
-          is.getCondition() = ma.getParent*()
-        )
-        or
-        exists(MethodAccess ma |
-          ma.getMethod().hasName("startsWith") and
-          ma.getMethod()
-              .getDeclaringType()
-              .hasQualifiedName(["org.apache.commons.lang3", "org.apache.commons.lang"],
-                "StringUtils") and
-          ma.getMethod().getNumberOfParameters() = 2 and
-          ma.getAnArgument().(CompileTimeConstantExpr).getStringValue() != "" and
-          is.getCondition() = ma.getParent*()
-        )
-        or
-        exists(MethodAccess ma |
-          ma.getMethod().getName() in ["equals", "equalsIgnoreCase"] and
-          ma.getMethod()
-              .getDeclaringType()
-              .hasQualifiedName(["org.apache.commons.lang3", "org.apache.commons.lang"],
-                "StringUtils") and
-          ma.getMethod().getNumberOfParameters() = 2 and
-          not ma.getAnArgument().(CompileTimeConstantExpr).getStringValue().toLowerCase() in [
-              "", "unknown", ":"
-            ] and
-          is.getCondition() = ma.getParent*()
-        )
+        ma.getQualifier() = this.asExpr() and
+        not ma.getArgument(0).(CompileTimeConstantExpr).getStringValue().toLowerCase() in [
+            "", "unknown", ":"
+          ]
       )
+    )
+    or
+    exists(MethodAccess ma |
+      ma.getMethod().hasName("contains") and
+      ma.getMethod().getDeclaringType() instanceof TypeString and
+      ma.getMethod().getNumberOfParameters() = 1 and
+      ma.getQualifier() = this.asExpr() and
+      ma.getArgument(0).(CompileTimeConstantExpr).getStringValue().toLowerCase() in ["", "unknown"]
+    )
+    or
+    exists(MethodAccess ma, int i |
+      ma.getMethod().hasName("startsWith") and
+      ma.getMethod()
+          .getDeclaringType()
+          .hasQualifiedName(["org.apache.commons.lang3", "org.apache.commons.lang"], "StringUtils") and
+      ma.getMethod().getNumberOfParameters() = 2 and
+      ma.getArgument(i) = this.asExpr() and
+      ma.getArgument(1 - i).(CompileTimeConstantExpr).getStringValue() != ""
+    )
+    or
+    exists(MethodAccess ma, int i |
+      ma.getMethod().getName() in ["equals", "equalsIgnoreCase"] and
+      ma.getMethod()
+          .getDeclaringType()
+          .hasQualifiedName(["org.apache.commons.lang3", "org.apache.commons.lang"], "StringUtils") and
+      ma.getMethod().getNumberOfParameters() = 2 and
+      ma.getArgument(i) = this.asExpr() and
+      not ma.getArgument(1 - i).(CompileTimeConstantExpr).getStringValue().toLowerCase() in [
+          "", "unknown", ":"
+        ]
     )
   }
 }

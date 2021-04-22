@@ -36,14 +36,6 @@ class UseOfLessTrustedSourceConfig extends TaintTracking::Configuration {
       not aa.getIndexExpr().(CompileTimeConstantExpr).getIntValue() = 0
     )
   }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node prod, DataFlow::Node succ) {
-    exists(MethodAccess ma |
-      ma.getAnArgument() = prod.asExpr() and
-      ma = succ.asExpr() and
-      ma.getMethod().getReturnType() instanceof BooleanType
-    )
-  }
 }
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, UseOfLessTrustedSourceConfig conf

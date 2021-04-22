@@ -11,7 +11,7 @@ edges
 | UseOfLessTrustedSource.java:37:18:37:58 | getHeader(...) : String | UseOfLessTrustedSource.java:48:28:48:48 | ... + ... |
 | UseOfLessTrustedSource.java:41:18:41:47 | getHeader(...) : String | UseOfLessTrustedSource.java:42:58:42:59 | ip |
 | UseOfLessTrustedSource.java:41:18:41:47 | getHeader(...) : String | UseOfLessTrustedSource.java:48:28:48:48 | ... + ... |
-| UseOfLessTrustedSource.java:53:21:53:33 | getClientIP(...) : String | UseOfLessTrustedSource.java:54:13:54:51 | !... |
+| UseOfLessTrustedSource.java:53:21:53:33 | getClientIP(...) : String | UseOfLessTrustedSource.java:54:37:54:38 | ip |
 | UseOfLessTrustedSource.java:74:27:74:62 | getHeader(...) : String | UseOfLessTrustedSource.java:78:16:78:37 | ...[...] : String |
 | UseOfLessTrustedSource.java:78:16:78:37 | ...[...] : String | UseOfLessTrustedSource.java:53:21:53:33 | getClientIP(...) : String |
 nodes
@@ -29,7 +29,7 @@ nodes
 | UseOfLessTrustedSource.java:42:58:42:59 | ip | semmle.label | ip |
 | UseOfLessTrustedSource.java:48:28:48:48 | ... + ... | semmle.label | ... + ... |
 | UseOfLessTrustedSource.java:53:21:53:33 | getClientIP(...) : String | semmle.label | getClientIP(...) : String |
-| UseOfLessTrustedSource.java:54:13:54:51 | !... | semmle.label | !... |
+| UseOfLessTrustedSource.java:54:37:54:38 | ip | semmle.label | ip |
 | UseOfLessTrustedSource.java:74:27:74:62 | getHeader(...) : String | semmle.label | getHeader(...) : String |
 | UseOfLessTrustedSource.java:78:16:78:37 | ...[...] : String | semmle.label | ...[...] : String |
 #select
@@ -45,4 +45,4 @@ nodes
 | UseOfLessTrustedSource.java:48:28:48:48 | ... + ... | UseOfLessTrustedSource.java:33:18:33:52 | getHeader(...) : String | UseOfLessTrustedSource.java:48:28:48:48 | ... + ... | IP address spoofing might include code from $@. | UseOfLessTrustedSource.java:33:18:33:52 | getHeader(...) | this user input |
 | UseOfLessTrustedSource.java:48:28:48:48 | ... + ... | UseOfLessTrustedSource.java:37:18:37:58 | getHeader(...) : String | UseOfLessTrustedSource.java:48:28:48:48 | ... + ... | IP address spoofing might include code from $@. | UseOfLessTrustedSource.java:37:18:37:58 | getHeader(...) | this user input |
 | UseOfLessTrustedSource.java:48:28:48:48 | ... + ... | UseOfLessTrustedSource.java:41:18:41:47 | getHeader(...) : String | UseOfLessTrustedSource.java:48:28:48:48 | ... + ... | IP address spoofing might include code from $@. | UseOfLessTrustedSource.java:41:18:41:47 | getHeader(...) | this user input |
-| UseOfLessTrustedSource.java:54:13:54:51 | !... | UseOfLessTrustedSource.java:74:27:74:62 | getHeader(...) : String | UseOfLessTrustedSource.java:54:13:54:51 | !... | IP address spoofing might include code from $@. | UseOfLessTrustedSource.java:74:27:74:62 | getHeader(...) | this user input |
+| UseOfLessTrustedSource.java:54:37:54:38 | ip | UseOfLessTrustedSource.java:74:27:74:62 | getHeader(...) : String | UseOfLessTrustedSource.java:54:37:54:38 | ip | IP address spoofing might include code from $@. | UseOfLessTrustedSource.java:74:27:74:62 | getHeader(...) | this user input |
