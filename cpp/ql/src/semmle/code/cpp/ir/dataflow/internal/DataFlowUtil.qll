@@ -10,6 +10,7 @@ private import semmle.code.cpp.ir.ValueNumbering
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.controlflow.IRGuards
 private import semmle.code.cpp.models.interfaces.DataFlow
+private import DataFlowPrivate
 
 cached
 private newtype TIRDataFlowNode =
@@ -515,6 +516,11 @@ Instruction getSourceValue(Instruction i) {
  * Gets the node corresponding to `instr`.
  */
 InstructionNode instructionNode(Instruction instr) { result.getInstruction() = instr }
+
+/**
+ * Gets the node corresponding to `operand`.
+ */
+OperandNode operandNode(Operand operand) { result.getOperand() = operand }
 
 /**
  * DEPRECATED: use `definitionByReferenceNodeFromArgument` instead.
