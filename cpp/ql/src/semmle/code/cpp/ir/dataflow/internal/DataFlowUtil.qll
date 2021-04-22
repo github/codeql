@@ -787,23 +787,6 @@ private predicate postReadStep(AddressNodeRead nodeFrom, Node nodeTo) {
   )
 }
 
-pragma[noinline]
-private predicate getFieldSizeOfClass(Class c, Type type, int size) {
-  exists(Field f |
-    f.getDeclaringType() = c and
-    f.getUnderlyingType() = type and
-    type.getSize() = size
-  )
-}
-
-private predicate isSingleFieldClass(Type type, Operand op) {
-  exists(int size, Class c |
-    c = op.getType().getUnderlyingType() and
-    c.getSize() = size and
-    getFieldSizeOfClass(c, type, size)
-  )
-}
-
 private predicate simpleOperandLocalFlowStep(Instruction iFrom, Operand opTo) {
   // Propagate flow from an instruction to its exact uses.
   opTo.getDef() = iFrom
@@ -833,10 +816,11 @@ private predicate simpleOperandLocalFlowStep(Instruction iFrom, Operand opTo) {
   )
   or
   // Flow from stores to structs with a single field to a load of that field.
-  exists(LoadInstruction load |
+  exists(LoadInstruction load, int end |
     load.getSourceValueOperand() = opTo and
     opTo.getAnyDef() = iFrom and
-    isSingleFieldClass(iFrom.getResultType(), opTo)
+    load.getSourceValueOperand().getUsedInterval(0, end) and
+    end = 8 * iFrom.getResultType().getSize()
   )
 }
 
