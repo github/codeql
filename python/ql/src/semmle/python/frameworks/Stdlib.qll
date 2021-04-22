@@ -886,21 +886,7 @@ private DataFlow::LocalSourceNode hashlibNewResult(DataFlow::TypeTracker t, stri
   t.start() and
   result = hashlibNewCall(algorithmName)
   or
-  // Due to bad performance when using normal setup with `hashlibNewResult(t2, algorithmName).track(t2, t)`
-  // we have inlined that code and forced a join
-  exists(DataFlow::TypeTracker t2 |
-    exists(DataFlow::StepSummary summary |
-      hashlibNewResult_first_join(t2, algorithmName, result, summary) and
-      t = t2.append(summary)
-    )
-  )
-}
-
-pragma[nomagic]
-private predicate hashlibNewResult_first_join(
-  DataFlow::TypeTracker t2, string algorithmName, DataFlow::Node res, DataFlow::StepSummary summary
-) {
-  DataFlow::StepSummary::step(hashlibNewResult(t2, algorithmName), res, summary)
+  exists(DataFlow::TypeTracker t2 | result = hashlibNewResult(t2, algorithmName).track(t2, t))
 }
 
 /** Gets a reference to the result of calling `hashlib.new` with `algorithmName` as the first argument. */

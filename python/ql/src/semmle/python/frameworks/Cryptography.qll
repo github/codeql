@@ -206,22 +206,7 @@ private module CryptographyModel {
             ]
         )
         or
-        // Due to bad performance when using normal setup with `cipherInstance(t2, algorithmName).track(t2, t)`
-        // we have inlined that code and forced a join
-        exists(DataFlow::TypeTracker t2 |
-          exists(DataFlow::StepSummary summary |
-            cipherInstance_first_join(t2, algorithmName, result, summary) and
-            t = t2.append(summary)
-          )
-        )
-      }
-
-      pragma[nomagic]
-      private predicate cipherInstance_first_join(
-        DataFlow::TypeTracker t2, string algorithmName, DataFlow::Node res,
-        DataFlow::StepSummary summary
-      ) {
-        DataFlow::StepSummary::step(cipherInstance(t2, algorithmName), res, summary)
+        exists(DataFlow::TypeTracker t2 | result = cipherInstance(t2, algorithmName).track(t2, t))
       }
 
       /** Gets a reference to the encryptor of a Cipher instance using algorithm with `algorithmName`. */
@@ -233,22 +218,7 @@ private module CryptographyModel {
           attr.getObject() = cipherInstance(algorithmName)
         )
         or
-        // Due to bad performance when using normal setup with `cipherEncryptor(t2, algorithmName).track(t2, t)`
-        // we have inlined that code and forced a join
-        exists(DataFlow::TypeTracker t2 |
-          exists(DataFlow::StepSummary summary |
-            cipherEncryptor_first_join(t2, algorithmName, result, summary) and
-            t = t2.append(summary)
-          )
-        )
-      }
-
-      pragma[nomagic]
-      private predicate cipherEncryptor_first_join(
-        DataFlow::TypeTracker t2, string algorithmName, DataFlow::Node res,
-        DataFlow::StepSummary summary
-      ) {
-        DataFlow::StepSummary::step(cipherEncryptor(t2, algorithmName), res, summary)
+        exists(DataFlow::TypeTracker t2 | result = cipherEncryptor(t2, algorithmName).track(t2, t))
       }
 
       /** Gets a reference to the dncryptor of a Cipher instance using algorithm with `algorithmName`. */
@@ -260,22 +230,7 @@ private module CryptographyModel {
           attr.getObject() = cipherInstance(algorithmName)
         )
         or
-        // Due to bad performance when using normal setup with `cipherDecryptor(t2, algorithmName).track(t2, t)`
-        // we have inlined that code and forced a join
-        exists(DataFlow::TypeTracker t2 |
-          exists(DataFlow::StepSummary summary |
-            cipherDecryptor_first_join(t2, algorithmName, result, summary) and
-            t = t2.append(summary)
-          )
-        )
-      }
-
-      pragma[nomagic]
-      private predicate cipherDecryptor_first_join(
-        DataFlow::TypeTracker t2, string algorithmName, DataFlow::Node res,
-        DataFlow::StepSummary summary
-      ) {
-        DataFlow::StepSummary::step(cipherDecryptor(t2, algorithmName), res, summary)
+        exists(DataFlow::TypeTracker t2 | result = cipherDecryptor(t2, algorithmName).track(t2, t))
       }
     }
 
@@ -362,22 +317,7 @@ private module CryptographyModel {
           ]
       )
       or
-      // Due to bad performance when using normal setup with `hashInstance(t2, algorithmName).track(t2, t)`
-      // we have inlined that code and forced a join
-      exists(DataFlow::TypeTracker t2 |
-        exists(DataFlow::StepSummary summary |
-          hashInstance_first_join(t2, algorithmName, result, summary) and
-          t = t2.append(summary)
-        )
-      )
-    }
-
-    pragma[nomagic]
-    private predicate hashInstance_first_join(
-      DataFlow::TypeTracker t2, string algorithmName, DataFlow::Node res,
-      DataFlow::StepSummary summary
-    ) {
-      DataFlow::StepSummary::step(hashInstance(t2, algorithmName), res, summary)
+      exists(DataFlow::TypeTracker t2 | result = hashInstance(t2, algorithmName).track(t2, t))
     }
 
     /** Gets a reference to a Hash instance using algorithm with `algorithmName`. */
