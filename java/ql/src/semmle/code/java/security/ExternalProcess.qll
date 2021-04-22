@@ -1,7 +1,10 @@
 /* Definitions related to external processes. */
 import semmle.code.java.Member
-import semmle.code.java.JDK
-import semmle.code.java.frameworks.apache.Exec
+
+private module Instances {
+  private import semmle.code.java.JDK
+  private import semmle.code.java.frameworks.apache.Exec
+}
 
 /**
  * A callable that executes a command.
