@@ -56,7 +56,7 @@ private class CompareSink extends UseOfLessTrustedSink {
       ma.getMethod().getDeclaringType() instanceof TypeString and
       ma.getMethod().getNumberOfParameters() = 1 and
       ma.getQualifier() = this.asExpr() and
-      ma.getArgument(0).(CompileTimeConstantExpr).getStringValue().toLowerCase() in ["", "unknown"]
+      not ma.getArgument(0).(CompileTimeConstantExpr).getStringValue().toLowerCase() in ["", "unknown"]
     )
     or
     exists(MethodAccess ma, int i |
