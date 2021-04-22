@@ -67,7 +67,7 @@ helpers.run_cmd(['dotnet', 'format', projectDirOut,
                 '--include', outputName + '.cs'])
 
 print("\n* Building output project")
-helpers.run_cmd(['dotnet', 'build', '/t:rebuild', projectDirOut],
+helpers.run_cmd(['dotnet', 'build', '/t:rebuild', '/p:AllowUnsafeBlocks=true', projectDirOut],
                 'ERR: Build failed. Script failed to generate a stub that builds')
 
 print("\n --> Generated output file: " + outputFile)

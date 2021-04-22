@@ -319,7 +319,11 @@ private string stubAccessibility(Member m) {
 }
 
 private string stubModifiers(Member m) {
-  result = stubAccessibility(m) + stubStaticOrConst(m) + stubOverride(m)
+  result = stubUnsafe(m) + stubAccessibility(m) + stubStaticOrConst(m) + stubOverride(m)
+}
+
+private string stubUnsafe(Member m) {
+  if m.(Modifiable).isUnsafe() then result = "unsafe " else result = ""
 }
 
 private string stubStaticOrConst(Member m) {
