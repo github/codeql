@@ -99,8 +99,6 @@ private predicate localAdditionalTaintExprStep(Expr src, Expr sink) {
   or
   sink.(LogicExpr).getAnOperand() = src
   or
-  containerReturnValueStep(src, sink)
-  or
   constructorStep(src, sink)
   or
   qualifierToMethodStep(src, sink)
@@ -123,8 +121,6 @@ private predicate localAdditionalTaintExprStep(Expr src, Expr sink) {
  * This is restricted to cases where the step updates the value of `sink`.
  */
 private predicate localAdditionalTaintUpdateStep(Expr src, Expr sink) {
-  containerUpdateStep(src, sink)
-  or
   qualifierToArgumentStep(src, sink)
   or
   argToArgStep(src, sink)
