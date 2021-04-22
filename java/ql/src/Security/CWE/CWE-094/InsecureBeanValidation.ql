@@ -60,7 +60,15 @@ class BeanValidationConfig extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSink(DataFlow::Node sink) { sinkNode(sink, "bean-validation") }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof BeanValidationSink }
+}
+
+/**
+ * A bean validation sink, such as method `buildConstraintViolationWithTemplate`
+ * declared on a subtype of `javax.validation.ConstraintValidatorContext`.
+ */
+private class BeanValidationSink extends DataFlow::Node {
+  BeanValidationSink() { sinkNode(this, "bean-validation") }
 }
 
 from BeanValidationConfig cfg, DataFlow::PathNode source, DataFlow::PathNode sink

@@ -124,7 +124,7 @@ class ZipSlipConfiguration extends TaintTracking::Configuration {
     source.asExpr().(MethodAccess).getMethod() instanceof ArchiveEntryNameMethod
   }
 
-  override predicate isSink(Node sink) { sinkNode(sink, "create-file") }
+  override predicate isSink(Node sink) { sink instanceof FileCreationSink }
 
   override predicate isAdditionalTaintStep(Node n1, Node n2) {
     filePathStep(n1, n2) or fileTaintStep(n1, n2)
@@ -144,6 +144,13 @@ class ZipSlipConfiguration extends TaintTracking::Configuration {
       ma.getBasicBlock().bbDominates(node.asExpr().getBasicBlock())
     )
   }
+}
+
+/**
+ * A sink that represents a file creation, such as a file write, copy or move operation.
+ */
+private class FileCreationSink extends DataFlow::Node {
+  FileCreationSink() { sinkNode(this, "create-file") }
 }
 
 from PathNode source, PathNode sink

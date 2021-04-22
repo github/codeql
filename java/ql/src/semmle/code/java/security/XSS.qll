@@ -29,6 +29,7 @@ class XssAdditionalTaintStep extends Unit {
   abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);
 }
 
+/** CSV sink models representing methods susceptible to XSS attacks. */
 private class DefaultXssSinkModel extends SinkModelCsv {
   override predicate row(string row) {
     row =
