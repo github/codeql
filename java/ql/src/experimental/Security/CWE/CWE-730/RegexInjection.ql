@@ -24,7 +24,7 @@ class RegexSink extends DataFlow::ExprNode {
   RegexSink() {
     exists(MethodAccess ma, Method m | m = ma.getMethod() |
       (
-        m.getDeclaringType().hasQualifiedName("java.lang", "String") and
+        m.getDeclaringType() instanceof TypeString and
         (
           ma.getArgument(0) = this.asExpr() and
           (
@@ -47,7 +47,7 @@ class RegexSink extends DataFlow::ExprNode {
         m.getDeclaringType().hasQualifiedName("org.apache.commons.lang3", "RegExUtils") and
         (
           ma.getArgument(1) = this.asExpr() and
-          m.getParameterType(1).(Class).hasQualifiedName("java.lang", "String") and
+          m.getParameterType(1).(Class) instanceof TypeString and
           (
             m.hasName("removeAll") or
             m.hasName("removeFirst") or
