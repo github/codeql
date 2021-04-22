@@ -1,2 +1,1 @@
 | Program.cs:9:32:9:46 | Unable to resolve target for call. (Compilation error?) | Unexpected C# extractor error in Program.cs: Unable to resolve target for call. (Compilation error?) | 3 |
-| file://:0:0:0:0 | Unhandled literal type | Unexpected C# extractor error: Unhandled literal type | 3 |
