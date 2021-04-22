@@ -10,4 +10,4 @@
 
 import java
 
-select sum(File f, int i | i = f.getNumberOfLinesOfCode() | i)
+select sum(CompilationUnit f | f.fromSource() | f.getNumberOfLinesOfCode())
