@@ -121,6 +121,14 @@ private module VirtualDispatch {
     )
   }
 
+  pragma[inline]
+  private DataFlowCallable getReturnNodeEnclosingCallable(ReturnNode n) {
+    exists(ReturnNode n0 |
+      pragma[only_bind_into](n0) = n and
+      pragma[only_bind_into](result) = n0.getEnclosingCallable()
+    )
+  }
+
   /**
    * A ReturnNode with its ReturnKind and its enclosing callable.
    *
@@ -130,7 +138,7 @@ private module VirtualDispatch {
     ReturnNode node, ReturnKind kind, DataFlowCallable callable
   ) {
     node.getKind() = kind and
-    node.getEnclosingCallable() = callable
+    getReturnNodeEnclosingCallable(node) = callable
   }
 
   /** Call through a function pointer. */
