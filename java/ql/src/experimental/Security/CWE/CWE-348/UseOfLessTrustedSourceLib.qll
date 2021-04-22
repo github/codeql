@@ -56,27 +56,27 @@ private class CompareSink extends UseOfLessTrustedSink {
       ma.getMethod().getDeclaringType() instanceof TypeString and
       ma.getMethod().getNumberOfParameters() = 1 and
       ma.getQualifier() = this.asExpr() and
-      ma.getArgument(0).(CompileTimeConstantExpr).getStringValue().toLowerCase() in ["", "unknown"]
+      not ma.getArgument(0).(CompileTimeConstantExpr).getStringValue().toLowerCase() in ["", "unknown"]
     )
     or
-    exists(MethodAccess ma, int i |
+    exists(MethodAccess ma |
       ma.getMethod().hasName("startsWith") and
       ma.getMethod()
           .getDeclaringType()
           .hasQualifiedName(["org.apache.commons.lang3", "org.apache.commons.lang"], "StringUtils") and
       ma.getMethod().getNumberOfParameters() = 2 and
-      ma.getArgument(i) = this.asExpr() and
-      ma.getArgument(1 - i).(CompileTimeConstantExpr).getStringValue() != ""
+      ma.getAnArgument() = this.asExpr() and
+      ma.getAnArgument().(CompileTimeConstantExpr).getStringValue() != ""
     )
     or
-    exists(MethodAccess ma, int i |
+    exists(MethodAccess ma |
       ma.getMethod().getName() in ["equals", "equalsIgnoreCase"] and
       ma.getMethod()
           .getDeclaringType()
           .hasQualifiedName(["org.apache.commons.lang3", "org.apache.commons.lang"], "StringUtils") and
       ma.getMethod().getNumberOfParameters() = 2 and
-      ma.getArgument(i) = this.asExpr() and
-      not ma.getArgument(1 - i).(CompileTimeConstantExpr).getStringValue().toLowerCase() in [
+      ma.getAnArgument() = this.asExpr() and
+      not ma.getAnArgument().(CompileTimeConstantExpr).getStringValue().toLowerCase() in [
           "", "unknown", ":"
         ]
     )
