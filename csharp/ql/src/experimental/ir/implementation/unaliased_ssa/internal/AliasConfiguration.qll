@@ -15,10 +15,4 @@ class Allocation extends IRAutomaticVariable {
   }
 }
 
-class StageEscapeConfiguration extends string {
-  StageEscapeConfiguration() {
-    this = "StageEscapeConfiguration (unaliased_ssa)"
-  }
-
-  predicate useSoundEscapeAnalysis() { any() }
-}
+predicate phaseNeedsSoundEscapeAnalysis() { any() }

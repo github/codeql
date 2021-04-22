@@ -72,9 +72,7 @@ class MemoryLocation extends TMemoryLocation {
   final predicate canReuseSSA() { canReuseSSAForVariable(var) }
 }
 
-predicate canReuseSSAForOldResult(Instruction instr) {
-  none()
-}
+predicate canReuseSSAForOldResult(Instruction instr) { none() }
 
 /**
  * Represents a set of `MemoryLocation`s that cannot overlap with

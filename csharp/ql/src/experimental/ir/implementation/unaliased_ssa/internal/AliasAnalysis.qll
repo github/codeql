@@ -92,9 +92,7 @@ private predicate operandIsConsumedWithoutEscaping(Operand operand) {
       instr.(ConvertInstruction).getResultIRType() instanceof IRBooleanType
       or
       instr instanceof CallInstruction and
-      not exists(IREscapeAnalysisConfiguration config |
-        config.useSoundEscapeAnalysis()
-      )
+      not exists(IREscapeAnalysisConfiguration config | config.useSoundEscapeAnalysis())
     )
   )
   or
@@ -331,9 +329,7 @@ predicate allocationEscapes(Configuration::Allocation allocation) {
     config.useSoundEscapeAnalysis() and resultEscapesNonReturn(allocation.getABaseInstruction())
   )
   or
-  exists(Configuration::StageEscapeConfiguration config |
-    config.useSoundEscapeAnalysis() and resultEscapesNonReturn(allocation.getABaseInstruction())
-  )
+  Configuration::phaseNeedsSoundEscapeAnalysis() and resultEscapesNonReturn(allocation.getABaseInstruction())
 }
 
 /**
