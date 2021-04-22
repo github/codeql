@@ -15,7 +15,9 @@ cached
 private newtype TIRDataFlowNode =
   TInstructionNode(Instruction i) or
   TOperandNode(Operand op) or
-  TVariableNode(Variable var)
+  TVariableNode(Variable var) or
+  TAddressNodeStore(Instruction i) { addressFlowInstrRTC(i, getDestinationAddress(_)) } or
+  TAddressNodeRead(Instruction i) { addressFlowInstrRTC(i, getSourceAddress(_)) }
 
 /**
  * A node in a data flow graph.
@@ -39,7 +41,9 @@ class Node extends TIRDataFlowNode {
     // node in the big-step relation used for human-readable path explanations.
     // Therefore we want a distinct enclosing callable for each `VariableNode`,
     // and that can be the `Variable` itself.
-    result = this.asVariable()
+    result = this.asVariable() or
+    result = this.(AddressNodeStore).getInstruction().getEnclosingFunction() or
+    result = this.(AddressNodeRead).getInstruction().getEnclosingFunction()
   }
 
   /** Gets the function to which this node belongs, if any. */
@@ -533,6 +537,65 @@ class VariableNode extends Node, TVariableNode {
 }
 
 /**
+ * INTERNAL: do not use.
+ *
+ * An instruction that is used for address computations. Unlike `InstructionNode`s, `AddressNodeStore`s
+ * flows "upwards" through the program (i.e., from a `LoadInstruction` to its address operand.)
+ */
+class AddressNodeStore extends Node, TAddressNodeStore {
+  Instruction instr;
+
+  AddressNodeStore() { this = TAddressNodeStore(instr) }
+
+  /** Gets the instruction corresponding to this node. */
+  Instruction getInstruction() { result = instr }
+
+  override Function getFunction() { result = instr.getEnclosingFunction() }
+
+  override IRType getType() { result = instr.getResultIRType() }
+
+  override Location getLocation() { result = instr.getLocation() }
+
+  override string toString() { result = "store address" }
+}
+
+class AddressNodeRead extends Node, TAddressNodeRead {
+  Instruction instr;
+
+  AddressNodeRead() { this = TAddressNodeRead(instr) }
+
+  /** Gets the instruction corresponding to this node. */
+  Instruction getInstruction() { result = instr }
+
+  override Function getFunction() { result = instr.getEnclosingFunction() }
+
+  override IRType getType() { result = instr.getResultIRType() }
+
+  override Location getLocation() { result = instr.getLocation() }
+
+  override string toString() { result = "read address" }
+}
+/**
+ * Gets the instruction that computes the destination address of a `StoreInstruction` or a
+ * `WriteSideEffectInstruction`.
+ */
+Instruction getDestinationAddress(Instruction i) {
+  result =
+    [
+      i.(StoreInstruction).getDestinationAddress(),
+      i.(WriteSideEffectInstruction).getDestinationAddress()
+    ]
+}
+
+/**
+ * Gets the instruction that computes the source address of a `LoadInstruction` or a
+ * `ReadSideEffectInstruction`.
+ */
+Instruction getSourceAddress(Instruction i) {
+  result = [i.(LoadInstruction).getSourceAddress(), i.(ReadSideEffectInstruction).getArgumentDef()]
+}
+
+/**
  * Gets the node corresponding to `instr`.
  */
 InstructionNode instructionNode(Instruction instr) { result.getInstruction() = instr }
@@ -599,9 +662,44 @@ predicate localFlowStep(Node nodeFrom, Node nodeTo) { simpleLocalFlowStep(nodeFr
  */
 cached
 predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
-  // Operand -> Instruction flow
-  simpleInstructionLocalFlowStep(nodeFrom.asOperand(), nodeTo.asInstruction())
+cached
+module AddressFlow {
+  /**
+   * Holds if the address computed by `iFrom` is used to compute the
+   * address computed by `iTo`.
+   */
+  cached
+  predicate addressFlowInstrStep(Instruction iFrom, Instruction iTo) {
+    iTo.(FieldAddressInstruction).getObjectAddress() = iFrom
+    or
+    iTo.(CopyValueInstruction).getSourceValue() = iFrom
+    or
+    iTo.(LoadInstruction).getSourceAddress() = iFrom
+    or
+    iTo.(ConvertInstruction).getUnary() = iFrom
+    or
+    iTo.(PointerArithmeticInstruction).getLeft() = iFrom
+    or
+    iTo.(CheckedConvertOrNullInstruction).getUnary() = iFrom
+    or
+    iTo.(InheritanceConversionInstruction).getUnary() = iFrom
+  }
+
+  cached
+  predicate addressFlowInstrTC(Instruction iFrom, Instruction iTo) =
+    fastTC(addressFlowInstrStep/2)(iFrom, iTo)
+}
+
+/**
+ * Holds if the address computed by `iFrom` is used to compute the
+ * address computed by `iTo`.
+ */
+pragma[inline]
+predicate addressFlowInstrRTC(Instruction iFrom, Instruction iTo) {
+  iFrom = iTo
   or
+  AddressFlow::addressFlowInstrTC(iFrom, iTo)
+}
   // Instruction -> Operand flow
   simpleOperandLocalFlowStep(nodeFrom.asInstruction(), nodeTo.asOperand())
 }
