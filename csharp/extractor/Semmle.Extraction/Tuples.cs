@@ -18,9 +18,9 @@ namespace Semmle.Extraction
             trapFile.WriteTuple("extractor_messages", error, (int)severity, origin, errorMessage, entityText, location, stackTrace);
         }
 
-        public static void files(this System.IO.TextWriter trapFile, File file, string fullName, string name, string extension)
+        public static void files(this System.IO.TextWriter trapFile, File file, string fullName, string name, string extension, FileSourceKind kind)
         {
-            trapFile.WriteTuple("files", file, fullName, name, extension, 0);
+            trapFile.WriteTuple("files", file, fullName, name, extension, (int)kind);
         }
 
         internal static void folders(this System.IO.TextWriter trapFile, Folder folder, string path, string name)

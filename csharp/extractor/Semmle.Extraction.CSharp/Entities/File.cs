@@ -17,14 +17,15 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
-            trapFile.files(this, TransformedPath.Value, TransformedPath.NameWithoutExtension, TransformedPath.Extension);
+            var trees = Context.Compilation.SyntaxTrees.Where(t => t.FilePath == originalPath);
+            var isSource = trees.Any();
+
+            trapFile.files(this, TransformedPath.Value, TransformedPath.NameWithoutExtension, TransformedPath.Extension, isSource ? FileSourceKind.FromSource : FileSourceKind.Unknown);
 
             if (TransformedPath.ParentDirectory is PathTransformer.ITransformedPath dir)
                 trapFile.containerparent(Extraction.Entities.Folder.Create(Context, dir), this);
 
-            var trees = Context.Compilation.SyntaxTrees.Where(t => t.FilePath == originalPath);
-
-            if (trees.Any())
+            if (isSource)
             {
                 foreach (var text in trees.Select(tree => tree.GetText()))
                 {
