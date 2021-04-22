@@ -17,8 +17,8 @@ private class HeaderSplittingSinkModel extends SinkModelCsv {
     row =
       [
         "javax.servlet.http;HttpServletResponse;false;addCookie;;;Argument[0];header-splitting",
-        "javax.servlet.http;HttpServletResponse;false;addHeader;;;Argument;header-splitting",
-        "javax.servlet.http;HttpServletResponse;false;setHeader;;;Argument;header-splitting",
+        "javax.servlet.http;HttpServletResponse;false;addHeader;;;Argument[0..1];header-splitting",
+        "javax.servlet.http;HttpServletResponse;false;setHeader;;;Argument[0..1];header-splitting",
         "javax.ws.rs.core;ResponseBuilder;false;header;;;Argument[1];header-splitting"
       ]
   }
