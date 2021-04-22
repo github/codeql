@@ -18,19 +18,19 @@ private class UniqueOrSharedPtr extends Class, PointerWrapper {
 }
 
 /** Any function that unwraps a pointer wrapper class to reveal the underlying pointer. */
-private class PointerWrapperDataFlow extends DataFlowFunction {
-  PointerWrapperDataFlow() {
+private class PointerWrapperFlow extends TaintFunction, DataFlowFunction {
+  PointerWrapperFlow() {
     this = any(PointerWrapper wrapper).getAnUnwrapperFunction() and
     not this.getUnspecifiedType() instanceof ReferenceType
   }
 
-  override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
-    input.isQualifierAddress() and output.isReturnValue()
-    or
-    input.isQualifierObject() and output.isReturnValueDeref()
-    or
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     input.isReturnValueDeref() and
     output.isQualifierObject()
+  }
+
+  override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
+    input.isQualifierObject() and output.isReturnValue()
   }
 }
 

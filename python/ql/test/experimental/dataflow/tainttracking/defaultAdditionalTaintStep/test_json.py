@@ -23,16 +23,16 @@ def test():
     import json
 
     ensure_tainted(
-        json.dumps(ts),
-        json.loads(json.dumps(ts)),
+        json.dumps(ts), # $ tainted
+        json.loads(json.dumps(ts)), # $ tainted
     )
 
     # For Python2, need to convert to unicode for StringIO to work
     tainted_filelike = StringIO(unicode(json.dumps(ts)))
 
     ensure_tainted(
-        tainted_filelike,
-        json.load(tainted_filelike),
+        tainted_filelike, # $ MISSING: tainted
+        json.load(tainted_filelike), # $ MISSING: tainted
     )
 
 def non_syntacical():
@@ -45,17 +45,17 @@ def non_syntacical():
     dumps_alias = dumps
 
     ensure_tainted(
-        dumps(ts),
-        dumps_alias(ts),
-        loads(dumps(ts)),
+        dumps(ts), # $ tainted
+        dumps_alias(ts), # $ tainted
+        loads(dumps(ts)), # $ tainted
     )
 
     # For Python2, need to convert to unicode for StringIO to work
     tainted_filelike = StringIO(unicode(dumps(ts)))
 
     ensure_tainted(
-        tainted_filelike,
-        load(tainted_filelike),
+        tainted_filelike, # $ MISSING: tainted
+        load(tainted_filelike), # $ MISSING: tainted
     )
 
 # Make tests runable

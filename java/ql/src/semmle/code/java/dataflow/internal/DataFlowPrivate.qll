@@ -84,8 +84,10 @@ private predicate instanceFieldAssign(Expr src, FieldAccess fa) {
 
 private newtype TContent =
   TFieldContent(InstanceField f) or
+  TArrayContent() or
   TCollectionContent() or
-  TArrayContent()
+  TMapKeyContent() or
+  TMapValueContent()
 
 /**
  * A reference contained in an object. Examples include instance fields, the
@@ -114,12 +116,20 @@ class FieldContent extends Content, TFieldContent {
   }
 }
 
-class CollectionContent extends Content, TCollectionContent {
-  override string toString() { result = "collection" }
+class ArrayContent extends Content, TArrayContent {
+  override string toString() { result = "[]" }
 }
 
-class ArrayContent extends Content, TArrayContent {
-  override string toString() { result = "array" }
+class CollectionContent extends Content, TCollectionContent {
+  override string toString() { result = "<element>" }
+}
+
+class MapKeyContent extends Content, TMapKeyContent {
+  override string toString() { result = "<map.key>" }
+}
+
+class MapValueContent extends Content, TMapValueContent {
+  override string toString() { result = "<map.value>" }
 }
 
 /**

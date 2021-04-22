@@ -2,6 +2,7 @@
  * The default C# QL library.
  */
 
+import Customizations
 import semmle.code.csharp.Attribute
 import semmle.code.csharp.Callable
 import semmle.code.csharp.Comments

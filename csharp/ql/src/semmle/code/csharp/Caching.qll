@@ -49,6 +49,7 @@ module Stages {
 
   cached
   module DataFlowStage {
+    private import semmle.code.csharp.dataflow.internal.DataFlowDispatch
     private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
     private import semmle.code.csharp.dataflow.internal.DataFlowImplCommon
     private import semmle.code.csharp.dataflow.internal.TaintTrackingPrivate
@@ -77,6 +78,8 @@ module Stages {
       exists(any(OutNode n).getCall(_))
       or
       exists(CallContext cc)
+      or
+      exists(any(DataFlowCall c).getEnclosingCallable())
       or
       forceCachingInSameStageRev()
     }

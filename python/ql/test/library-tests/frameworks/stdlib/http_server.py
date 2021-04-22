@@ -19,26 +19,28 @@ def test_cgi_FieldStorage_taint():
     form = cgi.FieldStorage()
 
     ensure_tainted(
-        form,
+        form, # $ tainted
 
-        form['key'], # will be a list, if multiple fields named "key" are provided
-        form['key'].value,
-        form['key'].file,
-        form['key'].filename,
-        form['key'][0],
-        form['key'][0].value,
-        form['key'][0].file,
-        form['key'][0].filename,
-        [field.value for field in form['key']],
+        # `form['key']` will be a list, if multiple fields named "key" are provided
+        form['key'], # $ tainted
+        form['key'].value, # $ tainted
+        form['key'].file, # $ tainted
+        form['key'].filename, # $ tainted
+        form['key'][0], # $ tainted
+        form['key'][0].value, # $ tainted
+        form['key'][0].file, # $ tainted
+        form['key'][0].filename, # $ tainted
+        [field.value for field in form['key']], # $ MISSING: tainted
 
-        form.getvalue('key'), # will be a list, if multiple fields named "key" are provided
-        form.getvalue('key')[0],
+        # `form.getvalue('key')` will be a list, if multiple fields named "key" are provided
+        form.getvalue('key'), # $ tainted
+        form.getvalue('key')[0], # $ tainted
 
-        form.getfirst('key'),
+        form.getfirst('key'), # $ tainted
 
-        form.getlist('key'),
-        form.getlist('key')[0],
-        [field.value for field in form.getlist('key')],
+        form.getlist('key'), # $ tainted
+        form.getlist('key')[0], # $ tainted
+        [field.value for field in form.getlist('key')], # $ MISSING: tainted
     )
 
 
@@ -47,26 +49,26 @@ class MyHandler(BaseHTTPRequestHandler):
     def taint_sources(self):
 
         ensure_tainted(
-            self,
+            self, # $ tainted
 
-            self.requestline,
+            self.requestline, # $ tainted
 
-            self.path,
+            self.path, # $ tainted
 
-            self.headers,
-            self.headers['Foo'],
-            self.headers.get('Foo'),
-            self.headers.get_all('Foo'),
-            self.headers.keys(),
-            self.headers.values(),
-            self.headers.items(),
-            self.headers.as_bytes(),
-            self.headers.as_string(),
-            str(self.headers),
-            bytes(self.headers),
+            self.headers, # $ tainted
+            self.headers['Foo'], # $ tainted
+            self.headers.get('Foo'), # $ tainted
+            self.headers.get_all('Foo'), # $ MISSING: tainted
+            self.headers.keys(), # $ MISSING: tainted
+            self.headers.values(), # $ tainted
+            self.headers.items(), # $ tainted
+            self.headers.as_bytes(), # $ MISSING: tainted
+            self.headers.as_string(), # $ MISSING: tainted
+            str(self.headers), # $ tainted
+            bytes(self.headers), # $ tainted
 
-            self.rfile,
-            self.rfile.read(),
+            self.rfile, # $ tainted
+            self.rfile.read(), # $ MISSING: tainted
         )
 
         form = cgi.FieldStorage(
@@ -75,7 +77,7 @@ class MyHandler(BaseHTTPRequestHandler):
             environ={'REQUEST_METHOD': 'POST', 'CONTENT_TYPE': self.headers.get('content-type')},
         )
 
-        ensure_tainted(form)
+        ensure_tainted(form) # $ tainted
 
 
     def do_GET(self): # $ requestHandler
