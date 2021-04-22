@@ -668,6 +668,13 @@ Node uninitializedNode(LocalVariable v) { none() }
  */
 predicate localFlowStep(Node nodeFrom, Node nodeTo) { simpleLocalFlowStep(nodeFrom, nodeTo) }
 
+private predicate valueFlow(Node nodeFrom, Node nodeTo) {
+  // Operand -> Instruction flow
+  simpleInstructionLocalFlowStep(nodeFrom.asOperand(), nodeTo.asInstruction())
+  or
+  // Instruction -> Operand flow
+  simpleOperandLocalFlowStep(nodeFrom.asInstruction(), nodeTo.asOperand())
+}
 
 /**
  * INTERNAL: do not use.
@@ -741,6 +748,35 @@ private predicate preStoreStep(Node nodeFrom, AddressNodeStore nodeTo) {
  */
 cached
 predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
+  // Flow between instructions and operands
+  valueFlow(nodeFrom, nodeTo)
+  or
+  // Flow that targets address nodes
+  preStoreStep(nodeFrom, nodeTo)
+  or
+  preReadStep(nodeFrom, nodeTo)
+  or
+  // Flow that targets instructions and operands
+  postStoreStep(nodeFrom, nodeTo)
+  or
+  postReadStep(nodeFrom, nodeTo)
+  or
+  // Flow through address nodes
+  addressFlowStore(nodeFrom, nodeTo)
+  or
+  addressFlowRead(nodeFrom, nodeTo)
+}
+
+private predicate addressFlowStore(AddressNodeStore nodeFrom, AddressNodeStore nodeTo) {
+  AddressFlow::addressFlowInstrStep(nodeTo.getInstruction(), nodeFrom.getInstruction()) and
+  not storeStep(nodeFrom, _, _)
+}
+
+private predicate addressFlowRead(AddressNodeRead nodeFrom, AddressNodeRead nodeTo) {
+  AddressFlow::addressFlowInstrStep(nodeFrom.getInstruction(), nodeTo.getInstruction()) and
+  not readStep(nodeFrom, _, _)
+}
+
 cached
 module AddressFlow {
   /**
