@@ -911,7 +911,7 @@ private module Stdlib {
   private string pathlibPathMethodExport() { result in ["as_posix", "as_uri"] }
 
   /**
-   * Flow for type presering mehtods.
+   * Flow for mehtods that return a `pathlib.Path` object.
    */
   private predicate typePreservingCall(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     exists(DataFlow::AttrRead returnsPath | returnsPath.getAttributeName() = pathlibPathMethod() |
@@ -921,7 +921,7 @@ private module Stdlib {
   }
 
   /**
-   * Flow for type presering attributes.
+   * Flow for attributes that are `pathlib.Path` objects.
    */
   private predicate typePreservingAttribute(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     exists(DataFlow::AttrRead isPath | isPath.getAttributeName() = pathlibPathAttribute() |
@@ -1018,7 +1018,7 @@ private module Stdlib {
         // Type-preserving call
         typePreservingCall(nodeFrom, nodeTo)
         or
-        // Type-preserving attribute
+        // Type-preserving attribute access
         typePreservingAttribute(nodeFrom, nodeTo)
       )
       or
@@ -1026,24 +1026,14 @@ private module Stdlib {
       nodeTo.getALocalSource() = pathlibPath() and
       (
         // Special handling of the `/` operator
-        exists(BinaryExprNode slash, DataFlow::Node pathOperand, DataFlow::Node dataOperand |
+        exists(BinaryExprNode slash, DataFlow::Node pathOperand |
           slash.getOp() instanceof Div and
-          (
-            pathOperand.asCfgNode() = slash.getLeft() and
-            dataOperand.asCfgNode() = slash.getRight()
-            or
-            pathOperand.asCfgNode() = slash.getRight() and
-            dataOperand.asCfgNode() = slash.getLeft()
-          ) and
+          pathOperand.asCfgNode() = slash.getAnOperand() and
           pathOperand.getALocalSource() = pathlibPath()
         |
           nodeTo.asCfgNode() = slash and
-          nodeFrom in [
-              // type-preserving call
-              pathOperand,
-              // data injection
-              dataOperand
-            ]
+          // Taint can flow either from the left or the right operand as long as one of them is a path.
+          nodeFrom.asCfgNode() = slash.getAnOperand()
         )
         or
         // standard case
