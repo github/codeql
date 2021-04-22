@@ -80,6 +80,16 @@ public class RegexInjection extends HttpServlet {
     return input.matches("^" + escapeSpecialRegexChars(pattern) + "=.*$");
   }
 
+  public boolean pattern6(javax.servlet.http.HttpServletRequest request) {
+    String pattern = request.getParameter("pattern");
+    String input = request.getParameter("input");
+
+    escapeSpecialRegexChars(pattern);
+
+    // BAD: the pattern is not really sanitized
+    return input.matches("^" + pattern + "=.*$");
+  }
+
   Pattern SPECIAL_REGEX_CHARS = Pattern.compile("[{}()\\[\\]><-=!.+*?^$\\\\|]");
 
   String escapeSpecialRegexChars(String str) {
