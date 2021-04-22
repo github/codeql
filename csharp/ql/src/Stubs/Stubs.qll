@@ -204,6 +204,7 @@ private class InheritedMember extends GeneratedMember, Virtualizable {
 
 private class ExtraGeneratedConstructor extends GeneratedMember, Constructor {
   ExtraGeneratedConstructor() {
+    not this.isStatic() and
     not this.isEffectivelyPublic() and
     this.getDeclaringType() instanceof GeneratedType and
     (
@@ -212,10 +213,10 @@ private class ExtraGeneratedConstructor extends GeneratedMember, Constructor {
         c = this.getDeclaringType().getBaseClass().getAMember() and c.getNumberOfParameters() = 0
       )
       or
-      // if this constructor might be called from a derived class
+      // if this constructor might be called from a (generic) derived class
       exists(Class c |
-        c.getBaseClass() = this.getDeclaringType() and
-        this = getBaseConstructor(c)
+        this.getDeclaringType() = c.getBaseClass().getUnboundDeclaration() and
+        this = getBaseConstructor(c).getUnboundDeclaration()
       )
     )
   }
