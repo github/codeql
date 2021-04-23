@@ -911,22 +911,20 @@ private module Stdlib {
   private string pathlibPathMethodExport() { result in ["as_posix", "as_uri"] }
 
   /**
-   * Flow for mehtods that return a `pathlib.Path` object.
+   * Flow for attributes and methods that return a `pathlib.Path` object.
    */
-  private predicate typePreservingCall(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    exists(DataFlow::AttrRead returnsPath | returnsPath.getAttributeName() = pathlibPathMethod() |
-      nodeTo.(DataFlow::CallCfgNode).getFunction() = returnsPath and
+  private predicate pathlibPathStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    exists(DataFlow::AttrRead returnsPath |
+      (
+        // attribute access
+        returnsPath.getAttributeName() = pathlibPathAttribute() and
+        nodeTo = returnsPath
+        or
+        // method call
+        returnsPath.getAttributeName() = pathlibPathMethod() and
+        nodeTo.(DataFlow::CallCfgNode).getFunction() = returnsPath
+      ) and
       nodeFrom = returnsPath.getObject()
-    )
-  }
-
-  /**
-   * Flow for attributes that are `pathlib.Path` objects.
-   */
-  private predicate typePreservingAttribute(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    exists(DataFlow::AttrRead isPath | isPath.getAttributeName() = pathlibPathAttribute() |
-      nodeTo = isPath and
-      nodeFrom = isPath.getObject()
     )
   }
 
@@ -939,22 +937,13 @@ private module Stdlib {
     t.start() and
     result = pathlib().getMember(pathlibPathConstructor()).getACall()
     or
-    // Type-preserving call
+    // Type-preserving step
     exists(DataFlow::Node nodeFrom, DataFlow::TypeTracker t2 |
       pathlibPath(t2).flowsTo(nodeFrom) and
       t2.end()
     |
       t.start() and
-      typePreservingCall(nodeFrom, result)
-    )
-    or
-    // Type-preserving attribute access
-    exists(DataFlow::Node nodeFrom, DataFlow::TypeTracker t2 |
-      nodeFrom.getALocalSource() = pathlibPath(t2) and
-      t2.end()
-    |
-      t.start() and
-      typePreservingAttribute(nodeFrom, result)
+      pathlibPathStep(nodeFrom, result)
     )
     or
     // Data injection
@@ -1013,14 +1002,7 @@ private module Stdlib {
       or
       // Type preservation
       pathlibPath().flowsTo(nodeFrom) and
-      pathlibPath().flowsTo(nodeTo) and
-      (
-        // Type-preserving call
-        typePreservingCall(nodeFrom, nodeTo)
-        or
-        // Type-preserving attribute access
-        typePreservingAttribute(nodeFrom, nodeTo)
-      )
+      pathlibPathStep(nodeFrom, nodeTo)
       or
       // Data injection
       pathlibPath().flowsTo(nodeTo) and
@@ -1053,20 +1035,16 @@ private module Stdlib {
       or
       // Export data from type
       pathlibPath().flowsTo(nodeFrom) and
-      (
+      exists(DataFlow::AttrRead exportPath |
         // exporting attribute
-        exists(DataFlow::AttrRead export |
-          export.getAttributeName() = pathlibPathAttributeExport()
-        |
-          nodeTo = export and
-          nodeFrom = export.getObject()
-        )
+        exportPath.getAttributeName() = pathlibPathAttributeExport() and
+        nodeTo = exportPath
         or
-        // exporting call
-        exists(DataFlow::AttrRead export | export.getAttributeName() = pathlibPathMethodExport() |
-          nodeTo.(DataFlow::CallCfgNode).getFunction() = export and
-          nodeFrom = export.getObject()
-        )
+        // exporting method
+        exportPath.getAttributeName() = pathlibPathMethodExport() and
+        nodeTo.(DataFlow::CallCfgNode).getFunction() = exportPath
+      |
+        nodeFrom = exportPath.getObject()
       )
     }
   }
