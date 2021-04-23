@@ -256,6 +256,9 @@ private module Cached {
   cached
   predicate jumpStepCached(Node node1, Node node2) { jumpStep(node1, node2) }
 
+  cached
+  predicate clearsContentCached(Node n, Content c) { clearsContent(n, c) }
+
   /**
    * Gets a viable target for the lambda call `call`.
    *
@@ -1141,7 +1144,7 @@ abstract class AccessPathFront extends TAccessPathFront {
 
   TypedContent getHead() { this = TFrontHead(result) }
 
-  predicate isClearedAt(Node n) { clearsContent(n, getHead().getContent()) }
+  predicate isClearedAt(Node n) { clearsContentCached(n, getHead().getContent()) }
 }
 
 class AccessPathFrontNil extends AccessPathFront, TFrontNil {

@@ -1258,7 +1258,7 @@ private module LocalFlowBigStep {
   private class FlowCheckNode extends Node {
     FlowCheckNode() {
       this instanceof CastNode or
-      clearsContent(this, _)
+      clearsContentCached(this, _)
     }
   }
 
@@ -3610,7 +3610,7 @@ private module FlowExploration {
       or
       exists(PartialPathNodeRev mid |
         revPartialPathStep(mid, node, sc1, sc2, ap, config) and
-        not clearsContent(node, ap.getHead()) and
+        not clearsContentCached(node, ap.getHead()) and
         not fullBarrier(node, config) and
         distSink(getNodeEnclosingCallable(node), config) <= config.explorationLimit()
       )
@@ -3624,7 +3624,7 @@ private module FlowExploration {
     exists(PartialPathNodeFwd mid |
       partialPathStep(mid, node, cc, sc1, sc2, ap, config) and
       not fullBarrier(node, config) and
-      not clearsContent(node, ap.getHead().getContent()) and
+      not clearsContentCached(node, ap.getHead().getContent()) and
       if node instanceof CastingNode
       then compatibleTypes(getNodeDataFlowType(node), ap.getType())
       else any()
