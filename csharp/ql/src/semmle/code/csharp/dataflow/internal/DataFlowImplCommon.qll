@@ -339,7 +339,7 @@ private module Cached {
         // read
         exists(Node mid |
           parameterValueFlowCand(p, mid, false) and
-          readStep(mid, _, node) and
+          read(mid, _, node) and
           read = true
         )
         or
@@ -658,7 +658,7 @@ private module Cached {
     Node node1, Content c, Node node2, DataFlowType contentType, DataFlowType containerType
   ) {
     storeStep(node1, c, node2) and
-    readStep(_, c, _) and
+    read(_, c, _) and
     contentType = getNodeDataFlowType(node1) and
     containerType = getNodeDataFlowType(node2)
     or
@@ -668,11 +668,14 @@ private module Cached {
     |
       argumentValueFlowsThrough(n2, TReadStepTypesSome(containerType, c, contentType), n1)
       or
-      readStep(n2, c, n1) and
+      read(n2, c, n1) and
       contentType = getNodeDataFlowType(n1) and
       containerType = getNodeDataFlowType(n2)
     )
   }
+
+  cached
+  predicate read(Node node1, Content c, Node node2) { readStep(node1, c, node2) }
 
   /**
    * Holds if data can flow from `node1` to `node2` via a direct assignment to
@@ -789,14 +792,14 @@ class CastingNode extends Node {
     // For reads, `x.f`, we want to check that the tracked type after the read (which
     // is obtained by popping the head of the access path stack) is compatible with
     // the type of `x.f`.
-    readStep(_, _, this)
+    read(_, _, this)
   }
 }
 
 private predicate readStepWithTypes(
   Node n1, DataFlowType container, Content c, Node n2, DataFlowType content
 ) {
-  readStep(n1, c, n2) and
+  read(n1, c, n2) and
   container = getNodeDataFlowType(n1) and
   content = getNodeDataFlowType(n2)
 }
@@ -1086,8 +1089,6 @@ DataFlowCallable resolveCall(DataFlowCall call, CallContext cc) {
   or
   result = viableCallableExt(call) and cc instanceof CallContextReturn
 }
-
-predicate read = readStep/3;
 
 /** An optional Boolean value. */
 class BooleanOption extends TBooleanOption {
