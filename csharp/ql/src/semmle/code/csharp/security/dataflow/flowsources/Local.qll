@@ -26,11 +26,9 @@ class SystemConsoleReadSource extends LocalUserInputSource {
   SystemConsoleReadSource() {
     this.asExpr() =
       any(MethodCall call |
-        call.getTarget().hasQualifiedName("System.Console", "ReadLine") or
-        call.getTarget().hasQualifiedName("System.Console", "Read") or
-        call.getTarget().hasQualifiedName("System.Console", "ReadKey")
+        call.getTarget().hasQualifiedName("System.Console", ["ReadLine", "Read", "ReadKey"])
       )
   }
 
-  override string getSourceType() { result = "TextBox text" }
+  override string getSourceType() { result = "System.Console input" }
 }
