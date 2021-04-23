@@ -51,6 +51,15 @@ module NestJS {
       getAFunctionDecorator(this) = nestjs().getMember("Redirect").getACall()
     }
 
+    /**
+     * Holds if the return value is sent back in the response.
+     */
+    predicate isReturnValueReflected() {
+      getAFunctionDecorator(this) = nestjs().getMember(["Get", "Post"]).getACall() and
+      not hasRedirectDecorator() and
+      not getAFunctionDecorator(this) = nestjs().getMember("Render").getACall()
+    }
+
     /** Gets a pipe applied to the inputs of this route handler, not including global pipes. */
     DataFlow::Node getAPipe() {
       exists(DataFlow::CallNode decorator |
@@ -317,6 +326,14 @@ module NestJS {
     }
   }
 
+  private predicate isStringType(Type type) {
+    type instanceof StringType
+    or
+    type instanceof AnyType
+    or
+    isStringType(type.(PromiseType).getElementType().unfold())
+  }
+
   /**
    * A return value from a route handler, seen as an argument to `res.send()`.
    *
@@ -333,8 +350,13 @@ module NestJS {
     NestJSRouteHandler handler;
 
     ReturnValueAsResponseSend() {
-      not handler.hasRedirectDecorator() and
-      this = handler.getAReturn().asExpr()
+      handler.isReturnValueReflected() and
+      this = handler.getAReturn().asExpr() and
+      // Only returned strings are sinks
+      not exists(Type type |
+        type = getType() and
+        not isStringType(type.unfold())
+      )
     }
 
     override HTTP::RouteHandler getRouteHandler() { result = handler }
