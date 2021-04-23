@@ -211,10 +211,7 @@ private predicate fullBarrier(Node node, Configuration config) {
  * Holds if data can flow in one local step from `node1` to `node2`.
  */
 private predicate localFlowStep(Node node1, Node node2, Configuration config) {
-  (
-    simpleLocalFlowStep(node1, node2) or
-    reverseStepThroughInputOutputAlias(node1, node2)
-  ) and
+  simpleLocalFlowStepExt(node1, node2) and
   not outBarrier(node1, config) and
   not inBarrier(node2, config) and
   not fullBarrier(node1, config) and

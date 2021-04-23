@@ -689,8 +689,9 @@ private module Cached {
    * are aliases. A typical example is a function returning `this`, implementing a fluent
    * interface.
    */
-  cached
-  predicate reverseStepThroughInputOutputAlias(PostUpdateNode fromNode, PostUpdateNode toNode) {
+  private predicate reverseStepThroughInputOutputAlias(
+    PostUpdateNode fromNode, PostUpdateNode toNode
+  ) {
     exists(Node fromPre, Node toPre |
       fromPre = fromNode.getPreUpdateNode() and
       toPre = toNode.getPreUpdateNode()
@@ -705,6 +706,12 @@ private module Cached {
       or
       argumentValueFlowsThrough(toPre, TReadStepTypesNone(), fromPre)
     )
+  }
+
+  cached
+  predicate simpleLocalFlowStepExt(Node node1, Node node2) {
+    simpleLocalFlowStep(node1, node2) or
+    reverseStepThroughInputOutputAlias(node1, node2)
   }
 
   /**
