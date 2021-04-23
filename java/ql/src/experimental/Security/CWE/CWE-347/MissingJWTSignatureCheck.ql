@@ -124,7 +124,7 @@ private predicate isSigningKeySetter(Expr expr, MethodAccess signingMa) {
 }
 
 /**
- * An expr that is a `JwtParser` for which a signing key has been set and which is used as
+ * An expr that is a (sub-type of) `JwtParser` for which a signing key has been set and which is used as
  * the qualifier to a `JwtParserInsecureParseMethodAccess`.
  */
 private class JwtParserWithSigningKeyExpr extends Expr {
@@ -140,8 +140,7 @@ private class JwtParserWithSigningKeyExpr extends Expr {
 }
 
 /**
- * Models flow from `SigningKeyMethodAccess`es to expressions that are a
- * (sub-type of) `JwtParser` and which are also the qualifier to a `JwtParserInsecureParseMethodAccess`.
+ * Models flow from `SigningKeyMethodAccess`es to qualifiers of `JwtParserInsecureParseMethodAccess`es.
  * This is used to determine whether a `JwtParser` has a signing key set.
  */
 private class SigningToInsecureMethodAccessDataFlow extends DataFlow::Configuration {
@@ -152,7 +151,6 @@ private class SigningToInsecureMethodAccessDataFlow extends DataFlow::Configurat
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    sink.asExpr().getType() instanceof TypeDerivedJwtParser and
     any(JwtParserInsecureParseMethodAccess ma).getQualifier() = sink.asExpr()
   }
 
