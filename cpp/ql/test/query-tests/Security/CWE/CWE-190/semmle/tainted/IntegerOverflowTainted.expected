@@ -12,6 +12,5 @@
 | test6.cpp:16:15:16:15 | s | $@ flows to here and is used in an expression which might overflow. | test6.cpp:39:23:39:24 | & ... | User-provided value |
 | test6.cpp:30:16:30:16 | s | $@ flows to here and is used in an expression which might overflow. | test6.cpp:39:23:39:24 | & ... | User-provided value |
 | test.c:14:15:14:35 | ... * ... | $@ flows to here and is used in an expression which might overflow. | test.c:11:29:11:32 | argv | User-provided value |
-| test.c:25:5:25:9 | ... ++ | $@ flows to here and is used in an expression which might overflow. | test.c:23:15:23:18 | argv | User-provided value |
 | test.c:44:7:44:12 | ... -- | $@ flows to here and is used in an expression which might overflow negatively. | test.c:41:17:41:20 | argv | User-provided value |
 | test.c:54:7:54:12 | ... -- | $@ flows to here and is used in an expression which might overflow negatively. | test.c:51:17:51:20 | argv | User-provided value |
