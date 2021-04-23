@@ -693,9 +693,9 @@ private string stubMember(Member m) {
               if m instanceof Indexer
               then
                 result =
-                  "    " + stubModifiers(m) + stubClassName(m.(Indexer).getType()) + " " +
-                    stubExplicitImplementation(m) + "this[" + stubParameters(m) + "] { " +
-                    stubGetter(m) + stubSetter(m) + "}\n"
+                  "    " + stubIndexerNameAttribute(m) + stubModifiers(m) +
+                    stubClassName(m.(Indexer).getType()) + " " + stubExplicitImplementation(m) +
+                    "this[" + stubParameters(m) + "] { " + stubGetter(m) + stubSetter(m) + "}\n"
               else
                 if m instanceof Field // EnumConstants are already stubbed
                 then
@@ -717,6 +717,12 @@ private string stubMember(Member m) {
                     else
                       result =
                         "    // ERR: Stub generator didn't handle member: " + m.getName() + "\n"
+}
+
+private string stubIndexerNameAttribute(Indexer i) {
+  if i.getName() != "Item"
+  then result = "[System.Runtime.CompilerServices.IndexerName(\"" + i.getName() + "\")]\n    "
+  else result = ""
 }
 
 private Constructor getBaseConstructor(ValueOrRefType type) {
