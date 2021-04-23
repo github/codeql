@@ -23,12 +23,12 @@ C# built-in support
    ASP.NET, Web application framework
    ASP.NET Core, Web application framework
    ASP.NET Razor templates, Web application framework
+   Dapper, Database ORM
    EntityFramework, Database ORM
    EntityFramework Core, Database ORM
    Json.NET, Serialization
    NHibernate, Database ORM
    WinForms, User interface
-   Dapper, Database ORM
 
 Go built-in support
 ================================
