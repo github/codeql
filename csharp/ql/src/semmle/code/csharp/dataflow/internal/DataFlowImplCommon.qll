@@ -119,7 +119,7 @@ private module LambdaFlow {
   ) {
     revLambdaFlow0(lambdaCall, kind, node, t, toReturn, toJump, lastCall) and
     if node instanceof CastNode or node instanceof ArgumentNode or node instanceof ReturnNode
-    then compatibleTypes(t, getNodeType(node))
+    then compatibleTypes(t, getNodeDataFlowType(node))
     else any()
   }
 
@@ -129,7 +129,7 @@ private module LambdaFlow {
     boolean toJump, DataFlowCallOption lastCall
   ) {
     lambdaCall(lambdaCall, kind, node) and
-    t = getNodeType(node) and
+    t = getNodeDataFlowType(node) and
     toReturn = false and
     toJump = false and
     lastCall = TDataFlowCallNone()
@@ -146,7 +146,7 @@ private module LambdaFlow {
         getNodeEnclosingCallable(node) = getNodeEnclosingCallable(mid)
       |
         preservesValue = false and
-        t = getNodeType(node)
+        t = getNodeDataFlowType(node)
         or
         preservesValue = true and
         t = t0
@@ -168,7 +168,7 @@ private module LambdaFlow {
         getNodeEnclosingCallable(node) != getNodeEnclosingCallable(mid)
       |
         preservesValue = false and
-        t = getNodeType(node)
+        t = getNodeDataFlowType(node)
         or
         preservesValue = true and
         t = t0
@@ -250,6 +250,9 @@ private module Cached {
     c = call.getEnclosingCallable()
   }
 
+  cached
+  predicate nodeDataFlowType(Node n, DataFlowType t) { t = getNodeType(n) }
+
   /**
    * Gets a viable target for the lambda call `call`.
    *
@@ -282,7 +285,7 @@ private module Cached {
     exists(int i |
       viableParam(call, i, p) and
       arg.argumentOf(call, i) and
-      compatibleTypes(getNodeType(arg), getNodeType(p))
+      compatibleTypes(getNodeDataFlowType(arg), getNodeDataFlowType(p))
     )
   }
 
@@ -430,10 +433,10 @@ private module Cached {
         then
           // normal flow through
           read = TReadStepTypesNone() and
-          compatibleTypes(getNodeType(p), getNodeType(node))
+          compatibleTypes(getNodeDataFlowType(p), getNodeDataFlowType(node))
           or
           // getter
-          compatibleTypes(read.getContentType(), getNodeType(node))
+          compatibleTypes(read.getContentType(), getNodeDataFlowType(node))
         else any()
       }
 
@@ -455,7 +458,7 @@ private module Cached {
           readStepWithTypes(mid, read.getContainerType(), read.getContent(), node,
             read.getContentType()) and
           Cand::parameterValueFlowReturnCand(p, _, true) and
-          compatibleTypes(getNodeType(p), read.getContainerType())
+          compatibleTypes(getNodeDataFlowType(p), read.getContainerType())
         )
         or
         parameterValueFlow0_0(TReadStepTypesNone(), p, node, read)
@@ -511,11 +514,11 @@ private module Cached {
         |
           // normal flow through
           read = TReadStepTypesNone() and
-          compatibleTypes(getNodeType(arg), getNodeType(out))
+          compatibleTypes(getNodeDataFlowType(arg), getNodeDataFlowType(out))
           or
           // getter
-          compatibleTypes(getNodeType(arg), read.getContainerType()) and
-          compatibleTypes(read.getContentType(), getNodeType(out))
+          compatibleTypes(getNodeDataFlowType(arg), read.getContainerType()) and
+          compatibleTypes(read.getContentType(), getNodeDataFlowType(out))
         )
       }
 
@@ -653,8 +656,8 @@ private module Cached {
   ) {
     storeStep(node1, c, node2) and
     readStep(_, c, _) and
-    contentType = getNodeType(node1) and
-    containerType = getNodeType(node2)
+    contentType = getNodeDataFlowType(node1) and
+    containerType = getNodeDataFlowType(node2)
     or
     exists(Node n1, Node n2 |
       n1 = node1.(PostUpdateNode).getPreUpdateNode() and
@@ -663,8 +666,8 @@ private module Cached {
       argumentValueFlowsThrough(n2, TReadStepTypesSome(containerType, c, contentType), n1)
       or
       readStep(n2, c, n1) and
-      contentType = getNodeType(n1) and
-      containerType = getNodeType(n2)
+      contentType = getNodeDataFlowType(n1) and
+      containerType = getNodeDataFlowType(n2)
     )
   }
 
@@ -784,8 +787,8 @@ private predicate readStepWithTypes(
   Node n1, DataFlowType container, Content c, Node n2, DataFlowType content
 ) {
   readStep(n1, c, n2) and
-  container = getNodeType(n1) and
-  content = getNodeType(n2)
+  container = getNodeDataFlowType(n1) and
+  content = getNodeDataFlowType(n2)
 }
 
 private newtype TReadStepTypesOption =
@@ -1023,10 +1026,13 @@ class ReturnPosition extends TReturnPosition0 {
  */
 pragma[inline]
 DataFlowCallable getNodeEnclosingCallable(Node n) {
-  exists(Node n0 |
-    pragma[only_bind_into](n0) = n and
-    nodeEnclosingCallable(n0, pragma[only_bind_into](result))
-  )
+  nodeEnclosingCallable(pragma[only_bind_out](n), pragma[only_bind_into](result))
+}
+
+/** Gets the type of `n` used for type pruning. */
+pragma[inline]
+DataFlowType getNodeDataFlowType(Node n) {
+  nodeDataFlowType(pragma[only_bind_out](n), pragma[only_bind_into](result))
 }
 
 pragma[noinline]

@@ -1327,11 +1327,11 @@ private module LocalFlowBigStep {
       (
         localFlowStepNodeCand1(node1, node2, config) and
         preservesValue = true and
-        t = getNodeType(node1)
+        t = getNodeDataFlowType(node1)
         or
         additionalLocalFlowStepNodeCand2(node1, node2, config) and
         preservesValue = false and
-        t = getNodeType(node2)
+        t = getNodeDataFlowType(node2)
       ) and
       node1 != node2 and
       cc.relevantFor(getNodeEnclosingCallable(node1)) and
@@ -1350,7 +1350,7 @@ private module LocalFlowBigStep {
         additionalLocalFlowStepNodeCand2(mid, node2, config) and
         not mid instanceof FlowCheckNode and
         preservesValue = false and
-        t = getNodeType(node2) and
+        t = getNodeDataFlowType(node2) and
         Stage2::revFlow(node2, pragma[only_bind_into](config))
       )
     )
@@ -1384,7 +1384,7 @@ private module Stage3 {
   private ApApprox getApprox(Ap ap) { result = ap.toBoolNonEmpty() }
 
   private ApNil getApNil(Node node) {
-    PrevStage::revFlow(node, _) and result = TFrontNil(getNodeType(node))
+    PrevStage::revFlow(node, _) and result = TFrontNil(getNodeDataFlowType(node))
   }
 
   bindingset[tc, tail]
@@ -1443,7 +1443,9 @@ private module Stage3 {
   bindingset[node, ap]
   private predicate filter(Node node, Ap ap) {
     not ap.isClearedAt(node) and
-    if node instanceof CastingNode then compatibleTypes(getNodeType(node), ap.getType()) else any()
+    if node instanceof CastingNode
+    then compatibleTypes(getNodeDataFlowType(node), ap.getType())
+    else any()
   }
 
   bindingset[ap, contentType]
@@ -2088,7 +2090,7 @@ private module Stage4 {
   private ApApprox getApprox(Ap ap) { result = ap.getFront() }
 
   private ApNil getApNil(Node node) {
-    PrevStage::revFlow(node, _) and result = TNil(getNodeType(node))
+    PrevStage::revFlow(node, _) and result = TNil(getNodeDataFlowType(node))
   }
 
   bindingset[tc, tail]
@@ -2758,7 +2760,7 @@ private newtype TPathNode =
     config.isSource(node) and
     cc instanceof CallContextAny and
     sc instanceof SummaryCtxNone and
-    ap = TAccessPathNil(getNodeType(node))
+    ap = TAccessPathNil(getNodeDataFlowType(node))
     or
     // ... or a step from an existing PathNode to another node.
     exists(PathNodeMid mid |
@@ -3148,7 +3150,7 @@ private predicate pathStep(PathNodeMid mid, Node node, CallContext cc, SummaryCt
   cc instanceof CallContextAny and
   sc instanceof SummaryCtxNone and
   mid.getAp() instanceof AccessPathNil and
-  ap = TAccessPathNil(getNodeType(node))
+  ap = TAccessPathNil(getNodeDataFlowType(node))
   or
   exists(TypedContent tc | pathStoreStep(mid, node, ap.pop(tc), tc, cc)) and
   sc = mid.getSummaryCtx()
@@ -3591,7 +3593,7 @@ private module FlowExploration {
       cc instanceof CallContextAny and
       sc1 = TSummaryCtx1None() and
       sc2 = TSummaryCtx2None() and
-      ap = TPartialNil(getNodeType(node)) and
+      ap = TPartialNil(getNodeDataFlowType(node)) and
       not fullBarrier(node, config) and
       exists(config.explorationLimit())
       or
@@ -3627,7 +3629,7 @@ private module FlowExploration {
       not fullBarrier(node, config) and
       not clearsContent(node, ap.getHead().getContent()) and
       if node instanceof CastingNode
-      then compatibleTypes(getNodeType(node), ap.getType())
+      then compatibleTypes(getNodeDataFlowType(node), ap.getType())
       else any()
     )
   }
@@ -3797,7 +3799,7 @@ private module FlowExploration {
       sc1 = mid.getSummaryCtx1() and
       sc2 = mid.getSummaryCtx2() and
       mid.getAp() instanceof PartialAccessPathNil and
-      ap = TPartialNil(getNodeType(node)) and
+      ap = TPartialNil(getNodeDataFlowType(node)) and
       config = mid.getConfiguration()
     )
     or
@@ -3813,7 +3815,7 @@ private module FlowExploration {
     sc1 = TSummaryCtx1None() and
     sc2 = TSummaryCtx2None() and
     mid.getAp() instanceof PartialAccessPathNil and
-    ap = TPartialNil(getNodeType(node)) and
+    ap = TPartialNil(getNodeDataFlowType(node)) and
     config = mid.getConfiguration()
     or
     partialPathStoreStep(mid, _, _, node, ap) and
@@ -3827,7 +3829,7 @@ private module FlowExploration {
       sc1 = mid.getSummaryCtx1() and
       sc2 = mid.getSummaryCtx2() and
       apConsFwd(ap, tc, ap0, config) and
-      compatibleTypes(ap.getType(), getNodeType(node))
+      compatibleTypes(ap.getType(), getNodeDataFlowType(node))
     )
     or
     partialPathIntoCallable(mid, node, _, cc, sc1, sc2, _, ap, config)
