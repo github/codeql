@@ -941,7 +941,7 @@ private module Stdlib {
     or
     // Type-preserving call
     exists(DataFlow::Node nodeFrom, DataFlow::TypeTracker t2 |
-      nodeFrom.getALocalSource() = pathlibPath(t2) and
+      pathlibPath(t2).flowsTo(nodeFrom) and
       t2.end()
     |
       t.start() and
@@ -962,7 +962,7 @@ private module Stdlib {
     exists(BinaryExprNode slash, DataFlow::Node pathOperand, DataFlow::TypeTracker t2 |
       slash.getOp() instanceof Div and
       pathOperand.asCfgNode() = slash.getAnOperand() and
-      pathOperand.getALocalSource() = pathlibPath(t2) and
+      pathlibPath(t2).flowsTo(pathOperand) and
       t2.end()
     |
       t.start() and
@@ -972,7 +972,7 @@ private module Stdlib {
     //   standard case
     exists(DataFlow::AttrRead returnsPath, DataFlow::TypeTracker t2 |
       returnsPath.getAttributeName() = pathlibPathInjection() and
-      returnsPath.getObject().getALocalSource() = pathlibPath(t2) and
+      pathlibPath(t2).flowsTo(returnsPath.getObject()) and
       t2.end()
     |
       t.start() and
@@ -997,7 +997,7 @@ private module Stdlib {
           "rename", "replace", "resolve", "rglob", "rmdir", "samefile", "symlink_to", "touch",
           "unlink", "link_to", "write_bytes", "write_text"
         ] and
-      fileAccess.getObject().getALocalSource() = pathlibPath() and
+      pathlibPath().flowsTo(fileAccess.getObject()) and
       this.getFunction() = fileAccess
     }
 
@@ -1012,8 +1012,8 @@ private module Stdlib {
       nodeFrom = nodeTo.(DataFlow::CallCfgNode).getArg(_)
       or
       // Type preservation
-      nodeFrom.getALocalSource() = pathlibPath() and
-      nodeTo.getALocalSource() = pathlibPath() and
+      pathlibPath().flowsTo(nodeFrom) and
+      pathlibPath().flowsTo(nodeTo) and
       (
         // Type-preserving call
         typePreservingCall(nodeFrom, nodeTo)
@@ -1023,13 +1023,13 @@ private module Stdlib {
       )
       or
       // Data injection
-      nodeTo.getALocalSource() = pathlibPath() and
+      pathlibPath().flowsTo(nodeTo) and
       (
         // Special handling of the `/` operator
         exists(BinaryExprNode slash, DataFlow::Node pathOperand |
           slash.getOp() instanceof Div and
           pathOperand.asCfgNode() = slash.getAnOperand() and
-          pathOperand.getALocalSource() = pathlibPath()
+          pathlibPath().flowsTo(pathOperand)
         |
           nodeTo.asCfgNode() = slash and
           // Taint can flow either from the left or the right operand as long as one of them is a path.
@@ -1052,7 +1052,7 @@ private module Stdlib {
       )
       or
       // Export data from type
-      nodeFrom.getALocalSource() = pathlibPath() and
+      pathlibPath().flowsTo(nodeFrom) and
       (
         // exporting attribute
         exists(DataFlow::AttrRead export |
