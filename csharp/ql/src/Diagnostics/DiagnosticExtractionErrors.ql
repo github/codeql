@@ -14,12 +14,16 @@ private newtype TDiagnosticError =
   TExtractorError(ExtractorError e)
 
 abstract private class DiagnosticError extends TDiagnosticError {
-  string getMessage() { none() }
+  abstract string getMessage();
 
-  string toString() { none() }
+  abstract string toString();
 
-  string getLocation(Location l) {
-    if l.getFile().fromSource() then result = " in " + l.getFile() else result = ""
+  abstract Location getLocation();
+
+  string getLocationMessage() {
+    if getLocation().getFile().fromSource()
+    then result = " in " + getLocation().getFile()
+    else result = ""
   }
 }
 
@@ -29,10 +33,12 @@ private class DiagnosticCompilerError extends DiagnosticError {
   DiagnosticCompilerError() { this = TCompilerError(c) }
 
   override string getMessage() {
-    result = "Compiler error" + getLocation(c.getLocation()) + ": " + c.getMessage()
+    result = "Compiler error" + this.getLocationMessage() + ": " + c.getMessage()
   }
 
   override string toString() { result = c.toString() }
+
+  override Location getLocation() { result = c.getLocation() }
 }
 
 private class DiagnosticExtractorError extends DiagnosticError {
@@ -45,10 +51,12 @@ private class DiagnosticExtractorError extends DiagnosticError {
 
   override string getMessage() {
     result =
-      "Unexpected " + e.getOrigin() + " error" + getLocation(e.getLocation()) + ": " + e.getText()
+      "Unexpected " + e.getOrigin() + " error" + this.getLocationMessage() + ": " + e.getText()
   }
 
   override string toString() { result = e.toString() }
+
+  override Location getLocation() { result = e.getLocation() }
 }
 
 from DiagnosticError error
