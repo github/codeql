@@ -118,7 +118,7 @@ private predicate isFunction(Element el) {
 
 /**
  * Holds if `fc` is a `FunctionCall` with no return value for `getTarget`. This
- * can happen due to extractor issue CPP-383.
+ * can happen in case of rare database inconsistencies.
  */
 pragma[noopt]
 private predicate callHasNoTarget(@funbindexpr fc) {
