@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Semmle.Autobuild.Cpp\Semmle.Autobuild.Cpp.csproj" />
+    <ProjectReference Include="..\Semmle.Autobuild.Cpp\Semmle.Autobuild.Cpp.csproj" /> 
     <ProjectReference Include="..\..\..\csharp\autobuilder\Semmle.Autobuild.Shared\Semmle.Autobuild.Shared.csproj" />
   </ItemGroup>
 </Project>
