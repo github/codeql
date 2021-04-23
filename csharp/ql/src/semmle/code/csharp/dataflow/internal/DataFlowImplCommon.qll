@@ -259,6 +259,9 @@ private module Cached {
   cached
   predicate clearsContentCached(Node n, Content c) { clearsContent(n, c) }
 
+  cached
+  predicate isUnreachableInCallCached(Node n, DataFlowCall call) { isUnreachableInCall(n, call) }
+
   /**
    * Gets a viable target for the lambda call `call`.
    *
@@ -731,7 +734,7 @@ private module Cached {
   predicate recordDataFlowCallSite(DataFlowCall call, DataFlowCallable callable) {
     reducedViableImplInCallContext(_, callable, call)
     or
-    exists(Node n | getNodeEnclosingCallable(n) = callable | isUnreachableInCall(n, call))
+    exists(Node n | getNodeEnclosingCallable(n) = callable | isUnreachableInCallCached(n, call))
   }
 
   cached
@@ -753,7 +756,7 @@ private module Cached {
   cached
   newtype TLocalFlowCallContext =
     TAnyLocalCall() or
-    TSpecificLocalCall(DataFlowCall call) { isUnreachableInCall(_, call) }
+    TSpecificLocalCall(DataFlowCall call) { isUnreachableInCallCached(_, call) }
 
   cached
   newtype TReturnKindExt =
@@ -926,7 +929,7 @@ class LocalCallContextSpecificCall extends LocalCallContext, TSpecificLocalCall 
 }
 
 private predicate relevantLocalCCtx(DataFlowCall call, DataFlowCallable callable) {
-  exists(Node n | getNodeEnclosingCallable(n) = callable and isUnreachableInCall(n, call))
+  exists(Node n | getNodeEnclosingCallable(n) = callable and isUnreachableInCallCached(n, call))
 }
 
 /**

@@ -1318,7 +1318,7 @@ private module LocalFlowBigStep {
     Node node1, Node node2, boolean preservesValue, DataFlowType t, Configuration config,
     LocalCallContext cc
   ) {
-    not isUnreachableInCall(node2, cc.(LocalCallContextSpecificCall).getCall()) and
+    not isUnreachableInCallCached(node2, cc.(LocalCallContextSpecificCall).getCall()) and
     (
       localFlowEntry(node1, pragma[only_bind_into](config)) and
       (
@@ -1332,7 +1332,7 @@ private module LocalFlowBigStep {
       ) and
       node1 != node2 and
       cc.relevantFor(getNodeEnclosingCallable(node1)) and
-      not isUnreachableInCall(node1, cc.(LocalCallContextSpecificCall).getCall()) and
+      not isUnreachableInCallCached(node1, cc.(LocalCallContextSpecificCall).getCall()) and
       Stage2::revFlow(node2, pragma[only_bind_into](config))
       or
       exists(Node mid |
@@ -3782,7 +3782,7 @@ private module FlowExploration {
     PartialPathNodeFwd mid, Node node, CallContext cc, TSummaryCtx1 sc1, TSummaryCtx2 sc2,
     PartialAccessPath ap, Configuration config
   ) {
-    not isUnreachableInCall(node, cc.(CallContextSpecificCall).getCall()) and
+    not isUnreachableInCallCached(node, cc.(CallContextSpecificCall).getCall()) and
     (
       localFlowStep(mid.getNode(), node, config) and
       cc = mid.getCallContext() and
