@@ -160,7 +160,7 @@ private module LambdaFlow {
       toJump = true and
       lastCall = TDataFlowCallNone()
     |
-      jumpStep(node, mid) and
+      jumpStepCached(node, mid) and
       t = t0
       or
       exists(boolean preservesValue |
@@ -252,6 +252,9 @@ private module Cached {
 
   cached
   predicate nodeDataFlowType(Node n, DataFlowType t) { t = getNodeType(n) }
+
+  cached
+  predicate jumpStepCached(Node node1, Node node2) { jumpStep(node1, node2) }
 
   /**
    * Gets a viable target for the lambda call `call`.

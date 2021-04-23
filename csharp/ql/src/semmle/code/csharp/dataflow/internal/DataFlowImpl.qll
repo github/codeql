@@ -234,7 +234,7 @@ private predicate additionalLocalFlowStep(Node node1, Node node2, Configuration 
  * Holds if data can flow from `node1` to `node2` in a way that discards call contexts.
  */
 private predicate jumpStep(Node node1, Node node2, Configuration config) {
-  jumpStep(node1, node2) and
+  jumpStepCached(node1, node2) and
   not outBarrier(node1, config) and
   not inBarrier(node2, config) and
   not fullBarrier(node1, config) and
