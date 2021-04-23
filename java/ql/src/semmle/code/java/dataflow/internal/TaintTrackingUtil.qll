@@ -57,8 +57,7 @@ predicate localAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
     sink.(DataFlow::ImplicitVarargsArray).getCall() = arg.getCall()
   )
   or
-  FlowSummaryImpl::Private::Steps::summaryLocalStep(src, sink, false) and
-  not FlowSummaryImpl::Private::Steps::summaryLocalStep(src, sink, true)
+  FlowSummaryImpl::Private::Steps::summaryLocalStep(src, sink, false)
 }
 
 /**
