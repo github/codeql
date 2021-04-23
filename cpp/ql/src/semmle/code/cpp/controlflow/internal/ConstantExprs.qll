@@ -128,7 +128,8 @@ private predicate callHasNoTarget(@funbindexpr fc) {
   )
 }
 
-// This base case is pulled out to work around QL-796
+// Pulled out for performance. See
+// https://github.com/github/codeql-coreql-team/issues/1044.
 private predicate potentiallyReturningFunctionCall_base(FunctionCall fc) {
   fc.isVirtual()
   or
