@@ -242,6 +242,14 @@ private DataFlowCallable viableCallableExt(DataFlowCall call) {
 
 cached
 private module Cached {
+  cached
+  predicate nodeEnclosingCallable(Node n, DataFlowCallable c) { c = n.getEnclosingCallable() }
+
+  cached
+  predicate callEnclosingCallable(DataFlowCall call, DataFlowCallable c) {
+    c = call.getEnclosingCallable()
+  }
+
   /**
    * Gets a viable target for the lambda call `call`.
    *
@@ -553,7 +561,7 @@ private module Cached {
     private predicate mayBenefitFromCallContextExt(DataFlowCall call, DataFlowCallable callable) {
       mayBenefitFromCallContext(call, callable)
       or
-      callable = call.getEnclosingCallable() and
+      callEnclosingCallable(call, callable) and
       exists(viableCallableLambda(call, TDataFlowCallSome(_)))
     }
 
@@ -611,7 +619,7 @@ private module Cached {
         mayBenefitFromCallContextExt(call, _) and
         c = viableCallableExt(call) and
         ctxtgts = count(DataFlowCall ctx | c = viableImplInCallContextExt(call, ctx)) and
-        tgts = strictcount(DataFlowCall ctx | viableCallableExt(ctx) = call.getEnclosingCallable()) and
+        tgts = strictcount(DataFlowCall ctx | callEnclosingCallable(call, viableCallableExt(ctx))) and
         ctxtgts < tgts
       )
     }
@@ -866,7 +874,7 @@ class CallContextReturn extends CallContextNoCall, TReturn {
   }
 
   override predicate relevantFor(DataFlowCallable callable) {
-    exists(DataFlowCall call | this = TReturn(_, call) and call.getEnclosingCallable() = callable)
+    exists(DataFlowCall call | this = TReturn(_, call) and callEnclosingCallable(call, callable))
   }
 }
 
@@ -1017,7 +1025,7 @@ pragma[inline]
 DataFlowCallable getNodeEnclosingCallable(Node n) {
   exists(Node n0 |
     pragma[only_bind_into](n0) = n and
-    pragma[only_bind_into](result) = n0.getEnclosingCallable()
+    nodeEnclosingCallable(n0, pragma[only_bind_into](result))
   )
 }
 
@@ -1042,7 +1050,7 @@ predicate resolveReturn(CallContext cc, DataFlowCallable callable, DataFlowCall 
   cc instanceof CallContextAny and callable = viableCallableExt(call)
   or
   exists(DataFlowCallable c0, DataFlowCall call0 |
-    call0.getEnclosingCallable() = callable and
+    callEnclosingCallable(call0, callable) and
     cc = TReturn(c0, call0) and
     c0 = prunedViableImplInCallContextReverse(call0, call)
   )
