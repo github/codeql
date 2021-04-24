@@ -99,4 +99,4 @@ with open(opcode_path, 'r', encoding='utf-8') as opcode:
 
 # Write out the updated `Opcode.qll`
 with open(opcode_path, 'w', encoding='utf-8') as opcode:
-    opcode.writelines(output_lines)
+    opcode.writelines(output_lines) 
