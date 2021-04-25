@@ -1,0 +1,2 @@
+| test.c:9:8:9:10 | buf | This pointer may be cleared again later. |
+| test.c:19:26:19:29 | buf1 | This pointer may be cleared again later. |
