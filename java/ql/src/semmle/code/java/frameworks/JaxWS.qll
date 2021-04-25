@@ -30,6 +30,7 @@ class JaxWsEndpoint extends Class {
     )
   }
 
+  /** Gets a method annotated with `@WebMethod` or `@WebEndpoint`. */
   Callable getARemoteMethod() {
     result = this.getACallable() and
     exists(AnnotationType a | a = result.getAnAnnotation().getType() |
@@ -210,10 +211,16 @@ class JaxRsInjectionAnnotation extends JaxRSAnnotation {
   }
 }
 
+/**
+ * The class `javax.ws.rs.core.Response`.
+ */
 class JaxRsResponse extends Class {
   JaxRsResponse() { this.hasQualifiedName(getAJaxRsPackage("core"), "Response") }
 }
 
+/**
+ * The class `javax.ws.rs.core.Response$ResponseBuilder`.
+ */
 class JaxRsResponseBuilder extends Class {
   JaxRsResponseBuilder() {
     this.hasQualifiedName(getAJaxRsPackage("core"), "Response$ResponseBuilder")
@@ -408,7 +415,7 @@ private class HttpHeadersModel extends SummaryModelCsv {
 }
 
 /**
- * Model MultivaluedMap, which extends Map<List<K>, V> and provides a few extra helper methods.
+ * Model MultivaluedMap, which extends Map<K, List<V>> and provides a few extra helper methods.
  */
 private class MultivaluedMapModel extends SummaryModelCsv {
   override predicate row(string row) {
