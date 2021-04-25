@@ -1,0 +1,25 @@
+| Test.java:12:13:12:24 | new Object(...) | Test.java:12:13:12:24 | new Object(...) |
+| Test.java:13:21:13:21 | 0 | Test.java:13:21:13:21 | 0 |
+| Test.java:14:13:14:16 | this | Test.java:14:13:14:16 | this |
+| Test.java:15:13:15:14 | "" | Test.java:15:13:15:14 | "" |
+| Test.java:17:13:17:24 | Boolean.TRUE | Test.java:17:13:17:24 | Boolean.TRUE |
+| Test.java:18:13:18:25 | Boolean.FALSE | Test.java:18:13:18:25 | Boolean.FALSE |
+| Test.java:20:13:20:13 | 1 | Test.java:20:13:20:13 | 1 |
+| Test.java:21:13:21:21 | Float.NaN | Test.java:21:13:21:21 | Float.NaN |
+| Test.java:22:13:22:20 | constant | Test.java:3:29:3:30 | "" |
+| Test.java:23:13:23:23 | (...)... | Test.java:23:22:23:23 | "" |
+| Test.java:24:13:24:21 | ...=... | Test.java:24:20:24:21 | "" |
+| Test.java:26:13:26:54 | ...?...:... | Test.java:26:38:26:39 | "" |
+| Test.java:26:13:26:54 | ...?...:... | Test.java:26:43:26:54 | new Object(...) |
+| Test.java:27:13:27:21 | switch (...) | Test.java:3:29:3:30 | "" |
+| Test.java:27:13:27:21 | switch (...) | Test.java:28:27:28:28 | "" |
+| Test.java:34:13:34:25 | ...::... | Test.java:34:13:34:25 | ...::... |
+| Test.java:35:13:35:27 | ...->... | Test.java:35:13:35:27 | ...->... |
+| Test.java:41:13:41:18 | ... + ... | Test.java:41:13:41:18 | ... + ... |
+| Test.java:42:13:42:20 | ... + ... | Test.java:42:13:42:20 | ... + ... |
+| Test.java:43:13:43:19 | ...+=... | Test.java:43:13:43:19 | ...+=... |
+| Test.java:44:13:44:32 | ... + ... | Test.java:44:13:44:32 | ... + ... |
+| Test.java:51:17:51:18 | n1 | Test.java:49:13:49:22 | ... != ... |
+| Test.java:59:13:59:14 | n2 | Test.java:57:14:57:15 | "" |
+| Test.java:70:13:70:14 | n3 | Test.java:65:18:65:19 | "" |
+| Test.java:70:13:70:14 | n3 | Test.java:67:18:67:18 | 1 |
