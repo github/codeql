@@ -1,0 +1,6 @@
+# github.com/gin-gonic/gin v1.6.2
+## explicit
+github.com/gin-gonic/gin
+# github.com/gorilla/sessions v1.2.1
+## explicit
+github.com/gorilla/sessions

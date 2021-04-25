@@ -1,0 +1,11 @@
+| CookieWithoutHttpOnly.go:14:20:14:21 | &... | Cookie attribute 'HttpOnly' is not set to true. |
+| CookieWithoutHttpOnly.go:23:20:23:21 | &... | Cookie attribute 'HttpOnly' is not set to true. |
+| CookieWithoutHttpOnly.go:50:20:50:21 | &... | Cookie attribute 'HttpOnly' is not set to true. |
+| CookieWithoutHttpOnly.go:60:20:60:21 | &... | Cookie attribute 'HttpOnly' is not set to true. |
+| CookieWithoutHttpOnly.go:90:20:90:21 | &... | Cookie attribute 'HttpOnly' is not set to true. |
+| CookieWithoutHttpOnly.go:109:20:109:21 | &... | Cookie attribute 'HttpOnly' is not set to true. |
+| CookieWithoutHttpOnly.go:119:20:119:21 | &... | Cookie attribute 'HttpOnly' is not set to true. |
+| CookieWithoutHttpOnly.go:128:2:128:8 | session | Cookie attribute 'HttpOnly' is not set to true. |
+| CookieWithoutHttpOnly.go:141:2:141:8 | session | Cookie attribute 'HttpOnly' is not set to true. |
+| CookieWithoutHttpOnly.go:152:2:152:8 | session | Cookie attribute 'HttpOnly' is not set to true. |
+| CookieWithoutHttpOnly.go:189:75:189:79 | false | Cookie attribute 'HttpOnly' is not set to true. |
