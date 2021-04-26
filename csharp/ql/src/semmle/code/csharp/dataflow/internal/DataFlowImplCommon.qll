@@ -262,6 +262,23 @@ private module Cached {
   cached
   predicate isUnreachableInCallCached(Node n, DataFlowCall call) { isUnreachableInCall(n, call) }
 
+  cached
+  predicate outNodeExt(Node n) {
+    n instanceof OutNode
+    or
+    n.(PostUpdateNode).getPreUpdateNode() instanceof ArgumentNode
+  }
+
+  cached
+  OutNodeExt getAnOutNodeExt(DataFlowCall call, ReturnKindExt k) {
+    result = getAnOutNode(call, k.(ValueReturnKind).getKind())
+    or
+    exists(ArgumentNode arg |
+      result.(PostUpdateNode).getPreUpdateNode() = arg and
+      arg.argumentOf(call, k.(ParamUpdateReturnKind).getPosition())
+    )
+  }
+
   /**
    * Gets a viable target for the lambda call `call`.
    *
@@ -970,11 +987,7 @@ class ReturnNodeExt extends Node {
  * or a post-update node associated with a call argument.
  */
 class OutNodeExt extends Node {
-  OutNodeExt() {
-    this instanceof OutNode
-    or
-    this.(PostUpdateNode).getPreUpdateNode() instanceof ArgumentNode
-  }
+  OutNodeExt() { outNodeExt(this) }
 }
 
 /**
@@ -987,7 +1000,7 @@ abstract class ReturnKindExt extends TReturnKindExt {
   abstract string toString();
 
   /** Gets a node corresponding to data flow out of `call`. */
-  abstract OutNodeExt getAnOutNode(DataFlowCall call);
+  final OutNodeExt getAnOutNode(DataFlowCall call) { result = getAnOutNodeExt(call, this) }
 }
 
 class ValueReturnKind extends ReturnKindExt, TValueReturn {
@@ -998,10 +1011,6 @@ class ValueReturnKind extends ReturnKindExt, TValueReturn {
   ReturnKind getKind() { result = kind }
 
   override string toString() { result = kind.toString() }
-
-  override OutNodeExt getAnOutNode(DataFlowCall call) {
-    result = getAnOutNode(call, this.getKind())
-  }
 }
 
 class ParamUpdateReturnKind extends ReturnKindExt, TParamUpdate {
@@ -1012,13 +1021,6 @@ class ParamUpdateReturnKind extends ReturnKindExt, TParamUpdate {
   int getPosition() { result = pos }
 
   override string toString() { result = "param update " + pos }
-
-  override OutNodeExt getAnOutNode(DataFlowCall call) {
-    exists(ArgumentNode arg |
-      result.(PostUpdateNode).getPreUpdateNode() = arg and
-      arg.argumentOf(call, this.getPosition())
-    )
-  }
 }
 
 /** A callable tagged with a relevant return kind. */
