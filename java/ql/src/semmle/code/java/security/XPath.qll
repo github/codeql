@@ -1,3 +1,6 @@
+/** Provides classes to reason about XPath vulnerabilities. */
+
+import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
 
@@ -5,6 +8,9 @@ import semmle.code.java.dataflow.TaintTracking
  * An abstract type representing a call to interpret XPath expressions.
  */
 class XPathSink extends MethodAccess {
+  /**
+   * Gets the argument representing the XPath expressions to be evaluated.
+   */
   abstract Expr getSink();
 }
 
@@ -44,10 +50,12 @@ class NodeSelectNodes extends XPathSink {
   override Expr getSink() { result = this.getArgument(0) }
 }
 
+/** A sink that represents a method that interprets XPath expressions. */
 class XPathInjectionSink extends DataFlow::ExprNode {
   XPathInjectionSink() { exists(XPathSink sink | this.getExpr() = sink.getSink()) }
 }
 
+/** A configuration that tracks data from a remote input source to a XPath evaluation sink. */
 class XPathInjectionConfiguration extends TaintTracking::Configuration {
   XPathInjectionConfiguration() { this = "XPathInjection" }
 
