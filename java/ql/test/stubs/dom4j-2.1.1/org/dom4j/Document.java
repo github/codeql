@@ -13,7 +13,13 @@
 
 package org.dom4j;
 
+import java.util.List;
+
 public interface Document {
+
+    public Node selectSingleNode(String xpathExpression);
+
+    public List selectNodes(String xpathExpression);
 }
 
 /*
