@@ -118,7 +118,7 @@ private module LambdaFlow {
     boolean toJump, DataFlowCallOption lastCall
   ) {
     revLambdaFlow0(lambdaCall, kind, node, t, toReturn, toJump, lastCall) and
-    if node instanceof CastNode or node instanceof ArgumentNode or node instanceof ReturnNode
+    if castNode(node) or node instanceof ArgumentNode or node instanceof ReturnNode
     then compatibleTypes(t, getNodeDataFlowType(node))
     else any()
   }
@@ -288,6 +288,20 @@ private module Cached {
       p.isParameterOf(_, pos) and
       k = TParamUpdate(pos)
     )
+  }
+
+  cached
+  predicate castNode(Node n) { n instanceof CastNode }
+
+  cached
+  predicate castingNode(Node n) {
+    castNode(n) or
+    n instanceof ParameterNode or
+    n instanceof OutNodeExt or
+    // For reads, `x.f`, we want to check that the tracked type after the read (which
+    // is obtained by popping the head of the access path stack) is compatible with
+    // the type of `x.f`.
+    read(_, _, n)
   }
 
   /**
@@ -818,15 +832,7 @@ private module Cached {
  * A `Node` at which a cast can occur such that the type should be checked.
  */
 class CastingNode extends Node {
-  CastingNode() {
-    this instanceof ParameterNode or
-    this instanceof CastNode or
-    this instanceof OutNodeExt or
-    // For reads, `x.f`, we want to check that the tracked type after the read (which
-    // is obtained by popping the head of the access path stack) is compatible with
-    // the type of `x.f`.
-    read(_, _, this)
-  }
+  CastingNode() { castingNode(this) }
 }
 
 private predicate readStepWithTypes(

@@ -1257,7 +1257,7 @@ private module LocalFlowBigStep {
    */
   private class FlowCheckNode extends Node {
     FlowCheckNode() {
-      this instanceof CastNode or
+      castNode(this) or
       clearsContentCached(this, _)
     }
   }
