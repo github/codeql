@@ -13,7 +13,7 @@ class XPath extends RefType {
   XPath() { this.hasQualifiedName("javax.xml.xpath", "XPath") }
 }
 
-/** A call to `XPath.Evaluate` or `XPath.compile` */
+/** A call to `XPath.evaluate` or `XPath.compile` */
 class XPathEvaluateOrCompile extends XPathSink {
   XPathEvaluateOrCompile() {
     exists(Method m | this.getMethod() = m and m.getDeclaringType() instanceof XPath |
@@ -24,9 +24,13 @@ class XPathEvaluateOrCompile extends XPathSink {
   override Expr getSink() { result = this.getArgument(0) }
 }
 
-/** The class `org.dom4j.Node` */
+/** Any class extending or implementing `org.dom4j.Node` */
 class Dom4JNode extends RefType {
-  Dom4JNode() { this.hasQualifiedName("org.dom4j", "Node") }
+  Dom4JNode() {
+    exists(Interface node | node.hasQualifiedName("org.dom4j", "Node") |
+      this.extendsOrImplements*(node)
+    )
+  }
 }
 
 /** A call to `Node.selectNodes` or `Node.selectSingleNode` */
