@@ -89,4 +89,15 @@ private module NoSQL {
 
     override DataFlow::Node getSanitizerNode() { result = this.getArg(0) }
   }
+
+  private class BsonObjectIdCall extends DataFlow::CallCfgNode, NoSQLSanitizer::Range {
+    BsonObjectIdCall() {
+      this =
+        API::moduleImport(["bson", "bson.objectid", "bson.json_util"])
+            .getMember("ObjectId")
+            .getACall()
+    }
+
+    override DataFlow::Node getSanitizerNode() { result = this.getArg(0) }
+  }
 }
