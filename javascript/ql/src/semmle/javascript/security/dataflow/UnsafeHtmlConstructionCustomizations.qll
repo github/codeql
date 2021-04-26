@@ -167,19 +167,6 @@ module UnsafeHtmlConstruction {
   }
 
   /**
-   * A taint step from the write of a field in a constructor to a read of the same field in an instance method.
-   */
-  predicate classFieldStep(DataFlow::Node pred, DataFlow::Node succ) {
-    // flow-step from a property written in the constructor to a use in an instance method.
-    // "simulates" client usage of a class, and regains some flow-steps lost by `requireMatchedReturn` below.
-    exists(DataFlow::ClassNode clazz, string prop |
-      DataFlow::thisNode(clazz.getConstructor().getFunction()).getAPropertyWrite(prop).getRhs() =
-        pred and
-      DataFlow::thisNode(clazz.getAnInstanceMethod().getFunction()).getAPropertyRead(prop) = succ
-    )
-  }
-
-  /**
    *  Holds if there is a path without unmatched return steps from `source` to `sink`.
    */
   predicate requireMatchedReturn(DataFlow::SourcePathNode source, DataFlow::SinkPathNode sink) {

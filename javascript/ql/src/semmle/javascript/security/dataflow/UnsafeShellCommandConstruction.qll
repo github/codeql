@@ -14,6 +14,7 @@ import javascript
  */
 module UnsafeShellCommandConstruction {
   import UnsafeShellCommandConstructionCustomizations::UnsafeShellCommandConstruction
+  import UnsafeHtmlConstructionCustomizations
 
   /**
    * A taint-tracking configuration for reasoning about shell command constructed from library input vulnerabilities.
@@ -35,21 +36,11 @@ module UnsafeShellCommandConstruction {
     // override to require that there is a path without unmatched return steps
     override predicate hasFlowPath(DataFlow::SourcePathNode source, DataFlow::SinkPathNode sink) {
       super.hasFlowPath(source, sink) and
-      exists(DataFlow::MidPathNode mid |
-        source.getASuccessor*() = mid and
-        sink = mid.getASuccessor() and
-        mid.getPathSummary().hasReturn() = false
-      )
+      UnsafeHtmlConstruction::requireMatchedReturn(source, sink)
     }
 
     override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-      // flow-step from a property written in the constructor to a use in an instance method.
-      // "simulates" client usage of a class, and regains some flow-steps lost by `hasFlowPath` above.
-      exists(DataFlow::ClassNode clz, string name |
-        pred =
-          DataFlow::thisNode(clz.getConstructor().getFunction()).getAPropertyWrite(name).getRhs() and
-        succ = DataFlow::thisNode(clz.getInstanceMethod(_).getFunction()).getAPropertyRead(name)
-      )
+      DataFlow::localFieldStep(pred, succ)
     }
   }
 }
