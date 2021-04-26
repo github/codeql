@@ -1,6 +1,5 @@
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.security.XmlParsers
 
 /**
  * An abstract type representing a call to interpret XPath expressions.
@@ -18,9 +17,7 @@ class XPath extends RefType {
 class XPathEvaluateOrCompile extends XPathSink {
   XPathEvaluateOrCompile() {
     exists(Method m | this.getMethod() = m and m.getDeclaringType() instanceof XPath |
-      m.hasName("evaluate")
-      or
-      m.hasName("compile")
+      m.hasName(["evaluate", "compile"])
     )
   }
 
@@ -36,7 +33,7 @@ class Dom4JNode extends RefType {
 class NodeSelectNodes extends XPathSink {
   NodeSelectNodes() {
     exists(Method m | this.getMethod() = m and m.getDeclaringType() instanceof Dom4JNode |
-      m.hasName("selectNodes") or m.hasName("selectSingleNode")
+      m.hasName(["selectNodes", "selectSingleNode"])
     )
   }
 
