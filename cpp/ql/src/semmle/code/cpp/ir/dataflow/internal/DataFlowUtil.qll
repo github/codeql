@@ -708,6 +708,11 @@ module AddressFlow {
     iTo.(InheritanceConversionInstruction).getUnary() = iFrom
   }
 
+  /**
+   * Holds if there is a transitive sequence of `addressFlowInstrStep` steps from `iFrom` to `iTo`.
+   *
+   * This is written explicitly with a `fastTC` for performance reasons.
+   */
   cached
   predicate addressFlowInstrTC(Instruction iFrom, Instruction iTo) =
     fastTC(addressFlowInstrStep/2)(iFrom, iTo)
@@ -746,11 +751,25 @@ private predicate isSuccessorInstruction(Instruction instr1, Instruction instr2)
 }
 
 /**
- * Holds if `nodeTo` should receive flow after leaving `nodeFrom`. This occurs in two different
- * situations:
- *   - There is a subsequence of use a memory operand that has been used when traversing the chain of
- *     addresses used to perform a sequence of `storeStep`s, or
- *   - The entire chain of addresses used to perform a sequence of `storeStep`s has been traversed.
+ * Holds if `nodeTo` should receive flow after leaving the `AddressNodeStore` node `nodeFrom`.
+ * This occurs in two different situations:
+ *   - `nodeTo` is the outermost `AddressNodeRead` node in an address computation that (at some point in
+ *     the chain) reads from a memory operand which was used during the traversal of addresses that
+ *     `nodeFrom` is part of. This happens in an example such as
+ *     ```cpp
+ *     a.b->c = source();
+ *     B* b = a.b;
+ *     sink(b->c);
+ *     ```
+ *     Here, the `LoadInstruction` on `a.b` reads from `&a.b` which was accessed during the store to the
+ *     address of `a.b->c`. So in this case it holds that `postStoreStep(nodeFrom, nodeTo)` where
+ *     `nodeFrom` is the `AddressNodeStore` node corresponding to `&a` on line 1, and `nodeTo` is the
+ *     `AddressNodeRead` node corresponding to `&a` on line 2.
+ *
+ *   - The entire chain of addresses that `nodeFrom` is part of has been traversed and `nodeTo` is an
+ *     `InstructionNode` node that represents the result of the store operation.
+ *     This happens in an example such as `a.b.c = source();` where `nodeFrom` is `AddressNodeStore` node
+ *     corresponding to `&a`, and `nodeTo` is the `ChiInstruction` that follows the `StoreInstruction`.
  */
 private predicate postStoreStep(AddressNodeStore nodeFrom, Node nodeTo) {
   // Flow out of an address node that is in a chain of partial definitions (which arise from a store step).
