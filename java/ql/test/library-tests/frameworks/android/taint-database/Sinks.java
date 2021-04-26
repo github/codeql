@@ -85,7 +85,7 @@ public class Sinks {
 	public static void query(SQLiteDatabase target) {
 		boolean distinct = taint();
 		String table = taint(); // $hasTaintFlowSink
-		String[] columns = {taint()}; // $hasTaintFlowSink
+		String[] columns = {taint()}; // $ MISSING: hasTaintFlowSink
 		String selection = taint(); // $hasTaintFlowSink
 		String[] selectionArgs = {taint()};
 		String groupBy = taint(); // $hasTaintFlowSink
@@ -98,7 +98,7 @@ public class Sinks {
 	public static void query2(SQLiteDatabase target) {
 		boolean distinct = taint();
 		String table = taint(); // $hasTaintFlowSink
-		String[] columns = {taint()}; // $hasTaintFlowSink
+		String[] columns = {taint()}; // $ MISSING: hasTaintFlowSink
 		String selection = taint(); // $hasTaintFlowSink
 		String[] selectionArgs = {taint()};
 		String groupBy = taint(); // $hasTaintFlowSink
@@ -123,7 +123,7 @@ public class Sinks {
 
 	public static void query4(SQLiteDatabase target) {
 		String table = taint(); // $hasTaintFlowSink
-		String[] columns = {taint()}; // $hasTaintFlowSink
+		String[] columns = {taint()}; // $ MISSING: hasTaintFlowSink
 		String selection = taint(); // $hasTaintFlowSink
 		String[] selectionArgs = {taint()};
 		String groupBy = taint(); // $hasTaintFlowSink
@@ -136,7 +136,7 @@ public class Sinks {
 	public static void query(MySQLiteQueryBuilder target) {
 		target = taint();  // $hasTaintFlowSink
 		SQLiteDatabase db = taint();
-		String[] projectionIn = {taint()}; // $hasTaintFlowSink
+		String[] projectionIn = {taint()}; // $ MISSING: hasTaintFlowSink
 		String selection = taint(); // $hasTaintFlowSink
 		String[] selectionArgs = {taint()};
 		String groupBy = taint(); // $hasTaintFlowSink
@@ -148,7 +148,7 @@ public class Sinks {
 	public static void query2(MySQLiteQueryBuilder target) {
 		target = taint(); // $hasTaintFlowSink
 		SQLiteDatabase db = taint();
-		String[] projectionIn = {taint()}; // $hasTaintFlowSink
+		String[] projectionIn = {taint()}; // $ MISSING: hasTaintFlowSink
 		String selection = taint(); // $hasTaintFlowSink
 		String[] selectionArgs = {taint()};
 		String groupBy = taint(); // $hasTaintFlowSink
@@ -161,7 +161,7 @@ public class Sinks {
 	public static void query3(MySQLiteQueryBuilder target) {
 		target = taint();  // $hasTaintFlowSink
 		SQLiteDatabase db = taint();
-		String[] projectionIn = {taint()}; // $hasTaintFlowSink
+		String[] projectionIn = {taint()}; // $ MISSING: hasTaintFlowSink
 		String selection = taint(); // $hasTaintFlowSink
 		String[] selectionArgs = {taint()};
 		String groupBy = taint(); // $hasTaintFlowSink
@@ -214,7 +214,7 @@ public class Sinks {
 		SQLiteDatabase.CursorFactory cursorFactory = taint();
 		boolean distinct = taint();
 		String table = taint(); // $hasTaintFlowSink
-		String[] columns = {taint()}; // $hasTaintFlowSink
+		String[] columns = {taint()}; // $ MISSING: hasTaintFlowSink
 		String selection = taint(); // $hasTaintFlowSink
 		String[] selectionArgs = {taint()};
 		String groupBy = taint(); // $hasTaintFlowSink
@@ -229,7 +229,7 @@ public class Sinks {
 		SQLiteDatabase.CursorFactory cursorFactory = taint();
 		boolean distinct = taint();
 		String table = taint(); // $hasTaintFlowSink
-		String[] columns = {taint()}; // $hasTaintFlowSink
+		String[] columns = {taint()}; // $ MISSING: hasTaintFlowSink
 		String selection = taint(); // $hasTaintFlowSink
 		String[] selectionArgs = {taint()};
 		String groupBy = taint(); // $hasTaintFlowSink
