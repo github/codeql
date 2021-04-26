@@ -1,0 +1,80 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+<overview>
+	<p>
+		Dynamically constructing HTML with inputs from exported functions may 
+		inadvertently leave a client open to XSS attacks.
+		
+		Clients using the exported function may use inputs containing unsafe HTML,
+		and if these inputs end up in the DOM, the client may be vulnerable to
+		cross-site scripting attacks.
+	</p>
+
+</overview>
+<recommendation>
+
+	<p>
+		If possible, use safe APIs when inserting HTML into the DOM.  
+		Such as writing to the <code>innerText</code> property instead of <code>innerHTML</code>.
+	</p>
+
+	<p>
+		Alternatively, use a HTML sanitizer to escape/remove unsafe content.
+	</p>
+
+</recommendation>
+<example>
+
+	<p>
+		The following example shows a library function that shows a boldface name
+		by writing to the <code>innerHTML</code> property of an element.
+	</p>
+
+	<sample src="examples/unsafe-html-construction.js" />
+
+	<p>
+		This library function, however, does not escape unsafe HTML, and a client
+		that calls the function with user-supplied input may be vulnerable to
+		cross-site scripting attacks.
+	</p>
+
+	<p>
+		To avoid such attacks, a program can use safe APIs such as <code>innerText</code>.
+	</p>
+
+	<sample src="examples/unsafe-html-construction_safe.js" />
+	
+	<p>
+		Alternatively, use a HTML sanitizer to remove unsafe content.
+	</p>
+
+	<sample src="examples/unsafe-html-construction_sanitizer.js" />
+
+</example>
+<references>
+	<li>
+		OWASP:
+		<a href="https://www.owasp.org/index.php/DOM_based_XSS_Prevention_Cheat_Sheet">DOM based
+		XSS Prevention Cheat Sheet</a>.
+	</li>
+	<li>
+		OWASP:
+		<a href="https://www.owasp.org/index.php/XSS_%28Cross_Site_Scripting%29_Prevention_Cheat_Sheet">XSS
+		(Cross Site Scripting) Prevention Cheat Sheet</a>.
+	</li>
+	<li>
+		OWASP
+		<a href="https://www.owasp.org/index.php/DOM_Based_XSS">DOM Based XSS</a>.
+	</li>
+	<li>
+		OWASP
+		<a href="https://www.owasp.org/index.php/Types_of_Cross-Site_Scripting">Types of Cross-Site
+		Scripting</a>.
+	</li>
+	<li>
+		Wikipedia: <a href="http://en.wikipedia.org/wiki/Cross-site_scripting">Cross-site scripting</a>.
+	</li>
+</references>
+</qhelp>
