@@ -198,6 +198,10 @@ module Stages {
       exists(any(DataFlow::TypeBackTracker t).prepend(_))
       or
       DataFlow::functionForwardingStep(_, _)
+      or
+      any(DataFlow::Node node).hasUnderlyingType(_)
+      or
+      any(DataFlow::Node node).hasUnderlyingType(_, _)
     }
   }
 
@@ -232,6 +236,8 @@ module Stages {
    */
   cached
   module Taint {
+    private import semmle.javascript.PackageExports as Exports
+
     /**
      * Always holds.
      * Ensures that a predicate is evaluated as part of the Taint stage.
@@ -250,6 +256,8 @@ module Stages {
       TaintTracking::heapStep(_, _)
       or
       exists(RemoteFlowSource r)
+      or
+      exists(Exports::getALibraryInputParameter())
     }
   }
 }
