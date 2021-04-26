@@ -64,5 +64,5 @@ class MethodAccessInsecureGuavaFilesCreateTempFile extends MethodAccessInsecureF
 
 from MethodAccessInsecureFileCreation methodAccess
 select methodAccess,
-  "Local information disclosure vulnerability due to use of " + methodAccess.getFileSystemEntityType() +
-    " readable by other local users."
+  "Local information disclosure vulnerability due to use of " +
+    methodAccess.getFileSystemEntityType() + " readable by other local users."
