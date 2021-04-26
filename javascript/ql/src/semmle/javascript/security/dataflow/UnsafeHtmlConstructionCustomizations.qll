@@ -13,7 +13,6 @@ module UnsafeHtmlConstruction {
   private import semmle.javascript.security.dataflow.DomBasedXssCustomizations::DomBasedXss as DomBasedXss
   private import semmle.javascript.security.dataflow.UnsafeJQueryPluginCustomizations::UnsafeJQueryPlugin as UnsafeJQueryPlugin
   private import semmle.javascript.PackageExports as Exports
-  private import semmle.javascript.security.dataflow.UnsafeJQueryPlugin::UnsafeJQueryPlugin as UnsafeJQueryPlugin
 
   /**
    * A source for unsafe HTML constructed from library input.

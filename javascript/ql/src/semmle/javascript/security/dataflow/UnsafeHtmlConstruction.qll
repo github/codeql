@@ -23,7 +23,13 @@ module UnsafeHtmlConstruction {
 
     override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-    override predicate isSanitizer(DataFlow::Node node) { super.isSanitizer(node) }
+    override predicate isSanitizer(DataFlow::Node node) {
+      super.isSanitizer(node)
+      or
+      node instanceof DomBasedXss::Sanitizer
+      or
+      node instanceof UnsafeJQueryPlugin::Sanitizer
+    }
 
     override predicate isSanitizerEdge(DataFlow::Node pred, DataFlow::Node succ) {
       DomBasedXss::isOptionallySanitizedEdge(pred, succ)

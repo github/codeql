@@ -62,3 +62,16 @@ $.fn.xssPlugin = function (options) {
         $("<b>" + settings.name + "</b>").appendTo(this); // NOT OK
     });
 }
+
+module.exports.guards = function (attrVal) {
+    document.querySelector("#id").innerHTML = "<img alt=\"" + attrVal + "\"/>"; // NOT OK
+    document.querySelector("#id").innerHTML = "<img alt=\"" + attrVal.replace(/"|'/g, "") + "\"/>"; // OK
+    if (attrVal.indexOf("\"") === -1 && attrVal.indexOf("'") === -1) {
+        document.querySelector("#id").innerHTML = "<img alt=\"" + attrVal + "\"/>"; // OK
+    }
+}
+
+module.exports.intentionalTemplate = function (obj) {
+    const html = "<span>" + obj.spanTemplate + "</span>"; // OK
+    document.querySelector("#template").innerHTML = html;
+}
