@@ -27,8 +27,8 @@ public class FlowSteps {
 	}
 
 	public static String[] appendSelectionArgs() {
-		String[] originalValues = taint(); // $hasTaintFlowStep
-		String[] newValues = taint(); // $hasTaintFlowStep
+		String[] originalValues = {taint()}; // $hasTaintFlowStep
+		String[] newValues = {taint()}; // $hasTaintFlowStep
 		return DatabaseUtils.appendSelectionArgs(originalValues, newValues);
 	}
 
@@ -42,7 +42,7 @@ public class FlowSteps {
 		target = taint();
 		boolean distinct = taint(); 
 		String tables = taint(); // $hasTaintFlowStep
-		String[] columns = taint(); // $hasTaintFlowStep
+		String[] columns = {taint()}; // $hasTaintFlowStep
 		String where = taint(); // $hasTaintFlowStep
 		String groupBy = taint(); // $hasTaintFlowStep
 		String having = taint(); // $hasTaintFlowStep
@@ -53,7 +53,7 @@ public class FlowSteps {
 
 	public static String buildQuery(MySQLiteQueryBuilder target) {
 		target = taint(); // $hasTaintFlowStep
-		String[] projectionIn = taint();// $hasTaintFlowStep
+		String[] projectionIn = {taint()};// $hasTaintFlowStep
 		String selection = taint(); // $hasTaintFlowStep
 		String groupBy = taint(); // $hasTaintFlowStep
 		String having = taint(); // $hasTaintFlowStep
@@ -64,9 +64,9 @@ public class FlowSteps {
 
 	public static String buildQuery2(MySQLiteQueryBuilder target) {
 		target = taint(); // $hasTaintFlowStep
-		String[] projectionIn = taint(); // $hasTaintFlowStep
+		String[] projectionIn = {taint()}; // $hasTaintFlowStep
 		String selection = taint(); // $hasTaintFlowStep
-		String[] selectionArgs = taint(); // $hasTaintFlowStep
+		String[] selectionArgs = {taint()}; // $hasTaintFlowStep
 		String groupBy = taint(); // $hasTaintFlowStep
 		String having = taint(); // $hasTaintFlowStep
 		String sortOrder = taint(); // $hasTaintFlowStep
@@ -76,7 +76,7 @@ public class FlowSteps {
 
 	public static String buildUnionQuery(MySQLiteQueryBuilder target) {
 		target = taint(); // $hasTaintFlowStep
-		String[] subQueries = taint(); // $hasTaintFlowStep
+		String[] subQueries = {taint()}; // $hasTaintFlowStep
 		String sortOrder = taint(); // $hasTaintFlowStep
 		String limit = taint(); // $hasTaintFlowStep
 		return target.buildUnionQuery(subQueries, sortOrder, limit);
@@ -85,12 +85,12 @@ public class FlowSteps {
 	public static String buildUnionSubQuery2(MySQLiteQueryBuilder target) {
 		target = taint(); // $hasTaintFlowStep
 		String typeDiscriminatorColumn = taint(); // $hasTaintFlowStep
-		String[] unionColumns = taint(); // $hasTaintFlowStep
+		String[] unionColumns = {taint()}; // $hasTaintFlowStep
 		Set<String> columnsPresentInTable = taint(); // $hasTaintFlowStep
 		int computedColumnsOffset = taint();
 		String typeDiscriminatorValue = taint(); // $hasTaintFlowStep
 		String selection = taint(); // $hasTaintFlowStep
-		String[] selectionArgs = taint(); // $hasTaintFlowStep
+		String[] selectionArgs = {taint()}; // $hasTaintFlowStep
 		String groupBy = taint(); // $hasTaintFlowStep
 		String having = taint(); // $hasTaintFlowStep
 		return target.buildUnionSubQuery(typeDiscriminatorColumn, unionColumns, columnsPresentInTable,
@@ -100,7 +100,7 @@ public class FlowSteps {
 	public static String buildUnionSubQuery3(MySQLiteQueryBuilder target) {
 		target = taint(); // $hasTaintFlowStep 
 		String typeDiscriminatorColumn = taint(); // $hasTaintFlowStep
-		String[] unionColumns = taint(); // $hasTaintFlowStep
+		String[] unionColumns = {taint()}; // $hasTaintFlowStep
 		Set<String> columnsPresentInTable = taint(); // $hasTaintFlowStep
 		int computedColumnsOffset = taint();
 		String typeDiscriminatorValue = taint(); // $hasTaintFlowStep
@@ -113,9 +113,9 @@ public class FlowSteps {
 
 	public static Cursor query(MyContentResolver target) {
 		Uri uri = taint(); // $hasTaintFlowStep
-		String[] projection = taint();
+		String[] projection = {taint()};
 		String selection = taint(); // $hasTaintFlowSink
-		String[] selectionArgs = taint();
+		String[] selectionArgs = {taint()};
 		String sortOrder = taint();
 		CancellationSignal cancellationSignal = taint();
 		return target.query(uri, projection, selection, selectionArgs, sortOrder, cancellationSignal);
@@ -123,9 +123,9 @@ public class FlowSteps {
 
 	public static Cursor query(MyContentProvider target) {
 		Uri uri = taint(); // $hasTaintFlowStep
-		String[] projection = taint();
+		String[] projection = {taint()};
 		String selection = taint(); // $hasTaintFlowSink
-		String[] selectionArgs = taint();
+		String[] selectionArgs = {taint()};
 		String sortOrder = taint();
 		CancellationSignal cancellationSignal = taint();
 		return target.query(uri, projection, selection, selectionArgs, sortOrder, cancellationSignal);
@@ -133,25 +133,25 @@ public class FlowSteps {
 
 	public static Cursor query2(MyContentResolver target) {
 		Uri uri = taint(); // $hasTaintFlowStep
-		String[] projection = taint();
+		String[] projection = {taint()};
 		String selection = taint(); // $hasTaintFlowSink
-		String[] selectionArgs = taint();
+		String[] selectionArgs = {taint()};
 		String sortOrder = taint();
 		return target.query(uri, projection, selection, selectionArgs, sortOrder);
 	}
 
 	public static Cursor query2(MyContentProvider target) {
 		Uri uri = taint(); // $hasTaintFlowStep
-		String[] projection = taint();
+		String[] projection = {taint()};
 		String selection = taint(); // $hasTaintFlowSink
-		String[] selectionArgs = taint();
+		String[] selectionArgs = {taint()};
 		String sortOrder = taint();
 		return target.query(uri, projection, selection, selectionArgs, sortOrder);
 	}
 
 	public static StringBuilder appendColumns() {
 		StringBuilder s = taint(); // $hasTaintFlowStep
-		String[] columns = taint(); // $hasTaintFlowStep
+		String[] columns = {taint()}; // $hasTaintFlowStep
 		SQLiteQueryBuilder.appendColumns(s, columns);
 		return s;
 	}

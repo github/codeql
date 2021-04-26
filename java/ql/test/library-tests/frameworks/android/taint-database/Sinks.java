@@ -33,34 +33,34 @@ public class Sinks {
 		target = taint(); // $hasTaintFlowSink
 		SQLiteDatabase db = taint();
 		String selection = taint(); // $hasTaintFlowSink
-		String[] selectionArgs = taint();
+		String[] selectionArgs = {taint()};
 		target.delete(db, selection, selectionArgs);
 	}
 
 	public static void delete(SQLiteDatabase target) {
 		String table = taint(); // $hasTaintFlowSink
 		String whereClause = taint(); // $hasTaintFlowSink
-		String[] whereArgs = taint();
+		String[] whereArgs = {taint()};
 		target.delete(table, whereClause, whereArgs);
 	}
 
 	public static void delete(MyContentResolver target) {
 		Uri uri = taint();
 		String selection = taint(); // $hasTaintFlowSink
-		String[] selectionArgs = taint();
+		String[] selectionArgs = {taint()};
 		target.delete(uri, selection, selectionArgs);
 	}
 
 	public static void delete(MyContentProvider target) {
 		Uri uri = taint();
 		String selection = taint(); // $hasTaintFlowSink
-		String[] selectionArgs = taint();
+		String[] selectionArgs = {taint()};
 		target.delete(uri, selection, selectionArgs);
 	}
 
 	public static void execPerConnectionSQL(SQLiteDatabase target) {
 		String sql = taint(); // $hasTaintFlowSink
-		Object[] bindArgs = taint();
+		Object[] bindArgs = {taint()};
 		target.execPerConnectionSQL(sql, bindArgs);
 	}
 
@@ -71,7 +71,7 @@ public class Sinks {
 
 	public static void execSQL2(SQLiteDatabase target) {
 		String sql = taint(); // $hasTaintFlowSink
-		Object[] bindArgs = taint();
+		Object[] bindArgs = {taint()};
 		target.execSQL(sql, bindArgs);
 	}
 
@@ -85,9 +85,9 @@ public class Sinks {
 	public static void query(SQLiteDatabase target) {
 		boolean distinct = taint();
 		String table = taint(); // $hasTaintFlowSink
-		String[] columns = taint(); // $hasTaintFlowSink
+		String[] columns = {taint()}; // $hasTaintFlowSink
 		String selection = taint(); // $hasTaintFlowSink
-		String[] selectionArgs = taint();
+		String[] selectionArgs = {taint()};
 		String groupBy = taint(); // $hasTaintFlowSink
 		String having = taint(); // $hasTaintFlowSink
 		String orderBy = taint(); // $hasTaintFlowSink
@@ -98,9 +98,9 @@ public class Sinks {
 	public static void query2(SQLiteDatabase target) {
 		boolean distinct = taint();
 		String table = taint(); // $hasTaintFlowSink
-		String[] columns = taint(); // $hasTaintFlowSink
+		String[] columns = {taint()}; // $hasTaintFlowSink
 		String selection = taint(); // $hasTaintFlowSink
-		String[] selectionArgs = taint();
+		String[] selectionArgs = {taint()};
 		String groupBy = taint(); // $hasTaintFlowSink
 		String having = taint(); // $hasTaintFlowSink
 		String orderBy = taint(); // $hasTaintFlowSink
@@ -112,9 +112,9 @@ public class Sinks {
 
 	public static void query3(SQLiteDatabase target) {
 		String table = taint(); // $hasTaintFlowSink
-		String[] columns = taint(); // $hasTaintFlowSink
+		String[] columns = {taint()}; // $hasTaintFlowSink
 		String selection = taint(); // $hasTaintFlowSink
-		String[] selectionArgs = taint();
+		String[] selectionArgs = {taint()};
 		String groupBy = taint(); // $hasTaintFlowSink
 		String having = taint(); // $hasTaintFlowSink
 		String orderBy = taint(); // $hasTaintFlowSink
@@ -123,9 +123,9 @@ public class Sinks {
 
 	public static void query4(SQLiteDatabase target) {
 		String table = taint(); // $hasTaintFlowSink
-		String[] columns = taint(); // $hasTaintFlowSink
+		String[] columns = {taint()}; // $hasTaintFlowSink
 		String selection = taint(); // $hasTaintFlowSink
-		String[] selectionArgs = taint();
+		String[] selectionArgs = {taint()};
 		String groupBy = taint(); // $hasTaintFlowSink
 		String having = taint(); // $hasTaintFlowSink
 		String orderBy = taint(); // $hasTaintFlowSink
@@ -136,9 +136,9 @@ public class Sinks {
 	public static void query(MySQLiteQueryBuilder target) {
 		target = taint();  // $hasTaintFlowSink
 		SQLiteDatabase db = taint();
-		String[] projectionIn = taint(); // $hasTaintFlowSink
+		String[] projectionIn = {taint()}; // $hasTaintFlowSink
 		String selection = taint(); // $hasTaintFlowSink
-		String[] selectionArgs = taint();
+		String[] selectionArgs = {taint()};
 		String groupBy = taint(); // $hasTaintFlowSink
 		String having = taint(); // $hasTaintFlowSink
 		String sortOrder = taint(); // $hasTaintFlowSink
@@ -148,9 +148,9 @@ public class Sinks {
 	public static void query2(MySQLiteQueryBuilder target) {
 		target = taint(); // $hasTaintFlowSink
 		SQLiteDatabase db = taint();
-		String[] projectionIn = taint(); // $hasTaintFlowSink
+		String[] projectionIn = {taint()}; // $hasTaintFlowSink
 		String selection = taint(); // $hasTaintFlowSink
-		String[] selectionArgs = taint();
+		String[] selectionArgs = {taint()};
 		String groupBy = taint(); // $hasTaintFlowSink
 		String having = taint(); // $hasTaintFlowSink
 		String sortOrder = taint(); // $hasTaintFlowSink
@@ -161,9 +161,9 @@ public class Sinks {
 	public static void query3(MySQLiteQueryBuilder target) {
 		target = taint();  // $hasTaintFlowSink
 		SQLiteDatabase db = taint();
-		String[] projectionIn = taint(); // $hasTaintFlowSink
+		String[] projectionIn = {taint()}; // $hasTaintFlowSink
 		String selection = taint(); // $hasTaintFlowSink
-		String[] selectionArgs = taint();
+		String[] selectionArgs = {taint()};
 		String groupBy = taint(); // $hasTaintFlowSink
 		String having = taint(); // $hasTaintFlowSink
 		String sortOrder = taint(); // $hasTaintFlowSink
@@ -174,18 +174,18 @@ public class Sinks {
 
 	public static void query3(MyContentProvider target) {
 		Uri uri = taint();
-		String[] projection = taint();
+		String[] projection = {taint()};
 		String selection = taint(); // $hasTaintFlowSink
-		String[] selectionArgs = taint();
+		String[] selectionArgs = {taint()};
 		String sortOrder = taint();
 		target.query(uri, projection, selection, selectionArgs, sortOrder);
 	}
 
 	public static void query(MyContentProvider target) {
 		Uri uri = taint();
-		String[] projection = taint();
+		String[] projection = {taint()};
 		String selection = taint(); // $hasTaintFlowSink
-		String[] selectionArgs = taint();
+		String[] selectionArgs = {taint()};
 		String sortOrder = taint();
 		CancellationSignal cancellationSignal = taint();
 		target.query(uri, projection, selection, selectionArgs, sortOrder, cancellationSignal);
@@ -193,18 +193,18 @@ public class Sinks {
 
 	public static void query3(MyContentResolver target) {
 		Uri uri = taint();
-		String[] projection = taint();
+		String[] projection = {taint()};
 		String selection = taint(); // $hasTaintFlowSink
-		String[] selectionArgs = taint();
+		String[] selectionArgs = {taint()};
 		String sortOrder = taint();
 		target.query(uri, projection, selection, selectionArgs, sortOrder);
 	}
 
 	public static void query(MyContentResolver target) {
 		Uri uri = taint();
-		String[] projection = taint();
+		String[] projection = {taint()};
 		String selection = taint(); // $hasTaintFlowSink
-		String[] selectionArgs = taint();
+		String[] selectionArgs = {taint()};
 		String sortOrder = taint();
 		CancellationSignal cancellationSignal = taint();
 		target.query(uri, projection, selection, selectionArgs, sortOrder, cancellationSignal);
@@ -214,9 +214,9 @@ public class Sinks {
 		SQLiteDatabase.CursorFactory cursorFactory = taint();
 		boolean distinct = taint();
 		String table = taint(); // $hasTaintFlowSink
-		String[] columns = taint(); // $hasTaintFlowSink
+		String[] columns = {taint()}; // $hasTaintFlowSink
 		String selection = taint(); // $hasTaintFlowSink
-		String[] selectionArgs = taint();
+		String[] selectionArgs = {taint()};
 		String groupBy = taint(); // $hasTaintFlowSink
 		String having = taint(); // $hasTaintFlowSink
 		String orderBy = taint(); // $hasTaintFlowSink
@@ -229,9 +229,9 @@ public class Sinks {
 		SQLiteDatabase.CursorFactory cursorFactory = taint();
 		boolean distinct = taint();
 		String table = taint(); // $hasTaintFlowSink
-		String[] columns = taint(); // $hasTaintFlowSink
+		String[] columns = {taint()}; // $hasTaintFlowSink
 		String selection = taint(); // $hasTaintFlowSink
-		String[] selectionArgs = taint();
+		String[] selectionArgs = {taint()};
 		String groupBy = taint(); // $hasTaintFlowSink
 		String having = taint(); // $hasTaintFlowSink
 		String orderBy = taint(); // $hasTaintFlowSink
@@ -243,13 +243,13 @@ public class Sinks {
 
 	public static void rawQuery(SQLiteDatabase target) {
 		String sql = taint(); // $hasTaintFlowSink
-		String[] selectionArgs = taint();
+		String[] selectionArgs = {taint()};
 		target.rawQuery(sql, selectionArgs);
 	}
 
 	public static void rawQuery2(SQLiteDatabase target) {
 		String sql = taint(); // $hasTaintFlowSink
-		String[] selectionArgs = taint();
+		String[] selectionArgs = {taint()};
 		CancellationSignal cancellationSignal = taint();
 		target.rawQuery(sql, selectionArgs, cancellationSignal);
 	}
@@ -257,7 +257,7 @@ public class Sinks {
 	public static void rawQueryWithFactory(SQLiteDatabase target) {
 		SQLiteDatabase.CursorFactory cursorFactory = taint();
 		String sql = taint(); // $hasTaintFlowSink
-		String[] selectionArgs = taint();
+		String[] selectionArgs = {taint()};
 		String editTable = taint();
 		target.rawQueryWithFactory(cursorFactory, sql, selectionArgs, editTable);
 	}
@@ -265,7 +265,7 @@ public class Sinks {
 	public static void rawQueryWithFactory2(SQLiteDatabase target) {
 		SQLiteDatabase.CursorFactory cursorFactory = taint();
 		String sql = taint(); // $hasTaintFlowSink
-		String[] selectionArgs = taint();
+		String[] selectionArgs = {taint()};
 		String editTable = taint();
 		CancellationSignal cancellationSignal = taint();
 		target.rawQueryWithFactory(cursorFactory, sql, selectionArgs, editTable, cancellationSignal);
@@ -276,7 +276,7 @@ public class Sinks {
 		SQLiteDatabase db = taint();
 		ContentValues values = taint();
 		String selection = taint(); // $hasTaintFlowSink
-		String[] selectionArgs = taint();
+		String[] selectionArgs = {taint()};
 		target.update(db, values, selection, selectionArgs);
 	}
 
@@ -284,7 +284,7 @@ public class Sinks {
 		String table = taint(); // $hasTaintFlowSink
 		ContentValues values = taint();
 		String whereClause = taint(); // $hasTaintFlowSink
-		String[] whereArgs = taint();
+		String[] whereArgs = {taint()};
 		target.update(table, values, whereClause, whereArgs);
 	}
 
@@ -292,7 +292,7 @@ public class Sinks {
 		Uri uri = taint();
 		ContentValues values = taint();
 		String selection = taint(); // $hasTaintFlowSink
-		String[] selectionArgs = taint();
+		String[] selectionArgs = {taint()};
 		target.update(uri, values, selection, selectionArgs);
 	}
 
@@ -300,7 +300,7 @@ public class Sinks {
 		Uri uri = taint();
 		ContentValues values = taint();
 		String selection = taint(); // $hasTaintFlowSink
-		String[] selectionArgs = taint();
+		String[] selectionArgs = {taint()};
 		target.update(uri, values, selection, selectionArgs);
 	}
 
@@ -308,7 +308,7 @@ public class Sinks {
 		String table = taint(); // $hasTaintFlowSink
 		ContentValues values = taint();
 		String whereClause = taint(); // $hasTaintFlowSink
-		String[] whereArgs = taint();
+		String[] whereArgs = {taint()};
 		int conflictAlgorithm = taint();
 		target.updateWithOnConflict(table, values, whereClause, whereArgs, conflictAlgorithm);
 	}
@@ -324,7 +324,7 @@ public class Sinks {
 		SQLiteDatabase db = taint();
 		String table = taint(); // $hasTaintFlowSink
 		String selection = taint(); // $hasTaintFlowSink
-		String[] selectionArgs = taint();
+		String[] selectionArgs = {taint()};
 		DatabaseUtils.queryNumEntries(db, table, selection, selectionArgs);
 	}
 
@@ -339,21 +339,21 @@ public class Sinks {
 	public static void blobFileDescriptorForQuery() {
 		SQLiteDatabase db = taint();
 		String query = taint(); // $hasTaintFlowSink
-		String[] selectionArgs = taint();
+		String[] selectionArgs = {taint()};
 		DatabaseUtils.blobFileDescriptorForQuery(db, query, selectionArgs);
 	}
 
 	public static void longForQuery() {
 		SQLiteDatabase db = taint();
 		String query = taint(); // $hasTaintFlowSink
-		String[] selectionArgs = taint();
+		String[] selectionArgs = {taint()};
 		DatabaseUtils.longForQuery(db, query, selectionArgs);
 	}
 
 	public static void stringForQuery() {
 		SQLiteDatabase db = taint();
 		String query = taint(); // $hasTaintFlowSink
-		String[] selectionArgs = taint();
+		String[] selectionArgs = {taint()};
 		DatabaseUtils.stringForQuery(db, query, selectionArgs);
 	}
 }
