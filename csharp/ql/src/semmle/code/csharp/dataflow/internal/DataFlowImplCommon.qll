@@ -244,6 +244,14 @@ private DataFlowCallable viableCallableExt(DataFlowCall call) {
 
 cached
 private module Cached {
+  /**
+   * If needed, call this predicate from `DataFlowImplSpecific.qll` in order to
+   * force a stage-dependency on the `DataFlowImplCommon.qll` stage and therby
+   * collapsing the two stages.
+   */
+  cached
+  predicate forceCachingInSameStage() { any() }
+
   cached
   predicate nodeEnclosingCallable(Node n, DataFlowCallable c) { c = n.getEnclosingCallable() }
 
@@ -270,6 +278,9 @@ private module Cached {
     or
     n.(PostUpdateNode).getPreUpdateNode() instanceof ArgumentNodeExt
   }
+
+  cached
+  predicate hiddenNode(Node n) { nodeIsHidden(n) }
 
   cached
   OutNodeExt getAnOutNodeExt(DataFlowCall call, ReturnKindExt k) {

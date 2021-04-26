@@ -2986,7 +2986,7 @@ class PathNode extends TPathNode {
   Configuration getConfiguration() { none() }
 
   private predicate isHidden() {
-    nodeIsHidden(this.getNode()) and
+    hiddenNode(this.getNode()) and
     not this.isSource() and
     not this instanceof PathNodeSink
   }
