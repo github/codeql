@@ -512,7 +512,7 @@ private module Stage1 {
 
   pragma[nomagic]
   predicate viableParamArgNodeCandFwd1(
-    DataFlowCall call, ParameterNode p, ArgumentNodeExt arg, Configuration config
+    DataFlowCall call, ParameterNodeExt p, ArgumentNodeExt arg, Configuration config
   ) {
     viableParamArg(call, p, arg) and
     fwdFlow(arg, config)
@@ -522,7 +522,7 @@ private module Stage1 {
   private predicate revFlowIn(
     DataFlowCall call, ArgumentNodeExt arg, boolean toReturn, Configuration config
   ) {
-    exists(ParameterNode p |
+    exists(ParameterNodeExt p |
       revFlow(p, toReturn, config) and
       viableParamArgNodeCandFwd1(call, p, arg, config)
     )
@@ -594,7 +594,9 @@ private module Stage1 {
    * Holds if flow may enter through `p` and reach a return node making `p` a
    * candidate for the origin of a summary.
    */
-  predicate parameterMayFlowThrough(ParameterNode p, DataFlowCallable c, Ap ap, Configuration config) {
+  predicate parameterMayFlowThrough(
+    ParameterNodeExt p, DataFlowCallable c, Ap ap, Configuration config
+  ) {
     exists(ReturnKindExt kind |
       throughFlowNodeCand(p, config) and
       returnFlowCallableNodeCand(c, kind, config) and
@@ -660,7 +662,7 @@ private predicate flowOutOfCallNodeCand1(
 
 pragma[nomagic]
 private predicate viableParamArgNodeCand1(
-  DataFlowCall call, ParameterNode p, ArgumentNodeExt arg, Configuration config
+  DataFlowCall call, ParameterNodeExt p, ArgumentNodeExt arg, Configuration config
 ) {
   Stage1::viableParamArgNodeCandFwd1(call, p, arg, config) and
   Stage1::revFlow(arg, config)
@@ -672,7 +674,7 @@ private predicate viableParamArgNodeCand1(
  */
 pragma[nomagic]
 private predicate flowIntoCallNodeCand1(
-  DataFlowCall call, ArgumentNodeExt arg, ParameterNode p, Configuration config
+  DataFlowCall call, ArgumentNodeExt arg, ParameterNodeExt p, Configuration config
 ) {
   viableParamArgNodeCand1(call, p, arg, config) and
   Stage1::revFlow(p, config) and
@@ -732,7 +734,7 @@ private predicate flowOutOfCallNodeCand1(
  */
 pragma[nomagic]
 private predicate flowIntoCallNodeCand1(
-  DataFlowCall call, ArgumentNodeExt arg, ParameterNode p, boolean allowsFieldFlow,
+  DataFlowCall call, ArgumentNodeExt arg, ParameterNodeExt p, boolean allowsFieldFlow,
   Configuration config
 ) {
   flowIntoCallNodeCand1(call, arg, p, config) and
@@ -941,7 +943,7 @@ private module Stage2 {
 
   pragma[nomagic]
   private predicate fwdFlowIn(
-    DataFlowCall call, ParameterNode p, Cc outercc, Cc innercc, ApOption argAp, Ap ap,
+    DataFlowCall call, ParameterNodeExt p, Cc outercc, Cc innercc, ApOption argAp, Ap ap,
     Configuration config
   ) {
     exists(ArgumentNodeExt arg, boolean allowsFieldFlow |
@@ -989,7 +991,7 @@ private module Stage2 {
   private predicate fwdFlowIsEntered(
     DataFlowCall call, Cc cc, ApOption argAp, Ap ap, Configuration config
   ) {
-    exists(ParameterNode p |
+    exists(ParameterNodeExt p |
       fwdFlowIn(call, p, cc, _, argAp, ap, config) and
       PrevStage::parameterMayFlowThrough(p, _, getApprox(ap), config)
     )
@@ -1133,7 +1135,7 @@ private module Stage2 {
     DataFlowCall call, ArgumentNodeExt arg, boolean toReturn, ApOption returnAp, Ap ap,
     Configuration config
   ) {
-    exists(ParameterNode p, boolean allowsFieldFlow |
+    exists(ParameterNodeExt p, boolean allowsFieldFlow |
       revFlow(p, toReturn, returnAp, ap, config) and
       flowIntoCall(call, arg, p, allowsFieldFlow, config)
     |
@@ -1196,13 +1198,15 @@ private module Stage2 {
 
   pragma[noinline]
   private predicate parameterFlow(
-    ParameterNode p, Ap ap, Ap ap0, DataFlowCallable c, Configuration config
+    ParameterNodeExt p, Ap ap, Ap ap0, DataFlowCallable c, Configuration config
   ) {
     revFlow(p, true, apSome(ap0), ap, config) and
     c = getNodeEnclosingCallable(p)
   }
 
-  predicate parameterMayFlowThrough(ParameterNode p, DataFlowCallable c, Ap ap, Configuration config) {
+  predicate parameterMayFlowThrough(
+    ParameterNodeExt p, DataFlowCallable c, Ap ap, Configuration config
+  ) {
     exists(ReturnNodeExt ret, Ap ap0, ReturnKindExt kind, int pos |
       parameterFlow(p, ap, ap0, c, config) and
       c = getNodeEnclosingCallable(ret) and
@@ -1242,7 +1246,7 @@ private predicate flowOutOfCallNodeCand2(
 
 pragma[nomagic]
 private predicate flowIntoCallNodeCand2(
-  DataFlowCall call, ArgumentNodeExt node1, ParameterNode node2, boolean allowsFieldFlow,
+  DataFlowCall call, ArgumentNodeExt node1, ParameterNodeExt node2, boolean allowsFieldFlow,
   Configuration config
 ) {
   flowIntoCallNodeCand1(call, node1, node2, allowsFieldFlow, config) and
@@ -1272,7 +1276,7 @@ private module LocalFlowBigStep {
       config.isSource(node) or
       jumpStep(_, node, config) or
       additionalJumpStep(_, node, config) or
-      node instanceof ParameterNode or
+      node instanceof ParameterNodeExt or
       node instanceof OutNodeExt or
       store(_, _, node, _) or
       read(_, _, node) or
@@ -1582,7 +1586,7 @@ private module Stage3 {
 
   pragma[nomagic]
   private predicate fwdFlowIn(
-    DataFlowCall call, ParameterNode p, Cc outercc, Cc innercc, ApOption argAp, Ap ap,
+    DataFlowCall call, ParameterNodeExt p, Cc outercc, Cc innercc, ApOption argAp, Ap ap,
     Configuration config
   ) {
     exists(ArgumentNodeExt arg, boolean allowsFieldFlow |
@@ -1630,7 +1634,7 @@ private module Stage3 {
   private predicate fwdFlowIsEntered(
     DataFlowCall call, Cc cc, ApOption argAp, Ap ap, Configuration config
   ) {
-    exists(ParameterNode p |
+    exists(ParameterNodeExt p |
       fwdFlowIn(call, p, cc, _, argAp, ap, config) and
       PrevStage::parameterMayFlowThrough(p, _, unbindApa(getApprox(ap)), config)
     )
@@ -1774,7 +1778,7 @@ private module Stage3 {
     DataFlowCall call, ArgumentNodeExt arg, boolean toReturn, ApOption returnAp, Ap ap,
     Configuration config
   ) {
-    exists(ParameterNode p, boolean allowsFieldFlow |
+    exists(ParameterNodeExt p, boolean allowsFieldFlow |
       revFlow(p, toReturn, returnAp, ap, config) and
       flowIntoCall(call, arg, p, allowsFieldFlow, config)
     |
@@ -1837,13 +1841,15 @@ private module Stage3 {
 
   pragma[noinline]
   private predicate parameterFlow(
-    ParameterNode p, Ap ap, Ap ap0, DataFlowCallable c, Configuration config
+    ParameterNodeExt p, Ap ap, Ap ap0, DataFlowCallable c, Configuration config
   ) {
     revFlow(p, true, apSome(ap0), ap, config) and
     c = getNodeEnclosingCallable(p)
   }
 
-  predicate parameterMayFlowThrough(ParameterNode p, DataFlowCallable c, Ap ap, Configuration config) {
+  predicate parameterMayFlowThrough(
+    ParameterNodeExt p, DataFlowCallable c, Ap ap, Configuration config
+  ) {
     exists(ReturnNodeExt ret, Ap ap0, ReturnKindExt kind, int pos |
       parameterFlow(p, ap, ap0, c, config) and
       c = getNodeEnclosingCallable(ret) and
@@ -2154,7 +2160,7 @@ private module Stage4 {
 
   pragma[nomagic]
   private predicate flowIntoCall(
-    DataFlowCall call, ArgumentNodeExt node1, ParameterNode node2, boolean allowsFieldFlow,
+    DataFlowCall call, ArgumentNodeExt node1, ParameterNodeExt node2, boolean allowsFieldFlow,
     Configuration config
   ) {
     flowIntoCallNodeCand2(call, node1, node2, allowsFieldFlow, config) and
@@ -2299,7 +2305,7 @@ private module Stage4 {
 
   pragma[nomagic]
   private predicate fwdFlowIn(
-    DataFlowCall call, ParameterNode p, Cc outercc, Cc innercc, ApOption argAp, Ap ap,
+    DataFlowCall call, ParameterNodeExt p, Cc outercc, Cc innercc, ApOption argAp, Ap ap,
     Configuration config
   ) {
     exists(ArgumentNodeExt arg, boolean allowsFieldFlow |
@@ -2347,7 +2353,7 @@ private module Stage4 {
   private predicate fwdFlowIsEntered(
     DataFlowCall call, Cc cc, ApOption argAp, Ap ap, Configuration config
   ) {
-    exists(ParameterNode p |
+    exists(ParameterNodeExt p |
       fwdFlowIn(call, p, cc, _, argAp, ap, config) and
       PrevStage::parameterMayFlowThrough(p, _, unbindApa(getApprox(ap)), config)
     )
@@ -2491,7 +2497,7 @@ private module Stage4 {
     DataFlowCall call, ArgumentNodeExt arg, boolean toReturn, ApOption returnAp, Ap ap,
     Configuration config
   ) {
-    exists(ParameterNode p, boolean allowsFieldFlow |
+    exists(ParameterNodeExt p, boolean allowsFieldFlow |
       revFlow(p, toReturn, returnAp, ap, config) and
       flowIntoCall(call, arg, p, allowsFieldFlow, config)
     |
@@ -2554,13 +2560,15 @@ private module Stage4 {
 
   pragma[noinline]
   private predicate parameterFlow(
-    ParameterNode p, Ap ap, Ap ap0, DataFlowCallable c, Configuration config
+    ParameterNodeExt p, Ap ap, Ap ap0, DataFlowCallable c, Configuration config
   ) {
     revFlow(p, true, apSome(ap0), ap, config) and
     c = getNodeEnclosingCallable(p)
   }
 
-  predicate parameterMayFlowThrough(ParameterNode p, DataFlowCallable c, Ap ap, Configuration config) {
+  predicate parameterMayFlowThrough(
+    ParameterNodeExt p, DataFlowCallable c, Ap ap, Configuration config
+  ) {
     exists(ReturnNodeExt ret, Ap ap0, ReturnKindExt kind, int pos |
       parameterFlow(p, ap, ap0, c, config) and
       c = getNodeEnclosingCallable(ret) and
@@ -2605,7 +2613,7 @@ private predicate nodeMayUseSummary(Node n, AccessPathApprox apa, Configuration 
 
 private newtype TSummaryCtx =
   TSummaryCtxNone() or
-  TSummaryCtxSome(ParameterNode p, AccessPath ap) {
+  TSummaryCtxSome(ParameterNodeExt p, AccessPath ap) {
     Stage4::parameterMayFlowThrough(p, _, ap.getApprox(), _)
   }
 
@@ -2626,7 +2634,7 @@ private class SummaryCtxNone extends SummaryCtx, TSummaryCtxNone {
 
 /** A summary context from which a flow summary can be generated. */
 private class SummaryCtxSome extends SummaryCtx, TSummaryCtxSome {
-  private ParameterNode p;
+  private ParameterNodeExt p;
   private AccessPath ap;
 
   SummaryCtxSome() { this = TSummaryCtxSome(p, ap) }
@@ -3247,7 +3255,7 @@ pragma[noinline]
 private predicate parameterCand(
   DataFlowCallable callable, int i, AccessPathApprox apa, Configuration config
 ) {
-  exists(ParameterNode p |
+  exists(ParameterNodeExt p |
     Stage4::revFlow(p, _, _, apa, config) and
     p.isParameterOf(callable, i)
   )
@@ -3271,7 +3279,7 @@ private predicate pathIntoCallable0(
  * respectively.
  */
 private predicate pathIntoCallable(
-  PathNodeMid mid, ParameterNode p, CallContext outercc, CallContextCall innercc, SummaryCtx sc,
+  PathNodeMid mid, ParameterNodeExt p, CallContext outercc, CallContextCall innercc, SummaryCtx sc,
   DataFlowCall call
 ) {
   exists(int i, DataFlowCallable callable, AccessPath ap |
@@ -3567,7 +3575,7 @@ private module FlowExploration {
 
   private newtype TSummaryCtx1 =
     TSummaryCtx1None() or
-    TSummaryCtx1Param(ParameterNode p)
+    TSummaryCtx1Param(ParameterNodeExt p)
 
   private newtype TSummaryCtx2 =
     TSummaryCtx2None() or
@@ -3942,7 +3950,7 @@ private module FlowExploration {
   }
 
   private predicate partialPathIntoCallable(
-    PartialPathNodeFwd mid, ParameterNode p, CallContext outercc, CallContextCall innercc,
+    PartialPathNodeFwd mid, ParameterNodeExt p, CallContext outercc, CallContextCall innercc,
     TSummaryCtx1 sc1, TSummaryCtx2 sc2, DataFlowCall call, PartialAccessPath ap,
     Configuration config
   ) {
@@ -3979,7 +3987,7 @@ private module FlowExploration {
     DataFlowCall call, PartialPathNodeFwd mid, ReturnKindExt kind, CallContext cc,
     PartialAccessPath ap, Configuration config
   ) {
-    exists(ParameterNode p, CallContext innercc, TSummaryCtx1 sc1, TSummaryCtx2 sc2 |
+    exists(ParameterNodeExt p, CallContext innercc, TSummaryCtx1 sc1, TSummaryCtx2 sc2 |
       partialPathIntoCallable(mid, p, cc, innercc, sc1, sc2, call, _, config) and
       paramFlowsThroughInPartialPath(kind, innercc, sc1, sc2, ap, config)
     )
@@ -4036,7 +4044,7 @@ private module FlowExploration {
       apConsRev(ap, c, ap0, config)
     )
     or
-    exists(ParameterNode p |
+    exists(ParameterNodeExt p |
       mid.getNode() = p and
       viableParamArg(_, p, node) and
       sc1 = mid.getSummaryCtx1() and
@@ -4114,7 +4122,7 @@ private module FlowExploration {
     int pos, TRevSummaryCtx1Some sc1, TRevSummaryCtx2Some sc2, RevPartialAccessPath ap,
     Configuration config
   ) {
-    exists(PartialPathNodeRev mid, ParameterNode p |
+    exists(PartialPathNodeRev mid, ParameterNodeExt p |
       mid.getNode() = p and
       p.isParameterOf(_, pos) and
       sc1 = mid.getSummaryCtx1() and
