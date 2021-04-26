@@ -28,5 +28,15 @@ module UnsafeHtmlConstruction {
     override predicate isSanitizerEdge(DataFlow::Node pred, DataFlow::Node succ) {
       DomBasedXss::isOptionallySanitizedEdge(pred, succ)
     }
+
+    // override to require that there is a path without unmatched return steps
+    override predicate hasFlowPath(DataFlow::SourcePathNode source, DataFlow::SinkPathNode sink) {
+      super.hasFlowPath(source, sink) and
+      requireMatchedReturn(source, sink)
+    }
+
+    override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+      classFieldStep(pred, succ)
+    }
   }
 }

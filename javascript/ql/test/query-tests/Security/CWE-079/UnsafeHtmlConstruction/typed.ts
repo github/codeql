@@ -14,7 +14,7 @@ export function id(s: string) {
 
 export function notVulnerable() {
     const s = id("x");
-    const html = "<span>" + s + "</span>"; // OK - but flagged due to step with unmatched call [INCONSISTENCY]
+    const html = "<span>" + s + "</span>"; // OK
     document.body.innerHTML = html;
 }
  

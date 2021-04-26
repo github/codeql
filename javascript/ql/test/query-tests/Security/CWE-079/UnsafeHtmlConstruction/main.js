@@ -44,7 +44,7 @@ class Foo {
 
     doXss() {
         // not called here, but still bad.
-        document.querySelector("#class").innerHTML = "<span>" + this.step + "</span>"; // NOT OK - but not flagged [INCONSISTENCY]
+        document.querySelector("#class").innerHTML = "<span>" + this.step + "</span>"; // NOT OK
     }
 
 }
