@@ -13,6 +13,9 @@ module Markdown {
    * A taint-step that parses a markdown document, but preserves taint.import
    */
   class MarkdownStep extends Unit {
+    /**
+     * Holds if there is a taint-step from `pred` to `succ` for a taint-preserving markdown parser.
+     */
     abstract predicate step(DataFlow::Node pred, DataFlow::Node succ);
   }
 
