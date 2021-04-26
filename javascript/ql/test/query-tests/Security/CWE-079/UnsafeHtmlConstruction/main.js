@@ -52,3 +52,13 @@ class Foo {
 module.exports.createsClass = function (s) {
     return new Foo(s);
 }
+
+$.fn.xssPlugin = function (options) {
+    const defaults = {
+        name: "name"
+    };
+    const settings = $.extend(defaults, options);
+    return this.each(function () {
+        $("<b>" + settings.name + "</b>").appendTo(this); // NOT OK
+    });
+}
