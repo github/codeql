@@ -27,7 +27,7 @@ public class JSchOSInjectionSanitized {
 
         for (String badChar : badChars) {
             if (untrusted.contains(badChar)) {
-                System.out.println("Invalid IP address");
+                System.out.println("Invalid host");
                 return;
             }    
         }
