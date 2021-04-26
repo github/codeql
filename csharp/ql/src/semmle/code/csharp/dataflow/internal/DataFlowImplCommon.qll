@@ -279,6 +279,17 @@ private module Cached {
     )
   }
 
+  cached
+  predicate returnNodeExt(Node n, ReturnKindExt k) {
+    k = TValueReturn(n.(ReturnNode).getKind())
+    or
+    exists(ParameterNode p, int pos |
+      parameterValueFlowsToPreUpdate(p, n) and
+      p.isParameterOf(_, pos) and
+      k = TParamUpdate(pos)
+    )
+  }
+
   /**
    * Gets a viable target for the lambda call `call`.
    *
@@ -672,8 +683,7 @@ private module Cached {
    * Holds if `p` can flow to the pre-update node associated with post-update
    * node `n`, in the same callable, using only value-preserving steps.
    */
-  cached
-  predicate parameterValueFlowsToPreUpdate(ParameterNode p, PostUpdateNode n) {
+  private predicate parameterValueFlowsToPreUpdate(ParameterNode p, PostUpdateNode n) {
     parameterValueFlow(p, n.getPreUpdateNode(), TReadStepTypesNone())
   }
 
@@ -965,21 +975,10 @@ LocalCallContext getLocalCallContext(CallContext ctx, DataFlowCallable callable)
  * `ReturnNode` or a `PostUpdateNode` corresponding to the value of a parameter.
  */
 class ReturnNodeExt extends Node {
-  ReturnNodeExt() {
-    this instanceof ReturnNode or
-    parameterValueFlowsToPreUpdate(_, this)
-  }
+  ReturnNodeExt() { returnNodeExt(this, _) }
 
   /** Gets the kind of this returned value. */
-  ReturnKindExt getKind() {
-    result = TValueReturn(this.(ReturnNode).getKind())
-    or
-    exists(ParameterNode p, int pos |
-      parameterValueFlowsToPreUpdate(p, this) and
-      p.isParameterOf(_, pos) and
-      result = TParamUpdate(pos)
-    )
-  }
+  ReturnKindExt getKind() { returnNodeExt(this, result) }
 }
 
 /**
