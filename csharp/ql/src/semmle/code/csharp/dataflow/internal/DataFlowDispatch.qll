@@ -1,10 +1,10 @@
 private import csharp
 private import cil
 private import dotnet
+private import DataFlowImplCommon as DataFlowImplCommon
 private import DataFlowPublic
 private import DataFlowPrivate
 private import FlowSummaryImpl as FlowSummaryImpl
-private import semmle.code.csharp.Caching
 private import semmle.code.csharp.dataflow.FlowSummary
 private import semmle.code.csharp.dispatch.Dispatch
 private import semmle.code.csharp.frameworks.system.Collections
@@ -68,31 +68,30 @@ private predicate transitiveCapturedCallTarget(ControlFlow::Nodes::ElementNode c
   )
 }
 
-cached
-private module Cached {
-  cached
-  newtype TReturnKind =
-    TNormalReturnKind() { Stages::DataFlowStage::forceCachingInSameStage() } or
-    TOutReturnKind(int i) { i = any(Parameter p | p.isOut()).getPosition() } or
-    TRefReturnKind(int i) { i = any(Parameter p | p.isRef()).getPosition() } or
-    TImplicitCapturedReturnKind(LocalScopeVariable v) {
-      exists(Ssa::ExplicitDefinition def | def.isCapturedVariableDefinitionFlowOut(_, _) |
-        v = def.getSourceVariable().getAssignable()
-      )
-    } or
-    TJumpReturnKind(DataFlowCallable target, ReturnKind rk) {
-      rk instanceof NormalReturnKind and
-      (
-        target instanceof Constructor or
-        not target.getReturnType() instanceof VoidType
-      )
-      or
-      exists(target.getParameter(rk.(OutRefReturnKind).getPosition()))
-    }
+newtype TReturnKind =
+  TNormalReturnKind() or
+  TOutReturnKind(int i) { i = any(Parameter p | p.isOut()).getPosition() } or
+  TRefReturnKind(int i) { i = any(Parameter p | p.isRef()).getPosition() } or
+  TImplicitCapturedReturnKind(LocalScopeVariable v) {
+    exists(Ssa::ExplicitDefinition def | def.isCapturedVariableDefinitionFlowOut(_, _) |
+      v = def.getSourceVariable().getAssignable()
+    )
+  } or
+  TJumpReturnKind(DataFlowCallable target, ReturnKind rk) {
+    rk instanceof NormalReturnKind and
+    (
+      target instanceof Constructor or
+      not target.getReturnType() instanceof VoidType
+    )
+    or
+    exists(target.getParameter(rk.(OutRefReturnKind).getPosition()))
+  }
 
+private module Cached {
   cached
   newtype TDataFlowCall =
     TNonDelegateCall(ControlFlow::Nodes::ElementNode cfn, DispatchCall dc) {
+      DataFlowImplCommon::forceCachingInSameStage() and
       cfn.getElement() = dc.getCall()
     } or
     TExplicitDelegateLikeCall(ControlFlow::Nodes::ElementNode cfn, DelegateLikeCall dc) {
@@ -246,7 +245,6 @@ abstract class DataFlowCall extends TDataFlowCall {
   abstract DataFlow::Node getNode();
 
   /** Gets the enclosing callable of this call. */
-  cached
   abstract DataFlowCallable getEnclosingCallable();
 
   /** Gets the underlying expression, if any. */
@@ -280,10 +278,7 @@ class NonDelegateDataFlowCall extends DataFlowCall, TNonDelegateCall {
 
   override DataFlow::ExprNode getNode() { result.getControlFlowNode() = cfn }
 
-  override DataFlowCallable getEnclosingCallable() {
-    Stages::DataFlowStage::forceCachingInSameStage() and
-    result = cfn.getEnclosingCallable()
-  }
+  override DataFlowCallable getEnclosingCallable() { result = cfn.getEnclosingCallable() }
 
   override string toString() { result = cfn.toString() }
 
