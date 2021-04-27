@@ -18,12 +18,12 @@ import DataFlow::PathGraph
 
 from
   RegexInjectionFlowConfig config, DataFlow::PathNode source, DataFlow::PathNode sink,
-  RegexInjectionSink castedSink, Attribute methodAttribute
+  RegexInjectionSink regexInjectionSink, Attribute methodAttribute
 where
   config.hasFlowPath(source, sink) and
-  castedSink = sink.getNode() and
-  methodAttribute = castedSink.getRegexMethod()
+  regexInjectionSink = sink.getNode() and
+  methodAttribute = regexInjectionSink.getRegexMethod()
 select sink.getNode(), source, sink,
   "$@ regular expression is constructed from a $@ and executed by $@.", sink.getNode(), "This",
   source.getNode(), "user-provided value", methodAttribute,
-  castedSink.getRegexModule() + "." + methodAttribute.getName()
+  regexInjectionSink.getRegexModule() + "." + methodAttribute.getName()
