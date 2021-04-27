@@ -65,7 +65,10 @@ private module Cached {
     instr = reusedPhiInstruction(_) and
     // Check that the phi instruction is *not* degenerate, but we can't use
     // getDegeneratePhiOperand in the first stage with phi instyructions
-    exists(OldIR::PhiInputOperand operand1, OldIR::PhiInputOperand operand2, OldInstruction oldInstruction |
+    exists(
+      OldIR::PhiInputOperand operand1, OldIR::PhiInputOperand operand2,
+      OldInstruction oldInstruction
+    |
       oldInstruction = instr and
       operand1 = oldInstruction.(OldIR::PhiInstruction).getAnInputOperand() and
       operand1.getPredecessorBlock() instanceof OldBlock and
@@ -79,13 +82,14 @@ private module Cached {
     instr instanceof TUnreachedInstruction
   }
 
-  cached IRBlock getNewBlock(OldBlock oldBlock) {
+  cached
+  IRBlock getNewBlock(OldBlock oldBlock) {
     exists(Instruction newEnd, OldIR::Instruction oldEnd |
       (
-      result.getLastInstruction() = newEnd and
-      not newEnd instanceof ChiInstruction
-      or
-      newEnd = result.getLastInstruction().(ChiInstruction).getAPredecessor() // does this work?
+        result.getLastInstruction() = newEnd and
+        not newEnd instanceof ChiInstruction
+        or
+        newEnd = result.getLastInstruction().(ChiInstruction).getAPredecessor() // does this work?
       ) and
       (
         oldBlock.getLastInstruction() = oldEnd and
