@@ -79,4 +79,10 @@
 	$(document.my_form.my_input.value); // NOT OK
 
 	$("#id").html( $('#foo').prop('innerText') ); // NOT OK
+
+	const anser = require("anser");
+	const text = $("text").text();
+
+	$("#id").html(anser.ansiToHtml(text)); // NOT OK
+	$("#id").html(new anser().process(text)); // NOT OK
 })();
