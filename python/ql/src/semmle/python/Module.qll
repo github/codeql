@@ -212,8 +212,15 @@ private string moduleNameFromBase(Container file) {
 private predicate transitively_imported_from_entry_point(File file) {
   file.getExtension().matches("%py%") and
   exists(File importer |
+    // Only consider files that are in the source archive
+    exists(importer.getRelativePath()) and
     importer.getParent() = file.getParent() and
-    exists(ImportExpr i | i.getLocation().getFile() = importer and i.getName() = file.getStem())
+    exists(ImportExpr i |
+      i.getLocation().getFile() = importer and
+      i.getName() = file.getStem() and
+      // Disregard relative imports
+      i.getLevel() = 0
+    )
   |
     importer.isPossibleEntryPoint() or transitively_imported_from_entry_point(importer)
   )
