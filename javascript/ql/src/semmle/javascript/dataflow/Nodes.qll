@@ -165,8 +165,11 @@ class InvokeNode extends DataFlow::SourceNode {
     getOptionsArgument(i).hasPropertyWrite(name, result)
   }
 
+  /**
+   * Holds if the `i`th argument of this invocation is an object literal set to `result`.
+   */
   pragma[noinline]
-  private ObjectLiteralNode getOptionsArgument(int i) { result.flowsTo(getArgument(i)) }
+  ObjectLiteralNode getOptionsArgument(int i) { result.flowsTo(getArgument(i)) }
 
   /** Gets an abstract value representing possible callees of this call site. */
   final AbstractValue getACalleeValue() {
