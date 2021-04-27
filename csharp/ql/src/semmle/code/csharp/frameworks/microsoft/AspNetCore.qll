@@ -322,7 +322,8 @@ class MicrosoftAspNetCoreBuilderCookiePolicyOptions extends RefType {
 /** The `Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationOptions` class. */
 class MicrosoftAspNetCoreAuthenticationCookiesCookieAuthenticationOptions extends RefType {
   MicrosoftAspNetCoreAuthenticationCookiesCookieAuthenticationOptions() {
-    this.hasQualifiedName("Microsoft.AspNetCore.Authentication.Cookies", "CookieAuthenticationOptions")
+    this.hasQualifiedName("Microsoft.AspNetCore.Authentication.Cookies",
+      "CookieAuthenticationOptions")
   }
 }
 

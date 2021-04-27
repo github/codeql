@@ -86,9 +86,7 @@ class HttpCookiesElement extends XMLElement {
   /**
    * Holds if there any chance that `httpOnlyCookies` is set to `true`.
    */
-  predicate isHttpOnlyCookies() {
-    getHttpOnlyCookies() = "true"
-  }
+  predicate isHttpOnlyCookies() { getHttpOnlyCookies() = "true" }
 
   string getRequireSSL() { result = getAttribute("requireSSL").getValue().trim().toLowerCase() }
 
