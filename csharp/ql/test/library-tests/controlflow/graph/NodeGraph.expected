@@ -3211,10 +3211,7 @@
 | MultiImplementationA.cs:8:23:8:32 | throw ... | MultiImplementationB.cs:5:16:5:16 | exit M (abnormal) | semmle.label | exception(NullReferenceException) |
 | MultiImplementationA.cs:8:29:8:32 | null | MultiImplementationA.cs:8:23:8:32 | throw ... | semmle.label | successor |
 | MultiImplementationA.cs:13:16:13:16 | this access | MultiImplementationA.cs:13:20:13:20 | 0 | semmle.label | successor |
-| MultiImplementationA.cs:13:16:13:20 | ... = ... | MultiImplementationA.cs:13:16:13:16 | this access | semmle.label | successor |
 | MultiImplementationA.cs:13:16:13:20 | ... = ... | MultiImplementationA.cs:24:16:24:16 | this access | semmle.label | successor |
-| MultiImplementationA.cs:13:16:13:20 | ... = ... | MultiImplementationB.cs:11:16:11:16 | this access | semmle.label | successor |
-| MultiImplementationA.cs:13:16:13:20 | ... = ... | MultiImplementationB.cs:22:16:22:16 | this access | semmle.label | successor |
 | MultiImplementationA.cs:13:20:13:20 | 0 | MultiImplementationA.cs:13:16:13:20 | ... = ... | semmle.label | successor |
 | MultiImplementationA.cs:14:31:14:31 | access to parameter i | MultiImplementationA.cs:14:31:14:31 | exit get_Item (normal) | semmle.label | successor |
 | MultiImplementationA.cs:14:31:14:31 | access to parameter i | MultiImplementationB.cs:12:31:12:40 | exit get_Item (normal) | semmle.label | successor |
@@ -3251,7 +3248,6 @@
 | MultiImplementationA.cs:18:9:18:22 | exit M2 (normal) | MultiImplementationA.cs:18:9:18:22 | exit M2 | semmle.label | successor |
 | MultiImplementationA.cs:18:21:18:21 | 0 | MultiImplementationA.cs:18:9:18:22 | exit M2 (normal) | semmle.label | successor |
 | MultiImplementationA.cs:20:12:20:13 | call to constructor Object | MultiImplementationA.cs:13:16:13:16 | this access | semmle.label | successor |
-| MultiImplementationA.cs:20:12:20:13 | call to constructor Object | MultiImplementationB.cs:11:16:11:16 | this access | semmle.label | successor |
 | MultiImplementationA.cs:20:12:20:13 | enter C2 | MultiImplementationA.cs:20:12:20:13 | call to constructor Object | semmle.label | successor |
 | MultiImplementationA.cs:20:12:20:13 | enter C2 | MultiImplementationB.cs:18:12:18:13 | call to constructor Object | semmle.label | successor |
 | MultiImplementationA.cs:20:12:20:13 | exit C2 (abnormal) | MultiImplementationA.cs:20:12:20:13 | exit C2 | semmle.label | successor |
@@ -3269,7 +3265,6 @@
 | MultiImplementationA.cs:21:12:21:13 | exit C2 (normal) | MultiImplementationA.cs:21:12:21:13 | exit C2 | semmle.label | successor |
 | MultiImplementationA.cs:21:12:21:13 | exit C2 (normal) | MultiImplementationB.cs:19:12:19:13 | exit C2 | semmle.label | successor |
 | MultiImplementationA.cs:21:19:21:22 | call to constructor C2 | MultiImplementationA.cs:21:27:21:29 | {...} | semmle.label | successor |
-| MultiImplementationA.cs:21:19:21:22 | call to constructor C2 | MultiImplementationB.cs:19:27:19:29 | {...} | semmle.label | successor |
 | MultiImplementationA.cs:21:24:21:24 | 0 | MultiImplementationA.cs:21:19:21:22 | call to constructor C2 | semmle.label | successor |
 | MultiImplementationA.cs:21:27:21:29 | {...} | MultiImplementationA.cs:21:12:21:13 | exit C2 (normal) | semmle.label | successor |
 | MultiImplementationA.cs:21:27:21:29 | {...} | MultiImplementationB.cs:19:12:19:13 | exit C2 (normal) | semmle.label | successor |
@@ -3292,9 +3287,6 @@
 | MultiImplementationA.cs:24:16:24:16 | access to property P | MultiImplementationA.cs:24:32:24:34 | ... = ... | semmle.label | successor |
 | MultiImplementationA.cs:24:16:24:16 | this access | MultiImplementationA.cs:24:34:24:34 | 0 | semmle.label | successor |
 | MultiImplementationA.cs:24:32:24:34 | ... = ... | MultiImplementationA.cs:20:22:20:31 | {...} | semmle.label | successor |
-| MultiImplementationA.cs:24:32:24:34 | ... = ... | MultiImplementationA.cs:24:16:24:16 | this access | semmle.label | successor |
-| MultiImplementationA.cs:24:32:24:34 | ... = ... | MultiImplementationB.cs:18:22:18:36 | {...} | semmle.label | successor |
-| MultiImplementationA.cs:24:32:24:34 | ... = ... | MultiImplementationB.cs:22:16:22:16 | this access | semmle.label | successor |
 | MultiImplementationA.cs:24:34:24:34 | 0 | MultiImplementationA.cs:24:16:24:16 | access to property P | semmle.label | successor |
 | MultiImplementationA.cs:30:21:30:23 | enter get_P3 | MultiImplementationA.cs:30:34:30:37 | null | semmle.label | successor |
 | MultiImplementationA.cs:30:21:30:23 | exit get_P3 (abnormal) | MultiImplementationA.cs:30:21:30:23 | exit get_P3 | semmle.label | successor |
@@ -3352,9 +3344,6 @@
 | MultiImplementationB.cs:5:23:5:23 | 2 | MultiImplementationA.cs:8:16:8:16 | exit M (normal) | semmle.label | successor |
 | MultiImplementationB.cs:5:23:5:23 | 2 | MultiImplementationB.cs:5:16:5:16 | exit M (normal) | semmle.label | successor |
 | MultiImplementationB.cs:11:16:11:16 | this access | MultiImplementationB.cs:11:20:11:20 | 1 | semmle.label | successor |
-| MultiImplementationB.cs:11:16:11:20 | ... = ... | MultiImplementationA.cs:13:16:13:16 | this access | semmle.label | successor |
-| MultiImplementationB.cs:11:16:11:20 | ... = ... | MultiImplementationA.cs:24:16:24:16 | this access | semmle.label | successor |
-| MultiImplementationB.cs:11:16:11:20 | ... = ... | MultiImplementationB.cs:11:16:11:16 | this access | semmle.label | successor |
 | MultiImplementationB.cs:11:16:11:20 | ... = ... | MultiImplementationB.cs:22:16:22:16 | this access | semmle.label | successor |
 | MultiImplementationB.cs:11:20:11:20 | 1 | MultiImplementationB.cs:11:16:11:20 | ... = ... | semmle.label | successor |
 | MultiImplementationB.cs:12:31:12:40 | enter get_Item | MultiImplementationA.cs:14:31:14:31 | access to parameter i | semmle.label | successor |
@@ -3393,7 +3382,6 @@
 | MultiImplementationB.cs:16:9:16:31 | exit M2 (abnormal) | MultiImplementationB.cs:16:9:16:31 | exit M2 | semmle.label | successor |
 | MultiImplementationB.cs:16:21:16:30 | throw ... | MultiImplementationB.cs:16:9:16:31 | exit M2 (abnormal) | semmle.label | exception(NullReferenceException) |
 | MultiImplementationB.cs:16:27:16:30 | null | MultiImplementationB.cs:16:21:16:30 | throw ... | semmle.label | successor |
-| MultiImplementationB.cs:18:12:18:13 | call to constructor Object | MultiImplementationA.cs:13:16:13:16 | this access | semmle.label | successor |
 | MultiImplementationB.cs:18:12:18:13 | call to constructor Object | MultiImplementationB.cs:11:16:11:16 | this access | semmle.label | successor |
 | MultiImplementationB.cs:18:12:18:13 | enter C2 | MultiImplementationA.cs:20:12:20:13 | call to constructor Object | semmle.label | successor |
 | MultiImplementationB.cs:18:12:18:13 | enter C2 | MultiImplementationB.cs:18:12:18:13 | call to constructor Object | semmle.label | successor |
@@ -3409,7 +3397,6 @@
 | MultiImplementationB.cs:19:12:19:13 | enter C2 | MultiImplementationB.cs:19:24:19:24 | 1 | semmle.label | successor |
 | MultiImplementationB.cs:19:12:19:13 | exit C2 (normal) | MultiImplementationA.cs:21:12:21:13 | exit C2 | semmle.label | successor |
 | MultiImplementationB.cs:19:12:19:13 | exit C2 (normal) | MultiImplementationB.cs:19:12:19:13 | exit C2 | semmle.label | successor |
-| MultiImplementationB.cs:19:19:19:22 | call to constructor C2 | MultiImplementationA.cs:21:27:21:29 | {...} | semmle.label | successor |
 | MultiImplementationB.cs:19:19:19:22 | call to constructor C2 | MultiImplementationB.cs:19:27:19:29 | {...} | semmle.label | successor |
 | MultiImplementationB.cs:19:24:19:24 | 1 | MultiImplementationB.cs:19:19:19:22 | call to constructor C2 | semmle.label | successor |
 | MultiImplementationB.cs:19:27:19:29 | {...} | MultiImplementationA.cs:21:12:21:13 | exit C2 (normal) | semmle.label | successor |
@@ -3435,10 +3422,7 @@
 | MultiImplementationB.cs:21:56:21:59 | null | MultiImplementationB.cs:21:50:21:59 | throw ... | semmle.label | successor |
 | MultiImplementationB.cs:22:16:22:16 | access to property P | MultiImplementationB.cs:22:32:22:34 | ... = ... | semmle.label | successor |
 | MultiImplementationB.cs:22:16:22:16 | this access | MultiImplementationB.cs:22:34:22:34 | 1 | semmle.label | successor |
-| MultiImplementationB.cs:22:32:22:34 | ... = ... | MultiImplementationA.cs:20:22:20:31 | {...} | semmle.label | successor |
-| MultiImplementationB.cs:22:32:22:34 | ... = ... | MultiImplementationA.cs:24:16:24:16 | this access | semmle.label | successor |
 | MultiImplementationB.cs:22:32:22:34 | ... = ... | MultiImplementationB.cs:18:22:18:36 | {...} | semmle.label | successor |
-| MultiImplementationB.cs:22:32:22:34 | ... = ... | MultiImplementationB.cs:22:16:22:16 | this access | semmle.label | successor |
 | MultiImplementationB.cs:22:34:22:34 | 1 | MultiImplementationB.cs:22:16:22:16 | access to property P | semmle.label | successor |
 | MultiImplementationB.cs:27:21:27:23 | enter get_P3 | MultiImplementationA.cs:30:34:30:37 | null | semmle.label | successor |
 | MultiImplementationB.cs:27:21:27:23 | exit get_P3 (abnormal) | MultiImplementationA.cs:30:21:30:23 | exit get_P3 | semmle.label | successor |
