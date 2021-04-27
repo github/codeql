@@ -70,8 +70,14 @@ class FormsElement extends XMLElement {
     this = any(SystemWebXMLElement sw).getAChild("authentication").getAChild("forms")
   }
 
+  /**
+   * Gets attribute's `requireSSL` value.
+   */
   string getRequireSSL() { result = getAttribute("requireSSL").getValue().trim().toLowerCase() }
 
+  /**
+   * Holds if `requireSSL` value is true.
+   */
   predicate isRequireSSL() { getRequireSSL() = "true" }
 }
 
@@ -79,19 +85,25 @@ class FormsElement extends XMLElement {
 class HttpCookiesElement extends XMLElement {
   HttpCookiesElement() { this = any(SystemWebXMLElement sw).getAChild("httpCookies") }
 
+  /**
+   * Gets attribute's `httpOnlyCookies` value.
+   */
   string getHttpOnlyCookies() {
     result = getAttribute("httpOnlyCookies").getValue().trim().toLowerCase()
   }
 
   /**
-   * Holds if there any chance that `httpOnlyCookies` is set to `true`.
+   * Holds if there is any chance that `httpOnlyCookies` is set to `true`.
    */
   predicate isHttpOnlyCookies() { getHttpOnlyCookies() = "true" }
 
+  /**
+   * Gets attribute's `requireSSL` value.
+   */
   string getRequireSSL() { result = getAttribute("requireSSL").getValue().trim().toLowerCase() }
 
   /**
-   * Holds if there any chance that `requireSSL` is set to `true` either globally or for Forms.
+   * Holds if there is any chance that `requireSSL` is set to `true` either globally or for Forms.
    */
   predicate isRequireSSL() {
     getRequireSSL() = "true"

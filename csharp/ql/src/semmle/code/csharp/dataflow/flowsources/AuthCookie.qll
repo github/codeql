@@ -141,10 +141,16 @@ class OnAppendCookieHttpOnlyTrackingConfig extends OnAppendCookieTrackingConfig 
   override string propertyName() { result = "HttpOnly" }
 }
 
+/**
+ * Tracks if a callback used in `OnAppendCookie` sets a cookie property to `true`.
+ */
 abstract class OnAppendCookieTrackingConfig extends DataFlow::Configuration {
   bindingset[this]
   OnAppendCookieTrackingConfig() { any() }
 
+  /**
+   * Specifies the cookie property name to track.
+   */
   abstract string propertyName();
 
   override predicate isSource(DataFlow::Node source) {

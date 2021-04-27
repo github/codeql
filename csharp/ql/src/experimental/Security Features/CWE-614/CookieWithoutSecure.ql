@@ -63,6 +63,7 @@ where
         // the property wasn't explicitly set, so a default value from config is used
         not isPropertySet(oc, "Secure") and
         // the default in config is not set to `true`
+        // the `exists` below covers the `cs/web/cookie-secure-not-set`
         not exists(XMLElement element |
           element instanceof FormsElement and
           element.(FormsElement).isRequireSSL()
