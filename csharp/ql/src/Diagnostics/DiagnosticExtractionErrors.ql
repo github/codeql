@@ -60,4 +60,4 @@ private class DiagnosticExtractorError extends DiagnosticError {
 }
 
 from DiagnosticError error
-select error.getMessage(), 3
+select error.getMessage(), 2
