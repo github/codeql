@@ -54,7 +54,6 @@ private module Re {
    */
   private class CompiledRegex extends DataFlow::CallCfgNode, RegexExecution::Range {
     DataFlow::Node regexNode;
-    DataFlow::CallCfgNode regexMethod;
 
     CompiledRegex() {
       exists(DataFlow::CallCfgNode patternCall, DataFlow::AttrRead reMethod |
@@ -78,7 +77,6 @@ private module Re {
    */
   class ReEscape extends DataFlow::CallCfgNode, RegexEscape::Range {
     DataFlow::Node regexNode;
-    DataFlow::CallCfgNode escapeMethod;
 
     ReEscape() {
       this = API::moduleImport("re").getMember("escape").getACall() and
