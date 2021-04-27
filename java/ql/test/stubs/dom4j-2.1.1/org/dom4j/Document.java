@@ -17,9 +17,6 @@ import java.util.List;
 
 public interface Document extends Branch {
 
-    public Node selectSingleNode(String xpathExpression);
-
-    public List selectNodes(String xpathExpression);
 }
 
 /*

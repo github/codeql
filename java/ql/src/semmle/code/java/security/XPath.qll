@@ -9,13 +9,13 @@ private class XPath extends RefType {
   XPath() { this.hasQualifiedName("javax.xml.xpath", "XPath") }
 }
 
-/** A call to `XPath.evaluate` or `XPath.compile` */
-private class XPathEvaluateOrCompile extends MethodAccess {
-  XPathEvaluateOrCompile() {
+/** A call to methods of any class implementing the interface `XPath` that evaluate XPath expressions */
+private class XPathEvaluation extends MethodAccess {
+  XPathEvaluation() {
     exists(Method m |
-      this.getMethod() = m and m.getDeclaringType() instanceof XPath
+      this.getMethod() = m and m.getDeclaringType().getASourceSupertype*() instanceof XPath
     |
-      m.hasName(["evaluate", "compile"])
+      m.hasName(["evaluate", "evaluateExpression", "compile"])
     )
   }
 }
@@ -25,13 +25,16 @@ private class Dom4JNode extends Interface {
   Dom4JNode() { this.hasQualifiedName("org.dom4j", "Node") }
 }
 
-/** A call to `Node.selectNodes` or `Node.selectSingleNode` */
-private class NodeSelectNodes extends MethodAccess {
-  NodeSelectNodes() {
+/** A call to methods of any class implementing the interface `Node` that evaluate XPath expressions */
+private class NodeXPathEvaluation extends MethodAccess {
+  NodeXPathEvaluation() {
     exists(Method m |
       this.getMethod() = m and m.getDeclaringType().getASourceSupertype*() instanceof Dom4JNode
     |
-      m.hasName(["selectNodes", "selectSingleNode"])
+      m.hasName([
+          "selectObject", "selectNodes", "selectSingleNode", "numberValueOf", "valueOf", "matches",
+          "createXPath"
+        ])
     )
   }
 }
@@ -44,7 +47,7 @@ abstract class XPathInjectionSink extends DataFlow::Node { }
 
 private class DefaultXPathInjectionSink extends XPathInjectionSink {
   DefaultXPathInjectionSink() {
-    exists(NodeSelectNodes sink | sink.getArgument(0) = this.asExpr()) or
-    exists(XPathEvaluateOrCompile sink | sink.getArgument(0) = this.asExpr())
+    exists(NodeXPathEvaluation sink | sink.getArgument(0) = this.asExpr()) or
+    exists(XPathEvaluation sink | sink.getArgument(0) = this.asExpr())
   }
 }
