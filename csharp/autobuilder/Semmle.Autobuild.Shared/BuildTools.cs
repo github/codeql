@@ -1,3 +1,4 @@
+using Semmle.Util.Logging;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -24,6 +25,7 @@ namespace Semmle.Autobuild.Shared
     /// </summary>
     public static class BuildTools
     {
+        private static readonly ILogger logger = new ConsoleLogger(Verbosity.Info);
         public static IEnumerable<VcVarsBatFile> GetCandidateVcVarsFiles(IBuildActions actions)
         {
             var programFilesx86 = actions.GetEnvironmentVariable("ProgramFiles(x86)");
@@ -35,6 +37,7 @@ namespace Semmle.Autobuild.Shared
 
             if (actions.FileExists(vswhere))
             {
+                logger.Log(Severity.Info, "Found vswhere.exe");
                 var exitCode1 = actions.RunProcess(vswhere, "-prerelease -legacy -property installationPath", null, null, out var installationList);
                 var exitCode2 = actions.RunProcess(vswhere, "-prerelease -legacy -property installationVersion", null, null, out var versionList);
 
@@ -43,6 +46,8 @@ namespace Semmle.Autobuild.Shared
                     // vswhere ran successfully and produced the expected output
                     foreach (var vsInstallation in versionList.Zip(installationList, (v, i) => (Version: v, InstallationPath: i)))
                     {
+
+                        logger.Log(Severity.Info, $"Found VS version {vsInstallation.Version} at path {vsInstallation.InstallationPath}");
                         var dot = vsInstallation.Version.IndexOf('.');
                         var majorVersionString = dot == -1 ? vsInstallation.Version : vsInstallation.Version.Substring(0, dot);
                         if (int.TryParse(majorVersionString, out var majorVersion))
