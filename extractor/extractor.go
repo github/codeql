@@ -460,11 +460,17 @@ func (extraction *Extraction) extractError(tw *trap.Writer, err packages.Error, 
 
 	if pos == "" {
 		// extract a dummy file
-		file, e = filepath.Abs(filepath.Join(".", "-"))
+		wd, e := os.Getwd()
 		if e != nil {
-			file = filepath.Join(".", "-")
-			log.Printf("Warning: failed to get absolute path for for %s", file)
+			wd = "."
+			log.Printf("Warning: failed to get working directory")
 		}
+		ewd, e := filepath.EvalSymlinks(wd)
+		if e != nil {
+			ewd = wd
+			log.Printf("Warning: failed to evaluate symlinks for %s", wd)
+		}
+		file = filepath.Join(ewd, "-")
 	} else {
 		var rawfile string
 		if parts := threePartPos.FindStringSubmatch(pos); parts != nil {
