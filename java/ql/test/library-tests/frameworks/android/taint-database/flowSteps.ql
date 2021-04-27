@@ -17,10 +17,10 @@ class Conf extends TaintTracking::Configuration {
 class FlowStepTest extends InlineExpectationsTest {
   FlowStepTest() { this = "FlowStepTest" }
 
-  override string getARelevantTag() { result = "hasTaintFlowStep" }
+  override string getARelevantTag() { result = "taintReachesReturn" }
 
   override predicate hasActualResult(Location l, string element, string tag, string value) {
-    tag = "hasTaintFlowStep" and
+    tag = "taintReachesReturn" and
     value = "" and
     exists(Conf conf, DataFlow::Node source, DataFlow::Node sink |
       conf.hasFlow(source, sink) and
