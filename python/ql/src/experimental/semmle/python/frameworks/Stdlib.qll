@@ -48,6 +48,17 @@ private module Re {
   /**
    * A class to find `re` methods immediately executing a compiled expression by `re.compile`.
    *
+   * Given the following example:
+   *
+   * ```py
+   * pattern = re.compile(input)
+   * input.match(s)
+   * ```
+   *
+   * `patternCall` refers to `re.compile(input)`,
+   * `regexNode` refers to `input` and
+   * `this` will refer to `input.match(s)`
+   *
    * See `RegexExecutionMethods`
    *
    * See https://docs.python.org/3/library/re.html#regular-expression-objects
