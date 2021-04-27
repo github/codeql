@@ -34,7 +34,14 @@ module Shared {
   class MetacharEscapeSanitizer extends Sanitizer, StringReplaceCall {
     MetacharEscapeSanitizer() {
       isGlobal() and
-      RegExp::alwaysMatchesMetaCharacter(getRegExp().getRoot(), ["<", "'", "\""])
+      (
+        RegExp::alwaysMatchesMetaCharacter(getRegExp().getRoot(), ["<", "'", "\""])
+        or
+        // or it's a global inverted char class.
+        getRegExp().getRoot().(RegExpCharacterClass).isInverted()
+        or
+        getRegExp().getRoot().(RegExpQuantifier).getAChild().(RegExpCharacterClass).isInverted()
+      )
     }
   }
 

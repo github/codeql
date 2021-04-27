@@ -85,4 +85,8 @@
 
 	$("#id").html(anser.ansiToHtml(text)); // NOT OK
 	$("#id").html(new anser().process(text)); // NOT OK
+	
+	$("section h1").each(function(){
+		$("nav ul").append("<a href='#" + $(this).text().toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g,'') + "'>Section</a>"); // OK
+	});
 })();
