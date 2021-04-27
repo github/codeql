@@ -1,5 +1,4 @@
 /**
- * @id py/summary/lines-of-user-code
  * @name Total lines of user written Python code in the database
  * @description The total number of lines of Python code from the source code directory,
  *   excluding auto-generated files. This query counts the lines of code, excluding
@@ -8,6 +7,7 @@
  *   be counted as user written code.
  * @kind metric
  * @tags summary
+ * @id py/summary/lines-of-user-code
  */
 
 import python
