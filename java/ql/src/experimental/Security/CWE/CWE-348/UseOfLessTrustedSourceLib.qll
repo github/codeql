@@ -90,22 +90,6 @@ private class SqlOperationSink extends UseOfLessTrustedSink {
   SqlOperationSink() { this instanceof QueryInjectionSink }
 }
 
-/** A data flow sink for log operation. */
-private class LogOperationSink extends UseOfLessTrustedSink {
-  LogOperationSink() { exists(LoggingCall lc | lc.getAnArgument() = this.asExpr()) }
-}
-
-/** A data flow sink for local output. */
-private class PrintSink extends UseOfLessTrustedSink {
-  PrintSink() {
-    exists(MethodAccess ma |
-      ma.getMethod().getName() in ["print", "println"] and
-      ma.getMethod().getDeclaringType().hasQualifiedName("java.io", ["PrintWriter", "PrintStream"]) and
-      ma.getAnArgument() = this.asExpr()
-    )
-  }
-}
-
 /** A method that split string. */
 class SplitMethod extends Method {
   SplitMethod() {
