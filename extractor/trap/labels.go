@@ -3,6 +3,8 @@ package trap
 import (
 	"fmt"
 	"go/types"
+
+	"github.com/github/codeql-go/extractor/util"
 )
 
 // Label represents a label
@@ -65,14 +67,14 @@ func (l *Labeler) GlobalID(key string) Label {
 // FileLabel returns the label for a file with path `path`.
 func (l *Labeler) FileLabel() Label {
 	if l.fileLabel == InvalidLabel {
-		l.fileLabel = l.GlobalID(l.tw.path + ";sourcefile")
+		l.fileLabel = l.FileLabelFor(l.tw.path)
 	}
 	return l.fileLabel
 }
 
 // FileLabelFor returns the label for the file for which the trap writer `tw` is associated
 func (l *Labeler) FileLabelFor(path string) Label {
-	return l.GlobalID(path + ";sourcefile")
+	return l.GlobalID(util.EscapeTrapSpecialChars(path) + ";sourcefile")
 }
 
 // LocalID associates a label with the given AST node `nd` and returns it
@@ -101,7 +103,7 @@ func (l *Labeler) ScopeID(scope *types.Scope, pkg *types.Package) Label {
 		} else {
 			if pkg != nil && pkg.Scope() == scope {
 				// if this scope is the package scope
-				pkgLabel := l.GlobalID(pkg.Path() + ";package")
+				pkgLabel := l.GlobalID(util.EscapeTrapSpecialChars(pkg.Path()) + ";package")
 				label = l.GlobalID("{" + pkgLabel.String() + "};scope")
 			} else {
 				label = l.FreshID()

@@ -139,7 +139,7 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 
 		scope := extractPackageScope(tw, pkg)
 		tw.ForEachObject(extractObjectType)
-		lbl := tw.Labeler.GlobalID(pkg.PkgPath + ";pkg")
+		lbl := tw.Labeler.GlobalID(util.EscapeTrapSpecialChars(pkg.PkgPath) + ";pkg")
 		dbscheme.PackagesTable.Emit(tw, lbl, pkg.Name, pkg.PkgPath, scope)
 
 		if len(pkg.Errors) != 0 {
@@ -449,60 +449,68 @@ var (
 // extractError extracts the message and location of a frontend error
 func (extraction *Extraction) extractError(tw *trap.Writer, err packages.Error, pkglbl trap.Label, idx int) {
 	var (
-		lbl  = tw.Labeler.FreshID()
-		tag  = dbscheme.ErrorTags[err.Kind]
-		kind = dbscheme.ErrorTypes[err.Kind].Index()
-		pos  = err.Pos
-		file = ""
-		line = 0
-		col  = 0
-		e    error
+		lbl       = tw.Labeler.FreshID()
+		tag       = dbscheme.ErrorTags[err.Kind]
+		kind      = dbscheme.ErrorTypes[err.Kind].Index()
+		pos       = err.Pos
+		file      = ""
+		line, col int
+		e         error
 	)
 
-	if parts := threePartPos.FindStringSubmatch(pos); parts != nil {
-		// "file:line:col"
-		col, e = strconv.Atoi(parts[3])
+	if pos == "" {
+		// extract a dummy file
+		file, e = filepath.Abs(filepath.Join(".", "-"))
 		if e != nil {
-			log.Printf("Warning: malformed column number `%s`: %v", parts[3], e)
+			file = filepath.Join(".", "-")
+			log.Printf("Warning: failed to get absolute path for for %s", file)
 		}
-		line, e = strconv.Atoi(parts[2])
+	} else {
+		var rawfile string
+		if parts := threePartPos.FindStringSubmatch(pos); parts != nil {
+			// "file:line:col"
+			col, e = strconv.Atoi(parts[3])
+			if e != nil {
+				log.Printf("Warning: malformed column number `%s`: %v", parts[3], e)
+			}
+			line, e = strconv.Atoi(parts[2])
+			if e != nil {
+				log.Printf("Warning: malformed line number `%s`: %v", parts[2], e)
+			}
+			rawfile = parts[1]
+		} else if parts := twoPartPos.FindStringSubmatch(pos); parts != nil {
+			// "file:line"
+			line, e = strconv.Atoi(parts[2])
+			if e != nil {
+				log.Printf("Warning: malformed line number `%s`: %v", parts[2], e)
+			}
+			rawfile = parts[1]
+		} else if pos != "" && pos != "-" {
+			log.Printf("Warning: malformed error position `%s`", pos)
+		}
+		afile, e := filepath.Abs(rawfile)
 		if e != nil {
-			log.Printf("Warning: malformed line number `%s`: %v", parts[2], e)
+			log.Printf("Warning: failed to get absolute path for for %s", file)
+			afile = file
 		}
-		file = parts[1]
-	} else if parts := twoPartPos.FindStringSubmatch(pos); parts != nil {
-		// "file:line"
-		line, e = strconv.Atoi(parts[2])
+		file, e = filepath.EvalSymlinks(afile)
 		if e != nil {
-			log.Printf("Warning: malformed line number `%s`: %v", parts[2], e)
+			log.Printf("Warning: failed to evaluate symlinks for %s", afile)
+			file = afile
 		}
-		file = parts[1]
-	} else if pos != "" && pos != "-" {
-		log.Printf("Warning: malformed error position `%s`", pos)
-	}
-	afile, e := filepath.Abs(file)
-	if e != nil {
-		log.Printf("Warning: failed to get absolute path for for %s", file)
-		afile = file
-	}
-	ffile, e := filepath.EvalSymlinks(afile)
-	if e != nil {
-		log.Printf("Warning: failed to evaluate symlinks for %s", afile)
-		ffile = afile
-	}
-	transformed := filepath.ToSlash(srcarchive.TransformPath(ffile))
 
-	extraction.extractFileInfo(tw, ffile)
+		extraction.extractFileInfo(tw, file)
+	}
 
 	extraction.Lock.Lock()
-
+	flbl := extraction.StatWriter.Labeler.FileLabelFor(file)
 	diagLbl := extraction.StatWriter.Labeler.FreshID()
-	flbl := extraction.StatWriter.Labeler.FileLabelFor(ffile)
 	dbscheme.DiagnosticsTable.Emit(
 		extraction.StatWriter, diagLbl, 1, tag, err.Msg, err.Msg,
 		emitLocation(extraction.StatWriter, flbl, line, col, line, col))
-	dbscheme.DiagnosticForTable.Emit(extraction.StatWriter, diagLbl, extraction.Label, extraction.GetFileIdx(transformed), extraction.GetNextErr(transformed))
+	dbscheme.DiagnosticForTable.Emit(extraction.StatWriter, diagLbl, extraction.Label, extraction.GetFileIdx(file), extraction.GetNextErr(file))
 	extraction.Lock.Unlock()
+	transformed := filepath.ToSlash(srcarchive.TransformPath(file))
 	dbscheme.ErrorsTable.Emit(tw, lbl, kind, err.Msg, pos, transformed, line, col, pkglbl, idx)
 }
 
@@ -588,19 +596,19 @@ func stemAndExt(base string) (string, string) {
 // extractFileInfo extracts file-system level information for the given file, populating
 // the `files` and `containerparent` tables
 func (extraction *Extraction) extractFileInfo(tw *trap.Writer, file string) {
-	path := filepath.ToSlash(srcarchive.TransformPath(file))
-	components := strings.Split(path, "/")
-	parentPath := ""
-	var parentLbl trap.Label
-
 	// We may visit the same file twice because `extractError` calls this function to describe files containing
 	// compilation errors. It is also called for user source files being extracted.
 	extraction.Lock.Lock()
-	if extraction.SeenFile(path) {
+	if extraction.SeenFile(file) {
 		extraction.Lock.Unlock()
 		return
 	}
 	extraction.Lock.Unlock()
+
+	path := filepath.ToSlash(srcarchive.TransformPath(file))
+	components := strings.Split(path, "/")
+	parentPath := ""
+	var parentLbl trap.Label
 
 	for i, component := range components {
 		if i == 0 {
@@ -620,11 +628,11 @@ func (extraction *Extraction) extractFileInfo(tw *trap.Writer, file string) {
 			dbscheme.HasLocationTable.Emit(tw, lbl, emitLocation(tw, lbl, 0, 0, 0, 0))
 			extraction.Lock.Lock()
 			slbl := extraction.StatWriter.Labeler.FileLabelFor(file)
-			dbscheme.CompilationCompilingFilesTable.Emit(extraction.StatWriter, extraction.Label, extraction.GetFileIdx(path), slbl)
+			dbscheme.CompilationCompilingFilesTable.Emit(extraction.StatWriter, extraction.Label, extraction.GetFileIdx(file), slbl)
 			extraction.Lock.Unlock()
 			break
 		}
-		lbl := tw.Labeler.GlobalID(path + ";folder")
+		lbl := tw.Labeler.GlobalID(util.EscapeTrapSpecialChars(path) + ";folder")
 		dbscheme.FoldersTable.Emit(tw, lbl, path, component)
 		if i > 0 {
 			dbscheme.ContainerParentTable.Emit(tw, parentLbl, lbl)
@@ -1496,7 +1504,7 @@ func getTypeLabel(tw *trap.Writer, tp types.Type) (trap.Label, bool) {
 				if field.Embedded() {
 					name = ""
 				}
-				fmt.Fprintf(&b, "%s,{%s},%s", name, fieldTypeLbl, tp.Tag(i))
+				fmt.Fprintf(&b, "%s,{%s},%s", name, fieldTypeLbl, util.EscapeTrapSpecialChars(tp.Tag(i)))
 			}
 			lbl = tw.Labeler.GlobalID(fmt.Sprintf("%s;structtype", b.String()))
 		case *types.Pointer:
