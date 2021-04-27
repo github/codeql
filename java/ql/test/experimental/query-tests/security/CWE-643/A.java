@@ -107,7 +107,7 @@ public class A {
             org.dom4j.Document document = reader.read(new ByteArrayInputStream(xmlStr.getBytes()));
             document.selectObject("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
             document.selectNodes("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
-            document.selectNodes("/users/user[@name='test']", "/users/user[@pass='" + pass + "']"); // Safe-ish
+            document.selectNodes("/users/user[@name='test']", "/users/user[@pass='" + pass + "']"); // $hasXPathInjection
             document.selectSingleNode("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
             document.valueOf("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
             document.numberValueOf("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection

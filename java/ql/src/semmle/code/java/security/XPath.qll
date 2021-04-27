@@ -18,6 +18,8 @@ private class XPathEvaluation extends MethodAccess {
       m.hasName(["evaluate", "evaluateExpression", "compile"])
     )
   }
+
+  Expr getSink() { result = this.getArgument(0) }
 }
 
 /** The interface `org.dom4j.Node` */
@@ -27,16 +29,25 @@ private class Dom4JNode extends Interface {
 
 /** A call to methods of any class implementing the interface `Node` that evaluate XPath expressions */
 private class NodeXPathEvaluation extends MethodAccess {
+  Expr sink;
+
   NodeXPathEvaluation() {
-    exists(Method m |
-      this.getMethod() = m and m.getDeclaringType().getASourceSupertype*() instanceof Dom4JNode
+    exists(Method m, int index |
+      this.getMethod() = m and
+      m.getDeclaringType().getASourceSupertype*() instanceof Dom4JNode and
+      sink = this.getArgument(index)
     |
       m.hasName([
           "selectObject", "selectNodes", "selectSingleNode", "numberValueOf", "valueOf", "matches",
           "createXPath"
-        ])
+        ]) and
+      index = 0
+      or
+      m.hasName("selectNodes") and index in [0, 1]
     )
   }
+
+  Expr getSink() { result = sink }
 }
 
 /**
@@ -47,7 +58,7 @@ abstract class XPathInjectionSink extends DataFlow::Node { }
 
 private class DefaultXPathInjectionSink extends XPathInjectionSink {
   DefaultXPathInjectionSink() {
-    exists(NodeXPathEvaluation sink | sink.getArgument(0) = this.asExpr()) or
-    exists(XPathEvaluation sink | sink.getArgument(0) = this.asExpr())
+    exists(NodeXPathEvaluation sink | sink.getSink() = this.asExpr()) or
+    exists(XPathEvaluation sink | sink.getSink() = this.asExpr())
   }
 }
