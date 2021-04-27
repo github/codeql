@@ -4,55 +4,47 @@ import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
 
-/**
- * An abstract type representing a call to interpret XPath expressions.
- */
-class XPathSink extends MethodAccess {
-  /**
-   * Gets the argument representing the XPath expressions to be evaluated.
-   */
-  abstract Expr getSink();
-}
-
 /** The class `javax.xml.xpath.XPath` */
-class XPath extends RefType {
+private class XPath extends RefType {
   XPath() { this.hasQualifiedName("javax.xml.xpath", "XPath") }
 }
 
 /** A call to `XPath.evaluate` or `XPath.compile` */
-class XPathEvaluateOrCompile extends XPathSink {
+private class XPathEvaluateOrCompile extends MethodAccess {
   XPathEvaluateOrCompile() {
-    exists(Method m | this.getMethod() = m and m.getDeclaringType() instanceof XPath |
+    exists(Method m |
+      this.getMethod() = m and m.getDeclaringType() instanceof XPath
+    |
       m.hasName(["evaluate", "compile"])
     )
   }
-
-  override Expr getSink() { result = this.getArgument(0) }
 }
 
-/** Any class extending or implementing `org.dom4j.Node` */
-class Dom4JNode extends RefType {
-  Dom4JNode() {
-    exists(Interface node | node.hasQualifiedName("org.dom4j", "Node") |
-      this.extendsOrImplements*(node)
-    )
-  }
+/** The interface `org.dom4j.Node` */
+private class Dom4JNode extends Interface {
+  Dom4JNode() { this.hasQualifiedName("org.dom4j", "Node") }
 }
 
 /** A call to `Node.selectNodes` or `Node.selectSingleNode` */
-class NodeSelectNodes extends XPathSink {
+private class NodeSelectNodes extends MethodAccess {
   NodeSelectNodes() {
-    exists(Method m | this.getMethod() = m and m.getDeclaringType() instanceof Dom4JNode |
+    exists(Method m |
+      this.getMethod() = m and m.getDeclaringType().getASourceSupertype*() instanceof Dom4JNode
+    |
       m.hasName(["selectNodes", "selectSingleNode"])
     )
   }
-
-  override Expr getSink() { result = this.getArgument(0) }
 }
 
-/** A sink that represents a method that interprets XPath expressions. */
-class XPathInjectionSink extends DataFlow::ExprNode {
-  XPathInjectionSink() { exists(XPathSink sink | this.getExpr() = sink.getSink()) }
+/**
+ *  A sink that represents a method that interprets XPath expressions.
+ *  Extend this class to add your own XPath Injection sinks.
+ */
+abstract class XPathInjectionSink extends DataFlow::Node { }
+
+private class DefaultXPathInjectionSink extends XPathInjectionSink {
+  DefaultXPathInjectionSink() {
+    exists(NodeSelectNodes sink | sink.getArgument(0) = this.asExpr()) or
+    exists(XPathEvaluateOrCompile sink | sink.getArgument(0) = this.asExpr())
+  }
 }
-
-
