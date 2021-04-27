@@ -1,4 +1,2 @@
-| Extraction failed in query-tests/Diagnostics/badpkg.go with error cannot find package "." in:\n\t/home/sauyon/devel/semmlego/vendor/github.com/github/nonexistent | 2 |
-| Extraction failed in query-tests/Diagnostics/badpkg.go with error could not import github.com/github/nonexistent (invalid package name: "") | 2 |
 | Extraction failed in query-tests/Diagnostics/type.go with error cannot use v (variable of type V) as T value in argument to takesT | 2 |
 | Extraction failed with error expected 'package', found avvu | 2 |
