@@ -15,8 +15,8 @@ import semmle.code.java.frameworks.Networking
 import DataFlow::PathGraph
 private import semmle.code.java.dataflow.ExternalFlow
 
-class HTTPString extends StringLiteral {
-  HTTPString() {
+class HttpString extends StringLiteral {
+  HttpString() {
     // Avoid matching "https" here.
     exists(string s | this.getRepresentedString() = s |
       (
@@ -31,12 +31,12 @@ class HTTPString extends StringLiteral {
   }
 }
 
-class HTTPStringToURLOpenMethodFlowConfig extends TaintTracking::Configuration {
-  HTTPStringToURLOpenMethodFlowConfig() { this = "HttpsUrls::HTTPStringToURLOpenMethodFlowConfig" }
+class HttpStringToUrlOpenMethodFlowConfig extends TaintTracking::Configuration {
+  HttpStringToUrlOpenMethodFlowConfig() { this = "HttpsUrls::HttpStringToUrlOpenMethodFlowConfig" }
 
-  override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof HTTPString }
+  override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof HttpString }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof URLOpenSink }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof UrlOpenSink }
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
     exists(UrlConstructorCall u |
@@ -53,14 +53,14 @@ class HTTPStringToURLOpenMethodFlowConfig extends TaintTracking::Configuration {
 /**
  * A sink that represents a URL opening method call, such as a call to `java.net.URL.openConnection()`.
  */
-private class URLOpenSink extends DataFlow::Node {
-  URLOpenSink() { sinkNode(this, "open-url") }
+private class UrlOpenSink extends DataFlow::Node {
+  UrlOpenSink() { sinkNode(this, "open-url") }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, MethodAccess m, HTTPString s
+from DataFlow::PathNode source, DataFlow::PathNode sink, MethodAccess m, HttpString s
 where
   source.getNode().asExpr() = s and
   sink.getNode().asExpr() = m.getQualifier() and
-  any(HTTPStringToURLOpenMethodFlowConfig c).hasFlowPath(source, sink)
+  any(HttpStringToUrlOpenMethodFlowConfig c).hasFlowPath(source, sink)
 select m, source, sink, "URL may have been constructed with HTTP protocol, using $@.", s,
   "this source"
