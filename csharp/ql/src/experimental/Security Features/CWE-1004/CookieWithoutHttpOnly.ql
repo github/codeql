@@ -16,7 +16,7 @@ import csharp
 import semmle.code.asp.WebConfig
 import semmle.code.csharp.frameworks.system.Web
 import semmle.code.csharp.frameworks.microsoft.AspNetCore
-import semmle.code.csharp.dataflow.flowsources.AuthCookie
+import experimental.dataflow.flowsources.AuthCookie
 
 from Expr httpOnlySink
 where
