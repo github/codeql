@@ -452,7 +452,7 @@ module API {
      * Holds if there is an edge from `pred` to `succ` in the API graph that is labeled with `lbl`.
      */
     cached
-    predicate edge(Node pred, string lbl, Node succ) {
+    predicate edge(TApiNode pred, string lbl, TApiNode succ) {
       /* There's an edge from the root node for each imported module. */
       exists(string m |
         pred = MkRoot() and
