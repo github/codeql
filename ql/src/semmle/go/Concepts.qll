@@ -6,6 +6,8 @@
 
 import go
 import semmle.go.dataflow.FunctionInputsAndOutputs
+import semmle.go.concepts.HTTP
+import semmle.go.concepts.GeneratedFile
 
 /**
  * A data-flow node that executes an operating system command,

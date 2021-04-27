@@ -4,13 +4,6 @@ import go
 
 module HTML {
   /**
-   * An HTML file.
-   */
-  class HtmlFile extends File {
-    HtmlFile() { this.getExtension().regexpMatch("x?html?") }
-  }
-
-  /**
    * An HTML element.
    *
    * Example:

@@ -30,12 +30,12 @@ clean:
 DATAFLOW_BRANCH=main
 
 autoformat:
-	find ql -name "*.ql" -or -name "*.qll" | xargs codeql query format -qq -i
-	git ls-files | grep '\.go$$' | grep -v ^vendor/ | xargs grep -L "//\s*autoformat-ignore" | xargs gofmt -w
+	find ql -iregex '.*\.qll?' -print0 | xargs -0 codeql query format -qq -i
+	find . -path '**/vendor' -prune -or -type f -iname '*.go' ! -empty -print0 | xargs -0 grep -L "//\s*autoformat-ignore" | xargs gofmt -w
 
 check-formatting:
-	find ql -name "*.ql" -or -name "*.qll" | xargs codeql query format --check-only
-	test -z "$$(git ls-files | grep '\.go$$' | grep -v ^vendor/ | xargs grep -L "//\s*autoformat-ignore" | xargs gofmt -l)"
+	find ql -iregex '.*\.qll?' -print0 | xargs -0 codeql query format --check-only
+	test -z "$$(find . -path '**/vendor' -prune -or -type f -iname '*.go' ! -empty -print0 | xargs -0 grep -L "//\s*autoformat-ignore" | xargs gofmt -l)"
 
 ifeq ($(QHELP_OUT_DIR),)
 # If not otherwise specified, compile qhelp to markdown in place
