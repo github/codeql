@@ -23,9 +23,32 @@
  */
 
 /**
+ * @typedef {Array<string>}
+ */
+var URLSearchParamsTupleType;
+
+/**
+ * Represents the query string of a URL.
+ *
+ * * When `init` is a string, it is basically parsed as a query string
+ *   `'name1=value1&name2=value2'`.
+ *
+ * * When `init` is an array of arrays of string
+ *   `([['name1', 'value1'], ['name2', 'value2']])`,
+ *   it must contain pairs of strings, where the first item in the pair will be
+ *   interpreted as a key and the second as a value.
+ *
+ *   NOTE: The specification uses Iterable rather than Array, but this is not
+ *   supported in Edge 17 - 18.
+ *
+ * * When `init` is an object, keys and values will be interpreted as such
+ *   `({name1: 'value1', name2: 'value2'}).
+ *
+ * @see https://url.spec.whatwg.org/#interface-urlsearchparams
  * @constructor
  * @implements {Iterable<!Array<string>>}
- * @param {(string|!URLSearchParams)=} init
+ * @param {(string|!Array<!URLSearchParamsTupleType>|!Object<string,string>)=}
+ *     init
  */
 function URLSearchParams(init) {}
 
@@ -41,6 +64,19 @@ URLSearchParams.prototype.append = function(name, value) {};
  * @return {undefined}
  */
 URLSearchParams.prototype.delete = function(name) {};
+
+/**
+ * @return {!IteratorIterable<!Array<string>>}
+ * @nosideeffects
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams/entries
+ */
+URLSearchParams.prototype.entries = function() {};
+
+/**
+ * @param {function(string, string)} callback
+ * @return {undefined}
+ */
+URLSearchParams.prototype.forEach = function(callback) {};
 
 /**
  * @param {string} name
@@ -61,11 +97,27 @@ URLSearchParams.prototype.getAll = function(name) {};
 URLSearchParams.prototype.has = function(name) {};
 
 /**
+ * @return {!IteratorIterable<string>}
+ */
+URLSearchParams.prototype.keys = function() {};
+
+
+/**
  * @param {string} name
  * @param {string} value
  * @return {undefined}
  */
 URLSearchParams.prototype.set = function(name, value) {};
+
+/**
+ * @return {undefined}
+ */
+URLSearchParams.prototype.sort = function() {};
+
+/**
+ * @return {!IteratorIterable<string>}
+ */
+URLSearchParams.prototype.values = function() {};
 
 /**
  * @see https://url.spec.whatwg.org
@@ -79,8 +131,7 @@ function URL(url, base) {}
 URL.prototype.href;
 
 /**
- * @const
- * @type {string}
+ * @const {string}
  */
 URL.prototype.origin;
 
@@ -109,8 +160,7 @@ URL.prototype.pathname;
 URL.prototype.search;
 
 /**
- * @const
- * @type {URLSearchParams}
+ * @const {!URLSearchParams}
  */
 URL.prototype.searchParams;
 

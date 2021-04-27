@@ -23,7 +23,13 @@
  */
 
 /**
- * @param {function(number)} callback
+ * @typedef {function(number): undefined}
+ * @see https://html.spec.whatwg.org/multipage/imagebitmap-and-animations.html#framerequestcallback
+ */
+var FrameRequestCallback;
+
+/**
+ * @param {!FrameRequestCallback} callback
  * @param {Element=} opt_element In early versions of this API, the callback
  *     was invoked only if the element was visible.
  * @return {number}

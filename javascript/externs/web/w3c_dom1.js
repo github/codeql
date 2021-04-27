@@ -20,76 +20,75 @@
  *  http://www.w3.org/TR/REC-DOM-Level-1/ecma-script-language-binding.html
  *
  * @externs
- * @author stevey@google.com (Steve Yegge)
  */
 
 /**
  * @constructor
  * @param {string=} message
- * @param {string=} message
- * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#ID-17189187
+ * @param {string=} name
+ * @see https://heycam.github.io/webidl/#idl-DOMException
  */
 function DOMException(message, name) {}
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#ID-258A00AF
  */
-DOMException.INDEX_SIZE_ERR = 1;
+DOMException.INDEX_SIZE_ERR;
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#ID-258A00AF
  */
-DOMException.DOMSTRING_SIZE_ERR = 2;
+DOMException.DOMSTRING_SIZE_ERR;
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#ID-258A00AF
  */
-DOMException.HIERARCHY_REQUEST_ERR = 3;
+DOMException.HIERARCHY_REQUEST_ERR;
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#ID-258A00AF
  */
-DOMException.WRONG_DOCUMENT_ERR = 4;
+DOMException.WRONG_DOCUMENT_ERR;
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#ID-258A00AF
  */
-DOMException.INVALID_CHARACTER_ERR = 5;
+DOMException.INVALID_CHARACTER_ERR;
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#ID-258A00AF
  */
-DOMException.NO_DATA_ALLOWED_ERR = 6;
+DOMException.NO_DATA_ALLOWED_ERR;
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#ID-258A00AF
  */
-DOMException.NO_MODIFICATION_ALLOWED_ERR = 7;
+DOMException.NO_MODIFICATION_ALLOWED_ERR;
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#ID-258A00AF
  */
-DOMException.NOT_FOUND_ERR = 8;
+DOMException.NOT_FOUND_ERR;
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#ID-258A00AF
  */
-DOMException.NOT_SUPPORTED_ERR = 9;
+DOMException.NOT_SUPPORTED_ERR;
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#ID-258A00AF
  */
-DOMException.INUSE_ATTRIBUTE_ERR = 10;
+DOMException.INUSE_ATTRIBUTE_ERR;
 
 /**
  * @constructor
@@ -119,24 +118,13 @@ DOMImplementation.prototype.hasFeature = function(feature, version) {};
  */
 function Node() {}
 
-/**
- * @param {boolean=} opt_useCapture
- * @override
- * @return {undefined}
- */
-Node.prototype.addEventListener = function(type, listener, opt_useCapture) {};
+/** @override */
+Node.prototype.addEventListener = function(type, listener, opt_options) {};
 
-/**
- * @param {boolean=} opt_useCapture
- * @override
- * @return {undefined}
- */
-Node.prototype.removeEventListener = function(type, listener, opt_useCapture) {};
+/** @override */
+Node.prototype.removeEventListener = function(type, listener, opt_options) {};
 
-/**
- * @override
- * @return {boolean}
- */
+/** @override */
 Node.prototype.dispatchEvent = function(evt) {};
 
 /**
@@ -207,14 +195,16 @@ Node.prototype.previousSibling;
 
 /**
  * @param {Node} newChild
- * @return {Node}
+ * @return {!Node}
  * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#method-appendChild
  */
 Node.prototype.appendChild = function(newChild) {};
 
 /**
  * @param {boolean} deep
- * @return {!Node}
+ * @return {THIS}
+ * @this {THIS}
+ * @template THIS
  * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#method-cloneNode
  * @nosideeffects
  */
@@ -251,79 +241,73 @@ Node.prototype.removeChild = function(oldChild) {};
 Node.prototype.replaceChild = function(newChild, oldChild) {};
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#ID-1950641247
  */
 Node.ATTRIBUTE_NODE;
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#ID-1950641247
  */
 Node.CDATA_SECTION_NODE;
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#ID-1950641247
  */
 Node.COMMENT_NODE;
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#ID-1950641247
  */
 Node.DOCUMENT_FRAGMENT_NODE;
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#ID-1950641247
  */
 Node.DOCUMENT_NODE;
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#ID-1950641247
  */
 Node.DOCUMENT_TYPE_NODE;
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#ID-1950641247
  */
 Node.ELEMENT_NODE;
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#ID-1950641247
  */
 Node.ENTITY_NODE;
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#ID-1950641247
  */
 Node.ENTITY_REFERENCE_NODE;
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#ID-1950641247
  */
 Node.PROCESSING_INSTRUCTION_NODE;
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#ID-1950641247
  */
 Node.TEXT_NODE;
 
 /**
- * @type {number}
- * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#ID-1950641247
- */
-Node.XPATH_NAMESPACE_NODE;
-
-/**
- * @type {number}
+ * @const {number}
  * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#ID-1950641247
  */
 Node.NOTATION_NODE;
@@ -349,7 +333,7 @@ function Document() {}
 Document.prototype.doctype;
 
 /**
- * @type {!Element}
+ * @type {!HTMLHtmlElement}
  * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#attribute-documentElement
  */
 Document.prototype.documentElement;
@@ -395,24 +379,16 @@ Document.prototype.createDocumentFragment = function() {};
  * Create a DOM element.
  *
  * Web components introduced the second parameter as a way of extending existing
- * tags (e.g. document.createElement('button', 'fancy-button')).
+ * tags (e.g. document.createElement('button', {is: 'fancy-button'})).
  *
  * @param {string} tagName
- * @param {string=} opt_typeExtension
+ * @param {({is: string}|string)=} opt_typeExtension
  * @return {!Element}
  * @nosideeffects
  * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#method-createElement
- * @see http://w3c.github.io/webcomponents/spec/custom/#extensions-to-document-interface-to-instantiate
+ * @see https://dom.spec.whatwg.org/#dom-document-createelement
  */
 Document.prototype.createElement = function(tagName, opt_typeExtension) {};
-
-/**
- * @param {string} name
- * @return {!EntityReference}
- * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#method-createEntityReference
- * @nosideeffects
- */
-Document.prototype.createEntityReference = function(name) {};
 
 /**
  * @param {string} target
@@ -440,6 +416,32 @@ Document.prototype.createTextNode = function(data) {};
 Document.prototype.getElementsByTagName = function(tagname) {};
 
 /**
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/Document/open
+ * @see https://html.spec.whatwg.org/multipage/dynamic-markup-insertion.html#dom-document-open
+ */
+Document.prototype.open;
+
+/**
+ * @return {undefined}
+ * @see https://html.spec.whatwg.org/multipage/dynamic-markup-insertion.html#dom-document-close
+ */
+Document.prototype.close = function() {};
+
+/**
+ * @param {!TrustedHTML|string} text
+ * @return {undefined}
+ * @see https://html.spec.whatwg.org/multipage/dynamic-markup-insertion.html#dom-document-write
+ */
+Document.prototype.write = function(text) {};
+
+/**
+ * @param {!TrustedHTML|string} text
+ * @return {undefined}
+ * @see https://html.spec.whatwg.org/multipage/dynamic-markup-insertion.html#dom-document-writeln
+ */
+Document.prototype.writeln = function(text) {};
+
+/**
  * @constructor
  * @implements {IArrayLike<T>}
  * @implements {Iterable<T>}
@@ -460,6 +462,33 @@ NodeList.prototype.length;
  * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#ID-844377136
  */
 NodeList.prototype.item = function(index) {};
+
+/**
+ * @param {?function(this:S, T, number, !NodeList<T>): ?} callback
+ * @param {S=} opt_thisobj
+ * @template S
+ * @return {undefined}
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/NodeList/forEach
+ */
+NodeList.prototype.forEach = function(callback, opt_thisobj) {};
+
+/**
+ * @return {!IteratorIterable<!Array<number|T>>}
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/NodeList/entries
+ */
+NodeList.prototype.entries = function() {};
+
+/**
+ * @return {!IteratorIterable<number>}
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/NodeList/keys
+ */
+NodeList.prototype.keys = function() {};
+
+/**
+ * @return {!IteratorIterable<T>}
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/NodeList/values
+ */
+NodeList.prototype.values = function() {};
 
 /**
  * @constructor
@@ -600,6 +629,13 @@ Attr.prototype.value;
 function Element() {}
 
 /**
+ * @type {string}
+ * @implicitCast
+ * @see https://dom.spec.whatwg.org/index.html#dom-element-id
+ */
+Element.prototype.id;
+
+/**
  * An Element always contains a non-null NamedNodeMap containing the attributes
  * of this node.
  * @type {!NamedNodeMap<!Attr>}
@@ -626,13 +662,13 @@ Element.prototype.className;
 
 /**
  * @param {string} name
- * @param {number?=} opt_flags
+ * @param {?number=} flags
  * @return {string}
  * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#method-getAttribute
  * @see http://msdn.microsoft.com/en-us/library/ms536429(VS.85).aspx
  * @nosideeffects
  */
-Element.prototype.getAttribute = function(name, opt_flags) {};
+Element.prototype.getAttribute = function(name, flags) {};
 
 /**
  * @param {string} name
@@ -666,9 +702,9 @@ Element.prototype.removeAttributeNode = function(oldAttr) {};
 
 /**
  * @param {string} name
- * @param {string|number|boolean} value Values are converted to strings with
- *     ToString, so we accept number and boolean since both convert easily to
- *     strings.
+ * @param {string|number|boolean|!TrustedHTML|!TrustedScriptURL}
+ *     value Values are converted to strings with ToString, so we accept number
+ *     and boolean since both convert easily to strings.
  * @return {undefined}
  * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#method-setAttribute
  */
@@ -706,8 +742,8 @@ Element.prototype.setAttributeNode = function(newAttr) {};
 /** @type {?function (Event)} */ Element.prototype.onkeydown;
 /** @type {?function (Event)} */ Element.prototype.onkeypress;
 /** @type {?function (Event)} */ Element.prototype.onkeyup;
-/** @type {?function (Event)} */ Element.prototype.onload;
-/** @type {?function (Event)} */ Element.prototype.onunload;
+/** @type {?function (Event): void} */ Element.prototype.onload;
+/** @type {?function (Event): void} */ Element.prototype.onunload;
 /** @type {?function (Event)} */ Element.prototype.onmousedown;
 /** @type {?function (Event)} */ Element.prototype.onmousemove;
 /** @type {?function (Event)} */ Element.prototype.onmouseout;
@@ -726,9 +762,10 @@ Element.prototype.setAttributeNode = function(newAttr) {};
 /**
  * @constructor
  * @extends {CharacterData}
+ * @param {string=} contents Optional textual content.
  * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#ID-1312295772
  */
-function Text() {}
+function Text(contents) {}
 
 /**
  * @param {number} offset
@@ -759,73 +796,10 @@ function CDATASection() {}
 function DocumentType() {}
 
 /**
- * @type {NamedNodeMap<!Entity>}
- * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#ID-1788794630
- */
-DocumentType.prototype.entities;
-
-/**
  * @type {string}
  * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#ID-1844763134
  */
 DocumentType.prototype.name;
-
-/**
- * @type {NamedNodeMap<!Notation>}
- * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#ID-D46829EF
- */
-DocumentType.prototype.notations;
-
-/**
- * @constructor
- * @extends {Node}
- * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#ID-5431D1B9
- */
-function Notation() {}
-
-/**
- * @type {string}
- * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#ID-54F2B4D0
- */
-Notation.prototype.publicId;
-
-/**
- * @type {string}
- * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#ID-E8AAB1D0
- */
-Notation.prototype.systemId;
-
-/**
- * @constructor
- * @extends {Node}
- * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#ID-527DCFF2
- */
-function Entity() {}
-
-/**
- * @type {string}
- * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#ID-D7303025
- */
-Entity.prototype.publicId;
-
-/**
- * @type {string}
- * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#ID-D7C29F3E
- */
-Entity.prototype.systemId;
-
-/**
- * @type {string}
- * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#ID-6ABAEB38
- */
-Entity.prototype.notationName;
-
-/**
- * @constructor
- * @extends {Node}
- * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#ID-11C98490
- */
-function EntityReference() {}
 
 /**
  * @constructor
@@ -854,25 +828,13 @@ ProcessingInstruction.prototype.target;
 function Window() {}
 Window.prototype.Window;
 
-/**
- * @param {boolean=} opt_useCapture
- * @override
- * @return {undefined}
- */
-Window.prototype.addEventListener = function(type, listener, opt_useCapture) {};
+/** @override */
+Window.prototype.addEventListener = function(type, listener, opt_options) {};
 
-/**
- * @param {boolean=} opt_useCapture
- * @override
- * @return {undefined}
- */
-Window.prototype.removeEventListener = function(type, listener, opt_useCapture)
-    {};
+/** @override */
+Window.prototype.removeEventListener = function(type, listener, opt_options) {};
 
-/**
- * @override
- * @return {boolean}
- */
+/** @override */
 Window.prototype.dispatchEvent = function(evt) {};
 
 /** @type {?function (Event)} */ Window.prototype.onabort;
@@ -885,9 +847,11 @@ Window.prototype.dispatchEvent = function(evt) {};
 /** @type {?function (Event)} */ Window.prototype.ondblclick;
 /** @type {?function (Event)} */ Window.prototype.ondragdrop;
 // onerror has a special signature.
-// See https://developer.mozilla.org/en/DOM/window.onerror
-// and http://msdn.microsoft.com/en-us/library/cc197053(VS.85).aspx
-/** @type {?function (string, string, number)} */
+// See
+//  https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers/onerror
+/**
+ * @type {?function (string, string, number, number, !Error):?}
+ */
 Window.prototype.onerror;
 /** @type {?function (Event)} */ Window.prototype.onfocus;
 /** @type {?function (Event)} */ Window.prototype.onhashchange;
@@ -908,5 +872,7 @@ Window.prototype.onerror;
 /** @type {?function (Event)} */ Window.prototype.onscroll;
 /** @type {?function (Event)} */ Window.prototype.onselect;
 /** @type {?function (Event=)} */ Window.prototype.onsubmit;
+/** @type {?function (Event)} */ Window.prototype.onunhandledrejection;
 /** @type {?function (Event)} */ Window.prototype.onunload;
 /** @type {?function (Event)} */ Window.prototype.onwheel;
+/** @type {?function (Event)} */ Window.prototype.onstorage;

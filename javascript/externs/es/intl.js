@@ -26,7 +26,7 @@ var Intl = {};
 
 /**
  * NOTE: this API is not from ecma402 and is subject to change.
- * @param {string|Array.<string>=} opt_locales
+ * @param {string|Array<string>=} opt_locales
  * @param {{type: (string|undefined)}=}
  *         opt_options
  * @constructor
@@ -35,6 +35,7 @@ Intl.v8BreakIterator = function(opt_locales, opt_options) {};
 
 /**
  * @param {string} text
+ * @return {undefined}
  */
 Intl.v8BreakIterator.prototype.adoptText = function(text) {};
 
@@ -60,7 +61,7 @@ Intl.v8BreakIterator.prototype.next = function() {};
 
 /**
  * @constructor
- * @param {string|Array.<string>=} opt_locales
+ * @param {string|Array<string>=} opt_locales
  * @param {{usage: (string|undefined), localeMatcher: (string|undefined),
  *     sensitivity: (string|undefined), ignorePunctuation: (boolean|undefined),
  *     numeric: (boolean|undefined), caseFirst: (string|undefined)}=}
@@ -69,8 +70,9 @@ Intl.v8BreakIterator.prototype.next = function() {};
 Intl.Collator = function(opt_locales, opt_options) {};
 
 /**
- * @param {Array.<string>} locales
+ * @param {Array<string>} locales
  * @param {{localeMatcher: (string|undefined)}=} opt_options
+ * @return {Array<string>}
  */
 Intl.Collator.supportedLocalesOf = function(locales, opt_options) {};
 
@@ -90,7 +92,7 @@ Intl.Collator.prototype.resolvedOptions = function() {};
 
 /**
  * @constructor
- * @param {string|Array.<string>=} opt_locales
+ * @param {string|Array<string>=} opt_locales
  * @param {{localeMatcher: (string|undefined), useGrouping: (boolean|undefined),
  *     numberingSystem: (string|undefined), style: (string|undefined),
  *     currency: (string|undefined), currencyDisplay: (string|undefined),
@@ -104,8 +106,9 @@ Intl.Collator.prototype.resolvedOptions = function() {};
 Intl.NumberFormat = function(opt_locales, opt_options) {};
 
 /**
- * @param {Array.<string>} locales
+ * @param {Array<string>} locales
  * @param {{localeMatcher: (string|undefined)}=} opt_options
+ * @return {Array<string>}
  */
 Intl.NumberFormat.supportedLocalesOf = function(locales, opt_options) {};
 
@@ -114,6 +117,13 @@ Intl.NumberFormat.supportedLocalesOf = function(locales, opt_options) {};
  * @return {string}
  */
 Intl.NumberFormat.prototype.format = function(num) {};
+
+/**
+ * @param {number} num
+ * @return {!Array<{type: string, value: string}>}
+ * @see http://www.ecma-international.org/ecma-402/#sec-intl.numberformat.prototype.formattoparts
+ */
+Intl.NumberFormat.prototype.formatToParts = function(num) {};
 
 /**
  * @return {{locale: string, numberingSystem: string, style: string,
@@ -126,7 +136,7 @@ Intl.NumberFormat.prototype.resolvedOptions = function() {};
 
 /**
  * @constructor
- * @param {string|Array.<string>=} opt_locales
+ * @param {string|Array<string>=} opt_locales
  * @param {{localeMatcher: (string|undefined),
  *    formatMatcher: (string|undefined), calendar: (string|undefined),
  *    numberingSystem: (string|undefined), tz: (string|undefined),
@@ -140,16 +150,23 @@ Intl.NumberFormat.prototype.resolvedOptions = function() {};
 Intl.DateTimeFormat = function(opt_locales, opt_options) {};
 
 /**
- * @param {Array.<string>} locales
+ * @param {Array<string>} locales
  * @param {{localeMatcher: string}=} opt_options
+ * @return {Array<string>}
  */
 Intl.DateTimeFormat.supportedLocalesOf = function(locales, opt_options) {};
 
 /**
- * @param {number} date
+ * @param {(!Date|number)=} date
  * @return {string}
  */
 Intl.DateTimeFormat.prototype.format = function(date) {};
+
+/**
+ * @param {(!Date|number)=} date
+ * @return {Array<{type: string, value: string}>}
+ */
+Intl.DateTimeFormat.prototype.formatToParts = function(date) {};
 
 /**
  * @return {{locale: string, calendar: string, numberingSystem: string,
@@ -161,3 +178,74 @@ Intl.DateTimeFormat.prototype.format = function(date) {};
  *    hour12: (boolean|undefined)}}
  */
 Intl.DateTimeFormat.prototype.resolvedOptions = function() {};
+
+/**
+ * @constructor
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules#Syntax
+ * @param {string|Array<string>=} opt_locales
+ * @param {{localeMatcher: (string|undefined), type: (string|undefined)}=}
+ *         opt_options
+ */
+Intl.PluralRules = function(opt_locales, opt_options) {};
+
+/**
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules/supportedLocalesOf#Syntax
+ * @param {Array<string>} locales
+ * @param {{localeMatcher: string}=} opt_options
+ * @return {Array<string>}
+ */
+Intl.PluralRules.supportedLocalesOf = function(locales, opt_options) {};
+
+/**
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules/resolvedOptions#Syntax
+ * @return {{locale: string, pluralCategories: Array<string>, type: string}}
+ */
+Intl.PluralRules.prototype.resolvedOptions = function() {};
+
+/**
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules/select#Syntax
+ * @param {number} number
+ * @return {string}
+ */
+Intl.PluralRules.prototype.select = function(number) {};
+
+/**
+ * @constructor
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat#Syntax
+ * @param {string|Array<string>=} opt_locales
+ * @param {{localeMatcher: (string|undefined),
+ *    numeric: (string|undefined),
+ *    style: (string|undefined)}=}
+ *        opt_options
+ */
+Intl.RelativeTimeFormat = function(opt_locales, opt_options) {};
+
+/**
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat/supportedLocalesOf#Syntax
+ * @param {Array<string>} locales
+ * @param {{localeMatcher: string}=} opt_options
+ * @return {Array<string>}
+ */
+Intl.RelativeTimeFormat.supportedLocalesOf = function(locales, opt_options) {};
+
+/**
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat/format#Syntax
+ * @param {number} value
+ * @param {string} unit
+ * @return {string}
+ */
+Intl.RelativeTimeFormat.prototype.format = function(value, unit) {};
+
+/**
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat/formatToParts#Syntax
+ * @param {number} value
+ * @param {string} unit
+ * @return {Array<string>}
+ */
+Intl.RelativeTimeFormat.prototype.formatToParts = function(value, unit) {};
+
+/**
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat/resolvedOptions#Syntax
+ * @return {{locale: string, pluralCategories: Array<string>, type: string}}
+ */
+Intl.RelativeTimeFormat.prototype.resolvedOptions = function() {};
