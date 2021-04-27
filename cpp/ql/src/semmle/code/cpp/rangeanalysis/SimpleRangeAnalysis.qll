@@ -1626,7 +1626,9 @@ private module SimpleRangeAnalysisCached {
   private predicate exprThatCanOverflow(Expr e) {
     e instanceof UnaryArithmeticOperation or
     e instanceof BinaryArithmeticOperation or
-    e instanceof LShiftExpr
+    e instanceof AssignArithmeticOperation or
+    e instanceof LShiftExpr or
+    e instanceof AssignLShiftExpr
   }
 
   /**
