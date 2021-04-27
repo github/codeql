@@ -39,7 +39,7 @@ class RegexSink extends DataFlow::ExprNode {
         m.getDeclaringType().hasQualifiedName("org.apache.commons.lang3", "RegExUtils") and
         (
           ma.getArgument(1) = this.asExpr() and
-          m.getParameterType(1).(Class) instanceof TypeString and
+          m.getParameterType(1) instanceof TypeString and
           m.hasName([
               "removeAll", "removeFirst", "removePattern", "replaceAll", "replaceFirst",
               "replacePattern"
