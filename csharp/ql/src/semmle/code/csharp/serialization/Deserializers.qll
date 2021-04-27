@@ -81,6 +81,7 @@ private class BinaryFormatterClass extends Class {
   }
 }
 
+/** `System.Runtime.Serialization.Formatters.Binary.BinaryFormatter.Deserialize` method */
 class BinaryFormatterDeserializeMethod extends Method, UnsafeDeserializer {
   BinaryFormatterDeserializeMethod() {
     this.getDeclaringType() instanceof BinaryFormatterClass and
@@ -88,6 +89,7 @@ class BinaryFormatterDeserializeMethod extends Method, UnsafeDeserializer {
   }
 }
 
+/** `System.Runtime.Serialization.Formatters.Binary.BinaryFormatter.UnsafeDeserialize` method */
 class BinaryFormatterUnsafeDeserializeMethod extends Method, UnsafeDeserializer {
   BinaryFormatterUnsafeDeserializeMethod() {
     this.getDeclaringType() instanceof BinaryFormatterClass and
@@ -95,6 +97,7 @@ class BinaryFormatterUnsafeDeserializeMethod extends Method, UnsafeDeserializer 
   }
 }
 
+/** `System.Runtime.Serialization.Formatters.Binary.BinaryFormatter.UnsafeDeserializeMethodResponse` method */
 class BinaryFormatterUnsafeDeserializeMethodResponseMethod extends Method, UnsafeDeserializer {
   BinaryFormatterUnsafeDeserializeMethodResponseMethod() {
     this.getDeclaringType() instanceof BinaryFormatterClass and
@@ -109,6 +112,7 @@ private class SoapFormatterClass extends Class {
   }
 }
 
+/** `System.Runtime.Serialization.Formatters.Soap.SoapFormatter.Deserialize` method */
 class SoapFormatterDeserializeMethod extends Method, UnsafeDeserializer {
   SoapFormatterDeserializeMethod() {
     this.getDeclaringType() instanceof SoapFormatterClass and
@@ -121,6 +125,7 @@ private class ObjectStateFormatterClass extends Class {
   ObjectStateFormatterClass() { this.hasQualifiedName("System.Web.UI.ObjectStateFormatter") }
 }
 
+/** `System.Web.UI.ObjectStateFormatter.Deserialize` method */
 class ObjectStateFormatterDeserializeMethod extends Method, UnsafeDeserializer {
   ObjectStateFormatterDeserializeMethod() {
     this.getDeclaringType() instanceof ObjectStateFormatterClass and
@@ -135,6 +140,7 @@ class NetDataContractSerializerClass extends Class {
   }
 }
 
+/** `System.Runtime.Serialization.NetDataContractSerializer.Deserialize` method */
 class NetDataContractSerializerDeserializeMethod extends Method, UnsafeDeserializer {
   NetDataContractSerializerDeserializeMethod() {
     this.getDeclaringType() instanceof NetDataContractSerializerClass and
@@ -142,6 +148,7 @@ class NetDataContractSerializerDeserializeMethod extends Method, UnsafeDeseriali
   }
 }
 
+/** `System.Runtime.Serialization.NetDataContractSerializer.ReadObject` method */
 class NetDataContractSerializerReadObjectMethod extends Method, UnsafeDeserializer {
   NetDataContractSerializerReadObjectMethod() {
     this.getDeclaringType() instanceof NetDataContractSerializerClass and
@@ -156,6 +163,7 @@ class DataContractJsonSerializerClass extends Class {
   }
 }
 
+/** `System.Runtime.Serialization.Json.DataContractJsonSerializer.ReadObject` method */
 class DataContractJsonSerializerReadObjectMethod extends Method, UnsafeDeserializer {
   DataContractJsonSerializerReadObjectMethod() {
     this.getDeclaringType() instanceof DataContractJsonSerializerClass and
@@ -170,6 +178,7 @@ class JavaScriptSerializerClass extends Class {
   }
 }
 
+/** `System.Web.Script.Serialization.JavaScriptSerializer.Deserialize` method */
 class JavaScriptSerializerClassDeserializeMethod extends Method, UnsafeDeserializer {
   JavaScriptSerializerClassDeserializeMethod() {
     this.getDeclaringType() instanceof JavaScriptSerializerClass and
@@ -177,6 +186,7 @@ class JavaScriptSerializerClassDeserializeMethod extends Method, UnsafeDeseriali
   }
 }
 
+/** `System.Web.Script.Serialization.JavaScriptSerializer.DeserializeObject` method */
 class JavaScriptSerializerClassDeserializeObjectMethod extends Method, UnsafeDeserializer {
   JavaScriptSerializerClassDeserializeObjectMethod() {
     this.getDeclaringType() instanceof JavaScriptSerializerClass and
@@ -191,6 +201,7 @@ class XmlObjectSerializerClass extends Class {
   }
 }
 
+/** `System.Runtime.Serialization.XmlObjectSerializer.ReadObject` method */
 class XmlObjectSerializerReadObjectMethod extends Method, UnsafeDeserializer {
   XmlObjectSerializerReadObjectMethod() {
     this.getDeclaringType() instanceof XmlObjectSerializerClass and
@@ -203,6 +214,7 @@ class XmlSerializerClass extends Class {
   XmlSerializerClass() { this.hasQualifiedName("System.Xml.Serialization.XmlSerializer") }
 }
 
+/** `System.Xml.Serialization.XmlSerializer.Deserialize` method */
 class XmlSerializerDeserializeMethod extends Method, UnsafeDeserializer {
   XmlSerializerDeserializeMethod() {
     this.getDeclaringType() instanceof XmlSerializerClass and
@@ -217,6 +229,7 @@ class DataContractSerializerClass extends Class {
   }
 }
 
+/** `System.Runtime.Serialization.DataContractSerializer.ReadObject` method */
 class DataContractSerializerReadObjectMethod extends Method, UnsafeDeserializer {
   DataContractSerializerReadObjectMethod() {
     this.getDeclaringType() instanceof DataContractSerializerClass and
@@ -229,6 +242,7 @@ class XmlMessageFormatterClass extends Class {
   XmlMessageFormatterClass() { this.hasQualifiedName("System.Messaging.XmlMessageFormatter") }
 }
 
+/** `System.Messaging.XmlMessageFormatter.Read` method */
 class XmlMessageFormatterReadMethod extends Method, UnsafeDeserializer {
   XmlMessageFormatterReadMethod() {
     this.getDeclaringType() instanceof XmlMessageFormatterClass and
@@ -241,6 +255,7 @@ private class LosFormatterClass extends Class {
   LosFormatterClass() { this.hasQualifiedName("System.Web.UI.LosFormatter") }
 }
 
+/** `System.Web.UI.LosFormatter.Deserialize` method */
 class LosFormatterDeserializeMethod extends Method, UnsafeDeserializer {
   LosFormatterDeserializeMethod() {
     this.getDeclaringType() instanceof LosFormatterClass and
@@ -253,6 +268,7 @@ private class FastJsonClass extends Class {
   FastJsonClass() { this.hasQualifiedName("fastJSON.JSON") }
 }
 
+/** `fastJSON.JSON.ToObject` method */
 class FastJsonClassToObjectMethod extends Method, UnsafeDeserializer {
   FastJsonClassToObjectMethod() {
     this.getDeclaringType() instanceof FastJsonClass and
@@ -266,6 +282,7 @@ private class ActivityClass extends Class {
   ActivityClass() { this.hasQualifiedName("System.Workflow.ComponentModel.Activity") }
 }
 
+/** `System.Workflow.ComponentModel.Activity.Load` method */
 class ActivityLoadMethod extends Method, UnsafeDeserializer {
   ActivityLoadMethod() {
     this.getDeclaringType() instanceof ActivityClass and
@@ -278,6 +295,7 @@ private class ResourceReaderClass extends Class {
   ResourceReaderClass() { this.hasQualifiedName("System.Resources.ResourceReader") }
 }
 
+/** `System.Resources.ResourceReader` constructor */
 class ResourceReaderConstructor extends Constructor, UnsafeDeserializer {
   ResourceReaderConstructor() {
     this.getDeclaringType() instanceof ResourceReaderClass and
@@ -290,6 +308,7 @@ private class BinaryMessageFormatterClass extends Class {
   BinaryMessageFormatterClass() { this.hasQualifiedName("System.Messaging.BinaryMessageFormatter") }
 }
 
+/** `System.Messaging.BinaryMessageFormatter.Read` method */
 class BinaryMessageFormatterReadMethod extends Method, UnsafeDeserializer {
   BinaryMessageFormatterReadMethod() {
     this.getDeclaringType() instanceof BinaryMessageFormatterClass and
@@ -302,6 +321,7 @@ private class XamlReaderClass extends Class {
   XamlReaderClass() { this.hasQualifiedName("System.Windows.Markup.XamlReader") }
 }
 
+/** `System.Windows.Markup.XamlReader.Parse` method */
 class XamlReaderParseMethod extends Method, UnsafeDeserializer {
   XamlReaderParseMethod() {
     this.getDeclaringType() instanceof XamlReaderClass and
@@ -310,6 +330,7 @@ class XamlReaderParseMethod extends Method, UnsafeDeserializer {
   }
 }
 
+/** `System.Windows.Markup.XamlReader.Load` method */
 class XamlReaderLoadMethod extends Method, UnsafeDeserializer {
   XamlReaderLoadMethod() {
     this.getDeclaringType() instanceof XamlReaderClass and
@@ -318,6 +339,7 @@ class XamlReaderLoadMethod extends Method, UnsafeDeserializer {
   }
 }
 
+/** `System.Windows.Markup.XamlReader.LoadAsync` method */
 class XamlReaderLoadAsyncMethod extends Method, UnsafeDeserializer {
   XamlReaderLoadAsyncMethod() {
     this.getDeclaringType() instanceof XamlReaderClass and
@@ -330,6 +352,7 @@ private class ProxyObjectClass extends Class {
   ProxyObjectClass() { this.hasQualifiedName("Microsoft.Web.Design.Remote.ProxyObject") }
 }
 
+/** `Microsoft.Web.Design.Remote.ProxyObject.DecodeValue` method */
 class ProxyObjectDecodeValueMethod extends Method, UnsafeDeserializer {
   ProxyObjectDecodeValueMethod() {
     this.getDeclaringType() instanceof ProxyObjectClass and
@@ -337,6 +360,7 @@ class ProxyObjectDecodeValueMethod extends Method, UnsafeDeserializer {
   }
 }
 
+/** `Microsoft.Web.Design.Remote.ProxyObject.DecodeSerializedObject` method */
 class ProxyObjectDecodeSerializedObjectMethod extends Method, UnsafeDeserializer {
   ProxyObjectDecodeSerializedObjectMethod() {
     this.getDeclaringType() instanceof ProxyObjectClass and
@@ -349,6 +373,7 @@ private class JaysonConverterClass extends Class {
   JaysonConverterClass() { this.hasQualifiedName("Sweet.Jayson.JaysonConverter") }
 }
 
+/** `Sweet.Jayson.JaysonConverter.ToObject` method */
 class JaysonConverterToObjectMethod extends Method, UnsafeDeserializer {
   JaysonConverterToObjectMethod() {
     this.getDeclaringType() instanceof JaysonConverterClass and
@@ -364,6 +389,7 @@ private class ServiceStackTextJsonSerializerClass extends Class {
   }
 }
 
+/** `ServiceStack.Text.JsonSerializer.DeserializeFromString` method */
 class ServiceStackTextJsonSerializerDeserializeFromStringMethod extends Method, UnsafeDeserializer {
   ServiceStackTextJsonSerializerDeserializeFromStringMethod() {
     this.getDeclaringType() instanceof ServiceStackTextJsonSerializerClass and
@@ -372,6 +398,7 @@ class ServiceStackTextJsonSerializerDeserializeFromStringMethod extends Method, 
   }
 }
 
+/** `ServiceStack.Text.JsonSerializer.DeserializeFromReader` method */
 class ServiceStackTextJsonSerializerDeserializeFromReaderMethod extends Method, UnsafeDeserializer {
   ServiceStackTextJsonSerializerDeserializeFromReaderMethod() {
     this.getDeclaringType() instanceof ServiceStackTextJsonSerializerClass and
@@ -380,6 +407,7 @@ class ServiceStackTextJsonSerializerDeserializeFromReaderMethod extends Method, 
   }
 }
 
+/** `ServiceStack.Text.JsonSerializer.DeserializeFromStream` method */
 class ServiceStackTextJsonSerializerDeserializeFromStreamMethod extends Method, UnsafeDeserializer {
   ServiceStackTextJsonSerializerDeserializeFromStreamMethod() {
     this.getDeclaringType() instanceof ServiceStackTextJsonSerializerClass and
@@ -395,6 +423,7 @@ private class ServiceStackTextTypeSerializerClass extends Class {
   }
 }
 
+/** `ServiceStack.Text.TypeSerializer.DeserializeFromString` method */
 class ServiceStackTextTypeSerializerDeserializeFromStringMethod extends Method, UnsafeDeserializer {
   ServiceStackTextTypeSerializerDeserializeFromStringMethod() {
     this.getDeclaringType() instanceof ServiceStackTextTypeSerializerClass and
@@ -403,6 +432,7 @@ class ServiceStackTextTypeSerializerDeserializeFromStringMethod extends Method, 
   }
 }
 
+/** `ServiceStack.Text.TypeSerializer.DeserializeFromReader` method */
 class ServiceStackTextTypeSerializerDeserializeFromReaderMethod extends Method, UnsafeDeserializer {
   ServiceStackTextTypeSerializerDeserializeFromReaderMethod() {
     this.getDeclaringType() instanceof ServiceStackTextTypeSerializerClass and
@@ -411,6 +441,7 @@ class ServiceStackTextTypeSerializerDeserializeFromReaderMethod extends Method, 
   }
 }
 
+/** `ServiceStack.Text.TypeSerializer.DeserializeFromStream` method */
 class ServiceStackTextTypeSerializerDeserializeFromStreamMethod extends Method, UnsafeDeserializer {
   ServiceStackTextTypeSerializerDeserializeFromStreamMethod() {
     this.getDeclaringType() instanceof ServiceStackTextTypeSerializerClass and
@@ -424,6 +455,7 @@ private class ServiceStackTextCsvSerializerClass extends Class {
   ServiceStackTextCsvSerializerClass() { this.hasQualifiedName("ServiceStack.Text.CsvSerializer") }
 }
 
+/** `ServiceStack.Text.CsvSerializer.DeserializeFromString` method */
 class ServiceStackTextCsvSerializerDeserializeFromStringMethod extends Method, UnsafeDeserializer {
   ServiceStackTextCsvSerializerDeserializeFromStringMethod() {
     this.getDeclaringType() instanceof ServiceStackTextCsvSerializerClass and
@@ -432,6 +464,7 @@ class ServiceStackTextCsvSerializerDeserializeFromStringMethod extends Method, U
   }
 }
 
+/** `ServiceStack.Text.TypeSeriCsvSerializeralizer.DeserializeFromReader` method */
 class ServiceStackTextCsvSerializerDeserializeFromReaderMethod extends Method, UnsafeDeserializer {
   ServiceStackTextCsvSerializerDeserializeFromReaderMethod() {
     this.getDeclaringType() instanceof ServiceStackTextCsvSerializerClass and
@@ -440,6 +473,7 @@ class ServiceStackTextCsvSerializerDeserializeFromReaderMethod extends Method, U
   }
 }
 
+/** `ServiceStack.Text.CsvSerializer.DeserializeFromStream` method */
 class ServiceStackTextCsvSerializerDeserializeFromStreamMethod extends Method, UnsafeDeserializer {
   ServiceStackTextCsvSerializerDeserializeFromStreamMethod() {
     this.getDeclaringType() instanceof ServiceStackTextCsvSerializerClass and
@@ -453,6 +487,7 @@ private class ServiceStackTextXmlSerializerClass extends Class {
   ServiceStackTextXmlSerializerClass() { this.hasQualifiedName("ServiceStack.Text.XmlSerializer") }
 }
 
+/** `ServiceStack.Text.XmlSerializer.DeserializeFromString` method */
 class ServiceStackTextXmlSerializerDeserializeFromStringMethod extends Method, UnsafeDeserializer {
   ServiceStackTextXmlSerializerDeserializeFromStringMethod() {
     this.getDeclaringType() instanceof ServiceStackTextXmlSerializerClass and
@@ -461,6 +496,7 @@ class ServiceStackTextXmlSerializerDeserializeFromStringMethod extends Method, U
   }
 }
 
+/** `ServiceStack.Text.XmlSerializer.DeserializeFromReader` method */
 class ServiceStackTextXmlSerializerDeserializeFromReaderMethod extends Method, UnsafeDeserializer {
   ServiceStackTextXmlSerializerDeserializeFromReaderMethod() {
     this.getDeclaringType() instanceof ServiceStackTextXmlSerializerClass and
@@ -469,6 +505,7 @@ class ServiceStackTextXmlSerializerDeserializeFromReaderMethod extends Method, U
   }
 }
 
+/** `ServiceStack.Text.XmlSerializer.DeserializeFromStream` method */
 class ServiceStackTextXmlSerializerDeserializeFromStreamMethod extends Method, UnsafeDeserializer {
   ServiceStackTextXmlSerializerDeserializeFromStreamMethod() {
     this.getDeclaringType() instanceof ServiceStackTextXmlSerializerClass and

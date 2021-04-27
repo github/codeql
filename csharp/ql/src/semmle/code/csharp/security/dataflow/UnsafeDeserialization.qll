@@ -47,11 +47,11 @@ module UnsafeDeserialization {
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
-  class RemoteSource extends Source {
+  private class RemoteSource extends Source {
     RemoteSource() { this instanceof RemoteFlowSource }
   }
 
-  class LocalSource extends Source {
+  private class LocalSource extends Source {
     LocalSource() { this instanceof LocalFlowSource }
   }
 
