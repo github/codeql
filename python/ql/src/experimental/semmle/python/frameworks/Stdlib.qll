@@ -60,7 +60,7 @@ private module Re {
       exists(DataFlow::CallCfgNode patternCall, DataFlow::AttrRead reMethod |
         this.getFunction() = reMethod and
         patternCall = API::moduleImport("re").getMember("compile").getACall() and
-        patternCall = reMethod.getObject().getALocalSource() and
+        patternCall.flowsTo(reMethod.getObject()) and
         reMethod.getAttributeName() instanceof RegexExecutionMethods and
         regexNode = patternCall.getArg(0)
       )

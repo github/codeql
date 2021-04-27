@@ -17,7 +17,7 @@ private import experimental.semmle.python.Frameworks
 /** Provides classes for modeling Regular Expression-related APIs. */
 module RegexExecution {
   /**
-   * A data-flow node that collects methods immediately executing an expression.
+   * A data-flow node that executes a regular expression.
    *
    * Extend this class to model new APIs. If you want to refine existing API models,
    * extend `RegexExecution` instead.
