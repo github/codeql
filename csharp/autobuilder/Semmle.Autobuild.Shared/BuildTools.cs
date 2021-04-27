@@ -69,7 +69,10 @@ namespace Semmle.Autobuild.Shared
                     }
                     yield break;
                 }
+            } else {
+                logger.Log(Severity.Info, "Could not find vswhere.exe, using default VcVarsBatFile");
             }
+
 
             // vswhere not installed or didn't run correctly - return legacy Visual Studio versions
             yield return new VcVarsBatFile(actions.PathCombine(programFilesx86, @"Microsoft Visual Studio 14.0\VC\vcvarsall.bat"), 14);
