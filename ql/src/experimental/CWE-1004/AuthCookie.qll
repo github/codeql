@@ -10,21 +10,14 @@ import go
  * This should cover most typical patterns...
  */
 DataFlow::Node getValueForFieldWrite(StructLit sl, string field) {
-  exists(Write w, DataFlow::Node base, Field f, DataFlow::Node rhs |
+  exists(Write w, DataFlow::Node base, Field f |
     f.getName() = field and
-    w.writesField(base, f, rhs) and
-    result = rhs and
+    w.writesField(base, f, result) and
     (
       sl = base.asExpr()
       or
-      exists(VariableName vn |
-        vn = base.asExpr() and
-        exists(DataFlow::Node creation |
-          DataFlow::localFlow(creation, base) and
-          creation.asExpr() = sl and
-          base.asExpr() = vn
-        )
-      )
+      base.asExpr() instanceof VariableName and
+      base.getAPredecessor*().asExpr() = sl
     )
   )
 }
@@ -44,10 +37,7 @@ class HttpOnlyCookieTrackingConfiguration extends TaintTracking::Configuration {
         or
         exists(DataFlow::Node rhs |
           rhs = getValueForFieldWrite(sl, "HttpOnly") and
-          exists(DataFlow::Node valSrc |
-            DataFlow::localFlow(valSrc, rhs) and
-            valSrc.asExpr().getBoolValue() = false
-          )
+          rhs.getAPredecessor*().asExpr().getBoolValue() = false
         )
       )
     )
@@ -94,10 +84,7 @@ class AuthCookieNameConfiguration extends TaintTracking::Configuration {
       sl.getType().hasQualifiedName("net/http", "Cookie") and
       exists(DataFlow::Node rhs |
         rhs = getValueForFieldWrite(sl, "Name") and
-        exists(DataFlow::Node valSrc |
-          DataFlow::localFlow(valSrc, rhs) and
-          isAuthVariable(valSrc.asExpr())
-        )
+        isAuthVariable(rhs.getAPredecessor*().asExpr())
       )
     )
   }
@@ -157,8 +144,7 @@ class SessionOptionsTrackingConfiguration extends TaintTracking::Configuration {
   override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(Field f, DataFlow::Write w, DataFlow::Node base |
       f.getQualifiedName() = "github.com/gorilla/sessions.Session.Options" and
-      w.writesField(base, f, _) and
-      pred = w.getRhs() and
+      w.writesField(base, f, pred) and
       succ = base
     )
   }

@@ -15,14 +15,18 @@
 import go
 import AuthCookie
 
-from Expr expr
-where
-  exists(SetCookieSink sink, DataFlow::Node source |
-    exists(HttpOnlyCookieTrackingConfiguration httpOnlyCfg | httpOnlyCfg.hasFlow(source, sink)) and
-    exists(AuthCookieNameConfiguration cookieNameCfg | cookieNameCfg.hasFlow(source, sink)) and
+predicate isNetHttpCookieFlow(Expr expr) {
+  exists(
+    HttpOnlyCookieTrackingConfiguration httpOnlyCfg, AuthCookieNameConfiguration cookieNameCfg,
+    SetCookieSink sink, DataFlow::Node source
+  |
+    httpOnlyCfg.hasFlow(source, sink) and
+    cookieNameCfg.hasFlow(source, sink) and
     sink.asExpr() = expr
   )
-  or
+}
+
+predicate isGinContextCookieFlow(Expr expr) {
   exists(CallExpr c |
     c.getTarget().getQualifiedName() = "github.com/gin-gonic/gin.Context.SetCookie" and
     c.getArgument(6) = expr and
@@ -37,7 +41,9 @@ where
       isAuthVariable(nameSrc.asExpr())
     )
   )
-  or
+}
+
+predicate isGorillaSessionsCookieFlow(Expr expr) {
   exists(DataFlow::Node sessionSave |
     sessionSave.asExpr() = expr and
     exists(CookieStoreSaveTrackingConfiguration cfg | cfg.hasFlow(_, sessionSave)) and
@@ -60,4 +66,11 @@ where
       )
     )
   )
+}
+
+from Expr expr
+where
+  isNetHttpCookieFlow(expr) or
+  isGinContextCookieFlow(expr) or
+  isGorillaSessionsCookieFlow(expr)
 select expr, "Cookie attribute 'HttpOnly' is not set to true."
