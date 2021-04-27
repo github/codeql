@@ -807,17 +807,29 @@ class SystemTextStringBuilderFlow extends LibraryTypeDataFlow, SystemTextStringB
       sinkAp = AccessPath::empty() and
       preservesValue = false
       or
-      exists(int i, Type t |
-        name.regexpMatch("Append(Format|Line)?") and
-        t = m.getParameter(i).getType() and
-        source = TCallableFlowSourceArg(i) and
+      name.regexpMatch("Append(Format|Line|Join)?") and
+      preservesValue = true and
+      (
+        exists(int i, Type t |
+          t = m.getParameter(i).getType() and
+          source = TCallableFlowSourceArg(i) and
+          sink = TCallableFlowSinkQualifier() and
+          sinkAp = AccessPath::element()
+        |
+          (
+            t instanceof StringType or
+            t instanceof ObjectType
+          ) and
+          sourceAp = AccessPath::empty()
+          or
+          isCollectionType(t) and
+          sourceAp = AccessPath::element()
+        )
+        or
+        source = TCallableFlowSourceQualifier() and
         sourceAp = AccessPath::empty() and
-        sink = [TCallableFlowSinkQualifier().(TCallableFlowSink), TCallableFlowSinkReturn()] and
-        sinkAp = AccessPath::element() and
-        preservesValue = true
-      |
-        t instanceof StringType or
-        t instanceof ObjectType
+        sink = TCallableFlowSinkReturn() and
+        sinkAp = AccessPath::empty()
       )
     )
   }
