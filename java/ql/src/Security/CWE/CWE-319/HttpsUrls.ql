@@ -36,7 +36,7 @@ class HTTPStringToURLOpenMethodFlowConfig extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof HTTPString }
 
-  override predicate isSink(DataFlow::Node sink) { sinkNode(sink, "open-url") }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof URLOpenSink }
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
     exists(UrlConstructorCall u |
@@ -48,6 +48,13 @@ class HTTPStringToURLOpenMethodFlowConfig extends TaintTracking::Configuration {
   override predicate isSanitizer(DataFlow::Node node) {
     node.getType() instanceof PrimitiveType or node.getType() instanceof BoxedType
   }
+}
+
+/**
+ * A sink that represents a URL opening method call, such as a call to `java.net.URL.openConnection()`.
+ */
+private class URLOpenSink extends DataFlow::Node {
+  URLOpenSink() { sinkNode(this, "open-url") }
 }
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, MethodAccess m, HTTPString s
