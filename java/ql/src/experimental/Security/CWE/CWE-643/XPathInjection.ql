@@ -15,6 +15,14 @@ import semmle.code.java.dataflow.TaintTracking
 import DataFlow::PathGraph
 import semmle.code.java.security.XPath
 
+class XPathInjectionConfiguration extends TaintTracking::Configuration {
+  XPathInjectionConfiguration() { this = "XPathInjection" }
+
+  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+
+  override predicate isSink(DataFlow::Node sink) { sink instanceof XPathInjectionSink }
+}
+
 from DataFlow::PathNode source, DataFlow::PathNode sink, XPathInjectionConfiguration c
 where c.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "$@ flows to here and is used in an XPath expression.",

@@ -55,11 +55,4 @@ class XPathInjectionSink extends DataFlow::ExprNode {
   XPathInjectionSink() { exists(XPathSink sink | this.getExpr() = sink.getSink()) }
 }
 
-/** A configuration that tracks data from a remote input source to a XPath evaluation sink. */
-class XPathInjectionConfiguration extends TaintTracking::Configuration {
-  XPathInjectionConfiguration() { this = "XPathInjection" }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof XPathInjectionSink }
-}
