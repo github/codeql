@@ -192,6 +192,19 @@ class RegExpQuantifier extends RegExpTerm, @regexp_quantifier {
 }
 
 /**
+ * A regular expression term that permits unlimited repetitions.
+ */
+class InfiniteRepetitionQuantifier extends RegExpQuantifier {
+  InfiniteRepetitionQuantifier() {
+    this instanceof RegExpPlus
+    or
+    this instanceof RegExpStar
+    or
+    this instanceof RegExpRange and not exists(this.(RegExpRange).getUpperBound())
+  }
+}
+
+/**
  * An escaped regular expression term, that is, a regular expression
  * term starting with a backslash.
  *
