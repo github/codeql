@@ -13,8 +13,6 @@
 
 package org.dom4j;
 
-import java.util.List;
-
 public interface Document extends Branch {
 
 }
