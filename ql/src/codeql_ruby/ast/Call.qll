@@ -136,6 +136,8 @@ private class IdentifierMethodCall extends MethodCall, TIdentifierMethodCall {
   IdentifierMethodCall() { this = TIdentifierMethodCall(g) }
 
   final override string getMethodName() { result = getMethodName(this, g.getValue()) }
+
+  final override Self getReceiver() { result = TIdentifierMethodCallImplicitSelf(g) }
 }
 
 private class ScopeResolutionMethodCall extends MethodCall, TScopeResolutionMethodCall {
@@ -159,6 +161,10 @@ private class RegularMethodCall extends MethodCall, TRegularMethodCall {
     or
     not exists(g.getReceiver()) and
     toGenerated(result) = g.getMethod().(Generated::ScopeResolution).getScope()
+    or
+    not exists(g.getReceiver()) and
+    not exists(g.getMethod().(Generated::ScopeResolution).getScope()) and
+    result = TRegularMethodCallImplicitSelf(g)
   }
 
   final override string getMethodName() {

@@ -32,14 +32,16 @@ class AstNode extends TAstNode {
   /** Gets the enclosing module, if any. */
   ModuleBase getEnclosingModule() {
     exists(Scope::Range s |
-      s = scopeOf(toGenerated(this)) and toGenerated(result) = s.getEnclosingModule()
+      s = scopeOf(toGeneratedInclSynth(this)) and
+      toGeneratedInclSynth(result) = s.getEnclosingModule()
     )
   }
 
   /** Gets the enclosing method, if any. */
   MethodBase getEnclosingMethod() {
     exists(Scope::Range s |
-      s = scopeOf(toGenerated(this)) and toGenerated(result) = s.getEnclosingMethod()
+      s = scopeOf(toGeneratedInclSynth(this)) and
+      toGeneratedInclSynth(result) = s.getEnclosingMethod()
     )
   }
 
@@ -48,7 +50,7 @@ class AstNode extends TAstNode {
   string toString() { none() }
 
   /** Gets the location of this node. */
-  Location getLocation() { result = toGenerated(this).getLocation() }
+  Location getLocation() { result = toGeneratedInclSynth(this).getLocation() }
 
   /** Gets a child node of this `AstNode`. */
   final AstNode getAChild() { result = this.getAChild(_) }

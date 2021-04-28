@@ -103,6 +103,7 @@ private module Cached {
     TEndBlock(Generated::EndBlock g) or
     TEnsure(Generated::Ensure g) or
     TEqExpr(Generated::Binary g) { g instanceof @binary_equalequal } or
+    TExplicitSelf(Generated::Self g) or
     TExponentExpr(Generated::Binary g) { g instanceof @binary_starstar } or
     TFalseLiteral(Generated::False g) or
     TFloatLiteral(Generated::Float g) { not any(Generated::Rational r).getChild() = g } or
@@ -119,6 +120,7 @@ private module Cached {
     THashSplatParameter(Generated::HashSplatParameter g) or
     THereDoc(Generated::HeredocBeginning g) or
     TIdentifierMethodCall(Generated::Identifier g) { vcall(g) and not access(g, _) } or
+    TIdentifierMethodCallImplicitSelf(Generated::Identifier g) { vcall(g) and not access(g, _) } or
     TIf(Generated::If g) or
     TIfModifierExpr(Generated::IfModifier g) or
     TInstanceVariableAccess(Generated::InstanceVariable g, AST::InstanceVariable v) {
@@ -158,6 +160,11 @@ private module Cached {
     TRegexMatchExpr(Generated::Binary g) { g instanceof @binary_equaltilde } or
     TRegularArrayLiteral(Generated::Array g) or
     TRegularMethodCall(Generated::Call g) { not g.getMethod() instanceof Generated::Super } or
+    TRegularMethodCallImplicitSelf(Generated::Call g) {
+      not g.getMethod() instanceof Generated::Super and
+      not exists(g.getReceiver()) and
+      not exists(g.getMethod().(Generated::ScopeResolution).getScope())
+    } or
     TRegularStringLiteral(Generated::String g) or
     TRegularSuperCall(Generated::Call g) { g.getMethod() instanceof Generated::Super } or
     TRescueClause(Generated::Rescue g) or
@@ -179,7 +186,6 @@ private module Cached {
       i = g.getName() and
       not exists(Generated::Call c | c.getMethod() = g)
     } or
-    TSelf(Generated::Self g) or
     TSimpleParameter(Generated::Identifier g) { g instanceof Parameter::Range } or
     TSimpleSymbolLiteral(Generated::SimpleSymbol g) or
     TSingletonClass(Generated::SingletonClass g) or
@@ -223,7 +229,11 @@ private module Cached {
     TWhileModifierExpr(Generated::WhileModifier g) or
     TYieldCall(Generated::Yield g)
 
-  /** Gets the underlying TreeSitter entity for a given AST node. */
+  /**
+   * Gets the underlying TreeSitter entity for a given AST node. This does not
+   * include synthesized AST nodes, because they are not the primary AST node
+   * for any given generated node.
+   */
   cached
   Generated::AstNode toGenerated(AST::AstNode n) {
     n = TAddExpr(result) or
@@ -274,6 +284,7 @@ private module Cached {
     n = TEndBlock(result) or
     n = TEnsure(result) or
     n = TEqExpr(result) or
+    n = TExplicitSelf(result) or
     n = TExponentExpr(result) or
     n = TFalseLiteral(result) or
     n = TFloatLiteral(result) or
@@ -329,7 +340,6 @@ private module Cached {
     n = TReturnStmt(result) or
     n = TScopeResolutionConstantAccess(result, _) or
     n = TScopeResolutionMethodCall(result, _) or
-    n = TSelf(result) or
     n = TSimpleParameter(result) or
     n = TSimpleSymbolLiteral(result) or
     n = TSingletonClass(result) or
@@ -365,11 +375,24 @@ private module Cached {
     n = TWhileModifierExpr(result) or
     n = TYieldCall(result)
   }
+
+  /**
+   * Like `toGenerated`, but also returns generated nodes for synthesized AST
+   * nodes.
+   */
+  cached
+  Generated::AstNode toGeneratedInclSynth(AST::AstNode n) {
+    result = toGenerated(n) or
+    n = TIdentifierMethodCallImplicitSelf(result) or
+    n = TRegularMethodCallImplicitSelf(result)
+  }
 }
 
 import Cached
 
 TAstNode fromGenerated(Generated::AstNode n) { n = toGenerated(result) }
+
+TAstNode fromGeneratedInclSynth(Generated::AstNode n) { n = toGeneratedInclSynth(result) }
 
 class TCall = TMethodCall or TYieldCall;
 
@@ -391,6 +414,8 @@ class TIfExpr = TIf or TElsif;
 class TConditionalLoop = TWhileExpr or TUntilExpr or TWhileModifierExpr or TUntilModifierExpr;
 
 class TLoop = TConditionalLoop or TForExpr;
+
+class TSelf = TExplicitSelf or TIdentifierMethodCallImplicitSelf or TRegularMethodCallImplicitSelf;
 
 class TExpr =
   TSelf or TArgumentList or TRescueClause or TRescueModifierExpr or TPair or TStringConcatenation or
