@@ -356,10 +356,7 @@ abstract private class PartialDefinitionNode extends Node {
 private class PartialFieldDefinition extends AddressNodeStore, PartialDefinitionNode {
   FieldAddressInstruction fai;
 
-  PartialFieldDefinition() {
-    fai = this.getInstruction() and
-    addressFlowInstrRTC(fai, getDestinationAddress(_))
-  }
+  PartialFieldDefinition() { fai = this.getInstruction() }
 
   override Expr getDefinedExpr() {
     result = fai.getObjectAddress().getUnconvertedResultExpression()
@@ -369,10 +366,7 @@ private class PartialFieldDefinition extends AddressNodeStore, PartialDefinition
 private class PartialArrayDefinition extends AddressNodeStore, PartialDefinitionNode {
   LoadInstruction load;
 
-  PartialArrayDefinition() {
-    load = this.getInstruction() and
-    addressFlowInstrRTC(load, getDestinationAddress(_))
-  }
+  PartialArrayDefinition() { load = this.getInstruction() }
 
   override Expr getDefinedExpr() {
     result = load.getResultAddress().getUnconvertedResultExpression()
