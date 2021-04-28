@@ -13,14 +13,13 @@ An attack might look like this:
 </p>
 
 <ol>
-  <li>The vulnerable program connects to <code>https://example.com</code>.
-  <li>The attacker intercepts this connection and presents a valid, self-signed certificate for <code>https://example.com</code>.
-  <li>The vulnerable program calls the <code>checkServerTrusted</code> method to check whether it should trust the certificate.
-  <li>The <code>checkServerTrusted</code> method of your <code>TrustManager</code> does not throw a <code>CertificateException</code>.
-  <li>The vulnerable program accepts the certificate and proceeds with the connection since your <code>TrustManager</code> implicitly trusted it by not throwing an exception.
-  <li>The attacker can now read the data your program sends to <code>https://example.com</code> and/or alter its replies while the program thinks the connection is secure.
+  <li>The vulnerable program connects to <code>https://example.com</code>.</li>
+  <li>The attacker intercepts this connection and presents a valid, self-signed certificate for <code>https://example.com</code>.</li>
+  <li>The vulnerable program calls the <code>checkServerTrusted</code> method to check whether it should trust the certificate.</li>
+  <li>The <code>checkServerTrusted</code> method of your <code>TrustManager</code> does not throw a <code>CertificateException</code>.</li>
+  <li>The vulnerable program accepts the certificate and proceeds with the connection since your <code>TrustManager</code> implicitly trusted it by not throwing an exception.</li>
+  <li>The attacker can now read the data your program sends to <code>https://example.com</code> and/or alter its replies while the program thinks the connection is secure.</li>
 </ol>
-</p>
 </overview>
 
 <recommendation>
