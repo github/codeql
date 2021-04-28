@@ -50,6 +50,7 @@ namespace Semmle.Autobuild.Shared
                         logger.Log(Severity.Info, $"Found VS version {vsInstallation.Version} at path {vsInstallation.InstallationPath}");
                         var dot = vsInstallation.Version.IndexOf('.');
                         var majorVersionString = dot == -1 ? vsInstallation.Version : vsInstallation.Version.Substring(0, dot);
+                        logger.Log(Severity.Info, $"majorVersionString: {majorVersionString}");
                         if (int.TryParse(majorVersionString, out var majorVersion))
                         {
                             if (majorVersion < 15)

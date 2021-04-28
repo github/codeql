@@ -25,6 +25,7 @@ namespace Semmle.Autobuild.Shared
 
             if (vsTools is null && builder.ProjectsOrSolutionsToBuild.Any())
             {
+                builder.Log(Severity.Info, "Selecting MSBuild version based on projects and solutions");
                 var firstSolution = builder.ProjectsOrSolutionsToBuild.OfType<ISolution>().FirstOrDefault();
                 vsTools = firstSolution is not null
                                 ? BuildTools.FindCompatibleVcVars(builder.Actions, firstSolution)
@@ -132,6 +133,7 @@ namespace Semmle.Autobuild.Shared
 
             if (builder.Options.VsToolsVersion is not null)
             {
+                builder.Log(Severity.Info, $"Searching for Visual Studio {builder.Options.VsToolsVersion}");
                 if (int.TryParse(builder.Options.VsToolsVersion, out var msToolsVersion))
                 {
                     foreach (var b in BuildTools.VcVarsAllBatFiles(builder.Actions))
@@ -149,6 +151,8 @@ namespace Semmle.Autobuild.Shared
                 {
                     builder.Log(Severity.Error, "The format of vstools_version is incorrect. Please specify an integer.");
                 }
+            } else {
+                builder.Log(Severity.Info, "No VS tool version specified by config");
             }
 
             return vsTools;
