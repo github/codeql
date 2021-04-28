@@ -18,7 +18,7 @@ import semmle.code.java.security.Encryption
 import DataFlow::PathGraph
 
 /**
- * Models an insecure `X509TrustManager`.
+ * An insecure `X509TrustManager`.
  * An `X509TrustManager` is considered insecure if it never throws a `CertificateException`
  * thereby accepting any certificate as valid.
  */
@@ -40,13 +40,16 @@ private class CertificateException extends RefType {
 
 /**
  * Holds if:
- * - `m` may `throw` a `CertificateException`
- * - `m` calls another method that may throw
+ * - `m` may `throw` a `CertificateException`, or
+ * - `m` calls another method that may throw, or
  * - `m` calls a method declared to throw a `CertificateException`, but for which no source is available
  */
 private predicate mayThrowCertificateException(Method m) {
-  m.getBody().getAChild*().(ThrowStmt).getThrownExceptionType().getASupertype*() instanceof
-    CertificateException
+  exists(ThrowStmt throwStmt |
+    throwStmt.getThrownExceptionType().getASupertype*() instanceof CertificateException
+  |
+    throwStmt.getEnclosingCallable() = m
+  )
   or
   exists(Method otherMethod | m.polyCalls(otherMethod) |
     mayThrowCertificateException(otherMethod)
@@ -57,7 +60,7 @@ private predicate mayThrowCertificateException(Method m) {
 }
 
 /**
- * A configuration to model the flow of a `InsecureX509TrustManager` to an `SSLContext.init` call.
+ * A configuration to model the flow of an `InsecureX509TrustManager` to an `SSLContext.init` call.
  */
 class InsecureTrustManagerConfiguration extends TaintTracking::Configuration {
   InsecureTrustManagerConfiguration() { this = "InsecureTrustManagerConfiguration" }
