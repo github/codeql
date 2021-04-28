@@ -13,8 +13,8 @@ import java
 import semmle.code.java.controlflow.Guards
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.dataflow.TaintTracking2
 import semmle.code.java.security.Encryption
+import semmle.code.java.security.SecurityFlag
 import DataFlow::PathGraph
 
 /**
@@ -80,72 +80,30 @@ class InsecureTrustManagerConfiguration extends TaintTracking::Configuration {
   }
 }
 
-bindingset[result]
-private string getAFlagName() {
-  result
-      .regexpMatch("(?i).*(secure|disable|selfCert|selfSign|validat|verif|trust|ignore|nocertificatecheck).*") and
-  result != "equalsIgnoreCase"
-}
-
 /**
- * A flag has to either be of type `String`, `boolean` or `Boolean`.
+ * Flags suggesting a deliberately insecure `TrustManager` usage.
  */
-private class FlagType extends Type {
-  FlagType() {
-    this instanceof TypeString
-    or
-    this instanceof BooleanType
+private class InsecureTrustManagerFlag extends FlagKind {
+  InsecureTrustManagerFlag() { this = "InsecureTrustManagerFlag" }
+
+  bindingset[result]
+  override string getAFlagName() {
+    result
+        .regexpMatch("(?i).*(secure|disable|selfCert|selfSign|validat|verif|trust|ignore|nocertificatecheck).*") and
+    result != "equalsIgnoreCase"
   }
 }
 
-/** Holds if `source` should is considered a flag. */
-private predicate isFlag(DataFlow::Node source) {
-  exists(VarAccess v | v.getVariable().getName() = getAFlagName() |
-    source.asExpr() = v and v.getType() instanceof FlagType
-  )
-  or
-  exists(StringLiteral s | s.getRepresentedString() = getAFlagName() | source.asExpr() = s)
-  or
-  exists(MethodAccess ma | ma.getMethod().getName() = getAFlagName() |
-    source.asExpr() = ma and
-    ma.getType() instanceof FlagType
-  )
+/** Gets a guard that represents a (likely) flag controlling an insecure `TrustManager` use. */
+private Guard getAnInsecureTrustManagerFlagGuard() {
+  result = any(InsecureTrustManagerFlag flag).getAFlag().asExpr()
 }
 
-/**
- * Holds if there is local flow from `node1` to `node2` either due to standard data-flow steps or the
- * following custom flow steps:
- * 1. `Boolean.parseBoolean(taintedValue)` taints the return value of `parseBoolean`.
- * 2. A call to an `EnvReadMethod` such as `System.getProperty` where a tainted value is used as an argument.
- *    The return value of such a method is then tainted.
- */
-private predicate flagFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-  DataFlow::localFlowStep(node1, node2)
-  or
-  exists(MethodAccess ma | ma.getMethod() = any(EnvReadMethod m) |
-    ma = node2.asExpr() and ma.getAnArgument() = node1.asExpr()
-  )
-  or
-  exists(MethodAccess ma |
-    ma.getMethod().hasName("parseBoolean") and
-    ma.getMethod().getDeclaringType().hasQualifiedName("java.lang", "Boolean")
-  |
-    ma = node2.asExpr() and ma.getAnArgument() = node1.asExpr()
-  )
-}
-
-/** Gets a guard that depends on a flag. */
-private Guard getAGuard() {
-  exists(DataFlow::Node source, DataFlow::Node sink |
-    isFlag(source) and
-    flagFlowStep*(source, sink) and
-    sink.asExpr() = result
-  )
-}
-
-/** Holds if `node` is guarded by a flag that suggests an intentionally insecure feature. */
+/** Holds if `node` is guarded by a flag that suggests an intentionally insecure use. */
 private predicate isNodeGuardedByFlag(DataFlow::Node node) {
-  exists(Guard g | g.controls(node.asExpr().getBasicBlock(), _) | g = getAGuard())
+  exists(Guard g | g.controls(node.asExpr().getBasicBlock(), _) |
+    g = getASecurityFeatureFlagGuard() or g = getAnInsecureTrustManagerFlagGuard()
+  )
 }
 
 from
