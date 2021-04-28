@@ -1,13 +1,12 @@
 /** Provides classes to reason about XPath vulnerabilities. */
 
 import java
-import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.dataflow.TaintTracking
+import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.ExternalFlow
 
 /**
- *  A sink that represents a method that interprets XPath expressions.
- *  Extend this class to add your own XPath Injection sinks.
+ * A sink that represents a method that interprets XPath expressions.
+ * Extend this class to add your own XPath Injection sinks.
  */
 abstract class XPathInjectionSink extends DataFlow::Node { }
 

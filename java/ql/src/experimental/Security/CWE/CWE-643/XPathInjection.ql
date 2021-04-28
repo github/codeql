@@ -11,8 +11,9 @@
  */
 
 import java
-import semmle.code.java.dataflow.TaintTracking
 import DataFlow::PathGraph
+import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.XPath
 
 class XPathInjectionConfiguration extends TaintTracking::Configuration {
