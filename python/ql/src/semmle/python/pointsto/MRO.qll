@@ -114,6 +114,7 @@ class ClassList extends TClassList {
     this = Empty() and result = Empty()
   }
 
+  pragma[inline]
   predicate legalMergeHead(ClassObjectInternal cls) {
     this.getTail().doesNotContain(cls)
     or
@@ -194,14 +195,17 @@ class ClassList extends TClassList {
    * Gets a class list which is the de-duplicated form of the list containing elements of
    * this list from `n` onwards.
    */
+  pragma[noopt]
   ClassList deduplicate(int n) {
     n = this.length() and result = Empty()
     or
-    this.duplicate(n) and result = this.deduplicate(n + 1)
+    exists(int succ | this.duplicate(n) and succ = n + 1 and result = this.deduplicate(succ))
     or
-    exists(ClassObjectInternal cls |
+    exists(ClassObjectInternal cls, ClassList tail, int succ |
       n = this.firstIndex(cls) and
-      result = Cons(cls, this.deduplicate(n + 1))
+      succ = n + 1 and
+      tail = this.deduplicate(succ) and
+      result = Cons(cls, tail)
     )
   }
 
@@ -324,9 +328,12 @@ private class ClassListList extends TClassListList {
 
   predicate legalMergeCandidate(ClassObjectInternal cls) { this.legalMergeCandidate(cls, 0) }
 
+  pragma[noopt]
   predicate illegalMergeCandidate(ClassObjectInternal cls) {
     cls = this.getAHead() and
-    this.getItem(_).getTail().contains(cls)
+    exists(ClassList anyitem, ClassList tail |
+      anyitem = this.getItem(_) and tail = anyitem.getTail() and tail.contains(cls)
+    )
   }
 
   ClassObjectInternal bestMergeCandidate(int n) {
@@ -355,7 +362,7 @@ private ClassList flatten_list(ClassListList list, int n) {
   exists(ClassList head, ClassListList tail | list = ConsList(head, tail) |
     n = head.length() and result = tail.flatten()
     or
-    result = Cons(head.getItem(n), flatten_list(list, n + 1))
+    result = cons(head.getItem(n), flatten_list(list, n + 1))
   )
 }
 
@@ -372,7 +379,7 @@ private predicate need_flattening(ClassListList list) {
 private ClassList bases(ClassObjectInternal cls) { result = bases(cls, 0) }
 
 private ClassList bases(ClassObjectInternal cls, int n) {
-  result = Cons(Types::getBase(cls, n), bases(cls, n + 1))
+  result = cons(Types::getBase(cls, n), bases(cls, n + 1))
   or
   result = Empty() and n = Types::base_count(cls)
 }
@@ -398,11 +405,17 @@ private ClassListList list_old_style_base_mros(ClassObjectInternal cls) {
   result = list_old_style_base_mros(cls, 0)
 }
 
-pragma[nomagic]
+pragma[noopt]
 private ClassListList list_old_style_base_mros(ClassObjectInternal cls, int n) {
   n = Types::base_count(cls) and result = EmptyList()
   or
-  result = ConsList(Mro::oldStyleMro(Types::getBase(cls, n)), list_old_style_base_mros(cls, n + 1))
+  exists(ClassObjectInternal base, TClassList oldmro, TClassListList rest, int succ |
+    base = Types::getBase(cls, n) and
+    oldmro = Mro::oldStyleMro(base) and
+    succ = n + 1 and
+    rest = list_old_style_base_mros(cls, succ) and
+    result = ConsList(oldmro, rest)
+  )
 }
 
 /**
@@ -443,19 +456,33 @@ private predicate reverse_step(ClassList lst, ClassList remainder, ClassList rev
   )
 }
 
+pragma[inline]
+private TClassList cons(ClassObjectInternal head, TClassList tail) {
+  result =
+    Cons(pragma[only_bind_into](pragma[only_bind_out](head)),
+      pragma[only_bind_into](pragma[only_bind_out](tail)))
+}
+
+pragma[inline]
+private TClassListList conslist(TClassList head, TClassListList tail) {
+  result =
+    ConsList(pragma[only_bind_into](pragma[only_bind_out](head)),
+      pragma[only_bind_into](pragma[only_bind_out](tail)))
+}
+
 module Mro {
   cached
   ClassList newStyleMro(ClassObjectInternal cls) {
     cls = ObjectInternal::builtin("object") and result = Cons(cls, Empty())
     or
-    result = Cons(cls, merge_of_linearization_of_bases(cls))
+    result = cons(cls, merge_of_linearization_of_bases(cls))
     or
-    result = Cons(cls, newStyleMro(sole_base(cls)))
+    result = cons(cls, newStyleMro(sole_base(cls)))
   }
 
   cached
   ClassList oldStyleMro(ClassObjectInternal cls) {
     Types::isOldStyle(cls) and
-    result = Cons(cls, list_old_style_base_mros(cls).flatten()).(ClassList).deduplicate()
+    result = cons(cls, list_old_style_base_mros(cls).flatten()).(ClassList).deduplicate()
   }
 }
