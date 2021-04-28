@@ -8,7 +8,7 @@ struct A {
 
 void pointer_without_allocation(const A& ra) {
   *ra.p = user_input();
-  sink(*ra.p); // $ ir MISSING: ast
+  sink(*ra.p); // $ MISSING: ast,ir
 }
 
 void argument_source(void*);
@@ -17,7 +17,7 @@ void sink(void*);
 void pointer_without_allocation_2() {
   char *raw;
   argument_source(raw);
-  sink(raw); // $ ast MISSING: ir
+  sink(raw); // $ ast,ir
 }
 
 A* makeA() {

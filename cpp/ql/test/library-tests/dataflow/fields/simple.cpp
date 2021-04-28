@@ -94,4 +94,18 @@ void single_field_test_typedef(A_typedef a)
     sink(a2.i); //$ ast,ir
 }
 
+struct O {
+  int* pointer;
+  int unrelated;
+};
+
+void set_pointer(O* o, int* x) { o->pointer = x; }
+
+int* user_input(bool) { return nullptr; }
+
+void test_pointer_obj_conflation(O o) {
+  set_pointer(&o, user_input(true));
+  sink(*o.pointer); // clean (but tainted)
+}
+
 } // namespace Simple

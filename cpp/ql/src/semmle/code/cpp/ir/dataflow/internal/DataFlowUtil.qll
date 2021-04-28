@@ -17,7 +17,16 @@ private newtype TIRDataFlowNode =
   TInstructionNode(Instruction i) or
   TOperandNode(Operand op) or
   TVariableNode(Variable var) or
-  TAddressNodeStore(Instruction i) { addressFlowInstrRTC(i, getDestinationAddress(_)) } or
+  TAddressNodeStore(Instruction i) {
+    // Any instruction that is used as an address to a store
+    addressFlowInstrRTC(i, getDestinationAddress(_))
+    or
+    // Or any instruction that is used for an address to a load that needs an address node
+    exists(LoadInstruction load |
+      exists(TAddressNodeStore(load)) and
+      addressFlowInstrRTC(i, load.getSourceAddress())
+    )
+  } or
   TAddressNodeRead(Instruction i) { addressFlowInstrRTC(i, getSourceAddress(_)) }
 
 /**
@@ -587,20 +596,22 @@ private predicate valueFlow(Node nodeFrom, Node nodeTo) {
 /**
  * INTERNAL: do not use.
  *
- * Gets the `AddressNodeStore` node corresponding to this instruction, if any,
- */
-private AddressNodeStore addressNodeStore(Instruction i) { result.getInstruction() = i }
-
-/**
- * INTERNAL: do not use.
- *
  * Gets the `AddressNodeRead` node corresponding to this instruction, if any,
  */
 private AddressNodeRead addressNodeRead(Instruction i) { result.getInstruction() = i }
 
-private predicate stepsToInitialAddressNode(Instruction iTo, Instruction iFrom) {
-  not AddressFlow::addressFlowInstrStep(_, iFrom) and
-  addressFlowInstrRTC(iFrom, iTo)
+pragma[inline]
+private predicate isInitialAddress(Instruction i) { not AddressFlow::addressFlowInstrStep(_, i) }
+
+/**
+ * Holds if `address` is an instruction whose result is propagated (transitively) to the
+ * source of a `readstep`.
+ */
+private predicate addressFlowsToReadStep(Instruction address) {
+  exists(Instruction i |
+    readStep(addressNodeRead(i), _, _) and
+    addressFlowInstrRTC(address, i)
+  )
 }
 
 /**
@@ -609,14 +620,21 @@ private predicate stepsToInitialAddressNode(Instruction iTo, Instruction iFrom) 
  * the dataflow library's field flow mechanism to track the address that was used.
  */
 private predicate preReadStep(Node nodeFrom, AddressNodeRead nodeTo) {
+  // We begin a sequence of read steps by transferring flow from the memory operand of a
+  // `LoadInstruction` or a `ReadSideEffectInstruction`.
   exists(Instruction instr |
-    stepsToInitialAddressNode(getSourceAddress(instr), nodeTo.getInstruction()) and
+    isInitialAddress(nodeTo.getInstruction()) and
+    addressFlowInstrRTC(nodeTo.getInstruction(), getSourceAddress(instr)) and
     getSourceValue(instr) = nodeFrom.asInstruction() and
-    // Only step to `nodeTo` if that will allow us to perform a read step.
-    exists(Instruction i |
-      readStep(addressNodeRead(i), _, _) and
-      addressFlowInstrRTC(nodeTo.getInstruction(), i)
-    )
+    addressFlowsToReadStep(nodeTo.getInstruction())
+  )
+  or
+  // Or we begin another sequence of read steps after exiting another `AddressNodeRead` because we hit
+  // a `LoadInstruction`.
+  exists(LoadInstruction load |
+    nodeFrom.asInstruction() = load and
+    nodeTo.getInstruction() = load and
+    addressFlowsToReadStep(load)
   )
 }
 
@@ -637,14 +655,7 @@ private predicate preStoreStep(Node nodeFrom, AddressNodeStore nodeTo) {
   or
   exists(WriteSideEffectInstruction write |
     nodeFrom.asInstruction() = write and
-    nodeTo.getInstruction() = write.getDestinationAddress() and
-    // We can't just check for the presence of a ChiInstruction here as most
-    // `WriteSideEffectInstruction`s have an associated `ChiInstruction`. So instead we only propagate
-    // flow to an address node if there is a `storeStep` somewhere along the chain of addresses used by
-    // the `WriteSideEffectInstruction`.
-    exists(Instruction i | storeStep(addressNodeStore(i), _, _) |
-      addressFlowInstrRTC(i, write.getDestinationAddress())
-    )
+    nodeTo.getInstruction() = write.getDestinationAddress()
   )
 }
 
@@ -676,7 +687,10 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
 }
 
 private predicate addressFlowStore(AddressNodeStore nodeFrom, AddressNodeStore nodeTo) {
-  AddressFlow::addressFlowInstrStep(nodeTo.getInstruction(), nodeFrom.getInstruction()) and
+  (
+    AddressFlow::addressFlowInstrStep(nodeTo.getInstruction(), nodeFrom.getInstruction()) or
+    nodeFrom.getInstruction().(LoadInstruction).getSourceAddress() = nodeTo.getInstruction()
+  ) and
   not storeStep(nodeFrom, _, _)
 }
 
@@ -696,8 +710,6 @@ module AddressFlow {
     iTo.(FieldAddressInstruction).getObjectAddress() = iFrom
     or
     iTo.(CopyValueInstruction).getSourceValue() = iFrom
-    or
-    iTo.(LoadInstruction).getSourceAddress() = iFrom
     or
     iTo.(ConvertInstruction).getUnary() = iFrom
     or
@@ -751,6 +763,15 @@ private predicate isSuccessorInstruction(Instruction instr1, Instruction instr2)
 }
 
 /**
+ * Holds if `iFrom` is the initial address of an address computation and the value computed
+ * by `iFrom` flows to `iTo`.
+ */
+private predicate initialAddressFlowInstrRTC(Instruction iFrom, Instruction iTo) {
+  isInitialAddress(iFrom) and
+  addressFlowInstrRTC(iFrom, iTo)
+}
+
+/**
  * Holds if `nodeTo` should receive flow after leaving the `AddressNodeStore` node `nodeFrom`.
  * This occurs in two different situations:
  *   - `nodeTo` is the outermost `AddressNodeRead` node in an address computation that (at some point in
@@ -773,19 +794,22 @@ private predicate isSuccessorInstruction(Instruction instr1, Instruction instr2)
  */
 private predicate postStoreStep(AddressNodeStore nodeFrom, Node nodeTo) {
   // Flow out of an address node that is in a chain of partial definitions (which arise from a store step).
-  exists(Instruction load |
-    stepsToInitialAddressNode(load, nodeFrom.getInstruction()) and
-    preReadStep(instructionNode(getSourceValue(load)), nodeTo) and
-    isSuccessorInstruction(load, nodeTo.(AddressNodeRead).getInstruction())
+  exists(Instruction load1, Instruction load2 |
+    // `nodeFrom` is the start of one chain of addresses
+    initialAddressFlowInstrRTC(nodeFrom.getInstruction(), getSourceAddress(load1)) and
+    // and `nodeTo` is the start of another chain of addresses
+    initialAddressFlowInstrRTC(nodeTo.(AddressNodeRead).getInstruction(), getSourceAddress(load2)) and
+    // ... that end up reading from the same memory operand
+    getSourceValue(load1) = getSourceValue(load2) and
+    // ... and `load2` is a (transitive) successor in the control-flow graph.
+    isSuccessorInstruction(load1, load2)
   )
   or
   // Flow out of an address node (to a chi instruction) after traversing the entire address chain.
   exists(Instruction instr, ChiInstruction chi |
     // We cannot take any further steps using store steps or steps through address nodes.
-    not (
-      AddressFlow::addressFlowInstrStep(_, nodeFrom.getInstruction()) or
-      storeStep(nodeFrom, _, _)
-    ) and
+    isInitialAddress(nodeFrom.getInstruction()) and
+    not storeStep(nodeFrom, _, _) and
     addressFlowInstrRTC(nodeFrom.getInstruction(), getDestinationAddress(instr))
   |
     chi = nodeTo.asInstruction() and

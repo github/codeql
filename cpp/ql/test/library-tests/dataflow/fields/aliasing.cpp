@@ -140,7 +140,7 @@ void pointer_unary_plus(int* xs) {
 void pointer_member_index(S_with_pointer s) {
   taint_a_ptr(s.data);
   // `s.data` is points to all-aliased-memory
-  sink(s.data[0]); // $ ir MISSING: ast
+  sink(s.data[0]); // $ MISSING: ast,ir
 }
 
 void member_array_different_field(S_with_pointer* s) {
