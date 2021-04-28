@@ -10,13 +10,6 @@ import python
 import DataFlowPublic
 private import DataFlowPrivate
 
-private predicate comes_from_cfgnode(Node node) {
-  exists(CfgNode first, Node second |
-    simpleLocalFlowStep(first, second) and
-    simpleLocalFlowStep*(second, node)
-  )
-}
-
 /**
  * A data flow node that is a source of local flow. This includes things like
  * - Expressions
@@ -40,8 +33,7 @@ private predicate comes_from_cfgnode(Node node) {
 class LocalSourceNode extends Node {
   cached
   LocalSourceNode() {
-    not comes_from_cfgnode(this) and
-    not this instanceof ModuleVariableNode and
+    not simpleLocalFlowStep(_, this) and
     // Currently, we create synthetic post-update nodes for
     // - arguments to calls that may modify said argument
     // - direct reads a writes of object attributes
@@ -85,6 +77,22 @@ class LocalSourceNode extends Node {
    * Gets a call to this node.
    */
   CallCfgNode getACall() { Cached::call(this, result) }
+
+  /**
+   * Gets a node that this node may flow to using one heap and/or interprocedural step.
+   *
+   * See `TypeTracker` for more details about how to use this.
+   */
+  pragma[inline]
+  LocalSourceNode track(TypeTracker t2, TypeTracker t) { t = t2.step(this, result) }
+
+  /**
+   * Gets a node that may flow into this one using one heap and/or interprocedural step.
+   *
+   * See `TypeBackTracker` for more details about how to use this.
+   */
+  pragma[inline]
+  LocalSourceNode backtrack(TypeBackTracker t2, TypeBackTracker t) { t2 = t.step(result, this) }
 }
 
 cached

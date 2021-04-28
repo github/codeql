@@ -18,7 +18,7 @@ class TestBase {
         sink(Strings.lenientFormat(x, 3)); // $numTaintFlow=1
         sink(Strings.commonPrefix(x, "abc")); 
         sink(Strings.commonSuffix(x, "cde")); 
-        sink(Strings.lenientFormat("%s = %s", x, 3)); // $numTaintFlow=1
+        sink(Strings.lenientFormat("%s = %s", x, 3)); // $ MISSING:numTaintFlow=1
     }
 
     void test2() {

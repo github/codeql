@@ -7,8 +7,10 @@ private import internal.FlowSummaryImpl as Impl
 private import internal.DataFlowDispatch
 private import internal.DataFlowPrivate
 
-// import all instances below
-private module Summaries { }
+// import all instances of SummarizedCallable below
+private module Summaries {
+  private import semmle.code.java.dataflow.ExternalFlow
+}
 
 class SummaryComponent = Impl::Public::SummaryComponent;
 

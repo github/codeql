@@ -3,7 +3,6 @@ private import cil
 private import dotnet
 private import DataFlowDispatch
 private import DataFlowPrivate
-private import semmle.code.csharp.Caching
 private import semmle.code.csharp.controlflow.Guards
 private import semmle.code.csharp.Unification
 
@@ -38,38 +37,21 @@ class Node extends TNode {
   }
 
   /** Gets the type of this node. */
-  cached
-  final DotNet::Type getType() {
-    Stages::DataFlowStage::forceCachingInSameStage() and result = this.(NodeImpl).getTypeImpl()
-  }
+  final DotNet::Type getType() { result = this.(NodeImpl).getTypeImpl() }
 
   /** Gets the enclosing callable of this node. */
-  cached
   final DataFlowCallable getEnclosingCallable() {
-    Stages::DataFlowStage::forceCachingInSameStage() and
     result = this.(NodeImpl).getEnclosingCallableImpl()
   }
 
   /** Gets the control flow node corresponding to this node, if any. */
-  cached
-  final ControlFlow::Node getControlFlowNode() {
-    Stages::DataFlowStage::forceCachingInSameStage() and
-    result = this.(NodeImpl).getControlFlowNodeImpl()
-  }
+  final ControlFlow::Node getControlFlowNode() { result = this.(NodeImpl).getControlFlowNodeImpl() }
 
   /** Gets a textual representation of this node. */
-  cached
-  final string toString() {
-    Stages::DataFlowStage::forceCachingInSameStage() and
-    result = this.(NodeImpl).toStringImpl()
-  }
+  final string toString() { result = this.(NodeImpl).toStringImpl() }
 
   /** Gets the location of this node. */
-  cached
-  final Location getLocation() {
-    Stages::DataFlowStage::forceCachingInSameStage() and
-    result = this.(NodeImpl).getLocationImpl()
-  }
+  final Location getLocation() { result = this.(NodeImpl).getLocationImpl() }
 
   /**
    * Holds if this element is at the specified location.
@@ -81,7 +63,7 @@ class Node extends TNode {
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 }
 
@@ -117,18 +99,18 @@ class ExprNode extends Node {
  * flow graph.
  */
 class ParameterNode extends Node {
-  private ParameterNodeImpl p;
-
-  ParameterNode() { this = p }
+  ParameterNode() { parameterNode(this, _, _) }
 
   /** Gets the parameter corresponding to this node, if any. */
-  DotNet::Parameter getParameter() { result = p.getParameter() }
+  DotNet::Parameter getParameter() {
+    exists(DataFlowCallable c, int i | this.isParameterOf(c, i) and result = c.getParameter(i))
+  }
 
   /**
    * Holds if this node is the parameter of callable `c` at the specified
    * (zero-based) position.
    */
-  predicate isParameterOf(DataFlowCallable c, int i) { p.isParameterOf(c, i) }
+  predicate isParameterOf(DataFlowCallable c, int i) { parameterNode(this, c, i) }
 }
 
 /** A definition, viewed as a node in a data flow graph. */
@@ -166,6 +148,7 @@ predicate localFlowStep = localFlowStepImpl/2;
  * Holds if data flows from `source` to `sink` in zero or more local
  * (intra-procedural) steps.
  */
+pragma[inline]
 predicate localFlow(Node source, Node sink) { localFlowStep*(source, sink) }
 
 /**

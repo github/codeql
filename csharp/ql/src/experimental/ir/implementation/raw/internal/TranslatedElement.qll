@@ -57,7 +57,8 @@ private Element getRealParent(Expr expr) { result = expr.getParent() }
  */
 predicate isIRConstant(Expr expr) { exists(expr.getValue()) }
 
-// Pulled out to work around QL-796
+// Pulled out for performance. See
+// https://github.com/github/codeql-coreql-team/issues/1044.
 private predicate isOrphan(Expr expr) { not exists(getRealParent(expr)) }
 
 /**

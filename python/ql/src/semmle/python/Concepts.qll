@@ -570,21 +570,7 @@ module Cryptography {
         arg = any(KeyGeneration::Range r).getKeySizeArg() and
         result = arg.getALocalSource()
         or
-        // Due to bad performance when using normal setup with we have inlined that code and forced a join
-        exists(DataFlow::TypeBackTracker t2 |
-          exists(DataFlow::StepSummary summary |
-            keysizeBacktracker_first_join(t2, arg, result, summary) and
-            t = t2.prepend(summary)
-          )
-        )
-      }
-
-      pragma[nomagic]
-      private predicate keysizeBacktracker_first_join(
-        DataFlow::TypeBackTracker t2, DataFlow::Node arg, DataFlow::Node res,
-        DataFlow::StepSummary summary
-      ) {
-        DataFlow::StepSummary::step(res, keysizeBacktracker(t2, arg), summary)
+        exists(DataFlow::TypeBackTracker t2 | result = keysizeBacktracker(t2, arg).backtrack(t2, t))
       }
 
       /** Gets a back-reference to the keysize argument `arg` that was used to generate a new key-pair. */

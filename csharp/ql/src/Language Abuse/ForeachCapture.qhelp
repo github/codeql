@@ -29,7 +29,7 @@ However on older compilers, the actual output is <code>10 10 10 10 10 10 10 10 1
 
 <references>
 
-  <li>Eric Lippert's Blog: <a href="http://blogs.msdn.com/b/ericlippert/archive/2009/11/12/closing-over-the-loop-variable-considered-harmful.aspx">Closing over the loop variable considered harmful</a>.</li>
+  <li>Eric Lippert's Blog: <a href="https://docs.microsoft.com/en-gb/archive/blogs/ericlippert/closing-over-the-loop-variable-considered-harmful">Closing over the loop variable considered harmful</a>.</li>
 
 </references>
 

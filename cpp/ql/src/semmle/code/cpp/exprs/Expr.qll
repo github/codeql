@@ -1271,7 +1271,8 @@ private predicate convparents(Expr child, int idx, Element parent) {
   )
 }
 
-// Pulled out for performance. See QL-796.
+// Pulled out for performance. See
+// https://github.com/github/codeql-coreql-team/issues/1044.
 private predicate hasNoConversions(Expr e) { not e.hasConversion() }
 
 /**

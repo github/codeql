@@ -79,4 +79,14 @@
 	$(document.my_form.my_input.value); // NOT OK
 
 	$("#id").html( $('#foo').prop('innerText') ); // NOT OK
+
+	const anser = require("anser");
+	const text = $("text").text();
+
+	$("#id").html(anser.ansiToHtml(text)); // NOT OK
+	$("#id").html(new anser().process(text)); // NOT OK
+	
+	$("section h1").each(function(){
+		$("nav ul").append("<a href='#" + $(this).text().toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g,'') + "'>Section</a>"); // OK
+	});
 })();

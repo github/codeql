@@ -446,7 +446,19 @@ module Private {
         summary(c, inputContents, outputContents, preservesValue) and
         pred = summaryNodeInputState(c, inputContents) and
         succ = summaryNodeOutputState(c, outputContents)
+      |
+        preservesValue = true
+        or
+        preservesValue = false and not summary(c, inputContents, outputContents, true)
       )
+      or
+      // If flow through a method updates a parameter from some input A, and that
+      // parameter also is returned through B, then we'd like a combined flow from A
+      // to B as well. As an example, this simplifies modeling of fluent methods:
+      // for `StringBuilder.append(x)` with a specified value flow from qualifier to
+      // return value and taint flow from argument 0 to the qualifier, then this
+      // allows us to infer taint flow from argument 0 to the return value.
+      summaryPostUpdateNode(pred, succ) and preservesValue = true
     }
 
     /**
