@@ -34,3 +34,6 @@ p.write_bytes(b"hello")  # $getAPathArgument=p
 
 name = windows.parent.name
 o(name)  # $getAPathArgument=name
+
+wb = p.write_bytes
+wb(b"hello")  # $getAPathArgument=p

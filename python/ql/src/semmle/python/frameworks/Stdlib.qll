@@ -922,7 +922,9 @@ private module Stdlib {
         or
         // method call
         returnsPath.getAttributeName() = pathlibPathMethod() and
-        nodeTo.(DataFlow::CallCfgNode).getFunction() = returnsPath
+        returnsPath
+            .(DataFlow::LocalSourceNode)
+            .flowsTo(nodeTo.(DataFlow::CallCfgNode).getFunction())
       ) and
       nodeFrom = returnsPath.getObject()
     )
@@ -987,7 +989,7 @@ private module Stdlib {
           "unlink", "link_to", "write_bytes", "write_text"
         ] and
       pathlibPath().flowsTo(fileAccess.getObject()) and
-      this.getFunction() = fileAccess
+      fileAccess.(DataFlow::LocalSourceNode).flowsTo(this.getFunction())
     }
 
     override DataFlow::Node getAPathArgument() { result = fileAccess.getObject() }
@@ -1022,7 +1024,9 @@ private module Stdlib {
         exists(DataFlow::AttrRead augmentsPath |
           augmentsPath.getAttributeName() = pathlibPathInjection()
         |
-          nodeTo.(DataFlow::CallCfgNode).getFunction() = augmentsPath and
+          augmentsPath
+              .(DataFlow::LocalSourceNode)
+              .flowsTo(nodeTo.(DataFlow::CallCfgNode).getFunction()) and
           (
             // type-preserving call
             nodeFrom = augmentsPath.getObject()
@@ -1042,7 +1046,7 @@ private module Stdlib {
         or
         // exporting method
         exportPath.getAttributeName() = pathlibPathMethodExport() and
-        nodeTo.(DataFlow::CallCfgNode).getFunction() = exportPath
+        exportPath.(DataFlow::LocalSourceNode).flowsTo(nodeTo.(DataFlow::CallCfgNode).getFunction())
       |
         nodeFrom = exportPath.getObject()
       )
