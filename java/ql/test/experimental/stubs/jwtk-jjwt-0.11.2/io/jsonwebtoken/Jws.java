@@ -20,9 +20,6 @@ package io.jsonwebtoken;
  *
  * @param <B> the type of the JWS body contents, either a String or a {@link Claims} instance.
  *
- * @since 0.1
- */
+ * @since 0.1 */
 public interface Jws<B> extends Jwt<JwsHeader,B> {
-
-    String getSignature();
 }

@@ -23,14 +23,6 @@ package io.jsonwebtoken;
  * @since 0.1
  */
 public interface Jwt<H extends Header, B> {
-
-    /**
-     * Returns the JWT {@link Header} or {@code null} if not present.
-     *
-     * @return the JWT {@link Header} or {@code null} if not present.
-     */
-    H getHeader();
-
     /**
      * Returns the JWT body, either a {@code String} or a {@code Claims} instance.
      *

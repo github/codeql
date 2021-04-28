@@ -49,25 +49,4 @@ import java.security.Key;
  */
 public interface SigningKeyResolver {
 
-    /**
-     * Returns the signing key that should be used to validate a digital signature for the Claims JWS with the specified
-     * header and claims.
-     *
-     * @param header the header of the JWS to validate
-     * @param claims the claims (body) of the JWS to validate
-     * @return the signing key that should be used to validate a digital signature for the Claims JWS with the specified
-     * header and claims.
-     */
-    Key resolveSigningKey(JwsHeader header, Claims claims);
-
-    /**
-     * Returns the signing key that should be used to validate a digital signature for the Plaintext JWS with the
-     * specified header and plaintext payload.
-     *
-     * @param header    the header of the JWS to validate
-     * @param plaintext the plaintext body of the JWS to validate
-     * @return the signing key that should be used to validate a digital signature for the Plaintext JWS with the
-     * specified header and plaintext payload.
-     */
-    Key resolveSigningKey(JwsHeader header, String plaintext);
 }
