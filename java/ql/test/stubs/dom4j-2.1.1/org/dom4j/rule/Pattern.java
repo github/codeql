@@ -11,29 +11,21 @@
 * Only relevant stubs of this file have been retained for test purposes.
 */
 
-package org.dom4j;
+package org.dom4j.rule;
 
-import java.util.List;
+import org.dom4j.Node;
+import org.dom4j.NodeFilter;
 
-public interface Node extends Cloneable {
+public interface Pattern extends NodeFilter {
+    boolean matches(Node node);
 
-    List<Node> selectNodes(String xpathExpression);
+    double getPriority();
 
-    Object selectObject(String xpathExpression);
+    Pattern[] getUnionPatterns();
 
-    List<Node> selectNodes(String xpathExpression, String comparisonXPathExpression);
+    short getMatchType();
 
-    List<Node> selectNodes(String xpathExpression, String comparisonXPathExpression, boolean removeDuplicates);
-
-    Node selectSingleNode(String xpathExpression);
-
-    String valueOf(String xpathExpression);
-
-    Number numberValueOf(String xpathExpression);
-
-    boolean matches(String xpathExpression);
-
-    XPath createXPath(String xpathExpression) throws InvalidXPathException;
+    String getMatchesNodeName();
 
 }
 

@@ -11,29 +11,85 @@
 * Only relevant stubs of this file have been retained for test purposes.
 */
 
-package org.dom4j;
+package org.dom4j.xpath;
 
+import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
+import org.dom4j.InvalidXPathException;
+import org.dom4j.Node;
+import org.dom4j.XPath;
 
-public interface Node extends Cloneable {
+public class DefaultXPath implements org.dom4j.XPath, Serializable {
+  public DefaultXPath(String text) throws InvalidXPathException {
+  }
 
-    List<Node> selectNodes(String xpathExpression);
+  @Override
+  public String getText() {
+    return null;
+  }
 
-    Object selectObject(String xpathExpression);
+  @Override
+  public boolean matches(Node node) {
+    return false;
+  }
 
-    List<Node> selectNodes(String xpathExpression, String comparisonXPathExpression);
+  @Override
+  public Object evaluate(Object context) {
+    return null;
+  }
 
-    List<Node> selectNodes(String xpathExpression, String comparisonXPathExpression, boolean removeDuplicates);
+  @Override
+  public Object selectObject(Object context) {
+    return null;
+  }
 
-    Node selectSingleNode(String xpathExpression);
+  @Override
+  public List<Node> selectNodes(Object context) {
+    return null;
+  }
 
-    String valueOf(String xpathExpression);
+  @Override
+  public List<Node> selectNodes(Object context, XPath sortXPath) {
+    return null;
+  }
 
-    Number numberValueOf(String xpathExpression);
+  @Override
+  public List<Node> selectNodes(Object context, XPath sortXPath, boolean distinct) {
+    return null;
+  }
 
-    boolean matches(String xpathExpression);
+  @Override
+  public Node selectSingleNode(Object context) {
+    return null;
+  }
 
-    XPath createXPath(String xpathExpression) throws InvalidXPathException;
+  @Override
+  public String valueOf(Object context) {
+    return null;
+  }
+
+  @Override
+  public Number numberValueOf(Object context) {
+    return null;
+  }
+
+  @Override
+  public boolean booleanValueOf(Object context) {
+    return false;
+  }
+
+  @Override
+  public void sort(List<Node> list) {
+  }
+
+  @Override
+  public void sort(List<Node> list, boolean distinct) {
+  }
+
+  @Override
+  public void setNamespaceURIs(Map<String, String> map) {
+  }
 
 }
 

@@ -13,27 +13,71 @@
 
 package org.dom4j;
 
-import java.util.List;
+import org.dom4j.tree.AbstractNode;
 
-public interface Node extends Cloneable {
+public class Namespace extends AbstractNode {
 
-    List<Node> selectNodes(String xpathExpression);
+  public Namespace(String prefix, String uri) {
+  }
 
-    Object selectObject(String xpathExpression);
+  public static Namespace get(String prefix, String uri) {
+    return null;
+  }
 
-    List<Node> selectNodes(String xpathExpression, String comparisonXPathExpression);
+  public static Namespace get(String uri) {
+    return null;
+  }
 
-    List<Node> selectNodes(String xpathExpression, String comparisonXPathExpression, boolean removeDuplicates);
+  public short getNodeType() {
+    return 0;
+  }
 
-    Node selectSingleNode(String xpathExpression);
+  public int hashCode() {
+    return 0;
+  }
 
-    String valueOf(String xpathExpression);
+  public boolean equals(Object object) {
+    return false;
+  }
 
-    Number numberValueOf(String xpathExpression);
+  public String getText() {
+    return null;
+  }
 
-    boolean matches(String xpathExpression);
+  public String getStringValue() {
+    return null;
+  }
 
-    XPath createXPath(String xpathExpression) throws InvalidXPathException;
+  public String getPrefix() {
+    return null;
+  }
+
+  public String getURI() {
+    return null;
+  }
+
+  public String getXPathNameStep() {
+    return null;
+  }
+
+  public String getPath(Element context) {
+    return null;
+  }
+
+  public String getUniquePath(Element context) {
+    return null;
+  }
+
+  public String toString() {
+    return null;
+  }
+
+  public String asXML() {
+    return null;
+  }
+
+  public void accept(Visitor visitor) {
+  }
 
 }
 

@@ -10,30 +10,95 @@
 *   https://search.maven.org/remotecontent?filepath=org/dom4j/dom4j/2.1.1/dom4j-2.1.1-sources.jar
 * Only relevant stubs of this file have been retained for test purposes.
 */
-
 package org.dom4j;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
-public interface Node extends Cloneable {
+public interface Element extends Branch {
 
-    List<Node> selectNodes(String xpathExpression);
+	Namespace getNamespace();
 
-    Object selectObject(String xpathExpression);
+	Namespace getNamespaceForPrefix(String prefix);
 
-    List<Node> selectNodes(String xpathExpression, String comparisonXPathExpression);
+	Namespace getNamespaceForURI(String uri);
 
-    List<Node> selectNodes(String xpathExpression, String comparisonXPathExpression, boolean removeDuplicates);
+	List<Namespace> getNamespacesForURI(String uri);
 
-    Node selectSingleNode(String xpathExpression);
+	String getNamespacePrefix();
 
-    String valueOf(String xpathExpression);
+	String getNamespaceURI();
 
-    Number numberValueOf(String xpathExpression);
+	String getQualifiedName();
 
-    boolean matches(String xpathExpression);
+	List<Namespace> additionalNamespaces();
 
-    XPath createXPath(String xpathExpression) throws InvalidXPathException;
+	List<Namespace> declaredNamespaces();
+
+	Element addAttribute(String name, String value);
+
+	Element addComment(String comment);
+
+	Element addCDATA(String cdata);
+
+	Element addEntity(String name, String text);
+
+	Element addNamespace(String prefix, String uri);
+
+	Element addProcessingInstruction(String target, String text);
+
+	Element addProcessingInstruction(String target, Map<String, String> data);
+
+	Element addText(String text);
+
+	void add(Namespace namespace);
+
+	String getText();
+
+	String getTextTrim();
+
+	String getStringValue();
+
+	Object getData();
+
+	void setData(Object data);
+
+	int attributeCount();
+
+	String attributeValue(String name);
+
+	String attributeValue(String name, String defaultValue);
+
+	void setAttributeValue(String name, String value);
+
+	Element element(String name);
+
+	List<Element> elements();
+
+	List<Element> elements(String name);
+
+	Iterator<Element> elementIterator();
+
+	Iterator<Element> elementIterator(String name);
+
+	boolean isRootElement();
+
+	boolean hasMixedContent();
+
+	boolean isTextOnly();
+
+	void appendAttributes(Element element);
+
+	Element createCopy();
+
+	Element createCopy(String name);
+
+	String elementText(String name);
+
+	String elementTextTrim(String name);
+
+	Node getXPathResult(int index);
 
 }
 

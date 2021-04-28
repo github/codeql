@@ -11,29 +11,41 @@
 * Only relevant stubs of this file have been retained for test purposes.
 */
 
-package org.dom4j;
+package org.dom4j.xpath;
 
-import java.util.List;
+import org.dom4j.Node;
 
-public interface Node extends Cloneable {
+public class XPathPattern implements org.dom4j.rule.Pattern {
+  public XPathPattern(String text) {
+  }
 
-    List<Node> selectNodes(String xpathExpression);
+  public boolean matches(Node node) {
+    return false;
+  }
 
-    Object selectObject(String xpathExpression);
+  public String getText() {
+    return null;
+  }
 
-    List<Node> selectNodes(String xpathExpression, String comparisonXPathExpression);
+  public double getPriority() {
+    return 0;
+  }
 
-    List<Node> selectNodes(String xpathExpression, String comparisonXPathExpression, boolean removeDuplicates);
+  public org.dom4j.rule.Pattern[] getUnionPatterns() {
+    return null;
+  }
 
-    Node selectSingleNode(String xpathExpression);
+  public short getMatchType() {
+    return 0;
+  }
 
-    String valueOf(String xpathExpression);
+  public String getMatchesNodeName() {
+    return null;
+  }
 
-    Number numberValueOf(String xpathExpression);
-
-    boolean matches(String xpathExpression);
-
-    XPath createXPath(String xpathExpression) throws InvalidXPathException;
+  public String toString() {
+    return null;
+  }
 
 }
 

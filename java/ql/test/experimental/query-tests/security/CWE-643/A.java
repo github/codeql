@@ -11,6 +11,13 @@ import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.dom4j.DocumentFactory;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Namespace;
+import org.dom4j.io.SAXReader;
+import org.dom4j.util.ProxyDocumentFactory;
+import org.dom4j.xpath.DefaultXPath;
+import org.dom4j.xpath.XPathPattern;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
@@ -48,71 +55,86 @@ public class A {
 
     }
 
+    private static class ProxyDocumentFactoryStub extends ProxyDocumentFactory {
+    }
+
     public void handle(HttpServletRequest request) throws Exception {
+        String user = request.getParameter("user");
+        String pass = request.getParameter("pass");
+        String expression = "/users/user[@name='" + user + "' and @pass='" + pass + "']";
+
         final String xmlStr = "<users>" + "   <user name=\"aaa\" pass=\"pass1\"></user>"
                 + "   <user name=\"bbb\" pass=\"pass2\"></user>" + "</users>";
         DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
-        domFactory.setNamespaceAware(true);
         DocumentBuilder builder = domFactory.newDocumentBuilder();
         InputSource xmlSource = new InputSource(new StringReader(xmlStr));
         Document doc = builder.parse(xmlSource);
 
         XPathFactory factory = XPathFactory.newInstance();
         XPath xpath = factory.newXPath();
+
+        xpath.evaluate(expression, doc, XPathConstants.BOOLEAN); // $hasXPathInjection
+        xpath.evaluateExpression(expression, xmlSource); // $hasXPathInjection
+        xpath.compile("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
+
         XPathImplStub xpathStub = XPathImplStub.getInstance();
+        xpathStub.evaluate(expression, doc, XPathConstants.BOOLEAN); // $hasXPathInjection
+        xpathStub.evaluateExpression(expression, xmlSource); // $hasXPathInjection
+        xpathStub.compile("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
 
-        // Injectable data
-        String user = request.getParameter("user");
-        String pass = request.getParameter("pass");
-        if (user != null && pass != null) {
-            // Bad expression
-            String expression1 = "/users/user[@name='" + user + "' and @pass='" + pass + "']";
-            xpath.evaluate(expression1, doc, XPathConstants.BOOLEAN); // $hasXPathInjection
-            xpathStub.evaluate(expression1, doc, XPathConstants.BOOLEAN); // $hasXPathInjection
-            xpath.evaluateExpression(expression1, xmlSource); // $hasXPathInjection
-            xpathStub.evaluateExpression(expression1, xmlSource); // $hasXPathInjection
+        StringBuffer sb = new StringBuffer("/users/user[@name=");
+        sb.append(user);
+        sb.append("' and @pass='");
+        sb.append(pass);
+        sb.append("']");
+        String query = sb.toString();
 
-            // Bad expression
-            XPathExpression expression2 = xpath.compile("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
-            xpathStub.compile("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
-            expression2.evaluate(doc, XPathConstants.BOOLEAN);
+        xpath.compile(query); // $hasXPathInjection
+        xpathStub.compile(query); // $hasXPathInjection
 
-            // Bad expression
-            StringBuffer sb = new StringBuffer("/users/user[@name=");
-            sb.append(user);
-            sb.append("' and @pass='");
-            sb.append(pass);
-            sb.append("']");
-            String query = sb.toString();
-            XPathExpression expression3 = xpath.compile(query); // $hasXPathInjection
-            xpathStub.compile(query); // $hasXPathInjection
-            expression3.evaluate(doc, XPathConstants.BOOLEAN);
+        String expression4 = "/users/user[@name=$user and @pass=$pass]";
+        xpath.setXPathVariableResolver(v -> {
+            switch (v.getLocalPart()) {
+            case "user":
+                return user;
+            case "pass":
+                return pass;
+            default:
+                throw new IllegalArgumentException();
+            }
+        });
+        xpath.evaluate(expression4, doc, XPathConstants.BOOLEAN); // Safe
 
-            // Good expression
-            String expression4 = "/users/user[@name=$user and @pass=$pass]";
-            xpath.setXPathVariableResolver(v -> {
-                switch (v.getLocalPart()) {
-                case "user":
-                    return user;
-                case "pass":
-                    return pass;
-                default:
-                    throw new IllegalArgumentException();
-                }
-            });
-            xpath.evaluate(expression4, doc, XPathConstants.BOOLEAN); // Safe
+        SAXReader reader = new SAXReader();
+        org.dom4j.Document document = reader.read(new ByteArrayInputStream(xmlStr.getBytes()));
+        document.selectObject("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
+        document.selectNodes("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
+        document.selectNodes("/users/user[@name='test']", "/users/user[@pass='" + pass + "']"); // $hasXPathInjection
+        document.selectSingleNode("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
+        document.valueOf("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
+        document.numberValueOf("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
+        document.matches("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
+        document.createXPath("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
 
-            // Bad Dom4j
-            org.dom4j.io.SAXReader reader = new org.dom4j.io.SAXReader();
-            org.dom4j.Document document = reader.read(new ByteArrayInputStream(xmlStr.getBytes()));
-            document.selectObject("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
-            document.selectNodes("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
-            document.selectNodes("/users/user[@name='test']", "/users/user[@pass='" + pass + "']"); // $hasXPathInjection
-            document.selectSingleNode("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
-            document.valueOf("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
-            document.numberValueOf("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
-            document.matches("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
-            document.createXPath("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
-        }
+        new DefaultXPath("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
+        new XPathPattern("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
+
+        DocumentFactory docFactory = DocumentFactory.getInstance();
+        docFactory.createPattern("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
+        docFactory.createXPath("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
+        docFactory.createXPathFilter("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
+
+        DocumentHelper.createPattern("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
+        DocumentHelper.createXPath("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
+        DocumentHelper.createXPathFilter("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
+
+        ProxyDocumentFactoryStub proxyDocFactory = new ProxyDocumentFactoryStub();
+        proxyDocFactory.createPattern("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
+        proxyDocFactory.createXPath("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
+        proxyDocFactory.createXPathFilter("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
+
+        Namespace namespace = new Namespace("prefix", "http://some.uri.io");
+        namespace.createPattern("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
+        namespace.createXPathFilter("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
     }
 }

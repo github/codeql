@@ -11,29 +11,137 @@
 * Only relevant stubs of this file have been retained for test purposes.
 */
 
-package org.dom4j;
+package org.dom4j.tree;
 
+import org.dom4j.*;
+import org.dom4j.rule.Pattern;
+import java.io.IOException;
+import java.io.Serializable;
+import java.io.Writer;
 import java.util.List;
 
-public interface Node extends Cloneable {
+public abstract class AbstractNode implements Node, Cloneable, Serializable {
+  public AbstractNode() {
+  }
 
-    List<Node> selectNodes(String xpathExpression);
+  public short getNodeType() {
+    return 0;
+  }
 
-    Object selectObject(String xpathExpression);
+  public String getNodeTypeName() {
+    return null;
+  }
 
-    List<Node> selectNodes(String xpathExpression, String comparisonXPathExpression);
+  public Document getDocument() {
+    return null;
+  }
 
-    List<Node> selectNodes(String xpathExpression, String comparisonXPathExpression, boolean removeDuplicates);
+  public void setDocument(Document document) {
+  }
 
-    Node selectSingleNode(String xpathExpression);
+  public Element getParent() {
+    return null;
+  }
 
-    String valueOf(String xpathExpression);
+  public void setParent(Element parent) {
+  }
 
-    Number numberValueOf(String xpathExpression);
+  public boolean supportsParent() {
+    return false;
+  }
 
-    boolean matches(String xpathExpression);
+  public boolean isReadOnly() {
+    return false;
+  }
 
-    XPath createXPath(String xpathExpression) throws InvalidXPathException;
+  public boolean hasContent() {
+    return false;
+  }
+
+  public String getPath() {
+    return null;
+  }
+
+  public String getUniquePath() {
+    return null;
+  }
+
+  public Object clone() {
+    return null;
+  }
+
+  public Node detach() {
+    return null;
+  }
+
+  public String getName() {
+    return null;
+  }
+
+  public void setName(String name) {
+  }
+
+  public String getText() {
+    return null;
+  }
+
+  public String getStringValue() {
+    return null;
+  }
+
+  public void setText(String text) {
+  }
+
+  public void write(Writer writer) throws IOException {
+  }
+
+  public Object selectObject(String xpathExpression) {
+    return null;
+  }
+
+  public List<Node> selectNodes(String xpathExpression) {
+    return null;
+  }
+
+  public List<Node> selectNodes(String xpathExpression, String comparisonXPathExpression) {
+    return null;
+  }
+
+  public List<Node> selectNodes(String xpathExpression, String comparisonXPathExpression, boolean removeDuplicates) {
+    return null;
+  }
+
+  public Node selectSingleNode(String xpathExpression) {
+    return null;
+  }
+
+  public String valueOf(String xpathExpression) {
+    return null;
+  }
+
+  public Number numberValueOf(String xpathExpression) {
+    return null;
+  }
+
+  public boolean matches(String patternText) {
+    return false;
+  }
+
+  public XPath createXPath(String xpathExpression) {
+    return null;
+  }
+
+  public NodeFilter createXPathFilter(String patternText) {
+    return null;
+  }
+
+  public Pattern createPattern(String patternText) {
+    return null;
+  }
+
+  public Node asXPathResult(Element parent) {
+    return null;
+  }
 
 }
 

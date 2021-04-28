@@ -13,27 +13,8 @@
 
 package org.dom4j;
 
-import java.util.List;
-
-public interface Node extends Cloneable {
-
-    List<Node> selectNodes(String xpathExpression);
-
-    Object selectObject(String xpathExpression);
-
-    List<Node> selectNodes(String xpathExpression, String comparisonXPathExpression);
-
-    List<Node> selectNodes(String xpathExpression, String comparisonXPathExpression, boolean removeDuplicates);
-
-    Node selectSingleNode(String xpathExpression);
-
-    String valueOf(String xpathExpression);
-
-    Number numberValueOf(String xpathExpression);
-
-    boolean matches(String xpathExpression);
-
-    XPath createXPath(String xpathExpression) throws InvalidXPathException;
+public interface NodeFilter {
+    boolean matches(Node node);
 
 }
 

@@ -14,26 +14,36 @@
 package org.dom4j;
 
 import java.util.List;
+import java.util.Map;
 
-public interface Node extends Cloneable {
+public interface XPath extends NodeFilter {
+	String getText();
 
-    List<Node> selectNodes(String xpathExpression);
+	boolean matches(Node node);
 
-    Object selectObject(String xpathExpression);
+	Object evaluate(Object context);
 
-    List<Node> selectNodes(String xpathExpression, String comparisonXPathExpression);
+	Object selectObject(Object context);
 
-    List<Node> selectNodes(String xpathExpression, String comparisonXPathExpression, boolean removeDuplicates);
+	List<Node> selectNodes(Object context);
 
-    Node selectSingleNode(String xpathExpression);
+	List<Node> selectNodes(Object context, XPath sortXPath);
 
-    String valueOf(String xpathExpression);
+	List<Node> selectNodes(Object context, XPath sortXPath, boolean distinct);
 
-    Number numberValueOf(String xpathExpression);
+	Node selectSingleNode(Object context);
 
-    boolean matches(String xpathExpression);
+	String valueOf(Object context);
 
-    XPath createXPath(String xpathExpression) throws InvalidXPathException;
+	Number numberValueOf(Object context);
+
+	boolean booleanValueOf(Object context);
+
+	void sort(List<Node> list);
+
+	void sort(List<Node> list, boolean distinct);
+
+	void setNamespaceURIs(Map<String, String> map);
 
 }
 
