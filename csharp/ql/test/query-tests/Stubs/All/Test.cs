@@ -130,3 +130,36 @@ namespace Test
         public Class9.Nested NestedInstance { get; } = new Class9.Nested(1);
     }
 }
+
+namespace A1
+{
+    namespace B1
+    {
+
+    }
+
+    public class C1 { }
+}
+
+namespace A2
+{
+    namespace B2
+    {
+        public class C2 { }
+    }
+}
+
+namespace A3
+{
+    public class C3 { }
+}
+
+namespace A4
+{
+    namespace B4
+    {
+        public class D4 { }
+    }
+
+    public class C4 { }
+}

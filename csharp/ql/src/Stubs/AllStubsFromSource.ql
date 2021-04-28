@@ -10,4 +10,4 @@ class AllDeclarations extends GeneratedDeclaration {
   AllDeclarations() { not this.fromLibrary() }
 }
 
-select generatedCode()
+select concat(generatedCode(_) + "\n\n")

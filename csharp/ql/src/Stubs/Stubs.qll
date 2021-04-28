@@ -48,6 +48,8 @@ abstract private class GeneratedType extends ValueOrRefType, GeneratedElement {
     )
   }
 
+  predicate isInAssembly(Assembly assembly) { this.getALocation() = assembly }
+
   private string stubKeyword() {
     this instanceof Interface and result = "interface"
     or
@@ -87,8 +89,8 @@ abstract private class GeneratedType extends ValueOrRefType, GeneratedElement {
     else (
       not this instanceof DelegateType and
       result =
-        this.stubComment() + this.stubAttributes() + this.stubAbstractModifier() +
-          this.stubStaticModifier() + stubAccessibility(this) + this.stubKeyword() + " " +
+        this.stubComment() + this.stubAttributes() + stubAccessibility(this) +
+          this.stubAbstractModifier() + this.stubStaticModifier() + this.stubKeyword() + " " +
           this.getUndecoratedName() + stubGenericArguments(this) + stubBaseTypesString() +
           stubTypeParametersConstraints(this) + "\n{\n" + stubMembers() + "}\n\n"
       or
@@ -238,8 +240,9 @@ private class GeneratedNamespace extends Namespace, GeneratedElement {
 
   private string getPostAmble() { if this.isGlobalNamespace() then result = "" else result = "}\n" }
 
-  final string getStubs() {
-    result = getPreamble() + getTypeStubs() + getSubNamespaces() + getPostAmble()
+  final string getStubs(Assembly assembly) {
+    result =
+      getPreamble() + getTypeStubs(assembly) + getSubNamespaceStubs(assembly) + getPostAmble()
   }
 
   /** Gets the `n`th generated child namespace, indexed from 0. */
@@ -254,14 +257,31 @@ private class GeneratedNamespace extends Namespace, GeneratedElement {
     result = count(GeneratedNamespace g | g.getParentNamespace() = this)
   }
 
-  language[monotonicAggregates]
-  private string getSubNamespaces() {
-    result = concat(int i | exists(getChildNamespace(i)) | getChildNamespace(i).getStubs())
+  private predicate isInAssembly(Assembly assembly) {
+    any(GeneratedType gt | gt.getDeclaringNamespace() = this).isInAssembly(assembly)
+    or
+    this.getChildNamespace(_).isInAssembly(assembly)
   }
 
-  private string getTypeStubs() {
+  language[monotonicAggregates]
+  string getSubNamespaceStubs(Assembly assembly) {
+    this.isInAssembly(assembly) and
     result =
-      concat(string s | s = any(GeneratedType gt | gt.getDeclaringNamespace() = this).getStub())
+      concat(GeneratedNamespace child, int i |
+        child = getChildNamespace(i) and child.isInAssembly(assembly)
+      |
+        child.getStubs(assembly) order by i
+      )
+  }
+
+  string getTypeStubs(Assembly assembly) {
+    this.isInAssembly(assembly) and
+    result =
+      concat(GeneratedType gt |
+        gt.getDeclaringNamespace() = this and gt.isInAssembly(assembly)
+      |
+        gt.getStub() order by gt.getName()
+      )
   }
 }
 
@@ -783,8 +803,8 @@ private string stubSemmleExtractorOptions() {
 }
 
 /** Gets the generated C# code. */
-string generatedCode() {
+string generatedCode(Assembly assembly) {
   result =
     "// This file contains auto-generated code.\n" + stubSemmleExtractorOptions() + "\n" +
-      any(GeneratedNamespace ns | ns.isGlobalNamespace()).getStubs()
+      any(GeneratedNamespace ns | ns.isGlobalNamespace()).getStubs(assembly)
 }

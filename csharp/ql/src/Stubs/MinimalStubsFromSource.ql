@@ -29,4 +29,4 @@ class UsedInSource extends GeneratedDeclaration {
   }
 }
 
-select generatedCode()
+select concat(generatedCode(_) + "\n\n")

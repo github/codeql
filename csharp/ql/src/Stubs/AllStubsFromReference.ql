@@ -17,4 +17,5 @@ class NonTargetAssembly extends ExcludedAssembly {
   }
 }
 
-select generatedCode()
+from Assembly a
+select a, generatedCode(a)
