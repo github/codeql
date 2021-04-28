@@ -5,7 +5,7 @@ package main
 import "clevergo.tech/clevergo"
 
 // Package clevergo.tech/clevergo@v0.5.2
-func HttpRedirect_ClevergoTechClevergov052() {
+func HttpRedirect_ClevergoTechClevergoV052() {
 	// Redirect via method calls.
 	{
 		// Redirect via method calls on clevergo.tech/clevergo.Context.

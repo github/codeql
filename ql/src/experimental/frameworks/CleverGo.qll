@@ -8,8 +8,6 @@ import go
  * Provides classes for working with concepts from the [`clevergo.tech/clevergo@v0.5.2`](https://pkg.go.dev/clevergo.tech/clevergo@v0.5.2) package.
  */
 private module CleverGo {
-  /** Gets the package path. */
-  bindingset[result]
   string packagePath() {
     result = package(["clevergo.tech/clevergo", "github.com/clevergo/clevergo"], "")
   }
@@ -213,112 +211,14 @@ private module CleverGo {
     override HTTP::ResponseWriter getResponseWriter() { result.getANode() = receiverNode }
   }
 
-  /**
-   * Models HTTP ResponseBody where the content-type can be dynamically set by the caller.
-   */
-  private class HttpResponseBodyDynamicContentType extends HTTP::ResponseBody::Range {
-    DataFlow::Node contentTypeNode;
-    DataFlow::Node receiverNode;
-
-    HttpResponseBodyDynamicContentType() {
-      exists(string package, string receiverName |
-        setsBodyAndDynamicContentType(package, receiverName, this, contentTypeNode, receiverNode)
-      )
-    }
-
-    override DataFlow::Node getAContentTypeNode() { result = contentTypeNode }
-
-    override HTTP::ResponseWriter getResponseWriter() { result.getANode() = receiverNode }
-  }
-
-  /**
-   * Models HTTP ResponseBody where the content-type is set by another call.
-   */
-  private class HttpResponseBodyNoContentType extends HTTP::ResponseBody::Range {
-    private DataFlow::Node receiverNode;
-
-    HttpResponseBodyNoContentType() {
-      exists(string package, string receiverName |
-        setsBody(package, receiverName, receiverNode, this)
-      )
-    }
-
-    override HTTP::ResponseWriter getResponseWriter() { result.getANode() = receiverNode }
-  }
-
-  /**
-   * Models an HTTP static content-type setter for package: clevergo.tech/clevergo@v0.5.2
-   */
-  private class StaticContentTypeSetter extends HTTP::HeaderWrite::Range, DataFlow::CallNode {
-    DataFlow::Node receiverNode;
-    string contentType;
-
-    StaticContentTypeSetter() { setsStaticContentType(_, _, this, contentType, receiverNode) }
-
-    override string getHeaderName() { result = "content-type" }
-
-    override string getHeaderValue() { result = contentType }
-
-    override DataFlow::Node getName() { none() }
-
-    override DataFlow::Node getValue() { none() }
-
-    override HTTP::ResponseWriter getResponseWriter() { result.getANode() = receiverNode }
-  }
-
-  /**
-   * Models an HTTP dynamic content-type setter for package: clevergo.tech/clevergo@v0.5.2
-   */
-  private class DynamicContentTypeSetter extends HTTP::HeaderWrite::Range, DataFlow::CallNode {
-    DataFlow::Node receiverNode;
-    DataFlow::Node contentType;
-
-    DynamicContentTypeSetter() { setsDynamicContentType(_, _, this, contentType, receiverNode) }
-
-    override string getHeaderName() { result = "content-type" }
-
-    override DataFlow::Node getName() { none() }
-
-    override DataFlow::Node getValue() { result = contentType }
-
-    override HTTP::ResponseWriter getResponseWriter() { result.getANode() = receiverNode }
-  }
-
-  // Holds for a call that sets the body.
-  private predicate setsBody(
-    string package, string receiverName, DataFlow::Node receiverNode, DataFlow::Node bodyNode
-  ) {
-    exists(string methodName, Method m, DataFlow::CallNode bodySetterCall |
-      m.hasQualifiedName(package, receiverName, methodName) and
-      bodySetterCall = m.getACall() and
-      receiverNode = bodySetterCall.getReceiver()
-    |
-      package = packagePath() and
-      (
-        // Receiver type: Context
-        receiverName = "Context" and
-        (
-          // signature: func (*Context).Write(data []byte) (int, error)
-          methodName = "Write" and
-          bodyNode = bodySetterCall.getArgument(0)
-          or
-          // signature: func (*Context).WriteString(data string) (int, error)
-          methodName = "WriteString" and
-          bodyNode = bodySetterCall.getArgument(0)
-        )
-      )
-    )
-  }
-
-  // Holds for a call that sets the body; the content-type is static and implicit.
+  // Holds for a call that sets the body; the content-type is implicitly set.
   private predicate setsBodyAndStaticContentType(
     string package, string receiverName, DataFlow::Node bodyNode, string contentTypeString,
     DataFlow::Node receiverNode
   ) {
-    // One call sets both body and content-type (which is implicit in the func name).
-    exists(string methodName, Method m, DataFlow::CallNode bodySetterCall |
-      m.hasQualifiedName(package, receiverName, methodName) and
-      bodySetterCall = m.getACall() and
+    exists(string methodName, Method met, DataFlow::CallNode bodySetterCall |
+      met.hasQualifiedName(package, receiverName, methodName) and
+      bodySetterCall = met.getACall() and
       receiverNode = bodySetterCall.getReceiver()
     |
       package = packagePath() and
@@ -400,14 +300,33 @@ private module CleverGo {
     )
   }
 
+  /**
+   * Models HTTP ResponseBody where the content-type can be dynamically set by the caller.
+   */
+  private class HttpResponseBodyDynamicContentType extends HTTP::ResponseBody::Range {
+    DataFlow::Node contentTypeNode;
+    DataFlow::Node receiverNode;
+
+    HttpResponseBodyDynamicContentType() {
+      exists(string package, string receiverName |
+        setsBodyAndDynamicContentType(package, receiverName, this, contentTypeNode, receiverNode)
+      )
+    }
+
+    override DataFlow::Node getAContentTypeNode() { result = contentTypeNode }
+
+    override HTTP::ResponseWriter getResponseWriter() { result.getANode() = receiverNode }
+  }
+
   // Holds for a call that sets the body; the content-type is a parameter.
+  // Both body and content-type are parameters in the same func call.
   private predicate setsBodyAndDynamicContentType(
     string package, string receiverName, DataFlow::Node bodyNode, DataFlow::Node contentTypeNode,
     DataFlow::Node receiverNode
   ) {
-    exists(string methodName, Method m, DataFlow::CallNode bodySetterCall |
-      m.hasQualifiedName(package, receiverName, methodName) and
-      bodySetterCall = m.getACall() and
+    exists(string methodName, Method met, DataFlow::CallNode bodySetterCall |
+      met.hasQualifiedName(package, receiverName, methodName) and
+      bodySetterCall = met.getACall() and
       receiverNode = bodySetterCall.getReceiver()
     |
       package = packagePath() and
@@ -429,14 +348,109 @@ private module CleverGo {
     )
   }
 
+  /**
+   * Models HTTP ResponseBody where only the body is set.
+   */
+  private class HttpResponseBodyNoContentType extends HTTP::ResponseBody::Range {
+    DataFlow::Node receiverNode;
+
+    HttpResponseBodyNoContentType() {
+      exists(string package, string receiverName |
+        setsBody(package, receiverName, receiverNode, this)
+      )
+    }
+
+    override HTTP::ResponseWriter getResponseWriter() { result.getANode() = receiverNode }
+  }
+
+  // Holds for a call that sets the body. The content-type is not defined.
+  private predicate setsBody(
+    string package, string receiverName, DataFlow::Node receiverNode, DataFlow::Node bodyNode
+  ) {
+    exists(string methodName, Method met, DataFlow::CallNode bodySetterCall |
+      met.hasQualifiedName(package, receiverName, methodName) and
+      bodySetterCall = met.getACall() and
+      receiverNode = bodySetterCall.getReceiver()
+    |
+      package = packagePath() and
+      (
+        // Receiver type: Context
+        receiverName = "Context" and
+        (
+          // signature: func (*Context).Write(data []byte) (int, error)
+          methodName = "Write" and
+          bodyNode = bodySetterCall.getArgument(0)
+          or
+          // signature: func (*Context).WriteString(data string) (int, error)
+          methodName = "WriteString" and
+          bodyNode = bodySetterCall.getArgument(0)
+        )
+      )
+    )
+  }
+
+  /**
+   * Models HTTP header writer models for package: clevergo.tech/clevergo@v0.5.2
+   */
+  private class HeaderWrite extends HTTP::HeaderWrite::Range, DataFlow::CallNode {
+    string receiverName;
+    string methodName;
+    DataFlow::Node headerNameNode;
+    DataFlow::Node headerValueNode;
+
+    HeaderWrite() {
+      (
+        // Type methods:
+        this =
+          any(Method m | m.hasQualifiedName(packagePath(), receiverName, methodName)).getACall() and
+        (
+          // Receiver type: Context
+          receiverName = "Context" and
+          (
+            // signature: func (*Context).SetHeader(key string, value string)
+            methodName = "SetHeader" and
+            headerNameNode = this.getArgument(0) and
+            headerValueNode = this.getArgument(1)
+          )
+        )
+      )
+    }
+
+    override DataFlow::Node getName() { result = headerNameNode }
+
+    override DataFlow::Node getValue() { result = headerValueNode }
+
+    override HTTP::ResponseWriter getResponseWriter() { none() }
+  }
+
+  /**
+   * Models an HTTP static content-type setter.
+   */
+  private class StaticContentTypeSetter extends HTTP::HeaderWrite::Range, DataFlow::CallNode {
+    DataFlow::Node receiverNode;
+    string contentTypeString;
+
+    StaticContentTypeSetter() { setsStaticContentType(_, _, this, contentTypeString, receiverNode) }
+
+    override string getHeaderName() { result = "content-type" }
+
+    override string getHeaderValue() { result = contentTypeString }
+
+    override DataFlow::Node getName() { none() }
+
+    override DataFlow::Node getValue() { none() }
+
+    override HTTP::ResponseWriter getResponseWriter() { result.getANode() = receiverNode }
+  }
+
   // Holds for a call that sets the content-type (implicit).
   private predicate setsStaticContentType(
     string package, string receiverName, DataFlow::CallNode contentTypeSetterCall,
-    string contentType, DataFlow::Node receiverNode
+    string contentTypeString, DataFlow::Node receiverNode
   ) {
-    exists(string methodName, Method m |
-      m.hasQualifiedName(package, receiverName, methodName) and
-      contentTypeSetterCall = m.getACall() and
+    exists(string methodName, Method met |
+      met.hasQualifiedName(package, receiverName, methodName) and
+      contentTypeSetterCall = met.getACall() and
       receiverNode = contentTypeSetterCall.getReceiver()
     |
       package = packagePath() and
@@ -446,22 +460,42 @@ private module CleverGo {
         (
           // signature: func (*Context).SetContentTypeHTML()
           methodName = "SetContentTypeHTML" and
-          contentType = "text/html"
+          contentTypeString = "text/html"
           or
           // signature: func (*Context).SetContentTypeJSON()
           methodName = "SetContentTypeJSON" and
-          contentType = "application/json"
+          contentTypeString = "application/json"
           or
           // signature: func (*Context).SetContentTypeText()
           methodName = "SetContentTypeText" and
-          contentType = "text/plain"
+          contentTypeString = "text/plain"
           or
           // signature: func (*Context).SetContentTypeXML()
           methodName = "SetContentTypeXML" and
-          contentType = "text/xml"
+          contentTypeString = "text/xml"
         )
       )
     )
+  }
+
+  /**
+   * Models an HTTP dynamic content-type setter.
+   */
+  private class DynamicContentTypeSetter extends HTTP::HeaderWrite::Range, DataFlow::CallNode {
+    DataFlow::Node receiverNode;
+    DataFlow::Node contentTypeNode;
+
+    DynamicContentTypeSetter() { setsDynamicContentType(_, _, this, contentTypeNode, receiverNode) }
+
+    override string getHeaderName() { result = "content-type" }
+
+    override string getHeaderValue() { none() }
+
+    override DataFlow::Node getName() { none() }
+
+    override DataFlow::Node getValue() { result = contentTypeNode }
+
+    override HTTP::ResponseWriter getResponseWriter() { result.getANode() = receiverNode }
   }
 
   // Holds for a call that sets the content-type via a parameter.
@@ -469,9 +503,9 @@ private module CleverGo {
     string package, string receiverName, DataFlow::CallNode contentTypeSetterCall,
     DataFlow::Node contentTypeNode, DataFlow::Node receiverNode
   ) {
-    exists(string methodName, Method m |
-      m.hasQualifiedName(package, receiverName, methodName) and
-      contentTypeSetterCall = m.getACall() and
+    exists(string methodName, Method met |
+      met.hasQualifiedName(package, receiverName, methodName) and
+      contentTypeSetterCall = met.getACall() and
       receiverNode = contentTypeSetterCall.getReceiver()
     |
       package = packagePath() and
@@ -485,22 +519,5 @@ private module CleverGo {
         )
       )
     )
-  }
-
-  /**
-   * Models a HTTP header writer model for package: clevergo.tech/clevergo@v0.5.2
-   */
-  private class HeaderWrite extends HTTP::HeaderWrite::Range, DataFlow::CallNode {
-    HeaderWrite() {
-      // Receiver type: Context
-      // signature: func (*Context).SetHeader(key string, value string)
-      this = any(Method m | m.hasQualifiedName(packagePath(), "Context", "SetHeader")).getACall()
-    }
-
-    override DataFlow::Node getName() { result = this.getArgument(0) }
-
-    override DataFlow::Node getValue() { result = this.getArgument(1) }
-
-    override HTTP::ResponseWriter getResponseWriter() { result.getANode() = this.getReceiver() }
   }
 }

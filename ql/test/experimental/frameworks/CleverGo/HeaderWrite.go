@@ -5,17 +5,55 @@ package main
 import "clevergo.tech/clevergo"
 
 // Package clevergo.tech/clevergo@v0.5.2
-func HeaderWrite_ClevergoTechClevergov052() {
+func HeaderWrite_ClevergoTechClevergoV052() {
 	// Header write via method calls.
 	{
 		// Header write via method calls on clevergo.tech/clevergo.Context.
 		{
 			// func (*Context).SetHeader(key string, value string)
 			{
-				keyString566 := source().(string)
-				valString497 := source().(string)
+				keyString506 := source().(string)
+				valString213 := source().(string)
 				var rece clevergo.Context
-				rece.SetHeader(keyString566, valString497) // $headerKey=keyString566 $headerVal=valString497
+				rece.SetHeader(keyString506, valString213) // $headerKeyNode=keyString506 $headerValNode=valString213
+			}
+		}
+	}
+	// Dynamic Content-Type header via method calls.
+	{
+		// Dynamic Content-Type header via method calls on clevergo.tech/clevergo.Context.
+		{
+			// func (*Context).SetContentType(v string)
+			{
+				valString468 := source().(string)
+				var rece clevergo.Context
+				rece.SetContentType(valString468) // $headerKey=content-type $headerValNode=valString468
+			}
+		}
+	}
+	// Static Content-Type header write via method calls.
+	{
+		// Static Content-Type header write via method calls on clevergo.tech/clevergo.Context.
+		{
+			// func (*Context).SetContentTypeHTML()
+			{
+				var rece clevergo.Context
+				rece.SetContentTypeHTML() // $headerKey=content-type $headerVal=text/html
+			}
+			// func (*Context).SetContentTypeJSON()
+			{
+				var rece clevergo.Context
+				rece.SetContentTypeJSON() // $headerKey=content-type $headerVal=application/json
+			}
+			// func (*Context).SetContentTypeText()
+			{
+				var rece clevergo.Context
+				rece.SetContentTypeText() // $headerKey=content-type $headerVal=text/plain
+			}
+			// func (*Context).SetContentTypeXML()
+			{
+				var rece clevergo.Context
+				rece.SetContentTypeXML() // $headerKey=content-type $headerVal=text/xml
 			}
 		}
 	}
