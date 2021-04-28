@@ -102,13 +102,11 @@ module HeuristicNames {
 
   /**
    * DEPRECATED: Use `maybeSensitiveRegexp` instead.
-   * Only added to aid with internal rewrite
    */
   deprecated predicate maybeSensitive = maybeSensitiveRegexp/1;
 
   /**
    * DEPRECATED: Use `notSensitiveRegexp` instead.
-   * Only added to aid with internal rewrite
    */
   deprecated predicate notSensitive = notSensitiveRegexp/0;
 
