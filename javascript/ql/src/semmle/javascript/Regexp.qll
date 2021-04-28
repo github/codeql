@@ -1078,6 +1078,12 @@ module RegExp {
       not cls.isInverted() and
       cls.getAChild().(RegExpCharacterClassEscape).getValue().isUppercase()
     )
+    or
+    // an unlimited number of wildcards, is also a wildcard.
+    exists(InfiniteRepetitionQuantifier q |
+      term = q and
+      isWildcardLike(q.getAChild())
+    )
   }
 
   /**
