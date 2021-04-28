@@ -34,7 +34,8 @@ private DataFlow::Node pipeInput(DataFlow::CallNode pipe) {
  * the pipe.
  */
 private DataFlow::Node pipeOutput(DataFlow::CallNode pipe) {
-  pipe = DataFlow::moduleMember("rxjs/operators", "map").getACall() and
+  // we assume if there is a return, it is an output.
+  pipe = DataFlow::moduleMember("rxjs/operators", _).getACall() and
   result = pipe.getCallback(0).getReturnNode()
   or
   pipe = DataFlow::moduleMember("rxjs/operators", "filter").getACall() and

@@ -1,4 +1,4 @@
-import { map, tap, catchError } from 'rxjs/operators';
+import { map, tap, catchError, switchMap, filter } from 'rxjs/operators';
 
 source()
     .pipe(
@@ -17,6 +17,18 @@ source()
         tap(x => sink(x)),
         tap(x => sink(x)),
         catchError(err => {})
+    )
+    .subscribe(data => {
+        sink(data)
+    });
+
+myIdentifier()
+    .pipe(
+        switchMap(x => source(x)),
+        filter(x => myFilter(x)),
+        tap(x => sink(x)),
+        catchError(err => {}),
+        map(x => x + 'foo')
     )
     .subscribe(data => {
         sink(data)
