@@ -34,7 +34,12 @@ module Shared {
   class MetacharEscapeSanitizer extends Sanitizer, StringReplaceCall {
     MetacharEscapeSanitizer() {
       isGlobal() and
-      RegExp::alwaysMatchesMetaCharacter(getRegExp().getRoot(), ["<", "'", "\""])
+      (
+        RegExp::alwaysMatchesMetaCharacter(getRegExp().getRoot(), ["<", "'", "\""])
+        or
+        // or it's like a wild-card.
+        RegExp::isWildcardLike(getRegExp().getRoot())
+      )
     }
   }
 

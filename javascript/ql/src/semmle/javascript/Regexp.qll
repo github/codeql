@@ -192,6 +192,19 @@ class RegExpQuantifier extends RegExpTerm, @regexp_quantifier {
 }
 
 /**
+ * A regular expression term that permits unlimited repetitions.
+ */
+class InfiniteRepetitionQuantifier extends RegExpQuantifier {
+  InfiniteRepetitionQuantifier() {
+    this instanceof RegExpPlus
+    or
+    this instanceof RegExpStar
+    or
+    this instanceof RegExpRange and not exists(this.(RegExpRange).getUpperBound())
+  }
+}
+
+/**
  * An escaped regular expression term, that is, a regular expression
  * term starting with a backslash.
  *
@@ -1064,6 +1077,12 @@ module RegExp {
     exists(RegExpCharacterClass cls | term = cls |
       not cls.isInverted() and
       cls.getAChild().(RegExpCharacterClassEscape).getValue().isUppercase()
+    )
+    or
+    // an unlimited number of wildcards, is also a wildcard.
+    exists(InfiniteRepetitionQuantifier q |
+      term = q and
+      isWildcardLike(q.getAChild())
     )
   }
 
