@@ -27,7 +27,8 @@ private module NoSQL {
         API::moduleImport("pymongo")
             .getMember("MongoClient")
             .getReturn()
-            .getAMember*()
+            .getAMember()
+            .getAMember()
             .getMember(any(PyMongoMethods pyMongoMethod))
             .getACall()
     }
@@ -45,7 +46,8 @@ private module NoSQL {
         API::moduleImport("flask_pymongo")
             .getMember("PyMongo")
             .getReturn()
-            .getAMember*()
+            .getAMember()
+            .getAMember()
             .getMember(any(PyMongoFlaskMethods pyMongoFlaskMethod))
             .getACall()
     }
