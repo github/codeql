@@ -1,7 +1,7 @@
 /**
  * @name Overly permissive file permissions
  * @description Allowing files to be readable or writable by users other than the owner may allow sensitive information to be accessed.
- * @kind problem
+ * @kind path-problem
  * @problem.severity warning
  * @id rb/overly-permissive-file
  * @tags external/cwe/cwe-732
@@ -11,9 +11,10 @@
 
 import ruby
 private import codeql_ruby.dataflow.SSA
+private import codeql_ruby.dataflow.internal.DataFlowImpl as DataFlow
 
 // TODO: account for flows through tuple assignments
-// TODO: full dataflow?
+
 /** An expression referencing the File or FileUtils module */
 class FileModuleAccess extends Expr {
   FileModuleAccess() {
@@ -40,11 +41,6 @@ class PermissivePermissionsExpr extends Expr {
     // TODO: non-literal expressions? underscores? decimal/hex literals?
     // adding/setting read or write permissions for all/group/owner
     this.(StringLiteral).getValueText().regexpMatch(".*[ago][^-=+]*[+=]*[rwxXst]*[rw].*")
-    or
-    exists(PermissivePermissionsExpr ppe, Ssa::WriteDefinition def |
-      def.getARead() = this.getAControlFlowNode() and
-      def.getWriteAccess().getParent().(Assignment).getRightOperand() = ppe
-    )
   }
 }
 
@@ -70,10 +66,21 @@ class PermissionSettingMethodCall extends MethodCall {
   }
 
   Expr getPermissionArgument() { result = permArg }
-
-  predicate isPermissive() { this.getPermissionArgument() instanceof PermissivePermissionsExpr }
 }
 
-from PermissionSettingMethodCall c
-where c.isPermissive()
-select c, "Overly permissive mask sets file to " + c.getPermissionArgument() + "."
+class PermissivePermissionsConfig extends DataFlow::Configuration {
+  PermissivePermissionsConfig() { this = "PermissivePermissionsConfig" }
+
+  override predicate isSource(DataFlow::Node source) {
+    exists(PermissivePermissionsExpr ppe | source.asExpr().getExpr() = ppe)
+  }
+
+  override predicate isSink(DataFlow::Node sink) {
+    exists(PermissionSettingMethodCall c | sink.asExpr().getExpr() = c.getPermissionArgument())
+  }
+}
+
+from DataFlow::PathNode source, DataFlow::PathNode sink, PermissivePermissionsConfig conf
+where conf.hasFlowPath(source, sink)
+select sink.getNode(), source, sink, "Overly permissive mask sets file to $@.",
+  source.getNode(), source.getNode().toString()
