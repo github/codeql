@@ -12,16 +12,29 @@ edges
 | RequestForgery2.java:25:23:25:35 | new URI(...) : URI | RequestForgery2.java:67:43:67:45 | uri |
 | RequestForgery2.java:25:31:25:34 | sink : String | RequestForgery2.java:25:23:25:35 | new URI(...) : URI |
 | RequestForgery.java:19:23:19:58 | new URI(...) : URI | RequestForgery.java:22:52:22:54 | uri |
-| RequestForgery.java:19:23:19:58 | new URI(...) : URI | RequestForgery.java:27:57:27:59 | uri |
 | RequestForgery.java:19:31:19:57 | getParameter(...) : String | RequestForgery.java:19:23:19:58 | new URI(...) : URI |
 | RequestForgery.java:19:31:19:57 | getParameter(...) : String | RequestForgery.java:22:52:22:54 | uri |
 | RequestForgery.java:59:33:59:63 | getParameter(...) : String | RequestForgery.java:60:59:60:77 | new URI(...) |
+| RequestForgery.java:59:33:59:63 | getParameter(...) : String | RequestForgery.java:60:67:60:76 | unsafeUri3 : String |
+| RequestForgery.java:60:67:60:76 | unsafeUri3 : String | RequestForgery.java:60:59:60:77 | new URI(...) |
 | RequestForgery.java:63:49:63:79 | getParameter(...) : String | RequestForgery.java:64:59:64:77 | new URI(...) |
+| RequestForgery.java:63:49:63:79 | getParameter(...) : String | RequestForgery.java:64:67:64:76 | unsafeUri4 : String |
+| RequestForgery.java:64:67:64:76 | unsafeUri4 : String | RequestForgery.java:64:59:64:77 | new URI(...) |
 | RequestForgery.java:68:31:68:61 | getParameter(...) : String | RequestForgery.java:69:59:69:88 | new URI(...) |
+| RequestForgery.java:68:31:68:61 | getParameter(...) : String | RequestForgery.java:69:67:69:87 | toString(...) : String |
+| RequestForgery.java:69:67:69:87 | toString(...) : String | RequestForgery.java:69:59:69:88 | new URI(...) |
 | RequestForgery.java:72:73:72:103 | getParameter(...) : String | RequestForgery.java:73:59:73:77 | new URI(...) |
+| RequestForgery.java:72:73:72:103 | getParameter(...) : String | RequestForgery.java:73:67:73:76 | unsafeUri6 : String |
+| RequestForgery.java:73:67:73:76 | unsafeUri6 : String | RequestForgery.java:73:59:73:77 | new URI(...) |
 | RequestForgery.java:76:56:76:86 | getParameter(...) : String | RequestForgery.java:77:59:77:77 | new URI(...) |
+| RequestForgery.java:76:56:76:86 | getParameter(...) : String | RequestForgery.java:77:67:77:76 | unsafeUri7 : String |
+| RequestForgery.java:77:67:77:76 | unsafeUri7 : String | RequestForgery.java:77:59:77:77 | new URI(...) |
 | RequestForgery.java:80:55:80:85 | getParameter(...) : String | RequestForgery.java:81:59:81:77 | new URI(...) |
+| RequestForgery.java:80:55:80:85 | getParameter(...) : String | RequestForgery.java:81:67:81:76 | unsafeUri8 : String |
+| RequestForgery.java:81:67:81:76 | unsafeUri8 : String | RequestForgery.java:81:59:81:77 | new URI(...) |
 | RequestForgery.java:84:33:84:63 | getParameter(...) : String | RequestForgery.java:85:59:85:77 | new URI(...) |
+| RequestForgery.java:84:33:84:63 | getParameter(...) : String | RequestForgery.java:85:67:85:76 | unsafeUri9 : String |
+| RequestForgery.java:85:67:85:76 | unsafeUri9 : String | RequestForgery.java:85:59:85:77 | new URI(...) |
 | SpringSSRF.java:26:33:26:60 | getParameter(...) : String | SpringSSRF.java:32:47:32:67 | ... + ... |
 | SpringSSRF.java:26:33:26:60 | getParameter(...) : String | SpringSSRF.java:37:43:37:56 | fooResourceUrl |
 | SpringSSRF.java:26:33:26:60 | getParameter(...) : String | SpringSSRF.java:41:42:41:55 | fooResourceUrl |
@@ -51,18 +64,25 @@ nodes
 | RequestForgery.java:22:52:22:54 | uri | semmle.label | uri |
 | RequestForgery.java:59:33:59:63 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | RequestForgery.java:60:59:60:77 | new URI(...) | semmle.label | new URI(...) |
+| RequestForgery.java:60:67:60:76 | unsafeUri3 : String | semmle.label | unsafeUri3 : String |
 | RequestForgery.java:63:49:63:79 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | RequestForgery.java:64:59:64:77 | new URI(...) | semmle.label | new URI(...) |
+| RequestForgery.java:64:67:64:76 | unsafeUri4 : String | semmle.label | unsafeUri4 : String |
 | RequestForgery.java:68:31:68:61 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | RequestForgery.java:69:59:69:88 | new URI(...) | semmle.label | new URI(...) |
+| RequestForgery.java:69:67:69:87 | toString(...) : String | semmle.label | toString(...) : String |
 | RequestForgery.java:72:73:72:103 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | RequestForgery.java:73:59:73:77 | new URI(...) | semmle.label | new URI(...) |
+| RequestForgery.java:73:67:73:76 | unsafeUri6 : String | semmle.label | unsafeUri6 : String |
 | RequestForgery.java:76:56:76:86 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | RequestForgery.java:77:59:77:77 | new URI(...) | semmle.label | new URI(...) |
+| RequestForgery.java:77:67:77:76 | unsafeUri7 : String | semmle.label | unsafeUri7 : String |
 | RequestForgery.java:80:55:80:85 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | RequestForgery.java:81:59:81:77 | new URI(...) | semmle.label | new URI(...) |
+| RequestForgery.java:81:67:81:76 | unsafeUri8 : String | semmle.label | unsafeUri8 : String |
 | RequestForgery.java:84:33:84:63 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | RequestForgery.java:85:59:85:77 | new URI(...) | semmle.label | new URI(...) |
+| RequestForgery.java:85:67:85:76 | unsafeUri9 : String | semmle.label | unsafeUri9 : String |
 | SpringSSRF.java:26:33:26:60 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | SpringSSRF.java:32:47:32:67 | ... + ... | semmle.label | ... + ... |
 | SpringSSRF.java:37:43:37:56 | fooResourceUrl | semmle.label | fooResourceUrl |
