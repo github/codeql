@@ -37,10 +37,8 @@ module Shared {
       (
         RegExp::alwaysMatchesMetaCharacter(getRegExp().getRoot(), ["<", "'", "\""])
         or
-        // or it's a global inverted char class.
-        getRegExp().getRoot().(RegExpCharacterClass).isInverted()
-        or
-        getRegExp().getRoot().(RegExpQuantifier).getAChild().(RegExpCharacterClass).isInverted()
+        // or it's like a wild-card.
+        RegExp::isWildcardLike(getRegExp().getRoot())
       )
     }
   }
