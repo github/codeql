@@ -27,9 +27,12 @@ namespace Semmle.Autobuild.Shared
             {
                 builder.Log(Severity.Info, "Selecting MSBuild version based on projects and solutions");
                 var firstSolution = builder.ProjectsOrSolutionsToBuild.OfType<ISolution>().FirstOrDefault();
-                vsTools = firstSolution is not null
-                                ? BuildTools.FindCompatibleVcVars(builder.Actions, firstSolution)
-                                : BuildTools.VcVarsAllBatFiles(builder.Actions).OrderByDescending(b => b.ToolsVersion).FirstOrDefault();
+                if (firstSolution is not null) {
+                    vsTools = BuildTools.FindCompatibleVcVars(builder.Actions, firstSolution);
+                } else {
+                    builder.Log(Severity.Info, "No solution found. Selecting most recent installed version.");
+                    vsTools = BuildTools.VcVarsAllBatFiles(builder.Actions).OrderByDescending(b => b.ToolsVersion).FirstOrDefault();
+                }
             }
 
             if (vsTools is null && builder.Actions.IsWindows())

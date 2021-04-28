@@ -101,9 +101,15 @@ namespace Semmle.Autobuild.Shared
         /// </summary>
         /// <param name="targetVersion">The tools version.</param>
         /// <returns>A compatible file, or null.</returns>
-        public static VcVarsBatFile? FindCompatibleVcVars(IBuildActions actions, int targetVersion) =>
-            targetVersion < 10
-                ? VcVarsAllBatFiles(actions).OrderByDescending(b => b.ToolsVersion).FirstOrDefault()
-                : VcVarsAllBatFiles(actions).Where(b => b.ToolsVersion >= targetVersion).OrderBy(b => b.ToolsVersion).FirstOrDefault();
+        public static VcVarsBatFile? FindCompatibleVcVars(IBuildActions actions, int targetVersion) {
+            logger.Log(Severity.Info, $"Finding compatible VcVars for version {targetVersion}");
+            if(targetVersion < 10) {
+                logger.Log(Severity.Info, "Target version less than 10, selecting highest available version");
+                return VcVarsAllBatFiles(actions).OrderByDescending(b => b.ToolsVersion).FirstOrDefault();
+            } else {
+                logger.Log(Severity.Info, "Target version greater than 10, selecting lowest compatible version");
+                return VcVarsAllBatFiles(actions).Where(b => b.ToolsVersion >= targetVersion).OrderBy(b => b.ToolsVersion).FirstOrDefault();
+            }
+        }
     }
 }
