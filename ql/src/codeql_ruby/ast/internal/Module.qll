@@ -110,7 +110,7 @@ private predicate isDefinedConstant(string qualifiedModuleName) {
  * definition is a Namespace then it is returned, if it's a constant assignment then
  * the right-hand side of the assignment is resolved.
  */
-private TResolved resolveScopeExpr(ConstantReadAccess r) {
+TResolved resolveScopeExpr(ConstantReadAccess r) {
   exists(string qname |
     qname =
       min(string qn, int p |
