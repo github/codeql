@@ -1318,8 +1318,7 @@ private module Cached {
   /** Gets the CFG scope of node `n`. */
   cached
   CfgScope getCfgScopeImpl(AstNode n) {
-    result =
-      parent*(ASTInternal::fromGeneratedInclSynth(scopeOf(ASTInternal::toGeneratedInclSynth(n))))
+    result = parent*(ASTInternal::fromGenerated(scopeOf(ASTInternal::toGeneratedInclSynth(n))))
   }
 
   private predicate isAbnormalExitType(SuccessorType t) {

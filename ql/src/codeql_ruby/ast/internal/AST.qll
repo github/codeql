@@ -392,8 +392,6 @@ import Cached
 
 TAstNode fromGenerated(Generated::AstNode n) { n = toGenerated(result) }
 
-TAstNode fromGeneratedInclSynth(Generated::AstNode n) { n = toGeneratedInclSynth(result) }
-
 class TCall = TMethodCall or TYieldCall;
 
 class TMethodCall =
