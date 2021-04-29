@@ -1,6 +1,6 @@
 /** Step Summaries and Type Tracking */
 
-private import TypeTrackerPrivate
+private import TypeTrackerSpecific
 
 /**
  * Any string that may appear as the name of a piece of content. This will usually include things like:
@@ -71,8 +71,8 @@ module StepSummary {
    * Unlike `StepSummary::step`, this predicate does not compress
    * type-preserving steps.
    */
-  predicate smallstep(Node nodeFrom, Node nodeTo, StepSummary summary) {
-    typePreservingStep(nodeFrom, nodeTo) and
+  predicate smallstep(Node nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
+    jumpStep(nodeFrom, nodeTo) and
     summary = LevelStep()
     or
     callStep(nodeFrom, nodeTo) and summary = CallStep()
@@ -227,8 +227,8 @@ class TypeTracker extends TTypeTracker {
   pragma[inline]
   TypeTracker step(LocalSourceNode nodeFrom, LocalSourceNode nodeTo) {
     exists(StepSummary summary |
-      StepSummary::step(nodeFrom, nodeTo, summary) and
-      result = this.append(summary)
+      StepSummary::step(nodeFrom, pragma[only_bind_out](nodeTo), pragma[only_bind_into](summary)) and
+      result = this.append(pragma[only_bind_into](summary))
     )
   }
 
@@ -263,7 +263,7 @@ class TypeTracker extends TTypeTracker {
       result = this.append(summary)
     )
     or
-    typePreservingStep(nodeFrom, nodeTo) and
+    simpleLocalFlowStep(nodeFrom, nodeTo) and
     result = this
   }
 }
@@ -370,8 +370,8 @@ class TypeBackTracker extends TTypeBackTracker {
   pragma[inline]
   TypeBackTracker step(LocalSourceNode nodeFrom, LocalSourceNode nodeTo) {
     exists(StepSummary summary |
-      StepSummary::step(nodeFrom, nodeTo, summary) and
-      this = result.prepend(summary)
+      StepSummary::step(pragma[only_bind_out](nodeFrom), nodeTo, pragma[only_bind_into](summary)) and
+      this = result.prepend(pragma[only_bind_into](summary))
     )
   }
 
@@ -406,7 +406,7 @@ class TypeBackTracker extends TTypeBackTracker {
       this = result.prepend(summary)
     )
     or
-    typePreservingStep(nodeFrom, nodeTo) and
+    simpleLocalFlowStep(nodeFrom, nodeTo) and
     this = result
   }
 }
