@@ -1,5 +1,6 @@
 import java
 import DataFlow
+import semmle.code.java.frameworks.Networking
 import semmle.code.java.security.QueryInjection
 import experimental.semmle.code.java.Logging
 
@@ -40,14 +41,10 @@ private class CompareSink extends UseOfLessTrustedSink {
       ma.getMethod().getNumberOfParameters() = 1 and
       (
         ma.getArgument(0) = this.asExpr() and
-        not ma.getQualifier().(CompileTimeConstantExpr).getStringValue().toLowerCase() in [
-            "", "unknown", ":"
-          ]
+        ma.getQualifier().(CompileTimeConstantExpr).getStringValue() instanceof PrivateHostName
         or
         ma.getQualifier() = this.asExpr() and
-        not ma.getArgument(0).(CompileTimeConstantExpr).getStringValue().toLowerCase() in [
-            "", "unknown", ":"
-          ]
+        ma.getArgument(0).(CompileTimeConstantExpr).getStringValue() instanceof PrivateHostName
       )
     )
     or
@@ -56,9 +53,10 @@ private class CompareSink extends UseOfLessTrustedSink {
       ma.getMethod().getDeclaringType() instanceof TypeString and
       ma.getMethod().getNumberOfParameters() = 1 and
       ma.getQualifier() = this.asExpr() and
-      not ma.getArgument(0).(CompileTimeConstantExpr).getStringValue().toLowerCase() in [
-          "", "unknown"
-        ]
+      ma.getAnArgument()
+          .(CompileTimeConstantExpr)
+          .getStringValue()
+          .regexpMatch("^((10\\.((1\\d{2})?|(2[0-4]\\d)?|(25[0-5])?|([1-9]\\d|[0-9])?)(\\.)?)|(192\\.168\\.)|172\\.(1[6789]|2[0-9]|3[01])\\.)((1\\d{2})?|(2[0-4]\\d)?|(25[0-5])?|([1-9]\\d|[0-9])?)(\\.)?((1\\d{2})?|(2[0-4]\\d)?|(25[0-5])?|([1-9]\\d|[0-9])?)$")
     )
     or
     exists(MethodAccess ma |
@@ -68,7 +66,10 @@ private class CompareSink extends UseOfLessTrustedSink {
           .hasQualifiedName(["org.apache.commons.lang3", "org.apache.commons.lang"], "StringUtils") and
       ma.getMethod().getNumberOfParameters() = 2 and
       ma.getAnArgument() = this.asExpr() and
-      ma.getAnArgument().(CompileTimeConstantExpr).getStringValue() != ""
+      ma.getAnArgument()
+          .(CompileTimeConstantExpr)
+          .getStringValue()
+          .regexpMatch("^((10\\.((1\\d{2})?|(2[0-4]\\d)?|(25[0-5])?|([1-9]\\d|[0-9])?)(\\.)?)|(192\\.168\\.)|172\\.(1[6789]|2[0-9]|3[01])\\.)((1\\d{2})?|(2[0-4]\\d)?|(25[0-5])?|([1-9]\\d|[0-9])?)(\\.)?((1\\d{2})?|(2[0-4]\\d)?|(25[0-5])?|([1-9]\\d|[0-9])?)$")
     )
     or
     exists(MethodAccess ma |
@@ -78,9 +79,7 @@ private class CompareSink extends UseOfLessTrustedSink {
           .hasQualifiedName(["org.apache.commons.lang3", "org.apache.commons.lang"], "StringUtils") and
       ma.getMethod().getNumberOfParameters() = 2 and
       ma.getAnArgument() = this.asExpr() and
-      not ma.getAnArgument().(CompileTimeConstantExpr).getStringValue().toLowerCase() in [
-          "", "unknown", ":"
-        ]
+      ma.getAnArgument().(CompileTimeConstantExpr).getStringValue() instanceof PrivateHostName
     )
   }
 }

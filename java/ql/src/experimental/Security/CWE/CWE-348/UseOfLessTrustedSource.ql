@@ -36,8 +36,6 @@ class UseOfLessTrustedSourceConfig extends TaintTracking::Configuration {
       not aa.getIndexExpr().(CompileTimeConstantExpr).getIntValue() = 0
     )
     or
-    node.getType().hasName("Object")
-    or
     node.getType() instanceof PrimitiveType
     or
     node.getType() instanceof BoxedType

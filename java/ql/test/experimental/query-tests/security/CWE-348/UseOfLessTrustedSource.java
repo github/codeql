@@ -19,6 +19,14 @@ public class UseOfLessTrustedSource {
         }
     }
 
+    @GetMapping(value = "bad2")
+    public void bad2(HttpServletRequest request) {
+        String ip = getClientIP();
+        if (!"127.0.0.1".equals(ip)) {
+            new Exception("ip illegal");
+        }
+    }
+
     @GetMapping(value = "good1")
     @ResponseBody
     public String good1(HttpServletRequest request) {
