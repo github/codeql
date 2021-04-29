@@ -38,6 +38,10 @@ class HttpOnlyCookieTrackingConfiguration extends TaintTracking::Configuration {
         exists(DataFlow::Node rhs |
           rhs = getValueForFieldWrite(sl, "HttpOnly") and
           rhs.getAPredecessor*().asExpr().getBoolValue() = false
+        ) and
+        exists(DataFlow::Node rhs |
+          rhs = getValueForFieldWrite(sl, "Name") and
+          isAuthVariable(rhs.getAPredecessor*().asExpr())
         )
       )
     )
@@ -70,26 +74,6 @@ predicate isAuthVariable(Expr expr) {
     val.regexpMatch("(?i).*(session|login|token|user|auth|credential).*") and
     not val.regexpMatch("(?i).*(xsrf|csrf|forgery).*")
   )
-}
-
-/**
- * Tracks if a variable with a sensitive name is used as a cookie name.
- */
-class AuthCookieNameConfiguration extends TaintTracking::Configuration {
-  AuthCookieNameConfiguration() { this = "AuthCookieNameConfiguration" }
-
-  override predicate isSource(DataFlow::Node source) {
-    exists(StructLit sl |
-      source.asExpr() = sl and
-      sl.getType().hasQualifiedName("net/http", "Cookie") and
-      exists(DataFlow::Node rhs |
-        rhs = getValueForFieldWrite(sl, "Name") and
-        isAuthVariable(rhs.getAPredecessor*().asExpr())
-      )
-    )
-  }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof SetCookieSink }
 }
 
 /**

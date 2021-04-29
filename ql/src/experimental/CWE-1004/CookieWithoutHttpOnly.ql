@@ -17,11 +17,9 @@ import AuthCookie
 
 predicate isNetHttpCookieFlow(Expr expr) {
   exists(
-    HttpOnlyCookieTrackingConfiguration httpOnlyCfg, AuthCookieNameConfiguration cookieNameCfg,
-    SetCookieSink sink, DataFlow::Node source
+    HttpOnlyCookieTrackingConfiguration httpOnlyCfg, DataFlow::Node source, SetCookieSink sink
   |
     httpOnlyCfg.hasFlow(source, sink) and
-    cookieNameCfg.hasFlow(source, sink) and
     sink.asExpr() = expr
   )
 }
