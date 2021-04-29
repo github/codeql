@@ -36,7 +36,7 @@ module RegexExecution {
 }
 
 /**
- * A data-flow node that collect methods immediately executing an expression.
+ * A data-flow node that executes a regular expression.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `RegexExecution::Range` instead.
@@ -54,7 +54,7 @@ class RegexExecution extends DataFlow::Node {
 /** Provides classes for modeling Regular Expression escape-related APIs. */
 module RegexEscape {
   /**
-   * A data-flow node that collects functions escaping regular expressions.
+   * A data-flow node that escapes a regular expression.
    *
    * Extend this class to model new APIs. If you want to refine existing API models,
    * extend `RegexEscape` instead.
@@ -68,7 +68,7 @@ module RegexEscape {
 }
 
 /**
- * A data-flow node that collects functions escaping regular expressions.
+ * A data-flow node that escapes a regular expression.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `RegexEscape::Range` instead.
