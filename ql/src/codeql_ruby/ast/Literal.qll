@@ -49,22 +49,22 @@ class IntegerLiteral extends NumericLiteral, TIntegerLiteral {
 
   final int getValue() {
     exists(string s, string values, string str |
-      s = this.getValueText() and
+      s = this.getValueText().toLowerCase() and
       (
-        (s.matches("0b%") or s.matches("0B%")) and
+        s.matches("0b%") and
         values = "01" and
         str = s.suffix(2)
         or
-        (s.matches("0x%") or s.matches("0X%")) and
+        s.matches("0x%") and
         values = "0123456789abcdef" and
         str = s.suffix(2)
         or
         s.charAt(0) = "0" and
-        not s.charAt(1) = ["b", "B", "x", "X"] and
+        not s.charAt(1) = ["b", "x", "o"] and
         values = "01234567" and
         str = s.suffix(1)
         or
-        (s.matches("0o%") or s.matches("0O%")) and
+        s.matches("0o%") and
         values = "01234567" and
         str = s.suffix(2)
         or
