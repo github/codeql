@@ -178,12 +178,14 @@ class JaxRsResourceClass extends Class {
   }
 }
 
-/** An annotation from the `javax.ws.rs` package hierarchy. */
+/**
+ * An annotation from the `javax.ws.rs` or `jakarta.ws.rs` package hierarchy.
+ */
 class JaxRSAnnotation extends Annotation {
   JaxRSAnnotation() {
     exists(AnnotationType a |
       a = this.getType() and
-      a.getPackage().getName().regexpMatch("javax\\.ws\\.rs(\\..*)?")
+      a.getPackage().getName().regexpMatch(["javax\\.ws\\.rs(\\..*)?", "jakarta\\.ws\\.rs(\\..*)?"])
     )
   }
 }
@@ -264,7 +266,7 @@ class MessageBodyReader extends GenericInterface {
  */
 class MessageBodyReaderReadFrom extends Method {
   MessageBodyReaderReadFrom() {
-    this.getDeclaringType() instanceof MessageBodyReader and
+    this.getDeclaringType().(RefType).getSourceDeclaration() instanceof MessageBodyReader and
     this.hasName("readFrom")
   }
 }
@@ -504,9 +506,11 @@ private class FormModel extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
+        "javax.ws.rs.core;Form;false;Form;;;Argument;Argument[-1];taint",
         "javax.ws.rs.core;Form;true;asMap;;;Argument[-1];ReturnValue;taint",
         "javax.ws.rs.core;Form;true;param;;;Argument;Argument[-1];taint",
         "javax.ws.rs.core;Form;true;param;;;Argument[-1];ReturnValue;value",
+        "jakarta.ws.rs.core;Form;false;Form;;;Argument;Argument[-1];taint",
         "jakarta.ws.rs.core;Form;true;asMap;;;Argument[-1];ReturnValue;taint",
         "jakarta.ws.rs.core;Form;true;param;;;Argument;Argument[-1];taint",
         "jakarta.ws.rs.core;Form;true;param;;;Argument[-1];ReturnValue;value"
