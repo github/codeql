@@ -120,9 +120,15 @@ private module Cached {
     THashSplatParameter(Generated::HashSplatParameter g) or
     THereDoc(Generated::HeredocBeginning g) or
     TIdentifierMethodCall(Generated::Identifier g) { vcall(g) and not access(g, _) } or
-    TIdentifierMethodCallImplicitSelf(Generated::Identifier g) { vcall(g) and not access(g, _) } or
     TIf(Generated::If g) or
     TIfModifierExpr(Generated::IfModifier g) or
+    TImplicitSelf(Generated::AstNode g) {
+      exists(TIdentifierMethodCall(g))
+      or
+      exists(TRegularMethodCall(g)) and
+      not exists(g.(Generated::Call).getReceiver()) and
+      not exists(g.(Generated::Call).getMethod().(Generated::ScopeResolution).getScope())
+    } or
     TInstanceVariableAccess(Generated::InstanceVariable g, AST::InstanceVariable v) {
       InstanceVariableAccess::range(g, v)
     } or
@@ -160,11 +166,6 @@ private module Cached {
     TRegexMatchExpr(Generated::Binary g) { g instanceof @binary_equaltilde } or
     TRegularArrayLiteral(Generated::Array g) or
     TRegularMethodCall(Generated::Call g) { not g.getMethod() instanceof Generated::Super } or
-    TRegularMethodCallImplicitSelf(Generated::Call g) {
-      not g.getMethod() instanceof Generated::Super and
-      not exists(g.getReceiver()) and
-      not exists(g.getMethod().(Generated::ScopeResolution).getScope())
-    } or
     TRegularStringLiteral(Generated::String g) or
     TRegularSuperCall(Generated::Call g) { g.getMethod() instanceof Generated::Super } or
     TRescueClause(Generated::Rescue g) or
@@ -383,8 +384,7 @@ private module Cached {
   cached
   Generated::AstNode toGeneratedInclSynth(AST::AstNode n) {
     result = toGenerated(n) or
-    n = TIdentifierMethodCallImplicitSelf(result) or
-    n = TRegularMethodCallImplicitSelf(result)
+    n = TImplicitSelf(result)
   }
 }
 
@@ -413,7 +413,7 @@ class TConditionalLoop = TWhileExpr or TUntilExpr or TWhileModifierExpr or TUnti
 
 class TLoop = TConditionalLoop or TForExpr;
 
-class TSelf = TExplicitSelf or TIdentifierMethodCallImplicitSelf or TRegularMethodCallImplicitSelf;
+class TSelf = TExplicitSelf or TImplicitSelf;
 
 class TExpr =
   TSelf or TArgumentList or TRescueClause or TRescueModifierExpr or TPair or TStringConcatenation or

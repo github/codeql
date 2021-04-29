@@ -137,7 +137,7 @@ private class IdentifierMethodCall extends MethodCall, TIdentifierMethodCall {
 
   final override string getMethodName() { result = getMethodName(this, g.getValue()) }
 
-  final override Self getReceiver() { result = TIdentifierMethodCallImplicitSelf(g) }
+  final override Self getReceiver() { result = TImplicitSelf(g) }
 }
 
 private class ScopeResolutionMethodCall extends MethodCall, TScopeResolutionMethodCall {
@@ -167,7 +167,7 @@ private class RegularMethodCall extends MethodCall, TRegularMethodCall {
     // not valid Ruby.
     not exists(g.getReceiver()) and
     not exists(g.getMethod().(Generated::ScopeResolution).getScope()) and
-    result = TRegularMethodCallImplicitSelf(g)
+    result = TImplicitSelf(g)
   }
 
   final override string getMethodName() {
