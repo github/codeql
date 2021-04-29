@@ -52,12 +52,13 @@ private module Re {
    *
    * ```py
    * pattern = re.compile(input)
-   * input.match(s)
+   * pattern.match(s)
    * ```
    *
-   * `patternCall` refers to `re.compile(input)`,
-   * `regexNode` refers to `input` and
-   * `this` will refer to `input.match(s)`
+   * This class will identify that `re.compile` compiles `input` and afterwards
+   * executes `re`'s `match`. As a result, `this` will refer to `pattern.match(s)`
+   * and `this.getRegexNode()` will return the node for `input` (`re.compile`'s first argument)
+   * 
    *
    * See `RegexExecutionMethods`
    *
