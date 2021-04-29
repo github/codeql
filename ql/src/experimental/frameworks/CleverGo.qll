@@ -390,37 +390,47 @@ private module CleverGo {
   }
 
   /**
-   * Models HTTP header writer models for package: clevergo.tech/clevergo@v0.5.2
+   * Models HTTP header writers.
+   * The write is done with a call where you can set both the key and the value of the header.
    */
   private class HeaderWrite extends HTTP::HeaderWrite::Range, DataFlow::CallNode {
-    string receiverName;
-    string methodName;
+    DataFlow::Node receiverNode;
     DataFlow::Node headerNameNode;
     DataFlow::Node headerValueNode;
 
     HeaderWrite() {
-      (
-        // Type methods:
-        this =
-          any(Method m | m.hasQualifiedName(packagePath(), receiverName, methodName)).getACall() and
-        (
-          // Receiver type: Context
-          receiverName = "Context" and
-          (
-            // signature: func (*Context).SetHeader(key string, value string)
-            methodName = "SetHeader" and
-            headerNameNode = this.getArgument(0) and
-            headerValueNode = this.getArgument(1)
-          )
-        )
-      )
+      setsHeaderDynamicKeyValue(_, _, this, headerNameNode, headerValueNode, receiverNode)
     }
 
     override DataFlow::Node getName() { result = headerNameNode }
 
     override DataFlow::Node getValue() { result = headerValueNode }
 
-    override HTTP::ResponseWriter getResponseWriter() { none() }
+    override HTTP::ResponseWriter getResponseWriter() { result.getANode() = receiverNode }
+  }
+
+  // Holds for a call that sets a header with a key-value combination.
+  private predicate setsHeaderDynamicKeyValue(
+    string package, string receiverName, DataFlow::CallNode headerSetterCall,
+    DataFlow::Node headerNameNode, DataFlow::Node headerValueNode, DataFlow::Node receiverNode
+  ) {
+    exists(string methodName, Method met |
+      met.hasQualifiedName(package, receiverName, methodName) and
+      headerSetterCall = met.getACall() and
+      receiverNode = headerSetterCall.getReceiver()
+    |
+      package = packagePath() and
+      (
+        // Receiver type: Context
+        receiverName = "Context" and
+        (
+          // signature: func (*Context).SetHeader(key string, value string)
+          methodName = "SetHeader" and
+          headerNameNode = headerSetterCall.getArgument(0) and
+          headerValueNode = headerSetterCall.getArgument(1)
+        )
+      )
+    )
   }
 
   /**
