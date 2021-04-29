@@ -35,3 +35,10 @@ def trim_output_file(file):
     f = open(file, "wb")
     f.write(contents)
     f.close()
+
+
+# remove all files with extension
+def remove_files(path, ext):
+    for file in os.listdir(path):
+        if file.endswith(ext):
+            os.remove(os.path.join(path, file))

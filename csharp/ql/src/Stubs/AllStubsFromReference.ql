@@ -18,4 +18,5 @@ class NonTargetAssembly extends ExcludedAssembly {
 }
 
 from Assembly a
-select a, generatedCode(a)
+select a.getFullName(), a.getName(), a.getVersion().toString(), a.getFile().getAbsolutePath(),
+  generatedCode(a)
