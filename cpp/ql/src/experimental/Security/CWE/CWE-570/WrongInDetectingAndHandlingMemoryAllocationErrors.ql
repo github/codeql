@@ -1,7 +1,6 @@
 /**
  * @name Detect And Handle Memory Allocation Errors
- * @description --::operator new(std::size_t) throws an exception on error, and ::operator new(std::size_t, const std::nothrow_t &) returns zero on error.
- *              --the programmer can get confused when check the error that occurs when allocating memory incorrectly.
+ * @description `operator new` throws an exception on allocation failures, while `operator new(std::nothrow)` returns a null pointer. Mixing up these two failure conditions can result in unexpected behavior.
  * @kind problem
  * @id cpp/detect-and-handle-memory-allocation-errors
  * @problem.severity warning
