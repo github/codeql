@@ -119,13 +119,13 @@ private module Cached {
     THashSplatArgument(Generated::HashSplatArgument g) or
     THashSplatParameter(Generated::HashSplatParameter g) or
     THereDoc(Generated::HeredocBeginning g) or
-    TIdentifierMethodCall(Generated::Identifier g) { vcall(g) and not access(g, _) } or
+    TIdentifierMethodCall(Generated::Identifier g) { isIdentifierMethodCall(g) } or
     TIf(Generated::If g) or
     TIfModifierExpr(Generated::IfModifier g) or
     TImplicitSelf(Generated::AstNode g) {
-      exists(TIdentifierMethodCall(g))
+      isIdentifierMethodCall(g)
       or
-      exists(TRegularMethodCall(g)) and
+      isRegularMethodCall(g) and
       not exists(g.(Generated::Call).getReceiver()) and
       not exists(g.(Generated::Call).getMethod().(Generated::ScopeResolution).getScope())
     } or
@@ -165,7 +165,7 @@ private module Cached {
     TRegexLiteral(Generated::Regex g) or
     TRegexMatchExpr(Generated::Binary g) { g instanceof @binary_equaltilde } or
     TRegularArrayLiteral(Generated::Array g) or
-    TRegularMethodCall(Generated::Call g) { not g.getMethod() instanceof Generated::Super } or
+    TRegularMethodCall(Generated::Call g) { isRegularMethodCall(g) } or
     TRegularStringLiteral(Generated::String g) or
     TRegularSuperCall(Generated::Call g) { g.getMethod() instanceof Generated::Super } or
     TRescueClause(Generated::Rescue g) or
@@ -229,6 +229,14 @@ private module Cached {
     TWhileExpr(Generated::While g) or
     TWhileModifierExpr(Generated::WhileModifier g) or
     TYieldCall(Generated::Yield g)
+
+  private predicate isIdentifierMethodCall(Generated::Identifier g) {
+    vcall(g) and not access(g, _)
+  }
+
+  private predicate isRegularMethodCall(Generated::Call g) {
+    not g.getMethod() instanceof Generated::Super
+  }
 
   /**
    * Gets the underlying TreeSitter entity for a given AST node. This does not

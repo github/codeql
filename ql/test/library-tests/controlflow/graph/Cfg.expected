@@ -262,17 +262,17 @@ break_ensure.rb:
 #-----| true -> [ensure: return] then ...
 #-----| false -> [ensure: return] if ...
 
-#   35| call to x
-#-----|  -> 0
-
-#   35| [ensure: return] call to x
-#-----|  -> [ensure: return] 0
-
 #   35| self
 #-----|  -> call to x
 
 #   35| [ensure: return] self
 #-----|  -> [ensure: return] call to x
+
+#   35| call to x
+#-----|  -> 0
+
+#   35| [ensure: return] call to x
+#-----|  -> [ensure: return] 0
 
 #   35| 0
 #-----|  -> ... > ...
@@ -429,11 +429,11 @@ case.rb:
 #    2| case ...
 #-----|  -> self
 
-#    2| call to x1
-#-----|  -> when ...
-
 #    2| self
 #-----|  -> call to x1
+
+#    2| call to x1
+#-----|  -> when ...
 
 #    3| when ...
 #-----|  -> 1
@@ -451,12 +451,12 @@ case.rb:
 #    3| if ...
 #-----|  -> ( ... )
 
+#    3| self
+#-----|  -> call to x2
+
 #    3| call to x2
 #-----| true -> then ...
 #-----| false -> if ...
-
-#    3| self
-#-----|  -> call to x2
 
 #    3| then ...
 #-----|  -> self
@@ -881,11 +881,11 @@ cfg.rb:
 #-----| true -> "hello"
 #-----| false -> "bye"
 
-#   60| call to b
-#-----|  -> 10
-
 #   60| self
 #-----|  -> call to b
+
+#   60| call to b
+#-----|  -> 10
 
 #   60| 10
 #-----|  -> ... < ...
@@ -1330,20 +1330,20 @@ cfg.rb:
 #  109| #{...}
 #-----|  -> self
 
-#  109| call to table
-#-----|  -> #{...}
-
 #  109| self
 #-----|  -> call to table
+
+#  109| call to table
+#-----|  -> #{...}
 
 #  110| #{...}
 #-----|  -> ( ... )
 
-#  110| call to type
-#-----|  -> #{...}
-
 #  110| self
 #-----|  -> call to type
+
+#  110| call to type
+#-----|  -> #{...}
 
 #  113| call to puts
 #-----|  -> ... if ...
@@ -1730,11 +1730,11 @@ cfg.rb:
 #  160| #{...}
 #-----|  -> `cat "#{...}"`
 
-#  160| call to __FILE__
-#-----|  -> #{...}
-
 #  160| self
 #-----|  -> call to __FILE__
+
+#  160| call to __FILE__
+#-----|  -> #{...}
 
 #  162| ... = ...
 #-----|  -> delimited_symbol
