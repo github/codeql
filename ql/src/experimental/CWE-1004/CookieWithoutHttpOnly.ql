@@ -30,15 +30,13 @@ predicate isGinContextCookieFlow(Expr expr) {
   exists(CallExpr c |
     c.getTarget().getQualifiedName() = "github.com/gin-gonic/gin.Context.SetCookie" and
     c.getArgument(6) = expr and
-    exists(DataFlow::Node valSrc, DataFlow::Node httpOnlyArg |
-      DataFlow::localFlow(valSrc, httpOnlyArg) and
+    exists(DataFlow::Node httpOnlyArg |
       httpOnlyArg.asExpr() = c.getArgument(6) and
-      valSrc.asExpr().getBoolValue() = false
+      httpOnlyArg.getAPredecessor*().asExpr().getBoolValue() = false
     ) and
-    exists(DataFlow::Node nameSrc, DataFlow::Node nameArg |
-      DataFlow::localFlow(nameSrc, nameArg) and
+    exists(DataFlow::Node nameArg |
       nameArg.asExpr() = c.getArgument(0) and
-      isAuthVariable(nameSrc.asExpr())
+      isAuthVariable(nameArg.getAPredecessor*().asExpr())
     )
   )
 }
@@ -57,10 +55,7 @@ predicate isGorillaSessionsCookieFlow(Expr expr) {
           or
           exists(DataFlow::Node rhs |
             rhs = getValueForFieldWrite(options.asExpr(), "HttpOnly") and
-            exists(DataFlow::Node valSrc |
-              DataFlow::localFlow(valSrc, rhs) and
-              valSrc.asExpr().getBoolValue() = false
-            )
+            rhs.getAPredecessor*().asExpr().getBoolValue() = false
           )
         )
       )
