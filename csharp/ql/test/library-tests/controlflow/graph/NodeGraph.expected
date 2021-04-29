@@ -3524,6 +3524,28 @@
 | NullCoalescing.cs:17:13:17:19 | (...) ... | NullCoalescing.cs:17:13:17:24 | ... ?? ... | semmle.label | non-null |
 | NullCoalescing.cs:17:13:17:24 | ... ?? ... | NullCoalescing.cs:17:9:17:24 | ... = ... | semmle.label | successor |
 | NullCoalescing.cs:17:19:17:19 | access to parameter i | NullCoalescing.cs:17:13:17:19 | (...) ... | semmle.label | successor |
+| PartialImplementationA.cs:3:12:3:18 | call to constructor Object | PartialImplementationB.cs:3:16:3:16 | this access | semmle.label | successor |
+| PartialImplementationA.cs:3:12:3:18 | enter Partial | PartialImplementationA.cs:3:12:3:18 | call to constructor Object | semmle.label | successor |
+| PartialImplementationA.cs:3:12:3:18 | exit Partial (normal) | PartialImplementationA.cs:3:12:3:18 | exit Partial | semmle.label | successor |
+| PartialImplementationA.cs:3:27:3:29 | {...} | PartialImplementationA.cs:3:12:3:18 | exit Partial (normal) | semmle.label | successor |
+| PartialImplementationB.cs:3:16:3:16 | this access | PartialImplementationB.cs:3:20:3:20 | 0 | semmle.label | successor |
+| PartialImplementationB.cs:3:16:3:16 | this access | PartialImplementationB.cs:3:20:3:20 | 0 | semmle.label | successor |
+| PartialImplementationB.cs:3:16:3:20 | ... = ... | PartialImplementationB.cs:5:16:5:16 | this access | semmle.label | successor |
+| PartialImplementationB.cs:3:16:3:20 | ... = ... | PartialImplementationB.cs:5:16:5:16 | this access | semmle.label | successor |
+| PartialImplementationB.cs:3:20:3:20 | 0 | PartialImplementationB.cs:3:16:3:20 | ... = ... | semmle.label | successor |
+| PartialImplementationB.cs:3:20:3:20 | 0 | PartialImplementationB.cs:3:16:3:20 | ... = ... | semmle.label | successor |
+| PartialImplementationB.cs:4:12:4:18 | call to constructor Object | PartialImplementationB.cs:3:16:3:16 | this access | semmle.label | successor |
+| PartialImplementationB.cs:4:12:4:18 | enter Partial | PartialImplementationB.cs:4:12:4:18 | call to constructor Object | semmle.label | successor |
+| PartialImplementationB.cs:4:12:4:18 | exit Partial (normal) | PartialImplementationB.cs:4:12:4:18 | exit Partial | semmle.label | successor |
+| PartialImplementationB.cs:4:22:4:24 | {...} | PartialImplementationB.cs:4:12:4:18 | exit Partial (normal) | semmle.label | successor |
+| PartialImplementationB.cs:5:16:5:16 | access to property P | PartialImplementationB.cs:5:32:5:34 | ... = ... | semmle.label | successor |
+| PartialImplementationB.cs:5:16:5:16 | access to property P | PartialImplementationB.cs:5:32:5:34 | ... = ... | semmle.label | successor |
+| PartialImplementationB.cs:5:16:5:16 | this access | PartialImplementationB.cs:5:34:5:34 | 0 | semmle.label | successor |
+| PartialImplementationB.cs:5:16:5:16 | this access | PartialImplementationB.cs:5:34:5:34 | 0 | semmle.label | successor |
+| PartialImplementationB.cs:5:32:5:34 | ... = ... | PartialImplementationA.cs:3:27:3:29 | {...} | semmle.label | successor |
+| PartialImplementationB.cs:5:32:5:34 | ... = ... | PartialImplementationB.cs:4:22:4:24 | {...} | semmle.label | successor |
+| PartialImplementationB.cs:5:34:5:34 | 0 | PartialImplementationB.cs:5:16:5:16 | access to property P | semmle.label | successor |
+| PartialImplementationB.cs:5:34:5:34 | 0 | PartialImplementationB.cs:5:16:5:16 | access to property P | semmle.label | successor |
 | Patterns.cs:5:10:5:11 | enter M1 | Patterns.cs:6:5:43:5 | {...} | semmle.label | successor |
 | Patterns.cs:5:10:5:11 | exit M1 (normal) | Patterns.cs:5:10:5:11 | exit M1 | semmle.label | successor |
 | Patterns.cs:6:5:43:5 | {...} | Patterns.cs:7:9:7:24 | ... ...; | semmle.label | successor |

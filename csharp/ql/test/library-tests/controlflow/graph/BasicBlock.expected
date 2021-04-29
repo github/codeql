@@ -930,6 +930,8 @@
 | NullCoalescing.cs:15:31:15:31 | 0 | NullCoalescing.cs:16:17:16:18 | "" | 5 |
 | NullCoalescing.cs:16:17:16:25 | ... ?? ... | NullCoalescing.cs:17:13:17:19 | (...) ... | 5 |
 | NullCoalescing.cs:17:13:17:24 | ... ?? ... | NullCoalescing.cs:13:10:13:11 | exit M6 | 4 |
+| PartialImplementationA.cs:3:12:3:18 | enter Partial | PartialImplementationA.cs:3:12:3:18 | exit Partial | 12 |
+| PartialImplementationB.cs:4:12:4:18 | enter Partial | PartialImplementationB.cs:4:12:4:18 | exit Partial | 12 |
 | Patterns.cs:5:10:5:11 | enter M1 | Patterns.cs:8:18:8:23 | Int32 i1 | 8 |
 | Patterns.cs:8:13:8:23 | [false] ... is ... | Patterns.cs:8:13:8:23 | [false] ... is ... | 1 |
 | Patterns.cs:8:13:8:23 | [true] ... is ... | Patterns.cs:8:13:8:23 | [true] ... is ... | 1 |
