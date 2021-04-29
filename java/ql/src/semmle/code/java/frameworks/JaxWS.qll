@@ -71,23 +71,23 @@ class JaxRsResourceMethod extends Method {
     or
     // A JaxRS resource method can also inherit these annotations from a supertype, but only if
     // there are no JaxRS annotations on the method itself
-    getAnOverride() instanceof JaxRsResourceMethod and
-    not exists(getAnAnnotation().(JaxRSAnnotation))
+    this.getAnOverride() instanceof JaxRsResourceMethod and
+    not exists(this.getAnAnnotation().(JaxRSAnnotation))
   }
 
   /** Gets an `@Produces` annotation that applies to this method */
   JaxRSProducesAnnotation getProducesAnnotation() {
-    result = getAnAnnotation()
+    result = this.getAnAnnotation()
     or
     // No direct annotations
-    not exists(getAnAnnotation().(JaxRSProducesAnnotation)) and
+    not exists(this.getAnAnnotation().(JaxRSProducesAnnotation)) and
     (
       // Annotations on a method we've overridden
-      result = getAnOverride().getAnAnnotation()
+      result = this.getAnOverride().getAnAnnotation()
       or
       // No annotations on this method, or a method we've overridden, so look to the class
-      not exists(getAnOverride().getAnAnnotation().(JaxRSProducesAnnotation)) and
-      result = getDeclaringType().getAnAnnotation()
+      not exists(this.getAnOverride().getAnAnnotation().(JaxRSProducesAnnotation)) and
+      result = this.getDeclaringType().getAnAnnotation()
     )
   }
 }
@@ -120,7 +120,7 @@ class JaxRsResourceClass extends Class {
    * annotations leading to this resource method.
    */
   JaxRsResourceMethod getAResourceMethod() {
-    isPublic() and
+    this.isPublic() and
     result = this.getACallable()
   }
 
@@ -129,7 +129,7 @@ class JaxRsResourceClass extends Class {
    * but is not a resource method e.g. it is not annotated with `@GET` etc.
    */
   Callable getASubResourceLocator() {
-    result = getAMethod() and
+    result = this.getAMethod() and
     not result instanceof JaxRsResourceMethod and
     hasPathAnnotation(result)
   }
@@ -148,10 +148,10 @@ class JaxRsResourceClass extends Class {
    * (existence of particular parameters).
    */
   Constructor getAnInjectableConstructor() {
-    result = getAConstructor() and
+    result = this.getAConstructor() and
     // JaxRs Spec v2.0 - 3.12
     // Only root resources are constructed by the JaxRS container.
-    isRootResource() and
+    this.isRootResource() and
     // JaxRS can only construct the class using constructors that are public, and where the
     // container can provide all of the parameters. This includes the no-arg constructor.
     result.isPublic() and
@@ -164,16 +164,16 @@ class JaxRsResourceClass extends Class {
    * Gets a Callable that may be executed by the JaxRs container, injecting parameters as required.
    */
   Callable getAnInjectableCallable() {
-    result = getAResourceMethod() or
-    result = getAnInjectableConstructor() or
-    result = getASubResourceLocator()
+    result = this.getAResourceMethod() or
+    result = this.getAnInjectableConstructor() or
+    result = this.getASubResourceLocator()
   }
 
   /**
    * Gets a Field that may be injected with a value by the JaxRs container.
    */
   Field getAnInjectableField() {
-    result = getAField() and
+    result = this.getAField() and
     result.getAnAnnotation() instanceof JaxRsInjectionAnnotation
   }
 }
@@ -182,7 +182,7 @@ class JaxRsResourceClass extends Class {
 class JaxRSAnnotation extends Annotation {
   JaxRSAnnotation() {
     exists(AnnotationType a |
-      a = getType() and
+      a = this.getType() and
       a.getPackage().getName().regexpMatch("javax\\.ws\\.rs(\\..*)?")
     )
   }
@@ -195,7 +195,7 @@ class JaxRSAnnotation extends Annotation {
 class JaxRsInjectionAnnotation extends JaxRSAnnotation {
   JaxRsInjectionAnnotation() {
     exists(AnnotationType a |
-      a = getType() and
+      a = this.getType() and
       a.getPackage().getName() = getAJaxRsPackage()
     |
       a.hasName("BeanParam") or
@@ -207,7 +207,7 @@ class JaxRsInjectionAnnotation extends JaxRSAnnotation {
       a.hasName("QueryParam")
     )
     or
-    getType().hasQualifiedName(getAJaxRsPackage("core"), "Context")
+    this.getType().hasQualifiedName(getAJaxRsPackage("core"), "Context")
   }
 }
 
@@ -241,13 +241,12 @@ class JaxRsClient extends RefType {
 class JaxRsBeanParamConstructor extends Constructor {
   JaxRsBeanParamConstructor() {
     exists(JaxRsResourceClass resourceClass, Callable c, Parameter p |
-      c = resourceClass.getAnInjectableCallable()
-    |
+      c = resourceClass.getAnInjectableCallable() and
       p = c.getAParameter() and
       p.getAnAnnotation().getType().hasQualifiedName(getAJaxRsPackage(), "BeanParam") and
       this.getDeclaringType().getSourceDeclaration() = p.getType().(RefType).getSourceDeclaration()
     ) and
-    forall(Parameter p | p = getAParameter() |
+    forall(Parameter p | p = this.getAParameter() |
       p.getAnAnnotation() instanceof JaxRsInjectionAnnotation
     )
   }
@@ -283,19 +282,19 @@ class MessageBodyReaderRead extends Method {
 
 /** An `@Produces` annotation that describes which content types can be produced by this resource. */
 class JaxRSProducesAnnotation extends JaxRSAnnotation {
-  JaxRSProducesAnnotation() { getType().hasQualifiedName(getAJaxRsPackage(), "Produces") }
+  JaxRSProducesAnnotation() { this.getType().hasQualifiedName(getAJaxRsPackage(), "Produces") }
 
   /**
    * Gets a declared content type that can be produced by this resource.
    */
   string getADeclaredContentType() {
-    result = getAValue().(CompileTimeConstantExpr).getStringValue()
+    result = this.getAValue().(CompileTimeConstantExpr).getStringValue()
     or
     exists(Field jaxMediaType |
       // Accesses to static fields on `MediaType` class do not have constant strings in the database
       // so convert the field name to a content type string
       jaxMediaType.getDeclaringType().hasQualifiedName(getAJaxRsPackage("core"), "MediaType") and
-      jaxMediaType.getAnAccess() = getAValue() and
+      jaxMediaType.getAnAccess() = this.getAValue() and
       // e.g. MediaType.TEXT_PLAIN => text/plain
       result = jaxMediaType.getName().toLowerCase().replaceAll("_", "/")
     )
@@ -304,7 +303,7 @@ class JaxRSProducesAnnotation extends JaxRSAnnotation {
 
 /** An `@Consumes` annotation that describes content types can be consumed by this resource. */
 class JaxRSConsumesAnnotation extends JaxRSAnnotation {
-  JaxRSConsumesAnnotation() { getType().hasQualifiedName(getAJaxRsPackage(), "Consumes") }
+  JaxRSConsumesAnnotation() { this.getType().hasQualifiedName(getAJaxRsPackage(), "Consumes") }
 }
 
 /**
