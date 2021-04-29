@@ -28,7 +28,7 @@ class AdditionalQueryInjectionTaintStep extends Unit {
 }
 
 /** A sink for SQL injection vulnerabilities. */
-private class SqlInjectionSink extends QueryInjectionSink {
+class SqlInjectionSink extends QueryInjectionSink {
   SqlInjectionSink() {
     this.asExpr() instanceof SqlExpr
     or
