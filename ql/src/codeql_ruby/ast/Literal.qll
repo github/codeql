@@ -47,6 +47,33 @@ class IntegerLiteral extends NumericLiteral, TIntegerLiteral {
 
   final override string getValueText() { result = g.getValue() }
 
+  final int getValue() {
+    exists(string s, string values, string str |
+      s = this.getValueText() and
+      (
+        s.matches("0b%") and values = "01" and str = s.suffix(2)
+        or
+        s.matches("0x%") and values = "0123456789abcdef" and str = s.suffix(2)
+        or
+        s.charAt(0) = "0" and
+        not s.charAt(1) = ["b", "x"] and
+        values = "01234567" and
+        str = s.suffix(1)
+        or
+        s.charAt(0) != "0" and values = "0123456789" and str = s
+      )
+    |
+      result =
+        sum(int index, string c, int v, int exp |
+          c = str.replaceAll("_", "").charAt(index) and
+          v = values.indexOf(c.toLowerCase()) and
+          exp = str.replaceAll("_", "").length() - index - 1
+        |
+          v * values.length().pow(exp)
+        )
+    )
+  }
+
   final override string toString() { result = this.getValueText() }
 
   final override string getAPrimaryQlClass() { result = "IntegerLiteral" }

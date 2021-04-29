@@ -41,34 +41,12 @@ string access(int p) {
   p % 8 in [4, 5] and result = "readable"
 }
 
-bindingset[s]
-int parseInt(string s) {
-  exists(string values, string str |
-    s.matches("0b%") and values = "01" and str = s.suffix(2)
-    or
-    s.matches("0x%") and values = "0123456789abcdef" and str = s.suffix(2)
-    or
-    s.charAt(0) = "0" and not s.charAt(1) = ["b", "x"] and values = "01234567" and str = s.suffix(1)
-    or
-    s.charAt(0) != "0" and values = "0123456789" and str = s
-  |
-    result =
-      sum(int index, string c, int v, int exp |
-        c = str.replaceAll("_", "").charAt(index) and
-        v = values.indexOf(c.toLowerCase()) and
-        exp = str.replaceAll("_", "").length() - index - 1
-      |
-        v * values.length().pow(exp)
-      )
-  )
-}
-
 /** An expression specifing a file permission that allows group/others read or write access */
 class PermissivePermissionsExpr extends Expr {
   // TODO: non-literal expressions?
   PermissivePermissionsExpr() {
     exists(int perm, string acc |
-      perm = parseInt(this.(IntegerLiteral).getValueText()) and
+      perm = this.(IntegerLiteral).getValue() and
       (acc = access(world_permission(perm)) or acc = access(group_permission(perm)))
     )
     or
