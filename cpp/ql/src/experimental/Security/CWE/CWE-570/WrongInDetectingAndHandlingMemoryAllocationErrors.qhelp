@@ -3,10 +3,11 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>Different overloads of the <code>new</code> operator handle allocation failures in different ways:
+<p>Different overloads of the <code>new</code> operator handle allocation failures in different ways.
 If <code>new T</code> fails for some type <code>T</code>, it throws a <code>std::bad_alloc</code> exception,
-but <code>new(std::nothrow) T</code> returns a null pointer. If the programmer handles the wrong kind of
-failure, it could cause the program to behave in unexpected ways.</p>
+but <code>new(std::nothrow) T</code> returns a null pointer. If the programmer does not use the corresponding
+method of error handling, allocation failure may go unhandled and could cause the program to behave in
+unexpected ways.</p>
 
 </overview>
 <recommendation>
