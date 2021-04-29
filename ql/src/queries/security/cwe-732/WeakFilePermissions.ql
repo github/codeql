@@ -31,8 +31,8 @@ class FileModuleAccess extends Expr {
 bindingset[p]
 int world_permission(int p) { result = p.bitAnd(7) }
 
-bindingset[p]
 // 70 oct = 56 dec
+bindingset[p]
 int group_permission(int p) { result = p.bitAnd(56) }
 
 bindingset[p]
