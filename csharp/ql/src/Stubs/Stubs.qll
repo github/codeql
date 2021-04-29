@@ -70,6 +70,10 @@ abstract private class GeneratedType extends ValueOrRefType, GeneratedElement {
     if this.isStatic() then result = "static " else result = ""
   }
 
+  private string stubPartialModifier() {
+    if count(Assembly a | this.getALocation() = a) > 1 then result = "partial " else result = ""
+  }
+
   private string stubAttributes() {
     if this.getAnAttribute().getType().getQualifiedName() = "System.FlagsAttribute"
     then result = "[System.Flags]\n"
@@ -79,20 +83,21 @@ abstract private class GeneratedType extends ValueOrRefType, GeneratedElement {
   private string stubComment() {
     result =
       "// Generated from `" + this.getQualifiedName() + "` in `" +
-        min(this.getLocation().toString()) + "`\n"
+        concat(this.getALocation().toString(), "; ") + "`\n"
   }
 
   /** Gets the entire C# stub code for this type. */
-  final string getStub() {
+  final string getStub(Assembly assembly) {
     if this.isDuplicate()
     then result = ""
     else (
       not this instanceof DelegateType and
       result =
         this.stubComment() + this.stubAttributes() + stubAccessibility(this) +
-          this.stubAbstractModifier() + this.stubStaticModifier() + this.stubKeyword() + " " +
-          this.getUndecoratedName() + stubGenericArguments(this) + stubBaseTypesString() +
-          stubTypeParametersConstraints(this) + "\n{\n" + stubMembers() + "}\n\n"
+          this.stubAbstractModifier() + this.stubStaticModifier() + this.stubPartialModifier() +
+          this.stubKeyword() + " " + this.getUndecoratedName() + stubGenericArguments(this) +
+          stubBaseTypesString() + stubTypeParametersConstraints(this) + "\n{\n" +
+          stubMembers(assembly) + "}\n\n"
       or
       result =
         this.stubComment() + this.stubAttributes() + stubAccessibility(this) + this.stubKeyword() +
@@ -126,8 +131,13 @@ abstract private class GeneratedType extends ValueOrRefType, GeneratedElement {
   }
 
   language[monotonicAggregates]
-  private string stubMembers() {
-    result = concat(Member m | m = this.getAGeneratedMember() | stubMember(m) order by m.getName())
+  private string stubMembers(Assembly assembly) {
+    result =
+      concat(Member m |
+        m = this.getAGeneratedMember() and m.getALocation() = assembly
+      |
+        stubMember(m, assembly) order by m.getName()
+      )
   }
 
   private GeneratedMember getAGeneratedMember() { result.getDeclaringType() = this }
@@ -280,7 +290,7 @@ private class GeneratedNamespace extends Namespace, GeneratedElement {
       concat(GeneratedType gt |
         gt.getDeclaringNamespace() = this and gt.isInAssembly(assembly)
       |
-        gt.getStub() order by gt.getName()
+        gt.getStub(assembly) order by gt.getName()
       )
   }
 }
@@ -657,7 +667,7 @@ private string stubExplicitImplementation(Member c) {
   else result = ""
 }
 
-private string stubMember(Member m) {
+private string stubMember(Member m, Assembly assembly) {
   if m instanceof Method
   then
     if not m.getDeclaringType() instanceof Enum
@@ -733,7 +743,7 @@ private string stubMember(Member m) {
                         " " + stubExplicitImplementation(m) + m.getName() + ";\n"
                   else
                     if m instanceof GeneratedType
-                    then result = m.(GeneratedType).getStub() + "\n"
+                    then result = m.(GeneratedType).getStub(assembly) + "\n"
                     else
                       result =
                         "    // ERR: Stub generator didn't handle member: " + m.getName() + "\n"
