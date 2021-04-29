@@ -29,16 +29,17 @@ class FileModuleAccess extends Expr {
 }
 
 bindingset[p]
-int world_permission(int p) { result = p % 8 }
+int world_permission(int p) { result = p.bitAnd(7) }
 
 bindingset[p]
-int group_permission(int p) { result = (p / 8) % 8 }
+// 70 oct = 56 dec
+int group_permission(int p) { result = p.bitAnd(56) }
 
 bindingset[p]
 string access(int p) {
-  p % 4 >= 2 and result = "writable"
+  p.bitAnd(2) != 0 and result = "writable"
   or
-  p % 8 in [4, 5] and result = "readable"
+  p.bitAnd(2) = 0 and p.bitAnd(4) != 0 and result = "readable"
 }
 
 /** An expression specifing a file permission that allows group/others read or write access */
