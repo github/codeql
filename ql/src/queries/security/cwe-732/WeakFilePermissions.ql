@@ -115,5 +115,5 @@ class PermissivePermissionsConfig extends DataFlow::Configuration {
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, PermissivePermissionsConfig conf
 where conf.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "Overly permissive mask sets file to $@.", source.getNode(),
+select sink, source, sink, "Overly permissive mask sets file to $@.", source.getNode(),
   source.getNode().toString()
