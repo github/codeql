@@ -1,0 +1,7 @@
+edges
+| RhinoServlet.java:25:23:25:50 | getParameter(...) : String | RhinoServlet.java:29:55:29:58 | code |
+nodes
+| RhinoServlet.java:25:23:25:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RhinoServlet.java:29:55:29:58 | code | semmle.label | code |
+#select
+| RhinoServlet.java:29:55:29:58 | code | RhinoServlet.java:25:23:25:50 | getParameter(...) : String | RhinoServlet.java:29:55:29:58 | code | Rhino injection from $@. | RhinoServlet.java:25:23:25:50 | getParameter(...) |  user input |
