@@ -28,6 +28,6 @@ public interface MessageBodyReader<T> {
     public T readFrom(Class<T> type, Type genericType,
                       Annotation[] annotations, MediaType mediaType,
                       MultivaluedMap<String, String> httpHeaders,
-                      InputStream entityStream) throws java.io.IOException, javax.ws.rs.WebApplicationException;
+                      InputStream entityStream) throws java.io.IOException /*, javax.ws.rs.WebApplicationException */;
 
 }

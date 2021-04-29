@@ -36,9 +36,15 @@ public class MediaType {
 
     public final static MediaType APPLICATION_OCTET_STREAM_TYPE = new MediaType("application", "octet-stream");
 
+    public final static String TEXT_PLAIN = "text/plain";
+
     public final static MediaType TEXT_PLAIN_TYPE = new MediaType("text", "plain");
 
+    public final static String TEXT_XML = "text/xml";
+    
     public final static MediaType TEXT_XML_TYPE = new MediaType("text", "xml");
+
+    public final static String TEXT_HTML = "text/html";
 
     public final static MediaType TEXT_HTML_TYPE = new MediaType("text", "html");
 

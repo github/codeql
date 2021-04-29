@@ -18,8 +18,8 @@ package javax.ws.rs.core;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.namespace.QName;
+// import javax.xml.bind.annotation.adapters.XmlAdapter;
+// import javax.xml.namespace.QName;
 
 public abstract class Link {
     public abstract URI getUri();
@@ -106,16 +106,16 @@ public abstract class Link {
         public JaxbLink(URI uri) {
         }
 
-        public JaxbLink(URI uri, Map<QName, Object> params) {
-        }
+        // public JaxbLink(URI uri, Map<QName, Object> params) {
+        // }
 
         public URI getUri() {
           return null;
         }
 
-        public Map<QName, Object> getParams() {
-          return null;
-        }
+        // public Map<QName, Object> getParams() {
+        //   return null;
+        // }
 
         @Override
         public boolean equals(Object o) {
@@ -128,16 +128,16 @@ public abstract class Link {
         }
 
     }
-    public static class JaxbAdapter extends XmlAdapter<JaxbLink, Link> {
-        @Override
-        public Link unmarshal(JaxbLink v) {
-          return null;
-        }
+    // public static class JaxbAdapter extends XmlAdapter<JaxbLink, Link> {
+    //     @Override
+    //     public Link unmarshal(JaxbLink v) {
+    //       return null;
+    //     }
 
-        @Override
-        public JaxbLink marshal(Link v) {
-          return null;
-        }
+    //     @Override
+    //     public JaxbLink marshal(Link v) {
+    //       return null;
+    //     }
 
-    }
+    // }
 }

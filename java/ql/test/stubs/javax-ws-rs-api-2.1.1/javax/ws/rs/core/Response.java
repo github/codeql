@@ -32,11 +32,11 @@ public abstract class Response implements AutoCloseable {
 
     public abstract <T> T readEntity(Class<T> entityType);
 
-    public abstract <T> T readEntity(GenericType<T> entityType);
+    // public abstract <T> T readEntity(GenericType<T> entityType);
 
     public abstract <T> T readEntity(Class<T> entityType, Annotation[] annotations);
 
-    public abstract <T> T readEntity(GenericType<T> entityType, Annotation[] annotations);
+    // public abstract <T> T readEntity(GenericType<T> entityType, Annotation[] annotations);
 
     public abstract boolean hasEntity();
 
@@ -53,9 +53,9 @@ public abstract class Response implements AutoCloseable {
 
     public abstract Set<String> getAllowedMethods();
 
-    public abstract Map<String, NewCookie> getCookies();
+    // public abstract Map<String, NewCookie> getCookies();
 
-    public abstract EntityTag getEntityTag();
+    // public abstract EntityTag getEntityTag();
 
     public abstract Date getDate();
 
@@ -63,13 +63,13 @@ public abstract class Response implements AutoCloseable {
 
     public abstract URI getLocation();
 
-    public abstract Set<Link> getLinks();
+    // public abstract Set<Link> getLinks();
 
     public abstract boolean hasLink(String relation);
 
-    public abstract Link getLink(String relation);
+    // public abstract Link getLink(String relation);
 
-    public abstract Link.Builder getLinkBuilder(String relation);
+    // public abstract Link.Builder getLinkBuilder(String relation);
 
     public abstract MultivaluedMap<String, Object> getMetadata();
 
@@ -145,9 +145,9 @@ public abstract class Response implements AutoCloseable {
       return null;
     }
 
-    public static ResponseBuilder notModified(EntityTag tag) {
-      return null;
-    }
+    // public static ResponseBuilder notModified(EntityTag tag) {
+    //   return null;
+    // }
 
     public static ResponseBuilder notModified(String tag) {
       return null;
@@ -161,9 +161,9 @@ public abstract class Response implements AutoCloseable {
       return null;
     }
 
-    public static ResponseBuilder notAcceptable(List<Variant> variants) {
-      return null;
-    }
+    // public static ResponseBuilder notAcceptable(List<Variant> variants) {
+    //   return null;
+    // }
 
     public static abstract class ResponseBuilder {
         public abstract Response build();
@@ -247,7 +247,11 @@ public abstract class Response implements AutoCloseable {
 
     }
     public enum Status implements StatusType {
+        DUMMY_STATUS;
+
         public enum Family {
+            DUMMY_FAMILY;
+
             public static Family familyOf(final int statusCode) {
               return null;
             }
