@@ -23,49 +23,9 @@ DataFlow::Node getValueForFieldWrite(StructLit sl, string field) {
 }
 
 /**
- * Tracks struct creation without `HttpOnly` to `SetCookie`.
- */
-class HttpOnlyCookieTrackingConfiguration extends TaintTracking::Configuration {
-  HttpOnlyCookieTrackingConfiguration() { this = "HttpOnlyCookieTrackingConfiguration" }
-
-  override predicate isSource(DataFlow::Node source) {
-    exists(StructLit sl |
-      source.asExpr() = sl and
-      sl.getType().hasQualifiedName("net/http", "Cookie") and
-      (
-        not exists(DataFlow::Node rhs | rhs = getValueForFieldWrite(sl, "HttpOnly"))
-        or
-        exists(DataFlow::Node rhs |
-          rhs = getValueForFieldWrite(sl, "HttpOnly") and
-          rhs.getAPredecessor*().asExpr().getBoolValue() = false
-        ) and
-        exists(DataFlow::Node rhs |
-          rhs = getValueForFieldWrite(sl, "Name") and
-          isAuthVariable(rhs.getAPredecessor*().asExpr())
-        )
-      )
-    )
-  }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof SetCookieSink }
-}
-
-/**
- * A cookie passed the second parameter to `SetCookie`.
- */
-class SetCookieSink extends DataFlow::Node {
-  SetCookieSink() {
-    exists(CallExpr c |
-      c.getTarget().hasQualifiedName("net/http", "SetCookie") and
-      this.asExpr() = c.getArgument(1)
-    )
-  }
-}
-
-/**
  * Holds if the expression or its value has a sensitive name
  */
-predicate isAuthVariable(Expr expr) {
+private predicate isAuthVariable(Expr expr) {
   exists(string val |
     (
       val = expr.getStringValue() or
@@ -77,10 +37,132 @@ predicate isAuthVariable(Expr expr) {
 }
 
 /**
- * Tracks from gorilla cookie store creation to session save.
+ * A cookie passed as the second parameter to `net/http.SetCookie`.
  */
-class CookieStoreSaveTrackingConfiguration extends DataFlow::Configuration {
-  CookieStoreSaveTrackingConfiguration() { this = "CookieStoreSaveTrackingConfiguration" }
+private class SetCookieSink extends DataFlow::Node {
+  SetCookieSink() {
+    exists(CallExpr c |
+      c.getTarget().hasQualifiedName("net/http", "SetCookie") and
+      this.asExpr() = c.getArgument(1)
+    )
+  }
+}
+
+/**
+ * Tracks `net/http.Cookie` creation to `net/http.SetCookie`.
+ */
+class NetHttpCookieTrackingConfiguration extends TaintTracking::Configuration {
+  NetHttpCookieTrackingConfiguration() { this = "NetHttpCookieTrackingConfiguration" }
+
+  override predicate isSource(DataFlow::Node source) {
+    exists(StructLit sl |
+      source.asExpr() = sl and
+      sl.getType().hasQualifiedName("net/http", "Cookie")
+    )
+  }
+
+  override predicate isSink(DataFlow::Node sink) {
+    sink instanceof SetCookieSink and
+    exists(NameToNetHttpCookieTrackingConfiguration cfg, DataFlow::Node nameArg |
+      cfg.hasFlow(_, nameArg) and
+      sink.asExpr() = nameArg.asExpr()
+    )
+  }
+}
+
+/**
+ * Tracks sensitive name to `net/http.SetCookie`.
+ */
+private class NameToNetHttpCookieTrackingConfiguration extends TaintTracking2::Configuration {
+  NameToNetHttpCookieTrackingConfiguration() { this = "NameToNetHttpCookieTrackingConfiguration" }
+
+  override predicate isSource(DataFlow::Node source) { isAuthVariable(source.asExpr()) }
+
+  override predicate isSink(DataFlow::Node sink) { sink instanceof SetCookieSink }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(StructLit sl |
+      sl.getType().hasQualifiedName("net/http", "Cookie") and
+      getValueForFieldWrite(sl, "Name") = pred and
+      sl = succ.asExpr()
+    )
+  }
+}
+
+/**
+ * Tracks `HttpOnly` set to `false` to `net/http.SetCookie`.
+ */
+class BoolToNetHttpCookieTrackingConfiguration extends TaintTracking::Configuration {
+  BoolToNetHttpCookieTrackingConfiguration() { this = "BoolToNetHttpCookieTrackingConfiguration" }
+
+  override predicate isSource(DataFlow::Node source) { source.asExpr().getBoolValue() = false }
+
+  override predicate isSink(DataFlow::Node sink) { sink instanceof SetCookieSink }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(StructLit sl |
+      sl.getType().hasQualifiedName("net/http", "Cookie") and
+      getValueForFieldWrite(sl, "HttpOnly") = pred and
+      sl = succ.asExpr()
+    )
+  }
+}
+
+/**
+ * Tracks `HttpOnly` set to `false` to `gin-gonic/gin.Context.SetCookie`.
+ */
+class BoolToGinSetCookieTrackingConfiguration extends DataFlow::Configuration {
+  BoolToGinSetCookieTrackingConfiguration() { this = "BoolToGinSetCookieTrackingConfiguration" }
+
+  override predicate isSource(DataFlow::Node source) { source.asExpr().getBoolValue() = false }
+
+  override predicate isSink(DataFlow::Node sink) {
+    exists(CallExpr c |
+      c.getTarget().getQualifiedName() = "github.com/gin-gonic/gin.Context.SetCookie" and
+      c.getArgument(6) = sink.asExpr() and
+      exists(NameToGinSetCookieTrackingConfiguration cfg, DataFlow::Node nameArg |
+        cfg.hasFlow(_, nameArg) and
+        c.getAnArgument() = nameArg.asExpr()
+      )
+    )
+  }
+}
+
+/**
+ * Tracks sensitive name to `gin-gonic/gin.Context.SetCookie`.
+ */
+private class NameToGinSetCookieTrackingConfiguration extends DataFlow2::Configuration {
+  NameToGinSetCookieTrackingConfiguration() { this = "NameToGinSetCookieTrackingConfiguration" }
+
+  override predicate isSource(DataFlow::Node source) { isAuthVariable(source.asExpr()) }
+
+  override predicate isSink(DataFlow::Node sink) {
+    exists(CallExpr c |
+      c.getTarget().getQualifiedName() = "github.com/gin-gonic/gin.Context.SetCookie" and
+      c.getArgument(0) = sink.asExpr()
+    )
+  }
+}
+
+/**
+ * A cookie passed the second parameter to `gorilla/sessions.Session.Save`.
+ */
+private class GorillaSessionSaveSink extends DataFlow::Node {
+  GorillaSessionSaveSink() {
+    exists(CallExpr c |
+      this.asExpr() = c.getCalleeExpr().(SelectorExpr).getBase() and
+      c.getTarget().getQualifiedName() = "github.com/gorilla/sessions.Session.Save"
+    )
+  }
+}
+
+/**
+ * Tracks from gorilla cookie store creation to `gorilla/sessions.Session.Save`.
+ */
+class GorillaCookieStoreSaveTrackingConfiguration extends DataFlow::Configuration {
+  GorillaCookieStoreSaveTrackingConfiguration() {
+    this = "GorillaCookieStoreSaveTrackingConfiguration"
+  }
 
   override predicate isSource(DataFlow::Node source) {
     exists(CallExpr c |
@@ -89,12 +171,7 @@ class CookieStoreSaveTrackingConfiguration extends DataFlow::Configuration {
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) {
-    exists(CallExpr c |
-      sink.asExpr() = c.getCalleeExpr().(SelectorExpr).getBase() and
-      c.getTarget().getQualifiedName() = "github.com/gorilla/sessions.Session.Save"
-    )
-  }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof GorillaSessionSaveSink }
 
   override predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(Function f, DataFlow::CallNode cn | cn = f.getACall() |
@@ -106,10 +183,12 @@ class CookieStoreSaveTrackingConfiguration extends DataFlow::Configuration {
 }
 
 /**
- * Tracks session options to session save.
+ * Tracks session options to `gorilla/sessions.Session.Save`.
  */
-class SessionOptionsTrackingConfiguration extends TaintTracking::Configuration {
-  SessionOptionsTrackingConfiguration() { this = "SessionOptionsTrackingConfiguration" }
+class GorillaSessionOptionsTrackingConfiguration extends TaintTracking::Configuration {
+  GorillaSessionOptionsTrackingConfiguration() {
+    this = "GorillaSessionOptionsTrackingConfiguration"
+  }
 
   override predicate isSource(DataFlow::Node source) {
     exists(StructLit sl |
@@ -118,14 +197,35 @@ class SessionOptionsTrackingConfiguration extends TaintTracking::Configuration {
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) {
-    exists(CallExpr c |
-      sink.asExpr() = c.getCalleeExpr().(SelectorExpr).getBase() and
-      c.getTarget().getQualifiedName() = "github.com/gorilla/sessions.Session.Save"
-    )
-  }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof GorillaSessionSaveSink }
 
   override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(Field f, DataFlow::Write w, DataFlow::Node base |
+      f.getQualifiedName() = "github.com/gorilla/sessions.Session.Options" and
+      w.writesField(base, f, pred) and
+      succ = base
+    )
+  }
+}
+
+/**
+ * Tracks `HttpOnly` set to `false` to `gorilla/sessions.Session.Save`.
+ */
+class BoolToGorillaSessionOptionsTrackingConfiguration extends TaintTracking::Configuration {
+  BoolToGorillaSessionOptionsTrackingConfiguration() {
+    this = "BoolToGorillaSessionOptionsTrackingConfiguration"
+  }
+
+  override predicate isSource(DataFlow::Node source) { source.asExpr().getBoolValue() = false }
+
+  override predicate isSink(DataFlow::Node sink) { sink instanceof GorillaSessionSaveSink }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(StructLit sl |
+      getValueForFieldWrite(sl, "HttpOnly") = pred and
+      sl = succ.asExpr()
+    )
+    or
     exists(Field f, DataFlow::Write w, DataFlow::Node base |
       f.getQualifiedName() = "github.com/gorilla/sessions.Session.Options" and
       w.writesField(base, f, pred) and

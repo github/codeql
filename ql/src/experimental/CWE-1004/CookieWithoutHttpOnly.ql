@@ -4,7 +4,7 @@
  *              malicious JavaScript to steal it in case of XSS vulnerability. Always set
  *              'HttpOnly' to 'true' to authentication related cookie to make it
  *              not accessible by JavaScript.
- * @kind problem
+ * @kind path-problem
  * @problem.severity warning
  * @precision high
  * @id go/cookie-httponly-not-set
@@ -14,46 +14,64 @@
 
 import go
 import AuthCookie
+import DataFlow::PathGraph
 
-predicate isNetHttpCookieFlow(Expr expr) {
-  exists(
-    HttpOnlyCookieTrackingConfiguration httpOnlyCfg, DataFlow::Node source, SetCookieSink sink
-  |
-    httpOnlyCfg.hasFlow(source, sink) and
-    sink.asExpr() = expr
-  )
-}
-
-predicate isGinContextCookieFlow(Expr expr) {
-  exists(CallExpr c |
-    c.getTarget().getQualifiedName() = "github.com/gin-gonic/gin.Context.SetCookie" and
-    c.getArgument(6) = expr and
-    exists(DataFlow::Node httpOnlyArg |
-      httpOnlyArg.asExpr() = c.getArgument(6) and
-      httpOnlyArg.getAPredecessor*().asExpr().getBoolValue() = false
-    ) and
-    exists(DataFlow::Node nameArg |
-      nameArg.asExpr() = c.getArgument(0) and
-      isAuthVariable(nameArg.getAPredecessor*().asExpr())
+predicate isNetHttpCookieFlow(DataFlow::PathNode source, DataFlow::PathNode sink) {
+  exists(DataFlow::PathNode cookieCreate, DataFlow::PathNode setCookieSink |
+    exists(NetHttpCookieTrackingConfiguration cfg | cfg.hasFlowPath(cookieCreate, setCookieSink)) and
+    (
+      not exists(DataFlow::Node rhs |
+        rhs = getValueForFieldWrite(cookieCreate.getNode().asExpr(), "HttpOnly")
+      ) and
+      source = cookieCreate and
+      sink = setCookieSink
+      or
+      exists(BoolToNetHttpCookieTrackingConfiguration cfg, DataFlow::PathNode setCookieSink2 |
+        cfg.hasFlowPath(source, setCookieSink2) and
+        setCookieSink2.getNode() = setCookieSink.getNode() and
+        sink = setCookieSink2
+      )
     )
   )
 }
 
-predicate isGorillaSessionsCookieFlow(Expr expr) {
-  exists(DataFlow::Node sessionSave |
-    sessionSave.asExpr() = expr and
-    exists(CookieStoreSaveTrackingConfiguration cfg | cfg.hasFlow(_, sessionSave)) and
+predicate isGinContextCookieFlow(DataFlow::PathNode source, DataFlow::PathNode sink) {
+  exists(BoolToGinSetCookieTrackingConfiguration cfg | cfg.hasFlowPath(source, sink))
+}
+
+predicate isGorillaSessionsCookieFlow(DataFlow::PathNode source, DataFlow::PathNode sink) {
+  exists(DataFlow::PathNode cookieStoreCreate, DataFlow::PathNode sessionSave |
+    exists(GorillaCookieStoreSaveTrackingConfiguration cfg |
+      cfg.hasFlowPath(cookieStoreCreate, sessionSave)
+    ) and
     (
-      not exists(SessionOptionsTrackingConfiguration cfg | cfg.hasFlow(_, sessionSave))
+      not exists(GorillaSessionOptionsTrackingConfiguration cfg, DataFlow::PathNode sessionSave2 |
+        sessionSave2.getNode() = sessionSave.getNode() and
+        cfg.hasFlowPath(_, sessionSave2)
+      ) and
+      source = cookieStoreCreate and
+      sink = sessionSave
       or
-      exists(SessionOptionsTrackingConfiguration cfg, DataFlow::Node options |
-        cfg.hasFlow(options, sessionSave) and
+      exists(
+        GorillaSessionOptionsTrackingConfiguration cfg, DataFlow::PathNode options,
+        DataFlow::PathNode sessionSave2
+      |
+        cfg.hasFlowPath(options, sessionSave2) and
         (
-          not exists(DataFlow::Node rhs | rhs = getValueForFieldWrite(options.asExpr(), "HttpOnly"))
+          not exists(DataFlow::Node rhs |
+            rhs = getValueForFieldWrite(options.getNode().asExpr(), "HttpOnly")
+          ) and
+          sessionSave2.getNode() = sessionSave.getNode() and
+          sink = sessionSave2 and
+          source = options
           or
-          exists(DataFlow::Node rhs |
-            rhs = getValueForFieldWrite(options.asExpr(), "HttpOnly") and
-            rhs.getAPredecessor*().asExpr().getBoolValue() = false
+          exists(
+            BoolToGorillaSessionOptionsTrackingConfiguration boolCfg,
+            DataFlow::PathNode sessionSave3
+          |
+            boolCfg.hasFlowPath(source, sessionSave3) and
+            sessionSave3.getNode() = sessionSave.getNode() and
+            sink = sessionSave3
           )
         )
       )
@@ -61,9 +79,9 @@ predicate isGorillaSessionsCookieFlow(Expr expr) {
   )
 }
 
-from Expr expr
+from DataFlow::PathNode source, DataFlow::PathNode sink
 where
-  isNetHttpCookieFlow(expr) or
-  isGinContextCookieFlow(expr) or
-  isGorillaSessionsCookieFlow(expr)
-select expr, "Cookie attribute 'HttpOnly' is not set to true."
+  isNetHttpCookieFlow(source, sink) or
+  isGinContextCookieFlow(source, sink) or
+  isGorillaSessionsCookieFlow(source, sink)
+select sink.getNode(), source, sink, "Cookie attribute 'HttpOnly' is not set to true."

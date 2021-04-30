@@ -1,11 +1,272 @@
-| CookieWithoutHttpOnly.go:14:20:14:21 | &... | Cookie attribute 'HttpOnly' is not set to true. |
-| CookieWithoutHttpOnly.go:23:20:23:21 | &... | Cookie attribute 'HttpOnly' is not set to true. |
-| CookieWithoutHttpOnly.go:50:20:50:21 | &... | Cookie attribute 'HttpOnly' is not set to true. |
-| CookieWithoutHttpOnly.go:60:20:60:21 | &... | Cookie attribute 'HttpOnly' is not set to true. |
-| CookieWithoutHttpOnly.go:90:20:90:21 | &... | Cookie attribute 'HttpOnly' is not set to true. |
-| CookieWithoutHttpOnly.go:109:20:109:21 | &... | Cookie attribute 'HttpOnly' is not set to true. |
-| CookieWithoutHttpOnly.go:119:20:119:21 | &... | Cookie attribute 'HttpOnly' is not set to true. |
-| CookieWithoutHttpOnly.go:128:2:128:8 | session | Cookie attribute 'HttpOnly' is not set to true. |
-| CookieWithoutHttpOnly.go:141:2:141:8 | session | Cookie attribute 'HttpOnly' is not set to true. |
-| CookieWithoutHttpOnly.go:152:2:152:8 | session | Cookie attribute 'HttpOnly' is not set to true. |
-| CookieWithoutHttpOnly.go:189:75:189:79 | false | Cookie attribute 'HttpOnly' is not set to true. |
+edges
+| CookieWithoutHttpOnly.go:10:7:13:2 | struct literal : Cookie | CookieWithoutHttpOnly.go:14:20:14:21 | &... |
+| CookieWithoutHttpOnly.go:10:7:13:2 | struct literal : Cookie | CookieWithoutHttpOnly.go:14:20:14:21 | &... : pointer type |
+| CookieWithoutHttpOnly.go:14:20:14:21 | &... : pointer type | CookieWithoutHttpOnly.go:14:20:14:21 | &... |
+| CookieWithoutHttpOnly.go:14:20:14:21 | &... : pointer type | CookieWithoutHttpOnly.go:14:20:14:21 | &... : pointer type |
+| CookieWithoutHttpOnly.go:18:7:22:2 | struct literal : Cookie | CookieWithoutHttpOnly.go:23:20:23:21 | &... |
+| CookieWithoutHttpOnly.go:18:7:22:2 | struct literal : Cookie | CookieWithoutHttpOnly.go:23:20:23:21 | &... : pointer type |
+| CookieWithoutHttpOnly.go:21:13:21:17 | false : bool | CookieWithoutHttpOnly.go:23:20:23:21 | &... |
+| CookieWithoutHttpOnly.go:21:13:21:17 | false : bool | CookieWithoutHttpOnly.go:23:20:23:21 | &... : pointer type |
+| CookieWithoutHttpOnly.go:23:20:23:21 | &... : pointer type | CookieWithoutHttpOnly.go:23:20:23:21 | &... |
+| CookieWithoutHttpOnly.go:23:20:23:21 | &... : pointer type | CookieWithoutHttpOnly.go:23:20:23:21 | &... |
+| CookieWithoutHttpOnly.go:23:20:23:21 | &... : pointer type | CookieWithoutHttpOnly.go:23:20:23:21 | &... : pointer type |
+| CookieWithoutHttpOnly.go:23:20:23:21 | &... : pointer type | CookieWithoutHttpOnly.go:23:20:23:21 | &... : pointer type |
+| CookieWithoutHttpOnly.go:27:7:31:2 | struct literal : Cookie | CookieWithoutHttpOnly.go:32:20:32:21 | &... |
+| CookieWithoutHttpOnly.go:27:7:31:2 | struct literal : Cookie | CookieWithoutHttpOnly.go:32:20:32:21 | &... : pointer type |
+| CookieWithoutHttpOnly.go:32:20:32:21 | &... : pointer type | CookieWithoutHttpOnly.go:32:20:32:21 | &... |
+| CookieWithoutHttpOnly.go:32:20:32:21 | &... : pointer type | CookieWithoutHttpOnly.go:32:20:32:21 | &... : pointer type |
+| CookieWithoutHttpOnly.go:36:7:39:2 | struct literal : Cookie | CookieWithoutHttpOnly.go:41:20:41:21 | &... |
+| CookieWithoutHttpOnly.go:36:7:39:2 | struct literal : Cookie | CookieWithoutHttpOnly.go:41:20:41:21 | &... : pointer type |
+| CookieWithoutHttpOnly.go:41:20:41:21 | &... : pointer type | CookieWithoutHttpOnly.go:41:20:41:21 | &... |
+| CookieWithoutHttpOnly.go:41:20:41:21 | &... : pointer type | CookieWithoutHttpOnly.go:41:20:41:21 | &... : pointer type |
+| CookieWithoutHttpOnly.go:45:7:48:2 | struct literal : Cookie | CookieWithoutHttpOnly.go:50:20:50:21 | &... |
+| CookieWithoutHttpOnly.go:45:7:48:2 | struct literal : Cookie | CookieWithoutHttpOnly.go:50:20:50:21 | &... : pointer type |
+| CookieWithoutHttpOnly.go:49:15:49:19 | false : bool | CookieWithoutHttpOnly.go:50:20:50:21 | &... |
+| CookieWithoutHttpOnly.go:49:15:49:19 | false : bool | CookieWithoutHttpOnly.go:50:20:50:21 | &... : pointer type |
+| CookieWithoutHttpOnly.go:50:20:50:21 | &... : pointer type | CookieWithoutHttpOnly.go:50:20:50:21 | &... |
+| CookieWithoutHttpOnly.go:50:20:50:21 | &... : pointer type | CookieWithoutHttpOnly.go:50:20:50:21 | &... |
+| CookieWithoutHttpOnly.go:50:20:50:21 | &... : pointer type | CookieWithoutHttpOnly.go:50:20:50:21 | &... : pointer type |
+| CookieWithoutHttpOnly.go:50:20:50:21 | &... : pointer type | CookieWithoutHttpOnly.go:50:20:50:21 | &... : pointer type |
+| CookieWithoutHttpOnly.go:54:9:54:13 | false : bool | CookieWithoutHttpOnly.go:60:20:60:21 | &... |
+| CookieWithoutHttpOnly.go:54:9:54:13 | false : bool | CookieWithoutHttpOnly.go:60:20:60:21 | &... : pointer type |
+| CookieWithoutHttpOnly.go:55:7:59:2 | struct literal : Cookie | CookieWithoutHttpOnly.go:60:20:60:21 | &... |
+| CookieWithoutHttpOnly.go:55:7:59:2 | struct literal : Cookie | CookieWithoutHttpOnly.go:60:20:60:21 | &... : pointer type |
+| CookieWithoutHttpOnly.go:60:20:60:21 | &... : pointer type | CookieWithoutHttpOnly.go:60:20:60:21 | &... |
+| CookieWithoutHttpOnly.go:60:20:60:21 | &... : pointer type | CookieWithoutHttpOnly.go:60:20:60:21 | &... |
+| CookieWithoutHttpOnly.go:60:20:60:21 | &... : pointer type | CookieWithoutHttpOnly.go:60:20:60:21 | &... : pointer type |
+| CookieWithoutHttpOnly.go:60:20:60:21 | &... : pointer type | CookieWithoutHttpOnly.go:60:20:60:21 | &... : pointer type |
+| CookieWithoutHttpOnly.go:65:7:69:2 | struct literal : Cookie | CookieWithoutHttpOnly.go:70:20:70:21 | &... |
+| CookieWithoutHttpOnly.go:65:7:69:2 | struct literal : Cookie | CookieWithoutHttpOnly.go:70:20:70:21 | &... : pointer type |
+| CookieWithoutHttpOnly.go:70:20:70:21 | &... : pointer type | CookieWithoutHttpOnly.go:70:20:70:21 | &... |
+| CookieWithoutHttpOnly.go:70:20:70:21 | &... : pointer type | CookieWithoutHttpOnly.go:70:20:70:21 | &... : pointer type |
+| CookieWithoutHttpOnly.go:75:7:78:2 | struct literal : Cookie | CookieWithoutHttpOnly.go:80:20:80:21 | &... |
+| CookieWithoutHttpOnly.go:75:7:78:2 | struct literal : Cookie | CookieWithoutHttpOnly.go:80:20:80:21 | &... : pointer type |
+| CookieWithoutHttpOnly.go:80:20:80:21 | &... : pointer type | CookieWithoutHttpOnly.go:80:20:80:21 | &... |
+| CookieWithoutHttpOnly.go:80:20:80:21 | &... : pointer type | CookieWithoutHttpOnly.go:80:20:80:21 | &... : pointer type |
+| CookieWithoutHttpOnly.go:84:9:84:13 | false : bool | CookieWithoutHttpOnly.go:90:20:90:21 | &... |
+| CookieWithoutHttpOnly.go:84:9:84:13 | false : bool | CookieWithoutHttpOnly.go:90:20:90:21 | &... : pointer type |
+| CookieWithoutHttpOnly.go:85:7:88:2 | struct literal : Cookie | CookieWithoutHttpOnly.go:90:20:90:21 | &... |
+| CookieWithoutHttpOnly.go:85:7:88:2 | struct literal : Cookie | CookieWithoutHttpOnly.go:90:20:90:21 | &... : pointer type |
+| CookieWithoutHttpOnly.go:90:20:90:21 | &... : pointer type | CookieWithoutHttpOnly.go:90:20:90:21 | &... |
+| CookieWithoutHttpOnly.go:90:20:90:21 | &... : pointer type | CookieWithoutHttpOnly.go:90:20:90:21 | &... |
+| CookieWithoutHttpOnly.go:90:20:90:21 | &... : pointer type | CookieWithoutHttpOnly.go:90:20:90:21 | &... : pointer type |
+| CookieWithoutHttpOnly.go:90:20:90:21 | &... : pointer type | CookieWithoutHttpOnly.go:90:20:90:21 | &... : pointer type |
+| CookieWithoutHttpOnly.go:98:15:98:19 | false : bool | CookieWithoutHttpOnly.go:99:20:99:21 | &... |
+| CookieWithoutHttpOnly.go:98:15:98:19 | false : bool | CookieWithoutHttpOnly.go:99:20:99:21 | &... : pointer type |
+| CookieWithoutHttpOnly.go:99:20:99:21 | &... : pointer type | CookieWithoutHttpOnly.go:99:20:99:21 | &... |
+| CookieWithoutHttpOnly.go:99:20:99:21 | &... : pointer type | CookieWithoutHttpOnly.go:99:20:99:21 | &... : pointer type |
+| CookieWithoutHttpOnly.go:104:7:107:2 | struct literal : Cookie | CookieWithoutHttpOnly.go:109:20:109:21 | &... |
+| CookieWithoutHttpOnly.go:104:7:107:2 | struct literal : Cookie | CookieWithoutHttpOnly.go:109:20:109:21 | &... : pointer type |
+| CookieWithoutHttpOnly.go:108:15:108:19 | false : bool | CookieWithoutHttpOnly.go:109:20:109:21 | &... |
+| CookieWithoutHttpOnly.go:108:15:108:19 | false : bool | CookieWithoutHttpOnly.go:109:20:109:21 | &... : pointer type |
+| CookieWithoutHttpOnly.go:109:20:109:21 | &... : pointer type | CookieWithoutHttpOnly.go:109:20:109:21 | &... |
+| CookieWithoutHttpOnly.go:109:20:109:21 | &... : pointer type | CookieWithoutHttpOnly.go:109:20:109:21 | &... |
+| CookieWithoutHttpOnly.go:109:20:109:21 | &... : pointer type | CookieWithoutHttpOnly.go:109:20:109:21 | &... : pointer type |
+| CookieWithoutHttpOnly.go:109:20:109:21 | &... : pointer type | CookieWithoutHttpOnly.go:109:20:109:21 | &... : pointer type |
+| CookieWithoutHttpOnly.go:114:7:117:2 | struct literal : Cookie | CookieWithoutHttpOnly.go:119:20:119:21 | &... |
+| CookieWithoutHttpOnly.go:114:7:117:2 | struct literal : Cookie | CookieWithoutHttpOnly.go:119:20:119:21 | &... : pointer type |
+| CookieWithoutHttpOnly.go:118:15:118:19 | false : bool | CookieWithoutHttpOnly.go:119:20:119:21 | &... |
+| CookieWithoutHttpOnly.go:118:15:118:19 | false : bool | CookieWithoutHttpOnly.go:119:20:119:21 | &... : pointer type |
+| CookieWithoutHttpOnly.go:119:20:119:21 | &... : pointer type | CookieWithoutHttpOnly.go:119:20:119:21 | &... |
+| CookieWithoutHttpOnly.go:119:20:119:21 | &... : pointer type | CookieWithoutHttpOnly.go:119:20:119:21 | &... |
+| CookieWithoutHttpOnly.go:119:20:119:21 | &... : pointer type | CookieWithoutHttpOnly.go:119:20:119:21 | &... : pointer type |
+| CookieWithoutHttpOnly.go:119:20:119:21 | &... : pointer type | CookieWithoutHttpOnly.go:119:20:119:21 | &... : pointer type |
+| CookieWithoutHttpOnly.go:122:13:122:49 | call to NewCookieStore : pointer type | CookieWithoutHttpOnly.go:125:16:125:20 | store : pointer type |
+| CookieWithoutHttpOnly.go:122:13:122:49 | call to NewCookieStore : pointer type | CookieWithoutHttpOnly.go:133:16:133:20 | store : pointer type |
+| CookieWithoutHttpOnly.go:122:13:122:49 | call to NewCookieStore : pointer type | CookieWithoutHttpOnly.go:145:16:145:20 | store : pointer type |
+| CookieWithoutHttpOnly.go:122:13:122:49 | call to NewCookieStore : pointer type | CookieWithoutHttpOnly.go:157:16:157:20 | store : pointer type |
+| CookieWithoutHttpOnly.go:122:13:122:49 | call to NewCookieStore : pointer type | CookieWithoutHttpOnly.go:169:16:169:20 | store : pointer type |
+| CookieWithoutHttpOnly.go:125:16:125:20 | store : pointer type | CookieWithoutHttpOnly.go:128:2:128:8 | session |
+| CookieWithoutHttpOnly.go:132:14:132:18 | false : bool | CookieWithoutHttpOnly.go:134:2:134:8 | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:132:14:132:18 | false : bool | CookieWithoutHttpOnly.go:136:2:136:8 | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:132:14:132:18 | false : bool | CookieWithoutHttpOnly.go:141:2:141:8 | session |
+| CookieWithoutHttpOnly.go:133:2:133:8 | definition of session [pointer] : Session | CookieWithoutHttpOnly.go:134:2:134:8 | session [pointer] : Session |
+| CookieWithoutHttpOnly.go:133:2:133:8 | definition of session [pointer] : Session | CookieWithoutHttpOnly.go:134:2:134:8 | session [pointer] : Session |
+| CookieWithoutHttpOnly.go:133:2:133:8 | definition of session [pointer] : Session | CookieWithoutHttpOnly.go:136:2:136:8 | session [pointer] : Session |
+| CookieWithoutHttpOnly.go:133:2:133:8 | definition of session [pointer] : Session | CookieWithoutHttpOnly.go:136:2:136:8 | session [pointer] : Session |
+| CookieWithoutHttpOnly.go:133:16:133:20 | store : pointer type | CookieWithoutHttpOnly.go:141:2:141:8 | session |
+| CookieWithoutHttpOnly.go:134:2:134:8 | implicit dereference : Session | CookieWithoutHttpOnly.go:133:2:133:8 | definition of session [pointer] : Session |
+| CookieWithoutHttpOnly.go:134:2:134:8 | implicit dereference : Session | CookieWithoutHttpOnly.go:133:2:133:8 | definition of session [pointer] : Session |
+| CookieWithoutHttpOnly.go:134:2:134:8 | implicit dereference : Session | CookieWithoutHttpOnly.go:134:2:134:8 | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:134:2:134:8 | implicit dereference : Session | CookieWithoutHttpOnly.go:134:2:134:8 | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:134:2:134:8 | implicit dereference : Session | CookieWithoutHttpOnly.go:136:2:136:8 | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:134:2:134:8 | implicit dereference : Session | CookieWithoutHttpOnly.go:136:2:136:8 | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:134:2:134:8 | implicit dereference : Session | CookieWithoutHttpOnly.go:141:2:141:8 | session |
+| CookieWithoutHttpOnly.go:134:2:134:8 | implicit dereference : Session | CookieWithoutHttpOnly.go:141:2:141:8 | session |
+| CookieWithoutHttpOnly.go:134:2:134:8 | session [pointer] : Session | CookieWithoutHttpOnly.go:134:2:134:8 | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:134:2:134:8 | session [pointer] : Session | CookieWithoutHttpOnly.go:134:2:134:8 | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:136:2:136:8 | implicit dereference : Session | CookieWithoutHttpOnly.go:133:2:133:8 | definition of session [pointer] : Session |
+| CookieWithoutHttpOnly.go:136:2:136:8 | implicit dereference : Session | CookieWithoutHttpOnly.go:133:2:133:8 | definition of session [pointer] : Session |
+| CookieWithoutHttpOnly.go:136:2:136:8 | implicit dereference : Session | CookieWithoutHttpOnly.go:134:2:134:8 | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:136:2:136:8 | implicit dereference : Session | CookieWithoutHttpOnly.go:134:2:134:8 | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:136:2:136:8 | implicit dereference : Session | CookieWithoutHttpOnly.go:136:2:136:8 | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:136:2:136:8 | implicit dereference : Session | CookieWithoutHttpOnly.go:136:2:136:8 | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:136:2:136:8 | implicit dereference : Session | CookieWithoutHttpOnly.go:141:2:141:8 | session |
+| CookieWithoutHttpOnly.go:136:2:136:8 | implicit dereference : Session | CookieWithoutHttpOnly.go:141:2:141:8 | session |
+| CookieWithoutHttpOnly.go:136:2:136:8 | session [pointer] : Session | CookieWithoutHttpOnly.go:136:2:136:8 | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:136:2:136:8 | session [pointer] : Session | CookieWithoutHttpOnly.go:136:2:136:8 | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:136:21:139:2 | struct literal : Options | CookieWithoutHttpOnly.go:134:2:134:8 | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:136:21:139:2 | struct literal : Options | CookieWithoutHttpOnly.go:136:2:136:8 | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:136:21:139:2 | struct literal : Options | CookieWithoutHttpOnly.go:141:2:141:8 | session |
+| CookieWithoutHttpOnly.go:145:2:145:8 | definition of session [pointer] : Session | CookieWithoutHttpOnly.go:146:2:146:8 | session [pointer] : Session |
+| CookieWithoutHttpOnly.go:145:2:145:8 | definition of session [pointer] : Session | CookieWithoutHttpOnly.go:148:2:148:8 | session [pointer] : Session |
+| CookieWithoutHttpOnly.go:145:16:145:20 | store : pointer type | CookieWithoutHttpOnly.go:152:2:152:8 | session |
+| CookieWithoutHttpOnly.go:146:2:146:8 | implicit dereference : Session | CookieWithoutHttpOnly.go:145:2:145:8 | definition of session [pointer] : Session |
+| CookieWithoutHttpOnly.go:146:2:146:8 | implicit dereference : Session | CookieWithoutHttpOnly.go:146:2:146:8 | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:146:2:146:8 | implicit dereference : Session | CookieWithoutHttpOnly.go:148:2:148:8 | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:146:2:146:8 | implicit dereference : Session | CookieWithoutHttpOnly.go:152:2:152:8 | session |
+| CookieWithoutHttpOnly.go:146:2:146:8 | session [pointer] : Session | CookieWithoutHttpOnly.go:146:2:146:8 | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:148:2:148:8 | implicit dereference : Session | CookieWithoutHttpOnly.go:145:2:145:8 | definition of session [pointer] : Session |
+| CookieWithoutHttpOnly.go:148:2:148:8 | implicit dereference : Session | CookieWithoutHttpOnly.go:146:2:146:8 | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:148:2:148:8 | implicit dereference : Session | CookieWithoutHttpOnly.go:148:2:148:8 | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:148:2:148:8 | implicit dereference : Session | CookieWithoutHttpOnly.go:152:2:152:8 | session |
+| CookieWithoutHttpOnly.go:148:2:148:8 | session [pointer] : Session | CookieWithoutHttpOnly.go:148:2:148:8 | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:148:21:150:2 | struct literal : Options | CookieWithoutHttpOnly.go:146:2:146:8 | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:148:21:150:2 | struct literal : Options | CookieWithoutHttpOnly.go:148:2:148:8 | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:148:21:150:2 | struct literal : Options | CookieWithoutHttpOnly.go:152:2:152:8 | session |
+| CookieWithoutHttpOnly.go:157:2:157:8 | definition of session [pointer] : Session | CookieWithoutHttpOnly.go:158:2:158:8 | session [pointer] : Session |
+| CookieWithoutHttpOnly.go:157:2:157:8 | definition of session [pointer] : Session | CookieWithoutHttpOnly.go:160:2:160:8 | session [pointer] : Session |
+| CookieWithoutHttpOnly.go:157:16:157:20 | store : pointer type | CookieWithoutHttpOnly.go:165:2:165:8 | session |
+| CookieWithoutHttpOnly.go:158:2:158:8 | implicit dereference : Session | CookieWithoutHttpOnly.go:157:2:157:8 | definition of session [pointer] : Session |
+| CookieWithoutHttpOnly.go:158:2:158:8 | implicit dereference : Session | CookieWithoutHttpOnly.go:158:2:158:8 | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:158:2:158:8 | implicit dereference : Session | CookieWithoutHttpOnly.go:160:2:160:8 | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:158:2:158:8 | implicit dereference : Session | CookieWithoutHttpOnly.go:165:2:165:8 | session |
+| CookieWithoutHttpOnly.go:158:2:158:8 | session [pointer] : Session | CookieWithoutHttpOnly.go:158:2:158:8 | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:160:2:160:8 | implicit dereference : Session | CookieWithoutHttpOnly.go:157:2:157:8 | definition of session [pointer] : Session |
+| CookieWithoutHttpOnly.go:160:2:160:8 | implicit dereference : Session | CookieWithoutHttpOnly.go:158:2:158:8 | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:160:2:160:8 | implicit dereference : Session | CookieWithoutHttpOnly.go:160:2:160:8 | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:160:2:160:8 | implicit dereference : Session | CookieWithoutHttpOnly.go:165:2:165:8 | session |
+| CookieWithoutHttpOnly.go:160:2:160:8 | session [pointer] : Session | CookieWithoutHttpOnly.go:160:2:160:8 | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:160:21:163:2 | struct literal : Options | CookieWithoutHttpOnly.go:158:2:158:8 | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:160:21:163:2 | struct literal : Options | CookieWithoutHttpOnly.go:160:2:160:8 | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:160:21:163:2 | struct literal : Options | CookieWithoutHttpOnly.go:165:2:165:8 | session |
+| CookieWithoutHttpOnly.go:169:2:169:8 | definition of session [pointer] : Session | CookieWithoutHttpOnly.go:170:2:170:8 | session [pointer] : Session |
+| CookieWithoutHttpOnly.go:169:2:169:8 | definition of session [pointer] : Session | CookieWithoutHttpOnly.go:172:2:172:8 | session [pointer] : Session |
+| CookieWithoutHttpOnly.go:169:16:169:20 | store : pointer type | CookieWithoutHttpOnly.go:177:2:177:8 | session |
+| CookieWithoutHttpOnly.go:170:2:170:8 | implicit dereference : Session | CookieWithoutHttpOnly.go:169:2:169:8 | definition of session [pointer] : Session |
+| CookieWithoutHttpOnly.go:170:2:170:8 | implicit dereference : Session | CookieWithoutHttpOnly.go:170:2:170:8 | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:170:2:170:8 | implicit dereference : Session | CookieWithoutHttpOnly.go:172:2:172:8 | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:170:2:170:8 | implicit dereference : Session | CookieWithoutHttpOnly.go:177:2:177:8 | session |
+| CookieWithoutHttpOnly.go:170:2:170:8 | session [pointer] : Session | CookieWithoutHttpOnly.go:170:2:170:8 | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:172:2:172:8 | implicit dereference : Session | CookieWithoutHttpOnly.go:169:2:169:8 | definition of session [pointer] : Session |
+| CookieWithoutHttpOnly.go:172:2:172:8 | implicit dereference : Session | CookieWithoutHttpOnly.go:170:2:170:8 | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:172:2:172:8 | implicit dereference : Session | CookieWithoutHttpOnly.go:172:2:172:8 | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:172:2:172:8 | implicit dereference : Session | CookieWithoutHttpOnly.go:177:2:177:8 | session |
+| CookieWithoutHttpOnly.go:172:2:172:8 | session [pointer] : Session | CookieWithoutHttpOnly.go:172:2:172:8 | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:172:21:175:2 | struct literal : Options | CookieWithoutHttpOnly.go:170:2:170:8 | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:172:21:175:2 | struct literal : Options | CookieWithoutHttpOnly.go:172:2:172:8 | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:172:21:175:2 | struct literal : Options | CookieWithoutHttpOnly.go:177:2:177:8 | session |
+nodes
+| CookieWithoutHttpOnly.go:10:7:13:2 | struct literal : Cookie | semmle.label | struct literal : Cookie |
+| CookieWithoutHttpOnly.go:14:20:14:21 | &... | semmle.label | &... |
+| CookieWithoutHttpOnly.go:14:20:14:21 | &... : pointer type | semmle.label | &... : pointer type |
+| CookieWithoutHttpOnly.go:18:7:22:2 | struct literal : Cookie | semmle.label | struct literal : Cookie |
+| CookieWithoutHttpOnly.go:21:13:21:17 | false : bool | semmle.label | false : bool |
+| CookieWithoutHttpOnly.go:23:20:23:21 | &... | semmle.label | &... |
+| CookieWithoutHttpOnly.go:23:20:23:21 | &... | semmle.label | &... |
+| CookieWithoutHttpOnly.go:23:20:23:21 | &... : pointer type | semmle.label | &... : pointer type |
+| CookieWithoutHttpOnly.go:23:20:23:21 | &... : pointer type | semmle.label | &... : pointer type |
+| CookieWithoutHttpOnly.go:27:7:31:2 | struct literal : Cookie | semmle.label | struct literal : Cookie |
+| CookieWithoutHttpOnly.go:32:20:32:21 | &... | semmle.label | &... |
+| CookieWithoutHttpOnly.go:32:20:32:21 | &... : pointer type | semmle.label | &... : pointer type |
+| CookieWithoutHttpOnly.go:36:7:39:2 | struct literal : Cookie | semmle.label | struct literal : Cookie |
+| CookieWithoutHttpOnly.go:41:20:41:21 | &... | semmle.label | &... |
+| CookieWithoutHttpOnly.go:41:20:41:21 | &... : pointer type | semmle.label | &... : pointer type |
+| CookieWithoutHttpOnly.go:45:7:48:2 | struct literal : Cookie | semmle.label | struct literal : Cookie |
+| CookieWithoutHttpOnly.go:49:15:49:19 | false : bool | semmle.label | false : bool |
+| CookieWithoutHttpOnly.go:50:20:50:21 | &... | semmle.label | &... |
+| CookieWithoutHttpOnly.go:50:20:50:21 | &... | semmle.label | &... |
+| CookieWithoutHttpOnly.go:50:20:50:21 | &... : pointer type | semmle.label | &... : pointer type |
+| CookieWithoutHttpOnly.go:50:20:50:21 | &... : pointer type | semmle.label | &... : pointer type |
+| CookieWithoutHttpOnly.go:54:9:54:13 | false : bool | semmle.label | false : bool |
+| CookieWithoutHttpOnly.go:55:7:59:2 | struct literal : Cookie | semmle.label | struct literal : Cookie |
+| CookieWithoutHttpOnly.go:60:20:60:21 | &... | semmle.label | &... |
+| CookieWithoutHttpOnly.go:60:20:60:21 | &... | semmle.label | &... |
+| CookieWithoutHttpOnly.go:60:20:60:21 | &... : pointer type | semmle.label | &... : pointer type |
+| CookieWithoutHttpOnly.go:60:20:60:21 | &... : pointer type | semmle.label | &... : pointer type |
+| CookieWithoutHttpOnly.go:65:7:69:2 | struct literal : Cookie | semmle.label | struct literal : Cookie |
+| CookieWithoutHttpOnly.go:70:20:70:21 | &... | semmle.label | &... |
+| CookieWithoutHttpOnly.go:70:20:70:21 | &... : pointer type | semmle.label | &... : pointer type |
+| CookieWithoutHttpOnly.go:75:7:78:2 | struct literal : Cookie | semmle.label | struct literal : Cookie |
+| CookieWithoutHttpOnly.go:80:20:80:21 | &... | semmle.label | &... |
+| CookieWithoutHttpOnly.go:80:20:80:21 | &... : pointer type | semmle.label | &... : pointer type |
+| CookieWithoutHttpOnly.go:84:9:84:13 | false : bool | semmle.label | false : bool |
+| CookieWithoutHttpOnly.go:85:7:88:2 | struct literal : Cookie | semmle.label | struct literal : Cookie |
+| CookieWithoutHttpOnly.go:90:20:90:21 | &... | semmle.label | &... |
+| CookieWithoutHttpOnly.go:90:20:90:21 | &... | semmle.label | &... |
+| CookieWithoutHttpOnly.go:90:20:90:21 | &... : pointer type | semmle.label | &... : pointer type |
+| CookieWithoutHttpOnly.go:90:20:90:21 | &... : pointer type | semmle.label | &... : pointer type |
+| CookieWithoutHttpOnly.go:98:15:98:19 | false : bool | semmle.label | false : bool |
+| CookieWithoutHttpOnly.go:99:20:99:21 | &... | semmle.label | &... |
+| CookieWithoutHttpOnly.go:99:20:99:21 | &... : pointer type | semmle.label | &... : pointer type |
+| CookieWithoutHttpOnly.go:104:7:107:2 | struct literal : Cookie | semmle.label | struct literal : Cookie |
+| CookieWithoutHttpOnly.go:108:15:108:19 | false : bool | semmle.label | false : bool |
+| CookieWithoutHttpOnly.go:109:20:109:21 | &... | semmle.label | &... |
+| CookieWithoutHttpOnly.go:109:20:109:21 | &... | semmle.label | &... |
+| CookieWithoutHttpOnly.go:109:20:109:21 | &... : pointer type | semmle.label | &... : pointer type |
+| CookieWithoutHttpOnly.go:109:20:109:21 | &... : pointer type | semmle.label | &... : pointer type |
+| CookieWithoutHttpOnly.go:114:7:117:2 | struct literal : Cookie | semmle.label | struct literal : Cookie |
+| CookieWithoutHttpOnly.go:118:15:118:19 | false : bool | semmle.label | false : bool |
+| CookieWithoutHttpOnly.go:119:20:119:21 | &... | semmle.label | &... |
+| CookieWithoutHttpOnly.go:119:20:119:21 | &... | semmle.label | &... |
+| CookieWithoutHttpOnly.go:119:20:119:21 | &... : pointer type | semmle.label | &... : pointer type |
+| CookieWithoutHttpOnly.go:119:20:119:21 | &... : pointer type | semmle.label | &... : pointer type |
+| CookieWithoutHttpOnly.go:122:13:122:49 | call to NewCookieStore : pointer type | semmle.label | call to NewCookieStore : pointer type |
+| CookieWithoutHttpOnly.go:125:16:125:20 | store : pointer type | semmle.label | store : pointer type |
+| CookieWithoutHttpOnly.go:128:2:128:8 | session | semmle.label | session |
+| CookieWithoutHttpOnly.go:132:14:132:18 | false : bool | semmle.label | false : bool |
+| CookieWithoutHttpOnly.go:133:2:133:8 | definition of session [pointer] : Session | semmle.label | definition of session [pointer] : Session |
+| CookieWithoutHttpOnly.go:133:2:133:8 | definition of session [pointer] : Session | semmle.label | definition of session [pointer] : Session |
+| CookieWithoutHttpOnly.go:133:16:133:20 | store : pointer type | semmle.label | store : pointer type |
+| CookieWithoutHttpOnly.go:134:2:134:8 | implicit dereference : Session | semmle.label | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:134:2:134:8 | implicit dereference : Session | semmle.label | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:134:2:134:8 | session [pointer] : Session | semmle.label | session [pointer] : Session |
+| CookieWithoutHttpOnly.go:134:2:134:8 | session [pointer] : Session | semmle.label | session [pointer] : Session |
+| CookieWithoutHttpOnly.go:136:2:136:8 | implicit dereference : Session | semmle.label | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:136:2:136:8 | implicit dereference : Session | semmle.label | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:136:2:136:8 | session [pointer] : Session | semmle.label | session [pointer] : Session |
+| CookieWithoutHttpOnly.go:136:2:136:8 | session [pointer] : Session | semmle.label | session [pointer] : Session |
+| CookieWithoutHttpOnly.go:136:21:139:2 | struct literal : Options | semmle.label | struct literal : Options |
+| CookieWithoutHttpOnly.go:141:2:141:8 | session | semmle.label | session |
+| CookieWithoutHttpOnly.go:141:2:141:8 | session | semmle.label | session |
+| CookieWithoutHttpOnly.go:141:2:141:8 | session | semmle.label | session |
+| CookieWithoutHttpOnly.go:145:2:145:8 | definition of session [pointer] : Session | semmle.label | definition of session [pointer] : Session |
+| CookieWithoutHttpOnly.go:145:16:145:20 | store : pointer type | semmle.label | store : pointer type |
+| CookieWithoutHttpOnly.go:146:2:146:8 | implicit dereference : Session | semmle.label | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:146:2:146:8 | session [pointer] : Session | semmle.label | session [pointer] : Session |
+| CookieWithoutHttpOnly.go:148:2:148:8 | implicit dereference : Session | semmle.label | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:148:2:148:8 | session [pointer] : Session | semmle.label | session [pointer] : Session |
+| CookieWithoutHttpOnly.go:148:21:150:2 | struct literal : Options | semmle.label | struct literal : Options |
+| CookieWithoutHttpOnly.go:152:2:152:8 | session | semmle.label | session |
+| CookieWithoutHttpOnly.go:152:2:152:8 | session | semmle.label | session |
+| CookieWithoutHttpOnly.go:157:2:157:8 | definition of session [pointer] : Session | semmle.label | definition of session [pointer] : Session |
+| CookieWithoutHttpOnly.go:157:16:157:20 | store : pointer type | semmle.label | store : pointer type |
+| CookieWithoutHttpOnly.go:158:2:158:8 | implicit dereference : Session | semmle.label | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:158:2:158:8 | session [pointer] : Session | semmle.label | session [pointer] : Session |
+| CookieWithoutHttpOnly.go:160:2:160:8 | implicit dereference : Session | semmle.label | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:160:2:160:8 | session [pointer] : Session | semmle.label | session [pointer] : Session |
+| CookieWithoutHttpOnly.go:160:21:163:2 | struct literal : Options | semmle.label | struct literal : Options |
+| CookieWithoutHttpOnly.go:165:2:165:8 | session | semmle.label | session |
+| CookieWithoutHttpOnly.go:165:2:165:8 | session | semmle.label | session |
+| CookieWithoutHttpOnly.go:169:2:169:8 | definition of session [pointer] : Session | semmle.label | definition of session [pointer] : Session |
+| CookieWithoutHttpOnly.go:169:16:169:20 | store : pointer type | semmle.label | store : pointer type |
+| CookieWithoutHttpOnly.go:170:2:170:8 | implicit dereference : Session | semmle.label | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:170:2:170:8 | session [pointer] : Session | semmle.label | session [pointer] : Session |
+| CookieWithoutHttpOnly.go:172:2:172:8 | implicit dereference : Session | semmle.label | implicit dereference : Session |
+| CookieWithoutHttpOnly.go:172:2:172:8 | session [pointer] : Session | semmle.label | session [pointer] : Session |
+| CookieWithoutHttpOnly.go:172:21:175:2 | struct literal : Options | semmle.label | struct literal : Options |
+| CookieWithoutHttpOnly.go:177:2:177:8 | session | semmle.label | session |
+| CookieWithoutHttpOnly.go:177:2:177:8 | session | semmle.label | session |
+| CookieWithoutHttpOnly.go:189:75:189:79 | false | semmle.label | false |
+#select
+| CookieWithoutHttpOnly.go:14:20:14:21 | &... | CookieWithoutHttpOnly.go:10:7:13:2 | struct literal : Cookie | CookieWithoutHttpOnly.go:14:20:14:21 | &... | Cookie attribute 'HttpOnly' is not set to true. |
+| CookieWithoutHttpOnly.go:23:20:23:21 | &... | CookieWithoutHttpOnly.go:21:13:21:17 | false : bool | CookieWithoutHttpOnly.go:23:20:23:21 | &... | Cookie attribute 'HttpOnly' is not set to true. |
+| CookieWithoutHttpOnly.go:50:20:50:21 | &... | CookieWithoutHttpOnly.go:49:15:49:19 | false : bool | CookieWithoutHttpOnly.go:50:20:50:21 | &... | Cookie attribute 'HttpOnly' is not set to true. |
+| CookieWithoutHttpOnly.go:60:20:60:21 | &... | CookieWithoutHttpOnly.go:54:9:54:13 | false : bool | CookieWithoutHttpOnly.go:60:20:60:21 | &... | Cookie attribute 'HttpOnly' is not set to true. |
+| CookieWithoutHttpOnly.go:90:20:90:21 | &... | CookieWithoutHttpOnly.go:84:9:84:13 | false : bool | CookieWithoutHttpOnly.go:90:20:90:21 | &... | Cookie attribute 'HttpOnly' is not set to true. |
+| CookieWithoutHttpOnly.go:109:20:109:21 | &... | CookieWithoutHttpOnly.go:108:15:108:19 | false : bool | CookieWithoutHttpOnly.go:109:20:109:21 | &... | Cookie attribute 'HttpOnly' is not set to true. |
+| CookieWithoutHttpOnly.go:119:20:119:21 | &... | CookieWithoutHttpOnly.go:118:15:118:19 | false : bool | CookieWithoutHttpOnly.go:119:20:119:21 | &... | Cookie attribute 'HttpOnly' is not set to true. |
+| CookieWithoutHttpOnly.go:128:2:128:8 | session | CookieWithoutHttpOnly.go:122:13:122:49 | call to NewCookieStore : pointer type | CookieWithoutHttpOnly.go:128:2:128:8 | session | Cookie attribute 'HttpOnly' is not set to true. |
+| CookieWithoutHttpOnly.go:141:2:141:8 | session | CookieWithoutHttpOnly.go:132:14:132:18 | false : bool | CookieWithoutHttpOnly.go:141:2:141:8 | session | Cookie attribute 'HttpOnly' is not set to true. |
+| CookieWithoutHttpOnly.go:152:2:152:8 | session | CookieWithoutHttpOnly.go:148:21:150:2 | struct literal : Options | CookieWithoutHttpOnly.go:152:2:152:8 | session | Cookie attribute 'HttpOnly' is not set to true. |
+| CookieWithoutHttpOnly.go:189:75:189:79 | false | CookieWithoutHttpOnly.go:189:75:189:79 | false | CookieWithoutHttpOnly.go:189:75:189:79 | false | Cookie attribute 'HttpOnly' is not set to true. |
