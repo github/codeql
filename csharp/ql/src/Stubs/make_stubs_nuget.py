@@ -125,53 +125,86 @@ with open(assetsJsonFile) as json_data:
             os.makedirs(packageDir)
         print('  * Processing package: ' + name + '/' + version)
         with open(os.path.join(packageDir, stubFileName), 'a') as f:
-            f.write('// Stub for ' + name + ' version ' + version + '\n\n')
+            with open(os.path.join(packageDir, name + '.csproj'), 'a') as pf:
 
-            dlls = set()
-            if 'compile' in data['targets'][target][package]:
-                for dll in data['targets'][target][package]['compile']:
-                    dlls.add((name + '/' + version + '/' + dll).lower())
-            if 'runtime' in data['targets'][target][package]:
-                for dll in data['targets'][target][package]['runtime']:
-                    dlls.add((name + '/' + version + '/' + dll).lower())
+                pf.write('<Project Sdk="Microsoft.NET.Sdk">\n')
+                pf.write('  <PropertyGroup>\n')
+                pf.write('    <TargetFramework>net5.0</TargetFramework>\n')
+                pf.write('    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>\n')
+                pf.write('    <OutputPath>bin\</OutputPath>\n')
+                pf.write(
+                    '    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>\n')
+                pf.write('  </PropertyGroup>\n\n')
+                pf.write('  <ItemGroup>\n')
 
-            for pathInfo in pathInfos:
-                for dll in dlls:
-                    if pathInfo.lower().endswith(dll):
-                        copiedFiles.add(pathInfo)
-                        shutil.copy2(pathInfos[pathInfo], packageDir)
-                        f.write('// semmle-extractor-options: ' +
-                                os.path.basename(pathInfos[pathInfo]) + '\n')
+                f.write('// Stub for ' + name + ' version ' + version + '\n\n')
 
-            if 'dependencies' in data['targets'][target][package]:
-                for dependency in data['targets'][target][package]['dependencies'].keys():
-                    depVersion = data['targets'][target][package]['dependencies'][dependency]
-                    f.write('// semmle-extractor-options: ../../' +
-                            dependency + '/' + depVersion + '/' + stubFileName + '\n')
+                dlls = set()
+                if 'compile' in data['targets'][target][package]:
+                    for dll in data['targets'][target][package]['compile']:
+                        dlls.add(
+                            (name + '/' + version + '/' + dll).lower())
+                if 'runtime' in data['targets'][target][package]:
+                    for dll in data['targets'][target][package]['runtime']:
+                        dlls.add((name + '/' + version + '/' + dll).lower())
 
-            if 'frameworkReferences' in data['targets'][target][package]:
-                if not os.path.exists(frameworksDir):
-                    os.makedirs(frameworksDir)
-                for framework in data['targets'][target][package]['frameworkReferences']:
-                    frameworks.add(framework)
-                    frameworkDir = os.path.join(frameworksDir, framework)
-                    if not os.path.exists(frameworkDir):
-                        os.makedirs(frameworkDir)
-                    f.write('// semmle-extractor-options: ../../' + frameworksDirName + '/' +
-                            framework + '/' + stubFileName + '\n')
+                for pathInfo in pathInfos:
+                    for dll in dlls:
+                        if pathInfo.lower().endswith(dll):
+                            copiedFiles.add(pathInfo)
+                            shutil.copy2(pathInfos[pathInfo], packageDir)
+                            f.write('// semmle-extractor-options: ' +
+                                    os.path.basename(pathInfos[pathInfo]) + '\n')
+
+                if 'dependencies' in data['targets'][target][package]:
+                    for dependency in data['targets'][target][package]['dependencies'].keys():
+                        depVersion = data['targets'][target][package]['dependencies'][dependency]
+                        f.write('// semmle-extractor-options: ../../' +
+                                dependency + '/' + depVersion + '/' + stubFileName + '\n')
+                        pf.write('    <ProjectReference Include="../../' +
+                                 dependency + '/' + depVersion + '/' + dependency + '.csproj" />\n')
+
+                if 'frameworkReferences' in data['targets'][target][package]:
+                    if not os.path.exists(frameworksDir):
+                        os.makedirs(frameworksDir)
+                    for framework in data['targets'][target][package]['frameworkReferences']:
+                        frameworks.add(framework)
+                        frameworkDir = os.path.join(
+                            frameworksDir, framework)
+                        if not os.path.exists(frameworkDir):
+                            os.makedirs(frameworkDir)
+                        f.write('// semmle-extractor-options: ../../' + frameworksDirName + '/' +
+                                framework + '/' + stubFileName + '\n')
+                        pf.write('    <ProjectReference Include="../../' +
+                                 frameworksDirName + '/' + framework + '/' + framework + '.csproj" />\n')
+
+                pf.write('  </ItemGroup>\n')
+                pf.write('</Project>\n')
 
 for framework in frameworks:
     with open(os.path.join(frameworksDir, framework, stubFileName), 'a') as f:
-        f.write('// Stub for ' + framework + '\n\n')
-        for pathInfo in pathInfos:
-            if 'packs/' + framework.lower() in pathInfo.lower():
-                copiedFiles.add(pathInfo)
-                shutil.copy2(pathInfos[pathInfo], os.path.join(
-                    frameworksDir, framework))
-                f.write('// semmle-extractor-options: ' +
-                        os.path.basename(pathInfos[pathInfo]) + '\n')
+        with open(os.path.join(frameworksDir, framework, framework + '.csproj'), 'a') as pf:
 
-# todo: write not copied files to others folder
+            pf.write('<Project Sdk="Microsoft.NET.Sdk">\n')
+            pf.write('  <PropertyGroup>\n')
+            pf.write('    <TargetFramework>net5.0</TargetFramework>\n')
+            pf.write('    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>\n')
+            pf.write('    <OutputPath>bin\</OutputPath>\n')
+            pf.write(
+                '    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>\n')
+            pf.write('  </PropertyGroup>\n')
+            pf.write('</Project>\n')
+
+            f.write('// Stub for ' + framework + '\n\n')
+
+            for pathInfo in pathInfos:
+                if 'packs/' + framework.lower() in pathInfo.lower():
+                    copiedFiles.add(pathInfo)
+                    shutil.copy2(pathInfos[pathInfo], os.path.join(
+                        frameworksDir, framework))
+                    f.write('// semmle-extractor-options: ' +
+                            os.path.basename(pathInfos[pathInfo]) + '\n')
+
 for pathInfo in pathInfos:
     if pathInfo not in copiedFiles:
         print('Not copied to nuget or framework folder: ' + pathInfo)
@@ -183,8 +216,8 @@ for pathInfo in pathInfos:
 print("\n --> Generated structured stub files: " + stubsDir)
 
 print("\n* Building raw output project")
-helpers.run_cmd(['dotnet', 'build', '/t:rebuild', '/p:AllowUnsafeBlocks=true', '/p:WarningLevel=0',
-                rawSrcOutputDir], 'ERR: Build failed. Script failed to generate a stub that builds')
+helpers.run_cmd(['dotnet', 'build', '/t:rebuild', '/p:AllowUnsafeBlocks=true', '/p:WarningLevel=0', rawSrcOutputDir],
+                'ERR: Build failed. Script failed to generate a stub that builds. Please touch up manually the stubs.')
 
 print("\n --> Generated structured stub files: " + stubsDir)
 
