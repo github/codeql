@@ -1,5 +1,6 @@
 /**
  * @name InsecureRmiJmxAuthenticationEnvironment
+ * @description This query detects if a JMX/RMI server is created with a potentially dangerous environment, which could lead to code execution through insecure deserialization.
  * @kind path-problem
  * @problem.severity error
  * @tags security
