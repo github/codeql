@@ -41,10 +41,12 @@ private class CompareSink extends UseOfLessTrustedSink {
       ma.getMethod().getNumberOfParameters() = 1 and
       (
         ma.getArgument(0) = this.asExpr() and
-        ma.getQualifier().(CompileTimeConstantExpr).getStringValue() instanceof PrivateHostName
+        ma.getQualifier().(CompileTimeConstantExpr).getStringValue() instanceof PrivateHostName and
+        not ma.getQualifier().(CompileTimeConstantExpr).getStringValue() = "0:0:0:0:0:0:0:1"
         or
         ma.getQualifier() = this.asExpr() and
-        ma.getArgument(0).(CompileTimeConstantExpr).getStringValue() instanceof PrivateHostName
+        ma.getArgument(0).(CompileTimeConstantExpr).getStringValue() instanceof PrivateHostName and
+        not ma.getArgument(0).(CompileTimeConstantExpr).getStringValue() = "0:0:0:0:0:0:0:1"
       )
     )
     or
@@ -79,7 +81,8 @@ private class CompareSink extends UseOfLessTrustedSink {
           .hasQualifiedName(["org.apache.commons.lang3", "org.apache.commons.lang"], "StringUtils") and
       ma.getMethod().getNumberOfParameters() = 2 and
       ma.getAnArgument() = this.asExpr() and
-      ma.getAnArgument().(CompileTimeConstantExpr).getStringValue() instanceof PrivateHostName
+      ma.getAnArgument().(CompileTimeConstantExpr).getStringValue() instanceof PrivateHostName and
+      not ma.getAnArgument().(CompileTimeConstantExpr).getStringValue() = "0:0:0:0:0:0:0:1"
     )
   }
 }
