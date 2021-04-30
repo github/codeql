@@ -43,7 +43,13 @@ import ratpack.func.Function;
  */
 @SuppressWarnings("JavadocReference")
 public interface Promise<T> {
+  static <T> Promise<T> value(T t) {
+    return null;
+  }
+
   <O> Promise<O> map(Function<? super T, ? extends O> transformer);
+
+  <O> Promise<O> flatMap(Function<? super T, ? extends Promise<O>> transformer);
 
   void then(Action<? super T> then);
 

@@ -1,11 +1,16 @@
 import ratpack.core.handling.Context;
 import ratpack.core.http.TypedData;
 import ratpack.core.form.UploadedFile;
+import ratpack.exec.Promise;
 import java.io.OutputStream;
 
 class Resource {
 
     void sink(Object o) {}
+
+    String taint() {
+        return null;
+    }
 
     void test1(Context ctx) {
         sink(ctx.getRequest().getContentLength()); //$hasTaintFlow
@@ -51,6 +56,16 @@ class Resource {
             .getBody()
             .map(TypedData::getText)
             .next(this::sink) //$hasTaintFlow
+            .then(this::sink); //$hasTaintFlow
+    }
+
+    void test6() {
+        String tainted = taint();
+        Promise.value(tainted);
+        sink(Promise.value(tainted)); //$hasTaintFlow
+        Promise
+            .value(tainted)
+            .flatMap(a -> Promise.value(a))
             .then(this::sink); //$hasTaintFlow
     }
 }
