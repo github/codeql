@@ -11,19 +11,23 @@
  */
 
 import java
-import UseOfLessTrustedSourceLib
+import ClientSuppliedIpUsedInSecurityCheckLib
 import semmle.code.java.dataflow.FlowSources
 import DataFlow::PathGraph
 
 /**
  * Taint-tracking configuration tracing flow from obtaining a client ip from an HTTP header to a sensitive use.
  */
-class UseOfLessTrustedSourceConfig extends TaintTracking::Configuration {
-  UseOfLessTrustedSourceConfig() { this = "UseOfLessTrustedSourceConfig" }
+class ClientSuppliedIpUsedInSecurityCheckConfig extends TaintTracking::Configuration {
+  ClientSuppliedIpUsedInSecurityCheckConfig() { this = "ClientSuppliedIpUsedInSecurityCheckConfig" }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof UseOfLessTrustedSource }
+  override predicate isSource(DataFlow::Node source) {
+    source instanceof ClientSuppliedIpUsedInSecurityCheck
+  }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof UseOfLessTrustedSink }
+  override predicate isSink(DataFlow::Node sink) {
+    sink instanceof ClientSuppliedIpUsedInSecurityCheckSink
+  }
 
   /**
    * Splitting a header value by `,` and taking an entry other than the first is sanitizing, because
@@ -42,7 +46,8 @@ class UseOfLessTrustedSourceConfig extends TaintTracking::Configuration {
   }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, UseOfLessTrustedSourceConfig conf
+from
+  DataFlow::PathNode source, DataFlow::PathNode sink, ClientSuppliedIpUsedInSecurityCheckConfig conf
 where conf.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "IP address spoofing might include code from $@.",
   source.getNode(), "this user input"

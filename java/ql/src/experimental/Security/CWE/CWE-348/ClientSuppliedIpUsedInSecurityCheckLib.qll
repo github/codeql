@@ -10,8 +10,8 @@ import experimental.semmle.code.java.Logging
  *
  * For example: `ServletRequest.getHeader("X-Forwarded-For")`.
  */
-class UseOfLessTrustedSource extends DataFlow::Node {
-  UseOfLessTrustedSource() {
+class ClientSuppliedIpUsedInSecurityCheck extends DataFlow::Node {
+  ClientSuppliedIpUsedInSecurityCheck() {
     exists(MethodAccess ma |
       ma.getMethod().hasName("getHeader") and
       ma.getArgument(0).(CompileTimeConstantExpr).getStringValue().toLowerCase() in [
@@ -25,7 +25,7 @@ class UseOfLessTrustedSource extends DataFlow::Node {
 }
 
 /** A data flow sink for ip address forgery vulnerabilities. */
-abstract class UseOfLessTrustedSink extends DataFlow::Node { }
+abstract class ClientSuppliedIpUsedInSecurityCheckSink extends DataFlow::Node { }
 
 /**
  * A data flow sink for remote client ip comparison.
@@ -33,7 +33,7 @@ abstract class UseOfLessTrustedSink extends DataFlow::Node { }
  * For example: `if (!StringUtils.startsWith(ipAddr, "192.168.")){...` determine whether the client ip starts
  * with `192.168.`, and the program can be deceived by forging the ip address.
  */
-private class CompareSink extends UseOfLessTrustedSink {
+private class CompareSink extends ClientSuppliedIpUsedInSecurityCheckSink {
   CompareSink() {
     exists(MethodAccess ma |
       ma.getMethod().getName() in ["equals", "equalsIgnoreCase"] and
@@ -55,10 +55,7 @@ private class CompareSink extends UseOfLessTrustedSink {
       ma.getMethod().getDeclaringType() instanceof TypeString and
       ma.getMethod().getNumberOfParameters() = 1 and
       ma.getQualifier() = this.asExpr() and
-      ma.getAnArgument()
-          .(CompileTimeConstantExpr)
-          .getStringValue()
-          .regexpMatch("^((10\\.((1\\d{2})?|(2[0-4]\\d)?|(25[0-5])?|([1-9]\\d|[0-9])?)(\\.)?)|(192\\.168\\.)|172\\.(1[6789]|2[0-9]|3[01])\\.)((1\\d{2})?|(2[0-4]\\d)?|(25[0-5])?|([1-9]\\d|[0-9])?)(\\.)?((1\\d{2})?|(2[0-4]\\d)?|(25[0-5])?|([1-9]\\d|[0-9])?)$") // Matches IP-address-like strings
+      ma.getAnArgument().(CompileTimeConstantExpr).getStringValue().regexpMatch(getIpAddressRegex()) // Matches IP-address-like strings
     )
     or
     exists(MethodAccess ma |
@@ -68,10 +65,7 @@ private class CompareSink extends UseOfLessTrustedSink {
           .hasQualifiedName(["org.apache.commons.lang3", "org.apache.commons.lang"], "StringUtils") and
       ma.getMethod().getNumberOfParameters() = 2 and
       ma.getAnArgument() = this.asExpr() and
-      ma.getAnArgument()
-          .(CompileTimeConstantExpr)
-          .getStringValue()
-          .regexpMatch("^((10\\.((1\\d{2})?|(2[0-4]\\d)?|(25[0-5])?|([1-9]\\d|[0-9])?)(\\.)?)|(192\\.168\\.)|172\\.(1[6789]|2[0-9]|3[01])\\.)((1\\d{2})?|(2[0-4]\\d)?|(25[0-5])?|([1-9]\\d|[0-9])?)(\\.)?((1\\d{2})?|(2[0-4]\\d)?|(25[0-5])?|([1-9]\\d|[0-9])?)$")
+      ma.getAnArgument().(CompileTimeConstantExpr).getStringValue().regexpMatch(getIpAddressRegex())
     )
     or
     exists(MethodAccess ma |
@@ -88,7 +82,7 @@ private class CompareSink extends UseOfLessTrustedSink {
 }
 
 /** A data flow sink for sql operation. */
-private class SqlOperationSink extends UseOfLessTrustedSink {
+private class SqlOperationSink extends ClientSuppliedIpUsedInSecurityCheckSink {
   SqlOperationSink() { this instanceof QueryInjectionSink }
 }
 
@@ -98,4 +92,9 @@ class SplitMethod extends Method {
     this.getNumberOfParameters() = 1 and
     this.hasQualifiedName("java.lang", "String", "split")
   }
+}
+
+string getIpAddressRegex() {
+  result =
+    "^((10\\.((1\\d{2})?|(2[0-4]\\d)?|(25[0-5])?|([1-9]\\d|[0-9])?)(\\.)?)|(192\\.168\\.)|172\\.(1[6789]|2[0-9]|3[01])\\.)((1\\d{2})?|(2[0-4]\\d)?|(25[0-5])?|([1-9]\\d|[0-9])?)(\\.)?((1\\d{2})?|(2[0-4]\\d)?|(25[0-5])?|([1-9]\\d|[0-9])?)$"
 }

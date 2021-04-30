@@ -19,7 +19,7 @@ bypass a ban-list, for example.</p>
 In <code>bad1</code> method and <code>bad2</code> method, the client ip the <code>X-Forwarded-For</code> is split into comma-separated values, but the less-trustworthy first one is used. Both of these examples could be deceived by providing a forged HTTP header. The method
 <code>good1</code> similarly splits an <code>X-Forwarded-For</code> value, but uses the last, more-trustworthy entry.</p>
 
-<sample src="UseOfLessTrustedSource.java" />
+<sample src="ClientSuppliedIpUsedInSecurityCheck.java" />
 
 </example>
 <references>

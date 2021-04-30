@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-public class UseOfLessTrustedSource {
+public class ClientSuppliedIpUsedInSecurityCheck {
 
     @Autowired
     private HttpServletRequest request;
@@ -30,15 +30,13 @@ public class UseOfLessTrustedSource {
     @GetMapping(value = "good1")
     @ResponseBody
     public String good1(HttpServletRequest request) {
-        String remoteAddr = "";
-        if (request != null) {
-            remoteAddr = request.getHeader("X-FORWARDED-FOR");
-            remoteAddr = remoteAddr.split(",")[remoteAddr.split(",").length - 1]; // good
-            if (remoteAddr == null || "".equals(remoteAddr)) {
-                remoteAddr = request.getRemoteAddr();
-            }
+        String ip = request.getHeader("X-FORWARDED-FOR");
+        // Good: if this application runs behind a reverse proxy it may append the real remote IP to the end of any client-supplied X-Forwarded-For header.
+        ip = ip.split(",")[ip.split(",").length - 1];
+        if (!StringUtils.startsWith(ip, "192.168.")) {
+            new Exception("ip illegal");
         }
-        return remoteAddr;
+        return ip;
     }
 
     protected String getClientIP() {
