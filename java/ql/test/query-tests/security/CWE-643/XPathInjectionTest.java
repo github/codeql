@@ -24,7 +24,7 @@ import org.dom4j.xpath.XPathPattern;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
-public class A {
+public class XPathInjectionTest {
     private static abstract class XPathImplStub implements XPath {
         public static XPathImplStub getInstance() {
             return null;
