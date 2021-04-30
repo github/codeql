@@ -91,23 +91,11 @@ class RatpackHeader extends RefType {
   }
 }
 
-private class RatpackHeaderTaintPropigatingMethod extends Method {
+private class RatpackHeaderTaintPropigatingMethod extends Method, TaintPreservingCallable {
   RatpackHeaderTaintPropigatingMethod() {
     getDeclaringType() instanceof RatpackHeader and
     hasName(["get", "getAll", "getNames", "asMultiValueMap"])
   }
-}
 
-class TaintPropigatingHeaderMethod extends AdditionalTaintStep {
-  override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
-    stepHeaderPropigatingTaint(node1, node2)
-  }
-
-  private predicate stepHeaderPropigatingTaint(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(MethodAccess ma |
-      ma.getMethod() instanceof RatpackHeaderTaintPropigatingMethod and
-      node2.asExpr() = ma and
-      node1.asExpr() = ma.getQualifier()
-    )
-  }
+  override predicate returnsTaintFrom(int arg) { arg = -1 }
 }
