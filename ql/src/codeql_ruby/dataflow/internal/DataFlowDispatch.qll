@@ -87,9 +87,17 @@ private DataFlow::LocalSourceNode trackInstance(Module tp) {
   result = trackInstance(tp, TypeTracker::end())
 }
 
-private DataFlow::LocalSourceNode trackSingletonMethod(SingletonMethod method, TypeTracker t) {
+private predicate singletonMethod(MethodBase method, Expr object) {
+  object = method.(SingletonMethod).getObject()
+  or
+  exists(SingletonClass cls |
+    object = cls.getValue() and method instanceof Method and method = cls.getAMethod()
+  )
+}
+
+private DataFlow::LocalSourceNode trackSingletonMethod(MethodBase method, TypeTracker t) {
   t.start() and
-  exists(DataFlow::Node nodeTo | nodeTo.asExpr().getExpr() = method.getObject() |
+  exists(DataFlow::Node nodeTo | singletonMethod(method, nodeTo.asExpr().getExpr()) |
     result.flowsTo(nodeTo)
     or
     exists(Module m | result = trackModule(m) and trackModule(m).flowsTo(nodeTo))
@@ -98,7 +106,7 @@ private DataFlow::LocalSourceNode trackSingletonMethod(SingletonMethod method, T
   exists(TypeTracker t2 | result = trackSingletonMethod(method, t2).track(t2, t))
 }
 
-private DataFlow::LocalSourceNode trackSingletonMethod(SingletonMethod m) {
+private DataFlow::LocalSourceNode trackSingletonMethod(MethodBase m) {
   result = trackSingletonMethod(m, TypeTracker::end())
 }
 
