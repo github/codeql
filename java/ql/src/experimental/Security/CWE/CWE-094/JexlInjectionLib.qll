@@ -1,87 +1,125 @@
 import java
-import FlowUtils
-import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
-
-/**
- * A taint-tracking configuration for unsafe user input
- * that is used to construct and evaluate a JEXL expression.
- * It supports both JEXL 2 and 3.
- */
-class JexlInjectionConfig extends TaintTracking::Configuration {
-  JexlInjectionConfig() { this = "JexlInjectionConfig" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof JexlEvaluationSink }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-    any(TaintPropagatingJexlMethodCall c).taintFlow(fromNode, toNode) or
-    hasGetterFlow(fromNode, toNode)
-  }
-}
+private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A sink for Expresssion Language injection vulnerabilities via Jexl,
  * i.e. method calls that run evaluation of a JEXL expression.
- *
- * Creating a `Callable` from a tainted JEXL expression or script is considered as a sink
- * although the tainted expression is not executed at this point.
- * Here we assume that it will get executed at some point,
- * maybe stored in an object field and then reached by a different flow.
  */
-private class JexlEvaluationSink extends DataFlow::ExprNode {
-  JexlEvaluationSink() {
-    exists(MethodAccess ma, Method m, Expr taintFrom |
-      ma.getMethod() = m and taintFrom = this.asExpr()
-    |
-      m instanceof DirectJexlEvaluationMethod and ma.getQualifier() = taintFrom
-      or
-      m instanceof CreateJexlCallableMethod and ma.getQualifier() = taintFrom
-      or
-      m instanceof JexlEngineGetSetPropertyMethod and
-      taintFrom.getType() instanceof TypeString and
-      ma.getAnArgument() = taintFrom
-    )
+abstract class JexlEvaluationSink extends DataFlow::ExprNode { }
+
+/** Default sink for JXEL injection vulnerabilities. */
+private class DefaultJexlEvaluationSink extends JexlEvaluationSink {
+  DefaultJexlEvaluationSink() { sinkNode(this, "jexl") }
+}
+
+private class DefaultJexlInjectionSinkModel extends SinkModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        // JEXL2
+        "org.apache.commons.jexl2;JexlEngine;false;getProperty;(JexlContext,Object,String);;Argument[2];jexl",
+        "org.apache.commons.jexl2;JexlEngine;false;getProperty;(Object,String);;Argument[1];jexl",
+        "org.apache.commons.jexl2;JexlEngine;false;setProperty;(JexlContext,Object,String,Object);;Argument[2];jexl",
+        "org.apache.commons.jexl2;JexlEngine;false;setProperty;(Object,String,Object);;Argument[1];jexl",
+        "org.apache.commons.jexl2;Expression;false;evaluate;;;Argument[-1];jexl",
+        "org.apache.commons.jexl2;Expression;false;callable;;;Argument[-1];jexl",
+        "org.apache.commons.jexl2;JexlExpression;false;evaluate;;;Argument[-1];jexl",
+        "org.apache.commons.jexl2;JexlExpression;false;callable;;;Argument[-1];jexl",
+        "org.apache.commons.jexl2;Script;false;execute;;;Argument[-1];jexl",
+        "org.apache.commons.jexl2;Script;false;callable;;;Argument[-1];jexl",
+        "org.apache.commons.jexl2;JexlScript;false;execute;;;Argument[-1];jexl",
+        "org.apache.commons.jexl2;JexlScript;false;callable;;;Argument[-1];jexl",
+        "org.apache.commons.jexl2;JxltEngine$Expression;false;evaluate;;;Argument[-1];jexl",
+        "org.apache.commons.jexl2;JxltEngine$Expression;false;prepare;;;Argument[-1];jexl",
+        "org.apache.commons.jexl2;JxltEngine$Template;false;evaluate;;;Argument[-1];jexl",
+        "org.apache.commons.jexl2;UnifiedJEXL$Expression;false;evaluate;;;Argument[-1];jexl",
+        "org.apache.commons.jexl2;UnifiedJEXL$Expression;false;prepare;;;Argument[-1];jexl",
+        "org.apache.commons.jexl2;UnifiedJEXL$Template;false;evaluate;;;Argument[-1];jexl",
+        // JEXL3
+        "org.apache.commons.jexl3;JexlEngine;false;getProperty;(JexlContext,Object,String);;Argument[2];jexl",
+        "org.apache.commons.jexl3;JexlEngine;false;getProperty;(Object,String);;Argument[1];jexl",
+        "org.apache.commons.jexl3;JexlEngine;false;setProperty;(JexlContext,Object,String);;Argument[2];jexl",
+        "org.apache.commons.jexl3;JexlEngine;false;setProperty;(Object,String,Object);;Argument[1];jexl",
+        "org.apache.commons.jexl3;Expression;false;evaluate;;;Argument[-1];jexl",
+        "org.apache.commons.jexl3;Expression;false;callable;;;Argument[-1];jexl",
+        "org.apache.commons.jexl3;JexlExpression;false;evaluate;;;Argument[-1];jexl",
+        "org.apache.commons.jexl3;JexlExpression;false;callable;;;Argument[-1];jexl",
+        "org.apache.commons.jexl3;Script;false;execute;;;Argument[-1];jexl",
+        "org.apache.commons.jexl3;Script;false;callable;;;Argument[-1];jexl",
+        "org.apache.commons.jexl3;JexlScript;false;execute;;;Argument[-1];jexl",
+        "org.apache.commons.jexl3;JexlScript;false;callable;;;Argument[-1];jexl",
+        "org.apache.commons.jexl3;JxltEngine$Expression;false;evaluate;;;Argument[-1];jexl",
+        "org.apache.commons.jexl3;JxltEngine$Expression;false;prepare;;;Argument[-1];jexl",
+        "org.apache.commons.jexl3;JxltEngine$Template;false;evaluate;;;Argument[-1];jexl",
+        "org.apache.commons.jexl3;UnifiedJEXL$Expression;false;evaluate;;;Argument[-1];jexl",
+        "org.apache.commons.jexl3;UnifiedJEXL$Expression;false;prepare;;;Argument[-1];jexl",
+        "org.apache.commons.jexl3;UnifiedJEXL$Template;false;evaluate;;;Argument[-1];jexl"
+      ]
   }
 }
 
 /**
- * Defines method calls that propagate tainted data via one of the methods
- * from JEXL library.
+ * A unit class for adding additional taint steps.
+ *
+ * Extend this class to add additional taint steps that should apply to the `JexlInjectionFlowConfig`.
  */
-private class TaintPropagatingJexlMethodCall extends MethodAccess {
-  Expr taintFromExpr;
-
-  TaintPropagatingJexlMethodCall() {
-    exists(Method m, RefType taintType |
-      this.getMethod() = m and
-      taintType = taintFromExpr.getType()
-    |
-      isUnsafeEngine(this.getQualifier()) and
-      (
-        m instanceof CreateJexlScriptMethod and
-        taintFromExpr = this.getArgument(0) and
-        taintType instanceof TypeString
-        or
-        m instanceof CreateJexlExpressionMethod and
-        taintFromExpr = this.getAnArgument() and
-        taintType instanceof TypeString
-        or
-        m instanceof CreateJexlTemplateMethod and
-        (taintType instanceof TypeString or taintType instanceof Reader) and
-        taintFromExpr = this.getArgument([0, 1])
-      )
-    )
-  }
-
+abstract class JexlInjectionAdditionalTaintStep extends Unit {
   /**
-   * Holds if `fromNode` to `toNode` is a dataflow step that propagates
-   * tainted data.
+   * Holds if the step from `node1` to `node2` should be considered a taint
+   * step for the `JexlInjectionConfig` configuration.
    */
-  predicate taintFlow(DataFlow::Node fromNode, DataFlow::Node toNode) {
-    fromNode.asExpr() = taintFromExpr and toNode.asExpr() = this
+  abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);
+}
+
+/** A set of additional taint steps to consider when taint tracking JXEL related data flows. */
+private class DefaultJexlInjectionAdditionalTaintStep extends JexlInjectionAdditionalTaintStep {
+  override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
+    createJexlScriptStep(node1, node2) or
+    createJexlExpressionStep(node1, node2) or
+    createJexlTemplateStep(node1, node2)
   }
+}
+
+/**
+ * Holds if `n1` to `n2` is a dataflow step that creates a JEXL script using an unsafe engine
+ * i.e. `tainted.createScript(jexlExpr)`.
+ */
+private predicate createJexlScriptStep(DataFlow::Node n1, DataFlow::Node n2) {
+  exists(MethodAccess ma, Method m | m = ma.getMethod() and n2.asExpr() = ma |
+    isUnsafeEngine(ma.getQualifier()) and
+    m instanceof CreateJexlScriptMethod and
+    n1.asExpr() = ma.getArgument(0) and
+    n1.asExpr().getType() instanceof TypeString
+  )
+}
+
+/**
+ * Holds if `n1` to `n2` is a dataflow step that creates a JEXL expression using an unsafe engine
+ * i.e. `tainted.createExpression(jexlExpr)`.
+ */
+private predicate createJexlExpressionStep(DataFlow::Node n1, DataFlow::Node n2) {
+  exists(MethodAccess ma, Method m | m = ma.getMethod() and n2.asExpr() = ma |
+    isUnsafeEngine(ma.getQualifier()) and
+    m instanceof CreateJexlExpressionMethod and
+    n1.asExpr() = ma.getAnArgument() and
+    n1.asExpr().getType() instanceof TypeString
+  )
+}
+
+/**
+ * Holds if `n1` to `n2` is a dataflow step that creates a JEXL template using an unsafe engine
+ * i.e. `tainted.createTemplate(jexlExpr)`.
+ */
+private predicate createJexlTemplateStep(DataFlow::Node n1, DataFlow::Node n2) {
+  exists(MethodAccess ma, Method m, RefType taintType |
+    m = ma.getMethod() and n2.asExpr() = ma and taintType = n1.asExpr().getType()
+  |
+    isUnsafeEngine(ma.getQualifier()) and
+    m instanceof CreateJexlTemplateMethod and
+    n1.asExpr() = ma.getArgument([0, 1]) and
+    (taintType instanceof TypeString or taintType instanceof Reader)
+  )
 }
 
 /**
@@ -92,7 +130,7 @@ private predicate isUnsafeEngine(Expr expr) {
 }
 
 /**
- * A configuration for a tracking sandboxed JEXL engines.
+ * A configuration for tracking sandboxed JEXL engines.
  */
 private class SandboxedJexlFlowConfig extends DataFlow2::Configuration {
   SandboxedJexlFlowConfig() { this = "JexlInjection::SandboxedJexlFlowConfig" }
