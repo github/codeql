@@ -46,4 +46,6 @@ public interface Promise<T> {
   <O> Promise<O> map(Function<? super T, ? extends O> transformer);
 
   void then(Action<? super T> then);
+
+  Promise<T> next(Action<? super T> action);
 }

@@ -3,6 +3,8 @@
  */
 
 import java
+private import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.dataflow.FlowSteps
 
 /**
  * Ratpack methods that access user-supplied request data.
@@ -79,5 +81,33 @@ class RatpackUploadFileGetMethod extends RatpackGetRequestDataMethod {
   RatpackUploadFileGetMethod() {
     getDeclaringType() instanceof RatpackUploadFile and
     hasName("getFileName")
+  }
+}
+
+class RatpackHeader extends RefType {
+  RatpackHeader() {
+    hasQualifiedName("ratpack.http", "Headers") or
+    hasQualifiedName("ratpack.core.http", "Headers")
+  }
+}
+
+private class RatpackHeaderTaintPropigatingMethod extends Method {
+  RatpackHeaderTaintPropigatingMethod() {
+    getDeclaringType() instanceof RatpackHeader and
+    hasName(["get", "getAll", "getNames", "asMultiValueMap"])
+  }
+}
+
+class TaintPropigatingHeaderMethod extends AdditionalTaintStep {
+  override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
+    stepHeaderPropigatingTaint(node1, node2)
+  }
+
+  private predicate stepHeaderPropigatingTaint(DataFlow::Node node1, DataFlow::Node node2) {
+    exists(MethodAccess ma |
+      ma.getMethod() instanceof RatpackHeaderTaintPropigatingMethod and
+      node2.asExpr() = ma and
+      node1.asExpr() = ma.getQualifier()
+    )
   }
 }

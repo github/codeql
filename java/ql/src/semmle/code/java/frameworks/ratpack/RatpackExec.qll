@@ -9,6 +9,12 @@ class RatpackPromise extends RefType {
   }
 }
 
+/**
+ * Taint flows from the qualifier to the first argument of the lambda passed to this method access.
+ * Eg. `tainted.map(stillTainted -> ..)`
+ */
+abstract private class TaintFromQualifierToFunctionalArgumentMethodAccess extends MethodAccess { }
+
 class RatpackPromiseMapMethod extends Method {
   RatpackPromiseMapMethod() {
     getDeclaringType() instanceof RatpackPromise and
@@ -16,7 +22,7 @@ class RatpackPromiseMapMethod extends Method {
   }
 }
 
-class RatpackPromiseMapMethodAccess extends MethodAccess {
+class RatpackPromiseMapMethodAccess extends TaintFromQualifierToFunctionalArgumentMethodAccess {
   RatpackPromiseMapMethodAccess() { getMethod() instanceof RatpackPromiseMapMethod }
 }
 
@@ -27,8 +33,19 @@ class RatpackPromiseThenMethod extends Method {
   }
 }
 
-class RatpackPromiseThenMethodAccess extends MethodAccess {
+class RatpackPromiseThenMethodAccess extends TaintFromQualifierToFunctionalArgumentMethodAccess {
   RatpackPromiseThenMethodAccess() { getMethod() instanceof RatpackPromiseThenMethod }
+}
+
+class RatpackPromiseNextMethod extends FluentMethod {
+  RatpackPromiseNextMethod() {
+    getDeclaringType() instanceof RatpackPromise and
+    hasName("next")
+  }
+}
+
+class RatpackPromiseNextMethodAccess extends TaintFromQualifierToFunctionalArgumentMethodAccess {
+  RatpackPromiseNextMethodAccess() { getMethod() instanceof RatpackPromiseNextMethod }
 }
 
 private class RatpackPromiseTaintPreservingCallable extends AdditionalTaintStep {
@@ -51,12 +68,7 @@ private class RatpackPromiseTaintPreservingCallable extends AdditionalTaintStep 
    * Tracks taint from the previous `Promise` to the first argument of lambda passed to `map` or `then`.
    */
   private predicate stepFromPromiseToFunctionalArgument(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(RatpackPromiseMapMethodAccess ma |
-      node1.asExpr() = ma.getQualifier() and
-      ma.getArgument(0).(FunctionalExpr).asMethod().getParameter(0) = node2.asParameter()
-    )
-    or
-    exists(RatpackPromiseThenMethodAccess ma |
+    exists(TaintFromQualifierToFunctionalArgumentMethodAccess ma |
       node1.asExpr() = ma.getQualifier() and
       ma.getArgument(0).(FunctionalExpr).asMethod().getParameter(0) = node2.asParameter()
     )
