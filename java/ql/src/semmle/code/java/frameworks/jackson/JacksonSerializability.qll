@@ -50,6 +50,15 @@ library class JacksonWriteValueMethod extends Method, TaintPreservingCallable {
   }
 }
 
+library class JacksonReadValueMethod extends Method, TaintPreservingCallable {
+  JacksonReadValueMethod() {
+    getDeclaringType().hasQualifiedName("com.fasterxml.jackson.databind", "ObjectReader") and
+    hasName("readValue")
+  }
+
+  override predicate returnsTaintFrom(int arg) { arg = 0 }
+}
+
 /** A type whose values are explicitly serialized in a call to a Jackson method. */
 library class ExplicitlyWrittenJacksonSerializableType extends JacksonSerializableType {
   ExplicitlyWrittenJacksonSerializableType() {
@@ -132,6 +141,16 @@ class JacksonDeserializableField extends DeserializableField {
       superType.fromSource()
     ) and
     not this.getAnAnnotation() instanceof JacksonJSONIgnoreAnnotation
+  }
+}
+
+class JacksonDeserializableFieldAccess extends FieldAccess {
+  JacksonDeserializableFieldAccess() { getField() instanceof JacksonDeserializableField }
+}
+
+class JacksonDeseializedTaintStep extends AdditionalTaintStep {
+  override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
+    node2.asExpr().(JacksonDeserializableFieldAccess).getQualifier() = node1.asExpr()
   }
 }
 

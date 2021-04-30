@@ -26,4 +26,8 @@ public class ObjectMapper {
   public String writeValueAsString(Object value) {
     return null;
   }
+
+  public ObjectReader readerFor(Class<?> type) {
+    return null;
+  }
 }
