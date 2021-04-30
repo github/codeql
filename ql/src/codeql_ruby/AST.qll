@@ -64,4 +64,16 @@ class AstNode extends TAstNode {
    */
   cached
   AstNode getAChild(string pred) { none() }
+
+  /**
+   * Holds if this node was synthesized to represent an implicit AST node not
+   * present in the source code.  In the following example method call, the
+   * receiver is an implicit `self` reference, for which there is a synthesized
+   * `Self` node.
+   *
+   * ```rb
+   * foo(123)
+   * ```
+   */
+  predicate isSynthesized() { this instanceof TImplicitSelf }
 }
