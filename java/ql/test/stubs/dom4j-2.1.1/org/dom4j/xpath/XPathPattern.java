@@ -19,6 +19,9 @@ public class XPathPattern implements org.dom4j.rule.Pattern {
   public XPathPattern(String text) {
   }
 
+  public XPathPattern(org.jaxen.pattern.Pattern pattern) {
+  }
+
   public boolean matches(Node node) {
     return false;
   }

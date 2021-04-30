@@ -31,6 +31,8 @@ private class DefaultXPathInjectionSinkModel extends SinkModelCsv {
         "org.dom4j;DocumentHelper;false;createPattern;;;Argument[0];xpath",
         "org.dom4j;DocumentHelper;false;createXPath;;;Argument[0];xpath",
         "org.dom4j;DocumentHelper;false;createXPathFilter;;;Argument[0];xpath",
+        "org.dom4j;DocumentHelper;false;selectNodes;;;Argument[0];xpath",
+        "org.dom4j;DocumentHelper;false;sort;;;Argument[1];xpath",
         "org.dom4j.tree;AbstractNode;true;createXPathFilter;;;Argument[0];xpath",
         "org.dom4j.tree;AbstractNode;true;createPattern;;;Argument[0];xpath",
         "org.dom4j.util;ProxyDocumentFactory;true;createPattern;;;Argument[0];xpath",

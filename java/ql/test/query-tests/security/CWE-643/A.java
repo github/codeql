@@ -1,5 +1,6 @@
 import java.io.ByteArrayInputStream;
 import java.io.StringReader;
+import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.namespace.QName;
@@ -11,9 +12,11 @@ import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.jaxen.pattern.Pattern;
 import org.dom4j.DocumentFactory;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Namespace;
+import org.dom4j.Node;
 import org.dom4j.io.SAXReader;
 import org.dom4j.util.ProxyDocumentFactory;
 import org.dom4j.xpath.DefaultXPath;
@@ -56,6 +59,18 @@ public class A {
     }
 
     private static class ProxyDocumentFactoryStub extends ProxyDocumentFactory {
+    }
+
+    private static class PatternStub extends Pattern {
+        private String text;
+
+        PatternStub(String text) {
+            this.text = text;
+        }
+
+        public String getText() {
+            return text;
+        }
     }
 
     public void handle(HttpServletRequest request) throws Exception {
@@ -118,6 +133,7 @@ public class A {
 
         new DefaultXPath("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
         new XPathPattern("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
+        new XPathPattern(new PatternStub(user)); // Safe
 
         DocumentFactory docFactory = DocumentFactory.getInstance();
         docFactory.createPattern("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
@@ -127,6 +143,8 @@ public class A {
         DocumentHelper.createPattern("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
         DocumentHelper.createXPath("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
         DocumentHelper.createXPathFilter("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
+        DocumentHelper.selectNodes("/users/user[@name='" + user + "' and @pass='" + pass + "']", new ArrayList<Node>()); // $hasXPathInjection
+        DocumentHelper.sort(new ArrayList<Node>(), "/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
 
         ProxyDocumentFactoryStub proxyDocFactory = new ProxyDocumentFactoryStub();
         proxyDocFactory.createPattern("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
