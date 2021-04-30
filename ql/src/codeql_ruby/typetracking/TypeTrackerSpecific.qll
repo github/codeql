@@ -24,7 +24,7 @@ predicate callStep(
   DataFlowPrivate::ArgumentNode nodeFrom, DataFlowPrivate::ExplicitParameterNode nodeTo
 ) {
   exists(DataFlowDispatch::DataFlowCall call, DataFlowDispatch::DataFlowCallable callable, int i |
-    call.getCallable() = callable and
+    call.getTarget() = callable and
     nodeFrom.argumentOf(call, i) and
     nodeTo.isParameterOf(callable, i)
   )
@@ -33,7 +33,7 @@ predicate callStep(
 /** Holds if `nodeFrom` steps to `nodeTo` by being returned from a call. */
 predicate returnStep(DataFlowPrivate::ReturnNode nodeFrom, Node nodeTo) {
   exists(DataFlowDispatch::DataFlowCall call |
-    nodeFrom.getEnclosingCallable() = call.getCallable() and
+    nodeFrom.getEnclosingCallable() = call.getTarget() and
     nodeTo.asExpr().getNode() = call.getNode()
   )
 }
