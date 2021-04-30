@@ -5,7 +5,7 @@ package main
 import "clevergo.tech/clevergo"
 
 // Package clevergo.tech/clevergo@v0.5.2
-func UntrustedSources_ClevergoTechClevergov052() {
+func UntrustedSources_ClevergoTechClevergoV052() {
 	// Untrusted flow sources from method calls.
 	{
 		// Untrusted flow sources from method calls on clevergo.tech/clevergo.Context.

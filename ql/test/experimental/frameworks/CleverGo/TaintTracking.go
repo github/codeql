@@ -10,7 +10,7 @@ import (
 )
 
 // Package clevergo.tech/clevergo@v0.5.2
-func TaintTracking_ClevergoTechClevergov052() {
+func TaintTracking_ClevergoTechClevergoV052() {
 	// Taint-tracking through functions.
 	{
 		// func CleanPath(p string) string

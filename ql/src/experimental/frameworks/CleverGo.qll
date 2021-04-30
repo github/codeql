@@ -8,8 +8,6 @@ import go
  * Provides classes for working with concepts from the [`clevergo.tech/clevergo@v0.5.2`](https://pkg.go.dev/clevergo.tech/clevergo@v0.5.2) package.
  */
 private module CleverGo {
-  /** Gets the package path. */
-  bindingset[result]
   string packagePath() {
     result = package(["clevergo.tech/clevergo", "github.com/clevergo/clevergo"], "")
   }
@@ -192,188 +190,342 @@ private module CleverGo {
 
     override DataFlow::Node getUrl() { result = urlNode }
 
-    override HTTP::ResponseWriter getResponseWriter() { none() }
+    override HTTP::ResponseWriter getResponseWriter() { result.getANode() = this.getReceiver() }
   }
 
   /**
-   * Models HTTP ResponseBody.
+   * Models HTTP ResponseBody where the content-type is static and non-modifiable.
    */
-  private class HttpResponseBody extends HTTP::ResponseBody::Range {
-    string package;
-    DataFlow::CallNode bodySetterCall;
-    string contentType;
+  private class HttpResponseBodyStaticContentType extends HTTP::ResponseBody::Range {
+    string contentTypeString;
+    DataFlow::Node receiverNode;
 
-    HttpResponseBody() {
-      // HTTP ResponseBody models for package: clevergo.tech/clevergo@v0.5.2
-      package = packagePath() and
-      (
-        // One call sets both body and content-type (which is implicit in the func name).
-        // Receiver type: Context
-        exists(string methodName, Method m |
-          m.hasQualifiedName(package, "Context", methodName) and
-          bodySetterCall = m.getACall()
-        |
-          // signature: func (*Context).Error(code int, msg string) error
-          methodName = "Error" and
-          this = bodySetterCall.getArgument(1) and
-          contentType = "text/plain"
-          or
-          // signature: func (*Context).HTML(code int, html string) error
-          methodName = "HTML" and
-          this = bodySetterCall.getArgument(1) and
-          contentType = "text/html"
-          or
-          // signature: func (*Context).HTMLBlob(code int, bs []byte) error
-          methodName = "HTMLBlob" and
-          this = bodySetterCall.getArgument(1) and
-          contentType = "text/html"
-          or
-          // signature: func (*Context).JSON(code int, data interface{}) error
-          methodName = "JSON" and
-          this = bodySetterCall.getArgument(1) and
-          contentType = "application/json"
-          or
-          // signature: func (*Context).JSONBlob(code int, bs []byte) error
-          methodName = "JSONBlob" and
-          this = bodySetterCall.getArgument(1) and
-          contentType = "application/json"
-          or
-          // signature: func (*Context).JSONP(code int, data interface{}) error
-          methodName = "JSONP" and
-          this = bodySetterCall.getArgument(1) and
-          contentType = "application/javascript"
-          or
-          // signature: func (*Context).JSONPBlob(code int, bs []byte) error
-          methodName = "JSONPBlob" and
-          this = bodySetterCall.getArgument(1) and
-          contentType = "application/javascript"
-          or
-          // signature: func (*Context).JSONPCallback(code int, callback string, data interface{}) error
-          methodName = "JSONPCallback" and
-          this = bodySetterCall.getArgument(2) and
-          contentType = "application/javascript"
-          or
-          // signature: func (*Context).JSONPCallbackBlob(code int, callback string, bs []byte) (err error)
-          methodName = "JSONPCallbackBlob" and
-          this = bodySetterCall.getArgument(2) and
-          contentType = "application/javascript"
-          or
-          // signature: func (*Context).String(code int, s string) error
-          methodName = "String" and
-          this = bodySetterCall.getArgument(1) and
-          contentType = "text/plain"
-          or
-          // signature: func (*Context).StringBlob(code int, bs []byte) error
-          methodName = "StringBlob" and
-          this = bodySetterCall.getArgument(1) and
-          contentType = "text/plain"
-          or
-          // signature: func (*Context).Stringf(code int, format string, a ...interface{}) error
-          methodName = "Stringf" and
-          this = bodySetterCall.getArgument([1, any(int i | i >= 2)]) and
-          contentType = "text/plain"
-          or
-          // signature: func (*Context).XML(code int, data interface{}) error
-          methodName = "XML" and
-          this = bodySetterCall.getArgument(1) and
-          contentType = "text/xml"
-          or
-          // signature: func (*Context).XMLBlob(code int, bs []byte) error
-          methodName = "XMLBlob" and
-          this = bodySetterCall.getArgument(1) and
-          contentType = "text/xml"
-        )
-        or
-        // One call sets both body and content-type (both are parameters in the func call).
-        // Receiver type: Context
-        exists(string methodName, Method m |
-          m.hasQualifiedName(package, "Context", methodName) and
-          bodySetterCall = m.getACall()
-        |
-          // signature: func (*Context).Blob(code int, contentType string, bs []byte) (err error)
-          methodName = "Blob" and
-          this = bodySetterCall.getArgument(2) and
-          contentType = bodySetterCall.getArgument(1).getStringValue()
-          or
-          // signature: func (*Context).Emit(code int, contentType string, body string) (err error)
-          methodName = "Emit" and
-          this = bodySetterCall.getArgument(2) and
-          contentType = bodySetterCall.getArgument(1).getStringValue()
-        )
-        or
-        // Two calls, one to set the response body and one to set the content-type.
-        // Receiver type: Context
-        exists(string methodName, Method m |
-          m.hasQualifiedName(package, "Context", methodName) and
-          bodySetterCall = m.getACall()
-        |
-          // signature: func (*Context).Write(data []byte) (int, error)
-          methodName = "Write" and
-          this = bodySetterCall.getArgument(0)
-          or
-          // signature: func (*Context).WriteString(data string) (int, error)
-          methodName = "WriteString" and
-          this = bodySetterCall.getArgument(0)
-        ) and
-        (
-          // Receiver type: Context
-          exists(string methodName, Method m, DataFlow::CallNode contentTypeSetterCall |
-            m.hasQualifiedName(package, "Context", methodName) and
-            contentTypeSetterCall = m.getACall() and
-            contentTypeSetterCall.getReceiver().getAPredecessor*() =
-              bodySetterCall.getReceiver().getAPredecessor*()
-          |
-            // signature: func (*Context).SetContentType(v string)
-            methodName = "SetContentType" and
-            contentType = contentTypeSetterCall.getArgument(0).getStringValue()
-          )
-          or
-          // Receiver type: Context
-          exists(string methodName, Method m, DataFlow::CallNode contentTypeSetterCall |
-            m.hasQualifiedName(package, "Context", methodName) and
-            contentTypeSetterCall = m.getACall() and
-            contentTypeSetterCall.getReceiver().getAPredecessor*() =
-              bodySetterCall.getReceiver().getAPredecessor*()
-          |
-            // signature: func (*Context).SetContentTypeHTML()
-            methodName = "SetContentTypeHTML" and
-            contentType = "text/html"
-            or
-            // signature: func (*Context).SetContentTypeJSON()
-            methodName = "SetContentTypeJSON" and
-            contentType = "application/json"
-            or
-            // signature: func (*Context).SetContentTypeText()
-            methodName = "SetContentTypeText" and
-            contentType = "text/plain"
-            or
-            // signature: func (*Context).SetContentTypeXML()
-            methodName = "SetContentTypeXML" and
-            contentType = "text/xml"
-          )
-        )
+    HttpResponseBodyStaticContentType() {
+      exists(string package, string receiverName |
+        setsBodyAndStaticContentType(package, receiverName, this, contentTypeString, receiverNode)
       )
     }
 
-    override string getAContentType() { result = contentType }
+    override string getAContentType() { result = contentTypeString }
 
-    override HTTP::ResponseWriter getResponseWriter() { none() }
+    override HTTP::ResponseWriter getResponseWriter() { result.getANode() = receiverNode }
+  }
+
+  // Holds for a call that sets the body; the content-type is implicitly set.
+  private predicate setsBodyAndStaticContentType(
+    string package, string receiverName, DataFlow::Node bodyNode, string contentTypeString,
+    DataFlow::Node receiverNode
+  ) {
+    exists(string methodName, Method met, DataFlow::CallNode bodySetterCall |
+      met.hasQualifiedName(package, receiverName, methodName) and
+      bodySetterCall = met.getACall() and
+      receiverNode = bodySetterCall.getReceiver()
+    |
+      package = packagePath() and
+      (
+        // Receiver type: Context
+        receiverName = "Context" and
+        (
+          // signature: func (*Context).Error(code int, msg string) error
+          methodName = "Error" and
+          bodyNode = bodySetterCall.getArgument(1) and
+          contentTypeString = "text/plain"
+          or
+          // signature: func (*Context).HTML(code int, html string) error
+          methodName = "HTML" and
+          bodyNode = bodySetterCall.getArgument(1) and
+          contentTypeString = "text/html"
+          or
+          // signature: func (*Context).HTMLBlob(code int, bs []byte) error
+          methodName = "HTMLBlob" and
+          bodyNode = bodySetterCall.getArgument(1) and
+          contentTypeString = "text/html"
+          or
+          // signature: func (*Context).JSON(code int, data interface{}) error
+          methodName = "JSON" and
+          bodyNode = bodySetterCall.getArgument(1) and
+          contentTypeString = "application/json"
+          or
+          // signature: func (*Context).JSONBlob(code int, bs []byte) error
+          methodName = "JSONBlob" and
+          bodyNode = bodySetterCall.getArgument(1) and
+          contentTypeString = "application/json"
+          or
+          // signature: func (*Context).JSONP(code int, data interface{}) error
+          methodName = "JSONP" and
+          bodyNode = bodySetterCall.getArgument(1) and
+          contentTypeString = "application/javascript"
+          or
+          // signature: func (*Context).JSONPBlob(code int, bs []byte) error
+          methodName = "JSONPBlob" and
+          bodyNode = bodySetterCall.getArgument(1) and
+          contentTypeString = "application/javascript"
+          or
+          // signature: func (*Context).JSONPCallback(code int, callback string, data interface{}) error
+          methodName = "JSONPCallback" and
+          bodyNode = bodySetterCall.getArgument(2) and
+          contentTypeString = "application/javascript"
+          or
+          // signature: func (*Context).JSONPCallbackBlob(code int, callback string, bs []byte) (err error)
+          methodName = "JSONPCallbackBlob" and
+          bodyNode = bodySetterCall.getArgument(2) and
+          contentTypeString = "application/javascript"
+          or
+          // signature: func (*Context).String(code int, s string) error
+          methodName = "String" and
+          bodyNode = bodySetterCall.getArgument(1) and
+          contentTypeString = "text/plain"
+          or
+          // signature: func (*Context).StringBlob(code int, bs []byte) error
+          methodName = "StringBlob" and
+          bodyNode = bodySetterCall.getArgument(1) and
+          contentTypeString = "text/plain"
+          or
+          // signature: func (*Context).Stringf(code int, format string, a ...interface{}) error
+          methodName = "Stringf" and
+          bodyNode = bodySetterCall.getArgument([1, any(int i | i >= 2)]) and
+          contentTypeString = "text/plain"
+          or
+          // signature: func (*Context).XML(code int, data interface{}) error
+          methodName = "XML" and
+          bodyNode = bodySetterCall.getArgument(1) and
+          contentTypeString = "text/xml"
+          or
+          // signature: func (*Context).XMLBlob(code int, bs []byte) error
+          methodName = "XMLBlob" and
+          bodyNode = bodySetterCall.getArgument(1) and
+          contentTypeString = "text/xml"
+        )
+      )
+    )
   }
 
   /**
-   * Models a HTTP header writer model for package: clevergo.tech/clevergo@v0.5.2
+   * Models HTTP ResponseBody where the content-type can be dynamically set by the caller.
    */
-  private class HeaderWrite extends HTTP::HeaderWrite::Range, DataFlow::CallNode {
-    HeaderWrite() {
-      // Receiver type: Context
-      // signature: func (*Context).SetHeader(key string, value string)
-      this = any(Method m | m.hasQualifiedName(packagePath(), "Context", "SetHeader")).getACall()
+  private class HttpResponseBodyDynamicContentType extends HTTP::ResponseBody::Range {
+    DataFlow::Node contentTypeNode;
+    DataFlow::Node receiverNode;
+
+    HttpResponseBodyDynamicContentType() {
+      exists(string package, string receiverName |
+        setsBodyAndDynamicContentType(package, receiverName, this, contentTypeNode, receiverNode)
+      )
     }
 
-    override DataFlow::Node getName() { result = this.getArgument(0) }
+    override DataFlow::Node getAContentTypeNode() { result = contentTypeNode }
 
-    override DataFlow::Node getValue() { result = this.getArgument(1) }
+    override HTTP::ResponseWriter getResponseWriter() { result.getANode() = receiverNode }
+  }
 
-    override HTTP::ResponseWriter getResponseWriter() { none() }
+  // Holds for a call that sets the body; the content-type is a parameter.
+  // Both body and content-type are parameters in the same func call.
+  private predicate setsBodyAndDynamicContentType(
+    string package, string receiverName, DataFlow::Node bodyNode, DataFlow::Node contentTypeNode,
+    DataFlow::Node receiverNode
+  ) {
+    exists(string methodName, Method met, DataFlow::CallNode bodySetterCall |
+      met.hasQualifiedName(package, receiverName, methodName) and
+      bodySetterCall = met.getACall() and
+      receiverNode = bodySetterCall.getReceiver()
+    |
+      package = packagePath() and
+      (
+        // Receiver type: Context
+        receiverName = "Context" and
+        (
+          // signature: func (*Context).Blob(code int, contentType string, bs []byte) (err error)
+          methodName = "Blob" and
+          bodyNode = bodySetterCall.getArgument(2) and
+          contentTypeNode = bodySetterCall.getArgument(1)
+          or
+          // signature: func (*Context).Emit(code int, contentType string, body string) (err error)
+          methodName = "Emit" and
+          bodyNode = bodySetterCall.getArgument(2) and
+          contentTypeNode = bodySetterCall.getArgument(1)
+        )
+      )
+    )
+  }
+
+  /**
+   * Models HTTP ResponseBody where only the body is set.
+   */
+  private class HttpResponseBodyNoContentType extends HTTP::ResponseBody::Range {
+    DataFlow::Node receiverNode;
+
+    HttpResponseBodyNoContentType() {
+      exists(string package, string receiverName |
+        setsBody(package, receiverName, receiverNode, this)
+      )
+    }
+
+    override HTTP::ResponseWriter getResponseWriter() { result.getANode() = receiverNode }
+  }
+
+  // Holds for a call that sets the body. The content-type is not defined.
+  private predicate setsBody(
+    string package, string receiverName, DataFlow::Node receiverNode, DataFlow::Node bodyNode
+  ) {
+    exists(string methodName, Method met, DataFlow::CallNode bodySetterCall |
+      met.hasQualifiedName(package, receiverName, methodName) and
+      bodySetterCall = met.getACall() and
+      receiverNode = bodySetterCall.getReceiver()
+    |
+      package = packagePath() and
+      (
+        // Receiver type: Context
+        receiverName = "Context" and
+        (
+          // signature: func (*Context).Write(data []byte) (int, error)
+          methodName = "Write" and
+          bodyNode = bodySetterCall.getArgument(0)
+          or
+          // signature: func (*Context).WriteString(data string) (int, error)
+          methodName = "WriteString" and
+          bodyNode = bodySetterCall.getArgument(0)
+        )
+      )
+    )
+  }
+
+  /**
+   * Models HTTP header writers.
+   * The write is done with a call where you can set both the key and the value of the header.
+   */
+  private class HeaderWrite extends HTTP::HeaderWrite::Range, DataFlow::CallNode {
+    DataFlow::Node receiverNode;
+    DataFlow::Node headerNameNode;
+    DataFlow::Node headerValueNode;
+
+    HeaderWrite() {
+      setsHeaderDynamicKeyValue(_, _, this, headerNameNode, headerValueNode, receiverNode)
+    }
+
+    override DataFlow::Node getName() { result = headerNameNode }
+
+    override DataFlow::Node getValue() { result = headerValueNode }
+
+    override HTTP::ResponseWriter getResponseWriter() { result.getANode() = receiverNode }
+  }
+
+  // Holds for a call that sets a header with a key-value combination.
+  private predicate setsHeaderDynamicKeyValue(
+    string package, string receiverName, DataFlow::CallNode headerSetterCall,
+    DataFlow::Node headerNameNode, DataFlow::Node headerValueNode, DataFlow::Node receiverNode
+  ) {
+    exists(string methodName, Method met |
+      met.hasQualifiedName(package, receiverName, methodName) and
+      headerSetterCall = met.getACall() and
+      receiverNode = headerSetterCall.getReceiver()
+    |
+      package = packagePath() and
+      (
+        // Receiver type: Context
+        receiverName = "Context" and
+        (
+          // signature: func (*Context).SetHeader(key string, value string)
+          methodName = "SetHeader" and
+          headerNameNode = headerSetterCall.getArgument(0) and
+          headerValueNode = headerSetterCall.getArgument(1)
+        )
+      )
+    )
+  }
+
+  /**
+   * Models an HTTP static content-type setter.
+   */
+  private class StaticContentTypeSetter extends HTTP::HeaderWrite::Range, DataFlow::CallNode {
+    DataFlow::Node receiverNode;
+    string contentTypeString;
+
+    StaticContentTypeSetter() { setsStaticContentType(_, _, this, contentTypeString, receiverNode) }
+
+    override string getHeaderName() { result = "content-type" }
+
+    override string getHeaderValue() { result = contentTypeString }
+
+    override DataFlow::Node getName() { none() }
+
+    override DataFlow::Node getValue() { none() }
+
+    override HTTP::ResponseWriter getResponseWriter() { result.getANode() = receiverNode }
+  }
+
+  // Holds for a call that sets the content-type (implicit).
+  private predicate setsStaticContentType(
+    string package, string receiverName, DataFlow::CallNode contentTypeSetterCall,
+    string contentTypeString, DataFlow::Node receiverNode
+  ) {
+    exists(string methodName, Method met |
+      met.hasQualifiedName(package, receiverName, methodName) and
+      contentTypeSetterCall = met.getACall() and
+      receiverNode = contentTypeSetterCall.getReceiver()
+    |
+      package = packagePath() and
+      (
+        // Receiver type: Context
+        receiverName = "Context" and
+        (
+          // signature: func (*Context).SetContentTypeHTML()
+          methodName = "SetContentTypeHTML" and
+          contentTypeString = "text/html"
+          or
+          // signature: func (*Context).SetContentTypeJSON()
+          methodName = "SetContentTypeJSON" and
+          contentTypeString = "application/json"
+          or
+          // signature: func (*Context).SetContentTypeText()
+          methodName = "SetContentTypeText" and
+          contentTypeString = "text/plain"
+          or
+          // signature: func (*Context).SetContentTypeXML()
+          methodName = "SetContentTypeXML" and
+          contentTypeString = "text/xml"
+        )
+      )
+    )
+  }
+
+  /**
+   * Models an HTTP dynamic content-type setter.
+   */
+  private class DynamicContentTypeSetter extends HTTP::HeaderWrite::Range, DataFlow::CallNode {
+    DataFlow::Node receiverNode;
+    DataFlow::Node contentTypeNode;
+
+    DynamicContentTypeSetter() { setsDynamicContentType(_, _, this, contentTypeNode, receiverNode) }
+
+    override string getHeaderName() { result = "content-type" }
+
+    override DataFlow::Node getName() { none() }
+
+    override DataFlow::Node getValue() { result = contentTypeNode }
+
+    override HTTP::ResponseWriter getResponseWriter() { result.getANode() = receiverNode }
+  }
+
+  // Holds for a call that sets the content-type via a parameter.
+  private predicate setsDynamicContentType(
+    string package, string receiverName, DataFlow::CallNode contentTypeSetterCall,
+    DataFlow::Node contentTypeNode, DataFlow::Node receiverNode
+  ) {
+    exists(string methodName, Method met |
+      met.hasQualifiedName(package, receiverName, methodName) and
+      contentTypeSetterCall = met.getACall() and
+      receiverNode = contentTypeSetterCall.getReceiver()
+    |
+      package = packagePath() and
+      (
+        // Receiver type: Context
+        receiverName = "Context" and
+        (
+          // signature: func (*Context).SetContentType(v string)
+          methodName = "SetContentType" and
+          contentTypeNode = contentTypeSetterCall.getArgument(0)
+        )
+      )
+    )
   }
 }

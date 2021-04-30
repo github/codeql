@@ -1,6 +1,6 @@
 import go
-import experimental.frameworks.CleverGo
 import TestUtilities.InlineExpectationsTest
+import experimental.frameworks.CleverGo
 
 class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "test-configuration" }
