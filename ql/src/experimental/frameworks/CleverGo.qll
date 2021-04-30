@@ -499,8 +499,6 @@ private module CleverGo {
 
     override string getHeaderName() { result = "content-type" }
 
-    override string getHeaderValue() { none() }
-
     override DataFlow::Node getName() { none() }
 
     override DataFlow::Node getValue() { result = contentTypeNode }
