@@ -1,4 +1,5 @@
 edges
+| RhinoServlet.java:25:23:25:50 | getParameter(...) : String | RhinoServlet.java:29:55:29:58 | code |
 | ScriptEngineTest.java:8:44:8:55 | input : String | ScriptEngineTest.java:12:37:12:41 | input |
 | ScriptEngineTest.java:15:51:15:62 | input : String | ScriptEngineTest.java:19:31:19:35 | input |
 | ScriptEngineTest.java:23:58:23:69 | input : String | ScriptEngineTest.java:27:31:27:35 | input |
@@ -12,6 +13,8 @@ edges
 | ScriptEngineTest.java:40:70:40:76 | ...[...] : String | ScriptEngineTest.java:23:58:23:69 | input : String |
 | ScriptEngineTest.java:41:58:41:64 | ...[...] : String | ScriptEngineTest.java:30:46:30:57 | input : String |
 nodes
+| RhinoServlet.java:25:23:25:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RhinoServlet.java:29:55:29:58 | code | semmle.label | code |
 | ScriptEngineTest.java:8:44:8:55 | input : String | semmle.label | input : String |
 | ScriptEngineTest.java:12:37:12:41 | input | semmle.label | input |
 | ScriptEngineTest.java:15:51:15:62 | input : String | semmle.label | input : String |
@@ -26,7 +29,8 @@ nodes
 | ScriptEngineTest.java:40:70:40:76 | ...[...] : String | semmle.label | ...[...] : String |
 | ScriptEngineTest.java:41:58:41:64 | ...[...] : String | semmle.label | ...[...] : String |
 #select
-| ScriptEngineTest.java:12:19:12:42 | eval(...) | ScriptEngineTest.java:37:26:37:38 | args : String[] | ScriptEngineTest.java:12:37:12:41 | input | ScriptEngine eval $@. | ScriptEngineTest.java:37:26:37:38 | args | user input |
-| ScriptEngineTest.java:19:19:19:36 | eval(...) | ScriptEngineTest.java:37:26:37:38 | args : String[] | ScriptEngineTest.java:19:31:19:35 | input | ScriptEngine eval $@. | ScriptEngineTest.java:37:26:37:38 | args | user input |
-| ScriptEngineTest.java:27:19:27:36 | eval(...) | ScriptEngineTest.java:37:26:37:38 | args : String[] | ScriptEngineTest.java:27:31:27:35 | input | ScriptEngine eval $@. | ScriptEngineTest.java:37:26:37:38 | args | user input |
-| ScriptEngineTest.java:34:19:34:36 | eval(...) | ScriptEngineTest.java:37:26:37:38 | args : String[] | ScriptEngineTest.java:34:31:34:35 | input | ScriptEngine eval $@. | ScriptEngineTest.java:37:26:37:38 | args | user input |
+| RhinoServlet.java:29:29:29:78 | evaluateString(...) | RhinoServlet.java:25:23:25:50 | getParameter(...) : String | RhinoServlet.java:29:55:29:58 | code | JavaScript Engine evaluate $@. | RhinoServlet.java:25:23:25:50 | getParameter(...) | user input |
+| ScriptEngineTest.java:12:19:12:42 | eval(...) | ScriptEngineTest.java:37:26:37:38 | args : String[] | ScriptEngineTest.java:12:37:12:41 | input | JavaScript Engine evaluate $@. | ScriptEngineTest.java:37:26:37:38 | args | user input |
+| ScriptEngineTest.java:19:19:19:36 | eval(...) | ScriptEngineTest.java:37:26:37:38 | args : String[] | ScriptEngineTest.java:19:31:19:35 | input | JavaScript Engine evaluate $@. | ScriptEngineTest.java:37:26:37:38 | args | user input |
+| ScriptEngineTest.java:27:19:27:36 | eval(...) | ScriptEngineTest.java:37:26:37:38 | args : String[] | ScriptEngineTest.java:27:31:27:35 | input | JavaScript Engine evaluate $@. | ScriptEngineTest.java:37:26:37:38 | args | user input |
+| ScriptEngineTest.java:34:19:34:36 | eval(...) | ScriptEngineTest.java:37:26:37:38 | args : String[] | ScriptEngineTest.java:34:31:34:35 | input | JavaScript Engine evaluate $@. | ScriptEngineTest.java:37:26:37:38 | args | user input |
