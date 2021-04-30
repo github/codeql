@@ -37,14 +37,6 @@ class Node extends TNode {
   ) {
     getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
-
-  /**
-   * Gets a node that this node may flow to using one heap and/or interprocedural step.
-   *
-   * See `TypeTracker` for more details about how to use this.
-   */
-  pragma[inline]
-  LocalSourceNode track(TypeTracker t2, TypeTracker t) { t = t2.step(this, result) }
 }
 
 /**
@@ -91,6 +83,14 @@ class LocalSourceNode extends Node {
   /** Holds if this `LocalSourceNode` can flow to `nodeTo` in one or more local flow steps. */
   pragma[inline]
   predicate flowsTo(Node nodeTo) { hasLocalSource(nodeTo, this) }
+
+  /**
+   * Gets a node that this node may flow to using one heap and/or interprocedural step.
+   *
+   * See `TypeTracker` for more details about how to use this.
+   */
+  pragma[inline]
+  LocalSourceNode track(TypeTracker t2, TypeTracker t) { t = t2.step(this, result) }
 }
 
 predicate hasLocalSource(Node sink, Node source) {
