@@ -1,15 +1,42 @@
 #-----| Object
 #-----|  -> BasicObject
 
+#-----| Array
+#-----|  -> Object
+
+#-----| BasicObject
+
+#-----| Boolean
+#-----|  -> Object
+
 #-----| Class
-#-----|  -> Module
+#-----|  -> Object
+
+#-----| Complex
+#-----|  -> Numeric
+
+#-----| Float
+#-----|  -> Numeric
+
+#-----| Hash
+#-----|  -> Object
+
+#-----| Integer
+#-----|  -> Numeric
 
 #-----| Kernel
 
 #-----| Module
 #-----|  -> Object
 
-#-----| BasicObject
+#-----| NilClass
+#-----|  -> Object
+
+#-----| Numeric
+#-----|  -> Object
+
+#-----| Rational
+#-----|  -> Numeric
 
 hello.rb:
 #    1| EnglishWords

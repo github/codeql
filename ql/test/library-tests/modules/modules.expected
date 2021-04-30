@@ -1,9 +1,18 @@
 getModule
+| file://:0:0:0:0 | Array |
 | file://:0:0:0:0 | BasicObject |
+| file://:0:0:0:0 | Boolean |
 | file://:0:0:0:0 | Class |
+| file://:0:0:0:0 | Complex |
+| file://:0:0:0:0 | Float |
+| file://:0:0:0:0 | Hash |
+| file://:0:0:0:0 | Integer |
 | file://:0:0:0:0 | Kernel |
 | file://:0:0:0:0 | Module |
+| file://:0:0:0:0 | NilClass |
+| file://:0:0:0:0 | Numeric |
 | file://:0:0:0:0 | Object |
+| file://:0:0:0:0 | Rational |
 | hello.rb:1:1:8:3 | EnglishWords |
 | hello.rb:11:1:16:3 | Greeting |
 | hello.rb:18:1:22:3 | HelloWorld |
@@ -77,9 +86,18 @@ getADeclaration
 | modules.rb:116:7:117:9 | XX::YY | modules.rb:116:7:117:9 | YY |
 | modules.rb:120:1:121:3 | Test::Foo1::Bar::Baz | modules.rb:120:1:121:3 | Baz |
 getSuperClass
-| file://:0:0:0:0 | Class | file://:0:0:0:0 | Module |
+| file://:0:0:0:0 | Array | file://:0:0:0:0 | Object |
+| file://:0:0:0:0 | Boolean | file://:0:0:0:0 | Object |
+| file://:0:0:0:0 | Class | file://:0:0:0:0 | Object |
+| file://:0:0:0:0 | Complex | file://:0:0:0:0 | Numeric |
+| file://:0:0:0:0 | Float | file://:0:0:0:0 | Numeric |
+| file://:0:0:0:0 | Hash | file://:0:0:0:0 | Object |
+| file://:0:0:0:0 | Integer | file://:0:0:0:0 | Numeric |
 | file://:0:0:0:0 | Module | file://:0:0:0:0 | Object |
+| file://:0:0:0:0 | NilClass | file://:0:0:0:0 | Object |
+| file://:0:0:0:0 | Numeric | file://:0:0:0:0 | Object |
 | file://:0:0:0:0 | Object | file://:0:0:0:0 | BasicObject |
+| file://:0:0:0:0 | Rational | file://:0:0:0:0 | Numeric |
 | hello.rb:11:1:16:3 | Greeting | file://:0:0:0:0 | Object |
 | hello.rb:18:1:22:3 | HelloWorld | hello.rb:11:1:16:3 | Greeting |
 | modules.rb:6:5:7:7 | Foo::Bar::ClassInFooBar | file://:0:0:0:0 | Object |

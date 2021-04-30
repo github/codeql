@@ -1,16 +1,43 @@
 #-----| Object
-#-----| include -> Kernel
 #-----| super -> BasicObject
+#-----| include -> Kernel
+
+#-----| Array
+#-----| super -> Object
+
+#-----| BasicObject
+
+#-----| Boolean
+#-----| super -> Object
 
 #-----| Class
-#-----| super -> Module
+#-----| super -> Object
+
+#-----| Complex
+#-----| super -> Numeric
+
+#-----| Float
+#-----| super -> Numeric
+
+#-----| Hash
+#-----| super -> Object
+
+#-----| Integer
+#-----| super -> Numeric
 
 #-----| Kernel
 
 #-----| Module
 #-----| super -> Object
 
-#-----| BasicObject
+#-----| NilClass
+#-----| super -> Object
+
+#-----| Numeric
+#-----| super -> Object
+
+#-----| Rational
+#-----| super -> Numeric
 
 hello.rb:
 #    1| EnglishWords

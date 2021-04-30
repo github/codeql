@@ -8,7 +8,13 @@ private import codeql_ruby.ast.Operation
 private import codeql_ruby.ast.Scope
 
 // Names of built-in modules and classes
-private string builtin() { result = ["Object", "Kernel", "BasicObject", "Class", "Module"] }
+private string builtin() {
+  result =
+    [
+      "Object", "Kernel", "BasicObject", "Class", "Module", "NilClass", "Boolean", "Numeric",
+      "Integer", "Float", "Rational", "Complex", "Array", "Hash"
+    ]
+}
 
 cached
 private module Cached {
@@ -39,9 +45,11 @@ private module Cached {
   Module getSuperClass(Module cls) {
     cls = TResolved("Object") and result = TResolved("BasicObject")
     or
-    cls = TResolved("Module") and result = TResolved("Object")
+    cls = TResolved(["Module", "Class", "Numeric", "Array", "Hash", "Boolean", "NilClass"]) and
+    result = TResolved("Object")
     or
-    cls = TResolved("Class") and result = TResolved("Module")
+    cls = TResolved(["Integer", "Float", "Rational", "Complex"]) and
+    result = TResolved("Numeric")
     or
     not cls = TResolved(builtin()) and
     (

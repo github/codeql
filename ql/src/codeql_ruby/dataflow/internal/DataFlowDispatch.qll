@@ -64,6 +64,24 @@ class DataFlowCall extends CfgNodes::ExprNodes::CallCfgNode {
 private DataFlow::LocalSourceNode trackInstance(Module tp, TypeTracker t) {
   t.start() and
   (
+    result.asExpr().getExpr() instanceof NilLiteral and tp = TResolved("NilClass")
+    or
+    result.asExpr().getExpr() instanceof BooleanLiteral and tp = TResolved("Boolean")
+    or
+    result.asExpr().getExpr() instanceof IntegerLiteral and tp = TResolved("Integer")
+    or
+    result.asExpr().getExpr() instanceof FloatLiteral and tp = TResolved("Float")
+    or
+    result.asExpr().getExpr() instanceof RationalLiteral and tp = TResolved("Rational")
+    or
+    result.asExpr().getExpr() instanceof ComplexLiteral and tp = TResolved("Complex")
+    or
+    result.asExpr().getExpr() instanceof StringlikeLiteral and tp = TResolved("String")
+    or
+    result.asExpr().getExpr() instanceof ArrayLiteral and tp = TResolved("Array")
+    or
+    result.asExpr().getExpr() instanceof HashLiteral and tp = TResolved("Hash")
+    or
     exists(CfgNodes::ExprNodes::CallCfgNode call, DataFlow::Node nodeTo |
       call.getExpr().(MethodCall).getMethodName() = "new" and
       nodeTo.asExpr() = call.getReceiver() and
