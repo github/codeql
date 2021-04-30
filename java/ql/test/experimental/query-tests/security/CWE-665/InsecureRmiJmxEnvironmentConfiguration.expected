@@ -1,0 +1,18 @@
+edges
+| InsecureRmiServerInitialisation.java:32:31:32:45 | new HashMap<String,Object>(...) : HashMap | InsecureRmiServerInitialisation.java:34:59:34:61 | env |
+| InsecureRmiServerInitialisation.java:39:31:39:45 | new HashMap<String,Object>(...) : HashMap | InsecureRmiServerInitialisation.java:43:59:43:61 | env |
+| InsecureRmiServerInitialisation.java:57:31:57:45 | new HashMap<String,Object>(...) : HashMap | InsecureRmiServerInitialisation.java:61:59:61:61 | env |
+nodes
+| InsecureRmiServerInitialisation.java:13:5:13:69 | newJMXConnectorServer(...) | semmle.label | newJMXConnectorServer(...) |
+| InsecureRmiServerInitialisation.java:32:31:32:45 | new HashMap<String,Object>(...) : HashMap | semmle.label | new HashMap<String,Object>(...) : HashMap |
+| InsecureRmiServerInitialisation.java:34:59:34:61 | env | semmle.label | env |
+| InsecureRmiServerInitialisation.java:39:31:39:45 | new HashMap<String,Object>(...) : HashMap | semmle.label | new HashMap<String,Object>(...) : HashMap |
+| InsecureRmiServerInitialisation.java:43:59:43:61 | env | semmle.label | env |
+| InsecureRmiServerInitialisation.java:57:31:57:45 | new HashMap<String,Object>(...) : HashMap | semmle.label | new HashMap<String,Object>(...) : HashMap |
+| InsecureRmiServerInitialisation.java:61:59:61:61 | env | semmle.label | env |
+#select
+| InsecureRmiServerInitialisation.java:13:5:13:69 | newJMXConnectorServer(...) | InsecureRmiServerInitialisation.java:13:5:13:69 | newJMXConnectorServer(...) | InsecureRmiServerInitialisation.java:13:5:13:69 | newJMXConnectorServer(...) | RMI/JMX server initialized with 'null' environment $@. Missing type restriction in RMI authentication method exposes the application to deserialization attacks. | InsecureRmiServerInitialisation.java:13:5:13:69 | newJMXConnectorServer(...) | here | InsecureRmiServerInitialisation.java:13:5:13:69 | newJMXConnectorServer(...) | source environment 'Map' |
+| InsecureRmiServerInitialisation.java:34:59:34:61 | env | InsecureRmiServerInitialisation.java:32:31:32:45 | new HashMap<String,Object>(...) : HashMap | InsecureRmiServerInitialisation.java:34:59:34:61 | env | RMI/JMX server initialized with insecure environment $@. The $@ never restricts accepted client objects to 'java.lang.String'. This exposes to deserialization attacks against the RMI authentication method. | InsecureRmiServerInitialisation.java:34:59:34:61 | env | here | InsecureRmiServerInitialisation.java:32:31:32:45 | new HashMap<String,Object>(...) | source environment 'Map' |
+| InsecureRmiServerInitialisation.java:61:59:61:61 | env | InsecureRmiServerInitialisation.java:57:31:57:45 | new HashMap<String,Object>(...) : HashMap | InsecureRmiServerInitialisation.java:61:59:61:61 | env | RMI/JMX server initialized with insecure environment $@. The $@ never restricts accepted client objects to 'java.lang.String'. This exposes to deserialization attacks against the RMI authentication method. | InsecureRmiServerInitialisation.java:61:59:61:61 | env | here | InsecureRmiServerInitialisation.java:57:31:57:45 | new HashMap<String,Object>(...) | source environment 'Map' |
+
+TODO RMI Server is missing due to import errors (See test java file)
