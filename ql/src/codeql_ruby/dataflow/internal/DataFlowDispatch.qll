@@ -45,14 +45,18 @@ class DataFlowCall extends CfgNodes::ExprNodes::CallCfgNode {
   DataFlowCallable getEnclosingCallable() { result = this.getScope() }
 
   DataFlowCallable getTarget() {
-    exists(MethodCall mcall, Module tp |
-      mcall = this.getExpr() and
-      result = lookupMethod(tp, mcall.getMethodName())
+    exists(string method, DataFlow::Node nodeTo, DataFlow::LocalSourceNode sourceNode |
+      method = this.getExpr().(MethodCall).getMethodName() and
+      nodeTo.asExpr() = this.getReceiver() and
+      sourceNode.flowsTo(nodeTo)
     |
-      exists(DataFlow::Node nodeTo |
-        nodeTo.asExpr() = this.getReceiver() and
-        trackInstance(tp).flowsTo(nodeTo)
+      exists(Module tp |
+        sourceNode = trackInstance(tp) and
+        result = lookupMethod(tp, method)
       )
+      or
+      sourceNode = trackSingletonMethod(result) and
+      result.(MethodBase).getName() = method
     )
   }
 }
@@ -81,6 +85,21 @@ private DataFlow::LocalSourceNode trackInstance(Module tp, TypeTracker t) {
 
 private DataFlow::LocalSourceNode trackInstance(Module tp) {
   result = trackInstance(tp, TypeTracker::end())
+}
+
+private DataFlow::LocalSourceNode trackSingletonMethod(SingletonMethod method, TypeTracker t) {
+  t.start() and
+  exists(DataFlow::Node nodeTo | nodeTo.asExpr().getExpr() = method.getObject() |
+    result.flowsTo(nodeTo)
+    or
+    exists(Module m | result = trackModule(m) and trackModule(m).flowsTo(nodeTo))
+  )
+  or
+  exists(TypeTracker t2 | result = trackSingletonMethod(method, t2).track(t2, t))
+}
+
+private DataFlow::LocalSourceNode trackSingletonMethod(SingletonMethod m) {
+  result = trackSingletonMethod(m, TypeTracker::end())
 }
 
 private DataFlow::LocalSourceNode trackModule(Module tp, TypeTracker t) {
