@@ -1,7 +1,5 @@
 public class CorrectRmiInitialisation {
     public void initAndStartRmiServer(int port, String hostname, boolean local) {
-        Map<String, Object> env = new HashMap<>();
-
         MBeanServerForwarder authzProxy = null;
 
         env.put("jmx.remote.x.daemon", "true");
