@@ -1999,7 +1999,7 @@ predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
   kind = TMkUnit()
 }
 
-/** Extra data-flow steps needed for lamba flow analysis. */
+/** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) {
   exists(Ssa::Definition def |
     LocalFlow::localSsaFlowStep(def, nodeFrom, nodeTo) and
