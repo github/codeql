@@ -7,5 +7,5 @@ string printableEnclosingStmt(Expr e) {
 }
 
 from Expr e
-where e.getFile().toString() = "A"
+where e.getFile().getAbsolutePath() = "A"
 select e, printableEnclosingStmt(e)

@@ -7,5 +7,5 @@ string printableEnclosingCallable(Expr e) {
 }
 
 from Expr e
-where e.getFile().toString() = "A"
+where e.getFile().getAbsolutePath() = "A"
 select e, printableEnclosingCallable(e)

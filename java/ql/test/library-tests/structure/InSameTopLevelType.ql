@@ -10,5 +10,5 @@ where
   e.fromSource() and
   f.fromSource() and
   e.getName() < f.getName() and
-  e.getFile().toString() = "A"
+  e.getFile().getAbsolutePath() = "A"
 select e, f

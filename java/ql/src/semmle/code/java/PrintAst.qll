@@ -97,7 +97,7 @@ private string getQlClass(Top el) {
 private predicate locationSortKeys(Element ast, string file, int line, int column) {
   exists(Location loc |
     loc = ast.getLocation() and
-    file = loc.getFile().toString() and
+    file = loc.getFile().getAbsolutePath() and
     line = loc.getStartLine() and
     column = loc.getStartColumn()
   )

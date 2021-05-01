@@ -9,5 +9,5 @@ where
   inheritor.hasMethod(method, declarer) and
   inheritor.fromSource() and
   declarer.hasName("Object") and
-  inheritor.getFile().toString() = "Inherit"
+  inheritor.getFile().getAbsolutePath() = "Inherit"
 select inheritor.toString(), method.toString(), declarer.toString()

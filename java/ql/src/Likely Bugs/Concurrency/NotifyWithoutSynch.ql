@@ -85,6 +85,8 @@ predicate synchronizedVarAccess(VarAccess x) {
     s.getAChild*() = x.getEnclosingStmt() and
     s.getExpr() = y and
     y.getVariable() = x.getVariable() and
+    // TODO: Properly compare whether access is on same variable; toString() can
+    // be ambiguous
     y.toString() = x.toString()
   )
 }
