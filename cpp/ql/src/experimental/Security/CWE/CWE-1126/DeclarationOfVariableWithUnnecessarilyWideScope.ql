@@ -26,7 +26,7 @@ class DangerousWhileLoop extends WhileStmt {
     exp = this.getCondition().getAChild*() and
     not exp instanceof PointerFieldAccess and
     not exp instanceof ValueFieldAccess and
-    exp.toString() = dl.getName() and
+    exp.(VariableAccess).getTarget().getName() = dl.getName() and
     not exp.getParent*() instanceof CrementOperation and
     not exp.getParent*() instanceof Assignment and
     not exp.getParent*() instanceof FunctionCall
