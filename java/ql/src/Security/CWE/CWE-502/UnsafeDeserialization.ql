@@ -40,6 +40,10 @@ class UnsafeDeserializationConfig extends TaintTracking::Configuration {
       ma.getArgument(0) = pred.asExpr() and
       ma.getQualifier() = succ.asExpr()
     )
+    or
+    createJacksonJsonParserStep(pred, succ)
+    or
+    createJacksonTreeNodeStep(pred, succ)
   }
 
   override predicate isSanitizer(DataFlow::Node node) {

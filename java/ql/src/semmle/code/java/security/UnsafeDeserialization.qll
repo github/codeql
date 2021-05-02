@@ -23,6 +23,61 @@ class XMLDecoderReadObjectMethod extends Method {
   }
 }
 
+class ObjectMapperReadMethod extends Method {
+  ObjectMapperReadMethod() {
+    this.getDeclaringType() instanceof ObjectMapper and
+    this.hasName(["readValue", "readValues", "treeToValue"])
+  }
+}
+
+class ObjectMapper extends RefType {
+  ObjectMapper() { hasQualifiedName("com.fasterxml.jackson.databind", "ObjectMapper") }
+}
+
+class MapperBuilder extends RefType {
+  MapperBuilder() {
+    hasQualifiedName("com.fasterxml.jackson.databind.cfg", "MapperBuilder<JsonMapper,Builder>")
+  }
+}
+
+class JsonFactory extends RefType {
+  JsonFactory() { hasQualifiedName("com.fasterxml.jackson.core", "JsonFactory") }
+}
+
+class JsonParser extends RefType {
+  JsonParser() { hasQualifiedName("com.fasterxml.jackson.core", "JsonParser") }
+}
+
+class EnableJacksonDefaultTyping extends MethodAccess {
+  EnableJacksonDefaultTyping() {
+    this.getMethod().getDeclaringType() instanceof ObjectMapper and
+    this.getMethod().hasName("enableDefaultTyping")
+  }
+}
+
+class ObjectMapperReadSink extends DataFlow::ExprNode {
+  ObjectMapperReadSink() {
+    exists(MethodAccess ma | ma.getQualifier() = this.asExpr() |
+      ma.getMethod() instanceof ObjectMapperReadMethod
+    )
+  }
+}
+
+class SetPolymorphicTypeValidatorSource extends DataFlow::ExprNode {
+  SetPolymorphicTypeValidatorSource() {
+    exists(MethodAccess ma, Method m, Expr q | m = ma.getMethod() and q = ma.getQualifier() |
+      (
+        m.getDeclaringType() instanceof ObjectMapper and
+        m.hasName("setPolymorphicTypeValidator")
+        or
+        m.getDeclaringType() instanceof MapperBuilder and
+        m.hasName("polymorphicTypeValidator")
+      ) and
+      this.asExpr() = [q, q.(VarAccess).getVariable().getAnAccess()]
+    )
+  }
+}
+
 class SafeXStream extends DataFlow2::Configuration {
   SafeXStream() { this = "UnsafeDeserialization::SafeXStream" }
 
@@ -114,6 +169,87 @@ class SafeKryo extends DataFlow2::Configuration {
   }
 }
 
+class EnabledJacksonDefaultTyping extends DataFlow2::Configuration {
+  EnabledJacksonDefaultTyping() { this = "EnabledJacksonDefaultTyping" }
+
+  override predicate isSource(DataFlow::Node src) {
+    any(EnableJacksonDefaultTyping ma).getQualifier().(VarAccess).getVariable().getAnAccess() =
+      src.asExpr()
+  }
+
+  override predicate isSink(DataFlow::Node sink) { sink instanceof ObjectMapperReadSink }
+}
+
+class SafeObjectMapper extends DataFlow2::Configuration {
+  SafeObjectMapper() { this = "SafeObjectMapper" }
+
+  override predicate isSource(DataFlow::Node src) {
+    src instanceof SetPolymorphicTypeValidatorSource
+  }
+
+  override predicate isSink(DataFlow::Node sink) { sink instanceof ObjectMapperReadSink }
+
+  /**
+   * Holds if `fromNode` to `toNode` is a dataflow step
+   * that configures or creates an `ObjectMapper` via a builder.
+   */
+  override predicate isAdditionalFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
+    exists(MethodAccess ma, Method m, Expr q | m = ma.getMethod() and q = ma.getQualifier() |
+      m.getDeclaringType() instanceof MapperBuilder and
+      m.getReturnType()
+          .(RefType)
+          .hasQualifiedName("com.fasterxml.jackson.databind.json",
+            ["JsonMapper$Builder", "JsonMapper"]) and
+      fromNode.asExpr() = [q, q.(VarAccess).getVariable().getAnAccess()] and
+      ma = toNode.asExpr()
+    )
+  }
+}
+
+/**
+ * Holds if `fromNode` to `toNode` is a dataflow step that creates a Jackson parser.
+ */
+predicate createJacksonJsonParserStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
+  exists(MethodAccess ma, Method m | m = ma.getMethod() |
+    (m.getDeclaringType() instanceof ObjectMapper or m.getDeclaringType() instanceof JsonFactory) and
+    m.hasName("createParser") and
+    ma.getArgument(0) = fromNode.asExpr() and
+    ma = toNode.asExpr()
+  )
+}
+
+/**
+ * Holds if `fromNode` to `toNode` is a dataflow step that creates a Jackson `TreeNode`.
+ */
+predicate createJacksonTreeNodeStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
+  exists(MethodAccess ma, Method m | m = ma.getMethod() |
+    m.getDeclaringType() instanceof ObjectMapper and
+    m.hasName("readTree") and
+    ma.getArgument(0) = fromNode.asExpr() and
+    ma = toNode.asExpr()
+  )
+  or
+  exists(MethodAccess ma, Method m | m = ma.getMethod() |
+    m.getDeclaringType() instanceof JsonParser and
+    m.hasName("readValueAsTree") and
+    ma.getQualifier() = fromNode.asExpr() and
+    ma = toNode.asExpr()
+  )
+}
+
+predicate hasJsonTypeInfoAnnotation(RefType type) {
+  hasFieldWithJsonTypeAnnotation(type.getASupertype*()) or
+  hasFieldWithJsonTypeAnnotation(type.getAField().getType())
+}
+
+predicate hasFieldWithJsonTypeAnnotation(RefType type) {
+  exists(Annotation a |
+    type.getAField().getAnAnnotation() = a and
+    a.getType().hasQualifiedName("com.fasterxml.jackson.annotation", "JsonTypeInfo") and
+    a.getValue("use").(VarAccess).getVariable().hasName("CLASS")
+  )
+}
+
 predicate unsafeDeserialization(MethodAccess ma, Expr sink) {
   exists(Method m | m = ma.getMethod() |
     m instanceof ObjectInputStreamReadObjectMethod and
@@ -162,6 +298,14 @@ predicate unsafeDeserialization(MethodAccess ma, Expr sink) {
     ma.getMethod() instanceof CastorUnmarshalMethod and sink = ma.getAnArgument()
     or
     ma.getMethod() instanceof BurlapInputReadObjectMethod and sink = ma.getQualifier()
+    or
+    ma.getMethod() instanceof ObjectMapperReadMethod and
+    sink = ma.getArgument(0) and
+    (
+      exists(EnabledJacksonDefaultTyping config | config.hasFlowToExpr(ma.getQualifier())) or
+      hasJsonTypeInfoAnnotation(ma.getArgument(1).getType().(ParameterizedType).getATypeArgument())
+    ) and
+    not exists(SafeObjectMapper config | config.hasFlowToExpr(ma.getQualifier()))
   )
 }
 
