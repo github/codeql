@@ -1,5 +1,5 @@
 /**
- * Provides classes for reasoning about cookies added to response without the 'secure' flag being set.
+ * Provides classes for reasoning about cookies added to response without the 'secure' or 'httponly' flag being set.
  * A cookie without the 'secure' flag being set can be intercepted and read by a malicious user.
  * A cookie without the 'httponly' flag being set can be read by an injected JavaScript
  */
