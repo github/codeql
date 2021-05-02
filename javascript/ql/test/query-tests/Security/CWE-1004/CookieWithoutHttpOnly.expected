@@ -14,3 +14,4 @@
 | test_responseCookie.js:65:5:65:43 | res.coo ... ptions) | Cookie attribute 'HttpOnly' is not set to true. |
 | test_responseCookie.js:84:5:84:43 | res.coo ... ptions) | Cookie attribute 'HttpOnly' is not set to true. |
 | test_responseCookie.js:95:5:95:41 | res.coo ... ptions) | Cookie attribute 'HttpOnly' is not set to true. |
+| test_responseCookie.js:106:5:106:43 | res.coo ... ptions) | Cookie attribute 'HttpOnly' is not set to true. |

@@ -53,7 +53,8 @@ module Cookie {
       exists(string val |
         (
           val = expr.getStringValue() or
-          val = expr.asExpr().(VarAccess).getName()
+          val = expr.asExpr().(VarAccess).getName() or
+          val = expr.(DataFlow::PropRead).getPropertyName()
         ) and
         regexpMatchAuth(val)
       )
