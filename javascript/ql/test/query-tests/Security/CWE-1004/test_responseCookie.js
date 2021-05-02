@@ -110,6 +110,17 @@ app.get('/a', function (req, res, next) {
 app.get('/a', function (req, res, next) {
     let options = {
         maxAge: 9000000000,
+        httpOnly: false,
+    }
+    options.httpOnly = false;
+    let blabla = "session"
+    res.cookie(blabla, 'value', options); // BAD, var name likely auth related
+    res.end('ok')
+})
+
+app.get('/a', function (req, res, next) {
+    let options = {
+        maxAge: 9000000000,
         httpOnly: true,
     }
     options.httpOnly = true;

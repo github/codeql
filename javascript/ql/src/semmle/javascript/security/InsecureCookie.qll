@@ -58,6 +58,8 @@ module Cookie {
         ) and
         regexpMatchAuth(val)
       )
+      or
+      isAuthVariable(expr.getAPredecessor())
     }
 
     /**
