@@ -75,7 +75,7 @@ module Cookie {
   class InsecureCookieSession extends ExpressLibraries::CookieSession::MiddlewareInstance, Cookie {
     override string getKind() { result = "cookie-session" }
 
-    override DataFlow::SourceNode getCookieOptionsArgument() { result = this.getOptionsArgument(0) }
+    override DataFlow::SourceNode getCookieOptionsArgument() { result.flowsTo(getArgument(0)) }
 
     private DataFlow::Node getCookieFlagValue(string flag) {
       result = this.getCookieOptionsArgument().getAPropertyWrite(flag).getRhs()
