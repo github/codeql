@@ -17,7 +17,7 @@ void sink(void*);
 void pointer_without_allocation_2() {
   char *raw;
   argument_source(raw);
-  sink(raw); // $ ast,ir
+  sink(raw); // $ ast MISSING: ir
 }
 
 A* makeA() {
@@ -27,14 +27,14 @@ A* makeA() {
 void no_InitializeDynamicAllocation_instruction() {
   A* pa = makeA();
   pa->x = user_input();
-  sink(pa->x); // $ ast,ir
+  sink(pa->x); // $ ast MISSING: ir
 }
 
 void fresh_or_arg(A* arg, bool unknown) {
   A* pa;
   pa = unknown ? arg : new A;
   pa->x = user_input();
-  sink(pa->x); // $ ast,ir
+  sink(pa->x); // $ ast MISSING: ir
 }
 
 struct LinkedList {

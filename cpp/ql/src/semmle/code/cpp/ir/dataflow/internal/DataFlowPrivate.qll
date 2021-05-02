@@ -250,29 +250,115 @@ private predicate hasAddressInstructionWithNoIntermediateFields(Instruction i) {
   )
 }
 
-private predicate arrayStoreStepChi(Node node1, ArrayContent a, AddressNodeStore node2) {
-  a = TArrayContent() and
-  exists(ChiPartialOperand operand, ChiInstruction chi, Instruction store |
-    chi.getPartialOperand() = operand and
-    store = operand.getDef() and
-    node1.asOperand() = operand and
-    not chi.isResultConflated() and
-    (
+/**
+ * INTERNAL: do not use.
+ *
+ * This module encapsulates the predicates used for array and pointer flow.
+ */
+module ArrayFlow {
+  /**
+   * INTERNAL: do not use.
+   *
+   * A store step from a `ChiPartialOperand` to the destination address of a `StoreInstruction` or
+   * a `WriteSideEffectInstruction`.
+   */
+  predicate storeImpl(ChiPartialOperand operand, ArrayContent a, Instruction instr2) {
+    a = TArrayContent() and
+    exists(ChiInstruction chi, Instruction store |
+      chi.getPartialOperand() = operand and
+      store = operand.getDef() and
+      not chi.isResultConflated() and
       // `*p = taint()`
       // Search backwards through `CopyValue` instructions and check if there's an address instruction
       // that is not just a glvalue.
       hasAddressInstructionWithNoIntermediateFields(getDestinationAddress(store)) and
-      node2.getInstruction() = getDestinationAddress(store)
+      instr2 = getDestinationAddress(store)
     )
-  )
+  }
+
+  predicate store(Node node1, ArrayContent a, AddressNodeStore node2) {
+    storeImpl(node1.asOperand(), a, node2.getInstruction())
+  }
+
+  /**
+   * INTERNAL: do not use.
+   *
+   * A read step that reads the value defined by the `sourceValue` instruction and stores it into the
+   * address given by the instruction `sourceAddress`.
+   */
+  predicate readImpl(Instruction sourceValue, ArrayContent a, Instruction sourceAddress) {
+    a = TArrayContent() and
+    // Explicit dereferences such as `*p` or `p[i]` where `p` is a pointer or array.
+    // Note that we don't register read side effects as read steps since we have dataflow from the
+    // side effect operand's definition to the side effect operand even without a read step. So we only
+    // use `LoadInstruction`s here.
+    exists(Operand operand, LoadInstruction load |
+      not load.getSourceValueOperand().getAnyDef().isResultConflated() and
+      operand.getAnyDef() = pragma[only_bind_out](getSourceValue(load)) and
+      operand.isDefinitionInexact() and
+      sourceValue = operand.getAnyDef() and
+      // `use(p[i])`
+      (
+        // Search backwards through `CopyValue` instructions and check if there's an address instruction
+        // that is not just a glvalue.
+        hasAddressInstructionWithNoIntermediateFields(getSourceAddress(load)) and
+        sourceAddress = getSourceAddress(load)
+      )
+    )
+  }
+
+  predicate read(Node node1, ArrayContent a, AddressNodeRead node2) {
+    readImpl(node1.asInstruction(), a, node2.getInstruction())
+  }
 }
 
-private predicate fieldStoreStep(AddressNodeStore node1, FieldContent f, AddressNodeStore node2) {
-  exists(FieldAddressInstruction fai |
-    node1.getInstruction() = fai and
-    node2.getInstruction() = fai.getObjectAddress() and
+/**
+ * INTERNAL: do not use.
+ *
+ * This module encapsulates the predicates used for field flow.
+ */
+module FieldFlow {
+  /**
+   * INTERNAL: do not use.
+   *
+   * A store step from a `FieldAddressInstruction` to it the instruction that defines the address of the
+   * object of the field access.
+   */
+  predicate storeImpl(FieldAddressInstruction fai, FieldContent f, Instruction object) {
+    object = fai.getObjectAddress() and
     f.getAField() = fai.getField()
+  }
+
+  predicate store(AddressNodeStore node1, FieldContent f, AddressNodeStore node2) {
+    storeImpl(node1.getInstruction(), f, node2.getInstruction())
+  }
+
+  /**
+   * INTERNAL: do not use.
+   *
+   * A read step from an instruction that represents a qualifier of a `FieldAddressInstruction` to the
+   * `FieldAddressInstruction`.
+   */
+  predicate readImpl(Instruction object, FieldContent f, FieldAddressInstruction fai) {
+    object = fai.getObjectAddress() and
+    f.getAField() = fai.getField()
+  }
+
+  predicate read(AddressNodeRead node1, FieldContent f, AddressNodeRead node2) {
+    readImpl(node1.getInstruction(), f, node2.getInstruction())
+  }
+}
+
+/**
+ * INTERNAL: do not use.
+ */
+predicate usedForStore(Instruction i) {
+  exists(ChiPartialOperand operand |
+    i = getDestinationAddress(operand.getDef()) and
+    ArrayFlow::storeImpl(operand, _, _)
   )
+  or
+  FieldFlow::storeImpl(i, _, _)
 }
 
 /**
@@ -281,37 +367,18 @@ private predicate fieldStoreStep(AddressNodeStore node1, FieldContent f, Address
  * value of `node1`.
  */
 predicate storeStep(Node node1, Content c, Node node2) {
-  fieldStoreStep(node1, c, node2)
+  FieldFlow::store(node1, c, node2)
   or
-  arrayStoreStepChi(node1, c, node2)
+  ArrayFlow::store(node1, c, node2)
 }
 
-predicate arrayReadStep(Node node1, ArrayContent a, AddressNodeRead node2) {
-  a = TArrayContent() and
-  // Explicit dereferences such as `*p` or `p[i]` where `p` is a pointer or array.
-  // Note that we don't register read side effects as read steps since we have dataflow from the
-  // side effect operand's definition to the side effect operand even without a read step. So we only
-  // use `LoadInstruction`s here.
-  exists(Operand operand, LoadInstruction load |
-    operand.getAnyDef() = pragma[only_bind_out](getSourceValue(load)) and
-    operand.isDefinitionInexact() and
-    node1.asInstruction() = operand.getAnyDef() and
-    // `use(p[i])`
-    (
-      // Search backwards through `CopyValue` instructions and check if there's an address instruction
-      // that is not just a glvalue.
-      hasAddressInstructionWithNoIntermediateFields(getSourceAddress(load)) and
-      node2.getInstruction() = getSourceAddress(load)
-    )
-  )
-}
-
-private predicate fieldReadStep(AddressNodeRead node1, FieldContent f, AddressNodeRead node2) {
-  exists(FieldAddressInstruction fai |
-    node1.getInstruction() = fai.getObjectAddress() and
-    node2.getInstruction() = fai and
-    f.getAField() = fai.getField()
-  )
+/**
+ * INTERNAL: do not use.
+ */
+predicate usedForRead(Instruction mid) {
+  ArrayFlow::readImpl(_, _, mid)
+  or
+  FieldFlow::readImpl(_, _, mid)
 }
 
 /**
@@ -321,9 +388,9 @@ private predicate fieldReadStep(AddressNodeRead node1, FieldContent f, AddressNo
  */
 cached
 predicate readStep(Node node1, Content f, Node node2) {
-  fieldReadStep(node1, f, node2)
+  FieldFlow::read(node1, f, node2)
   or
-  arrayReadStep(node1, f, node2)
+  ArrayFlow::read(node1, f, node2)
 }
 
 /**
