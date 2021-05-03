@@ -14,6 +14,7 @@ private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.internal.DataFlowPrivate
 import semmle.code.java.dataflow.FlowSteps
 private import FlowSummaryImpl as FlowSummaryImpl
+private import semmle.code.java.frameworks.JaxWS
 
 /**
  * Holds if taint can flow from `src` to `sink` in zero or more
@@ -263,6 +264,8 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   )
   or
   m.(TaintPreservingCallable).returnsTaintFrom(-1)
+  or
+  exists(JaxRsResourceMethod resourceMethod | m.(GetterMethod).getDeclaringType() = resourceMethod.getAParameter().getType())
 }
 
 private class StringReplaceMethod extends TaintPreservingCallable {

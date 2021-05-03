@@ -28,7 +28,7 @@ class JexlInjectionConfig extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { sink instanceof JexlEvaluationSink }
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    any(JexlInjectionAdditionalTaintStep c).step(node1, node2) 
+    any(JexlInjectionAdditionalTaintStep c).step(node1, node2)
   }
 }
 
