@@ -45,31 +45,31 @@ module Cookie {
      * Holds if the cookie is authentication sensitive and lacks HttpOnly.
      */
     abstract predicate isAuthNotHttpOnly();
+  }
 
-    /**
-     * Holds if the expression is a variable with a sensitive name.
-     */
-    predicate isAuthVariable(DataFlow::Node expr) {
-      exists(string val |
-        (
-          val = expr.getStringValue() or
-          val = expr.asExpr().(VarAccess).getName() or
-          val = expr.(DataFlow::PropRead).getPropertyName()
-        ) and
-        regexpMatchAuth(val)
-      )
-      or
-      isAuthVariable(expr.getAPredecessor())
-    }
+  /**
+   * Holds if the expression is a variable with a sensitive name.
+   */
+  private predicate isAuthVariable(DataFlow::Node expr) {
+    exists(string val |
+      (
+        val = expr.getStringValue() or
+        val = expr.asExpr().(VarAccess).getName() or
+        val = expr.(DataFlow::PropRead).getPropertyName()
+      ) and
+      regexpMatchAuth(val)
+    )
+    or
+    isAuthVariable(expr.getAPredecessor())
+  }
 
-    /**
-     * Holds if the string contains sensitive auth keyword, but not antiforgery token.
-     */
-    bindingset[val]
-    predicate regexpMatchAuth(string val) {
-      val.regexpMatch("(?i).*(session|login|token|user|auth|credential).*") and
-      not val.regexpMatch("(?i).*(xsrf|csrf|forgery).*")
-    }
+  /**
+   * Holds if the string contains sensitive auth keyword, but not antiforgery token.
+   */
+  bindingset[val]
+  private predicate regexpMatchAuth(string val) {
+    val.regexpMatch("(?i).*(session|login|token|user|auth|credential).*") and
+    not val.regexpMatch("(?i).*(xsrf|csrf|forgery).*")
   }
 
   /**
@@ -168,6 +168,26 @@ module Cookie {
     }
   }
 
+  private class AttributeToSetCookieHeaderTrackingConfig extends TaintTracking::Configuration {
+    AttributeToSetCookieHeaderTrackingConfig() { this = "AttributeToSetCookieHeaderTrackingConfig" }
+
+    override predicate isSource(DataFlow::Node source) {
+      exists(string s | source.mayHaveStringValue(s))
+    }
+
+    override predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof TemplateLiteral }
+  }
+
+  private class SensitiveNameToSetCookieHeaderTrackingConfig extends TaintTracking::Configuration {
+    SensitiveNameToSetCookieHeaderTrackingConfig() {
+      this = "SensitiveNameToSetCookieHeaderTrackingConfig"
+    }
+
+    override predicate isSource(DataFlow::Node source) { isAuthVariable(source) }
+
+    override predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof TemplateLiteral }
+  }
+
   /**
    * A cookie set using `Set-Cookie` header of an `HTTP` response.
    * (https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie).
@@ -197,7 +217,7 @@ module Cookie {
      * A cookie is httpOnly if the `httpOnly` flag is specified in the cookie definition.
      * The default is `false`.
      */
-    override predicate isHttpOnly() { allHaveCookieAttribute("httponly") }
+    override predicate isHttpOnly() { allHaveCookieAttribute(httpOnlyFlag()) }
 
     /**
      * The predicate holds only if all elements have the specified attribute.
@@ -208,6 +228,14 @@ module Cookie {
         exists(string s |
           n.mayHaveStringValue(s) and
           hasCookieAttribute(s, attribute)
+        )
+        or
+        exists(AttributeToSetCookieHeaderTrackingConfig cfg, DataFlow::Node source |
+          cfg.hasFlow(source, n) and
+          exists(string attr |
+            source.mayHaveStringValue(attr) and
+            attr.regexpMatch("(?i).*\\b" + attribute + "\\b.*")
+          )
         )
       )
     }
@@ -221,10 +249,19 @@ module Cookie {
         exists(string s |
           n.mayHaveStringValue(s) and
           (
-            not hasCookieAttribute(s, "httponly") and
+            not hasCookieAttribute(s, httpOnlyFlag()) and
             regexpMatchAuth(getCookieName(s))
           )
         )
+        or
+        not exists(AttributeToSetCookieHeaderTrackingConfig cfg, DataFlow::Node source |
+          cfg.hasFlow(source, n) and
+          exists(string attr |
+            source.mayHaveStringValue(attr) and
+            attr.regexpMatch("(?i).*\\b" + httpOnlyFlag() + "\\b.*")
+          )
+        ) and
+        exists(SensitiveNameToSetCookieHeaderTrackingConfig cfg | cfg.hasFlow(_, n))
       )
     }
 

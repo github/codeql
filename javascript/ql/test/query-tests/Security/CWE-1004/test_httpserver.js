@@ -69,3 +69,23 @@ function test7() {
         res.end('ok');
     });
 }
+
+function test8() {
+    const server = http.createServer((req, res) => {
+        res.setHeader('Content-Type', 'text/html');
+        let attr = "; httponly"
+        res.setHeader("Set-Cookie", `session=ninja ${attr}`); // Good, httponly string expression
+        res.writeHead(200, { 'Content-Type': 'text/plain' });
+        res.end('ok');
+    });
+}
+
+function test9() {
+    const server = http.createServer((req, res) => {
+        res.setHeader('Content-Type', 'text/html');
+        let attr = "; secure"
+        res.setHeader("Set-Cookie", `session=ninja ${attr}`); // Bad, not httponly string expression
+        res.writeHead(200, { 'Content-Type': 'text/plain' });
+        res.end('ok');
+    });
+}
