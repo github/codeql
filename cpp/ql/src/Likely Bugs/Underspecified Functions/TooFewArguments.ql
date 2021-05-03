@@ -12,6 +12,9 @@
  * @tags correctness
  *       maintainability
  *       security
+ *       external/cwe/cwe-233
+ *       external/cwe/cwe-234
+ *       external/cwe/cwe-685
  */
 
 import cpp
