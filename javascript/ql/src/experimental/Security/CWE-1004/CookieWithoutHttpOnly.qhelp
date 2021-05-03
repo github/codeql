@@ -8,7 +8,7 @@ Cross-Site Scripting (XSS) vulnerability the cookie can be stolen by malicious s
 </overview>
 <recommendation>
 
-<p>Protect sensitive cookies, such as related to authentication, by setting <code>HttpOnly</code> to <code>true</code> to make
+<p>Protect sensitive cookies, such as those related to authentication, by setting <code>HttpOnly</code> to <code>true</code> to make
 them not accessible to JavaScript.</p>
 
 </recommendation>

@@ -1,7 +1,7 @@
 /**
  * Provides classes for reasoning about cookies added to response without the 'secure' or 'httponly' flag being set.
- * A cookie without the 'secure' flag being set can be intercepted and read by a malicious user.
- * A cookie without the 'httponly' flag being set can be read by an injected JavaScript
+ * - A cookie without the 'secure' flag being set can be intercepted and read by a malicious user.
+ * - A cookie without the 'httponly' flag being set can be read by maliciously injected JavaScript.
  */
 
 import javascript
@@ -64,7 +64,7 @@ module Cookie {
   }
 
   /**
-   * Holds if the string contains sensitive auth keyword, but not antiforgery token.
+   * Holds if `val` looks related to authentication, without being an anti-forgery token.
    */
   bindingset[val]
   private predicate regexpMatchAuth(string val) {
