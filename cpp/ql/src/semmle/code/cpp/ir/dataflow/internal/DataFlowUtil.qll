@@ -737,6 +737,15 @@ predicate addressFlowInstrRTC(Instruction iFrom, Instruction iTo) {
 }
 
 /**
+ * Holds if `iFrom` is the initial address of an address computation and the value computed
+ * by `iFrom` flows to `iTo`.
+ */
+private predicate initialAddressFlowInstrRTC(Instruction iFrom, Instruction iTo) {
+  isInitialAddress(iFrom) and
+  addressFlowInstrRTC(iFrom, iTo)
+}
+
+/**
  * Holds if `instr2` is a possible (transitive) successor of `instr1` in the control-flow graph.
  *
  * This predicate is `inline` because it's infeasible to compute it in isolation.
@@ -753,17 +762,53 @@ private predicate isSuccessorInstruction(Instruction instr1, Instruction instr2)
         block2.getInstruction(index2) = instr2 and
         index1 < index2
       )
-    else block1.getASuccessor+() = block2
+    else IRBlockFlow::flowsToSink(block1, block2)
   )
 }
 
 /**
- * Holds if `iFrom` is the initial address of an address computation and the value computed
- * by `iFrom` flows to `iTo`.
+ * A module that hides implementation details for the control-flow analysis needed
+ * for `isSuccessorInstruction`.
  */
-private predicate initialAddressFlowInstrRTC(Instruction iFrom, Instruction iTo) {
-  isInitialAddress(iFrom) and
-  addressFlowInstrRTC(iFrom, iTo)
+private module IRBlockFlow {
+  /**
+   * Holds if:
+   * - `source` and `sink` are either a `LoadInstruction` or a `ReadSideEffectInstruction`.
+   * - `source` is the beginning of an address computation that is used as part of a `storeStep`,
+   *    and `sink` is the beginning of an address computation that is used as part of a `readStep`.
+   * - `source` and `sink` read from the same instruction (i.e., the definition of their memory operand
+   * is identical).
+   */
+  private predicate sourceSinkPairCand(Instruction source, Instruction sink) {
+    source != sink and
+    initialAddressFlowInstrRTC(any(AddressNodeStore address).getInstruction(),
+      getSourceAddress(source)) and
+    getSourceValue(source) = getSourceValue(sink) and
+    initialAddressFlowInstrRTC(any(AddressNodeRead address).getInstruction(), getSourceAddress(sink))
+  }
+
+  private predicate isSource(IRBlock source) { sourceSinkPairCand(source.getAnInstruction(), _) }
+
+  private predicate isSink(IRBlock sink) { sourceSinkPairCand(_, sink.getAnInstruction()) }
+
+  private IRBlock getASuccessor(IRBlock b) { b.getASuccessor() = result }
+
+  private IRBlock getAPredecessor(IRBlock b) { b = getASuccessor(result) }
+
+  private predicate flowsFromSource(IRBlock b) {
+    isSource(b) or
+    flowsFromSource(getAPredecessor(b))
+  }
+
+  /** Holds if `isSink(sink)` and `b` flows to `sink` in one or more steps. */
+  predicate flowsToSink(IRBlock b, IRBlock sink) {
+    flowsFromSource(b) and
+    (
+      getASuccessor(b) = sink and isSink(b)
+      or
+      flowsToSink(getASuccessor(b), sink)
+    )
+  }
 }
 
 /**
