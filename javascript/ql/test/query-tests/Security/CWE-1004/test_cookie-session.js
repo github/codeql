@@ -38,11 +38,19 @@ var sess2 = {
 sess2.httpOnly = false;
 app.use(session(sess2)) // BAD
 
-var sess2 = {
+var sess3 = {
     name: 'mycookie',
     keys: ['key1', 'key2'],
     httpOnly: true,
 }
 
-sess2.httpOnly = false;
-app.use(session(sess2)) // BAD, It is a session cookie, name doesn't matter
+sess3.httpOnly = false;
+app.use(session(sess3)) // BAD, It is a session cookie, name doesn't matter
+
+var flag = false
+var flag2 = flag
+app.use(session({
+    name: 'session',
+    keys: ['key1', 'key2'],
+    httpOnly: flag2 // BAD
+}))
