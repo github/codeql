@@ -165,7 +165,7 @@ class JacksonDeserializableFieldAccess extends FieldAccess {
  * When an object is deserialized by the Jackson JSON framework using a tainted input source,
  * the fields that the framework deserialized are themselves tainted input data.
  */
-class JacksonDeseializedTaintStep extends AdditionalTaintStep {
+class JacksonDeserializedTaintStep extends AdditionalTaintStep {
   override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
     node2.asExpr().(JacksonDeserializableFieldAccess).getQualifier() = node1.asExpr()
   }
