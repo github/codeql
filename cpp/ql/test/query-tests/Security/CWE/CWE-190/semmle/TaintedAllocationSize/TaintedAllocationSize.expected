@@ -35,22 +35,16 @@ edges
 | test.cpp:97:18:97:23 | buffer | test.cpp:100:17:100:22 | buffer indirection |
 | test.cpp:97:18:97:23 | buffer | test.cpp:101:4:101:15 | ... + ... |
 | test.cpp:97:18:97:23 | buffer | test.cpp:101:4:101:15 | buffer |
-| test.cpp:97:18:97:23 | buffer | test.cpp:101:17:101:22 | buffer indirection |
 | test.cpp:97:18:97:23 | fread output argument | test.cpp:100:4:100:15 | buffer |
 | test.cpp:97:18:97:23 | fread output argument | test.cpp:100:17:100:22 | buffer indirection |
 | test.cpp:97:18:97:23 | fread output argument | test.cpp:101:4:101:15 | ... + ... |
 | test.cpp:97:18:97:23 | fread output argument | test.cpp:101:4:101:15 | buffer |
-| test.cpp:97:18:97:23 | fread output argument | test.cpp:101:17:101:22 | buffer indirection |
 | test.cpp:100:4:100:15 | buffer | test.cpp:100:17:100:22 | processData1 output argument |
 | test.cpp:100:17:100:22 | buffer indirection | test.cpp:100:17:100:22 | processData1 output argument |
 | test.cpp:100:17:100:22 | processData1 output argument | test.cpp:101:4:101:15 | ... + ... |
 | test.cpp:100:17:100:22 | processData1 output argument | test.cpp:101:4:101:15 | buffer |
-| test.cpp:100:17:100:22 | processData1 output argument | test.cpp:101:17:101:22 | buffer indirection |
 | test.cpp:101:4:101:15 | ... + ... | test.cpp:75:38:75:40 | end |
 | test.cpp:101:4:101:15 | buffer | test.cpp:75:25:75:29 | start |
-| test.cpp:101:4:101:15 | buffer | test.cpp:101:17:101:22 | processData2 output argument |
-| test.cpp:101:17:101:22 | buffer indirection | test.cpp:101:17:101:22 | processData2 output argument |
-| test.cpp:101:17:101:22 | processData2 output argument | test.cpp:101:4:101:15 | ... + ... |
 | test.cpp:123:18:123:23 | call to getenv | test.cpp:127:24:127:41 | ... * ... |
 | test.cpp:123:18:123:23 | call to getenv | test.cpp:127:24:127:41 | ... * ... |
 | test.cpp:123:18:123:31 | (const char *)... | test.cpp:127:24:127:41 | ... * ... |
@@ -131,11 +125,8 @@ nodes
 | test.cpp:64:25:64:30 | *buffer | semmle.label | *buffer |
 | test.cpp:64:25:64:30 | *buffer | semmle.label | *buffer |
 | test.cpp:64:25:64:30 | buffer | semmle.label | buffer |
-| test.cpp:75:25:75:29 | *start | semmle.label | *start |
-| test.cpp:75:25:75:29 | *start | semmle.label | *start |
 | test.cpp:75:25:75:29 | start | semmle.label | start |
 | test.cpp:75:38:75:40 | end | semmle.label | end |
-| test.cpp:79:18:79:28 | ... - ... | semmle.label | ... - ... |
 | test.cpp:79:18:79:28 | ... - ... | semmle.label | ... - ... |
 | test.cpp:79:18:79:28 | ... - ... | semmle.label | ... - ... |
 | test.cpp:79:18:79:28 | ... - ... | semmle.label | ... - ... |
@@ -146,8 +137,6 @@ nodes
 | test.cpp:100:17:100:22 | processData1 output argument | semmle.label | processData1 output argument |
 | test.cpp:101:4:101:15 | ... + ... | semmle.label | ... + ... |
 | test.cpp:101:4:101:15 | buffer | semmle.label | buffer |
-| test.cpp:101:17:101:22 | buffer indirection | semmle.label | buffer indirection |
-| test.cpp:101:17:101:22 | processData2 output argument | semmle.label | processData2 output argument |
 | test.cpp:123:18:123:23 | call to getenv | semmle.label | call to getenv |
 | test.cpp:123:18:123:31 | (const char *)... | semmle.label | (const char *)... |
 | test.cpp:127:24:127:41 | ... * ... | semmle.label | ... * ... |
