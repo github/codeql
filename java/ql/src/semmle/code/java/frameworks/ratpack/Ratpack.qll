@@ -91,7 +91,7 @@ class RatpackHeader extends RefType {
   }
 }
 
-private class RatpackHeaderTaintPropigatingMethod extends Method, TaintPreservingCallable {
+private class RatpackHeaderTaintPropagatingMethod extends Method, TaintPreservingCallable {
   RatpackHeaderTaintPropigatingMethod() {
     getDeclaringType() instanceof RatpackHeader and
     hasName(["get", "getAll", "getNames", "asMultiValueMap"])
