@@ -58,6 +58,12 @@ class DataFlowCall extends CfgNodes::ExprNodes::CallCfgNode {
       sourceNode = trackSingletonMethod(result) and
       result.(MethodBase).getName() = method
     )
+    or
+    this.getExpr() instanceof SuperCall and
+    exists(Module tp |
+      tp = this.getExpr().getEnclosingModule().getModule() and
+      result = lookupMethod(tp.getSuperClass(), this.getExpr().getEnclosingMethod().getName())
+    )
   }
 }
 
