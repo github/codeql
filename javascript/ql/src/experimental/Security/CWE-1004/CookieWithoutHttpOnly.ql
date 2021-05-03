@@ -13,7 +13,7 @@
  */
 
 import javascript
-import semmle.javascript.security.InsecureCookie::Cookie
+import experimental.semmle.javascript.security.InsecureCookie::Cookie
 
 from Cookie cookie
 where cookie.isAuthNotHttpOnly()
