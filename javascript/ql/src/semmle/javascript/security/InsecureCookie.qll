@@ -169,7 +169,10 @@ module Cookie {
   }
 
   /**
-   * A cookie set using `Set-Cookie` header of an `HTTP` response (https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie).
+   * A cookie set using `Set-Cookie` header of an `HTTP` response.
+   * (https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie).
+   * In case an array is passed `setHeader("Set-Cookie", [...]` it sets multiple cookies.
+   * Each array element has its own attributes.
    */
   class InsecureSetCookieHeader extends Cookie {
     InsecureSetCookieHeader() {
@@ -184,38 +187,67 @@ module Cookie {
       else result.asExpr() = this.asExpr()
     }
 
-    override predicate isSecure() {
-      // A cookie is secure if the 'secure' flag is specified in the cookie definition.
-      // The default is `false`.
+    /**
+     * A cookie is secure if the `secure` flag is specified in the cookie definition.
+     * The default is `false`.
+     */
+    override predicate isSecure() { allHaveCookieAttribute("secure") }
+
+    /**
+     * A cookie is httpOnly if the `httpOnly` flag is specified in the cookie definition.
+     * The default is `false`.
+     */
+    override predicate isHttpOnly() { allHaveCookieAttribute("httponly") }
+
+    /**
+     * The predicate holds only if all elements have the specified attribute.
+     */
+    bindingset[attribute]
+    private predicate allHaveCookieAttribute(string attribute) {
       forall(DataFlow::Node n | n = getCookieOptionsArgument() |
         exists(string s |
           n.mayHaveStringValue(s) and
-          s.regexpMatch("(?i).*;\\s*secure\\s*;?.*$")
+          hasCookieAttribute(s, attribute)
         )
       )
     }
 
+    /**
+     * The predicate holds only if any element has a sensitive name and
+     * doesn't have the `httpOnly` flag.
+     */
     override predicate isAuthNotHttpOnly() {
       exists(DataFlow::Node n | n = getCookieOptionsArgument() |
         exists(string s |
           n.mayHaveStringValue(s) and
           (
-            not s.regexpMatch("(?i).*;\\s*httponly\\s*;?.*$") and
-            regexpMatchAuth(s.regexpCapture("\\s*([^=\\s]*)\\s*=.*", 1))
+            not hasCookieAttribute(s, "httponly") and
+            regexpMatchAuth(getCookieName(s))
           )
         )
       )
     }
 
-    override predicate isHttpOnly() {
-      // A cookie is httpOnly if the 'httpOnly' flag is specified in the cookie definition.
-      // The default is `false`.
-      forall(DataFlow::Node n | n = getCookieOptionsArgument() |
-        exists(string s |
-          n.mayHaveStringValue(s) and
-          s.regexpMatch("(?i).*;\\s*httponly\\s*;?.*$")
-        )
-      )
+    /**
+     * Gets cookie name from a `Set-Cookie` header value.
+     * The header value always starts with `<cookie-name>=<cookie-value>` optionally followed by attributes:
+     * `<cookie-name>=<cookie-value>; Domain=<domain-value>; Secure; HttpOnly`
+     */
+    bindingset[s]
+    private string getCookieName(string s) { result = s.regexpCapture("\\s*([^=\\s]*)\\s*=.*", 1) }
+
+    /**
+     * Holds if the `Set-Cookie` header value contains the specified attribute
+     * 1. The attribute is case insensitive
+     * 2. It always starts with a pair `<cookie-name>=<cookie-value>`.
+     *    If the attribute is present there must be `;` after the pair.
+     *    Other attributes like `Domain=`, `Path=`, etc. may come after the pair:
+     *    `<cookie-name>=<cookie-value>; Domain=<domain-value>; Secure; HttpOnly`
+     * See `https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie`
+     */
+    bindingset[s, attribute]
+    private predicate hasCookieAttribute(string s, string attribute) {
+      s.regexpMatch("(?i).*;\\s*" + attribute + "\\s*;?.*$")
     }
   }
 
