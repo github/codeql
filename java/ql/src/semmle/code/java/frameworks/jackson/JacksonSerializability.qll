@@ -28,7 +28,7 @@ abstract class JacksonSerializableType extends Type { }
  * A method used for serializing objects using Jackson. The final parameter is the object to be
  * serialized.
  */
-library class JacksonWriteValueMethod extends Method, TaintPreservingCallable {
+private class JacksonWriteValueMethod extends Method, TaintPreservingCallable {
   JacksonWriteValueMethod() {
     (
       getDeclaringType().hasQualifiedName("com.fasterxml.jackson.databind", "ObjectWriter") or
@@ -50,17 +50,17 @@ library class JacksonWriteValueMethod extends Method, TaintPreservingCallable {
   }
 }
 
-library class JacksonReadValueMethod extends Method, TaintPreservingCallable {
+private class JacksonReadValueMethod extends Method, TaintPreservingCallable {
   JacksonReadValueMethod() {
     getDeclaringType().hasQualifiedName("com.fasterxml.jackson.databind", "ObjectReader") and
-    hasName("readValue")
+    hasName(["readValue", "readValues"])
   }
 
   override predicate returnsTaintFrom(int arg) { arg = 0 }
 }
 
 /** A type whose values are explicitly serialized in a call to a Jackson method. */
-library class ExplicitlyWrittenJacksonSerializableType extends JacksonSerializableType {
+private class ExplicitlyWrittenJacksonSerializableType extends JacksonSerializableType {
   ExplicitlyWrittenJacksonSerializableType() {
     exists(MethodAccess ma |
       // A call to a Jackson write method...
@@ -71,8 +71,20 @@ library class ExplicitlyWrittenJacksonSerializableType extends JacksonSerializab
   }
 }
 
+/** A type whose values are explicitly deserialized in a call to a Jackson method. */
+private class ExplicitlyReadJacksonSerializableType extends JacksonDeserializableType {
+  ExplicitlyReadJacksonSerializableType() {
+    exists(MethodAccess ma |
+      // A call to a Jackson write method...
+      ma.getMethod() instanceof JacksonReadValueMethod and
+      // ...where `this` is used in the final argument, indicating that this type will be deserialized.
+      usesType(ma.getArgument(ma.getNumArgument() - 1).getType(), this)
+    )
+  }
+}
+
 /** A type used in a `JacksonSerializableField` declaration. */
-library class FieldReferencedJacksonSerializableType extends JacksonSerializableType {
+private class FieldReferencedJacksonSerializableType extends JacksonSerializableType {
   FieldReferencedJacksonSerializableType() {
     exists(JacksonSerializableField f | usesType(f.getType(), this))
   }
@@ -105,7 +117,7 @@ private class TypeLiteralToJacksonDatabindFlowConfiguration extends DataFlow5::C
 }
 
 /** A type whose values are explicitly deserialized in a call to a Jackson method. */
-library class ExplicitlyReadJacksonDeserializableType extends JacksonDeserializableType {
+private class ExplicitlyReadJacksonDeserializableType extends JacksonDeserializableType {
   ExplicitlyReadJacksonDeserializableType() {
     exists(TypeLiteralToJacksonDatabindFlowConfiguration conf |
       usesType(conf.getSourceWithFlowToJacksonDatabind().getTypeName().getType(), this)
@@ -114,7 +126,7 @@ library class ExplicitlyReadJacksonDeserializableType extends JacksonDeserializa
 }
 
 /** A type used in a `JacksonDeserializableField` declaration. */
-library class FieldReferencedJacksonDeSerializableType extends JacksonDeserializableType {
+private class FieldReferencedJacksonDeSerializableType extends JacksonDeserializableType {
   FieldReferencedJacksonDeSerializableType() {
     exists(JacksonDeserializableField f | usesType(f.getType(), this))
   }
@@ -144,10 +156,15 @@ class JacksonDeserializableField extends DeserializableField {
   }
 }
 
+/** A call to a field that may be deserialized using the Jackson JSON framework. */
 class JacksonDeserializableFieldAccess extends FieldAccess {
   JacksonDeserializableFieldAccess() { getField() instanceof JacksonDeserializableField }
 }
 
+/**
+ * When an object is deserialized by the Jackson JSON framework using a tainted input source,
+ * the fields that the framework deserialized are themselves tainted input data.
+ */
 class JacksonDeseializedTaintStep extends AdditionalTaintStep {
   override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
     node2.asExpr().(JacksonDeserializableFieldAccess).getQualifier() = node1.asExpr()

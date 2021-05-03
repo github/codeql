@@ -3,6 +3,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.Iterator;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -78,5 +79,19 @@ class Test {
 		sink(reader.readValue(s));  //$hasTaintFlow
 		sink(reader.readValue(s, Potato.class).name);  //$hasTaintFlow
 		sink(reader.readValue(s, Potato.class).getName());  //$hasTaintFlow
+	}
+
+	public static void jacksonObjectReaderIterable() throws java.io.IOException {
+		String s = taint();
+		ObjectMapper om = new ObjectMapper();
+		ObjectReader reader = om.readerFor(Potato.class);
+		sink(reader.readValues(s));  //$hasTaintFlow
+		Iterator<Potato> pIterator = reader.readValues(s, Potato.class);
+		while(pIterator.hasNext()) {
+			Potato p = pIterator.next();
+			sink(p); //$hasTaintFlow
+			sink(p.name); //$hasTaintFlow
+			sink(p.getName()); //$hasTaintFlow
+		}
 	}
 }
