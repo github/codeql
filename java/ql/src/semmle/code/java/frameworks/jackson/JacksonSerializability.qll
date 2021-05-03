@@ -75,7 +75,7 @@ private class ExplicitlyWrittenJacksonSerializableType extends JacksonSerializab
 private class ExplicitlyReadJacksonSerializableType extends JacksonDeserializableType {
   ExplicitlyReadJacksonSerializableType() {
     exists(MethodAccess ma |
-      // A call to a Jackson write method...
+      // A call to a Jackson read method...
       ma.getMethod() instanceof JacksonReadValueMethod and
       // ...where `this` is used in the final argument, indicating that this type will be deserialized.
       usesType(ma.getArgument(ma.getNumArgument() - 1).getType(), this)
@@ -126,8 +126,8 @@ private class ExplicitlyReadJacksonDeserializableType extends JacksonDeserializa
 }
 
 /** A type used in a `JacksonDeserializableField` declaration. */
-private class FieldReferencedJacksonDeSerializableType extends JacksonDeserializableType {
-  FieldReferencedJacksonDeSerializableType() {
+private class FieldReferencedJacksonDeserializableType extends JacksonDeserializableType {
+  FieldReferencedJacksonDeserializableType() {
     exists(JacksonDeserializableField f | usesType(f.getType(), this))
   }
 }
