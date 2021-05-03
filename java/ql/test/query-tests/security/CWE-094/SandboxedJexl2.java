@@ -6,7 +6,7 @@ import java.net.Socket;
 import java.util.function.Consumer;
 
 public class SandboxedJexl2 {
-    
+
     private static void runJexlExpressionWithSandbox(String jexlExpr) {
         Sandbox sandbox = new Sandbox();
         sandbox.white(SandboxedJexl2.class.getCanonicalName());
@@ -14,7 +14,7 @@ public class SandboxedJexl2 {
         JexlEngine jexl = new JexlEngine(uberspect, null, null, null);
         Expression e = jexl.createExpression(jexlExpr);
         JexlContext jc = new MapContext();
-        e.evaluate(jc);
+        e.evaluate(jc); // Safe
     }
 
     private static void runJexlExpressionViaSandboxedUnifiedJexl(String jexlExpr) {
@@ -23,7 +23,7 @@ public class SandboxedJexl2 {
         Uberspect uberspect = new SandboxUberspectImpl(null, sandbox);
         JexlEngine jexl = new JexlEngine(uberspect, null, null, null);
         UnifiedJEXL unifiedJEXL = new UnifiedJEXL(jexl);
-        unifiedJEXL.parse(jexlExpr).evaluate(new MapContext());
+        unifiedJEXL.parse(jexlExpr).evaluate(new MapContext()); // Safe
     }
 
     private static void simpleServer(Consumer<String> action) throws Exception {
