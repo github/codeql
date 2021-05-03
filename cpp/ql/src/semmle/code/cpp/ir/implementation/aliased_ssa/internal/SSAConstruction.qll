@@ -65,10 +65,12 @@ private module Cached {
     instr = reusedPhiInstruction(_) and
     // Check that the phi instruction is *not* degenerate, but we can't use
     // getDegeneratePhiOperand in the first stage with phi instyructions
-    not exists(unique(OldIR::PhiInputOperand operand |
-      operand = instr.(OldIR::PhiInstruction).getAnInputOperand() and
-      operand.getPredecessorBlock() instanceof OldBlock
-    ))
+    not exists(
+      unique(OldIR::PhiInputOperand operand |
+        operand = instr.(OldIR::PhiInstruction).getAnInputOperand() and
+        operand.getPredecessorBlock() instanceof OldBlock
+      )
+    )
     or
     instr instanceof TChiInstruction
     or
