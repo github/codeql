@@ -115,7 +115,7 @@ module Cookie {
     }
 
     override predicate isSecure() {
-      // The flag `secure` is not set by default (https://github.com/expressjs/session#Cookieecure).
+      // The flag `secure` is not set by default (https://github.com/expressjs/session#Cookiesecure).
       // The default value for cookie options is { path: '/', httpOnly: true, secure: false, maxAge: null }.
       // A cookie is secure if there are the cookie options with the `secure` flag set to `true` or to `auto`.
       getCookieFlagValue(secureFlag()).mayHaveBooleanValue(true) or
@@ -127,7 +127,7 @@ module Cookie {
     }
 
     override predicate isHttpOnly() {
-      // The flag `httpOnly` is set by default (https://github.com/expressjs/session#Cookieecure).
+      // The flag `httpOnly` is set by default (https://github.com/expressjs/session#Cookiesecure).
       // The default value for cookie options is { path: '/', httpOnly: true, secure: false, maxAge: null }.
       // A cookie is httpOnly if the `httpOnly` flag is not explicitly set to `false`.
       not getCookieFlagValue(httpOnlyFlag()).mayHaveBooleanValue(false)
