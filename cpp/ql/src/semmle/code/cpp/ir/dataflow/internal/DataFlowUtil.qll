@@ -762,7 +762,7 @@ private predicate isSuccessorInstruction(Instruction instr1, Instruction instr2)
         block2.getInstruction(index2) = instr2 and
         index1 < index2
       )
-    else IRBlockFlow::flowsToSink(block1, block2)
+    else IRBlockFlow::flowsToSink(block1, pragma[only_bind_out](block2))
   )
 }
 
