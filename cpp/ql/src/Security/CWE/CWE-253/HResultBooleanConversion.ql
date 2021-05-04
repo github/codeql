@@ -7,8 +7,6 @@
  * @precision high
  * @tags security
  *       external/cwe/cwe-253
- *       external/cwe/cwe-573
- *       external/cwe/cwe-754
  *       external/microsoft/C6214
  *       external/microsoft/C6215
  *       external/microsoft/C6216

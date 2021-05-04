@@ -9,7 +9,6 @@
  * @id cpp/suspicious-add-sizeof
  * @tags security
  *       external/cwe/cwe-468
- *       external/cwe/cwe-682
  */
 
 import cpp
