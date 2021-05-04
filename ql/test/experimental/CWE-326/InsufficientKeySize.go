@@ -25,10 +25,3 @@ func foo4() {
 func foo5(size int) {
 	rsa.GenerateKey(rand.Reader, size)
 }
-
-func main() {
-	foo1()
-	foo2()
-	foo3()
-	foo4()
-}

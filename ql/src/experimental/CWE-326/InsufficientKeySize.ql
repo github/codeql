@@ -11,19 +11,19 @@
 import go
 import DataFlow::PathGraph
 
+/**
+ * RSA key length data flow tracking configuration.
+ */
 class RsaKeyTrackingConfiguration extends DataFlow::Configuration {
   RsaKeyTrackingConfiguration() { this = "RsaKeyTrackingConfiguration" }
 
   override predicate isSource(DataFlow::Node source) {
-    exists(ValueExpr c |
-      source.asExpr() = c and
-      c.getIntValue() < 2048
-    )
+    source.asExpr().(ValueExpr).getIntValue() < 2048
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(CallExpr c |
-      sink.asExpr() = c.getArgument(1) and
+    exists(DataFlow::CallNode c |
+      sink = c.getArgument(1) and
       c.getTarget().hasQualifiedName("crypto/rsa", "GenerateKey")
     )
   }
