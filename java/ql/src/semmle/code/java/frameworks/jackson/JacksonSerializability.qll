@@ -167,7 +167,7 @@ class JacksonDeserializableFieldAccess extends FieldAccess {
  */
 class JacksonDeserializedTaintStep extends AdditionalTaintStep {
   override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
-    node2.asExpr().(JacksonDeserializableFieldAccess).getQualifier() = node1.asExpr()
+    DataFlow::getFieldQualifier(node2.asExpr().(JacksonDeserializableFieldAccess)) = node1
   }
 }
 
