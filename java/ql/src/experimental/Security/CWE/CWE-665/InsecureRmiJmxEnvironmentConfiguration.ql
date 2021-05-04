@@ -17,7 +17,7 @@ import DataFlow::PathGraph
 import semmle.code.java.dataflow.NullGuards
 import semmle.code.java.dataflow.Nullness
 
-/** predicate which detects vulnerable Constructors */
+/** Predicate which detects vulnerable Constructors */
 predicate isRmiOrJmxServerCreateConstructor(Constructor constructor) {
   constructor.getName() = "RMIConnectorServer" and
   constructor
