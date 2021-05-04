@@ -255,7 +255,9 @@ module DataFlow {
      * Holds if this node is annotated with the given named type,
      * or is declared as a subtype thereof, or is a union or intersection containing such a type.
      */
+    cached
     predicate hasUnderlyingType(string globalName) {
+      Stages::TypeTracking::ref() and
       getType().hasUnderlyingType(globalName)
       or
       getFallbackTypeAnnotation().getAnUnderlyingType().hasQualifiedName(globalName)
@@ -265,7 +267,9 @@ module DataFlow {
      * Holds if this node is annotated with the given named type,
      * or is declared as a subtype thereof, or is a union or intersection containing such a type.
      */
+    cached
     predicate hasUnderlyingType(string moduleName, string typeName) {
+      Stages::TypeTracking::ref() and
       getType().hasUnderlyingType(moduleName, typeName)
       or
       getFallbackTypeAnnotation().getAnUnderlyingType().hasQualifiedName(moduleName, typeName)
