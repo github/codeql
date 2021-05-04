@@ -2,6 +2,7 @@ private import codeql_ruby.AST as AST
 private import codeql_ruby.dataflow.internal.DataFlowPublic as DataFlowPublic
 private import codeql_ruby.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 private import codeql_ruby.dataflow.internal.DataFlowDispatch as DataFlowDispatch
+private import codeql_ruby.controlflow.CfgNodes
 
 class Node = DataFlowPublic::Node;
 
@@ -71,11 +72,14 @@ predicate returnStep(DataFlowPrivate::ReturnNode nodeFrom, Node nodeTo) {
  */
 predicate basicStoreStep(Node nodeFrom, LocalSourceNode nodeTo, string content) {
   // TODO: support SetterMethodCall inside TuplePattern
-  exists(AST::Assignment assignment, AST::SetterMethodCall call, DataFlowPublic::ExprNode receiver |
-    assignment.getLeftOperand() = call and
-    content = getSetterCallAttributeName(call) and
-    receiver.getExprNode().getNode() = call.getReceiver() and
-    assignment.getRightOperand() = nodeFrom.(DataFlowPublic::ExprNode).getExprNode().getNode() and
+  exists(
+    ExprNodes::AssignmentCfgNode assignment, ExprNodes::CallCfgNode call,
+    DataFlowPublic::ExprNode receiver
+  |
+    assignment.getLhs() = call and
+    content = getSetterCallAttributeName(call.getExpr()) and
+    receiver.getExprNode().getNode() = call.getExpr().(AST::SetterMethodCall).getReceiver() and
+    assignment.getRhs() = nodeFrom.(DataFlowPublic::ExprNode).getExprNode() and
     nodeTo.flowsTo(receiver)
   )
 }
@@ -101,11 +105,11 @@ private string getSetterCallAttributeName(AST::SetterMethodCall call) {
  * Holds if `nodeTo` is the result of accessing the `content` content of `nodeFrom`.
  */
 predicate basicLoadStep(Node nodeFrom, Node nodeTo, string content) {
-  exists(AST::MethodCall call |
-    call.getNumberOfArguments() = 0 and
-    content = call.getMethodName() and
-    nodeFrom.asExpr().getNode() = call.getReceiver() and
-    nodeTo.asExpr().getNode() = call
+  exists(ExprNodes::CallCfgNode call |
+    call.getExpr().getNumberOfArguments() = 0 and
+    content = call.getExpr().(AST::MethodCall).getMethodName() and
+    nodeFrom.asExpr().getNode() = call.getExpr().(AST::MethodCall).getReceiver() and
+    nodeTo.asExpr() = call
   )
 }
 
