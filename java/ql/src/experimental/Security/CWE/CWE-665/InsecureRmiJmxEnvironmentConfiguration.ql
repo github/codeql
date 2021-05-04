@@ -63,7 +63,10 @@ class MapToPutCredentialstypeConfiguration extends DataFlow2::Configuration {
   }
 }
 
-/** Models flow from `new HashMap<>()` to the argument of a `TestConstructor` call. */
+/**
+ * Models flow from `new HashMap<>()` variable which is later used as environment during
+ * a JMX/RMI server initalitation with `newJMXConnectorServer(...)` or `RMIConnectorServer(...)`
+ */
 class MapToRmiServerInitConfiguration extends DataFlow::Configuration {
   MapToRmiServerInitConfiguration() { this = "MapToRmiServerInitConfiguration" }
 
@@ -139,7 +142,11 @@ where
   // Check if server is created with null env
   initNullDataflow.hasFlowPath(source, sink)
   or
-  // The map created by `new HashMap<String, Object>()` has to a) flow to the sink and b) there must not exist a (different) sink that would put `"jmx.remote.rmi.server.credential.types"` into `source`. */
+  /*
+   * The map created by `new HashMap<String, Object>()` has to a) flow to the sink and
+   *  b) there must not exist a (different) sink that would put `"jmx.remote.rmi.server.credential.types"` into `source`.
+   */
+
   hasVulnerableMapFlow(source, sink)
 select sink.getNode(), source, sink, getRmiResult(source), sink.getNode(), "here", source.getNode(),
   "source environment 'Map'"
