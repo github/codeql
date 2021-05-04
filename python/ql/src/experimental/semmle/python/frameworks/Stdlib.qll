@@ -11,46 +11,80 @@ private import experimental.semmle.python.Concepts
 private import semmle.python.ApiGraphs
 
 private module NoSQL {
-  private class PyMongoMethods extends string {
-    // These are all find-keyword relevant PyMongo collection level operation methods
-    PyMongoMethods() {
+  /** Gets a reference to a `MongoClient` DB. */
+  private API::Node mongoClientInstance() {
+    result = API::moduleImport("pymongo").getMember("MongoClient").getReturn() or
+    result =
+      API::moduleImport("flask_mongoengine")
+          .getMember("MongoEngine")
+          .getReturn()
+          .getMember("get_db")
+          .getReturn() or
+    result = API::moduleImport("mongoengine").getMember("connect").getReturn() or
+    result = API::moduleImport("flask_pymongo").getMember("PyMongo").getReturn()
+  }
+
+  /** Gets a reference to a `MongoClient` DB. */
+  private DataFlow::LocalSourceNode mongoClientDB(DataFlow::TypeTracker t) {
+    t.start() and
+    (
+      exists(SubscriptNode subscript | result.asCfgNode() = subscript |
+        subscript.getObject() = mongoClientInstance().getAUse().asCfgNode()
+      )
+      or
+      result.(DataFlow::AttrRead).getObject() = mongoClientInstance().getAUse()
+    )
+    or
+    exists(DataFlow::TypeTracker t2 | result = mongoClientDB(t2).track(t2, t))
+  }
+
+  /** Gets a reference to a `MongoClient` DB. */
+  private DataFlow::Node mongoClientDB() {
+    mongoClientDB(DataFlow::TypeTracker::end()).flowsTo(result)
+  }
+
+  /** Gets a reference to a `MongoClient` collection. */
+  private DataFlow::LocalSourceNode mongoClientCollection(DataFlow::TypeTracker t) {
+    t.start() and
+    (
+      exists(SubscriptNode subscript | result.asCfgNode() = subscript |
+        subscript.getObject() = mongoClientDB().asCfgNode()
+      )
+      or
+      result.(DataFlow::AttrRead).getObject() = mongoClientDB()
+    )
+    or
+    exists(DataFlow::TypeTracker t2 | result = mongoClientCollection(t2).track(t2, t))
+  }
+
+  /** Gets a reference to a `MongoClient` collection. */
+  private DataFlow::Node mongoClientCollection() {
+    mongoClientCollection(DataFlow::TypeTracker::end()).flowsTo(result)
+  }
+
+  /** This class represents names of find_* relevant MongoClient collection level operation methods. */
+  private class MongoClientMethodNames extends string {
+    MongoClientMethodNames() {
+      // the find_one_or_404 method is only found in the Pymongo Flask library.  
       this in [
           "find", "find_raw_batches", "find_one", "find_one_and_delete", "find_and_modify",
-          "find_one_and_replace", "find_one_and_update"
+          "find_one_and_replace", "find_one_and_update", "find_one_or_404"
         ]
     }
   }
 
-  private class PyMongoClientCall extends DataFlow::CallCfgNode, NoSQLQuery::Range {
-    PyMongoClientCall() {
-      this =
-        API::moduleImport("pymongo")
-            .getMember("MongoClient")
-            .getReturn()
-            .getAMember()
-            .getAMember()
-            .getMember(any(PyMongoMethods pyMongoMethod))
-            .getACall()
-    }
-
-    override DataFlow::Node getQuery() { result = this.getArg(0) }
+  /** Gets a reference to a `MongoClient` Collection method. */
+  DataFlow::Node mongoClientMethod() {
+    result.(DataFlow::AttrRead).getAttributeName() instanceof MongoClientMethodNames and
+    (
+      result.(DataFlow::AttrRead).getObject() = mongoClientCollection() or
+      result.(DataFlow::AttrRead) = mongoClientCollection()
+    )
   }
 
-  private class PyMongoFlaskMethods extends string {
-    PyMongoFlaskMethods() { this in ["find_one_or_404", any(PyMongoMethods pyMongoMethod)] }
-  }
-
-  private class PyMongoFlaskCall extends DataFlow::CallCfgNode, NoSQLQuery::Range {
-    PyMongoFlaskCall() {
-      this =
-        API::moduleImport("flask_pymongo")
-            .getMember("PyMongo")
-            .getReturn()
-            .getAMember()
-            .getAMember()
-            .getMember(any(PyMongoFlaskMethods pyMongoFlaskMethod))
-            .getACall()
-    }
+  /** Gets a reference to a `MongoClient` call */
+  private class MongoClientCall extends DataFlow::CallCfgNode, NoSQLQuery::Range {
+    MongoClientCall() { this.getFunction() = mongoClientMethod() }
 
     override DataFlow::Node getQuery() { result = this.getArg(0) }
   }
@@ -92,10 +126,11 @@ private module NoSQL {
     override DataFlow::Node getSanitizerNode() { result = this.getArg(0) }
   }
 
-  /** ObjectId returns a string representing an id.
-  * If at any time ObjectId can't parse it's input (like when a tainted dict in passed in),
-  * then ObjectId will throw an error preventing the query from running.
-  */
+  /**
+   * ObjectId returns a string representing an id.
+   * If at any time ObjectId can't parse it's input (like when a tainted dict in passed in),
+   * then ObjectId will throw an error preventing the query from running.
+   */
   private class BsonObjectIdCall extends DataFlow::CallCfgNode, NoSQLSanitizer::Range {
     BsonObjectIdCall() {
       this =
