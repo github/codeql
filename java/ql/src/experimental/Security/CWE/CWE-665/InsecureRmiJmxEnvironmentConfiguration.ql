@@ -6,7 +6,7 @@
  * @tags security
  *       external/cwe/cwe-665
  * @precision high
- * @id java/insecure-rmi-jmx-server-initalisation
+ * @id java/insecure-rmi-jmx-server-initialization
  */
 
 import java
