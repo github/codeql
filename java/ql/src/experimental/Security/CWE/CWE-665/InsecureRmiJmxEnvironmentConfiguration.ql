@@ -125,7 +125,7 @@ string getRmiResult(DataFlow::PathNode source) {
       "RMI/JMX server initialized with 'null' environment $@. Missing type restriction in RMI authentication method exposes the application to deserialization attacks."
 }
 
-/** Predicate returns true for any map flow paths with NO jmx.remote.rmi.server.credential.types set */
+/** Holds for any map flow paths with **no** jmx.remote.rmi.server.credential.types set */
 predicate hasVulnerableMapFlow(DataFlow::PathNode source, DataFlow::PathNode sink) {
   exists(MapToRmiServerInitConfiguration dataflow |
     dataflow.hasFlowPath(source, sink) and
