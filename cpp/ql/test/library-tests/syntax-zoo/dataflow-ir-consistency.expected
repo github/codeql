@@ -552,7 +552,6 @@ uniqueNodeLocation
 | file://:0:0:0:0 | ReturnIndirection | Node should have one location but has 0. |
 | file://:0:0:0:0 | SideEffect | Node should have one location but has 0. |
 | file://:0:0:0:0 | VariableAddress | Node should have one location but has 0. |
-| file://:0:0:0:0 | read address | Node should have one location but has 0. |
 | forstmt.cpp:1:6:1:7 | AliasedDefinition | Node should have one location but has 2. |
 | forstmt.cpp:1:6:1:7 | AliasedUse | Node should have one location but has 2. |
 | forstmt.cpp:1:6:1:7 | Chi | Node should have one location but has 2. |
@@ -1417,7 +1416,7 @@ uniqueNodeLocation
 | whilestmt.c:39:6:39:11 | ReturnVoid | Node should have one location but has 4. |
 | whilestmt.c:39:6:39:11 | SideEffect | Node should have one location but has 4. |
 missingLocation
-| Nodes without location: 35 |
+| Nodes without location: 34 |
 uniqueNodeToString
 | break_labels.c:2:11:2:11 | i | Node should have one toString but has 2. |
 | break_labels.c:2:11:2:11 | i | Node should have one toString but has 2. |
@@ -1498,12 +1497,7 @@ postWithInFlow
 | ir.cpp:655:9:655:30 | store address | PostUpdateNode should not be the target of local flow. |
 | ir.cpp:745:8:745:8 | store address | PostUpdateNode should not be the target of local flow. |
 | ir.cpp:754:8:754:8 | store address | PostUpdateNode should not be the target of local flow. |
-| ir.cpp:757:3:757:8 | store address | PostUpdateNode should not be the target of local flow. |
 | ir.cpp:763:8:763:8 | store address | PostUpdateNode should not be the target of local flow. |
-| ir.cpp:766:3:766:9 | store address | PostUpdateNode should not be the target of local flow. |
-| ir.cpp:775:3:775:11 | store address | PostUpdateNode should not be the target of local flow. |
-| ir.cpp:784:3:784:11 | store address | PostUpdateNode should not be the target of local flow. |
-| ir.cpp:793:3:793:11 | store address | PostUpdateNode should not be the target of local flow. |
 | ir.cpp:943:3:943:11 | store address | PostUpdateNode should not be the target of local flow. |
 | ir.cpp:944:3:944:14 | store address | PostUpdateNode should not be the target of local flow. |
 | ir.cpp:945:3:945:27 | store address | PostUpdateNode should not be the target of local flow. |
