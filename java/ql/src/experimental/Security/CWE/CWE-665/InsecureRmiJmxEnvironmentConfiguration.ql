@@ -57,8 +57,8 @@ class MapToPutCredentialstypeConfiguration extends DataFlow2::Configuration {
       put.getKey().toString() = "RMIConnectorServer.CREDENTIALS_FILTER_PATTERN" // This can probably be solved more nicely
     |
       put.getQualifier() = qualifier and
-      put.getMethod().(MapMethod).getReceiverKeyType().getName() = "String" and
-      put.getMethod().(MapMethod).getReceiverValueType().getName() = "Object"
+      put.getMethod().(MapMethod).getReceiverKeyType() instanceof TypeString and
+      put.getMethod().(MapMethod).getReceiverValueType() instanceof TypeObject
     )
   }
 }
