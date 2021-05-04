@@ -791,9 +791,12 @@ private module IRBlockFlow {
 
   private predicate isSink(IRBlock sink) { sourceSinkPairCand(_, sink.getAnInstruction()) }
 
-  private IRBlock getASuccessor(IRBlock b) { b.getASuccessor() = result }
+  private predicate getASuccessor(IRBlock b, IRBlock succ) {
+    flowsFromSource(b) and
+    b.getASuccessor() = succ
+  }
 
-  private IRBlock getAPredecessor(IRBlock b) { b = getASuccessor(result) }
+  private IRBlock getAPredecessor(IRBlock b) { result.getASuccessor() = b }
 
   private predicate flowsFromSource(IRBlock b) {
     isSource(b) or
@@ -801,13 +804,11 @@ private module IRBlockFlow {
   }
 
   /** Holds if `isSink(sink)` and `b` flows to `sink` in one or more steps. */
-  predicate flowsToSink(IRBlock b, IRBlock sink) {
-    flowsFromSource(b) and
-    (
-      getASuccessor(b) = sink and isSink(b)
-      or
-      flowsToSink(getASuccessor(b), sink)
-    )
+  private predicate flows(IRBlock b, IRBlock sink) = fastTC(getASuccessor/2)(b, sink)
+
+  predicate flowsToSink(IRBlock source, IRBlock sink) {
+    flows(source, sink) and
+    isSink(sink)
   }
 }
 
