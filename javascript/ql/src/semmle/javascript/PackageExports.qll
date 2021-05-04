@@ -50,6 +50,32 @@ private DataFlow::Node getAValueExportedByPackage() {
     result = cla.getConstructor()
   )
   or
+  // One shot closures that define a "factory" function.
+  // Recognizes the following pattern:
+  // ```Javascript
+  // (function (root, factory) {
+  //   if (typeof define === 'function' && define.amd) {
+  //     define('library-name', factory);
+  //   } else if (typeof exports === 'object') {
+  //     module.exports = factory();
+  //   } else {
+  //     root.libraryName = factory();
+  //   }
+  // }(this, function () {
+  //   ....
+  // }));
+  // ```
+  exists(ImmediatelyInvokedFunctionExpr func, DataFlow::ParameterNode prev, int i |
+    prev.getName() = "factory" and
+    func.getParameter(i) = prev.getParameter() and
+    result = func.getInvocation().getArgument(i).flow().getAFunctionValue().getAReturn()
+  )
+  or
+  // the exported value is a call to a unique callee
+  exists(DataFlow::CallNode call | call = getAValueExportedByPackage() |
+    result = unique( | | call.getCalleeNode().getAFunctionValue()).getAReturn()
+  )
+  or
   // *****
   // Common styles of transforming exported objects.
   // *****
