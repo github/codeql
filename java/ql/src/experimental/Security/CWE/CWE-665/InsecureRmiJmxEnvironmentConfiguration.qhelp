@@ -59,10 +59,10 @@ For this reason an initialization with a <code>null</code> environment is also v
 </example>
 
 <references>
-<li>Deserialization of arbitrary objects could lead to remote code execution as discribed following: <a href="https://owasp.org/www-community/vulnerabilities/Deserialization_of_untrusted_data">OWASP Deserialization of untrusted data</a>.</li>
+<li>Deserialization of arbitrary objects could lead to remote code execution as described following: <a href="https://owasp.org/www-community/vulnerabilities/Deserialization_of_untrusted_data">OWASP Deserialization of untrusted data</a>.</li>
 <li>Issue discovered in Tomcat (CVE-2016-8735): <a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-8735">OWASP ESAPI</a>.</li>
 <li>Oracle release notes fixing the issue: <a href="https://www.oracle.com/java/technologies/javase/8u91-relnotes.html">Rlease Notes</a>.</li>
 <li>Java 10 API specification for <a href="https://docs.oracle.com/javase/10/docs/api/javax/management/remote/rmi/RMIConnectorServer.html#CREDENTIALS_FILTER_PATTERN">RMIConnectorServer.CREDENTIALS_FILTER_PATTERN</a></li>
-<li>The Java API specification for<a href="https://docs.oracle.com/javase/10/docs/api/javax/management/remote/rmi/RMIConnectorServer.html#CREDENTIAL_TYPES">CREDENTIAL_TYPES</a>. Please note that this field is deprecated since Java 10.</li>
+<li>The Java API specification for <a href="https://docs.oracle.com/javase/10/docs/api/javax/management/remote/rmi/RMIConnectorServer.html#CREDENTIAL_TYPES">RMIConnectorServer.CREDENTIAL_TYPES</a>. Please note that this field is deprecated since Java 10.</li>
 </references>
 </qhelp>

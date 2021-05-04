@@ -65,7 +65,7 @@ class MapToPutCredentialstypeConfiguration extends DataFlow2::Configuration {
 
 /**
  * Models flow from `new HashMap<>()` variable which is later used as environment during
- * a JMX/RMI server initalitation with `newJMXConnectorServer(...)` or `RMIConnectorServer(...)`
+ * a JMX/RMI server initialization with `newJMXConnectorServer(...)` or `RMIConnectorServer(...)`
  */
 class MapToRmiServerInitConfiguration extends DataFlow::Configuration {
   MapToRmiServerInitConfiguration() { this = "MapToRmiServerInitConfiguration" }
