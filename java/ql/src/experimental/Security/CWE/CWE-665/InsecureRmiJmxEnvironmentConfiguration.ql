@@ -106,7 +106,7 @@ class FlowServerInitializedWithNullEnv extends DataFlow::Configuration {
   }
 }
 
-/** Returns true if within the passed PathNode a "jmx.remote.rmi.server.credential.types" is set. */
+/** Holds if within the passed PathNode a "jmx.remote.rmi.server.credential.types" is set. */
 predicate mapFlowContainsCredentialtype(DataFlow::PathNode source) {
   exists(MapToPutCredentialstypeConfiguration conf | conf.hasFlow(source.getNode(), _))
 }
