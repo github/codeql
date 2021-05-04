@@ -14,6 +14,10 @@ class Expr extends Stmt, TExpr { }
  * - `self == other`
  * - `self.method_name`
  * - `def self.method_name ... end`
+ *
+ * This also includes implicit references to the current object in method
+ * calls.  For example, the method call `foo(123)` has an implicit `self`
+ * receiver, and is equivalent to the explicit `self.foo(123)`.
  */
 class Self extends Expr, TSelf {
   final override string getAPrimaryQlClass() { result = "Self" }
