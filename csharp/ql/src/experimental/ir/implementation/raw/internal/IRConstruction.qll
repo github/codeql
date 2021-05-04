@@ -165,10 +165,10 @@ import Cached
 cached
 private module Cached {
   cached
-  Opcode getInstructionOpcode(TRawInstruction instr) {
+  predicate getInstructionOpcode(Opcode opcode, TRawInstruction instr) {
     exists(TranslatedElement element, InstructionTag tag |
       instructionOrigin(instr, element, tag) and
-      element.hasInstruction(result, tag, _)
+      element.hasInstruction(opcode, tag, _)
     )
   }
 
