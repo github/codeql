@@ -16,7 +16,7 @@ In order to disallow the deserialization of arbitrary objects the passed environ
 Ideally this filter only allows the deserialization to <code>java.lang.String</code>.
 
 The filter can be configured by setting the key <code>jmx.remote.rmi.server.credentials.filter.pattern</code> (CONST variable <code>RMIConnectorServer.CREDENTIALS_FILTER_PATTERN</code>).
-The filter should (ideally) blacklist all classes, and only whitelist java.lang.String for deserialization: (<code> "java.lang.String;!*"</code>).
+The filter should (ideally) only allow java.lang.String and disallow all other classes for deserialization: (<code>"java.lang.String;!*"</code>).
 
 The key-value pair can be set as following:
 
