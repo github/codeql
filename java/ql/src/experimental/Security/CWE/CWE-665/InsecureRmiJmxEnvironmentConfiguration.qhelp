@@ -63,6 +63,6 @@ For this reason an initialization with a <code>null</code> environment is also v
 <li>Issue discovered in Tomcat (CVE-2016-8735): <a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-8735">OWASP ESAPI</a>.</li>
 <li>Vulnerable implementation of the RMI "newClient()" function: <a href="https://docs.oracle.com/javase/8/docs/api/javax/management/remote/rmi/RMIServer.html#newClient-java.lang.Object-">Vulnerable Function</a>.</li>
 <li>Oracle release notes fixing the issue: <a href="https://www.oracle.com/java/technologies/javase/8u91-relnotes.html">Rlease Notes</a>.</li>
-<li>Documentation for <a href="https://docs.oracle.com/javase/10/docs/api/javax/management/remote/rmi/RMIConnectorServer.html#CREDENTIALS_FILTER_PATTERN">CREDENTIALS_FILTER_PATTERN</a></li>
+<li>Java API Specification: <a href="https://docs.oracle.com/javase/10/docs/api/javax/management/remote/rmi/RMIConnectorServer.html#CREDENTIALS_FILTER_PATTERN">RMIConnectorServer.CREDENTIALS_FILTER_PATTERN</a></li>
 </references>
 </qhelp>
