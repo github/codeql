@@ -6,7 +6,7 @@ import javax.management.remote.JMXConnectorServerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
-public class InsecureRmiServerInitialisation {
+public class InsecureRmiJmxEnvironmentConfiguration {
 
   public void initInsecureJmxDueToNullEnv() throws IOException {
     // Bad initializing env (arg1) with null
