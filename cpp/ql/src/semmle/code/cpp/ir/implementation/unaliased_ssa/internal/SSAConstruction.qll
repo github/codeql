@@ -192,7 +192,9 @@ private module Cached {
         exists(OldIR::PhiInputOperand phiOperand, Overlap phiOperandOverlap |
           phiOperand = getDegeneratePhiOperand(oldOperand.getAnyDef()) and
           result = getNewDefinitionFromOldSSA(phiOperand, phiOperandOverlap) and
-          overlap = combineOverlap(phiOperandOverlap, originalOverlap)
+          overlap =
+            combineOverlap(pragma[only_bind_out](phiOperandOverlap),
+              pragma[only_bind_out](originalOverlap))
         )
       )
     )
