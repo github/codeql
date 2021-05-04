@@ -58,7 +58,7 @@ private class DefaultJexlInjectionSinkModel extends SinkModelCsv {
  *
  * Extend this class to add additional taint steps that should apply to the `JexlInjectionFlowConfig`.
  */
-abstract class JexlInjectionAdditionalTaintStep extends Unit {
+class JexlInjectionAdditionalTaintStep extends Unit {
   /**
    * Holds if the step from `node1` to `node2` should be considered a taint
    * step for the `JexlInjectionConfig` configuration.
