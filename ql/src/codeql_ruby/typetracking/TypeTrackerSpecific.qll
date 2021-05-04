@@ -80,7 +80,7 @@ predicate basicStoreStep(Node nodeFrom, LocalSourceNode nodeTo, string content) 
     content = getSetterCallAttributeName(call.getExpr()) and
     receiver.getExprNode().getNode() = call.getExpr().(AST::SetterMethodCall).getReceiver() and
     assignment.getRhs() = nodeFrom.(DataFlowPublic::ExprNode).getExprNode() and
-    nodeTo.flowsTo(receiver)
+    nodeTo = receiver
   )
 }
 
