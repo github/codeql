@@ -92,6 +92,10 @@ private module NoSQL {
     override DataFlow::Node getSanitizerNode() { result = this.getArg(0) }
   }
 
+  /** ObjectId returns a string representing an id.
+  * If at any time ObjectId can't parse it's input (like when a tainted dict in passed in),
+  * then ObjectId will throw an error preventing the query from running.
+  */
   private class BsonObjectIdCall extends DataFlow::CallCfgNode, NoSQLSanitizer::Range {
     BsonObjectIdCall() {
       this =
