@@ -9,6 +9,7 @@
  * @tags reliability
  *       correctness
  *       security
+ *       external/cwe/cwe-234
  *       external/cwe/cwe-685
  */
 
