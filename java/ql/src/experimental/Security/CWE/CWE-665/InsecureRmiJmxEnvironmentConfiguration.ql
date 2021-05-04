@@ -19,7 +19,6 @@ import semmle.code.java.dataflow.Nullness
 
 /** Predicate which detects vulnerable Constructors */
 predicate isRmiOrJmxServerCreateConstructor(Constructor constructor) {
-  constructor.getName() = "RMIConnectorServer" and
   constructor
       .getDeclaringType()
       .hasQualifiedName("javax.management.remote.rmi", "RMIConnectorServer")
@@ -38,7 +37,7 @@ predicate isRmiOrJmxServerCreateMethod(Method method) {
 class MapToPutCredentialstypeConfiguration extends DataFlow2::Configuration {
   MapToPutCredentialstypeConfiguration() { this = "MapToPutCredentialstypeConfiguration" }
 
-  override predicate isSource(DataFlow::Node source) {
+  override predicate isSource(DataFlow2::Node source) {
     source.asExpr().(ClassInstanceExpr).getConstructedType() instanceof MapType
   }
 
