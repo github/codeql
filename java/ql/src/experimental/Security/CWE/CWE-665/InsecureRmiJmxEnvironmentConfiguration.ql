@@ -111,7 +111,7 @@ predicate mapFlowContainsCredentialtype(DataFlow::PathNode source) {
   exists(MapToPutCredentialstypeConfiguration conf | conf.hasFlow(source.getNode(), _))
 }
 
-/** Returns result depending if the vulnerability is present due to a) a null environment b) an insecurely set environment map */
+/** Gets a string describing why the application is vulnerable, depending on if the vulnerability is present due to a) a null environment b) an insecurely set environment map */
 bindingset[source]
 string getRmiResult(DataFlow::PathNode source) {
   // We got a Map so we have a source and a sink node
