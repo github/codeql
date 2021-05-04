@@ -339,14 +339,14 @@ private module Cached {
   }
 
   cached
-  Opcode getInstructionOpcode(Instruction instr) {
-    result = getOldInstruction(instr).getOpcode()
+  predicate getInstructionOpcode(Opcode opcode, Instruction instr) {
+    opcode = getOldInstruction(instr).getOpcode()
     or
-    instr = phiInstruction(_, _) and result instanceof Opcode::Phi
+    instr = phiInstruction(_, _) and opcode instanceof Opcode::Phi
     or
-    instr = chiInstruction(_) and result instanceof Opcode::Chi
+    instr = chiInstruction(_) and opcode instanceof Opcode::Chi
     or
-    instr = unreachedInstruction(_) and result instanceof Opcode::Unreached
+    instr = unreachedInstruction(_) and opcode instanceof Opcode::Unreached
   }
 
   cached
