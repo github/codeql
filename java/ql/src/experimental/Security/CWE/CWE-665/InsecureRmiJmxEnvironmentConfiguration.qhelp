@@ -42,7 +42,7 @@ env.put (
 </code>
 
 Please note that the authentication implementation is vulnerable by default.
-For this reason an initialitation with a <code>null</code> environment is also vulnerable .
+For this reason an initialization with a <code>null</code> environment is also vulnerable.
 </recommendation>
 
 <example>
