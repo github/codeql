@@ -265,7 +265,9 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   or
   m.(TaintPreservingCallable).returnsTaintFrom(-1)
   or
-  exists(JaxRsResourceMethod resourceMethod | m.(GetterMethod).getDeclaringType() = resourceMethod.getAParameter().getType())
+  exists(JaxRsResourceMethod resourceMethod |
+    m.(GetterMethod).getDeclaringType() = resourceMethod.getAParameter().getType()
+  )
 }
 
 private class StringReplaceMethod extends TaintPreservingCallable {
