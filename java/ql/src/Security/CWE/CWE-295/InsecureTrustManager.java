@@ -39,10 +39,12 @@ public static void main(String[] args) throws Exception {
         // Use it with our key store that trusts our self-signed certificate
         tmf.init(keyStore);
         TrustManager[] trustManagers = tmf.getTrustManagers();
-        context.init(null, trustManagers, null); // GOOD, we are not using a custom `TrustManager` but instead have
-                                                // added the self-signed certificate we want to trust to the key
-                                                // store. Note, the `trustManagers` will **only** trust this one
-                                                // certificate.
+        context.init(null, trustManagers, null);
+        // GOOD, we are not using a custom `TrustManager` but instead have
+        // added the self-signed certificate we want to trust to the key
+        // store. Note, the `trustManagers` will **only** trust this one
+        // certificate.
+        
         URL url = new URL("https://self-signed.badssl.com/");
         HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
         conn.setSSLSocketFactory(context.getSocketFactory());
