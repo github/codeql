@@ -1,26 +1,12 @@
-/**
- * @name Unsafe resource fetching in Android webview
- * @description JavaScript rendered inside WebViews can access any protected
- *              application file and web resource from any origin
- * @kind path-problem
- * @problem.severity warning
- * @precision medium
- * @id java/android/unsafe-android-webview-fetch
- * @tags security
- *       external/cwe/cwe-749
- *       external/cwe/cwe-079
- */
-
 import java
-import semmle.code.java.frameworks.android.Intent
 import semmle.code.java.frameworks.android.WebView
-import semmle.code.java.dataflow.FlowSources
-import DataFlow::PathGraph
+import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * Methods allowing any-local-file and cross-origin access in the WebSettings class
  */
-class CrossOriginAccessMethod extends Method {
+private class CrossOriginAccessMethod extends Method {
   CrossOriginAccessMethod() {
     this.getDeclaringType() instanceof TypeWebSettings and
     (
@@ -33,7 +19,7 @@ class CrossOriginAccessMethod extends Method {
 /**
  * `setJavaScriptEnabled` method for the webview
  */
-class AllowJavaScriptMethod extends Method {
+private class AllowJavaScriptMethod extends Method {
   AllowJavaScriptMethod() {
     this.getDeclaringType() instanceof TypeWebSettings and
     this.hasName("setJavaScriptEnabled")
@@ -43,7 +29,7 @@ class AllowJavaScriptMethod extends Method {
 /**
  * Holds if a call to `v.setJavaScriptEnabled(true)` exists
  */
-predicate isJSEnabled(Variable v) {
+private predicate isJSEnabled(Variable v) {
   exists(MethodAccess jsa |
     v.getAnAccess() = jsa.getQualifier() and
     jsa.getMethod() instanceof AllowJavaScriptMethod and
@@ -54,7 +40,7 @@ predicate isJSEnabled(Variable v) {
 /**
  * Fetch URL method call on the `android.webkit.WebView` object
  */
-class FetchResourceMethodAccess extends MethodAccess {
+private class FetchResourceMethodAccess extends MethodAccess {
   FetchResourceMethodAccess() {
     this.getMethod().getDeclaringType() instanceof TypeWebView and
     this.getMethod().hasName(["loadUrl", "postUrl"])
@@ -64,12 +50,14 @@ class FetchResourceMethodAccess extends MethodAccess {
 /**
  * Holds if `ma` loads URL `sink`
  */
-predicate fetchResource(FetchResourceMethodAccess ma, Expr sink) { sink = ma.getArgument(0) }
+private predicate fetchResource(FetchResourceMethodAccess ma, Expr sink) {
+  sink = ma.getArgument(0)
+}
 
 /**
  * A URL argument to a `loadUrl` or `postUrl` call, considered as a sink.
  */
-class UrlResourceSink extends DataFlow::ExprNode {
+private class UrlResourceSink extends DataFlow::ExprNode {
   UrlResourceSink() { fetchResource(_, this.getExpr()) }
 
   /** Gets the fetch method that fetches this sink URL. */
@@ -103,18 +91,10 @@ class UrlResourceSink extends DataFlow::ExprNode {
   }
 }
 
-/**
- * Taint configuration tracking flow from untrusted inputs to `loadUrl` or `postUrl` calls.
- */
-class FetchUntrustedResourceConfiguration extends TaintTracking::Configuration {
-  FetchUntrustedResourceConfiguration() { this = "FetchUntrustedResourceConfiguration" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) {
-    sink instanceof UrlResourceSink and
+class FetchUntrustedResourceSink extends UrlResourceSink {
+  FetchUntrustedResourceSink() {
     exists(VarAccess webviewVa, MethodAccess getSettingsMa, Variable v |
-      sink.(UrlResourceSink).getMethodAccess().getQualifier() = webviewVa and
+      this.getMethodAccess().getQualifier() = webviewVa and
       getSettingsMa.getMethod() instanceof WebViewGetSettingsMethod and
       webviewVa.getVariable().getAnAccess() = getSettingsMa.getQualifier() and
       v.getAnAssignedValue() = getSettingsMa and
@@ -122,9 +102,3 @@ class FetchUntrustedResourceConfiguration extends TaintTracking::Configuration {
     )
   }
 }
-
-from DataFlow::PathNode source, DataFlow::PathNode sink, FetchUntrustedResourceConfiguration conf
-where conf.hasFlowPath(source, sink)
-select sink.getNode().(UrlResourceSink).getMethodAccess(), source, sink,
-  "Unsafe resource fetching in Android webview due to $@.", source.getNode(),
-  sink.getNode().(UrlResourceSink).getSinkType()
