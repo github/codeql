@@ -24,11 +24,10 @@ class FetchUntrustedResourceConfiguration extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof FetchUntrustedResourceSink }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof UrlResourceSink }
 }
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, FetchUntrustedResourceConfiguration conf
 where conf.hasFlowPath(source, sink)
-select sink.getNode().(FetchUntrustedResourceSink).getMethodAccess(), source, sink,
-  "Unsafe resource fetching in Android webview due to $@.", source.getNode(),
-  sink.getNode().(FetchUntrustedResourceSink).getSinkType()
+select sink.getNode(), source, sink, "Unsafe resource fetching in Android webview due to $@.",
+  source.getNode(), sink.getNode().(UrlResourceSink).getSinkType()

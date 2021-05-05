@@ -1,7 +1,74 @@
+/**
+ */
+
 import java
 import semmle.code.java.frameworks.android.WebView
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.ExternalFlow
+
+/**
+ */
+abstract class UrlResourceSink extends DataFlow::Node {
+  /**
+   * Returns a description of this vulnerability,
+   */
+  abstract string getSinkType();
+}
+
+/**
+ * A URL argument to a `loadUrl` or `postUrl` call, considered as a sink.
+ */
+private class DefaultUrlResourceSinkModel extends SinkModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "android.webkit;WebView;true;loadUrl;;;Argument[0];unsafe-android-access",
+        "android.webkit;WebView;true;postUrl;;;Argument[0];unsafe-android-access"
+      ]
+  }
+}
+
+/**
+ * Cross-origin access enabled resource fetch.
+ *
+ * Specifically this looks for code like
+ * `webView.getSettings().setAllow[File|Universal]AccessFromFileURLs(true);`
+ */
+private class CrossOriginUrlResourceSink extends UrlResourceSink {
+  CrossOriginUrlResourceSink() {
+    sinkNode(this, "unsafe-android-access") and
+    exists(MethodAccess ma, MethodAccess getSettingsMa |
+      ma.getMethod() instanceof CrossOriginAccessMethod and
+      ma.getArgument(0).(BooleanLiteral).getBooleanValue() = true and
+      ma.getQualifier().(VarAccess).getVariable().getAnAssignedValue() = getSettingsMa and
+      getSettingsMa.getMethod() instanceof WebViewGetSettingsMethod and
+      getSettingsMa.getQualifier().(VarAccess).getVariable().getAnAccess() =
+        this.asExpr().(Argument).getCall().getQualifier()
+    )
+  }
+
+  override string getSinkType() {
+    result = "user input vulnerable to cross-origin and sensitive resource disclosure attacks"
+  }
+}
+
+/**
+ * JavaScript enabled resource fetch.
+ */
+private class JavaScriptEnabledUrlResourceSink extends UrlResourceSink {
+  JavaScriptEnabledUrlResourceSink() {
+    sinkNode(this, "unsafe-android-access") and
+    exists(VarAccess webviewVa, MethodAccess getSettingsMa, Variable v |
+      this.asExpr().(Argument).getCall().getQualifier() = webviewVa and
+      getSettingsMa.getMethod() instanceof WebViewGetSettingsMethod and
+      webviewVa.getVariable().getAnAccess() = getSettingsMa.getQualifier() and
+      v.getAnAssignedValue() = getSettingsMa and
+      isJSEnabled(v)
+    )
+  }
+
+  override string getSinkType() { result = "user input vulnerable to XSS attacks" }
+}
 
 /**
  * Methods allowing any-local-file and cross-origin access in the WebSettings class
@@ -35,70 +102,4 @@ private predicate isJSEnabled(Variable v) {
     jsa.getMethod() instanceof AllowJavaScriptMethod and
     jsa.getArgument(0).(BooleanLiteral).getBooleanValue() = true
   )
-}
-
-/**
- * Fetch URL method call on the `android.webkit.WebView` object
- */
-private class FetchResourceMethodAccess extends MethodAccess {
-  FetchResourceMethodAccess() {
-    this.getMethod().getDeclaringType() instanceof TypeWebView and
-    this.getMethod().hasName(["loadUrl", "postUrl"])
-  }
-}
-
-/**
- * Holds if `ma` loads URL `sink`
- */
-private predicate fetchResource(FetchResourceMethodAccess ma, Expr sink) {
-  sink = ma.getArgument(0)
-}
-
-/**
- * A URL argument to a `loadUrl` or `postUrl` call, considered as a sink.
- */
-private class UrlResourceSink extends DataFlow::ExprNode {
-  UrlResourceSink() { fetchResource(_, this.getExpr()) }
-
-  /** Gets the fetch method that fetches this sink URL. */
-  FetchResourceMethodAccess getMethodAccess() { fetchResource(result, this.getExpr()) }
-
-  /**
-   * Holds if cross-origin access is enabled for this resource fetch.
-   *
-   * Specifically this looks for code like
-   * `webView.getSettings().setAllow[File|Universal]AccessFromFileURLs(true);`
-   */
-  predicate crossOriginAccessEnabled() {
-    exists(MethodAccess ma, MethodAccess getSettingsMa |
-      ma.getMethod() instanceof CrossOriginAccessMethod and
-      ma.getArgument(0).(BooleanLiteral).getBooleanValue() = true and
-      ma.getQualifier().(VarAccess).getVariable().getAnAssignedValue() = getSettingsMa and
-      getSettingsMa.getMethod() instanceof WebViewGetSettingsMethod and
-      getSettingsMa.getQualifier().(VarAccess).getVariable().getAnAccess() =
-        getMethodAccess().getQualifier()
-    )
-  }
-
-  /**
-   * Returns a description of this vulnerability, assuming Javascript is enabled and
-   * the fetched URL is attacker-controlled.
-   */
-  string getSinkType() {
-    if crossOriginAccessEnabled()
-    then result = "user input vulnerable to cross-origin and sensitive resource disclosure attacks"
-    else result = "user input vulnerable to XSS attacks"
-  }
-}
-
-class FetchUntrustedResourceSink extends UrlResourceSink {
-  FetchUntrustedResourceSink() {
-    exists(VarAccess webviewVa, MethodAccess getSettingsMa, Variable v |
-      this.getMethodAccess().getQualifier() = webviewVa and
-      getSettingsMa.getMethod() instanceof WebViewGetSettingsMethod and
-      webviewVa.getVariable().getAnAccess() = getSettingsMa.getQualifier() and
-      v.getAnAssignedValue() = getSettingsMa and
-      isJSEnabled(v)
-    )
-  }
 }
