@@ -375,4 +375,9 @@ module CodeInjection {
       this = LodashUnderscore::member("template").getACall().getArgument(0)
     }
   }
+
+  /**
+   * A call to JSON.stringify() seen as a sanitizer.
+   */
+  class JSONStringifySanitizer extends Sanitizer, JsonStringifyCall { }
 }

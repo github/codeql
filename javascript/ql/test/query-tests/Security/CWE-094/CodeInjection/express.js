@@ -25,4 +25,6 @@ const cp = require('child_process');
 app.get('/other/path', function(req, res) {
   const taint = req.param("wobble");
   cp.execFileSync('node', ['-e', taint]); // NOT OK
+
+  cp.execFileSync('node', ['-e', `console.log(${JSON.stringify(taint)})`]); // OK
 });
