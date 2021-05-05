@@ -3,6 +3,8 @@
     kind:
     - problem
     - path-problem
+    - alert
+    - path-alert
     precision:
     - high
     - very-high
