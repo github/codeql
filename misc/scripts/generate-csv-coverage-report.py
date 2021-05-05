@@ -259,7 +259,7 @@ with open("flow-model-coverage.rst", 'w') as rst_file:
             csvwriter.writerow(row)
 
             # Collect statistics on all packages
-            row = ["Total", None]
+            row = ["Totals", None]
 
             def collect_total(): return collect_package_stats(
                 packages,
