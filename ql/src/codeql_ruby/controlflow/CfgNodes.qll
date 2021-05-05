@@ -247,6 +247,11 @@ module ExprNodes {
     override predicate relevantChild(Expr e) { e = this.getValue() or e = this.getBranch(_) }
   }
 
+  /** A control-flow node that wraps a `MethodCall` AST expression. */
+  class MethodCallCfgNode extends CallCfgNode {
+    MethodCallCfgNode() { this.getExpr() instanceof MethodCall }
+  }
+
   /** A control-flow node that wraps a `CaseExpr` AST expression. */
   class CaseExprCfgNode extends ExprCfgNode {
     override CaseExprChildMapping e;

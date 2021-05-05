@@ -72,15 +72,12 @@ predicate returnStep(DataFlowPrivate::ReturnNode nodeFrom, Node nodeTo) {
  */
 predicate basicStoreStep(Node nodeFrom, LocalSourceNode nodeTo, string content) {
   // TODO: support SetterMethodCall inside TuplePattern
-  exists(
-    ExprNodes::AssignmentCfgNode assignment, ExprNodes::CallCfgNode call,
-    DataFlowPublic::ExprNode receiver
-  |
+  exists(ExprNodes::AssignmentCfgNode assignment, ExprNodes::CallCfgNode call |
     assignment.getLhs() = call and
     content = getSetterCallAttributeName(call.getExpr()) and
-    receiver.getExprNode().getNode() = call.getExpr().(AST::SetterMethodCall).getReceiver() and
-    assignment.getRhs() = nodeFrom.(DataFlowPublic::ExprNode).getExprNode() and
-    nodeTo = receiver
+    nodeTo.(DataFlowPublic::ExprNode).getExprNode() = call.getReceiver() and
+    call.getExpr() instanceof AST::SetterMethodCall and
+    assignment.getRhs() = nodeFrom.(DataFlowPublic::ExprNode).getExprNode()
   )
 }
 
@@ -105,10 +102,10 @@ private string getSetterCallAttributeName(AST::SetterMethodCall call) {
  * Holds if `nodeTo` is the result of accessing the `content` content of `nodeFrom`.
  */
 predicate basicLoadStep(Node nodeFrom, Node nodeTo, string content) {
-  exists(ExprNodes::CallCfgNode call |
+  exists(ExprNodes::MethodCallCfgNode call |
     call.getExpr().getNumberOfArguments() = 0 and
     content = call.getExpr().(AST::MethodCall).getMethodName() and
-    nodeFrom.asExpr().getNode() = call.getExpr().(AST::MethodCall).getReceiver() and
+    nodeFrom.asExpr() = call.getReceiver() and
     nodeTo.asExpr() = call
   )
 }
