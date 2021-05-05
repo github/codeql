@@ -102,6 +102,14 @@ private DataFlow::LocalSourceNode trackInstance(Module tp, TypeTracker t) {
       tp = enclosing.getEnclosingModule().getModule() and
       not self.getEnclosingModule().getEnclosingMethod() = enclosing
     )
+    or
+    // `self` in top-level
+    exists(Self self, Toplevel enclosing |
+      self = result.asExpr().getExpr() and
+      enclosing = self.getEnclosingModule() and
+      tp = TResolved("Object") and
+      not self.getEnclosingMethod().getEnclosingModule() = enclosing
+    )
   )
   or
   exists(TypeTracker t2 | result = trackInstance(tp, t2).track(t2, t))
