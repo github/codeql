@@ -18,7 +18,6 @@ DataFlow::ParameterNode getALibraryInputParameter() {
 
 /**
  * Gets a value exported by the main module from a named `package.json` file.
- * The value is either directly the `module.exports` value, a nested property of `module.exports`, or a method on an exported class.
  */
 private DataFlow::Node getAValueExportedByPackage() {
   result =
