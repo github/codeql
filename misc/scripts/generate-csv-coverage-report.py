@@ -112,7 +112,7 @@ configs = [
         "java", "Java", ".java", prefix + "java/ql/src/meta/frameworks/Coverage.ql")
 ]
 
-with open("csv-flow-model-coverage.rst", 'w') as rst_file:
+with open("flow-model-coverage.rst", 'w') as rst_file:
     for config in configs:
         lang = config.lang
         db = "empty-" + lang
