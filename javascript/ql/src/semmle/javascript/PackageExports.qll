@@ -20,11 +20,17 @@ DataFlow::ParameterNode getALibraryInputParameter() {
  * Gets a value exported by the main module from a named `package.json` file.
  */
 private DataFlow::Node getAValueExportedByPackage() {
+  // The base case, an export from a named `package.json` file.
   result =
     getAnExportFromModule(any(PackageJSON pack | exists(pack.getPackageName())).getMainModule())
   or
+  // module.exports.bar.baz = result;
   result = getAValueExportedByPackage().(DataFlow::PropWrite).getRhs()
   or
+  // class Foo {
+  //   bar() {} // <- result
+  // };
+  // module.exports = new Foo();
   exists(DataFlow::SourceNode callee |
     callee = getAValueExportedByPackage().(DataFlow::NewNode).getCalleeNode().getALocalSource()
   |
@@ -35,14 +41,21 @@ private DataFlow::Node getAValueExportedByPackage() {
   or
   result = getAValueExportedByPackage().getALocalSource()
   or
+  // Nested property reads.
   result = getAValueExportedByPackage().(DataFlow::SourceNode).getAPropertyReference()
   or
+  // module.exports.foo = require("./other-module.js");
   exists(Module mod |
     mod = getAValueExportedByPackage().getEnclosingExpr().(Import).getImportedModule()
   |
     result = getAnExportFromModule(mod)
   )
   or
+  // module.exports = class Foo {
+  //   bar() {} // <- result
+  //   static baz() {} // <- result
+  //   constructor() {} // <- result
+  // };
   exists(DataFlow::ClassNode cla | cla = getAValueExportedByPackage() |
     result = cla.getAnInstanceMethod() or
     result = cla.getAStaticMethod() or
@@ -72,6 +85,12 @@ private DataFlow::Node getAValueExportedByPackage() {
   )
   or
   // the exported value is a call to a unique callee
+  // ```JavaScript
+  // module.exports = foo();
+  // function foo() {
+  //   return result;
+  // }
+  // ```
   exists(DataFlow::CallNode call | call = getAValueExportedByPackage() |
     result = unique( | | call.getCalleeNode().getAFunctionValue()).getAReturn()
   )
