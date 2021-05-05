@@ -1,4 +1,5 @@
 use node_types::{EntryKind, Field, NodeTypeMap, Storage, TypeName};
+use std::borrow::Cow;
 use std::collections::BTreeMap as Map;
 use std::collections::BTreeSet as Set;
 use std::fmt;
@@ -190,6 +191,41 @@ pub fn extract(
     Ok(Program(visitor.trap_writer.trap_output))
 }
 
+/// Escapes a string for use in a TRAP key, by replacing special characters with
+/// HTML entities.
+fn escape_key<'a, S: Into<Cow<'a, str>>>(key: S) -> Cow<'a, str> {
+    fn needs_escaping(c: char) -> bool {
+        match c {
+            '&' => true,
+            '{' => true,
+            '}' => true,
+            '"' => true,
+            '@' => true,
+            '#' => true,
+            _ => false,
+        }
+    }
+
+    let key = key.into();
+    if key.contains(needs_escaping) {
+        let mut escaped = String::with_capacity(2 * key.len());
+        for c in key.chars() {
+            match c {
+                '&' => escaped.push_str("&amp;"),
+                '{' => escaped.push_str("&lbrace;"),
+                '}' => escaped.push_str("&rbrace;"),
+                '"' => escaped.push_str("&quot;"),
+                '@' => escaped.push_str("&commat;"),
+                '#' => escaped.push_str("&num;"),
+                _ => escaped.push(c),
+            }
+        }
+        Cow::Owned(escaped)
+    } else {
+        key
+    }
+}
+
 /// Normalizes the path according the common CodeQL specification. Assumes that
 /// `path` has already been canonicalized using `std::fs::canonicalize`.
 fn normalize_path(path: &Path) -> String {
@@ -230,11 +266,11 @@ fn normalize_path(path: &Path) -> String {
 }
 
 fn full_id_for_file(path: &Path) -> String {
-    format!("{};sourcefile", normalize_path(path))
+    format!("{};sourcefile", escape_key(&normalize_path(path)))
 }
 
 fn full_id_for_folder(path: &Path) -> String {
-    format!("{};folder", normalize_path(path))
+    format!("{};folder", escape_key(&normalize_path(path)))
 }
 
 struct ChildNode {
@@ -730,4 +766,17 @@ fn limit_string_test() {
     assert_eq!("hello", limit_string(&"hello world".to_owned(), 5));
     assert_eq!("hi ☹", limit_string(&"hi ☹☹".to_owned(), 6));
     assert_eq!("hi ", limit_string(&"hi ☹☹".to_owned(), 5));
+}
+
+#[test]
+fn escape_key_test() {
+    assert_eq!("foo!", escape_key("foo!"));
+    assert_eq!("foo&lbrace;&rbrace;", escape_key("foo{}"));
+    assert_eq!("&lbrace;&rbrace;", escape_key("{}"));
+    assert_eq!("", escape_key(""));
+    assert_eq!("/path/to/foo.rb", escape_key("/path/to/foo.rb"));
+    assert_eq!(
+        "/path/to/foo&amp;&lbrace;&rbrace;&quot;&commat;&num;.rb",
+        escape_key("/path/to/foo&{}\"@#.rb")
+    );
 }
