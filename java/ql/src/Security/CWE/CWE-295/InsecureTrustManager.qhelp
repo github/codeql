@@ -33,16 +33,15 @@ See below for an example of how to do this.
 
 <example>
 <p>
-In the first (bad) example, the <code>TrustManager</code> never throws a <code>CertificateException</code> thereby trusting any certificate.
+In the first (bad) example, the <code>TrustManager</code> never throws a <code>CertificateException</code> and therefore implicitly trusts any certificate.
 This allows an attacker to perform a machine-in-the-middle attack.
-In the second (good) example, no custom <code>TrustManager</code> is used. Instead, the self-signed certificate that should be trusted
-is explicitly trusted by loading it into a <code>KeyStore</code>.
+In the second (good) example, the self-signed certificate that should be trusted
+is loaded into a <code>KeyStore</code>. This explicitly defines the certificate as trusted and there is no need to create a custom <code>TrustManager</code>.
 </p>
 <sample src="InsecureTrustManager.java" />
 </example>
 
 <references>
-<li><a href="https://developer.android.com/training/articles/security-ssl">Android Security Guide for TLS/HTTPS</a>.</li>
-<li>OWASP: <a href="https://cwe.mitre.org/data/definitions/295.html">CWE-295</a>.</li>
+<li>Android Develoers:<a href="https://developer.android.com/training/articles/security-ssl">Security with HTTPS and SSL</a>.</li>
 </references>
 </qhelp>

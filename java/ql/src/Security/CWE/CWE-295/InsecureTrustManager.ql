@@ -20,7 +20,7 @@ import DataFlow::PathGraph
 /**
  * An insecure `X509TrustManager`.
  * An `X509TrustManager` is considered insecure if it never throws a `CertificateException`
- * thereby accepting any certificate as valid.
+ * and therefore implicitly trusts any certificate as valid.
  */
 class InsecureX509TrustManager extends RefType {
   InsecureX509TrustManager() {
