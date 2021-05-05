@@ -208,7 +208,7 @@ fn escape_key<'a, S: Into<Cow<'a, str>>>(key: S) -> Cow<'a, str> {
 
     let key = key.into();
     if key.contains(needs_escaping) {
-        let mut escaped = String::with_capacity(key.len());
+        let mut escaped = String::with_capacity(2 * key.len());
         for c in key.chars() {
             match c {
                 '&' => escaped.push_str("&amp;"),
