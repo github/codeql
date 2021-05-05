@@ -1,0 +1,5 @@
+Framework name,URL,Package prefix
+Hibernate,https://hibernate.org/,org.hibernate
+Java Standard Library,,java.*
+Google,,com.google.common.*
+Apache,,org.apache.*
