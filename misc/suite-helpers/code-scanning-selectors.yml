@@ -13,8 +13,12 @@
     - warning
     tags contain:
     - security
+- include:
+    kind:
+    - metric
+    tags contain:
+    - summary
 - exclude:
     deprecated: //
 - exclude:
     query path: /^experimental\/.*/
-
