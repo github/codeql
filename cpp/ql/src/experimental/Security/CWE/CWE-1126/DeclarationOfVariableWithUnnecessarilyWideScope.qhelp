@@ -3,7 +3,7 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>Using variables with the same name is dangerous. However, such a situation inside the while loop can lead to a violation of the accessibility of the program. Requires the attention of developers.</p>
+<p>Using variables with the same name is dangerous. However, such a situation inside the while loop can create an infinite loop exhausting resources. Requires the attention of developers.</p>
 
 </overview>
 <recommendation>
