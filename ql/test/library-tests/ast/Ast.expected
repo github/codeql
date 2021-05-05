@@ -567,6 +567,21 @@ calls/calls.rb:
 #  319|         getReceiver: [Self] self
 #  319|       getArgument: [IntegerLiteral] 0
 #  319|     getAnOperand/getRightOperand: [IntegerLiteral] 1
+#  320|   getStmt: [AssignMulExpr] ... *= ...
+#  320|     getAnOperand/getLeftOperand: [ElementReference, SetterMethodCall] ...[...]
+#  320|       getReceiver: [MethodCall] call to bar
+#  320|         getReceiver: [MethodCall] call to foo
+#  320|           getReceiver: [Self] self
+#  320|       getArgument: [IntegerLiteral] 0
+#  320|       getArgument: [MethodCall] call to baz
+#  320|         getReceiver: [MethodCall] call to foo
+#  320|           getReceiver: [Self] self
+#  320|       getArgument: [AddExpr] ... + ...
+#  320|         getAnOperand/getLeftOperand: [MethodCall] call to boo
+#  320|           getReceiver: [MethodCall] call to foo
+#  320|             getReceiver: [Self] self
+#  320|         getAnOperand/getRightOperand: [IntegerLiteral] 1
+#  320|     getAnOperand/getRightOperand: [IntegerLiteral] 2
 control/cases.rb:
 #    1| [Toplevel] cases.rb
 #    2|   getStmt: [AssignExpr] ... = ...
@@ -1718,6 +1733,25 @@ operations/operations.rb:
 #   84|   getStmt: [AssignBitwiseXorExpr] ... ^= ...
 #   84|     getAnOperand/getLeftOperand: [LocalVariableAccess] baz
 #   84|     getAnOperand/getRightOperand: [LocalVariableAccess] qux
+#   86|   getStmt: [ClassDeclaration] X
+#   87|     getStmt: [AssignExpr] ... = ...
+#   87|       getAnOperand/getLeftOperand: [InstanceVariableAccess] @x
+#   87|       getAnOperand/getRightOperand: [IntegerLiteral] 1
+#   88|     getStmt: [AssignAddExpr] ... += ...
+#   88|       getAnOperand/getLeftOperand: [InstanceVariableAccess] @x
+#   88|       getAnOperand/getRightOperand: [IntegerLiteral] 2
+#   90|     getStmt: [AssignExpr] ... = ...
+#   90|       getAnOperand/getLeftOperand: [ClassVariableAccess] @@y
+#   90|       getAnOperand/getRightOperand: [IntegerLiteral] 3
+#   91|     getStmt: [AssignDivExpr] ... /= ...
+#   91|       getAnOperand/getLeftOperand: [ClassVariableAccess] @@y
+#   91|       getAnOperand/getRightOperand: [IntegerLiteral] 4
+#   94|   getStmt: [AssignExpr] ... = ...
+#   94|     getAnOperand/getLeftOperand: [GlobalVariableAccess] $global_var
+#   94|     getAnOperand/getRightOperand: [IntegerLiteral] 5
+#   95|   getStmt: [AssignMulExpr] ... *= ...
+#   95|     getAnOperand/getLeftOperand: [GlobalVariableAccess] $global_var
+#   95|     getAnOperand/getRightOperand: [IntegerLiteral] 6
 params/params.rb:
 #    1| [Toplevel] params.rb
 #    4|   getStmt: [Method] identifier_method_params

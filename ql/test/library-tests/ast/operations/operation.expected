@@ -116,3 +116,15 @@
 | operations.rb:83:2:83:12 | ... \|= ... | \|= | operations.rb:83:9:83:12 | 0x01 | AssignBitwiseOrExpr |
 | operations.rb:84:2:84:11 | ... ^= ... | ^= | operations.rb:84:2:84:4 | baz | AssignBitwiseXorExpr |
 | operations.rb:84:2:84:11 | ... ^= ... | ^= | operations.rb:84:9:84:11 | qux | AssignBitwiseXorExpr |
+| operations.rb:87:3:87:8 | ... = ... | = | operations.rb:87:3:87:4 | @x | AssignExpr |
+| operations.rb:87:3:87:8 | ... = ... | = | operations.rb:87:8:87:8 | 1 | AssignExpr |
+| operations.rb:88:3:88:9 | ... += ... | += | operations.rb:88:3:88:4 | @x | AssignAddExpr |
+| operations.rb:88:3:88:9 | ... += ... | += | operations.rb:88:9:88:9 | 2 | AssignAddExpr |
+| operations.rb:90:3:90:9 | ... = ... | = | operations.rb:90:3:90:5 | @@y | AssignExpr |
+| operations.rb:90:3:90:9 | ... = ... | = | operations.rb:90:9:90:9 | 3 | AssignExpr |
+| operations.rb:91:3:91:10 | ... /= ... | /= | operations.rb:91:3:91:5 | @@y | AssignDivExpr |
+| operations.rb:91:3:91:10 | ... /= ... | /= | operations.rb:91:10:91:10 | 4 | AssignDivExpr |
+| operations.rb:94:1:94:15 | ... = ... | = | operations.rb:94:1:94:11 | $global_var | AssignExpr |
+| operations.rb:94:1:94:15 | ... = ... | = | operations.rb:94:15:94:15 | 5 | AssignExpr |
+| operations.rb:95:1:95:16 | ... *= ... | *= | operations.rb:95:1:95:11 | $global_var | AssignMulExpr |
+| operations.rb:95:1:95:16 | ... *= ... | *= | operations.rb:95:16:95:16 | 6 | AssignMulExpr |
