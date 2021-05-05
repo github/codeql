@@ -67,7 +67,8 @@ private DataFlow::Node getAValueExportedByPackage() {
   exists(ImmediatelyInvokedFunctionExpr func, DataFlow::ParameterNode prev, int i |
     prev.getName() = "factory" and
     func.getParameter(i) = prev.getParameter() and
-    result = func.getInvocation().getArgument(i).flow().getAFunctionValue().getAReturn()
+    result = func.getInvocation().getArgument(i).flow().getAFunctionValue().getAReturn() and
+    DataFlow::globalVarRef("define").getACall().getArgument(1) = prev.getALocalUse()
   )
   or
   // the exported value is a call to a unique callee
