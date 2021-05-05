@@ -1,5 +1,5 @@
 {
   "name": "my-sub-lib",
   "version": "0.0.7",
-  "main": "./my-file.js"
+  "main": "./factory.js"
 }
