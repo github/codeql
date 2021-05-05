@@ -1293,8 +1293,7 @@ module Trees {
     }
   }
 
-  // TODO: make post-order
-  private class YieldCallTree extends StandardPreOrderTree, YieldCall {
+  private class YieldCallTree extends StandardPostOrderTree, YieldCall {
     final override ControlFlowTree getChildNode(int i) { result = this.getArgument(i) }
   }
 }

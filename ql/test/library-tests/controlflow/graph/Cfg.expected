@@ -2038,7 +2038,7 @@ cfg.rb:
 #-----|  -> ... != ...
 
 #  190| enter run_block
-#-----|  -> yield ...
+#-----|  -> 42
 
 #  190| run_block
 #-----|  -> self
@@ -2049,10 +2049,10 @@ cfg.rb:
 #-----|  -> exit run_block
 
 #  191| yield ...
-#-----|  -> 42
+#-----|  -> exit run_block (normal)
 
 #  191| 42
-#-----|  -> exit run_block (normal)
+#-----|  -> yield ...
 
 #  194| call to run_block
 #-----|  -> exit cfg.rb (normal)
