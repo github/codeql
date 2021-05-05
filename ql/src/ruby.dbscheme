@@ -46,6 +46,15 @@ sourceLocationPrefix(
   string prefix: string ref
 );
 
+diagnostics(
+  unique int id: @diagnostic,
+  int severity: int ref,
+  string error_tag: string ref,
+  string error_message: string ref,
+  string full_error_message: string ref,
+  int location: @location_default ref
+);
+
 @underscore_arg = @assignment | @binary | @conditional | @operator_assignment | @range | @unary | @underscore_primary
 
 @underscore_lhs = @call | @element_reference | @scope_resolution | @token_false | @token_nil | @token_true | @underscore_variable

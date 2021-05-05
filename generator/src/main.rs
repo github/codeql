@@ -148,6 +148,7 @@ fn convert_nodes<'a>(nodes: &'a node_types::NodeTypeMap) -> Vec<dbscheme::Entry<
         create_container_union(),
         create_containerparent_table(),
         create_source_location_prefix_table(),
+        create_diagnostics_table(),
     ];
     let mut ast_node_members: Set<&str> = Set::new();
     let token_kinds: Map<&str, usize> = nodes
@@ -587,6 +588,57 @@ fn create_source_location_prefix_table<'a>() -> dbscheme::Entry<'a> {
             ql_type: ql::Type::String,
             ql_type_is_ref: true,
         }],
+    })
+}
+
+fn create_diagnostics_table<'a>() -> dbscheme::Entry<'a> {
+    dbscheme::Entry::Table(dbscheme::Table {
+        name: "diagnostics",
+        keysets: None,
+        columns: vec![
+            dbscheme::Column {
+                unique: true,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "id",
+                ql_type: ql::Type::AtType("diagnostic"),
+                ql_type_is_ref: false,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "severity",
+                ql_type: ql::Type::Int,
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::String,
+                name: "error_tag",
+                ql_type: ql::Type::String,
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::String,
+                name: "error_message",
+                ql_type: ql::Type::String,
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::String,
+                name: "full_error_message",
+                ql_type: ql::Type::String,
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "location",
+                ql_type: ql::Type::AtType("location_default"),
+                ql_type_is_ref: true,
+            },
+        ],
     })
 }
 
