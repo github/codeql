@@ -39,6 +39,16 @@
 #-----| Rational
 #-----| super -> Numeric
 
+calls.rb:
+#   15| M
+
+#   29| C
+#-----| super -> Object
+#-----| include -> M
+
+#   51| D
+#-----| super -> C
+
 hello.rb:
 #    1| EnglishWords
 

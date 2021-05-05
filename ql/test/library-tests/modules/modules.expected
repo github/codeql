@@ -1,4 +1,7 @@
 getModule
+| calls.rb:15:1:24:3 | M |
+| calls.rb:29:1:44:3 | C |
+| calls.rb:51:1:55:3 | D |
 | file://:0:0:0:0 | Array |
 | file://:0:0:0:0 | BasicObject |
 | file://:0:0:0:0 | Boolean |
@@ -47,6 +50,10 @@ getModule
 | modules.rb:116:7:117:9 | XX::YY |
 | modules.rb:120:1:121:3 | Test::Foo1::Bar::Baz |
 getADeclaration
+| calls.rb:15:1:24:3 | M | calls.rb:15:1:24:3 | M |
+| calls.rb:29:1:44:3 | C | calls.rb:29:1:44:3 | C |
+| calls.rb:51:1:55:3 | D | calls.rb:51:1:55:3 | D |
+| file://:0:0:0:0 | Object | calls.rb:1:1:60:12 | calls.rb |
 | file://:0:0:0:0 | Object | hello.rb:1:1:22:3 | hello.rb |
 | file://:0:0:0:0 | Object | modules.rb:1:1:122:1 | modules.rb |
 | hello.rb:1:1:8:3 | EnglishWords | hello.rb:1:1:8:3 | EnglishWords |
@@ -86,6 +93,8 @@ getADeclaration
 | modules.rb:116:7:117:9 | XX::YY | modules.rb:116:7:117:9 | YY |
 | modules.rb:120:1:121:3 | Test::Foo1::Bar::Baz | modules.rb:120:1:121:3 | Baz |
 getSuperClass
+| calls.rb:29:1:44:3 | C | file://:0:0:0:0 | Object |
+| calls.rb:51:1:55:3 | D | calls.rb:29:1:44:3 | C |
 | file://:0:0:0:0 | Array | file://:0:0:0:0 | Object |
 | file://:0:0:0:0 | Boolean | file://:0:0:0:0 | Object |
 | file://:0:0:0:0 | Class | file://:0:0:0:0 | Object |
@@ -112,6 +121,7 @@ getSuperClass
 getAPrependedModule
 | modules.rb:101:1:105:3 | PrependTest | modules.rb:63:1:81:3 | Test |
 getAnIncludedModule
+| calls.rb:29:1:44:3 | C | calls.rb:15:1:24:3 | M |
 | file://:0:0:0:0 | Object | file://:0:0:0:0 | Kernel |
 | hello.rb:11:1:16:3 | Greeting | hello.rb:1:1:8:3 | EnglishWords |
 | modules.rb:88:1:93:3 | IncludeTest | modules.rb:63:1:81:3 | Test |

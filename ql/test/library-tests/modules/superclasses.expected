@@ -38,6 +38,15 @@
 #-----| Rational
 #-----|  -> Numeric
 
+calls.rb:
+#   15| M
+
+#   29| C
+#-----|  -> Object
+
+#   51| D
+#-----|  -> C
+
 hello.rb:
 #    1| EnglishWords
 
