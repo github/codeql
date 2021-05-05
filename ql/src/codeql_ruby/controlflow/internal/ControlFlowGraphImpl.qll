@@ -555,6 +555,10 @@ module Trees {
     }
   }
 
+  private class CallTree extends StandardPostOrderTree, Call {
+    override ControlFlowTree getChildNode(int i) { result = this.getArgument(i) }
+  }
+
   private class CaseTree extends PreOrderTree, CaseExpr {
     final override predicate propagatesAbnormal(AstNode child) {
       child = this.getValue() or child = this.getABranch()
@@ -913,7 +917,7 @@ module Trees {
     }
   }
 
-  private class MethodCallTree extends StandardPostOrderTree, MethodCall {
+  private class MethodCallTree extends CallTree, MethodCall {
     final override ControlFlowTree getChildNode(int i) {
       result = this.getReceiver() and i = 0
       or
@@ -1222,10 +1226,6 @@ module Trees {
     final override ControlFlowTree getChildNode(int i) { result = this.getComponent(i) }
   }
 
-  private class SuperCallTree extends StandardPostOrderTree, SuperCall {
-    final override ControlFlowTree getChildNode(int i) { result = this.getArgument(i) }
-  }
-
   private class ToplevelTree extends BodyStmtTree, Toplevel {
     final override AstNode getBodyChild(int i, boolean rescuable) {
       result = this.getBeginBlock(i) and rescuable = true
@@ -1291,10 +1291,6 @@ module Trees {
         first(this.getPattern(i + 1), succ)
       )
     }
-  }
-
-  private class YieldCallTree extends StandardPostOrderTree, YieldCall {
-    final override ControlFlowTree getChildNode(int i) { result = this.getArgument(i) }
   }
 }
 
