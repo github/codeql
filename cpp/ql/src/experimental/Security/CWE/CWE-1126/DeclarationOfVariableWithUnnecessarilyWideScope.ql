@@ -1,7 +1,7 @@
 /**
  * @name Errors When Using Variable Declaration Inside Loop
  * @description Using variables with the same name is dangerous.
- *              However, such a situation inside the while loop can lead to a violation of the accessibility of the program.
+ *              However, such a situation inside the while loop can create an infinite loop exhausting resources.
  *              Requires the attention of developers.
  * @kind problem
  * @id cpp/errors-when-using-variable-declaration-inside-loop
@@ -37,7 +37,7 @@ class DangerousWhileLoop extends WhileStmt {
   /** Holds when there are changes to the variables involved in the condition. */
   predicate isUseThisVariable() {
     exists(Variable v |
-      this.getCondition().getAChild*().(VariableAccess).getTarget() = v and
+      exp.(VariableAccess).getTarget() = v and
       (
         exists(Assignment aexp |
           aexp = this.getStmt().getAChild*() and
