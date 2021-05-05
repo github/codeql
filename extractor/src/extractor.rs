@@ -1,4 +1,5 @@
 use node_types::{EntryKind, Field, NodeTypeMap, Storage, TypeName};
+use std::borrow::Cow;
 use std::collections::BTreeMap as Map;
 use std::collections::BTreeSet as Set;
 use std::fmt;
@@ -192,20 +193,37 @@ pub fn extract(
 
 /// Escapes a string for use in a TRAP key, by replacing special characters with
 /// HTML entities.
-fn escape_key(s: &str) -> String {
-    let mut escaped = String::new();
-    for c in s.chars() {
+fn escape_key<'a, S: Into<Cow<'a, str>>>(key: S) -> Cow<'a, str> {
+    fn needs_escaping(c: char) -> bool {
         match c {
-            '&' => escaped.push_str("&amp;"),
-            '{' => escaped.push_str("&lbrace;"),
-            '}' => escaped.push_str("&rbrace;"),
-            '"' => escaped.push_str("&quot;"),
-            '@' => escaped.push_str("&commat;"),
-            '#' => escaped.push_str("&num;"),
-            _ => escaped.push(c),
+            '&' => true,
+            '{' => true,
+            '}' => true,
+            '"' => true,
+            '@' => true,
+            '#' => true,
+            _ => false,
         }
     }
-    escaped
+
+    let key = key.into();
+    if key.contains(needs_escaping) {
+        let mut escaped = String::with_capacity(key.len());
+        for c in key.chars() {
+            match c {
+                '&' => escaped.push_str("&amp;"),
+                '{' => escaped.push_str("&lbrace;"),
+                '}' => escaped.push_str("&rbrace;"),
+                '"' => escaped.push_str("&quot;"),
+                '@' => escaped.push_str("&commat;"),
+                '#' => escaped.push_str("&num;"),
+                _ => escaped.push(c),
+            }
+        }
+        Cow::Owned(escaped)
+    } else {
+        key
+    }
 }
 
 /// Normalizes the path according the common CodeQL specification. Assumes that
