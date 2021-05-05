@@ -116,7 +116,7 @@ module HeuristicNames {
    * it is hashed or encrypted). `classification` describes the kind of sensitive data
    * involved.
    *
-   * That is, one of the rexeps from `maybeSensitiveRegexp` matches `name` (with the
+   * That is, one of the regexps from `maybeSensitiveRegexp` matches `name` (with the
    * given classification), and none of the regexps from `notSensitiveRegexp` matches
    * `name`.
    */
