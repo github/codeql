@@ -229,7 +229,7 @@ with open("flow-model-coverage.rst", 'w') as rst_file:
                         "`" + framework + " <" + frameworks[framework]["url"] + ">`_")
 
                 # Add the package name to the row
-                row.append(frameworks[framework]["package"])
+                row.append("``" + frameworks[framework]["package"] + "``")
 
                 prefix = frameworks[framework]["package"]
 
@@ -254,7 +254,8 @@ with open("flow-model-coverage.rst", 'w') as rst_file:
             row, other_packages = add_package_stats_to_row(
                 row, sorted(cwes), collect_others)
 
-            row[1] = ", ".join(sorted(other_packages))
+            row[1] = ", ".join("``{0}``".format(p)
+                               for p in sorted(other_packages))
 
             csvwriter.writerow(row)
 
