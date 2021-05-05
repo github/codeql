@@ -72,7 +72,7 @@ predicate returnStep(DataFlowPrivate::ReturnNode nodeFrom, Node nodeTo) {
  */
 predicate basicStoreStep(Node nodeFrom, LocalSourceNode nodeTo, string content) {
   // TODO: support SetterMethodCall inside TuplePattern
-  exists(ExprNodes::AssignmentCfgNode assignment, ExprNodes::CallCfgNode call |
+  exists(ExprNodes::AssignmentCfgNode assignment, ExprNodes::MethodCallCfgNode call |
     assignment.getLhs() = call and
     content = getSetterCallAttributeName(call.getExpr()) and
     nodeTo.(DataFlowPublic::ExprNode).getExprNode() = call.getReceiver() and
