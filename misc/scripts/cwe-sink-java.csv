@@ -1,0 +1,3 @@
+CWE,Sink identifier,Label
+CWE-89,sql,SQL injection
+CWE-22,create-file,Path injection
