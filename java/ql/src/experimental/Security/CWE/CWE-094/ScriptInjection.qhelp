@@ -4,7 +4,7 @@
 <qhelp>
 
 <overview>
-<p>The JavaScript Engine API has been available since the release of Java 6, which allows
+<p>The Java Scripting API has been available since the release of Java 6, which allows
   applications to interact with scripts written in languages such as JavaScript. It serves
   as an embedded scripting engine inside Java applications which allows Java-to-JavaScript
   interoperability and provides a seamless integration between the two languages. If an 
@@ -13,11 +13,11 @@
 </overview>
 
 <recommendation>
-<p>In general, including user input in a JavaScript Engine expression should be avoided.
+<p>In general, including user input in a Java Script Engine expression should be avoided.
   If user input must be included in the expression, it should be then evaluated in a safe
-  context that doesn't allow arbitrary code invocation. Use "Cloudbees Rhino Sandbox" or 
-  sandboxing with SecurityManager or use <a href="https://www.graalvm.org/">graalvm</a> 
-  instead.</p>
+  context that doesn't allow arbitrary code invocation. Use "Cloudbees Rhino Sandbox" or
+  sandboxing with SecurityManager, which will be deprecated in a future release, or use
+  <a href="https://www.graalvm.org/">GraalVM</a> instead.</p>
 </recommendation>
 
 <example>
@@ -37,13 +37,16 @@
 CERT coding standard: <a href="https://wiki.sei.cmu.edu/confluence/display/java/IDS52-J.+Prevent+code+injection">ScriptEngine code injection</a>
 </li>
 <li>
+GraalVM: <a href="https://www.graalvm.org/reference-manual/js/NashornMigrationGuide/#secure-by-default">Secure by Default</a>
+</li>
+<li>
   Mozilla Rhino: <a href="https://github.com/mozilla/rhino">Rhino: JavaScript in Java</a>
 </li>
 <li>
   Rhino Sandbox: <a href="https://github.com/javadelight/delight-rhino-sandbox">A sandbox to execute JavaScript code with Rhino in Java</a>
 </li>
 <li>
-  GuardRails: <a href="https://docs.guardrails.io/docs/en/vulnerabilities/java/insecure_use_of_dangerous_function">Code Injection</a>
+  GuardRails: <a href="https://docs.guardrails.io/docs/en/vulnerabilities/java/insecure_use_of_dangerous_function#code-injection">Code Injection</a>
 </li>
 </references>
 </qhelp>

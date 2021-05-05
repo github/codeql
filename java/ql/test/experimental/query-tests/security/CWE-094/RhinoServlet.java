@@ -5,9 +5,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.mozilla.javascript.ClassShutter;
+import org.mozilla.javascript.CompilerEnvirons;
 import org.mozilla.javascript.Context;
+import org.mozilla.javascript.DefiningClassLoader;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.RhinoException;
+import org.mozilla.javascript.optimizer.ClassCompiler;
 
 /**
  * Servlet implementation class RhinoServlet
@@ -75,4 +78,17 @@ public class RhinoServlet extends HttpServlet {
             Context.exit();
         }
     }    
+
+    // BAD: allow arbitrary code to be compiled for subsequent execution
+    protected void doGet2(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String code = request.getParameter("code");
+        ClassCompiler compiler = new ClassCompiler(new CompilerEnvirons());
+        Object[] objs = compiler.compileToClassFiles(code, "/sourceLocation", 1, "mainClassName");
+    }
+
+    // BAD: allow arbitrary code to be loaded for subsequent execution
+    protected void doPost2(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String code = request.getParameter("code");
+        Class clazz = new DefiningClassLoader().defineClass("Powerfunc", code.getBytes());
+    }
 }

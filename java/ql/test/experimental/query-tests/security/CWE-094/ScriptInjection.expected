@@ -1,20 +1,32 @@
 edges
-| RhinoServlet.java:25:23:25:50 | getParameter(...) : String | RhinoServlet.java:29:55:29:58 | code |
+| RhinoServlet.java:28:23:28:50 | getParameter(...) : String | RhinoServlet.java:32:55:32:58 | code |
+| RhinoServlet.java:84:23:84:50 | getParameter(...) : String | RhinoServlet.java:86:54:86:57 | code |
+| RhinoServlet.java:91:23:91:50 | getParameter(...) : String | RhinoServlet.java:92:74:92:88 | getBytes(...) |
 | ScriptEngineTest.java:8:44:8:55 | input : String | ScriptEngineTest.java:12:37:12:41 | input |
 | ScriptEngineTest.java:15:51:15:62 | input : String | ScriptEngineTest.java:19:31:19:35 | input |
 | ScriptEngineTest.java:23:58:23:69 | input : String | ScriptEngineTest.java:27:31:27:35 | input |
 | ScriptEngineTest.java:30:46:30:57 | input : String | ScriptEngineTest.java:34:31:34:35 | input |
-| ScriptEngineTest.java:37:26:37:38 | args : String[] | ScriptEngineTest.java:38:56:38:62 | ...[...] : String |
-| ScriptEngineTest.java:37:26:37:38 | args : String[] | ScriptEngineTest.java:39:63:39:69 | ...[...] : String |
-| ScriptEngineTest.java:37:26:37:38 | args : String[] | ScriptEngineTest.java:40:70:40:76 | ...[...] : String |
-| ScriptEngineTest.java:37:26:37:38 | args : String[] | ScriptEngineTest.java:41:58:41:64 | ...[...] : String |
-| ScriptEngineTest.java:38:56:38:62 | ...[...] : String | ScriptEngineTest.java:8:44:8:55 | input : String |
-| ScriptEngineTest.java:39:63:39:69 | ...[...] : String | ScriptEngineTest.java:15:51:15:62 | input : String |
-| ScriptEngineTest.java:40:70:40:76 | ...[...] : String | ScriptEngineTest.java:23:58:23:69 | input : String |
-| ScriptEngineTest.java:41:58:41:64 | ...[...] : String | ScriptEngineTest.java:30:46:30:57 | input : String |
+| ScriptEngineTest.java:37:41:37:52 | input : String | ScriptEngineTest.java:40:42:40:46 | input |
+| ScriptEngineTest.java:44:41:44:52 | input : String | ScriptEngineTest.java:47:51:47:55 | input |
+| ScriptEngineTest.java:51:26:51:38 | args : String[] | ScriptEngineTest.java:52:56:52:62 | ...[...] : String |
+| ScriptEngineTest.java:51:26:51:38 | args : String[] | ScriptEngineTest.java:53:63:53:69 | ...[...] : String |
+| ScriptEngineTest.java:51:26:51:38 | args : String[] | ScriptEngineTest.java:54:70:54:76 | ...[...] : String |
+| ScriptEngineTest.java:51:26:51:38 | args : String[] | ScriptEngineTest.java:55:58:55:64 | ...[...] : String |
+| ScriptEngineTest.java:51:26:51:38 | args : String[] | ScriptEngineTest.java:56:53:56:59 | ...[...] : String |
+| ScriptEngineTest.java:51:26:51:38 | args : String[] | ScriptEngineTest.java:57:53:57:59 | ...[...] : String |
+| ScriptEngineTest.java:52:56:52:62 | ...[...] : String | ScriptEngineTest.java:8:44:8:55 | input : String |
+| ScriptEngineTest.java:53:63:53:69 | ...[...] : String | ScriptEngineTest.java:15:51:15:62 | input : String |
+| ScriptEngineTest.java:54:70:54:76 | ...[...] : String | ScriptEngineTest.java:23:58:23:69 | input : String |
+| ScriptEngineTest.java:55:58:55:64 | ...[...] : String | ScriptEngineTest.java:30:46:30:57 | input : String |
+| ScriptEngineTest.java:56:53:56:59 | ...[...] : String | ScriptEngineTest.java:37:41:37:52 | input : String |
+| ScriptEngineTest.java:57:53:57:59 | ...[...] : String | ScriptEngineTest.java:44:41:44:52 | input : String |
 nodes
-| RhinoServlet.java:25:23:25:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| RhinoServlet.java:29:55:29:58 | code | semmle.label | code |
+| RhinoServlet.java:28:23:28:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RhinoServlet.java:32:55:32:58 | code | semmle.label | code |
+| RhinoServlet.java:84:23:84:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RhinoServlet.java:86:54:86:57 | code | semmle.label | code |
+| RhinoServlet.java:91:23:91:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RhinoServlet.java:92:74:92:88 | getBytes(...) | semmle.label | getBytes(...) |
 | ScriptEngineTest.java:8:44:8:55 | input : String | semmle.label | input : String |
 | ScriptEngineTest.java:12:37:12:41 | input | semmle.label | input |
 | ScriptEngineTest.java:15:51:15:62 | input : String | semmle.label | input : String |
@@ -23,14 +35,24 @@ nodes
 | ScriptEngineTest.java:27:31:27:35 | input | semmle.label | input |
 | ScriptEngineTest.java:30:46:30:57 | input : String | semmle.label | input : String |
 | ScriptEngineTest.java:34:31:34:35 | input | semmle.label | input |
-| ScriptEngineTest.java:37:26:37:38 | args : String[] | semmle.label | args : String[] |
-| ScriptEngineTest.java:38:56:38:62 | ...[...] : String | semmle.label | ...[...] : String |
-| ScriptEngineTest.java:39:63:39:69 | ...[...] : String | semmle.label | ...[...] : String |
-| ScriptEngineTest.java:40:70:40:76 | ...[...] : String | semmle.label | ...[...] : String |
-| ScriptEngineTest.java:41:58:41:64 | ...[...] : String | semmle.label | ...[...] : String |
+| ScriptEngineTest.java:37:41:37:52 | input : String | semmle.label | input : String |
+| ScriptEngineTest.java:40:42:40:46 | input | semmle.label | input |
+| ScriptEngineTest.java:44:41:44:52 | input : String | semmle.label | input : String |
+| ScriptEngineTest.java:47:51:47:55 | input | semmle.label | input |
+| ScriptEngineTest.java:51:26:51:38 | args : String[] | semmle.label | args : String[] |
+| ScriptEngineTest.java:52:56:52:62 | ...[...] : String | semmle.label | ...[...] : String |
+| ScriptEngineTest.java:53:63:53:69 | ...[...] : String | semmle.label | ...[...] : String |
+| ScriptEngineTest.java:54:70:54:76 | ...[...] : String | semmle.label | ...[...] : String |
+| ScriptEngineTest.java:55:58:55:64 | ...[...] : String | semmle.label | ...[...] : String |
+| ScriptEngineTest.java:56:53:56:59 | ...[...] : String | semmle.label | ...[...] : String |
+| ScriptEngineTest.java:57:53:57:59 | ...[...] : String | semmle.label | ...[...] : String |
 #select
-| RhinoServlet.java:29:29:29:78 | evaluateString(...) | RhinoServlet.java:25:23:25:50 | getParameter(...) : String | RhinoServlet.java:29:55:29:58 | code | JavaScript Engine evaluate $@. | RhinoServlet.java:25:23:25:50 | getParameter(...) | user input |
-| ScriptEngineTest.java:12:19:12:42 | eval(...) | ScriptEngineTest.java:37:26:37:38 | args : String[] | ScriptEngineTest.java:12:37:12:41 | input | JavaScript Engine evaluate $@. | ScriptEngineTest.java:37:26:37:38 | args | user input |
-| ScriptEngineTest.java:19:19:19:36 | eval(...) | ScriptEngineTest.java:37:26:37:38 | args : String[] | ScriptEngineTest.java:19:31:19:35 | input | JavaScript Engine evaluate $@. | ScriptEngineTest.java:37:26:37:38 | args | user input |
-| ScriptEngineTest.java:27:19:27:36 | eval(...) | ScriptEngineTest.java:37:26:37:38 | args : String[] | ScriptEngineTest.java:27:31:27:35 | input | JavaScript Engine evaluate $@. | ScriptEngineTest.java:37:26:37:38 | args | user input |
-| ScriptEngineTest.java:34:19:34:36 | eval(...) | ScriptEngineTest.java:37:26:37:38 | args : String[] | ScriptEngineTest.java:34:31:34:35 | input | JavaScript Engine evaluate $@. | ScriptEngineTest.java:37:26:37:38 | args | user input |
+| RhinoServlet.java:32:29:32:78 | evaluateString(...) | RhinoServlet.java:28:23:28:50 | getParameter(...) : String | RhinoServlet.java:32:55:32:58 | code | Java Script Engine evaluate $@. | RhinoServlet.java:28:23:28:50 | getParameter(...) | user input |
+| RhinoServlet.java:86:25:86:97 | compileToClassFiles(...) | RhinoServlet.java:84:23:84:50 | getParameter(...) : String | RhinoServlet.java:86:54:86:57 | code | Java Script Engine evaluate $@. | RhinoServlet.java:84:23:84:50 | getParameter(...) | user input |
+| RhinoServlet.java:92:23:92:89 | defineClass(...) | RhinoServlet.java:91:23:91:50 | getParameter(...) : String | RhinoServlet.java:92:74:92:88 | getBytes(...) | Java Script Engine evaluate $@. | RhinoServlet.java:91:23:91:50 | getParameter(...) | user input |
+| ScriptEngineTest.java:12:19:12:42 | eval(...) | ScriptEngineTest.java:51:26:51:38 | args : String[] | ScriptEngineTest.java:12:37:12:41 | input | Java Script Engine evaluate $@. | ScriptEngineTest.java:51:26:51:38 | args | user input |
+| ScriptEngineTest.java:19:19:19:36 | eval(...) | ScriptEngineTest.java:51:26:51:38 | args : String[] | ScriptEngineTest.java:19:31:19:35 | input | Java Script Engine evaluate $@. | ScriptEngineTest.java:51:26:51:38 | args | user input |
+| ScriptEngineTest.java:27:19:27:36 | eval(...) | ScriptEngineTest.java:51:26:51:38 | args : String[] | ScriptEngineTest.java:27:31:27:35 | input | Java Script Engine evaluate $@. | ScriptEngineTest.java:51:26:51:38 | args | user input |
+| ScriptEngineTest.java:34:19:34:36 | eval(...) | ScriptEngineTest.java:51:26:51:38 | args : String[] | ScriptEngineTest.java:34:31:34:35 | input | Java Script Engine evaluate $@. | ScriptEngineTest.java:51:26:51:38 | args | user input |
+| ScriptEngineTest.java:40:27:40:47 | compile(...) | ScriptEngineTest.java:51:26:51:38 | args : String[] | ScriptEngineTest.java:40:42:40:46 | input | Java Script Engine evaluate $@. | ScriptEngineTest.java:51:26:51:38 | args | user input |
+| ScriptEngineTest.java:47:20:47:56 | getProgram(...) | ScriptEngineTest.java:51:26:51:38 | args : String[] | ScriptEngineTest.java:47:51:47:55 | input | Java Script Engine evaluate $@. | ScriptEngineTest.java:51:26:51:38 | args | user input |
