@@ -252,6 +252,25 @@ module CodeInjection {
     }
   }
 
+  /**
+   * A system command execution of "node", where the executed code is seen as a code injection sink.
+   */
+  class NodeCallSink extends Sink {
+    NodeCallSink() {
+      exists(SystemCommandExecution s |
+        s.getACommandArgument().mayHaveStringValue("node")
+        or
+        s.getACommandArgument() =
+          DataFlow::globalVarRef("process").getAPropertyRead("argv").getAPropertyRead("0")
+      |
+        exists(DataFlow::SourceNode arr | arr = s.getArgumentList().getALocalSource() |
+          arr.getAPropertyWrite().getRhs().mayHaveStringValue("-e") and
+          this = arr.getAPropertyWrite().getRhs()
+        )
+      )
+    }
+  }
+
   /** A sink for code injection via template injection. */
   abstract private class TemplateSink extends Sink {
     override string getMessageSuffix() {
