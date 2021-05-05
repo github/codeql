@@ -1,0 +1,55 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Dynamically constructing code with inputs from exported functions 
+may inadvertently change the meaning of the code.
+
+Clients using the functions may use characters that have special
+meaning, such as quotes and spaces.
+
+This can result in the resulting code to misbehave, or in the worst case 
+cause an attacker to execute arbitrary code on the system.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Avoid dynamically constructing code where possible.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example shows two methods implemented using `eval`: a simple
+deserialization routine and a getter method. 
+</p>
+
+<sample src="examples/UnsafeCodeConstruction.js" />
+
+<p>
+If untrusted inputs are used with these methods,
+then an attacker might be able to execute arbitrary code on the system.
+</p>
+<p>
+To avoid this problem, use an alternative solution such as `JSON.parse`
+or another library that does not allow arbitrary code to be executed.
+</p>
+
+<sample src="examples/UnsafeCodeConstructionSafe.js" />
+
+</example>
+
+<references>
+<li>
+OWASP:
+<a href="https://www.owasp.org/index.php/Code_Injection">Code Injection</a>.
+</li>
+<li>
+Wikipedia: <a href="https://en.wikipedia.org/wiki/Code_injection">Code Injection</a>.
+</li>
+</references>
+</qhelp>
