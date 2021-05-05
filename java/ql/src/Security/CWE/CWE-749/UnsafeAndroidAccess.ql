@@ -17,7 +17,7 @@ import semmle.code.java.security.UnsafeAndroidAccess
 import DataFlow::PathGraph
 
 /**
- * Taint configuration tracking flow from untrusted inputs to `loadUrl` or `postUrl` calls.
+ * Taint configuration tracking flow from untrusted inputs to a resource fetching call.
  */
 class FetchUntrustedResourceConfiguration extends TaintTracking::Configuration {
   FetchUntrustedResourceConfiguration() { this = "FetchUntrustedResourceConfiguration" }

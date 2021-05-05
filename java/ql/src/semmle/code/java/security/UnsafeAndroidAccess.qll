@@ -1,4 +1,5 @@
 /**
+ * Provides classes to reason about Unsafe Resource Fetching vulnerabilities in Android.
  */
 
 import java
@@ -7,6 +8,9 @@ import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.ExternalFlow
 
 /**
+ * A sink that represents a method that fetches a web resource.
+ *
+ * Extend this class to add your own Unsafe Resource Fetching sinks.
  */
 abstract class UrlResourceSink extends DataFlow::Node {
   /**
@@ -15,9 +19,7 @@ abstract class UrlResourceSink extends DataFlow::Node {
   abstract string getSinkType();
 }
 
-/**
- * A URL argument to a `loadUrl` or `postUrl` call, considered as a sink.
- */
+/** CSV sink models representing methods susceptible to Unsafe Resource Fetching attacks. */
 private class DefaultUrlResourceSinkModel extends SinkModelCsv {
   override predicate row(string row) {
     row =
