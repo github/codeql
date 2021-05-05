@@ -132,6 +132,7 @@ JavaScript and TypeScript built-in support
    postgres, Database
    ramda, Utility library
    react, HTML framework
+   react native, HTML framework
    request, Network communicator
    sequelize, Database
    socket.io, Network communicator
