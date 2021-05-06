@@ -209,6 +209,6 @@ void bad_new_with_nonthrowing_call() {
 
 void bad_new_catch_baseclass_of_bad_alloc() {
   try {
-    int* p = new(std::nothrow) int; // BAD [NOT DETECTED]
+    int* p = new(std::nothrow) int; // BAD
   } catch(const std::exception&) { }
 }
