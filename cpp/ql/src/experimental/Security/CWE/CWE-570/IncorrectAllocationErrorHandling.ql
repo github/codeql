@@ -181,8 +181,9 @@ class BadAllocCatchBlock extends CatchBlock {
 }
 
 /**
- * Holds if `newExpr` will not throw an exception, but is embedded in a `try` statement
- * with a catch block `catchBlock` that catches an `std::bad_alloc` exception.
+ * Holds if `newExpr` is embedded in a `try` statement with a catch block `catchBlock` that
+ * catches a `std::bad_alloc` exception, but nothing in the `try` block (including the `newExpr`)
+ * will throw that exception.
  */
 predicate noThrowInTryBlock(NewOrNewArrayExpr newExpr, BadAllocCatchBlock catchBlock) {
   exists(TryStmt try |
