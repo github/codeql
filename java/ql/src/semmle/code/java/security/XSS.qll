@@ -36,7 +36,6 @@ private class DefaultXssSinkModel extends SinkModelCsv {
       [
         "javax.servlet.http;HttpServletResponse;false;sendError;(int,String);;Argument[1];xss",
         "android.webkit;WebView;false;loadData;;;Argument[0];xss",
-        "android.webkit;WebView;false;loadUrl;;;Argument[0];xss",
         "android.webkit;WebView;false;loadDataWithBaseURL;;;Argument[1];xss"
       ]
   }
