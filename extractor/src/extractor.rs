@@ -269,21 +269,70 @@ struct Visitor<'a> {
 }
 
 impl Visitor<'_> {
+    fn record_error(
+        &mut self,
+        node: Node,
+        severity: usize,
+        error_tag: String,
+        error_message: String,
+        full_error_message: String,
+    ) {
+        let (start_line, start_column, end_line, end_column) = location_for(&self.source, node);
+        let loc = self.trap_writer.location(
+            self.file_label,
+            start_line,
+            start_column,
+            end_line,
+            end_column,
+        );
+        let id = self.trap_writer.fresh_id();
+        self.trap_writer.add_tuple(
+            "diagnostics",
+            vec![
+                Arg::Label(id),
+                Arg::Int(severity),
+                Arg::String(error_tag),
+                Arg::String(error_message),
+                Arg::String(full_error_message),
+                Arg::Label(loc),
+            ],
+        );
+    }
+
     fn enter_node(&mut self, node: Node) -> bool {
         if node.is_error() {
-            error!(
-                "{}:{}: parse error",
+            let short_err = "parse error";
+            let full_err = format!(
+                "{}:{}: {}",
                 &self.path,
-                node.start_position().row + 1
+                node.start_position().row + 1,
+                short_err
+            );
+            error!("{}", full_err);
+            self.record_error(
+                node,
+                4,
+                "parse_error".to_string(),
+                short_err.to_string(),
+                full_err,
             );
             return false;
         }
         if node.is_missing() {
-            error!(
-                "{}:{}: parse error: expecting '{}'",
+            let short_err = format!("parse error: expecting '{}'", node.kind());
+            let full_err = format!(
+                "{}:{}: {}",
                 &self.path,
                 node.start_position().row + 1,
-                node.kind()
+                short_err
+            );
+            error!("{}", full_err);
+            self.record_error(
+                node,
+                4,
+                "parse_error".to_string(),
+                short_err.to_string(),
+                full_err,
             );
             return false;
         }
