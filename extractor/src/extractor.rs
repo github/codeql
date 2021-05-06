@@ -269,14 +269,20 @@ struct Visitor<'a> {
 }
 
 impl Visitor<'_> {
-    fn record_error(
-        &mut self,
-        node: Node,
-        severity: usize,
-        error_tag: String,
-        error_message: String,
-        full_error_message: String,
-    ) {
+    fn record_parse_error(&mut self, node: Node) {
+        let error_message = if node.is_missing() {
+            format!("parse error: expecting '{}'", node.kind())
+        } else {
+            "parse error".to_string()
+        };
+        let full_error_message = format!(
+            "{}:{}: {}",
+            &self.path,
+            node.start_position().row + 1,
+            error_message
+        );
+        error!("{}", full_error_message);
+
         let (start_line, start_column, end_line, end_column) = location_for(&self.source, node);
         let loc = self.trap_writer.location(
             self.file_label,
@@ -290,8 +296,8 @@ impl Visitor<'_> {
             "diagnostics",
             vec![
                 Arg::Label(id),
-                Arg::Int(severity),
-                Arg::String(error_tag),
+                Arg::Int(4),
+                Arg::String("parse_error".to_string()),
                 Arg::String(error_message),
                 Arg::String(full_error_message),
                 Arg::Label(loc),
@@ -300,40 +306,8 @@ impl Visitor<'_> {
     }
 
     fn enter_node(&mut self, node: Node) -> bool {
-        if node.is_error() {
-            let short_err = "parse error";
-            let full_err = format!(
-                "{}:{}: {}",
-                &self.path,
-                node.start_position().row + 1,
-                short_err
-            );
-            error!("{}", full_err);
-            self.record_error(
-                node,
-                4,
-                "parse_error".to_string(),
-                short_err.to_string(),
-                full_err,
-            );
-            return false;
-        }
-        if node.is_missing() {
-            let short_err = format!("parse error: expecting '{}'", node.kind());
-            let full_err = format!(
-                "{}:{}: {}",
-                &self.path,
-                node.start_position().row + 1,
-                short_err
-            );
-            error!("{}", full_err);
-            self.record_error(
-                node,
-                4,
-                "parse_error".to_string(),
-                short_err.to_string(),
-                full_err,
-            );
+        if node.is_error() || node.is_missing() {
+            self.record_parse_error(node);
             return false;
         }
 
