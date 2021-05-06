@@ -165,7 +165,7 @@ module UnsafeHtmlConstruction {
     MarkdownSink() {
       exists(DataFlow::Node pred, DataFlow::Node succ, Markdown::MarkdownStep step |
         step.step(pred, succ) and
-        step.preservesHtml() and
+        step.preservesHTML() and
         this = pred and
         succ = isUsedInXssSink(xssSink)
       )
@@ -177,7 +177,9 @@ module UnsafeHtmlConstruction {
   /**
    *  Holds if there is a path without unmatched return steps from `source` to `sink`.
    */
-  predicate hasPathWithoutUnmatchedReturn(DataFlow::SourcePathNode source, DataFlow::SinkPathNode sink) {
+  predicate hasPathWithoutUnmatchedReturn(
+    DataFlow::SourcePathNode source, DataFlow::SinkPathNode sink
+  ) {
     exists(DataFlow::MidPathNode mid |
       source.getASuccessor*() = mid and
       sink = mid.getASuccessor() and

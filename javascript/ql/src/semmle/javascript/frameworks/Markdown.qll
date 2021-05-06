@@ -17,6 +17,11 @@ module Markdown {
      * Holds if there is a taint-step from `pred` to `succ` for a taint-preserving markdown parser.
      */
     abstract predicate step(DataFlow::Node pred, DataFlow::Node succ);
+
+    /**
+     * Holds if the taint-step preserves HTML.
+     */
+    predicate preservesHTML() { any() }
   }
 
   private class MarkdownStepAsTaintStep extends TaintTracking::SharedTaintStep {

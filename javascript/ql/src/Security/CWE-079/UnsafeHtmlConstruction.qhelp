@@ -4,8 +4,8 @@
 <qhelp>
 <overview>
 	<p>
-		Dynamically constructing HTML with inputs from library functions may 
-		inadvertently leave a client open to XSS attacks.
+		Dynamically constructing HTML with inputs from library functions that are 
+		available to external clients may inadvertently leave a client open to XSS attacks.
 		
 		Clients using the exported function may use inputs containing unsafe HTML,
 		and if these inputs end up in the DOM, the client may be vulnerable to
