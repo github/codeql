@@ -1,5 +1,5 @@
 /**
- * Provides a language-independant implementation of static single assignment
+ * Provides a language-independent implementation of static single assignment
  * (SSA) form.
  */
 
@@ -316,15 +316,23 @@ private module SsaDefReaches {
     )
   }
 
+  /**
+   * Holds if the reference to `def` at index `i` in basic block `bb` is the
+   * last reference to `v` inside `bb`.
+   */
+  pragma[noinline]
+  predicate lastSsaRef(Definition def, SourceVariable v, BasicBlock bb, int i) {
+    ssaDefRank(def, v, bb, i, _) = maxSsaRefRank(bb, v)
+  }
+
   predicate defOccursInBlock(Definition def, BasicBlock bb, SourceVariable v) {
     exists(ssaDefRank(def, v, bb, _, _))
   }
 
   pragma[noinline]
-  private BasicBlock getAMaybeLiveSuccessor(Definition def, BasicBlock bb) {
-    result = getABasicBlockSuccessor(bb) and
-    not defOccursInBlock(_, bb, def.getSourceVariable()) and
-    ssaDefReachesEndOfBlock(bb, def, _)
+  private predicate ssaDefReachesThroughBlock(Definition def, BasicBlock bb) {
+    ssaDefReachesEndOfBlock(bb, def, _) and
+    not defOccursInBlock(_, bb, def.getSourceVariable())
   }
 
   /**
@@ -337,7 +345,11 @@ private module SsaDefReaches {
     defOccursInBlock(def, bb1, _) and
     bb2 = getABasicBlockSuccessor(bb1)
     or
-    exists(BasicBlock mid | varBlockReaches(def, bb1, mid) | bb2 = getAMaybeLiveSuccessor(def, mid))
+    exists(BasicBlock mid |
+      varBlockReaches(def, bb1, mid) and
+      ssaDefReachesThroughBlock(def, mid) and
+      bb2 = getABasicBlockSuccessor(mid)
+    )
   }
 
   /**
@@ -348,24 +360,16 @@ private module SsaDefReaches {
    */
   predicate defAdjacentRead(Definition def, BasicBlock bb1, BasicBlock bb2, int i2) {
     varBlockReaches(def, bb1, bb2) and
-    ssaRefRank(bb2, i2, def.getSourceVariable(), SsaRead()) = 1 and
-    variableRead(bb2, i2, _, _)
+    ssaRefRank(bb2, i2, def.getSourceVariable(), SsaRead()) = 1
   }
 }
 
 private import SsaDefReaches
 
-pragma[noinline]
-private predicate ssaDefReachesEndOfBlockRec(BasicBlock bb, Definition def, SourceVariable v) {
-  exists(BasicBlock idom | ssaDefReachesEndOfBlock(idom, def, v) |
-    // The construction of SSA form ensures that each read of a variable is
-    // dominated by its definition. An SSA definition therefore reaches a
-    // control flow node if it is the _closest_ SSA definition that dominates
-    // the node. If two definitions dominate a node then one must dominate the
-    // other, so therefore the definition of _closest_ is given by the dominator
-    // tree. Thus, reaching definitions can be calculated in terms of dominance.
-    idom = getImmediateBasicBlockDominator(bb)
-  )
+pragma[nomagic]
+predicate liveThrough(BasicBlock bb, SourceVariable v) {
+  liveAtExit(bb, v) and
+  not ssaRef(bb, _, v, SsaDef())
 }
 
 /**
@@ -382,9 +386,14 @@ predicate ssaDefReachesEndOfBlock(BasicBlock bb, Definition def, SourceVariable 
     liveAtExit(bb, v)
   )
   or
-  ssaDefReachesEndOfBlockRec(bb, def, v) and
-  liveAtExit(bb, v) and
-  not ssaRef(bb, _, v, SsaDef())
+  // The construction of SSA form ensures that each read of a variable is
+  // dominated by its definition. An SSA definition therefore reaches a
+  // control flow node if it is the _closest_ SSA definition that dominates
+  // the node. If two definitions dominate a node then one must dominate the
+  // other, so therefore the definition of _closest_ is given by the dominator
+  // tree. Thus, reaching definitions can be calculated in terms of dominance.
+  ssaDefReachesEndOfBlock(getImmediateBasicBlockDominator(bb), def, pragma[only_bind_into](v)) and
+  liveThrough(bb, pragma[only_bind_into](v))
 }
 
 /**
@@ -433,15 +442,22 @@ predicate adjacentDefRead(Definition def, BasicBlock bb1, int i1, BasicBlock bb2
     bb2 = bb1
   )
   or
-  exists(SourceVariable v | ssaDefRank(def, v, bb1, i1, _) = maxSsaRefRank(bb1, v)) and
+  lastSsaRef(def, _, bb1, i1) and
   defAdjacentRead(def, bb1, bb2, i2)
+}
+
+pragma[noinline]
+private predicate adjacentDefRead(
+  Definition def, BasicBlock bb1, int i1, BasicBlock bb2, int i2, SourceVariable v
+) {
+  adjacentDefRead(def, bb1, i1, bb2, i2) and
+  v = def.getSourceVariable()
 }
 
 private predicate adjacentDefReachesRead(
   Definition def, BasicBlock bb1, int i1, BasicBlock bb2, int i2
 ) {
-  adjacentDefRead(def, bb1, i1, bb2, i2) and
-  exists(SourceVariable v | v = def.getSourceVariable() |
+  exists(SourceVariable v | adjacentDefRead(def, bb1, i1, bb2, i2, v) |
     ssaRef(bb1, i1, v, SsaDef())
     or
     variableRead(bb1, i1, v, true)
@@ -474,17 +490,19 @@ predicate adjacentDefNoUncertainReads(Definition def, BasicBlock bb1, int i1, Ba
  */
 pragma[nomagic]
 predicate lastRefRedef(Definition def, BasicBlock bb, int i, Definition next) {
-  exists(int rnk, SourceVariable v, int j | rnk = ssaDefRank(def, v, bb, i, _) |
+  exists(SourceVariable v |
     // Next reference to `v` inside `bb` is a write
-    next.definesAt(v, bb, j) and
-    rnk + 1 = ssaRefRank(bb, j, v, SsaDef())
+    exists(int rnk, int j |
+      rnk = ssaDefRank(def, v, bb, i, _) and
+      next.definesAt(v, bb, j) and
+      rnk + 1 = ssaRefRank(bb, j, v, SsaDef())
+    )
     or
     // Can reach a write using one or more steps
-    rnk = maxSsaRefRank(bb, v) and
+    lastSsaRef(def, v, bb, i) and
     exists(BasicBlock bb2 |
       varBlockReaches(def, bb, bb2) and
-      next.definesAt(v, bb2, j) and
-      1 = ssaRefRank(bb2, j, v, SsaDef())
+      1 = ssaDefRank(next, v, bb2, _, SsaDef())
     )
   )
 }
@@ -538,7 +556,8 @@ pragma[nomagic]
 predicate lastRef(Definition def, BasicBlock bb, int i) {
   lastRefRedef(def, bb, i, _)
   or
-  exists(SourceVariable v | ssaDefRank(def, v, bb, i, _) = maxSsaRefRank(bb, v) |
+  lastSsaRef(def, _, bb, i) and
+  (
     // Can reach exit directly
     bb instanceof ExitBasicBlock
     or

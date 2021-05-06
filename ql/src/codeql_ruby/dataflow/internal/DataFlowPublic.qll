@@ -2,6 +2,7 @@ private import ruby
 private import DataFlowDispatch
 private import DataFlowPrivate
 private import codeql_ruby.CFG
+private import codeql_ruby.typetracking.TypeTracker
 
 /**
  * An element, viewed as a node in a data flow graph. Either an expression
@@ -71,6 +72,37 @@ class ParameterNode extends Node, TParameterNode {
    * (zero-based) position.
    */
   predicate isParameterOf(Callable c, int i) { p = c.getParameter(i) }
+}
+
+/**
+ * A data-flow node that is a source of local flow.
+ */
+class LocalSourceNode extends Node {
+  LocalSourceNode() { not simpleLocalFlowStep+(any(ExprNode n), this) }
+
+  /** Holds if this `LocalSourceNode` can flow to `nodeTo` in one or more local flow steps. */
+  pragma[inline]
+  predicate flowsTo(Node nodeTo) { hasLocalSource(nodeTo, this) }
+
+  /**
+   * Gets a node that this node may flow to using one heap and/or interprocedural step.
+   *
+   * See `TypeTracker` for more details about how to use this.
+   */
+  pragma[inline]
+  LocalSourceNode track(TypeTracker t2, TypeTracker t) { t = t2.step(this, result) }
+}
+
+predicate hasLocalSource(Node sink, Node source) {
+  // Declaring `source` to be a `SourceNode` currently causes a redundant check in the
+  // recursive case, so instead we check it explicitly here.
+  source = sink and
+  source instanceof LocalSourceNode
+  or
+  exists(Node mid |
+    hasLocalSource(mid, source) and
+    simpleLocalFlowStep(mid, sink)
+  )
 }
 
 /** Gets a node corresponding to expression `e`. */
