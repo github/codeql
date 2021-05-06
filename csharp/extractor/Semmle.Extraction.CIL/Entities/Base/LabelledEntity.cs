@@ -25,9 +25,9 @@ namespace Semmle.Extraction.CIL
 
         public override string ToString()
         {
-            using var writer = new StringWriter();
+            using var writer = new EscapingTextWriter();
             WriteQuotedId(writer);
-            return writer.ToString();
+            return writer.ToString()!;
         }
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;

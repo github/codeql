@@ -79,7 +79,7 @@ namespace Semmle.Extraction.CSharp.Entities
             return h;
         }
 
-        public void WriteId(TextWriter trapFile)
+        public void WriteId(EscapingTextWriter trapFile)
         {
             trapFile.Write(Annotation);
             trapFile.Write('(');
@@ -90,7 +90,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override string ToString()
         {
-            using var w = new StringWriter();
+            using var w = new EscapingTextWriter();
             WriteId(w);
             return w.ToString();
         }
@@ -120,7 +120,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             Symbol.WriteId(trapFile);
         }

@@ -69,7 +69,7 @@ namespace Semmle.Extraction.CSharp.Entities
             return AssemblyConstructorFactory.Instance.CreateEntity(cx, outputAssemblyCacheKey, null);
         }
 
-        public override void WriteId(System.IO.TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             trapFile.Write(assembly.ToString());
             if (!(assemblyPath is null))

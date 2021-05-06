@@ -12,7 +12,7 @@ namespace Semmle.Extraction.CIL.Entities
             this.type = type;
         }
 
-        public void WriteId(TextWriter trapFile, bool inContext)
+        public void WriteId(EscapingTextWriter trapFile, bool inContext)
         {
             if (type.IsPrimitiveType)
             {
