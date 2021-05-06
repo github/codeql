@@ -120,14 +120,18 @@ except Exception as e:
     print("Error: couldn't invoke CodeQL CLI 'codeql'. Is it on the path? Aborting.", file=sys.stderr)
     raise e
 
-prefix = ""
+query_prefix = ""
+data_prefix = ""
 if len(sys.argv) > 1:
-    prefix = sys.argv[1] + "/"
+    query_prefix = sys.argv[1] + "/"
+
+if len(sys.argv) > 2:
+    data_prefix = sys.argv[2] + "/"
 
 # Languages for which we want to generate coverage reports.
 configs = [
     LanguageConfig(
-        "java", "Java", ".java", prefix + "java/ql/src/meta/frameworks/Coverage.ql")
+        "java", "Java", ".java", query_prefix + "java/ql/src/meta/frameworks/Coverage.ql")
 ]
 
 # The names of input and output files. The placeholder {language} is replaced with the language name.
@@ -135,8 +139,8 @@ output_rst = "flow-model-coverage.rst"
 output_rst_csv = "rst-csv-flow-model-coverage-{language}.csv"
 output_ql_csv = "output-{language}.csv"
 output_csv = "csv-flow-model-coverage-{language}.csv"
-input_framework_csv = prefix + "misc/scripts/frameworks-{language}.csv"
-input_cwe_sink_csv = prefix + "misc/scripts/cwe-sink-{language}.csv"
+input_framework_csv = data_prefix + "misc/scripts/frameworks-{language}.csv"
+input_cwe_sink_csv = data_prefix + "misc/scripts/cwe-sink-{language}.csv"
 
 with open(output_rst, 'w') as rst_file:
     for config in configs:

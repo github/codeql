@@ -1,6 +1,11 @@
 name: Build CSV flow coverage report
 
 on:
+  workflow_dispatch:
+    inputs:
+      qlModelShaOverride:
+        description: 'github/codeql repo SHA used for looking up the CSV models'
+        required: false
   push:
     branches:
      - main
@@ -22,7 +27,18 @@ jobs:
     - name: Clone self (github/codeql)
       uses: actions/checkout@v2
       with:
-        path: codeql
+        path: script
+    - name: Clone self (github/codeql) at a given SHA for analysis
+      if: github.event.inputs.qlModelShaOverride != ''
+      uses: actions/checkout@v2
+      with:
+        path: codeqlModels
+        ref: github.event.inputs.qlModelShaOverride
+    - name: Clone self (github/codeql) for analysis
+      if: github.event.inputs.qlModelShaOverride == ''
+      uses: actions/checkout@v2
+      with:
+        path: codeqlModels
     - name: Set up Python 3.8
       uses: actions/setup-python@v2
       with:
@@ -38,7 +54,7 @@ jobs:
       run: unzip -d codeql-cli codeql-linux64.zip
     - name: Build modeled package list
       run: |
-        PATH="$PATH:codeql-cli/codeql" python codeql/misc/scripts/generate-csv-coverage-report.py codeql
+        PATH="$PATH:codeql-cli/codeql" python script/misc/scripts/generate-csv-coverage-report.py codeqlModels script
     - name: Upload CSV package list
       uses: actions/upload-artifact@v2
       with:
