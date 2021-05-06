@@ -9,6 +9,8 @@
  * @id cpp/signed-overflow-check
  * @tags correctness
  *       security
+ *       external/cwe/cwe-128
+ *       external/cwe/cwe-190
  */
 
 import cpp
