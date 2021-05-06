@@ -28,4 +28,7 @@ public abstract class WebSettings {
 
   public void setAllowUniversalAccessFromFileURLs(boolean b) {
   }
+
+  public void setAllowFileAccessFromFileURLs(boolean b) {
+  }
 }

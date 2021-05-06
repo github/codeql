@@ -12,14 +12,14 @@ public class UnsafeAndroidAccess extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.webview);
 		testJavaScriptEnabledWebView();
-		testCrossOriginEnabledWebView();
+		testUniversalFileAccessEnabledWebView();
+		testFileAccessEnabledWebView();
 		testSafeWebView();
 	}
 
 	private void testJavaScriptEnabledWebView() {
 		WebView wv = (WebView) findViewById(R.id.my_webview);
 		WebSettings webSettings = wv.getSettings();
-
 		webSettings.setJavaScriptEnabled(true);
 
 		wv.setWebViewClient(new WebViewClient() {
@@ -36,10 +36,29 @@ public class UnsafeAndroidAccess extends Activity {
 		wv.loadUrl("https://www.mycorp.com"); // Safe
 	}
 
-	private void testCrossOriginEnabledWebView() {
+	private void testUniversalFileAccessEnabledWebView() {
 		WebView wv = (WebView) findViewById(R.id.my_webview);
 		WebSettings webSettings = wv.getSettings();
 		webSettings.setAllowUniversalAccessFromFileURLs(true);
+
+		wv.setWebViewClient(new WebViewClient() {
+			@Override
+			public boolean shouldOverrideUrlLoading(WebView view, String url) {
+				view.loadUrl(url);
+				return true;
+			}
+		});
+
+		String thisUrl = getIntent().getStringExtra("url");
+		wv.loadUrl(thisUrl); // $hasUnsafeAndroidAccess
+		wv.loadUrl("https://www.mycorp.com/" + thisUrl); // Safe
+		wv.loadUrl("https://www.mycorp.com"); // Safe
+	}
+
+	private void testFileAccessEnabledWebView() {
+		WebView wv = (WebView) findViewById(R.id.my_webview);
+		WebSettings webSettings = wv.getSettings();
+		webSettings.setAllowFileAccessFromFileURLs(true);
 
 		wv.setWebViewClient(new WebViewClient() {
 			@Override
