@@ -5,7 +5,7 @@ import TestUtilities.InlineExpectationsTest
 import semmle.code.java.security.UnsafeAndroidAccess
 
 class Conf extends TaintTracking::Configuration {
-  Conf() { this = "qltest:cwe:jexl-injection" }
+  Conf() { this = "qltest:cwe:unsafe-android-access" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 

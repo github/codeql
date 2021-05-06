@@ -8,7 +8,7 @@ import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.ExternalFlow
 
 /**
- * A sink that represents a method that fetches a web resource.
+ * A sink that represents a method that fetches a web resource in Android.
  *
  * Extend this class to add your own Unsafe Resource Fetching sinks.
  */
