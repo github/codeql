@@ -1176,13 +1176,27 @@ module Trees {
     }
   }
 
-  private class SingletonClassTree extends BodyStmtPreOrderTree, SingletonClass {
+  private class SingletonClassTree extends BodyStmtPostOrderTree, SingletonClass {
+    final override predicate first(AstNode first) {
+      this.firstInner(first)
+      or
+      not exists(this.getAChild(_)) and
+      first = this
+    }
+
+    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      BodyStmtPostOrderTree.super.succ(pred, succ, c)
+      or
+      succ = this and
+      this.lastInner(pred, c)
+    }
+
     /** Gets the `i`th child in the body of this block. */
     final override AstNode getBodyChild(int i, boolean rescuable) {
       (
         result = this.getValue() and i = 0 and rescuable = false
         or
-        result = BodyStmtPreOrderTree.super.getBodyChild(i - 1, rescuable)
+        result = BodyStmtPostOrderTree.super.getBodyChild(i - 1, rescuable)
       )
     }
   }

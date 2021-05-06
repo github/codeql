@@ -1599,10 +1599,10 @@ cfg.rb:
 #-----|  -> call to itself
 
 #  141| Constant
-#-----|  -> class << ...
+#-----|  -> Silly
 
 #  143| class << ...
-#-----|  -> Silly
+#-----|  -> silly
 
 #  143| call to itself
 #-----|  -> setter=
@@ -1617,7 +1617,7 @@ cfg.rb:
 #-----|  -> self
 
 #  145| print
-#-----|  -> silly
+#-----|  -> class << ...
 
 #  145| exit print
 
