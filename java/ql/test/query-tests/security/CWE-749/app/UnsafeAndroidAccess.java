@@ -1,3 +1,5 @@
+package app;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.webkit.WebSettings;
@@ -29,7 +31,7 @@ public class UnsafeAndroidAccess extends Activity {
 		});
 
 		String thisUrl = getIntent().getExtras().getString("url");
-		wv.loadUrl(thisUrl); // hasUnsafeAndroidAccess
+		wv.loadUrl(thisUrl); // $hasUnsafeAndroidAccess
 		wv.loadUrl("https://www.mycorp.com/" + thisUrl); // Safe
 		wv.loadUrl("https://www.mycorp.com"); // Safe
 	}
@@ -48,8 +50,8 @@ public class UnsafeAndroidAccess extends Activity {
 		});
 
 		String thisUrl = getIntent().getStringExtra("url");
-		wv.loadUrl(thisUrl); // hasUnsafeAndroidAccess
-		wv.loadUrl("https://www.mycorp.com/" + thisUrl); // hasUnsafeAndroidAccess
+		wv.loadUrl(thisUrl); // $hasUnsafeAndroidAccess
+		wv.loadUrl("https://www.mycorp.com/" + thisUrl); // Safe
 		wv.loadUrl("https://www.mycorp.com"); // Safe
 	}
 
