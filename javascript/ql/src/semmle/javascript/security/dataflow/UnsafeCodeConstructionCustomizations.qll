@@ -22,7 +22,10 @@ module UnsafeCodeConstruction {
    * A parameter of an exported function, seen as a source.
    */
   class ExternalInputSource extends Source, DataFlow::ParameterNode {
-    ExternalInputSource() { this = Exports::getALibraryInputParameter() }
+    ExternalInputSource() {
+      this = Exports::getALibraryInputParameter() and
+      not this.getName() = "code"
+    }
   }
 
   /**
