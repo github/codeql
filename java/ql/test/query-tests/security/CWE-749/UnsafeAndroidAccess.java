@@ -9,76 +9,64 @@ public class UnsafeAndroidAccess extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.webview);
-		{
-			WebView wv = (WebView) findViewById(R.id.my_webview);
-			WebSettings webSettings = wv.getSettings();
-
-			webSettings.setJavaScriptEnabled(true);
-			webSettings.setAllowUniversalAccessFromFileURLs(true);
-
-			wv.setWebViewClient(new WebViewClient() {
-				@Override
-				public boolean shouldOverrideUrlLoading(WebView view, String url) {
-					view.loadUrl(url);
-					return true;
-				}
-			});
-
-			String thisUrl = getIntent().getExtras().getString("url");
-			wv.loadUrl(thisUrl); // hasUnsafeAndroidAccess
-		}
-
-		{
-			WebView wv = (WebView) findViewById(R.id.my_webview);
-			WebSettings webSettings = wv.getSettings();
-
-			webSettings.setJavaScriptEnabled(true);
-			webSettings.setAllowUniversalAccessFromFileURLs(true);
-
-			wv.setWebViewClient(new WebViewClient() {
-				@Override
-				public boolean shouldOverrideUrlLoading(WebView view, String url) {
-					view.loadUrl(url);
-					return true;
-				}
-			});
-
-			String thisUrl = getIntent().getStringExtra("url");
-			wv.loadUrl(thisUrl); // hasUnsafeAndroidAccess
-		}
-
-		{
-			WebView wv = (WebView) findViewById(-1);
-			WebSettings webSettings = wv.getSettings();
-
-			wv.setWebViewClient(new WebViewClient() {
-				@Override
-				public boolean shouldOverrideUrlLoading(WebView view, String url) {
-					view.loadUrl(url);
-					return true;
-				}
-			});
-
-			String thisUrl = getIntent().getExtras().getString("url"); // remote input
-			wv.loadUrl(thisUrl); // Safe
-		}
-
-		{
-			WebView wv = (WebView) findViewById(-1);
-			WebSettings webSettings = wv.getSettings();
-
-			webSettings.setJavaScriptEnabled(true);
-
-			wv.setWebViewClient(new WebViewClient() {
-				@Override
-				public boolean shouldOverrideUrlLoading(WebView view, String url) {
-					view.loadUrl(url);
-					return true;
-				}
-			});
-
-			wv.loadUrl("https://www.mycorp.com"); // Safe
-		}
+		testJavaScriptEnabledWebView();
+		testCrossOriginEnabledWebView();
+		testSafeWebView();
 	}
 
+	private void testJavaScriptEnabledWebView() {
+		WebView wv = (WebView) findViewById(R.id.my_webview);
+		WebSettings webSettings = wv.getSettings();
+
+		webSettings.setJavaScriptEnabled(true);
+
+		wv.setWebViewClient(new WebViewClient() {
+			@Override
+			public boolean shouldOverrideUrlLoading(WebView view, String url) {
+				view.loadUrl(url);
+				return true;
+			}
+		});
+
+		String thisUrl = getIntent().getExtras().getString("url");
+		wv.loadUrl(thisUrl); // hasUnsafeAndroidAccess
+		wv.loadUrl("https://www.mycorp.com/" + thisUrl); // Safe
+		wv.loadUrl("https://www.mycorp.com"); // Safe
+	}
+
+	private void testCrossOriginEnabledWebView() {
+		WebView wv = (WebView) findViewById(R.id.my_webview);
+		WebSettings webSettings = wv.getSettings();
+		webSettings.setAllowUniversalAccessFromFileURLs(true);
+
+		wv.setWebViewClient(new WebViewClient() {
+			@Override
+			public boolean shouldOverrideUrlLoading(WebView view, String url) {
+				view.loadUrl(url);
+				return true;
+			}
+		});
+
+		String thisUrl = getIntent().getStringExtra("url");
+		wv.loadUrl(thisUrl); // hasUnsafeAndroidAccess
+		wv.loadUrl("https://www.mycorp.com/" + thisUrl); // hasUnsafeAndroidAccess
+		wv.loadUrl("https://www.mycorp.com"); // Safe
+	}
+
+	private void testSafeWebView() {
+		WebView wv = (WebView) findViewById(-1);
+
+		wv.setWebViewClient(new WebViewClient() {
+			@Override
+			public boolean shouldOverrideUrlLoading(WebView view, String url) {
+				view.loadUrl(url);
+				return true;
+			}
+		});
+
+		String thisUrl = getIntent().getExtras().getString("url");
+		wv.loadUrl(thisUrl); // Safe
+		wv.loadUrl("https://www.mycorp.com/" + thisUrl); // Safe
+		wv.loadUrl("https://www.mycorp.com"); // Safe
+	}
 }
