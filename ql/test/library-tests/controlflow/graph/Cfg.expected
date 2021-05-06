@@ -491,7 +491,7 @@ case.rb:
 
 cfg.rb:
 #    1| enter cfg.rb
-#-----|  -> BEGIN { ... }
+#-----|  -> self
 
 #    1| bar
 #-----|  -> alias ...
@@ -559,10 +559,10 @@ cfg.rb:
 #-----|  -> call to puts
 
 #   15| BEGIN { ... }
-#-----|  -> self
+#-----|  -> bar
 
 #   16| call to puts
-#-----|  -> bar
+#-----|  -> BEGIN { ... }
 
 #   16| self
 #-----|  -> "hello"
