@@ -1,7 +1,7 @@
 /**
  * @name Unsafe HTML constructed from library input
  * @description Using externally controlled strings to construct HTML might allow a malicious
- *              user to perform an cross-site scripting attack.
+ *              user to perform a cross-site scripting attack.
  * @kind path-problem
  * @problem.severity error
  * @precision high

@@ -4,7 +4,7 @@
 <qhelp>
 <overview>
 	<p>
-		Dynamically constructing HTML with inputs from exported functions may 
+		Dynamically constructing HTML with inputs from library functions may 
 		inadvertently leave a client open to XSS attacks.
 		
 		Clients using the exported function may use inputs containing unsafe HTML,
@@ -28,7 +28,7 @@
 <example>
 
 	<p>
-		The following example shows a library function that shows a boldface name
+		The following example has a library function that renders a boldface name
 		by writing to the <code>innerHTML</code> property of an element.
 	</p>
 
