@@ -523,24 +523,6 @@ module Trees {
     }
   }
 
-  abstract class BodyStmtPreOrderTree extends BodyStmtTree, PreOrderTree {
-    final override predicate last(AstNode last, Completion c) {
-      this.lastInner(last, c)
-      or
-      not exists(this.getAChild(_)) and
-      last = this and
-      c.isValidFor(this)
-    }
-
-    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
-      BodyStmtTree.super.succ(pred, succ, c)
-      or
-      pred = this and
-      c instanceof SimpleCompletion and
-      this.firstInner(succ)
-    }
-  }
-
   abstract class BodyStmtPostOrderTree extends BodyStmtTree, PostOrderTree {
     override predicate first(AstNode first) { first = this }
   }
