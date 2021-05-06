@@ -23,16 +23,20 @@ class DeleteOrDeleteArrayExpr extends Expr {
   DeallocationFunction getDeallocator() {
     result = [this.(DeleteExpr).getDeallocator(), this.(DeleteArrayExpr).getDeallocator()]
   }
+
+  Destructor getDestructor() {
+    result = [this.(DeleteExpr).getDestructor(), this.(DeleteArrayExpr).getDestructor()]
+  }
 }
 
 /** Gets the `Constructor` invoked when `newExpr` allocates memory. */
 Constructor getConstructorForAllocation(NewOrNewArrayExpr newExpr) {
-  result.getACallToThisFunction().getLocation() = newExpr.getLocation()
+  result.getACallToThisFunction() = newExpr.getInitializer()
 }
 
 /** Gets the `Destructor` invoked when `deleteExpr` deallocates memory. */
 Destructor getDestructorForDeallocation(DeleteOrDeleteArrayExpr deleteExpr) {
-  result.getACallToThisFunction().getLocation() = deleteExpr.getLocation()
+  result = deleteExpr.getDestructor()
 }
 
 /** Holds if the evaluation of `newExpr` may throw an exception. */
@@ -63,15 +67,45 @@ predicate stmtMayThrow(Stmt stmt) {
   or
   convertedExprMayThrow(stmt.(ExprStmt).getExpr())
   or
+  convertedExprMayThrow(stmt.(DeclStmt).getADeclaration().(Variable).getInitializer().getExpr())
+  or
   exists(IfStmt ifStmt | ifStmt = stmt |
     convertedExprMayThrow(ifStmt.getCondition()) or
     stmtMayThrow([ifStmt.getThen(), ifStmt.getElse()])
+  )
+  or
+  exists(ConstexprIfStmt constIfStmt | constIfStmt = stmt |
+    stmtMayThrow([constIfStmt.getThen(), constIfStmt.getElse()])
   )
   or
   exists(Loop loop | loop = stmt |
     convertedExprMayThrow(loop.getCondition()) or
     stmtMayThrow(loop.getStmt())
   )
+  or
+  // The case for `Loop` already checked the condition and the statement.
+  convertedExprMayThrow(stmt.(RangeBasedForStmt).getUpdate())
+  or
+  // The case for `Loop` already checked the condition and the statement.
+  exists(ForStmt forStmt | forStmt = stmt |
+    stmtMayThrow(forStmt.getInitialization())
+    or
+    convertedExprMayThrow(forStmt.getUpdate())
+  )
+  or
+  exists(SwitchStmt switchStmt | switchStmt = stmt |
+    convertedExprMayThrow(switchStmt.getExpr()) or
+    stmtMayThrow(switchStmt.getStmt())
+  )
+  or
+  stmtMayThrow(stmt.(SwitchCase).getAStmt())
+  or
+  // NOTE: We don't include `TryStmt` as those exceptions are not "observable" outside the function.
+  stmtMayThrow(stmt.(Handler).getBlock())
+  or
+  convertedExprMayThrow(stmt.(CoReturnStmt).getExpr())
+  or
+  convertedExprMayThrow(stmt.(ReturnStmt).getExpr())
 }
 
 /** Holds if the evaluation of `e` (including conversions) may throw an exception. */
