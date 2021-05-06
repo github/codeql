@@ -6,7 +6,7 @@
  * @kind path-problem
  * @problem.severity error
  * @precision high
- * @id cpp/sql-injection
+ * @id cpp/sql-injection-via-pqxx
  * @tags security
  *       external/cwe/cwe-089
  */
@@ -75,7 +75,7 @@ Expr getPqxxSqlArgument() {
     // to find ConnectionHandle/TransationHandle and similar classes which override '->' operator behavior
     // and return pointer to a connection/transation object
     e.getType().refersTo(t) and
-    // transation exec and connection prepare variations
+    // transaction exec and connection prepare variations
     (
       pqxxTransationClassNames(t.getName(), _) and
       pqxxTransactionSqlArgument(fc.getTarget().getName(), argIndex)
@@ -113,10 +113,10 @@ predicate isEscapedPqxxArgument(Expr argExpr) {
     // to find ConnectionHandle/TransationHandle and similar classes which override '->' operator behavior
     // and return pointer to a connection/transation object
     e.getType().refersTo(t) and
-    // transation and connection escape functions
+    // transaction and connection escape functions
     (pqxxTransationClassNames(t.getName(), _) or pqxxConnectionClassNames(t.getName(), _)) and
     pqxxEscapeArgument(fc.getTarget().getName(), argIndex) and
-    // eval is escaped
+    // is escaped arg == argExpr
     argExpr = fc.getArgument(argIndex)
   )
 }
