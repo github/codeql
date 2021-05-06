@@ -168,13 +168,13 @@ class BadAllocType extends Class {
 }
 
 /**
- * A catch block that catches a `std::bad_alloc` (or any of its subclasses), or a catch
+ * A catch block that catches a `std::bad_alloc` (or any of its superclasses), or a catch
  * block that catches every exception (i.e., `catch(...)`).
  */
 class BadAllocCatchBlock extends CatchBlock {
   BadAllocCatchBlock() {
     this.getParameter().getUnspecifiedType().stripType() =
-      any(BadAllocType badAlloc).getADerivedClass*()
+      any(BadAllocType badAlloc).getABaseClass*()
     or
     not exists(this.getParameter())
   }
