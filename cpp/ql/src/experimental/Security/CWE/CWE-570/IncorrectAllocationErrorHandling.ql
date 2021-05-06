@@ -147,19 +147,14 @@ predicate exprMayThrow(Expr e) {
   )
 }
 
-/** An allocator that will not throw an exception. */
-class NoThrowAllocator extends Function {
-  NoThrowAllocator() {
-    exists(NewOrNewArrayExpr newExpr |
-      newExpr.getAllocator() = this and
-      not functionMayThrow(this)
-    )
-  }
-}
-
 /** An allocator that might throw an exception. */
 class ThrowingAllocator extends Function {
-  ThrowingAllocator() { not this instanceof NoThrowAllocator }
+  ThrowingAllocator() {
+    exists(NewOrNewArrayExpr newExpr |
+      newExpr.getAllocator() = this and
+      functionMayThrow(this)
+    )
+  }
 }
 
 /** The `std::bad_alloc` exception and its `bsl` variant. */
