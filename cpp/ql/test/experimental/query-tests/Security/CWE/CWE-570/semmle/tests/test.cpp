@@ -135,3 +135,74 @@ void good_new_handles_nullptr() {
   if (new (std::nothrow) int[100] == nullptr)
     return; // GOOD
 }
+
+void* operator new(std::size_t count, void*) noexcept;
+void* operator new[](std::size_t count, void*) noexcept;
+
+struct Foo {
+  Foo() noexcept;
+  Foo(int);
+
+  operator bool();
+};
+
+void bad_placement_new_with_exception_handling() {
+  char buffer[1024];
+  try { new (buffer) Foo; } // BAD
+  catch (...) {  }
+}
+
+void good_placement_new_with_exception_handling() {
+  char buffer[1024];
+  try { new (buffer) Foo(42); } // GOOD: Foo constructor might throw [FALSE POSITIVE]
+  catch (...) {  }
+}
+
+int rand();
+
+void may_throw() {
+  if(rand()) {
+    throw "bad luck exception!";
+  }
+}
+
+void unknown_code_that_may_throw(int*);
+void unknown_code_that_will_not_throw(int*) noexcept;
+
+void calls_throwing_code(int* p) {
+  if(rand()) unknown_code_that_may_throw(p);
+}
+
+void calls_non_throwing(int* p) {
+  if (rand()) unknown_code_that_will_not_throw(p);
+}
+
+void good_new_with_throwing_call() {
+  try {
+    int* p1 = new(std::nothrow) int; // GOOD [FALSE POSITIVE]
+    may_throw();
+  } catch(...) {  }
+
+  try {
+    int* p2 = new(std::nothrow) int; // GOOD [FALSE POSITIVE]
+    Foo f(10);
+  } catch(...) {  }
+
+  try {
+    int* p3 = new(std::nothrow) int; // GOOD [FALSE POSITIVE]
+    calls_throwing_code(p3);
+  } catch(...) {  }
+}
+
+void bad_new_with_nonthrowing_call() {
+  try {
+    int* p1 = new(std::nothrow) int; // BAD
+    calls_non_throwing(p1);
+  } catch(...) {  }
+
+  try {
+    int* p2 = new(std::nothrow) int; // GOOD: boolean conversion constructor might throw [FALSE POSITIVE]
+    Foo f(12);
+    if(f) { }
+  } catch(...) {  }
+}

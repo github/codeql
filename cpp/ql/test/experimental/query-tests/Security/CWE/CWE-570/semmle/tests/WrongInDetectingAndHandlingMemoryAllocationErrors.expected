@@ -7,3 +7,10 @@
 | test.cpp:92:5:92:31 | call to operator new[] | memory allocation error check is incorrect or missing |
 | test.cpp:93:15:93:41 | call to operator new[] | memory allocation error check is incorrect or missing |
 | test.cpp:96:10:96:36 | call to operator new[] | memory allocation error check is incorrect or missing |
+| test.cpp:151:9:151:24 | call to operator new | memory allocation error check is incorrect or missing |
+| test.cpp:157:9:157:28 | call to operator new | memory allocation error check is incorrect or missing |
+| test.cpp:182:15:182:35 | call to operator new | memory allocation error check is incorrect or missing |
+| test.cpp:187:15:187:35 | call to operator new | memory allocation error check is incorrect or missing |
+| test.cpp:192:15:192:35 | call to operator new | memory allocation error check is incorrect or missing |
+| test.cpp:199:15:199:35 | call to operator new | memory allocation error check is incorrect or missing |
+| test.cpp:204:15:204:35 | call to operator new | memory allocation error check is incorrect or missing |
