@@ -6,6 +6,9 @@
 
 import javascript
 
+/**
+ * Module containing sources, sinks, and sanitizers for code constructed from library input.
+ */
 module UnsafeCodeConstruction {
   private import semmle.javascript.security.dataflow.CodeInjectionCustomizations::CodeInjection as CodeInjection
   private import semmle.javascript.PackageExports as Exports
@@ -26,6 +29,9 @@ module UnsafeCodeConstruction {
    * A sink for unsafe code constructed from library input vulnerabilities.
    */
   abstract class Sink extends DataFlow::Node {
+    /**
+     * Gets the node where the unsafe code is executed.
+     */
     abstract DataFlow::Node getCodeSink();
   }
 

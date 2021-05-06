@@ -9,6 +9,9 @@
 
 import javascript
 
+/**
+ * Classes and predicates for the code constructed from library input query.
+ */
 module UnsafeCodeConstruction {
   private import semmle.javascript.security.dataflow.CodeInjectionCustomizations::CodeInjection as CodeInjection
   import UnsafeCodeConstructionCustomizations::UnsafeCodeConstruction
