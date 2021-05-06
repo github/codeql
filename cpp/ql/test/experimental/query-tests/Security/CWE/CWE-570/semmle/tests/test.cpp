@@ -202,7 +202,7 @@ void bad_new_with_nonthrowing_call() {
 
   try {
     int* p2 = new(std::nothrow) int; // GOOD: boolean conversion constructor might throw
-    Foo f(12);
+    Foo f;
     if(f) { }
   } catch(...) {  }
 }
