@@ -845,7 +845,7 @@ cfg.rb:
 #-----|  -> ... = ...
 
 #   54| ... = ...
-#-----|  -> Silly
+#-----|  -> Object
 
 #   54| character
 #-----|  -> ?\x40
@@ -854,7 +854,7 @@ cfg.rb:
 #-----|  -> ... = ...
 
 #   58| Silly
-#-----|  -> Object
+#-----|  -> x
 
 #   58| Object
 #-----|  -> complex
@@ -1013,7 +1013,7 @@ cfg.rb:
 #-----|  -> self
 
 #   69| print
-#-----|  -> x
+#-----|  -> Silly
 
 #   69| exit print
 
@@ -1346,7 +1346,7 @@ cfg.rb:
 #-----|  -> call to type
 
 #  113| ... if ...
-#-----|  -> C
+#-----|  -> @field
 
 #  113| call to puts
 #-----|  -> ... if ...
@@ -1368,7 +1368,7 @@ cfg.rb:
 #-----|  -> ... > ...
 
 #  115| C
-#-----|  -> @field
+#-----|  -> swap
 
 #  116| ... = ...
 #-----|  -> @@static_field
@@ -1380,7 +1380,7 @@ cfg.rb:
 #-----|  -> ... = ...
 
 #  117| ... = ...
-#-----|  -> swap
+#-----|  -> C
 
 #  117| @@static_field
 #-----|  -> 10
@@ -2979,7 +2979,7 @@ loops.rb:
 
 raise.rb:
 #    1| enter raise.rb
-#-----|  -> ExceptionA
+#-----|  -> Exception
 
 #    1| ExceptionA
 #-----|  -> Exception
@@ -2990,13 +2990,13 @@ raise.rb:
 #-----|  -> exit raise.rb
 
 #    1| Exception
-#-----|  -> ExceptionB
+#-----|  -> ExceptionA
 
 #    4| ExceptionB
-#-----|  -> Exception
+#-----|  -> m1
 
 #    4| Exception
-#-----|  -> m1
+#-----|  -> ExceptionB
 
 #    7| enter m1
 #-----|  -> x

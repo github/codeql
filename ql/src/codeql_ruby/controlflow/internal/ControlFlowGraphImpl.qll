@@ -602,7 +602,21 @@ module Trees {
 
   private class CharacterTree extends LeafTree, CharacterLiteral { }
 
-  private class ClassDeclarationTree extends BodyStmtPreOrderTree, ClassDeclaration {
+  private class ClassDeclarationTree extends BodyStmtPostOrderTree, ClassDeclaration {
+    override predicate first(AstNode first) {
+      this.firstInner(first)
+      or
+      not exists(this.getAChild(_)) and
+      first = this
+    }
+
+    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      BodyStmtPostOrderTree.super.succ(pred, succ, c)
+      or
+      succ = this and
+      this.lastInner(pred, c)
+    }
+
     /** Gets the `i`th child in the body of this block. */
     final override AstNode getBodyChild(int i, boolean rescuable) {
       result = this.getScopeExpr() and i = 0 and rescuable = false
