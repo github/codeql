@@ -10,7 +10,13 @@ module RegExpInjection {
   /**
    * A data flow source for untrusted user input used to construct regular expressions.
    */
-  abstract class Source extends DataFlow::Node { }
+  abstract class Source extends DataFlow::Node {
+    /**
+     * Gets a string that describes the source.
+     * For use in the alert message.
+     */
+    string describe() { result = "a user-provided value" }
+  }
 
   /**
    * A data flow sink for untrusted user input used to construct regular expressions.
