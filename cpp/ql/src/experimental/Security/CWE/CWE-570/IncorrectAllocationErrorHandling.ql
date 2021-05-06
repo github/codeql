@@ -139,7 +139,8 @@ class BadAllocType extends Class {
  */
 class BadAllocCatchBlock extends CatchBlock {
   BadAllocCatchBlock() {
-    this.getParameter().getUnspecifiedType() = any(BadAllocType badAlloc).getADerivedClass*()
+    this.getParameter().getUnspecifiedType().stripType() =
+      any(BadAllocType badAlloc).getADerivedClass*()
     or
     not exists(this.getParameter())
   }
