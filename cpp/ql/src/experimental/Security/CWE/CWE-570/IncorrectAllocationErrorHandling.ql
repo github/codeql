@@ -191,8 +191,7 @@ predicate noThrowInTryBlock(NewOrNewArrayExpr newExpr, BadAllocCatchBlock catchB
       not convertedExprMayThrow(cand)
     ) and
     try.getACatchClause() = catchBlock and
-    newExpr.getEnclosingBlock().getEnclosingBlock*() = try.getStmt() and
-    not newMayThrow(newExpr)
+    newExpr.getEnclosingBlock().getEnclosingBlock*() = try.getStmt()
   )
 }
 
