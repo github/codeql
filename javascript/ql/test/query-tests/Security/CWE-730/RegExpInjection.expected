@@ -44,6 +44,11 @@ nodes
 | RegExpInjection.js:54:14:54:42 | key.spl ... x => x) |
 | RegExpInjection.js:54:14:54:52 | key.spl ... in("-") |
 | RegExpInjection.js:54:14:54:52 | key.spl ... in("-") |
+| lib/index.js:1:42:1:45 | name |
+| lib/index.js:1:42:1:45 | name |
+| lib/index.js:2:23:2:46 | '(^\| )' ... '( \|$)' |
+| lib/index.js:2:23:2:46 | '(^\| )' ... '( \|$)' |
+| lib/index.js:2:33:2:36 | name |
 | tst.js:1:46:1:46 | e |
 | tst.js:1:46:1:46 | e |
 | tst.js:2:9:2:21 | data |
@@ -99,6 +104,10 @@ edges
 | RegExpInjection.js:54:14:54:27 | key.split(".") | RegExpInjection.js:54:14:54:42 | key.spl ... x => x) |
 | RegExpInjection.js:54:14:54:42 | key.spl ... x => x) | RegExpInjection.js:54:14:54:52 | key.spl ... in("-") |
 | RegExpInjection.js:54:14:54:42 | key.spl ... x => x) | RegExpInjection.js:54:14:54:52 | key.spl ... in("-") |
+| lib/index.js:1:42:1:45 | name | lib/index.js:2:33:2:36 | name |
+| lib/index.js:1:42:1:45 | name | lib/index.js:2:33:2:36 | name |
+| lib/index.js:2:33:2:36 | name | lib/index.js:2:23:2:46 | '(^\| )' ... '( \|$)' |
+| lib/index.js:2:33:2:36 | name | lib/index.js:2:23:2:46 | '(^\| )' ... '( \|$)' |
 | tst.js:1:46:1:46 | e | tst.js:2:16:2:16 | e |
 | tst.js:1:46:1:46 | e | tst.js:2:16:2:16 | e |
 | tst.js:2:9:2:21 | data | tst.js:3:21:3:24 | data |
@@ -122,4 +131,5 @@ edges
 | RegExpInjection.js:47:22:47:26 | input | RegExpInjection.js:5:39:5:56 | req.param("input") | RegExpInjection.js:47:22:47:26 | input | This regular expression is constructed from $@. | RegExpInjection.js:5:39:5:56 | req.param("input") | a user-provided value |
 | RegExpInjection.js:50:46:50:50 | input | RegExpInjection.js:5:39:5:56 | req.param("input") | RegExpInjection.js:50:46:50:50 | input | This regular expression is constructed from $@. | RegExpInjection.js:5:39:5:56 | req.param("input") | a user-provided value |
 | RegExpInjection.js:54:14:54:52 | key.spl ... in("-") | RegExpInjection.js:5:13:5:28 | req.param("key") | RegExpInjection.js:54:14:54:52 | key.spl ... in("-") | This regular expression is constructed from $@. | RegExpInjection.js:5:13:5:28 | req.param("key") | a user-provided value |
+| lib/index.js:2:23:2:46 | '(^\| )' ... '( \|$)' | lib/index.js:1:42:1:45 | name | lib/index.js:2:23:2:46 | '(^\| )' ... '( \|$)' | This regular expression is constructed from $@. | lib/index.js:1:42:1:45 | name | library input |
 | tst.js:3:16:3:35 | "^"+ data.name + "$" | tst.js:1:46:1:46 | e | tst.js:3:16:3:35 | "^"+ data.name + "$" | This regular expression is constructed from $@. | tst.js:1:46:1:46 | e | a user-provided value |

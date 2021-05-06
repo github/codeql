@@ -39,6 +39,17 @@ module RegExpInjection {
     }
   }
 
+  private import semmle.javascript.PackageExports as Exports
+
+  /**
+   * A parameter of an exported function, seen as a source for regexp expression injection.
+   */
+  class ExternalInputSource extends Source, DataFlow::ParameterNode {
+    ExternalInputSource() { this = Exports::getALibraryInputParameter() }
+
+    override string describe() { result = "library input" }
+  }
+
   /**
    * The source string of a regular expression.
    */
