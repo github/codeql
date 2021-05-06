@@ -38,7 +38,7 @@ module UnsafeHtmlConstruction {
 
   /**
    * A sink for unsafe HTML constructed from library input.
-   * This sink somehow transforms its input into a value that can cause XSS if it ends up in a XSS sink.
+   * This sink transforms its input into a value that can cause XSS if it ends up in a XSS sink.
    */
   abstract class Sink extends DataFlow::Node {
     /**
@@ -165,6 +165,7 @@ module UnsafeHtmlConstruction {
     MarkdownSink() {
       exists(DataFlow::Node pred, DataFlow::Node succ, Markdown::MarkdownStep step |
         step.step(pred, succ) and
+        step.preservesHtml() and
         this = pred and
         succ = isUsedInXssSink(xssSink)
       )
@@ -176,7 +177,7 @@ module UnsafeHtmlConstruction {
   /**
    *  Holds if there is a path without unmatched return steps from `source` to `sink`.
    */
-  predicate requireMatchedReturn(DataFlow::SourcePathNode source, DataFlow::SinkPathNode sink) {
+  predicate hasPathWithoutUnmatchedReturn(DataFlow::SourcePathNode source, DataFlow::SinkPathNode sink) {
     exists(DataFlow::MidPathNode mid |
       source.getASuccessor*() = mid and
       sink = mid.getASuccessor() and
