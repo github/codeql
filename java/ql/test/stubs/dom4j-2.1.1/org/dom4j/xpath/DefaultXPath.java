@@ -91,6 +91,10 @@ public class DefaultXPath implements org.dom4j.XPath, Serializable {
   public void setNamespaceURIs(Map<String, String> map) {
   }
 
+  @Override
+  public void setVariableContext(org.jaxen.VariableContext variableContext) {
+  }
+
 }
 
 /*

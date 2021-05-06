@@ -45,6 +45,7 @@ public interface XPath extends NodeFilter {
 
 	void setNamespaceURIs(Map<String, String> map);
 
+	void setVariableContext(org.jaxen.VariableContext variableContext);
 }
 
 /*

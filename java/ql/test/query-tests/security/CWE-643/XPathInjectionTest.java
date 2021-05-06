@@ -110,12 +110,12 @@ public class XPathInjectionTest {
         String expression4 = "/users/user[@name=$user and @pass=$pass]";
         xpath.setXPathVariableResolver(v -> {
             switch (v.getLocalPart()) {
-            case "user":
-                return user;
-            case "pass":
-                return pass;
-            default:
-                throw new IllegalArgumentException();
+                case "user":
+                    return user;
+                case "pass":
+                    return pass;
+                default:
+                    throw new IllegalArgumentException();
             }
         });
         xpath.evaluate(expression4, doc, XPathConstants.BOOLEAN); // Safe
@@ -154,5 +154,13 @@ public class XPathInjectionTest {
         Namespace namespace = new Namespace("prefix", "http://some.uri.io");
         namespace.createPattern("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
         namespace.createXPathFilter("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
+
+        org.jaxen.SimpleVariableContext svc = new org.jaxen.SimpleVariableContext();
+        svc.setVariableValue("user", user);
+        svc.setVariableValue("pass", pass);
+        String xpathString = "/users/user[@name=$user and @pass=$pass]";
+        org.dom4j.XPath safeXPath = document.createXPath(xpathString); // Safe
+        safeXPath.setVariableContext(svc);
+        safeXPath.selectSingleNode(document); // Safe
     }
 }
