@@ -182,9 +182,7 @@ class BadAllocCatchBlock extends CatchBlock {
  */
 predicate noThrowInTryBlock(NewOrNewArrayExpr newExpr, BadAllocCatchBlock catchBlock) {
   exists(TryStmt try |
-    forall(Expr cand | cand.getEnclosingBlock().getEnclosingBlock*() = try.getStmt() |
-      not convertedExprMayThrow(cand)
-    ) and
+    not stmtMayThrow(try.getStmt()) and
     try.getACatchClause() = catchBlock and
     newExpr.getEnclosingBlock().getEnclosingBlock*() = try.getStmt()
   )
