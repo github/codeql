@@ -32,7 +32,7 @@ public class UnsafeAndroidAccess extends Activity {
 
 		String thisUrl = getIntent().getExtras().getString("url");
 		wv.loadUrl(thisUrl); // $hasUnsafeAndroidAccess
-		wv.loadUrl("https://www.mycorp.com/" + thisUrl); // Safe
+		wv.loadUrl("https://www.mycorp.com/" + thisUrl); // $ SPURIOUS: hasUnsafeAndroidAccess // Safe, needs sanitizer
 		wv.loadUrl("https://www.mycorp.com"); // Safe
 	}
 
@@ -51,7 +51,7 @@ public class UnsafeAndroidAccess extends Activity {
 
 		String thisUrl = getIntent().getStringExtra("url");
 		wv.loadUrl(thisUrl); // $hasUnsafeAndroidAccess
-		wv.loadUrl("https://www.mycorp.com/" + thisUrl); // Safe
+		wv.loadUrl("https://www.mycorp.com/" + thisUrl); // $ SPURIOUS: hasUnsafeAndroidAccess // Safe, needs sanitizer
 		wv.loadUrl("https://www.mycorp.com"); // Safe
 	}
 
@@ -70,7 +70,7 @@ public class UnsafeAndroidAccess extends Activity {
 
 		String thisUrl = getIntent().getStringExtra("url");
 		wv.loadUrl(thisUrl); // $hasUnsafeAndroidAccess
-		wv.loadUrl("https://www.mycorp.com/" + thisUrl); // Safe
+		wv.loadUrl("https://www.mycorp.com/" + thisUrl); // $ SPURIOUS: hasUnsafeAndroidAccess // Safe, needs sanitizer
 		wv.loadUrl("https://www.mycorp.com"); // Safe
 	}
 
