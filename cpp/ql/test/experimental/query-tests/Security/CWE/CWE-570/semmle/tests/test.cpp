@@ -158,10 +158,10 @@ void good_placement_new_with_exception_handling() {
   catch (...) {  }
 }
 
-int rand();
+int unknown_value_without_exceptions() noexcept;
 
 void may_throw() {
-  if(rand()) {
+  if(unknown_value_without_exceptions()) {
     throw "bad luck exception!";
   }
 }
@@ -170,11 +170,11 @@ void unknown_code_that_may_throw(int*);
 void unknown_code_that_will_not_throw(int*) noexcept;
 
 void calls_throwing_code(int* p) {
-  if(rand()) unknown_code_that_may_throw(p);
+  if(unknown_value_without_exceptions()) unknown_code_that_may_throw(p);
 }
 
 void calls_non_throwing(int* p) {
-  if (rand()) unknown_code_that_will_not_throw(p);
+  if (unknown_value_without_exceptions()) unknown_code_that_will_not_throw(p);
 }
 
 void good_new_with_throwing_call() {
@@ -196,7 +196,7 @@ void good_new_with_throwing_call() {
 
 void bad_new_with_nonthrowing_call() {
   try {
-    int* p1 = new(std::nothrow) int; // BAD [NOT DETECTED]
+    int* p1 = new(std::nothrow) int; // BAD
     calls_non_throwing(p1);
   } catch(...) {  }
 
