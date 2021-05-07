@@ -26,7 +26,7 @@ module LDAPQuery {
     /**
      * Gets the argument containing the executed expression.
      */
-    abstract DataFlow::Node getLDAPNode();
+    abstract DataFlow::Node getQuery();
   }
 }
 
@@ -44,7 +44,7 @@ class LDAPQuery extends DataFlow::Node {
   /**
    * Gets the argument containing the executed expression.
    */
-  DataFlow::Node getLDAPNode() { result = range.getLDAPNode() }
+  DataFlow::Node getQuery() { result = range.getQuery() }
 }
 
 /** Provides classes for modeling LDAP components escape-related APIs. */
@@ -59,7 +59,7 @@ module LDAPEscape {
     /**
      * Gets the argument containing the escaped expression.
      */
-    abstract DataFlow::Node getEscapeNode();
+    abstract DataFlow::Node getAnInput();
   }
 }
 
@@ -77,5 +77,5 @@ class LDAPEscape extends DataFlow::Node {
   /**
    * Gets the argument containing the escaped expression.
    */
-  DataFlow::Node getEscapeNode() { result = range.getEscapeNode() }
+  DataFlow::Node getAnInput() { result = range.getAnInput() }
 }

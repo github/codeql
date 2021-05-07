@@ -36,7 +36,7 @@ private module LDAP {
      * See `LDAP2QueryMethods`
      */
     private class LDAP2Query extends DataFlow::CallCfgNode, LDAPQuery::Range {
-      DataFlow::Node ldapNode;
+      DataFlow::Node ldapQuery;
 
       LDAP2Query() {
         exists(DataFlow::AttrRead searchMethod |
@@ -45,17 +45,17 @@ private module LDAP {
             searchMethod.getObject().getALocalSource() and
           searchMethod.getAttributeName() instanceof LDAP2QueryMethods and
           (
-            ldapNode = this.getArg(0)
+            ldapQuery = this.getArg(0)
             or
             (
-              ldapNode = this.getArg(2) or
-              ldapNode = this.getArgByName("filterstr")
+              ldapQuery = this.getArg(2) or
+              ldapQuery = this.getArgByName("filterstr")
             )
           )
         )
       }
 
-      override DataFlow::Node getLDAPNode() { result = ldapNode }
+      override DataFlow::Node getQuery() { result = ldapQuery }
     }
 
     /**
@@ -68,7 +68,7 @@ private module LDAP {
         this = API::moduleImport("ldap").getMember("dn").getMember("escape_dn_chars").getACall()
       }
 
-      override DataFlow::Node getEscapeNode() { result = this.getArg(0) }
+      override DataFlow::Node getAnInput() { result = this.getArg(0) }
     }
 
     /**
@@ -82,7 +82,7 @@ private module LDAP {
           API::moduleImport("ldap").getMember("filter").getMember("escape_filter_chars").getACall()
       }
 
-      override DataFlow::Node getEscapeNode() { result = this.getArg(0) }
+      override DataFlow::Node getAnInput() { result = this.getArg(0) }
     }
   }
 
@@ -96,7 +96,7 @@ private module LDAP {
      * A class to find `ldap3` methods executing a query.
      */
     private class LDAP3Query extends DataFlow::CallCfgNode, LDAPQuery::Range {
-      DataFlow::Node ldapNode;
+      DataFlow::Node ldapQuery;
 
       LDAP3Query() {
         exists(DataFlow::AttrRead searchMethod |
@@ -105,13 +105,13 @@ private module LDAP {
             searchMethod.getObject().getALocalSource() and
           searchMethod.getAttributeName() = "search" and
           (
-            ldapNode = this.getArg(0) or
-            ldapNode = this.getArg(1)
+            ldapQuery = this.getArg(0) or
+            ldapQuery = this.getArg(1)
           )
         )
       }
 
-      override DataFlow::Node getLDAPNode() { result = ldapNode }
+      override DataFlow::Node getQuery() { result = ldapQuery }
     }
 
     /**
@@ -129,7 +129,7 @@ private module LDAP {
               .getACall()
       }
 
-      override DataFlow::Node getEscapeNode() { result = this.getArg(0) }
+      override DataFlow::Node getAnInput() { result = this.getArg(0) }
     }
 
     /**
@@ -147,7 +147,7 @@ private module LDAP {
               .getACall()
       }
 
-      override DataFlow::Node getEscapeNode() { result = this.getArg(0) }
+      override DataFlow::Node getAnInput() { result = this.getArg(0) }
     }
   }
 }
