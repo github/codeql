@@ -25,7 +25,7 @@ break_ensure.rb:
 #-----|  -> ensure ...
 
 #    2| element
-#-----|  -> do ...
+#-----|  -> element
 
 #    2| In
 #-----| empty -> for ... in ...
@@ -35,10 +35,10 @@ break_ensure.rb:
 #-----|  -> In
 
 #    2| do ...
-#-----|  -> element
+#-----|  -> In
 
 #    3| if ...
-#-----|  -> In
+#-----|  -> do ...
 
 #    3| ... > ...
 #-----| true -> break
@@ -96,7 +96,7 @@ break_ensure.rb:
 #-----|  -> exit m2 (normal)
 
 #   14| element
-#-----|  -> do ...
+#-----|  -> element
 
 #   14| In
 #-----| empty -> for ... in ...
@@ -106,7 +106,7 @@ break_ensure.rb:
 #-----|  -> In
 
 #   14| do ...
-#-----|  -> element
+#-----|  -> In
 
 #   16| if ...
 #-----|  -> ensure ...
@@ -131,7 +131,7 @@ break_ensure.rb:
 #-----|  -> [ensure: break] elements
 
 #   20| if ...
-#-----|  -> In
+#-----|  -> do ...
 
 #   20| [ensure: break] if ...
 #-----| break -> for ... in ...
@@ -214,10 +214,10 @@ break_ensure.rb:
 #-----| return -> exit m3 (normal)
 
 #   33| element
-#-----|  -> do ...
+#-----|  -> self
 
 #   33| [ensure: return] element
-#-----|  -> [ensure: return] do ...
+#-----|  -> [ensure: return] self
 
 #   33| In
 #-----| empty -> for ... in ...
@@ -234,16 +234,16 @@ break_ensure.rb:
 #-----|  -> [ensure: return] In
 
 #   33| do ...
-#-----|  -> self
-
-#   33| [ensure: return] do ...
-#-----|  -> [ensure: return] self
-
-#   35| if ...
 #-----|  -> In
 
-#   35| [ensure: return] if ...
+#   33| [ensure: return] do ...
 #-----|  -> [ensure: return] In
+
+#   35| if ...
+#-----|  -> do ...
+
+#   35| [ensure: return] if ...
+#-----|  -> [ensure: return] do ...
 
 #   35| ... > ...
 #-----| true -> break
@@ -304,7 +304,7 @@ break_ensure.rb:
 #-----|  -> exit m4 (normal)
 
 #   45| element
-#-----|  -> do ...
+#-----|  -> element
 
 #   45| In
 #-----| empty -> for ... in ...
@@ -314,7 +314,7 @@ break_ensure.rb:
 #-----|  -> In
 
 #   45| do ...
-#-----|  -> element
+#-----|  -> In
 
 #   47| if ...
 #-----|  -> ensure ...
@@ -345,7 +345,7 @@ break_ensure.rb:
 #-----|  -> [ensure: raise] element
 
 #   51| if ...
-#-----|  -> In
+#-----|  -> do ...
 
 #   51| [ensure: raise] if ...
 #-----| raise -> for ... in ...
@@ -646,10 +646,7 @@ cfg.rb:
 #-----|  -> false
 
 #   31| true
-#-----| true -> do ...
-
-#   31| do ...
-#-----|  -> 1
+#-----| true -> 1
 
 #   32| break
 #-----| break -> while ...
@@ -1104,7 +1101,7 @@ cfg.rb:
 #-----|  -> $global
 
 #   90| x
-#-----|  -> do ...
+#-----|  -> x
 
 #   90| In
 #-----| empty -> for ... in ...
@@ -1123,7 +1120,7 @@ cfg.rb:
 #-----|  -> [...]
 
 #   90| do ...
-#-----|  -> x
+#-----|  -> In
 
 #   91| if ...
 #-----|  -> self
@@ -1142,7 +1139,7 @@ cfg.rb:
 #-----| next -> In
 
 #   92| call to puts
-#-----|  -> In
+#-----|  -> do ...
 
 #   92| self
 #-----|  -> x
@@ -1841,8 +1838,8 @@ cfg.rb:
 #-----|  -> i
 
 #  176| ... > ...
-#-----| false -> do ...
 #-----| true -> until ...
+#-----| false -> x
 
 #  176| x
 #-----|  -> 10
@@ -1863,7 +1860,7 @@ cfg.rb:
 #-----|  -> ... += ...
 
 #  176| call to puts
-#-----|  -> x
+#-----|  -> do ...
 
 #  176| self
 #-----|  -> "hello"
@@ -1927,8 +1924,8 @@ cfg.rb:
 #-----|  -> i
 
 #  182| ... < ...
-#-----| true -> do ...
 #-----| false -> while ...
+#-----| true -> x
 
 #  182| x
 #-----|  -> 10
@@ -1962,10 +1959,10 @@ cfg.rb:
 #-----|  -> ... == ...
 
 #  184| redo
-#-----| redo -> do ...
+#-----| redo -> x
 
 #  185| call to puts
-#-----|  -> x
+#-----|  -> do ...
 
 #  185| self
 #-----|  -> x
@@ -2708,8 +2705,8 @@ loops.rb:
 #-----|  -> exit m1 (normal)
 
 #    2| ... >= ...
-#-----| true -> do ...
 #-----| false -> while ...
+#-----| true -> self
 
 #    2| x
 #-----|  -> 0
@@ -2718,7 +2715,7 @@ loops.rb:
 #-----|  -> ... >= ...
 
 #    2| do ...
-#-----|  -> self
+#-----|  -> x
 
 #    3| call to puts
 #-----|  -> x
@@ -2730,7 +2727,7 @@ loops.rb:
 #-----|  -> call to puts
 
 #    4| ... -= ...
-#-----|  -> x
+#-----|  -> do ...
 
 #    4| x
 #-----|  -> 1
@@ -2756,8 +2753,8 @@ loops.rb:
 #-----|  -> self
 
 #    9| ... >= ...
-#-----| true -> do ...
 #-----| false -> while ...
+#-----| true -> self
 
 #    9| x
 #-----|  -> 0
@@ -2766,7 +2763,7 @@ loops.rb:
 #-----|  -> ... >= ...
 
 #    9| do ...
-#-----|  -> self
+#-----|  -> x
 
 #   10| call to puts
 #-----|  -> x
@@ -2832,10 +2829,10 @@ loops.rb:
 #-----|  -> ... > ...
 
 #   17| redo
-#-----| redo -> do ...
+#-----| redo -> self
 
 #   19| call to puts
-#-----|  -> x
+#-----|  -> do ...
 
 #   19| self
 #-----|  -> "Iter"
@@ -2922,7 +2919,6 @@ loops.rb:
 #-----|  -> exit m4 (normal)
 
 #   31| ... < ...
-#-----| true -> do ...
 #-----| false -> while ...
 
 #   31| x
@@ -2930,9 +2926,6 @@ loops.rb:
 
 #   31| y
 #-----|  -> ... < ...
-
-#   31| do ...
-#-----|  -> x
 
 raise.rb:
 #    1| enter raise.rb

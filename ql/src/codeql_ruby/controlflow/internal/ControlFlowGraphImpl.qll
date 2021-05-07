@@ -1111,6 +1111,7 @@ module Trees {
       this instanceof ParenthesizedExpr or
       this instanceof BeginBlock or
       this instanceof ASTInternal::TThen or
+      this instanceof ASTInternal::TDo or
       this instanceof ASTInternal::TElse
     }
 
@@ -1142,6 +1143,7 @@ module Trees {
       not this instanceof ParenthesizedExpr and
       not this instanceof BeginBlock and
       not this instanceof ASTInternal::TThen and
+      not this instanceof ASTInternal::TDo and
       not this instanceof ASTInternal::TElse
     }
 
