@@ -63,7 +63,7 @@ predicate exprIsSubLeftOrLess(SubExpr sub, DataFlow::Node n) {
   exists(DataFlow::Node other, float p, float q |
     // linear access of `n`
     exprIsSubLeftOrLess(sub, other) and
-    linearAccess(other.asExpr(), n.asExpr(), p, q) and // other = p * e + q
+    linearAccess(other.asExpr(), n.asExpr(), p, q) and // other = p * n + q
     p >= 1 and
     q >= 0
   )
