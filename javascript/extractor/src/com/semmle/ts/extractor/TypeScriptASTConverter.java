@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -1001,10 +1000,10 @@ public class TypeScriptASTConverter {
   private Node convertConditionalType(JsonObject node, SourceLocation loc) throws ParseError {
     return new ConditionalTypeExpr(
         loc,
-        convertChild(node, "checkType"),
-        convertChild(node, "extendsType"),
-        convertChild(node, "trueType"),
-        convertChild(node, "falseType"));
+        convertChildAsType(node, "checkType"),
+        convertChildAsType(node, "extendsType"),
+        convertChildAsType(node, "trueType"),
+        convertChildAsType(node, "falseType"));
   }
 
   private SourceLocation getSourceRange(Position from, Position to) {
@@ -1613,6 +1612,10 @@ public class TypeScriptASTConverter {
         literal = new Literal(loc, arg.getTokenType(), "-" + arg.getValue());
       }
     }
+    if (literal instanceof TemplateLiteral) {
+      // A LiteralType containing a NoSubstitutionTemplateLiteral must produce a TemplateLiteralTypeExpr
+      return new TemplateLiteralTypeExpr(literal.getLoc(), new ArrayList<>(), ((TemplateLiteral)literal).getQuasis());
+    }
     return literal;
   }
 
@@ -1842,7 +1845,7 @@ public class TypeScriptASTConverter {
   }
 
   private Node convertOptionalType(JsonObject node, SourceLocation loc) throws ParseError {
-    return new OptionalTypeExpr(loc, convertChild(node, "type"));
+    return new OptionalTypeExpr(loc, convertChildAsType(node, "type"));
   }
 
   private ITypeExpression asType(Node node) {

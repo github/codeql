@@ -7,6 +7,7 @@ private import semmle.code.cpp.controlflow.SSA
 private import semmle.code.cpp.dataflow.internal.SubBasicBlocks
 private import semmle.code.cpp.dataflow.internal.AddressFlow
 private import semmle.code.cpp.models.implementations.Iterator
+private import semmle.code.cpp.models.interfaces.PointerWrapper
 
 /**
  * A conceptual variable that is assigned only once, like an SSA variable. This
@@ -158,18 +159,14 @@ private module PartialDefinitions {
     Expr innerDefinedExpr;
 
     IteratorPartialDefinition() {
-      exists(Expr convertedInner |
-        not this instanceof Conversion and
-        valueToUpdate(convertedInner, this.getFullyConverted(), node) and
-        innerDefinedExpr = convertedInner.getUnconverted() and
-        (
-          innerDefinedExpr.(Call).getQualifier() = getAnIteratorAccess(collection)
-          or
-          innerDefinedExpr.(Call).getQualifier() = collection.getAnAccess() and
-          collection instanceof IteratorParameter
-        ) and
-        innerDefinedExpr.(Call).getTarget() instanceof IteratorPointerDereferenceMemberOperator
-      )
+      innerDefinedExpr = getInnerDefinedExpr(this, node) and
+      (
+        innerDefinedExpr.(Call).getQualifier() = getAnIteratorAccess(collection)
+        or
+        innerDefinedExpr.(Call).getQualifier() = collection.getAnAccess() and
+        collection instanceof IteratorParameter
+      ) and
+      innerDefinedExpr.(Call).getTarget() instanceof IteratorPointerDereferenceMemberOperator
       or
       // iterators passed by value without a copy constructor
       exists(Call call |
@@ -207,16 +204,18 @@ private module PartialDefinitions {
     }
   }
 
+  private Expr getInnerDefinedExpr(Expr e, ControlFlowNode node) {
+    not e instanceof Conversion and
+    exists(Expr convertedInner |
+      valueToUpdate(convertedInner, e.getFullyConverted(), node) and
+      result = convertedInner.getUnconverted()
+    )
+  }
+
   class VariablePartialDefinition extends PartialDefinition {
     Expr innerDefinedExpr;
 
-    VariablePartialDefinition() {
-      not this instanceof Conversion and
-      exists(Expr convertedInner |
-        valueToUpdate(convertedInner, this.getFullyConverted(), node) and
-        innerDefinedExpr = convertedInner.getUnconverted()
-      )
-    }
+    VariablePartialDefinition() { innerDefinedExpr = getInnerDefinedExpr(this, node) }
 
     deprecated override predicate partiallyDefines(Variable v) {
       innerDefinedExpr = v.getAnAccess()
@@ -296,7 +295,8 @@ module FlowVar_internal {
     // treating them as immutable, but for data flow it gives better results in
     // practice to make the variable synonymous with its contents.
     not v.getUnspecifiedType() instanceof ReferenceType and
-    not v instanceof IteratorParameter
+    not v instanceof IteratorParameter and
+    not v instanceof PointerWrapperParameter
   }
 
   /**
@@ -644,10 +644,19 @@ module FlowVar_internal {
   predicate parameterIsNonConstReference(Parameter p) {
     exists(ReferenceType refType |
       refType = p.getUnderlyingType() and
-      not refType.getBaseType().isConst()
+      (
+        not refType.getBaseType().isConst()
+        or
+        // A field of a parameter of type `const std::shared_ptr<A>& p` can still be changed even though
+        // the base type of the reference is `const`.
+        refType.getBaseType().getUnspecifiedType() =
+          any(PointerWrapper wrapper | not wrapper.pointsToConst())
+      )
     )
     or
     p instanceof IteratorParameter
+    or
+    p instanceof PointerWrapperParameter
   }
 
   /**
@@ -834,6 +843,10 @@ module FlowVar_internal {
 
   class IteratorParameter extends Parameter {
     IteratorParameter() { this.getUnspecifiedType() instanceof Iterator }
+  }
+
+  class PointerWrapperParameter extends Parameter {
+    PointerWrapperParameter() { this.getUnspecifiedType() instanceof PointerWrapper }
   }
 
   /**

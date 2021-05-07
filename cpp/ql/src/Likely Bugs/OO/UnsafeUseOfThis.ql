@@ -10,6 +10,7 @@
  * @tags correctness
  *       language-features
  *       security
+ *       external/cwe/cwe-670
  */
 
 import cpp

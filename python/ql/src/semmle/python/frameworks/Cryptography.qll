@@ -83,21 +83,9 @@ private module CryptographyModel {
       result.(DataFlow::CallCfgNode).getFunction() = curveClassWithKeySize(keySize) and
       origin = result
       or
-      // Due to bad performance when using normal setup with we have inlined that code and forced a join
       exists(DataFlow::TypeTracker t2 |
-        exists(DataFlow::StepSummary summary |
-          curveClassInstanceWithKeySize_first_join(t2, keySize, origin, result, summary) and
-          t = t2.append(summary)
-        )
+        result = curveClassInstanceWithKeySize(t2, keySize, origin).track(t2, t)
       )
-    }
-
-    pragma[nomagic]
-    private predicate curveClassInstanceWithKeySize_first_join(
-      DataFlow::TypeTracker t2, int keySize, DataFlow::Node origin, DataFlow::Node res,
-      DataFlow::StepSummary summary
-    ) {
-      DataFlow::StepSummary::step(curveClassInstanceWithKeySize(t2, keySize, origin), res, summary)
     }
 
     /** Gets a reference to a predefined curve class instance with a specific key size (in bits), as well as the origin of the class. */

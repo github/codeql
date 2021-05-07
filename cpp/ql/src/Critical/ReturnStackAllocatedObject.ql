@@ -7,6 +7,8 @@
  * @tags reliability
  *       security
  *       external/cwe/cwe-562
+ * @deprecated This query is not suitable for production use and has been deprecated. Use
+ *             cpp/return-stack-allocated-memory instead.
  */
 
 import semmle.code.cpp.pointsto.PointsTo

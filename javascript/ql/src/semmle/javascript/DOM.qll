@@ -469,6 +469,9 @@ module DOM {
     t.start() and
     result = locationSource()
     or
+    t.startInProp("location") and
+    result = [DataFlow::globalObjectRef(), documentSource()]
+    or
     exists(DataFlow::TypeTracker t2 | result = locationRef(t2).track(t2, t))
   }
 

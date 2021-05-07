@@ -4,13 +4,8 @@
  */
 
 private import javascript
+private import semmle.javascript.Unit
 private import semmle.javascript.internal.CachedStages
-
-private newtype TUnit = MkUnit()
-
-private class Unit extends TUnit {
-  string toString() { result = "unit" }
-}
 
 /**
  * Internal extension point for adding flow edges prior to call graph construction

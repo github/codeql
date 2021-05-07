@@ -32,7 +32,7 @@ Check the return value of functions that return status information.
 <references>
 
 <li>
-  M. Henricson and E. Nyquist, <i>Industrial Strength C++</i>, Chapter 12: Error handling. Prentice Hall PTR, 1997 (<a href="http://mongers.org/industrial-c++/">available online</a>).
+  M. Henricson and E. Nyquist, <i>Industrial Strength C++</i>, Chapter 12: Error handling. Prentice Hall PTR, 1997 (<a href="https://web.archive.org/web/20190919025638/https://mongers.org/industrial-c++/">available online</a>).
 </li>
 <li>
   The CERT C Secure Coding Standard: <a href="https://www.securecoding.cert.org/confluence/display/perl/EXP32-PL.+Do+not+ignore+function+return+values">EXP32-PL. Do not ignore function return values</a>.

@@ -31,7 +31,7 @@ predicate accessPathCostLimits(int apLimit, int tupleLimit) {
  * currently excludes read-steps, store-steps, and flow-through.
  *
  * The analysis uses non-linear recursion: When computing a flow path in or out
- * of a call, we use the results of the analysis recursively to resolve lamba
+ * of a call, we use the results of the analysis recursively to resolve lambda
  * calls. For this reason, we cannot reuse the code from `DataFlowImpl.qll` directly.
  */
 private module LambdaFlow {

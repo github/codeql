@@ -68,6 +68,7 @@ import semmle.javascript.dataflow.TaintTracking
 import semmle.javascript.dataflow.TypeInference
 import semmle.javascript.frameworks.Angular2
 import semmle.javascript.frameworks.AngularJS
+import semmle.javascript.frameworks.Anser
 import semmle.javascript.frameworks.AsyncPackage
 import semmle.javascript.frameworks.AWS
 import semmle.javascript.frameworks.Azure
@@ -105,6 +106,7 @@ import semmle.javascript.frameworks.PropertyProjection
 import semmle.javascript.frameworks.Puppeteer
 import semmle.javascript.frameworks.React
 import semmle.javascript.frameworks.ReactNative
+import semmle.javascript.frameworks.Redux
 import semmle.javascript.frameworks.Request
 import semmle.javascript.frameworks.RxJS
 import semmle.javascript.frameworks.ServerLess
