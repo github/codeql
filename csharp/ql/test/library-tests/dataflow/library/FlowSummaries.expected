@@ -2211,54 +2211,83 @@
 | System.Text.RegularExpressions.MatchCollection.get_Item(int) | element of argument -1 -> return (normal) | true |
 | System.Text.RegularExpressions.MatchCollection.set_Item(int, Match) | argument 1 -> element of argument -1 | true |
 | System.Text.RegularExpressions.MatchCollection.set_Item(int, object) | argument 1 -> element of argument -1 | true |
+| System.Text.StringBuilder.Append(Char[]) | argument -1 -> return (normal) | true |
+| System.Text.StringBuilder.Append(Char[]) | element of argument 0 -> element of argument -1 | true |
+| System.Text.StringBuilder.Append(Char[], int, int) | argument -1 -> return (normal) | true |
+| System.Text.StringBuilder.Append(Char[], int, int) | element of argument 0 -> element of argument -1 | true |
+| System.Text.StringBuilder.Append(ReadOnlyMemory<Char>) | argument -1 -> return (normal) | true |
+| System.Text.StringBuilder.Append(ReadOnlySpan<Char>) | argument -1 -> return (normal) | true |
+| System.Text.StringBuilder.Append(StringBuilder) | argument -1 -> return (normal) | true |
+| System.Text.StringBuilder.Append(StringBuilder, int, int) | argument -1 -> return (normal) | true |
+| System.Text.StringBuilder.Append(bool) | argument -1 -> return (normal) | true |
+| System.Text.StringBuilder.Append(byte) | argument -1 -> return (normal) | true |
+| System.Text.StringBuilder.Append(char) | argument -1 -> return (normal) | true |
+| System.Text.StringBuilder.Append(char*, int) | argument -1 -> return (normal) | true |
+| System.Text.StringBuilder.Append(char, int) | argument -1 -> return (normal) | true |
+| System.Text.StringBuilder.Append(decimal) | argument -1 -> return (normal) | true |
+| System.Text.StringBuilder.Append(double) | argument -1 -> return (normal) | true |
+| System.Text.StringBuilder.Append(float) | argument -1 -> return (normal) | true |
+| System.Text.StringBuilder.Append(int) | argument -1 -> return (normal) | true |
+| System.Text.StringBuilder.Append(long) | argument -1 -> return (normal) | true |
 | System.Text.StringBuilder.Append(object) | argument 0 -> element of argument -1 | true |
-| System.Text.StringBuilder.Append(object) | argument 0 -> element of return (normal) | true |
+| System.Text.StringBuilder.Append(object) | argument -1 -> return (normal) | true |
+| System.Text.StringBuilder.Append(sbyte) | argument -1 -> return (normal) | true |
+| System.Text.StringBuilder.Append(short) | argument -1 -> return (normal) | true |
 | System.Text.StringBuilder.Append(string) | argument 0 -> element of argument -1 | true |
-| System.Text.StringBuilder.Append(string) | argument 0 -> element of return (normal) | true |
+| System.Text.StringBuilder.Append(string) | argument -1 -> return (normal) | true |
 | System.Text.StringBuilder.Append(string, int, int) | argument 0 -> element of argument -1 | true |
-| System.Text.StringBuilder.Append(string, int, int) | argument 0 -> element of return (normal) | true |
+| System.Text.StringBuilder.Append(string, int, int) | argument -1 -> return (normal) | true |
+| System.Text.StringBuilder.Append(uint) | argument -1 -> return (normal) | true |
+| System.Text.StringBuilder.Append(ulong) | argument -1 -> return (normal) | true |
+| System.Text.StringBuilder.Append(ushort) | argument -1 -> return (normal) | true |
 | System.Text.StringBuilder.AppendFormat(IFormatProvider, string, object) | argument 1 -> element of argument -1 | true |
-| System.Text.StringBuilder.AppendFormat(IFormatProvider, string, object) | argument 1 -> element of return (normal) | true |
 | System.Text.StringBuilder.AppendFormat(IFormatProvider, string, object) | argument 2 -> element of argument -1 | true |
-| System.Text.StringBuilder.AppendFormat(IFormatProvider, string, object) | argument 2 -> element of return (normal) | true |
+| System.Text.StringBuilder.AppendFormat(IFormatProvider, string, object) | argument -1 -> return (normal) | true |
 | System.Text.StringBuilder.AppendFormat(IFormatProvider, string, object, object) | argument 1 -> element of argument -1 | true |
-| System.Text.StringBuilder.AppendFormat(IFormatProvider, string, object, object) | argument 1 -> element of return (normal) | true |
 | System.Text.StringBuilder.AppendFormat(IFormatProvider, string, object, object) | argument 2 -> element of argument -1 | true |
-| System.Text.StringBuilder.AppendFormat(IFormatProvider, string, object, object) | argument 2 -> element of return (normal) | true |
 | System.Text.StringBuilder.AppendFormat(IFormatProvider, string, object, object) | argument 3 -> element of argument -1 | true |
-| System.Text.StringBuilder.AppendFormat(IFormatProvider, string, object, object) | argument 3 -> element of return (normal) | true |
+| System.Text.StringBuilder.AppendFormat(IFormatProvider, string, object, object) | argument -1 -> return (normal) | true |
 | System.Text.StringBuilder.AppendFormat(IFormatProvider, string, object, object, object) | argument 1 -> element of argument -1 | true |
-| System.Text.StringBuilder.AppendFormat(IFormatProvider, string, object, object, object) | argument 1 -> element of return (normal) | true |
 | System.Text.StringBuilder.AppendFormat(IFormatProvider, string, object, object, object) | argument 2 -> element of argument -1 | true |
-| System.Text.StringBuilder.AppendFormat(IFormatProvider, string, object, object, object) | argument 2 -> element of return (normal) | true |
 | System.Text.StringBuilder.AppendFormat(IFormatProvider, string, object, object, object) | argument 3 -> element of argument -1 | true |
-| System.Text.StringBuilder.AppendFormat(IFormatProvider, string, object, object, object) | argument 3 -> element of return (normal) | true |
 | System.Text.StringBuilder.AppendFormat(IFormatProvider, string, object, object, object) | argument 4 -> element of argument -1 | true |
-| System.Text.StringBuilder.AppendFormat(IFormatProvider, string, object, object, object) | argument 4 -> element of return (normal) | true |
+| System.Text.StringBuilder.AppendFormat(IFormatProvider, string, object, object, object) | argument -1 -> return (normal) | true |
 | System.Text.StringBuilder.AppendFormat(IFormatProvider, string, params Object[]) | argument 1 -> element of argument -1 | true |
-| System.Text.StringBuilder.AppendFormat(IFormatProvider, string, params Object[]) | argument 1 -> element of return (normal) | true |
+| System.Text.StringBuilder.AppendFormat(IFormatProvider, string, params Object[]) | argument -1 -> return (normal) | true |
+| System.Text.StringBuilder.AppendFormat(IFormatProvider, string, params Object[]) | element of argument 2 -> element of argument -1 | true |
 | System.Text.StringBuilder.AppendFormat(string, object) | argument 0 -> element of argument -1 | true |
-| System.Text.StringBuilder.AppendFormat(string, object) | argument 0 -> element of return (normal) | true |
 | System.Text.StringBuilder.AppendFormat(string, object) | argument 1 -> element of argument -1 | true |
-| System.Text.StringBuilder.AppendFormat(string, object) | argument 1 -> element of return (normal) | true |
+| System.Text.StringBuilder.AppendFormat(string, object) | argument -1 -> return (normal) | true |
 | System.Text.StringBuilder.AppendFormat(string, object, object) | argument 0 -> element of argument -1 | true |
-| System.Text.StringBuilder.AppendFormat(string, object, object) | argument 0 -> element of return (normal) | true |
 | System.Text.StringBuilder.AppendFormat(string, object, object) | argument 1 -> element of argument -1 | true |
-| System.Text.StringBuilder.AppendFormat(string, object, object) | argument 1 -> element of return (normal) | true |
 | System.Text.StringBuilder.AppendFormat(string, object, object) | argument 2 -> element of argument -1 | true |
-| System.Text.StringBuilder.AppendFormat(string, object, object) | argument 2 -> element of return (normal) | true |
+| System.Text.StringBuilder.AppendFormat(string, object, object) | argument -1 -> return (normal) | true |
 | System.Text.StringBuilder.AppendFormat(string, object, object, object) | argument 0 -> element of argument -1 | true |
-| System.Text.StringBuilder.AppendFormat(string, object, object, object) | argument 0 -> element of return (normal) | true |
 | System.Text.StringBuilder.AppendFormat(string, object, object, object) | argument 1 -> element of argument -1 | true |
-| System.Text.StringBuilder.AppendFormat(string, object, object, object) | argument 1 -> element of return (normal) | true |
 | System.Text.StringBuilder.AppendFormat(string, object, object, object) | argument 2 -> element of argument -1 | true |
-| System.Text.StringBuilder.AppendFormat(string, object, object, object) | argument 2 -> element of return (normal) | true |
 | System.Text.StringBuilder.AppendFormat(string, object, object, object) | argument 3 -> element of argument -1 | true |
-| System.Text.StringBuilder.AppendFormat(string, object, object, object) | argument 3 -> element of return (normal) | true |
+| System.Text.StringBuilder.AppendFormat(string, object, object, object) | argument -1 -> return (normal) | true |
 | System.Text.StringBuilder.AppendFormat(string, params Object[]) | argument 0 -> element of argument -1 | true |
-| System.Text.StringBuilder.AppendFormat(string, params Object[]) | argument 0 -> element of return (normal) | true |
+| System.Text.StringBuilder.AppendFormat(string, params Object[]) | argument -1 -> return (normal) | true |
+| System.Text.StringBuilder.AppendFormat(string, params Object[]) | element of argument 1 -> element of argument -1 | true |
+| System.Text.StringBuilder.AppendJoin(char, params Object[]) | argument -1 -> return (normal) | true |
+| System.Text.StringBuilder.AppendJoin(char, params Object[]) | element of argument 1 -> element of argument -1 | true |
+| System.Text.StringBuilder.AppendJoin(char, params String[]) | argument -1 -> return (normal) | true |
+| System.Text.StringBuilder.AppendJoin(char, params String[]) | element of argument 1 -> element of argument -1 | true |
+| System.Text.StringBuilder.AppendJoin(string, params Object[]) | argument 0 -> element of argument -1 | true |
+| System.Text.StringBuilder.AppendJoin(string, params Object[]) | argument -1 -> return (normal) | true |
+| System.Text.StringBuilder.AppendJoin(string, params Object[]) | element of argument 1 -> element of argument -1 | true |
+| System.Text.StringBuilder.AppendJoin(string, params String[]) | argument 0 -> element of argument -1 | true |
+| System.Text.StringBuilder.AppendJoin(string, params String[]) | argument -1 -> return (normal) | true |
+| System.Text.StringBuilder.AppendJoin(string, params String[]) | element of argument 1 -> element of argument -1 | true |
+| System.Text.StringBuilder.AppendJoin<T>(char, IEnumerable<T>) | argument -1 -> return (normal) | true |
+| System.Text.StringBuilder.AppendJoin<T>(char, IEnumerable<T>) | element of argument 1 -> element of argument -1 | true |
+| System.Text.StringBuilder.AppendJoin<T>(string, IEnumerable<T>) | argument 0 -> element of argument -1 | true |
+| System.Text.StringBuilder.AppendJoin<T>(string, IEnumerable<T>) | argument -1 -> return (normal) | true |
+| System.Text.StringBuilder.AppendJoin<T>(string, IEnumerable<T>) | element of argument 1 -> element of argument -1 | true |
+| System.Text.StringBuilder.AppendLine() | argument -1 -> return (normal) | true |
 | System.Text.StringBuilder.AppendLine(string) | argument 0 -> element of argument -1 | true |
-| System.Text.StringBuilder.AppendLine(string) | argument 0 -> element of return (normal) | true |
+| System.Text.StringBuilder.AppendLine(string) | argument -1 -> return (normal) | true |
 | System.Text.StringBuilder.StringBuilder(string) | argument 0 -> element of return (normal) | true |
 | System.Text.StringBuilder.StringBuilder(string, int) | argument 0 -> element of return (normal) | true |
 | System.Text.StringBuilder.StringBuilder(string, int, int, int) | argument 0 -> element of return (normal) | true |

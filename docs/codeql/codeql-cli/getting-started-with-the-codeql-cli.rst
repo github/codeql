@@ -138,7 +138,7 @@ see ":doc:`About QL packs <about-ql-packs>`."
         
    - For the queries used in a particular LGTM Enterprise release, check out the
      branch tagged with the relevant release number. For example, the branch
-     tagged ``v1.23.0`` corresponds to LGTM Enterprise 1.23. You must use this
+     tagged ``v1.27.0`` corresponds to LGTM Enterprise 1.27. You must use this
      version if you want to upload data to LGTM Enterprise. For further
      information, see `Preparing CodeQL databases to upload to LGTM 
      <https://help.semmle.com/lgtm-enterprise/admin/help/prepare-database-upload.html>`__

@@ -224,7 +224,13 @@ module Express {
     /**
      * Gets the function body of this handler, if it is defined locally.
      */
-    RouteHandler getBody() { result.(DataFlow::SourceNode).flowsToExpr(this) }
+    RouteHandler getBody() {
+      exists(DataFlow::SourceNode source | source = flow().getALocalSource() |
+        result = source
+        or
+        DataFlow::functionOneWayForwardingStep(result.(DataFlow::SourceNode).getALocalUse(), source)
+      )
+    }
 
     /**
      * Holds if this is not followed by more handlers.
@@ -688,8 +694,7 @@ module Express {
     override RouteHandler getRouteHandler() { result = rh }
 
     override Expr getNameExpr() {
-      exists(DataFlow::PropWrite write |
-        getAHeaderSource().flowsTo(write.getBase()) and
+      exists(DataFlow::PropWrite write | getAHeaderSource().getAPropertyWrite() = write |
         result = write.getPropertyNameExpr()
       )
     }

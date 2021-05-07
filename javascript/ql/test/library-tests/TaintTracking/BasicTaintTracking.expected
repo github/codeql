@@ -166,3 +166,7 @@ typeInferenceMismatch
 | xml.js:23:18:23:25 | source() | xml.js:20:14:20:17 | attr |
 | xml.js:26:27:26:34 | source() | xml.js:26:10:26:39 | convert ... (), {}) |
 | xml.js:34:18:34:25 | source() | xml.js:31:18:31:21 | name |
+| xml.js:41:15:41:22 | source() | xml.js:44:10:44:22 | gchild.text() |
+| xml.js:41:15:41:22 | source() | xml.js:49:10:49:34 | child.a ... value() |
+| xml.js:41:15:41:22 | source() | xml.js:52:10:52:34 | child2. ... .name() |
+| xml.js:41:15:41:22 | source() | xml.js:58:12:58:14 | str |

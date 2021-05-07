@@ -1059,7 +1059,7 @@ ssa.cpp:
 #  241|     v241_3(void)                 = Call[g]                         : func:r241_2, this:r241_1
 #  241|     m241_4(unknown)              = ^CallSideEffect                 : ~m240_7
 #  241|     m241_5(unknown)              = Chi                             : total:m240_7, partial:m241_4
-#  241|     v241_6(void)                 = ^BufferReadSideEffect[-1]       : &:r241_1, ~m240_9
+#  241|     v241_6(void)                 = ^IndirectReadSideEffect[-1]     : &:r241_1, m240_9
 #  241|     m241_7(Constructible)        = ^IndirectMayWriteSideEffect[-1] : &:r241_1
 #  241|     m241_8(Constructible)        = Chi                             : total:m240_9, partial:m241_7
 #  242|     r242_1(glval<Constructible>) = VariableAddress[c]              : 
@@ -1067,7 +1067,7 @@ ssa.cpp:
 #  242|     v242_3(void)                 = Call[g]                         : func:r242_2, this:r242_1
 #  242|     m242_4(unknown)              = ^CallSideEffect                 : ~m241_5
 #  242|     m242_5(unknown)              = Chi                             : total:m241_5, partial:m242_4
-#  242|     v242_6(void)                 = ^BufferReadSideEffect[-1]       : &:r242_1, ~m241_8
+#  242|     v242_6(void)                 = ^IndirectReadSideEffect[-1]     : &:r242_1, m241_8
 #  242|     m242_7(Constructible)        = ^IndirectMayWriteSideEffect[-1] : &:r242_1
 #  242|     m242_8(Constructible)        = Chi                             : total:m241_8, partial:m242_7
 #  243|     r243_1(glval<Constructible>) = VariableAddress[c2]             : 
@@ -1084,7 +1084,7 @@ ssa.cpp:
 #  244|     v244_3(void)                 = Call[g]                         : func:r244_2, this:r244_1
 #  244|     m244_4(unknown)              = ^CallSideEffect                 : ~m243_7
 #  244|     m244_5(unknown)              = Chi                             : total:m243_7, partial:m244_4
-#  244|     v244_6(void)                 = ^BufferReadSideEffect[-1]       : &:r244_1, ~m243_9
+#  244|     v244_6(void)                 = ^IndirectReadSideEffect[-1]     : &:r244_1, m243_9
 #  244|     m244_7(Constructible)        = ^IndirectMayWriteSideEffect[-1] : &:r244_1
 #  244|     m244_8(Constructible)        = Chi                             : total:m243_9, partial:m244_7
 #  245|     v245_1(void)                 = NoOp                            : 

@@ -28,30 +28,52 @@ module SQL {
  * Provides classes modelling the (API compatible) `mysql` and `mysql2` packages.
  */
 private module MySql {
+  private string moduleName() { result = ["mysql", "mysql2", "mysql2/promise"] }
+
   /** Gets the package name `mysql` or `mysql2`. */
-  API::Node mysql() { result = API::moduleImport(["mysql", "mysql2"]) }
+  API::Node mysql() { result = API::moduleImport(moduleName()) }
 
   /** Gets a reference to `mysql.createConnection`. */
-  API::Node createConnection() { result = mysql().getMember("createConnection") }
+  API::Node createConnection() {
+    result = mysql().getMember(["createConnection", "createConnectionPromise"])
+  }
 
   /** Gets a reference to `mysql.createPool`. */
-  API::Node createPool() { result = mysql().getMember("createPool") }
+  API::Node createPool() { result = mysql().getMember(["createPool", "createPoolCluster"]) }
 
   /** Gets a node that contains a MySQL pool created using `mysql.createPool()`. */
-  API::Node pool() { result = createPool().getReturn() }
+  API::Node pool() {
+    result = createPool().getReturn()
+    or
+    result = pool().getMember("on").getReturn()
+    or
+    result = API::Node::ofType(moduleName(), ["Pool", "PoolCluster"])
+  }
 
   /** Gets a data flow node that contains a freshly created MySQL connection instance. */
   API::Node connection() {
     result = createConnection().getReturn()
     or
+    result = createConnection().getReturn().getPromised()
+    or
     result = pool().getMember("getConnection").getParameter(0).getParameter(1)
+    or
+    result = pool().getMember("getConnection").getPromised()
+    or
+    exists(API::CallNode call |
+      call = pool().getMember("on").getACall() and
+      call.getArgument(0).getStringValue() = ["connection", "acquire", "release"] and
+      result = call.getParameter(1).getParameter(0)
+    )
+    or
+    result = API::Node::ofType(moduleName(), ["Connection", "PoolConnection"])
   }
 
   /** A call to the MySql `query` method. */
   private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
     QueryCall() {
       exists(API::Node recv | recv = pool() or recv = connection() |
-        this = recv.getMember("query").getACall()
+        this = recv.getMember(["query", "execute"]).getACall()
       )
     }
 
@@ -112,7 +134,20 @@ private module Postgres {
     // pool.connect(function(err, client) { ... })
     result = pool().getMember("connect").getParameter(0).getParameter(1)
     or
+    // await pool.connect()
+    result = pool().getMember("connect").getReturn().getPromised()
+    or
     result = pgpConnection().getMember("client")
+    or
+    exists(API::CallNode call |
+      call = pool().getMember("on").getACall() and
+      call.getArgument(0).getStringValue() = ["connect", "acquire"] and
+      result = call.getParameter(1).getParameter(0)
+    )
+    or
+    result = client().getMember("on").getReturn()
+    or
+    result = API::Node::ofType("pg", ["Client", "PoolClient"])
   }
 
   /** Gets a constructor that when invoked constructs a new connection pool. */
@@ -129,6 +164,10 @@ private module Postgres {
     result = newPool().getInstance()
     or
     result = pgpDatabase().getMember("$pool")
+    or
+    result = pool().getMember("on").getReturn()
+    or
+    result = API::Node::ofType("pg", "Pool")
   }
 
   /** A call to the Postgres `query` method. */
@@ -140,7 +179,11 @@ private module Postgres {
 
   /** An expression that is passed to the `query` method and hence interpreted as SQL. */
   class QueryString extends SQL::SqlString {
-    QueryString() { this = any(QueryCall qc).getAQueryArgument().asExpr() }
+    QueryString() {
+      this = any(QueryCall qc).getAQueryArgument().asExpr()
+      or
+      this = API::moduleImport("pg-cursor").getParameter(0).getARhs().asExpr()
+    }
   }
 
   /** An expression that is passed as user name or password when creating a client or a pool. */
@@ -299,24 +342,17 @@ private module Sqlite {
   }
 
   /** Gets an expression that constructs a Sqlite database instance. */
-  API::Node newDb() {
+  API::Node database() {
     // new require('sqlite3').Database()
     result = sqlite().getMember("Database").getInstance()
+    or
+    result = API::Node::ofType("sqlite3", "Database")
   }
 
   /** A call to a Sqlite query method. */
   private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
     QueryCall() {
-      exists(string meth |
-        meth = "all" or
-        meth = "each" or
-        meth = "exec" or
-        meth = "get" or
-        meth = "prepare" or
-        meth = "run"
-      |
-        this = newDb().getMember(meth).getACall()
-      )
+      this = database().getMember(["all", "each", "exec", "get", "prepare", "run"]).getACall()
     }
 
     override DataFlow::Node getAQueryArgument() { result = getArgument(0) }
@@ -335,14 +371,31 @@ private module MsSql {
   /** Gets a reference to the `mssql` module. */
   API::Node mssql() { result = API::moduleImport("mssql") }
 
-  /** Gets an expression that creates a request object. */
-  API::Node request() {
-    // new require('mssql').Request()
-    result = mssql().getMember("Request").getInstance()
+  /** Gets a node referring to an instance of the given class. */
+  API::Node mssqlClass(string name) {
+    result = mssql().getMember(name).getInstance()
     or
-    // request.input(...)
-    result = request().getMember("input").getReturn()
+    result = API::Node::ofType("mssql", name)
   }
+
+  /** Gets an API node referring to a Request object. */
+  API::Node request() {
+    result = mssqlClass("Request")
+    or
+    result = request().getMember(["input", "replaceInput", "output", "replaceOutput"]).getReturn()
+    or
+    result = [transaction(), pool()].getMember("request").getReturn()
+  }
+
+  /** Gets an API node referring to a Transaction object. */
+  API::Node transaction() {
+    result = mssqlClass("Transaction")
+    or
+    result = pool().getMember("transaction").getReturn()
+  }
+
+  /** Gets a API node referring to a ConnectionPool object. */
+  API::Node pool() { result = mssqlClass("ConnectionPool") }
 
   /** A tagged template evaluated as a query. */
   private class QueryTemplateExpr extends DatabaseAccess, DataFlow::ValueNode {
@@ -359,7 +412,7 @@ private module MsSql {
 
   /** A call to a MsSql query method. */
   private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
-    QueryCall() { this = request().getMember(["query", "batch"]).getACall() }
+    QueryCall() { this = [mssql(), request()].getMember(["query", "batch"]).getACall() }
 
     override DataFlow::Node getAQueryArgument() { result = getArgument(0) }
   }
@@ -410,22 +463,34 @@ private module MsSql {
  * Provides classes modelling the `sequelize` package.
  */
 private module Sequelize {
-  /** Gets an import of the `sequelize` module. */
-  API::Node sequelize() { result = API::moduleImport("sequelize") }
+  /** Gets an import of the `sequelize` module or one that re-exports it. */
+  API::Node sequelize() { result = API::moduleImport(["sequelize", "sequelize-typescript"]) }
 
   /** Gets an expression that creates an instance of the `Sequelize` class. */
-  API::Node newSequelize() { result = sequelize().getInstance() }
+  API::Node instance() {
+    result = [sequelize(), sequelize().getMember("Sequelize")].getInstance()
+    or
+    result = API::Node::ofType(["sequelize", "sequelize-typescript"], ["Sequelize", "default"])
+  }
 
   /** A call to `Sequelize.query`. */
   private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
-    QueryCall() { this = newSequelize().getMember("query").getACall() }
+    QueryCall() { this = instance().getMember("query").getACall() }
 
-    override DataFlow::Node getAQueryArgument() { result = getArgument(0) }
+    override DataFlow::Node getAQueryArgument() {
+      result = getArgument(0)
+      or
+      result = getOptionArgument(0, "query")
+    }
   }
 
   /** An expression that is passed to `Sequelize.query` method and hence interpreted as SQL. */
   class QueryString extends SQL::SqlString {
-    QueryString() { this = any(QueryCall qc).getAQueryArgument().asExpr() }
+    QueryString() {
+      this = any(QueryCall qc).getAQueryArgument().asExpr()
+      or
+      this = sequelize().getMember(["literal", "asIs"]).getParameter(0).getARhs().asExpr()
+    }
   }
 
   /**
@@ -478,6 +543,8 @@ private module Spanner {
   API::Node database() {
     result =
       spanner().getReturn().getMember("instance").getReturn().getMember("database").getReturn()
+    or
+    result = API::Node::ofType("@google-cloud/spanner", "Database")
   }
 
   /**
@@ -485,61 +552,81 @@ private module Spanner {
    */
   API::Node v1SpannerClient() {
     result = spanner().getMember("v1").getMember("SpannerClient").getInstance()
+    or
+    result = API::Node::ofType("@google-cloud/spanner", "v1.SpannerClient")
   }
 
   /**
    * Gets a node that refers to a transaction object.
    */
   API::Node transaction() {
-    result = database().getMember("runTransaction").getParameter(0).getParameter(1)
+    result =
+      database()
+          .getMember(["runTransaction", "runTransactionAsync"])
+          .getParameter([0, 1])
+          .getParameter(1)
+    or
+    result = API::Node::ofType("@google-cloud/spanner", "Transaction")
+  }
+
+  /** Gets an API node referring to a `BatchTransaction` object. */
+  API::Node batchTransaction() {
+    result = database().getMember("batchTransaction").getReturn()
+    or
+    result = database().getMember("createBatchTransaction").getReturn().getPromised()
+    or
+    result = API::Node::ofType("@google-cloud/spanner", "BatchTransaction")
   }
 
   /**
    * A call to a Spanner method that executes a SQL query.
    */
-  abstract class SqlExecution extends DatabaseAccess, DataFlow::InvokeNode {
-    /**
-     * Gets the position of the query argument; default is zero, which can be overridden
-     * by subclasses.
-     */
-    int getQueryArgumentPosition() { result = 0 }
+  abstract class SqlExecution extends DatabaseAccess, DataFlow::InvokeNode { }
+
+  /**
+   * A SQL execution that takes the input directly in the first argument or in the `sql` option.
+   */
+  class SqlExecutionDirect extends SqlExecution {
+    SqlExecutionDirect() {
+      this = database().getMember(["run", "runPartitionedUpdate", "runStream"]).getACall()
+      or
+      this = transaction().getMember(["run", "runStream", "runUpdate"]).getACall()
+      or
+      this = batchTransaction().getMember("createQueryPartitions").getACall()
+    }
 
     override DataFlow::Node getAQueryArgument() {
-      result = getArgument(getQueryArgumentPosition()) or
-      result = getOptionArgument(getQueryArgumentPosition(), "sql")
+      result = getArgument(0)
+      or
+      result = getOptionArgument(0, "sql")
     }
   }
 
   /**
-   * A call to `Database.run`, `Database.runPartitionedUpdate` or `Database.runStream`.
+   * A SQL execution that takes an array of SQL strings or { sql: string } objects.
    */
-  class DatabaseRunCall extends SqlExecution {
-    DatabaseRunCall() {
-      this = database().getMember(["run", "runPartitionedUpdate", "runStream"]).getACall()
+  class SqlExecutionBatch extends SqlExecution, API::CallNode {
+    SqlExecutionBatch() { this = transaction().getMember("batchUpdate").getACall() }
+
+    override DataFlow::Node getAQueryArgument() {
+      // just use the whole array as the query argument, as arrays becomes tainted if one of the elements
+      // are tainted
+      result = getArgument(0)
+      or
+      result = getParameter(0).getUnknownMember().getMember("sql").getARhs()
     }
   }
 
   /**
-   * A call to `Transaction.run`, `Transaction.runStream` or `Transaction.runUpdate`.
+   * A SQL execution that only takes the input in the `sql` option, and do not accept query strings
+   * directly.
    */
-  class TransactionRunCall extends SqlExecution {
-    TransactionRunCall() {
-      this = transaction().getMember(["run", "runStream", "runUpdate"]).getACall()
-    }
-  }
-
-  /**
-   * A call to `v1.SpannerClient.executeSql` or `v1.SpannerClient.executeStreamingSql`.
-   */
-  class ExecuteSqlCall extends SqlExecution {
-    ExecuteSqlCall() {
+  class SqlExecutionWithOption extends SqlExecution {
+    SqlExecutionWithOption() {
       this = v1SpannerClient().getMember(["executeSql", "executeStreamingSql"]).getACall()
     }
 
-    override DataFlow::Node getAQueryArgument() {
-      // `executeSql` and `executeStreamingSql` do not accept query strings directly
-      result = getOptionArgument(0, "sql")
-    }
+    override DataFlow::Node getAQueryArgument() { result = getOptionArgument(0, "sql") }
   }
 
   /**

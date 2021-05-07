@@ -51,6 +51,7 @@ app.get('/findKey', function(req, res) {
   URI(`${protocol}://${host}${path}`).search(input).href(); // OK
   unknown.search(input).unknown; // OK
 
+  new RegExp(key.split(".").filter(x => x).join("-")); // NOT OK
 });
 
 import * as Search from './search';

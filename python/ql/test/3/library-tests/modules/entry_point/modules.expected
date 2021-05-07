@@ -1,5 +1,3 @@
-| main | hash_bang/main.py:0:0:0:0 | Script main |
-| main | name_main/main.py:0:0:0:0 | Module main |
 | module | hash_bang/module.py:0:0:0:0 | Module module |
 | module | name_main/module.py:0:0:0:0 | Module module |
 | package | hash_bang/package:0:0:0:0 | Package package |

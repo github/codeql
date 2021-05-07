@@ -194,7 +194,7 @@ private predicate source(RefType t, ObjNode n) {
 private predicate sink(ObjNode n) {
   exists(MethodAccess toString |
     toString.getQualifier() = n.asExpr() and
-    toString.getMethod().hasName("toString")
+    toString.getMethod() instanceof ToStringMethod
   ) and
   n.getTypeBound().getErasure() instanceof TypeObject
 }
