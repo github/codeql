@@ -11,9 +11,9 @@
  */
 
 import java
-import DataFlow::PathGraph
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.JexlInjection
+import DataFlow::PathGraph
 
 /**
  * A taint-tracking configuration for unsafe user input
