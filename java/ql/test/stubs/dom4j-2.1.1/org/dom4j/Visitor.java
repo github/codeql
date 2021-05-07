@@ -6,14 +6,19 @@
  */
 
 /*
- * Adapted from DOM4J version 2.1.1 as available at
- *   https://search.maven.org/remotecontent?filepath=org/dom4j/dom4j/2.1.1/dom4j-2.1.1-sources.jar
- * Only relevant stubs of this file have been retained for test purposes.
- */
+* Adapted from DOM4J version 2.1.1 as available at
+*   https://search.maven.org/remotecontent?filepath=org/dom4j/dom4j/2.1.1/dom4j-2.1.1-sources.jar
+* Only relevant stubs of this file have been retained for test purposes.
+*/
 
 package org.dom4j;
 
-public interface Document extends Branch {
+public interface Visitor {
+    void visit(Document document);
+
+    void visit(Element node);
+
+    void visit(Namespace namespace);
 
 }
 

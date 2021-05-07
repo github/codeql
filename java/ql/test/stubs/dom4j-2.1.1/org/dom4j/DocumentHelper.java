@@ -6,14 +6,68 @@
  */
 
 /*
- * Adapted from DOM4J version 2.1.1 as available at
- *   https://search.maven.org/remotecontent?filepath=org/dom4j/dom4j/2.1.1/dom4j-2.1.1-sources.jar
- * Only relevant stubs of this file have been retained for test purposes.
- */
+* Adapted from DOM4J version 2.1.1 as available at
+*   https://search.maven.org/remotecontent?filepath=org/dom4j/dom4j/2.1.1/dom4j-2.1.1-sources.jar
+* Only relevant stubs of this file have been retained for test purposes.
+*/
 
 package org.dom4j;
 
-public interface Document extends Branch {
+import java.util.List;
+
+import org.dom4j.rule.Pattern;
+import org.jaxen.VariableContext;
+
+public final class DocumentHelper {
+  public static Document createDocument() {
+    return null;
+  }
+
+  public static Document createDocument(Element rootElement) {
+    return null;
+  }
+
+  public static Element createElement(String name) {
+    return null;
+  }
+
+  public static Namespace createNamespace(String prefix, String uri) {
+    return null;
+  }
+
+  public static XPath createXPath(String xpathExpression) throws InvalidXPathException {
+    return null;
+  }
+
+  public static XPath createXPath(String xpathExpression, VariableContext context) throws InvalidXPathException {
+    return null;
+  }
+
+  public static NodeFilter createXPathFilter(String xpathFilterExpression) {
+    return null;
+  }
+
+  public static Pattern createPattern(String xpathPattern) {
+    return null;
+  }
+
+  public static List<Node> selectNodes(String xpathFilterExpression, List<Node> nodes) {
+    return null;
+  }
+
+  public static List<Node> selectNodes(String xpathFilterExpression, Node node) {
+    return null;
+  }
+
+  public static void sort(List<Node> list, String xpathExpression) {
+  }
+
+  public static void sort(List<Node> list, String expression, boolean distinct) {
+  }
+
+  public static Element makeElement(Branch source, String path) {
+    return null;
+  }
 
 }
 

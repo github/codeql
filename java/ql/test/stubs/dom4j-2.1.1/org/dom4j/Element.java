@@ -6,14 +6,99 @@
  */
 
 /*
- * Adapted from DOM4J version 2.1.1 as available at
- *   https://search.maven.org/remotecontent?filepath=org/dom4j/dom4j/2.1.1/dom4j-2.1.1-sources.jar
- * Only relevant stubs of this file have been retained for test purposes.
- */
-
+* Adapted from DOM4J version 2.1.1 as available at
+*   https://search.maven.org/remotecontent?filepath=org/dom4j/dom4j/2.1.1/dom4j-2.1.1-sources.jar
+* Only relevant stubs of this file have been retained for test purposes.
+*/
 package org.dom4j;
 
-public interface Document extends Branch {
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+public interface Element extends Branch {
+
+	Namespace getNamespace();
+
+	Namespace getNamespaceForPrefix(String prefix);
+
+	Namespace getNamespaceForURI(String uri);
+
+	List<Namespace> getNamespacesForURI(String uri);
+
+	String getNamespacePrefix();
+
+	String getNamespaceURI();
+
+	String getQualifiedName();
+
+	List<Namespace> additionalNamespaces();
+
+	List<Namespace> declaredNamespaces();
+
+	Element addAttribute(String name, String value);
+
+	Element addComment(String comment);
+
+	Element addCDATA(String cdata);
+
+	Element addEntity(String name, String text);
+
+	Element addNamespace(String prefix, String uri);
+
+	Element addProcessingInstruction(String target, String text);
+
+	Element addProcessingInstruction(String target, Map<String, String> data);
+
+	Element addText(String text);
+
+	void add(Namespace namespace);
+
+	String getText();
+
+	String getTextTrim();
+
+	String getStringValue();
+
+	Object getData();
+
+	void setData(Object data);
+
+	int attributeCount();
+
+	String attributeValue(String name);
+
+	String attributeValue(String name, String defaultValue);
+
+	void setAttributeValue(String name, String value);
+
+	Element element(String name);
+
+	List<Element> elements();
+
+	List<Element> elements(String name);
+
+	Iterator<Element> elementIterator();
+
+	Iterator<Element> elementIterator(String name);
+
+	boolean isRootElement();
+
+	boolean hasMixedContent();
+
+	boolean isTextOnly();
+
+	void appendAttributes(Element element);
+
+	Element createCopy();
+
+	Element createCopy(String name);
+
+	String elementText(String name);
+
+	String elementTextTrim(String name);
+
+	Node getXPathResult(int index);
 
 }
 

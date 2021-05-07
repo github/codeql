@@ -6,14 +6,94 @@
  */
 
 /*
- * Adapted from DOM4J version 2.1.1 as available at
- *   https://search.maven.org/remotecontent?filepath=org/dom4j/dom4j/2.1.1/dom4j-2.1.1-sources.jar
- * Only relevant stubs of this file have been retained for test purposes.
- */
+* Adapted from DOM4J version 2.1.1 as available at
+*   https://search.maven.org/remotecontent?filepath=org/dom4j/dom4j/2.1.1/dom4j-2.1.1-sources.jar
+* Only relevant stubs of this file have been retained for test purposes.
+*/
 
-package org.dom4j;
+package org.dom4j.xpath;
 
-public interface Document extends Branch {
+import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
+import org.dom4j.InvalidXPathException;
+import org.dom4j.Node;
+import org.dom4j.XPath;
+
+public class DefaultXPath implements org.dom4j.XPath, Serializable {
+  public DefaultXPath(String text) throws InvalidXPathException {
+  }
+
+  @Override
+  public String getText() {
+    return null;
+  }
+
+  @Override
+  public boolean matches(Node node) {
+    return false;
+  }
+
+  @Override
+  public Object evaluate(Object context) {
+    return null;
+  }
+
+  @Override
+  public Object selectObject(Object context) {
+    return null;
+  }
+
+  @Override
+  public List<Node> selectNodes(Object context) {
+    return null;
+  }
+
+  @Override
+  public List<Node> selectNodes(Object context, XPath sortXPath) {
+    return null;
+  }
+
+  @Override
+  public List<Node> selectNodes(Object context, XPath sortXPath, boolean distinct) {
+    return null;
+  }
+
+  @Override
+  public Node selectSingleNode(Object context) {
+    return null;
+  }
+
+  @Override
+  public String valueOf(Object context) {
+    return null;
+  }
+
+  @Override
+  public Number numberValueOf(Object context) {
+    return null;
+  }
+
+  @Override
+  public boolean booleanValueOf(Object context) {
+    return false;
+  }
+
+  @Override
+  public void sort(List<Node> list) {
+  }
+
+  @Override
+  public void sort(List<Node> list, boolean distinct) {
+  }
+
+  @Override
+  public void setNamespaceURIs(Map<String, String> map) {
+  }
+
+  @Override
+  public void setVariableContext(org.jaxen.VariableContext variableContext) {
+  }
 
 }
 

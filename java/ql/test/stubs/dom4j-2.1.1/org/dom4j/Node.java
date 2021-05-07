@@ -6,14 +6,34 @@
  */
 
 /*
- * Adapted from DOM4J version 2.1.1 as available at
- *   https://search.maven.org/remotecontent?filepath=org/dom4j/dom4j/2.1.1/dom4j-2.1.1-sources.jar
- * Only relevant stubs of this file have been retained for test purposes.
- */
+* Adapted from DOM4J version 2.1.1 as available at
+*   https://search.maven.org/remotecontent?filepath=org/dom4j/dom4j/2.1.1/dom4j-2.1.1-sources.jar
+* Only relevant stubs of this file have been retained for test purposes.
+*/
 
 package org.dom4j;
 
-public interface Document extends Branch {
+import java.util.List;
+
+public interface Node extends Cloneable {
+
+    List<Node> selectNodes(String xpathExpression);
+
+    Object selectObject(String xpathExpression);
+
+    List<Node> selectNodes(String xpathExpression, String comparisonXPathExpression);
+
+    List<Node> selectNodes(String xpathExpression, String comparisonXPathExpression, boolean removeDuplicates);
+
+    Node selectSingleNode(String xpathExpression);
+
+    String valueOf(String xpathExpression);
+
+    Number numberValueOf(String xpathExpression);
+
+    boolean matches(String xpathExpression);
+
+    XPath createXPath(String xpathExpression) throws InvalidXPathException;
 
 }
 

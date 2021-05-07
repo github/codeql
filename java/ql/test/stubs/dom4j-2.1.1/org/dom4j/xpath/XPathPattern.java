@@ -6,14 +6,49 @@
  */
 
 /*
- * Adapted from DOM4J version 2.1.1 as available at
- *   https://search.maven.org/remotecontent?filepath=org/dom4j/dom4j/2.1.1/dom4j-2.1.1-sources.jar
- * Only relevant stubs of this file have been retained for test purposes.
- */
+* Adapted from DOM4J version 2.1.1 as available at
+*   https://search.maven.org/remotecontent?filepath=org/dom4j/dom4j/2.1.1/dom4j-2.1.1-sources.jar
+* Only relevant stubs of this file have been retained for test purposes.
+*/
 
-package org.dom4j;
+package org.dom4j.xpath;
 
-public interface Document extends Branch {
+import org.dom4j.Node;
+
+public class XPathPattern implements org.dom4j.rule.Pattern {
+  public XPathPattern(String text) {
+  }
+
+  public XPathPattern(org.jaxen.pattern.Pattern pattern) {
+  }
+
+  public boolean matches(Node node) {
+    return false;
+  }
+
+  public String getText() {
+    return null;
+  }
+
+  public double getPriority() {
+    return 0;
+  }
+
+  public org.dom4j.rule.Pattern[] getUnionPatterns() {
+    return null;
+  }
+
+  public short getMatchType() {
+    return 0;
+  }
+
+  public String getMatchesNodeName() {
+    return null;
+  }
+
+  public String toString() {
+    return null;
+  }
 
 }
 

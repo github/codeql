@@ -6,15 +6,46 @@
  */
 
 /*
- * Adapted from DOM4J version 2.1.1 as available at
- *   https://search.maven.org/remotecontent?filepath=org/dom4j/dom4j/2.1.1/dom4j-2.1.1-sources.jar
- * Only relevant stubs of this file have been retained for test purposes.
- */
+* Adapted from DOM4J version 2.1.1 as available at
+*   https://search.maven.org/remotecontent?filepath=org/dom4j/dom4j/2.1.1/dom4j-2.1.1-sources.jar
+* Only relevant stubs of this file have been retained for test purposes.
+*/
 
 package org.dom4j;
 
-public interface Document extends Branch {
+import java.util.List;
+import java.util.Map;
 
+public interface XPath extends NodeFilter {
+	String getText();
+
+	boolean matches(Node node);
+
+	Object evaluate(Object context);
+
+	Object selectObject(Object context);
+
+	List<Node> selectNodes(Object context);
+
+	List<Node> selectNodes(Object context, XPath sortXPath);
+
+	List<Node> selectNodes(Object context, XPath sortXPath, boolean distinct);
+
+	Node selectSingleNode(Object context);
+
+	String valueOf(Object context);
+
+	Number numberValueOf(Object context);
+
+	boolean booleanValueOf(Object context);
+
+	void sort(List<Node> list);
+
+	void sort(List<Node> list, boolean distinct);
+
+	void setNamespaceURIs(Map<String, String> map);
+
+	void setVariableContext(org.jaxen.VariableContext variableContext);
 }
 
 /*

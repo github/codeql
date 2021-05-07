@@ -6,14 +6,59 @@
  */
 
 /*
- * Adapted from DOM4J version 2.1.1 as available at
- *   https://search.maven.org/remotecontent?filepath=org/dom4j/dom4j/2.1.1/dom4j-2.1.1-sources.jar
- * Only relevant stubs of this file have been retained for test purposes.
- */
+* Adapted from DOM4J version 2.1.1 as available at
+*   https://search.maven.org/remotecontent?filepath=org/dom4j/dom4j/2.1.1/dom4j-2.1.1-sources.jar
+* Only relevant stubs of this file have been retained for test purposes.
+*/
 
-package org.dom4j;
+package org.dom4j.util;
 
-public interface Document extends Branch {
+import org.dom4j.Document;
+import org.dom4j.DocumentFactory;
+import org.dom4j.Element;
+import org.dom4j.NodeFilter;
+import org.dom4j.XPath;
+import org.dom4j.rule.Pattern;
+import org.jaxen.VariableContext;
+
+public abstract class ProxyDocumentFactory {
+  public ProxyDocumentFactory() {
+  }
+
+  public ProxyDocumentFactory(DocumentFactory proxy) {
+  }
+
+  public Document createDocument() {
+    return null;
+  }
+
+  public Document createDocument(Element rootElement) {
+    return null;
+  }
+
+  public Element createElement(String name) {
+    return null;
+  }
+
+  public XPath createXPath(String xpathExpression) {
+    return null;
+  }
+
+  public XPath createXPath(String xpathExpression, VariableContext variableContext) {
+    return null;
+  }
+
+  public NodeFilter createXPathFilter(String xpathFilterExpression, VariableContext variableContext) {
+    return null;
+  }
+
+  public NodeFilter createXPathFilter(String xpathFilterExpression) {
+    return null;
+  }
+
+  public Pattern createPattern(String xpathPattern) {
+    return null;
+  }
 
 }
 

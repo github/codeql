@@ -6,14 +6,77 @@
  */
 
 /*
- * Adapted from DOM4J version 2.1.1 as available at
- *   https://search.maven.org/remotecontent?filepath=org/dom4j/dom4j/2.1.1/dom4j-2.1.1-sources.jar
- * Only relevant stubs of this file have been retained for test purposes.
- */
+* Adapted from DOM4J version 2.1.1 as available at
+*   https://search.maven.org/remotecontent?filepath=org/dom4j/dom4j/2.1.1/dom4j-2.1.1-sources.jar
+* Only relevant stubs of this file have been retained for test purposes.
+*/
 
 package org.dom4j;
 
-public interface Document extends Branch {
+import java.io.Serializable;
+import java.util.Map;
+
+import org.dom4j.rule.Pattern;
+import org.jaxen.VariableContext;
+
+public class DocumentFactory implements Serializable {
+  public DocumentFactory() {
+  }
+
+  public static synchronized DocumentFactory getInstance() {
+    return null;
+  }
+
+  public Document createDocument() {
+    return null;
+  }
+
+  public Document createDocument(String encoding) {
+    return null;
+  }
+
+  public Document createDocument(Element rootElement) {
+    return null;
+  }
+
+  public Element createElement(String name) {
+    return null;
+  }
+
+  public Element createElement(String qualifiedName, String namespaceURI) {
+    return null;
+  }
+
+  public Namespace createNamespace(String prefix, String uri) {
+    return null;
+  }
+
+  public XPath createXPath(String xpathExpression) throws InvalidXPathException {
+    return null;
+  }
+
+  public XPath createXPath(String xpathExpression, VariableContext variableContext) {
+    return null;
+  }
+
+  public NodeFilter createXPathFilter(String xpathFilterExpression, VariableContext variableContext) {
+    return null;
+  }
+
+  public NodeFilter createXPathFilter(String xpathFilterExpression) {
+    return null;
+  }
+
+  public Pattern createPattern(String xpathPattern) {
+    return null;
+  }
+
+  public Map<String, String> getXPathNamespaceURIs() {
+    return null;
+  }
+
+  public void setXPathNamespaceURIs(Map<String, String> namespaceURIs) {
+  }
 
 }
 

@@ -6,14 +6,26 @@
  */
 
 /*
- * Adapted from DOM4J version 2.1.1 as available at
- *   https://search.maven.org/remotecontent?filepath=org/dom4j/dom4j/2.1.1/dom4j-2.1.1-sources.jar
- * Only relevant stubs of this file have been retained for test purposes.
- */
+* Adapted from DOM4J version 2.1.1 as available at
+*   https://search.maven.org/remotecontent?filepath=org/dom4j/dom4j/2.1.1/dom4j-2.1.1-sources.jar
+* Only relevant stubs of this file have been retained for test purposes.
+*/
 
-package org.dom4j;
+package org.dom4j.rule;
 
-public interface Document extends Branch {
+import org.dom4j.Node;
+import org.dom4j.NodeFilter;
+
+public interface Pattern extends NodeFilter {
+    boolean matches(Node node);
+
+    double getPriority();
+
+    Pattern[] getUnionPatterns();
+
+    short getMatchType();
+
+    String getMatchesNodeName();
 
 }
 

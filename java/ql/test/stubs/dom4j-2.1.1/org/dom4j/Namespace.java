@@ -6,14 +6,78 @@
  */
 
 /*
- * Adapted from DOM4J version 2.1.1 as available at
- *   https://search.maven.org/remotecontent?filepath=org/dom4j/dom4j/2.1.1/dom4j-2.1.1-sources.jar
- * Only relevant stubs of this file have been retained for test purposes.
- */
+* Adapted from DOM4J version 2.1.1 as available at
+*   https://search.maven.org/remotecontent?filepath=org/dom4j/dom4j/2.1.1/dom4j-2.1.1-sources.jar
+* Only relevant stubs of this file have been retained for test purposes.
+*/
 
 package org.dom4j;
 
-public interface Document extends Branch {
+import org.dom4j.tree.AbstractNode;
+
+public class Namespace extends AbstractNode {
+
+  public Namespace(String prefix, String uri) {
+  }
+
+  public static Namespace get(String prefix, String uri) {
+    return null;
+  }
+
+  public static Namespace get(String uri) {
+    return null;
+  }
+
+  public short getNodeType() {
+    return 0;
+  }
+
+  public int hashCode() {
+    return 0;
+  }
+
+  public boolean equals(Object object) {
+    return false;
+  }
+
+  public String getText() {
+    return null;
+  }
+
+  public String getStringValue() {
+    return null;
+  }
+
+  public String getPrefix() {
+    return null;
+  }
+
+  public String getURI() {
+    return null;
+  }
+
+  public String getXPathNameStep() {
+    return null;
+  }
+
+  public String getPath(Element context) {
+    return null;
+  }
+
+  public String getUniquePath(Element context) {
+    return null;
+  }
+
+  public String toString() {
+    return null;
+  }
+
+  public String asXML() {
+    return null;
+  }
+
+  public void accept(Visitor visitor) {
+  }
 
 }
 

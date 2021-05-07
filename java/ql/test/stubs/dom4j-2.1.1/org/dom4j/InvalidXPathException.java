@@ -13,7 +13,12 @@
 
 package org.dom4j;
 
-public interface Document extends Branch {
+public class InvalidXPathException extends IllegalArgumentException {
+    public InvalidXPathException(String xpath) {
+    }
+
+    public InvalidXPathException(String xpath, String reason) {
+    }
 
 }
 
