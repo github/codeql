@@ -4,6 +4,7 @@ private import dotnet
 private import DataFlowPublic
 private import DataFlowPrivate
 private import FlowSummaryImpl as FlowSummaryImpl
+private import semmle.code.csharp.Caching
 private import semmle.code.csharp.dataflow.FlowSummary
 private import semmle.code.csharp.dispatch.Dispatch
 private import semmle.code.csharp.frameworks.system.Collections
@@ -69,8 +70,6 @@ private predicate transitiveCapturedCallTarget(ControlFlow::Nodes::ElementNode c
 
 cached
 private module Cached {
-  private import semmle.code.csharp.Caching
-
   cached
   newtype TReturnKind =
     TNormalReturnKind() { Stages::DataFlowStage::forceCachingInSameStage() } or
@@ -247,6 +246,7 @@ abstract class DataFlowCall extends TDataFlowCall {
   abstract DataFlow::Node getNode();
 
   /** Gets the enclosing callable of this call. */
+  cached
   abstract DataFlowCallable getEnclosingCallable();
 
   /** Gets the underlying expression, if any. */
@@ -280,7 +280,10 @@ class NonDelegateDataFlowCall extends DataFlowCall, TNonDelegateCall {
 
   override DataFlow::ExprNode getNode() { result.getControlFlowNode() = cfn }
 
-  override DataFlowCallable getEnclosingCallable() { result = cfn.getEnclosingCallable() }
+  override DataFlowCallable getEnclosingCallable() {
+    Stages::DataFlowStage::forceCachingInSameStage() and
+    result = cfn.getEnclosingCallable()
+  }
 
   override string toString() { result = cfn.toString() }
 

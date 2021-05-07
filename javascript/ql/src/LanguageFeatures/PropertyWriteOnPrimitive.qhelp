@@ -58,7 +58,7 @@ for (var i=s.length; i%8; ++i)
 </example>
 
 <references>
-<li>Ecma International, <a href="http://www.ecma-international.org/ecma-262/7.0/#prod-AssignmentExpression">ECMAScript 2016 Language Specification, Section 12.15: Assignment Operators</a>.</li>
-<li>Ecma International, <a href="http://www.ecma-international.org/ecma-262/7.0/#sec-object.defineproperty">ECMAScript 2016 Language Specification, Section 19.1.2.4: Object.defineProperty</a>.</li>
+<li>Ecma International, <a href="https://262.ecma-international.org/7.0/#prod-AssignmentExpression">ECMAScript 2016 Language Specification, Section 12.15: Assignment Operators</a>.</li>
+<li>Ecma International, <a href="https://262.ecma-international.org/7.0/#sec-object.defineproperty">ECMAScript 2016 Language Specification, Section 19.1.2.4: Object.defineProperty</a>.</li>
 </references>
 </qhelp>

@@ -20,9 +20,9 @@
    Java,"Java 7 to 15 [3]_","javac (OpenJDK and Oracle JDK),
 
    Eclipse compiler for Java (ECJ) [4]_",``.java``
-   JavaScript,ECMAScript 2019 or lower,Not applicable,"``.js``, ``.jsx``, ``.mjs``, ``.es``, ``.es6``, ``.htm``, ``.html``, ``.xhm``, ``.xhtml``, ``.vue``, ``.json``, ``.yaml``, ``.yml``, ``.raml``, ``.xml`` [5]_"
+   JavaScript,ECMAScript 2021 or lower,Not applicable,"``.js``, ``.jsx``, ``.mjs``, ``.es``, ``.es6``, ``.htm``, ``.html``, ``.xhm``, ``.xhtml``, ``.vue``, ``.json``, ``.yaml``, ``.yml``, ``.raml``, ``.xml`` [5]_"
    Python,"2.7, 3.5, 3.6, 3.7, 3.8",Not applicable,``.py``
-   TypeScript [6]_,"2.6-3.7",Standard TypeScript compiler,"``.ts``, ``.tsx``"
+   TypeScript [6]_,"2.6-4.2",Standard TypeScript compiler,"``.ts``, ``.tsx``"
 
 .. container:: footnote-group
 

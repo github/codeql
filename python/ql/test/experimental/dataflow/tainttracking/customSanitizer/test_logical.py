@@ -29,12 +29,12 @@ def test_basic():
     if is_safe(s):
         ensure_not_tainted(s)
     else:
-        ensure_tainted(s)
+        ensure_tainted(s) # $ tainted
 
     if not is_safe(s):
-        ensure_tainted(s)
+        ensure_tainted(s) # $ tainted
     else:
-        ensure_not_tainted(s)
+        ensure_not_tainted(s) # $ SPURIOUS: tainted
 
 
 def test_or():
@@ -42,21 +42,27 @@ def test_or():
 
     # x or y
     if is_safe(s) or random_choice():
-        ensure_tainted(s) # might be tainted
+        # might be tainted
+        ensure_tainted(s) # $ tainted
     else:
-        ensure_tainted(s) # must be tainted
+        # must be tainted
+        ensure_tainted(s) # $ tainted
 
     # not (x or y)
     if not(is_safe(s) or random_choice()):
-        ensure_tainted(s) # must be tainted
+        # must be tainted
+        ensure_tainted(s) # $ tainted
     else:
-        ensure_tainted(s) # might be tainted
+        # might be tainted
+        ensure_tainted(s) # $ tainted
 
     # not (x or y) == not x and not y   [de Morgan's laws]
     if not is_safe(s) and not random_choice():
-        ensure_tainted(s) # must be tainted
+        # must be tainted
+        ensure_tainted(s) # $ tainted
     else:
-        ensure_tainted(s) # might be tainted
+        # might be tainted
+        ensure_tainted(s) # $ tainted
 
 
 def test_and():
@@ -64,21 +70,27 @@ def test_and():
 
     # x and y
     if is_safe(s) and random_choice():
-        ensure_not_tainted(s) # must not be tainted
+        # cannot be tainted
+        ensure_not_tainted(s)
     else:
-        ensure_tainted(s) # might be tainted
+        # might be tainted
+        ensure_tainted(s) # $ tainted
 
     # not (x and y)
     if not(is_safe(s) and random_choice()):
-        ensure_tainted(s) # might be tainted
+        # might be tainted
+        ensure_tainted(s) # $ tainted
     else:
+        # cannot be tainted
         ensure_not_tainted(s)
 
     # not (x and y) == not x or not y   [de Morgan's laws]
     if not is_safe(s) or not random_choice():
-        ensure_tainted(s) # might be tainted
+        # might be tainted
+        ensure_tainted(s) # $ tainted
     else:
-        ensure_not_tainted(s)
+        # cannot be tainted
+        ensure_not_tainted(s) # $ SPURIOUS: tainted
 
 
 def test_tricky():
@@ -86,25 +98,25 @@ def test_tricky():
 
     x = is_safe(s)
     if x:
-        ensure_not_tainted(s) # FP
+        ensure_not_tainted(s) # $ SPURIOUS: tainted
 
     s_ = s
     if is_safe(s):
-        ensure_not_tainted(s_) # FP
+        ensure_not_tainted(s_) # $ SPURIOUS: tainted
 
 
 def test_nesting_not():
     s = TAINTED_STRING
 
     if not(not(is_safe(s))):
-        ensure_not_tainted(s)
+        ensure_not_tainted(s) # $ SPURIOUS: tainted
     else:
-        ensure_tainted(s)
+        ensure_tainted(s) # $ tainted
 
     if not(not(not(is_safe(s)))):
-        ensure_tainted(s)
+        ensure_tainted(s) # $ tainted
     else:
-        ensure_not_tainted(s)
+        ensure_not_tainted(s) # $ SPURIOUS: tainted
 
 
 # Adding `and True` makes the sanitizer trigger when it would otherwise not. See output in
@@ -113,17 +125,17 @@ def test_nesting_not_with_and_true():
     s = TAINTED_STRING
 
     if not(is_safe(s) and True):
-        ensure_tainted(s)
+        ensure_tainted(s) # $ tainted
     else:
         ensure_not_tainted(s)
 
     if not(not(is_safe(s) and True)):
         ensure_not_tainted(s)
     else:
-        ensure_tainted(s)
+        ensure_tainted(s) # $ tainted
 
     if not(not(not(is_safe(s) and True))):
-        ensure_tainted(s)
+        ensure_tainted(s) # $ tainted
     else:
         ensure_not_tainted(s)
 
@@ -134,7 +146,7 @@ def test_with_return():
     if not is_safe(s):
         return
 
-    ensure_not_tainted(s)
+    ensure_not_tainted(s) # $ SPURIOUS: tainted
 
 
 def test_with_exception():
@@ -143,7 +155,7 @@ def test_with_exception():
     if not is_safe(s):
         raise Exception("unsafe")
 
-    ensure_not_tainted(s)
+    ensure_not_tainted(s) # $ SPURIOUS: tainted
 
 # Make tests runable
 

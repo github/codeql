@@ -171,6 +171,11 @@ nodes
 | tst.js:22:34:22:50 | document.location |
 | tst.js:22:34:22:55 | documen ... on.href |
 | tst.js:22:34:22:55 | documen ... on.href |
+| tst.js:26:22:26:79 | new Reg ... n.href) |
+| tst.js:26:22:26:82 | new Reg ... ref)[1] |
+| tst.js:26:22:26:82 | new Reg ... ref)[1] |
+| tst.js:26:62:26:78 | win.location.href |
+| tst.js:26:62:26:78 | win.location.href |
 | typed.ts:4:13:4:36 | params |
 | typed.ts:4:22:4:36 | location.search |
 | typed.ts:4:22:4:36 | location.search |
@@ -337,6 +342,10 @@ edges
 | tst.js:22:34:22:50 | document.location | tst.js:22:34:22:55 | documen ... on.href |
 | tst.js:22:34:22:55 | documen ... on.href | tst.js:22:20:22:56 | indirec ... n.href) |
 | tst.js:22:34:22:55 | documen ... on.href | tst.js:22:20:22:56 | indirec ... n.href) |
+| tst.js:26:22:26:79 | new Reg ... n.href) | tst.js:26:22:26:82 | new Reg ... ref)[1] |
+| tst.js:26:22:26:79 | new Reg ... n.href) | tst.js:26:22:26:82 | new Reg ... ref)[1] |
+| tst.js:26:62:26:78 | win.location.href | tst.js:26:22:26:79 | new Reg ... n.href) |
+| tst.js:26:62:26:78 | win.location.href | tst.js:26:22:26:79 | new Reg ... n.href) |
 | typed.ts:4:13:4:36 | params | typed.ts:5:25:5:30 | params |
 | typed.ts:4:22:4:36 | location.search | typed.ts:4:13:4:36 | params |
 | typed.ts:4:22:4:36 | location.search | typed.ts:4:13:4:36 | params |
@@ -400,5 +409,6 @@ edges
 | tst.js:18:19:18:84 | new Reg ... ref)[1] | tst.js:18:59:18:80 | documen ... on.href | tst.js:18:19:18:84 | new Reg ... ref)[1] | Untrusted URL redirection due to $@. | tst.js:18:59:18:80 | documen ... on.href | user-provided value |
 | tst.js:22:20:22:59 | indirec ... ref)[1] | tst.js:22:34:22:50 | document.location | tst.js:22:20:22:59 | indirec ... ref)[1] | Untrusted URL redirection due to $@. | tst.js:22:34:22:50 | document.location | user-provided value |
 | tst.js:22:20:22:59 | indirec ... ref)[1] | tst.js:22:34:22:55 | documen ... on.href | tst.js:22:20:22:59 | indirec ... ref)[1] | Untrusted URL redirection due to $@. | tst.js:22:34:22:55 | documen ... on.href | user-provided value |
+| tst.js:26:22:26:82 | new Reg ... ref)[1] | tst.js:26:62:26:78 | win.location.href | tst.js:26:22:26:82 | new Reg ... ref)[1] | Untrusted URL redirection due to $@. | tst.js:26:62:26:78 | win.location.href | user-provided value |
 | typed.ts:8:33:8:43 | redirectUri | typed.ts:4:22:4:36 | location.search | typed.ts:8:33:8:43 | redirectUri | Untrusted URL redirection due to $@. | typed.ts:4:22:4:36 | location.search | user-provided value |
 | typed.ts:29:33:29:43 | redirectUri | typed.ts:25:25:25:34 | loc.search | typed.ts:29:33:29:43 | redirectUri | Untrusted URL redirection due to $@. | typed.ts:25:25:25:34 | loc.search | user-provided value |

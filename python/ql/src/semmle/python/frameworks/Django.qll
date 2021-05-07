@@ -366,7 +366,7 @@ private module PrivateDjango {
               "none", "all", "filter", "exclude", "complex_filter", "union", "intersection",
               "difference", "select_for_update", "select_related", "prefetch_related", "order_by",
               "distinct", "reverse", "defer", "only", "using", "annotate", "extra", "raw",
-              "datetimes", "dates", "values", "values_list"
+              "datetimes", "dates", "values", "values_list", "alias"
             ] and
           result = [manager(), querySet()].getMember(name)
         }
@@ -386,7 +386,7 @@ private module PrivateDjango {
           /** Provides models for the `django.db.models.expressions.RawSQL` class. */
           module RawSQL {
             /**
-             * Gets a reference to the `django.db.models.expressions.RawSQL` class.
+             * Gets an reference to the `django.db.models.expressions.RawSQL` class.
              */
             API::Node classRef() {
               result = expressions().getMember("RawSQL")
@@ -395,7 +395,10 @@ private module PrivateDjango {
               result = models().getMember("RawSQL")
             }
 
-            /** Gets an instance of the `django.db.models.expressions.RawSQL` class. */
+            /**
+             * Gets an instance of the `django.db.models.expressions.RawSQL` class,
+             * that was initiated with the SQL represented by `sql`.
+             */
             private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t, ControlFlowNode sql) {
               t.start() and
               exists(DataFlow::CallCfgNode c | result = c |
@@ -406,7 +409,10 @@ private module PrivateDjango {
               exists(DataFlow::TypeTracker t2 | result = instance(t2, sql).track(t2, t))
             }
 
-            /** Gets an instance of the `django.db.models.expressions.RawSQL` class. */
+            /**
+             * Gets an instance of the `django.db.models.expressions.RawSQL` class,
+             * that was initiated with the SQL represented by `sql`.
+             */
             DataFlow::Node instance(ControlFlowNode sql) {
               instance(DataFlow::TypeTracker::end(), sql).flowsTo(result)
             }
@@ -427,6 +433,24 @@ private module PrivateDjango {
 
       ObjectsAnnotate() {
         this = django::db::models::querySetReturningMethod("annotate").getACall() and
+        django::db::models::expressions::RawSQL::instance(sql) in [
+            this.getArg(_), this.getArgByName(_)
+          ]
+      }
+
+      override DataFlow::Node getSql() { result.asCfgNode() = sql }
+    }
+
+    /**
+     * A call to the `alias` function on a model using a `RawSQL` argument.
+     *
+     * See https://docs.djangoproject.com/en/3.2/ref/models/querysets/#alias
+     */
+    private class ObjectsAlias extends SqlExecution::Range, DataFlow::CallCfgNode {
+      ControlFlowNode sql;
+
+      ObjectsAlias() {
+        this = django::db::models::querySetReturningMethod("alias").getACall() and
         django::db::models::expressions::RawSQL::instance(sql) in [
             this.getArg(_), this.getArgByName(_)
           ]
@@ -1303,7 +1327,7 @@ private module PrivateDjango {
         }
 
         /** Gets a reference to the `django.http.response.HttpResponse.write` function. */
-        private DataFlow::Node write(
+        private DataFlow::LocalSourceNode write(
           django::http::response::HttpResponse::InstanceSource instance, DataFlow::TypeTracker t
         ) {
           t.startInAttr("write") and
@@ -1315,7 +1339,7 @@ private module PrivateDjango {
 
         /** Gets a reference to the `django.http.response.HttpResponse.write` function. */
         DataFlow::Node write(django::http::response::HttpResponse::InstanceSource instance) {
-          result = write(instance, DataFlow::TypeTracker::end())
+          write(instance, DataFlow::TypeTracker::end()).flowsTo(result)
         }
 
         /**

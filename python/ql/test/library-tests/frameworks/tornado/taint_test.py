@@ -3,73 +3,73 @@ import tornado.web
 
 class TaintTest(tornado.web.RequestHandler):
     def get(self, name = "World!", number="0", foo="foo"):  # $ requestHandler routedParameter=name routedParameter=number
-        ensure_tainted(name, number)
+        ensure_tainted(name, number) # $ tainted
         ensure_not_tainted(foo)
 
         ensure_tainted(
             # see https://www.tornadoweb.org/en/stable/web.html#input
-            self.get_argument("name"),
-            self.get_arguments("name"),
-            self.get_arguments("name")[0],
+            self.get_argument("name"), # $ tainted
+            self.get_arguments("name"), # $ tainted
+            self.get_arguments("name")[0], # $ tainted
 
-            self.get_body_argument("name"),
-            self.get_body_arguments("name"),
-            self.get_body_arguments("name")[0],
+            self.get_body_argument("name"), # $ tainted
+            self.get_body_arguments("name"), # $ tainted
+            self.get_body_arguments("name")[0], # $ tainted
 
-            self.get_query_argument("name"),
-            self.get_query_arguments("name"),
-            self.get_query_arguments("name")[0],
+            self.get_query_argument("name"), # $ tainted
+            self.get_query_arguments("name"), # $ tainted
+            self.get_query_arguments("name")[0], # $ tainted
 
-            self.path_args,
-            self.path_args[0],
+            self.path_args, # $ tainted
+            self.path_args[0], # $ tainted
 
-            self.path_kwargs,
-            self.path_kwargs["name"],
+            self.path_kwargs, # $ tainted
+            self.path_kwargs["name"], # $ tainted
         )
 
         request = self.request
 
         ensure_tainted(
             # see https://www.tornadoweb.org/en/stable/httputil.html#tornado.httputil.HTTPServerRequest
-            request,
+            request, # $ tainted
 
             # For the URL https:://example.com/foo/bar?baz=42
             # request.uri="/foo/bar?baz=42"
             # request.path="/foo/bar"
             # request.query="baz=42"
-            request.uri,
-            request.path,
-            request.query,
-            request.full_url(),
+            request.uri, # $ tainted
+            request.path, # $ tainted
+            request.query, # $ tainted
+            request.full_url(), # $ tainted
 
-            request.remote_ip,
+            request.remote_ip, # $ tainted
 
-            request.body,
+            request.body, # $ tainted
 
-            request.arguments,
-            request.arguments["name"],
-            request.arguments["name"][0],
+            request.arguments, # $ tainted
+            request.arguments["name"], # $ tainted
+            request.arguments["name"][0], # $ tainted
 
-            request.query_arguments,
-            request.query_arguments["name"],
-            request.query_arguments["name"][0],
+            request.query_arguments, # $ tainted
+            request.query_arguments["name"], # $ tainted
+            request.query_arguments["name"][0], # $ tainted
 
-            request.body_arguments,
-            request.body_arguments["name"],
-            request.body_arguments["name"][0],
+            request.body_arguments, # $ tainted
+            request.body_arguments["name"], # $ tainted
+            request.body_arguments["name"][0], # $ tainted
 
             # dict-like, see https://www.tornadoweb.org/en/stable/httputil.html#tornado.httputil.HTTPHeaders
-            request.headers,
-            request.headers["header-name"],
-            request.headers.get_list("header-name"),
-            request.headers.get_all(),
-            [(k, v) for (k, v) in request.headers.get_all()],
+            request.headers, # $ tainted
+            request.headers["header-name"], # $ tainted
+            request.headers.get_list("header-name"), # $ MISSING: tainted
+            request.headers.get_all(), # $ MISSING: tainted
+            [(k, v) for (k, v) in request.headers.get_all()], # $ MISSING: tainted
 
             # Dict[str, http.cookies.Morsel]
-            request.cookies,
-            request.cookies["cookie-name"],
-            request.cookies["cookie-name"].key,
-            request.cookies["cookie-name"].value,
+            request.cookies, # $ tainted
+            request.cookies["cookie-name"], # $ tainted
+            request.cookies["cookie-name"].key, # $ MISSING: tainted
+            request.cookies["cookie-name"].value, # $ MISSING: tainted
         )
 
 

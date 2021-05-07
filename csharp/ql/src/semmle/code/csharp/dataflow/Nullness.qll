@@ -128,12 +128,19 @@ private predicate dereferenceAt(BasicBlock bb, int i, Ssa::Definition def, Deref
  * has abstract value `vDef`.
  */
 private predicate exprImpliesSsaDef(
-  Expr e, G::AbstractValue vExpr, Ssa::Definition def, G::AbstractValue vDef
+  G::Guard e, G::AbstractValue vExpr, Ssa::Definition def, G::AbstractValue vDef
 ) {
-  exists(G::Guard g | G::Internal::impliesSteps(e, vExpr, g, vDef) |
-    g = def.getARead()
+  vExpr = e.getAValue() and
+  vExpr = vDef and
+  (
+    e = def.getARead()
     or
-    g = def.(Ssa::ExplicitDefinition).getADefinition().getTargetAccess()
+    e = def.(Ssa::ExplicitDefinition).getADefinition().getTargetAccess()
+  )
+  or
+  exists(Expr e0, G::AbstractValue vExpr0 |
+    exprImpliesSsaDef(e0, vExpr0, def, vDef) and
+    G::Internal::impliesStep(e, vExpr, e0, vExpr0)
   )
 }
 

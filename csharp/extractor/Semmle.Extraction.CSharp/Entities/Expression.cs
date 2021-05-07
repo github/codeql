@@ -193,6 +193,16 @@ namespace Semmle.Extraction.CSharp.Entities
                 return Default.CreateGenerated(cx, parent, childIndex, location, parameter.Type.IsReferenceType ? ValueAsString(null) : null);
             }
 
+            if (parameter.Type.SpecialType == SpecialType.System_Object)
+            {
+                // this can happen in VB.NET
+                cx.ExtractionError($"Extracting default argument value 'object {parameter.Name} = default' instead of 'object {parameter.Name} = {defaultValue}'. The latter is not supported in C#.",
+                    null, null, severity: Util.Logging.Severity.Warning);
+
+                // we're generating a default expression:
+                return Default.CreateGenerated(cx, parent, childIndex, location, ValueAsString(null));
+            }
+
             // const literal:
             return Literal.CreateGenerated(cx, parent, childIndex, parameter.Type, defaultValue, location);
         }
