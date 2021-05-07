@@ -1,9 +1,0 @@
-| test.cpp:29:13:29:24 | call to operator new[] | memory allocation error check is incorrect or missing |
-| test.cpp:37:13:37:24 | call to operator new[] | memory allocation error check is incorrect or missing |
-| test.cpp:41:13:41:24 | call to operator new[] | memory allocation error check is incorrect or missing |
-| test.cpp:49:8:49:19 | call to operator new[] | memory allocation error check is incorrect or missing |
-| test.cpp:58:8:58:19 | call to operator new[] | memory allocation error check is incorrect or missing |
-| test.cpp:63:8:63:19 | call to operator new[] | memory allocation error check is incorrect or missing |
-| test.cpp:92:5:92:31 | call to operator new[] | memory allocation error check is incorrect or missing |
-| test.cpp:93:15:93:41 | call to operator new[] | memory allocation error check is incorrect or missing |
-| test.cpp:96:10:96:36 | call to operator new[] | memory allocation error check is incorrect or missing |

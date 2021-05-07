@@ -17,7 +17,7 @@ make sure to handle the possibility of null pointers if <code>new(std::nothrow) 
 
 </recommendation>
 <example>
-<sample src="WrongInDetectingAndHandlingMemoryAllocationErrors.cpp" />
+<sample src="IncorrectAllocationErrorHandling.cpp" />
 
 </example>
 <references>

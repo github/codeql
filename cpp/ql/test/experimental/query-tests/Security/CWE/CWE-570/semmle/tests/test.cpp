@@ -18,7 +18,7 @@ void *operator new(std::size_t, const std::nothrow_t &) noexcept;
 void *operator new[](std::size_t, const std::nothrow_t &) noexcept;
 
 void bad_new_in_condition() {
-  if (!(new int)) { // BAD [NOT DETECTED]
+  if (!(new int)) { // BAD
     return;
   }
 }
@@ -30,7 +30,7 @@ void bad_new_missing_exception_handling() {
   if (p1 == 0)
     return;
 
-  int *p2 = new int[100]; // BAD [NOT DETECTED]
+  int *p2 = new int[100]; // BAD
   if (!p2)
     return;
 
@@ -42,7 +42,7 @@ void bad_new_missing_exception_handling() {
   if (p4 == nullptr)
     return;
 
-  int *p5 = new int[100]; // BAD [NOT DETECTED]
+  int *p5 = new int[100]; // BAD
   if (p5) {} else return;
 
   int *p6;
@@ -50,7 +50,7 @@ void bad_new_missing_exception_handling() {
   if (p6 == 0) return;
 
   int *p7;
-  p7 = new int[100]; // BAD [NOT DETECTED]
+  p7 = new int[100]; // BAD
   if (!p7)
     return;
 
@@ -66,13 +66,13 @@ void bad_new_missing_exception_handling() {
     return;
 
   int *p10;
-  p10 = new int[100]; // BAD [NOT DETECTED]
+  p10 = new int[100]; // BAD
   if (p10 != 0) {
   }
 
   int *p11;
   do {
-    p11 = new int[100]; // BAD [NOT DETECTED]
+    p11 = new int[100]; // BAD
   } while (!p11);
 
   int* p12 = new int[100];
@@ -134,4 +134,94 @@ void good_new_handles_nullptr() {
 
   if (new (std::nothrow) int[100] == nullptr)
     return; // GOOD
+}
+
+void* operator new(std::size_t count, void*) noexcept;
+void* operator new[](std::size_t count, void*) noexcept;
+
+struct Foo {
+  Foo() noexcept;
+  Foo(int);
+
+  operator bool();
+};
+
+void bad_placement_new_with_exception_handling() {
+  char buffer[1024];
+  try { new (buffer) Foo; } // BAD
+  catch (...) {  }
+}
+
+void good_placement_new_with_exception_handling() {
+  char buffer[1024];
+  try { new (buffer) Foo(42); } // GOOD: Foo constructor might throw
+  catch (...) {  }
+}
+
+int unknown_value_without_exceptions() noexcept;
+
+void may_throw() {
+  if(unknown_value_without_exceptions()) {
+    throw "bad luck exception!";
+  }
+}
+
+void unknown_code_that_may_throw(int*);
+void unknown_code_that_will_not_throw(int*) noexcept;
+
+void calls_throwing_code(int* p) {
+  if(unknown_value_without_exceptions()) unknown_code_that_may_throw(p);
+}
+
+void calls_non_throwing(int* p) {
+  if (unknown_value_without_exceptions()) unknown_code_that_will_not_throw(p);
+}
+
+void good_new_with_throwing_call() {
+  try {
+    int* p1 = new(std::nothrow) int; // GOOD
+    may_throw();
+  } catch(...) {  }
+
+  try {
+    int* p2 = new(std::nothrow) int; // GOOD
+    Foo f(10);
+  } catch(...) {  }
+
+  try {
+    int* p3 = new(std::nothrow) int; // GOOD
+    calls_throwing_code(p3);
+  } catch(...) {  }
+}
+
+void bad_new_with_nonthrowing_call() {
+  try {
+    int* p1 = new(std::nothrow) int; // BAD
+    calls_non_throwing(p1);
+  } catch(...) {  }
+
+  try {
+    int* p2 = new(std::nothrow) int; // GOOD: boolean conversion constructor might throw
+    Foo f;
+    if(f) { }
+  } catch(...) {  }
+}
+
+void bad_new_catch_baseclass_of_bad_alloc() {
+  try {
+    int* p = new(std::nothrow) int; // BAD
+  } catch(const std::exception&) { }
+}
+
+void good_new_catch_exception_in_assignment() {
+  int* p;
+  try {
+    p = new int; // GOOD
+  } catch(const std::bad_alloc&) { }
+}
+
+void good_new_catch_exception_in_conversion() {
+  try {
+    long* p = (long*) new int; // GOOD
+  } catch(const std::bad_alloc&) { }
 }
