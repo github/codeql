@@ -17,22 +17,28 @@ private newtype TIRDataFlowNode =
   TInstructionNode(Instruction i) or
   TOperandNode(Operand op) or
   TVariableNode(Variable var) or
-  TAddressNodeStore(Instruction i) {
-    exists(Instruction store | usedForStore(store) |
-      addressFlowInstrWithLoads(i, store) and
-      addressFlowInstrWithLoads(store, getDestinationAddress(_))
-      or
-      addressFlowInstrWithLoads(store, i) and
-      addressFlowInstrWithLoads(i, getDestinationAddress(_))
-    )
-  } or
+  TAddressNodeStore(Instruction i) { inStoreChain(i, _) } or
   TAddressNodeRead(Instruction i) {
     exists(Instruction read | usedForRead(read) |
       addressFlowInstrRTC(i, read)
       or
       addressFlowInstrRTC(read, i)
-    )
+    ) and
+    // We can't filter out addresses that flow to `WriteSideEffects` since the instruction that
+    // represents the address of a `WriteSideEffect` is also used for the `ReadSideEffect`.
+    // But at least we can filter out the instructions that are only used for stores.
+    not inStoreChain(i, any(StoreInstruction store))
   }
+
+predicate inStoreChain(Instruction i, Instruction store) {
+  exists(Instruction storeStepSource | usedForStore(storeStepSource) |
+    addressFlowInstrWithLoads(i, storeStepSource) and
+    addressFlowInstrWithLoads(storeStepSource, getDestinationAddress(store))
+    or
+    addressFlowInstrWithLoads(storeStepSource, i) and
+    addressFlowInstrWithLoads(i, getDestinationAddress(store))
+  )
+}
 
 /**
  * A node in a data flow graph.
@@ -746,27 +752,6 @@ private predicate initialAddressFlowInstrRTC(Instruction iFrom, Instruction iTo)
 }
 
 /**
- * Holds if `instr2` is a possible (transitive) successor of `instr1` in the control-flow graph.
- *
- * This predicate is `inline` because it's infeasible to compute it in isolation.
- */
-pragma[inline]
-private predicate isSuccessorInstruction(Instruction instr1, Instruction instr2) {
-  exists(IRBlock block1, IRBlock block2 |
-    block1 = instr1.getBlock() and
-    block2 = instr2.getBlock() and
-    if block1 = block2
-    then
-      exists(int index1, int index2 |
-        block1.getInstruction(index1) = instr1 and
-        block2.getInstruction(index2) = instr2 and
-        index1 < index2
-      )
-    else IRBlockFlow::flowsToSink(block1, pragma[only_bind_out](block2))
-  )
-}
-
-/**
  * A module that hides implementation details for the control-flow analysis needed
  * for `isSuccessorInstruction`.
  */
@@ -774,41 +759,87 @@ private module IRBlockFlow {
   /**
    * Holds if:
    * - `source` and `sink` are either a `LoadInstruction` or a `ReadSideEffectInstruction`.
-   * - `source` is the beginning of an address computation that is used as part of a `storeStep`,
-   *    and `sink` is the beginning of an address computation that is used as part of a `readStep`.
+   * - `source` is the beginning of an address computation that is used as part of a `storeStep` or
+   *    `readStep`, and `sink` is the beginning of an address computation that is used as part of a
+   *    `readStep`.
    * - `source` and `sink` read from the same instruction (i.e., the definition of their memory operand
    * is identical).
    */
-  private predicate sourceSinkPairCand(Instruction source, Instruction sink) {
+  private predicate sourceSinkPairCand(Instruction source, Instruction sink, Instruction value) {
     source != sink and
-    initialAddressFlowInstrRTC(any(AddressNodeStore address).getInstruction(),
-      getSourceAddress(source)) and
-    getSourceValue(source) = getSourceValue(sink) and
+    initialAddressFlowInstrRTC([
+        any(AddressNodeStore address).getInstruction(),
+        any(AddressNodeRead address).getInstruction()
+      ], getSourceAddress(source)) and
+    getSourceValue(source) = value and
+    getSourceValue(sink) = value and
     initialAddressFlowInstrRTC(any(AddressNodeRead address).getInstruction(), getSourceAddress(sink))
   }
 
-  private predicate isSource(IRBlock source) { sourceSinkPairCand(source.getAnInstruction(), _) }
+  private predicate isSourceInstr(Instruction value, Instruction source) {
+    sourceSinkPairCand(source, _, value)
+  }
 
-  private predicate isSink(IRBlock sink) { sourceSinkPairCand(_, sink.getAnInstruction()) }
+  private predicate isSource(Instruction value, IRBlock source) {
+    isSourceInstr(value, source.getAnInstruction())
+  }
 
-  private predicate getASuccessor(IRBlock b, IRBlock succ) {
-    flowsFromSource(b) and
+  private predicate isSink(Instruction value, IRBlock sink) {
+    sourceSinkPairCand(value, _, sink.getAnInstruction())
+  }
+
+  private predicate getASuccessor(Instruction value, IRBlock b, IRBlock succ) {
+    flowsFromSource(value, b) and
+    not isSink(value, b) and
     b.getASuccessor() = succ
   }
 
   private IRBlock getAPredecessor(IRBlock b) { result.getASuccessor() = b }
 
-  private predicate flowsFromSource(IRBlock b) {
-    isSource(b) or
-    flowsFromSource(getAPredecessor(b))
+  private predicate flowsFromSource(Instruction value, IRBlock b) {
+    isSource(value, b) or
+    flowsFromSource(value, getAPredecessor(b))
   }
 
   /** Holds if `isSink(sink)` and `b` flows to `sink` in one or more steps. */
-  private predicate flows(IRBlock b, IRBlock sink) = fastTC(getASuccessor/2)(b, sink)
+  private predicate flows(Instruction value, IRBlock b, IRBlock sink) {
+    flowsFromSource(value, b) and
+    b.getASuccessor() = sink and
+    isSink(value, sink)
+    or
+    exists(IRBlock succ | getASuccessor(value, b, succ) and flows(value, succ, sink))
+  }
 
-  predicate flowsToSink(IRBlock source, IRBlock sink) {
-    flows(source, sink) and
-    isSink(sink)
+  private predicate flowsToSink(Instruction value, IRBlock b, IRBlock sink) {
+    isSource(value, b) and
+    flows(value, b, sink)
+  }
+
+  /**
+   * Holds if `instr2` is a possible (transitive) successor of `instr1` in the control-flow graph.
+   *
+   * This predicate is `inline` because it's infeasible to compute it in isolation.
+   */
+  bindingset[value]
+  pragma[inline]
+  predicate isSuccessorInstruction(Instruction value, Instruction instr1, Instruction instr2) {
+    exists(IRBlock block1, IRBlock block2 |
+      block1 = instr1.getBlock() and
+      block2 = instr2.getBlock() and
+      if block1 = block2
+      then
+        exists(int index1, int index2 |
+          block1.getInstruction(index1) = instr1 and
+          block2.getInstruction(index2) = instr2 and
+          not exists(int mid |
+            index1 < mid and
+            mid < index2 and
+            isSourceInstr(block1.getInstruction(mid), value)
+          ) and
+          index1 < index2
+        )
+      else flowsToSink(value, block1, pragma[only_bind_out](block2))
+    )
   }
 }
 
@@ -834,17 +865,7 @@ private module IRBlockFlow {
  *     corresponding to `&a`, and `nodeTo` is the `ChiInstruction` that follows the `StoreInstruction`.
  */
 private predicate postStoreStep(AddressNodeStore nodeFrom, Node nodeTo) {
-  // Flow out of an address node that is in a chain of partial definitions (which arise from a store step).
-  exists(Instruction load1, Instruction load2 |
-    // `nodeFrom` is the start of one chain of addresses
-    initialAddressFlowInstrRTC(nodeFrom.getInstruction(), getSourceAddress(load1)) and
-    // and `nodeTo` is the start of another chain of addresses
-    initialAddressFlowInstrRTC(nodeTo.(AddressNodeRead).getInstruction(), getSourceAddress(load2)) and
-    // ... that end up reading from the same memory operand
-    getSourceValue(load1) = getSourceValue(load2) and
-    // ... and `load2` is a (transitive) successor in the control-flow graph.
-    isSuccessorInstruction(load1, load2)
-  )
+  partialDefFlow(nodeFrom.getInstruction(), nodeTo)
   or
   // Flow out of an address node (to a chi instruction) after traversing the entire address chain.
   exists(Instruction instr, ChiInstruction chi |
@@ -859,12 +880,28 @@ private predicate postStoreStep(AddressNodeStore nodeFrom, Node nodeTo) {
   )
 }
 
+private predicate partialDefFlow(Instruction iFrom, Node nodeTo) {
+  exists(Instruction load1, Instruction load2, Instruction value |
+    // `nodeFrom` is the start of one chain of addresses
+    initialAddressFlowInstrRTC(iFrom, getSourceAddress(load1)) and
+    // and `nodeTo` is the start of another chain of addresses
+    initialAddressFlowInstrRTC(nodeTo.(AddressNodeRead).getInstruction(), getSourceAddress(load2)) and
+    // ... that end up reading from the same memory operand
+    getSourceValue(load1) = value and
+    getSourceValue(load2) = value and
+    // ... and `load2` is a (transitive) successor in the control-flow graph.
+    IRBlockFlow::isSuccessorInstruction(value, load1, load2)
+  )
+}
+
 /**
  * Holds if `nodeTo` should receive flow after traversing a chain of addresses used to perform a sequence
  * of `readStep`s. `nodeTo` is either the `LoadInstruction` (or the side effect operand of a
  * `ReadSideEffectInstruction`) whose address chain has been traversed.
  */
 private predicate postReadStep(AddressNodeRead nodeFrom, Node nodeTo) {
+  partialDefFlow(nodeFrom.getInstruction(), nodeTo)
+  or
   not readStep(nodeFrom, _, _) and
   (
     exists(LoadInstruction load | nodeTo.asInstruction() = load |
