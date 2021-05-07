@@ -219,3 +219,9 @@ void good_new_catch_exception_in_assignment() {
     p = new int; // GOOD
   } catch(const std::bad_alloc&) { }
 }
+
+void good_new_catch_exception_in_conversion() {
+  try {
+    long* p = (long*) new int; // GOOD [FALSE POSITIVE]
+  } catch(const std::bad_alloc&) { }
+}
