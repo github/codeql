@@ -292,18 +292,14 @@ module ArrayFlow {
     // Note that we don't register read side effects as read steps since we have dataflow from the
     // side effect operand's definition to the side effect operand even without a read step. So we only
     // use `LoadInstruction`s here.
-    exists(Operand operand, LoadInstruction load |
-      not load.getSourceValueOperand().getAnyDef().isResultConflated() and
-      operand.getAnyDef() = pragma[only_bind_out](getSourceValue(load)) and
+    exists(LoadOperand operand, LoadInstruction load |
       operand.isDefinitionInexact() and
+      operand = load.getSourceValueOperand() and
       sourceValue = operand.getAnyDef() and
-      // `use(p[i])`
-      (
-        // Search backwards through `CopyValue` instructions and check if there's an address instruction
-        // that is not just a glvalue.
-        hasAddressInstructionWithNoIntermediateFields(getSourceAddress(load)) and
-        sourceAddress = getSourceAddress(load)
-      )
+      not sourceValue.isResultConflated() and
+      // Only allow a read step if this is not a `LoadInstruction` that loads a field.
+      hasAddressInstructionWithNoIntermediateFields(sourceAddress) and
+      sourceAddress = load.getSourceAddress()
     )
   }
 
