@@ -107,7 +107,11 @@ predicate stmtMayThrow(Stmt stmt) {
 }
 
 /** Holds if the evaluation of `e` (including conversions) may throw an exception. */
-predicate convertedExprMayThrow(Expr e) { exprMayThrow(e.getFullyConverted()) }
+predicate convertedExprMayThrow(Expr e) {
+  exprMayThrow(e)
+  or
+  convertedExprMayThrow(e.getConversion())
+}
 
 /** Holds if the evaluation of `e` may throw an exception. */
 predicate exprMayThrow(Expr e) {

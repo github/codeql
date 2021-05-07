@@ -196,7 +196,7 @@ void good_new_with_throwing_call() {
 
 void bad_new_with_nonthrowing_call() {
   try {
-    int* p1 = new(std::nothrow) int; // BAD
+    int* p1 = new(std::nothrow) int; // BAD [NOT DETECTED]
     calls_non_throwing(p1);
   } catch(...) {  }
 
@@ -222,6 +222,6 @@ void good_new_catch_exception_in_assignment() {
 
 void good_new_catch_exception_in_conversion() {
   try {
-    long* p = (long*) new int; // GOOD [FALSE POSITIVE]
+    long* p = (long*) new int; // GOOD
   } catch(const std::bad_alloc&) { }
 }
