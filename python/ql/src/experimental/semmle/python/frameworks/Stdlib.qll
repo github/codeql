@@ -11,7 +11,7 @@ private import experimental.semmle.python.Concepts
 private import semmle.python.ApiGraphs
 
 private module NoSQL {
-  /** Gets a reference to a `MongoClient` DB. */
+  /** Gets a reference to a `MongoClient` instance. */
   private API::Node mongoClientInstance() {
     result = API::moduleImport("pymongo").getMember("MongoClient").getReturn() or
     result =
