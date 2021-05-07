@@ -1112,7 +1112,8 @@ module Trees {
       this instanceof BeginBlock or
       this instanceof ASTInternal::TThen or
       this instanceof ASTInternal::TDo or
-      this instanceof ASTInternal::TElse
+      this instanceof ASTInternal::TElse or
+      this instanceof ASTInternal::TEnsure
     }
 
     final override predicate first(AstNode first) { first(this.getStmt(0), first) }
@@ -1144,7 +1145,8 @@ module Trees {
       not this instanceof BeginBlock and
       not this instanceof ASTInternal::TThen and
       not this instanceof ASTInternal::TDo and
-      not this instanceof ASTInternal::TElse
+      not this instanceof ASTInternal::TElse and
+      not this instanceof ASTInternal::TEnsure
     }
 
     final override predicate propagatesAbnormal(AstNode child) { child = this.getAStmt() }
