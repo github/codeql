@@ -12,29 +12,31 @@
 
 import cpp
 import semmle.code.cpp.commons.Exclusions
-import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
-import semmle.code.cpp.controlflow.Guards
+import semmle.code.cpp.ir.IR
+import experimental.semmle.code.cpp.rangeanalysis.RangeAnalysis
 
-/** Holds if `sub` is guarded by a condition which ensures that `left >= right`. */
-pragma[noinline]
-predicate isGuarded(SubExpr sub, Expr left, Expr right) {
-  exists(GuardCondition guard |
-    guard.controls(sub.getBasicBlock(), true) and
-    guard.ensuresLt(left, right, 0, sub.getBasicBlock(), false)
+predicate subIsSafe(SubExpr sub) {
+  // RangeAnalysis shows `left >= right`.
+  exists(Instruction i, LeftOperand left, RightOperand right, Bound b, int delta |
+    i.getAST() = sub and
+    left = i.getAnOperand() and
+    right = i.getAnOperand() and
+    boundedOperand(left, b, delta, false, _) and // left >= b + delta
+    delta >= 0 and
+    b.getInstruction() = right.getAnyDef() // b = right
   )
-}
-
-/** Holds if `sub` will never be negative. */
-predicate nonNegative(SubExpr sub) {
-  not exprMightOverflowNegatively(sub.getFullyConverted())
   or
-  // The subtraction is guarded by a check of the form `left >= right`.
-  exists(GVN left, GVN right |
-    // This is basically a poor man's version of a directional unbind operator.
-    strictcount([left, globalValueNumber(sub.getLeftOperand())]) = 1 and
-    strictcount([right, globalValueNumber(sub.getRightOperand())]) = 1 and
-    isGuarded(sub, left.getAnExpr(), right.getAnExpr())
+  exists(Instruction i, LeftOperand left, RightOperand right, Bound b, int delta |
+    i.getAST() = sub and
+    left = i.getAnOperand() and
+    right = i.getAnOperand() and
+    boundedOperand(right, b, delta, true, _) and // right <= b + delta
+    delta <= 0 and
+    (
+      b.getInstruction() = left.getAnyDef() or // b = left
+      b instanceof ZeroBound // b = 0
+    )
   )
 }
 
@@ -45,5 +47,6 @@ where
   ro.getLesserOperand().getValue().toInt() = 0 and
   ro.getGreaterOperand() = sub and
   sub.getFullyConverted().getUnspecifiedType().(IntegralType).isUnsigned() and
-  not nonNegative(sub)
+  exprMightOverflowNegatively(sub.getFullyConverted()) and // generally catches false positives involving constants
+  not subIsSafe(sub) // generally catches false positives where there's a relation between the left and right operands
 select ro, "Unsigned subtraction can never be negative."
