@@ -133,7 +133,7 @@ public class XPathInjectionTest {
 
         new DefaultXPath("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
         new XPathPattern("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
-        new XPathPattern(new PatternStub(user)); // Jaxen is not modeled yet
+        new XPathPattern(new PatternStub(user)); // $ MISSING: hasXPathInjection // Jaxen is not modeled yet
 
         DocumentFactory docFactory = DocumentFactory.getInstance();
         docFactory.createPattern("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
