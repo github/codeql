@@ -98,8 +98,6 @@ predicate stmtMayThrow(Stmt stmt) {
     stmtMayThrow(switchStmt.getStmt())
   )
   or
-  stmtMayThrow(stmt.(SwitchCase).getAStmt())
-  or
   // NOTE: We don't include `TryStmt` as those exceptions are not "observable" outside the function.
   stmtMayThrow(stmt.(Handler).getBlock())
   or
