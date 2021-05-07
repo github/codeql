@@ -11,10 +11,10 @@
  */
 
 import java
-import DataFlow::PathGraph
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.XPath
+import DataFlow::PathGraph
 
 class XPathInjectionConfiguration extends TaintTracking::Configuration {
   XPathInjectionConfiguration() { this = "XPathInjection" }
