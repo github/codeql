@@ -23,7 +23,6 @@
 
   <references>
     <li>
-      <a href="https://cwe.mitre.org/data/definitions/749.html">CWE-749</a>
       <a href="https://support.google.com/faqs/answer/7668153?hl=en">Fixing a File-based XSS Vulnerability</a>
       <a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05h-Testing-Platform-Interaction.md">OWASP - Testing WebView Protocol Handlers (MSTG-PLATFORM-5 and MSTG-PLATFORM-6)</a>
     </li>
