@@ -674,14 +674,14 @@
 | Foreach.cs:36:10:36:11 | exit M6 (normal) | Foreach.cs:36:10:36:11 | exit M6 | 2 |
 | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... | 1 |
 | Foreach.cs:38:26:38:26 | String x | Foreach.cs:39:11:39:11 | ; | 4 |
-| Initializers.cs:8:5:8:16 | enter Initializers | Initializers.cs:8:5:8:16 | exit Initializers | 15 |
-| Initializers.cs:10:5:10:16 | enter Initializers | Initializers.cs:10:5:10:16 | exit Initializers | 15 |
+| Initializers.cs:8:5:8:16 | enter Initializers | Initializers.cs:8:5:8:16 | exit Initializers | 16 |
+| Initializers.cs:10:5:10:16 | enter Initializers | Initializers.cs:10:5:10:16 | exit Initializers | 16 |
 | Initializers.cs:12:10:12:10 | enter M | Initializers.cs:12:10:12:10 | exit M | 22 |
 | Initializers.cs:18:20:18:20 | 1 | Initializers.cs:18:16:18:20 | ... = ... | 2 |
 | Initializers.cs:20:11:20:23 | enter NoConstructor | Initializers.cs:20:11:20:23 | exit NoConstructor | 9 |
 | Initializers.cs:31:9:31:11 | enter Sub | Initializers.cs:31:9:31:11 | exit Sub | 12 |
 | Initializers.cs:33:9:33:11 | enter Sub | Initializers.cs:33:9:33:11 | exit Sub | 9 |
-| Initializers.cs:35:9:35:11 | enter Sub | Initializers.cs:35:9:35:11 | exit Sub | 19 |
+| Initializers.cs:35:9:35:11 | enter Sub | Initializers.cs:35:9:35:11 | exit Sub | 14 |
 | Initializers.cs:51:10:51:13 | enter Test | Initializers.cs:51:10:51:13 | exit Test | 105 |
 | LoopUnrolling.cs:7:10:7:11 | enter M1 | LoopUnrolling.cs:9:13:9:28 | ... == ... | 7 |
 | LoopUnrolling.cs:7:10:7:11 | exit M1 (normal) | LoopUnrolling.cs:7:10:7:11 | exit M1 | 2 |
@@ -776,6 +776,7 @@
 | MultiImplementationA.cs:16:17:16:18 | exit M1 (normal) | MultiImplementationB.cs:14:17:14:18 | exit M1 | 2 |
 | MultiImplementationA.cs:17:5:19:5 | {...} | MultiImplementationA.cs:18:9:18:22 | M2(...) | 2 |
 | MultiImplementationA.cs:18:9:18:22 | enter M2 | MultiImplementationA.cs:18:9:18:22 | exit M2 | 4 |
+| MultiImplementationA.cs:20:12:20:13 | call to constructor Object | MultiImplementationA.cs:20:12:20:13 | call to constructor Object | 1 |
 | MultiImplementationA.cs:20:12:20:13 | enter C2 | MultiImplementationA.cs:20:12:20:13 | enter C2 | 1 |
 | MultiImplementationA.cs:20:12:20:13 | enter C2 | MultiImplementationB.cs:18:12:18:13 | enter C2 | 1 |
 | MultiImplementationA.cs:20:12:20:13 | exit C2 | MultiImplementationA.cs:20:12:20:13 | exit C2 | 1 |
@@ -858,6 +859,7 @@
 | MultiImplementationB.cs:14:17:14:18 | exit M1 (normal) | MultiImplementationB.cs:14:17:14:18 | exit M1 | 2 |
 | MultiImplementationB.cs:15:5:17:5 | {...} | MultiImplementationB.cs:16:9:16:31 | M2(...) | 2 |
 | MultiImplementationB.cs:16:9:16:31 | enter M2 | MultiImplementationB.cs:16:9:16:31 | exit M2 | 5 |
+| MultiImplementationB.cs:18:12:18:13 | call to constructor Object | MultiImplementationB.cs:18:12:18:13 | call to constructor Object | 1 |
 | MultiImplementationB.cs:18:12:18:13 | enter C2 | MultiImplementationA.cs:20:12:20:13 | enter C2 | 1 |
 | MultiImplementationB.cs:18:12:18:13 | enter C2 | MultiImplementationB.cs:18:12:18:13 | enter C2 | 1 |
 | MultiImplementationB.cs:18:12:18:13 | exit C2 | MultiImplementationA.cs:20:12:20:13 | exit C2 | 1 |
@@ -1231,7 +1233,7 @@
 | cflow.cs:127:48:127:49 | "" | cflow.cs:127:48:127:49 | "" | 1 |
 | cflow.cs:127:53:127:57 | this access | cflow.cs:127:53:127:57 | access to field Field | 2 |
 | cflow.cs:127:62:127:64 | enter set_Prop | cflow.cs:127:62:127:64 | exit set_Prop | 8 |
-| cflow.cs:129:5:129:15 | enter ControlFlow | cflow.cs:129:5:129:15 | exit ControlFlow | 8 |
+| cflow.cs:129:5:129:15 | enter ControlFlow | cflow.cs:129:5:129:15 | exit ControlFlow | 9 |
 | cflow.cs:134:5:134:15 | enter ControlFlow | cflow.cs:134:5:134:15 | exit ControlFlow | 9 |
 | cflow.cs:136:12:136:22 | enter ControlFlow | cflow.cs:136:12:136:22 | exit ControlFlow | 8 |
 | cflow.cs:138:40:138:40 | enter + | cflow.cs:138:40:138:40 | exit + | 9 |
@@ -1330,7 +1332,7 @@
 | cflow.cs:284:5:284:18 | enter ControlFlowSub | cflow.cs:284:5:284:18 | exit ControlFlowSub | 5 |
 | cflow.cs:286:5:286:18 | enter ControlFlowSub | cflow.cs:286:5:286:18 | exit ControlFlowSub | 7 |
 | cflow.cs:291:12:291:12 | enter M | cflow.cs:291:12:291:12 | exit M | 6 |
-| cflow.cs:296:5:296:25 | enter NegationInConstructor | cflow.cs:296:5:296:25 | exit NegationInConstructor | 4 |
+| cflow.cs:296:5:296:25 | enter NegationInConstructor | cflow.cs:296:5:296:25 | exit NegationInConstructor | 5 |
 | cflow.cs:298:10:298:10 | enter M | cflow.cs:300:46:300:50 | ... > ... | 7 |
 | cflow.cs:300:44:300:51 | [false] !... | cflow.cs:300:44:300:51 | [false] !... | 1 |
 | cflow.cs:300:44:300:51 | [true] !... | cflow.cs:300:44:300:51 | [true] !... | 1 |

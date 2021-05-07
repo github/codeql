@@ -58,8 +58,18 @@ try {
         // Bad Dom4j 
         org.dom4j.io.SAXReader reader = new org.dom4j.io.SAXReader();
         org.dom4j.Document document = reader.read(new InputSource(new StringReader(xmlStr)));
-        isExist = document.selectSingleNode("/users/user[@name='" + user + "' and @pass='" + pass + "']").hasContent();
+        isExist = document.selectSingleNode("/users/user[@name='" + user + "' and @pass='" + pass + "']") != null;
         // or document.selectNodes
+        System.out.println(isExist);
+
+        // Good Dom4j
+        org.jaxen.SimpleVariableContext svc = new org.jaxen.SimpleVariableContext();
+        svc.setVariableValue("user", user);
+        svc.setVariableValue("pass", pass);
+        String xpathString = "/users/user[@name=$user and @pass=$pass]";
+        org.dom4j.XPath safeXPath = document.createXPath(xpathString);
+        safeXPath.setVariableContext(svc);
+        isExist = safeXPath.selectSingleNode(document) != null;
         System.out.println(isExist);
     }
 } catch (ParserConfigurationException e) {

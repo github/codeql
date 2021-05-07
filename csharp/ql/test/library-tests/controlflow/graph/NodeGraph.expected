@@ -2792,10 +2792,12 @@
 | Initializers.cs:6:27:6:31 | ... + ... | Initializers.cs:6:9:6:9 | access to property G | semmle.label | successor |
 | Initializers.cs:6:31:6:31 | 2 | Initializers.cs:6:27:6:31 | ... + ... | semmle.label | successor |
 | Initializers.cs:6:31:6:31 | 2 | Initializers.cs:6:27:6:31 | ... + ... | semmle.label | successor |
-| Initializers.cs:8:5:8:16 | enter Initializers | Initializers.cs:5:9:5:9 | this access | semmle.label | successor |
+| Initializers.cs:8:5:8:16 | call to constructor Object | Initializers.cs:5:9:5:9 | this access | semmle.label | successor |
+| Initializers.cs:8:5:8:16 | enter Initializers | Initializers.cs:8:5:8:16 | call to constructor Object | semmle.label | successor |
 | Initializers.cs:8:5:8:16 | exit Initializers (normal) | Initializers.cs:8:5:8:16 | exit Initializers | semmle.label | successor |
 | Initializers.cs:8:20:8:22 | {...} | Initializers.cs:8:5:8:16 | exit Initializers (normal) | semmle.label | successor |
-| Initializers.cs:10:5:10:16 | enter Initializers | Initializers.cs:5:9:5:9 | this access | semmle.label | successor |
+| Initializers.cs:10:5:10:16 | call to constructor Object | Initializers.cs:5:9:5:9 | this access | semmle.label | successor |
+| Initializers.cs:10:5:10:16 | enter Initializers | Initializers.cs:10:5:10:16 | call to constructor Object | semmle.label | successor |
 | Initializers.cs:10:5:10:16 | exit Initializers (normal) | Initializers.cs:10:5:10:16 | exit Initializers | semmle.label | successor |
 | Initializers.cs:10:28:10:30 | {...} | Initializers.cs:10:5:10:16 | exit Initializers (normal) | semmle.label | successor |
 | Initializers.cs:12:10:12:10 | enter M | Initializers.cs:13:5:16:5 | {...} | semmle.label | successor |
@@ -2823,16 +2825,10 @@
 | Initializers.cs:20:11:20:23 | enter NoConstructor | Initializers.cs:22:23:22:23 | this access | semmle.label | successor |
 | Initializers.cs:20:11:20:23 | exit NoConstructor (normal) | Initializers.cs:20:11:20:23 | exit NoConstructor | semmle.label | successor |
 | Initializers.cs:22:23:22:23 | this access | Initializers.cs:22:27:22:27 | 0 | semmle.label | successor |
-| Initializers.cs:22:23:22:23 | this access | Initializers.cs:22:27:22:27 | 0 | semmle.label | successor |
-| Initializers.cs:22:23:22:27 | ... = ... | Initializers.cs:23:23:23:23 | this access | semmle.label | successor |
 | Initializers.cs:22:23:22:27 | ... = ... | Initializers.cs:23:23:23:23 | this access | semmle.label | successor |
 | Initializers.cs:22:27:22:27 | 0 | Initializers.cs:22:23:22:27 | ... = ... | semmle.label | successor |
-| Initializers.cs:22:27:22:27 | 0 | Initializers.cs:22:23:22:27 | ... = ... | semmle.label | successor |
-| Initializers.cs:23:23:23:23 | this access | Initializers.cs:23:27:23:27 | 1 | semmle.label | successor |
 | Initializers.cs:23:23:23:23 | this access | Initializers.cs:23:27:23:27 | 1 | semmle.label | successor |
 | Initializers.cs:23:23:23:27 | ... = ... | Initializers.cs:20:11:20:23 | exit NoConstructor (normal) | semmle.label | successor |
-| Initializers.cs:23:23:23:27 | ... = ... | Initializers.cs:28:13:28:13 | this access | semmle.label | successor |
-| Initializers.cs:23:27:23:27 | 1 | Initializers.cs:23:23:23:27 | ... = ... | semmle.label | successor |
 | Initializers.cs:23:27:23:27 | 1 | Initializers.cs:23:23:23:27 | ... = ... | semmle.label | successor |
 | Initializers.cs:28:13:28:13 | this access | Initializers.cs:28:17:28:17 | 2 | semmle.label | successor |
 | Initializers.cs:28:13:28:13 | this access | Initializers.cs:28:17:28:17 | 2 | semmle.label | successor |
@@ -2856,7 +2852,8 @@
 | Initializers.cs:33:31:33:35 | ... = ... | Initializers.cs:33:9:33:11 | exit Sub (normal) | semmle.label | successor |
 | Initializers.cs:33:31:33:36 | ...; | Initializers.cs:33:31:33:31 | this access | semmle.label | successor |
 | Initializers.cs:33:35:33:35 | access to parameter i | Initializers.cs:33:31:33:35 | ... = ... | semmle.label | successor |
-| Initializers.cs:35:9:35:11 | enter Sub | Initializers.cs:22:23:22:23 | this access | semmle.label | successor |
+| Initializers.cs:35:9:35:11 | call to constructor NoConstructor | Initializers.cs:28:13:28:13 | this access | semmle.label | successor |
+| Initializers.cs:35:9:35:11 | enter Sub | Initializers.cs:35:9:35:11 | call to constructor NoConstructor | semmle.label | successor |
 | Initializers.cs:35:9:35:11 | exit Sub (normal) | Initializers.cs:35:9:35:11 | exit Sub | semmle.label | successor |
 | Initializers.cs:35:27:35:40 | {...} | Initializers.cs:35:29:35:38 | ...; | semmle.label | successor |
 | Initializers.cs:35:29:35:29 | this access | Initializers.cs:35:33:35:33 | access to parameter i | semmle.label | successor |
@@ -3253,8 +3250,10 @@
 | MultiImplementationA.cs:18:9:18:22 | enter M2 | MultiImplementationA.cs:18:21:18:21 | 0 | semmle.label | successor |
 | MultiImplementationA.cs:18:9:18:22 | exit M2 (normal) | MultiImplementationA.cs:18:9:18:22 | exit M2 | semmle.label | successor |
 | MultiImplementationA.cs:18:21:18:21 | 0 | MultiImplementationA.cs:18:9:18:22 | exit M2 (normal) | semmle.label | successor |
-| MultiImplementationA.cs:20:12:20:13 | enter C2 | MultiImplementationA.cs:13:16:13:16 | this access | semmle.label | successor |
-| MultiImplementationA.cs:20:12:20:13 | enter C2 | MultiImplementationB.cs:11:16:11:16 | this access | semmle.label | successor |
+| MultiImplementationA.cs:20:12:20:13 | call to constructor Object | MultiImplementationA.cs:13:16:13:16 | this access | semmle.label | successor |
+| MultiImplementationA.cs:20:12:20:13 | call to constructor Object | MultiImplementationB.cs:11:16:11:16 | this access | semmle.label | successor |
+| MultiImplementationA.cs:20:12:20:13 | enter C2 | MultiImplementationA.cs:20:12:20:13 | call to constructor Object | semmle.label | successor |
+| MultiImplementationA.cs:20:12:20:13 | enter C2 | MultiImplementationB.cs:18:12:18:13 | call to constructor Object | semmle.label | successor |
 | MultiImplementationA.cs:20:12:20:13 | exit C2 (abnormal) | MultiImplementationA.cs:20:12:20:13 | exit C2 | semmle.label | successor |
 | MultiImplementationA.cs:20:12:20:13 | exit C2 (abnormal) | MultiImplementationB.cs:18:12:18:13 | exit C2 | semmle.label | successor |
 | MultiImplementationA.cs:20:12:20:13 | exit C2 (normal) | MultiImplementationA.cs:20:12:20:13 | exit C2 | semmle.label | successor |
@@ -3394,8 +3393,10 @@
 | MultiImplementationB.cs:16:9:16:31 | exit M2 (abnormal) | MultiImplementationB.cs:16:9:16:31 | exit M2 | semmle.label | successor |
 | MultiImplementationB.cs:16:21:16:30 | throw ... | MultiImplementationB.cs:16:9:16:31 | exit M2 (abnormal) | semmle.label | exception(NullReferenceException) |
 | MultiImplementationB.cs:16:27:16:30 | null | MultiImplementationB.cs:16:21:16:30 | throw ... | semmle.label | successor |
-| MultiImplementationB.cs:18:12:18:13 | enter C2 | MultiImplementationA.cs:13:16:13:16 | this access | semmle.label | successor |
-| MultiImplementationB.cs:18:12:18:13 | enter C2 | MultiImplementationB.cs:11:16:11:16 | this access | semmle.label | successor |
+| MultiImplementationB.cs:18:12:18:13 | call to constructor Object | MultiImplementationA.cs:13:16:13:16 | this access | semmle.label | successor |
+| MultiImplementationB.cs:18:12:18:13 | call to constructor Object | MultiImplementationB.cs:11:16:11:16 | this access | semmle.label | successor |
+| MultiImplementationB.cs:18:12:18:13 | enter C2 | MultiImplementationA.cs:20:12:20:13 | call to constructor Object | semmle.label | successor |
+| MultiImplementationB.cs:18:12:18:13 | enter C2 | MultiImplementationB.cs:18:12:18:13 | call to constructor Object | semmle.label | successor |
 | MultiImplementationB.cs:18:12:18:13 | exit C2 (abnormal) | MultiImplementationA.cs:20:12:20:13 | exit C2 | semmle.label | successor |
 | MultiImplementationB.cs:18:12:18:13 | exit C2 (abnormal) | MultiImplementationB.cs:18:12:18:13 | exit C2 | semmle.label | successor |
 | MultiImplementationB.cs:18:12:18:13 | exit C2 (normal) | MultiImplementationA.cs:20:12:20:13 | exit C2 | semmle.label | successor |
@@ -4501,7 +4502,8 @@
 | cflow.cs:127:68:127:80 | ... = ... | cflow.cs:127:62:127:64 | exit set_Prop (normal) | semmle.label | successor |
 | cflow.cs:127:68:127:81 | ...; | cflow.cs:127:68:127:72 | this access | semmle.label | successor |
 | cflow.cs:127:76:127:80 | access to parameter value | cflow.cs:127:68:127:80 | ... = ... | semmle.label | successor |
-| cflow.cs:129:5:129:15 | enter ControlFlow | cflow.cs:130:5:132:5 | {...} | semmle.label | successor |
+| cflow.cs:129:5:129:15 | call to constructor Object | cflow.cs:130:5:132:5 | {...} | semmle.label | successor |
+| cflow.cs:129:5:129:15 | enter ControlFlow | cflow.cs:129:5:129:15 | call to constructor Object | semmle.label | successor |
 | cflow.cs:129:5:129:15 | exit ControlFlow (normal) | cflow.cs:129:5:129:15 | exit ControlFlow | semmle.label | successor |
 | cflow.cs:130:5:132:5 | {...} | cflow.cs:131:9:131:18 | ...; | semmle.label | successor |
 | cflow.cs:131:9:131:13 | this access | cflow.cs:131:17:131:17 | access to parameter s | semmle.label | successor |
@@ -4894,7 +4896,8 @@
 | cflow.cs:291:38:291:38 | access to parameter f | cflow.cs:291:40:291:40 | 0 | semmle.label | successor |
 | cflow.cs:291:38:291:41 | delegate call | cflow.cs:291:12:291:12 | exit M (normal) | semmle.label | successor |
 | cflow.cs:291:40:291:40 | 0 | cflow.cs:291:38:291:41 | delegate call | semmle.label | successor |
-| cflow.cs:296:5:296:25 | enter NegationInConstructor | cflow.cs:296:52:296:54 | {...} | semmle.label | successor |
+| cflow.cs:296:5:296:25 | call to constructor Object | cflow.cs:296:52:296:54 | {...} | semmle.label | successor |
+| cflow.cs:296:5:296:25 | enter NegationInConstructor | cflow.cs:296:5:296:25 | call to constructor Object | semmle.label | successor |
 | cflow.cs:296:5:296:25 | exit NegationInConstructor (normal) | cflow.cs:296:5:296:25 | exit NegationInConstructor | semmle.label | successor |
 | cflow.cs:296:52:296:54 | {...} | cflow.cs:296:5:296:25 | exit NegationInConstructor (normal) | semmle.label | successor |
 | cflow.cs:298:10:298:10 | enter M | cflow.cs:299:5:301:5 | {...} | semmle.label | successor |

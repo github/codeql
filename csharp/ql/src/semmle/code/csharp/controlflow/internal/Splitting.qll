@@ -244,18 +244,10 @@ module InitializerSplitting {
    * Holds if `c` is a non-static constructor that performs the initialization
    * of member `m`.
    */
-  predicate constructorInitializes(Constructor c, InitializedInstanceMember m) {
+  predicate constructorInitializes(InstanceConstructor c, InitializedInstanceMember m) {
     c.isUnboundDeclaration() and
-    not c.isStatic() and
-    c.getDeclaringType().hasMember(m) and
-    (
-      not c.hasInitializer()
-      or
-      // Members belonging to the base class are initialized via calls to the
-      // base constructor
-      c.getInitializer().isBase() and
-      m.getDeclaringType() = c.getDeclaringType()
-    )
+    c.getDeclaringType().getAMember() = m and
+    not c.getInitializer().isThis()
   }
 
   /**

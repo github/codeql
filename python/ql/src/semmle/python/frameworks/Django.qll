@@ -386,8 +386,7 @@ private module PrivateDjango {
           /** Provides models for the `django.db.models.expressions.RawSQL` class. */
           module RawSQL {
             /**
-             * Gets an instance of the `django.db.models.expressions.RawSQL` class,
-             * that was initiated with the SQL represented by `sql`.
+             * Gets an reference to the `django.db.models.expressions.RawSQL` class.
              */
             API::Node classRef() {
               result = expressions().getMember("RawSQL")
@@ -396,7 +395,10 @@ private module PrivateDjango {
               result = models().getMember("RawSQL")
             }
 
-            /** Gets an instance of the `django.db.models.expressions.RawSQL` class. */
+            /**
+             * Gets an instance of the `django.db.models.expressions.RawSQL` class,
+             * that was initiated with the SQL represented by `sql`.
+             */
             private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t, ControlFlowNode sql) {
               t.start() and
               exists(DataFlow::CallCfgNode c | result = c |
