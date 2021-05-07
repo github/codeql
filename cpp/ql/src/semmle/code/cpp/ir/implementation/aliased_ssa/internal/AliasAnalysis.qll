@@ -400,3 +400,46 @@ predicate addressOperandAllocationAndOffset(
     )
   )
 }
+
+/**
+ * Predicates used only for printing annotated IR dumps. These should not be used in production
+ * queries.
+ */
+module Print {
+  string getOperandProperty(Operand operand, string key) {
+    key = "alloc" and
+    result =
+      strictconcat(Configuration::Allocation allocation, IntValue bitOffset |
+        addressOperandAllocationAndOffset(operand, allocation, bitOffset)
+      |
+        allocation.toString() + Ints::getBitOffsetString(bitOffset), ", "
+      )
+    or
+    key = "prop" and
+    result =
+      strictconcat(Instruction destInstr, IntValue bitOffset, string value |
+        operandIsPropagatedIncludingByCall(operand, bitOffset, destInstr) and
+        if destInstr = operand.getUse()
+        then value = "@" + Ints::getBitOffsetString(bitOffset) + "->result"
+        else value = "@" + Ints::getBitOffsetString(bitOffset) + "->" + destInstr.getResultId()
+      |
+        value, ", "
+      )
+  }
+
+  string getInstructionProperty(Instruction instr, string key) {
+    key = "prop" and
+    result =
+      strictconcat(IntValue bitOffset, Operand sourceOperand, string value |
+        operandIsPropagatedIncludingByCall(sourceOperand, bitOffset, instr) and
+        if instr = sourceOperand.getUse()
+        then value = sourceOperand.getDumpId() + Ints::getBitOffsetString(bitOffset) + "->@"
+        else
+          value =
+            sourceOperand.getUse().getResultId() + "." + sourceOperand.getDumpId() +
+              Ints::getBitOffsetString(bitOffset) + "->@"
+      |
+        value, ", "
+      )
+  }
+}
