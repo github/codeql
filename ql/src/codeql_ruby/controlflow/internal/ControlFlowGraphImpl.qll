@@ -1110,7 +1110,8 @@ module Trees {
       this instanceof StringInterpolationComponent or
       this instanceof ParenthesizedExpr or
       this instanceof BeginBlock or
-      this instanceof ASTInternal::TThen
+      this instanceof ASTInternal::TThen or
+      this instanceof ASTInternal::TElse
     }
 
     final override predicate first(AstNode first) { first(this.getStmt(0), first) }
@@ -1140,7 +1141,8 @@ module Trees {
       not this instanceof Block and
       not this instanceof ParenthesizedExpr and
       not this instanceof BeginBlock and
-      not this instanceof ASTInternal::TThen
+      not this instanceof ASTInternal::TThen and
+      not this instanceof ASTInternal::TElse
     }
 
     final override predicate propagatesAbnormal(AstNode child) { child = this.getAStmt() }
