@@ -1129,45 +1129,6 @@ module Trees {
     }
   }
 
-  /**
-   * Control-flow tree for any pre-order StmtSequence that doesn't have a more
-   * specific implementation.
-   * TODO: make all StmtSequence tree classes post-order, and simplify class
-   * hierarchy.
-   */
-  private class SimplePreOrderStmtSequenceTree extends StmtSequenceTree, PreOrderTree {
-    SimplePreOrderStmtSequenceTree() {
-      not this instanceof BodyStmtTree and
-      not this instanceof EndBlock and
-      not this instanceof StringInterpolationComponent and
-      not this instanceof Block and
-      not this instanceof ParenthesizedExpr and
-      not this instanceof BeginBlock and
-      not this instanceof ASTInternal::TThen and
-      not this instanceof ASTInternal::TDo and
-      not this instanceof ASTInternal::TElse and
-      not this instanceof ASTInternal::TEnsure
-    }
-
-    final override predicate propagatesAbnormal(AstNode child) { child = this.getAStmt() }
-
-    final override predicate last(AstNode last, Completion c) {
-      last(this.getLastStmt(), last, c)
-      or
-      not exists(this.getLastStmt()) and
-      c.isValidFor(this) and
-      last = this
-    }
-
-    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
-      pred = this and
-      first(this.getBodyChild(0, _), succ) and
-      c instanceof SimpleCompletion
-      or
-      StmtSequenceTree.super.succ(pred, succ, c)
-    }
-  }
-
   private class SingletonClassTree extends BodyStmtPostOrderTree, SingletonClass {
     final override predicate first(AstNode first) {
       this.firstInner(first)
