@@ -158,11 +158,11 @@ private class SmartPtrSetterFunction extends MemberFunction, AliasFunction, Side
           // parameter.
           result.isParameter(1)
         else result.isParameterDeref(0)
+        or
+        // One of the functions that takes ownership of a raw pointer.
+        param0.getUnspecifiedType() instanceof PointerType and
+        result.isParameter(0)
       )
-      or
-      // One of the functions that takes ownership of a raw pointer.
-      param0.getUnspecifiedType() instanceof PointerType and
-      result.isParameter(0)
     )
   }
 }
