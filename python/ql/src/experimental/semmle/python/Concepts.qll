@@ -41,6 +41,9 @@ class LDAPQuery extends DataFlow::Node {
 
   LDAPQuery() { this = range }
 
+  /**
+   * Gets the argument containing the executed expression.
+   */
   DataFlow::Node getLDAPNode() { result = range.getLDAPNode() }
 }
 
@@ -71,5 +74,8 @@ class LDAPEscape extends DataFlow::Node {
 
   LDAPEscape() { this = range }
 
+  /**
+   * Gets the argument containing the escaped expression.
+   */
   DataFlow::Node getEscapeNode() { result = range.getEscapeNode() }
 }
