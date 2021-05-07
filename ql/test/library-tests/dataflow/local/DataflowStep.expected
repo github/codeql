@@ -32,7 +32,6 @@
 | local_dataflow.rb:19:5:19:5 | x | local_dataflow.rb:20:6:20:6 | x |
 | local_dataflow.rb:19:10:19:14 | array | local_dataflow.rb:19:1:21:3 | for ... in ... |
 | local_dataflow.rb:20:3:20:25 | if ... | local_dataflow.rb:19:16:21:3 | do ... |
-| local_dataflow.rb:20:12:20:21 | then ... | local_dataflow.rb:20:3:20:25 | if ... |
 | local_dataflow.rb:20:17:20:21 | break | local_dataflow.rb:19:1:21:3 | for ... in ... |
 | local_dataflow.rb:24:2:24:8 | break | local_dataflow.rb:23:1:25:3 | while ... |
 | local_dataflow.rb:24:8:24:8 | 5 | local_dataflow.rb:24:2:24:8 | break |
@@ -43,10 +42,8 @@
 | local_dataflow.rb:32:5:32:25 | bar | local_dataflow.rb:32:1:32:25 | ... = ... |
 | local_dataflow.rb:32:5:32:25 | bar | local_dataflow.rb:32:1:32:25 | ... = ... |
 | local_dataflow.rb:34:7:34:7 | x | local_dataflow.rb:35:6:35:6 | x |
-| local_dataflow.rb:35:12:36:13 | then ... | local_dataflow.rb:35:3:37:5 | if ... |
 | local_dataflow.rb:36:13:36:13 | 7 | local_dataflow.rb:36:6:36:13 | return |
 | local_dataflow.rb:41:7:41:7 | x | local_dataflow.rb:42:6:42:6 | x |
-| local_dataflow.rb:42:12:43:13 | then ... | local_dataflow.rb:42:3:44:5 | if ... |
 | local_dataflow.rb:43:13:43:13 | 7 | local_dataflow.rb:43:6:43:13 | return |
 | local_dataflow.rb:45:10:45:10 | 6 | local_dataflow.rb:45:3:45:10 | return |
 | local_dataflow.rb:49:3:53:3 | <captured> | local_dataflow.rb:50:18:50:18 | x |

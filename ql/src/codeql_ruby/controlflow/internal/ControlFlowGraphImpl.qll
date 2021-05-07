@@ -1109,7 +1109,8 @@ module Trees {
     SimplePostOrderStmtSequenceTree() {
       this instanceof StringInterpolationComponent or
       this instanceof ParenthesizedExpr or
-      this instanceof BeginBlock
+      this instanceof BeginBlock or
+      this instanceof ASTInternal::TThen
     }
 
     final override predicate first(AstNode first) { first(this.getStmt(0), first) }
@@ -1138,7 +1139,8 @@ module Trees {
       not this instanceof StringInterpolationComponent and
       not this instanceof Block and
       not this instanceof ParenthesizedExpr and
-      not this instanceof BeginBlock
+      not this instanceof BeginBlock and
+      not this instanceof ASTInternal::TThen
     }
 
     final override predicate propagatesAbnormal(AstNode child) { child = this.getAStmt() }
