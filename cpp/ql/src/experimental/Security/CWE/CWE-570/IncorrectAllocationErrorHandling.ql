@@ -127,6 +127,10 @@ predicate exprMayThrow(Expr e) {
     convertedExprMayThrow([binOp.getLeftOperand(), binOp.getRightOperand()])
   )
   or
+  exists(Assignment assign | assign = e |
+    convertedExprMayThrow([assign.getLValue(), assign.getRValue()])
+  )
+  or
   exists(CommaExpr comma | comma = e |
     convertedExprMayThrow([comma.getLeftOperand(), comma.getRightOperand()])
   )
