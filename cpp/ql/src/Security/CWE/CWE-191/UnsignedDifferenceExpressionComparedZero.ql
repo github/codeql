@@ -49,7 +49,7 @@ predicate exprIsSubLeftOrLess(SubExpr sub, DataFlow::Node n) {
   exists(DataFlow::Node other |
     // guard constraining `sub`
     exprIsSubLeftOrLess(sub, other) and
-    isGuarded(sub, other.asExpr(), n.asExpr()) // other >= e
+    isGuarded(sub, other.asExpr(), n.asExpr()) // other >= n
   )
   or
   exists(DataFlow::Node other, float p, float q |
