@@ -412,6 +412,10 @@ private class PromiseTaintStep extends TaintTracking::SharedTaintStep {
       pred = thn.getReceiver() and
       succ = thn.getCallback(0).getParameter(0)
       or
+      thn.getReceiver() instanceof ClientRequest::Range and
+      pred = thn.getReceiver() and
+      succ = thn.getCallback(1).getParameter(0).getAPropertyRead("response")
+      or
       // from `v` to `p.then(x => return v)`
       pred = thn.getCallback([0 .. 1]).getAReturn() and
       succ = thn
