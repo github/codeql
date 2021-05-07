@@ -269,6 +269,29 @@ struct Visitor<'a> {
 }
 
 impl Visitor<'_> {
+    fn record_error(
+        &mut self,
+        severity: usize,
+        error_tag: String,
+        error_message: String,
+        full_error_message: String,
+        loc: Label,
+    ) {
+        error!("{}", full_error_message);
+        let id = self.trap_writer.fresh_id();
+        self.trap_writer.add_tuple(
+            "diagnostics",
+            vec![
+                Arg::Label(id),
+                Arg::Int(severity),
+                Arg::String(error_tag),
+                Arg::String(error_message),
+                Arg::String(full_error_message),
+                Arg::Label(loc),
+            ],
+        );
+    }
+
     fn record_parse_error(&mut self, node: Node) {
         let error_message = if node.is_missing() {
             format!("parse error: expecting '{}'", node.kind())
@@ -281,7 +304,6 @@ impl Visitor<'_> {
             node.start_position().row + 1,
             error_message
         );
-        error!("{}", full_error_message);
 
         let (start_line, start_column, end_line, end_column) = location_for(&self.source, node);
         let loc = self.trap_writer.location(
@@ -291,17 +313,12 @@ impl Visitor<'_> {
             end_line,
             end_column,
         );
-        let id = self.trap_writer.fresh_id();
-        self.trap_writer.add_tuple(
-            "diagnostics",
-            vec![
-                Arg::Label(id),
-                Arg::Int(4),
-                Arg::String("parse_error".to_string()),
-                Arg::String(error_message),
-                Arg::String(full_error_message),
-                Arg::Label(loc),
-            ],
+        self.record_error(
+            4,
+            "parse_error".to_string(),
+            error_message,
+            full_error_message,
+            loc,
         );
     }
 
@@ -392,12 +409,21 @@ impl Visitor<'_> {
                 }
             }
             _ => {
-                error!(
-                    "{}:{}: unknown table type: '{}'",
+                let error_message = format!("unknown table type: '{}'", node.kind());
+                let full_error_message = format!(
+                    "{}:{}: {}",
                     &self.path,
                     node.start_position().row + 1,
-                    node.kind()
+                    error_message
                 );
+                self.record_error(
+                    4,
+                    "parse_error".to_string(),
+                    error_message,
+                    full_error_message,
+                    loc,
+                );
+
                 valid = false;
             }
         }
