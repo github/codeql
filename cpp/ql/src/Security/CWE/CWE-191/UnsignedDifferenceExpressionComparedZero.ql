@@ -35,7 +35,7 @@ predicate isGuarded(SubExpr sub, Expr left, Expr right) {
  * `sub.getLeftOperand()`.
  */
 predicate exprIsSubLeftOrLess(SubExpr sub, DataFlow::Node n) {
-  n = DataFlow::exprNode(sub.getLeftOperand())
+  n.asExpr() = sub.getLeftOperand()
   or
   exists(DataFlow::Node other |
     // dataflow
