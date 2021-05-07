@@ -130,7 +130,8 @@ private predicate javaApiCallablePasswordParam(string s) {
   s = "sun.tools.jconsole.ProxyClient;getProxyClient(String, int, String, String);3" or
   s = "sun.tools.jconsole.ProxyClient;getProxyClient(String, String, String);2" or
   s = "sun.tools.jconsole.ProxyClient;getCacheKey(String, int, String, String);3" or
-  s = "com.amazonaws.auth.BasicAWSCredentials;BasicAWSCredentials(String, String);1"
+  s = "com.amazonaws.auth.BasicAWSCredentials;BasicAWSCredentials(String, String);1" or
+  s = "com.azure.identity.UsernamePasswordCredentialBuilder;password(String);0"
 }
 
 /**
@@ -202,7 +203,8 @@ private predicate javaApiCallableUsernameParam(string s) {
   s = "sun.tools.jconsole.ProxyClient;getConnectionName(String, String);1" or
   s = "sun.tools.jconsole.ProxyClient;getProxyClient(String, int, String, String);2" or
   s = "sun.tools.jconsole.ProxyClient;getConnectionName(String, int, String);2" or
-  s = "com.amazonaws.auth.BasicAWSCredentials;BasicAWSCredentials(String, String);0"
+  s = "com.amazonaws.auth.BasicAWSCredentials;BasicAWSCredentials(String, String);0" or
+  s = "com.azure.identity.UsernamePasswordCredentialBuilder;username(String);0"
 }
 
 /**
@@ -510,5 +512,7 @@ private predicate otherApiCallableCredentialParam(string s) {
   s =
     "org.springframework.security.core.userdetails.User;User(String, String, boolean, boolean, boolean, boolean, Collection<? extends GrantedAuthority>);0" or
   s =
-    "org.springframework.security.core.userdetails.User;User(String, String, boolean, boolean, boolean, boolean, Collection<? extends GrantedAuthority>);1"
+    "org.springframework.security.core.userdetails.User;User(String, String, boolean, boolean, boolean, boolean, Collection<? extends GrantedAuthority>);1" or
+  s = "com.azure.identity.ClientSecretCredentialBuilder;clientSecret(String);0"
+
 }
