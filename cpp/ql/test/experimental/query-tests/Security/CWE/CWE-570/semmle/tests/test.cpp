@@ -212,3 +212,10 @@ void bad_new_catch_baseclass_of_bad_alloc() {
     int* p = new(std::nothrow) int; // BAD
   } catch(const std::exception&) { }
 }
+
+void good_new_catch_exception_in_assignment() {
+  int* p;
+  try {
+    p = new int; // GOOD [FALSE POSITIVE]
+  } catch(const std::bad_alloc&) { }
+}
