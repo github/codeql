@@ -16,9 +16,9 @@ class LDAPInjectionFlowConfig extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSink(DataFlow::Node sink) { sink = any(LDAPQuery ldapQuery).getLDAPNode() }
+  override predicate isSink(DataFlow::Node sink) { sink = any(LDAPQuery ldapQuery).getQuery() }
 
   override predicate isSanitizer(DataFlow::Node sanitizer) {
-    sanitizer = any(LDAPEscape ldapEsc).getEscapeNode()
+    sanitizer = any(LDAPEscape ldapEsc).getAnInput()
   }
 }
