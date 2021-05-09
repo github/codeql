@@ -434,17 +434,19 @@ private module CleverGo {
   }
 
   /**
-   * Models an HTTP static content-type setter.
+   * Models an HTTP static content-type header setter.
    */
-  private class StaticContentTypeSetter extends HTTP::HeaderWrite::Range, DataFlow::CallNode {
+  private class StaticContentTypeHeaderSetter extends HTTP::HeaderWrite::Range, DataFlow::CallNode {
     DataFlow::Node receiverNode;
-    string contentTypeString;
+    string valueString;
 
-    StaticContentTypeSetter() { setsStaticContentType(_, _, this, contentTypeString, receiverNode) }
+    StaticContentTypeHeaderSetter() {
+      setsStaticHeaderContentType(_, _, this, valueString, receiverNode)
+    }
 
     override string getHeaderName() { result = "content-type" }
 
-    override string getHeaderValue() { result = contentTypeString }
+    override string getHeaderValue() { result = valueString }
 
     override DataFlow::Node getName() { none() }
 
@@ -453,15 +455,15 @@ private module CleverGo {
     override HTTP::ResponseWriter getResponseWriter() { result.getANode() = receiverNode }
   }
 
-  // Holds for a call that sets the content-type (implicit).
-  private predicate setsStaticContentType(
-    string package, string receiverName, DataFlow::CallNode contentTypeSetterCall,
-    string contentTypeString, DataFlow::Node receiverNode
+  // Holds for a call that sets the content-type header (implicit).
+  private predicate setsStaticHeaderContentType(
+    string package, string receiverName, DataFlow::CallNode setterCall, string valueString,
+    DataFlow::Node receiverNode
   ) {
     exists(string methodName, Method met |
       met.hasQualifiedName(package, receiverName, methodName) and
-      contentTypeSetterCall = met.getACall() and
-      receiverNode = contentTypeSetterCall.getReceiver()
+      setterCall = met.getACall() and
+      receiverNode = setterCall.getReceiver()
     |
       package = packagePath() and
       (
@@ -470,51 +472,53 @@ private module CleverGo {
         (
           // signature: func (*Context).SetContentTypeHTML()
           methodName = "SetContentTypeHTML" and
-          contentTypeString = "text/html"
+          valueString = "text/html"
           or
           // signature: func (*Context).SetContentTypeJSON()
           methodName = "SetContentTypeJSON" and
-          contentTypeString = "application/json"
+          valueString = "application/json"
           or
           // signature: func (*Context).SetContentTypeText()
           methodName = "SetContentTypeText" and
-          contentTypeString = "text/plain"
+          valueString = "text/plain"
           or
           // signature: func (*Context).SetContentTypeXML()
           methodName = "SetContentTypeXML" and
-          contentTypeString = "text/xml"
+          valueString = "text/xml"
         )
       )
     )
   }
 
   /**
-   * Models an HTTP dynamic content-type setter.
+   * Models an HTTP dynamic content-type header setter.
    */
-  private class DynamicContentTypeSetter extends HTTP::HeaderWrite::Range, DataFlow::CallNode {
+  private class DynamicContentTypeHeaderSetter extends HTTP::HeaderWrite::Range, DataFlow::CallNode {
     DataFlow::Node receiverNode;
-    DataFlow::Node contentTypeNode;
+    DataFlow::Node valueNode;
 
-    DynamicContentTypeSetter() { setsDynamicContentType(_, _, this, contentTypeNode, receiverNode) }
+    DynamicContentTypeHeaderSetter() {
+      setsDynamicHeaderContentType(_, _, this, valueNode, receiverNode)
+    }
 
     override string getHeaderName() { result = "content-type" }
 
     override DataFlow::Node getName() { none() }
 
-    override DataFlow::Node getValue() { result = contentTypeNode }
+    override DataFlow::Node getValue() { result = valueNode }
 
     override HTTP::ResponseWriter getResponseWriter() { result.getANode() = receiverNode }
   }
 
-  // Holds for a call that sets the content-type via a parameter.
-  private predicate setsDynamicContentType(
-    string package, string receiverName, DataFlow::CallNode contentTypeSetterCall,
-    DataFlow::Node contentTypeNode, DataFlow::Node receiverNode
+  // Holds for a call that sets the content-type header via a parameter.
+  private predicate setsDynamicHeaderContentType(
+    string package, string receiverName, DataFlow::CallNode setterCall, DataFlow::Node valueNode,
+    DataFlow::Node receiverNode
   ) {
     exists(string methodName, Method met |
       met.hasQualifiedName(package, receiverName, methodName) and
-      contentTypeSetterCall = met.getACall() and
-      receiverNode = contentTypeSetterCall.getReceiver()
+      setterCall = met.getACall() and
+      receiverNode = setterCall.getReceiver()
     |
       package = packagePath() and
       (
@@ -523,7 +527,7 @@ private module CleverGo {
         (
           // signature: func (*Context).SetContentType(v string)
           methodName = "SetContentType" and
-          contentTypeNode = contentTypeSetterCall.getArgument(0)
+          valueNode = setterCall.getArgument(0)
         )
       )
     )
