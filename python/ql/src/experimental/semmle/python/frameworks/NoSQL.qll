@@ -96,7 +96,7 @@ private module NoSQL {
     MongoEngineObjectsCall() {
       this =
         API::moduleImport("mongoengine")
-            .getMember("Document")
+            .getMember(["Document", "EmbeddedDocument"])
             .getASubclass()
             .getMember("objects")
             .getACall()
@@ -111,7 +111,7 @@ private module NoSQL {
         API::moduleImport("flask_mongoengine")
             .getMember("MongoEngine")
             .getReturn()
-            .getMember("Document")
+            .getMember(["Document", "EmbeddedDocument"])
             .getASubclass()
             .getMember("objects")
             .getACall()
@@ -125,13 +125,13 @@ private module NoSQL {
   }
 
   /**
-   * A MongoEngine.Document subclass which represents a single MongoDB table.
+   * A MongoEngine.Document or MongoEngine.EmbeddedDocument subclass which represents a MongoDB document.
    */
   private class FlaskMongoEngineDocumentClass extends ClassValue {
     FlaskMongoEngineDocumentClass() {
-      this.getASuperType().getName() = "Document" and
+      this.getASuperType().getName() in ["Document", "EmbeddedDocument"] and
       exists(AttrNode documentClass |
-        documentClass.getName() = "Document" and
+        documentClass.getName() in ["Document", "EmbeddedDocument"] and
         documentClass.getObject() = flaskMongoEngineInstance().asCfgNode() and
         // This is super hacky. It checks to see if the class is a subclass of a flaskMongoEngineInstance.Document
         this.getASuperType()
