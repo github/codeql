@@ -25,7 +25,7 @@ def home_page():
     json_search = json.loads(unsanitized_search)
 
     retrieved_db = db.get_db()
-    result = retrieved_db["Movie"].find_one_or_404({'name': json_search})
+    result = retrieved_db["Movie"].find({'name': json_search})
 
 # if __name__ == "__main__":
 #     app.run(debug=True)
