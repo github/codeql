@@ -32,13 +32,11 @@ private class DefaultUrlResourceSinkModel extends SinkModelCsv {
 
 /**
  * Cross-origin access enabled resource fetch.
- *
- * Specifically this looks for code like
- * `webView.getSettings().setAllow[File|Universal]AccessFromFileURLs(true);`
+ * 
+ * It requires JavaScript to be enabled too to be considered a valid sink.
  */
-private class CrossOriginUrlResourceSink extends UrlResourceSink {
+private class CrossOriginUrlResourceSink extends JavaScriptEnabledUrlResourceSink {
   CrossOriginUrlResourceSink() {
-    sinkNode(this, "unsafe-android-access") and
     exists(MethodAccess ma, MethodAccess getSettingsMa |
       ma.getMethod() instanceof CrossOriginAccessMethod and
       ma.getArgument(0).(BooleanLiteral).getBooleanValue() = true and
