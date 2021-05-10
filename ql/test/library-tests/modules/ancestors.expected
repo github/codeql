@@ -7,14 +7,14 @@
 
 #-----| BasicObject
 
-#-----| Boolean
-#-----| super -> Object
-
 #-----| Class
 #-----| super -> Object
 
 #-----| Complex
 #-----| super -> Numeric
+
+#-----| FalseClass
+#-----| super -> Object
 
 #-----| Float
 #-----| super -> Numeric
@@ -38,6 +38,9 @@
 
 #-----| Rational
 #-----| super -> Numeric
+
+#-----| TrueClass
+#-----| super -> Object
 
 calls.rb:
 #   15| M

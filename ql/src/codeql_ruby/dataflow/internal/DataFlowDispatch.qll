@@ -97,7 +97,9 @@ private DataFlow::LocalSourceNode trackInstance(Module tp, TypeTracker t) {
   (
     result.asExpr().getExpr() instanceof NilLiteral and tp = TResolved("NilClass")
     or
-    result.asExpr().getExpr() instanceof BooleanLiteral and tp = TResolved("Boolean")
+    result.asExpr().getExpr().(BooleanLiteral).isFalse() and tp = TResolved("FalseClass")
+    or
+    result.asExpr().getExpr().(BooleanLiteral).isTrue() and tp = TResolved("TrueClass")
     or
     result.asExpr().getExpr() instanceof IntegerLiteral and tp = TResolved("Integer")
     or

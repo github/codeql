@@ -11,8 +11,8 @@ private import codeql_ruby.ast.Scope
 private string builtin() {
   result =
     [
-      "Object", "Kernel", "BasicObject", "Class", "Module", "NilClass", "Boolean", "Numeric",
-      "Integer", "Float", "Rational", "Complex", "Array", "Hash"
+      "Object", "Kernel", "BasicObject", "Class", "Module", "NilClass", "FalseClass", "TrueClass",
+      "Numeric", "Integer", "Float", "Rational", "Complex", "Array", "Hash"
     ]
 }
 
@@ -45,7 +45,10 @@ private module Cached {
   Module getSuperClass(Module cls) {
     cls = TResolved("Object") and result = TResolved("BasicObject")
     or
-    cls = TResolved(["Module", "Class", "Numeric", "Array", "Hash", "Boolean", "NilClass"]) and
+    cls =
+      TResolved([
+          "Module", "Class", "Numeric", "Array", "Hash", "FalseClass", "TrueClass", "NilClass"
+        ]) and
     result = TResolved("Object")
     or
     cls = TResolved(["Integer", "Float", "Rational", "Complex"]) and
