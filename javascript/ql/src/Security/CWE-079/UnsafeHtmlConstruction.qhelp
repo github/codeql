@@ -4,26 +4,22 @@
 <qhelp>
 <overview>
 	<p>
-		Dynamically constructing HTML with inputs from library functions that are 
-		available to external clients may inadvertently leave a client open to XSS attacks.
-		
-		Clients using the exported function may use inputs containing unsafe HTML,
-		and if these inputs end up in the DOM, the client may be vulnerable to
-		cross-site scripting attacks.
-	</p>
+		When a library function dynamically constructs HTML in a potentially unsafe
+		way, then it's important to document to clients of the library that the function 
+		should only be used with trusted inputs. 
 
+		If the function is not documented as being potentially unsafe, then a client
+		may inadvertently use inputs containing unsafe HTML fragments, and thereby leave
+		the client vulnerable to cross-site scripting attacks.
+	</p>
 </overview>
 <recommendation>
 
 	<p>
-		If possible, use safe APIs when inserting HTML into the DOM.  
-		Such as writing to the <code>innerText</code> property instead of <code>innerHTML</code>.
+		Document all library functions that can lead to cross-site scripting 
+		attacks, and guard against unsafe inputs where dynamic HTML
+		construction is not intended.
 	</p>
-
-	<p>
-		Alternatively, use a HTML sanitizer to escape/remove unsafe content.
-	</p>
-
 </recommendation>
 <example>
 
@@ -41,13 +37,14 @@
 	</p>
 
 	<p>
-		To avoid such attacks, a program can use safe APIs such as <code>innerText</code>.
+		The library could either document that this function should not be used
+		with unsafe inputs, or use safe APIs such as <code>innerText</code>.
 	</p>
 
 	<sample src="examples/unsafe-html-construction_safe.js" />
 	
 	<p>
-		Alternatively, use a HTML sanitizer to remove unsafe content.
+		Alternatively, a HTML sanitizer can be used to remove unsafe content.
 	</p>
 
 	<sample src="examples/unsafe-html-construction_sanitizer.js" />
