@@ -25,6 +25,7 @@ module UnsafeHtmlConstruction {
   class ExternalInputSource extends Source, DataFlow::ParameterNode {
     ExternalInputSource() {
       this = Exports::getALibraryInputParameter() and
+      // An AMD-style module sometimes loads the jQuery library in a way which looks like library input.
       not this = JQuery::dollarSource()
     }
   }
