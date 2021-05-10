@@ -511,7 +511,7 @@ private module Stdlib {
 
     override predicate mayExecuteInput() { none() }
 
-    override DataFlow::Node getAnInput() { result.asCfgNode() = node.getArg(0) }
+    override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("s")] }
 
     override DataFlow::Node getOutput() { result = this }
 
@@ -525,7 +525,7 @@ private module Stdlib {
   private class JsonDumpsCall extends Encoding::Range, DataFlow::CallCfgNode {
     JsonDumpsCall() { this = json().getMember("dumps").getACall() }
 
-    override DataFlow::Node getAnInput() { result.asCfgNode() = node.getArg(0) }
+    override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("obj")] }
 
     override DataFlow::Node getOutput() { result = this }
 

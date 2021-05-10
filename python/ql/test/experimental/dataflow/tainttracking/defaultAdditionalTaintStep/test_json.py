@@ -22,9 +22,9 @@ def test():
     ensure_tainted(
         encoded, # $ tainted
         json.dumps(ts), # $ tainted
-        json.dumps(obj=ts), # $ MISSING: tainted
+        json.dumps(obj=ts), # $ tainted
         json.loads(encoded), # $ tainted
-        json.loads(s=encoded), # $ MISSING: tainted
+        json.loads(s=encoded), # $ tainted
     )
 
     # load/dump with file-like
