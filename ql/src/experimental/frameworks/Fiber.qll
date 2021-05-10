@@ -12,6 +12,10 @@ import go
  * - [`github.com/gofiber/utils@v0.1.0`](https://pkg.go.dev/github.com/gofiber/utils@v0.1.0)
  */
 private module Fiber {
+  string fiberPackagePath() { result = package("github.com/gofiber/fiber", "") }
+
+  string utilsPackagePath() { result = package("github.com/gofiber/utils", "") }
+
   /**
    * Models taint-tracking through functions.
    */
@@ -22,94 +26,94 @@ private module Fiber {
     TaintTrackingFunctionModels() {
       // Taint-tracking models for package: github.com/gofiber/fiber@v1.14.6
       // signature: func NewError(code int, message ...string) *Error
-      this.hasQualifiedName(package("github.com/gofiber/fiber", ""), "NewError") and
+      this.hasQualifiedName(fiberPackagePath(), "NewError") and
       inp.isParameter(any(int i | i >= 1)) and
       out.isResult()
       or
       // Taint-tracking models for package: github.com/gofiber/utils@v0.1.0
       (
         // signature: func GetBytes(s string) []byte
-        this.hasQualifiedName(package("github.com/gofiber/utils", ""), "GetBytes") and
+        this.hasQualifiedName(utilsPackagePath(), "GetBytes") and
         inp.isParameter(0) and
         out.isResult()
         or
         // signature: func GetString(b []byte) string
-        this.hasQualifiedName(package("github.com/gofiber/utils", ""), "GetString") and
+        this.hasQualifiedName(utilsPackagePath(), "GetString") and
         inp.isParameter(0) and
         out.isResult()
         or
         // signature: func ImmutableString(s string) string
-        this.hasQualifiedName(package("github.com/gofiber/utils", ""), "ImmutableString") and
+        this.hasQualifiedName(utilsPackagePath(), "ImmutableString") and
         inp.isParameter(0) and
         out.isResult()
         or
         // signature: func SafeBytes(b []byte) []byte
-        this.hasQualifiedName(package("github.com/gofiber/utils", ""), "SafeBytes") and
+        this.hasQualifiedName(utilsPackagePath(), "SafeBytes") and
         inp.isParameter(0) and
         out.isResult()
         or
         // signature: func SafeString(s string) string
-        this.hasQualifiedName(package("github.com/gofiber/utils", ""), "SafeString") and
+        this.hasQualifiedName(utilsPackagePath(), "SafeString") and
         inp.isParameter(0) and
         out.isResult()
         or
         // signature: func ToLower(b string) string
-        this.hasQualifiedName(package("github.com/gofiber/utils", ""), "ToLower") and
+        this.hasQualifiedName(utilsPackagePath(), "ToLower") and
         inp.isParameter(0) and
         out.isResult()
         or
         // signature: func ToLowerBytes(b []byte) []byte
-        this.hasQualifiedName(package("github.com/gofiber/utils", ""), "ToLowerBytes") and
+        this.hasQualifiedName(utilsPackagePath(), "ToLowerBytes") and
         inp.isParameter(0) and
         out.isResult()
         or
         // signature: func ToUpper(b string) string
-        this.hasQualifiedName(package("github.com/gofiber/utils", ""), "ToUpper") and
+        this.hasQualifiedName(utilsPackagePath(), "ToUpper") and
         inp.isParameter(0) and
         out.isResult()
         or
         // signature: func ToUpperBytes(b []byte) []byte
-        this.hasQualifiedName(package("github.com/gofiber/utils", ""), "ToUpperBytes") and
+        this.hasQualifiedName(utilsPackagePath(), "ToUpperBytes") and
         inp.isParameter(0) and
         out.isResult()
         or
         // signature: func Trim(s string, cutset byte) string
-        this.hasQualifiedName(package("github.com/gofiber/utils", ""), "Trim") and
+        this.hasQualifiedName(utilsPackagePath(), "Trim") and
         inp.isParameter(0) and
         out.isResult()
         or
         // signature: func TrimBytes(b []byte, cutset byte) []byte
-        this.hasQualifiedName(package("github.com/gofiber/utils", ""), "TrimBytes") and
+        this.hasQualifiedName(utilsPackagePath(), "TrimBytes") and
         inp.isParameter(0) and
         out.isResult()
         or
         // signature: func TrimLeft(s string, cutset byte) string
-        this.hasQualifiedName(package("github.com/gofiber/utils", ""), "TrimLeft") and
+        this.hasQualifiedName(utilsPackagePath(), "TrimLeft") and
         inp.isParameter(0) and
         out.isResult()
         or
         // signature: func TrimLeftBytes(b []byte, cutset byte) []byte
-        this.hasQualifiedName(package("github.com/gofiber/utils", ""), "TrimLeftBytes") and
+        this.hasQualifiedName(utilsPackagePath(), "TrimLeftBytes") and
         inp.isParameter(0) and
         out.isResult()
         or
         // signature: func TrimRight(s string, cutset byte) string
-        this.hasQualifiedName(package("github.com/gofiber/utils", ""), "TrimRight") and
+        this.hasQualifiedName(utilsPackagePath(), "TrimRight") and
         inp.isParameter(0) and
         out.isResult()
         or
         // signature: func TrimRightBytes(b []byte, cutset byte) []byte
-        this.hasQualifiedName(package("github.com/gofiber/utils", ""), "TrimRightBytes") and
+        this.hasQualifiedName(utilsPackagePath(), "TrimRightBytes") and
         inp.isParameter(0) and
         out.isResult()
         or
         // signature: func UnsafeBytes(s string) (bs []byte)
-        this.hasQualifiedName(package("github.com/gofiber/utils", ""), "UnsafeBytes") and
+        this.hasQualifiedName(utilsPackagePath(), "UnsafeBytes") and
         inp.isParameter(0) and
         out.isResult()
         or
         // signature: func UnsafeString(b []byte) string
-        this.hasQualifiedName(package("github.com/gofiber/utils", ""), "UnsafeString") and
+        this.hasQualifiedName(utilsPackagePath(), "UnsafeString") and
         inp.isParameter(0) and
         out.isResult()
       )
@@ -129,7 +133,7 @@ private module Fiber {
 
     Redirect() {
       // HTTP redirect models for package: github.com/gofiber/fiber@v1.14.6
-      package = package("github.com/gofiber/fiber", "") and
+      package = fiberPackagePath() and
       // Receiver type: Ctx
       (
         // signature: func (*Ctx).Redirect(location string, status ...int)
@@ -173,7 +177,7 @@ private module Fiber {
       headerSetterCall = met.getACall() and
       receiverNode = headerSetterCall.getReceiver()
     |
-      package = package("github.com/gofiber/fiber", "") and
+      package = fiberPackagePath() and
       (
         // Receiver type: Ctx
         receiverName = "Ctx" and
@@ -220,7 +224,7 @@ private module Fiber {
       bodySetterCall = met.getACall() and
       receiverNode = bodySetterCall.getReceiver()
     |
-      package = package("github.com/gofiber/fiber", "") and
+      package = fiberPackagePath() and
       (
         // Receiver type: Ctx
         receiverName = "Ctx" and
@@ -263,7 +267,7 @@ private module Fiber {
       bodySetterCall = met.getACall() and
       receiverNode = bodySetterCall.getReceiver()
     |
-      package = package("github.com/gofiber/fiber", "") and
+      package = fiberPackagePath() and
       (
         // Receiver type: Ctx
         receiverName = "Ctx" and
@@ -304,7 +308,7 @@ private module Fiber {
       // Methods on types of package: github.com/gofiber/fiber@v1.14.6
       exists(string receiverName, string methodName, Method mtd, FunctionOutput out |
         this = out.getExitNode(mtd.getACall()) and
-        mtd.hasQualifiedName(package("github.com/gofiber/fiber", ""), receiverName, methodName)
+        mtd.hasQualifiedName(fiberPackagePath(), receiverName, methodName)
       |
         receiverName = "Ctx" and
         (
@@ -385,7 +389,7 @@ private module Fiber {
       // Structs of package: github.com/gofiber/fiber@v1.14.6
       exists(string structName, string fields, DataFlow::Field fld |
         this = fld.getARead() and
-        fld.hasQualifiedName(package("github.com/gofiber/fiber", ""), structName, fields)
+        fld.hasQualifiedName(fiberPackagePath(), structName, fields)
       |
         structName = "Cookie" and
         fields = ["Domain", "Name", "Path", "SameSite", "Value"]
