@@ -62,7 +62,7 @@ abstract class RequestForgerySink extends DataFlow::Node { }
 
 /**
  * An argument to a url `openConnection` or `openStream` call
- *  taken as a sink for request forgery vulnerabilities.
+ * taken as a sink for request forgery vulnerabilities.
  */
 private class UrlOpen extends RequestForgerySink {
   UrlOpen() {
@@ -77,7 +77,7 @@ private class UrlOpen extends RequestForgerySink {
 
 /**
  * An argument to an Apache `setURI` call taken as a
- *   sink for request forgery vulnerabilities.
+ * sink for request forgery vulnerabilities.
  */
 private class ApacheSetUri extends RequestForgerySink {
   ApacheSetUri() {
@@ -92,7 +92,7 @@ private class ApacheSetUri extends RequestForgerySink {
 
 /**
  * An argument to any Apache `HttpRequest` instantiation taken as a
- *   sink for request forgery vulnerabilities.
+ * sink for request forgery vulnerabilities.
  */
 private class ApacheHttpRequestInstantiation extends RequestForgerySink {
   ApacheHttpRequestInstantiation() {
@@ -104,7 +104,7 @@ private class ApacheHttpRequestInstantiation extends RequestForgerySink {
 
 /**
  * An argument to an Apache `RequestBuilder` method call taken as a
- *   sink for request forgery vulnerabilities.
+ * sink for request forgery vulnerabilities.
  */
 private class ApacheHttpRequestBuilderArgument extends RequestForgerySink {
   ApacheHttpRequestBuilderArgument() {
@@ -119,7 +119,7 @@ private class ApacheHttpRequestBuilderArgument extends RequestForgerySink {
 
 /**
  * An argument to any `java.net.http.HttpRequest` instantiation taken as a
- *   sink for request forgery vulnerabilities.
+ * sink for request forgery vulnerabilities.
  */
 private class HttpRequestNewBuilder extends RequestForgerySink {
   HttpRequestNewBuilder() {
@@ -134,7 +134,7 @@ private class HttpRequestNewBuilder extends RequestForgerySink {
 
 /**
  * An argument to an `HttpBuilder` `uri` call taken as a
- *   sink for request forgery vulnerabilities.
+ * sink for request forgery vulnerabilities.
  */
 private class HttpBuilderUriArgument extends RequestForgerySink {
   HttpBuilderUriArgument() {
@@ -146,7 +146,7 @@ private class HttpBuilderUriArgument extends RequestForgerySink {
 
 /**
  * An argument to a Spring `RestTemplate` method call taken as a
- *   sink for request forgery vulnerabilities.
+ * sink for request forgery vulnerabilities.
  */
 private class SpringRestTemplateArgument extends RequestForgerySink {
   SpringRestTemplateArgument() {
@@ -158,7 +158,7 @@ private class SpringRestTemplateArgument extends RequestForgerySink {
 
 /**
  * An argument to a `javax.ws.rs.Client` `target` method call taken as a
- *   sink for request forgery vulnerabilities.
+ * sink for request forgery vulnerabilities.
  */
 private class JaxRsClientTarget extends RequestForgerySink {
   JaxRsClientTarget() {
@@ -172,8 +172,8 @@ private class JaxRsClientTarget extends RequestForgerySink {
 }
 
 /**
- * An argument to an `org.springframework.http.RequestEntity` constructor call
- *   which is an URI taken as a sink for request forgery vulnerabilities.
+ * A URI argument to an `org.springframework.http.RequestEntity` constructor call
+ * taken as a sink for request forgery vulnerabilities.
  */
 private class RequestEntityUriArg extends RequestForgerySink {
   RequestEntityUriArg() {
@@ -188,7 +188,7 @@ private class RequestEntityUriArg extends RequestForgerySink {
 
 /**
  * A Spring Rest Template method
- * which take a URL as an argument.
+ * that takes a URL as an argument.
  */
 private class SpringRestTemplateUrlMethod extends Method {
   SpringRestTemplateUrlMethod() {
