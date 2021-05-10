@@ -9,7 +9,7 @@ import javascript
  */
 module ClassValidator {
   /**
-   * Holds if the decorator with the given name does not sanitize the input, for the purpose of taint tracking.
+   * Holds if the decorator with the given name sanitizes the input, for the purpose of taint tracking.
    */
   bindingset[name]
   private predicate isSanitizingDecoratorName(string name) {
