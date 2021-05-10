@@ -5,97 +5,52 @@
 import java
 private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.FlowSteps
+private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * Ratpack methods that access user-supplied request data.
  */
 abstract class RatpackGetRequestDataMethod extends Method { }
 
-/**
- * The interface `ratpack.http.Request`.
- * https://ratpack.io/manual/current/api/ratpack/http/Request.html
- */
-class RatpackRequest extends RefType {
-  RatpackRequest() {
-    hasQualifiedName("ratpack.http", "Request") or
-    hasQualifiedName("ratpack.core.http", "Request")
+private class RatpackHttpSource extends SourceModelCsv {
+  override predicate row(string row) {
+    row =
+      ["ratpack.http;", "ratpack.core.http;"] +
+        [
+          "Request;true;getContentLength;;;ReturnValue;remote",
+          "Request;true;getCookies;;;ReturnValue;remote",
+          "Request;true;oneCookie;;;ReturnValue;remote",
+          "Request;true;getHeaders;;;ReturnValue;remote",
+          "Request;true;getPath;;;ReturnValue;remote", "Request;true;getQuery;;;ReturnValue;remote",
+          "Request;true;getQueryParams;;;ReturnValue;remote",
+          "Request;true;getRawUri;;;ReturnValue;remote", "Request;true;getUri;;;ReturnValue;remote",
+          "Request;true;getBody;;;ReturnValue;remote"
+        ]
   }
 }
 
 /**
- * Methods on `ratpack.http.Request` that return user tainted data.
+ * Ratpack methods that propagate user-supplied request data as tainted.
  */
-class RatpackHttpRequestGetMethod extends RatpackGetRequestDataMethod {
-  RatpackHttpRequestGetMethod() {
-    getDeclaringType() instanceof RatpackRequest and
-    hasName([
-        "getContentLength", "getCookies", "oneCookie", "getHeaders", "getPath", "getQuery",
-        "getQueryParams", "getRawUri", "getUri"
-      ])
+private class RatpackHttpModel extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      ["ratpack.http;", "ratpack.core.http;"] +
+        [
+          "TypedData;true;getBuffer;;;Argument[-1];ReturnValue;taint",
+          "TypedData;true;getBytes;;;Argument[-1];ReturnValue;taint",
+          "TypedData;true;getContentType;;;Argument[-1];ReturnValue;taint",
+          "TypedData;true;getInputStream;;;Argument[-1];ReturnValue;taint",
+          "TypedData;true;getText;;;Argument[-1];ReturnValue;taint",
+          "TypedData;true;writeTo;;;Argument[-1];Argument[0];taint",
+          "Headers;true;get;;;Argument[-1];ReturnValue;taint",
+          "Headers;true;getAll;;;Argument[-1];ReturnValue;taint",
+          "Headers;true;getNames;;;Argument[-1];ReturnValue;taint",
+          "Headers;true;asMultiValueMap;;;Argument[-1];ReturnValue;taint"
+        ]
+    or
+    row =
+      ["ratpack.form;", "ratpack.core.form;"] +
+        ["UploadedFile;true;getFileName;;;Argument[-1];ReturnValue;taint"]
   }
-}
-
-/**
- * The interface `ratpack.http.TypedData`.
- * https://ratpack.io/manual/current/api/ratpack/http/TypedData.html
- */
-class RatpackTypedData extends RefType {
-  RatpackTypedData() {
-    hasQualifiedName("ratpack.http", "TypedData") or
-    hasQualifiedName("ratpack.core.http", "TypedData")
-  }
-}
-
-/**
- * Methods on `ratpack.http.TypedData` that return user tainted data.
- */
-class RatpackHttpTypedDataGetMethod extends RatpackGetRequestDataMethod {
-  RatpackHttpTypedDataGetMethod() {
-    getDeclaringType() instanceof RatpackTypedData and
-    hasName(["getBuffer", "getBytes", "getContentType", "getInputStream", "getText"])
-  }
-}
-
-/**
- * Methods on `ratpack.http.TypedData` that taint the parameter passed in.
- */
-class RatpackHttpTypedDataWriteMethod extends Method {
-  RatpackHttpTypedDataWriteMethod() {
-    getDeclaringType() instanceof RatpackTypedData and
-    hasName("writeTo")
-  }
-}
-
-/**
- * The interface `ratpack.form.UploadedFile`.
- * https://ratpack.io/manual/current/api/ratpack/form/UploadedFile.html
- */
-class RatpackUploadFile extends RefType {
-  RatpackUploadFile() {
-    hasQualifiedName("ratpack.form", "UploadedFile") or
-    hasQualifiedName("ratpack.core.form", "UploadedFile")
-  }
-}
-
-class RatpackUploadFileGetMethod extends RatpackGetRequestDataMethod {
-  RatpackUploadFileGetMethod() {
-    getDeclaringType() instanceof RatpackUploadFile and
-    hasName("getFileName")
-  }
-}
-
-class RatpackHeader extends RefType {
-  RatpackHeader() {
-    hasQualifiedName("ratpack.http", "Headers") or
-    hasQualifiedName("ratpack.core.http", "Headers")
-  }
-}
-
-private class RatpackHeaderTaintPropagatingMethod extends Method, TaintPreservingCallable {
-  RatpackHeaderTaintPropigatingMethod() {
-    getDeclaringType() instanceof RatpackHeader and
-    hasName(["get", "getAll", "getNames", "asMultiValueMap"])
-  }
-
-  override predicate returnsTaintFrom(int arg) { arg = -1 }
 }

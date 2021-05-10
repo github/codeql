@@ -30,25 +30,24 @@ class Resource {
         sink(ctx.getRequest().getUri()); //$hasTaintFlow
     }
 
-    void test2(TypedData td) {
-        sink(td.getText()); //$hasTaintFlow
-        sink(td.getBuffer()); //$hasTaintFlow
-        sink(td.getBytes()); //$hasTaintFlow
-        sink(td.getContentType()); //$hasTaintFlow
-        sink(td.getInputStream()); //$hasTaintFlow
+    void test2(Context ctx, OutputStream os) {
+        ctx.getRequest().getBody().then(td -> {
+            sink(td.getText()); //$hasTaintFlow
+            sink(td.getBuffer()); //$hasTaintFlow
+            sink(td.getBytes()); //$hasTaintFlow
+            sink(td.getContentType()); //$hasTaintFlow
+            sink(td.getInputStream()); //$hasTaintFlow
+            sink(os);
+            td.writeTo(os);
+            sink(os); //$hasTaintFlow
+            if (td instanceof UploadedFile) {
+                UploadedFile uf = (UploadedFile) td;
+                sink(uf.getFileName()); //$hasTaintFlow
+            }
+        });
     }
 
-    void test3(TypedData td, OutputStream os) throws java.io.IOException {
-        sink(os);
-        td.writeTo(os);
-        sink(os); //$hasTaintFlow
-    }
-
-    void test4(UploadedFile uf) {
-        sink(uf.getFileName()); //$hasTaintFlow
-    }
-
-    void test5(Context ctx) {
+    void test3(Context ctx) {
         sink(ctx.getRequest().getBody().map(TypedData::getText)); //$hasTaintFlow
         ctx.getRequest().getBody().map(TypedData::getText).then(this::sink); //$hasTaintFlow
         ctx
@@ -59,7 +58,7 @@ class Resource {
             .then(this::sink); //$hasTaintFlow
     }
 
-    void test6() {
+    void test4() {
         String tainted = taint();
         Promise.value(tainted);
         sink(Promise.value(tainted)); //$hasTaintFlow
