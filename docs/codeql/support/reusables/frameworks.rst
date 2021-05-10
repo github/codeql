@@ -158,6 +158,7 @@ Python built-in support
    dill, Serialization
    fabric, Utility library
    invoke, Utility library
+   idna, Utility library
    mysql-connector-python, Database
    MySQLdb, Database
    psycopg2, Database
