@@ -49,6 +49,9 @@ where
   small = rel.getLesserOperand() and
   large = rel.getGreaterOperand() and
   rel = l.getCondition().getAChild*() and
+  forall(Expr conv | conv = large.getConversion*() |
+    upperBound(conv).log2() > getComparisonSize(small) * 8
+  ) and
   upperBound(large.getFullyConverted()).log2() > getComparisonSize(small) * 8 and
   // Ignore cases where the smaller type is int or larger
   // These are still bugs, but you should need a very large string or array to

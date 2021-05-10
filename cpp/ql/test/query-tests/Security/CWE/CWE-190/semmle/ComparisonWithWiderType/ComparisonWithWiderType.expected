@@ -1,4 +1,3 @@
-| test3.cpp:6:8:6:71 | ... < ... | Comparison between $@ of type unsigned char and $@ of wider type int. | test3.cpp:5:34:5:38 | small | small | test3.cpp:6:42:6:70 | ... - ... | ... - ... |
 | test.c:4:14:4:18 | ... < ... | Comparison between $@ of type char and $@ of wider type int. | test.c:3:7:3:7 | c | c | test.c:2:17:2:17 | x | x |
 | test.c:9:14:9:18 | ... > ... | Comparison between $@ of type char and $@ of wider type int. | test.c:8:7:8:7 | c | c | test.c:7:17:7:17 | x | x |
 | test.c:14:14:14:18 | ... < ... | Comparison between $@ of type short and $@ of wider type int. | test.c:13:8:13:8 | s | s | test.c:12:17:12:17 | x | x |
