@@ -74,7 +74,11 @@ private newtype TPrintAstNode =
   THTMLAttributeNode(HTML::Attribute attr) { shouldPrint(attr, _) and not isNotNeeded(attr) } or
   THTMLScript(Script script) { shouldPrint(script, _) and not isNotNeeded(script) } or
   THTMLCodeInAttr(CodeInAttribute attr) { shouldPrint(attr, _) and not isNotNeeded(attr) } or
-  TRegExpTermNode(RegExpTerm term) { term.isUsedAsRegExp() }
+  TRegExpTermNode(RegExpTerm term) {
+    shouldPrint(term, _) and
+    term.isUsedAsRegExp() and
+    any(RegExpLiteral lit).getRoot() = term.getRootTerm()
+  }
 
 /**
  * A node in the output tree.
