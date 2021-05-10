@@ -756,6 +756,17 @@ private predicate initialAddressFlowInstrRTC(Instruction iFrom, Instruction iTo)
  * for `isSuccessorInstruction`.
  */
 private module IRBlockFlow {
+  pragma[noinline]
+  private predicate hasSourceValue(Instruction value, IRBlock b) {
+    exists(Instruction i | i = b.getAnInstruction() | getSourceValue(i) = value)
+  }
+
+  private newtype ValuedBlock =
+    MkValuedBlock(Instruction value, IRBlock b) {
+      flowsFromSource(value, b) and
+      hasSourceValue(value, b)
+    }
+
   /**
    * Holds if:
    * - `source` and `sink` are either a `LoadInstruction` or a `ReadSideEffectInstruction`.
@@ -780,41 +791,52 @@ private module IRBlockFlow {
     sourceSinkPairCand(value, source, _)
   }
 
-  private predicate isSource(Instruction value, IRBlock source) {
-    isSourceInstr(value, source.getAnInstruction())
+  private predicate isSource(Instruction value, IRBlock b) {
+    isSourceInstr(value, b.getAnInstruction())
   }
 
-  private predicate isSink(Instruction value, IRBlock sink) {
-    sourceSinkPairCand(value, _, sink.getAnInstruction())
+  private predicate isSink(ValuedBlock sink) {
+    exists(IRBlock sinkBlock, Instruction value |
+      sink = MkValuedBlock(value, sinkBlock) and
+      sourceSinkPairCand(value, _, sinkBlock.getAnInstruction())
+    )
   }
 
-  private predicate getASuccessor(Instruction value, IRBlock b, IRBlock succ) {
-    flowsFromSource(value, b) and
-    not isSink(value, b) and
-    b.getASuccessor() = succ
+  private predicate getASuccessor(ValuedBlock vb, ValuedBlock vSucc) {
+    not isSink(vb) and
+    exists(IRBlock b, Instruction value, IRBlock succ |
+      flowsFromSource(value, b) and
+      vb = MkValuedBlock(value, b) and
+      vSucc = MkValuedBlock(value, succ) and
+      b.getASuccessor() = succ
+    )
   }
 
-  private IRBlock getAPredecessor(IRBlock b) { result.getASuccessor() = b }
+  private IRBlock getAPredecessor(IRBlock b) { result = b.getAPredecessor() }
 
   private predicate flowsFromSource(Instruction value, IRBlock b) {
     isSource(value, b) or
     flowsFromSource(value, getAPredecessor(b))
   }
 
+  private predicate flowsTC(ValuedBlock vb, ValuedBlock vSink) = fastTC(getASuccessor/2)(vb, vSink)
+
   /** Holds if `isSink(sink)` and `b` flows to `sink` in one or more steps. */
-  private predicate flows(Instruction value, IRBlock b, IRBlock sink) {
-    flowsFromSource(value, b) and
-    b.getASuccessor() = sink and
-    isSink(value, sink)
-    or
-    exists(IRBlock succ |
-      getASuccessor(value, pragma[only_bind_out](b), succ) and flows(value, succ, sink)
+  private predicate flows(ValuedBlock vb, ValuedBlock vSink) {
+    isSink(vSink) and
+    exists(IRBlock b, Instruction value, IRBlock sink |
+      flowsFromSource(value, b) and
+      vb = MkValuedBlock(value, b) and
+      vSink = MkValuedBlock(value, sink) and
+      b.getASuccessor() = sink
     )
+    or
+    flowsTC(vb, vSink)
   }
 
   private predicate flowsToSink(Instruction value, IRBlock b, IRBlock sink) {
     isSource(value, b) and
-    flows(value, b, sink)
+    flows(MkValuedBlock(value, b), MkValuedBlock(value, sink))
   }
 
   /**
