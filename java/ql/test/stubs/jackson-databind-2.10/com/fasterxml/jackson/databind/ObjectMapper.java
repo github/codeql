@@ -30,4 +30,12 @@ public class ObjectMapper {
   public ObjectReader readerFor(Class<?> type) {
     return null;
   }
+
+  public <T extends JsonNode> T valueToTree(Object fromValue) throws IllegalArgumentException {
+    return null;
+  }
+
+  public <T> T convertValue(Object fromValue, Class<T> toValueType) throws IllegalArgumentException {
+    return null;
+  }
 }

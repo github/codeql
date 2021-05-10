@@ -1,6 +1,8 @@
 package com.fasterxml.jackson.databind;
 
-public class JsonNode {
+import java.util.*;
+
+public abstract class JsonNode implements Iterable<JsonNode> {
     public JsonNode() {
     }
 }

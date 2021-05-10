@@ -4,9 +4,12 @@ import java.io.OutputStream;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Iterator;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -93,5 +96,17 @@ class Test {
 			sink(p.name); //$hasTaintFlow
 			sink(p.getName()); //$hasTaintFlow
 		}
+	}
+
+	public static void jacksonTwoStepDeserialization() throws java.io.IOException {
+		String s = taint();
+		Map<String, Object> taintedParams = new HashMap<>();
+		taintedParams.put("name", s);
+		ObjectMapper om = new ObjectMapper();
+		JsonNode jn = om.valueToTree(taintedParams);
+		sink(jn); //$hasTaintFlow
+		Potato p = om.convertValue(jn, Potato.class);
+		sink(p); //$hasTaintFlow
+		sink(p.getName()); //$hasTaintFlow
 	}
 }

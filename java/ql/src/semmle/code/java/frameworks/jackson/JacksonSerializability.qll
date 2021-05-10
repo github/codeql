@@ -9,6 +9,7 @@ import semmle.code.java.Reflection
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.DataFlow5
 import semmle.code.java.dataflow.FlowSteps
+private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A `@com.fasterxml.jackson.annotation.JsonIgnore` annoation.
@@ -273,5 +274,15 @@ class JacksonMixedInCallable extends Callable {
         // Signatures should match
         result.getSignature() = getSignature()
     )
+  }
+}
+
+private class JacksonModel extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "com.fasterxml.jackson.databind;ObjectMapper;true;valueToTree;;;Argument[0];ReturnValue;taint",
+        "com.fasterxml.jackson.databind;ObjectMapper;true;convertValue;;;Argument[0];ReturnValue;taint"
+      ]
   }
 }
