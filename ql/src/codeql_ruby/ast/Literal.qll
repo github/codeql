@@ -47,6 +47,7 @@ class IntegerLiteral extends NumericLiteral, TIntegerLiteral {
 
   final override string getValueText() { result = g.getValue() }
 
+  /** Gets the numerical value of this integer literal. */
   final int getValue() {
     exists(string s, string values, string str |
       s = this.getValueText().toLowerCase() and
