@@ -11,7 +11,7 @@ namespace Semmle.Extraction
     /// HTML escapes the characters `&`, `{`, `}`, `"`, `@`, and `#`, before
     /// writing to the underlying object.
     /// </summary>
-    public class EscapingTextWriter : TextWriter
+    public sealed class EscapingTextWriter : TextWriter
     {
         private readonly TextWriter wrapped;
         private readonly bool disposeUnderlying;
@@ -93,7 +93,7 @@ namespace Semmle.Extraction
             => throw new NotImplementedException();
 
         public override bool Equals(object? obj)
-            => wrapped.Equals(obj);
+            => wrapped.Equals(obj) && obj is EscapingTextWriter other && disposeUnderlying == other.disposeUnderlying;
 
         public override void Flush()
             => wrapped.Flush();
@@ -102,7 +102,7 @@ namespace Semmle.Extraction
             => wrapped.FlushAsync();
 
         public override int GetHashCode()
-            => wrapped.GetHashCode();
+            => HashCode.Combine(wrapped, disposeUnderlying);
 
         public override string ToString()
             => wrapped.ToString() ?? "";
