@@ -10,7 +10,7 @@ import javascript
  */
 module Markdown {
   /**
-   * A taint-step that parses a markdown document, but preserves taint.import
+   * A taint-step that parses a markdown document, but preserves taint.
    */
   class MarkdownStep extends Unit {
     /**
