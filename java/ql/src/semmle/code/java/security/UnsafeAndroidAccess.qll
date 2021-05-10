@@ -32,7 +32,7 @@ private class DefaultUrlResourceSinkModel extends SinkModelCsv {
 
 /**
  * Cross-origin access enabled resource fetch.
- * 
+ *
  * It requires JavaScript to be enabled too to be considered a valid sink.
  */
 private class CrossOriginUrlResourceSink extends JavaScriptEnabledUrlResourceSink {
