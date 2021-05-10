@@ -26,15 +26,243 @@ predicate accessPathCostLimits(int apLimit, int tupleLimit) {
   tupleLimit = 1000
 }
 
+/**
+ * Provides a simple data-flow analysis for resolving lambda calls. The analysis
+ * currently excludes read-steps, store-steps, and flow-through.
+ *
+ * The analysis uses non-linear recursion: When computing a flow path in or out
+ * of a call, we use the results of the analysis recursively to resolve lambda
+ * calls. For this reason, we cannot reuse the code from `DataFlowImpl.qll` directly.
+ */
+private module LambdaFlow {
+  private predicate viableParamNonLambda(DataFlowCall call, int i, ParameterNode p) {
+    p.isParameterOf(viableCallable(call), i)
+  }
+
+  private predicate viableParamLambda(DataFlowCall call, int i, ParameterNode p) {
+    p.isParameterOf(viableCallableLambda(call, _), i)
+  }
+
+  private predicate viableParamArgNonLambda(DataFlowCall call, ParameterNode p, ArgumentNode arg) {
+    exists(int i |
+      viableParamNonLambda(call, i, p) and
+      arg.argumentOf(call, i)
+    )
+  }
+
+  private predicate viableParamArgLambda(DataFlowCall call, ParameterNode p, ArgumentNode arg) {
+    exists(int i |
+      viableParamLambda(call, i, p) and
+      arg.argumentOf(call, i)
+    )
+  }
+
+  private newtype TReturnPositionSimple =
+    TReturnPositionSimple0(DataFlowCallable c, ReturnKind kind) {
+      exists(ReturnNode ret |
+        c = getNodeEnclosingCallable(ret) and
+        kind = ret.getKind()
+      )
+    }
+
+  pragma[noinline]
+  private TReturnPositionSimple getReturnPositionSimple(ReturnNode ret, ReturnKind kind) {
+    result = TReturnPositionSimple0(getNodeEnclosingCallable(ret), kind)
+  }
+
+  pragma[nomagic]
+  private TReturnPositionSimple viableReturnPosNonLambda(DataFlowCall call, ReturnKind kind) {
+    result = TReturnPositionSimple0(viableCallable(call), kind)
+  }
+
+  pragma[nomagic]
+  private TReturnPositionSimple viableReturnPosLambda(
+    DataFlowCall call, DataFlowCallOption lastCall, ReturnKind kind
+  ) {
+    result = TReturnPositionSimple0(viableCallableLambda(call, lastCall), kind)
+  }
+
+  private predicate viableReturnPosOutNonLambda(
+    DataFlowCall call, TReturnPositionSimple pos, OutNode out
+  ) {
+    exists(ReturnKind kind |
+      pos = viableReturnPosNonLambda(call, kind) and
+      out = getAnOutNode(call, kind)
+    )
+  }
+
+  private predicate viableReturnPosOutLambda(
+    DataFlowCall call, DataFlowCallOption lastCall, TReturnPositionSimple pos, OutNode out
+  ) {
+    exists(ReturnKind kind |
+      pos = viableReturnPosLambda(call, lastCall, kind) and
+      out = getAnOutNode(call, kind)
+    )
+  }
+
+  /**
+   * Holds if data can flow (inter-procedurally) from `node` (of type `t`) to
+   * the lambda call `lambdaCall`.
+   *
+   * The parameter `toReturn` indicates whether the path from `node` to
+   * `lambdaCall` goes through a return, and `toJump` whether the path goes
+   * through a jump step.
+   *
+   * The call context `lastCall` records the last call on the path from `node`
+   * to `lambdaCall`, if any. That is, `lastCall` is able to target the enclosing
+   * callable of `lambdaCall`.
+   */
+  pragma[nomagic]
+  predicate revLambdaFlow(
+    DataFlowCall lambdaCall, LambdaCallKind kind, Node node, DataFlowType t, boolean toReturn,
+    boolean toJump, DataFlowCallOption lastCall
+  ) {
+    revLambdaFlow0(lambdaCall, kind, node, t, toReturn, toJump, lastCall) and
+    if node instanceof CastNode or node instanceof ArgumentNode or node instanceof ReturnNode
+    then compatibleTypes(t, getNodeType(node))
+    else any()
+  }
+
+  pragma[nomagic]
+  predicate revLambdaFlow0(
+    DataFlowCall lambdaCall, LambdaCallKind kind, Node node, DataFlowType t, boolean toReturn,
+    boolean toJump, DataFlowCallOption lastCall
+  ) {
+    lambdaCall(lambdaCall, kind, node) and
+    t = getNodeType(node) and
+    toReturn = false and
+    toJump = false and
+    lastCall = TDataFlowCallNone()
+    or
+    // local flow
+    exists(Node mid, DataFlowType t0 |
+      revLambdaFlow(lambdaCall, kind, mid, t0, toReturn, toJump, lastCall)
+    |
+      simpleLocalFlowStep(node, mid) and
+      t = t0
+      or
+      exists(boolean preservesValue |
+        additionalLambdaFlowStep(node, mid, preservesValue) and
+        getNodeEnclosingCallable(node) = getNodeEnclosingCallable(mid)
+      |
+        preservesValue = false and
+        t = getNodeType(node)
+        or
+        preservesValue = true and
+        t = t0
+      )
+    )
+    or
+    // jump step
+    exists(Node mid, DataFlowType t0 |
+      revLambdaFlow(lambdaCall, kind, mid, t0, _, _, _) and
+      toReturn = false and
+      toJump = true and
+      lastCall = TDataFlowCallNone()
+    |
+      jumpStep(node, mid) and
+      t = t0
+      or
+      exists(boolean preservesValue |
+        additionalLambdaFlowStep(node, mid, preservesValue) and
+        getNodeEnclosingCallable(node) != getNodeEnclosingCallable(mid)
+      |
+        preservesValue = false and
+        t = getNodeType(node)
+        or
+        preservesValue = true and
+        t = t0
+      )
+    )
+    or
+    // flow into a callable
+    exists(ParameterNode p, DataFlowCallOption lastCall0, DataFlowCall call |
+      revLambdaFlowIn(lambdaCall, kind, p, t, toJump, lastCall0) and
+      (
+        if lastCall0 = TDataFlowCallNone() and toJump = false
+        then lastCall = TDataFlowCallSome(call)
+        else lastCall = lastCall0
+      ) and
+      toReturn = false
+    |
+      viableParamArgNonLambda(call, p, node)
+      or
+      viableParamArgLambda(call, p, node) // non-linear recursion
+    )
+    or
+    // flow out of a callable
+    exists(TReturnPositionSimple pos |
+      revLambdaFlowOut(lambdaCall, kind, pos, t, toJump, lastCall) and
+      getReturnPositionSimple(node, node.(ReturnNode).getKind()) = pos and
+      toReturn = true
+    )
+  }
+
+  pragma[nomagic]
+  predicate revLambdaFlowOutLambdaCall(
+    DataFlowCall lambdaCall, LambdaCallKind kind, OutNode out, DataFlowType t, boolean toJump,
+    DataFlowCall call, DataFlowCallOption lastCall
+  ) {
+    revLambdaFlow(lambdaCall, kind, out, t, _, toJump, lastCall) and
+    exists(ReturnKindExt rk |
+      out = rk.getAnOutNode(call) and
+      lambdaCall(call, _, _)
+    )
+  }
+
+  pragma[nomagic]
+  predicate revLambdaFlowOut(
+    DataFlowCall lambdaCall, LambdaCallKind kind, TReturnPositionSimple pos, DataFlowType t,
+    boolean toJump, DataFlowCallOption lastCall
+  ) {
+    exists(DataFlowCall call, OutNode out |
+      revLambdaFlow(lambdaCall, kind, out, t, _, toJump, lastCall) and
+      viableReturnPosOutNonLambda(call, pos, out)
+      or
+      // non-linear recursion
+      revLambdaFlowOutLambdaCall(lambdaCall, kind, out, t, toJump, call, lastCall) and
+      viableReturnPosOutLambda(call, _, pos, out)
+    )
+  }
+
+  pragma[nomagic]
+  predicate revLambdaFlowIn(
+    DataFlowCall lambdaCall, LambdaCallKind kind, ParameterNode p, DataFlowType t, boolean toJump,
+    DataFlowCallOption lastCall
+  ) {
+    revLambdaFlow(lambdaCall, kind, p, t, false, toJump, lastCall)
+  }
+}
+
+private DataFlowCallable viableCallableExt(DataFlowCall call) {
+  result = viableCallable(call)
+  or
+  result = viableCallableLambda(call, _)
+}
+
 cached
 private module Cached {
+  /**
+   * Gets a viable target for the lambda call `call`.
+   *
+   * `lastCall` records the call required to reach `call` in order for the result
+   * to be a viable target, if any.
+   */
+  cached
+  DataFlowCallable viableCallableLambda(DataFlowCall call, DataFlowCallOption lastCall) {
+    exists(Node creation, LambdaCallKind kind |
+      LambdaFlow::revLambdaFlow(call, kind, creation, _, _, _, lastCall) and
+      lambdaCreation(creation, kind, result)
+    )
+  }
+
   /**
    * Holds if `p` is the `i`th parameter of a viable dispatch target of `call`.
    * The instance parameter is considered to have index `-1`.
    */
   pragma[nomagic]
   private predicate viableParam(DataFlowCall call, int i, ParameterNode p) {
-    p.isParameterOf(viableCallable(call), i)
+    p.isParameterOf(viableCallableExt(call), i)
   }
 
   /**
@@ -52,7 +280,7 @@ private module Cached {
 
   pragma[nomagic]
   private ReturnPosition viableReturnPos(DataFlowCall call, ReturnKindExt kind) {
-    viableCallable(call) = result.getCallable() and
+    viableCallableExt(call) = result.getCallable() and
     kind = result.getKind()
   }
 
@@ -318,16 +546,45 @@ private module Cached {
   cached
   private module DispatchWithCallContext {
     /**
+     * Holds if the set of viable implementations that can be called by `call`
+     * might be improved by knowing the call context.
+     */
+    pragma[nomagic]
+    private predicate mayBenefitFromCallContextExt(DataFlowCall call, DataFlowCallable callable) {
+      mayBenefitFromCallContext(call, callable)
+      or
+      callable = call.getEnclosingCallable() and
+      exists(viableCallableLambda(call, TDataFlowCallSome(_)))
+    }
+
+    /**
+     * Gets a viable dispatch target of `call` in the context `ctx`. This is
+     * restricted to those `call`s for which a context might make a difference.
+     */
+    pragma[nomagic]
+    private DataFlowCallable viableImplInCallContextExt(DataFlowCall call, DataFlowCall ctx) {
+      result = viableImplInCallContext(call, ctx)
+      or
+      result = viableCallableLambda(call, TDataFlowCallSome(ctx))
+      or
+      exists(DataFlowCallable enclosing |
+        mayBenefitFromCallContextExt(call, enclosing) and
+        enclosing = viableCallableExt(ctx) and
+        result = viableCallableLambda(call, TDataFlowCallNone())
+      )
+    }
+
+    /**
      * Holds if the call context `ctx` reduces the set of viable run-time
      * dispatch targets of call `call` in `c`.
      */
     cached
     predicate reducedViableImplInCallContext(DataFlowCall call, DataFlowCallable c, DataFlowCall ctx) {
       exists(int tgts, int ctxtgts |
-        mayBenefitFromCallContext(call, c) and
-        c = viableCallable(ctx) and
-        ctxtgts = count(viableImplInCallContext(call, ctx)) and
-        tgts = strictcount(viableCallable(call)) and
+        mayBenefitFromCallContextExt(call, c) and
+        c = viableCallableExt(ctx) and
+        ctxtgts = count(viableImplInCallContextExt(call, ctx)) and
+        tgts = strictcount(viableCallableExt(call)) and
         ctxtgts < tgts
       )
     }
@@ -339,7 +596,7 @@ private module Cached {
      */
     cached
     DataFlowCallable prunedViableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
-      result = viableImplInCallContext(call, ctx) and
+      result = viableImplInCallContextExt(call, ctx) and
       reducedViableImplInCallContext(call, _, ctx)
     }
 
@@ -351,10 +608,10 @@ private module Cached {
     cached
     predicate reducedViableImplInReturn(DataFlowCallable c, DataFlowCall call) {
       exists(int tgts, int ctxtgts |
-        mayBenefitFromCallContext(call, _) and
-        c = viableCallable(call) and
-        ctxtgts = count(DataFlowCall ctx | c = viableImplInCallContext(call, ctx)) and
-        tgts = strictcount(DataFlowCall ctx | viableCallable(ctx) = call.getEnclosingCallable()) and
+        mayBenefitFromCallContextExt(call, _) and
+        c = viableCallableExt(call) and
+        ctxtgts = count(DataFlowCall ctx | c = viableImplInCallContextExt(call, ctx)) and
+        tgts = strictcount(DataFlowCall ctx | viableCallableExt(ctx) = call.getEnclosingCallable()) and
         ctxtgts < tgts
       )
     }
@@ -367,7 +624,7 @@ private module Cached {
      */
     cached
     DataFlowCallable prunedViableImplInCallContextReverse(DataFlowCall call, DataFlowCall ctx) {
-      result = viableImplInCallContext(call, ctx) and
+      result = viableImplInCallContextExt(call, ctx) and
       reducedViableImplInReturn(result, call)
     }
   }
@@ -416,6 +673,30 @@ private module Cached {
   }
 
   /**
+   * Holds if data can flow from `fromNode` to `toNode` because they are the post-update
+   * nodes of some function output and input respectively, where the output and input
+   * are aliases. A typical example is a function returning `this`, implementing a fluent
+   * interface.
+   */
+  cached
+  predicate reverseStepThroughInputOutputAlias(PostUpdateNode fromNode, PostUpdateNode toNode) {
+    exists(Node fromPre, Node toPre |
+      fromPre = fromNode.getPreUpdateNode() and
+      toPre = toNode.getPreUpdateNode()
+    |
+      exists(DataFlowCall c |
+        // Does the language-specific simpleLocalFlowStep already model flow
+        // from function input to output?
+        fromPre = getAnOutNode(c, _) and
+        toPre.(ArgumentNode).argumentOf(c, _) and
+        simpleLocalFlowStep(toPre.(ArgumentNode), fromPre)
+      )
+      or
+      argumentValueFlowsThrough(toPre, TReadStepTypesNone(), fromPre)
+    )
+  }
+
+  /**
    * Holds if the call context `call` either improves virtual dispatch in
    * `callable` or if it allows us to prune unreachable nodes in `callable`.
    */
@@ -423,7 +704,7 @@ private module Cached {
   predicate recordDataFlowCallSite(DataFlowCall call, DataFlowCallable callable) {
     reducedViableImplInCallContext(_, callable, call)
     or
-    exists(Node n | n.getEnclosingCallable() = callable | isUnreachableInCall(n, call))
+    exists(Node n | getNodeEnclosingCallable(n) = callable | isUnreachableInCall(n, call))
   }
 
   cached
@@ -456,6 +737,11 @@ private module Cached {
   newtype TBooleanOption =
     TBooleanNone() or
     TBooleanSome(boolean b) { b = true or b = false }
+
+  cached
+  newtype TDataFlowCallOption =
+    TDataFlowCallNone() or
+    TDataFlowCallSome(DataFlowCall call)
 
   cached
   newtype TTypedContent = MkTypedContent(Content c, DataFlowType t) { store(_, c, _, _, t) }
@@ -568,7 +854,7 @@ class CallContextSomeCall extends CallContextCall, TSomeCall {
   override string toString() { result = "CcSomeCall" }
 
   override predicate relevantFor(DataFlowCallable callable) {
-    exists(ParameterNode p | p.getEnclosingCallable() = callable)
+    exists(ParameterNode p | getNodeEnclosingCallable(p) = callable)
   }
 
   override predicate matchesCall(DataFlowCall call) { any() }
@@ -613,7 +899,7 @@ class LocalCallContextSpecificCall extends LocalCallContext, TSpecificLocalCall 
 }
 
 private predicate relevantLocalCCtx(DataFlowCall call, DataFlowCallable callable) {
-  exists(Node n | n.getEnclosingCallable() = callable and isUnreachableInCall(n, call))
+  exists(Node n | getNodeEnclosingCallable(n) = callable and isUnreachableInCall(n, call))
 }
 
 /**
@@ -722,9 +1008,22 @@ class ReturnPosition extends TReturnPosition0 {
   string toString() { result = "[" + kind + "] " + c }
 }
 
+/**
+ * Gets the enclosing callable of `n`. Unlike `n.getEnclosingCallable()`, this
+ * predicate ensures that joins go from `n` to the result instead of the other
+ * way around.
+ */
+pragma[inline]
+DataFlowCallable getNodeEnclosingCallable(Node n) {
+  exists(Node n0 |
+    pragma[only_bind_into](n0) = n and
+    pragma[only_bind_into](result) = n0.getEnclosingCallable()
+  )
+}
+
 pragma[noinline]
 private DataFlowCallable returnNodeGetEnclosingCallable(ReturnNodeExt ret) {
-  result = ret.getEnclosingCallable()
+  result = getNodeEnclosingCallable(ret)
 }
 
 pragma[noinline]
@@ -740,7 +1039,7 @@ ReturnPosition getReturnPosition(ReturnNodeExt ret) {
 
 bindingset[cc, callable]
 predicate resolveReturn(CallContext cc, DataFlowCallable callable, DataFlowCall call) {
-  cc instanceof CallContextAny and callable = viableCallable(call)
+  cc instanceof CallContextAny and callable = viableCallableExt(call)
   or
   exists(DataFlowCallable c0, DataFlowCall call0 |
     call0.getEnclosingCallable() = callable and
@@ -754,14 +1053,14 @@ DataFlowCallable resolveCall(DataFlowCall call, CallContext cc) {
   exists(DataFlowCall ctx | cc = TSpecificCall(ctx) |
     if reducedViableImplInCallContext(call, _, ctx)
     then result = prunedViableImplInCallContext(call, ctx)
-    else result = viableCallable(call)
+    else result = viableCallableExt(call)
   )
   or
-  result = viableCallable(call) and cc instanceof CallContextSomeCall
+  result = viableCallableExt(call) and cc instanceof CallContextSomeCall
   or
-  result = viableCallable(call) and cc instanceof CallContextAny
+  result = viableCallableExt(call) and cc instanceof CallContextAny
   or
-  result = viableCallable(call) and cc instanceof CallContextReturn
+  result = viableCallableExt(call) and cc instanceof CallContextReturn
 }
 
 predicate read = readStep/3;
@@ -772,6 +1071,19 @@ class BooleanOption extends TBooleanOption {
     this = TBooleanNone() and result = "<none>"
     or
     this = TBooleanSome(any(boolean b | result = b.toString()))
+  }
+}
+
+/** An optional `DataFlowCall`. */
+class DataFlowCallOption extends TDataFlowCallOption {
+  string toString() {
+    this = TDataFlowCallNone() and
+    result = "(none)"
+    or
+    exists(DataFlowCall call |
+      this = TDataFlowCallSome(call) and
+      result = call.toString()
+    )
   }
 }
 
