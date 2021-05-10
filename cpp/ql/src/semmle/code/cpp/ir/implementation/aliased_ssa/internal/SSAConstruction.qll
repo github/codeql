@@ -338,21 +338,15 @@ private module Cached {
     instr = unreachedInstruction(_) and result = Language::getVoidType()
   }
 
-  /**
-   * Holds if `opcode` is the opcode that specifies the operation performed by `instr`.
-   *
-   * The parameters are ordered such that they produce a clean join (with no need for reordering)
-   * in the characteristic predicates of the `Instruction` subclasses.
-   */
   cached
-  predicate getInstructionOpcode(Opcode opcode, Instruction instr) {
-    opcode = getOldInstruction(instr).getOpcode()
+  Opcode getInstructionOpcode(Instruction instr) {
+    result = getOldInstruction(instr).getOpcode()
     or
-    instr = phiInstruction(_, _) and opcode instanceof Opcode::Phi
+    instr = phiInstruction(_, _) and result instanceof Opcode::Phi
     or
-    instr = chiInstruction(_) and opcode instanceof Opcode::Chi
+    instr = chiInstruction(_) and result instanceof Opcode::Chi
     or
-    instr = unreachedInstruction(_) and opcode instanceof Opcode::Unreached
+    instr = unreachedInstruction(_) and result instanceof Opcode::Unreached
   }
 
   cached

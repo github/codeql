@@ -297,8 +297,7 @@ class Instruction extends Construction::TStageInstruction {
   /**
    * Gets the opcode that specifies the operation performed by this instruction.
    */
-  pragma[inline]
-  final Opcode getOpcode() { Construction::getInstructionOpcode(result, this) }
+  final Opcode getOpcode() { result = Construction::getInstructionOpcode(this) }
 
   /**
    * Gets all direct uses of the result of this instruction. The result can be

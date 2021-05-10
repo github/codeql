@@ -360,8 +360,8 @@ CppType getInstructionResultType(TStageInstruction instr) {
   getInstructionTranslatedElement(instr).hasInstruction(_, getInstructionTag(instr), result)
 }
 
-predicate getInstructionOpcode(Opcode opcode, TStageInstruction instr) {
-  getInstructionTranslatedElement(instr).hasInstruction(opcode, getInstructionTag(instr), _)
+Opcode getInstructionOpcode(TStageInstruction instr) {
+  getInstructionTranslatedElement(instr).hasInstruction(result, getInstructionTag(instr), _)
 }
 
 IRFunctionBase getInstructionEnclosingIRFunction(TStageInstruction instr) {
