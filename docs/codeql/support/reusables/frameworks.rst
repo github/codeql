@@ -157,6 +157,7 @@ Python built-in support
    PyYAML, Serialization
    dill, Serialization
    simplejson, Serialization
+   ujson, Serialization
    fabric, Utility library
    invoke, Utility library
    idna, Utility library
