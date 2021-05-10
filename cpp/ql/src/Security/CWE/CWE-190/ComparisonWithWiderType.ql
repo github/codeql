@@ -52,7 +52,6 @@ where
   forall(Expr conv | conv = large.getConversion*() |
     upperBound(conv).log2() > getComparisonSize(small) * 8
   ) and
-  upperBound(large.getFullyConverted()).log2() > getComparisonSize(small) * 8 and
   // Ignore cases where the smaller type is int or larger
   // These are still bugs, but you should need a very large string or array to
   // trigger them. We will want to disable this for some applications, but it's
