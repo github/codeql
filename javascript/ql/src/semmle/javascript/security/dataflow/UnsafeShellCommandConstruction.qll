@@ -14,7 +14,6 @@ import javascript
  */
 module UnsafeShellCommandConstruction {
   import UnsafeShellCommandConstructionCustomizations::UnsafeShellCommandConstruction
-  import UnsafeHtmlConstructionCustomizations
 
   /**
    * A taint-tracking configuration for reasoning about shell command constructed from library input vulnerabilities.
@@ -36,7 +35,7 @@ module UnsafeShellCommandConstruction {
     // override to require that there is a path without unmatched return steps
     override predicate hasFlowPath(DataFlow::SourcePathNode source, DataFlow::SinkPathNode sink) {
       super.hasFlowPath(source, sink) and
-      UnsafeHtmlConstruction::requireMatchedReturn(source, sink)
+      DataFlow::hasPathWithoutUnmatchedReturn(source, sink)
     }
 
     override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {

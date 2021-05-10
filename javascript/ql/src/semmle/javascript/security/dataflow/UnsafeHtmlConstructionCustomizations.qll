@@ -174,17 +174,4 @@ module UnsafeHtmlConstruction {
 
     override string describe() { result = "Markdown rendering" }
   }
-
-  /**
-   *  Holds if there is a path without unmatched return steps from `source` to `sink`.
-   */
-  predicate hasPathWithoutUnmatchedReturn(
-    DataFlow::SourcePathNode source, DataFlow::SinkPathNode sink
-  ) {
-    exists(DataFlow::MidPathNode mid |
-      source.getASuccessor*() = mid and
-      sink = mid.getASuccessor() and
-      mid.getPathSummary().hasReturn() = false
-    )
-  }
 }

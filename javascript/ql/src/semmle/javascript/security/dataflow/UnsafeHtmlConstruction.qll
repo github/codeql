@@ -38,7 +38,7 @@ module UnsafeHtmlConstruction {
     // override to require that there is a path without unmatched return steps
     override predicate hasFlowPath(DataFlow::SourcePathNode source, DataFlow::SinkPathNode sink) {
       super.hasFlowPath(source, sink) and
-      hasPathWithoutUnmatchedReturn(source, sink)
+      DataFlow::hasPathWithoutUnmatchedReturn(source, sink)
     }
 
     override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
