@@ -12,16 +12,6 @@ namespace Semmle.Extraction.CIL.Entities
         {
         }
 
-        public abstract string IdSuffix { get; }
-
-        public override void WriteQuotedId(TextWriter trapFile)
-        {
-            trapFile.Write("@\"");
-            WriteId(trapFile);
-            trapFile.Write(IdSuffix);
-            trapFile.Write('\"');
-        }
-
         public abstract IEnumerable<Type> MethodParameters { get; }
         public abstract IEnumerable<Type> TypeParameters { get; }
     }

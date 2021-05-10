@@ -100,7 +100,7 @@ namespace Semmle.Extraction.CIL.Entities
             throw new NotImplementedException();
         }
 
-        public override void WriteId(TextWriter trapFile, bool inContext)
+        public override void WriteId(EscapingTextWriter trapFile, bool inContext)
         {
             idWriter.WriteId(trapFile, inContext);
         }

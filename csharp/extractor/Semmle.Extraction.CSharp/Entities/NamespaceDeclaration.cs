@@ -20,7 +20,7 @@ namespace Semmle.Extraction.CSharp.Entities
             this.parent = parent;
         }
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             trapFile.WriteSubId(Context.CreateLocation(ReportingLocation));
             trapFile.Write(";namespacedeclaration");
