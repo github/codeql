@@ -765,7 +765,7 @@ private module IRBlockFlow {
    * - `source` and `sink` read from the same instruction (i.e., the definition of their memory operand
    * is identical).
    */
-  private predicate sourceSinkPairCand(Instruction source, Instruction sink, Instruction value) {
+  private predicate sourceSinkPairCand(Instruction value, Instruction source, Instruction sink) {
     source != sink and
     initialAddressFlowInstrRTC([
         any(AddressNodeStore address).getInstruction(),
@@ -777,7 +777,7 @@ private module IRBlockFlow {
   }
 
   private predicate isSourceInstr(Instruction value, Instruction source) {
-    sourceSinkPairCand(source, _, value)
+    sourceSinkPairCand(value, source, _)
   }
 
   private predicate isSource(Instruction value, IRBlock source) {
@@ -807,7 +807,9 @@ private module IRBlockFlow {
     b.getASuccessor() = sink and
     isSink(value, sink)
     or
-    exists(IRBlock succ | getASuccessor(value, b, succ) and flows(value, succ, sink))
+    exists(IRBlock succ |
+      getASuccessor(value, pragma[only_bind_out](b), succ) and flows(value, succ, sink)
+    )
   }
 
   private predicate flowsToSink(Instruction value, IRBlock b, IRBlock sink) {
