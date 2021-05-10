@@ -1,3 +1,3 @@
 lgtm,codescanning
 * Add support for version 5 of the Kryo serialzation/deserialization framework.
-* Add support for detecting safe uses of Kryo utilizing `KryoPool.Builder. (#4992)[https://github.com/github/codeql/issues/4992]
+* Add support for detecting safe uses of Kryo utilizing `KryoPool.Builder`. [#4992](https://github.com/github/codeql/issues/4992)

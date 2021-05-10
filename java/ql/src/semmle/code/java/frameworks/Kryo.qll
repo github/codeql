@@ -47,7 +47,7 @@ class KryoPoolBuilder extends RefType {
 }
 
 /**
- * A Kryo pool builder method used a fluent API call chain.
+ * A Kryo pool builder method used in a fluent API call chain.
  */
 class KryoPoolBuilderMethod extends Method {
   KryoPoolBuilderMethod() {

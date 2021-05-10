@@ -57,7 +57,7 @@ class SafeKryo extends DataFlow2::Configuration {
   }
 
   /**
-   * Holds when a funcitonal expression is used to create a `KryoPool.Builder`.
+   * Holds when a functional expression is used to create a `KryoPool.Builder`.
    * Eg. `new KryoPool.Builder(() -> new Kryo())`
    */
   private predicate stepKryoPoolBuilderFactoryArgToConstructor(
