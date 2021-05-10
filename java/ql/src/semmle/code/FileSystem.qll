@@ -148,8 +148,8 @@ class Container extends @container, Top {
   /**
    * Gets a textual representation of this container.
    *
-   * The default implementation returns the absolute path to the container, but subclasses may
-   * may override to provide a different result. To get the absolute path for any `Container`, call
+   * The default implementation gets the absolute path to the container, but subclasses may override
+   * to provide a different result. To get the absolute path of any `Container`, call
    * `Container.getAbsolutePath()` directly.
    */
   override string toString() { result = getAbsolutePath() }
