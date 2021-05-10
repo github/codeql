@@ -3,5 +3,5 @@ void test_issue_5850(unsigned char small, unsigned int large1) {
 }
 
 void test_widening(unsigned char small, char large) {
-	for(; small < static_cast<unsigned int>(static_cast<short>(large) - 1); small++) { } // GOOD [FALSE POSITIVE]
+	for(; small < static_cast<unsigned int>(static_cast<short>(large) - 1); small++) { } // GOOD
 }
