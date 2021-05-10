@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/sessions"
 )
@@ -146,7 +147,7 @@ func handler15(w http.ResponseWriter, r *http.Request) {
 	session.Values["foo"] = "secret"
 
 	session.Options = &sessions.Options{
-		MaxAge:   -1,
+		MaxAge: -1,
 	}
 
 	session.Save(r, w) // BAD: default (false) is used
@@ -179,16 +180,16 @@ func handler17(w http.ResponseWriter, r *http.Request, httpOnly bool) {
 
 func main() {
 
-    router := gin.Default()
+	router := gin.Default()
 
-    router.GET("/cookie", func(c *gin.Context) {
+	router.GET("/cookie", func(c *gin.Context) {
 
-        _, err := c.Cookie("session")
+		_, err := c.Cookie("session")
 
-        if err != nil {
-            c.SetCookie("session", "test", 3600, "/", "localhost", false, false) // BAD: httpOnly set to false
-        }
-    })
+		if err != nil {
+			c.SetCookie("session", "test", 3600, "/", "localhost", false, false) // BAD: httpOnly set to false
+		}
+	})
 
-    router.Run()
+	router.Run()
 }
