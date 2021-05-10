@@ -20,9 +20,7 @@ predicate isNetHttpCookieFlow(DataFlow::PathNode source, DataFlow::PathNode sink
   exists(DataFlow::PathNode cookieCreate, DataFlow::PathNode setCookieSink |
     exists(NetHttpCookieTrackingConfiguration cfg | cfg.hasFlowPath(cookieCreate, setCookieSink)) and
     (
-      not exists(DataFlow::Node rhs |
-        rhs = getValueForFieldWrite(cookieCreate.getNode().asExpr(), "HttpOnly")
-      ) and
+      not exists(getValueForFieldWrite(cookieCreate.getNode().asExpr(), "HttpOnly")) and
       source = cookieCreate and
       sink = setCookieSink
       or
@@ -36,14 +34,12 @@ predicate isNetHttpCookieFlow(DataFlow::PathNode source, DataFlow::PathNode sink
 }
 
 predicate isGinContextCookieFlow(DataFlow::PathNode source, DataFlow::PathNode sink) {
-  exists(BoolToGinSetCookieTrackingConfiguration cfg | cfg.hasFlowPath(source, sink))
+  any(BoolToGinSetCookieTrackingConfiguration cfg).hasFlowPath(source, sink)
 }
 
 predicate isGorillaSessionsCookieFlow(DataFlow::PathNode source, DataFlow::PathNode sink) {
   exists(DataFlow::PathNode cookieStoreCreate, DataFlow::PathNode sessionSave |
-    exists(GorillaCookieStoreSaveTrackingConfiguration cfg |
-      cfg.hasFlowPath(cookieStoreCreate, sessionSave)
-    ) and
+    any(GorillaCookieStoreSaveTrackingConfiguration cfg).hasFlowPath(cookieStoreCreate, sessionSave) and
     (
       not exists(GorillaSessionOptionsTrackingConfiguration cfg, DataFlow::PathNode sessionSave2 |
         sessionSave2.getNode() = sessionSave.getNode() and
