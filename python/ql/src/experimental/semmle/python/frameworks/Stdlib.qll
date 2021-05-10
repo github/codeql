@@ -58,7 +58,7 @@ private module Re {
    * This class will identify that `re.compile` compiles `input` and afterwards
    * executes `re`'s `match`. As a result, `this` will refer to `pattern.match(s)`
    * and `this.getRegexNode()` will return the node for `input` (`re.compile`'s first argument)
-   * 
+   *
    *
    * See `RegexExecutionMethods`
    *
