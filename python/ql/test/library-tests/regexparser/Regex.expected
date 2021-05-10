@@ -1,0 +1,243 @@
+| 012345678 | char | 0 | 1 |
+| 012345678 | char | 1 | 2 |
+| 012345678 | char | 2 | 3 |
+| 012345678 | char | 3 | 4 |
+| 012345678 | char | 4 | 5 |
+| 012345678 | char | 5 | 6 |
+| 012345678 | char | 6 | 7 |
+| 012345678 | char | 7 | 8 |
+| 012345678 | char | 8 | 9 |
+| 012345678 | sequence | 0 | 9 |
+| (?!not-this)^[A-Z_]+$ | $ | 20 | 21 |
+| (?!not-this)^[A-Z_]+$ | ^ | 12 | 13 |
+| (?!not-this)^[A-Z_]+$ | char | 3 | 4 |
+| (?!not-this)^[A-Z_]+$ | char | 4 | 5 |
+| (?!not-this)^[A-Z_]+$ | char | 5 | 6 |
+| (?!not-this)^[A-Z_]+$ | char | 6 | 7 |
+| (?!not-this)^[A-Z_]+$ | char | 7 | 8 |
+| (?!not-this)^[A-Z_]+$ | char | 8 | 9 |
+| (?!not-this)^[A-Z_]+$ | char | 9 | 10 |
+| (?!not-this)^[A-Z_]+$ | char | 10 | 11 |
+| (?!not-this)^[A-Z_]+$ | char | 14 | 15 |
+| (?!not-this)^[A-Z_]+$ | char | 16 | 17 |
+| (?!not-this)^[A-Z_]+$ | char | 17 | 18 |
+| (?!not-this)^[A-Z_]+$ | char-set | 13 | 19 |
+| (?!not-this)^[A-Z_]+$ | empty group | 0 | 12 |
+| (?!not-this)^[A-Z_]+$ | qualified | 13 | 20 |
+| (?!not-this)^[A-Z_]+$ | sequence | 0 | 21 |
+| (?!not-this)^[A-Z_]+$ | sequence | 3 | 11 |
+| (?:(?:\n\r?)\|^)( *)\\S | ^ | 11 | 12 |
+| (?:(?:\n\r?)\|^)( *)\\S | char | 6 | 7 |
+| (?:(?:\n\r?)\|^)( *)\\S | char | 7 | 8 |
+| (?:(?:\n\r?)\|^)( *)\\S | char | 14 | 15 |
+| (?:(?:\n\r?)\|^)( *)\\S | char | 17 | 19 |
+| (?:(?:\n\r?)\|^)( *)\\S | choice | 3 | 12 |
+| (?:(?:\n\r?)\|^)( *)\\S | non-empty group | 0 | 13 |
+| (?:(?:\n\r?)\|^)( *)\\S | non-empty group | 3 | 10 |
+| (?:(?:\n\r?)\|^)( *)\\S | non-empty group | 13 | 17 |
+| (?:(?:\n\r?)\|^)( *)\\S | qualified | 7 | 9 |
+| (?:(?:\n\r?)\|^)( *)\\S | qualified | 14 | 16 |
+| (?:(?:\n\r?)\|^)( *)\\S | sequence | 0 | 19 |
+| (?:(?:\n\r?)\|^)( *)\\S | sequence | 3 | 10 |
+| (?:(?:\n\r?)\|^)( *)\\S | sequence | 6 | 9 |
+| (?:(?:\n\r?)\|^)( *)\\S | sequence | 11 | 12 |
+| (?:(?P<n1>^(?:\|x))) | ^ | 10 | 11 |
+| (?:(?P<n1>^(?:\|x))) | char | 15 | 16 |
+| (?:(?P<n1>^(?:\|x))) | choice | 14 | 16 |
+| (?:(?P<n1>^(?:\|x))) | non-empty group | 0 | 19 |
+| (?:(?P<n1>^(?:\|x))) | non-empty group | 3 | 18 |
+| (?:(?P<n1>^(?:\|x))) | non-empty group | 11 | 17 |
+| (?:(?P<n1>^(?:\|x))) | sequence | 0 | 19 |
+| (?:(?P<n1>^(?:\|x))) | sequence | 3 | 18 |
+| (?:(?P<n1>^(?:\|x))) | sequence | 10 | 17 |
+| (?:(?P<n1>^(?:\|x))) | sequence | 15 | 16 |
+| (?:[^%]\|^)?%\\((\\w*)\\)[a-z] | ^ | 8 | 9 |
+| (?:[^%]\|^)?%\\((\\w*)\\)[a-z] | char | 5 | 6 |
+| (?:[^%]\|^)?%\\((\\w*)\\)[a-z] | char | 11 | 12 |
+| (?:[^%]\|^)?%\\((\\w*)\\)[a-z] | char | 12 | 14 |
+| (?:[^%]\|^)?%\\((\\w*)\\)[a-z] | char | 15 | 17 |
+| (?:[^%]\|^)?%\\((\\w*)\\)[a-z] | char | 19 | 21 |
+| (?:[^%]\|^)?%\\((\\w*)\\)[a-z] | char | 22 | 23 |
+| (?:[^%]\|^)?%\\((\\w*)\\)[a-z] | char | 24 | 25 |
+| (?:[^%]\|^)?%\\((\\w*)\\)[a-z] | char-set | 3 | 7 |
+| (?:[^%]\|^)?%\\((\\w*)\\)[a-z] | char-set | 21 | 26 |
+| (?:[^%]\|^)?%\\((\\w*)\\)[a-z] | choice | 3 | 9 |
+| (?:[^%]\|^)?%\\((\\w*)\\)[a-z] | non-empty group | 0 | 10 |
+| (?:[^%]\|^)?%\\((\\w*)\\)[a-z] | non-empty group | 14 | 19 |
+| (?:[^%]\|^)?%\\((\\w*)\\)[a-z] | qualified | 0 | 11 |
+| (?:[^%]\|^)?%\\((\\w*)\\)[a-z] | qualified | 15 | 18 |
+| (?:[^%]\|^)?%\\((\\w*)\\)[a-z] | sequence | 0 | 26 |
+| (?:[^%]\|^)?%\\((\\w*)\\)[a-z] | sequence | 3 | 7 |
+| (?:[^%]\|^)?%\\((\\w*)\\)[a-z] | sequence | 8 | 9 |
+| (?P<name>[\\w]+)\| | char | 10 | 12 |
+| (?P<name>[\\w]+)\| | char-set | 9 | 13 |
+| (?P<name>[\\w]+)\| | choice | 0 | 16 |
+| (?P<name>[\\w]+)\| | non-empty group | 0 | 15 |
+| (?P<name>[\\w]+)\| | qualified | 9 | 14 |
+| (?P<name>[\\w]+)\| | sequence | 0 | 15 |
+| (?m)^(?!$) | $ | 8 | 9 |
+| (?m)^(?!$) | ^ | 4 | 5 |
+| (?m)^(?!$) | empty group | 0 | 4 |
+| (?m)^(?!$) | empty group | 5 | 10 |
+| (?m)^(?!$) | sequence | 0 | 10 |
+| (?m)^(?!$) | sequence | 8 | 9 |
+| (\\033\|~{) | char | 1 | 5 |
+| (\\033\|~{) | char | 6 | 7 |
+| (\\033\|~{) | char | 7 | 8 |
+| (\\033\|~{) | choice | 1 | 8 |
+| (\\033\|~{) | non-empty group | 0 | 9 |
+| (\\033\|~{) | sequence | 0 | 9 |
+| (\\033\|~{) | sequence | 1 | 5 |
+| (\\033\|~{) | sequence | 6 | 8 |
+| [\ufffd-\ufffd] | char | 1 | 2 |
+| [\ufffd-\ufffd] | char | 3 | 4 |
+| [\ufffd-\ufffd] | char-set | 0 | 5 |
+| [\ufffd-\ufffd] | sequence | 0 | 5 |
+| [\ufffd-\ufffd][\ufffd-\ufffd] | char | 1 | 2 |
+| [\ufffd-\ufffd][\ufffd-\ufffd] | char | 3 | 4 |
+| [\ufffd-\ufffd][\ufffd-\ufffd] | char | 6 | 7 |
+| [\ufffd-\ufffd][\ufffd-\ufffd] | char | 8 | 9 |
+| [\ufffd-\ufffd][\ufffd-\ufffd] | char-set | 0 | 5 |
+| [\ufffd-\ufffd][\ufffd-\ufffd] | char-set | 5 | 10 |
+| [\ufffd-\ufffd][\ufffd-\ufffd] | sequence | 0 | 10 |
+| []] | char | 1 | 2 |
+| []] | char-set | 0 | 3 |
+| []] | sequence | 0 | 3 |
+| [^-] | char | 2 | 3 |
+| [^-] | char-set | 0 | 4 |
+| [^-] | sequence | 0 | 4 |
+| [^A-Z] | char | 2 | 3 |
+| [^A-Z] | char | 4 | 5 |
+| [^A-Z] | char-set | 0 | 6 |
+| [^A-Z] | sequence | 0 | 6 |
+| [^]] | char | 2 | 3 |
+| [^]] | char-set | 0 | 4 |
+| [^]] | sequence | 0 | 4 |
+| \\A[+-]?\\d+ | char | 0 | 2 |
+| \\A[+-]?\\d+ | char | 3 | 4 |
+| \\A[+-]?\\d+ | char | 4 | 5 |
+| \\A[+-]?\\d+ | char | 7 | 9 |
+| \\A[+-]?\\d+ | char-set | 2 | 6 |
+| \\A[+-]?\\d+ | qualified | 2 | 7 |
+| \\A[+-]?\\d+ | qualified | 7 | 10 |
+| \\A[+-]?\\d+ | sequence | 0 | 10 |
+| \\[(?P<txt>[^[]*)\\]\\((?P<uri>[^)]*) | char | 0 | 2 |
+| \\[(?P<txt>[^[]*)\\]\\((?P<uri>[^)]*) | char | 12 | 13 |
+| \\[(?P<txt>[^[]*)\\]\\((?P<uri>[^)]*) | char | 16 | 18 |
+| \\[(?P<txt>[^[]*)\\]\\((?P<uri>[^)]*) | char | 18 | 20 |
+| \\[(?P<txt>[^[]*)\\]\\((?P<uri>[^)]*) | char | 30 | 31 |
+| \\[(?P<txt>[^[]*)\\]\\((?P<uri>[^)]*) | char-set | 10 | 14 |
+| \\[(?P<txt>[^[]*)\\]\\((?P<uri>[^)]*) | char-set | 28 | 32 |
+| \\[(?P<txt>[^[]*)\\]\\((?P<uri>[^)]*) | non-empty group | 2 | 16 |
+| \\[(?P<txt>[^[]*)\\]\\((?P<uri>[^)]*) | non-empty group | 20 | 34 |
+| \\[(?P<txt>[^[]*)\\]\\((?P<uri>[^)]*) | qualified | 10 | 15 |
+| \\[(?P<txt>[^[]*)\\]\\((?P<uri>[^)]*) | qualified | 28 | 33 |
+| \\[(?P<txt>[^[]*)\\]\\((?P<uri>[^)]*) | sequence | 0 | 34 |
+| \\\|\\[\\][123]\|\\{\\} | char | 0 | 2 |
+| \\\|\\[\\][123]\|\\{\\} | char | 2 | 4 |
+| \\\|\\[\\][123]\|\\{\\} | char | 4 | 6 |
+| \\\|\\[\\][123]\|\\{\\} | char | 7 | 8 |
+| \\\|\\[\\][123]\|\\{\\} | char | 8 | 9 |
+| \\\|\\[\\][123]\|\\{\\} | char | 9 | 10 |
+| \\\|\\[\\][123]\|\\{\\} | char | 12 | 14 |
+| \\\|\\[\\][123]\|\\{\\} | char | 14 | 16 |
+| \\\|\\[\\][123]\|\\{\\} | char-set | 6 | 11 |
+| \\\|\\[\\][123]\|\\{\\} | choice | 0 | 16 |
+| \\\|\\[\\][123]\|\\{\\} | sequence | 0 | 11 |
+| \\\|\\[\\][123]\|\\{\\} | sequence | 12 | 16 |
+| \|x | char | 1 | 2 |
+| \|x | choice | 0 | 2 |
+| \|x | sequence | 1 | 2 |
+| ^(^y\|^z)(u$\|v$)$ | $ | 10 | 11 |
+| ^(^y\|^z)(u$\|v$)$ | $ | 13 | 14 |
+| ^(^y\|^z)(u$\|v$)$ | $ | 15 | 16 |
+| ^(^y\|^z)(u$\|v$)$ | ^ | 0 | 1 |
+| ^(^y\|^z)(u$\|v$)$ | ^ | 2 | 3 |
+| ^(^y\|^z)(u$\|v$)$ | ^ | 5 | 6 |
+| ^(^y\|^z)(u$\|v$)$ | char | 3 | 4 |
+| ^(^y\|^z)(u$\|v$)$ | char | 6 | 7 |
+| ^(^y\|^z)(u$\|v$)$ | char | 9 | 10 |
+| ^(^y\|^z)(u$\|v$)$ | char | 12 | 13 |
+| ^(^y\|^z)(u$\|v$)$ | choice | 2 | 7 |
+| ^(^y\|^z)(u$\|v$)$ | choice | 9 | 14 |
+| ^(^y\|^z)(u$\|v$)$ | non-empty group | 1 | 8 |
+| ^(^y\|^z)(u$\|v$)$ | non-empty group | 8 | 15 |
+| ^(^y\|^z)(u$\|v$)$ | sequence | 0 | 16 |
+| ^(^y\|^z)(u$\|v$)$ | sequence | 2 | 4 |
+| ^(^y\|^z)(u$\|v$)$ | sequence | 5 | 7 |
+| ^(^y\|^z)(u$\|v$)$ | sequence | 9 | 11 |
+| ^(^y\|^z)(u$\|v$)$ | sequence | 12 | 14 |
+| ^.$ | $ | 2 | 3 |
+| ^.$ | . | 1 | 2 |
+| ^.$ | ^ | 0 | 1 |
+| ^.$ | sequence | 0 | 3 |
+| ^[A-Z_]+$(?<!not-this) | $ | 8 | 9 |
+| ^[A-Z_]+$(?<!not-this) | ^ | 0 | 1 |
+| ^[A-Z_]+$(?<!not-this) | char | 2 | 3 |
+| ^[A-Z_]+$(?<!not-this) | char | 4 | 5 |
+| ^[A-Z_]+$(?<!not-this) | char | 5 | 6 |
+| ^[A-Z_]+$(?<!not-this) | char | 13 | 14 |
+| ^[A-Z_]+$(?<!not-this) | char | 14 | 15 |
+| ^[A-Z_]+$(?<!not-this) | char | 15 | 16 |
+| ^[A-Z_]+$(?<!not-this) | char | 16 | 17 |
+| ^[A-Z_]+$(?<!not-this) | char | 17 | 18 |
+| ^[A-Z_]+$(?<!not-this) | char | 18 | 19 |
+| ^[A-Z_]+$(?<!not-this) | char | 19 | 20 |
+| ^[A-Z_]+$(?<!not-this) | char | 20 | 21 |
+| ^[A-Z_]+$(?<!not-this) | char-set | 1 | 7 |
+| ^[A-Z_]+$(?<!not-this) | empty group | 9 | 22 |
+| ^[A-Z_]+$(?<!not-this) | qualified | 1 | 8 |
+| ^[A-Z_]+$(?<!not-this) | sequence | 0 | 22 |
+| ^[A-Z_]+$(?<!not-this) | sequence | 13 | 21 |
+| ax{01,3} | char | 0 | 1 |
+| ax{01,3} | char | 1 | 2 |
+| ax{01,3} | char | 3 | 4 |
+| ax{01,3} | char | 4 | 5 |
+| ax{01,3} | char | 5 | 6 |
+| ax{01,3} | char | 6 | 7 |
+| ax{01,3} | char | 7 | 8 |
+| ax{01,3} | qualified | 1 | 8 |
+| ax{01,3} | sequence | 0 | 8 |
+| ax{3,} | char | 0 | 1 |
+| ax{3,} | char | 1 | 2 |
+| ax{3,} | char | 3 | 4 |
+| ax{3,} | char | 4 | 5 |
+| ax{3,} | char | 5 | 6 |
+| ax{3,} | qualified | 1 | 6 |
+| ax{3,} | sequence | 0 | 6 |
+| ax{3} | char | 0 | 1 |
+| ax{3} | char | 1 | 2 |
+| ax{3} | char | 3 | 4 |
+| ax{3} | char | 4 | 5 |
+| ax{3} | qualified | 1 | 5 |
+| ax{3} | sequence | 0 | 5 |
+| ax{,3} | char | 0 | 1 |
+| ax{,3} | char | 1 | 2 |
+| ax{,3} | char | 3 | 4 |
+| ax{,3} | char | 4 | 5 |
+| ax{,3} | char | 5 | 6 |
+| ax{,3} | qualified | 1 | 6 |
+| ax{,3} | sequence | 0 | 6 |
+| x\| | char | 0 | 1 |
+| x\| | choice | 0 | 2 |
+| x\| | sequence | 0 | 1 |
+| x\|(?<!\\w)l | char | 0 | 1 |
+| x\|(?<!\\w)l | char | 6 | 8 |
+| x\|(?<!\\w)l | char | 9 | 10 |
+| x\|(?<!\\w)l | choice | 0 | 10 |
+| x\|(?<!\\w)l | empty group | 2 | 9 |
+| x\|(?<!\\w)l | sequence | 0 | 1 |
+| x\|(?<!\\w)l | sequence | 2 | 10 |
+| x\|(?<!\\w)l | sequence | 6 | 8 |
+| x{Not qual} | char | 0 | 1 |
+| x{Not qual} | char | 1 | 2 |
+| x{Not qual} | char | 2 | 3 |
+| x{Not qual} | char | 3 | 4 |
+| x{Not qual} | char | 4 | 5 |
+| x{Not qual} | char | 5 | 6 |
+| x{Not qual} | char | 6 | 7 |
+| x{Not qual} | char | 7 | 8 |
+| x{Not qual} | char | 8 | 9 |
+| x{Not qual} | char | 9 | 10 |
+| x{Not qual} | char | 10 | 11 |
+| x{Not qual} | sequence | 0 | 11 |
