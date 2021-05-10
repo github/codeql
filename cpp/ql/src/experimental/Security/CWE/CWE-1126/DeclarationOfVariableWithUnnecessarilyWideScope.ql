@@ -27,8 +27,6 @@ class DangerousWhileLoop extends WhileStmt {
     not exp instanceof PointerFieldAccess and
     not exp instanceof ValueFieldAccess and
     exp.(VariableAccess).getTarget().getName() = dl.getName() and
-    not exp.getParent*() instanceof CrementOperation and
-    not exp.getParent*() instanceof Assignment and
     not exp.getParent*() instanceof FunctionCall
   }
 
@@ -37,10 +35,10 @@ class DangerousWhileLoop extends WhileStmt {
   /** Holds when there are changes to the variables involved in the condition. */
   predicate isUseThisVariable() {
     exists(Variable v |
-      exp.(VariableAccess).getTarget() = v and
+      this.getCondition().getAChild*().(VariableAccess).getTarget() = v and
       (
         exists(Assignment aexp |
-          aexp = this.getStmt().getAChild*() and
+          this = aexp.getEnclosingStmt().getParentStmt*() and
           (
             aexp.getLValue().(ArrayExpr).getArrayBase().(VariableAccess).getTarget() = v
             or
@@ -49,7 +47,7 @@ class DangerousWhileLoop extends WhileStmt {
         )
         or
         exists(CrementOperation crm |
-          crm = this.getStmt().getAChild*() and
+          this = crm.getEnclosingStmt().getParentStmt*() and
           crm.getOperand().(VariableAccess).getTarget() = v
         )
       )
@@ -59,4 +57,4 @@ class DangerousWhileLoop extends WhileStmt {
 
 from DangerousWhileLoop lp
 where not lp.isUseThisVariable()
-select lp.getDeclaration(), "A variable with this name is used in the loop condition."
+select lp.getDeclaration(), "A variable with this name is used in the $@ condition.", lp, "loop"
