@@ -16,6 +16,7 @@ private import semmle.python.frameworks.MysqlConnectorPython
 private import semmle.python.frameworks.MySQLdb
 private import semmle.python.frameworks.Psycopg2
 private import semmle.python.frameworks.PyMySQL
+private import semmle.python.frameworks.Simplejson
 private import semmle.python.frameworks.Stdlib
 private import semmle.python.frameworks.Tornado
 private import semmle.python.frameworks.Yaml

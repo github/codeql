@@ -156,6 +156,7 @@ Python built-in support
    Tornado, Web framework
    PyYAML, Serialization
    dill, Serialization
+   simplejson, Serialization
    fabric, Utility library
    invoke, Utility library
    idna, Utility library
