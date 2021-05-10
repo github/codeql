@@ -10,8 +10,6 @@ private import semmle.code.java.dataflow.ExternalFlow
 /**
  * Ratpack methods that access user-supplied request data.
  */
-abstract class RatpackGetRequestDataMethod extends Method { }
-
 private class RatpackHttpSource extends SourceModelCsv {
   override predicate row(string row) {
     row =
