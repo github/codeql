@@ -269,10 +269,8 @@ struct Visitor<'a> {
 }
 
 impl Visitor<'_> {
-    fn record_error(
+    fn record_parse_error(
         &mut self,
-        severity: usize,
-        error_tag: String,
         error_message: String,
         full_error_message: String,
         loc: Label,
@@ -283,8 +281,8 @@ impl Visitor<'_> {
             "diagnostics",
             vec![
                 Arg::Label(id),
-                Arg::Int(severity),
-                Arg::String(error_tag),
+                Arg::Int(4),
+                Arg::String("parse_error".to_string()),
                 Arg::String(error_message),
                 Arg::String(full_error_message),
                 Arg::Label(loc),
@@ -292,7 +290,7 @@ impl Visitor<'_> {
         );
     }
 
-    fn record_parse_error(&mut self, node: Node) {
+    fn record_enter_parse_error(&mut self, node: Node) {
         let error_message = if node.is_missing() {
             format!("parse error: expecting '{}'", node.kind())
         } else {
@@ -313,18 +311,12 @@ impl Visitor<'_> {
             end_line,
             end_column,
         );
-        self.record_error(
-            4,
-            "parse_error".to_string(),
-            error_message,
-            full_error_message,
-            loc,
-        );
+        self.record_parse_error(error_message, full_error_message, loc);
     }
 
     fn enter_node(&mut self, node: Node) -> bool {
         if node.is_error() || node.is_missing() {
-            self.record_parse_error(node);
+            self.record_enter_parse_error(node);
             return false;
         }
 
@@ -416,13 +408,7 @@ impl Visitor<'_> {
                     node.start_position().row + 1,
                     error_message
                 );
-                self.record_error(
-                    4,
-                    "parse_error".to_string(),
-                    error_message,
-                    full_error_message,
-                    loc,
-                );
+                self.record_parse_error(error_message, full_error_message, loc);
 
                 valid = false;
             }
@@ -469,26 +455,56 @@ impl Visitor<'_> {
                         values.push(Arg::Label(child_node.label));
                     }
                 } else if field.name.is_some() {
-                    error!(
-                        "{}:{}: type mismatch for field {}::{} with type {:?} != {:?}",
-                        &self.path,
-                        node.start_position().row + 1,
+                    let error_message = format!(
+                        "type mismatch for field {}::{} with type {:?} != {:?}",
                         node.kind(),
                         child_node.field_name.unwrap_or("child"),
                         child_node.type_name,
                         field.type_info
-                    )
+                    );
+                    let full_error_message = format!(
+                        "{}:{}: {}",
+                        &self.path,
+                        node.start_position().row + 1,
+                        error_message
+                    );
+                    let (start_line, start_column, end_line, end_column) =
+                        location_for(&self.source, *node);
+                    let loc = self.trap_writer.location(
+                        self.file_label,
+                        start_line,
+                        start_column,
+                        end_line,
+                        end_column,
+                    );
+
+                    self.record_parse_error(error_message, full_error_message, loc);
                 }
             } else {
                 if child_node.field_name.is_some() || child_node.type_name.named {
-                    error!(
-                        "{}:{}: value for unknown field: {}::{} and type {:?}",
-                        &self.path,
-                        node.start_position().row + 1,
+                    let error_message = format!(
+                        "value for unknown field: {}::{} and type {:?}",
                         node.kind(),
                         &child_node.field_name.unwrap_or("child"),
                         &child_node.type_name
                     );
+                    let full_error_message = format!(
+                        "{}:{}: {}",
+                        &self.path,
+                        node.start_position().row + 1,
+                        error_message
+                    );
+                    let (start_line, start_column, end_line, end_column) =
+                        location_for(&self.source, *node);
+                    let loc = self.trap_writer.location(
+                        self.file_label,
+                        start_line,
+                        start_column,
+                        end_line,
+                        end_column,
+                    );
+
+                    self.record_parse_error(error_message, full_error_message, loc);
                 }
             }
         }
@@ -502,10 +518,8 @@ impl Visitor<'_> {
                         args.push(child_values.first().unwrap().clone());
                     } else {
                         is_valid = false;
-                        error!(
-                            "{}:{}: {} for field: {}::{}",
-                            &self.path,
-                            node.start_position().row + 1,
+                        let error_message = format!(
+                            "{} for field: {}::{}",
                             if child_values.is_empty() {
                                 "missing value"
                             } else {
@@ -513,7 +527,25 @@ impl Visitor<'_> {
                             },
                             node.kind(),
                             column_name
-                        )
+                        );
+                        let full_error_message = format!(
+                            "{}:{}: {}",
+                            &self.path,
+                            node.start_position().row + 1,
+                            error_message
+                        );
+
+                        let (start_line, start_column, end_line, end_column) =
+                            location_for(&self.source, *node);
+                        let loc = self.trap_writer.location(
+                            self.file_label,
+                            start_line,
+                            start_column,
+                            end_line,
+                            end_column,
+                        );
+
+                        self.record_parse_error(error_message, full_error_message, loc);
                     }
                 }
                 Storage::Table {
