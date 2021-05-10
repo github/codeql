@@ -21,8 +21,8 @@ def test():
 
     tainted_filelike.seek(0)
     ensure_tainted(
-        tainted_filelike, # $ tainted
-        simplejson.load(tainted_filelike), # $ tainted decodeOutput=Attribute() decodeFormat=JSON decodeInput=tainted_filelike
+        tainted_filelike, # $ MISSING: tainted
+        simplejson.load(tainted_filelike), # $ decodeOutput=Attribute() decodeFormat=JSON decodeInput=tainted_filelike MISSING: tainted
     )
 
     # load/dump with file-like using keyword-args
@@ -31,8 +31,8 @@ def test():
 
     tainted_filelike.seek(0)
     ensure_tainted(
-        tainted_filelike, # $ tainted
-        simplejson.load(fp=tainted_filelike), # $ tainted decodeOutput=Attribute() decodeFormat=JSON decodeInput=tainted_filelike
+        tainted_filelike, # $ MISSING: tainted
+        simplejson.load(fp=tainted_filelike), # $ decodeOutput=Attribute() decodeFormat=JSON decodeInput=tainted_filelike MISSING: tainted
     )
 
 # To make things runable
