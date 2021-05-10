@@ -132,3 +132,7 @@
 | Test.java:13:18:13:24 | tainted | Test.java:18:10:18:11 | x3 |
 | Test.java:13:18:13:24 | tainted | Test.java:22:12:22:13 | x4 |
 | Test.java:13:18:13:24 | tainted | Test.java:27:10:27:11 | x5 |
+| Test.java:13:18:13:24 | tainted | Test.java:30:12:30:13 | x6 |
+| Test.java:13:18:13:24 | tainted | Test.java:34:12:34:14 | key |
+| Test.java:13:18:13:24 | tainted | Test.java:35:12:35:16 | value |
+| Test.java:13:18:13:24 | tainted | Test.java:42:12:42:13 | x8 |

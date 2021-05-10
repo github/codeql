@@ -187,6 +187,24 @@ private predicate qualifierToMethodStep(Expr tracked, MethodAccess sink) {
   tracked = sink.getQualifier()
 }
 
+private predicate taintPreservingQualifierToFunctionalParameter(Method m, Parameter p) {
+  m.getDeclaringType() instanceof IterableType and
+  m.hasName("forEach")
+  or
+  m.(MapMethod).hasName("forEach")
+  or
+  m.getDeclaringType() instanceof IteratorType and
+  m.hasName("forEachRemaining")
+}
+
+private predicate qualifierToFunctionalParameterStep(Expr tracked, Parameter parameter) {
+  exists(MethodAccess ma |
+    taintPreservingQualifierToFunctionalParameter(ma.getMethod(), parameter) and
+    tracked = ma.getQualifier() and
+    ma.getAnArgument().(FunctionalExpr).asMethod().getAParameter() = parameter
+  )
+}
+
 private predicate qualifierToArgumentStep(Expr tracked, Expr sink) {
   exists(MethodAccess ma, CollectionMethod method |
     method = ma.getMethod() and
@@ -404,6 +422,14 @@ private predicate argToArgStep(Expr tracked, Expr sink) {
  */
 predicate containerReturnValueStep(Expr n1, Expr n2) {
   qualifierToMethodStep(n1, n2) or argToMethodStep(n1, n2)
+}
+
+/**
+ * Holds if the step from `n1` to `p1` is extracting a value from a
+ * container. This is restricted to cases where `p1` is the value extracted.
+ */
+predicate containerToParameterStep(Expr n1, Parameter p1) {
+  qualifierToFunctionalParameterStep(n1, p1)
 }
 
 /**

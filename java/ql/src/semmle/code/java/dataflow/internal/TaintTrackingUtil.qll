@@ -48,6 +48,8 @@ predicate localTaintStep(DataFlow::Node src, DataFlow::Node sink) {
 predicate localAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
   localAdditionalTaintExprStep(src.asExpr(), sink.asExpr())
   or
+  localAdditionalTaintExprToParameterStep(src.asExpr(), sink.asParameter())
+  or
   localAdditionalTaintUpdateStep(src.asExpr(),
     sink.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr())
   or
@@ -118,6 +120,15 @@ private predicate localAdditionalTaintExprStep(Expr src, Expr sink) {
   serializationStep(src, sink)
   or
   formatStep(src, sink)
+}
+
+/**
+ * Holds if taint can flow in one local step from `src` to functional argument `sink`
+ * excluding local data flow steps. That is, `src`, and `sink` are likely to represent
+ * different objects.
+ */
+private predicate localAdditionalTaintExprToParameterStep(Expr src, Parameter sink) {
+  containerToParameterStep(src, sink)
 }
 
 /**

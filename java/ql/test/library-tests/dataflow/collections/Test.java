@@ -25,5 +25,21 @@ public class Test {
     Iterator<String> it = m.values().iterator();
     String x5 = it.next();
     sink(x5); // Flow
+
+    it.forEachRemaining(x6 -> {
+      sink(x6); // Flow
+    });
+
+    m.forEach((key, value) -> {
+      sink(key); // Flow
+      sink(value); // Flow
+    });
+
+    m.entrySet().forEach(entry -> {
+      String x7 = entry.getKey();
+      sink(x7); // No flow
+      String x8 = entry.getValue();
+      sink(x8); // Flow
+    });
   }
 }

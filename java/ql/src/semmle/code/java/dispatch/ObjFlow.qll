@@ -129,6 +129,8 @@ private predicate step(Node n1, Node n2) {
   or
   containerStep(n1.asExpr(), n2.asExpr())
   or
+  containerToParameterStep(n1.asExpr(), n2.asParameter())
+  or
   exists(Field v |
     containerStep(n1.asExpr(), v.getAnAccess()) and
     n2.asExpr() = v.getAnAccess()
