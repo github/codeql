@@ -33,8 +33,8 @@ def test():
 
     tainted_filelike.seek(0)
     ensure_tainted(
-        tainted_filelike, # $ MISSING: tainted
-        json.load(tainted_filelike), # $ MISSING: tainted
+        tainted_filelike, # $ tainted
+        json.load(tainted_filelike), # $ tainted
     )
 
     # load/dump with file-like using keyword-args
@@ -43,8 +43,8 @@ def test():
 
     tainted_filelike.seek(0)
     ensure_tainted(
-        tainted_filelike, # $ MISSING: tainted
-        json.load(fp=tainted_filelike), # $ MISSING: tainted
+        tainted_filelike, # $ tainted
+        json.load(fp=tainted_filelike), # $ tainted
     )
 
 
