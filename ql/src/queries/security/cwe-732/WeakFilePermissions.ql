@@ -10,9 +10,9 @@
  */
 
 import ruby
-import codeql_ruby.dataflow.internal.DataFlowImpl::PathGraph
+import codeql_ruby.DataFlow
+import DataFlow::PathGraph
 private import codeql_ruby.dataflow.SSA
-private import codeql_ruby.dataflow.internal.DataFlowImpl as DataFlow
 
 // TODO: account for flows through tuple assignments
 /** An expression referencing the File or FileUtils module */
