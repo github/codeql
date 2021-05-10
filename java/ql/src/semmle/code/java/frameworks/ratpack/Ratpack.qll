@@ -24,13 +24,22 @@ private class RatpackHttpSource extends SourceModelCsv {
           "Request;true;getRawUri;;;ReturnValue;remote", "Request;true;getUri;;;ReturnValue;remote",
           "Request;true;getBody;;;ReturnValue;remote"
         ]
+    or
+    // All Context#parse methods that return a Promise are remote flow sources.
+    row =
+      ["ratpack.handling;", "ratpack.core.handling;"] + "Context;true;parse;" +
+        [
+          "(java.lang.Class);", "(com.google.common.reflect.TypeToken);", "(java.lang.Class,O);",
+          "(com.google.common.reflect.TypeToken,O);", "(ratpack.core.parse.Parse);",
+          "(ratpack.parse.Parse);"
+        ] + ";ReturnValue;remote"
   }
 }
 
 /**
  * Ratpack methods that propagate user-supplied request data as tainted.
  */
-private class RatpackHttpModel extends SummaryModelCsv {
+private class RatpackModel extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       ["ratpack.http;", "ratpack.core.http;"] +
@@ -49,6 +58,24 @@ private class RatpackHttpModel extends SummaryModelCsv {
     or
     row =
       ["ratpack.form;", "ratpack.core.form;"] +
-        ["UploadedFile;true;getFileName;;;Argument[-1];ReturnValue;taint"]
+        [
+          "UploadedFile;true;getFileName;;;Argument[-1];ReturnValue;taint",
+          "Form;true;file;;;Argument[-1];ReturnValue;taint",
+          "Form;true;files;;;Argument[-1];ReturnValue;taint"
+        ]
+    or
+    row =
+      ["ratpack.handling;", "ratpack.core.handling;"] +
+        [
+          "Context;true;parse;(ratpack.http.TypedData,ratpack.parse.Parse);;Argument[0];ReturnValue;taint",
+          "Context;true;parse;(ratpack.core.http.TypedData,ratpack.core.parse.Parse);;Argument[0];ReturnValue;taint"
+        ]
+    or
+    row =
+      ["ratpack.util;", "ratpack.func;"] +
+        [
+          "MultiValueMap;true;getAll;;;Argument[-1];ReturnValue;taint",
+          "MultiValueMap;true;asMultimap;;;Argument[-1];ReturnValue;taint"
+        ]
   }
 }

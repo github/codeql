@@ -1,6 +1,8 @@
 import ratpack.core.handling.Context;
 import ratpack.core.http.TypedData;
+import ratpack.core.form.Form;
 import ratpack.core.form.UploadedFile;
+import ratpack.core.parse.Parse;
 import ratpack.exec.Promise;
 import java.io.OutputStream;
 
@@ -66,5 +68,37 @@ class Resource {
             .value(tainted)
             .flatMap(a -> Promise.value(a))
             .then(this::sink); //$hasTaintFlow
+    }
+
+    void test5(Context ctx) {
+        ctx
+            .getRequest()
+            .getBody()
+            .map(data -> {
+                Form form = ctx.parse(data, Form.form());
+                sink(form); //$hasTaintFlow
+                return form;
+            })
+            .then(form -> {
+                sink(form.file("questionable_file")); //$hasTaintFlow
+                sink(form.file("questionable_file").getFileName()); //$hasTaintFlow
+                sink(form.files("questionable_files")); //$hasTaintFlow
+                sink(form.files()); //$hasTaintFlow
+                sink(form.asMultimap()); //$hasTaintFlow
+                sink(form.asMultimap().asMap()); //$hasTaintFlow
+            });
+    }
+
+    void test6(Context ctx) {
+        ctx
+            .parse(Parse.of(Form.class))
+            .then(form -> {
+                sink(form); //$hasTaintFlow
+            });
+        ctx
+            .parse(Form.class)
+            .then(form -> {
+                sink(form); //$hasTaintFlow
+            });
     }
 }
