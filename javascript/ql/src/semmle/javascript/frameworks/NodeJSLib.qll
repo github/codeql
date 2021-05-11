@@ -465,6 +465,9 @@ module NodeJSLib {
       ) and
       t.start()
       or
+      t.start() and
+      result = DataFlow::moduleMember("fs", "promises")
+      or
       exists(DataFlow::TypeTracker t2, DataFlow::SourceNode pred | pred = fsModule(t2) |
         result = pred.track(t2, t)
         or

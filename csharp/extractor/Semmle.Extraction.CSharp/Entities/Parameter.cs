@@ -74,7 +74,7 @@ namespace Semmle.Extraction.CSharp.Entities
         public static Parameter Create(Context cx, IParameterSymbol param) =>
             ParameterFactory.Instance.CreateEntity(cx, param, (param, null, null));
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             if (Parent is null)
                 Parent = Method.Create(Context, Symbol.ContainingSymbol as IMethodSymbol);
@@ -209,7 +209,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override bool NeedsPopulation => true;
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             trapFile.Write("__arglist;type");
         }
