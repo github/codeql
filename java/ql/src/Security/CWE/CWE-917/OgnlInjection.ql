@@ -12,8 +12,8 @@
 
 import java
 import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.security.OgnlInjection
 import DataFlow::PathGraph
-import OgnlInjectionLib
 
 /**
  * A taint-tracking configuration for unvalidated user input that is used in OGNL EL evaluation.
