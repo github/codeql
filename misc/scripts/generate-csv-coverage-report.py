@@ -136,13 +136,12 @@ configs = [
 
 # The names of input and output files. The placeholder {language} is replaced with the language name.
 output_rst = "flow-model-coverage.rst"
-output_rst_csv = "rst-csv-flow-model-coverage-{language}.csv"
 output_ql_csv = "output-{language}.csv"
 output_csv = "csv-flow-model-coverage-{language}.csv"
 input_framework_csv = data_prefix + "misc/scripts/frameworks-{language}.csv"
 input_cwe_sink_csv = data_prefix + "misc/scripts/cwe-sink-{language}.csv"
 
-with open(output_rst, 'w') as rst_file:
+with open(output_rst, 'w', newline='') as rst_file:
     for config in configs:
         lang = config.lang
         db = "empty-" + lang
@@ -230,81 +229,81 @@ with open(output_rst, 'w') as rst_file:
 
         sorted_cwes = sorted(cwes)
 
-        file_name = output_rst_csv.format(language=lang)
-
         rst_file.write(
             config.capitalized_lang + " framework & library support\n")
         rst_file.write("================================\n\n")
         rst_file.write(".. csv-table:: \n")
-        rst_file.write("     :file: " + file_name + "\n")
-        rst_file.write("     :header-rows: 1\n")
-        rst_file.write("     :class: fullWidthTable\n")
-        rst_file.write("     :widths: auto\n\n")
+        rst_file.write("   :header-rows: 1\n")
+        rst_file.write("   :class: fullWidthTable\n")
+        rst_file.write("   :widths: auto\n\n")
+
+        row_prefix = "   "
 
         # Write CSV file with package statistics and framework data to be used in RST file.
-        with open(file_name, 'w', newline='') as csvfile:
-            csvwriter = csv.writer(csvfile)
+        csvwriter = csv.writer(rst_file)
 
-            # Write CSV header.
-            headers = ["Framework / library",
-                       "Package",
-                       "Remote flow sources",
-                       "Taint & value steps",
-                       "Sinks (total)"]
-            for cwe in sorted_cwes:
-                headers.append(
-                    "`{0}` :sub:`{1}`".format(cwe, cwes[cwe]["label"]))
-            csvwriter.writerow(headers)
+        # Write CSV header.
+        headers = [row_prefix + "Framework / library",
+                   "Package",
+                   "Remote flow sources",
+                   "Taint & value steps",
+                   "Sinks (total)"]
+        for cwe in sorted_cwes:
+            headers.append(
+                "`{0}` :sub:`{1}`".format(cwe, cwes[cwe]["label"]))
+        csvwriter.writerow(headers)
 
-            processed_packages = set()
+        processed_packages = set()
 
-            # Write a row for each framework.
-            for framework in sorted(frameworks):
-                row = []
+        # Write a row for each framework.
+        for framework in sorted(frameworks):
+            row = []
 
-                # Add the framework name to the row
-                if not frameworks[framework]["url"]:
-                    row.append(framework)
-                else:
-                    row.append(
-                        "`" + framework + " <" + frameworks[framework]["url"] + ">`_")
+            # Add the framework name to the row
+            if not frameworks[framework]["url"]:
+                row.append(row_prefix + framework)
+            else:
+                row.append(
+                    row_prefix + "`" + framework + " <" + frameworks[framework]["url"] + ">`_")
 
-                # Add the package name to the row
-                row.append("``" + frameworks[framework]["package"] + "``")
+            # Add the package name to the row
+            row.append("``" + frameworks[framework]["package"] + "``")
 
-                prefix = frameworks[framework]["package"]
+            prefix = frameworks[framework]["package"]
 
-                # Collect statistics on the current framework
-                # package name is either full name, such as "org.hibernate", or a prefix, such as "java.*"
-                def collect_framework(): return collect_package_stats(
-                    packages, cwes, lambda p: (prefix.endswith("*") and p.startswith(prefix[:-1])) or (not prefix.endswith("*") and prefix == p))
+            # Collect statistics on the current framework
+            # package name is either full name, such as "org.hibernate", or a prefix, such as "java.*"
+            def collect_framework(): return collect_package_stats(
+                packages, cwes, lambda p: (prefix.endswith("*") and p.startswith(prefix[:-1])) or (not prefix.endswith("*") and prefix == p))
 
-                row, f_processed_packages = add_package_stats_to_row(
-                    row, sorted_cwes, collect_framework)
-
-                csvwriter.writerow(row)
-                processed_packages.update(f_processed_packages)
-
-            # Collect statistics on all packages that are not part of a framework
-            row = ["Others", None]
-
-            def collect_others(): return collect_package_stats(
-                packages, cwes, lambda p: p not in processed_packages)
-
-            row, other_packages = add_package_stats_to_row(
-                row, sorted_cwes, collect_others)
-
-            row[1] = ", ".join("``{0}``".format(p)
-                               for p in sorted(other_packages))
+            row, f_processed_packages = add_package_stats_to_row(
+                row, sorted_cwes, collect_framework)
 
             csvwriter.writerow(row)
+            processed_packages.update(f_processed_packages)
 
-            # Collect statistics on all packages
-            row = ["Totals", None]
+        # Collect statistics on all packages that are not part of a framework
+        row = [row_prefix + "Others", None]
 
-            def collect_total(): return collect_package_stats(packages, cwes, lambda p: True)
+        def collect_others(): return collect_package_stats(
+            packages, cwes, lambda p: p not in processed_packages)
 
-            row, _ = add_package_stats_to_row(
-                row, sorted_cwes, collect_total)
+        row, other_packages = add_package_stats_to_row(
+            row, sorted_cwes, collect_others)
 
-            csvwriter.writerow(row)
+        row[1] = ", ".join("``{0}``".format(p)
+                           for p in sorted(other_packages))
+
+        csvwriter.writerow(row)
+
+        # Collect statistics on all packages
+        row = [row_prefix + "Totals", None]
+
+        def collect_total(): return collect_package_stats(packages, cwes, lambda p: True)
+
+        row, _ = add_package_stats_to_row(
+            row, sorted_cwes, collect_total)
+
+        csvwriter.writerow(row)
+
+        rst_file.write("\n\n")

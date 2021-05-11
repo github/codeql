@@ -66,5 +66,4 @@ jobs:
         name: rst-flow-model-coverage
         path: |
           flow-model-coverage.rst
-          rst-csv-flow-model-coverage-*.csv
 
