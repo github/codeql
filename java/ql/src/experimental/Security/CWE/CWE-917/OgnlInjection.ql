@@ -12,9 +12,27 @@
 
 import java
 import semmle.code.java.dataflow.FlowSources
-import DataFlow
 import DataFlow::PathGraph
 import OgnlInjectionLib
+
+/**
+ * A taint-tracking configuration for unvalidated user input that is used in OGNL EL evaluation.
+ */
+class OgnlInjectionFlowConfig extends TaintTracking::Configuration {
+  OgnlInjectionFlowConfig() { this = "OgnlInjectionFlowConfig" }
+
+  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+
+  override predicate isSink(DataFlow::Node sink) { sink instanceof OgnlInjectionSink }
+
+  override predicate isSanitizer(DataFlow::Node node) {
+    node.getType() instanceof PrimitiveType or node.getType() instanceof BoxedType
+  }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+    any(OgnlInjectionAdditionalTaintStep c).step(node1, node2)
+  }
+}
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, OgnlInjectionFlowConfig conf
 where conf.hasFlowPath(source, sink)
