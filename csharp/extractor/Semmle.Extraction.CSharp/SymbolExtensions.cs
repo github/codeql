@@ -158,7 +158,7 @@ namespace Semmle.Extraction.CSharp
         /// <param name="trapFile">The trap builder used to store the result.</param>
         /// <param name="symbolBeingDefined">The outer symbol being defined (to avoid recursive ids).</param>
         /// <param name="constructUnderlyingTupleType">Whether to build a type ID for the underlying `System.ValueTuple` struct in the case of tuple types.</param>
-        public static void BuildTypeId(this ITypeSymbol type, Context cx, EscapingTextWriter trapFile, ISymbol symbolBeingDefined, bool constructUnderlyingTupleType = false)
+        public static void BuildTypeId(this ITypeSymbol type, Context cx, EscapingTextWriter trapFile, ISymbol symbolBeingDefined, bool constructUnderlyingTupleType)
         {
             using (cx.StackGuard)
             {
@@ -166,7 +166,7 @@ namespace Semmle.Extraction.CSharp
                 {
                     case TypeKind.Array:
                         var array = (IArrayTypeSymbol)type;
-                        array.ElementType.BuildOrWriteId(cx, trapFile, symbolBeingDefined);
+                        array.ElementType.BuildOrWriteId(cx, trapFile, symbolBeingDefined, constructUnderlyingTupleType: false);
                         array.BuildArraySuffix(trapFile);
                         return;
                     case TypeKind.Class:
@@ -180,12 +180,12 @@ namespace Semmle.Extraction.CSharp
                         return;
                     case TypeKind.Pointer:
                         var ptr = (IPointerTypeSymbol)type;
-                        ptr.PointedAtType.BuildOrWriteId(cx, trapFile, symbolBeingDefined);
+                        ptr.PointedAtType.BuildOrWriteId(cx, trapFile, symbolBeingDefined, constructUnderlyingTupleType: false);
                         trapFile.Write('*');
                         return;
                     case TypeKind.TypeParameter:
                         var tp = (ITypeParameterSymbol)type;
-                        tp.ContainingSymbol.BuildOrWriteId(cx, trapFile, symbolBeingDefined);
+                        tp.ContainingSymbol.BuildOrWriteId(cx, trapFile, symbolBeingDefined, constructUnderlyingTupleType: false);
                         trapFile.Write('_');
                         trapFile.Write(tp.Name);
                         return;
@@ -202,7 +202,7 @@ namespace Semmle.Extraction.CSharp
             }
         }
 
-        private static void BuildOrWriteId(this ISymbol? symbol, Context cx, EscapingTextWriter trapFile, ISymbol symbolBeingDefined, bool constructUnderlyingTupleType = false)
+        private static void BuildOrWriteId(this ISymbol? symbol, Context cx, EscapingTextWriter trapFile, ISymbol symbolBeingDefined, bool constructUnderlyingTupleType)
         {
             if (symbol is null)
             {
@@ -245,7 +245,7 @@ namespace Semmle.Extraction.CSharp
         /// <paramref name="symbol" />.
         /// </summary>
         public static void BuildOrWriteId(this ISymbol? symbol, Context cx, EscapingTextWriter trapFile, ISymbol symbolBeingDefined) =>
-            symbol.BuildOrWriteId(cx, trapFile, symbolBeingDefined, true);
+            symbol.BuildOrWriteId(cx, trapFile, symbolBeingDefined, constructUnderlyingTupleType: false);
 
         /// <summary>
         /// Constructs an array suffix string for this array type symbol.
@@ -292,7 +292,7 @@ namespace Semmle.Extraction.CSharp
                     {
                         trapFile.Write((f.CorrespondingTupleField ?? f).Name);
                         trapFile.Write(":");
-                        f.Type.BuildOrWriteId(cx, trapFile, symbolBeingDefined);
+                        f.Type.BuildOrWriteId(cx, trapFile, symbolBeingDefined, constructUnderlyingTupleType: false);
                     }
                     );
                 trapFile.Write(")");
@@ -303,7 +303,7 @@ namespace Semmle.Extraction.CSharp
             {
                 if (named.ContainingType is not null)
                 {
-                    named.ContainingType.BuildOrWriteId(cx, trapFile, symbolBeingDefined);
+                    named.ContainingType.BuildOrWriteId(cx, trapFile, symbolBeingDefined, constructUnderlyingTupleType: false);
                     trapFile.Write('.');
                 }
                 else if (named.ContainingNamespace is not null)
@@ -335,7 +335,7 @@ namespace Semmle.Extraction.CSharp
                 // a constructed type with different nullability of its members and methods,
                 // so we need to create a distinct database entity for it.
                 trapFile.BuildList(",", named.GetAnnotatedTypeArguments(),
-                    ta => ta.Symbol.BuildOrWriteId(cx, trapFile, symbolBeingDefined)
+                    ta => ta.Symbol.BuildOrWriteId(cx, trapFile, symbolBeingDefined, constructUnderlyingTupleType: false)
                     );
                 trapFile.Write('>');
             }
