@@ -18,3 +18,15 @@ void useTaintedInt()
 	y = getTaintedInt();
 	y = y * 1024; // BAD: arithmetic on a tainted value
 }
+
+typedef long long int intmax_t;
+
+intmax_t imaxabs(intmax_t j);
+
+void useTaintedIntWithGuard() {
+	int tainted = getTaintedInt();
+
+	if(imaxabs(tainted) <= 100) {
+		int product = tainted * tainted; // GOOD: can't underflow/overflow [FALSE POSITIVE]
+	}
+}
