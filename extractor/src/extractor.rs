@@ -290,19 +290,12 @@ impl Visitor<'_> {
         );
     }
 
-    fn record_enter_parse_error(&mut self, node: Node) {
-        let error_message = if node.is_missing() {
-            format!("parse error: expecting '{}'", node.kind())
-        } else {
-            "parse error".to_string()
-        };
-        let full_error_message = format!(
-            "{}:{}: {}",
-            &self.path,
-            node.start_position().row + 1,
-            error_message
-        );
-
+    fn record_parse_error_for_node(
+        &mut self,
+        error_message: String,
+        full_error_message: String,
+        node: Node,
+    ) {
         let (start_line, start_column, end_line, end_column) = location_for(&self.source, node);
         let loc = self.trap_writer.location(
             self.file_label,
@@ -316,7 +309,18 @@ impl Visitor<'_> {
 
     fn enter_node(&mut self, node: Node) -> bool {
         if node.is_error() || node.is_missing() {
-            self.record_enter_parse_error(node);
+            let error_message = if node.is_missing() {
+                format!("parse error: expecting '{}'", node.kind())
+            } else {
+                "parse error".to_string()
+            };
+            let full_error_message = format!(
+                "{}:{}: {}",
+                &self.path,
+                node.start_position().row + 1,
+                error_message
+            );
+            self.record_parse_error_for_node(error_message, full_error_message, node);
             return false;
         }
 
@@ -468,17 +472,7 @@ impl Visitor<'_> {
                         node.start_position().row + 1,
                         error_message
                     );
-                    let (start_line, start_column, end_line, end_column) =
-                        location_for(&self.source, *node);
-                    let loc = self.trap_writer.location(
-                        self.file_label,
-                        start_line,
-                        start_column,
-                        end_line,
-                        end_column,
-                    );
-
-                    self.record_parse_error(error_message, full_error_message, loc);
+                    self.record_parse_error_for_node(error_message, full_error_message, *node);
                 }
             } else {
                 if child_node.field_name.is_some() || child_node.type_name.named {
@@ -494,17 +488,7 @@ impl Visitor<'_> {
                         node.start_position().row + 1,
                         error_message
                     );
-                    let (start_line, start_column, end_line, end_column) =
-                        location_for(&self.source, *node);
-                    let loc = self.trap_writer.location(
-                        self.file_label,
-                        start_line,
-                        start_column,
-                        end_line,
-                        end_column,
-                    );
-
-                    self.record_parse_error(error_message, full_error_message, loc);
+                    self.record_parse_error_for_node(error_message, full_error_message, *node);
                 }
             }
         }
@@ -534,18 +518,7 @@ impl Visitor<'_> {
                             node.start_position().row + 1,
                             error_message
                         );
-
-                        let (start_line, start_column, end_line, end_column) =
-                            location_for(&self.source, *node);
-                        let loc = self.trap_writer.location(
-                            self.file_label,
-                            start_line,
-                            start_column,
-                            end_line,
-                            end_column,
-                        );
-
-                        self.record_parse_error(error_message, full_error_message, loc);
+                        self.record_parse_error_for_node(error_message, full_error_message, *node);
                     }
                 }
                 Storage::Table {
