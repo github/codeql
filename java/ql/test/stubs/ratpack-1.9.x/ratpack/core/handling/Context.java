@@ -304,7 +304,7 @@ public interface Context extends Registry {
   /**
    * Parse the request into the given type, using no options (or more specifically an instance of {@link NullParseOpts} as the options).
    * <p>
-   * The code sample is functionally identical to the sample given for the {@link #parse(Parse)} variant…
+   * The code sample is functionally identical to the sample given for the {@link #parse(Parse)} variant
    * <pre class="java">{@code
    * import ratpack.core.handling.Handler;
    * import ratpack.core.handling.Context;

@@ -23,7 +23,7 @@ import ratpack.func.Function;
  * A promise for a single value.
  * <p>
  * A promise is a representation of a value which will become available later.
- * Methods such as {@link #map(Function)}, {@link #flatMap(Function)}, {@link #cache()} etc.) allow a pipeline of “operations” to be specified,
+ * Methods such as {@link #map(Function)}, {@link #flatMap(Function)}, {@link #cache()} etc.) allow a pipeline of “operations" to be specified,
  * that the value will travel through as it becomes available.
  * Such operations are implemented via the {@link #transform(Function)} method.
  * Each operation returns a new promise object, not the original promise object.

@@ -22,7 +22,7 @@ package ratpack.func;
  * This type serves the same purpose as the JDK's {@link java.util.function.Predicate}, but allows throwing checked exceptions.
  * It contains methods for bridging to and from the JDK type.
  *
- * @param <T> the type of object “tested” by the predicate
+ * @param <T> the type of object "tested" by the predicate
  */
 @FunctionalInterface
 public interface Predicate<T> {
@@ -30,7 +30,7 @@ public interface Predicate<T> {
   /**
    * Tests the given value.
    *
-   * @param t the value to “test”
+   * @param t the value to "test"
    * @return {@code true} if the predicate applied, otherwise {@code false}
    * @throws Exception any
    */

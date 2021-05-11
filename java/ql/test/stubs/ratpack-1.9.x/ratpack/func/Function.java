@@ -174,7 +174,7 @@ public interface Function<I, O> {
    * Creates a function that delegates based on the specified conditions.
    * <p>
    * If no conditions match, an {@link IllegalArgumentException} will be thrown.
-   * Use {@link #conditional(Function, Action)} alternatively to specify a different “else” strategy.
+   * Use {@link #conditional(Function, Action)} alternatively to specify a different "else" strategy.
    *
    * @param conditions the conditions
    * @param <I> the input type

@@ -173,7 +173,7 @@ public interface Registry {
    * Creates a new registry by joining {@code this} registry with the given registry
    * <p>
    * The returned registry is effectively the union of the two registries, with the {@code child} registry taking precedence.
-   * This means that child entries are effectively “returned first”.
+   * This means that child entries are effectively "returned first".
    * <pre class="java">{@code
    * import ratpack.exec.registry.Registry;
    *
