@@ -1,3 +1,5 @@
+import org.python.util.PythonInterpreter;
+
 public class JythonInjection extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/plain");
@@ -10,7 +12,7 @@ public class JythonInjection extends HttpServlet {
             interpreter.setOut(out);
             interpreter.setErr(out);
 
-            // BAD: allow arbitrary Jython expression to execute
+            // BAD: allow execution of arbitrary Python code
             interpreter.exec(code);
             out.flush();
 
@@ -32,7 +34,7 @@ public class JythonInjection extends HttpServlet {
 
         try {
             interpreter = new PythonInterpreter();
-            // BAD: allow arbitrary Jython expression to evaluate
+            // BAD: allow execution of arbitrary Python code
             PyObject py = interpreter.eval(code);
 
             response.getWriter().print(py.toString());

@@ -11,6 +11,7 @@
 
 import java
 import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.frameworks.spring.SpringController
 import DataFlow::PathGraph
 
 /** The class `org.python.util.PythonInterpreter`. */
@@ -22,12 +23,7 @@ class PythonInterpreter extends RefType {
 class InterpretExprMethod extends Method {
   InterpretExprMethod() {
     this.getDeclaringType().getAnAncestor*() instanceof PythonInterpreter and
-    (
-      getName().matches("exec%") or
-      hasName("eval") or
-      hasName("compile") or
-      getName().matches("run%")
-    )
+    getName().matches(["exec%", "run%", "eval", "compile"])
   }
 }
 
@@ -48,14 +44,14 @@ predicate runCode(MethodAccess ma, Expr sink) {
 class LoadClassMethod extends Method {
   LoadClassMethod() {
     this.getDeclaringType().getAnAncestor*() instanceof BytecodeLoader and
-    (
-      hasName("makeClass") or
-      hasName("makeCode")
-    )
+    hasName(["makeClass", "makeCode"])
   }
 }
 
-/** Holds if a Java class file is loaded. */
+/**
+ * Holds if `ma` is a call to a class-loading method, and `sink` is the byte array
+ * representing the class to be loaded.
+ */
 predicate loadClass(MethodAccess ma, Expr sink) {
   exists(Method m, int i | m = ma.getMethod() |
     m instanceof LoadClassMethod and
@@ -69,7 +65,7 @@ class Py extends RefType {
   Py() { this.hasQualifiedName("org.python.core", "Py") }
 }
 
-/** A method that compiles code with `Py`. */
+/** A method declared on class `Py` or one of its descendants that compiles Python code. */
 class PyCompileMethod extends Method {
   PyCompileMethod() {
     this.getDeclaringType().getAnAncestor*() instanceof Py and
@@ -85,7 +81,7 @@ predicate compile(MethodAccess ma, Expr sink) {
   )
 }
 
-/** Sink of an expression loaded by Jython. */
+/** An expression loaded by Jython. */
 class CodeInjectionSink extends DataFlow::ExprNode {
   CodeInjectionSink() {
     runCode(_, this.getExpr()) or
@@ -103,17 +99,18 @@ class CodeInjectionSink extends DataFlow::ExprNode {
 class CodeInjectionConfiguration extends TaintTracking::Configuration {
   CodeInjectionConfiguration() { this = "CodeInjectionConfiguration" }
 
-  override predicate isSource(DataFlow::Node source) {
-    source instanceof RemoteFlowSource
-    or
-    source instanceof LocalUserInput
-  }
+  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof CodeInjectionSink }
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
     // @RequestBody MyQueryObj query; interpreter.exec(query.getInterpreterCode());
-    exists(MethodAccess ma | ma.getQualifier() = node1.asExpr() and ma = node2.asExpr())
+    exists(MethodAccess ma |
+      ma.getMethod().getDeclaringType().getASubtype*() instanceof SpringUntrustedDataType and
+      not ma.getMethod().getDeclaringType() instanceof TypeObject and
+      ma.getQualifier() = node1.asExpr() and
+      ma = node2.asExpr()
+    )
   }
 }
 

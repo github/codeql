@@ -22,7 +22,7 @@ public class JythonInjection extends HttpServlet {
         super();
     }
 
-    // BAD: allow arbitrary Jython expression to execute
+    // BAD: allow execution of arbitrary Python code
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/plain");
         String code = request.getParameter("code");
@@ -47,7 +47,7 @@ public class JythonInjection extends HttpServlet {
         }
     }
 
-    // BAD: allow arbitrary Jython expression to evaluate
+    // BAD: allow execution of arbitrary Python code
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/plain");
         String code = request.getParameter("code");
