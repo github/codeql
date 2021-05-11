@@ -96,6 +96,8 @@ class RegExpTerm extends RegExpParent {
   ) {
     node.hasLocationInfo(file, startline, startcol, endline, endcol)
   }
+
+  string getPrimaryQLClass() { result = "???" }
 }
 
 private class NormalRegExpTerm extends RegExpTerm, TRegExp {
@@ -110,6 +112,8 @@ class RegExpAlt extends NormalRegExpTerm {
   override RegExpTerm getChild(int i) {
     result = TRegExp(orRevChild(node, orNumChild(node) - i - 1))
   }
+
+  override string getPrimaryQLClass() { result = "RegExpAlt" }
 }
 
 private P::Regex orRevChild(P::Regex re, int i) {
@@ -130,20 +134,28 @@ class RegExpQuantifier extends NormalRegExpTerm {
   override P::SuffixRegex node;
 
   override RegExpTerm getChild(int i) { i = 0 and result = TRegExp(node.getBody()) }
+
+  override string getPrimaryQLClass() { result = "RegExpQuantifier" }
 }
 
 class RegExpLookbehind extends NormalRegExpTerm {
   RegExpLookbehind() {
     node instanceof P::NegativeLookbehindRegex or node instanceof P::PositiveLookbehindRegex
   }
+
+  override string getPrimaryQLClass() { result = "RegExpLookbehind" }
 }
 
 class RegExpStar extends RegExpQuantifier {
   override P::StarRegex node;
+
+  override string getPrimaryQLClass() { result = "RegExpStar" }
 }
 
 class RegExpPlus extends RegExpQuantifier {
   override P::PlusRegex node;
+
+  override string getPrimaryQLClass() { result = "RegExpPlus" }
 }
 
 class RegExpRange extends RegExpQuantifier {
@@ -152,10 +164,14 @@ class RegExpRange extends RegExpQuantifier {
   int getLowerBound() { result = node.getLowerBound() }
 
   int getUpperBound() { result = node.getUpperBound() }
+
+  override string getPrimaryQLClass() { result = "RegExpRange" }
 }
 
 class RegExpOpt extends RegExpQuantifier {
   override P::OptionalRegex node;
+
+  override string getPrimaryQLClass() { result = "RegExpOpt" }
 }
 
 class RegExpConstant extends RegExpTerm {
@@ -172,18 +188,26 @@ class RegExpConstant extends RegExpTerm {
     or
     result = node.(P::ClassChar).getChar()
   }
+
+  override string getPrimaryQLClass() { result = "RegExpConstant" }
 }
 
 class RegExpDot extends NormalRegExpTerm {
   override P::DotRegex node;
+
+  override string getPrimaryQLClass() { result = "RegExpDot" }
 }
 
 class RegExpDollar extends NormalRegExpTerm {
   override P::DollarRegex node;
+
+  override string getPrimaryQLClass() { result = "RegExpDollar" }
 }
 
 class RegExpCaret extends NormalRegExpTerm {
   override P::CaretRegex node;
+
+  override string getPrimaryQLClass() { result = "RegExpCaret" }
 }
 
 // predicate findIt()
@@ -209,6 +233,8 @@ class RegExpCharacterClass extends NormalRegExpTerm {
       cce1 != cce2 and cce1.toLowerCase() = cce2.toLowerCase()
     )
   }
+
+  override string getPrimaryQLClass() { result = "RegExpCharacterClass" }
 }
 
 private RegExpTerm classPart(P::Node node) {
@@ -263,6 +289,8 @@ class RegExpCharacterClassEscape extends NormalRegExpTerm {
   override P::EscapeClassRegex node;
 
   string getValue() { result = node.getClass() }
+
+  override string getPrimaryQLClass() { result = "RegExpCharacterClassEscape" }
 }
 
 class RegExpCharacterRange extends RegExpTerm {
@@ -283,6 +311,8 @@ class RegExpCharacterRange extends RegExpTerm {
     lo = getChild(0).(RegExpConstant).getValue() and
     hi = getChild(1).(RegExpConstant).getValue()
   }
+
+  override string getPrimaryQLClass() { result = "RegExpCharacterRange" }
 }
 
 class RegExpSequence extends NormalRegExpTerm {
@@ -295,6 +325,8 @@ class RegExpSequence extends NormalRegExpTerm {
     i = 1 and
     result = TRegExp(node.getRight())
   }
+
+  override string getPrimaryQLClass() { result = "RegExpSequence" }
 }
 
 class RegExpGroup extends NormalRegExpTerm {
@@ -304,6 +336,8 @@ class RegExpGroup extends NormalRegExpTerm {
     i = 0 and
     result = TRegExp(node.getBody())
   }
+
+  override string getPrimaryQLClass() { result = "RegExpGroup" }
 }
 
 RegExpTerm getParsedRegExp(StrConst re) { result = TRegExpLiteral(re).(RegExpLiteral).getChild(0) }
