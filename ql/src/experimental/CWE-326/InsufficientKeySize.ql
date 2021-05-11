@@ -17,9 +17,7 @@ import DataFlow::PathGraph
 class RsaKeyTrackingConfiguration extends DataFlow::Configuration {
   RsaKeyTrackingConfiguration() { this = "RsaKeyTrackingConfiguration" }
 
-  override predicate isSource(DataFlow::Node source) {
-    source.asExpr().(ValueExpr).getIntValue() < 2048
-  }
+  override predicate isSource(DataFlow::Node source) { source.getIntValue() < 2048 }
 
   override predicate isSink(DataFlow::Node sink) {
     exists(DataFlow::CallNode c |
