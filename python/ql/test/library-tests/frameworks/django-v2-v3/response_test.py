@@ -74,20 +74,20 @@ class CustomRedirectView(RedirectView):
 
 # Ensure that simple subclasses are still vuln to XSS
 def xss__not_found(request):
-    return HttpResponseNotFound(request.GET.get("name"))  # $HttpResponse mimetype=text/html responseBody=Attribute()
+    return HttpResponseNotFound(request.GET.get("name"))  # $HttpResponse mimetype=text/html responseBody=request.GET.get(..)
 
 # Ensure we still have an XSS sink when manually setting the content_type to HTML
 def xss__manual_response_type(request):
-    return HttpResponse(request.GET.get("name"), content_type="text/html; charset=utf-8")  # $HttpResponse mimetype=text/html responseBody=Attribute()
+    return HttpResponse(request.GET.get("name"), content_type="text/html; charset=utf-8")  # $HttpResponse mimetype=text/html responseBody=request.GET.get(..)
 
 def xss__write(request):
     response = HttpResponse()  # $HttpResponse mimetype=text/html
-    response.write(request.GET.get("name"))  # $HttpResponse mimetype=text/html responseBody=Attribute()
+    response.write(request.GET.get("name"))  # $HttpResponse mimetype=text/html responseBody=request.GET.get(..)
 
 # This is safe but probably a bug if the argument to `write` is not a result of `json.dumps` or similar.
 def safe__write_json(request):
     response = JsonResponse()  # $HttpResponse mimetype=application/json
-    response.write(request.GET.get("name"))  # $HttpResponse mimetype=application/json responseBody=Attribute()
+    response.write(request.GET.get("name"))  # $HttpResponse mimetype=application/json responseBody=request.GET.get(..)
 
 # Ensure manual subclasses are vulnerable
 class CustomResponse(HttpResponse):
@@ -95,7 +95,7 @@ class CustomResponse(HttpResponse):
         super().__init__(content, *args, content_type="text/html", **kwargs)
 
 def xss__custom_response(request):
-    return CustomResponse("ACME Responses", request.GET("name"))  # $HttpResponse MISSING: mimetype=text/html responseBody=Attribute() SPURIOUS: responseBody="ACME Responses"
+    return CustomResponse("ACME Responses", request.GET("name"))  # $HttpResponse MISSING: mimetype=text/html responseBody=request.GET.get(..) SPURIOUS: responseBody="ACME Responses"
 
 class CustomJsonResponse(JsonResponse):
     def __init__(self, banner, content, *args, **kwargs):
