@@ -5,7 +5,10 @@ private import RegexParserExtended
 class RegexLiteralValue extends ParsedString {
   R::Regex lit;
 
-  RegexLiteralValue() { this = lit.getText() }
+  RegexLiteralValue() {
+    this = lit.getText() and
+    exists(lit.getLocation().getFile().getRelativePath())
+  }
 
   override ParserConfiguration getConfiguration() { result instanceof RegexParserConfiguration }
 
