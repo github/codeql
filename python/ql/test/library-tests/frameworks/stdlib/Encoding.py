@@ -2,8 +2,8 @@ import pickle
 import marshal
 import base64
 
-pickle.dumps(obj)  # $ MISSING: f-:encodeInput=obj f-:encodeOutput=Attribute() f-:encodeFormat=pickle f-:encodeMayExecuteInput
-marshal.dumps(obj)  # $ MISSING: f-:encodeInput=obj f-:encodeOutput=Attribute() f-:encodeFormat=marshal f-:encodeMayExecuteInput
+pickle.dumps(obj)  # $ MISSING: encodeInput=obj encodeOutput=Attribute() encodeFormat=pickle encodeMayExecuteInput
+marshal.dumps(obj)  # $ MISSING: encodeInput=obj encodeOutput=Attribute() encodeFormat=marshal encodeMayExecuteInput
 
 # TODO: These tests should be merged with python/ql/test/experimental/dataflow/tainttracking/defaultAdditionalTaintStep/test_string.py
 base64.b64encode(bs)  # $ encodeInput=bs encodeOutput=Attribute() encodeFormat=Base64
