@@ -17,14 +17,14 @@ import CloseType
 
 predicate readerType(RefType t) {
   exists(RefType sup | sup = t.getASupertype*() |
-    sup.hasName(["Reader", "InputStream"]) or
+    sup.hasQualifiedName("java.io", ["Reader", "InputStream"]) or
     sup.hasQualifiedName("java.util.zip", "ZipFile")
   )
 }
 
 predicate safeReaderType(RefType t) {
   exists(RefType sup | sup = t.getASupertype*() |
-    sup.hasName(["CharArrayReader", "StringReader", "ByteArrayInputStream"])
+    sup.hasQualifiedName("java.io", ["CharArrayReader", "StringReader", "ByteArrayInputStream"])
   )
 }
 

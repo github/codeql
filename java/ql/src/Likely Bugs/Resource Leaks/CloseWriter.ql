@@ -16,12 +16,14 @@
 import CloseType
 
 predicate writerType(RefType t) {
-  exists(RefType sup | sup = t.getASupertype*() | sup.hasName(["Writer", "OutputStream"]))
+  exists(RefType sup | sup = t.getASupertype*() |
+    sup.hasQualifiedName("java.io", ["Writer", "OutputStream"])
+  )
 }
 
 predicate safeWriterType(RefType t) {
   exists(RefType sup | sup = t.getASupertype*() |
-    sup.hasName(["CharArrayWriter", "StringWriter", "ByteArrayOutputStream"])
+    sup.hasQualifiedName("java.io", ["CharArrayWriter", "StringWriter", "ByteArrayOutputStream"])
   )
 }
 
