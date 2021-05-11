@@ -14,35 +14,35 @@ public class OgnlInjection {
   @RequestMapping
   public void testOgnlParseExpression(@RequestParam String expr) throws Exception {
     Object tree = Ognl.parseExpression(expr);
-    Ognl.getValue(tree, new HashMap<>(), new Object());
-    Ognl.setValue(tree, new HashMap<>(), new Object());
+    Ognl.getValue(tree, new HashMap<>(), new Object()); // $hasOgnlInjection
+    Ognl.setValue(tree, new HashMap<>(), new Object()); // $hasOgnlInjection
 
     Node node = (Node) tree;
-    node.getValue(null, new Object());
-    node.setValue(null, new Object(), new Object());
+    node.getValue(null, new Object()); // $hasOgnlInjection
+    node.setValue(null, new Object(), new Object()); // $hasOgnlInjection
   }
 
   @RequestMapping
   public void testOgnlCompileExpression(@RequestParam String expr) throws Exception {
     Node tree = Ognl.compileExpression(null, new Object(), expr);
-    Ognl.getValue(tree, new HashMap<>(), new Object());
-    Ognl.setValue(tree, new HashMap<>(), new Object());
+    Ognl.getValue(tree, new HashMap<>(), new Object()); // $hasOgnlInjection
+    Ognl.setValue(tree, new HashMap<>(), new Object()); // $hasOgnlInjection
 
-    tree.getValue(null, new Object());
-    tree.setValue(null, new Object(), new Object());
+    tree.getValue(null, new Object()); // $hasOgnlInjection
+    tree.setValue(null, new Object(), new Object()); // $hasOgnlInjection
   }
 
   @RequestMapping
   public void testOgnlDirectlyToGetSet(@RequestParam String expr) throws Exception {
-    Ognl.getValue(expr, new Object());
-    Ognl.setValue(expr, new Object(), new Object());
+    Ognl.getValue(expr, new Object()); // $hasOgnlInjection
+    Ognl.setValue(expr, new Object(), new Object()); // $hasOgnlInjection
   }
 
   @RequestMapping
   public void testStruts(@RequestParam String expr) throws Exception {
     OgnlUtil ognl = new OgnlUtil();
-    ognl.getValue(expr, new HashMap<>(), new Object());
-    ognl.setValue(expr, new HashMap<>(), new Object(), new Object());
-    new OgnlUtil().callMethod(expr, new HashMap<>(), new Object());
+    ognl.getValue(expr, new HashMap<>(), new Object()); // $hasOgnlInjection
+    ognl.setValue(expr, new HashMap<>(), new Object(), new Object()); // $hasOgnlInjection
+    new OgnlUtil().callMethod(expr, new HashMap<>(), new Object()); // $hasOgnlInjection
   }
 }
