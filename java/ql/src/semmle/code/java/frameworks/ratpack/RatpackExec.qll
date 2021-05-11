@@ -15,31 +15,82 @@ private class RatpackPromiseValueMethod extends Method, TaintPreservingCallable 
   override predicate returnsTaintFrom(int arg) { arg = 0 }
 }
 
-abstract private class SimpleFluentLambdaMethod extends Method {
-  SimpleFluentLambdaMethod() { getNumberOfParameters() = 1 }
+abstract private class FluentLambdaMethod extends Method {
+  /**
+   * Holds if this lambda consumes taint from the quaifier when `lambdaArg`
+   * for `methodArg` is tainted.
+   * Eg. `tainted.map(stillTainted -> ..)`
+   */
+  abstract predicate consumesTaint(int methodArg, int lambdaArg);
+
+  /**
+   * Holds if the lambda passed at the given `arg` position produces taint
+   * that taints the result of this method.
+   * Eg. `var tainted = CompletableFuture.supplyAsync(() -> taint());`
+   */
+  predicate doesReturnTaint(int arg) { none() }
+}
+
+private class RatpackPromiseProviderethod extends Method, FluentLambdaMethod {
+  RatpackPromiseProviderethod() { isStatic() and hasName(["flatten", "sync"]) }
+
+  override predicate consumesTaint(int methodArg, int lambdaArg) { none() }
+
+  override predicate doesReturnTaint(int arg) { arg = 0 }
+}
+
+abstract private class SimpleFluentLambdaMethod extends FluentLambdaMethod {
+  override predicate consumesTaint(int methodArg, int lambdaArg) {
+    methodArg = 0 and consumesTaint(lambdaArg)
+  }
 
   /**
    * Holds if this lambda consumes taint from the quaifier when `arg` is tainted.
    * Eg. `tainted.map(stillTainted -> ..)`
    */
-  abstract predicate consumesTaint(int arg);
-
-  /**
-   * Holds if the lambda passed produces taint that taints the result of this method.
-   * Eg. `var tainted = CompletableFuture.supplyAsync(() -> taint());`
-   */
-  predicate doesReturnTaint() { none() }
+  abstract predicate consumesTaint(int lambdaArg);
 }
 
 private class RatpackPromiseMapMethod extends SimpleFluentLambdaMethod {
   RatpackPromiseMapMethod() {
     getDeclaringType() instanceof RatpackPromise and
-    hasName(["map", "flatMap"])
+    hasName(["map", "flatMap", "blockingMap"])
   }
 
-  override predicate consumesTaint(int arg) { arg = 0 }
+  override predicate consumesTaint(int lambdaArg) { lambdaArg = 0 }
 
-  override predicate doesReturnTaint() { any() }
+  override predicate doesReturnTaint(int arg) { arg = 0 }
+}
+
+/**
+ * Represents the `mapIf` and `flatMapIf` method.
+ *
+ * `<O> Promise<O> mapIf(Predicate<T> predicate, Function<T, O> onTrue, Function<T, O> onFalse)`
+ * `<O> Promise<O> flatMapIf(Predicate<T> predicate, Function<T, Promise<O>> onTrue, Function<T, Promise<O>> onFalse)`
+ */
+private class RatpackPromiseMapIfMethod extends FluentLambdaMethod {
+  RatpackPromiseMapIfMethod() {
+    getDeclaringType() instanceof RatpackPromise and
+    hasName(["mapIf", "flatMapIf"]) and
+    getNumberOfParameters() = 3
+  }
+
+  override predicate consumesTaint(int methodArg, int lambdaArg) {
+    methodArg = [1, 2, 3] and lambdaArg = 0
+  }
+
+  override predicate doesReturnTaint(int arg) { arg = [1, 2] }
+}
+
+private class RatpackPromiseMapErrorMethod extends FluentLambdaMethod {
+  RatpackPromiseMapErrorMethod() {
+    getDeclaringType() instanceof RatpackPromise and
+    hasName(["mapError", "flatMapError"])
+  }
+
+  override predicate consumesTaint(int methodArg, int lambdaArg) { none() }
+
+  override predicate doesReturnTaint(int arg) { arg = getNumberOfParameters() - 1 }
 }
 
 private class RatpackPromiseThenMethod extends SimpleFluentLambdaMethod {
@@ -48,16 +99,29 @@ private class RatpackPromiseThenMethod extends SimpleFluentLambdaMethod {
     hasName("then")
   }
 
-  override predicate consumesTaint(int arg) { arg = 0 }
+  override predicate consumesTaint(int lambdaArg) { lambdaArg = 0 }
 }
 
-private class RatpackPromiseNextMethod extends FluentMethod, SimpleFluentLambdaMethod {
-  RatpackPromiseNextMethod() {
+private class RatpackPromiseFluentMethod extends FluentMethod, FluentLambdaMethod {
+  RatpackPromiseFluentMethod() {
     getDeclaringType() instanceof RatpackPromise and
-    hasName("next")
+    not isStatic() and
+    exists(ParameterizedType t |
+      t instanceof RatpackPromise and
+      t = getDeclaringType() and
+      t = getReturnType()
+    )
   }
 
-  override predicate consumesTaint(int arg) { arg = 0 }
+  override predicate consumesTaint(int methodArg, int lambdaArg) {
+    hasName(["next"]) and methodArg = 0 and lambdaArg = 0
+    or
+    hasName(["cacheIf"]) and methodArg = 0 and lambdaArg = 0
+    or
+    hasName(["route"]) and methodArg = [0, 1] and lambdaArg = 0
+  }
+
+  override predicate doesReturnTaint(int arg) { hasName(["flatMapIf"]) and arg = 1 }
 }
 
 private class RatpackPromiseTaintPreservingStep extends AdditionalTaintStep {
@@ -70,10 +134,13 @@ private class RatpackPromiseTaintPreservingStep extends AdditionalTaintStep {
    * Holds if the method access qualifier `node1` has dataflow to the functional expression parameter `node2`.
    */
   predicate stepIntoLambda(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(MethodAccess ma, SimpleFluentLambdaMethod sflm, int arg | sflm.consumesTaint(arg) |
-      ma.getMethod() = sflm and
+    exists(MethodAccess ma, FluentLambdaMethod flm, int methodArg, int lambdaArg |
+      flm.consumesTaint(methodArg, lambdaArg)
+    |
+      ma.getMethod() = flm and
       node1.asExpr() = ma.getQualifier() and
-      ma.getArgument(0).(FunctionalExpr).asMethod().getParameter(arg) = node2.asParameter()
+      ma.getArgument(methodArg).(FunctionalExpr).asMethod().getParameter(lambdaArg) =
+        node2.asParameter()
     )
   }
 
@@ -82,13 +149,13 @@ private class RatpackPromiseTaintPreservingStep extends AdditionalTaintStep {
    * method access result `node2`.
    */
   predicate stepOutOfLambda(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(SimpleFluentLambdaMethod sflm, MethodAccess ma, FunctionalExpr fe |
-      sflm.doesReturnTaint()
+    exists(FluentLambdaMethod flm, MethodAccess ma, FunctionalExpr fe, int arg |
+      flm.doesReturnTaint(arg)
     |
       fe.asMethod().getBody().getAStmt().(ReturnStmt).getResult() = node1.asExpr() and
-      ma.getMethod() = sflm and
+      ma.getMethod() = flm and
       node2.asExpr() = ma and
-      ma.getArgument(0) = fe
+      ma.getArgument(arg) = fe
     )
   }
 }

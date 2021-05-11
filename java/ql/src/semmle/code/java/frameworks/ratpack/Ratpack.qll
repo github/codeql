@@ -29,8 +29,8 @@ private class RatpackHttpSource extends SourceModelCsv {
     row =
       ["ratpack.handling;", "ratpack.core.handling;"] + "Context;true;parse;" +
         [
-          "(java.lang.Class);", "(com.google.common.reflect.TypeToken);", "(java.lang.Class,O);",
-          "(com.google.common.reflect.TypeToken,O);", "(ratpack.core.parse.Parse);",
+          "(java.lang.Class);", "(com.google.common.reflect.TypeToken);", "(java.lang.Class,java.lang.Object);",
+          "(com.google.common.reflect.TypeToken,java.lang.Object);", "(ratpack.core.parse.Parse);",
           "(ratpack.parse.Parse);"
         ] + ";ReturnValue;remote"
   }

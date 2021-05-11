@@ -17,7 +17,9 @@
 package ratpack.exec;
 
 import ratpack.func.Action;
+import ratpack.func.Factory;
 import ratpack.func.Function;
+import ratpack.func.Predicate;
 
 /**
  * A promise for a single value.
@@ -43,6 +45,15 @@ import ratpack.func.Function;
  */
 @SuppressWarnings("JavadocReference")
 public interface Promise<T> {
+
+  static <T> Promise<T> sync(Factory<T> factory) {
+    return null;
+  }
+
+  static <T> Promise<T> flatten(Factory<? extends Promise<T>> factory) {
+    return null;
+  }
+
   static <T> Promise<T> value(T t) {
     return null;
   }
@@ -54,4 +65,52 @@ public interface Promise<T> {
   void then(Action<? super T> then);
 
   Promise<T> next(Action<? super T> action);
+
+  default <E extends Throwable> Promise<T> onError(Class<E> errorType, Action<? super E> errorHandler) {
+    return null;
+  }
+
+  default Promise<T> onError(Action<? super Throwable> errorHandler) {
+    return null;
+  }
+
+  default Promise<T> mapError(Function<? super Throwable, ? extends T> transformer) {
+    return null;
+  }
+
+  default <E extends Throwable> Promise<T> mapError(Class<E> type, Function<? super E, ? extends T> function) {
+    return null;
+  }
+
+  default Promise<T> mapError(Predicate<? super Throwable> predicate, Function<? super Throwable, ? extends T> function) {
+    return null;
+  }
+
+  default Promise<T> flatMapError(Function<? super Throwable, ? extends Promise<T>> function) {
+    return null;
+  }
+
+  default <E extends Throwable> Promise<T> flatMapError(Class<E> type, Function<? super E, ? extends Promise<T>> function) {
+    return null;
+  }
+
+  default Promise<T> flatMapError(Predicate<? super Throwable> predicate, Function<? super Throwable, ? extends Promise<T>> function) {
+    return null;
+  }
+
+  default Promise<T> route(Predicate<? super T> predicate, Action<? super T> action) {
+    return null;
+  }
+
+  default Promise<T> cache() {
+    return null;
+  }
+
+  default Promise<T> cacheIf(Predicate<? super T> shouldCache) {
+    return null;
+  }
+
+  default Promise<T> fork() {
+    return null;
+  }
 }

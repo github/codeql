@@ -4,6 +4,7 @@ import ratpack.core.form.Form;
 import ratpack.core.form.UploadedFile;
 import ratpack.core.parse.Parse;
 import ratpack.exec.Promise;
+import ratpack.func.Action;
 import java.io.OutputStream;
 
 class Resource {
@@ -99,6 +100,93 @@ class Resource {
             .parse(Form.class)
             .then(form -> {
                 sink(form); //$hasTaintFlow
+            });
+        ctx
+            .parse(Form.class, "Some Object")
+            .then(form -> {
+                sink(form); //$hasTaintFlow
+            });
+    }
+
+    void test7() {
+        String tainted = taint();
+        Promise
+            .flatten(() -> Promise.value(tainted))
+            .next(value -> {
+                sink(value); //$hasTaintFlow
+            })
+            .onError(Action.noop())
+            .next(value -> {
+                sink(value); //$hasTaintFlow
+            })
+            .cache()
+            .next(value -> {
+                sink(value); //$hasTaintFlow
+            })
+            .fork()
+            .next(value -> {
+                sink(value); //$hasTaintFlow
+            })
+            .route(value -> {
+                sink(value); //$hasTaintFlow
+                return false;
+            }, value -> {
+                sink(value); //$hasTaintFlow
+            })
+            .next(value -> {
+                sink(value); //$hasTaintFlow
+            })
+            .cacheIf(value -> {
+                sink(value); //$hasTaintFlow
+                return true;
+            })
+            .next(value -> {
+                sink(value); //$hasTaintFlow
+            })
+            .onError(RuntimeException.class, Action.noop())
+            .next(value -> {
+                sink(value); //$hasTaintFlow
+            })
+            .then(value -> {
+                sink(value); //$hasTaintFlow
+            });
+    }
+
+    void test8() {
+        String tainted = taint();
+        Promise
+            .sync(() -> tainted)
+            .mapError(RuntimeException.class, exception -> {
+                sink(exception); // no taint
+                return "potato";
+            })
+            .then(value -> {
+                sink(value); //$hasTaintFlow
+            });
+        Promise
+            .value("potato")
+            .mapError(RuntimeException.class, exception -> {
+                return taint();
+            })
+            .then(value -> {
+                sink(value); //$hasTaintFlow
+            });
+        Promise
+            .value(tainted)
+            .flatMapError(RuntimeException.class, exception -> {
+                sink(exception); // no taint
+                return Promise.value("potato");
+            })
+            .then(value -> {
+                sink(value); //$hasTaintFlow
+            });
+        Promise
+            .value("potato")
+            .flatMapError(RuntimeException.class, exception -> {
+                return Promise.value(taint());
+            })
+            .then(value -> {
+                sink(value); //$hasTaintFlow
             });
     }
 }
