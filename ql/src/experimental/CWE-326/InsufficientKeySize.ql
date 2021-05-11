@@ -31,5 +31,4 @@ class RsaKeyTrackingConfiguration extends DataFlow::Configuration {
 
 from RsaKeyTrackingConfiguration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
-select sink, source, sink, "The size of RSA key '$@' should be at least 2048 bits.", sink,
-  source.getNode().toString()
+select sink, source, sink, "The size of this RSA key should be at least 2048 bits."
