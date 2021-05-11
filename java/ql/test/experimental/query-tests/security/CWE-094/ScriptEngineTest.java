@@ -1,9 +1,21 @@
+import javax.script.AbstractScriptEngine;
+import javax.script.Compilable;
+import javax.script.CompiledScript;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptEngineFactory;
+import javax.script.ScriptException;
+
 import jdk.nashorn.api.scripting.NashornScriptEngine;
 import jdk.nashorn.api.scripting.NashornScriptEngineFactory;
-import javax.script.*;
 
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-public class ScriptEngineTest {
+public class ScriptEngineTest extends HttpServlet {
 
 	public void testWithScriptEngineReference(String input) throws ScriptException {
 		ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
@@ -47,16 +59,7 @@ public class ScriptEngineTest {
 		String program = engine.getFactory().getProgram(input);
 		Object result = engine.eval(program);
 	}
-	
-	public static void main(String[] args) throws ScriptException {
-		new ScriptEngineTest().testWithScriptEngineReference(args[0]);
-		new ScriptEngineTest().testNashornWithScriptEngineReference(args[0]);
-		new ScriptEngineTest().testNashornWithNashornScriptEngineReference(args[0]);
-		new ScriptEngineTest().testCustomScriptEngineReference(args[0]);
-		new ScriptEngineTest().testScriptEngineCompilable(args[0]);
-		new ScriptEngineTest().testScriptEngineGetProgram(args[0]);
-	}
-	
+
 	private static class MyCustomScriptEngine extends AbstractScriptEngine {
 		public Object eval(String var1) throws ScriptException { return null; }
 
@@ -81,5 +84,20 @@ public class ScriptEngineTest {
 
 		@Override
 		public String getProgram(final String... statements) { return null; }
+	}
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		try {
+			String code = request.getParameter("code");
+
+			new ScriptEngineTest().testWithScriptEngineReference(code);
+			new ScriptEngineTest().testNashornWithScriptEngineReference(code);
+			new ScriptEngineTest().testNashornWithNashornScriptEngineReference(code);
+			new ScriptEngineTest().testCustomScriptEngineReference(code);
+			new ScriptEngineTest().testScriptEngineCompilable(code);
+			new ScriptEngineTest().testScriptEngineGetProgram(code);
+		} catch (ScriptException se) {
+			throw new IOException(se.getMessage());
+		}
 	}
 }

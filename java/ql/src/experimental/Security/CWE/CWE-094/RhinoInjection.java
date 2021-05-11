@@ -1,3 +1,7 @@
+import org.mozilla.javascript.ClassShutter;
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.Scriptable;
+
 public class RhinoInjection extends HttpServlet {
 
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -20,10 +24,7 @@ public class RhinoInjection extends HttpServlet {
         Scriptable scope = ctx.initStandardObjects();
         ctx.setClassShutter(new ClassShutter() {
             public boolean visibleToScripts(String className) {
-                if(className.startsWith("com.example.")) {
-                    return true;
-                }
-                return false;
+              return className.startsWith("com.example.");
             }
         });
       }

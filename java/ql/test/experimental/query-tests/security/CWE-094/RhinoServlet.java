@@ -63,10 +63,7 @@ public class RhinoServlet extends HttpServlet {
             Scriptable scope = ctx.initStandardObjects();
             ctx.setClassShutter(new ClassShutter() {
                 public boolean visibleToScripts(String className) {
-                    if(className.startsWith("com.example.")) {
-                        return true;
-                    }
-                    return false;
+                    return className.startsWith("com.example.");
                 }
             });
 
