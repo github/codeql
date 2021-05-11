@@ -10,4 +10,6 @@
 import ruby
 import codeql_ruby.Diagnostics
 
-select count(File f | not exists(ExtractionError e | e.getLocation().getFile() = f))
+select count(File f |
+    not exists(ExtractionError e | e.getLocation().getFile() = f) and exists(f.getRelativePath())
+  )
