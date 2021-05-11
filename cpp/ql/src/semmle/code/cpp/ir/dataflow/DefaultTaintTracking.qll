@@ -196,6 +196,9 @@ private predicate nodeIsBarrierIn(DataFlow::Node node) {
     // This case goes together with the similar (but not identical) rule in
     // `getNodeForSource`.
     node = DataFlow::definitionByReferenceNodeFromArgument(source)
+    or
+    // Avoid partial-def-to-adjacent-use and adjacent-use-use flow into sources
+    node.(AddressNodeRead).getInstruction().getUnconvertedResultExpression() = source
   )
   or
   // don't use dataflow into binary instructions if both operands are unpredictable
