@@ -52,6 +52,21 @@ class TripleTest {
       sink(taintedRight2.getMiddle());
       sink(taintedRight2.getRight()); // $hasValueFlow
 
+      // Check flow via Triple.of:
+      Triple<String, String, String> taintedLeft3 = Triple.of(taint(), "clean-middle", "clean-right");
+      Triple<String, String, String> taintedMiddle3 = Triple.of("clean-left", taint(), "clean-right");
+      Triple<String, String, String> taintedRight3 = Triple.of("clean-left", "clean-middle", taint());
+
+      sink(taintedLeft3.getLeft()); // $hasValueFlow
+      sink(taintedLeft3.getMiddle());
+      sink(taintedLeft3.getRight());
+      sink(taintedMiddle3.getLeft());
+      sink(taintedMiddle3.getMiddle()); // $hasValueFlow
+      sink(taintedMiddle3.getRight());
+      sink(taintedRight3.getLeft());
+      sink(taintedRight3.getMiddle());
+      sink(taintedRight3.getRight()); // $hasValueFlow
+
       MutableTriple<String, String, String> mutableTaintedLeft = MutableTriple.of(taint(), "clean-middle", "clean-right");
       MutableTriple<String, String, String> mutableTaintedMiddle = MutableTriple.of("clean-left", taint(), "clean-right");
       MutableTriple<String, String, String> mutableTaintedRight = MutableTriple.of("clean-left", "clean-middle", taint());

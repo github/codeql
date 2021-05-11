@@ -19,6 +19,8 @@ class PairTest {
       ImmutablePair<String, String> taintedLeft2 = (ImmutablePair)taintedLeft2_;
       Pair<String, String> taintedRight2_ = ImmutablePair.right(taint());
       ImmutablePair<String, String> taintedRight2 = (ImmutablePair)taintedRight2_;
+      Pair<String, String> taintedLeft3 = Pair.of(taint(), "clean-right");
+      Pair<String, String> taintedRight3 = Pair.of("clean-left", taint());
 
       // Check flow through ImmutablePairs:
       sink(taintedLeft.getLeft()); // $hasValueFlow
@@ -45,6 +47,14 @@ class PairTest {
       sink(taintedRight2.getValue()); // $hasValueFlow
       sink(taintedRight2.left);
       sink(taintedRight2.right); // $hasValueFlow
+      sink(taintedLeft3.getLeft()); // $hasValueFlow
+      sink(taintedLeft3.getRight());
+      sink(taintedLeft3.getKey()); // $hasValueFlow
+      sink(taintedLeft3.getValue());
+      sink(taintedRight3.getLeft());
+      sink(taintedRight3.getRight()); // $hasValueFlow
+      sink(taintedRight3.getKey());
+      sink(taintedRight3.getValue()); // $hasValueFlow
 
       // Check flow also works via an alias of type Pair:
       sink(taintedLeft2_.getLeft()); // $hasValueFlow
