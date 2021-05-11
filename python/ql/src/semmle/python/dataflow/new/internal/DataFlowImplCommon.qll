@@ -35,24 +35,22 @@ predicate accessPathCostLimits(int apLimit, int tupleLimit) {
  * calls. For this reason, we cannot reuse the code from `DataFlowImpl.qll` directly.
  */
 private module LambdaFlow {
-  private predicate viableParamNonLambda(DataFlowCall call, int i, ParameterNodeExt p) {
+  private predicate viableParamNonLambda(DataFlowCall call, int i, ParamNode p) {
     p.isParameterOf(viableCallable(call), i)
   }
 
-  private predicate viableParamLambda(DataFlowCall call, int i, ParameterNodeExt p) {
+  private predicate viableParamLambda(DataFlowCall call, int i, ParamNode p) {
     p.isParameterOf(viableCallableLambda(call, _), i)
   }
 
-  private predicate viableParamArgNonLambda(
-    DataFlowCall call, ParameterNodeExt p, ArgumentNodeExt arg
-  ) {
+  private predicate viableParamArgNonLambda(DataFlowCall call, ParamNode p, ArgNode arg) {
     exists(int i |
       viableParamNonLambda(call, i, p) and
       arg.argumentOf(call, i)
     )
   }
 
-  private predicate viableParamArgLambda(DataFlowCall call, ParameterNodeExt p, ArgumentNodeExt arg) {
+  private predicate viableParamArgLambda(DataFlowCall call, ParamNode p, ArgNode arg) {
     exists(int i |
       viableParamLambda(call, i, p) and
       arg.argumentOf(call, i)
@@ -120,7 +118,7 @@ private module LambdaFlow {
     boolean toJump, DataFlowCallOption lastCall
   ) {
     revLambdaFlow0(lambdaCall, kind, node, t, toReturn, toJump, lastCall) and
-    if castNode(node) or node instanceof ArgumentNodeExt or node instanceof ReturnNode
+    if castNode(node) or node instanceof ArgNode or node instanceof ReturnNode
     then compatibleTypes(t, getNodeDataFlowType(node))
     else any()
   }
@@ -178,7 +176,7 @@ private module LambdaFlow {
     )
     or
     // flow into a callable
-    exists(ParameterNodeExt p, DataFlowCallOption lastCall0, DataFlowCall call |
+    exists(ParamNode p, DataFlowCallOption lastCall0, DataFlowCall call |
       revLambdaFlowIn(lambdaCall, kind, p, t, toJump, lastCall0) and
       (
         if lastCall0 = TDataFlowCallNone() and toJump = false
@@ -229,8 +227,8 @@ private module LambdaFlow {
 
   pragma[nomagic]
   predicate revLambdaFlowIn(
-    DataFlowCall lambdaCall, LambdaCallKind kind, ParameterNodeExt p, DataFlowType t,
-    boolean toJump, DataFlowCallOption lastCall
+    DataFlowCall lambdaCall, LambdaCallKind kind, ParamNode p, DataFlowType t, boolean toJump,
+    DataFlowCallOption lastCall
   ) {
     revLambdaFlow(lambdaCall, kind, p, t, false, toJump, lastCall)
   }
@@ -276,7 +274,7 @@ private module Cached {
   predicate outNodeExt(Node n) {
     n instanceof OutNode
     or
-    n.(PostUpdateNode).getPreUpdateNode() instanceof ArgumentNodeExt
+    n.(PostUpdateNode).getPreUpdateNode() instanceof ArgNode
   }
 
   cached
@@ -286,7 +284,7 @@ private module Cached {
   OutNodeExt getAnOutNodeExt(DataFlowCall call, ReturnKindExt k) {
     result = getAnOutNode(call, k.(ValueReturnKind).getKind())
     or
-    exists(ArgumentNodeExt arg |
+    exists(ArgNode arg |
       result.(PostUpdateNode).getPreUpdateNode() = arg and
       arg.argumentOf(call, k.(ParamUpdateReturnKind).getPosition())
     )
@@ -296,7 +294,7 @@ private module Cached {
   predicate returnNodeExt(Node n, ReturnKindExt k) {
     k = TValueReturn(n.(ReturnNode).getKind())
     or
-    exists(ParameterNodeExt p, int pos |
+    exists(ParamNode p, int pos |
       parameterValueFlowsToPreUpdate(p, n) and
       p.isParameterOf(_, pos) and
       k = TParamUpdate(pos)
@@ -309,7 +307,7 @@ private module Cached {
   cached
   predicate castingNode(Node n) {
     castNode(n) or
-    n instanceof ParameterNodeExt or
+    n instanceof ParamNode or
     n instanceof OutNodeExt or
     // For reads, `x.f`, we want to check that the tracked type after the read (which
     // is obtained by popping the head of the access path stack) is compatible with
@@ -346,7 +344,7 @@ private module Cached {
    * The instance parameter is considered to have index `-1`.
    */
   pragma[nomagic]
-  private predicate viableParam(DataFlowCall call, int i, ParameterNodeExt p) {
+  private predicate viableParam(DataFlowCall call, int i, ParamNode p) {
     p.isParameterOf(viableCallableExt(call), i)
   }
 
@@ -355,7 +353,7 @@ private module Cached {
    * dispatch into account.
    */
   cached
-  predicate viableParamArg(DataFlowCall call, ParameterNodeExt p, ArgumentNodeExt arg) {
+  predicate viableParamArg(DataFlowCall call, ParamNode p, ArgNode arg) {
     exists(int i |
       viableParam(call, i, p) and
       arg.argumentOf(call, i) and
@@ -397,7 +395,7 @@ private module Cached {
        * `read` indicates whether it is contents of `p` that can flow to `node`.
        */
       pragma[nomagic]
-      private predicate parameterValueFlowCand(ParameterNodeExt p, Node node, boolean read) {
+      private predicate parameterValueFlowCand(ParamNode p, Node node, boolean read) {
         p = node and
         read = false
         or
@@ -415,27 +413,25 @@ private module Cached {
         )
         or
         // flow through: no prior read
-        exists(ArgumentNodeExt arg |
+        exists(ArgNode arg |
           parameterValueFlowArgCand(p, arg, false) and
           argumentValueFlowsThroughCand(arg, node, read)
         )
         or
         // flow through: no read inside method
-        exists(ArgumentNodeExt arg |
+        exists(ArgNode arg |
           parameterValueFlowArgCand(p, arg, read) and
           argumentValueFlowsThroughCand(arg, node, false)
         )
       }
 
       pragma[nomagic]
-      private predicate parameterValueFlowArgCand(
-        ParameterNodeExt p, ArgumentNodeExt arg, boolean read
-      ) {
+      private predicate parameterValueFlowArgCand(ParamNode p, ArgNode arg, boolean read) {
         parameterValueFlowCand(p, arg, read)
       }
 
       pragma[nomagic]
-      predicate parameterValueFlowsToPreUpdateCand(ParameterNodeExt p, PostUpdateNode n) {
+      predicate parameterValueFlowsToPreUpdateCand(ParamNode p, PostUpdateNode n) {
         parameterValueFlowCand(p, n.getPreUpdateNode(), false)
       }
 
@@ -447,7 +443,7 @@ private module Cached {
        * `read` indicates whether it is contents of `p` that can flow to the return
        * node.
        */
-      predicate parameterValueFlowReturnCand(ParameterNodeExt p, ReturnKind kind, boolean read) {
+      predicate parameterValueFlowReturnCand(ParamNode p, ReturnKind kind, boolean read) {
         exists(ReturnNode ret |
           parameterValueFlowCand(p, ret, read) and
           kind = ret.getKind()
@@ -456,9 +452,9 @@ private module Cached {
 
       pragma[nomagic]
       private predicate argumentValueFlowsThroughCand0(
-        DataFlowCall call, ArgumentNodeExt arg, ReturnKind kind, boolean read
+        DataFlowCall call, ArgNode arg, ReturnKind kind, boolean read
       ) {
-        exists(ParameterNodeExt param | viableParamArg(call, param, arg) |
+        exists(ParamNode param | viableParamArg(call, param, arg) |
           parameterValueFlowReturnCand(param, kind, read)
         )
       }
@@ -469,14 +465,14 @@ private module Cached {
        *
        * `read` indicates whether it is contents of `arg` that can flow to `out`.
        */
-      predicate argumentValueFlowsThroughCand(ArgumentNodeExt arg, Node out, boolean read) {
+      predicate argumentValueFlowsThroughCand(ArgNode arg, Node out, boolean read) {
         exists(DataFlowCall call, ReturnKind kind |
           argumentValueFlowsThroughCand0(call, arg, kind, read) and
           out = getAnOutNode(call, kind)
         )
       }
 
-      predicate cand(ParameterNodeExt p, Node n) {
+      predicate cand(ParamNode p, Node n) {
         parameterValueFlowCand(p, n, _) and
         (
           parameterValueFlowReturnCand(p, _, _)
@@ -503,7 +499,7 @@ private module Cached {
        * If a read step was taken, then `read` captures the `Content`, the
        * container type, and the content type.
        */
-      predicate parameterValueFlow(ParameterNodeExt p, Node node, ReadStepTypesOption read) {
+      predicate parameterValueFlow(ParamNode p, Node node, ReadStepTypesOption read) {
         parameterValueFlow0(p, node, read) and
         if node instanceof CastingNode
         then
@@ -517,7 +513,7 @@ private module Cached {
       }
 
       pragma[nomagic]
-      private predicate parameterValueFlow0(ParameterNodeExt p, Node node, ReadStepTypesOption read) {
+      private predicate parameterValueFlow0(ParamNode p, Node node, ReadStepTypesOption read) {
         p = node and
         Cand::cand(p, _) and
         read = TReadStepTypesNone()
@@ -542,34 +538,32 @@ private module Cached {
 
       pragma[nomagic]
       private predicate parameterValueFlow0_0(
-        ReadStepTypesOption mustBeNone, ParameterNodeExt p, Node node, ReadStepTypesOption read
+        ReadStepTypesOption mustBeNone, ParamNode p, Node node, ReadStepTypesOption read
       ) {
         // flow through: no prior read
-        exists(ArgumentNodeExt arg |
+        exists(ArgNode arg |
           parameterValueFlowArg(p, arg, mustBeNone) and
           argumentValueFlowsThrough(arg, read, node)
         )
         or
         // flow through: no read inside method
-        exists(ArgumentNodeExt arg |
+        exists(ArgNode arg |
           parameterValueFlowArg(p, arg, read) and
           argumentValueFlowsThrough(arg, mustBeNone, node)
         )
       }
 
       pragma[nomagic]
-      private predicate parameterValueFlowArg(
-        ParameterNodeExt p, ArgumentNodeExt arg, ReadStepTypesOption read
-      ) {
+      private predicate parameterValueFlowArg(ParamNode p, ArgNode arg, ReadStepTypesOption read) {
         parameterValueFlow(p, arg, read) and
         Cand::argumentValueFlowsThroughCand(arg, _, _)
       }
 
       pragma[nomagic]
       private predicate argumentValueFlowsThrough0(
-        DataFlowCall call, ArgumentNodeExt arg, ReturnKind kind, ReadStepTypesOption read
+        DataFlowCall call, ArgNode arg, ReturnKind kind, ReadStepTypesOption read
       ) {
-        exists(ParameterNodeExt param | viableParamArg(call, param, arg) |
+        exists(ParamNode param | viableParamArg(call, param, arg) |
           parameterValueFlowReturn(param, kind, read)
         )
       }
@@ -583,7 +577,7 @@ private module Cached {
        * container type, and the content type.
        */
       pragma[nomagic]
-      predicate argumentValueFlowsThrough(ArgumentNodeExt arg, ReadStepTypesOption read, Node out) {
+      predicate argumentValueFlowsThrough(ArgNode arg, ReadStepTypesOption read, Node out) {
         exists(DataFlowCall call, ReturnKind kind |
           argumentValueFlowsThrough0(call, arg, kind, read) and
           out = getAnOutNode(call, kind)
@@ -603,7 +597,7 @@ private module Cached {
        * value-preserving steps and a single read step, not taking call
        * contexts into account, thus representing a getter-step.
        */
-      predicate getterStep(ArgumentNodeExt arg, Content c, Node out) {
+      predicate getterStep(ArgNode arg, Content c, Node out) {
         argumentValueFlowsThrough(arg, TReadStepTypesSome(_, c, _), out)
       }
 
@@ -616,7 +610,7 @@ private module Cached {
        * container type, and the content type.
        */
       private predicate parameterValueFlowReturn(
-        ParameterNodeExt p, ReturnKind kind, ReadStepTypesOption read
+        ParamNode p, ReturnKind kind, ReadStepTypesOption read
       ) {
         exists(ReturnNode ret |
           parameterValueFlow(p, ret, read) and
@@ -722,7 +716,7 @@ private module Cached {
    * Holds if `p` can flow to the pre-update node associated with post-update
    * node `n`, in the same callable, using only value-preserving steps.
    */
-  private predicate parameterValueFlowsToPreUpdate(ParameterNodeExt p, PostUpdateNode n) {
+  private predicate parameterValueFlowsToPreUpdate(ParamNode p, PostUpdateNode n) {
     parameterValueFlow(p, n.getPreUpdateNode(), TReadStepTypesNone())
   }
 
@@ -778,8 +772,8 @@ private module Cached {
         // Does the language-specific simpleLocalFlowStep already model flow
         // from function input to output?
         fromPre = getAnOutNode(c, _) and
-        toPre.(ArgumentNodeExt).argumentOf(c, _) and
-        simpleLocalFlowStep(toPre.(ArgumentNodeExt), fromPre)
+        toPre.(ArgNode).argumentOf(c, _) and
+        simpleLocalFlowStep(toPre.(ArgNode), fromPre)
       )
       or
       argumentValueFlowsThrough(toPre, TReadStepTypesNone(), fromPre)
@@ -827,7 +821,7 @@ private module Cached {
   cached
   newtype TReturnKindExt =
     TValueReturn(ReturnKind kind) or
-    TParamUpdate(int pos) { exists(ParameterNodeExt p | p.isParameterOf(_, pos)) }
+    TParamUpdate(int pos) { exists(ParamNode p | p.isParameterOf(_, pos)) }
 
   cached
   newtype TBooleanOption =
@@ -942,7 +936,7 @@ class CallContextSomeCall extends CallContextCall, TSomeCall {
   override string toString() { result = "CcSomeCall" }
 
   override predicate relevantFor(DataFlowCallable callable) {
-    exists(ParameterNodeExt p | getNodeEnclosingCallable(p) = callable)
+    exists(ParamNode p | getNodeEnclosingCallable(p) = callable)
   }
 
   override predicate matchesCall(DataFlowCall call) { any() }
@@ -1005,8 +999,8 @@ LocalCallContext getLocalCallContext(CallContext ctx, DataFlowCallable callable)
  * The value of a parameter at function entry, viewed as a node in a data
  * flow graph.
  */
-class ParameterNodeExt extends Node {
-  ParameterNodeExt() { parameterNode(this, _, _) }
+class ParamNode extends Node {
+  ParamNode() { parameterNode(this, _, _) }
 
   /**
    * Holds if this node is the parameter of callable `c` at the specified
@@ -1016,8 +1010,8 @@ class ParameterNodeExt extends Node {
 }
 
 /** A data-flow node that represents a call argument. */
-class ArgumentNodeExt extends Node {
-  ArgumentNodeExt() { argumentNode(this, _, _) }
+class ArgNode extends Node {
+  ArgNode() { argumentNode(this, _, _) }
 
   /** Holds if this argument occurs at the given position in the given call. */
   final predicate argumentOf(DataFlowCall call, int pos) { argumentNode(this, call, pos) }
