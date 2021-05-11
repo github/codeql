@@ -21,6 +21,8 @@ class PairTest {
       ImmutablePair<String, String> taintedRight2 = (ImmutablePair)taintedRight2_;
       Pair<String, String> taintedLeft3 = Pair.of(taint(), "clean-right");
       Pair<String, String> taintedRight3 = Pair.of("clean-left", taint());
+      ImmutablePair<String, String> taintedLeft4 = new ImmutablePair(taint(), "clean-right");
+      ImmutablePair<String, String> taintedRight4 = new ImmutablePair("clean-left", taint());
 
       // Check flow through ImmutablePairs:
       sink(taintedLeft.getLeft()); // $hasValueFlow
@@ -55,6 +57,18 @@ class PairTest {
       sink(taintedRight3.getRight()); // $hasValueFlow
       sink(taintedRight3.getKey());
       sink(taintedRight3.getValue()); // $hasValueFlow
+      sink(taintedLeft4.getLeft()); // $hasValueFlow
+      sink(taintedLeft4.getRight());
+      sink(taintedLeft4.getKey()); // $hasValueFlow
+      sink(taintedLeft4.getValue());
+      sink(taintedLeft4.left); // $hasValueFlow
+      sink(taintedLeft4.right);
+      sink(taintedRight4.getLeft());
+      sink(taintedRight4.getRight()); // $hasValueFlow
+      sink(taintedRight4.getKey());
+      sink(taintedRight4.getValue()); // $hasValueFlow
+      sink(taintedRight4.left);
+      sink(taintedRight4.right); // $hasValueFlow
 
       // Check flow also works via an alias of type Pair:
       sink(taintedLeft2_.getLeft()); // $hasValueFlow
@@ -75,6 +89,8 @@ class PairTest {
       setTaintRight.setRight(taint());
       MutablePair<String, String> setTaintValue = MutablePair.of("clean-left", "clean-right");
       setTaintValue.setValue(taint());
+      MutablePair<String, String> taintedLeftMutableConstructed = new MutablePair(taint(), "clean-right");
+      MutablePair<String, String> taintedRightMutableConstructed = new MutablePair("clean-left", taint());
 
       sink(taintedLeftMutable.getLeft()); // $hasValueFlow
       sink(taintedLeftMutable.getRight());
@@ -106,6 +122,18 @@ class PairTest {
       sink(setTaintValue.getValue()); // $hasValueFlow
       sink(setTaintValue.left);
       sink(setTaintValue.right); // $hasValueFlow
+      sink(taintedLeftMutableConstructed.getLeft()); // $hasValueFlow
+      sink(taintedLeftMutableConstructed.getRight());
+      sink(taintedLeftMutableConstructed.getKey()); // $hasValueFlow
+      sink(taintedLeftMutableConstructed.getValue());
+      sink(taintedLeftMutableConstructed.left); // $hasValueFlow
+      sink(taintedLeftMutableConstructed.right);
+      sink(taintedRightMutableConstructed.getLeft());
+      sink(taintedRightMutableConstructed.getRight()); // $hasValueFlow
+      sink(taintedRightMutableConstructed.getKey());
+      sink(taintedRightMutableConstructed.getValue()); // $hasValueFlow
+      sink(taintedRightMutableConstructed.left);
+      sink(taintedRightMutableConstructed.right); // $hasValueFlow
 
       // Check flow also works via an alias of type Pair:
       Pair<String, String> taintedLeftMutableAlias = taintedLeftMutable;

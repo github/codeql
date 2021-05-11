@@ -67,6 +67,21 @@ class TripleTest {
       sink(taintedRight3.getMiddle());
       sink(taintedRight3.getRight()); // $hasValueFlow
 
+      // Check flow via constructor:
+      ImmutableTriple<String, String, String> taintedLeft4 = new ImmutableTriple(taint(), "clean-middle", "clean-right");
+      ImmutableTriple<String, String, String> taintedMiddle4 = new ImmutableTriple("clean-left", taint(), "clean-right");
+      ImmutableTriple<String, String, String> taintedRight4 = new ImmutableTriple("clean-left", "clean-middle", taint());
+
+      sink(taintedLeft4.getLeft()); // $hasValueFlow
+      sink(taintedLeft4.getMiddle());
+      sink(taintedLeft4.getRight());
+      sink(taintedMiddle4.getLeft());
+      sink(taintedMiddle4.getMiddle()); // $hasValueFlow
+      sink(taintedMiddle4.getRight());
+      sink(taintedRight4.getLeft());
+      sink(taintedRight4.getMiddle());
+      sink(taintedRight4.getRight()); // $hasValueFlow
+
       MutableTriple<String, String, String> mutableTaintedLeft = MutableTriple.of(taint(), "clean-middle", "clean-right");
       MutableTriple<String, String, String> mutableTaintedMiddle = MutableTriple.of("clean-left", taint(), "clean-right");
       MutableTriple<String, String, String> mutableTaintedRight = MutableTriple.of("clean-left", "clean-middle", taint());
@@ -76,6 +91,9 @@ class TripleTest {
       setTaintedMiddle.setMiddle(taint());
       MutableTriple<String, String, String> setTaintedRight = MutableTriple.of("clean-left", "clean-middle", "clean-right");
       setTaintedRight.setRight(taint());
+      MutableTriple<String, String, String> mutableTaintedLeftConstructed = new MutableTriple(taint(), "clean-middle", "clean-right");
+      MutableTriple<String, String, String> mutableTaintedMiddleConstructed = new MutableTriple("clean-left", taint(), "clean-right");
+      MutableTriple<String, String, String> mutableTaintedRightConstructed = new MutableTriple("clean-left", "clean-middle", taint());
 
       // Check flow through MutableTriples:
       sink(mutableTaintedLeft.getLeft()); // $hasValueFlow
@@ -114,6 +132,24 @@ class TripleTest {
       sink(setTaintedRight.left);
       sink(setTaintedRight.middle);
       sink(setTaintedRight.right); // $hasValueFlow
+      sink(mutableTaintedLeftConstructed.getLeft()); // $hasValueFlow
+      sink(mutableTaintedLeftConstructed.getMiddle());
+      sink(mutableTaintedLeftConstructed.getRight());
+      sink(mutableTaintedLeftConstructed.left); // $hasValueFlow
+      sink(mutableTaintedLeftConstructed.middle);
+      sink(mutableTaintedLeftConstructed.right);
+      sink(mutableTaintedMiddleConstructed.getLeft());
+      sink(mutableTaintedMiddleConstructed.getMiddle()); // $hasValueFlow
+      sink(mutableTaintedMiddleConstructed.getRight());
+      sink(mutableTaintedMiddleConstructed.left);
+      sink(mutableTaintedMiddleConstructed.middle); // $hasValueFlow
+      sink(mutableTaintedMiddleConstructed.right);
+      sink(mutableTaintedRightConstructed.getLeft());
+      sink(mutableTaintedRightConstructed.getMiddle());
+      sink(mutableTaintedRightConstructed.getRight()); // $hasValueFlow
+      sink(mutableTaintedRightConstructed.left);
+      sink(mutableTaintedRightConstructed.middle);
+      sink(mutableTaintedRightConstructed.right); // $hasValueFlow
 
       Triple<String, String, String> mutableTaintedLeft2 = mutableTaintedLeft;
       Triple<String, String, String> mutableTaintedMiddle2 = mutableTaintedMiddle;
