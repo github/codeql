@@ -16,6 +16,7 @@ import go
 import AuthCookie
 import DataFlow::PathGraph
 
+/** Holds if `HttpOnly` of `net/http.SetCookie` is set to `false` or not set (default value is used). */
 predicate isNetHttpCookieFlow(DataFlow::PathNode source, DataFlow::PathNode sink) {
   exists(DataFlow::PathNode cookieCreate, DataFlow::PathNode setCookieSink |
     exists(NetHttpCookieTrackingConfiguration cfg | cfg.hasFlowPath(cookieCreate, setCookieSink)) and
@@ -33,10 +34,15 @@ predicate isNetHttpCookieFlow(DataFlow::PathNode source, DataFlow::PathNode sink
   )
 }
 
+/** Holds if `HttpOnly` of `gin-gonic/gin.Context.SetCookie` is set to `false` or not set (default value is used). */
 predicate isGinContextCookieFlow(DataFlow::PathNode source, DataFlow::PathNode sink) {
   any(BoolToGinSetCookieTrackingConfiguration cfg).hasFlowPath(source, sink)
 }
 
+/**
+ * Holds if there is gorilla cookie store creation to `Save` path and
+ * `HttpOnly` is set to `false` or not set (default value is used).
+ */
 predicate isGorillaSessionsCookieFlow(DataFlow::PathNode source, DataFlow::PathNode sink) {
   exists(DataFlow::PathNode cookieStoreCreate, DataFlow::PathNode sessionSave |
     any(GorillaCookieStoreSaveTrackingConfiguration cfg).hasFlowPath(cookieStoreCreate, sessionSave) and
