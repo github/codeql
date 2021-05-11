@@ -160,10 +160,10 @@ namespace Semmle.Extraction.CSharp
         /// <param name="trapFile">The trap builder used to store the result.</param>
         /// <param name="symbolBeingDefined">The outer symbol being defined (to avoid recursive ids).</param>
         /// <param name="constructUnderlyingTupleType">Whether to build a type ID for the underlying `System.ValueTuple` struct in the case of tuple types.</param>
-        public static void BuildTypeId(this ITypeSymbol type, Context cx, TextWriter trapFile, ISymbol symbolBeingDefined, bool constructUnderlyingTupleType = false) =>
+        public static void BuildTypeId(this ITypeSymbol type, Context cx, EscapingTextWriter trapFile, ISymbol symbolBeingDefined, bool constructUnderlyingTupleType = false) =>
             type.BuildTypeId(cx, trapFile, symbolBeingDefined, true, constructUnderlyingTupleType);
 
-        private static void BuildTypeId(this ITypeSymbol type, Context cx, TextWriter trapFile, ISymbol symbolBeingDefined, bool addBaseClass, bool constructUnderlyingTupleType)
+        private static void BuildTypeId(this ITypeSymbol type, Context cx, EscapingTextWriter trapFile, ISymbol symbolBeingDefined, bool addBaseClass, bool constructUnderlyingTupleType)
         {
             using (cx.StackGuard)
             {
@@ -207,7 +207,7 @@ namespace Semmle.Extraction.CSharp
             }
         }
 
-        private static void BuildOrWriteId(this ISymbol? symbol, Context cx, TextWriter trapFile, ISymbol symbolBeingDefined, bool addBaseClass, bool constructUnderlyingTupleType = false)
+        private static void BuildOrWriteId(this ISymbol? symbol, Context cx, EscapingTextWriter trapFile, ISymbol symbolBeingDefined, bool addBaseClass, bool constructUnderlyingTupleType = false)
         {
             if (symbol is null)
             {
@@ -249,7 +249,7 @@ namespace Semmle.Extraction.CSharp
         /// it will generate an appropriate ID that encodes the signature of
         /// <paramref name="symbol" />.
         /// </summary>
-        public static void BuildOrWriteId(this ISymbol? symbol, Context cx, TextWriter trapFile, ISymbol symbolBeingDefined) =>
+        public static void BuildOrWriteId(this ISymbol? symbol, Context cx, EscapingTextWriter trapFile, ISymbol symbolBeingDefined) =>
             symbol.BuildOrWriteId(cx, trapFile, symbolBeingDefined, true);
 
         /// <summary>
@@ -264,7 +264,7 @@ namespace Semmle.Extraction.CSharp
             trapFile.Write(']');
         }
 
-        private static void BuildAssembly(IAssemblySymbol asm, TextWriter trapFile, bool extraPrecise = false)
+        private static void BuildAssembly(IAssemblySymbol asm, EscapingTextWriter trapFile, bool extraPrecise = false)
         {
             var assembly = asm.Identity;
             trapFile.Write(assembly.Name);
@@ -282,22 +282,22 @@ namespace Semmle.Extraction.CSharp
             trapFile.Write("::");
         }
 
-        private static void BuildFunctionPointerTypeId(this IFunctionPointerTypeSymbol funptr, Context cx, TextWriter trapFile, ISymbol symbolBeingDefined)
+        private static void BuildFunctionPointerTypeId(this IFunctionPointerTypeSymbol funptr, Context cx, EscapingTextWriter trapFile, ISymbol symbolBeingDefined)
         {
-            BuildFunctionPointerSignature(funptr, trapFile, (s, tw) => s.BuildOrWriteId(cx, tw, symbolBeingDefined));
+            BuildFunctionPointerSignature(funptr, trapFile, s => s.BuildOrWriteId(cx, trapFile, symbolBeingDefined));
         }
 
-        private static void BuildNamedTypeId(this INamedTypeSymbol named, Context cx, TextWriter trapFile, ISymbol symbolBeingDefined, bool addBaseClass, bool constructUnderlyingTupleType)
+        private static void BuildNamedTypeId(this INamedTypeSymbol named, Context cx, EscapingTextWriter trapFile, ISymbol symbolBeingDefined, bool addBaseClass, bool constructUnderlyingTupleType)
         {
             if (!constructUnderlyingTupleType && named.IsTupleType)
             {
                 trapFile.Write('(');
                 trapFile.BuildList(",", named.TupleElements,
-                    (f, tb0) =>
+                    f =>
                     {
                         trapFile.Write((f.CorrespondingTupleField ?? f).Name);
                         trapFile.Write(":");
-                        f.Type.BuildOrWriteId(cx, tb0, symbolBeingDefined, addBaseClass);
+                        f.Type.BuildOrWriteId(cx, trapFile, symbolBeingDefined, addBaseClass);
                     }
                     );
                 trapFile.Write(")");
@@ -340,7 +340,7 @@ namespace Semmle.Extraction.CSharp
                 // a constructed type with different nullability of its members and methods,
                 // so we need to create a distinct database entity for it.
                 trapFile.BuildList(",", named.GetAnnotatedTypeArguments(),
-                    (ta, tb0) => ta.Symbol.BuildOrWriteId(cx, tb0, symbolBeingDefined, addBaseClass)
+                    ta => ta.Symbol.BuildOrWriteId(cx, trapFile, symbolBeingDefined, addBaseClass)
                     );
                 trapFile.Write('>');
             }
@@ -364,7 +364,7 @@ namespace Semmle.Extraction.CSharp
             }
         }
 
-        private static void BuildNamespace(this INamespaceSymbol ns, Context cx, TextWriter trapFile)
+        private static void BuildNamespace(this INamespaceSymbol ns, Context cx, EscapingTextWriter trapFile)
         {
             trapFile.WriteSubId(Namespace.Create(cx, ns));
             trapFile.Write('.');
@@ -377,7 +377,7 @@ namespace Semmle.Extraction.CSharp
             trapFile.Write("<>__AnonType");
             trapFile.Write(hackTypeNumber);
             trapFile.Write('<');
-            trapFile.BuildList(",", type.GetMembers().OfType<IPropertySymbol>(), (prop, tb0) => BuildDisplayName(prop.Type, cx, tb0));
+            trapFile.BuildList(",", type.GetMembers().OfType<IPropertySymbol>(), prop => BuildDisplayName(prop.Type, cx, trapFile));
             trapFile.Write('>');
         }
 
@@ -433,7 +433,7 @@ namespace Semmle.Extraction.CSharp
         }
 
         public static void BuildFunctionPointerSignature(IFunctionPointerTypeSymbol funptr, TextWriter trapFile,
-            Action<ITypeSymbol, TextWriter> buildNested)
+            Action<ITypeSymbol> buildNested)
         {
             trapFile.Write("delegate* ");
             trapFile.Write(funptr.Signature.CallingConvention.ToString().ToLowerInvariant());
@@ -447,19 +447,19 @@ namespace Semmle.Extraction.CSharp
 
             trapFile.Write('<');
             trapFile.BuildList(",", funptr.Signature.Parameters,
-                (p, trap) =>
+                p =>
                 {
-                    buildNested(p.Type, trap);
+                    buildNested(p.Type);
                     switch (p.RefKind)
                     {
                         case RefKind.Out:
-                            trap.Write(" out");
+                            trapFile.Write(" out");
                             break;
                         case RefKind.In:
-                            trap.Write(" in");
+                            trapFile.Write(" in");
                             break;
                         case RefKind.Ref:
-                            trap.Write(" ref");
+                            trapFile.Write(" ref");
                             break;
                     }
                 });
@@ -469,7 +469,7 @@ namespace Semmle.Extraction.CSharp
                 trapFile.Write(",");
             }
 
-            buildNested(funptr.Signature.ReturnType, trapFile);
+            buildNested(funptr.Signature.ReturnType);
 
             if (funptr.Signature.ReturnsByRef)
                 trapFile.Write(" ref");
@@ -481,7 +481,7 @@ namespace Semmle.Extraction.CSharp
 
         private static void BuildFunctionPointerTypeDisplayName(this IFunctionPointerTypeSymbol funptr, Context cx, TextWriter trapFile)
         {
-            BuildFunctionPointerSignature(funptr, trapFile, (s, tw) => s.BuildDisplayName(cx, tw));
+            BuildFunctionPointerSignature(funptr, trapFile, s => s.BuildDisplayName(cx, trapFile));
         }
 
         private static void BuildNamedTypeDisplayName(this INamedTypeSymbol namedType, Context cx, TextWriter trapFile, bool constructUnderlyingTupleType)
@@ -492,7 +492,7 @@ namespace Semmle.Extraction.CSharp
                 trapFile.BuildList(
                     ",",
                     namedType.TupleElements.Select(f => f.Type),
-                    (t, tb0) => t.BuildDisplayName(cx, tb0));
+                    t => t.BuildDisplayName(cx, trapFile));
                 trapFile.Write(")");
                 return;
             }
@@ -512,11 +512,11 @@ namespace Semmle.Extraction.CSharp
                 trapFile.BuildList(
                     ",",
                     namedType.TypeArguments,
-                    (p, tb0) =>
+                    p =>
                     {
                         if (IsReallyBound(namedType))
                         {
-                            p.BuildDisplayName(cx, tb0);
+                            p.BuildDisplayName(cx, trapFile);
                         }
                     });
                 trapFile.Write('>');

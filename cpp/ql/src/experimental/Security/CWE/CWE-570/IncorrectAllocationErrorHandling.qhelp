@@ -1,0 +1,31 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Different overloads of the <code>new</code> operator handle allocation failures in different ways.
+If <code>new T</code> fails for some type <code>T</code>, it throws a <code>std::bad_alloc</code> exception,
+but <code>new(std::nothrow) T</code> returns a null pointer. If the programmer does not use the corresponding
+method of error handling, allocation failure may go unhandled and could cause the program to behave in
+unexpected ways.</p>
+
+</overview>
+<recommendation>
+
+<p>Make sure that exceptions are handled appropriately if <code>new T</code> is used. On the other hand,
+make sure to handle the possibility of null pointers if <code>new(std::nothrow) T</code> is used.</p>
+
+</recommendation>
+<example>
+<sample src="IncorrectAllocationErrorHandling.cpp" />
+
+</example>
+<references>
+
+<li>
+  CERT C++ Coding Standard:
+<a href="https://wiki.sei.cmu.edu/confluence/display/cplusplus/MEM52-CPP.+Detect+and+handle+memory+allocation+errors">MEM52-CPP. Detect and handle memory allocation errors</a>.
+</li>
+
+</references>
+</qhelp>

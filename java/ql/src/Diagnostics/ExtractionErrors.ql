@@ -9,5 +9,5 @@ import java
 import DiagnosticsReporting
 
 from string msg, int sev
-where reportableDiagnostics(_, msg, sev)
+where reportableErrors(_, msg, sev)
 select msg, sev

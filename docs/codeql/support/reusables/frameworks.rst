@@ -129,9 +129,11 @@ JavaScript and TypeScript built-in support
    mssql, Database
    mysql, Database
    node, Runtime environment
+   nest.js, Server
    postgres, Database
    ramda, Utility library
    react, HTML framework
+   react native, HTML framework
    request, Network communicator
    sequelize, Database
    socket.io, Network communicator
