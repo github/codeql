@@ -44,25 +44,50 @@ class DataFlowCallable = CfgScope;
 class DataFlowCall extends CfgNodes::ExprNodes::CallCfgNode {
   DataFlowCallable getEnclosingCallable() { result = this.getScope() }
 
-  DataFlowCallable getTarget() {
-    exists(string method, DataFlow::Node nodeTo, DataFlow::LocalSourceNode sourceNode |
+  pragma[nomagic]
+  private predicate methodCall(DataFlow::LocalSourceNode sourceNode, string method) {
+    exists(DataFlow::Node nodeTo |
       method = this.getExpr().(MethodCall).getMethodName() and
       nodeTo.asExpr() = this.getReceiver() and
       sourceNode.flowsTo(nodeTo)
-    |
-      exists(Module tp |
-        sourceNode = trackInstance(tp) and
-        result = lookupMethod(tp, method)
-      )
-      or
-      sourceNode = trackSingletonMethod(result) and
-      result.(MethodBase).getName() = method
     )
-    or
+  }
+
+  pragma[nomagic]
+  private predicate superCall(Module superClass, string method) {
     this.getExpr() instanceof SuperCall and
     exists(Module tp |
       tp = this.getExpr().getEnclosingModule().getModule() and
-      result = lookupMethod(tp.getSuperClass(), this.getExpr().getEnclosingMethod().getName())
+      superClass = tp.getSuperClass() and
+      method = this.getExpr().getEnclosingMethod().getName()
+    )
+  }
+
+  pragma[nomagic]
+  private predicate instanceMethodCall(Module tp, string method) {
+    exists(DataFlow::LocalSourceNode sourceNode |
+      this.methodCall(sourceNode, method) and
+      sourceNode = trackInstance(tp)
+    )
+  }
+
+  cached
+  DataFlowCallable getTarget() {
+    exists(string method |
+      exists(Module tp |
+        this.instanceMethodCall(tp, method) and
+        result = lookupMethod(tp, method)
+      )
+      or
+      exists(DataFlow::LocalSourceNode sourceNode |
+        this.methodCall(sourceNode, method) and
+        sourceNode = trackSingletonMethod(result, method)
+      )
+    )
+    or
+    exists(Module superClass, string method |
+      this.superCall(superClass, method) and
+      result = lookupMethod(superClass, method)
     )
   }
 }
@@ -127,7 +152,8 @@ private predicate singletonMethod(MethodBase method, Expr object) {
   )
 }
 
-private DataFlow::LocalSourceNode trackSingletonMethod(MethodBase method, TypeTracker t) {
+pragma[nomagic]
+private DataFlow::LocalSourceNode trackSingletonMethod0(MethodBase method, TypeTracker t) {
   t.start() and
   exists(DataFlow::Node nodeTo | singletonMethod(method, nodeTo.asExpr().getExpr()) |
     result.flowsTo(nodeTo)
@@ -135,11 +161,13 @@ private DataFlow::LocalSourceNode trackSingletonMethod(MethodBase method, TypeTr
     exists(Module m | result = trackModule(m) and trackModule(m).flowsTo(nodeTo))
   )
   or
-  exists(TypeTracker t2 | result = trackSingletonMethod(method, t2).track(t2, t))
+  exists(TypeTracker t2 | result = trackSingletonMethod0(method, t2).track(t2, t))
 }
 
-private DataFlow::LocalSourceNode trackSingletonMethod(MethodBase m) {
-  result = trackSingletonMethod(m, TypeTracker::end())
+pragma[nomagic]
+private DataFlow::LocalSourceNode trackSingletonMethod(MethodBase m, string name) {
+  result = trackSingletonMethod0(m, TypeTracker::end()) and
+  name = m.getName()
 }
 
 private DataFlow::LocalSourceNode trackModule(Module tp, TypeTracker t) {
@@ -165,7 +193,7 @@ private DataFlow::LocalSourceNode trackModule(Module tp) {
 }
 
 /** Gets a viable run-time target for the call `call`. */
-DataFlowCallable viableCallable(DataFlowCall call) { none() }
+DataFlowCallable viableCallable(DataFlowCall call) { result = call.getTarget() }
 
 /**
  * Holds if the set of viable implementations that can be called by `call`

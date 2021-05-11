@@ -1,4 +1,5 @@
 private import codeql_ruby.AST as AST
+private import codeql_ruby.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
 private import codeql_ruby.dataflow.internal.DataFlowPublic as DataFlowPublic
 private import codeql_ruby.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 private import codeql_ruby.dataflow.internal.DataFlowDispatch as DataFlowDispatch
@@ -34,7 +35,7 @@ predicate callStep(
 /** Holds if `nodeFrom` steps to `nodeTo` by being returned from a call. */
 predicate returnStep(DataFlowPrivate::ReturnNode nodeFrom, Node nodeTo) {
   exists(DataFlowDispatch::DataFlowCall call |
-    nodeFrom.getEnclosingCallable() = call.getTarget() and
+    DataFlowImplCommon::getNodeEnclosingCallable(nodeFrom) = call.getTarget() and
     nodeTo.asExpr().getNode() = call.getNode()
   )
 }

@@ -94,6 +94,39 @@ private module Cached {
       result = resolveScopeExpr(c.getAnArgument())
     )
   }
+
+  /**
+   * Resolve constant read access (typically a scope expression) to a qualified module name.
+   * `resolveScopeExpr/1` picks the best (lowest priority number) result of
+   * `resolveScopeExpr/2` that resolves to a constant definition. If the constant
+   * definition is a Namespace then it is returned, if it's a constant assignment then
+   * the right-hand side of the assignment is resolved.
+   */
+  cached
+  TResolved resolveScopeExpr(ConstantReadAccess r) {
+    exists(string qname |
+      qname =
+        min(string qn, int p |
+          isDefinedConstant(qn) and
+          qn = resolveScopeExpr(r, p) and
+          // prevent classes/modules that contain/extend themselves
+          not exists(ConstantWriteAccess w | qn = constantDefinition0(w) |
+            r = w.getScopeExpr()
+            or
+            r = w.(ClassDeclaration).getSuperclassExpr()
+          )
+        |
+          qn order by p
+        )
+    |
+      result = TResolved(qname)
+      or
+      exists(ConstantAssignment a |
+        qname = constantDefinition0(a) and
+        result = resolveScopeExpr(a.getParent().(Assignment).getRightOperand())
+      )
+    )
+  }
 }
 
 import Cached
@@ -109,38 +142,6 @@ private predicate isToplevel(ConstantAccess n) {
 
 private predicate isDefinedConstant(string qualifiedModuleName) {
   qualifiedModuleName = [builtin(), constantDefinition0(_)]
-}
-
-/**
- * Resolve constant read access (typically a scope expression) to a qualified module name.
- * `resolveScopeExpr/1` picks the best (lowest priority number) result of
- * `resolveScopeExpr/2` that resolves to a constant definition. If the constant
- * definition is a Namespace then it is returned, if it's a constant assignment then
- * the right-hand side of the assignment is resolved.
- */
-TResolved resolveScopeExpr(ConstantReadAccess r) {
-  exists(string qname |
-    qname =
-      min(string qn, int p |
-        isDefinedConstant(qn) and
-        qn = resolveScopeExpr(r, p) and
-        // prevent classes/modules that contain/extend themselves
-        not exists(ConstantWriteAccess w | qn = constantDefinition0(w) |
-          r = w.getScopeExpr()
-          or
-          r = w.(ClassDeclaration).getSuperclassExpr()
-        )
-      |
-        qn order by p
-      )
-  |
-    result = TResolved(qname)
-    or
-    exists(ConstantAssignment a |
-      qname = constantDefinition0(a) and
-      result = resolveScopeExpr(a.getParent().(Assignment).getRightOperand())
-    )
-  )
 }
 
 private int maxDepth() { result = 1 + max(int level | exists(enclosing(_, level))) }
