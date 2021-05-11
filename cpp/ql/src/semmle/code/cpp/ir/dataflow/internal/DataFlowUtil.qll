@@ -795,10 +795,14 @@ private module IRBlockFlow {
     isSourceInstr(value, b.getAnInstruction())
   }
 
+  private predicate isSinkInstr(Instruction value, Instruction sink) {
+    sourceSinkPairCand(value, _, sink)
+  }
+
   private predicate isSink(ValuedBlock sink) {
     exists(IRBlock sinkBlock, Instruction value |
       sink = MkValuedBlock(value, sinkBlock) and
-      sourceSinkPairCand(value, _, sinkBlock.getAnInstruction())
+      isSinkInstr(value, sinkBlock.getAnInstruction())
     )
   }
 
@@ -858,7 +862,7 @@ private module IRBlockFlow {
           not exists(int mid |
             index1 < mid and
             mid < index2 and
-            isSourceInstr(block1.getInstruction(mid), value)
+            isSinkInstr(value, block1.getInstruction(mid))
           ) and
           index1 < index2
         )
