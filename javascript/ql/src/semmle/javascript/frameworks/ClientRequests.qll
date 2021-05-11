@@ -268,6 +268,11 @@ module ClientRequest {
       responseType = getResponseType() and
       promise = true and
       result = this
+      or
+      responseType = getResponseType() and
+      promise = false and
+      result =
+        getReturn().getPromisedError().getMember("response").getMember("data").getAnImmediateUse()
     }
   }
 

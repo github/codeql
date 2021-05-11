@@ -87,6 +87,7 @@ test_ClientRequest
 | tst.js:271:3:271:61 | proxy.w ... 080' }) |
 | tst.js:274:1:283:2 | httpPro ... true\\n}) |
 | tst.js:286:20:286:55 | new Web ... :8080') |
+| tst.js:296:5:299:6 | axios({ ... \\n    }) |
 test_getADataNode
 | tst.js:53:5:53:23 | axios({data: data}) | tst.js:53:18:53:21 | data |
 | tst.js:57:5:57:39 | axios.p ... data2}) | tst.js:57:19:57:23 | data1 |
@@ -227,6 +228,8 @@ test_getUrl
 | tst.js:271:3:271:61 | proxy.w ... 080' }) | tst.js:271:33:271:58 | 'http:/ ... m:8080' |
 | tst.js:274:1:283:2 | httpPro ... true\\n}) | tst.js:275:13:281:5 | {\\n      ... ,\\n    } |
 | tst.js:286:20:286:55 | new Web ... :8080') | tst.js:286:34:286:54 | 'ws://l ... t:8080' |
+| tst.js:296:5:299:6 | axios({ ... \\n    }) | tst.js:296:11:299:5 | {\\n      ... ,\\n    } |
+| tst.js:296:5:299:6 | axios({ ... \\n    }) | tst.js:298:14:298:44 | "http:/ ... -axios" |
 test_getAResponseDataNode
 | tst.js:19:5:19:23 | requestPromise(url) | tst.js:19:5:19:23 | requestPromise(url) | text | true |
 | tst.js:21:5:21:23 | superagent.get(url) | tst.js:21:5:21:23 | superagent.get(url) | stream | true |
@@ -294,3 +297,5 @@ test_getAResponseDataNode
 | tst.js:235:5:237:6 | needle. ... \\n    }) | tst.js:235:67:235:70 | resp | fetch.response | false |
 | tst.js:235:5:237:6 | needle. ... \\n    }) | tst.js:235:73:235:76 | body | json | false |
 | tst.js:286:20:286:55 | new Web ... :8080') | tst.js:291:44:291:53 | event.data | json | false |
+| tst.js:296:5:299:6 | axios({ ... \\n    }) | tst.js:296:5:299:6 | axios({ ... \\n    }) | json | true |
+| tst.js:296:5:299:6 | axios({ ... \\n    }) | tst.js:303:26:303:42 | err.response.data | json | false |
