@@ -351,20 +351,74 @@ module API {
 
     private import semmle.python.types.Builtins as Builtins
 
+    /** Returns the names of known built-ins. */
+    private string builtin_name() {
+      // Built-in functions shared between Python 2.7.6 and 3.9.5
+      result in [
+          "abs", "all", "any", "bin", "bool", "bytearray", "callable", "chr", "classmethod",
+          "compile", "complex", "delattr", "dict", "dir", "divmod", "enumerate", "eval", "filter",
+          "float", "format", "frozenset", "getattr", "globals", "hasattr", "hash", "help", "hex",
+          "id", "input", "int", "isinstance", "issubclass", "iter", "len", "list", "locals", "map",
+          "max", "memoryview", "min", "next", "object", "oct", "open", "ord", "pow", "print",
+          "property", "range", "repr", "reversed", "round", "set", "setattr", "slice", "sorted",
+          "staticmethod", "str", "sum", "super", "tuple", "type", "vars", "zip", "__import__"
+        ]
+      or
+      // Built-in constants shared between Python 2.7.6 and 3.9.5
+      result in ["False", "True", "None", "NotImplemented", "Ellipsis", "__debug__"]
+      or
+      // Python 3.9.5 only
+      major_version() = 3 and
+      result in ["ascii", "breakpoint", "bytes", "exec"]
+      or
+      // Python 2.7.6 only
+      major_version() = 2 and
+      result in [
+          "basestring", "cmp", "execfile", "file", "long", "raw_input", "reduce", "reload",
+          "unichr", "unicode", "xrange"
+        ]
+    }
+
     /**
      * Gets a data flow node that is likely to refer to a built-in with the name `name`.
      *
-     * Currently this is an over-approximation, and does not account for things like overwriting a
+     * Currently this is an over-approximation, and may not account for things like overwriting a
      * built-in with a different value.
      */
     private DataFlow::Node likely_builtin(string name) {
-      result.asCfgNode() =
-        any(NameNode n |
-          n.isGlobal() and
-          n.isLoad() and
-          name = n.getId() and
-          name in [any(Builtins::Builtin b).getName(), "None", "True", "False"]
-        )
+      exists(Module m |
+        result.asCfgNode() =
+          any(NameNode n |
+            possible_builtin_accessed_in_module(n, name, m) and
+            not possible_builtin_defined_in_module(name, m)
+          )
+      )
+    }
+
+    /**
+     * Holds if a global variable called `name` (which is also the name of a built-in) is assigned
+     * a value in the module `m`.
+     */
+    private predicate possible_builtin_defined_in_module(string name, Module m) {
+      exists(NameNode n |
+        n.isGlobal() and
+        n.isStore() and
+        name = n.getId() and
+        name = builtin_name() and
+        m = n.getEnclosingModule()
+      )
+    }
+
+    /**
+     * Holds if `n` is an access of a global variable called `name` (which is also the name of a
+     * built-in) inside the module `m`.
+     */
+    private predicate possible_builtin_accessed_in_module(NameNode n, string name, Module m) {
+      n.isGlobal() and
+      n.isLoad() and
+      name = n.getId() and
+      name = builtin_name() and
+      m = n.getEnclosingModule()
     }
 
     /**
