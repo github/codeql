@@ -27,6 +27,6 @@ void useTaintedIntWithGuard() {
 	int tainted = getTaintedInt();
 
 	if(imaxabs(tainted) <= 100) {
-		int product = tainted * tainted; // GOOD: can't underflow/overflow [FALSE POSITIVE]
+		int product = tainted * tainted; // GOOD: can't underflow/overflow
 	}
 }
