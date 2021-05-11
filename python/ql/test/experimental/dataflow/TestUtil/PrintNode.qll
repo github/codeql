@@ -1,7 +1,7 @@
 import python
 import semmle.python.dataflow.new.DataFlow
 
-string prettyExp(Expr e) {
+string prettyExpr(Expr e) {
   not e instanceof Num and
   not e instanceof StrConst and
   not e instanceof Subscript and
@@ -15,17 +15,17 @@ string prettyExp(Expr e) {
     e.(StrConst).getPrefix() + e.(StrConst).getText() +
       e.(StrConst).getPrefix().regexpReplaceAll("[a-zA-Z]+", "")
   or
-  result = prettyExp(e.(Subscript).getObject()) + "[" + prettyExp(e.(Subscript).getIndex()) + "]"
+  result = prettyExpr(e.(Subscript).getObject()) + "[" + prettyExpr(e.(Subscript).getIndex()) + "]"
   or
   (
     if exists(e.(Call).getAnArg()) or exists(e.(Call).getANamedArg())
-    then result = prettyExp(e.(Call).getFunc()) + "(..)"
-    else result = prettyExp(e.(Call).getFunc()) + "()"
+    then result = prettyExpr(e.(Call).getFunc()) + "(..)"
+    else result = prettyExpr(e.(Call).getFunc()) + "()"
   )
   or
-  result = prettyExp(e.(Attribute).getObject()) + "." + e.(Attribute).getName()
+  result = prettyExpr(e.(Attribute).getObject()) + "." + e.(Attribute).getName()
 }
 
 string prettyNode(DataFlow::Node node) {
-  if exists(node.asExpr()) then result = prettyExp(node.asExpr()) else result = node.toString()
+  if exists(node.asExpr()) then result = prettyExpr(node.asExpr()) else result = node.toString()
 }
