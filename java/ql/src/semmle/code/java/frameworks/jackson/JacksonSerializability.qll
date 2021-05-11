@@ -72,18 +72,6 @@ private class ExplicitlyWrittenJacksonSerializableType extends JacksonSerializab
   }
 }
 
-/** A type whose values are explicitly deserialized in a call to a Jackson method. */
-private class ExplicitlyReadJacksonSerializableType extends JacksonDeserializableType {
-  ExplicitlyReadJacksonSerializableType() {
-    exists(MethodAccess ma |
-      // A call to a Jackson read method...
-      ma.getMethod() instanceof JacksonReadValueMethod and
-      // ...where `this` is used in the final argument, indicating that this type will be deserialized.
-      usesType(ma.getArgument(ma.getNumArgument() - 1).getType(), this)
-    )
-  }
-}
-
 /** A type used in a `JacksonSerializableField` declaration. */
 private class FieldReferencedJacksonSerializableType extends JacksonSerializableType {
   FieldReferencedJacksonSerializableType() {
@@ -122,6 +110,13 @@ private class ExplicitlyReadJacksonDeserializableType extends JacksonDeserializa
   ExplicitlyReadJacksonDeserializableType() {
     exists(TypeLiteralToJacksonDatabindFlowConfiguration conf |
       usesType(conf.getSourceWithFlowToJacksonDatabind().getTypeName().getType(), this)
+    )
+    or
+    exists(MethodAccess ma |
+      // A call to a Jackson read method...
+      ma.getMethod() instanceof JacksonReadValueMethod and
+      // ...where `this` is used in the final argument, indicating that this type will be deserialized.
+      usesType(ma.getArgument(ma.getNumArgument() - 1).getType(), this)
     )
   }
 }
