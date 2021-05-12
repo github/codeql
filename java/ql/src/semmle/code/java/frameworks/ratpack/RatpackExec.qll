@@ -54,7 +54,7 @@ abstract private class SimpleFluentLambdaMethod extends FluentLambdaMethod {
 private class RatpackPromiseMapMethod extends SimpleFluentLambdaMethod {
   RatpackPromiseMapMethod() {
     getDeclaringType() instanceof RatpackPromise and
-    hasName(["map", "flatMap", "blockingMap"])
+    hasName(["map", "flatMap", "blockingMap", "apply"])
   }
 
   override predicate consumesTaint(int lambdaArg) { lambdaArg = 0 }

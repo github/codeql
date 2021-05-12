@@ -113,4 +113,8 @@ public interface Promise<T> {
   default Promise<T> fork() {
     return null;
   }
+
+  default <O> Promise<O> apply(Function<? super Promise<T>, ? extends Promise<O>> function) {
+    return null;
+  }
 }

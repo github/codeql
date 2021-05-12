@@ -189,4 +189,24 @@ class Resource {
                 sink(value); //$hasTaintFlow
             });
     }
+
+    void test9() {
+        String tainted = taint();
+        Promise
+            .value(tainted)
+            .apply(Resource::identity)
+            .then(value -> {
+                sink(value); //$hasTaintFlow
+            });
+        Promise
+            .value("potato")
+            .apply(Resource::identity)
+            .then(value -> {
+                sink(value); // no taints flow
+            });
+    }
+
+    public static Promise<String> identity(Promise<String> input) {
+        return input.map(i -> i);
+    }
 }
