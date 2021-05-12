@@ -67,6 +67,8 @@ class Node extends TNode {
   }
 }
 
+private class TExprNode_ = TExprNode or TCilExprNode;
+
 /**
  * An expression, viewed as a node in a data flow graph.
  *
@@ -74,9 +76,7 @@ class Node extends TNode {
  * to multiple `ExprNode`s, just like it may correspond to multiple
  * `ControlFlow::Node`s.
  */
-class ExprNode extends Node {
-  ExprNode() { this = TExprNode(_) or this = TCilExprNode(_) }
-
+class ExprNode extends Node, TExprNode_ {
   /** Gets the expression corresponding to this node. */
   DotNet::Expr getExpr() {
     result = this.getExprAtNode(_)
@@ -99,7 +99,7 @@ class ExprNode extends Node {
  * flow graph.
  */
 class ParameterNode extends Node {
-  ParameterNode() { parameterNode(this, _, _) }
+  ParameterNode() { this instanceof ParameterNodeImpl }
 
   /** Gets the parameter corresponding to this node, if any. */
   DotNet::Parameter getParameter() {
@@ -110,7 +110,9 @@ class ParameterNode extends Node {
    * Holds if this node is the parameter of callable `c` at the specified
    * (zero-based) position.
    */
-  predicate isParameterOf(DataFlowCallable c, int i) { parameterNode(this, c, i) }
+  predicate isParameterOf(DataFlowCallable c, int i) {
+    this.(ParameterNodeImpl).isParameterOf(c, i)
+  }
 }
 
 /** A definition, viewed as a node in a data flow graph. */

@@ -13,32 +13,42 @@ private import semmle.code.cpp.models.interfaces.DataFlow
 private import DataFlowPrivate
 
 cached
-private newtype TIRDataFlowNode =
-  TInstructionNode(Instruction i) or
-  TOperandNode(Operand op) or
-  TVariableNode(Variable var) or
-  TAddressNodeStore(Instruction i) { inStoreChain(i, _) } or
-  TAddressNodeRead(Instruction i) {
-    exists(Instruction read | usedForRead(read) |
-      addressFlowInstrRTC(i, read)
+private module Cached {
+  cached
+  newtype TIRDataFlowNode =
+    TInstructionNode(Instruction i) or
+    TOperandNode(Operand op) or
+    TVariableNode(Variable var) or
+    TAddressNodeStore(Instruction i) { inStoreChain(i, _) } or
+    TAddressNodeRead(Instruction i) {
+      exists(Instruction read | usedForRead(read) |
+        addressFlowInstrRTC(i, read)
+        or
+        addressFlowInstrRTC(read, i)
+      ) and
+      // We can't filter out addresses that flow to `WriteSideEffects` since the instruction that
+      // represents the address of a `WriteSideEffect` is also used for the `ReadSideEffect`.
+      // But at least we can filter out the instructions that are only used for stores.
+      not inStoreChain(i, any(StoreInstruction store))
+    }
+
+  private predicate inStoreChain(Instruction i, Instruction store) {
+    exists(Instruction storeStepSource | usedForStore(storeStepSource) |
+      addressFlowInstrWithLoads(i, storeStepSource) and
+      addressFlowInstrWithLoads(storeStepSource, getDestinationAddress(store))
       or
-      addressFlowInstrRTC(read, i)
-    ) and
-    // We can't filter out addresses that flow to `WriteSideEffects` since the instruction that
-    // represents the address of a `WriteSideEffect` is also used for the `ReadSideEffect`.
-    // But at least we can filter out the instructions that are only used for stores.
-    not inStoreChain(i, any(StoreInstruction store))
+      addressFlowInstrWithLoads(storeStepSource, i) and
+      addressFlowInstrWithLoads(i, getDestinationAddress(store))
+    )
   }
 
-predicate inStoreChain(Instruction i, Instruction store) {
-  exists(Instruction storeStepSource | usedForStore(storeStepSource) |
-    addressFlowInstrWithLoads(i, storeStepSource) and
-    addressFlowInstrWithLoads(storeStepSource, getDestinationAddress(store))
-    or
-    addressFlowInstrWithLoads(storeStepSource, i) and
-    addressFlowInstrWithLoads(i, getDestinationAddress(store))
-  )
+  cached
+  predicate localFlowStepCached(Node nodeFrom, Node nodeTo) {
+    simpleLocalFlowStep(nodeFrom, nodeTo)
+  }
 }
+
+private import Cached
 
 /**
  * A node in a data flow graph.
@@ -604,7 +614,7 @@ Node uninitializedNode(LocalVariable v) { none() }
  * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
  * (intra-procedural) step.
  */
-predicate localFlowStep(Node nodeFrom, Node nodeTo) { simpleLocalFlowStep(nodeFrom, nodeTo) }
+predicate localFlowStep = localFlowStepCached/2;
 
 private predicate valueFlow(Node nodeFrom, Node nodeTo) {
   // Operand -> Instruction flow
@@ -666,7 +676,6 @@ private predicate preStoreStep(Node nodeFrom, AddressNodeStore nodeTo) {
  * This is the local flow predicate that's used as a building block in global
  * data flow. It may have less flow than the `localFlowStep` predicate.
  */
-cached
 predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   // Flow between instructions and operands
   valueFlow(nodeFrom, nodeTo)

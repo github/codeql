@@ -284,7 +284,6 @@ private class ConstantBooleanArgumentNode extends ArgumentNode, ExprNode {
 /**
  * Holds if the node `n` is unreachable when the call context is `call`.
  */
-cached
 predicate isUnreachableInCall(Node n, DataFlowCall call) {
   exists(
     ExplicitParameterNode paramNode, ConstantBooleanArgumentNode arg, SsaImplicitInit param,

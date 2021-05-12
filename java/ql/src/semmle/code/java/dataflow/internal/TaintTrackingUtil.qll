@@ -29,55 +29,69 @@ predicate localExprTaint(Expr src, Expr sink) {
   localTaint(DataFlow::exprNode(src), DataFlow::exprNode(sink))
 }
 
-/**
- * Holds if taint can flow in one local step from `src` to `sink`.
- */
-predicate localTaintStep(DataFlow::Node src, DataFlow::Node sink) {
-  DataFlow::localFlowStep(src, sink) or
-  localAdditionalTaintStep(src, sink) or
-  // Simple flow through library code is included in the exposed local
-  // step relation, even though flow is technically inter-procedural
-  FlowSummaryImpl::Private::Steps::summaryThroughStep(src, sink, false)
+cached
+private module Cached {
+  private import DataFlowImplCommon as DataFlowImplCommon
+
+  cached
+  predicate forceCachingInSameStage() { DataFlowImplCommon::forceCachingInSameStage() }
+
+  /**
+   * Holds if taint can flow in one local step from `src` to `sink`.
+   */
+  cached
+  predicate localTaintStep(DataFlow::Node src, DataFlow::Node sink) {
+    DataFlow::localFlowStep(src, sink) or
+    localAdditionalTaintStep(src, sink) or
+    // Simple flow through library code is included in the exposed local
+    // step relation, even though flow is technically inter-procedural
+    FlowSummaryImpl::Private::Steps::summaryThroughStep(src, sink, false)
+  }
+
+  /**
+   * Holds if taint can flow in one local step from `src` to `sink` excluding
+   * local data flow steps. That is, `src` and `sink` are likely to represent
+   * different objects.
+   */
+  cached
+  predicate localAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
+    localAdditionalTaintExprStep(src.asExpr(), sink.asExpr())
+    or
+    localAdditionalTaintUpdateStep(src.asExpr(),
+      sink.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr())
+    or
+    exists(Argument arg |
+      src.asExpr() = arg and
+      arg.isVararg() and
+      sink.(DataFlow::ImplicitVarargsArray).getCall() = arg.getCall()
+    )
+    or
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(src, sink, false)
+  }
+
+  /**
+   * Holds if the additional step from `src` to `sink` should be included in all
+   * global taint flow configurations.
+   */
+  cached
+  predicate defaultAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
+    localAdditionalTaintStep(src, sink) or
+    any(AdditionalTaintStep a).step(src, sink)
+  }
+
+  /**
+   * Holds if `node` should be a sanitizer in all global taint flow configurations
+   * but not in local taint.
+   */
+  cached
+  predicate defaultTaintSanitizer(DataFlow::Node node) {
+    // Ignore paths through test code.
+    node.getEnclosingCallable().getDeclaringType() instanceof NonSecurityTestClass or
+    node.asExpr() instanceof ValidatedVariableAccess
+  }
 }
 
-/**
- * Holds if taint can flow in one local step from `src` to `sink` excluding
- * local data flow steps. That is, `src` and `sink` are likely to represent
- * different objects.
- */
-predicate localAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
-  localAdditionalTaintExprStep(src.asExpr(), sink.asExpr())
-  or
-  localAdditionalTaintUpdateStep(src.asExpr(),
-    sink.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr())
-  or
-  exists(Argument arg |
-    src.asExpr() = arg and
-    arg.isVararg() and
-    sink.(DataFlow::ImplicitVarargsArray).getCall() = arg.getCall()
-  )
-  or
-  FlowSummaryImpl::Private::Steps::summaryLocalStep(src, sink, false)
-}
-
-/**
- * Holds if the additional step from `src` to `sink` should be included in all
- * global taint flow configurations.
- */
-predicate defaultAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
-  localAdditionalTaintStep(src, sink) or
-  any(AdditionalTaintStep a).step(src, sink)
-}
-
-/**
- * Holds if `node` should be a sanitizer in all global taint flow configurations
- * but not in local taint.
- */
-predicate defaultTaintSanitizer(DataFlow::Node node) {
-  // Ignore paths through test code.
-  node.getEnclosingCallable().getDeclaringType() instanceof NonSecurityTestClass or
-  node.asExpr() instanceof ValidatedVariableAccess
-}
+import Cached
 
 /**
  * Holds if taint can flow in one local step from `src` to `sink` excluding
