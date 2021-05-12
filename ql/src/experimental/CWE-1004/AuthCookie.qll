@@ -122,7 +122,7 @@ class BoolToGinSetCookieTrackingConfiguration extends DataFlow::Configuration {
       c.getArgument(6) = sink.asExpr() and
       exists(NameToGinSetCookieTrackingConfiguration cfg, DataFlow::Node nameArg |
         cfg.hasFlow(_, nameArg) and
-        c.getAnArgument() = nameArg.asExpr()
+        c.getArgument(0) = nameArg.asExpr()
       )
     )
   }
