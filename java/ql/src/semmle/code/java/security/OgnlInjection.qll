@@ -24,12 +24,16 @@ private class DefaultOgnlInjectionSinkModel extends SinkModelCsv {
       [
         "org.apache.commons.ognl;Ognl;false;getValue;;;Argument[-1..0];ognl-injection",
         "org.apache.commons.ognl;Ognl;false;setValue;;;Argument[-1..0];ognl-injection",
-        "ognl;Ognl;false;getValue;;;Argument[-1..0];ognl-injection",
-        "ognl;Ognl;false;setValue;;;Argument[-1..0];ognl-injection",
         "org.apache.commons.ognl;Node;false;getValue;;;Argument[-1..0];ognl-injection",
         "org.apache.commons.ognl;Node;false;setValue;;;Argument[-1..0];ognl-injection",
+        "org.apache.commons.ognl.enhance;ExpressionAccessor;true;get;;;Argument[-1];ognl-injection",
+        "org.apache.commons.ognl.enhance;ExpressionAccessor;true;set;;;Argument[-1];ognl-injection",
+        "ognl;Ognl;false;getValue;;;Argument[-1..0];ognl-injection",
+        "ognl;Ognl;false;setValue;;;Argument[-1..0];ognl-injection",
         "ognl;Node;false;getValue;;;Argument[-1..0];ognl-injection",
         "ognl;Node;false;setValue;;;Argument[-1..0];ognl-injection",
+        "ognl.enhance;ExpressionAccessor;true;get;;;Argument[-1];ognl-injection",
+        "ognl.enhance;ExpressionAccessor;true;set;;;Argument[-1];ognl-injection",
         "com.opensymphony.xwork2.ognl;OgnlUtil;false;getValue;;;Argument[-1..0];ognl-injection",
         "com.opensymphony.xwork2.ognl;OgnlUtil;false;setValue;;;Argument[-1..0];ognl-injection",
         "com.opensymphony.xwork2.ognl;OgnlUtil;false;callMethod;;;Argument[-1..0];ognl-injection"
@@ -46,6 +50,14 @@ private class TypeOgnl extends Class {
   TypeOgnl() {
     this.hasQualifiedName("org.apache.commons.ognl", "Ognl") or
     this.hasQualifiedName("ognl", "Ognl")
+  }
+}
+
+/** The class `org.apache.commons.ognl.Node` or `ognl.Node`. */
+private class TypeNode extends Interface {
+  TypeNode() {
+    this.hasQualifiedName("org.apache.commons.ognl", "Node") or
+    this.hasQualifiedName("ognl", "Node")
   }
 }
 
@@ -66,8 +78,24 @@ private predicate parseCompileExpressionStep(DataFlow::Node n1, DataFlow::Node n
   )
 }
 
+/**
+ * Holds if `n1` to `n2` is a dataflow step that converts between `Node` and `Accessor`,
+ * i.e. `Node.getAccessor()`.
+ */
+private predicate getAccessorStep(DataFlow::Node n1, DataFlow::Node n2) {
+  exists(MethodAccess ma, Method m |
+    n1.asExpr() = ma.getQualifier() and
+    n2.asExpr() = ma and
+    ma.getMethod() = m and
+    m.getDeclaringType() instanceof TypeNode
+  |
+    m.hasName("getAccessor")
+  )
+}
+
 private class DefaultOgnlInjectionAdditionalTaintStep extends OgnlInjectionAdditionalTaintStep {
   override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
-    parseCompileExpressionStep(node1, node2)
+    parseCompileExpressionStep(node1, node2) or
+    getAccessorStep(node1, node2)
   }
 }

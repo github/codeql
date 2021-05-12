@@ -1,5 +1,6 @@
 import ognl.Node;
 import ognl.Ognl;
+import ognl.enhance.ExpressionAccessor;
 
 import java.util.HashMap;
 
@@ -44,5 +45,17 @@ public class OgnlInjection {
     ognl.getValue(expr, new HashMap<>(), new Object()); // $hasOgnlInjection
     ognl.setValue(expr, new HashMap<>(), new Object(), new Object()); // $hasOgnlInjection
     new OgnlUtil().callMethod(expr, new HashMap<>(), new Object()); // $hasOgnlInjection
+  }
+
+  @RequestMapping
+  public void testExpressionAccessor(@RequestParam String expr) throws Exception {
+    Node tree = Ognl.compileExpression(null, new Object(), expr);
+    ExpressionAccessor accessor = tree.getAccessor();
+    accessor.get(null, new Object()); // $hasOgnlInjection
+    accessor.set(null, new Object(), new Object()); // $hasOgnlInjection
+
+    Ognl.getValue(accessor, null, new Object()); // $hasOgnlInjection
+    Ognl.setValue(accessor, null, new Object()); // $hasOgnlInjection
+
   }
 }
