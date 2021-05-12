@@ -53,7 +53,10 @@ private class JacksonWriteValueMethod extends Method, TaintPreservingCallable {
 
 private class JacksonReadValueMethod extends Method, TaintPreservingCallable {
   JacksonReadValueMethod() {
-    getDeclaringType().hasQualifiedName("com.fasterxml.jackson.databind", "ObjectReader") and
+    (
+      getDeclaringType().hasQualifiedName("com.fasterxml.jackson.databind", "ObjectReader") or
+      getDeclaringType().hasQualifiedName("com.fasterxml.jackson.databind", "ObjectMapper")
+    ) and
     hasName(["readValue", "readValues"])
   }
 
