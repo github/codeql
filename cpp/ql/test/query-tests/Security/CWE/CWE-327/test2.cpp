@@ -30,7 +30,7 @@ void encrypt_good(char *data, size_t amount, keytype key, int algo)
 {
 	switch (algo)
 	{
-	case ALGO_DES: // [FALSE POSITIVE]
+	case ALGO_DES:
 		abort();
 
 	case ALGO_AES:
@@ -189,7 +189,7 @@ void do_unseen_encrypts(char *data, size_t amount, keytype key)
 	encryption_with3(data, amount, key, "AES"); // GOOD
 	encryption_with3(data, amount, key, "AES-256"); // GOOD
 
-	if (get_algorithm1() == ALGO_DES) // GOOD [FALSE POSITIVE]
+	if (get_algorithm1() == ALGO_DES) // GOOD
 	{
 		throw "DES is not a good choice of encryption algorithm!";
 	}

@@ -45,7 +45,10 @@ class InsecureMacroSpec extends InsecureCryptoSpec, MacroInvocation {
     // the macro name suggests it relates to an insecure crypto algorithm.
     this.getMacro() = getAnInsecureMacro() and
     // the macro invocation generates something.
-    exists(this.getAGeneratedElement())
+    exists(this.getAGeneratedElement().(ControlFlowNode)) and
+    // exclude expressions controlling ifs/switches (as they may not be used).
+    not any(IfStmt c).getCondition().getAChild*() = this.getAGeneratedElement() and
+    not any(SwitchCase c).getExpr().getAChild*() = this.getAGeneratedElement()
   }
 
   override string description() { result = "macro invocation" }
