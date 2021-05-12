@@ -47,6 +47,10 @@ second dict-like argument.
 In the fifth case, there is example of PEP249 interface usage.
 </p>
 
+<p>
+In the sixth case, there is custom Class usge which is a subclass of default Client.
+</p>
+
 <sample src="ClickHouseSQLInjection.py" />
 </example>
 

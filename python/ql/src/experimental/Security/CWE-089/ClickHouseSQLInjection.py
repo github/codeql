@@ -3,6 +3,10 @@ from clickhouse_driver import Client
 from clickhouse_driver import connect
 from aioch import Client as aiochClient
 
+class MyClient(Client):
+    def dummy(self):
+        return None
+
 def show_user(request, username):
 
     # BAD -- async library 'aioch'
@@ -24,5 +28,8 @@ def show_user(request, username):
     conn = connect('clickhouse://localhost')
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM users WHERE username = '%s'" % username)
+
+    # BAD -- MyClient is a subclass of Client
+    MyClient('localhost').execute("SELECT * FROM users WHERE username = '%s'" % username)
 
 urlpatterns = [url(r'^users/(?P<username>[^/]+)$', show_user)]

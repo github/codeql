@@ -36,9 +36,9 @@ module ClickHouseDriver {
   module Client {
     /** Gets a reference to a Client call. */
     private DataFlow::Node client_ref() {
-      result = clickhouse_driver().getMember("Client").getAUse()
+      result = clickhouse_driver().getMember("Client").getASubclass*().getAUse()
       or
-      result = aioch().getMember("Client").getAUse()
+      result = aioch().getMember("Client").getASubclass*().getAUse()
     }
 
     /** A direct instantiation of `clickhouse_driver.Client`. */
