@@ -34,11 +34,6 @@ predicate isNetHttpCookieFlow(DataFlow::PathNode source, DataFlow::PathNode sink
   )
 }
 
-/** Holds if `HttpOnly` of `gin-gonic/gin.Context.SetCookie` is set to `false` or not set (default value is used). */
-predicate isGinContextCookieFlow(DataFlow::PathNode source, DataFlow::PathNode sink) {
-  any(BoolToGinSetCookieTrackingConfiguration cfg).hasFlowPath(source, sink)
-}
-
 /**
  * Holds if there is gorilla cookie store creation to `Save` path and
  * `HttpOnly` is set to `false` or not set (default value is used).
@@ -84,6 +79,6 @@ predicate isGorillaSessionsCookieFlow(DataFlow::PathNode source, DataFlow::PathN
 from DataFlow::PathNode source, DataFlow::PathNode sink
 where
   isNetHttpCookieFlow(source, sink) or
-  isGinContextCookieFlow(source, sink) or
+  any(BoolToGinSetCookieTrackingConfiguration cfg).hasFlowPath(source, sink) or
   isGorillaSessionsCookieFlow(source, sink)
 select sink.getNode(), source, sink, "Cookie attribute 'HttpOnly' is not set to true."
