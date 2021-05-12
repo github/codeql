@@ -529,7 +529,7 @@ function_pointer_return_type(
     int return_type_id: @type_or_ref ref);
 
 extend(
-  int sub: @type ref,
+  unique int sub: @type ref,
   int super: @type_or_ref ref);
 
 anonymous_types(
