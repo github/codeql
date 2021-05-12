@@ -48,7 +48,9 @@ class InsecureMacroSpec extends InsecureCryptoSpec, MacroInvocation {
     exists(this.getAGeneratedElement().(ControlFlowNode)) and
     // exclude expressions controlling ifs/switches (as they may not be used).
     not any(IfStmt c).getCondition().getAChild*() = this.getAGeneratedElement() and
-    not any(SwitchCase c).getExpr().getAChild*() = this.getAGeneratedElement()
+    not any(SwitchCase c).getExpr().getAChild*() = this.getAGeneratedElement() and
+    // exclude expressions in array initializers (as they may not be used).
+    not any(AggregateLiteral i).getAChild*() = this.getAGeneratedElement() 
   }
 
   override string description() { result = "macro invocation" }

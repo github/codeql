@@ -22,7 +22,7 @@ typedef void (*implementation_fn_ptr)(char *data, size_t amount, keytype key);
 #define ALGO_AES (2)
 
 int all_algos[] = {
-	ALGO_DES, // [FALSE POSITIVE]
+	ALGO_DES,
 	ALGO_AES
 };
 
