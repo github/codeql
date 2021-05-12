@@ -21,6 +21,39 @@ class UnsafeDeserializationConfig extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof UnsafeDeserializationSink }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node prod, DataFlow::Node succ) {
+    exists(ClassInstanceExpr cie |
+      cie.getConstructor().getDeclaringType() instanceof JsonReader and
+      cie.getArgument(0) = prod.asExpr() and
+      cie = succ.asExpr() and
+      not exists(SafeJsonIo sji | sji.hasFlowToExpr(cie.getArgument(1)))
+    )
+    or
+    exists(ClassInstanceExpr cie |
+      cie.getConstructor().getDeclaringType() instanceof YamlReader and
+      cie.getArgument(0) = prod.asExpr() and
+      cie = succ.asExpr()
+    )
+    or
+    exists(ClassInstanceExpr cie |
+      cie.getConstructor().getDeclaringType() instanceof UnSafeHessianInput and
+      cie.getArgument(0) = prod.asExpr() and
+      cie = succ.asExpr()
+    )
+    or
+    exists(ClassInstanceExpr cie |
+      cie.getConstructor().getDeclaringType() instanceof BurlapInput and
+      cie.getArgument(0) = prod.asExpr() and
+      cie = succ.asExpr()
+    )
+    or
+    exists(MethodAccess ma |
+      ma.getMethod() instanceof BurlapInputInitMethod and
+      ma.getArgument(0) = prod.asExpr() and
+      ma.getQualifier() = succ.asExpr()
+    )
+  }
 }
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, UnsafeDeserializationConfig conf
