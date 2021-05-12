@@ -49,6 +49,10 @@ module LocalFlow {
    * SSA definition `def.
    */
   predicate localSsaFlowStep(Ssa::Definition def, Node nodeFrom, Node nodeTo) {
+    // Flow from parameter into SSA definition
+    nodeFrom.(ParameterNode).getParameter().(SimpleParameter).getVariable() = def.getSourceVariable() and
+    nodeTo.(SsaDefinitionNode).getDefinition() = def
+    or
     // Flow from assignment into SSA definition
     exists(CfgNodes::ExprNodes::AssignmentCfgNode a, BasicBlock bb, int i |
       def.definesAt(_, bb, i) and
