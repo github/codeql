@@ -271,8 +271,7 @@ module ClientRequest {
       or
       responseType = getResponseType() and
       promise = false and
-      result =
-        getReturn().getPromisedError().getMember("response").getMember("data").getAnImmediateUse()
+      result = getReturn().getPromisedError().getMember("response").getAnImmediateUse()
     }
   }
 

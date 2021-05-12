@@ -298,4 +298,6 @@ test_getAResponseDataNode
 | tst.js:235:5:237:6 | needle. ... \\n    }) | tst.js:235:73:235:76 | body | json | false |
 | tst.js:286:20:286:55 | new Web ... :8080') | tst.js:291:44:291:53 | event.data | json | false |
 | tst.js:296:5:299:6 | axios({ ... \\n    }) | tst.js:296:5:299:6 | axios({ ... \\n    }) | json | true |
-| tst.js:296:5:299:6 | axios({ ... \\n    }) | tst.js:303:26:303:42 | err.response.data | json | false |
+| tst.js:296:5:299:6 | axios({ ... \\n    }) | tst.js:302:28:302:39 | err.response | json | false |
+| tst.js:296:5:299:6 | axios({ ... \\n    }) | tst.js:303:26:303:37 | err.response | json | false |
+| tst.js:296:5:299:6 | axios({ ... \\n    }) | tst.js:304:27:304:38 | err.response | json | false |

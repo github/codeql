@@ -301,6 +301,7 @@ function moreAxios() {
         (err) => {
             const status = err.response.status;
             const data = err.response.data;
+            const agent = err.response.headers.useragent;
         }
     );
 }
