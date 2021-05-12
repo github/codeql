@@ -10,7 +10,6 @@
 | test.cpp:38:2:38:31 | ENCRYPT_WITH_DES(data,amount) | This macro invocation specifies a broken or weak cryptographic algorithm. |
 | test.cpp:39:2:39:31 | ENCRYPT_WITH_RC2(data,amount) | This macro invocation specifies a broken or weak cryptographic algorithm. |
 | test.cpp:42:2:42:38 | ENCRYPT_WITH_TRIPLE_DES(data,amount) | This macro invocation specifies a broken or weak cryptographic algorithm. |
-| test.cpp:44:2:44:39 | ENCRYPT_WITH_DES_REMOVED(data,amount) | This macro invocation specifies a broken or weak cryptographic algorithm. |
 | test.cpp:51:2:51:32 | DES_DO_ENCRYPTION(data,amount) | This macro invocation specifies a broken or weak cryptographic algorithm. |
 | test.cpp:52:2:52:31 | RUN_DES_ENCODING(data,amount) | This macro invocation specifies a broken or weak cryptographic algorithm. |
 | test.cpp:53:2:53:25 | DES_ENCODE(data,amount) | This macro invocation specifies a broken or weak cryptographic algorithm. |

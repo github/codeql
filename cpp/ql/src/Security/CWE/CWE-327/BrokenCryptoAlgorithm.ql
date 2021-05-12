@@ -23,7 +23,10 @@ Function getAnInsecureFunction() {
 }
 
 class InsecureFunctionCall extends InsecureCryptoSpec, FunctionCall {
-  InsecureFunctionCall() { this.getTarget() = getAnInsecureFunction() }
+  InsecureFunctionCall() {
+    // the function name suggests it relates to an insecure crypto algorithm.
+    this.getTarget() = getAnInsecureFunction()
+  }
 
   override string description() { result = "function call" }
 
@@ -38,7 +41,12 @@ Macro getAnInsecureMacro() {
 }
 
 class InsecureMacroSpec extends InsecureCryptoSpec, MacroInvocation {
-  InsecureMacroSpec() { this.getMacro() = getAnInsecureMacro() }
+  InsecureMacroSpec() {
+    // the macro name suggests it relates to an insecure crypto algorithm.
+    this.getMacro() = getAnInsecureMacro() and
+    // the macro invocation generates something.
+    exists(this.getAGeneratedElement())
+  }
 
   override string description() { result = "macro invocation" }
 

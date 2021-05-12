@@ -41,7 +41,7 @@ void test_macros(void *data, size_t amount, const char *str)
 	ENCRYPT_WITH_3DES(data, amount); // GOOD (good enough algorithm)
 	ENCRYPT_WITH_TRIPLE_DES(data, amount); // GOOD (good enough algorithm) [FALSE POSITIVE]
 	ENCRYPT_WITH_RC20(data, amount); // GOOD (if there ever is an RC20 algorithm, we have no reason to believe it's weak)
-	ENCRYPT_WITH_DES_REMOVED(data, amount); // GOOD (implementation has been deleted) [FALSE POSITIVE]
+	ENCRYPT_WITH_DES_REMOVED(data, amount); // GOOD (implementation has been deleted)
 
 	DESENCRYPT(data, amount); // BAD [NOT DETECTED]
 	RC2ENCRYPT(data, amount); // BAD [NOT DETECTED]
