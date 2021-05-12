@@ -45,6 +45,7 @@ predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
  * local data flow steps. That is, `nodeFrom` and `nodeTo` are likely to represent
  * different objects.
  */
+cached
 predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   // Taint can flow through expressions that alter the value but preserve
   // more than one bit of it _or_ expressions that follow data through
