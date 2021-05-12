@@ -372,7 +372,9 @@ module API {
           "RuntimeWarning", "StandardError", "StopIteration", "SyntaxError", "SyntaxWarning",
           "SystemError", "SystemExit", "TabError", "TypeError", "UnboundLocalError",
           "UnicodeDecodeError", "UnicodeEncodeError", "UnicodeError", "UnicodeTranslateError",
-          "UnicodeWarning", "UserWarning", "ValueError", "Warning", "ZeroDivisionError"
+          "UnicodeWarning", "UserWarning", "ValueError", "Warning", "ZeroDivisionError",
+          // Added for compatibility
+          "exec"
         ]
       or
       // Built-in constants shared between Python 2 and 3
