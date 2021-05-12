@@ -703,12 +703,10 @@ class ArrayCreationNode extends DataFlow::ValueNode, DataFlow::SourceNode {
  * ```
  */
 class ModuleImportNode extends DataFlow::SourceNode {
-  ModuleImportNode::Range range;
-
-  ModuleImportNode() { this = range }
+  ModuleImportNode() { this instanceof ModuleImportNode::Range }
 
   /** Gets the path of the imported module. */
-  string getPath() { result = range.getPath() }
+  string getPath() { result = this.(ModuleImportNode::Range).getPath() }
 }
 
 module ModuleImportNode {
@@ -845,24 +843,22 @@ module MemberKind {
  * Additional patterns can be recognized as class nodes, by extending `DataFlow::ClassNode::Range`.
  */
 class ClassNode extends DataFlow::SourceNode {
-  ClassNode::Range impl;
-
-  ClassNode() { this = impl }
+  ClassNode() { this instanceof ClassNode::Range }
 
   /**
    * Gets the unqualified name of the class, if it has one or one can be determined from the context.
    */
-  string getName() { result = impl.getName() }
+  string getName() { result = this.(ClassNode::Range).getName() }
 
   /**
    * Gets a description of the class.
    */
-  string describe() { result = impl.describe() }
+  string describe() { result = this.(ClassNode::Range).describe() }
 
   /**
    * Gets the constructor function of this class.
    */
-  FunctionNode getConstructor() { result = impl.getConstructor() }
+  FunctionNode getConstructor() { result = this.(ClassNode::Range).getConstructor() }
 
   /**
    * Gets an instance method declared in this class, with the given name, if any.
@@ -870,7 +866,7 @@ class ClassNode extends DataFlow::SourceNode {
    * Does not include methods from superclasses.
    */
   FunctionNode getInstanceMethod(string name) {
-    result = impl.getInstanceMember(name, MemberKind::method())
+    result = this.(ClassNode::Range).getInstanceMember(name, MemberKind::method())
   }
 
   /**
@@ -880,7 +876,9 @@ class ClassNode extends DataFlow::SourceNode {
    *
    * Does not include methods from superclasses.
    */
-  FunctionNode getAnInstanceMethod() { result = impl.getAnInstanceMember(MemberKind::method()) }
+  FunctionNode getAnInstanceMethod() {
+    result = this.(ClassNode::Range).getAnInstanceMember(MemberKind::method())
+  }
 
   /**
    * Gets the instance method, getter, or setter with the given name and kind.
@@ -888,7 +886,7 @@ class ClassNode extends DataFlow::SourceNode {
    * Does not include members from superclasses.
    */
   FunctionNode getInstanceMember(string name, MemberKind kind) {
-    result = impl.getInstanceMember(name, kind)
+    result = this.(ClassNode::Range).getInstanceMember(name, kind)
   }
 
   /**
@@ -896,31 +894,35 @@ class ClassNode extends DataFlow::SourceNode {
    *
    * Does not include members from superclasses.
    */
-  FunctionNode getAnInstanceMember(MemberKind kind) { result = impl.getAnInstanceMember(kind) }
+  FunctionNode getAnInstanceMember(MemberKind kind) {
+    result = this.(ClassNode::Range).getAnInstanceMember(kind)
+  }
 
   /**
    * Gets an instance method, getter, or setter declared in this class.
    *
    * Does not include members from superclasses.
    */
-  FunctionNode getAnInstanceMember() { result = impl.getAnInstanceMember(_) }
+  FunctionNode getAnInstanceMember() { result = this.(ClassNode::Range).getAnInstanceMember(_) }
 
   /**
    * Gets the static method declared in this class with the given name.
    */
-  FunctionNode getStaticMethod(string name) { result = impl.getStaticMethod(name) }
+  FunctionNode getStaticMethod(string name) {
+    result = this.(ClassNode::Range).getStaticMethod(name)
+  }
 
   /**
    * Gets a static method declared in this class.
    *
    * The constructor is not considered a static method.
    */
-  FunctionNode getAStaticMethod() { result = impl.getAStaticMethod() }
+  FunctionNode getAStaticMethod() { result = this.(ClassNode::Range).getAStaticMethod() }
 
   /**
    * Gets a dataflow node that refers to the superclass of this class.
    */
-  DataFlow::Node getASuperClassNode() { result = impl.getASuperClassNode() }
+  DataFlow::Node getASuperClassNode() { result = this.(ClassNode::Range).getASuperClassNode() }
 
   /**
    * Gets a direct super class of this class.
@@ -1066,13 +1068,13 @@ class ClassNode extends DataFlow::SourceNode {
    * Gets the type annotation for the field `fieldName`, if any.
    */
   TypeAnnotation getFieldTypeAnnotation(string fieldName) {
-    result = impl.getFieldTypeAnnotation(fieldName)
+    result = this.(ClassNode::Range).getFieldTypeAnnotation(fieldName)
   }
 
   /**
    * Gets a decorator applied to this class.
    */
-  DataFlow::Node getADecorator() { result = impl.getADecorator() }
+  DataFlow::Node getADecorator() { result = this.(ClassNode::Range).getADecorator() }
 }
 
 module ClassNode {
@@ -1359,9 +1361,7 @@ module ClassNode {
  * ```
  */
 class PartialInvokeNode extends DataFlow::Node {
-  PartialInvokeNode::Range range;
-
-  PartialInvokeNode() { this = range }
+  PartialInvokeNode() { this instanceof PartialInvokeNode::Range }
 
   /** Gets a node holding a callback invoked by this partial invocation node. */
   DataFlow::Node getACallbackNode() {
@@ -1374,26 +1374,26 @@ class PartialInvokeNode extends DataFlow::Node {
    * Holds if `argument` is passed as argument `index` to the function in `callback`.
    */
   predicate isPartialArgument(DataFlow::Node callback, DataFlow::Node argument, int index) {
-    range.isPartialArgument(callback, argument, index)
+    this.(PartialInvokeNode::Range).isPartialArgument(callback, argument, index)
   }
 
   /**
    * Gets a node referring to a bound version of `callback` with `boundArgs` arguments bound.
    */
   DataFlow::SourceNode getBoundFunction(DataFlow::Node callback, int boundArgs) {
-    result = range.getBoundFunction(callback, boundArgs)
+    result = this.(PartialInvokeNode::Range).getBoundFunction(callback, boundArgs)
   }
 
   /**
    * Gets the node holding the receiver to be passed to the bound function, if specified.
    */
-  DataFlow::Node getBoundReceiver() { result = range.getBoundReceiver(_) }
+  DataFlow::Node getBoundReceiver() { result = this.(PartialInvokeNode::Range).getBoundReceiver(_) }
 
   /**
    * Gets the node holding the receiver to be passed to the bound function, if specified.
    */
   DataFlow::Node getBoundReceiver(DataFlow::Node callback) {
-    result = range.getBoundReceiver(callback)
+    result = this.(PartialInvokeNode::Range).getBoundReceiver(callback)
   }
 }
 

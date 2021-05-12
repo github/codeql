@@ -826,7 +826,7 @@ module NodeJSLib {
    * for example `http.request(url)`.
    */
   class NodeJSClientRequest extends ClientRequest {
-    override NodeJSClientRequest::Range self;
+    NodeJSClientRequest() { this instanceof NodeJSClientRequest::Range }
   }
 
   module NodeJSClientRequest {

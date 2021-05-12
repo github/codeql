@@ -17,15 +17,13 @@ private import javascript
  * ```
  */
 class InclusionTest extends DataFlow::Node {
-  InclusionTest::Range range;
-
-  InclusionTest() { this = range }
+  InclusionTest() { this instanceof InclusionTest::Range }
 
   /** Gets the `A` in `A.includes(B)`. */
-  DataFlow::Node getContainerNode() { result = range.getContainerNode() }
+  DataFlow::Node getContainerNode() { result = this.(InclusionTest::Range).getContainerNode() }
 
   /** Gets the `B` in `A.includes(B)`. */
-  DataFlow::Node getContainedNode() { result = range.getContainedNode() }
+  DataFlow::Node getContainedNode() { result = this.(InclusionTest::Range).getContainedNode() }
 
   /**
    * Gets the polarity of the check.
@@ -33,7 +31,7 @@ class InclusionTest extends DataFlow::Node {
    * If the polarity is `false` the check returns `true` if the container does not contain
    * the given element.
    */
-  boolean getPolarity() { result = range.getPolarity() }
+  boolean getPolarity() { result = this.(InclusionTest::Range).getPolarity() }
 }
 
 module InclusionTest {
