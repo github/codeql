@@ -50,7 +50,7 @@ module LocalFlow {
    */
   predicate localSsaFlowStep(Ssa::Definition def, Node nodeFrom, Node nodeTo) {
     // Flow from parameter into SSA definition
-    nodeFrom.(ParameterNode).getParameter().(SimpleParameter).getVariable() = def.getSourceVariable() and
+    nodeFrom.(ParameterNode).getParameter().(NamedParameter).getVariable() = def.getSourceVariable() and
     nodeTo.(SsaDefinitionNode).getDefinition() = def
     or
     // Flow from assignment into SSA definition
@@ -127,6 +127,12 @@ private module Cached {
   cached
   predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
     exists(Ssa::Definition def | LocalFlow::localSsaFlowStep(def, nodeFrom, nodeTo))
+    or
+    nodeTo.(ParameterNode).getParameter().(OptionalParameter).getDefaultValue() =
+      nodeFrom.asExpr().getExpr()
+    or
+    nodeTo.(ParameterNode).getParameter().(KeywordParameter).getDefaultValue() =
+      nodeFrom.asExpr().getExpr()
     or
     nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::AssignExprCfgNode).getRhs()
     or
