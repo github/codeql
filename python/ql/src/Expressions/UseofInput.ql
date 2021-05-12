@@ -16,6 +16,7 @@ import semmle.python.ApiGraphs
 
 from DataFlow::CallCfgNode call
 where
+  major_version() = 2 and
   call = API::builtin("input").getACall() and
   call != API::builtin("raw_input").getACall()
 select call, "The unsafe built-in function 'input' is used in Python 2."
