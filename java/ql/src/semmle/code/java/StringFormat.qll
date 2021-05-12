@@ -175,14 +175,17 @@ class FormattingCall extends Call {
     )
   }
 
-  /** Gets the `i`th argument to be formatted. */
+  /** Gets the `i`th argument to be formatted. The index `i` is one-based. */
   Expr getArgumentToBeFormatted(int i) {
-    i >= 0 and
+    i >= 1 and
     if this.hasExplicitVarargsArray()
     then
       result =
-        this.getArgument(1 + this.getFormatStringIndex()).(ArrayCreationExpr).getInit().getInit(i)
-    else result = this.getArgument(this.getFormatStringIndex() + 1 + i)
+        this.getArgument(1 + this.getFormatStringIndex())
+            .(ArrayCreationExpr)
+            .getInit()
+            .getInit(i - 1)
+    else result = this.getArgument(this.getFormatStringIndex() + i)
   }
 
   /** Holds if the varargs argument is given as an explicit array. */
@@ -441,14 +444,21 @@ private class PrintfFormatString extends FormatString {
     not result = fmtSpecRefersToSpecificIndex(_)
   }
 
+  private int getFmtSpecRank(int specOffset) {
+    rank[result](int i | this.fmtSpecIsRef(i)) = specOffset
+  }
+
   override int getAnArgUsageOffset(int argNo) {
     argNo = fmtSpecRefersToSpecificIndex(result)
     or
     fmtSpecRefersToSequentialIndex(result) and
-    argNo = count(int i | i < result and fmtSpecRefersToSequentialIndex(i))
+    result = rank[argNo](int i | fmtSpecRefersToSequentialIndex(i))
     or
     fmtSpecRefersToPrevious(result) and
-    argNo = count(int i | i < result and fmtSpecRefersToSequentialIndex(i)) - 1
+    exists(int previousOffset |
+      getFmtSpecRank(previousOffset) = getFmtSpecRank(result) - 1 and
+      previousOffset = getAnArgUsageOffset(argNo)
+    )
   }
 }
 
