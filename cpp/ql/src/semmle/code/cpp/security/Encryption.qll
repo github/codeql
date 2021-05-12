@@ -27,14 +27,15 @@ string getAnInsecureHashAlgorithmName() { result = ["SHA1", "MD5"] }
 string getInsecureAlgorithmRegex() {
   result =
     // algorithms usually appear in names surrounded by characters that are not
-    // alphabetical characters in the same case. This handles the upper and lower
-    // case cases
-    "(^|.*[^A-Z])(" + strictconcat(getAnInsecureAlgorithmName(), "|") + ")([^A-Z].*|$)" + "|" +
-      // for lowercase, we want to be careful to avoid being confused by camelCase
-      // hence we require two preceding uppercase letters to be sure of a case switch,
-      // or a preceding non-alphabetic character
-      "(^|.*[A-Z]{2}|.*[^a-zA-Z])(" + strictconcat(getAnInsecureAlgorithmName().toLowerCase(), "|") +
-      ")([^a-z].*|$)"
+    // alphabetical characters in the same case or numerical digits. This
+    // handles the upper case:
+    "(^|.*[^A-Z0-9])(" + strictconcat(getAnInsecureAlgorithmName(), "|") + ")([^A-Z0-9].*|$)" + "|" +
+      // for lowercase, we want to be careful to avoid being confused by
+      //camelCase, hence we require two preceding uppercase letters to be
+      // sure of a case switch (or a preceding non-alphabetic, non-numeric
+      // character).
+      "(^|.*[A-Z]{2}|.*[^a-zA-Z0-9])(" +
+      strictconcat(getAnInsecureAlgorithmName().toLowerCase(), "|") + ")([^a-z0-9].*|$)"
 }
 
 /**
@@ -51,14 +52,15 @@ string getASecureAlgorithmName() {
 string getSecureAlgorithmRegex() {
   result =
     // algorithms usually appear in names surrounded by characters that are not
-    // alphabetical characters in the same case. This handles the upper and lower
-    // case cases
-    "(^|.*[^A-Z])(" + strictconcat(getASecureAlgorithmName(), "|") + ")([^A-Z].*|$)" + "|" +
-      // for lowercase, we want to be careful to avoid being confused by camelCase
-      // hence we require two preceding uppercase letters to be sure of a case
-      // switch, or a preceding non-alphabetic character
-      "(^|.*[A-Z]{2}|.*[^a-zA-Z])(" + strictconcat(getASecureAlgorithmName().toLowerCase(), "|") +
-      ")([^a-z].*|$)"
+    // alphabetical characters in the same case or numerical digits. This
+    // handles the upper case:
+    "(^|.*[^A-Z0-9])(" + strictconcat(getASecureAlgorithmName(), "|") + ")([^A-Z0-9].*|$)" + "|" +
+      // for lowercase, we want to be careful to avoid being confused by
+      //camelCase, hence we require two preceding uppercase letters to be
+      // sure of a case switch (or a preceding non-alphabetic, non-numeric
+      // character).
+      "(^|.*[A-Z]{2}|.*[^a-zA-Z0-9])(" + strictconcat(getASecureAlgorithmName().toLowerCase(), "|") +
+      ")([^a-z0-9].*|$)"
 }
 
 /**

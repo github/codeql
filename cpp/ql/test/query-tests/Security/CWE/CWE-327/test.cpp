@@ -38,15 +38,15 @@ void test_macros(void *data, size_t amount, const char *str)
 	ENCRYPT_WITH_DES(data, amount); // BAD
 	ENCRYPT_WITH_RC2(data, amount); // BAD
 	ENCRYPT_WITH_AES(data, amount); // GOOD (good algorithm)
-	ENCRYPT_WITH_3DES(data, amount); // GOOD (good enough algorithm) [FALSE POSITIVE]
+	ENCRYPT_WITH_3DES(data, amount); // GOOD (good enough algorithm)
 	ENCRYPT_WITH_TRIPLE_DES(data, amount); // GOOD (good enough algorithm) [FALSE POSITIVE]
-	ENCRYPT_WITH_RC20(data, amount); // GOOD (if there ever is an RC20 algorithm, we have no reason to believe it's weak) [FALSE POSITIVE]
+	ENCRYPT_WITH_RC20(data, amount); // GOOD (if there ever is an RC20 algorithm, we have no reason to believe it's weak)
 	ENCRYPT_WITH_DES_REMOVED(data, amount); // GOOD (implementation has been deleted) [FALSE POSITIVE]
 
 	DESENCRYPT(data, amount); // BAD [NOT DETECTED]
 	RC2ENCRYPT(data, amount); // BAD [NOT DETECTED]
 	AESENCRYPT(data, amount); // GOOD (good algorithm)
-	DES3ENCRYPT(data, amount); // GOOD (good enough algorithm) [FALSE POSITIVE]
+	DES3ENCRYPT(data, amount); // GOOD (good enough algorithm)
 
 	DES_DO_ENCRYPTION(data, amount); // BAD
 	RUN_DES_ENCODING(data, amount); // BAD
@@ -88,13 +88,13 @@ void test_functions(void *data, size_t amount, const char *str)
 	encryptDES(data, amount); // BAD
 	encryptRC2(data, amount); // BAD
 	encryptAES(data, amount); // GOOD (good algorithm)
-	encrypt3DES(data, amount); // GOOD (good enough algorithm) [FALSE POSITIVE]
+	encrypt3DES(data, amount); // GOOD (good enough algorithm)
 	encryptTripleDES(data, amount); // GOOD (good enough algorithm) [FALSE POSITIVE]
 
 	DESEncrypt(data, amount); // BAD
 	RC2Encrypt(data, amount); // BAD
 	AESEncrypt(data, amount); // GOOD (good algorithm)
-	DES3Encrypt(data, amount); // GOOD (good enough algorithm) [FALSE POSITIVE]
+	DES3Encrypt(data, amount); // GOOD (good enough algorithm)
 
 	DoDESEncryption(data, amount); // BAD [NOT DETECTED]
 	encryptDes(data, amount); // BAD [NOT DETECTED]
