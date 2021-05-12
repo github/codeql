@@ -1,45 +1,86 @@
 getTarget
+| calls.rb:2:5:2:14 | call to puts | calls.rb:87:5:87:17 | puts |
 | calls.rb:5:1:5:3 | call to foo | calls.rb:1:1:3:3 | foo |
+| calls.rb:5:1:5:3 | call to foo | calls.rb:71:1:75:3 | foo |
+| calls.rb:8:5:8:14 | call to puts | calls.rb:87:5:87:17 | puts |
 | calls.rb:11:1:11:8 | call to bar | calls.rb:7:1:9:3 | bar |
 | calls.rb:13:1:13:8 | call to foo | calls.rb:1:1:3:3 | foo |
+| calls.rb:13:1:13:8 | call to foo | calls.rb:71:1:75:3 | foo |
 | calls.rb:22:5:22:15 | call to singleton_m | calls.rb:17:5:17:29 | singleton_m |
 | calls.rb:23:5:23:20 | call to singleton_m | calls.rb:17:5:17:29 | singleton_m |
 | calls.rb:27:1:27:13 | call to singleton_m | calls.rb:17:5:17:29 | singleton_m |
+| calls.rb:30:5:30:13 | call to include | calls.rb:92:5:92:20 | include |
 | calls.rb:38:9:38:18 | call to instance_m | calls.rb:16:5:16:23 | instance_m |
 | calls.rb:39:9:39:23 | call to instance_m | calls.rb:16:5:16:23 | instance_m |
+| calls.rb:46:5:46:9 | call to new | calls.rb:98:5:98:16 | new |
 | calls.rb:47:1:47:5 | call to baz | calls.rb:37:5:43:7 | baz |
 | calls.rb:49:1:49:12 | call to instance_m | calls.rb:16:5:16:23 | instance_m |
 | calls.rb:53:9:53:13 | call to super | calls.rb:37:5:43:7 | baz |
+| calls.rb:57:5:57:9 | call to new | calls.rb:98:5:98:16 | new |
 | calls.rb:58:1:58:5 | call to baz | calls.rb:52:5:54:7 | baz |
 | calls.rb:60:1:60:12 | call to instance_m | calls.rb:16:5:16:23 | instance_m |
+| calls.rb:63:5:63:16 | call to bit_length | calls.rb:78:5:78:23 | bit_length |
+| calls.rb:64:5:64:16 | call to bit_length | calls.rb:78:5:78:23 | bit_length |
+| calls.rb:72:11:72:18 | call to new | calls.rb:98:5:98:16 | new |
+| calls.rb:73:5:73:10 | ...[...] | calls.rb:102:5:102:15 | [] |
+| calls.rb:74:5:74:29 | call to call_block | calls.rb:67:1:69:3 | call_block |
+| calls.rb:74:22:74:27 | ...[...] | calls.rb:102:5:102:15 | [] |
+| calls.rb:97:5:97:18 | call to include | calls.rb:92:5:92:20 | include |
+| calls.rb:111:15:111:25 | call to length | calls.rb:107:3:107:17 | length |
+| calls.rb:112:18:112:24 | ...[...] | calls.rb:106:3:106:13 | [] |
+| calls.rb:122:1:122:30 | call to funny | calls.rb:118:1:120:3 | funny |
+| calls.rb:122:13:122:29 | call to puts | calls.rb:87:5:87:17 | puts |
+| calls.rb:124:1:124:14 | call to capitalize | calls.rb:83:5:83:23 | capitalize |
+| calls.rb:125:1:125:12 | call to bit_length | calls.rb:78:5:78:23 | bit_length |
+| calls.rb:126:1:126:5 | call to abs | calls.rb:79:5:79:16 | abs |
+| calls.rb:128:1:128:62 | call to foreach | calls.rb:109:3:115:5 | foreach |
+| calls.rb:128:32:128:61 | call to puts | calls.rb:87:5:87:17 | puts |
+| calls.rb:130:1:130:35 | call to foreach | calls.rb:109:3:115:5 | foreach |
+| calls.rb:132:1:132:40 | call to foreach | calls.rb:109:3:115:5 | foreach |
+| calls.rb:132:23:132:39 | call to puts | calls.rb:87:5:87:17 | puts |
+| calls.rb:134:1:134:37 | call to foreach | calls.rb:109:3:115:5 | foreach |
+| calls.rb:134:27:134:36 | call to puts | calls.rb:87:5:87:17 | puts |
+| calls.rb:137:5:137:17 | call to call_block | calls.rb:67:1:69:3 | call_block |
+| calls.rb:140:1:140:28 | call to indirect | calls.rb:136:1:138:3 | indirect |
+| calls.rb:159:1:159:5 | call to new | calls.rb:98:5:98:16 | new |
+| calls.rb:159:1:159:14 | call to s_method | calls.rb:144:5:146:7 | s_method |
+| calls.rb:160:1:160:5 | call to new | calls.rb:98:5:98:16 | new |
+| calls.rb:160:1:160:14 | call to s_method | calls.rb:144:5:146:7 | s_method |
+| calls.rb:161:1:161:5 | call to new | calls.rb:98:5:98:16 | new |
+| calls.rb:161:1:161:14 | call to s_method | calls.rb:144:5:146:7 | s_method |
+| hello.rb:12:5:12:24 | call to include | calls.rb:92:5:92:20 | include |
 | hello.rb:14:16:14:20 | call to hello | hello.rb:2:5:4:7 | hello |
 | hello.rb:20:16:20:20 | call to super | hello.rb:13:5:15:7 | message |
 | hello.rb:20:30:20:34 | call to world | hello.rb:5:5:7:7 | world |
+| modules.rb:12:5:12:26 | call to puts | calls.rb:87:5:87:17 | puts |
+| modules.rb:22:3:22:19 | call to puts | calls.rb:87:5:87:17 | puts |
+| modules.rb:33:3:33:25 | call to puts | calls.rb:87:5:87:17 | puts |
+| modules.rb:44:3:44:19 | call to puts | calls.rb:87:5:87:17 | puts |
+| modules.rb:55:3:55:30 | call to puts | calls.rb:87:5:87:17 | puts |
+| modules.rb:89:3:89:16 | call to include | calls.rb:92:5:92:20 | include |
+| modules.rb:90:3:90:38 | call to module_eval | calls.rb:91:5:91:24 | module_eval |
+| modules.rb:90:24:90:36 | call to prepend | calls.rb:93:5:93:20 | prepend |
+| modules.rb:96:3:96:14 | call to include | calls.rb:92:5:92:20 | include |
+| modules.rb:102:3:102:16 | call to prepend | calls.rb:93:5:93:20 | prepend |
 unresolvedCall
-| calls.rb:2:5:2:14 | call to puts |
-| calls.rb:8:5:8:14 | call to puts |
 | calls.rb:19:5:19:14 | call to instance_m |
 | calls.rb:20:5:20:19 | call to instance_m |
 | calls.rb:26:1:26:12 | call to instance_m |
-| calls.rb:30:5:30:13 | call to include |
 | calls.rb:31:5:31:14 | call to instance_m |
 | calls.rb:32:5:32:19 | call to instance_m |
 | calls.rb:34:5:34:15 | call to singleton_m |
 | calls.rb:35:5:35:20 | call to singleton_m |
 | calls.rb:41:9:41:19 | call to singleton_m |
 | calls.rb:42:9:42:24 | call to singleton_m |
-| calls.rb:46:5:46:9 | call to new |
 | calls.rb:48:1:48:13 | call to singleton_m |
-| calls.rb:57:5:57:9 | call to new |
 | calls.rb:59:1:59:13 | call to singleton_m |
-| hello.rb:12:5:12:24 | call to include |
-| modules.rb:12:5:12:26 | call to puts |
-| modules.rb:22:3:22:19 | call to puts |
-| modules.rb:33:3:33:25 | call to puts |
-| modules.rb:44:3:44:19 | call to puts |
-| modules.rb:55:3:55:30 | call to puts |
-| modules.rb:89:3:89:16 | call to include |
-| modules.rb:90:3:90:38 | call to module_eval |
-| modules.rb:90:24:90:36 | call to prepend |
-| modules.rb:96:3:96:14 | call to include |
-| modules.rb:102:3:102:16 | call to prepend |
+| calls.rb:68:5:68:11 | yield ... |
+| calls.rb:112:9:112:24 | yield ... |
+| calls.rb:119:5:119:20 | yield ... |
+| calls.rb:122:18:122:29 | call to capitalize |
+| calls.rb:128:48:128:59 | call to capitalize |
+| calls.rb:130:23:130:34 | call to bit_length |
+| calls.rb:132:28:132:39 | call to capitalize |
+| calls.rb:134:32:134:36 | call to abs |
+| calls.rb:140:16:140:27 | call to bit_length |
+| calls.rb:145:9:145:17 | call to to_s |
