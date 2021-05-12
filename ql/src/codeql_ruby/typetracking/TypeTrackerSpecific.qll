@@ -3,6 +3,7 @@ private import codeql_ruby.dataflow.internal.DataFlowImplCommon as DataFlowImplC
 private import codeql_ruby.dataflow.internal.DataFlowPublic as DataFlowPublic
 private import codeql_ruby.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 private import codeql_ruby.dataflow.internal.DataFlowDispatch as DataFlowDispatch
+private import codeql_ruby.dataflow.internal.SsaImpl as SsaImpl
 private import codeql_ruby.controlflow.CfgNodes
 
 class Node = DataFlowPublic::Node;
@@ -11,7 +12,15 @@ class LocalSourceNode = DataFlowPublic::LocalSourceNode;
 
 predicate simpleLocalFlowStep = DataFlowPrivate::simpleLocalFlowStep/2;
 
-predicate jumpStep = DataFlowPrivate::jumpStep/2;
+predicate jumpStep(Node nodeFrom, Node nodeTo) {
+  DataFlowPrivate::jumpStep(nodeFrom, nodeTo)
+  or
+  SsaImpl::captureFlowIn(nodeFrom.(DataFlowPrivate::SsaDefinitionNode).getDefinition(),
+    nodeTo.(DataFlowPrivate::SsaDefinitionNode).getDefinition())
+  or
+  SsaImpl::captureFlowOut(nodeFrom.(DataFlowPrivate::SsaDefinitionNode).getDefinition(),
+    nodeTo.(DataFlowPrivate::SsaDefinitionNode).getDefinition())
+}
 
 /**
  * Gets the name of a possible piece of content. This will usually include things like

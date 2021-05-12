@@ -176,6 +176,49 @@ private module Cached {
     )
   }
 
+  /**
+   * Holds if there is flow for a captured variable from the enclosing scope into a block.
+   * ```rb
+   * foo = 0
+   * bar {
+   *   puts foo
+   * }
+   * ```
+   */
+  cached
+  predicate captureFlowIn(Definition def, Definition entry) {
+    exists(LocalVariable v, BasicBlock bb, int i |
+      ssaDefReachesRead(v, def, bb, i) and
+      capturedCallRead(bb, i, v) and
+      exists(BasicBlock bb2, int i2 |
+        capturedEntryWrite(bb2, i2, v) and
+        entry.definesAt(v, bb2, i2)
+      )
+    )
+  }
+
+  /**
+   * Holds if there is outgoinh flow for a captured variable that is updated in a block.
+   * ```rb
+   * foo = 0
+   * bar {
+   *   foo += 10
+   * }
+   * puts foo
+   * ```
+   */
+  cached
+  predicate captureFlowOut(Definition def, Definition exit) {
+    exists(LocalVariable v, BasicBlock bb, int i |
+      ssaDefReachesRead(v, def, bb, i) and
+      capturedExitRead(bb, i, v) and
+      exists(BasicBlock bb2, int i2 |
+        capturedCallWrite(bb2, i2, v) and
+        exit.definesAt(v, bb2, i2)
+      )
+    )
+  }
+
   cached
   Definition phiHasInputFromBlock(PhiNode phi, BasicBlock bb) {
     phiHasInputFromBlock(phi, result, bb)
