@@ -231,9 +231,23 @@ module ExprNodes {
     final ExprCfgNode getRightOperand() { e.hasCfgChild(e.getRightOperand(), this, result) }
   }
 
+  private class BlockArgumentChildMapping extends ExprChildMapping, BlockArgument {
+    override predicate relevantChild(Expr e) { e = this.getValue() }
+  }
+
+  /** A control-flow node that wraps a `BlockArgument` AST expression. */
+  class BlockArgumentCfgNode extends ExprCfgNode {
+    override BlockArgumentChildMapping e;
+
+    final override BlockArgument getExpr() { result = ExprCfgNode.super.getExpr() }
+
+    /** Gets the value of this block argument. */
+    final ExprCfgNode getValue() { e.hasCfgChild(e.getValue(), this, result) }
+  }
+
   private class CallExprChildMapping extends ExprChildMapping, Call {
     override predicate relevantChild(Expr e) {
-      e = [this.getAnArgument(), this.(MethodCall).getReceiver()]
+      e = [this.getAnArgument(), this.(MethodCall).getReceiver(), this.(MethodCall).getBlock()]
     }
   }
 
@@ -248,6 +262,9 @@ module ExprNodes {
 
     /** Gets the receiver of this call. */
     final ExprCfgNode getReceiver() { e.hasCfgChild(e.(MethodCall).getReceiver(), this, result) }
+
+    /** Gets the block of this call. */
+    final ExprCfgNode getBlock() { e.hasCfgChild(e.(MethodCall).getBlock(), this, result) }
   }
 
   private class CaseExprChildMapping extends ExprChildMapping, CaseExpr {

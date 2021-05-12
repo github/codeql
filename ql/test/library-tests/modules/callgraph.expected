@@ -21,27 +21,37 @@ getTarget
 | calls.rb:60:1:60:12 | call to instance_m | calls.rb:16:5:16:23 | instance_m |
 | calls.rb:63:5:63:16 | call to bit_length | calls.rb:78:5:78:23 | bit_length |
 | calls.rb:64:5:64:16 | call to bit_length | calls.rb:78:5:78:23 | bit_length |
+| calls.rb:68:5:68:11 | yield ... | calls.rb:74:16:74:29 | { ... } |
+| calls.rb:68:5:68:11 | yield ... | calls.rb:140:10:140:28 | { ... } |
 | calls.rb:72:11:72:18 | call to new | calls.rb:98:5:98:16 | new |
 | calls.rb:73:5:73:10 | ...[...] | calls.rb:102:5:102:15 | [] |
 | calls.rb:74:5:74:29 | call to call_block | calls.rb:67:1:69:3 | call_block |
 | calls.rb:74:22:74:27 | ...[...] | calls.rb:102:5:102:15 | [] |
 | calls.rb:97:5:97:18 | call to include | calls.rb:92:5:92:20 | include |
 | calls.rb:111:15:111:25 | call to length | calls.rb:107:3:107:17 | length |
+| calls.rb:112:9:112:24 | yield ... | calls.rb:128:23:128:62 | { ... } |
+| calls.rb:112:9:112:24 | yield ... | calls.rb:130:17:130:35 | { ... } |
+| calls.rb:112:9:112:24 | yield ... | calls.rb:132:17:132:40 | { ... } |
+| calls.rb:112:9:112:24 | yield ... | calls.rb:134:18:134:37 | { ... } |
 | calls.rb:112:18:112:24 | ...[...] | calls.rb:106:3:106:13 | [] |
+| calls.rb:119:5:119:20 | yield ... | calls.rb:122:7:122:30 | { ... } |
 | calls.rb:122:1:122:30 | call to funny | calls.rb:118:1:120:3 | funny |
 | calls.rb:122:13:122:29 | call to puts | calls.rb:87:5:87:17 | puts |
+| calls.rb:122:18:122:29 | call to capitalize | calls.rb:83:5:83:23 | capitalize |
 | calls.rb:124:1:124:14 | call to capitalize | calls.rb:83:5:83:23 | capitalize |
 | calls.rb:125:1:125:12 | call to bit_length | calls.rb:78:5:78:23 | bit_length |
 | calls.rb:126:1:126:5 | call to abs | calls.rb:79:5:79:16 | abs |
 | calls.rb:128:1:128:62 | call to foreach | calls.rb:109:3:115:5 | foreach |
 | calls.rb:128:32:128:61 | call to puts | calls.rb:87:5:87:17 | puts |
 | calls.rb:130:1:130:35 | call to foreach | calls.rb:109:3:115:5 | foreach |
+| calls.rb:130:23:130:34 | call to bit_length | calls.rb:78:5:78:23 | bit_length |
 | calls.rb:132:1:132:40 | call to foreach | calls.rb:109:3:115:5 | foreach |
 | calls.rb:132:23:132:39 | call to puts | calls.rb:87:5:87:17 | puts |
 | calls.rb:134:1:134:37 | call to foreach | calls.rb:109:3:115:5 | foreach |
 | calls.rb:134:27:134:36 | call to puts | calls.rb:87:5:87:17 | puts |
 | calls.rb:137:5:137:17 | call to call_block | calls.rb:67:1:69:3 | call_block |
 | calls.rb:140:1:140:28 | call to indirect | calls.rb:136:1:138:3 | indirect |
+| calls.rb:140:16:140:27 | call to bit_length | calls.rb:78:5:78:23 | bit_length |
 | calls.rb:159:1:159:5 | call to new | calls.rb:98:5:98:16 | new |
 | calls.rb:159:1:159:14 | call to s_method | calls.rb:144:5:146:7 | s_method |
 | calls.rb:160:1:160:5 | call to new | calls.rb:98:5:98:16 | new |
@@ -74,13 +84,7 @@ unresolvedCall
 | calls.rb:42:9:42:24 | call to singleton_m |
 | calls.rb:48:1:48:13 | call to singleton_m |
 | calls.rb:59:1:59:13 | call to singleton_m |
-| calls.rb:68:5:68:11 | yield ... |
-| calls.rb:112:9:112:24 | yield ... |
-| calls.rb:119:5:119:20 | yield ... |
-| calls.rb:122:18:122:29 | call to capitalize |
 | calls.rb:128:48:128:59 | call to capitalize |
-| calls.rb:130:23:130:34 | call to bit_length |
 | calls.rb:132:28:132:39 | call to capitalize |
 | calls.rb:134:32:134:36 | call to abs |
-| calls.rb:140:16:140:27 | call to bit_length |
 | calls.rb:145:9:145:17 | call to to_s |

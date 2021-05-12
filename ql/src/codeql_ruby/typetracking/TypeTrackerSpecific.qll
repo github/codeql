@@ -31,9 +31,7 @@ predicate jumpStep(Node nodeFrom, Node nodeTo) {
 string getPossibleContentName() { result = getSetterCallAttributeName(_) }
 
 /** Holds if `nodeFrom` steps to `nodeTo` by being passed as a parameter in a call. */
-predicate callStep(
-  DataFlowPrivate::ArgumentNode nodeFrom, DataFlowPrivate::ExplicitParameterNode nodeTo
-) {
+predicate callStep(DataFlowPrivate::ArgumentNode nodeFrom, DataFlowPublic::ParameterNode nodeTo) {
   exists(DataFlowDispatch::DataFlowCall call, DataFlowDispatch::DataFlowCallable callable, int i |
     call.getTarget() = callable and
     nodeFrom.argumentOf(call, i) and

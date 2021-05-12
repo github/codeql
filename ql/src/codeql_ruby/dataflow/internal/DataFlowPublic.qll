@@ -60,18 +60,14 @@ class ExprNode extends Node, TExprNode {
  * flow graph.
  */
 class ParameterNode extends Node, TParameterNode {
-  private Parameter p;
-
-  ParameterNode() { this = TParameterNode(p) }
-
   /** Gets the parameter corresponding to this node, if any. */
-  Parameter getParameter() { result = p }
+  Parameter getParameter() { none() }
 
   /**
    * Holds if this node is the parameter of callable `c` at the specified
    * (zero-based) position.
    */
-  predicate isParameterOf(Callable c, int i) { p = c.getParameter(i) }
+  predicate isParameterOf(Callable c, int i) { none() }
 }
 
 /**

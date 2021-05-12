@@ -53,6 +53,14 @@ class DataFlowCall extends CfgNodes::ExprNodes::CallCfgNode {
     )
   }
 
+  private Block yieldCall() {
+    this.getExpr() instanceof YieldCall and
+    exists(BlockParameterNode node |
+      node = trackBlock(result) and
+      node.getMethod() = this.getExpr().getEnclosingMethod()
+    )
+  }
+
   pragma[nomagic]
   private predicate superCall(Module superClass, string method) {
     this.getExpr() instanceof SuperCall and
@@ -89,6 +97,8 @@ class DataFlowCall extends CfgNodes::ExprNodes::CallCfgNode {
       this.superCall(superClass, method) and
       result = lookupMethod(superClass, method)
     )
+    or
+    result = this.yieldCall()
   }
 }
 
@@ -161,6 +171,16 @@ private DataFlow::LocalSourceNode trackInstance(Module tp, TypeTracker t) {
 
 private DataFlow::LocalSourceNode trackInstance(Module tp) {
   result = trackInstance(tp, TypeTracker::end())
+}
+
+private DataFlow::LocalSourceNode trackBlock(Block block, TypeTracker t) {
+  t.start() and result.asExpr().getExpr() = block
+  or
+  exists(TypeTracker t2 | result = trackBlock(block, t2).track(t2, t))
+}
+
+private DataFlow::LocalSourceNode trackBlock(Block block) {
+  result = trackBlock(block, TypeTracker::end())
 }
 
 private predicate singletonMethod(MethodBase method, Expr object) {
