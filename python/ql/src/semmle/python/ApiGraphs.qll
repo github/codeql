@@ -353,7 +353,7 @@ module API {
 
     /** Returns the names of known built-ins. */
     private string builtin_name() {
-      // Built-in functions shared between Python 2.7.6 and 3.9.5
+      // Built-in functions and exceptions shared between Python 2 and 3
       result in [
           "abs", "all", "any", "bin", "bool", "bytearray", "callable", "chr", "classmethod",
           "compile", "complex", "delattr", "dict", "dir", "divmod", "enumerate", "eval", "filter",
@@ -361,17 +361,36 @@ module API {
           "id", "input", "int", "isinstance", "issubclass", "iter", "len", "list", "locals", "map",
           "max", "memoryview", "min", "next", "object", "oct", "open", "ord", "pow", "print",
           "property", "range", "repr", "reversed", "round", "set", "setattr", "slice", "sorted",
-          "staticmethod", "str", "sum", "super", "tuple", "type", "vars", "zip", "__import__"
+          "staticmethod", "str", "sum", "super", "tuple", "type", "vars", "zip", "__import__",
+          // Exceptions
+          "ArithmeticError", "AssertionError", "AttributeError", "BaseException", "BufferError",
+          "BytesWarning", "DeprecationWarning", "EOFError", "EnvironmentError", "Exception",
+          "FloatingPointError", "FutureWarning", "GeneratorExit", "IOError", "ImportError",
+          "ImportWarning", "IndentationError", "IndexError", "KeyError", "KeyboardInterrupt",
+          "LookupError", "MemoryError", "NameError", "NotImplemented", "NotImplementedError",
+          "OSError", "OverflowError", "PendingDeprecationWarning", "ReferenceError", "RuntimeError",
+          "RuntimeWarning", "StandardError", "StopIteration", "SyntaxError", "SyntaxWarning",
+          "SystemError", "SystemExit", "TabError", "TypeError", "UnboundLocalError",
+          "UnicodeDecodeError", "UnicodeEncodeError", "UnicodeError", "UnicodeTranslateError",
+          "UnicodeWarning", "UserWarning", "ValueError", "Warning", "ZeroDivisionError"
         ]
       or
-      // Built-in constants shared between Python 2.7.6 and 3.9.5
+      // Built-in constants shared between Python 2 and 3
       result in ["False", "True", "None", "NotImplemented", "Ellipsis", "__debug__"]
       or
-      // Python 3.9.5 only
+      // Python 3 only
       major_version() = 3 and
-      result in ["ascii", "breakpoint", "bytes", "exec"]
+      result in [
+          "ascii", "breakpoint", "bytes", "exec",
+          // Exceptions
+          "BlockingIOError", "BrokenPipeError", "ChildProcessError", "ConnectionAbortedError",
+          "ConnectionError", "ConnectionRefusedError", "ConnectionResetError", "FileExistsError",
+          "FileNotFoundError", "InterruptedError", "IsADirectoryError", "ModuleNotFoundError",
+          "NotADirectoryError", "PermissionError", "ProcessLookupError", "RecursionError",
+          "ResourceWarning", "StopAsyncIteration", "TimeoutError"
+        ]
       or
-      // Python 2.7.6 only
+      // Python 2 only
       major_version() = 2 and
       result in [
           "basestring", "cmp", "execfile", "file", "long", "raw_input", "reduce", "reload",
