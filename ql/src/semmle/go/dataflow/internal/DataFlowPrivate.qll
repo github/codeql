@@ -236,7 +236,6 @@ private ControlFlow::ConditionGuardNode getAFalsifiedGuard(DataFlowCall call) {
 /**
  * Holds if the node `n` is unreachable when the call context is `call`.
  */
-cached
 predicate isUnreachableInCall(Node n, DataFlowCall call) {
   getAFalsifiedGuard(call).dominates(n.getBasicBlock())
 }
