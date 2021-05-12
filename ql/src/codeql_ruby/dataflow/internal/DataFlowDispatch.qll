@@ -130,12 +130,29 @@ private DataFlow::LocalSourceNode trackInstance(Module tp, TypeTracker t) {
       not self.getEnclosingModule().getEnclosingMethod() = enclosing
     )
     or
+    // `self` in singleton method
+    exists(Self self, MethodBase enclosing, DataFlow::Node objectNode |
+      self = result.asExpr().getExpr() and
+      singletonMethod(enclosing, objectNode.asExpr().getExpr()) and
+      enclosing = self.getEnclosingMethod() and
+      trackInstance(tp).flowsTo(objectNode) and
+      not self.getEnclosingModule().getEnclosingMethod() = enclosing
+    )
+    or
     // `self` in top-level
     exists(Self self, Toplevel enclosing |
       self = result.asExpr().getExpr() and
       enclosing = self.getEnclosingModule() and
       tp = TResolved("Object") and
       not self.getEnclosingMethod().getEnclosingModule() = enclosing
+    )
+    or
+    // a module or class
+    exists(Module m |
+      result = trackModule(m) and
+      if m.getADeclaration() instanceof ClassDeclaration
+      then tp = TResolved("Class")
+      else tp = TResolved("Module")
     )
   )
   or
@@ -172,6 +189,15 @@ private DataFlow::LocalSourceNode trackSingletonMethod(MethodBase m, string name
   name = m.getName()
 }
 
+private DataFlow::Node selfInModule(Module tp) {
+  exists(Self self, ModuleBase enclosing |
+    self = result.asExpr().getExpr() and
+    enclosing = self.getEnclosingModule() and
+    tp = enclosing.getModule() and
+    not self.getEnclosingMethod().getEnclosingModule() = enclosing
+  )
+}
+
 private DataFlow::LocalSourceNode trackModule(Module tp, TypeTracker t) {
   t.start() and
   (
@@ -179,12 +205,7 @@ private DataFlow::LocalSourceNode trackModule(Module tp, TypeTracker t) {
     resolveScopeExpr(result.asExpr().getExpr()) = tp
     or
     // `self` reference to Module
-    exists(Self self, ModuleBase enclosing |
-      self = result.asExpr().getExpr() and
-      enclosing = self.getEnclosingModule() and
-      tp = enclosing.getModule() and
-      not self.getEnclosingMethod().getEnclosingModule() = enclosing
-    )
+    result = selfInModule(tp)
   )
   or
   exists(TypeTracker t2 | result = trackModule(tp, t2).track(t2, t))
