@@ -31,8 +31,8 @@ abstract private class FluentLambdaMethod extends Method {
   predicate doesReturnTaint(int arg) { none() }
 }
 
-private class RatpackPromiseProviderethod extends Method, FluentLambdaMethod {
-  RatpackPromiseProviderethod() { isStatic() and hasName(["flatten", "sync"]) }
+private class RatpackPromiseProviderMethod extends Method, FluentLambdaMethod {
+  RatpackPromiseProviderMethod() { isStatic() and hasName(["flatten", "sync"]) }
 
   override predicate consumesTaint(int methodArg, int lambdaArg) { none() }
 
