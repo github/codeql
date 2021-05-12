@@ -215,7 +215,11 @@ private class SpringRestTemplateUrlMethodAccess extends MethodAccess {
 abstract class RequestForgerySanitizer extends DataFlow::Node { }
 
 private class PrimitiveSanitizer extends RequestForgerySanitizer {
-  PrimitiveSanitizer() { this.getType() instanceof PrimitiveType }
+  PrimitiveSanitizer() {
+    this.getType() instanceof PrimitiveType or
+    this.getType() instanceof BoxedType or
+    this.getType() instanceof NumberType
+  }
 }
 
 private class HostnameSanitizingPrefix extends CompileTimeConstantExpr {
