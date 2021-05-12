@@ -701,8 +701,7 @@ class ArrayCreationNode extends DataFlow::ValueNode, DataFlow::SourceNode {
  * define(["fs"], function(fs) { ... }); // AMD module
  * ```
  */
-class ModuleImportNode extends DataFlow::SourceNode {
-  ModuleImportNode() { this instanceof ModuleImportNode::Range }
+class ModuleImportNode extends DataFlow::SourceNode instanceof ModuleImportNode::Range {
 
   /** Gets the path of the imported module. */
   string getPath() { result = this.(ModuleImportNode::Range).getPath() }
@@ -841,8 +840,7 @@ module MemberKind {
  *
  * Additional patterns can be recognized as class nodes, by extending `DataFlow::ClassNode::Range`.
  */
-class ClassNode extends DataFlow::SourceNode {
-  ClassNode() { this instanceof ClassNode::Range }
+class ClassNode extends DataFlow::SourceNode instanceof ClassNode::Range {
 
   /**
    * Gets the unqualified name of the class, if it has one or one can be determined from the context.
@@ -1359,8 +1357,7 @@ module ClassNode {
  * _.partial(fn, x, y, z)
  * ```
  */
-class PartialInvokeNode extends DataFlow::Node {
-  PartialInvokeNode() { this instanceof PartialInvokeNode::Range }
+class PartialInvokeNode extends DataFlow::Node instanceof PartialInvokeNode::Range {
 
   /** Gets a node holding a callback invoked by this partial invocation node. */
   DataFlow::Node getACallbackNode() {

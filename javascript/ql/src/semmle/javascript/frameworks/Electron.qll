@@ -181,8 +181,7 @@ module Electron {
   /**
    * A Node.js-style HTTP or HTTPS request made using an Electron module.
    */
-  class ElectronClientRequest extends NodeJSLib::NodeJSClientRequest {
-    ElectronClientRequest() { this instanceof ElectronClientRequest::Range }
+  class ElectronClientRequest extends NodeJSLib::NodeJSClientRequest instanceof ElectronClientRequest::Range {
   }
 
   module ElectronClientRequest {

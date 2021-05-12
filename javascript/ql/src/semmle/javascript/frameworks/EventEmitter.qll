@@ -68,15 +68,13 @@ module EventEmitter {
  * An EventEmitter instance that implements the EventEmitter API.
  * Extend EventEmitter::Range to mark something as being an EventEmitter.
  */
-class EventEmitter extends DataFlow::Node {
-  EventEmitter() { this instanceof EventEmitter::Range }
+class EventEmitter extends DataFlow::Node instanceof EventEmitter::Range {
 }
 
 /**
  * A registration of an event handler on an EventEmitter.
  */
-class EventRegistration extends DataFlow::Node {
-  EventRegistration() { this instanceof EventRegistration::Range }
+class EventRegistration extends DataFlow::Node instanceof EventRegistration::Range {
 
   /** Gets the EventEmitter that the event handler is registered on. */
   final EventEmitter getEmitter() { result = this.(EventRegistration::Range).getEmitter() }
@@ -142,8 +140,7 @@ module EventRegistration {
 /**
  * A dispatch of an event on an EventEmitter.
  */
-class EventDispatch extends DataFlow::Node {
-  EventDispatch() { this instanceof EventDispatch::Range }
+class EventDispatch extends DataFlow::Node instanceof EventDispatch::Range {
 
   /** Gets the emitter that the event dispatch happens on. */
   EventEmitter getEmitter() { result = this.(EventDispatch::Range).getEmitter() }

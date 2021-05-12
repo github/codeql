@@ -540,8 +540,7 @@ module HTTP {
   /**
    * An object that contains one or more potential route handlers.
    */
-  class RouteHandlerCandidateContainer extends DataFlow::Node {
-    RouteHandlerCandidateContainer() { this instanceof RouteHandlerCandidateContainer::Range }
+  class RouteHandlerCandidateContainer extends DataFlow::Node instanceof RouteHandlerCandidateContainer::Range {
 
     /**
      * Gets the route handler in this container that is accessed at `access`.

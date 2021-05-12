@@ -8,8 +8,7 @@ import javascript
  * A call to a function that constructs a function composition `f(g(h(...)))` from a
  * series functions `f, g, h, ...`.
  */
-class FunctionCompositionCall extends DataFlow::CallNode {
-  FunctionCompositionCall() { this instanceof FunctionCompositionCall::Range }
+class FunctionCompositionCall extends DataFlow::CallNode instanceof FunctionCompositionCall::Range {
 
   /**
    * Gets the `i`th function in the composition `f(g(h(...)))`, counting from left to right.

@@ -14,8 +14,7 @@ import javascript
  * To model additional APIs, extend `PropertyProjection::Range` and implement its abstract member
  * predicates.
  */
-class PropertyProjection extends DataFlow::CallNode {
-  PropertyProjection() { this instanceof PropertyProjection::Range }
+class PropertyProjection extends DataFlow::CallNode instanceof PropertyProjection::Range {
 
   /**
    * Gets the argument for the object to project properties from, such as `o` in `_.get(o, 'a.b')`.

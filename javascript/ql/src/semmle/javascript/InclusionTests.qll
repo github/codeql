@@ -16,8 +16,7 @@ private import javascript
  * ~A.indexOf(B)
  * ```
  */
-class InclusionTest extends DataFlow::Node {
-  InclusionTest() { this instanceof InclusionTest::Range }
+class InclusionTest extends DataFlow::Node instanceof InclusionTest::Range {
 
   /** Gets the `A` in `A.includes(B)`. */
   DataFlow::Node getContainerNode() { result = this.(InclusionTest::Range).getContainerNode() }

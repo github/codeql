@@ -6,8 +6,7 @@ import javascript
 
 module Base64 {
   /** A call to a base64 encoder. */
-  class Encode extends DataFlow::Node {
-    Encode() { this instanceof Encode::Range }
+  class Encode extends DataFlow::Node instanceof Encode::Range {
 
     /** Gets the input passed to the encoder. */
     DataFlow::Node getInput() { result = this.(Encode::Range).getInput() }
@@ -32,8 +31,7 @@ module Base64 {
   }
 
   /** A call to a base64 decoder. */
-  class Decode extends DataFlow::Node {
-    Decode() { this instanceof Decode::Range }
+  class Decode extends DataFlow::Node instanceof Decode::Range {
 
     /** Gets the base64-encoded input passed to the decoder. */
     DataFlow::Node getInput() { result = this.(Decode::Range).getInput() }

@@ -8,8 +8,7 @@ module StringOps {
   /**
    * A expression that is equivalent to `A.startsWith(B)` or `!A.startsWith(B)`.
    */
-  class StartsWith extends DataFlow::Node {
-    StartsWith() { this instanceof StartsWith::Range }
+  class StartsWith extends DataFlow::Node instanceof StartsWith::Range {
 
     /**
      * Gets the `A` in `A.startsWith(B)`.
@@ -235,8 +234,7 @@ module StringOps {
   /**
    * An expression that is equivalent to `A.endsWith(B)` or `!A.endsWith(B)`.
    */
-  class EndsWith extends DataFlow::Node {
-    EndsWith() { this instanceof EndsWith::Range }
+  class EndsWith extends DataFlow::Node instanceof EndsWith::Range {
 
     /**
      * Gets the `A` in `A.startsWith(B)`.
@@ -658,8 +656,7 @@ module StringOps {
    * if (!match) { ... } // <--- 'match' is the RegExpTest
    * ```
    */
-  class RegExpTest extends DataFlow::Node {
-    RegExpTest() { this instanceof RegExpTest::Range }
+  class RegExpTest extends DataFlow::Node instanceof RegExpTest::Range {
 
     /**
      * Gets the AST of the regular expression used in the test, if it can be seen locally.

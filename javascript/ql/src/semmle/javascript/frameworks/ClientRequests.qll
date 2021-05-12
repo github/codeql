@@ -18,8 +18,7 @@ import javascript
  * To model additional APIs, extend `ClientRequest::Range` and implement its abstract member
  * predicates.
  */
-class ClientRequest extends DataFlow::InvokeNode {
-  ClientRequest() { this instanceof ClientRequest::Range }
+class ClientRequest extends DataFlow::InvokeNode instanceof ClientRequest::Range {
 
   /**
    * Gets the URL of the request.

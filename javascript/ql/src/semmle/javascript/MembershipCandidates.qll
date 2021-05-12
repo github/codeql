@@ -9,8 +9,7 @@ import javascript
  *
  * Additional candidates can be added by subclassing `MembershipCandidate::Range`
  */
-class MembershipCandidate extends DataFlow::Node {
-  MembershipCandidate() { this instanceof MembershipCandidate::Range }
+class MembershipCandidate extends DataFlow::Node instanceof MembershipCandidate::Range {
 
   /**
    * Gets the expression that performs the membership test, if any.
