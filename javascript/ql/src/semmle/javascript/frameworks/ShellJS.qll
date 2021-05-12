@@ -15,12 +15,10 @@ module ShellJS {
 
   /** A member of the `shelljs` library. */
   class Member extends DataFlow::SourceNode {
-    Member::Range range;
-
-    Member() { this = range }
+    Member() { this instanceof Member::Range }
 
     /** Gets the name of `shelljs` member being referenced, such as `cat` in `shelljs.cat`. */
-    string getName() { result = range.getName() }
+    string getName() { result = this.(Member::Range).getName() }
   }
 
   module Member {

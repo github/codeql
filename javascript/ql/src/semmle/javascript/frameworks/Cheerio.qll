@@ -33,9 +33,7 @@ module Cheerio {
    * with an interface similar to that of a jQuery object.
    */
   class CheerioObjectCreation extends DataFlow::SourceNode {
-    CheerioObjectCreation::Range range;
-
-    CheerioObjectCreation() { this = range }
+    CheerioObjectCreation() { this instanceof CheerioObjectCreation::Range }
   }
 
   module CheerioObjectCreation {
