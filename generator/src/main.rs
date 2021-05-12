@@ -148,7 +148,6 @@ fn convert_nodes<'a>(nodes: &'a node_types::NodeTypeMap) -> Vec<dbscheme::Entry<
         create_container_union(),
         create_containerparent_table(),
         create_source_location_prefix_table(),
-        create_diagnostics_table(),
     ];
     let mut ast_node_members: Set<&str> = Set::new();
     let token_kinds: Map<&str, usize> = nodes
@@ -248,6 +247,11 @@ fn convert_nodes<'a>(nodes: &'a node_types::NodeTypeMap) -> Vec<dbscheme::Entry<
     let (token_case, token_table) = create_tokeninfo(token_kinds);
     entries.push(dbscheme::Entry::Table(token_table));
     entries.push(dbscheme::Entry::Case(token_case));
+
+    // Add the diagnostics table
+    let (diagnostics_case, diagnostics_table) = create_diagnostics();
+    entries.push(dbscheme::Entry::Table(diagnostics_table));
+    entries.push(dbscheme::Entry::Case(diagnostics_case));
 
     // Create a union of all database types.
     entries.push(dbscheme::Entry::Union(dbscheme::Union {
@@ -591,8 +595,8 @@ fn create_source_location_prefix_table<'a>() -> dbscheme::Entry<'a> {
     })
 }
 
-fn create_diagnostics_table<'a>() -> dbscheme::Entry<'a> {
-    dbscheme::Entry::Table(dbscheme::Table {
+fn create_diagnostics<'a>() -> (dbscheme::Case<'a>, dbscheme::Table<'a>) {
+    let table = dbscheme::Table {
         name: "diagnostics",
         keysets: None,
         columns: vec![
@@ -639,7 +643,19 @@ fn create_diagnostics_table<'a>() -> dbscheme::Entry<'a> {
                 ql_type_is_ref: true,
             },
         ],
-    })
+    };
+    let severities: Vec<(usize, &str)> = vec![
+        (0, "diagnostic_hidden"),
+        (1, "diagnostic_info"),
+        (2, "diagnostic_warning"),
+        (3, "diagnostic_error"),
+    ];
+    let case = dbscheme::Case {
+        name: "diagnostic",
+        column: "severity",
+        branches: severities,
+    };
+    (case, table)
 }
 
 fn main() {

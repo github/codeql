@@ -46,15 +46,6 @@ sourceLocationPrefix(
   string prefix: string ref
 );
 
-diagnostics(
-  unique int id: @diagnostic,
-  int severity: int ref,
-  string error_tag: string ref,
-  string error_message: string ref,
-  string full_error_message: string ref,
-  int location: @location_default ref
-);
-
 @underscore_arg = @assignment | @binary | @conditional | @operator_assignment | @range | @unary | @underscore_primary
 
 @underscore_lhs = @call | @element_reference | @scope_resolution | @token_false | @token_nil | @token_true | @underscore_variable
@@ -1243,6 +1234,23 @@ case @token.kind of
 | 23 = @token_super
 | 24 = @token_true
 | 25 = @token_uninterpreted
+;
+
+
+diagnostics(
+  unique int id: @diagnostic,
+  int severity: int ref,
+  string error_tag: string ref,
+  string error_message: string ref,
+  string full_error_message: string ref,
+  int location: @location_default ref
+);
+
+case @diagnostic.severity of
+  0 = @diagnostic_hidden
+| 1 = @diagnostic_info
+| 2 = @diagnostic_warning
+| 3 = @diagnostic_error
 ;
 
 
