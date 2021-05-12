@@ -242,7 +242,7 @@ module ClientRequest {
       method = "request" and
       result = getOptionArgument(0, "data")
       or
-      method = ["post", "put", "put"] and
+      method = ["post", "put"] and
       result = [getArgument(1), getOptionArgument(2, "data")]
       or
       result = getOptionArgument([0 .. 2], ["headers", "params"])
