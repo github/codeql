@@ -206,15 +206,21 @@ class BodyStmt extends StmtSequence, TBodyStmt {
  * ```
  */
 class ParenthesizedExpr extends StmtSequence, TParenthesizedExpr {
-  private Generated::ParenthesizedStatements g;
-
-  ParenthesizedExpr() { this = TParenthesizedExpr(g) }
-
   final override string getAPrimaryQlClass() { result = "ParenthesizedExpr" }
 
   final override string toString() { result = "( ... )" }
+}
+
+private class ParenthesizedExprReal extends ParenthesizedExpr, TParenthesizedExprReal {
+  private Generated::ParenthesizedStatements g;
+
+  ParenthesizedExprReal() { this = TParenthesizedExprReal(g) }
 
   final override Stmt getStmt(int n) { toGenerated(result) = g.getChild(n) }
+}
+
+private class ParenthesizedExprSynth extends ParenthesizedExpr, TParenthesizedExprSynth {
+  final override Stmt getStmt(int n) { synthChild(this, n, result) }
 }
 
 /**

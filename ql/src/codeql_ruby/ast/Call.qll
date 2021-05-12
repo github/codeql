@@ -137,7 +137,7 @@ private class IdentifierMethodCall extends MethodCall, TIdentifierMethodCall {
 
   final override string getMethodName() { result = getMethodName(this, g.getValue()) }
 
-  final override Self getReceiver() { result = TImplicitSelf(g) }
+  final override Self getReceiver() { result = TSelfSynth(this, 0) }
 }
 
 private class ScopeResolutionMethodCall extends MethodCall, TScopeResolutionMethodCall {
@@ -162,12 +162,7 @@ private class RegularMethodCall extends MethodCall, TRegularMethodCall {
     not exists(g.getReceiver()) and
     toGenerated(result) = g.getMethod().(Generated::ScopeResolution).getScope()
     or
-    // If there's no explicit receiver (or scope resolution that acts like a
-    // receiver), then the receiver is implicitly `self`.  N.B.  `::Foo()` is
-    // not valid Ruby.
-    not exists(g.getReceiver()) and
-    not exists(g.getMethod().(Generated::ScopeResolution).getScope()) and
-    result = TImplicitSelf(g)
+    result = TSelfSynth(this, 0)
   }
 
   final override string getMethodName() {

@@ -15,6 +15,14 @@ query predicate missingParent(AstNode node, string cls) {
 
 query predicate multipleParents(AstNode node, AstNode parent, string cls) {
   parent = node.getParent() and
-  count(node.getParent()) > 1 and
-  cls = getAPrimaryQlClass(parent)
+  cls = getAPrimaryQlClass(parent) and
+  exists(AstNode one, AstNode two |
+    one = node.getParent() and
+    two = node.getParent() and
+    one != two
+  |
+    one.isSynthesized() and two.isSynthesized()
+    or
+    not one.isSynthesized() and not two.isSynthesized()
+  )
 }

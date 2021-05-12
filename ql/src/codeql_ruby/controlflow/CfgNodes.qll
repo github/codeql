@@ -159,6 +159,13 @@ abstract private class ExprChildMapping extends Expr {
     )
   }
 
+  private Expr desugar(Expr n) {
+    result = n.getDesugared()
+    or
+    not exists(n.getDesugared()) and
+    result = n
+  }
+
   /**
    * Holds if there is a control-flow path from `cfn` to `cfnChild`, where `cfn`
    * is a control-flow node for this expression, and `cfnChild` is a control-flow
@@ -171,13 +178,13 @@ abstract private class ExprChildMapping extends Expr {
     exists(BasicBlock bb |
       this.reachesBasicBlockBase(child, cfn, bb) and
       cfnChild = bb.getANode() and
-      cfnChild = child.getAControlFlowNode()
+      cfnChild = desugar(child).getAControlFlowNode()
     )
     or
     exists(BasicBlock bb |
       this.reachesBasicBlockRec(child, cfn, bb) and
       cfnChild = bb.getANode() and
-      cfnChild = child.getAControlFlowNode()
+      cfnChild = desugar(child).getAControlFlowNode()
     )
   }
 }

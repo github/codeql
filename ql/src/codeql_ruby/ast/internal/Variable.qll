@@ -4,6 +4,7 @@ private import codeql_ruby.AST
 private import codeql_ruby.ast.internal.AST
 private import codeql_ruby.ast.internal.Parameter
 private import codeql_ruby.ast.internal.Scope
+private import codeql_ruby.ast.internal.Synthesis
 
 /**
  * Holds if `n` is in the left-hand-side of an explicit assignment `assignment`.
@@ -128,7 +129,7 @@ private module Cached {
           other order by other.getLocation().getStartLine(), other.getLocation().getStartColumn()
         )
     } or
-    TLocalVariable(Scope::Range scope, string name, Generated::Identifier i) {
+    TLocalVariableReal(Scope::Range scope, string name, Generated::Identifier i) {
       scopeDefinesParameterVariable(scope, name, i)
       or
       i =
@@ -139,7 +140,8 @@ private module Cached {
         ) and
       not scopeDefinesParameterVariable(scope, name, _) and
       not inherits(scope, name, _)
-    }
+    } or
+    TLocalVariableSynth(AstNode n, int i) { any(Synthesis s).localVariable(n, i) }
 
   // Db types that can be vcalls
   private class VcallToken =
@@ -288,7 +290,7 @@ private module Cached {
   }
 
   cached
-  predicate access(Generated::Identifier access, Variable::Range variable) {
+  predicate access(Generated::Identifier access, VariableReal::Range variable) {
     exists(string name |
       variable.getName() = name and
       name = access.getValue()
@@ -372,8 +374,10 @@ private predicate inherits(Scope::Range scope, string name, Scope::Range outer) 
   )
 }
 
-module Variable {
-  class Range extends TVariable {
+class TVariableReal = TGlobalVariable or TClassVariable or TInstanceVariable or TLocalVariableReal;
+
+module VariableReal {
+  class Range extends TVariableReal {
     abstract string getName();
 
     string toString() { result = this.getName() }
@@ -384,13 +388,15 @@ module Variable {
   }
 }
 
+class TLocalVariable = TLocalVariableReal or TLocalVariableSynth;
+
 module LocalVariable {
-  class Range extends Variable::Range, TLocalVariable {
+  class Range extends VariableReal::Range, TLocalVariableReal {
     private Scope::Range scope;
     private string name;
     private Generated::Identifier i;
 
-    Range() { this = TLocalVariable(scope, name, i) }
+    Range() { this = TLocalVariableReal(scope, name, i) }
 
     final override string getName() { result = name }
 
@@ -402,8 +408,41 @@ module LocalVariable {
   }
 }
 
+class VariableReal extends Variable, TVariableReal {
+  VariableReal::Range range;
+
+  VariableReal() { range = this }
+
+  final override string getName() { result = range.getName() }
+
+  final override Location getLocation() { result = range.getLocation() }
+
+  final override Scope getDeclaringScope() { toGenerated(result) = range.getDeclaringScope() }
+}
+
+class LocalVariableReal extends VariableReal, LocalVariable, TLocalVariableReal {
+  override LocalVariable::Range range;
+
+  final override LocalVariableAccessReal getAnAccess() { result.getVariable() = this }
+
+  final override VariableAccess getDefiningAccess() { result = range.getDefiningAccess() }
+}
+
+class LocalVariableSynth extends LocalVariable, TLocalVariableSynth {
+  private AstNode n;
+  private int i;
+
+  LocalVariableSynth() { this = TLocalVariableSynth(n, i) }
+
+  final override string getName() { result = "__synth__" + i }
+
+  final override Location getLocation() { result = n.getLocation() }
+
+  final override Scope getDeclaringScope() { none() } // not relevant for synthesized variables
+}
+
 module GlobalVariable {
-  class Range extends Variable::Range, TGlobalVariable {
+  class Range extends VariableReal::Range, TGlobalVariable {
     private string name;
 
     Range() { this = TGlobalVariable(name) }
@@ -417,7 +456,7 @@ module GlobalVariable {
 }
 
 module InstanceVariable {
-  class Range extends Variable::Range, TInstanceVariable {
+  class Range extends VariableReal::Range, TInstanceVariable {
     private ModuleBase::Range scope;
     private boolean instance;
     private string name;
@@ -436,7 +475,7 @@ module InstanceVariable {
 }
 
 module ClassVariable {
-  class Range extends Variable::Range, TClassVariable {
+  class Range extends VariableReal::Range, TClassVariable {
     private ModuleBase::Range scope;
     private string name;
     private Generated::AstNode decl;
@@ -464,8 +503,64 @@ module LocalVariableAccess {
   }
 }
 
+class TVariableAccessReal =
+  TLocalVariableAccessReal or TGlobalVariableAccess or TInstanceVariableAccess or
+      TClassVariableAccess;
+
+abstract class VariableAccessReal extends VariableAccess, TVariableAccessReal {
+  abstract VariableReal getVariableReal();
+}
+
+private class LocalVariableAccessReal extends VariableAccessReal, LocalVariableAccess,
+  TLocalVariableAccessReal {
+  private Generated::Identifier g;
+  private LocalVariable v;
+
+  LocalVariableAccessReal() { this = TLocalVariableAccessReal(g, v) }
+
+  final override LocalVariable getVariable() { result = v }
+
+  final override LocalVariableReal getVariableReal() { result = v }
+
+  final override string toString() { result = g.getValue() }
+}
+
+private class LocalVariableAccessSynth extends LocalVariableAccess, TLocalVariableAccessSynth {
+  private LocalVariable v;
+
+  LocalVariableAccessSynth() { this = TLocalVariableAccessSynth(_, _, v) }
+
+  final override LocalVariable getVariable() { result = v }
+
+  final override string toString() { result = v.getName() }
+}
+
 module GlobalVariableAccess {
   predicate range(Generated::GlobalVariable n, GlobalVariable v) { n.getValue() = v.getName() }
+}
+
+private class GlobalVariableAccessReal extends VariableAccessReal, GlobalVariableAccess,
+  TGlobalVariableAccessReal {
+  private Generated::GlobalVariable g;
+  private GlobalVariable v;
+
+  GlobalVariableAccessReal() { this = TGlobalVariableAccessReal(g, v) }
+
+  final override GlobalVariable getVariable() { result = v }
+
+  final override GlobalVariable getVariableReal() { result = v }
+
+  final override string toString() { result = g.getValue() }
+}
+
+private class GlobalVariableAccessSynth extends GlobalVariableAccess, TGlobalVariableAccessSynth {
+  private GlobalVariable v;
+
+  GlobalVariableAccessSynth() { this = TGlobalVariableAccessSynth(_, _, v) }
+
+  final override GlobalVariable getVariable() { result = v }
+
+  final override string toString() { result = v.getName() }
 }
 
 module InstanceVariableAccess {
@@ -474,6 +569,55 @@ module InstanceVariableAccess {
   }
 }
 
+private class InstanceVariableAccessReal extends VariableAccessReal, InstanceVariableAccess,
+  TInstanceVariableAccessReal {
+  private Generated::InstanceVariable g;
+  private InstanceVariable v;
+
+  InstanceVariableAccessReal() { this = TInstanceVariableAccessReal(g, v) }
+
+  final override InstanceVariable getVariable() { result = v }
+
+  final override InstanceVariable getVariableReal() { result = v }
+
+  final override string toString() { result = g.getValue() }
+}
+
+private class InstanceVariableAccessSynth extends InstanceVariableAccess,
+  TInstanceVariableAccessSynth {
+  private InstanceVariable v;
+
+  InstanceVariableAccessSynth() { this = TInstanceVariableAccessSynth(_, _, v) }
+
+  final override InstanceVariable getVariable() { result = v }
+
+  final override string toString() { result = v.getName() }
+}
+
 module ClassVariableAccess {
   predicate range(Generated::ClassVariable n, ClassVariable v) { classVariableAccess(n, v) }
+}
+
+private class ClassVariableAccessReal extends VariableAccessReal, ClassVariableAccess,
+  TClassVariableAccessReal {
+  private Generated::ClassVariable g;
+  private ClassVariable v;
+
+  ClassVariableAccessReal() { this = TClassVariableAccessReal(g, v) }
+
+  final override ClassVariable getVariable() { result = v }
+
+  final override ClassVariable getVariableReal() { result = v }
+
+  final override string toString() { result = g.getValue() }
+}
+
+private class ClassVariableAccessSynth extends ClassVariableAccess, TClassVariableAccessSynth {
+  private ClassVariable v;
+
+  ClassVariableAccessSynth() { this = TClassVariableAccessSynth(_, _, v) }
+
+  final override ClassVariable getVariable() { result = v }
+
+  final override string toString() { result = v.getName() }
 }

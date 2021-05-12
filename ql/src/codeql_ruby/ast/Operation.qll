@@ -101,12 +101,6 @@ class DefinedExpr extends UnaryOperation, TDefinedExpr {
 
 /** A binary operation. */
 class BinaryOperation extends Operation, TBinaryOperation {
-  private Generated::Binary g;
-
-  BinaryOperation() { g = toGenerated(this) }
-
-  final override string getOperator() { result = g.getOperator() }
-
   final override Expr getAnOperand() {
     result = this.getLeftOperand() or result = this.getRightOperand()
   }
@@ -122,10 +116,28 @@ class BinaryOperation extends Operation, TBinaryOperation {
   }
 
   /** Gets the left operand of this binary operation. */
-  final Stmt getLeftOperand() { toGenerated(result) = g.getLeft() }
+  Stmt getLeftOperand() { none() }
 
   /** Gets the right operand of this binary operation. */
-  final Stmt getRightOperand() { toGenerated(result) = g.getRight() }
+  Stmt getRightOperand() { none() }
+}
+
+private class BinaryOperationReal extends BinaryOperation {
+  private Generated::Binary g;
+
+  BinaryOperationReal() { g = toGenerated(this) }
+
+  final override string getOperator() { result = g.getOperator() }
+
+  final override Stmt getLeftOperand() { toGenerated(result) = g.getLeft() }
+
+  final override Stmt getRightOperand() { toGenerated(result) = g.getRight() }
+}
+
+abstract private class BinaryOperationSynth extends BinaryOperation {
+  final override Stmt getLeftOperand() { synthChild(this, 0, result) }
+
+  final override Stmt getRightOperand() { synthChild(this, 1, result) }
 }
 
 /**
@@ -143,6 +155,10 @@ class AddExpr extends BinaryArithmeticOperation, TAddExpr {
   final override string getAPrimaryQlClass() { result = "AddExpr" }
 }
 
+private class AddExprSynth extends AddExpr, BinaryOperationSynth, TAddExprSynth {
+  final override string getOperator() { result = "+" }
+}
+
 /**
  * A subtract expression.
  * ```rb
@@ -151,6 +167,10 @@ class AddExpr extends BinaryArithmeticOperation, TAddExpr {
  */
 class SubExpr extends BinaryArithmeticOperation, TSubExpr {
   final override string getAPrimaryQlClass() { result = "SubExpr" }
+}
+
+private class SubExprSynth extends SubExpr, BinaryOperationSynth, TSubExprSynth {
+  final override string getOperator() { result = "-" }
 }
 
 /**
@@ -163,6 +183,10 @@ class MulExpr extends BinaryArithmeticOperation, TMulExpr {
   final override string getAPrimaryQlClass() { result = "MulExpr" }
 }
 
+private class MulExprSynth extends MulExpr, BinaryOperationSynth, TMulExprSynth {
+  final override string getOperator() { result = "*" }
+}
+
 /**
  * A divide expression.
  * ```rb
@@ -171,6 +195,10 @@ class MulExpr extends BinaryArithmeticOperation, TMulExpr {
  */
 class DivExpr extends BinaryArithmeticOperation, TDivExpr {
   final override string getAPrimaryQlClass() { result = "DivExpr" }
+}
+
+private class DivExprSynth extends DivExpr, BinaryOperationSynth, TDivExprSynth {
+  final override string getOperator() { result = "/" }
 }
 
 /**
@@ -183,6 +211,10 @@ class ModuloExpr extends BinaryArithmeticOperation, TModuloExpr {
   final override string getAPrimaryQlClass() { result = "ModuloExpr" }
 }
 
+private class ModuloExprSynth extends ModuloExpr, BinaryOperationSynth, TModuloExprSynth {
+  final override string getOperator() { result = "%" }
+}
+
 /**
  * An exponent expression.
  * ```rb
@@ -191,6 +223,10 @@ class ModuloExpr extends BinaryArithmeticOperation, TModuloExpr {
  */
 class ExponentExpr extends BinaryArithmeticOperation, TExponentExpr {
   final override string getAPrimaryQlClass() { result = "ExponentExpr" }
+}
+
+private class ExponentExprSynth extends ExponentExpr, BinaryOperationSynth, TExponentExprSynth {
+  final override string getOperator() { result = "**" }
 }
 
 /**
@@ -209,6 +245,10 @@ class LogicalAndExpr extends BinaryLogicalOperation, TLogicalAndExpr {
   final override string getAPrimaryQlClass() { result = "LogicalAndExpr" }
 }
 
+private class LogicalAndExprSynth extends LogicalAndExpr, BinaryOperationSynth, TLogicalAndExprSynth {
+  final override string getOperator() { result = "&&" }
+}
+
 /**
  * A logical OR operation, using either `or` or `||`.
  * ```rb
@@ -218,6 +258,10 @@ class LogicalAndExpr extends BinaryLogicalOperation, TLogicalAndExpr {
  */
 class LogicalOrExpr extends BinaryLogicalOperation, TLogicalOrExpr {
   final override string getAPrimaryQlClass() { result = "LogicalOrExpr" }
+}
+
+private class LogicalOrExprSynth extends LogicalOrExpr, BinaryOperationSynth, TLogicalOrExprSynth {
+  final override string getOperator() { result = "||" }
 }
 
 /**
@@ -235,6 +279,10 @@ class LShiftExpr extends BinaryBitwiseOperation, TLShiftExpr {
   final override string getAPrimaryQlClass() { result = "LShiftExpr" }
 }
 
+private class LShiftExprSynth extends LShiftExpr, BinaryOperationSynth, TLShiftExprSynth {
+  final override string getOperator() { result = "<<" }
+}
+
 /**
  * A right-shift operation.
  * ```rb
@@ -243,6 +291,10 @@ class LShiftExpr extends BinaryBitwiseOperation, TLShiftExpr {
  */
 class RShiftExpr extends BinaryBitwiseOperation, TRShiftExpr {
   final override string getAPrimaryQlClass() { result = "RShiftExpr" }
+}
+
+private class RShiftExprSynth extends RShiftExpr, BinaryOperationSynth, TRShiftExprSynth {
+  final override string getOperator() { result = ">>" }
 }
 
 /**
@@ -255,6 +307,10 @@ class BitwiseAndExpr extends BinaryBitwiseOperation, TBitwiseAndExpr {
   final override string getAPrimaryQlClass() { result = "BitwiseAndExpr" }
 }
 
+private class BitwiseAndSynthExpr extends BitwiseAndExpr, BinaryOperationSynth, TBitwiseAndExprSynth {
+  final override string getOperator() { result = "&" }
+}
+
 /**
  * A bitwise OR operation.
  * ```rb
@@ -265,6 +321,10 @@ class BitwiseOrExpr extends BinaryBitwiseOperation, TBitwiseOrExpr {
   final override string getAPrimaryQlClass() { result = "BitwiseOrExpr" }
 }
 
+private class BitwiseOrSynthExpr extends BitwiseOrExpr, BinaryOperationSynth, TBitwiseOrExprSynth {
+  final override string getOperator() { result = "|" }
+}
+
 /**
  * An XOR (exclusive OR) operation.
  * ```rb
@@ -273,6 +333,10 @@ class BitwiseOrExpr extends BinaryBitwiseOperation, TBitwiseOrExpr {
  */
 class BitwiseXorExpr extends BinaryBitwiseOperation, TBitwiseXorExpr {
   final override string getAPrimaryQlClass() { result = "BitwiseXorExpr" }
+}
+
+private class BitwiseXorSynthExpr extends BitwiseXorExpr, BinaryOperationSynth, TBitwiseXorExprSynth {
+  final override string getOperator() { result = "^" }
 }
 
 /**
@@ -455,17 +519,25 @@ class Assignment extends Operation, TAssignment {
  * ```
  */
 class AssignExpr extends Assignment, TAssignExpr {
+  final override string getOperator() { result = "=" }
+
+  final override string getAPrimaryQlClass() { result = "AssignExpr" }
+}
+
+private class AssignExprReal extends AssignExpr, TAssignExprReal {
   private Generated::Assignment g;
 
-  AssignExpr() { this = TAssignExpr(g) }
+  AssignExprReal() { this = TAssignExprReal(g) }
 
   final override Pattern getLeftOperand() { toGenerated(result) = g.getLeft() }
 
   final override Expr getRightOperand() { toGenerated(result) = g.getRight() }
+}
 
-  final override string getOperator() { result = "=" }
+private class AssignExprSynth extends AssignExpr, TAssignExprSynth {
+  final override Pattern getLeftOperand() { synthChild(this, 0, result) }
 
-  override string getAPrimaryQlClass() { result = "AssignExpr" }
+  final override Expr getRightOperand() { synthChild(this, 1, result) }
 }
 
 /**
