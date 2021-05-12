@@ -422,7 +422,7 @@ module API {
      */
     private predicate possible_builtin_defined_in_module(string name, Module m) {
       exists(NameNode n |
-        n.isGlobal() and
+        not exists(LocalVariable v | n.defines(v)) and
         n.isStore() and
         name = n.getId() and
         name = builtin_name() and
