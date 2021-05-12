@@ -150,9 +150,7 @@ private class HttpBuilderUriArgument extends RequestForgerySink {
  */
 private class SpringRestTemplateArgument extends RequestForgerySink {
   SpringRestTemplateArgument() {
-    exists(MethodAccess ma |
-      this.asExpr() = ma.getMethod().(SpringRestTemplateUrlMethod).getUrlArgument(ma)
-    )
+    this.asExpr() = any(SpringRestTemplateUrlMethodAccess m).getUrlArgument()
   }
 }
 
@@ -198,16 +196,19 @@ private class SpringRestTemplateUrlMethod extends Method {
         "execute", "getForEntity", "getForObject", "patchForObject"
       ])
   }
+}
+
+/**
+ * A call to a Spring Rest Template method
+ * that takes a URL as an argument.
+ */
+private class SpringRestTemplateUrlMethodAccess extends MethodAccess {
+  SpringRestTemplateUrlMethodAccess() { this.getMethod() instanceof SpringRestTemplateUrlMethod }
 
   /**
-   * Gets the argument which corresponds to a URL argument
-   * passed as a `java.net.URL` object or as a string or the like
+   * Gets the URL argument of this template call.
    */
-  Argument getUrlArgument(MethodAccess ma) {
-    // doExecute(URI url, HttpMethod method, RequestCallback requestCallback,
-    //  ResponseExtractor<T> responseExtractor)
-    result = ma.getArgument(0)
-  }
+  Argument getUrlArgument() { result = this.getArgument(0) }
 }
 
 /** A sanitizer for request forgery vulnerabilities. */
