@@ -45,14 +45,14 @@ private module Cached {
   Module getSuperClass(Module cls) {
     cls = TResolved("Object") and result = TResolved("BasicObject")
     or
-    cls =
-      TResolved([
-          "Module", "Class", "Numeric", "Array", "Hash", "FalseClass", "TrueClass", "NilClass"
-        ]) and
+    cls = TResolved(["Module", "Numeric", "Array", "Hash", "FalseClass", "TrueClass", "NilClass"]) and
     result = TResolved("Object")
     or
     cls = TResolved(["Integer", "Float", "Rational", "Complex"]) and
     result = TResolved("Numeric")
+    or
+    cls = TResolved("Class") and
+    result = TResolved("Module")
     or
     not cls = TResolved(builtin()) and
     (

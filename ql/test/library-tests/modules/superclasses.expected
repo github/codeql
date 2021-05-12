@@ -7,7 +7,7 @@
 #-----| BasicObject
 
 #-----| Class
-#-----|  -> Object
+#-----|  -> Module
 
 #-----| Complex
 #-----|  -> Numeric

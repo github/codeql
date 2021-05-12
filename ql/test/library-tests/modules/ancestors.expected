@@ -8,7 +8,7 @@
 #-----| BasicObject
 
 #-----| Class
-#-----| super -> Object
+#-----| super -> Module
 
 #-----| Complex
 #-----| super -> Numeric
