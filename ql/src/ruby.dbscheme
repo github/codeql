@@ -1247,10 +1247,10 @@ diagnostics(
 );
 
 case @diagnostic.severity of
-  0 = @diagnostic_hidden
-| 1 = @diagnostic_info
-| 2 = @diagnostic_warning
-| 3 = @diagnostic_error
+  10 = @diagnostic_debug
+| 20 = @diagnostic_info
+| 30 = @diagnostic_warning
+| 40 = @diagnostic_error
 ;
 
 

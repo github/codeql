@@ -281,7 +281,7 @@ impl Visitor<'_> {
             "diagnostics",
             vec![
                 Arg::Label(id),
-                Arg::Int(3), // severity 3 = error
+                Arg::Int(40), // severity 40 = error
                 Arg::String("parse_error".to_string()),
                 Arg::String(error_message),
                 Arg::String(full_error_message),

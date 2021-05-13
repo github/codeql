@@ -17,13 +17,13 @@ class Diagnostic extends @diagnostic {
 
   /** Gets a string representation of the severity of this diagnostic. */
   string getSeverityText() {
-    severity = 0 and result = "Hidden"
+    severity = 10 and result = "Debug"
     or
-    severity = 1 and result = "Info"
+    severity = 20 and result = "Info"
     or
-    severity = 2 and result = "Warning"
+    severity = 30 and result = "Warning"
     or
-    severity = 3 and result = "Error"
+    severity = 40 and result = "Error"
   }
 
   /** Gets the error code associated with this diagnostic, e.g. parse_error. */

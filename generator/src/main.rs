@@ -645,10 +645,10 @@ fn create_diagnostics<'a>() -> (dbscheme::Case<'a>, dbscheme::Table<'a>) {
         ],
     };
     let severities: Vec<(usize, &str)> = vec![
-        (0, "diagnostic_hidden"),
-        (1, "diagnostic_info"),
-        (2, "diagnostic_warning"),
-        (3, "diagnostic_error"),
+        (10, "diagnostic_debug"),
+        (20, "diagnostic_info"),
+        (30, "diagnostic_warning"),
+        (40, "diagnostic_error"),
     ];
     let case = dbscheme::Case {
         name: "diagnostic",
