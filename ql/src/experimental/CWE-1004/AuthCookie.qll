@@ -165,10 +165,10 @@ class GorillaCookieStoreSaveTrackingConfiguration extends DataFlow::Configuratio
   }
 
   override predicate isSource(DataFlow::Node source) {
-    exists(CallExpr c |
-      source.asExpr() = c and
-      c.getTarget().hasQualifiedName("github.com/gorilla/sessions", "NewCookieStore")
-    )
+    source
+        .(DataFlow::CallNode)
+        .getTarget()
+        .hasQualifiedName("github.com/gorilla/sessions", "NewCookieStore")
   }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof GorillaSessionSaveSink }
