@@ -24,6 +24,7 @@ module UnsafeCodeConstruction {
   class ExternalInputSource extends Source, DataFlow::ParameterNode {
     ExternalInputSource() {
       this = Exports::getALibraryInputParameter() and
+      // permit parameters that clearly are intended to contain executable code.
       not this.getName() = "code"
     }
   }
