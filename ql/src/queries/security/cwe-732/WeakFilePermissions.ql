@@ -40,9 +40,7 @@ bindingset[p]
 string access(int p) {
   p.bitAnd(2) != 0 and result = "writable"
   or
-  // report only the "most permissive" permission, i.e. report the file as
-  // readable only if it is not also writable
-  p.bitAnd(2) = 0 and p.bitAnd(4) != 0 and result = "readable"
+  p.bitAnd(4) != 0 and result = "readable"
 }
 
 /** An expression specifing a file permission that allows group/others read or write access */
