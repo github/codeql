@@ -15,6 +15,13 @@ string getAnInsecureAlgorithmName() {
 }
 
 /**
+ * Gets the name of an algorithm that is known to be secure.
+ */
+string getASecureAlgorithmName() {
+  result = ["RSA", "SHA256", "CCM", "GCM", "AES", "Blowfish", "ECIES"]
+}
+
+/**
  * Gets the name of a hash algorithm that is insecure if it is being used for
  * encryption (but it is hard to know when that is happening).
  */
@@ -39,10 +46,11 @@ string getInsecureAlgorithmRegex() {
 }
 
 /**
- * Gets the name of an algorithm that is known to be secure.
+ * Holds if `name` looks like it might be related to operations with an
+ * insecure encyption algorithm.
  */
-string getASecureAlgorithmName() {
-  result = ["RSA", "SHA256", "CCM", "GCM", "AES", "Blowfish", "ECIES"]
+bindingset[name] predicate isInsecureEncryption(string name) {
+  name.regexpMatch(getInsecureAlgorithmRegex())
 }
 
 /**
