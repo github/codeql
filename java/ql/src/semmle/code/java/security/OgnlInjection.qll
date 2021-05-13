@@ -15,6 +15,10 @@ abstract class OgnlInjectionSink extends DataFlow::Node { }
  * Extend this class to add additional taint steps that should apply to the `OgnlInjectionFlowConfig`.
  */
 class OgnlInjectionAdditionalTaintStep extends Unit {
+  /**
+   * Holds if the step from `node1` to `node2` should be considered a taint
+   * step for OGNL Injection taint configurations.
+   */
   abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);
 }
 
