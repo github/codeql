@@ -76,6 +76,8 @@ edges
 | CookieWithoutHttpOnly.go:123:13:123:49 | call to NewCookieStore : pointer type | CookieWithoutHttpOnly.go:146:16:146:20 | store : pointer type |
 | CookieWithoutHttpOnly.go:123:13:123:49 | call to NewCookieStore : pointer type | CookieWithoutHttpOnly.go:158:16:158:20 | store : pointer type |
 | CookieWithoutHttpOnly.go:123:13:123:49 | call to NewCookieStore : pointer type | CookieWithoutHttpOnly.go:170:16:170:20 | store : pointer type |
+| CookieWithoutHttpOnly.go:123:13:123:49 | call to NewCookieStore : pointer type | CookieWithoutHttpOnly.go:183:16:183:20 | store : pointer type |
+| CookieWithoutHttpOnly.go:123:13:123:49 | call to NewCookieStore : pointer type | CookieWithoutHttpOnly.go:195:16:195:20 | store : pointer type |
 | CookieWithoutHttpOnly.go:126:16:126:20 | store : pointer type | CookieWithoutHttpOnly.go:129:2:129:8 | session |
 | CookieWithoutHttpOnly.go:133:14:133:18 | false : bool | CookieWithoutHttpOnly.go:135:2:135:8 | implicit dereference : Session |
 | CookieWithoutHttpOnly.go:133:14:133:18 | false : bool | CookieWithoutHttpOnly.go:137:2:137:8 | implicit dereference : Session |
@@ -156,6 +158,8 @@ edges
 | CookieWithoutHttpOnly.go:173:21:176:2 | struct literal : Options | CookieWithoutHttpOnly.go:171:2:171:8 | implicit dereference : Session |
 | CookieWithoutHttpOnly.go:173:21:176:2 | struct literal : Options | CookieWithoutHttpOnly.go:173:2:173:8 | implicit dereference : Session |
 | CookieWithoutHttpOnly.go:173:21:176:2 | struct literal : Options | CookieWithoutHttpOnly.go:178:2:178:8 | session |
+| CookieWithoutHttpOnly.go:183:16:183:20 | store : pointer type | CookieWithoutHttpOnly.go:191:19:191:25 | session |
+| CookieWithoutHttpOnly.go:195:16:195:20 | store : pointer type | CookieWithoutHttpOnly.go:202:19:202:25 | session |
 nodes
 | CookieWithoutHttpOnly.go:11:7:14:2 | struct literal : Cookie | semmle.label | struct literal : Cookie |
 | CookieWithoutHttpOnly.go:15:20:15:21 | &... | semmle.label | &... |
@@ -257,7 +261,11 @@ nodes
 | CookieWithoutHttpOnly.go:173:21:176:2 | struct literal : Options | semmle.label | struct literal : Options |
 | CookieWithoutHttpOnly.go:178:2:178:8 | session | semmle.label | session |
 | CookieWithoutHttpOnly.go:178:2:178:8 | session | semmle.label | session |
-| CookieWithoutHttpOnly.go:190:66:190:70 | false | semmle.label | false |
+| CookieWithoutHttpOnly.go:183:16:183:20 | store : pointer type | semmle.label | store : pointer type |
+| CookieWithoutHttpOnly.go:191:19:191:25 | session | semmle.label | session |
+| CookieWithoutHttpOnly.go:195:16:195:20 | store : pointer type | semmle.label | store : pointer type |
+| CookieWithoutHttpOnly.go:202:19:202:25 | session | semmle.label | session |
+| CookieWithoutHttpOnly.go:214:66:214:70 | false | semmle.label | false |
 #select
 | CookieWithoutHttpOnly.go:15:20:15:21 | &... | CookieWithoutHttpOnly.go:11:7:14:2 | struct literal : Cookie | CookieWithoutHttpOnly.go:15:20:15:21 | &... | Cookie attribute 'HttpOnly' is not set to true. |
 | CookieWithoutHttpOnly.go:24:20:24:21 | &... | CookieWithoutHttpOnly.go:22:13:22:17 | false : bool | CookieWithoutHttpOnly.go:24:20:24:21 | &... | Cookie attribute 'HttpOnly' is not set to true. |
@@ -269,4 +277,6 @@ nodes
 | CookieWithoutHttpOnly.go:129:2:129:8 | session | CookieWithoutHttpOnly.go:123:13:123:49 | call to NewCookieStore : pointer type | CookieWithoutHttpOnly.go:129:2:129:8 | session | Cookie attribute 'HttpOnly' is not set to true. |
 | CookieWithoutHttpOnly.go:142:2:142:8 | session | CookieWithoutHttpOnly.go:133:14:133:18 | false : bool | CookieWithoutHttpOnly.go:142:2:142:8 | session | Cookie attribute 'HttpOnly' is not set to true. |
 | CookieWithoutHttpOnly.go:153:2:153:8 | session | CookieWithoutHttpOnly.go:149:21:151:2 | struct literal : Options | CookieWithoutHttpOnly.go:153:2:153:8 | session | Cookie attribute 'HttpOnly' is not set to true. |
-| CookieWithoutHttpOnly.go:190:66:190:70 | false | CookieWithoutHttpOnly.go:190:66:190:70 | false | CookieWithoutHttpOnly.go:190:66:190:70 | false | Cookie attribute 'HttpOnly' is not set to true. |
+| CookieWithoutHttpOnly.go:191:19:191:25 | session | CookieWithoutHttpOnly.go:123:13:123:49 | call to NewCookieStore : pointer type | CookieWithoutHttpOnly.go:191:19:191:25 | session | Cookie attribute 'HttpOnly' is not set to true. |
+| CookieWithoutHttpOnly.go:202:19:202:25 | session | CookieWithoutHttpOnly.go:123:13:123:49 | call to NewCookieStore : pointer type | CookieWithoutHttpOnly.go:202:19:202:25 | session | Cookie attribute 'HttpOnly' is not set to true. |
+| CookieWithoutHttpOnly.go:214:66:214:70 | false | CookieWithoutHttpOnly.go:214:66:214:70 | false | CookieWithoutHttpOnly.go:214:66:214:70 | false | Cookie attribute 'HttpOnly' is not set to true. |

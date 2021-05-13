@@ -178,6 +178,30 @@ func handler17(w http.ResponseWriter, r *http.Request, httpOnly bool) {
 	session.Save(r, w) // GOOD: value is unknown
 }
 
+func handler18(w http.ResponseWriter, r *http.Request) {
+	httpOnly := false
+	session, _ := store.Get(r, "session-name")
+	session.Values["foo"] = "secret"
+
+	session.Options = &sessions.Options{
+		MaxAge:   -1,
+		HttpOnly: httpOnly,
+	}
+
+	store.Save(r, w, session) // BAD: Explicitly set to false
+}
+
+func handler19(w http.ResponseWriter, r *http.Request) {
+	session, _ := store.Get(r, "session-name")
+	session.Values["foo"] = "secret"
+
+	session.Options = &sessions.Options{
+		MaxAge: -1,
+	}
+
+	store.Save(r, w, session) // BAD: default (false) is used
+}
+
 func main() {
 
 	router := gin.Default()

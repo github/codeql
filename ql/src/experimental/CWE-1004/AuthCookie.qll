@@ -173,6 +173,16 @@ private class GorillaSessionSaveSink extends DataFlow::Node {
   }
 }
 
+private class GorillaStoreSaveSink extends DataFlow::Node {
+  GorillaStoreSaveSink() {
+    exists(DataFlow::MethodCallNode mcn |
+      this = mcn.getArgument(2) and
+      mcn.getTarget()
+          .hasQualifiedName(package("github.com/gorilla/sessions", ""), "CookieStore", "Save")
+    )
+  }
+}
+
 /**
  * Tracks from gorilla cookie store creation to `gorilla/sessions.Session.Save`.
  */
@@ -188,7 +198,10 @@ class GorillaCookieStoreSaveTrackingConfiguration extends DataFlow::Configuratio
         .hasQualifiedName(package("github.com/gorilla/sessions", ""), "NewCookieStore")
   }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof GorillaSessionSaveSink }
+  override predicate isSink(DataFlow::Node sink) {
+    sink instanceof GorillaSessionSaveSink or
+    sink instanceof GorillaStoreSaveSink
+  }
 
   override predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(DataFlow::MethodCallNode cn |
