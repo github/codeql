@@ -915,9 +915,9 @@ module Trees {
     final override ControlFlowTree getChildNode(int i) {
       result = this.getReceiver() and i = 0
       or
-      result = this.getArgument(i - count(this.getReceiver()))
+      result = this.getArgument(i - 1)
       or
-      result = this.getBlock() and i = count(this.getReceiver()) + this.getNumberOfArguments()
+      result = this.getBlock() and i = 1 + this.getNumberOfArguments()
     }
   }
 
