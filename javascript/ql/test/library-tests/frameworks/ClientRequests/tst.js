@@ -291,3 +291,17 @@ function webSocket() {
         console.log("Data from server: " + event.data);
     });
 }
+
+function moreAxios() {
+    axios({
+        method: 'GET',
+        url: "http://example.org/more-axios",
+    }).then(
+        x => res.send(x.data),
+        (err) => {
+            const status = err.response.status;
+            const data = err.response.data;
+            const agent = err.response.headers.useragent;
+        }
+    );
+}
