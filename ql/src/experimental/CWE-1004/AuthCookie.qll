@@ -117,12 +117,13 @@ class BoolToGinSetCookieTrackingConfiguration extends DataFlow::Configuration {
   override predicate isSource(DataFlow::Node source) { source.asExpr().getBoolValue() = false }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(CallExpr c |
-      c.getTarget().getQualifiedName() = "github.com/gin-gonic/gin.Context.SetCookie" and
-      c.getArgument(6) = sink.asExpr() and
+    exists(DataFlow::MethodCallNode mcn |
+      mcn.getTarget()
+          .hasQualifiedName(package("github.com/gin-gonic/gin", ""), "Context", "SetCookie") and
+      mcn.getArgument(6) = sink and
       exists(NameToGinSetCookieTrackingConfiguration cfg, DataFlow::Node nameArg |
         cfg.hasFlow(_, nameArg) and
-        c.getArgument(0) = nameArg.asExpr()
+        mcn.getArgument(0) = nameArg
       )
     )
   }
@@ -137,21 +138,23 @@ private class NameToGinSetCookieTrackingConfiguration extends DataFlow2::Configu
   override predicate isSource(DataFlow::Node source) { isAuthVariable(source.asExpr()) }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(CallExpr c |
-      c.getTarget().getQualifiedName() = "github.com/gin-gonic/gin.Context.SetCookie" and
-      c.getArgument(0) = sink.asExpr()
+    exists(DataFlow::MethodCallNode mcn |
+      mcn.getTarget()
+          .hasQualifiedName(package("github.com/gin-gonic/gin", ""), "Context", "SetCookie") and
+      mcn.getArgument(0) = sink
     )
   }
 }
 
 /**
- * The base of `gorilla/sessions.Session.Save` call.
+ * The receiver of `gorilla/sessions.Session.Save` call.
  */
 private class GorillaSessionSaveSink extends DataFlow::Node {
   GorillaSessionSaveSink() {
-    exists(CallExpr c |
-      this.asExpr() = c.getCalleeExpr().(SelectorExpr).getBase() and
-      c.getTarget().getQualifiedName() = "github.com/gorilla/sessions.Session.Save"
+    exists(DataFlow::MethodCallNode mcn |
+      this = mcn.getReceiver() and
+      mcn.getTarget()
+          .hasQualifiedName(package("github.com/gorilla/sessions", ""), "Session", "Save")
     )
   }
 }
@@ -174,8 +177,9 @@ class GorillaCookieStoreSaveTrackingConfiguration extends DataFlow::Configuratio
   override predicate isSink(DataFlow::Node sink) { sink instanceof GorillaSessionSaveSink }
 
   override predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(DataFlow::CallNode cn |
-      cn.getTarget().getQualifiedName() = "github.com/gorilla/sessions.CookieStore.Get" and
+    exists(DataFlow::MethodCallNode cn |
+      cn.getTarget()
+          .hasQualifiedName(package("github.com/gorilla/sessions", ""), "CookieStore", "Get") and
       pred = cn.getReceiver() and
       succ = cn.getResult(0)
     )
@@ -201,7 +205,7 @@ class GorillaSessionOptionsTrackingConfiguration extends TaintTracking::Configur
 
   override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(Field f, DataFlow::Write w, DataFlow::Node base |
-      f.getQualifiedName() = "github.com/gorilla/sessions.Session.Options" and
+      f.hasQualifiedName(package("github.com/gorilla/sessions", ""), "Session", "Options") and
       w.writesField(base, f, pred) and
       succ = base
     )
@@ -227,7 +231,7 @@ class BoolToGorillaSessionOptionsTrackingConfiguration extends TaintTracking::Co
     )
     or
     exists(Field f, DataFlow::Write w, DataFlow::Node base |
-      f.getQualifiedName() = "github.com/gorilla/sessions.Session.Options" and
+      f.hasQualifiedName(package("github.com/gorilla/sessions", ""), "Session", "Options") and
       w.writesField(base, f, pred) and
       succ = base
     )
