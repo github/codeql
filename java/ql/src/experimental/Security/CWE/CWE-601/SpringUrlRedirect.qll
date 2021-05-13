@@ -51,19 +51,8 @@ class SpringUrlRedirectSink extends DataFlow::Node {
     exists(ClassInstanceExpr cie |
       cie.getConstructedType().hasQualifiedName("org.springframework.web.servlet", "ModelAndView") and
       cie.getArgument(0) = this.asExpr() and
-      exists(RedirectBuilderFlowConfig rstrbfc | rstrbfc.hasFlowToExpr(cie.getArgument(0)))
+      exists(RedirectBuilderExpr rbe | rbe.getRightOperand() = this.asExpr())
     )
-  }
-}
-
-/** A data flow configuration tracing flow from remote sources to redirect builder expression. */
-private class RedirectBuilderFlowConfig extends DataFlow2::Configuration {
-  RedirectBuilderFlowConfig() { this = "RedirectBuilderFlowConfig" }
-
-  override predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(RedirectBuilderExpr rbe | rbe.getRightOperand() = sink.asExpr())
   }
 }
 
