@@ -222,10 +222,10 @@ private class PrimitiveSanitizer extends RequestForgerySanitizer {
   }
 }
 
-private class HostnameSanitizingPrefix extends CompileTimeConstantExpr {
+private class HostnameSanitizingConstantPrefix extends CompileTimeConstantExpr {
   int offset;
 
-  HostnameSanitizingPrefix() {
+  HostnameSanitizingConstantPrefix() {
     // Matches strings that look like when prepended to untrusted input, they will restrict
     // the host or entity addressed: for example, anything containing `?` or `#`, or a slash that
     // doesn't appear to be a protocol specifier (e.g. `http://` is not sanitizing), or specifically
@@ -242,21 +242,10 @@ private class HostnameSanitizingPrefix extends CompileTimeConstantExpr {
   int getOffset() { result = offset }
 }
 
-private AddExpr getParentAdd(AddExpr e) { result = e.getParent() }
-
-private AddExpr getAnAddContainingHostnameSanitizingPrefix() {
-  result = getParentAdd*(any(HostnameSanitizingPrefix p).getParent())
-}
-
-private Expr getASanitizedAddOperand() {
-  exists(AddExpr e |
-    e = getAnAddContainingHostnameSanitizingPrefix() and
-    (
-      e.getLeftOperand() = getAnAddContainingHostnameSanitizingPrefix() or
-      e.getLeftOperand() instanceof HostnameSanitizingPrefix
-    ) and
-    result = e.getRightOperand()
-  )
+private Expr getAHostnameSanitizingPrefix() {
+  result instanceof HostnameSanitizingConstantPrefix
+  or
+  result.(AddExpr).getAnOperand() = getAHostnameSanitizingPrefix()
 }
 
 private MethodAccess getNextAppend(MethodAccess append) {
@@ -283,7 +272,8 @@ private MethodAccess getAChainedAppend(Expr e) {
 private class HostnameSanitizedExpr extends Expr {
   HostnameSanitizedExpr() {
     // Sanitize expressions that come after a sanitizing prefix in a tree of string additions:
-    this = getASanitizedAddOperand()
+    this =
+      any(AddExpr add | add.getLeftOperand() = getAHostnameSanitizingPrefix()).getRightOperand()
     or
     // Sanitize all appends to a StringBuilder that is initialized with a sanitizing prefix:
     // (note imprecision: if the same StringBuilder/StringBuffer has more than one constructor call,
@@ -291,7 +281,7 @@ private class HostnameSanitizedExpr extends Expr {
     exists(StringBuilderVar sbv, ConstructorCall constructor, Expr initializer |
       initializer = sbv.getAnAssignedValue() and
       constructor = getQualifier*(initializer) and
-      constructor.getArgument(0) instanceof HostnameSanitizingPrefix and
+      constructor.getArgument(0) = getAHostnameSanitizingPrefix() and
       (
         this = sbv.getAnAppend().getArgument(0)
         or
@@ -301,14 +291,15 @@ private class HostnameSanitizedExpr extends Expr {
     or
     // Sanitize expressions that come after a sanitizing prefix in a sequence of StringBuilder operations:
     exists(MethodAccess appendSanitizingConstant, MethodAccess subsequentAppend |
-      appendSanitizingConstant.getArgument(0) instanceof HostnameSanitizingPrefix and
+      appendSanitizingConstant = any(StringBuilderVar v).getAnAppend() and
+      appendSanitizingConstant.getArgument(0) = getAHostnameSanitizingPrefix() and
       getNextAppend*(appendSanitizingConstant) = subsequentAppend and
       this = subsequentAppend.getArgument(0)
     )
     or
     // Sanitize expressions that come after a sanitizing prefix in the args to a format call:
     exists(
-      FormattingCall formatCall, FormatString formatString, HostnameSanitizingPrefix prefix,
+      FormattingCall formatCall, FormatString formatString, HostnameSanitizingConstantPrefix prefix,
       int sanitizedFromOffset, int laterOffset, int sanitizedArg
     |
       formatString = unique(FormatString fs | fs = formatCall.getAFormatString()) and
