@@ -30,6 +30,9 @@ string getAnInsecureHashAlgorithmName() { result = ["SHA1", "MD5"] }
 /**
  * Gets the regular expression used for matching strings that look like they
  * contain an algorithm that is known to be insecure.
+ *
+ * Consider using `isInsecureEncryption` rather than accessing this regular
+ * expression directly.
  */
 string getInsecureAlgorithmRegex() {
   result =
@@ -49,8 +52,12 @@ string getInsecureAlgorithmRegex() {
  * Holds if `name` looks like it might be related to operations with an
  * insecure encyption algorithm.
  */
-bindingset[name] predicate isInsecureEncryption(string name) {
-  name.regexpMatch(getInsecureAlgorithmRegex())
+bindingset[name]
+predicate isInsecureEncryption(string name) {
+  name.regexpMatch(getInsecureAlgorithmRegex()) and
+  // Check for evidence that an otherwise matching name may in fact not be
+  // related to insecure encrpytion, e.g. "Triple-DES" is not "DES".
+  not name.toUpperCase().regexpMatch(".*TRIPLE.*")
 }
 
 /**
