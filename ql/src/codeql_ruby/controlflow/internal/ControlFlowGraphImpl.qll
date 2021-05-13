@@ -580,21 +580,7 @@ module Trees {
 
   private class CharacterTree extends LeafTree, CharacterLiteral { }
 
-  private class ClassDeclarationTree extends BodyStmtTree, ClassDeclaration {
-    final override predicate first(AstNode first) {
-      this.firstInner(first)
-      or
-      not exists(this.getAChild(_)) and
-      first = this
-    }
-
-    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
-      BodyStmtTree.super.succ(pred, succ, c)
-      or
-      succ = this and
-      this.lastInner(pred, c)
-    }
-
+  private class ClassDeclarationTree extends NamespaceTree, ClassDeclaration {
     /** Gets the `i`th child in the body of this block. */
     final override AstNode getBodyChild(int i, boolean rescuable) {
       result = this.getScopeExpr() and i = 0 and rescuable = false
@@ -603,8 +589,10 @@ module Trees {
       i = count(this.getScopeExpr()) and
       rescuable = true
       or
-      result = this.getStmt(i - count(this.getScopeExpr()) - count(this.getSuperclassExpr())) and
-      rescuable = true
+      result =
+        NamespaceTree.super
+            .getBodyChild(i - count(this.getScopeExpr()) - count(this.getSuperclassExpr()),
+              rescuable)
     }
   }
 
@@ -934,7 +922,16 @@ module Trees {
     }
   }
 
-  private class ModuleDeclarationTree extends BodyStmtTree, ModuleDeclaration {
+  private class ModuleDeclarationTree extends NamespaceTree, ModuleDeclaration {
+    /** Gets the `i`th child in the body of this block. */
+    final override AstNode getBodyChild(int i, boolean rescuable) {
+      result = this.getScopeExpr() and i = 0 and rescuable = false
+      or
+      result = NamespaceTree.super.getBodyChild(i - count(this.getScopeExpr()), rescuable)
+    }
+  }
+
+  private class NamespaceTree extends BodyStmtTree, Namespace {
     final override predicate first(AstNode first) {
       this.firstInner(first)
       or
@@ -947,13 +944,6 @@ module Trees {
       or
       succ = this and
       this.lastInner(pred, c)
-    }
-
-    /** Gets the `i`th child in the body of this block. */
-    final override AstNode getBodyChild(int i, boolean rescuable) {
-      result = this.getScopeExpr() and i = 0 and rescuable = false
-      or
-      result = BodyStmtTree.super.getBodyChild(i - count(this.getScopeExpr()), rescuable)
     }
   }
 
