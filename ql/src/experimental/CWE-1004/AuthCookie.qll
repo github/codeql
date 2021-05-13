@@ -1,5 +1,21 @@
 import go
 
+private class NetHttpCookieType extends Type {
+  NetHttpCookieType() { this.hasQualifiedName(package("net/http", ""), "Cookie") }
+}
+
+private class GinContextSetCookieMethod extends Method {
+  GinContextSetCookieMethod() {
+    this.hasQualifiedName(package("github.com/gin-gonic/gin", ""), "Context", "SetCookie")
+  }
+}
+
+private class GorillaSessionOptionsField extends Field {
+  GorillaSessionOptionsField() {
+    this.hasQualifiedName(package("github.com/gorilla/sessions", ""), "Session", "Options")
+  }
+}
+
 /**
  * A simplistic points-to alternative: given a struct creation and a field name, get the values that field can be assigned.
  *
@@ -57,7 +73,7 @@ class NetHttpCookieTrackingConfiguration extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) {
     exists(StructLit sl |
       source.asExpr() = sl and
-      sl.getType().hasQualifiedName(package("net/http", ""), "Cookie")
+      sl.getType() instanceof NetHttpCookieType
     )
   }
 
@@ -82,7 +98,7 @@ private class NameToNetHttpCookieTrackingConfiguration extends TaintTracking2::C
 
   override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(StructLit sl |
-      sl.getType().hasQualifiedName(package("net/http", ""), "Cookie") and
+      sl.getType() instanceof NetHttpCookieType and
       getValueForFieldWrite(sl, "Name") = pred and
       sl = succ.asExpr()
     )
@@ -101,7 +117,7 @@ class BoolToNetHttpCookieTrackingConfiguration extends TaintTracking::Configurat
 
   override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(StructLit sl |
-      sl.getType().hasQualifiedName(package("net/http", ""), "Cookie") and
+      sl.getType() instanceof NetHttpCookieType and
       getValueForFieldWrite(sl, "HttpOnly") = pred and
       sl = succ.asExpr()
     )
@@ -118,8 +134,7 @@ class BoolToGinSetCookieTrackingConfiguration extends DataFlow::Configuration {
 
   override predicate isSink(DataFlow::Node sink) {
     exists(DataFlow::MethodCallNode mcn |
-      mcn.getTarget()
-          .hasQualifiedName(package("github.com/gin-gonic/gin", ""), "Context", "SetCookie") and
+      mcn.getTarget() instanceof GinContextSetCookieMethod and
       mcn.getArgument(6) = sink and
       exists(NameToGinSetCookieTrackingConfiguration cfg, DataFlow::Node nameArg |
         cfg.hasFlow(_, nameArg) and
@@ -139,8 +154,7 @@ private class NameToGinSetCookieTrackingConfiguration extends DataFlow2::Configu
 
   override predicate isSink(DataFlow::Node sink) {
     exists(DataFlow::MethodCallNode mcn |
-      mcn.getTarget()
-          .hasQualifiedName(package("github.com/gin-gonic/gin", ""), "Context", "SetCookie") and
+      mcn.getTarget() instanceof GinContextSetCookieMethod and
       mcn.getArgument(0) = sink
     )
   }
@@ -204,8 +218,7 @@ class GorillaSessionOptionsTrackingConfiguration extends TaintTracking::Configur
   override predicate isSink(DataFlow::Node sink) { sink instanceof GorillaSessionSaveSink }
 
   override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(Field f, DataFlow::Write w, DataFlow::Node base |
-      f.hasQualifiedName(package("github.com/gorilla/sessions", ""), "Session", "Options") and
+    exists(GorillaSessionOptionsField f, DataFlow::Write w, DataFlow::Node base |
       w.writesField(base, f, pred) and
       succ = base
     )
@@ -230,8 +243,7 @@ class BoolToGorillaSessionOptionsTrackingConfiguration extends TaintTracking::Co
       sl = succ.asExpr()
     )
     or
-    exists(Field f, DataFlow::Write w, DataFlow::Node base |
-      f.hasQualifiedName(package("github.com/gorilla/sessions", ""), "Session", "Options") and
+    exists(GorillaSessionOptionsField f, DataFlow::Write w, DataFlow::Node base |
       w.writesField(base, f, pred) and
       succ = base
     )
