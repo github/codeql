@@ -55,16 +55,12 @@ Macro getAdditionalEvidenceMacro() {
 /**
  * An enum constant which may relate to an insecure encryption algorithm.
  */
-EnumConstant getAnInsecureEncryptionEnumConst() {
-  isInsecureEncryption(result.getName())
-}
+EnumConstant getAnInsecureEncryptionEnumConst() { isInsecureEncryption(result.getName()) }
 
 /**
  * An enum constant with additional evidence it is related to encryption.
  */
-EnumConstant getAdditionalEvidenceEnumConst() {
-  isEncryptionAdditionalEvidence(result.getName())
-}
+EnumConstant getAdditionalEvidenceEnumConst() { isEncryptionAdditionalEvidence(result.getName()) }
 
 /**
  * A function call we have a high confidence is related to use of an insecure
@@ -111,14 +107,11 @@ class InsecureFunctionCall extends FunctionCall {
     )
   }
 
-  Element getBlame() {
-    result = blame
-  }
+  Element getBlame() { result = blame }
 
-  string getDescription() {
-     result = explain
-  }
+  string getDescription() { result = explain }
 }
 
 from InsecureFunctionCall c
-select c.getBlame(), "This " + c.getDescription() + " specifies a broken or weak cryptographic algorithm."
+select c.getBlame(),
+  "This " + c.getDescription() + " specifies a broken or weak cryptographic algorithm."
