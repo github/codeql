@@ -6,6 +6,8 @@
 | test2.cpp:175:28:175:34 | USE_DES | This enum constant access specifies a broken or weak cryptographic algorithm. |
 | test2.cpp:182:38:182:45 | ALGO_DES | This macro invocation specifies a broken or weak cryptographic algorithm. |
 | test2.cpp:185:38:185:44 | USE_DES | This enum constant access specifies a broken or weak cryptographic algorithm. |
+| test2.cpp:234:2:234:20 | call to encrypt | This function call specifies a broken or weak cryptographic algorithm. |
+| test2.cpp:239:5:239:11 | call to encrypt | This function call specifies a broken or weak cryptographic algorithm. |
 | test.cpp:38:2:38:31 | ENCRYPT_WITH_DES(data,amount) | This macro invocation specifies a broken or weak cryptographic algorithm. |
 | test.cpp:39:2:39:31 | ENCRYPT_WITH_RC2(data,amount) | This macro invocation specifies a broken or weak cryptographic algorithm. |
 | test.cpp:51:2:51:32 | DES_DO_ENCRYPTION(data,amount) | This macro invocation specifies a broken or weak cryptographic algorithm. |

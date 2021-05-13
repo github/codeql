@@ -19,7 +19,8 @@ import semmle.code.cpp.security.Encryption
 Function getAnInsecureEncryptionFunction() {
   (
     isInsecureEncryption(result.getName()) or
-    isInsecureEncryption(result.getAParameter().getName())
+    isInsecureEncryption(result.getAParameter().getName()) or
+    isInsecureEncryption(result.getDeclaringType().getName())
   ) and
   exists(result.getACallToThisFunction())
 }

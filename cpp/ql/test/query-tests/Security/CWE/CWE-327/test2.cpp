@@ -231,12 +231,12 @@ public:
 
 void do_classes(const char *data)
 {
-	desEncrypt::encrypt(data); // BAD [NOT DETECTED]
+	desEncrypt::encrypt(data); // BAD
 	aes256Encrypt::encrypt(data); // GOOD
 
 	desCipher dc;
 	aesCipher ac;
-	dc.encrypt(data); // BAD [NOT DETECTED]
+	dc.encrypt(data); // BAD
 	ac.encrypt(data); // GOOD
 }
 
