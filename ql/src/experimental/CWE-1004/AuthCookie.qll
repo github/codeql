@@ -145,7 +145,7 @@ private class NameToGinSetCookieTrackingConfiguration extends DataFlow2::Configu
 }
 
 /**
- * A cookie passed the second parameter to `gorilla/sessions.Session.Save`.
+ * The base of `gorilla/sessions.Session.Save` call.
  */
 private class GorillaSessionSaveSink extends DataFlow::Node {
   GorillaSessionSaveSink() {
