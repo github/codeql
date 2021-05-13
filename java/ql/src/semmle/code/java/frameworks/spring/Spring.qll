@@ -8,6 +8,7 @@ import semmle.code.java.frameworks.spring.SpringBean
 import semmle.code.java.frameworks.spring.SpringBeanFile
 import semmle.code.java.frameworks.spring.SpringBeans
 import semmle.code.java.frameworks.spring.SpringBeanRefType
+import semmle.code.java.frameworks.spring.SpringCache
 import semmle.code.java.frameworks.spring.SpringComponentScan
 import semmle.code.java.frameworks.spring.SpringConstructorArg
 import semmle.code.java.frameworks.spring.SpringController
