@@ -57,9 +57,9 @@ private predicate isAuthVariable(Expr expr) {
  */
 private class SetCookieSink extends DataFlow::Node {
   SetCookieSink() {
-    exists(CallExpr c |
-      c.getTarget().hasQualifiedName(package("net/http", ""), "SetCookie") and
-      this.asExpr() = c.getArgument(1)
+    exists(DataFlow::CallNode cn |
+      cn.getTarget().hasQualifiedName(package("net/http", ""), "SetCookie") and
+      this = cn.getArgument(1)
     )
   }
 }
