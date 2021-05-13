@@ -13,12 +13,12 @@ module StringOps {
     /**
      * Gets the `A` in `A.startsWith(B)`.
      */
-    DataFlow::Node getBaseString() { result = this.(StartsWith::Range).getBaseString() }
+    DataFlow::Node getBaseString() { result = super.getBaseString() }
 
     /**
      * Gets the `B` in `A.startsWith(B)`.
      */
-    DataFlow::Node getSubstring() { result = this.(StartsWith::Range).getSubstring() }
+    DataFlow::Node getSubstring() { result = super.getSubstring() }
 
     /**
      * Gets the polarity of the check.
@@ -26,7 +26,7 @@ module StringOps {
      * If the polarity is `false` the check returns `true` if the string does not start
      * with the given substring.
      */
-    boolean getPolarity() { result = this.(StartsWith::Range).getPolarity() }
+    boolean getPolarity() { result = super.getPolarity() }
   }
 
   module StartsWith {
@@ -239,12 +239,12 @@ module StringOps {
     /**
      * Gets the `A` in `A.startsWith(B)`.
      */
-    DataFlow::Node getBaseString() { result = this.(EndsWith::Range).getBaseString() }
+    DataFlow::Node getBaseString() { result = super.getBaseString() }
 
     /**
      * Gets the `B` in `A.startsWith(B)`.
      */
-    DataFlow::Node getSubstring() { result = this.(EndsWith::Range).getSubstring() }
+    DataFlow::Node getSubstring() { result = super.getSubstring() }
 
     /**
      * Gets the polarity if the check.
@@ -252,7 +252,7 @@ module StringOps {
      * If the polarity is `false` the check returns `true` if the string does not end
      * with the given substring.
      */
-    boolean getPolarity() { result = this.(EndsWith::Range).getPolarity() }
+    boolean getPolarity() { result = super.getPolarity() }
   }
 
   module EndsWith {
@@ -672,12 +672,12 @@ module StringOps {
      *
      * In some cases this represents a string value being coerced to a RegExp object.
      */
-    DataFlow::Node getRegExpOperand() { result = this.(RegExpTest::Range).getRegExpOperand(_) }
+    DataFlow::Node getRegExpOperand() { result = super.getRegExpOperand(_) }
 
     /**
      * Gets the data flow node corresponding to the string being tested against the regular expression.
      */
-    DataFlow::Node getStringOperand() { result = this.(RegExpTest::Range).getStringOperand() }
+    DataFlow::Node getStringOperand() { result = super.getStringOperand() }
 
     /**
      * Gets the return value indicating that the string matched the regular expression.
@@ -685,7 +685,7 @@ module StringOps {
      * For example, for `regexp.exec(str) == null`, the polarity is `false`, and for
      * `regexp.exec(str) != null` the polarity is `true`.
      */
-    boolean getPolarity() { result = this.(RegExpTest::Range).getPolarity() }
+    boolean getPolarity() { result = super.getPolarity() }
   }
 
   /**

@@ -23,17 +23,17 @@ class ClientRequest extends DataFlow::InvokeNode instanceof ClientRequest::Range
   /**
    * Gets the URL of the request.
    */
-  DataFlow::Node getUrl() { result = this.(ClientRequest::Range).getUrl() }
+  DataFlow::Node getUrl() { result = super.getUrl() }
 
   /**
    * Gets the host of the request.
    */
-  DataFlow::Node getHost() { result = this.(ClientRequest::Range).getHost() }
+  DataFlow::Node getHost() { result = super.getHost() }
 
   /**
    * Gets a node that contributes to the data-part this request.
    */
-  DataFlow::Node getADataNode() { result = this.(ClientRequest::Range).getADataNode() }
+  DataFlow::Node getADataNode() { result = super.getADataNode() }
 
   /**
    * Gets a data flow node that refers to some representation of the response, possibly
@@ -69,7 +69,7 @@ class ClientRequest extends DataFlow::InvokeNode instanceof ClientRequest::Range
   /**
    * Gets a data-flow node that determines where in the file-system the result of the request should be saved.
    */
-  DataFlow::Node getASavePath() { result = this.(ClientRequest::Range).getASavePath() }
+  DataFlow::Node getASavePath() { result = super.getASavePath() }
 }
 
 deprecated class CustomClientRequest = ClientRequest::Range;

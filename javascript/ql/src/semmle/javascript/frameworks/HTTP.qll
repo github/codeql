@@ -546,7 +546,7 @@ module HTTP {
      * Gets the route handler in this container that is accessed at `access`.
      */
     DataFlow::SourceNode getRouteHandler(DataFlow::SourceNode access) {
-      result = this.(RouteHandlerCandidateContainer::Range).getRouteHandler(access)
+      result = super.getRouteHandler(access)
     }
   }
 

@@ -14,19 +14,19 @@ class MembershipCandidate extends DataFlow::Node instanceof MembershipCandidate:
   /**
    * Gets the expression that performs the membership test, if any.
    */
-  DataFlow::Node getTest() { result = this.(MembershipCandidate::Range).getTest() }
+  DataFlow::Node getTest() { result = super.getTest() }
 
   /**
    * Gets a string that this candidate is tested against, if
    * it can be determined.
    */
-  string getAMemberString() { result = this.(MembershipCandidate::Range).getAMemberString() }
+  string getAMemberString() { result = super.getAMemberString() }
 
   /**
    * Gets a node that this candidate is tested against, if
    * it can be determined.
    */
-  DataFlow::Node getAMemberNode() { result = this.(MembershipCandidate::Range).getAMemberNode() }
+  DataFlow::Node getAMemberNode() { result = super.getAMemberNode() }
 
   /**
    * Gets the polarity of the test.
@@ -34,7 +34,7 @@ class MembershipCandidate extends DataFlow::Node instanceof MembershipCandidate:
    * If the polarity is `false` the test returns `true` if the
    * collection does not contain this candidate.
    */
-  boolean getTestPolarity() { result = this.(MembershipCandidate::Range).getTestPolarity() }
+  boolean getTestPolarity() { result = super.getTestPolarity() }
 }
 
 /**

@@ -9,10 +9,10 @@ module Base64 {
   class Encode extends DataFlow::Node instanceof Encode::Range {
 
     /** Gets the input passed to the encoder. */
-    DataFlow::Node getInput() { result = this.(Encode::Range).getInput() }
+    DataFlow::Node getInput() { result = super.getInput() }
 
     /** Gets the base64-encoded output of the encoder. */
-    DataFlow::Node getOutput() { result = this.(Encode::Range).getOutput() }
+    DataFlow::Node getOutput() { result = super.getOutput() }
   }
 
   module Encode {
@@ -34,10 +34,10 @@ module Base64 {
   class Decode extends DataFlow::Node instanceof Decode::Range {
 
     /** Gets the base64-encoded input passed to the decoder. */
-    DataFlow::Node getInput() { result = this.(Decode::Range).getInput() }
+    DataFlow::Node getInput() { result = super.getInput() }
 
     /** Gets the output of the decoder. */
-    DataFlow::Node getOutput() { result = this.(Decode::Range).getOutput() }
+    DataFlow::Node getOutput() { result = super.getOutput() }
   }
 
   module Decode {

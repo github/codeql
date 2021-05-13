@@ -19,10 +19,10 @@ private import javascript
 class InclusionTest extends DataFlow::Node instanceof InclusionTest::Range {
 
   /** Gets the `A` in `A.includes(B)`. */
-  DataFlow::Node getContainerNode() { result = this.(InclusionTest::Range).getContainerNode() }
+  DataFlow::Node getContainerNode() { result = super.getContainerNode() }
 
   /** Gets the `B` in `A.includes(B)`. */
-  DataFlow::Node getContainedNode() { result = this.(InclusionTest::Range).getContainedNode() }
+  DataFlow::Node getContainedNode() { result = super.getContainedNode() }
 
   /**
    * Gets the polarity of the check.
@@ -30,7 +30,7 @@ class InclusionTest extends DataFlow::Node instanceof InclusionTest::Range {
    * If the polarity is `false` the check returns `true` if the container does not contain
    * the given element.
    */
-  boolean getPolarity() { result = this.(InclusionTest::Range).getPolarity() }
+  boolean getPolarity() { result = super.getPolarity() }
 }
 
 module InclusionTest {

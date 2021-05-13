@@ -17,7 +17,7 @@ class FunctionCompositionCall extends DataFlow::CallNode instanceof FunctionComp
    * that is, `g` occurs later than `f` in `f(g(...))` but is invoked before `f`.
    */
   DataFlow::Node getOperandNode(int i) {
-    result = this.(FunctionCompositionCall::Range).getOperandNode(i)
+    result = super.getOperandNode(i)
   }
 
   /** Gets a node holding one of the functions to be composed. */
@@ -37,7 +37,7 @@ class FunctionCompositionCall extends DataFlow::CallNode instanceof FunctionComp
   final DataFlow::Node getAnOperandFunction() { result = getOperandFunction(_) }
 
   /** Gets the number of functions being composed. */
-  int getNumOperand() { result = this.(FunctionCompositionCall::Range).getNumOperand() }
+  int getNumOperand() { result = super.getNumOperand() }
 }
 
 /**

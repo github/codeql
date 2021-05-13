@@ -14,7 +14,7 @@ module Closure {
      * Gets the namespace being referenced.
      */
     string getClosureNamespace() {
-      result = this.(ClosureNamespaceRef::Range).getClosureNamespace()
+      result = super.getClosureNamespace()
     }
   }
 
