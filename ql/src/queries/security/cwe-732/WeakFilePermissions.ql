@@ -52,8 +52,8 @@ class PermissivePermissionsExpr extends Expr {
       (acc = access(world_permission(perm)) or acc = access(group_permission(perm)))
     )
     or
-    // adding/setting read or write permissions for all/group/owner
-    this.(StringLiteral).getValueText().regexpMatch(".*[ago][^-=+]*[+=]*[xXst]*[rw].*")
+    // adding/setting read or write permissions for all/group/other
+    this.(StringLiteral).getValueText().regexpMatch(".*[ago][^-=+]*[+=][xXst]*[rw].*")
   }
 }
 
