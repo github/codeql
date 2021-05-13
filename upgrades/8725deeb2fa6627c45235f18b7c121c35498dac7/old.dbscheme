@@ -1237,23 +1237,6 @@ case @token.kind of
 ;
 
 
-diagnostics(
-  unique int id: @diagnostic,
-  int severity: int ref,
-  string error_tag: string ref,
-  string error_message: string ref,
-  string full_error_message: string ref,
-  int location: @location_default ref
-);
-
-case @diagnostic.severity of
-  10 = @diagnostic_debug
-| 20 = @diagnostic_info
-| 30 = @diagnostic_warning
-| 40 = @diagnostic_error
-;
-
-
 @ast_node = @alias | @argument_list | @array | @assignment | @bare_string | @bare_symbol | @begin | @begin_block | @binary | @block | @block_argument | @block_parameter | @block_parameters | @break | @call | @case__ | @chained_string | @class | @conditional | @delimited_symbol | @destructured_left_assignment | @destructured_parameter | @do | @do_block | @element_reference | @else | @elsif | @end_block | @ensure | @exception_variable | @exceptions | @for | @hash | @hash_splat_argument | @hash_splat_parameter | @heredoc_body | @if | @if_modifier | @in | @interpolation | @keyword_parameter | @lambda | @lambda_parameters | @left_assignment_list | @method | @method_parameters | @module | @next | @operator_assignment | @optional_parameter | @pair | @parenthesized_statements | @pattern | @program | @range | @rational | @redo | @regex | @rescue | @rescue_modifier | @rest_assignment | @retry | @return | @right_assignment_list | @scope_resolution | @setter | @singleton_class | @singleton_method | @splat_argument | @splat_parameter | @string__ | @string_array | @subshell | @superclass | @symbol_array | @then | @token | @unary | @undef | @unless | @unless_modifier | @until | @until_modifier | @when | @while | @while_modifier | @yield
 
 @ast_node_parent = @ast_node | @file

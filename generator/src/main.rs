@@ -248,6 +248,11 @@ fn convert_nodes<'a>(nodes: &'a node_types::NodeTypeMap) -> Vec<dbscheme::Entry<
     entries.push(dbscheme::Entry::Table(token_table));
     entries.push(dbscheme::Entry::Case(token_case));
 
+    // Add the diagnostics table
+    let (diagnostics_case, diagnostics_table) = create_diagnostics();
+    entries.push(dbscheme::Entry::Table(diagnostics_table));
+    entries.push(dbscheme::Entry::Case(diagnostics_case));
+
     // Create a union of all database types.
     entries.push(dbscheme::Entry::Union(dbscheme::Union {
         name: "ast_node",
@@ -588,6 +593,69 @@ fn create_source_location_prefix_table<'a>() -> dbscheme::Entry<'a> {
             ql_type_is_ref: true,
         }],
     })
+}
+
+fn create_diagnostics<'a>() -> (dbscheme::Case<'a>, dbscheme::Table<'a>) {
+    let table = dbscheme::Table {
+        name: "diagnostics",
+        keysets: None,
+        columns: vec![
+            dbscheme::Column {
+                unique: true,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "id",
+                ql_type: ql::Type::AtType("diagnostic"),
+                ql_type_is_ref: false,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "severity",
+                ql_type: ql::Type::Int,
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::String,
+                name: "error_tag",
+                ql_type: ql::Type::String,
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::String,
+                name: "error_message",
+                ql_type: ql::Type::String,
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::String,
+                name: "full_error_message",
+                ql_type: ql::Type::String,
+                ql_type_is_ref: true,
+            },
+            dbscheme::Column {
+                unique: false,
+                db_type: dbscheme::DbColumnType::Int,
+                name: "location",
+                ql_type: ql::Type::AtType("location_default"),
+                ql_type_is_ref: true,
+            },
+        ],
+    };
+    let severities: Vec<(usize, &str)> = vec![
+        (10, "diagnostic_debug"),
+        (20, "diagnostic_info"),
+        (30, "diagnostic_warning"),
+        (40, "diagnostic_error"),
+    ];
+    let case = dbscheme::Case {
+        name: "diagnostic",
+        column: "severity",
+        branches: severities,
+    };
+    (case, table)
 }
 
 fn main() {
