@@ -174,8 +174,8 @@ class GorillaCookieStoreSaveTrackingConfiguration extends DataFlow::Configuratio
   override predicate isSink(DataFlow::Node sink) { sink instanceof GorillaSessionSaveSink }
 
   override predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(Function f, DataFlow::CallNode cn | cn = f.getACall() |
-      f.getQualifiedName() = "github.com/gorilla/sessions.CookieStore.Get" and
+    exists(DataFlow::CallNode cn |
+      cn.getTarget().getQualifiedName() = "github.com/gorilla/sessions.CookieStore.Get" and
       pred = cn.getReceiver() and
       succ = cn.getResult(0)
     )
