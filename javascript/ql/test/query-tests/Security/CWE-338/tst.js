@@ -116,4 +116,7 @@ function uid() {
     var sessionUid = Math.floor(Math.random() * 4_000_000_000); // NOT OK
     var uid = Math.floor(Math.random() * 4_000_000_000); // NOT OK
     var my_nice_uid = Math.floor(Math.random() * 4_000_000_000); // NOT OK
+    var liquid = Math.random(); // OK
+    var UUID = Math.random(); // NOT OK
+    var MY_UID = Math.random(); // NOK OK
 }
