@@ -70,19 +70,28 @@ EnumConstant getAdditionalEvidenceEnumConst() {
  * encryption algorithm.
  */
 class InsecureFunctionCall extends FunctionCall {
+  Element blame;
+  string explain;
+
   InsecureFunctionCall() {
     // find use of an insecure algorithm name
     (
-      getTarget() = getAnInsecureEncryptionFunction()
+      getTarget() = getAnInsecureEncryptionFunction() and
+      blame = this and
+      explain = "function call"
       or
       exists(MacroInvocation mi |
         mi.getAGeneratedElement() = this.getAChild*() and
-        mi.getMacro() = getAnInsecureEncryptionMacro()
+        mi.getMacro() = getAnInsecureEncryptionMacro() and
+        blame = mi and
+        explain = "macro invocation"
       )
       or
       exists(EnumConstantAccess ec |
         ec = this.getAChild*() and
-        ec.getTarget() = getAnInsecureEncryptionEnumConst()
+        ec.getTarget() = getAnInsecureEncryptionEnumConst() and
+        blame = ec and
+        explain = "enum constant access"
       )
     ) and
     // find additional evidence that this function is related to encryption.
@@ -101,8 +110,14 @@ class InsecureFunctionCall extends FunctionCall {
     )
   }
 
-  string description() { result = "function call" }
+  Element getBlame() {
+    result = blame
+  }
+
+  string getDescription() {
+     result = explain
+  }
 }
 
 from InsecureFunctionCall c
-select c, "This " + c.description() + " specifies a broken or weak cryptographic algorithm."
+select c.getBlame(), "This " + c.getDescription() + " specifies a broken or weak cryptographic algorithm."
