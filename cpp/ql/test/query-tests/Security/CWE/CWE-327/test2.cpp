@@ -141,7 +141,7 @@ void do_class_encrypts(char *data, size_t amount, keytype key)
 	}
 
 	{
-		MyBadEncryptor mbe(key, DES); // BAD [NOT DETECTED]
+		MyBadEncryptor mbe(key, DES); // BAD
 
 		mbe.encrypt(data, amount);
 	}
@@ -172,7 +172,7 @@ void do_unseen_encrypts(char *data, size_t amount, keytype key)
 	set_encryption_algorithm1(ALGO_DES); // BAD
 	set_encryption_algorithm1(ALGO_AES); // GOOD
 
-	set_encryption_algorithm2(USE_DES); // BAD [NOT DETECTED]
+	set_encryption_algorithm2(USE_DES); // BAD
 	set_encryption_algorithm2(USE_AES); // GOOD
 
 	set_encryption_algorithm3("DES"); // BAD [NOT DETECTED]
@@ -182,7 +182,7 @@ void do_unseen_encrypts(char *data, size_t amount, keytype key)
 	encryption_with1(data, amount, key, ALGO_DES); // BAD
 	encryption_with1(data, amount, key, ALGO_AES); // GOOD
 
-	encryption_with2(data, amount, key, USE_DES); // BAD [NOT DETECTED]
+	encryption_with2(data, amount, key, USE_DES); // BAD
 	encryption_with2(data, amount, key, USE_AES); // GOOD
 
 	encryption_with3(data, amount, key, "DES"); // BAD [NOT DETECTED]

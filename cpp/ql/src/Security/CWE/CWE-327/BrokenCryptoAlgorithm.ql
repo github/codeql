@@ -52,6 +52,20 @@ Macro getAdditionalEvidenceMacro() {
 }
 
 /**
+ * An enum constant which may relate to an insecure encryption algorithm.
+ */
+EnumConstant getAnInsecureEncryptionEnumConst() {
+  isInsecureEncryption(result.getName())
+}
+
+/**
+ * An enum constant with additional evidence it is related to encryption.
+ */
+EnumConstant getAdditionalEvidenceEnumConst() {
+  isEncryptionAdditionalEvidence(result.getName())
+}
+
+/**
  * A function call we have a high confidence is related to use of an insecure
  * encryption algorithm.
  */
@@ -65,6 +79,11 @@ class InsecureFunctionCall extends FunctionCall {
         mi.getAGeneratedElement() = this.getAChild*() and
         mi.getMacro() = getAnInsecureEncryptionMacro()
       )
+      or
+      exists(EnumConstantAccess ec |
+        ec = this.getAChild*() and
+        ec.getTarget() = getAnInsecureEncryptionEnumConst()
+      )
     ) and
     // find additional evidence that this function is related to encryption.
     (
@@ -73,6 +92,11 @@ class InsecureFunctionCall extends FunctionCall {
       exists(MacroInvocation mi |
         mi.getAGeneratedElement() = this.getAChild*() and
         mi.getMacro() = getAdditionalEvidenceMacro()
+      )
+      or
+      exists(EnumConstantAccess ec |
+        ec = this.getAChild*() and
+        ec.getTarget() = getAdditionalEvidenceEnumConst()
       )
     )
   }

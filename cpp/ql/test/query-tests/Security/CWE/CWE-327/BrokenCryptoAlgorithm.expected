@@ -1,8 +1,11 @@
 | test2.cpp:49:4:49:24 | call to my_des_implementation | This function call specifies a broken or weak cryptographic algorithm. |
 | test2.cpp:62:2:62:12 | call to encrypt_bad | This function call specifies a broken or weak cryptographic algorithm. |
 | test2.cpp:124:4:124:24 | call to my_des_implementation | This function call specifies a broken or weak cryptographic algorithm. |
+| test2.cpp:144:22:144:30 | call to MyBadEncryptor | This function call specifies a broken or weak cryptographic algorithm. |
 | test2.cpp:172:2:172:26 | call to set_encryption_algorithm1 | This function call specifies a broken or weak cryptographic algorithm. |
+| test2.cpp:175:2:175:26 | call to set_encryption_algorithm2 | This function call specifies a broken or weak cryptographic algorithm. |
 | test2.cpp:182:2:182:17 | call to encryption_with1 | This function call specifies a broken or weak cryptographic algorithm. |
+| test2.cpp:185:2:185:17 | call to encryption_with2 | This function call specifies a broken or weak cryptographic algorithm. |
 | test.cpp:38:2:38:31 | call to my_implementation1 | This function call specifies a broken or weak cryptographic algorithm. |
 | test.cpp:39:2:39:31 | call to my_implementation2 | This function call specifies a broken or weak cryptographic algorithm. |
 | test.cpp:51:2:51:32 | call to my_implementation1 | This function call specifies a broken or weak cryptographic algorithm. |
