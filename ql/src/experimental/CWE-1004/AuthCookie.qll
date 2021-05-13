@@ -25,7 +25,7 @@ private class GorillaSessionOptionsField extends Field {
  *
  * This should cover most typical patterns...
  */
-DataFlow::Node getValueForFieldWrite(StructLit sl, string field) {
+private DataFlow::Node getValueForFieldWrite(StructLit sl, string field) {
   exists(Write w, DataFlow::Node base, Field f |
     f.getName() = field and
     w.writesField(base, f, result) and
@@ -65,31 +65,9 @@ private class SetCookieSink extends DataFlow::Node {
 }
 
 /**
- * Tracks `net/http.Cookie` creation to `net/http.SetCookie`.
- */
-class NetHttpCookieTrackingConfiguration extends TaintTracking::Configuration {
-  NetHttpCookieTrackingConfiguration() { this = "NetHttpCookieTrackingConfiguration" }
-
-  override predicate isSource(DataFlow::Node source) {
-    exists(StructLit sl |
-      source.asExpr() = sl and
-      sl.getType() instanceof NetHttpCookieType
-    )
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
-    sink instanceof SetCookieSink and
-    exists(NameToNetHttpCookieTrackingConfiguration cfg, DataFlow::Node nameArg |
-      cfg.hasFlowTo(nameArg) and
-      sink.asExpr() = nameArg.asExpr()
-    )
-  }
-}
-
-/**
  * Tracks sensitive name to `net/http.SetCookie`.
  */
-private class NameToNetHttpCookieTrackingConfiguration extends TaintTracking2::Configuration {
+class NameToNetHttpCookieTrackingConfiguration extends TaintTracking::Configuration {
   NameToNetHttpCookieTrackingConfiguration() { this = "NameToNetHttpCookieTrackingConfiguration" }
 
   override predicate isSource(DataFlow::Node source) { isAuthVariable(source.asExpr()) }
@@ -106,12 +84,14 @@ private class NameToNetHttpCookieTrackingConfiguration extends TaintTracking2::C
 }
 
 /**
- * Tracks `HttpOnly` set to `false` to `net/http.SetCookie`.
+ * Tracks `bool` assigned to `HttpOnly` that flows into `net/http.SetCookie`.
  */
 class BoolToNetHttpCookieTrackingConfiguration extends TaintTracking::Configuration {
   BoolToNetHttpCookieTrackingConfiguration() { this = "BoolToNetHttpCookieTrackingConfiguration" }
 
-  override predicate isSource(DataFlow::Node source) { source.asExpr().getBoolValue() = false }
+  override predicate isSource(DataFlow::Node source) {
+    source.asExpr().getType().getUnderlyingType() instanceof BoolType
+  }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof SetCookieSink }
 

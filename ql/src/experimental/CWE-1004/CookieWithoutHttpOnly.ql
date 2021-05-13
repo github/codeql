@@ -18,15 +18,20 @@ import DataFlow::PathGraph
 
 /** Holds if `HttpOnly` of `net/http.SetCookie` is set to `false` or not set (default value is used). */
 predicate isNetHttpCookieFlow(DataFlow::PathNode source, DataFlow::PathNode sink) {
-  exists(DataFlow::PathNode cookieCreate, DataFlow::PathNode setCookieSink |
-    exists(NetHttpCookieTrackingConfiguration cfg | cfg.hasFlowPath(cookieCreate, setCookieSink)) and
+  exists(DataFlow::PathNode sensitiveName, DataFlow::PathNode setCookieSink |
+    exists(NameToNetHttpCookieTrackingConfiguration cfg |
+      cfg.hasFlowPath(sensitiveName, setCookieSink)
+    ) and
     (
-      not exists(getValueForFieldWrite(cookieCreate.getNode().asExpr(), "HttpOnly")) and
-      source = cookieCreate and
+      not exists(BoolToNetHttpCookieTrackingConfiguration cfg |
+        cfg.hasFlowTo(setCookieSink.getNode())
+      ) and
+      source = sensitiveName and
       sink = setCookieSink
       or
       exists(BoolToNetHttpCookieTrackingConfiguration cfg |
         cfg.hasFlow(source.getNode(), setCookieSink.getNode()) and
+        source.getNode().getBoolValue() = false and
         sink = setCookieSink
       )
     )
