@@ -25,10 +25,9 @@ predicate isNetHttpCookieFlow(DataFlow::PathNode source, DataFlow::PathNode sink
       source = cookieCreate and
       sink = setCookieSink
       or
-      exists(BoolToNetHttpCookieTrackingConfiguration cfg, DataFlow::PathNode setCookieSink2 |
-        cfg.hasFlowPath(source, setCookieSink2) and
-        setCookieSink2.getNode() = setCookieSink.getNode() and
-        sink = setCookieSink2
+      exists(BoolToNetHttpCookieTrackingConfiguration cfg |
+        cfg.hasFlow(source.getNode(), setCookieSink.getNode()) and
+        sink = setCookieSink
       )
     )
   )
@@ -42,33 +41,22 @@ predicate isGorillaSessionsCookieFlow(DataFlow::PathNode source, DataFlow::PathN
   exists(DataFlow::PathNode cookieStoreCreate, DataFlow::PathNode sessionSave |
     any(GorillaCookieStoreSaveTrackingConfiguration cfg).hasFlowPath(cookieStoreCreate, sessionSave) and
     (
-      not exists(GorillaSessionOptionsTrackingConfiguration cfg, DataFlow::PathNode sessionSave2 |
-        sessionSave2.getNode() = sessionSave.getNode() and
-        cfg.hasFlowPath(_, sessionSave2)
-      ) and
+      not any(GorillaSessionOptionsTrackingConfiguration cfg).hasFlowTo(sessionSave.getNode()) and
       source = cookieStoreCreate and
       sink = sessionSave
       or
-      exists(
-        GorillaSessionOptionsTrackingConfiguration cfg, DataFlow::PathNode options,
-        DataFlow::PathNode sessionSave2
-      |
-        cfg.hasFlowPath(options, sessionSave2) and
+      exists(GorillaSessionOptionsTrackingConfiguration cfg, DataFlow::PathNode options |
+        cfg.hasFlow(options.getNode(), sessionSave.getNode()) and
         (
           not exists(DataFlow::Node rhs |
             rhs = getValueForFieldWrite(options.getNode().asExpr(), "HttpOnly")
           ) and
-          sessionSave2.getNode() = sessionSave.getNode() and
-          sink = sessionSave2 and
+          sink = sessionSave and
           source = options
           or
-          exists(
-            BoolToGorillaSessionOptionsTrackingConfiguration boolCfg,
-            DataFlow::PathNode sessionSave3
-          |
-            boolCfg.hasFlowPath(source, sessionSave3) and
-            sessionSave3.getNode() = sessionSave.getNode() and
-            sink = sessionSave3
+          exists(BoolToGorillaSessionOptionsTrackingConfiguration boolCfg |
+            boolCfg.hasFlow(source.getNode(), sessionSave.getNode()) and
+            sink = sessionSave
           )
         )
       )

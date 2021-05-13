@@ -80,7 +80,7 @@ class NetHttpCookieTrackingConfiguration extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) {
     sink instanceof SetCookieSink and
     exists(NameToNetHttpCookieTrackingConfiguration cfg, DataFlow::Node nameArg |
-      cfg.hasFlow(_, nameArg) and
+      cfg.hasFlowTo(nameArg) and
       sink.asExpr() = nameArg.asExpr()
     )
   }
@@ -137,7 +137,7 @@ class BoolToGinSetCookieTrackingConfiguration extends DataFlow::Configuration {
       mcn.getTarget() instanceof GinContextSetCookieMethod and
       mcn.getArgument(6) = sink and
       exists(NameToGinSetCookieTrackingConfiguration cfg, DataFlow::Node nameArg |
-        cfg.hasFlow(_, nameArg) and
+        cfg.hasFlowTo(nameArg) and
         mcn.getArgument(0) = nameArg
       )
     )
