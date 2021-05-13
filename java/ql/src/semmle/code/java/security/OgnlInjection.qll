@@ -1,3 +1,5 @@
+/** Provides classes to reason about OGNL injection vulnerabilities. */
+
 import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.ExternalFlow
@@ -17,7 +19,7 @@ abstract class OgnlInjectionSink extends DataFlow::Node { }
 class OgnlInjectionAdditionalTaintStep extends Unit {
   /**
    * Holds if the step from `node1` to `node2` should be considered a taint
-   * step for OGNL Injection taint configurations.
+   * step for OGNL injection taint configurations.
    */
   abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);
 }
