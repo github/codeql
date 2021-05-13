@@ -41,11 +41,7 @@ module UnsafeCodeConstruction {
     // override to require that there is a path without unmatched return steps
     override predicate hasFlowPath(DataFlow::SourcePathNode source, DataFlow::SinkPathNode sink) {
       super.hasFlowPath(source, sink) and
-      exists(DataFlow::MidPathNode mid |
-        source.getASuccessor*() = mid and
-        sink = mid.getASuccessor() and
-        mid.getPathSummary().hasReturn() = false
-      )
+      DataFlow::hasPathWithoutUnmatchedReturn(source, sink)
     }
   }
 }
