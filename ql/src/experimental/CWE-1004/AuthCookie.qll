@@ -42,7 +42,7 @@ private predicate isAuthVariable(Expr expr) {
 private class SetCookieSink extends DataFlow::Node {
   SetCookieSink() {
     exists(CallExpr c |
-      c.getTarget().hasQualifiedName("net/http", "SetCookie") and
+      c.getTarget().hasQualifiedName(package("net/http", ""), "SetCookie") and
       this.asExpr() = c.getArgument(1)
     )
   }
@@ -57,7 +57,7 @@ class NetHttpCookieTrackingConfiguration extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) {
     exists(StructLit sl |
       source.asExpr() = sl and
-      sl.getType().hasQualifiedName("net/http", "Cookie")
+      sl.getType().hasQualifiedName(package("net/http", ""), "Cookie")
     )
   }
 
@@ -82,7 +82,7 @@ private class NameToNetHttpCookieTrackingConfiguration extends TaintTracking2::C
 
   override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(StructLit sl |
-      sl.getType().hasQualifiedName("net/http", "Cookie") and
+      sl.getType().hasQualifiedName(package("net/http", ""), "Cookie") and
       getValueForFieldWrite(sl, "Name") = pred and
       sl = succ.asExpr()
     )
@@ -101,7 +101,7 @@ class BoolToNetHttpCookieTrackingConfiguration extends TaintTracking::Configurat
 
   override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(StructLit sl |
-      sl.getType().hasQualifiedName("net/http", "Cookie") and
+      sl.getType().hasQualifiedName(package("net/http", ""), "Cookie") and
       getValueForFieldWrite(sl, "HttpOnly") = pred and
       sl = succ.asExpr()
     )
@@ -171,7 +171,7 @@ class GorillaCookieStoreSaveTrackingConfiguration extends DataFlow::Configuratio
     source
         .(DataFlow::CallNode)
         .getTarget()
-        .hasQualifiedName("github.com/gorilla/sessions", "NewCookieStore")
+        .hasQualifiedName(package("github.com/gorilla/sessions", ""), "NewCookieStore")
   }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof GorillaSessionSaveSink }
@@ -196,7 +196,7 @@ class GorillaSessionOptionsTrackingConfiguration extends TaintTracking::Configur
 
   override predicate isSource(DataFlow::Node source) {
     exists(StructLit sl |
-      sl.getType().hasQualifiedName("github.com/gorilla/sessions", "Options") and
+      sl.getType().hasQualifiedName(package("github.com/gorilla/sessions", ""), "Options") and
       source.asExpr() = sl
     )
   }
