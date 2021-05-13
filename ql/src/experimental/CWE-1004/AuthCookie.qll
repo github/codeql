@@ -219,14 +219,16 @@ class GorillaSessionOptionsTrackingConfiguration extends TaintTracking::Configur
 }
 
 /**
- * Tracks `HttpOnly` set to `false` to `gorilla/sessions.Session.Save`.
+ * Tracks `bool` assigned to `HttpOnly` that flows into `gorilla/sessions.Session.Save`.
  */
 class BoolToGorillaSessionOptionsTrackingConfiguration extends TaintTracking::Configuration {
   BoolToGorillaSessionOptionsTrackingConfiguration() {
     this = "BoolToGorillaSessionOptionsTrackingConfiguration"
   }
 
-  override predicate isSource(DataFlow::Node source) { source.asExpr().getBoolValue() = false }
+  override predicate isSource(DataFlow::Node source) {
+    source.asExpr().getType().getUnderlyingType() instanceof BoolType
+  }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof GorillaSessionSaveSink }
 
