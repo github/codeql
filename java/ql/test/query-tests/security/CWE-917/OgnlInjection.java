@@ -56,6 +56,18 @@ public class OgnlInjection {
 
     Ognl.getValue(accessor, null, new Object()); // $hasOgnlInjection
     Ognl.setValue(accessor, null, new Object()); // $hasOgnlInjection
+  }
 
+  @RequestMapping
+  public void testExpressionAccessorSetExpression(@RequestParam String expr) throws Exception {
+    Node tree = Ognl.compileExpression(null, new Object(), "\"some safe expression\".toString()");
+    ExpressionAccessor accessor = tree.getAccessor();
+    Node taintedTree = Ognl.compileExpression(null, new Object(), expr);
+    accessor.setExpression(taintedTree);
+    accessor.get(null, new Object()); // $hasOgnlInjection
+    accessor.set(null, new Object(), new Object()); // $hasOgnlInjection
+
+    Ognl.getValue(accessor, null, new Object()); // $hasOgnlInjection
+    Ognl.setValue(accessor, null, new Object()); // $hasOgnlInjection
   }
 }

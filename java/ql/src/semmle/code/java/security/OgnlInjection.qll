@@ -61,6 +61,13 @@ private class TypeNode extends Interface {
   }
 }
 
+private class TypeExpressionAccessor extends Interface {
+  TypeExpressionAccessor() {
+    this.hasQualifiedName("org.apache.commons.ognl.enhance", "ExpressionAccessor") or
+    this.hasQualifiedName("ognl.enhance", "ExpressionAccessor")
+  }
+}
+
 /**
  * Holds if `n1` to `n2` is a dataflow step that converts between `String` and `Object` or `Node`,
  * i.e. `Ognl.parseExpression(tainted)` or `Ognl.compileExpression(tainted)`.
@@ -87,15 +94,31 @@ private predicate getAccessorStep(DataFlow::Node n1, DataFlow::Node n2) {
     n1.asExpr() = ma.getQualifier() and
     n2.asExpr() = ma and
     ma.getMethod() = m and
-    m.getDeclaringType() instanceof TypeNode
+    m.getDeclaringType().getASupertype*() instanceof TypeNode
   |
     m.hasName("getAccessor")
+  )
+}
+
+/**
+ * Holds if `n1` to `n2` is a dataflow step that converts between `Node` and `Accessor`
+ * in a `setExpression` call, i.e. `accessor.setExpression(tainted)`
+ */
+private predicate setExpressionStep(DataFlow::Node n1, DataFlow::Node n2) {
+  exists(MethodAccess ma, Method m |
+    n1.asExpr() = ma.getArgument(0) and
+    n2.asExpr() = ma.getQualifier() and
+    ma.getMethod() = m and
+    m.getDeclaringType().getASupertype*() instanceof TypeExpressionAccessor
+  |
+    m.hasName("setExpression")
   )
 }
 
 private class DefaultOgnlInjectionAdditionalTaintStep extends OgnlInjectionAdditionalTaintStep {
   override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
     parseCompileExpressionStep(node1, node2) or
-    getAccessorStep(node1, node2)
+    getAccessorStep(node1, node2) or
+    setExpressionStep(node1, node2)
   }
 }
