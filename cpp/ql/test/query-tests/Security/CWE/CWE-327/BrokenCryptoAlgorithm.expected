@@ -1,16 +1,14 @@
 | test2.cpp:49:4:49:24 | call to my_des_implementation | This function call specifies a broken or weak cryptographic algorithm. |
-| test2.cpp:62:33:62:40 | ALGO_DES | This macro invocation specifies a broken or weak cryptographic algorithm. |
+| test2.cpp:62:2:62:12 | call to encrypt_bad | This function call specifies a broken or weak cryptographic algorithm. |
 | test2.cpp:124:4:124:24 | call to my_des_implementation | This function call specifies a broken or weak cryptographic algorithm. |
-| test2.cpp:172:28:172:35 | ALGO_DES | This macro invocation specifies a broken or weak cryptographic algorithm. |
-| test2.cpp:182:38:182:45 | ALGO_DES | This macro invocation specifies a broken or weak cryptographic algorithm. |
-| test.cpp:38:2:38:31 | ENCRYPT_WITH_DES(data,amount) | This macro invocation specifies a broken or weak cryptographic algorithm. |
-| test.cpp:39:2:39:31 | ENCRYPT_WITH_RC2(data,amount) | This macro invocation specifies a broken or weak cryptographic algorithm. |
-| test.cpp:51:2:51:32 | DES_DO_ENCRYPTION(data,amount) | This macro invocation specifies a broken or weak cryptographic algorithm. |
-| test.cpp:52:2:52:31 | RUN_DES_ENCODING(data,amount) | This macro invocation specifies a broken or weak cryptographic algorithm. |
-| test.cpp:53:2:53:25 | DES_ENCODE(data,amount) | This macro invocation specifies a broken or weak cryptographic algorithm. |
-| test.cpp:54:2:54:26 | DES_SET_KEY(data,amount) | This macro invocation specifies a broken or weak cryptographic algorithm. |
-| test.cpp:56:2:56:9 | DES(str) | This macro invocation specifies a broken or weak cryptographic algorithm. |
-| test.cpp:59:12:59:25 | SORT_ORDER_DES | This macro invocation specifies a broken or weak cryptographic algorithm. |
+| test2.cpp:172:2:172:26 | call to set_encryption_algorithm1 | This function call specifies a broken or weak cryptographic algorithm. |
+| test2.cpp:182:2:182:17 | call to encryption_with1 | This function call specifies a broken or weak cryptographic algorithm. |
+| test.cpp:38:2:38:31 | call to my_implementation1 | This function call specifies a broken or weak cryptographic algorithm. |
+| test.cpp:39:2:39:31 | call to my_implementation2 | This function call specifies a broken or weak cryptographic algorithm. |
+| test.cpp:51:2:51:32 | call to my_implementation1 | This function call specifies a broken or weak cryptographic algorithm. |
+| test.cpp:52:2:52:31 | call to my_implementation1 | This function call specifies a broken or weak cryptographic algorithm. |
+| test.cpp:53:2:53:25 | call to my_implementation1 | This function call specifies a broken or weak cryptographic algorithm. |
+| test.cpp:54:2:54:26 | call to my_implementation1 | This function call specifies a broken or weak cryptographic algorithm. |
 | test.cpp:88:2:88:11 | call to encryptDES | This function call specifies a broken or weak cryptographic algorithm. |
 | test.cpp:89:2:89:11 | call to encryptRC2 | This function call specifies a broken or weak cryptographic algorithm. |
 | test.cpp:101:2:101:15 | call to do_des_encrypt | This function call specifies a broken or weak cryptographic algorithm. |

@@ -53,10 +53,10 @@ void test_macros(void *data, size_t amount, const char *str)
 	DES_ENCODE(data, amount); // BAD
 	DES_SET_KEY(data, amount); // BAD
 
-	DES(str); // GOOD (probably nothing to do with encryption) [FALSE POSITIVE]
+	DES(str); // GOOD (probably nothing to do with encryption)
 	DESMOND(str); // GOOD (probably nothing to do with encryption)
 	ANODES(str); // GOOD (probably nothing to do with encryption)
-	int ord = SORT_ORDER_DES; // GOOD (probably nothing to do with encryption) [FALSE POSITIVE]
+	int ord = SORT_ORDER_DES; // GOOD (probably nothing to do with encryption)
 }
 
 // --- simple encryption function calls ---

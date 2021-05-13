@@ -13,52 +13,72 @@
 import cpp
 import semmle.code.cpp.security.Encryption
 
-abstract class InsecureCryptoSpec extends Locatable {
-  abstract string description();
-}
-
-Function getAnInsecureFunction() {
-  isInsecureEncryption(result.getName()) and
+/**
+ * A function which may relate to an insecure encryption algorithm.
+ */
+Function getAnInsecureEncryptionFunction() {
+  (
+    isInsecureEncryption(result.getName()) or
+    isInsecureEncryption(result.getAParameter().getName())
+  ) and
   exists(result.getACallToThisFunction())
 }
 
-class InsecureFunctionCall extends InsecureCryptoSpec, FunctionCall {
-  InsecureFunctionCall() {
-    // the function name suggests it relates to an insecure crypto algorithm.
-    this.getTarget() = getAnInsecureFunction()
-  }
-
-  override string description() { result = "function call" }
-
-  override string toString() { result = FunctionCall.super.toString() }
-
-  override Location getLocation() { result = FunctionCall.super.getLocation() }
+/**
+ * A function with additional evidence it is related to encryption.
+ */
+Function getAdditionalEvidenceFunction() {
+  (
+    isEncryptionAdditionalEvidence(result.getName()) or
+    isEncryptionAdditionalEvidence(result.getAParameter().getName())
+  ) and
+  exists(result.getACallToThisFunction())
 }
 
-Macro getAnInsecureMacro() {
+/**
+ * A macro which may relate to an insecure encryption algorithm.
+ */
+Macro getAnInsecureEncryptionMacro() {
   isInsecureEncryption(result.getName()) and
   exists(result.getAnInvocation())
 }
 
-class InsecureMacroSpec extends InsecureCryptoSpec, MacroInvocation {
-  InsecureMacroSpec() {
-    // the macro name suggests it relates to an insecure crypto algorithm.
-    this.getMacro() = getAnInsecureMacro() and
-    // the macro invocation generates something.
-    exists(this.getAGeneratedElement().(ControlFlowNode)) and
-    // exclude expressions controlling ifs/switches (as they may not be used).
-    not any(IfStmt c).getCondition().getAChild*() = this.getAGeneratedElement() and
-    not any(SwitchCase c).getExpr().getAChild*() = this.getAGeneratedElement() and
-    // exclude expressions in array initializers (as they may not be used).
-    not any(AggregateLiteral i).getAChild*() = this.getAGeneratedElement() 
-  }
-
-  override string description() { result = "macro invocation" }
-
-  override string toString() { result = MacroInvocation.super.toString() }
-
-  override Location getLocation() { result = MacroInvocation.super.getLocation() }
+/**
+ * A macro with additional evidence it is related to encryption.
+ */
+Macro getAdditionalEvidenceMacro() {
+  isEncryptionAdditionalEvidence(result.getName()) and
+  exists(result.getAnInvocation())
 }
 
-from InsecureCryptoSpec c
+/**
+ * A function call we have a high confidence is related to use of an insecure
+ * encryption algorithm.
+ */
+class InsecureFunctionCall extends FunctionCall {
+  InsecureFunctionCall() {
+    // find use of an insecure algorithm name
+    (
+      getTarget() = getAnInsecureEncryptionFunction()
+      or
+      exists(MacroInvocation mi |
+        mi.getAGeneratedElement() = this.getAChild*() and
+        mi.getMacro() = getAnInsecureEncryptionMacro()
+      )
+    ) and
+    // find additional evidence that this function is related to encryption.
+    (
+      getTarget() = getAdditionalEvidenceFunction()
+      or
+      exists(MacroInvocation mi |
+        mi.getAGeneratedElement() = this.getAChild*() and
+        mi.getMacro() = getAdditionalEvidenceMacro()
+      )
+    )
+  }
+
+  string description() { result = "function call" }
+}
+
+from InsecureFunctionCall c
 select c, "This " + c.description() + " specifies a broken or weak cryptographic algorithm."

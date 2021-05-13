@@ -60,6 +60,17 @@ predicate isInsecureEncryption(string name) {
   not name.toUpperCase().regexpMatch(".*TRIPLE.*")
 }
 
+ /**
+ * Holds if there is additional evidence that `name` looks like it might be
+ * related to operations with an encyption algorithm, besides the name of a
+ * specific algorithm. This can be used in conjuction with
+ * `isInsecureEncryption` to produce a stronger heuristic.
+ */
+bindingset[name]
+predicate isEncryptionAdditionalEvidence(string name) {
+  name.toUpperCase().regexpMatch(".*(CRYPT|CODE|CODING|CBC|KEY).*")
+}
+
 /**
  * Gets a regular expression for matching strings that look like they
  * contain an algorithm that is known to be secure.
