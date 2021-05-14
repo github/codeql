@@ -1,7 +1,9 @@
 /**
  * @id rb/summary/lines-of-user-code
- * @name Lines of authored Ruby code in the database
- * @description The total number of lines of Ruby code across files, excluding library and generated code.
+ * @name Total Lines of user written Ruby code in the database
+ * @description The total number of lines of Ruby code from the source code
+ *   directory, excluding external library and auto-generated files. This
+ *   query counts the lines of code, excluding whitespace or comments.
  * @kind metric
  * @tags summary
  */
