@@ -590,7 +590,7 @@ dependencies = [
 [[package]]
 name = "tree-sitter-embedded-template"
 version = "0.17.0"
-source = "git+https://github.com/aibaars/tree-sitter-embedded-template?rev=d4aac29c08aa7c596633d00b5ec2dd2d247eafe4#d4aac29c08aa7c596633d00b5ec2dd2d247eafe4"
+source = "git+https://github.com/tree-sitter/tree-sitter-embedded-template?rev=d4aac29c08aa7c596633d00b5ec2dd2d247eafe4#d4aac29c08aa7c596633d00b5ec2dd2d247eafe4"
 dependencies = [
  "cc",
  "tree-sitter",

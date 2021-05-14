@@ -10,7 +10,7 @@ edition = "2018"
 flate2 = "1.0"
 node-types = { path = "../node-types" }
 tree-sitter = "0.17"
-tree-sitter-embedded-template = { git = "https://github.com/aibaars/tree-sitter-embedded-template", rev = "d4aac29c08aa7c596633d00b5ec2dd2d247eafe4" }
+tree-sitter-embedded-template = { git = "https://github.com/tree-sitter/tree-sitter-embedded-template", rev = "d4aac29c08aa7c596633d00b5ec2dd2d247eafe4" }
 tree-sitter-ruby = { git = "https://github.com/tree-sitter/tree-sitter-ruby.git", rev = "32cd5a04adb4accb0c121f037ab59df3c3488228" }
 clap = "2.33"
 tracing = "0.1"
