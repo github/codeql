@@ -139,7 +139,7 @@ void more_bounded_tests() {
 
 		if (size > 0)
 		{
-			malloc(size * sizeof(int)); // BAD
+			malloc(size * sizeof(int)); // GOOD (overflow not possible)
 		}
 	}
 
@@ -302,7 +302,7 @@ void equality_cases() {
 
 		if ((size == 50) || (size == 100))
 		{
-			malloc(size * sizeof(int)); // GOOD [FALSE POSITIVE]
+			malloc(size * sizeof(int)); // GOOD
 		}
 	}
 	{
@@ -311,6 +311,6 @@ void equality_cases() {
 		if (size != 50 && size != 100)
 			return;
 
-		malloc(size * sizeof(int)); // GOOD [FALSE POSITIVE]
+		malloc(size * sizeof(int)); // GOOD
 	}
 }
