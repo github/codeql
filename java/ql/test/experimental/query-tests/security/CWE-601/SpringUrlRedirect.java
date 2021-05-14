@@ -34,6 +34,22 @@ public class SpringUrlRedirect {
     }
 
     @GetMapping("url5")
+    public String bad5(String redirectUrl) {
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append("redirect:");
+        stringBuffer.append(redirectUrl);
+        return stringBuffer.toString();
+    }
+
+    @GetMapping("url6")
+    public String bad6(String redirectUrl) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("redirect:");
+        stringBuilder.append(redirectUrl);
+        return stringBuilder.toString();
+    }
+
+    @GetMapping("url7")
     public RedirectView good1(String redirectUrl) {
         RedirectView rv = new RedirectView();
         if (redirectUrl.startsWith(VALID_REDIRECT)){
@@ -44,7 +60,7 @@ public class SpringUrlRedirect {
         return rv;
     }
 
-    @GetMapping("url6")
+    @GetMapping("url8")
     public ModelAndView good2(String token) {
         String url = "/edit?token=" + token;
         return new ModelAndView("redirect:" + url);
