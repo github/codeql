@@ -26,17 +26,6 @@ class ScriptEngineMethod extends Method {
     this.getDeclaringType().getASupertype*().hasQualifiedName("javax.script", "ScriptEngineFactory") and
     this.hasName(["getProgram", "getMethodCallSyntax"])
   }
-
-  /** Holds if the index is for an injectable parameter. */
-  bindingset[index]
-  predicate isInjectableArgIndex(int index) {
-    if
-      this.getDeclaringType()
-          .getASupertype*()
-          .hasQualifiedName("javax.script", "ScriptEngineFactory")
-    then any()
-    else index = 0
-  }
 }
 
 /** The context class `org.mozilla.javascript.Context` of Rhino Java Script Engine. */
@@ -82,10 +71,11 @@ class RhinoDefineClassMethod extends Method {
 
 /** Holds if `ma` is a method access of `ScriptEngineMethod`. */
 predicate scriptEngine(MethodAccess ma, Expr sink) {
-  exists(ScriptEngineMethod m, int index |
+  exists(ScriptEngineMethod m |
     m = ma.getMethod() and
-    m.isInjectableArgIndex(index) and
-    sink = ma.getArgument(index)
+    if m.getDeclaringType().getASupertype*().hasQualifiedName("javax.script", "ScriptEngineFactory")
+    then sink = ma.getArgument(_) // all arguments allow script injection
+    else sink = ma.getArgument(0)
   )
 }
 
