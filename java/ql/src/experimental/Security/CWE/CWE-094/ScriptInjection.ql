@@ -69,8 +69,11 @@ class RhinoDefineClassMethod extends Method {
   }
 }
 
-/** Holds if `ma` is a method access of `ScriptEngineMethod`. */
-predicate scriptEngine(MethodAccess ma, Expr sink) {
+/**
+ * Holds if `ma` is a call to a `ScriptEngineMethod` and `sink` is an argument that
+ * will be executed.
+ */
+predicate isScriptArgument(MethodAccess ma, Expr sink) {
   exists(ScriptEngineMethod m |
     m = ma.getMethod() and
     if m.getDeclaringType().getASupertype*().hasQualifiedName("javax.script", "ScriptEngineFactory")
@@ -113,7 +116,7 @@ predicate defineClass(MethodAccess ma, Expr sink) {
 /** A script injection sink. */
 class ScriptInjectionSink extends DataFlow::ExprNode {
   ScriptInjectionSink() {
-    scriptEngine(_, this.getExpr()) or
+    isScriptArgument(_, this.getExpr()) or
     evaluateRhinoExpression(_, this.getExpr()) or
     compileScript(_, this.getExpr()) or
     defineClass(_, this.getExpr())
@@ -121,7 +124,7 @@ class ScriptInjectionSink extends DataFlow::ExprNode {
 
   /** An access to the method associated with this sink. */
   MethodAccess getMethodAccess() {
-    scriptEngine(result, this.getExpr()) or
+    isScriptArgument(result, this.getExpr()) or
     evaluateRhinoExpression(result, this.getExpr()) or
     compileScript(result, this.getExpr()) or
     defineClass(result, this.getExpr())
