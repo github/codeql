@@ -42,6 +42,12 @@ class TaintedAllocationSizeConfiguration extends TaintTrackingConfiguration {
       e instanceof AssignArithmeticOperation
     ) and
     not convertedExprMightOverflow(e)
+    or
+    // Subtracting two pointers is either well-defined (and the result will likely be small), or
+    // terribly undefined and dangerous. Here, we assume that the programmer has ensured that the
+    // result is well-defined (i.e., the two pointers point to the same object), and thus the result
+    // will likely be small.
+    e = any(PointerDiffExpr diff).getAnOperand()
   }
 }
 

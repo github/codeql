@@ -76,7 +76,7 @@ void processData2(char *start, char *end)
 {
 	char *copy;
 
-	copy = new char[end - start]; // GOOD [FALSE POSITIVE]
+	copy = new char[end - start]; // GOOD
 
 	// ...
 
@@ -321,5 +321,5 @@ void ptr_diff_case() {
 	char* user = getenv("USER");
 	char* admin_begin_pos = strstr(user, "ADMIN");
 	int offset = admin_begin_pos ? user - admin_begin_pos : 0; 
-	malloc(offset); // GOOD [FALSE POSITIVE]
+	malloc(offset); // GOOD
 }

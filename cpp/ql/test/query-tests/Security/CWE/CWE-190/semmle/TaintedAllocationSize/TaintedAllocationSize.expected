@@ -27,24 +27,6 @@ edges
 | test.cpp:39:21:39:24 | argv | test.cpp:52:35:52:60 | ... * ... |
 | test.cpp:39:21:39:24 | argv | test.cpp:52:35:52:60 | ... * ... |
 | test.cpp:39:21:39:24 | argv | test.cpp:52:35:52:60 | ... * ... |
-| test.cpp:75:25:75:29 | start | test.cpp:79:18:79:28 | ... - ... |
-| test.cpp:75:25:75:29 | start | test.cpp:79:18:79:28 | ... - ... |
-| test.cpp:75:38:75:40 | end | test.cpp:79:18:79:28 | ... - ... |
-| test.cpp:75:38:75:40 | end | test.cpp:79:18:79:28 | ... - ... |
-| test.cpp:97:18:97:23 | buffer | test.cpp:100:4:100:15 | buffer |
-| test.cpp:97:18:97:23 | buffer | test.cpp:100:17:100:22 | buffer indirection |
-| test.cpp:97:18:97:23 | buffer | test.cpp:101:4:101:15 | ... + ... |
-| test.cpp:97:18:97:23 | buffer | test.cpp:101:4:101:15 | buffer |
-| test.cpp:97:18:97:23 | fread output argument | test.cpp:100:4:100:15 | buffer |
-| test.cpp:97:18:97:23 | fread output argument | test.cpp:100:17:100:22 | buffer indirection |
-| test.cpp:97:18:97:23 | fread output argument | test.cpp:101:4:101:15 | ... + ... |
-| test.cpp:97:18:97:23 | fread output argument | test.cpp:101:4:101:15 | buffer |
-| test.cpp:100:4:100:15 | buffer | test.cpp:100:17:100:22 | processData1 output argument |
-| test.cpp:100:17:100:22 | buffer indirection | test.cpp:100:17:100:22 | processData1 output argument |
-| test.cpp:100:17:100:22 | processData1 output argument | test.cpp:101:4:101:15 | ... + ... |
-| test.cpp:100:17:100:22 | processData1 output argument | test.cpp:101:4:101:15 | buffer |
-| test.cpp:101:4:101:15 | ... + ... | test.cpp:75:38:75:40 | end |
-| test.cpp:101:4:101:15 | buffer | test.cpp:75:25:75:29 | start |
 | test.cpp:123:18:123:23 | call to getenv | test.cpp:127:24:127:41 | ... * ... |
 | test.cpp:123:18:123:23 | call to getenv | test.cpp:127:24:127:41 | ... * ... |
 | test.cpp:123:18:123:31 | (const char *)... | test.cpp:127:24:127:41 | ... * ... |
@@ -87,12 +69,6 @@ edges
 | test.cpp:295:18:295:21 | Chi | test.cpp:298:10:298:27 | ... * ... |
 | test.cpp:295:18:295:21 | Chi | test.cpp:298:10:298:27 | ... * ... |
 | test.cpp:295:18:295:21 | get_size output argument [array content] | test.cpp:295:18:295:21 | Chi |
-| test.cpp:321:15:321:20 | call to getenv | test.cpp:324:9:324:14 | (size_t)... |
-| test.cpp:321:15:321:20 | call to getenv | test.cpp:324:9:324:14 | (size_t)... |
-| test.cpp:321:15:321:20 | call to getenv | test.cpp:324:9:324:14 | offset |
-| test.cpp:321:15:321:20 | call to getenv | test.cpp:324:9:324:14 | offset |
-| test.cpp:321:15:321:20 | call to getenv | test.cpp:324:9:324:14 | offset |
-| test.cpp:321:15:321:20 | call to getenv | test.cpp:324:9:324:14 | offset |
 nodes
 | test.cpp:39:21:39:24 | argv | semmle.label | argv |
 | test.cpp:39:21:39:24 | argv | semmle.label | argv |
@@ -118,21 +94,6 @@ nodes
 | test.cpp:52:35:52:60 | ... * ... | semmle.label | ... * ... |
 | test.cpp:52:35:52:60 | ... * ... | semmle.label | ... * ... |
 | test.cpp:52:35:52:60 | ... * ... | semmle.label | ... * ... |
-| test.cpp:64:25:64:30 | *buffer | semmle.label | *buffer |
-| test.cpp:64:25:64:30 | *buffer | semmle.label | *buffer |
-| test.cpp:64:25:64:30 | buffer | semmle.label | buffer |
-| test.cpp:75:25:75:29 | start | semmle.label | start |
-| test.cpp:75:38:75:40 | end | semmle.label | end |
-| test.cpp:79:18:79:28 | ... - ... | semmle.label | ... - ... |
-| test.cpp:79:18:79:28 | ... - ... | semmle.label | ... - ... |
-| test.cpp:79:18:79:28 | ... - ... | semmle.label | ... - ... |
-| test.cpp:97:18:97:23 | buffer | semmle.label | buffer |
-| test.cpp:97:18:97:23 | fread output argument | semmle.label | fread output argument |
-| test.cpp:100:4:100:15 | buffer | semmle.label | buffer |
-| test.cpp:100:17:100:22 | buffer indirection | semmle.label | buffer indirection |
-| test.cpp:100:17:100:22 | processData1 output argument | semmle.label | processData1 output argument |
-| test.cpp:101:4:101:15 | ... + ... | semmle.label | ... + ... |
-| test.cpp:101:4:101:15 | buffer | semmle.label | buffer |
 | test.cpp:123:18:123:23 | call to getenv | semmle.label | call to getenv |
 | test.cpp:123:18:123:31 | (const char *)... | semmle.label | (const char *)... |
 | test.cpp:127:24:127:41 | ... * ... | semmle.label | ... * ... |
@@ -185,13 +146,6 @@ nodes
 | test.cpp:298:10:298:27 | ... * ... | semmle.label | ... * ... |
 | test.cpp:298:10:298:27 | ... * ... | semmle.label | ... * ... |
 | test.cpp:298:10:298:27 | ... * ... | semmle.label | ... * ... |
-| test.cpp:321:15:321:20 | call to getenv | semmle.label | call to getenv |
-| test.cpp:321:15:321:20 | call to getenv | semmle.label | call to getenv |
-| test.cpp:324:9:324:14 | (size_t)... | semmle.label | (size_t)... |
-| test.cpp:324:9:324:14 | (size_t)... | semmle.label | (size_t)... |
-| test.cpp:324:9:324:14 | offset | semmle.label | offset |
-| test.cpp:324:9:324:14 | offset | semmle.label | offset |
-| test.cpp:324:9:324:14 | offset | semmle.label | offset |
 #select
 | test.cpp:42:31:42:36 | call to malloc | test.cpp:39:21:39:24 | argv | test.cpp:42:38:42:44 | tainted | This allocation size is derived from $@ and might overflow | test.cpp:39:21:39:24 | argv | user input (argv) |
 | test.cpp:43:31:43:36 | call to malloc | test.cpp:39:21:39:24 | argv | test.cpp:43:38:43:63 | ... * ... | This allocation size is derived from $@ and might overflow | test.cpp:39:21:39:24 | argv | user input (argv) |
@@ -199,7 +153,6 @@ nodes
 | test.cpp:48:25:48:30 | call to malloc | test.cpp:39:21:39:24 | argv | test.cpp:48:32:48:35 | size | This allocation size is derived from $@ and might overflow | test.cpp:39:21:39:24 | argv | user input (argv) |
 | test.cpp:49:17:49:30 | new[] | test.cpp:39:21:39:24 | argv | test.cpp:49:26:49:29 | size | This allocation size is derived from $@ and might overflow | test.cpp:39:21:39:24 | argv | user input (argv) |
 | test.cpp:52:21:52:27 | call to realloc | test.cpp:39:21:39:24 | argv | test.cpp:52:35:52:60 | ... * ... | This allocation size is derived from $@ and might overflow | test.cpp:39:21:39:24 | argv | user input (argv) |
-| test.cpp:79:9:79:29 | new[] | test.cpp:97:18:97:23 | buffer | test.cpp:79:18:79:28 | ... - ... | This allocation size is derived from $@ and might overflow | test.cpp:97:18:97:23 | buffer | user input (fread) |
 | test.cpp:127:17:127:22 | call to malloc | test.cpp:123:18:123:23 | call to getenv | test.cpp:127:24:127:41 | ... * ... | This allocation size is derived from $@ and might overflow | test.cpp:123:18:123:23 | call to getenv | user input (getenv) |
 | test.cpp:134:3:134:8 | call to malloc | test.cpp:132:19:132:24 | call to getenv | test.cpp:134:10:134:27 | ... * ... | This allocation size is derived from $@ and might overflow | test.cpp:132:19:132:24 | call to getenv | user input (getenv) |
 | test.cpp:215:14:215:19 | call to malloc | test.cpp:227:24:227:29 | call to getenv | test.cpp:215:21:215:21 | s | This allocation size is derived from $@ and might overflow | test.cpp:227:24:227:29 | call to getenv | user input (getenv) |
@@ -209,4 +162,3 @@ nodes
 | test.cpp:253:4:253:9 | call to malloc | test.cpp:249:20:249:25 | call to getenv | test.cpp:253:11:253:29 | ... * ... | This allocation size is derived from $@ and might overflow | test.cpp:249:20:249:25 | call to getenv | user input (getenv) |
 | test.cpp:281:4:281:9 | call to malloc | test.cpp:241:18:241:23 | call to getenv | test.cpp:281:11:281:28 | ... * ... | This allocation size is derived from $@ and might overflow | test.cpp:241:18:241:23 | call to getenv | user input (getenv) |
 | test.cpp:298:3:298:8 | call to malloc | test.cpp:241:18:241:23 | call to getenv | test.cpp:298:10:298:27 | ... * ... | This allocation size is derived from $@ and might overflow | test.cpp:241:18:241:23 | call to getenv | user input (getenv) |
-| test.cpp:324:2:324:7 | call to malloc | test.cpp:321:15:321:20 | call to getenv | test.cpp:324:9:324:14 | offset | This allocation size is derived from $@ and might overflow | test.cpp:321:15:321:20 | call to getenv | user input (getenv) |
