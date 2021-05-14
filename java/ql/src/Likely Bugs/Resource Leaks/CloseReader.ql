@@ -25,6 +25,9 @@ predicate readerType(RefType t) {
 predicate safeReaderType(RefType t) {
   exists(RefType sup | sup = t.getASupertype*() |
     sup.hasQualifiedName("java.io", ["CharArrayReader", "StringReader", "ByteArrayInputStream"])
+    or
+    // Note: It is unclear which specific class this is supposed to match
+    sup.hasName("StringInputStream")
   )
 }
 
