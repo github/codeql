@@ -314,3 +314,12 @@ void equality_cases() {
 		malloc(size * sizeof(int)); // GOOD
 	}
 }
+
+char * strstr(char *, const char *);
+
+void ptr_diff_case() {
+	char* user = getenv("USER");
+	char* admin_begin_pos = strstr(user, "ADMIN");
+	int offset = admin_begin_pos ? user - admin_begin_pos : 0; 
+	malloc(offset); // GOOD [FALSE POSITIVE]
+}
