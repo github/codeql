@@ -1,0 +1,30 @@
+edges
+| FilePermissions.rb:43:10:43:13 | 0777 :  | FilePermissions.rb:44:19:44:22 | perm |
+| FilePermissions.rb:43:10:43:13 | 0777 :  | FilePermissions.rb:46:19:46:23 | perm2 |
+| FilePermissions.rb:48:10:48:26 | "u=wrx,g=rwx,o=x" :  | FilePermissions.rb:50:19:50:23 | perm2 |
+nodes
+| FilePermissions.rb:4:19:4:22 | 0222 | semmle.label | 0222 |
+| FilePermissions.rb:5:19:5:22 | 0622 | semmle.label | 0622 |
+| FilePermissions.rb:6:19:6:22 | 0755 | semmle.label | 0755 |
+| FilePermissions.rb:7:19:7:22 | 0777 | semmle.label | 0777 |
+| FilePermissions.rb:24:13:24:16 | 0755 | semmle.label | 0755 |
+| FilePermissions.rb:43:10:43:13 | 0777 :  | semmle.label | 0777 :  |
+| FilePermissions.rb:44:19:44:22 | perm | semmle.label | perm |
+| FilePermissions.rb:46:19:46:23 | perm2 | semmle.label | perm2 |
+| FilePermissions.rb:48:10:48:26 | "u=wrx,g=rwx,o=x" :  | semmle.label | "u=wrx,g=rwx,o=x" :  |
+| FilePermissions.rb:50:19:50:23 | perm2 | semmle.label | perm2 |
+| FilePermissions.rb:51:19:51:29 | "u=rwx,o+r" | semmle.label | "u=rwx,o+r" |
+| FilePermissions.rb:53:19:53:24 | "a+rw" | semmle.label | "a+rw" |
+| FilePermissions.rb:57:16:57:19 | 0755 | semmle.label | 0755 |
+#select
+| FilePermissions.rb:4:19:4:22 | 0222 | FilePermissions.rb:4:19:4:22 | 0222 | FilePermissions.rb:4:19:4:22 | 0222 | Overly permissive mask sets file to $@. | FilePermissions.rb:4:19:4:22 | 0222 | 0222 |
+| FilePermissions.rb:5:19:5:22 | 0622 | FilePermissions.rb:5:19:5:22 | 0622 | FilePermissions.rb:5:19:5:22 | 0622 | Overly permissive mask sets file to $@. | FilePermissions.rb:5:19:5:22 | 0622 | 0622 |
+| FilePermissions.rb:6:19:6:22 | 0755 | FilePermissions.rb:6:19:6:22 | 0755 | FilePermissions.rb:6:19:6:22 | 0755 | Overly permissive mask sets file to $@. | FilePermissions.rb:6:19:6:22 | 0755 | 0755 |
+| FilePermissions.rb:7:19:7:22 | 0777 | FilePermissions.rb:7:19:7:22 | 0777 | FilePermissions.rb:7:19:7:22 | 0777 | Overly permissive mask sets file to $@. | FilePermissions.rb:7:19:7:22 | 0777 | 0777 |
+| FilePermissions.rb:24:13:24:16 | 0755 | FilePermissions.rb:24:13:24:16 | 0755 | FilePermissions.rb:24:13:24:16 | 0755 | Overly permissive mask sets file to $@. | FilePermissions.rb:24:13:24:16 | 0755 | 0755 |
+| FilePermissions.rb:44:19:44:22 | perm | FilePermissions.rb:43:10:43:13 | 0777 :  | FilePermissions.rb:44:19:44:22 | perm | Overly permissive mask sets file to $@. | FilePermissions.rb:43:10:43:13 | 0777 | 0777 |
+| FilePermissions.rb:46:19:46:23 | perm2 | FilePermissions.rb:43:10:43:13 | 0777 :  | FilePermissions.rb:46:19:46:23 | perm2 | Overly permissive mask sets file to $@. | FilePermissions.rb:43:10:43:13 | 0777 | 0777 |
+| FilePermissions.rb:50:19:50:23 | perm2 | FilePermissions.rb:48:10:48:26 | "u=wrx,g=rwx,o=x" :  | FilePermissions.rb:50:19:50:23 | perm2 | Overly permissive mask sets file to $@. | FilePermissions.rb:48:10:48:26 | "u=wrx,g=rwx,o=x" | "u=wrx,g=rwx,o=x" |
+| FilePermissions.rb:51:19:51:29 | "u=rwx,o+r" | FilePermissions.rb:51:19:51:29 | "u=rwx,o+r" | FilePermissions.rb:51:19:51:29 | "u=rwx,o+r" | Overly permissive mask sets file to $@. | FilePermissions.rb:51:19:51:29 | "u=rwx,o+r" | "u=rwx,o+r" |
+| FilePermissions.rb:53:19:53:24 | "a+rw" | FilePermissions.rb:53:19:53:24 | "a+rw" | FilePermissions.rb:53:19:53:24 | "a+rw" | Overly permissive mask sets file to $@. | FilePermissions.rb:53:19:53:24 | "a+rw" | "a+rw" |
+| FilePermissions.rb:57:16:57:19 | 0755 | FilePermissions.rb:57:16:57:19 | 0755 | FilePermissions.rb:57:16:57:19 | 0755 | Overly permissive mask sets file to $@. | FilePermissions.rb:57:16:57:19 | 0755 | 0755 |
