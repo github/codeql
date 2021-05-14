@@ -172,7 +172,7 @@ build steps, you may need to explicitly define each step in the command line.
    The Go autobuilder attempts to automatically detect Go code in a repository,
    and only runs build scripts in an attempt to fetch dependencies. To force
    CodeQL to use your build script, set the environment variable
-   `CODEQL_EXTRACTOR_GO_BUILD_TRACING=on` or pass a command.
+   `CODEQL_EXTRACTOR_GO_BUILD_TRACING=on` or use the ``--command`` option.
 
 Specifying build commands
 ~~~~~~~~~~~~~~~~~~~~~~~~~
