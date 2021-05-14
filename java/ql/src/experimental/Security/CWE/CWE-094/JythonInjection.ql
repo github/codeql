@@ -102,16 +102,6 @@ class CodeInjectionConfiguration extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof CodeInjectionSink }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    // @RequestBody MyQueryObj query; interpreter.exec(query.getInterpreterCode());
-    exists(MethodAccess ma |
-      ma.getMethod().getDeclaringType().getASubtype*() instanceof SpringUntrustedDataType and
-      not ma.getMethod().getDeclaringType() instanceof TypeObject and
-      ma.getQualifier() = node1.asExpr() and
-      ma = node2.asExpr()
-    )
-  }
 }
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, CodeInjectionConfiguration conf
