@@ -1,3 +1,5 @@
+import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.dataflow.TaintTracking2
 import semmle.code.java.frameworks.Kryo
 import semmle.code.java.frameworks.XStream
 import semmle.code.java.frameworks.SnakeYaml
@@ -31,7 +33,9 @@ class ObjectMapperReadMethod extends Method {
 }
 
 class ObjectMapper extends RefType {
-  ObjectMapper() { hasQualifiedName("com.fasterxml.jackson.databind", "ObjectMapper") }
+  ObjectMapper() {
+    getASupertype*().hasQualifiedName("com.fasterxml.jackson.databind", "ObjectMapper")
+  }
 }
 
 class MapperBuilder extends RefType {
@@ -46,6 +50,14 @@ class JsonFactory extends RefType {
 
 class JsonParser extends RefType {
   JsonParser() { hasQualifiedName("com.fasterxml.jackson.core", "JsonParser") }
+}
+
+class JacksonType extends RefType {
+  JacksonType() {
+    this instanceof TypeClass or
+    hasQualifiedName("com.fasterxml.jackson.databind", "JavaType") or
+    hasQualifiedName("com.fasterxml.jackson.core.type", "TypeReference")
+  }
 }
 
 class EnableJacksonDefaultTyping extends MethodAccess {
@@ -206,6 +218,31 @@ class SafeObjectMapper extends DataFlow2::Configuration {
   }
 }
 
+class UnsafeType extends TaintTracking2::Configuration {
+  UnsafeType() { this = "UnsafeType" }
+
+  override predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
+
+  override predicate isSink(DataFlow::Node sink) {
+    exists(MethodAccess ma, int i, Expr arg | i > 0 and ma.getArgument(i) = arg |
+      ma.getMethod() instanceof ObjectMapperReadMethod and
+      arg.getType() instanceof JacksonType and
+      arg = sink.asExpr()
+    )
+  }
+
+  /**
+   * Holds if `fromNode` to `toNode` is a dataflow step that looks like resolving a class.
+   */
+  override predicate isAdditionalTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
+    exists(MethodAccess ma, RefType returnType | returnType = ma.getMethod().getReturnType() |
+      returnType instanceof JacksonType and
+      ma.getAnArgument() = fromNode.asExpr() and
+      ma = toNode.asExpr()
+    )
+  }
+}
+
 /**
  * Holds if `fromNode` to `toNode` is a dataflow step that creates a Jackson parser.
  */
@@ -246,7 +283,7 @@ predicate hasFieldWithJsonTypeAnnotation(RefType type) {
   exists(Annotation a |
     type.getAField().getAnAnnotation() = a and
     a.getType().hasQualifiedName("com.fasterxml.jackson.annotation", "JsonTypeInfo") and
-    a.getValue("use").(VarAccess).getVariable().hasName("CLASS")
+    a.getValue("use").(VarAccess).getVariable().hasName(["CLASS", "MINIMAL_CLASS"])
   )
 }
 
@@ -302,8 +339,13 @@ predicate unsafeDeserialization(MethodAccess ma, Expr sink) {
     ma.getMethod() instanceof ObjectMapperReadMethod and
     sink = ma.getArgument(0) and
     (
-      exists(EnabledJacksonDefaultTyping config | config.hasFlowToExpr(ma.getQualifier())) or
-      hasJsonTypeInfoAnnotation(ma.getArgument(1).getType().(ParameterizedType).getATypeArgument())
+      exists(UnsafeType config | config.hasFlowToExpr(ma.getAnArgument()))
+      or
+      exists(EnabledJacksonDefaultTyping config | config.hasFlowToExpr(ma.getQualifier()))
+      or
+      exists(RefType argType, int i | i > 0 and argType = ma.getArgument(i).getType() |
+        hasJsonTypeInfoAnnotation(argType.(ParameterizedType).getATypeArgument())
+      )
     ) and
     not exists(SafeObjectMapper config | config.hasFlowToExpr(ma.getQualifier()))
   )
