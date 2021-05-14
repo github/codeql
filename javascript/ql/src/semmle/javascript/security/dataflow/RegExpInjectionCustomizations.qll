@@ -71,11 +71,4 @@ module RegExpInjection {
       )
     }
   }
-
-  /**
-   * Meta characters used in the above sanitizer.
-   */
-  private class RegexpMetaChars extends RegExp::MetaCharacter {
-    RegexpMetaChars() { this = ["{", "[", "+"] }
-  }
 }
