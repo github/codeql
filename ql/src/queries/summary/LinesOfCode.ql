@@ -7,6 +7,7 @@
  *   code, excluding whitespace or comments.
  * @kind metric
  * @tags summary
+ *       lines-of-code
  */
 
 import ruby
