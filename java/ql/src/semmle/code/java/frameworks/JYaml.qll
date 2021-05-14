@@ -15,8 +15,8 @@ class JYaml extends RefType {
  * A JYaml unsafe load method. This is either `YAML.load` or
  * `YAML.loadType` or `YAML.loadStream` or `YAML.loadStreamOfType`.
  */
-class JYamlUnSafeLoadMethod extends Method {
-  JYamlUnSafeLoadMethod() {
+class JYamlUnsafeLoadMethod extends Method {
+  JYamlUnsafeLoadMethod() {
     this.getDeclaringType() instanceof JYaml and
     this.getName() in ["load", "loadType", "loadStream", "loadStreamOfType"]
   }
@@ -33,8 +33,8 @@ class JYamlConfig extends RefType {
  * A JYamlConfig unsafe load method. This is either `YamlConfig.load` or
  * `YAML.loadType` or `YamlConfig.loadStream` or `YamlConfig.loadStreamOfType`.
  */
-class JYamlConfigUnSafeLoadMethod extends Method {
-  JYamlConfigUnSafeLoadMethod() {
+class JYamlConfigUnsafeLoadMethod extends Method {
+  JYamlConfigUnsafeLoadMethod() {
     this.getDeclaringType() instanceof JYamlConfig and
     this.getName() in ["load", "loadType", "loadStream", "loadStreamOfType"]
   }

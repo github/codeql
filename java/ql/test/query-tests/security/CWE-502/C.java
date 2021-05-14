@@ -42,13 +42,8 @@ public class C {
 
 		JsonReader.jsonToJava(data); //bad
 
-		JsonReader.jsonToJava(data, hashMap); //good
-
 		JsonReader jr = new JsonReader(data, null); //bad
 		jr.readObject();
-
-		JsonReader jr1 = new JsonReader(data, hashMap); //good
-		jr1.readObject();
 	}
 
 	@GetMapping(value = "yamlbeans")
@@ -94,5 +89,26 @@ public class C {
         BurlapInput burlapInput1 = new BurlapInput();
 		burlapInput1.init(is);
 		burlapInput1.readObject(); //bad
+	}
+
+	@GetMapping(value = "jsonio1")
+	public void good1(HttpServletRequest request) {
+		String data = request.getParameter("data");
+
+		HashMap hashMap = new HashMap();
+		hashMap.put("USE_MAPS", true);
+
+		JsonReader.jsonToJava(data, hashMap); //good
+	}
+
+	@GetMapping(value = "jsonio2")
+	public void good2(HttpServletRequest request) {
+		String data = request.getParameter("data");
+
+		HashMap hashMap = new HashMap();
+		hashMap.put("USE_MAPS", true);
+
+		JsonReader jr1 = new JsonReader(data, hashMap); //good
+		jr1.readObject();
 	}
 }

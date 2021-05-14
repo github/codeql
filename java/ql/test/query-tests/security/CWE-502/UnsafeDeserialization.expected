@@ -34,17 +34,17 @@ edges
 | C.java:23:17:23:44 | getParameter(...) : String | C.java:32:31:32:34 | data |
 | C.java:23:17:23:44 | getParameter(...) : String | C.java:33:23:33:26 | data |
 | C.java:38:17:38:44 | getParameter(...) : String | C.java:43:25:43:28 | data |
-| C.java:38:17:38:44 | getParameter(...) : String | C.java:48:3:48:4 | jr |
-| C.java:56:17:56:44 | getParameter(...) : String | C.java:58:3:58:3 | r |
-| C.java:56:17:56:44 | getParameter(...) : String | C.java:59:3:59:3 | r |
-| C.java:56:17:56:44 | getParameter(...) : String | C.java:60:3:60:3 | r |
-| C.java:65:18:65:45 | getParameter(...) : String | C.java:68:3:68:14 | hessianInput |
-| C.java:65:18:65:45 | getParameter(...) : String | C.java:69:3:69:14 | hessianInput |
-| C.java:74:18:74:45 | getParameter(...) : String | C.java:77:3:77:14 | hessianInput |
-| C.java:74:18:74:45 | getParameter(...) : String | C.java:78:3:78:14 | hessianInput |
-| C.java:84:43:84:70 | getParameter(...) : String | C.java:84:26:84:71 | new StringReader(...) |
-| C.java:89:27:89:54 | getParameter(...) : String | C.java:92:3:92:13 | burlapInput |
-| C.java:89:27:89:54 | getParameter(...) : String | C.java:96:3:96:14 | burlapInput1 |
+| C.java:38:17:38:44 | getParameter(...) : String | C.java:46:3:46:4 | jr |
+| C.java:51:17:51:44 | getParameter(...) : String | C.java:53:3:53:3 | r |
+| C.java:51:17:51:44 | getParameter(...) : String | C.java:54:3:54:3 | r |
+| C.java:51:17:51:44 | getParameter(...) : String | C.java:55:3:55:3 | r |
+| C.java:60:18:60:45 | getParameter(...) : String | C.java:63:3:63:14 | hessianInput |
+| C.java:60:18:60:45 | getParameter(...) : String | C.java:64:3:64:14 | hessianInput |
+| C.java:69:18:69:45 | getParameter(...) : String | C.java:72:3:72:14 | hessianInput |
+| C.java:69:18:69:45 | getParameter(...) : String | C.java:73:3:73:14 | hessianInput |
+| C.java:79:43:79:70 | getParameter(...) : String | C.java:79:26:79:71 | new StringReader(...) |
+| C.java:84:27:84:54 | getParameter(...) : String | C.java:87:3:87:13 | burlapInput |
+| C.java:84:27:84:54 | getParameter(...) : String | C.java:91:3:91:14 | burlapInput1 |
 | TestMessageBodyReader.java:20:55:20:78 | entityStream : InputStream | TestMessageBodyReader.java:22:18:22:52 | new ObjectInputStream(...) |
 nodes
 | A.java:13:31:13:51 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
@@ -96,22 +96,22 @@ nodes
 | C.java:33:23:33:26 | data | semmle.label | data |
 | C.java:38:17:38:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | C.java:43:25:43:28 | data | semmle.label | data |
-| C.java:48:3:48:4 | jr | semmle.label | jr |
-| C.java:56:17:56:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| C.java:58:3:58:3 | r | semmle.label | r |
-| C.java:59:3:59:3 | r | semmle.label | r |
-| C.java:60:3:60:3 | r | semmle.label | r |
-| C.java:65:18:65:45 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| C.java:68:3:68:14 | hessianInput | semmle.label | hessianInput |
-| C.java:69:3:69:14 | hessianInput | semmle.label | hessianInput |
-| C.java:74:18:74:45 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| C.java:77:3:77:14 | hessianInput | semmle.label | hessianInput |
-| C.java:78:3:78:14 | hessianInput | semmle.label | hessianInput |
-| C.java:84:26:84:71 | new StringReader(...) | semmle.label | new StringReader(...) |
-| C.java:84:43:84:70 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| C.java:89:27:89:54 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| C.java:92:3:92:13 | burlapInput | semmle.label | burlapInput |
-| C.java:96:3:96:14 | burlapInput1 | semmle.label | burlapInput1 |
+| C.java:46:3:46:4 | jr | semmle.label | jr |
+| C.java:51:17:51:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| C.java:53:3:53:3 | r | semmle.label | r |
+| C.java:54:3:54:3 | r | semmle.label | r |
+| C.java:55:3:55:3 | r | semmle.label | r |
+| C.java:60:18:60:45 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| C.java:63:3:63:14 | hessianInput | semmle.label | hessianInput |
+| C.java:64:3:64:14 | hessianInput | semmle.label | hessianInput |
+| C.java:69:18:69:45 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| C.java:72:3:72:14 | hessianInput | semmle.label | hessianInput |
+| C.java:73:3:73:14 | hessianInput | semmle.label | hessianInput |
+| C.java:79:26:79:71 | new StringReader(...) | semmle.label | new StringReader(...) |
+| C.java:79:43:79:70 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| C.java:84:27:84:54 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| C.java:87:3:87:13 | burlapInput | semmle.label | burlapInput |
+| C.java:91:3:91:14 | burlapInput1 | semmle.label | burlapInput1 |
 | TestMessageBodyReader.java:20:55:20:78 | entityStream : InputStream | semmle.label | entityStream : InputStream |
 | TestMessageBodyReader.java:22:18:22:52 | new ObjectInputStream(...) | semmle.label | new ObjectInputStream(...) |
 #select
@@ -150,15 +150,15 @@ nodes
 | C.java:32:3:32:49 | loadStreamOfType(...) | C.java:23:17:23:44 | getParameter(...) : String | C.java:32:31:32:34 | data | Unsafe deserialization of $@. | C.java:23:17:23:44 | getParameter(...) | user input |
 | C.java:33:3:33:41 | loadType(...) | C.java:23:17:23:44 | getParameter(...) : String | C.java:33:23:33:26 | data | Unsafe deserialization of $@. | C.java:23:17:23:44 | getParameter(...) | user input |
 | C.java:43:3:43:29 | jsonToJava(...) | C.java:38:17:38:44 | getParameter(...) : String | C.java:43:25:43:28 | data | Unsafe deserialization of $@. | C.java:38:17:38:44 | getParameter(...) | user input |
-| C.java:48:3:48:17 | readObject(...) | C.java:38:17:38:44 | getParameter(...) : String | C.java:48:3:48:4 | jr | Unsafe deserialization of $@. | C.java:38:17:38:44 | getParameter(...) | user input |
-| C.java:58:3:58:10 | read(...) | C.java:56:17:56:44 | getParameter(...) : String | C.java:58:3:58:3 | r | Unsafe deserialization of $@. | C.java:56:17:56:44 | getParameter(...) | user input |
-| C.java:59:3:59:22 | read(...) | C.java:56:17:56:44 | getParameter(...) : String | C.java:59:3:59:3 | r | Unsafe deserialization of $@. | C.java:56:17:56:44 | getParameter(...) | user input |
-| C.java:60:3:60:36 | read(...) | C.java:56:17:56:44 | getParameter(...) : String | C.java:60:3:60:3 | r | Unsafe deserialization of $@. | C.java:56:17:56:44 | getParameter(...) | user input |
-| C.java:68:3:68:27 | readObject(...) | C.java:65:18:65:45 | getParameter(...) : String | C.java:68:3:68:14 | hessianInput | Unsafe deserialization of $@. | C.java:65:18:65:45 | getParameter(...) | user input |
-| C.java:69:3:69:39 | readObject(...) | C.java:65:18:65:45 | getParameter(...) : String | C.java:69:3:69:14 | hessianInput | Unsafe deserialization of $@. | C.java:65:18:65:45 | getParameter(...) | user input |
-| C.java:77:3:77:27 | readObject(...) | C.java:74:18:74:45 | getParameter(...) : String | C.java:77:3:77:14 | hessianInput | Unsafe deserialization of $@. | C.java:74:18:74:45 | getParameter(...) | user input |
-| C.java:78:3:78:39 | readObject(...) | C.java:74:18:74:45 | getParameter(...) : String | C.java:78:3:78:14 | hessianInput | Unsafe deserialization of $@. | C.java:74:18:74:45 | getParameter(...) | user input |
-| C.java:84:3:84:72 | unmarshal(...) | C.java:84:43:84:70 | getParameter(...) : String | C.java:84:26:84:71 | new StringReader(...) | Unsafe deserialization of $@. | C.java:84:43:84:70 | getParameter(...) | user input |
-| C.java:92:3:92:26 | readObject(...) | C.java:89:27:89:54 | getParameter(...) : String | C.java:92:3:92:13 | burlapInput | Unsafe deserialization of $@. | C.java:89:27:89:54 | getParameter(...) | user input |
-| C.java:96:3:96:27 | readObject(...) | C.java:89:27:89:54 | getParameter(...) : String | C.java:96:3:96:14 | burlapInput1 | Unsafe deserialization of $@. | C.java:89:27:89:54 | getParameter(...) | user input |
+| C.java:46:3:46:17 | readObject(...) | C.java:38:17:38:44 | getParameter(...) : String | C.java:46:3:46:4 | jr | Unsafe deserialization of $@. | C.java:38:17:38:44 | getParameter(...) | user input |
+| C.java:53:3:53:10 | read(...) | C.java:51:17:51:44 | getParameter(...) : String | C.java:53:3:53:3 | r | Unsafe deserialization of $@. | C.java:51:17:51:44 | getParameter(...) | user input |
+| C.java:54:3:54:22 | read(...) | C.java:51:17:51:44 | getParameter(...) : String | C.java:54:3:54:3 | r | Unsafe deserialization of $@. | C.java:51:17:51:44 | getParameter(...) | user input |
+| C.java:55:3:55:36 | read(...) | C.java:51:17:51:44 | getParameter(...) : String | C.java:55:3:55:3 | r | Unsafe deserialization of $@. | C.java:51:17:51:44 | getParameter(...) | user input |
+| C.java:63:3:63:27 | readObject(...) | C.java:60:18:60:45 | getParameter(...) : String | C.java:63:3:63:14 | hessianInput | Unsafe deserialization of $@. | C.java:60:18:60:45 | getParameter(...) | user input |
+| C.java:64:3:64:39 | readObject(...) | C.java:60:18:60:45 | getParameter(...) : String | C.java:64:3:64:14 | hessianInput | Unsafe deserialization of $@. | C.java:60:18:60:45 | getParameter(...) | user input |
+| C.java:72:3:72:27 | readObject(...) | C.java:69:18:69:45 | getParameter(...) : String | C.java:72:3:72:14 | hessianInput | Unsafe deserialization of $@. | C.java:69:18:69:45 | getParameter(...) | user input |
+| C.java:73:3:73:39 | readObject(...) | C.java:69:18:69:45 | getParameter(...) : String | C.java:73:3:73:14 | hessianInput | Unsafe deserialization of $@. | C.java:69:18:69:45 | getParameter(...) | user input |
+| C.java:79:3:79:72 | unmarshal(...) | C.java:79:43:79:70 | getParameter(...) : String | C.java:79:26:79:71 | new StringReader(...) | Unsafe deserialization of $@. | C.java:79:43:79:70 | getParameter(...) | user input |
+| C.java:87:3:87:26 | readObject(...) | C.java:84:27:84:54 | getParameter(...) : String | C.java:87:3:87:13 | burlapInput | Unsafe deserialization of $@. | C.java:84:27:84:54 | getParameter(...) | user input |
+| C.java:91:3:91:27 | readObject(...) | C.java:84:27:84:54 | getParameter(...) : String | C.java:91:3:91:14 | burlapInput1 | Unsafe deserialization of $@. | C.java:84:27:84:54 | getParameter(...) | user input |
 | TestMessageBodyReader.java:22:18:22:65 | readObject(...) | TestMessageBodyReader.java:20:55:20:78 | entityStream : InputStream | TestMessageBodyReader.java:22:18:22:52 | new ObjectInputStream(...) | Unsafe deserialization of $@. | TestMessageBodyReader.java:20:55:20:78 | entityStream | user input |

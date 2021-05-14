@@ -5,7 +5,7 @@ import semmle.code.java.frameworks.FastJson
 import semmle.code.java.frameworks.JYaml
 import semmle.code.java.frameworks.JsonIo
 import semmle.code.java.frameworks.YamlBeans
-import semmle.code.java.frameworks.Hessian
+import semmle.code.java.frameworks.HessianBurlap
 import semmle.code.java.frameworks.Castor
 import semmle.code.java.frameworks.apache.Lang
 
@@ -55,29 +55,6 @@ class SafeKryo extends DataFlow2::Configuration {
   }
 }
 
-class SafeJsonIo extends DataFlow2::Configuration {
-  SafeJsonIo() { this = "UnsafeDeserialization::SafeJsonIo" }
-
-  override predicate isSource(DataFlow::Node src) {
-    exists(MethodAccess ma |
-      ma instanceof JsonIoSafeOptionalArgs and
-      src.asExpr() = ma.getQualifier()
-    )
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma |
-      ma.getMethod() instanceof JsonIoJsonToJavaMethod and
-      sink.asExpr() = ma.getArgument(1)
-    )
-    or
-    exists(ClassInstanceExpr cie |
-      cie.getConstructor().getDeclaringType() instanceof JsonReader and
-      sink.asExpr() = cie.getArgument(1)
-    )
-  }
-}
-
 predicate unsafeDeserialization(MethodAccess ma, Expr sink) {
   exists(Method m | m = ma.getMethod() |
     m instanceof ObjectInputStreamReadObjectMethod and
@@ -110,22 +87,21 @@ predicate unsafeDeserialization(MethodAccess ma, Expr sink) {
     not fastJsonLooksSafe() and
     sink = ma.getArgument(0)
     or
-    ma.getMethod() instanceof JYamlUnSafeLoadMethod and
+    ma.getMethod() instanceof JYamlUnsafeLoadMethod and
     sink = ma.getArgument(0)
     or
-    ma.getMethod() instanceof JYamlConfigUnSafeLoadMethod and
+    ma.getMethod() instanceof JYamlConfigUnsafeLoadMethod and
     sink = ma.getArgument(0)
     or
     ma.getMethod() instanceof JsonIoJsonToJavaMethod and
-    sink = ma.getArgument(0) and
-    not exists(SafeJsonIo sji | sji.hasFlowToExpr(ma.getArgument(1)))
+    sink = ma.getArgument(0)
     or
     ma.getMethod() instanceof JsonIoReadObjectMethod and
     sink = ma.getQualifier()
     or
-    ma.getMethod() instanceof YamlReaderReadMethod and sink = ma.getQualifier()
+    ma.getMethod() instanceof YamlBeansReaderReadMethod and sink = ma.getQualifier()
     or
-    ma.getMethod() instanceof UnSafeHessianInputReadObjectMethod and sink = ma.getQualifier()
+    ma.getMethod() instanceof UnsafeHessianInputReadObjectMethod and sink = ma.getQualifier()
     or
     ma.getMethod() instanceof UnmarshalMethod and sink = ma.getAnArgument()
     or

@@ -7,14 +7,14 @@ import java
 /**
  * The class `org.exolab.castor.xml.Unmarshaller`.
  */
-class Unmarshaller extends RefType {
-  Unmarshaller() { this.hasQualifiedName("org.exolab.castor.xml", "Unmarshaller") }
+class CastorUnmarshaller extends RefType {
+  CastorUnmarshaller() { this.hasQualifiedName("org.exolab.castor.xml", "Unmarshaller") }
 }
 
 /** A method with the name `unmarshal` declared in `org.exolab.castor.xml.Unmarshaller`. */
 class UnmarshalMethod extends Method {
   UnmarshalMethod() {
-    this.getDeclaringType() instanceof Unmarshaller and
+    this.getDeclaringType() instanceof CastorUnmarshaller and
     this.getName() = "unmarshal"
   }
 }

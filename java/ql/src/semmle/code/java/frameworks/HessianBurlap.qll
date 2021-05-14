@@ -1,24 +1,26 @@
 /**
- * Provides classes and predicates for working with the Hession framework.
+ * Provides classes and predicates for working with the HessianBurlap framework.
  */
 
 import java
 
 /**
- * The class `com.caucho.hessian.io.HessianInput` or `com.caucho.hessian.io.Hessian2Input`.
+ * The class `com.caucho.hessian.io.AbstractHessianInput` or `com.alibaba.com.caucho.hessian.io.Hessian2StreamingInput`.
  */
-class UnSafeHessianInput extends RefType {
-  UnSafeHessianInput() {
-    this.hasQualifiedName("com.caucho.hessian.io", ["HessianInput", "Hessian2Input"])
+class UnsafeHessianInput extends RefType {
+  UnsafeHessianInput() {
+    this.hasQualifiedName(["com.caucho.hessian.io", "com.alibaba.com.caucho.hessian.io"],
+      ["AbstractHessianInput", "Hessian2StreamingInput"])
   }
 }
 
 /**
- * A HessianInput readObject method. This is either `HessianInput.readObject` or `Hessian2Input.readObject`.
+ * A AbstractHessianInput or Hessian2StreamingInput subclass readObject method.
+ * This is either `AbstractHessianInput.readObject` or `Hessian2StreamingInput.readObject`.
  */
-class UnSafeHessianInputReadObjectMethod extends Method {
-  UnSafeHessianInputReadObjectMethod() {
-    this.getDeclaringType() instanceof UnSafeHessianInput and
+class UnsafeHessianInputReadObjectMethod extends Method {
+  UnsafeHessianInputReadObjectMethod() {
+    this.getDeclaringType().getASupertype*() instanceof UnsafeHessianInput and
     this.getName() = "readObject"
   }
 }

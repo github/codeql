@@ -24,34 +24,34 @@ class UnsafeDeserializationConfig extends TaintTracking::Configuration {
 
   override predicate isAdditionalTaintStep(DataFlow::Node prod, DataFlow::Node succ) {
     exists(ClassInstanceExpr cie |
-      cie.getConstructor().getDeclaringType() instanceof JsonReader and
       cie.getArgument(0) = prod.asExpr() and
       cie = succ.asExpr() and
-      not exists(SafeJsonIo sji | sji.hasFlowToExpr(cie.getArgument(1)))
-    )
-    or
-    exists(ClassInstanceExpr cie |
-      cie.getConstructor().getDeclaringType() instanceof YamlReader and
-      cie.getArgument(0) = prod.asExpr() and
-      cie = succ.asExpr()
-    )
-    or
-    exists(ClassInstanceExpr cie |
-      cie.getConstructor().getDeclaringType() instanceof UnSafeHessianInput and
-      cie.getArgument(0) = prod.asExpr() and
-      cie = succ.asExpr()
-    )
-    or
-    exists(ClassInstanceExpr cie |
-      cie.getConstructor().getDeclaringType() instanceof BurlapInput and
-      cie.getArgument(0) = prod.asExpr() and
-      cie = succ.asExpr()
+      (
+        cie.getConstructor().getDeclaringType() instanceof JsonIoJsonReader or
+        cie.getConstructor().getDeclaringType() instanceof YamlBeansReader or
+        cie.getConstructor().getDeclaringType().getASupertype*() instanceof UnsafeHessianInput or
+        cie.getConstructor().getDeclaringType() instanceof BurlapInput
+      )
     )
     or
     exists(MethodAccess ma |
       ma.getMethod() instanceof BurlapInputInitMethod and
       ma.getArgument(0) = prod.asExpr() and
       ma.getQualifier() = succ.asExpr()
+    )
+  }
+
+  override predicate isSanitizer(DataFlow::Node node) {
+    exists(ClassInstanceExpr cie |
+      cie.getConstructor().getDeclaringType() instanceof JsonIoJsonReader and
+      cie = node.asExpr() and
+      exists(SafeJsonIoConfig sji | sji.hasFlowToExpr(cie.getArgument(1)))
+    )
+    or
+    exists(MethodAccess ma |
+      ma.getMethod() instanceof JsonIoJsonToJavaMethod and
+      ma.getArgument(0) = node.asExpr() and
+      exists(SafeJsonIoConfig sji | sji.hasFlowToExpr(ma.getArgument(1)))
     )
   }
 }
