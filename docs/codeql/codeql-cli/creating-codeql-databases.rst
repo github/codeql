@@ -203,6 +203,7 @@ commands that you can specify for compiled languages.
      codeql database create csharp-database --language=csharp --command='dotnet build /p:UseSharedCompilation=false /t:rebuild'
 
 - Go project built using the ``COEQL_EXTRACTOR_GO_BUILD_TRACING=on`` environment variable::
+
    CODEQL_EXTRACTOR_GO_BUILD_TRACING=on codeql database create go-database --language=go
 
 - Go project built using a custom build script::
