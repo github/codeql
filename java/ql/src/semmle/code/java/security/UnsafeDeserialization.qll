@@ -274,11 +274,19 @@ predicate createJacksonTreeNodeStep(DataFlow::Node fromNode, DataFlow::Node toNo
   )
 }
 
+/**
+ * Holds if `type` or one of its supertypes has a field with `JsonTypeInfo` annotation
+ * that enables polymorphic type handling.
+ */
 predicate hasJsonTypeInfoAnnotation(RefType type) {
   hasFieldWithJsonTypeAnnotation(type.getASupertype*()) or
   hasFieldWithJsonTypeAnnotation(type.getAField().getType())
 }
 
+/**
+ * Holds if `type` has a field with `JsonTypeInfo` annotation
+ * that enables polymorphic type handling.
+ */
 predicate hasFieldWithJsonTypeAnnotation(RefType type) {
   exists(Annotation a |
     type.getAField().getAnAnnotation() = a and
