@@ -84,7 +84,8 @@ class Configuration extends TaintTracking::Configuration {
     guard instanceof InstanceofCheck or
     guard instanceof IsArrayCheck or
     guard instanceof TypeofCheck or
-    guard instanceof EqualityCheck
+    guard instanceof EqualityCheck or
+    guard instanceof IncludesCheck
   }
 }
 
@@ -202,5 +203,17 @@ private class EqualityCheck extends TaintTracking::SanitizerGuardNode, DataFlow:
   override predicate sanitizes(boolean outcome, Expr e) {
     e = astNode.getAnOperand() and
     outcome = astNode.getPolarity().booleanNot()
+  }
+}
+
+/**
+ * Sanitizer guard of the form `x.includes("__proto__")`.
+ */
+private class IncludesCheck extends TaintTracking::LabeledSanitizerGuardNode, InclusionTest {
+  IncludesCheck() { this.getContainedNode().mayHaveStringValue("__proto__") }
+
+  override predicate sanitizes(boolean outcome, Expr e) {
+    e = getContainerNode().asExpr() and
+    outcome = getPolarity().booleanNot()
   }
 }

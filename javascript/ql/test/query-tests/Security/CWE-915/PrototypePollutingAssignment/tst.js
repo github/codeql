@@ -80,5 +80,11 @@ app.get('/', (req, res) => {
     object[taint][taint] = taint; // NOT OK
 
     object["" + taint]["" + taint] = taint; // NOT OK
+
+    if (!taint.includes("__proto__")) {
+        object[taint][taint] = taint; // OK
+    } else {
+        object[taint][taint] = taint; // NOT OK
+    }
 });
 
