@@ -11,6 +11,7 @@ private import javascript
 private import semmle.javascript.DynamicPropertyAccess
 private import semmle.javascript.dataflow.InferredTypes
 private import PrototypePollutingAssignmentCustomizations::PrototypePollutingAssignment
+private import filters.ClassifyFiles as ClassifyFiles
 
 // Materialize flow labels
 private class ConcreteObjectPrototype extends ObjectPrototype {
@@ -98,7 +99,8 @@ private DataFlow::SourceNode prototypeLessObject(DataFlow::TypeTracker t) {
   t.start() and
   // We assume the argument to Object.create is not Object.prototype, since most
   // users wouldn't bother to call Object.create in that case.
-  result = DataFlow::globalVarRef("Object").getAMemberCall("create")
+  result = DataFlow::globalVarRef("Object").getAMemberCall("create") and
+  not result.getFile() instanceof TestFile
   or
   // Allow use of SharedFlowSteps to track a bit further
   exists(DataFlow::Node mid |
@@ -107,6 +109,14 @@ private DataFlow::SourceNode prototypeLessObject(DataFlow::TypeTracker t) {
   )
   or
   exists(DataFlow::TypeTracker t2 | result = prototypeLessObject(t2).track(t2, t))
+}
+
+/**
+ * A test file.
+ * Objects created in such files are ignored in the `prototypeLessObject` predicate.
+ */
+private class TestFile extends File {
+  TestFile() { ClassifyFiles::classify(this, "test") }
 }
 
 /** Holds if `Object.prototype` has a member named `prop`. */

@@ -32,6 +32,12 @@ nodes
 | lib.js:22:3:22:14 | obj[path[0]] |
 | lib.js:22:7:22:10 | path |
 | lib.js:22:7:22:13 | path[0] |
+| lib.js:25:44:25:47 | path |
+| lib.js:25:44:25:47 | path |
+| lib.js:26:10:26:21 | obj[path[0]] |
+| lib.js:26:10:26:21 | obj[path[0]] |
+| lib.js:26:14:26:17 | path |
+| lib.js:26:14:26:20 | path[0] |
 | tst.js:5:9:5:38 | taint |
 | tst.js:5:17:5:38 | String( ... y.data) |
 | tst.js:5:24:5:37 | req.query.data |
@@ -104,6 +110,11 @@ edges
 | lib.js:22:7:22:10 | path | lib.js:22:7:22:13 | path[0] |
 | lib.js:22:7:22:13 | path[0] | lib.js:22:3:22:14 | obj[path[0]] |
 | lib.js:22:7:22:13 | path[0] | lib.js:22:3:22:14 | obj[path[0]] |
+| lib.js:25:44:25:47 | path | lib.js:26:14:26:17 | path |
+| lib.js:25:44:25:47 | path | lib.js:26:14:26:17 | path |
+| lib.js:26:14:26:17 | path | lib.js:26:14:26:20 | path[0] |
+| lib.js:26:14:26:20 | path[0] | lib.js:26:10:26:21 | obj[path[0]] |
+| lib.js:26:14:26:20 | path[0] | lib.js:26:10:26:21 | obj[path[0]] |
 | tst.js:5:9:5:38 | taint | tst.js:8:12:8:16 | taint |
 | tst.js:5:9:5:38 | taint | tst.js:9:12:9:16 | taint |
 | tst.js:5:9:5:38 | taint | tst.js:12:25:12:29 | taint |
@@ -144,6 +155,7 @@ edges
 | lib.js:6:7:6:9 | obj | lib.js:1:43:1:46 | path | lib.js:6:7:6:9 | obj | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | lib.js:1:43:1:46 | path | here |
 | lib.js:15:3:15:14 | obj[path[0]] | lib.js:14:38:14:41 | path | lib.js:15:3:15:14 | obj[path[0]] | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | lib.js:14:38:14:41 | path | here |
 | lib.js:22:3:22:14 | obj[path[0]] | lib.js:20:14:20:25 | arguments[1] | lib.js:22:3:22:14 | obj[path[0]] | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | lib.js:20:14:20:25 | arguments[1] | here |
+| lib.js:26:10:26:21 | obj[path[0]] | lib.js:25:44:25:47 | path | lib.js:26:10:26:21 | obj[path[0]] | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | lib.js:25:44:25:47 | path | here |
 | tst.js:8:5:8:17 | object[taint] | tst.js:5:24:5:37 | req.query.data | tst.js:8:5:8:17 | object[taint] | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | tst.js:5:24:5:37 | req.query.data | here |
 | tst.js:9:5:9:17 | object[taint] | tst.js:5:24:5:37 | req.query.data | tst.js:9:5:9:17 | object[taint] | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | tst.js:5:24:5:37 | req.query.data | here |
 | tst.js:14:5:14:32 | unsafeG ...  taint) | tst.js:5:24:5:37 | req.query.data | tst.js:14:5:14:32 | unsafeG ...  taint) | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | tst.js:5:24:5:37 | req.query.data | here |

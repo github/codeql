@@ -21,3 +21,7 @@ module.exports.setWithArgs = function() {
   var value = arguments[2];
   obj[path[0]][path[1]] = value; // NOT OK
 }
+
+module.exports.usedInTest = function (obj, path, value) {
+  return obj[path[0]][path[1]] = value; // NOT OK
+}
