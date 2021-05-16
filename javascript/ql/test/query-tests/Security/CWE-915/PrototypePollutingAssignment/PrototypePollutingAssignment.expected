@@ -1,4 +1,24 @@
 nodes
+| lib.js:1:38:1:40 | obj |
+| lib.js:1:43:1:46 | path |
+| lib.js:1:43:1:46 | path |
+| lib.js:1:43:1:46 | path |
+| lib.js:2:7:2:27 | currentPath |
+| lib.js:2:7:2:27 | currentPath |
+| lib.js:2:21:2:24 | path |
+| lib.js:2:21:2:24 | path |
+| lib.js:2:21:2:27 | path[0] |
+| lib.js:2:21:2:27 | path[0] |
+| lib.js:6:7:6:9 | obj |
+| lib.js:6:7:6:9 | obj |
+| lib.js:11:17:11:32 | obj[currentPath] |
+| lib.js:11:17:11:32 | obj[currentPath] |
+| lib.js:11:21:11:31 | currentPath |
+| lib.js:11:21:11:31 | currentPath |
+| lib.js:11:35:11:38 | path |
+| lib.js:11:35:11:38 | path |
+| lib.js:11:35:11:47 | path.slice(1) |
+| lib.js:11:35:11:47 | path.slice(1) |
 | tst.js:5:9:5:38 | taint |
 | tst.js:5:17:5:38 | String( ... y.data) |
 | tst.js:5:24:5:37 | req.query.data |
@@ -24,6 +44,28 @@ nodes
 | tst.js:48:9:48:11 | obj |
 | tst.js:48:9:48:11 | obj |
 edges
+| lib.js:1:38:1:40 | obj | lib.js:6:7:6:9 | obj |
+| lib.js:1:38:1:40 | obj | lib.js:6:7:6:9 | obj |
+| lib.js:1:43:1:46 | path | lib.js:2:21:2:24 | path |
+| lib.js:1:43:1:46 | path | lib.js:2:21:2:24 | path |
+| lib.js:1:43:1:46 | path | lib.js:2:21:2:24 | path |
+| lib.js:1:43:1:46 | path | lib.js:11:35:11:38 | path |
+| lib.js:1:43:1:46 | path | lib.js:11:35:11:38 | path |
+| lib.js:1:43:1:46 | path | lib.js:11:35:11:38 | path |
+| lib.js:2:7:2:27 | currentPath | lib.js:11:21:11:31 | currentPath |
+| lib.js:2:7:2:27 | currentPath | lib.js:11:21:11:31 | currentPath |
+| lib.js:2:21:2:24 | path | lib.js:2:21:2:27 | path[0] |
+| lib.js:2:21:2:24 | path | lib.js:2:21:2:27 | path[0] |
+| lib.js:2:21:2:27 | path[0] | lib.js:2:7:2:27 | currentPath |
+| lib.js:2:21:2:27 | path[0] | lib.js:2:7:2:27 | currentPath |
+| lib.js:11:17:11:32 | obj[currentPath] | lib.js:1:38:1:40 | obj |
+| lib.js:11:17:11:32 | obj[currentPath] | lib.js:1:38:1:40 | obj |
+| lib.js:11:21:11:31 | currentPath | lib.js:11:17:11:32 | obj[currentPath] |
+| lib.js:11:21:11:31 | currentPath | lib.js:11:17:11:32 | obj[currentPath] |
+| lib.js:11:35:11:38 | path | lib.js:11:35:11:47 | path.slice(1) |
+| lib.js:11:35:11:38 | path | lib.js:11:35:11:47 | path.slice(1) |
+| lib.js:11:35:11:47 | path.slice(1) | lib.js:1:43:1:46 | path |
+| lib.js:11:35:11:47 | path.slice(1) | lib.js:1:43:1:46 | path |
 | tst.js:5:9:5:38 | taint | tst.js:8:12:8:16 | taint |
 | tst.js:5:9:5:38 | taint | tst.js:9:12:9:16 | taint |
 | tst.js:5:9:5:38 | taint | tst.js:12:25:12:29 | taint |
@@ -48,6 +90,7 @@ edges
 | tst.js:33:23:33:25 | obj | tst.js:48:9:48:11 | obj |
 | tst.js:33:23:33:25 | obj | tst.js:48:9:48:11 | obj |
 #select
+| lib.js:6:7:6:9 | obj | lib.js:1:43:1:46 | path | lib.js:6:7:6:9 | obj | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | lib.js:1:43:1:46 | path | here |
 | tst.js:8:5:8:17 | object[taint] | tst.js:5:24:5:37 | req.query.data | tst.js:8:5:8:17 | object[taint] | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | tst.js:5:24:5:37 | req.query.data | here |
 | tst.js:9:5:9:17 | object[taint] | tst.js:5:24:5:37 | req.query.data | tst.js:9:5:9:17 | object[taint] | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | tst.js:5:24:5:37 | req.query.data | here |
 | tst.js:14:5:14:32 | unsafeG ...  taint) | tst.js:5:24:5:37 | req.query.data | tst.js:14:5:14:32 | unsafeG ...  taint) | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | tst.js:5:24:5:37 | req.query.data | here |

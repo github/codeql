@@ -53,4 +53,13 @@ module PrototypePollutingAssignment {
   private class DefaultSource extends Source {
     DefaultSource() { this instanceof RemoteFlowSource }
   }
+
+  import semmle.javascript.PackageExports as Exports
+
+  /**
+   * A parameter of an exported function, seen as a source prototype-polluting assignment.
+   */
+  class ExternalInputSource extends Source, DataFlow::SourceNode {
+    ExternalInputSource() { this = Exports::getALibraryInputParameter() }
+  }
 }
