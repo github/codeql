@@ -71,3 +71,14 @@ class Box {
         this.foo = 'bar'; // OK - 'this' won't refer to Object.prototype
     }
 }
+
+
+app.get('/', (req, res) => {
+    let taint = String(req.query.data);
+
+    let object = {};
+    object[taint][taint] = taint; // NOT OK
+
+    object["" + taint]["" + taint] = taint; // NOT OK
+});
+

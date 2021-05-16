@@ -31,7 +31,13 @@ class Configuration extends TaintTracking::Configuration {
     node instanceof Sanitizer
     or
     // Concatenating with a string will in practice prevent the string `__proto__` from arising.
-    node instanceof StringOps::ConcatenationRoot
+    exists(StringOps::ConcatenationRoot root | node = root |
+      // Exclude the string coercion `"" + node` from this filter.
+      not (
+        strictcount(root.getALeaf()) = 2 and
+        root.getALeaf().getStringValue() = ""
+      )
+    )
   }
 
   override predicate isAdditionalFlowStep(

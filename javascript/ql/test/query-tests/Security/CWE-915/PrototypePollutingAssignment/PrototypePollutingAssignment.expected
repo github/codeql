@@ -56,6 +56,17 @@ nodes
 | tst.js:45:9:45:11 | obj |
 | tst.js:48:9:48:11 | obj |
 | tst.js:48:9:48:11 | obj |
+| tst.js:77:9:77:38 | taint |
+| tst.js:77:17:77:38 | String( ... y.data) |
+| tst.js:77:24:77:37 | req.query.data |
+| tst.js:77:24:77:37 | req.query.data |
+| tst.js:80:5:80:17 | object[taint] |
+| tst.js:80:5:80:17 | object[taint] |
+| tst.js:80:12:80:16 | taint |
+| tst.js:82:5:82:22 | object["" + taint] |
+| tst.js:82:5:82:22 | object["" + taint] |
+| tst.js:82:12:82:21 | "" + taint |
+| tst.js:82:17:82:21 | taint |
 edges
 | lib.js:1:38:1:40 | obj | lib.js:6:7:6:9 | obj |
 | lib.js:1:38:1:40 | obj | lib.js:6:7:6:9 | obj |
@@ -113,6 +124,16 @@ edges
 | tst.js:33:23:33:25 | obj | tst.js:45:9:45:11 | obj |
 | tst.js:33:23:33:25 | obj | tst.js:48:9:48:11 | obj |
 | tst.js:33:23:33:25 | obj | tst.js:48:9:48:11 | obj |
+| tst.js:77:9:77:38 | taint | tst.js:80:12:80:16 | taint |
+| tst.js:77:9:77:38 | taint | tst.js:82:17:82:21 | taint |
+| tst.js:77:17:77:38 | String( ... y.data) | tst.js:77:9:77:38 | taint |
+| tst.js:77:24:77:37 | req.query.data | tst.js:77:17:77:38 | String( ... y.data) |
+| tst.js:77:24:77:37 | req.query.data | tst.js:77:17:77:38 | String( ... y.data) |
+| tst.js:80:12:80:16 | taint | tst.js:80:5:80:17 | object[taint] |
+| tst.js:80:12:80:16 | taint | tst.js:80:5:80:17 | object[taint] |
+| tst.js:82:12:82:21 | "" + taint | tst.js:82:5:82:22 | object["" + taint] |
+| tst.js:82:12:82:21 | "" + taint | tst.js:82:5:82:22 | object["" + taint] |
+| tst.js:82:17:82:21 | taint | tst.js:82:12:82:21 | "" + taint |
 #select
 | lib.js:6:7:6:9 | obj | lib.js:1:43:1:46 | path | lib.js:6:7:6:9 | obj | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | lib.js:1:43:1:46 | path | here |
 | lib.js:15:3:15:14 | obj[path[0]] | lib.js:14:38:14:41 | path | lib.js:15:3:15:14 | obj[path[0]] | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | lib.js:14:38:14:41 | path | here |
@@ -124,3 +145,5 @@ edges
 | tst.js:39:9:39:11 | obj | tst.js:5:24:5:37 | req.query.data | tst.js:39:9:39:11 | obj | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | tst.js:5:24:5:37 | req.query.data | here |
 | tst.js:45:9:45:11 | obj | tst.js:5:24:5:37 | req.query.data | tst.js:45:9:45:11 | obj | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | tst.js:5:24:5:37 | req.query.data | here |
 | tst.js:48:9:48:11 | obj | tst.js:5:24:5:37 | req.query.data | tst.js:48:9:48:11 | obj | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | tst.js:5:24:5:37 | req.query.data | here |
+| tst.js:80:5:80:17 | object[taint] | tst.js:77:24:77:37 | req.query.data | tst.js:80:5:80:17 | object[taint] | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | tst.js:77:24:77:37 | req.query.data | here |
+| tst.js:82:5:82:22 | object["" + taint] | tst.js:77:24:77:37 | req.query.data | tst.js:82:5:82:22 | object["" + taint] | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | tst.js:77:24:77:37 | req.query.data | here |
