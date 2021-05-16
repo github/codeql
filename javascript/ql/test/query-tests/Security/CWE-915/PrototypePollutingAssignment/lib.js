@@ -10,3 +10,14 @@ module.exports.set = function recSet(obj, path, value) {
 
   return recSet(obj[currentPath], path.slice(1), value);
 }
+
+module.exports.set2 = function (obj, path, value) {
+  obj[path[0]][path[1]] = value; // NOT OK
+}
+
+module.exports.setWithArgs = function() {
+  var obj = arguments[0];
+  var path = arguments[1];
+  var value = arguments[2];
+  obj[path[0]][path[1]] = value; // NOT OK
+}

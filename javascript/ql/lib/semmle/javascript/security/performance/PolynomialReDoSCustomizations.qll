@@ -126,7 +126,7 @@ module PolynomialReDoS {
   /**
    * A parameter of an exported function, seen as a source for polynomial-redos.
    */
-  class ExternalInputSource extends Source, DataFlow::ParameterNode {
+  class ExternalInputSource extends Source, DataFlow::SourceNode {
     ExternalInputSource() { this = Exports::getALibraryInputParameter() }
 
     override string getKind() { result = "library" }

@@ -50,14 +50,14 @@ module UnsafeShellCommandConstruction {
   /**
    * A parameter of an exported function, seen as a source for shell command constructed from library input.
    */
-  class ExternalInputSource extends Source, DataFlow::ParameterNode {
+  class ExternalInputSource extends Source, DataFlow::SourceNode {
     ExternalInputSource() {
       this = Exports::getALibraryInputParameter() and
       not (
         // looks to be on purpose.
-        this.getName() = ["cmd", "command"]
+        this.(DataFlow::ParameterNode).getName() = ["cmd", "command"]
         or
-        this.getName().regexpMatch(".*(Cmd|Command)$") // ends with "Cmd" or "Command"
+        this.(DataFlow::ParameterNode).getName().regexpMatch(".*(Cmd|Command)$") // ends with "Cmd" or "Command"
       )
     }
   }
