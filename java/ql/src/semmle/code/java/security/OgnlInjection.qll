@@ -59,7 +59,7 @@ private class TypeOgnl extends Class {
   }
 }
 
-/** The class `org.apache.commons.ognl.Node` or `ognl.Node`. */
+/** The interface `org.apache.commons.ognl.Node` or `ognl.Node`. */
 private class TypeNode extends Interface {
   TypeNode() {
     this.hasQualifiedName("org.apache.commons.ognl", "Node") or
@@ -67,6 +67,7 @@ private class TypeNode extends Interface {
   }
 }
 
+/** The interface `org.apache.commons.ognl.enhance.ExpressionAccessor` or `ognl.enhance.ExpressionAccessor`. */
 private class TypeExpressionAccessor extends Interface {
   TypeExpressionAccessor() {
     this.hasQualifiedName("org.apache.commons.ognl.enhance", "ExpressionAccessor") or
