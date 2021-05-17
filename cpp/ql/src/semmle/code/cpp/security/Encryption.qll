@@ -10,7 +10,8 @@ import cpp
 string getAnInsecureAlgorithmName() {
   result =
     [
-      "DES", "RC2", "RC4", "RC5", "ARCFOUR" // ARCFOUR is a variant of RC4
+      "DES", "RC2", "RC4", "RC5", "ARCFOUR", // ARCFOUR is a variant of RC4
+      "3DES", "DES3" // also appears separated, e.g. "TRIPLE-DES", which will be matched as "DES".
     ]
 }
 
@@ -53,12 +54,7 @@ string getInsecureAlgorithmRegex() {
  * insecure encyption algorithm.
  */
 bindingset[name]
-predicate isInsecureEncryption(string name) {
-  name.regexpMatch(getInsecureAlgorithmRegex()) and
-  // Check for evidence that an otherwise matching name may in fact not be
-  // related to insecure encrpytion, e.g. "Triple-DES" is not "DES".
-  not name.toUpperCase().regexpMatch(".*TRIPLE.*")
-}
+predicate isInsecureEncryption(string name) { name.regexpMatch(getInsecureAlgorithmRegex()) }
 
 /**
  * Holds if there is additional evidence that `name` looks like it might be
