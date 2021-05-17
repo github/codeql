@@ -82,3 +82,14 @@ foo **= bar
  foo &= mask
  bar |= 0x01
  baz ^= qux
+
+class X
+  @x = 1
+  @x += 2
+
+  @@y = 3
+  @@y /= 4
+end
+
+$global_var = 5
+$global_var *= 6

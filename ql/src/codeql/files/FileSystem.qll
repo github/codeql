@@ -190,4 +190,7 @@ class File extends Container, @file {
 
   /** Gets the number of lines of comments in this file. */
   int getNumberOfLinesOfComments() { result = count(int line | this.line(line, true)) }
+
+  /** Holds if this file was extracted from ordinary source code. */
+  predicate fromSource() { files(this, _, _, _, 1) }
 }

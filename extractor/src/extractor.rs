@@ -305,22 +305,58 @@ struct Visitor<'a> {
 }
 
 impl Visitor<'_> {
+    fn record_parse_error(
+        &mut self,
+        error_message: String,
+        full_error_message: String,
+        loc: Label,
+    ) {
+        error!("{}", full_error_message);
+        let id = self.trap_writer.fresh_id();
+        self.trap_writer.add_tuple(
+            "diagnostics",
+            vec![
+                Arg::Label(id),
+                Arg::Int(40), // severity 40 = error
+                Arg::String("parse_error".to_string()),
+                Arg::String(error_message),
+                Arg::String(full_error_message),
+                Arg::Label(loc),
+            ],
+        );
+    }
+
+    fn record_parse_error_for_node(
+        &mut self,
+        error_message: String,
+        full_error_message: String,
+        node: Node,
+    ) {
+        let (start_line, start_column, end_line, end_column) = location_for(&self.source, node);
+        let loc = self.trap_writer.location(
+            self.file_label,
+            start_line,
+            start_column,
+            end_line,
+            end_column,
+        );
+        self.record_parse_error(error_message, full_error_message, loc);
+    }
+
     fn enter_node(&mut self, node: Node) -> bool {
-        if node.is_error() {
-            error!(
-                "{}:{}: parse error",
-                &self.path,
-                node.start_position().row + 1
-            );
-            return false;
-        }
-        if node.is_missing() {
-            error!(
-                "{}:{}: parse error: expecting '{}'",
+        if node.is_error() || node.is_missing() {
+            let error_message = if node.is_missing() {
+                format!("parse error: expecting '{}'", node.kind())
+            } else {
+                "parse error".to_string()
+            };
+            let full_error_message = format!(
+                "{}:{}: {}",
                 &self.path,
                 node.start_position().row + 1,
-                node.kind()
+                error_message
             );
+            self.record_parse_error_for_node(error_message, full_error_message, node);
             return false;
         }
 
@@ -405,12 +441,15 @@ impl Visitor<'_> {
                 }
             }
             _ => {
-                error!(
-                    "{}:{}: unknown table type: '{}'",
+                let error_message = format!("unknown table type: '{}'", node.kind());
+                let full_error_message = format!(
+                    "{}:{}: {}",
                     &self.path,
                     node.start_position().row + 1,
-                    node.kind()
+                    error_message
                 );
+                self.record_parse_error(error_message, full_error_message, loc);
+
                 valid = false;
             }
         }
@@ -456,26 +495,36 @@ impl Visitor<'_> {
                         values.push(Arg::Label(child_node.label));
                     }
                 } else if field.name.is_some() {
-                    error!(
-                        "{}:{}: type mismatch for field {}::{} with type {:?} != {:?}",
-                        &self.path,
-                        node.start_position().row + 1,
+                    let error_message = format!(
+                        "type mismatch for field {}::{} with type {:?} != {:?}",
                         node.kind(),
                         child_node.field_name.unwrap_or("child"),
                         child_node.type_name,
                         field.type_info
-                    )
+                    );
+                    let full_error_message = format!(
+                        "{}:{}: {}",
+                        &self.path,
+                        node.start_position().row + 1,
+                        error_message
+                    );
+                    self.record_parse_error_for_node(error_message, full_error_message, *node);
                 }
             } else {
                 if child_node.field_name.is_some() || child_node.type_name.named {
-                    error!(
-                        "{}:{}: value for unknown field: {}::{} and type {:?}",
-                        &self.path,
-                        node.start_position().row + 1,
+                    let error_message = format!(
+                        "value for unknown field: {}::{} and type {:?}",
                         node.kind(),
                         &child_node.field_name.unwrap_or("child"),
                         &child_node.type_name
                     );
+                    let full_error_message = format!(
+                        "{}:{}: {}",
+                        &self.path,
+                        node.start_position().row + 1,
+                        error_message
+                    );
+                    self.record_parse_error_for_node(error_message, full_error_message, *node);
                 }
             }
         }
@@ -489,10 +538,8 @@ impl Visitor<'_> {
                         args.push(child_values.first().unwrap().clone());
                     } else {
                         is_valid = false;
-                        error!(
-                            "{}:{}: {} for field: {}::{}",
-                            &self.path,
-                            node.start_position().row + 1,
+                        let error_message = format!(
+                            "{} for field: {}::{}",
                             if child_values.is_empty() {
                                 "missing value"
                             } else {
@@ -500,7 +547,14 @@ impl Visitor<'_> {
                             },
                             node.kind(),
                             column_name
-                        )
+                        );
+                        let full_error_message = format!(
+                            "{}:{}: {}",
+                            &self.path,
+                            node.start_position().row + 1,
+                            error_message
+                        );
+                        self.record_parse_error_for_node(error_message, full_error_message, *node);
                     }
                 }
                 Storage::Table {

@@ -14,6 +14,7 @@ import ast.Statement
 import ast.Variable
 private import ast.internal.AST
 private import ast.internal.Scope
+private import ast.internal.Synthesis
 
 /**
  * A node in the abstract syntax tree. This class is the base class for all Ruby
@@ -56,7 +57,11 @@ class AstNode extends TAstNode {
   final AstNode getAChild() { result = this.getAChild(_) }
 
   /** Gets the parent of this `AstNode`, if this node is not a root node. */
-  final AstNode getParent() { result.getAChild() = this }
+  final AstNode getParent() {
+    result.getAChild() = this
+    or
+    result.getAChild().getDesugared() = this
+  }
 
   /**
    * Gets a child of this node, which can also be retrieved using a predicate
@@ -75,5 +80,25 @@ class AstNode extends TAstNode {
    * foo(123)
    * ```
    */
-  predicate isSynthesized() { this instanceof TImplicitSelf }
+  final predicate isSynthesized() { this = getSynthChild(_, _) }
+
+  /**
+   * Gets the desugared version of this AST node, if any.
+   *
+   * For example, the desugared version of
+   *
+   * ```rb
+   * x += y
+   * ```
+   *
+   * is
+   *
+   * ```rb
+   * x = x + y
+   * ```
+   *
+   * when `x` is a variable. Whenever an AST node can be desugared,
+   * then the desugared version is used in the control-flow graph.
+   */
+  final AstNode getDesugared() { result = getSynthChild(this, -1) }
 }

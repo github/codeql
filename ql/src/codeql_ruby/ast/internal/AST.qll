@@ -3,6 +3,7 @@ private import TreeSitter
 private import codeql_ruby.ast.internal.Parameter
 private import codeql_ruby.ast.internal.Variable
 private import codeql_ruby.AST as AST
+private import Synthesis
 
 module MethodName {
   predicate range(Generated::UnderscoreMethodName g) {
@@ -16,11 +17,16 @@ module MethodName {
         @token_identifier or @token_instance_variable or @token_operator;
 }
 
+private predicate mkSynthChild(SynthKind kind, AST::AstNode parent, int i) {
+  any(Synthesis s).child(parent, i, SynthChild(kind))
+}
+
 cached
 private module Cached {
   cached
   newtype TAstNode =
-    TAddExpr(Generated::Binary g) { g instanceof @binary_plus } or
+    TAddExprReal(Generated::Binary g) { g instanceof @binary_plus } or
+    TAddExprSynth(AST::AstNode parent, int i) { mkSynthChild(AddExprKind(), parent, i) } or
     TAliasStmt(Generated::Alias g) or
     TArgumentList(Generated::AstNode g) {
       (
@@ -50,7 +56,8 @@ private module Cached {
     TAssignExponentExpr(Generated::OperatorAssignment g) {
       g instanceof @operator_assignment_starstarequal
     } or
-    TAssignExpr(Generated::Assignment g) or
+    TAssignExprReal(Generated::Assignment g) or
+    TAssignExprSynth(AST::AstNode parent, int i) { mkSynthChild(AssignExprKind(), parent, i) } or
     TAssignLShiftExpr(Generated::OperatorAssignment g) {
       g instanceof @operator_assignment_langlelangleequal
     } or
@@ -72,9 +79,16 @@ private module Cached {
     TBareSymbolLiteral(Generated::BareSymbol g) or
     TBeginBlock(Generated::BeginBlock g) or
     TBeginExpr(Generated::Begin g) or
-    TBitwiseAndExpr(Generated::Binary g) { g instanceof @binary_ampersand } or
-    TBitwiseOrExpr(Generated::Binary g) { g instanceof @binary_pipe } or
-    TBitwiseXorExpr(Generated::Binary g) { g instanceof @binary_caret } or
+    TBitwiseAndExprReal(Generated::Binary g) { g instanceof @binary_ampersand } or
+    TBitwiseAndExprSynth(AST::AstNode parent, int i) {
+      mkSynthChild(BitwiseAndExprKind(), parent, i)
+    } or
+    TBitwiseOrExprReal(Generated::Binary g) { g instanceof @binary_pipe } or
+    TBitwiseOrExprSynth(AST::AstNode parent, int i) { mkSynthChild(BitwiseOrExprKind(), parent, i) } or
+    TBitwiseXorExprReal(Generated::Binary g) { g instanceof @binary_caret } or
+    TBitwiseXorExprSynth(AST::AstNode parent, int i) {
+      mkSynthChild(BitwiseXorExprKind(), parent, i)
+    } or
     TBlockArgument(Generated::BlockArgument g) or
     TBlockParameter(Generated::BlockParameter g) or
     TBraceBlock(Generated::Block g) { not g.getParent() instanceof Generated::Lambda } or
@@ -83,8 +97,11 @@ private module Cached {
     TCaseExpr(Generated::Case g) or
     TCharacterLiteral(Generated::Character g) or
     TClassDeclaration(Generated::Class g) or
-    TClassVariableAccess(Generated::ClassVariable g, AST::ClassVariable v) {
+    TClassVariableAccessReal(Generated::ClassVariable g, AST::ClassVariable v) {
       ClassVariableAccess::range(g, v)
+    } or
+    TClassVariableAccessSynth(AST::AstNode parent, int i, AST::ClassVariable v) {
+      mkSynthChild(ClassVariableAccessKind(v), parent, i)
     } or
     TComplementExpr(Generated::Unary g) { g instanceof @unary_tilde } or
     TComplexLiteral(Generated::Complex g) or
@@ -93,7 +110,8 @@ private module Cached {
     TDestructuredLeftAssignment(Generated::DestructuredLeftAssignment g) {
       not strictcount(int i | exists(g.getParent().(Generated::LeftAssignmentList).getChild(i))) = 1
     } or
-    TDivExpr(Generated::Binary g) { g instanceof @binary_slash } or
+    TDivExprReal(Generated::Binary g) { g instanceof @binary_slash } or
+    TDivExprSynth(AST::AstNode parent, int i) { mkSynthChild(DivExprKind(), parent, i) } or
     TDo(Generated::Do g) or
     TDoBlock(Generated::DoBlock g) { not g.getParent() instanceof Generated::Lambda } or
     TElementReference(Generated::ElementReference g) or
@@ -103,16 +121,19 @@ private module Cached {
     TEndBlock(Generated::EndBlock g) or
     TEnsure(Generated::Ensure g) or
     TEqExpr(Generated::Binary g) { g instanceof @binary_equalequal } or
-    TExplicitSelf(Generated::Self g) or
-    TExponentExpr(Generated::Binary g) { g instanceof @binary_starstar } or
+    TExponentExprReal(Generated::Binary g) { g instanceof @binary_starstar } or
+    TExponentExprSynth(AST::AstNode parent, int i) { mkSynthChild(ExponentExprKind(), parent, i) } or
     TFalseLiteral(Generated::False g) or
     TFloatLiteral(Generated::Float g) { not any(Generated::Rational r).getChild() = g } or
     TForExpr(Generated::For g) or
     TForIn(Generated::In g) or // TODO REMOVE
     TGEExpr(Generated::Binary g) { g instanceof @binary_rangleequal } or
     TGTExpr(Generated::Binary g) { g instanceof @binary_rangle } or
-    TGlobalVariableAccess(Generated::GlobalVariable g, AST::GlobalVariable v) {
+    TGlobalVariableAccessReal(Generated::GlobalVariable g, AST::GlobalVariable v) {
       GlobalVariableAccess::range(g, v)
+    } or
+    TGlobalVariableAccessSynth(AST::AstNode parent, int i, AST::GlobalVariable v) {
+      mkSynthChild(GlobalVariableAccessKind(v), parent, i)
     } or
     THashKeySymbolLiteral(Generated::HashKeySymbol g) or
     THashLiteral(Generated::Hash g) or
@@ -122,34 +143,44 @@ private module Cached {
     TIdentifierMethodCall(Generated::Identifier g) { isIdentifierMethodCall(g) } or
     TIf(Generated::If g) or
     TIfModifierExpr(Generated::IfModifier g) or
-    TImplicitSelf(Generated::AstNode g) {
-      isIdentifierMethodCall(g)
-      or
-      isRegularMethodCall(g) and
-      not exists(g.(Generated::Call).getReceiver()) and
-      not exists(g.(Generated::Call).getMethod().(Generated::ScopeResolution).getScope())
-    } or
-    TInstanceVariableAccess(Generated::InstanceVariable g, AST::InstanceVariable v) {
+    TInstanceVariableAccessReal(Generated::InstanceVariable g, AST::InstanceVariable v) {
       InstanceVariableAccess::range(g, v)
+    } or
+    TInstanceVariableAccessSynth(AST::AstNode parent, int i, AST::InstanceVariable v) {
+      mkSynthChild(InstanceVariableAccessKind(v), parent, i)
     } or
     TIntegerLiteral(Generated::Integer g) { not any(Generated::Rational r).getChild() = g } or
     TKeywordParameter(Generated::KeywordParameter g) or
     TLEExpr(Generated::Binary g) { g instanceof @binary_langleequal } or
-    TLShiftExpr(Generated::Binary g) { g instanceof @binary_langlelangle } or
+    TLShiftExprReal(Generated::Binary g) { g instanceof @binary_langlelangle } or
+    TLShiftExprSynth(AST::AstNode parent, int i) { mkSynthChild(LShiftExprKind(), parent, i) } or
     TLTExpr(Generated::Binary g) { g instanceof @binary_langle } or
     TLambda(Generated::Lambda g) or
     TLeftAssignmentList(Generated::LeftAssignmentList g) or
-    TLocalVariableAccess(Generated::Identifier g, AST::LocalVariable v) {
+    TLocalVariableAccessReal(Generated::Identifier g, AST::LocalVariable v) {
       LocalVariableAccess::range(g, v)
     } or
-    TLogicalAndExpr(Generated::Binary g) {
+    TLocalVariableAccessSynth(AST::AstNode parent, int i, AST::LocalVariable v) {
+      mkSynthChild(LocalVariableAccessRealKind(v), parent, i)
+      or
+      mkSynthChild(LocalVariableAccessSynthKind(v), parent, i)
+    } or
+    TLogicalAndExprReal(Generated::Binary g) {
       g instanceof @binary_and or g instanceof @binary_ampersandampersand
     } or
-    TLogicalOrExpr(Generated::Binary g) { g instanceof @binary_or or g instanceof @binary_pipepipe } or
+    TLogicalAndExprSynth(AST::AstNode parent, int i) {
+      mkSynthChild(LogicalAndExprKind(), parent, i)
+    } or
+    TLogicalOrExprReal(Generated::Binary g) {
+      g instanceof @binary_or or g instanceof @binary_pipepipe
+    } or
+    TLogicalOrExprSynth(AST::AstNode parent, int i) { mkSynthChild(LogicalOrExprKind(), parent, i) } or
     TMethod(Generated::Method g) or
     TModuleDeclaration(Generated::Module g) or
-    TModuloExpr(Generated::Binary g) { g instanceof @binary_percent } or
-    TMulExpr(Generated::Binary g) { g instanceof @binary_star } or
+    TModuloExprReal(Generated::Binary g) { g instanceof @binary_percent } or
+    TModuloExprSynth(AST::AstNode parent, int i) { mkSynthChild(ModuloExprKind(), parent, i) } or
+    TMulExprReal(Generated::Binary g) { g instanceof @binary_star } or
+    TMulExprSynth(AST::AstNode parent, int i) { mkSynthChild(MulExprKind(), parent, i) } or
     TNEExpr(Generated::Binary g) { g instanceof @binary_bangequal } or
     TNextStmt(Generated::Next g) or
     TNilLiteral(Generated::Nil g) or
@@ -158,7 +189,8 @@ private module Cached {
     TOptionalParameter(Generated::OptionalParameter g) or
     TPair(Generated::Pair g) or
     TParenthesizedExpr(Generated::ParenthesizedStatements g) or
-    TRShiftExpr(Generated::Binary g) { g instanceof @binary_ranglerangle } or
+    TRShiftExprReal(Generated::Binary g) { g instanceof @binary_ranglerangle } or
+    TRShiftExprSynth(AST::AstNode parent, int i) { mkSynthChild(RShiftExprKind(), parent, i) } or
     TRangeLiteral(Generated::Range g) or
     TRationalLiteral(Generated::Rational g) or
     TRedoStmt(Generated::Redo g) or
@@ -187,6 +219,8 @@ private module Cached {
       i = g.getName() and
       not exists(Generated::Call c | c.getMethod() = g)
     } or
+    TSelfReal(Generated::Self g) or
+    TSelfSynth(AST::AstNode parent, int i) { mkSynthChild(SelfKind(), parent, i) } or
     TSimpleParameter(Generated::Identifier g) { g instanceof Parameter::Range } or
     TSimpleSymbolLiteral(Generated::SimpleSymbol g) or
     TSingletonClass(Generated::SingletonClass g) or
@@ -194,6 +228,7 @@ private module Cached {
     TSpaceshipExpr(Generated::Binary g) { g instanceof @binary_langleequalrangle } or
     TSplatArgument(Generated::SplatArgument g) or
     TSplatParameter(Generated::SplatParameter g) or
+    TStmtSequenceSynth(AST::AstNode parent, int i) { mkSynthChild(StmtSequenceKind(), parent, i) } or
     TStringArrayLiteral(Generated::StringArray g) or
     TStringConcatenation(Generated::ChainedString g) or
     TStringEscapeSequenceComponent(Generated::EscapeSequence g) or
@@ -201,7 +236,8 @@ private module Cached {
     TStringTextComponent(Generated::Token g) {
       g instanceof Generated::StringContent or g instanceof Generated::HeredocContent
     } or
-    TSubExpr(Generated::Binary g) { g instanceof @binary_minus } or
+    TSubExprReal(Generated::Binary g) { g instanceof @binary_minus } or
+    TSubExprSynth(AST::AstNode parent, int i) { mkSynthChild(SubExprKind(), parent, i) } or
     TSubshellLiteral(Generated::Subshell g) or
     TSymbolArrayLiteral(Generated::SymbolArray g) or
     TTernaryIfExpr(Generated::Conditional g) or
@@ -245,7 +281,7 @@ private module Cached {
    */
   cached
   Generated::AstNode toGenerated(AST::AstNode n) {
-    n = TAddExpr(result) or
+    n = TAddExprReal(result) or
     n = TAliasStmt(result) or
     n = TArgumentList(result) or
     n = TAssignAddExpr(result) or
@@ -254,7 +290,7 @@ private module Cached {
     n = TAssignBitwiseXorExpr(result) or
     n = TAssignDivExpr(result) or
     n = TAssignExponentExpr(result) or
-    n = TAssignExpr(result) or
+    n = TAssignExprReal(result) or
     n = TAssignLShiftExpr(result) or
     n = TAssignLogicalAndExpr(result) or
     n = TAssignLogicalOrExpr(result) or
@@ -266,9 +302,9 @@ private module Cached {
     n = TBareSymbolLiteral(result) or
     n = TBeginBlock(result) or
     n = TBeginExpr(result) or
-    n = TBitwiseAndExpr(result) or
-    n = TBitwiseOrExpr(result) or
-    n = TBitwiseXorExpr(result) or
+    n = TBitwiseAndExprReal(result) or
+    n = TBitwiseOrExprReal(result) or
+    n = TBitwiseXorExprReal(result) or
     n = TBlockArgument(result) or
     n = TBlockParameter(result) or
     n = TBraceBlock(result) or
@@ -277,13 +313,13 @@ private module Cached {
     n = TCaseExpr(result) or
     n = TCharacterLiteral(result) or
     n = TClassDeclaration(result) or
-    n = TClassVariableAccess(result, _) or
+    n = TClassVariableAccessReal(result, _) or
     n = TComplementExpr(result) or
     n = TComplexLiteral(result) or
     n = TDefinedExpr(result) or
     n = TDelimitedSymbolLiteral(result) or
     n = TDestructuredLeftAssignment(result) or
-    n = TDivExpr(result) or
+    n = TDivExprReal(result) or
     n = TDo(result) or
     n = TDoBlock(result) or
     n = TElementReference(result) or
@@ -293,15 +329,14 @@ private module Cached {
     n = TEndBlock(result) or
     n = TEnsure(result) or
     n = TEqExpr(result) or
-    n = TExplicitSelf(result) or
-    n = TExponentExpr(result) or
+    n = TExponentExprReal(result) or
     n = TFalseLiteral(result) or
     n = TFloatLiteral(result) or
     n = TForExpr(result) or
     n = TForIn(result) or // TODO REMOVE
     n = TGEExpr(result) or
     n = TGTExpr(result) or
-    n = TGlobalVariableAccess(result, _) or
+    n = TGlobalVariableAccessReal(result, _) or
     n = THashKeySymbolLiteral(result) or
     n = THashLiteral(result) or
     n = THashSplatArgument(result) or
@@ -310,21 +345,21 @@ private module Cached {
     n = TIdentifierMethodCall(result) or
     n = TIf(result) or
     n = TIfModifierExpr(result) or
-    n = TInstanceVariableAccess(result, _) or
+    n = TInstanceVariableAccessReal(result, _) or
     n = TIntegerLiteral(result) or
     n = TKeywordParameter(result) or
     n = TLEExpr(result) or
-    n = TLShiftExpr(result) or
+    n = TLShiftExprReal(result) or
     n = TLTExpr(result) or
     n = TLambda(result) or
     n = TLeftAssignmentList(result) or
-    n = TLocalVariableAccess(result, _) or
-    n = TLogicalAndExpr(result) or
-    n = TLogicalOrExpr(result) or
+    n = TLocalVariableAccessReal(result, _) or
+    n = TLogicalAndExprReal(result) or
+    n = TLogicalOrExprReal(result) or
     n = TMethod(result) or
     n = TModuleDeclaration(result) or
-    n = TModuloExpr(result) or
-    n = TMulExpr(result) or
+    n = TModuloExprReal(result) or
+    n = TMulExprReal(result) or
     n = TNEExpr(result) or
     n = TNextStmt(result) or
     n = TNilLiteral(result) or
@@ -333,7 +368,7 @@ private module Cached {
     n = TOptionalParameter(result) or
     n = TPair(result) or
     n = TParenthesizedExpr(result) or
-    n = TRShiftExpr(result) or
+    n = TRShiftExprReal(result) or
     n = TRangeLiteral(result) or
     n = TRationalLiteral(result) or
     n = TRedoStmt(result) or
@@ -349,6 +384,7 @@ private module Cached {
     n = TReturnStmt(result) or
     n = TScopeResolutionConstantAccess(result, _) or
     n = TScopeResolutionMethodCall(result, _) or
+    n = TSelfReal(result) or
     n = TSimpleParameter(result) or
     n = TSimpleSymbolLiteral(result) or
     n = TSingletonClass(result) or
@@ -361,7 +397,7 @@ private module Cached {
     n = TStringEscapeSequenceComponent(result) or
     n = TStringInterpolationComponent(result) or
     n = TStringTextComponent(result) or
-    n = TSubExpr(result) or
+    n = TSubExprReal(result) or
     n = TSubshellLiteral(result) or
     n = TSymbolArrayLiteral(result) or
     n = TTernaryIfExpr(result) or
@@ -385,14 +421,105 @@ private module Cached {
     n = TYieldCall(result)
   }
 
+  /** Gets the `i`th synthesized child of `parent`. */
+  cached
+  AST::AstNode getSynthChild(AST::AstNode parent, int i) {
+    exists(SynthKind kind | mkSynthChild(kind, parent, i) |
+      kind = AddExprKind() and
+      result = TAddExprSynth(parent, i)
+      or
+      kind = AssignExprKind() and
+      result = TAssignExprSynth(parent, i)
+      or
+      kind = BitwiseAndExprKind() and
+      result = TBitwiseAndExprSynth(parent, i)
+      or
+      kind = BitwiseOrExprKind() and
+      result = TBitwiseOrExprSynth(parent, i)
+      or
+      kind = BitwiseXorExprKind() and
+      result = TBitwiseXorExprSynth(parent, i)
+      or
+      exists(AST::ClassVariable v |
+        kind = ClassVariableAccessKind(v) and
+        result = TClassVariableAccessSynth(parent, i, v)
+      )
+      or
+      kind = DivExprKind() and
+      result = TDivExprSynth(parent, i)
+      or
+      kind = ExponentExprKind() and
+      result = TExponentExprSynth(parent, i)
+      or
+      exists(AST::GlobalVariable v |
+        kind = GlobalVariableAccessKind(v) and
+        result = TGlobalVariableAccessSynth(parent, i, v)
+      )
+      or
+      exists(AST::InstanceVariable v |
+        kind = InstanceVariableAccessKind(v) and
+        result = TInstanceVariableAccessSynth(parent, i, v)
+      )
+      or
+      kind = LShiftExprKind() and
+      result = TLShiftExprSynth(parent, i)
+      or
+      exists(AST::LocalVariable v | result = TLocalVariableAccessSynth(parent, i, v) |
+        kind = LocalVariableAccessRealKind(v)
+        or
+        kind = LocalVariableAccessSynthKind(v)
+      )
+      or
+      kind = LogicalAndExprKind() and
+      result = TLogicalAndExprSynth(parent, i)
+      or
+      kind = LogicalOrExprKind() and
+      result = TLogicalOrExprSynth(parent, i)
+      or
+      kind = ModuloExprKind() and
+      result = TModuloExprSynth(parent, i)
+      or
+      kind = MulExprKind() and
+      result = TMulExprSynth(parent, i)
+      or
+      kind = RShiftExprKind() and
+      result = TRShiftExprSynth(parent, i)
+      or
+      kind = SelfKind() and
+      result = TSelfSynth(parent, i)
+      or
+      kind = StmtSequenceKind() and
+      result = TStmtSequenceSynth(parent, i)
+      or
+      kind = SubExprKind() and
+      result = TSubExprSynth(parent, i)
+    )
+  }
+
+  /**
+   * Holds if the `i`th child of `parent` is `child`. Either `parent` or
+   * `child` (or both) is a synthesized node.
+   */
+  cached
+  predicate synthChild(AST::AstNode parent, int i, AST::AstNode child) {
+    child = getSynthChild(parent, i)
+    or
+    any(Synthesis s).child(parent, i, RealChild(child))
+  }
+
   /**
    * Like `toGenerated`, but also returns generated nodes for synthesized AST
    * nodes.
    */
   cached
   Generated::AstNode toGeneratedInclSynth(AST::AstNode n) {
-    result = toGenerated(n) or
-    n = TImplicitSelf(result)
+    result = toGenerated(n)
+    or
+    not exists(toGenerated(n)) and
+    exists(AST::AstNode parent |
+      synthChild(parent, _, n) and
+      result = toGeneratedInclSynth(parent)
+    )
   }
 }
 
@@ -421,7 +548,7 @@ class TConditionalLoop = TWhileExpr or TUntilExpr or TWhileModifierExpr or TUnti
 
 class TLoop = TConditionalLoop or TForExpr;
 
-class TSelf = TExplicitSelf or TImplicitSelf;
+class TSelf = TSelfReal or TSelfSynth;
 
 class TExpr =
   TSelf or TArgumentList or TRescueClause or TRescueModifierExpr or TPair or TStringConcatenation or
@@ -431,7 +558,7 @@ class TExpr =
 
 class TStmtSequence =
   TBeginBlock or TEndBlock or TThen or TElse or TDo or TEnsure or TStringInterpolationComponent or
-      TBlock or TBodyStmt or TParenthesizedExpr;
+      TBlock or TBodyStmt or TParenthesizedExpr or TStmtSequenceSynth;
 
 class TBodyStmt = TBeginExpr or TModuleBase or TMethod or TLambda or TDoBlock or TSingletonMethod;
 
@@ -485,16 +612,44 @@ class TBinaryOperation =
 class TBinaryArithmeticOperation =
   TAddExpr or TSubExpr or TMulExpr or TDivExpr or TModuloExpr or TExponentExpr;
 
+class TAddExpr = TAddExprReal or TAddExprSynth;
+
+class TSubExpr = TSubExprReal or TSubExprSynth;
+
+class TMulExpr = TMulExprReal or TMulExprSynth;
+
+class TDivExpr = TDivExprReal or TDivExprSynth;
+
+class TModuloExpr = TModuloExprReal or TModuloExprSynth;
+
+class TExponentExpr = TExponentExprReal or TExponentExprSynth;
+
 class TBinaryLogicalOperation = TLogicalAndExpr or TLogicalOrExpr;
+
+class TLogicalAndExpr = TLogicalAndExprReal or TLogicalAndExprSynth;
+
+class TLogicalOrExpr = TLogicalOrExprReal or TLogicalOrExprSynth;
 
 class TBinaryBitwiseOperation =
   TLShiftExpr or TRShiftExpr or TBitwiseAndExpr or TBitwiseOrExpr or TBitwiseXorExpr;
+
+class TLShiftExpr = TLShiftExprReal or TLShiftExprSynth;
+
+class TRShiftExpr = TRShiftExprReal or TRShiftExprSynth;
+
+class TBitwiseAndExpr = TBitwiseAndExprReal or TBitwiseAndExprSynth;
+
+class TBitwiseOrExpr = TBitwiseOrExprReal or TBitwiseOrExprSynth;
+
+class TBitwiseXorExpr = TBitwiseXorExprReal or TBitwiseXorExprSynth;
 
 class TComparisonOperation = TEqualityOperation or TRelationalOperation;
 
 class TEqualityOperation = TEqExpr or TNEExpr or TCaseEqExpr;
 
 class TRelationalOperation = TGTExpr or TGEExpr or TLTExpr or TLEExpr;
+
+class TAssignExpr = TAssignExprReal or TAssignExprSynth;
 
 class TAssignment = TAssignExpr or TAssignOperation;
 
@@ -531,3 +686,11 @@ class TTuplePattern = TTuplePatternParameter or TDestructuredLeftAssignment or T
 
 class TVariableAccess =
   TLocalVariableAccess or TGlobalVariableAccess or TInstanceVariableAccess or TClassVariableAccess;
+
+class TLocalVariableAccess = TLocalVariableAccessReal or TLocalVariableAccessSynth;
+
+class TGlobalVariableAccess = TGlobalVariableAccessReal or TGlobalVariableAccessSynth;
+
+class TInstanceVariableAccess = TInstanceVariableAccessReal or TInstanceVariableAccessSynth;
+
+class TClassVariableAccess = TClassVariableAccessReal or TClassVariableAccessSynth;

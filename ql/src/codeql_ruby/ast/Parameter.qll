@@ -37,10 +37,7 @@ class TuplePatternParameter extends PatternParameter, TuplePattern, TTuplePatter
 
   final override string getAPrimaryQlClass() { result = "TuplePatternParameter" }
 
-  override AstNode getAChild(string pred) {
-    result = PatternParameter.super.getAChild(pred) or
-    result = TuplePattern.super.getAChild(pred)
-  }
+  override AstNode getAChild(string pred) { result = TuplePattern.super.getAChild(pred) }
 }
 
 /** A named parameter. */
@@ -60,8 +57,6 @@ class NamedParameter extends Parameter, TNamedParameter {
   final VariableAccess getDefiningAccess() { result = this.getVariable().getDefiningAccess() }
 
   override AstNode getAChild(string pred) {
-    result = Parameter.super.getAChild(pred)
-    or
     pred = "getDefiningAccess" and
     result = this.getDefiningAccess()
   }
@@ -75,7 +70,7 @@ class SimpleParameter extends NamedParameter, PatternParameter, VariablePattern,
 
   final override string getName() { result = g.getValue() }
 
-  final override LocalVariable getVariable() { result = TLocalVariable(_, _, g) }
+  final override LocalVariable getVariable() { result = TLocalVariableReal(_, _, g) }
 
   final override LocalVariable getAVariable() { result = this.getVariable() }
 
@@ -99,7 +94,7 @@ class BlockParameter extends NamedParameter, TBlockParameter {
 
   final override string getName() { result = g.getName().getValue() }
 
-  final override LocalVariable getVariable() { result = TLocalVariable(_, _, g.getName()) }
+  final override LocalVariable getVariable() { result = TLocalVariableReal(_, _, g.getName()) }
 
   final override string toString() { result = "&" + this.getName() }
 
@@ -122,7 +117,7 @@ class HashSplatParameter extends NamedParameter, THashSplatParameter {
 
   final override string getAPrimaryQlClass() { result = "HashSplatParameter" }
 
-  final override LocalVariable getVariable() { result = TLocalVariable(_, _, g.getName()) }
+  final override LocalVariable getVariable() { result = TLocalVariableReal(_, _, g.getName()) }
 
   final override string toString() { result = "**" + this.getName() }
 
@@ -147,7 +142,7 @@ class KeywordParameter extends NamedParameter, TKeywordParameter {
 
   final override string getAPrimaryQlClass() { result = "KeywordParameter" }
 
-  final override LocalVariable getVariable() { result = TLocalVariable(_, _, g.getName()) }
+  final override LocalVariable getVariable() { result = TLocalVariableReal(_, _, g.getName()) }
 
   /**
    * Gets the default value, i.e. the value assigned to the parameter when one
@@ -197,7 +192,7 @@ class OptionalParameter extends NamedParameter, TOptionalParameter {
    */
   final Expr getDefaultValue() { toGenerated(result) = g.getValue() }
 
-  final override LocalVariable getVariable() { result = TLocalVariable(_, _, g.getName()) }
+  final override LocalVariable getVariable() { result = TLocalVariableReal(_, _, g.getName()) }
 
   final override string toString() { result = this.getName() }
 
@@ -227,7 +222,7 @@ class SplatParameter extends NamedParameter, TSplatParameter {
 
   final override string getAPrimaryQlClass() { result = "SplatParameter" }
 
-  final override LocalVariable getVariable() { result = TLocalVariable(_, _, g.getName()) }
+  final override LocalVariable getVariable() { result = TLocalVariableReal(_, _, g.getName()) }
 
   final override string toString() { result = "*" + this.getName() }
 

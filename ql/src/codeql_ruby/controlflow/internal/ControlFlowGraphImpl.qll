@@ -35,6 +35,7 @@ private import codeql_ruby.AST
 private import codeql_ruby.ast.internal.AST as ASTInternal
 private import codeql_ruby.ast.internal.Scope
 private import codeql_ruby.ast.Scope
+private import codeql_ruby.ast.internal.Synthesis
 private import codeql_ruby.ast.internal.TreeSitter
 private import codeql_ruby.ast.internal.Variable
 private import codeql_ruby.controlflow.ControlFlowGraph
@@ -85,6 +86,8 @@ module CfgScope {
 }
 
 abstract private class ControlFlowTree extends AstNode {
+  ControlFlowTree() { not any(Synthesis s).excludeFromControlFlowTree(this) }
+
   /**
    * Holds if `first` is the first element executed within this AST node.
    */
@@ -284,6 +287,8 @@ module Trees {
   }
 
   private class AssignOperationTree extends StandardPostOrderTree, AssignOperation {
+    AssignOperationTree() { not this.getLeftOperand() instanceof VariableAccess }
+
     final override ControlFlowTree getChildNode(int i) {
       result = this.getLeftOperand() and i = 0
       or
@@ -723,6 +728,22 @@ module Trees {
       first(this.getDefaultValueExpr(), succ) and
       c.(MatchingCompletion).getValue() = false
     }
+  }
+
+  private class DesugaredTree extends ControlFlowTree {
+    ControlFlowTree desugared;
+
+    DesugaredTree() { desugared = this.getDesugared() }
+
+    final override predicate propagatesAbnormal(AstNode child) {
+      desugared.propagatesAbnormal(child)
+    }
+
+    final override predicate first(AstNode first) { desugared.first(first) }
+
+    final override predicate last(AstNode last, Completion c) { desugared.last(last, c) }
+
+    final override predicate succ(AstNode pred, AstNode succ, Completion c) { none() }
   }
 
   private class DoBlockTree extends BodyStmtTree, DoBlock {
