@@ -156,7 +156,7 @@ class JacksonDeserializableField extends DeserializableField {
 }
 
 /** A call to a field that may be deserialized using the Jackson JSON framework. */
-class JacksonDeserializableFieldAccess extends FieldAccess {
+private class JacksonDeserializableFieldAccess extends FieldAccess {
   JacksonDeserializableFieldAccess() { getField() instanceof JacksonDeserializableField }
 }
 
@@ -164,7 +164,7 @@ class JacksonDeserializableFieldAccess extends FieldAccess {
  * When an object is deserialized by the Jackson JSON framework using a tainted input source,
  * the fields that the framework deserialized are themselves tainted input data.
  */
-class JacksonDeserializedTaintStep extends AdditionalTaintStep {
+private class JacksonDeserializedTaintStep extends AdditionalTaintStep {
   override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
     DataFlow::getFieldQualifier(node2.asExpr().(JacksonDeserializableFieldAccess)) = node1
   }
