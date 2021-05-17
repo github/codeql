@@ -85,7 +85,7 @@ class SetPolymorphicTypeValidatorSource extends DataFlow::ExprNode {
         m.getDeclaringType() instanceof MapperBuilder and
         m.hasName("polymorphicTypeValidator")
       ) and
-      this.asExpr() = [q, q.(VarAccess).getVariable().getAnAccess()]
+      this.asExpr() = q
     )
   }
 }
@@ -185,8 +185,7 @@ class EnabledJacksonDefaultTyping extends DataFlow2::Configuration {
   EnabledJacksonDefaultTyping() { this = "EnabledJacksonDefaultTyping" }
 
   override predicate isSource(DataFlow::Node src) {
-    any(EnableJacksonDefaultTyping ma).getQualifier().(VarAccess).getVariable().getAnAccess() =
-      src.asExpr()
+    any(EnableJacksonDefaultTyping ma).getQualifier() = src.asExpr()
   }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof ObjectMapperReadSink }
@@ -212,7 +211,7 @@ class SafeObjectMapper extends DataFlow2::Configuration {
           .(RefType)
           .hasQualifiedName("com.fasterxml.jackson.databind.json",
             ["JsonMapper$Builder", "JsonMapper"]) and
-      fromNode.asExpr() = [q, q.(VarAccess).getVariable().getAnAccess()] and
+      fromNode.asExpr() = q and
       ma = toNode.asExpr()
     )
   }
