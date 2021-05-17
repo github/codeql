@@ -53,25 +53,18 @@ private class DefaultOgnlInjectionSink extends OgnlInjectionSink {
 
 /** The class `org.apache.commons.ognl.Ognl` or `ognl.Ognl`. */
 private class TypeOgnl extends Class {
-  TypeOgnl() {
-    this.hasQualifiedName("org.apache.commons.ognl", "Ognl") or
-    this.hasQualifiedName("ognl", "Ognl")
-  }
+  TypeOgnl() { this.hasQualifiedName(["org.apache.commons.ognl", "ognl"], "Ognl") }
 }
 
 /** The interface `org.apache.commons.ognl.Node` or `ognl.Node`. */
 private class TypeNode extends Interface {
-  TypeNode() {
-    this.hasQualifiedName("org.apache.commons.ognl", "Node") or
-    this.hasQualifiedName("ognl", "Node")
-  }
+  TypeNode() { this.hasQualifiedName(["org.apache.commons.ognl", "ognl"], "Node") }
 }
 
 /** The interface `org.apache.commons.ognl.enhance.ExpressionAccessor` or `ognl.enhance.ExpressionAccessor`. */
 private class TypeExpressionAccessor extends Interface {
   TypeExpressionAccessor() {
-    this.hasQualifiedName("org.apache.commons.ognl.enhance", "ExpressionAccessor") or
-    this.hasQualifiedName("ognl.enhance", "ExpressionAccessor")
+    this.hasQualifiedName(["org.apache.commons.ognl.enhance", "ognl.enhance"], "ExpressionAccessor")
   }
 }
 
