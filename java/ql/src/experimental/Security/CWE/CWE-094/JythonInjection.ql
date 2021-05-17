@@ -52,7 +52,7 @@ class LoadClassMethod extends Method {
  * Holds if `ma` is a call to a class-loading method, and `sink` is the byte array
  * representing the class to be loaded.
  */
-predicate loadClass(MethodAccess ma, Expr sink) {
+predicate loadsClass(MethodAccess ma, Expr sink) {
   exists(Method m, int i | m = ma.getMethod() |
     m instanceof LoadClassMethod and
     m.getParameter(i).getType() instanceof Array and // makeClass(java.lang.String name, byte[] data, ...)
@@ -85,17 +85,21 @@ predicate compile(MethodAccess ma, Expr sink) {
 class CodeInjectionSink extends DataFlow::ExprNode {
   CodeInjectionSink() {
     runCode(_, this.getExpr()) or
-    loadClass(_, this.getExpr()) or
+    loadsClass(_, this.getExpr()) or
     compile(_, this.getExpr())
   }
 
   MethodAccess getMethodAccess() {
     runCode(result, this.getExpr()) or
-    loadClass(result, this.getExpr()) or
+    loadsClass(result, this.getExpr()) or
     compile(result, this.getExpr())
   }
 }
 
+/**
+ * A taint configuration for tracking flow from `RemoteFlowSource` to a Jython method call
+ * `CodeInjectionSink` that executes injected code.
+ */
 class CodeInjectionConfiguration extends TaintTracking::Configuration {
   CodeInjectionConfiguration() { this = "CodeInjectionConfiguration" }
 
