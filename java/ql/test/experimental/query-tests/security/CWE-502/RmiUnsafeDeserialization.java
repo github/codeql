@@ -54,4 +54,5 @@ class SafeRemoteObject implements SafeRemoteObjectInterface {
     public void take(double n) throws RemoteException {}
     public void take(String s) throws RemoteException {}
     public void take(ObjectInputStream ois) throws RemoteException {}
+    public void safeMethod(Object object) {} // this method is not declared in SafeRemoteObjectInterface
 }

@@ -1,7 +1,7 @@
 public class Server {
     public static void main(String... args) throws Exception {
         Registry registry = LocateRegistry.createRegistry(1099);
-        registry.bind("unsafe", new RemoteObjectImpl());
+        registry.bind("safe", new RemoteObjectImpl());
     }
 }
 

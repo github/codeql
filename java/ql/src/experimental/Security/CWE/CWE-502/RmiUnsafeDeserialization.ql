@@ -15,7 +15,7 @@
 import java
 import semmle.code.java.frameworks.Rmi
 
-private class ObjectInputStream extends RefType {
+private class ObjectInputStream extends Class {
   ObjectInputStream() { hasQualifiedName("java.io", "ObjectInputStream") }
 }
 
@@ -35,9 +35,8 @@ private class BindMethod extends Method {
 /**
  * Looks for a vulnerable method in a `Remote` object.
  */
-private Method getVulnerableMethod(Type type) {
-  type.(RefType).getASupertype*() instanceof TypeRemote and
-  exists(Method m, Type parameterType |
+private Method getVulnerableMethod(RefType type) {
+  exists(RemoteCallableMethod m, Type parameterType |
     m.getDeclaringType() = type and parameterType = m.getAParamType()
   |
     not parameterType instanceof PrimitiveType and
@@ -61,5 +60,7 @@ private class UnsafeRmiBinding extends MethodAccess {
   Method getVulnerableMethod() { result = vulnerableMethod }
 }
 
-from UnsafeRmiBinding call
-select call, "Unsafe deserialization with RMI in '" + call.getVulnerableMethod() + "' method"
+from UnsafeRmiBinding call, Method vulnerableMethod
+where vulnerableMethod = call.getVulnerableMethod()
+select call, "Unsafe deserialization with RMI in '$@' method", vulnerableMethod,
+  vulnerableMethod.getStringSignature()
