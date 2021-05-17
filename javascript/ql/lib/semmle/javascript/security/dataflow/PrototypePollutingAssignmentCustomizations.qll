@@ -13,7 +13,12 @@ module PrototypePollutingAssignment {
   /**
    * A data flow source for untrusted data from which the special `__proto__` property name may be arise.
    */
-  abstract class Source extends DataFlow::Node { }
+  abstract class Source extends DataFlow::Node {
+    /**
+     * Gets a string that describes the type of source.
+     */
+    abstract string describe();
+  }
 
   /**
    * A data flow sink for prototype-polluting assignments or untrusted property names.
@@ -52,6 +57,8 @@ module PrototypePollutingAssignment {
   /** A remote flow source or location.{hash,search} as a taint source. */
   private class DefaultSource extends Source {
     DefaultSource() { this instanceof RemoteFlowSource }
+
+    override string describe() { result = "user controlled input" }
   }
 
   import semmle.javascript.PackageExports as Exports
@@ -61,5 +68,7 @@ module PrototypePollutingAssignment {
    */
   class ExternalInputSource extends Source, DataFlow::SourceNode {
     ExternalInputSource() { this = Exports::getALibraryInputParameter() }
+
+    override string describe() { result = "library input" }
   }
 }

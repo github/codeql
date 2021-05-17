@@ -10,7 +10,7 @@
 private import javascript
 private import semmle.javascript.DynamicPropertyAccess
 private import semmle.javascript.dataflow.InferredTypes
-private import PrototypePollutingAssignmentCustomizations::PrototypePollutingAssignment
+import PrototypePollutingAssignmentCustomizations::PrototypePollutingAssignment
 private import filters.ClassifyFiles as ClassifyFiles
 
 // Materialize flow labels
