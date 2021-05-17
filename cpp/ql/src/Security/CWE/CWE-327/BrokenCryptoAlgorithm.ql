@@ -79,14 +79,14 @@ class InsecureFunctionCall extends FunctionCall {
       explain = "function call"
       or
       exists(MacroInvocation mi |
-        mi.getAGeneratedElement() = this.getAChild*() and
+        mi.getAGeneratedElement() = this.getAnArgument() and
         mi.getMacro() = getAnInsecureEncryptionMacro() and
         blame = mi and
         explain = "macro invocation"
       )
       or
       exists(EnumConstantAccess ec |
-        ec = this.getAChild*() and
+        ec = this.getAnArgument() and
         ec.getTarget() = getAnInsecureEncryptionEnumConst() and
         blame = ec and
         explain = "enum constant access"
@@ -97,12 +97,12 @@ class InsecureFunctionCall extends FunctionCall {
       getTarget() = getAdditionalEvidenceFunction()
       or
       exists(MacroInvocation mi |
-        mi.getAGeneratedElement() = this.getAChild*() and
+        mi.getAGeneratedElement() = this.getAnArgument() and
         mi.getMacro() = getAdditionalEvidenceMacro()
       )
       or
       exists(EnumConstantAccess ec |
-        ec = this.getAChild*() and
+        ec = this.getAnArgument() and
         ec.getTarget() = getAdditionalEvidenceEnumConst()
       )
     )
