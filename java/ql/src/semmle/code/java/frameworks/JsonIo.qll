@@ -33,8 +33,8 @@ class JsonIoReadObjectMethod extends Method {
 /**
  * A call to `Map.put` method, set the value of the `USE_MAPS` key to `true`.
  */
-class JsonIoSafeOptionalArgs extends MethodAccess {
-  JsonIoSafeOptionalArgs() {
+class JsonIoUseMapsSetter extends MethodAccess {
+  JsonIoUseMapsSetter() {
     this.getMethod().getDeclaringType().getASourceSupertype*() instanceof MapType and
     this.getMethod().hasName("put") and
     this.getArgument(0).(CompileTimeConstantExpr).getStringValue() = "USE_MAPS" and
@@ -48,7 +48,7 @@ class SafeJsonIoConfig extends DataFlow2::Configuration {
 
   override predicate isSource(DataFlow::Node src) {
     exists(MethodAccess ma |
-      ma instanceof JsonIoSafeOptionalArgs and
+      ma instanceof JsonIoUseMapsSetter and
       src.asExpr() = ma.getQualifier()
     )
   }
