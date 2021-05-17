@@ -11,7 +11,7 @@ attacker to modify Java objects' properties or execute arbitrary code.</p>
 
 <recommendation>
 <p>The general recommendation is to not evaluate untrusted ONGL expressions. If user provided OGNL
-expressions must be evaluated, do this in sandbox (add `-Dognl.security.manager` to JVM arguments)
+expressions must be evaluated, do this in sandbox (add <code>-Dognl.security.manager</code> to JVM arguments)
 and validate the expressions before evaluation.</p>
 </recommendation>
 
