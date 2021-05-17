@@ -188,10 +188,7 @@ private module Cached {
     TNotExpr(Generated::Unary g) { g instanceof @unary_bang or g instanceof @unary_not } or
     TOptionalParameter(Generated::OptionalParameter g) or
     TPair(Generated::Pair g) or
-    TParenthesizedExprReal(Generated::ParenthesizedStatements g) or
-    TParenthesizedExprSynth(AST::AstNode parent, int i) {
-      mkSynthChild(ParenthesizedExprKind(), parent, i)
-    } or
+    TParenthesizedExpr(Generated::ParenthesizedStatements g) or
     TRShiftExprReal(Generated::Binary g) { g instanceof @binary_ranglerangle } or
     TRShiftExprSynth(AST::AstNode parent, int i) { mkSynthChild(RShiftExprKind(), parent, i) } or
     TRangeLiteral(Generated::Range g) or
@@ -231,6 +228,7 @@ private module Cached {
     TSpaceshipExpr(Generated::Binary g) { g instanceof @binary_langleequalrangle } or
     TSplatArgument(Generated::SplatArgument g) or
     TSplatParameter(Generated::SplatParameter g) or
+    TStmtSequenceSynth(AST::AstNode parent, int i) { mkSynthChild(StmtSequenceKind(), parent, i) } or
     TStringArrayLiteral(Generated::StringArray g) or
     TStringConcatenation(Generated::ChainedString g) or
     TStringEscapeSequenceComponent(Generated::EscapeSequence g) or
@@ -369,7 +367,7 @@ private module Cached {
     n = TNotExpr(result) or
     n = TOptionalParameter(result) or
     n = TPair(result) or
-    n = TParenthesizedExprReal(result) or
+    n = TParenthesizedExpr(result) or
     n = TRShiftExprReal(result) or
     n = TRangeLiteral(result) or
     n = TRationalLiteral(result) or
@@ -484,14 +482,14 @@ private module Cached {
       kind = MulExprKind() and
       result = TMulExprSynth(parent, i)
       or
-      kind = ParenthesizedExprKind() and
-      result = TParenthesizedExprSynth(parent, i)
-      or
       kind = RShiftExprKind() and
       result = TRShiftExprSynth(parent, i)
       or
       kind = SelfKind() and
       result = TSelfSynth(parent, i)
+      or
+      kind = StmtSequenceKind() and
+      result = TStmtSequenceSynth(parent, i)
       or
       kind = SubExprKind() and
       result = TSubExprSynth(parent, i)
@@ -560,9 +558,7 @@ class TExpr =
 
 class TStmtSequence =
   TBeginBlock or TEndBlock or TThen or TElse or TDo or TEnsure or TStringInterpolationComponent or
-      TBlock or TBodyStmt or TParenthesizedExpr;
-
-class TParenthesizedExpr = TParenthesizedExprReal or TParenthesizedExprSynth;
+      TBlock or TBodyStmt or TParenthesizedExpr or TStmtSequenceSynth;
 
 class TBodyStmt = TBeginExpr or TModuleBase or TMethod or TLambda or TDoBlock or TSingletonMethod;
 

@@ -79,6 +79,12 @@ class StmtSequence extends Expr, TStmtSequence {
   override AstNode getAChild(string pred) { pred = "getStmt" and result = this.getStmt(_) }
 }
 
+private class StmtSequenceSynth extends StmtSequence, TStmtSequenceSynth {
+  final override Stmt getStmt(int n) { synthChild(this, n, result) }
+
+  final override string toString() { result = "..." }
+}
+
 private class Then extends StmtSequence, TThen {
   private Generated::Then g;
 
@@ -206,21 +212,15 @@ class BodyStmt extends StmtSequence, TBodyStmt {
  * ```
  */
 class ParenthesizedExpr extends StmtSequence, TParenthesizedExpr {
+  private Generated::ParenthesizedStatements g;
+
+  ParenthesizedExpr() { this = TParenthesizedExpr(g) }
+
+  final override Stmt getStmt(int n) { toGenerated(result) = g.getChild(n) }
+
   final override string getAPrimaryQlClass() { result = "ParenthesizedExpr" }
 
   final override string toString() { result = "( ... )" }
-}
-
-private class ParenthesizedExprReal extends ParenthesizedExpr, TParenthesizedExprReal {
-  private Generated::ParenthesizedStatements g;
-
-  ParenthesizedExprReal() { this = TParenthesizedExprReal(g) }
-
-  final override Stmt getStmt(int n) { toGenerated(result) = g.getChild(n) }
-}
-
-private class ParenthesizedExprSynth extends ParenthesizedExpr, TParenthesizedExprSynth {
-  final override Stmt getStmt(int n) { synthChild(this, n, result) }
 }
 
 /**

@@ -25,7 +25,7 @@ newtype SynthKind =
   LogicalOrExprKind() or
   ModuloExprKind() or
   MulExprKind() or
-  ParenthesizedExprKind() or
+  StmtSequenceKind() or
   RShiftExprKind() or
   SelfKind() or
   SubExprKind()
