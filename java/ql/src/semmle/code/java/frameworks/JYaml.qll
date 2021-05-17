@@ -5,37 +5,18 @@
 import java
 
 /**
- * The class `org.ho.yaml.Yaml`.
+ * The class `org.ho.yaml.Yaml` or `org.ho.yaml.YamlConfig`.
  */
-class JYaml extends RefType {
-  JYaml() { this.hasQualifiedName("org.ho.yaml", "Yaml") }
+class JYamlLoader extends RefType {
+  JYamlLoader() { this.hasQualifiedName("org.ho.yaml", ["Yaml", "YamlConfig"]) }
 }
 
 /**
- * A JYaml unsafe load method. This is either `YAML.load` or
- * `YAML.loadType` or `YAML.loadStream` or `YAML.loadStreamOfType`.
+ * A JYaml unsafe load method, declared on either `Yaml` or `YamlConfig`.
  */
-class JYamlUnsafeLoadMethod extends Method {
-  JYamlUnsafeLoadMethod() {
-    this.getDeclaringType() instanceof JYaml and
-    this.getName() in ["load", "loadType", "loadStream", "loadStreamOfType"]
-  }
-}
-
-/**
- * The class `org.ho.yaml.YamlConfig`.
- */
-class JYamlConfig extends RefType {
-  JYamlConfig() { this.hasQualifiedName("org.ho.yaml", "YamlConfig") }
-}
-
-/**
- * A JYamlConfig unsafe load method. This is either `YamlConfig.load` or
- * `YAML.loadType` or `YamlConfig.loadStream` or `YamlConfig.loadStreamOfType`.
- */
-class JYamlConfigUnsafeLoadMethod extends Method {
-  JYamlConfigUnsafeLoadMethod() {
-    this.getDeclaringType() instanceof JYamlConfig and
+class JYamlLoaderUnsafeLoadMethod extends Method {
+  JYamlLoaderUnsafeLoadMethod() {
+    this.getDeclaringType() instanceof JYamlLoader and
     this.getName() in ["load", "loadType", "loadStream", "loadStreamOfType"]
   }
 }

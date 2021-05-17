@@ -5,7 +5,7 @@
 import java
 
 /**
- * The class `com.caucho.hessian.io.AbstractHessianInput` or `com.alibaba.com.caucho.hessian.io.Hessian2StreamingInput`.
+ * The classes `[com.alibaba.]com.caucho.hessian.io.AbstractHessianInput` or `[com.alibaba.]com.caucho.hessian.io.Hessian2StreamingInput`.
  */
 class UnsafeHessianInput extends RefType {
   UnsafeHessianInput() {

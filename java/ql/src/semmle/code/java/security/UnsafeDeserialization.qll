@@ -87,10 +87,7 @@ predicate unsafeDeserialization(MethodAccess ma, Expr sink) {
     not fastJsonLooksSafe() and
     sink = ma.getArgument(0)
     or
-    ma.getMethod() instanceof JYamlUnsafeLoadMethod and
-    sink = ma.getArgument(0)
-    or
-    ma.getMethod() instanceof JYamlConfigUnsafeLoadMethod and
+    ma.getMethod() instanceof JYamlLoaderUnsafeLoadMethod and
     sink = ma.getArgument(0)
     or
     ma.getMethod() instanceof JsonIoJsonToJavaMethod and
