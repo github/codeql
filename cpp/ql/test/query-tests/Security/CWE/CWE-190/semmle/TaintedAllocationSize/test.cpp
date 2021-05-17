@@ -7,6 +7,7 @@ void *malloc(size_t size);
 void *realloc(void *ptr, size_t size);
 void free(void *ptr);
 int atoi(const char *nptr);
+long atol(const char *nptr);
 struct MyStruct
 {
 	char data[256];
@@ -140,6 +141,15 @@ void more_bounded_tests() {
 		if (size > 0)
 		{
 			malloc(size * sizeof(int)); // GOOD (overflow not possible)
+		}
+	}
+
+	{
+		long size = atol(getenv("USER"));
+
+		if (size > 0)
+		{
+			malloc(size * sizeof(int)); // BAD
 		}
 	}
 
