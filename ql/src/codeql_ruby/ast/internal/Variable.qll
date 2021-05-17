@@ -508,6 +508,11 @@ class TVariableAccessReal =
       TClassVariableAccess;
 
 abstract class VariableAccessReal extends VariableAccess, TVariableAccessReal {
+  /**
+   * Same as `getVariable()`, but restricted to non-synthesized variable accesses.
+   *
+   * The sole purpose of this predicate is to make AST synthesis monotonic.
+   */
   abstract VariableReal getVariableReal();
 }
 
