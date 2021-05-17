@@ -91,8 +91,8 @@ void test_functions(void *data, size_t amount, const char *str)
 	encrypt3DES(data, amount); // BAD
 	encryptTripleDES(data, amount); // BAD
 
-	DESEncrypt(data, amount); // BAD
-	RC2Encrypt(data, amount); // BAD
+	DESEncrypt(data, amount); // BAD [NOT DETECTED]
+	RC2Encrypt(data, amount); // BAD [NOT DETECTED]
 	AESEncrypt(data, amount); // GOOD (good algorithm)
 	DES3Encrypt(data, amount); // BAD [NOT DETECTED]
 
