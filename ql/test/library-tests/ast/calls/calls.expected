@@ -36,6 +36,12 @@ callsWithArguments
 | calls.rb:317:5:317:10 | ...[...] | []= | 0 | calls.rb:317:9:317:9 | 5 |
 | calls.rb:319:1:319:6 | ...[...] | [] | 0 | calls.rb:319:5:319:5 | 0 |
 | calls.rb:319:1:319:6 | ...[...] | []= | 0 | calls.rb:319:5:319:5 | 0 |
+| calls.rb:320:1:320:32 | ...[...] | [] | 0 | calls.rb:320:9:320:9 | 0 |
+| calls.rb:320:1:320:32 | ...[...] | [] | 1 | calls.rb:320:12:320:18 | call to baz |
+| calls.rb:320:1:320:32 | ...[...] | [] | 2 | calls.rb:320:21:320:31 | ... + ... |
+| calls.rb:320:1:320:32 | ...[...] | []= | 0 | calls.rb:320:9:320:9 | 0 |
+| calls.rb:320:1:320:32 | ...[...] | []= | 1 | calls.rb:320:12:320:18 | call to baz |
+| calls.rb:320:1:320:32 | ...[...] | []= | 2 | calls.rb:320:21:320:31 | ... + ... |
 callsWithReceiver
 | calls.rb:2:1:2:5 | call to foo | calls.rb:2:1:2:5 | self |
 | calls.rb:5:1:5:10 | call to bar | calls.rb:5:1:5:3 | Foo |
@@ -216,6 +222,13 @@ callsWithReceiver
 | calls.rb:318:1:318:10 | call to count/count= | calls.rb:318:1:318:4 | self |
 | calls.rb:319:1:319:3 | call to foo | calls.rb:319:1:319:3 | self |
 | calls.rb:319:1:319:6 | ...[...] | calls.rb:319:1:319:3 | call to foo |
+| calls.rb:320:1:320:3 | call to foo | calls.rb:320:1:320:3 | self |
+| calls.rb:320:1:320:7 | call to bar | calls.rb:320:1:320:3 | call to foo |
+| calls.rb:320:1:320:32 | ...[...] | calls.rb:320:1:320:7 | call to bar |
+| calls.rb:320:12:320:14 | call to foo | calls.rb:320:12:320:14 | self |
+| calls.rb:320:12:320:18 | call to baz | calls.rb:320:12:320:14 | call to foo |
+| calls.rb:320:21:320:23 | call to foo | calls.rb:320:21:320:23 | self |
+| calls.rb:320:21:320:27 | call to boo | calls.rb:320:21:320:23 | call to foo |
 callsWithBlock
 | calls.rb:17:1:17:17 | call to foo | calls.rb:17:5:17:17 | { ... } |
 | calls.rb:20:1:22:3 | call to foo | calls.rb:20:5:22:3 | do ... end |
@@ -262,3 +275,4 @@ setterCalls
 | calls.rb:317:5:317:10 | ...[...] |
 | calls.rb:318:1:318:10 | call to count/count= |
 | calls.rb:319:1:319:6 | ...[...] |
+| calls.rb:320:1:320:32 | ...[...] |

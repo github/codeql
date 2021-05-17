@@ -7,9 +7,13 @@ private import internal.Variable
 /** A pattern. */
 class Pattern extends AstNode {
   Pattern() {
-    explicitAssignmentNode(toGenerated(this), _) or
-    implicitAssignmentNode(toGenerated(this)) or
+    explicitAssignmentNode(toGenerated(this), _)
+    or
+    implicitAssignmentNode(toGenerated(this))
+    or
     implicitParameterAssignmentNode(toGenerated(this), _)
+    or
+    this = getSynthChild(any(AssignExpr ae), 0)
   }
 
   /** Gets a variable used in (or introduced by) this pattern. */

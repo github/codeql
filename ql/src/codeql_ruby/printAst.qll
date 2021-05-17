@@ -8,6 +8,13 @@
 
 import AST
 
+/** Holds if `n` appears in the desugaring of some other node. */
+predicate isDesugared(AstNode n) {
+  n = any(AstNode sugar).getDesugared()
+  or
+  isDesugared(n.getParent())
+}
+
 /**
  * The query can extend this class to control which nodes are printed.
  */
@@ -17,7 +24,19 @@ class PrintAstConfiguration extends string {
   /**
    * Holds if the given node should be printed.
    */
-  predicate shouldPrintNode(AstNode n) { any() }
+  predicate shouldPrintNode(AstNode n) {
+    not isDesugared(n)
+    or
+    not n.isSynthesized()
+    or
+    n.isSynthesized() and
+    not n = any(AstNode sugar).getDesugared() and
+    exists(AstNode parent |
+      parent = n.getParent() and
+      not parent.isSynthesized() and
+      not n = parent.getDesugared()
+    )
+  }
 }
 
 /**
@@ -32,12 +51,11 @@ class PrintAstNode extends AstNode {
     result =
       any(int i |
         this =
-          rank[i](AstNode p |
-            |
-            p
-            order by
-              p.getLocation().getFile().getBaseName(), p.getLocation().getFile().getAbsolutePath(),
-              p.getLocation().getStartLine(), p.getLocation().getStartColumn()
+          rank[i](AstNode p, Location l, File f |
+            l = p.getLocation() and
+            f = l.getFile()
+          |
+            p order by f.getBaseName(), f.getAbsolutePath(), l.getStartLine(), l.getStartColumn()
           )
       ).toString()
   }
@@ -75,10 +93,10 @@ query predicate nodes(PrintAstNode node, string key, string value) {
 query predicate edges(PrintAstNode source, PrintAstNode target, string key, string value) {
   source.shouldPrint() and
   target.shouldPrint() and
-  target = source.getAChild() and
+  target = source.getChild(_) and
   (
     key = "semmle.label" and
-    value = concat(string name | source.getChild(name) = target | name, "/")
+    value = strictconcat(string name | source.getChild(name) = target | name, "/")
     or
     key = "semmle.order" and
     value = target.getProperty("semmle.order")
