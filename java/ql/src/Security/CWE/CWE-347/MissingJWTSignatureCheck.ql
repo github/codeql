@@ -190,7 +190,7 @@ private predicate isInTestFile(MethodAccess ma) {
   |
     lowerCasedAbsolutePath.matches("%/test/%") and
     not lowerCasedAbsolutePath
-        .matches("%/ql/test/experimental/query-tests/security/CWE-347/%".toLowerCase())
+        .matches("%/ql/test/query-tests/security/CWE-347/%".toLowerCase())
   )
 }
 
