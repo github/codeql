@@ -75,11 +75,11 @@ module CfgScope {
 
   private class BraceBlockScope extends Range_, BraceBlock {
     final override predicate entry(AstNode first) {
-      first(this.(Trees::BraceBlockTree).getFirstChildNode(), first)
+      first(this.(Trees::BraceBlockTree).getBodyChild(0, _), first)
     }
 
     final override predicate exit(AstNode last, Completion c) {
-      last(this.(Trees::BraceBlockTree).getLastChildNode(), last, c)
+      last(this.(Trees::BraceBlockTree).getLastBodyChild(), last, c)
     }
   }
 }
@@ -525,11 +525,24 @@ module Trees {
 
   private class BooleanLiteralTree extends LeafTree, BooleanLiteral { }
 
-  class BraceBlockTree extends ScopeTree, BraceBlock {
-    final override ControlFlowTree getChildNode(int i) {
-      result = this.getParameter(i)
+  class BraceBlockTree extends StmtSequenceTree, BraceBlock {
+    final override predicate propagatesAbnormal(AstNode child) { none() }
+
+    final override AstNode getBodyChild(int i, boolean rescuable) {
+      result = this.getParameter(i) and rescuable = false
       or
-      result = this.getStmt(i - this.getNumberOfParameters())
+      result = StmtSequenceTree.super.getBodyChild(i - this.getNumberOfParameters(), rescuable)
+    }
+
+    override predicate first(AstNode first) { first = this }
+
+    override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      // Normal left-to-right evaluation in the body
+      exists(int i |
+        last(this.getBodyChild(i, _), pred, c) and
+        first(this.getBodyChild(i + 1, _), succ) and
+        c instanceof NormalCompletion
+      )
     }
   }
 
@@ -1140,10 +1153,7 @@ module Trees {
   private class SplatParameterTree extends NonDefaultValueParameterTree, SplatParameter { }
 
   class StmtSequenceTree extends PostOrderTree, StmtSequence {
-    StmtSequenceTree() {
-      not this instanceof BraceBlock and
-      not this instanceof EndBlock
-    }
+    StmtSequenceTree() { not this instanceof EndBlock }
 
     override predicate propagatesAbnormal(AstNode child) { child = this.getAStmt() }
 
