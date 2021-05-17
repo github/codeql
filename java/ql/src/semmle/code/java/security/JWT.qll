@@ -34,6 +34,7 @@ class JwtParserWithInsecureParseSink extends DataFlow::Node {
     )
   }
 
+  /** Gets the method access that does the insecure parsing. */
   MethodAccess getParseMethodAccess() { result = insecureParseMa }
 }
 
@@ -86,7 +87,7 @@ private class SigningKeySourceModel extends SourceModelCsv {
   }
 }
 
-/** CSV sink models representing qualifiers of methods that insecurely parse a JWT */
+/** CSV sink models representing qualifiers of methods that parse a JWT insecurely. */
 private class InsecureJwtParseSinkModel extends SinkModelCsv {
   override predicate row(string row) {
     row =
