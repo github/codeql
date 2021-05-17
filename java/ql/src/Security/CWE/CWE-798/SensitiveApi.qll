@@ -490,7 +490,8 @@ private predicate javaApiCallableCryptoKeyParam(string s) {
   s = "sun.security.provider.JavaKeyStore;engineSetKeyEntry(String, byte[], Certificate[]);1" or
   s = "sun.security.tools.keytool.Main;recoverKey(String, char[], char[]);2" or
   s = "sun.security.tools.keytool.Main;getKeyPasswd(String, String, char[]);2" or
-  s = "sun.security.x509.X509Key;decode(byte[]);0"
+  s = "sun.security.x509.X509Key;decode(byte[]);0" or
+  s = "org.apache.shiro.mgt.AbstractRememberMeManager;setCipherKey(byte[]);0"
 }
 
 /**

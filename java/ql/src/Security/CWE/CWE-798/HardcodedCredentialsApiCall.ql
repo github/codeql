@@ -27,9 +27,9 @@ class HardcodedCredentialApiCallConfiguration extends DataFlow::Configuration {
 
   override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     node1.asExpr().getType() instanceof TypeString and
-    exists(MethodAccess ma | ma.getMethod().hasName(["getBytes", "toCharArray"]) |
+    exists(MethodAccess ma | ma.getMethod().hasName(["getBytes", "toCharArray","decode"]) |
       node2.asExpr() = ma and
-      ma.getQualifier() = node1.asExpr()
+      (ma.getQualifier() = node1.asExpr() or ma.getAnArgument() = node1.asExpr())
     )
   }
 
