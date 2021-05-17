@@ -603,7 +603,7 @@ module Trees {
       rescuable = true
       or
       result =
-        NamespaceTree.super
+        super
             .getBodyChild(i - count(this.getScopeExpr()) - count(this.getSuperclassExpr()),
               rescuable)
     }
