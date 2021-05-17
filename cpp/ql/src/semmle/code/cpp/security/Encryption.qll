@@ -68,7 +68,7 @@ predicate isInsecureEncryption(string name) {
  */
 bindingset[name]
 predicate isEncryptionAdditionalEvidence(string name) {
-  name.toUpperCase().matches("%" + ["CRYPT", "CODE", "CODING", "CBC", "KEY"] + "%")
+  name.toUpperCase().matches("%" + ["CRYPT", "CODE", "CODING", "CBC", "KEY", "CIPHER"] + "%")
 }
 
 /**
