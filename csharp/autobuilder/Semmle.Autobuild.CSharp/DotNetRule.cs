@@ -236,12 +236,6 @@ namespace Semmle.Autobuild.CSharp
 
         /// <summary>
         /// Gets the `dotnet build` script.
-        ///
-        /// The CLR tracer only works on .NET Core >= 3 on Linux and macOS (see
-        /// https://github.com/dotnet/coreclr/issues/19622), so in case we are
-        /// running on an older .NET Core, we disable shared compilation (and
-        /// hence the need for CLR tracing), by adding a
-        /// `/p:UseSharedCompilation=false` argument.
         /// </summary>
         private static BuildScript GetBuildScript(Autobuilder builder, string? dotNetPath, IDictionary<string, string>? environment, string projOrSln)
         {
