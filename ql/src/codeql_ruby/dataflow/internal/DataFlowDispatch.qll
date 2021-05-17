@@ -125,6 +125,12 @@ private DataFlow::LocalSourceNode trackInstance(Module tp, TypeTracker t) {
     or
     result.asExpr().getExpr() instanceof HashLiteral and tp = TResolved("Hash")
     or
+    result.asExpr().getExpr() instanceof MethodBase and tp = TResolved("Symbol")
+    or
+    result.asParameter() instanceof BlockParameter and tp = TResolved("Proc")
+    or
+    result.asExpr().getExpr() instanceof Lambda and tp = TResolved("Proc")
+    or
     exists(CfgNodes::ExprNodes::CallCfgNode call, DataFlow::Node nodeTo |
       call.getExpr().(MethodCall).getMethodName() = "new" and
       nodeTo.asExpr() = call.getReceiver() and

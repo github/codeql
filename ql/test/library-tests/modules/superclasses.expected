@@ -36,8 +36,12 @@ calls.rb:
 #-----| Numeric
 #-----|  -> Object
 
+#-----| Proc
+
 #-----| Rational
 #-----|  -> Numeric
+
+#-----| Symbol
 
 #-----| TrueClass
 #-----|  -> Object

@@ -12,7 +12,7 @@ private string builtin() {
   result =
     [
       "Object", "Kernel", "BasicObject", "Class", "Module", "NilClass", "FalseClass", "TrueClass",
-      "Numeric", "Integer", "Float", "Rational", "Complex", "Array", "Hash"
+      "Numeric", "Integer", "Float", "Rational", "Complex", "Array", "Hash", "Symbol", "Proc"
     ]
 }
 
