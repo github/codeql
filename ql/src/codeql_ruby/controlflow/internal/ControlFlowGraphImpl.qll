@@ -57,11 +57,11 @@ module CfgScope {
 
   private class EndBlockScope extends Range_, EndBlock {
     final override predicate entry(AstNode first) {
-      first(this.(Trees::EndBlockTree).getFirstChildNode(), first)
+      first(this.(Trees::EndBlockTree).getBodyChild(0, _), first)
     }
 
     final override predicate exit(AstNode last, Completion c) {
-      last(this.(Trees::EndBlockTree).getLastChildNode(), last, c)
+      last(this.(Trees::EndBlockTree).getLastBodyChild(), last, c)
     }
   }
 
@@ -738,8 +738,17 @@ module Trees {
 
   private class EmptyStatementTree extends LeafTree, EmptyStmt { }
 
-  class EndBlockTree extends ScopeTree, EndBlock {
-    final override ControlFlowTree getChildNode(int i) { result = this.getStmt(i) }
+  class EndBlockTree extends StmtSequenceTree, EndBlock {
+    override predicate first(AstNode first) { first = this }
+
+    override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      // Normal left-to-right evaluation in the body
+      exists(int i |
+        last(this.getBodyChild(i, _), pred, c) and
+        first(this.getBodyChild(i + 1, _), succ) and
+        c instanceof NormalCompletion
+      )
+    }
   }
 
   private class ForInTree extends LeafTree, ForIn { }
@@ -1153,8 +1162,6 @@ module Trees {
   private class SplatParameterTree extends NonDefaultValueParameterTree, SplatParameter { }
 
   class StmtSequenceTree extends PostOrderTree, StmtSequence {
-    StmtSequenceTree() { not this instanceof EndBlock }
-
     override predicate propagatesAbnormal(AstNode child) { child = this.getAStmt() }
 
     override predicate first(AstNode first) { first(this.getStmt(0), first) }
