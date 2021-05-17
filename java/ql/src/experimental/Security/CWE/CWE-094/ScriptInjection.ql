@@ -85,7 +85,7 @@ predicate isScriptArgument(MethodAccess ma, Expr sink) {
 /**
  * Holds if a Rhino expression evaluation method is vulnerable to code injection.
  */
-predicate evaluateRhinoExpression(MethodAccess ma, Expr sink) {
+predicate evaluatesRhinoExpression(MethodAccess ma, Expr sink) {
   exists(RhinoEvaluateExpressionMethod m | m = ma.getMethod() |
     (
       if ma.getMethod().getName() = "compileReader"
@@ -102,14 +102,14 @@ predicate evaluateRhinoExpression(MethodAccess ma, Expr sink) {
 /**
  * Holds if a Rhino expression compilation method is vulnerable to code injection.
  */
-predicate compileScript(MethodAccess ma, Expr sink) {
+predicate compilesScript(MethodAccess ma, Expr sink) {
   exists(RhinoCompileClassMethod m | m = ma.getMethod() | sink = ma.getArgument(0))
 }
 
 /**
  * Holds if a Rhino class loading method is vulnerable to code injection.
  */
-predicate defineClass(MethodAccess ma, Expr sink) {
+predicate definesRhinoClass(MethodAccess ma, Expr sink) {
   exists(RhinoDefineClassMethod m | m = ma.getMethod() | sink = ma.getArgument(1))
 }
 
@@ -117,17 +117,17 @@ predicate defineClass(MethodAccess ma, Expr sink) {
 class ScriptInjectionSink extends DataFlow::ExprNode {
   ScriptInjectionSink() {
     isScriptArgument(_, this.getExpr()) or
-    evaluateRhinoExpression(_, this.getExpr()) or
-    compileScript(_, this.getExpr()) or
-    defineClass(_, this.getExpr())
+    evaluatesRhinoExpression(_, this.getExpr()) or
+    compilesScript(_, this.getExpr()) or
+    definesRhinoClass(_, this.getExpr())
   }
 
   /** An access to the method associated with this sink. */
   MethodAccess getMethodAccess() {
     isScriptArgument(result, this.getExpr()) or
-    evaluateRhinoExpression(result, this.getExpr()) or
-    compileScript(result, this.getExpr()) or
-    defineClass(result, this.getExpr())
+    evaluatesRhinoExpression(result, this.getExpr()) or
+    compilesScript(result, this.getExpr()) or
+    definesRhinoClass(result, this.getExpr())
   }
 }
 
