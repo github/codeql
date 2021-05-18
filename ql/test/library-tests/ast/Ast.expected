@@ -558,7 +558,7 @@ calls/calls.rb:
 #  317|       getElement: [IntegerLiteral] 2
 #  317|       getElement: [IntegerLiteral] 3
 #  318|   getStmt: [AssignAddExpr] ... += ...
-#  318|     getAnOperand/getLeftOperand: [SetterMethodCall] call to count/count=
+#  318|     getAnOperand/getLeftOperand: [SetterMethodCall] call to count=
 #  318|       getReceiver: [Self] self
 #  318|     getAnOperand/getRightOperand: [IntegerLiteral] 1
 #  319|   getStmt: [AssignAddExpr] ... += ...

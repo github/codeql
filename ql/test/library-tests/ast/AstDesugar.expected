@@ -11,6 +11,14 @@ calls/calls.rb:
 #   67|     getAnOperand/getLeftOperand: [LocalVariableAccess] var1
 #   67|     getAnOperand/getRightOperand: [MethodCall] call to bar
 #   67|       getReceiver: [ConstantReadAccess] X
+#  314| [SetterMethodCall] call to foo=
+#  314|   getReceiver: [Self] self
+#  314|   getArgument: [IntegerLiteral] 10
+#  315| [ElementReference, SetterMethodCall] ...[...]
+#  315|   getReceiver: [MethodCall] call to foo
+#  315|     getReceiver: [Self] self
+#  315|   getArgument: [IntegerLiteral] 0
+#  315|   getArgument: [IntegerLiteral] 10
 control/loops.rb:
 #   10| [AssignExpr] ... = ...
 #   10|   getAnOperand/getLeftOperand: [LocalVariableAccess] sum

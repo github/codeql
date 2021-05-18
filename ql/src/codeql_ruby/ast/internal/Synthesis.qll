@@ -2,6 +2,8 @@
 
 private import AST
 private import TreeSitter
+private import codeql_ruby.ast.internal.Call
+private import codeql_ruby.ast.internal.Operation
 private import codeql_ruby.ast.internal.Parameter
 private import codeql_ruby.ast.internal.Variable
 private import codeql_ruby.AST
@@ -15,6 +17,7 @@ newtype SynthKind =
   BitwiseXorExprKind() or
   ClassVariableAccessKind(ClassVariable v) or
   DivExprKind() or
+  ElementReferenceKind() or
   ExponentExprKind() or
   GlobalVariableAccessKind(GlobalVariable v) or
   InstanceVariableAccessKind(InstanceVariable v) or
@@ -23,6 +26,13 @@ newtype SynthKind =
   LocalVariableAccessSynthKind(TLocalVariableSynth v) or
   LogicalAndExprKind() or
   LogicalOrExprKind() or
+  MethodCallKind(string name) {
+    exists(Generated::Identifier g | isIdentifierMethodCall(g) and name = g.getValue())
+    or
+    exists(Generated::Identifier i | isScopeResolutionMethodCall(_, i) and name = i.getValue())
+    or
+    name = regularMethodCallName(_)
+  } or
   ModuloExprKind() or
   MulExprKind() or
   StmtSequenceKind() or
@@ -72,6 +82,13 @@ class Synthesis extends TSynthesis {
   final string toString() { none() }
 }
 
+private SynthKind getCallKind(MethodCall mc) {
+  result = MethodCallKind(methodCallName(mc))
+  or
+  mc instanceof ElementReference and
+  result = ElementReferenceKind()
+}
+
 private SomeLocation getSomeLocation(AstNode n) {
   result = SomeLocation(toGenerated(n).getLocation())
 }
@@ -99,6 +116,46 @@ private module ImplicitSelfSynthesis {
         not exists(g.(Generated::Call).getMethod().(Generated::ScopeResolution).getScope())
       ) and
       l = NoneLocation()
+    }
+  }
+}
+
+private module SetterDesugar {
+  /**
+   * ```rb
+   * x.foo = y
+   * ```
+   *
+   * desugars to
+   *
+   * ```rb
+   * x.foo=(y)
+   * ```
+   */
+  private class SetterMethodCallSynthesis extends Synthesis {
+    final override predicate child(AstNode parent, int i, Child child, LocationOption l) {
+      exists(AssignExprReal ae, MethodCallReal mc | mc = ae.getLeftOperand() |
+        parent = ae and
+        i = -1 and
+        child = SynthChild(getCallKind(mc)) and
+        l = getSomeLocation(mc)
+        or
+        parent = getSynthChild(ae, -1) and
+        l = NoneLocation() and
+        (
+          i = 0 and
+          child = RealChild(mc.getReceiverReal())
+          or
+          child = RealChild(mc.getArgumentReal(i - 1))
+          or
+          i = mc.getNumberOfArgumentsReal() + 1 and
+          child = RealChild(ae.getRightOperand())
+        )
+      )
+    }
+
+    final override predicate excludeFromControlFlowTree(AstNode n) {
+      n.(MethodCall) = any(AssignExprReal ae).getLeftOperand()
     }
   }
 }

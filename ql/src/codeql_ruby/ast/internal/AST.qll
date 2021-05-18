@@ -1,5 +1,6 @@
 import codeql.Locations
 private import TreeSitter
+private import codeql_ruby.ast.internal.Call
 private import codeql_ruby.ast.internal.Parameter
 private import codeql_ruby.ast.internal.Variable
 private import codeql_ruby.AST as AST
@@ -114,7 +115,10 @@ private module Cached {
     TDivExprSynth(AST::AstNode parent, int i) { mkSynthChild(DivExprKind(), parent, i) } or
     TDo(Generated::Do g) or
     TDoBlock(Generated::DoBlock g) { not g.getParent() instanceof Generated::Lambda } or
-    TElementReference(Generated::ElementReference g) or
+    TElementReferenceReal(Generated::ElementReference g) or
+    TElementReferenceSynth(AST::AstNode parent, int i) {
+      mkSynthChild(ElementReferenceKind(), parent, i)
+    } or
     TElse(Generated::Else g) or
     TElsif(Generated::Elsif g) or
     TEmptyStmt(Generated::EmptyStatement g) or
@@ -176,6 +180,9 @@ private module Cached {
     } or
     TLogicalOrExprSynth(AST::AstNode parent, int i) { mkSynthChild(LogicalOrExprKind(), parent, i) } or
     TMethod(Generated::Method g) or
+    TMethodCallSynth(AST::AstNode parent, int i, string name) {
+      mkSynthChild(MethodCallKind(name), parent, i)
+    } or
     TModuleDeclaration(Generated::Module g) or
     TModuloExprReal(Generated::Binary g) { g instanceof @binary_percent } or
     TModuloExprSynth(AST::AstNode parent, int i) { mkSynthChild(ModuloExprKind(), parent, i) } or
@@ -216,8 +223,7 @@ private module Cached {
       )
     } or
     TScopeResolutionMethodCall(Generated::ScopeResolution g, Generated::Identifier i) {
-      i = g.getName() and
-      not exists(Generated::Call c | c.getMethod() = g)
+      isScopeResolutionMethodCall(g, i)
     } or
     TSelfReal(Generated::Self g) or
     TSelfSynth(AST::AstNode parent, int i) { mkSynthChild(SelfKind(), parent, i) } or
@@ -265,14 +271,6 @@ private module Cached {
     TWhileExpr(Generated::While g) or
     TWhileModifierExpr(Generated::WhileModifier g) or
     TYieldCall(Generated::Yield g)
-
-  private predicate isIdentifierMethodCall(Generated::Identifier g) {
-    vcall(g) and not access(g, _)
-  }
-
-  private predicate isRegularMethodCall(Generated::Call g) {
-    not g.getMethod() instanceof Generated::Super
-  }
 
   /**
    * Gets the underlying TreeSitter entity for a given AST node. This does not
@@ -322,7 +320,7 @@ private module Cached {
     n = TDivExprReal(result) or
     n = TDo(result) or
     n = TDoBlock(result) or
-    n = TElementReference(result) or
+    n = TElementReferenceReal(result) or
     n = TElse(result) or
     n = TElsif(result) or
     n = TEmptyStmt(result) or
@@ -448,6 +446,9 @@ private module Cached {
       kind = DivExprKind() and
       result = TDivExprSynth(parent, i)
       or
+      kind = ElementReferenceKind() and
+      result = TElementReferenceSynth(parent, i)
+      or
       kind = ExponentExprKind() and
       result = TExponentExprSynth(parent, i)
       or
@@ -475,6 +476,11 @@ private module Cached {
       or
       kind = LogicalOrExprKind() and
       result = TLogicalOrExprSynth(parent, i)
+      or
+      exists(string name |
+        kind = MethodCallKind(name) and
+        result = TMethodCallSynth(parent, i, name)
+      )
       or
       kind = ModuloExprKind() and
       result = TModuloExprSynth(parent, i)
@@ -545,8 +551,10 @@ TAstNode fromGenerated(Generated::AstNode n) { n = toGenerated(result) }
 class TCall = TMethodCall or TYieldCall;
 
 class TMethodCall =
-  TIdentifierMethodCall or TScopeResolutionMethodCall or TRegularMethodCall or TElementReference or
-      TSuperCall;
+  TMethodCallSynth or TIdentifierMethodCall or TScopeResolutionMethodCall or TRegularMethodCall or
+      TElementReference or TSuperCall;
+
+class TElementReference = TElementReferenceReal or TElementReferenceSynth;
 
 class TSuperCall = TTokenSuperCall or TRegularSuperCall;
 

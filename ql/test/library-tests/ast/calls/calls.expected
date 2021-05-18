@@ -31,14 +31,13 @@ callsWithArguments
 | calls.rb:293:5:293:33 | call to super | super | 0 | calls.rb:293:11:293:11 | 6 |
 | calls.rb:293:5:293:33 | call to super | super | 1 | calls.rb:293:14:293:14 | 7 |
 | calls.rb:311:1:311:7 | call to call | call | 0 | calls.rb:311:6:311:6 | 1 |
+| calls.rb:314:1:314:8 | call to foo= | foo= | 0 | calls.rb:314:12:314:13 | 10 |
 | calls.rb:315:1:315:6 | ...[...] | []= | 0 | calls.rb:315:5:315:5 | 0 |
+| calls.rb:315:1:315:6 | ...[...] | []= | 0 | calls.rb:315:5:315:5 | 0 |
+| calls.rb:315:1:315:6 | ...[...] | []= | 1 | calls.rb:315:10:315:11 | 10 |
 | calls.rb:316:22:316:27 | ...[...] | []= | 0 | calls.rb:316:26:316:26 | 4 |
 | calls.rb:317:5:317:10 | ...[...] | []= | 0 | calls.rb:317:9:317:9 | 5 |
-| calls.rb:319:1:319:6 | ...[...] | [] | 0 | calls.rb:319:5:319:5 | 0 |
 | calls.rb:319:1:319:6 | ...[...] | []= | 0 | calls.rb:319:5:319:5 | 0 |
-| calls.rb:320:1:320:32 | ...[...] | [] | 0 | calls.rb:320:9:320:9 | 0 |
-| calls.rb:320:1:320:32 | ...[...] | [] | 1 | calls.rb:320:12:320:18 | call to baz |
-| calls.rb:320:1:320:32 | ...[...] | [] | 2 | calls.rb:320:21:320:31 | ... + ... |
 | calls.rb:320:1:320:32 | ...[...] | []= | 0 | calls.rb:320:9:320:9 | 0 |
 | calls.rb:320:1:320:32 | ...[...] | []= | 1 | calls.rb:320:12:320:18 | call to baz |
 | calls.rb:320:1:320:32 | ...[...] | []= | 2 | calls.rb:320:21:320:31 | ... + ... |
@@ -211,7 +210,9 @@ callsWithReceiver
 | calls.rb:311:1:311:3 | call to foo | calls.rb:311:1:311:3 | self |
 | calls.rb:311:1:311:7 | call to call | calls.rb:311:1:311:3 | call to foo |
 | calls.rb:314:1:314:8 | call to foo= | calls.rb:314:1:314:4 | self |
+| calls.rb:314:1:314:8 | call to foo= | calls.rb:314:1:314:4 | self |
 | calls.rb:315:1:315:3 | call to foo | calls.rb:315:1:315:3 | self |
+| calls.rb:315:1:315:6 | ...[...] | calls.rb:315:1:315:3 | call to foo |
 | calls.rb:315:1:315:6 | ...[...] | calls.rb:315:1:315:3 | call to foo |
 | calls.rb:316:1:316:8 | call to foo= | calls.rb:316:1:316:4 | self |
 | calls.rb:316:12:316:19 | call to bar= | calls.rb:316:12:316:15 | self |
@@ -219,7 +220,7 @@ callsWithReceiver
 | calls.rb:316:22:316:27 | ...[...] | calls.rb:316:22:316:24 | call to foo |
 | calls.rb:317:5:317:7 | call to foo | calls.rb:317:5:317:7 | self |
 | calls.rb:317:5:317:10 | ...[...] | calls.rb:317:5:317:7 | call to foo |
-| calls.rb:318:1:318:10 | call to count/count= | calls.rb:318:1:318:4 | self |
+| calls.rb:318:1:318:10 | call to count= | calls.rb:318:1:318:4 | self |
 | calls.rb:319:1:319:3 | call to foo | calls.rb:319:1:319:3 | self |
 | calls.rb:319:1:319:6 | ...[...] | calls.rb:319:1:319:3 | call to foo |
 | calls.rb:320:1:320:3 | call to foo | calls.rb:320:1:320:3 | self |
@@ -268,11 +269,13 @@ superCallsWithBlock
 | calls.rb:293:5:293:33 | call to super | calls.rb:293:16:293:33 | do ... end |
 setterCalls
 | calls.rb:314:1:314:8 | call to foo= |
+| calls.rb:314:1:314:8 | call to foo= |
+| calls.rb:315:1:315:6 | ...[...] |
 | calls.rb:315:1:315:6 | ...[...] |
 | calls.rb:316:1:316:8 | call to foo= |
 | calls.rb:316:12:316:19 | call to bar= |
 | calls.rb:316:22:316:27 | ...[...] |
 | calls.rb:317:5:317:10 | ...[...] |
-| calls.rb:318:1:318:10 | call to count/count= |
+| calls.rb:318:1:318:10 | call to count= |
 | calls.rb:319:1:319:6 | ...[...] |
 | calls.rb:320:1:320:32 | ...[...] |

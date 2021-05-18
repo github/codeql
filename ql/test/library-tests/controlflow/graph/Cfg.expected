@@ -2126,20 +2126,17 @@ desugar.rb:
 #    5| x
 #-----|  -> x
 
-#    6| ... = ...
-#-----|  -> exit m2 (normal)
-
-#    6| call to count=
-#-----|  -> 1
-
 #    6| call to foo
-#-----|  -> call to count=
+#-----|  -> 1
 
 #    6| x
 #-----|  -> call to foo
 
+#    6| call to count=
+#-----|  -> exit m2 (normal)
+
 #    6| 1
-#-----|  -> ... = ...
+#-----|  -> call to count=
 
 #    9| enter m3
 #-----|  -> x
@@ -2155,23 +2152,20 @@ desugar.rb:
 #    9| x
 #-----|  -> x
 
-#   10| ... = ...
-#-----|  -> exit m3 (normal)
-
-#   10| ...[...]
-#-----|  -> 1
-
 #   10| call to foo
 #-----|  -> 0
 
 #   10| x
 #-----|  -> call to foo
 
+#   10| ...[...]
+#-----|  -> exit m3 (normal)
+
 #   10| 0
-#-----|  -> ...[...]
+#-----|  -> 1
 
 #   10| 1
-#-----|  -> ... = ...
+#-----|  -> ...[...]
 
 #   13| enter m4
 #-----|  -> x
@@ -2190,11 +2184,11 @@ desugar.rb:
 #   14| ... += ...
 #-----|  -> exit m4 (normal)
 
-#   14| call to count/count=
+#   14| call to count=
 #-----|  -> 1
 
 #   14| call to foo
-#-----|  -> call to count/count=
+#-----|  -> call to count=
 
 #   14| x
 #-----|  -> call to foo

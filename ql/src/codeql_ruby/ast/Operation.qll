@@ -1,6 +1,7 @@
 private import codeql_ruby.AST
 private import internal.AST
 private import internal.TreeSitter
+private import internal.Operation
 
 /**
  * An operation.
@@ -522,22 +523,6 @@ class AssignExpr extends Assignment, TAssignExpr {
   final override string getOperator() { result = "=" }
 
   final override string getAPrimaryQlClass() { result = "AssignExpr" }
-}
-
-private class AssignExprReal extends AssignExpr, TAssignExprReal {
-  private Generated::Assignment g;
-
-  AssignExprReal() { this = TAssignExprReal(g) }
-
-  final override Pattern getLeftOperand() { toGenerated(result) = g.getLeft() }
-
-  final override Expr getRightOperand() { toGenerated(result) = g.getRight() }
-}
-
-private class AssignExprSynth extends AssignExpr, TAssignExprSynth {
-  final override Pattern getLeftOperand() { synthChild(this, 0, result) }
-
-  final override Expr getRightOperand() { synthChild(this, 1, result) }
 }
 
 /**
