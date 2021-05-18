@@ -1,4 +1,4 @@
-name: Build CSV flow coverage report
+name: Build/check CSV flow coverage report
 
 on:
   workflow_dispatch:
@@ -13,10 +13,14 @@ on:
   pull_request:
     paths:
       - '.github/workflows/csv-coverage.yml'
-      - 'misc/scripts/generate-csv-coverage-report.py'
       - 'java/ql/src/meta/frameworks/Coverage.ql'
-      - 'java/documentation/library-coverage/cwe-sink.csv'
-      - 'java/documentation/library-coverage/frameworks.csv'
+      - 'misc/scripts/library-coverage/*.py'
+      # input data files
+      - '*/documentation/library-coverage/cwe-sink.csv'
+      - '*/documentation/library-coverage/frameworks.csv'
+      # coverage report files
+      - '*/documentation/library-coverage/flow-model-coverage.csv'
+      - '*/documentation/library-coverage/flow-model-coverage.rst'
 
 jobs:
   build:
@@ -54,7 +58,7 @@ jobs:
       run: unzip -d codeql-cli codeql-linux64.zip
     - name: Build modeled package list
       run: |
-        PATH="$PATH:codeql-cli/codeql" python script/misc/scripts/generate-csv-coverage-report.py ci codeqlModels script
+        PATH="$PATH:codeql-cli/codeql" python script/misc/scripts/library-coverage/generate-report.py ci codeqlModels script
     - name: Upload CSV package list
       uses: actions/upload-artifact@v2
       with:
@@ -65,4 +69,8 @@ jobs:
       with:
         name: rst-flow-model-coverage
         path: flow-model-coverage-*.rst
+    - name: Check coverage files
+      if: github.event.pull_request
+      run: |
+        python script/misc/scripts/library-coverage/compare-files.py codeqlModels
 

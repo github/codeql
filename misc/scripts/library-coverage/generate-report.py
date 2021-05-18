@@ -3,6 +3,7 @@ import csv
 import sys
 import os
 import shutil
+import settings
 
 """
 This script runs the CSV coverage report QL query, and transforms it to a more readable format.
@@ -135,13 +136,12 @@ if mode != "dev" and mode != "ci":
           ". Expected either 'dev' or 'ci'.", file=sys.stderr)
     exit(1)
 
+# The QL model holding the CSV info can come from directly a PR or the main branch, but optionally we can use an earlier
+# SHA too, therefore it's checked out seperately into a dedicated subfolder.
 query_prefix = ""
-data_prefix = ""
 if len(sys.argv) > 2:
     query_prefix = sys.argv[2] + "/"
 
-if len(sys.argv) > 3:
-    data_prefix = sys.argv[3] + "/"
 
 # Languages for which we want to generate coverage reports.
 configs = [
@@ -150,17 +150,16 @@ configs = [
 ]
 
 # The names of input and output files. The placeholder {language} is replaced with the language name.
-documentation_folder = "{language}/documentation/library-coverage/"
 output_ql_csv = "output-{language}.csv"
-input_framework_csv = data_prefix + documentation_folder + "frameworks.csv"
-input_cwe_sink_csv = data_prefix + documentation_folder + "cwe-sink.csv"
+input_framework_csv = settings.documentation_folder + "frameworks.csv"
+input_cwe_sink_csv = settings.documentation_folder + "cwe-sink.csv"
 
 if mode == "dev":
-    output_rst = data_prefix + documentation_folder + "flow-model-coverage.rst"
-    output_csv = data_prefix + documentation_folder + "flow-model-coverage.csv"
+    output_rst = settings.repo_output_rst
+    output_csv = settings.repo_output_csv
 else:
-    output_rst = "flow-model-coverage-{language}.rst"
-    output_csv = "flow-model-coverage-{language}.csv"
+    output_rst = settings.generated_output_rst
+    output_csv = settings.generated_output_csv
 
 for config in configs:
     lang = config.lang
