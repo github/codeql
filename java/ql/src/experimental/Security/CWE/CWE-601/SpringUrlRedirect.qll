@@ -5,7 +5,7 @@ import semmle.code.java.dataflow.DataFlow2
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.frameworks.spring.SpringController
 
-class StartsWithSanitizer extends DataFlow::BarrierGuard {
+private class StartsWithSanitizer extends DataFlow::BarrierGuard {
   StartsWithSanitizer() {
     this.(MethodAccess).getMethod().hasName("startsWith") and
     this.(MethodAccess).getMethod().getDeclaringType() instanceof TypeString and
