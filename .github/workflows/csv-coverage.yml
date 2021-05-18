@@ -13,7 +13,8 @@ on:
   pull_request:
     paths:
       - '.github/workflows/csv-coverage.yml'
-      - 'java/ql/src/meta/frameworks/Coverage.ql'
+      - '*/ql/src/**/*.ql'
+      - '*/ql/src/**/*.qll'
       - 'misc/scripts/library-coverage/*.py'
       # input data files
       - '*/documentation/library-coverage/cwe-sink.csv'
