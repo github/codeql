@@ -1,7 +1,7 @@
 import sys
 import os
 import settings
-import filecmp
+import difflib
 
 """
 This script compares the generated CSV coverage files with the ones in the codebase.
@@ -14,10 +14,21 @@ def check_file_exists(file):
         sys.exit(1)
 
 
+def ignore_line_ending(ch):
+    return difflib.IS_CHARACTER_JUNK(ch, ws=" \r\n")
+
+
 def compare_files(file1, file2):
-    filecmp.clear_cache()
-    if not filecmp.cmp(file1, file2):
-        print("Error: The generated files do not match the ones in the codebase. Please check and fix file '" +
+    has_differences = False
+    diff = difflib.ndiff(open(file1).readlines(),
+                         open(file2).readlines(), None, ignore_line_ending)
+    for line in diff:
+        if line.startswith("+") or line.startswith("-"):
+            print(line, end="", file=sys.stderr)
+            has_differences = True
+
+    if has_differences:
+        print("Error: The generated file doesn't match the one in the codebase. Please check and fix file '" +
               file1 + "'.", file=sys.stderr)
         sys.exit(1)
 
