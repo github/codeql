@@ -116,10 +116,11 @@ private module Cached {
     TReturningNode(CfgNodes::ReturningCfgNode n) or
     TSsaDefinitionNode(Ssa::Definition def) or
     TNormalParameterNode(Parameter p) { not p instanceof BlockParameter } or
+    TSelfParameterNode(MethodBase m) or
     TBlockParameterNode(MethodBase m) or
     TExprPostUpdateNode(CfgNodes::ExprCfgNode n) { n.getNode() instanceof Argument }
 
-  class TParameterNode = TNormalParameterNode or TBlockParameterNode;
+  class TParameterNode = TNormalParameterNode or TBlockParameterNode or TSelfParameterNode;
 
   /**
    * This is the local flow predicate that is used as a building block in global
@@ -136,6 +137,9 @@ private module Cached {
     or
     nodeTo.(ParameterNode).getParameter().(KeywordParameter).getDefaultValue() =
       nodeFrom.asExpr().getExpr()
+    or
+    nodeFrom.(SelfParameterNode).getMethod() = nodeTo.asExpr().getExpr().getEnclosingMethod() and
+    nodeTo.asExpr().getExpr() instanceof Self
     or
     nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::AssignExprCfgNode).getRhs()
     or
@@ -243,6 +247,26 @@ private module ParameterNodes {
   }
 
   /**
+   * The value of the `self` parameter at function entry, viewed as a node in a data
+   * flow graph.
+   */
+  class SelfParameterNode extends ParameterNodeImpl, TSelfParameterNode {
+    private MethodBase method;
+
+    SelfParameterNode() { this = TSelfParameterNode(method) }
+
+    final MethodBase getMethod() { result = method }
+
+    override predicate isParameterOf(Callable c, int i) { method = c and i = -1 }
+
+    override CfgScope getCfgScope() { result = method }
+
+    override Location getLocationImpl() { result = method.getLocation() }
+
+    override string toStringImpl() { result = "self in " + method.toString() }
+  }
+
+  /**
    * The value of a block parameter at function entry, viewed as a node in a data
    * flow graph.
    */
@@ -296,10 +320,17 @@ private module ArgumentNodes {
     }
 
     override predicate argumentOf(DataFlowCall call, int pos) {
+      this.asExpr() = call.getArgument(pos)
+    }
+  }
+
+  /** A data-flow node that represents the `self` argument of a call. */
+  class SelfArgumentNode extends ArgumentNode {
+    SelfArgumentNode() { this.asExpr() = any(CfgNodes::ExprNodes::CallCfgNode call).getReceiver() }
+
+    override predicate argumentOf(DataFlowCall call, int pos) {
       this.asExpr() = call.getReceiver() and
       pos = -1
-      or
-      this.asExpr() = call.getArgument(pos)
     }
   }
 

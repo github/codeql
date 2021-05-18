@@ -1,3 +1,4 @@
+| local_dataflow.rb:1:1:7:3 | self in foo | local_dataflow.rb:3:8:3:10 | self |
 | local_dataflow.rb:1:9:1:9 | a | local_dataflow.rb:1:9:1:9 | a |
 | local_dataflow.rb:1:9:1:9 | a | local_dataflow.rb:2:7:2:7 | a |
 | local_dataflow.rb:2:3:2:7 | ... = ... | local_dataflow.rb:3:13:3:13 | b |

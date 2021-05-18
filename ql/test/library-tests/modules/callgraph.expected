@@ -52,6 +52,8 @@ getTarget
 | calls.rb:137:5:137:17 | call to call_block | calls.rb:67:1:69:3 | call_block |
 | calls.rb:140:1:140:28 | call to indirect | calls.rb:136:1:138:3 | indirect |
 | calls.rb:140:16:140:27 | call to bit_length | calls.rb:78:5:78:23 | bit_length |
+| calls.rb:145:9:145:17 | call to to_s | calls.rb:150:5:151:7 | to_s |
+| calls.rb:145:9:145:17 | call to to_s | calls.rb:155:5:156:7 | to_s |
 | calls.rb:159:1:159:5 | call to new | calls.rb:98:5:98:16 | new |
 | calls.rb:159:1:159:14 | call to s_method | calls.rb:144:5:146:7 | s_method |
 | calls.rb:160:1:160:5 | call to new | calls.rb:98:5:98:16 | new |
@@ -87,4 +89,3 @@ unresolvedCall
 | calls.rb:128:48:128:59 | call to capitalize |
 | calls.rb:132:28:132:39 | call to capitalize |
 | calls.rb:134:32:134:36 | call to abs |
-| calls.rb:145:9:145:17 | call to to_s |
