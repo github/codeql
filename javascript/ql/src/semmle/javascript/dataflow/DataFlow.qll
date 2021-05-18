@@ -239,7 +239,6 @@ module DataFlow {
     private TypeAnnotation getFallbackTypeAnnotation() {
       exists(BindingPattern pattern |
         this = valueNode(pattern) and
-        not ast_node_type(pattern, _) and
         result = pattern.getTypeAnnotation()
       )
       or
@@ -255,7 +254,9 @@ module DataFlow {
      * Holds if this node is annotated with the given named type,
      * or is declared as a subtype thereof, or is a union or intersection containing such a type.
      */
+    cached
     predicate hasUnderlyingType(string globalName) {
+      Stages::TypeTracking::ref() and
       getType().hasUnderlyingType(globalName)
       or
       getFallbackTypeAnnotation().getAnUnderlyingType().hasQualifiedName(globalName)
@@ -265,7 +266,9 @@ module DataFlow {
      * Holds if this node is annotated with the given named type,
      * or is declared as a subtype thereof, or is a union or intersection containing such a type.
      */
+    cached
     predicate hasUnderlyingType(string moduleName, string typeName) {
+      Stages::TypeTracking::ref() and
       getType().hasUnderlyingType(moduleName, typeName)
       or
       getFallbackTypeAnnotation().getAnUnderlyingType().hasQualifiedName(moduleName, typeName)
@@ -1682,61 +1685,7 @@ module DataFlow {
   import Configuration
   import TrackedNodes
   import TypeTracking
+  import internal.FunctionWrapperSteps
 
   predicate localTaintStep = TaintTracking::localTaintStep/2;
-
-  /**
-   * Holds if the function in `succ` forwards all its arguments to a call to `pred` and returns
-   * its result. This can thus be seen as a step `pred -> succ` used for tracking function values
-   * through "wrapper functions", since the `succ` function partially replicates behavior of `pred`.
-   *
-   * Examples:
-   * ```js
-   * function f(x) {
-   *   return g(x); // step: g -> f
-   * }
-   *
-   * function doExec(x) {
-   *   console.log(x);
-   *   return exec(x); // step: exec -> doExec
-   * }
-   *
-   * function doEither(x, y) {
-   *   if (x > y) {
-   *     return foo(x, y); // step: foo -> doEither
-   *   } else {
-   *     return bar(x, y); // step: bar -> doEither
-   *   }
-   * }
-   *
-   * function wrapWithLogging(f) {
-   *   return (x) => {
-   *     console.log(x);
-   *     return f(x); // step: f -> anonymous function
-   *   }
-   * }
-   * wrapWithLogging(g); // step: g -> wrapWithLogging(g)
-   * ```
-   */
-  predicate functionForwardingStep(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(DataFlow::FunctionNode function, DataFlow::CallNode call |
-      call.flowsTo(function.getReturnNode()) and
-      forall(int i | exists([call.getArgument(i), function.getParameter(i)]) |
-        function.getParameter(i).flowsTo(call.getArgument(i))
-      ) and
-      pred = call.getCalleeNode() and
-      succ = function
-    )
-    or
-    // Given a generic wrapper function like,
-    //
-    //   function wrap(f) { return (x, y) => f(x, y) };
-    //
-    // add steps through calls to that function: `g -> wrap(g)`
-    exists(DataFlow::FunctionNode wrapperFunction, SourceNode param, Node paramUse |
-      FlowSteps::argumentPassing(succ, pred, wrapperFunction.getFunction(), param) and
-      param.flowsTo(paramUse) and
-      functionForwardingStep(paramUse, wrapperFunction.getReturnNode().getALocalSource())
-    )
-  }
 }

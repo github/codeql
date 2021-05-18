@@ -109,6 +109,11 @@ typeInferenceMismatch
 | promise.js:10:24:10:31 | source() | promise.js:10:8:10:32 | Promise ... urce()) |
 | promise.js:12:20:12:27 | source() | promise.js:13:8:13:23 | resolver.promise |
 | rxjs.js:3:1:3:8 | source() | rxjs.js:10:14:10:17 | data |
+| rxjs.js:13:1:13:8 | source() | rxjs.js:17:23:17:23 | x |
+| rxjs.js:13:1:13:8 | source() | rxjs.js:18:23:18:23 | x |
+| rxjs.js:13:1:13:8 | source() | rxjs.js:22:14:22:17 | data |
+| rxjs.js:27:24:27:32 | source(x) | rxjs.js:29:23:29:23 | x |
+| rxjs.js:27:24:27:32 | source(x) | rxjs.js:34:14:34:17 | data |
 | sanitizer-function.js:12:17:12:24 | source() | sanitizer-function.js:14:10:14:14 | taint |
 | sanitizer-function.js:12:17:12:24 | source() | sanitizer-function.js:33:14:33:18 | taint |
 | sanitizer-guards.js:2:11:2:18 | source() | sanitizer-guards.js:4:8:4:8 | x |

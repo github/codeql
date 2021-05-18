@@ -526,7 +526,6 @@ predicate localFlowStep(Node nodeFrom, Node nodeTo) {
  * This is the local flow predicate that's used as a building block in global
  * data flow. It may have less flow than the `localFlowStep` predicate.
  */
-cached
 predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   // Expr -> Expr
   exprToExprStep_nocfg(nodeFrom.asExpr(), nodeTo.asExpr())
@@ -694,7 +693,12 @@ private predicate exprToExprStep_nocfg(Expr fromExpr, Expr toExpr) {
           fromExpr = call.getQualifier()
         ) and
         call.getTarget() = f and
-        outModel.isReturnValue()
+        // AST dataflow treats a reference as if it were the referred-to object, while the dataflow
+        // models treat references as pointers. If the return type of the call is a reference, then
+        // look for data flow the the referred-to object, rather than the reference itself.
+        if call.getType().getUnspecifiedType() instanceof ReferenceType
+        then outModel.isReturnValueDeref()
+        else outModel.isReturnValue()
       )
     )
 }

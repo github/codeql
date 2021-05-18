@@ -864,6 +864,194 @@ private module Stdlib {
   class Sqlite3 extends PEP249ModuleApiNode {
     Sqlite3() { this = API::moduleImport("sqlite3") }
   }
+
+  // ---------------------------------------------------------------------------
+  // pathlib
+  // ---------------------------------------------------------------------------
+  /** Gets a reference to the `pathlib` module. */
+  private API::Node pathlib() { result = API::moduleImport("pathlib") }
+
+  /**
+   * Gets a name of a constructor for a `pathlib.Path` object.
+   * We include the pure paths, as they can be "exported" (say with `as_posix`) and then used to acces the underlying file system.
+   */
+  private string pathlibPathConstructor() {
+    result in ["Path", "PurePath", "PurePosixPath", "PureWindowsPath", "PosixPath", "WindowsPath"]
+  }
+
+  /**
+   * Gets a name of an attribute of a `pathlib.Path` object that is also a `pathlib.Path` object.
+   */
+  private string pathlibPathAttribute() { result in ["parent"] }
+
+  /**
+   * Gets a name of a method of a `pathlib.Path` object that returns a `pathlib.Path` object.
+   */
+  private string pathlibPathMethod() {
+    result in ["absolute", "relative_to", "rename", "replace", "resolve"]
+  }
+
+  /**
+   * Gets a name of a method of a `pathlib.Path` object that modifies a `pathlib.Path` object based on new data.
+   */
+  private string pathlibPathInjection() {
+    result in ["joinpath", "with_name", "with_stem", "with_suffix"]
+  }
+
+  /**
+   * Gets a name of an attribute of a `pathlib.Path` object that exports information about the `pathlib.Path` object.
+   */
+  private string pathlibPathAttributeExport() {
+    result in ["drive", "root", "anchor", "name", "suffix", "stem"]
+  }
+
+  /**
+   * Gets a name of a method of a `pathlib.Path` object that exports information about the `pathlib.Path` object.
+   */
+  private string pathlibPathMethodExport() { result in ["as_posix", "as_uri"] }
+
+  /**
+   * Flow for attributes and methods that return a `pathlib.Path` object.
+   */
+  private predicate pathlibPathStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    exists(DataFlow::AttrRead returnsPath |
+      (
+        // attribute access
+        returnsPath.getAttributeName() = pathlibPathAttribute() and
+        nodeTo = returnsPath
+        or
+        // method call
+        returnsPath.getAttributeName() = pathlibPathMethod() and
+        returnsPath
+            .(DataFlow::LocalSourceNode)
+            .flowsTo(nodeTo.(DataFlow::CallCfgNode).getFunction())
+      ) and
+      nodeFrom = returnsPath.getObject()
+    )
+  }
+
+  /**
+   * Gets a reference to a `pathlib.Path` object.
+   * This type tracker makes the monomorphic API use assumption.
+   */
+  private DataFlow::LocalSourceNode pathlibPath(DataFlow::TypeTracker t) {
+    // Type construction
+    t.start() and
+    result = pathlib().getMember(pathlibPathConstructor()).getACall()
+    or
+    // Type-preserving step
+    exists(DataFlow::Node nodeFrom, DataFlow::TypeTracker t2 |
+      pathlibPath(t2).flowsTo(nodeFrom) and
+      t2.end()
+    |
+      t.start() and
+      pathlibPathStep(nodeFrom, result)
+    )
+    or
+    // Data injection
+    //   Special handling of the `/` operator
+    exists(BinaryExprNode slash, DataFlow::Node pathOperand, DataFlow::TypeTracker t2 |
+      slash.getOp() instanceof Div and
+      pathOperand.asCfgNode() = slash.getAnOperand() and
+      pathlibPath(t2).flowsTo(pathOperand) and
+      t2.end()
+    |
+      t.start() and
+      result.asCfgNode() = slash
+    )
+    or
+    //   standard case
+    exists(DataFlow::AttrRead returnsPath, DataFlow::TypeTracker t2 |
+      returnsPath.getAttributeName() = pathlibPathInjection() and
+      pathlibPath(t2).flowsTo(returnsPath.getObject()) and
+      t2.end()
+    |
+      t.start() and
+      result.(DataFlow::CallCfgNode).getFunction() = returnsPath
+    )
+    or
+    // Track further
+    exists(DataFlow::TypeTracker t2 | result = pathlibPath(t2).track(t2, t))
+  }
+
+  /** Gets a reference to a `pathlib.Path` object. */
+  DataFlow::LocalSourceNode pathlibPath() { result = pathlibPath(DataFlow::TypeTracker::end()) }
+
+  private class PathlibFileAccess extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    DataFlow::AttrRead fileAccess;
+
+    PathlibFileAccess() {
+      fileAccess.getAttributeName() in [
+          "stat", "chmod", "exists", "expanduser", "glob", "group", "is_dir", "is_file", "is_mount",
+          "is_symlink", "is_socket", "is_fifo", "is_block_device", "is_char_device", "iter_dir",
+          "lchmod", "lstat", "mkdir", "open", "owner", "read_bytes", "read_text", "readlink",
+          "rename", "replace", "resolve", "rglob", "rmdir", "samefile", "symlink_to", "touch",
+          "unlink", "link_to", "write_bytes", "write_text"
+        ] and
+      pathlibPath().flowsTo(fileAccess.getObject()) and
+      fileAccess.(DataFlow::LocalSourceNode).flowsTo(this.getFunction())
+    }
+
+    override DataFlow::Node getAPathArgument() { result = fileAccess.getObject() }
+  }
+
+  /** An additional taint steps for objects of type `pathlib.Path` */
+  private class PathlibPathTaintStep extends TaintTracking::AdditionalTaintStep {
+    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+      // Type construction
+      nodeTo = pathlib().getMember(pathlibPathConstructor()).getACall() and
+      nodeFrom = nodeTo.(DataFlow::CallCfgNode).getArg(_)
+      or
+      // Type preservation
+      pathlibPath().flowsTo(nodeFrom) and
+      pathlibPathStep(nodeFrom, nodeTo)
+      or
+      // Data injection
+      pathlibPath().flowsTo(nodeTo) and
+      (
+        // Special handling of the `/` operator
+        exists(BinaryExprNode slash, DataFlow::Node pathOperand |
+          slash.getOp() instanceof Div and
+          pathOperand.asCfgNode() = slash.getAnOperand() and
+          pathlibPath().flowsTo(pathOperand)
+        |
+          nodeTo.asCfgNode() = slash and
+          // Taint can flow either from the left or the right operand as long as one of them is a path.
+          nodeFrom.asCfgNode() = slash.getAnOperand()
+        )
+        or
+        // standard case
+        exists(DataFlow::AttrRead augmentsPath |
+          augmentsPath.getAttributeName() = pathlibPathInjection()
+        |
+          augmentsPath
+              .(DataFlow::LocalSourceNode)
+              .flowsTo(nodeTo.(DataFlow::CallCfgNode).getFunction()) and
+          (
+            // type-preserving call
+            nodeFrom = augmentsPath.getObject()
+            or
+            // data injection
+            nodeFrom = nodeTo.(DataFlow::CallCfgNode).getArg(_)
+          )
+        )
+      )
+      or
+      // Export data from type
+      pathlibPath().flowsTo(nodeFrom) and
+      exists(DataFlow::AttrRead exportPath |
+        // exporting attribute
+        exportPath.getAttributeName() = pathlibPathAttributeExport() and
+        nodeTo = exportPath
+        or
+        // exporting method
+        exportPath.getAttributeName() = pathlibPathMethodExport() and
+        exportPath.(DataFlow::LocalSourceNode).flowsTo(nodeTo.(DataFlow::CallCfgNode).getFunction())
+      |
+        nodeFrom = exportPath.getObject()
+      )
+    }
+  }
 }
 
 // ---------------------------------------------------------------------------

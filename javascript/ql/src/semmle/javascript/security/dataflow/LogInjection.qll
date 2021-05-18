@@ -67,4 +67,11 @@ module LogInjection {
   class HtmlSanitizer extends Sanitizer {
     HtmlSanitizer() { this instanceof HtmlSanitizerCall }
   }
+
+  /**
+   * A call to `JSON.stringify` or similar, seen as sanitizing log output.
+   */
+  class JsonStringifySanitizer extends Sanitizer {
+    JsonStringifySanitizer() { this = any(JsonStringifyCall c).getOutput() }
+  }
 }

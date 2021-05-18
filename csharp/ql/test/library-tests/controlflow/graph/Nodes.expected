@@ -1137,13 +1137,13 @@ entryPoint
 | Foreach.cs:24:10:24:11 | M4 | Foreach.cs:25:5:28:5 | {...} |
 | Foreach.cs:30:10:30:11 | M5 | Foreach.cs:31:5:34:5 | {...} |
 | Foreach.cs:36:10:36:11 | M6 | Foreach.cs:37:5:40:5 | {...} |
-| Initializers.cs:8:5:8:16 | Initializers | Initializers.cs:5:9:5:9 | this access |
-| Initializers.cs:10:5:10:16 | Initializers | Initializers.cs:5:9:5:9 | this access |
+| Initializers.cs:8:5:8:16 | Initializers | Initializers.cs:8:5:8:16 | call to constructor Object |
+| Initializers.cs:10:5:10:16 | Initializers | Initializers.cs:10:5:10:16 | call to constructor Object |
 | Initializers.cs:12:10:12:10 | M | Initializers.cs:13:5:16:5 | {...} |
 | Initializers.cs:20:11:20:23 | NoConstructor | Initializers.cs:22:23:22:23 | this access |
 | Initializers.cs:31:9:31:11 | Sub | Initializers.cs:31:17:31:20 | call to constructor NoConstructor |
 | Initializers.cs:33:9:33:11 | Sub | Initializers.cs:33:22:33:25 | call to constructor Sub |
-| Initializers.cs:35:9:35:11 | Sub | Initializers.cs:22:23:22:23 | this access |
+| Initializers.cs:35:9:35:11 | Sub | Initializers.cs:35:9:35:11 | call to constructor NoConstructor |
 | Initializers.cs:51:10:51:13 | Test | Initializers.cs:52:5:66:5 | {...} |
 | LoopUnrolling.cs:7:10:7:11 | M1 | LoopUnrolling.cs:8:5:13:5 | {...} |
 | LoopUnrolling.cs:15:10:15:11 | M2 | LoopUnrolling.cs:16:5:20:5 | {...} |
@@ -1173,8 +1173,8 @@ entryPoint
 | MultiImplementationA.cs:16:17:16:18 | M1 | MultiImplementationA.cs:17:5:19:5 | {...} |
 | MultiImplementationA.cs:16:17:16:18 | M1 | MultiImplementationB.cs:15:5:17:5 | {...} |
 | MultiImplementationA.cs:18:9:18:22 | M2 | MultiImplementationA.cs:18:21:18:21 | 0 |
-| MultiImplementationA.cs:20:12:20:13 | C2 | MultiImplementationA.cs:13:16:13:16 | this access |
-| MultiImplementationA.cs:20:12:20:13 | C2 | MultiImplementationB.cs:11:16:11:16 | this access |
+| MultiImplementationA.cs:20:12:20:13 | C2 | MultiImplementationA.cs:20:12:20:13 | call to constructor Object |
+| MultiImplementationA.cs:20:12:20:13 | C2 | MultiImplementationB.cs:18:12:18:13 | call to constructor Object |
 | MultiImplementationA.cs:21:12:21:13 | C2 | MultiImplementationA.cs:21:24:21:24 | 0 |
 | MultiImplementationA.cs:21:12:21:13 | C2 | MultiImplementationB.cs:19:24:19:24 | 1 |
 | MultiImplementationA.cs:22:6:22:7 | ~C2 | MultiImplementationA.cs:22:11:22:13 | {...} |
@@ -1202,8 +1202,8 @@ entryPoint
 | MultiImplementationB.cs:14:17:14:18 | M1 | MultiImplementationA.cs:17:5:19:5 | {...} |
 | MultiImplementationB.cs:14:17:14:18 | M1 | MultiImplementationB.cs:15:5:17:5 | {...} |
 | MultiImplementationB.cs:16:9:16:31 | M2 | MultiImplementationB.cs:16:27:16:30 | null |
-| MultiImplementationB.cs:18:12:18:13 | C2 | MultiImplementationA.cs:13:16:13:16 | this access |
-| MultiImplementationB.cs:18:12:18:13 | C2 | MultiImplementationB.cs:11:16:11:16 | this access |
+| MultiImplementationB.cs:18:12:18:13 | C2 | MultiImplementationA.cs:20:12:20:13 | call to constructor Object |
+| MultiImplementationB.cs:18:12:18:13 | C2 | MultiImplementationB.cs:18:12:18:13 | call to constructor Object |
 | MultiImplementationB.cs:19:12:19:13 | C2 | MultiImplementationA.cs:21:24:21:24 | 0 |
 | MultiImplementationB.cs:19:12:19:13 | C2 | MultiImplementationB.cs:19:24:19:24 | 1 |
 | MultiImplementationB.cs:20:6:20:7 | ~C2 | MultiImplementationA.cs:22:11:22:13 | {...} |
@@ -1219,6 +1219,8 @@ entryPoint
 | NullCoalescing.cs:9:12:9:13 | M4 | NullCoalescing.cs:9:37:9:37 | access to parameter b |
 | NullCoalescing.cs:11:9:11:10 | M5 | NullCoalescing.cs:11:44:11:45 | access to parameter b1 |
 | NullCoalescing.cs:13:10:13:11 | M6 | NullCoalescing.cs:14:5:18:5 | {...} |
+| PartialImplementationA.cs:3:12:3:18 | Partial | PartialImplementationA.cs:3:12:3:18 | call to constructor Object |
+| PartialImplementationB.cs:4:12:4:18 | Partial | PartialImplementationB.cs:4:12:4:18 | call to constructor Object |
 | Patterns.cs:5:10:5:11 | M1 | Patterns.cs:6:5:43:5 | {...} |
 | Patterns.cs:47:24:47:25 | M2 | Patterns.cs:48:9:48:9 | access to parameter c |
 | Patterns.cs:50:24:50:25 | M3 | Patterns.cs:51:9:51:9 | access to parameter c |
@@ -1265,7 +1267,7 @@ entryPoint
 | cflow.cs:119:20:119:21 | M5 | cflow.cs:120:5:124:5 | {...} |
 | cflow.cs:127:19:127:21 | get_Prop | cflow.cs:127:23:127:60 | {...} |
 | cflow.cs:127:62:127:64 | set_Prop | cflow.cs:127:66:127:83 | {...} |
-| cflow.cs:129:5:129:15 | ControlFlow | cflow.cs:130:5:132:5 | {...} |
+| cflow.cs:129:5:129:15 | ControlFlow | cflow.cs:129:5:129:15 | call to constructor Object |
 | cflow.cs:134:5:134:15 | ControlFlow | cflow.cs:134:31:134:31 | access to parameter i |
 | cflow.cs:136:12:136:22 | ControlFlow | cflow.cs:136:33:136:33 | 0 |
 | cflow.cs:138:40:138:40 | + | cflow.cs:139:5:142:5 | {...} |
@@ -1285,5 +1287,5 @@ entryPoint
 | cflow.cs:284:5:284:18 | ControlFlowSub | cflow.cs:284:32:284:35 | call to constructor ControlFlowSub |
 | cflow.cs:286:5:286:18 | ControlFlowSub | cflow.cs:286:34:286:34 | access to parameter i |
 | cflow.cs:291:12:291:12 | M | cflow.cs:291:38:291:38 | access to parameter f |
-| cflow.cs:296:5:296:25 | NegationInConstructor | cflow.cs:296:52:296:54 | {...} |
+| cflow.cs:296:5:296:25 | NegationInConstructor | cflow.cs:296:5:296:25 | call to constructor Object |
 | cflow.cs:298:10:298:10 | M | cflow.cs:299:5:301:5 | {...} |

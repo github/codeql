@@ -51,11 +51,25 @@ private predicate unknownErrors(@diagnostic d, string msg, int sev) {
 
 /**
  * Holds if an extraction error or warning occurred that should be reported to end users,
- * with the error message `msg` and SARIF severity `sev`.
+ * with the message `msg` and SARIF severity `sev`.
  */
 predicate reportableDiagnostics(@diagnostic d, string msg, int sev) {
-  knownWarnings(d, msg, sev) or knownErrors(d, msg, sev) or unknownErrors(d, msg, sev)
+  reportableWarnings(d, msg, sev) or reportableErrors(d, msg, sev)
 }
+
+/**
+ * Holds if an extraction error occurred that should be reported to end users,
+ * with the message `msg` and SARIF severity `sev`.
+ */
+predicate reportableErrors(@diagnostic d, string msg, int sev) {
+  knownErrors(d, msg, sev) or unknownErrors(d, msg, sev)
+}
+
+/**
+ * Holds if an extraction warning occurred that should be reported to end users,
+ * with the message `msg` and SARIF severity `sev`.
+ */
+predicate reportableWarnings(@diagnostic d, string msg, int sev) { knownWarnings(d, msg, sev) }
 
 /**
  * Holds if compilation unit `f` is a source file that has

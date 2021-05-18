@@ -5,6 +5,7 @@
     "java/ql/src/semmle/code/java/dataflow/internal/DataFlowImpl3.qll",
     "java/ql/src/semmle/code/java/dataflow/internal/DataFlowImpl4.qll",
     "java/ql/src/semmle/code/java/dataflow/internal/DataFlowImpl5.qll",
+    "java/ql/src/semmle/code/java/dataflow/internal/DataFlowImpl6.qll",
     "cpp/ql/src/semmle/code/cpp/dataflow/internal/DataFlowImpl.qll",
     "cpp/ql/src/semmle/code/cpp/dataflow/internal/DataFlowImpl2.qll",
     "cpp/ql/src/semmle/code/cpp/dataflow/internal/DataFlowImpl3.qll",
@@ -439,5 +440,9 @@
   "CryptoAlgorithms Python/JS": [
     "javascript/ql/src/semmle/javascript/security/CryptoAlgorithms.qll",
     "python/ql/src/semmle/python/concepts/CryptoAlgorithms.qll"
+  ],
+  "SensitiveDataHeuristics Python/JS": [
+    "javascript/ql/src/semmle/javascript/security/internal/SensitiveDataHeuristics.qll",
+    "python/ql/src/semmle/python/security/internal/SensitiveDataHeuristics.qll"
   ]
 }

@@ -1,0 +1,8 @@
+| expressions.cs:56:9:56:13 | Class | expressions.cs:56:19:56:22 | call to constructor Class | expressions.cs:58:19:58:23 | Class |
+| expressions.cs:58:19:58:23 | Class | expressions.cs:58:19:58:23 | call to constructor Object | file://:0:0:0:0 | Object |
+| expressions.cs:132:13:132:18 | Nested | expressions.cs:132:13:132:18 | call to constructor Class | expressions.cs:56:9:56:13 | Class |
+| expressions.cs:133:13:133:18 | Nested | expressions.cs:133:29:133:32 | call to constructor Class | expressions.cs:58:19:58:23 | Class |
+| expressions.cs:249:16:249:26 | LoginDialog | expressions.cs:249:16:249:26 | call to constructor Object | file://:0:0:0:0 | Object |
+| expressions.cs:270:16:270:24 | IntVector | expressions.cs:270:16:270:24 | call to constructor Object | file://:0:0:0:0 | Object |
+| expressions.cs:310:16:310:20 | Digit | expressions.cs:310:16:310:20 | call to constructor ValueType | file://:0:0:0:0 | ValueType |
+| expressions.cs:480:20:480:22 | Num | expressions.cs:480:20:480:22 | call to constructor Object | file://:0:0:0:0 | Object |

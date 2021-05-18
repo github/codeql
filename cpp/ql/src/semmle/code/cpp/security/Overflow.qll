@@ -12,7 +12,7 @@ import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
  * Holds if the value of `use` is guarded using `abs`.
  */
 predicate guardedAbs(Operation e, Expr use) {
-  exists(FunctionCall fc | fc.getTarget().getName() = "abs" |
+  exists(FunctionCall fc | fc.getTarget().getName() = ["abs", "labs", "llabs", "imaxabs"] |
     fc.getArgument(0).getAChild*() = use and
     guardedLesser(e, fc)
   )
@@ -99,12 +99,11 @@ VariableAccess varUse(LocalScopeVariable v) { result = v.getAnAccess() }
  * Holds if `e` potentially overflows and `use` is an operand of `e` that is not guarded.
  */
 predicate missingGuardAgainstOverflow(Operation e, VariableAccess use) {
-  (
-    convertedExprMightOverflowPositively(e)
-    or
-    // Ensure that the predicate holds when range analysis cannot determine an upper bound
-    upperBound(e.getFullyConverted()) = exprMaxVal(e.getFullyConverted())
-  ) and
+  // Since `e` is guarenteed to be a `BinaryArithmeticOperation`, a `UnaryArithmeticOperation` or
+  // an `AssignArithmeticOperation` by the other constraints in this predicate, we know that
+  // `convertedExprMightOverflowPositively` will have a result even when `e` is not analyzable
+  // by `SimpleRangeAnalysis`.
+  convertedExprMightOverflowPositively(e) and
   use = e.getAnOperand() and
   exists(LocalScopeVariable v | use.getTarget() = v |
     // overflow possible if large
@@ -126,12 +125,11 @@ predicate missingGuardAgainstOverflow(Operation e, VariableAccess use) {
  * Holds if `e` potentially underflows and `use` is an operand of `e` that is not guarded.
  */
 predicate missingGuardAgainstUnderflow(Operation e, VariableAccess use) {
-  (
-    convertedExprMightOverflowNegatively(e)
-    or
-    // Ensure that the predicate holds when range analysis cannot determine a lower bound
-    lowerBound(e.getFullyConverted()) = exprMinVal(e.getFullyConverted())
-  ) and
+  // Since `e` is guarenteed to be a `BinaryArithmeticOperation`, a `UnaryArithmeticOperation` or
+  // an `AssignArithmeticOperation` by the other constraints in this predicate, we know that
+  // `convertedExprMightOverflowNegatively` will have a result even when `e` is not analyzable
+  // by `SimpleRangeAnalysis`.
+  convertedExprMightOverflowNegatively(e) and
   use = e.getAnOperand() and
   exists(LocalScopeVariable v | use.getTarget() = v |
     // underflow possible if use is left operand and small

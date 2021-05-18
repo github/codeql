@@ -11,6 +11,7 @@ private import semmle.code.java.dataflow.FlowSteps
 private import semmle.code.java.dataflow.FlowSummary
 import semmle.code.java.dataflow.InstanceAccess
 private import FlowSummaryImpl as FlowSummaryImpl
+private import TaintTrackingUtil as TaintTrackingUtil
 import DataFlowNodes::Public
 
 /** Holds if `n` is an access to an unqualified `this` at `cfgnode`. */
@@ -112,6 +113,7 @@ predicate localFlowStep(Node node1, Node node2) {
  */
 cached
 predicate simpleLocalFlowStep(Node node1, Node node2) {
+  TaintTrackingUtil::forceCachingInSameStage() and
   // Variable flow steps through adjacent def-use and use-use pairs.
   exists(SsaExplicitUpdate upd |
     upd.getDefiningExpr().(VariableAssign).getSource() = node1.asExpr() or
@@ -150,14 +152,6 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
   )
   or
   FlowSummaryImpl::Private::Steps::summaryLocalStep(node1, node2, true)
-  or
-  // If flow through a method updates a parameter from some input A, and that
-  // parameter also is returned through B, then we'd like a combined flow from A
-  // to B as well. As an example, this simplifies modeling of fluent methods:
-  // for `StringBuilder.append(x)` with a specified value flow from qualifier to
-  // return value and taint flow from argument 0 to the qualifier, then this
-  // allows us to infer taint flow from argument 0 to the return value.
-  node1.(SummaryNode).(PostUpdateNode).getPreUpdateNode().(ParameterNode) = node2
 }
 
 /**

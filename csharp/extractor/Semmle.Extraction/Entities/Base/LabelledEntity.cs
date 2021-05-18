@@ -7,12 +7,5 @@ namespace Semmle.Extraction
         protected LabelledEntity(Context cx) : base(cx)
         {
         }
-
-        public override void WriteQuotedId(TextWriter trapFile)
-        {
-            trapFile.Write("@\"");
-            WriteId(trapFile);
-            trapFile.Write('\"');
-        }
     }
 }

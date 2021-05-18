@@ -49,6 +49,15 @@ def redirect_through_normal_response(request):
     resp.content = private # $ MISSING: responseBody=private
     return resp
 
+def redirect_through_normal_response_new_headers_attr(request):
+    private = "private"
+    next = request.GET.get("next")
+
+    resp = HttpResponse() # $ HttpResponse mimetype=text/html
+    resp.status_code = 302
+    resp.headers['Location'] = next # $ MISSING: redirectLocation=next
+    resp.content = private # $ MISSING: responseBody=private
+    return resp
 
 def redirect_shortcut(request):
     next = request.GET.get("next")

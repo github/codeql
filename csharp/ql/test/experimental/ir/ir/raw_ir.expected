@@ -285,29 +285,37 @@ collections.cs:
 constructor_init.cs:
 #    5| System.Void BaseClass..ctor()
 #    5|   Block 0
-#    5|     v5_1(Void)             = EnterFunction     : 
-#    5|     mu5_2(<unknown>)       = AliasedDefinition : 
-#    5|     r5_3(glval<BaseClass>) = InitializeThis    : 
-#    6|     v6_1(Void)             = NoOp              : 
-#    5|     v5_4(Void)             = ReturnVoid        : 
-#    5|     v5_5(Void)             = AliasedUse        : ~m?
-#    5|     v5_6(Void)             = ExitFunction      : 
+#    5|     v5_1(Void)             = EnterFunction               : 
+#    5|     mu5_2(<unknown>)       = AliasedDefinition           : 
+#    5|     r5_3(glval<BaseClass>) = InitializeThis              : 
+#    5|     r5_4(glval<Object>)    = Convert[BaseClass : Object] : r5_3
+#    5|     r5_5(<funcaddr>)       = FunctionAddress[Object]     : 
+#    5|     v5_6(Void)             = Call[Object]                : func:r5_5, this:r5_4
+#    5|     mu5_7(<unknown>)       = ^CallSideEffect             : ~m?
+#    6|     v6_1(Void)             = NoOp                        : 
+#    5|     v5_8(Void)             = ReturnVoid                  : 
+#    5|     v5_9(Void)             = AliasedUse                  : ~m?
+#    5|     v5_10(Void)            = ExitFunction                : 
 
 #    9| System.Void BaseClass..ctor(System.Int32)
 #    9|   Block 0
-#    9|     v9_1(Void)             = EnterFunction          : 
-#    9|     mu9_2(<unknown>)       = AliasedDefinition      : 
-#    9|     r9_3(glval<BaseClass>) = InitializeThis         : 
-#    9|     r9_4(glval<Int32>)     = VariableAddress[i]     : 
-#    9|     mu9_5(Int32)           = InitializeParameter[i] : &:r9_4
-#   11|     r11_1(glval<Int32>)    = VariableAddress[i]     : 
-#   11|     r11_2(Int32)           = Load[i]                : &:r11_1, ~m?
-#   11|     r11_3(BaseClass)       = CopyValue              : r9_3
-#   11|     r11_4(glval<Int32>)    = FieldAddress[num]      : r11_3
-#   11|     mu11_5(Int32)          = Store[?]               : &:r11_4, r11_2
-#    9|     v9_6(Void)             = ReturnVoid             : 
-#    9|     v9_7(Void)             = AliasedUse             : ~m?
-#    9|     v9_8(Void)             = ExitFunction           : 
+#    9|     v9_1(Void)             = EnterFunction               : 
+#    9|     mu9_2(<unknown>)       = AliasedDefinition           : 
+#    9|     r9_3(glval<BaseClass>) = InitializeThis              : 
+#    9|     r9_4(glval<Int32>)     = VariableAddress[i]          : 
+#    9|     mu9_5(Int32)           = InitializeParameter[i]      : &:r9_4
+#    9|     r9_6(glval<Object>)    = Convert[BaseClass : Object] : r9_3
+#    9|     r9_7(<funcaddr>)       = FunctionAddress[Object]     : 
+#    9|     v9_8(Void)             = Call[Object]                : func:r9_7, this:r9_6
+#    9|     mu9_9(<unknown>)       = ^CallSideEffect             : ~m?
+#   11|     r11_1(glval<Int32>)    = VariableAddress[i]          : 
+#   11|     r11_2(Int32)           = Load[i]                     : &:r11_1, ~m?
+#   11|     r11_3(BaseClass)       = CopyValue                   : r9_3
+#   11|     r11_4(glval<Int32>)    = FieldAddress[num]           : r11_3
+#   11|     mu11_5(Int32)          = Store[?]                    : &:r11_4, r11_2
+#    9|     v9_10(Void)            = ReturnVoid                  : 
+#    9|     v9_11(Void)            = AliasedUse                  : ~m?
+#    9|     v9_12(Void)            = ExitFunction                : 
 
 #   17| System.Void DerivedClass..ctor()
 #   17|   Block 0
@@ -469,20 +477,24 @@ delegates.cs:
 events.cs:
 #    8| System.Void Events..ctor()
 #    8|   Block 0
-#    8|     v8_1(Void)          = EnterFunction          : 
-#    8|     mu8_2(<unknown>)    = AliasedDefinition      : 
-#    8|     r8_3(glval<Events>) = InitializeThis         : 
-#   10|     r10_1(MyDel)        = NewObj                 : 
-#   10|     r10_2(<funcaddr>)   = FunctionAddress[MyDel] : 
-#   10|     r10_3(glval<MyDel>) = FunctionAddress[Fun]   : 
-#   10|     v10_4(Void)         = Call[MyDel]            : func:r10_2, this:r10_1, 0:r10_3
-#   10|     mu10_5(<unknown>)   = ^CallSideEffect        : ~m?
-#   10|     r10_6(Events)       = CopyValue              : r8_3
-#   10|     r10_7(glval<MyDel>) = FieldAddress[Inst]     : r10_6
-#   10|     mu10_8(MyDel)       = Store[?]               : &:r10_7, r10_1
-#    8|     v8_4(Void)          = ReturnVoid             : 
-#    8|     v8_5(Void)          = AliasedUse             : ~m?
-#    8|     v8_6(Void)          = ExitFunction           : 
+#    8|     v8_1(Void)          = EnterFunction            : 
+#    8|     mu8_2(<unknown>)    = AliasedDefinition        : 
+#    8|     r8_3(glval<Events>) = InitializeThis           : 
+#    8|     r8_4(glval<Object>) = Convert[Events : Object] : r8_3
+#    8|     r8_5(<funcaddr>)    = FunctionAddress[Object]  : 
+#    8|     v8_6(Void)          = Call[Object]             : func:r8_5, this:r8_4
+#    8|     mu8_7(<unknown>)    = ^CallSideEffect          : ~m?
+#   10|     r10_1(MyDel)        = NewObj                   : 
+#   10|     r10_2(<funcaddr>)   = FunctionAddress[MyDel]   : 
+#   10|     r10_3(glval<MyDel>) = FunctionAddress[Fun]     : 
+#   10|     v10_4(Void)         = Call[MyDel]              : func:r10_2, this:r10_1, 0:r10_3
+#   10|     mu10_5(<unknown>)   = ^CallSideEffect          : ~m?
+#   10|     r10_6(Events)       = CopyValue                : r8_3
+#   10|     r10_7(glval<MyDel>) = FieldAddress[Inst]       : r10_6
+#   10|     mu10_8(MyDel)       = Store[?]                 : &:r10_7, r10_1
+#    8|     v8_8(Void)          = ReturnVoid               : 
+#    8|     v8_9(Void)          = AliasedUse               : ~m?
+#    8|     v8_10(Void)         = ExitFunction             : 
 
 #   13| System.Void Events.AddEvent()
 #   13|   Block 0
@@ -601,13 +613,13 @@ foreach.cs:
 #    5|     r5_28(glval<Int32>)      = PointerAdd[4]                  : r5_1, r5_27
 #    5|     r5_29(Int32)             = Constant[7]                    : 
 #    5|     mu5_30(Int32)            = Store[?]                       : &:r5_28, r5_29
-#    7|     r7_1(glval<IEnumerator>) = VariableAddress[#temp7:9]      : 
+#    7|     r7_1(glval<Boolean>)     = VariableAddress[#temp7:9]      : 
 #    7|     r7_2(glval<Int32[]>)     = VariableAddress[a_array]       : 
 #    7|     r7_3(Int32[])            = Load[a_array]                  : &:r7_2, ~m?
 #    7|     r7_4(<funcaddr>)         = FunctionAddress[GetEnumerator] : 
 #    7|     r7_5(IEnumerator)        = Call[GetEnumerator]            : func:r7_4, this:r7_3
 #    7|     mu7_6(<unknown>)         = ^CallSideEffect                : ~m?
-#    7|     mu7_7(IEnumerator)       = Store[#temp7:9]                : &:r7_1, r7_5
+#    7|     mu7_7(Boolean)           = Store[#temp7:9]                : &:r7_1, r7_5
 #-----|   Goto -> Block 1
 
 #    7|   Block 1
@@ -1237,29 +1249,37 @@ lock.cs:
 obj_creation.cs:
 #    7| System.Void ObjCreation.MyClass..ctor()
 #    7|   Block 0
-#    7|     v7_1(Void)           = EnterFunction     : 
-#    7|     mu7_2(<unknown>)     = AliasedDefinition : 
-#    7|     r7_3(glval<MyClass>) = InitializeThis    : 
-#    8|     v8_1(Void)           = NoOp              : 
-#    7|     v7_4(Void)           = ReturnVoid        : 
-#    7|     v7_5(Void)           = AliasedUse        : ~m?
-#    7|     v7_6(Void)           = ExitFunction      : 
+#    7|     v7_1(Void)           = EnterFunction             : 
+#    7|     mu7_2(<unknown>)     = AliasedDefinition         : 
+#    7|     r7_3(glval<MyClass>) = InitializeThis            : 
+#    7|     r7_4(glval<Object>)  = Convert[MyClass : Object] : r7_3
+#    7|     r7_5(<funcaddr>)     = FunctionAddress[Object]   : 
+#    7|     v7_6(Void)           = Call[Object]              : func:r7_5, this:r7_4
+#    7|     mu7_7(<unknown>)     = ^CallSideEffect           : ~m?
+#    8|     v8_1(Void)           = NoOp                      : 
+#    7|     v7_8(Void)           = ReturnVoid                : 
+#    7|     v7_9(Void)           = AliasedUse                : ~m?
+#    7|     v7_10(Void)          = ExitFunction              : 
 
 #   11| System.Void ObjCreation.MyClass..ctor(System.Int32)
 #   11|   Block 0
-#   11|     v11_1(Void)           = EnterFunction           : 
-#   11|     mu11_2(<unknown>)     = AliasedDefinition       : 
-#   11|     r11_3(glval<MyClass>) = InitializeThis          : 
-#   11|     r11_4(glval<Int32>)   = VariableAddress[_x]     : 
-#   11|     mu11_5(Int32)         = InitializeParameter[_x] : &:r11_4
-#   13|     r13_1(glval<Int32>)   = VariableAddress[_x]     : 
-#   13|     r13_2(Int32)          = Load[_x]                : &:r13_1, ~m?
-#   13|     r13_3(MyClass)        = CopyValue               : r11_3
-#   13|     r13_4(glval<Int32>)   = FieldAddress[x]         : r13_3
-#   13|     mu13_5(Int32)         = Store[?]                : &:r13_4, r13_2
-#   11|     v11_6(Void)           = ReturnVoid              : 
-#   11|     v11_7(Void)           = AliasedUse              : ~m?
-#   11|     v11_8(Void)           = ExitFunction            : 
+#   11|     v11_1(Void)           = EnterFunction             : 
+#   11|     mu11_2(<unknown>)     = AliasedDefinition         : 
+#   11|     r11_3(glval<MyClass>) = InitializeThis            : 
+#   11|     r11_4(glval<Int32>)   = VariableAddress[_x]       : 
+#   11|     mu11_5(Int32)         = InitializeParameter[_x]   : &:r11_4
+#   11|     r11_6(glval<Object>)  = Convert[MyClass : Object] : r11_3
+#   11|     r11_7(<funcaddr>)     = FunctionAddress[Object]   : 
+#   11|     v11_8(Void)           = Call[Object]              : func:r11_7, this:r11_6
+#   11|     mu11_9(<unknown>)     = ^CallSideEffect           : ~m?
+#   13|     r13_1(glval<Int32>)   = VariableAddress[_x]       : 
+#   13|     r13_2(Int32)          = Load[_x]                  : &:r13_1, ~m?
+#   13|     r13_3(MyClass)        = CopyValue                 : r11_3
+#   13|     r13_4(glval<Int32>)   = FieldAddress[x]           : r13_3
+#   13|     mu13_5(Int32)         = Store[?]                  : &:r13_4, r13_2
+#   11|     v11_10(Void)          = ReturnVoid                : 
+#   11|     v11_11(Void)          = AliasedUse                : ~m?
+#   11|     v11_12(Void)          = ExitFunction              : 
 
 #   17| System.Void ObjCreation.SomeFun(ObjCreation.MyClass)
 #   17|   Block 0
@@ -1884,13 +1904,17 @@ stmts.cs:
 using.cs:
 #    7| System.Void UsingStmt.MyDisposable..ctor()
 #    7|   Block 0
-#    7|     v7_1(Void)                = EnterFunction     : 
-#    7|     mu7_2(<unknown>)          = AliasedDefinition : 
-#    7|     r7_3(glval<MyDisposable>) = InitializeThis    : 
-#    7|     v7_4(Void)                = NoOp              : 
-#    7|     v7_5(Void)                = ReturnVoid        : 
-#    7|     v7_6(Void)                = AliasedUse        : ~m?
-#    7|     v7_7(Void)                = ExitFunction      : 
+#    7|     v7_1(Void)                = EnterFunction                  : 
+#    7|     mu7_2(<unknown>)          = AliasedDefinition              : 
+#    7|     r7_3(glval<MyDisposable>) = InitializeThis                 : 
+#    7|     r7_4(glval<Object>)       = Convert[MyDisposable : Object] : r7_3
+#    7|     r7_5(<funcaddr>)          = FunctionAddress[Object]        : 
+#    7|     v7_6(Void)                = Call[Object]                   : func:r7_5, this:r7_4
+#    7|     mu7_7(<unknown>)          = ^CallSideEffect                : ~m?
+#    7|     v7_8(Void)                = NoOp                           : 
+#    7|     v7_9(Void)                = ReturnVoid                     : 
+#    7|     v7_10(Void)               = AliasedUse                     : ~m?
+#    7|     v7_11(Void)               = ExitFunction                   : 
 
 #    8| System.Void UsingStmt.MyDisposable.DoSomething()
 #    8|   Block 0
