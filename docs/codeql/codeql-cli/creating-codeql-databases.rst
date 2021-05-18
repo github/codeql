@@ -169,7 +169,7 @@ build steps, you may need to explicitly define each step in the command line.
    are dependencies, the appropriate dependency manager (such as `dep
    <https://golang.github.io/dep/>`__).
    
-   The Go autobuilder attempts to automatically detect Go code in a repository,
+   The Go autobuilder attempts to automatically detect code written in Go in a repository,
    and only runs build scripts in an attempt to fetch dependencies. To force
    CodeQL to limit extraction to the files compiled by your build script, set the environment variable
    `CODEQL_EXTRACTOR_GO_BUILD_TRACING=on` or use the ``--command`` option to specify a
