@@ -19,7 +19,7 @@
                <li>
                     collision attacks: if you know a hash value <code>h(x)</code>,
                     you should not be able to easily find a different input <code>y</code>
-                    such that hash value is the same <code>h(x) = h(y)</code>.
+                    with the same hash value <code>h(x) = h(y)</code>.
                </li>
           </ul>
           <p>
@@ -30,7 +30,7 @@
           </p>
 
           <p>
-               As an example, both MD5 and SHA-1 is known to be vulnerable to collision attacks.
+               As an example, both MD5 and SHA-1 are known to be vulnerable to collision attacks.
           </p>
 
           <p>

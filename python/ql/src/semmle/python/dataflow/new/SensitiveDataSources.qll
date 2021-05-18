@@ -1,6 +1,6 @@
 /**
  * Provides an extension point for for modeling sensitive data, such as secrets, certificates, or passwords.
- * Sensitive data is can be interesting to use as data-flow sources in security queries.
+ * Sensitive data can be interesting to use as data-flow sources in security queries.
  */
 
 private import python
