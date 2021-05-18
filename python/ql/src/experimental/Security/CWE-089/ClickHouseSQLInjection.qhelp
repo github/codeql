@@ -21,11 +21,9 @@ or prepared statements.
 
 <example>
 <p>
-In the following snippet, a user is fetched from the ClickHouse database
-using five different queries. In bad patterns query is build by formatting
-string with user-controlled data. In a qood pattern user-supplied parameter
-is send through a second argument (params) which is dict. Following cases
-show different types of communication with ClickHouse database.
+In the following snippet, a user is fetched from a <code>ClickHouse</code> database
+using five different queries. In the "BAD" cases the query is built directly from user-controlled data.
+In the "GOOD" case the user-controlled data is safely embedded into the query by using query parameters.
 </p>
 
 <p>

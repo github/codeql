@@ -3,6 +3,7 @@ from clickhouse_driver import Client
 from clickhouse_driver import connect
 from aioch import Client as aiochClient
 
+# Dummy Client subclass
 class MyClient(Client):
     def dummy(self):
         return None
@@ -20,9 +21,12 @@ def show_user(request, username):
     query = "SELECT * FROM users WHERE username = %(username)s"
     Client('localhost').execute(query, {"username": username})
 
-    # BAD -- PEP249 interface
+    # BAD -- Untrusted user input is directly injected into the sql query using PEP249 interface
     conn = connect('clickhouse://localhost')
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM users WHERE username = '%s'" % username)
+
+    # BAD -- Untrusted user input is directly injected into the sql query using MyClient, which is a subclass of Client
+    MyClient('localhost').execute("SELECT * FROM users WHERE username = '%s'" % username)
 
 urlpatterns = [url(r'^users/(?P<username>[^/]+)$', show_user)]
