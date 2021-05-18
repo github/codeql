@@ -880,6 +880,8 @@ module Trees {
   }
 
   private class LambdaTree extends BodyStmtTree, Lambda {
+    final override predicate propagatesAbnormal(AstNode child) { none() }
+
     /** Gets the `i`th child in the body of this block. */
     final override AstNode getBodyChild(int i, boolean rescuable) {
       result = this.getParameter(i) and rescuable = false
@@ -1158,6 +1160,8 @@ module Trees {
   }
 
   private class SingletonMethodTree extends BodyStmtTree, SingletonMethod {
+    final override predicate propagatesAbnormal(AstNode child) { none() }
+
     /** Gets the `i`th child in the body of this block. */
     final override AstNode getBodyChild(int i, boolean rescuable) {
       result = this.getParameter(i) and rescuable = false

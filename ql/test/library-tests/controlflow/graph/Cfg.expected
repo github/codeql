@@ -3173,9 +3173,6 @@ raise.rb:
 
 #    1| exit raise.rb
 
-#    1| exit raise.rb (abnormal)
-#-----|  -> exit raise.rb
-
 #    1| exit raise.rb (normal)
 #-----|  -> exit raise.rb
 
@@ -4333,9 +4330,6 @@ raise.rb:
 
 #  159| exit do ... end
 
-#  159| exit do ... end (abnormal)
-#-----|  -> exit do ... end
-
 #  159| exit do ... end (normal)
 #-----|  -> exit do ... end
 
@@ -4363,7 +4357,6 @@ raise.rb:
 #-----|  -> x
 
 #  161| call to raise
-#-----| raise -> exit do ... end (abnormal)
 #-----| raise -> exit -> { ... } (abnormal)
 
 #  161| ... unless ...
@@ -4397,9 +4390,7 @@ raise.rb:
 #-----|  -> m
 
 #  168| call to raise
-#-----| raise -> C
 #-----| raise -> exit m (abnormal)
-#-----| raise -> exit raise.rb (abnormal)
 
 #  168| self
 #-----|  -> ""
