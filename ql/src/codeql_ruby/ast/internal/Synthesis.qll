@@ -39,6 +39,10 @@ newtype Child =
   SynthChild(SynthKind k) or
   RealChild(AstNode n)
 
+newtype LocationOption =
+  NoneLocation() or
+  SomeLocation(Location l)
+
 private newtype TSynthesis = MkSynthesis()
 
 /** A class used for synthesizing AST nodes. */
@@ -49,8 +53,10 @@ class Synthesis extends TSynthesis {
    *
    * `i = -1` is used to represent that the synthesized node is a desugared version
    * of its parent.
+   *
+   * In case a new node is synthesized, it will have the location specified by `l`.
    */
-  predicate child(AstNode parent, int i, Child child) { none() }
+  predicate child(AstNode parent, int i, Child child, LocationOption l) { none() }
 
   /**
    * Holds if a local variable, identified by `i`, should be synthesized for AST
@@ -66,17 +72,22 @@ class Synthesis extends TSynthesis {
   final string toString() { none() }
 }
 
+private SomeLocation getSomeLocation(AstNode n) {
+  result = SomeLocation(toGenerated(n).getLocation())
+}
+
 private module ImplicitSelfSynthesis {
   private class IdentifierMethodCallSelfSynthesis extends Synthesis {
-    final override predicate child(AstNode parent, int i, Child child) {
+    final override predicate child(AstNode parent, int i, Child child, LocationOption l) {
       child = SynthChild(SelfKind()) and
       parent = TIdentifierMethodCall(_) and
-      i = 0
+      i = 0 and
+      l = NoneLocation()
     }
   }
 
   private class RegularMethodCallSelfSynthesis extends Synthesis {
-    final override predicate child(AstNode parent, int i, Child child) {
+    final override predicate child(AstNode parent, int i, Child child, LocationOption l) {
       child = SynthChild(SelfKind()) and
       i = 0 and
       exists(Generated::AstNode g |
@@ -86,7 +97,8 @@ private module ImplicitSelfSynthesis {
         // not valid Ruby.
         not exists(g.(Generated::Call).getReceiver()) and
         not exists(g.(Generated::Call).getMethod().(Generated::ScopeResolution).getScope())
-      )
+      ) and
+      l = NoneLocation()
     }
   }
 }
@@ -123,6 +135,15 @@ private module AssignOperationDesugar {
     ao instanceof AssignBitwiseXorExpr and result = BitwiseXorExprKind()
   }
 
+  private Location getAssignOperationLocation(AssignOperation ao) {
+    exists(Generated::OperatorAssignment g, Generated::Token op |
+      g = toGenerated(ao) and
+      op.getParent() = g and
+      op.getParentIndex() = 1 and
+      result = op.getLocation()
+    )
+  }
+
   /**
    * ```rb
    * x += y
@@ -137,22 +158,25 @@ private module AssignOperationDesugar {
    * when `x` is a variable.
    */
   private class VariableAssignOperationSynthesis extends Synthesis {
-    final override predicate child(AstNode parent, int i, Child child) {
+    final override predicate child(AstNode parent, int i, Child child, LocationOption l) {
       exists(AssignOperation ao, VariableReal v |
         v = ao.getLeftOperand().(VariableAccessReal).getVariableReal()
       |
         parent = ao and
         i = -1 and
-        child = SynthChild(AssignExprKind())
+        child = SynthChild(AssignExprKind()) and
+        l = NoneLocation()
         or
         exists(AstNode assign | assign = getSynthChild(ao, -1) |
           parent = assign and
           i = 0 and
-          child = RealChild(ao.getLeftOperand())
+          child = RealChild(ao.getLeftOperand()) and
+          l = NoneLocation()
           or
           parent = assign and
           i = 1 and
-          child = SynthChild(getKind(ao))
+          child = SynthChild(getKind(ao)) and
+          l = SomeLocation(getAssignOperationLocation(ao))
           or
           parent = getSynthChild(assign, 1) and
           (
@@ -161,10 +185,12 @@ private module AssignOperationDesugar {
               SynthChild([
                   LocalVariableAccessRealKind(v).(SynthKind), InstanceVariableAccessKind(v),
                   ClassVariableAccessKind(v), GlobalVariableAccessKind(v)
-                ])
+                ]) and
+            l = getSomeLocation(ao.getLeftOperand())
             or
             i = 1 and
-            child = RealChild(ao.getRightOperand())
+            child = RealChild(ao.getRightOperand()) and
+            l = NoneLocation()
           )
         )
       )

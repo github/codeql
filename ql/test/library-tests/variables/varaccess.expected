@@ -103,7 +103,7 @@ variableAccess
 | scopes.rb:9:14:9:14 | x | scopes.rb:9:14:9:14 | x | scopes.rb:9:9:18:3 | do ... end |
 | scopes.rb:10:9:10:9 | a | scopes.rb:7:1:7:1 | a | scopes.rb:1:1:49:4 | scopes.rb |
 | scopes.rb:11:4:11:4 | a | scopes.rb:7:1:7:1 | a | scopes.rb:1:1:49:4 | scopes.rb |
-| scopes.rb:11:4:11:9 | a | scopes.rb:7:1:7:1 | a | scopes.rb:1:1:49:4 | scopes.rb |
+| scopes.rb:11:4:11:4 | a | scopes.rb:7:1:7:1 | a | scopes.rb:1:1:49:4 | scopes.rb |
 | scopes.rb:12:9:12:9 | a | scopes.rb:7:1:7:1 | a | scopes.rb:1:1:49:4 | scopes.rb |
 | scopes.rb:13:4:13:4 | a | scopes.rb:7:1:7:1 | a | scopes.rb:1:1:49:4 | scopes.rb |
 | scopes.rb:13:7:13:7 | b | scopes.rb:13:7:13:7 | b | scopes.rb:9:9:18:3 | do ... end |
@@ -145,7 +145,7 @@ variableAccess
 | ssa.rb:19:9:19:9 | x | ssa.rb:18:8:18:8 | x | ssa.rb:18:1:23:3 | m1 |
 | ssa.rb:20:10:20:10 | x | ssa.rb:18:8:18:8 | x | ssa.rb:18:1:23:3 | m1 |
 | ssa.rb:21:5:21:5 | x | ssa.rb:18:8:18:8 | x | ssa.rb:18:1:23:3 | m1 |
-| ssa.rb:21:5:21:10 | x | ssa.rb:18:8:18:8 | x | ssa.rb:18:1:23:3 | m1 |
+| ssa.rb:21:5:21:5 | x | ssa.rb:18:8:18:8 | x | ssa.rb:18:1:23:3 | m1 |
 | ssa.rb:25:8:25:15 | elements | ssa.rb:25:8:25:15 | elements | ssa.rb:25:1:30:3 | m2 |
 | ssa.rb:26:7:26:10 | elem | ssa.rb:26:7:26:10 | elem | ssa.rb:25:1:30:3 | m2 |
 | ssa.rb:26:15:26:22 | elements | ssa.rb:25:8:25:15 | elements | ssa.rb:25:1:30:3 | m2 |
@@ -168,7 +168,7 @@ variableAccess
 | ssa.rb:55:8:55:8 | x | ssa.rb:54:3:54:3 | x | ssa.rb:53:1:56:3 | m7 |
 | ssa.rb:59:3:59:3 | x | ssa.rb:59:3:59:3 | x | ssa.rb:58:1:62:3 | m8 |
 | ssa.rb:60:3:60:3 | x | ssa.rb:59:3:59:3 | x | ssa.rb:58:1:62:3 | m8 |
-| ssa.rb:60:3:60:9 | x | ssa.rb:59:3:59:3 | x | ssa.rb:58:1:62:3 | m8 |
+| ssa.rb:60:3:60:3 | x | ssa.rb:59:3:59:3 | x | ssa.rb:58:1:62:3 | m8 |
 | ssa.rb:61:8:61:8 | x | ssa.rb:59:3:59:3 | x | ssa.rb:58:1:62:3 | m8 |
 | ssa.rb:64:8:64:8 | a | ssa.rb:64:8:64:8 | a | ssa.rb:64:1:72:3 | m9 |
 | ssa.rb:65:3:65:10 | captured | ssa.rb:65:3:65:10 | captured | ssa.rb:64:1:72:3 | m9 |
@@ -177,7 +177,7 @@ variableAccess
 | ssa.rb:67:10:67:10 | a | ssa.rb:66:15:66:15 | a | ssa.rb:66:11:70:5 | do ... end |
 | ssa.rb:68:10:68:17 | captured | ssa.rb:65:3:65:10 | captured | ssa.rb:64:1:72:3 | m9 |
 | ssa.rb:69:5:69:12 | captured | ssa.rb:65:3:65:10 | captured | ssa.rb:64:1:72:3 | m9 |
-| ssa.rb:69:5:69:17 | captured | ssa.rb:65:3:65:10 | captured | ssa.rb:64:1:72:3 | m9 |
+| ssa.rb:69:5:69:12 | captured | ssa.rb:65:3:65:10 | captured | ssa.rb:64:1:72:3 | m9 |
 | ssa.rb:71:8:71:15 | captured | ssa.rb:65:3:65:10 | captured | ssa.rb:64:1:72:3 | m9 |
 | ssa.rb:75:3:75:10 | captured | ssa.rb:75:3:75:10 | captured | ssa.rb:74:1:79:3 | m10 |
 | ssa.rb:77:15:77:22 | captured | ssa.rb:75:3:75:10 | captured | ssa.rb:74:1:79:3 | m10 |
@@ -332,7 +332,7 @@ readAccess
 | scopes.rb:5:9:5:9 | a |
 | scopes.rb:8:6:8:6 | a |
 | scopes.rb:10:9:10:9 | a |
-| scopes.rb:11:4:11:9 | a |
+| scopes.rb:11:4:11:4 | a |
 | scopes.rb:12:9:12:9 | a |
 | scopes.rb:14:9:14:9 | a |
 | scopes.rb:15:9:15:9 | b |
@@ -356,7 +356,7 @@ readAccess
 | ssa.rb:15:8:15:8 | i |
 | ssa.rb:19:9:19:9 | x |
 | ssa.rb:20:10:20:10 | x |
-| ssa.rb:21:5:21:10 | x |
+| ssa.rb:21:5:21:5 | x |
 | ssa.rb:26:15:26:22 | elements |
 | ssa.rb:27:10:27:13 | elem |
 | ssa.rb:29:8:29:11 | elem |
@@ -367,12 +367,12 @@ readAccess
 | ssa.rb:50:8:50:8 | y |
 | ssa.rb:54:7:54:9 | foo |
 | ssa.rb:55:8:55:8 | x |
-| ssa.rb:60:3:60:9 | x |
+| ssa.rb:60:3:60:3 | x |
 | ssa.rb:61:8:61:8 | x |
 | ssa.rb:66:3:66:3 | a |
 | ssa.rb:67:10:67:10 | a |
 | ssa.rb:68:10:68:17 | captured |
-| ssa.rb:69:5:69:17 | captured |
+| ssa.rb:69:5:69:12 | captured |
 | ssa.rb:71:8:71:15 | captured |
 | ssa.rb:77:15:77:22 | captured |
 | ssa.rb:85:15:85:22 | captured |
