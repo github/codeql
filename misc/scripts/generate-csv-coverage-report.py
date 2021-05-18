@@ -1,8 +1,8 @@
 import subprocess
-import json
 import csv
 import sys
 import os
+import shutil
 
 """
 This script runs the CSV coverage report QL query, and transforms it to a more readable format.
@@ -32,6 +32,7 @@ def run_codeql_query(query, database, output):
                    "--database", database, "--output", output + ".bqrs"])
     subprocess_run(["codeql", "bqrs", "decode", output + ".bqrs",
                    "--format=csv", "--no-titles", "--output", output])
+    os.remove(output + ".bqrs")
 
 
 def append_csv_number(list, value):
@@ -120,13 +121,27 @@ except Exception as e:
     print("Error: couldn't invoke CodeQL CLI 'codeql'. Is it on the path? Aborting.", file=sys.stderr)
     raise e
 
+# The script can be run in two modes:
+# (i) dev: run on the local developer machine, and collect the coverage data. The output is generated into the expected
+#          folders: {language}/documentation/library-coverage/
+# (ii) ci: run in a CI action. The output is generated to the root folder, and then in a subsequent step packaged as a
+#          build artifact.
+mode = "dev"
+if len(sys.argv) > 1:
+    mode = sys.argv[1]
+
+if mode != "dev" and mode != "ci":
+    print("Unknown execution mode: " + mode +
+          ". Expected either 'dev' or 'ci'.", file=sys.stderr)
+    exit(1)
+
 query_prefix = ""
 data_prefix = ""
-if len(sys.argv) > 1:
-    query_prefix = sys.argv[1] + "/"
-
 if len(sys.argv) > 2:
-    data_prefix = sys.argv[2] + "/"
+    query_prefix = sys.argv[2] + "/"
+
+if len(sys.argv) > 3:
+    data_prefix = sys.argv[3] + "/"
 
 # Languages for which we want to generate coverage reports.
 configs = [
@@ -135,100 +150,109 @@ configs = [
 ]
 
 # The names of input and output files. The placeholder {language} is replaced with the language name.
-output_rst = "flow-model-coverage.rst"
+documentation_folder = "{language}/documentation/library-coverage/"
 output_ql_csv = "output-{language}.csv"
-output_csv = "csv-flow-model-coverage-{language}.csv"
-input_framework_csv = data_prefix + "misc/scripts/frameworks-{language}.csv"
-input_cwe_sink_csv = data_prefix + "misc/scripts/cwe-sink-{language}.csv"
+input_framework_csv = data_prefix + documentation_folder + "frameworks.csv"
+input_cwe_sink_csv = data_prefix + documentation_folder + "cwe-sink.csv"
 
-with open(output_rst, 'w', newline='') as rst_file:
-    for config in configs:
-        lang = config.lang
-        db = "empty-" + lang
-        ql_output = output_ql_csv.format(language=lang)
-        create_empty_database(lang, config.ext, db)
-        run_codeql_query(config.ql_path, db, ql_output)
+if mode == "dev":
+    output_rst = data_prefix + documentation_folder + "flow-model-coverage.rst"
+    output_csv = data_prefix + documentation_folder + "flow-model-coverage.csv"
+else:
+    output_rst = "flow-model-coverage-{language}.rst"
+    output_csv = "flow-model-coverage-{language}.csv"
 
-        packages = {}
-        parts = set()
-        kinds = set()
+for config in configs:
+    lang = config.lang
+    db = "empty-" + lang
+    ql_output = output_ql_csv.format(language=lang)
+    create_empty_database(lang, config.ext, db)
+    run_codeql_query(config.ql_path, db, ql_output)
+    shutil.rmtree(db)
 
-        # Read the generated CSV file, and collect package statistics.
-        with open(ql_output) as csvfile:
-            reader = csv.reader(csvfile)
-            for row in reader:
-                # row: "android.util",1,"remote","source",16
-                package = row[0]
-                if package not in packages:
-                    packages[package] = {
-                        "count": row[1],
-                        # part: "summary", "sink", or "source"
-                        "part": {},
-                        # kind: "source:remote", "sink:create-file", ...
-                        "kind": {}
-                    }
+    packages = {}
+    parts = set()
+    kinds = set()
 
-                part = row[3]
-                parts.add(part)
-                increment_dict_item(row[4], packages[package]["part"], part)
+    # Read the generated CSV file, and collect package statistics.
+    with open(ql_output) as csvfile:
+        reader = csv.reader(csvfile)
+        for row in reader:
+            # row: "android.util",1,"remote","source",16
+            package = row[0]
+            if package not in packages:
+                packages[package] = {
+                    "count": row[1],
+                    # part: "summary", "sink", or "source"
+                    "part": {},
+                    # kind: "source:remote", "sink:create-file", ...
+                    "kind": {}
+                }
 
-                kind = part + ":" + row[2]
-                kinds.add(kind)
-                increment_dict_item(row[4], packages[package]["kind"], kind)
+            part = row[3]
+            parts.add(part)
+            increment_dict_item(row[4], packages[package]["part"], part)
 
-        parts = sorted(parts)
-        kinds = sorted(kinds)
+            kind = part + ":" + row[2]
+            kinds.add(kind)
+            increment_dict_item(row[4], packages[package]["kind"], kind)
 
-        # Write the denormalized package statistics to a CSV file.
-        with open(output_csv.format(language=lang), 'w', newline='') as csvfile:
-            csvwriter = csv.writer(csvfile)
+    os.remove(ql_output)
 
-            headers = ["package"]
-            headers.extend(parts)
-            headers.extend(kinds)
+    parts = sorted(parts)
+    kinds = sorted(kinds)
 
-            csvwriter.writerow(headers)
+    # Write the denormalized package statistics to a CSV file.
+    with open(output_csv.format(language=lang), 'w', newline='') as csvfile:
+        csvwriter = csv.writer(csvfile)
 
-            for package in sorted(packages):
-                row = [package]
-                for part in parts:
-                    append_csv_dict_item(row, packages[package]["part"], part)
-                for kind in kinds:
-                    append_csv_dict_item(row, packages[package]["kind"], kind)
-                csvwriter.writerow(row)
+        headers = ["package"]
+        headers.extend(parts)
+        headers.extend(kinds)
 
-        # Read the additional framework data, such as URL, friendly name
-        frameworks = {}
+        csvwriter.writerow(headers)
 
-        with open(input_framework_csv.format(language=lang)) as csvfile:
-            reader = csv.reader(csvfile)
-            next(reader)
-            for row in reader:
-                # row: Hibernate,https://hibernate.org/,org.hibernate
-                framwork = row[0]
-                if framwork not in frameworks:
-                    frameworks[framwork] = {
-                        "package": row[2],
-                        "url": row[1]
-                    }
+        for package in sorted(packages):
+            row = [package]
+            for part in parts:
+                append_csv_dict_item(row, packages[package]["part"], part)
+            for kind in kinds:
+                append_csv_dict_item(row, packages[package]["kind"], kind)
+            csvwriter.writerow(row)
 
-        # Read the additional CWE data
-        cwes = {}
+    # Read the additional framework data, such as URL, friendly name
+    frameworks = {}
 
-        with open(input_cwe_sink_csv.format(language=lang)) as csvfile:
-            reader = csv.reader(csvfile)
-            next(reader)
-            for row in reader:
-                # row: CWE-89,sql,SQL injection
-                cwe = row[0]
-                if cwe not in cwes:
-                    cwes[cwe] = {
-                        "sink": row[1],
-                        "label": row[2]
-                    }
+    with open(input_framework_csv.format(language=lang)) as csvfile:
+        reader = csv.reader(csvfile)
+        next(reader)
+        for row in reader:
+            # row: Hibernate,https://hibernate.org/,org.hibernate
+            framwork = row[0]
+            if framwork not in frameworks:
+                frameworks[framwork] = {
+                    "package": row[2],
+                    "url": row[1]
+                }
 
-        sorted_cwes = sorted(cwes)
+    # Read the additional CWE data
+    cwes = {}
 
+    with open(input_cwe_sink_csv.format(language=lang)) as csvfile:
+        reader = csv.reader(csvfile)
+        next(reader)
+        for row in reader:
+            # row: CWE-89,sql,SQL injection
+            cwe = row[0]
+            if cwe not in cwes:
+                cwes[cwe] = {
+                    "sink": row[1],
+                    "label": row[2]
+                }
+
+    sorted_cwes = sorted(cwes)
+
+    with open(output_rst.format(language=lang), 'w', newline='') as rst_file:
         rst_file.write(
             config.capitalized_lang + " framework & library support\n")
         rst_file.write("================================\n\n")
@@ -314,4 +338,4 @@ with open(output_rst, 'w', newline='') as rst_file:
 
         csvwriter.writerow(row)
 
-        rst_file.write("\n\n")
+        rst_file.write("\n")

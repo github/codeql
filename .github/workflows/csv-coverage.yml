@@ -14,9 +14,9 @@ on:
     paths:
       - '.github/workflows/csv-coverage.yml'
       - 'misc/scripts/generate-csv-coverage-report.py'
-      - 'misc/scripts/cwe-sink-*.csv'
-      - 'misc/scripts/frameworks-*.csv'
       - 'java/ql/src/meta/frameworks/Coverage.ql'
+      - 'java/documentation/library-coverage/cwe-sink.csv'
+      - 'java/documentation/library-coverage/frameworks.csv'
 
 jobs:
   build:
@@ -54,16 +54,15 @@ jobs:
       run: unzip -d codeql-cli codeql-linux64.zip
     - name: Build modeled package list
       run: |
-        PATH="$PATH:codeql-cli/codeql" python script/misc/scripts/generate-csv-coverage-report.py codeqlModels script
+        PATH="$PATH:codeql-cli/codeql" python script/misc/scripts/generate-csv-coverage-report.py ci codeqlModels script
     - name: Upload CSV package list
       uses: actions/upload-artifact@v2
       with:
         name: csv-flow-model-coverage
-        path: csv-flow-model-coverage-*.csv
+        path: flow-model-coverage-*.csv
     - name: Upload RST package list
       uses: actions/upload-artifact@v2
       with:
         name: rst-flow-model-coverage
-        path: |
-          flow-model-coverage.rst
+        path: flow-model-coverage-*.rst
 
