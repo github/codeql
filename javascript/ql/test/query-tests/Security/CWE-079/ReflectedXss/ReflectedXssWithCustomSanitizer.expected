@@ -37,3 +37,5 @@
 | tst2.js:8:12:8:12 | r | Cross-site scripting vulnerability due to $@. | tst2.js:6:12:6:15 | q: r | user-provided value |
 | tst2.js:18:12:18:12 | p | Cross-site scripting vulnerability due to $@. | tst2.js:14:9:14:9 | p | user-provided value |
 | tst2.js:21:14:21:14 | p | Cross-site scripting vulnerability due to $@. | tst2.js:14:9:14:9 | p | user-provided value |
+| tst2.js:36:12:36:12 | p | Cross-site scripting vulnerability due to $@. | tst2.js:30:9:30:9 | p | user-provided value |
+| tst2.js:37:12:37:18 | other.p | Cross-site scripting vulnerability due to $@. | tst2.js:30:9:30:9 | p | user-provided value |
