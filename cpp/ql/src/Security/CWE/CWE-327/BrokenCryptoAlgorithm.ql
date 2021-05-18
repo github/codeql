@@ -79,7 +79,7 @@ class InsecureFunctionCall extends FunctionCall {
       explain = "function call"
       or
       exists(MacroInvocation mi |
-        mi.getAGeneratedElement() = this.getAnArgument() and
+        mi.getAnExpandedElement() = this.getAnArgument() and
         mi.getMacro() = getAnInsecureEncryptionMacro() and
         blame = mi and
         explain = "macro invocation"
@@ -97,7 +97,7 @@ class InsecureFunctionCall extends FunctionCall {
       getTarget() = getAdditionalEvidenceFunction()
       or
       exists(MacroInvocation mi |
-        mi.getAGeneratedElement() = this.getAnArgument() and
+        mi.getAnExpandedElement() = this.getAnArgument() and
         mi.getMacro() = getAdditionalEvidenceMacro()
       )
       or
