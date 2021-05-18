@@ -14,6 +14,7 @@
 
 import cpp
 import semmle.code.cpp.commons.Buffer
+import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 import LoopBounds
 
 private predicate staticBufferBase(VariableAccess access, Variable v) {
@@ -51,6 +52,8 @@ predicate overflowOffsetInLoop(BufferAccess bufaccess, string msg) {
     loop.getStmt().getAChild*() = bufaccess.getEnclosingStmt() and
     loop.limit() >= bufaccess.bufferSize() and
     loop.counter().getAnAccess() = bufaccess.getArrayOffset() and
+    // Ensure that we don't have an upper bound on the array index that's less than the buffer size.
+    not upperBound(bufaccess.getArrayOffset().getFullyConverted()) < bufaccess.bufferSize() and
     msg =
       "Potential buffer-overflow: counter '" + loop.counter().toString() + "' <= " +
         loop.limit().toString() + " but '" + bufaccess.buffer().getName() + "' has " +
@@ -94,10 +97,15 @@ class CallWithBufferSize extends FunctionCall {
   }
 
   int statedSizeValue() {
-    exists(Expr statedSizeSrc |
-      DataFlow::localExprFlow(statedSizeSrc, statedSizeExpr()) and
-      result = statedSizeSrc.getValue().toInt()
-    )
+    // `upperBound(e)` defaults to `exprMaxVal(e)` when `e` isn't analyzable. So to get a meaningful
+    // result in this case we pick the minimum value obtainable from dataflow and range analysis.
+    result =
+      upperBound(statedSizeExpr())
+          .minimum(any(Expr statedSizeSrc |
+              DataFlow::localExprFlow(statedSizeSrc, statedSizeExpr())
+            |
+              statedSizeSrc.getValue().toInt()
+            ))
   }
 }
 

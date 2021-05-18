@@ -591,7 +591,7 @@ void test22(bool b, const char* source) {
 	int k;
 	for (k = 0; k <= 100; k++) {
 		if(k < 16) {
-			buffer[k] = 'x'; // GOOD [FALSE POSITIVE]
+			buffer[k] = 'x'; // GOOD
 		}
 	}
 
@@ -600,7 +600,7 @@ void test22(bool b, const char* source) {
 	if (n >= 128) {
     return;
   }
-  memcpy(dest, source, n); // GOOD [FALSE POSITIVE]
+  memcpy(dest, source, n); // GOOD
 }
 
 int main(int argc, char *argv[])

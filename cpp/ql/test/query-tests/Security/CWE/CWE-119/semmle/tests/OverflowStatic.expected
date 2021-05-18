@@ -5,8 +5,6 @@
 | tests.cpp:245:42:245:42 | 6 | Potential buffer-overflow: 'global_array_5' has size 5 not 6. |
 | tests.cpp:349:2:349:14 | access to array | Potential buffer-overflow: 'charArray' has size 10 but 'charArray[10]' is accessed here. |
 | tests.cpp:350:17:350:29 | access to array | Potential buffer-overflow: 'charArray' has size 10 but 'charArray[10]' is accessed here. |
-| tests.cpp:594:4:594:12 | access to array | Potential buffer-overflow: counter 'k' <= 100 but 'buffer' has 16 elements. |
-| tests.cpp:603:24:603:24 | n | Potential buffer-overflow: 'dest' has size 128 not 132. |
 | var_size_struct.cpp:54:5:54:14 | access to array | Potential buffer-overflow: 'str' has size 1 but 'str[1]' is accessed here. |
 | var_size_struct.cpp:55:5:55:14 | access to array | Potential buffer-overflow: 'str' has size 1 but 'str[1]' is accessed here. |
 | var_size_struct.cpp:103:39:103:41 | 129 | Potential buffer-overflow: 'str' has size 128 not 129. |
