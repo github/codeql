@@ -1,11 +1,11 @@
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.JwtParser;
-import io.jsonwebtoken.Jwt;
-import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Header;
-import io.jsonwebtoken.JwtParserBuilder;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwt;
 import io.jsonwebtoken.JwtHandlerAdapter;
+import io.jsonwebtoken.JwtParser;
+import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.impl.DefaultJwtParser;
+import io.jsonwebtoken.impl.DefaultJwtParserBuilder;
 
 public class MissingJWTSignatureCheckTest {
 
@@ -108,6 +108,10 @@ public class MissingJWTSignatureCheckTest {
 
     private void badJwtOnParserBuilder(String token) {
         Jwts.parserBuilder().setSigningKey("someBase64EncodedKey").build().parse(token); // $hasMissingJwtSignatureCheck
+    }
+
+    private void badJwtOnDefaultParserBuilder(String token) {
+        new DefaultJwtParserBuilder().setSigningKey("someBase64EncodedKey").build().parse(token); // $hasMissingJwtSignatureCheck
     }
 
     private void badJwtHandlerOnParser(String token) {
