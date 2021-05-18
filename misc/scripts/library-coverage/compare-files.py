@@ -14,6 +14,14 @@ def check_file_exists(file):
         sys.exit(1)
 
 
+def compare_files(file1, file2):
+    filecmp.clear_cache()
+    if not filecmp.cmp(file1, file2):
+        print("Error: The generated files do not match the ones in the codebase. Please check and fix file '" +
+              file1 + "'.", file=sys.stderr)
+        sys.exit(1)
+
+
 languages = ['java']
 
 for lang in languages:
@@ -28,11 +36,8 @@ for lang in languages:
     check_file_exists(generated_output_rst)
     check_file_exists(generated_output_csv)
 
-    filecmp.clear_cache()
-    if not filecmp.cmp(repo_output_rst, generated_output_rst, shallow=False) or not filecmp.cmp(repo_output_csv, generated_output_csv, shallow=False):
-        print("Error: The generated files for '" + lang +
-              "' do not match the ones in the codebase. Please check and fix.", file=sys.stderr)
-        sys.exit(1)
+    compare_files(repo_output_rst, generated_output_rst)
+    compare_files(repo_output_csv, generated_output_csv)
 
     print("The generated files for '" + lang +
           "' match the ones in the codebase.")
