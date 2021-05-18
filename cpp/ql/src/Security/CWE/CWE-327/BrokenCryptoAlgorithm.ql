@@ -31,8 +31,7 @@ Function getAnInsecureEncryptionFunction() {
 Function getAdditionalEvidenceFunction() {
   (
     isEncryptionAdditionalEvidence(result.getName()) or
-    isEncryptionAdditionalEvidence(result.getAParameter().getName()) or
-    isEncryptionAdditionalEvidence(result.getDeclaringType().getName())
+    isEncryptionAdditionalEvidence(result.getAParameter().getName())
   ) and
   exists(result.getACallToThisFunction())
 }

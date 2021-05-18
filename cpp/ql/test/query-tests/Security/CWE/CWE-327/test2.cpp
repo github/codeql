@@ -237,14 +237,14 @@ void do_classes(const char *data)
 {
 	desEncrypt::encrypt(data); // BAD
 	aes256Encrypt::encrypt(data); // GOOD
-	desEncrypt::doSomethingElse(); // GOOD [FALSE POSITIVE]
+	desEncrypt::doSomethingElse(); // GOOD
 	aes256Encrypt::doSomethingElse(); // GOOD
 
 	desCipher dc;
 	aesCipher ac;
 	dc.encrypt(data); // BAD
 	ac.encrypt(data); // GOOD
-	dc.doSomethingElse(); // GOOD [FALSE POSITIVE]
+	dc.doSomethingElse(); // GOOD
 	ac.doSomethingElse(); // GOOD
 }
 
