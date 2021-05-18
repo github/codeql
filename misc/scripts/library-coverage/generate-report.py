@@ -255,7 +255,7 @@ for config in configs:
         rst_file.write(
             config.capitalized_lang + " framework & library support\n")
         rst_file.write("================================\n\n")
-        rst_file.write(".. csv-table:: \n")
+        rst_file.write(".. csv-table::\n")
         rst_file.write("   :header-rows: 1\n")
         rst_file.write("   :class: fullWidthTable\n")
         rst_file.write("   :widths: auto\n\n")
