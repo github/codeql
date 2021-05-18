@@ -255,6 +255,9 @@ with open(output_rst, 'w', newline='') as rst_file:
 
         processed_packages = set()
 
+        all_package_patterns = set(
+            (frameworks[fr]["package"] for fr in frameworks))
+
         # Write a row for each framework.
         for framework in sorted(frameworks):
             row = []
@@ -269,12 +272,17 @@ with open(output_rst, 'w', newline='') as rst_file:
             # Add the package name to the row
             row.append("``" + frameworks[framework]["package"] + "``")
 
-            prefix = frameworks[framework]["package"]
+            current_package_pattern = frameworks[framework]["package"]
 
             # Collect statistics on the current framework
-            # package name is either full name, such as "org.hibernate", or a prefix, such as "java.*"
+            # current_package_pattern is either full name, such as "org.hibernate", or a prefix, such as "java.*"
+            # Package patterns might overlap, in case of 'org.apache.commons.io' and 'org.apache.*', the statistics for
+            # the latter will not include the statistics for the former.
+            def package_match(package_name, pattern): return (pattern.endswith(
+                "*") and package_name.startswith(pattern[:-1])) or (not pattern.endswith("*") and pattern == package_name)
+
             def collect_framework(): return collect_package_stats(
-                packages, cwes, lambda p: (prefix.endswith("*") and p.startswith(prefix[:-1])) or (not prefix.endswith("*") and prefix == p))
+                packages, cwes, lambda p: package_match(p, current_package_pattern) and all(len(current_package_pattern) >= len(pattern) or not package_match(p, pattern) for pattern in all_package_patterns))
 
             row, f_processed_packages = add_package_stats_to_row(
                 row, sorted_cwes, collect_framework)
