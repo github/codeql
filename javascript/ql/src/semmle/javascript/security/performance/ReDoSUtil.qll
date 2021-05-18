@@ -251,7 +251,7 @@ class InputSymbol extends TInputSymbol {
 /**
  * An abstract input symbol that represents a character class.
  */
-abstract private class CharacterClass extends InputSymbol {
+abstract class CharacterClass extends InputSymbol {
   /**
    * Gets a character that is relevant for intersection-tests involving this
    * character class.

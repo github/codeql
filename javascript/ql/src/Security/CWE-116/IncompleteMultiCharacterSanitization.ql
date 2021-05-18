@@ -56,29 +56,60 @@ DangerousPrefix getADangerousMatchedPrefix(EmptyReplaceRegExpTerm t) {
   not exists(EmptyReplaceRegExpTerm pred | pred = t.getPredecessor+() and not pred.isNullable())
 }
 
+private import semmle.javascript.security.performance.ReDoSUtil as ReDoSUtil
+
+/**
+ * Gets a char from a dangerous prefix that is matched by `t`.
+ */
+pragma[noinline]
+DangerousPrefixSubstring getADangerousMatchedChar(EmptyReplaceRegExpTerm t) {
+  t.isNullable() and result = ""
+  or
+  t.getAMatchedString() = result
+  or
+  ReDoSUtil::getCanonicalCharClass(t).(ReDoSUtil::CharacterClass).matches(result)
+  or
+  t instanceof RegExpDot and
+  result.length() = 1
+  or
+  (
+    t instanceof RegExpOpt or
+    t instanceof RegExpStar or
+    t instanceof RegExpPlus or
+    t instanceof RegExpGroup or
+    t instanceof RegExpAlt
+  ) and
+  result = getADangerousMatchedChar(t.getAChild())
+}
+
 /**
  * Gets a substring of a dangerous prefix that is in the language starting at `t` (ignoring lookarounds).
  *
  * Note that the language of `t` is slightly restricted as not all RegExpTerm types are supported.
  */
 DangerousPrefixSubstring getADangerousMatchedPrefixSubstring(EmptyReplaceRegExpTerm t) {
-  exists(string left |
-    t.isNullable() and left = ""
-    or
-    t.getAMatchedString() = left
-    or
-    (
-      t instanceof RegExpOpt or
-      t instanceof RegExpStar or
-      t instanceof RegExpPlus or
-      t instanceof RegExpGroup or
-      t instanceof RegExpAlt
-    ) and
-    left = getADangerousMatchedPrefixSubstring(t.getAChild())
-  |
-    result = left + getADangerousMatchedPrefixSubstring(t.getSuccessor()) or
-    result = left
+  result = getADangerousMatchedChar(t) + getADangerousMatchedPrefixSubstring(t.getSuccessor())
+  or
+  result = getADangerousMatchedChar(t)
+  or
+  // loop around for repetitions (only considering alphanumeric characters in the repetition)
+  exists(RepetitionMatcher repetition | t = repetition |
+    result = getADangerousMatchedPrefixSubstring(repetition) + repetition.getAChar()
   )
+}
+
+class RepetitionMatcher extends EmptyReplaceRegExpTerm {
+  string char;
+
+  pragma[noinline]
+  RepetitionMatcher() {
+    (this instanceof RegExpPlus or this instanceof RegExpStar) and
+    char = getADangerousMatchedChar(this.getAChild()) and
+    char.regexpMatch("\\w")
+  }
+
+  pragma[noinline]
+  string getAChar() { result = char }
 }
 
 /**
@@ -151,7 +182,7 @@ where
   // skip leading optional elements
   not dangerous.isNullable() and
   // only warn about the longest match (presumably the most descriptive)
-  prefix = max(string m | matchesDangerousPrefix(dangerous, m, kind) | m order by m.length()) and
+  prefix = max(string m | matchesDangerousPrefix(dangerous, m, kind) | m order by m.length(), m) and
   // only warn once per kind
   not exists(EmptyReplaceRegExpTerm other |
     other = dangerous.getAChild+() or other = dangerous.getPredecessor+()
