@@ -33,7 +33,7 @@ class BytecodeLoader extends RefType {
 }
 
 /** Holds if a Jython expression if evaluated, compiled or executed. */
-predicate runCode(MethodAccess ma, Expr sink) {
+predicate runsCode(MethodAccess ma, Expr sink) {
   exists(Method m | m = ma.getMethod() |
     m instanceof InterpretExprMethod and
     sink = ma.getArgument(0)
@@ -83,17 +83,15 @@ predicate compile(MethodAccess ma, Expr sink) {
 
 /** An expression loaded by Jython. */
 class CodeInjectionSink extends DataFlow::ExprNode {
+  MethodAccess methodAccess;
+
   CodeInjectionSink() {
-    runCode(_, this.getExpr()) or
-    loadsClass(_, this.getExpr()) or
-    compile(_, this.getExpr())
+    runsCode(methodAccess, this.getExpr()) or
+    loadsClass(methodAccess, this.getExpr()) or
+    compile(methodAccess, this.getExpr())
   }
 
-  MethodAccess getMethodAccess() {
-    runCode(result, this.getExpr()) or
-    loadsClass(result, this.getExpr()) or
-    compile(result, this.getExpr())
-  }
+  MethodAccess getMethodAccess() { result = methodAccess }
 }
 
 /**
