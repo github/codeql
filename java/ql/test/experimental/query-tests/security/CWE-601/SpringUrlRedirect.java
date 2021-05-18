@@ -50,6 +50,16 @@ public class SpringUrlRedirect {
     }
 
     @GetMapping("url7")
+    public String bad7(String redirectUrl) {
+        return "redirect:" + String.format("%s/?aaa", redirectUrl);
+    }
+
+    @GetMapping("url8")
+    public String bad8(String redirectUrl, String token) {
+        return "redirect:" + String.format(redirectUrl + "?token=%s", token);
+    }
+
+    @GetMapping("url9")
     public RedirectView good1(String redirectUrl) {
         RedirectView rv = new RedirectView();
         if (redirectUrl.startsWith(VALID_REDIRECT)){
@@ -60,9 +70,14 @@ public class SpringUrlRedirect {
         return rv;
     }
 
-    @GetMapping("url8")
+    @GetMapping("url10")
     public ModelAndView good2(String token) {
         String url = "/edit?token=" + token;
         return new ModelAndView("redirect:" + url);
+    }
+
+    @GetMapping("url11")
+    public String good3(String status) {
+        return "redirect:" + String.format("/stories/search/criteria?status=%s", status);
     }
 }

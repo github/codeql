@@ -33,6 +33,16 @@ class SpringUrlRedirectFlowConfig extends TaintTracking::Configuration {
       ae.getRightOperand() = node.asExpr() and
       not ae instanceof RedirectBuilderExpr
     )
+    or
+    exists(MethodAccess ma, int index |
+      ma.getMethod().hasName("format") and
+      ma.getMethod().getDeclaringType() instanceof TypeString and
+      ma.getArgument(index) = node.asExpr() and
+      (
+        index != 0 and
+        not ma.getArgument(0).(CompileTimeConstantExpr).getStringValue().regexpMatch("^%s.*")
+      )
+    )
   }
 }
 

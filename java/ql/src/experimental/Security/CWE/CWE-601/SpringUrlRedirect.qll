@@ -51,14 +51,14 @@ class SpringUrlRedirectSink extends DataFlow::Node {
   SpringUrlRedirectSink() {
     exists(RedirectBuilderExpr rbe |
       rbe.getRightOperand() = this.asExpr() and
-      exists(RedirectBuilderFlowConfig rbfc | rbfc.hasFlow(exprNode(rbe), _))
+      any(SpringRequestMappingMethod sqmm).polyCalls*(this.getEnclosingCallable())
     )
     or
     exists(MethodAccess ma, RedirectAppendCall rac |
       DataFlow2::localExprFlow(rac.getQualifier(), ma.getQualifier()) and
       ma.getMethod().hasName("append") and
       ma.getArgument(0) = this.asExpr() and
-      exists(RedirectBuilderFlowConfig rbfc | rbfc.hasFlow(exprNode(ma.getQualifier()), _))
+      any(SpringRequestMappingMethod sqmm).polyCalls*(this.getEnclosingCallable())
     )
     or
     exists(MethodAccess ma |
@@ -66,8 +66,7 @@ class SpringUrlRedirectSink extends DataFlow::Node {
       ma.getMethod()
           .getDeclaringType()
           .hasQualifiedName("org.springframework.web.servlet.view", "AbstractUrlBasedView") and
-      ma.getArgument(0) = this.asExpr() and
-      exists(RedirectViewFlowConfig rvfc | rvfc.hasFlowToExpr(ma.getQualifier()))
+      ma.getArgument(0) = this.asExpr()
     )
     or
     exists(ClassInstanceExpr cie |
@@ -81,60 +80,6 @@ class SpringUrlRedirectSink extends DataFlow::Node {
       exists(RedirectBuilderExpr rbe |
         rbe = cie.getArgument(0) and rbe.getRightOperand() = this.asExpr()
       )
-    )
-  }
-}
-
-/** A data flow configuration tracing flow from redirect builder expression to spring controller method return expression. */
-private class RedirectBuilderFlowConfig extends DataFlow2::Configuration {
-  RedirectBuilderFlowConfig() { this = "RedirectBuilderFlowConfig" }
-
-  override predicate isSource(DataFlow::Node src) {
-    exists(RedirectBuilderExpr rbe | rbe = src.asExpr())
-    or
-    exists(MethodAccess ma, RedirectAppendCall rac |
-      DataFlow2::localExprFlow(rac.getQualifier(), ma.getQualifier()) and
-      ma.getMethod().hasName("append") and
-      ma.getQualifier() = src.asExpr()
-    )
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(ReturnStmt rs, SpringRequestMappingMethod sqmm |
-      rs.getResult() = sink.asExpr() and
-      sqmm.getBody().getAStmt() = rs
-    )
-  }
-
-  override predicate isAdditionalFlowStep(Node prod, Node succ) {
-    exists(MethodAccess ma |
-      ma.getMethod().hasName("toString") and
-      ma.getMethod().getDeclaringType() instanceof StringBuildingType and
-      ma.getQualifier() = prod.asExpr() and
-      ma = succ.asExpr()
-    )
-  }
-}
-
-/** A data flow configuration tracing flow from RedirectView object to calling setUrl method. */
-private class RedirectViewFlowConfig extends DataFlow2::Configuration {
-  RedirectViewFlowConfig() { this = "RedirectViewFlowConfig" }
-
-  override predicate isSource(DataFlow::Node src) {
-    exists(ClassInstanceExpr cie |
-      cie.getConstructedType()
-          .hasQualifiedName("org.springframework.web.servlet.view", "RedirectView") and
-      cie = src.asExpr()
-    )
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma |
-      ma.getMethod().hasName("setUrl") and
-      ma.getMethod()
-          .getDeclaringType()
-          .hasQualifiedName("org.springframework.web.servlet.view", "AbstractUrlBasedView") and
-      ma.getQualifier() = sink.asExpr()
     )
   }
 }
