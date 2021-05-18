@@ -148,7 +148,10 @@ private module CryptodomeModel {
       result in [this.getArg(0), this.getArgByName("plaintext")]
       or
       methodName in ["decrypt_and_verify"] and
-      result in [this.getArg(0), this.getArgByName("ciphertext"), this.getArg(1), this.getArgByName("mac_tag")]
+      result in [
+          this.getArg(0), this.getArgByName("ciphertext"), this.getArg(1),
+          this.getArgByName("mac_tag")
+        ]
     }
   }
 
