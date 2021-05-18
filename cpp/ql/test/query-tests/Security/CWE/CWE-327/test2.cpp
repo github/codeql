@@ -209,35 +209,43 @@ class desEncrypt
 {
 public:
 	static void encrypt(const char *data);
+	static void doSomethingElse();
 };
 
 class aes256Encrypt
 {
 public:
 	static void encrypt(const char *data);
+	static void doSomethingElse();
 };
 
 class desCipher
 {
 public:
 	void encrypt(const char *data);
+	void doSomethingElse();
 };
 
 class aesCipher
 {
 public:
 	void encrypt(const char *data);
+	void doSomethingElse();
 };
 
 void do_classes(const char *data)
 {
 	desEncrypt::encrypt(data); // BAD
 	aes256Encrypt::encrypt(data); // GOOD
+	desEncrypt::doSomethingElse(); // GOOD [FALSE POSITIVE]
+	aes256Encrypt::doSomethingElse(); // GOOD
 
 	desCipher dc;
 	aesCipher ac;
 	dc.encrypt(data); // BAD
 	ac.encrypt(data); // GOOD
+	dc.doSomethingElse(); // GOOD [FALSE POSITIVE]
+	ac.doSomethingElse(); // GOOD
 }
 
 // --- function pointer ---

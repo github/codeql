@@ -107,3 +107,19 @@ void test_functions(void *data, size_t amount, const char *str)
 	Anodes(1); // GOOD (probably nothing to do with encryption)
 	ConDes(); // GOOD (probably nothing to do with encryption)
 }
+
+// --- macros for functions with no arguments ---
+
+void my_implementation7();
+void my_implementation8();
+
+#define INIT_ENCRYPT_WITH_DES() my_implementation7()
+#define INIT_ENCRYPT_WITH_AES() my_implementation8()
+
+void test_macros2()
+{
+	INIT_ENCRYPT_WITH_DES(); // BAD [NOT DETECTED]
+	INIT_ENCRYPT_WITH_AES(); // GOOD (good algorithm)
+	
+	// ...
+}
