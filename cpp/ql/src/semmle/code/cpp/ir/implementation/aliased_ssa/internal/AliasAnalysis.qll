@@ -287,14 +287,24 @@ private predicate isArgumentForParameter(
 private predicate isOnlyEscapesViaReturnArgument(Operand operand) {
   exists(AliasModels::AliasFunction f |
     f = operand.getUse().(CallInstruction).getStaticCallTarget() and
-    f.parameterEscapesOnlyViaReturn(operand.(PositionalArgumentOperand).getIndex())
+    (
+      f.parameterEscapesOnlyViaReturn(operand.(PositionalArgumentOperand).getIndex())
+      or
+      f.parameterEscapesOnlyViaReturn(-1) and
+      operand instanceof ThisArgumentOperand
+    )
   )
 }
 
 private predicate isNeverEscapesArgument(Operand operand) {
   exists(AliasModels::AliasFunction f |
     f = operand.getUse().(CallInstruction).getStaticCallTarget() and
-    f.parameterNeverEscapes(operand.(PositionalArgumentOperand).getIndex())
+    (
+      f.parameterNeverEscapes(operand.(PositionalArgumentOperand).getIndex())
+      or
+      f.parameterNeverEscapes(-1) and
+      operand instanceof ThisArgumentOperand
+    )
   )
 }
 
