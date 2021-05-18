@@ -58,11 +58,11 @@ module CfgScope {
 
   private class EndBlockScope extends Range_, EndBlock {
     final override predicate entry(AstNode first) {
-      first(this.(Trees::EndBlockTree).getFirstChildNode(), first)
+      first(this.(Trees::EndBlockTree).getBodyChild(0, _), first)
     }
 
     final override predicate exit(AstNode last, Completion c) {
-      last(this.(Trees::EndBlockTree).getLastChildNode(), last, c)
+      last(this.(Trees::EndBlockTree).getLastBodyChild(), last, c)
     }
   }
 
@@ -76,11 +76,11 @@ module CfgScope {
 
   private class BraceBlockScope extends Range_, BraceBlock {
     final override predicate entry(AstNode first) {
-      first(this.(Trees::BraceBlockTree).getFirstChildNode(), first)
+      first(this.(Trees::BraceBlockTree).getBodyChild(0, _), first)
     }
 
     final override predicate exit(AstNode last, Completion c) {
-      last(this.(Trees::BraceBlockTree).getLastChildNode(), last, c)
+      last(this.(Trees::BraceBlockTree).getLastBodyChild(), last, c)
     }
   }
 }
@@ -308,6 +308,8 @@ module Trees {
     final override predicate first(AstNode first) { this.firstInner(first) }
 
     final override predicate last(AstNode last, Completion c) { this.lastInner(last, c) }
+
+    final override predicate propagatesAbnormal(AstNode child) { none() }
   }
 
   private class BinaryOperationTree extends StandardPostOrderTree, BinaryOperation {
@@ -343,11 +345,9 @@ module Trees {
 
   private class BlockParameterTree extends NonDefaultValueParameterTree, BlockParameter { }
 
-  /**
-   * TODO: make all StmtSequence tree classes post-order, and simplify class
-   * hierarchy.
-   */
   abstract class BodyStmtTree extends StmtSequenceTree, BodyStmt {
+    override predicate first(AstNode first) { first = this }
+
     predicate firstInner(AstNode first) {
       first(this.getBodyChild(0, _), first)
       or
@@ -528,36 +528,31 @@ module Trees {
     }
   }
 
-  abstract class BodyStmtPreOrderTree extends BodyStmtTree, PreOrderTree {
-    final override predicate last(AstNode last, Completion c) {
-      this.lastInner(last, c)
-      or
-      not exists(this.getAChild(_)) and
-      last = this and
-      c.isValidFor(this)
-    }
-
-    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
-      BodyStmtTree.super.succ(pred, succ, c)
-      or
-      pred = this and
-      c instanceof SimpleCompletion and
-      this.firstInner(succ)
-    }
-  }
-
-  abstract class BodyStmtPostOrderTree extends BodyStmtTree, PostOrderTree {
-    override predicate first(AstNode first) { first = this }
-  }
-
   private class BooleanLiteralTree extends LeafTree, BooleanLiteral { }
 
-  class BraceBlockTree extends ScopeTree, BraceBlock {
-    final override ControlFlowTree getChildNode(int i) {
-      result = this.getParameter(i)
+  class BraceBlockTree extends StmtSequenceTree, BraceBlock {
+    final override predicate propagatesAbnormal(AstNode child) { none() }
+
+    final override AstNode getBodyChild(int i, boolean rescuable) {
+      result = this.getParameter(i) and rescuable = false
       or
-      result = this.getStmt(i - this.getNumberOfParameters())
+      result = StmtSequenceTree.super.getBodyChild(i - this.getNumberOfParameters(), rescuable)
     }
+
+    override predicate first(AstNode first) { first = this }
+
+    override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      // Normal left-to-right evaluation in the body
+      exists(int i |
+        last(this.getBodyChild(i, _), pred, c) and
+        first(this.getBodyChild(i + 1, _), succ) and
+        c instanceof NormalCompletion
+      )
+    }
+  }
+
+  private class CallTree extends StandardPostOrderTree, Call {
+    override ControlFlowTree getChildNode(int i) { result = this.getArgument(i) }
   }
 
   private class CaseTree extends PreOrderTree, CaseExpr {
@@ -603,7 +598,7 @@ module Trees {
 
   private class CharacterTree extends LeafTree, CharacterLiteral { }
 
-  private class ClassDeclarationTree extends BodyStmtPreOrderTree, ClassDeclaration {
+  private class ClassDeclarationTree extends NamespaceTree, ClassDeclaration {
     /** Gets the `i`th child in the body of this block. */
     final override AstNode getBodyChild(int i, boolean rescuable) {
       result = this.getScopeExpr() and i = 0 and rescuable = false
@@ -612,8 +607,10 @@ module Trees {
       i = count(this.getScopeExpr()) and
       rescuable = true
       or
-      result = this.getStmt(i - count(this.getScopeExpr()) - count(this.getSuperclassExpr())) and
-      rescuable = true
+      result =
+        super
+            .getBodyChild(i - count(this.getScopeExpr()) - count(this.getSuperclassExpr()),
+              rescuable)
     }
   }
 
@@ -749,19 +746,30 @@ module Trees {
     final override predicate succ(AstNode pred, AstNode succ, Completion c) { none() }
   }
 
-  private class DoBlockTree extends BodyStmtPostOrderTree, DoBlock {
+  private class DoBlockTree extends BodyStmtTree, DoBlock {
     /** Gets the `i`th child in the body of this block. */
     final override AstNode getBodyChild(int i, boolean rescuable) {
       result = this.getParameter(i) and rescuable = false
       or
-      result = BodyStmtPostOrderTree.super.getBodyChild(i - this.getNumberOfParameters(), rescuable)
+      result = BodyStmtTree.super.getBodyChild(i - this.getNumberOfParameters(), rescuable)
     }
+
+    override predicate propagatesAbnormal(AstNode child) { none() }
   }
 
   private class EmptyStatementTree extends LeafTree, EmptyStmt { }
 
-  class EndBlockTree extends ScopeTree, EndBlock {
-    final override ControlFlowTree getChildNode(int i) { result = this.getStmt(i) }
+  class EndBlockTree extends StmtSequenceTree, EndBlock {
+    override predicate first(AstNode first) { first = this }
+
+    override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      // Normal left-to-right evaluation in the body
+      exists(int i |
+        last(this.getBodyChild(i, _), pred, c) and
+        first(this.getBodyChild(i + 1, _), succ) and
+        c instanceof NormalCompletion
+      )
+    }
   }
 
   private class ForInTree extends LeafTree, ForIn { }
@@ -871,12 +879,12 @@ module Trees {
     final override AstNode getAccessNode() { result = this.getDefiningAccess() }
   }
 
-  private class LambdaTree extends BodyStmtPostOrderTree, Lambda {
+  private class LambdaTree extends BodyStmtTree, Lambda {
     /** Gets the `i`th child in the body of this block. */
     final override AstNode getBodyChild(int i, boolean rescuable) {
       result = this.getParameter(i) and rescuable = false
       or
-      result = BodyStmtPostOrderTree.super.getBodyChild(i - this.getNumberOfParameters(), rescuable)
+      result = BodyStmtTree.super.getBodyChild(i - this.getNumberOfParameters(), rescuable)
     }
   }
 
@@ -934,33 +942,51 @@ module Trees {
     }
   }
 
-  private class MethodCallTree extends StandardPostOrderTree, MethodCall {
+  private class MethodCallTree extends CallTree, MethodCall {
     final override ControlFlowTree getChildNode(int i) {
       result = this.getReceiver() and i = 0
       or
-      result = this.getArgument(i - count(this.getReceiver()))
+      result = this.getArgument(i - 1)
       or
-      result = this.getBlock() and i = count(this.getReceiver()) + this.getNumberOfArguments()
+      result = this.getBlock() and i = 1 + this.getNumberOfArguments()
     }
   }
 
   private class MethodNameTree extends LeafTree, MethodName, ASTInternal::TTokenMethodName { }
 
-  private class MethodTree extends BodyStmtPostOrderTree, Method {
+  private class MethodTree extends BodyStmtTree, Method {
+    final override predicate propagatesAbnormal(AstNode child) { none() }
+
     /** Gets the `i`th child in the body of this block. */
     final override AstNode getBodyChild(int i, boolean rescuable) {
       result = this.getParameter(i) and rescuable = false
       or
-      result = BodyStmtPostOrderTree.super.getBodyChild(i - this.getNumberOfParameters(), rescuable)
+      result = BodyStmtTree.super.getBodyChild(i - this.getNumberOfParameters(), rescuable)
     }
   }
 
-  private class ModuleDeclarationTree extends BodyStmtPreOrderTree, ModuleDeclaration {
+  private class ModuleDeclarationTree extends NamespaceTree, ModuleDeclaration {
     /** Gets the `i`th child in the body of this block. */
     final override AstNode getBodyChild(int i, boolean rescuable) {
       result = this.getScopeExpr() and i = 0 and rescuable = false
       or
-      result = BodyStmtPreOrderTree.super.getBodyChild(i - count(this.getScopeExpr()), rescuable)
+      result = NamespaceTree.super.getBodyChild(i - count(this.getScopeExpr()), rescuable)
+    }
+  }
+
+  private class NamespaceTree extends BodyStmtTree, Namespace {
+    final override predicate first(AstNode first) {
+      this.firstInner(first)
+      or
+      not exists(this.getAChild(_)) and
+      first = this
+    }
+
+    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      BodyStmtTree.super.succ(pred, succ, c)
+      or
+      succ = this and
+      this.lastInner(pred, c)
     }
   }
 
@@ -1106,88 +1132,43 @@ module Trees {
     SimpleParameterTreeDupUnderscore() { not exists(this.getDefiningAccess()) }
   }
 
-  /**
-   * Control-flow tree for any post-order StmtSequence that doesn't have a more
-   * specific implementation.
-   * TODO: make all StmtSequence tree classes post-order, and simplify class
-   * hierarchy.
-   */
-  private class SimplePostOrderStmtSequenceTree extends StmtSequenceTree, PostOrderTree {
-    SimplePostOrderStmtSequenceTree() {
-      this instanceof StringInterpolationComponent or
-      this instanceof ParenthesizedExpr
+  private class SingletonClassTree extends BodyStmtTree, SingletonClass {
+    final override predicate first(AstNode first) {
+      this.firstInner(first)
+      or
+      not exists(this.getAChild(_)) and
+      first = this
     }
 
-    final override predicate first(AstNode first) { first(this.getStmt(0), first) }
-
-    final override predicate propagatesAbnormal(AstNode child) { child = this.getAStmt() }
-
     final override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      BodyStmtTree.super.succ(pred, succ, c)
+      or
       succ = this and
-      last(this.getLastBodyChild(), pred, c) and
-      c instanceof NormalCompletion
-      or
-      StmtSequenceTree.super.succ(pred, succ, c)
-    }
-  }
-
-  /**
-   * Control-flow tree for any pre-order StmtSequence that doesn't have a more
-   * specific implementation.
-   * TODO: make all StmtSequence tree classes post-order, and simplify class
-   * hierarchy.
-   */
-  private class SimplePreOrderStmtSequenceTree extends StmtSequenceTree, PreOrderTree {
-    SimplePreOrderStmtSequenceTree() {
-      not this instanceof BodyStmtTree and
-      not this instanceof EndBlock and
-      not this instanceof StringInterpolationComponent and
-      not this instanceof Block and
-      not this instanceof ParenthesizedExpr
+      this.lastInner(pred, c)
     }
 
-    final override predicate propagatesAbnormal(AstNode child) { child = this.getAStmt() }
-
-    final override predicate last(AstNode last, Completion c) {
-      last(this.getLastStmt(), last, c)
-      or
-      not exists(this.getLastStmt()) and
-      c.isValidFor(this) and
-      last = this
-    }
-
-    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
-      pred = this and
-      first(this.getBodyChild(0, _), succ) and
-      c instanceof SimpleCompletion
-      or
-      StmtSequenceTree.super.succ(pred, succ, c)
-    }
-  }
-
-  private class SingletonClassTree extends BodyStmtPreOrderTree, SingletonClass {
     /** Gets the `i`th child in the body of this block. */
     final override AstNode getBodyChild(int i, boolean rescuable) {
       (
         result = this.getValue() and i = 0 and rescuable = false
         or
-        result = BodyStmtPreOrderTree.super.getBodyChild(i - 1, rescuable)
+        result = BodyStmtTree.super.getBodyChild(i - 1, rescuable)
       )
     }
   }
 
-  private class SingletonMethodTree extends BodyStmtPostOrderTree, SingletonMethod {
+  private class SingletonMethodTree extends BodyStmtTree, SingletonMethod {
     /** Gets the `i`th child in the body of this block. */
     final override AstNode getBodyChild(int i, boolean rescuable) {
       result = this.getParameter(i) and rescuable = false
       or
-      result = BodyStmtPostOrderTree.super.getBodyChild(i - this.getNumberOfParameters(), rescuable)
+      result = BodyStmtTree.super.getBodyChild(i - this.getNumberOfParameters(), rescuable)
     }
 
     override predicate first(AstNode first) { first(this.getObject(), first) }
 
     override predicate succ(AstNode pred, AstNode succ, Completion c) {
-      BodyStmtPostOrderTree.super.succ(pred, succ, c)
+      BodyStmtTree.super.succ(pred, succ, c)
       or
       last(this.getObject(), pred, c) and
       succ = this and
@@ -1201,8 +1182,10 @@ module Trees {
 
   private class SplatParameterTree extends NonDefaultValueParameterTree, SplatParameter { }
 
-  abstract class StmtSequenceTree extends ControlFlowTree, StmtSequence {
-    override predicate propagatesAbnormal(AstNode child) { none() }
+  class StmtSequenceTree extends PostOrderTree, StmtSequence {
+    override predicate propagatesAbnormal(AstNode child) { child = this.getAStmt() }
+
+    override predicate first(AstNode first) { first(this.getStmt(0), first) }
 
     /** Gets the `i`th child in the body of this body statement. */
     AstNode getBodyChild(int i, boolean rescuable) {
@@ -1224,6 +1207,10 @@ module Trees {
         first(this.getBodyChild(i + 1, _), succ) and
         c instanceof NormalCompletion
       )
+      or
+      succ = this and
+      last(this.getLastBodyChild(), pred, c) and
+      c instanceof NormalCompletion
     }
   }
 
@@ -1241,10 +1228,6 @@ module Trees {
     StringlikeLiteralTree() { not this instanceof HereDoc }
 
     final override ControlFlowTree getChildNode(int i) { result = this.getComponent(i) }
-  }
-
-  private class SuperCallTree extends StandardPostOrderTree, SuperCall {
-    final override ControlFlowTree getChildNode(int i) { result = this.getArgument(i) }
   }
 
   private class ToplevelTree extends BodyStmtTree, Toplevel {
@@ -1312,11 +1295,6 @@ module Trees {
         first(this.getPattern(i + 1), succ)
       )
     }
-  }
-
-  // TODO: make post-order
-  private class YieldCallTree extends StandardPreOrderTree, YieldCall {
-    final override ControlFlowTree getChildNode(int i) { result = this.getArgument(i) }
   }
 }
 
