@@ -15,6 +15,18 @@ import SpringUrlRedirect
 import semmle.code.java.dataflow.FlowSources
 import DataFlow::PathGraph
 
+private class StartsWithSanitizer extends DataFlow::BarrierGuard {
+  StartsWithSanitizer() {
+    this.(MethodAccess).getMethod().hasName("startsWith") and
+    this.(MethodAccess).getMethod().getDeclaringType() instanceof TypeString and
+    this.(MethodAccess).getMethod().getNumberOfParameters() = 1
+  }
+
+  override predicate checks(Expr e, boolean branch) {
+    e = this.(MethodAccess).getQualifier() and branch = true
+  }
+}
+
 class SpringUrlRedirectFlowConfig extends TaintTracking::Configuration {
   SpringUrlRedirectFlowConfig() { this = "SpringUrlRedirectFlowConfig" }
 

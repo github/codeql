@@ -5,18 +5,6 @@ import semmle.code.java.dataflow.DataFlow2
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.frameworks.spring.SpringController
 
-private class StartsWithSanitizer extends DataFlow::BarrierGuard {
-  StartsWithSanitizer() {
-    this.(MethodAccess).getMethod().hasName("startsWith") and
-    this.(MethodAccess).getMethod().getDeclaringType() instanceof TypeString and
-    this.(MethodAccess).getMethod().getNumberOfParameters() = 1
-  }
-
-  override predicate checks(Expr e, boolean branch) {
-    e = this.(MethodAccess).getQualifier() and branch = true
-  }
-}
-
 /**
  * A concatenate expression using the string `redirect:` or `ajaxredirect:` or `forward:` on the left.
  *
