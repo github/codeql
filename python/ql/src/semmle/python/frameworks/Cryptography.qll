@@ -183,62 +183,40 @@ private module CryptographyModel {
             .getMember(algorithmName)
     }
 
-    /**
-     * Internal module making it easy to hide verbose type-tracking helpers.
-     *
-     * These turned out to be so verbose, that it was impossible to get an overview of
-     * the relevant predicates without hiding them away.
-     */
-    private module InternalTypeTracking {
-      /** Gets a reference to a Cipher instance using algorithm with `algorithmName`. */
-      DataFlow::LocalSourceNode cipherInstance(DataFlow::TypeTracker t, string algorithmName) {
-        t.start() and
-        exists(DataFlow::CallCfgNode call | result = call |
-          call =
-            API::moduleImport("cryptography")
-                .getMember("hazmat")
-                .getMember("primitives")
-                .getMember("ciphers")
-                .getMember("Cipher")
-                .getACall() and
-          algorithmClassRef(algorithmName).getReturn().getAUse() in [
-              call.getArg(0), call.getArgByName("algorithm")
-            ]
-        )
-        or
-        exists(DataFlow::TypeTracker t2 | result = cipherInstance(t2, algorithmName).track(t2, t))
-      }
-
-      /** Gets a reference to the encryptor of a Cipher instance using algorithm with `algorithmName`. */
-      DataFlow::LocalSourceNode cipherEncryptor(DataFlow::TypeTracker t, string algorithmName) {
-        t.start() and
-        exists(DataFlow::AttrRead attr |
-          result.(DataFlow::CallCfgNode).getFunction() = attr and
-          attr.getAttributeName() = "encryptor" and
-          attr.getObject() = cipherInstance(algorithmName)
-        )
-        or
-        exists(DataFlow::TypeTracker t2 | result = cipherEncryptor(t2, algorithmName).track(t2, t))
-      }
-
-      /** Gets a reference to the dncryptor of a Cipher instance using algorithm with `algorithmName`. */
-      DataFlow::LocalSourceNode cipherDecryptor(DataFlow::TypeTracker t, string algorithmName) {
-        t.start() and
-        exists(DataFlow::AttrRead attr |
-          result.(DataFlow::CallCfgNode).getFunction() = attr and
-          attr.getAttributeName() = "decryptor" and
-          attr.getObject() = cipherInstance(algorithmName)
-        )
-        or
-        exists(DataFlow::TypeTracker t2 | result = cipherDecryptor(t2, algorithmName).track(t2, t))
-      }
+    /** Gets a reference to a Cipher instance using algorithm with `algorithmName`. */
+    DataFlow::LocalSourceNode cipherInstance(DataFlow::TypeTracker t, string algorithmName) {
+      t.start() and
+      exists(DataFlow::CallCfgNode call | result = call |
+        call =
+          API::moduleImport("cryptography")
+              .getMember("hazmat")
+              .getMember("primitives")
+              .getMember("ciphers")
+              .getMember("Cipher")
+              .getACall() and
+        algorithmClassRef(algorithmName).getReturn().getAUse() in [
+            call.getArg(0), call.getArgByName("algorithm")
+          ]
+      )
+      or
+      exists(DataFlow::TypeTracker t2 | result = cipherInstance(t2, algorithmName).track(t2, t))
     }
-
-    private import InternalTypeTracking
 
     /** Gets a reference to a Cipher instance using algorithm with `algorithmName`. */
     DataFlow::Node cipherInstance(string algorithmName) {
       cipherInstance(DataFlow::TypeTracker::end(), algorithmName).flowsTo(result)
+    }
+
+    /** Gets a reference to the encryptor of a Cipher instance using algorithm with `algorithmName`. */
+    DataFlow::LocalSourceNode cipherEncryptor(DataFlow::TypeTracker t, string algorithmName) {
+      t.start() and
+      exists(DataFlow::AttrRead attr |
+        result.(DataFlow::CallCfgNode).getFunction() = attr and
+        attr.getAttributeName() = "encryptor" and
+        attr.getObject() = cipherInstance(algorithmName)
+      )
+      or
+      exists(DataFlow::TypeTracker t2 | result = cipherEncryptor(t2, algorithmName).track(t2, t))
     }
 
     /**
@@ -248,6 +226,18 @@ private module CryptographyModel {
      */
     DataFlow::Node cipherEncryptor(string algorithmName) {
       cipherEncryptor(DataFlow::TypeTracker::end(), algorithmName).flowsTo(result)
+    }
+
+    /** Gets a reference to the dncryptor of a Cipher instance using algorithm with `algorithmName`. */
+    DataFlow::LocalSourceNode cipherDecryptor(DataFlow::TypeTracker t, string algorithmName) {
+      t.start() and
+      exists(DataFlow::AttrRead attr |
+        result.(DataFlow::CallCfgNode).getFunction() = attr and
+        attr.getAttributeName() = "decryptor" and
+        attr.getObject() = cipherInstance(algorithmName)
+      )
+      or
+      exists(DataFlow::TypeTracker t2 | result = cipherDecryptor(t2, algorithmName).track(t2, t))
     }
 
     /**
