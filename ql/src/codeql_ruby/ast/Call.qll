@@ -92,7 +92,7 @@ class MethodCall extends Call, TMethodCall {
    */
   Block getBlock() { none() }
 
-  override string toString() { result = "call to " + concat(this.getMethodName(), "/") }
+  override string toString() { result = "call to " + this.getMethodName() }
 
   final override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
@@ -115,6 +115,8 @@ class SetterMethodCall extends MethodCall {
     this instanceof LhsExpr
     or
     this = any(Assignment a).getDesugared()
+    or
+    this = any(Assignment a).getDesugared().(StmtSequence).getAStmt()
   }
 
   final override string getAPrimaryQlClass() { result = "SetterMethodCall" }

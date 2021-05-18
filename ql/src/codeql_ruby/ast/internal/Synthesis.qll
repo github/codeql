@@ -82,6 +82,30 @@ class Synthesis extends TSynthesis {
   final string toString() { none() }
 }
 
+/**
+ * Use this predicate in `Synthesis::child` to generate an assignment of `value` to
+ * synthesized variable `v`, where the assignment is a child of `assignParent` at
+ * index `assignIndex`.
+ */
+bindingset[v, assignParent, assignIndex, value]
+private predicate assign(
+  AstNode parent, int i, Child child, TLocalVariableSynth v, AstNode assignParent, int assignIndex,
+  AstNode value
+) {
+  parent = assignParent and
+  i = assignIndex and
+  child = SynthChild(AssignExprKind())
+  or
+  parent = getSynthChild(assignParent, assignIndex) and
+  (
+    i = 0 and
+    child = SynthChild(LocalVariableAccessSynthKind(v))
+    or
+    i = 1 and
+    child = RealChild(value)
+  )
+}
+
 private SynthKind getCallKind(MethodCall mc) {
   result = MethodCallKind(methodCallName(mc))
   or
@@ -251,6 +275,132 @@ private module AssignOperationDesugar {
           )
         )
       )
+    }
+  }
+
+  /** Gets an assignment operation where the LHS is method call `mc`. */
+  private AssignOperation assignOperationMethodCall(MethodCallReal mc) {
+    result.getLeftOperand() = mc
+  }
+
+  /**
+   * ```rb
+   * foo[bar] += y
+   * ```
+   *
+   * desguars to
+   *
+   * ```rb
+   * __synth__0 = foo;
+   * __synth__1 = bar;
+   * __synth__2 = __synth__0.[](__synth__1) + y;
+   * __synth__0.[]=(__synth__1, __synth__2);
+   * __synth__2;
+   * ```
+   */
+  private class MethodCallAssignOperationSynthesis extends Synthesis {
+    final override predicate child(AstNode parent, int i, Child child, LocationOption l) {
+      exists(AssignOperation ao, MethodCallReal mc | ao = assignOperationMethodCall(mc) |
+        parent = ao and
+        i = -1 and
+        child = SynthChild(StmtSequenceKind()) and
+        l = NoneLocation()
+        or
+        exists(AstNode seq, AstNode receiver |
+          seq = getSynthChild(ao, -1) and receiver = mc.getReceiverReal()
+        |
+          // `__synth__0 = foo`
+          assign(parent, i, child, TLocalVariableSynth(ao, 0), seq, 0, receiver) and
+          l = getSomeLocation(receiver)
+          or
+          // `__synth__1 = bar`
+          exists(Expr arg, int j | arg = mc.getArgumentReal(j - 1) |
+            assign(parent, i, child, TLocalVariableSynth(ao, j), seq, j, arg) and
+            l = getSomeLocation(arg)
+          )
+          or
+          // `__synth__2 = __synth__0.[](__synth__1) + y`
+          exists(int opAssignIndex | opAssignIndex = mc.getNumberOfArgumentsReal() + 1 |
+            parent = seq and
+            i = opAssignIndex and
+            child = SynthChild(AssignExprKind()) and
+            l = SomeLocation(getAssignOperationLocation(ao))
+            or
+            exists(AstNode assign | assign = getSynthChild(seq, opAssignIndex) |
+              parent = assign and
+              i = 0 and
+              child =
+                SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(ao, opAssignIndex))) and
+              l = SomeLocation(getAssignOperationLocation(ao))
+              or
+              parent = assign and
+              i = 1 and
+              child = SynthChild(getKind(ao)) and
+              l = SomeLocation(getAssignOperationLocation(ao))
+              or
+              // `__synth__0.[](__synth__1) + y`
+              exists(AstNode op | op = getSynthChild(assign, 1) |
+                parent = op and
+                i = 0 and
+                child = SynthChild(getCallKind(mc)) and
+                l = getSomeLocation(mc)
+                or
+                parent = getSynthChild(op, 0) and
+                child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(ao, i))) and
+                (
+                  i = 0 and
+                  l = getSomeLocation(receiver)
+                  or
+                  l = getSomeLocation(mc.getArgumentReal(i - 1))
+                )
+                or
+                parent = op and
+                i = 1 and
+                child = RealChild(ao.getRightOperand()) and
+                l = NoneLocation()
+              )
+            )
+            or
+            // `__synth__0.[]=(__synth__1, __synth__2);`
+            parent = seq and
+            i = opAssignIndex + 1 and
+            child = SynthChild(getCallKind(mc)) and
+            l = getSomeLocation(mc)
+            or
+            exists(AstNode setter | setter = getSynthChild(seq, opAssignIndex + 1) |
+              parent = setter and
+              child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(ao, i))) and
+              (
+                i = 0 and
+                l = getSomeLocation(receiver)
+                or
+                l = getSomeLocation(mc.getArgumentReal(i - 1))
+              )
+              or
+              parent = setter and
+              i = opAssignIndex + 1 and
+              child =
+                SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(ao, opAssignIndex))) and
+              l = SomeLocation(getAssignOperationLocation(ao))
+            )
+            or
+            parent = seq and
+            i = opAssignIndex + 2 and
+            child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(ao, opAssignIndex))) and
+            l = SomeLocation(getAssignOperationLocation(ao))
+          )
+        )
+      )
+    }
+
+    final override predicate localVariable(AstNode n, int i) {
+      exists(MethodCallReal mc | n = assignOperationMethodCall(mc) |
+        i in [0 .. mc.getNumberOfArgumentsReal() + 1]
+      )
+    }
+
+    final override predicate excludeFromControlFlowTree(AstNode n) {
+      exists(assignOperationMethodCall(n))
     }
   }
 }

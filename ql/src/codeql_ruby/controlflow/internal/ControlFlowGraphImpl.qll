@@ -286,16 +286,6 @@ module Trees {
     final override ControlFlowTree getChildNode(int i) { result = this.getElement(i) }
   }
 
-  private class AssignOperationTree extends StandardPostOrderTree, AssignOperation {
-    AssignOperationTree() { not this.getLeftOperand() instanceof VariableAccess }
-
-    final override ControlFlowTree getChildNode(int i) {
-      result = this.getLeftOperand() and i = 0
-      or
-      result = this.getRightOperand() and i = 1
-    }
-  }
-
   private class AssignExprTree extends StandardPostOrderTree, AssignExpr {
     AssignExprTree() { not this.getLeftOperand() instanceof MethodCall }
 
