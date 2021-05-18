@@ -115,22 +115,23 @@ predicate definesRhinoClass(MethodAccess ma, Expr sink) {
 
 /** A script injection sink. */
 class ScriptInjectionSink extends DataFlow::ExprNode {
+  MethodAccess methodAccess;
+
   ScriptInjectionSink() {
-    isScriptArgument(_, this.getExpr()) or
-    evaluatesRhinoExpression(_, this.getExpr()) or
-    compilesScript(_, this.getExpr()) or
-    definesRhinoClass(_, this.getExpr())
+    isScriptArgument(methodAccess, this.getExpr()) or
+    evaluatesRhinoExpression(methodAccess, this.getExpr()) or
+    compilesScript(methodAccess, this.getExpr()) or
+    definesRhinoClass(methodAccess, this.getExpr())
   }
 
   /** An access to the method associated with this sink. */
-  MethodAccess getMethodAccess() {
-    isScriptArgument(result, this.getExpr()) or
-    evaluatesRhinoExpression(result, this.getExpr()) or
-    compilesScript(result, this.getExpr()) or
-    definesRhinoClass(result, this.getExpr())
-  }
+  MethodAccess getMethodAccess() { result = methodAccess }
 }
 
+/**
+ * A taint tracking configuration that tracks flow from `RemoteFlowSource` to an argument
+ * of a method call that executes injected script.
+ */
 class ScriptInjectionConfiguration extends TaintTracking::Configuration {
   ScriptInjectionConfiguration() { this = "ScriptInjectionConfiguration" }
 
