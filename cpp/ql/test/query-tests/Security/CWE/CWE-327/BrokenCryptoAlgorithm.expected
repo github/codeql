@@ -24,3 +24,4 @@
 | test.cpp:92:2:92:17 | call to encryptTripleDES | This function call specifies a broken or weak cryptographic algorithm. |
 | test.cpp:101:2:101:15 | call to do_des_encrypt | This function call specifies a broken or weak cryptographic algorithm. |
 | test.cpp:102:2:102:12 | call to DES_Set_Key | This function call specifies a broken or weak cryptographic algorithm. |
+| test.cpp:121:2:121:24 | INIT_ENCRYPT_WITH_DES() | This macro invocation specifies a broken or weak cryptographic algorithm. |

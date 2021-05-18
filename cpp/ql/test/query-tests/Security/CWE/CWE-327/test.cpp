@@ -118,7 +118,7 @@ void my_implementation8();
 
 void test_macros2()
 {
-	INIT_ENCRYPT_WITH_DES(); // BAD [NOT DETECTED]
+	INIT_ENCRYPT_WITH_DES(); // BAD
 	INIT_ENCRYPT_WITH_AES(); // GOOD (good algorithm)
 	
 	// ...
