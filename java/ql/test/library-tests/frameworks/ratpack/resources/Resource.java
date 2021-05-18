@@ -5,6 +5,7 @@ import ratpack.core.form.UploadedFile;
 import ratpack.core.parse.Parse;
 import ratpack.exec.Promise;
 import ratpack.func.Action;
+import ratpack.func.Function;
 import java.io.OutputStream;
 
 class Resource {
@@ -67,7 +68,7 @@ class Resource {
         sink(Promise.value(tainted)); //$hasTaintFlow
         Promise
             .value(tainted)
-            .flatMap(a -> Promise.value(a))
+            .map(a -> a)
             .then(this::sink); //$hasTaintFlow
     }
 
@@ -180,33 +181,51 @@ class Resource {
             .then(value -> {
                 sink(value); //$hasTaintFlow
             });
-        Promise
-            .value("potato")
-            .flatMapError(RuntimeException.class, exception -> {
-                return Promise.value(taint());
-            })
-            .then(value -> {
-                sink(value); //$hasTaintFlow
-            });
+        // Waiting for support for lambda data flow
+        // Promise
+        //     .value("potato")
+        //     .flatMapError(RuntimeException.class, exception -> {
+        //         return Promise.value(taint());
+        //     })
+        //     .then(value -> {
+        //         sink(value); //$hasTaintFlow
+        //     });
     }
 
     void test9() {
         String tainted = taint();
         Promise
             .value(tainted)
-            .apply(Resource::identity)
+            .map(Resource::identity)
             .then(value -> {
                 sink(value); //$hasTaintFlow
             });
         Promise
             .value("potato")
-            .apply(Resource::identity)
+            .map(Resource::identity)
             .then(value -> {
                 sink(value); // no taints flow
             });
     }
 
-    public static Promise<String> identity(Promise<String> input) {
-        return input.map(i -> i);
+    public static String identity(String input) {
+        return input;
     }
+
+    void test10() {
+        String tainted = taint();
+        Promise
+            .value(tainted)
+            .map(a -> a)
+            .then(value -> {
+                sink(value); //$hasTaintFlow
+            });
+        Promise
+            .value("potato")
+            .map(a -> a)
+            .then(value -> {
+                sink(value); // no taints flow
+            });
+    }
+    
 }

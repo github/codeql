@@ -54,7 +54,7 @@ abstract private class SimpleFluentLambdaMethod extends FluentLambdaMethod {
 private class RatpackPromiseMapMethod extends SimpleFluentLambdaMethod {
   RatpackPromiseMapMethod() {
     getDeclaringType() instanceof RatpackPromise and
-    hasName(["map", "flatMap", "blockingMap", "apply"])
+    hasName(["map", "blockingMap"]) // "flatMap" & "apply" cause false positives. Wait for fluent lambda support.
   }
 
   override predicate consumesTaint(int lambdaArg) { lambdaArg = 0 }
@@ -63,15 +63,14 @@ private class RatpackPromiseMapMethod extends SimpleFluentLambdaMethod {
 }
 
 /**
- * Represents the `mapIf` and `flatMapIf` method.
+ * Represents the `mapIf` method.
  *
  * `<O> Promise<O> mapIf(Predicate<T> predicate, Function<T, O> onTrue, Function<T, O> onFalse)`
- * `<O> Promise<O> flatMapIf(Predicate<T> predicate, Function<T, Promise<O>> onTrue, Function<T, Promise<O>> onFalse)`
  */
 private class RatpackPromiseMapIfMethod extends FluentLambdaMethod {
   RatpackPromiseMapIfMethod() {
     getDeclaringType() instanceof RatpackPromise and
-    hasName(["mapIf", "flatMapIf"]) and
+    hasName(["mapIf"]) and // "flatMapIf" causes false positives. Wait for fluent lambda support.
     getNumberOfParameters() = 3
   }
 
@@ -85,7 +84,7 @@ private class RatpackPromiseMapIfMethod extends FluentLambdaMethod {
 private class RatpackPromiseMapErrorMethod extends FluentLambdaMethod {
   RatpackPromiseMapErrorMethod() {
     getDeclaringType() instanceof RatpackPromise and
-    hasName(["mapError", "flatMapError"])
+    hasName(["mapError"]) // "flatMapError" causes false positives. Wait for fluent lambda support.
   }
 
   override predicate consumesTaint(int methodArg, int lambdaArg) { none() }
@@ -121,41 +120,41 @@ private class RatpackPromiseFluentMethod extends FluentMethod, FluentLambdaMetho
     hasName(["route"]) and methodArg = [0, 1] and lambdaArg = 0
   }
 
-  override predicate doesReturnTaint(int arg) { hasName(["flatMapIf"]) and arg = 1 }
+  override predicate doesReturnTaint(int arg) { none() } // "flatMapIf" causes false positives. Wait for fluent lambda support.
+}
+
+/**
+ * Holds if the method access qualifier `node1` has dataflow to the functional expression parameter `node2`.
+ */
+private predicate stepIntoLambda(DataFlow::Node node1, DataFlow::Node node2) {
+  exists(MethodAccess ma, FluentLambdaMethod flm, int methodArg, int lambdaArg |
+    flm.consumesTaint(methodArg, lambdaArg)
+  |
+    ma.getMethod() = flm and
+    node1.asExpr() = ma.getQualifier() and
+    ma.getArgument(methodArg).(FunctionalExpr).asMethod().getParameter(lambdaArg) =
+      node2.asParameter()
+  )
+}
+
+/**
+ * Holds if the return statement result of the functional expression `node1` has dataflow to the
+ * method access result `node2`.
+ */
+private predicate stepOutOfLambda(DataFlow::Node node1, DataFlow::Node node2) {
+  exists(FluentLambdaMethod flm, MethodAccess ma, FunctionalExpr fe, int arg |
+    flm.doesReturnTaint(arg)
+  |
+    fe.asMethod().getBody().getAStmt().(ReturnStmt).getResult() = node1.asExpr() and
+    ma.getMethod() = flm and
+    node2.asExpr() = ma and
+    ma.getArgument(arg) = fe
+  )
 }
 
 private class RatpackPromiseTaintPreservingStep extends AdditionalTaintStep {
   override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
     stepIntoLambda(node1, node2) or
     stepOutOfLambda(node1, node2)
-  }
-
-  /**
-   * Holds if the method access qualifier `node1` has dataflow to the functional expression parameter `node2`.
-   */
-  predicate stepIntoLambda(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(MethodAccess ma, FluentLambdaMethod flm, int methodArg, int lambdaArg |
-      flm.consumesTaint(methodArg, lambdaArg)
-    |
-      ma.getMethod() = flm and
-      node1.asExpr() = ma.getQualifier() and
-      ma.getArgument(methodArg).(FunctionalExpr).asMethod().getParameter(lambdaArg) =
-        node2.asParameter()
-    )
-  }
-
-  /**
-   * Holds if the return statement result of the functional expression `node1` has dataflow to the
-   * method access result `node2`.
-   */
-  predicate stepOutOfLambda(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(FluentLambdaMethod flm, MethodAccess ma, FunctionalExpr fe, int arg |
-      flm.doesReturnTaint(arg)
-    |
-      fe.asMethod().getBody().getAStmt().(ReturnStmt).getResult() = node1.asExpr() and
-      ma.getMethod() = flm and
-      node2.asExpr() = ma and
-      ma.getArgument(arg) = fe
-    )
   }
 }
