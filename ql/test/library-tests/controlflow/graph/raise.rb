@@ -154,3 +154,17 @@ end
 def m14 element
   element.each { |elem| raise "" if element.nil? }
 end
+
+def m15
+  foo do
+    bar ->(x) do
+      raise "" unless x
+    end
+  end
+end
+
+class C
+  def self.m()
+    raise ""
+  end
+end
