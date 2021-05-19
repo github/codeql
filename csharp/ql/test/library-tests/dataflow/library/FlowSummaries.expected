@@ -1,96 +1,4 @@
 | MS.Internal.Xml.Linq.ComponentModel.XDeferredAxis<>.GetEnumerator() | element of argument -1 -> property Current of return (normal) | true |
-| System.().Create<T1, T2, T3, T4, T5, T6, T7, T8>(T1, T2, T3, T4, T5, T6, T7, T8) | argument 0 -> field Item1 of return (normal) | true |
-| System.().Create<T1, T2, T3, T4, T5, T6, T7, T8>(T1, T2, T3, T4, T5, T6, T7, T8) | argument 1 -> field Item2 of return (normal) | true |
-| System.().Create<T1, T2, T3, T4, T5, T6, T7, T8>(T1, T2, T3, T4, T5, T6, T7, T8) | argument 2 -> field Item3 of return (normal) | true |
-| System.().Create<T1, T2, T3, T4, T5, T6, T7, T8>(T1, T2, T3, T4, T5, T6, T7, T8) | argument 3 -> field Item4 of return (normal) | true |
-| System.().Create<T1, T2, T3, T4, T5, T6, T7, T8>(T1, T2, T3, T4, T5, T6, T7, T8) | argument 4 -> field Item5 of return (normal) | true |
-| System.().Create<T1, T2, T3, T4, T5, T6, T7, T8>(T1, T2, T3, T4, T5, T6, T7, T8) | argument 5 -> field Item6 of return (normal) | true |
-| System.().Create<T1, T2, T3, T4, T5, T6, T7, T8>(T1, T2, T3, T4, T5, T6, T7, T8) | argument 6 -> field Item7 of return (normal) | true |
-| System.().Create<T1, T2, T3, T4, T5, T6, T7, T8>(T1, T2, T3, T4, T5, T6, T7, T8) | argument 7 -> field Item8 of return (normal) | true |
-| System.().Create<T1, T2, T3, T4, T5, T6, T7>(T1, T2, T3, T4, T5, T6, T7) | argument 0 -> field Item1 of return (normal) | true |
-| System.().Create<T1, T2, T3, T4, T5, T6, T7>(T1, T2, T3, T4, T5, T6, T7) | argument 1 -> field Item2 of return (normal) | true |
-| System.().Create<T1, T2, T3, T4, T5, T6, T7>(T1, T2, T3, T4, T5, T6, T7) | argument 2 -> field Item3 of return (normal) | true |
-| System.().Create<T1, T2, T3, T4, T5, T6, T7>(T1, T2, T3, T4, T5, T6, T7) | argument 3 -> field Item4 of return (normal) | true |
-| System.().Create<T1, T2, T3, T4, T5, T6, T7>(T1, T2, T3, T4, T5, T6, T7) | argument 4 -> field Item5 of return (normal) | true |
-| System.().Create<T1, T2, T3, T4, T5, T6, T7>(T1, T2, T3, T4, T5, T6, T7) | argument 5 -> field Item6 of return (normal) | true |
-| System.().Create<T1, T2, T3, T4, T5, T6, T7>(T1, T2, T3, T4, T5, T6, T7) | argument 6 -> field Item7 of return (normal) | true |
-| System.().Create<T1, T2, T3, T4, T5, T6>(T1, T2, T3, T4, T5, T6) | argument 0 -> field Item1 of return (normal) | true |
-| System.().Create<T1, T2, T3, T4, T5, T6>(T1, T2, T3, T4, T5, T6) | argument 1 -> field Item2 of return (normal) | true |
-| System.().Create<T1, T2, T3, T4, T5, T6>(T1, T2, T3, T4, T5, T6) | argument 2 -> field Item3 of return (normal) | true |
-| System.().Create<T1, T2, T3, T4, T5, T6>(T1, T2, T3, T4, T5, T6) | argument 3 -> field Item4 of return (normal) | true |
-| System.().Create<T1, T2, T3, T4, T5, T6>(T1, T2, T3, T4, T5, T6) | argument 4 -> field Item5 of return (normal) | true |
-| System.().Create<T1, T2, T3, T4, T5, T6>(T1, T2, T3, T4, T5, T6) | argument 5 -> field Item6 of return (normal) | true |
-| System.().Create<T1, T2, T3, T4, T5>(T1, T2, T3, T4, T5) | argument 0 -> field Item1 of return (normal) | true |
-| System.().Create<T1, T2, T3, T4, T5>(T1, T2, T3, T4, T5) | argument 1 -> field Item2 of return (normal) | true |
-| System.().Create<T1, T2, T3, T4, T5>(T1, T2, T3, T4, T5) | argument 2 -> field Item3 of return (normal) | true |
-| System.().Create<T1, T2, T3, T4, T5>(T1, T2, T3, T4, T5) | argument 3 -> field Item4 of return (normal) | true |
-| System.().Create<T1, T2, T3, T4, T5>(T1, T2, T3, T4, T5) | argument 4 -> field Item5 of return (normal) | true |
-| System.().Create<T1, T2, T3, T4>(T1, T2, T3, T4) | argument 0 -> field Item1 of return (normal) | true |
-| System.().Create<T1, T2, T3, T4>(T1, T2, T3, T4) | argument 1 -> field Item2 of return (normal) | true |
-| System.().Create<T1, T2, T3, T4>(T1, T2, T3, T4) | argument 2 -> field Item3 of return (normal) | true |
-| System.().Create<T1, T2, T3, T4>(T1, T2, T3, T4) | argument 3 -> field Item4 of return (normal) | true |
-| System.().Create<T1, T2, T3>(T1, T2, T3) | argument 0 -> field Item1 of return (normal) | true |
-| System.().Create<T1, T2, T3>(T1, T2, T3) | argument 1 -> field Item2 of return (normal) | true |
-| System.().Create<T1, T2, T3>(T1, T2, T3) | argument 2 -> field Item3 of return (normal) | true |
-| System.().Create<T1, T2>(T1, T2) | argument 0 -> field Item1 of return (normal) | true |
-| System.().Create<T1, T2>(T1, T2) | argument 1 -> field Item2 of return (normal) | true |
-| System.().Create<T1>(T1) | argument 0 -> field Item1 of return (normal) | true |
-| System.(T1).ValueTuple(T1) | argument 0 -> field Item1 of return (normal) | true |
-| System.(T1).get_Item(int) | field Item1 of argument -1 -> return (normal) | true |
-| System.(T1,T2).ValueTuple(T1, T2) | argument 0 -> field Item1 of return (normal) | true |
-| System.(T1,T2).ValueTuple(T1, T2) | argument 1 -> field Item2 of return (normal) | true |
-| System.(T1,T2).get_Item(int) | field Item1 of argument -1 -> return (normal) | true |
-| System.(T1,T2).get_Item(int) | field Item2 of argument -1 -> return (normal) | true |
-| System.(T1,T2,T3).ValueTuple(T1, T2, T3) | argument 0 -> field Item1 of return (normal) | true |
-| System.(T1,T2,T3).ValueTuple(T1, T2, T3) | argument 1 -> field Item2 of return (normal) | true |
-| System.(T1,T2,T3).ValueTuple(T1, T2, T3) | argument 2 -> field Item3 of return (normal) | true |
-| System.(T1,T2,T3).get_Item(int) | field Item1 of argument -1 -> return (normal) | true |
-| System.(T1,T2,T3).get_Item(int) | field Item2 of argument -1 -> return (normal) | true |
-| System.(T1,T2,T3).get_Item(int) | field Item3 of argument -1 -> return (normal) | true |
-| System.(T1,T2,T3,T4).ValueTuple(T1, T2, T3, T4) | argument 0 -> field Item1 of return (normal) | true |
-| System.(T1,T2,T3,T4).ValueTuple(T1, T2, T3, T4) | argument 1 -> field Item2 of return (normal) | true |
-| System.(T1,T2,T3,T4).ValueTuple(T1, T2, T3, T4) | argument 2 -> field Item3 of return (normal) | true |
-| System.(T1,T2,T3,T4).ValueTuple(T1, T2, T3, T4) | argument 3 -> field Item4 of return (normal) | true |
-| System.(T1,T2,T3,T4).get_Item(int) | field Item1 of argument -1 -> return (normal) | true |
-| System.(T1,T2,T3,T4).get_Item(int) | field Item2 of argument -1 -> return (normal) | true |
-| System.(T1,T2,T3,T4).get_Item(int) | field Item3 of argument -1 -> return (normal) | true |
-| System.(T1,T2,T3,T4).get_Item(int) | field Item4 of argument -1 -> return (normal) | true |
-| System.(T1,T2,T3,T4,T5).ValueTuple(T1, T2, T3, T4, T5) | argument 0 -> field Item1 of return (normal) | true |
-| System.(T1,T2,T3,T4,T5).ValueTuple(T1, T2, T3, T4, T5) | argument 1 -> field Item2 of return (normal) | true |
-| System.(T1,T2,T3,T4,T5).ValueTuple(T1, T2, T3, T4, T5) | argument 2 -> field Item3 of return (normal) | true |
-| System.(T1,T2,T3,T4,T5).ValueTuple(T1, T2, T3, T4, T5) | argument 3 -> field Item4 of return (normal) | true |
-| System.(T1,T2,T3,T4,T5).ValueTuple(T1, T2, T3, T4, T5) | argument 4 -> field Item5 of return (normal) | true |
-| System.(T1,T2,T3,T4,T5).get_Item(int) | field Item1 of argument -1 -> return (normal) | true |
-| System.(T1,T2,T3,T4,T5).get_Item(int) | field Item2 of argument -1 -> return (normal) | true |
-| System.(T1,T2,T3,T4,T5).get_Item(int) | field Item3 of argument -1 -> return (normal) | true |
-| System.(T1,T2,T3,T4,T5).get_Item(int) | field Item4 of argument -1 -> return (normal) | true |
-| System.(T1,T2,T3,T4,T5).get_Item(int) | field Item5 of argument -1 -> return (normal) | true |
-| System.(T1,T2,T3,T4,T5,T6).ValueTuple(T1, T2, T3, T4, T5, T6) | argument 0 -> field Item1 of return (normal) | true |
-| System.(T1,T2,T3,T4,T5,T6).ValueTuple(T1, T2, T3, T4, T5, T6) | argument 1 -> field Item2 of return (normal) | true |
-| System.(T1,T2,T3,T4,T5,T6).ValueTuple(T1, T2, T3, T4, T5, T6) | argument 2 -> field Item3 of return (normal) | true |
-| System.(T1,T2,T3,T4,T5,T6).ValueTuple(T1, T2, T3, T4, T5, T6) | argument 3 -> field Item4 of return (normal) | true |
-| System.(T1,T2,T3,T4,T5,T6).ValueTuple(T1, T2, T3, T4, T5, T6) | argument 4 -> field Item5 of return (normal) | true |
-| System.(T1,T2,T3,T4,T5,T6).ValueTuple(T1, T2, T3, T4, T5, T6) | argument 5 -> field Item6 of return (normal) | true |
-| System.(T1,T2,T3,T4,T5,T6).get_Item(int) | field Item1 of argument -1 -> return (normal) | true |
-| System.(T1,T2,T3,T4,T5,T6).get_Item(int) | field Item2 of argument -1 -> return (normal) | true |
-| System.(T1,T2,T3,T4,T5,T6).get_Item(int) | field Item3 of argument -1 -> return (normal) | true |
-| System.(T1,T2,T3,T4,T5,T6).get_Item(int) | field Item4 of argument -1 -> return (normal) | true |
-| System.(T1,T2,T3,T4,T5,T6).get_Item(int) | field Item5 of argument -1 -> return (normal) | true |
-| System.(T1,T2,T3,T4,T5,T6).get_Item(int) | field Item6 of argument -1 -> return (normal) | true |
-| System.(T1,T2,T3,T4,T5,T6,T7).ValueTuple(T1, T2, T3, T4, T5, T6, T7) | argument 0 -> field Item1 of return (normal) | true |
-| System.(T1,T2,T3,T4,T5,T6,T7).ValueTuple(T1, T2, T3, T4, T5, T6, T7) | argument 1 -> field Item2 of return (normal) | true |
-| System.(T1,T2,T3,T4,T5,T6,T7).ValueTuple(T1, T2, T3, T4, T5, T6, T7) | argument 2 -> field Item3 of return (normal) | true |
-| System.(T1,T2,T3,T4,T5,T6,T7).ValueTuple(T1, T2, T3, T4, T5, T6, T7) | argument 3 -> field Item4 of return (normal) | true |
-| System.(T1,T2,T3,T4,T5,T6,T7).ValueTuple(T1, T2, T3, T4, T5, T6, T7) | argument 4 -> field Item5 of return (normal) | true |
-| System.(T1,T2,T3,T4,T5,T6,T7).ValueTuple(T1, T2, T3, T4, T5, T6, T7) | argument 5 -> field Item6 of return (normal) | true |
-| System.(T1,T2,T3,T4,T5,T6,T7).ValueTuple(T1, T2, T3, T4, T5, T6, T7) | argument 6 -> field Item7 of return (normal) | true |
-| System.(T1,T2,T3,T4,T5,T6,T7).get_Item(int) | field Item1 of argument -1 -> return (normal) | true |
-| System.(T1,T2,T3,T4,T5,T6,T7).get_Item(int) | field Item2 of argument -1 -> return (normal) | true |
-| System.(T1,T2,T3,T4,T5,T6,T7).get_Item(int) | field Item3 of argument -1 -> return (normal) | true |
-| System.(T1,T2,T3,T4,T5,T6,T7).get_Item(int) | field Item4 of argument -1 -> return (normal) | true |
-| System.(T1,T2,T3,T4,T5,T6,T7).get_Item(int) | field Item5 of argument -1 -> return (normal) | true |
-| System.(T1,T2,T3,T4,T5,T6,T7).get_Item(int) | field Item6 of argument -1 -> return (normal) | true |
-| System.(T1,T2,T3,T4,T5,T6,T7).get_Item(int) | field Item7 of argument -1 -> return (normal) | true |
 | System.Array.Add(object) | argument 0 -> element of argument -1 | true |
 | System.Array.AsReadOnly<T>(T[]) | element of argument 0 -> element of return (normal) | true |
 | System.Array.Clone() | element of argument 0 -> element of return (normal) | true |
@@ -2785,6 +2693,41 @@
 | System.Uri.get_OriginalString() | argument -1 -> return (normal) | false |
 | System.Uri.get_PathAndQuery() | argument -1 -> return (normal) | false |
 | System.Uri.get_Query() | argument -1 -> return (normal) | false |
+| System.ValueTuple.Create<T1, T2, T3, T4, T5, T6, T7, T8>(T1, T2, T3, T4, T5, T6, T7, T8) | argument 0 -> field Item1 of return (normal) | true |
+| System.ValueTuple.Create<T1, T2, T3, T4, T5, T6, T7, T8>(T1, T2, T3, T4, T5, T6, T7, T8) | argument 1 -> field Item2 of return (normal) | true |
+| System.ValueTuple.Create<T1, T2, T3, T4, T5, T6, T7, T8>(T1, T2, T3, T4, T5, T6, T7, T8) | argument 2 -> field Item3 of return (normal) | true |
+| System.ValueTuple.Create<T1, T2, T3, T4, T5, T6, T7, T8>(T1, T2, T3, T4, T5, T6, T7, T8) | argument 3 -> field Item4 of return (normal) | true |
+| System.ValueTuple.Create<T1, T2, T3, T4, T5, T6, T7, T8>(T1, T2, T3, T4, T5, T6, T7, T8) | argument 4 -> field Item5 of return (normal) | true |
+| System.ValueTuple.Create<T1, T2, T3, T4, T5, T6, T7, T8>(T1, T2, T3, T4, T5, T6, T7, T8) | argument 5 -> field Item6 of return (normal) | true |
+| System.ValueTuple.Create<T1, T2, T3, T4, T5, T6, T7, T8>(T1, T2, T3, T4, T5, T6, T7, T8) | argument 6 -> field Item7 of return (normal) | true |
+| System.ValueTuple.Create<T1, T2, T3, T4, T5, T6, T7>(T1, T2, T3, T4, T5, T6, T7) | argument 0 -> field Item1 of return (normal) | true |
+| System.ValueTuple.Create<T1, T2, T3, T4, T5, T6, T7>(T1, T2, T3, T4, T5, T6, T7) | argument 1 -> field Item2 of return (normal) | true |
+| System.ValueTuple.Create<T1, T2, T3, T4, T5, T6, T7>(T1, T2, T3, T4, T5, T6, T7) | argument 2 -> field Item3 of return (normal) | true |
+| System.ValueTuple.Create<T1, T2, T3, T4, T5, T6, T7>(T1, T2, T3, T4, T5, T6, T7) | argument 3 -> field Item4 of return (normal) | true |
+| System.ValueTuple.Create<T1, T2, T3, T4, T5, T6, T7>(T1, T2, T3, T4, T5, T6, T7) | argument 4 -> field Item5 of return (normal) | true |
+| System.ValueTuple.Create<T1, T2, T3, T4, T5, T6, T7>(T1, T2, T3, T4, T5, T6, T7) | argument 5 -> field Item6 of return (normal) | true |
+| System.ValueTuple.Create<T1, T2, T3, T4, T5, T6, T7>(T1, T2, T3, T4, T5, T6, T7) | argument 6 -> field Item7 of return (normal) | true |
+| System.ValueTuple.Create<T1, T2, T3, T4, T5, T6>(T1, T2, T3, T4, T5, T6) | argument 0 -> field Item1 of return (normal) | true |
+| System.ValueTuple.Create<T1, T2, T3, T4, T5, T6>(T1, T2, T3, T4, T5, T6) | argument 1 -> field Item2 of return (normal) | true |
+| System.ValueTuple.Create<T1, T2, T3, T4, T5, T6>(T1, T2, T3, T4, T5, T6) | argument 2 -> field Item3 of return (normal) | true |
+| System.ValueTuple.Create<T1, T2, T3, T4, T5, T6>(T1, T2, T3, T4, T5, T6) | argument 3 -> field Item4 of return (normal) | true |
+| System.ValueTuple.Create<T1, T2, T3, T4, T5, T6>(T1, T2, T3, T4, T5, T6) | argument 4 -> field Item5 of return (normal) | true |
+| System.ValueTuple.Create<T1, T2, T3, T4, T5, T6>(T1, T2, T3, T4, T5, T6) | argument 5 -> field Item6 of return (normal) | true |
+| System.ValueTuple.Create<T1, T2, T3, T4, T5>(T1, T2, T3, T4, T5) | argument 0 -> field Item1 of return (normal) | true |
+| System.ValueTuple.Create<T1, T2, T3, T4, T5>(T1, T2, T3, T4, T5) | argument 1 -> field Item2 of return (normal) | true |
+| System.ValueTuple.Create<T1, T2, T3, T4, T5>(T1, T2, T3, T4, T5) | argument 2 -> field Item3 of return (normal) | true |
+| System.ValueTuple.Create<T1, T2, T3, T4, T5>(T1, T2, T3, T4, T5) | argument 3 -> field Item4 of return (normal) | true |
+| System.ValueTuple.Create<T1, T2, T3, T4, T5>(T1, T2, T3, T4, T5) | argument 4 -> field Item5 of return (normal) | true |
+| System.ValueTuple.Create<T1, T2, T3, T4>(T1, T2, T3, T4) | argument 0 -> field Item1 of return (normal) | true |
+| System.ValueTuple.Create<T1, T2, T3, T4>(T1, T2, T3, T4) | argument 1 -> field Item2 of return (normal) | true |
+| System.ValueTuple.Create<T1, T2, T3, T4>(T1, T2, T3, T4) | argument 2 -> field Item3 of return (normal) | true |
+| System.ValueTuple.Create<T1, T2, T3, T4>(T1, T2, T3, T4) | argument 3 -> field Item4 of return (normal) | true |
+| System.ValueTuple.Create<T1, T2, T3>(T1, T2, T3) | argument 0 -> field Item1 of return (normal) | true |
+| System.ValueTuple.Create<T1, T2, T3>(T1, T2, T3) | argument 1 -> field Item2 of return (normal) | true |
+| System.ValueTuple.Create<T1, T2, T3>(T1, T2, T3) | argument 2 -> field Item3 of return (normal) | true |
+| System.ValueTuple.Create<T1, T2>(T1, T2) | argument 0 -> field Item1 of return (normal) | true |
+| System.ValueTuple.Create<T1, T2>(T1, T2) | argument 1 -> field Item2 of return (normal) | true |
+| System.ValueTuple.Create<T1>(T1) | argument 0 -> field Item1 of return (normal) | true |
 | System.ValueTuple<,,,,,,,>.ValueTuple(T1, T2, T3, T4, T5, T6, T7, TRest) | argument 0 -> field Item1 of return (normal) | true |
 | System.ValueTuple<,,,,,,,>.ValueTuple(T1, T2, T3, T4, T5, T6, T7, TRest) | argument 1 -> field Item2 of return (normal) | true |
 | System.ValueTuple<,,,,,,,>.ValueTuple(T1, T2, T3, T4, T5, T6, T7, TRest) | argument 2 -> field Item3 of return (normal) | true |
@@ -2799,6 +2742,62 @@
 | System.ValueTuple<,,,,,,,>.get_Item(int) | field Item5 of argument -1 -> return (normal) | true |
 | System.ValueTuple<,,,,,,,>.get_Item(int) | field Item6 of argument -1 -> return (normal) | true |
 | System.ValueTuple<,,,,,,,>.get_Item(int) | field Item7 of argument -1 -> return (normal) | true |
+| System.ValueTuple<,,,,,,>.ValueTuple(T1, T2, T3, T4, T5, T6, T7) | argument 0 -> field Item1 of return (normal) | true |
+| System.ValueTuple<,,,,,,>.ValueTuple(T1, T2, T3, T4, T5, T6, T7) | argument 1 -> field Item2 of return (normal) | true |
+| System.ValueTuple<,,,,,,>.ValueTuple(T1, T2, T3, T4, T5, T6, T7) | argument 2 -> field Item3 of return (normal) | true |
+| System.ValueTuple<,,,,,,>.ValueTuple(T1, T2, T3, T4, T5, T6, T7) | argument 3 -> field Item4 of return (normal) | true |
+| System.ValueTuple<,,,,,,>.ValueTuple(T1, T2, T3, T4, T5, T6, T7) | argument 4 -> field Item5 of return (normal) | true |
+| System.ValueTuple<,,,,,,>.ValueTuple(T1, T2, T3, T4, T5, T6, T7) | argument 5 -> field Item6 of return (normal) | true |
+| System.ValueTuple<,,,,,,>.ValueTuple(T1, T2, T3, T4, T5, T6, T7) | argument 6 -> field Item7 of return (normal) | true |
+| System.ValueTuple<,,,,,,>.get_Item(int) | field Item1 of argument -1 -> return (normal) | true |
+| System.ValueTuple<,,,,,,>.get_Item(int) | field Item2 of argument -1 -> return (normal) | true |
+| System.ValueTuple<,,,,,,>.get_Item(int) | field Item3 of argument -1 -> return (normal) | true |
+| System.ValueTuple<,,,,,,>.get_Item(int) | field Item4 of argument -1 -> return (normal) | true |
+| System.ValueTuple<,,,,,,>.get_Item(int) | field Item5 of argument -1 -> return (normal) | true |
+| System.ValueTuple<,,,,,,>.get_Item(int) | field Item6 of argument -1 -> return (normal) | true |
+| System.ValueTuple<,,,,,,>.get_Item(int) | field Item7 of argument -1 -> return (normal) | true |
+| System.ValueTuple<,,,,,>.ValueTuple(T1, T2, T3, T4, T5, T6) | argument 0 -> field Item1 of return (normal) | true |
+| System.ValueTuple<,,,,,>.ValueTuple(T1, T2, T3, T4, T5, T6) | argument 1 -> field Item2 of return (normal) | true |
+| System.ValueTuple<,,,,,>.ValueTuple(T1, T2, T3, T4, T5, T6) | argument 2 -> field Item3 of return (normal) | true |
+| System.ValueTuple<,,,,,>.ValueTuple(T1, T2, T3, T4, T5, T6) | argument 3 -> field Item4 of return (normal) | true |
+| System.ValueTuple<,,,,,>.ValueTuple(T1, T2, T3, T4, T5, T6) | argument 4 -> field Item5 of return (normal) | true |
+| System.ValueTuple<,,,,,>.ValueTuple(T1, T2, T3, T4, T5, T6) | argument 5 -> field Item6 of return (normal) | true |
+| System.ValueTuple<,,,,,>.get_Item(int) | field Item1 of argument -1 -> return (normal) | true |
+| System.ValueTuple<,,,,,>.get_Item(int) | field Item2 of argument -1 -> return (normal) | true |
+| System.ValueTuple<,,,,,>.get_Item(int) | field Item3 of argument -1 -> return (normal) | true |
+| System.ValueTuple<,,,,,>.get_Item(int) | field Item4 of argument -1 -> return (normal) | true |
+| System.ValueTuple<,,,,,>.get_Item(int) | field Item5 of argument -1 -> return (normal) | true |
+| System.ValueTuple<,,,,,>.get_Item(int) | field Item6 of argument -1 -> return (normal) | true |
+| System.ValueTuple<,,,,>.ValueTuple(T1, T2, T3, T4, T5) | argument 0 -> field Item1 of return (normal) | true |
+| System.ValueTuple<,,,,>.ValueTuple(T1, T2, T3, T4, T5) | argument 1 -> field Item2 of return (normal) | true |
+| System.ValueTuple<,,,,>.ValueTuple(T1, T2, T3, T4, T5) | argument 2 -> field Item3 of return (normal) | true |
+| System.ValueTuple<,,,,>.ValueTuple(T1, T2, T3, T4, T5) | argument 3 -> field Item4 of return (normal) | true |
+| System.ValueTuple<,,,,>.ValueTuple(T1, T2, T3, T4, T5) | argument 4 -> field Item5 of return (normal) | true |
+| System.ValueTuple<,,,,>.get_Item(int) | field Item1 of argument -1 -> return (normal) | true |
+| System.ValueTuple<,,,,>.get_Item(int) | field Item2 of argument -1 -> return (normal) | true |
+| System.ValueTuple<,,,,>.get_Item(int) | field Item3 of argument -1 -> return (normal) | true |
+| System.ValueTuple<,,,,>.get_Item(int) | field Item4 of argument -1 -> return (normal) | true |
+| System.ValueTuple<,,,,>.get_Item(int) | field Item5 of argument -1 -> return (normal) | true |
+| System.ValueTuple<,,,>.ValueTuple(T1, T2, T3, T4) | argument 0 -> field Item1 of return (normal) | true |
+| System.ValueTuple<,,,>.ValueTuple(T1, T2, T3, T4) | argument 1 -> field Item2 of return (normal) | true |
+| System.ValueTuple<,,,>.ValueTuple(T1, T2, T3, T4) | argument 2 -> field Item3 of return (normal) | true |
+| System.ValueTuple<,,,>.ValueTuple(T1, T2, T3, T4) | argument 3 -> field Item4 of return (normal) | true |
+| System.ValueTuple<,,,>.get_Item(int) | field Item1 of argument -1 -> return (normal) | true |
+| System.ValueTuple<,,,>.get_Item(int) | field Item2 of argument -1 -> return (normal) | true |
+| System.ValueTuple<,,,>.get_Item(int) | field Item3 of argument -1 -> return (normal) | true |
+| System.ValueTuple<,,,>.get_Item(int) | field Item4 of argument -1 -> return (normal) | true |
+| System.ValueTuple<,,>.ValueTuple(T1, T2, T3) | argument 0 -> field Item1 of return (normal) | true |
+| System.ValueTuple<,,>.ValueTuple(T1, T2, T3) | argument 1 -> field Item2 of return (normal) | true |
+| System.ValueTuple<,,>.ValueTuple(T1, T2, T3) | argument 2 -> field Item3 of return (normal) | true |
+| System.ValueTuple<,,>.get_Item(int) | field Item1 of argument -1 -> return (normal) | true |
+| System.ValueTuple<,,>.get_Item(int) | field Item2 of argument -1 -> return (normal) | true |
+| System.ValueTuple<,,>.get_Item(int) | field Item3 of argument -1 -> return (normal) | true |
+| System.ValueTuple<,>.ValueTuple(T1, T2) | argument 0 -> field Item1 of return (normal) | true |
+| System.ValueTuple<,>.ValueTuple(T1, T2) | argument 1 -> field Item2 of return (normal) | true |
+| System.ValueTuple<,>.get_Item(int) | field Item1 of argument -1 -> return (normal) | true |
+| System.ValueTuple<,>.get_Item(int) | field Item2 of argument -1 -> return (normal) | true |
+| System.ValueTuple<>.ValueTuple(T1) | argument 0 -> field Item1 of return (normal) | true |
+| System.ValueTuple<>.get_Item(int) | field Item1 of argument -1 -> return (normal) | true |
 | System.Web.HttpCookie.get_Value() | argument -1 -> return (normal) | false |
 | System.Web.HttpCookie.get_Values() | argument -1 -> return (normal) | false |
 | System.Web.HttpServerUtility.UrlEncode(string) | argument 0 -> return (normal) | false |
