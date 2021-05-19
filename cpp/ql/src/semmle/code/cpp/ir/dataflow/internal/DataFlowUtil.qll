@@ -748,14 +748,8 @@ private predicate modelFlow(Operand opFrom, Instruction iTo) {
       )
       or
       exists(int index, ReadSideEffectInstruction read |
-        modelIn.isParameterDeref(index) and
+        modelIn.isParameterDerefOrQualifierObject(index) and
         read = getSideEffectFor(call, index) and
-        opFrom = read.getSideEffectOperand()
-      )
-      or
-      exists(ReadSideEffectInstruction read |
-        modelIn.isQualifierObject() and
-        read = getSideEffectFor(call, -1) and
         opFrom = read.getSideEffectOperand()
       )
     )
