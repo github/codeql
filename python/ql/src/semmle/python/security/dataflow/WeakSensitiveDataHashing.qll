@@ -4,7 +4,7 @@
  *
  * Note, for performance reasons: only import this file if
  * `WeakSensitiveDataHashing::Configuration` is needed, otherwise
- * `SqlInjectionCustomizations` should be imported instead.
+ * `WeakSensitiveDataHashingCustomizations` should be imported instead.
  */
 
 private import python
