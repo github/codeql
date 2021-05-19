@@ -1,9 +1,7 @@
 import sys
 
-
 generated_output_rst = "flow-model-coverage-{language}.rst"
 generated_output_csv = "flow-model-coverage-{language}.csv"
-
 
 # The CI job checks out the codebase to a subfolder
 data_prefix = ""
@@ -14,7 +12,6 @@ if sys.argv[0].endswith("generate-report.py"):
 
 if len(sys.argv) > index:
     data_prefix = sys.argv[index] + "/"
-
 
 documentation_folder = data_prefix + \
     "{language}/documentation/library-coverage/"
