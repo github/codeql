@@ -157,8 +157,11 @@ Python built-in support
    Tornado, Web framework
    PyYAML, Serialization
    dill, Serialization
+   simplejson, Serialization
+   ujson, Serialization
    fabric, Utility library
    invoke, Utility library
+   idna, Utility library
    mysql-connector-python, Database
    MySQLdb, Database
    psycopg2, Database
