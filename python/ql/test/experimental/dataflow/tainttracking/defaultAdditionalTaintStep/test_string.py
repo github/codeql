@@ -32,7 +32,7 @@ def str_operations():
         ts[0], # $ tainted
         str(ts), # $ tainted
         bytes(tb), # $ tainted
-        unicode(ts), # $ tainted
+        unicode(ts), # $ MISSING: tainted
     )
 
     aug_assignment = "safe"
@@ -104,7 +104,7 @@ def non_syntactic():
     _str = str
     ensure_tainted(
         meth(), # $ MISSING: tainted
-        _str(ts), # $ MISSING: tainted
+        _str(ts), # $ tainted
     )
 
 

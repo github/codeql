@@ -76,13 +76,9 @@ predicate subscriptStep(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
  */
 predicate stringManipulation(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
   // transforming something tainted into a string will make the string tainted
-  exists(CallNode call | call = nodeTo.getNode() |
-    call.getFunction().(NameNode).getId() in ["str", "bytes", "unicode"] and
-    (
-      nodeFrom.getNode() = call.getArg(0)
-      or
-      nodeFrom.getNode() = call.getArgByName("object")
-    )
+  exists(DataFlow::CallCfgNode call | call = nodeTo |
+    call = API::builtin(["str", "bytes", "unicode"]).getACall() and
+    nodeFrom in [call.getArg(0), call.getArgByName("object")]
   )
   or
   // String methods. Note that this doesn't recognize `meth = "foo".upper; meth()`
