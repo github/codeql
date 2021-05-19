@@ -160,8 +160,8 @@ abstract private class GeneratedType extends ValueOrRefType, GeneratedElement {
  * This is extended in client code to identify the actual
  * declarations that should be generated.
  */
-abstract class GeneratedDeclaration extends Declaration {
-  GeneratedDeclaration() { this.(Modifiable).isEffectivelyPublic() }
+abstract class GeneratedDeclaration extends Modifiable {
+  GeneratedDeclaration() { this.isEffectivelyPublic() }
 }
 
 private class IndirectType extends GeneratedType {
