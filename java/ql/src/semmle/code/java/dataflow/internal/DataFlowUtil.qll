@@ -144,6 +144,8 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
   or
   node2.asExpr().(AssignExpr).getSource() = node1.asExpr()
   or
+  node2.asExpr().(ArrayCreationExpr).getInit() = node1.asExpr()
+  or
   exists(MethodAccess ma, ValuePreservingMethod m, int argNo |
     ma.getCallee().getSourceDeclaration() = m and m.returnsValue(argNo)
   |

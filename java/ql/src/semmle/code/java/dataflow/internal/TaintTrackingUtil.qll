@@ -60,12 +60,6 @@ private module Cached {
     localAdditionalTaintUpdateStep(src.asExpr(),
       sink.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr())
     or
-    exists(Argument arg |
-      src.asExpr() = arg and
-      arg.isVararg() and
-      sink.(DataFlow::ImplicitVarargsArray).getCall() = arg.getCall()
-    )
-    or
     FlowSummaryImpl::Private::Steps::summaryLocalStep(src, sink, false)
   }
 
@@ -103,19 +97,7 @@ private predicate localAdditionalTaintExprStep(Expr src, Expr sink) {
   or
   sink.(AssignAddExpr).getSource() = src and sink.getType() instanceof TypeString
   or
-  sink.(ArrayCreationExpr).getInit() = src
-  or
-  sink.(ArrayInit).getAnInit() = src
-  or
-  sink.(ArrayAccess).getArray() = src
-  or
   sink.(LogicExpr).getAnOperand() = src
-  or
-  exists(EnhancedForStmt for, SsaExplicitUpdate v |
-    for.getExpr() = src and
-    v.getDefiningExpr() = for.getVariable() and
-    v.getAFirstUse() = sink
-  )
   or
   containerReturnValueStep(src, sink)
   or
@@ -141,10 +123,6 @@ private predicate localAdditionalTaintExprStep(Expr src, Expr sink) {
  * This is restricted to cases where the step updates the value of `sink`.
  */
 private predicate localAdditionalTaintUpdateStep(Expr src, Expr sink) {
-  exists(Assignment assign | assign.getSource() = src |
-    sink = assign.getDest().(ArrayAccess).getArray()
-  )
-  or
   containerUpdateStep(src, sink)
   or
   qualifierToArgumentStep(src, sink)

@@ -30,6 +30,12 @@ DataFlowType getContentType(Content c) {
   or
   c instanceof ArrayContent and
   result instanceof TypeObject
+  or
+  c instanceof MapKeyContent and
+  result instanceof TypeObject
+  or
+  c instanceof MapValueContent and
+  result instanceof TypeObject
 }
 
 /** Gets the return type of kind `rk` for callable `c`. */

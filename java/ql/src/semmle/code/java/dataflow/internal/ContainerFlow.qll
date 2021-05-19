@@ -1,6 +1,8 @@
 import java
 import semmle.code.java.Collections
 import semmle.code.java.Maps
+private import semmle.code.java.dataflow.SSA
+private import DataFlowUtil
 
 private class EntryType extends RefType {
   EntryType() {
@@ -425,4 +427,45 @@ predicate containerUpdateStep(Expr n1, Expr n2) {
 predicate containerStep(Expr n1, Expr n2) {
   containerReturnValueStep(n1, n2) or
   containerUpdateStep(n1, n2)
+}
+
+predicate arrayStoreStep(Node node1, Node node2) {
+  exists(Argument arg |
+    node1.asExpr() = arg and
+    arg.isVararg() and
+    node2.(ImplicitVarargsArray).getCall() = arg.getCall()
+  )
+  or
+  node2.asExpr().(ArrayInit).getAnInit() = node1.asExpr()
+  or
+  exists(Assignment assign | assign.getSource() = node1.asExpr() |
+    node2.(PostUpdateNode).getPreUpdateNode().asExpr() = assign.getDest().(ArrayAccess).getArray()
+  )
+}
+
+private predicate enhancedForStmtStep(Node node1, Node node2, Type containerType) {
+  exists(EnhancedForStmt for, Expr e, SsaExplicitUpdate v |
+    for.getExpr() = e and
+    node1.asExpr() = e and
+    containerType = e.getType() and
+    v.getDefiningExpr() = for.getVariable() and
+    v.getAFirstUse() = node2.asExpr()
+  )
+}
+
+predicate arrayReadStep(Node node1, Node node2, Type elemType) {
+  exists(ArrayAccess aa |
+    aa.getArray() = node1.asExpr() and
+    aa.getType() = elemType and
+    node2.asExpr() = aa
+  )
+  or
+  exists(Array arr |
+    enhancedForStmtStep(node1, node2, arr) and
+    arr.getComponentType() = elemType
+  )
+}
+
+predicate collectionReadStep(Node node1, Node node2) {
+  enhancedForStmtStep(node1, node2, any(Type t | not t instanceof Array))
 }
