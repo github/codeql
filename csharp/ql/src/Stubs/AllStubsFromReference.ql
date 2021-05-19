@@ -12,9 +12,7 @@ class AllExternalPublicDeclarations extends GeneratedDeclaration {
 
 /** All framework assemblies. */
 class NonTargetAssembly extends ExcludedAssembly {
-  NonTargetAssembly() {
-    exists(this.getFile().getAbsolutePath().indexOf("Microsoft.NETCore.App.Ref"))
-  }
+  NonTargetAssembly() { this.getFile().getAbsolutePath().matches("%Microsoft.NETCore.App.Ref%") }
 }
 
 from Assembly a
