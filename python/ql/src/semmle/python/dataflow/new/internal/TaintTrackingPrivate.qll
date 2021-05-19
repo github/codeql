@@ -151,36 +151,35 @@ predicate containerStep(DataFlow::CfgNode nodeFrom, DataFlow::Node nodeTo) {
   storeStep(nodeFrom, _, nodeTo)
   or
   // constructor call
-  exists(CallNode call | call = nodeTo.asCfgNode() |
-    call.getFunction().(NameNode).getId() in [
+  exists(DataFlow::CallCfgNode call | call = nodeTo |
+    call.getFunction().asCfgNode().(NameNode).getId() in [
         "list", "set", "frozenset", "dict", "defaultdict", "tuple"
       ] and
-    call.getArg(0) = nodeFrom.getNode()
+    call.getArg(0) = nodeFrom
   )
   or
   // functions operating on collections
-  exists(CallNode call | call = nodeTo.asCfgNode() |
-    call.getFunction().(NameNode).getId() in ["sorted", "reversed", "iter", "next"] and
-    call.getArg(0) = nodeFrom.getNode()
+  exists(DataFlow::CallCfgNode call | call = nodeTo |
+    call.getFunction().asCfgNode().(NameNode).getId() in ["sorted", "reversed", "iter", "next"] and
+    call.getArg(0) = nodeFrom
   )
   or
   // methods
-  exists(CallNode call, string name | call = nodeTo.asCfgNode() |
+  exists(DataFlow::CallCfgNode call, string name | call = nodeTo |
     name in [
         // general
         "copy", "pop",
         // dict
         "values", "items", "get", "popitem"
       ] and
-    call.getFunction().(AttrNode).getObject(name) = nodeFrom.asCfgNode()
+    call.getFunction().(DataFlow::AttrRead).getObject(name) = nodeFrom
   )
   or
   // list.append, set.add
-  exists(CallNode call, string name |
+  exists(DataFlow::CallCfgNode call, string name |
     name in ["append", "add"] and
-    call.getFunction().(AttrNode).getObject(name) =
-      nodeTo.(DataFlow::PostUpdateNode).getPreUpdateNode().asCfgNode() and
-    call.getArg(0) = nodeFrom.getNode()
+    call.getFunction().(DataFlow::AttrRead).getObject(name).getPostUpdateNode() = nodeTo and
+    call.getArg(0) = nodeFrom
   )
 }
 
