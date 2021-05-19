@@ -143,6 +143,14 @@ private ModuleBase enclosing(ModuleBase m, int level) {
   result = enclosing(m.getEnclosingModule(), level - 1)
 }
 
+pragma[noinline]
+private Namespace enclosingNameSpaceConstantReadAccess(
+  ConstantReadAccess c, int priority, string name
+) {
+  result = enclosing(c.getEnclosingModule(), priority) and
+  name = c.getName()
+}
+
 /**
  * Resolve constant read access (typically a scope expression) to a qualified name. The
  * `priority` value indicates the precedence of the solution with respect to the lookup order.
@@ -154,24 +162,33 @@ private ModuleBase enclosing(ModuleBase m, int level) {
 private string resolveScopeExpr(ConstantReadAccess c, int priority) {
   c.hasGlobalScope() and result = c.getName() and priority = 0
   or
-  result = qualifiedModuleName(resolveScopeExpr(c.getScopeExpr(), priority), c.getName())
+  exists(string name |
+    result = qualifiedModuleName(resolveScopeExprConstantReadAccess(c, priority, name), name)
+  )
   or
   not exists(c.getScopeExpr()) and
   not c.hasGlobalScope() and
   (
-    exists(Namespace n |
-      result = qualifiedModuleName(constantDefinition0(n), c.getName()) and
-      n = enclosing(c.getEnclosingModule(), priority)
+    exists(string name |
+      exists(Namespace n |
+        n = enclosingNameSpaceConstantReadAccess(c, priority, name) and
+        result = qualifiedModuleName(constantDefinition0(n), name)
+      )
+      or
+      result =
+        qualifiedModuleName(ancestors(qualifiedModuleNameConstantReadAccess(c, name),
+            priority - maxDepth()), name)
     )
     or
-    result =
-      qualifiedModuleName(ancestors(qualifiedModuleName(c.getEnclosingModule()),
-          priority - maxDepth()), c.getName())
-    or
-    result = c.getName() and
     priority = maxDepth() + 4 and
-    qualifiedModuleName(c.getEnclosingModule()) != "BasicObject"
+    qualifiedModuleNameConstantReadAccess(c, result) != "BasicObject"
   )
+}
+
+pragma[noinline]
+private string resolveScopeExprConstantReadAccess(ConstantReadAccess c, int priority, string name) {
+  result = resolveScopeExpr(c.getScopeExpr(), priority) and
+  name = c.getName()
 }
 
 bindingset[qualifier, name]
@@ -183,6 +200,18 @@ private string qualifiedModuleName(ModuleBase m) {
   result = "Object" and m instanceof Toplevel
   or
   result = constantDefinition0(m)
+}
+
+pragma[noinline]
+private string qualifiedModuleNameConstantWriteAccess(ConstantWriteAccess c, string name) {
+  result = qualifiedModuleName(c.getEnclosingModule()) and
+  name = c.getName()
+}
+
+pragma[noinline]
+private string qualifiedModuleNameConstantReadAccess(ConstantReadAccess c, string name) {
+  result = qualifiedModuleName(c.getEnclosingModule()) and
+  name = c.getName()
 }
 
 /**
@@ -198,9 +227,7 @@ private string constantDefinition0(ConstantWriteAccess c) {
   or
   not exists(c.getScopeExpr()) and
   not c.hasGlobalScope() and
-  exists(ModuleBase enclosing | enclosing = c.getEnclosingModule() |
-    result = scopeAppend(qualifiedModuleName(enclosing), c.getName())
-  )
+  exists(string name | result = scopeAppend(qualifiedModuleNameConstantWriteAccess(c, name), name))
 }
 
 /**
