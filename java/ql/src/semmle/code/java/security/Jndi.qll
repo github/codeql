@@ -6,28 +6,6 @@ import experimental.semmle.code.java.frameworks.spring.SpringJndi
 import semmle.code.java.frameworks.SpringLdap
 import experimental.semmle.code.java.frameworks.Shiro
 
-/**
- * A taint-tracking configuration for unvalidated user input that is used in JNDI lookup.
- */
-class JndiInjectionFlowConfig extends TaintTracking::Configuration {
-  JndiInjectionFlowConfig() { this = "JndiInjectionFlowConfig" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof JndiInjectionSink }
-
-  override predicate isSanitizer(DataFlow::Node node) {
-    node.getType() instanceof PrimitiveType or node.getType() instanceof BoxedType
-  }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    nameStep(node1, node2) or
-    jmxServiceUrlStep(node1, node2) or
-    jmxConnectorStep(node1, node2) or
-    rmiConnectorStep(node1, node2)
-  }
-}
-
 /** The class `java.util.Hashtable`. */
 class TypeHashtable extends Class {
   TypeHashtable() { this.getSourceDeclaration().hasQualifiedName("java.util", "Hashtable") }
