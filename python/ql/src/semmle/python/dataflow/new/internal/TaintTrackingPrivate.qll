@@ -1,6 +1,6 @@
 private import python
 private import semmle.python.dataflow.new.DataFlow
-private import semmle.python.dataflow.new.internal.DataFlowPrivate
+private import semmle.python.dataflow.new.internal.DataFlowPrivate as DataFlowPrivate
 private import semmle.python.dataflow.new.internal.TaintTrackingPublic
 
 /**
@@ -148,7 +148,7 @@ predicate stringManipulation(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeT
 predicate containerStep(DataFlow::CfgNode nodeFrom, DataFlow::Node nodeTo) {
   // construction by literal
   // TODO: Not limiting the content argument here feels like a BIG hack, but we currently get nothing for free :|
-  storeStep(nodeFrom, _, nodeTo)
+  DataFlowPrivate::storeStep(nodeFrom, _, nodeTo)
   or
   // constructor call
   exists(DataFlow::CallCfgNode call | call = nodeTo |
