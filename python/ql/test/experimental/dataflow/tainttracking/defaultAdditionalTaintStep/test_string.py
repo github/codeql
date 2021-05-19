@@ -32,7 +32,7 @@ def str_operations():
         ts[0], # $ tainted
         str(ts), # $ tainted
         bytes(tb), # $ tainted
-        unicode(ts), # $ MISSING: tainted
+        unicode(ts), # $ tainted
     )
 
     aug_assignment = "safe"
