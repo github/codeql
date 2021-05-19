@@ -77,6 +77,7 @@ private module Frameworks {
   private import semmle.code.java.frameworks.ApacheHttp
   private import semmle.code.java.frameworks.apache.Lang
   private import semmle.code.java.frameworks.guava.Guava
+  private import semmle.code.java.frameworks.jackson.JacksonSerializability
   private import semmle.code.java.security.ResponseSplitting
   private import semmle.code.java.security.XSS
   private import semmle.code.java.security.LdapInjection
@@ -293,6 +294,7 @@ private predicate summaryModelCsv(string row) {
       "java.util;StringTokenizer;false;StringTokenizer;;;Argument[0];Argument[-1];taint",
       "java.beans;XMLDecoder;false;XMLDecoder;;;Argument[0];Argument[-1];taint",
       "com.esotericsoftware.kryo.io;Input;false;Input;;;Argument[0];Argument[-1];taint",
+      "com.esotericsoftware.kryo5.io;Input;false;Input;;;Argument[0];Argument[-1];taint",
       "java.io;BufferedInputStream;false;BufferedInputStream;;;Argument[0];Argument[-1];taint",
       "java.io;DataInputStream;false;DataInputStream;;;Argument[0];Argument[-1];taint",
       "java.io;ByteArrayInputStream;false;ByteArrayInputStream;;;Argument[0];Argument[-1];taint",

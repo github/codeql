@@ -4,70 +4,47 @@ private import semmle.code.java.dataflow.FlowSummary
 private import semmle.code.java.dataflow.TypeFlow
 private import DataFlowPrivate
 private import FlowSummaryImpl as FlowSummaryImpl
+private import DataFlowImplCommon as DataFlowImplCommon
 
 cached
-private module Cached {
-  cached
-  newtype TNode =
-    TExprNode(Expr e) {
-      not e.getType() instanceof VoidType and
-      not e.getParent*() instanceof Annotation
-    } or
-    TExplicitParameterNode(Parameter p) {
-      exists(p.getCallable().getBody()) or p.getCallable() instanceof SummarizedCallable
-    } or
-    TImplicitVarargsArray(Call c) {
-      c.getCallee().isVarargs() and
-      not exists(Argument arg | arg.getCall() = c and arg.isExplicitVarargsArray())
-    } or
-    TInstanceParameterNode(Callable c) {
-      (exists(c.getBody()) or c instanceof SummarizedCallable) and
-      not c.isStatic()
-    } or
-    TImplicitInstanceAccess(InstanceAccessExt ia) { not ia.isExplicit(_) } or
-    TMallocNode(ClassInstanceExpr cie) or
-    TExplicitExprPostUpdate(Expr e) {
-      explicitInstanceArgument(_, e)
-      or
-      e instanceof Argument and not e.getType() instanceof ImmutableType
-      or
-      exists(FieldAccess fa | fa.getField() instanceof InstanceField and e = fa.getQualifier())
-      or
-      exists(ArrayAccess aa | e = aa.getArray())
-    } or
-    TImplicitExprPostUpdate(InstanceAccessExt ia) {
-      implicitInstanceArgument(_, ia)
-      or
-      exists(FieldAccess fa |
-        fa.getField() instanceof InstanceField and ia.isImplicitFieldQualifier(fa)
-      )
-    } or
-    TSummaryInternalNode(SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state) {
-      FlowSummaryImpl::Private::summaryNodeRange(c, state)
-    }
-
-  cached
-  predicate summaryOutNodeCached(DataFlowCall c, Node out) {
-    FlowSummaryImpl::Private::summaryOutNode(c, out, _)
+newtype TNode =
+  TExprNode(Expr e) {
+    DataFlowImplCommon::forceCachingInSameStage() and
+    not e.getType() instanceof VoidType and
+    not e.getParent*() instanceof Annotation
+  } or
+  TExplicitParameterNode(Parameter p) {
+    exists(p.getCallable().getBody()) or p.getCallable() instanceof SummarizedCallable
+  } or
+  TImplicitVarargsArray(Call c) {
+    c.getCallee().isVarargs() and
+    not exists(Argument arg | arg.getCall() = c and arg.isExplicitVarargsArray())
+  } or
+  TInstanceParameterNode(Callable c) {
+    (exists(c.getBody()) or c instanceof SummarizedCallable) and
+    not c.isStatic()
+  } or
+  TImplicitInstanceAccess(InstanceAccessExt ia) { not ia.isExplicit(_) } or
+  TMallocNode(ClassInstanceExpr cie) or
+  TExplicitExprPostUpdate(Expr e) {
+    explicitInstanceArgument(_, e)
+    or
+    e instanceof Argument and not e.getType() instanceof ImmutableType
+    or
+    exists(FieldAccess fa | fa.getField() instanceof InstanceField and e = fa.getQualifier())
+    or
+    exists(ArrayAccess aa | e = aa.getArray())
+  } or
+  TImplicitExprPostUpdate(InstanceAccessExt ia) {
+    implicitInstanceArgument(_, ia)
+    or
+    exists(FieldAccess fa |
+      fa.getField() instanceof InstanceField and ia.isImplicitFieldQualifier(fa)
+    )
+  } or
+  TSummaryInternalNode(SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state) {
+    FlowSummaryImpl::Private::summaryNodeRange(c, state)
   }
-
-  cached
-  predicate summaryArgumentNodeCached(DataFlowCall c, Node arg, int i) {
-    FlowSummaryImpl::Private::summaryArgumentNode(c, arg, i)
-  }
-
-  cached
-  predicate summaryPostUpdateNodeCached(Node post, ParameterNode pre) {
-    FlowSummaryImpl::Private::summaryPostUpdateNode(post, pre)
-  }
-
-  cached
-  predicate summaryReturnNodeCached(Node ret) {
-    FlowSummaryImpl::Private::summaryReturnNode(ret, _)
-  }
-}
-
-private import Cached
 
 private predicate explicitInstanceArgument(Call call, Expr instarg) {
   call instanceof MethodAccess and
@@ -404,13 +381,15 @@ module Private {
     override string toString() { result = "[summary] " + state + " in " + c }
 
     /** Holds if this summary node is the `i`th argument of `call`. */
-    predicate isArgumentOf(DataFlowCall call, int i) { summaryArgumentNodeCached(call, this, i) }
+    predicate isArgumentOf(DataFlowCall call, int i) {
+      FlowSummaryImpl::Private::summaryArgumentNode(call, this, i)
+    }
 
     /** Holds if this summary node is a return node. */
-    predicate isReturn() { summaryReturnNodeCached(this) }
+    predicate isReturn() { FlowSummaryImpl::Private::summaryReturnNode(this, _) }
 
     /** Holds if this summary node is an out node for `call`. */
-    predicate isOut(DataFlowCall call) { summaryOutNodeCached(call, this) }
+    predicate isOut(DataFlowCall call) { FlowSummaryImpl::Private::summaryOutNode(call, this, _) }
   }
 
   SummaryNode getSummaryNode(SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state) {
@@ -439,7 +418,7 @@ private class MallocNode extends Node, TMallocNode {
 private class SummaryPostUpdateNode extends SummaryNode, PostUpdateNode {
   private Node pre;
 
-  SummaryPostUpdateNode() { summaryPostUpdateNodeCached(this, pre) }
+  SummaryPostUpdateNode() { FlowSummaryImpl::Private::summaryPostUpdateNode(this, pre) }
 
   override Node getPreUpdateNode() { result = pre }
 }

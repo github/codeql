@@ -613,13 +613,13 @@ foreach.cs:
 #    5|     r5_28(glval<Int32>)      = PointerAdd[4]                  : r5_1, r5_27
 #    5|     r5_29(Int32)             = Constant[7]                    : 
 #    5|     mu5_30(Int32)            = Store[?]                       : &:r5_28, r5_29
-#    7|     r7_1(glval<IEnumerator>) = VariableAddress[#temp7:9]      : 
+#    7|     r7_1(glval<Boolean>)     = VariableAddress[#temp7:9]      : 
 #    7|     r7_2(glval<Int32[]>)     = VariableAddress[a_array]       : 
 #    7|     r7_3(Int32[])            = Load[a_array]                  : &:r7_2, ~m?
 #    7|     r7_4(<funcaddr>)         = FunctionAddress[GetEnumerator] : 
 #    7|     r7_5(IEnumerator)        = Call[GetEnumerator]            : func:r7_4, this:r7_3
 #    7|     mu7_6(<unknown>)         = ^CallSideEffect                : ~m?
-#    7|     mu7_7(IEnumerator)       = Store[#temp7:9]                : &:r7_1, r7_5
+#    7|     mu7_7(Boolean)           = Store[#temp7:9]                : &:r7_1, r7_5
 #-----|   Goto -> Block 1
 
 #    7|   Block 1

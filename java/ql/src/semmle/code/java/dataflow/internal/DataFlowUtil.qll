@@ -11,6 +11,7 @@ private import semmle.code.java.dataflow.FlowSteps
 private import semmle.code.java.dataflow.FlowSummary
 import semmle.code.java.dataflow.InstanceAccess
 private import FlowSummaryImpl as FlowSummaryImpl
+private import TaintTrackingUtil as TaintTrackingUtil
 import DataFlowNodes::Public
 
 /** Holds if `n` is an access to an unqualified `this` at `cfgnode`. */
@@ -112,6 +113,7 @@ predicate localFlowStep(Node node1, Node node2) {
  */
 cached
 predicate simpleLocalFlowStep(Node node1, Node node2) {
+  TaintTrackingUtil::forceCachingInSameStage() and
   // Variable flow steps through adjacent def-use and use-use pairs.
   exists(SsaExplicitUpdate upd |
     upd.getDefiningExpr().(VariableAssign).getSource() = node1.asExpr() or

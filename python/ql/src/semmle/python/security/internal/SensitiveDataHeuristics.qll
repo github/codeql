@@ -58,7 +58,8 @@ module HeuristicNames {
    */
   string maybeAccountInfo() {
     result = "(?is).*acc(ou)?nt.*" or
-    result = "(?is).*(puid|username|userid).*"
+    result = "(?is).*(puid|username|userid).*" or
+    result = "(?s).*([uU]|^|_|[a-z](?=U))([uU][iI][dD]).*"
   }
 
   /**

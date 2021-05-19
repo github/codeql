@@ -12,7 +12,7 @@ import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
  * Holds if the value of `use` is guarded using `abs`.
  */
 predicate guardedAbs(Operation e, Expr use) {
-  exists(FunctionCall fc | fc.getTarget().getName() = "abs" |
+  exists(FunctionCall fc | fc.getTarget().getName() = ["abs", "labs", "llabs", "imaxabs"] |
     fc.getArgument(0).getAChild*() = use and
     guardedLesser(e, fc)
   )
