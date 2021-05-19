@@ -55,6 +55,9 @@ modules.rb:
 #   30| Foo::ClassInAnotherDefinitionOfFoo
 #-----|  -> Object
 
+#  116| XX::YY
+#-----|  -> YY
+
 #   65| Test::Foo1
 
 #   70| Test::Foo2
@@ -62,9 +65,6 @@ modules.rb:
 #   76| Test::Foo3
 
 #   84| Other::Foo1
-
-#  116| XX::YY
-#-----|  -> YY
 
 #    6| Foo::Bar::ClassInFooBar
 #-----|  -> Object
