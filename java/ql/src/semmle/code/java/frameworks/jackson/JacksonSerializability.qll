@@ -51,6 +51,10 @@ private class JacksonWriteValueMethod extends Method, TaintPreservingCallable {
   }
 }
 
+/**
+ * A method used for deserializing objects using Jackson. The first parameter is the object to be
+ * deserialized.
+ */
 private class JacksonReadValueMethod extends Method, TaintPreservingCallable {
   JacksonReadValueMethod() {
     (
@@ -58,6 +62,23 @@ private class JacksonReadValueMethod extends Method, TaintPreservingCallable {
       getDeclaringType().hasQualifiedName("com.fasterxml.jackson.databind", "ObjectMapper")
     ) and
     hasName(["readValue", "readValues"])
+  }
+
+  override predicate returnsTaintFrom(int arg) { arg = 0 }
+}
+
+/**
+ * A method used for creating a `JsonParser` object using Jackson. The first parameter is the object to
+ * create the `JsonParser` from.
+ */
+private class JacksonCreateParserMethod extends Method, TaintPreservingCallable {
+  JacksonCreateParserMethod() {
+    (
+      getDeclaringType().hasQualifiedName("com.fasterxml.jackson.core", "JsonFactory") or
+      getDeclaringType().hasQualifiedName("com.fasterxml.jackson.databind", "ObjectMapper") or
+      getDeclaringType().hasQualifiedName("com.fasterxml.jackson.databind", "ObjectReader")
+    ) and
+    hasName("createParser")
   }
 
   override predicate returnsTaintFrom(int arg) { arg = 0 }
