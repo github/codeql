@@ -101,7 +101,7 @@ class CallWithBufferSize extends FunctionCall {
     // result in this case we pick the minimum value obtainable from dataflow and range analysis.
     result =
       upperBound(statedSizeExpr())
-          .minimum(any(Expr statedSizeSrc |
+          .minimum(min(Expr statedSizeSrc |
               DataFlow::localExprFlow(statedSizeSrc, statedSizeExpr())
             |
               statedSizeSrc.getValue().toInt()
@@ -112,7 +112,7 @@ class CallWithBufferSize extends FunctionCall {
 predicate wrongBufferSize(Expr error, string msg) {
   exists(CallWithBufferSize call, int bufsize, Variable buf, int statedSize |
     staticBuffer(call.buffer(), buf, bufsize) and
-    statedSize = min(call.statedSizeValue()) and
+    statedSize = call.statedSizeValue() and
     statedSize > bufsize and
     error = call.statedSizeExpr() and
     msg =
