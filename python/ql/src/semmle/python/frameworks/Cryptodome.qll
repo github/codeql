@@ -138,6 +138,8 @@ private module CryptodomeModel {
       methodName in ["update"] and
       result in [this.getArg(0), this.getArgByName("data")]
       or
+      // although `mac_tag` is used as the parameter name in the spec above, some implementations use `received_mac_tag`, for an example, see
+      // https://github.com/Legrandin/pycryptodome/blob/5dace638b70ac35bb5d9b565f3e75f7869c9d851/lib/Crypto/Cipher/ChaCha20_Poly1305.py#L207
       methodName in ["verify"] and
       result in [this.getArg(0), this.getArgByName(["mac_tag", "received_mac_tag"])]
       or
