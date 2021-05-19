@@ -18,6 +18,15 @@ abstract class AttrRef extends Node {
   abstract Node getObject();
 
   /**
+   * Gets the data flow node corresponding to the object whose attribute named
+   * `attrName` is being read or written.
+   */
+  Node getObject(string attrName) {
+    result = this.getObject() and
+    attrName = this.getAttributeName()
+  }
+
+  /**
    * Gets the expression node that defines the attribute being accessed, if any. This is
    * usually an identifier or literal.
    */
