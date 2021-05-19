@@ -71,7 +71,11 @@ abstract private class GeneratedType extends ValueOrRefType, GeneratedElement {
   }
 
   private string stubPartialModifier() {
-    if count(Assembly a | this.getALocation() = a) > 1 then result = "partial " else result = ""
+    if
+      count(Assembly a | this.getALocation() = a) <= 1 or
+      this instanceof Enum
+    then result = ""
+    else result = "partial "
   }
 
   private string stubAttributes() {
@@ -100,9 +104,10 @@ abstract private class GeneratedType extends ValueOrRefType, GeneratedElement {
           stubMembers(assembly) + "}\n\n"
       or
       result =
-        this.stubComment() + this.stubAttributes() + stubAccessibility(this) + this.stubKeyword() +
-          " " + stubClassName(this.(DelegateType).getReturnType()) + " " + this.getUndecoratedName()
-          + stubGenericArguments(this) + "(" + stubParameters(this) + ");\n\n"
+        this.stubComment() + this.stubAttributes() + stubUnsafe(this) + stubAccessibility(this) +
+          this.stubKeyword() + " " + stubClassName(this.(DelegateType).getReturnType()) + " " +
+          this.getUndecoratedName() + stubGenericArguments(this) + "(" + stubParameters(this) +
+          ");\n\n"
     )
   }
 
@@ -669,6 +674,12 @@ private string stubDefaultValue(Parameter p) {
   else result = ""
 }
 
+private string stubEventAccessors(Event e) {
+  if exists(e.(Virtualizable).getExplicitlyImplementedInterface())
+  then result = " { add => throw null; remove => throw null; }"
+  else result = ";"
+}
+
 private string stubExplicitImplementation(Member c) {
   if exists(c.(Virtualizable).getExplicitlyImplementedInterface())
   then result = stubClassName(c.(Virtualizable).getExplicitlyImplementedInterface()) + "."
@@ -748,7 +759,8 @@ private string stubMember(Member m, Assembly assembly) {
                   then
                     result =
                       "    " + stubModifiers(m) + "event " + stubClassName(m.(Event).getType()) +
-                        " " + stubExplicitImplementation(m) + m.getName() + ";\n"
+                        " " + stubExplicitImplementation(m) + m.getName() + stubEventAccessors(m) +
+                        "\n"
                   else
                     if m instanceof GeneratedType
                     then result = m.(GeneratedType).getStub(assembly) + "\n"
