@@ -16,8 +16,9 @@ from Cryptography::CryptographicOperation operation, Cryptography::Cryptographic
 where
   algorithm = operation.getAlgorithm() and
   algorithm.isWeak() and
-  not algorithm instanceof Cryptography::HashingAlgorithm and // handled by `py/weak-sensitive-data-hashing`
-  not algorithm instanceof Cryptography::PasswordHashingAlgorithm // handled by `py/weak-sensitive-data-hashing`
+  // `Cryptography::HashingAlgorithm` and `Cryptography::PasswordHashingAlgorithm` are
+  // handled by `py/weak-sensitive-data-hashing`
+  algorithm instanceof Cryptography::EncryptionAlgorithm
 select operation,
   "The cryptographic algorithm " + algorithm.getName() +
     " is broken or weak, and should not be used."
