@@ -140,7 +140,7 @@ module ComputationallyExpensiveHashFunction {
         algorithm instanceof Cryptography::PasswordHashingAlgorithm and
         algorithm.isWeak()
         or
-        algorithm instanceof Cryptography::HashingAlgorithm
+        algorithm instanceof Cryptography::HashingAlgorithm // Note that HashingAlgorithm and PasswordHashingAlgorithm are disjoint
       ) and
       exists(Cryptography::CryptographicOperation operation |
         algorithm = operation.getAlgorithm() and
