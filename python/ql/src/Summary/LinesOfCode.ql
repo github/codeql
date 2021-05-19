@@ -5,6 +5,7 @@
  *   database. This query counts the lines of code, excluding whitespace or comments.
  * @kind metric
  * @tags summary
+ *       lines-of-code
  * @id py/summary/lines-of-code
  */
 

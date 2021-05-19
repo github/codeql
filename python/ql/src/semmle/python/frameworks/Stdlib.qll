@@ -511,7 +511,23 @@ private module Stdlib {
 
     override predicate mayExecuteInput() { none() }
 
-    override DataFlow::Node getAnInput() { result.asCfgNode() = node.getArg(0) }
+    override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("s")] }
+
+    override DataFlow::Node getOutput() { result = this }
+
+    override string getFormat() { result = "JSON" }
+  }
+
+  /**
+   * A call to `json.load`
+   * See https://docs.python.org/3/library/json.html#json.load
+   */
+  private class JsonLoadCall extends Decoding::Range, DataFlow::CallCfgNode {
+    JsonLoadCall() { this = json().getMember("load").getACall() }
+
+    override predicate mayExecuteInput() { none() }
+
+    override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("fp")] }
 
     override DataFlow::Node getOutput() { result = this }
 
@@ -525,9 +541,27 @@ private module Stdlib {
   private class JsonDumpsCall extends Encoding::Range, DataFlow::CallCfgNode {
     JsonDumpsCall() { this = json().getMember("dumps").getACall() }
 
-    override DataFlow::Node getAnInput() { result.asCfgNode() = node.getArg(0) }
+    override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("obj")] }
 
     override DataFlow::Node getOutput() { result = this }
+
+    override string getFormat() { result = "JSON" }
+  }
+
+  /**
+   * A call to `json.dump`
+   * See https://docs.python.org/3/library/json.html#json.dump
+   */
+  private class JsonDumpCall extends Encoding::Range, DataFlow::CallCfgNode {
+    JsonDumpCall() { this = json().getMember("dump").getACall() }
+
+    override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("obj")] }
+
+    override DataFlow::Node getOutput() {
+      result.(DataFlow::PostUpdateNode).getPreUpdateNode() in [
+          this.getArg(1), this.getArgByName("fp")
+        ]
+    }
 
     override string getFormat() { result = "JSON" }
   }
