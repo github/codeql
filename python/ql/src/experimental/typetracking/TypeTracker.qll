@@ -55,13 +55,46 @@ class StepSummary extends TStepSummary {
 
 /** Provides predicates for updating step summaries (`StepSummary`s). */
 module StepSummary {
+  cached
+  private predicate stepNoCall(LocalSourceNode nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
+    exists(Node mid | nodeFrom.flowsTo(mid) and smallstepNoCall(mid, nodeTo, summary))
+  }
+
+  cached
+  private predicate stepCall(LocalSourceNode nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
+    exists(Node mid | nodeFrom.flowsTo(mid) and smallstepCall(mid, nodeTo, summary))
+  }
+
   /**
    * Gets the summary that corresponds to having taken a forwards
    * heap and/or inter-procedural step from `nodeFrom` to `nodeTo`.
    */
-  cached
+  pragma[inline]
   predicate step(LocalSourceNode nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
-    exists(Node mid | nodeFrom.flowsTo(mid) and smallstep(mid, nodeTo, summary))
+    stepNoCall(nodeFrom, nodeTo, summary)
+    or
+    stepCall(nodeFrom, nodeTo, summary)
+  }
+
+  pragma[noinline]
+  private predicate smallstepNoCall(Node nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
+    jumpStep(nodeFrom, nodeTo) and
+    summary = LevelStep()
+    or
+    exists(string content |
+      localSourceStoreStep(nodeFrom, nodeTo, content) and
+      summary = StoreStep(content)
+      or
+      basicLoadStep(nodeFrom, nodeTo, content) and summary = LoadStep(content)
+    )
+  }
+
+  pragma[noinline]
+  private predicate smallstepCall(Node nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
+    callStep(nodeFrom, nodeTo) and summary = CallStep()
+    or
+    returnStep(nodeFrom, nodeTo) and
+    summary = ReturnStep()
   }
 
   /**
@@ -71,21 +104,11 @@ module StepSummary {
    * Unlike `StepSummary::step`, this predicate does not compress
    * type-preserving steps.
    */
+  pragma[inline]
   predicate smallstep(Node nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
-    jumpStep(nodeFrom, nodeTo) and
-    summary = LevelStep()
+    smallstepNoCall(nodeFrom, nodeTo, summary)
     or
-    callStep(nodeFrom, nodeTo) and summary = CallStep()
-    or
-    returnStep(nodeFrom, nodeTo) and
-    summary = ReturnStep()
-    or
-    exists(string content |
-      localSourceStoreStep(nodeFrom, nodeTo, content) and
-      summary = StoreStep(content)
-      or
-      basicLoadStep(nodeFrom, nodeTo, content) and summary = LoadStep(content)
-    )
+    smallstepCall(nodeFrom, nodeTo, summary)
   }
 
   /**
