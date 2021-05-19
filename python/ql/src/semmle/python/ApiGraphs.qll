@@ -349,10 +349,10 @@ module API {
       )
     }
 
-    private import semmle.python.types.Builtins as Builtins
-
-    /** Returns the names of known built-ins. */
-    private string builtin_name() {
+    /** Gets the name of a known built-in. */
+    private string getBuiltInName() {
+      // These lists were created by inspecting the `builtins` and `__builtin__` modules in
+      // Python 2 and 3 respectively, using the `dir` built-in.
       // Built-in functions and exceptions shared between Python 2 and 3
       result in [
           "abs", "all", "any", "bin", "bool", "bytearray", "callable", "chr", "classmethod",
@@ -381,7 +381,6 @@ module API {
       result in ["False", "True", "None", "NotImplemented", "Ellipsis", "__debug__"]
       or
       // Python 3 only
-      major_version() = 3 and
       result in [
           "ascii", "breakpoint", "bytes", "exec",
           // Exceptions
@@ -393,7 +392,6 @@ module API {
         ]
       or
       // Python 2 only
-      major_version() = 2 and
       result in [
           "basestring", "cmp", "execfile", "file", "long", "raw_input", "reduce", "reload",
           "unichr", "unicode", "xrange"
@@ -425,7 +423,7 @@ module API {
         not exists(LocalVariable v | n.defines(v)) and
         n.isStore() and
         name = n.getId() and
-        name = builtin_name() and
+        name = getBuiltInName() and
         m = n.getEnclosingModule()
       )
     }
@@ -438,7 +436,7 @@ module API {
       n.isGlobal() and
       n.isLoad() and
       name = n.getId() and
-      name = builtin_name() and
+      name = getBuiltInName() and
       m = n.getEnclosingModule()
     }
 
