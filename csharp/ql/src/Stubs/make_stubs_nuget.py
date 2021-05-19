@@ -100,8 +100,6 @@ stubsDirName = 'stubs'
 stubsDir = os.path.join(outputDir, stubsDirName)
 os.makedirs(stubsDir)
 
-stubFileName = '_stub.cs'
-
 frameworksDirName = 'frameworks'
 frameworksDir = os.path.join(stubsDir, frameworksDirName)
 
@@ -124,66 +122,7 @@ with open(assetsJsonFile) as json_data:
         if not os.path.exists(packageDir):
             os.makedirs(packageDir)
         print('  * Processing package: ' + name + '/' + version)
-        with open(os.path.join(packageDir, stubFileName), 'a') as f:
-            with open(os.path.join(packageDir, name + '.csproj'), 'a') as pf:
-
-                pf.write('<Project Sdk="Microsoft.NET.Sdk">\n')
-                pf.write('  <PropertyGroup>\n')
-                pf.write('    <TargetFramework>net5.0</TargetFramework>\n')
-                pf.write('    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>\n')
-                pf.write('    <OutputPath>bin\</OutputPath>\n')
-                pf.write(
-                    '    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>\n')
-                pf.write('  </PropertyGroup>\n\n')
-                pf.write('  <ItemGroup>\n')
-
-                f.write('// Stub for ' + name + ' version ' + version + '\n\n')
-
-                dlls = set()
-                if 'compile' in data['targets'][target][package]:
-                    for dll in data['targets'][target][package]['compile']:
-                        dlls.add(
-                            (name + '/' + version + '/' + dll).lower())
-                if 'runtime' in data['targets'][target][package]:
-                    for dll in data['targets'][target][package]['runtime']:
-                        dlls.add((name + '/' + version + '/' + dll).lower())
-
-                for pathInfo in pathInfos:
-                    for dll in dlls:
-                        if pathInfo.lower().endswith(dll):
-                            copiedFiles.add(pathInfo)
-                            shutil.copy2(pathInfos[pathInfo], packageDir)
-                            f.write('// semmle-extractor-options: ' +
-                                    os.path.basename(pathInfos[pathInfo]) + '\n')
-
-                if 'dependencies' in data['targets'][target][package]:
-                    for dependency in data['targets'][target][package]['dependencies'].keys():
-                        depVersion = data['targets'][target][package]['dependencies'][dependency]
-                        f.write('// semmle-extractor-options: ../../' +
-                                dependency + '/' + depVersion + '/' + stubFileName + '\n')
-                        pf.write('    <ProjectReference Include="../../' +
-                                 dependency + '/' + depVersion + '/' + dependency + '.csproj" />\n')
-
-                if 'frameworkReferences' in data['targets'][target][package]:
-                    if not os.path.exists(frameworksDir):
-                        os.makedirs(frameworksDir)
-                    for framework in data['targets'][target][package]['frameworkReferences']:
-                        frameworks.add(framework)
-                        frameworkDir = os.path.join(
-                            frameworksDir, framework)
-                        if not os.path.exists(frameworkDir):
-                            os.makedirs(frameworkDir)
-                        f.write('// semmle-extractor-options: ../../' + frameworksDirName + '/' +
-                                framework + '/' + stubFileName + '\n')
-                        pf.write('    <ProjectReference Include="../../' +
-                                 frameworksDirName + '/' + framework + '/' + framework + '.csproj" />\n')
-
-                pf.write('  </ItemGroup>\n')
-                pf.write('</Project>\n')
-
-for framework in frameworks:
-    with open(os.path.join(frameworksDir, framework, stubFileName), 'a') as f:
-        with open(os.path.join(frameworksDir, framework, framework + '.csproj'), 'a') as pf:
+        with open(os.path.join(packageDir, name + '.csproj'), 'a') as pf:
 
             pf.write('<Project Sdk="Microsoft.NET.Sdk">\n')
             pf.write('  <PropertyGroup>\n')
@@ -192,18 +131,63 @@ for framework in frameworks:
             pf.write('    <OutputPath>bin\</OutputPath>\n')
             pf.write(
                 '    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>\n')
-            pf.write('  </PropertyGroup>\n')
-            pf.write('</Project>\n')
+            pf.write('  </PropertyGroup>\n\n')
+            pf.write('  <ItemGroup>\n')
 
-            f.write('// Stub for ' + framework + '\n\n')
+            dlls = set()
+            if 'compile' in data['targets'][target][package]:
+                for dll in data['targets'][target][package]['compile']:
+                    dlls.add(
+                        (name + '/' + version + '/' + dll).lower())
+            if 'runtime' in data['targets'][target][package]:
+                for dll in data['targets'][target][package]['runtime']:
+                    dlls.add((name + '/' + version + '/' + dll).lower())
 
             for pathInfo in pathInfos:
-                if 'packs/' + framework.lower() in pathInfo.lower():
-                    copiedFiles.add(pathInfo)
-                    shutil.copy2(pathInfos[pathInfo], os.path.join(
-                        frameworksDir, framework))
-                    f.write('// semmle-extractor-options: ' +
-                            os.path.basename(pathInfos[pathInfo]) + '\n')
+                for dll in dlls:
+                    if pathInfo.lower().endswith(dll):
+                        copiedFiles.add(pathInfo)
+                        shutil.copy2(pathInfos[pathInfo], packageDir)
+
+            if 'dependencies' in data['targets'][target][package]:
+                for dependency in data['targets'][target][package]['dependencies'].keys():
+                    depVersion = data['targets'][target][package]['dependencies'][dependency]
+                    pf.write('    <ProjectReference Include="../../' +
+                             dependency + '/' + depVersion + '/' + dependency + '.csproj" />\n')
+
+            if 'frameworkReferences' in data['targets'][target][package]:
+                if not os.path.exists(frameworksDir):
+                    os.makedirs(frameworksDir)
+                for framework in data['targets'][target][package]['frameworkReferences']:
+                    frameworks.add(framework)
+                    frameworkDir = os.path.join(
+                        frameworksDir, framework)
+                    if not os.path.exists(frameworkDir):
+                        os.makedirs(frameworkDir)
+                    pf.write('    <ProjectReference Include="../../' +
+                             frameworksDirName + '/' + framework + '/' + framework + '.csproj" />\n')
+
+            pf.write('  </ItemGroup>\n')
+            pf.write('</Project>\n')
+
+for framework in frameworks:
+    with open(os.path.join(frameworksDir, framework, framework + '.csproj'), 'a') as pf:
+
+        pf.write('<Project Sdk="Microsoft.NET.Sdk">\n')
+        pf.write('  <PropertyGroup>\n')
+        pf.write('    <TargetFramework>net5.0</TargetFramework>\n')
+        pf.write('    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>\n')
+        pf.write('    <OutputPath>bin\</OutputPath>\n')
+        pf.write(
+            '    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>\n')
+        pf.write('  </PropertyGroup>\n')
+        pf.write('</Project>\n')
+
+        for pathInfo in pathInfos:
+            if 'packs/' + framework.lower() in pathInfo.lower():
+                copiedFiles.add(pathInfo)
+                shutil.copy2(pathInfos[pathInfo], os.path.join(
+                    frameworksDir, framework))
 
 for pathInfo in pathInfos:
     if pathInfo not in copiedFiles:
