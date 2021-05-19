@@ -628,13 +628,18 @@ private string stubParameters(Parameterizable p) {
     )
 }
 
-private string stubDefaultArguments(Parameterizable p) {
-  result =
-    concat(int i, Parameter param |
-      param = p.getParameter(i) and not param.getType() instanceof ArglistType
-    |
-      "default(" + stubClassName(param.getType()) + ")", ", " order by i
-    )
+private string stubDefaultArguments(Constructor baseCtor) {
+  exists(Constructor c |
+    baseCtor = getBaseConstructor(c.getDeclaringType()) and
+    baseCtor.getNumberOfParameters() > 0 and
+    not c.isStatic() and
+    result =
+      concat(int i, Parameter param |
+        param = baseCtor.getParameter(i) and not param.getType() instanceof ArglistType
+      |
+        "default(" + stubClassName(param.getType()) + ")", ", " order by i
+      )
+  )
 }
 
 private string stubParameterModifiers(Parameter p) {
