@@ -4253,7 +4253,7 @@ raise.rb:
 #-----|  -> element
 
 #  154| m14
-#-----|  -> exit raise.rb (normal)
+#-----|  -> m15
 
 #  154| exit m14
 
@@ -4304,3 +4304,96 @@ raise.rb:
 
 #  155| element
 #-----|  -> call to nil?
+
+#  158| enter m15
+#-----|  -> self
+
+#  158| m15
+#-----|  -> self
+
+#  158| exit m15
+
+#  158| exit m15 (normal)
+#-----|  -> exit m15
+
+#  159| call to foo
+#-----|  -> exit m15 (normal)
+
+#  159| self
+#-----|  -> do ... end
+
+#  159| enter do ... end
+#-----|  -> self
+
+#  159| do ... end
+#-----|  -> call to foo
+
+#  159| exit do ... end
+
+#  159| exit do ... end (normal)
+#-----|  -> exit do ... end
+
+#  160| call to bar
+#-----|  -> exit do ... end (normal)
+
+#  160| self
+#-----|  -> -> { ... }
+
+#  160| enter -> { ... }
+#-----|  -> x
+
+#  160| -> { ... }
+#-----|  -> call to bar
+
+#  160| exit -> { ... }
+
+#  160| exit -> { ... } (abnormal)
+#-----|  -> exit -> { ... }
+
+#  160| exit -> { ... } (normal)
+#-----|  -> exit -> { ... }
+
+#  160| x
+#-----|  -> x
+
+#  161| call to raise
+#-----| raise -> exit -> { ... } (abnormal)
+
+#  161| ... unless ...
+#-----|  -> exit -> { ... } (normal)
+
+#  161| self
+#-----|  -> ""
+
+#  161| ""
+#-----|  -> call to raise
+
+#  161| x
+#-----| true -> ... unless ...
+#-----| false -> self
+
+#  166| C
+#-----|  -> exit raise.rb (normal)
+
+#  167| enter m
+#-----|  -> self
+
+#  167| m
+#-----|  -> C
+
+#  167| exit m
+
+#  167| exit m (abnormal)
+#-----|  -> exit m
+
+#  167| self
+#-----|  -> m
+
+#  168| call to raise
+#-----| raise -> exit m (abnormal)
+
+#  168| self
+#-----|  -> ""
+
+#  168| ""
+#-----|  -> call to raise
