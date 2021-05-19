@@ -2,6 +2,7 @@ private import python
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.internal.DataFlowPrivate as DataFlowPrivate
 private import semmle.python.dataflow.new.internal.TaintTrackingPublic
+private import semmle.python.ApiGraphs
 
 /**
  * Holds if `node` should be a sanitizer in all global taint flow configurations
@@ -152,15 +153,14 @@ predicate containerStep(DataFlow::CfgNode nodeFrom, DataFlow::Node nodeTo) {
   or
   // constructor call
   exists(DataFlow::CallCfgNode call | call = nodeTo |
-    call.getFunction().asCfgNode().(NameNode).getId() in [
-        "list", "set", "frozenset", "dict", "defaultdict", "tuple"
-      ] and
+    call = API::builtin(["list", "set", "frozenset", "dict", "tuple"]).getACall() and
     call.getArg(0) = nodeFrom
+    // TODO: Properly handle defaultdict/namedtuple
   )
   or
   // functions operating on collections
   exists(DataFlow::CallCfgNode call | call = nodeTo |
-    call.getFunction().asCfgNode().(NameNode).getId() in ["sorted", "reversed", "iter", "next"] and
+    call = API::builtin(["sorted", "reversed", "iter", "next"]).getACall() and
     call.getArg(0) = nodeFrom
   )
   or
@@ -187,14 +187,9 @@ predicate containerStep(DataFlow::CfgNode nodeFrom, DataFlow::Node nodeTo) {
  * Holds if taint can flow from `nodeFrom` to `nodeTo` with a step related to copying.
  */
 predicate copyStep(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
-  exists(CallNode call | call = nodeTo.getNode() |
-    // Fully qualified: copy.copy, copy.deepcopy
-    (
-      call.getFunction().(NameNode).getId() in ["copy", "deepcopy"]
-      or
-      call.getFunction().(AttrNode).getObject(["copy", "deepcopy"]).(NameNode).getId() = "copy"
-    ) and
-    call.getArg(0) = nodeFrom.getNode()
+  exists(DataFlow::CallCfgNode call | call = nodeTo |
+    call = API::moduleImport("copy").getMember(["copy", "deepcopy"]).getACall() and
+    call.getArg(0) = nodeFrom
   )
 }
 
