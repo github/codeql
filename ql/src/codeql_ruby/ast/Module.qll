@@ -20,6 +20,10 @@ class Module extends TModule {
   /** Gets an `include`d module. */
   Module getAnIncludedModule() { result = getAnIncludedModule(this) }
 
+  /** Holds if this module is a class. */
+  pragma[noinline]
+  predicate isClass() { this.getADeclaration() instanceof ClassDeclaration }
+
   /** Gets a textual representation of this module. */
   string toString() {
     this = TResolved(result)

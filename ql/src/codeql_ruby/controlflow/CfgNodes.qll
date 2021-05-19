@@ -123,15 +123,9 @@ abstract private class ExprChildMapping extends Expr {
    */
   abstract predicate relevantChild(Expr child);
 
-  private AstNode getAChildStar() {
-    result = this
-    or
-    result.getParent() = this.getAChildStar()
-  }
-
   pragma[noinline]
   private BasicBlock getABasicBlockInScope() {
-    result.getANode() = TAstCfgNode(this.getAChildStar(), _)
+    result.getANode() = TAstCfgNode(this.getAChild*(), _)
   }
 
   pragma[nomagic]

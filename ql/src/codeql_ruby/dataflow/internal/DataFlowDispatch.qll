@@ -147,11 +147,10 @@ private DataFlow::LocalSourceNode trackInstance(Module tp, TypeTracker t) {
     )
     or
     // `self` in singleton method
-    exists(Self self, MethodBase enclosing, DataFlow::Node objectNode |
+    exists(Self self, MethodBase enclosing |
       self = result.asExpr().getExpr() and
-      singletonMethod(enclosing, objectNode.asExpr().getExpr()) and
+      flowsToSingletonMethodObject(trackInstance(tp), enclosing) and
       enclosing = self.getEnclosingMethod() and
-      trackInstance(tp).flowsTo(objectNode) and
       not self.getEnclosingModule().getEnclosingMethod() = enclosing
     )
     or
@@ -166,9 +165,7 @@ private DataFlow::LocalSourceNode trackInstance(Module tp, TypeTracker t) {
     // a module or class
     exists(Module m |
       result = trackModule(m) and
-      if m.getADeclaration() instanceof ClassDeclaration
-      then tp = TResolved("Class")
-      else tp = TResolved("Module")
+      if m.isClass() then tp = TResolved("Class") else tp = TResolved("Module")
     )
   )
   or
@@ -198,12 +195,25 @@ private predicate singletonMethod(MethodBase method, Expr object) {
 }
 
 pragma[nomagic]
+private predicate flowsToSingletonMethodObject(DataFlow::LocalSourceNode nodeFrom, MethodBase method) {
+  exists(DataFlow::LocalSourceNode nodeTo |
+    nodeFrom.flowsTo(nodeTo) and
+    singletonMethod(method, nodeTo.asExpr().getExpr())
+  )
+}
+
+pragma[nomagic]
+private predicate moduleFlowsToSingletonMethodObject(Module m, MethodBase method) {
+  flowsToSingletonMethodObject(trackModule(m), method)
+}
+
+pragma[nomagic]
 private DataFlow::LocalSourceNode trackSingletonMethod0(MethodBase method, TypeTracker t) {
   t.start() and
-  exists(DataFlow::Node nodeTo | singletonMethod(method, nodeTo.asExpr().getExpr()) |
-    result.flowsTo(nodeTo)
+  (
+    flowsToSingletonMethodObject(result, method)
     or
-    exists(Module m | result = trackModule(m) and trackModule(m).flowsTo(nodeTo))
+    exists(Module m | result = trackModule(m) and moduleFlowsToSingletonMethodObject(m, method))
   )
   or
   exists(TypeTracker t2 | result = trackSingletonMethod0(method, t2).track(t2, t))
