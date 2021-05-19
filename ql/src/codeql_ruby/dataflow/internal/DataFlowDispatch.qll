@@ -169,7 +169,14 @@ private DataFlow::LocalSourceNode trackInstance(Module tp, TypeTracker t) {
     )
   )
   or
-  exists(TypeTracker t2 | result = trackInstance(tp, t2).track(t2, t))
+  exists(TypeTracker t2, StepSummary summary |
+    result = trackInstanceRec(tp, t2, summary) and t = t2.append(summary)
+  )
+}
+
+pragma[nomagic]
+private DataFlow::LocalSourceNode trackInstanceRec(Module tp, TypeTracker t, StepSummary summary) {
+  StepSummary::step(trackInstance(tp, t), result, summary)
 }
 
 private DataFlow::LocalSourceNode trackInstance(Module tp) {
@@ -179,7 +186,14 @@ private DataFlow::LocalSourceNode trackInstance(Module tp) {
 private DataFlow::LocalSourceNode trackBlock(Block block, TypeTracker t) {
   t.start() and result.asExpr().getExpr() = block
   or
-  exists(TypeTracker t2 | result = trackBlock(block, t2).track(t2, t))
+  exists(TypeTracker t2, StepSummary summary |
+    result = trackBlockRec(block, t2, summary) and t = t2.append(summary)
+  )
+}
+
+pragma[nomagic]
+private DataFlow::LocalSourceNode trackBlockRec(Block block, TypeTracker t, StepSummary summary) {
+  StepSummary::step(trackBlock(block, t), result, summary)
 }
 
 private DataFlow::LocalSourceNode trackBlock(Block block) {
@@ -216,7 +230,16 @@ private DataFlow::LocalSourceNode trackSingletonMethod0(MethodBase method, TypeT
     exists(Module m | result = trackModule(m) and moduleFlowsToSingletonMethodObject(m, method))
   )
   or
-  exists(TypeTracker t2 | result = trackSingletonMethod0(method, t2).track(t2, t))
+  exists(TypeTracker t2, StepSummary summary |
+    result = trackSingletonMethod0Rec(method, t2, summary) and t = t2.append(summary)
+  )
+}
+
+pragma[nomagic]
+private DataFlow::LocalSourceNode trackSingletonMethod0Rec(
+  MethodBase method, TypeTracker t, StepSummary summary
+) {
+  StepSummary::step(trackSingletonMethod0(method, t), result, summary)
 }
 
 pragma[nomagic]
@@ -244,7 +267,14 @@ private DataFlow::LocalSourceNode trackModule(Module tp, TypeTracker t) {
     result = selfInModule(tp)
   )
   or
-  exists(TypeTracker t2 | result = trackModule(tp, t2).track(t2, t))
+  exists(TypeTracker t2, StepSummary summary |
+    result = trackModuleRec(tp, t2, summary) and t = t2.append(summary)
+  )
+}
+
+pragma[nomagic]
+private DataFlow::LocalSourceNode trackModuleRec(Module tp, TypeTracker t, StepSummary summary) {
+  StepSummary::step(trackModule(tp, t), result, summary)
 }
 
 private DataFlow::LocalSourceNode trackModule(Module tp) {
