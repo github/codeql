@@ -11,6 +11,7 @@ private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.PEP249
 private import semmle.python.regex
+private import semmle.python.frameworks.internal.PoorMansFunctionResolution
 
 /**
  * Provides models for the `django` PyPI package.
@@ -1386,13 +1387,6 @@ private module PrivateDjango {
   // ---------------------------------------------------------------------------
   // Helpers
   // ---------------------------------------------------------------------------
-  /**
-   * Gets the last decorator call for the function `func`, if `func` has decorators.
-   */
-  private Expr lastDecoratorCall(Function func) {
-    result = func.getDefinition().(FunctionExpr).getADecoratorCall() and
-    not exists(Call other_decorator | other_decorator.getArg(0) = result)
-  }
 
   /** Adds the `getASelfRef` member predicate when modeling a class. */
   abstract private class SelfRefMixin extends Class {
@@ -1487,45 +1481,6 @@ private module PrivateDjango {
   // ---------------------------------------------------------------------------
   // routing modeling
   // ---------------------------------------------------------------------------
-  /**
-   * Gets a reference to the Function `func`.
-   *
-   * The idea is that this function should be used as a route handler when setting up a
-   * route, but currently it just tracks all functions, since we can't do type-tracking
-   * backwards yet (TODO).
-   */
-  private DataFlow::LocalSourceNode djangoRouteHandlerFunctionTracker(
-    DataFlow::TypeTracker t, Function func
-  ) {
-    t.start() and
-    (
-      not exists(func.getADecorator()) and
-      result.asExpr() = func.getDefinition()
-      or
-      // If the function has decorators, we still want to model the function as being
-      // the request handler for a route setup. In such situations, we must track the
-      // last decorator call instead of the function itself.
-      //
-      // Note that this means that we blindly ignore what the decorator actually does to
-      // the function, which seems like an OK tradeoff.
-      result.asExpr() = lastDecoratorCall(func)
-    )
-    or
-    exists(DataFlow::TypeTracker t2 |
-      result = djangoRouteHandlerFunctionTracker(t2, func).track(t2, t)
-    )
-  }
-
-  /**
-   * Gets a reference to the Function `func`.
-   *
-   * The idea is that this function should be used as a route handler when setting up a
-   * route, but currently it just tracks all functions, since we can't do type-tracking
-   * backwards yet (TODO).
-   */
-  private DataFlow::Node djangoRouteHandlerFunctionTracker(Function func) {
-    djangoRouteHandlerFunctionTracker(DataFlow::TypeTracker::end(), func).flowsTo(result)
-  }
 
   /**
    * In order to recognize a class as being a django view class, based on the `as_view`
@@ -1613,7 +1568,7 @@ private module PrivateDjango {
    */
   private class DjangoRouteHandler extends Function {
     DjangoRouteHandler() {
-      exists(DjangoRouteSetup route | route.getViewArg() = djangoRouteHandlerFunctionTracker(this))
+      exists(DjangoRouteSetup route | route.getViewArg() = poorMansFunctionTracker(this))
       or
       any(DjangoViewClass vc).getARequestHandler() = this
     }
@@ -1663,7 +1618,7 @@ private module PrivateDjango {
     abstract DataFlow::Node getViewArg();
 
     final override DjangoRouteHandler getARequestHandler() {
-      djangoRouteHandlerFunctionTracker(result) = getViewArg()
+      poorMansFunctionTracker(result) = getViewArg()
       or
       exists(DjangoViewClass vc |
         getViewArg() = vc.asViewResult() and
