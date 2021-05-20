@@ -352,7 +352,7 @@ module API {
     /** Gets the name of a known built-in. */
     private string getBuiltInName() {
       // These lists were created by inspecting the `builtins` and `__builtin__` modules in
-      // Python 2 and 3 respectively, using the `dir` built-in.
+      // Python 3 and 2 respectively, using the `dir` built-in.
       // Built-in functions and exceptions shared between Python 2 and 3
       result in [
           "abs", "all", "any", "bin", "bool", "bytearray", "callable", "chr", "classmethod",
