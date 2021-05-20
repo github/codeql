@@ -12,7 +12,6 @@
  */
 
 // TODO: adjust precision
-
 import ruby
 import codeql_ruby.DataFlow
 import DataFlow::PathGraph
