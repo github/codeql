@@ -86,3 +86,20 @@ class JMXRegistrationMethod extends Method {
     )
   }
 }
+
+/** The class `javax.management.remote.JMXConnectorFactory`. */
+class TypeJMXConnectorFactory extends Class {
+  TypeJMXConnectorFactory() {
+    this.hasQualifiedName("javax.management.remote", "JMXConnectorFactory")
+  }
+}
+
+/** The class `javax.management.remote.JMXServiceURL`. */
+class TypeJMXServiceURL extends Class {
+  TypeJMXServiceURL() { this.hasQualifiedName("javax.management.remote", "JMXServiceURL") }
+}
+
+/** The class `javax.management.remote.rmi.RMIConnector`. */
+class TypeRMIConnector extends Class {
+  TypeRMIConnector() { this.hasQualifiedName("javax.management.remote.rmi", "RMIConnector") }
+}

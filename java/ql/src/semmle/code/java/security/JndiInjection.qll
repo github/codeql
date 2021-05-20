@@ -1,11 +1,10 @@
 /** Provides classes to reason about JNDI injection vulnerabilities. */
 
 import java
+import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.ExternalFlow
-import semmle.code.java.dataflow.FlowSources
-import experimental.semmle.code.java.frameworks.Jndi
+import semmle.code.java.frameworks.Jndi
 import semmle.code.java.frameworks.SpringLdap
-import DataFlow
 
 /** A data flow sink for unvalidated user input that is used in JNDI lookup. */
 abstract class JndiInjectionSink extends DataFlow::Node { }
@@ -82,7 +81,6 @@ private class DefaultJndiInjectionSinkModel extends SinkModelCsv {
   override predicate row(string row) {
     row =
       [
-        // JDK
         "javax.naming;InitialContext;true;lookup;;;Argument[0];jndi-injection",
         "javax.naming;InitialContext;true;lookupLink;;;Argument[0];jndi-injection",
         "javax.naming;InitialContext;true;doLookup;;;Argument[0];jndi-injection",
@@ -143,7 +141,7 @@ private class DefaultJndiInjectionAdditionalTaintStep extends JndiInjectionAddit
  * Holds if `n1` to `n2` is a dataflow step that converts between `String` and `CompositeName` or
  * `CompoundName`, i.e. `new CompositeName(tainted)` or `new CompoundName(tainted)`.
  */
-private predicate nameStep(ExprNode n1, ExprNode n2) {
+private predicate nameStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2) {
   exists(ConstructorCall cc |
     cc.getConstructedType() instanceof TypeCompositeName or
     cc.getConstructedType() instanceof TypeCompoundName
@@ -157,7 +155,7 @@ private predicate nameStep(ExprNode n1, ExprNode n2) {
  * Holds if `n1` to `n2` is a dataflow step that converts between `String` and `JMXServiceURL`,
  * i.e. `new JMXServiceURL(tainted)`.
  */
-private predicate jmxServiceUrlStep(ExprNode n1, ExprNode n2) {
+private predicate jmxServiceUrlStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2) {
   exists(ConstructorCall cc | cc.getConstructedType() instanceof TypeJMXServiceURL |
     n1.asExpr() = cc.getAnArgument() and
     n2.asExpr() = cc
@@ -168,7 +166,7 @@ private predicate jmxServiceUrlStep(ExprNode n1, ExprNode n2) {
  * Holds if `n1` to `n2` is a dataflow step that converts between `JMXServiceURL` and
  * `JMXConnector`, i.e. `JMXConnectorFactory.newJMXConnector(tainted)`.
  */
-private predicate jmxConnectorStep(ExprNode n1, ExprNode n2) {
+private predicate jmxConnectorStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2) {
   exists(MethodAccess ma, Method m | n1.asExpr() = ma.getArgument(0) and n2.asExpr() = ma |
     ma.getMethod() = m and
     m.getDeclaringType() instanceof TypeJMXConnectorFactory and
@@ -180,7 +178,7 @@ private predicate jmxConnectorStep(ExprNode n1, ExprNode n2) {
  * Holds if `n1` to `n2` is a dataflow step that converts between `JMXServiceURL` and
  * `RMIConnector`, i.e. `new RMIConnector(tainted)`.
  */
-private predicate rmiConnectorStep(ExprNode n1, ExprNode n2) {
+private predicate rmiConnectorStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2) {
   exists(ConstructorCall cc | cc.getConstructedType() instanceof TypeRMIConnector |
     n1.asExpr() = cc.getAnArgument() and
     n2.asExpr() = cc
