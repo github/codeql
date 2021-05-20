@@ -87,6 +87,13 @@ private module Frameworks {
 private predicate sourceModelCsv(string row) {
   row =
     [
+      // org.springframework.security.web.savedrequest.SavedRequest
+      "org.springframework.security.web.savedrequest;SavedRequest;true;getRedirectUrl;;;ReturnValue;remote",
+      "org.springframework.security.web.savedrequest;SavedRequest;true;getCookies;;;ReturnValue;remote",
+      "org.springframework.security.web.savedrequest;SavedRequest;true;getHeaderValues;;;ReturnValue;remote",
+      "org.springframework.security.web.savedrequest;SavedRequest;true;getHeaderNames;;;ReturnValue;remote",
+      "org.springframework.security.web.savedrequest;SavedRequest;true;getParameterValues;;;ReturnValue;remote",
+      "org.springframework.security.web.savedrequest;SavedRequest;true;getParameterMap;;;ReturnValue;remote",
       // ServletRequestGetParameterMethod
       "javax.servlet;ServletRequest;false;getParameter;(String);;ReturnValue;remote",
       "javax.servlet;ServletRequest;false;getParameterValues;(String);;ReturnValue;remote",
