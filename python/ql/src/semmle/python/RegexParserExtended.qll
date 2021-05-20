@@ -7,17 +7,23 @@ module RegexSpecific {
 
 import RegexSpecific as Conf
 
+private string escapableChars() { result = "AbBdDsSwWZafnNrtuUvx\\\\" }
+
+private string keywordChars() { result = "()|*+?\\-\\[\\]" }
+
 class RegexParserConfiguration extends ParserConfiguration {
   RegexParserConfiguration() { this = "Extended regex parser configuration" }
 
   override predicate hasTokenRegex(string regex) {
-    regex = "[()|*+?\\-\\[\\]]"
+    regex = "[" + keywordChars() + "]"
     or
     regex = "\\[\\^"
   }
 
   override predicate hasTokenRegex(string regex, string id) {
-    regex = "[^()|.$\\^\\[\\]\\\\]" and id = "normalchar"
+    regex = "[^" + keywordChars() + ".$\\^\\\\]" and id = "normalchar"
+    or
+    regex = "\\\\[^" + escapableChars() + "0-9]" and id = "normalchar"
     or
     regex = "\\\\[0-9]+" and id = "backref"
     or
@@ -37,9 +43,7 @@ class RegexParserConfiguration extends ParserConfiguration {
     or
     regex = "\\{[0-9]+,\\}" and id = "openrepeat"
     or
-    regex = "\\\\[^AbBdDsSwWZafnNrtuUvx\\\\0-9]" and id = "normalchar"
-    or
-    regex = "\\\\[AbBdDsSwWZafnNrtuUvx\\\\]" and id = "escclass"
+    regex = "\\\\[" + escapableChars() + "]" and id = "escclass"
     or
     regex = "\\(\\?[aiLmsux]+\\)" and id = "confgroup"
     or
@@ -504,14 +508,38 @@ class ParsedRegex extends Regex {
 string testTokenize(ParsedString text, string id, int pos, int seq) {
   // text.toString() = "\\|\\[\\][123]|\\{\\}" and
   // text.toString() = "\\A[+-]?\\d+" and
-  text.toString() = "\\[(?P<txt>[^[]*)\\]\\((?P<uri>[^)]*)" and
+  // text.toString() = "\\[(?P<txt>[^[]*)\\]\\((?P<uri>[^)]*)" and
   // text.toString() = "(?m)^(?!$)" and
+  text.toString() = "^\\b_((?:__|[^_])+?)_\\b|^\\*((?:\\*\\*|[^*])+?)\\*(?!\\*)" and
   result = tokenize(text, id, pos, seq)
 }
 
-predicate testRegex() {
-  "(?P<uri>".regexpMatch("\\(\\?P<\\w+>")
+string canParse(ParsedString text) { result = text.toString() }
+
+predicate testTokenRegex(string text, string kind) {
+  // "(?P<uri>".regexpMatch("\\(\\?P<\\w+>")
   // "n1".regexpMatch("\\w+")
+  exists(string regex |
+    any(RegexParserConfiguration c).hasTokenRegex(regex, kind) and
+    text.regexpMatch(regex)
+  ) and
+  text = "_" and
+  kind = "normalchar"
+}
+
+predicate testT(ParsedString text, int length, string failedAt) {
+  unsuccessfullyTokenized(text, length, failedAt) //and
+  // text.toString() = "^\\b_((?:__|[^_])+?)_\\b|^\\*((?:\\*\\*|[^*])+?)\\*(?!\\*)"
+}
+
+predicate testKeywordRegex(string text) {
+  // "(?P<uri>".regexpMatch("\\(\\?P<\\w+>")
+  // "n1".regexpMatch("\\w+")
+  exists(string regex |
+    any(RegexParserConfiguration c).hasTokenRegex(regex) and
+    text.regexpMatch(regex)
+  ) and
+  text = "("
 }
 
 predicate testParse(ParsedString s, int start, int next, string id) {
@@ -520,4 +548,9 @@ predicate testParse(ParsedString s, int start, int next, string id) {
   // s = "\\[(?P<txt>[^[]*)\\]\\((?P<uri>[^)]*)" and
   s = "012345678" and
   s.nodes(start, next, id)
+}
+
+string testRawTokens(ParsedString s, int pos, string id) {
+  s.toString() = "^\\b_((?:__|[^_])+?)_\\b|^\\*((?:\\*\\*|[^*])+?)\\*(?!\\*)" and
+  result = s.tokens(pos, id)
 }
