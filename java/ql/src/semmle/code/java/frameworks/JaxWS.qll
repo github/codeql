@@ -308,6 +308,20 @@ class JaxRSConsumesAnnotation extends JaxRSAnnotation {
   JaxRSConsumesAnnotation() { this.getType().hasQualifiedName(getAJaxRsPackage(), "Consumes") }
 }
 
+/** A URL redirection sink from JAX-RS */
+private class JaxRsUrlRedirectSink extends SinkModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        //`namespace; type; subtypes; name; signature; ext; input; kind`
+        "javax.ws.rs.core;Response;true;seeOther;;;Argument[0];url-redirect",
+        "javax.ws.rs.core;Response;true;temporaryRedirect;;;Argument[0];url-redirect",
+        "jakarta.ws.rs.core;Response;true;seeOther;;;Argument[0];url-redirect",
+        "jakarta.ws.rs.core;Response;true;temporaryRedirect;;;Argument[0];url-redirect"
+      ]
+  }
+}
+
 /**
  * Model Response:
  *

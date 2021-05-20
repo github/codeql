@@ -36,17 +36,3 @@ private class ApacheUrlRedirectSink extends UrlRedirectSink {
     )
   }
 }
-
-/** A URL redirection sink from JAX-RS */
-private class JaxRsUrlRedirectSink extends UrlRedirectSink {
-  JaxRsUrlRedirectSink() {
-    exists(MethodAccess ma |
-      ma.getMethod()
-          .getDeclaringType()
-          .getAnAncestor()
-          .hasQualifiedName(getAJaxRsPackage("core"), "Response") and
-      ma.getMethod().getName() in ["seeOther", "temporaryRedirect"] and
-      this.asExpr() = ma.getArgument(0)
-    )
-  }
-}
