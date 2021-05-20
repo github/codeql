@@ -152,6 +152,7 @@ Python built-in support
    :widths: auto
 
    Name, Category
+   aiohttp.web, Web framework
    Django, Web framework
    Flask, Web framework
    Tornado, Web framework

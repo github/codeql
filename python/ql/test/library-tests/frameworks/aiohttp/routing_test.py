@@ -15,55 +15,55 @@ app = web.Application()
 if True:
 
     # `app.add_routes` with list
-    async def foo(request):  # $ MISSING: requestHandler
+    async def foo(request):  # $ requestHandler
         return web.Response(text="foo")
 
-    async def foo2(request):  # $ MISSING: requestHandler
+    async def foo2(request):  # $ requestHandler
         return web.Response(text="foo2")
 
-    async def foo3(request):  # $ MISSING: requestHandler
+    async def foo3(request):  # $ requestHandler
         return web.Response(text="foo3")
 
     app.add_routes([
-        web.get("/foo", foo),  # $ MISSING: routeSetup
-        web.route("*", "/foo2", foo2), # $ MISSING: routeSetup
-        web.get(path="/foo3", handler=foo3), # $ MISSING: routeSetup
+        web.get("/foo", foo),  # $ routeSetup="/foo"
+        web.route("*", "/foo2", foo2), # $ routeSetup="/foo2"
+        web.get(path="/foo3", handler=foo3), # $ routeSetup="/foo3"
     ])
 
 
     # using decorator
     routes = web.RouteTableDef()
 
-    @routes.get("/bar")  # $ MISSING: routeSetup
-    async def bar(request):  # $ MISSING: requestHandler
+    @routes.get("/bar")  # $ routeSetup="/bar"
+    async def bar(request):  # $ requestHandler
         return web.Response(text="bar")
 
-    @routes.route("*", "/bar2")  # $ MISSING: routeSetup
-    async def bar2(request):  # $ MISSING: requestHandler
+    @routes.route("*", "/bar2")  # $ routeSetup="/bar2"
+    async def bar2(request):  # $ requestHandler
         return web.Response(text="bar2")
 
-    @routes.get(path="/bar3")  # $ MISSING: routeSetup
-    async def bar3(request):  # $ MISSING: requestHandler
+    @routes.get(path="/bar3")  # $ routeSetup="/bar3"
+    async def bar3(request):  # $ requestHandler
         return web.Response(text="bar3")
 
     app.add_routes(routes)
 
 
     # `app.router.add_get` / `app.router.add_route`
-    async def baz(request):  # $ MISSING: requestHandler
+    async def baz(request):  # $ requestHandler
         return web.Response(text="baz")
 
-    app.router.add_get("/baz", baz)  # $ MISSING: routeSetup
+    app.router.add_get("/baz", baz)  # $ routeSetup="/baz"
 
-    async def baz2(request):  # $ MISSING: requestHandler
+    async def baz2(request):  # $ requestHandler
         return web.Response(text="baz2")
 
-    app.router.add_route("*", "/baz2", baz2)  # $ MISSING: routeSetup
+    app.router.add_route("*", "/baz2", baz2)  # $ routeSetup="/baz2"
 
-    async def baz3(request):  # $ MISSING: requestHandler
+    async def baz3(request):  # $ requestHandler
         return web.Response(text="baz3")
 
-    app.router.add_get(path="/baz3", handler=baz3)  # $ MISSING: routeSetup
+    app.router.add_get(path="/baz3", handler=baz3)  # $ routeSetup="/baz3"
 
 
 ## Using classes / views
@@ -76,7 +76,7 @@ if True:
             return web.Response(text="MyCustomHandlerClass.foo")
 
     my_custom_handler = MyCustomHandlerClass()
-    app.router.add_get("/MyCustomHandlerClass/foo", my_custom_handler.foo_handler)   # $ MISSING: routeSetup
+    app.router.add_get("/MyCustomHandlerClass/foo", my_custom_handler.foo_handler)   # $ routeSetup="/MyCustomHandlerClass/foo"
 
     # Using `web.View`
     # ---------------
@@ -116,12 +116,12 @@ if True:
 if True:
     # see https://docs.aiohttp.org/en/stable/web_quickstart.html#variable-resources
 
-    async def matching(request: web.Request):  # $ MISSING: requestHandler
+    async def matching(request: web.Request):  # $ requestHandler
         name = request.match_info['name']
         number = request.match_info['number']
         return web.Response(text="matching name={} number={}".format(name, number))
 
-    app.router.add_get("/matching/{name}/{number:\d+}", matching)  # $ MISSING: routeSetup
+    app.router.add_get(r"/matching/{name}/{number:\d+}", matching)  # $ routeSetup="/matching/{name}/{number:\d+}"
 
 ## ======= ##
 ## subapps ##
@@ -130,10 +130,10 @@ if True:
 if True:
     subapp = web.Application()
 
-    async def subapp_handler(request):  # $ MISSING: requestHandler
+    async def subapp_handler(request):  # $ requestHandler
         return web.Response(text="subapp_handler")
 
-    subapp.router.add_get("/subapp_handler", subapp_handler)  # $ MISSING: routeSetup
+    subapp.router.add_get("/subapp_handler", subapp_handler)  # $ routeSetup="/subapp_handler"
 
     app.add_subapp("/my_subapp", subapp)
 
@@ -146,11 +146,11 @@ if True:
 ## ================================ ##
 
 if True:
-    async def manual_dispatcher_instance(request):  # $ MISSING: requestHandler
+    async def manual_dispatcher_instance(request):  # $ requestHandler
         return web.Response(text="manual_dispatcher_instance")
 
     url_dispatcher = web.UrlDispatcher()
-    url_dispatcher.add_get("/manual_dispatcher_instance", manual_dispatcher_instance)  # $ MISSING: routeSetup
+    url_dispatcher.add_get("/manual_dispatcher_instance", manual_dispatcher_instance)  # $ routeSetup="/manual_dispatcher_instance"
 
     subapp2 = web.Application(router=url_dispatcher)
     app.add_subapp("/manual_dispatcher_instance_app", subapp2)

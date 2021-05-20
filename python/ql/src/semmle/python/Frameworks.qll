@@ -4,6 +4,7 @@
 
 // If you add modeling of a new framework/library, remember to add it it to the docs in
 // `docs/codeql/support/reusables/frameworks.rst`
+private import semmle.python.frameworks.Aiohttp
 private import semmle.python.frameworks.Cryptodome
 private import semmle.python.frameworks.Cryptography
 private import semmle.python.frameworks.Dill
