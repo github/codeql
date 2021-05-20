@@ -60,22 +60,20 @@ class RegexParserConfiguration extends ParserConfiguration {
     regex = "\\(\\?P<\\w+>" and id = "(named"
   }
 
-  predicate testRegex() {
-    //  "(?P<n1>".regexpMatch("\\(\\?P<[:alnum:]+>")
-    "n1".regexpMatch("\\w+")
-  }
-
   /*
    * Use a proper unambiguous grammar for regexes:
    *
    * regex -> orregex
    * orregex -> seqregex
    * |      orregex '|' seqregex
+   * |      '|' seqregex
+   * |      orregex '|'
    * seqregex -> primary
    * |      primary seqregex
    * primary -> group
-   * |      primary *
-   * |      primary +
+   * |      primary '*'
+   * |      primary '+'
+   * |      primary '?'
    * |      char
    * |      class
    * |      escclass
@@ -93,27 +91,32 @@ class RegexParserConfiguration extends ParserConfiguration {
    * |      '[^]' if allowed empty classes
    * classinner -> classstart classinner1
    * |      classstart
-   * classinner1 -> classinner2 '-'
-   * |      classinner2
-   * classinner2 -> classpart
-   * |      classpart classinner2
-   * classstart -> '-'
-   * |      ']' if not allowed empty classes
-   * |      classpart
-   * classpart -> normalchar
-   * |      classrange
+   * |      classinner1
+   * classstart -> ']'
+   * classinner1 -> classpart
+   * |      classpart classinner1
+   * |      classpart_c
+   * |      classpart_c-
+   * |      '-'
+   * classpart_c -> clschar
+   *        classpart_c clschar
+   *        classpart clschar
+   * classpart_c- -> classpart_c '-'
+   * classpart -> // does not end in a clschar
    * |      escclass
-   * classrange -> normalchar '-' normalchar
-   *
+   * |      classpart_c escclass
+   * |      classpart_c- escclass
+   * |      classpart_c- '-'
+   * |      classrange
+   * classrange -> clschar '-' clschar
+   * clschar -> normalchar
+   * |      anychar
+   * |      '(', ')', '|', '+', '*', '?'
    *
    * Things that currently don't parse:
-   * - Empty regexes (as standalone empty strings, or part of a disjunction or group, e.g. `(a|)` or `()`)
-   * - Inline options, i.e. `(?s)`
-   * - Lookaheads/lookbehinds
-   * - Java specific: Nested character classes, intersecting character classes
+   * - Empty regexes (as standalone empty strings, or part of a group, e.g. `()`)
    *
    * Things that parse but with the wrong semantics:
-   * - Possesive and reluctant quantifiers (`a*?` is treated as an optional regex with body `a*`)
    * - Most escape sequences with special meanings (i.e. besides "quote the next character" or predefined character classes)
    */
 
@@ -123,6 +126,8 @@ class RegexParserConfiguration extends ParserConfiguration {
     or
     a = "primary" and result = "seqregex"
     or
+    // a = "orregex|" and result = "orregex"
+    // or
     a = "seqregex" and result = "orregex"
     or
     a = "orregex" and result = "regex"
@@ -132,22 +137,24 @@ class RegexParserConfiguration extends ParserConfiguration {
     a in ["normalchar", "-", "]"] and
     result = "char"
     or
-    a in ["normalchar", "anychar", "()|+*?".charAt(_)] and result = "clschar"
+    a in ["normalchar", "anychar", "()|+*?[".charAt(_)] and result = "clschar"
     or
-    a = "classstart" and result = "classinner"
+    a in ["classstart", "classinner1"] and result = "classinner"
     or
-    a = "classinner2" and result = "classinner1"
-    or
-    a in ["classpart", "-"] and result = "classstart"
-    or
-    a = "classpart" and result = "classinner2"
+    a in ["classpart", "classpart_c", "classpart_c-", "-"] and result = "classinner1"
     or
     a = "]" and not Conf::allowedEmptyClasses() and result = "classstart"
     or
-    a in ["clschar", "classrange", "escclass"] and result = "classpart"
+    a in ["classrange", "escclass"] and result = "classpart"
+    or
+    a = "clschar" and result = "classpart_c"
   }
 
   override string rule(string a, string b) {
+    a = "|" and b = "seqregex" and result = "orregex"
+    or
+    a = "orregex" and b = "|" and result = "orregex"
+    or
     a = "primary" and b = "seqregex" and result = "seqregex"
     or
     a = "primary" and b = "*" and result = "primary"
@@ -168,9 +175,17 @@ class RegexParserConfiguration extends ParserConfiguration {
     or
     a = "classstart" and b = "classinner1" and result = "classinner"
     or
-    a = "classpart" and b = "classinner2" and result = "classinner2"
+    a = "classpart" and b = "classinner1" and result = "classinner1"
     or
-    a = "classinner2" and b = "-" and result = "classinner1"
+    a in ["classpart", "classpart_c"] and b = "clschar" and result = "classpart_c"
+    or
+    a = "classpart_c" and b = "-" and result = "classpart_c-"
+    or
+    a = "classpart_c" and b = "escclass" and result = "classpart"
+    or
+    a = "classpart_c-" and b = "escclass" and result = "classpart"
+    or
+    a = "classpart_c-" and b = "-" and result = "classpart"
   }
 
   override string rule(string a, string b, string c) {
@@ -276,7 +291,9 @@ class ClassRange extends Node {
 }
 
 class SequenceRegex extends Regex {
-  SequenceRegex() { id = "primaryseqregex" }
+  SequenceRegex() {
+    this.hasId("primaryseqregex") and not this.getParent().getId() = "primaryseqregex"
+  }
 
   Regex getLeft() { result = this.getLeftNode() }
 
@@ -284,7 +301,15 @@ class SequenceRegex extends Regex {
 }
 
 abstract class SuffixRegex extends Regex {
-  Regex getBody() { result = this.getLeftNode() }
+  Regex getBody() {
+    if this.isNonGreedy()
+    then result = this.getLeftNode().getLeftNode()
+    else result = this.getLeftNode()
+  }
+
+  abstract predicate isMaybeEmpty();
+
+  abstract predicate isNonGreedy();
 }
 
 abstract class UnboundedRegex extends SuffixRegex { }
@@ -293,14 +318,38 @@ abstract class RepeatRegex extends SuffixRegex {
   abstract int getLowerBound();
 
   abstract int getUpperBound();
+
+  override predicate isMaybeEmpty() { getLowerBound() = 0 }
+
+  override predicate isNonGreedy() { none() }
 }
 
 class StarRegex extends UnboundedRegex {
-  StarRegex() { id = "primary*" }
+  boolean nonGreedy;
+
+  StarRegex() {
+    id = "primary*" and not this.getParent().getId() = "primary?" and nonGreedy = false
+    or
+    id = "primary?" and this.getLeftNode().getId() = "primary*" and nonGreedy = true
+  }
+
+  override predicate isMaybeEmpty() { any() }
+
+  override predicate isNonGreedy() { nonGreedy = true }
 }
 
 class PlusRegex extends UnboundedRegex {
-  PlusRegex() { id = "primary+" }
+  boolean nonGreedy;
+
+  PlusRegex() {
+    id = "primary+" and not this.getParent().getId() = "primary?" and nonGreedy = false
+    or
+    id = "primary?" and this.getLeftNode().getId() = "primary+" and nonGreedy = true
+  }
+
+  override predicate isMaybeEmpty() { none() }
+
+  override predicate isNonGreedy() { nonGreedy = true }
 }
 
 class FixedRepeatRegex extends SuffixRegex, RepeatRegex {
@@ -366,15 +415,48 @@ class OpenRepeatRegex extends UnboundedRegex, RepeatRegex {
 }
 
 class OptionalRegex extends SuffixRegex {
-  OptionalRegex() { id = "primary?" }
+  boolean nonGreedy;
+
+  OptionalRegex() {
+    id = "primary?" and
+    not this.getLeftNode().getId() = "primary*" and
+    not this.getLeftNode().getId() = "primary+" and
+    if this.getLeftNode().getId() = "primary?" then nonGreedy = true else nonGreedy = false
+  }
+
+  override predicate isMaybeEmpty() { any() }
+
+  override predicate isNonGreedy() { nonGreedy = true }
 }
 
-class OrRegex extends Regex {
-  OrRegex() { id = "orregex|seqregex" }
+abstract class OrRegex extends Regex {
+  abstract Regex getLeft();
 
-  Regex getLeft() { result = this.getLeftNode().getLeftNode() }
+  abstract Regex getRight();
+}
 
-  Regex getRight() { result = this.getRightNode() }
+class FullOrRegex extends OrRegex {
+  FullOrRegex() { id = "orregex|seqregex" }
+
+  override Regex getLeft() { result = this.getLeftNode().getLeftNode() }
+
+  override Regex getRight() { result = this.getRightNode() }
+}
+
+class LeftOrRegex extends OrRegex {
+  LeftOrRegex() { id = "orregex|" and not this.getParent() instanceof FullOrRegex }
+
+  override Regex getLeft() { result = this.getLeftNode() }
+
+  override Regex getRight() { none() }
+}
+
+class RightOrRegex extends OrRegex {
+  RightOrRegex() { id = "|seqregex" }
+
+  override Regex getLeft() { none() }
+
+  override Regex getRight() { result = this.getRightNode() }
 }
 
 class CaptureRegex extends Regex {
@@ -389,9 +471,11 @@ class BackrefRegex extends Regex {
 
 class GroupRegex extends Regex {
   GroupRegex() { this.hasId("group") }
+
+  Regex getContents() { result = this.getLeftNode().getRightNode() }
 }
 
-class ConfGroupRegex extends Regex {
+class ConfGroupRegex extends GroupRegex {
   ConfGroupRegex() { this.hasId("confgroup") }
 }
 
@@ -418,7 +502,22 @@ class ParsedRegex extends Regex {
 }
 
 string testTokenize(ParsedString text, string id, int pos, int seq) {
+  // text.toString() = "\\|\\[\\][123]|\\{\\}" and
   // text.toString() = "\\A[+-]?\\d+" and
   text.toString() = "\\[(?P<txt>[^[]*)\\]\\((?P<uri>[^)]*)" and
+  // text.toString() = "(?m)^(?!$)" and
   result = tokenize(text, id, pos, seq)
+}
+
+predicate testRegex() {
+  "(?P<uri>".regexpMatch("\\(\\?P<\\w+>")
+  // "n1".regexpMatch("\\w+")
+}
+
+predicate testParse(ParsedString s, int start, int next, string id) {
+  // s = "\\A[+-]?\\d+" and
+  // s = "\\|\\[\\][123]|\\{\\}" and
+  // s = "\\[(?P<txt>[^[]*)\\]\\((?P<uri>[^)]*)" and
+  s = "012345678" and
+  s.nodes(start, next, id)
 }

@@ -1,7 +1,13 @@
 import python
-import semmle.python.regex
+import semmle.python.RegexParserExtended
 
-from Regex r, int start, int end, int part_start, int part_end
-where r.groupContents(start, end, part_start, part_end)
-select r.getText(), start, end, r.getText().substring(start, end), part_start, part_end,
-  r.getText().substring(part_start, part_end)
+from Regex r, GroupRegex gr, Regex part, int start, int end, int part_start, int part_end
+where
+  r.isRoot() and
+  r = gr.getParent*() and
+  start = gr.getStartOffset() and
+  end = gr.getEndOffset() and
+  part_start = part.getStartOffset() and
+  part_end = part.getEndOffset() and
+  part = gr.getContents()
+select r.getText(), start, end, gr.getText(), part_start, part_end, part.getText()

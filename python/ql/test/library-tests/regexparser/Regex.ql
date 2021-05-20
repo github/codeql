@@ -8,7 +8,6 @@ predicate zeroWidthMatch(Regex r) {
   r instanceof AssertionGroupRegex
 }
 
-// import semmle.python.RegexLiteral
 predicate part(Regex r, int start, int end, string kind) {
   start = r.getStartOffset() and
   end = r.getEndOffset() and
@@ -24,14 +23,6 @@ predicate part(Regex r, int start, int end, string kind) {
     r instanceof SpecialCharRegex and kind = r.getText()
     or
     r instanceof SequenceRegex and
-    (
-      r.getParent() instanceof SequenceRegex
-      implies
-      (
-        r.getParent().getStartOffset() < r.getStartOffset() and
-        r.getParent().getEndOffset() > r.getEndOffset()
-      )
-    ) and
     kind = "sequence"
     or
     r instanceof ClassRegex and kind = "char-set"

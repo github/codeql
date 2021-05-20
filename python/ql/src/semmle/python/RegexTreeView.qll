@@ -2,7 +2,7 @@ import python
 private import semmle.python.RegexLiteral as L
 private import semmle.python.RegexParserExtended as P
 
-/** Defenitions for compatibility with the JS ReDoS query */
+/** Definitions for compatibility with the JS ReDoS query */
 private newtype TRegExpParent =
   TRegExpLiteral(L::RegexLiteral re) { exists(re.getRegex()) } or
   TRegExp(P::Regex re) {
@@ -174,6 +174,7 @@ class RegExpOpt extends RegExpQuantifier {
   override string getPrimaryQLClass() { result = "RegExpOpt" }
 }
 
+// TODO: This is supposed to be a constant sequence.
 class RegExpConstant extends RegExpTerm {
   RegExpConstant() {
     this = TRegExp(node.(P::ChRegex))
