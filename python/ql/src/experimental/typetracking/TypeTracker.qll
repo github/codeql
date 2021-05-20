@@ -55,11 +55,21 @@ class StepSummary extends TStepSummary {
 
 /** Provides predicates for updating step summaries (`StepSummary`s). */
 module StepSummary {
+  /**
+   * Gets the summary that corresponds to having taken a forwards
+   * heap and/or intra-procedural step from `nodeFrom` to `nodeTo`.
+   *
+   * Steps contained in this predicate should _not_ depend on the call graph.
+   */
   cached
   private predicate stepNoCall(LocalSourceNode nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
     exists(Node mid | nodeFrom.flowsTo(mid) and smallstepNoCall(mid, nodeTo, summary))
   }
 
+  /**
+   * Gets the summary that corresponds to having taken a forwards
+   * inter-procedural step from `nodeFrom` to `nodeTo`.
+   */
   cached
   private predicate stepCall(LocalSourceNode nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
     exists(Node mid | nodeFrom.flowsTo(mid) and smallstepCall(mid, nodeTo, summary))
@@ -68,6 +78,12 @@ module StepSummary {
   /**
    * Gets the summary that corresponds to having taken a forwards
    * heap and/or inter-procedural step from `nodeFrom` to `nodeTo`.
+   *
+   * This predicate is inlined, which enables better join-orders when
+   * the call graph construction and type tracking are mutually recursive.
+   * In such cases, non-linear recursion involving `step` will be limited
+   * to non-linear recursion for the parts of `step` that involve the
+   * call graph.
    */
   pragma[inline]
   predicate step(LocalSourceNode nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
