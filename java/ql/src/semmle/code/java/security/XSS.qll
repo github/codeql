@@ -1,7 +1,6 @@
 /** Provides classes to reason about Cross-site scripting (XSS) vulnerabilities. */
 
 import java
-import semmle.code.java.frameworks.JaxWS
 import semmle.code.java.frameworks.Servlets
 import semmle.code.java.frameworks.android.WebView
 import semmle.code.java.frameworks.spring.SpringController
@@ -93,16 +92,6 @@ private class DefaultXssSink extends XssSink {
         // String.
         returnType instanceof RawClass
       )
-    )
-    or
-    exists(JaxRsResourceMethod resourceMethod, ReturnStmt rs |
-      resourceMethod = any(JaxRsResourceClass resourceClass).getAResourceMethod() and
-      rs.getEnclosingCallable() = resourceMethod and
-      this.asExpr() = rs.getResult()
-    |
-      not exists(resourceMethod.getProducesAnnotation())
-      or
-      resourceMethod.getProducesAnnotation().getADeclaredContentType() = "text/plain"
     )
   }
 }

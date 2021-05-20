@@ -30,7 +30,8 @@ public class JaxRs1 { // $RootResourceClass
   }
 
   @GET
-  void Get() { // $ResourceMethod $ResourceMethodOnResourceClass
+  int Get() { // $ResourceMethod $ResourceMethodOnResourceClass
+    return 0; // $XssSink
   }
 
   @POST
@@ -39,7 +40,8 @@ public class JaxRs1 { // $RootResourceClass
 
   @Produces("text/plain") // $ProducesAnnotation=text/plain
   @DELETE
-  void Delete() { // $ResourceMethod=text/plain $ResourceMethodOnResourceClass
+  double Delete() { // $ResourceMethod=text/plain $ResourceMethodOnResourceClass
+    return 0.0; // $XssSink
   }
 
   @Produces(MediaType.TEXT_HTML) // $ProducesAnnotation=text/html
@@ -59,27 +61,44 @@ public class JaxRs1 { // $RootResourceClass
   NonRootResourceClass subResourceLocator() { // $SubResourceLocator
     return null;
   }
-}
 
-class NonRootResourceClass { // $NonRootResourceClass
-  @Path("")
-  AnotherNonRootResourceClass subResourceLocator1() { // $SubResourceLocator
-    return null;
-  }
+  public class NonRootResourceClass { // $NonRootResourceClass
+    @GET
+    int Get() { // $ResourceMethod $ResourceMethodOnResourceClass
+      return 0; // $XssSink
+    }
 
-  @GET
-  @Path("")
-  NotAResourceClass1 NotASubResourceLocator1() { // $ResourceMethod
-    return null;
-  }
+    @Produces("text/html") // $ProducesAnnotation=text/html
+    @POST
+    boolean Post() { // $ResourceMethod=text/html $ResourceMethodOnResourceClass
+      return false;
+    }
 
-  @GET
-  NotAResourceClass2 NotASubResourceLocator2() { // $ResourceMethod
-    return null;
-  }
+    @Produces(MediaType.TEXT_PLAIN) // $ProducesAnnotation=text/plain
+    @DELETE
+    double Delete() { // $ResourceMethod=text/plain $ResourceMethodOnResourceClass
+      return 0.0; // $XssSink
+    }
 
-  NotAResourceClass2 NotASubResourceLocator3() {
-    return null;
+    @Path("")
+    AnotherNonRootResourceClass subResourceLocator1() { // $SubResourceLocator
+      return null;
+    }
+
+    @GET
+    @Path("")
+    NotAResourceClass1 NotASubResourceLocator1() { // $ResourceMethod $ResourceMethodOnResourceClass
+      return null; // $XssSink
+    }
+
+    @GET
+    NotAResourceClass2 NotASubResourceLocator2() { // $ResourceMethod $ResourceMethodOnResourceClass
+      return null; // $XssSink
+    }
+
+    NotAResourceClass2 NotASubResourceLocator3() {
+      return null;
+    }
   }
 }
 
@@ -120,7 +139,8 @@ class NotAResourceClass2 {
 
 class ExtendsJaxRs1 extends JaxRs1 {
   @Override
-  void Get() { // $ResourceMethod
+  int Get() { // $ResourceMethod
+    return 1;
   }
   
   @Override
@@ -129,7 +149,8 @@ class ExtendsJaxRs1 extends JaxRs1 {
   }
 
   @Override
-  void Delete() { // $ResourceMethod=text/plain
+  double Delete() { // $ResourceMethod=text/plain
+    return 1.0;
   }
 
   @Override
@@ -151,7 +172,8 @@ class ExtendsJaxRs1 extends JaxRs1 {
 @Produces(MediaType.TEXT_XML) // $ProducesAnnotation=text/xml
 class ExtendsJaxRs1WithProducesAnnotation extends JaxRs1 {
   @Override
-  void Get() { // $ResourceMethod=text/xml
+  int Get() { // $ResourceMethod=text/xml
+    return 2;
   }
   
   @Override
@@ -160,7 +182,8 @@ class ExtendsJaxRs1WithProducesAnnotation extends JaxRs1 {
   }
 
   @Override
-  void Delete() { // $ResourceMethod=text/plain
+  double Delete() { // $ResourceMethod=text/plain
+    return 2.0;
   }
 
   @Override

@@ -5,6 +5,7 @@
 
 import java
 private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.security.XSS
 
 /**
  * Gets a name for the root package of JAX-RS.
@@ -306,6 +307,21 @@ class JaxRSProducesAnnotation extends JaxRSAnnotation {
 /** An `@Consumes` annotation that describes content types can be consumed by this resource. */
 class JaxRSConsumesAnnotation extends JaxRSAnnotation {
   JaxRSConsumesAnnotation() { this.getType().hasQualifiedName(getAJaxRsPackage(), "Consumes") }
+}
+
+/** A default sink representing methods susceptible to XSS attacks. */
+private class JaxRSXssSink extends XssSink {
+  JaxRSXssSink() {
+    exists(JaxRsResourceMethod resourceMethod, ReturnStmt rs |
+      resourceMethod = any(JaxRsResourceClass resourceClass).getAResourceMethod() and
+      rs.getEnclosingCallable() = resourceMethod and
+      this.asExpr() = rs.getResult()
+    |
+      not exists(resourceMethod.getProducesAnnotation())
+      or
+      resourceMethod.getProducesAnnotation().getADeclaredContentType() = "text/plain"
+    )
+  }
 }
 
 /** A URL redirection sink from JAX-RS */

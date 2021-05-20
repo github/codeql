@@ -1,5 +1,6 @@
 import java
 import semmle.code.java.frameworks.JaxWS
+import semmle.code.java.security.XSS
 import TestUtilities.InlineExpectationsTest
 
 class JaxRsTest extends InlineExpectationsTest {
@@ -141,6 +142,13 @@ class JaxRsTest extends InlineExpectationsTest {
     exists(JaxRSConsumesAnnotation consumesAnnotation |
       consumesAnnotation.getLocation() = location and
       element = consumesAnnotation.toString() and
+      value = ""
+    )
+    or
+    tag = "XssSink" and
+    exists(XssSink xssSink |
+      xssSink.getLocation() = location and
+      element = xssSink.toString() and
       value = ""
     )
   }
