@@ -50,13 +50,36 @@ abstract private class GeneratedType extends Type, GeneratedElement {
   }
 
   /**
-   * Holds if this type is duplicated in another assembly.
-   * In this case, we use the assembly with the highest string.
+   * Holds if this type is defined in multiple assemblies, and at least one of
+   * them is in the `Microsoft.NETCore.App.Ref` folder. In this case, we only stub
+   * the type in the assembly in `Microsoft.NETCore.App.Ref`. In case there are
+   * multiple assemblies in this folder, then we prefer `System.Runtime`.
    */
-  private predicate isDuplicate() {
-    exists(GeneratedType dup |
-      dup.getQualifiedName() = this.getQualifiedName() and
-      this.getLocation().(Assembly).toString() < dup.getLocation().(Assembly).toString()
+  private predicate isDuplicate(Assembly assembly) {
+    // type exists in multiple assemblies
+    count(this.getALocation().(Assembly)) > 1 and
+    // at least one of them is in the `Microsoft.NETCore.App.Ref` folder
+    this.getALocation()
+        .(Assembly)
+        .getFile()
+        .getAbsolutePath()
+        .matches("%Microsoft.NETCore.App.Ref%") and
+    exists(int i |
+      i =
+        count(Assembly a |
+          this.getALocation() = a and
+          a.getFile().getAbsolutePath().matches("%Microsoft.NETCore.App.Ref%")
+        )
+    |
+      i = 1 and
+      // assemblies not in `Microsoft.NETCore.App.Ref` folder are considered duplicates
+      not assembly.getFile().getAbsolutePath().matches("%Microsoft.NETCore.App.Ref%")
+      or
+      i > 1 and
+      // one of the assemblies is named `System.Runtime`
+      this.getALocation().(Assembly).getName() = "System.Runtime" and
+      // all others are considered duplicates
+      assembly.getName() != "System.Runtime"
     )
   }
 
@@ -104,8 +127,11 @@ abstract private class GeneratedType extends Type, GeneratedElement {
 
   /** Gets the entire C# stub code for this type. */
   final string getStub(Assembly assembly) {
-    if this.isDuplicate()
-    then result = ""
+    if this.isDuplicate(assembly)
+    then
+      result =
+        "/* Duplicate type '" + this.getName() + "' is not stubbed in this assembly '" +
+          assembly.toString() + "'. */\n\n"
     else (
       not this instanceof DelegateType and
       result =
