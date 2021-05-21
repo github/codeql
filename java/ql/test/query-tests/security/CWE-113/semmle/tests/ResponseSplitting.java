@@ -27,6 +27,11 @@ public class ResponseSplitting extends HttpServlet {
 		// can lead to HTTP splitting
 		response.addHeader("Content-type", request.getParameter("contentType"));
 		response.setHeader("Content-type", request.getParameter("contentType"));
+		response.sendRedirect(request.getParameter("name"));
+		response.addDateHeader(request.getParameter("name"), 0);
+		response.setDateHeader(request.getParameter("name"), 0);
+		response.addIntHeader(request.getParameter("name"), 0);
+		response.setIntHeader(request.getParameter("name"), 0);
 
 		// GOOD: remove special characters before putting them in the header
 		{

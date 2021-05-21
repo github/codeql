@@ -18,6 +18,11 @@ private class HeaderSplittingSinkModel extends SinkModelCsv {
   override predicate row(string row) {
     row =
       [
+        "javax.servlet.http;HttpServletResponse;false;sendRedirect;;;Argument[0];header-splitting",
+        "javax.servlet.http;HttpServletResponse;false;addDateHeader;;;Argument[0];header-splitting",
+        "javax.servlet.http;HttpServletResponse;false;setDateHeader;;;Argument[0];header-splitting",
+        "javax.servlet.http;HttpServletResponse;false;addIntHeader;;;Argument[0];header-splitting",
+        "javax.servlet.http;HttpServletResponse;false;setIntHeader;;;Argument[0];header-splitting",
         "javax.servlet.http;HttpServletResponse;false;addCookie;;;Argument[0];header-splitting",
         "javax.servlet.http;HttpServletResponse;false;addHeader;;;Argument[0..1];header-splitting",
         "javax.servlet.http;HttpServletResponse;false;setHeader;;;Argument[0..1];header-splitting",
