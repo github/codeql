@@ -8,7 +8,7 @@
 import java
 
 /** A type that should be in the generated code. */
-abstract /*private*/ class GeneratedType extends RefType {
+abstract private class GeneratedType extends RefType {
   GeneratedType() {
     (
       this instanceof Interface
@@ -23,9 +23,9 @@ abstract /*private*/ class GeneratedType extends RefType {
   private string stubKeyword() {
     this instanceof Interface and result = "interface"
     or
-    this instanceof Class and result = "class"
-    // or
-    // this instanceof Enum and result = "enum"
+    this instanceof Class and result = "class" and not this instanceof EnumType
+    or
+    this instanceof EnumType and result = "enum"
   }
 
   private string stubAbstractModifier() {
@@ -51,6 +51,7 @@ abstract /*private*/ class GeneratedType extends RefType {
   private RefType getAnInterestingBaseType() {
     result = this.getASupertype() and
     not result instanceof TypeObject and
+    not this instanceof EnumType and
     result.getSourceDeclaration() != this
   }
 
@@ -78,7 +79,9 @@ abstract /*private*/ class GeneratedType extends RefType {
 
   language[monotonicAggregates]
   private string stubMembers() {
-    result = concat(Member m | m = this.getAGeneratedMember() | stubMember(m))
+    result =
+      stubEnumConstants(this) + stubFakeConstructor(this) +
+        concat(Member m | m = this.getAGeneratedMember() | stubMember(m))
   }
 
   private Member getAGeneratedMember() {
@@ -175,7 +178,7 @@ private string stubAccessibility(Member m) {
 }
 
 private string stubModifiers(Member m) {
-  result = stubAccessibility(m) + stubStaticOrFinal(m) + stubAbstract(m)
+  result = stubAccessibility(m) + stubStaticOrFinal(m) + stubAbstractOrDefault(m)
 }
 
 private string stubStaticOrFinal(Member m) {
@@ -187,9 +190,9 @@ private string stubStaticOrFinal(Member m) {
     else result = ""
 }
 
-private string stubAbstract(Member m) {
+private string stubAbstractOrDefault(Member m) {
   if m.getDeclaringType() instanceof Interface
-  then result = ""
+  then if m.isDefault() then result = "default " else result = ""
   else
     if m.isAbstract()
     then result = "abstract "
@@ -261,7 +264,7 @@ private string stubGenericMethodParams(Method m) {
 }
 
 private string stubImplementation(Callable c) {
-  if c.isAbstract() or c.getDeclaringType() instanceof Interface
+  if c.isAbstract()
   then result = ";"
   else
     if c instanceof Constructor or c.getReturnType() instanceof VoidType
@@ -305,50 +308,109 @@ private string stubParameter(Parameter p) {
   )
 }
 
-private string stubMember(Member m) {
+private string stubEnumConstants(RefType t) {
+  if t instanceof EnumType
+  then
+    exists(EnumType et | et = t |
+      result =
+        "    " + concat(EnumConstant c | c = et.getAnEnumConstant() | c.getName(), ", ") + ";\n"
+    )
+  else result = ""
+}
+
+// Holds if the member is to be excluded from stubMember
+private predicate excludedMember(Member m) {
+  m instanceof EnumConstant
+  or
   exists(Method c | m = c |
-    result =
-      "    " + stubModifiers(c) + stubGenericMethodParams(c) + stubTypeName(c.getReturnType()) + " "
-        + c.getName() + "(" + stubParameters(c) + ")" + stubImplementation(c) + "\n"
+    c.getDeclaringType() instanceof EnumType and
+    m.hasName(["values", "valueOf"]) and
+    m.isStatic()
   )
-  or
-  exists(Constructor c | m = c |
-    result =
-      "    " + stubModifiers(m) + c.getName() + "(" + stubParameters(c) + ")" +
-        stubImplementation(c) + "\n"
+}
+
+private string stubMember(Member m) {
+  if excludedMember(m)
+  then result = ""
+  else (
+    exists(Method c | m = c |
+      result =
+        "    " + stubModifiers(c) + stubGenericMethodParams(c) + stubTypeName(c.getReturnType()) +
+          " " + c.getName() + "(" + stubParameters(c) + ")" + stubImplementation(c) + "\n"
+    )
+    or
+    exists(Constructor c | m = c |
+      result =
+        "    " + stubModifiers(m) + c.getName() + "(" + stubParameters(c) + ")" +
+          stubImplementation(c) + "\n"
+    )
+    or
+    exists(Field f | f = m |
+      result =
+        "    " + stubModifiers(m) + stubTypeName(f.getType()) + " " + f.getName() + " = " +
+          stubDefaultValue(f.getType()) + ";\n"
+    )
+    or
+    exists(NestedType nt | nt = m | result = indent(nt.(GeneratedType).getStub()))
   )
-  or
-  exists(Field f, string impl | f = m |
-    /* and not f instanceof EnumConstant */
-    /*if f.isConst() then impl = " = throw null" else*/ impl = "" and
-    result =
-      "    " + stubModifiers(m) + stubTypeName(f.getType()) + " " + f.getName() + impl + ";\n"
-  )
-  or
-  exists(NestedType nt | nt = m | result = indent(nt.(GeneratedType).getStub()))
 }
 
 bindingset[s]
 private string indent(string s) { result = "    " + s.replaceAll("\n", "\n    ") + "\n" }
 
-private TopLevelType getTopLevel(RefType t) {
-  result = t or
-  result = getTopLevel(t.(NestedType).getEnclosingType())
+// If a class's superclass doesn't have a no-arg constructor, then it won't compile when its constructor's bodies are stubbed
+// So we synthesise no-arg constructors for each generated type that doesn't have one.
+private string stubFakeConstructor(RefType t) {
+  if not t instanceof Class
+  then result = ""
+  else
+    exists(string mod |
+      if t instanceof EnumType then mod = "    private " else mod = "    protected "
+    |
+      if hasNoArgConstructor(t) then result = "" else result = mod + t.getName() + "() {}\n"
+    )
 }
 
+private predicate hasNoArgConstructor(Class t) {
+  exists(Constructor c | c.getDeclaringType() = t |
+    c.getNumberOfParameters() = 0 and
+    not c.isPrivate()
+  )
+}
+
+private RefType getAReferencedType(RefType t) {
+  result = t.(GeneratedType).getAGeneratedType()
+  or
+  result =
+    getAReferencedType(any(NestedType nt |
+        nt.getEnclosingType().getSourceDeclaration() = t.getSourceDeclaration()
+      ))
+  or
+  exists(RefType t1 | t1 = getAReferencedType(t) |
+    result = t1.(NestedType).getEnclosingType()
+    or
+    result = t1.getSourceDeclaration()
+    or
+    result = t1.(ParameterizedType).getATypeArgument()
+    or
+    result = t1.(Array).getElementType()
+  )
+}
+
+/** A top level type whose file should be stubbed */
 class GeneratedTopLevel extends TopLevelType {
   GeneratedTopLevel() {
     this = this.getSourceDeclaration() and
     this instanceof GeneratedType
   }
 
-  RefType getAReferencedType() {
-    exists(GeneratedType t | this = getTopLevel(t) | result = getTopLevel(t.getAGeneratedType()))
+  private TopLevelType getAnImportedType() {
+    result = getAReferencedType(this).getSourceDeclaration()
   }
 
   private string stubAnImport() {
     exists(RefType t, string pkg, string name |
-      t = getAReferencedType().getSourceDeclaration() and
+      t = getAnImportedType() and
       (t instanceof Class or t instanceof Interface) and
       t.hasQualifiedName(pkg, name) and
       t != this and
@@ -371,6 +433,7 @@ class GeneratedTopLevel extends TopLevelType {
       "// Generated automatically from " + this.getQualifiedName() + " for testing purposes\n\n"
   }
 
+  /** Creates a full stub for the file containing this type. */
   string stubFile() {
     result = stubComment() + stubPackage() + stubImports() + this.(GeneratedType).getStub() + "\n"
   }
