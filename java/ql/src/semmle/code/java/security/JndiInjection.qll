@@ -2,6 +2,7 @@
 
 import java
 import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.DataFlow2
 import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.frameworks.Jndi
 import semmle.code.java.frameworks.SpringLdap
@@ -29,24 +30,33 @@ private class DefaultJndiInjectionSink extends JndiInjectionSink {
 }
 
 /**
- * A method that does a JNDI lookup but needs a specific parameter set to `true` to be vulnerable
+ * A method that does a JNDI lookup when it receives a specific argument set to `true`.
  */
 private class ConditionedJndiInjectionSink extends JndiInjectionSink, DataFlow::ExprNode {
   ConditionedJndiInjectionSink() {
     exists(MethodAccess ma, Method m |
       ma.getMethod() = m and
-      ma.getAnArgument() = this.asExpr() and
-      m.getSourceDeclaration()
-          .getDeclaringType()
-          .getASourceSupertype*()
-          .hasQualifiedName(["org.springframework.ldap.core", "org.springframework.ldap"],
-            "LdapOperations")
+      ma.getArgument(0) = this.asExpr() and
+      m.getDeclaringType().getASourceSupertype*() instanceof TypeLdapOperations
     |
       m.hasName("search") and
       ma.getArgument(3).(CompileTimeConstantExpr).getBooleanValue() = true
       or
       m.hasName("unbind") and
       ma.getArgument(1).(CompileTimeConstantExpr).getBooleanValue() = true
+    )
+  }
+}
+
+/**
+ * A method that does a JNDI lookup when it receives a `SearchControls` argument with `setReturningObjFlag` = `true`
+ */
+private class UnsafeSearchControlsSink extends JndiInjectionSink {
+  UnsafeSearchControlsSink() {
+    exists(UnsafeSearchControlsConf conf, MethodAccess ma |
+      conf.hasFlowTo(DataFlow::exprNode(ma.getAnArgument()))
+    |
+      this.asExpr() = ma.getArgument(0)
     )
   }
 }
@@ -61,7 +71,7 @@ private class ProviderUrlJndiInjectionSink extends JndiInjectionSink, DataFlow::
       ma.getMethod() = m and
       ma.getArgument(1) = this.getExpr()
     |
-      m.getDeclaringType().getAnAncestor() instanceof TypeHashtable and
+      m.getDeclaringType().getASourceSupertype*() instanceof TypeHashtable and
       (m.hasName("put") or m.hasName("setProperty")) and
       (
         ma.getArgument(0).(CompileTimeConstantExpr).getStringValue() = "java.naming.provider.url"
@@ -81,12 +91,12 @@ private class DefaultJndiInjectionSinkModel extends SinkModelCsv {
   override predicate row(string row) {
     row =
       [
-        "javax.naming;InitialContext;true;lookup;;;Argument[0];jndi-injection",
-        "javax.naming;InitialContext;true;lookupLink;;;Argument[0];jndi-injection",
-        "javax.naming;InitialContext;true;doLookup;;;Argument[0];jndi-injection",
-        "javax.naming;InitialContext;true;rename;;;Argument[0];jndi-injection",
-        "javax.naming;InitialContext;true;list;;;Argument[0];jndi-injection",
-        "javax.naming;InitialContext;true;listBindings;;;Argument[0];jndi-injection",
+        "javax.naming;Context;true;lookup;;;Argument[0];jndi-injection",
+        "javax.naming;Context;true;lookupLink;;;Argument[0];jndi-injection",
+        "javax.naming;Context;true;doLookup;;;Argument[0];jndi-injection",
+        "javax.naming;Context;true;rename;;;Argument[0];jndi-injection",
+        "javax.naming;Context;true;list;;;Argument[0];jndi-injection",
+        "javax.naming;Context;true;listBindings;;;Argument[0];jndi-injection",
         "javax.management.remote;JMXConnector;true;connect;;;Argument[-1];jndi-injection",
         "javax.management.remote;JMXConnectorFactory;false;connect;;;Argument[0];jndi-injection",
         // Spring
@@ -127,10 +137,92 @@ private class DefaultJndiInjectionSinkModel extends SinkModelCsv {
   }
 }
 
+/**
+ * Find flows between a `SearchControls` object with `setReturningObjFlag` = `true`
+ * and an argument of a `LdapOperations.search` or `DirContext.search` call.
+ */
+private class UnsafeSearchControlsConf extends DataFlow2::Configuration {
+  UnsafeSearchControlsConf() { this = "UnsafeSearchControlsConf" }
+
+  override predicate isSource(DataFlow2::Node source) { source instanceof UnsafeSearchControls }
+
+  override predicate isSink(DataFlow2::Node sink) { sink instanceof UnsafeSearchControlsArgument }
+}
+
+/**
+ * An argument of type `SearchControls` of a a `LdapOperations.search` or `DirContext.search` call.
+ */
+private class UnsafeSearchControlsArgument extends DataFlow2::ExprNode {
+  UnsafeSearchControlsArgument() {
+    exists(MethodAccess ma, Method m |
+      ma.getMethod() = m and
+      ma.getAnArgument() = this.asExpr() and
+      this.asExpr().getType() instanceof TypeSearchControls and
+      m.hasName("search")
+    |
+      m.getDeclaringType().getASourceSupertype*() instanceof TypeLdapOperations or
+      m.getDeclaringType().getASourceSupertype*() instanceof TypeDirContext
+    )
+  }
+}
+
+/**
+ * A `SearchControls` object with `setReturningObjFlag` = `true`.
+ */
+private class UnsafeSearchControls extends DataFlow2::ExprNode {
+  UnsafeSearchControls() {
+    exists(MethodAccess ma |
+      ma.getMethod() instanceof SetReturningObjFlagMethod and
+      ma.getArgument(0).(CompileTimeConstantExpr).getBooleanValue() = true and
+      this.asExpr() = ma.getQualifier()
+    )
+    or
+    exists(ConstructorCall cc |
+      cc.getConstructedType() instanceof TypeSearchControls and
+      cc.getArgument(4).(CompileTimeConstantExpr).getBooleanValue() = true and
+      this.asExpr() = cc
+    )
+  }
+}
+
+/**
+ * The method `SearchControls.setReturningObjFlag`.
+ */
+private class SetReturningObjFlagMethod extends Method {
+  SetReturningObjFlagMethod() {
+    this.getDeclaringType() instanceof TypeSearchControls and
+    this.hasName("setReturningObjFlag")
+  }
+}
+
+/**
+ * The class `javax.naming.directory.SearchControls`
+ */
+private class TypeSearchControls extends Class {
+  TypeSearchControls() { this.hasQualifiedName("javax.naming.directory", "SearchControls") }
+}
+
+/**
+ * The interface `org.springframework.ldap.core.LdapOperations` or
+ * `org.springframework.ldap.LdapOperations`
+ */
+private class TypeLdapOperations extends Interface {
+  TypeLdapOperations() {
+    this.hasQualifiedName(["org.springframework.ldap.core", "org.springframework.ldap"],
+      "LdapOperations")
+  }
+}
+
+/** The class `java.util.Hashtable`. */
+private class TypeHashtable extends Class {
+  TypeHashtable() { this.getSourceDeclaration().hasQualifiedName("java.util", "Hashtable") }
+}
+
 /** A set of additional taint steps to consider when taint tracking JNDI injection related data flows. */
 private class DefaultJndiInjectionAdditionalTaintStep extends JndiInjectionAdditionalTaintStep {
   override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
     nameStep(node1, node2) or
+    nameAddStep(node1, node2) or
     jmxServiceUrlStep(node1, node2) or
     jmxConnectorStep(node1, node2) or
     rmiConnectorStep(node1, node2)
@@ -148,6 +240,24 @@ private predicate nameStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2) {
   |
     n1.asExpr() = cc.getAnArgument() and
     n2.asExpr() = cc
+  )
+}
+
+/**
+ * Holds if `n1` to `n2` is a dataflow step that converts between `String` and `CompositeName` or
+ * `CompoundName`, i.e. `new CompositeName().add(tainted)` or `new CompoundName().add(tainted)`.
+ */
+private predicate nameAddStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2) {
+  exists(Method m, MethodAccess ma |
+    ma.getMethod() = m and
+    m.hasName("add") and
+    (
+      m.getDeclaringType() instanceof TypeCompositeName or
+      m.getDeclaringType() instanceof TypeCompoundName
+    )
+  |
+    n1.asExpr() = ma.getAnArgument() and
+    n2.asExpr() = ma
   )
 }
 
@@ -183,9 +293,4 @@ private predicate rmiConnectorStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2)
     n1.asExpr() = cc.getAnArgument() and
     n2.asExpr() = cc
   )
-}
-
-/** The class `java.util.Hashtable`. */
-private class TypeHashtable extends Class {
-  TypeHashtable() { this.getSourceDeclaration().hasQualifiedName("java.util", "Hashtable") }
 }

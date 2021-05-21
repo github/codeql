@@ -11,6 +11,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.Name;
 import javax.naming.NamingException;
+import javax.naming.directory.DirContext;
 import javax.naming.directory.InitialDirContext;
 import javax.naming.directory.SearchControls;
 import javax.naming.ldap.InitialLdapContext;
@@ -18,6 +19,7 @@ import javax.naming.ldap.InitialLdapContext;
 import org.springframework.jndi.JndiTemplate;
 import org.springframework.ldap.core.AttributesMapper;
 import org.springframework.ldap.core.ContextMapper;
+import org.springframework.ldap.core.DirContextProcessor;
 import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.core.NameClassPairCallbackHandler;
 import org.springframework.stereotype.Controller;
@@ -47,9 +49,9 @@ public class JndiInjectionTest {
   }
 
   @RequestMapping
-  public void testInitialDirContextBad1(@RequestParam String nameStr) throws NamingException {
+  public void testDirContextBad1(@RequestParam String nameStr) throws NamingException {
     Name name = new CompoundName(nameStr, new Properties());
-    InitialDirContext ctx = new InitialDirContext();
+    DirContext ctx = new InitialDirContext();
 
     ctx.lookup(nameStr); // $hasJndiInjection
     ctx.lookupLink(nameStr); // $hasJndiInjection
@@ -62,6 +64,19 @@ public class JndiInjectionTest {
     ctx.rename(name, null); // $hasJndiInjection
     ctx.list(name); // $hasJndiInjection
     ctx.listBindings(name); // $hasJndiInjection
+
+    SearchControls searchControls = new SearchControls();
+    searchControls.setReturningObjFlag(true);
+    ctx.search(nameStr, "", searchControls); // $hasJndiInjection
+    ctx.search(nameStr, "", new Object[] {}, searchControls); // $hasJndiInjection
+
+    SearchControls searchControls2 = new SearchControls(1, 0, 0, null, true, false);
+    ctx.search(nameStr, "", searchControls2); // $hasJndiInjection
+    ctx.search(nameStr, "", new Object[] {}, searchControls2); // $hasJndiInjection
+
+    SearchControls searchControls3 = new SearchControls(1, 0, 0, null, false, false);
+    ctx.search(nameStr, "", searchControls3); // Safe
+    ctx.search(nameStr, "", new Object[] {}, searchControls3); // Safe
   }
 
   @RequestMapping
@@ -93,7 +108,7 @@ public class JndiInjectionTest {
   @RequestMapping
   public void testSpringLdapTemplateBad1(@RequestParam String nameStr) throws NamingException {
     LdapTemplate ctx = new LdapTemplate();
-    Name name = new CompositeName(nameStr);
+    Name name = new CompositeName().add(nameStr);
 
     ctx.lookup(nameStr); // $hasJndiInjection
     ctx.lookupContext(nameStr); // $hasJndiInjection
@@ -104,11 +119,45 @@ public class JndiInjectionTest {
     ctx.unbind(nameStr, true); // $hasJndiInjection
 
     ctx.search(nameStr, "", 0, true, null); // $hasJndiInjection
-    ctx.search(nameStr, "", 0, new String[] {}, (ContextMapper<Object>) new Object()); // $hasJndiInjection
-    ctx.search(nameStr, "", 0, (ContextMapper<Object>) new Object()); // $hasJndiInjection
-    ctx.search(nameStr, "", (ContextMapper) new Object()); // $hasJndiInjection
+    ctx.search(nameStr, "", 0, new String[] {}, (ContextMapper<Object>) null); // $hasJndiInjection
+    ctx.search(nameStr, "", 0, (ContextMapper<Object>) null); // $hasJndiInjection
+    ctx.search(nameStr, "", (ContextMapper<Object>) null); // $hasJndiInjection
 
-    ctx.searchForObject(nameStr, "", (ContextMapper) new Object()); // $hasJndiInjection
+    SearchControls searchControls = new SearchControls();
+    searchControls.setReturningObjFlag(true);
+    ctx.search(nameStr, "", searchControls, (AttributesMapper<Object>) null); // $hasJndiInjection
+    ctx.search(nameStr, "", searchControls, (AttributesMapper<Object>) null, // $hasJndiInjection
+        (DirContextProcessor) null);
+    ctx.search(nameStr, "", searchControls, (ContextMapper<Object>) null); // $hasJndiInjection
+    ctx.search(nameStr, "", searchControls, (ContextMapper<Object>) null, // $hasJndiInjection
+        (DirContextProcessor) null);
+    ctx.search(nameStr, "", searchControls, (NameClassPairCallbackHandler) null); // $hasJndiInjection
+    ctx.search(nameStr, "", searchControls, (NameClassPairCallbackHandler) null, // $hasJndiInjection
+        (DirContextProcessor) null);
+
+    SearchControls searchControls2 = new SearchControls(1, 0, 0, null, true, false);
+    ctx.search(nameStr, "", searchControls2, (AttributesMapper<Object>) null); // $hasJndiInjection
+    ctx.search(nameStr, "", searchControls2, (AttributesMapper<Object>) null, // $hasJndiInjection
+        (DirContextProcessor) null);
+    ctx.search(nameStr, "", searchControls2, (ContextMapper<Object>) null); // $hasJndiInjection
+    ctx.search(nameStr, "", searchControls2, (ContextMapper<Object>) null, // $hasJndiInjection
+        (DirContextProcessor) null);
+    ctx.search(nameStr, "", searchControls2, (NameClassPairCallbackHandler) null); // $hasJndiInjection
+    ctx.search(nameStr, "", searchControls2, (NameClassPairCallbackHandler) null, // $hasJndiInjection
+        (DirContextProcessor) null);
+
+    SearchControls searchControls3 = new SearchControls(1, 0, 0, null, false, false);
+    ctx.search(nameStr, "", searchControls3, (AttributesMapper<Object>) null); // Safe
+    ctx.search(nameStr, "", searchControls3, (AttributesMapper<Object>) null, // Safe
+        (DirContextProcessor) null);
+    ctx.search(nameStr, "", searchControls3, (ContextMapper<Object>) null); // Safe
+    ctx.search(nameStr, "", searchControls3, (ContextMapper<Object>) null, // Safe
+        (DirContextProcessor) null);
+    ctx.search(nameStr, "", searchControls3, (NameClassPairCallbackHandler) null); // Safe
+    ctx.search(nameStr, "", searchControls3, (NameClassPairCallbackHandler) null, // Safe
+        (DirContextProcessor) null);
+
+    ctx.searchForObject(nameStr, "", (ContextMapper<Object>) null); // $hasJndiInjection
   }
 
   @RequestMapping
