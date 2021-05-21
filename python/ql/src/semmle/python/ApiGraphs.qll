@@ -585,5 +585,6 @@ private module Label {
   /** Gets the `return` edge label. */
   string return() { result = "getReturn()" }
 
+  /** Gets the `subclass` edge label. */
   string subclass() { result = "getASubclass()" }
 }
