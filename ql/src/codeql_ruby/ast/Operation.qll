@@ -493,10 +493,10 @@ class NoRegexMatchExpr extends BinaryOperation, TNoRegexMatchExpr {
  */
 class Assignment extends Operation, TAssignment {
   /** Gets the left hand side of this assignment. */
-  Pattern getLeftOperand() { none() }
+  final Pattern getLeftOperand() { result = this.(AssignmentImpl).getLeftOperandImpl() }
 
   /** Gets the right hand side of this assignment. */
-  Expr getRightOperand() { none() }
+  final Expr getRightOperand() { result = this.(AssignmentImpl).getRightOperandImpl() }
 
   final override Expr getAnOperand() {
     result = this.getLeftOperand() or result = this.getRightOperand()
@@ -529,15 +529,11 @@ class AssignExpr extends Assignment, TAssignExpr {
  * A binary assignment operation other than `=`.
  */
 class AssignOperation extends Assignment, TAssignOperation {
-  private Generated::OperatorAssignment g;
+  Generated::OperatorAssignment g;
 
   AssignOperation() { g = toGenerated(this) }
 
   final override string getOperator() { result = g.getOperator() }
-
-  final override LhsExpr getLeftOperand() { toGenerated(result) = g.getLeft() }
-
-  final override Expr getRightOperand() { toGenerated(result) = g.getRight() }
 }
 
 /**

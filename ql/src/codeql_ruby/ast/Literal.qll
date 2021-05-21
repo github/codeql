@@ -42,14 +42,22 @@ class NumericLiteral extends Literal, TNumericLiteral { }
  * ```
  */
 class IntegerLiteral extends NumericLiteral, TIntegerLiteral {
+  /** Gets the numerical value of this integer literal. */
+  int getValue() { none() }
+
+  final override string toString() { result = this.getValueText() }
+
+  final override string getAPrimaryQlClass() { result = "IntegerLiteral" }
+}
+
+private class IntegerLiteralReal extends IntegerLiteral, TIntegerLiteralReal {
   private Generated::Integer g;
 
-  IntegerLiteral() { this = TIntegerLiteral(g) }
+  IntegerLiteralReal() { this = TIntegerLiteralReal(g) }
 
   final override string getValueText() { result = g.getValue() }
 
-  /** Gets the numerical value of this integer literal. */
-  final int getValue() {
+  final override int getValue() {
     exists(string s, string values, string str |
       s = this.getValueText().toLowerCase() and
       (
@@ -83,10 +91,16 @@ class IntegerLiteral extends NumericLiteral, TIntegerLiteral {
         )
     )
   }
+}
 
-  final override string toString() { result = this.getValueText() }
+private class IntegerLiteralSynth extends IntegerLiteral, TIntegerLiteralSynth {
+  private int value;
 
-  final override string getAPrimaryQlClass() { result = "IntegerLiteral" }
+  IntegerLiteralSynth() { this = TIntegerLiteralSynth(_, _, value) }
+
+  final override string getValueText() { result = value.toString() }
+
+  final override int getValue() { result = value }
 }
 
 /**

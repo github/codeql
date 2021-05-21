@@ -490,6 +490,10 @@ module ClassVariable {
   }
 }
 
+abstract class VariableAccessImpl extends VariableAccess {
+  abstract Variable getVariableImpl();
+}
+
 module LocalVariableAccess {
   predicate range(Generated::Identifier id, LocalVariable v) {
     access(id, v) and
@@ -507,35 +511,25 @@ class TVariableAccessReal =
   TLocalVariableAccessReal or TGlobalVariableAccess or TInstanceVariableAccess or
       TClassVariableAccess;
 
-abstract class VariableAccessReal extends VariableAccess, TVariableAccessReal {
-  /**
-   * Same as `getVariable()`, but restricted to non-synthesized variable accesses.
-   *
-   * The sole purpose of this predicate is to make AST synthesis monotonic.
-   */
-  abstract VariableReal getVariableReal();
-}
-
-private class LocalVariableAccessReal extends VariableAccessReal, LocalVariableAccess,
+private class LocalVariableAccessReal extends VariableAccessImpl, LocalVariableAccess,
   TLocalVariableAccessReal {
   private Generated::Identifier g;
   private LocalVariable v;
 
   LocalVariableAccessReal() { this = TLocalVariableAccessReal(g, v) }
 
-  final override LocalVariable getVariable() { result = v }
-
-  final override LocalVariableReal getVariableReal() { result = v }
+  final override LocalVariable getVariableImpl() { result = v }
 
   final override string toString() { result = g.getValue() }
 }
 
-private class LocalVariableAccessSynth extends LocalVariableAccess, TLocalVariableAccessSynth {
+private class LocalVariableAccessSynth extends VariableAccessImpl, LocalVariableAccess,
+  TLocalVariableAccessSynth {
   private LocalVariable v;
 
   LocalVariableAccessSynth() { this = TLocalVariableAccessSynth(_, _, v) }
 
-  final override LocalVariable getVariable() { result = v }
+  final override LocalVariable getVariableImpl() { result = v }
 
   final override string toString() { result = v.getName() }
 }
@@ -544,26 +538,25 @@ module GlobalVariableAccess {
   predicate range(Generated::GlobalVariable n, GlobalVariable v) { n.getValue() = v.getName() }
 }
 
-private class GlobalVariableAccessReal extends VariableAccessReal, GlobalVariableAccess,
+private class GlobalVariableAccessReal extends GlobalVariableAccess, VariableAccessImpl,
   TGlobalVariableAccessReal {
   private Generated::GlobalVariable g;
   private GlobalVariable v;
 
   GlobalVariableAccessReal() { this = TGlobalVariableAccessReal(g, v) }
 
-  final override GlobalVariable getVariable() { result = v }
-
-  final override GlobalVariable getVariableReal() { result = v }
+  final override GlobalVariable getVariableImpl() { result = v }
 
   final override string toString() { result = g.getValue() }
 }
 
-private class GlobalVariableAccessSynth extends GlobalVariableAccess, TGlobalVariableAccessSynth {
+private class GlobalVariableAccessSynth extends GlobalVariableAccess, VariableAccessImpl,
+  TGlobalVariableAccessSynth {
   private GlobalVariable v;
 
   GlobalVariableAccessSynth() { this = TGlobalVariableAccessSynth(_, _, v) }
 
-  final override GlobalVariable getVariable() { result = v }
+  final override GlobalVariable getVariableImpl() { result = v }
 
   final override string toString() { result = v.getName() }
 }
@@ -574,27 +567,25 @@ module InstanceVariableAccess {
   }
 }
 
-private class InstanceVariableAccessReal extends VariableAccessReal, InstanceVariableAccess,
+private class InstanceVariableAccessReal extends InstanceVariableAccess, VariableAccessImpl,
   TInstanceVariableAccessReal {
   private Generated::InstanceVariable g;
   private InstanceVariable v;
 
   InstanceVariableAccessReal() { this = TInstanceVariableAccessReal(g, v) }
 
-  final override InstanceVariable getVariable() { result = v }
-
-  final override InstanceVariable getVariableReal() { result = v }
+  final override InstanceVariable getVariableImpl() { result = v }
 
   final override string toString() { result = g.getValue() }
 }
 
-private class InstanceVariableAccessSynth extends InstanceVariableAccess,
+private class InstanceVariableAccessSynth extends InstanceVariableAccess, VariableAccessImpl,
   TInstanceVariableAccessSynth {
   private InstanceVariable v;
 
   InstanceVariableAccessSynth() { this = TInstanceVariableAccessSynth(_, _, v) }
 
-  final override InstanceVariable getVariable() { result = v }
+  final override InstanceVariable getVariableImpl() { result = v }
 
   final override string toString() { result = v.getName() }
 }
@@ -603,26 +594,25 @@ module ClassVariableAccess {
   predicate range(Generated::ClassVariable n, ClassVariable v) { classVariableAccess(n, v) }
 }
 
-private class ClassVariableAccessReal extends VariableAccessReal, ClassVariableAccess,
+private class ClassVariableAccessReal extends ClassVariableAccess, VariableAccessImpl,
   TClassVariableAccessReal {
   private Generated::ClassVariable g;
   private ClassVariable v;
 
   ClassVariableAccessReal() { this = TClassVariableAccessReal(g, v) }
 
-  final override ClassVariable getVariable() { result = v }
-
-  final override ClassVariable getVariableReal() { result = v }
+  final override ClassVariable getVariableImpl() { result = v }
 
   final override string toString() { result = g.getValue() }
 }
 
-private class ClassVariableAccessSynth extends ClassVariableAccess, TClassVariableAccessSynth {
+private class ClassVariableAccessSynth extends ClassVariableAccess, VariableAccessImpl,
+  TClassVariableAccessSynth {
   private ClassVariable v;
 
   ClassVariableAccessSynth() { this = TClassVariableAccessSynth(_, _, v) }
 
-  final override ClassVariable getVariable() { result = v }
+  final override ClassVariable getVariableImpl() { result = v }
 
   final override string toString() { result = v.getName() }
 }

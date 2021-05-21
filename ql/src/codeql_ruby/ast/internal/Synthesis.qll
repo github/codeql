@@ -21,6 +21,7 @@ newtype SynthKind =
   ExponentExprKind() or
   GlobalVariableAccessKind(GlobalVariable v) or
   InstanceVariableAccessKind(InstanceVariable v) or
+  IntegerLiteralKind(int i) { i in [0 .. 1000] } or
   LShiftExprKind() or
   LocalVariableAccessRealKind(LocalVariableReal v) or
   LocalVariableAccessSynthKind(TLocalVariableSynth v) or
@@ -158,7 +159,7 @@ private module SetterDesugar {
    */
   private class SetterMethodCallSynthesis extends Synthesis {
     final override predicate child(AstNode parent, int i, Child child, LocationOption l) {
-      exists(AssignExprReal ae, MethodCallReal mc | mc = ae.getLeftOperand() |
+      exists(AssignExpr ae, MethodCall mc | mc = ae.getLeftOperand() |
         parent = ae and
         i = -1 and
         child = SynthChild(getCallKind(mc)) and
@@ -168,18 +169,23 @@ private module SetterDesugar {
         l = NoneLocation() and
         (
           i = 0 and
-          child = RealChild(mc.getReceiverReal())
+          child = RealChild(mc.getReceiver())
           or
-          child = RealChild(mc.getArgumentReal(i - 1))
+          child = RealChild(mc.getArgument(i - 1))
           or
-          i = mc.getNumberOfArgumentsReal() + 1 and
+          i = mc.getNumberOfArguments() + 1 and
           child = RealChild(ae.getRightOperand())
+          or
+          // special "number of arguments argument"; required to avoid non-monotonic recursion
+          i = -2 and
+          child = SynthChild(IntegerLiteralKind(mc.getNumberOfArguments() + 1)) and
+          l = NoneLocation()
         )
       )
     }
 
     final override predicate excludeFromControlFlowTree(AstNode n) {
-      n.(MethodCall) = any(AssignExprReal ae).getLeftOperand()
+      n.(MethodCall) = any(AssignExpr ae).getLeftOperand()
     }
   }
 }
@@ -241,7 +247,7 @@ private module AssignOperationDesugar {
   private class VariableAssignOperationSynthesis extends Synthesis {
     final override predicate child(AstNode parent, int i, Child child, LocationOption l) {
       exists(AssignOperation ao, VariableReal v |
-        v = ao.getLeftOperand().(VariableAccessReal).getVariableReal()
+        v = ao.getLeftOperand().(VariableAccess).getVariable()
       |
         parent = ao and
         i = -1 and
@@ -279,9 +285,7 @@ private module AssignOperationDesugar {
   }
 
   /** Gets an assignment operation where the LHS is method call `mc`. */
-  private AssignOperation assignOperationMethodCall(MethodCallReal mc) {
-    result.getLeftOperand() = mc
-  }
+  private AssignOperation assignOperationMethodCall(MethodCall mc) { result.getLeftOperand() = mc }
 
   /**
    * ```rb
@@ -300,27 +304,27 @@ private module AssignOperationDesugar {
    */
   private class MethodCallAssignOperationSynthesis extends Synthesis {
     final override predicate child(AstNode parent, int i, Child child, LocationOption l) {
-      exists(AssignOperation ao, MethodCallReal mc | ao = assignOperationMethodCall(mc) |
+      exists(AssignOperation ao, MethodCall mc | ao = assignOperationMethodCall(mc) |
         parent = ao and
         i = -1 and
         child = SynthChild(StmtSequenceKind()) and
         l = NoneLocation()
         or
         exists(AstNode seq, AstNode receiver |
-          seq = getSynthChild(ao, -1) and receiver = mc.getReceiverReal()
+          seq = getSynthChild(ao, -1) and receiver = mc.getReceiver()
         |
           // `__synth__0 = foo`
           assign(parent, i, child, TLocalVariableSynth(ao, 0), seq, 0, receiver) and
           l = getSomeLocation(receiver)
           or
           // `__synth__1 = bar`
-          exists(Expr arg, int j | arg = mc.getArgumentReal(j - 1) |
+          exists(Expr arg, int j | arg = mc.getArgument(j - 1) |
             assign(parent, i, child, TLocalVariableSynth(ao, j), seq, j, arg) and
             l = getSomeLocation(arg)
           )
           or
           // `__synth__2 = __synth__0.[](__synth__1) + y`
-          exists(int opAssignIndex | opAssignIndex = mc.getNumberOfArgumentsReal() + 1 |
+          exists(int opAssignIndex | opAssignIndex = mc.getNumberOfArguments() + 1 |
             parent = seq and
             i = opAssignIndex and
             child = SynthChild(AssignExprKind()) and
@@ -351,7 +355,7 @@ private module AssignOperationDesugar {
                   i = 0 and
                   l = getSomeLocation(receiver)
                   or
-                  l = getSomeLocation(mc.getArgumentReal(i - 1))
+                  l = getSomeLocation(mc.getArgument(i - 1))
                 )
                 or
                 parent = op and
@@ -374,7 +378,7 @@ private module AssignOperationDesugar {
                 i = 0 and
                 l = getSomeLocation(receiver)
                 or
-                l = getSomeLocation(mc.getArgumentReal(i - 1))
+                l = getSomeLocation(mc.getArgument(i - 1))
               )
               or
               parent = setter and
@@ -382,6 +386,12 @@ private module AssignOperationDesugar {
               child =
                 SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(ao, opAssignIndex))) and
               l = SomeLocation(getAssignOperationLocation(ao))
+              or
+              // special "number of arguments argument"; required to avoid non-monotonic recursion
+              parent = setter and
+              i = -2 and
+              child = SynthChild(IntegerLiteralKind(opAssignIndex + 1)) and
+              l = NoneLocation()
             )
             or
             parent = seq and
@@ -394,8 +404,8 @@ private module AssignOperationDesugar {
     }
 
     final override predicate localVariable(AstNode n, int i) {
-      exists(MethodCallReal mc | n = assignOperationMethodCall(mc) |
-        i in [0 .. mc.getNumberOfArgumentsReal() + 1]
+      exists(MethodCall mc | n = assignOperationMethodCall(mc) |
+        i in [0 .. mc.getNumberOfArguments() + 1]
       )
     }
 

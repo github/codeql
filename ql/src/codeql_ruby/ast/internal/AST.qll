@@ -153,7 +153,10 @@ private module Cached {
     TInstanceVariableAccessSynth(AST::AstNode parent, int i, AST::InstanceVariable v) {
       mkSynthChild(InstanceVariableAccessKind(v), parent, i)
     } or
-    TIntegerLiteral(Generated::Integer g) { not any(Generated::Rational r).getChild() = g } or
+    TIntegerLiteralReal(Generated::Integer g) { not any(Generated::Rational r).getChild() = g } or
+    TIntegerLiteralSynth(AST::AstNode parent, int i, int value) {
+      mkSynthChild(IntegerLiteralKind(value), parent, i)
+    } or
     TKeywordParameter(Generated::KeywordParameter g) or
     TLEExpr(Generated::Binary g) { g instanceof @binary_langleequal } or
     TLShiftExprReal(Generated::Binary g) { g instanceof @binary_langlelangle } or
@@ -344,7 +347,7 @@ private module Cached {
     n = TIf(result) or
     n = TIfModifierExpr(result) or
     n = TInstanceVariableAccessReal(result, _) or
-    n = TIntegerLiteral(result) or
+    n = TIntegerLiteralReal(result) or
     n = TKeywordParameter(result) or
     n = TLEExpr(result) or
     n = TLShiftExprReal(result) or
@@ -460,6 +463,11 @@ private module Cached {
       exists(AST::InstanceVariable v |
         kind = InstanceVariableAccessKind(v) and
         result = TInstanceVariableAccessSynth(parent, i, v)
+      )
+      or
+      exists(int value |
+        kind = IntegerLiteralKind(value) and
+        result = TIntegerLiteralSynth(parent, i, value)
       )
       or
       kind = LShiftExprKind() and
@@ -590,6 +598,8 @@ class TLiteral =
       TArrayLiteral or THashLiteral or TRangeLiteral or TTokenMethodName;
 
 class TNumericLiteral = TIntegerLiteral or TFloatLiteral or TRationalLiteral or TComplexLiteral;
+
+class TIntegerLiteral = TIntegerLiteralReal or TIntegerLiteralSynth;
 
 class TBooleanLiteral = TTrueLiteral or TFalseLiteral;
 

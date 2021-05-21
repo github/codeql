@@ -2,18 +2,30 @@ private import codeql_ruby.AST
 private import AST
 private import TreeSitter
 
-class AssignExprReal extends AssignExpr, TAssignExprReal {
+class AssignmentImpl extends Operation, TAssignment {
+  abstract Pattern getLeftOperandImpl();
+
+  abstract Expr getRightOperandImpl();
+}
+
+class AssignExprReal extends AssignmentImpl, AssignExpr, TAssignExprReal {
   private Generated::Assignment g;
 
   AssignExprReal() { this = TAssignExprReal(g) }
 
-  final override Pattern getLeftOperand() { toGenerated(result) = g.getLeft() }
+  final override Pattern getLeftOperandImpl() { toGenerated(result) = g.getLeft() }
 
-  final override Expr getRightOperand() { toGenerated(result) = g.getRight() }
+  final override Expr getRightOperandImpl() { toGenerated(result) = g.getRight() }
 }
 
-class AssignExprSynth extends AssignExpr, TAssignExprSynth {
-  final override Pattern getLeftOperand() { synthChild(this, 0, result) }
+class AssignExprSynth extends AssignmentImpl, AssignExpr, TAssignExprSynth {
+  final override Pattern getLeftOperandImpl() { synthChild(this, 0, result) }
 
-  final override Expr getRightOperand() { synthChild(this, 1, result) }
+  final override Expr getRightOperandImpl() { synthChild(this, 1, result) }
+}
+
+class AssignOperationImpl extends AssignmentImpl, AssignOperation {
+  final override LhsExpr getLeftOperandImpl() { toGenerated(result) = g.getLeft() }
+
+  final override Expr getRightOperandImpl() { toGenerated(result) = g.getRight() }
 }

@@ -21,7 +21,7 @@ class Call extends Expr, TCall {
    * yield 0, bar: 1
    * ```
    */
-  Expr getArgument(int n) { none() }
+  final Expr getArgument(int n) { result = this.(CallImpl).getArgumentImpl(n) }
 
   /**
    * Gets an argument of this method call.
@@ -47,7 +47,7 @@ class Call extends Expr, TCall {
   /**
    * Gets the number of arguments of this method call.
    */
-  final int getNumberOfArguments() { result = count(this.getAnArgument()) }
+  final int getNumberOfArguments() { result = this.(CallImpl).getNumberOfArgumentsImpl() }
 
   override AstNode getAChild(string pred) { pred = "getArgument" and result = this.getArgument(_) }
 }
@@ -71,7 +71,7 @@ class MethodCall extends Call, TMethodCall {
    * the call to `qux` is the `Expr` for `Baz`; for the call to `corge` there
    * is no result.
    */
-  Expr getReceiver() { none() }
+  final Expr getReceiver() { result = this.(MethodCallImpl).getReceiverImpl() }
 
   /**
    * Gets the name of the method being called. For example, in:
@@ -94,7 +94,7 @@ class MethodCall extends Call, TMethodCall {
 
   override string toString() { result = "call to " + this.getMethodName() }
 
-  final override AstNode getAChild(string pred) {
+  override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
     or
     pred = "getReceiver" and result = this.getReceiver()
@@ -143,13 +143,11 @@ class ElementReference extends MethodCall, TElementReference {
  * ```
  */
 class YieldCall extends Call, TYieldCall {
-  private Generated::Yield g;
+  Generated::Yield g;
 
   YieldCall() { this = TYieldCall(g) }
 
   final override string getAPrimaryQlClass() { result = "YieldCall" }
-
-  final override Expr getArgument(int n) { toGenerated(result) = g.getChild().getChild(n) }
 
   final override string toString() { result = "yield ..." }
 }

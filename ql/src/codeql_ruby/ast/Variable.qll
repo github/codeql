@@ -75,7 +75,7 @@ class ClassVariable extends VariableReal, TClassVariable {
 /** An access to a variable. */
 class VariableAccess extends Expr, TVariableAccess {
   /** Gets the variable this identifier refers to. */
-  Variable getVariable() { none() }
+  final Variable getVariable() { result = this.(VariableAccessImpl).getVariableImpl() }
 
   /**
    * Holds if this access is a write access belonging to the explicit
@@ -126,8 +126,6 @@ class VariableReadAccess extends VariableAccess {
 
 /** An access to a local variable. */
 class LocalVariableAccess extends VariableAccess, TLocalVariableAccess {
-  override LocalVariable getVariable() { none() }
-
   final override string getAPrimaryQlClass() { result = "LocalVariableAccess" }
 
   /**
@@ -156,8 +154,6 @@ class LocalVariableReadAccess extends LocalVariableAccess, VariableReadAccess { 
 
 /** An access to a global variable. */
 class GlobalVariableAccess extends VariableAccess, TGlobalVariableAccess {
-  override GlobalVariable getVariable() { none() }
-
   final override string getAPrimaryQlClass() { result = "GlobalVariableAccess" }
 }
 
@@ -169,14 +165,10 @@ class GlobalVariableReadAccess extends GlobalVariableAccess, VariableReadAccess 
 
 /** An access to an instance variable. */
 class InstanceVariableAccess extends VariableAccess, TInstanceVariableAccess {
-  override InstanceVariable getVariable() { none() }
-
   final override string getAPrimaryQlClass() { result = "InstanceVariableAccess" }
 }
 
 /** An access to a class variable. */
 class ClassVariableAccess extends VariableAccess, TClassVariableAccess {
-  override ClassVariable getVariable() { none() }
-
   final override string getAPrimaryQlClass() { result = "ClassVariableAccess" }
 }
