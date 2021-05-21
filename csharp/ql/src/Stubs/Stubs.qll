@@ -345,15 +345,6 @@ private class GeneratedNamespace extends Namespace, GeneratedElement {
  */
 abstract class ExcludedAssembly extends Assembly { }
 
-/** Exclude types from these standard assemblies. */
-private class DefaultLibs extends ExcludedAssembly {
-  DefaultLibs() {
-    this.getName() = "System.Private.CoreLib" or
-    this.getName() = "mscorlib" or
-    this.getName() = "System.Runtime"
-  }
-}
-
 private Virtualizable getAccessibilityDeclaringVirtualizable(Virtualizable v) {
   if not v.isOverride()
   then result = v
