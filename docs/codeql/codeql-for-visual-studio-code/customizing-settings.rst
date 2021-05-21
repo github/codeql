@@ -46,12 +46,16 @@ The query history **Format** setting controls how the extension lists queries in
 
 To override the default label, you can specify a different format for the query history items.
 
+.. _configuring-settings-for-running-queries:
+
 Configuring settings for running queries
 -----------------------------------------
 
 There are a number of settings for **Running Queries**. If your queries run too slowly and time out frequently, you may want to increase the memory. 
 
 .. include:: ../reusables/running-queries-debug.rst
+
+To save CodeQL Query Server logs in a custom location, edit the **Running Queries: Custom Log Directory** setting. If you use a custom log directory, the extension doesn't automatically delete the CodeQL Query Server logs. This is useful if you want to investigate these logs to improve the performance of your queries.
 
 Configuring settings for testing queries
 -----------------------------------------
