@@ -1,8 +1,8 @@
 /**
- * Tool to generate C# stubs from a qltest snapshot.
+ * Tool to generate java stubs from a qltest snapshot.
  *
  * It finds all declarations used in the source code,
- * and generates minimal C# stubs containing those declarations
+ * and generates minimal java stubs containing those declarations
  * and their dependencies.
  */
 
