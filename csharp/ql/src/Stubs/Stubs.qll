@@ -534,7 +534,11 @@ private string stubConstraints(TypeParameterConstraints tpc, int i) {
   or
   tpc.hasUnmanagedTypeConstraint() and result = "unmanaged" and i = 0
   or
-  tpc.hasValueTypeConstraint() and result = "struct" and i = 0
+  tpc.hasValueTypeConstraint() and
+  result = "struct" and
+  i = 0 and
+  not tpc.hasUnmanagedTypeConstraint() and
+  not stubClassName(tpc.getATypeConstraint().(Class)) = "System.Enum"
   or
   tpc.hasRefTypeConstraint() and result = "class" and i = 0
   or
