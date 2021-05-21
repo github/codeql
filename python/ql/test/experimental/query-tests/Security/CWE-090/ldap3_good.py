@@ -12,15 +12,18 @@ def normal():
     A RemoteFlowSource is sanitized and used as DN and search filter
     """
 
-    unsafe_dn = "dc=%s" % request.args['dc']
-    unsafe_filter = "(user=%s)" % request.args['username']
+    unsafe_dc = request.args['dc']
+    unsafe_filter = request.args['username']
 
-    safe_dn = escape_rdn(unsafe_dn)
+    safe_dc = escape_rdn(unsafe_dc)
     safe_filter = escape_filter_chars(unsafe_filter)
 
-    srv = ldap3.Server('ldap://127.0.0.1', port=1337)
-    conn = ldap3.Connection(srv, user=safe_dn, auto_bind=True)
-    conn.search(safe_dn, safe_filter)
+    dn = "dc={}".format(safe_dc)
+    search_filter = "(user={})".format(safe_filter)
+
+    srv = ldap3.Server('ldap://127.0.0.1')
+    conn = ldap3.Connection(srv, user=dn, auto_bind=True)
+    conn.search(dn, search_filter)
 
 
 @app.route("/direct")
@@ -29,15 +32,18 @@ def direct():
     A RemoteFlowSource is sanitized and used as DN and search filter using a oneline call to .search
     """
 
-    unsafe_dn = "dc=%s" % request.args['dc']
-    unsafe_filter = "(user=%s)" % request.args['username']
+    unsafe_dc = request.args['dc']
+    unsafe_filter = request.args['username']
 
-    safe_dn = escape_rdn(unsafe_dn)
+    safe_dc = escape_rdn(unsafe_dc)
     safe_filter = escape_filter_chars(unsafe_filter)
 
-    srv = ldap3.Server('ldap://127.0.0.1', port=1337)
-    conn = ldap3.Connection(srv, user=safe_dn, auto_bind=True).search(
-        safe_dn, safe_filter)
+    dn = "dc={}".format(safe_dc)
+    search_filter = "(user={})".format(safe_filter)
+
+    srv = ldap3.Server('ldap://127.0.0.1')
+    conn = ldap3.Connection(srv, user=dn, auto_bind=True).search(
+        dn, search_filter)
 
 # if __name__ == "__main__":
 #     app.run(debug=True)

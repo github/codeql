@@ -10,12 +10,15 @@ def normal():
     A RemoteFlowSource is used directly as DN and search filter
     """
 
-    unsafe_dn = "dc=%s" % request.args['dc']
-    unsafe_filter = "(user=%s)" % request.args['username']
+    unsafe_dc = request.args['dc']
+    unsafe_filter = request.args['username']
 
-    ldap_connection = ldap.initialize("ldap://127.0.0.1:1337")
+    dn = "dc={}".format(unsafe_dc)
+    search_filter = "(user={})".format(unsafe_filter)
+
+    ldap_connection = ldap.initialize("ldap://127.0.0.1")
     user = ldap_connection.search_s(
-        unsafe_dn, ldap.SCOPE_SUBTREE, unsafe_filter)
+        dn, ldap.SCOPE_SUBTREE, search_filter)
 
 
 @app.route("/direct")
@@ -24,11 +27,14 @@ def direct():
     A RemoteFlowSource is used directly as DN and search filter using a oneline call to .search_s
     """
 
-    unsafe_dn = "dc=%s" % request.args['dc']
-    unsafe_filter = "(user=%s)" % request.args['username']
+    unsafe_dc = request.args['dc']
+    unsafe_filter = request.args['username']
 
-    user = ldap.initialize("ldap://127.0.0.1:1337").search_s(
-        unsafe_dn, ldap.SCOPE_SUBTREE, unsafe_filter)
+    dn = "dc={}".format(unsafe_dc)
+    search_filter = "(user={})".format(unsafe_filter)
+
+    user = ldap.initialize("ldap://127.0.0.1").search_s(
+        dn, ldap.SCOPE_SUBTREE, search_filter)
 
 
 @app.route("/normal_argbyname")
@@ -38,12 +44,15 @@ def normal_argbyname():
     an argument by name
     """
 
-    unsafe_dn = "dc=%s" % request.args['dc']
-    unsafe_filter = "(user=%s)" % request.args['username']
+    unsafe_dc = request.args['dc']
+    unsafe_filter = request.args['username']
 
-    ldap_connection = ldap.initialize("ldap://127.0.0.1:1337")
+    dn = "dc={}".format(unsafe_dc)
+    search_filter = "(user={})".format(unsafe_filter)
+
+    ldap_connection = ldap.initialize("ldap://127.0.0.1")
     user = ldap_connection.search_s(
-        unsafe_dn, ldap.SCOPE_SUBTREE, filterstr=unsafe_filter)
+        dn, ldap.SCOPE_SUBTREE, filterstr=search_filter)
 
 
 # if __name__ == "__main__":

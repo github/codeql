@@ -6,12 +6,15 @@ from ldap3.utils.conv import escape_filter_chars
 
 @app.route("/normal")
 def normal():
-    unsafe_dn = "dc=%s" % request.args['dc']
-    unsafe_filter = "(user=%s)" % request.args['username']
+    unsafe_dc = request.args['dc']
+    unsafe_filter = request.args['username']
 
-    safe_dn = escape_rdn(unsafe_dn)
+    safe_dc = escape_rdn(unsafe_dc)
     safe_filter = escape_filter_chars(unsafe_filter)
 
-    srv = ldap3.Server('ldap://127.0.0.1', port=1337)
-    conn = ldap3.Connection(srv, user=safe_dn, auto_bind=True)
-    conn.search(safe_dn, safe_filter)
+    dn = "dc={}".format(safe_dc)
+    search_filter = "(user={})".format(safe_filter)
+
+    srv = ldap3.Server('ldap://127.0.0.1')
+    conn = ldap3.Connection(srv, user=dn, auto_bind=True)
+    conn.search(dn, search_filter)
