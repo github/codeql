@@ -138,8 +138,8 @@ abstract private class GeneratedType extends Type, GeneratedElement {
         this.stubComment() + this.stubAttributes() + stubAccessibility(this) +
           this.stubAbstractModifier() + this.stubStaticModifier() + this.stubPartialModifier() +
           this.stubKeyword() + " " + this.getUndecoratedName() + stubGenericArguments(this) +
-          stubBaseTypesString() + stubTypeParametersConstraints(this) + "\n{\n" +
-          stubMembers(assembly) + "}\n\n"
+          this.stubBaseTypesString() + stubTypeParametersConstraints(this) + "\n{\n" +
+          this.stubPrivateConstructor() + this.stubMembers(assembly) + "}\n\n"
       or
       result =
         this.stubComment() + this.stubAttributes() + stubUnsafe(this) + stubAccessibility(this) +
@@ -181,6 +181,22 @@ abstract private class GeneratedType extends Type, GeneratedElement {
       |
         stubMember(m, assembly) order by m.getName()
       )
+  }
+
+  string stubPrivateConstructor() {
+    if
+      this instanceof Interface or
+      this.isStatic() or
+      this.isAbstract() or
+      exists(this.(ValueOrRefType).getAConstructor()) or
+      not exists(this.getAnInterestingBaseType()) or
+      not exists(this.getAnInterestingBaseType().getAConstructor()) or
+      this.getAnInterestingBaseType().getAConstructor().getNumberOfParameters() = 0
+    then result = ""
+    else
+      result =
+        "    private " + this.getUndecoratedName() + "() : base(" +
+          stubDefaultArguments(getBaseConstructor(this), this) + ")" + " => throw null;\n"
   }
 
   private GeneratedMember getAGeneratedMember() { result.getDeclaringType() = this }
@@ -670,18 +686,15 @@ private string stubParameters(Parameterizable p) {
     )
 }
 
-private string stubDefaultArguments(Constructor baseCtor) {
-  exists(Constructor c |
-    baseCtor = getBaseConstructor(c.getDeclaringType()) and
-    baseCtor.getNumberOfParameters() > 0 and
-    not c.isStatic() and
-    result =
-      concat(int i, Parameter param |
-        param = baseCtor.getParameter(i) and not param.getType() instanceof ArglistType
-      |
-        "default(" + stubClassName(param.getType()) + ")", ", " order by i
-      )
-  )
+private string stubDefaultArguments(Constructor baseCtor, ValueOrRefType callingType) {
+  baseCtor = getBaseConstructor(callingType) and
+  baseCtor.getNumberOfParameters() > 0 and
+  result =
+    concat(int i, Parameter param |
+      param = baseCtor.getParameter(i) and not param.getType() instanceof ArglistType
+    |
+      "default(" + stubClassName(param.getType()) + ")", ", " order by i
+    )
 }
 
 private string stubParameterModifiers(Parameter p) {
@@ -827,7 +840,7 @@ private string stubConstructorInitializer(Constructor c) {
     baseCtor = getBaseConstructor(c.getDeclaringType()) and
     if baseCtor.getNumberOfParameters() = 0 or c.isStatic()
     then result = ""
-    else result = " : base(" + stubDefaultArguments(baseCtor) + ")"
+    else result = " : base(" + stubDefaultArguments(baseCtor, c.getDeclaringType()) + ")"
   )
   or
   // abstract base class might not have a constructor
