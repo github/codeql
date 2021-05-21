@@ -14,7 +14,7 @@ private import semmle.python.ApiGraphs
  */
 private module LDAP {
   /**
-   * Provides models for Python's `ldap` library.
+   * Provides models for the `python-ldap` PyPI package (imported as `ldap`).
    *
    * See https://www.python-ldap.org/en/python-ldap-3.3.0/index.html
    */
@@ -87,7 +87,7 @@ private module LDAP {
   }
 
   /**
-   * Provides models for Python's `ldap3` library.
+   * Provides models for the `ldap3` PyPI package
    *
    * See https://pypi.org/project/ldap3/
    */
