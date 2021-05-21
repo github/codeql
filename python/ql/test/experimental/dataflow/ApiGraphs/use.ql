@@ -13,7 +13,8 @@ class ApiUseTest extends InlineExpectationsTest {
     l = n.getLocation() and
     // Module variable nodes have no suitable location, so it's best to simply exclude them entirely
     // from the inline tests.
-    not n instanceof DataFlow::ModuleVariableNode
+    not n instanceof DataFlow::ModuleVariableNode and
+    exists(l.getFile().getRelativePath())
   }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
