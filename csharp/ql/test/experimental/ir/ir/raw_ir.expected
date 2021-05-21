@@ -613,48 +613,48 @@ foreach.cs:
 #    5|     r5_28(glval<Int32>)      = PointerAdd[4]                  : r5_1, r5_27
 #    5|     r5_29(Int32)             = Constant[7]                    : 
 #    5|     mu5_30(Int32)            = Store[?]                       : &:r5_28, r5_29
-#    7|     r7_1(glval<Boolean>)     = VariableAddress[#temp7:9]      : 
+#    7|     r7_1(glval<IEnumerator>) = VariableAddress[#temp7:9]      : 
 #    7|     r7_2(glval<Int32[]>)     = VariableAddress[a_array]       : 
 #    7|     r7_3(Int32[])            = Load[a_array]                  : &:r7_2, ~m?
 #    7|     r7_4(<funcaddr>)         = FunctionAddress[GetEnumerator] : 
 #    7|     r7_5(IEnumerator)        = Call[GetEnumerator]            : func:r7_4, this:r7_3
 #    7|     mu7_6(<unknown>)         = ^CallSideEffect                : ~m?
-#    7|     mu7_7(Boolean)           = Store[#temp7:9]                : &:r7_1, r7_5
+#    7|     mu7_7(IEnumerator)       = Store[#temp7:9]                : &:r7_1, r7_5
 #-----|   Goto -> Block 1
 
 #    7|   Block 1
-#    7|     r7_8(glval<Boolean>) = VariableAddress[#temp7:9] : 
-#    7|     r7_9(Boolean)        = Load[#temp7:9]            : &:r7_8, ~m?
-#    7|     r7_10(<funcaddr>)    = FunctionAddress[MoveNext] : 
-#    7|     r7_11(Boolean)       = Call[MoveNext]            : func:r7_10, this:r7_9
-#    7|     mu7_12(<unknown>)    = ^CallSideEffect           : ~m?
-#    7|     v7_13(Void)          = ConditionalBranch         : r7_11
+#    7|     r7_8(glval<IEnumerator>) = VariableAddress[#temp7:9] : 
+#    7|     r7_9(IEnumerator)        = Load[#temp7:9]            : &:r7_8, ~m?
+#    7|     r7_10(<funcaddr>)        = FunctionAddress[MoveNext] : 
+#    7|     r7_11(Boolean)           = Call[MoveNext]            : func:r7_10, this:r7_9
+#    7|     mu7_12(<unknown>)        = ^CallSideEffect           : ~m?
+#    7|     v7_13(Void)              = ConditionalBranch         : r7_11
 #-----|   False -> Block 3
 #-----|   True -> Block 2
 
 #    7|   Block 2
-#    7|     r7_14(glval<Int32>)   = VariableAddress[items]       : 
-#    7|     r7_15(glval<Boolean>) = VariableAddress[#temp7:9]    : 
-#    7|     r7_16(Boolean)        = Load[#temp7:9]               : &:r7_15, ~m?
-#    7|     r7_17(<funcaddr>)     = FunctionAddress[get_Current] : 
-#    7|     r7_18(Int32)          = Call[get_Current]            : func:r7_17, this:r7_16
-#    7|     mu7_19(<unknown>)     = ^CallSideEffect              : ~m?
-#    7|     mu7_20(Int32)         = Store[items]                 : &:r7_14, r7_18
-#    9|     r9_1(glval<Int32>)    = VariableAddress[x]           : 
-#    9|     r9_2(glval<Int32>)    = VariableAddress[items]       : 
-#    9|     r9_3(Int32)           = Load[items]                  : &:r9_2, ~m?
-#    9|     mu9_4(Int32)          = Store[x]                     : &:r9_1, r9_3
+#    7|     r7_14(glval<Int32>)       = VariableAddress[items]       : 
+#    7|     r7_15(glval<IEnumerator>) = VariableAddress[#temp7:9]    : 
+#    7|     r7_16(IEnumerator)        = Load[#temp7:9]               : &:r7_15, ~m?
+#    7|     r7_17(<funcaddr>)         = FunctionAddress[get_Current] : 
+#    7|     r7_18(Int32)              = Call[get_Current]            : func:r7_17, this:r7_16
+#    7|     mu7_19(<unknown>)         = ^CallSideEffect              : ~m?
+#    7|     mu7_20(Int32)             = Store[items]                 : &:r7_14, r7_18
+#    9|     r9_1(glval<Int32>)        = VariableAddress[x]           : 
+#    9|     r9_2(glval<Int32>)        = VariableAddress[items]       : 
+#    9|     r9_3(Int32)               = Load[items]                  : &:r9_2, ~m?
+#    9|     mu9_4(Int32)              = Store[x]                     : &:r9_1, r9_3
 #-----|   Goto (back edge) -> Block 1
 
 #    7|   Block 3
-#    7|     r7_21(glval<Boolean>) = VariableAddress[#temp7:9] : 
-#    7|     r7_22(Boolean)        = Load[#temp7:9]            : &:r7_21, ~m?
-#    7|     r7_23(<funcaddr>)     = FunctionAddress[Dispose]  : 
-#    7|     v7_24(Void)           = Call[Dispose]             : func:r7_23, this:r7_22
-#    7|     mu7_25(<unknown>)     = ^CallSideEffect           : ~m?
-#    4|     v4_3(Void)            = ReturnVoid                : 
-#    4|     v4_4(Void)            = AliasedUse                : ~m?
-#    4|     v4_5(Void)            = ExitFunction              : 
+#    7|     r7_21(glval<IEnumerator>) = VariableAddress[#temp7:9] : 
+#    7|     r7_22(IEnumerator)        = Load[#temp7:9]            : &:r7_21, ~m?
+#    7|     r7_23(<funcaddr>)         = FunctionAddress[Dispose]  : 
+#    7|     v7_24(Void)               = Call[Dispose]             : func:r7_23, this:r7_22
+#    7|     mu7_25(<unknown>)         = ^CallSideEffect           : ~m?
+#    4|     v4_3(Void)                = ReturnVoid                : 
+#    4|     v4_4(Void)                = AliasedUse                : ~m?
+#    4|     v4_5(Void)                = ExitFunction              : 
 
 func_with_param_call.cs:
 #    5| System.Int32 test_call_with_param.f(System.Int32,System.Int32)
