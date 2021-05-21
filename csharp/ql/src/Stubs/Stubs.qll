@@ -12,6 +12,8 @@
  */
 
 import csharp
+private import semmle.code.csharp.frameworks.System
+private import semmle.code.dotnet.DotNet as DotNet
 
 /** An element that should be in the generated code. */
 abstract class GeneratedElement extends Element { }
@@ -19,15 +21,25 @@ abstract class GeneratedElement extends Element { }
 /** A member that should be in the generated code. */
 abstract class GeneratedMember extends Member, GeneratedElement { }
 
+/** Class representing all `struct`s, such as user defined ones and built-in ones, like `int`. */
+private class StructEx extends Type {
+  StructEx() {
+    this instanceof Struct or
+    this instanceof SimpleType or
+    this instanceof VoidType or
+    this instanceof SystemIntPtrType
+  }
+}
+
 /** A type that should be in the generated code. */
-abstract private class GeneratedType extends ValueOrRefType, GeneratedElement {
+abstract private class GeneratedType extends Type, GeneratedElement {
   GeneratedType() {
     (
       this instanceof Interface
       or
       this instanceof Class
       or
-      this instanceof Struct
+      this instanceof StructEx
       or
       this instanceof Enum
       or
@@ -53,7 +65,7 @@ abstract private class GeneratedType extends ValueOrRefType, GeneratedElement {
   private string stubKeyword() {
     this instanceof Interface and result = "interface"
     or
-    this instanceof Struct and result = "struct"
+    this instanceof StructEx and result = "struct"
     or
     this instanceof Class and result = "class"
     or
@@ -79,7 +91,7 @@ abstract private class GeneratedType extends ValueOrRefType, GeneratedElement {
   }
 
   private string stubAttributes() {
-    if this.getAnAttribute().getType().getQualifiedName() = "System.FlagsAttribute"
+    if this.(ValueOrRefType).getAnAttribute().getType().getQualifiedName() = "System.FlagsAttribute"
     then result = "[System.Flags]\n"
     else result = ""
   }
@@ -112,7 +124,7 @@ abstract private class GeneratedType extends ValueOrRefType, GeneratedElement {
   }
 
   private ValueOrRefType getAnInterestingBaseType() {
-    result = this.getABaseType() and
+    result = this.(ValueOrRefType).getABaseType() and
     not result instanceof ObjectType and
     not result.getQualifiedName() = "System.ValueType" and
     (not result instanceof Interface or result.(Interface).isEffectivelyPublic())
@@ -171,9 +183,9 @@ abstract class GeneratedDeclaration extends Modifiable {
 
 private class IndirectType extends GeneratedType {
   IndirectType() {
-    this.getASubType() instanceof GeneratedType
+    this.(ValueOrRefType).getASubType() instanceof GeneratedType
     or
-    this.getAChildType() instanceof GeneratedType
+    this.(ValueOrRefType).getAChildType() instanceof GeneratedType
     or
     this.(UnboundGenericType).getAConstructedGeneric().getASubType() instanceof GeneratedType
     or
@@ -273,7 +285,8 @@ private class GeneratedNamespace extends Namespace, GeneratedElement {
   }
 
   private predicate isInAssembly(Assembly assembly) {
-    any(GeneratedType gt | gt.getDeclaringNamespace() = this).isInAssembly(assembly)
+    any(GeneratedType gt | gt.(DotNet::ValueOrRefType).getDeclaringNamespace() = this)
+        .isInAssembly(assembly)
     or
     this.getChildNamespace(_).isInAssembly(assembly)
   }
@@ -293,7 +306,7 @@ private class GeneratedNamespace extends Namespace, GeneratedElement {
     this.isInAssembly(assembly) and
     result =
       concat(GeneratedType gt |
-        gt.getDeclaringNamespace() = this and gt.isInAssembly(assembly)
+        gt.(DotNet::ValueOrRefType).getDeclaringNamespace() = this and gt.isInAssembly(assembly)
       |
         gt.getStub(assembly) order by gt.getName()
       )
@@ -454,7 +467,7 @@ private string stubClassName(Type t) {
 }
 
 language[monotonicAggregates]
-private string stubGenericArguments(ValueOrRefType t) {
+private string stubGenericArguments(Type t) {
   if t instanceof UnboundGenericType
   then
     result =
@@ -730,7 +743,7 @@ private string stubMember(Member m, Assembly assembly) {
               if
                 not m.getDeclaringType() instanceof Enum and
                 (
-                  not m.getDeclaringType() instanceof Struct or
+                  not m.getDeclaringType() instanceof StructEx or
                   m.(Constructor).getNumberOfParameters() > 0
                 )
               then
