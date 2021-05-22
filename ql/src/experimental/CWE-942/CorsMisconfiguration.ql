@@ -69,16 +69,24 @@ predicate flowsFromUntrustedToAllowOrigin(HTTP::HeaderWrite allowOriginHW, strin
   )
 }
 
+/**
+ * Holds if the provided `allowOriginHW` HeaderWrite is for a `Access-Control-Allow-Origin`
+ * header and the value is set to `*` or `null`.
+ */
+predicate allowOriginIsWildcardOrNull(HTTP::HeaderWrite allowOriginHW, string message) {
+  allowOriginHW.getHeaderName() = headerAllowOrigin() and
+  allowOriginHW.getHeaderValue() = ["*", "null"] and
+  message =
+    headerAllowOrigin() + " header is set to `" + allowOriginHW.getHeaderValue() + "`, and " +
+      headerAllowCredentials() + " is set to `true`"
+}
+
 from HTTP::HeaderWrite allowOriginHW, string message
 where
   (
     flowsFromUntrustedToAllowOrigin(allowOriginHW, message)
     or
-    allowOriginHW.getHeaderName() = headerAllowOrigin() and
-    allowOriginHW.getHeaderValue() = ["*", "null"] and
-    message =
-      headerAllowOrigin() + " header is set to `" + allowOriginHW.getHeaderValue() + "`, and " +
-        headerAllowCredentials() + " is set to `true`"
+    allowOriginIsWildcardOrNull(allowOriginHW, message)
   ) and
   allowCredentialsIsSetToTrue(allowOriginHW)
 select allowOriginHW, message
