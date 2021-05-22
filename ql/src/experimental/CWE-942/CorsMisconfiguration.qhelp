@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+	When configuring the allowed origins for CORS requests that allow passing cookies
+	(i.e. the <code>Access-Control-Allow-Credentials</code> is set to true),
+	if the <code>Access-Control-Allow-Origin</code> header is set to a user-provided value (and not correctly validated),
+	or is set to special values such as <code>*</code> or <code>null</code>, then the users of that application might be
+	vulnerable to attacks where the attacker impersonates the user and sends request on their behalf.
+</p>
+</overview>
+<recommendation>
+<p>
+	When configuring CORS that allow credentials passing,
+	it's best not to use user-provided values for the allowed origins response header,
+	especially if the cookies grant session permissions on the user's account.
+</p>
+<p>
+	It also can be very dangerous to set the allowed origins to <code>*</code> or <code>null</code> (which can be bypassed).
+</p>
+</recommendation>
+<example>
+<p>
+	The first example shows a few possible CORS misconfiguration cases:
+</p>
+<sample src="CorsMisconfigurationBad.go"/>
+<p>
+	The second example show better configurations:
+</p>
+<sample src="CorsMisconfigurationGood.go"/>
+</example>
+<references>
+<li>
+	Reference 1: <a href="https://portswigger.net/web-security/cors">PortSwigger Web Security Academy on CORS</a>.
+</li>
+<li>
+	Reference 2: <a href="https://www.youtube.com/watch?v=wgkj4ZgxI4c">AppSec EU 2017 Exploiting CORS Misconfigurations For Bitcoins And Bounties by James Kettle</a>.
+</li>
+</references>
+</qhelp>
