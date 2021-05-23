@@ -1,6 +1,5 @@
 public class Server {
-    public static void main(String... args) throws Exception {
-        Registry registry = LocateRegistry.createRegistry(1099);
+    public void bindRemoteObject(Registry registry) throws Exception {
         registry.bind("unsafe", new RemoteObjectImpl());
     }
 }
