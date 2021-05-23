@@ -1,5 +1,5 @@
 /**
- * @name Unsafe remote object.
+ * @name Unsafe deserialization in a remotely callable method.
  * @description If a registered remote object has a method that accepts a complex object,
  *              an attacker can take advantage of the unsafe deserialization mechanism
  *              which is used to pass parameters in RMI.
@@ -31,7 +31,7 @@ private class BindMethod extends Method {
 }
 
 /**
- * Holds if `type` has an unsafe remote method.
+ * Holds if `type` has an vulnerable remote method.
  */
 private predicate hasVulnerableMethod(RefType type) {
   exists(RemoteCallableMethod m, Type parameterType |
@@ -57,13 +57,13 @@ private class BindingUnsafeRemoteObjectConfig extends TaintTracking::Configurati
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(StaticMethodAccess ma | ma.getArgument(1) = sink.asExpr() |
+    exists(MethodAccess ma | ma.getArgument(1) = sink.asExpr() |
       ma.getMethod() instanceof BindMethod
     )
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-    exists(StaticMethodAccess ma, Method m | m = ma.getMethod() |
+    exists(MethodAccess ma, Method m | m = ma.getMethod() |
       m.getDeclaringType().hasQualifiedName("java.rmi.server", "UnicastRemoteObject") and
       m.hasName("exportObject") and
       not ma.getArgument([2, 4])
@@ -79,4 +79,4 @@ private class BindingUnsafeRemoteObjectConfig extends TaintTracking::Configurati
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, BindingUnsafeRemoteObjectConfig conf
 where conf.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "Binding an unsafe remote object."
+select sink.getNode(), source, sink, "Unsafe deserialization in a remote object."
