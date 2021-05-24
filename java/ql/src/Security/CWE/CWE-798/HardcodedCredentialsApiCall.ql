@@ -14,6 +14,8 @@ import java
 import semmle.code.java.dataflow.DataFlow
 import HardcodedCredentials
 import DataFlow::PathGraph
+import semmle.code.java.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
+
 
 class HardcodedCredentialApiCallConfiguration extends DataFlow::Configuration {
   HardcodedCredentialApiCallConfiguration() { this = "HardcodedCredentialApiCallConfiguration" }
@@ -27,10 +29,10 @@ class HardcodedCredentialApiCallConfiguration extends DataFlow::Configuration {
 
   override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     node1.asExpr().getType() instanceof TypeString and
-    exists(MethodAccess ma | ma.getMethod().hasName(["getBytes", "toCharArray","decode"]) |
+    (exists(MethodAccess ma | ma.getMethod().hasName(["getBytes", "toCharArray"]) |
       node2.asExpr() = ma and
-      (ma.getQualifier() = node1.asExpr() or ma.getAnArgument() = node1.asExpr())
-    )
+      ma.getQualifier() = node1.asExpr()) or FlowSummaryImpl::Private::Steps::summaryThroughStep(node1, node2, false))
+    
   }
 
   override predicate isBarrier(DataFlow::Node n) {

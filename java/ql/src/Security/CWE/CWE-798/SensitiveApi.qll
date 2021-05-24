@@ -490,8 +490,7 @@ private predicate javaApiCallableCryptoKeyParam(string s) {
   s = "sun.security.provider.JavaKeyStore;engineSetKeyEntry(String, byte[], Certificate[]);1" or
   s = "sun.security.tools.keytool.Main;recoverKey(String, char[], char[]);2" or
   s = "sun.security.tools.keytool.Main;getKeyPasswd(String, String, char[]);2" or
-  s = "sun.security.x509.X509Key;decode(byte[]);0" or
-  s = "org.apache.shiro.mgt.AbstractRememberMeManager;setCipherKey(byte[]);0"
+  s = "sun.security.x509.X509Key;decode(byte[]);0"
 }
 
 /**
@@ -514,5 +513,6 @@ private predicate otherApiCallableCredentialParam(string s) {
   s = "com.amazonaws.auth.BasicAWSCredentials;BasicAWSCredentials(String, String);1" or
   s = "com.azure.identity.UsernamePasswordCredentialBuilder;username(String);0" or
   s = "com.azure.identity.UsernamePasswordCredentialBuilder;password(String);0" or
-  s = "com.azure.identity.ClientSecretCredentialBuilder;clientSecret(String);0"
+  s = "com.azure.identity.ClientSecretCredentialBuilder;clientSecret(String);0" or
+  s = "org.apache.shiro.mgt.AbstractRememberMeManager;setCipherKey(byte[]);0"
 }
