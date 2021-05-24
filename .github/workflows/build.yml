@@ -78,6 +78,16 @@ jobs:
           codeql/codeql pack create ql/src --output target/packs
           codeql/codeql pack create upgrades --output target/packs
           cp -r ql/src/codeql-suites target/packs/github_codeql-ruby_*/
+      - name: Compile with previous CodeQL versions
+        run: |
+          for version in  $(gh release list --repo https://github.com/github/codeql-cli-binaries | cut -f 1 | sort --version-sort | tail -3 | head -2); do
+            rm -f codeql-linux64.zip
+            gh release download --repo https://github.com/github/codeql-cli-binaries --pattern codeql-linux64.zip "$version"
+            rm -rf codeql; unzip -q codeql-linux64.zip
+            codeql/codeql query compile target/packs/*
+          done
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
       - uses: actions/upload-artifact@v2
         with:
           name: codeql-ruby-queries
