@@ -49,7 +49,10 @@ predicate isGorillaSessionsCookieFlow(DataFlow::PathNode source, DataFlow::PathN
       source = cookieStoreCreate and
       sink = sessionSave
       or
-      exists(GorillaSessionOptionsTrackingConfiguration cfg, DataFlow::PathNode options, DataFlow::PathNode sessionSave2 |
+      exists(
+        GorillaSessionOptionsTrackingConfiguration cfg, DataFlow::PathNode options,
+        DataFlow::PathNode sessionSave2
+      |
         cfg.hasFlowPath(options, sessionSave2) and
         (
           not any(BoolToGorillaSessionOptionsTrackingConfiguration boolCfg)
@@ -58,7 +61,10 @@ predicate isGorillaSessionsCookieFlow(DataFlow::PathNode source, DataFlow::PathN
           source = options and
           sessionSave.getNode() = sessionSave2.getNode()
           or
-          exists(BoolToGorillaSessionOptionsTrackingConfiguration boolCfg, DataFlow::PathNode sessionSave3 |
+          exists(
+            BoolToGorillaSessionOptionsTrackingConfiguration boolCfg,
+            DataFlow::PathNode sessionSave3
+          |
             boolCfg.hasFlowPath(source, sessionSave3) and
             source.getNode().getBoolValue() = false and
             sink = sessionSave3 and
