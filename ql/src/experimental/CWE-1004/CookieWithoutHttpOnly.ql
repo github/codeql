@@ -27,10 +27,11 @@ predicate isNetHttpCookieFlow(DataFlow::PathNode source, DataFlow::PathNode sink
       source = sensitiveName and
       sink = setCookieSink
       or
-      exists(BoolToNetHttpCookieTrackingConfiguration cfg |
-        cfg.hasFlow(source.getNode(), setCookieSink.getNode()) and
+      exists(BoolToNetHttpCookieTrackingConfiguration cfg, DataFlow::PathNode setCookieSink2 |
+        cfg.hasFlowPath(source, setCookieSink2) and
         source.getNode().getBoolValue() = false and
-        sink = setCookieSink
+        sink = setCookieSink2 and
+        setCookieSink.getNode() = setCookieSink2.getNode()
       )
     )
   )
@@ -48,18 +49,20 @@ predicate isGorillaSessionsCookieFlow(DataFlow::PathNode source, DataFlow::PathN
       source = cookieStoreCreate and
       sink = sessionSave
       or
-      exists(GorillaSessionOptionsTrackingConfiguration cfg, DataFlow::PathNode options |
-        cfg.hasFlow(options.getNode(), sessionSave.getNode()) and
+      exists(GorillaSessionOptionsTrackingConfiguration cfg, DataFlow::PathNode options, DataFlow::PathNode sessionSave2 |
+        cfg.hasFlowPath(options, sessionSave2) and
         (
           not any(BoolToGorillaSessionOptionsTrackingConfiguration boolCfg)
               .hasFlowTo(sessionSave.getNode()) and
-          sink = sessionSave and
-          source = options
+          sink = sessionSave2 and
+          source = options and
+          sessionSave.getNode() = sessionSave2.getNode()
           or
-          exists(BoolToGorillaSessionOptionsTrackingConfiguration boolCfg |
-            boolCfg.hasFlow(source.getNode(), sessionSave.getNode()) and
+          exists(BoolToGorillaSessionOptionsTrackingConfiguration boolCfg, DataFlow::PathNode sessionSave3 |
+            boolCfg.hasFlowPath(source, sessionSave3) and
             source.getNode().getBoolValue() = false and
-            sink = sessionSave
+            sink = sessionSave3 and
+            sessionSave.getNode() = sessionSave3.getNode()
           )
         )
       )
