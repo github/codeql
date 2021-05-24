@@ -4,6 +4,7 @@
  *              is then used in an arithmetic expression, this may result in an overflow.
  * @kind path-problem
  * @problem.severity recommendation
+ * @security-severity 5.9
  * @precision medium
  * @id java/extreme-value-arithmetic
  * @tags security
