@@ -1,0 +1,15 @@
+edges
+| InsufficientKeySize.go:13:10:13:13 | 1024 : int | InsufficientKeySize.go:14:31:14:34 | size |
+| InsufficientKeySize.go:18:7:18:10 | 1024 : int | InsufficientKeySize.go:25:11:25:14 | definition of size : int |
+| InsufficientKeySize.go:25:11:25:14 | definition of size : int | InsufficientKeySize.go:26:31:26:34 | size |
+nodes
+| InsufficientKeySize.go:9:31:9:34 | 1024 | semmle.label | 1024 |
+| InsufficientKeySize.go:13:10:13:13 | 1024 : int | semmle.label | 1024 : int |
+| InsufficientKeySize.go:14:31:14:34 | size | semmle.label | size |
+| InsufficientKeySize.go:18:7:18:10 | 1024 : int | semmle.label | 1024 : int |
+| InsufficientKeySize.go:25:11:25:14 | definition of size : int | semmle.label | definition of size : int |
+| InsufficientKeySize.go:26:31:26:34 | size | semmle.label | size |
+#select
+| InsufficientKeySize.go:9:31:9:34 | 1024 | InsufficientKeySize.go:9:31:9:34 | 1024 | InsufficientKeySize.go:9:31:9:34 | 1024 | The size of this RSA key should be at least 2048 bits. |
+| InsufficientKeySize.go:14:31:14:34 | size | InsufficientKeySize.go:13:10:13:13 | 1024 : int | InsufficientKeySize.go:14:31:14:34 | size | The size of this RSA key should be at least 2048 bits. |
+| InsufficientKeySize.go:26:31:26:34 | size | InsufficientKeySize.go:18:7:18:10 | 1024 : int | InsufficientKeySize.go:26:31:26:34 | size | The size of this RSA key should be at least 2048 bits. |
