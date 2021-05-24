@@ -90,7 +90,7 @@ class BoolToNetHttpCookieTrackingConfiguration extends TaintTracking::Configurat
   BoolToNetHttpCookieTrackingConfiguration() { this = "BoolToNetHttpCookieTrackingConfiguration" }
 
   override predicate isSource(DataFlow::Node source) {
-    source.asExpr().getType().getUnderlyingType() instanceof BoolType
+    source.getType().getUnderlyingType() instanceof BoolType
   }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof SetCookieSink }
@@ -110,7 +110,7 @@ class BoolToNetHttpCookieTrackingConfiguration extends TaintTracking::Configurat
 class BoolToGinSetCookieTrackingConfiguration extends DataFlow::Configuration {
   BoolToGinSetCookieTrackingConfiguration() { this = "BoolToGinSetCookieTrackingConfiguration" }
 
-  override predicate isSource(DataFlow::Node source) { source.asExpr().getBoolValue() = false }
+  override predicate isSource(DataFlow::Node source) { source.getBoolValue() = false }
 
   override predicate isSink(DataFlow::Node sink) {
     exists(DataFlow::MethodCallNode mcn |
@@ -227,7 +227,7 @@ class BoolToGorillaSessionOptionsTrackingConfiguration extends TaintTracking::Co
   }
 
   override predicate isSource(DataFlow::Node source) {
-    source.asExpr().getType().getUnderlyingType() instanceof BoolType
+    source.getType().getUnderlyingType() instanceof BoolType
   }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof GorillaSessionSaveSink }
