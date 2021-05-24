@@ -83,10 +83,10 @@ predicate allowOriginIsWildcardOrNull(HTTP::HeaderWrite allowOriginHW, string me
 
 from HTTP::HeaderWrite allowOriginHW, string message
 where
+  allowCredentialsIsSetToTrue(allowOriginHW) and
   (
     flowsFromUntrustedToAllowOrigin(allowOriginHW, message)
     or
     allowOriginIsWildcardOrNull(allowOriginHW, message)
-  ) and
-  allowCredentialsIsSetToTrue(allowOriginHW)
+  )
 select allowOriginHW, message
