@@ -7,14 +7,14 @@ SQL = "SOME SQL"
 # Normal operation
 client = clickhouse_driver.client.Client("localhost")
 
-client.execute(SQL) # $ MISSING: getSql=SQL
-client.execute(query=SQL) # $ MISSING: getSql=SQL
+client.execute(SQL) # $ getSql=SQL
+client.execute(query=SQL) # $ getSql=SQL
 
-client.execute_with_progress(SQL) # $ MISSING: getSql=SQL
-client.execute_with_progress(query=SQL) # $ MISSING: getSql=SQL
+client.execute_with_progress(SQL) # $ getSql=SQL
+client.execute_with_progress(query=SQL) # $ getSql=SQL
 
-client.execute_iter(SQL) # $ MISSING: getSql=SQL
-client.execute_iter(query=SQL) # $ MISSING: getSql=SQL
+client.execute_iter(SQL) # $ getSql=SQL
+client.execute_iter(query=SQL) # $ getSql=SQL
 
 
 # commonly used alias

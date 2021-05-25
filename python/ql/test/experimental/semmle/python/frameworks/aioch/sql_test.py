@@ -8,13 +8,13 @@ async def aioch_test():
     client = aioch.Client("localhost")
 
     await client.execute(SQL) # $ getSql=SQL
-    await client.execute(query=SQL) # $ MISSING: getSql=SQL
+    await client.execute(query=SQL) # $ getSql=SQL
 
     await client.execute_with_progress(SQL) # $ getSql=SQL
-    await client.execute_with_progress(query=SQL) # $ MISSING: getSql=SQL
+    await client.execute_with_progress(query=SQL) # $ getSql=SQL
 
     await client.execute_iter(SQL) # $ getSql=SQL
-    await client.execute_iter(query=SQL) # $ MISSING: getSql=SQL
+    await client.execute_iter(query=SQL) # $ getSql=SQL
 
 
 # Using custom client (this has been seen done for the blocking version in

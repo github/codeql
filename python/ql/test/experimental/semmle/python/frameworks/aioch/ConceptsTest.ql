@@ -1,3 +1,3 @@
 import python
 import experimental.meta.ConceptsTest
-import experimental.semmle.python.frameworks.ClickHouseDriver
+import experimental.semmle.python.frameworks.Aioch
