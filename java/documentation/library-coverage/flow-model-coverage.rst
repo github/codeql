@@ -13,7 +13,7 @@ Java framework & library support
    Google,``com.google.common.*``,,97,6,,6,,,,,
    Java Standard Library,``java.*``,3,41,15,13,,,,,,2
    Java extensions,``javax.*``,22,8,12,,,1,,1,1,
-   `Spring <https://spring.io/>`_,``org.springframework.*``,23,,14,,,,,14,,
+   `Spring <https://spring.io/>`_,``org.springframework.*``,29,,14,,,,,14,,
    Others,"``com.esotericsoftware.kryo.io``, ``com.esotericsoftware.kryo5.io``, ``com.fasterxml.jackson.databind``, ``com.unboundid.ldap.sdk``, ``org.dom4j``, ``org.xml.sax``, ``org.xmlpull.v1``, ``play.mvc``",7,5,37,,,,,17,,
-   Totals,,78,821,91,13,6,7,,33,1,2
+   Totals,,84,821,91,13,6,7,,33,1,2
 

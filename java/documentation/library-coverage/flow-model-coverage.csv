@@ -33,6 +33,7 @@ org.apache.hc.core5.util,,,22,,,,,,,,,,,18,4
 org.apache.http,2,3,66,,,,,,,,,2,3,59,7
 org.dom4j,20,,,,,,,,,,20,,,,
 org.springframework.ldap.core,14,,,,,,14,,,,,,,,
+org.springframework.security.web.savedrequest,,6,,,,,,,,,,,6,,
 org.springframework.web.client,,3,,,,,,,,,,,3,,
 org.springframework.web.context.request,,8,,,,,,,,,,,8,,
 org.springframework.web.multipart,,12,,,,,,,,,,,12,,
