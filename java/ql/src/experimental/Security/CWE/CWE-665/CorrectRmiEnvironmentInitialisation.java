@@ -10,7 +10,7 @@ public class CorrectRmiInitialisation {
         String my_filter = "java.lang.String;!*"; // Deny everything but java.lang.String
         env.put(RMIConnectorServer.CREDENTIALS_FILTER_PATTERN, my_filter);
                 
-        /* Old way
+        /* Java 9 or below
         env.put("jmx.remote.rmi.server.credential.types",
                 new String[] { String[].class.getName(), String.class.getName() });
         */

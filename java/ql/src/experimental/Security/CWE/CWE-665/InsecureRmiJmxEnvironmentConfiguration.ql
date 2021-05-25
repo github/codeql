@@ -1,6 +1,6 @@
 /**
  * @name InsecureRmiJmxAuthenticationEnvironment
- * @description This query detects if a JMX/RMI server is created with a potentially dangerous environment, which could lead to code execution through insecure deserialization.
+ * @description Creating a JMX/RMI server could lead to code execution through insecure deserialization if its environment does not restrict the types that can be deserialized.
  * @kind path-problem
  * @problem.severity error
  * @tags security
@@ -17,14 +17,14 @@ import DataFlow::PathGraph
 import semmle.code.java.dataflow.NullGuards
 import semmle.code.java.dataflow.Nullness
 
-/** Predicate which detects vulnerable Constructors */
+/** Holds if `constructor` instantiates an RMI or JMX server. */
 predicate isRmiOrJmxServerCreateConstructor(Constructor constructor) {
   constructor
       .getDeclaringType()
       .hasQualifiedName("javax.management.remote.rmi", "RMIConnectorServer")
 }
 
-/** Predicate which detects vulnerable server creations via methods */
+/** Holds if `method` creates an RMI or JMX server. */
 predicate isRmiOrJmxServerCreateMethod(Method method) {
   method.getName() = "newJMXConnectorServer" and
   method.getDeclaringType().hasQualifiedName("javax.management.remote", "JMXConnectorServerFactory")

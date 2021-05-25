@@ -4,7 +4,7 @@
 <qhelp>
 <overview>
 <p>An improperly set environment variable during the creation of an RMI or JMX server can lead 
-to an unauthenticated remote code execution vulnerability. This is due to the fact that the
+to an unauthenticated remote code execution vulnerability. This is because the
 RMI/JMX server environment allows attackers to supply arbitrary objects to the authentication 
 method, resulting in the attempted deserialization of an attacker-controlled object.
 </overview>
@@ -15,7 +15,7 @@ to be passed as second parameter.
 In order to disallow the deserialization of arbitrary objects the passed environment needs to set a deserialization filter.
 Ideally this filter only allows the deserialization to <code>java.lang.String</code>.
 
-The filter can be configured by setting the key <code>jmx.remote.rmi.server.credentials.filter.pattern</code> (CONST variable <code>RMIConnectorServer.CREDENTIALS_FILTER_PATTERN</code>).
+The filter can be configured by setting the key <code>jmx.remote.rmi.server.credentials.filter.pattern</code> (given by the constant <code>RMIConnectorServer.CREDENTIALS_FILTER_PATTERN</code>).
 The filter should (ideally) only allow java.lang.String and disallow all other classes for deserialization: (<code>"java.lang.String;!*"</code>).
 
 The key-value pair can be set as following:
@@ -27,7 +27,7 @@ Map<String, Object> env = new HashMap<String, Object>;
 env.put(RMIConnectorServer.CREDENTIALS_FILTER_PATTERN, my_filter);
 </code>
 
-For applications using &lt; Java 10:
+For applications using Java 9 or below:
 
 <code>
 // This is deprecated in Java 10+ !
