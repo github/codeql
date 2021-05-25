@@ -1137,6 +1137,22 @@ private predicate inForUpdate(Expr forUpdate, Expr child) {
 }
 
 /**
+ * Holds if `next` is the first `SwitchCase` after `case` that is enclosed by the `BlockStmt` `b`.
+ */
+pragma[nomagic]
+private predicate nextSwitchCaseInSameBlock(BlockStmt b, SwitchCase case, SwitchCase next) {
+  // If the next switch case is in the block `b` we're done.
+  case.getNextSwitchCase() = next and
+  next.getEnclosingBlock() = b
+  or
+  // Otherwise, skip past the next switch block when it's not enclosed in the block `b`.
+  exists(SwitchCase mid | mid = case.getNextSwitchCase() |
+    not mid.getEnclosingBlock() = b and
+    nextSwitchCaseInSameBlock(b, mid, next)
+  )
+}
+
+/**
  * A C/C++ 'switch case' statement.
  *
  * For example, the `case` and `default` statements in:
@@ -1331,16 +1347,19 @@ class SwitchCase extends Stmt, @stmt_switch_case {
    * `default:` has results `{ x = 3; }, `x = 4;` and `break;`.
    */
   Stmt getAStmt() {
-    exists(BlockStmt b, int i, int j |
-      b.getStmt(i) = this and
-      b.getStmt(j) = result and
-      i < j and
-      not result instanceof SwitchCase and
-      not exists(SwitchCase sc, int k |
-        b.getStmt(k) = sc and
-        i < k and
-        j > k
+    exists(BlockStmt b, int i | this = b.getStmt(i) |
+      // This is the most usual case:
+      // We locate the next `SwitchCase` and pick a statement between this `SwitchCase` and the `SwitchCase`
+      // in the `j`'th position in the block `b`.
+      exists(int j |
+        nextSwitchCaseInSameBlock(b, this,
+          pragma[only_bind_into](b).getStmt(pragma[only_bind_into](j))) and
+        result = b.getStmt(any(int k | i < k and k < j))
       )
+      or
+      // If there is no next switch case we pick any subsequent statement in the block `b`.
+      not nextSwitchCaseInSameBlock(b, this, _) and
+      result = b.getStmt(any(int k | i < k))
     )
   }
 
