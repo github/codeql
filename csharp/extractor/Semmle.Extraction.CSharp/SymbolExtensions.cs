@@ -373,7 +373,7 @@ namespace Semmle.Extraction.CSharp
                         var elementType = array.ElementType;
                         if (elementType.MetadataName.Contains("`"))
                         {
-                            trapFile.Write(elementType.Name);
+                            trapFile.Write(TrapExtensions.EncodeString(elementType.Name));
                             return;
                         }
                         elementType.BuildDisplayName(cx, trapFile);
@@ -480,7 +480,7 @@ namespace Semmle.Extraction.CSharp
             }
             else
             {
-                trapFile.Write(namedType.Name);
+                trapFile.Write(TrapExtensions.EncodeString(namedType.Name));
             }
 
             if (namedType.IsGenericType && namedType.TypeKind != TypeKind.Error && namedType.TypeArguments.Any())
