@@ -12,11 +12,11 @@ to <code>sprintf</code>. This leaves the code vulnerable to attack by SQL Inject
 <recommendation>
 
 <p>Use a library routine to escape characters in the user-supplied
-string before converting it to SQL. Use esc and quote pqxx library functions.</p>
+string before converting it to SQL. Use <code>esc</code> and <code>quote</code> pqxx library functions.</p>
 
 </recommendation>
 <example>
-<sample src="SqlPqxxTainted.c" />
+<sample src="SqlPqxxTainted.cpp" />
 
 </example>
 <references>

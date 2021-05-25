@@ -16,32 +16,17 @@ import semmle.code.cpp.security.Security
 import semmle.code.cpp.dataflow.TaintTracking
 import DataFlow::PathGraph
 
-predicate pqxxTransationClassNames(string class_name, string namespace) {
-  class_name = "dbtransaction" and namespace = "pqxx"
-  or
-  class_name = "nontransaction" and namespace = "pqxx"
-  or
-  class_name = "basic_robusttransaction" and namespace = "pqxx"
-  or
-  class_name = "robusttransaction" and namespace = "pqxx"
-  or
-  class_name = "subtransaction" and namespace = "pqxx"
-  or
-  class_name = "transaction" and namespace = "pqxx"
-  or
-  class_name = "basic_transaction" and namespace = "pqxx"
-  or
-  class_name = "transaction_base" and namespace = "pqxx"
-  or
-  class_name = "work" and namespace = "pqxx"
+predicate pqxxTransationClassNames(string className, string namespace) {
+  namespace = "pqxx" and
+  className in [
+      "dbtransaction", "nontransaction", "basic_robusttransaction", "robusttransaction",
+      "subtransaction", "transaction", "basic_transaction", "transaction_base", "work"
+    ]
 }
 
-predicate pqxxConnectionClassNames(string class_name, string namespace) {
-  class_name = "connection_base" and namespace = "pqxx"
-  or
-  class_name = "basic_connection" and namespace = "pqxx"
-  or
-  class_name = "connection" and namespace = "pqxx"
+predicate pqxxConnectionClassNames(string className, string namespace) {
+  namespace = "pqxx" and
+  className in ["connection_base", "basic_connection", "connection"]
 }
 
 predicate pqxxTransactionSqlArgument(string function, int arg) {
@@ -89,21 +74,7 @@ Expr getPqxxSqlArgument() {
 
 predicate pqxxEscapeArgument(string function, int arg) {
   arg = 0 and
-  (
-    function = "esc"
-    or
-    function = "esc_raw"
-    or
-    function = "quote"
-    or
-    function = "quote_raw"
-    or
-    function = "quote_name"
-    or
-    function = "quote_table"
-    or
-    function = "esc_like"
-  )
+  function in ["esc", "esc_raw", "quote", "quote_raw", "quote_name", "quote_table", "esc_like"]
 }
 
 predicate isEscapedPqxxArgument(Expr argExpr) {
