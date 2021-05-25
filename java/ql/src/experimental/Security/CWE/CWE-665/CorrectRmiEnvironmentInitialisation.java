@@ -7,8 +7,8 @@ public class CorrectRmiInitialisation {
         /* Restrict the login function to String Objects only (see CVE-2016-3427) */
         Map<String, Object> env = new HashMap<String, Object>();
         // For Java 10+
-        String my_filter = "java.lang.String;!*"; // Deny everything but java.lang.String
-        env.put(RMIConnectorServer.CREDENTIALS_FILTER_PATTERN, my_filter);
+        String stringsOnlyFilter = "java.lang.String;!*"; // Deny everything but java.lang.String
+        env.put(RMIConnectorServer.CREDENTIALS_FILTER_PATTERN, stringsOnlyFilter);
                 
         /* Java 9 or below
         env.put("jmx.remote.rmi.server.credential.types",
