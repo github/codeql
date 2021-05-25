@@ -53,21 +53,39 @@ public class InsecureRmiJmxEnvironmentConfiguration {
     new RMIConnectorServer(null, env, null, null);
   }
 
-  public void secureeJmxConnectorServerConstants() throws IOException {
+  public void secureeJmxConnectorServerConstants1() throws IOException {
     // Good
     Map<String, Object> env = new HashMap<>();
     env.put("jmx.remote.x.daemon", "true");
-    env.put("RMIConnectorServer.SERIAL_FILTER_PATTERN",
-        new String[] { String[].class.getName(), String.class.getName() });
+    env.put(RMIConnectorServer.CREDENTIALS_FILTER_PATTERN, "java.lang.String;!*"); // Deny everything but
+                                                                                   // java.lang.String
     JMXConnectorServerFactory.newJMXConnectorServer(null, env, null);
   }
 
-  public void secureeRmiConnectorServerConstants() throws IOException {
+  public void secureeRmiConnectorServerConstants1() throws IOException {
     // Good
     Map<String, Object> env = new HashMap<>();
     env.put("jmx.remote.x.daemon", "true");
-    env.put("RMIConnectorServer.SERIAL_FILTER_PATTERN",
-        new String[] { String[].class.getName(), String.class.getName() });
+    String stringsOnlyFilter = "java.lang.String;!*"; // Deny everything but java.lang.String
+    env.put(RMIConnectorServer.CREDENTIALS_FILTER_PATTERN, stringsOnlyFilter);
+    new RMIConnectorServer(null, env, null, null);
+  }
+
+  public void secureeJmxConnectorServerConstants2() throws IOException {
+    // Good
+    Map<String, Object> env = new HashMap<>();
+    env.put("jmx.remote.x.daemon", "true");
+    env.put("jmx.remote.rmi.server.credentials.filter.pattern", "java.lang.String;!*"); // Deny everything but
+                                                                                        // java.lang.String
+    JMXConnectorServerFactory.newJMXConnectorServer(null, env, null);
+  }
+
+  public void secureeRmiConnectorServerConstants2() throws IOException {
+    // Good
+    Map<String, Object> env = new HashMap<>();
+    env.put("jmx.remote.x.daemon", "true");
+    String stringsOnlyFilter = "java.lang.String;!*"; // Deny everything but java.lang.String
+    env.put("jmx.remote.rmi.server.credentials.filter.pattern", stringsOnlyFilter);
     new RMIConnectorServer(null, env, null, null);
   }
 }

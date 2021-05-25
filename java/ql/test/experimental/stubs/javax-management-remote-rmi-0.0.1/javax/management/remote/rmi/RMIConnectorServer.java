@@ -11,6 +11,9 @@ import javax.management.remote.rmi.RMIServerImpl;
 
 //public class RMIConnectorServerTEST extends JMXConnectorServer{
 public class RMIConnectorServer extends java.lang.Object {
+
+    public static final String CREDENTIALS_FILTER_PATTERN = "jmx.remote.rmi.server.credentials.filter.pattern";
+
     public RMIConnectorServer(JMXServiceURL url, Map<String, ?> environment) throws IOException {
         // stub;
     }
