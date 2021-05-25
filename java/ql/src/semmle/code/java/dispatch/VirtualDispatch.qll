@@ -76,7 +76,7 @@ private module Dispatch {
     (
       exists(Method def, RefType t, boolean exact |
         qualType(ma, t, exact) and
-        def = ma.getMethod()
+        def = ma.getMethod().getSourceDeclaration()
       |
         exact = true and result = exactMethodImpl(def, t.getSourceDeclaration())
         or
