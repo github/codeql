@@ -38,9 +38,7 @@ predicate interestringCallWithArgs(Call call, Expr sizeArg, Expr destArg) {
  */
 predicate case1(FunctionCall fc, Expr sizeArg, VariableAccess destArg) {
   interestringCallWithArgs(fc, sizeArg, destArg) and
-  exists(StrcatFunction strncat, VariableAccess va |
-    fc.getTarget() = strncat and
-    destArg = fc.getArgument(strncat.getParamDest()) and
+  exists(VariableAccess va |
     va = sizeArg.(BufferSizeExpr).getArg() and
     destArg.getTarget() = va.getTarget()
   )
