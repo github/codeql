@@ -18,6 +18,14 @@ def m5 x, y
   x.foo[0, y.bar, x.baz + 3] += 1
 end
 
+def m6
+  x, *y, z.bar = [1, 2, 3, 4]
+end
+
+def m7
+  x, (y, z) = [1, [2, 3]]
+end
+
 class X
   @x = 1
   @x += 2
