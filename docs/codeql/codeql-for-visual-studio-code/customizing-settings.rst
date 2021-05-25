@@ -55,7 +55,7 @@ There are a number of settings for **Running Queries**. If your queries run too 
 
 .. include:: ../reusables/running-queries-debug.rst
 
-To save CodeQL Query Server logs in a custom location, edit the **Running Queries: Custom Log Directory** setting. If you use a custom log directory, the extension doesn't automatically delete the CodeQL Query Server logs. This is useful if you want to investigate these logs to improve the performance of your queries.
+To save query server logs in a custom location, edit the **Running Queries: Custom Log Directory** setting. If you use a custom log directory, the extension saves the logs permanently, instead of deleting them automatically after each workspace session. This is useful if you want to investigate these logs to improve the performance of your queries.
 
 Configuring settings for testing queries
 -----------------------------------------
