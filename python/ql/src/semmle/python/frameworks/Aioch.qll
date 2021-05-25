@@ -9,7 +9,7 @@ private import python
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.PEP249
-private import experimental.semmle.python.frameworks.ClickhouseDriver
+private import semmle.python.frameworks.ClickhouseDriver
 
 /**
  * INTERNAL: Do not use.

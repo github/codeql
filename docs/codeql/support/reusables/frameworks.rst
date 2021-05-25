@@ -162,6 +162,8 @@ Python built-in support
    fabric, Utility library
    invoke, Utility library
    idna, Utility library
+   aioch, Database
+   clickhouse-driver, Database
    mysql-connector-python, Database
    MySQLdb, Database
    psycopg2, Database
