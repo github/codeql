@@ -7,5 +7,6 @@
     tags contain:
       - ide-contextual-queries/local-definitions
       - ide-contextual-queries/local-references
-- query: Metrics/FLinesOfCode.ql
+- include:
+    id: rb/lines-of-code-in-files
 
