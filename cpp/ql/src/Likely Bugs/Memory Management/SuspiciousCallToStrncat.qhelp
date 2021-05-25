@@ -4,11 +4,17 @@
 <qhelp>
 <overview>
 <p>The standard library function <code>strncat</code> appends a source string to a target string. 
-The third argument defines the maximum number of characters to append and should be less than or equal to the remaining space in the destination buffer.
-Calls of the form <code>strncat(dest, src, strlen(dest))</code> or <code>strncat(dest, src, sizeof(dest))</code> set the third argument to the entire size of the destination buffer.
-Executing a call of this type may cause a buffer overflow unless the buffer is known to be empty.
-Similarly, calls of the form <code>strncat(dest, src, sizeof (dest) - strlen (dest))</code> allow one byte to be written ouside the `dest` buffer.
-Buffer overflows can lead to anything from a segmentation fault to a security vulnerability.</p>
+The third argument defines the maximum number of characters to append and should be less than or equal
+to the remaining space in the destination buffer.</p>
+
+<p>Calls of the form <code>strncat(dest, src, strlen(dest))</code> or <code>strncat(dest, src, sizeof(dest))</code> set
+the third argument to the entire size of the destination buffer.
+Executing a call of this type may cause a buffer overflow unless the buffer is known to be empty.</p>
+
+<p>Similarly, calls of the form <code>strncat(dest, src, sizeof (dest) - strlen (dest))</code> allow one
+byte to be written ouside the <code>dest</code> buffer.</p>
+
+<p>Buffer overflows can lead to anything from a segmentation fault to a security vulnerability.</p>
 
 </overview>
 <recommendation>
