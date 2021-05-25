@@ -15,8 +15,8 @@
 import ruby
 import codeql_ruby.DataFlow
 import DataFlow::PathGraph
-private import codeql_ruby.dataflow.SSA
-private import codeql_ruby.CFG
+private import codeql_ruby.typetracking.TypeTracker
+private import codeql_ruby.controlflow.CfgNodes
 
 bindingset[char, fraction]
 predicate fewer_characters_than(StringLiteral str, string char, float fraction) {
@@ -82,32 +82,47 @@ private string getACredentialRegex() {
   result = "(?i).*(cert)(?!.*(format|name)).*"
 }
 
-private predicate isCredentialSink(Expr e) {
-  exists(string name |
-    name.regexpMatch(getACredentialRegex()) and
-    not name.suffix(name.length() - 4) = "file"
-  |
-    // A method call with a parameter that may hold a credential
-    exists(Method m, NamedParameter p, int idx, MethodCall mc |
-      // Include keyword argument values etc.
-      mc.getArgument(idx).getAChild*() = e and
-      p = m.getParameter(idx) and
-      p.getName() = name and
-      // TODO: link call w/ method more precisely
-      mc.getMethodName() = m.getName()
-    )
+bindingset[name]
+private predicate maybeCredentialName(string name) {
+  name.regexpMatch(getACredentialRegex()) and
+  not name.suffix(name.length() - 4) = "file"
+}
+
+private DataFlow::LocalSourceNode credentialParameter(TypeTracker t) {
+  t.start() and
+  exists(Method m, NamedParameter p, int idx |
+    // TODO: this does not capture keyword params
+    result.asParameter() = p and
+    p = m.getParameter(idx) and
+    maybeCredentialName(p.getName())
+  )
+  or
+  exists(TypeTracker t2 | result = credentialParameter(t2).track(t2, t))
+}
+
+private DataFlow::Node credentialParameter() {
+  credentialParameter(TypeTracker::end()).flowsTo(result)
+}
+
+// An equality check against a credential value
+private Expr credentialComparison() {
+  exists(EqualityOperation op, VariableReadAccess vra |
+    maybeCredentialName(vra.getVariable().getName()) and
+    op.getLeftOperand() = result and
+    op.getRightOperand() = vra
     or
-    // An equality check against a credential value
-    exists(EqualityOperation op, VariableReadAccess vra | vra.getVariable().getName() = name |
-      op.getLeftOperand() = e and op.getRightOperand() = vra
-      or
-      op.getLeftOperand() = vra and op.getRightOperand() = e
-    )
+    op.getLeftOperand() = vra and op.getRightOperand() = result
   )
 }
 
+private predicate isCredentialSink(DataFlow::Node node) {
+  node = credentialParameter()
+  or
+  node.asExpr().getExpr() = credentialComparison()
+}
+
 class CredentialSink extends DataFlow::Node {
-  CredentialSink() { isCredentialSink(this.asExpr().getExpr()) }
+  CredentialSink() { isCredentialSink(this) }
 }
 
 class HardcodedCredentialsConfiguration extends DataFlow::Configuration {
@@ -116,8 +131,20 @@ class HardcodedCredentialsConfiguration extends DataFlow::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof HardcodedValueSource }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof CredentialSink }
+
+  override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    // e.g. string concatenation
+    exists(ExprNodes::BinaryOperationCfgNode binop |
+      (
+        binop.getLeftOperand() = node1.asExpr() or
+        binop.getRightOperand() = node1.asExpr()
+      ) and
+      binop = node2.asExpr()
+    )
+  }
 }
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, HardcodedCredentialsConfiguration conf
 where conf.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "Use of $@.", source.getNode(), "hardcoded credentials"
+// TODO: debug duplicate rows
