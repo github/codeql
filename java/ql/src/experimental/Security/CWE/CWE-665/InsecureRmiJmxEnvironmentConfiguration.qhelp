@@ -10,10 +10,8 @@ method, resulting in the attempted deserialization of an attacker-controlled obj
 </overview>
 
 <recommendation>
-<p>During the creation/initialitation of an RMI or JMX server a properly set environment (Map) variable has
-to be passed as second parameter. 
-In order to disallow the deserialization of arbitrary objects the passed environment needs to set a deserialization filter.
-Ideally this filter only allows the deserialization to <code>java.lang.String</code>.
+<p>During the creation/initialization of an RMI or JMX server an environment should be supplied that sets a deserialization filter.
+Ideally this filter only allows the deserialization of <code>java.lang.String</code>.
 
 The filter can be configured by setting the key <code>jmx.remote.rmi.server.credentials.filter.pattern</code> (given by the constant <code>RMIConnectorServer.CREDENTIALS_FILTER_PATTERN</code>).
 The filter should (ideally) only allow java.lang.String and disallow all other classes for deserialization: (<code>"java.lang.String;!*"</code>).
@@ -21,10 +19,10 @@ The filter should (ideally) only allow java.lang.String and disallow all other c
 The key-value pair can be set as following:
 
 <code>
-String my_filter = "java.lang.String;!*"; // Deny everything but java.lang.String
+String stringsOnlyFilter = "java.lang.String;!*"; // Deny everything but java.lang.String
 
 Map<String, Object> env = new HashMap<String, Object>;
-env.put(RMIConnectorServer.CREDENTIALS_FILTER_PATTERN, my_filter);
+env.put(RMIConnectorServer.CREDENTIALS_FILTER_PATTERN, stringsOnlyFilter);
 </code>
 
 For applications using Java 9 or below:
