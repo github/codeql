@@ -1,6 +1,6 @@
 /**
  * @name Incorrect allocation-error handling
- * @description `operator new` throws an exception on allocation failures, while `operator new(std::nothrow)` returns a null pointer. Mixing up these two failure conditions can result in unexpected behavior.
+ * @description Mixing up the failure conditions of 'operator new' and 'operator new(std::nothrow)' can result in unexpected behavior.
  * @kind problem
  * @id cpp/incorrect-allocation-error-handling
  * @problem.severity warning

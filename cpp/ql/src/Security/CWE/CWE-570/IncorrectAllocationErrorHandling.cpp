@@ -21,7 +21,7 @@ void bad2(std::size_t length) noexcept {
   }
 }
 
-// GOOD: the allocation failure is handled appropiately.
+// GOOD: the allocation failure is handled appropriately.
 void good1(std::size_t length) noexcept {
   try {
     int* dest = new int[length];
@@ -32,7 +32,7 @@ void good1(std::size_t length) noexcept {
   }
 }
 
-// GOOD: the allocation failure is handled appropiately.
+// GOOD: the allocation failure is handled appropriately.
 void good2(std::size_t length) noexcept {
   int* dest = new int[length];
   if(!dest) {
