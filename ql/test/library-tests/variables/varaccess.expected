@@ -126,6 +126,9 @@ variableAccess
 | scopes.rb:38:3:38:3 | x | scopes.rb:38:3:38:3 | x | scopes.rb:37:1:39:3 | foo |
 | scopes.rb:42:2:42:4 | var | scopes.rb:42:2:42:4 | var | scopes.rb:41:1:49:3 | M |
 | scopes.rb:43:2:43:4 | foo | scopes.rb:43:2:43:4 | foo | scopes.rb:41:1:49:3 | M |
+| scopes.rb:44:5:44:7 | var | scopes.rb:42:2:42:4 | var | scopes.rb:41:1:49:3 | M |
+| scopes.rb:46:5:46:8 | var2 | scopes.rb:46:5:46:8 | var2 | scopes.rb:41:1:49:3 | M |
+| scopes.rb:47:5:47:8 | var2 | scopes.rb:46:5:46:8 | var2 | scopes.rb:41:1:49:3 | M |
 | ssa.rb:1:7:1:7 | b | ssa.rb:1:7:1:7 | b | ssa.rb:1:1:16:3 | m |
 | ssa.rb:2:3:2:3 | i | ssa.rb:2:3:2:3 | i | ssa.rb:1:1:16:3 | m |
 | ssa.rb:3:8:3:8 | i | ssa.rb:2:3:2:3 | i | ssa.rb:1:1:16:3 | m |
@@ -225,6 +228,7 @@ explicitWrite
 | scopes.rb:38:3:38:3 | x | scopes.rb:38:3:38:7 | ... = ... |
 | scopes.rb:42:2:42:4 | var | scopes.rb:42:2:42:9 | ... = ... |
 | scopes.rb:43:2:43:4 | foo | scopes.rb:43:2:43:13 | ... = ... |
+| scopes.rb:46:5:46:8 | var2 | scopes.rb:46:5:46:13 | ... = ... |
 | ssa.rb:2:3:2:3 | i | ssa.rb:2:3:2:7 | ... = ... |
 | ssa.rb:6:5:6:5 | i | ssa.rb:6:5:6:9 | ... = ... |
 | ssa.rb:10:5:10:5 | i | ssa.rb:10:5:10:9 | ... = ... |
@@ -340,6 +344,8 @@ readAccess
 | scopes.rb:34:7:34:7 | x |
 | scopes.rb:34:14:34:14 | x |
 | scopes.rb:37:5:37:5 | x |
+| scopes.rb:44:5:44:7 | var |
+| scopes.rb:47:5:47:8 | var2 |
 | ssa.rb:3:8:3:8 | i |
 | ssa.rb:4:8:4:8 | i |
 | ssa.rb:5:6:5:6 | b |

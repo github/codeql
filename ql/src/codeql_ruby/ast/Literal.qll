@@ -1,5 +1,6 @@
 private import codeql_ruby.AST
 private import internal.AST
+private import internal.Scope
 private import internal.TreeSitter
 
 /**
@@ -559,16 +560,6 @@ class CharacterLiteral extends Literal, TCharacterLiteral {
   final override string getAPrimaryQlClass() { result = "CharacterLiteral" }
 }
 
-pragma[noinline]
-private predicate rankHeredocBody(File f, Generated::HeredocBody b, int i) {
-  b =
-    rank[i](Generated::HeredocBody b0 |
-      f = b0.getLocation().getFile()
-    |
-      b0 order by b0.getLocation().getStartLine(), b0.getLocation().getStartColumn()
-    )
-}
-
 /**
  * A "here document". For example:
  * ```rb
@@ -627,20 +618,8 @@ class HereDoc extends StringlikeLiteral, THereDoc {
     )
   }
 
-  private Generated::HeredocBody getBody() {
-    exists(int i, File f |
-      g =
-        rank[i](Generated::HeredocBeginning b |
-          f = b.getLocation().getFile()
-        |
-          b order by b.getLocation().getStartLine(), b.getLocation().getStartColumn()
-        ) and
-      rankHeredocBody(f, result, i)
-    )
-  }
-
   final override StringComponent getComponent(int n) {
-    toGenerated(result) = this.getBody().getChild(n)
+    toGenerated(result) = getHereDocBody(g).getChild(n)
   }
 
   final override string toString() { result = g.getValue() }

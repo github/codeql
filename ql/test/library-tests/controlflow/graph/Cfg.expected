@@ -1295,25 +1295,19 @@ cfg.rb:
 #-----|  -> call to puts
 
 #  108| <<SQL
-#-----|  -> self
+#-----|  -> table
 
 #  109| #{...}
-#-----|  -> self
+#-----|  -> type
 
-#  109| call to table
+#  109| table
 #-----|  -> #{...}
-
-#  109| self
-#-----|  -> call to table
 
 #  110| #{...}
 #-----|  -> ( ... )
 
-#  110| call to type
+#  110| type
 #-----|  -> #{...}
-
-#  110| self
-#-----|  -> call to type
 
 #  113| ... if ...
 #-----|  -> @field

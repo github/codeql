@@ -48,6 +48,8 @@ definition
 | scopes.rb:13:4:13:32 | ... = ... | scopes.rb:13:11:13:11 | c |
 | scopes.rb:13:4:13:32 | ... = ... | scopes.rb:13:14:13:14 | d |
 | scopes.rb:27:1:27:5 | ... = ... | scopes.rb:27:1:27:1 | x |
+| scopes.rb:42:2:42:9 | ... = ... | scopes.rb:42:2:42:4 | var |
+| scopes.rb:46:5:46:13 | ... = ... | scopes.rb:46:5:46:8 | var2 |
 | ssa.rb:1:7:1:7 | b | ssa.rb:1:7:1:7 | b |
 | ssa.rb:2:3:2:7 | ... = ... | ssa.rb:2:3:2:3 | i |
 | ssa.rb:5:3:13:5 | phi | ssa.rb:2:3:2:3 | i |
@@ -135,6 +137,8 @@ read
 | scopes.rb:27:1:27:5 | ... = ... | scopes.rb:27:1:27:1 | x | scopes.rb:34:7:34:7 | x |
 | scopes.rb:27:1:27:5 | ... = ... | scopes.rb:27:1:27:1 | x | scopes.rb:34:14:34:14 | x |
 | scopes.rb:27:1:27:5 | ... = ... | scopes.rb:27:1:27:1 | x | scopes.rb:37:5:37:5 | x |
+| scopes.rb:42:2:42:9 | ... = ... | scopes.rb:42:2:42:4 | var | scopes.rb:44:5:44:7 | var |
+| scopes.rb:46:5:46:13 | ... = ... | scopes.rb:46:5:46:8 | var2 | scopes.rb:47:5:47:8 | var2 |
 | ssa.rb:1:7:1:7 | b | ssa.rb:1:7:1:7 | b | ssa.rb:5:6:5:6 | b |
 | ssa.rb:2:3:2:7 | ... = ... | ssa.rb:2:3:2:3 | i | ssa.rb:3:8:3:8 | i |
 | ssa.rb:2:3:2:7 | ... = ... | ssa.rb:2:3:2:3 | i | ssa.rb:4:8:4:8 | i |
@@ -210,6 +214,8 @@ firstRead
 | scopes.rb:13:4:13:32 | ... = ... | scopes.rb:13:11:13:11 | c | scopes.rb:16:9:16:9 | c |
 | scopes.rb:13:4:13:32 | ... = ... | scopes.rb:13:14:13:14 | d | scopes.rb:17:9:17:9 | d |
 | scopes.rb:27:1:27:5 | ... = ... | scopes.rb:27:1:27:1 | x | scopes.rb:28:8:28:8 | x |
+| scopes.rb:42:2:42:9 | ... = ... | scopes.rb:42:2:42:4 | var | scopes.rb:44:5:44:7 | var |
+| scopes.rb:46:5:46:13 | ... = ... | scopes.rb:46:5:46:8 | var2 | scopes.rb:47:5:47:8 | var2 |
 | ssa.rb:1:7:1:7 | b | ssa.rb:1:7:1:7 | b | ssa.rb:5:6:5:6 | b |
 | ssa.rb:2:3:2:7 | ... = ... | ssa.rb:2:3:2:3 | i | ssa.rb:3:8:3:8 | i |
 | ssa.rb:5:3:13:5 | phi | ssa.rb:2:3:2:3 | i | ssa.rb:15:8:15:8 | i |
@@ -279,6 +285,8 @@ lastRead
 | scopes.rb:13:4:13:32 | ... = ... | scopes.rb:13:11:13:11 | c | scopes.rb:16:9:16:9 | c |
 | scopes.rb:13:4:13:32 | ... = ... | scopes.rb:13:14:13:14 | d | scopes.rb:17:9:17:9 | d |
 | scopes.rb:27:1:27:5 | ... = ... | scopes.rb:27:1:27:1 | x | scopes.rb:37:5:37:5 | x |
+| scopes.rb:42:2:42:9 | ... = ... | scopes.rb:42:2:42:4 | var | scopes.rb:44:5:44:7 | var |
+| scopes.rb:46:5:46:13 | ... = ... | scopes.rb:46:5:46:8 | var2 | scopes.rb:47:5:47:8 | var2 |
 | ssa.rb:1:7:1:7 | b | ssa.rb:1:7:1:7 | b | ssa.rb:5:6:5:6 | b |
 | ssa.rb:2:3:2:7 | ... = ... | ssa.rb:2:3:2:3 | i | ssa.rb:4:8:4:8 | i |
 | ssa.rb:5:3:13:5 | phi | ssa.rb:2:3:2:3 | i | ssa.rb:15:8:15:8 | i |
