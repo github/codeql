@@ -1,7 +1,6 @@
 /**
  * @name Potentially unsafe call to strncat
- * @description Calling `strncat` with the size of the destination buffer as the third argument may result in a buffer overflow.
- *              Similarly, calling `strncat` with `sizeof (dest) - strlen (dest)` as the third argument may result in a buffer overflow.
+ * @description Calling 'strncat' with an incorrect size argument may result in a buffer overflow.
  * @kind problem
  * @problem.severity warning
  * @precision medium
