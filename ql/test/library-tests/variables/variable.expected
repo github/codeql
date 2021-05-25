@@ -63,6 +63,9 @@
 | scopes.rb:32:3:32:3 | x |
 | scopes.rb:35:3:35:3 | x |
 | scopes.rb:38:3:38:3 | x |
+| scopes.rb:42:2:42:4 | var |
+| scopes.rb:43:2:43:4 | foo |
+| scopes.rb:46:5:46:8 | var2 |
 | ssa.rb:1:7:1:7 | b |
 | ssa.rb:2:3:2:3 | i |
 | ssa.rb:18:8:18:8 | x |

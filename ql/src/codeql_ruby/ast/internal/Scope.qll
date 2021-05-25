@@ -59,7 +59,31 @@ module ModuleBase {
   class Range extends Scope::Range, TypeRange { }
 }
 
+pragma[noinline]
+private predicate rankHeredocBody(File f, Generated::HeredocBody b, int i) {
+  b =
+    rank[i](Generated::HeredocBody b0 |
+      f = b0.getLocation().getFile()
+    |
+      b0 order by b0.getLocation().getStartLine(), b0.getLocation().getStartColumn()
+    )
+}
+
+Generated::HeredocBody getHereDocBody(Generated::HeredocBeginning g) {
+  exists(int i, File f |
+    g =
+      rank[i](Generated::HeredocBeginning b |
+        f = b.getLocation().getFile()
+      |
+        b order by b.getLocation().getStartLine(), b.getLocation().getStartColumn()
+      ) and
+    rankHeredocBody(f, result, i)
+  )
+}
+
 private Generated::AstNode parentOf(Generated::AstNode n) {
+  n = getHereDocBody(result)
+  or
   exists(Generated::AstNode parent | parent = n.getParent() |
     if
       n =

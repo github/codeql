@@ -38,3 +38,12 @@ def x.foo
   x = 4
 end
 
+module M
+ var =  1
+ foo = <<-EOF
+  #{var}
+  #{fun}
+  #{var2 = 10}
+  #{var2}
+ EOF
+end
