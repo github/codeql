@@ -129,6 +129,30 @@ namespace Semmle.Extraction.CSharp.Entities
         /// </summary>
         private static void BuildMethodId(Method m, EscapingTextWriter trapFile)
         {
+            if (!SymbolEqualityComparer.Default.Equals(m.Symbol, m.Symbol.OriginalDefinition))
+            {
+                if (!SymbolEqualityComparer.Default.Equals(m.Symbol, m.ConstructedFromSymbol))
+                {
+                    trapFile.WriteSubId(Create(m.Context, m.ConstructedFromSymbol));
+                    trapFile.Write('<');
+                    // Encode the nullability of the type arguments in the label.
+                    // Type arguments with different nullability can result in
+                    // a constructed method with different nullability of its parameters and return type,
+                    // so we need to create a distinct database entity for it.
+                    trapFile.BuildList(",", m.Symbol.GetAnnotatedTypeArguments(), ta => { ta.Symbol.BuildOrWriteId(m.Context, trapFile, m.Symbol); trapFile.Write((int)ta.Nullability); });
+                    trapFile.Write('>');
+                }
+                else
+                {
+                    trapFile.WriteSubId(m.ContainingType!);
+                    trapFile.Write(".");
+                    trapFile.WriteSubId(m.OriginalDefinition);
+                }
+
+                WritePostfix(m, trapFile);
+                return;
+            }
+
             m.Symbol.ReturnType.BuildOrWriteId(m.Context, trapFile, m.Symbol);
             trapFile.Write(" ");
 
@@ -141,24 +165,16 @@ namespace Semmle.Extraction.CSharp.Entities
 
             if (m.Symbol.IsGenericMethod)
             {
-                if (SymbolEqualityComparer.Default.Equals(m.Symbol, m.Symbol.OriginalDefinition))
-                {
-                    trapFile.Write('`');
-                    trapFile.Write(m.Symbol.TypeParameters.Length);
-                }
-                else
-                {
-                    trapFile.Write('<');
-                    // Encode the nullability of the type arguments in the label.
-                    // Type arguments with different nullability can result in
-                    // a constructed method with different nullability of its parameters and return type,
-                    // so we need to create a distinct database entity for it.
-                    trapFile.BuildList(",", m.Symbol.GetAnnotatedTypeArguments(), ta => { ta.Symbol.BuildOrWriteId(m.Context, trapFile, m.Symbol); trapFile.Write((int)ta.Nullability); });
-                    trapFile.Write('>');
-                }
+                trapFile.Write('`');
+                trapFile.Write(m.Symbol.TypeParameters.Length);
             }
 
             AddParametersToId(m.Context, trapFile, m.Symbol);
+            WritePostfix(m, trapFile);
+        }
+
+        private static void WritePostfix(Method m, EscapingTextWriter trapFile)
+        {
             switch (m.Symbol.MethodKind)
             {
                 case MethodKind.PropertyGet:
