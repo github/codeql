@@ -171,3 +171,68 @@ class Body extends TBody, AstNode {
   override string getAPrimaryQlClass() { result = "Body" }
   // TODO: Children.
 }
+
+/** A formula, such as `x = 6 and y < 5`. */
+abstract class Formula extends AstNode { }
+
+/** An `and` formula, with 2 or more operands. */
+class Conjunction extends TConjunction, AstNode, Formula {
+  Generated::Conjunction conj;
+
+  Conjunction() { this = TConjunction(conj) }
+
+  override string getAPrimaryQlClass() { result = "Conjunction" }
+
+  /** Gets an operand to this formula. */
+  Formula getAnOperand() { toGenerated(result) in [conj.getLeft(), conj.getRight()] }
+}
+
+/** An `or` formula, with 2 or more operands. */
+class Disjunction extends TDisjunction, AstNode {
+  Generated::Disjunction disj;
+
+  Disjunction() { this = TDisjunction(disj) }
+
+  override string getAPrimaryQlClass() { result = "Disjunction" }
+
+  /** Gets an operand to this formula. */
+  Formula getAnOperand() { toGenerated(result) in [disj.getLeft(), disj.getRight()] }
+}
+
+class ComparisonOp extends TComparisonOp, AstNode {
+  Generated::Compop op;
+
+  ComparisonOp() {this = TComparisonOp(op)}
+
+
+}
+
+class ComparisonFormula extends TComparisonFormula, Formula {
+  Expr getLeftOperand() {none()}
+  Expr getRightOperand() {none()}
+  Expr getAnOperand() {none()}
+  ComparisonOp getOperator() {none()}
+  //ComparisonSymbol getSymbol() {none()}
+}
+
+/** An expression, such as `x+4`. */
+abstract class Expr extends AstNode {}
+
+/** A function symbol, such as `+` or `*`. */
+class FunctionSymbol extends string {
+  FunctionSymbol() { this = "+" or this = "-" or this = "*" or this = "/" or this = "%" }
+}
+
+/** A binary operation, such as `x+3` or `y/2` */
+abstract class BinOpExpr extends Expr {}
+
+class AddExpr extends TAddExpr, BinOpExpr {
+  Generated::AddExpr addexpr;
+
+  AddExpr() {this = TAddExpr(addexpr)}
+  Expr getLeftOperand() { toGenerated(result) = addexpr.getLeft() }
+  Expr getRightOperand() { toGenerated(result) = addexpr.getRight() }
+  Expr getAnOperand() { result = getLeftOperand() or result = getRightOperand() }
+  
+  FunctionSymbol getOperator() { result = addexpr.getChild().getValue() }
+}
