@@ -1,10 +1,15 @@
-name: Rust
+name: Build / Release
 
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Version tag to create"
+        required: false
 
 env:
   CARGO_TERM_COLOR: always
@@ -147,3 +152,12 @@ jobs:
           name: codeql-ruby-bundle
           path: codeql-ruby-bundle.zip
           retention-days: 1
+      - if: ${{ github.event.inputs.tag }}
+        run: |
+          gh release create --prerelease \
+             --title "CodeQL Ruby (${{ github.event.inputs.tag }})" \
+             --target "${{ github.sha }}" \
+             "${{ github.event.inputs.tag }}" \
+             codeql-ruby-bundle.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
