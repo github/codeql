@@ -5,6 +5,8 @@
 
 private import python
 private import semmle.python.dataflow.new.DataFlow
+private import semmle.python.dataflow.new.RemoteFlowSources
+private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.internal.PoorMansFunctionResolution
@@ -33,7 +35,6 @@ module AiohttpWebModel {
   }
 
   // -- route modeling --
-
   /** A route setup in `aiohttp.web` */
   abstract class AiohttpRouteSetup extends HTTP::Server::RouteSetup::Range {
     override Parameter getARoutedParameter() { none() }
@@ -137,5 +138,69 @@ module AiohttpWebModel {
     override DataFlow::Node getRequestHandlerArg() { none() }
 
     override Function getARequestHandler() { result.getADecorator() = this.asExpr() }
+  }
+
+  // ---------------------------------------------------------------------------
+  // aiohttp.web.Request taint modeling
+  // ---------------------------------------------------------------------------
+  /**
+   * Provides models for the `aiohttp.web.Request` class
+   *
+   * See https://docs.aiohttp.org/en/stable/web_reference.html#request-and-base-request
+   */
+  module Request {
+    /**
+     * A source of instances of `aiohttp.web.Request`, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use `Request::instance()` predicate to get
+     * references to instances of `aiohttp.web.Request`.
+     */
+    abstract class InstanceSource extends DataFlow::Node { }
+
+    /** Gets a reference to an instance of `aiohttp.web.Request`. */
+    private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an instance of `aiohttp.web.Request`. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+  }
+
+  /**
+   * A parameter that will receive a `aiohttp.web.Request` instance when a request
+   * handler is invoked.
+   */
+  class AiohttpRequestHandlerRequestParam extends Request::InstanceSource, RemoteFlowSource::Range,
+    DataFlow::ParameterNode {
+    AiohttpRequestHandlerRequestParam() {
+      exists(Function requestHandler |
+        requestHandler = any(AiohttpRouteSetup setup).getARequestHandler() and
+        // We select the _last_ parameter for the request since that is what they do in
+        // `aiohttp-jinja2`.
+        // https://github.com/aio-libs/aiohttp-jinja2/blob/7fb4daf2c3003921d34031d38c2311ee0e02c18b/aiohttp_jinja2/__init__.py#L235
+        //
+        // I assume that is just to handle cases such as the one below
+        // ```py
+        // class MyCustomHandlerClass:
+        //     async def foo_handler(self, request):
+        //            ...
+        //
+        // my_custom_handler = MyCustomHandlerClass()
+        // app.router.add_get("/MyCustomHandlerClass/foo", my_custom_handler.foo_handler)
+        // ```
+        this.getParameter() =
+          max(Parameter param, int i | param = requestHandler.getArg(i) | param order by i)
+
+      )
+    }
+
+    override string getSourceType() { result = "aiohttp.web.Request" }
   }
 }

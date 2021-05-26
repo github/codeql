@@ -3,7 +3,7 @@ from aiohttp import web
 async def test_taint(request: web.Request): # $ requestHandler
 
     ensure_tainted(
-        request, # $ MISSING: tainted
+        request, # $ tainted
 
         # yarl.URL instances
         # https://yarl.readthedocs.io/en/stable/api.html#yarl.URL
