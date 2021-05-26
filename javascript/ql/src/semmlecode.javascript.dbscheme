@@ -25,6 +25,12 @@ position_ticks(
   int ticks: int ref
 )
 
+samples(
+  int number: int ref,
+  int node: @profile_node ref,
+  int delta: int ref
+)
+
 /** Files and folders **/
 
 @location = @location_default;
