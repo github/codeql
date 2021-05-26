@@ -355,6 +355,70 @@ class ComparisonFormula extends TComparisonFormula, Formula {
   override string getAPrimaryQlClass() { result = "ComparisonFormula" }
 }
 
+class Quantifier extends TQuantifier, Formula {
+  Generated::Quantified quant;
+  string kind;
+
+  Quantifier() {
+    this = TQuantifier(quant) and kind = quant.getChild(0).(Generated::Quantifier).getValue()
+  }
+
+  /** Gets the ith declared argument of this quantifier. */
+  VarDecl getArgument(int i) {
+    i >= 1 and
+    toGenerated(result) = quant.getChild(i - 1) and
+    exists()
+  }
+
+  /** Gets an argument of this quantifier. */
+  VarDecl getAnArgument() { result = this.getArgument(_) }
+
+  /** Gets the formula restricting the range of this quantifier, if any. */
+  Formula getRange() { toGenerated(result) = quant.getRange() }
+
+  /** Holds if this quantifier has a range formula. */
+  predicate hasRange() { exists(this.getRange()) }
+
+  /** Gets the main body of the quantifier. */
+  Formula getFormula() { toGenerated(result) = quant.getFormula() }
+
+  /** Gets the expression of this quantifier, if it is of the expression only form of an exists. */
+  Expr getExpr() { toGenerated(result) = quant.getChild(1) }
+
+  /** Holds if this is the expression only form of an exists quantifier. */
+  predicate hasExpr() { exists(getExpr()) }
+
+  override string getAPrimaryQlClass() { result = "Quantifier" }
+}
+
+class Exists extends Quantifier {
+  Exists() { kind = "exists" }
+
+  override string getAPrimaryQlClass() { result = "Exists" }
+}
+
+class Forall extends Quantifier {
+  Forall() { kind = "forall" }
+
+  override string getAPrimaryQlClass() { result = "Forall" }
+}
+
+class Forex extends Quantifier {
+  Forex() { kind = "forex" }
+
+  override string getAPrimaryQlClass() { result = "Forex" }
+}
+
+class Negation extends TNegation, Formula {
+  Generated::Negation neg;
+
+  Negation() { this = TNegation(neg) }
+
+  Formula getFormula() { toGenerated(result) = neg.getChild() }
+
+  override string getAPrimaryQlClass() { result = "Negation" }
+}
+
 /** An expression, such as `x+4`. */
 class Expr extends TExpr, AstNode { }
 

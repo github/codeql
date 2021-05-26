@@ -19,9 +19,11 @@ newtype TAstNode =
   TConjunction(Generated::Conjunction conj) or
   TComparisonFormula(Generated::CompTerm comp) or
   TComparisonOp(Generated::Compop op) or
+  TQuantifier(Generated::Quantified quant) or
+  TNegation(Generated::Negation neg) or
   TAddExpr(Generated::AddExpr addexp)
 
-class TFormula = TDisjunction or TConjunction or TComparisonFormula;
+class TFormula = TDisjunction or TConjunction or TComparisonFormula or TQuantifier or TNegation;
 
 class TBinOpExpr = TAddExpr;
 
@@ -31,7 +33,9 @@ Generated::AstNode toGeneratedFormula(AST::AstNode n) {
   n = TConjunction(result) or
   n = TDisjunction(result) or
   n = TComparisonFormula(result) or
-  n = TComparisonOp(result)
+  n = TComparisonOp(result) or
+  n = TQuantifier(result) or
+  n = TNegation(result)
 }
 
 Generated::AstNode toGeneratedExpr(AST::AstNode n) { n = TAddExpr(result) }
