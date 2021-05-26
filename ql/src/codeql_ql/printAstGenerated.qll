@@ -18,7 +18,10 @@ class PrintAstConfiguration extends string {
   /**
    * Holds if the given node should be printed.
    */
-  predicate shouldPrintNode(AstNode n) { not n instanceof LineComment }
+  predicate shouldPrintNode(AstNode n) {
+    not n instanceof LineComment and
+    not n instanceof ReservedWord
+  }
 }
 
 /**
