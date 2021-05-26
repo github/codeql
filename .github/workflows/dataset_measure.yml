@@ -50,12 +50,12 @@ jobs:
           codeql/codeql database create \
             --search-path "${{ github.workspace }}" \
             --threads 4 \
-            --language ruby --source-root "${{ github.workspace }}/repo" \
+            --language ql --source-root "${{ github.workspace }}/repo" \
             "${{ runner.temp }}/database"
       - name: Measure database
         run: |
           mkdir -p "stats/${{ matrix.repo }}"
-          codeql/codeql dataset measure --threads 4 --output "stats/${{ matrix.repo }}/stats.xml" "${{ runner.temp }}/database/db-ruby"
+          codeql/codeql dataset measure --threads 4 --output "stats/${{ matrix.repo }}/stats.xml" "${{ runner.temp }}/database/db-ql"
       - uses: actions/upload-artifact@v2
         with:
           name: measurements
