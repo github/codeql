@@ -11,16 +11,24 @@ calls/calls.rb:
 #   67|     getAnOperand/getLeftOperand: [LocalVariableAccess] var1
 #   67|     getAnOperand/getRightOperand: [MethodCall] call to bar
 #   67|       getReceiver: [ConstantReadAccess] X
-#  314| [SetterMethodCall] call to foo=
-#  314|   getReceiver: [Self] self
-#  314|   getNumberOfArguments: [IntegerLiteral] 1
-#  314|   getArgument: [IntegerLiteral] 10
-#  315| [ElementReference, SetterMethodCall] ...[...]
-#  315|   getReceiver: [MethodCall] call to foo
-#  315|     getReceiver: [Self] self
-#  315|   getNumberOfArguments: [IntegerLiteral] 2
-#  315|   getArgument: [IntegerLiteral] 0
-#  315|   getArgument: [IntegerLiteral] 10
+#  314| [StmtSequence] ...
+#  314|   getStmt: [SetterMethodCall] call to foo=
+#  314|     getReceiver: [Self] self
+#  314|     getNumberOfArguments: [IntegerLiteral] 1
+#  314|     getArgument: [AssignExpr] ... = ...
+#  314|       getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0
+#  314|       getAnOperand/getRightOperand: [IntegerLiteral] 10
+#  314|   getStmt: [LocalVariableAccess] __synth__0
+#  315| [StmtSequence] ...
+#  315|   getStmt: [ElementReference, SetterMethodCall] ...[...]
+#  315|     getReceiver: [MethodCall] call to foo
+#  315|       getReceiver: [Self] self
+#  315|     getNumberOfArguments: [IntegerLiteral] 2
+#  315|     getArgument: [AssignExpr] ... = ...
+#  315|       getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0
+#  315|       getAnOperand/getRightOperand: [IntegerLiteral] 10
+#  315|     getArgument: [IntegerLiteral] 0
+#  315|   getStmt: [LocalVariableAccess] __synth__0
 #  318| [StmtSequence] ...
 #  318|   getStmt: [SetterMethodCall] call to count=
 #  318|     getNumberOfArguments: [IntegerLiteral] 2

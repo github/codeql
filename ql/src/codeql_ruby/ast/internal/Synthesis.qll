@@ -154,7 +154,8 @@ private module SetterDesugar {
    * desugars to
    *
    * ```rb
-   * x.foo=(y)
+   * x.foo=(__synth_0 = y);
+   * __synth_0;
    * ```
    */
   private class SetterMethodCallSynthesis extends Synthesis {
@@ -162,30 +163,63 @@ private module SetterDesugar {
       exists(AssignExpr ae, MethodCall mc | mc = ae.getLeftOperand() |
         parent = ae and
         i = -1 and
-        child = SynthChild(getCallKind(mc)) and
-        l = getSomeLocation(mc)
+        child = SynthChild(StmtSequenceKind()) and
+        l = NoneLocation()
         or
-        parent = getSynthChild(ae, -1) and
-        l = NoneLocation() and
-        (
+        exists(AstNode seq | seq = getSynthChild(ae, -1) |
+          parent = seq and
           i = 0 and
-          child = RealChild(mc.getReceiver())
+          child = SynthChild(getCallKind(mc)) and
+          l = getSomeLocation(mc)
           or
-          child = RealChild(mc.getArgument(i - 1))
+          exists(AstNode call | call = getSynthChild(seq, 0) |
+            parent = call and
+            i = 0 and
+            child = RealChild(mc.getReceiver()) and
+            l = NoneLocation()
+            or
+            parent = call and
+            child = RealChild(mc.getArgument(i - 1)) and
+            l = NoneLocation()
+            or
+            l = getSomeLocation(mc) and
+            exists(int valueIndex | valueIndex = mc.getNumberOfArguments() + 1 |
+              parent = call and
+              i = valueIndex and
+              child = SynthChild(AssignExprKind())
+              or
+              parent = getSynthChild(call, valueIndex) and
+              (
+                i = 0 and
+                child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(ae, 0)))
+                or
+                i = 1 and
+                child = RealChild(ae.getRightOperand())
+              )
+            )
+            or
+            parent = call and
+            // special "number of arguments argument"; required to avoid non-monotonic recursion
+            i = -2 and
+            child = SynthChild(IntegerLiteralKind(mc.getNumberOfArguments() + 1)) and
+            l = NoneLocation()
+          )
           or
-          i = mc.getNumberOfArguments() + 1 and
-          child = RealChild(ae.getRightOperand())
-          or
-          // special "number of arguments argument"; required to avoid non-monotonic recursion
-          i = -2 and
-          child = SynthChild(IntegerLiteralKind(mc.getNumberOfArguments() + 1)) and
-          l = NoneLocation()
+          parent = seq and
+          i = 1 and
+          child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(ae, 0))) and
+          l = getSomeLocation(mc)
         )
       )
     }
 
     final override predicate excludeFromControlFlowTree(AstNode n) {
       n.(MethodCall) = any(AssignExpr ae).getLeftOperand()
+    }
+
+    final override predicate localVariable(AstNode n, int i) {
+      n.(AssignExpr).getLeftOperand() instanceof MethodCall and
+      i = 0
     }
   }
 }

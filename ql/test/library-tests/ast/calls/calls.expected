@@ -31,10 +31,10 @@ callsWithArguments
 | calls.rb:293:5:293:33 | call to super | super | 0 | calls.rb:293:11:293:11 | 6 |
 | calls.rb:293:5:293:33 | call to super | super | 1 | calls.rb:293:14:293:14 | 7 |
 | calls.rb:311:1:311:7 | call to call | call | 0 | calls.rb:311:6:311:6 | 1 |
-| calls.rb:314:1:314:8 | call to foo= | foo= | 0 | calls.rb:314:12:314:13 | 10 |
+| calls.rb:314:1:314:8 | call to foo= | foo= | 0 | calls.rb:314:1:314:8 | ... = ... |
 | calls.rb:315:1:315:6 | ...[...] | []= | 0 | calls.rb:315:5:315:5 | 0 |
 | calls.rb:315:1:315:6 | ...[...] | []= | 0 | calls.rb:315:5:315:5 | 0 |
-| calls.rb:315:1:315:6 | ...[...] | []= | 1 | calls.rb:315:10:315:11 | 10 |
+| calls.rb:315:1:315:6 | ...[...] | []= | 1 | calls.rb:315:1:315:6 | ... = ... |
 | calls.rb:316:22:316:27 | ...[...] | []= | 0 | calls.rb:316:26:316:26 | 4 |
 | calls.rb:317:5:317:10 | ...[...] | []= | 0 | calls.rb:317:9:317:9 | 5 |
 | calls.rb:318:1:318:10 | call to count= | count= | 1 | calls.rb:318:12:318:13 | __synth__1 |
