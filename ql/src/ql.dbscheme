@@ -58,7 +58,7 @@ add_expr_def(
   int loc: @location ref
 );
 
-@aggregate_child_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_aggregate_body | @full_aggregate_body | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @token_aggi_d | @unary_expr | @variable
+@aggregate_child_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_aggregate_body | @full_aggregate_body | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @token_agg_id | @unary_expr | @variable
 
 #keyset[aggregate, index]
 aggregate_child(
@@ -72,15 +72,15 @@ aggregate_def(
   int loc: @location ref
 );
 
-@annotArg_child_type = @token_result | @token_simplei_d | @token_this
+@annotArg_child_type = @token_result | @token_simple_id | @token_this
 
-annota_rg_def(
-  unique int id: @annota_rg,
+annot_arg_def(
+  unique int id: @annot_arg,
   int child: @annotArg_child_type ref,
   int loc: @location ref
 );
 
-@annotation_args_type = @annota_rg | @reserved_word
+@annotation_args_type = @annot_arg | @reserved_word
 
 #keyset[annotation, index]
 annotation_args(
@@ -91,44 +91,44 @@ annotation_args(
 
 annotation_def(
   unique int id: @annotation,
-  int name: @token_annotn_ame ref,
+  int name: @token_annot_name ref,
   int loc: @location ref
 );
 
-aritylessp_redicatee_xpr_child(
-  unique int aritylessp_redicatee_xpr: @aritylessp_redicatee_xpr ref,
-  unique int child: @modulee_xpr ref
+arityless_predicate_expr_child(
+  unique int arityless_predicate_expr: @arityless_predicate_expr ref,
+  unique int child: @module_expr ref
 );
 
-aritylessp_redicatee_xpr_def(
-  unique int id: @aritylessp_redicatee_xpr,
-  int name: @token_literali_d ref,
+arityless_predicate_expr_def(
+  unique int id: @arityless_predicate_expr,
+  int name: @token_literal_id ref,
   int loc: @location ref
 );
 
-@asExpr_child_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @variable | @varn_ame
+@asExpr_child_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @var_name | @variable
 
-#keyset[ase_xpr, index]
-ase_xpr_child(
-  int ase_xpr: @ase_xpr ref,
+#keyset[as_expr, index]
+as_expr_child(
+  int as_expr: @as_expr ref,
   int index: int ref,
   unique int child: @asExpr_child_type ref
 );
 
-ase_xpr_def(
-  unique int id: @ase_xpr,
+as_expr_def(
+  unique int id: @as_expr,
   int loc: @location ref
 );
 
-#keyset[ase_xprs, index]
-ase_xprs_child(
-  int ase_xprs: @ase_xprs ref,
+#keyset[as_exprs, index]
+as_exprs_child(
+  int as_exprs: @as_exprs ref,
   int index: int ref,
-  unique int child: @ase_xpr ref
+  unique int child: @as_expr ref
 );
 
-ase_xprs_def(
-  unique int id: @ase_xprs,
+as_exprs_def(
+  unique int id: @as_exprs,
   int loc: @location ref
 );
 
@@ -162,7 +162,7 @@ call_body_def(
   int loc: @location ref
 );
 
-@call_or_unqual_agg_expr_child_type = @aritylessp_redicatee_xpr | @call_body | @token_closure | @unqual_agg_body
+@call_or_unqual_agg_expr_child_type = @arityless_predicate_expr | @call_body | @token_closure | @unqual_agg_body
 
 #keyset[call_or_unqual_agg_expr, index]
 call_or_unqual_agg_expr_child(
@@ -176,7 +176,7 @@ call_or_unqual_agg_expr_def(
   int loc: @location ref
 );
 
-@charpred_child_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @token_classn_ame | @unary_expr | @variable
+@charpred_child_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @token_class_name | @unary_expr | @variable
 
 #keyset[charpred, index]
 charpred_child(
@@ -190,35 +190,35 @@ charpred_def(
   int loc: @location ref
 );
 
-@classMember_child_type = @annotation | @charpred | @field | @memberp_redicate | @token_qldoc
+@classMember_child_type = @annotation | @charpred | @field | @member_predicate | @token_qldoc
 
-#keyset[classm_ember, index]
-classm_ember_child(
-  int classm_ember: @classm_ember ref,
+#keyset[class_member, index]
+class_member_child(
+  int class_member: @class_member ref,
   int index: int ref,
   unique int child: @classMember_child_type ref
 );
 
-classm_ember_def(
-  unique int id: @classm_ember,
+class_member_def(
+  unique int id: @class_member,
   int loc: @location ref
 );
 
-@classlessPredicate_returnType_type = @token_predicate | @typee_xpr
+@classlessPredicate_returnType_type = @token_predicate | @type_expr
 
-@classlessPredicate_child_type = @body | @highero_rdert_erm | @predicatea_liasb_ody | @token_empty | @vard_ecl
+@classlessPredicate_child_type = @body | @higher_order_term | @predicate_alias_body | @token_empty | @var_decl
 
-#keyset[classlessp_redicate, index]
-classlessp_redicate_child(
-  int classlessp_redicate: @classlessp_redicate ref,
+#keyset[classless_predicate, index]
+classless_predicate_child(
+  int classless_predicate: @classless_predicate ref,
   int index: int ref,
   unique int child: @classlessPredicate_child_type ref
 );
 
-classlessp_redicate_def(
-  unique int id: @classlessp_redicate,
-  int name: @token_predicaten_ame ref,
-  int returnt_ype: @classlessPredicate_returnType_type ref,
+classless_predicate_def(
+  unique int id: @classless_predicate,
+  int name: @token_predicate_name ref,
+  int return_type: @classlessPredicate_returnType_type ref,
   int loc: @location ref
 );
 
@@ -245,7 +245,7 @@ conjunction_def(
   int loc: @location ref
 );
 
-@dataclass_child_type = @classm_ember | @typea_liasb_ody | @typee_xpr | @typeu_nionb_ody
+@dataclass_child_type = @class_member | @type_alias_body | @type_expr | @type_union_body
 
 #keyset[dataclass, index]
 dataclass_child(
@@ -256,41 +256,41 @@ dataclass_child(
 
 dataclass_def(
   unique int id: @dataclass,
-  int name: @token_classn_ame ref,
+  int name: @token_class_name ref,
   int loc: @location ref
 );
 
 datatype_def(
   unique int id: @datatype,
-  int name: @token_classn_ame ref,
-  int child: @datatypeb_ranches ref,
+  int name: @token_class_name ref,
+  int child: @datatype_branches ref,
   int loc: @location ref
 );
 
-@datatypeBranch_child_type = @annotation | @body | @token_qldoc | @vard_ecl
+@datatypeBranch_child_type = @annotation | @body | @token_qldoc | @var_decl
 
-#keyset[datatypeb_ranch, index]
-datatypeb_ranch_child(
-  int datatypeb_ranch: @datatypeb_ranch ref,
+#keyset[datatype_branch, index]
+datatype_branch_child(
+  int datatype_branch: @datatype_branch ref,
   int index: int ref,
   unique int child: @datatypeBranch_child_type ref
 );
 
-datatypeb_ranch_def(
-  unique int id: @datatypeb_ranch,
-  int name: @token_classn_ame ref,
+datatype_branch_def(
+  unique int id: @datatype_branch,
+  int name: @token_class_name ref,
   int loc: @location ref
 );
 
-#keyset[datatypeb_ranches, index]
-datatypeb_ranches_child(
-  int datatypeb_ranches: @datatypeb_ranches ref,
+#keyset[datatype_branches, index]
+datatype_branches_child(
+  int datatype_branches: @datatype_branches ref,
   int index: int ref,
-  unique int child: @datatypeb_ranch ref
+  unique int child: @datatype_branch ref
 );
 
-datatypeb_ranches_def(
-  unique int id: @datatypeb_ranches,
+datatype_branches_def(
+  unique int id: @datatype_branches,
   int loc: @location ref
 );
 
@@ -305,7 +305,7 @@ disjunction_def(
   int loc: @location ref
 );
 
-@expr_aggregate_body_child_type = @ase_xprs | @orderb_ys
+@expr_aggregate_body_child_type = @as_exprs | @order_bys
 
 #keyset[expr_aggregate_body, index]
 expr_aggregate_body_child(
@@ -321,11 +321,11 @@ expr_aggregate_body_def(
 
 field_def(
   unique int id: @field,
-  int child: @vard_ecl ref,
+  int child: @var_decl ref,
   int loc: @location ref
 );
 
-@full_aggregate_body_child_type = @add_expr | @aggregate | @ase_xprs | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @orderb_ys | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @vard_ecl | @variable
+@full_aggregate_body_child_type = @add_expr | @aggregate | @as_exprs | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @order_bys | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @var_decl | @variable
 
 #keyset[full_aggregate_body, index]
 full_aggregate_body_child(
@@ -339,18 +339,18 @@ full_aggregate_body_def(
   int loc: @location ref
 );
 
-@higherOrderTerm_child_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @predicatee_xpr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @token_underscore | @unary_expr | @variable
+@higherOrderTerm_child_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @predicate_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @token_underscore | @unary_expr | @variable
 
-#keyset[highero_rdert_erm, index]
-highero_rdert_erm_child(
-  int highero_rdert_erm: @highero_rdert_erm ref,
+#keyset[higher_order_term, index]
+higher_order_term_child(
+  int higher_order_term: @higher_order_term ref,
   int index: int ref,
   unique int child: @higherOrderTerm_child_type ref
 );
 
-highero_rdert_erm_def(
-  unique int id: @highero_rdert_erm,
-  int name: @token_literali_d ref,
+higher_order_term_def(
+  unique int id: @higher_order_term,
+  int name: @token_literal_id ref,
   int loc: @location ref
 );
 
@@ -379,30 +379,30 @@ implication_def(
   int loc: @location ref
 );
 
-@importDirective_child_type = @importm_odulee_xpr | @modulen_ame
+@importDirective_child_type = @import_module_expr | @module_name
 
-#keyset[importd_irective, index]
-importd_irective_child(
-  int importd_irective: @importd_irective ref,
+#keyset[import_directive, index]
+import_directive_child(
+  int import_directive: @import_directive ref,
   int index: int ref,
   unique int child: @importDirective_child_type ref
 );
 
-importd_irective_def(
-  unique int id: @importd_irective,
+import_directive_def(
+  unique int id: @import_directive,
   int loc: @location ref
 );
 
-#keyset[importm_odulee_xpr, index]
-importm_odulee_xpr_name(
-  int importm_odulee_xpr: @importm_odulee_xpr ref,
+#keyset[import_module_expr, index]
+import_module_expr_name(
+  int import_module_expr: @import_module_expr ref,
   int index: int ref,
-  unique int name: @token_simplei_d ref
+  unique int name: @token_simple_id ref
 );
 
-importm_odulee_xpr_def(
-  unique int id: @importm_odulee_xpr,
-  int child: @qualm_odulee_xpr ref,
+import_module_expr_def(
+  unique int id: @import_module_expr,
+  int child: @qual_module_expr ref,
   int loc: @location ref
 );
 
@@ -417,7 +417,7 @@ in_expr_def(
   int loc: @location ref
 );
 
-@instance_of_child_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @typee_xpr | @unary_expr | @variable
+@instance_of_child_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @type_expr | @unary_expr | @variable
 
 #keyset[instance_of, index]
 instance_of_child(
@@ -439,25 +439,25 @@ literal_def(
   int loc: @location ref
 );
 
-@memberPredicate_returnType_type = @token_predicate | @typee_xpr
+@memberPredicate_returnType_type = @token_predicate | @type_expr
 
-@memberPredicate_child_type = @body | @highero_rdert_erm | @token_empty | @vard_ecl
+@memberPredicate_child_type = @body | @higher_order_term | @token_empty | @var_decl
 
-#keyset[memberp_redicate, index]
-memberp_redicate_child(
-  int memberp_redicate: @memberp_redicate ref,
+#keyset[member_predicate, index]
+member_predicate_child(
+  int member_predicate: @member_predicate ref,
   int index: int ref,
   unique int child: @memberPredicate_child_type ref
 );
 
-memberp_redicate_def(
-  unique int id: @memberp_redicate,
-  int name: @token_predicaten_ame ref,
-  int returnt_ype: @memberPredicate_returnType_type ref,
+member_predicate_def(
+  unique int id: @member_predicate,
+  int name: @token_predicate_name ref,
+  int return_type: @memberPredicate_returnType_type ref,
   int loc: @location ref
 );
 
-@module_child_type = @modulea_liasb_ody | @modulem_ember
+@module_child_type = @module_alias_body | @module_member
 
 #keyset[module, index]
 module_child(
@@ -468,46 +468,46 @@ module_child(
 
 module_def(
   unique int id: @module,
-  int name: @modulen_ame ref,
+  int name: @module_name ref,
   int loc: @location ref
 );
 
-modulea_liasb_ody_def(
-  unique int id: @modulea_liasb_ody,
-  int child: @modulee_xpr ref,
+module_alias_body_def(
+  unique int id: @module_alias_body,
+  int child: @module_expr ref,
   int loc: @location ref
 );
 
-modulee_xpr_name(
-  unique int modulee_xpr: @modulee_xpr ref,
-  unique int name: @token_simplei_d ref
+module_expr_name(
+  unique int module_expr: @module_expr ref,
+  unique int name: @token_simple_id ref
 );
 
-@moduleExpr_child_type = @modulee_xpr | @token_simplei_d
+@moduleExpr_child_type = @module_expr | @token_simple_id
 
-modulee_xpr_def(
-  unique int id: @modulee_xpr,
+module_expr_def(
+  unique int id: @module_expr,
   int child: @moduleExpr_child_type ref,
   int loc: @location ref
 );
 
-@moduleMember_child_type = @annotation | @classlessp_redicate | @dataclass | @datatype | @importd_irective | @module | @select | @token_qldoc
+@moduleMember_child_type = @annotation | @classless_predicate | @dataclass | @datatype | @import_directive | @module | @select | @token_qldoc
 
-#keyset[modulem_ember, index]
-modulem_ember_child(
-  int modulem_ember: @modulem_ember ref,
+#keyset[module_member, index]
+module_member_child(
+  int module_member: @module_member ref,
   int index: int ref,
   unique int child: @moduleMember_child_type ref
 );
 
-modulem_ember_def(
-  unique int id: @modulem_ember,
+module_member_def(
+  unique int id: @module_member,
   int loc: @location ref
 );
 
-modulen_ame_def(
-  unique int id: @modulen_ame,
-  int child: @token_simplei_d ref,
+module_name_def(
+  unique int id: @module_name,
+  int child: @token_simple_id ref,
   int loc: @location ref
 );
 
@@ -533,27 +533,27 @@ negation_def(
 
 @orderBy_child_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @token_direction | @unary_expr | @variable
 
-#keyset[orderb_y, index]
-orderb_y_child(
-  int orderb_y: @orderb_y ref,
+#keyset[order_by, index]
+order_by_child(
+  int order_by: @order_by ref,
   int index: int ref,
   unique int child: @orderBy_child_type ref
 );
 
-orderb_y_def(
-  unique int id: @orderb_y,
+order_by_def(
+  unique int id: @order_by,
   int loc: @location ref
 );
 
-#keyset[orderb_ys, index]
-orderb_ys_child(
-  int orderb_ys: @orderb_ys ref,
+#keyset[order_bys, index]
+order_bys_child(
+  int order_bys: @order_bys ref,
   int index: int ref,
-  unique int child: @orderb_y ref
+  unique int child: @order_by ref
 );
 
-orderb_ys_def(
-  unique int id: @orderb_ys,
+order_bys_def(
+  unique int id: @order_bys,
   int loc: @location ref
 );
 
@@ -565,27 +565,27 @@ par_expr_def(
   int loc: @location ref
 );
 
-predicatea_liasb_ody_def(
-  unique int id: @predicatea_liasb_ody,
-  int child: @predicatee_xpr ref,
+predicate_alias_body_def(
+  unique int id: @predicate_alias_body,
+  int child: @predicate_expr ref,
   int loc: @location ref
 );
 
-@predicateExpr_child_type = @aritylessp_redicatee_xpr | @token_integer
+@predicateExpr_child_type = @arityless_predicate_expr | @token_integer
 
-#keyset[predicatee_xpr, index]
-predicatee_xpr_child(
-  int predicatee_xpr: @predicatee_xpr ref,
+#keyset[predicate_expr, index]
+predicate_expr_child(
+  int predicate_expr: @predicate_expr ref,
   int index: int ref,
   unique int child: @predicateExpr_child_type ref
 );
 
-predicatee_xpr_def(
-  unique int id: @predicatee_xpr,
+predicate_expr_def(
+  unique int id: @predicate_expr,
   int loc: @location ref
 );
 
-@prefix_cast_child_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @typee_xpr | @unary_expr | @variable
+@prefix_cast_child_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @type_expr | @unary_expr | @variable
 
 #keyset[prefix_cast, index]
 prefix_cast_child(
@@ -603,7 +603,7 @@ prefix_cast_def(
 ql_child(
   int ql: @ql ref,
   int index: int ref,
-  unique int child: @modulem_ember ref
+  unique int child: @module_member ref
 );
 
 ql_def(
@@ -611,38 +611,38 @@ ql_def(
   int loc: @location ref
 );
 
-#keyset[qualm_odulee_xpr, index]
-qualm_odulee_xpr_name(
-  int qualm_odulee_xpr: @qualm_odulee_xpr ref,
+#keyset[qual_module_expr, index]
+qual_module_expr_name(
+  int qual_module_expr: @qual_module_expr ref,
   int index: int ref,
-  unique int name: @token_simplei_d ref
+  unique int name: @token_simple_id ref
 );
 
-qualm_odulee_xpr_def(
-  unique int id: @qualm_odulee_xpr,
+qual_module_expr_def(
+  unique int id: @qual_module_expr,
   int loc: @location ref
 );
 
-qualifiedr_hs_name(
-  unique int qualifiedr_hs: @qualifiedr_hs ref,
-  unique int name: @token_predicaten_ame ref
+qualified_rhs_name(
+  unique int qualified_rhs: @qualified_rhs ref,
+  unique int name: @token_predicate_name ref
 );
 
-@qualifiedRhs_child_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @token_closure | @token_underscore | @typee_xpr | @unary_expr | @variable
+@qualifiedRhs_child_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @token_closure | @token_underscore | @type_expr | @unary_expr | @variable
 
-#keyset[qualifiedr_hs, index]
-qualifiedr_hs_child(
-  int qualifiedr_hs: @qualifiedr_hs ref,
+#keyset[qualified_rhs, index]
+qualified_rhs_child(
+  int qualified_rhs: @qualified_rhs ref,
   int index: int ref,
   unique int child: @qualifiedRhs_child_type ref
 );
 
-qualifiedr_hs_def(
-  unique int id: @qualifiedr_hs,
+qualified_rhs_def(
+  unique int id: @qualified_rhs,
   int loc: @location ref
 );
 
-@qualified_expr_child_type = @aggregate | @call_or_unqual_agg_expr | @literal | @par_expr | @qualified_expr | @qualifiedr_hs | @range | @set_literal | @super_ref | @variable
+@qualified_expr_child_type = @aggregate | @call_or_unqual_agg_expr | @literal | @par_expr | @qualified_expr | @qualified_rhs | @range | @set_literal | @super_ref | @variable
 
 #keyset[qualified_expr, index]
 qualified_expr_child(
@@ -656,7 +656,7 @@ qualified_expr_def(
   int loc: @location ref
 );
 
-@quantified_child_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @token_quantifier | @unary_expr | @vard_ecl | @variable
+@quantified_child_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @token_quantifier | @unary_expr | @var_decl | @variable
 
 #keyset[quantified, index]
 quantified_child(
@@ -681,7 +681,7 @@ range_def(
   int loc: @location ref
 );
 
-@select_child_type = @add_expr | @aggregate | @ase_xprs | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @orderb_ys | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @vard_ecl | @variable
+@select_child_type = @add_expr | @aggregate | @as_exprs | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @order_bys | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @var_decl | @variable
 
 #keyset[select, index]
 select_child(
@@ -711,11 +711,11 @@ set_literal_def(
 
 special_call_def(
   unique int id: @special_call,
-  int child: @token_speciali_d ref,
+  int child: @token_special_id ref,
   int loc: @location ref
 );
 
-@super_ref_child_type = @token_super | @typee_xpr
+@super_ref_child_type = @token_super | @type_expr
 
 #keyset[super_ref, index]
 super_ref_child(
@@ -729,38 +729,38 @@ super_ref_def(
   int loc: @location ref
 );
 
-typea_liasb_ody_def(
-  unique int id: @typea_liasb_ody,
-  int child: @typee_xpr ref,
+type_alias_body_def(
+  unique int id: @type_alias_body,
+  int child: @type_expr ref,
   int loc: @location ref
 );
 
-typee_xpr_name(
-  unique int typee_xpr: @typee_xpr ref,
-  unique int name: @token_classn_ame ref
+type_expr_name(
+  unique int type_expr: @type_expr ref,
+  unique int name: @token_class_name ref
 );
 
-@typeExpr_child_type = @modulee_xpr | @token_dbtype | @token_primitivet_ype
+@typeExpr_child_type = @module_expr | @token_dbtype | @token_primitive_type
 
-typee_xpr_child(
-  unique int typee_xpr: @typee_xpr ref,
+type_expr_child(
+  unique int type_expr: @type_expr ref,
   unique int child: @typeExpr_child_type ref
 );
 
-typee_xpr_def(
-  unique int id: @typee_xpr,
+type_expr_def(
+  unique int id: @type_expr,
   int loc: @location ref
 );
 
-#keyset[typeu_nionb_ody, index]
-typeu_nionb_ody_child(
-  int typeu_nionb_ody: @typeu_nionb_ody ref,
+#keyset[type_union_body, index]
+type_union_body_child(
+  int type_union_body: @type_union_body ref,
   int index: int ref,
-  unique int child: @typee_xpr ref
+  unique int child: @type_expr ref
 );
 
-typeu_nionb_ody_def(
-  unique int id: @typeu_nionb_ody,
+type_union_body_def(
+  unique int id: @type_union_body,
   int loc: @location ref
 );
 
@@ -778,7 +778,7 @@ unary_expr_def(
   int loc: @location ref
 );
 
-@unqual_agg_body_child_type = @add_expr | @aggregate | @ase_xprs | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @vard_ecl | @variable
+@unqual_agg_body_child_type = @add_expr | @aggregate | @as_exprs | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @var_decl | @variable
 
 #keyset[unqual_agg_body, index]
 unqual_agg_body_child(
@@ -792,27 +792,27 @@ unqual_agg_body_def(
   int loc: @location ref
 );
 
-@varDecl_child_type = @typee_xpr | @varn_ame
+@varDecl_child_type = @type_expr | @var_name
 
-#keyset[vard_ecl, index]
-vard_ecl_child(
-  int vard_ecl: @vard_ecl ref,
+#keyset[var_decl, index]
+var_decl_child(
+  int var_decl: @var_decl ref,
   int index: int ref,
   unique int child: @varDecl_child_type ref
 );
 
-vard_ecl_def(
-  unique int id: @vard_ecl,
+var_decl_def(
+  unique int id: @var_decl,
   int loc: @location ref
 );
 
-varn_ame_def(
-  unique int id: @varn_ame,
-  int child: @token_simplei_d ref,
+var_name_def(
+  unique int id: @var_name,
+  int child: @token_simple_id ref,
   int loc: @location ref
 );
 
-@variable_child_type = @token_result | @token_this | @varn_ame
+@variable_child_type = @token_result | @token_this | @var_name
 
 variable_def(
   unique int id: @variable,
@@ -832,10 +832,10 @@ tokeninfo(
 case @token.kind of
   0 = @reserved_word
 | 1 = @token_addop
-| 2 = @token_aggi_d
-| 3 = @token_annotn_ame
+| 2 = @token_agg_id
+| 3 = @token_annot_name
 | 4 = @token_block_comment
-| 5 = @token_classn_ame
+| 5 = @token_class_name
 | 6 = @token_closure
 | 7 = @token_compop
 | 8 = @token_dbtype
@@ -845,16 +845,16 @@ case @token.kind of
 | 12 = @token_float
 | 13 = @token_integer
 | 14 = @token_line_comment
-| 15 = @token_literali_d
+| 15 = @token_literal_id
 | 16 = @token_mulop
 | 17 = @token_predicate
-| 18 = @token_predicaten_ame
-| 19 = @token_primitivet_ype
+| 18 = @token_predicate_name
+| 19 = @token_primitive_type
 | 20 = @token_qldoc
 | 21 = @token_quantifier
 | 22 = @token_result
-| 23 = @token_simplei_d
-| 24 = @token_speciali_d
+| 23 = @token_simple_id
+| 24 = @token_special_id
 | 25 = @token_string
 | 26 = @token_super
 | 27 = @token_this
@@ -881,7 +881,7 @@ case @diagnostic.severity of
 ;
 
 
-@ast_node = @add_expr | @aggregate | @annota_rg | @annotation | @aritylessp_redicatee_xpr | @ase_xpr | @ase_xprs | @body | @bool | @call_body | @call_or_unqual_agg_expr | @charpred | @classlessp_redicate | @classm_ember | @comp_term | @conjunction | @dataclass | @datatype | @datatypeb_ranch | @datatypeb_ranches | @disjunction | @expr_aggregate_body | @field | @full_aggregate_body | @highero_rdert_erm | @if_term | @implication | @importd_irective | @importm_odulee_xpr | @in_expr | @instance_of | @literal | @memberp_redicate | @module | @modulea_liasb_ody | @modulee_xpr | @modulem_ember | @modulen_ame | @mul_expr | @negation | @orderb_y | @orderb_ys | @par_expr | @predicatea_liasb_ody | @predicatee_xpr | @prefix_cast | @ql | @qualified_expr | @qualifiedr_hs | @qualm_odulee_xpr | @quantified | @range | @select | @set_literal | @special_call | @super_ref | @token | @typea_liasb_ody | @typee_xpr | @typeu_nionb_ody | @unary_expr | @unqual_agg_body | @vard_ecl | @variable | @varn_ame
+@ast_node = @add_expr | @aggregate | @annot_arg | @annotation | @arityless_predicate_expr | @as_expr | @as_exprs | @body | @bool | @call_body | @call_or_unqual_agg_expr | @charpred | @class_member | @classless_predicate | @comp_term | @conjunction | @dataclass | @datatype | @datatype_branch | @datatype_branches | @disjunction | @expr_aggregate_body | @field | @full_aggregate_body | @higher_order_term | @if_term | @implication | @import_directive | @import_module_expr | @in_expr | @instance_of | @literal | @member_predicate | @module | @module_alias_body | @module_expr | @module_member | @module_name | @mul_expr | @negation | @order_by | @order_bys | @par_expr | @predicate_alias_body | @predicate_expr | @prefix_cast | @ql | @qual_module_expr | @qualified_expr | @qualified_rhs | @quantified | @range | @select | @set_literal | @special_call | @super_ref | @token | @type_alias_body | @type_expr | @type_union_body | @unary_expr | @unqual_agg_body | @var_decl | @var_name | @variable
 
 @ast_node_parent = @ast_node | @file
 
