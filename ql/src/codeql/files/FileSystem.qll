@@ -178,7 +178,9 @@ class File extends Container, @file {
       token = this.getAToken() and
       l = token.getLocation() and
       line in [l.getStartLine() .. l.getEndLine()] and
-      if token instanceof @token_block_comment then comment = true else comment = false
+      if token instanceof @token_block_comment or token instanceof @token_line_comment
+      then comment = true
+      else comment = false
     )
   }
 

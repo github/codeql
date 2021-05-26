@@ -1,4 +1,4 @@
-- description: Standard LGTM queries for Ruby
-- apply: codeql-suites/ruby-lgtm-full.qls
+- description: Standard LGTM queries for QL
+- apply: codeql-suites/ql-lgtm-full.qls
 - apply: lgtm-displayed-only.yml
   from: codeql-suite-helpers

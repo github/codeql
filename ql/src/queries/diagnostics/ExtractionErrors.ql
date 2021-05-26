@@ -2,10 +2,10 @@
  * @name Extraction errors
  * @description List all extraction errors for files in the source code directory.
  * @kind diagnostic
- * @id rb/diagnostics/extraction-errors
+ * @id ql/diagnostics/extraction-errors
  */
 
-import ruby
+import ql
 import codeql_ql.Diagnostics
 
 /** Gets the SARIF severity to associate an error. */

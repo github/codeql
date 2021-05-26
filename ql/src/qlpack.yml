@@ -1,5 +1,5 @@
-name: codeql-ruby
+name: codeql-ql
 version: 0.0.0
 dbscheme: ql.dbscheme
 suites: codeql-suites
-extractor: ruby
+extractor: ql

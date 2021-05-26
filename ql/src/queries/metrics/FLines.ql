@@ -3,10 +3,10 @@
  * @kind metric
  * @description The number of lines in each file.
  * @metricType file
- * @id rb/lines-per-file
+ * @id ql/lines-per-file
  */
 
-import ruby
+import ql
 
 from File f, int n
 where n = f.getNumberOfLines()

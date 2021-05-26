@@ -3,10 +3,10 @@
  * @description Lists all files in the source code directory that were extracted
  *   without encountering an error in the file.
  * @kind diagnostic
- * @id rb/diagnostics/successfully-extracted-files
+ * @id ql/diagnostics/successfully-extracted-files
  */
 
-import ruby
+import ql
 import codeql_ql.Diagnostics
 
 from File f

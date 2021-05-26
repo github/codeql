@@ -4,10 +4,10 @@
  * @description Measures the number of lines of code in each file, ignoring lines that
  *              contain only comments or whitespace.
  * @metricType file
- * @id rb/lines-of-code-in-files
+ * @id ql/lines-of-code-in-files
  */
 
-import ruby
+import ql
 
 from File f, int n
 where n = f.getNumberOfLinesOfCode()
