@@ -1,3 +1,5 @@
+| local_dataflow.rb:1:1:7:3 | self in foo | local_dataflow.rb:3:8:3:10 | self |
+| local_dataflow.rb:1:9:1:9 | a | local_dataflow.rb:1:9:1:9 | a |
 | local_dataflow.rb:1:9:1:9 | a | local_dataflow.rb:2:7:2:7 | a |
 | local_dataflow.rb:2:3:2:7 | ... = ... | local_dataflow.rb:3:13:3:13 | b |
 | local_dataflow.rb:2:7:2:7 | a | local_dataflow.rb:2:3:2:7 | ... = ... |
@@ -42,8 +44,10 @@
 | local_dataflow.rb:30:14:30:20 | "class" | local_dataflow.rb:30:5:30:24 | C |
 | local_dataflow.rb:32:5:32:25 | bar | local_dataflow.rb:32:1:32:25 | ... = ... |
 | local_dataflow.rb:32:5:32:25 | bar | local_dataflow.rb:32:1:32:25 | ... = ... |
+| local_dataflow.rb:34:7:34:7 | x | local_dataflow.rb:34:7:34:7 | x |
 | local_dataflow.rb:34:7:34:7 | x | local_dataflow.rb:35:6:35:6 | x |
 | local_dataflow.rb:36:13:36:13 | 7 | local_dataflow.rb:36:6:36:13 | return |
+| local_dataflow.rb:41:7:41:7 | x | local_dataflow.rb:41:7:41:7 | x |
 | local_dataflow.rb:41:7:41:7 | x | local_dataflow.rb:42:6:42:6 | x |
 | local_dataflow.rb:43:13:43:13 | 7 | local_dataflow.rb:43:6:43:13 | return |
 | local_dataflow.rb:45:10:45:10 | 6 | local_dataflow.rb:45:3:45:10 | return |

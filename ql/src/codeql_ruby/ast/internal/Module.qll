@@ -8,7 +8,13 @@ private import codeql_ruby.ast.Operation
 private import codeql_ruby.ast.Scope
 
 // Names of built-in modules and classes
-private string builtin() { result = ["Object", "Kernel", "BasicObject", "Class", "Module"] }
+private string builtin() {
+  result =
+    [
+      "Object", "Kernel", "BasicObject", "Class", "Module", "NilClass", "FalseClass", "TrueClass",
+      "Numeric", "Integer", "Float", "Rational", "Complex", "Array", "Hash", "Symbol", "Proc"
+    ]
+}
 
 cached
 private module Cached {
@@ -39,9 +45,14 @@ private module Cached {
   Module getSuperClass(Module cls) {
     cls = TResolved("Object") and result = TResolved("BasicObject")
     or
-    cls = TResolved("Module") and result = TResolved("Object")
+    cls = TResolved(["Module", "Numeric", "Array", "Hash", "FalseClass", "TrueClass", "NilClass"]) and
+    result = TResolved("Object")
     or
-    cls = TResolved("Class") and result = TResolved("Module")
+    cls = TResolved(["Integer", "Float", "Rational", "Complex"]) and
+    result = TResolved("Numeric")
+    or
+    cls = TResolved("Class") and
+    result = TResolved("Module")
     or
     not cls = TResolved(builtin()) and
     (
@@ -86,6 +97,39 @@ private module Cached {
       result = resolveScopeExpr(c.getAnArgument())
     )
   }
+
+  /**
+   * Resolve constant read access (typically a scope expression) to a qualified module name.
+   * `resolveScopeExpr/1` picks the best (lowest priority number) result of
+   * `resolveScopeExpr/2` that resolves to a constant definition. If the constant
+   * definition is a Namespace then it is returned, if it's a constant assignment then
+   * the right-hand side of the assignment is resolved.
+   */
+  cached
+  TResolved resolveScopeExpr(ConstantReadAccess r) {
+    exists(string qname |
+      qname =
+        min(string qn, int p |
+          isDefinedConstant(qn) and
+          qn = resolveScopeExpr(r, p) and
+          // prevent classes/modules that contain/extend themselves
+          not exists(ConstantWriteAccess w | qn = constantDefinition0(w) |
+            r = w.getScopeExpr()
+            or
+            r = w.(ClassDeclaration).getSuperclassExpr()
+          )
+        |
+          qn order by p
+        )
+    |
+      result = TResolved(qname)
+      or
+      exists(ConstantAssignment a |
+        qname = constantDefinition0(a) and
+        result = resolveScopeExpr(a.getParent().(Assignment).getRightOperand())
+      )
+    )
+  }
 }
 
 import Cached
@@ -101,38 +145,6 @@ private predicate isToplevel(ConstantAccess n) {
 
 private predicate isDefinedConstant(string qualifiedModuleName) {
   qualifiedModuleName = [builtin(), constantDefinition0(_)]
-}
-
-/**
- * Resolve constant read access (typically a scope expression) to a qualified module name.
- * `resolveScopeExpr/1` picks the best (lowest priority number) result of
- * `resolveScopeExpr/2` that resolves to a constant definition. If the constant
- * definition is a Namespace then it is returned, if it's a constant assignment then
- * the right-hand side of the assignment is resolved.
- */
-private TResolved resolveScopeExpr(ConstantReadAccess r) {
-  exists(string qname |
-    qname =
-      min(string qn, int p |
-        isDefinedConstant(qn) and
-        qn = resolveScopeExpr(r, p) and
-        // prevent classes/modules that contain/extend themselves
-        not exists(ConstantWriteAccess w | qn = constantDefinition0(w) |
-          r = w.getScopeExpr()
-          or
-          r = w.(ClassDeclaration).getSuperclassExpr()
-        )
-      |
-        qn order by p
-      )
-  |
-    result = TResolved(qname)
-    or
-    exists(ConstantAssignment a |
-      qname = constantDefinition0(a) and
-      result = resolveScopeExpr(a.getParent().(Assignment).getRightOperand())
-    )
-  )
 }
 
 private int maxDepth() { result = 1 + max(int level | exists(enclosing(_, level))) }

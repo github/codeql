@@ -3,6 +3,7 @@ private import codeql_ruby.CFG
 private import codeql_ruby.dataflow.SSA
 private import DataFlowPublic
 private import DataFlowDispatch
+private import SsaImpl as SsaImpl
 
 abstract class NodeImpl extends Node {
   /** Do not call: use `getEnclosingCallable()` instead. */
@@ -49,6 +50,13 @@ module LocalFlow {
    * SSA definition `def.
    */
   predicate localSsaFlowStep(Ssa::Definition def, Node nodeFrom, Node nodeTo) {
+    // Flow from parameter into SSA definition
+    exists(BasicBlock bb, int i |
+      bb.getNode(i).getNode() =
+        nodeFrom.(ParameterNode).getParameter().(NamedParameter).getDefiningAccess() and
+      nodeTo.(SsaDefinitionNode).getDefinition().definesAt(_, bb, i)
+    )
+    or
     // Flow from assignment into SSA definition
     exists(CfgNodes::ExprNodes::AssignmentCfgNode a, BasicBlock bb, int i |
       def.definesAt(_, bb, i) and
@@ -111,8 +119,12 @@ private module Cached {
     TExprNode(CfgNodes::ExprCfgNode n) or
     TReturningNode(CfgNodes::ReturningCfgNode n) or
     TSsaDefinitionNode(Ssa::Definition def) or
-    TParameterNode(Parameter p) or
+    TNormalParameterNode(Parameter p) { not p instanceof BlockParameter } or
+    TSelfParameterNode(MethodBase m) or
+    TBlockParameterNode(MethodBase m) or
     TExprPostUpdateNode(CfgNodes::ExprCfgNode n) { n.getNode() instanceof Argument }
+
+  class TParameterNode = TNormalParameterNode or TBlockParameterNode or TSelfParameterNode;
 
   /**
    * This is the local flow predicate that is used as a building block in global
@@ -124,7 +136,18 @@ private module Cached {
   predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
     exists(Ssa::Definition def | LocalFlow::localSsaFlowStep(def, nodeFrom, nodeTo))
     or
+    nodeTo.(ParameterNode).getParameter().(OptionalParameter).getDefaultValue() =
+      nodeFrom.asExpr().getExpr()
+    or
+    nodeTo.(ParameterNode).getParameter().(KeywordParameter).getDefaultValue() =
+      nodeFrom.asExpr().getExpr()
+    or
+    nodeFrom.(SelfParameterNode).getMethod() = nodeTo.asExpr().getExpr().getEnclosingMethod() and
+    nodeTo.asExpr().getExpr() instanceof Self
+    or
     nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::AssignExprCfgNode).getRhs()
+    or
+    nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::BlockArgumentCfgNode).getValue()
     or
     nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::StmtSequenceCfgNode).getLastStmt()
     or
@@ -208,13 +231,13 @@ private module ParameterNodes {
   abstract private class ParameterNodeImpl extends ParameterNode, NodeImpl { }
 
   /**
-   * The value of an explicit parameter at function entry, viewed as a node in a data
+   * The value of a normal parameter at function entry, viewed as a node in a data
    * flow graph.
    */
-  class ExplicitParameterNode extends ParameterNodeImpl, TParameterNode {
+  class NormalParameterNode extends ParameterNodeImpl, TNormalParameterNode {
     private Parameter parameter;
 
-    ExplicitParameterNode() { this = TParameterNode(parameter) }
+    NormalParameterNode() { this = TNormalParameterNode(parameter) }
 
     override Parameter getParameter() { result = parameter }
 
@@ -225,6 +248,58 @@ private module ParameterNodes {
     override Location getLocationImpl() { result = parameter.getLocation() }
 
     override string toStringImpl() { result = parameter.toString() }
+  }
+
+  /**
+   * The value of the `self` parameter at function entry, viewed as a node in a data
+   * flow graph.
+   */
+  class SelfParameterNode extends ParameterNodeImpl, TSelfParameterNode {
+    private MethodBase method;
+
+    SelfParameterNode() { this = TSelfParameterNode(method) }
+
+    final MethodBase getMethod() { result = method }
+
+    override predicate isParameterOf(Callable c, int i) { method = c and i = -1 }
+
+    override CfgScope getCfgScope() { result = method }
+
+    override Location getLocationImpl() { result = method.getLocation() }
+
+    override string toStringImpl() { result = "self in " + method.toString() }
+  }
+
+  /**
+   * The value of a block parameter at function entry, viewed as a node in a data
+   * flow graph.
+   */
+  class BlockParameterNode extends ParameterNodeImpl, TBlockParameterNode {
+    private MethodBase method;
+
+    BlockParameterNode() { this = TBlockParameterNode(method) }
+
+    final MethodBase getMethod() { result = method }
+
+    override Parameter getParameter() {
+      result = method.getAParameter() and result instanceof BlockParameter
+    }
+
+    override predicate isParameterOf(Callable c, int i) { c = method and i = -2 }
+
+    override CfgScope getCfgScope() { result = method }
+
+    override Location getLocationImpl() {
+      result = getParameter().getLocation()
+      or
+      not exists(getParameter()) and result = method.getLocation()
+    }
+
+    override string toStringImpl() {
+      result = getParameter().toString()
+      or
+      not exists(getParameter()) and result = "&block"
+    }
   }
 }
 
@@ -243,13 +318,44 @@ abstract class ArgumentNode extends Node {
 private module ArgumentNodes {
   /** A data-flow node that represents an explicit call argument. */
   class ExplicitArgumentNode extends ArgumentNode {
-    ExplicitArgumentNode() { this.asExpr().getExpr() instanceof Argument }
+    ExplicitArgumentNode() {
+      this.asExpr().getExpr() instanceof Argument and
+      not this.asExpr().getExpr() instanceof BlockArgument
+    }
+
+    override predicate argumentOf(DataFlowCall call, int pos) {
+      this.asExpr() = call.getArgument(pos)
+    }
+  }
+
+  /** A data-flow node that represents the `self` argument of a call. */
+  class SelfArgumentNode extends ArgumentNode {
+    SelfArgumentNode() { this.asExpr() = any(CfgNodes::ExprNodes::CallCfgNode call).getReceiver() }
 
     override predicate argumentOf(DataFlowCall call, int pos) {
       this.asExpr() = call.getReceiver() and
       pos = -1
-      or
-      this.asExpr() = call.getArgument(pos)
+    }
+  }
+
+  /** A data-flow node that represents a block argument. */
+  class BlockArgumentNode extends ArgumentNode {
+    BlockArgumentNode() {
+      this.asExpr().getExpr() instanceof BlockArgument or
+      exists(CfgNodes::ExprNodes::CallCfgNode c | c.getBlock() = this.asExpr())
+    }
+
+    override predicate argumentOf(DataFlowCall call, int pos) {
+      pos = -2 and
+      (
+        this.asExpr() = call.getBlock()
+        or
+        exists(CfgNodes::ExprCfgNode arg, int n |
+          arg = call.getArgument(n) and
+          this.asExpr() = arg and
+          arg.getExpr() instanceof BlockArgument
+        )
+      )
     }
   }
 }
@@ -337,7 +443,13 @@ private module OutNodes {
 
 import OutNodes
 
-predicate jumpStep(Node pred, Node succ) { none() }
+predicate jumpStep(Node pred, Node succ) {
+  SsaImpl::captureFlowIn(pred.(SsaDefinitionNode).getDefinition(),
+    succ.(SsaDefinitionNode).getDefinition())
+  or
+  SsaImpl::captureFlowOut(pred.(SsaDefinitionNode).getDefinition(),
+    succ.(SsaDefinitionNode).getDefinition())
+}
 
 predicate storeStep(Node node1, Content c, Node node2) { none() }
 

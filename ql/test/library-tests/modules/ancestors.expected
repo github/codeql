@@ -1,16 +1,72 @@
-#-----| Object
+calls.rb:
+#  101| Hash
+#-----| super -> Object
+
+#   77| Integer
+#-----| super -> Numeric
+
+#   86| Kernel
+
+#   90| Module
+#-----| super -> Object
+
+#   96| Object
 #-----| include -> Kernel
 #-----| super -> BasicObject
+
+#  105| Array
+#-----| super -> Object
+
+#-----| BasicObject
 
 #-----| Class
 #-----| super -> Module
 
-#-----| Kernel
+#-----| Complex
+#-----| super -> Numeric
 
-#-----| Module
+#-----| FalseClass
 #-----| super -> Object
 
-#-----| BasicObject
+#-----| Float
+#-----| super -> Numeric
+
+#-----| NilClass
+#-----| super -> Object
+
+#-----| Numeric
+#-----| super -> Object
+
+#-----| Proc
+
+#-----| Rational
+#-----| super -> Numeric
+
+#-----| Symbol
+
+#-----| TrueClass
+#-----| super -> Object
+
+#   15| M
+
+#   29| C
+#-----| super -> Object
+#-----| include -> M
+
+#   51| D
+#-----| super -> C
+
+#   82| String
+#-----| super -> Object
+
+#  143| S
+#-----| super -> Object
+
+#  149| A
+#-----| super -> S
+
+#  154| B
+#-----| super -> S
 
 hello.rb:
 #    1| EnglishWords

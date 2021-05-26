@@ -1,9 +1,28 @@
 getModule
+| calls.rb:15:1:24:3 | M |
+| calls.rb:29:1:44:3 | C |
+| calls.rb:51:1:55:3 | D |
+| calls.rb:77:1:80:3 | Integer |
+| calls.rb:82:1:84:3 | String |
+| calls.rb:86:1:88:3 | Kernel |
+| calls.rb:90:1:94:3 | Module |
+| calls.rb:96:1:99:3 | Object |
+| calls.rb:101:1:103:3 | Hash |
+| calls.rb:105:1:116:3 | Array |
+| calls.rb:143:1:147:3 | S |
+| calls.rb:149:1:152:3 | A |
+| calls.rb:154:1:157:3 | B |
 | file://:0:0:0:0 | BasicObject |
 | file://:0:0:0:0 | Class |
-| file://:0:0:0:0 | Kernel |
-| file://:0:0:0:0 | Module |
-| file://:0:0:0:0 | Object |
+| file://:0:0:0:0 | Complex |
+| file://:0:0:0:0 | FalseClass |
+| file://:0:0:0:0 | Float |
+| file://:0:0:0:0 | NilClass |
+| file://:0:0:0:0 | Numeric |
+| file://:0:0:0:0 | Proc |
+| file://:0:0:0:0 | Rational |
+| file://:0:0:0:0 | Symbol |
+| file://:0:0:0:0 | TrueClass |
 | hello.rb:1:1:8:3 | EnglishWords |
 | hello.rb:11:1:16:3 | Greeting |
 | hello.rb:18:1:22:3 | HelloWorld |
@@ -38,8 +57,22 @@ getModule
 | modules.rb:116:7:117:9 | XX::YY |
 | modules.rb:120:1:121:3 | Test::Foo1::Bar::Baz |
 getADeclaration
-| file://:0:0:0:0 | Object | hello.rb:1:1:22:3 | hello.rb |
-| file://:0:0:0:0 | Object | modules.rb:1:1:122:1 | modules.rb |
+| calls.rb:15:1:24:3 | M | calls.rb:15:1:24:3 | M |
+| calls.rb:29:1:44:3 | C | calls.rb:29:1:44:3 | C |
+| calls.rb:51:1:55:3 | D | calls.rb:51:1:55:3 | D |
+| calls.rb:77:1:80:3 | Integer | calls.rb:77:1:80:3 | Integer |
+| calls.rb:82:1:84:3 | String | calls.rb:82:1:84:3 | String |
+| calls.rb:86:1:88:3 | Kernel | calls.rb:86:1:88:3 | Kernel |
+| calls.rb:90:1:94:3 | Module | calls.rb:90:1:94:3 | Module |
+| calls.rb:96:1:99:3 | Object | calls.rb:1:1:161:15 | calls.rb |
+| calls.rb:96:1:99:3 | Object | calls.rb:96:1:99:3 | Object |
+| calls.rb:96:1:99:3 | Object | hello.rb:1:1:22:3 | hello.rb |
+| calls.rb:96:1:99:3 | Object | modules.rb:1:1:122:1 | modules.rb |
+| calls.rb:101:1:103:3 | Hash | calls.rb:101:1:103:3 | Hash |
+| calls.rb:105:1:116:3 | Array | calls.rb:105:1:116:3 | Array |
+| calls.rb:143:1:147:3 | S | calls.rb:143:1:147:3 | S |
+| calls.rb:149:1:152:3 | A | calls.rb:149:1:152:3 | A |
+| calls.rb:154:1:157:3 | B | calls.rb:154:1:157:3 | B |
 | hello.rb:1:1:8:3 | EnglishWords | hello.rb:1:1:8:3 | EnglishWords |
 | hello.rb:11:1:16:3 | Greeting | hello.rb:11:1:16:3 | Greeting |
 | hello.rb:18:1:22:3 | HelloWorld | hello.rb:18:1:22:3 | HelloWorld |
@@ -77,24 +110,41 @@ getADeclaration
 | modules.rb:116:7:117:9 | XX::YY | modules.rb:116:7:117:9 | YY |
 | modules.rb:120:1:121:3 | Test::Foo1::Bar::Baz | modules.rb:120:1:121:3 | Baz |
 getSuperClass
-| file://:0:0:0:0 | Class | file://:0:0:0:0 | Module |
-| file://:0:0:0:0 | Module | file://:0:0:0:0 | Object |
-| file://:0:0:0:0 | Object | file://:0:0:0:0 | BasicObject |
-| hello.rb:11:1:16:3 | Greeting | file://:0:0:0:0 | Object |
+| calls.rb:29:1:44:3 | C | calls.rb:96:1:99:3 | Object |
+| calls.rb:51:1:55:3 | D | calls.rb:29:1:44:3 | C |
+| calls.rb:77:1:80:3 | Integer | file://:0:0:0:0 | Numeric |
+| calls.rb:82:1:84:3 | String | calls.rb:96:1:99:3 | Object |
+| calls.rb:90:1:94:3 | Module | calls.rb:96:1:99:3 | Object |
+| calls.rb:96:1:99:3 | Object | file://:0:0:0:0 | BasicObject |
+| calls.rb:101:1:103:3 | Hash | calls.rb:96:1:99:3 | Object |
+| calls.rb:105:1:116:3 | Array | calls.rb:96:1:99:3 | Object |
+| calls.rb:143:1:147:3 | S | calls.rb:96:1:99:3 | Object |
+| calls.rb:149:1:152:3 | A | calls.rb:143:1:147:3 | S |
+| calls.rb:154:1:157:3 | B | calls.rb:143:1:147:3 | S |
+| file://:0:0:0:0 | Class | calls.rb:90:1:94:3 | Module |
+| file://:0:0:0:0 | Complex | file://:0:0:0:0 | Numeric |
+| file://:0:0:0:0 | FalseClass | calls.rb:96:1:99:3 | Object |
+| file://:0:0:0:0 | Float | file://:0:0:0:0 | Numeric |
+| file://:0:0:0:0 | NilClass | calls.rb:96:1:99:3 | Object |
+| file://:0:0:0:0 | Numeric | calls.rb:96:1:99:3 | Object |
+| file://:0:0:0:0 | Rational | file://:0:0:0:0 | Numeric |
+| file://:0:0:0:0 | TrueClass | calls.rb:96:1:99:3 | Object |
+| hello.rb:11:1:16:3 | Greeting | calls.rb:96:1:99:3 | Object |
 | hello.rb:18:1:22:3 | HelloWorld | hello.rb:11:1:16:3 | Greeting |
-| modules.rb:6:5:7:7 | Foo::Bar::ClassInFooBar | file://:0:0:0:0 | Object |
-| modules.rb:19:3:20:5 | Foo::ClassInFoo | file://:0:0:0:0 | Object |
-| modules.rb:30:3:31:5 | Foo::ClassInAnotherDefinitionOfFoo | file://:0:0:0:0 | Object |
-| modules.rb:37:1:46:3 | Bar | file://:0:0:0:0 | Object |
-| modules.rb:49:3:50:5 | Foo::Bar::ClassInAnotherDefinitionOfFooBar | file://:0:0:0:0 | Object |
-| modules.rb:66:5:67:7 | Test::Foo1::Bar | file://:0:0:0:0 | Object |
-| modules.rb:72:5:73:7 | Test::Foo2::Foo2::Bar | file://:0:0:0:0 | Object |
-| modules.rb:112:1:113:3 | YY | file://:0:0:0:0 | Object |
+| modules.rb:6:5:7:7 | Foo::Bar::ClassInFooBar | calls.rb:96:1:99:3 | Object |
+| modules.rb:19:3:20:5 | Foo::ClassInFoo | calls.rb:96:1:99:3 | Object |
+| modules.rb:30:3:31:5 | Foo::ClassInAnotherDefinitionOfFoo | calls.rb:96:1:99:3 | Object |
+| modules.rb:37:1:46:3 | Bar | calls.rb:96:1:99:3 | Object |
+| modules.rb:49:3:50:5 | Foo::Bar::ClassInAnotherDefinitionOfFooBar | calls.rb:96:1:99:3 | Object |
+| modules.rb:66:5:67:7 | Test::Foo1::Bar | calls.rb:96:1:99:3 | Object |
+| modules.rb:72:5:73:7 | Test::Foo2::Foo2::Bar | calls.rb:96:1:99:3 | Object |
+| modules.rb:112:1:113:3 | YY | calls.rb:96:1:99:3 | Object |
 | modules.rb:116:7:117:9 | XX::YY | modules.rb:112:1:113:3 | YY |
 getAPrependedModule
 | modules.rb:101:1:105:3 | PrependTest | modules.rb:63:1:81:3 | Test |
 getAnIncludedModule
-| file://:0:0:0:0 | Object | file://:0:0:0:0 | Kernel |
+| calls.rb:29:1:44:3 | C | calls.rb:15:1:24:3 | M |
+| calls.rb:96:1:99:3 | Object | calls.rb:86:1:88:3 | Kernel |
 | hello.rb:11:1:16:3 | Greeting | hello.rb:1:1:8:3 | EnglishWords |
 | modules.rb:88:1:93:3 | IncludeTest | modules.rb:63:1:81:3 | Test |
 | modules.rb:95:1:99:3 | IncludeTest2 | modules.rb:63:1:81:3 | Test |
