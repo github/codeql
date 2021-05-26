@@ -347,6 +347,16 @@ module Generated {
     override AstNode getAFieldOrChild() { expr_aggregate_body_child(this, _, result) }
   }
 
+  class ExprAnnotation extends @expr_annotation, AstNode {
+    override string getAPrimaryQlClass() { result = "ExprAnnotation" }
+
+    override Location getLocation() { expr_annotation_def(this, _, result) }
+
+    AstNode getChild() { expr_annotation_def(this, result, _) }
+
+    override AstNode getAFieldOrChild() { expr_annotation_def(this, result, _) }
+  }
+
   class False extends @token_false, Token {
     override string getAPrimaryQlClass() { result = "False" }
   }
