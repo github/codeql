@@ -11,7 +11,7 @@ public class JShellInjection {
 	public void bad1(HttpServletRequest request) {
 		String input = request.getParameter("code");
 		JShell jShell = JShell.builder().build();
-    // BAD: allow execution of arbitrary Java code
+        // BAD: allow execution of arbitrary Java code
 		jShell.eval(input);
 	}
 
@@ -20,7 +20,21 @@ public class JShellInjection {
 		String input = request.getParameter("code");
 		JShell jShell = JShell.builder().build();
 		SourceCodeAnalysis sourceCodeAnalysis = jShell.sourceCodeAnalysis();
-    // BAD: allow execution of arbitrary Java code
+        // BAD: allow execution of arbitrary Java code
 		sourceCodeAnalysis.wrappers(input);
+	}
+
+	@GetMapping(value = "bad3")
+	public void bad3(HttpServletRequest request) {
+		String input = request.getParameter("code");
+		JShell jShell = JShell.builder().build();
+		SourceCodeAnalysis.CompletionInfo info;
+		SourceCodeAnalysis sca = jShell.sourceCodeAnalysis();
+		for (info = sca.analyzeCompletion(input);
+				info.completeness().isComplete();
+				info = sca.analyzeCompletion(info.remaining())) {
+			// BAD: allow execution of arbitrary Java code
+			jShell.eval(info.source());
+		}
 	}
 }

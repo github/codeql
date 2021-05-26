@@ -21,6 +21,19 @@ class JShellInjectionConfiguration extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof JShellInjectionSink }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node prod, DataFlow::Node succ) {
+    exists(MethodAccess ma |
+      ma.getMethod().hasName("analyzeCompletion") and
+      ma.getMethod().getNumberOfParameters() = 1 and
+      ma.getMethod()
+          .getDeclaringType()
+          .getASupertype*()
+          .hasQualifiedName("jdk.jshell", "SourceCodeAnalysis") and
+      ma.getArgument(0) = prod.asExpr() and
+      ma = succ.asExpr()
+    )
+  }
 }
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, JShellInjectionConfiguration conf
