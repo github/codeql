@@ -7,7 +7,10 @@ newtype TAstNode =
     pred.getParent() = member
   } or
   TVarDecl(Generated::VarDecl decl) or
-  TBody(Generated::Body body)
+  TBody(Generated::Body body) or
+  TClass(Generated::Dataclass dc) or
+  TCharPred(Generated::Charpred pred) or
+  TClassPredicate(Generated::MemberPredicate pred)
 
 /**
  * Gets the underlying TreeSitter entity for a given AST node.
@@ -18,4 +21,10 @@ Generated::AstNode toGenerated(AST::AstNode n) {
   n = TVarDecl(result)
   or
   n = TBody(result)
+  or
+  n = TClass(result)
+  or
+  n = TCharPred(result)
+  or
+  n = TClassPredicate(result)
 }

@@ -16,6 +16,7 @@ class AstNode extends TAstNode {
  * A classless predicate.
  */
 class ClasslessPredicate extends TClasslessPredicate, AstNode {
+  // TODO: Make super class for predicate things. (classless, class predicate, charpred)
   Generated::ModuleMember member;
   Generated::ClasslessPredicate pred;
 
@@ -39,6 +40,54 @@ class ClasslessPredicate extends TClasslessPredicate, AstNode {
    * Gets the body of the predicate.
    */
   Body getBody() { toGenerated(result) = pred.getChild(_) }
+
+  /**
+   * Gets the name of the predicate
+   */
+  string getName() { result = pred.getName().getValue() }
+}
+
+/**
+ * A predicate in a class.
+ */
+class ClassPredicate extends TClassPredicate, AstNode {
+  Generated::MemberPredicate pred;
+
+  ClassPredicate() { this = TClassPredicate(pred) }
+
+  /**
+   * Gets the name of the predicate.
+   */
+  string getName() { result = pred.getName().getValue() }
+
+  /**
+   * Gets the body containing the implementation of the predicate.
+   */
+  Body getBody() { toGenerated(result) = pred.getChild(_) }
+
+  // TODO: ReturnType.
+  override string getAPrimaryQlClass() { result = "ClassPredicate" }
+
+  override Class getParent() { result.getAClassPredicate() = this }
+}
+
+/**
+ * A characteristic predicate of a class.
+ */
+class CharPred extends TCharPred, AstNode {
+  Generated::Charpred pred;
+
+  CharPred() { this = TCharPred(pred) }
+
+  override string getAPrimaryQlClass() { result = "CharPred" }
+
+  /*
+   * Gets the body of the predicate.
+   * TODO: The body is just directly an Expr in the generated AST. Wait for Expr type to appear.
+   * Body getBody() { toGenerated(result) = pred.getChild(_) }MemberPredicate
+   */
+
+  override Class getParent() { result.getCharPred() = this }
 }
 
 /**
@@ -48,7 +97,67 @@ class VarDecl extends TVarDecl, AstNode {
   Generated::VarDecl var;
 
   VarDecl() { this = TVarDecl(var) }
-  // TODO: Type and name getters.
+
+  /**
+   * Gets the name for this variable declaration.
+   */
+  string getName() { result = var.getChild(_).(Generated::VarName).getChild().getValue() }
+
+  override string getAPrimaryQlClass() { result = "VarDecl" }
+
+  override AstNode getParent() {
+    result = super.getParent()
+    or
+    result.(Class).getAField() = this
+  }
+  // TODO: Getter for the Type.
+}
+
+/**
+ * A QL class.
+ */
+class Class extends TClass, AstNode {
+  Generated::Dataclass cls;
+
+  Class() { this = TClass(cls) }
+
+  override string getAPrimaryQlClass() { result = "Class" }
+
+  /**
+   * Gets the name of the class.
+   */
+  string getName() { result = cls.getName().getValue() }
+
+  /**
+   * Gets the charateristic predicate for this class.
+   */
+  CharPred getCharPred() {
+    toGenerated(result) = cls.getChild(_).(Generated::ClassMember).getChild(0).(Generated::Charpred)
+  }
+
+  /**
+   * Gets a predicate in this class.
+   */
+  ClassPredicate getAClassPredicate() {
+    toGenerated(result) = cls.getChild(_).(Generated::ClassMember).getChild(0)
+  }
+
+  /**
+   * Gets predicate `name` implemented in this class.
+   */
+  ClassPredicate getClassPredicate(string name) {
+    result = getAClassPredicate() and
+    result.getName() = name
+  }
+
+  /**
+   * Gets a field in this class.
+   */
+  VarDecl getAField() {
+    toGenerated(result) =
+      cls.getChild(_).(Generated::ClassMember).getChild(0).(Generated::Field).getChild()
+  }
+  // TODO: extends, modifiers.
 }
 
 /**
@@ -58,5 +167,7 @@ class Body extends TBody, AstNode {
   Generated::Body body;
 
   Body() { this = TBody(body) }
+
+  override string getAPrimaryQlClass() { result = "Body" }
   // TODO: Children.
 }
