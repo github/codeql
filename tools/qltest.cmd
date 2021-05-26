@@ -5,7 +5,7 @@ type NUL && "%CODEQL_DIST%\codeql.exe" database index-files ^
     --include-extension=.rb ^
     --include-extension=.erb ^
     --size-limit=5m ^
-    --language=ruby ^
+    --language=ql ^
     "%CODEQL_EXTRACTOR_QL_WIP_DATABASE%"
 
 exit /b %ERRORLEVEL%
