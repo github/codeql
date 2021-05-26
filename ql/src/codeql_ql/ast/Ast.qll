@@ -3,7 +3,7 @@ private import codeql_ql.ast.internal.AstNodes
 
 /** An AST node of a QL program */
 class AstNode extends TAstNode {
-  string toString() { result = "ASTNode" }
+  string toString() { result = getAPrimaryQlClass() }
 
   Location getLocation() { result = toGenerated(this).getLocation() }
 
@@ -13,10 +13,39 @@ class AstNode extends TAstNode {
 }
 
 /**
+ * The `from, where, select` part of a QL query.
+ */
+class Select extends TSelect, AstNode {
+  Generated::Select sel;
+
+  Select() { this = TSelect(sel) }
+
+  override string getAPrimaryQlClass() { result = "Select" }
+  // TODO: Getters for VarDecls, Where-clause, selects.
+}
+
+class Predicate extends TPredicate, AstNode {
+  /**
+   * Gets the body of the predicate.
+   */
+  Formula getBody() { none() }
+
+  /**
+   * Gets the name of the predicate
+   */
+  string getName() { none() }
+
+  /**
+   * Gets the `i`th parameter of the predicate.
+   */
+  VarDecl getParameter(int i) { none() }
+  // TODO: ReturnType.
+}
+
+/**
  * A classless predicate.
  */
-class ClasslessPredicate extends TClasslessPredicate, AstNode {
-  // TODO: Make super class for predicate things. (classless, class predicate, charpred)
+class ClasslessPredicate extends TClasslessPredicate, Predicate, ModuleMember {
   Generated::ModuleMember member;
   Generated::ClasslessPredicate pred;
 
@@ -28,64 +57,51 @@ class ClasslessPredicate extends TClasslessPredicate, AstNode {
 
   override string getAPrimaryQlClass() { result = "ClasslessPredicate" }
 
-  /**
-   * Gets the `i`th parameter of the predicate.
-   */
-  VarDecl getParameter(int i) {
+  override Formula getBody() { toGenerated(result) = pred.getChild(_).(Generated::Body).getChild() }
+
+  override string getName() { result = pred.getName().getValue() }
+
+  override VarDecl getParameter(int i) {
     toGenerated(result) =
       rank[i](Generated::VarDecl decl, int index | decl = pred.getChild(index) | decl order by index)
   }
-
-  /**
-   * Gets the body of the predicate.
-   */
-  Body getBody() { toGenerated(result) = pred.getChild(_) }
-
-  /**
-   * Gets the name of the predicate
-   */
-  string getName() { result = pred.getName().getValue() }
 }
 
 /**
  * A predicate in a class.
  */
-class ClassPredicate extends TClassPredicate, AstNode {
+class ClassPredicate extends TClassPredicate, Predicate {
   Generated::MemberPredicate pred;
 
   ClassPredicate() { this = TClassPredicate(pred) }
 
-  /**
-   * Gets the name of the predicate.
-   */
-  string getName() { result = pred.getName().getValue() }
+  override string getName() { result = pred.getName().getValue() }
 
-  /**
-   * Gets the body containing the implementation of the predicate.
-   */
-  Body getBody() { toGenerated(result) = pred.getChild(_) }
+  override Formula getBody() { toGenerated(result) = pred.getChild(_).(Generated::Body).getChild() }
 
-  // TODO: ReturnType.
   override string getAPrimaryQlClass() { result = "ClassPredicate" }
 
   override Class getParent() { result.getAClassPredicate() = this }
+
+  override VarDecl getParameter(int i) {
+    toGenerated(result) =
+      rank[i](Generated::VarDecl decl, int index | decl = pred.getChild(index) | decl order by index)
+  }
 }
 
 /**
  * A characteristic predicate of a class.
  */
-class CharPred extends TCharPred, AstNode {
+class CharPred extends TCharPred, Predicate {
   Generated::Charpred pred;
 
   CharPred() { this = TCharPred(pred) }
 
   override string getAPrimaryQlClass() { result = "CharPred" }
 
-  /*
-   * Gets the body of the predicate.
-   * TODO: The body is just directly an Expr in the generated AST. Wait for Expr type to appear.
-   * Body getBody() { toGenerated(result) = pred.getChild(_) }MemberPredicate
-   */
+  override Formula getBody() { toGenerated(result) = pred.getBody() }
+
+  override string getName() { result = getParent().getName() }
 
   override Class getParent() { result.getCharPred() = this }
 }
@@ -114,9 +130,39 @@ class VarDecl extends TVarDecl, AstNode {
 }
 
 /**
+ * A QL module.
+ */
+class Module extends TModule, AstNode, ModuleMember {
+  Generated::Module mod;
+
+  Module() { this = TModule(mod) }
+
+  override string getAPrimaryQlClass() { result = "Module" }
+
+  /**
+   * Gets the name of the module.
+   */
+  string getName() { result = mod.getName().(Generated::ModuleName).getChild().getValue() }
+
+  /**
+   * Gets a member of the module.
+   */
+  AstNode getAMember() {
+    toGenerated(result) = mod.getChild(_).(Generated::ModuleMember).getChild(_)
+  }
+}
+
+/**
+ * Something that can be member of a module.
+ */
+class ModuleMember extends TModuleMember, AstNode {
+  override AstNode getParent() { result.(Module).getAMember() = this }
+}
+
+/**
  * A QL class.
  */
-class Class extends TClass, AstNode {
+class Class extends TClass, AstNode, ModuleMember {
   Generated::Dataclass cls;
 
   Class() { this = TClass(cls) }
@@ -132,14 +178,14 @@ class Class extends TClass, AstNode {
    * Gets the charateristic predicate for this class.
    */
   CharPred getCharPred() {
-    toGenerated(result) = cls.getChild(_).(Generated::ClassMember).getChild(0).(Generated::Charpred)
+    toGenerated(result) = cls.getChild(_).(Generated::ClassMember).getChild(_)
   }
 
   /**
    * Gets a predicate in this class.
    */
   ClassPredicate getAClassPredicate() {
-    toGenerated(result) = cls.getChild(_).(Generated::ClassMember).getChild(0)
+    toGenerated(result) = cls.getChild(_).(Generated::ClassMember).getChild(_)
   }
 
   /**
@@ -155,25 +201,95 @@ class Class extends TClass, AstNode {
    */
   VarDecl getAField() {
     toGenerated(result) =
-      cls.getChild(_).(Generated::ClassMember).getChild(0).(Generated::Field).getChild()
+      cls.getChild(_).(Generated::ClassMember).getChild(_).(Generated::Field).getChild()
   }
   // TODO: extends, modifiers.
 }
 
 /**
- * The body of a predicate.
+ * A `newtype Foo` declaration.
  */
-class Body extends TBody, AstNode {
-  Generated::Body body;
+class NewType extends TNewType, ModuleMember {
+  Generated::Datatype type;
 
-  Body() { this = TBody(body) }
+  NewType() { this = TNewType(type) }
 
-  override string getAPrimaryQlClass() { result = "Body" }
-  // TODO: Children.
+  string getName() { result = type.getName().getValue() }
+
+  override string getAPrimaryQlClass() { result = "DataType" }
+
+  NewTypeBranch getABranch() { toGenerated(result) = type.getChild().getChild(_) }
+}
+
+/**
+ * A branch in a `newtype`.
+ */
+class NewTypeBranch extends TNewTypeBranch, AstNode {
+  Generated::DatatypeBranch branch;
+
+  NewTypeBranch() { this = TNewTypeBranch(branch) }
+
+  override string getAPrimaryQlClass() { result = "NewTypeBranch" }
+
+  string getName() { result = branch.getName().getValue() }
+
+  VarDecl getField(int i) {
+    toGenerated(result) =
+      rank[i](Generated::VarDecl var | var = branch.getChild(i) | var order by i)
+  }
+
+  Formula getBody() { toGenerated(result) = branch.getChild(_).(Generated::Body).getChild() }
+}
+
+/**
+ * An import statement.
+ */
+class Import extends TImport, ModuleMember {
+  Generated::ImportDirective imp;
+
+  Import() { this = TImport(imp) }
+
+  override string getAPrimaryQlClass() { result = "Import" }
+
+  /**
+   * Gets the name under which this import is imported, if such a name exists.
+   * E.g. the `Flow` in:
+   * ```
+   * import semmle.javascript.dataflow.Configuration as Flow
+   * ```
+   */
+  string importedAs() { result = imp.getChild(1).(Generated::ModuleName).getChild().getValue() }
+
+  /**
+   * Gets the `i`th selected name from the imported module.
+   * E.g. for
+   * `import foo.bar::Baz::Qux`
+   * It is true that `getSelectionName(0) = "Baz"` and `getSelectionName(1) = "Qux"`.
+   */
+  string getSelectionName(int i) {
+    result = imp.getChild(0).(Generated::ImportModuleExpr).getName(i).getValue()
+  }
+
+  /**
+   * Gets the `i`th imported module.
+   * E.g. for
+   * `import foo.bar::Baz::Qux`
+   * It is true that `getQualifiedName(0) = "foo"` and `getQualifiedName(1) = "bar"`.
+   */
+  string getQualifiedName(int i) {
+    result = imp.getChild(0).(Generated::ImportModuleExpr).getChild().getName(i).getValue()
+  }
+  // TODO: private modifier.
 }
 
 /** A formula, such as `x = 6 and y < 5`. */
-class Formula extends TFormula, AstNode { }
+class Formula extends TFormula, AstNode {
+  override AstNode getParent() {
+    result = super.getParent()
+    or
+    result.(Predicate).getBody() = this
+  }
+}
 
 /** An `and` formula, with 2 or more operands. */
 class Conjunction extends TConjunction, AstNode, Formula {

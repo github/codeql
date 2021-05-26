@@ -7,10 +7,14 @@ newtype TAstNode =
     pred.getParent() = member
   } or
   TVarDecl(Generated::VarDecl decl) or
-  TBody(Generated::Body body) or
   TClass(Generated::Dataclass dc) or
   TCharPred(Generated::Charpred pred) or
   TClassPredicate(Generated::MemberPredicate pred) or
+  TSelect(Generated::Select sel) or
+  TModule(Generated::Module mod) or
+  TNewType(Generated::Datatype dt) or
+  TNewTypeBranch(Generated::DatatypeBranch branch) or
+  TImport(Generated::ImportDirective imp) or
   TDisjunction(Generated::Disjunction disj) or
   TConjunction(Generated::Conjunction conj) or
   TComparisonFormula(Generated::CompTerm comp) or
@@ -44,11 +48,23 @@ Generated::AstNode toGenerated(AST::AstNode n) {
   or
   n = TVarDecl(result)
   or
-  n = TBody(result)
-  or
   n = TClass(result)
   or
   n = TCharPred(result)
   or
   n = TClassPredicate(result)
+  or
+  n = TSelect(result)
+  or
+  n = TModule(result)
+  or
+  n = TNewType(result)
+  or
+  n = TNewTypeBranch(result)
+  or
+  n = TImport(result)
 }
+
+class TPredicate = TCharPred or TClasslessPredicate or TClassPredicate;
+
+class TModuleMember = TClasslessPredicate or TClass or TModule or TNewType or TImport;
