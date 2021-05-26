@@ -350,11 +350,19 @@ module Generated {
   class ExprAnnotation extends @expr_annotation, AstNode {
     override string getAPrimaryQlClass() { result = "ExprAnnotation" }
 
-    override Location getLocation() { expr_annotation_def(this, _, result) }
+    override Location getLocation() { expr_annotation_def(this, _, _, _, result) }
 
-    AstNode getChild() { expr_annotation_def(this, result, _) }
+    AnnotName getAnnotArg() { expr_annotation_def(this, result, _, _, _) }
 
-    override AstNode getAFieldOrChild() { expr_annotation_def(this, result, _) }
+    AnnotName getName() { expr_annotation_def(this, _, result, _, _) }
+
+    AstNode getChild() { expr_annotation_def(this, _, _, result, _) }
+
+    override AstNode getAFieldOrChild() {
+      expr_annotation_def(this, result, _, _, _) or
+      expr_annotation_def(this, _, result, _, _) or
+      expr_annotation_def(this, _, _, result, _)
+    }
   }
 
   class False extends @token_false, Token {
