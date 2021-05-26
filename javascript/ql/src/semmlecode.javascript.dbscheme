@@ -6,7 +6,7 @@ profile_nodes(
   unique int id: @profile_node,
   string fnName: string ref,
   string scriptId: string ref,
-  int file: @file ref,
+  string file: string ref,
   int lineNumber: int ref,
   int columnNumber: int ref,
   int hitCount: int ref

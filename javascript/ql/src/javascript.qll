@@ -130,17 +130,37 @@ import semmle.javascript.linters.Linting
 import semmle.javascript.security.dataflow.RemoteFlowSources
 
 class ProfileNode extends @profile_node {
-  File getFile() { profile_nodes(this, _, _, result, _, _, _) }
+  File getFile() { profile_nodes(this, _, _, "file://" + result.getAbsolutePath(), _, _, _) }
+
+  string getFunctionName() { profile_nodes(this, result, _, _, _, _, _) }
+
+  string getFileUri() { profile_nodes(this, _, _, result, _, _, _) }
+
+  Location getLocation() {
+    profile_nodes(this, _, _, "file://" + result.getFile().getAbsolutePath(), result.getStartLine(),
+      result.getStartColumn(), _)
+  }
+
+  Function getFunction() {
+    result.getLocation() = getLocation() and
+    result.getName() = getFunctionName()
+  }
 
   ProfileNode getAChild() { profile_node_children(this, result) }
+
+  int getTicks() { profile_nodes(this, _, _, _, _, _, result) }
 
   int getTicks(int line) { position_ticks(this, line, result) }
 
   string toString() { result = "profile node" }
 }
 
-private predicate test(ProfileNode parent, File f, ProfileNode child, int line, int ticks) {
+private predicate test(ProfileNode parent, string f, ProfileNode child, int line, int ticks) {
   child = parent.getAChild() and
-  f = parent.getFile() and
+  f = parent.getFileUri() and
   ticks = child.getTicks(line)
 }
+
+private predicate test2(ProfileNode n, File f) { f = n.getFile() }
+
+private predicate test3(ProfileNode n, Location f) { f = n.getLocation() }
