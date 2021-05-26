@@ -19,6 +19,11 @@ async def test_taint(request: web.Request): # $ requestHandler
         request.path_qs, # $ tainted
         request.raw_path, # $ tainted
 
+        # dict-like for captured parts of the URL
+        request.match_info, # $ tainted
+        request.match_info["key"], # $ tainted
+        request.match_info.get("key"), # $ tainted
+
         # multidict.MultiDictProxy[str]
         # see https://multidict.readthedocs.io/en/stable/multidict.html#multidict.MultiDictProxy
         # TODO: Should have a better way to capture that we in fact _do_ model this as a
@@ -121,7 +126,6 @@ async def test_taint(request: web.Request): # $ requestHandler
     ensure_not_tainted(
         request.loop,
 
-        request.match_info,
         request.app,
         request.config_dict,
     )

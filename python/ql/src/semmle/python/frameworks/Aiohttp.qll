@@ -225,7 +225,7 @@ module AiohttpWebModel {
       nodeTo.(DataFlow::AttrRead).getAttributeName() in [
           "url", "rel_url", "forwarded", "host", "remote", "path", "path_qs", "raw_path", "query",
           "headers", "transport", "cookies", "content", "_payload", "content_type", "charset",
-          "http_range", "if_modified_since", "if_unmodified_since", "if_range"
+          "http_range", "if_modified_since", "if_unmodified_since", "if_range", "match_info"
         ]
     }
   }
