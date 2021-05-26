@@ -27,7 +27,6 @@ echo "Build the QL extractor"
 
 # clone the git dependencies using "git clone" because cargo's builtin git support is rather slow
 REPO_DIR="${CARGO_HOME:-/home/vscode/.cargo}/git/db" 
-REPO_DIR_ERB="${REPO_DIR}/tree-sitter-embedded-template-4c796e3340c233b6"
 REPO_DIR_QL="${REPO_DIR}/tree-sitter-ql-52319df96d97078e"
 
 mkdir -p "${REPO_DIR}"

@@ -1,3 +1,3 @@
-name: codeql-ruby-examples
+name: codeql-ql-examples
 version: 0.0.0
-libraryPathDependencies: codeql-ruby
+libraryPathDependencies: codeql-ql
