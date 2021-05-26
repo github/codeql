@@ -828,9 +828,9 @@ fn escape_key_test() {
     assert_eq!("foo&lbrace;&rbrace;", escape_key("foo{}"));
     assert_eq!("&lbrace;&rbrace;", escape_key("{}"));
     assert_eq!("", escape_key(""));
-    assert_eq!("/path/to/foo.rb", escape_key("/path/to/foo.rb"));
+    assert_eq!("/path/to/foo.ql", escape_key("/path/to/foo.ql"));
     assert_eq!(
-        "/path/to/foo&amp;&lbrace;&rbrace;&quot;&commat;&num;.rb",
-        escape_key("/path/to/foo&{}\"@#.rb")
+        "/path/to/foo&amp;&lbrace;&rbrace;&quot;&commat;&num;.ql",
+        escape_key("/path/to/foo&{}\"@#.ql")
     );
 }
