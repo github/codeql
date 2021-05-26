@@ -57,8 +57,8 @@ module Generated {
     override string getAPrimaryQlClass() { result = "Addop" }
   }
 
-  class AggiD extends @token_aggi_d, Token {
-    override string getAPrimaryQlClass() { result = "AggiD" }
+  class AggId extends @token_agg_id, Token {
+    override string getAPrimaryQlClass() { result = "AggId" }
   }
 
   class Aggregate extends @aggregate, AstNode {
@@ -71,18 +71,18 @@ module Generated {
     override AstNode getAFieldOrChild() { aggregate_child(this, _, result) }
   }
 
-  class AnnotaRg extends @annota_rg, AstNode {
-    override string getAPrimaryQlClass() { result = "AnnotaRg" }
+  class AnnotArg extends @annot_arg, AstNode {
+    override string getAPrimaryQlClass() { result = "AnnotArg" }
 
-    override Location getLocation() { annota_rg_def(this, _, result) }
+    override Location getLocation() { annot_arg_def(this, _, result) }
 
-    AstNode getChild() { annota_rg_def(this, result, _) }
+    AstNode getChild() { annot_arg_def(this, result, _) }
 
-    override AstNode getAFieldOrChild() { annota_rg_def(this, result, _) }
+    override AstNode getAFieldOrChild() { annot_arg_def(this, result, _) }
   }
 
-  class AnnotnAme extends @token_annotn_ame, Token {
-    override string getAPrimaryQlClass() { result = "AnnotnAme" }
+  class AnnotName extends @token_annot_name, Token {
+    override string getAPrimaryQlClass() { result = "AnnotName" }
   }
 
   class Annotation extends @annotation, AstNode {
@@ -92,45 +92,45 @@ module Generated {
 
     AstNode getArgs(int i) { annotation_args(this, i, result) }
 
-    AnnotnAme getName() { annotation_def(this, result, _) }
+    AnnotName getName() { annotation_def(this, result, _) }
 
     override AstNode getAFieldOrChild() {
       annotation_args(this, _, result) or annotation_def(this, result, _)
     }
   }
 
-  class AritylesspRedicateeXpr extends @aritylessp_redicatee_xpr, AstNode {
-    override string getAPrimaryQlClass() { result = "AritylesspRedicateeXpr" }
+  class AritylessPredicateExpr extends @arityless_predicate_expr, AstNode {
+    override string getAPrimaryQlClass() { result = "AritylessPredicateExpr" }
 
-    override Location getLocation() { aritylessp_redicatee_xpr_def(this, _, result) }
+    override Location getLocation() { arityless_predicate_expr_def(this, _, result) }
 
-    LiteraliD getName() { aritylessp_redicatee_xpr_def(this, result, _) }
+    LiteralId getName() { arityless_predicate_expr_def(this, result, _) }
 
-    ModuleeXpr getChild() { aritylessp_redicatee_xpr_child(this, result) }
+    ModuleExpr getChild() { arityless_predicate_expr_child(this, result) }
 
     override AstNode getAFieldOrChild() {
-      aritylessp_redicatee_xpr_def(this, result, _) or aritylessp_redicatee_xpr_child(this, result)
+      arityless_predicate_expr_def(this, result, _) or arityless_predicate_expr_child(this, result)
     }
   }
 
-  class AseXpr extends @ase_xpr, AstNode {
-    override string getAPrimaryQlClass() { result = "AseXpr" }
+  class AsExpr extends @as_expr, AstNode {
+    override string getAPrimaryQlClass() { result = "AsExpr" }
 
-    override Location getLocation() { ase_xpr_def(this, result) }
+    override Location getLocation() { as_expr_def(this, result) }
 
-    AstNode getChild(int i) { ase_xpr_child(this, i, result) }
+    AstNode getChild(int i) { as_expr_child(this, i, result) }
 
-    override AstNode getAFieldOrChild() { ase_xpr_child(this, _, result) }
+    override AstNode getAFieldOrChild() { as_expr_child(this, _, result) }
   }
 
-  class AseXprs extends @ase_xprs, AstNode {
-    override string getAPrimaryQlClass() { result = "AseXprs" }
+  class AsExprs extends @as_exprs, AstNode {
+    override string getAPrimaryQlClass() { result = "AsExprs" }
 
-    override Location getLocation() { ase_xprs_def(this, result) }
+    override Location getLocation() { as_exprs_def(this, result) }
 
-    AseXpr getChild(int i) { ase_xprs_child(this, i, result) }
+    AsExpr getChild(int i) { as_exprs_child(this, i, result) }
 
-    override AstNode getAFieldOrChild() { ase_xprs_child(this, _, result) }
+    override AstNode getAFieldOrChild() { as_exprs_child(this, _, result) }
   }
 
   class BlockComment extends @token_block_comment, Token {
@@ -187,35 +187,35 @@ module Generated {
     override AstNode getAFieldOrChild() { charpred_child(this, _, result) }
   }
 
-  class ClassmEmber extends @classm_ember, AstNode {
-    override string getAPrimaryQlClass() { result = "ClassmEmber" }
+  class ClassMember extends @class_member, AstNode {
+    override string getAPrimaryQlClass() { result = "ClassMember" }
 
-    override Location getLocation() { classm_ember_def(this, result) }
+    override Location getLocation() { class_member_def(this, result) }
 
-    AstNode getChild(int i) { classm_ember_child(this, i, result) }
+    AstNode getChild(int i) { class_member_child(this, i, result) }
 
-    override AstNode getAFieldOrChild() { classm_ember_child(this, _, result) }
+    override AstNode getAFieldOrChild() { class_member_child(this, _, result) }
   }
 
-  class ClassnAme extends @token_classn_ame, Token {
-    override string getAPrimaryQlClass() { result = "ClassnAme" }
+  class ClassName extends @token_class_name, Token {
+    override string getAPrimaryQlClass() { result = "ClassName" }
   }
 
-  class ClasslesspRedicate extends @classlessp_redicate, AstNode {
-    override string getAPrimaryQlClass() { result = "ClasslesspRedicate" }
+  class ClasslessPredicate extends @classless_predicate, AstNode {
+    override string getAPrimaryQlClass() { result = "ClasslessPredicate" }
 
-    override Location getLocation() { classlessp_redicate_def(this, _, _, result) }
+    override Location getLocation() { classless_predicate_def(this, _, _, result) }
 
-    PredicatenAme getName() { classlessp_redicate_def(this, result, _, _) }
+    PredicateName getName() { classless_predicate_def(this, result, _, _) }
 
-    AstNode getReturntYpe() { classlessp_redicate_def(this, _, result, _) }
+    AstNode getReturnType() { classless_predicate_def(this, _, result, _) }
 
-    AstNode getChild(int i) { classlessp_redicate_child(this, i, result) }
+    AstNode getChild(int i) { classless_predicate_child(this, i, result) }
 
     override AstNode getAFieldOrChild() {
-      classlessp_redicate_def(this, result, _, _) or
-      classlessp_redicate_def(this, _, result, _) or
-      classlessp_redicate_child(this, _, result)
+      classless_predicate_def(this, result, _, _) or
+      classless_predicate_def(this, _, result, _) or
+      classless_predicate_child(this, _, result)
     }
   }
 
@@ -264,7 +264,7 @@ module Generated {
 
     override Location getLocation() { dataclass_def(this, _, result) }
 
-    ClassnAme getName() { dataclass_def(this, result, _) }
+    ClassName getName() { dataclass_def(this, result, _) }
 
     AstNode getChild(int i) { dataclass_child(this, i, result) }
 
@@ -278,37 +278,37 @@ module Generated {
 
     override Location getLocation() { datatype_def(this, _, _, result) }
 
-    ClassnAme getName() { datatype_def(this, result, _, _) }
+    ClassName getName() { datatype_def(this, result, _, _) }
 
-    DatatypebRanches getChild() { datatype_def(this, _, result, _) }
+    DatatypeBranches getChild() { datatype_def(this, _, result, _) }
 
     override AstNode getAFieldOrChild() {
       datatype_def(this, result, _, _) or datatype_def(this, _, result, _)
     }
   }
 
-  class DatatypebRanch extends @datatypeb_ranch, AstNode {
-    override string getAPrimaryQlClass() { result = "DatatypebRanch" }
+  class DatatypeBranch extends @datatype_branch, AstNode {
+    override string getAPrimaryQlClass() { result = "DatatypeBranch" }
 
-    override Location getLocation() { datatypeb_ranch_def(this, _, result) }
+    override Location getLocation() { datatype_branch_def(this, _, result) }
 
-    ClassnAme getName() { datatypeb_ranch_def(this, result, _) }
+    ClassName getName() { datatype_branch_def(this, result, _) }
 
-    AstNode getChild(int i) { datatypeb_ranch_child(this, i, result) }
+    AstNode getChild(int i) { datatype_branch_child(this, i, result) }
 
     override AstNode getAFieldOrChild() {
-      datatypeb_ranch_def(this, result, _) or datatypeb_ranch_child(this, _, result)
+      datatype_branch_def(this, result, _) or datatype_branch_child(this, _, result)
     }
   }
 
-  class DatatypebRanches extends @datatypeb_ranches, AstNode {
-    override string getAPrimaryQlClass() { result = "DatatypebRanches" }
+  class DatatypeBranches extends @datatype_branches, AstNode {
+    override string getAPrimaryQlClass() { result = "DatatypeBranches" }
 
-    override Location getLocation() { datatypeb_ranches_def(this, result) }
+    override Location getLocation() { datatype_branches_def(this, result) }
 
-    DatatypebRanch getChild(int i) { datatypeb_ranches_child(this, i, result) }
+    DatatypeBranch getChild(int i) { datatype_branches_child(this, i, result) }
 
-    override AstNode getAFieldOrChild() { datatypeb_ranches_child(this, _, result) }
+    override AstNode getAFieldOrChild() { datatype_branches_child(this, _, result) }
   }
 
   class Dbtype extends @token_dbtype, Token {
@@ -356,7 +356,7 @@ module Generated {
 
     override Location getLocation() { field_def(this, _, result) }
 
-    VardEcl getChild() { field_def(this, result, _) }
+    VarDecl getChild() { field_def(this, result, _) }
 
     override AstNode getAFieldOrChild() { field_def(this, result, _) }
   }
@@ -375,17 +375,17 @@ module Generated {
     override AstNode getAFieldOrChild() { full_aggregate_body_child(this, _, result) }
   }
 
-  class HigheroRdertErm extends @highero_rdert_erm, AstNode {
-    override string getAPrimaryQlClass() { result = "HigheroRdertErm" }
+  class HigherOrderTerm extends @higher_order_term, AstNode {
+    override string getAPrimaryQlClass() { result = "HigherOrderTerm" }
 
-    override Location getLocation() { highero_rdert_erm_def(this, _, result) }
+    override Location getLocation() { higher_order_term_def(this, _, result) }
 
-    LiteraliD getName() { highero_rdert_erm_def(this, result, _) }
+    LiteralId getName() { higher_order_term_def(this, result, _) }
 
-    AstNode getChild(int i) { highero_rdert_erm_child(this, i, result) }
+    AstNode getChild(int i) { higher_order_term_child(this, i, result) }
 
     override AstNode getAFieldOrChild() {
-      highero_rdert_erm_def(this, result, _) or highero_rdert_erm_child(this, _, result)
+      higher_order_term_def(this, result, _) or higher_order_term_child(this, _, result)
     }
   }
 
@@ -421,27 +421,27 @@ module Generated {
     }
   }
 
-  class ImportdIrective extends @importd_irective, AstNode {
-    override string getAPrimaryQlClass() { result = "ImportdIrective" }
+  class ImportDirective extends @import_directive, AstNode {
+    override string getAPrimaryQlClass() { result = "ImportDirective" }
 
-    override Location getLocation() { importd_irective_def(this, result) }
+    override Location getLocation() { import_directive_def(this, result) }
 
-    AstNode getChild(int i) { importd_irective_child(this, i, result) }
+    AstNode getChild(int i) { import_directive_child(this, i, result) }
 
-    override AstNode getAFieldOrChild() { importd_irective_child(this, _, result) }
+    override AstNode getAFieldOrChild() { import_directive_child(this, _, result) }
   }
 
-  class ImportmOduleeXpr extends @importm_odulee_xpr, AstNode {
-    override string getAPrimaryQlClass() { result = "ImportmOduleeXpr" }
+  class ImportModuleExpr extends @import_module_expr, AstNode {
+    override string getAPrimaryQlClass() { result = "ImportModuleExpr" }
 
-    override Location getLocation() { importm_odulee_xpr_def(this, _, result) }
+    override Location getLocation() { import_module_expr_def(this, _, result) }
 
-    SimpleiD getName(int i) { importm_odulee_xpr_name(this, i, result) }
+    SimpleId getName(int i) { import_module_expr_name(this, i, result) }
 
-    QualmOduleeXpr getChild() { importm_odulee_xpr_def(this, result, _) }
+    QualModuleExpr getChild() { import_module_expr_def(this, result, _) }
 
     override AstNode getAFieldOrChild() {
-      importm_odulee_xpr_name(this, _, result) or importm_odulee_xpr_def(this, result, _)
+      import_module_expr_name(this, _, result) or import_module_expr_def(this, result, _)
     }
   }
 
@@ -487,25 +487,25 @@ module Generated {
     override AstNode getAFieldOrChild() { literal_def(this, result, _) }
   }
 
-  class LiteraliD extends @token_literali_d, Token {
-    override string getAPrimaryQlClass() { result = "LiteraliD" }
+  class LiteralId extends @token_literal_id, Token {
+    override string getAPrimaryQlClass() { result = "LiteralId" }
   }
 
-  class MemberpRedicate extends @memberp_redicate, AstNode {
-    override string getAPrimaryQlClass() { result = "MemberpRedicate" }
+  class MemberPredicate extends @member_predicate, AstNode {
+    override string getAPrimaryQlClass() { result = "MemberPredicate" }
 
-    override Location getLocation() { memberp_redicate_def(this, _, _, result) }
+    override Location getLocation() { member_predicate_def(this, _, _, result) }
 
-    PredicatenAme getName() { memberp_redicate_def(this, result, _, _) }
+    PredicateName getName() { member_predicate_def(this, result, _, _) }
 
-    AstNode getReturntYpe() { memberp_redicate_def(this, _, result, _) }
+    AstNode getReturnType() { member_predicate_def(this, _, result, _) }
 
-    AstNode getChild(int i) { memberp_redicate_child(this, i, result) }
+    AstNode getChild(int i) { member_predicate_child(this, i, result) }
 
     override AstNode getAFieldOrChild() {
-      memberp_redicate_def(this, result, _, _) or
-      memberp_redicate_def(this, _, result, _) or
-      memberp_redicate_child(this, _, result)
+      member_predicate_def(this, result, _, _) or
+      member_predicate_def(this, _, result, _) or
+      member_predicate_child(this, _, result)
     }
   }
 
@@ -514,7 +514,7 @@ module Generated {
 
     override Location getLocation() { module_def(this, _, result) }
 
-    ModulenAme getName() { module_def(this, result, _) }
+    ModuleName getName() { module_def(this, result, _) }
 
     AstNode getChild(int i) { module_child(this, i, result) }
 
@@ -523,48 +523,48 @@ module Generated {
     }
   }
 
-  class ModuleaLiasbOdy extends @modulea_liasb_ody, AstNode {
-    override string getAPrimaryQlClass() { result = "ModuleaLiasbOdy" }
+  class ModuleAliasBody extends @module_alias_body, AstNode {
+    override string getAPrimaryQlClass() { result = "ModuleAliasBody" }
 
-    override Location getLocation() { modulea_liasb_ody_def(this, _, result) }
+    override Location getLocation() { module_alias_body_def(this, _, result) }
 
-    ModuleeXpr getChild() { modulea_liasb_ody_def(this, result, _) }
+    ModuleExpr getChild() { module_alias_body_def(this, result, _) }
 
-    override AstNode getAFieldOrChild() { modulea_liasb_ody_def(this, result, _) }
+    override AstNode getAFieldOrChild() { module_alias_body_def(this, result, _) }
   }
 
-  class ModuleeXpr extends @modulee_xpr, AstNode {
-    override string getAPrimaryQlClass() { result = "ModuleeXpr" }
+  class ModuleExpr extends @module_expr, AstNode {
+    override string getAPrimaryQlClass() { result = "ModuleExpr" }
 
-    override Location getLocation() { modulee_xpr_def(this, _, result) }
+    override Location getLocation() { module_expr_def(this, _, result) }
 
-    SimpleiD getName() { modulee_xpr_name(this, result) }
+    SimpleId getName() { module_expr_name(this, result) }
 
-    AstNode getChild() { modulee_xpr_def(this, result, _) }
+    AstNode getChild() { module_expr_def(this, result, _) }
 
     override AstNode getAFieldOrChild() {
-      modulee_xpr_name(this, result) or modulee_xpr_def(this, result, _)
+      module_expr_name(this, result) or module_expr_def(this, result, _)
     }
   }
 
-  class ModulemEmber extends @modulem_ember, AstNode {
-    override string getAPrimaryQlClass() { result = "ModulemEmber" }
+  class ModuleMember extends @module_member, AstNode {
+    override string getAPrimaryQlClass() { result = "ModuleMember" }
 
-    override Location getLocation() { modulem_ember_def(this, result) }
+    override Location getLocation() { module_member_def(this, result) }
 
-    AstNode getChild(int i) { modulem_ember_child(this, i, result) }
+    AstNode getChild(int i) { module_member_child(this, i, result) }
 
-    override AstNode getAFieldOrChild() { modulem_ember_child(this, _, result) }
+    override AstNode getAFieldOrChild() { module_member_child(this, _, result) }
   }
 
-  class ModulenAme extends @modulen_ame, AstNode {
-    override string getAPrimaryQlClass() { result = "ModulenAme" }
+  class ModuleName extends @module_name, AstNode {
+    override string getAPrimaryQlClass() { result = "ModuleName" }
 
-    override Location getLocation() { modulen_ame_def(this, _, result) }
+    override Location getLocation() { module_name_def(this, _, result) }
 
-    SimpleiD getChild() { modulen_ame_def(this, result, _) }
+    SimpleId getChild() { module_name_def(this, result, _) }
 
-    override AstNode getAFieldOrChild() { modulen_ame_def(this, result, _) }
+    override AstNode getAFieldOrChild() { module_name_def(this, result, _) }
   }
 
   class MulExpr extends @mul_expr, AstNode {
@@ -599,24 +599,24 @@ module Generated {
     override AstNode getAFieldOrChild() { negation_def(this, result, _) }
   }
 
-  class OrderbY extends @orderb_y, AstNode {
-    override string getAPrimaryQlClass() { result = "OrderbY" }
+  class OrderBy extends @order_by, AstNode {
+    override string getAPrimaryQlClass() { result = "OrderBy" }
 
-    override Location getLocation() { orderb_y_def(this, result) }
+    override Location getLocation() { order_by_def(this, result) }
 
-    AstNode getChild(int i) { orderb_y_child(this, i, result) }
+    AstNode getChild(int i) { order_by_child(this, i, result) }
 
-    override AstNode getAFieldOrChild() { orderb_y_child(this, _, result) }
+    override AstNode getAFieldOrChild() { order_by_child(this, _, result) }
   }
 
-  class OrderbYs extends @orderb_ys, AstNode {
-    override string getAPrimaryQlClass() { result = "OrderbYs" }
+  class OrderBys extends @order_bys, AstNode {
+    override string getAPrimaryQlClass() { result = "OrderBys" }
 
-    override Location getLocation() { orderb_ys_def(this, result) }
+    override Location getLocation() { order_bys_def(this, result) }
 
-    OrderbY getChild(int i) { orderb_ys_child(this, i, result) }
+    OrderBy getChild(int i) { order_bys_child(this, i, result) }
 
-    override AstNode getAFieldOrChild() { orderb_ys_child(this, _, result) }
+    override AstNode getAFieldOrChild() { order_bys_child(this, _, result) }
   }
 
   class ParExpr extends @par_expr, AstNode {
@@ -633,28 +633,28 @@ module Generated {
     override string getAPrimaryQlClass() { result = "Predicate" }
   }
 
-  class PredicateaLiasbOdy extends @predicatea_liasb_ody, AstNode {
-    override string getAPrimaryQlClass() { result = "PredicateaLiasbOdy" }
+  class PredicateAliasBody extends @predicate_alias_body, AstNode {
+    override string getAPrimaryQlClass() { result = "PredicateAliasBody" }
 
-    override Location getLocation() { predicatea_liasb_ody_def(this, _, result) }
+    override Location getLocation() { predicate_alias_body_def(this, _, result) }
 
-    PredicateeXpr getChild() { predicatea_liasb_ody_def(this, result, _) }
+    PredicateExpr getChild() { predicate_alias_body_def(this, result, _) }
 
-    override AstNode getAFieldOrChild() { predicatea_liasb_ody_def(this, result, _) }
+    override AstNode getAFieldOrChild() { predicate_alias_body_def(this, result, _) }
   }
 
-  class PredicateeXpr extends @predicatee_xpr, AstNode {
-    override string getAPrimaryQlClass() { result = "PredicateeXpr" }
+  class PredicateExpr extends @predicate_expr, AstNode {
+    override string getAPrimaryQlClass() { result = "PredicateExpr" }
 
-    override Location getLocation() { predicatee_xpr_def(this, result) }
+    override Location getLocation() { predicate_expr_def(this, result) }
 
-    AstNode getChild(int i) { predicatee_xpr_child(this, i, result) }
+    AstNode getChild(int i) { predicate_expr_child(this, i, result) }
 
-    override AstNode getAFieldOrChild() { predicatee_xpr_child(this, _, result) }
+    override AstNode getAFieldOrChild() { predicate_expr_child(this, _, result) }
   }
 
-  class PredicatenAme extends @token_predicaten_ame, Token {
-    override string getAPrimaryQlClass() { result = "PredicatenAme" }
+  class PredicateName extends @token_predicate_name, Token {
+    override string getAPrimaryQlClass() { result = "PredicateName" }
   }
 
   class PrefixCast extends @prefix_cast, AstNode {
@@ -667,8 +667,8 @@ module Generated {
     override AstNode getAFieldOrChild() { prefix_cast_child(this, _, result) }
   }
 
-  class PrimitivetYpe extends @token_primitivet_ype, Token {
-    override string getAPrimaryQlClass() { result = "PrimitivetYpe" }
+  class PrimitiveType extends @token_primitive_type, Token {
+    override string getAPrimaryQlClass() { result = "PrimitiveType" }
   }
 
   class Ql extends @ql, AstNode {
@@ -676,7 +676,7 @@ module Generated {
 
     override Location getLocation() { ql_def(this, result) }
 
-    ModulemEmber getChild(int i) { ql_child(this, i, result) }
+    ModuleMember getChild(int i) { ql_child(this, i, result) }
 
     override AstNode getAFieldOrChild() { ql_child(this, _, result) }
   }
@@ -685,27 +685,27 @@ module Generated {
     override string getAPrimaryQlClass() { result = "Qldoc" }
   }
 
-  class QualmOduleeXpr extends @qualm_odulee_xpr, AstNode {
-    override string getAPrimaryQlClass() { result = "QualmOduleeXpr" }
+  class QualModuleExpr extends @qual_module_expr, AstNode {
+    override string getAPrimaryQlClass() { result = "QualModuleExpr" }
 
-    override Location getLocation() { qualm_odulee_xpr_def(this, result) }
+    override Location getLocation() { qual_module_expr_def(this, result) }
 
-    SimpleiD getName(int i) { qualm_odulee_xpr_name(this, i, result) }
+    SimpleId getName(int i) { qual_module_expr_name(this, i, result) }
 
-    override AstNode getAFieldOrChild() { qualm_odulee_xpr_name(this, _, result) }
+    override AstNode getAFieldOrChild() { qual_module_expr_name(this, _, result) }
   }
 
-  class QualifiedrHs extends @qualifiedr_hs, AstNode {
-    override string getAPrimaryQlClass() { result = "QualifiedrHs" }
+  class QualifiedRhs extends @qualified_rhs, AstNode {
+    override string getAPrimaryQlClass() { result = "QualifiedRhs" }
 
-    override Location getLocation() { qualifiedr_hs_def(this, result) }
+    override Location getLocation() { qualified_rhs_def(this, result) }
 
-    PredicatenAme getName() { qualifiedr_hs_name(this, result) }
+    PredicateName getName() { qualified_rhs_name(this, result) }
 
-    AstNode getChild(int i) { qualifiedr_hs_child(this, i, result) }
+    AstNode getChild(int i) { qualified_rhs_child(this, i, result) }
 
     override AstNode getAFieldOrChild() {
-      qualifiedr_hs_name(this, result) or qualifiedr_hs_child(this, _, result)
+      qualified_rhs_name(this, result) or qualified_rhs_child(this, _, result)
     }
   }
 
@@ -771,12 +771,12 @@ module Generated {
     override AstNode getAFieldOrChild() { set_literal_child(this, _, result) }
   }
 
-  class SimpleiD extends @token_simplei_d, Token {
-    override string getAPrimaryQlClass() { result = "SimpleiD" }
+  class SimpleId extends @token_simple_id, Token {
+    override string getAPrimaryQlClass() { result = "SimpleId" }
   }
 
-  class SpecialiD extends @token_speciali_d, Token {
-    override string getAPrimaryQlClass() { result = "SpecialiD" }
+  class SpecialId extends @token_special_id, Token {
+    override string getAPrimaryQlClass() { result = "SpecialId" }
   }
 
   class SpecialCall extends @special_call, AstNode {
@@ -784,7 +784,7 @@ module Generated {
 
     override Location getLocation() { special_call_def(this, _, result) }
 
-    SpecialiD getChild() { special_call_def(this, result, _) }
+    SpecialId getChild() { special_call_def(this, result, _) }
 
     override AstNode getAFieldOrChild() { special_call_def(this, result, _) }
   }
@@ -815,38 +815,38 @@ module Generated {
     override string getAPrimaryQlClass() { result = "True" }
   }
 
-  class TypeaLiasbOdy extends @typea_liasb_ody, AstNode {
-    override string getAPrimaryQlClass() { result = "TypeaLiasbOdy" }
+  class TypeAliasBody extends @type_alias_body, AstNode {
+    override string getAPrimaryQlClass() { result = "TypeAliasBody" }
 
-    override Location getLocation() { typea_liasb_ody_def(this, _, result) }
+    override Location getLocation() { type_alias_body_def(this, _, result) }
 
-    TypeeXpr getChild() { typea_liasb_ody_def(this, result, _) }
+    TypeExpr getChild() { type_alias_body_def(this, result, _) }
 
-    override AstNode getAFieldOrChild() { typea_liasb_ody_def(this, result, _) }
+    override AstNode getAFieldOrChild() { type_alias_body_def(this, result, _) }
   }
 
-  class TypeeXpr extends @typee_xpr, AstNode {
-    override string getAPrimaryQlClass() { result = "TypeeXpr" }
+  class TypeExpr extends @type_expr, AstNode {
+    override string getAPrimaryQlClass() { result = "TypeExpr" }
 
-    override Location getLocation() { typee_xpr_def(this, result) }
+    override Location getLocation() { type_expr_def(this, result) }
 
-    ClassnAme getName() { typee_xpr_name(this, result) }
+    ClassName getName() { type_expr_name(this, result) }
 
-    AstNode getChild() { typee_xpr_child(this, result) }
+    AstNode getChild() { type_expr_child(this, result) }
 
     override AstNode getAFieldOrChild() {
-      typee_xpr_name(this, result) or typee_xpr_child(this, result)
+      type_expr_name(this, result) or type_expr_child(this, result)
     }
   }
 
-  class TypeuNionbOdy extends @typeu_nionb_ody, AstNode {
-    override string getAPrimaryQlClass() { result = "TypeuNionbOdy" }
+  class TypeUnionBody extends @type_union_body, AstNode {
+    override string getAPrimaryQlClass() { result = "TypeUnionBody" }
 
-    override Location getLocation() { typeu_nionb_ody_def(this, result) }
+    override Location getLocation() { type_union_body_def(this, result) }
 
-    TypeeXpr getChild(int i) { typeu_nionb_ody_child(this, i, result) }
+    TypeExpr getChild(int i) { type_union_body_child(this, i, result) }
 
-    override AstNode getAFieldOrChild() { typeu_nionb_ody_child(this, _, result) }
+    override AstNode getAFieldOrChild() { type_union_body_child(this, _, result) }
   }
 
   class UnaryExpr extends @unary_expr, AstNode {
@@ -877,24 +877,24 @@ module Generated {
     override AstNode getAFieldOrChild() { unqual_agg_body_child(this, _, result) }
   }
 
-  class VardEcl extends @vard_ecl, AstNode {
-    override string getAPrimaryQlClass() { result = "VardEcl" }
+  class VarDecl extends @var_decl, AstNode {
+    override string getAPrimaryQlClass() { result = "VarDecl" }
 
-    override Location getLocation() { vard_ecl_def(this, result) }
+    override Location getLocation() { var_decl_def(this, result) }
 
-    AstNode getChild(int i) { vard_ecl_child(this, i, result) }
+    AstNode getChild(int i) { var_decl_child(this, i, result) }
 
-    override AstNode getAFieldOrChild() { vard_ecl_child(this, _, result) }
+    override AstNode getAFieldOrChild() { var_decl_child(this, _, result) }
   }
 
-  class VarnAme extends @varn_ame, AstNode {
-    override string getAPrimaryQlClass() { result = "VarnAme" }
+  class VarName extends @var_name, AstNode {
+    override string getAPrimaryQlClass() { result = "VarName" }
 
-    override Location getLocation() { varn_ame_def(this, _, result) }
+    override Location getLocation() { var_name_def(this, _, result) }
 
-    SimpleiD getChild() { varn_ame_def(this, result, _) }
+    SimpleId getChild() { var_name_def(this, result, _) }
 
-    override AstNode getAFieldOrChild() { varn_ame_def(this, result, _) }
+    override AstNode getAFieldOrChild() { var_name_def(this, result, _) }
   }
 
   class Variable extends @variable, AstNode {
