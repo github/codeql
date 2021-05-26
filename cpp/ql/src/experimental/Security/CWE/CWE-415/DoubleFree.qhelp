@@ -7,7 +7,7 @@
 
 </overview>
 <recommendation>
-<p>We recommend that you exclude situations of possible double release.</p>
+<p>We recommend that you exclude situations of possible double release. For example, use the assignment NULL to a freed variable.</p>
 
 </recommendation>
 <example>
