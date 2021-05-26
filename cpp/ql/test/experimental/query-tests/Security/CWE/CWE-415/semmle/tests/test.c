@@ -46,21 +46,21 @@ void workFunction_4(char *s) {
   buf = tmpbuf;
   free(buf); // GOOD
 }
-void workFunction_5(char *s) {
+void workFunction_5(char *s, int intFlag) {
   int intSize = 10;
   char *buf;
-  int intFlag;
+
   buf = (char *) malloc(intSize);
   if(intFlag) {
     free(buf); // GOOD
   }
   free(buf); // BAD
 }
-void workFunction_6(char *s) {
+void workFunction_6(char *s, int intFlag;) {
   int intSize = 10;
   char *buf;
   char *tmpbuf;
-  int intFlag;
+
   tmpbuf = (char *) malloc(intSize);
   buf = (char *) malloc(intSize);
   if(intFlag) {
