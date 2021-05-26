@@ -176,17 +176,12 @@ call_or_unqual_agg_expr_def(
   int loc: @location ref
 );
 
-@charpred_child_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @token_class_name | @unary_expr | @variable
-
-#keyset[charpred, index]
-charpred_child(
-  int charpred: @charpred ref,
-  int index: int ref,
-  unique int child: @charpred_child_type ref
-);
+@charpred_body_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @variable
 
 charpred_def(
   unique int id: @charpred,
+  int body: @charpred_body_type ref,
+  int child: @token_class_name ref,
   int loc: @location ref
 );
 
