@@ -17,13 +17,17 @@ newtype TAstNode =
   TComparisonOp(Generated::Compop op) or
   TAddExpr(Generated::AddExpr addexp)
 
+class TFormula = TDisjunction or TConjunction or TComparisonFormula;
 
-class TBinOpExpr = TAddExpr; // Can this work?
+class TBinOpExpr = TAddExpr;
+
+class TExpr = TBinOpExpr;
 
 Generated::AstNode toGeneratedFormula(AST::AstNode n) {
   n = TConjunction(result) or
   n = TDisjunction(result) or
-  n = TComparisonFormula(result)
+  n = TComparisonFormula(result) or
+  n = TComparisonOp(result)
 }
 
 Generated::AstNode toGeneratedExpr(AST::AstNode n) { n = TAddExpr(result) }

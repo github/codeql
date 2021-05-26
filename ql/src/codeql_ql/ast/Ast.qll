@@ -173,7 +173,7 @@ class Body extends TBody, AstNode {
 }
 
 /** A formula, such as `x = 6 and y < 5`. */
-abstract class Formula extends AstNode { }
+class Formula extends TFormula, AstNode { }
 
 /** An `and` formula, with 2 or more operands. */
 class Conjunction extends TConjunction, AstNode, Formula {
@@ -202,21 +202,45 @@ class Disjunction extends TDisjunction, AstNode {
 class ComparisonOp extends TComparisonOp, AstNode {
   Generated::Compop op;
 
-  ComparisonOp() {this = TComparisonOp(op)}
+  ComparisonOp() { this = TComparisonOp(op) }
 
+  ComparisonSymbol getSymbol() { result = op.getValue() }
 
+  override string getAPrimaryQlClass() { result = "ComparisonOp" }
+}
+
+/** A comparison symbol, such as `<` or `=`. */
+class ComparisonSymbol extends string {
+  ComparisonSymbol() {
+    this = "=" or
+    this = "!=" or
+    this = "<" or
+    this = ">" or
+    this = "<=" or
+    this = ">="
+  }
 }
 
 class ComparisonFormula extends TComparisonFormula, Formula {
-  Expr getLeftOperand() {none()}
-  Expr getRightOperand() {none()}
-  Expr getAnOperand() {none()}
-  ComparisonOp getOperator() {none()}
-  //ComparisonSymbol getSymbol() {none()}
+  Generated::CompTerm comp;
+
+  ComparisonFormula() { this = TComparisonFormula(comp) }
+
+  Expr getLeftOperand() { toGenerated(result) = comp.getLeft() }
+
+  Expr getRightOperand() { toGenerated(result) = comp.getRight() }
+
+  Expr getAnOperand() { result in [getLeftOperand(), getRightOperand()] }
+
+  ComparisonOp getOperator() { toGenerated(result) = comp.getChild() }
+
+  ComparisonSymbol getSymbol() { result = this.getOperator().getSymbol() }
+
+  override string getAPrimaryQlClass() { result = "ComparisonFormula" }
 }
 
 /** An expression, such as `x+4`. */
-abstract class Expr extends AstNode {}
+class Expr extends TExpr, AstNode { }
 
 /** A function symbol, such as `+` or `*`. */
 class FunctionSymbol extends string {
@@ -224,15 +248,18 @@ class FunctionSymbol extends string {
 }
 
 /** A binary operation, such as `x+3` or `y/2` */
-abstract class BinOpExpr extends Expr {}
+class BinOpExpr extends TBinOpExpr, Expr { }
 
 class AddExpr extends TAddExpr, BinOpExpr {
   Generated::AddExpr addexpr;
 
-  AddExpr() {this = TAddExpr(addexpr)}
+  AddExpr() { this = TAddExpr(addexpr) }
+
   Expr getLeftOperand() { toGenerated(result) = addexpr.getLeft() }
+
   Expr getRightOperand() { toGenerated(result) = addexpr.getRight() }
+
   Expr getAnOperand() { result = getLeftOperand() or result = getRightOperand() }
-  
+
   FunctionSymbol getOperator() { result = addexpr.getChild().getValue() }
 }
