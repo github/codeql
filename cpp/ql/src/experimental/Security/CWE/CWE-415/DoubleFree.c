@@ -2,7 +2,8 @@
   buf = malloc(intSize);
 ...
   free(buf); 
-  buf = NULL; // GOOD
+  buf = NULL;
+  if(buf) free(buf); // GOOD
 ...
 
 ...
