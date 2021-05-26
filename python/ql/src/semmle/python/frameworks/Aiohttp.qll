@@ -197,10 +197,37 @@ module AiohttpWebModel {
         // ```
         this.getParameter() =
           max(Parameter param, int i | param = requestHandler.getArg(i) | param order by i)
-
       )
     }
 
     override string getSourceType() { result = "aiohttp.web.Request" }
+  }
+
+  /**
+   * Taint propagation for `aiohttp.web.Request`.
+   *
+   * See https://docs.aiohttp.org/en/stable/web_reference.html#request-and-base-request
+   */
+  private class AiohttpRequestAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+      // Methods
+      exists(string method_name | method_name in ["TODO"] |
+        // Method access (obj -> obj.meth)
+        none()
+        or
+        // Method call (obj.meth -> obj.meth())
+        none()
+      )
+      or
+      // Attributes
+      nodeFrom = Request::instance() and
+      nodeTo.(DataFlow::AttrRead).getObject() = nodeFrom and
+      nodeTo.(DataFlow::AttrRead).getAttributeName() in [
+          "url", "rel_url", "forwarded", "host", "remote", "path", "path_qs", "raw_path", "query",
+          "headers", "transport", "cookies", "content", "_payload", "body_exists", "has_body",
+          "content_type", "charset", "http_range", "if_modified_since", "if_unmodified_since",
+          "if_range"
+        ]
+    }
   }
 }
