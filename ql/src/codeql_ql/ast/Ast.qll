@@ -143,18 +143,26 @@ class Type extends TType, AstNode {
   /**
    * Gets the class name for the type.
    * E.g. `Node` in `DataFlow::Node`.
-   * Also gets the name for primitive types such as `string` or `int`.
+   * Also gets the name for primitive types such as `string` or `int`
+   * or db-types such as `@locateable`.
    */
   string getClassName() {
     result = type.getName().getValue()
     or
     result = type.getChild().(Generated::PrimitiveType).getValue()
+    or
+    result = type.getChild().(Generated::Dbtype).getValue()
   }
 
   /**
    * Holds if this type is a primitive such as `string` or `int`.
    */
   predicate isPrimitive() { type.getChild() instanceof Generated::PrimitiveType }
+
+  /**
+   * Holds if this type is a db-type.
+   */
+  predicate isDBType() { type.getChild() instanceof Generated::Dbtype }
 
   /**
    * Gets the module name of the type, if it exists.
@@ -237,7 +245,12 @@ class Class extends TClass, AstNode, ModuleMember {
     toGenerated(result) =
       cls.getChild(_).(Generated::ClassMember).getChild(_).(Generated::Field).getChild()
   }
-  // TODO: extends, modifiers.
+
+  /**
+   * Gets a super-type for this class.
+   * That is: a type after the `extends` keyword.
+   */
+  Type getASuperType() { toGenerated(result) = cls.getChild(_) }
 }
 
 /**
@@ -357,6 +370,30 @@ class ComparisonOp extends TComparisonOp, AstNode {
   ComparisonSymbol getSymbol() { result = op.getValue() }
 
   override string getAPrimaryQlClass() { result = "ComparisonOp" }
+}
+
+class Literal extends TLiteral, AstNode {
+  Generated::Literal lit;
+
+  Literal() { this = TLiteral(lit) }
+
+  override string getAPrimaryQlClass() { result = "??Literal??" }
+}
+
+class String extends Literal {
+  String() { lit.getChild() instanceof Generated::String }
+
+  override string getAPrimaryQlClass() { result = "String" }
+
+  string getValue() { result = lit.getChild().(Generated::String).getValue() }
+}
+
+class Integer extends Literal {
+  Integer() { lit.getChild() instanceof Generated::Integer }
+
+  override string getAPrimaryQlClass() { result = "Integer" }
+
+  int getValue() { result = lit.getChild().(Generated::Integer).getValue().toInt() }
 }
 
 /** A comparison symbol, such as `<` or `=`. */
