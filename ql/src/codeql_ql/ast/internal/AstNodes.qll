@@ -22,13 +22,14 @@ newtype TAstNode =
   TComparisonOp(Generated::Compop op) or
   TQuantifier(Generated::Quantified quant) or
   TNegation(Generated::Negation neg) or
-  TAddExpr(Generated::AddExpr addexp)
+  TAddExpr(Generated::AddExpr addexp) or
+  TLiteral(Generated::Literal lit)
 
 class TFormula = TDisjunction or TConjunction or TComparisonFormula or TQuantifier or TNegation;
 
 class TBinOpExpr = TAddExpr;
 
-class TExpr = TBinOpExpr;
+class TExpr = TBinOpExpr or TLiteral;
 
 Generated::AstNode toGeneratedFormula(AST::AstNode n) {
   n = TConjunction(result) or
@@ -70,6 +71,8 @@ Generated::AstNode toGenerated(AST::AstNode n) {
   n = TImport(result)
   or
   n = TType(result)
+  or
+  n = TLiteral(result)
 }
 
 class TPredicate = TCharPred or TClasslessPredicate or TClassPredicate;
