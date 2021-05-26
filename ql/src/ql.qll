@@ -1,3 +1,3 @@
 import codeql.Locations
 import codeql.files.FileSystem
-import codeql_ql.ast.internal.TreeSitter::Generated
+import codeql_ql.ast.Ast
