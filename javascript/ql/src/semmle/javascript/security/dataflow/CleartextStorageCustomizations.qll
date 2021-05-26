@@ -35,7 +35,7 @@ module CleartextStorage {
 
     SensitiveExprSource() {
       // storing user names or account names in plaintext isn't usually a problem
-      astNode.getClassification() != SensitiveExpr::id()
+      astNode.getClassification() != SensitiveDataClassification::id()
     }
 
     override string describe() { result = astNode.describe() }

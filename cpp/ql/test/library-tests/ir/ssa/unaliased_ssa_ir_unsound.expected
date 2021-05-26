@@ -983,13 +983,13 @@ ssa.cpp:
 #  241|     r241_2(glval<unknown>)       = FunctionAddress[g]              : 
 #  241|     v241_3(void)                 = Call[g]                         : func:r241_2, this:r241_1
 #  241|     mu241_4(unknown)             = ^CallSideEffect                 : ~m?
-#  241|     v241_5(void)                 = ^BufferReadSideEffect[-1]       : &:r241_1, ~m?
+#  241|     v241_5(void)                 = ^IndirectReadSideEffect[-1]     : &:r241_1, ~m?
 #  241|     mu241_6(Constructible)       = ^IndirectMayWriteSideEffect[-1] : &:r241_1
 #  242|     r242_1(glval<Constructible>) = VariableAddress[c]              : 
 #  242|     r242_2(glval<unknown>)       = FunctionAddress[g]              : 
 #  242|     v242_3(void)                 = Call[g]                         : func:r242_2, this:r242_1
 #  242|     mu242_4(unknown)             = ^CallSideEffect                 : ~m?
-#  242|     v242_5(void)                 = ^BufferReadSideEffect[-1]       : &:r242_1, ~m?
+#  242|     v242_5(void)                 = ^IndirectReadSideEffect[-1]     : &:r242_1, ~m?
 #  242|     mu242_6(Constructible)       = ^IndirectMayWriteSideEffect[-1] : &:r242_1
 #  243|     r243_1(glval<Constructible>) = VariableAddress[c2]             : 
 #  243|     mu243_2(Constructible)       = Uninitialized[c2]               : &:r243_1
@@ -1002,7 +1002,7 @@ ssa.cpp:
 #  244|     r244_2(glval<unknown>)       = FunctionAddress[g]              : 
 #  244|     v244_3(void)                 = Call[g]                         : func:r244_2, this:r244_1
 #  244|     mu244_4(unknown)             = ^CallSideEffect                 : ~m?
-#  244|     v244_5(void)                 = ^BufferReadSideEffect[-1]       : &:r244_1, ~m?
+#  244|     v244_5(void)                 = ^IndirectReadSideEffect[-1]     : &:r244_1, ~m?
 #  244|     mu244_6(Constructible)       = ^IndirectMayWriteSideEffect[-1] : &:r244_1
 #  245|     v245_1(void)                 = NoOp                            : 
 #  239|     v239_4(void)                 = ReturnVoid                      : 

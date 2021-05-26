@@ -7,7 +7,9 @@
       "web": "http://mine.com"
   }],
   "dependencies": {
-      "esprima": "*"
+      "esprima": "*",
+      "something": "1.2.3-alpha.beta",
+      "foo": "! garbage string we \nreally can't parse %"
   },
   "devDependencies": {
       "mocha": "1.0"

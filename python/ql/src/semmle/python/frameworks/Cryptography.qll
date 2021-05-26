@@ -83,21 +83,9 @@ private module CryptographyModel {
       result.(DataFlow::CallCfgNode).getFunction() = curveClassWithKeySize(keySize) and
       origin = result
       or
-      // Due to bad performance when using normal setup with we have inlined that code and forced a join
       exists(DataFlow::TypeTracker t2 |
-        exists(DataFlow::StepSummary summary |
-          curveClassInstanceWithKeySize_first_join(t2, keySize, origin, result, summary) and
-          t = t2.append(summary)
-        )
+        result = curveClassInstanceWithKeySize(t2, keySize, origin).track(t2, t)
       )
-    }
-
-    pragma[nomagic]
-    private predicate curveClassInstanceWithKeySize_first_join(
-      DataFlow::TypeTracker t2, int keySize, DataFlow::Node origin, DataFlow::Node res,
-      DataFlow::StepSummary summary
-    ) {
-      DataFlow::StepSummary::step(curveClassInstanceWithKeySize(t2, keySize, origin), res, summary)
     }
 
     /** Gets a reference to a predefined curve class instance with a specific key size (in bits), as well as the origin of the class. */
@@ -180,5 +168,173 @@ private module CryptographyModel {
 
     // Note: There is not really a key-size argument, since it's always specified by the curve.
     override DataFlow::Node getKeySizeArg() { none() }
+  }
+
+  /** Provides models for the `cryptography.hazmat.primitives.ciphers` package */
+  private module Ciphers {
+    /** Gets a reference to a `cryptography.hazmat.primitives.ciphers.algorithms` Class */
+    API::Node algorithmClassRef(string algorithmName) {
+      result =
+        API::moduleImport("cryptography")
+            .getMember("hazmat")
+            .getMember("primitives")
+            .getMember("ciphers")
+            .getMember("algorithms")
+            .getMember(algorithmName)
+    }
+
+    /** Gets a reference to a Cipher instance using algorithm with `algorithmName`. */
+    DataFlow::LocalSourceNode cipherInstance(DataFlow::TypeTracker t, string algorithmName) {
+      t.start() and
+      exists(DataFlow::CallCfgNode call | result = call |
+        call =
+          API::moduleImport("cryptography")
+              .getMember("hazmat")
+              .getMember("primitives")
+              .getMember("ciphers")
+              .getMember("Cipher")
+              .getACall() and
+        algorithmClassRef(algorithmName).getReturn().getAUse() in [
+            call.getArg(0), call.getArgByName("algorithm")
+          ]
+      )
+      or
+      exists(DataFlow::TypeTracker t2 | result = cipherInstance(t2, algorithmName).track(t2, t))
+    }
+
+    /** Gets a reference to a Cipher instance using algorithm with `algorithmName`. */
+    DataFlow::Node cipherInstance(string algorithmName) {
+      cipherInstance(DataFlow::TypeTracker::end(), algorithmName).flowsTo(result)
+    }
+
+    /** Gets a reference to the encryptor of a Cipher instance using algorithm with `algorithmName`. */
+    DataFlow::LocalSourceNode cipherEncryptor(DataFlow::TypeTracker t, string algorithmName) {
+      t.start() and
+      exists(DataFlow::AttrRead attr |
+        result.(DataFlow::CallCfgNode).getFunction() = attr and
+        attr.getAttributeName() = "encryptor" and
+        attr.getObject() = cipherInstance(algorithmName)
+      )
+      or
+      exists(DataFlow::TypeTracker t2 | result = cipherEncryptor(t2, algorithmName).track(t2, t))
+    }
+
+    /**
+     * Gets a reference to the encryptor of a Cipher instance using algorithm with `algorithmName`.
+     *
+     * You obtain an encryptor by using the `encryptor()` method on a Cipher instance.
+     */
+    DataFlow::Node cipherEncryptor(string algorithmName) {
+      cipherEncryptor(DataFlow::TypeTracker::end(), algorithmName).flowsTo(result)
+    }
+
+    /** Gets a reference to the dncryptor of a Cipher instance using algorithm with `algorithmName`. */
+    DataFlow::LocalSourceNode cipherDecryptor(DataFlow::TypeTracker t, string algorithmName) {
+      t.start() and
+      exists(DataFlow::AttrRead attr |
+        result.(DataFlow::CallCfgNode).getFunction() = attr and
+        attr.getAttributeName() = "decryptor" and
+        attr.getObject() = cipherInstance(algorithmName)
+      )
+      or
+      exists(DataFlow::TypeTracker t2 | result = cipherDecryptor(t2, algorithmName).track(t2, t))
+    }
+
+    /**
+     * Gets a reference to the decryptor of a Cipher instance using algorithm with `algorithmName`.
+     *
+     * You obtain an decryptor by using the `decryptor()` method on a Cipher instance.
+     */
+    DataFlow::Node cipherDecryptor(string algorithmName) {
+      cipherDecryptor(DataFlow::TypeTracker::end(), algorithmName).flowsTo(result)
+    }
+
+    /**
+     * An encrypt or decrypt operation from `cryptography.hazmat.primitives.ciphers`.
+     */
+    class CryptographyGenericCipherOperation extends Cryptography::CryptographicOperation::Range,
+      DataFlow::CallCfgNode {
+      string algorithmName;
+
+      CryptographyGenericCipherOperation() {
+        exists(DataFlow::AttrRead attr |
+          this.getFunction() = attr and
+          attr.getAttributeName() = ["update", "update_into"] and
+          (
+            attr.getObject() = cipherEncryptor(algorithmName)
+            or
+            attr.getObject() = cipherDecryptor(algorithmName)
+          )
+        )
+      }
+
+      override Cryptography::CryptographicAlgorithm getAlgorithm() {
+        result.matchesName(algorithmName)
+      }
+
+      override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("data")] }
+    }
+  }
+
+  /** Provides models for the `cryptography.hazmat.primitives.hashes` package */
+  private module Hashes {
+    /**
+     * Gets a reference to a `cryptography.hazmat.primitives.hashes` class, representing
+     * a hashing algorithm.
+     */
+    API::Node algorithmClassRef(string algorithmName) {
+      result =
+        API::moduleImport("cryptography")
+            .getMember("hazmat")
+            .getMember("primitives")
+            .getMember("hashes")
+            .getMember(algorithmName)
+    }
+
+    /** Gets a reference to a Hash instance using algorithm with `algorithmName`. */
+    private DataFlow::LocalSourceNode hashInstance(DataFlow::TypeTracker t, string algorithmName) {
+      t.start() and
+      exists(DataFlow::CallCfgNode call | result = call |
+        call =
+          API::moduleImport("cryptography")
+              .getMember("hazmat")
+              .getMember("primitives")
+              .getMember("hashes")
+              .getMember("Hash")
+              .getACall() and
+        algorithmClassRef(algorithmName).getReturn().getAUse() in [
+            call.getArg(0), call.getArgByName("algorithm")
+          ]
+      )
+      or
+      exists(DataFlow::TypeTracker t2 | result = hashInstance(t2, algorithmName).track(t2, t))
+    }
+
+    /** Gets a reference to a Hash instance using algorithm with `algorithmName`. */
+    DataFlow::Node hashInstance(string algorithmName) {
+      hashInstance(DataFlow::TypeTracker::end(), algorithmName).flowsTo(result)
+    }
+
+    /**
+     * An hashing operation from `cryptography.hazmat.primitives.hashes`.
+     */
+    class CryptographyGenericHashOperation extends Cryptography::CryptographicOperation::Range,
+      DataFlow::CallCfgNode {
+      string algorithmName;
+
+      CryptographyGenericHashOperation() {
+        exists(DataFlow::AttrRead attr |
+          this.getFunction() = attr and
+          attr.getAttributeName() = "update" and
+          attr.getObject() = hashInstance(algorithmName)
+        )
+      }
+
+      override Cryptography::CryptographicAlgorithm getAlgorithm() {
+        result.matchesName(algorithmName)
+      }
+
+      override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("data")] }
+    }
   }
 }

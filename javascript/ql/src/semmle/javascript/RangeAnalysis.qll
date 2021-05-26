@@ -606,10 +606,10 @@ module RangeAnalysis {
         cfg2BB = cfg2.getBasicBlock() and
         cfg2RBB = cfg2BB.(ReachableBasicBlock) and
         (
-          cfg1RBB.strictlyDominates(cfg2BB) and
+          cfg2BB.getImmediateDominator+() = cfg1RBB and
           cfg = cfg2
           or
-          cfg2RBB.strictlyDominates(cfg1RBB) and
+          cfg1BB.getImmediateDominator+() = cfg2BB and
           cfg = cfg1
         )
       )
@@ -681,7 +681,7 @@ module RangeAnalysis {
       midBB = midcfg.getBasicBlock() and
       midRBB = midBB.(ReachableBasicBlock) and
       cfgBB = cfg.getBasicBlock() and
-      midRBB.strictlyDominates(cfgBB)
+      cfgBB.getImmediateDominator+() = midRBB
     )
   }
 

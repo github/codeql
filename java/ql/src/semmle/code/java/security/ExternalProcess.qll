@@ -1,7 +1,20 @@
 /* Definitions related to external processes. */
 import semmle.code.java.Member
-import semmle.code.java.JDK
-import semmle.code.java.frameworks.apache.Exec
+
+private module Instances {
+  private import semmle.code.java.JDK
+  private import semmle.code.java.frameworks.apache.Exec
+}
+
+/**
+ * A callable that executes a command.
+ */
+abstract class ExecCallable extends Callable {
+  /**
+   * Gets the index of an argument that will be part of the command that is executed.
+   */
+  abstract int getAnExecutedArgument();
+}
 
 /**
  * An expression used as an argument to a call that executes an external command. For calls to
@@ -10,21 +23,10 @@ import semmle.code.java.frameworks.apache.Exec
  */
 class ArgumentToExec extends Expr {
   ArgumentToExec() {
-    exists(MethodAccess execCall, Method method |
-      execCall.getArgument(0) = this and
-      method = execCall.getMethod() and
-      (
-        method instanceof MethodRuntimeExec or
-        method instanceof MethodProcessBuilderCommand or
-        method instanceof MethodCommandLineParse or
-        method instanceof MethodCommandLineAddArguments
-      )
-    )
-    or
-    exists(ConstructorCall expr, Constructor cons |
-      expr.getConstructor() = cons and
-      cons.getDeclaringType().hasQualifiedName("java.lang", "ProcessBuilder") and
-      expr.getArgument(0) = this
+    exists(Call execCall, ExecCallable execCallable, int i |
+      execCall.getArgument(pragma[only_bind_into](i)) = this and
+      execCallable = execCall.getCallee() and
+      i = execCallable.getAnExecutedArgument()
     )
   }
 }

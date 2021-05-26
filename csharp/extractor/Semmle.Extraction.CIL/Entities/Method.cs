@@ -37,17 +37,15 @@ namespace Semmle.Extraction.CIL.Entities
         public virtual IList<LocalVariable>? LocalVariables => throw new NotImplementedException();
         public IList<Parameter>? Parameters { get; protected set; }
 
-        public override void WriteId(TextWriter trapFile) => WriteMethodId(trapFile, DeclaringType, NameLabel);
-
         public abstract string NameLabel { get; }
 
-        protected internal void WriteMethodId(TextWriter trapFile, Type parent, string methodName)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             signature.ReturnType.WriteId(trapFile, this);
             trapFile.Write(' ');
-            parent.WriteId(trapFile);
+            DeclaringType.WriteId(trapFile);
             trapFile.Write('.');
-            trapFile.Write(methodName);
+            trapFile.Write(NameLabel);
 
             if (signature.GenericParameterCount > 0)
             {
@@ -61,10 +59,8 @@ namespace Semmle.Extraction.CIL.Entities
                 trapFile.WriteSeparator(",", ref index);
                 param.WriteId(trapFile, this);
             }
-            trapFile.Write(')');
+            trapFile.Write(");cil-method");
         }
-
-        public override string IdSuffix => ";cil-method";
 
         protected IEnumerable<IExtractionProduct> PopulateFlags
         {

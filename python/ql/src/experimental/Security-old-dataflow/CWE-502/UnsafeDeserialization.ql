@@ -2,6 +2,8 @@
  * @name OLD QUERY: Deserializing untrusted input
  * @description Deserializing user-controlled data may allow attackers to execute arbitrary code.
  * @kind path-problem
+ * @id py/old/unsafe-deserialization
+ * @problem.severity error
  */
 
 import python

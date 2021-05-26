@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>
+It is dangerous to load Dex libraries from shared world-writable storage spaces. A malicious actor can replace a dex file with a maliciously crafted file 
+which when loaded by the app can lead to code execution. 
+</p>
+  </overview>
+
+  <recommendation>
+    <p>
+      Loading a file from private storage instead of a world-writable one can prevent this issue,
+      because the attacker cannot access files stored there. 
+    </p>
+  </recommendation>
+
+  <example>
+    <p>
+      The following example loads a Dex file from a shared world-writable location. in this case, 
+      since the `/sdcard` directory is on external storage, anyone can read/write to the location. 
+      bypassing all Android security policies. Hence, this is insecure.
+    </p>
+    <sample src="InsecureDexLoadingBad.java" />
+
+    <p>
+    The next example loads a Dex file stored inside the app's private storage. 
+    This is not exploitable as nobody else except the app can access the data stored there.
+    </p>
+    <sample src="InsecureDexLoadingGood.java" />
+  </example>
+
+  <references>
+    <li>
+      Android Documentation:
+      <a href="https://developer.android.com/training/data-storage/">Data and file storage overview</a>.
+    </li>
+    <li>
+      Android Documentation:
+      <a href="https://developer.android.com/reference/dalvik/system/DexClassLoader">DexClassLoader</a>.
+    </li>
+  </references>
+</qhelp>

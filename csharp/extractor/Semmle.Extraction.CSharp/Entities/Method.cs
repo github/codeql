@@ -127,7 +127,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <summary>
         ///  Factored out to share logic between `Method` and `UserOperator`.
         /// </summary>
-        private static void BuildMethodId(Method m, TextWriter trapFile)
+        private static void BuildMethodId(Method m, EscapingTextWriter trapFile)
         {
             m.Symbol.ReturnType.BuildOrWriteId(m.Context, trapFile, m.Symbol);
             trapFile.Write(" ");
@@ -153,7 +153,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     // Type arguments with different nullability can result in
                     // a constructed method with different nullability of its parameters and return type,
                     // so we need to create a distinct database entity for it.
-                    trapFile.BuildList(",", m.Symbol.GetAnnotatedTypeArguments(), (ta, tb0) => { ta.Symbol.BuildOrWriteId(m.Context, tb0, m.Symbol); trapFile.Write((int)ta.Nullability); });
+                    trapFile.BuildList(",", m.Symbol.GetAnnotatedTypeArguments(), ta => { ta.Symbol.BuildOrWriteId(m.Context, trapFile, m.Symbol); trapFile.Write((int)ta.Nullability); });
                     trapFile.Write('>');
                 }
             }
@@ -182,12 +182,12 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             BuildMethodId(this, trapFile);
         }
 
-        protected static void AddParametersToId(Context cx, TextWriter trapFile, IMethodSymbol method)
+        protected static void AddParametersToId(Context cx, EscapingTextWriter trapFile, IMethodSymbol method)
         {
             trapFile.Write('(');
             var index = 0;
@@ -222,7 +222,7 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.Write(')');
         }
 
-        public static void AddExplicitInterfaceQualifierToId(Context cx, System.IO.TextWriter trapFile, IEnumerable<ISymbol> explicitInterfaceImplementations)
+        public static void AddExplicitInterfaceQualifierToId(Context cx, EscapingTextWriter trapFile, IEnumerable<ISymbol> explicitInterfaceImplementations)
         {
             if (explicitInterfaceImplementations.Any())
                 trapFile.AppendList(",", explicitInterfaceImplementations.Select(impl => cx.CreateEntity(impl.ContainingType)));

@@ -21,11 +21,9 @@ module LodashUnderscore {
     string name;
 
     DefaultMember() {
-      this = DataFlow::moduleMember("underscore", name)
+      this = DataFlow::moduleMember(["underscore", "lodash", "lodash-es"], name)
       or
-      this = DataFlow::moduleMember("lodash", name)
-      or
-      this = DataFlow::moduleImport("lodash/" + name)
+      this = DataFlow::moduleImport(["lodash/", "lodash-es/"] + name)
       or
       this = DataFlow::moduleImport("lodash." + name.toLowerCase()) and isLodashMember(name)
       or

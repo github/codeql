@@ -29,4 +29,6 @@ class Package extends Element, Annotatable, @package {
    * since packages do not have locations.
    */
   string getURL() { result = "file://:0:0:0:0" }
+
+  override string getAPrimaryQlClass() { result = "Package" }
 }

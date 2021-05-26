@@ -4,6 +4,7 @@
 var sqlite = require('sqlite3');
 
 var db = new sqlite.Database(":memory:");
-db.run("UPDATE tbl SET name = ? WHERE id = ?", "bar", 2);
+db.run("UPDATE tbl SET name = ? WHERE id = ?", "bar", 2)
+  .run("UPDATE tbl SET name = ? WHERE id = ?", "foo", 3);
 
 exports.db = db;

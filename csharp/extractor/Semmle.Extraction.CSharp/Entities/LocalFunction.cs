@@ -10,12 +10,12 @@ namespace Semmle.Extraction.CSharp.Entities
         {
         }
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             throw new InvalidOperationException();
         }
 
-        public override void WriteQuotedId(TextWriter trapFile)
+        public sealed override void WriteQuotedId(EscapingTextWriter trapFile)
         {
             trapFile.Write('*');
         }

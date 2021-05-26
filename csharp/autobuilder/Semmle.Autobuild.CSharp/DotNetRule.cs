@@ -36,7 +36,7 @@ namespace Semmle.Autobuild.CSharp
                 builder.Log(Severity.Info, "Attempting to build using .NET Core");
             }
 
-            return WithDotNet(builder, (dotNetPath, environment, compatibleClr) =>
+            return WithDotNet(builder, (dotNetPath, environment) =>
                 {
                     var ret = GetInfoCommand(builder.Actions, dotNetPath, environment);
                     foreach (var projectOrSolution in builder.ProjectsOrSolutionsToBuild)
@@ -49,7 +49,7 @@ namespace Semmle.Autobuild.CSharp
                         restoreCommand.QuoteArgument(projectOrSolution.FullPath);
                         var restore = restoreCommand.Script;
 
-                        var build = GetBuildScript(builder, dotNetPath, environment, compatibleClr, projectOrSolution.FullPath);
+                        var build = GetBuildScript(builder, dotNetPath, environment, projectOrSolution.FullPath);
 
                         ret &= BuildScript.Try(clean) & BuildScript.Try(restore) & build;
                     }
@@ -57,7 +57,7 @@ namespace Semmle.Autobuild.CSharp
                 });
         }
 
-        private static BuildScript WithDotNet(Autobuilder builder, Func<string?, IDictionary<string, string>?, bool, BuildScript> f)
+        private static BuildScript WithDotNet(Autobuilder builder, Func<string?, IDictionary<string, string>?, BuildScript> f)
         {
             var installDir = builder.Actions.PathCombine(builder.Options.RootDirectory, ".dotnet");
             var installScript = DownloadDotNet(builder, installDir);
@@ -81,35 +81,10 @@ namespace Semmle.Autobuild.CSharp
                     env = null;
                 }
 
-                // The CLR tracer is always compatible on Windows
-                if (builder.Actions.IsWindows())
-                    return f(installDir, env, true);
-
-                // The CLR tracer is only compatible on .NET Core >= 3 on Linux and macOS (see
-                // https://github.com/dotnet/coreclr/issues/19622)
-                return BuildScript.Bind(GetInstalledRuntimesScript(builder.Actions, installDir, env), (runtimes, runtimesRet) =>
-                {
-                    var compatibleClr = false;
-                    if (runtimesRet == 0)
-                    {
-                        var minimumVersion = new Version(3, 0);
-                        var regex = new Regex(@"Microsoft\.NETCore\.App (\d\.\d\.\d)");
-                        compatibleClr = runtimes
-                            .Select(runtime => regex.Match(runtime))
-                            .Where(m => m.Success)
-                            .Select(m => m.Groups[1].Value)
-                            .Any(m => Version.TryParse(m, out var v) && v >= minimumVersion);
-                    }
-
-                    if (!compatibleClr)
-                    {
-                        if (env is null)
-                            env = new Dictionary<string, string>();
-                        env.Add("UseSharedCompilation", "false");
-                    }
-
-                    return f(installDir, env, compatibleClr);
-                });
+                if (env is null)
+                    env = new Dictionary<string, string>();
+                env.Add("UseSharedCompilation", "false");
+                return f(installDir, env);
             });
         }
 
@@ -122,7 +97,7 @@ namespace Semmle.Autobuild.CSharp
         /// are needed).
         /// </summary>
         public static BuildScript WithDotNet(Autobuilder builder, Func<IDictionary<string, string>?, BuildScript> f)
-            => WithDotNet(builder, (_1, env, _2) => f(env));
+            => WithDotNet(builder, (_1, env) => f(env));
 
         /// <summary>
         /// Returns a script for downloading relevant versions of the
@@ -179,53 +154,20 @@ namespace Semmle.Autobuild.CSharp
 
                     if (builder.Actions.IsWindows())
                     {
-                        var psScript = @"param([string]$Version, [string]$InstallDir)
 
-add-type @""
-using System.Net;
-using System.Security.Cryptography.X509Certificates;
-public class TrustAllCertsPolicy : ICertificatePolicy
-{
-    public bool CheckValidationResult(ServicePoint srvPoint, X509Certificate certificate, WebRequest request, int certificateProblem)
-    {
-        return true;
-    }
-}
-""@
-$AllProtocols = [System.Net.SecurityProtocolType]'Ssl3,Tls,Tls11,Tls12'
-[System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
-[System.Net.ServicePointManager]::CertificatePolicy = New-Object TrustAllCertsPolicy
-$Script = Invoke-WebRequest -useb 'https://dot.net/v1/dotnet-install.ps1'
+                        var psCommand = $"[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://dot.net/v1/dotnet-install.ps1'))) -Version {version} -InstallDir {path}";
 
-$arguments = @{
-  Channel = 'release'
-  Version = $Version
-  InstallDir = $InstallDir
-}
-
-$ScriptBlock = [scriptblock]::create("".{$($Script)} $(&{$args} @arguments)"")
-
-Invoke-Command -ScriptBlock $ScriptBlock";
-                        var psScriptFile = builder.Actions.PathCombine(builder.Options.RootDirectory, "install-dotnet.ps1");
-                        builder.Actions.WriteAllText(psScriptFile, psScript);
-
-                        var install = new CommandBuilder(builder.Actions).
-                            RunCommand("powershell").
+                        BuildScript GetInstall(string pwsh) =>
+                            new CommandBuilder(builder.Actions).
+                            RunCommand(pwsh).
                             Argument("-NoProfile").
                             Argument("-ExecutionPolicy").
                             Argument("unrestricted").
-                            Argument("-file").
-                            Argument(psScriptFile).
-                            Argument("-Version").
-                            Argument(version).
-                            Argument("-InstallDir").
-                            Argument(path);
+                            Argument("-Command").
+                            Argument("\"" + psCommand + "\"").
+                            Script;
 
-                        var removeScript = new CommandBuilder(builder.Actions).
-                            RunCommand("del").
-                            Argument(psScriptFile);
-
-                        return install.Script & BuildScript.Try(removeScript.Script);
+                        return GetInstall("pwsh") | GetInstall("powershell");
                     }
                     else
                     {
@@ -292,34 +234,17 @@ Invoke-Command -ScriptBlock $ScriptBlock";
             return restore;
         }
 
-        private static BuildScript GetInstalledRuntimesScript(IBuildActions actions, string? dotNetPath, IDictionary<string, string>? environment)
-        {
-            var listSdks = new CommandBuilder(actions, environment: environment, silent: true).
-                RunCommand(DotNetCommand(actions, dotNetPath)).
-                Argument("--list-runtimes");
-            return listSdks.Script;
-        }
-
         /// <summary>
         /// Gets the `dotnet build` script.
-        ///
-        /// The CLR tracer only works on .NET Core >= 3 on Linux and macOS (see
-        /// https://github.com/dotnet/coreclr/issues/19622), so in case we are
-        /// running on an older .NET Core, we disable shared compilation (and
-        /// hence the need for CLR tracing), by adding a
-        /// `/p:UseSharedCompilation=false` argument.
         /// </summary>
-        private static BuildScript GetBuildScript(Autobuilder builder, string? dotNetPath, IDictionary<string, string>? environment, bool compatibleClr, string projOrSln)
+        private static BuildScript GetBuildScript(Autobuilder builder, string? dotNetPath, IDictionary<string, string>? environment, string projOrSln)
         {
             var build = new CommandBuilder(builder.Actions, null, environment);
             var script = builder.MaybeIndex(build, DotNetCommand(builder.Actions, dotNetPath)).
                 Argument("build").
                 Argument("--no-incremental");
 
-            return compatibleClr ?
-                script.Argument(builder.Options.DotNetArguments).
-                    QuoteArgument(projOrSln).
-                    Script :
+            return
                 script.Argument("/p:UseSharedCompilation=false").
                     Argument(builder.Options.DotNetArguments).
                     QuoteArgument(projOrSln).

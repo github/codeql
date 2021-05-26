@@ -18,9 +18,10 @@
 | NoDestructor.cpp:23:3:23:20 | ... = ... | Resource n is acquired by class MyClass5 but not released anywhere in this class. |
 | PlacementNew.cpp:36:3:36:36 | ... = ... | Resource p1 is acquired by class MyTestForPlacementNew but not released anywhere in this class. |
 | SelfRegistering.cpp:25:3:25:24 | ... = ... | Resource side is acquired by class MyOwner but not released anywhere in this class. |
-| Variants.cpp:25:3:25:13 | ... = ... | Resource f is acquired by class MyClass4 but not released anywhere in this class. |
-| Variants.cpp:65:3:65:17 | ... = ... | Resource a is acquired by class MyClass6 but not released anywhere in this class. |
-| Variants.cpp:66:3:66:36 | ... = ... | Resource b is acquired by class MyClass6 but not released anywhere in this class. |
-| Variants.cpp:67:3:67:41 | ... = ... | Resource c is acquired by class MyClass6 but not released anywhere in this class. |
+| Variants.cpp:26:3:26:13 | ... = ... | Resource f is acquired by class MyClass4 but not released anywhere in this class. |
+| Variants.cpp:69:3:69:17 | ... = ... | Resource a is acquired by class MyClass6 but not released anywhere in this class. |
+| Variants.cpp:70:3:70:36 | ... = ... | Resource b is acquired by class MyClass6 but not released anywhere in this class. |
+| Variants.cpp:71:3:71:41 | ... = ... | Resource c is acquired by class MyClass6 but not released anywhere in this class. |
+| Variants.cpp:72:3:72:22 | ... = ... | Resource d is acquired by class MyClass6 but not released anywhere in this class. |
 | Wrapped.cpp:46:3:46:22 | ... = ... | Resource ptr2 is acquired by class Wrapped2 but not released anywhere in this class. |
 | Wrapped.cpp:59:3:59:22 | ... = ... | Resource ptr4 is acquired by class Wrapped2 but not released anywhere in this class. |

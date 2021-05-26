@@ -341,3 +341,33 @@ class PublicKeyGenerationTest extends InlineExpectationsTest {
     )
   }
 }
+
+class CryptographicOperationTest extends InlineExpectationsTest {
+  CryptographicOperationTest() { this = "CryptographicOperationTest" }
+
+  override string getARelevantTag() {
+    result in [
+        "CryptographicOperation", "CryptographicOperationInput", "CryptographicOperationAlgorithm"
+      ]
+  }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(Cryptography::CryptographicOperation cryptoOperation |
+      location = cryptoOperation.getLocation() and
+      (
+        element = cryptoOperation.toString() and
+        value = "" and
+        tag = "CryptographicOperation"
+        or
+        element = cryptoOperation.toString() and
+        value = value_from_expr(cryptoOperation.getAnInput().asExpr()) and
+        tag = "CryptographicOperationInput"
+        or
+        element = cryptoOperation.toString() and
+        value = cryptoOperation.getAlgorithm().getName() and
+        tag = "CryptographicOperationAlgorithm"
+      )
+    )
+  }
+}

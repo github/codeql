@@ -34,7 +34,12 @@ module Shared {
   class MetacharEscapeSanitizer extends Sanitizer, StringReplaceCall {
     MetacharEscapeSanitizer() {
       isGlobal() and
-      RegExp::alwaysMatchesMetaCharacter(getRegExp().getRoot(), ["<", "'", "\""])
+      (
+        RegExp::alwaysMatchesMetaCharacter(getRegExp().getRoot(), ["<", "'", "\""])
+        or
+        // or it's like a wild-card.
+        RegExp::isWildcardLike(getRegExp().getRoot())
+      )
     }
   }
 
@@ -211,7 +216,7 @@ module DomBasedXss {
       exists(JQuery::MethodCall call |
         call.interpretsArgumentAsHtml(this) and
         call.interpretsArgumentAsSelector(this) and
-        analyze().getAType() = TTString()
+        pragma[only_bind_out](analyze()).getAType() = TTString()
       )
     }
 

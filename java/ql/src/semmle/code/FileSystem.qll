@@ -146,9 +146,11 @@ class Container extends @container, Top {
   }
 
   /**
-   * Gets a textual representation of the path of this container.
+   * Gets a textual representation of this container.
    *
-   * This is the absolute path of the container.
+   * The default implementation gets the absolute path to the container, but subclasses may override
+   * to provide a different result. To get the absolute path of any `Container`, call
+   * `Container.getAbsolutePath()` directly.
    */
   override string toString() { result = getAbsolutePath() }
 }
@@ -159,6 +161,8 @@ class Folder extends Container, @folder {
 
   /** Gets the URL of this folder. */
   override string getURL() { result = "folder://" + getAbsolutePath() }
+
+  override string getAPrimaryQlClass() { result = "Folder" }
 }
 
 /**
@@ -171,6 +175,8 @@ class File extends Container, @file {
 
   /** Gets the URL of this file. */
   override string getURL() { result = "file://" + this.getAbsolutePath() + ":0:0:0:0" }
+
+  override string getAPrimaryQlClass() { result = "File" }
 }
 
 /**
@@ -204,4 +210,6 @@ class JarFile extends File {
   string getManifestEntryAttribute(string entry, string key) {
     jarManifestEntries(this, entry, key, result)
   }
+
+  override string getAPrimaryQlClass() { result = "JarFile" }
 }

@@ -21,7 +21,7 @@ public class ParsedProject {
 
   /** Absolute paths to the files included in this project. */
   public Set<File> getOwnFiles() {
-    return allFiles;
+    return ownFiles;
   }
 
   /** Absolute paths to the files included in or referenced by this project. */

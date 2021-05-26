@@ -1,0 +1,77 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+<overview>
+	<p>
+		When a library function dynamically constructs HTML in a potentially unsafe
+		way, then it's important to document to clients of the library that the function 
+		should only be used with trusted inputs. 
+
+		If the function is not documented as being potentially unsafe, then a client
+		may inadvertently use inputs containing unsafe HTML fragments, and thereby leave
+		the client vulnerable to cross-site scripting attacks.
+	</p>
+</overview>
+<recommendation>
+
+	<p>
+		Document all library functions that can lead to cross-site scripting 
+		attacks, and guard against unsafe inputs where dynamic HTML
+		construction is not intended.
+	</p>
+</recommendation>
+<example>
+
+	<p>
+		The following example has a library function that renders a boldface name
+		by writing to the <code>innerHTML</code> property of an element.
+	</p>
+
+	<sample src="examples/unsafe-html-construction.js" />
+
+	<p>
+		This library function, however, does not escape unsafe HTML, and a client
+		that calls the function with user-supplied input may be vulnerable to
+		cross-site scripting attacks.
+	</p>
+
+	<p>
+		The library could either document that this function should not be used
+		with unsafe inputs, or use safe APIs such as <code>innerText</code>.
+	</p>
+
+	<sample src="examples/unsafe-html-construction_safe.js" />
+	
+	<p>
+		Alternatively, a HTML sanitizer can be used to remove unsafe content.
+	</p>
+
+	<sample src="examples/unsafe-html-construction_sanitizer.js" />
+
+</example>
+<references>
+	<li>
+		OWASP:
+		<a href="https://www.owasp.org/index.php/DOM_based_XSS_Prevention_Cheat_Sheet">DOM based
+		XSS Prevention Cheat Sheet</a>.
+	</li>
+	<li>
+		OWASP:
+		<a href="https://www.owasp.org/index.php/XSS_%28Cross_Site_Scripting%29_Prevention_Cheat_Sheet">XSS
+		(Cross Site Scripting) Prevention Cheat Sheet</a>.
+	</li>
+	<li>
+		OWASP
+		<a href="https://www.owasp.org/index.php/DOM_Based_XSS">DOM Based XSS</a>.
+	</li>
+	<li>
+		OWASP
+		<a href="https://www.owasp.org/index.php/Types_of_Cross-Site_Scripting">Types of Cross-Site
+		Scripting</a>.
+	</li>
+	<li>
+		Wikipedia: <a href="http://en.wikipedia.org/wiki/Cross-site_scripting">Cross-site scripting</a>.
+	</li>
+</references>
+</qhelp>

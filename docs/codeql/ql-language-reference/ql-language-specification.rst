@@ -1116,8 +1116,6 @@ A super expression may only occur in a QL program as the receiver expression for
 
 If a super expression includes a ``type``, then that type must be a class that the enclosing class inherits from.
 
-If the super expression does not include a type, then the enclosing class must have a single declared base type, and that base type must be a class.
-
 The value of a super expression is the same as the value of ``this`` in the named tuple.
 
 Casts
@@ -1169,7 +1167,12 @@ A valid call with results *resolves* to a set of predicates. The ways a call can
 
 -  If the call has no receiver and the predicate name is a selection identifier, then the qualifier is resolved as a module (see "`Module resolution <#module-resolution>`__"). The identifier is then resolved in the exported predicate environment of the qualifier module.
 
--  If the call has a super expression as the receiver, then it resolves to a member predicate in a class the enclosing class inherits from. If the super expression is unqualified, then the super-class is the single class that the current class inherits from. If there is not exactly one such class, then the program is invalid. Otherwise the super-class is the class named by the qualifier of the super expression. The predicate is resolved by looking up its name and arity in the exported predicate environment of the super-class. 
+-  If the call has a super expression as the receiver, then it resolves to a member predicate in a class that the enclosing class inherits from:
+    -  If the super expression is unqualified and there is a single class that the current class inherits from, then the super-class is that class. 
+    -  If the super expression is unqualified and there are multiple classes that the current class inherits from, then the super-class is the domain type.
+    -  Otherwise, the super-class is the class named by the qualifier of the super expression. 
+
+   The predicate is resolved by looking up its name and arity in the exported predicate environment of the super-class. 
 
 -  If the type of the receiver is the same as the enclosing class, the predicate is resolved by looking up its name and arity in the visible predicate environment of the class.
 

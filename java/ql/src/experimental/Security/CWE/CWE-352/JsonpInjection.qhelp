@@ -1,0 +1,37 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The software uses external input as the function name to wrap JSON data and returns it to the client as a request response. 
+When there is a cross-domain problem, this could lead to information leakage.</p>
+
+</overview>
+<recommendation>
+
+<p>Adding <code>Referer</code>/<code>Origin</code> or random <code>token</code> verification processing can effectively prevent the leakage of sensitive information.</p>
+
+</recommendation>
+<example>
+
+<p>The following examples show the bad case and the good case respectively. Bad cases, such as <code>bad1</code> to <code>bad7</code>, 
+will cause information leakage when there are cross-domain problems. In a good case, for example, in the <code>good1</code> 
+method and the <code>good2</code> method, When these two methods process the request, there must be a request body in the request, which does not meet the conditions of Jsonp injection.</p>
+
+<sample src="JsonpInjection.java" />
+
+</example>
+<references>
+
+<li>
+OWASPLondon20161124_JSON_Hijacking_Gareth_Heyes: 
+<a href="https://owasp.org/www-chapter-london/assets/slides/OWASPLondon20161124_JSON_Hijacking_Gareth_Heyes.pdf">JSON hijacking</a>.
+</li>
+<li>
+Practical JSONP Injection:
+<a href="https://securitycafe.ro/2017/01/18/practical-jsonp-injection">
+  Completely controllable from the URL (GET variable)
+</a>.
+</li>
+</references>
+</qhelp>

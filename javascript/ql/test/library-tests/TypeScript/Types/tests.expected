@@ -15,6 +15,8 @@ getExprType
 | boolean-type.ts:15:5:15:12 | boolean6 | boolean |
 | dummy.ts:2:12:2:12 | x | number |
 | dummy.ts:2:16:2:16 | 5 | 5 |
+| dummy.ts:4:12:4:14 | reg | RegExp |
+| dummy.ts:4:18:4:23 | /ab+c/ | RegExp |
 | middle-rest.ts:1:5:1:7 | foo | [boolean, ...string[], number] |
 | middle-rest.ts:3:1:3:3 | foo | [boolean, ...string[], number] |
 | middle-rest.ts:3:1:3:26 | foo = [ ... ", 123] | [true, string, number] |
