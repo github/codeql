@@ -180,11 +180,15 @@ module Generated {
   class Charpred extends @charpred, AstNode {
     override string getAPrimaryQlClass() { result = "Charpred" }
 
-    override Location getLocation() { charpred_def(this, result) }
+    override Location getLocation() { charpred_def(this, _, _, result) }
 
-    AstNode getChild(int i) { charpred_child(this, i, result) }
+    AstNode getBody() { charpred_def(this, result, _, _) }
 
-    override AstNode getAFieldOrChild() { charpred_child(this, _, result) }
+    ClassName getChild() { charpred_def(this, _, result, _) }
+
+    override AstNode getAFieldOrChild() {
+      charpred_def(this, result, _, _) or charpred_def(this, _, result, _)
+    }
   }
 
   class ClassMember extends @class_member, AstNode {
