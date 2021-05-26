@@ -2,6 +2,8 @@
  * Dynamic
  */
 
+// CPU Profiles
+
 profile_nodes(
   unique int id: @profile_node,
   string fnName: string ref,
@@ -12,7 +14,6 @@ profile_nodes(
   int hitCount: int ref
 )
 
-// #keyset[parent, child]
 profile_node_children(
   int parent: @profile_node ref,
   int child: @profile_node ref
@@ -29,6 +30,29 @@ samples(
   int number: int ref,
   int node: @profile_node ref,
   int delta: int ref
+)
+
+// Memory Profiles
+
+mem_profile_nodes(
+  unique int id: @mem_profile_node,
+  string fnName: string ref,
+  string scriptId: string ref,
+  string file: string ref,
+  int lineNumber: int ref,
+  int columnNumber: int ref,
+  int selfSize: int ref
+)
+
+mem_node_children(
+  int parent: @mem_profile_node ref,
+  int child: @mem_profile_node ref
+)
+
+mem_profile_sample(
+  unique int id: @mem_profile_sample,
+  int size: int ref,
+  int node: @mem_profile_node ref,
 )
 
 /** Files and folders **/
