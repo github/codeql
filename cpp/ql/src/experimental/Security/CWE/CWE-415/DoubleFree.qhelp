@@ -3,7 +3,7 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>Double freeing of a previously allocated resource can lead to various vulnerabilities in the program. Requires the attention of developers.</p>
+<p>Freeing a previously allocated resource twice can lead to various vulnerabilities in the program.</p>
 
 </overview>
 <recommendation>

@@ -1,9 +1,8 @@
 /**
  * @name Errors When Double Free
- * @description Double freeing of a previously allocated resource can lead to various vulnerabilities in the program
- *              and requires the attention of the developer.
+ * @description Freeing a previously allocated resource twice can lead to various vulnerabilities in the program.
  * @kind problem
- * @id cpp/errors-when-double-free
+ * @id cpp/double-free
  * @problem.severity warning
  * @precision medium
  * @tags security
