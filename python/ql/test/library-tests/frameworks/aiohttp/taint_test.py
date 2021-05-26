@@ -66,9 +66,6 @@ async def test_taint(request: web.Request): # $ requestHandler
         request.content, # $ tainted
         request._payload, # $ tainted
 
-        request.body_exists, # $ tainted
-        request.has_body, # $ tainted
-
         request.content_type, # $ tainted
         request.charset, # $ tainted
 
@@ -116,6 +113,9 @@ async def test_taint(request: web.Request): # $ requestHandler
         request.keep_alive,
 
         request.content_length,
+        request.body_exists,
+        request.has_body,
+        request.can_read_body,
     )
 
     ensure_not_tainted(

@@ -224,9 +224,8 @@ module AiohttpWebModel {
       nodeTo.(DataFlow::AttrRead).getObject() = nodeFrom and
       nodeTo.(DataFlow::AttrRead).getAttributeName() in [
           "url", "rel_url", "forwarded", "host", "remote", "path", "path_qs", "raw_path", "query",
-          "headers", "transport", "cookies", "content", "_payload", "body_exists", "has_body",
-          "content_type", "charset", "http_range", "if_modified_since", "if_unmodified_since",
-          "if_range"
+          "headers", "transport", "cookies", "content", "_payload", "content_type", "charset",
+          "http_range", "if_modified_since", "if_unmodified_since", "if_range"
         ]
     }
   }
