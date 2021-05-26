@@ -3,6 +3,7 @@ private import codeql_ruby.CFG
 private import codeql_ruby.dataflow.SSA
 private import DataFlowPublic
 private import DataFlowDispatch
+private import SsaImpl as SsaImpl
 
 abstract class NodeImpl extends Node {
   /** Do not call: use `getEnclosingCallable()` instead. */
@@ -50,8 +51,11 @@ module LocalFlow {
    */
   predicate localSsaFlowStep(Ssa::Definition def, Node nodeFrom, Node nodeTo) {
     // Flow from parameter into SSA definition
-    nodeFrom.(ParameterNode).getParameter().(NamedParameter).getVariable() = def.getSourceVariable() and
-    nodeTo.(SsaDefinitionNode).getDefinition() = def
+    exists(BasicBlock bb, int i |
+      bb.getNode(i).getNode() =
+        nodeFrom.(ParameterNode).getParameter().(NamedParameter).getDefiningAccess() and
+      nodeTo.(SsaDefinitionNode).getDefinition().definesAt(_, bb, i)
+    )
     or
     // Flow from assignment into SSA definition
     exists(CfgNodes::ExprNodes::AssignmentCfgNode a, BasicBlock bb, int i |
@@ -227,13 +231,13 @@ private module ParameterNodes {
   abstract private class ParameterNodeImpl extends ParameterNode, NodeImpl { }
 
   /**
-   * The value of an explicit parameter at function entry, viewed as a node in a data
+   * The value of a normal parameter at function entry, viewed as a node in a data
    * flow graph.
    */
-  class ExplicitParameterNode extends ParameterNodeImpl, TNormalParameterNode {
+  class NormalParameterNode extends ParameterNodeImpl, TNormalParameterNode {
     private Parameter parameter;
 
-    ExplicitParameterNode() { this = TNormalParameterNode(parameter) }
+    NormalParameterNode() { this = TNormalParameterNode(parameter) }
 
     override Parameter getParameter() { result = parameter }
 
@@ -439,7 +443,13 @@ private module OutNodes {
 
 import OutNodes
 
-predicate jumpStep(Node pred, Node succ) { none() }
+predicate jumpStep(Node pred, Node succ) {
+  SsaImpl::captureFlowIn(pred.(SsaDefinitionNode).getDefinition(),
+    succ.(SsaDefinitionNode).getDefinition())
+  or
+  SsaImpl::captureFlowOut(pred.(SsaDefinitionNode).getDefinition(),
+    succ.(SsaDefinitionNode).getDefinition())
+}
 
 predicate storeStep(Node node1, Content c, Node node2) { none() }
 

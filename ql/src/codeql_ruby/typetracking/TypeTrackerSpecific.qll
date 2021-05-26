@@ -12,15 +12,7 @@ class LocalSourceNode = DataFlowPublic::LocalSourceNode;
 
 predicate simpleLocalFlowStep = DataFlowPrivate::simpleLocalFlowStep/2;
 
-predicate jumpStep(Node nodeFrom, Node nodeTo) {
-  DataFlowPrivate::jumpStep(nodeFrom, nodeTo)
-  or
-  SsaImpl::captureFlowIn(nodeFrom.(DataFlowPrivate::SsaDefinitionNode).getDefinition(),
-    nodeTo.(DataFlowPrivate::SsaDefinitionNode).getDefinition())
-  or
-  SsaImpl::captureFlowOut(nodeFrom.(DataFlowPrivate::SsaDefinitionNode).getDefinition(),
-    nodeTo.(DataFlowPrivate::SsaDefinitionNode).getDefinition())
-}
+predicate jumpStep = DataFlowPrivate::jumpStep/2;
 
 /**
  * Gets the name of a possible piece of content. This will usually include things like

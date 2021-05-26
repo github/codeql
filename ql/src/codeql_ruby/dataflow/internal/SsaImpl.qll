@@ -198,7 +198,7 @@ private module Cached {
   }
 
   /**
-   * Holds if there is outgoinh flow for a captured variable that is updated in a block.
+   * Holds if there is outgoing flow for a captured variable that is updated in a block.
    * ```rb
    * foo = 0
    * bar {
