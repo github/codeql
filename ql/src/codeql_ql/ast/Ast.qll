@@ -383,7 +383,7 @@ class Quantifier extends TQuantifier, Formula {
   Formula getFormula() { toGenerated(result) = quant.getFormula() }
 
   /** Gets the expression of this quantifier, if it is of the expression only form of an exists. */
-  Expr getExpr() { toGenerated(result) = quant.getChild(1) }
+  Expr getExpr() { toGenerated(result) = quant.getExpr() }
 
   /** Holds if this is the expression only form of an exists quantifier. */
   predicate hasExpr() { exists(getExpr()) }
