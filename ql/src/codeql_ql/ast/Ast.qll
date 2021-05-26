@@ -21,4 +21,3 @@ class ClasslessPredicate extends TClasslessPredicate, AstNode {
     member.getAFieldOrChild().(Generated::Annotation).getName().getValue() = "private"
   }
 }
-
