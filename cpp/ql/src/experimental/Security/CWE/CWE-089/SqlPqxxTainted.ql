@@ -54,7 +54,7 @@ predicate pqxxTransactionSqlArgument(string function, int arg) {
 predicate pqxxConnectionSqlArgument(string function, int arg) { function = "prepare" and arg = 1 }
 
 Expr getPqxxSqlArgument() {
-  exists(FunctionCall fc, Expr e, int argIndex, Type t |
+  exists(FunctionCall fc, Expr e, int argIndex, UserType t |
     // examples: 'work' for 'work.exec(...)'; '->' for 'tx->exec()'.
     e = fc.getQualifier() and
     // to find ConnectionHandle/TransationHandle and similar classes which override '->' operator behavior
@@ -62,10 +62,10 @@ Expr getPqxxSqlArgument() {
     e.getType().refersTo(t) and
     // transaction exec and connection prepare variations
     (
-      pqxxTransationClassNames(t.getName(), _) and
+      pqxxTransationClassNames(t.getName(), t.getNamespace().getName()) and
       pqxxTransactionSqlArgument(fc.getTarget().getName(), argIndex)
       or
-      pqxxConnectionClassNames(t.getName(), _) and
+      pqxxConnectionClassNames(t.getName(), t.getNamespace().getName()) and
       pqxxConnectionSqlArgument(fc.getTarget().getName(), argIndex)
     ) and
     result = fc.getArgument(argIndex)
@@ -78,14 +78,17 @@ predicate pqxxEscapeArgument(string function, int arg) {
 }
 
 predicate isEscapedPqxxArgument(Expr argExpr) {
-  exists(FunctionCall fc, Expr e, int argIndex, Type t |
+  exists(FunctionCall fc, Expr e, int argIndex, UserType t |
     // examples: 'work' for 'work.exec(...)'; '->' for 'tx->exec()'.
     e = fc.getQualifier() and
     // to find ConnectionHandle/TransationHandle and similar classes which override '->' operator behavior
     // and return pointer to a connection/transation object
     e.getType().refersTo(t) and
     // transaction and connection escape functions
-    (pqxxTransationClassNames(t.getName(), _) or pqxxConnectionClassNames(t.getName(), _)) and
+    (
+      pqxxTransationClassNames(t.getName(), t.getNamespace().getName()) or
+      pqxxConnectionClassNames(t.getName(), t.getNamespace().getName())
+    ) and
     pqxxEscapeArgument(fc.getTarget().getName(), argIndex) and
     // is escaped arg == argExpr
     argExpr = fc.getArgument(argIndex)
