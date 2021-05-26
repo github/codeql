@@ -661,6 +661,20 @@ qualified_expr_def(
   int loc: @location ref
 );
 
+@quantified_formula_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @variable
+
+quantified_formula(
+  unique int quantified: @quantified ref,
+  unique int formula: @quantified_formula_type ref
+);
+
+@quantified_range_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @variable
+
+quantified_range(
+  unique int quantified: @quantified ref,
+  unique int range: @quantified_range_type ref
+);
+
 @quantified_child_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @token_quantifier | @unary_expr | @var_decl | @variable
 
 #keyset[quantified, index]

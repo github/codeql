@@ -746,9 +746,17 @@ module Generated {
 
     override Location getLocation() { quantified_def(this, result) }
 
+    AstNode getFormula() { quantified_formula(this, result) }
+
+    AstNode getRange() { quantified_range(this, result) }
+
     AstNode getChild(int i) { quantified_child(this, i, result) }
 
-    override AstNode getAFieldOrChild() { quantified_child(this, _, result) }
+    override AstNode getAFieldOrChild() {
+      quantified_formula(this, result) or
+      quantified_range(this, result) or
+      quantified_child(this, _, result)
+    }
   }
 
   class Quantifier extends @token_quantifier, Token {
