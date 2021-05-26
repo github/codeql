@@ -18,14 +18,15 @@ class PrintAstConfiguration extends string {
   /**
    * Holds if the given node should be printed.
    */
-  predicate shouldPrintNode(AstNode n) { any() }
+  predicate shouldPrintNode(AstNode n) { not n instanceof LineComment }
 }
 
 /**
  * Gets the `i`th child of parent.
  * The ordering is location based and pretty arbitary.
  */
-AstNode getAstChild(AstNode parent, int i) {
+AstNode getAstChild(PrintAstNode parent, int i) {
+  parent.shouldPrint() and
   result =
     rank[i](AstNode child, Location l |
       child.getParent() = parent and
@@ -42,20 +43,23 @@ AstNode getAstChild(AstNode parent, int i) {
  */
 class PrintAstNode extends AstNode {
   string getProperty(string key) {
-    key = "semmle.label" and
-    result = "[" + concat(this.getAPrimaryQlClass(), ", ") + "] " + this.toString()
-    or
-    key = "semmle.order" and
-    result =
-      any(int i |
-        this =
-          rank[i](AstNode p, Location l, File f |
-            l = p.getLocation() and
-            f = l.getFile()
-          |
-            p order by f.getBaseName(), f.getAbsolutePath(), l.getStartLine(), l.getStartColumn()
-          )
-      ).toString()
+    this.shouldPrint() and
+    (
+      key = "semmle.label" and
+      result = "[" + concat(this.getAPrimaryQlClass(), ", ") + "] " + this.toString()
+      or
+      key = "semmle.order" and
+      result =
+        any(int i |
+          this =
+            rank[i](AstNode p, Location l, File f |
+              l = p.getLocation() and
+              f = l.getFile()
+            |
+              p order by f.getBaseName(), f.getAbsolutePath(), l.getStartLine(), l.getStartColumn()
+            )
+        ).toString()
+    )
   }
 
   /**
