@@ -323,6 +323,8 @@ expr_aggregate_body_def(
 
 expr_annotation_def(
   unique int id: @expr_annotation,
+  int annot_arg: @token_annot_name ref,
+  int name: @token_annot_name ref,
   int child: @expr_annotation_child_type ref,
   int loc: @location ref
 );
