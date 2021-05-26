@@ -8,14 +8,13 @@
  */
 
 import codeql.IDEContextual
-import codeql_ql.AST
-import codeql_ql.ast.Variable
+import codeql_ql.ast.internal.TreeSitter::Generated
 
 external string selectedSourceFile();
 
 from AstNode e, Variable def, string kind
 where
-  e = def.getAnAccess() and
+  none() and // e = def.getAnAccess() and // TODO: Get binding to work.
   kind = "local variable" and
   def.getLocation().getFile() = getFileBySourceArchiveName(selectedSourceFile())
 select e, def, kind
