@@ -1,0 +1,18 @@
+{
+    "SSA": [
+        "codeql/csharp/ql/src/semmle/code/csharp/dataflow/internal/SsaImplCommon.qll",
+        "ql/src/codeql_ql/dataflow/internal/SsaImplCommon.qll"
+    ],
+    "DataFlow Common": [
+        "codeql/csharp/ql/src/semmle/code/csharp/dataflow/internal/DataFlowImplCommon.qll",
+        "ql/src/codeql_ql/dataflow/internal/DataFlowImplCommon.qll"
+    ],
+    "DataFlow": [
+        "codeql/csharp/ql/src/semmle/code/csharp/dataflow/internal/DataFlowImpl.qll",
+        "ql/src/codeql_ql/dataflow/internal/DataFlowImpl.qll"
+    ],
+    "TypeTracker": [
+        "codeql/python/ql/src/experimental/typetracking/TypeTracker.qll",
+        "ql/src/codeql_ql/typetracking/TypeTracker.qll"
+    ]
+}

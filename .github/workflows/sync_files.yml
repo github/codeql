@@ -1,0 +1,17 @@
+name: Check synchronized files
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Check synchronized files
+        run: scripts/sync-identical-files.py

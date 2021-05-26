@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"editor.formatOnSave": true,
+		"files.eol": "\n",
+		"files.exclude": {
+			"codeql": true
+		}
+	}
+}

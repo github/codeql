@@ -1,0 +1,80 @@
+name: Collect database stats
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ql/src/ql.dbscheme
+  pull_request:
+    branches: [main]
+    paths:
+      - ql/src/ql.dbscheme
+  workflow_dispatch:
+
+jobs:
+  measure:
+    env:
+      CODEQL_THREADS: 4 # TODO: remove this once it's set by the CLI
+    strategy:
+      fail-fast: false
+      matrix:
+        repo: [rails/rails, discourse/discourse, spree/spree]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Fetch CodeQL
+        run: |
+          LATEST=$(gh release list --repo https://github.com/github/codeql-cli-binaries | cut -f 1 | sort --version-sort | tail -1)
+          gh release download --repo https://github.com/github/codeql-cli-binaries --pattern codeql-linux64.zip "$LATEST"
+          unzip -q codeql-linux64.zip
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-qltest-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - name: Build Extractor
+        run: env "PATH=$PATH:${{ github.workspace }}/codeql" ./create-extractor-pack.sh
+
+      - name: Checkout ${{ matrix.repo }}
+        uses: actions/checkout@v2
+        with:
+          repository: ${{ matrix.repo }}
+          path: ${{ github.workspace }}/repo
+      - name: Create database
+        run: |
+          codeql/codeql database create \
+            --search-path "${{ github.workspace }}" \
+            --threads 4 \
+            --language ruby --source-root "${{ github.workspace }}/repo" \
+            "${{ runner.temp }}/database"
+      - name: Measure database
+        run: |
+          mkdir -p "stats/${{ matrix.repo }}"
+          codeql/codeql dataset measure --threads 4 --output "stats/${{ matrix.repo }}/stats.xml" "${{ runner.temp }}/database/db-ruby"
+      - uses: actions/upload-artifact@v2
+        with:
+          name: measurements
+          path: stats
+          retention-days: 1
+
+  merge:
+    runs-on: ubuntu-latest
+    needs: measure
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/download-artifact@v2
+        with:
+          name: measurements
+          path: stats
+      - run: |
+          python -m pip install --user lxml
+          find stats -name 'stats.xml' | sort | xargs python scripts/merge_stats.py --output ql/src/ql.dbscheme.stats --normalise tokeninfo
+      - uses: actions/upload-artifact@v2
+        with:
+          name: ql.dbscheme.stats
+          path: ql/src/ql.dbscheme.stats

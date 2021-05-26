@@ -1,0 +1,4 @@
+- description: Security-extended queries for Ruby
+- qlpack: codeql-ruby
+- apply: security-extended-selectors.yml
+  from: codeql-suite-helpers

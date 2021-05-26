@@ -1,0 +1,97 @@
+name: Rust
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install GNU tar
+        if: runner.os == 'macOS'
+        run: |
+          brew install gnu-tar
+          echo "/usr/local/opt/gnu-tar/libexec/gnubin" >> $GITHUB_PATH
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-rust-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - name: Check formatting
+        run: cargo fmt --all -- --check
+      - name: Build
+        run: cargo build --verbose
+      - name: Run tests
+        run: cargo test --verbose
+      - name: Release build
+        run: cargo build --release
+      - name: Generate dbscheme
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: target/release/ql-generator
+      - uses: actions/upload-artifact@v2
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        with:
+          name: ql.dbscheme
+          path: ql/src/ql.dbscheme
+      - uses: actions/upload-artifact@v2
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        with:
+          name: TreeSitter.qll
+          path: ql/src/codeql_ql/ast/internal/TreeSitter.qll
+      - uses: actions/upload-artifact@v2
+        with:
+          name: extractor-${{ matrix.os }}
+          path: |
+            target/release/ql-extractor
+            target/release/ql-extractor.exe
+          retention-days: 1
+  package:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/download-artifact@v2
+        with:
+          name: ql.dbscheme
+          path: ruby
+      - uses: actions/download-artifact@v2
+        with:
+          name: extractor-ubuntu-latest
+          path: linux64
+      - uses: actions/download-artifact@v2
+        with:
+          name: extractor-windows-latest
+          path: win64
+      - uses: actions/download-artifact@v2
+        with:
+          name: extractor-macos-latest
+          path: osx64
+      - run: |
+          mkdir -p ruby
+          cp -r codeql-extractor.yml tools ql/src/ql.dbscheme.stats ruby/
+          mkdir -p ruby/tools/{linux64,osx64,win64}
+          cp linux64/ql-extractor ruby/tools/linux64/extractor
+          cp osx64/ql-extractor ruby/tools/osx64/extractor
+          cp win64/ql-extractor.exe ruby/tools/win64/extractor.exe
+          chmod +x ruby/tools/{linux64,osx64}/extractor
+          zip -rq codeql-ruby.zip ruby
+      - uses: actions/upload-artifact@v2
+        with:
+          name: codeql-ruby-pack
+          path: codeql-ruby.zip
+          retention-days: 1
