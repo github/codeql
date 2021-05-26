@@ -54,28 +54,24 @@ impl TrapCompression {
  * "If the number is positive, it indicates the number of threads that should
  * be used. If the number is negative or zero, it should be added to the number
  * of cores available on the machine to determine how many threads to use
- * (minimum of 1). If unspecified, should be considered as set to 1."
+ * (minimum of 1). If unspecified, should be considered as set to -1."
  */
 fn num_codeql_threads() -> usize {
-    match std::env::var("CODEQL_THREADS") {
-        // Use 1 thread if the environment variable isn't set.
-        Err(_) => 1,
+    let threads_str = std::env::var("CODEQL_THREADS").unwrap_or("-1".to_owned());
+    match threads_str.parse::<i32>() {
+        Ok(num) if num <= 0 => {
+            let reduction = -num as usize;
+            std::cmp::max(1, num_cpus::get() - reduction)
+        }
+        Ok(num) => num as usize,
 
-        Ok(num) => match num.parse::<i32>() {
-            Ok(num) if num <= 0 => {
-                let reduction = -num as usize;
-                num_cpus::get() - reduction
-            }
-            Ok(num) => num as usize,
-
-            Err(_) => {
-                tracing::error!(
-                    "Unable to parse CODEQL_THREADS value '{}'; defaulting to 1 thread.",
-                    &num
-                );
-                1
-            }
-        },
+        Err(_) => {
+            tracing::error!(
+                "Unable to parse CODEQL_THREADS value '{}'; defaulting to 1 thread.",
+                &threads_str
+            );
+            1
+        }
     }
 }
 
