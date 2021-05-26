@@ -15,6 +15,7 @@ newtype TAstNode =
   TNewType(Generated::Datatype dt) or
   TNewTypeBranch(Generated::DatatypeBranch branch) or
   TImport(Generated::ImportDirective imp) or
+  TType(Generated::TypeExpr type) or
   TDisjunction(Generated::Disjunction disj) or
   TConjunction(Generated::Conjunction conj) or
   TComparisonFormula(Generated::CompTerm comp) or
@@ -67,6 +68,8 @@ Generated::AstNode toGenerated(AST::AstNode n) {
   n = TNewTypeBranch(result)
   or
   n = TImport(result)
+  or
+  n = TType(result)
 }
 
 class TPredicate = TCharPred or TClasslessPredicate or TClassPredicate;

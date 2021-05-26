@@ -117,7 +117,7 @@ class VarDecl extends TVarDecl, AstNode {
   /**
    * Gets the name for this variable declaration.
    */
-  string getName() { result = var.getChild(_).(Generated::VarName).getChild().getValue() }
+  string getName() { result = var.getChild(1).(Generated::VarName).getChild().getValue() }
 
   override string getAPrimaryQlClass() { result = "VarDecl" }
 
@@ -126,7 +126,41 @@ class VarDecl extends TVarDecl, AstNode {
     or
     result.(Class).getAField() = this
   }
-  // TODO: Getter for the Type.
+
+  Type getType() { toGenerated(result) = var.getChild(0) }
+}
+
+/**
+ * A type, such as `DataFlow::Node`.
+ */
+class Type extends TType, AstNode {
+  Generated::TypeExpr type;
+
+  Type() { this = TType(type) }
+
+  override string getAPrimaryQlClass() { result = "Type" }
+
+  /**
+   * Gets the class name for the type.
+   * E.g. `Node` in `DataFlow::Node`.
+   * Also gets the name for primitive types such as `string` or `int`.
+   */
+  string getClassName() {
+    result = type.getName().getValue()
+    or
+    result = type.getChild().(Generated::PrimitiveType).getValue()
+  }
+
+  /**
+   * Holds if this type is a primitive such as `string` or `int`.
+   */
+  predicate isPrimitive() { type.getChild() instanceof Generated::PrimitiveType }
+
+  /**
+   * Gets the module name of the type, if it exists.
+   * E.g. `DataFlow` in `DataFlow::Node`.
+   */
+  string getModuleName() { result = type.getChild().(Generated::ModuleExpr).getName().getValue() }
 }
 
 /**
