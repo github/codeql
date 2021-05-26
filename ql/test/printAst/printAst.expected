@@ -1,0 +1,261 @@
+WARNING: Unused predicate foobar (printAst.ql:3,11-17)
+nodes
+| printAst.ql:1:1:1:6 | import | semmle.label | [ReservedWord] import |
+| printAst.ql:1:1:1:6 | import | semmle.order | 1 |
+| printAst.ql:1:1:1:25 | ImportDirective | semmle.label | [ImportDirective] ImportDirective |
+| printAst.ql:1:1:1:25 | ImportDirective | semmle.order | 1 |
+| printAst.ql:1:1:1:25 | ModuleMember | semmle.label | [ModuleMember] ModuleMember |
+| printAst.ql:1:1:1:25 | ModuleMember | semmle.order | 1 |
+| printAst.ql:1:1:6:2 | Ql | semmle.label | [Ql] Ql |
+| printAst.ql:1:1:6:2 | Ql | semmle.order | 1 |
+| printAst.ql:1:8:1:16 | codeql_ql | semmle.label | [SimpleId] codeql_ql |
+| printAst.ql:1:8:1:16 | codeql_ql | semmle.order | 5 |
+| printAst.ql:1:8:1:25 | ImportModuleExpr | semmle.label | [ImportModuleExpr] ImportModuleExpr |
+| printAst.ql:1:8:1:25 | ImportModuleExpr | semmle.order | 5 |
+| printAst.ql:1:8:1:25 | QualModuleExpr | semmle.label | [QualModuleExpr] QualModuleExpr |
+| printAst.ql:1:8:1:25 | QualModuleExpr | semmle.order | 5 |
+| printAst.ql:1:17:1:17 | . | semmle.label | [ReservedWord] . |
+| printAst.ql:1:17:1:17 | . | semmle.order | 8 |
+| printAst.ql:1:18:1:25 | printAst | semmle.label | [SimpleId] printAst |
+| printAst.ql:1:18:1:25 | printAst | semmle.order | 9 |
+| printAst.ql:3:1:3:9 | predicate | semmle.label | [Predicate] predicate |
+| printAst.ql:3:1:3:9 | predicate | semmle.order | 10 |
+| printAst.ql:3:1:6:1 | ClasslessPredicate | semmle.label | [ClasslessPredicate] ClasslessPredicate |
+| printAst.ql:3:1:6:1 | ClasslessPredicate | semmle.order | 10 |
+| printAst.ql:3:1:6:1 | ModuleMember | semmle.label | [ModuleMember] ModuleMember |
+| printAst.ql:3:1:6:1 | ModuleMember | semmle.order | 10 |
+| printAst.ql:3:11:3:16 | foobar | semmle.label | [PredicateName] foobar |
+| printAst.ql:3:11:3:16 | foobar | semmle.order | 13 |
+| printAst.ql:3:17:3:17 | ( | semmle.label | [ReservedWord] ( |
+| printAst.ql:3:17:3:17 | ( | semmle.order | 14 |
+| printAst.ql:3:18:3:18 | ) | semmle.label | [ReservedWord] ) |
+| printAst.ql:3:18:3:18 | ) | semmle.order | 15 |
+| printAst.ql:3:20:3:20 | { | semmle.label | [ReservedWord] { |
+| printAst.ql:3:20:3:20 | { | semmle.order | 16 |
+| printAst.ql:3:20:6:1 | Body | semmle.label | [Body] Body |
+| printAst.ql:3:20:6:1 | Body | semmle.order | 16 |
+| printAst.ql:4:3:4:43 | // this exists to test the printAst query | semmle.label | [LineComment] // this exists to test the printAst query |
+| printAst.ql:4:3:4:43 | // this exists to test the printAst query | semmle.order | 18 |
+| printAst.ql:5:3:5:8 | exists | semmle.label | [Quantifier] exists |
+| printAst.ql:5:3:5:8 | exists | semmle.label | [ReservedWord] exists |
+| printAst.ql:5:3:5:8 | exists | semmle.order | 19 |
+| printAst.ql:5:3:5:8 | exists | semmle.order | 19 |
+| printAst.ql:5:3:5:48 | Quantified | semmle.label | [Quantified] Quantified |
+| printAst.ql:5:3:5:48 | Quantified | semmle.order | 19 |
+| printAst.ql:5:9:5:9 | ( | semmle.label | [ReservedWord] ( |
+| printAst.ql:5:9:5:9 | ( | semmle.order | 22 |
+| printAst.ql:5:10:5:12 | TypeExpr | semmle.label | [TypeExpr] TypeExpr |
+| printAst.ql:5:10:5:12 | TypeExpr | semmle.order | 23 |
+| printAst.ql:5:10:5:12 | int | semmle.label | [PrimitiveType] int |
+| printAst.ql:5:10:5:12 | int | semmle.label | [ReservedWord] int |
+| printAst.ql:5:10:5:12 | int | semmle.order | 23 |
+| printAst.ql:5:10:5:12 | int | semmle.order | 23 |
+| printAst.ql:5:10:5:14 | VarDecl | semmle.label | [VarDecl] VarDecl |
+| printAst.ql:5:10:5:14 | VarDecl | semmle.order | 23 |
+| printAst.ql:5:14:5:14 | VarName | semmle.label | [VarName] VarName |
+| printAst.ql:5:14:5:14 | VarName | semmle.order | 27 |
+| printAst.ql:5:14:5:14 | i | semmle.label | [SimpleId] i |
+| printAst.ql:5:14:5:14 | i | semmle.order | 27 |
+| printAst.ql:5:16:5:16 | \| | semmle.label | [ReservedWord] \| |
+| printAst.ql:5:16:5:16 | \| | semmle.order | 29 |
+| printAst.ql:5:18:5:18 | VarName | semmle.label | [VarName] VarName |
+| printAst.ql:5:18:5:18 | VarName | semmle.order | 30 |
+| printAst.ql:5:18:5:18 | Variable | semmle.label | [Variable] Variable |
+| printAst.ql:5:18:5:18 | Variable | semmle.order | 30 |
+| printAst.ql:5:18:5:18 | i | semmle.label | [SimpleId] i |
+| printAst.ql:5:18:5:18 | i | semmle.order | 30 |
+| printAst.ql:5:18:5:31 | CompTerm | semmle.label | [CompTerm] CompTerm |
+| printAst.ql:5:18:5:31 | CompTerm | semmle.order | 30 |
+| printAst.ql:5:20:5:20 | = | semmle.label | [Compop] = |
+| printAst.ql:5:20:5:20 | = | semmle.label | [ReservedWord] = |
+| printAst.ql:5:20:5:20 | = | semmle.order | 34 |
+| printAst.ql:5:20:5:20 | = | semmle.order | 34 |
+| printAst.ql:5:22:5:22 | [ | semmle.label | [ReservedWord] [ |
+| printAst.ql:5:22:5:22 | [ | semmle.order | 36 |
+| printAst.ql:5:22:5:31 | Range | semmle.label | [Range] Range |
+| printAst.ql:5:22:5:31 | Range | semmle.order | 36 |
+| printAst.ql:5:23:5:23 | 1 | semmle.label | [Integer] 1 |
+| printAst.ql:5:23:5:23 | 1 | semmle.order | 38 |
+| printAst.ql:5:23:5:23 | Literal | semmle.label | [Literal] Literal |
+| printAst.ql:5:23:5:23 | Literal | semmle.order | 38 |
+| printAst.ql:5:25:5:26 | .. | semmle.label | [ReservedWord] .. |
+| printAst.ql:5:25:5:26 | .. | semmle.order | 40 |
+| printAst.ql:5:28:5:30 | 100 | semmle.label | [Integer] 100 |
+| printAst.ql:5:28:5:30 | 100 | semmle.order | 41 |
+| printAst.ql:5:28:5:30 | Literal | semmle.label | [Literal] Literal |
+| printAst.ql:5:28:5:30 | Literal | semmle.order | 41 |
+| printAst.ql:5:31:5:31 | ] | semmle.label | [ReservedWord] ] |
+| printAst.ql:5:31:5:31 | ] | semmle.order | 43 |
+| printAst.ql:5:33:5:33 | \| | semmle.label | [ReservedWord] \| |
+| printAst.ql:5:33:5:33 | \| | semmle.order | 44 |
+| printAst.ql:5:35:5:35 | VarName | semmle.label | [VarName] VarName |
+| printAst.ql:5:35:5:35 | VarName | semmle.order | 45 |
+| printAst.ql:5:35:5:35 | Variable | semmle.label | [Variable] Variable |
+| printAst.ql:5:35:5:35 | Variable | semmle.order | 45 |
+| printAst.ql:5:35:5:35 | i | semmle.label | [SimpleId] i |
+| printAst.ql:5:35:5:35 | i | semmle.order | 45 |
+| printAst.ql:5:35:5:39 | MulExpr | semmle.label | [MulExpr] MulExpr |
+| printAst.ql:5:35:5:39 | MulExpr | semmle.order | 45 |
+| printAst.ql:5:35:5:47 | CompTerm | semmle.label | [CompTerm] CompTerm |
+| printAst.ql:5:35:5:47 | CompTerm | semmle.order | 45 |
+| printAst.ql:5:37:5:37 | * | semmle.label | [Mulop] * |
+| printAst.ql:5:37:5:37 | * | semmle.label | [ReservedWord] * |
+| printAst.ql:5:37:5:37 | * | semmle.order | 50 |
+| printAst.ql:5:37:5:37 | * | semmle.order | 50 |
+| printAst.ql:5:39:5:39 | 3 | semmle.label | [Integer] 3 |
+| printAst.ql:5:39:5:39 | 3 | semmle.order | 52 |
+| printAst.ql:5:39:5:39 | Literal | semmle.label | [Literal] Literal |
+| printAst.ql:5:39:5:39 | Literal | semmle.order | 52 |
+| printAst.ql:5:41:5:41 | = | semmle.label | [Compop] = |
+| printAst.ql:5:41:5:41 | = | semmle.label | [ReservedWord] = |
+| printAst.ql:5:41:5:41 | = | semmle.order | 54 |
+| printAst.ql:5:41:5:41 | = | semmle.order | 54 |
+| printAst.ql:5:43:5:43 | VarName | semmle.label | [VarName] VarName |
+| printAst.ql:5:43:5:43 | VarName | semmle.order | 56 |
+| printAst.ql:5:43:5:43 | Variable | semmle.label | [Variable] Variable |
+| printAst.ql:5:43:5:43 | Variable | semmle.order | 56 |
+| printAst.ql:5:43:5:43 | i | semmle.label | [SimpleId] i |
+| printAst.ql:5:43:5:43 | i | semmle.order | 56 |
+| printAst.ql:5:43:5:47 | AddExpr | semmle.label | [AddExpr] AddExpr |
+| printAst.ql:5:43:5:47 | AddExpr | semmle.order | 56 |
+| printAst.ql:5:45:5:45 | + | semmle.label | [Addop] + |
+| printAst.ql:5:45:5:45 | + | semmle.label | [ReservedWord] + |
+| printAst.ql:5:45:5:45 | + | semmle.order | 60 |
+| printAst.ql:5:45:5:45 | + | semmle.order | 60 |
+| printAst.ql:5:47:5:47 | 2 | semmle.label | [Integer] 2 |
+| printAst.ql:5:47:5:47 | 2 | semmle.order | 62 |
+| printAst.ql:5:47:5:47 | Literal | semmle.label | [Literal] Literal |
+| printAst.ql:5:47:5:47 | Literal | semmle.order | 62 |
+| printAst.ql:5:48:5:48 | ) | semmle.label | [ReservedWord] ) |
+| printAst.ql:5:48:5:48 | ) | semmle.order | 64 |
+| printAst.ql:6:1:6:1 | } | semmle.label | [ReservedWord] } |
+| printAst.ql:6:1:6:1 | } | semmle.order | 65 |
+edges
+| printAst.ql:1:1:1:25 | ImportDirective | printAst.ql:1:1:1:6 | import | semmle.label | 1 |
+| printAst.ql:1:1:1:25 | ImportDirective | printAst.ql:1:1:1:6 | import | semmle.order | 1 |
+| printAst.ql:1:1:1:25 | ImportDirective | printAst.ql:1:8:1:25 | ImportModuleExpr | semmle.label | 2 |
+| printAst.ql:1:1:1:25 | ImportDirective | printAst.ql:1:8:1:25 | ImportModuleExpr | semmle.order | 5 |
+| printAst.ql:1:1:1:25 | ModuleMember | printAst.ql:1:1:1:25 | ImportDirective | semmle.label | 1 |
+| printAst.ql:1:1:1:25 | ModuleMember | printAst.ql:1:1:1:25 | ImportDirective | semmle.order | 1 |
+| printAst.ql:1:1:6:2 | Ql | printAst.ql:1:1:1:25 | ModuleMember | semmle.label | 1 |
+| printAst.ql:1:1:6:2 | Ql | printAst.ql:1:1:1:25 | ModuleMember | semmle.order | 1 |
+| printAst.ql:1:1:6:2 | Ql | printAst.ql:3:1:6:1 | ModuleMember | semmle.label | 2 |
+| printAst.ql:1:1:6:2 | Ql | printAst.ql:3:1:6:1 | ModuleMember | semmle.order | 10 |
+| printAst.ql:1:8:1:25 | ImportModuleExpr | printAst.ql:1:8:1:25 | QualModuleExpr | semmle.label | 1 |
+| printAst.ql:1:8:1:25 | ImportModuleExpr | printAst.ql:1:8:1:25 | QualModuleExpr | semmle.order | 5 |
+| printAst.ql:1:8:1:25 | QualModuleExpr | printAst.ql:1:8:1:16 | codeql_ql | semmle.label | 1 |
+| printAst.ql:1:8:1:25 | QualModuleExpr | printAst.ql:1:8:1:16 | codeql_ql | semmle.order | 5 |
+| printAst.ql:1:8:1:25 | QualModuleExpr | printAst.ql:1:17:1:17 | . | semmle.label | 2 |
+| printAst.ql:1:8:1:25 | QualModuleExpr | printAst.ql:1:17:1:17 | . | semmle.order | 8 |
+| printAst.ql:1:8:1:25 | QualModuleExpr | printAst.ql:1:18:1:25 | printAst | semmle.label | 3 |
+| printAst.ql:1:8:1:25 | QualModuleExpr | printAst.ql:1:18:1:25 | printAst | semmle.order | 9 |
+| printAst.ql:3:1:6:1 | ClasslessPredicate | printAst.ql:3:1:3:9 | predicate | semmle.label | 1 |
+| printAst.ql:3:1:6:1 | ClasslessPredicate | printAst.ql:3:1:3:9 | predicate | semmle.order | 10 |
+| printAst.ql:3:1:6:1 | ClasslessPredicate | printAst.ql:3:11:3:16 | foobar | semmle.label | 2 |
+| printAst.ql:3:1:6:1 | ClasslessPredicate | printAst.ql:3:11:3:16 | foobar | semmle.order | 13 |
+| printAst.ql:3:1:6:1 | ClasslessPredicate | printAst.ql:3:17:3:17 | ( | semmle.label | 3 |
+| printAst.ql:3:1:6:1 | ClasslessPredicate | printAst.ql:3:17:3:17 | ( | semmle.order | 14 |
+| printAst.ql:3:1:6:1 | ClasslessPredicate | printAst.ql:3:18:3:18 | ) | semmle.label | 4 |
+| printAst.ql:3:1:6:1 | ClasslessPredicate | printAst.ql:3:18:3:18 | ) | semmle.order | 15 |
+| printAst.ql:3:1:6:1 | ClasslessPredicate | printAst.ql:3:20:6:1 | Body | semmle.label | 5 |
+| printAst.ql:3:1:6:1 | ClasslessPredicate | printAst.ql:3:20:6:1 | Body | semmle.order | 16 |
+| printAst.ql:3:1:6:1 | ModuleMember | printAst.ql:3:1:6:1 | ClasslessPredicate | semmle.label | 1 |
+| printAst.ql:3:1:6:1 | ModuleMember | printAst.ql:3:1:6:1 | ClasslessPredicate | semmle.order | 10 |
+| printAst.ql:3:20:6:1 | Body | printAst.ql:3:20:3:20 | { | semmle.label | 1 |
+| printAst.ql:3:20:6:1 | Body | printAst.ql:3:20:3:20 | { | semmle.order | 16 |
+| printAst.ql:3:20:6:1 | Body | printAst.ql:5:3:5:48 | Quantified | semmle.label | 2 |
+| printAst.ql:3:20:6:1 | Body | printAst.ql:5:3:5:48 | Quantified | semmle.order | 19 |
+| printAst.ql:3:20:6:1 | Body | printAst.ql:6:1:6:1 | } | semmle.label | 3 |
+| printAst.ql:3:20:6:1 | Body | printAst.ql:6:1:6:1 | } | semmle.order | 65 |
+| printAst.ql:5:3:5:8 | exists | printAst.ql:5:3:5:8 | exists | semmle.label | 1 |
+| printAst.ql:5:3:5:8 | exists | printAst.ql:5:3:5:8 | exists | semmle.order | 19 |
+| printAst.ql:5:3:5:48 | Quantified | printAst.ql:5:3:5:8 | exists | semmle.label | 1 |
+| printAst.ql:5:3:5:48 | Quantified | printAst.ql:5:3:5:8 | exists | semmle.order | 19 |
+| printAst.ql:5:3:5:48 | Quantified | printAst.ql:5:9:5:9 | ( | semmle.label | 2 |
+| printAst.ql:5:3:5:48 | Quantified | printAst.ql:5:9:5:9 | ( | semmle.order | 22 |
+| printAst.ql:5:3:5:48 | Quantified | printAst.ql:5:10:5:14 | VarDecl | semmle.label | 3 |
+| printAst.ql:5:3:5:48 | Quantified | printAst.ql:5:10:5:14 | VarDecl | semmle.order | 23 |
+| printAst.ql:5:3:5:48 | Quantified | printAst.ql:5:16:5:16 | \| | semmle.label | 4 |
+| printAst.ql:5:3:5:48 | Quantified | printAst.ql:5:16:5:16 | \| | semmle.order | 29 |
+| printAst.ql:5:3:5:48 | Quantified | printAst.ql:5:18:5:31 | CompTerm | semmle.label | 5 |
+| printAst.ql:5:3:5:48 | Quantified | printAst.ql:5:18:5:31 | CompTerm | semmle.order | 30 |
+| printAst.ql:5:3:5:48 | Quantified | printAst.ql:5:33:5:33 | \| | semmle.label | 6 |
+| printAst.ql:5:3:5:48 | Quantified | printAst.ql:5:33:5:33 | \| | semmle.order | 44 |
+| printAst.ql:5:3:5:48 | Quantified | printAst.ql:5:35:5:47 | CompTerm | semmle.label | 7 |
+| printAst.ql:5:3:5:48 | Quantified | printAst.ql:5:35:5:47 | CompTerm | semmle.order | 45 |
+| printAst.ql:5:3:5:48 | Quantified | printAst.ql:5:48:5:48 | ) | semmle.label | 8 |
+| printAst.ql:5:3:5:48 | Quantified | printAst.ql:5:48:5:48 | ) | semmle.order | 64 |
+| printAst.ql:5:10:5:12 | TypeExpr | printAst.ql:5:10:5:12 | int | semmle.label | 1 |
+| printAst.ql:5:10:5:12 | TypeExpr | printAst.ql:5:10:5:12 | int | semmle.order | 23 |
+| printAst.ql:5:10:5:12 | int | printAst.ql:5:10:5:12 | int | semmle.label | 1 |
+| printAst.ql:5:10:5:12 | int | printAst.ql:5:10:5:12 | int | semmle.order | 23 |
+| printAst.ql:5:10:5:14 | VarDecl | printAst.ql:5:10:5:12 | TypeExpr | semmle.label | 1 |
+| printAst.ql:5:10:5:14 | VarDecl | printAst.ql:5:10:5:12 | TypeExpr | semmle.order | 23 |
+| printAst.ql:5:10:5:14 | VarDecl | printAst.ql:5:14:5:14 | VarName | semmle.label | 2 |
+| printAst.ql:5:10:5:14 | VarDecl | printAst.ql:5:14:5:14 | VarName | semmle.order | 27 |
+| printAst.ql:5:14:5:14 | VarName | printAst.ql:5:14:5:14 | i | semmle.label | 1 |
+| printAst.ql:5:14:5:14 | VarName | printAst.ql:5:14:5:14 | i | semmle.order | 27 |
+| printAst.ql:5:18:5:18 | VarName | printAst.ql:5:18:5:18 | i | semmle.label | 1 |
+| printAst.ql:5:18:5:18 | VarName | printAst.ql:5:18:5:18 | i | semmle.order | 30 |
+| printAst.ql:5:18:5:18 | Variable | printAst.ql:5:18:5:18 | VarName | semmle.label | 1 |
+| printAst.ql:5:18:5:18 | Variable | printAst.ql:5:18:5:18 | VarName | semmle.order | 30 |
+| printAst.ql:5:18:5:31 | CompTerm | printAst.ql:5:18:5:18 | Variable | semmle.label | 1 |
+| printAst.ql:5:18:5:31 | CompTerm | printAst.ql:5:18:5:18 | Variable | semmle.order | 30 |
+| printAst.ql:5:18:5:31 | CompTerm | printAst.ql:5:20:5:20 | = | semmle.label | 2 |
+| printAst.ql:5:18:5:31 | CompTerm | printAst.ql:5:20:5:20 | = | semmle.order | 34 |
+| printAst.ql:5:18:5:31 | CompTerm | printAst.ql:5:22:5:31 | Range | semmle.label | 3 |
+| printAst.ql:5:18:5:31 | CompTerm | printAst.ql:5:22:5:31 | Range | semmle.order | 36 |
+| printAst.ql:5:20:5:20 | = | printAst.ql:5:20:5:20 | = | semmle.label | 1 |
+| printAst.ql:5:20:5:20 | = | printAst.ql:5:20:5:20 | = | semmle.order | 34 |
+| printAst.ql:5:22:5:31 | Range | printAst.ql:5:22:5:22 | [ | semmle.label | 1 |
+| printAst.ql:5:22:5:31 | Range | printAst.ql:5:22:5:22 | [ | semmle.order | 36 |
+| printAst.ql:5:22:5:31 | Range | printAst.ql:5:23:5:23 | Literal | semmle.label | 2 |
+| printAst.ql:5:22:5:31 | Range | printAst.ql:5:23:5:23 | Literal | semmle.order | 38 |
+| printAst.ql:5:22:5:31 | Range | printAst.ql:5:25:5:26 | .. | semmle.label | 3 |
+| printAst.ql:5:22:5:31 | Range | printAst.ql:5:25:5:26 | .. | semmle.order | 40 |
+| printAst.ql:5:22:5:31 | Range | printAst.ql:5:28:5:30 | Literal | semmle.label | 4 |
+| printAst.ql:5:22:5:31 | Range | printAst.ql:5:28:5:30 | Literal | semmle.order | 41 |
+| printAst.ql:5:22:5:31 | Range | printAst.ql:5:31:5:31 | ] | semmle.label | 5 |
+| printAst.ql:5:22:5:31 | Range | printAst.ql:5:31:5:31 | ] | semmle.order | 43 |
+| printAst.ql:5:23:5:23 | Literal | printAst.ql:5:23:5:23 | 1 | semmle.label | 1 |
+| printAst.ql:5:23:5:23 | Literal | printAst.ql:5:23:5:23 | 1 | semmle.order | 38 |
+| printAst.ql:5:28:5:30 | Literal | printAst.ql:5:28:5:30 | 100 | semmle.label | 1 |
+| printAst.ql:5:28:5:30 | Literal | printAst.ql:5:28:5:30 | 100 | semmle.order | 41 |
+| printAst.ql:5:35:5:35 | VarName | printAst.ql:5:35:5:35 | i | semmle.label | 1 |
+| printAst.ql:5:35:5:35 | VarName | printAst.ql:5:35:5:35 | i | semmle.order | 45 |
+| printAst.ql:5:35:5:35 | Variable | printAst.ql:5:35:5:35 | VarName | semmle.label | 1 |
+| printAst.ql:5:35:5:35 | Variable | printAst.ql:5:35:5:35 | VarName | semmle.order | 45 |
+| printAst.ql:5:35:5:39 | MulExpr | printAst.ql:5:35:5:35 | Variable | semmle.label | 1 |
+| printAst.ql:5:35:5:39 | MulExpr | printAst.ql:5:35:5:35 | Variable | semmle.order | 45 |
+| printAst.ql:5:35:5:39 | MulExpr | printAst.ql:5:37:5:37 | * | semmle.label | 2 |
+| printAst.ql:5:35:5:39 | MulExpr | printAst.ql:5:37:5:37 | * | semmle.order | 50 |
+| printAst.ql:5:35:5:39 | MulExpr | printAst.ql:5:39:5:39 | Literal | semmle.label | 3 |
+| printAst.ql:5:35:5:39 | MulExpr | printAst.ql:5:39:5:39 | Literal | semmle.order | 52 |
+| printAst.ql:5:35:5:47 | CompTerm | printAst.ql:5:35:5:39 | MulExpr | semmle.label | 1 |
+| printAst.ql:5:35:5:47 | CompTerm | printAst.ql:5:35:5:39 | MulExpr | semmle.order | 45 |
+| printAst.ql:5:35:5:47 | CompTerm | printAst.ql:5:41:5:41 | = | semmle.label | 2 |
+| printAst.ql:5:35:5:47 | CompTerm | printAst.ql:5:41:5:41 | = | semmle.order | 54 |
+| printAst.ql:5:35:5:47 | CompTerm | printAst.ql:5:43:5:47 | AddExpr | semmle.label | 3 |
+| printAst.ql:5:35:5:47 | CompTerm | printAst.ql:5:43:5:47 | AddExpr | semmle.order | 56 |
+| printAst.ql:5:37:5:37 | * | printAst.ql:5:37:5:37 | * | semmle.label | 1 |
+| printAst.ql:5:37:5:37 | * | printAst.ql:5:37:5:37 | * | semmle.order | 50 |
+| printAst.ql:5:39:5:39 | Literal | printAst.ql:5:39:5:39 | 3 | semmle.label | 1 |
+| printAst.ql:5:39:5:39 | Literal | printAst.ql:5:39:5:39 | 3 | semmle.order | 52 |
+| printAst.ql:5:41:5:41 | = | printAst.ql:5:41:5:41 | = | semmle.label | 1 |
+| printAst.ql:5:41:5:41 | = | printAst.ql:5:41:5:41 | = | semmle.order | 54 |
+| printAst.ql:5:43:5:43 | VarName | printAst.ql:5:43:5:43 | i | semmle.label | 1 |
+| printAst.ql:5:43:5:43 | VarName | printAst.ql:5:43:5:43 | i | semmle.order | 56 |
+| printAst.ql:5:43:5:43 | Variable | printAst.ql:5:43:5:43 | VarName | semmle.label | 1 |
+| printAst.ql:5:43:5:43 | Variable | printAst.ql:5:43:5:43 | VarName | semmle.order | 56 |
+| printAst.ql:5:43:5:47 | AddExpr | printAst.ql:5:43:5:43 | Variable | semmle.label | 1 |
+| printAst.ql:5:43:5:47 | AddExpr | printAst.ql:5:43:5:43 | Variable | semmle.order | 56 |
+| printAst.ql:5:43:5:47 | AddExpr | printAst.ql:5:45:5:45 | + | semmle.label | 2 |
+| printAst.ql:5:43:5:47 | AddExpr | printAst.ql:5:45:5:45 | + | semmle.order | 60 |
+| printAst.ql:5:43:5:47 | AddExpr | printAst.ql:5:47:5:47 | Literal | semmle.label | 3 |
+| printAst.ql:5:43:5:47 | AddExpr | printAst.ql:5:47:5:47 | Literal | semmle.order | 62 |
+| printAst.ql:5:45:5:45 | + | printAst.ql:5:45:5:45 | + | semmle.label | 1 |
+| printAst.ql:5:45:5:45 | + | printAst.ql:5:45:5:45 | + | semmle.order | 60 |
+| printAst.ql:5:47:5:47 | Literal | printAst.ql:5:47:5:47 | 2 | semmle.label | 1 |
+| printAst.ql:5:47:5:47 | Literal | printAst.ql:5:47:5:47 | 2 | semmle.order | 62 |
+graphProperties
+| semmle.graphKind | tree |
