@@ -12,8 +12,7 @@ import ql
 
 select sum(File f |
     f.fromSource() and
-    exists(f.getRelativePath()) and
-    not f.getAbsolutePath().matches("%/vendor/%")
+    exists(f.getRelativePath())
   |
     f.getNumberOfLinesOfCode()
   )
