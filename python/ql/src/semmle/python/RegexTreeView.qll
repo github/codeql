@@ -175,20 +175,26 @@ class RegExpOpt extends RegExpQuantifier {
 }
 
 // TODO: This is supposed to be a constant sequence.
-class RegExpConstant extends RegExpTerm {
-  RegExpConstant() {
-    this = TRegExp(node.(P::ChRegex))
-    or
-    this = TClassChar(node)
-  }
+// class RegExpConstant extends RegExpTerm {
+//   RegExpConstant() {
+//     this = TRegExp(node.(P::ChRegex))
+//     or
+//     this = TClassChar(node)
+//   }
+//   predicate isCharacter() { any() }
+//   string getValue() {
+//     result = node.(P::ChRegex).getChar()
+//     or
+//     result = node.(P::ClassChar).getChar()
+//   }
+//   override string getPrimaryQLClass() { result = "RegExpConstant" }
+// }
+class RegExpConstant extends NormalRegExpTerm {
+  override P::ConstantRegex node;
 
   predicate isCharacter() { any() }
 
-  string getValue() {
-    result = node.(P::ChRegex).getChar()
-    or
-    result = node.(P::ClassChar).getChar()
-  }
+  string getValue() { result = node.getText() }
 
   override string getPrimaryQLClass() { result = "RegExpConstant" }
 }

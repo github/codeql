@@ -72,13 +72,22 @@ class RegexParserConfiguration extends ParserConfiguration {
    * |      orregex '|' seqregex
    * |      '|' seqregex
    * |      orregex '|'
-   * seqregex -> primary
+   * seqregex -> constant
+   * |      primaryseqregex
+   * |      constant primaryseqregex
+   * primaryseqregex -> // seqregex starting with a primary
+   * |      primary
    * |      primary seqregex
-   * primary -> group
+   * constant -> char
+   * |      char constant
+   * char -> normalchar
+   * |      '-'
+   * |      ']'
+   * primary -> // not a constant
+   * |      group
    * |      primary '*'
    * |      primary '+'
    * |      primary '?'
-   * |      char
    * |      class
    * |      escclass
    * group -> '(' regex ')'
@@ -102,6 +111,7 @@ class RegexParserConfiguration extends ParserConfiguration {
    * |      classpart_c
    * |      classpart_c-
    * |      '-'
+   * |      '-' classinner1
    * classpart_c -> clschar
    *        classpart_c clschar
    *        classpart clschar
@@ -115,7 +125,7 @@ class RegexParserConfiguration extends ParserConfiguration {
    * classrange -> clschar '-' clschar
    * clschar -> normalchar
    * |      anychar
-   * |      '(', ')', '|', '+', '*', '?'
+   * |      '(', ')', '|', '+', '*', '?', '$'
    *
    * Things that currently don't parse:
    * - Empty regexes (as standalone empty strings, or part of a group, e.g. `()`)
@@ -125,13 +135,15 @@ class RegexParserConfiguration extends ParserConfiguration {
    */
 
   override string rule(string a) {
-    a in ["char", "anychar", "dollar", "caret", "backref", "class", "escclass", "group"] and
+    a in ["anychar", "dollar", "caret", "backref", "class", "escclass", "group"] and
     result = "primary"
     or
-    a = "primary" and result = "seqregex"
+    a in ["constant", "primaryseqregex"] and result = "seqregex"
     or
-    // a = "orregex|" and result = "orregex"
-    // or
+    a = "char" and result = "constant"
+    or
+    a = "primary" and result = "primaryseqregex"
+    or
     a = "seqregex" and result = "orregex"
     or
     a = "orregex" and result = "regex"
@@ -141,7 +153,7 @@ class RegexParserConfiguration extends ParserConfiguration {
     a in ["normalchar", "-", "]"] and
     result = "char"
     or
-    a in ["normalchar", "anychar", "()|+*?[".charAt(_)] and result = "clschar"
+    a in ["normalchar", "anychar", "()|+*?[$".charAt(_)] and result = "clschar"
     or
     a in ["classstart", "classinner1"] and result = "classinner"
     or
@@ -159,7 +171,11 @@ class RegexParserConfiguration extends ParserConfiguration {
     or
     a = "orregex" and b = "|" and result = "orregex"
     or
-    a = "primary" and b = "seqregex" and result = "seqregex"
+    a = "constant" and b = "primaryseqregex" and result = "seqregex"
+    or
+    a = "primary" and b = "seqregex" and result = "primaryseqregex"
+    or
+    a = "char" and b = "constant" and result = "constant"
     or
     a = "primary" and b = "*" and result = "primary"
     or
@@ -175,11 +191,27 @@ class RegexParserConfiguration extends ParserConfiguration {
     or
     a = "primary" and b = "openrepeat" and result = "primary"
     or
+    a = "constant" and b = "*" and result = "primary"
+    or
+    a = "constant" and b = "+" and result = "primary"
+    or
+    a = "constant" and b = "?" and result = "primary"
+    or
+    a = "constant" and b = "fixedrepeat" and result = "primary"
+    or
+    a = "constant" and b = "rangerepeat" and result = "primary"
+    or
+    a = "constant" and b = "uptorepeat" and result = "primary"
+    or
+    a = "constant" and b = "openrepeat" and result = "primary"
+    or
     a in ["[", "[^"] and b = "]" and Conf::allowedEmptyClasses() and result = "class"
     or
     a = "classstart" and b = "classinner1" and result = "classinner"
     or
     a = "classpart" and b = "classinner1" and result = "classinner1"
+    or
+    a = "-" and b = "classinner1" and result = "classinner1"
     or
     a in ["classpart", "classpart_c"] and b = "clschar" and result = "classpart_c"
     or
@@ -304,6 +336,18 @@ class SequenceRegex extends Regex {
   Regex getRight() { result = this.getRightNode() }
 }
 
+class ConstantRegex extends Regex {
+  ConstantRegex() {
+    this.getId() = "charconstant" and not this.getParent().getId() = "charconstant"
+  }
+}
+
+predicate isConst(Regex node, Node parent, string parentId) {
+  node.getId() = "charconstant" and
+  parent = node.getParent() and
+  parent.getId() = parentId
+}
+
 abstract class SuffixRegex extends Regex {
   Regex getBody() {
     if this.isNonGreedy()
@@ -332,9 +376,13 @@ class StarRegex extends UnboundedRegex {
   boolean nonGreedy;
 
   StarRegex() {
-    id = "primary*" and not this.getParent().getId() = "primary?" and nonGreedy = false
+    id = ["primary", "constant"] + "*" and
+    not this.getParent().getId() = "primary?" and
+    nonGreedy = false
     or
-    id = "primary?" and this.getLeftNode().getId() = "primary*" and nonGreedy = true
+    id = ["primary", "constant"] + "?" and
+    this.getLeftNode().getId() = "primary*" and
+    nonGreedy = true
   }
 
   override predicate isMaybeEmpty() { any() }
@@ -346,9 +394,13 @@ class PlusRegex extends UnboundedRegex {
   boolean nonGreedy;
 
   PlusRegex() {
-    id = "primary+" and not this.getParent().getId() = "primary?" and nonGreedy = false
+    id = ["primary", "constant"] + "+" and
+    not this.getParent().getId() = "primary?" and
+    nonGreedy = false
     or
-    id = "primary?" and this.getLeftNode().getId() = "primary+" and nonGreedy = true
+    id = ["primary", "constant"] + "?" and
+    this.getLeftNode().getId() = "primary+" and
+    nonGreedy = true
   }
 
   override predicate isMaybeEmpty() { none() }
@@ -357,7 +409,7 @@ class PlusRegex extends UnboundedRegex {
 }
 
 class FixedRepeatRegex extends SuffixRegex, RepeatRegex {
-  FixedRepeatRegex() { id = "primaryfixedrepeat" }
+  FixedRepeatRegex() { id = ["primary", "constant"] + "fixedrepeat" }
 
   override int getLowerBound() {
     exists(string suff, string num |
@@ -371,7 +423,7 @@ class FixedRepeatRegex extends SuffixRegex, RepeatRegex {
 }
 
 class UptoRepeatRegex extends SuffixRegex, RepeatRegex {
-  UptoRepeatRegex() { id = "primaryuptorepeat" }
+  UptoRepeatRegex() { id = ["primary", "constant"] + "uptorepeat" }
 
   override int getLowerBound() { result = 0 }
 
@@ -385,7 +437,7 @@ class UptoRepeatRegex extends SuffixRegex, RepeatRegex {
 }
 
 class RangeRegex extends SuffixRegex, RepeatRegex {
-  RangeRegex() { id = "primaryrangerepeat" }
+  RangeRegex() { id = ["primary", "constant"] + "rangerepeat" }
 
   override int getLowerBound() {
     exists(string suff, string numl |
@@ -405,7 +457,7 @@ class RangeRegex extends SuffixRegex, RepeatRegex {
 }
 
 class OpenRepeatRegex extends UnboundedRegex, RepeatRegex {
-  OpenRepeatRegex() { id = "primaryopenrepeat" }
+  OpenRepeatRegex() { id = ["primary", "constant"] + "openrepeat" }
 
   override int getLowerBound() {
     exists(string suff, string num |
@@ -422,10 +474,12 @@ class OptionalRegex extends SuffixRegex {
   boolean nonGreedy;
 
   OptionalRegex() {
-    id = "primary?" and
-    not this.getLeftNode().getId() = "primary*" and
-    not this.getLeftNode().getId() = "primary+" and
-    if this.getLeftNode().getId() = "primary?" then nonGreedy = true else nonGreedy = false
+    id = ["primary", "constant"] + "?" and
+    not this.getLeftNode().getId() = ["primary", "constant"] + "*" and
+    not this.getLeftNode().getId() = ["primary", "constant"] + "+" and
+    if this.getLeftNode().getId() = ["primary", "constant"] + "?"
+    then nonGreedy = true
+    else nonGreedy = false
   }
 
   override predicate isMaybeEmpty() { any() }
@@ -510,7 +564,8 @@ string testTokenize(ParsedString text, string id, int pos, int seq) {
   // text.toString() = "\\A[+-]?\\d+" and
   // text.toString() = "\\[(?P<txt>[^[]*)\\]\\((?P<uri>[^)]*)" and
   // text.toString() = "(?m)^(?!$)" and
-  text.toString() = "^\\b_((?:__|[^_])+?)_\\b|^\\*((?:\\*\\*|[^*])+?)\\*(?!\\*)" and
+  // text.toString() = "^\\b_((?:__|[^_])+?)_\\b|^\\*((?:\\*\\*|[^*])+?)\\*(?!\\*)" and
+  text.toString() = "^[\\_$a-z][\\_$a-z0-9]*(\\[.*?\\])*(\\.[\\_$a-z][\\_$a-z0-9]*(\\[.*?\\])*)*$" and
   result = tokenize(text, id, pos, seq)
 }
 
