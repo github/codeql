@@ -6,6 +6,10 @@ class AstNode extends TAstNode {
   string toString() { result = "ASTNode" }
 
   Location getLocation() { result = toGenerated(this).getLocation() }
+
+  AstNode getParent() { toGenerated(result) = toGenerated(this).getParent() }
+
+  string getAPrimaryQlClass() { result = "???" }
 }
 
 /**
@@ -20,4 +24,6 @@ class ClasslessPredicate extends TClasslessPredicate, AstNode {
   predicate isPrivate() {
     member.getAFieldOrChild().(Generated::Annotation).getName().getValue() = "private"
   }
+
+  override string getAPrimaryQlClass() { result = "ClasslessPredicate" }
 }
