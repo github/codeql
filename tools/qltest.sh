@@ -9,4 +9,4 @@ exec "${CODEQL_DIST}/codeql" database index-files \
     --size-limit=5m \
     --language=ruby \
     --working-dir=.\
-    "$CODEQL_EXTRACTOR_RUBY_WIP_DATABASE"
+    "$CODEQL_EXTRACTOR_QL_WIP_DATABASE"
