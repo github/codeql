@@ -128,3 +128,19 @@ import semmle.javascript.linters.ESLint
 import semmle.javascript.linters.JSLint
 import semmle.javascript.linters.Linting
 import semmle.javascript.security.dataflow.RemoteFlowSources
+
+class ProfileNode extends @profile_node {
+  File getFile() { profile_nodes(this, _, _, result, _, _, _) }
+
+  ProfileNode getAChild() { profile_node_children(this, result) }
+
+  int getTicks(int line) { position_ticks(this, line, result) }
+
+  string toString() { result = "profile node" }
+}
+
+private predicate test(ProfileNode parent, File f, ProfileNode child, int line, int ticks) {
+  child = parent.getAChild() and
+  f = parent.getFile() and
+  ticks = child.getTicks(line)
+}

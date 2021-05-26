@@ -1,9 +1,34 @@
-/*** Standard fragments ***/
+/**
+ * Dynamic
+ */
+
+profile_nodes(
+  unique int id: @profile_node,
+  string fnName: string ref,
+  string scriptId: string ref,
+  int file: @file ref,
+  int lineNumber: int ref,
+  int columnNumber: int ref,
+  int hitCount: int ref
+)
+
+// #keyset[parent, child]
+profile_node_children(
+  int parent: @profile_node ref,
+  int child: @profile_node ref
+)
+
+#keyset[node, line]
+position_ticks(
+  int node: @profile_node ref,
+  int line: int ref,
+  int ticks: int ref
+)
 
 /** Files and folders **/
 
 @location = @location_default;
- 
+
 locations_default(unique int id: @location_default,
           int file: @file ref,
           int beginLine: int ref,
@@ -11,16 +36,16 @@ locations_default(unique int id: @location_default,
           int endLine: int ref,
           int endColumn: int ref
          );
- 
+
 @sourceline = @locatable;
- 
+
 numlines(int element_id: @sourceline ref,
          int num_lines: int ref,
          int num_code: int ref,
          int num_comment: int ref
         );
- 
- 
+
+
 /*
   fromSource(0) = unknown,
   fromSource(1) = from source,
@@ -31,15 +56,15 @@ files(unique int id: @file,
       varchar(900) simple: string ref,
       varchar(900) ext: string ref,
       int fromSource: int ref);
- 
+
 folders(unique int id: @folder,
         varchar(900) name: string ref,
         varchar(900) simple: string ref);
- 
- 
+
+
 @container = @folder | @file ;
- 
- 
+
+
 containerparent(int parent: @container ref,
                 unique int child: @container ref);
 
@@ -49,14 +74,14 @@ duplicateCode(
   unique int id : @duplication,
   varchar(900) relativePath : string ref,
   int equivClass : int ref);
- 
+
 similarCode(
   unique int id : @similarity,
   varchar(900) relativePath : string ref,
   int equivClass : int ref);
- 
+
 @duplication_or_similarity = @duplication | @similarity;
- 
+
 tokens(
   int id : @duplication_or_similarity ref,
   int offset : int ref,
@@ -73,9 +98,9 @@ externalData(
   int column: int ref,
   varchar(900) value : string ref
 );
- 
+
 snapshotDate(unique date snapshotDate : date ref);
- 
+
 sourceLocationPrefix(varchar(900) prefix : string ref);
 
 /** Version control data **/
@@ -87,18 +112,18 @@ svnentries(
   date revisionDate : date ref,
   int changeSize : int ref
 );
- 
+
 svnaffectedfiles(
   int id : @svnentry ref,
   int file : @file ref,
   varchar(500) action : string ref
 );
- 
+
 svnentrymsg(
   int id : @svnentry ref,
   varchar(500) message : string ref
 );
- 
+
 svnchurn(
   int commit : @svnentry ref,
   int file : @file ref,
@@ -144,15 +169,15 @@ xml_element_parent_expression(
 
 // statements
 #keyset[parent, idx]
-stmts (unique int id: @stmt, 
+stmts (unique int id: @stmt,
        int kind: int ref,
-       int parent: @stmt_parent ref, 
+       int parent: @stmt_parent ref,
        int idx: int ref,
        varchar(900) tostring: string ref);
 
 stmt_containers (unique int stmt: @stmt ref,
        int container: @stmt_container ref);
-       
+
 jump_targets (unique int jump: @stmt ref,
        int target: @stmt ref);
 
@@ -227,7 +252,7 @@ exprs (unique int id: @expr,
 literals (varchar(900) value: string ref,
        varchar(900) raw: string ref,
        unique int expr: @expr_or_type ref);
-       
+
 enclosing_stmt (unique int expr: @expr_or_type ref,
        int stmt: @stmt ref);
 
@@ -441,7 +466,7 @@ case @scope.kind of
 
 scopenodes (unique int node: @ast_node ref,
             int scope: @scope ref);
-            
+
 scopenesting (unique int inner: @scope ref,
               int outer: @scope ref);
 
@@ -662,7 +687,7 @@ has_asserts_keyword(int node: @predicate_typeexpr ref);
 
 @typed_ast_node = @expr | @typeexpr | @function;
 ast_node_type(
-  unique int node: @typed_ast_node ref, 
+  unique int node: @typed_ast_node ref,
   int typ: @type ref);
 
 declared_function_signature(
@@ -841,7 +866,7 @@ js_parse_errors (unique int id: @js_parse_error,
         int toplevel: @toplevel ref,
         varchar(900) message: string ref,
         varchar(900) line: string ref);
-  
+
 // regular expressions
 #keyset[parent, idx]
 regexpterm (unique int id: @regexpterm,
@@ -849,7 +874,7 @@ regexpterm (unique int id: @regexpterm,
         int parent: @regexpparent ref,
         int idx: int ref,
         varchar(900) tostring: string ref);
-        
+
 @regexpparent = @regexpterm | @regexp_literal | @string_literal;
 
 case @regexpterm.kind of
@@ -967,7 +992,7 @@ case @json_value.kind of
 // locations
 @ast_node = @toplevel | @stmt | @expr | @property | @typeexpr;
 
-@locatable = @file 
+@locatable = @file
     | @ast_node
     | @comment
     | @line
