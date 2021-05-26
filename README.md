@@ -1,4 +1,4 @@
-# Ruby analysis support for CodeQL
+# QL analysis support for CodeQL
 
 Under development.
 
@@ -15,23 +15,19 @@ cargo build --release
 The generated `ql/src/ql.dbscheme` and `ql/src/codeql_ql/ast/internal/TreeSitter.qll` files are included in the repository, but they can be re-generated as follows:
 
 ```bash
-# Run the generator
-cargo run --release -p ql-generator
-# Then auto-format the QL library
-codeql query format -i ql/src/codeql_ql/ast/internal/TreeSitter.qll
+./create-extractor-pack.sh
 ```
 
-## Building a CodeQL database for a Ruby program
+## Building a CodeQL database for a QL program
 
-First, get an extractor pack. There are two options:
+First, get an extractor pack:
 
-1. Either download the latest `codeql-ruby-pack` from Actions and unzip it twice, or
-2. Run `./create-extractor-pack.sh` (Linux/Mac) or `.\create-extractor-pack.ps1` (Windows PowerShell) and the pack will be created in the `extractor-pack` directory.
+Run `./create-extractor-pack.sh` (Linux/Mac) or `.\create-extractor-pack.ps1` (Windows PowerShell) and the pack will be created in the `extractor-pack` directory.
 
 Then run
 
 ```bash
-codeql database create <database-path> -l ruby -s <project-source-path> --search-path <extractor-pack-path>
+codeql database create <database-path> -l ql -s <project-source-path> --search-path <extractor-pack-path>
 ```
 
 ## Running qltests
