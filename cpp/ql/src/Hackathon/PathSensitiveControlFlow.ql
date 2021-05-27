@@ -142,7 +142,7 @@ F interpF(Expr e) {
   result = interpretBinaryOperation(e)
 }
 
-E interpE(Expr e) { result = TVar(e.(Access).getTarget()) }
+E interpE(Expr e) { result = TVar(any(SsaDefinition ssa | ssa.getAUse(_) = e)) }
 
 F interpretGuard(GuardCondition guard) { result = interpF(guard) }
 
