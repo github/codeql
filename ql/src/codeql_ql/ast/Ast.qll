@@ -243,6 +243,8 @@ class TypeExpr extends TType, AstNode {
     result.(Class).getAliasType() = this
     or
     result.(Class).getUnionMember() = this
+    or
+    result.(MemberCall).getSuperType() = this
   }
 
   Type getResolvedType() { resolveTypeExpr(this, result) }
@@ -452,6 +454,15 @@ class MemberCall extends TMemberCall, Call {
 
   string getMemberName() {
     result = expr.getChild(_).(Generated::QualifiedRhs).getName().getValue()
+  }
+
+  /**
+   * Gets the supertype referenced in this call, that is the `Foo` in `Foo.super.bar(...)`.
+   *
+   * Only yields a result if this is actually a `super` call.
+   */
+  TypeExpr getSuperType() {
+    toGenerated(result) = expr.getChild(_).(Generated::SuperRef).getChild(0)
   }
 
   override Expr getArgument(int i) {
@@ -813,6 +824,39 @@ class HigherOrderFormula extends THigherOrderFormula, Formula {
   override string getAPrimaryQlClass() { result = "HigherOrderFormula" }
 }
 
+class ExprAggregate extends TExprAggregate, Expr {
+  Generated::Aggregate agg;
+  Generated::ExprAggregateBody body;
+  string kind;
+
+  ExprAggregate() {
+    this = TExprAggregate(agg) and
+    kind = agg.getChild(0).(Generated::AggId).getValue() and
+    body = agg.getChild(_)
+  }
+
+  string getKind() { result = kind }
+
+  /**
+   * Gets the ith "as" expression of this aggregate, if any.
+   */
+  AsExpr getAsExpr(int i) { toGenerated(result) = body.getAsExprs().getChild(i) }
+
+  /**
+   * Gets the ith "order by" expression of this aggregate, if any.
+   */
+  Expr getOrderBy(int i) { toGenerated(result) = body.getOrderBys().getChild(i).getChild(0) }
+
+  /**
+   * Gets the direction (ascending or descending) of the ith "order by" expression of this aggregate.
+   */
+  string getOrderbyDirection(int i) {
+    result = body.getOrderBys().getChild(i).getChild(1).(Generated::Direction).getValue()
+  }
+
+  override string getAPrimaryQlClass() { result = "ExprAggregate[" + kind + "]" }
+}
+
 /** An aggregate expression, such as `count` or `sum`. */
 class Aggregate extends TAggregate, Expr {
   Generated::Aggregate agg;
@@ -899,6 +943,8 @@ class AsExpr extends TAsExpr, AstNode {
     or
     result.(Aggregate).getAsExpr(_) = this
     or
+    result.(ExprAggregate).getAsExpr(_) = this
+    or
     result.(Select).getAsExpr(_) = this
   }
 }
@@ -933,7 +979,9 @@ class Expr extends TExpr, AstNode {
     result.(Call).getArgument(_) = this
     or
     result.(Aggregate).getOrderBy(_) = this
-    or 
+    or
+    result.(ExprAggregate).getOrderBy(_) = this
+    or
     result.(Select).getOrderBy(_) = this
   }
 }
