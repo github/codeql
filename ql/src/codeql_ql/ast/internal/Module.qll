@@ -121,7 +121,7 @@ private predicate resolveQualifiedName(Import imp, ContainerOrModule m, int i) {
         m = TFolder(c)
       )
       or
-      defines(getEnclosingModule(imp).getEnclosing*(), q, m, _)
+      definesModule(getEnclosingModule(imp).getEnclosing*(), q, m, _)
     )
     or
     exists(Folder_ mid |
@@ -142,7 +142,7 @@ private predicate resolveSelectionName(Import imp, ContainerOrModule m, int i) {
   or
   exists(ContainerOrModule mid |
     resolveSelectionName(imp, mid, i - 1) and
-    defines(mid, imp.getSelectionName(i), m, true)
+    definesModule(mid, imp.getSelectionName(i), m, true)
   )
 }
 
@@ -158,20 +158,22 @@ predicate resolve(Import imp, FileOrModule m) {
 predicate resolveModuleExpr(ModuleExpr me, FileOrModule m) {
   not m = TFile(any(File f | f.getExtension() = "ql")) and
   not exists(me.getQualifier()) and
-  defines(getEnclosingModule(me).getEnclosing*(), me.getName(), m, _)
+  definesModule(getEnclosingModule(me).getEnclosing*(), me.getName(), m, _)
   or
   exists(FileOrModule mid |
     resolveModuleExpr(me.getQualifier(), mid) and
-    defines(mid, me.getName(), m, true)
+    definesModule(mid, me.getName(), m, true)
   )
 }
 
-private boolean getPublicBool(ModuleMember m) {
-  if m.isPrivate() then result = false else result = true
-}
+boolean getPublicBool(ModuleMember m) { if m.isPrivate() then result = false else result = true }
 
-/** Holds if `container` defines module `m` with name `name`. */
-private predicate defines(
+/**
+ * Holds if `container` defines module `m` with name `name`.
+ *
+ * `m` may be defined either directly or through `import`s.
+ */
+private predicate definesModule(
   ContainerOrModule container, string name, ContainerOrModule m, boolean public
 ) {
   container = m.getEnclosing() and
@@ -188,7 +190,7 @@ private predicate defines(
     container = getEnclosingModule(imp) and
     resolve(imp, m0) and
     not exists(imp.importedAs()) and
-    defines(m0, name, m, true) and
+    definesModule(m0, name, m, true) and
     public = getPublicBool(imp)
   )
   or

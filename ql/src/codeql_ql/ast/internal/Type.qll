@@ -207,10 +207,6 @@ private predicate qualifier(TypeExpr te, FileOrModule m, boolean public) {
   )
 }
 
-private boolean getPublicBool(ModuleMember m) {
-  if m.isPrivate() then result = false else result = true
-}
-
 private predicate defines(FileOrModule m, string name, Type t, boolean public) {
   exists(Class ty | t = TClass(ty) |
     getEnclosingModule(ty) = m and

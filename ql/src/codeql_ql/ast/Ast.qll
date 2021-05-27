@@ -1,6 +1,7 @@
 import ql
 private import codeql_ql.ast.internal.AstNodes
 private import codeql_ql.ast.internal.Module
+private import codeql_ql.ast.internal.Predicate
 private import codeql_ql.ast.internal.Type
 
 /** An AST node of a QL program */
@@ -82,12 +83,29 @@ class PredicateExpr extends TPredicateExpr, AstNode {
 
   override string toString() { result = "predicate" }
 
+  string getName() {
+    exists(Generated::AritylessPredicateExpr ape, Generated::LiteralId id |
+      ape.getParent() = pe and
+      id.getParent() = ape and
+      result = id.getValue()
+    )
+  }
+
+  int getArity() {
+    exists(Generated::Integer i |
+      i.getParent() = pe and
+      result = i.getValue().toInt()
+    )
+  }
+
   ModuleExpr getQualifier() {
     exists(Generated::AritylessPredicateExpr ape |
       ape.getParent() = pe and
       toGenerated(result).getParent() = ape
     )
   }
+
+  Predicate getResolvedPredicate() { resolvePredicateExpr(this, result) }
 
   override AstNode getParent() {
     this in [result.(ClasslessPredicate).getAlias(), result.(HigherOrderFormula).getInput(_)]
@@ -99,7 +117,7 @@ class PredicateExpr extends TPredicateExpr, AstNode {
 /**
  * A classless predicate.
  */
-class ClasslessPredicate extends TClasslessPredicate, Predicate, ModuleMember {
+class ClasslessPredicate extends TClasslessPredicate, Predicate, ModuleDeclaration {
   Generated::ModuleMember member;
   Generated::ClasslessPredicate pred;
 
@@ -253,7 +271,7 @@ class TypeExpr extends TType, AstNode {
 /**
  * A QL module.
  */
-class Module extends TModule, AstNode, ModuleMember {
+class Module extends TModule, ModuleDeclaration {
   Generated::Module mod;
 
   Module() { this = TModule(mod) }
@@ -267,10 +285,7 @@ class Module extends TModule, AstNode, ModuleMember {
     )
   }
 
-  /**
-   * Gets the name of the module.
-   */
-  string getName() { result = mod.getName().(Generated::ModuleName).getChild().getValue() }
+  override string getName() { result = mod.getName().(Generated::ModuleName).getChild().getValue() }
 
   /**
    * Gets a member of the module.
@@ -297,10 +312,22 @@ class ModuleMember extends TModuleMember, AstNode {
   predicate isPrivate() { none() } // TODO: Implement.
 }
 
+/** A declaration. */
+class Declaration extends TDeclaration, AstNode {
+  /** Gets the name of this declaration. */
+  string getName() { none() }
+}
+
+/** An entity that can be declared in a module. */
+class ModuleDeclaration extends TModuleDeclaration, Declaration, ModuleMember { }
+
+/** An type declaration. Either a `class` or a `newtype`. */
+class TypeDeclaration extends TTypeDeclaration, Declaration { }
+
 /**
  * A QL class.
  */
-class Class extends TClass, AstNode, ModuleMember {
+class Class extends TClass, TypeDeclaration, ModuleDeclaration {
   Generated::Dataclass cls;
 
   Class() { this = TClass(cls) }
@@ -314,10 +341,7 @@ class Class extends TClass, AstNode, ModuleMember {
     )
   }
 
-  /**
-   * Gets the name of the class.
-   */
-  string getName() { result = cls.getName().getValue() }
+  override string getName() { result = cls.getName().getValue() }
 
   /**
    * Gets the charateristic predicate for this class.
@@ -365,12 +389,12 @@ class Class extends TClass, AstNode, ModuleMember {
 /**
  * A `newtype Foo` declaration.
  */
-class NewType extends TNewType, ModuleMember {
+class NewType extends TNewType, TypeDeclaration, ModuleDeclaration {
   Generated::Datatype type;
 
   NewType() { this = TNewType(type) }
 
-  string getName() { result = type.getName().getValue() }
+  override string getName() { result = type.getName().getValue() }
 
   override string getAPrimaryQlClass() { result = "NewType" }
 
@@ -390,15 +414,14 @@ class NewType extends TNewType, ModuleMember {
 /**
  * A branch in a `newtype`.
  */
-class NewTypeBranch extends TNewTypeBranch, AstNode {
+class NewTypeBranch extends TNewTypeBranch, TypeDeclaration {
   Generated::DatatypeBranch branch;
 
   NewTypeBranch() { this = TNewTypeBranch(branch) }
 
   override string getAPrimaryQlClass() { result = "NewTypeBranch" }
 
-  /** Gets the name of this branch. */
-  string getName() { result = branch.getName().getValue() }
+  override string getName() { result = branch.getName().getValue() }
 
   /** Gets a field in this branch. */
   VarDecl getField(int i) {
