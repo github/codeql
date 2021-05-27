@@ -46,24 +46,14 @@ string interpretGuard(GuardCondition guard) { result = interpretExpr(guard) }
 string getANewCondition(BasicBlock b, BasicBlock succ) {
   exists(GuardCondition guard | b.getEnd() = guard |
     guard.isCondition() and
-    guard.getATrueSuccessor() = succ and
+    guard.controls(succ, true) and
     result = interpretGuard(guard)
   )
   or
   exists(GuardCondition guard | b.getEnd() = guard |
     guard.isCondition() and
-    guard.getAFalseSuccessor() = succ and
+    guard.controls(succ, false) and
     result = "(not " + interpretGuard(guard) + ")"
-  )
-}
-
-predicate conditionIsInvalidated(string condition, BasicBlock b) {
-  condition = getANewCondition(_, _) and
-  exists(Assignment assign, string var |
-    assign = b.getANode() and
-    var = assign.getLValue().(Access).getTarget().getName()
-  |
-    condition = var
   )
 }
 
@@ -87,10 +77,11 @@ string getACondition(ControlFlowNode n) {
 }
 
 string getCondition(BasicBlock b) {
-  exists(int n | n = count(getACondition(b.getANode())) |
-    n = 1 and result = getACondition(b.getANode())
+  exists(int n | n = count(string cond | fwdFlow(b, cond)) |
+    n = 1 and fwdFlow(b, result)
     or
-    n > 1 and result = "(and " + concat(getACondition(b.getANode()), " ") + ")"
+    n > 1 and
+    result = "(and " + concat(string cond | fwdFlow(b, cond) | cond, " ") + ")"
   )
 }
 
@@ -100,8 +91,7 @@ predicate fwdFlow(BasicBlock b, string condition) {
   exists(BasicBlock pred, string predCondition |
     b = pred.getASuccessor() and
     fwdFlow(pred, predCondition) and
-    condition = [predCondition, getANewCondition(pred, b)] and
-    not conditionIsInvalidated(condition, pred)
+    condition = [predCondition, getANewCondition(pred, b)]
   )
 }
 
