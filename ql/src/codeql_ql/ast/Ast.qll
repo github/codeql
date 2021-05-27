@@ -212,6 +212,8 @@ class Type extends TType, AstNode {
     result = super.getParent()
     or
     result.(InlineCast).getType() = this
+    or
+    result.(Class).getAliasType() = this
   }
 }
 
@@ -317,6 +319,11 @@ class Class extends TClass, AstNode, ModuleMember {
    * That is: a type after the `extends` keyword.
    */
   Type getASuperType() { toGenerated(result) = cls.getChild(_) }
+
+  /** Gets the type that this class is defined to be an alias of. */
+  Type getAliasType() {
+    toGenerated(result) = cls.getChild(_).(Generated::TypeAliasBody).getChild()
+  }
 }
 
 /**
