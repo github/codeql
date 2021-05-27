@@ -64,8 +64,8 @@ class TFormula =
 class TBinOpExpr = TAddSubExpr or TMulDivModExpr;
 
 class TExpr =
-  TBinOpExpr or TLiteral or TAggregate or TExprAggregate or TIdentifier or TInlineCast or TCall or TUnaryExpr or
-      TExprAnnotation or TDontCare or TRange or TSet;
+  TBinOpExpr or TLiteral or TAggregate or TExprAggregate or TIdentifier or TInlineCast or TCall or
+      TUnaryExpr or TExprAnnotation or TDontCare or TRange or TSet;
 
 class TCall = TPredicateCall or TMemberCall or TNoneCall or TAnyCall;
 
