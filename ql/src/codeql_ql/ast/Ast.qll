@@ -753,6 +753,22 @@ class InstanceOf extends TInstanceOf, Formula {
   override string getAPrimaryQlClass() { result = "InstanceOf" }
 }
 
+class HigherOrderFormula extends THigherOrderFormula, Formula {
+  Generated::HigherOrderTerm hop;
+
+  HigherOrderFormula() { this = THigherOrderFormula(hop) }
+
+  PredicateExpr getInput(int i) { toGenerated(result) = hop.getChild(i).(Generated::PredicateExpr) }
+
+  private int getNumInputs() { result = 1 + max(int i | exists(this.getInput(i))) }
+
+  Expr getArgument(int i) { toGenerated(result) = hop.getChild(i + getNumInputs()) }
+
+  string getName() { result = hop.getName().getValue() }
+
+  override string getAPrimaryQlClass() { result = "HigherOrderFormula" }
+}
+
 /** An aggregate expression, such as `count` or `sum`. */
 class Aggregate extends TAggregate, Expr {
   Generated::Aggregate agg;
