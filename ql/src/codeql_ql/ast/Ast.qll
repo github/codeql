@@ -706,23 +706,27 @@ class Forex extends Quantifier {
   override string getAPrimaryQlClass() { result = "Forex" }
 }
 
+/** A conditional formula, of the form  `if a then b else c`. */
 class IfFormula extends TIfFormula, Formula {
   Generated::IfTerm ifterm;
 
   IfFormula() { this = TIfFormula(ifterm) }
 
-  /** Gets the condition of this if formula. */
+  /** Gets the condition (the `if` part) of this formula. */
   Formula getCondition() { toGenerated(result) = ifterm.getCond() }
 
-  /** Gets the then part of this if formula. */
+  /** Gets the `then` part of this formula. */
   Formula getThenPart() { toGenerated(result) = ifterm.getFirst() }
 
-  /** Gets the else part of this if formula. */
+  /** Gets the `else` part of this formula. */
   Formula getElsePart() { toGenerated(result) = ifterm.getSecond() }
 
   override string getAPrimaryQlClass() { result = "IfFormula" }
 }
 
+/**
+ * An implication formula, of the form `foo implies bar`.
+ */
 class Implication extends TImplication, Formula {
   Generated::Implication imp;
 
@@ -737,6 +741,9 @@ class Implication extends TImplication, Formula {
   override string getAPrimaryQlClass() { result = "Implication" }
 }
 
+/**
+ * A type check formula, of the form `foo instanceof bar`.
+ */
 class InstanceOf extends TInstanceOf, Formula {
   Generated::InstanceOf inst;
 
