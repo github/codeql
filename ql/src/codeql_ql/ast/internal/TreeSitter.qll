@@ -123,6 +123,11 @@ module Generated {
     override AstNode getAFieldOrChild() { as_expr_child(this, _, result) }
   }
 
+  AsExpr childThing(int i, AstNode child) {
+    result.getChild(i) = child and
+    i != 0
+  }
+
   class AsExprs extends @as_exprs, AstNode {
     override string getAPrimaryQlClass() { result = "AsExprs" }
 
@@ -344,11 +349,15 @@ module Generated {
   class ExprAggregateBody extends @expr_aggregate_body, AstNode {
     override string getAPrimaryQlClass() { result = "ExprAggregateBody" }
 
-    override Location getLocation() { expr_aggregate_body_def(this, result) }
+    override Location getLocation() { expr_aggregate_body_def(this, _, result) }
 
-    AstNode getChild(int i) { expr_aggregate_body_child(this, i, result) }
+    AsExprs getAsExprs() { expr_aggregate_body_def(this, result, _) }
 
-    override AstNode getAFieldOrChild() { expr_aggregate_body_child(this, _, result) }
+    OrderBys getOrderBys() { expr_aggregate_body_order_bys(this, result) }
+
+    override AstNode getAFieldOrChild() {
+      expr_aggregate_body_def(this, result, _) or expr_aggregate_body_order_bys(this, result)
+    }
   }
 
   class ExprAnnotation extends @expr_annotation, AstNode {
@@ -392,9 +401,20 @@ module Generated {
 
     override Location getLocation() { full_aggregate_body_def(this, result) }
 
-    AstNode getChild(int i) { full_aggregate_body_child(this, i, result) }
+    AsExprs getAsExprs() { full_aggregate_body_as_exprs(this, result) }
 
-    override AstNode getAFieldOrChild() { full_aggregate_body_child(this, _, result) }
+    AstNode getGuard() { full_aggregate_body_guard(this, result) }
+
+    OrderBys getOrderBys() { full_aggregate_body_order_bys(this, result) }
+
+    VarDecl getChild(int i) { full_aggregate_body_child(this, i, result) }
+
+    override AstNode getAFieldOrChild() {
+      full_aggregate_body_as_exprs(this, result) or
+      full_aggregate_body_guard(this, result) or
+      full_aggregate_body_order_bys(this, result) or
+      full_aggregate_body_child(this, _, result)
+    }
   }
 
   class HigherOrderTerm extends @higher_order_term, AstNode {
@@ -746,9 +766,20 @@ module Generated {
 
     override Location getLocation() { quantified_def(this, result) }
 
+    AstNode getExpr() { quantified_expr(this, result) }
+
+    AstNode getFormula() { quantified_formula(this, result) }
+
+    AstNode getRange() { quantified_range(this, result) }
+
     AstNode getChild(int i) { quantified_child(this, i, result) }
 
-    override AstNode getAFieldOrChild() { quantified_child(this, _, result) }
+    override AstNode getAFieldOrChild() {
+      quantified_expr(this, result) or
+      quantified_formula(this, result) or
+      quantified_range(this, result) or
+      quantified_child(this, _, result)
+    }
   }
 
   class Quantifier extends @token_quantifier, Token {
@@ -894,9 +925,17 @@ module Generated {
 
     override Location getLocation() { unqual_agg_body_def(this, result) }
 
-    AstNode getChild(int i) { unqual_agg_body_child(this, i, result) }
+    AstNode getAsExprs(int i) { unqual_agg_body_as_exprs(this, i, result) }
 
-    override AstNode getAFieldOrChild() { unqual_agg_body_child(this, _, result) }
+    AstNode getGuard() { unqual_agg_body_guard(this, result) }
+
+    VarDecl getChild(int i) { unqual_agg_body_child(this, i, result) }
+
+    override AstNode getAFieldOrChild() {
+      unqual_agg_body_as_exprs(this, _, result) or
+      unqual_agg_body_guard(this, result) or
+      unqual_agg_body_child(this, _, result)
+    }
   }
 
   class VarDecl extends @var_decl, AstNode {
