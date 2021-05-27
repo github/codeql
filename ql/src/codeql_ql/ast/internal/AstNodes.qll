@@ -37,13 +37,18 @@ newtype TAstNode =
     not agg.getChild(_) instanceof Generated::FullAggregateBody
   } or
   TNegation(Generated::Negation neg) or
+  TIfFormula(Generated::IfTerm ifterm) or
+  TImplication(Generated::Implication impl) or
+  TInstanceOf(Generated::InstanceOf inst) or
   TAddExpr(Generated::AddExpr addexp) or
   TLiteral(Generated::Literal lit) or
   TUnaryExpr(Generated::UnaryExpr unaryexpr) or
   TDontCare(Generated::Underscore dontcare) or
   TModuleExpr(Generated::ModuleExpr me)
 
-class TFormula = TDisjunction or TConjunction or TComparisonFormula or TQuantifier or TNegation;
+class TFormula =
+  TDisjunction or TConjunction or TComparisonFormula or TQuantifier or TNegation or TIfFormula or
+      TImplication or TInstanceOf;
 
 class TBinOpExpr = TAddExpr;
 
@@ -59,7 +64,12 @@ Generated::AstNode toGeneratedFormula(AST::AstNode n) {
   n = TComparisonFormula(result) or
   n = TComparisonOp(result) or
   n = TQuantifier(result) or
-  n = TNegation(result)
+  n = TAggregate(result) or
+  n = TIdentifier(result) or
+  n = TNegation(result) or
+  n = TIfFormula(result) or
+  n = TImplication(result) or
+  n = TInstanceOf(result)
 }
 
 Generated::AstNode toGeneratedExpr(AST::AstNode n) {
