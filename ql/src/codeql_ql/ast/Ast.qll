@@ -51,7 +51,7 @@ class ClasslessPredicate extends TClasslessPredicate, Predicate, ModuleMember {
 
   ClasslessPredicate() { this = TClasslessPredicate(member, pred) }
 
-  predicate isPrivate() {
+  final override predicate isPrivate() {
     member.getAFieldOrChild().(Generated::Annotation).getName().getValue() = "private"
   }
 
@@ -185,6 +185,13 @@ class Module extends TModule, AstNode, ModuleMember {
 
   override string getAPrimaryQlClass() { result = "Module" }
 
+  final override predicate isPrivate() {
+    exists(Generated::ModuleMember member |
+      mod = member.getChild(_) and
+      member.getAFieldOrChild().(Generated::Annotation).getName().getValue() = "private"
+    )
+  }
+
   /**
    * Gets the name of the module.
    */
@@ -203,6 +210,9 @@ class Module extends TModule, AstNode, ModuleMember {
  */
 class ModuleMember extends TModuleMember, AstNode {
   override AstNode getParent() { result.(Module).getAMember() = this }
+
+  /** Holds if this member is declared as `private`. */
+  predicate isPrivate() { none() }
 }
 
 /**
@@ -214,6 +224,13 @@ class Class extends TClass, AstNode, ModuleMember {
   Class() { this = TClass(cls) }
 
   override string getAPrimaryQlClass() { result = "Class" }
+
+  final override predicate isPrivate() {
+    exists(Generated::ModuleMember member |
+      cls = member.getChild(_) and
+      member.getAFieldOrChild().(Generated::Annotation).getName().getValue() = "private"
+    )
+  }
 
   /**
    * Gets the name of the class.
@@ -268,6 +285,13 @@ class NewType extends TNewType, ModuleMember {
   string getName() { result = type.getName().getValue() }
 
   override string getAPrimaryQlClass() { result = "DataType" }
+
+  final override predicate isPrivate() {
+    exists(Generated::ModuleMember member |
+      type = member.getChild(_) and
+      member.getAFieldOrChild().(Generated::Annotation).getName().getValue() = "private"
+    )
+  }
 
   NewTypeBranch getABranch() { toGenerated(result) = type.getChild().getChild(_) }
 }
@@ -330,7 +354,13 @@ class Import extends TImport, ModuleMember {
   string getQualifiedName(int i) {
     result = imp.getChild(0).(Generated::ImportModuleExpr).getChild().getName(i).getValue()
   }
-  // TODO: private modifier.
+
+  final override predicate isPrivate() {
+    exists(Generated::ModuleMember member |
+      imp = member.getChild(_) and
+      member.getAFieldOrChild().(Generated::Annotation).getName().getValue() = "private"
+    )
+  }
 }
 
 /** A formula, such as `x = 6 and y < 5`. */
