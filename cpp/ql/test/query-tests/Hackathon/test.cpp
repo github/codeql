@@ -1,60 +1,70 @@
 void start();
 void end();
 
-// void test1(bool b) {
-//   if(b) {
-//     start();
-//   }
+void test1(bool b) {
+  if(b) {
+    start();
+  }
 
-//   if(b) {
-//     end(); // BAD
-//   }
-// }
-
-bool getAnotherBool();
+  if(b) {
+    end(); // BAD
+  }
+}
 
 void test2(bool b) {
   if(b) {
     start();
   }
 
-  b = getAnotherBool();
-
   if(!b) {
-    end(); // GOOD [FALSE POSITIVE]
+    end(); // GOOD
   }
 }
 
-// void test3(bool b) {
-//   if(b) { }
-//   else {
-//     start();
-//   }
+void test3(bool b) {
+  if(b) { }
+  else {
+    start();
+  }
 
-//   if(!b) {
-//     end(); // BAD
-//   }
-// }
+  if(!b) {
+    end(); // BAD
+  }
+}
 
-// void test4(bool b) {
-//   if(b) {
-//     start();
-//   }
+void test4(bool b) {
+  if(b) {
+    start();
+  }
 
-//   if(!b) { }
-//   else {
-//     end(); // BAD
-//   }
-// }
+  if(!b) { }
+  else {
+    end(); // BAD
+  }
+}
 
-// void test5(bool b) {
-//   if(b) { }
-//   else {
-//     start();
-//   }
+void test5(bool b) {
+  if(b) { }
+  else {
+    start();
+  }
 
-//   if(!b) { }
-//   else {
-//     end(); // GOOD [FALSE POSITIVE]
-//   }
-// }
+  if(!b) { }
+  else {
+    end(); // GOOD
+  }
+}
+
+bool getUnknownBool();
+
+void test2_with_reassign(bool b) {
+  if(b) {
+    start();
+  }
+
+  b = getUnknownBool();
+
+  if(!b) {
+    end(); // BAD
+  }
+}
