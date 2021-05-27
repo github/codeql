@@ -13,6 +13,7 @@ private import semmle.python.frameworks.Fabric
 private import semmle.python.frameworks.Flask
 private import semmle.python.frameworks.Idna
 private import semmle.python.frameworks.Invoke
+private import semmle.python.frameworks.Multidict
 private import semmle.python.frameworks.MysqlConnectorPython
 private import semmle.python.frameworks.MySQLdb
 private import semmle.python.frameworks.Psycopg2

@@ -10,6 +10,7 @@ private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.internal.PoorMansFunctionResolution
+private import semmle.python.frameworks.Multidict
 
 /**
  * INTERNAL: Do not use.
@@ -241,5 +242,10 @@ module AiohttpWebModel {
     }
   }
 
-
+  class AiohttpRequestMultiDictProxyInstances extends Multidict::MultiDictProxy::InstanceSource {
+    AiohttpRequestMultiDictProxyInstances() {
+      this.(DataFlow::AttrRead).getObject() = Request::instance() and
+      this.(DataFlow::AttrRead).getAttributeName() in ["query", "headers"]
+    }
+  }
 }

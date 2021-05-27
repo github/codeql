@@ -32,8 +32,8 @@ async def test_taint(request: web.Request): # $ requestHandler
         request.query, # $ tainted
         request.query["key"], # $ tainted
         request.query.get("key"), # $ tainted
-        request.query.getone("key"), # $ MISSING: tainted
-        request.query.getall("key"), # $ MISSING: tainted
+        request.query.getone("key"), # $ tainted
+        request.query.getall("key"), # $ tainted
         request.query.keys(), # $ MISSING: tainted
         request.query.values(), # $ tainted
         request.query.items(), # $ tainted
@@ -47,7 +47,7 @@ async def test_taint(request: web.Request): # $ requestHandler
         # an instance of the right class, and have the actual taint_test for that in a
         # different file!
         request.headers, # $ tainted
-        request.headers.getone("key"), # $ MISSING: tainted
+        request.headers.getone("key"), # $ tainted
 
         # https://docs.python.org/3/library/asyncio-protocol.html#asyncio-transport
         # TODO
