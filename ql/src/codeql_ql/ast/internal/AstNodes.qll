@@ -21,9 +21,21 @@ newtype TAstNode =
   TComparisonFormula(Generated::CompTerm comp) or
   TComparisonOp(Generated::Compop op) or
   TQuantifier(Generated::Quantified quant) or
-  TAggregate(Generated::Aggregate agg) or
+  TAggregate(Generated::Aggregate agg) { agg.getChild(_) instanceof Generated::FullAggregateBody } or
   TIdentifier(Generated::Variable var) or
   TAsExpr(Generated::AsExpr asExpr) or
+  TPredicateCall(Generated::CallOrUnqualAggExpr call) or
+  TMemberCall(Generated::QualifiedExpr expr) {
+    not expr.getChild(_).(Generated::QualifiedRhs).getChild(_) instanceof Generated::TypeExpr
+  } or
+  TInlineCast(Generated::QualifiedExpr expr) {
+    expr.getChild(_).(Generated::QualifiedRhs).getChild(_) instanceof Generated::TypeExpr
+  } or
+  TNoneCall(Generated::SpecialCall call) or
+  TAnyCall(Generated::Aggregate agg) {
+    "any" = agg.getChild(0).(Generated::AggId).getValue() and
+    not agg.getChild(_) instanceof Generated::FullAggregateBody
+  } or
   TNegation(Generated::Negation neg) or
   TAddExpr(Generated::AddExpr addexp) or
   TLiteral(Generated::Literal lit) or
@@ -35,7 +47,11 @@ class TFormula = TDisjunction or TConjunction or TComparisonFormula or TQuantifi
 
 class TBinOpExpr = TAddExpr;
 
-class TExpr = TBinOpExpr or TLiteral or TAggregate or TIdentifier or TUnaryExpr or TDontCare;
+class TExpr =
+  TBinOpExpr or TLiteral or TAggregate or TIdentifier or TInlineCast or TCall or TUnaryExpr or
+      TDontCare;
+
+class TCall = TPredicateCall or TMemberCall or TNoneCall or TAnyCall;
 
 Generated::AstNode toGeneratedFormula(AST::AstNode n) {
   n = TConjunction(result) or
@@ -88,6 +104,16 @@ Generated::AstNode toGenerated(AST::AstNode n) {
   n = TAsExpr(result)
   or
   n = TModuleExpr(result)
+  or
+  n = TPredicateCall(result)
+  or
+  n = TMemberCall(result)
+  or
+  n = TInlineCast(result)
+  or
+  n = TNoneCall(result)
+  or
+  n = TAnyCall(result)
 }
 
 class TPredicate = TCharPred or TClasslessPredicate or TClassPredicate;

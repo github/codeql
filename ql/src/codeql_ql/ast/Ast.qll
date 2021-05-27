@@ -220,7 +220,7 @@ class ModuleMember extends TModuleMember, AstNode {
   override AstNode getParent() { result.(Module).getAMember() = this }
 
   /** Holds if this member is declared as `private`. */
-  predicate isPrivate() { none() }
+  predicate isPrivate() { none() } // TODO: Implement.
 }
 
 /**
@@ -328,6 +328,81 @@ class NewTypeBranch extends TNewTypeBranch, AstNode {
 
   /** Gets the body of this branch. */
   Formula getBody() { toGenerated(result) = branch.getChild(_).(Generated::Body).getChild() }
+}
+
+class Call extends TCall, Expr {
+  Expr getArgument(int i) {
+    none() // overriden in sublcasses.
+  }
+}
+
+class PredicateCall extends TPredicateCall, Call {
+  Generated::CallOrUnqualAggExpr expr;
+
+  PredicateCall() { this = TPredicateCall(expr) }
+
+  override Expr getArgument(int i) {
+    exists(Generated::CallBody body | body.getParent() = expr |
+      toGenerated(result) = body.getChild(i)
+    )
+  }
+
+  override string getAPrimaryQlClass() { result = "PredicateCall" }
+
+  string getPredicateName() {
+    result = expr.getChild(0).(Generated::AritylessPredicateExpr).getName().getValue()
+  }
+}
+
+class MemberCall extends TMemberCall, Call {
+  Generated::QualifiedExpr expr;
+
+  MemberCall() { this = TMemberCall(expr) }
+
+  override string getAPrimaryQlClass() { result = "MemberCall" }
+
+  string getMemberName() {
+    result = expr.getChild(_).(Generated::QualifiedRhs).getName().getValue()
+  }
+
+  override Expr getArgument(int i) {
+    result =
+      rank[i + 1](Expr e, int index |
+        toGenerated(e) = expr.getChild(_).(Generated::QualifiedRhs).getChild(index)
+      |
+        e order by index
+      )
+  }
+
+  Expr getBase() { toGenerated(result) = expr.getChild(0) }
+}
+
+class NoneCall extends TNoneCall, Call {
+  Generated::SpecialCall call;
+
+  NoneCall() { this = TNoneCall(call) }
+
+  override string getAPrimaryQlClass() { result = "NoneCall" }
+}
+
+class AnyCall extends TAnyCall, Call {
+  Generated::Aggregate agg;
+
+  AnyCall() { this = TAnyCall(agg) }
+
+  override string getAPrimaryQlClass() { result = "AnyCall" }
+}
+
+class InlineCast extends TInlineCast, Expr {
+  Generated::QualifiedExpr expr;
+
+  InlineCast() { this = TInlineCast(expr) }
+
+  override string getAPrimaryQlClass() { result = "InlineCast" }
+
+  Type getType() { toGenerated(result) = expr.getChild(_).(Generated::QualifiedRhs).getChild(_) }
+
+  Expr getBase() { toGenerated(result) = expr.getChild(0) }
 }
 
 /**
@@ -588,6 +663,7 @@ class Rank extends Aggregate {
   Expr getRankExpr() { toGenerated(result) = agg.getChild(1) }
 }
 
+// TODO: Range and Set.
 class AsExpr extends TAsExpr, AstNode {
   Generated::AsExpr asExpr;
 
