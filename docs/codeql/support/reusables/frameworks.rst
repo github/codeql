@@ -164,6 +164,7 @@ Python built-in support
    idna, Utility library
    invoke, Utility library
    multidict, Utility library
+   yarl, Utility library
    mysql-connector-python, Database
    MySQLdb, Database
    psycopg2, Database

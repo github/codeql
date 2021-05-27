@@ -11,6 +11,7 @@ private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.internal.PoorMansFunctionResolution
 private import semmle.python.frameworks.Multidict
+private import semmle.python.frameworks.Yarl
 
 /**
  * INTERNAL: Do not use.
@@ -246,6 +247,13 @@ module AiohttpWebModel {
     AiohttpRequestMultiDictProxyInstances() {
       this.(DataFlow::AttrRead).getObject() = Request::instance() and
       this.(DataFlow::AttrRead).getAttributeName() in ["query", "headers"]
+    }
+  }
+
+  class AiohttpRequestYarlUrlInstances extends Yarl::Url::InstanceSource {
+    AiohttpRequestYarlUrlInstances() {
+      this.(DataFlow::AttrRead).getObject() = Request::instance() and
+      this.(DataFlow::AttrRead).getAttributeName() in ["url", "rel_url"]
     }
   }
 }

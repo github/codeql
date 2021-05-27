@@ -136,59 +136,60 @@ async def test_taint(request: web.Request): # $ requestHandler
     import yarl
 
     ensure_tainted(
-        request.url.user, # $ MISSING: tainted
-        request.url.raw_user, # $ MISSING: tainted
+        # see https://yarl.readthedocs.io/en/stable/api.html#yarl.URL
+        request.url.user, # $ tainted
+        request.url.raw_user, # $ tainted
 
-        request.url.password, # $ MISSING: tainted
-        request.url.raw_password, # $ MISSING: tainted
+        request.url.password, # $ tainted
+        request.url.raw_password, # $ tainted
 
-        request.url.host, # $ MISSING: tainted
-        request.url.raw_host, # $ MISSING: tainted
+        request.url.host, # $ tainted
+        request.url.raw_host, # $ tainted
 
-        request.url.port, # $ MISSING: tainted
-        request.url.explicit_port, # $ MISSING: tainted
+        request.url.port, # $ tainted
+        request.url.explicit_port, # $ tainted
 
-        request.url.authority, # $ MISSING: tainted
-        request.url.raw_authority, # $ MISSING: tainted
+        request.url.authority, # $ tainted
+        request.url.raw_authority, # $ tainted
 
-        request.url.path, # $ MISSING: tainted
-        request.url.raw_path, # $ MISSING: tainted
+        request.url.path, # $ tainted
+        request.url.raw_path, # $ tainted
 
-        request.url.path_qs, # $ MISSING: tainted
-        request.url.raw_path_qs, # $ MISSING: tainted
+        request.url.path_qs, # $ tainted
+        request.url.raw_path_qs, # $ tainted
 
-        request.url.query_string, # $ MISSING: tainted
-        request.url.raw_query_string, # $ MISSING: tainted
+        request.url.query_string, # $ tainted
+        request.url.raw_query_string, # $ tainted
 
-        request.url.fragment, # $ MISSING: tainted
-        request.url.raw_fragment, # $ MISSING: tainted
+        request.url.fragment, # $ tainted
+        request.url.raw_fragment, # $ tainted
 
-        request.url.parts, # $ MISSING: tainted
-        request.url.raw_parts, # $ MISSING: tainted
+        request.url.parts, # $ tainted
+        request.url.raw_parts, # $ tainted
 
-        request.url.name, # $ MISSING: tainted
-        request.url.raw_name, # $ MISSING: tainted
+        request.url.name, # $ tainted
+        request.url.raw_name, # $ tainted
 
         # multidict.MultiDictProxy[str]
-        request.url.query, # $ MISSING: tainted
-        request.url.query.getone("key"), # $ MISSING: tainted
+        request.url.query, # $ tainted
+        request.url.query.getone("key"), # $ tainted
 
-        request.url.with_scheme("foo"), # $ MISSING: tainted
-        request.url.with_user("foo"), # $ MISSING: tainted
-        request.url.with_password("foo"), # $ MISSING: tainted
-        request.url.with_host("foo"), # $ MISSING: tainted
-        request.url.with_port("foo"), # $ MISSING: tainted
-        request.url.with_path("foo"), # $ MISSING: tainted
-        request.url.with_query({"foo": 42}), # $ MISSING: tainted
-        request.url.with_query(foo=42), # $ MISSING: tainted
-        request.url.update_query({"foo": 42}), # $ MISSING: tainted
-        request.url.update_query(foo=42), # $ MISSING: tainted
-        request.url.with_fragment("foo"), # $ MISSING: tainted
-        request.url.with_name("foo"), # $ MISSING: tainted
+        request.url.with_scheme("foo"), # $ tainted
+        request.url.with_user("foo"), # $ tainted
+        request.url.with_password("foo"), # $ tainted
+        request.url.with_host("foo"), # $ tainted
+        request.url.with_port("foo"), # $ tainted
+        request.url.with_path("foo"), # $ tainted
+        request.url.with_query({"foo": 42}), # $ tainted
+        request.url.with_query(foo=42), # $ tainted
+        request.url.update_query({"foo": 42}), # $ tainted
+        request.url.update_query(foo=42), # $ tainted
+        request.url.with_fragment("foo"), # $ tainted
+        request.url.with_name("foo"), # $ tainted
 
         request.url.join(yarl.URL("wat.html")), # $ tainted
 
-        request.url.human_repr(), # $ MISSING: tainted
+        request.url.human_repr(), # $ tainted
     )
 
 
