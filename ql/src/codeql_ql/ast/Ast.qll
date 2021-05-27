@@ -620,6 +620,53 @@ class Forex extends Quantifier {
   override string getAPrimaryQlClass() { result = "Forex" }
 }
 
+class IfFormula extends TIfFormula, Formula {
+  Generated::IfTerm ifterm;
+
+  IfFormula() { this = TIfFormula(ifterm) }
+
+  /** Gets the condition of this if formula. */
+  Formula getCondition() { toGenerated(result) = ifterm.getCond() }
+
+  /** Gets the then part of this if formula. */
+  Formula getThenPart() { toGenerated(result) = ifterm.getFirst() }
+
+  /** Gets the else part of this if formula. */
+  Formula getElsePart() { toGenerated(result) = ifterm.getSecond() }
+
+  override string getAPrimaryQlClass() { result = "IfFormula" }
+}
+
+class Implication extends TImplication, Formula {
+  Generated::Implication imp;
+
+  Implication() { this = TImplication(imp) }
+
+  /** Gets the left operand of this implication. */
+  Formula getLeftOperand() { toGenerated(result) = imp.getLeft() }
+
+  /** Gets the right operand of this implication. */
+  Formula getRightOperand() { toGenerated(result) = imp.getRight() }
+
+  override string getAPrimaryQlClass() { result = "Implication" }
+}
+
+class InstanceOf extends TInstanceOf, Formula {
+  Generated::InstanceOf inst;
+
+  InstanceOf() { this = TInstanceOf(inst) }
+
+  /** Gets the expression being checked. */
+  Expr getExpr() { toGenerated(result) = inst.getChild(0) }
+
+  /** Gets the reference to the type being checked. */
+  Type getType() { toGenerated(result) = inst.getChild(1) }
+
+  /** Gets the type being checked. */
+  //QLType getType() { result = getTypeRef().getType() }
+  override string getAPrimaryQlClass() { result = "InstanceOf" }
+}
+
 class Aggregate extends TAggregate, Expr {
   Generated::Aggregate agg;
   Generated::FullAggregateBody body;
