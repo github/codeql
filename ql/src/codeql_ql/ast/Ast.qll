@@ -298,7 +298,7 @@ class NewType extends TNewType, ModuleMember {
 
   string getName() { result = type.getName().getValue() }
 
-  override string getAPrimaryQlClass() { result = "DataType" }
+  override string getAPrimaryQlClass() { result = "NewType" }
 
   final override predicate isPrivate() {
     exists(Generated::ModuleMember member |
@@ -334,6 +334,8 @@ class NewTypeBranch extends TNewTypeBranch, AstNode {
 
   /** Gets the body of this branch. */
   Formula getBody() { toGenerated(result) = branch.getChild(_).(Generated::Body).getChild() }
+
+  override NewType getParent() { result.getABranch() = this }
 }
 
 class Call extends TCall, Expr {
@@ -466,6 +468,8 @@ class Formula extends TFormula, AstNode {
     result.(Predicate).getBody() = this
     or
     result.(Aggregate).getGuard() = this
+    or
+    result.(NewTypeBranch).getBody() = this
   }
 }
 
