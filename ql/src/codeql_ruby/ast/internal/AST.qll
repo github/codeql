@@ -425,89 +425,51 @@ private module Cached {
   /** Gets the `i`th synthesized child of `parent`. */
   cached
   AST::AstNode getSynthChild(AST::AstNode parent, int i) {
-    exists(SynthKind kind | mkSynthChild(kind, parent, i) |
-      kind = AddExprKind() and
-      result = TAddExprSynth(parent, i)
-      or
-      kind = AssignExprKind() and
-      result = TAssignExprSynth(parent, i)
-      or
-      kind = BitwiseAndExprKind() and
-      result = TBitwiseAndExprSynth(parent, i)
-      or
-      kind = BitwiseOrExprKind() and
-      result = TBitwiseOrExprSynth(parent, i)
-      or
-      kind = BitwiseXorExprKind() and
-      result = TBitwiseXorExprSynth(parent, i)
-      or
-      exists(AST::ClassVariable v |
-        kind = ClassVariableAccessKind(v) and
-        result = TClassVariableAccessSynth(parent, i, v)
-      )
-      or
-      kind = DivExprKind() and
-      result = TDivExprSynth(parent, i)
-      or
-      kind = ElementReferenceKind() and
-      result = TElementReferenceSynth(parent, i)
-      or
-      kind = ExponentExprKind() and
-      result = TExponentExprSynth(parent, i)
-      or
-      exists(AST::GlobalVariable v |
-        kind = GlobalVariableAccessKind(v) and
-        result = TGlobalVariableAccessSynth(parent, i, v)
-      )
-      or
-      exists(AST::InstanceVariable v |
-        kind = InstanceVariableAccessKind(v) and
-        result = TInstanceVariableAccessSynth(parent, i, v)
-      )
-      or
-      exists(int value |
-        kind = IntegerLiteralKind(value) and
-        result = TIntegerLiteralSynth(parent, i, value)
-      )
-      or
-      kind = LShiftExprKind() and
-      result = TLShiftExprSynth(parent, i)
-      or
-      exists(AST::LocalVariable v | result = TLocalVariableAccessSynth(parent, i, v) |
-        kind = LocalVariableAccessRealKind(v)
-        or
-        kind = LocalVariableAccessSynthKind(v)
-      )
-      or
-      kind = LogicalAndExprKind() and
-      result = TLogicalAndExprSynth(parent, i)
-      or
-      kind = LogicalOrExprKind() and
-      result = TLogicalOrExprSynth(parent, i)
-      or
-      exists(string name |
-        kind = MethodCallKind(name) and
-        result = TMethodCallSynth(parent, i, name)
-      )
-      or
-      kind = ModuloExprKind() and
-      result = TModuloExprSynth(parent, i)
-      or
-      kind = MulExprKind() and
-      result = TMulExprSynth(parent, i)
-      or
-      kind = RShiftExprKind() and
-      result = TRShiftExprSynth(parent, i)
-      or
-      kind = SelfKind() and
-      result = TSelfSynth(parent, i)
-      or
-      kind = StmtSequenceKind() and
-      result = TStmtSequenceSynth(parent, i)
-      or
-      kind = SubExprKind() and
-      result = TSubExprSynth(parent, i)
-    )
+    result = TAddExprSynth(parent, i)
+    or
+    result = TAssignExprSynth(parent, i)
+    or
+    result = TBitwiseAndExprSynth(parent, i)
+    or
+    result = TBitwiseOrExprSynth(parent, i)
+    or
+    result = TBitwiseXorExprSynth(parent, i)
+    or
+    result = TClassVariableAccessSynth(parent, i, _)
+    or
+    result = TDivExprSynth(parent, i)
+    or
+    result = TElementReferenceSynth(parent, i)
+    or
+    result = TExponentExprSynth(parent, i)
+    or
+    result = TGlobalVariableAccessSynth(parent, i, _)
+    or
+    result = TInstanceVariableAccessSynth(parent, i, _)
+    or
+    result = TIntegerLiteralSynth(parent, i, _)
+    or
+    result = TLShiftExprSynth(parent, i)
+    or
+    result = TLocalVariableAccessSynth(parent, i, _)
+    or
+    result = TLogicalAndExprSynth(parent, i)
+    or
+    result = TLogicalOrExprSynth(parent, i)
+    or
+    result = TMethodCallSynth(parent, i, _)
+    or
+    result = TModuloExprSynth(parent, i)
+    or
+    result = TMulExprSynth(parent, i)
+    or
+    result = TRShiftExprSynth(parent, i)
+    or
+    result = TSelfSynth(parent, i)
+    or
+    result = TStmtSequenceSynth(parent, i)
+    or
+    result = TSubExprSynth(parent, i)
   }
 
   /**
