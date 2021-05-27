@@ -81,8 +81,8 @@ nodes
 | Foo.qll:14:3:20:13 | Disjunction | semmle.order | 37 |
 | Foo.qll:14:3:22:16 | Disjunction | semmle.label | [Disjunction] Disjunction |
 | Foo.qll:14:3:22:16 | Disjunction | semmle.order | 37 |
-| Foo.qll:14:3:24:7 | Disjunction | semmle.label | [Disjunction] Disjunction |
-| Foo.qll:14:3:24:7 | Disjunction | semmle.order | 37 |
+| Foo.qll:14:3:24:15 | Disjunction | semmle.label | [Disjunction] Disjunction |
+| Foo.qll:14:3:24:15 | Disjunction | semmle.order | 37 |
 | Foo.qll:14:9:14:9 | Identifier | semmle.label | [Identifier] Identifier |
 | Foo.qll:14:9:14:9 | Identifier | semmle.order | 43 |
 | Foo.qll:16:3:16:7 | String | semmle.label | [String] String |
@@ -139,8 +139,8 @@ nodes
 | Foo.qll:22:11:22:13 | Type | semmle.order | 69 |
 | Foo.qll:22:11:22:15 | VarDecl | semmle.label | [VarDecl] VarDecl |
 | Foo.qll:22:11:22:15 | VarDecl | semmle.order | 69 |
-| Foo.qll:24:3:24:7 | AnyCall | semmle.label | [AnyCall] AnyCall |
-| Foo.qll:24:3:24:7 | AnyCall | semmle.order | 71 |
+| Foo.qll:24:7:24:11 | AnyCall | semmle.label | [AnyCall] AnyCall |
+| Foo.qll:24:7:24:11 | AnyCall | semmle.order | 71 |
 | printAst.ql:1:1:1:28 | Import | semmle.label | [Import] Import |
 | printAst.ql:1:1:1:28 | Import | semmle.order | 72 |
 edges
@@ -206,8 +206,8 @@ edges
 | Foo.qll:10:69:10:84 | MemberCall | Foo.qll:10:69:10:73 | Identifier | semmle.order | 32 |
 | Foo.qll:13:1:25:1 | ClasslessPredicate | Foo.qll:13:17:13:21 | VarDecl | semmle.label | 1 |
 | Foo.qll:13:1:25:1 | ClasslessPredicate | Foo.qll:13:17:13:21 | VarDecl | semmle.order | 35 |
-| Foo.qll:13:1:25:1 | ClasslessPredicate | Foo.qll:14:3:24:7 | Disjunction | semmle.label | 2 |
-| Foo.qll:13:1:25:1 | ClasslessPredicate | Foo.qll:14:3:24:7 | Disjunction | semmle.order | 37 |
+| Foo.qll:13:1:25:1 | ClasslessPredicate | Foo.qll:14:3:24:15 | Disjunction | semmle.label | 2 |
+| Foo.qll:13:1:25:1 | ClasslessPredicate | Foo.qll:14:3:24:15 | Disjunction | semmle.order | 37 |
 | Foo.qll:13:17:13:21 | VarDecl | Foo.qll:13:17:13:19 | Type | semmle.label | 1 |
 | Foo.qll:13:17:13:21 | VarDecl | Foo.qll:13:17:13:19 | Type | semmle.order | 35 |
 | Foo.qll:14:3:14:10 | PredicateCall | Foo.qll:14:9:14:9 | Identifier | semmle.label | 1 |
@@ -228,10 +228,10 @@ edges
 | Foo.qll:14:3:22:16 | Disjunction | Foo.qll:14:3:20:13 | Disjunction | semmle.order | 37 |
 | Foo.qll:14:3:22:16 | Disjunction | Foo.qll:22:3:22:16 | ComparisonFormula | semmle.label | 2 |
 | Foo.qll:14:3:22:16 | Disjunction | Foo.qll:22:3:22:16 | ComparisonFormula | semmle.order | 65 |
-| Foo.qll:14:3:24:7 | Disjunction | Foo.qll:14:3:22:16 | Disjunction | semmle.label | 1 |
-| Foo.qll:14:3:24:7 | Disjunction | Foo.qll:14:3:22:16 | Disjunction | semmle.order | 37 |
-| Foo.qll:14:3:24:7 | Disjunction | Foo.qll:24:3:24:7 | AnyCall | semmle.label | 2 |
-| Foo.qll:14:3:24:7 | Disjunction | Foo.qll:24:3:24:7 | AnyCall | semmle.order | 71 |
+| Foo.qll:14:3:24:15 | Disjunction | Foo.qll:14:3:22:16 | Disjunction | semmle.label | 1 |
+| Foo.qll:14:3:24:15 | Disjunction | Foo.qll:14:3:22:16 | Disjunction | semmle.order | 37 |
+| Foo.qll:14:3:24:15 | Disjunction | Foo.qll:24:7:24:11 | AnyCall | semmle.label | 2 |
+| Foo.qll:14:3:24:15 | Disjunction | Foo.qll:24:7:24:11 | AnyCall | semmle.order | 71 |
 | Foo.qll:16:3:16:29 | ComparisonFormula | Foo.qll:16:3:16:7 | String | semmle.label | 1 |
 | Foo.qll:16:3:16:29 | ComparisonFormula | Foo.qll:16:3:16:7 | String | semmle.order | 44 |
 | Foo.qll:16:3:16:29 | ComparisonFormula | Foo.qll:16:9:16:9 | ComparisonOp | semmle.label | 2 |
