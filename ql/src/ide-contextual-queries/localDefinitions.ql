@@ -50,10 +50,18 @@ predicate resolveType(TypeExpr ref, AstNode target, string kind) {
   ref.getLocation().getFile() = getFileBySourceArchiveName(selectedSourceFile())
 }
 
+predicate resolvePredicate(PredicateExpr ref, Predicate target, string kind) {
+  target = ref.getResolvedPredicate() and
+  kind = "predicate" and
+  ref.getLocation().getFile() = getFileBySourceArchiveName(selectedSourceFile())
+}
+
 predicate resolve(Loc ref, Loc target, string kind) {
   resolveModule(ref.asAst(), target.asMod(), kind)
   or
   resolveType(ref.asAst(), target.asAst(), kind)
+  or
+  resolvePredicate(ref.asAst(), target.asAst(), kind)
 }
 
 from Loc ref, Loc target, string kind
