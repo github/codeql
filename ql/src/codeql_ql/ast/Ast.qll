@@ -1,5 +1,6 @@
 import ql
 private import codeql_ql.ast.internal.AstNodes
+private import codeql_ql.ast.internal.Module
 
 /** An AST node of a QL program */
 class AstNode extends TAstNode {
@@ -45,6 +46,21 @@ class Predicate extends TPredicate, AstNode {
   // TODO: ReturnType.
 }
 
+class PredicateExpr extends TPredicateExpr, AstNode {
+  Generated::PredicateExpr pe;
+
+  PredicateExpr() { this = TPredicateExpr(pe) }
+
+  override string toString() { result = "predicate" }
+
+  ModuleExpr getQualifier() {
+    exists(Generated::AritylessPredicateExpr ape |
+      ape.getParent() = pe and
+      toGenerated(result).getParent() = ape
+    )
+  }
+}
+
 /**
  * A classless predicate.
  */
@@ -53,6 +69,13 @@ class ClasslessPredicate extends TClasslessPredicate, Predicate, ModuleMember {
   Generated::ClasslessPredicate pred;
 
   ClasslessPredicate() { this = TClasslessPredicate(member, pred) }
+
+  final PredicateExpr getAlias() {
+    exists(Generated::PredicateAliasBody alias |
+      alias.getParent() = pred and
+      toGenerated(result).getParent() = alias
+    )
+  }
 
   final override predicate isPrivate() {
     member.getAFieldOrChild().(Generated::Annotation).getName().getValue() = "private"
@@ -342,6 +365,8 @@ class Call extends TCall, Expr {
   Expr getArgument(int i) {
     none() // overriden in sublcasses.
   }
+
+  ModuleExpr getQualifier() { none() }
 }
 
 class PredicateCall extends TPredicateCall, Call {
@@ -352,6 +377,13 @@ class PredicateCall extends TPredicateCall, Call {
   override Expr getArgument(int i) {
     exists(Generated::CallBody body | body.getParent() = expr |
       toGenerated(result) = body.getChild(i)
+    )
+  }
+
+  final override ModuleExpr getQualifier() {
+    exists(Generated::AritylessPredicateExpr ape |
+      ape.getParent() = expr and
+      toGenerated(result).getParent() = ape
     )
   }
 
@@ -413,10 +445,16 @@ class InlineCast extends TInlineCast, Expr {
   Expr getBase() { toGenerated(result) = expr.getChild(0) }
 }
 
+/** An entity that resolves to a module. */
+class ModuleRef extends AstNode, TModuleRef {
+  /** Gets the module that this entity resolves to. */
+  FileOrModule getResolvedModule() { none() }
+}
+
 /**
  * An import statement.
  */
-class Import extends TImport, ModuleMember {
+class Import extends TImport, ModuleMember, ModuleRef {
   Generated::ImportDirective imp;
 
   Import() { this = TImport(imp) }
@@ -458,6 +496,8 @@ class Import extends TImport, ModuleMember {
       member.getAFieldOrChild().(Generated::Annotation).getName().getValue() = "private"
     )
   }
+
+  final override FileOrModule getResolvedModule() { resolve(this, result) }
 }
 
 /** A formula, such as `x = 6 and y < 5`. */
@@ -817,7 +857,7 @@ class DontCare extends TDontCare, Expr {
 }
 
 /** A module expression. */
-class ModuleExpr extends TModuleExpr, AstNode {
+class ModuleExpr extends TModuleExpr, ModuleRef {
   Generated::ModuleExpr me;
 
   ModuleExpr() { this = TModuleExpr(me) }
@@ -847,6 +887,8 @@ class ModuleExpr extends TModuleExpr, AstNode {
    * is `Foo::Bar`.
    */
   ModuleExpr getQualifier() { result = TModuleExpr(me.getChild()) }
+
+  final override FileOrModule getResolvedModule() { resolveModuleExpr(this, result) }
 
   final override string toString() { result = this.getName() }
 }
