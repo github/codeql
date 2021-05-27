@@ -176,6 +176,12 @@ class Type extends TType, AstNode {
    * E.g. `DataFlow` in `DataFlow::Node`.
    */
   ModuleExpr getModule() { toGenerated(result) = type.getChild() }
+
+  override AstNode getParent() {
+    result = super.getParent()
+    or
+    result.(InlineCast).getType() = this
+  }
 }
 
 /**
@@ -707,7 +713,15 @@ class Negation extends TNegation, Formula {
 }
 
 /** An expression, such as `x+4`. */
-class Expr extends TExpr, AstNode { }
+class Expr extends TExpr, AstNode {
+  override AstNode getParent() {
+    result = super.getParent()
+    or
+    result.(Call).getArgument(_) = this
+    or
+    result.(Aggregate).getOrderBy(_) = this
+  }
+}
 
 /** A function symbol, such as `+` or `*`. */
 class FunctionSymbol extends string {
