@@ -372,7 +372,7 @@ class ComparisonOp extends TComparisonOp, AstNode {
   override string getAPrimaryQlClass() { result = "ComparisonOp" }
 }
 
-class Literal extends TLiteral, AstNode {
+class Literal extends TLiteral, Expr {
   Generated::Literal lit;
 
   Literal() { this = TLiteral(lit) }
