@@ -211,12 +211,23 @@ module AiohttpWebModel {
   private class AiohttpRequestAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
     override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
       // Methods
-      exists(string method_name | method_name in ["TODO"] |
-        // Method access (obj -> obj.meth)
-        none()
+      //
+      // TODO: When we have tools that make it easy, model these properly to handle
+      // `meth = obj.meth; meth()`. Until then, we'll use this more syntactic approach
+      // (since it allows us to at least capture the most common cases).
+      nodeFrom = Request::instance() and
+      exists(DataFlow::AttrRead attr | attr.getObject() = nodeFrom |
+        // normal methods
+        attr.getAttributeName() in ["clone", "get_extra_info"] and
+        nodeTo.(DataFlow::CallCfgNode).getFunction() = attr
         or
-        // Method call (obj.meth -> obj.meth())
-        none()
+        // async methods
+        exists(Await await, DataFlow::CallCfgNode call |
+          attr.getAttributeName() in ["read", "text", "json", "multipart", "post"] and
+          call.getFunction() = attr and
+          await.getValue() = call.asExpr() and
+          nodeTo.asExpr() = await
+        )
       )
       or
       // Attributes

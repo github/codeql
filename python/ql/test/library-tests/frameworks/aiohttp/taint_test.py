@@ -81,25 +81,25 @@ async def test_taint(request: web.Request): # $ requestHandler
         request.if_unmodified_since, # $ tainted
         request.if_range, # $ tainted
 
-        request.clone(scheme="https"), # $ MISSING: tainted
+        request.clone(scheme="https"), # $ tainted
 
         # TODO: like request.transport.get_extra_info
-        request.get_extra_info("key"), # $ MISSING: tainted
+        request.get_extra_info("key"), # $ tainted
 
         # bytes
-        await request.read(), # $ MISSING: tainted
+        await request.read(), # $ tainted
 
         # str
-        await request.text(), # $ MISSING: tainted
+        await request.text(), # $ tainted
 
         # obj
-        await request.json(), # $ MISSING: tainted
+        await request.json(), # $ tainted
 
         # aiohttp.multipart.MultipartReader
-        await request.multipart(), # $ MISSING: tainted
+        await request.multipart(), # $ tainted
 
         # multidict.MultiDictProxy[str]
-        await request.post(), # $ MISSING: tainted
+        await request.post(), # $ tainted
         (await request.post()).getone("key"), # $ MISSING: tainted
     )
 
