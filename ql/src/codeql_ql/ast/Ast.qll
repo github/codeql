@@ -24,6 +24,9 @@ class Select extends TSelect, AstNode {
   // TODO: Getters for VarDecls, Where-clause, selects.
 }
 
+/**
+ * A QL predicate.
+ */
 class Predicate extends TPredicate, AstNode {
   /**
    * Gets the body of the predicate.
@@ -31,7 +34,7 @@ class Predicate extends TPredicate, AstNode {
   Formula getBody() { none() }
 
   /**
-   * Gets the name of the predicate
+   * Gets the name of the predicate.
    */
   string getName() { none() }
 
@@ -298,6 +301,9 @@ class NewType extends TNewType, ModuleMember {
     )
   }
 
+  /**
+   * Gets a branch in this `newtype`.
+   */
   NewTypeBranch getABranch() { toGenerated(result) = type.getChild().getChild(_) }
 }
 
@@ -311,13 +317,16 @@ class NewTypeBranch extends TNewTypeBranch, AstNode {
 
   override string getAPrimaryQlClass() { result = "NewTypeBranch" }
 
+  /** Gets the name of this branch. */
   string getName() { result = branch.getName().getValue() }
 
+  /** Gets a field in this branch. */
   VarDecl getField(int i) {
     toGenerated(result) =
       rank[i](Generated::VarDecl var | var = branch.getChild(i) | var order by i)
   }
 
+  /** Gets the body of this branch. */
   Formula getBody() { toGenerated(result) = branch.getChild(_).(Generated::Body).getChild() }
 }
 
@@ -416,6 +425,9 @@ class ComparisonOp extends TComparisonOp, AstNode {
   override string getAPrimaryQlClass() { result = "ComparisonOp" }
 }
 
+/**
+ * A literal expression, such as `6` or `true` or `"foo"`.
+ */
 class Literal extends TLiteral, Expr {
   Generated::Literal lit;
 
@@ -424,23 +436,27 @@ class Literal extends TLiteral, Expr {
   override string getAPrimaryQlClass() { result = "??Literal??" }
 }
 
+/** A string literal. */
 class String extends Literal {
   String() { lit.getChild() instanceof Generated::String }
 
   override string getAPrimaryQlClass() { result = "String" }
 
+  /** Gets the string value of this literal. */
   string getValue() { result = lit.getChild().(Generated::String).getValue() }
 }
 
+/** An integer literal. */
 class Integer extends Literal {
   Integer() { lit.getChild() instanceof Generated::Integer }
 
   override string getAPrimaryQlClass() { result = "Integer" }
 
+  /** Gets the integer value of this literal. */
   int getValue() { result = lit.getChild().(Generated::Integer).getValue().toInt() }
 }
 
-/** A comparison symbol, such as `<` or `=`. */
+/** A comparison symbol, such as `"<"` or `"="`. */
 class ComparisonSymbol extends string {
   ComparisonSymbol() {
     this = "=" or
@@ -452,19 +468,25 @@ class ComparisonSymbol extends string {
   }
 }
 
+/** A comparison formula, such as `x < 3` or `y = true`. */
 class ComparisonFormula extends TComparisonFormula, Formula {
   Generated::CompTerm comp;
 
   ComparisonFormula() { this = TComparisonFormula(comp) }
 
+  /** Gets the left operand of this comparison. */
   Expr getLeftOperand() { toGenerated(result) = comp.getLeft() }
 
+  /** Gets the right operand of this comparison. */
   Expr getRightOperand() { toGenerated(result) = comp.getRight() }
 
+  /** Gets an operand of this comparison. */
   Expr getAnOperand() { result in [getLeftOperand(), getRightOperand()] }
 
+  /** Gets the operator of this comparison. */
   ComparisonOp getOperator() { toGenerated(result) = comp.getChild() }
 
+  /** Gets the symbol of this comparison (as a string). */
   ComparisonSymbol getSymbol() { result = this.getOperator().getSymbol() }
 
   override string getAPrimaryQlClass() { result = "ComparisonFormula" }
