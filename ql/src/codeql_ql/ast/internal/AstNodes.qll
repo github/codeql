@@ -49,7 +49,7 @@ newtype TAstNode =
 
 class TFormula =
   TDisjunction or TConjunction or TComparisonFormula or TQuantifier or TNegation or TIfFormula or
-      TImplication or TInstanceOf;
+      TImplication or TInstanceOf or TNoneCall or TAnyCall;
 
 class TBinOpExpr = TAddExpr;
 

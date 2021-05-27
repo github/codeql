@@ -369,7 +369,7 @@ class NewTypeBranch extends TNewTypeBranch, AstNode {
   override NewType getParent() { result.getABranch() = this }
 }
 
-class Call extends TCall, Expr {
+class Call extends TCall, AstNode {
   Expr getArgument(int i) {
     none() // overriden in sublcasses.
   }
@@ -425,7 +425,7 @@ class MemberCall extends TMemberCall, Call {
   Expr getBase() { toGenerated(result) = expr.getChild(0) }
 }
 
-class NoneCall extends TNoneCall, Call {
+class NoneCall extends TNoneCall, Call, Formula {
   Generated::SpecialCall call;
 
   NoneCall() { this = TNoneCall(call) }
