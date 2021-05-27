@@ -403,6 +403,9 @@ class Disjunction extends TDisjunction, AstNode {
   Formula getAnOperand() { toGenerated(result) in [disj.getLeft(), disj.getRight()] }
 }
 
+/**
+ * A comparison operator, such as `<` or `=`.
+ */
 class ComparisonOp extends TComparisonOp, AstNode {
   Generated::Compop op;
 
@@ -613,7 +616,7 @@ class FunctionSymbol extends string {
   FunctionSymbol() { this = "+" or this = "-" or this = "*" or this = "/" or this = "%" }
 }
 
-/** A binary operation, such as `x+3` or `y/2` */
+/** A binary operation expression, such as `x+3` or `y/2` */
 class BinOpExpr extends TBinOpExpr, Expr { }
 
 class AddExpr extends TAddExpr, BinOpExpr {
@@ -628,6 +631,26 @@ class AddExpr extends TAddExpr, BinOpExpr {
   Expr getAnOperand() { result = getLeftOperand() or result = getRightOperand() }
 
   FunctionSymbol getOperator() { result = addexpr.getChild().getValue() }
+}
+
+/** A unary operation expression, such as `-(x*y)` */
+class UnaryExpr extends TUnaryExpr, Expr {
+  Generated::UnaryExpr unaryexpr;
+
+  UnaryExpr() { this = TUnaryExpr(unaryexpr) }
+
+  Expr getOperand() { toGenerated(result) = unaryexpr.getChild(1) }
+
+  FunctionSymbol getOperator() { result = unaryexpr.getChild(0).toString() }
+}
+
+/** A "don't care" expression, denoted by `_`. */
+class DontCare extends TDontCare, Expr {
+  Generated::Underscore dontcare;
+
+  DontCare() { this = TDontCare(dontcare) }
+
+  override string getAPrimaryQlClass() { result = "DontCare" }
 }
 
 /** A module expression. */
