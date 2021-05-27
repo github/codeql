@@ -203,7 +203,7 @@ class TypeExpr extends TType, AstNode {
 
   TypeExpr() { this = TType(type) }
 
-  override string getAPrimaryQlClass() { result = "Type" }
+  override string getAPrimaryQlClass() { result = "TypeExpr" }
 
   /**
    * Gets the class name for the type.
