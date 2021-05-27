@@ -203,6 +203,11 @@ class Module extends TModule, AstNode, ModuleMember {
   AstNode getAMember() {
     toGenerated(result) = mod.getChild(_).(Generated::ModuleMember).getChild(_)
   }
+
+  /** Gets the module expression that this module is an alias for, if any. */
+  ModuleExpr getAlias() {
+    toGenerated(result) = mod.getAFieldOrChild().(Generated::ModuleAliasBody).getChild()
+  }
 }
 
 /**
@@ -623,4 +628,39 @@ class AddExpr extends TAddExpr, BinOpExpr {
   Expr getAnOperand() { result = getLeftOperand() or result = getRightOperand() }
 
   FunctionSymbol getOperator() { result = addexpr.getChild().getValue() }
+}
+
+/** A module expression. */
+class ModuleExpr extends TModuleExpr, AstNode {
+  Generated::ModuleExpr me;
+
+  ModuleExpr() { this = TModuleExpr(me) }
+
+  /**
+   * Gets the name of this module expression. For example, the name of
+   *
+   * ```ql
+   * Foo::Bar
+   * ```
+   *
+   * is `Bar`.
+   */
+  string getName() {
+    result = me.getName().getValue()
+    or
+    not exists(me.getName()) and result = me.getChild().(Generated::SimpleId).getValue()
+  }
+
+  /**
+   * Gets the qualifier of this module expression. For example, the qualifier of
+   *
+   * ```ql
+   * Foo::Bar::Baz
+   * ```
+   *
+   * is `Foo::Bar`.
+   */
+  ModuleExpr getQualifier() { result = TModuleExpr(me.getChild()) }
+
+  final override string toString() { result = this.getName() }
 }
