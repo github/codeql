@@ -26,7 +26,8 @@ newtype TAstNode =
   TAsExpr(Generated::AsExpr asExpr) or
   TNegation(Generated::Negation neg) or
   TAddExpr(Generated::AddExpr addexp) or
-  TLiteral(Generated::Literal lit)
+  TLiteral(Generated::Literal lit) or
+  TModuleExpr(Generated::ModuleExpr me)
 
 class TFormula = TDisjunction or TConjunction or TComparisonFormula or TQuantifier or TNegation;
 
@@ -80,6 +81,8 @@ Generated::AstNode toGenerated(AST::AstNode n) {
   n = TLiteral(result)
   or
   n = TAsExpr(result)
+  or
+  n = TModuleExpr(result)
 }
 
 class TPredicate = TCharPred or TClasslessPredicate or TClassPredicate;
