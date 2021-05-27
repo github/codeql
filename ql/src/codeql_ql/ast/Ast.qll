@@ -1,6 +1,7 @@
 import ql
 private import codeql_ql.ast.internal.AstNodes
 private import codeql_ql.ast.internal.Module
+private import codeql_ql.ast.internal.Type
 
 /** An AST node of a QL program */
 class AstNode extends TAstNode {
@@ -169,16 +170,16 @@ class VarDecl extends TVarDecl, AstNode {
     result.(Quantifier).getAnArgument() = this
   }
 
-  Type getType() { toGenerated(result) = var.getChild(0) }
+  TypeExpr getType() { toGenerated(result) = var.getChild(0) }
 }
 
 /**
- * A type, such as `DataFlow::Node`.
+ * A type reference, such as `DataFlow::Node`.
  */
-class Type extends TType, AstNode {
+class TypeExpr extends TType, AstNode {
   Generated::TypeExpr type;
 
-  Type() { this = TType(type) }
+  TypeExpr() { this = TType(type) }
 
   override string getAPrimaryQlClass() { result = "Type" }
 
@@ -221,6 +222,8 @@ class Type extends TType, AstNode {
     or
     result.(Class).getUnionMember() = this
   }
+
+  Type getResolvedType() { resolveTypeExpr(this, result) }
 }
 
 /**
@@ -320,19 +323,15 @@ class Class extends TClass, AstNode, ModuleMember {
       cls.getChild(_).(Generated::ClassMember).getChild(_).(Generated::Field).getChild()
   }
 
-  /**
-   * Gets a super-type for this class.
-   * That is: a type after the `extends` keyword.
-   */
-  Type getASuperType() { toGenerated(result) = cls.getChild(_) }
+  TypeExpr getASuperType() { toGenerated(result) = cls.getChild(_) }
 
   /** Gets the type that this class is defined to be an alias of. */
-  Type getAliasType() {
+  TypeExpr getAliasType() {
     toGenerated(result) = cls.getChild(_).(Generated::TypeAliasBody).getChild()
   }
 
   /** Gets the type of one of the members that this class is defined to be a union of. */
-  Type getUnionMember() {
+  TypeExpr getUnionMember() {
     toGenerated(result) = cls.getChild(_).(Generated::TypeUnionBody).getChild(_)
   }
 }
@@ -466,7 +465,9 @@ class InlineCast extends TInlineCast, Expr {
 
   override string getAPrimaryQlClass() { result = "InlineCast" }
 
-  Type getType() { toGenerated(result) = expr.getChild(_).(Generated::QualifiedRhs).getChild(_) }
+  TypeExpr getType() {
+    toGenerated(result) = expr.getChild(_).(Generated::QualifiedRhs).getChild(_)
+  }
 
   Expr getBase() { toGenerated(result) = expr.getChild(0) }
 }
@@ -753,11 +754,27 @@ class InstanceOf extends TInstanceOf, Formula {
   Expr getExpr() { toGenerated(result) = inst.getChild(0) }
 
   /** Gets the reference to the type being checked. */
-  Type getType() { toGenerated(result) = inst.getChild(1) }
+  TypeExpr getType() { toGenerated(result) = inst.getChild(1) }
 
   /** Gets the type being checked. */
-  //QLType getType() { result = getTypeRef().getType() }
+  //QLTypeExpr getType() { result = getTypeRef().getType() }
   override string getAPrimaryQlClass() { result = "InstanceOf" }
+}
+
+class HigherOrderFormula extends THigherOrderFormula, Formula {
+  Generated::HigherOrderTerm hop;
+
+  HigherOrderFormula() { this = THigherOrderFormula(hop) }
+
+  PredicateExpr getInput(int i) { toGenerated(result) = hop.getChild(i).(Generated::PredicateExpr) }
+
+  private int getNumInputs() { result = 1 + max(int i | exists(this.getInput(i))) }
+
+  Expr getArgument(int i) { toGenerated(result) = hop.getChild(i + getNumInputs()) }
+
+  string getName() { result = hop.getName().getValue() }
+
+  override string getAPrimaryQlClass() { result = "HigherOrderFormula" }
 }
 
 /** An aggregate expression, such as `count` or `sum`. */

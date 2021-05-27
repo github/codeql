@@ -40,6 +40,7 @@ newtype TAstNode =
   TIfFormula(Generated::IfTerm ifterm) or
   TImplication(Generated::Implication impl) or
   TInstanceOf(Generated::InstanceOf inst) or
+  THigherOrderFormula(Generated::HigherOrderTerm hop) or
   TExprAnnotation(Generated::ExprAnnotation expr_anno) or
   TAddExpr(Generated::AddExpr addexp) or
   TLiteral(Generated::Literal lit) or
@@ -50,7 +51,7 @@ newtype TAstNode =
 
 class TFormula =
   TDisjunction or TConjunction or TComparisonFormula or TQuantifier or TNegation or TIfFormula or
-      TImplication or TInstanceOf or TCall;
+      TImplication or TInstanceOf or TCall or THigherOrderFormula;
 
 class TBinOpExpr = TAddExpr;
 
@@ -73,7 +74,8 @@ Generated::AstNode toGeneratedFormula(AST::AstNode n) {
   n = TNegation(result) or
   n = TIfFormula(result) or
   n = TImplication(result) or
-  n = TInstanceOf(result)
+  n = TInstanceOf(result) or
+  n = THigherOrderFormula(result)
 }
 
 Generated::AstNode toGeneratedExpr(AST::AstNode n) {
