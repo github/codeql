@@ -630,7 +630,11 @@ class String extends Literal {
   override string getAPrimaryQlClass() { result = "String" }
 
   /** Gets the string value of this literal. */
-  string getValue() { result = lit.getChild().(Generated::String).getValue() }
+  string getValue() {
+    exists(string raw | raw = lit.getChild().(Generated::String).getValue() |
+      result = raw.substring(1, raw.length() - 1)
+    )
+  }
 }
 
 /** An integer literal. */
@@ -1198,10 +1202,8 @@ class ModuleExpr extends TModuleExpr, ModuleRef {
 
   override AstNode getParent() {
     result = super.getParent() or
-    result.(PredicateCall).getQualifier() = this
-    or
-    result.(PredicateExpr).getQualifier() = this
-    or
+    result.(PredicateCall).getQualifier() = this or
+    result.(PredicateExpr).getQualifier() = this or
     result.(Module).getAlias() = this
   }
 }
