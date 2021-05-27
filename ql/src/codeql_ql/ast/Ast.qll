@@ -67,6 +67,10 @@ class PredicateExpr extends TPredicateExpr, AstNode {
       toGenerated(result).getParent() = ape
     )
   }
+
+  override ClasslessPredicate getParent() { result.getAlias() = this }
+
+  override string getAPrimaryQlClass() { result = "PredicateExpr" }
 }
 
 /**
