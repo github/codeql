@@ -4,17 +4,22 @@ private import codeql_ql.ast.internal.TreeSitter
 private import codeql_ql.ast.internal.Module
 
 private newtype TType =
-  TClass(Class c) or
+  TClass(Class c) { isActualClass(c) } or
   TNewType(NewType n) or
   TNewTypeBranch(NewTypeBranch b) or
   TPrimitive(string s) { primTypeName(s) } or
-  // TUnion(...) or
+  TUnion(Class c) { exists(c.getUnionMember()) } or
   TDontCare() or
-  TClassChar(Class c) or
-  TClassDomain(Class c) or
+  TClassChar(Class c) { isActualClass(c) } or
+  TClassDomain(Class c) { isActualClass(c) } or
   TDatabase(string s) { exists(TypeExpr t | t.isDBType() and s = t.getClassName()) }
 
 private predicate primTypeName(string s) { s = ["int", "float", "string", "boolean", "date"] }
+
+private predicate isActualClass(Class c) {
+  not exists(c.getAliasType()) and
+  not exists(c.getUnionMember())
+}
 
 /**
  * A type, such as `int` or `Node`.
@@ -133,6 +138,8 @@ class NewTypeType extends Type, TNewType {
 
   override NewType getDeclaration() { result = decl }
 
+  NewTypeBranchType getABranch() { result = TNewTypeBranch(decl.getABranch()) }
+
   override string getName() { result = decl.getName() }
 }
 
@@ -145,13 +152,29 @@ class NewTypeBranchType extends Type, TNewTypeBranch {
 
   override string getName() { result = decl.getName() }
 
-  override Type getASuperType() { result = TNewType(decl.getParent()) }
+  override Type getASuperType() {
+    result = TNewType(decl.getParent())
+    or
+    result.(UnionType).getUnionMember() = this
+  }
 
   override Type getAnInternalSuperType() {
     result = getASuperType()
     or
     result = super.getAnInternalSuperType()
   }
+}
+
+class UnionType extends Type, TUnion {
+  Class decl;
+
+  UnionType() { this = TUnion(decl) }
+
+  override Class getDeclaration() { result = decl }
+
+  override string getName() { result = decl.getName() }
+
+  Type getUnionMember() { result = decl.getUnionMember().getResolvedType() }
 }
 
 class DatabaseType extends Type, TDatabase {
@@ -205,6 +228,18 @@ private predicate defines(FileOrModule m, string name, Type t, boolean public) {
     getEnclosingModule(ty) = m and
     ty.getName() = name and
     public = getPublicBool(ty.getParent())
+  )
+  or
+  exists(Class ty | t = TUnion(ty) |
+    getEnclosingModule(ty) = m and
+    ty.getName() = name and
+    public = getPublicBool(ty)
+  )
+  or
+  exists(Class ty | t = ty.getAliasType().getResolvedType() |
+    getEnclosingModule(ty) = m and
+    ty.getName() = name and
+    public = getPublicBool(ty)
   )
   or
   exists(Import im |

@@ -331,7 +331,7 @@ class Class extends TClass, AstNode, ModuleMember {
   }
 
   /** Gets the type of one of the members that this class is defined to be a union of. */
-  Type getUnionMember() {
+  TypeExpr getUnionMember() {
     toGenerated(result) = cls.getChild(_).(Generated::TypeUnionBody).getChild(_)
   }
 }
