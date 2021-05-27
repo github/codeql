@@ -968,4 +968,11 @@ class ModuleExpr extends TModuleExpr, ModuleRef {
   final override FileOrModule getResolvedModule() { resolveModuleExpr(this, result) }
 
   final override string toString() { result = this.getName() }
+
+  override string getAPrimaryQlClass() { result = "ModuleExpr" }
+
+  override AstNode getParent() {
+    result = super.getParent() or
+    result.(PredicateCall).getQualifier() = this
+  }
 }
