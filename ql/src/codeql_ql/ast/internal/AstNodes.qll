@@ -44,7 +44,8 @@ newtype TAstNode =
   TLiteral(Generated::Literal lit) or
   TUnaryExpr(Generated::UnaryExpr unaryexpr) or
   TDontCare(Generated::Underscore dontcare) or
-  TModuleExpr(Generated::ModuleExpr me)
+  TModuleExpr(Generated::ModuleExpr me) or
+  TPredicateExpr(Generated::PredicateExpr pe)
 
 class TFormula =
   TDisjunction or TConjunction or TComparisonFormula or TQuantifier or TNegation or TIfFormula or
@@ -57,6 +58,8 @@ class TExpr =
       TDontCare;
 
 class TCall = TPredicateCall or TMemberCall or TNoneCall or TAnyCall;
+
+class TModuleRef = TImport or TModuleExpr;
 
 Generated::AstNode toGeneratedFormula(AST::AstNode n) {
   n = TConjunction(result) or
@@ -114,6 +117,8 @@ Generated::AstNode toGenerated(AST::AstNode n) {
   n = TAsExpr(result)
   or
   n = TModuleExpr(result)
+  or
+  n = TPredicateExpr(result)
   or
   n = TPredicateCall(result)
   or
