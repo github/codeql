@@ -80,7 +80,7 @@ private Module getEnclosingModule0(AstNode n) {
   AstNodes::toGenerated(result) = parent*(AstNodes::toGenerated(n).getParent())
 }
 
-private ContainerOrModule getEnclosingModule(AstNode n) {
+ContainerOrModule getEnclosingModule(AstNode n) {
   result = TModule(getEnclosingModule0(n))
   or
   not exists(getEnclosingModule0(n)) and
@@ -209,7 +209,7 @@ private predicate defines(
   )
 }
 
-module Consistency {
+module ModConsistency {
   query predicate noResolve(Import imp) {
     not resolve(imp, _) and
     not imp.getLocation().getFile().getAbsolutePath().regexpMatch(".*/(test|examples)/.*")
