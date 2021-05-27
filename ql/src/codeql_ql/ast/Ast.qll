@@ -218,6 +218,8 @@ class Type extends TType, AstNode {
     result.(InlineCast).getType() = this
     or
     result.(Class).getAliasType() = this
+    or
+    result.(Class).getUnionMember() = this
   }
 }
 
@@ -327,6 +329,11 @@ class Class extends TClass, AstNode, ModuleMember {
   /** Gets the type that this class is defined to be an alias of. */
   Type getAliasType() {
     toGenerated(result) = cls.getChild(_).(Generated::TypeAliasBody).getChild()
+  }
+
+  /** Gets the type of one of the members that this class is defined to be a union of. */
+  Type getUnionMember() {
+    toGenerated(result) = cls.getChild(_).(Generated::TypeUnionBody).getChild(_)
   }
 }
 
