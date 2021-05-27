@@ -4,23 +4,26 @@
 
 import cpp
 import semmle.code.cpp.controlflow.Guards
+import semmle.code.cpp.controlflow.SSA
 
-newtype TE = TVar(Variable x)
+newtype TE = TVar(SsaDefinition def)
 
 abstract class E extends TE {
   abstract string toString();
 
-  predicate asVar(Variable x) { none() }
+  predicate asVar(SsaDefinition x) { none() }
 }
 
 class Var extends E, TVar {
-  Variable x;
+  SsaDefinition def;
 
-  Var() { this = TVar(x) }
+  Var() { this = TVar(def) }
 
-  override string toString() { result = x.getName() }
+  override string toString() {
+    result = def.getAVariable() + "." + def.getLocation().getStartLine()
+  }
 
-  override predicate asVar(Variable y) { y = x }
+  override predicate asVar(SsaDefinition x) { x = def }
 }
 
 newtype TF =
@@ -112,35 +115,31 @@ class Truthy extends TTruthy, F {
   override predicate asTruthy(E e) { this = TTruthy(e) }
 }
 
-F interpretUnaryOperation(UnaryOperation unary, Expr arg) {
+F interpretUnaryOperation(UnaryOperation unary) {
   unary instanceof NotExpr and
-  result = TNot(interpF(arg))
+  result = TNot(interpF(unary.getOperand()))
 }
 
-F interpretBinaryOperation(BinaryOperation binary, Expr arg1, Expr arg2) {
+F interpretBinaryOperation(BinaryOperation binary) {
   binary instanceof LogicalAndExpr and
-  result = TAnd(interpF(arg1), interpF(arg2))
+  result = TAnd(interpF(binary.getLeftOperand()), interpF(binary.getRightOperand()))
   or
   binary instanceof LogicalOrExpr and
-  result = TOr(interpF(arg1), interpF(arg2))
+  result = TOr(interpF(binary.getLeftOperand()), interpF(binary.getRightOperand()))
   or
   binary instanceof EQExpr and
-  result = TEq(interpE(arg1), interpE(arg2))
+  result = TEq(interpE(binary.getLeftOperand()), interpE(binary.getRightOperand()))
   or
   binary instanceof NEExpr and
-  result = TNEq(interpE(arg1), interpE(arg2))
+  result = TNEq(interpE(binary.getLeftOperand()), interpE(binary.getRightOperand()))
 }
 
 F interpF(Expr e) {
   result = TTruthy(interpE(e))
   or
-  exists(UnaryOperation unary | unary = e |
-    result = interpretUnaryOperation(unary, unary.getOperand())
-  )
+  result = interpretUnaryOperation(e)
   or
-  exists(BinaryOperation binary | binary = e |
-    result = interpretBinaryOperation(binary, binary.getLeftOperand(), binary.getRightOperand())
-  )
+  result = interpretBinaryOperation(e)
 }
 
 E interpE(Expr e) { result = TVar(e.(Access).getTarget()) }
@@ -214,7 +213,11 @@ string stringifyF(F f) {
   )
 }
 
-string stringifyE(E e) { exists(Variable x | e.asVar(x) and result = x.getName()) }
+string stringifyE(E e) {
+  exists(SsaDefinition x |
+    e.asVar(x) and result = x.getAVariable() + "." + x.getLocation().getStartLine()
+  )
+}
 
 string getCondition(BasicBlock b) {
   exists(int n | n = count(F cond | fwdFlow(b, cond)) |
@@ -236,8 +239,11 @@ predicate fwdFlow(BasicBlock b, F condition) {
 }
 
 predicate revFlow(BasicBlock b) {
-  fwdFlow(b, _) and
-  satisfiable(getCondition(b)) and
+  exists(string cond |
+    fwdFlow(b, _) and
+    cond = getCondition(b) and
+    satisfiable(cond)
+  ) and
   (
     exists(ControlFlowNode n | b.getANode() = n | isSink(n))
     or
