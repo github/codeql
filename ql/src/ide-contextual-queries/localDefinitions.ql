@@ -7,14 +7,15 @@
  * @tags ide-contextual-queries/local-definitions
  */
 
+import ql
+import codeql_ql.ast.internal.Module
 import codeql.IDEContextual
-import codeql_ql.ast.internal.TreeSitter::Generated
 
 external string selectedSourceFile();
 
-from AstNode e, Variable def, string kind
+from ModuleRef ref, FileOrModule target, string kind
 where
-  none() and // e = def.getAnAccess() and // TODO: Get binding to work.
-  kind = "local variable" and
-  e.getLocation().getFile() = getFileBySourceArchiveName(selectedSourceFile())
-select e, def, kind
+  target = ref.getResolvedModule() and
+  kind = "module" and
+  ref.getLocation().getFile() = getFileBySourceArchiveName(selectedSourceFile())
+select ref, target, kind
