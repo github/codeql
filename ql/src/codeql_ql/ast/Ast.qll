@@ -1199,5 +1199,9 @@ class ModuleExpr extends TModuleExpr, ModuleRef {
   override AstNode getParent() {
     result = super.getParent() or
     result.(PredicateCall).getQualifier() = this
+    or
+    result.(PredicateExpr).getQualifier() = this
+    or
+    result.(Module).getAlias() = this
   }
 }
