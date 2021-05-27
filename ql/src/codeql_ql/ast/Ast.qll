@@ -993,7 +993,7 @@ class DivExpr extends MulDivModExpr {
 }
 
 class MulExpr extends MulDivModExpr {
-  MulExpr() { operator = "/" }
+  MulExpr() { operator = "*" }
 
   override string getAPrimaryQlClass() { result = "MulExpr" }
 }
