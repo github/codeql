@@ -957,86 +957,132 @@ class FunctionSymbol extends string {
   FunctionSymbol() { this = "+" or this = "-" or this = "*" or this = "/" or this = "%" }
 }
 
-/** A binary operation expression, such as `x+3` or `y/2` */
+/**
+ * A binary operation expression, such as `x + 3` or `y / 2`.
+ */
 class BinOpExpr extends TBinOpExpr, Expr { }
 
+/**
+ * An addition or subtraction expression.
+ */
 class AddSubExpr extends TAddSubExpr, BinOpExpr {
   Generated::AddExpr expr;
   FunctionSymbol operator;
 
   AddSubExpr() { this = TAddSubExpr(expr) and operator = expr.getChild().getValue() }
 
+  /** Gets the left operand of the binary expression. */
   Expr getLeftOperand() { toGenerated(result) = expr.getLeft() }
 
+  /* Gets the right operand of the binary expression. */
   Expr getRightOperand() { toGenerated(result) = expr.getRight() }
 
+  /* Gets an operand of the binary expression. */
   Expr getAnOperand() { result = getLeftOperand() or result = getRightOperand() }
 
+  /** Gets the operator of the binary expression. */
   FunctionSymbol getOperator() { result = operator }
 }
 
+/**
+ * An addition expression, such as `x + y`.
+ */
 class AddExpr extends AddSubExpr {
   AddExpr() { operator = "+" }
 
   override string getAPrimaryQlClass() { result = "AddExpr" }
 }
 
+/**
+ * A subtraction expression, such as `x - y`.
+ */
 class SubExpr extends AddSubExpr {
   SubExpr() { operator = "-" }
 
   override string getAPrimaryQlClass() { result = "SubExpr" }
 }
 
+/**
+ * A multiplication, division, or modulo expression.
+ */
 class MulDivModExpr extends TMulDivModExpr, BinOpExpr {
   Generated::MulExpr expr;
   FunctionSymbol operator;
 
   MulDivModExpr() { this = TMulDivModExpr(expr) and operator = expr.getChild().getValue() }
 
+  /** Gets the left operand of the binary expression. */
   Expr getLeftOperand() { toGenerated(result) = expr.getLeft() }
 
+  /** Gets the right operand of the binary expression. */
   Expr getRightOperand() { toGenerated(result) = expr.getRight() }
 
+  /** Gets an operand of the binary expression. */
   Expr getAnOperand() { result = getLeftOperand() or result = getRightOperand() }
 
+  /** Gets the operator of the binary expression. */
   FunctionSymbol getOperator() { result = operator }
 }
 
+/**
+ * A division expression, such as `x / y`.
+ */
 class DivExpr extends MulDivModExpr {
   DivExpr() { operator = "/" }
 
   override string getAPrimaryQlClass() { result = "DivExpr" }
 }
 
+/**
+ * A multiplication expression, such as `x * y`.
+ */
 class MulExpr extends MulDivModExpr {
   MulExpr() { operator = "*" }
 
   override string getAPrimaryQlClass() { result = "MulExpr" }
 }
 
+/**
+ * A modulo expression, such as `x % y`.
+ */
 class ModExpr extends MulDivModExpr {
   ModExpr() { operator = "%" }
 
   override string getAPrimaryQlClass() { result = "ModExpr" }
 }
 
+/**
+ * A range expression, such as `[1 .. 10]`.
+ */
 class Range extends TRange, Expr {
   Generated::Range range;
 
   Range() { this = TRange(range) }
 
+  /**
+   * Gets the lower bound of the range.
+   */
   Expr getLowEndpoint() { toGenerated(result) = range.getLower() }
 
+  /**
+   * Gets the upper bound of the range.
+   */
   Expr getHighEndpoint() { toGenerated(result) = range.getUpper() }
 
   override string getAPrimaryQlClass() { result = "Range" }
 }
 
+/**
+ * A set literal expression, such as `[1,3,5,7]`.
+ */
 class Set extends TSet, Expr {
   Generated::SetLiteral set;
 
   Set() { this = TSet(set) }
 
+  /**
+   * Gets the ith element in the set literal expression.
+   */
   Expr getElement(int i) { toGenerated(result) = set.getChild(i) }
 
   override string getAPrimaryQlClass() { result = "Set" }
