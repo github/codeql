@@ -507,7 +507,7 @@ class Formula extends TFormula, AstNode {
     or
     result.(Predicate).getBody() = this
     or
-    result.(Aggregate).getGuard() = this
+    result.(Aggregate).getRange() = this
     or
     result.(NewTypeBranch).getBody() = this
   }
@@ -617,6 +617,7 @@ class ComparisonFormula extends TComparisonFormula, Formula {
   override string getAPrimaryQlClass() { result = "ComparisonFormula" }
 }
 
+/** A quantifier formula, such as `exists` or `forall`. */
 class Quantifier extends TQuantifier, Formula {
   Generated::Quantified quant;
   string kind;
@@ -625,7 +626,7 @@ class Quantifier extends TQuantifier, Formula {
     this = TQuantifier(quant) and kind = quant.getChild(0).(Generated::Quantifier).getValue()
   }
 
-  /** Gets the ith declared argument of this quantifier. */
+  /** Gets the ith variable declaration of this quantifier. */
   VarDecl getArgument(int i) {
     i >= 1 and
     toGenerated(result) = quant.getChild(i - 1)
@@ -643,27 +644,36 @@ class Quantifier extends TQuantifier, Formula {
   /** Gets the main body of the quantifier. */
   Formula getFormula() { toGenerated(result) = quant.getFormula() }
 
-  /** Gets the expression of this quantifier, if it is of the expression only form of an exists. */
+  /**
+   * Gets the expression of this quantifier, if the quantifier is
+   * of the form `exists( expr )`.
+   */
   Expr getExpr() { toGenerated(result) = quant.getExpr() }
 
-  /** Holds if this is the expression only form of an exists quantifier. */
+  /**
+   * Holds if this is the "expression only" form of an exists quantifier.
+   * In other words, the quantifier is of the form `exists( expr )`.
+   */
   predicate hasExpr() { exists(getExpr()) }
 
   override string getAPrimaryQlClass() { result = "Quantifier" }
 }
 
+/** An `exists` quantifier. */
 class Exists extends Quantifier {
   Exists() { kind = "exists" }
 
   override string getAPrimaryQlClass() { result = "Exists" }
 }
 
+/** A `forall` quantifier. */
 class Forall extends Quantifier {
   Forall() { kind = "forall" }
 
   override string getAPrimaryQlClass() { result = "Forall" }
 }
 
+/** A `forex` quantifier. */
 class Forex extends Quantifier {
   Forex() { kind = "forex" }
 
@@ -717,6 +727,7 @@ class InstanceOf extends TInstanceOf, Formula {
   override string getAPrimaryQlClass() { result = "InstanceOf" }
 }
 
+/** An aggregate expression, such as `count` or `sum`. */
 class Aggregate extends TAggregate, Expr {
   Generated::Aggregate agg;
   Generated::FullAggregateBody body;
@@ -736,12 +747,24 @@ class Aggregate extends TAggregate, Expr {
   /** Gets an argument of this quantifier. */
   VarDecl getAnArgument() { result = this.getArgument(_) }
 
-  Formula getGuard() { toGenerated(result) = body.getGuard() }
+  /**
+   * Gets the formula restricting the range of this quantifier, if any.
+   */
+  Formula getRange() { toGenerated(result) = body.getGuard() }
 
+  /**
+   * Gets the ith "as" expression of this aggregate, if any.
+   */
   AsExpr getAsExpr(int i) { toGenerated(result) = body.getAsExprs().getChild(i) }
 
+  /**
+   * Gets the ith "order by" expression of this aggregate, if any.
+   */
   Expr getOrderBy(int i) { toGenerated(result) = body.getOrderBys().getChild(i).getChild(0) }
 
+  /**
+   * Gets the direction (ascending or descending) of the ith "order by" expression of this aggregate.
+   */
   string getOrderbyDirection(int i) {
     result = body.getOrderBys().getChild(i).getChild(1).(Generated::Direction).getValue()
   }
@@ -749,6 +772,9 @@ class Aggregate extends TAggregate, Expr {
   override string getAPrimaryQlClass() { result = "Aggregate[" + kind + "]" }
 }
 
+/**
+ * A "rank" expression, such as `rank[4](int i | i = [5 .. 15] | i)`.
+ */
 class Rank extends Aggregate {
   Rank() { kind = "rank" }
 
@@ -761,6 +787,9 @@ class Rank extends Aggregate {
 }
 
 // TODO: Range and Set.
+/**
+ * An "as" expression, such as `foo as bar`.
+ */
 class AsExpr extends TAsExpr, AstNode {
   Generated::AsExpr asExpr;
 
@@ -769,11 +798,15 @@ class AsExpr extends TAsExpr, AstNode {
   override string getAPrimaryQlClass() { result = "AsExpr" }
 
   /**
-   * Gets the name the inner expression gets "saved" under.
-   * If such a name exists.
+   * Gets the name the inner expression gets "saved" under, if it exists.
+   * For example this is `bar` in the expression `foo as bar`.
    */
   string getAsName() { result = asExpr.getChild(1).(Generated::VarName).getChild().getValue() }
 
+  /**
+   * Gets the inner expression of the "as" expression. For example, this is `foo` in
+   * the expression `foo as bar`.
+   */
   Expr getInnerExpr() { toGenerated(result) = asExpr.getChild(0) }
 
   override AstNode getParent() {
@@ -793,11 +826,13 @@ class Identifier extends TIdentifier, Expr {
   override string getAPrimaryQlClass() { result = "Identifier" }
 }
 
+/** A `not` formula. */
 class Negation extends TNegation, Formula {
   Generated::Negation neg;
 
   Negation() { this = TNegation(neg) }
 
+  /** Gets the formula being negated. */
   Formula getFormula() { toGenerated(result) = neg.getChild() }
 
   override string getAPrimaryQlClass() { result = "Negation" }
@@ -842,8 +877,10 @@ class UnaryExpr extends TUnaryExpr, Expr {
 
   UnaryExpr() { this = TUnaryExpr(unaryexpr) }
 
+  /** Gets the operand of the unary expression. */
   Expr getOperand() { toGenerated(result) = unaryexpr.getChild(1) }
 
+  /** Gets the operator of the unary expression as a string. */
   FunctionSymbol getOperator() { result = unaryexpr.getChild(0).toString() }
 }
 
