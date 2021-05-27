@@ -40,6 +40,7 @@ newtype TAstNode =
   TIfFormula(Generated::IfTerm ifterm) or
   TImplication(Generated::Implication impl) or
   TInstanceOf(Generated::InstanceOf inst) or
+  TExprAnnotation(Generated::ExprAnnotation expr_anno) or
   TAddExpr(Generated::AddExpr addexp) or
   TLiteral(Generated::Literal lit) or
   TUnaryExpr(Generated::UnaryExpr unaryexpr) or
@@ -55,7 +56,7 @@ class TBinOpExpr = TAddExpr;
 
 class TExpr =
   TBinOpExpr or TLiteral or TAggregate or TIdentifier or TInlineCast or TCall or TUnaryExpr or
-      TDontCare;
+      TExprAnnotation or TDontCare;
 
 class TCall = TPredicateCall or TMemberCall or TNoneCall or TAnyCall;
 
@@ -77,6 +78,7 @@ Generated::AstNode toGeneratedFormula(AST::AstNode n) {
 
 Generated::AstNode toGeneratedExpr(AST::AstNode n) {
   n = TAddExpr(result) or
+  n = TExprAnnotation(result) or
   n = TLiteral(result) or
   n = TAggregate(result) or
   n = TIdentifier(result) or
