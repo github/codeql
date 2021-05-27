@@ -95,6 +95,7 @@ Generated::AstNode toGeneratedExpr(AST::AstNode n) {
   n = TExprAnnotation(result) or
   n = TLiteral(result) or
   n = TAggregate(result) or
+  n = TExprAggregate(result) or
   n = TIdentifier(result) or
   n = TUnaryExpr(result) or
   n = TDontCare(result)
