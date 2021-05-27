@@ -123,6 +123,11 @@ module Generated {
     override AstNode getAFieldOrChild() { as_expr_child(this, _, result) }
   }
 
+  AsExpr childThing(int i, AstNode child) {
+    result.getChild(i) = child and
+    i != 0
+  }
+
   class AsExprs extends @as_exprs, AstNode {
     override string getAPrimaryQlClass() { result = "AsExprs" }
 

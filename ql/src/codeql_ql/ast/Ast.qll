@@ -125,6 +125,10 @@ class VarDecl extends TVarDecl, AstNode {
     result = super.getParent()
     or
     result.(Class).getAField() = this
+    or
+    result.(Aggregate).getAnArgument() = this
+    or
+    result.(Quantifier).getAnArgument() = this
   }
 
   Type getType() { toGenerated(result) = var.getChild(0) }
@@ -335,6 +339,8 @@ class Formula extends TFormula, AstNode {
     result = super.getParent()
     or
     result.(Predicate).getBody() = this
+    or
+    result.(Aggregate).getGuard() = this
   }
 }
 
@@ -437,8 +443,7 @@ class Quantifier extends TQuantifier, Formula {
   /** Gets the ith declared argument of this quantifier. */
   VarDecl getArgument(int i) {
     i >= 1 and
-    toGenerated(result) = quant.getChild(i - 1) and
-    exists()
+    toGenerated(result) = quant.getChild(i - 1)
   }
 
   /** Gets an argument of this quantifier. */
@@ -478,6 +483,81 @@ class Forex extends Quantifier {
   Forex() { kind = "forex" }
 
   override string getAPrimaryQlClass() { result = "Forex" }
+}
+
+class Aggregate extends TAggregate, Expr {
+  Generated::Aggregate agg;
+  Generated::FullAggregateBody body;
+  string kind;
+
+  Aggregate() {
+    this = TAggregate(agg) and
+    kind = agg.getChild(0).(Generated::AggId).getValue() and
+    body = agg.getChild(_)
+  }
+
+  string getKind() { result = kind }
+
+  /** Gets the ith declared argument of this quantifier. */
+  VarDecl getArgument(int i) { toGenerated(result) = body.getChild(i) }
+
+  /** Gets an argument of this quantifier. */
+  VarDecl getAnArgument() { result = this.getArgument(_) }
+
+  Formula getGuard() { toGenerated(result) = body.getGuard() }
+
+  AsExpr getAsExpr(int i) { toGenerated(result) = body.getAsExprs().getChild(i) }
+
+  Expr getOrderBy(int i) { toGenerated(result) = body.getOrderBys().getChild(i).getChild(0) }
+
+  string getOrderbyDirection(int i) {
+    result = body.getOrderBys().getChild(i).getChild(1).(Generated::Direction).getValue()
+  }
+
+  override string getAPrimaryQlClass() { result = "Aggregate[" + kind + "]" }
+}
+
+class Rank extends Aggregate {
+  Rank() { kind = "rank" }
+
+  override string getAPrimaryQlClass() { result = "Rank" }
+
+  /**
+   * The `i` in `rank[i]( | | )`.
+   */
+  Expr getRankExpr() { toGenerated(result) = agg.getChild(1) }
+}
+
+class AsExpr extends TAsExpr, AstNode {
+  Generated::AsExpr asExpr;
+
+  AsExpr() { this = TAsExpr(asExpr) }
+
+  override string getAPrimaryQlClass() { result = "AsExpr" }
+
+  /**
+   * Gets the name the inner expression gets "saved" under.
+   * If such a name exists.
+   */
+  string getAsName() { result = asExpr.getChild(1).(Generated::VarName).getChild().getValue() }
+
+  Expr getInnerExpr() { toGenerated(result) = asExpr.getChild(0) }
+
+  override AstNode getParent() {
+    result = super.getParent()
+    or
+    result.(Aggregate).getAsExpr(_) = this
+  }
+}
+
+class Identifier extends TIdentifier, Expr {
+  Generated::Variable id;
+
+  Identifier() { this = TIdentifier(id) }
+
+  string getName() { result = id.getChild().(Generated::VarName).getChild().getValue() }
+
+  override string getAPrimaryQlClass() { result = "Identifier" }
 }
 
 class Negation extends TNegation, Formula {
