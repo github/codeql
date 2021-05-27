@@ -24,4 +24,4 @@ where
   )
 select pred,
   "The getAPrimaryQlClass predicate $@ instead of the class name \"" + pred.getParent().getName() +
-    "\".", constant, "results in \"" + constant.getValue() + " \""
+    "\".", constant, "results in \"" + constant.getValue() + "\""
