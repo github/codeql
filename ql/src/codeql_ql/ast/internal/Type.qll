@@ -180,7 +180,7 @@ private predicate qualifier(TypeExpr te, FileOrModule m, boolean public) {
     public = true and m = te.getModule().getResolvedModule()
   ) else (
     (public = true or public = false) and
-    m = getEnclosingModule(te)
+    m = getEnclosingModule(te).getEnclosing*()
   )
 }
 
@@ -213,8 +213,6 @@ private predicate defines(FileOrModule m, string name, Type t, boolean public) {
     public = getPublicBool(im) and
     defines(im.getResolvedModule(), name, t, true)
   )
-  or
-  defines(m.getEnclosing(), name, t, public)
 }
 
 module TyConsistency {
@@ -224,7 +222,7 @@ module TyConsistency {
   }
 
   query predicate multipleResolve(TypeExpr te, int c, Type t) {
-    c = strictcount(Type t0 | resolveTypeExpr(te, t)) and
+    c = strictcount(Type t0 | resolveTypeExpr(te, t0)) and
     c > 1 and
     resolveTypeExpr(te, t)
   }
