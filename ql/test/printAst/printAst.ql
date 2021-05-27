@@ -1,1 +1,1 @@
-import codeql_ql.printAst
+import codeql_ql.printAstAst

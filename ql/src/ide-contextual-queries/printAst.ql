@@ -8,8 +8,8 @@
  */
 
 // Switch between the below two to switch between generated and pretty AST.
-import codeql_ql.printAstGenerated
-// import codeql_ql.printAstAst
+// import codeql_ql.printAstGenerated
+import codeql_ql.printAstAst
 import codeql.IDEContextual
 
 /**
