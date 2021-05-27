@@ -857,6 +857,20 @@ class Expr extends TExpr, AstNode {
   }
 }
 
+class ExprAnnotation extends TExprAnnotation, Expr {
+  Generated::ExprAnnotation expr_anno;
+
+  ExprAnnotation() { this = TExprAnnotation(expr_anno) }
+
+  string getName() { result = expr_anno.getName().getValue() }
+
+  string getAnnotationArgument() { result = expr_anno.getAnnotArg().getValue() }
+
+  Expr getExpression() { toGenerated(result) = expr_anno.getChild() }
+
+  override string getAPrimaryQlClass() { result = "ExprAnnotation" }
+}
+
 /** A function symbol, such as `+` or `*`. */
 class FunctionSymbol extends string {
   FunctionSymbol() { this = "+" or this = "-" or this = "*" or this = "/" or this = "%" }
