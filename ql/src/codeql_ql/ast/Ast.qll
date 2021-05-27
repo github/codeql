@@ -280,7 +280,7 @@ class TypeExpr extends TType, AstNode {
 
   TypeExpr() { this = TType(type) }
 
-  override string getAPrimaryQlClass() { result = "Type" }
+  override string getAPrimaryQlClass() { result = "TypeExpr" }
 
   /**
    * Gets the class name for the type.
@@ -767,7 +767,11 @@ class String extends Literal {
   override string getAPrimaryQlClass() { result = "String" }
 
   /** Gets the string value of this literal. */
-  string getValue() { result = lit.getChild().(Generated::String).getValue() }
+  string getValue() {
+    exists(string raw | raw = lit.getChild().(Generated::String).getValue() |
+      result = raw.substring(1, raw.length() - 1)
+    )
+  }
 }
 
 /** An integer literal. */
