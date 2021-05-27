@@ -154,4 +154,10 @@ Generated::AstNode toGenerated(AST::AstNode n) {
 
 class TPredicate = TCharPred or TClasslessPredicate or TClassPredicate;
 
-class TModuleMember = TClasslessPredicate or TClass or TModule or TNewType or TImport or TSelect;
+class TModuleMember = TModuleDeclaration or TImport or TSelect;
+
+class TDeclaration = TTypeDeclaration or TModuleDeclaration;
+
+class TTypeDeclaration = TClass or TNewType or TNewTypeBranch;
+
+class TModuleDeclaration = TClasslessPredicate or TModule or TClass or TNewType;
