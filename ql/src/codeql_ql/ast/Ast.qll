@@ -40,6 +40,16 @@ class Select extends TSelect, AstNode {
 
   Select() { this = TSelect(sel) }
 
+  VarDecl getVarDecl(int i) { toGenerated(result) = sel.getChild(i) }
+
+  Formula getWhere() { toGenerated(result) = sel.getChild(_) }
+
+  AsExpr getAsExpr(int i) { toGenerated(result) = sel.getChild(_).(Generated::AsExprs).getChild(i) }
+
+  Expr getOrderBy(int i) {
+    toGenerated(result) = sel.getChild(_).(Generated::OrderBys).getChild(i).getChild(0)
+  }
+
   override string getAPrimaryQlClass() { result = "Select" }
   // TODO: Getters for VarDecls, Where-clause, selects.
 }
@@ -79,7 +89,9 @@ class PredicateExpr extends TPredicateExpr, AstNode {
     )
   }
 
-  override ClasslessPredicate getParent() { result.getAlias() = this }
+  override AstNode getParent() {
+    this in [result.(ClasslessPredicate).getAlias(), result.(HigherOrderFormula).getInput(_)]
+  }
 
   override string getAPrimaryQlClass() { result = "PredicateExpr" }
 }
@@ -886,6 +898,8 @@ class AsExpr extends TAsExpr, AstNode {
     result = super.getParent()
     or
     result.(Aggregate).getAsExpr(_) = this
+    or
+    result.(Select).getAsExpr(_) = this
   }
 }
 
@@ -919,6 +933,8 @@ class Expr extends TExpr, AstNode {
     result.(Call).getArgument(_) = this
     or
     result.(Aggregate).getOrderBy(_) = this
+    or 
+    result.(Select).getOrderBy(_) = this
   }
 }
 

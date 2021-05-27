@@ -150,4 +150,4 @@ Generated::AstNode toGenerated(AST::AstNode n) {
 
 class TPredicate = TCharPred or TClasslessPredicate or TClassPredicate;
 
-class TModuleMember = TClasslessPredicate or TClass or TModule or TNewType or TImport;
+class TModuleMember = TClasslessPredicate or TClass or TModule or TNewType or TImport or TSelect;
