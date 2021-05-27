@@ -106,6 +106,8 @@ class Predicate extends TPredicate, AstNode {
    */
   VarDecl getParameter(int i) { none() }
 
+  int getArity() { result = count(getParameter(_)) }
+
   // TODO: ReturnType.
   override AstNode getAChild(string pred) {
     pred = "getBody" and result = this.getBody()
@@ -212,10 +214,21 @@ class ClassPredicate extends TClassPredicate, Predicate {
 
   override Class getParent() { result.getAClassPredicate() = this }
 
+  predicate isPrivate() {
+    exists(Generated::ClassMember member |
+      pred = member.getChild(_) and
+      member.getAFieldOrChild().(Generated::Annotation).getName().getValue() = "private"
+    )
+  }
+
   override VarDecl getParameter(int i) {
     toGenerated(result) =
       rank[i](Generated::VarDecl decl, int index | decl = pred.getChild(index) | decl order by index)
   }
+
+  ClassType getDeclaringType() { result.getDeclaration() = getParent() }
+
+  predicate overrides(ClassPredicate other) { predOverrides(this, other) }
 
   override AstNode getAChild(string pred_name) {
     pred_name = "getBody" and result = this.getBody()
@@ -269,6 +282,18 @@ class VarDecl extends TVarDecl, AstNode {
   }
 
   TypeExpr getType() { toGenerated(result) = var.getChild(0) }
+
+  predicate isPrivate() {
+    exists(Generated::ClassMember member |
+      var = member.getChild(_).(Generated::Field).getChild() and
+      member.getAFieldOrChild().(Generated::Annotation).getName().getValue() = "private"
+    )
+  }
+
+  /** If this is a field, returns the class type that declares it. */
+  ClassType getDeclaringType() { result.getDeclaration().getAField() = this }
+
+  predicate overrides(VarDecl other) { fieldOverrides(this, other) }
 
   override AstNode getAChild(string pred) { pred = "getType" and result = this.getType() }
 }
@@ -450,6 +475,9 @@ class Class extends TClass, TypeDeclaration, ModuleDeclaration {
   TypeExpr getUnionMember() {
     toGenerated(result) = cls.getChild(_).(Generated::TypeUnionBody).getChild(_)
   }
+
+  /** Gets the class type defined by this class declaration. */
+  Type getType() { result.getDeclaration() = this }
 
   override AstNode getAChild(string pred) {
     pred = "getAliasType" and result = this.getAliasType()
