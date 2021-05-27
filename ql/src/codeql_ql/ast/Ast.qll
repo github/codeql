@@ -169,10 +169,10 @@ class Type extends TType, AstNode {
   predicate isDBType() { type.getChild() instanceof Generated::Dbtype }
 
   /**
-   * Gets the module name of the type, if it exists.
+   * Gets the module of the type, if it exists.
    * E.g. `DataFlow` in `DataFlow::Node`.
    */
-  string getModuleName() { result = type.getChild().(Generated::ModuleExpr).getName().getValue() }
+  ModuleExpr getModule() { toGenerated(result) = type.getChild() }
 }
 
 /**
