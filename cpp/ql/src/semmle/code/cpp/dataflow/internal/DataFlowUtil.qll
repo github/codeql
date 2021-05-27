@@ -8,6 +8,204 @@ private import semmle.code.cpp.models.interfaces.DataFlow
 private import semmle.code.cpp.controlflow.Guards
 private import semmle.code.cpp.dataflow.internal.AddressFlow
 
+private newtype TE = TVar(SsaDefinition def)
+
+abstract private class E extends TE {
+  abstract string toString();
+
+  predicate asVar(SsaDefinition x) { none() }
+}
+
+private class Var extends E, TVar {
+  SsaDefinition def;
+
+  Var() { this = TVar(def) }
+
+  override string toString() {
+    result = def.getAVariable() + "." + def.getLocation().getStartLine()
+  }
+
+  override predicate asVar(SsaDefinition x) { x = def }
+}
+
+private newtype TF =
+  TTrue() or
+  TNot(TF f) { f = interpF(_) } or
+  TAnd(TF f1, TF f2) {
+    exists(LogicalAndExpr conj |
+      f1 = interpF(conj.getLeftOperand()) and
+      f2 = interpF(conj.getRightOperand())
+    )
+  } or
+  TOr(TF f1, TF f2) {
+    exists(LogicalOrExpr disj |
+      f1 = interpF(disj.getLeftOperand()) and
+      f2 = interpF(disj.getRightOperand())
+    )
+  } or
+  TEq(TE e1, TE e2) {
+    exists(EQExpr eq |
+      e1 = interpE(eq.getLeftOperand()) and
+      e2 = interpE(eq.getRightOperand())
+    )
+  } or
+  TNEq(TE e1, TE e2) {
+    exists(NEExpr neq |
+      e1 = interpE(neq.getLeftOperand()) and
+      e2 = interpE(neq.getRightOperand())
+    )
+  } or
+  TTruthy(TE e)
+
+abstract private class F extends TF {
+  final string toString() { result = "F" }
+
+  predicate asTrue() { none() }
+
+  predicate asNot(F f) { none() }
+
+  predicate asAnd(F f1, F f2) { none() }
+
+  predicate asOr(F f1, F f2) { none() }
+
+  predicate asEq(E e1, E e2) { none() }
+
+  predicate asNEq(E e1, E e2) { none() }
+
+  predicate asTruthy(E e) { none() }
+}
+
+class Formula = F;
+
+class True extends TTrue, F {
+  True() { this = TTrue() }
+
+  override predicate asTrue() { any() }
+}
+
+private class Not extends TNot, F {
+  Not() { this = TNot(_) }
+
+  override predicate asNot(F f) { this = TNot(f) }
+}
+
+private class And extends TAnd, F {
+  And() { this = TAnd(_, _) }
+
+  override predicate asAnd(F f1, F f2) { this = TAnd(f1, f2) }
+}
+
+private class Or extends TOr, F {
+  Or() { this = TOr(_, _) }
+
+  override predicate asOr(F f1, F f2) { this = TOr(f1, f2) }
+}
+
+private class Eq extends TEq, F {
+  Eq() { this = TEq(_, _) }
+
+  override predicate asEq(E e1, E e2) { this = TEq(e1, e2) }
+}
+
+private class NEq extends TNEq, F {
+  NEq() { this = TNEq(_, _) }
+
+  override predicate asNEq(E e1, E e2) { this = TNEq(e1, e2) }
+}
+
+private class Truthy extends TTruthy, F {
+  Truthy() { this = TTruthy(_) }
+
+  override predicate asTruthy(E e) { this = TTruthy(e) }
+}
+
+private F interpretUnaryOperation(UnaryOperation unary) {
+  unary instanceof NotExpr and
+  result = TNot(interpF(unary.getOperand()))
+}
+
+private F interpretBinaryOperation(BinaryOperation binary) {
+  binary instanceof LogicalAndExpr and
+  result = TAnd(interpF(binary.getLeftOperand()), interpF(binary.getRightOperand()))
+  or
+  binary instanceof LogicalOrExpr and
+  result = TOr(interpF(binary.getLeftOperand()), interpF(binary.getRightOperand()))
+  or
+  binary instanceof EQExpr and
+  result = TEq(interpE(binary.getLeftOperand()), interpE(binary.getRightOperand()))
+  or
+  binary instanceof NEExpr and
+  result = TNEq(interpE(binary.getLeftOperand()), interpE(binary.getRightOperand()))
+}
+
+private F interpF(Expr e) {
+  result = TTruthy(interpE(e))
+  or
+  result = interpretUnaryOperation(e)
+  or
+  result = interpretBinaryOperation(e)
+}
+
+private E interpE(Expr e) { result = TVar(any(SsaDefinition ssa | ssa.getAUse(_) = e)) }
+
+private F interpretGuard(GuardCondition guard) { result = interpF(guard) }
+
+private string stringOfExpr(E e) {
+  exists(SsaDefinition x |
+    e.asVar(x) and result = x.getAVariable() + "." + x.getLocation().getStartLine()
+  )
+}
+
+F getACondition(Node node) {
+  result = TTrue()
+  or
+  exists(GuardCondition guard |
+    guard.isCondition() and
+    guard.controls(node.asExpr().getBasicBlock(), true) and
+    result = interpretGuard(guard)
+  )
+  or
+  exists(GuardCondition guard |
+    guard.isCondition() and
+    guard.controls(node.asExpr().getBasicBlock(), false) and
+    result = TNot(interpretGuard(guard))
+  )
+}
+
+string stringOfFormula(F f) {
+  f.asTrue() and result = "true"
+  or
+  exists(F f1 |
+    f.asNot(f1) and
+    result = "(not " + stringOfFormula(f1) + ")"
+  )
+  or
+  exists(F f1, F f2 |
+    f.asAnd(f1, f2) and
+    result = "(and " + stringOfFormula(f1) + " " + stringOfFormula(f2) + ")"
+  )
+  or
+  exists(F f1, F f2 |
+    f.asOr(f1, f2) and
+    result = "(or " + stringOfFormula(f1) + " " + stringOfFormula(f2) + ")"
+  )
+  or
+  exists(E e1, E e2 |
+    f.asEq(e1, e2) and
+    result = "(= " + stringOfExpr(e1) + " " + stringOfExpr(e2) + ")"
+  )
+  or
+  exists(E e1, E e2 |
+    f.asNEq(e1, e2) and
+    result = "(not (= " + stringOfExpr(e1) + " " + stringOfExpr(e2) + "))"
+  )
+  or
+  exists(E e |
+    f.asTruthy(e) and
+    result = stringOfExpr(e)
+  )
+}
+
 cached
 private newtype TNode =
   TExprNode(Expr e) or
