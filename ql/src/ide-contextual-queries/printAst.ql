@@ -7,7 +7,9 @@
  * @tags ide-contextual-queries/print-ast
  */
 
-import codeql_ql.printAst
+// Switch between the below two to switch between generated and pretty AST.
+import codeql_ql.printAstGenerated
+// import codeql_ql.printAstAst
 import codeql.IDEContextual
 
 /**

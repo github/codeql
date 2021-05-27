@@ -300,17 +300,14 @@ disjunction_def(
   int loc: @location ref
 );
 
-@expr_aggregate_body_child_type = @as_exprs | @order_bys
-
-#keyset[expr_aggregate_body, index]
-expr_aggregate_body_child(
-  int expr_aggregate_body: @expr_aggregate_body ref,
-  int index: int ref,
-  unique int child: @expr_aggregate_body_child_type ref
+expr_aggregate_body_order_bys(
+  unique int expr_aggregate_body: @expr_aggregate_body ref,
+  unique int orderBys: @order_bys ref
 );
 
 expr_aggregate_body_def(
   unique int id: @expr_aggregate_body,
+  int as_exprs: @as_exprs ref,
   int loc: @location ref
 );
 
@@ -330,13 +327,28 @@ field_def(
   int loc: @location ref
 );
 
-@full_aggregate_body_child_type = @add_expr | @aggregate | @as_exprs | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @order_bys | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @var_decl | @variable
+full_aggregate_body_as_exprs(
+  unique int full_aggregate_body: @full_aggregate_body ref,
+  unique int asExprs: @as_exprs ref
+);
+
+@full_aggregate_body_guard_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @variable
+
+full_aggregate_body_guard(
+  unique int full_aggregate_body: @full_aggregate_body ref,
+  unique int guard: @full_aggregate_body_guard_type ref
+);
+
+full_aggregate_body_order_bys(
+  unique int full_aggregate_body: @full_aggregate_body ref,
+  unique int orderBys: @order_bys ref
+);
 
 #keyset[full_aggregate_body, index]
 full_aggregate_body_child(
   int full_aggregate_body: @full_aggregate_body ref,
   int index: int ref,
-  unique int child: @full_aggregate_body_child_type ref
+  unique int child: @var_decl ref
 );
 
 full_aggregate_body_def(
@@ -661,7 +673,28 @@ qualified_expr_def(
   int loc: @location ref
 );
 
-@quantified_child_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @token_quantifier | @unary_expr | @var_decl | @variable
+@quantified_expr_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @variable
+
+quantified_expr(
+  unique int quantified: @quantified ref,
+  unique int expr: @quantified_expr_type ref
+);
+
+@quantified_formula_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @variable
+
+quantified_formula(
+  unique int quantified: @quantified ref,
+  unique int formula: @quantified_formula_type ref
+);
+
+@quantified_range_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @variable
+
+quantified_range(
+  unique int quantified: @quantified ref,
+  unique int range: @quantified_range_type ref
+);
+
+@quantified_child_type = @token_quantifier | @var_decl
 
 #keyset[quantified, index]
 quantified_child(
@@ -783,13 +816,27 @@ unary_expr_def(
   int loc: @location ref
 );
 
-@unqual_agg_body_child_type = @add_expr | @aggregate | @as_exprs | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @var_decl | @variable
+@unqual_agg_body_asExprs_type = @as_exprs | @reserved_word
+
+#keyset[unqual_agg_body, index]
+unqual_agg_body_as_exprs(
+  int unqual_agg_body: @unqual_agg_body ref,
+  int index: int ref,
+  unique int asExprs: @unqual_agg_body_asExprs_type ref
+);
+
+@unqual_agg_body_guard_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @variable
+
+unqual_agg_body_guard(
+  unique int unqual_agg_body: @unqual_agg_body ref,
+  unique int guard: @unqual_agg_body_guard_type ref
+);
 
 #keyset[unqual_agg_body, index]
 unqual_agg_body_child(
   int unqual_agg_body: @unqual_agg_body ref,
   int index: int ref,
-  unique int child: @unqual_agg_body_child_type ref
+  unique int child: @var_decl ref
 );
 
 unqual_agg_body_def(
