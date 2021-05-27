@@ -1,7 +1,7 @@
 import ql
 private import codeql_ql.ast.internal.Module
 
-private predicate definesPredicate(FileOrModule m, string name, Predicate p, boolean public) {
+private predicate definesPredicate(FileOrModule m, string name, ClasslessPredicate p, boolean public) {
   m = getEnclosingModule(p) and
   name = p.getName() and
   public = getPublicBool(p)
@@ -24,7 +24,7 @@ private predicate definesPredicate(FileOrModule m, string name, Predicate p, boo
   )
 }
 
-predicate resolvePredicateExpr(PredicateExpr pe, Predicate p) {
+predicate resolvePredicateExpr(PredicateExpr pe, ClasslessPredicate p) {
   exists(FileOrModule m, boolean public |
     not exists(pe.getQualifier()) and
     m = getEnclosingModule(pe).getEnclosing*() and
@@ -44,8 +44,8 @@ module PredConsistency {
     not pe.getLocation().getFile().getAbsolutePath().regexpMatch(".*/(test|examples)/.*")
   }
 
-  query predicate multipleResolvePredicateExpr(PredicateExpr pe, int c, Predicate p) {
-    c = strictcount(Predicate p0 | resolvePredicateExpr(pe, p0)) and
+  query predicate multipleResolvePredicateExpr(PredicateExpr pe, int c, ClasslessPredicate p) {
+    c = strictcount(ClasslessPredicate p0 | resolvePredicateExpr(pe, p0)) and
     c > 1 and
     resolvePredicateExpr(pe, p)
   }
