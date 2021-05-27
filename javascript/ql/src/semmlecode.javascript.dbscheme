@@ -53,6 +53,7 @@ mem_profile_sample(
   unique int id: @mem_profile_sample,
   int size: int ref,
   int node: @mem_profile_node ref,
+  int ordinal: int ref
 )
 
 /** Files and folders **/
