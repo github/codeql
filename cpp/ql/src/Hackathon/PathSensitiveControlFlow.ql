@@ -239,11 +239,8 @@ predicate fwdFlow(BasicBlock b, F condition) {
 }
 
 predicate revFlow(BasicBlock b) {
-  exists(string cond |
-    fwdFlow(b, _) and
-    cond = getCondition(b) and
-    satisfiable(cond)
-  ) and
+  fwdFlow(b, _) and
+  satisfiable(getCondition(b)) and
   (
     exists(ControlFlowNode n | b.getANode() = n | isSink(n))
     or
