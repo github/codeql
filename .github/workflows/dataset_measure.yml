@@ -18,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        repo: [rails/rails, discourse/discourse, spree/spree]
+        repo: [github/codeql]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
