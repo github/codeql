@@ -21,5 +21,5 @@ predicate calls(Foo f) {
   or
   f = any(Foo f)
   or
-  ((((any()))))
+  2 = 1 + (2 + (3 + 4))
 }
