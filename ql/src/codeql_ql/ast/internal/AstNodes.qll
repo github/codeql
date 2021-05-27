@@ -3,6 +3,7 @@ import TreeSitter
 
 cached
 newtype TAstNode =
+  TTopLevel(Generated::Ql file) or
   TClasslessPredicate(Generated::ModuleMember member, Generated::ClasslessPredicate pred) {
     pred.getParent() = member
   } or
@@ -40,9 +41,13 @@ newtype TAstNode =
   TIfFormula(Generated::IfTerm ifterm) or
   TImplication(Generated::Implication impl) or
   TInstanceOf(Generated::InstanceOf inst) or
+  TInFormula(Generated::InExpr inexpr) or
   THigherOrderFormula(Generated::HigherOrderTerm hop) or
   TExprAnnotation(Generated::ExprAnnotation expr_anno) or
-  TAddExpr(Generated::AddExpr addexp) or
+  TAddSubExpr(Generated::AddExpr addexp) or
+  TMulDivModExpr(Generated::MulExpr mulexpr) or
+  TRange(Generated::Range range) or
+  TSet(Generated::SetLiteral set) or
   TLiteral(Generated::Literal lit) or
   TUnaryExpr(Generated::UnaryExpr unaryexpr) or
   TDontCare(Generated::Underscore dontcare) or
@@ -51,13 +56,13 @@ newtype TAstNode =
 
 class TFormula =
   TDisjunction or TConjunction or TComparisonFormula or TQuantifier or TNegation or TIfFormula or
-      TImplication or TInstanceOf or TCall or THigherOrderFormula;
+      TImplication or TInstanceOf or TCall or THigherOrderFormula or TInFormula;
 
-class TBinOpExpr = TAddExpr;
+class TBinOpExpr = TAddSubExpr or TMulDivModExpr;
 
 class TExpr =
   TBinOpExpr or TLiteral or TAggregate or TIdentifier or TInlineCast or TCall or TUnaryExpr or
-      TExprAnnotation or TDontCare;
+      TExprAnnotation or TDontCare or TRange or TSet;
 
 class TCall = TPredicateCall or TMemberCall or TNoneCall or TAnyCall;
 
@@ -75,11 +80,15 @@ Generated::AstNode toGeneratedFormula(AST::AstNode n) {
   n = TIfFormula(result) or
   n = TImplication(result) or
   n = TInstanceOf(result) or
-  n = THigherOrderFormula(result)
+  n = THigherOrderFormula(result) or
+  n = TInFormula(result)
 }
 
 Generated::AstNode toGeneratedExpr(AST::AstNode n) {
-  n = TAddExpr(result) or
+  n = TAddSubExpr(result) or
+  n = TMulDivModExpr(result) or
+  n = TRange(result) or
+  n = TSet(result) or
   n = TExprAnnotation(result) or
   n = TLiteral(result) or
   n = TAggregate(result) or
@@ -97,6 +106,8 @@ Generated::AstNode toGenerated(AST::AstNode n) {
   result = toGeneratedFormula(n)
   or
   result.(Generated::ParExpr).getChild() = toGenerated(n)
+  or
+  n = TTopLevel(result)
   or
   n = TClasslessPredicate(_, result)
   or
