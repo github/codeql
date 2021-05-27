@@ -6,9 +6,17 @@ private import codeql_ql.ast.internal.Module
 class AstNode extends TAstNode {
   string toString() { result = getAPrimaryQlClass() }
 
-  Location getLocation() { result = toGenerated(this).getLocation() }
+  Location getLocation() {
+    exists(Generated::AstNode node | not node instanceof Generated::ParExpr |
+      node = toGenerated(this) and
+      result = node.getLocation()
+    )
+  }
 
-  AstNode getParent() { toGenerated(result) = toGenerated(this).getParent() }
+  AstNode getParent() {
+    toGenerated(result) = toGenerated(this).getParent() and
+    not result = this
+  }
 
   string getAPrimaryQlClass() { result = "???" }
 }
