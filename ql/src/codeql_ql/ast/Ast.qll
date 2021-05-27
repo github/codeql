@@ -22,6 +22,16 @@ class AstNode extends TAstNode {
   string getAPrimaryQlClass() { result = "???" }
 }
 
+class TopLevel extends TTopLevel, AstNode {
+  Generated::Ql file;
+
+  TopLevel() { this = TTopLevel(file) }
+
+  ModuleMember getAMember() { toGenerated(result) = file.getChild(_).getChild(_) }
+
+  override string getAPrimaryQlClass() { result = "TopLevel" }
+}
+
 /**
  * The `from, where, select` part of a QL query.
  */
@@ -265,7 +275,9 @@ class Module extends TModule, AstNode, ModuleMember {
  * Something that can be member of a module.
  */
 class ModuleMember extends TModuleMember, AstNode {
-  override AstNode getParent() { result.(Module).getAMember() = this }
+  override AstNode getParent() {
+    this in [result.(Module).getAMember(), result.(TopLevel).getAMember()]
+  }
 
   /** Holds if this member is declared as `private`. */
   predicate isPrivate() { none() } // TODO: Implement.
@@ -761,6 +773,18 @@ class InstanceOf extends TInstanceOf, Formula {
   override string getAPrimaryQlClass() { result = "InstanceOf" }
 }
 
+class InFormula extends TInFormula, Formula {
+  Generated::InExpr inexpr;
+
+  InFormula() { this = TInFormula(inexpr) }
+
+  Expr getExpr() { toGenerated(result) = inexpr.getLeft() }
+
+  Expr getRange() { toGenerated(result) = inexpr.getRight() }
+
+  override string getAPrimaryQlClass() { result = "InFormula" }
+}
+
 class HigherOrderFormula extends THigherOrderFormula, Formula {
   Generated::HigherOrderTerm hop;
 
@@ -836,7 +860,6 @@ class Rank extends Aggregate {
   Expr getRankExpr() { toGenerated(result) = agg.getChild(1) }
 }
 
-// TODO: Range and Set.
 /**
  * An "as" expression, such as `foo as bar`.
  */
@@ -921,18 +944,86 @@ class FunctionSymbol extends string {
 /** A binary operation expression, such as `x+3` or `y/2` */
 class BinOpExpr extends TBinOpExpr, Expr { }
 
-class AddExpr extends TAddExpr, BinOpExpr {
-  Generated::AddExpr addexpr;
+class AddSubExpr extends TAddSubExpr, BinOpExpr {
+  Generated::AddExpr expr;
+  FunctionSymbol operator;
 
-  AddExpr() { this = TAddExpr(addexpr) }
+  AddSubExpr() { this = TAddSubExpr(expr) and operator = expr.getChild().getValue() }
 
-  Expr getLeftOperand() { toGenerated(result) = addexpr.getLeft() }
+  Expr getLeftOperand() { toGenerated(result) = expr.getLeft() }
 
-  Expr getRightOperand() { toGenerated(result) = addexpr.getRight() }
+  Expr getRightOperand() { toGenerated(result) = expr.getRight() }
 
   Expr getAnOperand() { result = getLeftOperand() or result = getRightOperand() }
 
-  FunctionSymbol getOperator() { result = addexpr.getChild().getValue() }
+  FunctionSymbol getOperator() { result = operator }
+}
+
+class AddExpr extends AddSubExpr {
+  AddExpr() { operator = "+" }
+
+  override string getAPrimaryQlClass() { result = "AddExpr" }
+}
+
+class SubExpr extends AddSubExpr {
+  SubExpr() { operator = "-" }
+
+  override string getAPrimaryQlClass() { result = "SubExpr" }
+}
+
+class MulDivModExpr extends TMulDivModExpr, BinOpExpr {
+  Generated::MulExpr expr;
+  FunctionSymbol operator;
+
+  MulDivModExpr() { this = TMulDivModExpr(expr) and operator = expr.getChild().getValue() }
+
+  Expr getLeftOperand() { toGenerated(result) = expr.getLeft() }
+
+  Expr getRightOperand() { toGenerated(result) = expr.getRight() }
+
+  Expr getAnOperand() { result = getLeftOperand() or result = getRightOperand() }
+
+  FunctionSymbol getOperator() { result = operator }
+}
+
+class DivExpr extends MulDivModExpr {
+  DivExpr() { operator = "/" }
+
+  override string getAPrimaryQlClass() { result = "DivExpr" }
+}
+
+class MulExpr extends MulDivModExpr {
+  MulExpr() { operator = "/" }
+
+  override string getAPrimaryQlClass() { result = "MulExpr" }
+}
+
+class ModExpr extends MulDivModExpr {
+  ModExpr() { operator = "%" }
+
+  override string getAPrimaryQlClass() { result = "ModExpr" }
+}
+
+class Range extends TRange, Expr {
+  Generated::Range range;
+
+  Range() { this = TRange(range) }
+
+  Expr getLowEndpoint() { toGenerated(result) = range.getLower() }
+
+  Expr getHighEndpoint() { toGenerated(result) = range.getUpper() }
+
+  override string getAPrimaryQlClass() { result = "Range" }
+}
+
+class Set extends TSet, Expr {
+  Generated::SetLiteral set;
+
+  Set() { this = TSet(set) }
+
+  Expr getElement(int i) { toGenerated(result) = set.getChild(i) }
+
+  override string getAPrimaryQlClass() { result = "Set" }
 }
 
 /** A unary operation expression, such as `-(x*y)` */
