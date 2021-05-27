@@ -92,6 +92,8 @@ Generated::AstNode toGenerated(AST::AstNode n) {
   or
   result = toGeneratedFormula(n)
   or
+  result.(Generated::ParExpr).getChild() = toGenerated(n)
+  or
   n = TClasslessPredicate(_, result)
   or
   n = TVarDecl(result)
