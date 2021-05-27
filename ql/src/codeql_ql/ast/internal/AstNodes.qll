@@ -23,6 +23,9 @@ newtype TAstNode =
   TComparisonOp(Generated::Compop op) or
   TQuantifier(Generated::Quantified quant) or
   TAggregate(Generated::Aggregate agg) { agg.getChild(_) instanceof Generated::FullAggregateBody } or
+  TExprAggregate(Generated::Aggregate agg) {
+    agg.getChild(_) instanceof Generated::ExprAggregateBody
+  } or
   TIdentifier(Generated::Variable var) or
   TAsExpr(Generated::AsExpr asExpr) or
   TPredicateCall(Generated::CallOrUnqualAggExpr call) or
@@ -61,7 +64,7 @@ class TFormula =
 class TBinOpExpr = TAddSubExpr or TMulDivModExpr;
 
 class TExpr =
-  TBinOpExpr or TLiteral or TAggregate or TIdentifier or TInlineCast or TCall or TUnaryExpr or
+  TBinOpExpr or TLiteral or TAggregate or TExprAggregate or TIdentifier or TInlineCast or TCall or TUnaryExpr or
       TExprAnnotation or TDontCare or TRange or TSet;
 
 class TCall = TPredicateCall or TMemberCall or TNoneCall or TAnyCall;
