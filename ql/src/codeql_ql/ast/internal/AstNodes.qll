@@ -27,13 +27,15 @@ newtype TAstNode =
   TNegation(Generated::Negation neg) or
   TAddExpr(Generated::AddExpr addexp) or
   TLiteral(Generated::Literal lit) or
+  TUnaryExpr(Generated::UnaryExpr unaryexpr) or
+  TDontCare(Generated::Underscore dontcare) or
   TModuleExpr(Generated::ModuleExpr me)
 
 class TFormula = TDisjunction or TConjunction or TComparisonFormula or TQuantifier or TNegation;
 
 class TBinOpExpr = TAddExpr;
 
-class TExpr = TBinOpExpr or TLiteral or TAggregate or TIdentifier;
+class TExpr = TBinOpExpr or TLiteral or TAggregate or TIdentifier or TUnaryExpr or TDontCare;
 
 Generated::AstNode toGeneratedFormula(AST::AstNode n) {
   n = TConjunction(result) or
@@ -41,12 +43,17 @@ Generated::AstNode toGeneratedFormula(AST::AstNode n) {
   n = TComparisonFormula(result) or
   n = TComparisonOp(result) or
   n = TQuantifier(result) or
-  n = TAggregate(result) or
-  n = TIdentifier(result) or
   n = TNegation(result)
 }
 
-Generated::AstNode toGeneratedExpr(AST::AstNode n) { n = TAddExpr(result) }
+Generated::AstNode toGeneratedExpr(AST::AstNode n) {
+  n = TAddExpr(result) or
+  n = TLiteral(result) or
+  n = TAggregate(result) or
+  n = TIdentifier(result) or
+  n = TUnaryExpr(result) or
+  n = TDontCare(result)
+}
 
 /**
  * Gets the underlying TreeSitter entity for a given AST node.
@@ -77,8 +84,6 @@ Generated::AstNode toGenerated(AST::AstNode n) {
   n = TImport(result)
   or
   n = TType(result)
-  or
-  n = TLiteral(result)
   or
   n = TAsExpr(result)
   or
