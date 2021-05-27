@@ -219,6 +219,8 @@ class TypeExpr extends TType, AstNode {
     result.(InlineCast).getType() = this
     or
     result.(Class).getAliasType() = this
+    or
+    result.(Class).getUnionMember() = this
   }
 
   Type getResolvedType() { resolveTypeExpr(this, result) }
@@ -326,6 +328,11 @@ class Class extends TClass, AstNode, ModuleMember {
   /** Gets the type that this class is defined to be an alias of. */
   TypeExpr getAliasType() {
     toGenerated(result) = cls.getChild(_).(Generated::TypeAliasBody).getChild()
+  }
+
+  /** Gets the type of one of the members that this class is defined to be a union of. */
+  Type getUnionMember() {
+    toGenerated(result) = cls.getChild(_).(Generated::TypeUnionBody).getChild(_)
   }
 }
 
@@ -962,4 +969,11 @@ class ModuleExpr extends TModuleExpr, ModuleRef {
   final override FileOrModule getResolvedModule() { resolveModuleExpr(this, result) }
 
   final override string toString() { result = this.getName() }
+
+  override string getAPrimaryQlClass() { result = "ModuleExpr" }
+
+  override AstNode getParent() {
+    result = super.getParent() or
+    result.(PredicateCall).getQualifier() = this
+  }
 }
