@@ -153,6 +153,7 @@ predicate exprMayThrow(Expr e) {
   )
 }
 
+/** The `std::nothrow_t` class and its `bsl` variant. */
 class NoThrowType extends Struct {
   NoThrowType() { this.hasGlobalOrStdOrBslName("nothrow_t") }
 }
