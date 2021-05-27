@@ -159,7 +159,7 @@ module AiohttpWebModel {
      * Use `Request::instance()` predicate to get
      * references to instances of `aiohttp.web.Request`.
      */
-    abstract class InstanceSource extends DataFlow::Node { }
+    abstract class InstanceSource extends DataFlow::LocalSourceNode { }
 
     /** Gets a reference to an instance of `aiohttp.web.Request`. */
     private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
@@ -240,4 +240,6 @@ module AiohttpWebModel {
         ]
     }
   }
+
+
 }
