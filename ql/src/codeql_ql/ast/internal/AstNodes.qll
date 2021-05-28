@@ -4,9 +4,7 @@ import TreeSitter
 cached
 newtype TAstNode =
   TTopLevel(Generated::Ql file) or
-  TClasslessPredicate(Generated::ModuleMember member, Generated::ClasslessPredicate pred) {
-    pred.getParent() = member
-  } or
+  TClasslessPredicate(Generated::ClasslessPredicate pred) or
   TVarDecl(Generated::VarDecl decl) or
   TClass(Generated::Dataclass dc) or
   TCharPred(Generated::Charpred pred) or
@@ -119,7 +117,7 @@ Generated::AstNode toGenerated(AST::AstNode n) {
   or
   n = TTopLevel(result)
   or
-  n = TClasslessPredicate(_, result)
+  n = TClasslessPredicate(result)
   or
   n = TVarDecl(result)
   or

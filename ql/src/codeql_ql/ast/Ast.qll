@@ -16,10 +16,22 @@ private string stringIndexedMember(string name, string index) {
   result = name + "(_)" and exists(index)
 }
 
+/**
+ * Holds if `node` has an annotation with `name`.
+ */
+private predicate hasAnnotation(AstNode node, string name) {
+  exists(Generated::Annotation annotation | annotation.getName().getValue() = name |
+    toGenerated(node).getParent() = annotation.getParent()
+  )
+}
+
 /** An AST node of a QL program */
 class AstNode extends TAstNode {
   string toString() { result = getAPrimaryQlClass() }
 
+  /**
+   * Gets the location of the AST node.
+   */
   Location getLocation() {
     exists(Generated::AstNode node | not node instanceof Generated::ParExpr |
       node = toGenerated(this) and
@@ -27,6 +39,9 @@ class AstNode extends TAstNode {
     )
   }
 
+  /**
+   * Gets the parent in the AST for this node.
+   */
   AstNode getParent() { result.getAChild(_) = this }
 
   /**
@@ -36,14 +51,22 @@ class AstNode extends TAstNode {
   cached
   AstNode getAChild(string pred) { none() }
 
+  /**
+   * Gets the primary QL class for the ast node.
+   */
   string getAPrimaryQlClass() { result = "???" }
 }
 
+/** A toplevel QL program, i.e. a file. */
 class TopLevel extends TTopLevel, AstNode {
   Generated::Ql file;
 
   TopLevel() { this = TTopLevel(file) }
 
+  /**
+   * Gets a member from contained in this top-level module.
+   * Includes private members.
+   */
   ModuleMember getAMember() { toGenerated(result) = file.getChild(_).getChild(_) }
 
   override ModuleMember getAChild(string pred) {
@@ -61,12 +84,22 @@ class Select extends TSelect, AstNode {
 
   Select() { this = TSelect(sel) }
 
+  /**
+   * Gets the `i`th variable in the `from` clause.
+   */
   VarDecl getVarDecl(int i) { toGenerated(result) = sel.getChild(i) }
 
+  /**
+   * Gets the formula in the `where`.
+   */
   Formula getWhere() { toGenerated(result) = sel.getChild(_) }
 
+  /**
+   * Gets the `i`th expression in the `select` clause.
+   */
   Expr getExpr(int i) { toGenerated(result) = sel.getChild(_).(Generated::AsExprs).getChild(i) }
 
+  // TODO: This gets the `i`th order-by, but some expressions might not have an order-by.
   Expr getOrderBy(int i) {
     toGenerated(result) = sel.getChild(_).(Generated::OrderBys).getChild(i).getChild(0)
   }
@@ -90,6 +123,7 @@ class Select extends TSelect, AstNode {
 
 /**
  * A QL predicate.
+ * Either a classless predicate, a class predicate, or a characteristic predicate.
  */
 class Predicate extends TPredicate, AstNode {
   /**
@@ -107,6 +141,9 @@ class Predicate extends TPredicate, AstNode {
    */
   VarDecl getParameter(int i) { none() }
 
+  /**
+   * Gets the number of parameters.
+   */
   int getArity() { result = count(getParameter(_)) }
 
   /**
@@ -129,6 +166,9 @@ class Predicate extends TPredicate, AstNode {
   override string getAPrimaryQlClass() { result = "Predicate" }
 }
 
+/**
+ * An expression that refers to a predicate, e.g. `BasicBlock::succ/2`.
+ */
 class PredicateExpr extends TPredicateExpr, AstNode {
   Generated::PredicateExpr pe;
 
@@ -136,6 +176,10 @@ class PredicateExpr extends TPredicateExpr, AstNode {
 
   override string toString() { result = "predicate" }
 
+  /**
+   * Gets the name of the predicate.
+   * E.g. for `BasicBlock::succ/2` the result is "succ".
+   */
   string getName() {
     exists(Generated::AritylessPredicateExpr ape, Generated::LiteralId id |
       ape.getParent() = pe and
@@ -144,6 +188,10 @@ class PredicateExpr extends TPredicateExpr, AstNode {
     )
   }
 
+  /**
+   * Gets the arity of the predicate.
+   * E.g. for `BasicBlock::succ/2` the result is 2.
+   */
   int getArity() {
     exists(Generated::Integer i |
       i.getParent() = pe and
@@ -151,6 +199,10 @@ class PredicateExpr extends TPredicateExpr, AstNode {
     )
   }
 
+  /**
+   * Gets the module containing the predicate.
+   * E.g. for `BasicBlock::succ/2` the result is a `ModuleExpr` representing "BasicBlock".
+   */
   ModuleExpr getQualifier() {
     exists(Generated::AritylessPredicateExpr ape |
       ape.getParent() = pe and
@@ -158,6 +210,9 @@ class PredicateExpr extends TPredicateExpr, AstNode {
     )
   }
 
+  /**
+   * Gets the predicate that this expression refers to.
+   */
   Predicate getResolvedPredicate() { resolvePredicateExpr(this, result) }
 
   override AstNode getAChild(string pred) {
@@ -173,11 +228,15 @@ class PredicateExpr extends TPredicateExpr, AstNode {
  * A classless predicate.
  */
 class ClasslessPredicate extends TClasslessPredicate, Predicate, ModuleDeclaration {
-  Generated::ModuleMember member;
   Generated::ClasslessPredicate pred;
 
-  ClasslessPredicate() { this = TClasslessPredicate(member, pred) }
+  ClasslessPredicate() { this = TClasslessPredicate(pred) }
 
+  /**
+   * If this predicate is an alias, gets the aliased value.
+   * E.g. for `predicate foo = Module::bar/2;` gets `Module::bar/2`.
+   * The result is either a `PredicateExpr` or `HigherOrderFormula`.
+   */
   final AstNode getAlias() {
     exists(Generated::PredicateAliasBody alias |
       alias.getParent() = pred and
@@ -185,10 +244,6 @@ class ClasslessPredicate extends TClasslessPredicate, Predicate, ModuleDeclarati
     )
     or
     toGenerated(result) = pred.getChild(_).(Generated::HigherOrderTerm)
-  }
-
-  final override predicate isPrivate() {
-    member.getAFieldOrChild().(Generated::Annotation).getName().getValue() = "private"
   }
 
   override string getAPrimaryQlClass() { result = "ClasslessPredicate" }
@@ -233,20 +288,16 @@ class ClassPredicate extends TClassPredicate, Predicate {
 
   override Class getParent() { result.getAClassPredicate() = this }
 
-  predicate isPrivate() { hasAnnotation("private") }
-
-  predicate hasAnnotation(string name) {
-    exists(Generated::ClassMember member |
-      pred = member.getChild(_) and
-      member.getAFieldOrChild().(Generated::Annotation).getName().getValue() = name
-    )
-  }
+  predicate isPrivate() { hasAnnotation(this, "private") }
 
   override VarDecl getParameter(int i) {
     toGenerated(result) =
       rank[i](Generated::VarDecl decl, int index | decl = pred.getChild(index) | decl order by index)
   }
 
+  /**
+   * Gets the type representing this class.
+   */
   ClassType getDeclaringType() { result.getDeclaration() = getParent() }
 
   predicate overrides(ClassPredicate other) { predOverrides(this, other) }
@@ -314,8 +365,14 @@ class VarDecl extends TVarDecl, VarDef {
 
   override string getAPrimaryQlClass() { result = "VarDecl" }
 
+  /**
+   * Gets the type part of this variable declaration.
+   */
   TypeExpr getTypeExpr() { toGenerated(result) = var.getChild(0) }
 
+  /**
+   * Holds if this variable declaration is a private field on a class.
+   */
   predicate isPrivate() {
     exists(Generated::ClassMember member |
       var = member.getChild(_).(Generated::Field).getChild() and
@@ -326,6 +383,9 @@ class VarDecl extends TVarDecl, VarDef {
   /** If this is a field, returns the class type that declares it. */
   ClassType getDeclaringType() { result.getDeclaration().getAField() = this }
 
+  /**
+   * Holds if this is a class field that overrides the field `other`.
+   */
   predicate overrides(VarDecl other) { fieldOverrides(this, other) }
 
   override AstNode getAChild(string pred) {
@@ -375,6 +435,9 @@ class TypeExpr extends TType, AstNode {
    */
   ModuleExpr getModule() { toGenerated(result) = type.getChild() }
 
+  /**
+   * Gets the type that this type reference refers to.
+   */
   Type getResolvedType() { resolveTypeExpr(this, result) }
 
   override ModuleExpr getAChild(string pred) {
@@ -393,13 +456,6 @@ class Module extends TModule, ModuleDeclaration {
   Module() { this = TModule(mod) }
 
   override string getAPrimaryQlClass() { result = "Module" }
-
-  final override predicate isPrivate() {
-    exists(Generated::ModuleMember member |
-      mod = member.getChild(_) and
-      member.getAFieldOrChild().(Generated::Annotation).getName().getValue() = "private"
-    )
-  }
 
   override string getName() { result = mod.getName().(Generated::ModuleName).getChild().getValue() }
 
@@ -429,10 +485,10 @@ class Module extends TModule, ModuleDeclaration {
  */
 class ModuleMember extends TModuleMember, AstNode {
   /** Holds if this member is declared as `private`. */
-  predicate isPrivate() { none() } // TODO: Implement.
+  predicate isPrivate() { hasAnnotation(this, "private") }
 }
 
-/** A declaration. */
+/** A declaration. E.g. a class, type, predicate, newtype... */
 class Declaration extends TDeclaration, AstNode {
   /** Gets the name of this declaration. */
   string getName() { none() }
@@ -455,13 +511,6 @@ class Class extends TClass, TypeDeclaration, ModuleDeclaration {
   Class() { this = TClass(cls) }
 
   override string getAPrimaryQlClass() { result = "Class" }
-
-  final override predicate isPrivate() {
-    exists(Generated::ModuleMember member |
-      cls = member.getChild(_) and
-      member.getAFieldOrChild().(Generated::Annotation).getName().getValue() = "private"
-    )
-  }
 
   override string getName() { result = cls.getName().getValue() }
 
@@ -495,6 +544,9 @@ class Class extends TClass, TypeDeclaration, ModuleDeclaration {
       cls.getChild(_).(Generated::ClassMember).getChild(_).(Generated::Field).getChild()
   }
 
+  /**
+   * Gets a super-type referenced in the `extends` part of the class declaration.
+   */
   TypeExpr getASuperType() { toGenerated(result) = cls.getChild(_) }
 
   /** Gets the type that this class is defined to be an alias of. */
@@ -542,13 +594,6 @@ class NewType extends TNewType, TypeDeclaration, ModuleDeclaration {
 
   override string getAPrimaryQlClass() { result = "NewType" }
 
-  final override predicate isPrivate() {
-    exists(Generated::ModuleMember member |
-      type = member.getChild(_) and
-      member.getAFieldOrChild().(Generated::Annotation).getName().getValue() = "private"
-    )
-  }
-
   /**
    * Gets a branch in this `newtype`.
    */
@@ -563,6 +608,7 @@ class NewType extends TNewType, TypeDeclaration, ModuleDeclaration {
 
 /**
  * A branch in a `newtype`.
+ * E.g. `Bar()` or `Baz()` in `newtype Foo = Bar() or Baz()`.
  */
 class NewTypeBranch extends TNewTypeBranch, TypeDeclaration {
   Generated::DatatypeBranch branch;
@@ -595,7 +641,14 @@ class NewTypeBranch extends TNewTypeBranch, TypeDeclaration {
   }
 }
 
+/**
+ * A call to a predicate.
+ * Either a predicate call `foo()`,
+ * or a member call `foo.bar()`,
+ * or a special call to `none()` or `any()`.
+ */
 class Call extends TCall, Expr {
+  /** Gets the `i`th argument of this call. */
   Expr getArgument(int i) {
     none() // overriden in sublcasses.
   }
@@ -606,9 +659,17 @@ class Call extends TCall, Expr {
 
   final int getNumberOfArguments() { result = count(this.getArgument(_)) }
 
+  /**
+   * Gets the module that contains the predicate.
+   * E.g. for `Foo::bar()` the result is `Foo`.
+   */
   ModuleExpr getQualifier() { none() }
 }
 
+/**
+ * A call to a non-member predicate.
+ * E.g. `foo()` or `Foo::bar()`.
+ */
 class PredicateCall extends TPredicateCall, Call {
   Generated::CallOrUnqualAggExpr expr;
 
@@ -629,6 +690,10 @@ class PredicateCall extends TPredicateCall, Call {
 
   override string getAPrimaryQlClass() { result = "PredicateCall" }
 
+  /**
+   * Gets the name of the predicate called.
+   * E.g. for `foo()` the result is "foo".
+   */
   string getPredicateName() {
     result = expr.getChild(0).(Generated::AritylessPredicateExpr).getName().getValue()
   }
@@ -642,6 +707,10 @@ class PredicateCall extends TPredicateCall, Call {
   }
 }
 
+/**
+ * A member call to a predicate.
+ * E.g. `foo.bar()`.
+ */
 class MemberCall extends TMemberCall, Call {
   Generated::QualifiedExpr expr;
 
@@ -649,6 +718,10 @@ class MemberCall extends TMemberCall, Call {
 
   override string getAPrimaryQlClass() { result = "MemberCall" }
 
+  /**
+   * Gets the name of the member called.
+   * E.g. for `foo.bar()` the result is "bar".
+   */
   string getMemberName() {
     result = expr.getChild(_).(Generated::QualifiedRhs).getName().getValue()
   }
@@ -671,6 +744,10 @@ class MemberCall extends TMemberCall, Call {
       )
   }
 
+  /**
+   * Gets the base of the member call.
+   * E.g. for `foo.(Bar).baz()` the result is `foo.(Bar)`.
+   */
   Expr getBase() { toGenerated(result) = expr.getChild(0) }
 
   override AstNode getAChild(string pred) {
@@ -684,6 +761,9 @@ class MemberCall extends TMemberCall, Call {
   }
 }
 
+/**
+ * A call to the special `none()` predicate.
+ */
 class NoneCall extends TNoneCall, Call, Formula {
   Generated::SpecialCall call;
 
@@ -694,6 +774,9 @@ class NoneCall extends TNoneCall, Call, Formula {
   override AstNode getParent() { result = Call.super.getParent() }
 }
 
+/**
+ * A call to the special `any()` predicate.
+ */
 class AnyCall extends TAnyCall, Call {
   Generated::Aggregate agg;
 
@@ -702,6 +785,9 @@ class AnyCall extends TAnyCall, Call {
   override string getAPrimaryQlClass() { result = "AnyCall" }
 }
 
+/**
+ * An inline cast, e.g. `foo.(Bar)`.
+ */
 class InlineCast extends TInlineCast, Expr {
   Generated::QualifiedExpr expr;
 
@@ -709,12 +795,20 @@ class InlineCast extends TInlineCast, Expr {
 
   override string getAPrimaryQlClass() { result = "InlineCast" }
 
+  /**
+   * Gets the type being cast to.
+   * E.g. for `foo.(Bar)` the result is `Bar`.
+   */
   TypeExpr getTypeExpr() {
     toGenerated(result) = expr.getChild(_).(Generated::QualifiedRhs).getChild(_)
   }
 
   override Type getType() { result = this.getTypeExpr().getResolvedType() }
 
+  /**
+   * Gets the expression being cast.
+   * E.g. for `foo.(Bar)` the result is `foo`.
+   */
   Expr getBase() { toGenerated(result) = expr.getChild(0) }
 
   override AstNode getAChild(string pred) {
@@ -771,13 +865,6 @@ class Import extends TImport, ModuleMember, ModuleRef {
     result = imp.getChild(0).(Generated::ImportModuleExpr).getChild().getName(i).getValue()
   }
 
-  final override predicate isPrivate() {
-    exists(Generated::ModuleMember member |
-      imp = member.getChild(_) and
-      member.getAFieldOrChild().(Generated::Annotation).getName().getValue() = "private"
-    )
-  }
-
   final override FileOrModule getResolvedModule() { resolve(this, result) }
 }
 
@@ -828,6 +915,10 @@ class ComparisonOp extends TComparisonOp, AstNode {
 
   ComparisonOp() { this = TComparisonOp(op) }
 
+  /**
+   * Gets a string representing the operator.
+   * E.g. "<" or "=".
+   */
   ComparisonSymbol getSymbol() { result = op.getValue() }
 
   override string getAPrimaryQlClass() { result = "ComparisonOp" }
@@ -866,6 +957,16 @@ class Integer extends Literal {
 
   /** Gets the integer value of this literal. */
   int getValue() { result = lit.getChild().(Generated::Integer).getValue().toInt() }
+}
+
+/** A float literal. */
+class Float extends Literal {
+  Float() { lit.getChild() instanceof Generated::Float }
+
+  override string getAPrimaryQlClass() { result = "Float" }
+
+  /** Gets the float value of this literal. */
+  float getValue() { result = lit.getChild().(Generated::Float).getValue().toFloat() }
 }
 
 /** A comparison symbol, such as `"<"` or `"="`. */
@@ -1056,8 +1157,6 @@ class InstanceOf extends TInstanceOf, Formula {
   /** Gets the reference to the type being checked. */
   TypeExpr getType() { toGenerated(result) = inst.getChild(1) }
 
-  /** Gets the type being checked. */
-  //QLTypeExpr getType() { result = getTypeRef().getType() }
   override string getAPrimaryQlClass() { result = "InstanceOf" }
 
   override AstNode getAChild(string pred) {
@@ -1069,13 +1168,25 @@ class InstanceOf extends TInstanceOf, Formula {
   }
 }
 
+/**
+ * A in formula, such as `foo in [2, 3]`.
+ * The formula holds if the lhs is in the rhs.
+ */
 class InFormula extends TInFormula, Formula {
   Generated::InExpr inexpr;
 
   InFormula() { this = TInFormula(inexpr) }
 
+  /**
+   * Gets the expression that is checked for membership.
+   * E.g. for `foo in [2, 3]` the result is `foo`.
+   */
   Expr getExpr() { toGenerated(result) = inexpr.getLeft() }
 
+  /**
+   * Gets the range for this in formula.
+   * E.g. for `foo in [2, 3]` the result is `[2, 3]`.
+   */
   Expr getRange() { toGenerated(result) = inexpr.getRight() }
 
   override string getAPrimaryQlClass() { result = "InFormula" }
@@ -1089,17 +1200,36 @@ class InFormula extends TInFormula, Formula {
   }
 }
 
+/**
+ * A "call" to a high-order formula.
+ * E.g. `fastTC(pathSucc/2)(n1, n2)`.
+ */
 class HigherOrderFormula extends THigherOrderFormula, Formula {
   Generated::HigherOrderTerm hop;
 
   HigherOrderFormula() { this = THigherOrderFormula(hop) }
 
+  /**
+   * Gets the `i`th input to this higher-order formula.
+   * E.g. for `fastTC(pathSucc/2)(n1, n2)` the result is `pathSucc/2`.
+   */
   PredicateExpr getInput(int i) { toGenerated(result) = hop.getChild(i).(Generated::PredicateExpr) }
 
+  /**
+   * Gets the number of inputs.
+   */
   private int getNumInputs() { result = 1 + max(int i | exists(this.getInput(i))) }
 
+  /**
+   * Gets the `i`th argument to this higher-order formula.
+   * E.g. for `fastTC(pathSucc/2)(n1, n2)` the result is `n1` and `n2`.
+   */
   Expr getArgument(int i) { toGenerated(result) = hop.getChild(i + getNumInputs()) }
 
+  /**
+   * Gets the name of this higher-order predicate.
+   * E.g. for `fastTC(pathSucc/2)(n1, n2)` the result is "fastTC".
+   */
   string getName() { result = hop.getName().getValue() }
 
   override string getAPrimaryQlClass() { result = "HigherOrderFormula" }
@@ -1115,6 +1245,10 @@ class HigherOrderFormula extends THigherOrderFormula, Formula {
   }
 }
 
+/**
+ * An aggregate containing an expression.
+ * E.g. `min(getAPredicate().getArity())`.
+ */
 class ExprAggregate extends TExprAggregate, Expr {
   Generated::Aggregate agg;
   Generated::ExprAggregateBody body;
@@ -1126,6 +1260,10 @@ class ExprAggregate extends TExprAggregate, Expr {
     body = agg.getChild(_)
   }
 
+  /**
+   * Gets the kind of aggregate.
+   * E.g. for `min(foo())` the result is "min".
+   */
   string getKind() { result = kind }
 
   /**
@@ -1170,6 +1308,10 @@ class Aggregate extends TAggregate, Expr {
     body = agg.getChild(_)
   }
 
+  /**
+   * Gets the kind of aggregate.
+   * E.g. for `min(int i | foo(i))` the result is "foo".
+   */
   string getKind() { result = kind }
 
   /** Gets the ith declared argument of this quantifier. */
@@ -1278,6 +1420,9 @@ class AsExpr extends TAsExpr, VarDef, Expr {
   }
 }
 
+/**
+ * An identifier, such as `foo`.
+ */
 class Identifier extends TIdentifier, Expr {
   Generated::Variable id;
 
@@ -1367,15 +1512,28 @@ class Expr extends TExpr, AstNode {
   Type getType() { none() }
 }
 
+/** An expression annotation, such as `pragma[only_bind_into](config)`. */
 class ExprAnnotation extends TExprAnnotation, Expr {
   Generated::ExprAnnotation expr_anno;
 
   ExprAnnotation() { this = TExprAnnotation(expr_anno) }
 
+  /**
+   * Gets the name of the annotation.
+   * E.g. for `pragma[only_bind_into](config)` the result is "pragma".
+   */
   string getName() { result = expr_anno.getName().getValue() }
 
+  /**
+   * Gets the argument to this annotation.
+   * E.g. for `pragma[only_bind_into](config)` the result is "only_bind_into".
+   */
   string getAnnotationArgument() { result = expr_anno.getAnnotArg().getValue() }
 
+  /**
+   * Gets the inner expression.
+   * E.g. for `pragma[only_bind_into](config)` the result is `config`.
+   */
   Expr getExpression() { toGenerated(result) = expr_anno.getChild() }
 
   override string getAPrimaryQlClass() { result = "ExprAnnotation" }
@@ -1583,7 +1741,7 @@ class DontCare extends TDontCare, Expr {
   override string getAPrimaryQlClass() { result = "DontCare" }
 }
 
-/** A module expression. */
+/** A module expression. Such as `DataFlow` in `DataFlow::Node` */
 class ModuleExpr extends TModuleExpr, ModuleRef {
   Generated::ModuleExpr me;
 
