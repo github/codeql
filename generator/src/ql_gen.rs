@@ -29,6 +29,7 @@ pub fn write(language: &Language, classes: &[ql::TopLevel]) -> std::io::Result<(
 fn create_ast_node_class<'a>() -> ql::Class<'a> {
     // Default implementation of `toString` calls `this.getAPrimaryQlClass()`
     let to_string = ql::Predicate {
+        qldoc: Some(String::from("Gets a string representation of this element.")),
         name: "toString",
         overridden: false,
         return_type: Some(ql::Type::String),
@@ -43,10 +44,11 @@ fn create_ast_node_class<'a>() -> ql::Class<'a> {
         ),
     };
     let get_location =
-        create_none_predicate("getLocation", false, Some(ql::Type::Normal("Location")));
+        create_none_predicate(Some(String::from("Gets the location of this element.")), "getLocation", false, Some(ql::Type::Normal("Location")));
     let get_a_field_or_child =
-        create_none_predicate("getAFieldOrChild", false, Some(ql::Type::Normal("AstNode")));
+        create_none_predicate(Some(String::from("Gets a field or child node of this node.")),"getAFieldOrChild", false, Some(ql::Type::Normal("AstNode")));
     let get_parent = ql::Predicate {
+        qldoc: Some(String::from("Gets the parent of this element.")),
         name: "getParent",
         overridden: false,
         return_type: Some(ql::Type::Normal("AstNode")),
@@ -61,6 +63,7 @@ fn create_ast_node_class<'a>() -> ql::Class<'a> {
         ),
     };
     let get_parent_index = ql::Predicate {
+        qldoc: Some(String::from("Gets the index of this node among the children of its parent.")),
         name: "getParentIndex",
         overridden: false,
         return_type: Some(ql::Type::Int),
@@ -75,6 +78,7 @@ fn create_ast_node_class<'a>() -> ql::Class<'a> {
         ),
     };
     let get_a_primary_ql_class = ql::Predicate {
+        qldoc: Some(String::from("Gets the name of the primary QL class for this element.")),
         name: "getAPrimaryQlClass",
         overridden: false,
         return_type: Some(ql::Type::String),
@@ -85,6 +89,7 @@ fn create_ast_node_class<'a>() -> ql::Class<'a> {
         ),
     };
     ql::Class {
+        qldoc: Some(String::from("The base class for all AST nodes")),
         name: "AstNode",
         is_abstract: false,
         supertypes: vec![ql::Type::AtType("ast_node")].into_iter().collect(),
@@ -103,6 +108,7 @@ fn create_ast_node_class<'a>() -> ql::Class<'a> {
 fn create_token_class<'a>() -> ql::Class<'a> {
     let tokeninfo_arity = 6;
     let get_value = ql::Predicate {
+        qldoc: Some(String::from("Gets the value of this token.")),
         name: "getValue",
         overridden: false,
         return_type: Some(ql::Type::String),
@@ -110,6 +116,7 @@ fn create_token_class<'a>() -> ql::Class<'a> {
         body: create_get_field_expr_for_column_storage("result", "tokeninfo", 3, tokeninfo_arity),
     };
     let get_location = ql::Predicate {
+        qldoc: Some(String::from("Gets the location of this token.")),
         name: "getLocation",
         overridden: true,
         return_type: Some(ql::Type::Normal("Location")),
@@ -117,6 +124,7 @@ fn create_token_class<'a>() -> ql::Class<'a> {
         body: create_get_field_expr_for_column_storage("result", "tokeninfo", 4, tokeninfo_arity),
     };
     let to_string = ql::Predicate {
+        qldoc: Some(String::from("Gets a string representation of this element.")),
         name: "toString",
         overridden: true,
         return_type: Some(ql::Type::String),
@@ -127,6 +135,7 @@ fn create_token_class<'a>() -> ql::Class<'a> {
         ),
     };
     ql::Class {
+        qldoc: Some(String::from("A token.")),
         name: "Token",
         is_abstract: false,
         supertypes: vec![ql::Type::AtType("token"), ql::Type::Normal("AstNode")]
@@ -148,6 +157,7 @@ fn create_reserved_word_class<'a>() -> ql::Class<'a> {
     let class_name = "ReservedWord";
     let get_a_primary_ql_class = create_get_a_primary_ql_class(&class_name);
     ql::Class {
+        qldoc: Some(String::from("A reserved word.")),
         name: class_name,
         is_abstract: false,
         supertypes: vec![ql::Type::AtType(db_name), ql::Type::Normal("Token")]
@@ -160,11 +170,13 @@ fn create_reserved_word_class<'a>() -> ql::Class<'a> {
 
 /// Creates a predicate whose body is `none()`.
 fn create_none_predicate<'a>(
+    qldoc: Option<String>,
     name: &'a str,
     overridden: bool,
     return_type: Option<ql::Type<'a>>,
 ) -> ql::Predicate<'a> {
     ql::Predicate {
+        qldoc: qldoc,
         name: name,
         overridden,
         return_type,
@@ -177,6 +189,7 @@ fn create_none_predicate<'a>(
 /// name.
 fn create_get_a_primary_ql_class<'a>(class_name: &'a str) -> ql::Predicate<'a> {
     ql::Predicate {
+        qldoc: Some(String::from("Gets the name of the primary QL class for this element.")),
         name: "getAPrimaryQlClass",
         overridden: true,
         return_type: Some(ql::Type::String),
@@ -196,6 +209,7 @@ fn create_get_a_primary_ql_class<'a>(class_name: &'a str) -> ql::Predicate<'a> {
 /// `arity` - the total number of columns in the table
 fn create_get_location_predicate<'a>(def_table: &'a str, arity: usize) -> ql::Predicate<'a> {
     ql::Predicate {
+        qldoc: Some(String::from("Gets the location of this element.")),
         name: "getLocation",
         overridden: true,
         return_type: Some(ql::Type::Normal("Location")),
@@ -220,6 +234,7 @@ fn create_get_location_predicate<'a>(def_table: &'a str, arity: usize) -> ql::Pr
 /// `def_table` - the name of the table that defines the entity and its text.
 fn create_get_text_predicate<'a>(def_table: &'a str) -> ql::Predicate<'a> {
     ql::Predicate {
+        qldoc: Some(String::from("Gets the text content of this element.")),
         name: "getText",
         overridden: false,
         return_type: Some(ql::Type::String),
@@ -419,6 +434,7 @@ fn create_field_getters<'a>(
     };
     (
         ql::Predicate {
+            qldoc: field.name.as_ref().map(|name| format!("Gets the node corresponding to the field `{}`.", name)),
             name: &field.getter_name,
             overridden: false,
             return_type,
@@ -456,6 +472,7 @@ pub fn convert_nodes<'a>(nodes: &'a node_types::NodeTypeMap) -> Vec<ql::TopLevel
                     supertypes.insert(ql::Type::AtType(&node.dbscheme_name));
                     supertypes.insert(ql::Type::Normal("Token"));
                     classes.push(ql::TopLevel::Class(ql::Class {
+                        qldoc: Some(format!("A class representing `{}` tokens.", type_name.kind)),
                         name: &node.ql_class_name,
                         is_abstract: false,
                         supertypes,
@@ -468,6 +485,7 @@ pub fn convert_nodes<'a>(nodes: &'a node_types::NodeTypeMap) -> Vec<ql::TopLevel
                 // It's a tree-sitter supertype node, so we're wrapping a dbscheme
                 // union type.
                 classes.push(ql::TopLevel::Class(ql::Class {
+                    qldoc: None,
                     name: &node.ql_class_name,
                     is_abstract: false,
                     supertypes: vec![
@@ -501,6 +519,7 @@ pub fn convert_nodes<'a>(nodes: &'a node_types::NodeTypeMap) -> Vec<ql::TopLevel
 
                 let main_class_name = &node.ql_class_name;
                 let mut main_class = ql::Class {
+                    qldoc: Some(format!("A class representing `{}` nodes.", type_name.kind)),
                     name: &main_class_name,
                     is_abstract: false,
                     supertypes: vec![
@@ -543,6 +562,7 @@ pub fn convert_nodes<'a>(nodes: &'a node_types::NodeTypeMap) -> Vec<ql::TopLevel
                     }
 
                     main_class.predicates.push(ql::Predicate {
+                        qldoc: Some(String::from("Gets a field or child node of this node.")),
                         name: "getAFieldOrChild",
                         overridden: true,
                         return_type: Some(ql::Type::Normal("AstNode")),
