@@ -112,7 +112,7 @@ private newtype TF =
   TGT(GTExpr gt) or
   TLE(LEExpr le) or
   TGE(GEExpr ge) or
-  TTruthy(TE e)
+  TTruthy(Expr e)
 
 abstract private class F extends TF {
   final string toString() { result = stringOfFormula(this) }
@@ -137,7 +137,7 @@ abstract private class F extends TF {
 
   predicate asGE(E e1, E e2) { none() }
 
-  predicate asTruthy(E e) { none() }
+  predicate asTruthy(E e, Expr expr) { none() }
 }
 
 class Formula = F;
@@ -253,7 +253,10 @@ private class GEE extends TGE, F {
 private class Truthy extends TTruthy, F {
   Truthy() { this = TTruthy(_) }
 
-  override predicate asTruthy(E e) { this = TTruthy(e) }
+  override predicate asTruthy(E e, Expr expr) {
+    this = TTruthy(expr) and
+    e = interpE(expr)
+  }
 }
 
 private F interpretUnaryOperationF(UnaryOperation unary) {
@@ -280,7 +283,7 @@ private F interpretBinaryOperationF(BinaryOperation binary) {
 }
 
 private F interpF(Expr e) {
-  result = TTruthy(interpE(e))
+  result = TTruthy(e)
   or
   result = interpretUnaryOperationF(e)
   or
@@ -394,9 +397,12 @@ string stringOfFormula(F f) {
     result = "(>= " + stringOfE(e1) + " " + stringOfE(e2) + ")"
   )
   or
-  exists(E e |
-    f.asTruthy(e) and
-    result = stringOfE(e)
+  exists(E e, Expr expr, string s |
+    f.asTruthy(e, expr) and
+    s = stringOfE(e) and
+    if expr.getUnspecifiedType() instanceof BoolType
+    then result = s
+    else result = "(not (= " + s + " 0))"
   )
 }
 
