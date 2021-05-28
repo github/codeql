@@ -32,6 +32,7 @@ class AstNode extends TAstNode {
   /**
    * Gets the location of the AST node.
    */
+  cached
   Location getLocation() {
     exists(Generated::AstNode node | not node instanceof Generated::ParExpr |
       node = toGenerated(this) and
