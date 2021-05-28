@@ -1,5 +1,7 @@
 /**
- * Provides queries to pretty-print a Ruby abstract syntax tree as a graph.
+ * Provides queries to pretty-print a QL abstract syntax tree as a graph.
+ *
+ * This representation is based on the TreeSitter auto-generated AST.
  *
  * By default, this will print the AST for all nodes in the database. To change
  * this behavior, extend `PrintASTConfiguration` and override `shouldPrintNode`
