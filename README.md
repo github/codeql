@@ -1,5 +1,7 @@
 # QL analysis support for CodeQL
 
+*Part of the May 2021 [code scanning hackathon](https://github.com/github/code-scanning-hackathon/issues/3).*
+
 Under development.
 
 ## Building the tools from source
