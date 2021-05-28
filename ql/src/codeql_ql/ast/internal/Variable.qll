@@ -65,9 +65,16 @@ private string getName(Identifier i) {
   )
 }
 
-predicate resolveVariable(Identifier i, VarDef decl) { scopeOf(i).containsVar(decl, getName(i)) }
+cached
+private module Cached {
+  cached
+  predicate resolveVariable(Identifier i, VarDef decl) { scopeOf(i).containsVar(decl, getName(i)) }
 
-predicate resolveField(Identifier i, VarDef decl) { scopeOf(i).containsField(decl, getName(i)) }
+  cached
+  predicate resolveField(Identifier i, VarDef decl) { scopeOf(i).containsField(decl, getName(i)) }
+}
+
+import Cached
 
 module VarConsistency {
   query predicate multipleVarDefs(VarAccess v, VarDef decl) {

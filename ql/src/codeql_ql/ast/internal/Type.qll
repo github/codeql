@@ -4,6 +4,7 @@ private import codeql_ql.ast.internal.TreeSitter
 private import codeql_ql.ast.internal.Module
 private import codeql_ql.ast.internal.Predicate
 
+cached
 private newtype TType =
   TClass(Class c) { isActualClass(c) } or
   TNewType(NewType n) or
@@ -257,6 +258,7 @@ class DatabaseType extends Type, TDatabase {
   override string getName() { result = name }
 }
 
+cached
 predicate resolveTypeExpr(TypeExpr te, Type t) {
   if te.isDBType()
   then t = TDatabase(te.getClassName())
