@@ -9,10 +9,12 @@ bindingset[name]
 private string directMember(string name) { result = name + "()" }
 
 bindingset[name, i]
-private string indexedMember(string name, int i) { result = name + "(_)" }
+private string indexedMember(string name, int i) { result = name + "(_)" and exists(i) }
 
 bindingset[name, index]
-private string stringIndexedMember(string name, string index) { result = name + "(_)" }
+private string stringIndexedMember(string name, string index) {
+  result = name + "(_)" and exists(index)
+}
 
 /** An AST node of a QL program */
 class AstNode extends TAstNode {
@@ -1621,5 +1623,3 @@ class ModuleExpr extends TModuleExpr, ModuleRef {
     pred = directMember("getQualifier") and result = this.getQualifier()
   }
 }
-
-private AstNode noParent() { not exists(result.getParent()) and not result instanceof TopLevel }
