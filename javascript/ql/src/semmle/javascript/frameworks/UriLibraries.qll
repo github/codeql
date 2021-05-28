@@ -15,7 +15,7 @@ abstract deprecated class UriLibraryStep extends DataFlow::ValueNode {
 }
 
 /**
- * Provides classes for working with [urijs](http://medialize.github.io/URI.js/) code.
+ * Provides classes for working with [urijs](https://medialize.github.io/URI.js/) code.
  */
 module urijs {
   /**

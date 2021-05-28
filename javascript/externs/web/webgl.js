@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,14 +16,14 @@
 
 /**
  * @fileoverview Definitions for WebGL functions as described at
- * http://www.khronos.org/registry/webgl/specs/latest/
+ * https://www.khronos.org/registry/webgl/specs/latest/
  *
  * This file is current up to the WebGL 1.0.1 spec, including extensions.
  *
  * This relies on html5.js being included for Canvas and Typed Array support.
  *
  * This includes some extensions defined at
- * http://www.khronos.org/registry/webgl/extensions/
+ * https://www.khronos.org/registry/webgl/extensions/
  *
  * @externs
  */
@@ -3060,7 +3060,7 @@ function WebGLUniformLocation() {}
 
 
 /**
- * @see http://www.khronos.org/registry/webgl/extensions/OES_texture_float/
+ * @see https://www.khronos.org/registry/webgl/extensions/OES_texture_float/
  * @constructor
  * @noalias
  */
@@ -3068,7 +3068,7 @@ function OES_texture_float() {}
 
 
 /**
- * @see http://www.khronos.org/registry/webgl/extensions/OES_texture_half_float/
+ * @see https://www.khronos.org/registry/webgl/extensions/OES_texture_half_float/
  * @constructor
  * @noalias
  */
@@ -3079,7 +3079,7 @@ OES_texture_half_float.prototype.HALF_FLOAT_OES;
 
 
 /**
- * @see http://www.khronos.org/registry/webgl/extensions/WEBGL_lose_context/
+ * @see https://www.khronos.org/registry/webgl/extensions/WEBGL_lose_context/
  * @constructor
  * @noalias
  */
@@ -3091,7 +3091,7 @@ WEBGL_lose_context.prototype.restoreContext = function() {};
 
 
 /**
- * @see http://www.khronos.org/registry/webgl/extensions/OES_standard_derivatives/
+ * @see https://www.khronos.org/registry/webgl/extensions/OES_standard_derivatives/
  * @constructor
  * @noalias
  */
@@ -3102,7 +3102,7 @@ OES_standard_derivatives.prototype.FRAGMENT_SHADER_DERIVATIVE_HINT_OES;
 
 
 /**
- * @see http://www.khronos.org/registry/webgl/extensions/OES_vertex_array_object/
+ * @see https://www.khronos.org/registry/webgl/extensions/OES_vertex_array_object/
  * @constructor
  * @noalias
  * @extends {WebGLObject}
@@ -3111,7 +3111,7 @@ function WebGLVertexArrayObjectOES() {}
 
 
 /**
- * @see http://www.khronos.org/registry/webgl/extensions/OES_vertex_array_object/
+ * @see https://www.khronos.org/registry/webgl/extensions/OES_vertex_array_object/
  * @constructor
  * @noalias
  */
@@ -3148,7 +3148,7 @@ OES_vertex_array_object.prototype.bindVertexArrayOES = function(arrayObject) {};
 
 
 /**
- * @see http://www.khronos.org/registry/webgl/extensions/WEBGL_debug_renderer_info/
+ * @see https://www.khronos.org/registry/webgl/extensions/WEBGL_debug_renderer_info/
  * @constructor
  * @noalias
  */
@@ -3162,7 +3162,7 @@ WEBGL_debug_renderer_info.prototype.UNMASKED_RENDERER_WEBGL;
 
 
 /**
- * @see http://www.khronos.org/registry/webgl/extensions/WEBGL_debug_shaders/
+ * @see https://www.khronos.org/registry/webgl/extensions/WEBGL_debug_shaders/
  * @constructor
  * @noalias
  */
@@ -3177,7 +3177,7 @@ WEBGL_debug_shaders.prototype.getTranslatedShaderSource = function(shader) {};
 
 
 /**
- * @see http://www.khronos.org/registry/webgl/extensions/WEBGL_compressed_texture_s3tc/
+ * @see https://www.khronos.org/registry/webgl/extensions/WEBGL_compressed_texture_s3tc/
  * @constructor
  * @noalias
  */
@@ -3197,7 +3197,7 @@ WEBGL_compressed_texture_s3tc.prototype.COMPRESSED_RGBA_S3TC_DXT5_EXT;
 
 
 /**
- * @see http://www.khronos.org/registry/webgl/extensions/OES_depth_texture/
+ * @see https://www.khronos.org/registry/webgl/extensions/OES_depth_texture/
  * @constructor
  * @noalias
  */
@@ -3205,7 +3205,7 @@ function OES_depth_texture() {}
 
 
 /**
- * @see http://www.khronos.org/registry/webgl/extensions/OES_element_index_uint/
+ * @see https://www.khronos.org/registry/webgl/extensions/OES_element_index_uint/
  * @constructor
  * @noalias
  */
@@ -3213,7 +3213,7 @@ function OES_element_index_uint() {}
 
 
 /**
- * @see http://www.khronos.org/registry/webgl/extensions/EXT_texture_filter_anisotropic/
+ * @see https://www.khronos.org/registry/webgl/extensions/EXT_texture_filter_anisotropic/
  * @constructor
  * @noalias
  */
@@ -3343,7 +3343,7 @@ WEBGL_draw_buffers.prototype.drawBuffersWEBGL = function(buffers) {};
 
 
 /**
- * @see http://www.khronos.org/registry/webgl/extensions/ANGLE_instanced_arrays/
+ * @see https://www.khronos.org/registry/webgl/extensions/ANGLE_instanced_arrays/
  * @constructor
  * @noalias
  */

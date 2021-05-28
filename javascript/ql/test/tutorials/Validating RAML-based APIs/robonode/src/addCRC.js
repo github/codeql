@@ -1,4 +1,4 @@
-// See http://support.robotis.com/en/product/dynamixel2/communication/crc.htm
+// See https://support.robotis.com/en/product/dynamixel2/communication/crc.htm
 
 var crcTable =
 [

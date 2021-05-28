@@ -384,7 +384,7 @@ SlideDeck.prototype.loadConfig_ = function(config) {
           '">' + p.gplus.replace(/https?:\/\//, '') + '</a>' : '';
 
       var twitter = p.twitter ? '<span>twitter</span>' +
-          '<a href="http://twitter.com/' + p.twitter + '">' +
+          '<a href="https://twitter.com/' + p.twitter + '">' +
           p.twitter + '</a>' : '';
 
       var www = p.www ? '<span>www</span><a href="' + p.www +
@@ -891,7 +891,7 @@ SlideDeck.prototype.loadAnalytics_ = function() {
 
   (function() {
     var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'https://www') + '.google-analytics.com/ga.js';
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   })();
 };

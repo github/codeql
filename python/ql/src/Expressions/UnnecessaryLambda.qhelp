@@ -23,7 +23,7 @@ call_with_x_squared</code>.</p>
 </example>
 <references>
 
-  <li>Python: <a href="http://docs.python.org/2.7/reference/expressions.html#lambda">lambdas</a>.</li>
+  <li>Python: <a href="https://docs.python.org/2.7/reference/expressions.html#lambda">lambdas</a>.</li>
 
 </references>
 </qhelp>

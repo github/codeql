@@ -1,7 +1,7 @@
 import javascript
 
 query predicate test_RedirectInvocation(
-  HTTP::RedirectInvocation redirect, Expr url, HTTP::RouteHandler rh
+  https::RedirectInvocation redirect, Expr url, https::RouteHandler rh
 ) {
   redirect.getUrlArgument() = url and
   redirect.getRouteHandler() = rh

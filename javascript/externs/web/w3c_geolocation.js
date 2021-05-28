@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,13 +16,13 @@
 
 /**
  * @fileoverview Definitions for W3C's Geolocation specification
- *     http://www.w3.org/TR/geolocation-API/
+ *     https://www.w3.org/TR/geolocation-API/
  * @externs
  */
 
 /**
  * @constructor
- * @see http://www.w3.org/TR/geolocation-API/#geolocation
+ * @see https://www.w3.org/TR/geolocation-API/#geolocation
  */
 function Geolocation() {}
 
@@ -55,7 +55,7 @@ Geolocation.prototype.clearWatch = function(watchId) {};
 
 /**
  * @constructor
- * @see http://www.w3.org/TR/geolocation-API/#coordinates
+ * @see https://www.w3.org/TR/geolocation-API/#coordinates
  */
 function GeolocationCoordinates() {}
 /** @type {number} */
@@ -76,7 +76,7 @@ GeolocationCoordinates.prototype.speed;
 
 /**
  * @constructor
- * @see http://www.w3.org/TR/geolocation-API/#position
+ * @see https://www.w3.org/TR/geolocation-API/#position
  */
 function GeolocationPosition() {}
 /** @type {GeolocationCoordinates} */
@@ -87,7 +87,7 @@ GeolocationPosition.prototype.timestamp;
 
 /**
  * @record
- * @see http://www.w3.org/TR/geolocation-API/#position-options
+ * @see https://www.w3.org/TR/geolocation-API/#position-options
  */
 function GeolocationPositionOptions() {}
 /** @type {boolean|undefined} */
@@ -100,7 +100,7 @@ GeolocationPositionOptions.prototype.timeout;
 
 /**
  * @constructor
- * @see http://www.w3.org/TR/geolocation-API/#position-error
+ * @see https://www.w3.org/TR/geolocation-API/#position-error
  */
 function GeolocationPositionError() {}
 /** @type {number} */

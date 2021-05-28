@@ -24,7 +24,7 @@ private API::Node paramikoSSHClientInstance() {
 
 from DataFlow::CallCfgNode call, DataFlow::Node arg, string name
 where
-  // see http://docs.paramiko.org/en/stable/api/client.html#paramiko.client.SSHClient.set_missing_host_key_policy
+  // see https://docs.paramiko.org/en/stable/api/client.html#paramiko.client.SSHClient.set_missing_host_key_policy
   call = paramikoSSHClientInstance().getMember("set_missing_host_key_policy").getACall() and
   arg in [call.getArg(0), call.getArgByName("policy")] and
   (

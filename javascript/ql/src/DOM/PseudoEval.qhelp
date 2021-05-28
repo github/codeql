@@ -18,7 +18,7 @@ but a function.
 
 <p>
 Instead of using <code>document.write</code> to insert raw HTML into the DOM, use a framework such as
-<a href="http://jquery.com">jQuery</a>.
+<a href="https://jquery.com">jQuery</a>.
 </p>
 
 </recommendation>

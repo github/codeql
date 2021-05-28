@@ -41,7 +41,7 @@ Instead of assigning to <code>exports</code>, <code>point.js</code> should assig
 <references>
 
 
-<li>Node.js Manual: <a href="http://nodejs.org/api/modules.html#modules_exports_alias">exports alias</a>.</li>
+<li>Node.js Manual: <a href="https://nodejs.org/api/modules.html#modules_exports_alias">exports alias</a>.</li>
 
 
 </references>

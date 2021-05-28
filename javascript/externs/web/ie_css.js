@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,10 +16,10 @@
 
 /**
  * @fileoverview Definitions for IE's custom CSS properties, as defined here:
- * http://msdn.microsoft.com/en-us/library/aa768661(VS.85).aspx
+ * https://msdn.microsoft.com/en-us/library/aa768661(VS.85).aspx
  *
  * This page is also useful for the IDL definitions:
- * http://source.winehq.org/source/include/mshtml.idl
+ * https://source.winehq.org/source/include/mshtml.idl
  *
  * @externs
  * @author nicksantos@google.com
@@ -49,7 +49,7 @@ StyleSheet.prototype.addImport;
  * @param {string} bstrStyle
  * @param {number=} opt_iIndex
  * @return {number}
- * @see http://msdn.microsoft.com/en-us/library/aa358796%28v=vs.85%29.aspx
+ * @see https://msdn.microsoft.com/en-us/library/aa358796%28v=vs.85%29.aspx
  */
 StyleSheet.prototype.addRule;
 
@@ -74,7 +74,7 @@ StyleSheet.prototype.rules;
 /**
  * @param {string} propName
  * @return {string}
- * @see http://msdn.microsoft.com/en-us/library/aa358797(VS.85).aspx
+ * @see https://msdn.microsoft.com/en-us/library/aa358797(VS.85).aspx
  */
 StyleSheet.prototype.getExpression;
 
@@ -82,14 +82,14 @@ StyleSheet.prototype.getExpression;
  * @param {string} name
  * @param {string} expression
  * @return {undefined}
- * @see http://msdn.microsoft.com/en-us/library/ms531196(VS.85).aspx
+ * @see https://msdn.microsoft.com/en-us/library/ms531196(VS.85).aspx
  */
 StyleSheet.prototype.setExpression;
 
 /**
  * @param {string} expression
  * @return {undefined}
- * @see http://msdn.microsoft.com/en-us/library/aa358798(VS.85).aspx
+ * @see https://msdn.microsoft.com/en-us/library/aa358798(VS.85).aspx
  */
 StyleSheet.prototype.removeExpression;
 
@@ -100,20 +100,20 @@ StyleSheet.prototype.removeExpression;
 /** @type {string} */ CSSProperties.prototype.backgroundPositionY;
 
 /**
- * @see http://msdn.microsoft.com/en-us/library/ie/ms531081(v=vs.85).aspx
+ * @see https://msdn.microsoft.com/en-us/library/ie/ms531081(v=vs.85).aspx
  * NOTE: Left untyped to avoid conflict with caller.
  */
 CSSProperties.prototype.behavior;
 
 /**
  * @type {string}
- * @see http://msdn.microsoft.com/en-us/library/ms533883.aspx
+ * @see https://msdn.microsoft.com/en-us/library/ms533883.aspx
  */
 CSSProperties.prototype.imeMode;
 
 /**
  * @type {string}
- * @see http://msdn.microsoft.com/en-us/library/ms534176(VS.85).aspx
+ * @see https://msdn.microsoft.com/en-us/library/ms534176(VS.85).aspx
  */
 CSSProperties.prototype.msInterpolationMode;
 
@@ -133,19 +133,19 @@ CSSProperties.prototype.msInterpolationMode;
 
 /**
  * @type {string|number}
- * @see http://msdn.microsoft.com/en-us/library/ms535169(VS.85).aspx
+ * @see https://msdn.microsoft.com/en-us/library/ms535169(VS.85).aspx
  */
 CSSProperties.prototype.zoom;
 
 /**
  * @type {string}
- * @see http://msdn.microsoft.com/en-us/library/ms535153(VS.85).aspx
+ * @see https://msdn.microsoft.com/en-us/library/ms535153(VS.85).aspx
  */
 CSSProperties.prototype.writingMode;
 
 /**
  * IE-specific extensions.
- * @see http://blogs.msdn.com/b/ie/archive/2008/09/08/microsoft-css-vendor-extensions.aspx
+ * @see https://blogs.msdn.com/b/ie/archive/2008/09/08/microsoft-css-vendor-extensions.aspx
  */
 
 /** @type {string} */
@@ -252,7 +252,7 @@ CSSProperties.prototype.MsWritingMode;
 /** @type {string} */
 CSSProperties.prototype.MsZoom;
 
-// See: http://msdn.microsoft.com/en-us/library/windows/apps/Hh702466.aspx
+// See: https://msdn.microsoft.com/en-us/library/windows/apps/Hh702466.aspx
 
 /** @type {string} */
 CSSProperties.prototype.msContentZooming;

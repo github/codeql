@@ -70,7 +70,7 @@ module NodeJSLib {
    * A server library that provides an (enhanced) NodesJS HTTP response
    * object should implement a library specific subclass of this class.
    */
-  abstract class ResponseExpr extends HTTP::Servers::StandardResponseExpr { }
+  abstract class ResponseExpr extends https::Servers::StandardResponseExpr { }
 
   /**
    * A Node.js HTTP request.
@@ -78,7 +78,7 @@ module NodeJSLib {
    * A server library that provides an (enhanced) NodesJS HTTP request
    * object should implement a library specific subclass of this class.
    */
-  abstract class RequestExpr extends HTTP::Servers::StandardRequestExpr { }
+  abstract class RequestExpr extends https::Servers::StandardRequestExpr { }
 
   /**
    * A function used as an Node.js server route handler.
@@ -87,7 +87,7 @@ module NodeJSLib {
    * but support for other kinds of route handlers can be added by implementing
    * additional subclasses of this class.
    */
-  abstract class RouteHandler extends HTTP::Servers::StandardRouteHandler, DataFlow::FunctionNode {
+  abstract class RouteHandler extends https::Servers::StandardRouteHandler, DataFlow::FunctionNode {
     /**
      * Gets the parameter of the route handler that contains the request object.
      */
@@ -109,7 +109,7 @@ module NodeJSLib {
   /**
    * A Node.js response source.
    */
-  abstract class ResponseSource extends HTTP::Servers::ResponseSource { }
+  abstract class ResponseSource extends https::Servers::ResponseSource { }
 
   /**
    * A standard Node.js response source, that is, the response parameter of a
@@ -129,7 +129,7 @@ module NodeJSLib {
   /**
    * A Node.js request source.
    */
-  abstract class RequestSource extends HTTP::Servers::RequestSource { }
+  abstract class RequestSource extends https::Servers::RequestSource { }
 
   /**
    * A standard Node.js request source, that is, the request parameter of a
@@ -163,7 +163,7 @@ module NodeJSLib {
   /**
    * An access to a user-controlled Node.js request input.
    */
-  private class RequestInputAccess extends HTTP::RequestInputAccess {
+  private class RequestInputAccess extends https::RequestInputAccess {
     RequestExpr request;
     string kind;
 
@@ -185,7 +185,7 @@ module NodeJSLib {
       )
     }
 
-    override HTTP::RouteHandler getRouteHandler() { result = request.getRouteHandler() }
+    override https::RouteHandler getRouteHandler() { result = request.getRouteHandler() }
 
     override string getKind() { result = kind }
   }
@@ -193,7 +193,7 @@ module NodeJSLib {
   /**
    * An access to an HTTP header (other than "Cookie") on an incoming Node.js request object.
    */
-  private class RequestHeaderAccess extends HTTP::RequestHeaderAccess {
+  private class RequestHeaderAccess extends https::RequestHeaderAccess {
     RequestExpr request;
 
     RequestHeaderAccess() {
@@ -209,14 +209,14 @@ module NodeJSLib {
       result = this.(DataFlow::PropRead).getPropertyName().toLowerCase()
     }
 
-    override HTTP::RouteHandler getRouteHandler() { result = request.getRouteHandler() }
+    override https::RouteHandler getRouteHandler() { result = request.getRouteHandler() }
 
     override string getKind() { result = "header" }
 
     RequestExpr getRequest() { result = request }
   }
 
-  class RouteSetup extends CallExpr, HTTP::Servers::StandardRouteSetup {
+  class RouteSetup extends CallExpr, https::Servers::StandardRouteSetup {
     ServerDefinition server;
     Expr handler;
 
@@ -242,7 +242,7 @@ module NodeJSLib {
         result = succ.backtrack(t2, t)
         or
         t = t2 and
-        HTTP::routeHandlerStep(result, succ)
+        https::routeHandlerStep(result, succ)
       )
     }
 
@@ -254,12 +254,12 @@ module NodeJSLib {
     Expr getRouteHandlerExpr() { result = handler }
   }
 
-  abstract private class HeaderDefinition extends HTTP::Servers::StandardHeaderDefinition {
+  abstract private class HeaderDefinition extends https::Servers::StandardHeaderDefinition {
     ResponseExpr r;
 
     HeaderDefinition() { astNode.getReceiver() = r }
 
-    override HTTP::RouteHandler getRouteHandler() { result = r.getRouteHandler() }
+    override https::RouteHandler getRouteHandler() { result = r.getRouteHandler() }
   }
 
   /**
@@ -357,8 +357,8 @@ module NodeJSLib {
    * An expression passed as the first argument to the `write` or `end` method
    * of an HTTP response.
    */
-  private class ResponseSendArgument extends HTTP::ResponseSendArgument {
-    HTTP::RouteHandler rh;
+  private class ResponseSendArgument extends https::ResponseSendArgument {
+    https::RouteHandler rh;
 
     ResponseSendArgument() {
       exists(MethodCallExpr mce, string m | m = "write" or m = "end" |
@@ -369,13 +369,13 @@ module NodeJSLib {
       )
     }
 
-    override HTTP::RouteHandler getRouteHandler() { result = rh }
+    override https::RouteHandler getRouteHandler() { result = rh }
   }
 
   /**
    * An expression that creates a new Node.js server.
    */
-  class ServerDefinition extends HTTP::Servers::StandardServerDefinition {
+  class ServerDefinition extends https::Servers::StandardServerDefinition {
     ServerDefinition() { isCreateServer(this) }
   }
 
@@ -756,7 +756,7 @@ module NodeJSLib {
    *
    * For example, this could be the function `function(req, res){...}`.
    */
-  class RouteHandlerCandidate extends HTTP::RouteHandlerCandidate {
+  class RouteHandlerCandidate extends https::RouteHandlerCandidate {
     RouteHandlerCandidate() {
       exists(string request, string response |
         (request = "request" or request = "req") and
@@ -776,7 +776,7 @@ module NodeJSLib {
    * A function that flows to a route setup.
    */
   private class TrackedRouteHandlerCandidateWithSetup extends RouteHandler,
-    HTTP::Servers::StandardRouteHandler, DataFlow::FunctionNode {
+    https::Servers::StandardRouteHandler, DataFlow::FunctionNode {
     TrackedRouteHandlerCandidateWithSetup() { this = any(RouteSetup s).getARouteHandler() }
   }
 
@@ -812,7 +812,7 @@ module NodeJSLib {
    * For example, this could be the call `server.on("request", handler)`
    * where it is unknown if `server` is a Node.js server.
    */
-  class RouteSetupCandidate extends HTTP::RouteSetupCandidate, DataFlow::MethodCallNode {
+  class RouteSetupCandidate extends https::RouteSetupCandidate, DataFlow::MethodCallNode {
     DataFlow::ValueNode arg;
 
     RouteSetupCandidate() {
@@ -857,7 +857,7 @@ module NodeJSLib {
       exists(string moduleName, DataFlow::SourceNode callee | this = callee.getACall() |
         (moduleName = "http" or moduleName = "https") and
         (
-          callee = DataFlow::moduleMember(moduleName, any(HTTP::RequestMethodName m).toLowerCase())
+          callee = DataFlow::moduleMember(moduleName, any(https::RequestMethodName m).toLowerCase())
           or
           callee = DataFlow::moduleMember(moduleName, "request")
         ) and

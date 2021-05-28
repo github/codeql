@@ -89,6 +89,6 @@ if __name__ == "__main__":
     app.listen(8888)
     tornado.ioloop.IOLoop.current().start()
 
-    # http://localhost:8888/ResponseWriting/str
-    # http://localhost:8888/ResponseWriting/bytes
-    # http://localhost:8888/ResponseWriting/dict
+    # https://localhost:8888/ResponseWriting/str
+    # https://localhost:8888/ResponseWriting/bytes
+    # https://localhost:8888/ResponseWriting/dict

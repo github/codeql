@@ -353,7 +353,7 @@ private predicate hasAccessModifier(Field field) {
   field.isInternal()
 }
 
-//Default accessibility rules http://msdn.microsoft.com/en-us/library/ba0a1yw2%28v=vs.71%29.aspx
+//Default accessibility rules https://msdn.microsoft.com/en-us/library/ba0a1yw2%28v=vs.71%29.aspx
 private predicate isPublic(Field field) {
   field.isPublic()
   or

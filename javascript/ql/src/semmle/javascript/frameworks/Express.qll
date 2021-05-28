@@ -69,7 +69,7 @@ module Express {
     result = "param" or
     result = "all" or
     result = "use" or
-    result = any(HTTP::RequestMethodName m).toLowerCase() or
+    result = any(https::RequestMethodName m).toLowerCase() or
     // deprecated methods
     result = "error" or
     result = "del"
@@ -78,7 +78,7 @@ module Express {
   /**
    * A call to an Express router method that sets up a route.
    */
-  class RouteSetup extends HTTP::Servers::StandardRouteSetup, MethodCallExpr {
+  class RouteSetup extends https::Servers::StandardRouteSetup, MethodCallExpr {
     RouteSetup() {
       isRouter(getReceiver()) and
       getMethodName() = routeSetupMethodName()
@@ -128,7 +128,7 @@ module Express {
       exists(DataFlow::TypeBackTracker t2, DataFlow::SourceNode succ | succ = getARouteHandler(t2) |
         result = succ.backtrack(t2, t)
         or
-        HTTP::routeHandlerStep(result, succ) and
+        https::routeHandlerStep(result, succ) and
         t = t2
       )
     }
@@ -140,7 +140,7 @@ module Express {
      *
      * Has no result for `use`, `all`, or `param` calls.
      */
-    HTTP::RequestMethodName getRequestMethod() { result.toLowerCase() = getMethodName() }
+    https::RequestMethodName getRequestMethod() { result.toLowerCase() = getMethodName() }
 
     /**
      * Holds if this registers a route for all request methods.
@@ -167,7 +167,7 @@ module Express {
   /**
    * A call that sets up a Passport router that includes the request object.
    */
-  private class PassportRouteSetup extends HTTP::Servers::StandardRouteSetup, CallExpr {
+  private class PassportRouteSetup extends https::Servers::StandardRouteSetup, CallExpr {
     DataFlow::ModuleImportNode importNode;
     DataFlow::FunctionNode callback;
 
@@ -192,7 +192,7 @@ module Express {
   /**
    * The callback given to passport in PassportRouteSetup.
    */
-  private class PassportRouteHandler extends RouteHandler, HTTP::Servers::StandardRouteHandler,
+  private class PassportRouteHandler extends RouteHandler, https::Servers::StandardRouteHandler,
     DataFlow::ValueNode {
     override Function astNode;
 
@@ -332,7 +332,7 @@ module Express {
    * but support for other kinds of route handlers can be added by implementing
    * additional subclasses of this class.
    */
-  abstract class RouteHandler extends HTTP::RouteHandler {
+  abstract class RouteHandler extends https::RouteHandler {
     /**
      * Gets the parameter of kind `kind` of this route handler.
      *
@@ -359,7 +359,7 @@ module Express {
   /**
    * An Express route handler installed by a route setup.
    */
-  class StandardRouteHandler extends RouteHandler, HTTP::Servers::StandardRouteHandler,
+  class StandardRouteHandler extends RouteHandler, https::Servers::StandardRouteHandler,
     DataFlow::ValueNode {
     override Function astNode;
     RouteSetup routeSetup;
@@ -399,7 +399,7 @@ module Express {
   }
 
   /** An Express response source. */
-  abstract class ResponseSource extends HTTP::Servers::ResponseSource { }
+  abstract class ResponseSource extends https::Servers::ResponseSource { }
 
   /**
    * An Express response source, that is, the response parameter of a
@@ -430,7 +430,7 @@ module Express {
   }
 
   /** An Express request source. */
-  abstract class RequestSource extends HTTP::Servers::RequestSource { }
+  abstract class RequestSource extends https::Servers::RequestSource { }
 
   /**
    * An Express request source, that is, the request parameter of a
@@ -485,7 +485,7 @@ module Express {
   }
 
   /** The input parameter to an `app.param()` route handler. */
-  private class ParamHandlerInputAccess extends HTTP::RequestInputAccess {
+  private class ParamHandlerInputAccess extends https::RequestInputAccess {
     RouteHandler rh;
 
     ParamHandlerInputAccess() {
@@ -494,7 +494,7 @@ module Express {
       )
     }
 
-    override HTTP::RouteHandler getRouteHandler() { result = rh }
+    override https::RouteHandler getRouteHandler() { result = rh }
 
     override string getKind() { result = "parameter" }
   }
@@ -528,7 +528,7 @@ module Express {
   /**
    * An access to a user-controlled Express request input.
    */
-  class RequestInputAccess extends HTTP::RequestInputAccess {
+  class RequestInputAccess extends https::RequestInputAccess {
     RequestSource request;
     string kind;
 
@@ -587,7 +587,7 @@ module Express {
   /**
    * An access to a header on an Express request.
    */
-  private class RequestHeaderAccess extends HTTP::RequestHeaderAccess {
+  private class RequestHeaderAccess extends https::RequestHeaderAccess {
     RequestSource request;
 
     RequestHeaderAccess() {
@@ -616,7 +616,7 @@ module Express {
   /**
    * HTTP headers created by Express calls
    */
-  abstract private class ExplicitHeader extends HTTP::ExplicitHeaderDefinition { }
+  abstract private class ExplicitHeader extends https::ExplicitHeaderDefinition { }
 
   /**
    * Holds if `e` is an HTTP request object.
@@ -635,7 +635,7 @@ module Express {
     RequestBodyAccess() { any(RouteHandler h).getARequestBodyAccess() = this }
   }
 
-  abstract private class HeaderDefinition extends HTTP::Servers::StandardHeaderDefinition {
+  abstract private class HeaderDefinition extends https::Servers::StandardHeaderDefinition {
     HeaderDefinition() { isResponse(astNode.getReceiver()) }
 
     override RouteHandler getRouteHandler() { astNode.getReceiver() = result.getAResponseExpr() }
@@ -644,7 +644,7 @@ module Express {
   /**
    * An invocation of the `redirect` method of an HTTP response object.
    */
-  private class RedirectInvocation extends HTTP::RedirectInvocation, MethodCallExpr {
+  private class RedirectInvocation extends https::RedirectInvocation, MethodCallExpr {
     ResponseSource response;
 
     RedirectInvocation() { this = response.ref().getAMethodCall("redirect").asExpr() }
@@ -708,7 +708,7 @@ module Express {
   /**
    * An argument passed to the `send` or `end` method of an HTTP response object.
    */
-  private class ResponseSendArgument extends HTTP::ResponseSendArgument {
+  private class ResponseSendArgument extends https::ResponseSendArgument {
     ResponseSource response;
 
     ResponseSendArgument() { this = response.ref().getAMethodCall("send").getArgument(0).asExpr() }
@@ -719,7 +719,7 @@ module Express {
   /**
    * An invocation of the `cookie` method on an HTTP response object.
    */
-  class SetCookie extends HTTP::CookieDefinition, MethodCallExpr {
+  class SetCookie extends https::CookieDefinition, MethodCallExpr {
     ResponseSource response;
 
     SetCookie() { this = response.ref().getAMethodCall("cookie").asExpr() }
@@ -735,7 +735,7 @@ module Express {
    * An expression passed to the `render` method of an HTTP response object
    * as the value of a template variable.
    */
-  private class TemplateInput extends HTTP::ResponseBody {
+  private class TemplateInput extends https::ResponseBody {
     TemplateObjectInput obj;
 
     TemplateInput() {
@@ -767,13 +767,13 @@ module Express {
   /**
    * An Express server application.
    */
-  private class Application extends HTTP::ServerDefinition {
+  private class Application extends https::ServerDefinition {
     Application() { this = appCreation().asExpr() }
 
     /**
      * Gets a route handler of the application, regardless of nesting.
      */
-    override HTTP::RouteHandler getARouteHandler() {
+    override https::RouteHandler getARouteHandler() {
       result = this.(RouterDefinition).getASubRouter*().getARouteHandler()
     }
   }
@@ -818,7 +818,7 @@ module Express {
      *
      * Example: `fun` for `router1.use(fun)` or `router.use("/route", fun)`
      */
-    HTTP::RouteHandler getARouteHandler() {
+    https::RouteHandler getARouteHandler() {
       result.(DataFlow::SourceNode).flowsToExpr(getARouteSetup().getAnArgument())
     }
 
@@ -902,7 +902,7 @@ module Express {
    * A function that flows to a route setup.
    */
   private class TrackedRouteHandlerCandidateWithSetup extends RouteHandler,
-    HTTP::Servers::StandardRouteHandler, DataFlow::FunctionNode {
+    https::Servers::StandardRouteHandler, DataFlow::FunctionNode {
     RouteSetup routeSetup;
 
     TrackedRouteHandlerCandidateWithSetup() { this = routeSetup.getARouteHandler() }
@@ -921,14 +921,14 @@ module Express {
    * `router.post(handler)` where it is unknown if `router` is an
    * Express router.
    */
-  class RouteSetupCandidate extends HTTP::RouteSetupCandidate, DataFlow::MethodCallNode {
+  class RouteSetupCandidate extends https::RouteSetupCandidate, DataFlow::MethodCallNode {
     DataFlow::ValueNode routeHandlerArg;
 
     RouteSetupCandidate() {
       exists(string methodName |
         methodName = "all" or
         methodName = "use" or
-        methodName = any(HTTP::RequestMethodName m).toLowerCase()
+        methodName = any(https::RequestMethodName m).toLowerCase()
       |
         getMethodName() = methodName and
         exists(DataFlow::ValueNode arg | arg = getAnArgument() |

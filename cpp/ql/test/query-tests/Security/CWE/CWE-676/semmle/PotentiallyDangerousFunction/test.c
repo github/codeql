@@ -1,5 +1,5 @@
 // Semmle test case for rule PotentiallyDangerousFunction.ql
-// Associated with CWE-676: Use of Potentially Dangerous Function. http://cwe.mitre.org/data/definitions/676.html
+// Associated with CWE-676: Use of Potentially Dangerous Function. https://cwe.mitre.org/data/definitions/676.html
 
 // Standard library definitions
 #define NULL (0)

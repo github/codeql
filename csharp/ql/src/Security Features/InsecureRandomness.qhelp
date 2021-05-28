@@ -65,8 +65,8 @@ a byte) to a series of permitted characters.
 
 <references>
 
-  <li>Wikipedia. <a href="http://en.wikipedia.org/wiki/Pseudorandom_number_generator">Pseudo-random number generator</a>.</li>
-  <li>MSDN. <a href="http://msdn.microsoft.com/en-us/library/system.security.cryptography.randomnumbergenerator.aspx">RandomNumberGenerator</a>.</li>
+  <li>Wikipedia. <a href="https://en.wikipedia.org/wiki/Pseudorandom_number_generator">Pseudo-random number generator</a>.</li>
+  <li>MSDN. <a href="https://msdn.microsoft.com/en-us/library/system.security.cryptography.randomnumbergenerator.aspx">RandomNumberGenerator</a>.</li>
   <li>MSDN. <a href="https://msdn.microsoft.com/en-us/library/system.web.security.membership.generatepassword(v=vs.110).aspx">Membership.GeneratePassword</a>.</li>
 
 </references>

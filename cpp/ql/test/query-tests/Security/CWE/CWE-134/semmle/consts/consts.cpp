@@ -1,5 +1,5 @@
 // Semmle test case for rule NonConstantFormat.ql (non-constant format string).
-// Associated with CWE-134: Uncontrolled format string. http://cwe.mitre.org/data/definitions/134.html
+// Associated with CWE-134: Uncontrolled format string. https://cwe.mitre.org/data/definitions/134.html
 // Constant strings are compliant with CWE-134 and non-constant strings may be non-compliant with CWE-134.
  
 int printf(const char *format, ...);

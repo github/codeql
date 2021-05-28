@@ -5,7 +5,7 @@ import * as puppeteer from 'puppeteer';
     const page = await browser.newPage();
     await page.goto('https://example.com');
 
-    page.addStyleTag({ url: "http://example.org/style.css" })
+    page.addStyleTag({ url: "https://example.org/style.css" })
 })();
 
 class Renderer {

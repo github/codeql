@@ -193,7 +193,7 @@ class XMLDTD extends XMLLocatable, @xmldtd {
  * Example:
  *
  * ```
- * <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+ * <manifest xmlns:android="https://schemas.android.com/apk/res/android"
  *           package="com.example.exampleapp" android:versionCode="1">
  * </manifest>
  * ```
@@ -278,7 +278,7 @@ class XMLAttribute extends @xmlattribute, XMLLocatable {
  * Example:
  *
  * ```
- * xmlns:android="http://schemas.android.com/apk/res/android"
+ * xmlns:android="https://schemas.android.com/apk/res/android"
  * ```
  */
 class XMLNamespace extends XMLLocatable, @xmlnamespace {

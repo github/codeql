@@ -28,8 +28,8 @@ output but does not crash, unlike the previous example.</p>
 </example>
 <references>
 
-  <li>MSDN: <a href="http://msdn.microsoft.com/en-us/library/sbf85k1c(v=vs.71).aspx">&amp; Operator</a></li>
-  <li>MSDN: <a href="http://msdn.microsoft.com/en-us/library/kxszd0kx(v=vs.71).aspx">| Operator</a></li>
+  <li>MSDN: <a href="https://msdn.microsoft.com/en-us/library/sbf85k1c(v=vs.71).aspx">&amp; Operator</a></li>
+  <li>MSDN: <a href="https://msdn.microsoft.com/en-us/library/kxszd0kx(v=vs.71).aspx">| Operator</a></li>
 
 </references>
 </qhelp>

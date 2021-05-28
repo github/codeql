@@ -29,9 +29,9 @@
  end-user documentation provided with the redistribution and/or in the
  software itself an acknowledgement equivalent to the following:
      "This product includes software developed by the
-      JDOM Project (http://www.jdom.org/)."
+      JDOM Project (https://www.jdom.org/)."
  Alternatively, the acknowledgment may be graphical using the logos
- available at http://www.jdom.org/images/logos.
+ available at https://www.jdom.org/images/logos.
 
  THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
@@ -50,7 +50,7 @@
  individuals on behalf of the JDOM Project and was originally
  created by Jason Hunter <jhunter_AT_jdom_DOT_org> and
  Brett McLaughlin <brett_AT_jdom_DOT_org>.  For more information
- on the JDOM Project, please see <http://www.jdom.org/>.
+ on the JDOM Project, please see <https://www.jdom.org/>.
 
  */
 

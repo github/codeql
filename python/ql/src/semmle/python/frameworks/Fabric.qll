@@ -3,8 +3,8 @@
  * both version 1.x and 2.x.
  *
  * See
- * - http://docs.fabfile.org/en/1.14/tutorial.html and
- * - http://docs.fabfile.org/en/2.5/getting-started.html
+ * - https://docs.fabfile.org/en/1.14/tutorial.html and
+ * - https://docs.fabfile.org/en/2.5/getting-started.html
  */
 
 private import python
@@ -17,7 +17,7 @@ private import semmle.python.ApiGraphs
  * Provides classes modeling security-relevant aspects of the `fabric` PyPI package, for
  * version 1.x.
  *
- * See http://docs.fabfile.org/en/1.14/tutorial.html.
+ * See https://docs.fabfile.org/en/1.14/tutorial.html.
  */
 private module FabricV1 {
   /** Gets a reference to the `fabric` module. */
@@ -59,7 +59,7 @@ private module FabricV1 {
  * Provides classes modeling security-relevant aspects of the `fabric` PyPI package, for
  * version 2.x.
  *
- * See http://docs.fabfile.org/en/2.5/getting-st  arted.html.
+ * See https://docs.fabfile.org/en/2.5/getting-st  arted.html.
  */
 private module FabricV2 {
   /** Gets a reference to the `fabric` module. */

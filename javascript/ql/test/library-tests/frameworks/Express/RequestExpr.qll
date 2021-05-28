@@ -1,6 +1,6 @@
 import javascript
 
-query predicate test_RequestExpr(Express::RequestExpr e, HTTP::RouteHandler res) {
+query predicate test_RequestExpr(Express::RequestExpr e, https::RouteHandler res) {
   res = e.getRouteHandler()
 }
 

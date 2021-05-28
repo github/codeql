@@ -1,5 +1,5 @@
 import javascript
 private import semmle.javascript.heuristics.AdditionalRouteHandlers
 
-from HTTP::RouteHandler rh
+from https::RouteHandler rh
 select rh

@@ -10,7 +10,7 @@ import semmle.code.java.frameworks.spring.SpringBean
  * An Apache Camel element in a Spring Beans file.
  */
 class SpringCamelXMLElement extends SpringXMLElement {
-  SpringCamelXMLElement() { getNamespace().getURI() = "http://camel.apache.org/schema/spring" }
+  SpringCamelXMLElement() { getNamespace().getURI() = "https://camel.apache.org/schema/spring" }
 }
 
 /**

@@ -24,7 +24,7 @@ the definition of <code>Y</code> but the opposite is true in the MRO of <code>X<
 </example>
 <references>
 
-  <li>Python: <a href="http://www.python.org/download/releases/2.3/mro/">The Python 2.3 Method Resolution Order</a>.</li>
+  <li>Python: <a href="https://www.python.org/download/releases/2.3/mro/">The Python 2.3 Method Resolution Order</a>.</li>
 
 </references>
 </qhelp>

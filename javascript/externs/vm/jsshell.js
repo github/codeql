@@ -3,7 +3,7 @@
  * Sources:
  *  * https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey/Introduction_to_the_JavaScript_shell
  *  * https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey/Shell_global_objects
- *  * http://mxr.mozilla.org/mozilla-central/source/js/src/shell/js.cpp 
+ *  * https://mxr.mozilla.org/mozilla-central/source/js/src/shell/js.cpp 
  */
 
 /**

@@ -31,7 +31,7 @@ The fixed version, <code>fixed_matcher</code>, includes the "?" and will work as
 <references>
 
 <li>Python Standard Library: <a href="https://docs.python.org/library/re.html">Regular expression operations</a>.</li>
-<li>Regular-Expressions.info: <a href="http://www.regular-expressions.info/named.html">Named Capturing Groups</a>.</li>
+<li>Regular-Expressions.info: <a href="https://www.regular-expressions.info/named.html">Named Capturing Groups</a>.</li>
 
 </references>
 </qhelp>

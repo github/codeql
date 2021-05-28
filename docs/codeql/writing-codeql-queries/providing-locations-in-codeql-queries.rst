@@ -42,7 +42,7 @@ A custom URL can be provided by defining a QL predicate returning ``string`` wit
        }
 
        string getURL() {
-           result = "http://mycompany.com/jira/" + getKey()
+           result = "https://mycompany.com/jira/" + getKey()
        }
    }
 

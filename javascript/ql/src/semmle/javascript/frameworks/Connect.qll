@@ -10,7 +10,7 @@ module Connect {
   /**
    * An expression that creates a new Connect server.
    */
-  class ServerDefinition extends HTTP::Servers::StandardServerDefinition, CallExpr {
+  class ServerDefinition extends https::Servers::StandardServerDefinition, CallExpr {
     ServerDefinition() {
       // `app = connect()`
       this = DataFlow::moduleImport("connect").getAnInvocation().asExpr()
@@ -24,7 +24,7 @@ module Connect {
    * but support for other kinds of route handlers can be added by implementing
    * additional subclasses of this class.
    */
-  abstract class RouteHandler extends HTTP::Servers::StandardRouteHandler, DataFlow::ValueNode {
+  abstract class RouteHandler extends https::Servers::StandardRouteHandler, DataFlow::ValueNode {
     /**
      * Gets the parameter of kind `kind` of this route handler.
      *
@@ -60,7 +60,7 @@ module Connect {
    * A Connect response source, that is, the response parameter of a
    * route handler.
    */
-  private class ResponseSource extends HTTP::Servers::ResponseSource {
+  private class ResponseSource extends https::Servers::ResponseSource {
     RouteHandler rh;
 
     ResponseSource() { this = DataFlow::parameterNode(rh.getResponseParameter()) }
@@ -75,7 +75,7 @@ module Connect {
    * A Connect request source, that is, the request parameter of a
    * route handler.
    */
-  private class RequestSource extends HTTP::Servers::RequestSource {
+  private class RequestSource extends https::Servers::RequestSource {
     RouteHandler rh;
 
     RequestSource() { this = DataFlow::parameterNode(rh.getRequestParameter()) }
@@ -103,7 +103,7 @@ module Connect {
   /**
    * A call to a Connect method that sets up a route.
    */
-  class RouteSetup extends MethodCallExpr, HTTP::Servers::StandardRouteSetup {
+  class RouteSetup extends MethodCallExpr, https::Servers::StandardRouteSetup {
     ServerDefinition server;
 
     RouteSetup() {
@@ -155,7 +155,7 @@ module Connect {
   /**
    * An access to a user-controlled Connect request input.
    */
-  private class RequestInputAccess extends HTTP::RequestInputAccess {
+  private class RequestInputAccess extends https::RequestInputAccess {
     RequestExpr request;
     string kind;
 
@@ -177,7 +177,7 @@ module Connect {
    * A function that flows to a route setup.
    */
   private class TrackedRouteHandlerCandidateWithSetup extends RouteHandler,
-    HTTP::Servers::StandardRouteHandler, DataFlow::FunctionNode {
+    https::Servers::StandardRouteHandler, DataFlow::FunctionNode {
     TrackedRouteHandlerCandidateWithSetup() { this = any(RouteSetup s).getARouteHandler() }
 
     override Parameter getRouteHandlerParameter(string kind) {
@@ -191,7 +191,7 @@ module Connect {
    * For example, this could be the call `router.use(handler)` where
    * it is unknown if `router` is a Connect router.
    */
-  class RouteSetupCandidate extends HTTP::RouteSetupCandidate, DataFlow::MethodCallNode {
+  class RouteSetupCandidate extends https::RouteSetupCandidate, DataFlow::MethodCallNode {
     DataFlow::ValueNode routeHandlerArg;
 
     RouteSetupCandidate() {

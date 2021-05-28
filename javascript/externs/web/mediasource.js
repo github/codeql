@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,7 +16,7 @@
 /**
  * @fileoverview Definitions for the Media Source Extensions. Note that the
  * properties available here are the union of several versions of the spec.
- * @see http://dvcs.w3.org/hg/html-media/raw-file/tip/media-source/media-source.html
+ * @see https://dvcs.w3.org/hg/html-media/raw-file/tip/media-source/media-source.html
  *
  * @externs
  */

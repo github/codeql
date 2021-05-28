@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,7 +18,7 @@
  * @fileoverview Definitions for W3C's event specification.
  *  The whole file has been fully type annotated.
  *  Created from
- *   http://www.w3.org/TR/DOM-Level-2-Events/ecma-script-binding.html
+ *   https://www.w3.org/TR/DOM-Level-2-Events/ecma-script-binding.html
  *
  * @externs
  */
@@ -71,8 +71,8 @@ EventListener.prototype.handleEvent = function(evt) {};
 // of DOM Level 3 (suggested) and the DOM "Living Standard" (mandated). They are
 // included here as externs cannot be redefined. The same applies to other
 // *EventInit interfaces and *Event constructors throughout this file. See:
-// http://www.w3.org/TR/DOM-Level-3-Events/#event-initializers
-// http://dom.spec.whatwg.org/#constructing-events
+// https://www.w3.org/TR/DOM-Level-3-Events/#event-initializers
+// https://dom.spec.whatwg.org/#constructing-events
 // https://dvcs.w3.org/hg/d4e/raw-file/tip/source_respec.htm#event-constructors
 
 /**
@@ -100,19 +100,19 @@ function Event(type, opt_eventInitDict) {}
 
 /**
  * @type {number}
- * @see http://www.w3.org/TR/DOM-Level-2-Events/ecma-script-binding.html
+ * @see https://www.w3.org/TR/DOM-Level-2-Events/ecma-script-binding.html
  */
 Event.AT_TARGET;
 
 /**
  * @type {number}
- * @see http://www.w3.org/TR/DOM-Level-2-Events/ecma-script-binding.html
+ * @see https://www.w3.org/TR/DOM-Level-2-Events/ecma-script-binding.html
  */
 Event.BUBBLING_PHASE;
 
 /**
  * @type {number}
- * @see http://www.w3.org/TR/DOM-Level-2-Events/ecma-script-binding.html
+ * @see https://www.w3.org/TR/DOM-Level-2-Events/ecma-script-binding.html
  */
 Event.CAPTURING_PHASE;
 
@@ -184,7 +184,7 @@ CustomEventInit.prototype.detail;
  * @extends {Event}
  * @param {string} type
  * @param {CustomEventInit=} opt_eventInitDict
- * @see http://www.w3.org/TR/DOM-Level-3-Events/#interface-CustomEvent
+ * @see https://www.w3.org/TR/DOM-Level-3-Events/#interface-CustomEvent
  */
 function CustomEvent(type, opt_eventInitDict) {}
 
@@ -472,7 +472,7 @@ FocusEventInit.prototype.relatedTarget;
 /**
  * The FocusEvent interface provides specific contextual information associated
  * with Focus events.
- * http://www.w3.org/TR/DOM-Level-3-Events/#events-focusevent
+ * https://www.w3.org/TR/DOM-Level-3-Events/#events-focusevent
  *
  * @constructor
  * @extends {UIEvent}

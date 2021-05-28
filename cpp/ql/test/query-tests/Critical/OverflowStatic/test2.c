@@ -1,5 +1,5 @@
 /* Semmle test case for OverflowStatic.ql
-   Associated with CWE-131  http://cwe.mitre.org/data/definitions/131.html
+   Associated with CWE-131  https://cwe.mitre.org/data/definitions/131.html
    Each query is expected to find exactly the lines marked BAD in the section corresponding to it.
 */
 

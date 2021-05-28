@@ -812,7 +812,7 @@ HTTP framework libraries
 
 The library ``semmle.javacript.frameworks.HTTP`` provides classes modeling common concepts from various HTTP frameworks. 
 
-Currently supported frameworks are `Express <https://expressjs.com/>`__, the standard Node.js ``http`` and ``https`` modules, `Connect <https://github.com/senchalabs/connect>`__, `Koa <https://koajs.com>`__, `Hapi <https://hapi.dev/>`__ and `Restify <http://restify.com/>`__.
+Currently supported frameworks are `Express <https://expressjs.com/>`__, the standard Node.js ``http`` and ``https`` modules, `Connect <https://github.com/senchalabs/connect>`__, `Koa <https://koajs.com>`__, `Hapi <https://hapi.dev/>`__ and `Restify <https://restify.com/>`__.
 
 The most important classes include (all in module ``HTTP``):
 
@@ -829,7 +829,7 @@ For each framework library, there is a corresponding CodeQL library (for example
 Node.js
 ^^^^^^^
 
-The ``semmle.javascript.NodeJS`` library provides support for working with `Node.js <http://nodejs.org/>`__ modules through the following classes:
+The ``semmle.javascript.NodeJS`` library provides support for working with `Node.js <https://nodejs.org/>`__ modules through the following classes:
 
 -  `NodeModule <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/NodeJS.qll/type.NodeJS$NodeModule.html>`__: a top-level that defines a Node.js module; see the section on `Modules <#modules>`__ for more information.
 -  `Require <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/NodeJS.qll/type.NodeJS$Require.html>`__: a call to the special ``require`` function that imports a module.
@@ -983,7 +983,7 @@ However, unlike HTML, JSX is interleaved with JavaScript, hence `JSXElement <htt
 JSON
 ^^^^
 
-The ``semmle.javascript.JSON`` library provides support for working with `JSON <http://json.org/>`__ files that were processed by the JavaScript extractor when building the CodeQL database.
+The ``semmle.javascript.JSON`` library provides support for working with `JSON <https://json.org/>`__ files that were processed by the JavaScript extractor when building the CodeQL database.
 
 JSON files are modeled as trees of JSON values. Each JSON value is represented by an entity of class `JSONValue <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/JSON.qll/type.JSON$JSONValue.html>`__, which provides the following member predicates:
 

@@ -1,6 +1,6 @@
 // Test case for
 // CWE-113: Improper Neutralization of CRLF Sequences in HTTP Headers ('HTTP Response Splitting')
-// http://cwe.mitre.org/data/definitions/113.html
+// https://cwe.mitre.org/data/definitions/113.html
 
 package test.cwe113.cwe.examples;
 

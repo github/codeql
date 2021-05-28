@@ -21,7 +21,7 @@ This is a dangerous practice, since the meaning of the numerical value of pointe
 
 
 <li>
-  Cplusplus.com: <a href="http://www.cplusplus.com/doc/tutorial/pointers/">Pointers</a>.
+  Cplusplus.com: <a href="https://www.cplusplus.com/doc/tutorial/pointers/">Pointers</a>.
 </li>
 <li>
   The CERT C Secure Coding Standard: <a href="https://www.securecoding.cert.org/confluence/display/c/INT36-C.+Converting+a+pointer+to+integer+or+integer+to+pointer">INT36-C. Converting a pointer to integer or integer to pointer</a>.

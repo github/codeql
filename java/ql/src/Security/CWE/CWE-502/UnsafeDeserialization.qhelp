@@ -62,9 +62,9 @@ OWASP guidance on deserializing objects:
 </li>
 <li>
 Talks by Chris Frohoff &amp; Gabriel Lawrence:
-<a href="http://frohoff.github.io/appseccali-marshalling-pickles/">
+<a href="https://frohoff.github.io/appseccali-marshalling-pickles/">
 AppSecCali 2015: Marshalling Pickles - how deserializing objects will ruin your day</a>,
-<a href="http://frohoff.github.io/owaspsd-deserialize-my-shorts/">OWASP SD: Deserialize My Shorts:
+<a href="https://frohoff.github.io/owaspsd-deserialize-my-shorts/">OWASP SD: Deserialize My Shorts:
 Or How I Learned to Start Worrying and Hate Java Object Deserialization</a>.
 </li>
 <li>

@@ -306,8 +306,8 @@ Class hierarchy
     -  ``Concepts::Encoding`` - a data-flow node that encodes data to a binary or textual format. An encoding (automatically) preserves taint from input to output.
     -  ``Concepts::CodeExecution`` - a data-flow node that dynamically executes Python code.
     -  ``Concepts::SqlExecution`` - a data-flow node that executes SQL statements.
-    -  ``Concepts::HTTP::Server::RouteSetup`` - a data-flow node that sets up a route on a server.
-    -  ``Concepts::HTTP::Server::HttpResponse`` - a data-flow node that creates a HTTP response on a server.
+    -  ``Concepts::https::Server::RouteSetup`` - a data-flow node that sets up a route on a server.
+    -  ``Concepts::https::Server::HttpResponse`` - a data-flow node that creates a HTTP response on a server.
 
 -  ``TaintTracking::Configuration`` - base class for custom global taint tracking analysis.
 

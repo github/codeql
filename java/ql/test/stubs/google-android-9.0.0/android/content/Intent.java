@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -281,7 +281,7 @@ import java.util.Set;
  * </p>
  * <li>For data that is not a <code>content:</code> URI and where no explicit
  * type is included in the Intent, instead the <b>scheme</b> of the intent data
- * (such as <code>http:</code> or <code>mailto:</code>) is considered. Again
+ * (such as <code>https:</code> or <code>mailto:</code>) is considered. Again
  * like the action, if we are matching a scheme it must be listed by the
  * component as one it can handle.
  * <li>
@@ -304,7 +304,7 @@ import java.util.Set;
  * </p>
  *
  * <pre>
- *  &lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"
+ *  &lt;manifest xmlns:android="https://schemas.android.com/apk/res/android"
  *       package="<i>com.android.notepad</i>"&gt;
  *     &lt;application android:icon="@drawable/app_notes"
  *             android:label="@string/app_name"&gt;
@@ -866,7 +866,7 @@ public class Intent implements Parcelable, Cloneable {
     /**
      * Retrieve data this intent is operating on. This URI specifies the name of the
      * data; often it uses the content: scheme, specifying data in a content
-     * provider. Other schemes may be handled by specific activities, such as http:
+     * provider. Other schemes may be handled by specific activities, such as https:
      * by the web browser.
      *
      * @return The URI of the data this intent is targeting or null.

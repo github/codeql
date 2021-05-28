@@ -33,6 +33,6 @@ module StackTraceExposure {
    * as a data flow sink for stack trace exposure vulnerabilities.
    */
   class DefaultSink extends Sink, DataFlow::ValueNode {
-    override HTTP::ResponseBody astNode;
+    override https::ResponseBody astNode;
   }
 }

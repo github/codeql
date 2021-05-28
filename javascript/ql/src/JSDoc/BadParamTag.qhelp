@@ -31,7 +31,7 @@ In the following example, the constructor <code>Message</code> has a JSDoc comme
 <references>
 
 
-<li>Use JSDoc: <a href="http://usejsdoc.org/tags-param.html">The @param tag</a>.</li>
+<li>Use JSDoc: <a href="https://usejsdoc.org/tags-param.html">The @param tag</a>.</li>
 
 
 </references>

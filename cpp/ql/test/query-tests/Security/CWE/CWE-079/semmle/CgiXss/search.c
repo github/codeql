@@ -1,5 +1,5 @@
 // Semmle test case for rule CgiXss.ql (CGI script vulnerable to cross-site scripting)
-// Associated with CWE-079: Cross-site Scripting. http://cwe.mitre.org/data/definitions/79.html
+// Associated with CWE-079: Cross-site Scripting. https://cwe.mitre.org/data/definitions/79.html
 
 // Standard library routines
 void free(void *ptr);

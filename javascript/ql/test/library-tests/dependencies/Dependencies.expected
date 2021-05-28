@@ -19,8 +19,8 @@
 | src/tst.html:21:11:21:61 | src=https://code.jquery.com/ui/1.7.0/jquery-ui.js | jquery-ui | 1.7.0 |
 | src/tst.html:22:11:22:83 | src=https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.js | jquery-ui | 1.12.0 |
 | src/tst.html:23:11:23:87 | src=https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js | jquery-ui | 1.12.0 |
-| src/tst.html:26:11:26:74 | src=http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.js | jquery-mobile | 1.4.5 |
-| src/tst.html:27:11:27:78 | src=http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js | jquery-mobile | 1.4.5 |
+| src/tst.html:26:11:26:74 | src=https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.js | jquery-mobile | 1.4.5 |
+| src/tst.html:27:11:27:78 | src=https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js | jquery-mobile | 1.4.5 |
 | src/tst.html:28:11:28:83 | src=https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js | modernizr | 2.8.3 |
 | src/tst.html:29:11:29:97 | src=https://cdnjs.cloudflare.com/ajax/libs/mootools/1.6.0/mootools-core-compat.min.js | mootools | 1.6.0 |
 | src/tst.html:30:11:30:83 | src=https://cdnjs.cloudflare.com/ajax/libs/prototype/1.7.3/prototype.js | prototype | 1.7.3 |

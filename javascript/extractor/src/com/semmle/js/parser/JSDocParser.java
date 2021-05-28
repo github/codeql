@@ -1701,135 +1701,135 @@ public class JSDocParser {
         lineStart = oldLineStart;
 
         switch (this._title) {
-            // http://usejsdoc.org/tags-access.html
+            // https://usejsdoc.org/tags-access.html
           case "access":
             if (!parseAccess()) return null;
             break;
-            // http://usejsdoc.org/tags-alias.html
+            // https://usejsdoc.org/tags-alias.html
           case "alias":
             if (!parseNamePath() || !ensureEnd()) return null;
             break;
-            // http://usejsdoc.org/tags-augments.html
+            // https://usejsdoc.org/tags-augments.html
           case "augments":
             if (!parseType() || !parseNamePathOptional() || !ensureEnd()) return null;
             break;
-            // http://usejsdoc.org/tags-constructor.html
+            // https://usejsdoc.org/tags-constructor.html
           case "constructor":
             if (!parseType() || !parseNamePathOptional() || !ensureEnd()) return null;
             break;
-            // Synonym: http://usejsdoc.org/tags-constructor.html
+            // Synonym: https://usejsdoc.org/tags-constructor.html
           case "class":
             if (!parseType() || !parseNamePathOptional() || !ensureEnd()) return null;
             break;
-            // Synonym: http://usejsdoc.org/tags-extends.html
+            // Synonym: https://usejsdoc.org/tags-extends.html
           case "extends":
             if (!parseType() || !parseNamePathOptional() || !ensureEnd()) return null;
             break;
-            // http://usejsdoc.org/tags-deprecated.html
+            // https://usejsdoc.org/tags-deprecated.html
           case "deprecated":
             if (!parseDescription()) return null;
             break;
-            // http://usejsdoc.org/tags-global.html
+            // https://usejsdoc.org/tags-global.html
           case "global":
             if (!ensureEnd()) return null;
             break;
-            // http://usejsdoc.org/tags-inner.html
+            // https://usejsdoc.org/tags-inner.html
           case "inner":
             if (!ensureEnd()) return null;
             break;
-            // http://usejsdoc.org/tags-instance.html
+            // https://usejsdoc.org/tags-instance.html
           case "instance":
             if (!ensureEnd()) return null;
             break;
-            // http://usejsdoc.org/tags-kind.html
+            // https://usejsdoc.org/tags-kind.html
           case "kind":
             if (!parseKind()) return null;
             break;
-            // http://usejsdoc.org/tags-mixes.html
+            // https://usejsdoc.org/tags-mixes.html
           case "mixes":
             if (!parseNamePath() || !ensureEnd()) return null;
             break;
-            // http://usejsdoc.org/tags-mixin.html
+            // https://usejsdoc.org/tags-mixin.html
           case "mixin":
             if (!parseNamePathOptional() || !ensureEnd()) return null;
             break;
-            // http://usejsdoc.org/tags-member.html
+            // https://usejsdoc.org/tags-member.html
           case "member":
             if (!parseType() || !parseNamePathOptional() || !ensureEnd()) return null;
             break;
-            // http://usejsdoc.org/tags-method.html
+            // https://usejsdoc.org/tags-method.html
           case "method":
             if (!parseNamePathOptional() || !ensureEnd()) return null;
             break;
-            // http://usejsdoc.org/tags-module.html
+            // https://usejsdoc.org/tags-module.html
           case "module":
             if (!parseType() || !parseNamePathOptional() || !ensureEnd()) return null;
             break;
-            // Synonym: http://usejsdoc.org/tags-method.html
+            // Synonym: https://usejsdoc.org/tags-method.html
           case "func":
             if (!parseNamePathOptional() || !ensureEnd()) return null;
             break;
-            // Synonym: http://usejsdoc.org/tags-method.html
+            // Synonym: https://usejsdoc.org/tags-method.html
           case "function":
             if (!parseNamePathOptional() || !ensureEnd()) return null;
             break;
-            // Synonym: http://usejsdoc.org/tags-member.html
+            // Synonym: https://usejsdoc.org/tags-member.html
           case "var":
             if (!parseType() || !parseNamePathOptional() || !ensureEnd()) return null;
             break;
-            // http://usejsdoc.org/tags-name.html
+            // https://usejsdoc.org/tags-name.html
           case "name":
             if (!parseNamePath() || !ensureEnd()) return null;
             break;
-            // http://usejsdoc.org/tags-namespace.html
+            // https://usejsdoc.org/tags-namespace.html
           case "namespace":
             if (!parseType() || !parseNamePathOptional() || !ensureEnd()) return null;
             break;
-            // http://usejsdoc.org/tags-private.html
+            // https://usejsdoc.org/tags-private.html
           case "private":
             if (!parseType() || !parseDescription()) return null;
             break;
-            // http://usejsdoc.org/tags-protected.html
+            // https://usejsdoc.org/tags-protected.html
           case "protected":
             if (!parseType() || !parseDescription()) return null;
             break;
-            // http://usejsdoc.org/tags-public.html
+            // https://usejsdoc.org/tags-public.html
           case "public":
             if (!parseType() || !parseDescription()) return null;
             break;
-            // http://usejsdoc.org/tags-readonly.html
+            // https://usejsdoc.org/tags-readonly.html
           case "readonly":
             if (!ensureEnd()) return null;
             break;
-            // http://usejsdoc.org/tags-requires.html
+            // https://usejsdoc.org/tags-requires.html
           case "requires":
             if (!parseNamePath() || !ensureEnd()) return null;
             break;
-            // http://usejsdoc.org/tags-since.html
+            // https://usejsdoc.org/tags-since.html
           case "since":
             if (!parseDescription()) return null;
             break;
-            // http://usejsdoc.org/tags-static.html
+            // https://usejsdoc.org/tags-static.html
           case "static":
             if (!ensureEnd()) return null;
             break;
-            // http://usejsdoc.org/tags-summary.html
+            // https://usejsdoc.org/tags-summary.html
           case "summary":
             if (!parseDescription()) return null;
             break;
-            // http://usejsdoc.org/tags-this.html
+            // https://usejsdoc.org/tags-this.html
           case "this":
             if (!parseNamePath() || !ensureEnd()) return null;
             break;
-            // http://usejsdoc.org/tags-todo.html
+            // https://usejsdoc.org/tags-todo.html
           case "todo":
             if (!parseDescription()) return null;
             break;
-            // http://usejsdoc.org/tags-variation.html
+            // https://usejsdoc.org/tags-variation.html
           case "variation":
             if (!parseVariation()) return null;
             break;
-            // http://usejsdoc.org/tags-version.html
+            // https://usejsdoc.org/tags-version.html
           case "version":
             if (!parseDescription()) return null;
             break;

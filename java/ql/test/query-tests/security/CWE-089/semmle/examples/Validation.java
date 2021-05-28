@@ -1,5 +1,5 @@
 // Test case for CWE-089 (SQL injection)
-// http://cwe.mitre.org/data/definitions/89.html
+// https://cwe.mitre.org/data/definitions/89.html
 package test.cwe089.semmle.tests;
 
 public class Validation {

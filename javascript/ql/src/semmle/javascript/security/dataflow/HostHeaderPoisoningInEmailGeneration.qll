@@ -13,7 +13,7 @@ module HostHeaderPoisoningInEmailGeneration {
     Configuration() { this = "TaintedHostHeader" }
 
     override predicate isSource(DataFlow::Node node) {
-      exists(HTTP::RequestHeaderAccess input | node = input |
+      exists(https::RequestHeaderAccess input | node = input |
         input.getKind() = "header" and
         input.getAHeaderName() = "host"
       )

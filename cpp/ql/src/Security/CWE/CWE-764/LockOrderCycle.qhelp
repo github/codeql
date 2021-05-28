@@ -49,13 +49,13 @@ simultaneously in separate threads then they could cause a deadlock.
 <references>
 
 <li>Dijkstra, E. W., <i>EWD-310:
-<a href="http://www.cs.utexas.edu/users/EWD/ewd03xx/EWD310.PDF">Hierarchical
+<a href="https://www.cs.utexas.edu/users/EWD/ewd03xx/EWD310.PDF">Hierarchical
 Ordering of Sequential Processes</a></i>.  E. W. Dijkstra
 Archive. Center for American History, University of Texas at Austin.
 </li>
 
 <li>Hoare, C. A. R.,
-<i><a href="http://www.usingcsp.com/cspbook.pdf">Communicating
+<i><a href="https://www.usingcsp.com/cspbook.pdf">Communicating
 Sequential Processes</a></i>,
 Section 2.5 - 'Example: The Dining Philosophers,' p. 55,
 2004 (originally published in 1985 by Prentice Hall International).</li>

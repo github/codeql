@@ -35,11 +35,11 @@ value.</p>
 <references>
 
 <li>
-  Tutorialspoint - The C++ Programming Language: <a href="http://www.tutorialspoint.com/cplusplus/cpp_dynamic_memory.htm">C++ Dynamic Memory</a>, 
- <a href="http://www.tutorialspoint.com/cplusplus/cpp_null_pointers.htm">C++ NULL pointers</a>.
+  Tutorialspoint - The C++ Programming Language: <a href="https://www.tutorialspoint.com/cplusplus/cpp_dynamic_memory.htm">C++ Dynamic Memory</a>, 
+ <a href="https://www.tutorialspoint.com/cplusplus/cpp_null_pointers.htm">C++ NULL pointers</a>.
 </li>
 <li>
-  Code project: <a href="http://www.codeproject.com/Articles/109026/Chained-null-checks-and-the-Maybe-monad">Chained null checks and the Maybe monad</a>.
+  Code project: <a href="https://www.codeproject.com/Articles/109026/Chained-null-checks-and-the-Maybe-monad">Chained null checks and the Maybe monad</a>.
 </li>
 
 

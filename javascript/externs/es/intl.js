@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,7 +16,7 @@
 
 /**
  * @fileoverview Definitions for the JS Internationalization API as defined in
- * http://www.ecma-international.org/ecma-402/1.0/
+ * https://www.ecma-international.org/ecma-402/1.0/
  *
  * @externs
  */

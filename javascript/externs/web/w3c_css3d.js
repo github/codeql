@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -186,7 +186,7 @@ CSSMatrix.prototype.rotateAxisAngle =
  * @constructor
  * @param {string=} opt_matrix
  * @extends {CSSMatrix}
- * @see http://developer.apple.com/safari/library/documentation/AudioVideo/Reference/WebKitCSSMatrixClassReference/WebKitCSSMatrix/WebKitCSSMatrix.html#//apple_ref/javascript/instm/WebKitCSSMatrix/setMatrixValue
+ * @see https://developer.apple.com/safari/library/documentation/AudioVideo/Reference/WebKitCSSMatrixClassReference/WebKitCSSMatrix/WebKitCSSMatrix.html#//apple_ref/javascript/instm/WebKitCSSMatrix/setMatrixValue
  */
 function WebKitCSSMatrix(opt_matrix) {}
 
@@ -194,6 +194,6 @@ function WebKitCSSMatrix(opt_matrix) {}
  * @constructor
  * @param {string=} opt_matrix
  * @extends {CSSMatrix}
- * @see http://msdn.microsoft.com/en-us/library/windows/apps/hh453593.aspx
+ * @see https://msdn.microsoft.com/en-us/library/windows/apps/hh453593.aspx
  */
 function MSCSSMatrix(opt_matrix) {}

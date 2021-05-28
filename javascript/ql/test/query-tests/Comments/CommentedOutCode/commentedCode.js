@@ -29,7 +29,7 @@ function sayHello() {
 
   //// this is not a commented-out comment
 
-  // and neither is this http://www.example.com
+  // and neither is this https://www.example.com
 
   // nor is this //
 

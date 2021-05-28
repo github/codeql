@@ -118,7 +118,7 @@ module ClientRequest {
   /**
    * Gets the name of an HTTP request method, in all-lowercase.
    */
-  private string httpMethodName() { result = any(HTTP::RequestMethodName m).toLowerCase() }
+  private string httpMethodName() { result = any(https::RequestMethodName m).toLowerCase() }
 
   /**
    * Gets a model of an instance of the `request` library, or one of
@@ -355,7 +355,7 @@ module ClientRequest {
 
     /**
      * A model of a URL request made using `require("needle")[method](...)`.
-     * E.g. `needle.get("http://example.org", (err, resp, body) => {})`.
+     * E.g. `needle.get("https://example.org", (err, resp, body) => {})`.
      *
      * As opposed to the calls modeled in `PromisedNeedleRequest` these calls do not return promises.
      * Instead they take an optional callback as their last argument.

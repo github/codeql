@@ -28,10 +28,10 @@ demonstrates the correct way to call a superclass from an old-style class.</p>
 </example>
 <references>
 
-<li>Python Glossary: <a href="http://docs.python.org/glossary.html#term-new-style-class">New-style class</a>.</li>
-<li>Python Language Reference: <a href="http://docs.python.org/2/reference/datamodel.html#newstyle">New-style and classic 
+<li>Python Glossary: <a href="https://docs.python.org/glossary.html#term-new-style-class">New-style class</a>.</li>
+<li>Python Language Reference: <a href="https://docs.python.org/2/reference/datamodel.html#newstyle">New-style and classic 
 classes</a>.</li>
-<li>Python Standard Library: <a href="http://docs.python.org/library/functions.html#super">super</a>.</li>
+<li>Python Standard Library: <a href="https://docs.python.org/library/functions.html#super">super</a>.</li>
 
 
 </references>

@@ -30,7 +30,7 @@ module TypeConfusionThroughParameterTampering {
    * Node.js-based HTTP servers turn request parameters into arrays if their names are repeated.
    */
   private class TypeTamperableRequestParameter extends Source {
-    TypeTamperableRequestParameter() { this.(HTTP::RequestInputAccess).isUserControlledObject() }
+    TypeTamperableRequestParameter() { this.(https::RequestInputAccess).isUserControlledObject() }
   }
 
   /**

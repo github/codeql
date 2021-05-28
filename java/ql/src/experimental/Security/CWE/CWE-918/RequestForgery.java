@@ -1,7 +1,7 @@
 import java.net.http.HttpClient;
 
 public class SSRF extends HttpServlet {
-	private static final String VALID_URI = "http://lgtm.com";
+	private static final String VALID_URI = "https://lgtm.com";
 	private HttpClient client = HttpClient.newHttpClient();
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)

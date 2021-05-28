@@ -14,7 +14,7 @@ be split up into multiple separate types for each function it performs.</p>
 </recommendation>
 <references>
 
-  <li>BlackWasp. <a href="http://www.blackwasp.co.uk/SRP.aspx">Single Responsibility Principle</a>.</li>
+  <li>BlackWasp. <a href="https://www.blackwasp.co.uk/SRP.aspx">Single Responsibility Principle</a>.</li>
 
 </references>
 </qhelp>

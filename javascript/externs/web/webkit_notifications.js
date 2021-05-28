@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,7 +24,7 @@
  *            icon: (string|undefined),
  *            requireInteraction: (boolean|undefined),
  *            actions: (!Array<!NotificationAction>|undefined)}}
- * @see http://notifications.spec.whatwg.org/#notificationoptions
+ * @see https://notifications.spec.whatwg.org/#notificationoptions
  */
 var NotificationOptions;
 
@@ -55,7 +55,7 @@ var NotificationOptionsInterface_ = function() {}
  * @param {NotificationOptions=} opt_options
  * @constructor
  * @implements {EventTarget}
- * @see http://notifications.spec.whatwg.org/#notification
+ * @see https://notifications.spec.whatwg.org/#notification
  */
 function Notification(title, opt_options) {}
 
@@ -185,13 +185,13 @@ Notification.prototype.onclick;
 
 /**
  * @typedef {function(string)}
- * @see http://notifications.spec.whatwg.org/#notificationpermissioncallback
+ * @see https://notifications.spec.whatwg.org/#notificationpermissioncallback
  */
 var NotificationPermissionCallback;
 
 /**
  * @constructor
- * @see http://dev.w3.org/2006/webapi/WebNotifications/publish/#dialog-if
+ * @see https://dev.w3.org/2006/webapi/WebNotifications/publish/#dialog-if
  * @deprecated Use Notification instead.
  */
 function NotificationCenter() {}

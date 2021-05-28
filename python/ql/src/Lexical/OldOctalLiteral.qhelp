@@ -27,8 +27,8 @@ Use the 0oXXX form instead of the 0XXX form. Alternatively use binary or hexadec
 <references>
 
 
-<li>Python Language Reference: <a href="http://docs.python.org/2/reference/lexical_analysis.html#integer-and-long-integer-literals">Integer Literals</a>.</li>
-<li>Python PEP 3127: <a href="http://www.python.org/dev/peps/pep-3127/">Integer Literal Support and Syntax</a>.</li>
+<li>Python Language Reference: <a href="https://docs.python.org/2/reference/lexical_analysis.html#integer-and-long-integer-literals">Integer Literals</a>.</li>
+<li>Python PEP 3127: <a href="https://www.python.org/dev/peps/pep-3127/">Integer Literal Support and Syntax</a>.</li>
 
 
 </references>

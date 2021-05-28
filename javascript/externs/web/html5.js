@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,11 +18,11 @@
  *  W3C's DOM3 specification in HTML5. This file depends on
  *  w3c_dom3.js. The whole file has been fully type annotated.
  *
- *  @see http://www.whatwg.org/specs/web-apps/current-work/multipage/index.html
- *  @see http://dev.w3.org/html5/spec/Overview.html
+ *  @see https://www.whatwg.org/specs/web-apps/current-work/multipage/index.html
+ *  @see https://dev.w3.org/html5/spec/Overview.html
  *
  *  This also includes Typed Array definitions from
- *  http://www.khronos.org/registry/typedarray/specs/latest/
+ *  https://www.khronos.org/registry/typedarray/specs/latest/
  *
  *  This relies on w3c_event.js being included first.
  *
@@ -46,7 +46,7 @@ Node.prototype.contains = function(n) {};
 
 /**
  * @constructor
- * @see http://www.whatwg.org/specs/web-apps/current-work/multipage/the-canvas-element.html#the-canvas-element
+ * @see https://www.whatwg.org/specs/web-apps/current-work/multipage/the-canvas-element.html#the-canvas-element
  * @extends {HTMLElement}
  */
 function HTMLCanvasElement() {}
@@ -170,7 +170,7 @@ CanvasPathMethods.prototype.arc = function(
 /**
  * @constructor
  * @implements {CanvasPathMethods}
- * @see http://www.w3.org/TR/2dcontext/#canvasrenderingcontext2d
+ * @see https://www.w3.org/TR/2dcontext/#canvasrenderingcontext2d
  */
 function CanvasRenderingContext2D() {}
 
@@ -386,7 +386,7 @@ CanvasRenderingContext2D.prototype.arc = function(
  * @param {number} endAngle
  * @param {boolean=} opt_anticlockwise
  * @return {undefined}
- * @see http://developer.mozilla.org/en/docs/Web/API/CanvasRenderingContext2D/ellipse
+ * @see https://developer.mozilla.org/en/docs/Web/API/CanvasRenderingContext2D/ellipse
  */
 CanvasRenderingContext2D.prototype.ellipse = function(
     x, y, radiusX, radiusY, rotation, startAngle, endAngle, opt_anticlockwise) {
@@ -414,7 +414,7 @@ CanvasRenderingContext2D.prototype.clip = function(opt_fillRule) {};
  * @param {number} y
  * @return {boolean}
  * @nosideeffects
- * @see http://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/isPointInStroke
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/isPointInStroke
  */
 CanvasRenderingContext2D.prototype.isPointInStroke = function(x, y) {};
 
@@ -513,7 +513,7 @@ CanvasRenderingContext2D.prototype.putImageData = function(imagedata, dx, dy,
  * @param {number=} opt_c
  * @param {number=} opt_d
  * @param {number=} opt_e
- * @see http://developer.apple.com/library/safari/#documentation/appleapplications/reference/WebKitDOMRef/CanvasRenderingContext2D_idl/Classes/CanvasRenderingContext2D/index.html
+ * @see https://developer.apple.com/library/safari/#documentation/appleapplications/reference/WebKitDOMRef/CanvasRenderingContext2D_idl/Classes/CanvasRenderingContext2D/index.html
  * @return {undefined}
  */
 CanvasRenderingContext2D.prototype.setFillColor;
@@ -525,7 +525,7 @@ CanvasRenderingContext2D.prototype.setFillColor;
  * @param {number=} opt_c
  * @param {number=} opt_d
  * @param {number=} opt_e
- * @see http://developer.apple.com/library/safari/#documentation/appleapplications/reference/WebKitDOMRef/CanvasRenderingContext2D_idl/Classes/CanvasRenderingContext2D/index.html
+ * @see https://developer.apple.com/library/safari/#documentation/appleapplications/reference/WebKitDOMRef/CanvasRenderingContext2D_idl/Classes/CanvasRenderingContext2D/index.html
  * @return {undefined}
  */
 CanvasRenderingContext2D.prototype.setStrokeColor;
@@ -785,7 +785,7 @@ SQLResultSet.prototype.rows;
 /**
  * @constructor
  * @implements {IArrayLike<!Object>}
- * @see http://www.w3.org/TR/webdatabase/#sqlresultsetrowlist
+ * @see https://www.w3.org/TR/webdatabase/#sqlresultsetrowlist
  */
 function SQLResultSetRowList() {}
 
@@ -842,7 +842,7 @@ HTMLImageElement.prototype.naturalHeight;
 
 /**
  * @type {string}
- * @see http://www.whatwg.org/specs/web-apps/current-work/multipage/embedded-content-1.html#attr-img-crossorigin
+ * @see https://www.whatwg.org/specs/web-apps/current-work/multipage/embedded-content-1.html#attr-img-crossorigin
  */
 HTMLImageElement.prototype.crossOrigin;
 
@@ -865,7 +865,7 @@ Document.prototype.postMessage = function(message) {};
 
 /**
  * Document head accessor.
- * @see http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#the-head-element-0
+ * @see https://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#the-head-element-0
  * @type {HTMLHeadElement}
  */
 Document.prototype.head;
@@ -1024,7 +1024,7 @@ Window.prototype.importScripts = function(var_args) {};
 function importScripts(var_args) {}
 
 /**
- * @see http://dev.w3.org/html5/workers/
+ * @see https://dev.w3.org/html5/workers/
  * @constructor
  * @implements {EventTarget}
  */
@@ -1079,7 +1079,7 @@ WebWorker.prototype.onmessage;
 WebWorker.prototype.onerror;
 
 /**
- * @see http://dev.w3.org/html5/workers/
+ * @see https://dev.w3.org/html5/workers/
  * @constructor
  * @implements {EventTarget}
  */
@@ -1143,7 +1143,7 @@ Worker.prototype.onmessage;
 Worker.prototype.onerror;
 
 /**
- * @see http://dev.w3.org/html5/workers/
+ * @see https://dev.w3.org/html5/workers/
  * @param {string} scriptURL The URL of the script to run in the SharedWorker.
  * @param {string=} opt_name A name that can later be used to obtain a
  *     reference to the same SharedWorker.
@@ -1187,8 +1187,8 @@ SharedWorker.prototype.port;
 SharedWorker.prototype.onerror;
 
 /**
- * @see http://dev.w3.org/html5/workers/
- * @see http://www.w3.org/TR/url-1/#dom-urlutilsreadonly
+ * @see https://dev.w3.org/html5/workers/
+ * @see https://www.w3.org/TR/url-1/#dom-urlutilsreadonly
  * @interface
  */
 function WorkerLocation() {}
@@ -1221,7 +1221,7 @@ WorkerLocation.prototype.search;
 WorkerLocation.prototype.hash;
 
 /**
- * @see http://dev.w3.org/html5/workers/
+ * @see https://dev.w3.org/html5/workers/
  * @interface
  * @extends {EventTarget}
  */
@@ -1258,7 +1258,7 @@ WorkerGlobalScope.prototype.onoffline;
 WorkerGlobalScope.prototype.ononline;
 
 /**
- * @see http://dev.w3.org/html5/workers/
+ * @see https://dev.w3.org/html5/workers/
  * @interface
  * @extends {WorkerGlobalScope}
  */
@@ -1289,7 +1289,7 @@ DedicatedWorkerGlobalScope.prototype.webkitPostMessage =
 DedicatedWorkerGlobalScope.prototype.onmessage;
 
 /**
- * @see http://dev.w3.org/html5/workers/
+ * @see https://dev.w3.org/html5/workers/
  * @interface
  * @extends {WorkerGlobalScope}
  */
@@ -1321,7 +1321,7 @@ HTMLElement.prototype.draggable;
 HTMLElement.prototype.dropzone;
 
 /**
- * @see http://www.w3.org/TR/html5/dom.html#dom-getelementsbyclassname
+ * @see https://www.w3.org/TR/html5/dom.html#dom-getelementsbyclassname
  * @param {string} classNames
  * @return {!NodeList<!Element>}
  * @nosideeffects
@@ -1351,43 +1351,43 @@ var GetRootNodeOptions;
 Node.prototype.getRootNode = function(opt_options) {};
 
 /**
- * @see http://www.w3.org/TR/components-intro/
+ * @see https://www.w3.org/TR/components-intro/
  * @return {!ShadowRoot}
  */
 HTMLElement.prototype.createShadowRoot;
 
 /**
- * @see http://www.w3.org/TR/components-intro/
+ * @see https://www.w3.org/TR/components-intro/
  * @return {!ShadowRoot}
  */
 HTMLElement.prototype.webkitCreateShadowRoot;
 
 /**
- * @see http://www.w3.org/TR/shadow-dom/
+ * @see https://www.w3.org/TR/shadow-dom/
  * @type {ShadowRoot}
  */
 HTMLElement.prototype.shadowRoot;
 
 /**
- * @see http://www.w3.org/TR/shadow-dom/
+ * @see https://www.w3.org/TR/shadow-dom/
  * @return {!NodeList<!Node>}
  */
 HTMLElement.prototype.getDestinationInsertionPoints = function() {};
 
 /**
- * @see http://www.w3.org/TR/components-intro/
+ * @see https://www.w3.org/TR/components-intro/
  * @type {function()}
  */
 HTMLElement.prototype.createdCallback;
 
 /**
- * @see http://w3c.github.io/webcomponents/explainer/#lifecycle-callbacks
+ * @see https://w3c.github.io/webcomponents/explainer/#lifecycle-callbacks
  * @type {function()}
  */
 HTMLElement.prototype.attachedCallback;
 
 /**
- * @see http://w3c.github.io/webcomponents/explainer/#lifecycle-callbacks
+ * @see https://w3c.github.io/webcomponents/explainer/#lifecycle-callbacks
  * @type {function()}
  */
 HTMLElement.prototype.detachedCallback;
@@ -1413,7 +1413,7 @@ HTMLAnchorElement.prototype.pathname;
  * current version of Internet Explorer.
  *
  * @type {string}
- * @see http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#hyperlink-auditing
+ * @see https://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#hyperlink-auditing
  */
 HTMLAnchorElement.prototype.ping;
 
@@ -1431,19 +1431,19 @@ HTMLAreaElement.prototype.download;
 
 /**
  * @type {string}
- * @see http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#hyperlink-auditing
+ * @see https://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#hyperlink-auditing
  */
 HTMLAreaElement.prototype.ping;
 
 /**
  * @type {string}
- * @see http://www.w3.org/TR/html-markup/iframe.html#iframe.attrs.srcdoc
+ * @see https://www.w3.org/TR/html-markup/iframe.html#iframe.attrs.srcdoc
  */
 HTMLIFrameElement.prototype.srcdoc;
 
 /**
  * @type {?string}
- * @see http://www.w3.org/TR/2012/WD-html5-20121025/the-iframe-element.html#attr-iframe-sandbox
+ * @see https://www.w3.org/TR/2012/WD-html5-20121025/the-iframe-element.html#attr-iframe-sandbox
  */
 HTMLIFrameElement.prototype.sandbox;
 
@@ -1725,7 +1725,7 @@ HTMLMediaElement.prototype.volume;
 HTMLMediaElement.prototype.muted;
 
 /**
- * @see http://www.whatwg.org/specs/web-apps/current-work/multipage/the-video-element.html#dom-media-addtexttrack
+ * @see https://www.whatwg.org/specs/web-apps/current-work/multipage/the-video-element.html#dom-media-addtexttrack
  * @param {string} kind Kind of the text track.
  * @param {string=} opt_label Label of the text track.
  * @param {string=} opt_language Language of the text track.
@@ -1739,14 +1739,14 @@ HTMLMediaElement.prototype.textTracks;
 
 
 /**
- * @see http://www.w3.org/TR/shadow-dom/
+ * @see https://www.w3.org/TR/shadow-dom/
  * @return {!NodeList<!Node>}
  */
 Text.prototype.getDestinationInsertionPoints = function() {};
 
 
 /**
- * @see http://www.whatwg.org/specs/web-apps/current-work/multipage/the-video-element.html#texttracklist
+ * @see https://www.whatwg.org/specs/web-apps/current-work/multipage/the-video-element.html#texttracklist
  * @constructor
  * @implements {IArrayLike<!TextTrack>}
  */
@@ -1763,7 +1763,7 @@ TextTrackList.prototype.getTrackById = function(id) {};
 
 
 /**
- * @see http://www.whatwg.org/specs/web-apps/current-work/multipage/the-video-element.html#texttrack
+ * @see https://www.whatwg.org/specs/web-apps/current-work/multipage/the-video-element.html#texttrack
  * @constructor
  * @implements {EventTarget}
  */
@@ -1818,7 +1818,7 @@ TextTrack.prototype.removeEventListener = function(type, listener, useCapture)
 
 
 /**
- * @see http://www.whatwg.org/specs/web-apps/current-work/multipage/the-video-element.html#texttrackcuelist
+ * @see https://www.whatwg.org/specs/web-apps/current-work/multipage/the-video-element.html#texttrackcuelist
  * @constructor
  * @implements {IArrayLike<!TextTrackCue>}
  */
@@ -1836,7 +1836,7 @@ TextTrackCueList.prototype.getCueById = function(id) {};
 
 
 /**
- * @see http://www.whatwg.org/specs/web-apps/current-work/multipage/the-video-element.html#texttrackcue
+ * @see https://www.whatwg.org/specs/web-apps/current-work/multipage/the-video-element.html#texttrackcue
  * @constructor
  * @param {number} startTime
  * @param {number} endTime
@@ -1858,7 +1858,7 @@ TextTrackCue.prototype.text;
 
 
 /**
- * @see http://dev.w3.org/html5/webvtt/#the-vttcue-interface
+ * @see https://dev.w3.org/html5/webvtt/#the-vttcue-interface
  * @constructor
  * @extends {TextTrackCue}
  */
@@ -1985,7 +1985,7 @@ MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED;
 
 // HTML5 MessageChannel
 /**
- * @see http://dev.w3.org/html5/spec/comms.html#messagechannel
+ * @see https://dev.w3.org/html5/spec/comms.html#messagechannel
  * @constructor
  */
 function MessageChannel() {}
@@ -2004,7 +2004,7 @@ MessageChannel.prototype.port2;
 
 // HTML5 MessagePort
 /**
- * @see http://dev.w3.org/html5/spec/comms.html#messageport
+ * @see https://dev.w3.org/html5/spec/comms.html#messageport
  * @constructor
  * @implements {EventTarget}
  * @implements {Transferable}
@@ -2064,7 +2064,7 @@ MessagePort.prototype.onmessage;
 
 // HTML5 MessageEvent class
 /**
- * @see http://dev.w3.org/html5/spec/comms.html#messageevent
+ * @see https://dev.w3.org/html5/spec/comms.html#messageevent
  * @constructor
  * @extends {Event}
  * @template T
@@ -2194,9 +2194,9 @@ BroadcastChannel.prototype.name;
  * is a DataTransfer on WebKit but a ClipboardData on IE. The interfaces are so
  * similar that it's easier to merge them.
  *
- * @see http://www.w3.org/TR/2011/WD-html5-20110113/dnd.html
- * @see http://www.whatwg.org/specs/web-apps/current-work/multipage/dnd.html
- * @see http://developers.whatwg.org/dnd.html#datatransferitem
+ * @see https://www.w3.org/TR/2011/WD-html5-20110113/dnd.html
+ * @see https://www.whatwg.org/specs/web-apps/current-work/multipage/dnd.html
+ * @see https://developers.whatwg.org/dnd.html#datatransferitem
  * @constructor
  * @extends {ClipboardData}
  */
@@ -2279,7 +2279,7 @@ WheelEventInit.prototype.deltaMode;
 /**
  * @param {string} type
  * @param {WheelEventInit=} opt_eventInitDict
- * @see http://www.w3.org/TR/DOM-Level-3-Events/#interface-WheelEvent
+ * @see https://www.w3.org/TR/DOM-Level-3-Events/#interface-WheelEvent
  * @constructor
  * @extends {MouseEvent}
  */
@@ -2309,9 +2309,9 @@ WheelEvent.prototype.deltaMode;
 /**
  * HTML5 DataTransferItem class.
  *
- * @see http://www.w3.org/TR/2011/WD-html5-20110113/dnd.html
- * @see http://www.whatwg.org/specs/web-apps/current-work/multipage/dnd.html
- * @see http://developers.whatwg.org/dnd.html#datatransferitem
+ * @see https://www.w3.org/TR/2011/WD-html5-20110113/dnd.html
+ * @see https://www.whatwg.org/specs/web-apps/current-work/multipage/dnd.html
+ * @see https://developers.whatwg.org/dnd.html#datatransferitem
  * @constructor
  */
 function DataTransferItem() {}
@@ -2347,9 +2347,9 @@ DataTransferItem.prototype.webkitGetAsEntry = function() { return null; };
  * on the whatwg.org site. When in doubt, these prototypes match what is
  * implemented as of Chrome 30.
  *
- * @see http://www.w3.org/TR/2011/WD-html5-20110113/dnd.html
- * @see http://www.whatwg.org/specs/web-apps/current-work/multipage/dnd.html
- * @see http://developers.whatwg.org/dnd.html#datatransferitem
+ * @see https://www.w3.org/TR/2011/WD-html5-20110113/dnd.html
+ * @see https://www.whatwg.org/specs/web-apps/current-work/multipage/dnd.html
+ * @see https://developers.whatwg.org/dnd.html#datatransferitem
  * @constructor
  * @implements {IArrayLike<!DataTransferItem>}
  */
@@ -2393,7 +2393,7 @@ DataTransfer.prototype.items;
 /**
  * @record
  * @extends {MouseEventInit}
- * @see http://w3c.github.io/html/editing.html#dictdef-drageventinit
+ * @see https://w3c.github.io/html/editing.html#dictdef-drageventinit
  */
 function DragEventInit() {}
 
@@ -2402,7 +2402,7 @@ DragEventInit.prototype.dataTransfer;
 
 
 /**
- * @see http://www.whatwg.org/specs/web-apps/current-work/multipage/dnd.html#the-dragevent-interface
+ * @see https://www.whatwg.org/specs/web-apps/current-work/multipage/dnd.html#the-dragevent-interface
  * @constructor
  * @extends {MouseEvent}
  * @param {string} type
@@ -2474,7 +2474,7 @@ TimeRanges.prototype.end = function(index) { return 0; };
 
 // HTML5 Web Socket class
 /**
- * @see http://dev.w3.org/html5/websockets/
+ * @see https://dev.w3.org/html5/websockets/
  * @constructor
  * @param {string} url
  * @param {string=} opt_protocol
@@ -2593,7 +2593,7 @@ function History() {}
 
 /**
  * Pushes a new state into the session history.
- * @see http://www.w3.org/TR/html5/history.html#the-history-interface
+ * @see https://www.w3.org/TR/html5/history.html#the-history-interface
  * @param {*} data New state.
  * @param {string} title The title for a new session history entry.
  * @param {string=} opt_url The URL for a new session history entry.
@@ -2603,7 +2603,7 @@ History.prototype.pushState = function(data, title, opt_url) {};
 
 /**
  * Replaces the current state in the session history.
- * @see http://www.w3.org/TR/html5/history.html#the-history-interface
+ * @see https://www.w3.org/TR/html5/history.html#the-history-interface
  * @param {*} data New state.
  * @param {string} title The title for a session history entry.
  * @param {string=} opt_url The URL for a new session history entry.
@@ -2631,7 +2631,7 @@ History.prototype.state;
 History.prototype.scrollRestoration;
 
 /**
- * @see http://www.whatwg.org/specs/web-apps/current-work/#popstateevent
+ * @see https://www.whatwg.org/specs/web-apps/current-work/#popstateevent
  * @constructor
  * @extends {Event}
  *
@@ -2657,7 +2657,7 @@ PopStateEvent.prototype.initPopStateEvent = function(typeArg, canBubbleArg,
     cancelableArg, stateArg) {};
 
 /**
- * @see http://www.whatwg.org/specs/web-apps/current-work/#hashchangeevent
+ * @see https://www.whatwg.org/specs/web-apps/current-work/#hashchangeevent
  * @constructor
  * @extends {Event}
  *
@@ -2685,7 +2685,7 @@ HashChangeEvent.prototype.initHashChangeEvent = function(typeArg, canBubbleArg,
     cancelableArg, oldURLArg, newURLArg) {};
 
 /**
- * @see http://www.whatwg.org/specs/web-apps/current-work/#pagetransitionevent
+ * @see https://www.whatwg.org/specs/web-apps/current-work/#pagetransitionevent
  * @constructor
  * @extends {Event}
  *
@@ -2726,7 +2726,7 @@ FileList.prototype.item = function(i) { return null; };
 
 /**
  * @type {boolean}
- * @see http://dev.w3.org/2006/webapi/XMLHttpRequest-2/#withcredentials
+ * @see https://dev.w3.org/2006/webapi/XMLHttpRequest-2/#withcredentials
  */
 XMLHttpRequest.prototype.withCredentials;
 
@@ -2768,7 +2768,7 @@ XMLHttpRequest.prototype.onloadend;
 
 /**
  * @type {XMLHttpRequestUpload}
- * @see http://dev.w3.org/2006/webapi/XMLHttpRequest-2/#the-upload-attribute
+ * @see https://dev.w3.org/2006/webapi/XMLHttpRequest-2/#the-upload-attribute
  */
 XMLHttpRequest.prototype.upload;
 
@@ -2780,13 +2780,13 @@ XMLHttpRequest.prototype.overrideMimeType = function(mimeType) {};
 
 /**
  * @type {string}
- * @see http://dev.w3.org/2006/webapi/XMLHttpRequest-2/#the-responsetype-attribute
+ * @see https://dev.w3.org/2006/webapi/XMLHttpRequest-2/#the-responsetype-attribute
  */
 XMLHttpRequest.prototype.responseType;
 
 /**
  * @type {?(ArrayBuffer|Blob|Document|Object|string)}
- * @see http://dev.w3.org/2006/webapi/XMLHttpRequest-2/#the-response-attribute
+ * @see https://dev.w3.org/2006/webapi/XMLHttpRequest-2/#the-response-attribute
  */
 XMLHttpRequest.prototype.response;
 
@@ -2934,7 +2934,7 @@ Element.prototype.classList;
 
 /**
  * Constraint Validation API properties and methods
- * @see http://www.w3.org/TR/2009/WD-html5-20090423/forms.html#the-constraint-validation-api
+ * @see https://www.w3.org/TR/2009/WD-html5-20090423/forms.html#the-constraint-validation-api
  */
 
 /** @return {boolean} */
@@ -3018,25 +3018,25 @@ HTMLButtonElement.prototype.setCustomValidity = function(message) {};
 
 /**
  * @type {string}
- * @see http://www.w3.org/TR/html5/forms.html#attr-fs-formaction
+ * @see https://www.w3.org/TR/html5/forms.html#attr-fs-formaction
  */
 HTMLButtonElement.prototype.formAction;
 
 /**
  * @type {string}
- * @see http://www.w3.org/TR/html5/forms.html#attr-fs-formenctype
+ * @see https://www.w3.org/TR/html5/forms.html#attr-fs-formenctype
  */
 HTMLButtonElement.prototype.formEnctype;
 
 /**
  * @type {string}
- * @see http://www.w3.org/TR/html5/forms.html#attr-fs-formmethod
+ * @see https://www.w3.org/TR/html5/forms.html#attr-fs-formmethod
  */
 HTMLButtonElement.prototype.formMethod;
 
 /**
  * @type {string}
- * @see http://www.w3.org/TR/html5/forms.html#attr-fs-formtarget
+ * @see https://www.w3.org/TR/html5/forms.html#attr-fs-formtarget
  */
 HTMLButtonElement.prototype.formTarget;
 
@@ -3048,25 +3048,25 @@ HTMLInputElement.prototype.formNoValidate;
 
 /**
  * @type {string}
- * @see http://www.w3.org/TR/html5/forms.html#attr-fs-formaction
+ * @see https://www.w3.org/TR/html5/forms.html#attr-fs-formaction
  */
 HTMLInputElement.prototype.formAction;
 
 /**
  * @type {string}
- * @see http://www.w3.org/TR/html5/forms.html#attr-fs-formenctype
+ * @see https://www.w3.org/TR/html5/forms.html#attr-fs-formenctype
  */
 HTMLInputElement.prototype.formEnctype;
 
 /**
  * @type {string}
- * @see http://www.w3.org/TR/html5/forms.html#attr-fs-formmethod
+ * @see https://www.w3.org/TR/html5/forms.html#attr-fs-formmethod
  */
 HTMLInputElement.prototype.formMethod;
 
 /**
  * @type {string}
- * @see http://www.w3.org/TR/html5/forms.html#attr-fs-formtarget
+ * @see https://www.w3.org/TR/html5/forms.html#attr-fs-formtarget
  */
 HTMLInputElement.prototype.formTarget;
 
@@ -3175,56 +3175,56 @@ HTMLTextAreaElement.prototype.setCustomValidity = function(message) {};
 /**
  * @constructor
  * @extends {HTMLElement}
- * @see http://www.w3.org/TR/html5/the-embed-element.html#htmlembedelement
+ * @see https://www.w3.org/TR/html5/the-embed-element.html#htmlembedelement
  */
 function HTMLEmbedElement() {}
 
 /**
  * @type {string}
- * @see http://www.w3.org/TR/html5/dimension-attributes.html#dom-dim-width
+ * @see https://www.w3.org/TR/html5/dimension-attributes.html#dom-dim-width
  */
 HTMLEmbedElement.prototype.width;
 
 /**
  * @type {string}
- * @see http://www.w3.org/TR/html5/dimension-attributes.html#dom-dim-height
+ * @see https://www.w3.org/TR/html5/dimension-attributes.html#dom-dim-height
  */
 HTMLEmbedElement.prototype.height;
 
 /**
  * @type {string}
- * @see http://www.w3.org/TR/html5/the-embed-element.html#dom-embed-src
+ * @see https://www.w3.org/TR/html5/the-embed-element.html#dom-embed-src
  */
 HTMLEmbedElement.prototype.src;
 
 /**
  * @type {string}
- * @see http://www.w3.org/TR/html5/the-embed-element.html#dom-embed-type
+ * @see https://www.w3.org/TR/html5/the-embed-element.html#dom-embed-type
  */
 HTMLEmbedElement.prototype.type;
 
 // Fullscreen APIs.
 
 /**
- * @see http://www.w3.org/TR/2012/WD-fullscreen-20120703/#dom-element-requestfullscreen
+ * @see https://www.w3.org/TR/2012/WD-fullscreen-20120703/#dom-element-requestfullscreen
  * @return {undefined}
  */
 Element.prototype.requestFullscreen = function() {};
 
 /**
  * @type {boolean}
- * @see http://www.w3.org/TR/2012/WD-fullscreen-20120703/#dom-document-fullscreenenabled
+ * @see https://www.w3.org/TR/2012/WD-fullscreen-20120703/#dom-document-fullscreenenabled
  */
 Document.prototype.fullscreenEnabled;
 
 /**
  * @type {Element}
- * @see http://www.w3.org/TR/2012/WD-fullscreen-20120703/#dom-document-fullscreenelement
+ * @see https://www.w3.org/TR/2012/WD-fullscreen-20120703/#dom-document-fullscreenelement
  */
 Document.prototype.fullscreenElement;
 
 /**
- * @see http://www.w3.org/TR/2012/WD-fullscreen-20120703/#dom-document-exitfullscreen
+ * @see https://www.w3.org/TR/2012/WD-fullscreen-20120703/#dom-document-exitfullscreen
  * @return {undefined}
  */
 Document.prototype.exitFullscreen = function() {};
@@ -3283,7 +3283,7 @@ Document.prototype.webkitFullscreenElement;
 Document.prototype.webkitFullScreenKeyboardInputAllowed;
 
 // IE 11 implementation.
-// http://msdn.microsoft.com/en-us/library/ie/dn265028(v=vs.85).aspx
+// https://msdn.microsoft.com/en-us/library/ie/dn265028(v=vs.85).aspx
 /** @return {void} */
 Element.prototype.msRequestFullscreen = function() {};
 
@@ -3349,7 +3349,7 @@ MutationRecord.prototype.oldValue;
 
 
 /**
- * @see http://www.w3.org/TR/domcore/#mutation-observers
+ * @see https://www.w3.org/TR/domcore/#mutation-observers
  * @param {function(Array<MutationRecord>, MutationObserver)} callback
  * @constructor
  */
@@ -3381,7 +3381,7 @@ Window.prototype.MozMutationObserver;
 
 
 /**
- * @see http://www.w3.org/TR/page-visibility/
+ * @see https://www.w3.org/TR/page-visibility/
  * @type {VisibilityState}
  */
 Document.prototype.visibilityState;
@@ -3402,7 +3402,7 @@ Document.prototype.webkitVisibilityState;
 Document.prototype.msVisibilityState;
 
 /**
- * @see http://www.w3.org/TR/page-visibility/
+ * @see https://www.w3.org/TR/page-visibility/
  * @type {boolean}
  */
 Document.prototype.hidden;
@@ -3423,8 +3423,8 @@ Document.prototype.webkitHidden;
 Document.prototype.msHidden;
 
 /**
- * @see http://www.w3.org/TR/components-intro/
- * @see http://w3c.github.io/webcomponents/spec/custom/#extensions-to-document-interface-to-register
+ * @see https://www.w3.org/TR/components-intro/
+ * @see https://w3c.github.io/webcomponents/spec/custom/#extensions-to-document-interface-to-register
  * @param {string} type
  * @param {{extends: (string|undefined), prototype: (Object|undefined)}=} options
  * @return {!Function} a constructor for the new tag. A generic function is the best we
@@ -3435,8 +3435,8 @@ Document.prototype.registerElement = function(type, options) {};
 
 /**
  * This method is deprecated and should be removed by the end of 2014.
- * @see http://www.w3.org/TR/components-intro/
- * @see http://w3c.github.io/webcomponents/spec/custom/#extensions-to-document-interface-to-register
+ * @see https://www.w3.org/TR/components-intro/
+ * @see https://w3c.github.io/webcomponents/spec/custom/#extensions-to-document-interface-to-register
  * @param {string} type
  * @param {{extends: (string|undefined), prototype: (Object|undefined)}} options
  */
@@ -3444,7 +3444,7 @@ Document.prototype.register = function(type, options) {};
 
 /**
  * @type {!FontFaceSet}
- * @see http://dev.w3.org/csswg/css-font-loading/#dom-fontfacesource-fonts
+ * @see https://dev.w3.org/csswg/css-font-loading/#dom-fontfacesource-fonts
  */
 Document.prototype.fonts;
 
@@ -3456,7 +3456,7 @@ Document.prototype.currentScript;
 
 /**
  * Definition of ShadowRoot interface,
- * @see http://www.w3.org/TR/shadow-dom/#api-shadow-root
+ * @see https://www.w3.org/TR/shadow-dom/#api-shadow-root
  * @constructor
  * @extends {DocumentFragment}
  */
@@ -3560,7 +3560,7 @@ ShadowRoot.prototype.styleSheets;
 
 
 /**
- * @see http://www.w3.org/TR/shadow-dom/#the-content-element
+ * @see https://www.w3.org/TR/shadow-dom/#the-content-element
  * @constructor
  * @extends {HTMLElement}
  */
@@ -3578,7 +3578,7 @@ HTMLContentElement.prototype.getDistributedNodes = function() {};
 
 
 /**
- * @see http://www.w3.org/TR/shadow-dom/#the-shadow-element
+ * @see https://www.w3.org/TR/shadow-dom/#the-shadow-element
  * @constructor
  * @extends {HTMLElement}
  */
@@ -3591,7 +3591,7 @@ HTMLShadowElement.prototype.getDistributedNodes = function() {};
 
 
 /**
- * @see http://www.w3.org/TR/html5/webappapis.html#the-errorevent-interface
+ * @see https://www.w3.org/TR/html5/webappapis.html#the-errorevent-interface
  *
  * @constructor
  * @extends {Event}
@@ -3641,7 +3641,7 @@ ErrorEventInit.prototype.error;
 
 
 /**
- * @see http://dom.spec.whatwg.org/#dom-domimplementation-createhtmldocument
+ * @see https://dom.spec.whatwg.org/#dom-domimplementation-createhtmldocument
  * @param {string=} opt_title A title to give the new HTML document
  * @return {!HTMLDocument}
  */
@@ -3687,18 +3687,18 @@ HTMLImageElement.prototype.srcset;
 
 /**
  * 4.11 Interactive elements
- * @see http://www.w3.org/html/wg/drafts/html/master/interactive-elements.html
+ * @see https://www.w3.org/html/wg/drafts/html/master/interactive-elements.html
  */
 
 /**
- * @see http://www.w3.org/html/wg/drafts/html/master/interactive-elements.html#the-details-element
+ * @see https://www.w3.org/html/wg/drafts/html/master/interactive-elements.html#the-details-element
  * @constructor
  * @extends {HTMLElement}
  */
 function HTMLDetailsElement() {}
 
 /**
- * @see http://www.w3.org/html/wg/drafts/html/master/interactive-elements.html#dom-details-open
+ * @see https://www.w3.org/html/wg/drafts/html/master/interactive-elements.html#dom-details-open
  * @type {boolean}
  */
 HTMLDetailsElement.prototype.open;
@@ -3709,63 +3709,63 @@ HTMLDetailsElement.prototype.open;
 
 
 /**
- * @see http://www.w3.org/html/wg/drafts/html/master/interactive-elements.html#dom-menu-type
+ * @see https://www.w3.org/html/wg/drafts/html/master/interactive-elements.html#dom-menu-type
  * @type {string}
  */
 HTMLMenuElement.prototype.type;
 
 /**
- * @see http://www.w3.org/html/wg/drafts/html/master/interactive-elements.html#dom-menu-label
+ * @see https://www.w3.org/html/wg/drafts/html/master/interactive-elements.html#dom-menu-label
  * @type {string}
  */
 HTMLMenuElement.prototype.label;
 
 
 /**
- * @see http://www.w3.org/html/wg/drafts/html/master/interactive-elements.html#the-menuitem-element
+ * @see https://www.w3.org/html/wg/drafts/html/master/interactive-elements.html#the-menuitem-element
  * @constructor
  * @extends {HTMLElement}
  */
 function HTMLMenuItemElement() {}
 
 /**
- * @see http://www.w3.org/html/wg/drafts/html/master/interactive-elements.html#dom-menuitem-type
+ * @see https://www.w3.org/html/wg/drafts/html/master/interactive-elements.html#dom-menuitem-type
  * @type {string}
  */
 HTMLMenuItemElement.prototype.type;
 
 /**
- * @see http://www.w3.org/html/wg/drafts/html/master/interactive-elements.html#dom-menuitem-label
+ * @see https://www.w3.org/html/wg/drafts/html/master/interactive-elements.html#dom-menuitem-label
  * @type {string}
  */
 HTMLMenuItemElement.prototype.label;
 
 /**
- * @see http://www.w3.org/html/wg/drafts/html/master/interactive-elements.html#dom-menuitem-icon
+ * @see https://www.w3.org/html/wg/drafts/html/master/interactive-elements.html#dom-menuitem-icon
  * @type {string}
  */
 HTMLMenuItemElement.prototype.icon;
 
 /**
- * @see http://www.w3.org/html/wg/drafts/html/master/interactive-elements.html#dom-menuitem-disabled
+ * @see https://www.w3.org/html/wg/drafts/html/master/interactive-elements.html#dom-menuitem-disabled
  * @type {boolean}
  */
 HTMLMenuItemElement.prototype.disabled;
 
 /**
- * @see http://www.w3.org/html/wg/drafts/html/master/interactive-elements.html#dom-menuitem-checked
+ * @see https://www.w3.org/html/wg/drafts/html/master/interactive-elements.html#dom-menuitem-checked
  * @type {boolean}
  */
 HTMLMenuItemElement.prototype.checked;
 
 /**
- * @see http://www.w3.org/html/wg/drafts/html/master/interactive-elements.html#dom-menuitem-radiogroup
+ * @see https://www.w3.org/html/wg/drafts/html/master/interactive-elements.html#dom-menuitem-radiogroup
  * @type {string}
  */
 HTMLMenuItemElement.prototype.radiogroup;
 
 /**
- * @see http://www.w3.org/html/wg/drafts/html/master/interactive-elements.html#dom-menuitem-default
+ * @see https://www.w3.org/html/wg/drafts/html/master/interactive-elements.html#dom-menuitem-default
  * @type {boolean}
  */
 HTMLMenuItemElement.prototype.default;
@@ -3774,7 +3774,7 @@ HTMLMenuItemElement.prototype.default;
 
 
 /**
- * @see http://www.w3.org/html/wg/drafts/html/master/interactive-elements.html#relatedevent
+ * @see https://www.w3.org/html/wg/drafts/html/master/interactive-elements.html#relatedevent
  * @param {string} type
  * @param {{relatedTarget: (EventTarget|undefined)}=} opt_eventInitDict
  * @constructor
@@ -3783,47 +3783,47 @@ HTMLMenuItemElement.prototype.default;
 function RelatedEvent(type, opt_eventInitDict) {}
 
 /**
- * @see http://www.w3.org/html/wg/drafts/html/master/interactive-elements.html#dom-relatedevent-relatedtarget
+ * @see https://www.w3.org/html/wg/drafts/html/master/interactive-elements.html#dom-relatedevent-relatedtarget
  * @type {EventTarget|undefined}
  */
 RelatedEvent.prototype.relatedTarget;
 
 
 /**
- * @see http://www.w3.org/html/wg/drafts/html/master/interactive-elements.html#the-dialog-element
+ * @see https://www.w3.org/html/wg/drafts/html/master/interactive-elements.html#the-dialog-element
  * @constructor
  * @extends {HTMLElement}
  */
 function HTMLDialogElement() {}
 
 /**
- * @see http://www.w3.org/html/wg/drafts/html/master/interactive-elements.html#dom-dialog-open
+ * @see https://www.w3.org/html/wg/drafts/html/master/interactive-elements.html#dom-dialog-open
  * @type {boolean}
  */
 HTMLDialogElement.prototype.open;
 
 /**
- * @see http://www.w3.org/html/wg/drafts/html/master/interactive-elements.html#dom-dialog-returnvalue
+ * @see https://www.w3.org/html/wg/drafts/html/master/interactive-elements.html#dom-dialog-returnvalue
  * @type {string}
  */
 HTMLDialogElement.prototype.returnValue;
 
 /**
- * @see http://www.w3.org/html/wg/drafts/html/master/interactive-elements.html#dom-dialog-show
+ * @see https://www.w3.org/html/wg/drafts/html/master/interactive-elements.html#dom-dialog-show
  * @param {(MouseEvent|Element)=} opt_anchor
  * @return {undefined}
  */
 HTMLDialogElement.prototype.show = function(opt_anchor) {};
 
 /**
- * @see http://www.w3.org/html/wg/drafts/html/master/interactive-elements.html#dom-dialog-showmodal
+ * @see https://www.w3.org/html/wg/drafts/html/master/interactive-elements.html#dom-dialog-showmodal
  * @param {(MouseEvent|Element)=} opt_anchor
  * @return {undefined}
  */
 HTMLDialogElement.prototype.showModal = function(opt_anchor) {};
 
 /**
- * @see http://www.w3.org/html/wg/drafts/html/master/interactive-elements.html#dom-dialog-close
+ * @see https://www.w3.org/html/wg/drafts/html/master/interactive-elements.html#dom-dialog-close
  * @param {string=} opt_returnValue
  * @return {undefined}
  */
@@ -3847,7 +3847,7 @@ HTMLTemplateElement.prototype.content;
 /**
  * @type {?Document}
  * @see w3c_dom2.js
- * @see http://www.w3.org/TR/html-imports/#interface-import
+ * @see https://www.w3.org/TR/html-imports/#interface-import
  */
 HTMLLinkElement.prototype.import;
 

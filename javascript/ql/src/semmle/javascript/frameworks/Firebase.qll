@@ -195,7 +195,7 @@ module Firebase {
     /**
      * A call to a Firebase method that sets up a route.
      */
-    private class RouteSetup extends HTTP::Servers::StandardRouteSetup, CallExpr {
+    private class RouteSetup extends https::Servers::StandardRouteSetup, CallExpr {
       RouteSetup() {
         this = namespace().getAPropertyRead("https").getAMemberCall("onRequest").asExpr()
       }
@@ -217,7 +217,7 @@ module Firebase {
     /**
      * A function used as a route handler.
      */
-    private class RouteHandler extends Express::RouteHandler, HTTP::Servers::StandardRouteHandler,
+    private class RouteHandler extends Express::RouteHandler, https::Servers::StandardRouteHandler,
       DataFlow::ValueNode {
       override Function astNode;
 

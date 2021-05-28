@@ -1,5 +1,5 @@
 // Semmle test case for rule SprintfToSqlQuery.ql (Uncontrolled sprintf for SQL query)
-// Associated with CWE-089: SQL injection. http://cwe.mitre.org/data/definitions/89.html
+// Associated with CWE-089: SQL injection. https://cwe.mitre.org/data/definitions/89.html
 
 ///// Library routines /////
 

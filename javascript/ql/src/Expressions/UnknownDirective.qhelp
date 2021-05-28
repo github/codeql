@@ -33,6 +33,6 @@
 
   <references>
     <li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode">"use strict"</a></li>
-    <li>asm.js: <a href="http://asmjs.org/spec/latest/#validation">"use asm"</a></li>
+    <li>asm.js: <a href="https://asmjs.org/spec/latest/#validation">"use asm"</a></li>
   </references>
 </qhelp>

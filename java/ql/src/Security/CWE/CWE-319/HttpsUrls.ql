@@ -24,7 +24,7 @@ class HttpString extends StringLiteral {
         s = "http"
         or
         // ... or the beginning of a http URL.
-        s.matches("http://%")
+        s.matches("https://%")
       ) and
       not s.matches("%/localhost%")
     )

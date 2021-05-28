@@ -12,7 +12,7 @@ Setup
 For this example you should download:
 
 - `CodeQL for Visual Studio Code <https://help.semmle.com/codeql/codeql-for-vscode/procedures/setting-up.html>`__
-- `exiv2 database <http://downloads.lgtm.com/snapshots/cpp/exiv2/Exiv2_exiv2_b090f4d.zip>`__
+- `exiv2 database <https://downloads.lgtm.com/snapshots/cpp/exiv2/Exiv2_exiv2_b090f4d.zip>`__
 
 .. note::
 

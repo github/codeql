@@ -83,7 +83,7 @@ namespace Semmle.BuildAnalyser
         {
             var projFile = new XmlDocument();
             var mgr = new XmlNamespaceManager(projFile.NameTable);
-            mgr.AddNamespace("msbuild", "http://schemas.microsoft.com/developer/msbuild/2003");
+            mgr.AddNamespace("msbuild", "https://schemas.microsoft.com/developer/msbuild/2003");
             projFile.Load(fileName.FullName);
             var projDir = fileName.Directory;
             var root = projFile.DocumentElement;

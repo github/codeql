@@ -30,6 +30,6 @@ var server = http.createServer(function (req, res) {
     require("foreground-child")(cmd); // NOT OK
 
     const opener = require("opener");
-    opener("http://github.com/" + url.parse(req.url, true).query.user); // OK
-    opener("http://github.com", { command: cmd }); // NOT OK
+    opener("https://github.com/" + url.parse(req.url, true).query.user); // OK
+    opener("https://github.com", { command: cmd }); // NOT OK
 });

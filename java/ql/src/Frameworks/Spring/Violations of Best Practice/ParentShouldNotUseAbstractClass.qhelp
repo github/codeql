@@ -41,7 +41,7 @@ provides property and constructor definitions to its children.
 
 
 <li>
-Spring Framework Reference Documentation 3.0: <a href="http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/beans.html#beans-child-bean-definitions">3.7 Bean definition inheritance</a>.
+Spring Framework Reference Documentation 3.0: <a href="https://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/beans.html#beans-child-bean-definitions">3.7 Bean definition inheritance</a>.
 </li>
 
 

@@ -22,6 +22,6 @@ Add <code>yyy = xxx.yyy</code> if required.</p>
 
 </example>
 <references>
-  <li>Python Language Reference: <a href="http://docs.python.org/2/reference/simple_stmts.html#import">The import statement</a>.</li>
+  <li>Python Language Reference: <a href="https://docs.python.org/2/reference/simple_stmts.html#import">The import statement</a>.</li>
 </references>
 </qhelp>

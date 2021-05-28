@@ -109,7 +109,7 @@ module Flask {
      *
      * Use the predicate `Response::instance()` to get references to instances of `flask.Response`.
      */
-    abstract class InstanceSource extends HTTP::Server::HttpResponse::Range, DataFlow::Node { }
+    abstract class InstanceSource extends https::Server::HttpResponse::Range, DataFlow::Node { }
 
     /** A direct instantiation of `flask.Response`. */
     private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
@@ -220,7 +220,7 @@ module Flask {
       // TODO: This doesn't handle attribute assignment. Should be OK, but analysis is not as complete as with
       // points-to and `.lookup`, which would handle `post = my_post_handler` inside class def
       result = this.getAMethod() and
-      result.getName() = HTTP::httpVerbLower()
+      result.getName() = https::httpVerbLower()
     }
   }
 
@@ -232,7 +232,7 @@ module Flask {
   }
 
   /** A route setup made by flask (sharing handling of URL patterns). */
-  abstract private class FlaskRouteSetup extends HTTP::Server::RouteSetup::Range {
+  abstract private class FlaskRouteSetup extends https::Server::RouteSetup::Range {
     override Parameter getARoutedParameter() {
       // If we don't know the URL pattern, we simply mark all parameters as a routed
       // parameter. This should give us more RemoteFlowSources but could also lead to
@@ -303,7 +303,7 @@ module Flask {
   }
 
   /** A request handler defined in a django view class, that has no known route. */
-  private class FlaskViewClassHandlerWithoutKnownRoute extends HTTP::Server::RequestHandler::Range {
+  private class FlaskViewClassHandlerWithoutKnownRoute extends https::Server::RequestHandler::Range {
     FlaskViewClassHandlerWithoutKnownRoute() {
       exists(FlaskViewClass vc | vc.getARequestHandler() = this) and
       not exists(FlaskRouteSetup setup | setup.getARequestHandler() = this)
@@ -423,7 +423,7 @@ module Flask {
   // ---------------------------------------------------------------------------
   // Implicit response from returns of flask request handlers
   // ---------------------------------------------------------------------------
-  private class FlaskRouteHandlerReturn extends HTTP::Server::HttpResponse::Range, DataFlow::CfgNode {
+  private class FlaskRouteHandlerReturn extends https::Server::HttpResponse::Range, DataFlow::CfgNode {
     FlaskRouteHandlerReturn() {
       exists(Function routeHandler |
         routeHandler = any(FlaskRouteSetup rs).getARequestHandler() and
@@ -446,7 +446,7 @@ module Flask {
    *
    * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.redirect
    */
-  private class FlaskRedirectCall extends HTTP::Server::HttpRedirectResponse::Range,
+  private class FlaskRedirectCall extends https::Server::HttpRedirectResponse::Range,
     DataFlow::CallCfgNode {
     FlaskRedirectCall() { this = API::moduleImport("flask").getMember("redirect").getACall() }
 

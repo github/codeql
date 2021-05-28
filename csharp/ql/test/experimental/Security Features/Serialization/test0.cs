@@ -22,7 +22,7 @@ namespace DataSetSerializationTest
     /*
      *  TODO: I cannot use DataContract on a QL unit test
      *
-    [DataContract(Name = "Customer", Namespace = "http://www.contoso.com")]
+    [DataContract(Name = "Customer", Namespace = "https://www.contoso.com")]
     public class PatternDataContractSerializer : XmlObjectSerializer
     {
         [DataMember()]

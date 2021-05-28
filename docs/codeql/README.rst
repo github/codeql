@@ -8,7 +8,7 @@ The CodeQL documentation in this repository is written in reStructuredText and c
 HTML using Sphinx. 
 
 For more information on writing in reStructuredText, 
-see http://docutils.sourceforge.net/rst.html.
+see https://docutils.sourceforge.net/rst.html.
 
 For more information on Sphinx, see https://www.sphinx-doc.org.
 
@@ -68,7 +68,7 @@ For example, to generate the HTML output for a project in the
   You can use errors reported during the build to debug problems in your source 
   code, such as broken internal links and malformed tables. You can also check 
   external links using Sphinx's `external link builder 
-  <http://www.sphinx-doc.org/en/master/usage/builders/index.html#sphinx.builders.linkcheck.CheckExternalLinksBuilder>`__.
+  <https://www.sphinx-doc.org/en/master/usage/builders/index.html#sphinx.builders.linkcheck.CheckExternalLinksBuilder>`__.
 
   Add the ``-a`` flag to regenerate all output files. By default, only files that 
   have changed are rebuilt.

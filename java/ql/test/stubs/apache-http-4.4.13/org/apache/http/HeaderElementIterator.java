@@ -1,5 +1,5 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/HeaderElementIterator.java $
+ * $HeadURL: https://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/HeaderElementIterator.java $
  * $Revision: 584542 $
  * $Date: 2007-10-14 06:29:34 -0700 (Sun, 14 Oct 2007) $
  *
@@ -12,7 +12,7 @@
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *   https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
@@ -25,7 +25,7 @@
  * This software consists of voluntary contributions made by many
  * individuals on behalf of the Apache Software Foundation.  For more
  * information on the Apache Software Foundation, please see
- * <http://www.apache.org/>.
+ * <https://www.apache.org/>.
  *
  */
 
@@ -39,7 +39,7 @@ import java.util.Iterator;
  * @version $Revision: 584542 $
  *
  * @deprecated Please use {@link java.net.URL#openConnection} instead.
- *     Please visit <a href="http://android-developers.blogspot.com/2011/09/androids-http-clients.html">this webpage</a>
+ *     Please visit <a href="https://android-developers.blogspot.com/2011/09/androids-http-clients.html">this webpage</a>
  *     for further details.
  */
 @Deprecated

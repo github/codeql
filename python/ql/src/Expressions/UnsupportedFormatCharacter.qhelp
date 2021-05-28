@@ -22,7 +22,7 @@ Otherwise, a <code>ValueError</code> will be raised.
 </example>
 <references>
 
-  <li>Python Library Reference: <a href="http://docs.python.org/library/stdtypes.html#string-formatting">String Formatting.</a> </li>
+  <li>Python Library Reference: <a href="https://docs.python.org/library/stdtypes.html#string-formatting">String Formatting.</a> </li>
 
 </references>
 </qhelp>

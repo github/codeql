@@ -27,7 +27,7 @@ Simplify the <code>sizeof</code> parameter to use only the subexpression that is
   AV Rule 166, <em>Joint Strike Fighter Air Vehicle C++ Coding Standards</em>. Lockheed Martin Corporation, 2005.
 </li>
 <li>
-  Tutorialspoint - The C++ Programming Language: <a href="http://www.tutorialspoint.com/cplusplus/cpp_sizeof_operator.htm">C++ sizeof Operator</a>
+  Tutorialspoint - The C++ Programming Language: <a href="https://www.tutorialspoint.com/cplusplus/cpp_sizeof_operator.htm">C++ sizeof Operator</a>
 </li>
 
 

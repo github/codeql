@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,7 +15,7 @@
  */
 /**
  * @fileoverview Definitions for all iPhone extensions. Created from:
- * http://developer.apple.com/library/safari/navigation/
+ * https://developer.apple.com/library/safari/navigation/
  *
  * @externs
  * @author agrieve@google.com (Andrew Grieve)
@@ -90,7 +90,7 @@ TouchEvent.prototype.initTouchEvent = function(type, canBubble, cancelable,
  * GestureEvent events if you want to respond to gestures only, not process
  * the low-level TouchEvent objects.
  *
- * @see http://developer.apple.com/library/safari/#documentation/UserExperience/Reference/GestureEventClassReference/GestureEvent/GestureEvent.html
+ * @see https://developer.apple.com/library/safari/#documentation/UserExperience/Reference/GestureEventClassReference/GestureEvent/GestureEvent.html
  * @extends {UIEvent}
  * @constructor
  */
@@ -168,14 +168,14 @@ Element.prototype.ongestureend;
  * Specifies the JavaScript method to invoke when the browser device's
  * orientation changes, i.e.the device is rotated.
  * @type {?function(!Event)}
- * @see http://developer.apple.com/library/IOS/#documentation/AppleApplications/Reference/SafariWebContent/HandlingEvents/HandlingEvents.html
+ * @see https://developer.apple.com/library/IOS/#documentation/AppleApplications/Reference/SafariWebContent/HandlingEvents/HandlingEvents.html
  */
 Window.prototype.onorientationchange;
 
 /**
  * Returns the orientation of the browser's device, one of [-90, 0, 90, 180].
  * @type {number}
- * @see http://developer.apple.com/library/IOS/#documentation/AppleApplications/Reference/SafariWebContent/HandlingEvents/HandlingEvents.html
+ * @see https://developer.apple.com/library/IOS/#documentation/AppleApplications/Reference/SafariWebContent/HandlingEvents/HandlingEvents.html
  */
 Window.prototype.orientation;
 

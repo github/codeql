@@ -1,5 +1,5 @@
 // Semmle test case for rule ExecTainted.ql (Uncontrolled data used in OS command)
-// Associated with CWE-078: OS Command Injection. http://cwe.mitre.org/data/definitions/78.html
+// Associated with CWE-078: OS Command Injection. https://cwe.mitre.org/data/definitions/78.html
 
 ///// Library routines /////
 

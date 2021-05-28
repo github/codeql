@@ -9,7 +9,7 @@ module Hapi {
   /**
    * An expression that creates a new Hapi server.
    */
-  class ServerDefinition extends HTTP::Servers::StandardServerDefinition, NewExpr {
+  class ServerDefinition extends https::Servers::StandardServerDefinition, NewExpr {
     ServerDefinition() {
       // `server = new Hapi.Server()`
       this = DataFlow::moduleMember("hapi", "Server").getAnInstantiation().asExpr()
@@ -19,7 +19,7 @@ module Hapi {
   /**
    * A Hapi route handler.
    */
-  class RouteHandler extends HTTP::Servers::StandardRouteHandler, DataFlow::ValueNode {
+  class RouteHandler extends https::Servers::StandardRouteHandler, DataFlow::ValueNode {
     Function function;
 
     RouteHandler() {
@@ -37,7 +37,7 @@ module Hapi {
    * A Hapi response source, that is, an access to the `response` property
    * of a request object.
    */
-  private class ResponseSource extends HTTP::Servers::ResponseSource {
+  private class ResponseSource extends https::Servers::ResponseSource {
     RequestExpr req;
 
     ResponseSource() { asExpr().(PropAccess).accesses(req, "response") }
@@ -52,7 +52,7 @@ module Hapi {
    * A Hapi request source, that is, the request parameter of a
    * route handler.
    */
-  private class RequestSource extends HTTP::Servers::RequestSource {
+  private class RequestSource extends https::Servers::RequestSource {
     RouteHandler rh;
 
     RequestSource() { this = DataFlow::parameterNode(rh.getRequestParameter()) }
@@ -66,21 +66,21 @@ module Hapi {
   /**
    * A Hapi response expression.
    */
-  class ResponseExpr extends HTTP::Servers::StandardResponseExpr {
+  class ResponseExpr extends https::Servers::StandardResponseExpr {
     override ResponseSource src;
   }
 
   /**
    * An Hapi request expression.
    */
-  class RequestExpr extends HTTP::Servers::StandardRequestExpr {
+  class RequestExpr extends https::Servers::StandardRequestExpr {
     override RequestSource src;
   }
 
   /**
    * An access to a user-controlled Hapi request input.
    */
-  private class RequestInputAccess extends HTTP::RequestInputAccess {
+  private class RequestInputAccess extends https::RequestInputAccess {
     RouteHandler rh;
     string kind;
 
@@ -134,7 +134,7 @@ module Hapi {
   /**
    * An access to an HTTP header on a Hapi request.
    */
-  private class RequestHeaderAccess extends HTTP::RequestHeaderAccess {
+  private class RequestHeaderAccess extends https::RequestHeaderAccess {
     RouteHandler rh;
 
     RequestHeaderAccess() {
@@ -159,7 +159,7 @@ module Hapi {
   /**
    * An HTTP header defined in a Hapi server.
    */
-  private class HeaderDefinition extends HTTP::Servers::StandardHeaderDefinition {
+  private class HeaderDefinition extends https::Servers::StandardHeaderDefinition {
     ResponseExpr res;
 
     HeaderDefinition() {
@@ -173,7 +173,7 @@ module Hapi {
   /**
    * A call to a Hapi method that sets up a route.
    */
-  class RouteSetup extends MethodCallExpr, HTTP::Servers::StandardRouteSetup {
+  class RouteSetup extends MethodCallExpr, https::Servers::StandardRouteSetup {
     ServerDefinition server;
     Expr handler;
 
@@ -214,7 +214,7 @@ module Hapi {
    *
    * For example, this could be the function `function(request, h){...}`.
    */
-  class RouteHandlerCandidate extends HTTP::RouteHandlerCandidate {
+  class RouteHandlerCandidate extends https::RouteHandlerCandidate {
     RouteHandlerCandidate() {
       exists(string request, string responseToolkit |
         (request = "request" or request = "req") and
@@ -234,7 +234,7 @@ module Hapi {
    * A function that looks like a Hapi route handler and flows to a route setup.
    */
   private class TrackedRouteHandlerCandidateWithSetup extends RouteHandler,
-    HTTP::Servers::StandardRouteHandler, DataFlow::FunctionNode {
+    https::Servers::StandardRouteHandler, DataFlow::FunctionNode {
     TrackedRouteHandlerCandidateWithSetup() { this = any(RouteSetup s).getARouteHandler() }
   }
 }

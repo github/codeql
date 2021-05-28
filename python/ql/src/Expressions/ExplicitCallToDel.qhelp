@@ -27,7 +27,7 @@ A safer alternative is shown in the second example.
 </example>
 <references>
 
-<li>Python Standard Library: <a href="http://docs.python.org/reference/datamodel.html#object.__del__">object.__del__</a></li>
+<li>Python Standard Library: <a href="https://docs.python.org/reference/datamodel.html#object.__del__">object.__del__</a></li>
 
 </references>
 </qhelp>

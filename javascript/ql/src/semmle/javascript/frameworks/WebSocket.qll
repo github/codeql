@@ -1,5 +1,5 @@
 /**
- * Provides classes for working with [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket), [ws](https://github.com/websockets/ws), and [SockJS](http://sockjs.org).
+ * Provides classes for working with [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket), [ws](https://github.com/websockets/ws), and [SockJS](https://sockjs.org).
  *
  * The model is based on the EventEmitter model, and there is therefore a
  * data-flow step from where a WebSocket event is sent to where the message
@@ -224,29 +224,29 @@ module ServerWebSocket {
 
   /**
    * A `socket.on("connection", (msg, req) => {})` call seen as a HTTP route handler.
-   * `req` is a `HTTP::IncomingMessage` instance.
+   * `req` is a `https::IncomingMessage` instance.
    */
-  class ConnectionCallAsRouteHandler extends HTTP::RouteHandler, DataFlow::CallNode {
+  class ConnectionCallAsRouteHandler extends https::RouteHandler, DataFlow::CallNode {
     ConnectionCallAsRouteHandler() { this = getAConnectionCall(_) }
 
-    override HTTP::HeaderDefinition getAResponseHeader(string name) { none() }
+    override https::HeaderDefinition getAResponseHeader(string name) { none() }
   }
 
   /**
    * The `req` parameter of a `socket.on("connection", (msg, req) => {})` call.
    */
-  class ServerHTTPRequest extends HTTP::Servers::RequestSource {
+  class ServerHTTPRequest extends https::Servers::RequestSource {
     ConnectionCallAsRouteHandler handler;
 
     ServerHTTPRequest() { this = handler.getCallback(1).getParameter(1) }
 
-    override HTTP::RouteHandler getRouteHandler() { result = handler }
+    override https::RouteHandler getRouteHandler() { result = handler }
   }
 
   /**
    * An access user-controlled HTTP request input in a request to a WebSocket server.
    */
-  class WebSocketRequestInput extends HTTP::RequestInputAccess {
+  class WebSocketRequestInput extends https::RequestInputAccess {
     ServerHTTPRequest request;
     string kind;
 
@@ -264,7 +264,7 @@ module ServerWebSocket {
 
     override string getKind() { result = kind }
 
-    override HTTP::RouteHandler getRouteHandler() { result = request.getRouteHandler() }
+    override https::RouteHandler getRouteHandler() { result = request.getRouteHandler() }
   }
 
   /**

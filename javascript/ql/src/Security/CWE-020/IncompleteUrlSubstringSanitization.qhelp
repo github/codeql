@@ -57,8 +57,8 @@
 
 			The substring check is, however, easy to bypass. For example
 			by embedding <code>example.com</code> in the path component:
-			<code>http://evil-example.net/example.com</code>, or in the query
-			string component: <code>http://evil-example.net/?x=example.com</code>.
+			<code>https://evil-example.net/example.com</code>, or in the query
+			string component: <code>https://evil-example.net/?x=example.com</code>.
 
 			Address these shortcomings by checking the host of the parsed URL instead:
 
@@ -69,8 +69,8 @@
 		<p>
 
 			This is still not a sufficient check as the
-			following URLs bypass it: <code>http://evil-example.com</code>
-			<code>http://example.com.evil-example.net</code>.
+			following URLs bypass it: <code>https://evil-example.com</code>
+			<code>https://example.com.evil-example.net</code>.
 
 			Instead, use an explicit whitelist of allowed hosts to
 			make the redirect secure:

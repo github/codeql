@@ -2,7 +2,7 @@
 
 
 // Test cases for CWE-089 (SQL injection and Java Persistence query injection)
-// http://cwe.mitre.org/data/definitions/89.html
+// https://cwe.mitre.org/data/definitions/89.html
 package test.cwe089.semmle.tests;
 
 import java.io.IOException;

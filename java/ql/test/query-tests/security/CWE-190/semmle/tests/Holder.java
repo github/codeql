@@ -1,5 +1,5 @@
 // Semmle test case for CWE-190: Integer Overflow or Wraparound
-// http://cwe.mitre.org/data/definitions/190.html
+// https://cwe.mitre.org/data/definitions/190.html
 package test.cwe190.semmle.tests;
 
 public class Holder {

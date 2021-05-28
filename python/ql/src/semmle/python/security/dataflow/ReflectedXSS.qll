@@ -20,7 +20,7 @@ class ReflectedXssConfiguration extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(HTTP::Server::HttpResponse response |
+    exists(https::Server::HttpResponse response |
       response.getMimetype().toLowerCase() = "text/html" and
       sink = response.getBody()
     )

@@ -41,7 +41,7 @@ Go built-in support
    Name, Category
    `beego <https://beego.me/>`_, Web/logging/database framework
    `Chi <https://github.com/go-chi/chi>`_, Web framework
-   Couchbase (`gocb <https://github.com/couchbase/gocb>`_ and `go-couchbase <http://www.github.com/couchbase/go-couchbase>`_), Database
+   Couchbase (`gocb <https://github.com/couchbase/gocb>`_ and `go-couchbase <https://www.github.com/couchbase/go-couchbase>`_), Database
    `Echo <https://echo.labstack.com/>`_, Web framework
    `Gin <https://github.com/gin-gonic/gin>`_, Web framework
    `glog <https://github.com/golang/glog>`_, Logging library
@@ -54,7 +54,7 @@ Go built-in support
    `golang.org/x/crypto/ssh <https://pkg.go.dev/golang.org/x/crypto/ssh>`_, Network communicator
    `golang.org/x/net/websocket <https://pkg.go.dev/golang.org/x/net/websocket>`_, Network communicator
    `goproxy <https://github.com/elazarl/goproxy>`_, HTTP proxy library
-   `Gorilla mux <http://www.gorillatoolkit.org/pkg/mux>`_, HTTP request router and dispatcher
+   `Gorilla mux <https://www.gorillatoolkit.org/pkg/mux>`_, HTTP request router and dispatcher
    `Gorilla websocket <https://github.com/gorilla/websocket>`_, Network communicator
    `GORM <https://gorm.io/>`_, Database
    `GoWebsocket <https://github.com/sacOO7/gowebsocket>`_, Network communicator
@@ -67,10 +67,10 @@ Go built-in support
    `Logrus <https://github.com/sirupsen/logrus>`_, Logging library
    `Macaron <https://gopkg.in/macaron.v1>`_, Web framework
    `mongo <https://pkg.go.dev/go.mongodb.org/mongo-driver/mongo>`_, Database
-   `nhooyr.io/websocket <http://nhooyr.io/websocket>`_, Network communicator
+   `nhooyr.io/websocket <https://nhooyr.io/websocket>`_, Network communicator
    `protobuf <https://pkg.go.dev/google.golang.org/protobuf>`_, Serialization
-   `Revel <http://revel.github.io/>`_, Web framework
-   `sqlx <http://jmoiron.github.io/sqlx/>`_, Database
+   `Revel <https://revel.github.io/>`_, Web framework
+   `sqlx <https://jmoiron.github.io/sqlx/>`_, Database
    `SendGrid <https://github.com/sendgrid/sendgrid-go>`_, Email library
    `Squirrel <https://github.com/Masterminds/squirrel>`_, Database
    `ws <https://github.com/gobwas/ws>`_, Network communicator

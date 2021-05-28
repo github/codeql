@@ -24,17 +24,17 @@ var SLIDE_CONFIG = {
   presenters: [{
     name: 'Firstname Lastname',
     company: 'Job Title<br>Google',
-    gplus: 'http://plus.google.com/1234567890',
+    gplus: 'https://plus.google.com/1234567890',
     twitter: '@yourhandle',
-    www: 'http://www.you.com',
-    github: 'http://github.com/you'
+    www: 'https://www.you.com',
+    github: 'https://github.com/you'
   }/*, {
     name: 'Second Name',
     company: 'Job Title, Google',
-    gplus: 'http://plus.google.com/1234567890',
+    gplus: 'https://plus.google.com/1234567890',
     twitter: '@yourhandle',
-    www: 'http://www.you.com',
-    github: 'http://github.com/you'
+    www: 'https://www.you.com',
+    github: 'https://github.com/you'
   }*/]
 };
 

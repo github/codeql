@@ -1,6 +1,6 @@
 // Test case for
 // CWE-079: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')
-// http://cwe.mitre.org/data/definitions/79.html
+// https://cwe.mitre.org/data/definitions/79.html
 
 package test.cwe079.cwe.examples;
 

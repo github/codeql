@@ -54,7 +54,7 @@ router.put('/putasync/:retry/:finalState', function (req, res, next) {
   var finalState = getPascalCase(req.params.finalState);
   var scenario = getLROAsyncScenarioName("putasync", retry, finalState);
   if (scenario) {
-    var pollingUri = 'http://localhost:' + utils.getPort() + '/lro/putasync/' + retry + '/' + finalState.toLowerCase() + '/operationResults/200/';
+    var pollingUri = 'https://localhost:' + utils.getPort() + '/lro/putasync/' + retry + '/' + finalState.toLowerCase() + '/operationResults/200/';
     var headers = {
       'Azure-AsyncOperation': pollingUri,
       // GOOD: localhost redirect

@@ -29,8 +29,8 @@ immediately after the <code>def</code> line.</p>
 </p></example>
 <references>
 
-<li>Python PEP 8: <a href="http://www.python.org/dev/peps/pep-0008/#documentation-strings">Documentation strings</a>.</li>
-<li>Python PEP 257: <a href="http://www.python.org/dev/peps/pep-0257">Documentation string conventions
+<li>Python PEP 8: <a href="https://www.python.org/dev/peps/pep-0008/#documentation-strings">Documentation strings</a>.</li>
+<li>Python PEP 257: <a href="https://www.python.org/dev/peps/pep-0257">Documentation string conventions
 </a>.</li>
 
 

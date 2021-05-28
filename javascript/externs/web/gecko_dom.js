@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -93,7 +93,7 @@ Window.prototype.fullScreen;
 
 /**
  * @return {!Promise<!BatteryManager>}
- * @see http://www.w3.org/TR/battery-status/
+ * @see https://www.w3.org/TR/battery-status/
  */
 Navigator.prototype.getBattery = function() {};
 
@@ -319,7 +319,7 @@ Window.prototype.showModalDialog;
 Window.prototype.sizeToContent;
 
 /**
- * @see http://msdn.microsoft.com/en-us/library/ms536769(VS.85).aspx
+ * @see https://msdn.microsoft.com/en-us/library/ms536769(VS.85).aspx
  * @return {undefined}
  */
 Window.prototype.stop = function() {};
@@ -513,25 +513,25 @@ Document.prototype.open;
 
 /**
  * @see https://developer.mozilla.org/en/Midas
- * @see http://msdn.microsoft.com/en-us/library/ms536676(VS.85).aspx
+ * @see https://msdn.microsoft.com/en-us/library/ms536676(VS.85).aspx
  */
 Document.prototype.queryCommandEnabled;
 
 /**
  * @see https://developer.mozilla.org/en/Midas
- * @see http://msdn.microsoft.com/en-us/library/ms536678(VS.85).aspx
+ * @see https://msdn.microsoft.com/en-us/library/ms536678(VS.85).aspx
  */
 Document.prototype.queryCommandIndeterm;
 
 /**
  * @see https://developer.mozilla.org/en/Midas
- * @see http://msdn.microsoft.com/en-us/library/ms536679(VS.85).aspx
+ * @see https://msdn.microsoft.com/en-us/library/ms536679(VS.85).aspx
  */
 Document.prototype.queryCommandState;
 
 /**
  * @see https://developer.mozilla.org/en/DOM/document.queryCommandSupported
- * @see http://msdn.microsoft.com/en-us/library/ms536681(VS.85).aspx
+ * @see https://msdn.microsoft.com/en-us/library/ms536681(VS.85).aspx
  * @param {string} command
  * @return {?} Implementation-specific.
  */
@@ -539,7 +539,7 @@ Document.prototype.queryCommandSupported;
 
 /**
  * @see https://developer.mozilla.org/en/Midas
- * @see http://msdn.microsoft.com/en-us/library/ms536683(VS.85).aspx
+ * @see https://msdn.microsoft.com/en-us/library/ms536683(VS.85).aspx
  */
 Document.prototype.queryCommandValue;
 
@@ -562,14 +562,14 @@ Document.prototype.onoffline;
 
 // XUL
 /**
- * @see http://developer.mozilla.org/en/DOM/document.getBoxObjectFor
+ * @see https://developer.mozilla.org/en/DOM/document.getBoxObjectFor
  * @return {BoxObject}
  * @nosideeffects
  */
 Document.prototype.getBoxObjectFor = function(element) {};
 
 // From:
-// http://lxr.mozilla.org/mozilla1.8/source/dom/public/idl/range/nsIDOMNSRange.idl
+// https://lxr.mozilla.org/mozilla1.8/source/dom/public/idl/range/nsIDOMNSRange.idl
 
 /**
  * @param {string} tag
@@ -752,7 +752,7 @@ Element.prototype.id;
 
 /**
  * @type {string}
- * @see http://www.w3.org/TR/DOM-Parsing/#widl-Element-innerHTML
+ * @see https://www.w3.org/TR/DOM-Parsing/#widl-Element-innerHTML
  * @implicitCast
  */
 Element.prototype.innerHTML;
@@ -799,7 +799,7 @@ HTMLInputElement.prototype.selectionEnd;
 /**
  * @param {number} selectionStart
  * @param {number} selectionEnd
- * @see http://www.whatwg.org/specs/web-apps/current-work/multipage/editing.html#dom-textarea/input-setselectionrange
+ * @see https://www.whatwg.org/specs/web-apps/current-work/multipage/editing.html#dom-textarea/input-setselectionrange
  * @return {undefined}
  */
 HTMLInputElement.prototype.setSelectionRange =
@@ -814,7 +814,7 @@ HTMLTextAreaElement.prototype.selectionEnd;
 /**
  * @param {number} selectionStart
  * @param {number} selectionEnd
- * @see http://www.whatwg.org/specs/web-apps/current-work/multipage/editing.html#dom-textarea/input-setselectionrange
+ * @see https://www.whatwg.org/specs/web-apps/current-work/multipage/editing.html#dom-textarea/input-setselectionrange
  * @return {undefined}
  */
 HTMLTextAreaElement.prototype.setSelectionRange =

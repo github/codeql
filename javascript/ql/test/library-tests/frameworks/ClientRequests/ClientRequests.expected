@@ -137,13 +137,13 @@ test_getHost
 | tst.js:274:1:283:2 | httpPro ... true\\n}) | tst.js:277:15:277:30 | 'my-domain-name' |
 test_getUrl
 | apollo.js:5:18:5:78 | new cre ... hql' }) | apollo.js:5:44:5:75 | 'https: ... raphql' |
-| apollo.js:10:1:10:54 | new Htt ... hql' }) | apollo.js:10:21:10:51 | 'http:/ ... raphql' |
+| apollo.js:10:1:10:54 | new Htt ... hql' }) | apollo.js:10:21:10:51 | 'https:/ ... raphql' |
 | apollo.js:14:16:14:69 | new Apo ... .com'}) | apollo.js:14:39:14:67 | 'https: ... le.com' |
 | apollo.js:17:1:17:34 | new Pre ... yurl"}) | apollo.js:17:26:17:32 | "myurl" |
 | apollo.js:20:1:20:77 | createN ... phql'}) | apollo.js:20:30:20:75 | 'https: ... raphql' |
 | apollo.js:23:1:23:31 | new Web ... wsUri}) | apollo.js:23:25:23:29 | wsUri |
 | puppeteer.ts:6:11:6:42 | page.go ... e.com') | puppeteer.ts:6:21:6:41 | 'https: ... le.com' |
-| puppeteer.ts:8:5:8:61 | page.ad ... css" }) | puppeteer.ts:8:29:8:58 | "http:/ ... le.css" |
+| puppeteer.ts:8:5:8:61 | page.ad ... css" }) | puppeteer.ts:8:29:8:58 | "https:/ ... le.css" |
 | puppeteer.ts:18:30:18:50 | page.go ... estUrl) | puppeteer.ts:18:40:18:49 | requestUrl |
 | tst.js:11:5:11:16 | request(url) | tst.js:11:13:11:15 | url |
 | tst.js:13:5:13:20 | request.get(url) | tst.js:13:17:13:19 | url |
@@ -211,25 +211,25 @@ test_getUrl
 | tst.js:181:2:181:69 | $.getSc ... r ) {}) | tst.js:181:15:181:28 | "ajax/test.js" |
 | tst.js:183:2:183:60 | $.post( ...  ) { }) | tst.js:183:10:183:25 | "ajax/test.html" |
 | tst.js:185:2:185:60 | $( "#re ... lt) {}) | tst.js:185:23:185:38 | "ajax/test.html" |
-| tst.js:187:2:193:3 | $.ajax( ... on"\\n\\t}) | tst.js:189:8:189:27 | "http://example.org" |
+| tst.js:187:2:193:3 | $.ajax( ... on"\\n\\t}) | tst.js:189:8:189:27 | "https://example.org" |
 | tst.js:195:2:195:54 | $.get(  ... "json") | tst.js:195:9:195:24 | "ajax/test.json" |
 | tst.js:197:2:197:45 | $.ajax( ... blob"}) | tst.js:197:15:197:25 | "ajax/blob" |
 | tst.js:200:2:200:21 | $.get("example.php") | tst.js:200:8:200:20 | "example.php" |
 | tst.js:202:5:208:7 | $.ajax( ...     }}) | tst.js:203:10:203:22 | "example.php" |
 | tst.js:210:2:210:21 | $.get("example.php") | tst.js:210:8:210:20 | "example.php" |
 | tst.js:219:5:219:41 | data.so ... Host"}) | tst.js:219:25:219:40 | {host: "myHost"} |
-| tst.js:229:5:229:67 | needle( ... ptions) | tst.js:229:20:229:47 | "http:/ ... oo/bar" |
-| tst.js:231:5:233:6 | needle. ... \\n    }) | tst.js:231:16:231:35 | "http://example.org" |
-| tst.js:235:5:237:6 | needle. ... \\n    }) | tst.js:235:17:235:41 | "http:/ ... g/post" |
-| tst.js:247:24:247:68 | request ... o.png') | tst.js:247:32:247:67 | 'http:/ ... go.png' |
-| tst.js:249:1:251:2 | form.su ... e();\\n}) | tst.js:249:13:249:33 | 'http:/ ... e.org/' |
+| tst.js:229:5:229:67 | needle( ... ptions) | tst.js:229:20:229:47 | "https:/ ... oo/bar" |
+| tst.js:231:5:233:6 | needle. ... \\n    }) | tst.js:231:16:231:35 | "https://example.org" |
+| tst.js:235:5:237:6 | needle. ... \\n    }) | tst.js:235:17:235:41 | "https:/ ... g/post" |
+| tst.js:247:24:247:68 | request ... o.png') | tst.js:247:32:247:67 | 'https:/ ... go.png' |
+| tst.js:249:1:251:2 | form.su ... e();\\n}) | tst.js:249:13:249:33 | 'https:/ ... e.org/' |
 | tst.js:257:1:262:2 | form.su ... rs()\\n}) | tst.js:257:13:262:1 | {\\n    m ... ers()\\n} |
-| tst.js:267:1:267:61 | httpPro ... 9000'}) | tst.js:267:37:267:59 | 'http:/ ... t:9000' |
-| tst.js:271:3:271:61 | proxy.w ... 080' }) | tst.js:271:33:271:58 | 'http:/ ... m:8080' |
+| tst.js:267:1:267:61 | httpPro ... 9000'}) | tst.js:267:37:267:59 | 'https:/ ... t:9000' |
+| tst.js:271:3:271:61 | proxy.w ... 080' }) | tst.js:271:33:271:58 | 'https:/ ... m:8080' |
 | tst.js:274:1:283:2 | httpPro ... true\\n}) | tst.js:275:13:281:5 | {\\n      ... ,\\n    } |
 | tst.js:286:20:286:55 | new Web ... :8080') | tst.js:286:34:286:54 | 'ws://l ... t:8080' |
 | tst.js:296:5:299:6 | axios({ ... \\n    }) | tst.js:296:11:299:5 | {\\n      ... ,\\n    } |
-| tst.js:296:5:299:6 | axios({ ... \\n    }) | tst.js:298:14:298:44 | "http:/ ... -axios" |
+| tst.js:296:5:299:6 | axios({ ... \\n    }) | tst.js:298:14:298:44 | "https:/ ... -axios" |
 test_getAResponseDataNode
 | tst.js:19:5:19:23 | requestPromise(url) | tst.js:19:5:19:23 | requestPromise(url) | text | true |
 | tst.js:21:5:21:23 | superagent.get(url) | tst.js:21:5:21:23 | superagent.get(url) | stream | true |

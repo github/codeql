@@ -27,8 +27,8 @@ byte to be written ouside the <code>dest</code> buffer.</p>
 </example>
 <references>
 
-<li>cplusplus.com: <a href="http://www.cplusplus.com/reference/clibrary/cstring/strncat/">strncat</a>,
-                   <a href="http://www.cplusplus.com/reference/clibrary/cstring/strncpy/">strncpy</a>.</li>
+<li>cplusplus.com: <a href="https://www.cplusplus.com/reference/clibrary/cstring/strncat/">strncat</a>,
+                   <a href="https://www.cplusplus.com/reference/clibrary/cstring/strncpy/">strncpy</a>.</li>
 <li>
   I. Gerg, <em>An Overview and Example of the Buffer-Overflow Exploit</em>. IANewsletter vol 7 no 4, 2005.
 </li>

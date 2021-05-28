@@ -1,5 +1,5 @@
 // Semmle test case for CWE-335: Use of a predictable seed in a secure random number generator
-// http://cwe.mitre.org/data/definitions/335.html
+// https://cwe.mitre.org/data/definitions/335.html
 package test.cwe335.semmle.tests;
 
 import java.util.Random;

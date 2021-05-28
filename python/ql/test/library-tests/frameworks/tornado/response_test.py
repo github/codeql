@@ -33,7 +33,7 @@ class ExplicitContentType(tornado.web.RequestHandler):
 
 class ExampleRedirect(tornado.web.RequestHandler):
     def get(self): # $ requestHandler
-        url = "http://example.com"
+        url = "https://example.com"
         self.redirect(url) # $ HttpRedirectResponse HttpResponse redirectLocation=url
 
 
@@ -78,9 +78,9 @@ if __name__ == "__main__":
     app.listen(8888)
     tornado.ioloop.IOLoop.current().start()
 
-    # http://localhost:8888/ResponseWriting/str
-    # http://localhost:8888/ResponseWriting/bytes
-    # http://localhost:8888/ResponseWriting/dict
-    # http://localhost:8888/ExplicitContentType
-    # http://localhost:8888/ExampleRedirect
-    # http://localhost:8888/ExampleConnectionWrite
+    # https://localhost:8888/ResponseWriting/str
+    # https://localhost:8888/ResponseWriting/bytes
+    # https://localhost:8888/ResponseWriting/dict
+    # https://localhost:8888/ExplicitContentType
+    # https://localhost:8888/ExampleRedirect
+    # https://localhost:8888/ExampleConnectionWrite

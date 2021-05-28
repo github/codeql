@@ -14,7 +14,7 @@ function PostXML(xmlData)
 {
 
   request({
-    url: "http://example.com/myxml",
+    url: "https://example.com/myxml",
     method: "POST",
     headers: {
         "content-type": "application/xml",

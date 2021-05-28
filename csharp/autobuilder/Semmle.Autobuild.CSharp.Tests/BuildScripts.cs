@@ -767,7 +767,7 @@ namespace Semmle.Autobuild.CSharp.Tests
 
             var csproj1 = new XmlDocument();
             csproj1.LoadXml(@"<?xml version=""1.0"" encoding=""utf - 8""?>
-  <Project ToolsVersion=""15.0"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
+  <Project ToolsVersion=""15.0"" xmlns=""https://schemas.microsoft.com/developer/msbuild/2003"">
     <ItemGroup>
       <Compile Include=""test1.cs"" />
     </ItemGroup>
@@ -776,7 +776,7 @@ namespace Semmle.Autobuild.CSharp.Tests
 
             var csproj2 = new XmlDocument();
             csproj2.LoadXml(@"<?xml version=""1.0"" encoding=""utf - 8""?>
-  <Project ToolsVersion=""15.0"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
+  <Project ToolsVersion=""15.0"" xmlns=""https://schemas.microsoft.com/developer/msbuild/2003"">
     <ItemGroup>
       <Compile Include=""test1.cs"" />
     </ItemGroup>
@@ -1029,7 +1029,7 @@ namespace Semmle.Autobuild.CSharp.Tests
 
             var csproj = new XmlDocument();
             csproj.LoadXml(@"<?xml version=""1.0"" encoding=""utf - 8""?>
-  <Project ToolsVersion=""15.0"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
+  <Project ToolsVersion=""15.0"" xmlns=""https://schemas.microsoft.com/developer/msbuild/2003"">
     <ItemGroup>
       <Compile Include=""test.cs"" />
     </ItemGroup>
@@ -1037,7 +1037,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.LoadXml[@"C:\Project\a\test.csproj"] = csproj;
 
             var dirsproj = new XmlDocument();
-            dirsproj.LoadXml(@"<Project DefaultTargets=""Build"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"" ToolsVersion=""3.5"">
+            dirsproj.LoadXml(@"<Project DefaultTargets=""Build"" xmlns=""https://schemas.microsoft.com/developer/msbuild/2003"" ToolsVersion=""3.5"">
   <ItemGroup>
     <ProjectFiles Include=""a\test.csproj"" />
   </ItemGroup>
@@ -1067,7 +1067,7 @@ namespace Semmle.Autobuild.CSharp.Tests
 
             var csproj = new XmlDocument();
             csproj.LoadXml(@"<?xml version=""1.0"" encoding=""utf - 8""?>
-  <Project ToolsVersion=""15.0"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
+  <Project ToolsVersion=""15.0"" xmlns=""https://schemas.microsoft.com/developer/msbuild/2003"">
     <ItemGroup>
       <Compile Include=""test.cs"" />
     </ItemGroup>
@@ -1075,7 +1075,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.LoadXml[@"C:\Project/a/test.csproj"] = csproj;
 
             var dirsproj = new XmlDocument();
-            dirsproj.LoadXml(@"<Project DefaultTargets=""Build"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"" ToolsVersion=""3.5"">
+            dirsproj.LoadXml(@"<Project DefaultTargets=""Build"" xmlns=""https://schemas.microsoft.com/developer/msbuild/2003"" ToolsVersion=""3.5"">
   <ItemGroup>
     <ProjectFiles Include=""a\test.csproj"" />
   </ItemGroup>
@@ -1097,7 +1097,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.EnumerateDirectories[@"C:\Project"] = "";
 
             var dirsproj1 = new XmlDocument();
-            dirsproj1.LoadXml(@"<Project DefaultTargets=""Build"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"" ToolsVersion=""3.5"">
+            dirsproj1.LoadXml(@"<Project DefaultTargets=""Build"" xmlns=""https://schemas.microsoft.com/developer/msbuild/2003"" ToolsVersion=""3.5"">
   <ItemGroup>
     <ProjectFiles Include=""dirs.proj"" />
   </ItemGroup>

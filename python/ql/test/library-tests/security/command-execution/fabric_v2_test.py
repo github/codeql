@@ -1,6 +1,6 @@
 """tests for the 'fabric' package (v2.x)
 
-Most of these examples are taken from the fabric documentation: http://docs.fabfile.org/en/2.5/getting-started.html
+Most of these examples are taken from the fabric documentation: https://docs.fabfile.org/en/2.5/getting-started.html
 See fabric-LICENSE for its' license.
 """
 

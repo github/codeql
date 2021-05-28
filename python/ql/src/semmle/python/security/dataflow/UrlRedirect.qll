@@ -19,7 +19,7 @@ class UrlRedirectConfiguration extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) {
-    sink = any(HTTP::Server::HttpRedirectResponse e).getRedirectLocation()
+    sink = any(https::Server::HttpRedirectResponse e).getRedirectLocation()
   }
 
   override predicate isSanitizer(DataFlow::Node node) {

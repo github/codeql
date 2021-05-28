@@ -23,8 +23,8 @@ public class TransformerTests {
 
   public void safeTransformerFactory1(Socket sock) throws Exception {
     TransformerFactory tf = TransformerFactory.newInstance();
-    tf.setAttribute("http://javax.xml.XMLConstants/property/accessExternalDTD", "");
-    tf.setAttribute("http://javax.xml.XMLConstants/property/accessExternalStylesheet", "");
+    tf.setAttribute("https://javax.xml.XMLConstants/property/accessExternalDTD", "");
+    tf.setAttribute("https://javax.xml.XMLConstants/property/accessExternalStylesheet", "");
     Transformer transformer = tf.newTransformer();
     transformer.transform(new StreamSource(sock.getInputStream()), null); //safe
     tf.newTransformer(new StreamSource(sock.getInputStream())); //safe
@@ -43,9 +43,9 @@ public class TransformerTests {
 	TransformerFactory tf = TransformerFactory.newInstance();
 	Transformer transformer = tf.newTransformer();
     XMLReader reader = XMLReaderFactory.createXMLReader();
-    reader.setFeature("http://xml.org/sax/features/external-general-entities", false);
-    reader.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-    reader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd",false);
+    reader.setFeature("https://xml.org/sax/features/external-general-entities", false);
+    reader.setFeature("https://xml.org/sax/features/external-parameter-entities", false);
+    reader.setFeature("https://apache.org/xml/features/nonvalidating/load-external-dtd",false);
     SAXSource source = new SAXSource(reader, new InputSource(sock.getInputStream())); //safe
 	transformer.transform(source, null); //safe
 	tf.newTransformer(source); //safe
@@ -55,9 +55,9 @@ public class TransformerTests {
 	TransformerFactory tf = TransformerFactory.newInstance();
 	Transformer transformer = tf.newTransformer();
     XMLReader reader = XMLReaderFactory.createXMLReader();
-    reader.setFeature("http://xml.org/sax/features/external-general-entities", false);
-    reader.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-    reader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd",false);
+    reader.setFeature("https://xml.org/sax/features/external-general-entities", false);
+    reader.setFeature("https://xml.org/sax/features/external-parameter-entities", false);
+    reader.setFeature("https://apache.org/xml/features/nonvalidating/load-external-dtd",false);
     SAXSource source = new SAXSource(new InputSource(sock.getInputStream()));
     source.setXMLReader(reader);
 	transformer.transform(source, null); //safe

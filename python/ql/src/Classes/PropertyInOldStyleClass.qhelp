@@ -29,13 +29,13 @@ property is only available for the <code>NewStyle</code> and <code>InheritNewSty
 </example>
 <references>
 
-<li>Python Glossary: <a href="http://docs.python.org/glossary.html#term-new-style-class">New-style class</a>.</li>
-<li>Python Language Reference: <a href="http://docs.python.org/2/reference/datamodel.html#newstyle">New-style and classic 
+<li>Python Glossary: <a href="https://docs.python.org/glossary.html#term-new-style-class">New-style class</a>.</li>
+<li>Python Language Reference: <a href="https://docs.python.org/2/reference/datamodel.html#newstyle">New-style and classic 
 classes</a>,
- <a href="http://docs.python.org/2/reference/datamodel.html#implementing-descriptors">
+ <a href="https://docs.python.org/2/reference/datamodel.html#implementing-descriptors">
 Descriptors</a>.</li>
-<li>Python Standard Library: <a href="http://docs.python.org/library/functions.html#property">Property</a>.</li>
-<li>The History of Python: <a href="http://python-history.blogspot.co.uk/2010/06/inside-story-on-new-style-classes.html">
+<li>Python Standard Library: <a href="https://docs.python.org/library/functions.html#property">Property</a>.</li>
+<li>The History of Python: <a href="https://python-history.blogspot.co.uk/2010/06/inside-story-on-new-style-classes.html">
 Inside story on new-style classes</a>.</li>
 
 

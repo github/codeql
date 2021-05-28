@@ -25,8 +25,8 @@ The third example function, <code>with_break</code>, shows a version where the <
 </example>
 <references>
 
-     <li>Python Language Reference: <a href="http://docs.python.org/2/reference/compound_stmts.html#the-while-statement">The while statement</a>.</li>
-     <li>Python Tutorial: <a href="http://docs.python.org/2/tutorial/controlflow.html#break-and-continue-statements-and-else-clauses-on-loops">Break and continue statements, and else clauses on loops</a>.</li>
+     <li>Python Language Reference: <a href="https://docs.python.org/2/reference/compound_stmts.html#the-while-statement">The while statement</a>.</li>
+     <li>Python Tutorial: <a href="https://docs.python.org/2/tutorial/controlflow.html#break-and-continue-statements-and-else-clauses-on-loops">Break and continue statements, and else clauses on loops</a>.</li>
 
 </references>
 </qhelp>

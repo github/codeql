@@ -1,5 +1,5 @@
 // Test case for CWE-421 (Race Condition During Access to Alternate Channel)
-// http://cwe.mitre.org/data/definitions/421.html
+// https://cwe.mitre.org/data/definitions/421.html
 package test.cwe807.semmle.tests;
 
 

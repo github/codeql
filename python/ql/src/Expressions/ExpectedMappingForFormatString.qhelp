@@ -24,7 +24,7 @@ To fix this example, ensure that <code>args</code> is a mapping when <code>unlik
 </example>
 <references>
 
-  <li>Python Library Reference: <a href="http://docs.python.org/library/stdtypes.html#string-formatting">String Formatting.</a></li>
+  <li>Python Library Reference: <a href="https://docs.python.org/library/stdtypes.html#string-formatting">String Formatting.</a></li>
 
 </references>
 </qhelp>

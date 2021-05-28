@@ -3021,7 +3021,7 @@ attrArgPositional
 | int System.Console.CursorTop | [UnsupportedOSPlatformAttribute(...)] | 0 | browser |
 | int System.Console.LargestWindowHeight | [UnsupportedOSPlatformAttribute(...)] | 0 | browser |
 | int System.Console.LargestWindowWidth | [UnsupportedOSPlatformAttribute(...)] | 0 | browser |
-| int System.Threading.Overlapped.EventHandle | [ObsoleteAttribute(...)] | 0 | This property is not 64-bit compatible.  Use EventHandleIntPtr instead.  http://go.microsoft.com/fwlink/?linkid=14202 |
+| int System.Threading.Overlapped.EventHandle | [ObsoleteAttribute(...)] | 0 | This property is not 64-bit compatible.  Use EventHandleIntPtr instead.  https://go.microsoft.com/fwlink/?linkid=14202 |
 | int[] System.Globalization.HebrewCalendar.Eras | [NullableAttribute(...)] | 0 | 1 |
 | int[] System.Globalization.StringInfo.Indexes | [NullableAttribute(...)] | 0 | 2 |
 | long | [TypeForwardedFromAttribute(...)] | 0 | mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 |

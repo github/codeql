@@ -60,7 +60,7 @@ ipcRenderer.sendSync('sync', 'ping');
 
 (function () {
   let win = new BrowserWindow({ width: 800, height: 1500 })
-  win.loadURL('http://github.com');
+  win.loadURL('https://github.com');
 
   let contents = win.webContents;
 

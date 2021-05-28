@@ -1,7 +1,7 @@
 public static void main(String[] args) {
 	{
 		try {
-			String protocol = "http://";
+			String protocol = "https://";
 			URL u = new URL(protocol + "www.secret.example.org/");
 			// BAD: This causes a 'ClassCastException' at runtime, because the
 			// HTTP URL cannot be used to make an 'HttpsURLConnection', 

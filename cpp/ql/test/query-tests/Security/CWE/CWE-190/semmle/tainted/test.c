@@ -1,5 +1,5 @@
 // Semmle test case for rule ArithmeticTainted.ql (User-controlled data in arithmetic expression).
-// Associated with CWE-190: Integer Overflow or Wraparound. http://cwe.mitre.org/data/definitions/190.html
+// Associated with CWE-190: Integer Overflow or Wraparound. https://cwe.mitre.org/data/definitions/190.html
 
 int atoi(const char *nptr);
 void startServer(int heapSize);

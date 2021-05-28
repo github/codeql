@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -190,7 +190,7 @@ Object.is;
  * @return {string}
  * @nosideeffects
  * @see https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number/toLocaleString
- * @see http://www.ecma-international.org/ecma-402/1.0/#sec-13.2.1
+ * @see https://www.ecma-international.org/ecma-402/1.0/#sec-13.2.1
  * @override
  */
 Number.prototype.toLocaleString = function(opt_locales, opt_options) {};
@@ -281,7 +281,7 @@ String.prototype.includes = function(searchString, opt_position) {};
 
 
 /**
- * @see http://dev.w3.org/html5/postmsg/
+ * @see https://dev.w3.org/html5/postmsg/
  * @interface
  */
 function Transferable() {}
@@ -697,7 +697,7 @@ Uint8ClampedArray.of = function(var_args) {};
  * @typedef {Uint8ClampedArray}
  * @deprecated CanvasPixelArray has been replaced by Uint8ClampedArray
  *     in the latest spec.
- * @see http://www.w3.org/TR/2dcontext/#imagedata
+ * @see https://www.w3.org/TR/2dcontext/#imagedata
  */
 var CanvasPixelArray;
 
@@ -1401,7 +1401,7 @@ Object.entries = function(obj) {};
 
 /**
  * @const
- * @see http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect
  */
 var Reflect = {};
 

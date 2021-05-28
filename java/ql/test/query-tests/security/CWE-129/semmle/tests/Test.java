@@ -1,6 +1,6 @@
 // Test case for
 // CWE-129: Improper Validation of Array Index
-// http://cwe.mitre.org/data/definitions/129.html
+// https://cwe.mitre.org/data/definitions/129.html
 
 package test.cwe129.cwe.examples;
 

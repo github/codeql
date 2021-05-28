@@ -38,8 +38,8 @@ by a separate rule).</p>
 <references>
 
 
-<li>Python Language Reference: <a href="http://docs.python.org/reference/datamodel.html#object.__hash__">object.__hash__</a>.</li>
-<li>Python Glossary: <a href="http://docs.python.org/2/glossary.html#term-hashable">hashable</a>.</li>
+<li>Python Language Reference: <a href="https://docs.python.org/reference/datamodel.html#object.__hash__">object.__hash__</a>.</li>
+<li>Python Glossary: <a href="https://docs.python.org/2/glossary.html#term-hashable">hashable</a>.</li>
 
 
 </references>

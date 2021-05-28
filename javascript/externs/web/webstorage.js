@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,7 +21,7 @@
 
 /**
  * @interface
- * @see http://www.w3.org/TR/2011/CR-webstorage-20111208/#the-storage-interface
+ * @see https://www.w3.org/TR/2011/CR-webstorage-20111208/#the-storage-interface
  */
 function Storage() {}
 
@@ -63,7 +63,7 @@ Storage.prototype.clear = function() {};
 
 /**
  * @interface
- * @see http://www.w3.org/TR/2011/CR-webstorage-20111208/#the-sessionstorage-attribute
+ * @see https://www.w3.org/TR/2011/CR-webstorage-20111208/#the-sessionstorage-attribute
  */
 function WindowSessionStorage() {}
 
@@ -81,7 +81,7 @@ Window.prototype.sessionStorage;
 
 /**
  * @interface
- * @see http://www.w3.org/TR/2011/CR-webstorage-20111208/#the-localstorage-attribute
+ * @see https://www.w3.org/TR/2011/CR-webstorage-20111208/#the-localstorage-attribute
  */
 function WindowLocalStorage() {}
 
@@ -99,7 +99,7 @@ Window.prototype.localStorage;
 
 /**
  * This is the storage event interface.
- * @see http://www.w3.org/TR/2011/CR-webstorage-20111208/#the-storage-event
+ * @see https://www.w3.org/TR/2011/CR-webstorage-20111208/#the-storage-event
  * @extends {Event}
  * @constructor
  */

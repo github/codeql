@@ -154,7 +154,7 @@ module NextJS {
   /**
    * A Next.js function that is exected on the server for every request, seen as a routehandler.
    */
-  class NextHttpRouteHandler extends HTTP::Servers::StandardRouteHandler, DataFlow::FunctionNode {
+  class NextHttpRouteHandler extends https::Servers::StandardRouteHandler, DataFlow::FunctionNode {
     Module pageModule;
 
     NextHttpRouteHandler() {
@@ -170,7 +170,7 @@ module NextJS {
 
     NextHttpRequestSource() { this = rh.getParameter(0).getAPropertyRead("req") }
 
-    override HTTP::RouteHandler getRouteHandler() { result = rh }
+    override https::RouteHandler getRouteHandler() { result = rh }
   }
 
   /**
@@ -181,7 +181,7 @@ module NextJS {
 
     NextHttpResponseSource() { this = rh.getParameter(0).getAPropertyRead("res") }
 
-    override HTTP::RouteHandler getRouteHandler() { result = rh }
+    override https::RouteHandler getRouteHandler() { result = rh }
   }
 
   /**
@@ -200,7 +200,7 @@ module NextJS {
    * and we therefore model the routehandler as an Express.js routehandler.
    */
   class NextAPIRouteHandler extends DataFlow::FunctionNode, Express::RouteHandler,
-    HTTP::Servers::StandardRouteHandler {
+    https::Servers::StandardRouteHandler {
     NextAPIRouteHandler() {
       exists(Module mod | mod.getFile().getParentContainer() = apiFolder() |
         this = mod.getAnExportedValue("default").getAFunctionValue()

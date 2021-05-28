@@ -1,6 +1,6 @@
 namespace VirtualRouter.Wlan.WinAPI
 {
-    //http://msdn.microsoft.com/en-us/library/dd439506%28VS.85%29.aspx
+    //https://msdn.microsoft.com/en-us/library/dd439506%28VS.85%29.aspx
     public enum WLAN_HOSTED_NETWORK_REASON
     {
         wlan_hosted_network_reason_success = 0,

@@ -30,6 +30,6 @@ Remove the <code>register</code> storage class specifier.
 <references>
 
 <li>AV Rule 140, <em>Joint Strike Fighter Air Vehicle C++ Coding Standards</em>. Lockheed Martin Corporation, 2005.</li>
-<li>M. Banahan, D. Brady, M. Doram. <em>The C Book</em>. Section 8.2.1.1. <code>http://publications.gbdirect.co.uk/c_book/</code></li>
+<li>M. Banahan, D. Brady, M. Doram. <em>The C Book</em>. Section 8.2.1.1. <code>https://publications.gbdirect.co.uk/c_book/</code></li>
 </references>
 </qhelp>

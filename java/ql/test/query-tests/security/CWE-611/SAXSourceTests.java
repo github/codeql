@@ -22,17 +22,17 @@ public class SAXSourceTests {
 
   public void explicitlySafeSource1(Socket sock) throws Exception {
     XMLReader reader = XMLReaderFactory.createXMLReader();
-    reader.setFeature("http://xml.org/sax/features/external-general-entities", false);
-    reader.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-    reader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd",false);
+    reader.setFeature("https://xml.org/sax/features/external-general-entities", false);
+    reader.setFeature("https://xml.org/sax/features/external-parameter-entities", false);
+    reader.setFeature("https://apache.org/xml/features/nonvalidating/load-external-dtd",false);
     SAXSource source = new SAXSource(reader, new InputSource(sock.getInputStream())); // GOOD
   }
 
   public void createdSafeSource(Socket sock) throws Exception {
     SAXParserFactory factory = SAXParserFactory.newInstance();
-    factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
-    factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-    factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+    factory.setFeature("https://xml.org/sax/features/external-general-entities", false);
+    factory.setFeature("https://xml.org/sax/features/external-parameter-entities", false);
+    factory.setFeature("https://apache.org/xml/features/nonvalidating/load-external-dtd", false);
     SAXParser parser = factory.newSAXParser();
     XMLReader reader = parser.getXMLReader();
     SAXSource source = new SAXSource(parser.getXMLReader(), new InputSource(sock.getInputStream())); // GOOD

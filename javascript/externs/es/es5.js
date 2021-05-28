@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,7 +39,7 @@ Function.prototype.bind = function(selfObj, var_args) {};
  * @this {String|string}
  * @return {string}
  * @nosideeffects
- * @see http://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String/Trim
+ * @see https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String/Trim
  */
 String.prototype.trim = function() {};
 
@@ -48,7 +48,7 @@ String.prototype.trim = function() {};
  * @this {String|string}
  * @return {string}
  * @nosideeffects
- * @see http://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String/TrimLeft
+ * @see https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String/TrimLeft
  */
 String.prototype.trimLeft = function() {};
 
@@ -57,7 +57,7 @@ String.prototype.trimLeft = function() {};
  * @this {String|string}
  * @return {string}
  * @nosideeffects
- * @see http://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String/TrimRight
+ * @see https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String/TrimRight
  */
 String.prototype.trimRight = function() {};
 
@@ -215,7 +215,7 @@ Object.isFrozen = function(obj) {};
 /**
  * @param {string=} opt_key The JSON key for this object.
  * @return {*} The serializable representation of this object. Note that this
- *     need not be a string. See http://goo.gl/PEUvs.
+ *     need not be a string. See https://goo.gl/PEUvs.
  * @see https://es5.github.io/#x15.12.3
  */
 Object.prototype.toJSON = function(opt_key) {};

@@ -2,16 +2,16 @@ function foo() { return "noopener noreferrer"; }
 var o = { rel: "noopener noreferrer "};
 
 // OK
-<a href="http://example.com" target="_blank" rel="noopener noreferrer">Example</a>;
-<a href="http://example.com" target="_blank" rel="noreferrer">Example</a>;
-<a href="http://example.com" target="_blank" rel="noopener">Example</a>;
-<a href="http://example.com" target="_blank" rel={foo()}>Example</a>;
-<a href="http://example.com" target="_blank" {...o}>Example</a>;
+<a href="https://example.com" target="_blank" rel="noopener noreferrer">Example</a>;
+<a href="https://example.com" target="_blank" rel="noreferrer">Example</a>;
+<a href="https://example.com" target="_blank" rel="noopener">Example</a>;
+<a href="https://example.com" target="_blank" rel={foo()}>Example</a>;
+<a href="https://example.com" target="_blank" {...o}>Example</a>;
 <a data-ng-href="https://example.com" target="_blank" rel="noopener">Example</a>;
 
 // OK, because of constant URL
-<a href="http://example.com" target="_blank">Example</a>;
-<a href="http://example.com" target="_blank" rel="nopoener">Example</a>;
+<a href="https://example.com" target="_blank">Example</a>;
+<a href="https://example.com" target="_blank" rel="nopoener">Example</a>;
 <a data-ng-href="https://example.com" target="_blank">Example</a>;
 
 // NOT OK, because of dynamic URL
@@ -21,11 +21,11 @@ var o = { rel: "noopener noreferrer "};
 
 function f() {
   // OK
-  var a1 = $("<a/>", { href: "http://example.com" });
+  var a1 = $("<a/>", { href: "https://example.com" });
   a1.attr("target", "_blank");
 
   // OK
-  var a2 = $("<a/>", { href: "http://example.com" });
+  var a2 = $("<a/>", { href: "https://example.com" });
   a2.attr("target", "_blank");
   a2.attr(computedName(), "noopener");
 
@@ -48,7 +48,7 @@ function f() {
 <a href="https://example.com/{{X}}" target="_blank">Example</a>;
 <a href="https://ex-ample.com/{{X}}" target="_blank">Example</a>;
 <a href="HTTPS://EXAMPLE.COM/{{X}}" target="_blank">Example</a>;
-<a href="http://example.com/{{X}}" target="_blank">Example</a>;
+<a href="https://example.com/{{X}}" target="_blank">Example</a>;
 <a href="//example.com/{{X}}" target="_blank">Example</a>;
 <a href="//www.example.com/{{X}}" target="_blank">Example</a>;
 

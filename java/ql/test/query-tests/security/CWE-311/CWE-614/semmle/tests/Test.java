@@ -1,5 +1,5 @@
 // Semmle test case for CWE-614: Sensitive Cookie in HTTPS Session Without 'Secure' Attribute
-// http://cwe.mitre.org/data/definitions/614.html
+// https://cwe.mitre.org/data/definitions/614.html
 package test.cwe614.semmle.tests;
 
 

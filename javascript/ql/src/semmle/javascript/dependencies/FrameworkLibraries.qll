@@ -346,7 +346,7 @@ private class Bootstrap extends FrameworkLibraryWithGenericURL, FrameworkLibrary
   Bootstrap() { this = "bootstrap" }
 
   override string getAMarkerCommentRegex() {
-    result = "(?s).*Bootstrap v(<VERSION>) \\(http://getbootstrap.com\\).*"
+    result = "(?s).*Bootstrap v(<VERSION>) \\(https://getbootstrap.com\\).*"
   }
 
   override string getAnEntryPoint() { result = "$" }

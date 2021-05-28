@@ -35,7 +35,7 @@ loop if the loop requires more complicated variable iteration.
   MISRA C++ Rule 6-5-3, <em>Guidelines for the use of the C++ language in critical systems</em>. The Motor Industry Software Reliability Associate, 2008.
 </li>
 <li>
-  <a href="http://www.learncpp.com/cpp-tutorial/57-for-statements/">For statements</a>
+  <a href="https://www.learncpp.com/cpp-tutorial/57-for-statements/">For statements</a>
 </li>
 <li>
   Mats Henricson and Erik Nyquist, <i>Industrial Strength C++</i>, published by Prentice Hall PTR (1997). 

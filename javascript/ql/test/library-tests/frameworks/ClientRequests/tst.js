@@ -186,7 +186,7 @@ import {ClientRequest, net} from 'electron';
 
 	$.ajax({
 		type: "POST",
-		url: "http://example.org",
+		url: "https://example.org",
   		data: "AjaxData",
   		success: (ajaxData) => {},
   		dataType: "json"
@@ -226,13 +226,13 @@ const net = require("net");
 const needle = require("needle");
 (function () {
     const options = { headers: { 'X-Custom-Header': 'Bumbaway atuna' } };
-    needle("POST", "http://example.org/foo/bar", "MyData", options).then(function(resp) { console.log(resp.body) });
+    needle("POST", "https://example.org/foo/bar", "MyData", options).then(function(resp) { console.log(resp.body) });
 
-    needle.get("http://example.org", (err, resp, body) => {
+    needle.get("https://example.org", (err, resp, body) => {
 
     });
 
-    needle.post("http://example.org/post", "data", options, (err, resp, body) => {
+    needle.post("https://example.org/post", "data", options, (err, resp, body) => {
 
     });
 })();
@@ -244,9 +244,9 @@ var form = new FormData();
 
 form.append('my_field', 'my value');
 form.append('my_buffer', Buffer.from("foo"));
-form.append('my_logo', request('http://example.org/images/logo.png'));
+form.append('my_logo', request('https://example.org/images/logo.png'));
 
-form.submit('http://example.org/', (err, res) => {
+form.submit('https://example.org/', (err, res) => {
     res.resume();
 });
 
@@ -264,11 +264,11 @@ form.submit({
 var httpProxy = require('http-proxy');
 var http = require("http");
 
-httpProxy.createProxyServer({target:'http://localhost:9000'}).listen(8000); 
+httpProxy.createProxyServer({target:'https://localhost:9000'}).listen(8000); 
 
 var proxy = httpProxy.createProxyServer(options);
 http.createServer(function(req, res) {
-  proxy.web(req, res, { target: 'http://mytarget.com:8080' });
+  proxy.web(req, res, { target: 'https://mytarget.com:8080' });
 });
 
 httpProxy.createProxyServer({
@@ -295,7 +295,7 @@ function webSocket() {
 function moreAxios() {
     axios({
         method: 'GET',
-        url: "http://example.org/more-axios",
+        url: "https://example.org/more-axios",
     }).then(
         x => res.send(x.data),
         (err) => {

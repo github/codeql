@@ -1,20 +1,20 @@
-var server1 = new (require('hapi')).Server(); // HTTP::Server
+var server1 = new (require('hapi')).Server(); // https::Server
 
 var Hapi = require('hapi');
-var server2 = new Hapi.Server(); // HTTP::Server
+var server2 = new Hapi.Server(); // https::Server
 
-function handler1(){} // HTTP::RouteHandler
+function handler1(){} // https::RouteHandler
 server2.route({
     handler: handler1
 });
 
 
 server2.route({
-    handler: function handler2(request, reply){ // HTTP::RouteHandler
-        request.response.header('HEADER1', '') // HTTP::HeaderDefinition
+    handler: function handler2(request, reply){ // https::RouteHandler
+        request.response.header('HEADER1', '') // https::HeaderDefinition
     }});
 
-server2.ext('onPreResponse', function handler3(request, reply) { // HTTP::RouteHandler
+server2.ext('onPreResponse', function handler3(request, reply) { // https::RouteHandler
 })
 
 function handler4(request, reply){

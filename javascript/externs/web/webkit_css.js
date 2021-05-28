@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,7 +17,7 @@
 /**
  * @fileoverview Definitions for WebKit's custom CSS properties. Copied from:
  * {@link
- * http://trac.webkit.org/browser/trunk/Source/WebCore/css/CSSPropertyNames.in}
+ * https://trac.webkit.org/browser/trunk/Source/WebCore/css/CSSPropertyNames.in}
  *
  * If you make changes to this file, notice that every property appears
  * twice: once as an uppercase name and once as a lowercase name.

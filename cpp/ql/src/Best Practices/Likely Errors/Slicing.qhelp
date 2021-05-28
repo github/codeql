@@ -20,10 +20,10 @@ These assignments slice off all the fields added by the derived type, and can ca
 <references>
 
 <li>
-  Wikipedia: <a href="http://en.wikipedia.org/wiki/Object_slicing">Object slicing</a>.
+  Wikipedia: <a href="https://en.wikipedia.org/wiki/Object_slicing">Object slicing</a>.
 </li>
 <li>
-  DevX.com: <a href="http://www.devx.com/tips/Tip/14570">Slicing in C++</a>.
+  DevX.com: <a href="https://www.devx.com/tips/Tip/14570">Slicing in C++</a>.
 </li>
 
 

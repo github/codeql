@@ -1,5 +1,5 @@
 // Semmle test case for CWE-367: Time-of-check Time-of-use (TOCTOU) Race Condition
-// http://cwe.mitre.org/data/definitions/367.html
+// https://cwe.mitre.org/data/definitions/367.html
 package test.cwe367.semmle.tests;
 
 class Test {

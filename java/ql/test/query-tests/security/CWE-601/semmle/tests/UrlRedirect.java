@@ -1,6 +1,6 @@
 // Test case for
 // CWE-601: URL Redirection to Untrusted Site ('Open Redirect')
-// http://cwe.mitre.org/data/definitions/601.html
+// https://cwe.mitre.org/data/definitions/601.html
 
 package test.cwe601.cwe.examples;
 
@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class UrlRedirect extends HttpServlet {
-	private static final String VALID_REDIRECT = "http://cwe.mitre.org/data/definitions/601.html";
+	private static final String VALID_REDIRECT = "https://cwe.mitre.org/data/definitions/601.html";
 	private static final String LOCATION_HEADER_KEY = "Location";
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -28,12 +28,12 @@ public class UrlRedirect extends HttpServlet {
 		}
 		
 		// FALSE NEGATIVE: the user attempts to clean the string, but this will fail
-		// if the argument is "hthttp://tp://malicious.com"
+		// if the argument is "hthttps://tp://malicious.com"
 		response.sendRedirect(weakCleanup(request.getParameter("target")));
 		
 		// FALSE POSITIVE: the user input is not used in a position that allows it to dictate
 		// the target of the redirect
-		response.sendRedirect("http://example.com?username=" + request.getParameter("username"));
+		response.sendRedirect("https://example.com?username=" + request.getParameter("username"));
 		
 		// BAD: set the "Location" header
 		response.setHeader("Location", request.getParameter("target"));
@@ -43,6 +43,6 @@ public class UrlRedirect extends HttpServlet {
 	}
 	
 	public String weakCleanup(String input) {
-		return input.replaceAll("http://", "");
+		return input.replaceAll("https://", "");
 	}
 }

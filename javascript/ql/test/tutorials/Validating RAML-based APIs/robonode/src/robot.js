@@ -1,6 +1,6 @@
 var addCRC = require('./addCRC');
 
-var PREFIX = 'fffffd00'; // Defined by http://support.robotis.com/en/techsupport_eng.htm#product/dynamixel_pro/communication.htm
+var PREFIX = 'fffffd00'; // Defined by https://support.robotis.com/en/techsupport_eng.htm#product/dynamixel_pro/communication.htm
 var DYNAMIXEL_ID = 'c8'; // Not sure why, but I'm told this is 200
 var COMMAND_PACKET_LENGTH = '0700';
 var STATE_PACKET_LENGTH = '0700';

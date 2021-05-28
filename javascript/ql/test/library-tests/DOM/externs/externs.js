@@ -10,7 +10,7 @@ function EventTarget() {}
 var window;
 
 /**
- * @see http://dev.w3.org/html5/workers/
+ * @see https://dev.w3.org/html5/workers/
  * @interface
  * @extends {EventTarget}
  */

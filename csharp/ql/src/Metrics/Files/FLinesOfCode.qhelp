@@ -26,7 +26,7 @@ refactored into smaller classes.</p>
 </recommendation>
 <references>
 
-  <li>MSDN. C# Programming Guide. <a href="http://msdn.microsoft.com/en-us/library/wa80x488%28VS.80%29.aspx">Partial Class Definitions</a>.</li>
+  <li>MSDN. C# Programming Guide. <a href="https://msdn.microsoft.com/en-us/library/wa80x488%28VS.80%29.aspx">Partial Class Definitions</a>.</li>
   <li>Martin Fowler. <em>Refactoring</em>. Addison-Wesley. 1999.</li>
 
 </references>

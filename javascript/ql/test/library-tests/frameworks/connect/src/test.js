@@ -1,10 +1,10 @@
 var connect = require('connect');
 var http = require('http');
 
-var app = connect(); // HTTP::Server
+var app = connect(); // https::Server
 
-app.use(function handler1(req, res){ // HTTP:RouteHandler
-    res.setHeader('HEADER1', ''); // HTTP:HeaderDefinition
+app.use(function handler1(req, res){ // https:RouteHandler
+    res.setHeader('HEADER1', ''); // https:HeaderDefinition
     req.cookies.get('foo');
 });
 

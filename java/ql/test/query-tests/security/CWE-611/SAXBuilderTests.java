@@ -10,13 +10,13 @@ public class SAXBuilderTests {
   
   public void safeBuilder(Socket sock) throws Exception {
     SAXBuilder builder = new SAXBuilder();
-    builder.setFeature("http://apache.org/xml/features/disallow-doctype-decl",true);
+    builder.setFeature("https://apache.org/xml/features/disallow-doctype-decl",true);
     builder.build(sock.getInputStream()); //safe
   }
 
   public void misConfiguredBuilder(Socket sock) throws Exception {
     SAXBuilder builder = new SAXBuilder();
-    builder.setFeature("http://apache.org/xml/features/disallow-doctype-decl",false);
+    builder.setFeature("https://apache.org/xml/features/disallow-doctype-decl",false);
     builder.build(sock.getInputStream()); //unsafe
   }
 }

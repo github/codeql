@@ -64,8 +64,8 @@ The revised example eliminates the unread assignments.</p>
 <references>
 
 
-<li>Wikipedia: <a href="http://en.wikipedia.org/wiki/Dead_store">Dead store</a>.</li>
-<li>MSDN, Code Analysis for Managed Code, <a href="http://msdn.microsoft.com/en-us/library/ms182278.aspx">CA1804: Remove unused locals</a>.</li>
+<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Dead_store">Dead store</a>.</li>
+<li>MSDN, Code Analysis for Managed Code, <a href="https://msdn.microsoft.com/en-us/library/ms182278.aspx">CA1804: Remove unused locals</a>.</li>
 <li>Microsoft: <a href="https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-7#discards">What's new in C# 7 - Discards</a>.</li>
 
 </references>

@@ -15,7 +15,7 @@ Expr getTest() {
   // cppunit tests; https://freedesktop.org/wiki/Software/cppunit/
   result.(FunctionCall).getTarget().hasQualifiedName("CppUnit", _, "addTest")
   or
-  // boost tests; http://www.boost.org/
+  // boost tests; https://www.boost.org/
   result.(FunctionCall).getTarget().hasQualifiedName("boost::unit_test", "make_test_case")
   or
   // googletest tests; https://github.com/google/googletest/

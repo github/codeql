@@ -35,14 +35,14 @@ The second way will verify the parameters before using them to build the HTTP re
 
 <references>
 <li>
-InfosecWriters: <a href="http://www.infosecwriters.com/Papers/DCrab_HTTP_Response.pdf">HTTP response splitting</a>.
+InfosecWriters: <a href="https://www.infosecwriters.com/Papers/DCrab_HTTP_Response.pdf">HTTP response splitting</a>.
 </li>
 <li>
 OWASP:
 <a href="https://www.owasp.org/index.php/HTTP_Response_Splitting">HTTP Response Splitting</a>.
 </li>
 <li>
-Wikipedia: <a href="http://en.wikipedia.org/wiki/HTTP_response_splitting">HTTP response splitting</a>.
+Wikipedia: <a href="https://en.wikipedia.org/wiki/HTTP_response_splitting">HTTP response splitting</a>.
 </li>
 </references>
 </qhelp>

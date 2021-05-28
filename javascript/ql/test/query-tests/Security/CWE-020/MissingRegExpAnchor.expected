@@ -1,13 +1,13 @@
-| tst-IncompleteHostnameRegExp.js:2:2:2:24 | /^http: ... le.com/ | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
-| tst-IncompleteHostnameRegExp.js:3:2:3:29 | /^http: ... le.com/ | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
-| tst-IncompleteHostnameRegExp.js:5:2:5:29 | /^http: ... le.net/ | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
-| tst-IncompleteHostnameRegExp.js:6:2:6:43 | /^http: ... b).com/ | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
-| tst-IncompleteHostnameRegExp.js:11:13:11:38 | "^http: ... le.com" | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
-| tst-IncompleteHostnameRegExp.js:12:10:12:35 | "^http: ... le.com" | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
-| tst-IncompleteHostnameRegExp.js:15:22:15:47 | "^http: ... le.com" | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
+| tst-IncompleteHostnameRegExp.js:2:2:2:24 | /^https: ... le.com/ | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
+| tst-IncompleteHostnameRegExp.js:3:2:3:29 | /^https: ... le.com/ | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
+| tst-IncompleteHostnameRegExp.js:5:2:5:29 | /^https: ... le.net/ | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
+| tst-IncompleteHostnameRegExp.js:6:2:6:43 | /^https: ... b).com/ | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
+| tst-IncompleteHostnameRegExp.js:11:13:11:38 | "^https: ... le.com" | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
+| tst-IncompleteHostnameRegExp.js:12:10:12:35 | "^https: ... le.com" | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
+| tst-IncompleteHostnameRegExp.js:15:22:15:47 | "^https: ... le.com" | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
 | tst-IncompleteHostnameRegExp.js:19:17:19:35 | '^test.example.com' | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
 | tst-IncompleteHostnameRegExp.js:40:2:40:30 | /^https ... le.com/ | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
-| tst-IncompleteHostnameRegExp.js:55:13:55:39 | '^http: ... le.com' | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
+| tst-IncompleteHostnameRegExp.js:55:13:55:39 | '^https: ... le.com' | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
 | tst-SemiAnchoredRegExp.js:3:2:3:7 | /^a\|b/ | Misleading operator precedence. The subexpression '^a' is anchored at the beginning, but the other parts of this regular expression are not |
 | tst-SemiAnchoredRegExp.js:6:2:6:9 | /^a\|b\|c/ | Misleading operator precedence. The subexpression '^a' is anchored at the beginning, but the other parts of this regular expression are not |
 | tst-SemiAnchoredRegExp.js:12:2:12:9 | /^a\|(b)/ | Misleading operator precedence. The subexpression '^a' is anchored at the beginning, but the other parts of this regular expression are not |
@@ -46,7 +46,7 @@
 | tst-SemiAnchoredRegExp.js:91:2:91:16 | /^@media\|@page/ | Misleading operator precedence. The subexpression '^@media' is anchored at the beginning, but the other parts of this regular expression are not |
 | tst-SemiAnchoredRegExp.js:92:2:92:32 | /^\\s*(x ... :yyy\\// | Misleading operator precedence. The subexpression '^\\s*(xxx?\|yyy\|zzz):' is anchored at the beginning, but the other parts of this regular expression are not |
 | tst-SemiAnchoredRegExp.js:93:2:93:21 | /^click\|mouse\|touch/ | Misleading operator precedence. The subexpression '^click' is anchored at the beginning, but the other parts of this regular expression are not |
-| tst-SemiAnchoredRegExp.js:94:2:94:43 | /^http: ... r\\.com/ | Misleading operator precedence. The subexpression '^http:\\/\\/good\\.com' is anchored at the beginning, but the other parts of this regular expression are not |
+| tst-SemiAnchoredRegExp.js:94:2:94:43 | /^https: ... r\\.com/ | Misleading operator precedence. The subexpression '^https:\\/\\/good\\.com' is anchored at the beginning, but the other parts of this regular expression are not |
 | tst-SemiAnchoredRegExp.js:95:2:95:47 | /^https ... r\\.com/ | Misleading operator precedence. The subexpression '^https?:\\/\\/good\\.com' is anchored at the beginning, but the other parts of this regular expression are not |
 | tst-SemiAnchoredRegExp.js:96:2:96:55 | /^mouse ... ragend/ | Misleading operator precedence. The subexpression '^mouse' is anchored at the beginning, but the other parts of this regular expression are not |
 | tst-SemiAnchoredRegExp.js:97:2:97:14 | /^xxx:\|yyy:/i | Misleading operator precedence. The subexpression '^xxx:' is anchored at the beginning, but the other parts of this regular expression are not |

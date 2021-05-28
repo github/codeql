@@ -12,7 +12,7 @@ Setup
 For this example you should download:
 
 - `CodeQL for Visual Studio Code <https://help.semmle.com/codeql/codeql-for-vscode/procedures/setting-up.html>`__
-- `VIVO Vitro database <http://downloads.lgtm.com/snapshots/java/vivo-project/Vitro/vivo-project_Vitro_java-srcVersion_47ae42c01954432c3c3b92d5d163551ce367f510-dist_odasa-lgtm-2019-04-23-7ceff95-linux64.zip>`__
+- `VIVO Vitro database <https://downloads.lgtm.com/snapshots/java/vivo-project/Vitro/vivo-project_Vitro_java-srcVersion_47ae42c01954432c3c3b92d5d163551ce367f510-dist_odasa-lgtm-2019-04-23-7ceff95-linux64.zip>`__
 
 .. note::
 
@@ -56,7 +56,7 @@ Motivation
 
   To understand the scope of this vulnerability, consider what would happen if a malicious user could provide the following as the content of the ``individualURI`` variable:
 
-  ``“http://vivoweb.org/ontology/core#FacultyMember> ?p ?o . FILTER regex("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa!", "(.*a){50}") } #``
+  ``“https://vivoweb.org/ontology/core#FacultyMember> ?p ?o . FILTER regex("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa!", "(.*a){50}") } #``
 
 
 Example: SPARQL injection

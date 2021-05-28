@@ -56,12 +56,12 @@
             The first two examples show unsafe checks that are easily bypassed.
             In <code>unsafe1</code> the attacker can simply add 
             <code>example.com</code> anywhere in the url. For example,
-            <code>http://evil-example.net/example.com</code>.
+            <code>https://evil-example.net/example.com</code>.
         </p>
         <p>
             In <code>unsafe2</code> the attacker must use a hostname ending in
             <code>example.com</code>, but that is easy to do.  For example,
-            <code>http://benign-looking-prefix-example.com</code>.
+            <code>https://benign-looking-prefix-example.com</code>.
 
         </p>
 

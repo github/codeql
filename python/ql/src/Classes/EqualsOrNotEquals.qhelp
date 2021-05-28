@@ -29,8 +29,8 @@ a separate rule).</p>
 <references>
 
 
-<li>Python Language Reference: <a href="http://docs.python.org/2/reference/datamodel.html#object.__ne__">object.__ne__</a>, 
-<a href="http://docs.python.org/2/reference/expressions.html#comparisons">Comparisons</a>.</li>
+<li>Python Language Reference: <a href="https://docs.python.org/2/reference/datamodel.html#object.__ne__">object.__ne__</a>, 
+<a href="https://docs.python.org/2/reference/expressions.html#comparisons">Comparisons</a>.</li>
 
 
 </references>

@@ -68,7 +68,7 @@ module InsecureDownload {
 
     SensitiveFileUrl() {
       str = this.getStringValue() and
-      str.regexpMatch("http://.*|ftp://.*")
+      str.regexpMatch("https://.*|ftp://.*")
     }
 
     override DataFlow::FlowLabel getALabel() {

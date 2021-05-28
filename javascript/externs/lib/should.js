@@ -6,7 +6,7 @@
 /**
  * @fileoverview A (highly incomplete) model of the should.js library.
  * @externs
- * @see http://shouldjs.github.io/
+ * @see https://shouldjs.github.io/
  */
 
 /**

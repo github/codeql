@@ -818,7 +818,7 @@ class FunctionTemplateInstantiation extends Function {
  * function templates.
  *
  * For further reference on function template specializations, see:
- *   http://www.gotw.ca/publications/mill17.htm
+ *   https://www.gotw.ca/publications/mill17.htm
  */
 class FunctionTemplateSpecialization extends Function {
   FunctionTemplateSpecialization() { this.isSpecialization() }

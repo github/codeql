@@ -33,7 +33,7 @@ Use the <code>Array</code> class, or explicitly declare the variable/parameter a
   AV Rule 97, <em>Joint Strike Fighter Air Vehicle C++ Coding Standards</em>. Lockheed Martin Corporation, 2005.
 </li>
 <li>
-  <a href="http://c-faq.com/aryptr/aryptrequiv.html">comp.lang.c FAQ list · Question 6.3 </a>
+  <a href="https://c-faq.com/aryptr/aryptrequiv.html">comp.lang.c FAQ list · Question 6.3 </a>
 </li>
 
 

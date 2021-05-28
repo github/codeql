@@ -16,7 +16,7 @@
 
 
 (function () {
-	var sock = new SockJS('http://0.0.0.0:9999/echo');
+	var sock = new SockJS('https://0.0.0.0:9999/echo');
 	sock.onopen = function () {
 		sock.send('test');
 	};

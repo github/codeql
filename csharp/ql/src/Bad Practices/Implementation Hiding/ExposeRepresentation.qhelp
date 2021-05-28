@@ -38,7 +38,7 @@ a short program showing what happens when an attempt is made to modify the data 
 <references>
 
   <li>MSDN, C# Programming Guide, <a href="https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/arrays/arrays-as-objects">Arrays as Objects</a>.</li>
-  <li>MSDN, <a href="http://msdn.microsoft.com/en-us/library/ms132474.aspx">ReadOnlyCollection&lt;T&gt;</a>.</li>
+  <li>MSDN, <a href="https://msdn.microsoft.com/en-us/library/ms132474.aspx">ReadOnlyCollection&lt;T&gt;</a>.</li>
 
 </references>
 </qhelp>

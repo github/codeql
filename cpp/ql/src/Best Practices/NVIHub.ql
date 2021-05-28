@@ -13,7 +13,7 @@
 
 import cpp
 
-//see http://www.gotw.ca/publications/mill18.htm
+//see https://www.gotw.ca/publications/mill18.htm
 from MemberFunction f, int hubIndex, Class fclass
 where
   f.hasSpecifier("public") and

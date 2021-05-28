@@ -50,7 +50,7 @@ private module Tornado {
             // TODO: This doesn't handle attribute assignment. Should be OK, but analysis is not as complete as with
             // points-to and `.lookup`, which would handle `post = my_post_handler` inside class def
             result = this.getAMethod() and
-            result.getName() = HTTP::httpVerbLower()
+            result.getName() = https::httpVerbLower()
           }
 
           /** Gets a reference to this class. */
@@ -335,7 +335,7 @@ private module Tornado {
   }
 
   /** A tornado route setup. */
-  abstract class TornadoRouteSetup extends HTTP::Server::RouteSetup::Range {
+  abstract class TornadoRouteSetup extends https::Server::RouteSetup::Range {
     override string getFramework() { result = "Tornado" }
   }
 
@@ -397,7 +397,7 @@ private module Tornado {
   }
 
   /** A request handler defined in a tornado RequestHandler class, that has no known route. */
-  private class TornadoRequestHandlerWithoutKnownRoute extends HTTP::Server::RequestHandler::Range {
+  private class TornadoRequestHandlerWithoutKnownRoute extends https::Server::RequestHandler::Range {
     TornadoRequestHandlerWithoutKnownRoute() {
       exists(tornado::web::RequestHandler::RequestHandlerClass cls |
         cls.getARequestHandler() = this
@@ -424,7 +424,7 @@ private module Tornado {
    *
    * See https://www.tornadoweb.org/en/stable/web.html?highlight=write#tornado.web.RequestHandler.redirect
    */
-  private class TornadoRequestHandlerRedirectCall extends HTTP::Server::HttpRedirectResponse::Range,
+  private class TornadoRequestHandlerRedirectCall extends https::Server::HttpRedirectResponse::Range,
     DataFlow::CallCfgNode {
     TornadoRequestHandlerRedirectCall() {
       this.getFunction() = tornado::web::RequestHandler::redirectMethod()
@@ -446,7 +446,7 @@ private module Tornado {
    *
    * See https://www.tornadoweb.org/en/stable/web.html?highlight=write#tornado.web.RequestHandler.write
    */
-  private class TornadoRequestHandlerWriteCall extends HTTP::Server::HttpResponse::Range,
+  private class TornadoRequestHandlerWriteCall extends https::Server::HttpResponse::Range,
     DataFlow::CallCfgNode {
     TornadoRequestHandlerWriteCall() {
       this.getFunction() = tornado::web::RequestHandler::writeMethod()

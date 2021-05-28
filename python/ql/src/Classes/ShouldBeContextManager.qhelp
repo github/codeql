@@ -31,12 +31,12 @@ updated to use a context manager.</p>
 </example>
 <references>
 
-<li>Effbot: <a href="https://web.archive.org/web/20201012110738/http://effbot.org/zone/python-with-statement.htm">Python with statement</a>.</li>
-<li>Python Standard Library: <a href="http://docs.python.org/library/stdtypes.html#context-manager-types">Context manager
+<li>Effbot: <a href="https://web.archive.org/web/20201012110738/https://effbot.org/zone/python-with-statement.htm">Python with statement</a>.</li>
+<li>Python Standard Library: <a href="https://docs.python.org/library/stdtypes.html#context-manager-types">Context manager
 </a>.</li>
-<li>Python Language Reference: <a href="http://docs.python.org/2.7/reference/datamodel.html#with-statement-context-managers">
+<li>Python Language Reference: <a href="https://docs.python.org/2.7/reference/datamodel.html#with-statement-context-managers">
 With Statement Context Managers</a>.</li>
-<li>Python PEP 343: <a href="http://www.python.org/dev/peps/pep-0343">The "with" Statement</a>.</li>
+<li>Python PEP 343: <a href="https://www.python.org/dev/peps/pep-0343">The "with" Statement</a>.</li>
 
 </references>
 </qhelp>

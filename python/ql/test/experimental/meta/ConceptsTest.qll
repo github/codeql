@@ -148,7 +148,7 @@ class HttpServerRouteSetupTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and
-    exists(HTTP::Server::RouteSetup setup |
+    exists(https::Server::RouteSetup setup |
       location = setup.getLocation() and
       element = setup.toString() and
       (
@@ -170,14 +170,14 @@ class HttpServerRequestHandlerTest extends InlineExpectationsTest {
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and
     (
-      exists(HTTP::Server::RequestHandler handler |
+      exists(https::Server::RequestHandler handler |
         location = handler.getLocation() and
         element = handler.toString() and
         value = "" and
         tag = "requestHandler"
       )
       or
-      exists(HTTP::Server::RequestHandler handler, Parameter param |
+      exists(https::Server::RequestHandler handler, Parameter param |
         param = handler.getARoutedParameter() and
         location = param.getLocation() and
         element = param.toString() and
@@ -208,21 +208,21 @@ class HttpServerHttpResponseTest extends InlineExpectationsTest {
     // we need to do this step since we expect subclasses could override getARelevantTag
     tag = getARelevantTag() and
     (
-      exists(HTTP::Server::HttpResponse response |
+      exists(https::Server::HttpResponse response |
         location = response.getLocation() and
         element = response.toString() and
         value = "" and
         tag = "HttpResponse"
       )
       or
-      exists(HTTP::Server::HttpResponse response |
+      exists(https::Server::HttpResponse response |
         location = response.getLocation() and
         element = response.toString() and
         value = value_from_expr(response.getBody().asExpr()) and
         tag = "responseBody"
       )
       or
-      exists(HTTP::Server::HttpResponse response |
+      exists(https::Server::HttpResponse response |
         location = response.getLocation() and
         element = response.toString() and
         // Ensure that an expectation value such as "mimetype=text/html; charset=utf-8" is parsed as a
@@ -247,14 +247,14 @@ class HttpServerHttpRedirectResponseTest extends InlineExpectationsTest {
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and
     (
-      exists(HTTP::Server::HttpRedirectResponse redirect |
+      exists(https::Server::HttpRedirectResponse redirect |
         location = redirect.getLocation() and
         element = redirect.toString() and
         value = "" and
         tag = "HttpRedirectResponse"
       )
       or
-      exists(HTTP::Server::HttpRedirectResponse redirect |
+      exists(https::Server::HttpRedirectResponse redirect |
         location = redirect.getLocation() and
         element = redirect.toString() and
         value = value_from_expr(redirect.getRedirectLocation().asExpr()) and

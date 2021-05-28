@@ -31,7 +31,7 @@ to using the cookie value, making it look like a forged request was initiated by
 </example>
 <references>
 
-  <li>MSDN: <a href="http://msdn.microsoft.com/en-us/library/system.web.httprequest.item(v=VS.100).aspx">HttpRequest.Item</a>.</li>
+  <li>MSDN: <a href="https://msdn.microsoft.com/en-us/library/system.web.httprequest.item(v=VS.100).aspx">HttpRequest.Item</a>.</li>
 
 </references>
 </qhelp>

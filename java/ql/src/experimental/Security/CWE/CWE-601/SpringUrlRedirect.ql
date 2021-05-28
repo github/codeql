@@ -41,7 +41,7 @@ class SpringUrlRedirectFlowConfig extends TaintTracking::Configuration {
   override predicate isSanitizer(DataFlow::Node node) {
     // Exclude the case where the left side of the concatenated string is not `redirect:`.
     // E.g: `String url = "/path?token=" + request.getParameter("token");`
-    // Note this is quite a broad sanitizer (it will also sanitize the right-hand side of `url = "http://" + request.getParameter("token")`);
+    // Note this is quite a broad sanitizer (it will also sanitize the right-hand side of `url = "https://" + request.getParameter("token")`);
     // Consider making this stricter in future.
     exists(AddExpr ae |
       ae.getRightOperand() = node.asExpr() and

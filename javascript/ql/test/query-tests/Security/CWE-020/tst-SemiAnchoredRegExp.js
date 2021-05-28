@@ -91,7 +91,7 @@
 	/^@media|@page/;
 	/^\s*(xxx?|yyy|zzz):|xxx:yyy\//;
 	/^click|mouse|touch/;
-	/^http:\/\/good\.com|http:\/\/better\.com/;
+	/^https:\/\/good\.com|https:\/\/better\.com/;
 	/^https?:\/\/good\.com|https?:\/\/better\.com/;
 	/^mouse|touch|click|contextmenu|drop|dragover|dragend/;
 	/^xxx:|yyy:/i;

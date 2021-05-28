@@ -50,7 +50,7 @@ private DataFlow::SourceNode getARouteUsingCookies(DataFlow::TypeTracker t) {
     result = pred.track(t2, t)
     or
     t = t2 and
-    HTTP::routeHandlerStep(pred, result)
+    https::routeHandlerStep(pred, result)
   )
 }
 
@@ -66,7 +66,7 @@ DataFlow::SourceNode getARouteUsingCookies() {
  * cookies, and thus require CSRF protection.
  */
 predicate hasCookieMiddleware(Express::RouteHandlerExpr expr, Express::RouteHandlerExpr cookie) {
-  any(HTTP::CookieMiddlewareInstance i).flowsToExpr(cookie) and
+  any(https::CookieMiddlewareInstance i).flowsToExpr(cookie) and
   expr.getAMatchingAncestor() = cookie
 }
 
@@ -121,7 +121,7 @@ private DataFlow::SourceNode nodeLeadingToCsrfWriteOrCheck(DataFlow::TypeBackTra
  * Gets a route handler that sets an CSRF related cookie.
  */
 private Express::RouteHandler getAHandlerSettingCsrfCookie() {
-  exists(HTTP::CookieDefinition setCookie |
+  exists(https::CookieDefinition setCookie |
     setCookie.getNameArgument().getStringValue().regexpMatch("(?i).*(csrf|xsrf).*") and
     result = setCookie.getRouteHandler()
   )
@@ -150,7 +150,7 @@ private DataFlow::SourceNode getACsrfProtectionRouteHandler(DataFlow::TypeTracke
     result = pred.track(t2, t)
     or
     t = t2 and
-    HTTP::routeHandlerStep(pred, result)
+    https::routeHandlerStep(pred, result)
   )
 }
 

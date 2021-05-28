@@ -27,7 +27,7 @@ to get the size of an array instead of the pointer.
 <references>
 
 <li>
-  Comp.lang.c, Frequently Asked Questions: <a href="http://c-faq.com/aryptr/aryptrequiv.html">Question 6.3: So what is meant by the "equivalence of pointers and arrays" in C?</a>.
+  Comp.lang.c, Frequently Asked Questions: <a href="https://c-faq.com/aryptr/aryptrequiv.html">Question 6.3: So what is meant by the "equivalence of pointers and arrays" in C?</a>.
 </li>
 
 

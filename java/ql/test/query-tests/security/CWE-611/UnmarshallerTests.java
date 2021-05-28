@@ -12,9 +12,9 @@ public class UnmarshallerTests {
 
   public void safeUnmarshal(Socket sock) throws Exception {
     SAXParserFactory spf = SAXParserFactory.newInstance();
-    spf.setFeature("http://xml.org/sax/features/external-general-entities", false);
-    spf.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-    spf.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+    spf.setFeature("https://xml.org/sax/features/external-general-entities", false);
+    spf.setFeature("https://xml.org/sax/features/external-parameter-entities", false);
+    spf.setFeature("https://apache.org/xml/features/nonvalidating/load-external-dtd", false);
     JAXBContext jc = JAXBContext.newInstance(Object.class);
     Source xmlSource = new SAXSource(spf.newSAXParser().getXMLReader(), new InputSource(sock.getInputStream()));
     Unmarshaller um = jc.createUnmarshaller();

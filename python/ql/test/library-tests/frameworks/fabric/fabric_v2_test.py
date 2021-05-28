@@ -1,6 +1,6 @@
 """tests for the 'fabric' package (v2.x)
 
-Loosely inspired by http://docs.fabfile.org/en/2.5/getting-started.html
+Loosely inspired by https://docs.fabfile.org/en/2.5/getting-started.html
 """
 
 from fabric import connection, Connection, group, SerialGroup, ThreadingGroup, tasks, task

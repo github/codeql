@@ -29,8 +29,8 @@ Correcting the spelling will fix the defect.
 </example>
 <references>
 
-  <li>Python Language Reference: <a href="http://docs.python.org/2/reference/simple_stmts.html#import">The import statement</a>.</li>
-  <li>Python Tutorial: <a href="http://docs.python.org/2/tutorial/modules.html#importing-from-a-package">Importing * from a Package</a>.</li>
+  <li>Python Language Reference: <a href="https://docs.python.org/2/reference/simple_stmts.html#import">The import statement</a>.</li>
+  <li>Python Tutorial: <a href="https://docs.python.org/2/tutorial/modules.html#importing-from-a-package">Importing * from a Package</a>.</li>
 
 
 </references>

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,7 +17,7 @@
 
 /**
  * @fileoverview Definitions for W3C's Web Cryptography specification
- * http://www.w3.org/TR/webCryptoAPI
+ * https://www.w3.org/TR/webCryptoAPI
  * @externs
  * @author chrismoon@google.com (Chris Moon)
  * This file was created using the best practices as described in:
@@ -27,7 +27,7 @@
 
 /**
  * @const
- * @see http://www.w3.org/TR/webCryptoAPI
+ * @see https://www.w3.org/TR/webCryptoAPI
  */
 var webCrypto = {};
 
@@ -36,21 +36,21 @@ var webCrypto = {};
  * @typedef {?{
  *   name: string
  * }}
- * @see http://www.w3.org/TR/WebCryptoAPI/#algorithm-dictionary
+ * @see https://www.w3.org/TR/WebCryptoAPI/#algorithm-dictionary
  */
 webCrypto.Algorithm;
 
 
 /**
  * @typedef {string|!webCrypto.Algorithm}
- * @see http://www.w3.org/TR/WebCryptoAPI/#dfn-AlgorithmIdentifier
+ * @see https://www.w3.org/TR/WebCryptoAPI/#dfn-AlgorithmIdentifier
  */
 webCrypto.AlgorithmIdentifier;
 
 
 /**
  * @constructor
- * @see http://www.w3.org/TR/webCryptoAPI/#dfn-CryptoKey
+ * @see https://www.w3.org/TR/webCryptoAPI/#dfn-CryptoKey
  */
 webCrypto.CryptoKey = function() {};
 
@@ -89,14 +89,14 @@ webCrypto.CryptoKey.prototype.usages;
  * @typedef {?{
  *   name: string
  * }}
- * @see http://www.w3.org/TR/WebCryptoAPI/#key-algorithm-dictionary-members
+ * @see https://www.w3.org/TR/WebCryptoAPI/#key-algorithm-dictionary-members
  */
 webCrypto.KeyAlgorithm;
 
 
 /**
  * @constructor
- * @see http://www.w3.org/TR/WebCryptoAPI/#dfn-JsonWebKey
+ * @see https://www.w3.org/TR/WebCryptoAPI/#dfn-JsonWebKey
  * @see Section 3.1:
  *     https://tools.ietf.org/html/draft-ietf-jose-json-web-key-41
  */
@@ -220,7 +220,7 @@ webCrypto.JsonWebKey.prototype.k;
 
 /**
  * @constructor
- * @see http://www.w3.org/TR/WebCryptoAPI/#dfn-RsaOtherPrimesInfo
+ * @see https://www.w3.org/TR/WebCryptoAPI/#dfn-RsaOtherPrimesInfo
  * @see Section-6.3.2.7:
  *     https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40
  */
@@ -250,7 +250,7 @@ webCrypto.RsaOtherPrimesInfo.prototype.t;
 
 /**
  * @constructor
- * @see http://www.w3.org/TR/WebCryptoAPI/#subtlecrypto-interface
+ * @see https://www.w3.org/TR/WebCryptoAPI/#subtlecrypto-interface
  */
 webCrypto.SubtleCrypto = function() {};
 
@@ -426,7 +426,7 @@ webCrypto.SubtleCrypto.prototype.unwrapKey = function(format, wrappedKey,
 
 /**
  * Web Cryptography API
- * @see http://www.w3.org/TR/WebCryptoAPI/
+ * @see https://www.w3.org/TR/WebCryptoAPI/
  */
 
 /** @see https://developer.mozilla.org/en/DOM/window.crypto */
@@ -444,6 +444,6 @@ Window.prototype.crypto.getRandomValues = function(typedArray) {};
 
 /**
  * @type {webCrypto.SubtleCrypto}
- * @see http://www.w3.org/TR/WebCryptoAPI/#Crypto-attribute-subtle
+ * @see https://www.w3.org/TR/WebCryptoAPI/#Crypto-attribute-subtle
  */
 Window.prototype.crypto.subtle;

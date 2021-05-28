@@ -5,7 +5,7 @@
  * in compliance with the License.
  * 
  * You can obtain a copy of the license at
- * http://www.opensource.org/licenses/cddl1.php
+ * https://www.opensource.org/licenses/cddl1.php
  * See the License for the specific language governing
  * permissions and limitations under the License.
  */

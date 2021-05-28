@@ -1,5 +1,5 @@
 // Semmle test case for CWE-676: Use of Potentially Dangerous Function
-// http://cwe.mitre.org/data/definitions/676.html
+// https://cwe.mitre.org/data/definitions/676.html
 package test.cwe676.semmle.tests;
 
 class Test {

@@ -51,7 +51,7 @@
 	<p>
 		Even worse, a client might pass in user-controlled
 		data, not knowing that the input is interpreted as a shell command. 
-		This could allow a malicious user to provide the input <code>http://example.org; cat /etc/passwd</code>
+		This could allow a malicious user to provide the input <code>https://example.org; cat /etc/passwd</code>
 		in order to execute the command <code>cat /etc/passwd</code>.
 	</p>
 

@@ -151,7 +151,7 @@ class JSLintOptions extends JSLintDirective {
  * Gets an implicit JSLint global of the given `category`.
  */
 private string jsLintImplicitGlobal(string category) {
-  // cf. http://www.jslint.com/help.html#global
+  // cf. https://www.jslint.com/help.html#global
   category = "browser" and
   (
     result = "clearInterval" or

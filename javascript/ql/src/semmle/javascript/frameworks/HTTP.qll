@@ -243,7 +243,7 @@ module HTTP {
     DataFlow::functionOneWayForwardingStep(pred.getALocalUse(), succ)
     or
     // a container containing route-handlers.
-    exists(HTTP::RouteHandlerCandidateContainer container | pred = container.getRouteHandler(succ))
+    exists(https::RouteHandlerCandidateContainer container | pred = container.getRouteHandler(succ))
     or
     // (function (req, res) {}).bind(this);
     exists(DataFlow::PartialInvokeNode call |
@@ -645,7 +645,7 @@ module HTTP {
     /**
      * A collection that contains one or more route potential handlers.
      */
-    private class ContainerCollection extends HTTP::RouteHandlerCandidateContainer::Range,
+    private class ContainerCollection extends https::RouteHandlerCandidateContainer::Range,
       DataFlow::NewNode {
       ContainerCollection() {
         this = DataFlow::globalVarRef("Map").getAnInstantiation() and // restrict to Map for now

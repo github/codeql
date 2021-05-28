@@ -16,7 +16,7 @@ class DocumentBuilderTests {
 
   public void disableDTD(Socket sock) throws Exception {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-    factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+    factory.setFeature("https://apache.org/xml/features/disallow-doctype-decl", true);
     DocumentBuilder builder = factory.newDocumentBuilder();
     builder.parse(sock.getInputStream()); //safe
   }
@@ -30,59 +30,59 @@ class DocumentBuilderTests {
 
   public void enableSecurityFeature2(Socket sock) throws Exception {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-    factory.setFeature("http://javax.xml.XMLConstants/feature/secure-processing", true);
+    factory.setFeature("https://javax.xml.XMLConstants/feature/secure-processing", true);
     DocumentBuilder builder = factory.newDocumentBuilder();
     builder.parse(sock.getInputStream()); //safe
   }
 
   public void enableDTD(Socket sock) throws Exception {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-    factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", false);
+    factory.setFeature("https://apache.org/xml/features/disallow-doctype-decl", false);
     DocumentBuilder builder = factory.newDocumentBuilder();
     builder.parse(sock.getInputStream()); //unsafe
   }
 
   public void disableSecurityFeature(Socket sock) throws Exception {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-    factory.setFeature("http://javax.xml.XMLConstants/feature/secure-processing", false);
+    factory.setFeature("https://javax.xml.XMLConstants/feature/secure-processing", false);
     DocumentBuilder builder = factory.newDocumentBuilder();
     builder.parse(sock.getInputStream()); //unsafe
   }
 
   public void disableExternalEntities(Socket sock) throws Exception {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-    factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-    factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+    factory.setFeature("https://xml.org/sax/features/external-parameter-entities", false);
+    factory.setFeature("https://xml.org/sax/features/external-general-entities", false);
     DocumentBuilder builder = factory.newDocumentBuilder();
     builder.parse(sock.getInputStream()); //safe
   }
 
   public void partialDisableExternalEntities(Socket sock) throws Exception {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-    factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+    factory.setFeature("https://xml.org/sax/features/external-parameter-entities", false);
     DocumentBuilder builder = factory.newDocumentBuilder();
     builder.parse(sock.getInputStream()); //unsafe
   }
 
   public void partialDisableExternalEntities2(Socket sock) throws Exception {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-    factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+    factory.setFeature("https://xml.org/sax/features/external-general-entities", false);
     DocumentBuilder builder = factory.newDocumentBuilder();
     builder.parse(sock.getInputStream()); //unsafe
   }
 
   public void misConfigureExternalEntities1(Socket sock) throws Exception {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-    factory.setFeature("http://xml.org/sax/features/external-parameter-entities", true);
-    factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+    factory.setFeature("https://xml.org/sax/features/external-parameter-entities", true);
+    factory.setFeature("https://xml.org/sax/features/external-general-entities", false);
     DocumentBuilder builder = factory.newDocumentBuilder();
     builder.parse(sock.getInputStream()); //unsafe
   }
 
   public void misConfigureExternalEntities2(Socket sock) throws Exception {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-    factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-    factory.setFeature("http://xml.org/sax/features/external-general-entities", true);
+    factory.setFeature("https://xml.org/sax/features/external-parameter-entities", false);
+    factory.setFeature("https://xml.org/sax/features/external-general-entities", true);
     DocumentBuilder builder = factory.newDocumentBuilder();
     builder.parse(sock.getInputStream()); //unsafe
   }
@@ -105,9 +105,9 @@ class DocumentBuilderTests {
   private static DocumentBuilderFactory getDocumentBuilderFactory() throws Exception {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     String feature = "";
-    feature = "http://xml.org/sax/features/external-parameter-entities";
+    feature = "https://xml.org/sax/features/external-parameter-entities";
     factory.setFeature(feature, false);
-    feature = "http://xml.org/sax/features/external-general-entities";
+    feature = "https://xml.org/sax/features/external-general-entities";
     factory.setFeature(feature, false);
     return factory;
   }

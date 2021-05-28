@@ -1,6 +1,6 @@
 // Semmle test cases for rule AuthenticationBypass.ql
 // Associated with CWE-290: Authentication Bypass by Spoofing
-// http://cwe.mitre.org/data/definitions/290.html
+// https://cwe.mitre.org/data/definitions/290.html
 
 ///// Library functions //////
 

@@ -1,4 +1,4 @@
-// Associated with CWE-190: Integer Overflow or Wraparound. http://cwe.mitre.org/data/definitions/190.html
+// Associated with CWE-190: Integer Overflow or Wraparound. https://cwe.mitre.org/data/definitions/190.html
 
 typedef unsigned long size_t;
 typedef struct {} FILE;

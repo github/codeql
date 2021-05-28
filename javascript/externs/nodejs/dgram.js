@@ -3,8 +3,8 @@
 // which is licensed under the MIT license; see file DefinitelyTyped-LICENSE
 // in parent directory.
 // Type definitions for Node.js 10.5.x
-// Project: http://nodejs.org/
-// Definitions by: Microsoft TypeScript <http://typescriptlang.org>
+// Project: https://nodejs.org/
+// Definitions by: Microsoft TypeScript <https://typescriptlang.org>
 //                 DefinitelyTyped <https://github.com/DefinitelyTyped/DefinitelyTyped>
 //                 Parambir Singh <https://github.com/parambirs>
 //                 Christian Vaagland Tellnes <https://github.com/tellnes>

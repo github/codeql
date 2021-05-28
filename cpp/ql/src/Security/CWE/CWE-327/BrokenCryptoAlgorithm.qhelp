@@ -27,9 +27,9 @@ is a strong modern algorithm.</p>
 </example>
 <references>
 
-<li>NIST, FIPS 140 Annex a: <a href="http://csrc.nist.gov/publications/fips/fips140-2/fips1402annexa.pdf">
+<li>NIST, FIPS 140 Annex a: <a href="https://csrc.nist.gov/publications/fips/fips140-2/fips1402annexa.pdf">
 Approved Security Functions</a>.</li>
-<li>NIST, SP 800-131A: <a href="http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar1.pdf">
+<li>NIST, SP 800-131A: <a href="https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar1.pdf">
 Transitions: Recommendation for Transitioning the Use of Cryptographic Algorithms and Key Lengths</a>.</li>
 
 

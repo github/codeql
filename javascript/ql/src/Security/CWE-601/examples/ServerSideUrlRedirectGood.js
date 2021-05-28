@@ -1,6 +1,6 @@
 const app = require("express")();
 
-const VALID_REDIRECT = "http://cwe.mitre.org/data/definitions/601.html";
+const VALID_REDIRECT = "https://cwe.mitre.org/data/definitions/601.html";
 
 app.get('/some/path', function(req, res) {
   // GOOD: the request parameter is validated against a known fixed string

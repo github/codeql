@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,10 +18,10 @@
  * @fileoverview Definitions for W3C's Navigation Timing specification.
  *
  * Created from
- * @see http://dvcs.w3.org/hg/webperf/raw-file/tip/specs/NavigationTiming/Overview.html
- * @see http://w3c-test.org/webperf/specs/ResourceTiming
- * @see http://www.w3.org/TR/performance-timeline
- * @see http://www.w3.org/TR/user-timing/
+ * @see https://dvcs.w3.org/hg/webperf/raw-file/tip/specs/NavigationTiming/Overview.html
+ * @see https://w3c-test.org/webperf/specs/ResourceTiming
+ * @see https://www.w3.org/TR/performance-timeline
+ * @see https://www.w3.org/TR/user-timing/
  *
  * @externs
  */

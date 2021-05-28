@@ -19,7 +19,7 @@ class StackTraceExposureConfiguration extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof ExceptionInfo }
 
   override predicate isSink(DataFlow::Node sink) {
-    sink = any(HTTP::Server::HttpResponse response).getBody()
+    sink = any(https::Server::HttpResponse response).getBody()
   }
 
   // A stack trace is accessible as the `__traceback__` attribute of a caught exception.

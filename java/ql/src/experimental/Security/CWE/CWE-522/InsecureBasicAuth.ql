@@ -72,7 +72,7 @@ class HttpStringLiteral extends StringLiteral {
   HttpStringLiteral() {
     // Match URLs with the HTTP protocol and without private IP addresses to reduce false positives.
     exists(string s | this.getRepresentedString() = s |
-      s.regexpMatch("(?i)http://[\\[a-zA-Z0-9].*") and
+      s.regexpMatch("(?i)https://[\\[a-zA-Z0-9].*") and
       not s.substring(7, s.length()) instanceof PrivateHostName
     )
   }

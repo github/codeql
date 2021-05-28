@@ -5,7 +5,7 @@ public class InsecureBasicAuth {
   public void testApacheHttpRequest(String username, String password) {
   {
     // BAD: basic authentication over HTTP
-    String url = "http://www.example.com/rest/getuser.do?uid=abcdx";
+    String url = "https://www.example.com/rest/getuser.do?uid=abcdx";
   }
 
   {
@@ -30,7 +30,7 @@ public class InsecureBasicAuth {
   public void testHttpUrlConnection(String username, String password) {
   {
     // BAD: basic authentication over HTTP
-    String urlStr = "http://www.example.com/rest/getuser.do?uid=abcdx";
+    String urlStr = "https://www.example.com/rest/getuser.do?uid=abcdx";
   }
 
   {

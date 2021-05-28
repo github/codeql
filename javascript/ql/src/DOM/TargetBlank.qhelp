@@ -21,7 +21,7 @@ Specify the link type by adding an attribute <code>rel="noopener noreferrer"</co
 
 <p>
 In the following example, a JSX element is created that corresponds to an HTML
-link opening the URL <code>http://example.com</code> in a new tab. Since it does
+link opening the URL <code>https://example.com</code> in a new tab. Since it does
 not specify a link type, that page will be able to access the DOM of the origin page.
 </p>
 

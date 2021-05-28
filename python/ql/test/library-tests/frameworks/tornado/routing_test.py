@@ -89,22 +89,22 @@ if __name__ == "__main__":
     app.listen(8888)
     tornado.ioloop.IOLoop.current().start()
 
-    # http://localhost:8888/foo/42/
-    # http://localhost:8888/foo/42/1337
+    # https://localhost:8888/foo/42/
+    # https://localhost:8888/foo/42/1337
 
-    # http://localhost:8888/bar/42/
-    # http://localhost:8888/bar/42/1337
+    # https://localhost:8888/bar/42/
+    # https://localhost:8888/bar/42/1337
 
-    # http://localhost:8888/baz/42/
-    # http://localhost:8888/baz/42/1337
+    # https://localhost:8888/baz/42/
+    # https://localhost:8888/baz/42/1337
 
-    # http://localhost:8888/kw-args/42/
-    # http://localhost:8888/kw-args/42/1337
+    # https://localhost:8888/kw-args/42/
+    # https://localhost:8888/kw-args/42/1337
 
-    # http://localhost:8888/only-localhost
+    # https://localhost:8888/only-localhost
 
-    # http://localhost:8888/one
-    # http://localhost:8888/two
-    # http://localhost:8888/three
+    # https://localhost:8888/one
+    # https://localhost:8888/two
+    # https://localhost:8888/three
 
-    # http://localhost:8888/added-later
+    # https://localhost:8888/added-later

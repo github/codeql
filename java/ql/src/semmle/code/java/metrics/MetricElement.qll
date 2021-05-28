@@ -112,7 +112,7 @@ class MetricElement extends Element {
 /*
  * QL metrics definitions. References for metrics defined here:
  *
- * http://en.wikipedia.org/wiki/Software_package_metrics
+ * https://en.wikipedia.org/wiki/Software_package_metrics
  *
  * Brian Henderson-Sellers (1996).
  * Object-oriented Metrics - Measures of Complexity.
@@ -131,22 +131,22 @@ class MetricElement extends Element {
  * Addison Wesley. ISBN 0-321-16607-8.
  *
  * Objecteering:
- * http://www.objecteering.com/
+ * https://www.objecteering.com/
  *
  * NDepend:
- * http://ndepend.com/
+ * https://ndepend.com/
  *
  * Virtual Machinery JHawk:
- * http://www.virtualmachinery.com/jhawkmetrics.htm
+ * https://www.virtualmachinery.com/jhawkmetrics.htm
  *
  * Eclipse metrics plugins:
- * http://metrics.sourceforge.net/
- * http://eclipse-metrics.sourceforge.net/
+ * https://metrics.sourceforge.net/
+ * https://eclipse-metrics.sourceforge.net/
  *
  * Avoisto Project Analyzer:
- * http://www.aivosto.com/project/help/pm-oo-ck.html
+ * https://www.aivosto.com/project/help/pm-oo-ck.html
  *
  * ckjm: Chidamber and Kemerer Java Metrics:
- * http://www.spinellis.gr/sw/ckjm/
+ * https://www.spinellis.gr/sw/ckjm/
  */
 

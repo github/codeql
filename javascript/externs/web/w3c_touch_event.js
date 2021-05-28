@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,7 +16,7 @@
 
 /**
  * @fileoverview Definitions for W3C's Touch Events specification.
- * @see http://www.w3.org/TR/touch-events/
+ * @see https://www.w3.org/TR/touch-events/
  * @externs
  */
 
@@ -42,7 +42,7 @@ var TouchInitDict;
  * The Touch class represents a single touch on the surface. A touch is the
  * presence or movement of a finger that is part of a unique multi-touch
  * sequence.
- * @see http://www.w3.org/TR/touch-events/#touch-interface
+ * @see https://www.w3.org/TR/touch-events/#touch-interface
  * @param {!TouchInitDict} touchInitDict
  * @constructor
  */
@@ -98,33 +98,33 @@ Touch.prototype.target;
 
 /**
  * @type {number}
- * @see http://www.w3.org/TR/touch-events-extensions/#widl-Touch-force
+ * @see https://www.w3.org/TR/touch-events-extensions/#widl-Touch-force
  */
 Touch.prototype.force;
 
 /**
  * @type {number}
- * @see http://www.w3.org/TR/touch-events-extensions/#widl-Touch-radiusX
+ * @see https://www.w3.org/TR/touch-events-extensions/#widl-Touch-radiusX
  */
 Touch.prototype.radiusX;
 
 /**
  * @type {number}
- * @see http://www.w3.org/TR/touch-events-extensions/#widl-Touch-radiusY
+ * @see https://www.w3.org/TR/touch-events-extensions/#widl-Touch-radiusY
  */
 Touch.prototype.radiusY;
 
 
 /**
  * @type {number}
- * @see http://www.w3.org/TR/2011/WD-touch-events-20110505/#widl-Touch-rotationAngle
+ * @see https://www.w3.org/TR/2011/WD-touch-events-20110505/#widl-Touch-rotationAngle
  */
 Touch.prototype.rotationAngle;
 
 
 /**
  * Creates a new Touch object.
- * @see http://www.w3.org/TR/touch-events/#widl-Document-createTouch-Touch-WindowProxy-view-EventTarget-target-long-identifier-long-pageX-long-pageY-long-screenX-long-screenY
+ * @see https://www.w3.org/TR/touch-events/#widl-Document-createTouch-Touch-WindowProxy-view-EventTarget-target-long-identifier-long-pageX-long-pageY-long-screenX-long-screenY
  * @param {Window} view
  * @param {EventTarget} target
  * @param {number} identifier
@@ -140,7 +140,7 @@ Document.prototype.createTouch = function(view, target, identifier, pageX,
 
 /**
  * The TouchList class is used to represent a collection of Touch objects.
- * @see http://www.w3.org/TR/touch-events/#touchlist-interface
+ * @see https://www.w3.org/TR/touch-events/#touchlist-interface
  * @constructor
  * @implements {IArrayLike<!Touch>}
  */
@@ -162,13 +162,13 @@ TouchList.prototype.item = function(index) {};
 /**
  * @param {number} identifier
  * @return {?Touch}
- * @see http://www.w3.org/TR/touch-events-extensions/#widl-TouchList-identifiedTouch-Touch-long-identifier
+ * @see https://www.w3.org/TR/touch-events-extensions/#widl-TouchList-identifiedTouch-Touch-long-identifier
  */
 TouchList.prototype.identifiedTouch = function(identifier) {};
 
 /**
  * Creates a new TouchList object.
- * @see http://www.w3.org/TR/touch-events/#widl-Document-createTouchList-TouchList-Touch-touches
+ * @see https://www.w3.org/TR/touch-events/#widl-Document-createTouchList-TouchList-Touch-touches
  * @param {Array<?Touch>} touches
  * @return {TouchList}
  */
@@ -215,7 +215,7 @@ TouchEventInit.prototype.changedTouches;
  * TouchEvent objects are combined together to form high-level GestureEvent
  * objects that are also sent during a multi-touch sequence.</p>
  *
- * @see http://www.w3.org/TR/touch-events/#touchevent-interface
+ * @see https://www.w3.org/TR/touch-events/#touchevent-interface
  * @param {string} type
  * @param {!TouchEventInit=} opt_eventInitDict
  * @extends {UIEvent}

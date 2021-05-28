@@ -18,8 +18,8 @@ testing.
 </recommendation>
 <references>
 <li><a href="https://qunitjs.com/">QUnit</a></li>
-<li><a href="http://xunitjs.shaege.com/">xUnit.js</a></li>
-<li><a href="http://jasmine.github.io/">Jasmine</a></li>
-<li><a href="http://unitjs.com/">Unit.js</a></li>
+<li><a href="https://xunitjs.shaege.com/">xUnit.js</a></li>
+<li><a href="https://jasmine.github.io/">Jasmine</a></li>
+<li><a href="https://unitjs.com/">Unit.js</a></li>
 </references>
 </qhelp>

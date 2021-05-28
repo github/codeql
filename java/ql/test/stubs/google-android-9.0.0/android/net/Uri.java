@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,7 +38,7 @@ import java.util.Set;
 /**
  * Immutable URI reference. A URI reference includes a URI and a fragment, the
  * component of the URI following a '#'. Builds and parses URI references which
- * conform to <a href="http://www.faqs.org/rfcs/rfc2396.html">RFC 2396</a>.
+ * conform to <a href="https://www.faqs.org/rfcs/rfc2396.html">RFC 2396</a>.
  *
  * <p>
  * In the interest of performance, this class performs little to no validation.
@@ -93,7 +93,7 @@ public abstract class Uri implements Parcelable, Comparable<Uri> {
      */
 
     /**
-     * Returns true if this URI is hierarchical like "http://google.com". Absolute
+     * Returns true if this URI is hierarchical like "https://google.com". Absolute
      * URIs are hierarchical if the scheme-specific part starts with a '/'. Relative
      * URIs are always hierarchical.
      */
@@ -231,7 +231,7 @@ public abstract class Uri implements Parcelable, Comparable<Uri> {
     /**
      * Gets the decoded query component from this URI. The query comes after the
      * query separator ('?') and before the fragment separator ('#'). This method
-     * would return "q=android" for "http://www.google.com/search?q=android".
+     * would return "q=android" for "https://www.google.com/search?q=android".
      *
      * @return the decoded query or null if there isn't one
      */
@@ -240,7 +240,7 @@ public abstract class Uri implements Parcelable, Comparable<Uri> {
     /**
      * Gets the encoded query component from this URI. The query comes after the
      * query separator ('?') and before the fragment separator ('#'). This method
-     * would return "q=android" for "http://www.google.com/search?q=android".
+     * would return "q=android" for "https://www.google.com/search?q=android".
      *
      * @return the encoded query or null if there isn't one
      */
@@ -301,7 +301,7 @@ public abstract class Uri implements Parcelable, Comparable<Uri> {
 
     /**
      * Returns the encoded string representation of this URI. Example:
-     * "http://google.com/"
+     * "https://google.com/"
      */
     public abstract String toString();
 
@@ -420,7 +420,7 @@ public abstract class Uri implements Parcelable, Comparable<Uri> {
      * Uri with Android best practices for intent filtering.
      *
      * <p>
-     * For example, "HTTP://www.android.com" becomes "http://www.android.com"
+     * For example, "https://www.android.com" becomes "https://www.android.com"
      *
      * <p>
      * All URIs received from outside Android (such as user input, or external

@@ -50,8 +50,8 @@ To fix this example, <code>super()</code> should be used throughout.
 
         <li>Python Tutorial: <a href="https://docs.python.org/2/tutorial/classes.html">Classes</a>.</li>
         <li>Python Standard Library: <a href="https://docs.python.org/2/library/functions.html#super">super</a>.</li>
-        <li>Artima Developer: <a href="http://www.artima.com/weblogs/viewpost.jsp?thread=236275">Things to Know About Python Super</a>.</li>
-        <li>Wikipedia: <a href="http://en.wikipedia.org/wiki/Composition_over_inheritance">Composition over inheritance</a>.</li>
+        <li>Artima Developer: <a href="https://www.artima.com/weblogs/viewpost.jsp?thread=236275">Things to Know About Python Super</a>.</li>
+        <li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Composition_over_inheritance">Composition over inheritance</a>.</li>
 
 
 </references>

@@ -33,10 +33,10 @@ Consider using <code>x % 2 != 0</code> to check for odd and <code>x % 2 == 0</co
 
 
 <li>
-  MSDN Library: <a href="http://msdn.microsoft.com/en-us/library/0w4e0fzs.aspx">% Operator (C# Reference)</a>.
+  MSDN Library: <a href="https://msdn.microsoft.com/en-us/library/0w4e0fzs.aspx">% Operator (C# Reference)</a>.
 </li>
 <li>
-  Wikipedia: <a href="http://en.wikipedia.org/wiki/Modulo_operation#Common_pitfalls">Modulo Operation - Common pitfalls</a>.
+  Wikipedia: <a href="https://en.wikipedia.org/wiki/Modulo_operation#Common_pitfalls">Modulo Operation - Common pitfalls</a>.
 </li>
 
 

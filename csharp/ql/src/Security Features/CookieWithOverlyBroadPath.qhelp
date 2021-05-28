@@ -26,7 +26,7 @@ path.</p>
 </example>
 <references>
 
-  <li>MSDN: <a href="http://msdn.microsoft.com/en-us/library/system.web.httpcookie.path.aspx">HttpCookie.Path Property</a>.</li>
+  <li>MSDN: <a href="https://msdn.microsoft.com/en-us/library/system.web.httpcookie.path.aspx">HttpCookie.Path Property</a>.</li>
 
 </references>
 </qhelp>

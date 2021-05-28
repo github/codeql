@@ -586,7 +586,7 @@ class FlowGraph(DiGraph):
         '''Compute liveness of all variables in this flow-graph.
         Return a mapping of basic blocks to the set of variables
         that are live at the start of that basic block.
-        See http://en.wikipedia.org/wiki/Live_variable_analysis.'''
+        See https://en.wikipedia.org/wiki/Live_variable_analysis.'''
 
         self._require('bb_pred')
         self._require('use_all')

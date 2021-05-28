@@ -23,13 +23,13 @@ var server = http.createServer(function(req, res) {
     options.url = tainted; // NOT OK
     request(options);
 
-    request("http://" + tainted); // NOT OK
+    request("https://" + tainted); // NOT OK
 
-    request("http://example.com" + tainted); // NOT OK
+    request("https://example.com" + tainted); // NOT OK
 
-    request("http://example.com/" + tainted); // NOT OK
+    request("https://example.com/" + tainted); // NOT OK
 
-    request("http://example.com/?" + tainted); // OK
+    request("https://example.com/?" + tainted); // OK
 
     http.get(relativeUrl, {host: tainted}); // NOT OK
 
@@ -38,17 +38,17 @@ var server = http.createServer(function(req, res) {
 
     let base = require('./config').base;
 
-    request(`http://example.com/${base}/${tainted}`); // NOT OK
+    request(`https://example.com/${base}/${tainted}`); // NOT OK
 
-    request(`http://example.com/${base}/v1/${tainted}`); // NOT OK
+    request(`https://example.com/${base}/v1/${tainted}`); // NOT OK
 
-    request('http://example.com/' + base + '/' + tainted); // NOT OK
+    request('https://example.com/' + base + '/' + tainted); // NOT OK
 
-    request('http://example.com/' + base + ('/' + tainted)); // NOT OK - but not flagged [INCONSISTENCY]
+    request('https://example.com/' + base + ('/' + tainted)); // NOT OK - but not flagged [INCONSISTENCY]
 
-    request(`http://example.com/?${base}/${tainted}`); // OK
+    request(`https://example.com/?${base}/${tainted}`); // OK
 
-    request(`http://example.com/${base}${tainted}`); // OK - assumed safe
+    request(`https://example.com/${base}${tainted}`); // OK - assumed safe
 
     request(`${base}${tainted}`); // OK - assumed safe
 })

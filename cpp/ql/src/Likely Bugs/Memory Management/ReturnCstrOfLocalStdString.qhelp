@@ -32,7 +32,7 @@ of the function.
 <example><sample src="ReturnCstrOfLocalStdStringGood.cpp" /></example>
 
 <references>
-<li>cplusplus.com: <a href="http://www.cplusplus.com/reference/string/string/c_str/">std::string::c_str</a></li>
+<li>cplusplus.com: <a href="https://www.cplusplus.com/reference/string/string/c_str/">std::string::c_str</a></li>
 <li>stackoverflow.com: <a href="https://stackoverflow.com/questions/6456359/what-is-stdstringc-str-lifetime/6456408">What
 is std::string::c_str() lifetime?</a></li>
 </references>

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,7 +19,7 @@
  *  W3C's event specification by IE in JScript. This file depends on
  *  w3c_event.js.
  *
- * @see http://msdn.microsoft.com/en-us/library/ms535863.aspx
+ * @see https://msdn.microsoft.com/en-us/library/ms535863.aspx
  * @externs
  */
 
@@ -34,7 +34,7 @@ Event.prototype.Banner;
 
 /**
  * A ClipboardData on IE, but a DataTransfer on WebKit.
- * @see http://msdn.microsoft.com/en-us/library/ms535220.aspx
+ * @see https://msdn.microsoft.com/en-us/library/ms535220.aspx
  * @type {(ClipboardData|undefined)}
  */
 Event.prototype.clipboardData;
@@ -118,7 +118,7 @@ Event.prototype.y;
 
 /**
  * @constructor
- * @see http://msdn.microsoft.com/en-us/library/windows/apps/hh441257.aspx
+ * @see https://msdn.microsoft.com/en-us/library/windows/apps/hh441257.aspx
  */
 function MSPointerPoint() {}
 
@@ -131,7 +131,7 @@ MSPointerPoint.prototype.pointerType;
 /**
  * @constructor
  * @extends {Event}
- * @see http://msdn.microsoft.com/en-us/library/windows/apps/hh441233.aspx
+ * @see https://msdn.microsoft.com/en-us/library/windows/apps/hh441233.aspx
  */
 function MSPointerEvent() {}
 
@@ -218,13 +218,13 @@ MSPointerEvent.prototype.msSetPointerCapture;
  * @param {number} hwTimestampArg
  * @param {boolean} isPrimary
  * @return {undefined}
- * @see http://msdn.microsoft.com/en-us/library/windows/apps/hh441246.aspx
+ * @see https://msdn.microsoft.com/en-us/library/windows/apps/hh441246.aspx
  */
 MSPointerEvent.prototype.initPointerEvent;
 
 /**
  * @constructor
- * @see http://msdn.microsoft.com/en-us/library/ie/hh968249(v=vs.85).aspx
+ * @see https://msdn.microsoft.com/en-us/library/ie/hh968249(v=vs.85).aspx
  */
 function MSGesture() {}
 
@@ -244,7 +244,7 @@ MSGesture.prototype.stop = function() {};
 /**
  * @constructor
  * @extends {Event}
- * @see http://msdn.microsoft.com/en-us/library/ie/hh772076(v=vs.85).aspx
+ * @see https://msdn.microsoft.com/en-us/library/ie/hh772076(v=vs.85).aspx
  */
 function MSGestureEvent() {}
 
@@ -305,6 +305,6 @@ MSGestureEvent.prototype.velocityY;
  * @param {number} hwTimestampArg
  * @param {EventTarget} relatedTargetArg
  * @return {undefined}
- * @see http://msdn.microsoft.com/en-us/library/windows/apps/hh441187.aspx
+ * @see https://msdn.microsoft.com/en-us/library/windows/apps/hh441187.aspx
  */
 MSGestureEvent.prototype.initGestureEvent;

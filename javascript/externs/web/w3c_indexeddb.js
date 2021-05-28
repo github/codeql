@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,7 +19,7 @@
  * IndexedDB classes are prefixed with 'webkit'. In order to access constants
  * and static methods of these classes they must be duplicated with the
  * prefix here.
- * @see http://www.w3.org/TR/IndexedDB/
+ * @see https://www.w3.org/TR/IndexedDB/
  *
  * @externs
  * @author guido.tapia@picnet.com.au (Guido Tapia)
@@ -42,7 +42,7 @@ Window.prototype.indexedDB;
 
 /**
  * @constructor
- * @see http://www.w3.org/TR/IndexedDB/#idl-def-IDBFactory
+ * @see https://www.w3.org/TR/IndexedDB/#idl-def-IDBFactory
  */
 function IDBFactory() {}
 
@@ -61,14 +61,14 @@ IDBFactory.prototype.deleteDatabase = function(name) {};
 
 /**
  * @constructor
- * @see http://www.w3.org/TR/IndexedDB/#idl-def-IDBDatabaseException
+ * @see https://www.w3.org/TR/IndexedDB/#idl-def-IDBDatabaseException
  */
 function IDBDatabaseException() {}
 
 /**
  * @constructor
  * @extends {IDBDatabaseException}
- * @see http://www.w3.org/TR/IndexedDB/#idl-def-IDBDatabaseException
+ * @see https://www.w3.org/TR/IndexedDB/#idl-def-IDBDatabaseException
  */
 function webkitIDBDatabaseException() {}
 
@@ -231,7 +231,7 @@ webkitIDBDatabaseException.prototype.message;
 /**
  * @constructor
  * @implements {EventTarget}
- * @see http://www.w3.org/TR/IndexedDB/#idl-def-IDBRequest
+ * @see https://www.w3.org/TR/IndexedDB/#idl-def-IDBRequest
  */
 function IDBRequest() {}
 
@@ -260,7 +260,7 @@ IDBRequest.prototype.dispatchEvent = function(evt) {};
 /**
  * @constructor
  * @extends {IDBRequest}
- * @see http://www.w3.org/TR/IndexedDB/#idl-def-IDBRequest
+ * @see https://www.w3.org/TR/IndexedDB/#idl-def-IDBRequest
  */
 function webkitIDBRequest() {}
 
@@ -325,7 +325,7 @@ IDBRequest.prototype.transaction; // readonly
 /**
  * @constructor
  * @extends {IDBRequest}
- * @see http://www.w3.org/TR/IndexedDB/#idl-def-IDBOpenDBRequest
+ * @see https://www.w3.org/TR/IndexedDB/#idl-def-IDBOpenDBRequest
  */
 function IDBOpenDBRequest() {}
 
@@ -342,7 +342,7 @@ IDBOpenDBRequest.prototype.onupgradeneeded = function(e) {};
 /**
  * @constructor
  * @implements {EventTarget}
- * @see http://www.w3.org/TR/IndexedDB/#idl-def-IDBDatabase
+ * @see https://www.w3.org/TR/IndexedDB/#idl-def-IDBDatabase
  */
 function IDBDatabase() {}
 
@@ -446,14 +446,14 @@ IDBDatabase.prototype.dispatchEvent = function(evt) {};
  * Typedef for valid key types according to the w3 specification. Note that this
  * is slightly wider than what is actually allowed, as all Array elements must
  * have a valid key type.
- * @see http://www.w3.org/TR/IndexedDB/#key-construct
+ * @see https://www.w3.org/TR/IndexedDB/#key-construct
  * @typedef {number|string|!Date|!Array<?>}
  */
 var IDBKeyType;
 
 /**
  * @constructor
- * @see http://www.w3.org/TR/IndexedDB/#idl-def-IDBObjectStore
+ * @see https://www.w3.org/TR/IndexedDB/#idl-def-IDBObjectStore
  */
 function IDBObjectStore() {}
 
@@ -540,13 +540,13 @@ IDBObjectStore.prototype.deleteIndex = function(indexName) {};
 /**
  * @param {(IDBKeyType|IDBKeyRange)=} key The key of this value.
  * @return {!IDBRequest} The IDBRequest object.
- * @see http://www.w3.org/TR/IndexedDB/#widl-IDBObjectStore-count
+ * @see https://www.w3.org/TR/IndexedDB/#widl-IDBObjectStore-count
  */
 IDBObjectStore.prototype.count = function(key) {};
 
 /**
  * @constructor
- * @see http://www.w3.org/TR/IndexedDB/#idl-def-IDBIndex
+ * @see https://www.w3.org/TR/IndexedDB/#idl-def-IDBIndex
  */
 function IDBIndex() {}
 
@@ -602,14 +602,14 @@ IDBIndex.prototype.getKey = function(key) {};
 
 /**
  * @constructor
- * @see http://www.w3.org/TR/IndexedDB/#idl-def-IDBCursor
+ * @see https://www.w3.org/TR/IndexedDB/#idl-def-IDBCursor
  */
 function IDBCursor() {}
 
 /**
  * @constructor
  * @extends {IDBCursor}
- * @see http://www.w3.org/TR/IndexedDB/#idl-def-IDBCursor
+ * @see https://www.w3.org/TR/IndexedDB/#idl-def-IDBCursor
  */
 function webkitIDBCursor() {}
 
@@ -714,7 +714,7 @@ IDBCursor.prototype.delete = function() {};
 /**
  * @constructor
  * @extends {IDBCursor}
- * @see http://www.w3.org/TR/IndexedDB/#idl-def-IDBCursorWithValue
+ * @see https://www.w3.org/TR/IndexedDB/#idl-def-IDBCursorWithValue
  */
 function IDBCursorWithValue() {}
 
@@ -723,14 +723,14 @@ IDBCursorWithValue.prototype.value; // readonly
 
 /**
  * @constructor
- * @see http://www.w3.org/TR/IndexedDB/#idl-def-IDBTransaction
+ * @see https://www.w3.org/TR/IndexedDB/#idl-def-IDBTransaction
  */
 function IDBTransaction() {}
 
 /**
  * @constructor
  * @extends {IDBTransaction}
- * @see http://www.w3.org/TR/IndexedDB/#idl-def-IDBTransaction
+ * @see https://www.w3.org/TR/IndexedDB/#idl-def-IDBTransaction
  */
 function webkitIDBTransaction() {}
 
@@ -811,14 +811,14 @@ IDBTransaction.prototype.onerror = function() {};
 
 /**
  * @constructor
- * @see http://www.w3.org/TR/IndexedDB/#idl-def-IDBKeyRange
+ * @see https://www.w3.org/TR/IndexedDB/#idl-def-IDBKeyRange
  */
 function IDBKeyRange() {}
 
 /**
  * @constructor
  * @extends {IDBKeyRange}
- * @see http://www.w3.org/TR/IndexedDB/#idl-def-IDBKeyRange
+ * @see https://www.w3.org/TR/IndexedDB/#idl-def-IDBKeyRange
  */
 function webkitIDBKeyRange() {}
 
@@ -907,7 +907,7 @@ webkitIDBKeyRange.bound = function(left, right, openLeft, openRight) {};
 /**
  * @constructor
  * @extends {Event}
- * @see http://www.w3.org/TR/IndexedDB/#idl-def-IDBVersionChangeEvent
+ * @see https://www.w3.org/TR/IndexedDB/#idl-def-IDBVersionChangeEvent
  */
 function IDBVersionChangeEvent() {}
 
@@ -926,7 +926,7 @@ IDBVersionChangeEvent.prototype.newVersion;
 /**
  * @constructor
  * @extends {IDBVersionChangeEvent}
- * @see http://www.w3.org/TR/IndexedDB/#idl-def-IDBVersionChangeEvent
+ * @see https://www.w3.org/TR/IndexedDB/#idl-def-IDBVersionChangeEvent
  */
 function webkitIDBVersionChangeEvent() {}
 

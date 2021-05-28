@@ -7,7 +7,7 @@ const httpLink = new createHttpLink({ uri: 'https://api.github.com/graphql' }) /
 const ApolloClient = require('apollo-client-preset').ApolloClient;
 const HttpLink = require('apollo-link-http').HttpLink;
 
-new HttpLink({ uri: 'http://localhost:8080/graphql' }); // url 2
+new HttpLink({ uri: 'https://localhost:8080/graphql' }); // url 2
 
 import ApolloClient from 'apollo-boost'; // / 'apollo-client'
  

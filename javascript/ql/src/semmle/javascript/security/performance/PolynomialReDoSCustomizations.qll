@@ -15,7 +15,7 @@ module PolynomialReDoS {
     /**
      * Gets the kind of source that is being accesed.
      *
-     * Is either a kind from `HTTP::RequestInputAccess::getKind()`, or "library".
+     * Is either a kind from `https::RequestInputAccess::getKind()`, or "library".
      */
     abstract string getKind();
 
@@ -48,9 +48,9 @@ module PolynomialReDoS {
    * regular expression denial-of-service vulnerabilities.
    */
   class RequestInputAccessAsSource extends Source {
-    RequestInputAccessAsSource() { this instanceof HTTP::RequestInputAccess }
+    RequestInputAccessAsSource() { this instanceof https::RequestInputAccess }
 
-    override string getKind() { result = this.(HTTP::RequestInputAccess).getKind() }
+    override string getKind() { result = this.(https::RequestInputAccess).getKind() }
   }
 
   /**

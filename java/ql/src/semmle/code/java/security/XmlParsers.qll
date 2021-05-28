@@ -158,10 +158,10 @@ private class ConstantStringExpr extends Expr {
  */
 Expr singleSafeConfig() {
   result.(ConstantStringExpr).getStringValue() =
-    "http://apache.org/xml/features/disallow-doctype-decl"
+    "https://apache.org/xml/features/disallow-doctype-decl"
   or
   result.(ConstantStringExpr).getStringValue() =
-    "http://javax.xml.XMLConstants/feature/secure-processing"
+    "https://javax.xml.XMLConstants/feature/secure-processing"
   or
   exists(Field f |
     result = f.getAnAccess() and
@@ -184,13 +184,13 @@ class SafeDocumentBuilderFactory extends VarAccess {
       exists(DocumentBuilderFactoryConfig config | config.getQualifier() = v.getAnAccess() |
         config
             .disables(any(ConstantStringExpr s |
-                s.getStringValue() = "http://xml.org/sax/features/external-general-entities"
+                s.getStringValue() = "https://xml.org/sax/features/external-general-entities"
               ))
       ) and
       exists(DocumentBuilderFactoryConfig config | config.getQualifier() = v.getAnAccess() |
         config
             .disables(any(ConstantStringExpr s |
-                s.getStringValue() = "http://xml.org/sax/features/external-parameter-entities"
+                s.getStringValue() = "https://xml.org/sax/features/external-parameter-entities"
               ))
       )
     )
@@ -428,7 +428,7 @@ class SafeSAXBuilder extends VarAccess {
       exists(SAXBuilderConfig config | config.getQualifier() = v.getAnAccess() |
         config
             .enables(any(ConstantStringExpr s |
-                s.getStringValue() = "http://apache.org/xml/features/disallow-doctype-decl"
+                s.getStringValue() = "https://apache.org/xml/features/disallow-doctype-decl"
               ))
       )
     )
@@ -494,20 +494,20 @@ class SafeSAXParserFactory extends VarAccess {
       exists(SAXParserFactoryConfig config | config.getQualifier() = v.getAnAccess() |
         config
             .disables(any(ConstantStringExpr s |
-                s.getStringValue() = "http://xml.org/sax/features/external-general-entities"
+                s.getStringValue() = "https://xml.org/sax/features/external-general-entities"
               ))
       ) and
       exists(SAXParserFactoryConfig config | config.getQualifier() = v.getAnAccess() |
         config
             .disables(any(ConstantStringExpr s |
-                s.getStringValue() = "http://xml.org/sax/features/external-parameter-entities"
+                s.getStringValue() = "https://xml.org/sax/features/external-parameter-entities"
               ))
       ) and
       exists(SAXParserFactoryConfig config | config.getQualifier() = v.getAnAccess() |
         config
             .disables(any(ConstantStringExpr s |
                 s.getStringValue() =
-                  "http://apache.org/xml/features/nonvalidating/load-external-dtd"
+                  "https://apache.org/xml/features/nonvalidating/load-external-dtd"
               ))
       )
     )
@@ -615,19 +615,19 @@ class SafeSAXReader extends VarAccess {
       exists(SAXReaderConfig config | config.getQualifier() = v.getAnAccess() |
         config
             .disables(any(ConstantStringExpr s |
-                s.getStringValue() = "http://xml.org/sax/features/external-general-entities"
+                s.getStringValue() = "https://xml.org/sax/features/external-general-entities"
               ))
       ) and
       exists(SAXReaderConfig config | config.getQualifier() = v.getAnAccess() |
         config
             .disables(any(ConstantStringExpr s |
-                s.getStringValue() = "http://xml.org/sax/features/external-parameter-entities"
+                s.getStringValue() = "https://xml.org/sax/features/external-parameter-entities"
               ))
       ) and
       exists(SAXReaderConfig config | config.getQualifier() = v.getAnAccess() |
         config
             .enables(any(ConstantStringExpr s |
-                s.getStringValue() = "http://apache.org/xml/features/disallow-doctype-decl"
+                s.getStringValue() = "https://apache.org/xml/features/disallow-doctype-decl"
               ))
       )
     )
@@ -696,27 +696,27 @@ class ExplicitlySafeXMLReader extends VarAccess {
       exists(XMLReaderConfig config | config.getQualifier() = v.getAnAccess() |
         config
             .disables(any(ConstantStringExpr s |
-                s.getStringValue() = "http://xml.org/sax/features/external-general-entities"
+                s.getStringValue() = "https://xml.org/sax/features/external-general-entities"
               ))
       ) and
       exists(XMLReaderConfig config | config.getQualifier() = v.getAnAccess() |
         config
             .disables(any(ConstantStringExpr s |
-                s.getStringValue() = "http://xml.org/sax/features/external-parameter-entities"
+                s.getStringValue() = "https://xml.org/sax/features/external-parameter-entities"
               ))
       ) and
       exists(XMLReaderConfig config | config.getQualifier() = v.getAnAccess() |
         config
             .disables(any(ConstantStringExpr s |
                 s.getStringValue() =
-                  "http://apache.org/xml/features/nonvalidating/load-external-dtd"
+                  "https://apache.org/xml/features/nonvalidating/load-external-dtd"
               ))
       )
       or
       exists(XMLReaderConfig config | config.getQualifier() = v.getAnAccess() |
         config
             .enables(any(ConstantStringExpr s |
-                s.getStringValue() = "http://apache.org/xml/features/disallow-doctype-decl"
+                s.getStringValue() = "https://apache.org/xml/features/disallow-doctype-decl"
               ))
       )
     )
@@ -843,7 +843,7 @@ class XmlConstants extends RefType {
 /** A configuration specific for transformers and schema. */
 Expr configAccessExternalDTD() {
   result.(ConstantStringExpr).getStringValue() =
-    "http://javax.xml.XMLConstants/property/accessExternalDTD"
+    "https://javax.xml.XMLConstants/property/accessExternalDTD"
   or
   exists(Field f |
     result = f.getAnAccess() and
@@ -855,7 +855,7 @@ Expr configAccessExternalDTD() {
 /** A configuration specific for transformers. */
 Expr configAccessExternalStyleSheet() {
   result.(ConstantStringExpr).getStringValue() =
-    "http://javax.xml.XMLConstants/property/accessExternalStylesheet"
+    "https://javax.xml.XMLConstants/property/accessExternalStylesheet"
   or
   exists(Field f |
     result = f.getAnAccess() and
@@ -867,7 +867,7 @@ Expr configAccessExternalStyleSheet() {
 /** A configuration specific for schema. */
 Expr configAccessExternalSchema() {
   result.(ConstantStringExpr).getStringValue() =
-    "http://javax.xml.XMLConstants/property/accessExternalSchema"
+    "https://javax.xml.XMLConstants/property/accessExternalSchema"
   or
   exists(Field f |
     result = f.getAnAccess() and
@@ -1119,7 +1119,7 @@ class XPathEvaluate extends XmlParserCall {
   override predicate isSafe() { none() }
 }
 
-// Sink methods in simplexml http://simple.sourceforge.net/home.php
+// Sink methods in simplexml https://simple.sourceforge.net/home.php
 /** A call to `read` or `validate` in `Persister`. */
 class SimpleXMLPersisterCall extends XmlParserCall {
   SimpleXMLPersisterCall() {
@@ -1186,7 +1186,7 @@ class SimpleXMLFormatterCall extends XmlParserCall {
 /** A configuration for secure processing. */
 Expr configSecureProcessing() {
   result.(ConstantStringExpr).getStringValue() =
-    "http://javax.xml.XMLConstants/feature/secure-processing"
+    "https://javax.xml.XMLConstants/feature/secure-processing"
   or
   exists(Field f |
     result = f.getAnAccess() and

@@ -1,21 +1,21 @@
 
-var app1 = new (require('koa'))(); // HTTP::Server
+var app1 = new (require('koa'))(); // https::Server
 
 var Koa = require('koa');
-var app2 = new Koa(); // HTTP::Server
+var app2 = new Koa(); // https::Server
 
-function handler1() {} // HTTP::RouteHandler
+function handler1() {} // https::RouteHandler
 app2.use(handler1);
 
-app2.use(function handler2(ctx){ // HTTP::RouteHandler
-  this.set('HEADER1', ''); // HTTP::HeaderDefinition
-  this.response.header('HEADER2', '') // HTTP::HeaderDefinition
-  ctx.set('HEADER3', ''); // HTTP::HeaderDefinition
-  ctx.response.header('HEADER4', '') // HTTP::HeaderDefinition
+app2.use(function handler2(ctx){ // https::RouteHandler
+  this.set('HEADER1', ''); // https::HeaderDefinition
+  this.response.header('HEADER2', '') // https::HeaderDefinition
+  ctx.set('HEADER3', ''); // https::HeaderDefinition
+  ctx.response.header('HEADER4', '') // https::HeaderDefinition
   var rsp = ctx.response;
-  rsp.header('HEADER5', '') // HTTP::HeaderDefinition
+  rsp.header('HEADER5', '') // https::HeaderDefinition
 
-  ctx.response.body = x // HTTP::ResponseSendArgument
+  ctx.response.body = x // https::ResponseSendArgument
   ctx.request.body;
   ctx.request.query.foo;
   ctx.request.url;

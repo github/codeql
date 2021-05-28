@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,7 +23,7 @@
  * expecting. For example:
  *    <code>var elt = /** @type {Element} * / (foo.get(0));</code>
  *
- * @see http://api.jquery.com/
+ * @see https://api.jquery.com/
  * @externs
  */
 
@@ -498,7 +498,7 @@ jQuery.prototype.dblclick = function(arg1, handler) {};
  * @constructor
  * @implements {jQuery.Promise}
  * @param {function()=} opt_fn
- * @see http://api.jquery.com/category/deferred-object/
+ * @see https://api.jquery.com/category/deferred-object/
  */
 jQuery.deferred = function(opt_fn) {};
 
@@ -898,7 +898,7 @@ jQuery.prototype.fadeToggle = function(duration, easing, callback) {};
 /**
  * @param {(jQuerySelector|function(number,Element))} arg1
  * @return {!jQuery}
- * @see http://api.jquery.com/filter/
+ * @see https://api.jquery.com/filter/
  */
 jQuery.prototype.filter = function(arg1) {};
 
@@ -915,7 +915,7 @@ jQuery.prototype.find = function(arg1) {};
  */
 jQuery.prototype.first = function() {};
 
-/** @see http://docs.jquery.com/Plugins/Authoring */
+/** @see https://docs.jquery.com/Plugins/Authoring */
 jQuery.fn = jQuery.prototype;
 
 /**
@@ -971,7 +971,7 @@ jQuery.prototype.get = function(index) {};
  *     function(Object<string,*>,string,jQuery.jqXHR))=} data
  * @param {function(Object<string,*>,string,jQuery.jqXHR)=} success
  * @return {!jQuery.jqXHR}
- * @see http://api.jquery.com/jquery.getjson/#jQuery-getJSON-url-data-success
+ * @see https://api.jquery.com/jquery.getjson/#jQuery-getJSON-url-data-success
  */
 jQuery.getJSON = function(url, data, success) {};
 
@@ -1160,7 +1160,7 @@ jQuery.prototype.jquery;
  * @extends {XMLHttpRequest}
  * @implements {jQuery.Promise}
  * @private
- * @see http://api.jquery.com/jQuery.ajax/#jqXHR
+ * @see https://api.jquery.com/jQuery.ajax/#jqXHR
  */
 jQuery.jqXHR = function () {};
 
@@ -1575,7 +1575,7 @@ jQuery.prototype.promise = function(type, target) {};
 /**
  * @interface
  * @private
- * @see http://api.jquery.com/Types/#Promise
+ * @see https://api.jquery.com/Types/#Promise
  */
 jQuery.Promise = function () {};
 

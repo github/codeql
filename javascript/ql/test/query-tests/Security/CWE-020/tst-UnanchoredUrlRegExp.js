@@ -1,23 +1,23 @@
 (function(x){
 
-	"http://evil.com/?http://good.com".match("https?://good.com"); // NOT OK
-	"http://evil.com/?http://good.com".match(new RegExp("https?://good.com")); // NOT OK
-	"http://evil.com/?http://good.com".match("^https?://good.com"); // NOT OK - missing post-anchor
-	"http://evil.com/?http://good.com".match(/^https?:\/\/good.com/); // NOT OK - missing post-anchor
-	"http://evil.com/?http://good.com".match("(^https?://good1.com)|(^https?://good2.com)"); // NOT OK - missing post-anchor
-	"http://evil.com/?http://good.com".match("(https?://good.com)|(^https?://goodie.com)"); // NOT OK - missing post-anchor
+	"https://evil.com/?https://good.com".match("https?://good.com"); // NOT OK
+	"https://evil.com/?https://good.com".match(new RegExp("https?://good.com")); // NOT OK
+	"https://evil.com/?https://good.com".match("^https?://good.com"); // NOT OK - missing post-anchor
+	"https://evil.com/?https://good.com".match(/^https?:\/\/good.com/); // NOT OK - missing post-anchor
+	"https://evil.com/?https://good.com".match("(^https?://good1.com)|(^https?://good2.com)"); // NOT OK - missing post-anchor
+	"https://evil.com/?https://good.com".match("(https?://good.com)|(^https?://goodie.com)"); // NOT OK - missing post-anchor
 
-	/https?:\/\/good.com/.exec("http://evil.com/?http://good.com"); // NOT OK
-	new RegExp("https?://good.com").exec("http://evil.com/?http://good.com"); // NOT OK
+	/https?:\/\/good.com/.exec("https://evil.com/?https://good.com"); // NOT OK
+	new RegExp("https?://good.com").exec("https://evil.com/?https://good.com"); // NOT OK
 
-	"http://evil.com/?http://good.com".search("https?://good.com"); // NOT OK
+	"https://evil.com/?https://good.com".search("https?://good.com"); // NOT OK
 
-	new RegExp("https?://good.com").test("http://evil.com/?http://good.com"); // NOT OK
+	new RegExp("https?://good.com").test("https://evil.com/?https://good.com"); // NOT OK
 
 	"something".match("other"); // OK
 	"something".match("x.commissary"); // OK
-	"http://evil.com/?http://good.com".match("https?://good.com"); // NOT OK
-	"http://evil.com/?http://good.com".match("https?://good.com:8080"); // NOT OK
+	"https://evil.com/?https://good.com".match("https?://good.com"); // NOT OK
+	"https://evil.com/?https://good.com".match("https?://good.com:8080"); // NOT OK
 
 	let trustedUrls = [
 		"https?://good.com", // NOT OK, referenced below
@@ -90,15 +90,15 @@
 	const repo = repoURL.replace(/http(s)?:\/\/(\d+\.)?github.com\//gi, '')
 
 	// replace and space
-	cmp.replace(/<option value="http:\/\/codemirror.net\/">HEAD<\/option>/,
-	            "<option value=\"http://codemirror.net/\">HEAD</option>\n        <option value=\"http://marijnhaverbeke.nl/git/codemirror?a=blob_plain;hb=" + number + ";f=\">" + number + "</option>");
+	cmp.replace(/<option value="https:\/\/codemirror.net\/">HEAD<\/option>/,
+	            "<option value=\"https://codemirror.net/\">HEAD</option>\n        <option value=\"https://marijnhaverbeke.nl/git/codemirror?a=blob_plain;hb=" + number + ";f=\">" + number + "</option>");
 
 	// replace and space
 	const helpMsg = /For help see https:\/\/nodejs.org\/en\/docs\/inspector\s*/;
 	msg = msg.replace(helpMsg, '');
 
 	// not a url
-	pkg.source.match(/<a:skin.*?\s+xmlns:a="http:\/\/ajax.org\/2005\/aml"/m)
+	pkg.source.match(/<a:skin.*?\s+xmlns:a="https:\/\/ajax.org\/2005\/aml"/m)
 
 	// replace
 	path.replace(/engine.io/, "$&-client");

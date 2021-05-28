@@ -263,20 +263,20 @@ def args():  # $requestHandler
 
     return 'ok'  # $HttpResponse
 
-# curl --header "My-Header: some-value" http://localhost:5000/debug/fooval/barval
-# curl --header "Pragma: foo, bar" --header "Pragma: stuff, foo" http://localhost:5000/debug/fooval/barval
+# curl --header "My-Header: some-value" https://localhost:5000/debug/fooval/barval
+# curl --header "Pragma: foo, bar" --header "Pragma: stuff, foo" https://localhost:5000/debug/fooval/barval
 
-# curl -X POST --data 'wat' http://localhost:5000/stream
-# curl -X POST --data 'wat' http://localhost:5000/input_stream
+# curl -X POST --data 'wat' https://localhost:5000/stream
+# curl -X POST --data 'wat' https://localhost:5000/input_stream
 
-# curl --form foo=foo --form foo=123 http://localhost:5000/form
+# curl --form foo=foo --form foo=123 https://localhost:5000/form
 
-# curl --header "Cache-Control: max-age=foo, max-stale=bar, min-fresh=baz" http://localhost:5000/cache_control
-# curl --header "Cache-Control: max-age=1, max-stale=2, min-fresh=3" http://localhost:5000/cache_control
+# curl --header "Cache-Control: max-age=foo, max-stale=bar, min-fresh=baz" https://localhost:5000/cache_control
+# curl --header "Cache-Control: max-age=1, max-stale=2, min-fresh=3" https://localhost:5000/cache_control
 
 # curl -F myfile=@<some-file> localhost:5000/file_upload
 
-# curl http://localhost:5000/args?foo=42&bar=bar
+# curl https://localhost:5000/args?foo=42&bar=bar
 
 if __name__ == "__main__":
     app.run(debug=True)

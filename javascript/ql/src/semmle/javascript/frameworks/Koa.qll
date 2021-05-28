@@ -9,7 +9,7 @@ module Koa {
   /**
    * An expression that creates a new Koa application.
    */
-  class AppDefinition extends HTTP::Servers::StandardServerDefinition, InvokeExpr {
+  class AppDefinition extends https::Servers::StandardServerDefinition, InvokeExpr {
     AppDefinition() {
       // `app = new Koa()` / `app = Koa()`
       this = DataFlow::moduleImport("koa").getAnInvocation().asExpr()
@@ -19,7 +19,7 @@ module Koa {
   /**
    * An HTTP header defined in a Koa application.
    */
-  private class HeaderDefinition extends HTTP::Servers::StandardHeaderDefinition {
+  private class HeaderDefinition extends https::Servers::StandardHeaderDefinition {
     RouteHandler rh;
 
     HeaderDefinition() {
@@ -36,7 +36,7 @@ module Koa {
   /**
    * A Koa route handler.
    */
-  abstract class RouteHandler extends HTTP::Servers::StandardRouteHandler, DataFlow::SourceNode {
+  abstract class RouteHandler extends https::Servers::StandardRouteHandler, DataFlow::SourceNode {
     /**
      * Gets the parameter of the route handler that contains the context object.
      */
@@ -197,7 +197,7 @@ module Koa {
    * A Koa request source, that is, an access to the `request` property
    * of a context object.
    */
-  private class RequestSource extends HTTP::Servers::RequestSource {
+  private class RequestSource extends https::Servers::RequestSource {
     ContextExpr ctx;
 
     RequestSource() { asExpr().(PropAccess).accesses(ctx, "request") }
@@ -212,7 +212,7 @@ module Koa {
    * A Koa request source, accessed through the a request property of a
    * generator route handler (deprecated in Koa 3).
    */
-  private class GeneratorRequestSource extends HTTP::Servers::RequestSource {
+  private class GeneratorRequestSource extends https::Servers::RequestSource {
     RouteHandler rh;
 
     GeneratorRequestSource() {
@@ -232,7 +232,7 @@ module Koa {
    * A Koa response source, that is, an access to the `response` property
    * of a context object.
    */
-  private class ResponseSource extends HTTP::Servers::ResponseSource {
+  private class ResponseSource extends https::Servers::ResponseSource {
     ContextExpr ctx;
 
     ResponseSource() { asExpr().(PropAccess).accesses(ctx, "response") }
@@ -260,21 +260,21 @@ module Koa {
   /**
    * An expression that may hold a Koa request object.
    */
-  class RequestExpr extends HTTP::Servers::StandardRequestExpr {
+  class RequestExpr extends https::Servers::StandardRequestExpr {
     override RequestSource src;
   }
 
   /**
    * An expression that may hold a Koa response object.
    */
-  class ResponseExpr extends HTTP::Servers::StandardResponseExpr {
+  class ResponseExpr extends https::Servers::StandardResponseExpr {
     override ResponseSource src;
   }
 
   /**
    * An access to a user-controlled Koa request input.
    */
-  private class RequestInputAccess extends HTTP::RequestInputAccess {
+  private class RequestInputAccess extends https::RequestInputAccess {
     RouteHandler rh;
     string kind;
 
@@ -340,7 +340,7 @@ module Koa {
   /**
    * An access to an HTTP header on a Koa request.
    */
-  private class RequestHeaderAccess extends HTTP::RequestHeaderAccess {
+  private class RequestHeaderAccess extends https::RequestHeaderAccess {
     RouteHandler rh;
 
     RequestHeaderAccess() {
@@ -376,7 +376,7 @@ module Koa {
   /**
    * A call to a Koa method that sets up a route.
    */
-  class RouteSetup extends HTTP::Servers::StandardRouteSetup, MethodCallExpr {
+  class RouteSetup extends https::Servers::StandardRouteSetup, MethodCallExpr {
     AppDefinition server;
 
     RouteSetup() {
@@ -399,7 +399,7 @@ module Koa {
   /**
    * A value assigned to the body of an HTTP response object.
    */
-  private class ResponseSendArgument extends HTTP::ResponseSendArgument {
+  private class ResponseSendArgument extends https::ResponseSendArgument {
     RouteHandler rh;
 
     ResponseSendArgument() {
@@ -415,7 +415,7 @@ module Koa {
   /**
    * An invocation of the `redirect` method of an HTTP response object.
    */
-  private class RedirectInvocation extends HTTP::RedirectInvocation, MethodCallExpr {
+  private class RedirectInvocation extends https::RedirectInvocation, MethodCallExpr {
     RouteHandler rh;
 
     RedirectInvocation() { this.(MethodCallExpr).calls(rh.getAResponseOrContextExpr(), "redirect") }

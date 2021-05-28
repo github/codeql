@@ -11,7 +11,7 @@ nodes
 | tst.js:1:1:1:32 | [DeclStmt] var href = ... | semmle.order | 1 |
 | tst.js:1:5:1:8 | [VarDecl] href | semmle.label | [VarDecl] href |
 | tst.js:1:5:1:31 | [VariableDeclarator] href = ... le.com" | semmle.label | [VariableDeclarator] href = ... le.com" |
-| tst.js:1:12:1:31 | [Literal] "http://example.com" | semmle.label | [Literal] "http://example.com" |
+| tst.js:1:12:1:31 | [Literal] "https://example.com" | semmle.label | [Literal] "https://example.com" |
 | tst.js:2:1:2:47 | [DeclStmt] var linkTypes = ... | semmle.label | [DeclStmt] var linkTypes = ... |
 | tst.js:2:1:2:47 | [DeclStmt] var linkTypes = ... | semmle.order | 2 |
 | tst.js:2:5:2:13 | [VarDecl] linkTypes | semmle.label | [VarDecl] linkTypes |
@@ -67,7 +67,7 @@ nodes
 | tstest.tsx:1:1:1:32 | [DeclStmt] var href = ... | semmle.order | 8 |
 | tstest.tsx:1:5:1:8 | [VarDecl] href | semmle.label | [VarDecl] href |
 | tstest.tsx:1:5:1:31 | [VariableDeclarator] href = ... le.com" | semmle.label | [VariableDeclarator] href = ... le.com" |
-| tstest.tsx:1:12:1:31 | [Literal] "http://example.com" | semmle.label | [Literal] "http://example.com" |
+| tstest.tsx:1:12:1:31 | [Literal] "https://example.com" | semmle.label | [Literal] "https://example.com" |
 | tstest.tsx:2:1:2:47 | [DeclStmt] var linkTypes = ... | semmle.label | [DeclStmt] var linkTypes = ... |
 | tstest.tsx:2:1:2:47 | [DeclStmt] var linkTypes = ... | semmle.order | 9 |
 | tstest.tsx:2:5:2:13 | [VarDecl] linkTypes | semmle.label | [VarDecl] linkTypes |
@@ -168,8 +168,8 @@ edges
 | tst.js:1:1:1:32 | [DeclStmt] var href = ... | tst.js:1:5:1:31 | [VariableDeclarator] href = ... le.com" | semmle.order | 1 |
 | tst.js:1:5:1:31 | [VariableDeclarator] href = ... le.com" | tst.js:1:5:1:8 | [VarDecl] href | semmle.label | 1 |
 | tst.js:1:5:1:31 | [VariableDeclarator] href = ... le.com" | tst.js:1:5:1:8 | [VarDecl] href | semmle.order | 1 |
-| tst.js:1:5:1:31 | [VariableDeclarator] href = ... le.com" | tst.js:1:12:1:31 | [Literal] "http://example.com" | semmle.label | 2 |
-| tst.js:1:5:1:31 | [VariableDeclarator] href = ... le.com" | tst.js:1:12:1:31 | [Literal] "http://example.com" | semmle.order | 2 |
+| tst.js:1:5:1:31 | [VariableDeclarator] href = ... le.com" | tst.js:1:12:1:31 | [Literal] "https://example.com" | semmle.label | 2 |
+| tst.js:1:5:1:31 | [VariableDeclarator] href = ... le.com" | tst.js:1:12:1:31 | [Literal] "https://example.com" | semmle.order | 2 |
 | tst.js:2:1:2:47 | [DeclStmt] var linkTypes = ... | tst.js:2:5:2:46 | [VariableDeclarator] linkTyp ... rrer" } | semmle.label | 1 |
 | tst.js:2:1:2:47 | [DeclStmt] var linkTypes = ... | tst.js:2:5:2:46 | [VariableDeclarator] linkTyp ... rrer" } | semmle.order | 1 |
 | tst.js:2:5:2:46 | [VariableDeclarator] linkTyp ... rrer" } | tst.js:2:5:2:13 | [VarDecl] linkTypes | semmle.label | 1 |
@@ -238,8 +238,8 @@ edges
 | tstest.tsx:1:1:1:32 | [DeclStmt] var href = ... | tstest.tsx:1:5:1:31 | [VariableDeclarator] href = ... le.com" | semmle.order | 1 |
 | tstest.tsx:1:5:1:31 | [VariableDeclarator] href = ... le.com" | tstest.tsx:1:5:1:8 | [VarDecl] href | semmle.label | 1 |
 | tstest.tsx:1:5:1:31 | [VariableDeclarator] href = ... le.com" | tstest.tsx:1:5:1:8 | [VarDecl] href | semmle.order | 1 |
-| tstest.tsx:1:5:1:31 | [VariableDeclarator] href = ... le.com" | tstest.tsx:1:12:1:31 | [Literal] "http://example.com" | semmle.label | 2 |
-| tstest.tsx:1:5:1:31 | [VariableDeclarator] href = ... le.com" | tstest.tsx:1:12:1:31 | [Literal] "http://example.com" | semmle.order | 2 |
+| tstest.tsx:1:5:1:31 | [VariableDeclarator] href = ... le.com" | tstest.tsx:1:12:1:31 | [Literal] "https://example.com" | semmle.label | 2 |
+| tstest.tsx:1:5:1:31 | [VariableDeclarator] href = ... le.com" | tstest.tsx:1:12:1:31 | [Literal] "https://example.com" | semmle.order | 2 |
 | tstest.tsx:2:1:2:47 | [DeclStmt] var linkTypes = ... | tstest.tsx:2:5:2:46 | [VariableDeclarator] linkTyp ... rrer" } | semmle.label | 1 |
 | tstest.tsx:2:1:2:47 | [DeclStmt] var linkTypes = ... | tstest.tsx:2:5:2:46 | [VariableDeclarator] linkTyp ... rrer" } | semmle.order | 1 |
 | tstest.tsx:2:5:2:46 | [VariableDeclarator] linkTyp ... rrer" } | tstest.tsx:2:5:2:13 | [VarDecl] linkTypes | semmle.label | 1 |

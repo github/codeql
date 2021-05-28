@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,7 +17,7 @@
 /**
  * @fileoverview Definitions for W3C's Selectors API.
  *  This file depends on w3c_dom1.js.
- *  @see http://www.w3.org/TR/selectors-api2/
+ *  @see https://www.w3.org/TR/selectors-api2/
  *
  * @externs
  */
@@ -89,7 +89,7 @@ Element.prototype.matchesSelector = function(selectors, refNodes) {};
 Element.prototype.mozMatchesSelector = function(selectors) {};
 
 /**
- * @see http://developer.apple.com/library/safari/documentation/WebKit/Reference/ElementClassRef/Element/Element.html
+ * @see https://developer.apple.com/library/safari/documentation/WebKit/Reference/ElementClassRef/Element/Element.html
  * @param {string} selectors
  * @return {boolean}
  * @nosideeffects
@@ -97,7 +97,7 @@ Element.prototype.mozMatchesSelector = function(selectors) {};
 Element.prototype.webkitMatchesSelector = function(selectors) {};
 
 /**
- * @see http://msdn.microsoft.com/en-us/library/ff975201.aspx
+ * @see https://msdn.microsoft.com/en-us/library/ff975201.aspx
  * @param {string} selectors
  * @return {boolean}
  * @nosideeffects
@@ -105,7 +105,7 @@ Element.prototype.webkitMatchesSelector = function(selectors) {};
 Element.prototype.msMatchesSelector = function(selectors) {};
 
 /**
- * @see http://www.opera.com/docs/changelogs/windows/1150/
+ * @see https://www.opera.com/docs/changelogs/windows/1150/
  * @param {string} selectors
  * @return {boolean}
  * @nosideeffects

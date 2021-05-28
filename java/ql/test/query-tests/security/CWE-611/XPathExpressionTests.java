@@ -12,7 +12,7 @@ public class XPathExpressionTests {
 
   public void safeXPathExpression(Socket sock) throws Exception {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-      factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+      factory.setFeature("https://apache.org/xml/features/disallow-doctype-decl", true);
       DocumentBuilder builder = factory.newDocumentBuilder();
       XPathFactory xFactory = XPathFactory.newInstance();
       XPath path = xFactory.newXPath();

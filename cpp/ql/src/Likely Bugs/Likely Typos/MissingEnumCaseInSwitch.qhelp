@@ -20,7 +20,7 @@ indication that there may be cases unhandled by the <code>switch</code> statemen
 <references>
 
 <li>
-  Tutorialspoint - The C++ Programming Language: <a href="http://www.tutorialspoint.com/cplusplus/cpp_switch_statement.htm">C++ switch statement</a>
+  Tutorialspoint - The C++ Programming Language: <a href="https://www.tutorialspoint.com/cplusplus/cpp_switch_statement.htm">C++ switch statement</a>
 </li>
 <li>
   MSDN Library: <a href="https://docs.microsoft.com/en-us/cpp/cpp/switch-statement-cpp">switch statement (C++)</a>

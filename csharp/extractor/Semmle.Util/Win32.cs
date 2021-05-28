@@ -35,7 +35,7 @@ namespace Semmle.Util
         {
             switch ((int)Environment.OSVersion.Platform)
             {
-                // See: http://www.mono-project.com/docs/faq/technical/#how-to-detect-the-execution-platform
+                // See: https://www.mono-project.com/docs/faq/technical/#how-to-detect-the-execution-platform
 
                 case 4:
                 case 6:

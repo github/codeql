@@ -1,5 +1,5 @@
 // Semmle test cases for UnterminatedVarargsCall.ql
-// Associated with CWE-121 http://cwe.mitre.org/data/definitions/121.html
+// Associated with CWE-121 https://cwe.mitre.org/data/definitions/121.html
 
 void f1(char *format, ...)
 {

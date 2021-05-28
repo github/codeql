@@ -1,5 +1,5 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/client/methods/HttpEntityEnclosingRequestBase.java $
+ * $HeadURL: https://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/client/methods/HttpEntityEnclosingRequestBase.java $
  * $Revision: 674186 $
  * $Date: 2008-07-05 05:18:54 -0700 (Sat, 05 Jul 2008) $
  *
@@ -12,7 +12,7 @@
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *   https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
@@ -25,7 +25,7 @@
  * This software consists of voluntary contributions made by many
  * individuals on behalf of the Apache Software Foundation.  For more
  * information on the Apache Software Foundation, please see
- * <http://www.apache.org/>.
+ * <https://www.apache.org/>.
  *
  */
 package org.apache.http.client.methods;
@@ -45,7 +45,7 @@ import org.apache.http.HttpEntityEnclosingRequest;
  *
  * @deprecated Please use {@link java.net.URL#openConnection} instead. Please
  *             visit <a href=
- *             "http://android-developers.blogspot.com/2011/09/androids-http-clients.html">this
+ *             "https://android-developers.blogspot.com/2011/09/androids-http-clients.html">this
  *             webpage</a> for further details.
  */
 @Deprecated

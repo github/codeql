@@ -496,7 +496,7 @@ private module AsyncReturnSteps {
 }
 
 /**
- * Provides classes for working with the `bluebird` library (http://bluebirdjs.com).
+ * Provides classes for working with the `bluebird` library (https://bluebirdjs.com).
  */
 module Bluebird {
   private DataFlow::SourceNode bluebird() {

@@ -1,5 +1,5 @@
 // Test case for CWE-807 (Reliance on Untrusted Inputs in a Security Decision)
-// http://cwe.mitre.org/data/definitions/807.html
+// https://cwe.mitre.org/data/definitions/807.html
 package test.cwe807.semmle.tests;
 
 

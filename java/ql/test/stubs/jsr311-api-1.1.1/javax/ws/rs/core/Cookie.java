@@ -8,7 +8,7 @@
  * and Distribution License("CDDL") (collectively, the "License").  You
  * may not use this file except in compliance with the License.  You can
  * obtain a copy of the License at
- * http://glassfish.java.net/public/CDDL+GPL_1_1.html
+ * https://glassfish.java.net/public/CDDL+GPL_1_1.html
  * or packager/legal/LICENSE.txt.  See the License for the specific
  * language governing permissions and limitations under the License.
  *
@@ -47,7 +47,7 @@ package javax.ws.rs.core;
  *
  * @author Paul Sandoz
  * @author Marc Hadley
- * @see <a href="http://www.ietf.org/rfc/rfc2109.txt">IETF RFC 2109</a>
+ * @see <a href="https://www.ietf.org/rfc/rfc2109.txt">IETF RFC 2109</a>
  * @since 1.0
  */
 public class Cookie {

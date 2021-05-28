@@ -1,5 +1,5 @@
 /* Semmle test case for UnsafeUseOfStrcat.ql
-   Associated with CWE-120  http://cwe.mitre.org/data/definitions/120.html
+   Associated with CWE-120  https://cwe.mitre.org/data/definitions/120.html
    Each query is expected to find exactly the lines marked BAD in the section corresponding to it.
 */
 

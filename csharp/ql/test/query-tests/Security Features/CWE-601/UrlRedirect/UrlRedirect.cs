@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 public class UrlRedirectHandler : IHttpHandler
 {
-    private const String VALID_REDIRECT = "http://cwe.mitre.org/data/definitions/601.html";
+    private const String VALID_REDIRECT = "https://cwe.mitre.org/data/definitions/601.html";
 
     public void ProcessRequest(HttpContext ctx)
     {

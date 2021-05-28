@@ -311,7 +311,7 @@ class Class extends UserType {
    * Holds if the compiler would be unable to generate a copy constructor for
    * this class, struct or union. This predicate implements the rules listed
    * here:
-   * http://en.cppreference.com/w/cpp/language/copy_constructor#Deleted_implicitly-declared_copy_constructor
+   * https://en.cppreference.com/w/cpp/language/copy_constructor#Deleted_implicitly-declared_copy_constructor
    */
   predicate implicitCopyConstructorDeleted() {
     // - T has non-static data members that cannot be copied (have deleted,
@@ -355,7 +355,7 @@ class Class extends UserType {
    * Holds if the compiler would be unable to generate a copy assignment
    * operator for this class, struct or union. This predicate implements the
    * rules listed here:
-   * http://en.cppreference.com/w/cpp/language/copy_assignment#Deleted_implicitly-declared_copy_assignment_operator
+   * https://en.cppreference.com/w/cpp/language/copy_assignment#Deleted_implicitly-declared_copy_assignment_operator
    */
   predicate implicitCopyAssignmentOperatorDeleted() {
     // - T has a user-declared move constructor;
@@ -677,7 +677,7 @@ class Class extends UserType {
     // To implement this properly, there should be a predicate about whether
     // the implicit destructor is deleted, similar to
     // `implicitCopyConstructorDeleted`. See
-    // http://en.cppreference.com/w/cpp/language/destructor#Deleted_implicitly-declared_destructor
+    // https://en.cppreference.com/w/cpp/language/destructor#Deleted_implicitly-declared_destructor
   }
 
   private predicate cannotAccessCopyConstructorOnThis(Class c) {

@@ -7,7 +7,7 @@ import org.springframework.web.servlet.view.RedirectView;
 @Controller
 public class SpringUrlRedirect {
 
-    private final static String VALID_REDIRECT = "http://127.0.0.1";
+    private final static String VALID_REDIRECT = "https://127.0.0.1";
 
     @GetMapping("url1")
     public RedirectView bad1(String redirectUrl, HttpServletResponse response) throws Exception {

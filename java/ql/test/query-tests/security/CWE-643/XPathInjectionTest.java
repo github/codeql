@@ -151,7 +151,7 @@ public class XPathInjectionTest {
         proxyDocFactory.createXPath("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
         proxyDocFactory.createXPathFilter("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
 
-        Namespace namespace = new Namespace("prefix", "http://some.uri.io");
+        Namespace namespace = new Namespace("prefix", "https://some.uri.io");
         namespace.createPattern("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
         namespace.createXPathFilter("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
 

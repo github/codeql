@@ -53,8 +53,8 @@ class UriCreation extends Call {
    * Gets the host argument of the newly created URI. In the case where the
    * host is specified separately, this is only the host. In the case where the
    * uri is parsed from an input string, such as in
-   * `URI("http://foo.com/mypath")`, this is the entire argument passed in,
-   * that is `"http://foo.com/mypath"`.
+   * `URI("https://foo.com/mypath")`, this is the entire argument passed in,
+   * that is `"https://foo.com/mypath"`.
    */
   Expr getHostArg() { none() }
 }

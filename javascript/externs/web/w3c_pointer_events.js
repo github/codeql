@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,7 +17,7 @@
 /**
  * @fileoverview Definitions for W3C's Pointer Events specification.
  *  Created from
- *   http://www.w3.org/TR/pointerevents/
+ *   https://www.w3.org/TR/pointerevents/
  *
  * @externs
  */
@@ -25,19 +25,19 @@
 
 /**
  * @type {string}
- * @see http://www.w3.org/TR/pointerevents/#the-touch-action-css-property
+ * @see https://www.w3.org/TR/pointerevents/#the-touch-action-css-property
  */
 CSSProperties.prototype.touchAction;
 
 /**
  * @type {boolean}
- * @see http://www.w3.org/TR/pointerevents/#widl-Navigator-pointerEnabled
+ * @see https://www.w3.org/TR/pointerevents/#widl-Navigator-pointerEnabled
  */
 Navigator.prototype.pointerEnabled;
 
 /**
  * @type {number}
- * @see http://www.w3.org/TR/pointerevents/#widl-Navigator-maxTouchPoints
+ * @see https://www.w3.org/TR/pointerevents/#widl-Navigator-maxTouchPoints
  */
 Navigator.prototype.maxTouchPoints;
 
@@ -78,7 +78,7 @@ PointerEventInit.prototype.isPrimary;
  * @extends {MouseEvent}
  * @param {string} type
  * @param {PointerEventInit=} opt_eventInitDict
- * @see http://www.w3.org/TR/pointerevents/#pointerevent-interface
+ * @see https://www.w3.org/TR/pointerevents/#pointerevent-interface
  */
 function PointerEvent(type, opt_eventInitDict) {}
 

@@ -4,7 +4,7 @@
   "maintainers": [{
       "name": "me",
       "email": "me@mine.com",
-      "web": "http://mine.com"
+      "web": "https://mine.com"
   }],
   "dependencies": {
       "esprima": "*",

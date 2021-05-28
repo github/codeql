@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -32,8 +32,8 @@ Element.prototype.scrollIntoViewIfNeeded = function(opt_center) {};
 
 /**
  * @constructor
- * @see http://trac.webkit.org/browser/trunk/Source/WebCore/page/MemoryInfo.idl
- * @see http://trac.webkit.org/browser/trunk/Source/WebCore/page/MemoryInfo.cpp
+ * @see https://trac.webkit.org/browser/trunk/Source/WebCore/page/MemoryInfo.idl
+ * @see https://trac.webkit.org/browser/trunk/Source/WebCore/page/MemoryInfo.cpp
  */
 function MemoryInfo() {};
 
@@ -48,7 +48,7 @@ MemoryInfo.prototype.jsHeapSizeLimit;
 
 /**
  * @constructor
- * @see http://trac.webkit.org/browser/trunk/Source/WebCore/inspector/ScriptProfileNode.idl
+ * @see https://trac.webkit.org/browser/trunk/Source/WebCore/inspector/ScriptProfileNode.idl
  */
 function ScriptProfileNode() {};
 
@@ -81,7 +81,7 @@ ScriptProfileNode.prototype.callUID;
 
 /**
  * @constructor
- * @see http://trac.webkit.org/browser/trunk/Source/WebCore/inspector/ScriptProfile.idl
+ * @see https://trac.webkit.org/browser/trunk/Source/WebCore/inspector/ScriptProfile.idl
  */
 function ScriptProfile() {};
 
@@ -96,8 +96,8 @@ ScriptProfile.prototype.head;
 
 /**
  * @constructor
- * @see http://trac.webkit.org/browser/trunk/Source/WebCore/page/Console.idl
- * @see http://trac.webkit.org/browser/trunk/Source/WebCore/page/Console.cpp
+ * @see https://trac.webkit.org/browser/trunk/Source/WebCore/page/Console.idl
+ * @see https://trac.webkit.org/browser/trunk/Source/WebCore/page/Console.cpp
  */
 function Console() {};
 
@@ -238,7 +238,7 @@ var console;
 
 /**
  * @type {number}
- * @see http://developer.android.com/reference/android/webkit/WebView.html
+ * @see https://developer.android.com/reference/android/webkit/WebView.html
  */
 Window.prototype.devicePixelRatio;
 

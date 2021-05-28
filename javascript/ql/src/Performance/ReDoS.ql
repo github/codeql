@@ -20,7 +20,7 @@ import semmle.javascript.security.performance.ReDoSUtil
  *
  *   James Kirrage, Asiri Rathnayake, Hayo Thielecke: Static Analysis for
  *     Regular Expression Denial-of-Service Attacks. NSS 2013.
- *     (http://www.cs.bham.ac.uk/~hxt/research/reg-exp-sec.pdf)
+ *     (https://www.cs.bham.ac.uk/~hxt/research/reg-exp-sec.pdf)
  *   Asiri Rathnayake, Hayo Thielecke: Static Analysis for Regular Expression
  *     Exponential Runtime via Substructural Logics. 2014.
  *     (https://www.cs.bham.ac.uk/~hxt/research/redos_full.pdf)

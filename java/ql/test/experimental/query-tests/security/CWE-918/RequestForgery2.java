@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class RequestForgery2 extends HttpServlet {
-    private static final String VALID_URI = "http://lgtm.com";
+    private static final String VALID_URI = "https://lgtm.com";
     private HttpClient client = HttpClient.newHttpClient();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -35,7 +35,7 @@ public class RequestForgery2 extends HttpServlet {
             // URI(String scheme, String authority, String path, String query, String
             // fragment)
             URI uri5 = new URI("http", "authority", "path", "query", "fragment");
-            URI uri6 = URI.create("http://foo.com/");
+            URI uri6 = URI.create("https://foo.com/");
 
             // URL(String spec)
             URL url1 = new URL(sink);

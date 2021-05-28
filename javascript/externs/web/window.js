@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -127,7 +127,7 @@ function alert(message) {}
 /**
  * @param {number|undefined|null} immediateID
  * @see https://developer.mozilla.org/en-US/docs/DOM/window.clearImmediate
- * @see http://msdn.microsoft.com/en-us/library/ie/hh924825(v=vs.85).aspx
+ * @see https://msdn.microsoft.com/en-us/library/ie/hh924825(v=vs.85).aspx
  * @return {undefined}
  */
 function clearImmediate(immediateID) {}
@@ -174,7 +174,7 @@ function prompt(message, opt_value) {}
  * @param {function()} callback
  * @return {number}
  * @see https://developer.mozilla.org/en-US/docs/DOM/window.setImmediate
- * @see http://msdn.microsoft.com/en-us/library/ie/hh773176(v=vs.85).aspx
+ * @see https://msdn.microsoft.com/en-us/library/ie/hh773176(v=vs.85).aspx
  */
 function setImmediate(callback) {}
 
@@ -203,6 +203,6 @@ function setTimeout(callback, opt_delay, var_args) {}
  * @param {*} propertyName Implicitly cast to a string.
  * @return {boolean}
  * @nosideeffects
- * @see http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwnProperty
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwnProperty
  */
 function hasOwnProperty (propertyName) {}

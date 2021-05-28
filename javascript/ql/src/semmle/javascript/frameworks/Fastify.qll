@@ -12,7 +12,7 @@ module Fastify {
   /**
    * An expression that creates a new Fastify server.
    */
-  abstract class ServerDefinition extends HTTP::Servers::StandardServerDefinition { }
+  abstract class ServerDefinition extends https::Servers::StandardServerDefinition { }
 
   /**
    * A standard way to create a Fastify server.
@@ -30,7 +30,7 @@ module Fastify {
    * but support for other kinds of route handlers can be added by implementing
    * additional subclasses of this class.
    */
-  abstract class RouteHandler extends HTTP::Servers::StandardRouteHandler, DataFlow::ValueNode {
+  abstract class RouteHandler extends https::Servers::StandardRouteHandler, DataFlow::ValueNode {
     /**
      * Gets the parameter of the route handler that contains the request object.
      */
@@ -57,7 +57,7 @@ module Fastify {
    * A Fastify reply source, that is, the `reply` parameter of a
    * route handler.
    */
-  private class ReplySource extends HTTP::Servers::ResponseSource {
+  private class ReplySource extends https::Servers::ResponseSource {
     RouteHandler rh;
 
     ReplySource() { this = rh.getReplyParameter() }
@@ -72,7 +72,7 @@ module Fastify {
    * A Fastify request source, that is, the request parameter of a
    * route handler.
    */
-  private class RequestSource extends HTTP::Servers::RequestSource {
+  private class RequestSource extends https::Servers::RequestSource {
     RouteHandler rh;
 
     RequestSource() { this = rh.getRequestParameter() }
@@ -86,7 +86,7 @@ module Fastify {
   /**
    * A call to a Fastify method that sets up a route.
    */
-  class RouteSetup extends MethodCallExpr, HTTP::Servers::StandardRouteSetup {
+  class RouteSetup extends MethodCallExpr, https::Servers::StandardRouteSetup {
     ServerDefinition server;
     string methodName;
 
@@ -128,7 +128,7 @@ module Fastify {
   /**
    * An access to a user-controlled Fastify request input.
    */
-  private class RequestInputAccess extends HTTP::RequestInputAccess {
+  private class RequestInputAccess extends https::RequestInputAccess {
     RouteHandler rh;
     string kind;
 
@@ -196,7 +196,7 @@ module Fastify {
   /**
    * An access to a header on a Fastify request.
    */
-  private class RequestHeaderAccess extends HTTP::RequestHeaderAccess {
+  private class RequestHeaderAccess extends https::RequestHeaderAccess {
     RouteHandler rh;
 
     RequestHeaderAccess() {
@@ -215,7 +215,7 @@ module Fastify {
   /**
    * An argument passed to the `send` or `end` method of an HTTP response object.
    */
-  private class ResponseSendArgument extends HTTP::ResponseSendArgument {
+  private class ResponseSendArgument extends https::ResponseSendArgument {
     RouteHandler rh;
 
     ResponseSendArgument() {
@@ -230,7 +230,7 @@ module Fastify {
   /**
    * An invocation of the `redirect` method of an HTTP response object.
    */
-  private class RedirectInvocation extends HTTP::RedirectInvocation, MethodCallExpr {
+  private class RedirectInvocation extends https::RedirectInvocation, MethodCallExpr {
     RouteHandler rh;
 
     RedirectInvocation() {
@@ -245,7 +245,7 @@ module Fastify {
   /**
    * An invocation that sets a single header of the HTTP response.
    */
-  private class SetOneHeader extends HTTP::Servers::StandardHeaderDefinition,
+  private class SetOneHeader extends https::Servers::StandardHeaderDefinition,
     DataFlow::MethodCallNode {
     RouteHandler rh;
 
@@ -260,7 +260,7 @@ module Fastify {
   /**
    * An invocation that sets any number of headers of the HTTP response.
    */
-  class SetMultipleHeaders extends HTTP::ExplicitHeaderDefinition, DataFlow::MethodCallNode {
+  class SetMultipleHeaders extends https::ExplicitHeaderDefinition, DataFlow::MethodCallNode {
     RouteHandler rh;
 
     SetMultipleHeaders() {

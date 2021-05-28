@@ -33,5 +33,5 @@ def unknown_lib_2():
 
 
 if __name__ == "__main__":
-    # http://127.0.0.1:5000/hmac-example?data=aGVsbG8gd29ybGQh
+    # https://127.0.0.1:5000/hmac-example?data=aGVsbG8gd29ybGQh
     app.run(debug=True)

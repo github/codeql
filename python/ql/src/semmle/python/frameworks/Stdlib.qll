@@ -810,9 +810,9 @@ private module Stdlib {
           SimpleHTTPServer::SimpleHTTPRequestHandler::classRef(),
           CGIHTTPServer::CGIHTTPRequestHandler::classRef(),
           // Python 3
-          http::server::BaseHTTPRequestHandler::classRef(),
-          http::server::SimpleHTTPRequestHandler::classRef(),
-          http::server::CGIHTTPRequestHandler::classRef()
+          https::server::BaseHTTPRequestHandler::classRef(),
+          https::server::SimpleHTTPRequestHandler::classRef(),
+          https::server::CGIHTTPRequestHandler::classRef()
         ].getASubclass*()
     }
 
@@ -875,10 +875,10 @@ private module Stdlib {
      *
      * Not essential for any functionality, but provides a consistent modeling.
      */
-    private class RequestHandlerFunc extends HTTP::Server::RequestHandler::Range {
+    private class RequestHandlerFunc extends https::Server::RequestHandler::Range {
       RequestHandlerFunc() {
         this = any(HTTPRequestHandlerClassDef cls).getAMethod() and
-        this.getName() = "do_" + HTTP::httpVerb()
+        this.getName() = "do_" + https::httpVerb()
       }
 
       override Parameter getARoutedParameter() { none() }

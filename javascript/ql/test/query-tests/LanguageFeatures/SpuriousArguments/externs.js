@@ -6,7 +6,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,7 +20,7 @@
  * @param {...*} var_args
  * @return {!Array}
  * @nosideeffects
- * @see http://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array
+ * @see https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array
  */
 function Array(var_args) {}
 
@@ -29,7 +29,7 @@ function Array(var_args) {}
  * @param {*=} opt_str
  * @return {string}
  * @nosideeffects
- * @see http://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/String
+ * @see https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/String
  */
 function String(opt_str) {}
 

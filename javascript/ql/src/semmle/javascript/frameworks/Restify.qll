@@ -9,7 +9,7 @@ module Restify {
   /**
    * An expression that creates a new Restify server.
    */
-  class ServerDefinition extends HTTP::Servers::StandardServerDefinition, CallExpr {
+  class ServerDefinition extends https::Servers::StandardServerDefinition, CallExpr {
     ServerDefinition() {
       // `server = restify.createServer()`
       this = DataFlow::moduleMember("restify", "createServer").getACall().asExpr()
@@ -19,7 +19,7 @@ module Restify {
   /**
    * A Restify route handler.
    */
-  class RouteHandler extends HTTP::Servers::StandardRouteHandler, DataFlow::ValueNode {
+  class RouteHandler extends https::Servers::StandardRouteHandler, DataFlow::ValueNode {
     Function function;
 
     RouteHandler() {
@@ -42,7 +42,7 @@ module Restify {
    * A Restify response source, that is, the response parameter of a
    * route handler.
    */
-  private class ResponseSource extends HTTP::Servers::ResponseSource {
+  private class ResponseSource extends https::Servers::ResponseSource {
     RouteHandler rh;
 
     ResponseSource() { this = DataFlow::parameterNode(rh.getResponseParameter()) }
@@ -57,7 +57,7 @@ module Restify {
    * A Restify request source, that is, the request parameter of a
    * route handler.
    */
-  private class RequestSource extends HTTP::Servers::RequestSource {
+  private class RequestSource extends https::Servers::RequestSource {
     RouteHandler rh;
 
     RequestSource() { this = DataFlow::parameterNode(rh.getRequestParameter()) }
@@ -85,7 +85,7 @@ module Restify {
   /**
    * An access to a user-controlled Restify request input.
    */
-  private class RequestInputAccess extends HTTP::RequestInputAccess {
+  private class RequestInputAccess extends https::RequestInputAccess {
     RequestExpr request;
     string kind;
 
@@ -130,7 +130,7 @@ module Restify {
   /**
    * An HTTP header defined in a Restify server.
    */
-  private class HeaderDefinition extends HTTP::Servers::StandardHeaderDefinition {
+  private class HeaderDefinition extends https::Servers::StandardHeaderDefinition {
     HeaderDefinition() {
       // response.header('Cache-Control', 'no-cache')
       astNode.getReceiver() instanceof ResponseExpr and
@@ -143,14 +143,14 @@ module Restify {
   /**
    * A call to a Restify method that sets up a route.
    */
-  class RouteSetup extends MethodCallExpr, HTTP::Servers::StandardRouteSetup {
+  class RouteSetup extends MethodCallExpr, https::Servers::StandardRouteSetup {
     ServerDefinition server;
 
     RouteSetup() {
       // server.get('/', fun)
       // server.head('/', fun)
       server.flowsTo(getReceiver()) and
-      getMethodName() = any(HTTP::RequestMethodName m).toLowerCase()
+      getMethodName() = any(https::RequestMethodName m).toLowerCase()
     }
 
     override DataFlow::SourceNode getARouteHandler() { result.flowsToExpr(getArgument(1)) }

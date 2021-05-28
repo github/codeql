@@ -9,7 +9,7 @@ from django.template import Template, Context, Engine, engines
 def a(request):
     xslt_root = etree.XML('''\
         <xsl:stylesheet version="1.0"
-            xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+            xmlns:xsl="https://www.w3.org/1999/XSL/Transform">
             <xsl:template match="/">
                 <foo><xsl:value-of select="/a/b/text()" /></foo>
             </xsl:template>
@@ -20,7 +20,7 @@ def a(request):
 def b(request):
     xslt_root = etree.XML('''\
         <xsl:stylesheet version="1.0"
-            xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+            xmlns:xsl="https://www.w3.org/1999/XSL/Transform">
             <xsl:template match="/">
                 <foo><xsl:value-of select="/a/b/text()" /></foo>
             </xsl:template>
@@ -33,7 +33,7 @@ def b(request):
 def c(request):
     xslt_root = etree.XML('''\
         <xsl:stylesheet version="1.0"
-            xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+            xmlns:xsl="https://www.w3.org/1999/XSL/Transform">
             <xsl:template match="/">
                 <foo><xsl:value-of select="/a/b/text()" /></foo>
             </xsl:template>

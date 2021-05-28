@@ -30,9 +30,9 @@ closed on exiting the method.</p>
 <references>
 
 
-<li>Python Language Reference: <a href="http://docs.python.org/reference/compound_stmts.html#the-with-statement">The with statement</a>,
- <a href="http://docs.python.org/reference/compound_stmts.html#the-try-statement">The try statement</a>.</li>
-<li>Python PEP 343: <a href="http://www.python.org/dev/peps/pep-0343">The "with" Statement</a>.</li>
+<li>Python Language Reference: <a href="https://docs.python.org/reference/compound_stmts.html#the-with-statement">The with statement</a>,
+ <a href="https://docs.python.org/reference/compound_stmts.html#the-try-statement">The try statement</a>.</li>
+<li>Python PEP 343: <a href="https://www.python.org/dev/peps/pep-0343">The "with" Statement</a>.</li>
 
 
 

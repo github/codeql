@@ -34,7 +34,7 @@ In Python 2, evaluation of the list comprehension occurs in the scope of <code>t
 <references>
     
     <li>Python Tutorial: <a href="https://docs.python.org/2/tutorial/datastructures.html#list-comprehensions">List Comprehensions</a>.</li>
-    <li>The History of Python: <a href="http://python-history.blogspot.co.uk/2010/06/from-list-comprehensions-to-generator.html">From List Comprehensions to Generator Expressions</a>.</li>
+    <li>The History of Python: <a href="https://python-history.blogspot.co.uk/2010/06/from-list-comprehensions-to-generator.html">From List Comprehensions to Generator Expressions</a>.</li>
     <li>Python Language Reference: <a href="https://docs.python.org/2/reference/expressions.html#list-displays">List displays</a>.</li>
 
 </references>

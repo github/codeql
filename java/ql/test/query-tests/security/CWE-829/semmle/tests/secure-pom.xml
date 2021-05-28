@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="https://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
 
     <!-- Duplicated in java/ql/src/Security/CWE/CWE-829/secure-pom.xml -->
 
@@ -32,13 +32,13 @@
             <id>insecure-snapshots</id>
             <name>Secure Repository Snapshots</name>
             <!-- GOOD! Use HTTP, but for localhost -->
-            <url>http://localhost/snaphots</url>
+            <url>https://localhost/snaphots</url>
         </snapshotRepository>
         <snapshotRepository>
             <id>insecure-snapshots</id>
             <name>Secure Repository Snapshots</name>
             <!-- GOOD! Use HTTP, but for localhost -->
-            <url>http://localhost:82</url>
+            <url>https://localhost:82</url>
         </snapshotRepository>
     </distributionManagement>
     <repositories>
@@ -51,7 +51,7 @@
         <repository>
             <id>test</id>
             <!-- GOOD! Use HTTP, but for localhost -->
-            <url>http://localhost:${deploy.webserver.port}/repo</url>
+            <url>https://localhost:${deploy.webserver.port}/repo</url>
         </repository>
     </repositories>
     <pluginRepositories>

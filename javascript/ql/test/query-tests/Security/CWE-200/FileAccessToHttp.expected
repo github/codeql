@@ -63,12 +63,12 @@ nodes
 | sentAsHeaders.js:14:20:19:9 | {\\n      ...       } |
 | sentAsHeaders.js:14:20:19:9 | {\\n      ...       } |
 | sentAsHeaders.js:18:20:18:55 | { Refer ... ntent } |
-| sentAsHeaders.js:18:31:18:53 | "http:/ ... content |
+| sentAsHeaders.js:18:31:18:53 | "https:/ ... content |
 | sentAsHeaders.js:18:47:18:53 | content |
 | sentAsHeaders.js:20:20:25:9 | {\\n      ...       } |
 | sentAsHeaders.js:20:20:25:9 | {\\n      ...       } |
 | sentAsHeaders.js:24:20:24:55 | { Refer ... ntent } |
-| sentAsHeaders.js:24:31:24:53 | "http:/ ... content |
+| sentAsHeaders.js:24:31:24:53 | "https:/ ... content |
 | sentAsHeaders.js:24:47:24:53 | content |
 edges
 | FileAccessToHttp.js:4:5:4:47 | content | FileAccessToHttp.js:9:23:9:29 | content |
@@ -128,12 +128,12 @@ edges
 | sentAsHeaders.js:12:19:12:81 | content ... .trim() | sentAsHeaders.js:12:9:12:81 | content |
 | sentAsHeaders.js:18:20:18:55 | { Refer ... ntent } | sentAsHeaders.js:14:20:19:9 | {\\n      ...       } |
 | sentAsHeaders.js:18:20:18:55 | { Refer ... ntent } | sentAsHeaders.js:14:20:19:9 | {\\n      ...       } |
-| sentAsHeaders.js:18:31:18:53 | "http:/ ... content | sentAsHeaders.js:18:20:18:55 | { Refer ... ntent } |
-| sentAsHeaders.js:18:47:18:53 | content | sentAsHeaders.js:18:31:18:53 | "http:/ ... content |
+| sentAsHeaders.js:18:31:18:53 | "https:/ ... content | sentAsHeaders.js:18:20:18:55 | { Refer ... ntent } |
+| sentAsHeaders.js:18:47:18:53 | content | sentAsHeaders.js:18:31:18:53 | "https:/ ... content |
 | sentAsHeaders.js:24:20:24:55 | { Refer ... ntent } | sentAsHeaders.js:20:20:25:9 | {\\n      ...       } |
 | sentAsHeaders.js:24:20:24:55 | { Refer ... ntent } | sentAsHeaders.js:20:20:25:9 | {\\n      ...       } |
-| sentAsHeaders.js:24:31:24:53 | "http:/ ... content | sentAsHeaders.js:24:20:24:55 | { Refer ... ntent } |
-| sentAsHeaders.js:24:47:24:53 | content | sentAsHeaders.js:24:31:24:53 | "http:/ ... content |
+| sentAsHeaders.js:24:31:24:53 | "https:/ ... content | sentAsHeaders.js:24:20:24:55 | { Refer ... ntent } |
+| sentAsHeaders.js:24:47:24:53 | content | sentAsHeaders.js:24:31:24:53 | "https:/ ... content |
 #select
 | FileAccessToHttp.js:5:11:10:1 | {\\n  hos ... ent }\\n} | FileAccessToHttp.js:4:15:4:47 | fs.read ... "utf8") | FileAccessToHttp.js:5:11:10:1 | {\\n  hos ... ent }\\n} | $@ flows directly to outbound network request | FileAccessToHttp.js:4:15:4:47 | fs.read ... "utf8") | File data |
 | bufferRead.js:33:21:33:28 | postData | bufferRead.js:12:22:12:43 | new Buf ... s.size) | bufferRead.js:33:21:33:28 | postData | $@ flows directly to outbound network request | bufferRead.js:12:22:12:43 | new Buf ... s.size) | File data |

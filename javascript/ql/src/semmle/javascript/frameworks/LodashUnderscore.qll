@@ -1,10 +1,10 @@
 /**
- * Provides classes for working with [lodash](https://lodash.com/) and [underscore](http://underscorejs.org/).
+ * Provides classes for working with [lodash](https://lodash.com/) and [underscore](https://underscorejs.org/).
  */
 
 import javascript
 
-/** Provides a unified model of [lodash](https://lodash.com/) and [underscore](http://underscorejs.org/). */
+/** Provides a unified model of [lodash](https://lodash.com/) and [underscore](https://underscorejs.org/). */
 module LodashUnderscore {
   /**
    * A data flow node that accesses a given member of `lodash` or `underscore`.

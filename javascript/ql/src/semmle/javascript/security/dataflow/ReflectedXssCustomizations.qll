@@ -11,9 +11,9 @@ module ReflectedXss {
   /** A third-party controllable request input, considered as a flow source for reflected XSS. */
   class ThirdPartyRequestInputAccessAsSource extends Source {
     ThirdPartyRequestInputAccessAsSource() {
-      this.(HTTP::RequestInputAccess).isThirdPartyControllable()
+      this.(https::RequestInputAccess).isThirdPartyControllable()
       or
-      this.(HTTP::RequestHeaderAccess).getAHeaderName() = "referer"
+      this.(https::RequestHeaderAccess).getAHeaderName() = "referer"
     }
   }
 }

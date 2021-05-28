@@ -27,7 +27,7 @@ public class Sinks {
         // URI(String scheme, String authority, String path, String query, String
         // fragment)
         URI uri5 = new URI("http", "authority", "path", "query", "fragment");
-        URI uri6 = URI.create("http://foo.com/");
+        URI uri6 = URI.create("https://foo.com/");
 
         // URL(String spec)
         URL url1 = new URL("spec");

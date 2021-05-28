@@ -418,7 +418,7 @@ module ReflectedXss {
    * is to prevent us from flagging plain-text or JSON responses as vulnerable.
    */
   class HttpResponseSink extends Sink, DataFlow::ValueNode {
-    override HTTP::ResponseSendArgument astNode;
+    override https::ResponseSendArgument astNode;
 
     HttpResponseSink() { not exists(getANonHtmlHeaderDefinition(astNode)) }
   }
@@ -426,8 +426,8 @@ module ReflectedXss {
   /**
    * Gets a HeaderDefinition that defines a non-html content-type for `send`.
    */
-  HTTP::HeaderDefinition getANonHtmlHeaderDefinition(HTTP::ResponseSendArgument send) {
-    exists(HTTP::RouteHandler h |
+  https::HeaderDefinition getANonHtmlHeaderDefinition(https::ResponseSendArgument send) {
+    exists(https::RouteHandler h |
       send.getRouteHandler() = h and
       result = nonHtmlContentTypeHeader(h)
     |
@@ -439,7 +439,7 @@ module ReflectedXss {
   /**
    * Holds if `h` may send a response with a content type other than HTML.
    */
-  HTTP::HeaderDefinition nonHtmlContentTypeHeader(HTTP::RouteHandler h) {
+  https::HeaderDefinition nonHtmlContentTypeHeader(https::RouteHandler h) {
     result = h.getAResponseHeader("content-type") and
     not exists(string tp | result.defines("content-type", tp) | tp.regexpMatch("(?i).*html.*"))
   }
@@ -447,7 +447,7 @@ module ReflectedXss {
   /**
    * Holds if a header set in `header` is likely to affect a response sent at `sender`.
    */
-  predicate headerAffects(HTTP::HeaderDefinition header, HTTP::ResponseSendArgument sender) {
+  predicate headerAffects(https::HeaderDefinition header, https::ResponseSendArgument sender) {
     sender.getRouteHandler() = header.getRouteHandler() and
     (
       // `sender` is affected by a dominating `header`.
@@ -455,7 +455,7 @@ module ReflectedXss {
       or
       // There is no dominating header, and `header` is non-local.
       not isLocalHeaderDefinition(header) and
-      not exists(HTTP::HeaderDefinition dominatingHeader |
+      not exists(https::HeaderDefinition dominatingHeader |
         dominatingHeader.getBasicBlock().(ReachableBasicBlock).dominates(sender.getBasicBlock())
       )
     )
@@ -472,12 +472,12 @@ module ReflectedXss {
    * return;
    * ```
    */
-  predicate isLocalHeaderDefinition(HTTP::HeaderDefinition header) {
+  predicate isLocalHeaderDefinition(https::HeaderDefinition header) {
     exists(ReachableBasicBlock headerBlock |
       headerBlock = header.getBasicBlock().(ReachableBasicBlock)
     |
       1 =
-        strictcount(HTTP::ResponseSendArgument sender |
+        strictcount(https::ResponseSendArgument sender |
           sender.getRouteHandler() = header.getRouteHandler() and
           header.getBasicBlock().(ReachableBasicBlock).dominates(sender.getBasicBlock())
         ) and

@@ -1,6 +1,6 @@
 from flask import Flask, request, redirect
 
-VALID_REDIRECT = "http://cwe.mitre.org/data/definitions/601.html"
+VALID_REDIRECT = "https://cwe.mitre.org/data/definitions/601.html"
 
 app = Flask(__name__)
 

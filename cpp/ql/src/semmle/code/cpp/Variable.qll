@@ -165,7 +165,7 @@ class Variable extends Declaration, @variable {
 
   /**
    * Holds if this is a compiler-generated variable. For example, a
-   * [range-based for loop](http://en.cppreference.com/w/cpp/language/range-for)
+   * [range-based for loop](https://en.cppreference.com/w/cpp/language/range-for)
    * typically has three compiler-generated variables, named `__range`,
    * `__begin`, and `__end`:
    *

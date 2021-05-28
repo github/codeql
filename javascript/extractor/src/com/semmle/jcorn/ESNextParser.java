@@ -55,7 +55,7 @@ public class ESNextParser extends JSXParser {
 
   /*
    * Support for proposed language feature "Object Rest/Spread Properties"
-   * (http://sebmarkbage.github.io/ecmascript-rest-spread/).
+   * (https://sebmarkbage.github.io/ecmascript-rest-spread/).
    */
 
   @Override
@@ -104,7 +104,7 @@ public class ESNextParser extends JSXParser {
 
   /*
    * Support for proposed language feature "Public Class Fields"
-   * (http://jeffmo.github.io/es-class-public-fields/).
+   * (https://jeffmo.github.io/es-class-public-fields/).
    */
 
   private boolean classProperties() {
@@ -287,7 +287,7 @@ public class ESNextParser extends JSXParser {
 
   /*
    * Support for proposed extensions to `export`
-   * (http://leebyron.com/ecmascript-export-ns-from and http://leebyron.com/ecmascript-export-default-from)
+   * (https://leebyron.com/ecmascript-export-ns-from and https://leebyron.com/ecmascript-export-default-from)
    */
   private boolean exportExtensions() {
     return options.esnext();

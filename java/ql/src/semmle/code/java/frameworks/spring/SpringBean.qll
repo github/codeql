@@ -8,7 +8,7 @@ import semmle.code.java.frameworks.spring.SpringQualifier
 import semmle.code.java.frameworks.spring.SpringReplacedMethod
 
 /*
- * Reference: http://docs.spring.io/spring/docs/2.5.x/reference/beans.html#beans-child-bean-definitions
+ * Reference: https://docs.spring.io/spring/docs/2.5.x/reference/beans.html#beans-child-bean-definitions
  */
 
 /** A `<bean>` element in a Spring XML file. */
@@ -16,7 +16,7 @@ class SpringBean extends SpringXMLElement {
   SpringBean() {
     this.getName() = "bean" and
     // Do not capture Camel beans, which are different
-    not getNamespace().getURI() = "http://camel.apache.org/schema/spring"
+    not getNamespace().getURI() = "https://camel.apache.org/schema/spring"
   }
 
   override string toString() { result = this.getBeanIdentifier() }

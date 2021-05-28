@@ -1,5 +1,5 @@
 // Semmle test case for CWE-327: Use of a Broken or Risky Cryptographic Algorithm
-// http://cwe.mitre.org/data/definitions/327.html
+// https://cwe.mitre.org/data/definitions/327.html
 package test.cwe327.semmle.tests;
 
 import javax.crypto.*;

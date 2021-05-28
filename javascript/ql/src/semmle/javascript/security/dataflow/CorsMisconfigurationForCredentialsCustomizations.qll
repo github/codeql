@@ -19,7 +19,7 @@ module CorsMisconfigurationForCredentials {
     /**
      * Gets the "Access-Control-Allow-Credentials" header definition.
      */
-    abstract HTTP::HeaderDefinition getCredentialsHeader();
+    abstract https::HeaderDefinition getCredentialsHeader();
   }
 
   /**
@@ -41,11 +41,11 @@ module CorsMisconfigurationForCredentials {
    * HTTP header with a truthy value.
    */
   class CorsOriginHeaderWithAssociatedCredentialHeader extends Sink, DataFlow::ValueNode {
-    HTTP::ExplicitHeaderDefinition credentials;
+    https::ExplicitHeaderDefinition credentials;
 
     CorsOriginHeaderWithAssociatedCredentialHeader() {
       exists(
-        HTTP::RouteHandler routeHandler, HTTP::ExplicitHeaderDefinition origin,
+        https::RouteHandler routeHandler, https::ExplicitHeaderDefinition origin,
         Expr credentialsValue
       |
         routeHandler.getAResponseHeader(_) = origin and
@@ -58,7 +58,7 @@ module CorsMisconfigurationForCredentials {
       )
     }
 
-    override HTTP::HeaderDefinition getCredentialsHeader() { result = credentials }
+    override https::HeaderDefinition getCredentialsHeader() { result = credentials }
   }
 
   /**

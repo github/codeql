@@ -196,7 +196,7 @@ module Cookie {
    */
   class InsecureSetCookieHeader extends Cookie {
     InsecureSetCookieHeader() {
-      this.asExpr() = any(HTTP::SetCookieHeader setCookie).getHeaderArgument()
+      this.asExpr() = any(https::SetCookieHeader setCookie).getHeaderArgument()
     }
 
     override string getKind() { result = "set-cookie header" }

@@ -22,7 +22,7 @@ mapping from 2 to "c". The programmer may have meant to map 3 to "c" instead.</p
 </example>
 <references>
 
-  <li>Python: <a href="http://docs.python.org/2/reference/expressions.html#dictionary-displays">Dictionary literals</a>.</li>
+  <li>Python: <a href="https://docs.python.org/2/reference/expressions.html#dictionary-displays">Dictionary literals</a>.</li>
 
 </references>
 </qhelp>

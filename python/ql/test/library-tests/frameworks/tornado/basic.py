@@ -57,13 +57,13 @@ if __name__ == "__main__":
     app.listen(8888)
     tornado.ioloop.IOLoop.current().start()
 
-    # http://localhost:8888/basic?xss=foo
-    # http://localhost:8888/deep?also_xss=foo
+    # https://localhost:8888/basic?xss=foo
+    # https://localhost:8888/deep?also_xss=foo
 
-    # curl -X POST http://localhost:8888/basic
-    # curl -X POST http://localhost:8888/deep
+    # curl -X POST https://localhost:8888/basic
+    # curl -X POST https://localhost:8888/deep
 
-    # curl -X POST -F "name=foo" http://localhost:8888/form
-    # curl -v -H 'url: http://example.com' http://localhost:8888/redirect
+    # curl -X POST -F "name=foo" https://localhost:8888/form
+    # curl -v -H 'url: https://example.com' https://localhost:8888/redirect
 
-    # http://localhost:8888/reverse-inheritance
+    # https://localhost:8888/reverse-inheritance

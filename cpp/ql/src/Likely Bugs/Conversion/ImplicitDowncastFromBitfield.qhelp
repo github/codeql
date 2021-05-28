@@ -26,10 +26,10 @@ overflow in the for loop.</p>
 
 <references>
 <li>
-  <a href="http://en.cppreference.com/w/cpp/language/bit_field">cpp-reference.com: Bit field</a>
+  <a href="https://en.cppreference.com/w/cpp/language/bit_field">cpp-reference.com: Bit field</a>
 </li>
 <li>
- <a href="http://en.cppreference.com/w/cpp/language/implicit_conversion">cpp-reference.com: Implicit conversion</a>
+ <a href="https://en.cppreference.com/w/cpp/language/implicit_conversion">cpp-reference.com: Implicit conversion</a>
 </li>
 <li>
   <a href="https://cwe.mitre.org/data/definitions/681.html">https://cwe.mitre.org/data/definitions/681.html</a>

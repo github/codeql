@@ -30,7 +30,7 @@ Use an enumeration instead of an integer to represent a limited set of choices.
   AV Rule 148, <em>Joint Strike Fighter Air Vehicle C++ Coding Standards</em>. Lockheed Martin Corporation, 2005.
 </li>
 <li>
-  <a href="http://www.tutorialspoint.com/cplusplus/cpp_switch_statement.htm">C++ Switch statement</a>
+  <a href="https://www.tutorialspoint.com/cplusplus/cpp_switch_statement.htm">C++ Switch statement</a>
 </li>
 
 

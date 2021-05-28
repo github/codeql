@@ -1,5 +1,5 @@
 // Semmle test case for rule UncontrolledFormatStringThroughGlobalVar.ql (Uncontrolled format string (through global variable)).
-// Associated with CWE-134: Uncontrolled format string. http://cwe.mitre.org/data/definitions/134.html
+// Associated with CWE-134: Uncontrolled format string. https://cwe.mitre.org/data/definitions/134.html
 // This file tests different ways to track argv usage to printf calls through global variables.
 
 int printf(const char *format, ...);

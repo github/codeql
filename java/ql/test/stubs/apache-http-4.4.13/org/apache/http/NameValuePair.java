@@ -1,5 +1,5 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/NameValuePair.java $
+ * $HeadURL: https://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/NameValuePair.java $
  * $Revision: 496070 $
  * $Date: 2007-01-14 04:18:34 -0800 (Sun, 14 Jan 2007) $
  *
@@ -12,7 +12,7 @@
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *   https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
@@ -25,7 +25,7 @@
  * This software consists of voluntary contributions made by many
  * individuals on behalf of the Apache Software Foundation.  For more
  * information on the Apache Software Foundation, please see
- * <http://www.apache.org/>.
+ * <https://www.apache.org/>.
  *
  */
 
@@ -36,10 +36,10 @@ package org.apache.http;
  * <p>
  * This class comforms to the generic grammar and formatting rules outlined in
  * the <a href=
- * "http://www.w3.org/Protocols/rfc2616/rfc2616-sec2.html#sec2.2">Section
+ * "https://www.w3.org/Protocols/rfc2616/rfc2616-sec2.html#sec2.2">Section
  * 2.2</a> and <a href=
- * "http://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html#sec3.6">Section
- * 3.6</a> of <a href="http://www.w3.org/Protocols/rfc2616/rfc2616.txt">RFC
+ * "https://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html#sec3.6">Section
+ * 3.6</a> of <a href="https://www.w3.org/Protocols/rfc2616/rfc2616.txt">RFC
  * 2616</a>
  * </p>
  * <h>2.2 Basic Rules</h>
@@ -111,7 +111,7 @@ package org.apache.http;
  *
  * @deprecated Please use {@link java.net.URL#openConnection} instead. Please
  *             visit <a href=
- *             "http://android-developers.blogspot.com/2011/09/androids-http-clients.html">this
+ *             "https://android-developers.blogspot.com/2011/09/androids-http-clients.html">this
  *             webpage</a> for further details.
  */
 @Deprecated

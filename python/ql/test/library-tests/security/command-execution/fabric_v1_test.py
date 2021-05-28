@@ -1,6 +1,6 @@
 """tests for the 'fabric' package (v1.x)
 
-See http://docs.fabfile.org/en/1.14/tutorial.html
+See https://docs.fabfile.org/en/1.14/tutorial.html
 """
 
 from fabric.api import run, local, sudo

@@ -5,7 +5,7 @@
 import javascript
 
 /**
- * Holds if `oe` looks like it was produced by [Browserify](http://browserify.org/).
+ * Holds if `oe` looks like it was produced by [Browserify](https://browserify.org/).
  *
  * Generally, Browserify's output looks like this:
  *

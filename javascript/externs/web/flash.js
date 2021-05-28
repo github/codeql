@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,7 +17,7 @@
  * @fileoverview Definitions for all the Flash Object JavaScript methods. This
  * file depends on w3c_dom2.js.
  * Created from
- * http://www.adobe.com/support/flash/publishexport/scriptingwithflash/scriptingwithflash_03.html
+ * https://www.adobe.com/support/flash/publishexport/scriptingwithflash/scriptingwithflash_03.html
  *
  * @externs
  */

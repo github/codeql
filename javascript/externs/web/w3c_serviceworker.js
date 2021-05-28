@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,12 +16,12 @@
 /**
  * @fileoverview Externs for service worker.
  *
- * @see http://www.w3.org/TR/service-workers/
+ * @see https://www.w3.org/TR/service-workers/
  * @externs
  */
 
 /**
- * @see http://www.w3.org/TR/service-workers/#service-worker-interface
+ * @see https://www.w3.org/TR/service-workers/#service-worker-interface
  * @constructor
  * @extends {Worker}
  */
@@ -98,7 +98,7 @@ PushManager.prototype.getSubscription = function() {};
 var PushSubscriptionOptions;
 
 /**
- * @see http://www.w3.org/TR/push-api/#idl-def-PushMessageData
+ * @see https://www.w3.org/TR/push-api/#idl-def-PushMessageData
  * @constructor
  */
 function PushMessageData() {}
@@ -117,7 +117,7 @@ PushMessageData.prototype.text = function() {};
 
 
 /**
- * @see http://www.w3.org/TR/push-api/#idl-def-PushEvent
+ * @see https://www.w3.org/TR/push-api/#idl-def-PushEvent
  * @constructor
  * @param {string} type
  * @param {!ExtendableEventInit=} opt_eventInitDict
@@ -130,7 +130,7 @@ PushEvent.prototype.data;
 
 
 /**
- * @see http://www.w3.org/TR/service-workers/#service-worker-registration-interface
+ * @see https://www.w3.org/TR/service-workers/#service-worker-registration-interface
  * @interface
  * @extends {EventTarget}
  */
@@ -180,7 +180,7 @@ ServiceWorkerRegistration.prototype.showNotification =
 ServiceWorkerRegistration.prototype.getNotifications = function(opt_filter) {};
 
 /**
- * @see http://www.w3.org/TR/service-workers/#service-worker-container-interface
+ * @see https://www.w3.org/TR/service-workers/#service-worker-container-interface
  * @interface
  * @extends {EventTarget}
  */
@@ -225,7 +225,7 @@ var RegistrationOptions;
 Navigator.prototype.serviceWorker;
 
 /**
- * @see http://www.w3.org/TR/service-workers/#service-worker-global-scope-interface
+ * @see https://www.w3.org/TR/service-workers/#service-worker-global-scope-interface
  * @interface
  * @extends {WorkerGlobalScope}
  */
@@ -280,7 +280,7 @@ ServiceWorkerGlobalScope.prototype.onmessage;
 ServiceWorkerGlobalScope.prototype.indexedDB;
 
 /**
- * @see http://www.w3.org/TR/service-workers/#service-worker-client-interface
+ * @see https://www.w3.org/TR/service-workers/#service-worker-client-interface
  * @constructor
  */
 function ServiceWorkerClient() {}
@@ -318,7 +318,7 @@ ServiceWorkerClient.prototype.postMessage = function(message, opt_transfer) {};
 ServiceWorkerClient.prototype.focus = function() {};
 
 /**
- * @see http://www.w3.org/TR/service-workers/#service-worker-clients-interface
+ * @see https://www.w3.org/TR/service-workers/#service-worker-clients-interface
  * @interface
  */
 function ServiceWorkerClients() {}
@@ -353,7 +353,7 @@ ServiceWorkerClients.prototype.openWindow = function(url) {};
 var ServiceWorkerClientQueryOptions;
 
 /**
- * @see http://www.w3.org/TR/service-workers/#cache-interface
+ * @see https://www.w3.org/TR/service-workers/#cache-interface
  * @interface
  */
 function Cache() {}
@@ -417,7 +417,7 @@ Cache.prototype.keys = function(opt_request, opt_options) {};
 var CacheQueryOptions;
 
 /**
- * @see http://www.w3.org/TR/service-workers/#cache-storage-interface
+ * @see https://www.w3.org/TR/service-workers/#cache-storage-interface
  * @interface
  */
 function CacheStorage() {}
@@ -458,7 +458,7 @@ CacheStorage.prototype.delete = function(cacheName) {};
 CacheStorage.prototype.keys = function() {};
 
 /**
- * @see http://www.w3.org/TR/service-workers/#extendable-event-interface
+ * @see https://www.w3.org/TR/service-workers/#extendable-event-interface
  * @constructor
  * @param {string} type
  * @param {ExtendableEventInit=} opt_eventInitDict
@@ -481,7 +481,7 @@ ExtendableEvent.prototype.waitUntil = function(f) {};
 var ExtendableEventInit;
 
 /**
- * @see http://www.w3.org/TR/service-workers/#install-event-interface
+ * @see https://www.w3.org/TR/service-workers/#install-event-interface
  * @constructor
  * @param {string} type
  * @param {InstallEventInit=} opt_eventInitDict
@@ -502,7 +502,7 @@ ExtendableEvent.prototype.activeWorker;
 var InstallEventInit;
 
 /**
- * @see http://www.w3.org/TR/service-workers/#fetch-event-interface
+ * @see https://www.w3.org/TR/service-workers/#fetch-event-interface
  * @constructor
  * @param {string} type
  * @param {FetchEventInit=} opt_eventInitDict

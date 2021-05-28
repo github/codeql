@@ -3,7 +3,7 @@ var div1 = <div id="theDiff"></div>;
 var div2 = <div id="theDiff"></div>;
 
 // not OK
-<a href="http://semmle.com" href="https://semmle.com">Semmle</a>;
+<a href="https://semmle.com" href="https://semmle.com">Semmle</a>;
 
 // not OK
 <a href="https://semmle.com" href="https://semmle.com">Semmle</a>;
@@ -13,7 +13,7 @@ var div2 = <div id="theDiff"></div>;
 <div id="a b"></div>;
 
 // not OK
-<a href="http://semmle.com" href={someValue()}>Semmle</a>;
+<a href="https://semmle.com" href={someValue()}>Semmle</a>;
 
 // OK
 <div id={someOtherValue()}></div>;

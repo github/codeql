@@ -17,7 +17,7 @@ module Request {
           action = mod.getAnInvocation()
           or
           // specialized form: `request.get(...)`
-          action = mod.getAMemberCall(any(HTTP::RequestMethodName n).toLowerCase())
+          action = mod.getAMemberCall(any(https::RequestMethodName n).toLowerCase())
         )
       |
         exists(MethodCallExpr auth, int argIndex |

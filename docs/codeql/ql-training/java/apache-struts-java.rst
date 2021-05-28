@@ -56,7 +56,7 @@ RCE in Apache Struts
 
 - Xstream allows deserialization of **dynamic proxies**, which permit remote code execution.
 
-- Disclosed as `CVE-2017-9805 <http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-9805>`__
+- Disclosed as `CVE-2017-9805 <https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-9805>`__
 
 - Blog post: https://securitylab.github.com/research/apache-struts-vulnerability-cve-2017-9805
 

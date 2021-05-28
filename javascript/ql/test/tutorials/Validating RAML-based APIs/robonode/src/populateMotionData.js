@@ -4,7 +4,7 @@ var parseString = require('xml2js').parseString;
 var pageData = {};
 var flowData = {};
 
-var MILLIS_PER_FRAME = 8; // This is a guess based on reading docs such as http://support.robotis.com/en/software/roboplus/roboplus_motion/motionedit/stepedit/roboplus_motion_pausetime.htm
+var MILLIS_PER_FRAME = 8; // This is a guess based on reading docs such as https://support.robotis.com/en/software/roboplus/roboplus_motion/motionedit/stepedit/roboplus_motion_pausetime.htm
 var UNIT_PADDING_TIME = 100; // Another guess of how long to wait before motion is truly done
 var RECOVERY_TIME = 300; // Another guess of how long to wait before motion is truly done
 function elapsedTime(flow)

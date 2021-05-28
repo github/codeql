@@ -20,7 +20,7 @@ Unused variables should be removed to increase readability and avoid misuse.</p>
 <references>
 
 <li>
-  <a href="http://www.tutorialspoint.com/cplusplus/cpp_variable_scope.htm">Variable scope</a>
+  <a href="https://www.tutorialspoint.com/cplusplus/cpp_variable_scope.htm">Variable scope</a>
 </li>
 <li>
   <a href="https://wiki.sei.cmu.edu/confluence/display/c/MSC12-C.+Detect+and+remove+code+that+has+no+effect+or+is+never+executed">MSC12-C. Detect and remove code that has no effect</a>

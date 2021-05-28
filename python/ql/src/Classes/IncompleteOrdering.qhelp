@@ -28,7 +28,7 @@ inconsistent behavior. <code>__gt__</code>, <code>__le__</code>, <code>__ge__</c
 </example>
 <references>
 
-  <li>Python Language Reference: <a href="http://docs.python.org/2/reference/datamodel.html#object.__lt__">Rich comparisons in Python</a>.</li>
+  <li>Python Language Reference: <a href="https://docs.python.org/2/reference/datamodel.html#object.__lt__">Rich comparisons in Python</a>.</li>
 
 
 </references>

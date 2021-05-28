@@ -1,7 +1,7 @@
 public static void main(String[] args) {
 	{
 		try {
-			URL u = new URL("http://www.secret.example.org/");
+			URL u = new URL("https://www.secret.example.org/");
 			HttpURLConnection httpcon = (HttpURLConnection) u.openConnection();
 			httpcon.setRequestMethod("PUT");
 			httpcon.connect();

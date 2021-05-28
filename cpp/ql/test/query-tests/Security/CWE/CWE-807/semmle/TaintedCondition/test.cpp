@@ -1,6 +1,6 @@
 // Semmle test case for rule TaintedCondition.ql (Untrusted input for a condition).
 // Associated with CWE-807: Reliance on Untrusted Inputs in a Security Decision
-// http://cwe.mitre.org/data/definitions/807.html
+// https://cwe.mitre.org/data/definitions/807.html
 
 
 ///// Library functions //////

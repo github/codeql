@@ -1,5 +1,5 @@
 // Semmle test case for rule UncontrolledFormatString.ql (Uncontrolled format string).
-// Associated with CWE-134: Uncontrolled format string. http://cwe.mitre.org/data/definitions/134.html
+// Associated with CWE-134: Uncontrolled format string. https://cwe.mitre.org/data/definitions/134.html
 // This file tests different ways to ignore branchs in code that will never be executed.
 
 int printf(const char *format, ...);

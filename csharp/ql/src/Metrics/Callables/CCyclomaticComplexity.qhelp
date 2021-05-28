@@ -32,9 +32,9 @@ testing easier because each helper method can be tested individually.</p>
 </recommendation>
 <references>
 
-  <li>Wikipedia. <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity">Cyclomatic complexity</a>.</li>
-  <li>Wikipedia. <a href="http://en.wikipedia.org/wiki/Control_flow_diagram">Control flow diagram</a>.</li>
-  <li>Wolfram MathWorld. <a href="http://mathworld.wolfram.com/LinearlyIndependent.html">Linearly Independent</a>.</li>
+  <li>Wikipedia. <a href="https://en.wikipedia.org/wiki/Cyclomatic_complexity">Cyclomatic complexity</a>.</li>
+  <li>Wikipedia. <a href="https://en.wikipedia.org/wiki/Control_flow_diagram">Control flow diagram</a>.</li>
+  <li>Wolfram MathWorld. <a href="https://mathworld.wolfram.com/LinearlyIndependent.html">Linearly Independent</a>.</li>
 
 </references>
 </qhelp>

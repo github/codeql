@@ -4,7 +4,7 @@
 #Exact duplication of function
 
 #Code copied from stdlib, copyright PSF.
-#See http://www.python.org/download/releases/2.7/license/
+#See https://www.python.org/download/releases/2.7/license/
 
 def dis(x=None):
     """Disassemble classes, methods, functions, or code.

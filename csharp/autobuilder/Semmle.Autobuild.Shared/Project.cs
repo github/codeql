@@ -76,7 +76,7 @@ namespace Semmle.Autobuild.Shared
                     // The documentation on `.proj` files is very limited, but it appears that both
                     // `<ProjectFile Include="X"/>` and `<ProjectFiles Include="X"/>` is valid
                     var mgr = new XmlNamespaceManager(projFile.NameTable);
-                    mgr.AddNamespace("msbuild", "http://schemas.microsoft.com/developer/msbuild/2003");
+                    mgr.AddNamespace("msbuild", "https://schemas.microsoft.com/developer/msbuild/2003");
                     var projectFileIncludes = root.SelectNodes("//msbuild:Project/msbuild:ItemGroup/msbuild:ProjectFile/@Include", mgr)
                         ?.OfType<XmlNode>() ?? Array.Empty<XmlNode>();
                     var projectFilesIncludes = root.SelectNodes("//msbuild:Project/msbuild:ItemGroup/msbuild:ProjectFiles/@Include", mgr)

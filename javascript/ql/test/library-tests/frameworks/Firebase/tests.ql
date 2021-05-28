@@ -6,8 +6,8 @@ query predicate firebaseSnapshot(DataFlow::SourceNode snap) { snap = Firebase::s
 
 query predicate firebaseVal(Firebase::FirebaseVal val) { any() }
 
-query predicate requestInputAccess(HTTP::RequestInputAccess acc) { any() }
+query predicate requestInputAccess(https::RequestInputAccess acc) { any() }
 
-query predicate responseSendArgument(HTTP::ResponseSendArgument send) { any() }
+query predicate responseSendArgument(https::ResponseSendArgument send) { any() }
 
-query predicate routeHandler(HTTP::RouteHandler handler) { any() }
+query predicate routeHandler(https::RouteHandler handler) { any() }

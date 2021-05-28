@@ -1,5 +1,5 @@
 // Semmle test case for rule TaintedPath.ql (User-controlled data in path expression)
-// Associated with CWE-022: Improper Limitation of a Pathname to a Restricted Directory. http://cwe.mitre.org/data/definitions/22.html
+// Associated with CWE-022: Improper Limitation of a Pathname to a Restricted Directory. https://cwe.mitre.org/data/definitions/22.html
 
 #include "stdlib.h"
 

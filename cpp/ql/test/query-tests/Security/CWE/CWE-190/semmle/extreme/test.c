@@ -1,5 +1,5 @@
 // Semmle test case for rule ArithmeticWithExtremeValues.ql (Use of extreme values in arithmetic expression).
-// Associated with CWE-190: Integer Overflow or Wraparound. http://cwe.mitre.org/data/definitions/190.html
+// Associated with CWE-190: Integer Overflow or Wraparound. https://cwe.mitre.org/data/definitions/190.html
 
 #define INT_MAX 2147483647
 

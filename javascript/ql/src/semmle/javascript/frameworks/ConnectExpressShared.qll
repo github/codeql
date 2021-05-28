@@ -112,7 +112,7 @@ module ConnectExpressShared {
    *
    * For example, this could be the function `function(req, res, next){...}`.
    */
-  class RouteHandlerCandidate extends HTTP::RouteHandlerCandidate {
+  class RouteHandlerCandidate extends https::RouteHandlerCandidate {
     RouteHandlerCandidate() {
       matchesSignature(astNode, _) and
       not (

@@ -25,8 +25,8 @@ particularly considering what would happen if the inner or outer variable were r
 </example>
 <references>
 
-  <li>Python Language Reference: <a href="http://docs.python.org/2/reference/compound_stmts.html#the-for-statement">The for statement</a>.</li>
-  <li>Python Tutorial: <a href="http://docs.python.org/2/tutorial/controlflow.html#for-statements">for statements</a>.</li>
+  <li>Python Language Reference: <a href="https://docs.python.org/2/reference/compound_stmts.html#the-for-statement">The for statement</a>.</li>
+  <li>Python Tutorial: <a href="https://docs.python.org/2/tutorial/controlflow.html#for-statements">for statements</a>.</li>
 
 </references>
 </qhelp>

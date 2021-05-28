@@ -1,5 +1,5 @@
 var sock = require("socket.io-client")("ws://localhost");
-var sock2 = require("socket.io-client").connect("http://example.com/foo/bar?q=v#abc");
+var sock2 = require("socket.io-client").connect("https://example.com/foo/bar?q=v#abc");
 
 sock.on('message', (x, y) => {
   console.log(x, y);

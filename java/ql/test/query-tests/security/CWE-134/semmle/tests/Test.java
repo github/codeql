@@ -1,6 +1,6 @@
 // Test case for
 // CWE-134: Use of Externally-Controlled Format String
-// http://cwe.mitre.org/data/definitions/134.html
+// https://cwe.mitre.org/data/definitions/134.html
 
 package test.cwe134.cwe.examples;
 

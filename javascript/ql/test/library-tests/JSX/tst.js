@@ -1,4 +1,4 @@
-var href = "http://example.com";
+var href = "https://example.com";
 var linkTypes = { rel: "noopener noreferrer" };
 <a href={href} target="_blank" {...linkTypes}>Link to {href}. {/*TODO: need more exciting link text*/}</a>;
 <MyComponents.FancyLink foo="bar"/>;

@@ -3,7 +3,7 @@
  * data in outbound network requests.
  *
  * Note, for performance reasons: only import this file if
- * `FileAccessToHttp::Configuration` is needed, otherwise
+ * `FileAccessTohttps::Configuration` is needed, otherwise
  * `FileAccessToHttpCustomizations` should be imported instead.
  */
 
