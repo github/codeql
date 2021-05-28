@@ -1181,6 +1181,8 @@ class VarAccess extends Identifier {
 
   /** Gets the accessed variable. */
   VarDecl getDeclaration() { result = decl }
+
+  override string getAPrimaryQlClass() { result = "VarAccess" }
 }
 
 /** A `not` formula. */
