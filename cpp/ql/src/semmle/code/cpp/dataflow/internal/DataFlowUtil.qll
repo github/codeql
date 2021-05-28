@@ -10,15 +10,31 @@ private import semmle.code.cpp.dataflow.internal.AddressFlow
 
 private newtype TE =
   TVar(SsaDefinition def, StackVariable x, VariableAccess acc) { def.getAUse(x) = acc } or
+  TLit(Literal lit) or
   TAdd(AddExpr add) or
   TMul(MulExpr mul) or
   TSub(SubExpr sub) or
   TDiv(DivExpr div)
 
+private newtype TF =
+  TTrue() or
+  TNot(TF f) { f = interpF(_) } or
+  TAnd(LogicalAndExpr conj) or
+  TOr(LogicalOrExpr disj) or
+  TEq(EQExpr eq) or
+  TNEq(NEExpr neq) or
+  TLT(LTExpr lt) or
+  TGT(GTExpr gt) or
+  TLE(LEExpr le) or
+  TGE(GEExpr ge) or
+  TTruthy(Expr e)
+
 abstract private class E extends TE {
-  abstract string toString();
+  string toString() { result = "E" }
 
   predicate asVar(SsaDefinition def, StackVariable x, VariableAccess acc) { none() }
+
+  predicate asLit(E e, Literal lit) { none() }
 
   predicate asAdd(E left, E right) { none() }
 
@@ -42,6 +58,15 @@ private class Var extends E, TVar {
 
   override predicate asVar(SsaDefinition def2, StackVariable x2, VariableAccess acc2) {
     this = TVar(def2, x2, acc2)
+  }
+}
+
+private class LitE extends E, TLit {
+  LitE() { this = TLit(_) }
+
+  override predicate asLit(E e, Literal lit) {
+    this = TLit(lit) and
+    e = interpE(lit)
   }
 }
 
@@ -100,19 +125,6 @@ private class DivE extends E, TDiv {
     )
   }
 }
-
-private newtype TF =
-  TTrue() or
-  TNot(TF f) { f = interpF(_) } or
-  TAnd(LogicalAndExpr conj) or
-  TOr(LogicalOrExpr disj) or
-  TEq(EQExpr eq) or
-  TNEq(NEExpr neq) or
-  TLT(LTExpr lt) or
-  TGT(GTExpr gt) or
-  TLE(LEExpr le) or
-  TGE(GEExpr ge) or
-  TTruthy(Expr e)
 
 abstract private class F extends TF {
   final string toString() { result = stringOfFormula(this) }
@@ -306,12 +318,19 @@ private E interpE(Expr e) {
     result = TVar(ssa, x, e)
   )
   or
+  result = TLit(e)
+  or
   result = interpretBinaryOperationE(e)
 }
 
 private string stringOfE(E e) {
   exists(SsaDefinition def, StackVariable x |
     e.asVar(def, x, _) and result = x + "." + def.getLocation().getStartLine()
+  )
+  or
+  exists(Literal literal |
+    e.asLit(e, literal) and
+    result = literal.getValue()
   )
   or
   exists(E e1, E e2 |

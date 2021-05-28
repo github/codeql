@@ -1,5 +1,10 @@
+/**
+ * @kind path-problem
+ */
+
 import cpp
 import semmle.code.cpp.dataflow.DataFlow::DataFlow
+import PathGraph
 
 class Config extends Configuration {
   Config() { this = "Config" }
@@ -13,6 +18,6 @@ class Config extends Configuration {
   }
 }
 
-from Node source, Node sink, Config config
-where config.hasFlow(source, sink)
-select source, sink
+from PathNode source, PathNode sink, Config config
+where config.hasFlowPath(source, sink)
+select sink.getNode(), source, sink, ""
