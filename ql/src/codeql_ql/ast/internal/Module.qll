@@ -2,11 +2,6 @@ import ql
 private import codeql_ql.ast.internal.AstNodes as AstNodes
 private import codeql_ql.ast.internal.TreeSitter
 
-private newtype TContainerOrModule =
-  TFile(File f) or
-  TFolder(Folder f) or
-  TModule(Module m)
-
 private class ContainerOrModule extends TContainerOrModule {
   string getName() { none() }
 
@@ -146,25 +141,42 @@ private predicate resolveSelectionName(Import imp, ContainerOrModule m, int i) {
   )
 }
 
-/** Holds if import statement `imp` resolves to `m`. */
-predicate resolve(Import imp, FileOrModule m) {
-  exists(int last |
-    resolveSelectionName(imp, m, last) and
-    last = count(int j | exists(imp.getSelectionName(j))) - 1
-  )
+cached
+private module Cached {
+  cached
+  module NewType {
+    cached
+    newtype TContainerOrModule =
+      TFile(File f) or
+      TFolder(Folder f) or
+      TModule(Module m)
+  }
+
+  /** Holds if import statement `imp` resolves to `m`. */
+  cached
+  predicate resolve(Import imp, FileOrModule m) {
+    exists(int last |
+      resolveSelectionName(imp, m, last) and
+      last = count(int j | exists(imp.getSelectionName(j))) - 1
+    )
+  }
+
+  /** Holds if module expression `me` resolves to `m`. */
+  cached
+  predicate resolveModuleExpr(ModuleExpr me, FileOrModule m) {
+    not m = TFile(any(File f | f.getExtension() = "ql")) and
+    not exists(me.getQualifier()) and
+    definesModule(getEnclosingModule(me).getEnclosing*(), me.getName(), m, _)
+    or
+    exists(FileOrModule mid |
+      resolveModuleExpr(me.getQualifier(), mid) and
+      definesModule(mid, me.getName(), m, true)
+    )
+  }
 }
 
-/** Holds if module expression `me` resolves to `m`. */
-predicate resolveModuleExpr(ModuleExpr me, FileOrModule m) {
-  not m = TFile(any(File f | f.getExtension() = "ql")) and
-  not exists(me.getQualifier()) and
-  definesModule(getEnclosingModule(me).getEnclosing*(), me.getName(), m, _)
-  or
-  exists(FileOrModule mid |
-    resolveModuleExpr(me.getQualifier(), mid) and
-    definesModule(mid, me.getName(), m, true)
-  )
-}
+import Cached
+private import NewType
 
 boolean getPublicBool(AstNode n) {
   if n.(ModuleMember).isPrivate() or n.(NewTypeBranch).getNewType().isPrivate()

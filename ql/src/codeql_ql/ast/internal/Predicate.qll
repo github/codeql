@@ -38,58 +38,73 @@ private predicate definesPredicate(
   )
 }
 
-predicate resolvePredicateExpr(PredicateExpr pe, ClasslessPredicate p) {
-  exists(FileOrModule m, boolean public |
-    not exists(pe.getQualifier()) and
-    m = getEnclosingModule(pe).getEnclosing*() and
-    public = [false, true]
-    or
-    m = pe.getQualifier().getResolvedModule() and
-    public = true
-  |
-    definesPredicate(m, pe.getName(), count(p.getParameter(_)), p, public)
-  )
-}
-
-private predicate resolvePredicateCall(PredicateCall pc, PredicateOrBuiltin p) {
-  exists(Class c, ClassType t |
-    c = pc.getParent*() and
-    t = c.getType() and
-    p = t.getClassPredicate(pc.getPredicateName(), pc.getNumberOfArguments())
-  )
-  or
-  exists(FileOrModule m, boolean public |
-    not exists(pc.getQualifier()) and
-    m = getEnclosingModule(pc).getEnclosing*() and
-    public = [false, true]
-    or
-    m = pc.getQualifier().getResolvedModule() and
-    public = true
-  |
-    definesPredicate(m, pc.getPredicateName(), pc.getNumberOfArguments(), p.getDeclaration(), public)
-  )
-}
-
-private predicate resolveMemberCall(MemberCall mc, PredicateOrBuiltin p) {
-  exists(Type t |
-    t = mc.getBase().getType() and
-    p = t.getClassPredicate(mc.getMemberName(), mc.getNumberOfArguments())
-  )
-}
-
-predicate resolveCall(Call c, PredicateOrBuiltin p) {
-  resolvePredicateCall(c, p)
-  or
-  resolveMemberCall(c, p)
-}
-
-private newtype TPredOrBuiltin =
-  TPred(Predicate p) or
-  TNewTypeBranch(NewTypeBranch b) or
-  TBuiltinClassless(string ret, string name, string args) { isBuiltinClassless(ret, name, args) } or
-  TBuiltinMember(string qual, string ret, string name, string args) {
-    isBuiltinMember(qual, ret, name, args)
+cached
+private module Cached {
+  cached
+  predicate resolvePredicateExpr(PredicateExpr pe, ClasslessPredicate p) {
+    exists(FileOrModule m, boolean public |
+      not exists(pe.getQualifier()) and
+      m = getEnclosingModule(pe).getEnclosing*() and
+      public = [false, true]
+      or
+      m = pe.getQualifier().getResolvedModule() and
+      public = true
+    |
+      definesPredicate(m, pe.getName(), count(p.getParameter(_)), p, public)
+    )
   }
+
+  private predicate resolvePredicateCall(PredicateCall pc, PredicateOrBuiltin p) {
+    exists(Class c, ClassType t |
+      c = pc.getParent*() and
+      t = c.getType() and
+      p = t.getClassPredicate(pc.getPredicateName(), pc.getNumberOfArguments())
+    )
+    or
+    exists(FileOrModule m, boolean public |
+      not exists(pc.getQualifier()) and
+      m = getEnclosingModule(pc).getEnclosing*() and
+      public = [false, true]
+      or
+      m = pc.getQualifier().getResolvedModule() and
+      public = true
+    |
+      definesPredicate(m, pc.getPredicateName(), pc.getNumberOfArguments(), p.getDeclaration(),
+        public)
+    )
+  }
+
+  private predicate resolveMemberCall(MemberCall mc, PredicateOrBuiltin p) {
+    exists(Type t |
+      t = mc.getBase().getType() and
+      p = t.getClassPredicate(mc.getMemberName(), mc.getNumberOfArguments())
+    )
+  }
+
+  cached
+  predicate resolveCall(Call c, PredicateOrBuiltin p) {
+    resolvePredicateCall(c, p)
+    or
+    resolveMemberCall(c, p)
+  }
+
+  cached
+  module NewTypeDef {
+    cached
+    newtype TPredOrBuiltin =
+      TPred(Predicate p) or
+      TNewTypeBranch(NewTypeBranch b) or
+      TBuiltinClassless(string ret, string name, string args) {
+        isBuiltinClassless(ret, name, args)
+      } or
+      TBuiltinMember(string qual, string ret, string name, string args) {
+        isBuiltinMember(qual, ret, name, args)
+      }
+  }
+}
+
+import Cached
+private import NewTypeDef
 
 class PredicateOrBuiltin extends TPredOrBuiltin {
   string getName() { none() }
