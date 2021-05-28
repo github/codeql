@@ -1,0 +1,55 @@
+name: "CodeQL action"
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "15 0 * * 2"
+  workflow_dispatch:
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-qltest-cargo-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Build Extractor
+        run: ./create-extractor-pack.sh
+# TODO
+
+#  analyze:
+#    name: Analyze
+#    runs-on: ubuntu-latest
+#    permissions:
+#      actions: read
+#      contents: read
+#      security-events: write
+#
+#    strategy:
+#      fail-fast: false
+#      matrix:
+#        language: ["ql"]
+#
+#    steps:
+#      - name: Initialize CodeQL
+#        uses: github/codeql-action/init@v1
+#        with:
+#          languages: ${{ matrix.language }}
+#          tools: extractor-pack
+#
+#      - name: Autobuild
+#        uses: github/codeql-action/autobuild@v1
+#
+#      - name: Perform CodeQL Analysis
+#        uses: github/codeql-action/analyze@v1
