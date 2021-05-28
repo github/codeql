@@ -2,7 +2,7 @@ import ql
 private import codeql_ql.ast.internal.AstNodes
 private import codeql_ql.ast.internal.Module
 private import codeql_ql.ast.internal.Predicate
-private import codeql_ql.ast.internal.Type
+import codeql_ql.ast.internal.Type
 private import codeql_ql.ast.internal.Variable
 
 bindingset[name, i]
@@ -257,17 +257,27 @@ class CharPred extends TCharPred, Predicate {
 }
 
 /**
+ * A variable definition. This is either a variable declaration or
+ * an `as` expression.
+ */
+class VarDef extends TVarDef, AstNode {
+  /** Gets the name of the declared variable. */
+  string getName() { none() }
+
+  override string getAPrimaryQlClass() { result = "VarDef" }
+
+  override string toString() { result = this.getName() }
+}
+
+/**
  * A variable declaration, with a type and a name.
  */
-class VarDecl extends TVarDecl, AstNode {
+class VarDecl extends TVarDecl, VarDef {
   Generated::VarDecl var;
 
   VarDecl() { this = TVarDecl(var) }
 
-  /**
-   * Gets the name for this variable declaration.
-   */
-  string getName() { result = var.getChild(1).(Generated::VarName).getChild().getValue() }
+  override string getName() { result = var.getChild(1).(Generated::VarName).getChild().getValue() }
 
   override string getAPrimaryQlClass() { result = "VarDecl" }
 
@@ -407,6 +417,8 @@ class ModuleMember extends TModuleMember, AstNode {
 class Declaration extends TDeclaration, AstNode {
   /** Gets the name of this declaration. */
   string getName() { none() }
+
+  final override string toString() { result = this.getName() }
 }
 
 /** An entity that can be declared in a module. */
@@ -1088,19 +1100,21 @@ class ExprAggregate extends TExprAggregate, Expr {
 /** An aggregate expression, such as `count` or `sum`. */
 class Aggregate extends TAggregate, Expr {
   Generated::Aggregate agg;
-  Generated::FullAggregateBody body;
   string kind;
 
   Aggregate() {
     this = TAggregate(agg) and
-    kind = agg.getChild(0).(Generated::AggId).getValue() and
-    body = agg.getChild(_)
+    kind = agg.getChild(0).(Generated::AggId).getValue()
   }
+
+  private Generated::FullAggregateBody getBody1() { result = agg.getChild(_) }
+
+  private Generated::ExprAggregateBody getBody2() { result = agg.getChild(_) }
 
   string getKind() { result = kind }
 
   /** Gets the ith declared argument of this quantifier. */
-  VarDecl getArgument(int i) { toGenerated(result) = body.getChild(i) }
+  VarDecl getArgument(int i) { toGenerated(result) = this.getBody1().getChild(i) }
 
   /** Gets an argument of this quantifier. */
   VarDecl getAnArgument() { result = this.getArgument(_) }
@@ -1108,23 +1122,33 @@ class Aggregate extends TAggregate, Expr {
   /**
    * Gets the formula restricting the range of this quantifier, if any.
    */
-  Formula getRange() { toGenerated(result) = body.getGuard() }
+  Formula getRange() { toGenerated(result) = this.getBody1().getGuard() }
 
   /**
    * Gets the ith "as" expression of this aggregate, if any.
    */
-  AsExpr getAsExpr(int i) { toGenerated(result) = body.getAsExprs().getChild(i) }
+  AsExpr getAsExpr(int i) {
+    toGenerated(result) = [this.getBody1().getAsExprs(), this.getBody2().getAsExprs()].getChild(i)
+  }
 
   /**
    * Gets the ith "order by" expression of this aggregate, if any.
    */
-  Expr getOrderBy(int i) { toGenerated(result) = body.getOrderBys().getChild(i).getChild(0) }
+  Expr getOrderBy(int i) {
+    toGenerated(result) =
+      [this.getBody1().getOrderBys(), this.getBody2().getOrderBys()].getChild(i).getChild(0)
+  }
 
   /**
    * Gets the direction (ascending or descending) of the ith "order by" expression of this aggregate.
    */
   string getOrderbyDirection(int i) {
-    result = body.getOrderBys().getChild(i).getChild(1).(Generated::Direction).getValue()
+    result =
+      [this.getBody1().getOrderBys(), this.getBody2().getOrderBys()]
+          .getChild(i)
+          .getChild(1)
+          .(Generated::Direction)
+          .getValue()
   }
 
   override string getAPrimaryQlClass() { result = "Aggregate[" + kind + "]" }
@@ -1159,12 +1183,14 @@ class Rank extends Aggregate {
 /**
  * An "as" expression, such as `foo as bar`.
  */
-class AsExpr extends TAsExpr, AstNode {
+class AsExpr extends TAsExpr, VarDef {
   Generated::AsExpr asExpr;
 
   AsExpr() { this = TAsExpr(asExpr) }
 
   override string getAPrimaryQlClass() { result = "AsExpr" }
+
+  final override string getName() { result = this.getAsName() }
 
   /**
    * Gets the name the inner expression gets "saved" under, if it exists.
@@ -1189,6 +1215,13 @@ class AsExpr extends TAsExpr, AstNode {
   }
 
   override AstNode getAChild(string pred) { pred = "getInnerExpr" and result = this.getInnerExpr() }
+
+  override string toString() {
+    result = this.getName()
+    or
+    not exists(this.getName()) and
+    result = "AsExpr"
+  }
 }
 
 class Identifier extends TIdentifier, Expr {
@@ -1196,21 +1229,57 @@ class Identifier extends TIdentifier, Expr {
 
   Identifier() { this = TIdentifier(id) }
 
-  string getName() { result = id.getChild().(Generated::VarName).getChild().getValue() }
+  string getName() { none() }
+
+  final override string toString() { result = this.getName() }
 
   override string getAPrimaryQlClass() { result = "Identifier" }
 }
 
 /** An access to a variable. */
 class VarAccess extends Identifier {
-  private VarDecl decl;
+  private VarDef decl;
 
   VarAccess() { resolveVariable(this, decl) }
 
   /** Gets the accessed variable. */
-  VarDecl getDeclaration() { result = decl }
+  VarDef getDeclaration() { result = decl }
+
+  override string getName() { result = id.getChild().(Generated::VarName).getChild().getValue() }
 
   override string getAPrimaryQlClass() { result = "VarAccess" }
+}
+
+/** An access to a field. */
+class FieldAccess extends Identifier {
+  private VarDecl decl;
+
+  FieldAccess() { resolveField(this, decl) }
+
+  /** Gets the accessed field. */
+  VarDecl getDeclaration() { result = decl }
+
+  override string getName() { result = id.getChild().(Generated::VarName).getChild().getValue() }
+
+  override string getAPrimaryQlClass() { result = "FieldAccess" }
+}
+
+/** An access to `this`. */
+class ThisAccess extends Identifier {
+  ThisAccess() { any(Generated::This t).getParent() = id }
+
+  override string getName() { result = "this" }
+
+  override string getAPrimaryQlClass() { result = "ThisAccess" }
+}
+
+/** An access to `result`. */
+class ResultAccess extends Identifier {
+  ResultAccess() { any(Generated::Result r).getParent() = id }
+
+  override string getName() { result = "result" }
+
+  override string getAPrimaryQlClass() { result = "ResultAccess" }
 }
 
 /** A `not` formula. */
