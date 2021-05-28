@@ -127,6 +127,8 @@ private class DefinedPredicate extends PredicateOrBuiltin, TPred {
 
   override Type getParameterType(int i) { result = decl.getParameter(i).getType() }
 
+  override int getArity() { result = decl.getArity() }
+
   override Type getDeclaringType() {
     result = decl.(ClassPredicate).getDeclaringType()
     or
