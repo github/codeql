@@ -147,7 +147,7 @@ private newtype TF =
   TTruthy(TE e)
 
 abstract private class F extends TF {
-  final string toString() { result = "F" }
+  final string toString() { result = stringOfFormula(this) }
 
   predicate asTrue() { none() }
 
@@ -177,7 +177,7 @@ class Formula = F;
 class True extends TTrue, F {
   True() { this = TTrue() }
 
-  override predicate asTrue() { any() }
+  override predicate asTrue() { this = TTrue() }
 }
 
 private class Not extends TNot, F {
@@ -246,20 +246,28 @@ private F interpretUnaryOperationF(UnaryOperation unary) {
 }
 
 private F interpretBinaryOperationF(BinaryOperation binary) {
+  binary instanceof LogicalAndExpr and
   result = TAnd(interpF(binary.getLeftOperand()), interpF(binary.getRightOperand()))
   or
+  binary instanceof LogicalOrExpr and
   result = TOr(interpF(binary.getLeftOperand()), interpF(binary.getRightOperand()))
   or
+  binary instanceof EQExpr and
   result = TEq(interpE(binary.getLeftOperand()), interpE(binary.getRightOperand()))
   or
+  binary instanceof NEExpr and
   result = TNEq(interpE(binary.getLeftOperand()), interpE(binary.getRightOperand()))
   or
+  binary instanceof LTExpr and
   result = TLT(interpE(binary.getLeftOperand()), interpE(binary.getRightOperand()))
   or
+  binary instanceof GTExpr and
   result = TGT(interpE(binary.getLeftOperand()), interpE(binary.getRightOperand()))
   or
+  binary instanceof LEExpr and
   result = TLE(interpE(binary.getLeftOperand()), interpE(binary.getRightOperand()))
   or
+  binary instanceof GEExpr and
   result = TGE(interpE(binary.getLeftOperand()), interpE(binary.getRightOperand()))
 }
 
@@ -272,12 +280,16 @@ private F interpF(Expr e) {
 }
 
 private E interpretBinaryOperationE(BinaryOperation e) {
+  e instanceof AddExpr and
   result = TAdd(interpE(e.getLeftOperand()), interpE(e.getRightOperand()))
   or
+  e instanceof SubExpr and
   result = TSub(interpE(e.getLeftOperand()), interpE(e.getRightOperand()))
   or
+  e instanceof MulExpr and
   result = TMul(interpE(e.getLeftOperand()), interpE(e.getRightOperand()))
   or
+  e instanceof DivExpr and
   result = TDiv(interpE(e.getLeftOperand()), interpE(e.getRightOperand()))
 }
 
@@ -286,8 +298,6 @@ private E interpE(Expr e) {
   or
   result = interpretBinaryOperationE(e)
 }
-
-private F interpretGuard(GuardCondition guard) { result = interpF(guard) }
 
 private string stringOfE(E e) {
   exists(SsaDefinition x |
@@ -318,16 +328,14 @@ private string stringOfE(E e) {
 F getACondition(Node node) {
   result = TTrue()
   or
-  exists(GuardCondition guard |
-    guard.isCondition() and
-    guard.controls(node.asExpr().getBasicBlock(), true) and
-    result = interpretGuard(guard)
+  exists(IfStmt cond |
+    dominates(cond.getThen(), node.asExpr()) and
+    result = interpF(cond.getCondition())
   )
   or
-  exists(GuardCondition guard |
-    guard.isCondition() and
-    guard.controls(node.asExpr().getBasicBlock(), false) and
-    result = TNot(interpretGuard(guard))
+  exists(IfStmt cond |
+    dominates(cond.getElse(), node.asExpr()) and
+    result = TNot(interpF(cond.getCondition()))
   )
 }
 
