@@ -314,4 +314,18 @@ module TyConsistency {
     c > 1 and
     resolveTypeExpr(te, t)
   }
+
+  query predicate varDefNoType(VarDef def) {
+    not exists(def.getType()) and
+    not def.getLocation().getFile().getAbsolutePath().regexpMatch(".*/(test|examples)/.*")
+  }
+
+  query predicate exprNoType(Expr e) {
+    not exists(e.getType()) and
+    not exists(Predicate p |
+      p = e.(Call).getTarget() and
+      not exists(p.getReturnType())
+    ) and
+    not e.getLocation().getFile().getAbsolutePath().regexpMatch(".*/(test|examples)/.*")
+  }
 }
