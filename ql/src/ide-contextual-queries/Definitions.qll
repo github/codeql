@@ -49,7 +49,7 @@ private predicate resolveVar(VarAccess va, VarDecl decl, string kind) {
 }
 
 private predicate resolveCall(Call c, Predicate p, string kind) {
-  p = c.getTarget() and
+  p = c.getTarget().getDeclaration() and
   kind = "call"
 }
 
