@@ -15,6 +15,6 @@ string getQualifiedName(ClassPredicate p) {
 }
 
 from ClassPredicate pred, ClassPredicate sup
-where pred.overrides(sup) and not pred.hasAnnotation("override")
+where pred.overrides(sup) and not pred.isOverride()
 select pred, getQualifiedName(pred) + "overrides $@ but does not have an override annotation.", sup,
   getQualifiedName(sup)
