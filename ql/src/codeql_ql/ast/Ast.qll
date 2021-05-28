@@ -283,6 +283,8 @@ class CharPred extends TCharPred, Predicate {
     or
     pred_name = directMember("getBody") and result = this.getBody()
   }
+
+  ClassType getDeclaringType() { result.getDeclaration() = getParent() }
 }
 
 /**
@@ -600,7 +602,7 @@ class Call extends TCall, Expr {
     none() // overriden in sublcasses.
   }
 
-  Predicate getTarget() { resolveCall(this, result) }
+  PredicateOrBuiltin getTarget() { resolveCall(this, result) }
 
   override Type getType() { result = this.getTarget().getReturnType() }
 
