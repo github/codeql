@@ -2,6 +2,7 @@ import ql
 private import codeql_ql.ast.internal.AstNodes as AstNodes
 private import codeql_ql.ast.internal.TreeSitter
 private import codeql_ql.ast.internal.Module
+private import codeql_ql.ast.internal.Predicate
 
 private newtype TType =
   TClass(Class c) { isActualClass(c) } or
@@ -59,6 +60,13 @@ class Type extends TType {
       endcolumn = 0
     )
   }
+
+  PredicateOrBuiltin getClassPredicate(string name, int arity) {
+    result = classPredCandidate(this, name, arity) and
+    not exists(PredicateOrBuiltin other | other = classPredCandidate(this, name, arity) |
+      other.getDeclaringType().getASuperType+() = result.getDeclaringType()
+    )
+  }
 }
 
 class ClassType extends Type, TClass {
@@ -78,13 +86,6 @@ class ClassType extends Type, TClass {
     result = super.getAnInternalSuperType()
   }
 
-  ClassPredicate getClassPredicate(string name, int arity) {
-    result = classPredCandidate(this, name, arity) and
-    not exists(ClassPredicate other | other = classPredCandidate(this, name, arity) |
-      other.getDeclaringType().getASuperType+() = result.getDeclaringType()
-    )
-  }
-
   VarDecl getField(string name) {
     result = fieldCandidate(this, name) and
     not exists(VarDecl other | other = fieldCandidate(this, name) |
@@ -93,26 +94,27 @@ class ClassType extends Type, TClass {
   }
 }
 
-private ClassPredicate declaredPred(ClassType ty, string name, int arity) {
-  result = ty.getDeclaration().getAClassPredicate() and
+private PredicateOrBuiltin declaredPred(Type ty, string name, int arity) {
+  result.getDeclaringType() = ty and
   result.getName() = name and
   result.getArity() = arity
 }
 
-private ClassPredicate classPredCandidate(ClassType ty, string name, int arity) {
+private PredicateOrBuiltin classPredCandidate(Type ty, string name, int arity) {
   result = declaredPred(ty, name, arity)
   or
   not exists(declaredPred(ty, name, arity)) and
   result = inherClassPredCandidate(ty, name, arity)
 }
 
-private ClassPredicate inherClassPredCandidate(ClassType ty, string name, int arity) {
-  result = classPredCandidate(ty.getASuperType(), name, arity) and
+private PredicateOrBuiltin inherClassPredCandidate(Type ty, string name, int arity) {
+  result = classPredCandidate(ty.getAnInternalSuperType(), name, arity) and
   not result.isPrivate()
 }
 
 predicate predOverrides(ClassPredicate sub, ClassPredicate sup) {
-  sup = inherClassPredCandidate(sub.getDeclaringType(), sub.getName(), sub.getArity())
+  sup =
+    inherClassPredCandidate(sub.getDeclaringType(), sub.getName(), sub.getArity()).getDeclaration()
 }
 
 private VarDecl declaredField(ClassType ty, string name) {
@@ -322,7 +324,7 @@ module TyConsistency {
 
   query predicate exprNoType(Expr e) {
     not exists(e.getType()) and
-    not exists(Predicate p |
+    not exists(PredicateOrBuiltin p |
       p = e.(Call).getTarget() and
       not exists(p.getReturnType())
     ) and
