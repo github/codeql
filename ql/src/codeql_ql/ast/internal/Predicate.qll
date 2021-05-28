@@ -38,15 +38,59 @@ predicate resolvePredicateExpr(PredicateExpr pe, ClasslessPredicate p) {
   )
 }
 
+private predicate resolvePredicateCall(PredicateCall pc, Predicate p) {
+  exists(Class c, ClassType t |
+    c = pc.getParent*() and
+    t = c.getType() and
+    p = t.getClassPredicate(pc.getPredicateName(), pc.getNumberOfArguments())
+  )
+  or
+  exists(FileOrModule m, boolean public |
+    not exists(pc.getQualifier()) and
+    m = getEnclosingModule(pc).getEnclosing*() and
+    public = [false, true]
+    or
+    m = pc.getQualifier().getResolvedModule() and
+    public = true
+  |
+    definesPredicate(m, pc.getPredicateName(), p, public) and
+    count(p.getParameter(_)) = pc.getNumberOfArguments()
+  )
+}
+
+private predicate resolveMemberCall(MemberCall mc, Predicate p) {
+  exists(ClassType t |
+    t = mc.getBase().getType() and
+    p = t.getClassPredicate(mc.getMemberName(), mc.getNumberOfArguments())
+  )
+}
+
+predicate resolveCall(Call c, Predicate p) {
+  resolvePredicateCall(c, p)
+  or
+  resolveMemberCall(c, p)
+}
+
 module PredConsistency {
   query predicate noResolvePredicateExpr(PredicateExpr pe) {
     not resolvePredicateExpr(pe, _) and
     not pe.getLocation().getFile().getAbsolutePath().regexpMatch(".*/(test|examples)/.*")
   }
 
+  query predicate noResolveCall(Call c) {
+    not resolveCall(c, _) and
+    not c.getLocation().getFile().getAbsolutePath().regexpMatch(".*/(test|examples)/.*")
+  }
+
   query predicate multipleResolvePredicateExpr(PredicateExpr pe, int c, ClasslessPredicate p) {
     c = strictcount(ClasslessPredicate p0 | resolvePredicateExpr(pe, p0)) and
     c > 1 and
     resolvePredicateExpr(pe, p)
+  }
+
+  query predicate multipleResolveCall(Call call, int c, Predicate p) {
+    c = strictcount(Predicate p0 | resolveCall(call, p0)) and
+    c > 1 and
+    resolveCall(call, p)
   }
 }
