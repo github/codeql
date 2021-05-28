@@ -48,6 +48,11 @@ private predicate resolveVar(VarAccess va, VarDecl decl, string kind) {
   kind = "variable"
 }
 
+private predicate resolveCall(Call c, Predicate p, string kind) {
+  p = c.getTarget() and
+  kind = "call"
+}
+
 cached
 predicate resolve(Loc ref, Loc target, string kind) {
   resolveModule(ref.asAst(), target.asMod(), kind)
@@ -57,4 +62,6 @@ predicate resolve(Loc ref, Loc target, string kind) {
   resolvePredicate(ref.asAst(), target.asAst(), kind)
   or
   resolveVar(ref.asAst(), target.asAst(), kind)
+  or
+  resolveCall(ref.asAst(), target.asAst(), kind)
 }
