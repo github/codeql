@@ -1,12 +1,12 @@
 /**
- * @name Swapped parameter names in overriding predicate.
- * @description Swapping the parameter names in an overriding method indicates an implementation mistake.
+ * @name Using a different paramater name than used in the super-predicate.
+ * @description Using another parameter can be an indication of copy-pasted code, or a mistake.
  * @kind problem
- * @problem.severity error
- * @id ql/override-swapped-name
+ * @problem.severity warning
+ * @id ql/override-parameter-name
  * @tags correctness
  *       maintainability
- * @precision high
+ * @precision medium
  */
 
 import ql
@@ -23,7 +23,8 @@ from ClassPredicate pred, ClassPredicate sup, VarDecl parameter, int index
 where
   getAnOverridingParameter(pred, sup, parameter, index) and
   sup.getParameter(index).getName() != pred.getParameter(index).getName() and
-  exists(int other | other != index |
+  // avoid duplicated alerts with `ql/override-swapped-name`
+  not exists(int other | other != index |
     sup.getParameter(other).getName() = pred.getParameter(index).getName()
   )
 select parameter, pred.getParameter(index).getName() + " was $@ in the super class.",
