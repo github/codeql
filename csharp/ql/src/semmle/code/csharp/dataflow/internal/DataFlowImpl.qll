@@ -419,7 +419,24 @@ private module Stage1 {
   }
 
   string getCondition(Node node, Configuration config) {
-    result = "(and " + concat(Formula f | fwdFlow(node, f, config) | stringOfFormula(f), " ") + ")"
+    exists(int n |
+      n = count(Formula f | fwdFlow(node, f, config) and not f instanceof True | stringOfFormula(f))
+    |
+      n = 0 and result = "true"
+      or
+      n = 1 and
+      result =
+        any(Formula f | fwdFlow(node, f, config) and not f instanceof True | stringOfFormula(f))
+      or
+      n > 1 and
+      result =
+        "(and " +
+          concat(Formula f |
+            fwdFlow(node, f, config) and not f instanceof True
+          |
+            stringOfFormula(f), " "
+          ) + ")"
+    )
   }
 
   /**
