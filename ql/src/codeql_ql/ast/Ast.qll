@@ -459,7 +459,7 @@ class VarDecl extends TVarDecl, VarDef, Declaration {
     pred = directMember("getTypeExpr") and result = this.getTypeExpr()
   }
 
-  override string toString() { result = Declaration.super.toString() }
+  override string toString() { result = this.getName() }
 }
 
 /**
@@ -568,7 +568,7 @@ class Declaration extends TDeclaration, AstNode {
   /** Gets the name of this declaration. */
   string getName() { none() }
 
-  override string toString() { result = this.getName() }
+  override string toString() { result = this.getAPrimaryQlClass() + " " + this.getName() }
 
   override QLDoc getQLDoc() {
     result = any(TopLevel m).getQLDocFor(this)

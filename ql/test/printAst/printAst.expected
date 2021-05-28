@@ -3,12 +3,12 @@ nodes
 | Foo.qll:1:1:1:17 | Import | semmle.order | 1 |
 | Foo.qll:1:1:25:2 | TopLevel | semmle.label | [TopLevel] TopLevel |
 | Foo.qll:1:1:25:2 | TopLevel | semmle.order | 1 |
-| Foo.qll:3:1:7:1 | Foo | semmle.label | [Class] Foo |
-| Foo.qll:3:1:7:1 | Foo | semmle.order | 3 |
+| Foo.qll:3:1:7:1 | Class Foo | semmle.label | [Class] Class Foo |
+| Foo.qll:3:1:7:1 | Class Foo | semmle.order | 3 |
 | Foo.qll:3:19:3:22 | TypeExpr | semmle.label | [TypeExpr] TypeExpr |
 | Foo.qll:3:19:3:22 | TypeExpr | semmle.order | 4 |
-| Foo.qll:4:3:4:17 | CharPred | semmle.label | [CharPred] CharPred |
-| Foo.qll:4:3:4:17 | CharPred | semmle.order | 5 |
+| Foo.qll:4:3:4:17 | CharPred Foo | semmle.label | [CharPred] CharPred Foo |
+| Foo.qll:4:3:4:17 | CharPred Foo | semmle.order | 5 |
 | Foo.qll:4:11:4:11 | Integer | semmle.label | [Integer] Integer |
 | Foo.qll:4:11:4:11 | Integer | semmle.order | 6 |
 | Foo.qll:4:11:4:15 | ComparisonFormula | semmle.label | [ComparisonFormula] ComparisonFormula |
@@ -19,8 +19,8 @@ nodes
 | Foo.qll:4:15:4:15 | Integer | semmle.order | 9 |
 | Foo.qll:6:3:6:8 | TypeExpr | semmle.label | [TypeExpr] TypeExpr |
 | Foo.qll:6:3:6:8 | TypeExpr | semmle.order | 10 |
-| Foo.qll:6:3:6:38 | ClassPredicate | semmle.label | [ClassPredicate] ClassPredicate |
-| Foo.qll:6:3:6:38 | ClassPredicate | semmle.order | 10 |
+| Foo.qll:6:3:6:38 | ClassPredicate toString | semmle.label | [ClassPredicate] ClassPredicate toString |
+| Foo.qll:6:3:6:38 | ClassPredicate toString | semmle.order | 10 |
 | Foo.qll:6:23:6:28 | result | semmle.label | [ResultAccess] result |
 | Foo.qll:6:23:6:28 | result | semmle.order | 12 |
 | Foo.qll:6:23:6:36 | ComparisonFormula | semmle.label | [ComparisonFormula] ComparisonFormula |
@@ -29,8 +29,8 @@ nodes
 | Foo.qll:6:30:6:30 | ComparisonOp | semmle.order | 14 |
 | Foo.qll:6:32:6:36 | String | semmle.label | [String] String |
 | Foo.qll:6:32:6:36 | String | semmle.order | 15 |
-| Foo.qll:9:7:11:1 | foo | semmle.label | [ClasslessPredicate] foo |
-| Foo.qll:9:7:11:1 | foo | semmle.order | 16 |
+| Foo.qll:9:7:11:1 | ClasslessPredicate foo | semmle.label | [ClasslessPredicate] ClasslessPredicate foo |
+| Foo.qll:9:7:11:1 | ClasslessPredicate foo | semmle.order | 16 |
 | Foo.qll:9:21:9:23 | TypeExpr | semmle.label | [TypeExpr] TypeExpr |
 | Foo.qll:9:21:9:23 | TypeExpr | semmle.order | 17 |
 | Foo.qll:9:21:9:25 | f | semmle.label | [VarDecl] f |
@@ -65,8 +65,8 @@ nodes
 | Foo.qll:10:69:10:73 | inner | semmle.order | 32 |
 | Foo.qll:10:69:10:84 | MemberCall | semmle.label | [MemberCall] MemberCall |
 | Foo.qll:10:69:10:84 | MemberCall | semmle.order | 32 |
-| Foo.qll:13:1:25:1 | calls | semmle.label | [ClasslessPredicate] calls |
-| Foo.qll:13:1:25:1 | calls | semmle.order | 34 |
+| Foo.qll:13:1:25:1 | ClasslessPredicate calls | semmle.label | [ClasslessPredicate] ClasslessPredicate calls |
+| Foo.qll:13:1:25:1 | ClasslessPredicate calls | semmle.order | 34 |
 | Foo.qll:13:17:13:19 | TypeExpr | semmle.label | [TypeExpr] TypeExpr |
 | Foo.qll:13:17:13:19 | TypeExpr | semmle.order | 35 |
 | Foo.qll:13:17:13:21 | f | semmle.label | [VarDecl] f |
@@ -164,42 +164,42 @@ nodes
 | printAst.ql:1:1:1:29 | TopLevel | semmle.label | [TopLevel] TopLevel |
 | printAst.ql:1:1:1:29 | TopLevel | semmle.order | 81 |
 edges
-| Foo.qll:1:1:25:2 | TopLevel | Foo.qll:1:1:1:17 | Import | semmle.label | getAMember() |
+| Foo.qll:1:1:25:2 | TopLevel | Foo.qll:1:1:1:17 | Import | semmle.label | getAnImport() |
 | Foo.qll:1:1:25:2 | TopLevel | Foo.qll:1:1:1:17 | Import | semmle.order | 1 |
-| Foo.qll:1:1:25:2 | TopLevel | Foo.qll:3:1:7:1 | Foo | semmle.label | getAMember() |
-| Foo.qll:1:1:25:2 | TopLevel | Foo.qll:3:1:7:1 | Foo | semmle.order | 3 |
-| Foo.qll:1:1:25:2 | TopLevel | Foo.qll:9:7:11:1 | foo | semmle.label | getAMember() |
-| Foo.qll:1:1:25:2 | TopLevel | Foo.qll:9:7:11:1 | foo | semmle.order | 16 |
-| Foo.qll:1:1:25:2 | TopLevel | Foo.qll:13:1:25:1 | calls | semmle.label | getAMember() |
-| Foo.qll:1:1:25:2 | TopLevel | Foo.qll:13:1:25:1 | calls | semmle.order | 34 |
-| Foo.qll:3:1:7:1 | Foo | Foo.qll:3:19:3:22 | TypeExpr | semmle.label | getASuperType() |
-| Foo.qll:3:1:7:1 | Foo | Foo.qll:3:19:3:22 | TypeExpr | semmle.order | 4 |
-| Foo.qll:3:1:7:1 | Foo | Foo.qll:4:3:4:17 | CharPred | semmle.label | getCharPred() |
-| Foo.qll:3:1:7:1 | Foo | Foo.qll:4:3:4:17 | CharPred | semmle.order | 5 |
-| Foo.qll:3:1:7:1 | Foo | Foo.qll:6:3:6:38 | ClassPredicate | semmle.label | getClassPredicate(_) |
-| Foo.qll:3:1:7:1 | Foo | Foo.qll:6:3:6:38 | ClassPredicate | semmle.order | 10 |
-| Foo.qll:4:3:4:17 | CharPred | Foo.qll:4:11:4:15 | ComparisonFormula | semmle.label | getBody() |
-| Foo.qll:4:3:4:17 | CharPred | Foo.qll:4:11:4:15 | ComparisonFormula | semmle.order | 6 |
+| Foo.qll:1:1:25:2 | TopLevel | Foo.qll:3:1:7:1 | Class Foo | semmle.label | getAClass() |
+| Foo.qll:1:1:25:2 | TopLevel | Foo.qll:3:1:7:1 | Class Foo | semmle.order | 3 |
+| Foo.qll:1:1:25:2 | TopLevel | Foo.qll:9:7:11:1 | ClasslessPredicate foo | semmle.label | getAPredicate() |
+| Foo.qll:1:1:25:2 | TopLevel | Foo.qll:9:7:11:1 | ClasslessPredicate foo | semmle.order | 16 |
+| Foo.qll:1:1:25:2 | TopLevel | Foo.qll:13:1:25:1 | ClasslessPredicate calls | semmle.label | getAPredicate() |
+| Foo.qll:1:1:25:2 | TopLevel | Foo.qll:13:1:25:1 | ClasslessPredicate calls | semmle.order | 34 |
+| Foo.qll:3:1:7:1 | Class Foo | Foo.qll:3:19:3:22 | TypeExpr | semmle.label | getASuperType() |
+| Foo.qll:3:1:7:1 | Class Foo | Foo.qll:3:19:3:22 | TypeExpr | semmle.order | 4 |
+| Foo.qll:3:1:7:1 | Class Foo | Foo.qll:4:3:4:17 | CharPred Foo | semmle.label | getCharPred() |
+| Foo.qll:3:1:7:1 | Class Foo | Foo.qll:4:3:4:17 | CharPred Foo | semmle.order | 5 |
+| Foo.qll:3:1:7:1 | Class Foo | Foo.qll:6:3:6:38 | ClassPredicate toString | semmle.label | getClassPredicate(_) |
+| Foo.qll:3:1:7:1 | Class Foo | Foo.qll:6:3:6:38 | ClassPredicate toString | semmle.order | 10 |
+| Foo.qll:4:3:4:17 | CharPred Foo | Foo.qll:4:11:4:15 | ComparisonFormula | semmle.label | getBody() |
+| Foo.qll:4:3:4:17 | CharPred Foo | Foo.qll:4:11:4:15 | ComparisonFormula | semmle.order | 6 |
 | Foo.qll:4:11:4:15 | ComparisonFormula | Foo.qll:4:11:4:11 | Integer | semmle.label | getLeftOperand() |
 | Foo.qll:4:11:4:15 | ComparisonFormula | Foo.qll:4:11:4:11 | Integer | semmle.order | 6 |
 | Foo.qll:4:11:4:15 | ComparisonFormula | Foo.qll:4:13:4:13 | ComparisonOp | semmle.label | getOperator() |
 | Foo.qll:4:11:4:15 | ComparisonFormula | Foo.qll:4:13:4:13 | ComparisonOp | semmle.order | 8 |
 | Foo.qll:4:11:4:15 | ComparisonFormula | Foo.qll:4:15:4:15 | Integer | semmle.label | getRightOperand() |
 | Foo.qll:4:11:4:15 | ComparisonFormula | Foo.qll:4:15:4:15 | Integer | semmle.order | 9 |
-| Foo.qll:6:3:6:38 | ClassPredicate | Foo.qll:6:3:6:8 | TypeExpr | semmle.label | getReturnTypeExpr() |
-| Foo.qll:6:3:6:38 | ClassPredicate | Foo.qll:6:3:6:8 | TypeExpr | semmle.order | 10 |
-| Foo.qll:6:3:6:38 | ClassPredicate | Foo.qll:6:23:6:36 | ComparisonFormula | semmle.label | getBody() |
-| Foo.qll:6:3:6:38 | ClassPredicate | Foo.qll:6:23:6:36 | ComparisonFormula | semmle.order | 12 |
+| Foo.qll:6:3:6:38 | ClassPredicate toString | Foo.qll:6:3:6:8 | TypeExpr | semmle.label | getReturnTypeExpr() |
+| Foo.qll:6:3:6:38 | ClassPredicate toString | Foo.qll:6:3:6:8 | TypeExpr | semmle.order | 10 |
+| Foo.qll:6:3:6:38 | ClassPredicate toString | Foo.qll:6:23:6:36 | ComparisonFormula | semmle.label | getBody() |
+| Foo.qll:6:3:6:38 | ClassPredicate toString | Foo.qll:6:23:6:36 | ComparisonFormula | semmle.order | 12 |
 | Foo.qll:6:23:6:36 | ComparisonFormula | Foo.qll:6:23:6:28 | result | semmle.label | getLeftOperand() |
 | Foo.qll:6:23:6:36 | ComparisonFormula | Foo.qll:6:23:6:28 | result | semmle.order | 12 |
 | Foo.qll:6:23:6:36 | ComparisonFormula | Foo.qll:6:30:6:30 | ComparisonOp | semmle.label | getOperator() |
 | Foo.qll:6:23:6:36 | ComparisonFormula | Foo.qll:6:30:6:30 | ComparisonOp | semmle.order | 14 |
 | Foo.qll:6:23:6:36 | ComparisonFormula | Foo.qll:6:32:6:36 | String | semmle.label | getRightOperand() |
 | Foo.qll:6:23:6:36 | ComparisonFormula | Foo.qll:6:32:6:36 | String | semmle.order | 15 |
-| Foo.qll:9:7:11:1 | foo | Foo.qll:9:21:9:25 | f | semmle.label | getParameter(_) |
-| Foo.qll:9:7:11:1 | foo | Foo.qll:9:21:9:25 | f | semmle.order | 17 |
-| Foo.qll:9:7:11:1 | foo | Foo.qll:10:3:10:85 | ComparisonFormula | semmle.label | getBody() |
-| Foo.qll:9:7:11:1 | foo | Foo.qll:10:3:10:85 | ComparisonFormula | semmle.order | 19 |
+| Foo.qll:9:7:11:1 | ClasslessPredicate foo | Foo.qll:9:21:9:25 | f | semmle.label | getParameter(_) |
+| Foo.qll:9:7:11:1 | ClasslessPredicate foo | Foo.qll:9:21:9:25 | f | semmle.order | 17 |
+| Foo.qll:9:7:11:1 | ClasslessPredicate foo | Foo.qll:10:3:10:85 | ComparisonFormula | semmle.label | getBody() |
+| Foo.qll:9:7:11:1 | ClasslessPredicate foo | Foo.qll:10:3:10:85 | ComparisonFormula | semmle.order | 19 |
 | Foo.qll:9:21:9:25 | f | Foo.qll:9:21:9:23 | TypeExpr | semmle.label | getTypeExpr() |
 | Foo.qll:9:21:9:25 | f | Foo.qll:9:21:9:23 | TypeExpr | semmle.order | 17 |
 | Foo.qll:10:3:10:85 | ComparisonFormula | Foo.qll:10:3:10:3 | f | semmle.label | getLeftOperand() |
@@ -230,10 +230,10 @@ edges
 | Foo.qll:10:27:10:50 | ComparisonFormula | Foo.qll:10:46:10:50 | String | semmle.order | 30 |
 | Foo.qll:10:69:10:84 | MemberCall | Foo.qll:10:69:10:73 | inner | semmle.label | getBase() |
 | Foo.qll:10:69:10:84 | MemberCall | Foo.qll:10:69:10:73 | inner | semmle.order | 32 |
-| Foo.qll:13:1:25:1 | calls | Foo.qll:13:17:13:21 | f | semmle.label | getParameter(_) |
-| Foo.qll:13:1:25:1 | calls | Foo.qll:13:17:13:21 | f | semmle.order | 35 |
-| Foo.qll:13:1:25:1 | calls | Foo.qll:14:3:24:23 | Disjunction | semmle.label | getBody() |
-| Foo.qll:13:1:25:1 | calls | Foo.qll:14:3:24:23 | Disjunction | semmle.order | 37 |
+| Foo.qll:13:1:25:1 | ClasslessPredicate calls | Foo.qll:13:17:13:21 | f | semmle.label | getParameter(_) |
+| Foo.qll:13:1:25:1 | ClasslessPredicate calls | Foo.qll:13:17:13:21 | f | semmle.order | 35 |
+| Foo.qll:13:1:25:1 | ClasslessPredicate calls | Foo.qll:14:3:24:23 | Disjunction | semmle.label | getBody() |
+| Foo.qll:13:1:25:1 | ClasslessPredicate calls | Foo.qll:14:3:24:23 | Disjunction | semmle.order | 37 |
 | Foo.qll:13:17:13:21 | f | Foo.qll:13:17:13:19 | TypeExpr | semmle.label | getTypeExpr() |
 | Foo.qll:13:17:13:21 | f | Foo.qll:13:17:13:19 | TypeExpr | semmle.order | 35 |
 | Foo.qll:14:3:14:10 | PredicateCall | Foo.qll:14:9:14:9 | f | semmle.label | getArgument(_) |
@@ -322,7 +322,7 @@ edges
 | Foo.qll:24:17:24:21 | AddExpr | Foo.qll:24:17:24:17 | Integer | semmle.order | 78 |
 | Foo.qll:24:17:24:21 | AddExpr | Foo.qll:24:21:24:21 | Integer | semmle.label | getRightOperand() |
 | Foo.qll:24:17:24:21 | AddExpr | Foo.qll:24:21:24:21 | Integer | semmle.order | 80 |
-| printAst.ql:1:1:1:29 | TopLevel | printAst.ql:1:1:1:28 | Import | semmle.label | getAMember() |
+| printAst.ql:1:1:1:29 | TopLevel | printAst.ql:1:1:1:28 | Import | semmle.label | getAnImport() |
 | printAst.ql:1:1:1:29 | TopLevel | printAst.ql:1:1:1:28 | Import | semmle.order | 81 |
 graphProperties
 | semmle.graphKind | tree |
