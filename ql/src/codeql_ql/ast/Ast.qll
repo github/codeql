@@ -288,7 +288,15 @@ class ClassPredicate extends TClassPredicate, Predicate {
 
   override Class getParent() { result.getAClassPredicate() = this }
 
+  /**
+   * Holds if this predicate is private.
+   */
   predicate isPrivate() { hasAnnotation(this, "private") }
+
+  /**
+   * Holds if this predicate is annotated as overriding another predicate.
+   */
+  predicate isOverride() { hasAnnotation(this, "override") }
 
   override VarDecl getParameter(int i) {
     toGenerated(result) =
