@@ -72,9 +72,7 @@ class PrintAstNode extends AstNode {
   /**
    * Gets the child node that is accessed using the predicate `edgeName`.
    */
-  PrintAstNode getChild(string edgeName) {
-    result = this.getAChild(edgeName)
-  }
+  PrintAstNode getChild(string edgeName) { result = this.getAChild(edgeName) }
 }
 
 private predicate shouldPrintNode(AstNode n) {
