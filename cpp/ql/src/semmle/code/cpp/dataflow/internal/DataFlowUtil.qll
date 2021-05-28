@@ -9,36 +9,16 @@ private import semmle.code.cpp.controlflow.Guards
 private import semmle.code.cpp.dataflow.internal.AddressFlow
 
 private newtype TE =
-  TVar(SsaDefinition def) or
-  TAdd(TE e1, TE e2) {
-    exists(AddExpr add |
-      e1 = interpE(add.getLeftOperand()) and
-      e2 = interpE(add.getRightOperand())
-    )
-  } or
-  TMul(TE e1, TE e2) {
-    exists(MulExpr mul |
-      e1 = interpE(mul.getLeftOperand()) and
-      e2 = interpE(mul.getRightOperand())
-    )
-  } or
-  TSub(TE e1, TE e2) {
-    exists(SubExpr sub |
-      e1 = interpE(sub.getLeftOperand()) and
-      e2 = interpE(sub.getRightOperand())
-    )
-  } or
-  TDiv(TE e1, TE e2) {
-    exists(DivExpr div |
-      e1 = interpE(div.getLeftOperand()) and
-      e2 = interpE(div.getRightOperand())
-    )
-  }
+  TVar(SsaDefinition def, StackVariable x, VariableAccess acc) { def.getAUse(x) = acc } or
+  TAdd(AddExpr add) or
+  TMul(MulExpr mul) or
+  TSub(SubExpr sub) or
+  TDiv(DivExpr div)
 
 abstract private class E extends TE {
   abstract string toString();
 
-  predicate asVar(SsaDefinition x) { none() }
+  predicate asVar(SsaDefinition def, StackVariable x, VariableAccess acc) { none() }
 
   predicate asAdd(E left, E right) { none() }
 
@@ -51,99 +31,87 @@ abstract private class E extends TE {
 
 private class Var extends E, TVar {
   SsaDefinition def;
+  StackVariable x;
+  VariableAccess acc;
 
-  Var() { this = TVar(def) }
+  Var() { this = TVar(def, x, acc) }
 
   override string toString() {
     result = def.getAVariable() + "." + def.getLocation().getStartLine()
   }
 
-  override predicate asVar(SsaDefinition x) { x = def }
+  override predicate asVar(SsaDefinition def2, StackVariable x2, VariableAccess acc2) {
+    this = TVar(def2, x2, acc2)
+  }
 }
 
 private class AddE extends E, TAdd {
-  AddE() { this = TAdd(_, _) }
+  AddE() { this = TAdd(_) }
 
   override string toString() { result = "AddE" }
 
-  override predicate asAdd(E left, E right) { this = TAdd(left, right) }
+  override predicate asAdd(E left, E right) {
+    exists(AddExpr add |
+      this = TAdd(add) and
+      left = interpE(add.getLeftOperand()) and
+      right = interpE(add.getRightOperand())
+    )
+  }
 }
 
 private class SubE extends E, TSub {
-  SubE() { this = TSub(_, _) }
+  SubE() { this = TSub(_) }
 
   override string toString() { result = "SubE" }
 
-  override predicate asSub(E left, E right) { this = TSub(left, right) }
+  override predicate asSub(E left, E right) {
+    exists(SubExpr sub |
+      this = TSub(sub) and
+      left = interpE(sub.getLeftOperand()) and
+      right = interpE(sub.getRightOperand())
+    )
+  }
 }
 
 private class MulE extends E, TMul {
-  MulE() { this = TMul(_, _) }
+  MulE() { this = TMul(_) }
 
   override string toString() { result = "MulE" }
 
-  override predicate asMul(E left, E right) { this = TMul(left, right) }
+  override predicate asMul(E left, E right) {
+    exists(MulExpr mul |
+      this = TMul(mul) and
+      left = interpE(mul.getLeftOperand()) and
+      right = interpE(mul.getRightOperand())
+    )
+  }
 }
 
 private class DivE extends E, TDiv {
-  DivE() { this = TDiv(_, _) }
+  DivE() { this = TDiv(_) }
 
   override string toString() { result = "DivE" }
 
-  override predicate asDiv(E left, E right) { this = TDiv(left, right) }
+  override predicate asDiv(E left, E right) {
+    exists(DivExpr div |
+      this = TDiv(div) and
+      left = interpE(div.getLeftOperand()) and
+      right = interpE(div.getRightOperand())
+    )
+  }
 }
 
 private newtype TF =
   TTrue() or
   TNot(TF f) { f = interpF(_) } or
-  TAnd(TF f1, TF f2) {
-    exists(LogicalAndExpr conj |
-      f1 = interpF(conj.getLeftOperand()) and
-      f2 = interpF(conj.getRightOperand())
-    )
-  } or
-  TOr(TF f1, TF f2) {
-    exists(LogicalOrExpr disj |
-      f1 = interpF(disj.getLeftOperand()) and
-      f2 = interpF(disj.getRightOperand())
-    )
-  } or
-  TEq(TE e1, TE e2) {
-    exists(EQExpr eq |
-      e1 = interpE(eq.getLeftOperand()) and
-      e2 = interpE(eq.getRightOperand())
-    )
-  } or
-  TNEq(TE e1, TE e2) {
-    exists(NEExpr neq |
-      e1 = interpE(neq.getLeftOperand()) and
-      e2 = interpE(neq.getRightOperand())
-    )
-  } or
-  TLT(TE e1, TE e2) {
-    exists(LTExpr lt |
-      e1 = interpE(lt.getLeftOperand()) and
-      e2 = interpE(lt.getRightOperand())
-    )
-  } or
-  TGT(TE e1, TE e2) {
-    exists(GTExpr gt |
-      e1 = interpE(gt.getLeftOperand()) and
-      e2 = interpE(gt.getRightOperand())
-    )
-  } or
-  TLE(TE e1, TE e2) {
-    exists(LEExpr le |
-      e1 = interpE(le.getLeftOperand()) and
-      e2 = interpE(le.getRightOperand())
-    )
-  } or
-  TGE(TE e1, TE e2) {
-    exists(GEExpr ge |
-      e1 = interpE(ge.getLeftOperand()) and
-      e2 = interpE(ge.getRightOperand())
-    )
-  } or
+  TAnd(LogicalAndExpr conj) or
+  TOr(LogicalOrExpr disj) or
+  TEq(EQExpr eq) or
+  TNEq(NEExpr neq) or
+  TLT(LTExpr lt) or
+  TGT(GTExpr gt) or
+  TLE(LEExpr le) or
+  TGE(GEExpr ge) or
   TTruthy(TE e)
 
 abstract private class F extends TF {
@@ -187,51 +155,99 @@ private class Not extends TNot, F {
 }
 
 private class And extends TAnd, F {
-  And() { this = TAnd(_, _) }
+  And() { this = TAnd(_) }
 
-  override predicate asAnd(F f1, F f2) { this = TAnd(f1, f2) }
+  override predicate asAnd(F left, F right) {
+    exists(LogicalAndExpr conj |
+      this = TAnd(conj) and
+      left = interpF(conj.getLeftOperand()) and
+      right = interpF(conj.getRightOperand())
+    )
+  }
 }
 
 private class Or extends TOr, F {
-  Or() { this = TOr(_, _) }
+  Or() { this = TOr(_) }
 
-  override predicate asOr(F f1, F f2) { this = TOr(f1, f2) }
+  override predicate asOr(F left, F right) {
+    exists(LogicalOrExpr disj |
+      this = TOr(disj) and
+      left = interpF(disj.getLeftOperand()) and
+      right = interpF(disj.getRightOperand())
+    )
+  }
 }
 
 private class Eq extends TEq, F {
-  Eq() { this = TEq(_, _) }
+  Eq() { this = TEq(_) }
 
-  override predicate asEq(E e1, E e2) { this = TEq(e1, e2) }
+  override predicate asEq(E left, E right) {
+    exists(EQExpr eq |
+      this = TEq(eq) and
+      left = interpE(eq.getLeftOperand()) and
+      right = interpE(eq.getRightOperand())
+    )
+  }
 }
 
 private class NEq extends TNEq, F {
-  NEq() { this = TNEq(_, _) }
+  NEq() { this = TNEq(_) }
 
-  override predicate asNEq(E e1, E e2) { this = TNEq(e1, e2) }
+  override predicate asNEq(E left, E right) {
+    exists(NEExpr neq |
+      this = TNEq(neq) and
+      left = interpE(neq.getLeftOperand()) and
+      right = interpE(neq.getRightOperand())
+    )
+  }
 }
 
 private class LTE extends TLT, F {
-  LTE() { this = TLT(_, _) }
+  LTE() { this = TLT(_) }
 
-  override predicate asLT(E e1, E e2) { this = TLT(e1, e2) }
+  override predicate asLT(E left, E right) {
+    exists(LTExpr lt |
+      this = TLT(lt) and
+      left = interpE(lt.getLeftOperand()) and
+      right = interpE(lt.getRightOperand())
+    )
+  }
 }
 
 private class GTE extends TGT, F {
-  GTE() { this = TGT(_, _) }
+  GTE() { this = TGT(_) }
 
-  override predicate asGT(E e1, E e2) { this = TGT(e1, e2) }
+  override predicate asGT(E left, E right) {
+    exists(GTExpr gt |
+      this = TGT(gt) and
+      left = interpE(gt.getLeftOperand()) and
+      right = interpE(gt.getRightOperand())
+    )
+  }
 }
 
 private class LEE extends TLE, F {
-  LEE() { this = TLE(_, _) }
+  LEE() { this = TLE(_) }
 
-  override predicate asLE(E e1, E e2) { this = TLE(e1, e2) }
+  override predicate asLE(E left, E right) {
+    exists(LEExpr le |
+      this = TLE(le) and
+      left = interpE(le.getLeftOperand()) and
+      right = interpE(le.getRightOperand())
+    )
+  }
 }
 
 private class GEE extends TGE, F {
-  GEE() { this = TGE(_, _) }
+  GEE() { this = TGE(_) }
 
-  override predicate asGE(E e1, E e2) { this = TGE(e1, e2) }
+  override predicate asGE(E left, E right) {
+    exists(GEExpr ge |
+      this = TGE(ge) and
+      left = interpE(ge.getLeftOperand()) and
+      right = interpE(ge.getRightOperand())
+    )
+  }
 }
 
 private class Truthy extends TTruthy, F {
@@ -246,29 +262,21 @@ private F interpretUnaryOperationF(UnaryOperation unary) {
 }
 
 private F interpretBinaryOperationF(BinaryOperation binary) {
-  binary instanceof LogicalAndExpr and
-  result = TAnd(interpF(binary.getLeftOperand()), interpF(binary.getRightOperand()))
+  result = TAnd(binary)
   or
-  binary instanceof LogicalOrExpr and
-  result = TOr(interpF(binary.getLeftOperand()), interpF(binary.getRightOperand()))
+  result = TOr(binary)
   or
-  binary instanceof EQExpr and
-  result = TEq(interpE(binary.getLeftOperand()), interpE(binary.getRightOperand()))
+  result = TEq(binary)
   or
-  binary instanceof NEExpr and
-  result = TNEq(interpE(binary.getLeftOperand()), interpE(binary.getRightOperand()))
+  result = TNEq(binary)
   or
-  binary instanceof LTExpr and
-  result = TLT(interpE(binary.getLeftOperand()), interpE(binary.getRightOperand()))
+  result = TLT(binary)
   or
-  binary instanceof GTExpr and
-  result = TGT(interpE(binary.getLeftOperand()), interpE(binary.getRightOperand()))
+  result = TGT(binary)
   or
-  binary instanceof LEExpr and
-  result = TLE(interpE(binary.getLeftOperand()), interpE(binary.getRightOperand()))
+  result = TLE(binary)
   or
-  binary instanceof GEExpr and
-  result = TGE(interpE(binary.getLeftOperand()), interpE(binary.getRightOperand()))
+  result = TGE(binary)
 }
 
 private F interpF(Expr e) {
@@ -280,28 +288,27 @@ private F interpF(Expr e) {
 }
 
 private E interpretBinaryOperationE(BinaryOperation e) {
-  e instanceof AddExpr and
-  result = TAdd(interpE(e.getLeftOperand()), interpE(e.getRightOperand()))
+  result = TAdd(e)
   or
-  e instanceof SubExpr and
-  result = TSub(interpE(e.getLeftOperand()), interpE(e.getRightOperand()))
+  result = TSub(e)
   or
-  e instanceof MulExpr and
-  result = TMul(interpE(e.getLeftOperand()), interpE(e.getRightOperand()))
+  result = TMul(e)
   or
-  e instanceof DivExpr and
-  result = TDiv(interpE(e.getLeftOperand()), interpE(e.getRightOperand()))
+  result = TDiv(e)
 }
 
 private E interpE(Expr e) {
-  result = TVar(any(SsaDefinition ssa | ssa.getAUse(_) = e))
+  exists(SsaDefinition ssa, Variable x |
+    ssa.getAUse(x) = e and
+    result = TVar(ssa, x, e)
+  )
   or
   result = interpretBinaryOperationE(e)
 }
 
 private string stringOfE(E e) {
-  exists(SsaDefinition x |
-    e.asVar(x) and result = x.getAVariable() + "." + x.getLocation().getStartLine()
+  exists(SsaDefinition def, StackVariable x |
+    e.asVar(def, x, _) and result = x + "." + def.getLocation().getStartLine()
   )
   or
   exists(E e1, E e2 |
