@@ -61,11 +61,24 @@ class Type extends TType {
     )
   }
 
+  pragma[nomagic]
+  private predicate getClassPredicate0(string name, int arity, PredicateOrBuiltin p, Type t) {
+    p = classPredCandidate(this, name, arity) and
+    t = p.getDeclaringType().getASuperType+()
+  }
+
+  pragma[nomagic]
+  private predicate getClassPredicate1(
+    string name, int arity, PredicateOrBuiltin p1, PredicateOrBuiltin p2
+  ) {
+    getClassPredicate0(name, arity, p1, p2.getDeclaringType()) and
+    p2 = classPredCandidate(this, name, arity)
+  }
+
+  pragma[nomagic]
   PredicateOrBuiltin getClassPredicate(string name, int arity) {
     result = classPredCandidate(this, name, arity) and
-    not exists(PredicateOrBuiltin other | other = classPredCandidate(this, name, arity) |
-      other.getDeclaringType().getASuperType+() = result.getDeclaringType()
-    )
+    not getClassPredicate1(name, arity, _, result)
   }
 }
 
