@@ -3,6 +3,7 @@ private import codeql_ql.ast.internal.AstNodes
 private import codeql_ql.ast.internal.Module
 private import codeql_ql.ast.internal.Predicate
 private import codeql_ql.ast.internal.Type
+private import codeql_ql.ast.internal.Variable
 
 bindingset[name, i]
 private string indexedMember(string name, int i) { result = name + "(" + i.toString() + ")" }
@@ -1170,6 +1171,18 @@ class Identifier extends TIdentifier, Expr {
   string getName() { result = id.getChild().(Generated::VarName).getChild().getValue() }
 
   override string getAPrimaryQlClass() { result = "Identifier" }
+}
+
+/** An access to a variable. */
+class VarAccess extends Identifier {
+  private VarDecl decl;
+
+  VarAccess() { resolveVariable(this, decl) }
+
+  /** Gets the accessed variable. */
+  VarDecl getDeclaration() { result = decl }
+
+  override string getAPrimaryQlClass() { result = "VarAccess" }
 }
 
 /** A `not` formula. */
