@@ -9,7 +9,7 @@ private import semmle.code.cpp.controlflow.Guards
 private import semmle.code.cpp.dataflow.internal.AddressFlow
 
 private newtype TE =
-  TVar(SsaDefinition def, StackVariable x, VariableAccess acc) { def.getAUse(x) = acc } or
+  TVar(SsaDefinition def, StackVariable x) { def.getAVariable() = x } or
   TLit(Literal lit) or
   TAdd(AddExpr add) or
   TMul(MulExpr mul) or
@@ -32,7 +32,7 @@ private newtype TF =
 abstract private class E extends TE {
   string toString() { result = "E" }
 
-  predicate asVar(SsaDefinition def, StackVariable x, VariableAccess acc) { none() }
+  predicate asVar(SsaDefinition def, StackVariable x) { none() }
 
   predicate asLit(E e, Literal lit) { none() }
 
@@ -48,17 +48,12 @@ abstract private class E extends TE {
 private class Var extends E, TVar {
   SsaDefinition def;
   StackVariable x;
-  VariableAccess acc;
 
-  Var() { this = TVar(def, x, acc) }
+  Var() { this = TVar(def, x) }
 
-  override string toString() {
-    result = def.getAVariable() + "." + def.getLocation().getStartLine()
-  }
+  override string toString() { result = x.getName() + "." + def.getLocation().getStartLine() }
 
-  override predicate asVar(SsaDefinition def2, StackVariable x2, VariableAccess acc2) {
-    this = TVar(def2, x2, acc2)
-  }
+  override predicate asVar(SsaDefinition def2, StackVariable x2) { this = TVar(def2, x2) }
 }
 
 private class LitE extends E, TLit {
@@ -315,7 +310,7 @@ private E interpretBinaryOperationE(BinaryOperation e) {
 private E interpE(Expr e) {
   exists(SsaDefinition ssa, Variable x |
     ssa.getAUse(x) = e and
-    result = TVar(ssa, x, e)
+    result = TVar(ssa, x)
   )
   or
   result = TLit(e)
@@ -325,7 +320,7 @@ private E interpE(Expr e) {
 
 private string stringOfE(E e) {
   exists(SsaDefinition def, StackVariable x |
-    e.asVar(def, x, _) and result = x + "." + def.getLocation().getStartLine()
+    e.asVar(def, x) and result = x.getName() + "." + def.getLocation().getStartLine()
   )
   or
   exists(Literal literal |
