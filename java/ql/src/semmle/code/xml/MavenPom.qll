@@ -485,3 +485,54 @@ class MavenRepoJar extends File {
     else getVersion().matches(pom.getVersionString() + "%")
   }
 }
+
+class MavenPlugin extends ProtoPom {
+  MavenPlugin() { this.hasName("plugin") }
+}
+
+class MavenShadePlugin extends MavenPlugin {
+  MavenShadePlugin() {
+    this.getGroup().getValue() = "org.apache.maven.plugins" and
+    this.getArtifact().getValue() = "maven-shade-plugin"
+  }
+
+  MavenShadeRelocation getARelocation() { result.getPlugin() = this }
+}
+
+class MavenShadeRelocation extends XMLElement {
+  MavenShadePlugin plugin;
+
+  MavenShadeRelocation() {
+    this.getParent().(XMLElement).getParent().(XMLElement).getParent() = plugin and
+    this.hasName("relocation")
+  }
+
+  MavenShadePlugin getPlugin() { result = plugin }
+
+  string getPattern() {
+    exists(XMLElement el | el.getName() = "pattern" and el.getParent() = this |
+      result = el.getTextValue()
+    )
+  }
+
+  string getShadedPattern() {
+    exists(XMLElement el | el.getName() = "shadedPattern" and el.getParent() = this |
+      result = el.getTextValue()
+    )
+  }
+
+  predicate relocates(string fromPackage, string toPackage) {
+    this.getPattern() = fromPackage and this.getShadedPattern() = toPackage
+  }
+}
+
+bindingset[package]
+string getAShadedPackage(string package) {
+  result = package
+  or
+  exists(string originalPackage, string shadedPackage, MavenShadeRelocation relocDirective |
+    relocDirective.relocates(originalPackage, shadedPackage)
+  |
+    result = package.regexpReplaceAll("^" + originalPackage, shadedPackage)
+  )
+}
