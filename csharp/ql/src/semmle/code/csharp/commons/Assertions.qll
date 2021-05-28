@@ -1,11 +1,36 @@
 /** Provides classes for assertions. */
 
+private import semmle.code.csharp.controlflow.internal.ControlFlowGraphImpl
 private import semmle.code.csharp.frameworks.system.Diagnostics
 private import semmle.code.csharp.frameworks.system.diagnostics.Contracts
 private import semmle.code.csharp.frameworks.test.VisualStudio
 private import semmle.code.csharp.frameworks.System
 private import ControlFlow
 private import ControlFlow::BasicBlocks
+
+private newtype TAssertionFailure =
+  TExceptionAssertionFailure(Class c) or
+  TExitAssertionFailure()
+
+/** An entity that describes how an assertion may fail. */
+class AssertionFailure extends TAssertionFailure {
+  /** Holds if this failure describes an exception of type `c`. */
+  predicate isException(Class c) { this = TExceptionAssertionFailure(c) }
+
+  /** Holds if this failure describes an exit. */
+  predicate isExit() { this = TExitAssertionFailure() }
+
+  /** Gets a textual representation of this element. */
+  string toString() {
+    exists(Class c |
+      this = TExceptionAssertionFailure(c) and
+      result = c.toString()
+    )
+    or
+    this = TExitAssertionFailure() and
+    result = "exit"
+  }
+}
 
 /** An assertion method. */
 abstract class AssertMethod extends Method {
@@ -32,15 +57,15 @@ abstract class AssertMethod extends Method {
    */
   deprecated final Parameter getAssertedParameter() { result = getAssertedParameter(_) }
 
-  /** Gets the exception being thrown if the assertion fails for argument `i`, if any. */
-  abstract Class getExceptionClass(int i);
+  /** Gets the failure type if the assertion fails for argument `i`, if any. */
+  abstract AssertionFailure getAssertionFailure(int i);
 
   /**
-   * DEPRECATED: Use `getExceptionClass(_)` instead.
+   * DEPRECATED: Use `getAssertionFailure(_)` instead.
    *
    * Gets the exception being thrown if the assertion fails, if any.
    */
-  deprecated final Class getExceptionClass() { result = this.getExceptionClass(_) }
+  deprecated final Class getExceptionClass() { this.getAssertionFailure(_).isException(result) }
 }
 
 /** A Boolean assertion method. */
@@ -62,7 +87,7 @@ deprecated class AssertTrueMethod extends AssertMethod {
 
   final override int getAnAssertionIndex() { result = m.getAnAssertionIndex() }
 
-  final override Class getExceptionClass(int i) { result = m.getExceptionClass(i) }
+  final override AssertionFailure getAssertionFailure(int i) { result = m.getAssertionFailure(i) }
 }
 
 /** A negated assertion method. */
@@ -76,7 +101,7 @@ deprecated class AssertFalseMethod extends AssertMethod {
 
   final override int getAnAssertionIndex() { result = m.getAnAssertionIndex() }
 
-  final override Class getExceptionClass(int i) { result = m.getExceptionClass(i) }
+  final override AssertionFailure getAssertionFailure(int i) { result = m.getAssertionFailure(i) }
 }
 
 /** A nullness assertion method. */
@@ -101,7 +126,7 @@ deprecated class AssertNullMethod extends AssertMethod {
 
   final override int getAnAssertionIndex() { result = m.getAnAssertionIndex() }
 
-  final override Class getExceptionClass(int i) { result = m.getExceptionClass(i) }
+  final override AssertionFailure getAssertionFailure(int i) { result = m.getAssertionFailure(i) }
 }
 
 /** A non-`null` assertion method. */
@@ -115,7 +140,7 @@ deprecated class AssertNonNullMethod extends AssertMethod {
 
   final override int getAnAssertionIndex() { result = m.getAnAssertionIndex() }
 
-  final override Class getExceptionClass(int i) { result = m.getExceptionClass(i) }
+  final override AssertionFailure getAssertionFailure(int i) { result = m.getAssertionFailure(i) }
 }
 
 /** An assertion, that is, a call to an assertion method. */
@@ -165,7 +190,7 @@ class Assertion extends MethodCall {
   deprecated private predicate immediatelyDominatesBlockSplit(BasicBlock succ) {
     // Only calculate dominance by explicit recursion for split nodes;
     // all other nodes can use regular CFG dominance
-    this instanceof ControlFlow::Internal::SplitControlFlowElement and
+    this instanceof SplitControlFlowElement and
     exists(BasicBlock bb | bb.getANode() = this.getAControlFlowNode() |
       succ = bb.getASuccessor() and
       forall(BasicBlock pred | pred = succ.getAPredecessor() and pred != bb |
@@ -258,7 +283,7 @@ class FailingAssertion extends Assertion {
   }
 
   /** Gets the exception being thrown by this failing assertion, if any. */
-  Class getExceptionClass() { result = this.getAssertMethod().getExceptionClass(i) }
+  AssertionFailure getAssertionFailure() { result = this.getAssertMethod().getAssertionFailure(i) }
 }
 
 /**
@@ -271,10 +296,10 @@ class SystemDiagnosticsDebugAssertTrueMethod extends BooleanAssertMethod {
 
   override int getAnAssertionIndex(boolean b) { result = 0 and b = true }
 
-  override Class getExceptionClass(int i) {
+  override AssertionFailure getAssertionFailure(int i) {
     // A failing assertion generates a message box, see
     // https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.debug.assert
-    none()
+    i = 0 and result.isExit()
   }
 }
 
@@ -294,10 +319,10 @@ class SystemDiagnosticsContractAssertTrueMethod extends BooleanAssertMethod {
 
   override int getAnAssertionIndex(boolean b) { result = 0 and b = true }
 
-  override Class getExceptionClass(int i) {
+  override AssertionFailure getAssertionFailure(int i) {
     // A failing assertion generates a message box, see
     // https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.contracts.contract.assert
-    none()
+    i = 0 and result.isExit()
   }
 }
 
@@ -321,7 +346,9 @@ class SystemDiagnosticsCodeAnalysisDoesNotReturnIfAnnotatedAssertTrueMethod exte
 
   override int getAnAssertionIndex(boolean b) { result = i_ and b = true }
 
-  override Class getExceptionClass(int i) { i = i_ and result instanceof SystemExceptionClass }
+  override AssertionFailure getAssertionFailure(int i) {
+    i = i_ and result.isException(any(SystemExceptionClass c))
+  }
 }
 
 /**
@@ -340,7 +367,9 @@ class SystemDiagnosticsCodeAnalysisDoesNotReturnIfAnnotatedAssertFalseMethod ext
     b = false
   }
 
-  override Class getExceptionClass(int i) { i = i_ and result instanceof SystemExceptionClass }
+  override AssertionFailure getAssertionFailure(int i) {
+    i = i_ and result.isException(any(SystemExceptionClass c))
+  }
 }
 
 /** A Visual Studio assertion method. */
@@ -349,7 +378,9 @@ class VSTestAssertTrueMethod extends BooleanAssertMethod {
 
   override int getAnAssertionIndex(boolean b) { result = 0 and b = true }
 
-  override Class getExceptionClass(int i) { i = 0 and result instanceof AssertFailedExceptionClass }
+  override AssertionFailure getAssertionFailure(int i) {
+    i = 0 and result.isException(any(AssertFailedExceptionClass c))
+  }
 }
 
 /** A Visual Studio negated assertion method. */
@@ -358,7 +389,9 @@ class VSTestAssertFalseMethod extends BooleanAssertMethod {
 
   override int getAnAssertionIndex(boolean b) { result = 0 and b = false }
 
-  override Class getExceptionClass(int i) { i = 0 and result instanceof AssertFailedExceptionClass }
+  override AssertionFailure getAssertionFailure(int i) {
+    i = 0 and result.isException(any(AssertFailedExceptionClass c))
+  }
 }
 
 /** A Visual Studio `null` assertion method. */
@@ -367,7 +400,9 @@ class VSTestAssertNullMethod extends NullnessAssertMethod {
 
   override int getAnAssertionIndex(boolean b) { result = 0 and b = true }
 
-  override Class getExceptionClass(int i) { i = 0 and result instanceof AssertFailedExceptionClass }
+  override AssertionFailure getAssertionFailure(int i) {
+    i = 0 and result.isException(any(AssertFailedExceptionClass c))
+  }
 }
 
 /** A Visual Studio non-`null` assertion method. */
@@ -376,14 +411,18 @@ class VSTestAssertNonNullMethod extends NullnessAssertMethod {
 
   override int getAnAssertionIndex(boolean b) { result = 0 and b = false }
 
-  override Class getExceptionClass(int i) { i = 0 and result instanceof AssertFailedExceptionClass }
+  override AssertionFailure getAssertionFailure(int i) {
+    i = 0 and result.isException(any(AssertFailedExceptionClass c))
+  }
 }
 
 /** An NUnit assertion method. */
 abstract class NUnitAssertMethod extends AssertMethod {
   override int getAnAssertionIndex() { result = 0 }
 
-  override Class getExceptionClass(int i) { i = 0 and result instanceof AssertionExceptionClass }
+  override AssertionFailure getAssertionFailure(int i) {
+    i = 0 and result.isException(any(AssertionExceptionClass c))
+  }
 }
 
 /** An NUnit assertion method. */
@@ -466,9 +505,9 @@ class ForwarderAssertMethod extends AssertMethod {
   /** Gets the assertion index of the forwarded assertion, for assertion index `i`. */
   int getAForwarderAssertionIndex(int i) { i = p.getPosition() and result = forwarderIndex }
 
-  override Class getExceptionClass(int i) {
+  override AssertionFailure getAssertionFailure(int i) {
     i = p.getPosition() and
-    result = this.getUnderlyingAssertMethod().getExceptionClass(forwarderIndex)
+    result = this.getUnderlyingAssertMethod().getAssertionFailure(forwarderIndex)
   }
 
   /** Gets the underlying assertion method that is being forwarded to. */
@@ -507,8 +546,8 @@ class ForwarderBooleanAssertMethod extends BooleanAssertMethod {
     forwarder.getAForwarderAssertionIndex(result) = underlying.getAnAssertionIndex(b)
   }
 
-  override Class getExceptionClass(int i) {
-    result = underlying.getExceptionClass(forwarder.getAForwarderAssertionIndex(i))
+  override AssertionFailure getAssertionFailure(int i) {
+    result = underlying.getAssertionFailure(forwarder.getAForwarderAssertionIndex(i))
   }
 }
 
@@ -536,8 +575,8 @@ class ForwarderNullnessAssertMethod extends NullnessAssertMethod {
     forwarder.getAForwarderAssertionIndex(result) = underlying.getAnAssertionIndex(b)
   }
 
-  override Class getExceptionClass(int i) {
-    result = underlying.getExceptionClass(forwarder.getAForwarderAssertionIndex(i))
+  override AssertionFailure getAssertionFailure(int i) {
+    result = underlying.getAssertionFailure(forwarder.getAForwarderAssertionIndex(i))
   }
 }
 

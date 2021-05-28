@@ -55,9 +55,9 @@
 <references>
 
 <li>
-  Java Platform, Standard Edition 8, API Documentation:
-  <a href="http://docs.oracle.com/javase/8/docs/api/java/io/OutputStream.html#write-byte:A-int-int-">OutputStream.write(byte[] b, int off, int len)</a>,
-  <a href="http://docs.oracle.com/javase/8/docs/api/java/io/FilterOutputStream.html#write-byte:A-int-int-">FilterOutputStream.write(byte[] b, int off, int len)</a>.
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/OutputStream.html#write(byte[],int,int)">OutputStream.write(byte[] b, int off, int len)</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/FilterOutputStream.html#write(byte[],int,int)">FilterOutputStream.write(byte[] b, int off, int len)</a>.
 </li>
 
 </references>

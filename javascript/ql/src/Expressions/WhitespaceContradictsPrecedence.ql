@@ -62,6 +62,16 @@ class HarmlessNestedExpr extends BinaryExpr {
 }
 
 /**
+ * Holds if contradicting whitespace for `binop` is unlikely to cause confusion.
+ */
+predicate benignWhitespace(BinaryExpr binop) {
+  // asm.js like `expr |0` binary expression.
+  not binop.getParent() instanceof BinaryExpr and
+  binop.getOperator() = "|" and
+  binop.getRightOperand().getIntValue() = 0
+}
+
+/**
  * Holds if `inner` is an operand of `outer`, and the relative precedence
  * may not be immediately clear, but is important for the semantics of
  * the expression (that is, the operators are not associative).
@@ -69,7 +79,8 @@ class HarmlessNestedExpr extends BinaryExpr {
 predicate interestingNesting(BinaryExpr inner, BinaryExpr outer) {
   inner = outer.getAChildExpr() and
   not inner instanceof AssocNestedExpr and
-  not inner instanceof HarmlessNestedExpr
+  not inner instanceof HarmlessNestedExpr and
+  not benignWhitespace(outer)
 }
 
 from BinaryExpr inner, BinaryExpr outer

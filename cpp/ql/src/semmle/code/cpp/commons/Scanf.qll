@@ -34,10 +34,10 @@ class Scanf extends ScanfFunction {
   Scanf() {
     this instanceof TopLevelFunction and
     (
-      hasName("scanf") or // scanf(format, args...)
-      hasName("wscanf") or // wscanf(format, args...)
-      hasName("_scanf_l") or // _scanf_l(format, locale, args...)
-      hasName("_wscanf_l") // _wscanf_l(format, locale, args...)
+      hasGlobalOrStdOrBslName("scanf") or // scanf(format, args...)
+      hasGlobalOrStdOrBslName("wscanf") or // wscanf(format, args...)
+      hasGlobalName("_scanf_l") or // _scanf_l(format, locale, args...)
+      hasGlobalName("_wscanf_l") // _wscanf_l(format, locale, args...)
     )
   }
 
@@ -53,10 +53,10 @@ class Fscanf extends ScanfFunction {
   Fscanf() {
     this instanceof TopLevelFunction and
     (
-      hasName("fscanf") or // fscanf(src_stream, format, args...)
-      hasName("fwscanf") or // fwscanf(src_stream, format, args...)
-      hasName("_fscanf_l") or // _fscanf_l(src_stream, format, locale, args...)
-      hasName("_fwscanf_l") // _fwscanf_l(src_stream, format, locale, args...)
+      hasGlobalOrStdOrBslName("fscanf") or // fscanf(src_stream, format, args...)
+      hasGlobalOrStdOrBslName("fwscanf") or // fwscanf(src_stream, format, args...)
+      hasGlobalName("_fscanf_l") or // _fscanf_l(src_stream, format, locale, args...)
+      hasGlobalName("_fwscanf_l") // _fwscanf_l(src_stream, format, locale, args...)
     )
   }
 
@@ -72,10 +72,10 @@ class Sscanf extends ScanfFunction {
   Sscanf() {
     this instanceof TopLevelFunction and
     (
-      hasName("sscanf") or // sscanf(src_stream, format, args...)
-      hasName("swscanf") or // swscanf(src, format, args...)
-      hasName("_sscanf_l") or // _sscanf_l(src, format, locale, args...)
-      hasName("_swscanf_l") // _swscanf_l(src, format, locale, args...)
+      hasGlobalOrStdOrBslName("sscanf") or // sscanf(src_stream, format, args...)
+      hasGlobalOrStdOrBslName("swscanf") or // swscanf(src, format, args...)
+      hasGlobalName("_sscanf_l") or // _sscanf_l(src, format, locale, args...)
+      hasGlobalName("_swscanf_l") // _swscanf_l(src, format, locale, args...)
     )
   }
 
@@ -91,8 +91,10 @@ class Snscanf extends ScanfFunction {
   Snscanf() {
     this instanceof TopLevelFunction and
     (
-      hasName("_snscanf") or // _snscanf(src, max_amount, format, args...)
-      hasName("_snwscanf") // _snwscanf(src, max_amount, format, args...)
+      hasGlobalName("_snscanf") or // _snscanf(src, max_amount, format, args...)
+      hasGlobalName("_snwscanf") or // _snwscanf(src, max_amount, format, args...)
+      hasGlobalName("_snscanf_l") or // _snscanf_l(src, max_amount, format, locale, args...)
+      hasGlobalName("_snwscanf_l") // _snwscanf_l(src, max_amount, format, locale, args...)
       // note that the max_amount is not a limit on the output length, it's an input length
       // limit used with non null-terminated strings.
     )
@@ -101,6 +103,12 @@ class Snscanf extends ScanfFunction {
   override int getInputParameterIndex() { result = 0 }
 
   override int getFormatParameterIndex() { result = 2 }
+
+  /**
+   * Gets the position at which the maximum number of characters in the
+   * input string is specified.
+   */
+  int getInputLengthParameterIndex() { result = 1 }
 }
 
 /**

@@ -25,11 +25,8 @@ module ClientSideUrlRedirect {
   class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "ClientSideUrlRedirect" }
 
-    override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
     override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel lbl) {
-      source = DOM::locationSource() and
-      lbl instanceof DocumentUrl
+      source.(Source).getAFlowLabel() = lbl
     }
 
     override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
@@ -46,7 +43,7 @@ module ClientSideUrlRedirect {
     override predicate isAdditionalFlowStep(
       DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel f, DataFlow::FlowLabel g
     ) {
-      queryAccess(pred, succ) and
+      untrustedUrlSubstring(pred, succ) and
       f instanceof DocumentUrl and
       g.isTaint()
       or
@@ -58,6 +55,17 @@ module ClientSideUrlRedirect {
 
     override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode guard) {
       guard instanceof HostnameSanitizerGuard
+    }
+  }
+
+  /**
+   * Improper use of openExternal can be leveraged to compromise the user's host.
+   * When openExternal is used with untrusted content, it can be leveraged to execute arbitrary commands.
+   */
+  class ElectronShellOpenExternalSink extends Sink {
+    ElectronShellOpenExternalSink() {
+      this =
+        DataFlow::moduleMember("electron", "shell").getAMemberCall("openExternal").getArgument(0)
     }
   }
 }

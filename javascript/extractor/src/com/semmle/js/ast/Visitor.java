@@ -39,6 +39,7 @@ import com.semmle.ts.ast.OptionalTypeExpr;
 import com.semmle.ts.ast.ParenthesizedTypeExpr;
 import com.semmle.ts.ast.PredicateTypeExpr;
 import com.semmle.ts.ast.RestTypeExpr;
+import com.semmle.ts.ast.TemplateLiteralTypeExpr;
 import com.semmle.ts.ast.TupleTypeExpr;
 import com.semmle.ts.ast.TypeAliasDeclaration;
 import com.semmle.ts.ast.TypeAssertion;
@@ -53,6 +54,8 @@ import com.semmle.ts.ast.UnionTypeExpr;
  * <p>Visit methods take a context argument of type {@link C} and return a result of type {@link R}.
  */
 public interface Visitor<C, R> {
+  public R visit(AngularPipeRef nd, C q);
+
   public R visit(AssignmentExpression nd, C q);
 
   public R visit(AssignmentPattern nd, C q);
@@ -156,6 +159,8 @@ public interface Visitor<C, R> {
   public R visit(TemplateElement nd, C q);
 
   public R visit(TemplateLiteral nd, C q);
+
+  public R visit(TemplateLiteralTypeExpr nd, C q);
 
   public R visit(TaggedTemplateExpression nd, C q);
 

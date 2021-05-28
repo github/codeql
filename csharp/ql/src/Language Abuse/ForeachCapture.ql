@@ -78,7 +78,7 @@ Element getCollectionAssignmentTarget(Expr e) {
     MethodCall mc, Method m, LibraryTypeDataFlow ltdf, CallableFlowSource source,
     CallableFlowSink sink
   |
-    m = mc.getTarget().getSourceDeclaration() and
+    m = mc.getTarget().getUnboundDeclaration() and
     ltdf.callableFlow(source, AccessPath::empty(), sink, AccessPath::element(), m, _) and
     e = source.getSource(mc) and
     result.(Variable).getAnAccess() = sink.getSink(mc)

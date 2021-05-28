@@ -11,7 +11,7 @@ class CallGraphConfig extends DataFlow::Configuration {
     node instanceof DataFlowPrivate::ReturnNode
     or
     // These sources should allow for the non-standard call syntax
-    node instanceof DataFlowPrivate::ArgumentNode
+    node instanceof DataFlow::ArgumentNode
   }
 
   override predicate isSink(DataFlow::Node node) {

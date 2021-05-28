@@ -6,7 +6,6 @@ import semmle.code.cpp.Element
 private import semmle.code.cpp.Enclosing
 private import semmle.code.cpp.internal.ResolveClass
 private import semmle.code.cpp.internal.AddressConstantExpression
-private import semmle.code.cpp.models.implementations.Allocation
 
 /**
  * A C/C++ expression.
@@ -839,7 +838,7 @@ class NewOrNewArrayExpr extends Expr, @any_new_expr {
    * For example, for `new int` the result is `int`.
    * For `new int[5]` the result is `int[5]`.
    */
-  abstract Type getAllocatedType();
+  Type getAllocatedType() { none() } // overridden in subclasses
 
   /**
    * Gets the pointer `p` if this expression is of the form `new(p) T...`.
@@ -848,10 +847,27 @@ class NewOrNewArrayExpr extends Expr, @any_new_expr {
    */
   Expr getPlacementPointer() {
     result =
-      this
-          .getAllocatorCall()
+      this.getAllocatorCall()
           .getArgument(this.getAllocator().(OperatorNewAllocationFunction).getPlacementArgument())
   }
+
+  /**
+   * For `operator new`, this gets the call or expression that initializes the allocated object, if any.
+   *
+   * As examples, for `new int(4)`, this will be `4`, and for `new std::vector(4)`, this will
+   * be a call to the constructor `std::vector::vector(size_t)` with `4` as an argument.
+   *
+   * For `operator new[]`, this gets the call or expression that initializes the first element of the
+   * array, if any.
+   *
+   * This will either be a call to the default constructor for the array's element type (as
+   * in `new std::string[10]`), or a literal zero for arrays of scalars which are zero-initialized
+   * due to extra parentheses (as in `new int[10]()`).
+   *
+   * At runtime, the constructor will be called once for each element in the array, but the
+   * constructor call only exists once in the AST.
+   */
+  final Expr getInitializer() { result = this.getChild(1) }
 }
 
 /**
@@ -873,14 +889,6 @@ class NewExpr extends NewOrNewArrayExpr, @new_expr {
   override Type getAllocatedType() {
     new_allocated_type(underlyingElement(this), unresolveElement(result))
   }
-
-  /**
-   * Gets the call or expression that initializes the allocated object, if any.
-   *
-   * As examples, for `new int(4)`, this will be `4`, and for `new std::vector(4)`, this will
-   * be a call to the constructor `std::vector::vector(size_t)` with `4` as an argument.
-   */
-  Expr getInitializer() { result = this.getChild(1) }
 }
 
 /**
@@ -910,18 +918,6 @@ class NewArrayExpr extends NewOrNewArrayExpr, @new_array_expr {
   Type getAllocatedElementType() {
     result = getType().getUnderlyingType().(PointerType).getBaseType()
   }
-
-  /**
-   * Gets the call or expression that initializes the first element of the array, if any.
-   *
-   * This will either be a call to the default constructor for the array's element type (as
-   * in `new std::string[10]`), or a literal zero for arrays of scalars which are zero-initialized
-   * due to extra parentheses (as in `new int[10]()`).
-   *
-   * At runtime, the constructor will be called once for each element in the array, but the
-   * constructor call only exists once in the AST.
-   */
-  Expr getInitializer() { result = this.getChild(1) }
 
   /**
    * Gets the extent of the non-constant array dimension, if any.
@@ -1147,6 +1143,40 @@ class BlockExpr extends Literal {
 }
 
 /**
+ * A C++ `throw` expression.
+ * ```
+ * throw Exc(2);
+ * ```
+ */
+class ThrowExpr extends Expr, @throw_expr {
+  /**
+   * Gets the expression that will be thrown, if any. There is no result if
+   * `this` is a `ReThrowExpr`.
+   */
+  Expr getExpr() { result = this.getChild(0) }
+
+  override string getAPrimaryQlClass() { result = "ThrowExpr" }
+
+  override string toString() { result = "throw ..." }
+
+  override int getPrecedence() { result = 1 }
+}
+
+/**
+ * A C++ `throw` expression with no argument (which causes the current exception to be re-thrown).
+ * ```
+ * throw;
+ * ```
+ */
+class ReThrowExpr extends ThrowExpr {
+  ReThrowExpr() { this.getType() instanceof VoidType }
+
+  override string getAPrimaryQlClass() { result = "ReThrowExpr" }
+
+  override string toString() { result = "re-throw exception " }
+}
+
+/**
  * A C++11 `noexcept` expression, returning `true` if its subexpression is guaranteed
  * not to `throw` exceptions.  For example:
  * ```
@@ -1239,7 +1269,8 @@ private predicate convparents(Expr child, int idx, Element parent) {
   )
 }
 
-// Pulled out for performance. See QL-796.
+// Pulled out for performance. See
+// https://github.com/github/codeql-coreql-team/issues/1044.
 private predicate hasNoConversions(Expr e) { not e.hasConversion() }
 
 /**

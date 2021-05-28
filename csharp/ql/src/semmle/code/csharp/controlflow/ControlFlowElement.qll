@@ -6,6 +6,7 @@ private import ControlFlow
 private import ControlFlow::BasicBlocks
 private import SuccessorTypes
 private import semmle.code.csharp.Caching
+private import internal.ControlFlowGraphImpl
 
 /**
  * A program element that can possess control flow. That is, either a statement or
@@ -38,14 +39,14 @@ class ControlFlowElement extends ExprOrStmtParent, @control_flow_element {
    * Gets a first control flow node executed within this element.
    */
   Nodes::ElementNode getAControlFlowEntryNode() {
-    result = Internal::getAControlFlowEntryNode(this).getAControlFlowNode()
+    result = getAControlFlowEntryNode(this).getAControlFlowNode()
   }
 
   /**
    * Gets a potential last control flow node executed within this element.
    */
   Nodes::ElementNode getAControlFlowExitNode() {
-    result = Internal::getAControlFlowExitNode(this).getAControlFlowNode()
+    result = getAControlFlowExitNode(this).getAControlFlowNode()
   }
 
   /**
@@ -80,7 +81,7 @@ class ControlFlowElement extends ExprOrStmtParent, @control_flow_element {
   ) {
     // Only calculate dominance by explicit recursion for split nodes;
     // all other nodes can use regular CFG dominance
-    this instanceof ControlFlow::Internal::SplitControlFlowElement and
+    this instanceof SplitControlFlowElement and
     cb.getLastNode() = this.getAControlFlowNode() and
     succ = cb.getASuccessorByType(s)
   }

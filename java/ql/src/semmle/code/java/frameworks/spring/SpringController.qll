@@ -126,6 +126,11 @@ class SpringRequestMappingMethod extends SpringControllerMethod {
       requestMappingAnnotation.getValue("produces").(CompileTimeConstantExpr).getStringValue()
   }
 
+  /** Gets the "value" @RequestMapping annotation value, if present. */
+  string getValue() {
+    result = requestMappingAnnotation.getValue("value").(CompileTimeConstantExpr).getStringValue()
+  }
+
   /** Holds if this is considered an `@ResponseBody` method. */
   predicate isResponseBody() {
     getAnAnnotation().getType() instanceof SpringResponseBodyAnnotationType or
@@ -208,12 +213,10 @@ class SpringRequestMappingParameter extends Parameter {
     // HttpEntity is like @RequestBody, but with a wrapper including the headers
     // TODO model unwrapping aspects
     getType().(RefType).getASourceSupertype*() instanceof SpringHttpEntity or
-    this
-        .getAnAnnotation()
+    this.getAnAnnotation()
         .getType()
         .hasQualifiedName("org.springframework.web.bind.annotation", "RequestAttribute") or
-    this
-        .getAnAnnotation()
+    this.getAnAnnotation()
         .getType()
         .hasQualifiedName("org.springframework.web.bind.annotation", "SessionAttribute")
   }

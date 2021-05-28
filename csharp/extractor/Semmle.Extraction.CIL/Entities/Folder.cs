@@ -3,11 +3,7 @@ using System.IO;
 
 namespace Semmle.Extraction.CIL.Entities
 {
-    internal interface IFolder : IFileOrFolder
-    {
-    }
-
-    public sealed class Folder : LabelledEntity, IFolder
+    internal sealed class Folder : LabelledEntity, IFileOrFolder
     {
         private readonly PathTransformer.ITransformedPath transformedPath;
 
@@ -16,12 +12,11 @@ namespace Semmle.Extraction.CIL.Entities
             this.transformedPath = path;
         }
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             trapFile.Write(transformedPath.DatabaseId);
+            trapFile.Write(";folder");
         }
-
-        public override string IdSuffix => ";folder";
 
         public override IEnumerable<IExtractionProduct> Contents
         {
@@ -29,7 +24,7 @@ namespace Semmle.Extraction.CIL.Entities
             {
                 if (transformedPath.ParentDirectory is PathTransformer.ITransformedPath parent)
                 {
-                    var parentFolder = Cx.CreateFolder(parent);
+                    var parentFolder = Context.CreateFolder(parent);
                     yield return parentFolder;
                     yield return Tuples.containerparent(parentFolder, this);
                 }

@@ -191,7 +191,7 @@ private predicate varMaybeNull(SsaVariable v, string msg, Expr reason) {
     // Comparisons in finally blocks are excluded since missing exception edges in the CFG could otherwise yield FPs.
     not exists(TryStmt try | try.getFinally() = e.getEnclosingStmt().getEnclosingStmt*()) and
     (
-      exists(ConditionalExpr c | c.getCondition().getAChildExpr*() = e) or
+      e = any(ConditionalExpr c).getCondition().getAChildExpr*() or
       not exists(MethodAccess ma | ma.getAnArgument().getAChildExpr*() = e)
     ) and
     // Don't use a guard as reason if there is a null assignment.
@@ -438,13 +438,8 @@ private predicate varConditionallyNull(SsaExplicitUpdate v, ConditionBlock cond,
     v.getDefiningExpr().(VariableAssign).getSource() = condexpr and
     condexpr.getCondition() = cond.getCondition()
   |
-    condexpr.getTrueExpr() = nullExpr() and
-    branch = true and
-    not condexpr.getFalseExpr() = nullExpr()
-    or
-    condexpr.getFalseExpr() = nullExpr() and
-    branch = false and
-    not condexpr.getTrueExpr() = nullExpr()
+    condexpr.getBranchExpr(branch) = nullExpr() and
+    not condexpr.getBranchExpr(branch.booleanNot()) = nullExpr()
   )
   or
   v.getDefiningExpr().(VariableAssign).getSource() = nullExpr() and

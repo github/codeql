@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import styled from 'styled-components';
 import unknownFunction from 'somewhere';
+import { hot } from 'react-hot-loader';
 
 import { MyComponent } from './exportedComponent';
 
@@ -21,4 +22,4 @@ const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
 const ConnectedComponent = compose(withConnect, unknownFunction)(StyledComponent);
 
-export default memo(ConnectedComponent);
+export default hot(module)(memo(ConnectedComponent));

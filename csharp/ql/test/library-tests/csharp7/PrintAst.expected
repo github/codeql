@@ -156,7 +156,7 @@ CSharp7.cs:
 #   74|       3: [ExprStmt] ...;
 #   74|         0: [AssignExpr] ... = ...
 #   74|           0: [LocalVariableAccess] access to local variable x
-#   74|           1: [FieldAccess] access to field A
+#   74|           1: [FieldAccess] access to field Item1
 #   74|             -1: [MethodCall] call to method F
 #   75|       4: [ExprStmt] ...;
 #   75|         0: [AssignExpr] ... = ...
@@ -218,7 +218,7 @@ CSharp7.cs:
 #   82|         -1: [TypeMention] string
 #   83|     4: [BlockStmt] {...}
 #   84|       0: [ReturnStmt] return ...;
-#   84|         0: [FieldAccess] access to field a
+#   84|         0: [FieldAccess] access to field Item1
 #   84|           -1: [TupleExpr] (..., ...)
 #   84|             0: [ParameterAccess] access to parameter x
 #   84|             1: [IntLiteral] 2
@@ -722,9 +722,9 @@ CSharp7.cs:
 #  235|       1: [IfStmt] if (...) ...
 #  235|         0: [LogicalAndExpr] ... && ...
 #  235|           0: [IsExpr] ... is ...
-#  235|             -1: [TypeMention] int
 #  235|             0: [LocalVariableAccess] access to local variable o
 #  235|             1: [VariablePatternExpr] Int32 i1
+#  235|               0: [TypeMention] int
 #  235|           1: [GTExpr] ... > ...
 #  235|             0: [LocalVariableAccess] access to local variable i1
 #  235|             1: [IntLiteral] 0
@@ -738,9 +738,9 @@ CSharp7.cs:
 #  237|                 1: [LocalVariableAccess] access to local variable i1
 #  239|         2: [IfStmt] if (...) ...
 #  239|           0: [IsExpr] ... is ...
-#  239|             -1: [TypeMention] string
 #  239|             0: [LocalVariableAccess] access to local variable o
 #  239|             1: [VariablePatternExpr] String s1
+#  239|               0: [TypeMention] string
 #  240|           1: [BlockStmt] {...}
 #  241|             0: [ExprStmt] ...;
 #  241|               0: [MethodCall] call to method WriteLine
@@ -774,9 +774,9 @@ CSharp7.cs:
 #  256|         4: [ConstCase] case ...:
 #  256|           0: [ConstantPatternExpr,StringLiteral] "x"
 #  256|           1: [IsExpr] ... is ...
-#  256|             -1: [TypeMention] string
 #  256|             0: [LocalVariableAccess] access to local variable o
 #  256|             1: [VariablePatternExpr] String s4
+#  256|               0: [TypeMention] string
 #  257|         5: [ExprStmt] ...;
 #  257|           0: [MethodCall] call to method WriteLine
 #  257|             -1: [TypeAccess] access to type Console
@@ -786,8 +786,8 @@ CSharp7.cs:
 #  257|               1: [LocalVariableAccess] access to local variable s4
 #  258|         6: [BreakStmt] break;
 #  259|         7: [CaseStmt] case ...:
-#  259|           -1: [TypeMention] int
 #  259|           0: [VariablePatternExpr] Int32 i2
+#  259|             0: [TypeMention] int
 #  259|           1: [GTExpr] ... > ...
 #  259|             0: [LocalVariableAccess] access to local variable i2
 #  259|             1: [IntLiteral] 0
@@ -800,8 +800,8 @@ CSharp7.cs:
 #  260|               1: [LocalVariableAccess] access to local variable i2
 #  261|         9: [BreakStmt] break;
 #  262|         10: [CaseStmt] case ...:
-#  262|           -1: [TypeMention] int
 #  262|           0: [VariablePatternExpr] Int32 i3
+#  262|             0: [TypeMention] int
 #  263|         11: [ExprStmt] ...;
 #  263|           0: [MethodCall] call to method WriteLine
 #  263|             -1: [TypeAccess] access to type Console
@@ -811,8 +811,8 @@ CSharp7.cs:
 #  263|               1: [LocalVariableAccess] access to local variable i3
 #  264|         12: [BreakStmt] break;
 #  265|         13: [CaseStmt] case ...:
-#  265|           -1: [TypeMention] string
 #  265|           0: [VariablePatternExpr] String s2
+#  265|             0: [TypeMention] string
 #  266|         14: [ExprStmt] ...;
 #  266|           0: [MethodCall] call to method WriteLine
 #  266|             -1: [TypeAccess] access to type Console
@@ -898,9 +898,9 @@ CSharp7.cs:
 #  299|             0: [LocalVariableAccess] access to local variable x
 #  299|             1: [IntLiteral] 10
 #  299|           1: [IsExpr] ... is ...
-#  299|             -1: [TypeMention] int
 #  299|             0: [LocalVariableAccess] access to local variable x
 #  299|             1: [VariablePatternExpr] Int32 y
+#  299|               0: [TypeMention] int
 #  299|         1: [PreIncrExpr] ++...
 #  299|           0: [LocalVariableAccess] access to local variable x
 #  300|         2: [BlockStmt] {...}

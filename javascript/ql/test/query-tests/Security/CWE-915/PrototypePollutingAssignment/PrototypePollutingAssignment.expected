@@ -1,0 +1,57 @@
+nodes
+| tst.js:5:9:5:38 | taint |
+| tst.js:5:17:5:38 | String( ... y.data) |
+| tst.js:5:24:5:37 | req.query.data |
+| tst.js:5:24:5:37 | req.query.data |
+| tst.js:8:5:8:17 | object[taint] |
+| tst.js:8:5:8:17 | object[taint] |
+| tst.js:8:12:8:16 | taint |
+| tst.js:9:5:9:17 | object[taint] |
+| tst.js:9:5:9:17 | object[taint] |
+| tst.js:9:12:9:16 | taint |
+| tst.js:12:18:12:30 | object[taint] |
+| tst.js:12:25:12:29 | taint |
+| tst.js:14:5:14:32 | unsafeG ...  taint) |
+| tst.js:14:5:14:32 | unsafeG ...  taint) |
+| tst.js:14:27:14:31 | taint |
+| tst.js:33:23:33:25 | obj |
+| tst.js:34:5:34:7 | obj |
+| tst.js:34:5:34:7 | obj |
+| tst.js:39:9:39:11 | obj |
+| tst.js:39:9:39:11 | obj |
+| tst.js:45:9:45:11 | obj |
+| tst.js:45:9:45:11 | obj |
+| tst.js:48:9:48:11 | obj |
+| tst.js:48:9:48:11 | obj |
+edges
+| tst.js:5:9:5:38 | taint | tst.js:8:12:8:16 | taint |
+| tst.js:5:9:5:38 | taint | tst.js:9:12:9:16 | taint |
+| tst.js:5:9:5:38 | taint | tst.js:12:25:12:29 | taint |
+| tst.js:5:9:5:38 | taint | tst.js:14:27:14:31 | taint |
+| tst.js:5:17:5:38 | String( ... y.data) | tst.js:5:9:5:38 | taint |
+| tst.js:5:24:5:37 | req.query.data | tst.js:5:17:5:38 | String( ... y.data) |
+| tst.js:5:24:5:37 | req.query.data | tst.js:5:17:5:38 | String( ... y.data) |
+| tst.js:8:12:8:16 | taint | tst.js:8:5:8:17 | object[taint] |
+| tst.js:8:12:8:16 | taint | tst.js:8:5:8:17 | object[taint] |
+| tst.js:9:12:9:16 | taint | tst.js:9:5:9:17 | object[taint] |
+| tst.js:9:12:9:16 | taint | tst.js:9:5:9:17 | object[taint] |
+| tst.js:12:18:12:30 | object[taint] | tst.js:33:23:33:25 | obj |
+| tst.js:12:25:12:29 | taint | tst.js:12:18:12:30 | object[taint] |
+| tst.js:14:27:14:31 | taint | tst.js:14:5:14:32 | unsafeG ...  taint) |
+| tst.js:14:27:14:31 | taint | tst.js:14:5:14:32 | unsafeG ...  taint) |
+| tst.js:33:23:33:25 | obj | tst.js:34:5:34:7 | obj |
+| tst.js:33:23:33:25 | obj | tst.js:34:5:34:7 | obj |
+| tst.js:33:23:33:25 | obj | tst.js:39:9:39:11 | obj |
+| tst.js:33:23:33:25 | obj | tst.js:39:9:39:11 | obj |
+| tst.js:33:23:33:25 | obj | tst.js:45:9:45:11 | obj |
+| tst.js:33:23:33:25 | obj | tst.js:45:9:45:11 | obj |
+| tst.js:33:23:33:25 | obj | tst.js:48:9:48:11 | obj |
+| tst.js:33:23:33:25 | obj | tst.js:48:9:48:11 | obj |
+#select
+| tst.js:8:5:8:17 | object[taint] | tst.js:5:24:5:37 | req.query.data | tst.js:8:5:8:17 | object[taint] | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | tst.js:5:24:5:37 | req.query.data | here |
+| tst.js:9:5:9:17 | object[taint] | tst.js:5:24:5:37 | req.query.data | tst.js:9:5:9:17 | object[taint] | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | tst.js:5:24:5:37 | req.query.data | here |
+| tst.js:14:5:14:32 | unsafeG ...  taint) | tst.js:5:24:5:37 | req.query.data | tst.js:14:5:14:32 | unsafeG ...  taint) | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | tst.js:5:24:5:37 | req.query.data | here |
+| tst.js:34:5:34:7 | obj | tst.js:5:24:5:37 | req.query.data | tst.js:34:5:34:7 | obj | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | tst.js:5:24:5:37 | req.query.data | here |
+| tst.js:39:9:39:11 | obj | tst.js:5:24:5:37 | req.query.data | tst.js:39:9:39:11 | obj | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | tst.js:5:24:5:37 | req.query.data | here |
+| tst.js:45:9:45:11 | obj | tst.js:5:24:5:37 | req.query.data | tst.js:45:9:45:11 | obj | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | tst.js:5:24:5:37 | req.query.data | here |
+| tst.js:48:9:48:11 | obj | tst.js:5:24:5:37 | req.query.data | tst.js:48:9:48:11 | obj | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | tst.js:5:24:5:37 | req.query.data | here |

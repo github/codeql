@@ -23,7 +23,7 @@ Declaring a variable
 ********************
 
 All variable declarations consist of a :ref:`type <types>` and a name for the variable. 
-The name can be any `identifier <ql-language-specification#identifiers>`_
+The name can be any `identifier <https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#identifiers>`_
 that starts with an uppercase or lowercase letter.
 
 For example, ``int i``, ``SsaDefinitionNode node``, and ``LocalScopeVariable lsv`` declare

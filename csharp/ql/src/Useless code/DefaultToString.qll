@@ -20,9 +20,15 @@ predicate invokesToString(Expr e, ValueOrRefType t) {
   // Implicit invocation via forwarder method
   t = e.stripCasts().getType() and
   not t instanceof StringType and
-  exists(AssignableDefinitions::ImplicitParameterDefinition def, Parameter p, ParameterRead pr |
+  exists(Parameter p |
+    alwaysInvokesToStringOnParameter(p) and
     e = p.getAnAssignedArgument()
-  |
+  )
+}
+
+pragma[noinline]
+private predicate alwaysInvokesToStringOnParameter(Parameter p) {
+  exists(AssignableDefinitions::ImplicitParameterDefinition def, ParameterRead pr |
     def.getParameter() = p and
     pr = def.getAReachableRead() and
     pr.getAControlFlowNode().postDominates(p.getCallable().getEntryPoint()) and

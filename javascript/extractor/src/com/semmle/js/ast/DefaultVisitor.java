@@ -43,6 +43,7 @@ import com.semmle.ts.ast.OptionalTypeExpr;
 import com.semmle.ts.ast.ParenthesizedTypeExpr;
 import com.semmle.ts.ast.PredicateTypeExpr;
 import com.semmle.ts.ast.RestTypeExpr;
+import com.semmle.ts.ast.TemplateLiteralTypeExpr;
 import com.semmle.ts.ast.TupleTypeExpr;
 import com.semmle.ts.ast.TypeAliasDeclaration;
 import com.semmle.ts.ast.TypeAssertion;
@@ -90,6 +91,11 @@ public class DefaultVisitor<C, R> implements Visitor<C, R> {
   public R visit(IFunction nd, C c) {
     if (nd instanceof Statement) return visit((Statement) nd, c);
     else return visit((Expression) nd, c);
+  }
+
+  @Override
+  public R visit(AngularPipeRef nd, C c) {
+    return visit((Expression) nd, c);
   }
 
   @Override
@@ -366,6 +372,11 @@ public class DefaultVisitor<C, R> implements Visitor<C, R> {
   @Override
   public R visit(TemplateLiteral nd, C c) {
     return visit((Expression) nd, c);
+  }
+
+  @Override
+  public R visit(TemplateLiteralTypeExpr nd, C c) {
+    return visit((TypeExpression) nd, c);
   }
 
   @Override

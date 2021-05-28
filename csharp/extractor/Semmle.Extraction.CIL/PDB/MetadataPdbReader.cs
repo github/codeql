@@ -41,7 +41,7 @@ namespace Semmle.Extraction.PDB
 
         public IEnumerable<ISourceFile> SourceFiles => reader.Documents.Select(handle => new SourceFile(reader, handle));
 
-        public IMethod? GetMethod(MethodDebugInformationHandle handle)
+        public Method? GetMethod(MethodDebugInformationHandle handle)
         {
             var debugInfo = reader.GetMethodDebugInformation(handle);
 
@@ -49,7 +49,7 @@ namespace Semmle.Extraction.PDB
                 .Where(p => !p.Document.IsNil && !p.IsHidden)
                 .Select(p => new SequencePoint(p.Offset, new Location(
                     new SourceFile(reader, p.Document), p.StartLine, p.StartColumn, p.EndLine, p.EndColumn)))
-                .Where(p => p.Location.File.Path != null)
+                .Where(p => p.Location.File.Path is not null)
                 .ToArray();
 
             return sequencePoints.Any() ? new Method(sequencePoints) : null;
@@ -63,7 +63,7 @@ namespace Semmle.Extraction.PDB
                 .Select(dirEntry => peReader.ReadEmbeddedPortablePdbDebugDirectoryData(dirEntry))
                 .FirstOrDefault();
 
-            if (provider is object)
+            if (provider is not null)
             {
                 return new MetadataPdbReader(provider);
             }
@@ -76,7 +76,7 @@ namespace Semmle.Extraction.PDB
                     out provider,
                     out _))
                 {
-                    return new MetadataPdbReader(provider);
+                    return new MetadataPdbReader(provider!);
                 }
             }
 

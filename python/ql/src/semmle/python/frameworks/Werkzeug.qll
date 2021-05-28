@@ -5,7 +5,14 @@
 private import python
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.TaintTracking
+private import semmle.python.ApiGraphs
 
+/**
+ * Provides models for the `Werkzeug` PyPI package.
+ * See
+ * - https://pypi.org/project/Werkzeug/
+ * - https://werkzeug.palletsprojects.com/en/1.0.x/#werkzeug
+ */
 module Werkzeug {
   /** Provides models for the `werkzeug` module. */
   module werkzeug {
@@ -17,46 +24,28 @@ module Werkzeug {
        * See https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.MultiDict.
        */
       module MultiDict {
+        /** DEPRECATED. Use `InstanceSourceApiNode` instead. */
+        abstract deprecated class InstanceSource extends DataFlow::Node { }
+
         /**
-         * A source of an instance of `werkzeug.datastructures.MultiDict`.
+         * A source of instances of `werkzeug.datastructures.MultiDict`, extend this class to model new instances.
          *
-         * This can include instantiation of the class, return value from function
-         * calls, or a special parameter that will be set when functions are call by external
+         * This can include instantiations of the class, return values from function
+         * calls, or a special parameter that will be set when functions are called by an external
          * library.
          *
-         * Use `MultiDict::instance()` predicate to get references to instances of `werkzeug.datastructures.MultiDict`.
+         * Use the predicate `MultiDict::instance()` to get references to instances of `werkzeug.datastructures.MultiDict`.
          */
-        abstract class InstanceSource extends DataFlow::Node { }
-
-        /** Gets a reference to an instance of `werkzeug.datastructures.MultiDict`. */
-        private DataFlow::Node instance(DataFlow::TypeTracker t) {
-          t.start() and
-          result instanceof InstanceSource
-          or
-          exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
-        }
-
-        /** Gets a reference to an instance of `werkzeug.datastructures.MultiDict`. */
-        DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
+        abstract class InstanceSourceApiNode extends API::Node { }
 
         /**
          * Gets a reference to the `getlist` method on an instance of `werkzeug.datastructures.MultiDict`.
          *
          * See https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.Headers.getlist
          */
-        private DataFlow::Node getlist(DataFlow::TypeTracker t) {
-          t.startInAttr("getlist") and
-          result = instance()
-          or
-          exists(DataFlow::TypeTracker t2 | result = getlist(t2).track(t2, t))
+        DataFlow::Node getlist() {
+          result = any(InstanceSourceApiNode a).getMember("getlist").getAUse()
         }
-
-        /**
-         * Gets a reference to the `getlist` method on an instance of `werkzeug.datastructures.MultiDict`.
-         *
-         * See https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.Headers.getlist
-         */
-        DataFlow::Node getlist() { result = getlist(DataFlow::TypeTracker::end()) }
       }
 
       /**
@@ -65,27 +54,22 @@ module Werkzeug {
        * See https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.FileStorage.
        */
       module FileStorage {
+        /** DEPRECATED. Use `InstanceSourceApiNode` instead. */
+        abstract deprecated class InstanceSource extends DataFlow::Node { }
+
         /**
-         * A source of an instance of `werkzeug.datastructures.FileStorage`.
+         * A source of instances of `werkzeug.datastructures.FileStorage`, extend this class to model new instances.
          *
-         * This can include instantiation of the class, return value from function
+         * This can include instantiations of the class, return values from function
          * calls, or a special parameter that will be set when functions are called by an external
          * library.
          *
-         * Use `FileStorage::instance()` predicate to get references to instances of `werkzeug.datastructures.FileStorage`.
+         * Use the predicate `FileStorage::instance()` to get references to instances of `werkzeug.datastructures.FileStorage`.
          */
-        abstract class InstanceSource extends DataFlow::Node { }
+        abstract class InstanceSourceApiNode extends API::Node { }
 
         /** Gets a reference to an instance of `werkzeug.datastructures.FileStorage`. */
-        private DataFlow::Node instance(DataFlow::TypeTracker t) {
-          t.start() and
-          result instanceof InstanceSource
-          or
-          exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
-        }
-
-        /** Gets a reference to an instance of `werkzeug.datastructures.FileStorage`. */
-        DataFlow::Node instance() { result = instance(DataFlow::TypeTracker::end()) }
+        DataFlow::Node instance() { result = any(InstanceSourceApiNode a).getAUse() }
       }
     }
   }
@@ -109,15 +93,16 @@ module Werkzeug {
     override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
       nodeFrom = werkzeug::datastructures::FileStorage::instance() and
       exists(DataFlow::AttrRead read | nodeTo = read |
-        read.getAttributeName() in ["filename",
-              // str
-              "name", "content_type", "mimetype",
-              // file-like
-              "stream",
-              // TODO: werkzeug.datastructures.Headers
-              "headers",
-              // dict[str, str]
-              "mimetype_params"] and
+        read.getAttributeName() in [
+            // str
+            "filename", "name", "content_type", "mimetype",
+            // file-like
+            "stream",
+            // TODO: werkzeug.datastructures.Headers
+            "headers",
+            // dict[str, str]
+            "mimetype_params"
+          ] and
         read.getObject() = nodeFrom
       )
     }

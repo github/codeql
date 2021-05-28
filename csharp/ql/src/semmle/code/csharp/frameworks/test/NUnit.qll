@@ -112,7 +112,7 @@ class TestCaseSourceAttribute extends Attribute {
   }
 
   /** Gets the declaration where the values are declared. */
-  Declaration getSourceDeclaration() {
+  Declaration getUnboundDeclaration() {
     result.getDeclaringType() = this.getSourceType() and
     result.getName() = this.getFieldName()
   }

@@ -80,7 +80,7 @@ statement as follows:
   #. If the compiler can't find the library file using the above two checks, it looks up ``examples/security/MyLibrary.qll``
      relative to each library path entry.
      The library path is usually specified using the ``libraryPathDependencies`` of the ``qlpack.yml`` file, though it may also depend on the tools you use to run your query, and whether you have specified any extra settings.
-     For more information, see "`Library path <ql-language-specification#library-path>`__" in the QL language specification.
+     For more information, see "`Library path <https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#library-path>`__" in the QL language specification.
      
 If the compiler cannot resolve an import statement, then it gives a compilation error.
 
@@ -106,7 +106,7 @@ Consider the following :ref:`library module <library-modules>`:
 
 **CountriesLib.qll**
 
-:: 
+.. code-block:: ql
 
     class Countries extends string {
       Countries() {
@@ -129,7 +129,9 @@ Consider the following :ref:`library module <library-modules>`:
     }
 
 You could write a query that imports ``CountriesLib`` and then uses ``M::EuropeanCountries``
-to refer to the class ``EuropeanCountries``:: 
+to refer to the class ``EuropeanCountries``:
+
+.. code-block:: ql
 
     import CountriesLib
 
@@ -137,7 +139,9 @@ to refer to the class ``EuropeanCountries``::
     select ec
 
 Alternatively, you could import the contents of ``M`` directly by using the selection
-``CountriesLib::M`` in the import statement:: 
+``CountriesLib::M`` in the import statement:
+
+.. code-block:: ql
 
     import CountriesLib::M 
 
@@ -154,7 +158,7 @@ Namespaces
 **********
 
 When writing QL, it's useful to understand how namespaces (also known as 
-`environments <ql-language-specification#name-resolution>`_) work.
+`environments <https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#name-resolution>`_) work.
 
 As in many other programming languages, a namespace is a mapping from **keys** to
 **entities**. A key is a kind of identifier, for example a name, and a QL entity is
@@ -181,7 +185,7 @@ In particular:
     - The **global module namespace** is empty.
     - The **global type namespace** has entries for the :ref:`primitive types <primitive-types>` ``int``, ``float``, 
       ``string``, ``boolean``, and ``date``, as well as any :ref:`database types <database-types>` defined in the database schema.
-    - The **global predicate namespace** includes all the `built-in predicates <ql-language-specification#built-ins>`_,
+    - The **global predicate namespace** includes all the `built-in predicates <https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#built-ins>`_,
       as well as any :ref:`database predicates <database-predicates>`.
 
 In practice, this means that you can use the built-in types and predicates directly in a QL module (without
@@ -246,7 +250,7 @@ were defined in the :ref:`QL tutorials <ql-tutorials>`:
     
 **Villagers.qll**
 
-::    
+.. code-block:: ql
 
     import tutorial
         
@@ -297,7 +301,7 @@ The type namespace of ``S`` has entries for:
 The predicate namespace of ``Villagers`` has entries for:
     - The predicate ``isBald``, with arity 1.
     - Any predicates (and their arities) exported by ``tutorial``. 
-    - The `built-in predicates <ql-language-specification#built-ins>`_.
+    - The `built-in predicates <https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#built-ins>`_.
 
 The predicate namespace of ``S`` has entries for:
     - All the above predicates.

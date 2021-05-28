@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, DomSanitizer as DomSanitizer2 } from '@angular/core';
 import { ɵgetDOM } from '@angular/common';
 import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -14,7 +14,8 @@ export class AppComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private sanitizer: DomSanitizer,
-    private router: Router
+    private router: Router,
+    private sanitizer2: DomSanitizer2
   ) {}
 
   ngOnInit() {
@@ -35,6 +36,8 @@ export class AppComponent implements OnInit {
     this.sanitizer.bypassSecurityTrustHtml(this.route.snapshot.url[1].parameterMap.params.x); // NOT OK
 
     this.sanitizer.bypassSecurityTrustHtml(this.router.url); // NOT OK
+
+    this.sanitizer2.bypassSecurityTrustHtml(this.router.url); // NOT OK
   }
 
   someMethod(routeSnapshot: ActivatedRouteSnapshot) {

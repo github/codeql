@@ -607,8 +607,7 @@ class TaintTrackingImplementation extends string {
     TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path,
     TaintKind kind, string edgeLabel
   ) {
-    this
-        .(EssaTaintTracking)
+    this.(EssaTaintTracking)
         .taintedDefinition(src, node.asVariable().getDefinition(), context, path, kind) and
     edgeLabel = ""
   }

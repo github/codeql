@@ -295,6 +295,8 @@ module SqlExecution {
 
 /** Provides classes for modeling HTTP-related APIs. */
 module HTTP {
+  import semmle.python.web.HttpConstants
+
   /** Provides classes for modeling HTTP servers. */
   module Server {
     /**
@@ -311,14 +313,21 @@ module HTTP {
       /** Gets the URL pattern for this route, if it can be statically determined. */
       string getUrlPattern() { result = range.getUrlPattern() }
 
-      /** Gets a function that will handle incoming requests for this route, if any. */
-      Function getARouteHandler() { result = range.getARouteHandler() }
+      /**
+       * Gets a function that will handle incoming requests for this route, if any.
+       *
+       * NOTE: This will be modified in the near future to have a `RequestHandler` result, instead of a `Function`.
+       */
+      Function getARequestHandler() { result = range.getARequestHandler() }
 
       /**
        * Gets a parameter that will receive parts of the url when handling incoming
        * requests for this route, if any. These automatically become a `RemoteFlowSource`.
        */
       Parameter getARoutedParameter() { result = range.getARoutedParameter() }
+
+      /** Gets a string that identifies the framework used for this route setup. */
+      string getFramework() { result = range.getFramework() }
     }
 
     /** Provides a class for modeling new HTTP routing APIs. */
@@ -336,26 +345,92 @@ module HTTP {
         /** Gets the URL pattern for this route, if it can be statically determined. */
         string getUrlPattern() {
           exists(StrConst str |
-            DataFlow::localFlow(DataFlow::exprNode(str), this.getUrlPatternArg()) and
+            DataFlow::exprNode(str).(DataFlow::LocalSourceNode).flowsTo(this.getUrlPatternArg()) and
             result = str.getText()
           )
         }
 
-        /** Gets a function that will handle incoming requests for this route, if any. */
-        abstract Function getARouteHandler();
+        /**
+         * Gets a function that will handle incoming requests for this route, if any.
+         *
+         * NOTE: This will be modified in the near future to have a `RequestHandler` result, instead of a `Function`.
+         */
+        abstract Function getARequestHandler();
 
         /**
          * Gets a parameter that will receive parts of the url when handling incoming
          * requests for this route, if any. These automatically become a `RemoteFlowSource`.
          */
         abstract Parameter getARoutedParameter();
+
+        /** Gets a string that identifies the framework used for this route setup. */
+        abstract string getFramework();
       }
     }
 
-    private class RoutedParameter extends RemoteFlowSource::Range, DataFlow::ParameterNode {
-      RoutedParameter() { this.getParameter() = any(RouteSetup setup).getARoutedParameter() }
+    /**
+     * A function that will handle incoming HTTP requests.
+     *
+     * Extend this class to refine existing API models. If you want to model new APIs,
+     * extend `RequestHandler::Range` instead.
+     */
+    class RequestHandler extends Function {
+      RequestHandler::Range range;
 
-      override string getSourceType() { result = "RoutedParameter" }
+      RequestHandler() { this = range }
+
+      /**
+       * Gets a parameter that could receive parts of the url when handling incoming
+       * requests, if any. These automatically become a `RemoteFlowSource`.
+       */
+      Parameter getARoutedParameter() { result = range.getARoutedParameter() }
+
+      /** Gets a string that identifies the framework used for this route setup. */
+      string getFramework() { result = range.getFramework() }
+    }
+
+    /** Provides a class for modeling new HTTP request handlers. */
+    module RequestHandler {
+      /**
+       * A function that will handle incoming HTTP requests.
+       *
+       * Extend this class to model new APIs. If you want to refine existing API models,
+       * extend `RequestHandler` instead.
+       *
+       * Only extend this class if you can't provide a `RouteSetup`, since we handle that case automatically.
+       */
+      abstract class Range extends Function {
+        /**
+         * Gets a parameter that could receive parts of the url when handling incoming
+         * requests, if any. These automatically become a `RemoteFlowSource`.
+         */
+        abstract Parameter getARoutedParameter();
+
+        /** Gets a string that identifies the framework used for this request handler. */
+        abstract string getFramework();
+      }
+    }
+
+    private class RequestHandlerFromRouteSetup extends RequestHandler::Range {
+      RouteSetup rs;
+
+      RequestHandlerFromRouteSetup() { this = rs.getARequestHandler() }
+
+      override Parameter getARoutedParameter() {
+        result = rs.getARoutedParameter() and
+        result in [this.getArg(_), this.getArgByName(_)]
+      }
+
+      override string getFramework() { result = rs.getFramework() }
+    }
+
+    /** A parameter that will receive parts of the url when handling an incoming request. */
+    private class RoutedParameter extends RemoteFlowSource::Range, DataFlow::ParameterNode {
+      RequestHandler handler;
+
+      RoutedParameter() { this.getParameter() = handler.getARoutedParameter() }
+
+      override string getSourceType() { result = handler.getFramework() + " RoutedParameter" }
     }
 
     /**
@@ -403,7 +478,9 @@ module HTTP {
         /** Gets the mimetype of this HTTP response, if it can be statically determined. */
         string getMimetype() {
           exists(StrConst str |
-            DataFlow::localFlow(DataFlow::exprNode(str), this.getMimetypeOrContentTypeArg()) and
+            DataFlow::exprNode(str)
+                .(DataFlow::LocalSourceNode)
+                .flowsTo(this.getMimetypeOrContentTypeArg()) and
             result = str.getText().splitAt(";", 0)
           )
           or
@@ -411,6 +488,188 @@ module HTTP {
           result = this.getMimetypeDefault()
         }
       }
+    }
+
+    /**
+     * A data-flow node that creates a HTTP redirect response on a server.
+     *
+     * Note: we don't require that this redirect must be sent to a client (a kind of
+     * "if a tree falls in a forest and nobody hears it" situation).
+     *
+     * Extend this class to refine existing API models. If you want to model new APIs,
+     * extend `HttpRedirectResponse::Range` instead.
+     */
+    class HttpRedirectResponse extends HttpResponse {
+      override HttpRedirectResponse::Range range;
+
+      HttpRedirectResponse() { this = range }
+
+      /** Gets the data-flow node that specifies the location of this HTTP redirect response. */
+      DataFlow::Node getRedirectLocation() { result = range.getRedirectLocation() }
+    }
+
+    /** Provides a class for modeling new HTTP redirect response APIs. */
+    module HttpRedirectResponse {
+      /**
+       * A data-flow node that creates a HTTP redirect response on a server.
+       *
+       * Note: we don't require that this redirect must be sent to a client (a kind of
+       * "if a tree falls in a forest and nobody hears it" situation).
+       *
+       * Extend this class to model new APIs. If you want to refine existing API models,
+       * extend `HttpResponse` instead.
+       */
+      abstract class Range extends HTTP::Server::HttpResponse::Range {
+        /** Gets the data-flow node that specifies the location of this HTTP redirect response. */
+        abstract DataFlow::Node getRedirectLocation();
+      }
+    }
+  }
+}
+
+/**
+ * Provides models for cryptographic things.
+ *
+ * Note: The `CryptographicAlgorithm` class currently doesn't take weak keys into
+ * consideration for the `isWeak` member predicate. So RSA is always considered
+ * secure, although using a low number of bits will actually make it insecure. We plan
+ * to improve our libraries in the future to more precisely capture this aspect.
+ */
+module Cryptography {
+  /** Provides models for public-key cryptography, also called asymmetric cryptography. */
+  module PublicKey {
+    /**
+     * A data-flow node that generates a new key-pair for use with public-key cryptography.
+     *
+     * Extend this class to refine existing API models. If you want to model new APIs,
+     * extend `KeyGeneration::Range` instead.
+     */
+    class KeyGeneration extends DataFlow::Node {
+      KeyGeneration::Range range;
+
+      KeyGeneration() { this = range }
+
+      /** Gets the name of the cryptographic algorithm (for example `"RSA"` or `"AES"`). */
+      string getName() { result = range.getName() }
+
+      /** Gets the argument that specifies the size of the key in bits, if available. */
+      DataFlow::Node getKeySizeArg() { result = range.getKeySizeArg() }
+
+      /**
+       * Gets the size of the key generated (in bits), as well as the `origin` that
+       * explains how we obtained this specific key size.
+       */
+      int getKeySizeWithOrigin(DataFlow::Node origin) {
+        result = range.getKeySizeWithOrigin(origin)
+      }
+
+      /** Gets the minimum key size (in bits) for this algorithm to be considered secure. */
+      int minimumSecureKeySize() { result = range.minimumSecureKeySize() }
+    }
+
+    /** Provides classes for modeling new key-pair generation APIs. */
+    module KeyGeneration {
+      /** Gets a back-reference to the keysize argument `arg` that was used to generate a new key-pair. */
+      private DataFlow::LocalSourceNode keysizeBacktracker(
+        DataFlow::TypeBackTracker t, DataFlow::Node arg
+      ) {
+        t.start() and
+        arg = any(KeyGeneration::Range r).getKeySizeArg() and
+        result = arg.getALocalSource()
+        or
+        exists(DataFlow::TypeBackTracker t2 | result = keysizeBacktracker(t2, arg).backtrack(t2, t))
+      }
+
+      /** Gets a back-reference to the keysize argument `arg` that was used to generate a new key-pair. */
+      DataFlow::LocalSourceNode keysizeBacktracker(DataFlow::Node arg) {
+        result = keysizeBacktracker(DataFlow::TypeBackTracker::end(), arg)
+      }
+
+      /**
+       * A data-flow node that generates a new key-pair for use with public-key cryptography.
+       *
+       * Extend this class to model new APIs. If you want to refine existing API models,
+       * extend `KeyGeneration` instead.
+       */
+      abstract class Range extends DataFlow::Node {
+        /** Gets the name of the cryptographic algorithm (for example `"RSA"`). */
+        abstract string getName();
+
+        /** Gets the argument that specifies the size of the key in bits, if available. */
+        abstract DataFlow::Node getKeySizeArg();
+
+        /**
+         * Gets the size of the key generated (in bits), as well as the `origin` that
+         * explains how we obtained this specific key size.
+         */
+        int getKeySizeWithOrigin(DataFlow::Node origin) {
+          origin = keysizeBacktracker(this.getKeySizeArg()) and
+          result = origin.asExpr().(IntegerLiteral).getValue()
+        }
+
+        /** Gets the minimum key size (in bits) for this algorithm to be considered secure. */
+        abstract int minimumSecureKeySize();
+      }
+
+      /** A data-flow node that generates a new RSA key-pair. */
+      abstract class RsaRange extends Range {
+        final override string getName() { result = "RSA" }
+
+        final override int minimumSecureKeySize() { result = 2048 }
+      }
+
+      /** A data-flow node that generates a new DSA key-pair. */
+      abstract class DsaRange extends Range {
+        final override string getName() { result = "DSA" }
+
+        final override int minimumSecureKeySize() { result = 2048 }
+      }
+
+      /** A data-flow node that generates a new ECC key-pair. */
+      abstract class EccRange extends Range {
+        final override string getName() { result = "ECC" }
+
+        final override int minimumSecureKeySize() { result = 224 }
+      }
+    }
+  }
+
+  import semmle.python.concepts.CryptoAlgorithms
+
+  /**
+   * A data-flow node that is an application of a cryptographic algorithm. For example,
+   * encryption, decryption, signature-validation.
+   *
+   * Extend this class to refine existing API models. If you want to model new APIs,
+   * extend `CryptographicOperation::Range` instead.
+   */
+  class CryptographicOperation extends DataFlow::Node {
+    CryptographicOperation::Range range;
+
+    CryptographicOperation() { this = range }
+
+    /** Gets the algorithm used, if it matches a known `CryptographicAlgorithm`. */
+    CryptographicAlgorithm getAlgorithm() { result = range.getAlgorithm() }
+
+    /** Gets an input the algorithm is used on, for example the plain text input to be encrypted. */
+    DataFlow::Node getAnInput() { result = range.getAnInput() }
+  }
+
+  /** Provides classes for modeling new applications of a cryptographic algorithms. */
+  module CryptographicOperation {
+    /**
+     * A data-flow node that is an application of a cryptographic algorithm. For example,
+     * encryption, decryption, signature-validation.
+     *
+     * Extend this class to model new APIs. If you want to refine existing API models,
+     * extend `CryptographicOperation` instead.
+     */
+    abstract class Range extends DataFlow::Node {
+      /** Gets the algorithm used, if it matches a known `CryptographicAlgorithm`. */
+      abstract CryptographicAlgorithm getAlgorithm();
+
+      /** Gets an input the algorithm is used on, for example the plain text input to be encrypted. */
+      abstract DataFlow::Node getAnInput();
     }
   }
 }

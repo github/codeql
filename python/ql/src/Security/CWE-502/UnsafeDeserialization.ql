@@ -12,24 +12,8 @@
  */
 
 import python
-import semmle.python.dataflow.new.DataFlow
-import semmle.python.dataflow.new.TaintTracking
-import semmle.python.Concepts
-import semmle.python.dataflow.new.RemoteFlowSources
+import semmle.python.security.dataflow.UnsafeDeserialization
 import DataFlow::PathGraph
-
-class UnsafeDeserializationConfiguration extends TaintTracking::Configuration {
-  UnsafeDeserializationConfiguration() { this = "UnsafeDeserializationConfiguration" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(Decoding d |
-      d.mayExecuteInput() and
-      sink = d.getAnInput()
-    )
-  }
-}
 
 from UnsafeDeserializationConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)

@@ -3,6 +3,7 @@
  * @description Finds cases where the 'userId' field in a request to another service
  *              is an arbitrary user-controlled value, indicating lack of authentication.
  * @kind path-problem
+ * @problem.severity error
  * @tags security
  * @id js/examples/backend-idor
  */

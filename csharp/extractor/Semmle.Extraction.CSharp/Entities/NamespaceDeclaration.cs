@@ -20,18 +20,18 @@ namespace Semmle.Extraction.CSharp.Entities
             this.parent = parent;
         }
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
-            trapFile.WriteSubId(Context.Create(ReportingLocation));
+            trapFile.WriteSubId(Context.CreateLocation(ReportingLocation));
             trapFile.Write(";namespacedeclaration");
         }
 
         public override void Populate(TextWriter trapFile)
         {
-            var @namespace = (INamespaceSymbol)Context.GetModel(node).GetSymbolInfo(node.Name).Symbol;
+            var @namespace = (INamespaceSymbol)Context.GetModel(node).GetSymbolInfo(node.Name).Symbol!;
             var ns = Namespace.Create(Context, @namespace);
             trapFile.namespace_declarations(this, ns);
-            trapFile.namespace_declaration_location(this, Context.Create(node.Name.GetLocation()));
+            trapFile.namespace_declaration_location(this, Context.CreateLocation(node.Name.GetLocation()));
 
             var visitor = new Populators.TypeOrNamespaceVisitor(Context, trapFile, this);
 
@@ -40,7 +40,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 member.Accept(visitor);
             }
 
-            if (parent != null)
+            if (parent is not null)
             {
                 trapFile.parent_namespace_declaration(this, parent);
             }
@@ -52,11 +52,11 @@ namespace Semmle.Extraction.CSharp.Entities
             return NamespaceDeclarationFactory.Instance.CreateEntity(cx, decl, init);
         }
 
-        private class NamespaceDeclarationFactory : ICachedEntityFactory<(NamespaceDeclarationSyntax decl, NamespaceDeclaration parent), NamespaceDeclaration>
+        private class NamespaceDeclarationFactory : CachedEntityFactory<(NamespaceDeclarationSyntax decl, NamespaceDeclaration parent), NamespaceDeclaration>
         {
             public static readonly NamespaceDeclarationFactory Instance = new NamespaceDeclarationFactory();
 
-            public NamespaceDeclaration Create(Context cx, (NamespaceDeclarationSyntax decl, NamespaceDeclaration parent) init) =>
+            public override NamespaceDeclaration Create(Context cx, (NamespaceDeclarationSyntax decl, NamespaceDeclaration parent) init) =>
                 new NamespaceDeclaration(cx, init.decl, init.parent);
         }
 

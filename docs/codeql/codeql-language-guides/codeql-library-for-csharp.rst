@@ -108,8 +108,8 @@ Count the number of lines of code, excluding the directory ``external``:
 .. code-block:: ql
 
    select sum(SourceFile f |
-     not exists(Folder external | external.getShortName() = "external" |
-                external.getAFolder*().getAFile() = f) |
+     not exists(Folder ext | ext.getShortName() = "external" |
+                ext.getAFolder*().getAFile() = f) |
      f.getNumberOfLines())
 
 Exercises
@@ -961,7 +961,7 @@ Find all obsolete elements:
 
 Model NUnit test fixtures:
 
-.. code-block:: csharp
+.. code-block:: ql
 
    class TestFixture extends Class
    {

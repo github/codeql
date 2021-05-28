@@ -1,28 +1,28 @@
 
 typedef unsigned long size_t;
 
-template<class T>
-struct remove_const { typedef T type; };
 
-template<class T>
-struct remove_const<const T> { typedef T type; };
 
-// `remove_const_t<T>` removes any `const` specifier from `T`
-template<class T>
-using remove_const_t = typename remove_const<T>::type;
 
-template<class T>
-struct remove_reference { typedef T type; };
 
-template<class T>
-struct remove_reference<T &> { typedef T type; };
 
-template<class T>
-struct remove_reference<T &&> { typedef T type; };
 
-// `remove_reference_t<T>` removes any `&` from `T`
-template<class T>
-using remove_reference_t = typename remove_reference<T>::type;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#include "type_traits.h"
 
 namespace std
 {
@@ -332,6 +332,9 @@ namespace std {
 		iterator insert(const_iterator position, size_type n, const T& x);
 		template<class InputIterator> iterator insert(const_iterator position, InputIterator first, InputIterator last);
 
+		template <class... Args> iterator emplace (const_iterator position, Args&&... args);
+		template <class... Args> void emplace_back (Args&&... args);
+
 		void swap(vector&) noexcept/*(allocator_traits<Allocator>::propagate_on_container_swap::value || allocator_traits<Allocator>::is_always_equal::value)*/;
 
 		void clear() noexcept;
@@ -346,6 +349,7 @@ namespace std {
 	public:
 		shared_ptr() noexcept;
 		explicit shared_ptr(T*);
+		shared_ptr(const shared_ptr&) noexcept;
 		template<class U> shared_ptr(const shared_ptr<U>&) noexcept;
 		template<class U> shared_ptr(shared_ptr<U>&&) noexcept;
 
@@ -395,8 +399,8 @@ namespace std {
 		void swap(pair& p) /*noexcept(...)*/;
 	};
 
-	template<class T1, class T2> constexpr pair<remove_reference_t<T1>, remove_reference_t<T2>> make_pair(T1&& x, T2&& y) {
-		return pair<T1, T2>(std::forward<T1>(x), std::forward<T2>(y));
+	template<class T1, class T2> constexpr pair<decay_t<T1>, decay_t<T2>> make_pair(T1&& x, T2&& y) {
+		return pair<decay_t<T1>, decay_t<T2>>(std::forward<T1>(x), std::forward<T2>(y));
 	}
 }
 

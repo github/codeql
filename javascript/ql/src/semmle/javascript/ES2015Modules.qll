@@ -1,6 +1,7 @@
 /** Provides classes for working with ECMAScript 2015 modules. */
 
 import javascript
+private import semmle.javascript.internal.CachedStages
 
 /**
  * An ECMAScript 2015 module.
@@ -41,6 +42,40 @@ class ES2015Module extends Module {
 }
 
 /**
+ * Holds if `mod` contains one or more named export declarations other than `default`.
+ */
+private predicate hasNamedExports(ES2015Module mod) {
+  mod.getAnExport().(ExportNamedDeclaration).getASpecifier().getExportedName() != "default"
+  or
+  exists(mod.getAnExport().(ExportNamedDeclaration).getAnExportedDecl())
+  or
+  // Bulk re-exports only export named bindings (not "default")
+  mod.getAnExport() instanceof BulkReExportDeclaration
+}
+
+/**
+ * Holds if this module contains a `default` export.
+ */
+private predicate hasDefaultExport(ES2015Module mod) {
+  // export default foo;
+  mod.getAnExport() instanceof ExportDefaultDeclaration
+  or
+  // export { foo as default };
+  mod.getAnExport().(ExportNamedDeclaration).getASpecifier().getExportedName() = "default"
+}
+
+/**
+ * Holds if `mod` contains both named and `default` exports.
+ *
+ * This is used to determine whether a default-import of the module should be reinterpreted
+ * as a namespace-import, to accomodate the non-standard behavior implemented by some compilers.
+ */
+private predicate hasBothNamedAndDefaultExports(ES2015Module mod) {
+  hasNamedExports(mod) and
+  hasDefaultExport(mod)
+}
+
+/**
  * An import declaration.
  *
  * Examples:
@@ -70,6 +105,10 @@ class ImportDeclaration extends Stmt, Import, @import_declaration {
       is instanceof ImportNamespaceSpecifier and
       count(getASpecifier()) = 1
       or
+      // For compatibility with the non-standard implementation of default imports,
+      // treat default imports as namespace imports in cases where it can't cause ambiguity
+      // between named exports and the properties of a default-exported object.
+      not hasBothNamedAndDefaultExports(getImportedModule()) and
       is.getImportedName() = "default"
     )
     or
@@ -616,7 +655,9 @@ abstract class ReExportDeclaration extends ExportDeclaration {
   ES2015Module getReExportedES2015Module() { result = getReExportedModule() }
 
   /** Gets the module from which this declaration re-exports. */
+  cached
   Module getReExportedModule() {
+    Stages::Imports::ref() and
     result.getFile() = getEnclosingModule().resolve(getImportedPath().(PathExpr))
     or
     result = resolveFromTypeRoot()

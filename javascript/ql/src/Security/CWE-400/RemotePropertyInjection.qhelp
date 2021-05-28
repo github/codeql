@@ -73,14 +73,14 @@
 	<li>Prototype pollution attacks:
 		<a href="https://github.com/electron/electron/pull/9287">electron</a>,
 		<a href="https://hackerone.com/reports/310443">lodash</a>,
-		<a href="https://nodesecurity.io/advisories/566">hoek</a>.
+		<a href="https://npmjs.com/advisories/566">hoek</a>.
 	</li>
 	<li> Penetration testing report:
 		<a href="http://seclists.org/pen-test/2009/Mar/67">
 			header name injection attack</a>
 	</li>
 	<li> npm blog post:
-		<a href="https://blog.liftsecurity.io/2015/01/14/the-dangers-of-square-bracket-notation#lift-security">
+		<a href="https://github.com/nodesecurity/eslint-plugin-security/blob/3c7522ca1be800353513282867a1034c795d9eb4/docs/the-dangers-of-square-bracket-notation.md">
 			dangers of square bracket notation</a>
 	</li>
 </references>

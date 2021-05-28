@@ -11,33 +11,33 @@ namespace Semmle.Extraction.CSharp.Entities
         private OrdinaryMethod(Context cx, IMethodSymbol init)
             : base(cx, init) { }
 
-        public override string Name => symbol.GetName();
+        public override string Name => Symbol.GetName();
 
-        protected override IMethodSymbol BodyDeclaringSymbol => symbol.PartialImplementationPart ?? symbol;
+        protected override IMethodSymbol BodyDeclaringSymbol => Symbol.PartialImplementationPart ?? Symbol;
 
         public IMethodSymbol SourceDeclaration
         {
             get
             {
-                var reducedFrom = symbol.ReducedFrom ?? symbol;
+                var reducedFrom = Symbol.ReducedFrom ?? Symbol;
                 return reducedFrom.OriginalDefinition;
             }
         }
 
-        public override Microsoft.CodeAnalysis.Location ReportingLocation => symbol.GetSymbolLocation();
+        public override Microsoft.CodeAnalysis.Location ReportingLocation => Symbol.GetSymbolLocation();
 
         public override void Populate(TextWriter trapFile)
         {
             PopulateMethod(trapFile);
             PopulateModifiers(trapFile);
-            ContainingType.PopulateGenerics();
+            ContainingType!.PopulateGenerics();
 
-            var returnType = Type.Create(Context, symbol.ReturnType);
+            var returnType = Type.Create(Context, Symbol.ReturnType);
             trapFile.methods(this, Name, ContainingType, returnType.TypeRef, OriginalDefinition);
 
             if (IsSourceDeclaration)
             {
-                foreach (var declaration in symbol.DeclaringSyntaxReferences.Select(s => s.GetSyntax()).OfType<MethodDeclarationSyntax>())
+                foreach (var declaration in Symbol.DeclaringSyntaxReferences.Select(s => s.GetSyntax()).OfType<MethodDeclarationSyntax>())
                 {
                     Context.BindComments(this, declaration.Identifier.GetLocation());
                     TypeMention.Create(Context, declaration.ReturnType, this, returnType);
@@ -49,17 +49,17 @@ namespace Semmle.Extraction.CSharp.Entities
 
             PopulateGenerics(trapFile);
             Overrides(trapFile);
-            ExtractRefReturn(trapFile);
+            ExtractRefReturn(trapFile, Symbol, this);
             ExtractCompilerGenerated(trapFile);
         }
 
         public static new OrdinaryMethod Create(Context cx, IMethodSymbol method) => OrdinaryMethodFactory.Instance.CreateEntityFromSymbol(cx, method);
 
-        private class OrdinaryMethodFactory : ICachedEntityFactory<IMethodSymbol, OrdinaryMethod>
+        private class OrdinaryMethodFactory : CachedEntityFactory<IMethodSymbol, OrdinaryMethod>
         {
             public static OrdinaryMethodFactory Instance { get; } = new OrdinaryMethodFactory();
 
-            public OrdinaryMethod Create(Context cx, IMethodSymbol init) => new OrdinaryMethod(cx, init);
+            public override OrdinaryMethod Create(Context cx, IMethodSymbol init) => new OrdinaryMethod(cx, init);
         }
     }
 }

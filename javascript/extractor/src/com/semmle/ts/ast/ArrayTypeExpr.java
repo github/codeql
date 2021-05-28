@@ -4,7 +4,7 @@ import com.semmle.js.ast.SourceLocation;
 import com.semmle.js.ast.Visitor;
 
 /**
- * An array type, such as <tt>number[]</tt>, or in general <tt>T[]</tt> where <tt>T</tt> is a type.
+ * An array type, such as <code>number[]</code>, or in general <code>T[]</code> where <code>T</code> is a type.
  */
 public class ArrayTypeExpr extends TypeExpression {
   private final ITypeExpression elementType;

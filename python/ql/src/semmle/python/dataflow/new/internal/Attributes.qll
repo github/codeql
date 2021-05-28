@@ -3,6 +3,7 @@
 import DataFlowUtil
 import DataFlowPublic
 private import DataFlowPrivate
+private import semmle.python.types.Builtins
 
 /**
  * A data flow node that reads or writes an attribute of an object.
@@ -30,8 +31,8 @@ abstract class AttrRef extends Node {
   predicate mayHaveAttributeName(string attrName) {
     attrName = this.getAttributeName()
     or
-    exists(Node nodeFrom |
-      localFlow(nodeFrom, this.getAttributeNameExpr()) and
+    exists(LocalSourceNode nodeFrom |
+      nodeFrom.flowsTo(this.getAttributeNameExpr()) and
       attrName = nodeFrom.asExpr().(StrConst).getText()
     )
   }
@@ -83,8 +84,6 @@ private class AttributeAssignmentAsAttrWrite extends AttrWrite, CfgNode {
 
   override string getAttributeName() { result = node.getName() }
 }
-
-import semmle.python.types.Builtins
 
 /** Represents `CallNode`s that may refer to calls to built-in functions or classes. */
 private class BuiltInCallNode extends CallNode {
@@ -159,7 +158,9 @@ private class SetAttrCallAsAttrWrite extends AttrWrite, CfgNode {
  * Instances of this class correspond to the `NameNode` for `attr`, and also gives access to `value` by
  * virtue of being a `DefinitionNode`.
  */
-private class ClassAttributeAssignmentNode extends DefinitionNode, NameNode { }
+private class ClassAttributeAssignmentNode extends DefinitionNode, NameNode {
+  ClassAttributeAssignmentNode() { this.getScope() = any(ClassExpr c).getInnerScope() }
+}
 
 /**
  * An attribute assignment via a class field, e.g.

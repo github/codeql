@@ -28,16 +28,22 @@ private class PrimaryArgumentNode extends ArgumentNode {
 
   PrimaryArgumentNode() { exists(CallInstruction call | op = call.getAnArgumentOperand()) }
 
-  override predicate argumentOf(DataFlowCall call, int pos) {
-    op = call.getPositionalArgumentOperand(pos)
-    or
-    op = call.getThisArgumentOperand() and pos = -1
-  }
+  override predicate argumentOf(DataFlowCall call, int pos) { op = call.getArgumentOperand(pos) }
 
   override string toString() {
-    result = "Argument " + op.(PositionalArgumentOperand).getIndex()
+    exists(Expr unconverted |
+      unconverted = op.getDef().getUnconvertedResultExpression() and
+      result = unconverted.toString()
+    )
     or
-    op instanceof ThisArgumentOperand and result = "This argument"
+    // Certain instructions don't map to an unconverted result expression. For these cases
+    // we fall back to a simpler naming scheme. This can happen in IR-generated constructors.
+    not exists(op.getDef().getUnconvertedResultExpression()) and
+    (
+      result = "Argument " + op.(PositionalArgumentOperand).getIndex()
+      or
+      op instanceof ThisArgumentOperand and result = "Argument this"
+    )
   }
 }
 
@@ -56,7 +62,18 @@ private class SideEffectArgumentNode extends ArgumentNode {
     pos = getArgumentPosOfSideEffect(read.getIndex())
   }
 
-  override string toString() { result = "Argument " + read.getIndex() + " indirection" }
+  override string toString() {
+    result = read.getArgumentDef().getUnconvertedResultExpression().toString() + " indirection"
+    or
+    // Some instructions don't map to an unconverted result expression. For these cases
+    // we fall back to a simpler naming scheme. This can happen in IR-generated constructors.
+    not exists(read.getArgumentDef().getUnconvertedResultExpression()) and
+    (
+      if read.getIndex() = -1
+      then result = "Argument this indirection"
+      else result = "Argument " + read.getIndex() + " indirection"
+    )
+  }
 }
 
 private newtype TReturnKind =
@@ -110,10 +127,10 @@ class ReturnIndirectionNode extends ReturnNode {
   override ReturnIndirectionInstruction primary;
 
   override ReturnKind getKind() {
-    result = TIndirectReturnKind(-1) and
-    primary.isThisIndirection()
-    or
-    result = TIndirectReturnKind(primary.getParameter().getIndex())
+    exists(int index |
+      primary.hasIndex(index) and
+      result = TIndirectReturnKind(index)
+    )
   }
 }
 
@@ -228,7 +245,7 @@ private class ArrayContent extends Content, TArrayContent {
 private predicate fieldStoreStepNoChi(Node node1, FieldContent f, PostUpdateNode node2) {
   exists(StoreInstruction store, Class c |
     store = node2.asInstruction() and
-    store.getSourceValue() = node1.asInstruction() and
+    store.getSourceValueOperand() = node1.asOperand() and
     getWrittenField(store, f.(FieldContent).getAField(), c) and
     f.hasOffset(c, _, _)
   )
@@ -243,18 +260,20 @@ pragma[noinline]
 private predicate getWrittenField(Instruction instr, Field f, Class c) {
   exists(FieldAddressInstruction fa |
     fa =
-      getFieldInstruction([instr.(StoreInstruction).getDestinationAddress(),
-            instr.(WriteSideEffectInstruction).getDestinationAddress()]) and
+      getFieldInstruction([
+          instr.(StoreInstruction).getDestinationAddress(),
+          instr.(WriteSideEffectInstruction).getDestinationAddress()
+        ]) and
     f = fa.getField() and
     c = f.getDeclaringType()
   )
 }
 
 private predicate fieldStoreStepChi(Node node1, FieldContent f, PostUpdateNode node2) {
-  exists(StoreInstruction store, ChiInstruction chi |
-    node1.asInstruction() = store and
+  exists(ChiPartialOperand operand, ChiInstruction chi |
+    chi.getPartialOperand() = operand and
+    node1.asOperand() = operand and
     node2.asInstruction() = chi and
-    chi.getPartial() = store and
     exists(Class c |
       c = chi.getResultType() and
       exists(int startBit, int endBit |
@@ -262,7 +281,7 @@ private predicate fieldStoreStepChi(Node node1, FieldContent f, PostUpdateNode n
         f.hasOffset(c, startBit, endBit)
       )
       or
-      getWrittenField(store, f.getAField(), c) and
+      getWrittenField(operand.getDef(), f.getAField(), c) and
       f.hasOffset(c, _, _)
     )
   )
@@ -270,8 +289,13 @@ private predicate fieldStoreStepChi(Node node1, FieldContent f, PostUpdateNode n
 
 private predicate arrayStoreStepChi(Node node1, ArrayContent a, PostUpdateNode node2) {
   a = TArrayContent() and
-  exists(StoreInstruction store |
-    node1.asInstruction() = store and
+  exists(ChiPartialOperand operand, ChiInstruction chi, StoreInstruction store |
+    chi.getPartialOperand() = operand and
+    store = operand.getDef() and
+    node1.asOperand() = operand and
+    // This `ChiInstruction` will always have a non-conflated result because both `ArrayStoreNode`
+    // and `PointerStoreNode` require it in their characteristic predicates.
+    node2.asInstruction() = chi and
     (
       // `x[i] = taint()`
       // This matches the characteristic predicate in `ArrayStoreNode`.
@@ -280,10 +304,7 @@ private predicate arrayStoreStepChi(Node node1, ArrayContent a, PostUpdateNode n
       // `*p = taint()`
       // This matches the characteristic predicate in `PointerStoreNode`.
       store.getDestinationAddress().(CopyValueInstruction).getUnary() instanceof LoadInstruction
-    ) and
-    // This `ChiInstruction` will always have a non-conflated result because both `ArrayStoreNode`
-    // and `PointerStoreNode` require it in their characteristic predicates.
-    node2.asInstruction().(ChiInstruction).getPartial() = store
+    )
   )
 }
 
@@ -304,7 +325,7 @@ predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
 private predicate fieldStoreStepAfterArraySuppression(
   Node node1, FieldContent f, PostUpdateNode node2
 ) {
-  exists(BufferMayWriteSideEffectInstruction write, ChiInstruction chi, Class c |
+  exists(WriteSideEffectInstruction write, ChiInstruction chi, Class c |
     not chi.isResultConflated() and
     node1.asInstruction() = chi and
     node2.asInstruction() = chi and
@@ -332,17 +353,17 @@ private predicate getLoadedField(LoadInstruction load, Field f, Class c) {
  * `node2`.
  */
 private predicate fieldReadStep(Node node1, FieldContent f, Node node2) {
-  exists(LoadInstruction load |
-    node2.asInstruction() = load and
-    node1.asInstruction() = load.getSourceValueOperand().getAnyDef() and
+  exists(LoadOperand operand |
+    node2.asOperand() = operand and
+    node1.asInstruction() = operand.getAnyDef() and
     exists(Class c |
-      c = load.getSourceValueOperand().getAnyDef().getResultType() and
+      c = operand.getAnyDef().getResultType() and
       exists(int startBit, int endBit |
-        load.getSourceValueOperand().getUsedInterval(unbindInt(startBit), unbindInt(endBit)) and
+        operand.getUsedInterval(unbindInt(startBit), unbindInt(endBit)) and
         f.hasOffset(c, startBit, endBit)
       )
       or
-      getLoadedField(load, f.getAField(), c) and
+      getLoadedField(operand.getUse(), f.getAField(), c) and
       f.hasOffset(c, _, _)
     )
   )
@@ -363,7 +384,7 @@ private predicate fieldReadStep(Node node1, FieldContent f, Node node2) {
  */
 predicate suppressArrayRead(Node node1, ArrayContent a, Node node2) {
   a = TArrayContent() and
-  exists(BufferMayWriteSideEffectInstruction write, ChiInstruction chi |
+  exists(WriteSideEffectInstruction write, ChiInstruction chi |
     node1.asInstruction() = write and
     node2.asInstruction() = chi and
     chi.getPartial() = write and
@@ -384,20 +405,20 @@ private Instruction skipOneCopyValueInstructionRec(CopyValueInstruction copy) {
   result = skipOneCopyValueInstructionRec(copy.getUnary())
 }
 
-private Instruction skipCopyValueInstructions(Instruction instr) {
-  not result instanceof CopyValueInstruction and result = instr
+private Instruction skipCopyValueInstructions(Operand op) {
+  not result instanceof CopyValueInstruction and result = op.getDef()
   or
-  result = skipOneCopyValueInstructionRec(instr)
+  result = skipOneCopyValueInstructionRec(op.getDef())
 }
 
 private predicate arrayReadStep(Node node1, ArrayContent a, Node node2) {
   a = TArrayContent() and
   // Explicit dereferences such as `*p` or `p[i]` where `p` is a pointer or array.
-  exists(LoadInstruction load, Instruction address |
-    load.getSourceValueOperand().isDefinitionInexact() and
-    node1.asInstruction() = load.getSourceValueOperand().getAnyDef() and
-    load = node2.asInstruction() and
-    address = skipCopyValueInstructions(load.getSourceAddress()) and
+  exists(LoadOperand operand, Instruction address |
+    operand.isDefinitionInexact() and
+    node1.asInstruction() = operand.getAnyDef() and
+    operand = node2.asOperand() and
+    address = skipCopyValueInstructions(operand.getAddressOperand()) and
     (
       address instanceof LoadInstruction or
       address instanceof ArrayToPointerConvertInstruction or
@@ -418,18 +439,18 @@ private predicate arrayReadStep(Node node1, ArrayContent a, Node node2) {
  * use(x);
  * ```
  * the load on `x` in `use(x)` will exactly overlap with its definition (in this case the definition
- * is a `BufferMayWriteSideEffect`). This predicate pops the `ArrayContent` (pushed by the store in `f`)
+ * is a `WriteSideEffect`). This predicate pops the `ArrayContent` (pushed by the store in `f`)
  * from the access path.
  */
 private predicate exactReadStep(Node node1, ArrayContent a, Node node2) {
   a = TArrayContent() and
-  exists(BufferMayWriteSideEffectInstruction write, ChiInstruction chi |
+  exists(WriteSideEffectInstruction write, ChiInstruction chi |
     not chi.isResultConflated() and
     chi.getPartial() = write and
     node1.asInstruction() = write and
     node2.asInstruction() = chi and
     // To distinquish this case from the `arrayReadStep` case we require that the entire variable was
-    // overwritten by the `BufferMayWriteSideEffectInstruction` (i.e., there is a load that reads the
+    // overwritten by the `WriteSideEffectInstruction` (i.e., there is a load that reads the
     // entire variable).
     exists(LoadInstruction load | load.getSourceValue() = chi)
   )
@@ -496,19 +517,21 @@ class DataFlowType = IRType;
 
 /** A function call relevant for data flow. */
 class DataFlowCall extends CallInstruction {
-  /**
-   * Gets the nth argument for this call.
-   *
-   * The range of `n` is from `0` to `getNumberOfArguments() - 1`.
-   */
-  Node getArgument(int n) { result.asInstruction() = this.getPositionalArgument(n) }
-
   Function getEnclosingCallable() { result = this.getEnclosingFunction() }
 }
 
 predicate isUnreachableInCall(Node n, DataFlowCall call) { none() } // stub implementation
 
 int accessPathLimit() { result = 5 }
+
+/** The unit type. */
+private newtype TUnit = TMkUnit()
+
+/** The trivial type with a single element. */
+class Unit extends TUnit {
+  /** Gets a textual representation of this element. */
+  string toString() { result = "unit" }
+}
 
 /**
  * Holds if `n` does not require a `PostUpdateNode` as it either cannot be
@@ -524,4 +547,15 @@ predicate isImmutableOrUnobservable(Node n) {
 }
 
 /** Holds if `n` should be hidden from path explanations. */
-predicate nodeIsHidden(Node n) { n instanceof OperandNode }
+predicate nodeIsHidden(Node n) { n instanceof OperandNode and not n instanceof ArgumentNode }
+
+class LambdaCallKind = Unit;
+
+/** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
+predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) { none() }
+
+/** Holds if `call` is a lambda call of kind `kind` where `receiver` is the lambda expression. */
+predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) { none() }
+
+/** Extra data-flow steps needed for lambda flow analysis. */
+predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }

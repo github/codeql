@@ -39,6 +39,12 @@ source_encoding = 'utf-8-sig'
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
 
+# The default language for syntax highlighting. We need to explicitly set this to "none",
+# otherwise Sphinx tries to highlight any unlabeled code samples as "python3".
+# See https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-highlight_language.
+
+highlight_language = "none"
+
 # Import the QL Lexer to use for syntax highlighting
 import os
 import sys
@@ -93,6 +99,8 @@ html_static_path = ['_static']
 
 # Copy the static landing page for codeql.github.com/docs when building this sphinx project
 html_extra_path = ['index.html']
+
+html_favicon = 'images/site/favicon.ico'
 
 # Exclude these paths from being built by Sphinx
 exclude_patterns = ['vale*', '_static', '_templates', 'reusables', 'images', 'support', 'ql-training', 'query-help', '_build', '*.py*', 'README.rst']

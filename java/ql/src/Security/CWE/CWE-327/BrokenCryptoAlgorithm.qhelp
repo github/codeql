@@ -12,7 +12,7 @@ data.</p>
 </overview>
 <recommendation>
 
-<p>Ensure that you use a strong, modern cryptographic algorithm. Use at least AES-128 or RSA-2048.</p>
+<p>Ensure that you use a strong, modern cryptographic algorithm. Use at least AES-128 or RSA-2048. Do not use the ECB encryption mode since it is vulnerable to replay and other attacks.</p>
 
 </recommendation>
 <example>

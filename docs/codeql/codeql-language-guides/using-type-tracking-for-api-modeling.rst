@@ -11,9 +11,9 @@ The type-tracking library makes it possible to track values through properties a
 usually to recognize method calls and properties accessed on a specific type of object.
 
 This is an advanced topic and is intended for readers already familiar with the
-`SourceNode <analyzing-data-flow-in-javascript.html#source-nodes>`__ class as well as
-`taint tracking <analyzing-data-flow-in-javascript.html#using-global-analyzing-data-flow-and-tracking-tainted-data-in-python>`__.
-For TypeScript analysis also consider reading about `static type information <codeql-library-for-typescript.html.html#static-type-information>`__ first.
+`SourceNode <https://codeql.github.com/docs/codeql-language-guides/analyzing-data-flow-in-javascript-and-typescript/#source-nodes>`__ class as well as
+`taint tracking <https://codeql.github.com/docs/codeql-language-guides/analyzing-data-flow-in-javascript-and-typescript/#using-global-taint-tracking>`__.
+For TypeScript analysis also consider reading about `static type information <https://codeql.github.com/docs/codeql-language-guides/codeql-library-for-typescript/#static-type-information>`__ first.
 
 
 The problem of recognizing method calls
@@ -458,7 +458,7 @@ Here's an example that the model from this tutorial won't find:
   let wrapper = wrapDB(firebase.database())
   wrapper.db.ref("forecast"); // <-- not found
 
-This is an example of where `data-flow configurations <analyzing-data-flow-in-javascript.html#global-data-flow>`__ are more powerful.
+This is an example of where `data-flow configurations <https://codeql.github.com/docs/codeql-language-guides/analyzing-data-flow-in-javascript-and-typescript/#global-data-flow>`__ are more powerful.
 
 When to use type tracking
 -------------------------
@@ -491,7 +491,7 @@ Prefer type tracking when:
 
 Prefer data-flow configurations when:
 
-- Tracking user-controlled data -- use `taint tracking <analyzing-data-flow-in-javascript.html#using-global-analyzing-data-flow-and-tracking-tainted-data-in-python>`__.
+- Tracking user-controlled data -- use `taint tracking <https://codeql.github.com/docs/codeql-language-guides/analyzing-data-flow-in-javascript-and-typescript/#using-global-taint-tracking>`__.
 - Differentiating between different kinds of user-controlled data -- see ":doc:`Using flow labels for precise data flow analysis <using-flow-labels-for-precise-data-flow-analysis>`."
 - Tracking transformations of a value through generic utility functions.
 - Tracking values through string manipulation.
@@ -499,7 +499,7 @@ Prefer data-flow configurations when:
 
 Lastly, depending on the code base being analyzed, some alternatives to consider are:
 
-- Using `static type information <codeql-library-for-typescript.html.html#static-type-information>`__,
+- Using `static type information <https://codeql.github.com/docs/codeql-language-guides/codeql-library-for-typescript/#static-type-information>`__,
   if analyzing TypeScript code.
 
 - Relying on local data flow.

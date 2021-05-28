@@ -56,11 +56,11 @@ OWASP guidance on parsing xml files:
 </li>
 <li>
 Paper by Timothy Morgen:
-<a href="https://www.vsecurity.com//download/publications/XMLDTDEntityAttacks.pdf">XML Schema, DTD, and Entity Attacks</a>
+<a href="https://research.nccgroup.com/2014/05/19/xml-schema-dtd-and-entity-attacks-a-compendium-of-known-techniques/">XML Schema, DTD, and Entity Attacks</a>
 </li>
 <li>
 Out-of-band data retrieval: Timur Yunusov &amp; Alexey Osipov, Black hat EU 2013:
-<a href="https://media.blackhat.com/eu-13/briefings/Osipov/bh-eu-13-XML-data-osipov-slides.pdf">XML Out-Of-Band Data Retrieval</a>.
+<a href="https://www.slideshare.net/qqlan/bh-ready-v4">XML Out-Of-Band Data Retrieval</a>.
 </li>
 <li>
 Denial of service attack (Billion laughs):

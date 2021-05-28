@@ -184,8 +184,7 @@ predicate ssa_consistency(string clsname, string problem, string what) {
   /* Minimality of phi nodes */
   exists(SsaVariable var |
     strictcount(var.getAPhiInput()) = 1 and
-    var
-        .getAPhiInput()
+    var.getAPhiInput()
         .getDefinition()
         .getBasicBlock()
         .strictlyDominates(var.getDefinition().getBasicBlock())

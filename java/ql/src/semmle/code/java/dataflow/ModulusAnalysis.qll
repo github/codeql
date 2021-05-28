@@ -268,9 +268,7 @@ predicate exprModulus(Expr e, Bound b, int val, int mod) {
 private predicate condExprBranchModulus(
   ConditionalExpr cond, boolean branch, Bound b, int val, int mod
 ) {
-  exprModulus(cond.getTrueExpr(), b, val, mod) and branch = true
-  or
-  exprModulus(cond.getFalseExpr(), b, val, mod) and branch = false
+  exprModulus(cond.getBranchExpr(branch), b, val, mod)
 }
 
 private predicate addModulus(Expr add, boolean isLeft, Bound b, int val, int mod) {

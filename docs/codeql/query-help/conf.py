@@ -23,7 +23,10 @@ master_doc = 'index'
 project = u'CodeQL query help'
 
 # Add md parser to process query help markdown files 
-extensions =['recommonmark']
+extensions = [
+    'recommonmark',
+    'sphinx_markdown_tables',
+]
 
 source_suffix = {
     '.rst': 'restructuredtext',
@@ -53,6 +56,8 @@ templates_path = ['../_templates']
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['../_static']
+
+html_favicon = '../images/site/favicon.ico'
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.

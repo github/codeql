@@ -64,7 +64,7 @@ There are two ways to do this:
       **Click to show information for LGTM Enterprise users**
 
    Your local version of the CodeQL queries and libraries should match your version of LGTM Enterprise. For example, if you
-   use LGTM Enterprise 1.23, then you should clone the ``1.23.0`` branch of the `starter workspace <https://github.com/github/vscode-codeql-starter/>`__ (or the appropriate ``1.23.x`` branch, corresponding to each maintenance release).
+   use LGTM Enterprise 1.27, then you should clone the ``1.27.0`` branch of the `starter workspace <https://github.com/github/vscode-codeql-starter/>`__ (or the appropriate ``1.27.x`` branch, corresponding to each maintenance release).
    
    This ensures that the queries and libraries you write in VS Code also work in the query console on LGTM Enterprise.
 
@@ -80,7 +80,7 @@ The starter workspace is a Git repository. It contains:
 
 * The `repository of CodeQL libraries and queries <https://github.com/github/codeql>`__ for C/C++, C#, Java, JavaScript, and Python. This is included as a submodule, so it can be updated without affecting your custom queries.
 * The `repository of CodeQL libraries and queries <https://github.com/github/codeql-go>`__ for Go. This is also included as a submodule.
-* A series of folders named ``codeql-custom-queries-<ql-language-specification>``. These are ready for you to start developing your own custom queries for each language, using the standard libraries. There are some example queries to get you started.
+* A series of folders named ``codeql-custom-queries-<language>``. These are ready for you to start developing your own custom queries for each language, using the standard libraries. There are some example queries to get you started.
 
 To use the starter workspace:
 

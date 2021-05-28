@@ -147,7 +147,7 @@ class Property extends DotNet::Property, DeclarationWithGetSetAccessors, @proper
     not this.getAnAccessor().hasBody()
   }
 
-  override Property getSourceDeclaration() { properties(this, _, _, _, result) }
+  override Property getUnboundDeclaration() { properties(this, _, _, _, result) }
 
   override Property getOverridee() { result = DeclarationWithGetSetAccessors.super.getOverridee() }
 
@@ -274,7 +274,7 @@ class Indexer extends DeclarationWithGetSetAccessors, Parameterizable, @indexer 
     result = DeclarationWithGetSetAccessors.super.getExpressionBody()
   }
 
-  override Indexer getSourceDeclaration() { indexers(this, _, _, _, result) }
+  override Indexer getUnboundDeclaration() { indexers(this, _, _, _, result) }
 
   override Indexer getOverridee() { result = DeclarationWithGetSetAccessors.super.getOverridee() }
 
@@ -370,7 +370,7 @@ class Accessor extends Callable, Modifiable, Attributable, @callable_accessor {
     not (result instanceof AccessModifier and exists(getAnAccessModifier()))
   }
 
-  override Accessor getSourceDeclaration() { accessors(this, _, _, _, result) }
+  override Accessor getUnboundDeclaration() { accessors(this, _, _, _, result) }
 
   override Location getALocation() { accessor_location(this, result) }
 
@@ -472,6 +472,9 @@ class Setter extends Accessor, @setter {
     result = Accessor.super.getDeclaration()
   }
 
+  /** Holds if this setter is an `init`-only accessor. */
+  predicate isInitOnly() { init_only_accessors(this) }
+
   override string getAPrimaryQlClass() { result = "Setter" }
 }
 
@@ -563,6 +566,4 @@ class IndexerProperty extends Property {
     // ```
     result.getIndexer() = i
   }
-
-  override string getAPrimaryQlClass() { result = "IndexerProperty" }
 }

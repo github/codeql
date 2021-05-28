@@ -47,12 +47,68 @@ module IndirectCommandInjection {
       // `require('get-them-args')(...)` => `{ unknown: [], a: ... b: ... }`
       this = DataFlow::moduleImport("get-them-args").getACall()
       or
-      // `require('minimist')(...)` => `{ _: [], a: ... b: ... }`
-      this = DataFlow::moduleImport("minimist").getACall()
-      or
       // `require('optimist').argv` => `{ _: [], a: ... b: ... }`
       this = DataFlow::moduleMember("optimist", "argv")
+      or
+      // `require("arg")({...spec})` => `{_: [], a: ..., b: ...}`
+      this = DataFlow::moduleImport("arg").getACall()
+      or
+      // `(new (require(argparse)).ArgumentParser({...spec})).parse_args()` => `{a: ..., b: ...}`
+      this =
+        API::moduleImport("argparse")
+            .getMember("ArgumentParser")
+            .getInstance()
+            .getMember("parse_args")
+            .getACall()
+      or
+      // `require('command-line-args')({...spec})` => `{a: ..., b: ...}`
+      this = DataFlow::moduleImport("command-line-args").getACall()
+      or
+      // `require('meow')(help, {...spec})` => `{a: ..., b: ....}`
+      this = DataFlow::moduleImport("meow").getACall()
+      or
+      // `require("dashdash").createParser(...spec)` => `{a: ..., b: ...}`
+      this =
+        [
+          API::moduleImport("dashdash"),
+          API::moduleImport("dashdash").getMember("createParser").getReturn()
+        ].getMember("parse").getACall()
+      or
+      // `require('commander').myCmdArgumentName`
+      this = commander().getAMember().getAnImmediateUse()
+      or
+      // `require('commander').opt()` => `{a: ..., b: ...}`
+      this = commander().getMember("opts").getACall()
     }
+  }
+
+  /**
+   * A command line parsing step from `pred` to `succ`.
+   * E.g: `var succ = require("minimist")(pred)`.
+   */
+  predicate argsParseStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(DataFlow::CallNode call |
+      call = DataFlow::moduleMember("args", "parse").getACall() or
+      call = DataFlow::moduleImport(["yargs-parser", "minimist", "subarg"]).getACall()
+    |
+      succ = call and
+      pred = call.getArgument(0)
+    )
+  }
+
+  /**
+   * A Command instance from the `commander` library.
+   */
+  private API::Node commander() {
+    result = API::moduleImport("commander")
+    or
+    // `require("commander").program === require("commander")`
+    result = commander().getMember("program")
+    or
+    result = commander().getMember("Command").getInstance()
+    or
+    // lots of chainable methods
+    result = commander().getAMember().getReturn()
   }
 
   /**
@@ -66,9 +122,11 @@ module IndirectCommandInjection {
     exists(string method |
       not method =
         // the methods that does not return a chained `yargs` object.
-        ["getContext", "getDemandedOptions", "getDemandedCommands", "getDeprecatedOptions",
-            "_getParseContext", "getOptions", "getGroups", "getStrict", "getStrictCommands",
-            "getExitProcess", "locale", "getUsageInstance", "getCommandInstance"]
+        [
+          "getContext", "getDemandedOptions", "getDemandedCommands", "getDeprecatedOptions",
+          "_getParseContext", "getOptions", "getGroups", "getStrict", "getStrictCommands",
+          "getExitProcess", "locale", "getUsageInstance", "getCommandInstance"
+        ]
     |
       result = yargs().getAMethodCall(method)
     )

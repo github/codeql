@@ -101,6 +101,7 @@ class Type extends Locatable, @type {
    *
    * For example, starting with `const i64* const` in the context of `typedef long long i64;`, this predicate will return `long long*`.
    */
+  pragma[nomagic]
   Type getUnspecifiedType() { unspecifiedtype(underlyingElement(this), unresolveElement(result)) }
 
   /**
@@ -274,7 +275,7 @@ class Type extends Locatable, @type {
 
   /**
    * Gets this type with any typedefs resolved. For example, given
-   * `typedef C T`, this would resolve `const T&amp;` to `const C&amp;`.
+   * `typedef C T`, this would resolve `const T&` to `const C&`.
    * Note that this will only work if the resolved type actually appears
    * on its own elsewhere in the program.
    */
@@ -577,7 +578,9 @@ class BoolType extends IntegralType {
  * unsigned char e, f;
  * ```
  */
-abstract class CharType extends IntegralType { }
+class CharType extends IntegralType {
+  CharType() { builtintypes(underlyingElement(this), _, [5, 6, 7], _, _, _) }
+}
 
 /**
  * The C/C++ `char` type (which is distinct from `signed char` and
@@ -1304,14 +1307,16 @@ class SpecifiedType extends DerivedType {
   }
 
   /**
+   * INTERNAL: Do not use.
+   *
    * Gets all the specifiers of this type as a string in a fixed order (the order
    * only depends on the specifiers, not on the source program). This is intended
    * for debugging queries only and is an expensive operation.
    */
-  string getSpecifierString() { internalSpecString(this, result, 1) }
+  string getSpecifierString() { result = concat(this.getASpecifier().getName(), " ") }
 
   override string explain() {
-    result = this.getSpecifierString() + "{" + this.getBaseType().explain() + "}"
+    result = this.getSpecifierString() + " {" + this.getBaseType().explain() + "}"
   }
 
   override predicate isDeeplyConst() {
@@ -1540,9 +1545,9 @@ class FunctionPointerIshType extends DerivedType {
 /**
  * A C++ pointer to data member. See 15.5.
  * ```
- * class C { int m; };
+ * class C { public: int m; };
  * int C::* p = &C::m;          // pointer to data member m of class C
- * class C *;
+ * class C c;
  * int val = c.*p;              // access data member
  * ```
  */
@@ -1708,28 +1713,6 @@ class AutoType extends TemplateParameter {
     suppressUnusedThis(this) and
     result instanceof UnknownDefaultLocation
   }
-}
-
-//
-// Internal implementation predicates
-//
-private predicate allSpecifiers(int i, string s) { s = rank[i](string t | specifiers(_, t) | t) }
-
-private predicate internalSpecString(Type t, string res, int i) {
-  (
-    if allSpecifiers(i, t.getASpecifier().getName())
-    then
-      exists(string spec, string rest |
-        allSpecifiers(i, spec) and
-        res = spec + " " + rest and
-        internalSpecString(t, rest, i + 1)
-      )
-    else (
-      allSpecifiers(i, _) and internalSpecString(t, res, i + 1)
-    )
-  )
-  or
-  i = count(Specifier s) + 1 and res = ""
 }
 
 private predicate suppressUnusedThis(Type t) { any() }

@@ -324,8 +324,8 @@ methods.cs:
 #  126|                 2: [StringLiteral] "333"
 #  126|                 3: [StringLiteral] "4444"
 #  127|         1: [ForeachStmt] foreach (... ... in ...) ...
-#  127|           -1: [TypeMention] string
 #  127|           0: [LocalVariableDeclExpr] String s
+#  127|             0: [TypeMention] string
 #  127|           1: [MethodCall] call to method Slice
 #  127|             -1: [LocalVariableAccess] access to local variable strings
 #  127|             0: [IntLiteral] 1

@@ -4,8 +4,9 @@ module Private {
   private import semmle.code.csharp.dataflow.internal.rangeanalysis.RangeUtils as RU
   private import SsaUtils as SU
   private import SsaReadPositionCommon
+  private import semmle.code.csharp.controlflow.internal.ControlFlowGraphImpl as CfgImpl
 
-  class BasicBlock = CS::Ssa::BasicBlock;
+  class BasicBlock = CS::ControlFlow::BasicBlock;
 
   class SsaVariable = SU::SsaVariable;
 
@@ -43,22 +44,16 @@ module Private {
 
   Expr getABasicBlockExpr(BasicBlock bb) { result = bb.getANode() }
 
-  private class CallableOrCFE extends CS::Element {
-    CallableOrCFE() { this instanceof CS::Callable or this instanceof CS::ControlFlowElement }
-  }
-
-  private predicate id(CallableOrCFE x, CallableOrCFE y) { x = y }
-
-  private predicate idOf(CallableOrCFE x, int y) = equivalenceRelation(id/2)(x, y)
-
   private class PhiInputEdgeBlock extends BasicBlock {
     PhiInputEdgeBlock() { this = any(SsaReadPositionPhiInputEdge edge).getOrigBlock() }
   }
 
   int getId(PhiInputEdgeBlock bb) {
-    idOf(bb.getFirstNode().getElement(), result)
-    or
-    idOf(bb.(CS::ControlFlow::BasicBlocks::EntryBlock).getCallable(), result)
+    exists(CfgImpl::ControlFlowTree::Range t | CfgImpl::ControlFlowTree::idOf(t, result) |
+      t = bb.getFirstNode().getElement()
+      or
+      t = bb.(CS::ControlFlow::BasicBlocks::EntryBlock).getCallable()
+    )
   }
 
   private string getSplitString(PhiInputEdgeBlock bb) {

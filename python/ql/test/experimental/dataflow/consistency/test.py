@@ -235,3 +235,24 @@ def non_const_eq_preserves_taint(x):
         SINK(tainted) # unsafe
     if tainted == x:
         SINK(tainted) # unsafe
+
+def overflowCallee(*args, p="", **kwargs):
+    print("args", args)
+    print("p", p)
+    print("kwargs", kwargs)
+
+def synth_arg_posOverflow():
+    overflowCallee(42)
+
+def synth_arg_kwOverflow():
+    overflowCallee(foo=42)
+
+def synth_arg_kwUnpacked():
+    overflowCallee(**{"p": "42"})
+
+def split_lambda(cond):
+    if cond:
+        pass
+    foo = lambda x: False
+    if cond:
+        pass

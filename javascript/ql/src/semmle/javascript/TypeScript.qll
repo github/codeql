@@ -725,7 +725,7 @@ class TypeAccess extends @typeaccess, TypeExpr, TypeRef {
       spec.getImportedName() = exportedName and
       this = spec.getLocal().(TypeDecl).getLocalTypeName().getAnAccess()
       or
-      spec instanceof ImportNamespaceSpecifier and
+      (spec instanceof ImportNamespaceSpecifier or spec instanceof ImportDefaultSpecifier) and
       this =
         spec.getLocal().(LocalNamespaceDecl).getLocalNamespaceName().getAMemberAccess(exportedName)
     )
@@ -1211,6 +1211,29 @@ class InferTypeExpr extends @infer_typeexpr, TypeParameterized, TypeExpr {
   override string describe() { result = "'infer' type " + getTypeParameter().getName() }
 
   override string getAPrimaryQlClass() { result = "InferTypeExpr" }
+}
+
+/**
+ * A template literal used as a type.
+ */
+class TemplateLiteralTypeExpr extends @template_literal_typeexpr, TypeExpr {
+  /**
+   * Gets the `i`th element of this template literal, which may either
+   * be a type expression or a constant template element.
+   */
+  ExprOrType getElement(int i) { result = getChild(i) }
+
+  /**
+   * Gets an element of this template literal.
+   */
+  ExprOrType getAnElement() { result = getElement(_) }
+
+  /**
+   * Gets the number of elements of this template literal.
+   */
+  int getNumElement() { result = count(getAnElement()) }
+
+  override string getAPrimaryQlClass() { result = "TemplateLiteralTypeExpr" }
 }
 
 /**
@@ -2126,18 +2149,23 @@ class TupleType extends ArrayType, @tuple_type {
   int getMinimumLength() { tuple_type_min_length(this, result) }
 
   /**
-   * Holds if this tuple type ends with a rest element, such as `[number, ...string[]]`.
+   * Gets the index of the rest element.
+   * For example, for a type `[number, ...string[]]` the result is 1,
+   * or for a type `[...number[], string]` the result is 0.
    */
-  predicate hasRestElement() { tuple_type_rest(this) }
+  int getRestElementIndex() { tuple_type_rest_index(this, result) }
+
+  /**
+   * Holds if this tuple type has a rest element, such as `[number, ...string[]]` or `[...number[], string]`.
+   */
+  predicate hasRestElement() { exists(getRestElementIndex()) }
 
   /**
    * Gets the type of the rest element, if there is one.
    *
    * For example, the rest element of `[number, ...string[]]` is `string`.
    */
-  Type getRestElementType() {
-    hasRestElement() and result = getElementType(getNumElementType() - 1)
-  }
+  Type getRestElementType() { result = getElementType(getRestElementIndex()) }
 }
 
 /**
@@ -2766,6 +2794,11 @@ class CallSignatureType extends @signature_type {
    * For example, for the signature `(...y: string[])`, this gets the type `string[]`.
    */
   PlainArrayType getRestParameterArrayType() { signature_rest_parameter(this, result) }
+
+  /**
+   * Holds if this signature is abstract.
+   */
+  predicate isAbstract() { is_abstract_signature(this) }
 }
 
 /**

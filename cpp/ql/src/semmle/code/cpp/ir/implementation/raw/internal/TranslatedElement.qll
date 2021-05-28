@@ -12,6 +12,7 @@ private import TranslatedStmt
 private import TranslatedExpr
 private import IRConstruction
 private import semmle.code.cpp.models.interfaces.SideEffect
+private import SideEffects
 
 /**
  * Gets the "real" parent of `expr`. This predicate treats conversions as if
@@ -41,7 +42,8 @@ IRTempVariable getIRTempVariable(Locatable ast, TempVariableTag tag) {
  */
 predicate isIRConstant(Expr expr) { exists(expr.getValue()) }
 
-// Pulled out to work around QL-796
+// Pulled out for performance. See
+// https://github.com/github/codeql-coreql-team/issues/1044.
 private predicate isOrphan(Expr expr) { not exists(getRealParent(expr)) }
 
 /**
@@ -228,21 +230,149 @@ private predicate usedAsCondition(Expr expr) {
 }
 
 /**
+ * Holds if `conv` is an `InheritanceConversion` that requires a `TranslatedLoad`, despite not being
+ * marked as having an lvalue-to-rvalue conversion.
+ *
+ * This is necessary for an `InheritanceConversion` that is originally modeled as a
+ * prvalue-to-prvalue conversion, since we transform it into a glvalue-to-glvalue conversion. If it
+ * is actually consumed as a prvalue, such as on the right hand side of an assignment, we need to
+ * load the resulting glvalue.
+ */
+private predicate isInheritanceConversionWithImplicitLoad(InheritanceConversion conv) {
+  // Must have originally been a prvalue-to-prvalue conversion.
+  isClassPRValue(conv.getExpr()) and
+  not conv.hasLValueToRValueConversion() and
+  // Exclude that case where this will be consumed as a glvalue, such as when used as the qualifier
+  // of a field access.
+  not isPRValueConversionOnGLValue(conv)
+}
+
+/**
+ * Holds if `expr` is the result of a field access whose qualifier was a prvalue and whose result is
+ * a prvalue. These accesses are not marked as having loads, but we do need a load in the IR.
+ */
+private predicate isPRValueFieldAccessWithImplicitLoad(Expr expr) {
+  expr instanceof ValueFieldAccess and
+  expr.isPRValueCategory() and
+  // No need to do a load if we're replacing the result with a constant anyway.
+  not isIRConstant(expr) and
+  // Model an array prvalue as the address of the array, just like an array glvalue.
+  not expr.getUnspecifiedType() instanceof ArrayType
+}
+
+/**
+ * Holds if `expr` is a prvalue of class type.
+ *
+ * This same test is used in several places.
+ */
+pragma[inline]
+private predicate isClassPRValue(Expr expr) {
+  expr.isPRValueCategory() and
+  expr.getUnspecifiedType() instanceof Class
+}
+
+/**
+ * Holds if `expr` is consumed as a glvalue by its parent. If `expr` is actually a prvalue, it will
+ * have any lvalue-to-rvalue conversion ignored. If it does not have an lvalue-to-rvalue conversion,
+ * it will be materialized into a temporary object.
+ */
+private predicate consumedAsGLValue(Expr expr) {
+  isClassPRValue(expr) and
+  (
+    // Qualifier of a field access.
+    expr = any(FieldAccess a).getQualifier().getFullyConverted()
+    or
+    // Qualifier of a member function call.
+    expr = any(Call c).getQualifier().getFullyConverted()
+    or
+    // The operand of an inheritance conversion.
+    expr = any(InheritanceConversion c).getExpr()
+  )
+}
+
+/**
+ * Holds if `expr` is a conversion that is originally a prvalue-to-prvalue conversion, but which is
+ * applied to a prvalue that will actually be consumed as a glvalue.
+ */
+predicate isPRValueConversionOnGLValue(Conversion conv) {
+  exists(Expr consumed |
+    consumedAsGLValue(consumed) and
+    isClassPRValue(conv.getExpr()) and
+    (
+      // Example: The conversion of `std::string` to `const std::string` when evaluating
+      // `std::string("foo").c_str()`.
+      conv instanceof PrvalueAdjustmentConversion
+      or
+      // Parentheses are transparent.
+      conv instanceof ParenthesisExpr
+      or
+      // Example: The base class conversion in `f().m()`, when `m` is member function of a base
+      // class of the return type of `f()`.
+      conv instanceof InheritanceConversion
+    ) and
+    (
+      // Base case: The conversion is consumed directly.
+      conv = consumed
+      or
+      // Recursive case: The conversion is the operand of another prvalue conversion.
+      isPRValueConversionOnGLValue(conv.getConversion())
+    )
+  )
+}
+
+/**
+ * Holds if `expr` is a prvalue of class type that is used in a context that requires a glvalue.
+ *
+ * Any conversions between `expr` and the ancestor that consumes the glvalue will also be treated
+ * as glvalues, but are not part of this relation.
+ *
+ * For example:
+ * ```c++
+ * std::string("s").c_str();
+ * ```
+ * The object for the qualifier is a prvalue(load) of type `std::string`, but the actual
+ * fully-converted qualifier of the call to `c_str()` is a prvalue adjustment conversion that
+ * converts the type to `const std::string` to match the type of the `this` pointer of the
+ * member function. In this case, `mustTransformToGLValue()` will hold for the temporary
+ * `std::string` object, but not the prvalue adjustment on top of it.
+ * `isPRValueConversionOnGLValue()` would hold for the prvalue adjustment.
+ */
+private predicate mustTransformToGLValue(Expr expr) {
+  not isPRValueConversionOnGLValue(expr) and
+  (
+    // The expression is the fully converted qualifier, with no prvalue adjustments on top.
+    consumedAsGLValue(expr)
+    or
+    // The expression has conversions on top, but they are all prvalue adjustments.
+    isPRValueConversionOnGLValue(expr.getConversion())
+  )
+}
+
+/**
  * Holds if `expr` has an lvalue-to-rvalue conversion that should be ignored
  * when generating IR. This occurs for conversion from an lvalue of function type
  * to an rvalue of function pointer type. The conversion is represented in the
  * AST as an lvalue-to-rvalue conversion, but the IR represents both a function
  * lvalue and a function pointer prvalue the same.
  */
-private predicate ignoreLoad(Expr expr) {
+predicate ignoreLoad(Expr expr) {
   expr.hasLValueToRValueConversion() and
   (
-    expr instanceof ThisExpr or
-    expr instanceof FunctionAccess or
+    expr instanceof ThisExpr
+    or
+    expr instanceof FunctionAccess
+    or
     expr.(PointerDereferenceExpr).getOperand().getFullyConverted().getType().getUnspecifiedType()
-      instanceof FunctionPointerType or
+      instanceof FunctionPointerType
+    or
     expr.(ReferenceDereferenceExpr).getExpr().getType().getUnspecifiedType() instanceof
       FunctionReferenceType
+    or
+    // The extractor represents the qualifier of a field access or member function call as a load of
+    // the temporary object if the original qualifier was a prvalue. For IR purposes, we always want
+    // to use the address of the temporary object as the qualifier of a field access or the `this`
+    // argument to a member function call.
+    mustTransformToGLValue(expr)
   )
 }
 
@@ -257,6 +387,17 @@ private predicate needsLoadForParentExpr(Expr expr) {
   exists(CrementOperation crement | expr = crement.getOperand().getFullyConverted())
   or
   exists(AssignOperation ao | expr = ao.getLValue().getFullyConverted())
+  or
+  // For arguments that are passed by value but require a constructor call, the extractor emits a
+  // `TemporaryObjectExpr` as the argument, and marks it as a glvalue. This is roughly how a code-
+  // generating compiler would implement this, passing the address of the temporary so that the
+  // callee is using the exact same memory location allocated by the caller. We don't fully model
+  // this yet, though, so we'll synthesize a load so that we appear to be passing the temporary
+  // object via a bitwise copy.
+  exists(Call call |
+    expr = call.getAnArgument().getFullyConverted().(TemporaryObjectExpr) and
+    expr.isGLValueCategory()
+  )
 }
 
 /**
@@ -267,11 +408,25 @@ predicate hasTranslatedLoad(Expr expr) {
     expr.hasLValueToRValueConversion()
     or
     needsLoadForParentExpr(expr)
+    or
+    isPRValueFieldAccessWithImplicitLoad(expr)
+    or
+    isInheritanceConversionWithImplicitLoad(expr)
   ) and
   not ignoreExpr(expr) and
   not isNativeCondition(expr) and
   not isFlexibleCondition(expr) and
   not ignoreLoad(expr)
+}
+
+/**
+ * Holds if `expr` should have a `TranslatedSyntheticTemporaryObject` on it.
+ */
+predicate hasTranslatedSyntheticTemporaryObject(Expr expr) {
+  not ignoreExpr(expr) and
+  mustTransformToGLValue(expr) and
+  // If it's a load, we'll just ignore the load in `ignoreLoad()`.
+  not expr.hasLValueToRValueConversion()
 }
 
 /**
@@ -304,6 +459,9 @@ newtype TTranslatedElement =
   // A separate element to handle the lvalue-to-rvalue conversion step of an
   // expression.
   TTranslatedLoad(Expr expr) { hasTranslatedLoad(expr) } or
+  // A temporary object that we had to synthesize ourselves, so that we could do a field access or
+  // method call on a prvalue.
+  TTranslatedSyntheticTemporaryObject(Expr expr) { hasTranslatedSyntheticTemporaryObject(expr) } or
   // For expressions that would not otherwise generate an instruction.
   TTranslatedResultCopy(Expr expr) {
     not ignoreExpr(expr) and
@@ -351,6 +509,7 @@ newtype TTranslatedElement =
       exists(ConstructorFieldInit fieldInit | fieldInit.getExpr().getFullyConverted() = expr) or
       exists(NewExpr newExpr | newExpr.getInitializer().getFullyConverted() = expr) or
       exists(ThrowExpr throw | throw.getExpr().getFullyConverted() = expr) or
+      exists(TemporaryObjectExpr temp | temp.getExpr() = expr) or
       exists(LambdaExpression lambda | lambda.getInitializer().getFullyConverted() = expr)
     )
   } or
@@ -478,42 +637,15 @@ newtype TTranslatedElement =
   // The side effects of an allocation, i.e. `new`, `new[]` or `malloc`
   TTranslatedAllocationSideEffects(AllocationExpr expr) { not ignoreExpr(expr) } or
   // A precise side effect of an argument to a `Call`
-  TTranslatedArgumentSideEffect(Call call, Expr expr, int n, boolean isWrite) {
-    (
-      expr = call.getArgument(n).getFullyConverted()
-      or
-      expr = call.getQualifier().getFullyConverted() and
-      n = -1 and
-      // Exclude calls to static member functions. They don't modify the qualifier
-      not exists(MemberFunction func | func = call.getTarget() and func.isStatic())
-    ) and
-    (
-      call.getTarget().(SideEffectFunction).hasSpecificReadSideEffect(n, _) and
-      isWrite = false
-      or
-      call.getTarget().(SideEffectFunction).hasSpecificWriteSideEffect(n, _, _) and
-      isWrite = true
-      or
-      not call.getTarget() instanceof SideEffectFunction and
-      exists(Type t | t = expr.getUnspecifiedType() |
-        t instanceof ArrayType or
-        t instanceof PointerType or
-        t instanceof ReferenceType
-      ) and
-      (
-        isWrite = true or
-        isWrite = false
-      )
-      or
-      not call.getTarget() instanceof SideEffectFunction and
-      n = -1 and
-      (
-        isWrite = true or
-        isWrite = false
-      )
-    ) and
+  TTranslatedArgumentSideEffect(Call call, Expr expr, int n, SideEffectOpcode opcode) {
     not ignoreExpr(expr) and
-    not ignoreExpr(call)
+    not ignoreExpr(call) and
+    (
+      n >= 0 and expr = call.getArgument(n).getFullyConverted()
+      or
+      n = -1 and expr = call.getQualifier().getFullyConverted()
+    ) and
+    opcode = getASideEffectOpcode(call, n)
   }
 
 /**
@@ -595,10 +727,10 @@ abstract class TranslatedElement extends TTranslatedElement {
   abstract TranslatedElement getChild(int id);
 
   /**
-   * Gets the an identifier string for the element. This string is unique within
+   * Gets the an identifier string for the element. This id is unique within
    * the scope of the element's function.
    */
-  final string getId() { result = getUniqueId().toString() }
+  final int getId() { result = getUniqueId() }
 
   private TranslatedElement getChildByRank(int rankIndex) {
     result =

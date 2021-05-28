@@ -3,11 +3,7 @@ using System.IO;
 
 namespace Semmle.Extraction.CIL.Entities
 {
-    internal interface ILocal : IExtractedEntity
-    {
-    }
-
-    internal class LocalVariable : LabelledEntity, ILocal
+    internal class LocalVariable : LabelledEntity
     {
         private readonly MethodImplementation method;
         private readonly int index;
@@ -20,14 +16,13 @@ namespace Semmle.Extraction.CIL.Entities
             type = t;
         }
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             trapFile.WriteSubId(method);
             trapFile.Write('_');
             trapFile.Write(index);
+            trapFile.Write(";cil-local");
         }
-
-        public override string IdSuffix => ";cil-local";
 
         public override IEnumerable<IExtractionProduct> Contents
         {

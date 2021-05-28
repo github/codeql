@@ -24,11 +24,12 @@
 package javax.servlet.http;
 
 import java.io.IOException;
+import javax.servlet.GenericServlet;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
-public abstract class HttpServlet {
+public abstract class HttpServlet extends GenericServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
     }

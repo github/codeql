@@ -1,0 +1,5 @@
+| code-invalid-package-name/cmd.py:0:0:0:0 | Script cmd.py |
+| code-invalid-package-name/test_fail.py:0:0:0:0 | Script test_fail.py |
+| code-invalid-package-name/test_ok.py:0:0:0:0 | Script test_ok.py |
+| code-invalid-package-name/unique_name.py:0:0:0:0 | Script unique_name.py |
+| code-invalid-package-name/unique_name_use.py:0:0:0:0 | Script unique_name_use.py |

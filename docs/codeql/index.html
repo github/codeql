@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>CodeQL documentation</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="_static/primer.css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
 </head>
+
 <body>
     <div class="Header">
         <div class="Header-item--full">
@@ -20,7 +23,8 @@
             </a>
         </div>
         <div class="Header-item hide-sm hide-md">
-            <script src="https://addsearch.com/js/?key=93b4d287e2fc079a4089412b669785d5&categories=!0xhelp.semmle.com,0xcodeql.github.com,1xdocs"></script>
+            <script
+                src="https://addsearch.com/js/?key=93b4d287e2fc079a4089412b669785d5&categories=!0xhelp.semmle.com,0xcodeql.github.com,1xdocs,1xcodeql-query-help,1xcodeql-standard-libraries"></script>
         </div>
         <div class="Header-item">
             <details class="dropdown details-reset details-overlay d-inline-block">
@@ -72,82 +76,140 @@
                 vulnerability, eradicating it forever. Then share your query to help others do the same.</p>
         </div>
         <div class="d-flex flex-column flex-md-row flex-justify-center">
-            <div class="Box col-lg-3 col-sm-12">
-                <a href="codeql-overview">
-                    <div class="Box-header">
-                        <h3 class="Box-title">
-                            CodeQL overview
-                        </h3>
-                    </div>
-                </a>
-                <div class="Box-body border-bottom-0">
-                    Learn more about how CodeQL works, the languages and libraries supported by CodeQL analysis, and the tools you can use to run CodeQL on open source projects.
-                </div>
-            </div>
-            <div class="Box col-lg-3 col-sm-12">
-                <div class="Box-header">
-                    <a href="codeql-overview/codeql-tools">
-                        <h3 class="Box-title">
-                            CodeQL tools
-                        </h3>
-                    </a>
-                </div>
-                <div class="Box-body border-bottom-0">
-                    GitHub provides the <a href ="codeql-cli">CodeQL command-line interface</a> and <a href="codeql-for-visual-studio-code">CodeQL for Visual Studio Code</a> for performing
-                    CodeQL analysis on open source codebases.
-                </div>
-            </div>
-            <div class="Box col-lg-3 col-sm-12">
-                <div class="Box-header">
-                    <a
-                        href="https://docs.github.com/en/github/finding-security-vulnerabilities-and-errors-in-your-code/about-code-scanning">
-                        <h3 class="Box-title">
-                            Code scanning with CodeQL
-                        </h3>
-                    </a>
-                </div>
-                <div class="Box-body border-bottom-0">
-                    You can use code scanning with CodeQL to analyze the code in a GitHub repository to find security
-                    vulnerabilities and coding errors. Any problems identified by the analysis are shown in GitHub
-                </div>
-            </div>
-        </div>
-        <div class="d-flex flex-column flex-md-row flex-justify-center">
-            <div class="Box col-lg-3 col-sm-12">
-                <div class="Box-header">
-                    
-                    <h3 class="Box-title text-blue">
-                        CodeQL guides
+            <div class="Box col-lg-5 col-sm-12 border-0">
+
+                <div class="Box-header border-0 bg-white">
+                    <h3 class="Box-title text-mono f3 text-center">
+                        BACKGROUND INFORMATION
                     </h3>
-                
-            </div>
-            <div class="Box-body border-bottom-0">
-                Learn more about CodeQL queries in <a href="writing-codeql-queries">Writing CodeQL queries</a> and find information about writing queries to analyze specific languages in the <a href="codeql-language-guides">CodeQL language guides</a>.
-            </div>
-            </div>
-            <div class="Box col-lg-3 col-sm-12">
-                     <div class="Box-header">
-                        <h3 class="Box-title text-blue">
-                            CodeQL reference documentation
-                        </h3>
+                </div>
+                <div class="Box-body border-bottom-0">
+                    <div class="Subhead border-0">
+                        <a href="codeql-overview/about-codeql">
+                            <div class="Subhead-heading f4 text-center">About CodeQL</div>
+                        </a>
+                        <div class="Subhead-description">Learn more about how CodeQL works...</div>
+                    </div>
+                    <div class="Subhead border-0">
+                        <a href="codeql-overview/supported-languages-and-frameworks/">
+                            <div class="Subhead-heading f4 text-center">Supported languages and frameworks</div>
+                        </a>
+                        <div class="Subhead-description">View the languages, libraries, and frameworks supported in the
+                            latest version of CodeQL...</div>
+                    </div>
+                    <div class="Subhead border-0">
+                        <a href="../publications">
+                            <div class="Subhead-heading f4 text-center">Academic publications</div>
+                        </a>
+                        <div class="Subhead-description">Read academic articles published by the team behind CodeQL...
+                        </div>
                     </div>
 
-                <div class="Box-body border-bottom-0">
-                    Finds details of the predicates, modules, and classes included with CodeQL in the <a href="../codeql-standard-libraries">CodeQL standard libraries</a> and explore the documentation for the CodeQL queries in the <a href="../codeql-query-help">CodeQL query help</a>.
                 </div>
             </div>
-            <div class="Box col-lg-3 col-sm-12">
-                <a href="ql-language-reference">
-                    <div class="Box-header">
-                        <h3 class="Box-title">
-                            QL language reference
-                        </h3>
+            <div class="Box col-lg-5 col-sm-12 border-0">
+                <div class="Box-header border-0 bg-white">
+                    <h3 class="Box-title text-mono f3 text-center">
+                        CODEQL TOOLS
+                    </h3>
+                </div>
+                <div class="Box-body border-bottom-0">
+                    <div class="Subhead border-0">
+                        <a href="codeql-cli">
+                            <div class="Subhead-heading f4 text-center">CodeQL CLI</div>
+                        </a>
+                        <div class="Subhead-description border-bottom-0">The CodeQL command-line interface (CLI) is used
+                            to create
+                            databases for security research....</div>
                     </div>
-                </a>
-                <div class="Box-body border-bottom-0">
-                    Learn all about QL, the powerful query language that underlies the code scanning tool CodeQL.
+                    <div class="Subhead border-0">
+                        <a href="codeql-for-visual-studio-code">
+                            <div class="Subhead-heading f4 text-center">CodeQL for Visual Studio Code</div>
+                        </a>
+                        <div class="Subhead-description">CodeQL for Visual Studio Code adds rich language
+                            support for CodeQL...</div>
+                    </div>
+                    <div class="Subhead border-0">
+                        <a
+                            href="https://docs.github.com/en/github/finding-security-vulnerabilities-and-errors-in-your-code/about-code-scanning">
+                            <div class="Subhead-heading f4 text-center">Code scanning with CodeQL</div>
+                        </a>
+                        <div class="Subhead-description">Use code scanning with CodeQL to analyze the code in a GitHub
+                            repository to find
+                            security
+                            vulnerabilities...</div>
+                    </div>
+
                 </div>
             </div>
+
+
+
+
+        </div>
+        </div>
+
+
+
+        <div class="d-flex flex-column flex-md-row flex-justify-center">
+
+            <div class="Box col-lg-5 col-sm-12 border-0">
+                <div class="Box-header border-0 bg-white">
+                    <h3 class="Box-title text-mono f3 text-center">
+                        CODEQL GUIDES
+                    </h3>
+                </div>
+                <div class="Box-body border-bottom-0">
+                    <div class="Subhead border-0">
+                        <a href="writing-codeql-queries">
+                            <div class="Subhead-heading f4 text-center">Writing CodeQL queries</div>
+                        </a>
+                        <div class="Subhead-description">Get to know more about queries and learn some key
+                            query-writing skills by solving puzzles.....</div>
+                    </div>
+                    <div class="Subhead border-0">
+                        <a href="codeql-language-guides">
+                            <div class="Subhead-heading f4 text-center">CodeQL language guides</div>
+                        </a>
+                        <div class="Subhead-description">Experiment and learn how to write effective and efficient
+                            queries for CodeQL databases generated from the languages supported in CodeQL
+                            analysis...</div>
+                    </div>
+                </div>
+            </div>
+            <div class="Box col-lg-5 col-sm-12 border-0">
+                <div class="Box-header border-0 bg-white">
+                    <h3 class="Box-title text-mono f3 text-center">
+                        CODEQL REFERENCE DOCS
+                    </h3>
+                </div>
+                <div class="Box-body border-bottom-0">
+                    <div class="Subhead border-0">
+                        <div class="Subhead border-0">
+                            <a href="ql-language-reference">
+                                <div class="Subhead-heading f4 text-center">QL language reference</div>
+                            </a>
+                            <div class="Subhead-description">Learn all about QL, the powerful query language that
+                                underlies the code scanning tool CodeQL...
+                            </div>
+                        </div>
+                        <a href="../codeql-standard-libraries">
+                            <div class="Subhead-heading f4 text-center">CodeQL standard libraries</div>
+                        </a>
+                        <div class="Subhead-description">Find details of the predicates, modules, and classes
+                            included with CodeQL...</div>
+                    </div>
+                    <div class="Subhead border-0">
+                        <a href="../codeql-query-help">
+                            <div class="Subhead-heading f4 text-center">CodeQL query help</div>
+                        </a>
+                        <div class="Subhead-description">View the query help for the queries included in the code
+                            scanning query suites...</div>
+                    </div>
+
+                </div>
+            </div>
+
         </div>
     </article>
     <div class="footer mt-6 bg-gray-light border-y border-gray-dark no-print">
@@ -287,12 +349,16 @@
                     </li>
                 </ul>
                 <ul class="list-style-none d-flex text-gray">
-                    <li class="mr-3">&copy; 2020 GitHub, Inc.</li>
-                    <li class="mr-3"><a href="https://docs.github.com/en/free-pro-team@latest/github/site-policy/github-terms-of-service" class="link-gray">Terms </a></li>
-                    <li><a href="https://docs.github.com/en/free-pro-team@latest/github/site-policy/github-privacy-statement" class="link-gray">Privacy </a></li>
+                    <li class="mr-3">&copy; 2021 GitHub, Inc.</li>
+                    <li class="mr-3"><a
+                            href="https://docs.github.com/en/free-pro-team@latest/github/site-policy/github-terms-of-service"
+                            class="link-gray">Terms </a></li>
+                    <li><a href="https://docs.github.com/en/free-pro-team@latest/github/site-policy/github-privacy-statement"
+                            class="link-gray">Privacy </a></li>
                 </ul>
             </div>
         </div>
     </div>
 </body>
+
 </html>

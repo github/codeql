@@ -56,7 +56,7 @@ class LocalScopeDisposableCreation extends Call {
       exists(Method create | this.getTarget() = create |
         create.hasName("Create") and
         create.isStatic() and
-        create.getDeclaringType().getSourceDeclaration() = t.getSourceDeclaration()
+        create.getDeclaringType().getUnboundDeclaration() = t.getUnboundDeclaration()
       )
     )
   }

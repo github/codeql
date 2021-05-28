@@ -48,3 +48,4 @@
 | comments2.cs:124:5:124:16 | // ... | comments2.cs:119:11:119:25 | GenericClass<> | GenericFn |
 | comments2.cs:127:20:127:23 | // ... | comments2.cs:127:9:127:18 | ... ...; | x |
 | comments2.cs:132:1:132:21 | // ... | comments2.cs:11:7:11:8 | C2 | End of comment2.cs |
+| trivia.cs:25:14:25:38 | // ... | trivia.cs:24:9:24:16 | ... ...; | numbering not affected |

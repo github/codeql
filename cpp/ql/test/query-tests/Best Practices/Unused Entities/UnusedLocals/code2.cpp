@@ -1,3 +1,4 @@
+// semmle-extractor-options: -std=c++17
 
 int test_const_init()
 {
@@ -75,4 +76,90 @@ void test_expect()
 			break;
 		}
 	}
+}
+
+// ---
+
+template<class T>
+class MyContainer
+{
+public:
+	struct Iterator {
+		const T& operator*() const;
+		bool operator!=(const Iterator &rhs) const;
+		Iterator operator++();
+	};
+
+	Iterator begin();
+	Iterator end();
+};
+
+void output(int value);
+
+void test_range_based_for()
+{
+	MyContainer<int> myContainer;
+	
+	for (int v1 : myContainer) // GOOD: v1 is used
+	{
+		output(v1);
+	}
+	
+	for (int v2 : myContainer) // BAD: v2 is not used
+	{
+	}
+}
+
+// ---
+
+int test_lambdas1()
+{
+	int a, b, c, d, e; // (b is not used, but is explicitly captured)
+	auto myLambda = [a, b, &c](int x, int y) -> int // (y is not used, but is a parameter)
+	{
+		return a + c + x;
+	};
+
+	return myLambda(d, e);
+}
+
+int test_lambdas2()
+{
+	int a, b; // BAD: b is not used
+	auto myLambda = [=]() -> int // BAD: myLambda is not used [NOT DETECTED] (due to containing a Constructor)
+	{
+		return a;
+	};
+
+	return 0;
+}
+
+// ---
+
+void test_if_initializer()
+{
+	bool a = false, b = true; // GOOD: a, b are both used
+
+	if (a = b; a)
+	{
+		// ...
+	}
+}
+
+// ---
+
+class MyObj
+{
+public:
+	MyObj();
+};
+
+template<class T>
+void myFunction2(T t);
+
+void test_captured_contructor()
+{
+	const auto &obj = MyObj(); // GOOD: obj is used
+
+	myFunction2( [obj](){} );
 }

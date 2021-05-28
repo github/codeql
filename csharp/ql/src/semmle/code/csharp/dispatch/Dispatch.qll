@@ -233,71 +233,61 @@ private module Internal {
   }
 
   pragma[noinline]
-  private predicate hasOverrider(OverridableCallable oc, ValueOrRefType t) {
-    exists(oc.getAnOverrider(t))
+  private predicate hasOverrider(OverridableCallable oc, Gvn::GvnType t) {
+    exists(oc.getAnOverrider(any(ValueOrRefType t0 | Gvn::getGlobalValueNumber(t0) = t)))
   }
 
   pragma[noinline]
-  private predicate hasCallable(OverridableCallable source, ValueOrRefType t, OverridableCallable c) {
-    c.getSourceDeclaration() = source and
-    t.hasCallable(c) and
+  private predicate hasCallable(OverridableCallable source, Gvn::GvnType t, OverridableCallable c) {
+    c.getUnboundDeclaration() = source and
+    any(ValueOrRefType t0 | Gvn::getGlobalValueNumber(t0) = t).hasCallable(c) and
     hasOverrider(c, t) and
-    hasQualifierTypeOverridden0(t, _) and
-    hasQualifierTypeOverridden1(source, _)
-  }
-
-  pragma[noinline]
-  private Unification::ConstrainedTypeParameter getAConstrainedTypeParameterQualifierType(
-    DispatchMethodOrAccessorCall call
-  ) {
-    result = getAPossibleType(call.getQualifier(), false)
-  }
-
-  pragma[noinline]
-  private predicate constrainedTypeParameterQualifierTypeSubsumes(
-    ValueOrRefType t, Unification::ConstrainedTypeParameter tp
-  ) {
-    tp = getAConstrainedTypeParameterQualifierType(_) and
-    tp.subsumes(t)
-  }
-
-  pragma[noinline]
-  private predicate hasQualifierTypeOverridden0(ValueOrRefType t, DispatchMethodOrAccessorCall call) {
-    hasOverrider(_, t) and
-    (
-      exists(Type t0, Type t1 |
-        t0 = getAPossibleType(call.getQualifier(), false) and
-        t1 = [t0, t0.(Unification::UnconstrainedTypeParameter).getAnUltimatelySuppliedType()]
-      |
-        t = t1
-        or
-        Unification::subsumes(t1, t)
-      )
-      or
-      constrainedTypeParameterQualifierTypeSubsumes(t,
-        getAConstrainedTypeParameterQualifierType(call))
-    )
-  }
-
-  pragma[noinline]
-  private predicate hasQualifierTypeOverridden1(
-    OverridableCallable c, DispatchMethodOrAccessorCall call
-  ) {
-    exists(OverridableCallable target | call.getAStaticTarget() = target |
-      c = target.getSourceDeclaration()
-      or
-      c = target.getAnUltimateImplementor().getSourceDeclaration()
-    )
+    source = any(DispatchMethodOrAccessorCall call).getAStaticTargetExt()
   }
 
   abstract private class DispatchMethodOrAccessorCall extends DispatchCallImpl {
+    pragma[noinline]
+    OverridableCallable getAStaticTargetExt() {
+      exists(OverridableCallable target | this.getAStaticTarget() = target |
+        result = target.getUnboundDeclaration()
+        or
+        result = target.getAnUltimateImplementor().getUnboundDeclaration()
+      )
+    }
+
     pragma[nomagic]
     predicate hasQualifierTypeInherited(Type t) { t = getAPossibleType(this.getQualifier(), _) }
 
+    pragma[noinline]
+    private predicate hasSubsumedQualifierType(Gvn::GvnType t) {
+      hasOverrider(_, t) and
+      exists(Type t0 |
+        t0 = getAPossibleType(this.getQualifier(), false) and
+        not t0 instanceof TypeParameter
+      |
+        t = Gvn::getGlobalValueNumber(t0)
+        or
+        Gvn::subsumes(Gvn::getGlobalValueNumber(t0), t)
+      )
+    }
+
+    pragma[noinline]
+    private predicate hasConstrainedTypeParameterQualifierType(
+      Unification::ConstrainedTypeParameter tp
+    ) {
+      tp = getAPossibleType(this.getQualifier(), false)
+    }
+
+    pragma[noinline]
+    private predicate hasUnconstrainedTypeParameterQualifierType() {
+      getAPossibleType(this.getQualifier(), false) instanceof
+        Unification::UnconstrainedTypeParameter
+    }
+
     pragma[nomagic]
-    predicate hasQualifierTypeOverridden(ValueOrRefType t, OverridableCallable c) {
-      hasQualifierTypeOverridden0(t, this) and
-      hasCallable(any(OverridableCallable oc | hasQualifierTypeOverridden1(oc, this)), t, c)
+    predicate hasSubsumedQualifierTypeOverridden(Gvn::GvnType t, OverridableCallable c) {
+      this.hasSubsumedQualifierType(t) and
+      hasCallable(any(OverridableCallable oc | oc = this.getAStaticTargetExt()), t, c)
     }
 
     /**
@@ -309,11 +299,16 @@ private module Internal {
      * have a more precise type.
      */
     predicate mayBenefitFromCallContext(Callable c, int i) {
-      1 < strictcount(this.getADynamicTarget().getSourceDeclaration()) and
-      c = this.getCall().getEnclosingCallable().getSourceDeclaration() and
+      1 < strictcount(this.getADynamicTarget().getUnboundDeclaration()) and
+      c = this.getCall().getEnclosingCallable().getUnboundDeclaration() and
       (
-        exists(AssignableDefinitions::ImplicitParameterDefinition pdef, Parameter p |
-          this.getQualifier() = BaseSsa::getARead(pdef, p) and
+        exists(
+          BaseSsa::Definition def, AssignableDefinitions::ImplicitParameterDefinition pdef,
+          Parameter p
+        |
+          pdef = def.getDefinition() and
+          p = pdef.getTarget() and
+          this.getQualifier() = def.getARead() and
           p.getPosition() = i and
           c.getAParameter() = p and
           not p.isParams()
@@ -331,7 +326,7 @@ private module Internal {
      */
     pragma[nomagic]
     private predicate relevantContext(DispatchCall ctx, int i) {
-      this.mayBenefitFromCallContext(ctx.getADynamicTarget().getSourceDeclaration(), i)
+      this.mayBenefitFromCallContext(ctx.getADynamicTarget().getUnboundDeclaration(), i)
     }
 
     /**
@@ -352,12 +347,33 @@ private module Internal {
     }
 
     pragma[nomagic]
-    private Callable getASubsumedStaticTarget0(Type t) {
+    private predicate contextArgHasConstrainedTypeParameterType(
+      DispatchCall ctx, Unification::ConstrainedTypeParameter tp
+    ) {
+      this.contextArgHasType(ctx, tp, false)
+    }
+
+    pragma[nomagic]
+    private predicate contextArgHasUnconstrainedTypeParameterType(DispatchCall ctx) {
+      this.contextArgHasType(ctx, any(Unification::UnconstrainedTypeParameter t), false)
+    }
+
+    pragma[nomagic]
+    private predicate contextArgHasNonTypeParameterType(DispatchCall ctx, Gvn::GvnType t) {
+      exists(Type t0 |
+        this.contextArgHasType(ctx, t0, false) and
+        not t0 instanceof TypeParameter and
+        t = Gvn::getGlobalValueNumber(t0)
+      )
+    }
+
+    pragma[nomagic]
+    private Callable getASubsumedStaticTarget0(Gvn::GvnType t) {
       exists(Callable staticTarget, Type declType |
         staticTarget = this.getAStaticTarget() and
         declType = staticTarget.getDeclaringType() and
-        result = staticTarget.getSourceDeclaration() and
-        Unification::subsumes(declType, t)
+        result = staticTarget.getUnboundDeclaration() and
+        Gvn::subsumes(Gvn::getGlobalValueNumber(declType), t)
       )
     }
 
@@ -370,7 +386,9 @@ private module Internal {
     private Callable getASubsumedStaticTarget() {
       result = this.getAStaticTarget()
       or
-      result.getSourceDeclaration() = this.getASubsumedStaticTarget0(result.getDeclaringType())
+      result.getUnboundDeclaration() =
+        this.getASubsumedStaticTarget0(pragma[only_bind_out](Gvn::getGlobalValueNumber(result
+                .getDeclaringType())))
     }
 
     /**
@@ -421,6 +439,12 @@ private module Internal {
       )
     }
 
+    pragma[noinline]
+    NonConstructedOverridableCallable getAViableOverrider0() {
+      getAPossibleType(this.getQualifier(), false) instanceof TypeParameter and
+      result.getAConstructingCallableOrSelf() = this.getAStaticTargetExt()
+    }
+
     /**
      * Gets a callable that is defined in a subtype of the qualifier type of this
      * call, and which overrides a static target of this call.
@@ -463,8 +487,21 @@ private module Internal {
      */
     private RuntimeCallable getAViableOverrider() {
       exists(ValueOrRefType t, NonConstructedOverridableCallable c |
-        this.hasQualifierTypeOverridden(t, c.getAConstructingCallableOrSelf()) and
+        this.hasSubsumedQualifierTypeOverridden(Gvn::getGlobalValueNumber(t),
+          c.getAConstructingCallableOrSelf()) and
         result = c.getAnOverrider(t)
+      )
+      or
+      exists(NonConstructedOverridableCallable c |
+        c = this.getAViableOverrider0() and
+        result = c.getAnOverrider(_)
+      |
+        this.hasUnconstrainedTypeParameterQualifierType()
+        or
+        exists(Unification::ConstrainedTypeParameter tp |
+          this.hasConstrainedTypeParameterQualifierType(tp) and
+          tp.subsumes(result.getDeclaringType())
+        )
       )
     }
 
@@ -505,36 +542,40 @@ private module Internal {
     }
 
     pragma[nomagic]
-    private RuntimeCallable getAViableOverriderInCallContext0(
-      NonConstructedOverridableCallable c, ValueOrRefType t
-    ) {
-      result = this.getAViableOverrider() and
-      this.contextArgHasType(_, _, false) and
-      result = c.getAnOverrider(t)
+    private RuntimeCallable getAViableOverriderInCallContext0(Gvn::GvnType t) {
+      exists(NonConstructedOverridableCallable c |
+        result = this.getAViableOverrider() and
+        this.contextArgHasType(_, _, false) and
+        result = c.getAnOverrider(any(Type t0 | t = Gvn::getGlobalValueNumber(t0))) and
+        this.getAStaticTarget() = c.getAConstructingCallableOrSelf()
+      )
     }
 
     pragma[nomagic]
-    private RuntimeCallable getAViableOverriderInCallContext1(
-      NonConstructedOverridableCallable c, DispatchCall ctx
-    ) {
-      exists(ValueOrRefType t |
-        result = this.getAViableOverriderInCallContext0(c, t) and
-        exists(Type t0, Type t1 |
-          this.contextArgHasType(ctx, t0, false) and
-          t1 = [t0, t0.(Unification::UnconstrainedTypeParameter).getAnUltimatelySuppliedType()]
-        |
-          t = t1
-          or
-          Unification::subsumes(t1, t)
-        )
+    private predicate contextArgHasSubsumedType(DispatchCall ctx, Gvn::GvnType t) {
+      hasOverrider(_, t) and
+      exists(Gvn::GvnType t0 | this.contextArgHasNonTypeParameterType(ctx, t0) |
+        t = t0
+        or
+        Gvn::subsumes(t0, t)
       )
     }
 
     pragma[nomagic]
     private RuntimeCallable getAViableOverriderInCallContext(DispatchCall ctx) {
-      exists(NonConstructedOverridableCallable c |
-        result = this.getAViableOverriderInCallContext1(c, ctx) and
-        this.getAStaticTarget() = c.getAConstructingCallableOrSelf()
+      exists(Gvn::GvnType t |
+        result = this.getAViableOverriderInCallContext0(t) and
+        this.contextArgHasSubsumedType(ctx, t)
+      )
+      or
+      result = this.getAViableOverrider() and
+      (
+        this.contextArgHasUnconstrainedTypeParameterType(ctx)
+        or
+        exists(Unification::ConstrainedTypeParameter tp |
+          this.contextArgHasConstrainedTypeParameterType(ctx, tp) and
+          tp.subsumes(result.getDeclaringType())
+        )
       )
     }
 
@@ -631,31 +672,41 @@ private module Internal {
       )
     }
 
-    private predicate stepExpr0(Expr succ, Expr pred) {
-      Steps::stepOpen(pred, succ)
-      or
-      exists(Assignable a |
-        a instanceof Field or
-        a instanceof Property
-      |
-        succ.(AssignableRead) = a.getAnAccess() and
-        pred = a.getAnAssignedValue() and
-        a = any(Modifiable m | not m.isEffectivelyPublic())
-      )
-    }
-
-    private predicate stepExpr(Expr succ, Expr pred) {
-      stepExpr0(succ, pred) and
+    private predicate stepExpr(Expr pred, Expr succ) {
+      Steps::stepOpen(pred, succ) and
       // Do not step through down casts
       not downCast(succ) and
       // Only step when we may learn more about the actual type
       typeMayBeImprecise(succ.getType())
     }
 
-    private predicate stepTC(Expr succ, Expr pred) = fastTC(stepExpr/2)(succ, pred)
+    private class AnalyzableFieldOrProperty extends Assignable, Modifiable {
+      AnalyzableFieldOrProperty() {
+        (
+          this instanceof Field or
+          this instanceof Property
+        ) and
+        not this.isEffectivelyPublic() and
+        exists(this.getAnAssignedValue())
+      }
+
+      AssignableRead getARead() { result = this.getAnAccess() }
+    }
 
     private class Source extends Expr {
-      Source() { not stepExpr(this, _) }
+      Source() {
+        not stepExpr(_, this) and
+        not this = any(AnalyzableFieldOrProperty a).getARead()
+      }
+
+      Type getType(boolean isExact) {
+        result = this.getType() and
+        if
+          this instanceof ObjectCreation or
+          this instanceof BaseAccess
+        then isExact = true
+        else isExact = false
+      }
     }
 
     private class Sink extends Expr {
@@ -675,24 +726,38 @@ private module Internal {
         this = any(DispatchCallImpl c).getArgument(_)
       }
 
-      Source getASource() { stepTC(this, result) }
+      pragma[nomagic]
+      Expr getAPred() { stepExpr*(result, this) }
+
+      pragma[nomagic]
+      AnalyzableFieldOrProperty getAPredRead() { this.getAPred() = result.getARead() }
     }
 
-    /** Holds if the expression `e` has an exact type. */
-    private predicate hasExactType(Expr e) {
-      e instanceof ObjectCreation or
-      e instanceof BaseAccess
+    /** Gets a source type for sink expression `e`, using simple data flow. */
+    Type getASourceType(Sink sink, boolean isExact) {
+      result = sink.getAPred().(Source).getType(isExact)
+      or
+      result = sink.getAPredRead().(RelevantFieldOrProperty).getASourceType(isExact)
     }
 
-    /** Gets a source type for expression `e`, using simple data flow. */
-    Type getASourceType(Sink e, boolean isExact) {
-      exists(Source s |
-        s = e.getASource() or
-        s = e
-      |
-        result = s.getType() and
-        if hasExactType(s) then isExact = true else isExact = false
-      )
+    private class RelevantFieldOrProperty extends AnalyzableFieldOrProperty {
+      RelevantFieldOrProperty() {
+        this = any(Sink s).getAPredRead()
+        or
+        this = any(RelevantFieldOrProperty a).getAPredRead()
+      }
+
+      pragma[nomagic]
+      Expr getAPred() { stepExpr*(result, this.getAnAssignedValue()) }
+
+      pragma[nomagic]
+      AnalyzableFieldOrProperty getAPredRead() { this.getAPred() = result.getARead() }
+
+      Type getASourceType(boolean isExact) {
+        result = this.getAPred().(Source).getType(isExact)
+        or
+        result = this.getAPredRead().(RelevantFieldOrProperty).getASourceType(isExact)
+      }
     }
   }
 

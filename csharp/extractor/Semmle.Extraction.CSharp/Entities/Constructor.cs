@@ -5,10 +5,11 @@ using System.Linq;
 using Microsoft.CodeAnalysis.CSharp;
 using Semmle.Extraction.Entities;
 using System.IO;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    public class Constructor : Method
+    internal class Constructor : Method
     {
         private Constructor(Context cx, IMethodSymbol init)
             : base(cx, init) { }
@@ -17,12 +18,12 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             PopulateMethod(trapFile);
             PopulateModifiers(trapFile);
-            ContainingType.PopulateGenerics();
+            ContainingType!.PopulateGenerics();
 
-            trapFile.constructors(this, symbol.ContainingType.Name, ContainingType, (Constructor)OriginalDefinition);
+            trapFile.constructors(this, Symbol.ContainingType.Name, ContainingType, (Constructor)OriginalDefinition);
             trapFile.constructor_location(this, Location);
 
-            if (symbol.IsImplicitlyDeclared)
+            if (Symbol.IsImplicitlyDeclared)
             {
                 var lineCounts = new LineCounts() { Total = 2, Code = 1, Comment = 0 };
                 trapFile.numlines(this, lineCounts);
@@ -39,19 +40,50 @@ namespace Semmle.Extraction.CSharp.Entities
             var syntax = Syntax;
             var initializer = syntax?.Initializer;
 
-            if (initializer == null)
-                return;
+            if (initializer is null)
+            {
+                if (Symbol.MethodKind is MethodKind.Constructor)
+                {
+                    var baseType = Symbol.ContainingType.BaseType;
+                    if (baseType is null)
+                    {
+                        Context.ModelError(Symbol, "Unable to resolve base type in implicit constructor initializer");
+                        return;
+                    }
 
-            Type initializerType;
+                    var baseConstructor = baseType.InstanceConstructors.FirstOrDefault(c => c.Arity is 0);
+
+                    if (baseConstructor is null)
+                    {
+                        Context.ModelError(Symbol, "Unable to resolve implicit constructor initializer call");
+                        return;
+                    }
+
+                    var baseConstructorTarget = Create(Context, baseConstructor);
+                    var info = new ExpressionInfo(Context,
+                        AnnotatedTypeSymbol.CreateNotAnnotated(baseType),
+                        Location,
+                        Kinds.ExprKind.CONSTRUCTOR_INIT,
+                        this,
+                        -1,
+                        isCompilerGenerated: true,
+                        null);
+
+                    trapFile.expr_call(new Expression(info), baseConstructorTarget);
+                }
+                return;
+            }
+
+            ITypeSymbol initializerType;
             var symbolInfo = Context.GetSymbolInfo(initializer);
 
             switch (initializer.Kind())
             {
                 case SyntaxKind.BaseConstructorInitializer:
-                    initializerType = Type.Create(Context, symbol.ContainingType.BaseType);
+                    initializerType = Symbol.ContainingType.BaseType!;
                     break;
                 case SyntaxKind.ThisConstructorInitializer:
-                    initializerType = ContainingType;
+                    initializerType = Symbol.ContainingType;
                     break;
                 default:
                     Context.ModelError(initializer, "Unknown initializer");
@@ -59,8 +91,8 @@ namespace Semmle.Extraction.CSharp.Entities
             }
 
             var initInfo = new ExpressionInfo(Context,
-                new AnnotatedType(initializerType, NullableAnnotation.None),
-                Context.Create(initializer.ThisOrBaseKeyword.GetLocation()),
+                AnnotatedTypeSymbol.CreateNotAnnotated(initializerType),
+                Context.CreateLocation(initializer.ThisOrBaseKeyword.GetLocation()),
                 Kinds.ExprKind.CONSTRUCTOR_INIT,
                 this,
                 -1,
@@ -69,11 +101,10 @@ namespace Semmle.Extraction.CSharp.Entities
 
             var init = new Expression(initInfo);
 
-            var target = Constructor.Create(Context, (IMethodSymbol)symbolInfo.Symbol);
-
-            if (target == null)
+            var target = Constructor.Create(Context, (IMethodSymbol?)symbolInfo.Symbol);
+            if (target is null)
             {
-                Context.ModelError(symbol, "Unable to resolve call");
+                Context.ModelError(Symbol, "Unable to resolve call");
                 return;
             }
 
@@ -86,20 +117,21 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        private ConstructorDeclarationSyntax Syntax
+        private ConstructorDeclarationSyntax? Syntax
         {
             get
             {
-                return symbol.DeclaringSyntaxReferences
+                return Symbol.DeclaringSyntaxReferences
                     .Select(r => r.GetSyntax())
                     .OfType<ConstructorDeclarationSyntax>()
                     .FirstOrDefault();
             }
         }
 
-        public static new Constructor Create(Context cx, IMethodSymbol constructor)
+        [return: NotNullIfNotNull("constructor")]
+        public static new Constructor? Create(Context cx, IMethodSymbol? constructor)
         {
-            if (constructor == null)
+            if (constructor is null)
                 return null;
 
             switch (constructor.MethodKind)
@@ -112,44 +144,44 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
-            if (symbol.IsStatic)
+            if (Symbol.IsStatic)
                 trapFile.Write("static");
-            trapFile.WriteSubId(ContainingType);
-            AddParametersToId(Context, trapFile, symbol);
+            trapFile.WriteSubId(ContainingType!);
+            AddParametersToId(Context, trapFile, Symbol);
             trapFile.Write(";constructor");
         }
 
-        private ConstructorDeclarationSyntax GetSyntax() =>
-            symbol.DeclaringSyntaxReferences.Select(r => r.GetSyntax()).OfType<ConstructorDeclarationSyntax>().FirstOrDefault();
+        private ConstructorDeclarationSyntax? GetSyntax() =>
+            Symbol.DeclaringSyntaxReferences.Select(r => r.GetSyntax()).OfType<ConstructorDeclarationSyntax>().FirstOrDefault();
 
-        public override Microsoft.CodeAnalysis.Location FullLocation => ReportingLocation;
+        public override Microsoft.CodeAnalysis.Location? FullLocation => ReportingLocation;
 
-        public override Microsoft.CodeAnalysis.Location ReportingLocation
+        public override Microsoft.CodeAnalysis.Location? ReportingLocation
         {
             get
             {
                 var syn = GetSyntax();
-                if (syn != null)
+                if (syn is not null)
                 {
                     return syn.Identifier.GetLocation();
                 }
 
-                if (symbol.IsImplicitlyDeclared)
+                if (Symbol.IsImplicitlyDeclared)
                 {
-                    return ContainingType.ReportingLocation;
+                    return ContainingType!.ReportingLocation;
                 }
 
-                return symbol.ContainingType.Locations.FirstOrDefault();
+                return Symbol.ContainingType.Locations.FirstOrDefault();
             }
         }
 
-        private class ConstructorFactory : ICachedEntityFactory<IMethodSymbol, Constructor>
+        private class ConstructorFactory : CachedEntityFactory<IMethodSymbol, Constructor>
         {
             public static ConstructorFactory Instance { get; } = new ConstructorFactory();
 
-            public Constructor Create(Context cx, IMethodSymbol init) => new Constructor(cx, init);
+            public override Constructor Create(Context cx, IMethodSymbol init) => new Constructor(cx, init);
         }
     }
 }

@@ -231,6 +231,8 @@ private module Annotations {
       type = element.(Expr).getType()
       or
       type = element.(DelegateType).getReturnType()
+      or
+      type = element.(FunctionPointerType).getReturnType()
     )
   }
 }

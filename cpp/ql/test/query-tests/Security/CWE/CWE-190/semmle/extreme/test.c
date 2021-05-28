@@ -72,8 +72,8 @@ void test_negatives() {
   signed char sc1, sc2, sc3, sc4, sc5, sc6, sc7, sc8;
 
   sc1 = CHAR_MAX;
-  sc1 += 0; // GOOD [FALSE POSITIVE]
-  sc1 += -1; // GOOD [FALSE POSITIVE]
+  sc1 += 0; // GOOD
+  sc1 += -1; // GOOD
   sc2 = CHAR_MIN;
   sc2 += -1; // BAD [NOT DETECTED]
   sc3 = CHAR_MIN;

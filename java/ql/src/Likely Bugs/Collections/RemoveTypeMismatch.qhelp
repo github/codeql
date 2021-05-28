@@ -52,8 +52,8 @@ item to remove.
 
 
 <li>
-  Java API Documentation:
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Collection.html#remove%28java.lang.Object%29">Collection.remove</a>.
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Collection.html#remove(java.lang.Object)">Collection.remove</a>.
 </li>
 
 

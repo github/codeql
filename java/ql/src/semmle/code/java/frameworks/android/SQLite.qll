@@ -263,9 +263,9 @@ private class QueryBuilderAppendMethod extends TaintPreservingCallable {
     // appendWhere(CharSequence inWhere)
     // appendWhereStandalone(CharSequence inWhere)
     // static appendColumns(StringBuilder s, String[] columns)
-    this
-        .hasName(["setProjectionMap", "setTables", "appendWhere", "appendWhereStandalone",
-              "appendColumns"])
+    this.hasName([
+        "setProjectionMap", "setTables", "appendWhere", "appendWhereStandalone", "appendColumns"
+      ])
   }
 
   override predicate transfersTaint(int src, int sink) {

@@ -3,6 +3,7 @@
  */
 
 import javascript
+private import semmle.javascript.internal.CachedStages
 
 /**
  * A program element that is either an expression or a type annotation.
@@ -109,14 +110,14 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
 
   /** Gets the constant string value this expression evaluates to, if any. */
   cached
-  string getStringValue() { result = getStringValue(this) }
+  string getStringValue() { Stages::Ast::ref() and result = getStringValue(this) }
 
   /** Holds if this expression is impure, that is, its evaluation could have side effects. */
   predicate isImpure() { any() }
 
   /**
-   * Holds if this expression is pure, that is, is its evaluation is guaranteed to be
-   * side effect-free.
+   * Holds if this expression is pure, that is, its evaluation is guaranteed
+   * to be side-effect free.
    */
   predicate isPure() { not isImpure() }
 
@@ -257,6 +258,7 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
 
 cached
 private DataFlow::Node getCatchParameterFromStmt(Stmt stmt) {
+  Stages::DataFlowStage::ref() and
   result =
     DataFlow::parameterNode(stmt.getEnclosingTryCatchStmt().getACatchClause().getAParameter())
 }
@@ -806,7 +808,9 @@ class FunctionExpr extends @function_expr, Expr, Function {
   /** Gets the statement in which this function expression appears. */
   override Stmt getEnclosingStmt() { result = Expr.super.getEnclosingStmt() }
 
-  override StmtContainer getEnclosingContainer() { result = Expr.super.getContainer() }
+  override StmtContainer getEnclosingContainer() {
+    Stages::Ast::ref() and result = Expr.super.getContainer()
+  }
 
   override predicate isImpure() { none() }
 
@@ -1603,17 +1607,26 @@ private predicate hasAllConstantLeafs(AddExpr add) {
 private string getConcatenatedString(Expr add) {
   result = getConcatenatedString(add.getUnderlyingValue())
   or
-  not add = getAnAddOperand(any(AddExpr parent | hasAllConstantLeafs(parent))) and
-  hasAllConstantLeafs(add) and
   result =
     strictconcat(Expr leaf |
-      leaf = getAnAddOperand*(add)
+      leaf = getAnAddOperand*(add.(SmallConcatRoot))
     |
       getConstantString(leaf)
       order by
         leaf.getLocation().getStartLine(), leaf.getLocation().getStartColumn()
-    ) and
-  result.length() < 1000 * 1000
+    )
+}
+
+/**
+ * An expr that is the root of a string concatenation of constant parts,
+ * and the length of the resulting concatenation is less than 1 million chars.
+ */
+private class SmallConcatRoot extends Expr {
+  SmallConcatRoot() {
+    not this = getAnAddOperand(any(AddExpr parent | hasAllConstantLeafs(parent))) and
+    hasAllConstantLeafs(this) and
+    sum(Expr leaf | leaf = getAnAddOperand*(this) | getConstantString(leaf).length()) < 1000 * 1000
+  }
 }
 
 /**
@@ -1912,6 +1925,18 @@ private class TCompoundAssignExpr =
  */
 class CompoundAssignExpr extends TCompoundAssignExpr, Assignment {
   override string getAPrimaryQlClass() { result = "CompoundAssignExpr" }
+
+  /**
+   * Holds if this compound assignment always returns a number value.
+   */
+  predicate isNumeric() {
+    not (
+      this instanceof AssignAddExpr or
+      this instanceof AssignLogOrExpr or
+      this instanceof AssignLogAndExpr or
+      this instanceof AssignNullishCoalescingExpr
+    )
+  }
 }
 
 /**

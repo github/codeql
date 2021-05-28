@@ -44,4 +44,4 @@ to the ``codeql-javascript`` QL pack::
 
     AngularJS/DeadAngularJSEventListener.ql
 
-For another example, see `Testing custom queries <test-queries.html#example>`__.
+For another example, see :doc:`Testing custom queries <testing-custom-queries>`.

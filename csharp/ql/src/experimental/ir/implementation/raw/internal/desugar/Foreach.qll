@@ -171,11 +171,7 @@ private class TranslatedForeachMoveNext extends TranslatedCompilerGeneratedCall,
 
   override Callable getInstructionFunction(InstructionTag tag) {
     tag = CallTargetTag() and
-    exists(Callable internal |
-      internal.getName() = "MoveNext" and
-      internal.getReturnType() instanceof BoolType and
-      result = internal
-    )
+    result = generatedBy.getMoveNext()
   }
 
   override Type getCallResultType() { result instanceof BoolType }
@@ -205,28 +201,9 @@ private class TranslatedForeachGetEnumerator extends TranslatedCompilerGenerated
     result = getInstructionFunction(CallTargetTag()).getReturnType()
   }
 
-  private Callable getEnumeratorCallable() {
-    if exists(generatedBy.getIterableExpr().getType().(ValueOrRefType).getAMember("GetEnumerator"))
-    then
-      result = generatedBy.getIterableExpr().getType().(ValueOrRefType).getAMember("GetEnumerator")
-    else
-      exists(Interface inter |
-        inter =
-          generatedBy
-              .getIterableExpr()
-              .getType()
-              .(ValueOrRefType)
-              // There could be some abstract base types until we reach `IEnumerable` (eg. `Array`)
-              .getABaseType*()
-              .getABaseInterface() and
-        inter.getName() = "IEnumerable" and
-        result = inter.getAMember("GetEnumerator")
-      )
-  }
-
   override Callable getInstructionFunction(InstructionTag tag) {
     tag = CallTargetTag() and
-    result = getEnumeratorCallable()
+    result = generatedBy.getGetEnumerator()
   }
 
   override TranslatedExpr getArgument(int id) { none() }
@@ -247,7 +224,7 @@ private class TranslatedForeachCurrent extends TranslatedCompilerGeneratedCall,
 
   TranslatedForeachCurrent() { this = TTranslatedCompilerGeneratedElement(generatedBy, 5) }
 
-  override Type getCallResultType() { result = generatedBy.getAVariable().getType() }
+  override Type getCallResultType() { result = generatedBy.getElementType() }
 
   override TranslatedExpr getArgument(int id) { none() }
 
@@ -262,10 +239,7 @@ private class TranslatedForeachCurrent extends TranslatedCompilerGeneratedCall,
 
   override Callable getInstructionFunction(InstructionTag tag) {
     tag = CallTargetTag() and
-    exists(Property prop |
-      prop.getName() = "Current" and
-      result = prop.getGetter()
-    )
+    result = generatedBy.getCurrent().getGetter()
   }
 }
 
@@ -280,10 +254,7 @@ private class TranslatedForeachDispose extends TranslatedCompilerGeneratedCall,
 
   override Callable getInstructionFunction(InstructionTag tag) {
     tag = CallTargetTag() and
-    exists(Callable dispose |
-      dispose.getName() = "Dispose" and
-      result = dispose
-    )
+    result = generatedBy.getDispose()
   }
 
   final override Type getCallResultType() { result instanceof VoidType }
@@ -388,9 +359,16 @@ private class TranslatedMoveNextEnumAcc extends TTranslatedCompilerGeneratedElem
 
   override Type getResultType() { result instanceof BoolType }
 
+  override Type getVariableType() {
+    exists(TranslatedForeachGetEnumerator ge |
+      ge.getAST() = generatedBy and
+      result = ge.getCallResultType()
+    )
+  }
+
   override predicate hasTempVariable(TempVariableTag tag, CSharpType type) {
     tag = ForeachEnumTempVar() and
-    type = getTypeForPRValue(getResultType())
+    type = getTypeForPRValue(getVariableType())
   }
 
   override IRVariable getInstructionVariable(InstructionTag tag) {
@@ -413,9 +391,16 @@ private class TranslatedForeachCurrentEnumAcc extends TTranslatedCompilerGenerat
 
   override Type getResultType() { result instanceof BoolType }
 
+  override Type getVariableType() {
+    exists(TranslatedForeachGetEnumerator ge |
+      ge.getAST() = generatedBy and
+      result = ge.getCallResultType()
+    )
+  }
+
   override predicate hasTempVariable(TempVariableTag tag, CSharpType type) {
     tag = ForeachEnumTempVar() and
-    type = getTypeForPRValue(getResultType())
+    type = getTypeForPRValue(getVariableType())
   }
 
   override IRVariable getInstructionVariable(InstructionTag tag) {
@@ -438,9 +423,16 @@ private class TranslatedForeachDisposeEnumAcc extends TTranslatedCompilerGenerat
 
   override Type getResultType() { result instanceof BoolType }
 
+  override Type getVariableType() {
+    exists(TranslatedForeachGetEnumerator ge |
+      ge.getAST() = generatedBy and
+      result = ge.getCallResultType()
+    )
+  }
+
   override predicate hasTempVariable(TempVariableTag tag, CSharpType type) {
     tag = ForeachEnumTempVar() and
-    type = getTypeForPRValue(getResultType())
+    type = getTypeForPRValue(getVariableType())
   }
 
   override IRVariable getInstructionVariable(InstructionTag tag) {

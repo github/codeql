@@ -11,7 +11,7 @@ For details see:
   language-support.rst
   framework-support.rst
 
-For details of the CodeQL libraries, see `CodeQL standard libraries <https://help.semmle.com/QL/ql-libraries.html>`_.
+For details of the CodeQL libraries, see `CodeQL standard libraries <https://codeql.github.com/codeql-standard-libraries/>`_.
 
 .. toctree::
    :hidden:

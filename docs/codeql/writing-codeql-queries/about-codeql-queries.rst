@@ -13,7 +13,7 @@ CodeQL includes queries to find the most relevant and interesting problems for e
 - **Alert queries**: queries that highlight issues in specific locations in your code.
 - **Path queries**: queries that describe the flow of information between a source and a sink in your code.
 
-You can add custom queries to `custom query packs <https://lgtm.com/help/lgtm/about-queries#what-are-query-packs>`__ to analyze your projects in `LGTM <https://lgtm.com>`__, use them to analyze a database with the ":ref:`CodeQL CLI <codeql-cli>`," or you can contribute to the standard CodeQL queries in our `open source repository on GitHub <https://github.com/github/codeql>`__.
+You can add custom queries to :doc:`QL packs <../codeql-cli/about-ql-packs>` to analyze your projects with "`Code scanning <https://docs.github.com/github/finding-security-vulnerabilities-and-errors-in-your-code>`__", use them to analyze a database with the ":ref:`CodeQL CLI <codeql-cli>`," or you can contribute to the standard CodeQL queries in our `open source repository on GitHub <https://github.com/github/codeql>`__.
 
 This topic is a basic introduction to query files. You can find more information on writing queries for specific programming languages in the ":ref:`CodeQL language guides <codeql-language-guides>`," and detailed technical information about QL in the ":ref:`QL language reference <ql-language-reference>`."
 For more information on how to format your code when contributing queries to the GitHub repository, see the `CodeQL style guide <https://github.com/github/codeql/blob/main/docs/ql-style-guide.md>`__.
@@ -21,7 +21,9 @@ For more information on how to format your code when contributing queries to the
 Basic query structure
 *********************
 
-:ref:`Queries <queries>` written with CodeQL have the file extension ``.ql``, and contain a ``select`` clause. Many of the existing queries include additional optional information, and have the following structure::
+:ref:`Queries <queries>` written with CodeQL have the file extension ``.ql``, and contain a ``select`` clause. Many of the existing queries include additional optional information, and have the following structure:
+
+.. code-block:: ql
 
     /**
      * 
@@ -77,7 +79,7 @@ When writing your own alert queries, you would typically import the standard lib
 
 There are also libraries containing commonly used predicates, types, and other modules associated with different analyses, including data flow, control flow, and taint-tracking. In order to calculate path graphs, path queries require you to import a data flow library into the query file. For more information, see ":doc:`Creating path queries <creating-path-queries>`."
 
-You can explore the contents of all the standard libraries in the `CodeQL library reference documentation <https://help.semmle.com/QL/ql-libraries.html>`__ or in the `GitHub repository <https://github.com/github/codeql>`__.
+You can explore the contents of all the standard libraries in the `CodeQL library reference documentation <https://codeql.github.com/codeql-standard-libraries/>`__ or in the `GitHub repository <https://github.com/github/codeql>`__.
 
 Optional CodeQL classes and predicates
 --------------------------------------
@@ -117,7 +119,7 @@ Viewing the standard CodeQL queries
 
 One of the easiest ways to get started writing your own queries is to modify an existing query. To view the standard CodeQL queries, or to try out other examples, visit the `CodeQL <https://github.com/github/codeql>`__ and `CodeQL for Go <https://github.com/github/codeql-go>`__ repositories on GitHub. 
 
-You can also find examples of queries developed to find security vulnerabilities and bugs in open source software projects on the `GitHub Security Lab website <https://securitylab.github.com/research>`__ and in the associated `repository <https://github.com/github/security-lab>`__.
+You can also find examples of queries developed to find security vulnerabilities and bugs in open source software projects on the `GitHub Security Lab website <https://securitylab.github.com/research>`__ and in the associated `repository <https://github.com/github/securitylab>`__.
 
 Contributing queries
 ********************

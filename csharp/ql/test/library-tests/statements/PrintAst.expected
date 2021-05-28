@@ -358,8 +358,8 @@ statements.cs:
 #  140|             1: [TypeMention] string
 #  141|       4: [BlockStmt] {...}
 #  142|         0: [ForeachStmt] foreach (... ... in ...) ...
-#  142|           -1: [TypeMention] string
 #  142|           0: [LocalVariableDeclExpr] String s
+#  142|             0: [TypeMention] string
 #  142|           1: [ParameterAccess] access to parameter args
 #  143|           2: [BlockStmt] {...}
 #  144|             0: [ExprStmt] ...;
@@ -502,8 +502,8 @@ statements.cs:
 #  193|       -1: [TypeMention] Void
 #  194|       4: [BlockStmt] {...}
 #  195|         0: [ForeachStmt] foreach (... ... in ...) ...
-#  195|           -1: [TypeMention] int
 #  195|           0: [LocalVariableDeclExpr] Int32 x
+#  195|             0: [TypeMention] int
 #  195|           1: [MethodCall] call to method Range
 #  195|             0: [UnaryMinusExpr] -...
 #  195|               0: [IntLiteral] 10

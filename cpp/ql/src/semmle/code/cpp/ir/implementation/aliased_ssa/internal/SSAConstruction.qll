@@ -6,6 +6,7 @@ private import Imports::Overlap
 private import Imports::TInstruction
 private import Imports::RawIR as RawIR
 private import SSAInstructions
+private import SSAOperands
 private import NewIR
 
 private class OldBlock = Reachability::ReachableBlock;
@@ -178,6 +179,22 @@ private module Cached {
   }
 
   /**
+   * Holds if the `ChiPartialOperand` only partially overlaps with the `ChiTotalOperand`.
+   * This means that the `ChiPartialOperand` will not override the entire memory associated
+   * with the `ChiTotalOperand`.
+   */
+  cached
+  predicate chiOnlyPartiallyUpdatesLocation(ChiInstruction chi) {
+    exists(Alias::MemoryLocation location, OldInstruction oldInstruction |
+      oldInstruction = getOldInstruction(chi.getPartial()) and
+      location = Alias::getResultMemoryLocation(oldInstruction)
+    |
+      Alias::getStartBitOffset(location) != 0 or
+      Alias::getEndBitOffset(location) != 8 * location.getType().getByteSize()
+    )
+  }
+
+  /**
    * Holds if `instr` is part of a cycle in the operand graph that doesn't go
    * through a phi instruction and therefore should be impossible.
    *
@@ -321,15 +338,21 @@ private module Cached {
     instr = unreachedInstruction(_) and result = Language::getVoidType()
   }
 
+  /**
+   * Holds if `opcode` is the opcode that specifies the operation performed by `instr`.
+   *
+   * The parameters are ordered such that they produce a clean join (with no need for reordering)
+   * in the characteristic predicates of the `Instruction` subclasses.
+   */
   cached
-  Opcode getInstructionOpcode(Instruction instr) {
-    result = getOldInstruction(instr).getOpcode()
+  predicate getInstructionOpcode(Opcode opcode, Instruction instr) {
+    opcode = getOldInstruction(instr).getOpcode()
     or
-    instr = phiInstruction(_, _) and result instanceof Opcode::Phi
+    instr = phiInstruction(_, _) and opcode instanceof Opcode::Phi
     or
-    instr = chiInstruction(_) and result instanceof Opcode::Chi
+    instr = chiInstruction(_) and opcode instanceof Opcode::Chi
     or
-    instr = unreachedInstruction(_) and result instanceof Opcode::Unreached
+    instr = unreachedInstruction(_) and opcode instanceof Opcode::Unreached
   }
 
   cached
@@ -404,15 +427,26 @@ private import PhiInsertion
  */
 private module PhiInsertion {
   /**
+   * Holds if `phiBlock` is a block in the dominance frontier of a block that has a definition of the
+   * memory location `defLocation`.
+   */
+  pragma[noinline]
+  private predicate dominanceFrontierOfDefinition(
+    Alias::MemoryLocation defLocation, OldBlock phiBlock
+  ) {
+    exists(OldBlock defBlock |
+      phiBlock = Dominance::getDominanceFrontier(defBlock) and
+      definitionHasDefinitionInBlock(defLocation, defBlock)
+    )
+  }
+
+  /**
    * Holds if a `Phi` instruction needs to be inserted for location `defLocation` at the beginning of block `phiBlock`.
    */
   predicate definitionHasPhiNode(Alias::MemoryLocation defLocation, OldBlock phiBlock) {
-    exists(OldBlock defBlock |
-      phiBlock = Dominance::getDominanceFrontier(defBlock) and
-      definitionHasDefinitionInBlock(defLocation, defBlock) and
-      /* We can also eliminate those nodes where the definition is not live on any incoming edge */
-      definitionLiveOnEntryToBlock(defLocation, phiBlock)
-    )
+    dominanceFrontierOfDefinition(defLocation, phiBlock) and
+    /* We can also eliminate those nodes where the definition is not live on any incoming edge */
+    definitionLiveOnEntryToBlock(defLocation, phiBlock)
   }
 
   /**
@@ -856,7 +890,8 @@ private module CachedForDebugging {
     exists(Alias::MemoryLocation location, OldBlock phiBlock, string specificity |
       instr = getPhi(phiBlock, location) and
       result =
-        "Phi Block(" + phiBlock.getUniqueId() + ")[" + specificity + "]: " + location.getUniqueId() and
+        "Phi Block(" + phiBlock.getFirstInstruction().getUniqueId() + ")[" + specificity + "]: " +
+          location.getUniqueId() and
       if location instanceof Alias::VirtualVariable
       then
         // Sort Phi nodes for virtual variables before Phi nodes for member locations.
@@ -873,6 +908,24 @@ private module CachedForDebugging {
     result.getAST() = var.getAST() and
     result.getTag() = var.getTag()
   }
+
+  cached
+  predicate instructionHasSortKeys(Instruction instr, int key1, int key2) {
+    exists(OldInstruction oldInstr |
+      oldInstr = getOldInstruction(instr) and
+      oldInstr.hasSortKeys(key1, key2)
+    )
+    or
+    instr instanceof TUnreachedInstruction and
+    key1 = maxValue() and
+    key2 = maxValue()
+  }
+
+  /**
+   * Returns the value of the maximum representable integer.
+   */
+  cached
+  int maxValue() { result = 2147483647 }
 }
 
 module SSAConsistency {

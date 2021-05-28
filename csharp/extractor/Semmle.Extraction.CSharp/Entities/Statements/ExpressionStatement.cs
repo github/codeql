@@ -17,10 +17,10 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
 
         protected override void PopulateStatement(TextWriter trapFile)
         {
-            if (Stmt.Expression != null)
-                Expression.Create(cx, Stmt.Expression, this, 0);
+            if (Stmt.Expression is not null)
+                Expression.Create(Context, Stmt.Expression, this, 0);
             else
-                cx.ModelError(Stmt, "Invalid expression statement");
+                Context.ModelError(Stmt, "Invalid expression statement");
         }
     }
 }

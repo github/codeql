@@ -599,7 +599,7 @@ expressions.cs:
 #   64|             0: [PropertyCall] access to property Length
 #   64|               -1: [ParameterAccess] access to parameter s
 #   64|             1: [ParameterAccess] access to parameter x
-#   67|     14: [IndexerProperty] Name
+#   67|     14: [Property] Name
 #   67|       -1: [TypeMention] string
 #   69|       3: [Getter] get_Name
 #   69|         4: [BlockStmt] {...}
@@ -835,7 +835,14 @@ expressions.cs:
 #  129|     21: [Class] Nested
 #-----|       3: (Base types)
 #  129|         0: [TypeMention] Class
-#  133|       4: [InstanceConstructor] Nested
+#  131|       4: [StaticConstructor] Nested
+#  131|         4: [BlockStmt] {...}
+#  132|       5: [InstanceConstructor] Nested
+#-----|         2: (Parameters)
+#  132|           0: [Parameter] b
+#  132|             -1: [TypeMention] bool
+#  132|         4: [BlockStmt] {...}
+#  133|       6: [InstanceConstructor] Nested
 #-----|         2: (Parameters)
 #  133|           0: [Parameter] i
 #  133|             -1: [TypeMention] int
@@ -844,7 +851,7 @@ expressions.cs:
 #  133|             0: [ParameterAccess] access to parameter i
 #  133|             1: [IntLiteral] 1
 #  133|         4: [BlockStmt] {...}
-#  135|       5: [Method] OtherAccesses
+#  135|       7: [Method] OtherAccesses
 #  135|         -1: [TypeMention] Void
 #  136|         4: [BlockStmt] {...}
 #  137|           0: [ExprStmt] ...;
@@ -1504,7 +1511,7 @@ expressions.cs:
 #  375|         1: [ObjectCreation] object creation of type List<String>
 #  375|           0: [TypeMention] List<String>
 #  375|             1: [TypeMention] string
-#  377|     7: [IndexerProperty] Name
+#  377|     7: [Property] Name
 #  377|       -1: [TypeMention] string
 #  377|       3: [Getter] get_Name
 #  377|         4: [BlockStmt] {...}
@@ -1518,7 +1525,7 @@ expressions.cs:
 #  377|             0: [AssignExpr] ... = ...
 #  377|               0: [FieldAccess] access to field name
 #  377|               1: [ParameterAccess] access to parameter value
-#  378|     8: [IndexerProperty] PhoneNumbers
+#  378|     8: [Property] PhoneNumbers
 #  378|       -1: [TypeMention] List<String>
 #  378|         1: [TypeMention] string
 #  378|       3: [Getter] get_PhoneNumbers
@@ -1995,15 +2002,15 @@ expressions.cs:
 #  449|               2: [TypeMention] byte
 #  449|             0: [LocalVariableAccess] access to local variable f1
 #  449|             1: [LambdaExpr] (...) => ...
-#  449|               0: [CastExpr] (...) ...
+#-----|               2: (Parameters)
+#  449|                 0: [Parameter] x
+#  449|               4: [CastExpr] (...) ...
 #  449|                 0: [TypeAccess] access to type Byte
 #  449|                   0: [TypeMention] byte
 #  449|                 1: [AddExpr] ... + ...
 #  449|                   0: [CastExpr] (...) ...
 #  449|                     1: [ParameterAccess] access to parameter x
 #  449|                   1: [IntLiteral] 1
-#-----|               2: (Parameters)
-#  449|                 0: [Parameter] x
 #  450|         1: [LocalVariableDeclStmt] ... ...;
 #  450|           0: [LocalVariableDeclAndInitExpr] Func<Int32,Double> f2 = ...
 #  450|             -1: [TypeMention] Func<Int32, Double>
@@ -2011,14 +2018,14 @@ expressions.cs:
 #  450|               2: [TypeMention] double
 #  450|             0: [LocalVariableAccess] access to local variable f2
 #  450|             1: [LambdaExpr] (...) => ...
-#  450|               0: [BlockStmt] {...}
+#-----|               2: (Parameters)
+#  450|                 0: [Parameter] x
+#  450|               4: [BlockStmt] {...}
 #  450|                 0: [ReturnStmt] return ...;
 #  450|                   0: [CastExpr] (...) ...
 #  450|                     1: [AddExpr] ... + ...
 #  450|                       0: [ParameterAccess] access to parameter x
 #  450|                       1: [IntLiteral] 1
-#-----|               2: (Parameters)
-#  450|                 0: [Parameter] x
 #  451|         2: [LocalVariableDeclStmt] ... ...;
 #  451|           0: [LocalVariableDeclAndInitExpr] Func<Int32,Int32> f3 = ...
 #  451|             -1: [TypeMention] Func<Int32, Int32>
@@ -2026,12 +2033,12 @@ expressions.cs:
 #  451|               2: [TypeMention] int
 #  451|             0: [LocalVariableAccess] access to local variable f3
 #  451|             1: [LambdaExpr] (...) => ...
-#  451|               0: [AddExpr] ... + ...
-#  451|                 0: [ParameterAccess] access to parameter x
-#  451|                 1: [IntLiteral] 1
 #-----|               2: (Parameters)
 #  451|                 0: [Parameter] x
 #  451|                   -1: [TypeMention] int
+#  451|               4: [AddExpr] ... + ...
+#  451|                 0: [ParameterAccess] access to parameter x
+#  451|                 1: [IntLiteral] 1
 #  452|         3: [LocalVariableDeclStmt] ... ...;
 #  452|           0: [LocalVariableDeclAndInitExpr] Func<Int32,String> f4 = ...
 #  452|             -1: [TypeMention] Func<Int32, String>
@@ -2039,32 +2046,32 @@ expressions.cs:
 #  452|               2: [TypeMention] string
 #  452|             0: [LocalVariableAccess] access to local variable f4
 #  452|             1: [LambdaExpr] (...) => ...
-#  452|               0: [BlockStmt] {...}
+#-----|               2: (Parameters)
+#  452|                 0: [Parameter] x
+#  452|                   -1: [TypeMention] int
+#  452|               4: [BlockStmt] {...}
 #  452|                 0: [ReturnStmt] return ...;
 #  452|                   0: [AddExpr] ... + ...
 #  452|                     0: [CastExpr] (...) ...
 #  452|                       1: [ParameterAccess] access to parameter x
 #  452|                     1: [StringLiteral] ""
-#-----|               2: (Parameters)
-#  452|                 0: [Parameter] x
-#  452|                   -1: [TypeMention] int
 #  453|         4: [LocalVariableDeclStmt] ... ...;
 #  453|           0: [LocalVariableDeclAndInitExpr] S f5 = ...
 #  453|             -1: [TypeMention] S
 #  453|             0: [LocalVariableAccess] access to local variable f5
 #  453|             1: [LambdaExpr] (...) => ...
-#  453|               0: [MulExpr] ... * ...
-#  453|                 0: [ParameterAccess] access to parameter x
-#  453|                 1: [ParameterAccess] access to parameter y
 #-----|               2: (Parameters)
 #  453|                 0: [Parameter] x
 #  453|                 1: [Parameter] y
+#  453|               4: [MulExpr] ... * ...
+#  453|                 0: [ParameterAccess] access to parameter x
+#  453|                 1: [ParameterAccess] access to parameter y
 #  454|         5: [LocalVariableDeclStmt] ... ...;
 #  454|           0: [LocalVariableDeclAndInitExpr] Unit f6 = ...
 #  454|             -1: [TypeMention] Unit
 #  454|             0: [LocalVariableAccess] access to local variable f6
 #  454|             1: [LambdaExpr] (...) => ...
-#  454|               0: [MethodCall] call to method WriteLine
+#  454|               4: [MethodCall] call to method WriteLine
 #  454|                 -1: [TypeAccess] access to type Console
 #  454|                   0: [TypeMention] Console
 #  455|         6: [LocalVariableDeclStmt] ... ...;
@@ -2074,14 +2081,14 @@ expressions.cs:
 #  455|               2: [TypeMention] int
 #  455|             0: [LocalVariableAccess] access to local variable f7
 #  455|             1: [AnonymousMethodExpr] delegate(...) { ... }
-#  455|               0: [BlockStmt] {...}
+#-----|               2: (Parameters)
+#  455|                 0: [Parameter] x
+#  455|                   -1: [TypeMention] int
+#  455|               4: [BlockStmt] {...}
 #  455|                 0: [ReturnStmt] return ...;
 #  455|                   0: [AddExpr] ... + ...
 #  455|                     0: [ParameterAccess] access to parameter x
 #  455|                     1: [IntLiteral] 1
-#-----|               2: (Parameters)
-#  455|                 0: [Parameter] x
-#  455|                   -1: [TypeMention] int
 #  456|         7: [LocalVariableDeclStmt] ... ...;
 #  456|           0: [LocalVariableDeclAndInitExpr] Int32 j = ...
 #  456|             -1: [TypeMention] int
@@ -2093,7 +2100,7 @@ expressions.cs:
 #  457|               1: [TypeMention] int
 #  457|             0: [LocalVariableAccess] access to local variable f8
 #  457|             1: [AnonymousMethodExpr] delegate(...) { ... }
-#  457|               0: [BlockStmt] {...}
+#  457|               4: [BlockStmt] {...}
 #  457|                 0: [ReturnStmt] return ...;
 #  457|                   0: [AddExpr] ... + ...
 #  457|                     0: [LocalVariableAccess] access to local variable j

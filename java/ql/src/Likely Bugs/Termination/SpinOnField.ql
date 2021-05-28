@@ -50,17 +50,10 @@ class EmptyLoop extends Stmt {
   }
 }
 
-/** An access to a field in this object. */
-class FieldAccessInThis extends VarAccess {
-  FieldAccessInThis() {
-    this.getVariable() instanceof Field and
-    (not this.hasQualifier() or this.getQualifier() instanceof ThisAccess)
-  }
-}
-
-from EmptyLoop loop, FieldAccessInThis access, Field field, ComparisonOrEqTestExpr expr
+from EmptyLoop loop, FieldAccess access, Field field, ComparisonOrEqTestExpr expr
 where
   loop.getCondition() = expr and
+  access.isOwnFieldAccess() and
   access.getParent() = expr and
   field = access.getVariable() and
   field.isStatic() and

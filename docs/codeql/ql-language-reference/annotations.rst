@@ -47,7 +47,7 @@ Overview of annotations
 
 This section describes what the different annotations do, and when you can use them.
 You can also find a summary table in the Annotations section of the 
-`QL language specification <ql-language-specification#annotations-in-java>`_.
+`QL language specification <https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#annotations>`_.
 
 .. index:: abstract
 .. _abstract:
@@ -83,7 +83,9 @@ to describe specific configurations. Any non-abstract subtypes must override it 
 indirectly) to describe what sources of data they each track.
 
 In other words, all non-abstract classes that extend ``Configuration`` must override ``isSource`` in their
-own body, or they must inherit from another class that overrides ``isSource``::
+own body, or they must inherit from another class that overrides ``isSource``:
+
+.. code-block:: ql
 
     class ConfigA extends Configuration {
       ...
@@ -203,7 +205,8 @@ change this definition. In this case, ``hasName`` should be final:
 
 **Available for**: |classes|
 
-.. important::
+.. pull-quote:: Important
+
    This annotation is deprecated. Instead of annotating a name with ``library``, put it in a
    private (or privately imported) module.
 
@@ -256,8 +259,6 @@ This means that it is part of the output of the QL program.
 Compiler pragmas
 ================
 
-**Available for**: |characteristic predicates|, |member predicates|, |non-member predicates|
-
 The following compiler pragmas affect the compilation and optimization of queries. You
 should avoid using these annotations unless you experience significant performance issues.
 
@@ -281,6 +282,8 @@ predicates.
 ``pragma[inline]``
 ------------------
 
+**Available for**: |characteristic predicates|, |member predicates|, |non-member predicates|
+
 The ``pragma[inline]`` annotation tells the QL optimizer to always inline the annotated predicate
 into the places where it is called. This can be useful when a predicate body is very expensive to 
 compute entirely, as it ensures that the predicate is evaluated with the other contextual information
@@ -288,6 +291,8 @@ at the places where it is called.
 
 ``pragma[noinline]``
 --------------------
+
+**Available for**: |characteristic predicates|, |member predicates|, |non-member predicates|
 
 The ``pragma[noinline]`` annotation is used to prevent a predicate from being inlined into the
 place where it is called. In practice, this annotation is useful when you've already grouped 
@@ -297,6 +302,8 @@ work of the helper predicate, so it's a good idea to annotate it with ``pragma[n
 
 ``pragma[nomagic]``
 -------------------
+
+**Available for**: |characteristic predicates|, |member predicates|, |non-member predicates|
 
 The ``pragma[nomagic]`` annotation is used to prevent the QL optimizer from performing the "magic sets"
 optimization on a predicate. 
@@ -310,6 +317,8 @@ Note that ``nomagic`` implies ``noinline``.
 
 ``pragma[noopt]``
 -----------------
+
+**Available for**: |characteristic predicates|, |member predicates|, |non-member predicates|
 
 The ``pragma[noopt]`` annotation is used to prevent the QL optimizer from optimizing a
 predicate, except when it's absolutely necessary for compilation and evaluation to work.
@@ -328,8 +337,10 @@ When you use this annotation, be aware of the following issues:
    In particular, you can't chain predicate :ref:`calls <calls>` or call predicates on a
    :ref:`cast <casts>`. You must write them as multiple conjuncts and explicitly order them.
 
-   For example, suppose you have the following definitions::
-   
+   For example, suppose you have the following definitions:
+
+   .. code-block:: ql
+
        class Small extends int {
          Small() { this in [1 .. 10] }
          Small getSucc() { result = this + 1}
@@ -343,8 +354,10 @@ When you use this annotation, be aware of the following issues:
          s.getSucc().getSucc() = 3
        }
    
-   If you add ``noopt`` pragmas, you must rewrite the predicates. For example::
-   
+   If you add ``noopt`` pragmas, you must rewrite the predicates. For example:
+
+   .. code-block:: ql
+
        pragma[noopt]
        predicate p(int i) {
          exists(Small s | s = i and s.getSucc() = 2)
@@ -357,7 +370,33 @@ When you use this annotation, be aware of the following issues:
            succ.getSucc() = 3
          )
        }
-   
+
+``pragma[only_bind_out]``
+-------------------------
+
+**Available for**: |expressions|
+
+The ``pragma[only_bind_out]`` annotation lets you specify the direction in which the QL compiler should bind expressions.
+This can be useful to improve performance in rare cases where the QL optimizer orders parts of the QL program in an inefficient way.
+
+For example, ``x = pragma[only_bind_out](y)`` is semantically equivalent to ``x = y``, but has different binding behavior. 
+``x = y`` binds ``x`` from ``y`` and vice versa, while ``x = pragma[only_bind_out](y)`` only binds ``x`` from ``y``.
+
+For more information, see ":ref:`Binding <binding>`."
+
+``pragma[only_bind_into]``
+--------------------------
+
+**Available for**: |expressions|
+
+The ``pragma[only_bind_into]`` annotation lets you specify the direction in which the QL compiler should bind expressions.
+This can be useful to improve performance in rare cases where the QL optimizer orders parts of the QL program in an inefficient way.
+
+For example, ``x = pragma[only_bind_into](y)`` is semantically equivalent to ``x = y``, but has different binding behavior. 
+``x = y`` binds ``x`` from ``y`` and vice versa, while ``x = pragma[only_bind_into](y)`` only binds ``y`` from ``x``.
+
+For more information, see ":ref:`Binding <binding>`."
+
 .. _language:
 
 Language pragmas
@@ -378,21 +417,23 @@ For more information, see ":ref:`monotonic-aggregates`."
 Binding sets
 ============
 
-**Available for**: |characteristic predicates|, |member predicates|, |non-member predicates|
+**Available for**: |classes|, |characteristic predicates|, |member predicates|, |non-member predicates|
 
 ``bindingset[...]``
 -------------------
 
-You can use this annotation to explicitly state the binding sets for a predicate. A binding set
-is a subset of the predicate's arguments such that, if those arguments are constrained to a
-finite set of values, then the predicate itself is finite (that is, it evaluates to a finite 
+You can use this annotation to explicitly state the binding sets for a predicate or class. A binding set
+is a subset of a predicate's or class body's arguments such that, if those arguments are constrained to a
+finite set of values, then the predicate or class itself is finite (that is, it evaluates to a finite 
 set of tuples).
 
-The ``bindingset`` annotation takes a comma-separated list of variables. Each variable must be
-an argument of the predicate, possibly including ``this`` (for characteristic predicates and 
-member predicates) and ``result`` (for predicates that return a result).
+The ``bindingset`` annotation takes a comma-separated list of variables.
 
-For more information, see ":ref:`predicate-binding`."
+- When you annotate a predicate, each variable must be an argument of the predicate, possibly including ``this``
+  (for characteristic predicates and member predicates) and ``result`` (for predicates that return a result). 
+  For more information, see ":ref:`predicate-binding`."
+- When you annotate a class, each variable must be ``this`` or a field in the class. 
+  Binding sets for classes are supported from release 2.3.0 of the CodeQL CLI, and release 1.26 of LGTM Enterprise.
 
 .. Links to use in substitutions
 
@@ -405,3 +446,4 @@ For more information, see ":ref:`predicate-binding`."
 .. |modules|                   replace:: :ref:`modules <modules>`
 .. |aliases|                   replace:: :ref:`aliases <aliases>`
 .. |algebraic datatypes|       replace:: :ref:`algebraic datatypes <algebraic-datatypes>`
+.. |expressions|               replace:: :ref:`expressions <expressions>`

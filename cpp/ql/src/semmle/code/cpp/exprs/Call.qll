@@ -300,17 +300,25 @@ class FunctionCall extends Call, @funbindexpr {
   }
 }
 
+/** A _user-defined_ unary `operator*` function. */
+class OverloadedPointerDereferenceFunction extends Function {
+  OverloadedPointerDereferenceFunction() {
+    this.hasName("operator*") and
+    this.getEffectiveNumberOfParameters() = 1
+  }
+}
+
 /**
  * An instance of a _user-defined_ unary `operator*` applied to its argument.
  * ```
  * T1 operator*(const T2 &);
  * T1 a; T2 b;
  * a = *b;
+ * ```
  */
 class OverloadedPointerDereferenceExpr extends FunctionCall {
   OverloadedPointerDereferenceExpr() {
-    getTarget().hasName("operator*") and
-    getTarget().getEffectiveNumberOfParameters() = 1
+    this.getTarget() instanceof OverloadedPointerDereferenceFunction
   }
 
   override string getAPrimaryQlClass() { result = "OverloadedPointerDereferenceExpr" }
@@ -439,40 +447,6 @@ class ConstructorCall extends FunctionCall {
 
   /** Gets the constructor being called. */
   override Constructor getTarget() { result = super.getTarget() }
-}
-
-/**
- * A C++ `throw` expression.
- * ```
- * throw Exc(2);
- * ```
- */
-class ThrowExpr extends Expr, @throw_expr {
-  /**
-   * Gets the expression that will be thrown, if any. There is no result if
-   * `this` is a `ReThrowExpr`.
-   */
-  Expr getExpr() { result = this.getChild(0) }
-
-  override string getAPrimaryQlClass() { result = "ThrowExpr" }
-
-  override string toString() { result = "throw ..." }
-
-  override int getPrecedence() { result = 1 }
-}
-
-/**
- * A C++ `throw` expression with no argument (which causes the current exception to be re-thrown).
- * ```
- * throw;
- * ```
- */
-class ReThrowExpr extends ThrowExpr {
-  ReThrowExpr() { this.getType() instanceof VoidType }
-
-  override string getAPrimaryQlClass() { result = "ReThrowExpr" }
-
-  override string toString() { result = "re-throw exception " }
 }
 
 /**

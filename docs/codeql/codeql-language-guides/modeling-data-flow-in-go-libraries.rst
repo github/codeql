@@ -27,7 +27,7 @@ example from ``Mux.qll``.
    }
 
 This has the effect that all calls to `the function Vars from the
-package mux <http://www.gorillatoolkit.org/pkg/mux#Vars>`__ are
+package mux <https://github.com/gorilla/mux>`__ are
 treated as sources of untrusted data.
 
 Flow propagation

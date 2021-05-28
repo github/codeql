@@ -9,38 +9,42 @@ private import semmle.python.dataflow.new.internal.TaintTrackingPublic
  */
 predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
 
-/**
- * Holds if the additional step from `nodeFrom` to `nodeTo` should be included in all
- * global taint flow configurations.
- */
-predicate defaultAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-  localAdditionalTaintStep(nodeFrom, nodeTo)
-  or
-  any(AdditionalTaintStep a).step(nodeFrom, nodeTo)
+private module Cached {
+  /**
+   * Holds if the additional step from `nodeFrom` to `nodeTo` should be included in all
+   * global taint flow configurations.
+   */
+  cached
+  predicate defaultAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    localAdditionalTaintStep(nodeFrom, nodeTo)
+    or
+    any(AdditionalTaintStep a).step(nodeFrom, nodeTo)
+  }
+
+  /**
+   * Holds if taint can flow in one local step from `nodeFrom` to `nodeTo` excluding
+   * local data flow steps. That is, `nodeFrom` and `nodeTo` are likely to represent
+   * different objects.
+   */
+  cached
+  predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    concatStep(nodeFrom, nodeTo)
+    or
+    subscriptStep(nodeFrom, nodeTo)
+    or
+    stringManipulation(nodeFrom, nodeTo)
+    or
+    containerStep(nodeFrom, nodeTo)
+    or
+    copyStep(nodeFrom, nodeTo)
+    or
+    forStep(nodeFrom, nodeTo)
+    or
+    unpackingAssignmentStep(nodeFrom, nodeTo)
+  }
 }
 
-/**
- * Holds if taint can flow in one local step from `nodeFrom` to `nodeTo` excluding
- * local data flow steps. That is, `nodeFrom` and `nodeTo` are likely to represent
- * different objects.
- */
-predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-  concatStep(nodeFrom, nodeTo)
-  or
-  subscriptStep(nodeFrom, nodeTo)
-  or
-  stringManipulation(nodeFrom, nodeTo)
-  or
-  jsonStep(nodeFrom, nodeTo)
-  or
-  containerStep(nodeFrom, nodeTo)
-  or
-  copyStep(nodeFrom, nodeTo)
-  or
-  forStep(nodeFrom, nodeTo)
-  or
-  unpackingAssignmentStep(nodeFrom, nodeTo)
-}
+import Cached
 
 /**
  * Holds if taint can flow from `nodeFrom` to `nodeTo` with a step related to concatenation.
@@ -86,9 +90,11 @@ predicate stringManipulation(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeT
     object = call.getFunction().(AttrNode).getObject(method_name)
   |
     nodeFrom.getNode() = object and
-    method_name in ["capitalize", "casefold", "center", "expandtabs", "format", "format_map",
-          "join", "ljust", "lstrip", "lower", "replace", "rjust", "rstrip", "strip", "swapcase",
-          "title", "upper", "zfill", "encode", "decode"]
+    method_name in [
+        "capitalize", "casefold", "center", "expandtabs", "format", "format_map", "join", "ljust",
+        "lstrip", "lower", "replace", "rjust", "rstrip", "strip", "swapcase", "title", "upper",
+        "zfill", "encode", "decode"
+      ]
     or
     method_name = "replace" and
     nodeFrom.getNode() = call.getArg(1)
@@ -134,16 +140,6 @@ predicate stringManipulation(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeT
 }
 
 /**
- * Holds if taint can flow from `nodeFrom` to `nodeTo` with a step related to JSON encoding/decoding.
- */
-predicate jsonStep(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
-  exists(CallNode call | call = nodeTo.getNode() |
-    call.getFunction().(AttrNode).getObject(["load", "loads", "dumps"]).(NameNode).getId() = "json" and
-    call.getArg(0) = nodeFrom.getNode()
-  )
-}
-
-/**
  * Holds if taint can flow from `nodeFrom` to `nodeTo` with a step related to containers
  * (lists/sets/dictionaries): literals, constructor invocation, methods. Note that this
  * is currently very imprecise, as an example, since we model `dict.get`, we treat any
@@ -156,8 +152,9 @@ predicate containerStep(DataFlow::CfgNode nodeFrom, DataFlow::Node nodeTo) {
   or
   // constructor call
   exists(CallNode call | call = nodeTo.asCfgNode() |
-    call.getFunction().(NameNode).getId() in ["list", "set", "frozenset", "dict", "defaultdict",
-          "tuple"] and
+    call.getFunction().(NameNode).getId() in [
+        "list", "set", "frozenset", "dict", "defaultdict", "tuple"
+      ] and
     call.getArg(0) = nodeFrom.getNode()
   )
   or
@@ -169,11 +166,12 @@ predicate containerStep(DataFlow::CfgNode nodeFrom, DataFlow::Node nodeTo) {
   or
   // methods
   exists(CallNode call, string name | call = nodeTo.asCfgNode() |
-    name in ["copy",
-          // general
-          "pop",
-          // dict
-          "values", "items", "get", "popitem"] and
+    name in [
+        // general
+        "copy", "pop",
+        // dict
+        "values", "items", "get", "popitem"
+      ] and
     call.getFunction().(AttrNode).getObject(name) = nodeFrom.asCfgNode()
   )
   or

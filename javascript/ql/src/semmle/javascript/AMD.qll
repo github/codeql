@@ -4,6 +4,7 @@
  */
 
 import javascript
+private import semmle.javascript.internal.CachedStages
 
 /**
  * An AMD `define` call.
@@ -155,9 +156,17 @@ class AmdModuleDefinition extends CallExpr {
    * into this module's `module.exports` property.
    */
   DefiniteAbstractValue getAModuleExportsValue() {
+    result = [getAnImplicitExportsValue(), getAnExplicitExportsValue()]
+  }
+
+  pragma[noinline, nomagic]
+  private AbstractValue getAnImplicitExportsValue() {
     // implicit exports: anything that is returned from the factory function
     result = getModuleExpr().analyze().getAValue()
-    or
+  }
+
+  pragma[noinline]
+  private AbstractValue getAnExplicitExportsValue() {
     // explicit exports: anything assigned to `module.exports`
     exists(AbstractProperty moduleExports, AmdModule m |
       this = m.getDefine() and
@@ -290,7 +299,10 @@ private class AmdDependencyImport extends Import {
  */
 class AmdModule extends Module {
   cached
-  AmdModule() { exists(unique(AmdModuleDefinition def | amdModuleTopLevel(def, this))) }
+  AmdModule() {
+    Stages::DataFlowStage::ref() and
+    exists(unique(AmdModuleDefinition def | amdModuleTopLevel(def, this)))
+  }
 
   /** Gets the definition of this module. */
   AmdModuleDefinition getDefine() { amdModuleTopLevel(result, this) }

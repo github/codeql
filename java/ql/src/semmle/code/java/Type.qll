@@ -517,7 +517,12 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
   /** Holds if this is a top-level type, which is not nested inside any other types. */
   predicate isTopLevel() { this instanceof TopLevelType }
 
-  /** Holds if this type is declared in a specified package with the specified name. */
+  /**
+   * Holds if this type is declared in a specified package with the specified name.
+   *
+   * For nested types the name of the nested type is prefixed with a `$` and appended
+   * to the name of the enclosing type, which might be a nested type as well.
+   */
   predicate hasQualifiedName(string package, string type) {
     this.getPackage().hasName(package) and type = this.nestedName()
   }
@@ -532,7 +537,12 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
   }
 
   /**
-   * Gets the qualified name of this type.
+   * Gets the qualified name of this type, consisting of the package name followed by
+   * a `.` and the name of this type.
+   *
+   * For nested types the name of the nested type is prefixed with a `$` and appended
+   * to the name of the enclosing type, which might be a nested type as well. For example:
+   * `java.lang.Thread$State`.
    */
   string getQualifiedName() {
     exists(string pkgName | pkgName = getPackage().getName() |
@@ -540,7 +550,13 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
     )
   }
 
-  /** Gets the nested name of this type. */
+  /**
+   * Gets the nested name of this type.
+   *
+   * If this type is not a nested type, the result is the same as `getName()`.
+   * Otherwise the name of the nested type is prefixed with a `$` and appended to
+   * the name of the enclosing type, which might be a nested type as well.
+   */
   string nestedName() {
     not this instanceof NestedType and result = this.getName()
     or
@@ -598,6 +614,13 @@ class Class extends RefType, @class {
 
   /** Holds if this class is a local class. */
   predicate isLocal() { isLocalClass(this, _) }
+
+  /** Holds if this class is package protected, that is, neither public nor private nor protected. */
+  predicate isPackageProtected() {
+    not isPrivate() and
+    not isProtected() and
+    not isPublic()
+  }
 
   override RefType getSourceDeclaration() { classes(this, _, _, result) }
 
@@ -782,6 +805,21 @@ class NestedType extends RefType {
 }
 
 /**
+ * A nested type which is a direct member of the enclosing type,
+ * that is, neither an anonymous nor local class.
+ */
+class MemberType extends NestedType, Member {
+  /**
+   * Gets the qualified name of this member type.
+   *
+   * The qualified name consists of the package name, a `.`, the name of the declaring
+   * type (which might be a nested or member type as well), followed by a `$` and the
+   * name of this member type. For example: `java.lang.Thread$State`.
+   */
+  override string getQualifiedName() { result = NestedType.super.getQualifiedName() }
+}
+
+/**
  * A class declared within another type.
  *
  * This includes (static and non-static) member classes,
@@ -790,8 +828,9 @@ class NestedType extends RefType {
 class NestedClass extends NestedType, Class { }
 
 /**
- * An inner class is a nested class that is neither
- * explicitly nor implicitly declared static.
+ * An inner class is a nested class that is neither explicitly nor
+ * implicitly declared static. This includes anonymous and local
+ * classes.
  */
 class InnerClass extends NestedClass {
   InnerClass() { not this.isStatic() }
@@ -814,6 +853,13 @@ class Interface extends RefType, @interface {
   override predicate isAbstract() {
     // JLS 9.1.1.1: "Every interface is implicitly abstract"
     any()
+  }
+
+  /** Holds if this interface is package protected, that is, neither public nor private nor protected. */
+  predicate isPackageProtected() {
+    not isPrivate() and
+    not isProtected() and
+    not isPublic()
   }
 
   override string getAPrimaryQlClass() { result = "Interface" }

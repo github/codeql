@@ -6,7 +6,6 @@ using Microsoft.DiaSymReader;
 using System.Reflection.Metadata.Ecma335;
 using System.Reflection.Metadata;
 using System.IO;
-using System.Reflection;
 
 namespace Semmle.Extraction.PDB
 {
@@ -56,11 +55,11 @@ namespace Semmle.Extraction.PDB
 
         public IEnumerable<ISourceFile> SourceFiles => reader.GetDocuments().Select(d => new Document(d));
 
-        public IMethod? GetMethod(MethodDebugInformationHandle h)
+        public Method? GetMethod(MethodDebugInformationHandle h)
         {
             var methodToken = MetadataTokens.GetToken(h.ToDefinitionHandle());
             var method = reader.GetMethod(methodToken);
-            if (method != null)
+            if (method is not null)
             {
                 if (method.GetSequencePointCount(out var count) != 0 || count == 0)
                     return null;
@@ -101,7 +100,7 @@ namespace Semmle.Extraction.PDB
                 .Select(cv => cv.Path)
                 .FirstOrDefault(File.Exists);
 
-            if (path is object)
+            if (path is not null)
             {
                 return new NativePdbReader(path);
             }
@@ -113,32 +112,5 @@ namespace Semmle.Extraction.PDB
         {
             pdbStream.Dispose();
         }
-    }
-
-    /// <summary>
-    /// This is not used but is seemingly needed in order to use DiaSymReader.
-    /// </summary>
-    internal class MdProvider : ISymReaderMetadataProvider
-    {
-        public MdProvider()
-        {
-        }
-
-        public object? GetMetadataImport() => null;
-
-        public unsafe bool TryGetStandaloneSignature(int standaloneSignatureToken, out byte* signature, out int length) =>
-            throw new NotImplementedException();
-
-        public bool TryGetTypeDefinitionInfo(int typeDefinitionToken, out string namespaceName, out string typeName, out TypeAttributes attributes, out int baseTypeToken) =>
-            throw new NotImplementedException();
-
-        public bool TryGetTypeDefinitionInfo(int typeDefinitionToken, out string namespaceName, out string typeName, out TypeAttributes attributes) =>
-            throw new NotImplementedException();
-
-        public bool TryGetTypeReferenceInfo(int typeReferenceToken, out string namespaceName, out string typeName, out int resolutionScopeToken) =>
-            throw new NotImplementedException();
-
-        public bool TryGetTypeReferenceInfo(int typeReferenceToken, out string namespaceName, out string typeName) =>
-            throw new NotImplementedException();
     }
 }

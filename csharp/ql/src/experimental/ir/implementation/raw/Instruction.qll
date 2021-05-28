@@ -172,6 +172,16 @@ class Instruction extends Construction::TStageInstruction {
   final string getUniqueId() { result = Construction::getInstructionUniqueId(this) }
 
   /**
+   * INTERNAL: Do not use.
+   *
+   * Gets two sort keys for this instruction - used to order instructions for printing
+   * in test outputs.
+   */
+  final predicate hasSortKeys(int key1, int key2) {
+    Construction::instructionHasSortKeys(this, key1, key2)
+  }
+
+  /**
    * Gets the basic block that contains this instruction.
    */
   final IRBlock getBlock() { result.getAnInstruction() = this }
@@ -287,7 +297,8 @@ class Instruction extends Construction::TStageInstruction {
   /**
    * Gets the opcode that specifies the operation performed by this instruction.
    */
-  final Opcode getOpcode() { result = Construction::getInstructionOpcode(this) }
+  pragma[inline]
+  final Opcode getOpcode() { Construction::getInstructionOpcode(result, this) }
 
   /**
    * Gets all direct uses of the result of this instruction. The result can be
@@ -572,6 +583,17 @@ class InitializeParameterInstruction extends VariableInstruction {
    * Gets the parameter initialized by this instruction.
    */
   final Language::Parameter getParameter() { result = var.(IRUserVariable).getVariable() }
+
+  /**
+   * Holds if this instruction initializes the parameter with index `index`, or
+   * if `index` is `-1` and this instruction initializes `this`.
+   */
+  pragma[noinline]
+  final predicate hasIndex(int index) {
+    index >= 0 and index = this.getParameter().getIndex()
+    or
+    index = -1 and this.getIRVariable() instanceof IRThisVariable
+  }
 }
 
 /**
@@ -595,6 +617,18 @@ class InitializeIndirectionInstruction extends VariableInstruction {
    * Gets the parameter initialized by this instruction.
    */
   final Language::Parameter getParameter() { result = var.(IRUserVariable).getVariable() }
+
+  /**
+   * Holds if this instruction initializes the memory pointed to by the parameter with
+   * index `index`, or if `index` is `-1` and this instruction initializes the memory
+   * pointed to by `this`.
+   */
+  pragma[noinline]
+  final predicate hasIndex(int index) {
+    index >= 0 and index = this.getParameter().getIndex()
+    or
+    index = -1 and this.getIRVariable() instanceof IRThisVariable
+  }
 }
 
 /**
@@ -769,6 +803,17 @@ class ReturnIndirectionInstruction extends VariableInstruction {
    * Holds if this instruction is the return indirection for `this`.
    */
   final predicate isThisIndirection() { var instanceof IRThisVariable }
+
+  /**
+   * Holds if this instruction is the return indirection for the parameter with index `index`, or
+   * if this instruction is the return indirection for `this` and `index` is `-1`.
+   */
+  pragma[noinline]
+  final predicate hasIndex(int index) {
+    index >= 0 and index = this.getParameter().getIndex()
+    or
+    index = -1 and this.isThisIndirection()
+  }
 }
 
 /**
@@ -1567,6 +1612,7 @@ class CallInstruction extends Instruction {
   /**
    * Gets the argument operand at the specified index.
    */
+  pragma[noinline]
   final PositionalArgumentOperand getPositionalArgumentOperand(int index) {
     result = getAnOperand() and
     result.getIndex() = index
@@ -1575,14 +1621,44 @@ class CallInstruction extends Instruction {
   /**
    * Gets the argument at the specified index.
    */
+  pragma[noinline]
   final Instruction getPositionalArgument(int index) {
     result = getPositionalArgumentOperand(index).getDef()
   }
 
   /**
+   * Gets the argument operand at the specified index, or `this` if `index` is `-1`.
+   */
+  pragma[noinline]
+  final ArgumentOperand getArgumentOperand(int index) {
+    index >= 0 and result = getPositionalArgumentOperand(index)
+    or
+    index = -1 and result = getThisArgumentOperand()
+  }
+
+  /**
+   * Gets the argument at the specified index, or `this` if `index` is `-1`.
+   */
+  pragma[noinline]
+  final Instruction getArgument(int index) { result = getArgumentOperand(index).getDef() }
+
+  /**
    * Gets the number of arguments of the call, including the `this` pointer, if any.
    */
   final int getNumberOfArguments() { result = count(this.getAnArgumentOperand()) }
+
+  /**
+   * Holds if the result is a side effect for the argument at the specified index, or `this` if
+   * `index` is `-1`.
+   *
+   * This helper predicate makes it easy to join on both of these columns at once, avoiding
+   * pathological join orders in case the argument index should get joined first.
+   */
+  pragma[noinline]
+  final SideEffectInstruction getAParameterSideEffect(int index) {
+    this = result.getPrimaryInstruction() and
+    index = result.(IndexedInstruction).getIndex()
+  }
 }
 
 /**
@@ -1993,6 +2069,13 @@ class ChiInstruction extends Instruction {
   final predicate getUpdatedInterval(int startBit, int endBit) {
     Construction::getIntervalUpdatedByChi(this, startBit, endBit)
   }
+
+  /**
+   * Holds if the `ChiPartialOperand` totally, but not exactly, overlaps with the `ChiTotalOperand`.
+   * This means that the `ChiPartialOperand` will not override the entire memory associated with the
+   * `ChiTotalOperand`.
+   */
+  final predicate isPartialUpdate() { Construction::chiOnlyPartiallyUpdatesLocation(this) }
 }
 
 /**

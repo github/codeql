@@ -184,11 +184,8 @@ class CompileTimeConstantExpr extends Expr {
     // Ternary conditional, with compile-time constant condition.
     exists(ConditionalExpr ce, boolean condition |
       ce = this and
-      condition = ce.getCondition().(CompileTimeConstantExpr).getBooleanValue()
-    |
-      if condition = true
-      then result = ce.getTrueExpr().(CompileTimeConstantExpr).getStringValue()
-      else result = ce.getFalseExpr().(CompileTimeConstantExpr).getStringValue()
+      condition = ce.getCondition().(CompileTimeConstantExpr).getBooleanValue() and
+      result = ce.getBranchExpr(condition).(CompileTimeConstantExpr).getStringValue()
     )
     or
     exists(Variable v | this = v.getAnAccess() |
@@ -295,11 +292,8 @@ class CompileTimeConstantExpr extends Expr {
     // Ternary expressions, where the `true` and `false` expressions are boolean compile-time constants.
     exists(ConditionalExpr ce, boolean condition |
       ce = this and
-      condition = ce.getCondition().(CompileTimeConstantExpr).getBooleanValue()
-    |
-      if condition = true
-      then result = ce.getTrueExpr().(CompileTimeConstantExpr).getBooleanValue()
-      else result = ce.getFalseExpr().(CompileTimeConstantExpr).getBooleanValue()
+      condition = ce.getCondition().(CompileTimeConstantExpr).getBooleanValue() and
+      result = ce.getBranchExpr(condition).(CompileTimeConstantExpr).getBooleanValue()
     )
     or
     // Simple or qualified names where the variable is final and the initializer is a constant.
@@ -380,11 +374,8 @@ class CompileTimeConstantExpr extends Expr {
       // Ternary conditional, with compile-time constant condition.
       exists(ConditionalExpr ce, boolean condition |
         ce = this and
-        condition = ce.getCondition().(CompileTimeConstantExpr).getBooleanValue()
-      |
-        if condition = true
-        then result = ce.getTrueExpr().(CompileTimeConstantExpr).getIntValue()
-        else result = ce.getFalseExpr().(CompileTimeConstantExpr).getIntValue()
+        condition = ce.getCondition().(CompileTimeConstantExpr).getBooleanValue() and
+        result = ce.getBranchExpr(condition).(CompileTimeConstantExpr).getIntValue()
       )
       or
       // If a `Variable` is a `CompileTimeConstantExpr`, its value is its initializer.
@@ -438,7 +429,7 @@ class ArrayCreationExpr extends Expr, @arraycreationexpr {
     result.getIndex() = index
   }
 
-  /** Gets the initializer of this array creation expression. */
+  /** Gets the initializer of this array creation expression, if any. */
   ArrayInit getInit() { result.isNthChildOf(this, -2) }
 
   /**
@@ -446,7 +437,7 @@ class ArrayCreationExpr extends Expr, @arraycreationexpr {
    */
   int getFirstDimensionSize() {
     if exists(getInit())
-    then result = count(getInit().getAnInit())
+    then result = getInit().getSize()
     else result = getDimension(0).(CompileTimeConstantExpr).getIntValue()
   }
 
@@ -456,7 +447,17 @@ class ArrayCreationExpr extends Expr, @arraycreationexpr {
   override string getAPrimaryQlClass() { result = "ArrayCreationExpr" }
 }
 
-/** An array initializer occurs in an array creation expression. */
+/**
+ * An array initializer consisting of an opening and closing curly bracket and
+ * optionally containing expressions (which themselves can be array initializers)
+ * representing the elements of the array. For example: `{ 'a', 'b' }`.
+ *
+ * This expression type matches array initializers representing the values for
+ * annotation elements as well, despite the Java Language Specification considering
+ * them a separate type, `ElementValueArrayInitializer`. It does however not match
+ * values for an array annotation element which consist of a single element
+ * without enclosing curly brackets (as per JLS).
+ */
 class ArrayInit extends Expr, @arrayinit {
   /**
    * An expression occurring in this initializer.
@@ -468,6 +469,12 @@ class ArrayInit extends Expr, @arrayinit {
 
   /** Gets the initializer occurring at the specified (zero-based) position. */
   Expr getInit(int index) { result = this.getAnInit() and result.getIndex() = index }
+
+  /**
+   * Gets the number of expressions in this initializer, that is, the size the
+   * created array will have.
+   */
+  int getSize() { result = count(getAnInit()) }
 
   /** Gets a printable representation of this expression. */
   override string toString() { result = "{...}" }
@@ -631,7 +638,21 @@ class BooleanLiteral extends Literal, @booleanliteral {
   override string getAPrimaryQlClass() { result = "BooleanLiteral" }
 }
 
-/** An integer literal. For example, `23`. */
+/**
+ * An integer literal. For example, `23`.
+ *
+ * An integer literal can never be negative except when:
+ * - It is written in binary, octal or hexadecimal notation
+ * - It is written in decimal notation, has the value `2147483648` and is preceded
+ *   by a minus; in this case the value of the IntegerLiteral is -2147483648 and
+ *   the preceding minus will *not* be modeled as `MinusExpr`.
+ *
+ * In all other cases the preceding minus, if any, will be modeled as a separate
+ * `MinusExpr`.
+ *
+ * The last exception is necessary because `2147483648` on its own would not be
+ * a valid integer literal (and could also not be parsed as CodeQL `int`).
+ */
 class IntegerLiteral extends Literal, @integerliteral {
   /** Gets the int representation of this literal. */
   int getIntValue() { result = getValue().toInt() }
@@ -639,18 +660,55 @@ class IntegerLiteral extends Literal, @integerliteral {
   override string getAPrimaryQlClass() { result = "IntegerLiteral" }
 }
 
-/** A long literal. For example, `23l`. */
+/**
+ * A long literal. For example, `23L`.
+ *
+ * A long literal can never be negative except when:
+ * - It is written in binary, octal or hexadecimal notation
+ * - It is written in decimal notation, has the value `9223372036854775808` and
+ *   is preceded by a minus; in this case the value of the LongLiteral is
+ *   -9223372036854775808 and the preceding minus will *not* be modeled as
+ *   `MinusExpr`.
+ *
+ * In all other cases the preceding minus, if any, will be modeled as a separate
+ * `MinusExpr`.
+ *
+ * The last exception is necessary because `9223372036854775808` on its own
+ * would not be a valid long literal.
+ */
 class LongLiteral extends Literal, @longliteral {
   override string getAPrimaryQlClass() { result = "LongLiteral" }
 }
 
-/** A floating point literal. For example, `4.2f`. */
+/**
+ * A float literal. For example, `4.2f`.
+ *
+ * A float literal is never negative; a preceding minus, if any, will always
+ * be modeled as separate `MinusExpr`.
+ */
 class FloatingPointLiteral extends Literal, @floatingpointliteral {
+  /**
+   * Gets the value of this literal as CodeQL 64-bit `float`. The value will
+   * be parsed as Java 32-bit `float` and then converted to a CodeQL `float`.
+   */
+  float getFloatValue() { result = getValue().toFloat() }
+
   override string getAPrimaryQlClass() { result = "FloatingPointLiteral" }
 }
 
-/** A double literal. For example, `4.2`. */
+/**
+ * A double literal. For example, `4.2`.
+ *
+ * A double literal is never negative; a preceding minus, if any, will always
+ * be modeled as separate `MinusExpr`.
+ */
 class DoubleLiteral extends Literal, @doubleliteral {
+  /**
+   * Gets the value of this literal as CodeQL 64-bit `float`. The result will
+   * have the same effective value as the Java `double` literal.
+   */
+  float getDoubleValue() { result = getValue().toFloat() }
+
   override string getAPrimaryQlClass() { result = "DoubleLiteral" }
 }
 
@@ -1170,8 +1228,7 @@ class ChooseExpr extends Expr {
 
   /** Gets a result expression of this `switch` or conditional expression. */
   Expr getAResultExpr() {
-    result = this.(ConditionalExpr).getTrueExpr() or
-    result = this.(ConditionalExpr).getFalseExpr() or
+    result = this.(ConditionalExpr).getABranchExpr() or
     result = this.(SwitchExpr).getAResult()
   }
 }
@@ -1197,6 +1254,23 @@ class ConditionalExpr extends Expr, @conditionalexpr {
    */
   Expr getFalseExpr() { result.isNthChildOf(this, 2) }
 
+  /**
+   * Gets the expression that is evaluated by the specific branch of this
+   * conditional expression. If `true` that is `getTrueExpr()`, if `false`
+   * it is `getFalseExpr()`.
+   */
+  Expr getBranchExpr(boolean branch) {
+    branch = true and result = getTrueExpr()
+    or
+    branch = false and result = getFalseExpr()
+  }
+
+  /**
+   * Gets the expressions that is evaluated by one of the branches (`true`
+   * or `false` branch) of this conditional expression.
+   */
+  Expr getABranchExpr() { result = getBranchExpr(_) }
+
   /** Gets a printable representation of this expression. */
   override string toString() { result = "...?...:..." }
 
@@ -1206,7 +1280,7 @@ class ConditionalExpr extends Expr, @conditionalexpr {
 /**
  * A `switch` expression.
  */
-class SwitchExpr extends Expr, @switchexpr {
+class SwitchExpr extends Expr, StmtParent, @switchexpr {
   /** Gets an immediate child statement of this `switch` expression. */
   Stmt getAStmt() { result.getParent() = this }
 
@@ -1734,7 +1808,7 @@ class WildcardTypeAccess extends Expr, @wildcardtypeaccess {
  * This includes method calls, constructor and super constructor invocations,
  * and constructors invoked through class instantiation.
  */
-class Call extends Top, @caller {
+class Call extends ExprParent, @caller {
   /** Gets an argument supplied in this call. */
   /*abstract*/ Expr getAnArgument() { none() }
 

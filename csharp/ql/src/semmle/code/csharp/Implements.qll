@@ -351,7 +351,7 @@ private module Gvn {
 
     private Unification::GenericType getConstructedGenericDeclaringTypeAt(int i) {
       i = 0 and
-      result = this.getKind().getConstructedSourceDeclaration()
+      result = this.getKind().getConstructedUnboundDeclaration()
       or
       result = this.getConstructedGenericDeclaringTypeAt(i - 1).getGenericDeclaringType()
     }

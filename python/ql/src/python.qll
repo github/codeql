@@ -35,6 +35,7 @@ import semmle.python.pointsto.Base
 import semmle.python.pointsto.Context
 import semmle.python.pointsto.CallGraph
 import semmle.python.objects.ObjectAPI
+import semmle.python.Unit
 import site
 // Removing this import perturbs the compilation process enough that the points-to analysis gets
 // compiled -- and cached -- differently depending on whether the data flow library is imported. By

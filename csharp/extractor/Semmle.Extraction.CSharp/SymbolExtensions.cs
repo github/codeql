@@ -2,6 +2,7 @@ using Microsoft.CodeAnalysis;
 using Semmle.Extraction.CSharp.Entities;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 
@@ -15,14 +16,17 @@ namespace Semmle.Extraction.CSharp
     /// </summary>
     public struct AnnotatedTypeSymbol
     {
-        public ITypeSymbol Symbol { get; set; }
+        public ITypeSymbol? Symbol { get; set; }
         public NullableAnnotation Nullability { get; }
 
-        public AnnotatedTypeSymbol(ITypeSymbol symbol, NullableAnnotation nullability)
+        public AnnotatedTypeSymbol(ITypeSymbol? symbol, NullableAnnotation nullability)
         {
             Symbol = symbol;
             Nullability = nullability;
         }
+
+        public static AnnotatedTypeSymbol? CreateNotAnnotated(ITypeSymbol symbol) =>
+            symbol is null ? (AnnotatedTypeSymbol?)null : new AnnotatedTypeSymbol(symbol, NullableAnnotation.None);
     }
 
     internal static class SymbolExtensions
@@ -33,7 +37,7 @@ namespace Semmle.Extraction.CSharp
         ///
         /// <param name="type">The type to disambiguate.</param>
         /// <returns></returns>
-        public static ITypeSymbol DisambiguateType(this ITypeSymbol type)
+        public static ITypeSymbol? DisambiguateType(this ITypeSymbol? type)
         {
             /* A type could not be determined.
              * Sometimes this happens due to a missing reference,
@@ -45,7 +49,6 @@ namespace Semmle.Extraction.CSharp
              *
              * The conservative option would be to resolve all error types as null.
              */
-
 
             return type is IErrorTypeSymbol errorType && errorType.CandidateSymbols.Any()
                 ? errorType.CandidateSymbols.First() as ITypeSymbol
@@ -90,7 +93,7 @@ namespace Semmle.Extraction.CSharp
         {
             var seen = new HashSet<ITypeSymbol>(SymbolEqualityComparer.Default);
 
-            bool IdDependsOnImpl(ITypeSymbol type)
+            bool IdDependsOnImpl(ITypeSymbol? type)
             {
                 if (SymbolEqualityComparer.Default.Equals(type, symbol))
                     return true;
@@ -114,11 +117,9 @@ namespace Semmle.Extraction.CSharp
                         case TypeKind.Delegate:
                         case TypeKind.Error:
                             var named = (INamedTypeSymbol)type;
-                            if (named.IsTupleType && named.TupleUnderlyingType is object)
+                            if (named.IsTupleType && named.TupleUnderlyingType is not null)
                                 named = named.TupleUnderlyingType;
                             if (IdDependsOnImpl(named.ContainingType))
-                                return true;
-                            if (IdDependsOnImpl(named.GetNonObjectBaseType(cx)))
                                 return true;
                             if (IdDependsOnImpl(named.ConstructedFrom))
                                 return true;
@@ -131,6 +132,13 @@ namespace Semmle.Extraction.CSharp
                             return tp.ContainingSymbol is ITypeSymbol cont
                                 ? IdDependsOnImpl(cont)
                                 : SymbolEqualityComparer.Default.Equals(tp.ContainingSymbol, symbol);
+                        case TypeKind.FunctionPointer:
+                            var funptr = (IFunctionPointerTypeSymbol)type;
+                            if (funptr.Signature.Parameters.Any(p => IdDependsOnImpl(p.Type)))
+                            {
+                                return true;
+                            }
+                            return IdDependsOnImpl(funptr.Signature.ReturnType);
                         default:
                             return false;
                     }
@@ -150,10 +158,7 @@ namespace Semmle.Extraction.CSharp
         /// <param name="trapFile">The trap builder used to store the result.</param>
         /// <param name="symbolBeingDefined">The outer symbol being defined (to avoid recursive ids).</param>
         /// <param name="constructUnderlyingTupleType">Whether to build a type ID for the underlying `System.ValueTuple` struct in the case of tuple types.</param>
-        public static void BuildTypeId(this ITypeSymbol type, Context cx, TextWriter trapFile, ISymbol symbolBeingDefined, bool constructUnderlyingTupleType = false) =>
-            type.BuildTypeId(cx, trapFile, symbolBeingDefined, true, constructUnderlyingTupleType);
-
-        private static void BuildTypeId(this ITypeSymbol type, Context cx, TextWriter trapFile, ISymbol symbolBeingDefined, bool addBaseClass, bool constructUnderlyingTupleType)
+        public static void BuildTypeId(this ITypeSymbol type, Context cx, EscapingTextWriter trapFile, ISymbol symbolBeingDefined, bool constructUnderlyingTupleType)
         {
             using (cx.StackGuard)
             {
@@ -161,7 +166,7 @@ namespace Semmle.Extraction.CSharp
                 {
                     case TypeKind.Array:
                         var array = (IArrayTypeSymbol)type;
-                        array.ElementType.BuildOrWriteId(cx, trapFile, symbolBeingDefined, addBaseClass);
+                        array.ElementType.BuildOrWriteId(cx, trapFile, symbolBeingDefined, constructUnderlyingTupleType: false);
                         array.BuildArraySuffix(trapFile);
                         return;
                     case TypeKind.Class:
@@ -171,21 +176,25 @@ namespace Semmle.Extraction.CSharp
                     case TypeKind.Delegate:
                     case TypeKind.Error:
                         var named = (INamedTypeSymbol)type;
-                        named.BuildNamedTypeId(cx, trapFile, symbolBeingDefined, addBaseClass, constructUnderlyingTupleType);
+                        named.BuildNamedTypeId(cx, trapFile, symbolBeingDefined, constructUnderlyingTupleType);
                         return;
                     case TypeKind.Pointer:
                         var ptr = (IPointerTypeSymbol)type;
-                        ptr.PointedAtType.BuildOrWriteId(cx, trapFile, symbolBeingDefined, addBaseClass);
+                        ptr.PointedAtType.BuildOrWriteId(cx, trapFile, symbolBeingDefined, constructUnderlyingTupleType: false);
                         trapFile.Write('*');
                         return;
                     case TypeKind.TypeParameter:
                         var tp = (ITypeParameterSymbol)type;
-                        tp.ContainingSymbol.BuildOrWriteId(cx, trapFile, symbolBeingDefined, addBaseClass);
+                        tp.ContainingSymbol.BuildOrWriteId(cx, trapFile, symbolBeingDefined, constructUnderlyingTupleType: false);
                         trapFile.Write('_');
                         trapFile.Write(tp.Name);
                         return;
                     case TypeKind.Dynamic:
                         trapFile.Write("dynamic");
+                        return;
+                    case TypeKind.FunctionPointer:
+                        var funptr = (IFunctionPointerTypeSymbol)type;
+                        funptr.BuildFunctionPointerTypeId(cx, trapFile, symbolBeingDefined);
                         return;
                     default:
                         throw new InternalError(type, $"Unhandled type kind '{type.TypeKind}'");
@@ -193,8 +202,14 @@ namespace Semmle.Extraction.CSharp
             }
         }
 
-        private static void BuildOrWriteId(this ISymbol symbol, Context cx, TextWriter trapFile, ISymbol symbolBeingDefined, bool addBaseClass, bool constructUnderlyingTupleType = false)
+        private static void BuildOrWriteId(this ISymbol? symbol, Context cx, EscapingTextWriter trapFile, ISymbol symbolBeingDefined, bool constructUnderlyingTupleType)
         {
+            if (symbol is null)
+            {
+                cx.ModelError(symbolBeingDefined, "Missing symbol. Couldn't build some part of the ID.");
+                return;
+            }
+
             // We need to keep track of the symbol being defined in order to avoid cyclic labels.
             // For example, in
             //
@@ -212,7 +227,7 @@ namespace Semmle.Extraction.CSharp
             if (SymbolEqualityComparer.Default.Equals(symbol, symbolBeingDefined))
                 trapFile.Write("__self__");
             else if (symbol is ITypeSymbol type && type.IdDependsOn(cx, symbolBeingDefined))
-                type.BuildTypeId(cx, trapFile, symbolBeingDefined, addBaseClass, constructUnderlyingTupleType);
+                type.BuildTypeId(cx, trapFile, symbolBeingDefined, constructUnderlyingTupleType);
             else if (symbol is INamedTypeSymbol namedType && namedType.IsTupleType && constructUnderlyingTupleType)
                 trapFile.WriteSubId(NamedType.CreateNamedTypeFromTupleType(cx, namedType));
             else
@@ -229,8 +244,8 @@ namespace Semmle.Extraction.CSharp
         /// it will generate an appropriate ID that encodes the signature of
         /// <paramref name="symbol" />.
         /// </summary>
-        public static void BuildOrWriteId(this ISymbol symbol, Context cx, TextWriter trapFile, ISymbol symbolBeingDefined) =>
-            symbol.BuildOrWriteId(cx, trapFile, symbolBeingDefined, true);
+        public static void BuildOrWriteId(this ISymbol? symbol, Context cx, EscapingTextWriter trapFile, ISymbol symbolBeingDefined) =>
+            symbol.BuildOrWriteId(cx, trapFile, symbolBeingDefined, constructUnderlyingTupleType: false);
 
         /// <summary>
         /// Constructs an array suffix string for this array type symbol.
@@ -244,7 +259,7 @@ namespace Semmle.Extraction.CSharp
             trapFile.Write(']');
         }
 
-        private static void BuildAssembly(IAssemblySymbol asm, TextWriter trapFile, bool extraPrecise = false)
+        private static void BuildAssembly(IAssemblySymbol asm, EscapingTextWriter trapFile, bool extraPrecise = false)
         {
             var assembly = asm.Identity;
             trapFile.Write(assembly.Name);
@@ -262,17 +277,22 @@ namespace Semmle.Extraction.CSharp
             trapFile.Write("::");
         }
 
-        private static void BuildNamedTypeId(this INamedTypeSymbol named, Context cx, TextWriter trapFile, ISymbol symbolBeingDefined, bool addBaseClass, bool constructUnderlyingTupleType)
+        private static void BuildFunctionPointerTypeId(this IFunctionPointerTypeSymbol funptr, Context cx, EscapingTextWriter trapFile, ISymbol symbolBeingDefined)
+        {
+            BuildFunctionPointerSignature(funptr, trapFile, s => s.BuildOrWriteId(cx, trapFile, symbolBeingDefined));
+        }
+
+        private static void BuildNamedTypeId(this INamedTypeSymbol named, Context cx, EscapingTextWriter trapFile, ISymbol symbolBeingDefined, bool constructUnderlyingTupleType)
         {
             if (!constructUnderlyingTupleType && named.IsTupleType)
             {
                 trapFile.Write('(');
                 trapFile.BuildList(",", named.TupleElements,
-                    (f, tb0) =>
+                    f =>
                     {
-                        trapFile.Write(f.Name);
+                        trapFile.Write((f.CorrespondingTupleField ?? f).Name);
                         trapFile.Write(":");
-                        f.Type.BuildOrWriteId(cx, tb0, symbolBeingDefined, addBaseClass);
+                        f.Type.BuildOrWriteId(cx, trapFile, symbolBeingDefined, constructUnderlyingTupleType: false);
                     }
                     );
                 trapFile.Write(")");
@@ -281,14 +301,14 @@ namespace Semmle.Extraction.CSharp
 
             void AddContaining()
             {
-                if (named.ContainingType != null)
+                if (named.ContainingType is not null)
                 {
-                    named.ContainingType.BuildOrWriteId(cx, trapFile, symbolBeingDefined, addBaseClass);
+                    named.ContainingType.BuildOrWriteId(cx, trapFile, symbolBeingDefined, constructUnderlyingTupleType: false);
                     trapFile.Write('.');
                 }
-                else if (named.ContainingNamespace != null)
+                else if (named.ContainingNamespace is not null)
                 {
-                    if (cx.ShouldAddAssemblyTrapPrefix && named.ContainingAssembly is object)
+                    if (cx.ShouldAddAssemblyTrapPrefix && named.ContainingAssembly is not null)
                         BuildAssembly(named.ContainingAssembly, trapFile);
                     named.ContainingNamespace.BuildNamespace(cx, trapFile);
                 }
@@ -308,38 +328,20 @@ namespace Semmle.Extraction.CSharp
             }
             else
             {
-                named.ConstructedFrom.BuildOrWriteId(cx, trapFile, symbolBeingDefined, addBaseClass, constructUnderlyingTupleType);
+                named.ConstructedFrom.BuildOrWriteId(cx, trapFile, symbolBeingDefined, constructUnderlyingTupleType);
                 trapFile.Write('<');
                 // Encode the nullability of the type arguments in the label.
                 // Type arguments with different nullability can result in
                 // a constructed type with different nullability of its members and methods,
                 // so we need to create a distinct database entity for it.
                 trapFile.BuildList(",", named.GetAnnotatedTypeArguments(),
-                    (ta, tb0) => ta.Symbol.BuildOrWriteId(cx, tb0, symbolBeingDefined, addBaseClass)
+                    ta => ta.Symbol.BuildOrWriteId(cx, trapFile, symbolBeingDefined, constructUnderlyingTupleType: false)
                     );
                 trapFile.Write('>');
             }
-
-            if (addBaseClass && named.GetNonObjectBaseType(cx) is INamedTypeSymbol @base)
-            {
-                // We need to limit unfolding of base classes. For example, in
-                //
-                // ```csharp
-                // class C1<T> { }
-                // class C2<T> : C1<C3<T>> { }
-                // class C3<T> : C1<C2<T>> { }
-                // class C4 : C3<C4> { }
-                // ```
-                //
-                // when we generate the label for `C4`, the base class `C3<C4>` has itself `C1<C2<C4>>` as
-                // a base class, which in turn has `C1<C3<C4>>` as a base class. The latter has the original
-                // base class `C3<C4>` as a type argument, which would lead to infinite unfolding.
-                trapFile.Write(" : ");
-                @base.BuildOrWriteId(cx, trapFile, symbolBeingDefined, addBaseClass: false);
-            }
         }
 
-        private static void BuildNamespace(this INamespaceSymbol ns, Context cx, TextWriter trapFile)
+        private static void BuildNamespace(this INamespaceSymbol ns, Context cx, EscapingTextWriter trapFile)
         {
             trapFile.WriteSubId(Namespace.Create(cx, ns));
             trapFile.Write('.');
@@ -352,7 +354,7 @@ namespace Semmle.Extraction.CSharp
             trapFile.Write("<>__AnonType");
             trapFile.Write(hackTypeNumber);
             trapFile.Write('<');
-            trapFile.BuildList(",", type.GetMembers().OfType<IPropertySymbol>(), (prop, tb0) => BuildDisplayName(prop.Type, cx, tb0));
+            trapFile.BuildList(",", type.GetMembers().OfType<IPropertySymbol>(), prop => BuildDisplayName(prop.Type, cx, trapFile));
             trapFile.Write('>');
         }
 
@@ -371,7 +373,7 @@ namespace Semmle.Extraction.CSharp
                         var elementType = array.ElementType;
                         if (elementType.MetadataName.Contains("`"))
                         {
-                            trapFile.Write(elementType.Name);
+                            trapFile.Write(TrapExtensions.EncodeString(elementType.Name));
                             return;
                         }
                         elementType.BuildDisplayName(cx, trapFile);
@@ -391,6 +393,10 @@ namespace Semmle.Extraction.CSharp
                         ptr.PointedAtType.BuildDisplayName(cx, trapFile);
                         trapFile.Write('*');
                         return;
+                    case TypeKind.FunctionPointer:
+                        var funptr = (IFunctionPointerTypeSymbol)type;
+                        funptr.BuildFunctionPointerTypeDisplayName(cx, trapFile);
+                        return;
                     case TypeKind.TypeParameter:
                         trapFile.Write(type.Name);
                         return;
@@ -403,31 +409,93 @@ namespace Semmle.Extraction.CSharp
             }
         }
 
-        public static void BuildNamedTypeDisplayName(this INamedTypeSymbol namedType, Context cx, TextWriter trapFile, bool constructUnderlyingTupleType)
+        public static void BuildFunctionPointerSignature(IFunctionPointerTypeSymbol funptr, TextWriter trapFile,
+            Action<ITypeSymbol> buildNested)
+        {
+            trapFile.Write("delegate* ");
+            trapFile.Write(funptr.Signature.CallingConvention.ToString().ToLowerInvariant());
+
+            if (funptr.Signature.UnmanagedCallingConventionTypes.Any())
+            {
+                trapFile.Write('[');
+                trapFile.BuildList(",", funptr.Signature.UnmanagedCallingConventionTypes, buildNested);
+                trapFile.Write("]");
+            }
+
+            trapFile.Write('<');
+            trapFile.BuildList(",", funptr.Signature.Parameters,
+                p =>
+                {
+                    buildNested(p.Type);
+                    switch (p.RefKind)
+                    {
+                        case RefKind.Out:
+                            trapFile.Write(" out");
+                            break;
+                        case RefKind.In:
+                            trapFile.Write(" in");
+                            break;
+                        case RefKind.Ref:
+                            trapFile.Write(" ref");
+                            break;
+                    }
+                });
+
+            if (funptr.Signature.Parameters.Any())
+            {
+                trapFile.Write(",");
+            }
+
+            buildNested(funptr.Signature.ReturnType);
+
+            if (funptr.Signature.ReturnsByRef)
+                trapFile.Write(" ref");
+            if (funptr.Signature.ReturnsByRefReadonly)
+                trapFile.Write(" ref readonly");
+
+            trapFile.Write('>');
+        }
+
+        private static void BuildFunctionPointerTypeDisplayName(this IFunctionPointerTypeSymbol funptr, Context cx, TextWriter trapFile)
+        {
+            BuildFunctionPointerSignature(funptr, trapFile, s => s.BuildDisplayName(cx, trapFile));
+        }
+
+        private static void BuildNamedTypeDisplayName(this INamedTypeSymbol namedType, Context cx, TextWriter trapFile, bool constructUnderlyingTupleType)
         {
             if (!constructUnderlyingTupleType && namedType.IsTupleType)
             {
                 trapFile.Write('(');
-                trapFile.BuildList(",", namedType.TupleElements.Select(f => f.Type),
-                    (t, tb0) => t.BuildDisplayName(cx, tb0)
-                    );
-
+                trapFile.BuildList(
+                    ",",
+                    namedType.TupleElements.Select(f => f.Type),
+                    t => t.BuildDisplayName(cx, trapFile));
                 trapFile.Write(")");
                 return;
             }
 
             if (namedType.IsAnonymousType)
+            {
                 namedType.BuildAnonymousName(cx, trapFile);
+            }
             else
-                trapFile.Write(namedType.Name);
+            {
+                trapFile.Write(TrapExtensions.EncodeString(namedType.Name));
+            }
+
             if (namedType.IsGenericType && namedType.TypeKind != TypeKind.Error && namedType.TypeArguments.Any())
             {
                 trapFile.Write('<');
-                trapFile.BuildList(",", namedType.TypeArguments, (p, tb0) =>
-                {
-                    if (IsReallyBound(namedType))
-                        p.BuildDisplayName(cx, tb0);
-                });
+                trapFile.BuildList(
+                    ",",
+                    namedType.TypeArguments,
+                    p =>
+                    {
+                        if (IsReallyBound(namedType))
+                        {
+                            p.BuildDisplayName(cx, trapFile);
+                        }
+                    });
                 trapFile.Write('>');
             }
         }
@@ -503,7 +571,7 @@ namespace Semmle.Extraction.CSharp
         /// Holds if this method is a source declaration.
         /// </summary>
         public static bool IsSourceDeclaration(this IMethodSymbol method) =>
-            IsSourceDeclaration((ISymbol)method) && SymbolEqualityComparer.Default.Equals(method, method.ConstructedFrom) && method.ReducedFrom == null;
+            IsSourceDeclaration((ISymbol)method) && SymbolEqualityComparer.Default.Equals(method, method.ConstructedFrom) && method.ReducedFrom is null;
 
         /// <summary>
         /// Holds if this parameter is a source declaration.
@@ -521,24 +589,34 @@ namespace Semmle.Extraction.CSharp
         /// Gets the base type of `symbol`. Unlike `symbol.BaseType`, this excludes effective base
         /// types of type parameters as well as `object` base types.
         /// </summary>
-        public static INamedTypeSymbol GetNonObjectBaseType(this ITypeSymbol symbol, Context cx) =>
+        public static INamedTypeSymbol? GetNonObjectBaseType(this ITypeSymbol symbol, Context cx) =>
             symbol is ITypeParameterSymbol || SymbolEqualityComparer.Default.Equals(symbol.BaseType, cx.Compilation.ObjectType) ? null : symbol.BaseType;
 
-        public static IEntity CreateEntity(this Context cx, ISymbol symbol)
+        [return: NotNullIfNotNull("symbol")]
+        public static IEntity? CreateEntity(this Context cx, ISymbol symbol)
         {
-            if (symbol == null)
+            if (symbol is null)
                 return null;
 
             using (cx.StackGuard)
             {
                 try
                 {
-                    return symbol.Accept(new Populators.Symbols(cx));
+                    var entity = symbol.Accept(new Populators.Symbols(cx));
+                    if (entity is null)
+                    {
+                        cx.ModelError(symbol, $"Symbol visitor returned null entity on symbol: {symbol}");
+                    }
+#nullable disable warnings
+                    return entity;
+#nullable restore warnings
                 }
                 catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
                 {
                     cx.ModelError(symbol, $"Exception processing symbol '{symbol.Kind}' of type '{ex}': {symbol}");
+#nullable disable warnings
                     return null;
+#nullable restore warnings
                 }
             }
         }

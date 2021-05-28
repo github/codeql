@@ -23,6 +23,6 @@ class PrintAstConfigurationOverride extends PrintAstConfiguration {
    */
   override predicate shouldPrint(Element e, Location l) {
     super.shouldPrint(e, l) and
-    l.getFile() = getEncodedFile(selectedSourceFile())
+    l.getFile() = getFileBySourceArchiveName(selectedSourceFile())
   }
 }

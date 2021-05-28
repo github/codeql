@@ -8,6 +8,8 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.Concepts
+private import semmle.python.ApiGraphs
+private import PEP249
 
 /** Provides models for the Python standard library. */
 private module Stdlib {
@@ -15,119 +17,17 @@ private module Stdlib {
   // os
   // ---------------------------------------------------------------------------
   /** Gets a reference to the `os` module. */
-  private DataFlow::Node os(DataFlow::TypeTracker t) {
-    t.start() and
-    result = DataFlow::importNode("os")
-    or
-    exists(DataFlow::TypeTracker t2 | result = os(t2).track(t2, t))
-  }
-
-  /** Gets a reference to the `os` module. */
-  DataFlow::Node os() { result = os(DataFlow::TypeTracker::end()) }
-
-  /**
-   * Gets a reference to the attribute `attr_name` of the `os` module.
-   * WARNING: Only holds for a few predefined attributes.
-   *
-   * For example, using `attr_name = "system"` will get all uses of `os.system`.
-   */
-  private DataFlow::Node os_attr(DataFlow::TypeTracker t, string attr_name) {
-    attr_name in ["system", "popen", "popen2", "popen3", "popen4",
-          // exec
-          "execl", "execle", "execlp", "execlpe", "execv", "execve", "execvp", "execvpe",
-          // spawn
-          "spawnl", "spawnle", "spawnlp", "spawnlpe", "spawnv", "spawnve", "spawnvp", "spawnvpe",
-          "posix_spawn", "posix_spawnp",
-          // modules
-          "path"] and
-    (
-      t.start() and
-      result = DataFlow::importNode("os." + attr_name)
-      or
-      t.startInAttr(attr_name) and
-      result = DataFlow::importNode("os")
-    )
-    or
-    // Due to bad performance when using normal setup with `os_attr(t2, attr_name).track(t2, t)`
-    // we have inlined that code and forced a join
-    exists(DataFlow::TypeTracker t2 |
-      exists(DataFlow::StepSummary summary |
-        os_attr_first_join(t2, attr_name, result, summary) and
-        t = t2.append(summary)
-      )
-    )
-  }
-
-  pragma[nomagic]
-  private predicate os_attr_first_join(
-    DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res, DataFlow::StepSummary summary
-  ) {
-    DataFlow::StepSummary::step(os_attr(t2, attr_name), res, summary)
-  }
-
-  /**
-   * Gets a reference to the attribute `attr_name` of the `os` module.
-   * WARNING: Only holds for a few predefined attributes.
-   *
-   * For example, using `"system"` will get all uses of `os.system`.
-   */
-  private DataFlow::Node os_attr(string attr_name) {
-    result = os_attr(DataFlow::TypeTracker::end(), attr_name)
-  }
+  API::Node os() { result = API::moduleImport("os") }
 
   /** Provides models for the `os` module. */
   module os {
     /** Gets a reference to the `os.path` module. */
-    DataFlow::Node path() { result = os_attr("path") }
+    API::Node path() { result = os().getMember("path") }
 
     /** Provides models for the `os.path` module */
     module path {
-      /**
-       * Gets a reference to the attribute `attr_name` of the `os.path` module.
-       * WARNING: Only holds for a few predefined attributes.
-       *
-       * For example, using `attr_name = "join"` will get all uses of `os.path.join`.
-       */
-      private DataFlow::Node path_attr(DataFlow::TypeTracker t, string attr_name) {
-        attr_name in ["join", "normpath"] and
-        (
-          t.start() and
-          result = DataFlow::importNode("os.path." + attr_name)
-          or
-          t.startInAttr(attr_name) and
-          result = os::path()
-        )
-        or
-        // Due to bad performance when using normal setup with `path_attr(t2, attr_name).track(t2, t)`
-        // we have inlined that code and forced a join
-        exists(DataFlow::TypeTracker t2 |
-          exists(DataFlow::StepSummary summary |
-            path_attr_first_join(t2, attr_name, result, summary) and
-            t = t2.append(summary)
-          )
-        )
-      }
-
-      pragma[nomagic]
-      private predicate path_attr_first_join(
-        DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res,
-        DataFlow::StepSummary summary
-      ) {
-        DataFlow::StepSummary::step(path_attr(t2, attr_name), res, summary)
-      }
-
-      /**
-       * Gets a reference to the attribute `attr_name` of the `os.path` module.
-       * WARNING: Only holds for a few predefined attributes.
-       *
-       * For example, using `attr_name = "join"` will get all uses of `os.path.join`.
-       */
-      DataFlow::Node path_attr(string attr_name) {
-        result = path_attr(DataFlow::TypeTracker::end(), attr_name)
-      }
-
       /** Gets a reference to the `os.path.join` function. */
-      DataFlow::Node join() { result = path_attr("join") }
+      API::Node join() { result = path().getMember("join") }
     }
   }
 
@@ -135,10 +35,8 @@ private module Stdlib {
    * A call to `os.path.normpath`.
    * See https://docs.python.org/3/library/os.path.html#os.path.normpath
    */
-  private class OsPathNormpathCall extends Path::PathNormalization::Range, DataFlow::CfgNode {
-    override CallNode node;
-
-    OsPathNormpathCall() { node.getFunction() = os::path::path_attr("normpath").asCfgNode() }
+  private class OsPathNormpathCall extends Path::PathNormalization::Range, DataFlow::CallCfgNode {
+    OsPathNormpathCall() { this = os::path().getMember("normpath").getACall() }
 
     DataFlow::Node getPathArg() {
       result.asCfgNode() in [node.getArg(0), node.getArgByName("path")]
@@ -156,13 +54,55 @@ private module Stdlib {
   }
 
   /**
+   * A call to `os.path.abspath`.
+   * See https://docs.python.org/3/library/os.path.html#os.path.abspath
+   */
+  private class OsPathAbspathCall extends Path::PathNormalization::Range, DataFlow::CallCfgNode {
+    OsPathAbspathCall() { this = os::path().getMember("abspath").getACall() }
+
+    DataFlow::Node getPathArg() {
+      result.asCfgNode() in [node.getArg(0), node.getArgByName("path")]
+    }
+  }
+
+  /** An additional taint step for calls to `os.path.abspath` */
+  private class OsPathAbspathCallAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+      exists(OsPathAbspathCall call |
+        nodeTo = call and
+        nodeFrom = call.getPathArg()
+      )
+    }
+  }
+
+  /**
+   * A call to `os.path.realpath`.
+   * See https://docs.python.org/3/library/os.path.html#os.path.realpath
+   */
+  private class OsPathRealpathCall extends Path::PathNormalization::Range, DataFlow::CallCfgNode {
+    OsPathRealpathCall() { this = os::path().getMember("realpath").getACall() }
+
+    DataFlow::Node getPathArg() {
+      result.asCfgNode() in [node.getArg(0), node.getArgByName("path")]
+    }
+  }
+
+  /** An additional taint step for calls to `os.path.realpath` */
+  private class OsPathRealpathCallAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+      exists(OsPathRealpathCall call |
+        nodeTo = call and
+        nodeFrom = call.getPathArg()
+      )
+    }
+  }
+
+  /**
    * A call to `os.system`.
    * See https://docs.python.org/3/library/os.html#os.system
    */
-  private class OsSystemCall extends SystemCommandExecution::Range, DataFlow::CfgNode {
-    override CallNode node;
-
-    OsSystemCall() { node.getFunction() = os_attr("system").asCfgNode() }
+  private class OsSystemCall extends SystemCommandExecution::Range, DataFlow::CallCfgNode {
+    OsSystemCall() { this = os().getMember("system").getACall() }
 
     override DataFlow::Node getCommand() { result.asCfgNode() = node.getArg(0) }
   }
@@ -175,13 +115,12 @@ private module Stdlib {
    * Although deprecated since version 2.6, they still work in 2.7.
    * See https://docs.python.org/2.7/library/os.html#os.popen2
    */
-  private class OsPopenCall extends SystemCommandExecution::Range, DataFlow::CfgNode {
-    override CallNode node;
+  private class OsPopenCall extends SystemCommandExecution::Range, DataFlow::CallCfgNode {
     string name;
 
     OsPopenCall() {
       name in ["popen", "popen2", "popen3", "popen4"] and
-      node.getFunction() = os_attr(name).asCfgNode()
+      this = os().getMember(name).getACall()
     }
 
     override DataFlow::Node getCommand() {
@@ -196,13 +135,11 @@ private module Stdlib {
    * A call to any of the `os.exec*` functions
    * See https://docs.python.org/3.8/library/os.html#os.execl
    */
-  private class OsExecCall extends SystemCommandExecution::Range, DataFlow::CfgNode {
-    override CallNode node;
-
+  private class OsExecCall extends SystemCommandExecution::Range, DataFlow::CallCfgNode {
     OsExecCall() {
       exists(string name |
         name in ["execl", "execle", "execlp", "execlpe", "execv", "execve", "execvp", "execvpe"] and
-        node.getFunction() = os_attr(name).asCfgNode()
+        this = os().getMember(name).getACall()
       )
     }
 
@@ -213,14 +150,13 @@ private module Stdlib {
    * A call to any of the `os.spawn*` functions
    * See https://docs.python.org/3.8/library/os.html#os.spawnl
    */
-  private class OsSpawnCall extends SystemCommandExecution::Range, DataFlow::CfgNode {
-    override CallNode node;
-
+  private class OsSpawnCall extends SystemCommandExecution::Range, DataFlow::CallCfgNode {
     OsSpawnCall() {
       exists(string name |
-        name in ["spawnl", "spawnle", "spawnlp", "spawnlpe", "spawnv", "spawnve", "spawnvp",
-              "spawnvpe"] and
-        node.getFunction() = os_attr(name).asCfgNode()
+        name in [
+            "spawnl", "spawnle", "spawnlp", "spawnlpe", "spawnv", "spawnve", "spawnvp", "spawnvpe"
+          ] and
+        this = os().getMember(name).getACall()
       )
     }
 
@@ -231,10 +167,8 @@ private module Stdlib {
    * A call to any of the `os.posix_spawn*` functions
    * See https://docs.python.org/3.8/library/os.html#os.posix_spawn
    */
-  private class OsPosixSpawnCall extends SystemCommandExecution::Range, DataFlow::CfgNode {
-    override CallNode node;
-
-    OsPosixSpawnCall() { node.getFunction() = os_attr(["posix_spawn", "posix_spawnp"]).asCfgNode() }
+  private class OsPosixSpawnCall extends SystemCommandExecution::Range, DataFlow::CallCfgNode {
+    OsPosixSpawnCall() { this = os().getMember(["posix_spawn", "posix_spawnp"]).getACall() }
 
     override DataFlow::Node getCommand() { result.asCfgNode() = node.getArg(0) }
   }
@@ -244,7 +178,7 @@ private module Stdlib {
     override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
       exists(CallNode call |
         nodeTo.asCfgNode() = call and
-        call.getFunction() = os::path::join().asCfgNode() and
+        call = os::path::join().getACall().asCfgNode() and
         call.getAnArg() = nodeFrom.asCfgNode()
       )
       // TODO: Handle pathlib (like we do for os.path.join)
@@ -255,70 +189,17 @@ private module Stdlib {
   // subprocess
   // ---------------------------------------------------------------------------
   /** Gets a reference to the `subprocess` module. */
-  private DataFlow::Node subprocess(DataFlow::TypeTracker t) {
-    t.start() and
-    result = DataFlow::importNode("subprocess")
-    or
-    exists(DataFlow::TypeTracker t2 | result = subprocess(t2).track(t2, t))
-  }
-
-  /** Gets a reference to the `subprocess` module. */
-  DataFlow::Node subprocess() { result = subprocess(DataFlow::TypeTracker::end()) }
-
-  /**
-   * Gets a reference to the attribute `attr_name` of the `subprocess` module.
-   * WARNING: Only holds for a few predefined attributes.
-   *
-   * For example, using `attr_name = "Popen"` will get all uses of `subprocess.Popen`.
-   */
-  private DataFlow::Node subprocess_attr(DataFlow::TypeTracker t, string attr_name) {
-    attr_name in ["Popen", "call", "check_call", "check_output", "run"] and
-    (
-      t.start() and
-      result = DataFlow::importNode("subprocess." + attr_name)
-      or
-      t.startInAttr(attr_name) and
-      result = subprocess()
-    )
-    or
-    // Due to bad performance when using normal setup with `subprocess_attr(t2, attr_name).track(t2, t)`
-    // we have inlined that code and forced a join
-    exists(DataFlow::TypeTracker t2 |
-      exists(DataFlow::StepSummary summary |
-        subprocess_attr_first_join(t2, attr_name, result, summary) and
-        t = t2.append(summary)
-      )
-    )
-  }
-
-  pragma[nomagic]
-  private predicate subprocess_attr_first_join(
-    DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res, DataFlow::StepSummary summary
-  ) {
-    DataFlow::StepSummary::step(subprocess_attr(t2, attr_name), res, summary)
-  }
-
-  /**
-   * Gets a reference to the attribute `attr_name` of the `subprocess` module.
-   * WARNING: Only holds for a few predefined attributes.
-   *
-   * For example, using `attr_name = "Popen"` will get all uses of `subprocess.Popen`.
-   */
-  private DataFlow::Node subprocess_attr(string attr_name) {
-    result = subprocess_attr(DataFlow::TypeTracker::end(), attr_name)
-  }
+  API::Node subprocess() { result = API::moduleImport("subprocess") }
 
   /**
    * A call to `subprocess.Popen` or helper functions (call, check_call, check_output, run)
    * See https://docs.python.org/3.8/library/subprocess.html#subprocess.Popen
    */
-  private class SubprocessPopenCall extends SystemCommandExecution::Range, DataFlow::CfgNode {
-    override CallNode node;
-
+  private class SubprocessPopenCall extends SystemCommandExecution::Range, DataFlow::CallCfgNode {
     SubprocessPopenCall() {
       exists(string name |
         name in ["Popen", "call", "check_call", "check_output", "run"] and
-        node.getFunction() = subprocess_attr(name).asCfgNode()
+        this = subprocess().getMember(name).getACall()
       )
     }
 
@@ -389,46 +270,16 @@ private module Stdlib {
   // ---------------------------------------------------------------------------
   // marshal
   // ---------------------------------------------------------------------------
-  /** Gets a reference to the `marshal` module. */
-  private DataFlow::Node marshal(DataFlow::TypeTracker t) {
-    t.start() and
-    result = DataFlow::importNode("marshal")
-    or
-    exists(DataFlow::TypeTracker t2 | result = marshal(t2).track(t2, t))
-  }
-
-  /** Gets a reference to the `marshal` module. */
-  DataFlow::Node marshal() { result = marshal(DataFlow::TypeTracker::end()) }
-
-  /** Provides models for the `marshal` module. */
-  module marshal {
-    /** Gets a reference to the `marshal.loads` function. */
-    private DataFlow::Node loads(DataFlow::TypeTracker t) {
-      t.start() and
-      result = DataFlow::importNode("marshal.loads")
-      or
-      t.startInAttr("loads") and
-      result = marshal()
-      or
-      exists(DataFlow::TypeTracker t2 | result = loads(t2).track(t2, t))
-    }
-
-    /** Gets a reference to the `marshal.loads` function. */
-    DataFlow::Node loads() { result = loads(DataFlow::TypeTracker::end()) }
-  }
-
   /**
    * A call to `marshal.loads`
    * See https://docs.python.org/3/library/marshal.html#marshal.loads
    */
-  private class MarshalLoadsCall extends Decoding::Range, DataFlow::CfgNode {
-    override CallNode node;
-
-    MarshalLoadsCall() { node.getFunction() = marshal::loads().asCfgNode() }
+  private class MarshalLoadsCall extends Decoding::Range, DataFlow::CallCfgNode {
+    MarshalLoadsCall() { this = API::moduleImport("marshal").getMember("loads").getACall() }
 
     override predicate mayExecuteInput() { any() }
 
-    override DataFlow::Node getAnInput() { result.asCfgNode() = node.getArg(0) }
+    override DataFlow::Node getAnInput() { result = this.getArg(0) }
 
     override DataFlow::Node getOutput() { result = this }
 
@@ -438,48 +289,27 @@ private module Stdlib {
   // ---------------------------------------------------------------------------
   // pickle
   // ---------------------------------------------------------------------------
-  private string pickleModuleName() { result in ["pickle", "cPickle", "_pickle"] }
-
   /** Gets a reference to the `pickle` module. */
-  private DataFlow::Node pickle(DataFlow::TypeTracker t) {
-    t.start() and
-    result = DataFlow::importNode(pickleModuleName())
-    or
-    exists(DataFlow::TypeTracker t2 | result = pickle(t2).track(t2, t))
-  }
-
-  /** Gets a reference to the `pickle` module. */
-  DataFlow::Node pickle() { result = pickle(DataFlow::TypeTracker::end()) }
+  DataFlow::Node pickle() { result = API::moduleImport(["pickle", "cPickle", "_pickle"]).getAUse() }
 
   /** Provides models for the `pickle` module. */
   module pickle {
     /** Gets a reference to the `pickle.loads` function. */
-    private DataFlow::Node loads(DataFlow::TypeTracker t) {
-      t.start() and
-      result = DataFlow::importNode(pickleModuleName() + ".loads")
-      or
-      t.startInAttr("loads") and
-      result = pickle()
-      or
-      exists(DataFlow::TypeTracker t2 | result = loads(t2).track(t2, t))
+    DataFlow::Node loads() {
+      result = API::moduleImport(["pickle", "cPickle", "_pickle"]).getMember("loads").getAUse()
     }
-
-    /** Gets a reference to the `pickle.loads` function. */
-    DataFlow::Node loads() { result = loads(DataFlow::TypeTracker::end()) }
   }
 
   /**
    * A call to `pickle.loads`
    * See https://docs.python.org/3/library/pickle.html#pickle.loads
    */
-  private class PickleLoadsCall extends Decoding::Range, DataFlow::CfgNode {
-    override CallNode node;
-
-    PickleLoadsCall() { node.getFunction() = pickle::loads().asCfgNode() }
+  private class PickleLoadsCall extends Decoding::Range, DataFlow::CallCfgNode {
+    PickleLoadsCall() { this.getFunction() = pickle::loads() }
 
     override predicate mayExecuteInput() { any() }
 
-    override DataFlow::Node getAnInput() { result.asCfgNode() = node.getArg(0) }
+    override DataFlow::Node getAnInput() { result = this.getArg(0) }
 
     override DataFlow::Node getOutput() { result = this }
 
@@ -490,68 +320,17 @@ private module Stdlib {
   // popen2
   // ---------------------------------------------------------------------------
   /** Gets a reference to the `popen2` module (only available in Python 2). */
-  private DataFlow::Node popen2(DataFlow::TypeTracker t) {
-    t.start() and
-    result = DataFlow::importNode("popen2")
-    or
-    exists(DataFlow::TypeTracker t2 | result = popen2(t2).track(t2, t))
-  }
-
-  /** Gets a reference to the `popen2` module (only available in Python 2). */
-  DataFlow::Node popen2() { result = popen2(DataFlow::TypeTracker::end()) }
-
-  /**
-   * Gets a reference to the attribute `attr_name` of the `popen2` module.
-   * WARNING: Only holds for a few predefined attributes.
-   */
-  private DataFlow::Node popen2_attr(DataFlow::TypeTracker t, string attr_name) {
-    attr_name in ["popen2", "popen3", "popen4",
-          // classes
-          "Popen3", "Popen4"] and
-    (
-      t.start() and
-      result = DataFlow::importNode("popen2." + attr_name)
-      or
-      t.startInAttr(attr_name) and
-      result = DataFlow::importNode("popen2")
-    )
-    or
-    // Due to bad performance when using normal setup with `popen2_attr(t2, attr_name).track(t2, t)`
-    // we have inlined that code and forced a join
-    exists(DataFlow::TypeTracker t2 |
-      exists(DataFlow::StepSummary summary |
-        popen2_attr_first_join(t2, attr_name, result, summary) and
-        t = t2.append(summary)
-      )
-    )
-  }
-
-  pragma[nomagic]
-  private predicate popen2_attr_first_join(
-    DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res, DataFlow::StepSummary summary
-  ) {
-    DataFlow::StepSummary::step(popen2_attr(t2, attr_name), res, summary)
-  }
-
-  /**
-   * Gets a reference to the attribute `attr_name` of the `popen2` module.
-   * WARNING: Only holds for a few predefined attributes.
-   */
-  private DataFlow::Node popen2_attr(string attr_name) {
-    result = popen2_attr(DataFlow::TypeTracker::end(), attr_name)
-  }
+  API::Node popen2() { result = API::moduleImport("popen2") }
 
   /**
    * A call to any of the `popen.popen*` functions, or instantiation of a `popen.Popen*` class.
    * See https://docs.python.org/2.7/library/popen2.html
    */
-  private class Popen2PopenCall extends SystemCommandExecution::Range, DataFlow::CfgNode {
-    override CallNode node;
-
+  private class Popen2PopenCall extends SystemCommandExecution::Range, DataFlow::CallCfgNode {
     Popen2PopenCall() {
       exists(string name |
         name in ["popen2", "popen3", "popen4", "Popen3", "Popen4"] and
-        node.getFunction() = popen2_attr(name).asCfgNode()
+        this = popen2().getMember(name).getACall()
       )
     }
 
@@ -564,63 +343,14 @@ private module Stdlib {
   // platform
   // ---------------------------------------------------------------------------
   /** Gets a reference to the `platform` module. */
-  private DataFlow::Node platform(DataFlow::TypeTracker t) {
-    t.start() and
-    result = DataFlow::importNode("platform")
-    or
-    exists(DataFlow::TypeTracker t2 | result = platform(t2).track(t2, t))
-  }
-
-  /** Gets a reference to the `platform` module. */
-  DataFlow::Node platform() { result = platform(DataFlow::TypeTracker::end()) }
-
-  /**
-   * Gets a reference to the attribute `attr_name` of the `platform` module.
-   * WARNING: Only holds for a few predefined attributes.
-   */
-  private DataFlow::Node platform_attr(DataFlow::TypeTracker t, string attr_name) {
-    attr_name in ["popen"] and
-    (
-      t.start() and
-      result = DataFlow::importNode("platform." + attr_name)
-      or
-      t.startInAttr(attr_name) and
-      result = DataFlow::importNode("platform")
-    )
-    or
-    // Due to bad performance when using normal setup with `platform_attr(t2, attr_name).track(t2, t)`
-    // we have inlined that code and forced a join
-    exists(DataFlow::TypeTracker t2 |
-      exists(DataFlow::StepSummary summary |
-        platform_attr_first_join(t2, attr_name, result, summary) and
-        t = t2.append(summary)
-      )
-    )
-  }
-
-  pragma[nomagic]
-  private predicate platform_attr_first_join(
-    DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res, DataFlow::StepSummary summary
-  ) {
-    DataFlow::StepSummary::step(platform_attr(t2, attr_name), res, summary)
-  }
-
-  /**
-   * Gets a reference to the attribute `attr_name` of the `platform` module.
-   * WARNING: Only holds for a few predefined attributes.
-   */
-  private DataFlow::Node platform_attr(string attr_name) {
-    result = platform_attr(DataFlow::TypeTracker::end(), attr_name)
-  }
+  API::Node platform() { result = API::moduleImport("platform") }
 
   /**
    * A call to the `platform.popen` function.
    * See https://docs.python.org/2.7/library/platform.html#platform.popen
    */
-  private class PlatformPopenCall extends SystemCommandExecution::Range, DataFlow::CfgNode {
-    override CallNode node;
-
-    PlatformPopenCall() { node.getFunction() = platform_attr("popen").asCfgNode() }
+  private class PlatformPopenCall extends SystemCommandExecution::Range, DataFlow::CallCfgNode {
+    PlatformPopenCall() { this = platform().getMember("popen").getACall() }
 
     override DataFlow::Node getCommand() {
       result.asCfgNode() in [node.getArg(0), node.getArgByName("cmd")]
@@ -630,204 +360,96 @@ private module Stdlib {
   // ---------------------------------------------------------------------------
   // builtins
   // ---------------------------------------------------------------------------
-  /** Gets a reference to the `builtins` module (called `__builtin__` in Python 2). */
-  private DataFlow::Node builtins(DataFlow::TypeTracker t) {
-    t.start() and
-    result = DataFlow::importNode(["builtins", "__builtin__"])
-    or
-    exists(DataFlow::TypeTracker t2 | result = builtins(t2).track(t2, t))
-  }
-
-  /** Gets a reference to the `builtins` module. */
-  DataFlow::Node builtins() { result = builtins(DataFlow::TypeTracker::end()) }
-
-  /**
-   * Gets a reference to the attribute `attr_name` of the `builtins` module.
-   * WARNING: Only holds for a few predefined attributes.
-   */
-  private DataFlow::Node builtins_attr(DataFlow::TypeTracker t, string attr_name) {
-    attr_name in ["exec", "eval", "compile"] and
-    (
-      t.start() and
-      result = DataFlow::importNode(["builtins", "__builtin__"] + "." + attr_name)
-      or
-      t.startInAttr(attr_name) and
-      result = DataFlow::importNode(["builtins", "__builtin__"])
-      or
-      // special handling of builtins, that are in scope without any imports
-      // TODO: Take care of overrides, either `def eval: ...`, `eval = ...`, or `builtins.eval = ...`
-      t.start() and
-      exists(NameNode ref | result.asCfgNode() = ref |
-        ref.isGlobal() and
-        ref.getId() = attr_name and
-        ref.isLoad()
-      )
-    )
-    or
-    // Due to bad performance when using normal setup with `builtins_attr(t2, attr_name).track(t2, t)`
-    // we have inlined that code and forced a join
-    exists(DataFlow::TypeTracker t2 |
-      exists(DataFlow::StepSummary summary |
-        builtins_attr_first_join(t2, attr_name, result, summary) and
-        t = t2.append(summary)
-      )
-    )
-  }
-
-  pragma[nomagic]
-  private predicate builtins_attr_first_join(
-    DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res, DataFlow::StepSummary summary
-  ) {
-    DataFlow::StepSummary::step(builtins_attr(t2, attr_name), res, summary)
-  }
-
-  /**
-   * Gets a reference to the attribute `attr_name` of the `builtins` module.
-   * WARNING: Only holds for a few predefined attributes.
-   */
-  private DataFlow::Node builtins_attr(string attr_name) {
-    result = builtins_attr(DataFlow::TypeTracker::end(), attr_name)
-  }
-
   /**
    * A call to the builtin `exec` function.
    * See https://docs.python.org/3/library/functions.html#exec
    */
-  private class BuiltinsExecCall extends CodeExecution::Range, DataFlow::CfgNode {
-    override CallNode node;
+  private class BuiltinsExecCall extends CodeExecution::Range, DataFlow::CallCfgNode {
+    BuiltinsExecCall() { this = API::builtin("exec").getACall() }
 
-    BuiltinsExecCall() { node.getFunction() = builtins_attr("exec").asCfgNode() }
-
-    override DataFlow::Node getCode() { result.asCfgNode() = node.getArg(0) }
+    override DataFlow::Node getCode() { result = this.getArg(0) }
   }
 
   /**
    * A call to the builtin `eval` function.
    * See https://docs.python.org/3/library/functions.html#eval
    */
-  private class BuiltinsEvalCall extends CodeExecution::Range, DataFlow::CfgNode {
+  private class BuiltinsEvalCall extends CodeExecution::Range, DataFlow::CallCfgNode {
     override CallNode node;
 
-    BuiltinsEvalCall() { node.getFunction() = builtins_attr("eval").asCfgNode() }
+    BuiltinsEvalCall() { this = API::builtin("eval").getACall() }
 
-    override DataFlow::Node getCode() { result.asCfgNode() = node.getArg(0) }
+    override DataFlow::Node getCode() { result = this.getArg(0) }
   }
 
   /** An additional taint step for calls to the builtin function `compile` */
   private class BuiltinsCompileCallAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
     override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-      exists(CallNode call |
-        nodeTo.asCfgNode() = call and
-        call.getFunction() = builtins_attr("compile").asCfgNode() and
-        nodeFrom.asCfgNode() in [call.getArg(0), call.getArgByName("source")]
+      exists(DataFlow::CallCfgNode call |
+        nodeTo = call and
+        call = API::builtin("compile").getACall() and
+        nodeFrom in [call.getArg(0), call.getArgByName("source")]
       )
     }
   }
-}
 
-/**
- * An exec statement (only Python 2).
- * Se ehttps://docs.python.org/2/reference/simple_stmts.html#the-exec-statement.
- */
-private class ExecStatement extends CodeExecution::Range {
-  ExecStatement() {
-    // since there are no DataFlow::Nodes for a Statement, we can't do anything like
-    // `this = any(Exec exec)`
-    this.asExpr() = any(Exec exec).getBody()
+  /**
+   * A call to the builtin `open` function.
+   * See https://docs.python.org/3/library/functions.html#open
+   */
+  private class OpenCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    OpenCall() {
+      this = API::builtin("open").getACall()
+      or
+      // io.open is a special case, since it is an alias for the builtin `open`
+      this = API::moduleImport("io").getMember("open").getACall()
+    }
+
+    override DataFlow::Node getAPathArgument() {
+      result in [this.getArg(0), this.getArgByName("file")]
+    }
   }
 
-  override DataFlow::Node getCode() { result = this }
-}
+  /**
+   * An exec statement (only Python 2).
+   * See https://docs.python.org/2/reference/simple_stmts.html#the-exec-statement.
+   */
+  private class ExecStatement extends CodeExecution::Range {
+    ExecStatement() {
+      // since there are no DataFlow::Nodes for a Statement, we can't do anything like
+      // `this = any(Exec exec)`
+      this.asExpr() = any(Exec exec).getBody()
+    }
 
-/**
- * A call to the builtin `open` function.
- * See https://docs.python.org/3/library/functions.html#open
- */
-private class OpenCall extends FileSystemAccess::Range, DataFlow::CfgNode {
-  override CallNode node;
-
-  OpenCall() { node.getFunction().(NameNode).getId() = "open" }
-
-  override DataFlow::Node getAPathArgument() {
-    result.asCfgNode() in [node.getArg(0), node.getArgByName("file")]
-  }
-}
-
-// ---------------------------------------------------------------------------
-// base64
-// ---------------------------------------------------------------------------
-/** Gets a reference to the `base64` module. */
-private DataFlow::Node base64(DataFlow::TypeTracker t) {
-  t.start() and
-  result = DataFlow::importNode("base64")
-  or
-  exists(DataFlow::TypeTracker t2 | result = base64(t2).track(t2, t))
-}
-
-/** Gets a reference to the `base64` module. */
-DataFlow::Node base64() { result = base64(DataFlow::TypeTracker::end()) }
-
-/**
- * Gets a reference to the attribute `attr_name` of the `base64` module.
- * WARNING: Only holds for a few predefined attributes.
- */
-private DataFlow::Node base64_attr(DataFlow::TypeTracker t, string attr_name) {
-  attr_name in ["b64encode", "b64decode", "standard_b64encode", "standard_b64decode",
-        "urlsafe_b64encode", "urlsafe_b64decode", "b32encode", "b32decode", "b16encode",
-        "b16decode", "encodestring", "decodestring", "a85encode", "a85decode", "b85encode",
-        "b85decode", "encodebytes", "decodebytes"] and
-  (
-    t.start() and
-    result = DataFlow::importNode("base64" + "." + attr_name)
-    or
-    t.startInAttr(attr_name) and
-    result = base64()
-  )
-  or
-  // Due to bad performance when using normal setup with `base64_attr(t2, attr_name).track(t2, t)`
-  // we have inlined that code and forced a join
-  exists(DataFlow::TypeTracker t2 |
-    exists(DataFlow::StepSummary summary |
-      base64_attr_first_join(t2, attr_name, result, summary) and
-      t = t2.append(summary)
-    )
-  )
-}
-
-pragma[nomagic]
-private predicate base64_attr_first_join(
-  DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res, DataFlow::StepSummary summary
-) {
-  DataFlow::StepSummary::step(base64_attr(t2, attr_name), res, summary)
-}
-
-/**
- * Gets a reference to the attribute `attr_name` of the `base64` module.
- * WARNING: Only holds for a few predefined attributes.
- */
-private DataFlow::Node base64_attr(string attr_name) {
-  result = base64_attr(DataFlow::TypeTracker::end(), attr_name)
-}
-
-/** A call to any of the encode functions in the `base64` module. */
-private class Base64EncodeCall extends Encoding::Range, DataFlow::CfgNode {
-  override CallNode node;
-
-  Base64EncodeCall() {
-    exists(string name |
-      name in ["b64encode", "standard_b64encode", "urlsafe_b64encode", "b32encode", "b16encode",
-            "encodestring", "a85encode", "b85encode", "encodebytes"] and
-      node.getFunction() = base64_attr(name).asCfgNode()
-    )
+    override DataFlow::Node getCode() { result = this }
   }
 
-  override DataFlow::Node getAnInput() { result.asCfgNode() = node.getArg(0) }
+  // ---------------------------------------------------------------------------
+  // base64
+  // ---------------------------------------------------------------------------
+  /** Gets a reference to the `base64` module. */
+  API::Node base64() { result = API::moduleImport("base64") }
 
-  override DataFlow::Node getOutput() { result = this }
+  /** A call to any of the encode functions in the `base64` module. */
+  private class Base64EncodeCall extends Encoding::Range, DataFlow::CallCfgNode {
+    string name;
 
-  override string getFormat() {
-    exists(string name | node.getFunction() = base64_attr(name).asCfgNode() |
-      name in ["b64encode", "standard_b64encode", "urlsafe_b64encode", "encodestring", "encodebytes"] and
+    Base64EncodeCall() {
+      name in [
+          "b64encode", "standard_b64encode", "urlsafe_b64encode", "b32encode", "b16encode",
+          "encodestring", "a85encode", "b85encode", "encodebytes"
+        ] and
+      this = base64().getMember(name).getACall()
+    }
+
+    override DataFlow::Node getAnInput() { result.asCfgNode() = node.getArg(0) }
+
+    override DataFlow::Node getOutput() { result = this }
+
+    override string getFormat() {
+      name in [
+          "b64encode", "standard_b64encode", "urlsafe_b64encode", "encodestring", "encodebytes"
+        ] and
       result = "Base64"
       or
       name = "b32encode" and result = "Base32"
@@ -837,31 +459,31 @@ private class Base64EncodeCall extends Encoding::Range, DataFlow::CfgNode {
       name = "a85encode" and result = "Ascii85"
       or
       name = "b85encode" and result = "Base85"
-    )
-  }
-}
-
-/** A call to any of the decode functions in the `base64` module. */
-private class Base64DecodeCall extends Decoding::Range, DataFlow::CfgNode {
-  override CallNode node;
-
-  Base64DecodeCall() {
-    exists(string name |
-      name in ["b64decode", "standard_b64decode", "urlsafe_b64decode", "b32decode", "b16decode",
-            "decodestring", "a85decode", "b85decode", "decodebytes"] and
-      node.getFunction() = base64_attr(name).asCfgNode()
-    )
+    }
   }
 
-  override predicate mayExecuteInput() { none() }
+  /** A call to any of the decode functions in the `base64` module. */
+  private class Base64DecodeCall extends Decoding::Range, DataFlow::CallCfgNode {
+    string name;
 
-  override DataFlow::Node getAnInput() { result.asCfgNode() = node.getArg(0) }
+    Base64DecodeCall() {
+      name in [
+          "b64decode", "standard_b64decode", "urlsafe_b64decode", "b32decode", "b16decode",
+          "decodestring", "a85decode", "b85decode", "decodebytes"
+        ] and
+      this = base64().getMember(name).getACall()
+    }
 
-  override DataFlow::Node getOutput() { result = this }
+    override predicate mayExecuteInput() { none() }
 
-  override string getFormat() {
-    exists(string name | node.getFunction() = base64_attr(name).asCfgNode() |
-      name in ["b64decode", "standard_b64decode", "urlsafe_b64decode", "decodestring", "decodebytes"] and
+    override DataFlow::Node getAnInput() { result.asCfgNode() = node.getArg(0) }
+
+    override DataFlow::Node getOutput() { result = this }
+
+    override string getFormat() {
+      name in [
+          "b64decode", "standard_b64decode", "urlsafe_b64decode", "decodestring", "decodebytes"
+        ] and
       result = "Base64"
       or
       name = "b32decode" and result = "Base32"
@@ -871,7 +493,711 @@ private class Base64DecodeCall extends Decoding::Range, DataFlow::CfgNode {
       name = "a85decode" and result = "Ascii85"
       or
       name = "b85decode" and result = "Base85"
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // json
+  // ---------------------------------------------------------------------------
+  /** Gets a reference to the `json` module. */
+  API::Node json() { result = API::moduleImport("json") }
+
+  /**
+   * A call to `json.loads`
+   * See https://docs.python.org/3/library/json.html#json.loads
+   */
+  private class JsonLoadsCall extends Decoding::Range, DataFlow::CallCfgNode {
+    JsonLoadsCall() { this = json().getMember("loads").getACall() }
+
+    override predicate mayExecuteInput() { none() }
+
+    override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("s")] }
+
+    override DataFlow::Node getOutput() { result = this }
+
+    override string getFormat() { result = "JSON" }
+  }
+
+  /**
+   * A call to `json.load`
+   * See https://docs.python.org/3/library/json.html#json.load
+   */
+  private class JsonLoadCall extends Decoding::Range, DataFlow::CallCfgNode {
+    JsonLoadCall() { this = json().getMember("load").getACall() }
+
+    override predicate mayExecuteInput() { none() }
+
+    override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("fp")] }
+
+    override DataFlow::Node getOutput() { result = this }
+
+    override string getFormat() { result = "JSON" }
+  }
+
+  /**
+   * A call to `json.dumps`
+   * See https://docs.python.org/3/library/json.html#json.dumps
+   */
+  private class JsonDumpsCall extends Encoding::Range, DataFlow::CallCfgNode {
+    JsonDumpsCall() { this = json().getMember("dumps").getACall() }
+
+    override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("obj")] }
+
+    override DataFlow::Node getOutput() { result = this }
+
+    override string getFormat() { result = "JSON" }
+  }
+
+  /**
+   * A call to `json.dump`
+   * See https://docs.python.org/3/library/json.html#json.dump
+   */
+  private class JsonDumpCall extends Encoding::Range, DataFlow::CallCfgNode {
+    JsonDumpCall() { this = json().getMember("dump").getACall() }
+
+    override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("obj")] }
+
+    override DataFlow::Node getOutput() {
+      result.(DataFlow::PostUpdateNode).getPreUpdateNode() in [
+          this.getArg(1), this.getArgByName("fp")
+        ]
+    }
+
+    override string getFormat() { result = "JSON" }
+  }
+
+  // ---------------------------------------------------------------------------
+  // cgi
+  // ---------------------------------------------------------------------------
+  /** Gets a reference to the `cgi` module. */
+  API::Node cgi() { result = API::moduleImport("cgi") }
+
+  /** Provides models for the `cgi` module. */
+  module cgi {
+    /**
+     * Provides models for the `cgi.FieldStorage` class
+     *
+     * See https://docs.python.org/3/library/cgi.html.
+     */
+    module FieldStorage {
+      /** Gets a reference to the `cgi.FieldStorage` class. */
+      API::Node classRef() { result = cgi().getMember("FieldStorage") }
+
+      /**
+       * A source of instances of `cgi.FieldStorage`, extend this class to model new instances.
+       *
+       * This can include instantiations of the class, return values from function
+       * calls, or a special parameter that will be set when functions are called by an external
+       * library.
+       *
+       * Use the predicate `FieldStorage::instance()` to get references to instances of `cgi.FieldStorage`.
+       */
+      abstract class InstanceSource extends DataFlow::Node { }
+
+      /**
+       * A direct instantiation of `cgi.FieldStorage`.
+       *
+       * We currently consider ALL instantiations to be `RemoteFlowSource`. This seems
+       * reasonable since it's used to parse form data for incoming POST requests, but
+       * if it turns out to be a problem, we'll have to refine.
+       */
+      private class ClassInstantiation extends InstanceSource, RemoteFlowSource::Range,
+        DataFlow::CallCfgNode {
+        ClassInstantiation() { this = classRef().getACall() }
+
+        override string getSourceType() { result = "cgi.FieldStorage" }
+      }
+
+      /** Gets a reference to an instance of `cgi.FieldStorage`. */
+      API::Node instance() { result = classRef().getReturn() }
+
+      /** Gets a reference to the `getvalue` method on a `cgi.FieldStorage` instance. */
+      API::Node getvalueRef() { result = instance().getMember("getvalue") }
+
+      /** Gets a reference to the result of calling the `getvalue` method on a `cgi.FieldStorage` instance. */
+      API::Node getvalueResult() { result = getvalueRef().getReturn() }
+
+      /** Gets a reference to the `getfirst` method on a `cgi.FieldStorage` instance. */
+      API::Node getfirstRef() { result = instance().getMember("getfirst") }
+
+      /** Gets a reference to the result of calling the `getfirst` method on a `cgi.FieldStorage` instance. */
+      API::Node getfirstResult() { result = getfirstRef().getReturn() }
+
+      /** Gets a reference to the `getlist` method on a `cgi.FieldStorage` instance. */
+      API::Node getlistRef() { result = instance().getMember("getlist") }
+
+      /** Gets a reference to the result of calling the `getlist` method on a `cgi.FieldStorage` instance. */
+      API::Node getlistResult() { result = getlistRef().getReturn() }
+
+      /** Gets a reference to a list of fields. */
+      private DataFlow::LocalSourceNode fieldList(DataFlow::TypeTracker t) {
+        t.start() and
+        // TODO: Should have better handling of subscripting
+        result.asCfgNode().(SubscriptNode).getObject() = instance().getAUse().asCfgNode()
+        or
+        exists(DataFlow::TypeTracker t2 | result = fieldList(t2).track(t2, t))
+      }
+
+      /** Gets a reference to a list of fields. */
+      DataFlow::Node fieldList() {
+        result = getlistResult().getAUse() or
+        result = getvalueResult().getAUse() or
+        fieldList(DataFlow::TypeTracker::end()).flowsTo(result)
+      }
+
+      /** Gets a reference to a field. */
+      private DataFlow::LocalSourceNode field(DataFlow::TypeTracker t) {
+        t.start() and
+        // TODO: Should have better handling of subscripting
+        result.asCfgNode().(SubscriptNode).getObject() =
+          [instance().getAUse(), fieldList()].asCfgNode()
+        or
+        exists(DataFlow::TypeTracker t2 | result = field(t2).track(t2, t))
+      }
+
+      /** Gets a reference to a field. */
+      DataFlow::Node field() {
+        result = getfirstResult().getAUse()
+        or
+        result = getvalueResult().getAUse()
+        or
+        field(DataFlow::TypeTracker::end()).flowsTo(result)
+      }
+
+      private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+        override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+          // Methods
+          nodeFrom = nodeTo.(DataFlow::AttrRead).getObject() and
+          nodeFrom = instance().getAUse() and
+          nodeTo = [getvalueRef(), getfirstRef(), getlistRef()].getAUse()
+          or
+          nodeFrom.asCfgNode() = nodeTo.asCfgNode().(CallNode).getFunction() and
+          (
+            nodeFrom = getvalueRef().getAUse() and nodeTo = getvalueResult().getAnImmediateUse()
+            or
+            nodeFrom = getfirstRef().getAUse() and nodeTo = getfirstResult().getAnImmediateUse()
+            or
+            nodeFrom = getlistRef().getAUse() and nodeTo = getlistResult().getAnImmediateUse()
+          )
+          or
+          // Indexing
+          nodeFrom in [instance().getAUse(), fieldList()] and
+          nodeTo.asCfgNode().(SubscriptNode).getObject() = nodeFrom.asCfgNode()
+          or
+          // Attributes on Field
+          nodeFrom = field() and
+          exists(DataFlow::AttrRead read | nodeTo = read and read.getObject() = nodeFrom |
+            read.getAttributeName() in ["value", "file", "filename"]
+          )
+        }
+      }
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // BaseHTTPServer (Python 2 only)
+  // ---------------------------------------------------------------------------
+  /** Gets a reference to the `BaseHTTPServer` module. */
+  API::Node baseHTTPServer() { result = API::moduleImport("BaseHTTPServer") }
+
+  /** Provides models for the `BaseHTTPServer` module. */
+  module BaseHTTPServer {
+    /**
+     * Provides models for the `BaseHTTPServer.BaseHTTPRequestHandler` class (Python 2 only).
+     */
+    module BaseHTTPRequestHandler {
+      /** Gets a reference to the `BaseHTTPServer.BaseHTTPRequestHandler` class. */
+      API::Node classRef() { result = baseHTTPServer().getMember("BaseHTTPRequestHandler") }
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // SimpleHTTPServer (Python 2 only)
+  // ---------------------------------------------------------------------------
+  /** Gets a reference to the `SimpleHTTPServer` module. */
+  API::Node simpleHTTPServer() { result = API::moduleImport("SimpleHTTPServer") }
+
+  /** Provides models for the `SimpleHTTPServer` module. */
+  module SimpleHTTPServer {
+    /**
+     * Provides models for the `SimpleHTTPServer.SimpleHTTPRequestHandler` class (Python 2 only).
+     */
+    module SimpleHTTPRequestHandler {
+      /** Gets a reference to the `SimpleHTTPServer.SimpleHTTPRequestHandler` class. */
+      API::Node classRef() { result = simpleHTTPServer().getMember("SimpleHTTPRequestHandler") }
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // CGIHTTPServer (Python 2 only)
+  // ---------------------------------------------------------------------------
+  /** Gets a reference to the `CGIHTTPServer` module. */
+  API::Node cgiHTTPServer() { result = API::moduleImport("CGIHTTPServer") }
+
+  /** Provides models for the `CGIHTTPServer` module. */
+  module CGIHTTPServer {
+    /**
+     * Provides models for the `CGIHTTPServer.CGIHTTPRequestHandler` class (Python 2 only).
+     */
+    module CGIHTTPRequestHandler {
+      /** Gets a reference to the `CGIHTTPServer.CGIHTTPRequestHandler` class. */
+      API::Node classRef() { result = cgiHTTPServer().getMember("CGIHTTPRequestHandler") }
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // http (Python 3 only)
+  // ---------------------------------------------------------------------------
+  /** Gets a reference to the `http` module. */
+  API::Node http() { result = API::moduleImport("http") }
+
+  /** Provides models for the `http` module. */
+  module http {
+    // -------------------------------------------------------------------------
+    // http.server
+    // -------------------------------------------------------------------------
+    /** Gets a reference to the `http.server` module. */
+    API::Node server() { result = http().getMember("server") }
+
+    /** Provides models for the `http.server` module */
+    module server {
+      /**
+       * Provides models for the `http.server.BaseHTTPRequestHandler` class (Python 3 only).
+       *
+       * See https://docs.python.org/3.9/library/http.server.html#http.server.BaseHTTPRequestHandler.
+       */
+      module BaseHTTPRequestHandler {
+        /** Gets a reference to the `http.server.BaseHTTPRequestHandler` class. */
+        API::Node classRef() { result = server().getMember("BaseHTTPRequestHandler") }
+      }
+
+      /**
+       * Provides models for the `http.server.SimpleHTTPRequestHandler` class (Python 3 only).
+       *
+       * See https://docs.python.org/3.9/library/http.server.html#http.server.SimpleHTTPRequestHandler.
+       */
+      module SimpleHTTPRequestHandler {
+        /** Gets a reference to the `http.server.SimpleHTTPRequestHandler` class. */
+        API::Node classRef() { result = server().getMember("SimpleHTTPRequestHandler") }
+      }
+
+      /**
+       * Provides models for the `http.server.CGIHTTPRequestHandler` class (Python 3 only).
+       *
+       * See https://docs.python.org/3.9/library/http.server.html#http.server.CGIHTTPRequestHandler.
+       */
+      module CGIHTTPRequestHandler {
+        /** Gets a reference to the `http.server.CGIHTTPRequestHandler` class. */
+        API::Node classRef() { result = server().getMember("CGIHTTPRequestHandler") }
+      }
+    }
+  }
+
+  /**
+   * Provides models for the `BaseHTTPRequestHandler` class and subclasses.
+   *
+   * See
+   *  - https://docs.python.org/3.9/library/http.server.html#http.server.BaseHTTPRequestHandler
+   *  - https://docs.python.org/2.7/library/basehttpserver.html#BaseHTTPServer.BaseHTTPRequestHandler
+   */
+  private module HTTPRequestHandler {
+    /** Gets a reference to the `BaseHTTPRequestHandler` class or any subclass. */
+    API::Node subclassRef() {
+      result =
+        [
+          // Python 2
+          BaseHTTPServer::BaseHTTPRequestHandler::classRef(),
+          SimpleHTTPServer::SimpleHTTPRequestHandler::classRef(),
+          CGIHTTPServer::CGIHTTPRequestHandler::classRef(),
+          // Python 3
+          http::server::BaseHTTPRequestHandler::classRef(),
+          http::server::SimpleHTTPRequestHandler::classRef(),
+          http::server::CGIHTTPRequestHandler::classRef()
+        ].getASubclass*()
+    }
+
+    /** A HTTPRequestHandler class definition (most likely in project code). */
+    class HTTPRequestHandlerClassDef extends Class {
+      HTTPRequestHandlerClassDef() { this.getParent() = subclassRef().getAUse().asExpr() }
+    }
+
+    /**
+     * A source of instances of the `BaseHTTPRequestHandler` class or any subclass, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `classname::instance()` to get references to instances of the `BaseHTTPRequestHandler` class or any subclass.
+     */
+    abstract class InstanceSource extends DataFlow::Node { }
+
+    /** The `self` parameter in a method on the `BaseHTTPRequestHandler` class or any subclass. */
+    private class SelfParam extends InstanceSource, RemoteFlowSource::Range, DataFlow::ParameterNode {
+      SelfParam() {
+        exists(HTTPRequestHandlerClassDef cls | cls.getAMethod().getArg(0) = this.getParameter())
+      }
+
+      override string getSourceType() { result = "stdlib HTTPRequestHandler" }
+    }
+
+    /** Gets a reference to an instance of the `BaseHTTPRequestHandler` class or any subclass. */
+    private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an instance of the `BaseHTTPRequestHandler` class or any subclass. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+      override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+        nodeFrom = instance() and
+        exists(DataFlow::AttrRead read | nodeTo = read and read.getObject() = nodeFrom |
+          read.getAttributeName() in [
+              // str
+              "requestline", "path",
+              // by default dict-like http.client.HTTPMessage, which is a subclass of email.message.Message
+              // see https://docs.python.org/3.9/library/email.compat32-message.html#email.message.Message
+              // TODO: Implement custom methods (at least `get_all`, `as_bytes`, `as_string`)
+              "headers",
+              // file-like
+              "rfile"
+            ]
+        )
+      }
+    }
+
+    /**
+     * The entry-point for handling a request with a `BaseHTTPRequestHandler` subclass.
+     *
+     * Not essential for any functionality, but provides a consistent modeling.
+     */
+    private class RequestHandlerFunc extends HTTP::Server::RequestHandler::Range {
+      RequestHandlerFunc() {
+        this = any(HTTPRequestHandlerClassDef cls).getAMethod() and
+        this.getName() = "do_" + HTTP::httpVerb()
+      }
+
+      override Parameter getARoutedParameter() { none() }
+
+      override string getFramework() { result = "Stdlib" }
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // sqlite3
+  // ---------------------------------------------------------------------------
+  /**
+   * sqlite3 implements PEP 249, providing ways to execute SQL statements against a database.
+   *
+   * See https://devdocs.io/python~3.9/library/sqlite3
+   */
+  class Sqlite3 extends PEP249ModuleApiNode {
+    Sqlite3() { this = API::moduleImport("sqlite3") }
+  }
+
+  // ---------------------------------------------------------------------------
+  // pathlib
+  // ---------------------------------------------------------------------------
+  /** Gets a reference to the `pathlib` module. */
+  private API::Node pathlib() { result = API::moduleImport("pathlib") }
+
+  /**
+   * Gets a name of a constructor for a `pathlib.Path` object.
+   * We include the pure paths, as they can be "exported" (say with `as_posix`) and then used to acces the underlying file system.
+   */
+  private string pathlibPathConstructor() {
+    result in ["Path", "PurePath", "PurePosixPath", "PureWindowsPath", "PosixPath", "WindowsPath"]
+  }
+
+  /**
+   * Gets a name of an attribute of a `pathlib.Path` object that is also a `pathlib.Path` object.
+   */
+  private string pathlibPathAttribute() { result in ["parent"] }
+
+  /**
+   * Gets a name of a method of a `pathlib.Path` object that returns a `pathlib.Path` object.
+   */
+  private string pathlibPathMethod() {
+    result in ["absolute", "relative_to", "rename", "replace", "resolve"]
+  }
+
+  /**
+   * Gets a name of a method of a `pathlib.Path` object that modifies a `pathlib.Path` object based on new data.
+   */
+  private string pathlibPathInjection() {
+    result in ["joinpath", "with_name", "with_stem", "with_suffix"]
+  }
+
+  /**
+   * Gets a name of an attribute of a `pathlib.Path` object that exports information about the `pathlib.Path` object.
+   */
+  private string pathlibPathAttributeExport() {
+    result in ["drive", "root", "anchor", "name", "suffix", "stem"]
+  }
+
+  /**
+   * Gets a name of a method of a `pathlib.Path` object that exports information about the `pathlib.Path` object.
+   */
+  private string pathlibPathMethodExport() { result in ["as_posix", "as_uri"] }
+
+  /**
+   * Flow for attributes and methods that return a `pathlib.Path` object.
+   */
+  private predicate pathlibPathStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    exists(DataFlow::AttrRead returnsPath |
+      (
+        // attribute access
+        returnsPath.getAttributeName() = pathlibPathAttribute() and
+        nodeTo = returnsPath
+        or
+        // method call
+        returnsPath.getAttributeName() = pathlibPathMethod() and
+        returnsPath
+            .(DataFlow::LocalSourceNode)
+            .flowsTo(nodeTo.(DataFlow::CallCfgNode).getFunction())
+      ) and
+      nodeFrom = returnsPath.getObject()
     )
+  }
+
+  /**
+   * Gets a reference to a `pathlib.Path` object.
+   * This type tracker makes the monomorphic API use assumption.
+   */
+  private DataFlow::LocalSourceNode pathlibPath(DataFlow::TypeTracker t) {
+    // Type construction
+    t.start() and
+    result = pathlib().getMember(pathlibPathConstructor()).getACall()
+    or
+    // Type-preserving step
+    exists(DataFlow::Node nodeFrom, DataFlow::TypeTracker t2 |
+      pathlibPath(t2).flowsTo(nodeFrom) and
+      t2.end()
+    |
+      t.start() and
+      pathlibPathStep(nodeFrom, result)
+    )
+    or
+    // Data injection
+    //   Special handling of the `/` operator
+    exists(BinaryExprNode slash, DataFlow::Node pathOperand, DataFlow::TypeTracker t2 |
+      slash.getOp() instanceof Div and
+      pathOperand.asCfgNode() = slash.getAnOperand() and
+      pathlibPath(t2).flowsTo(pathOperand) and
+      t2.end()
+    |
+      t.start() and
+      result.asCfgNode() = slash
+    )
+    or
+    //   standard case
+    exists(DataFlow::AttrRead returnsPath, DataFlow::TypeTracker t2 |
+      returnsPath.getAttributeName() = pathlibPathInjection() and
+      pathlibPath(t2).flowsTo(returnsPath.getObject()) and
+      t2.end()
+    |
+      t.start() and
+      result.(DataFlow::CallCfgNode).getFunction() = returnsPath
+    )
+    or
+    // Track further
+    exists(DataFlow::TypeTracker t2 | result = pathlibPath(t2).track(t2, t))
+  }
+
+  /** Gets a reference to a `pathlib.Path` object. */
+  DataFlow::LocalSourceNode pathlibPath() { result = pathlibPath(DataFlow::TypeTracker::end()) }
+
+  private class PathlibFileAccess extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    DataFlow::AttrRead fileAccess;
+
+    PathlibFileAccess() {
+      fileAccess.getAttributeName() in [
+          "stat", "chmod", "exists", "expanduser", "glob", "group", "is_dir", "is_file", "is_mount",
+          "is_symlink", "is_socket", "is_fifo", "is_block_device", "is_char_device", "iter_dir",
+          "lchmod", "lstat", "mkdir", "open", "owner", "read_bytes", "read_text", "readlink",
+          "rename", "replace", "resolve", "rglob", "rmdir", "samefile", "symlink_to", "touch",
+          "unlink", "link_to", "write_bytes", "write_text"
+        ] and
+      pathlibPath().flowsTo(fileAccess.getObject()) and
+      fileAccess.(DataFlow::LocalSourceNode).flowsTo(this.getFunction())
+    }
+
+    override DataFlow::Node getAPathArgument() { result = fileAccess.getObject() }
+  }
+
+  /** An additional taint steps for objects of type `pathlib.Path` */
+  private class PathlibPathTaintStep extends TaintTracking::AdditionalTaintStep {
+    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+      // Type construction
+      nodeTo = pathlib().getMember(pathlibPathConstructor()).getACall() and
+      nodeFrom = nodeTo.(DataFlow::CallCfgNode).getArg(_)
+      or
+      // Type preservation
+      pathlibPath().flowsTo(nodeFrom) and
+      pathlibPathStep(nodeFrom, nodeTo)
+      or
+      // Data injection
+      pathlibPath().flowsTo(nodeTo) and
+      (
+        // Special handling of the `/` operator
+        exists(BinaryExprNode slash, DataFlow::Node pathOperand |
+          slash.getOp() instanceof Div and
+          pathOperand.asCfgNode() = slash.getAnOperand() and
+          pathlibPath().flowsTo(pathOperand)
+        |
+          nodeTo.asCfgNode() = slash and
+          // Taint can flow either from the left or the right operand as long as one of them is a path.
+          nodeFrom.asCfgNode() = slash.getAnOperand()
+        )
+        or
+        // standard case
+        exists(DataFlow::AttrRead augmentsPath |
+          augmentsPath.getAttributeName() = pathlibPathInjection()
+        |
+          augmentsPath
+              .(DataFlow::LocalSourceNode)
+              .flowsTo(nodeTo.(DataFlow::CallCfgNode).getFunction()) and
+          (
+            // type-preserving call
+            nodeFrom = augmentsPath.getObject()
+            or
+            // data injection
+            nodeFrom = nodeTo.(DataFlow::CallCfgNode).getArg(_)
+          )
+        )
+      )
+      or
+      // Export data from type
+      pathlibPath().flowsTo(nodeFrom) and
+      exists(DataFlow::AttrRead exportPath |
+        // exporting attribute
+        exportPath.getAttributeName() = pathlibPathAttributeExport() and
+        nodeTo = exportPath
+        or
+        // exporting method
+        exportPath.getAttributeName() = pathlibPathMethodExport() and
+        exportPath.(DataFlow::LocalSourceNode).flowsTo(nodeTo.(DataFlow::CallCfgNode).getFunction())
+      |
+        nodeFrom = exportPath.getObject()
+      )
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// hashlib
+// ---------------------------------------------------------------------------
+/** Gets a call to `hashlib.new` with `algorithmName` as the first argument. */
+private DataFlow::CallCfgNode hashlibNewCall(string algorithmName) {
+  exists(DataFlow::Node nameArg |
+    result = API::moduleImport("hashlib").getMember("new").getACall() and
+    nameArg in [result.getArg(0), result.getArgByName("name")] and
+    exists(StrConst str |
+      DataFlow::exprNode(str).(DataFlow::LocalSourceNode).flowsTo(nameArg) and
+      algorithmName = str.getText()
+    )
+  )
+}
+
+/** Gets a reference to the result of calling `hashlib.new` with `algorithmName` as the first argument. */
+private DataFlow::LocalSourceNode hashlibNewResult(DataFlow::TypeTracker t, string algorithmName) {
+  t.start() and
+  result = hashlibNewCall(algorithmName)
+  or
+  exists(DataFlow::TypeTracker t2 | result = hashlibNewResult(t2, algorithmName).track(t2, t))
+}
+
+/** Gets a reference to the result of calling `hashlib.new` with `algorithmName` as the first argument. */
+DataFlow::Node hashlibNewResult(string algorithmName) {
+  hashlibNewResult(DataFlow::TypeTracker::end(), algorithmName).flowsTo(result)
+}
+
+/**
+ * A hashing operation by supplying initial data when calling the `hashlib.new` function.
+ */
+class HashlibNewCall extends Cryptography::CryptographicOperation::Range, DataFlow::CallCfgNode {
+  string hashName;
+
+  HashlibNewCall() {
+    this = hashlibNewCall(hashName) and
+    exists([this.getArg(1), this.getArgByName("data")])
+  }
+
+  override Cryptography::CryptographicAlgorithm getAlgorithm() { result.matchesName(hashName) }
+
+  override DataFlow::Node getAnInput() { result in [this.getArg(1), this.getArgByName("data")] }
+}
+
+/**
+ * A hashing operation by using the `update` method on the result of calling the `hashlib.new` function.
+ */
+class HashlibNewUpdateCall extends Cryptography::CryptographicOperation::Range,
+  DataFlow::CallCfgNode {
+  string hashName;
+
+  HashlibNewUpdateCall() {
+    exists(DataFlow::AttrRead attr |
+      attr.getObject() = hashlibNewResult(hashName) and
+      this.getFunction() = attr and
+      attr.getAttributeName() = "update"
+    )
+  }
+
+  override Cryptography::CryptographicAlgorithm getAlgorithm() { result.matchesName(hashName) }
+
+  override DataFlow::Node getAnInput() { result = this.getArg(0) }
+}
+
+/**
+ * A hashing operation from the `hashlib` package using one of the predefined classes
+ * (such as `hashlib.md5`). `hashlib.new` is not included, since it is handled by
+ * `HashlibNewCall` and `HashlibNewUpdateCall`.
+ */
+abstract class HashlibGenericHashOperation extends Cryptography::CryptographicOperation::Range,
+  DataFlow::CallCfgNode {
+  string hashName;
+  API::Node hashClass;
+
+  bindingset[this]
+  HashlibGenericHashOperation() {
+    not hashName = "new" and
+    hashClass = API::moduleImport("hashlib").getMember(hashName)
+  }
+
+  override Cryptography::CryptographicAlgorithm getAlgorithm() { result.matchesName(hashName) }
+}
+
+/**
+ * A hashing operation from the `hashlib` package using one of the predefined classes
+ * (such as `hashlib.md5`), by calling its' `update` mehtod.
+ */
+class HashlibHashClassUpdateCall extends HashlibGenericHashOperation {
+  HashlibHashClassUpdateCall() { this = hashClass.getReturn().getMember("update").getACall() }
+
+  override DataFlow::Node getAnInput() { result = this.getArg(0) }
+}
+
+/**
+ * A hashing operation from the `hashlib` package using one of the predefined classes
+ * (such as `hashlib.md5`), by passing data to when instantiating the class.
+ */
+class HashlibDataPassedToHashClass extends HashlibGenericHashOperation {
+  HashlibDataPassedToHashClass() {
+    // we only want to model calls to classes such as `hashlib.md5()` if initial data
+    // is passed as an argument
+    this = hashClass.getACall() and
+    exists([this.getArg(0), this.getArgByName("string")])
+  }
+
+  override DataFlow::Node getAnInput() {
+    result = this.getArg(0)
+    or
+    // in Python 3.9, you are allowed to use `hashlib.md5(string=<bytes-like>)`.
+    result = this.getArgByName("string")
   }
 }
 

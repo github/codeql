@@ -204,8 +204,8 @@ definitions.cs:
 #   86|               0: [TypeMention] Exception
 #   87|             1: [BlockStmt] {...}
 #   88|               0: [ForeachStmt] foreach (... ... in ...) ...
-#   88|                 -1: [TypeMention] S1
 #   88|                 0: [LocalVariableDeclExpr] S1 s
+#   88|                   0: [TypeMention] S1
 #   88|                 1: [ParameterAccess] access to parameter ss
 #   89|                 2: [BlockStmt] {...}
 #   92|         1: [LocalVariableDeclStmt] ... ...;
@@ -507,9 +507,9 @@ definitions.cs:
 #  210|             1: [NullLiteral] null
 #  211|         1: [IfStmt] if (...) ...
 #  211|           0: [IsExpr] ... is ...
-#  211|             -1: [TypeMention] C8
 #  211|             0: [LocalVariableAccess] access to local variable c8a
 #  211|             1: [VariablePatternExpr] C8 c8b
+#  211|               0: [TypeMention] C8
 #  212|           1: [ExprStmt] ...;
 #  212|             0: [AssignExpr] ... = ...
 #  212|               0: [LocalVariableAccess] access to local variable c8a
@@ -517,8 +517,8 @@ definitions.cs:
 #  213|         2: [SwitchStmt] switch (...) {...}
 #  213|           0: [LocalVariableAccess] access to local variable c8a
 #  215|           0: [CaseStmt] case ...:
-#  215|             -1: [TypeMention] C8
 #  215|             0: [VariablePatternExpr] C8 c8c
+#  215|               0: [TypeMention] C8
 #  215|             1: [NEExpr] ... != ...
 #  215|               0: [LocalVariableAccess] access to local variable c8c
 #  215|               1: [NullLiteral] null

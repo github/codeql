@@ -1,3 +1,8 @@
+/**
+ * Provides an extension point for for modeling user-controlled data.
+ * Such data is often used as data-flow sources in security queries.
+ */
+
 private import python
 private import semmle.python.dataflow.new.DataFlow
 // Need to import since frameworks can extend `RemoteFlowSource::Range`

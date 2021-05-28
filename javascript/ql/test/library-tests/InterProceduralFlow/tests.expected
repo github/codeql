@@ -26,6 +26,8 @@ dataFlow
 | global.js:2:15:2:24 | "tainted2" | global.js:10:13:10:22 | g(source2) |
 | global.js:5:22:5:35 | "also tainted" | global.js:9:13:9:22 | g(source1) |
 | global.js:5:22:5:35 | "also tainted" | global.js:10:13:10:22 | g(source2) |
+| mixedExports.js:1:14:1:22 | 'tainted' | mixedExportsClient.js:6:13:6:13 | x |
+| mixedExports.js:1:14:1:22 | 'tainted' | mixedExportsClient.js:7:13:7:16 | ns.x |
 | nodeJsLib.js:2:15:2:23 | "tainted" | esClient.js:7:13:7:18 | nj.foo |
 | nodeJsLib.js:2:15:2:23 | "tainted" | esClient.js:10:13:10:17 | njFoo |
 | nodeJsLib.js:2:15:2:23 | "tainted" | nodeJsClient.js:4:13:4:18 | nj.foo |
@@ -106,6 +108,8 @@ taintTracking
 | global.js:2:15:2:24 | "tainted2" | global.js:10:13:10:22 | g(source2) |
 | global.js:5:22:5:35 | "also tainted" | global.js:9:13:9:22 | g(source1) |
 | global.js:5:22:5:35 | "also tainted" | global.js:10:13:10:22 | g(source2) |
+| mixedExports.js:1:14:1:22 | 'tainted' | mixedExportsClient.js:6:13:6:13 | x |
+| mixedExports.js:1:14:1:22 | 'tainted' | mixedExportsClient.js:7:13:7:16 | ns.x |
 | nodeJsLib.js:1:15:1:23 | "tainted" | esClient.js:7:13:7:18 | nj.foo |
 | nodeJsLib.js:1:15:1:23 | "tainted" | esClient.js:10:13:10:17 | njFoo |
 | nodeJsLib.js:1:15:1:23 | "tainted" | nodeJsClient.js:4:13:4:18 | nj.foo |
@@ -209,6 +213,8 @@ germanFlow
 | global.js:2:15:2:24 | "tainted2" | global.js:10:13:10:22 | g(source2) |
 | global.js:5:22:5:35 | "also tainted" | global.js:9:13:9:22 | g(source1) |
 | global.js:5:22:5:35 | "also tainted" | global.js:10:13:10:22 | g(source2) |
+| mixedExports.js:1:14:1:22 | 'tainted' | mixedExportsClient.js:6:13:6:13 | x |
+| mixedExports.js:1:14:1:22 | 'tainted' | mixedExportsClient.js:7:13:7:16 | ns.x |
 | nodeJsLib.js:2:15:2:23 | "tainted" | esClient.js:7:13:7:18 | nj.foo |
 | nodeJsLib.js:2:15:2:23 | "tainted" | esClient.js:10:13:10:17 | njFoo |
 | nodeJsLib.js:2:15:2:23 | "tainted" | nodeJsClient.js:4:13:4:18 | nj.foo |

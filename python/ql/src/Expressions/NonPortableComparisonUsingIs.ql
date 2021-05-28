@@ -1,5 +1,5 @@
 /**
- * @name Non-portable comparison using is when operands support __eq__
+ * @name Non-portable comparison using is when operands support `__eq__`
  * @description Comparison using 'is' when equivalence is not the same as identity and may not be portable.
  * @kind problem
  * @tags portability

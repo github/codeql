@@ -140,12 +140,9 @@ class FopenCreationExpr extends FileCreationExpr {
 
 class FopensCreationExpr extends FileCreationExpr {
   FopensCreationExpr() {
-    exists(string name | name = this.getTarget().getName() |
-      name = "fopen_s" or
-      name = "_wfopen_s"
-    ) and
+    this.getTarget().getName() = ["fopen_s", "_wfopen_s"] and
     exists(string mode |
-      (mode = "w" or mode = "a") and
+      mode = ["w", "a"] and
       this.getArgument(2).getValue().matches(mode + "%")
     )
   }

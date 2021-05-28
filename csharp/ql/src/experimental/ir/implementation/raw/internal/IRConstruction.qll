@@ -165,10 +165,10 @@ import Cached
 cached
 private module Cached {
   cached
-  Opcode getInstructionOpcode(TRawInstruction instr) {
+  predicate getInstructionOpcode(Opcode opcode, TRawInstruction instr) {
     exists(TranslatedElement element, InstructionTag tag |
       instructionOrigin(instr, element, tag) and
-      element.hasInstruction(result, tag, _)
+      element.hasInstruction(opcode, tag, _)
     )
   }
 
@@ -227,6 +227,9 @@ private module Cached {
    */
   cached
   predicate getUsedInterval(Operand operand, int startBit, int endBit) { none() }
+
+  cached
+  predicate chiOnlyPartiallyUpdatesLocation(ChiInstruction chi) { none() }
 
   /**
    * Holds if `instr` is part of a cycle in the operand graph that doesn't go
@@ -411,8 +414,19 @@ private module CachedForDebugging {
   string getTempVariableUniqueId(IRTempVariable var) {
     exists(TranslatedElement element |
       var = element.getTempVariable(_) and
-      result = element.getId() + ":" + getTempVariableTagId(var.getTag())
+      result = element.getId().toString() + ":" + getTempVariableTagId(var.getTag())
     )
+  }
+
+  cached
+  predicate instructionHasSortKeys(Instruction instruction, int key1, int key2) {
+    key1 = getInstructionTranslatedElement(instruction).getId() and
+    getInstructionTag(instruction) =
+      rank[key2](InstructionTag tag, string tagId |
+        tagId = getInstructionTagId(tag)
+      |
+        tag order by tagId
+      )
   }
 
   cached

@@ -22,3 +22,17 @@ app.get('/bar', function(req, res) {
   else
     res.send(p); // OK
 });
+
+
+const clone = require('clone');
+
+app.get('/baz', function(req, res) {
+  let { p } = req.params;
+
+  var obj = {};
+  obj.p = p;
+  var other = clone(obj);
+
+  res.send(p); // NOT OK
+  res.send(other.p); // NOT OK
+});

@@ -79,7 +79,11 @@ where
   ) and
   // And `cond` does not use method calls, field reads, or array reads.
   not exists(MethodAccess ma | ma.getParent*() = cond) and
-  not exists(FieldRead fa | fa.getParent*() = cond) and
+  not exists(FieldRead fa |
+    // Ignore if field is final
+    not fa.getField().isFinal() and
+    fa.getParent*() = cond
+  ) and
   not exists(ArrayAccess aa | aa.getParent*() = cond)
 select cond, "$@ might not terminate, as this loop condition is constant within the loop.", loop,
   "Loop"

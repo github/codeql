@@ -45,16 +45,17 @@ namespace Semmle.Autobuild.Shared
         private readonly SolutionFile? solution;
 
         private readonly IEnumerable<Project> includedProjects;
+
         public override IEnumerable<IProjectOrSolution> IncludedProjects => includedProjects;
 
         public IEnumerable<SolutionConfigurationInSolution> Configurations =>
-            solution == null ? Enumerable.Empty<SolutionConfigurationInSolution>() : solution.SolutionConfigurations;
+            solution is null ? Enumerable.Empty<SolutionConfigurationInSolution>() : solution.SolutionConfigurations;
 
         public string DefaultConfigurationName =>
-            solution == null ? "" : solution.GetDefaultConfigurationName();
+            solution is null ? "" : solution.GetDefaultConfigurationName();
 
         public string DefaultPlatformName =>
-            solution == null ? "" : solution.GetDefaultPlatformName();
+            solution is null ? "" : solution.GetDefaultPlatformName();
 
         public Solution(Autobuilder builder, string path, bool allowProject) : base(builder, path)
         {
@@ -84,8 +85,12 @@ namespace Semmle.Autobuild.Shared
                 .ToArray();
         }
 
-        private IEnumerable<Version> ToolsVersions => includedProjects.Where(p => p.ValidToolsVersion).Select(p => p.ToolsVersion);
+        private IEnumerable<Version> ToolsVersions => includedProjects
+            .Where(p => p.ValidToolsVersion)
+            .Select(p => p.ToolsVersion);
 
-        public Version ToolsVersion => ToolsVersions.Any() ? ToolsVersions.Max() : new Version();
+        public Version ToolsVersion => ToolsVersions.Any()
+            ? ToolsVersions.Max()!
+            : new Version();
     }
 }

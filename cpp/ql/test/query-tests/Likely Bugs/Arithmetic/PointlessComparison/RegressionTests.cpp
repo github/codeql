@@ -116,3 +116,11 @@ void negativeZero4(int val) {
   if (val == 0) // GOOD [NO LONGER REPORTED]
     ;
 }
+
+void f(int *const &ref_to_ptr);
+
+void testTempObject() {
+  int x = 0;
+  f(&x);
+  if (x > 0) {} // GOOD [NO LONGER REPORTED]
+}

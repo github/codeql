@@ -16,7 +16,7 @@ mapping with (usually) a single key. The instructions are executed in the order
 they appear in the query suite definition. After all the instructions in the
 suite definition have been executed, the result is a set of selected queries.
 
-.. note::
+.. pull-quote:: Note
 
    Any custom queries that you want to add to a query suite must be in a :doc:`QL
    pack <about-ql-packs>` and contain the correct query metadata. 
@@ -54,7 +54,7 @@ queries using:
 
    - qlpack: <qlpack-name>
 
-.. note::
+.. pull-quote:: Note
 
    When pathnames appear in query suite definitions, they must always
    be given with a forward slash, ``/``, as a directory separator.
@@ -100,7 +100,7 @@ representing the constraints. Each constraint is a map entry, where the key is
 typically a query metadata property. The value can be:
 
 - A single string. 
-- A ``/``\ -enclosed `regular expression <https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html>`__.
+- A ``/``\ -enclosed `regular expression <https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/regex/Pattern.html>`__.
 - A list containing strings, regular expressions, or both.
 
 To match a constraint, a metadata value must match one of the strings or
@@ -254,7 +254,7 @@ without providing their full path. This gives you a simple way of specifying a
 set of queries, without needing to search inside QL packs and distributions.
 To declare a directory that contains "well-known" query suites, add the directory
 to the ``suites`` property in the ``qlpack.yml`` file at the root of your QL pack.
-For more information, see "`About QL packs <qlpack-overview.html#qlpack-yml-properties>`__."
+For more information, see ":ref:`About QL packs <qlpack-yml-properties>`."
 
 Using query suites with CodeQL
 ------------------------------

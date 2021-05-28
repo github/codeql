@@ -7,6 +7,11 @@
 **/mono*:
 **/dotnet:
   invoke ${config_dir}/extract-csharp.sh
+**/msbuild:
+**/xbuild:
+  replace yes
+  invoke ${compiler}
+  append /p:UseSharedCompilation=false
 /usr/bin/codesign:
   replace yes
   invoke /usr/bin/env

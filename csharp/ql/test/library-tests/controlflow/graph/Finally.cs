@@ -229,4 +229,47 @@ public class Finally
         }
         Console.WriteLine("Done");
     }
+
+    void M12(bool b1, bool b2)
+    {
+        try
+        {
+            try
+            {
+                if (b1)
+                    throw new ExceptionA();
+            }
+            finally
+            {
+                try
+                {
+                    if (b2)
+                        throw new ExceptionA();
+                }
+                finally
+                {
+                    Console.WriteLine("Inner finally");
+                }
+            }
+            Console.WriteLine("Mid finally");
+        }
+        finally
+        {
+            Console.WriteLine("Outer finally");
+        }
+        Console.WriteLine("Done");
+    }
+
+    void M13(int i)
+    {
+        try
+        {
+            Console.WriteLine("1");
+        }
+        finally
+        {
+            Console.WriteLine("3");
+            i += 3;
+        }
+    }
 }

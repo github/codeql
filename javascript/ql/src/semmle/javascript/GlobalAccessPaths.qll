@@ -5,6 +5,7 @@
 import javascript
 private import semmle.javascript.dataflow.InferredTypes
 private import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps
+private import semmle.javascript.internal.CachedStages
 
 deprecated module GlobalAccessPath {
   /**
@@ -304,6 +305,7 @@ module AccessPath {
    * }
    * ```
    */
+  pragma[inline]
   DataFlow::Node getAReferenceTo(Root root, string path) {
     path = fromReference(result, root) and
     not root.isGlobal()
@@ -326,6 +328,7 @@ module AccessPath {
    * })(NS = NS || {});
    * ```
    */
+  pragma[inline]
   DataFlow::Node getAReferenceTo(string path) {
     path = fromReference(result, DataFlow::globalAccessPathRootPseudoNode())
   }
@@ -346,6 +349,7 @@ module AccessPath {
    * }
    * ```
    */
+  pragma[inline]
   DataFlow::Node getAnAssignmentTo(Root root, string path) {
     path = fromRhs(result, root) and
     not root.isGlobal()
@@ -366,6 +370,7 @@ module AccessPath {
    *  })(foo = foo || {});
    * ```
    */
+  pragma[inline]
   DataFlow::Node getAnAssignmentTo(string path) {
     path = fromRhs(result, DataFlow::globalAccessPathRootPseudoNode())
   }
@@ -375,6 +380,7 @@ module AccessPath {
    *
    * See `getAReferenceTo` and `getAnAssignmentTo` for more details.
    */
+  pragma[inline]
   DataFlow::Node getAReferenceOrAssignmentTo(string path) {
     result = getAReferenceTo(path)
     or
@@ -386,6 +392,7 @@ module AccessPath {
    *
    * See `getAReferenceTo` and `getAnAssignmentTo` for more details.
    */
+  pragma[inline]
   DataFlow::Node getAReferenceOrAssignmentTo(Root root, string path) {
     result = getAReferenceTo(root, path)
     or
@@ -415,7 +422,7 @@ module AccessPath {
   pragma[inline]
   DataFlow::SourceNode getAnAliasedSourceNode(DataFlow::Node node) {
     exists(DataFlow::SourceNode root, string accessPath |
-      node = AccessPath::getAReferenceTo(root, accessPath) and
+      node = pragma[only_bind_into](AccessPath::getAReferenceTo(root, accessPath)) and
       result = AccessPath::getAReferenceTo(root, accessPath)
     )
     or
@@ -429,7 +436,6 @@ module AccessPath {
     /**
      * A classification of acccess paths into reads and writes.
      */
-    cached
     private newtype AccessPathKind =
       AccessPathRead() or
       AccessPathWrite()
@@ -440,6 +446,7 @@ module AccessPath {
      *
      * Only has a result if there exists both a read and write of the access-path within `bb`.
      */
+    pragma[nomagic]
     private ControlFlowNode rankedAccessPath(
       ReachableBasicBlock bb, Root root, string path, int ranking, AccessPathKind type
     ) {
@@ -539,6 +546,7 @@ module AccessPath {
      */
     cached
     predicate hasDominatingWrite(DataFlow::PropRead read) {
+      Stages::FlowSteps::ref() and
       // within the same basic block.
       exists(ReachableBasicBlock bb, Root root, string path, int ranking |
         read.asExpr() = rankedAccessPath(bb, root, path, ranking, AccessPathRead()) and

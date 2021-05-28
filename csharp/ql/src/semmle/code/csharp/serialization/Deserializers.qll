@@ -11,21 +11,17 @@ abstract class UnsafeDeserializer extends Callable { }
 /** An unsafe deserializer method in the `System.*` namespace. */
 class SystemDeserializer extends UnsafeDeserializer {
   SystemDeserializer() {
-    this
-        .hasQualifiedName("System.Runtime.Serialization.Formatters.Binary.BinaryFormatter",
-          "Deserialize")
+    this.hasQualifiedName("System.Runtime.Serialization.Formatters.Binary.BinaryFormatter",
+      "Deserialize")
     or
-    this
-        .hasQualifiedName("System.Runtime.Serialization.Formatters.Binary.BinaryFormatter",
-          "UnsafeDeserialize")
+    this.hasQualifiedName("System.Runtime.Serialization.Formatters.Binary.BinaryFormatter",
+      "UnsafeDeserialize")
     or
-    this
-        .hasQualifiedName("System.Runtime.Serialization.Formatters.Binary.BinaryFormatter",
-          "UnsafeDeserializeMethodResponse")
+    this.hasQualifiedName("System.Runtime.Serialization.Formatters.Binary.BinaryFormatter",
+      "UnsafeDeserializeMethodResponse")
     or
-    this
-        .hasQualifiedName("System.Runtime.Deserialization.Formatters.Soap.SoapFormatter",
-          "Deserialize")
+    this.hasQualifiedName("System.Runtime.Deserialization.Formatters.Soap.SoapFormatter",
+      "Deserialize")
     or
     this.hasQualifiedName("System.Web.UI.ObjectStateFormatter", "Deserialize")
     or

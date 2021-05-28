@@ -42,13 +42,11 @@ abstract class BufferAccess extends Expr {
  */
 class MemcpyBA extends BufferAccess {
   MemcpyBA() {
-    this.(FunctionCall).getTarget().getName() = "memcpy" or
-    this.(FunctionCall).getTarget().getName() = "wmemcpy" or
-    this.(FunctionCall).getTarget().getName() = "memmove" or
-    this.(FunctionCall).getTarget().getName() = "wmemmove" or
-    this.(FunctionCall).getTarget().getName() = "mempcpy" or
-    this.(FunctionCall).getTarget().getName() = "wmempcpy" or
-    this.(FunctionCall).getTarget().getName() = "RtlCopyMemoryNonTemporal"
+    this.(FunctionCall).getTarget().getName() =
+      [
+        "memcpy", "wmemcpy", "memmove", "wmemmove", "mempcpy", "wmempcpy",
+        "RtlCopyMemoryNonTemporal"
+      ]
   }
 
   override string getName() { result = this.(FunctionCall).getTarget().getName() }
@@ -157,10 +155,7 @@ class MemccpyBA extends BufferAccess {
  */
 class MemcmpBA extends BufferAccess {
   MemcmpBA() {
-    this.(FunctionCall).getTarget().getName() = "memcmp" or
-    this.(FunctionCall).getTarget().getName() = "wmemcmp" or
-    this.(FunctionCall).getTarget().getName() = "_memicmp" or
-    this.(FunctionCall).getTarget().getName() = "_memicmp_l"
+    this.(FunctionCall).getTarget().getName() = ["memcmp", "wmemcmp", "_memicmp", "_memicmp_l"]
   }
 
   override string getName() { result = this.(FunctionCall).getTarget().getName() }
@@ -188,10 +183,7 @@ class MemcmpBA extends BufferAccess {
  *  _swab(src, dest, num)
  */
 class SwabBA extends BufferAccess {
-  SwabBA() {
-    this.(FunctionCall).getTarget().getName() = "swab" or
-    this.(FunctionCall).getTarget().getName() = "_swab"
-  }
+  SwabBA() { this.(FunctionCall).getTarget().getName() = ["swab", "_swab"] }
 
   override string getName() { result = this.(FunctionCall).getTarget().getName() }
 
@@ -218,10 +210,7 @@ class SwabBA extends BufferAccess {
  *  wmemset(dest, value, num)
  */
 class MemsetBA extends BufferAccess {
-  MemsetBA() {
-    this.(FunctionCall).getTarget().getName() = "memset" or
-    this.(FunctionCall).getTarget().getName() = "wmemset"
-  }
+  MemsetBA() { this.(FunctionCall).getTarget().getName() = ["memset", "wmemset"] }
 
   override string getName() { result = this.(FunctionCall).getTarget().getName() }
 
@@ -262,10 +251,7 @@ class ZeroMemoryBA extends BufferAccess {
  *  wmemchr(buffer, value, num)
  */
 class MemchrBA extends BufferAccess {
-  MemchrBA() {
-    this.(FunctionCall).getTarget().getName() = "memchr" or
-    this.(FunctionCall).getTarget().getName() = "wmemchr"
-  }
+  MemchrBA() { this.(FunctionCall).getTarget().getName() = ["memchr", "wmemchr"] }
 
   override string getName() { result = this.(FunctionCall).getTarget().getName() }
 

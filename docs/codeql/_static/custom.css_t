@@ -200,7 +200,7 @@ blockquote.pull-quote {
     border-radius: 5px;
 } 
 
-blockquote.pull-quote p:first-of-type {
+blockquote.pull-quote:first-line {
     font-weight: bold;
     margin-top: 0px;
 }
@@ -222,10 +222,12 @@ blockquote.pull-quote > :last-child {
 
 .toggle .name:after {
     content: " ▶";
+    font-family: "monospace";
 }
 
 .toggle .name.open:after {
     content: " ▼";
+    font-family: "monospace";
 }
 
 /* -- PRINT VIEW ----------------------------------------------------------------------------*/

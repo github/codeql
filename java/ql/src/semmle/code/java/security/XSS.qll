@@ -7,6 +7,7 @@ import semmle.code.java.frameworks.spring.SpringController
 import semmle.code.java.frameworks.spring.SpringHttp
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking2
+import semmle.code.java.dataflow.ExternalFlow
 
 /** A sink that represent a method that outputs data without applying contextual output encoding. */
 abstract class XssSink extends DataFlow::Node { }
@@ -28,29 +29,28 @@ class XssAdditionalTaintStep extends Unit {
   abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);
 }
 
+/** CSV sink models representing methods susceptible to XSS attacks. */
+private class DefaultXssSinkModel extends SinkModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "javax.servlet.http;HttpServletResponse;false;sendError;(int,String);;Argument[1];xss",
+        "android.webkit;WebView;false;loadData;;;Argument[0];xss",
+        "android.webkit;WebView;false;loadUrl;;;Argument[0];xss",
+        "android.webkit;WebView;false;loadDataWithBaseURL;;;Argument[1];xss"
+      ]
+  }
+}
+
 /** A default sink representing methods susceptible to XSS attacks. */
 private class DefaultXssSink extends XssSink {
   DefaultXssSink() {
-    exists(HttpServletResponseSendErrorMethod m, MethodAccess ma |
-      ma.getMethod() = m and
-      this.asExpr() = ma.getArgument(1)
-    )
+    sinkNode(this, "xss")
     or
     exists(ServletWriterSourceToWritingMethodFlowConfig writer, MethodAccess ma |
       ma.getMethod() instanceof WritingMethod and
       writer.hasFlowToExpr(ma.getQualifier()) and
       this.asExpr() = ma.getArgument(_)
-    )
-    or
-    exists(Method m |
-      m.getDeclaringType() instanceof TypeWebView and
-      (
-        m.getAReference().getArgument(0) = this.asExpr() and m.getName() = "loadData"
-        or
-        m.getAReference().getArgument(0) = this.asExpr() and m.getName() = "loadUrl"
-        or
-        m.getAReference().getArgument(1) = this.asExpr() and m.getName() = "loadDataWithBaseURL"
-      )
     )
     or
     exists(SpringRequestMappingMethod requestMappingMethod, ReturnStmt rs |

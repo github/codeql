@@ -8,12 +8,12 @@ namespace Semmle.Extraction.CSharp.Entities
     {
         private LocalVariable(Context cx, ISymbol init) : base(cx, init) { }
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             throw new InvalidOperationException();
         }
 
-        public override void WriteQuotedId(TextWriter trapFile)
+        public sealed override void WriteQuotedId(EscapingTextWriter trapFile)
         {
             trapFile.Write('*');
         }
@@ -23,12 +23,12 @@ namespace Semmle.Extraction.CSharp.Entities
         public void PopulateManual(Expression parent, bool isVar)
         {
             var trapFile = Context.TrapWriter.Writer;
-            var (kind, type) = symbol is ILocalSymbol l
-                ? (l.IsRef ? 3 : l.IsConst ? 2 : 1, Type.Create(Context, l.GetAnnotatedType()))
+            var (kind, type) = Symbol is ILocalSymbol l
+                ? (l.IsRef ? 3 : l.IsConst ? 2 : 1, l.GetAnnotatedType())
                 : (1, parent.Type);
-            trapFile.localvars(this, kind, symbol.Name, isVar ? 1 : 0, type.Type.TypeRef, parent);
+            trapFile.localvars(this, kind, Symbol.Name, isVar ? 1 : 0, Type.Create(Context, type).TypeRef, parent);
 
-            if (symbol is ILocalSymbol local)
+            if (Symbol is ILocalSymbol local)
             {
                 PopulateNullability(trapFile, local.GetAnnotatedType());
                 if (local.IsRef)
@@ -47,17 +47,17 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private void DefineConstantValue(TextWriter trapFile)
         {
-            if (symbol is ILocalSymbol local && local.HasConstantValue)
+            if (Symbol is ILocalSymbol local && local.HasConstantValue)
             {
-                trapFile.constant_value(this, Expression.ValueAsString(local.ConstantValue));
+                trapFile.constant_value(this, Expression.ValueAsString(local.ConstantValue!));
             }
         }
 
-        private class LocalVariableFactory : ICachedEntityFactory<ISymbol, LocalVariable>
+        private class LocalVariableFactory : CachedEntityFactory<ISymbol, LocalVariable>
         {
             public static LocalVariableFactory Instance { get; } = new LocalVariableFactory();
 
-            public LocalVariable Create(Context cx, ISymbol init) => new LocalVariable(cx, init);
+            public override LocalVariable Create(Context cx, ISymbol init) => new LocalVariable(cx, init);
         }
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NeedsLabel;

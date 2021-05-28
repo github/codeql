@@ -57,7 +57,10 @@ cached
 private module Cached {
   cached
   Location bestLocation(Element e) {
-    result = e.getALocation().(SourceLocation)
+    result = e.getALocation().(SourceLocation) and
+    not exists(e.getALocation().(SourceLocation).getMappedLocation())
+    or
+    result = e.getALocation().(SourceLocation).getMappedLocation()
     or
     hasNoSourceLocation(e) and
     result = min(Location l | l = e.getALocation() | l order by l.getFile().toString())
@@ -134,6 +137,54 @@ private module Cached {
           expr_parent(child, i, parent)
         )
     else expr_parent(child, i, parent)
+  }
+
+  private Expr getAChildExpr(ExprOrStmtParent parent) {
+    result = parent.getAChildExpr() or
+    result = parent.(AssignOperation).getExpandedAssignment()
+  }
+
+  private ControlFlowElement getAChild(ExprOrStmtParent parent) {
+    result = getAChildExpr(parent)
+    or
+    result = parent.getAChildStmt()
+  }
+
+  pragma[inline]
+  private ControlFlowElement enclosingStart(ControlFlowElement cfe) {
+    result = cfe
+    or
+    getAChild(result).(AnonymousFunctionExpr) = cfe
+  }
+
+  private predicate parent(ControlFlowElement child, ExprOrStmtParent parent) {
+    child = getAChild(parent) and
+    not child instanceof Callable
+  }
+
+  /** Holds if the enclosing body of `cfe` is `body`. */
+  cached
+  predicate enclosingBody(ControlFlowElement cfe, ControlFlowElement body) {
+    body = any(Callable c).getBody() and
+    parent*(enclosingStart(cfe), body)
+  }
+
+  /** Holds if the enclosing callable of `cfe` is `c`. */
+  cached
+  predicate enclosingCallable(ControlFlowElement cfe, Callable c) {
+    enclosingBody(cfe, c.getBody())
+    or
+    parent*(enclosingStart(cfe), c.(Constructor).getInitializer())
+  }
+
+  /** Holds if the enclosing statement of expression `e` is `s`. */
+  cached
+  predicate enclosingStmt(Expr e, Stmt s) {
+    // Compute the enclosing statement for an expression. Note that this need
+    // not exist, since expressions can occur in contexts where they have no
+    // enclosing statement (examples include field initialisers, both inline
+    // and explicit on constructor definitions, and annotation arguments).
+    getAChildExpr+(s) = e
   }
 }
 

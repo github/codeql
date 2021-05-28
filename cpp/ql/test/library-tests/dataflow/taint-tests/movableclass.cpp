@@ -19,10 +19,10 @@ public:
 	int v;
 };
 
-MyMovableClass &&getUnTainted() { return MyMovableClass(1); }
-MyMovableClass &&getTainted() { return MyMovableClass(source()); }
+MyMovableClass   getUnTainted() { return MyMovableClass(1); }
+MyMovableClass   getTainted() { return MyMovableClass(source()); }
 
-void test_copyableclass()
+void test_movableclass()
 {
 	{
 		MyMovableClass s1(1);
@@ -41,9 +41,9 @@ void test_copyableclass()
 		MyMovableClass s3;
 		s3 = source();
 
-		sink(s1); // tainted
-		sink(s2); // tainted
-		sink(s3); // tainted
+		sink(s1); // $ ast,ir
+		sink(s2); // $ ast,ir
+		sink(s3); // $ ast,ir
 	}
 
 	{
@@ -51,8 +51,8 @@ void test_copyableclass()
 		MyMovableClass s2;
 		s2 = MyMovableClass(source());
 
-		sink(s1); // tainted
-		sink(s2); // tainted
+		sink(s1); // $ ast,ir
+		sink(s2); // $ ast,ir
 	}
 
 	{
@@ -61,7 +61,7 @@ void test_copyableclass()
 		MyMovableClass s3;
 
 		sink(s1);
-		sink(s2); // tainted
-		sink(s3 = source()); // tainted
+		sink(s2); // $ ast,ir
+		sink(s3 = source()); // $ ast,ir
 	}
 }

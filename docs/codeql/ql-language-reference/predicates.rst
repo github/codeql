@@ -8,7 +8,9 @@ Predicates
 Predicates are used to describe the logical relations that make up a QL program. 
 
 Strictly speaking, a predicate evaluates to a set of tuples. For example, consider the 
-following two predicate definitions:: 
+following two predicate definitions:
+
+.. code-block:: ql
 
     predicate isCountry(string country) {
       country = "Germany"
@@ -35,7 +37,7 @@ The `arity <https://en.wikipedia.org/wiki/Arity>`_ of these predicates is one an
 In general, all tuples in a predicate have the same number of elements. The **arity** of 
 a predicate is that number of elements, not including a possible ``result`` variable. For more information, see ":ref:`predicates-with-result`."
 
-There are a number of `built-in predicates <ql-language-specification#built-ins>`_ 
+There are a number of `built-in predicates <https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#built-ins>`_ 
 in QL. You can use these in any queries without needing to :ref:`import <importing-modules>`
 any additional modules. In addition to these built-in predicates, you can also define your
 own:
@@ -49,13 +51,14 @@ When defining a predicate, you should specify:
 
 #. The keyword ``predicate`` (for a :ref:`predicate without result <predicates-without-result>`), 
    or the type of the result (for a :ref:`predicate with result <predicates-with-result>`).
-#. The name of the predicate. This is an `identifier <ql-language-specification#identifiers>`_ 
+#. The name of the predicate. This is an `identifier <https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#identifiers>`_ 
    starting with a lowercase letter.
 #. The arguments to the predicate, if any, separated by commas. For each argument, specify the
    argument type and an identifier for the argument variable.
 #. The predicate body itself. This is a logical formula enclosed in braces. 
 
-.. note::
+.. pull-quote:: Note
+
    An :ref:`abstract` or :ref:`external` predicate has no body. To define such a predicate, 
    end the predicate definition with a semicolon (``;``) instead.
 
@@ -142,7 +145,9 @@ on itself.
 For example, you could use recursion to refine the above example. As it stands, the relation 
 defined in ``getANeighbor`` is not symmetric—it does not capture the fact that if x is a 
 neighbor of y, then y is a neighbor of x. A simple way to capture this is to call this 
-predicate recursively, as shown below:: 
+predicate recursively, as shown below:
+
+.. code-block:: ql
 
     string getANeighbor(string country) {
       country = "France" and result = "Belgium"
@@ -221,14 +226,16 @@ Here are a few examples of infinite predicates:
       Compilation errors:
       ERROR: "i" is not bound to a value.
       ERROR: "result" is not bound to a value.
+      ERROR: expression "i * 4" is not bound to a value.
     */
     int multiplyBy4(int i) {
       result = i * 4
     }
     
     /*
-      Compilation error:
+      Compilation errors:
       ERROR: "str" is not bound to a value.
+      ERROR: expression "str.length()" is not bound to a value.
     */
     predicate shortString(string str) {
       str.length() < 10

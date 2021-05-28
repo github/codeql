@@ -129,7 +129,11 @@ class Module extends Module_, Scope, AstNode {
       a.defines(all) and
       a.getScope() = this and
       all.getId() = "__all__" and
-      a.getValue().(List).getAnElt().(StrConst).getText() = name
+      (
+        a.getValue().(List).getAnElt().(StrConst).getText() = name
+        or
+        a.getValue().(Tuple).getAnElt().(StrConst).getText() = name
+      )
     )
   }
 
@@ -201,11 +205,38 @@ private string moduleNameFromBase(Container file) {
   file instanceof File and result = file.getStem()
 }
 
+/**
+ * Holds if `file` may be transitively imported from a file that may serve as the entry point of
+ * the execution.
+ */
+private predicate transitively_imported_from_entry_point(File file) {
+  file.getExtension().matches("%py%") and
+  exists(File importer |
+    // Only consider files that are in the source archive
+    exists(importer.getRelativePath()) and
+    importer.getParent() = file.getParent() and
+    exists(ImportExpr i |
+      i.getLocation().getFile() = importer and
+      i.getName() = file.getStem() and
+      // Disregard relative imports
+      i.getLevel() = 0
+    )
+  |
+    importer.isPossibleEntryPoint() or transitively_imported_from_entry_point(importer)
+  )
+}
+
 string moduleNameFromFile(Container file) {
   exists(string basename |
     basename = moduleNameFromBase(file) and
-    legalShortName(basename) and
+    legalShortName(basename)
+  |
     result = moduleNameFromFile(file.getParent()) + "." + basename
+    or
+    // If `file` is a transitive import of a file that's executed directly, we allow references
+    // to it by its `basename`.
+    transitively_imported_from_entry_point(file) and
+    result = basename
   )
   or
   isPotentialSourcePackage(file) and

@@ -3,9 +3,8 @@ import java
 /** The class `org.springframework.security.config.annotation.web.builders.HttpSecurity`. */
 class TypeHttpSecurity extends Class {
   TypeHttpSecurity() {
-    this
-        .hasQualifiedName("org.springframework.security.config.annotation.web.builders",
-          "HttpSecurity")
+    this.hasQualifiedName("org.springframework.security.config.annotation.web.builders",
+      "HttpSecurity")
   }
 }
 
@@ -15,9 +14,8 @@ class TypeHttpSecurity extends Class {
  */
 class TypeAuthorizedUrl extends Class {
   TypeAuthorizedUrl() {
-    this
-        .hasQualifiedName("org.springframework.security.config.annotation.web.configurers",
-          "ExpressionUrlAuthorizationConfigurer<HttpSecurity>$AuthorizedUrl<>")
+    this.hasQualifiedName("org.springframework.security.config.annotation.web.configurers",
+      "ExpressionUrlAuthorizationConfigurer<HttpSecurity>$AuthorizedUrl<>")
   }
 }
 
@@ -26,9 +24,8 @@ class TypeAuthorizedUrl extends Class {
  */
 class TypeAbstractRequestMatcherRegistry extends Class {
   TypeAbstractRequestMatcherRegistry() {
-    this
-        .hasQualifiedName("org.springframework.security.config.annotation.web",
-          "AbstractRequestMatcherRegistry<AuthorizedUrl<>>")
+    this.hasQualifiedName("org.springframework.security.config.annotation.web",
+      "AbstractRequestMatcherRegistry<AuthorizedUrl<>>")
   }
 }
 
@@ -37,9 +34,8 @@ class TypeAbstractRequestMatcherRegistry extends Class {
  */
 class TypeEndpointRequest extends Class {
   TypeEndpointRequest() {
-    this
-        .hasQualifiedName("org.springframework.boot.actuate.autoconfigure.security.servlet",
-          "EndpointRequest")
+    this.hasQualifiedName("org.springframework.boot.actuate.autoconfigure.security.servlet",
+      "EndpointRequest")
   }
 }
 

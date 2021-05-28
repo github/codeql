@@ -25,7 +25,7 @@ public final class Splitter {
   }
 
   public Splitter omitEmptyStrings() {
-    return null;;
+    return null;
   }
 
   public Iterable<String> split(final CharSequence sequence) {

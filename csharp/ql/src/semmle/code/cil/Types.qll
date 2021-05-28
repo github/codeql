@@ -47,13 +47,22 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, @cil_valueorreftype {
 class Enum extends ValueOrRefType {
   Enum() { this.isEnum() }
 
-  // Note that we don't actually use the proper internal representation yet.
-  override IntType getUnderlyingType() { any() }
+  override IntegralType getUnderlyingType() {
+    cil_enum_underlying_type(this, result)
+    or
+    not cil_enum_underlying_type(this, _) and
+    result instanceof IntType
+  }
 }
 
 /** A `class`. */
 class Class extends ValueOrRefType {
   Class() { this.isClass() }
+}
+
+/** A `record`. */
+class Record extends Class {
+  Record() { this.isRecord() }
 }
 
 /** An `interface`. */
@@ -283,4 +292,33 @@ class CharType extends IntegralType {
 /** The type `System.Type`. */
 class SystemType extends ValueOrRefType {
   SystemType() { this.isSystemType("Type") }
+}
+
+/**
+ * A function pointer type, for example
+ *
+ * ```csharp
+ * delegate*<int, void>
+ * ```
+ */
+class FunctionPointerType extends Type, CustomModifierReceiver, Parameterizable,
+  @cil_function_pointer_type {
+  /** Gets the return type of this function pointer. */
+  Type getReturnType() { cil_function_pointer_return_type(this, result) }
+
+  /** Gets the calling convention. */
+  int getCallingConvention() { cil_function_pointer_calling_conventions(this, result) }
+
+  override string toString() { result = Type.super.toString() }
+
+  /** Holds if the return type is `void`. */
+  predicate returnsVoid() { getReturnType() instanceof VoidType }
+
+  /** Gets the number of stack items pushed in a call to this method. */
+  int getCallPushCount() { if returnsVoid() then result = 0 else result = 1 }
+
+  /** Gets the number of stack items popped in a call to this method. */
+  int getCallPopCount() { result = count(getRawParameter(_)) }
+
+  override string getLabel() { result = getName() }
 }

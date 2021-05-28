@@ -40,7 +40,7 @@ class Splitting
         if (b)
             Check(s); // flow
         else
-            Check(s); // no flow [FALSE POSITIVE]
+            Check(s); // no flow
     }
 
     void M4(bool b)

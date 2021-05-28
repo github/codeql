@@ -16,7 +16,7 @@ import javascript
  */
 DataFlow::ObjectLiteralNode tlsOptions() {
   exists(DataFlow::InvokeNode invk | result.flowsTo(invk.getAnArgument()) |
-    invk instanceof NodeJSLib::NodeJSClientRequest
+    invk instanceof ClientRequest
     or
     invk = DataFlow::moduleMember("https", "Agent").getAnInstantiation()
     or

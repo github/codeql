@@ -21,6 +21,8 @@ notMarkedAsConflated
 wronglyMarkedAsConflated
 invalidOverlap
 nonUniqueEnclosingIRFunction
+fieldAddressOnNonPointer
+thisArgumentIsNonPointer
 missingCanonicalLanguageType
 multipleCanonicalLanguageTypes
 missingIRType

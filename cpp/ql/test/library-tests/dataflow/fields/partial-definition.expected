@@ -266,14 +266,18 @@
 | by_reference.cpp:20:23:20:27 | value |
 | by_reference.cpp:24:19:24:22 | this |
 | by_reference.cpp:24:25:24:29 | value |
+| by_reference.cpp:40:12:40:15 | this |
 | by_reference.cpp:50:3:50:3 | s |
 | by_reference.cpp:50:17:50:26 | call to user_input |
+| by_reference.cpp:51:8:51:8 | s |
 | by_reference.cpp:51:10:51:20 | call to getDirectly |
 | by_reference.cpp:56:3:56:3 | s |
 | by_reference.cpp:56:19:56:28 | call to user_input |
+| by_reference.cpp:57:8:57:8 | s |
 | by_reference.cpp:57:10:57:22 | call to getIndirectly |
 | by_reference.cpp:62:3:62:3 | s |
 | by_reference.cpp:62:25:62:34 | call to user_input |
+| by_reference.cpp:63:8:63:8 | s |
 | by_reference.cpp:63:10:63:28 | call to getThroughNonMember |
 | by_reference.cpp:68:17:68:18 | & ... |
 | by_reference.cpp:68:21:68:30 | call to user_input |
@@ -366,6 +370,23 @@
 | complex.cpp:62:7:62:8 | b2 |
 | complex.cpp:65:7:65:8 | b3 |
 | complex.cpp:68:7:68:8 | b4 |
+| conflated.cpp:10:3:10:7 | * ... |
+| conflated.cpp:10:4:10:5 | ra |
+| conflated.cpp:19:19:19:21 | raw |
+| conflated.cpp:20:8:20:10 | raw |
+| conflated.cpp:29:3:29:4 | pa |
+| conflated.cpp:29:7:29:7 | x |
+| conflated.cpp:36:3:36:4 | pa |
+| conflated.cpp:36:7:36:7 | x |
+| conflated.cpp:53:3:53:4 | ll |
+| conflated.cpp:53:7:53:10 | next |
+| conflated.cpp:54:3:54:4 | ll |
+| conflated.cpp:54:7:54:10 | next |
+| conflated.cpp:54:13:54:13 | y |
+| conflated.cpp:59:35:59:38 | next |
+| conflated.cpp:60:3:60:4 | ll |
+| conflated.cpp:60:7:60:10 | next |
+| conflated.cpp:60:13:60:13 | y |
 | constructors.cpp:20:24:20:25 | a_ |
 | constructors.cpp:20:24:20:25 | this |
 | constructors.cpp:21:24:21:25 | b_ |

@@ -165,6 +165,7 @@ Query help inclusion
 ====================
 
 To reuse content between different help topics, you can store shared content in one query help file and then include it in a number of other query help files using the ``include`` element. The shared content can be stored either in the same directory as the including files, or in ``SEMMLE_DIST/docs/include``.
+When a query help file is only included by other help files but does not belong to a specific query, it should have the file extension ``.inc.qhelp``.
 
 The ``include`` element can be used as a section or block element. The content of the query help file defined by the ``src`` attribute must contain elements that are appropriate to the location of the ``include`` element.
 
@@ -190,12 +191,12 @@ Block-level ``include`` elements can be included beneath section-level elements.
    
    <qhelp>
        <overview>
-           <include src="ThreadUnsafeICryptoTransformOverview.qhelp" />
+           <include src="ThreadUnsafeICryptoTransformOverview.inc.qhelp" />
        </overview>
        ...
    </qhelp>
 
-The included file, `ThreadUnsafeICryptoTransformOverview.qhelp <https://github.com/github/codeql/blob/main/csharp/ql/src/Likely%20Bugs/ThreadUnsafeICryptoTransformOverview.qhelp>`_, may only contain one or more ``fragment`` sections. For example:
+The included file, `ThreadUnsafeICryptoTransformOverview.inc.qhelp <https://github.com/github/codeql/blob/main/csharp/ql/src/Likely%20Bugs/ThreadUnsafeICryptoTransformOverview.inc.qhelp>`_, may only contain one or more ``fragment`` sections. For example:
 
 .. code-block:: xml 
 

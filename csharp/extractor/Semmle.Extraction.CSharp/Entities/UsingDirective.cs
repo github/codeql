@@ -21,33 +21,33 @@ namespace Semmle.Extraction.CSharp.Entities
 
         protected override void Populate(TextWriter trapFile)
         {
-            var info = cx.GetModel(node).GetSymbolInfo(node.Name);
+            var info = Context.GetModel(node).GetSymbolInfo(node.Name);
 
             if (node.StaticKeyword.Kind() == SyntaxKind.None)
             {
                 // A normal using
                 if (info.Symbol is INamespaceSymbol namespaceSymbol)
                 {
-                    var ns = Namespace.Create(cx, namespaceSymbol);
+                    var ns = Namespace.Create(Context, namespaceSymbol);
                     trapFile.using_namespace_directives(this, ns);
-                    trapFile.using_directive_location(this, cx.Create(ReportingLocation));
+                    trapFile.using_directive_location(this, Context.CreateLocation(ReportingLocation));
                 }
                 else
                 {
-                    cx.Extractor.MissingNamespace(node.Name.ToFullString(), cx.FromSource);
-                    cx.ModelError(node, "Namespace not found");
+                    Context.Extractor.MissingNamespace(node.Name.ToFullString(), Context.FromSource);
+                    Context.ModelError(node, "Namespace not found");
                     return;
                 }
             }
             else
             {
                 // A "using static"
-                var m = Type.Create(cx, (ITypeSymbol)info.Symbol);
+                var m = Type.Create(Context, (ITypeSymbol?)info.Symbol);
                 trapFile.using_static_directives(this, m.TypeRef);
-                trapFile.using_directive_location(this, cx.Create(ReportingLocation));
+                trapFile.using_directive_location(this, Context.CreateLocation(ReportingLocation));
             }
 
-            if (parent != null)
+            if (parent is not null)
             {
                 trapFile.parent_namespace_declaration(this, parent);
             }

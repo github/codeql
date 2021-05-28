@@ -227,14 +227,18 @@
 | by_reference.cpp:20:23:20:27 | value | AST only |
 | by_reference.cpp:24:19:24:22 | this | AST only |
 | by_reference.cpp:24:25:24:29 | value | AST only |
+| by_reference.cpp:40:12:40:15 | this | AST only |
 | by_reference.cpp:50:3:50:3 | s | AST only |
 | by_reference.cpp:50:17:50:26 | call to user_input | AST only |
+| by_reference.cpp:51:8:51:8 | s | AST only |
 | by_reference.cpp:51:10:51:20 | call to getDirectly | AST only |
 | by_reference.cpp:56:3:56:3 | s | AST only |
 | by_reference.cpp:56:19:56:28 | call to user_input | AST only |
+| by_reference.cpp:57:8:57:8 | s | AST only |
 | by_reference.cpp:57:10:57:22 | call to getIndirectly | AST only |
 | by_reference.cpp:62:3:62:3 | s | AST only |
 | by_reference.cpp:62:25:62:34 | call to user_input | AST only |
+| by_reference.cpp:63:8:63:8 | s | AST only |
 | by_reference.cpp:63:10:63:28 | call to getThroughNonMember | AST only |
 | by_reference.cpp:68:17:68:18 | & ... | AST only |
 | by_reference.cpp:68:21:68:30 | call to user_input | AST only |
@@ -294,27 +298,37 @@
 | complex.cpp:11:22:11:23 | a_ | AST only |
 | complex.cpp:12:22:12:23 | b_ | AST only |
 | complex.cpp:42:8:42:8 | b | AST only |
-| complex.cpp:42:10:42:14 | inner | AST only |
 | complex.cpp:42:16:42:16 | f | AST only |
 | complex.cpp:43:8:43:8 | b | AST only |
-| complex.cpp:43:10:43:14 | inner | AST only |
 | complex.cpp:43:16:43:16 | f | AST only |
 | complex.cpp:53:3:53:4 | b1 | AST only |
-| complex.cpp:53:6:53:10 | inner | AST only |
 | complex.cpp:53:12:53:12 | f | AST only |
 | complex.cpp:54:3:54:4 | b2 | AST only |
-| complex.cpp:54:6:54:10 | inner | AST only |
 | complex.cpp:54:12:54:12 | f | AST only |
 | complex.cpp:55:3:55:4 | b3 | AST only |
-| complex.cpp:55:6:55:10 | inner | AST only |
 | complex.cpp:55:12:55:12 | f | AST only |
 | complex.cpp:56:3:56:4 | b3 | AST only |
-| complex.cpp:56:6:56:10 | inner | AST only |
 | complex.cpp:56:12:56:12 | f | AST only |
 | complex.cpp:59:7:59:8 | b1 | AST only |
 | complex.cpp:62:7:62:8 | b2 | AST only |
 | complex.cpp:65:7:65:8 | b3 | AST only |
 | complex.cpp:68:7:68:8 | b4 | AST only |
+| conflated.cpp:10:3:10:7 | * ... | AST only |
+| conflated.cpp:10:4:10:5 | ra | AST only |
+| conflated.cpp:19:19:19:21 | raw | AST only |
+| conflated.cpp:20:8:20:10 | raw | AST only |
+| conflated.cpp:29:3:29:4 | pa | AST only |
+| conflated.cpp:29:7:29:7 | x | AST only |
+| conflated.cpp:36:3:36:4 | pa | AST only |
+| conflated.cpp:36:7:36:7 | x | AST only |
+| conflated.cpp:53:7:53:10 | next | AST only |
+| conflated.cpp:54:3:54:4 | ll | AST only |
+| conflated.cpp:54:7:54:10 | next | AST only |
+| conflated.cpp:54:13:54:13 | y | AST only |
+| conflated.cpp:59:35:59:38 | next | AST only |
+| conflated.cpp:60:3:60:4 | ll | AST only |
+| conflated.cpp:60:7:60:10 | next | AST only |
+| conflated.cpp:60:13:60:13 | y | AST only |
 | constructors.cpp:20:24:20:25 | a_ | AST only |
 | constructors.cpp:21:24:21:25 | b_ | AST only |
 | constructors.cpp:28:10:28:10 | f | AST only |

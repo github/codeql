@@ -72,7 +72,7 @@ namespace SemmleTests.Semmle.Util
         public void Move()
         {
             File.WriteAllText(shortPath, "abc");
-            Directory.CreateDirectory(Path.GetDirectoryName(longPath));
+            Directory.CreateDirectory(Path.GetDirectoryName(longPath)!);
             File.Delete(longPath);
             File.Move(shortPath, longPath);
             File.Move(longPath, shortPath);
@@ -84,7 +84,7 @@ namespace SemmleTests.Semmle.Util
         {
             File.WriteAllText(shortPath, "abc");
             File.Delete(longPath);
-            Directory.CreateDirectory(Path.GetDirectoryName(longPath));
+            Directory.CreateDirectory(Path.GetDirectoryName(longPath)!);
             File.Move(shortPath, longPath);
             File.WriteAllText(shortPath, "def");
             FileUtils.MoveOrReplace(shortPath, longPath);
@@ -117,7 +117,7 @@ namespace SemmleTests.Semmle.Util
         {
             var buffer2 = new byte[10];
 
-            Directory.CreateDirectory(Path.GetDirectoryName(longPath));
+            Directory.CreateDirectory(Path.GetDirectoryName(longPath)!);
 
             using (var s3 = new FileStream(longPath, FileMode.Create, FileAccess.Write, FileShare.None))
             {

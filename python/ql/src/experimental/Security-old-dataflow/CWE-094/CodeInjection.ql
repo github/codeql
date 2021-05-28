@@ -1,17 +1,10 @@
 /**
  * @name Code injection
- * @description Interpreting unsanitized user input as code allows a malicious user arbitrary
+ * @description OLD QUERY: Interpreting unsanitized user input as code allows a malicious user arbitrary
  *              code execution.
  * @kind path-problem
  * @problem.severity error
- * @sub-severity high
- * @precision high
- * @id py/code-injection
- * @tags security
- *       external/owasp/owasp-a1
- *       external/cwe/cwe-094
- *       external/cwe/cwe-095
- *       external/cwe/cwe-116
+ * @id py/old/code-injection
  */
 
 import python

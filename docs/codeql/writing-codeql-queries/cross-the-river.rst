@@ -47,6 +47,7 @@ a piece of cargo.
       *Show/hide code*
 
    .. literalinclude:: river-crossing.ql
+      :language: ql
       :lines: 15-23
 
 Second, any item can be on one of two shores. Let's call these the "left shore" and the "right shore".
@@ -63,6 +64,7 @@ You can do this by defining a member predicate
       *Show/hide code*
 
    .. literalinclude:: river-crossing.ql
+      :language: ql
       :lines: 25-38
 
 We also want a way to keep track of where the man, the goat, the cabbage, and the wolf are at any point. We can call this combined
@@ -80,6 +82,7 @@ temporary variables in the body of a class are called :ref:`fields <fields>`.
       *Show/hide code*
 
    .. literalinclude:: river-crossing-1.ql
+      :language: ql
       :lines: 33-40,87
 
 We are interested in two particular states, namely the initial state and the goal state,
@@ -94,6 +97,7 @@ Assuming that all items start on the left shore and end up on the right shore, d
       *Show/hide code*
 
    .. literalinclude:: river-crossing-1.ql
+      :language: ql
       :lines: 89-97
 
 .. pull-quote::
@@ -112,6 +116,7 @@ Using the above note, the QL code so far looks like this:
       *Show/hide code*
 
    .. literalinclude:: river-crossing.ql
+      :language: ql
       :lines: 15-52,103-113
 
 Model the action of "ferrying"
@@ -130,6 +135,7 @@ after ferrying a particular cargo. (Hint: Use the predicate ``other``.)
       *Show/hide code*
 
    .. literalinclude:: river-crossing.ql
+      :language: ql
       :lines: 54-67
 
 Of course, not all ferrying actions are possible. Add some extra conditions to describe when a ferrying
@@ -147,6 +153,7 @@ For example, follow these steps:
       *Show/hide code*
 
    .. literalinclude:: river-crossing.ql
+      :language: ql
       :lines: 69-81
 
 Find paths from one state to another
@@ -185,6 +192,7 @@ for example ``steps <= 7``.
       *Show/hide code*
 
    .. literalinclude:: river-crossing-1.ql
+      :language: ql
       :lines: 70-86
 
 However, although this ensures that the solution is finite, it can still contain loops if the upper bound
@@ -205,7 +213,7 @@ the given path without revisiting any previously visited states.
     revisiting any previous states, and there is a ``safeFerry`` action from the intermediate state to
     the result state.
     (Hint: To check whether a state has previously been visited, you could check if
-    there is an `index of <ql-language-specification#built-ins-for-string>`__
+    there is an `index of <https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#built-ins-for-string>`__
     ``visitedStates`` at which the state occurs.)
 
 .. container:: toggle
@@ -215,6 +223,7 @@ the given path without revisiting any previously visited states.
       *Show/hide code*
 
    .. literalinclude:: river-crossing.ql
+      :language: ql
       :lines: 83-102
 
 Display the results
@@ -230,6 +239,7 @@ that returns the resulting path.
       *Show/hide code*
 
    .. literalinclude:: river-crossing.ql
+      :language: ql
       :lines: 115-117
 
 The :ref:`don't-care expression <don-t-care-expressions>` (``_``),

@@ -8,7 +8,7 @@ import java.util.List;
 import org.apache.commons.io.IOUtils;
 
 class Test {
-	public static void ioutils() {
+	public static void ioutils() throws java.io.FileNotFoundException, java.io.IOException {
 		InputStream inp = new FileInputStream("test"); // user input
 
 		InputStream buf = IOUtils.buffer(inp);

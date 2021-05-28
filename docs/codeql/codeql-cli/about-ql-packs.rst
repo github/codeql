@@ -21,7 +21,7 @@ files and directories within the pack should be logically organized. For example
 - Queries are organized into directories for specific categories.
 - Queries for specific products, libraries, and frameworks are organized into 
   their own top-level directories.
-- There is a top-level directory named ``<owner>/<ql-language-specification>`` for query library 
+- There is a top-level directory named ``<owner>/<language>`` for query library 
   (``.qll``) files. Within this directory, ``.qll`` files should be organized into 
   subdirectories for specific categories. 
 
@@ -57,6 +57,8 @@ from any location in the pack by declaring ``import mycompany.java.CustomSinks``
 For more information, see ":ref:`Importing modules <importing-modules>`" 
 in the QL language reference.
 
+.. _qlpack-yml-properties:
+
 ``qlpack.yml`` properties
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -73,11 +75,11 @@ The following properties are supported in ``qlpack.yml`` files.
    * - ``name``
      - ``org-queries``
      - All packs
-     - The name of the QL pack defined using alphanumeric characters, hyphens, and periods. It must be unique as CodeQL cannot differentiate between QL packs with identical names. If you intend to    distribute the pack, prefix the name with your (or your organization's) name followed by a hyphen. Use the pack name to specify queries to run using ``database analyze`` and to define    dependencies between QL packs (see examples below).- '
+     - The name of the QL pack defined using alphanumeric characters, hyphens, and periods. It must be unique as CodeQL cannot differentiate between QL packs with identical names. If you intend to    distribute the pack, prefix the name with your (or your organization's) name followed by a hyphen. Use the pack name to specify queries to run using ``database analyze`` and to define    dependencies between QL packs (see examples below).
    * - ``version``
      - ``0.0.0``
      - All packs
-     - A version number for this QL pack. This field is not currently used by any commands, but may be required by future releases of CodeQL.
+     - A version number for this QL pack. This must be a valid semantic version that meets the `SemVer v2.0.0 specification <https://semver.org/spec/v2.0.0.html>`__.
    * - ``libraryPathDependencies``
      - ``codeql-javascript``
      - Optional
@@ -101,7 +103,7 @@ The following properties are supported in ``qlpack.yml`` files.
    * - ``upgrades``
      - ``.``
      - Packs with upgrades
-     - The path to a directory within the pack that contains upgrade scripts, defined relative to the pack directory. The ``database upgrade`` action uses these scripts to update databases that were created by an older version of an extractor so they're compatible with the current extractor (see `Upgrade scripts for a language <upgrade-scripts-for-a-language>`__ below.)
+     - The path to a directory within the pack that contains upgrade scripts, defined relative to the pack directory. The ``database upgrade`` action uses these scripts to update databases that were created by an older version of an extractor so they're compatible with the current extractor (see `Upgrade scripts for a language <#upgrade-scripts-for-a-language>`__ below.)
 
 
 .. _custom-ql-packs:

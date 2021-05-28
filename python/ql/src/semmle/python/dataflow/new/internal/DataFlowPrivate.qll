@@ -11,103 +11,138 @@ private import semmle.python.essa.SsaCompute
 //--------
 predicate isExpressionNode(ControlFlowNode node) { node.getNode() instanceof Expr }
 
-/** A data flow node for which we should synthesise an associated pre-update node. */
-abstract class NeedsSyntheticPreUpdateNode extends Node {
-  /** A label for this kind of node. This will figure in the textual representation of the synthesized pre-update node. */
-  abstract string label();
-}
+/** A module collecting the different reasons for synthesising a pre-update node. */
+module syntheticPreUpdateNode {
+  class SyntheticPreUpdateNode extends Node, TSyntheticPreUpdateNode {
+    NeedsSyntheticPreUpdateNode post;
 
-class SyntheticPreUpdateNode extends Node, TSyntheticPreUpdateNode {
-  NeedsSyntheticPreUpdateNode post;
+    SyntheticPreUpdateNode() { this = TSyntheticPreUpdateNode(post) }
 
-  SyntheticPreUpdateNode() { this = TSyntheticPreUpdateNode(post) }
+    /** Gets the node for which this is a synthetic pre-update node. */
+    Node getPostUpdateNode() { result = post }
 
-  /** Gets the node for which this is a synthetic pre-update node. */
-  Node getPostUpdateNode() { result = post }
+    override string toString() { result = "[pre " + post.label() + "] " + post.toString() }
 
-  override string toString() { result = "[pre " + post.label() + "] " + post.toString() }
+    override Scope getScope() { result = post.getScope() }
 
-  override Scope getScope() { result = post.getScope() }
-
-  override Location getLocation() { result = post.getLocation() }
-}
-
-/** A data flow node for which we should synthesise an associated post-update node. */
-abstract class NeedsSyntheticPostUpdateNode extends Node {
-  /** A label for this kind of node. This will figure in the textual representation of the synthesized post-update node. */
-  abstract string label();
-}
-
-/** An argument might have its value changed as a result of a call. */
-class ArgumentPreUpdateNode extends NeedsSyntheticPostUpdateNode, ArgumentNode {
-  // Certain arguments, such as implicit self arguments are already post-update nodes
-  // and should not have an extra node synthesised.
-  ArgumentPreUpdateNode() {
-    this = any(FunctionCall c).getArg(_)
-    or
-    // Avoid argument 0 of method calls as those have read post-update nodes.
-    exists(MethodCall c, int n | n > 0 | this = c.getArg(n))
-    or
-    this = any(SpecialCall c).getArg(_)
-    or
-    // Avoid argument 0 of class calls as those have non-synthetic post-update nodes.
-    exists(ClassCall c, int n | n > 0 | this = c.getArg(n))
+    override Location getLocation() { result = post.getLocation() }
   }
 
-  override string label() { result = "arg" }
+  /** A data flow node for which we should synthesise an associated pre-update node. */
+  class NeedsSyntheticPreUpdateNode extends PostUpdateNode {
+    NeedsSyntheticPreUpdateNode() { this = objectCreationNode() }
+
+    override Node getPreUpdateNode() { result.(SyntheticPreUpdateNode).getPostUpdateNode() = this }
+
+    /**
+     * A label for this kind of node. This will figure in the textual representation of the synthesized pre-update node.
+     *
+     * There is currently only one reason for needing a pre-update node, so we always use that as the label.
+     */
+    string label() { result = "objCreate" }
+  }
+
+  /**
+   * Calls to constructors are treated as post-update nodes for the synthesized argument
+   * that is mapped to the `self` parameter. That way, constructor calls represent the value of the
+   * object after the constructor (currently only `__init__`) has run.
+   */
+  CfgNode objectCreationNode() { result.getNode().(CallNode) = any(ClassCall c).getNode() }
 }
 
-/** An object might have its value changed after a store. */
-class StorePreUpdateNode extends NeedsSyntheticPostUpdateNode, CfgNode {
-  StorePreUpdateNode() {
+import syntheticPreUpdateNode
+
+/** A module collecting the different reasons for synthesising a post-update node. */
+module syntheticPostUpdateNode {
+  /** A post-update node is synthesized for all nodes which satisfy `NeedsSyntheticPostUpdateNode`. */
+  class SyntheticPostUpdateNode extends PostUpdateNode, TSyntheticPostUpdateNode {
+    NeedsSyntheticPostUpdateNode pre;
+
+    SyntheticPostUpdateNode() { this = TSyntheticPostUpdateNode(pre) }
+
+    override Node getPreUpdateNode() { result = pre }
+
+    override string toString() { result = "[post " + pre.label() + "] " + pre.toString() }
+
+    override Scope getScope() { result = pre.getScope() }
+
+    override Location getLocation() { result = pre.getLocation() }
+  }
+
+  /** A data flow node for which we should synthesise an associated post-update node. */
+  class NeedsSyntheticPostUpdateNode extends Node {
+    NeedsSyntheticPostUpdateNode() {
+      this = argumentPreUpdateNode()
+      or
+      this = storePreUpdateNode()
+      or
+      this = readPreUpdateNode()
+    }
+
+    /**
+     * A label for this kind of node. This will figure in the textual representation of the synthesized post-update node.
+     * We favour being an arguments as the reason for the post-update node in case multiple reasons apply.
+     */
+    string label() {
+      if this = argumentPreUpdateNode()
+      then result = "arg"
+      else
+        if this = storePreUpdateNode()
+        then result = "store"
+        else result = "read"
+    }
+  }
+
+  /**
+   * An argument might have its value changed as a result of a call.
+   * Certain arguments, such as implicit self arguments are already post-update nodes
+   * and should not have an extra node synthesised.
+   */
+  ArgumentNode argumentPreUpdateNode() {
+    result = any(FunctionCall c).getArg(_)
+    or
+    // Avoid argument 0 of method calls as those have read post-update nodes.
+    exists(MethodCall c, int n | n > 0 | result = c.getArg(n))
+    or
+    result = any(SpecialCall c).getArg(_)
+    or
+    // Avoid argument 0 of class calls as those have non-synthetic post-update nodes.
+    exists(ClassCall c, int n | n > 0 | result = c.getArg(n))
+  }
+
+  /** An object might have its value changed after a store. */
+  CfgNode storePreUpdateNode() {
     exists(Attribute a |
-      node = a.getObject().getAFlowNode() and
+      result.getNode() = a.getObject().getAFlowNode() and
       a.getCtx() instanceof Store
     )
   }
 
-  override string label() { result = "store" }
-}
-
-/** A node marking the state change of an object after a read. */
-class ReadPreUpdateNode extends NeedsSyntheticPostUpdateNode, CfgNode {
-  ReadPreUpdateNode() {
+  /**
+   * A node marking the state change of an object after a read.
+   *
+   * A reverse read happens when the result of a read is modified, e.g. in
+   * ```python
+   * l = [ mutable ]
+   * l[0].mutate()
+   * ```
+   * we may now have changed the content of `l`. To track this, there must be
+   * a postupdate node for `l`.
+   */
+  CfgNode readPreUpdateNode() {
     exists(Attribute a |
-      node = a.getObject().getAFlowNode() and
+      result.getNode() = a.getObject().getAFlowNode() and
       a.getCtx() instanceof Load
     )
+    or
+    result.getNode() = any(SubscriptNode s).getObject()
+    or
+    // The dictionary argument is read from if the callable has parameters matching the keys.
+    result.getNode().getNode() = any(Call call).getKwargs()
   }
-
-  override string label() { result = "read" }
 }
 
-/** A post-update node is synthesized for all nodes which satisfy `NeedsSyntheticPostUpdateNode`. */
-class SyntheticPostUpdateNode extends PostUpdateNode, TSyntheticPostUpdateNode {
-  NeedsSyntheticPostUpdateNode pre;
-
-  SyntheticPostUpdateNode() { this = TSyntheticPostUpdateNode(pre) }
-
-  override Node getPreUpdateNode() { result = pre }
-
-  override string toString() { result = "[post " + pre.label() + "] " + pre.toString() }
-
-  override Scope getScope() { result = pre.getScope() }
-
-  override Location getLocation() { result = pre.getLocation() }
-}
-
-/**
- * Calls to constructors are treated as post-update nodes for the synthesized argument
- * that is mapped to the `self` parameter. That way, constructor calls represent the value of the
- * object after the constructor (currently only `__init__`) has run.
- */
-class ObjectCreationNode extends PostUpdateNode, NeedsSyntheticPreUpdateNode, CfgNode {
-  ObjectCreationNode() { node.(CallNode) = any(ClassCall c).getNode() }
-
-  override Node getPreUpdateNode() { result.(SyntheticPreUpdateNode).getPostUpdateNode() = this }
-
-  override string label() { result = "objCreate" }
-}
+import syntheticPostUpdateNode
 
 class DataFlowExpr = Expr;
 
@@ -139,6 +174,15 @@ module EssaFlow {
       contextManager.strictlyDominates(var)
     )
     or
+    // Parameter definition
+    //   `def foo(x):`
+    //   nodeFrom is `x`, cfgNode
+    //   nodeTo is `x`, essa var
+    exists(ParameterDefinition pd |
+      nodeFrom.asCfgNode() = pd.getDefiningNode() and
+      nodeTo.asVar() = pd.getVariable()
+    )
+    or
     // First use after definition
     //   `y = 42`
     //   `x = f(y)`
@@ -155,6 +199,9 @@ module EssaFlow {
     or
     // If expressions
     nodeFrom.asCfgNode() = nodeTo.asCfgNode().(IfExprNode).getAnOperand()
+    or
+    // Flow inside an unpacking assignment
+    iterableUnpackingFlowStep(nodeFrom, nodeTo)
     or
     // Overflow keyword argument
     exists(CallNode call, CallableValue callable |
@@ -214,12 +261,9 @@ private predicate localEssaStep(EssaNode nodeFrom, EssaNode nodeTo) {
  * Holds if `result` is either `node`, or the post-update node for `node`.
  */
 private Node update(Node node) {
-  exists(PostUpdateNode pun |
-    node = pun.getPreUpdateNode() and
-    result = pun
-  )
-  or
   result = node
+  or
+  result.(PostUpdateNode).getPreUpdateNode() = node
 }
 
 // TODO: Make modules for these headings
@@ -416,7 +460,7 @@ module ArgumentPassing {
       // argument unpacked from dict
       exists(string name |
         call_unpacks(call, mapping, callable, name, paramN) and
-        result = TKwUnpacked(call, callable, name)
+        result = TKwUnpackedNode(call, callable, name)
       )
     )
   }
@@ -481,10 +525,12 @@ import ArgumentPassing
  */
 newtype TDataFlowCallable =
   TCallableValue(CallableValue callable) {
-    callable instanceof FunctionValue
+    callable instanceof FunctionValue and
+    not callable.(FunctionValue).isLambda()
     or
     callable instanceof ClassValue
   } or
+  TLambda(Function lambda) { lambda.isLambda() } or
   TModule(Module m)
 
 /** Represents a callable. */
@@ -525,6 +571,27 @@ class DataFlowCallableValue extends DataFlowCallable, TCallableValue {
   override string getName() { result = callable.getName() }
 
   override CallableValue getCallableValue() { result = callable }
+}
+
+/** A class representing a callable lambda. */
+class DataFlowLambda extends DataFlowCallable, TLambda {
+  Function lambda;
+
+  DataFlowLambda() { this = TLambda(lambda) }
+
+  override string toString() { result = lambda.toString() }
+
+  override CallNode getACall() { result = getCallableValue().getACall() }
+
+  override Scope getScope() { result = lambda.getEvaluatingScope() }
+
+  override NameNode getParameter(int n) { result = getParameter(getCallableValue(), n) }
+
+  override string getName() { result = "Lambda callable" }
+
+  override FunctionValue getCallableValue() {
+    result.getOrigin().getNode() = lambda.getDefinition()
+  }
 }
 
 /** A class representing the scope in which a `ModuleVariableNode` appears. */
@@ -700,17 +767,6 @@ class SpecialCall extends DataFlowCall, TSpecialCall {
   }
 }
 
-/** A data flow node that represents a call argument. */
-class ArgumentNode extends Node {
-  ArgumentNode() { this = any(DataFlowCall c).getArg(_) }
-
-  /** Holds if this argument occurs at the given position in the given call. */
-  predicate argumentOf(DataFlowCall call, int pos) { this = call.getArg(pos) }
-
-  /** Gets the call in which this node is an argument. */
-  final DataFlowCall getCall() { this.argumentOf(result, _) }
-}
-
 /** Gets a viable run-time target for the call `call`. */
 DataFlowCallable viableCallable(DataFlowCall call) { result = call.getCallable() }
 
@@ -734,10 +790,6 @@ class ReturnNode extends CfgNode {
 
   /** Gets the kind of this return node. */
   ReturnKind getKind() { any() }
-
-  override DataFlowCallable getEnclosingCallable() {
-    result.getScope().getAStmt() = ret // TODO: check nested function definitions
-  }
 }
 
 /** A data flow node that represents the output of a call. */
@@ -766,7 +818,15 @@ class DataFlowType extends TDataFlowType {
 
 /** A node that performs a type cast. */
 class CastNode extends Node {
-  CastNode() { none() }
+  // We include read- and store steps here to force them to be
+  // shown in path explanations.
+  // This hack is necessary, because we have included some of these
+  // steps as default taint steps, making them be suppressed in path
+  // explanations.
+  // We should revert this once, we can remove this steps from the
+  // default taint steps; this should be possible once we have
+  // implemented flow summaries and recursive content.
+  CastNode() { readStep(_, _, this) or storeStep(_, _, this) }
 }
 
 /**
@@ -845,6 +905,8 @@ predicate storeStep(Node nodeFrom, Content c, Node nodeTo) {
   or
   comprehensionStoreStep(nodeFrom, c, nodeTo)
   or
+  iterableUnpackingStoreStep(nodeFrom, c, nodeTo)
+  or
   attributeStoreStep(nodeFrom, c, nodeTo)
   or
   posOverflowStoreStep(nodeFrom, c, nodeTo)
@@ -860,6 +922,7 @@ predicate listStoreStep(CfgNode nodeFrom, ListElementContent c, CfgNode nodeTo) 
   //   nodeTo is the list, `[..., 42, ...]`, cfg node
   //   c denotes element of list
   nodeTo.getNode().(ListNode).getAnElement() = nodeFrom.getNode() and
+  not nodeTo.getNode() instanceof UnpackingAssignmentSequenceTarget and
   // Suppress unused variable warning
   c = c
 }
@@ -885,6 +948,7 @@ predicate tupleStoreStep(CfgNode nodeFrom, TupleElementContent c, CfgNode nodeTo
   //   c denotes element of tuple and index of nodeFrom
   exists(int n |
     nodeTo.getNode().(TupleNode).getElement(n) = nodeFrom.getNode() and
+    not nodeTo.getNode() instanceof UnpackingAssignmentSequenceTarget and
     c.getIndex() = n
   )
 }
@@ -975,9 +1039,11 @@ predicate kwOverflowStoreStep(CfgNode nodeFrom, DictionaryElementContent c, Node
 predicate readStep(Node nodeFrom, Content c, Node nodeTo) {
   subscriptReadStep(nodeFrom, c, nodeTo)
   or
+  iterableUnpackingReadStep(nodeFrom, c, nodeTo)
+  or
   popReadStep(nodeFrom, c, nodeTo)
   or
-  comprehensionReadStep(nodeFrom, c, nodeTo)
+  forReadStep(nodeFrom, c, nodeTo)
   or
   attributeReadStep(nodeFrom, c, nodeTo)
   or
@@ -1006,6 +1072,405 @@ predicate subscriptReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
       nodeTo.getNode().(SubscriptNode).getIndex().getNode().(StrConst).getS()
   )
 }
+
+/**
+ * The unpacking assignment takes the general form
+ * ```python
+ *   sequence = iterable
+ * ```
+ * where `sequence` is either a tuple or a list and it can contain wildcards.
+ * The iterable can be any iterable, which means that (CodeQL modeling of) content
+ * will need to change type if it should be transferred from the LHS to the RHS.
+ *
+ * Note that (CodeQL modeling of) content does not have to change type on data-flow
+ * paths _inside_ the LHS, as the different allowed syntaxes here are merely a convenience.
+ * Consequently, we model all LHS sequences as tuples, which have the more precise content
+ * model, making flow to the elements more precise. If an element is a starred variable,
+ * we will have to mutate the content type to be list content.
+ *
+ * We may for instance have
+ * ```python
+ *    (a, b) = ["a", SOURCE]  # RHS has content `ListElementContent`
+ * ```
+ * Due to the abstraction for list content, we do not know whether `SOURCE`
+ * ends up in `a` or in `b`, so we want to overapproximate and see it in both.
+ *
+ * Using wildcards we may have
+ * ```python
+ *   (a, *b) = ("a", "b", SOURCE)  # RHS has content `TupleElementContent(2)`
+ * ```
+ * Since the starred variables are always assigned (Python-)type list, `*b` will be
+ * `["b", SOURCE]`, and we will again overapproximate and assign it
+ * content corresponding to anything found in the RHS.
+ *
+ * For a precise transfer
+ * ```python
+ *    (a, b) = ("a", SOURCE)  # RHS has content `TupleElementContent(1)`
+ * ```
+ * we wish to keep the precision, so only `b` receives the tuple content at index 1.
+ *
+ * Finally, `sequence` is actually a pattern and can have a more complicated structure,
+ * such as
+ * ```python
+ *   (a, [b, *c]) = ("a", ["b", SOURCE])  # RHS has content `TupleElementContent(1); ListElementContent`
+ * ```
+ * where `a` should not receive content, but `b` and `c` should. `c` will be `[SOURCE]` so
+ * should have the content transferred, while `b` should read it.
+ *
+ * To transfer content from RHS to the elements of the LHS in the expression `sequence = iterable`,
+ * we use two synthetic nodes:
+ *
+ * - `TIterableSequence(sequence)` which captures the content-modeling the entire `sequence` will have
+ * (essentially just a copy of the content-modeling the RHS has)
+ *
+ * - `TIterableElement(sequence)` which captures the content-modeling that will be assigned to an element.
+ * Note that an empty access path means that the value we are tracking flows directly to the element.
+ *
+ *
+ * The `TIterableSequence(sequence)` is at this point superflous but becomes useful when handling recursive
+ * structures in the LHS, where `sequence` is some internal sequence node. We can have a uniform treatment
+ * by always having these two synthetic nodes. So we transfer to (or, in the recursive case, read into)
+ * `TIterableSequence(sequence)`, from which we take a read step to `TIterableElement(sequence)` and then a
+ * store step to `sequence`.
+ *
+ * This allows the unknown content from the RHS to be read into `TIterableElement(sequence)` and tuple content
+ * to then be stored into `sequence`. If the content is already tuple content, this inderection creates crosstalk
+ * between indices. Therefore, tuple content is never read into `TIterableElement(sequence)`; it is instead
+ * transferred directly from `TIterableSequence(sequence)` to `sequence` via a flow step. Such a flow step will
+ * also transfer other content, but only tuple content is further read from `sequence` into its elements.
+ *
+ * The strategy is then via several read-, store-, and flow steps:
+ * 1. a) [Flow] Content is transferred from `iterable` to `TIterableSequence(sequence)` via a
+ *    flow step. From here, everything happens on the LHS.
+ *
+ *    b) [Read] If the unpacking happens inside a for as in
+ *    ```python
+ *       for sequence in iterable
+ *    ```
+ *    then content is read from `iterable` to `TIterableSequence(sequence)`.
+ *
+ * 2. [Flow] Content is transferred from `TIterableSequence(sequence)` to `sequence` via a
+ *    flow step. (Here only tuple content is relevant.)
+ *
+ * 3. [Read] Content is read from `TIterableSequence(sequence)` into  `TIterableElement(sequence)`.
+ *    As `sequence` is modeled as a tuple, we will not read tuple content as that would allow
+ *    crosstalk.
+ *
+ * 4. [Store] Content is stored from `TIterableElement(sequence)` to `sequence`.
+ *    Content type is `TupleElementContent` with indices taken from the syntax.
+ *    For instance, if `sequence` is `(a, *b, c)`, content is written to index 0, 1, and 2.
+ *    This is adequate as the route through `TIterableElement(sequence)` does not transfer precise content.
+ *
+ * 5. [Read] Content is read from `sequence` to its elements.
+ *    a) If the element is a plain variable, the target is the corresponding essa node.
+ *
+ *    b) If the element is itself a sequence, with control-flow node `seq`, the target is `TIterableSequence(seq)`.
+ *
+ *    c) If the element is a starred variable, with control-flow node `v`, the target is `TIterableElement(v)`.
+ *
+ * 6. [Store] Content is stored from `TIterableElement(v)` to the essa variable for `v`, with
+ *    content type `ListElementContent`.
+ *
+ * 7. [Flow, Read, Store] Steps 2 through 7 are repeated for all recursive elements which are sequences.
+ *
+ *
+ * We illustrate the above steps on the assignment
+ *
+ * ```python
+ * (a, b) = ["a", SOURCE]
+ * ```
+ *
+ * Looking at the content propagation to `a`:
+ *   `["a", SOURCE]`: [ListElementContent]
+ *
+ * --Step 1a-->
+ *
+ *   `TIterableSequence((a, b))`: [ListElementContent]
+ *
+ * --Step 3-->
+ *
+ *   `TIterableElement((a, b))`: []
+ *
+ * --Step 4-->
+ *
+ *   `(a, b)`: [TupleElementContent(0)]
+ *
+ * --Step 5a-->
+ *
+ *   `a`: []
+ *
+ * Meaning there is data-flow from the RHS to `a` (an over approximation). The same logic would be applied to show there is data-flow to `b`. Note that _Step 3_ and _Step 4_ would not have been needed if the RHS had been a tuple (since that would have been able to use _Step 2_ instead).
+ *
+ * Another, more complicated example:
+ * ```python
+ *   (a, [b, *c]) = ["a", [SOURCE]]
+ * ```
+ * where the path to `c` is
+ *
+ *   `["a", [SOURCE]]`: [ListElementContent; ListElementContent]
+ *
+ * --Step 1a-->
+ *
+ *   `TIterableSequence((a, [b, *c]))`: [ListElementContent; ListElementContent]
+ *
+ * --Step 3-->
+ *
+ *   `TIterableElement((a, [b, *c]))`: [ListElementContent]
+ *
+ * --Step 4-->
+ *
+ *   `(a, [b, *c])`: [TupleElementContent(1); ListElementContent]
+ *
+ * --Step 5b-->
+ *
+ *   `TIterableSequence([b, *c])`: [ListElementContent]
+ *
+ * --Step 3-->
+ *
+ *   `TIterableElement([b, *c])`: []
+ *
+ * --Step 4-->
+ *
+ *   `[b, *c]`: [TupleElementContent(1)]
+ *
+ * --Step 5c-->
+ *
+ *   `TIterableElement(c)`: []
+ *
+ * --Step 6-->
+ *
+ *  `c`: [ListElementContent]
+ */
+module IterableUnpacking {
+  /**
+   * The target of a `for`, e.g. `x` in `for x in list` or in `[42 for x in list]`.
+   * This class also records the source, which in both above cases is `list`.
+   * This class abstracts away the differing representations of comprehensions and
+   * for statements.
+   */
+  class ForTarget extends ControlFlowNode {
+    Expr source;
+
+    ForTarget() {
+      exists(For for |
+        source = for.getIter() and
+        this.getNode() = for.getTarget() and
+        not for = any(Comp comp).getNthInnerLoop(0)
+      )
+      or
+      exists(Comp comp |
+        source = comp.getIterable() and
+        this.getNode() = comp.getNthInnerLoop(0).getTarget()
+      )
+    }
+
+    Expr getSource() { result = source }
+  }
+
+  /** The LHS of an assignment, it also records the assigned value. */
+  class AssignmentTarget extends ControlFlowNode {
+    Expr value;
+
+    AssignmentTarget() {
+      exists(Assign assign | this.getNode() = assign.getATarget() | value = assign.getValue())
+    }
+
+    Expr getValue() { result = value }
+  }
+
+  /** A direct (or top-level) target of an unpacking assignment. */
+  class UnpackingAssignmentDirectTarget extends ControlFlowNode {
+    Expr value;
+
+    UnpackingAssignmentDirectTarget() {
+      this instanceof SequenceNode and
+      (
+        value = this.(AssignmentTarget).getValue()
+        or
+        value = this.(ForTarget).getSource()
+      )
+    }
+
+    Expr getValue() { result = value }
+  }
+
+  /** A (possibly recursive) target of an unpacking assignment. */
+  class UnpackingAssignmentTarget extends ControlFlowNode {
+    UnpackingAssignmentTarget() {
+      this instanceof UnpackingAssignmentDirectTarget
+      or
+      this = any(UnpackingAssignmentSequenceTarget parent).getAnElement()
+    }
+  }
+
+  /** A (possibly recursive) target of an unpacking assignment which is also a sequence. */
+  class UnpackingAssignmentSequenceTarget extends UnpackingAssignmentTarget {
+    UnpackingAssignmentSequenceTarget() { this instanceof SequenceNode }
+
+    ControlFlowNode getElement(int i) { result = this.(SequenceNode).getElement(i) }
+
+    ControlFlowNode getAnElement() { result = this.getElement(_) }
+  }
+
+  /**
+   * Step 1a
+   * Data flows from `iterable` to `TIterableSequence(sequence)`
+   */
+  predicate iterableUnpackingAssignmentFlowStep(Node nodeFrom, Node nodeTo) {
+    exists(AssignmentTarget target |
+      nodeFrom.asExpr() = target.getValue() and
+      nodeTo = TIterableSequenceNode(target)
+    )
+  }
+
+  /**
+   * Step 1b
+   * Data is read from `iterable` to `TIterableSequence(sequence)`
+   */
+  predicate iterableUnpackingForReadStep(CfgNode nodeFrom, Content c, Node nodeTo) {
+    exists(ForTarget target |
+      nodeFrom.asExpr() = target.getSource() and
+      target instanceof SequenceNode and
+      nodeTo = TIterableSequenceNode(target)
+    ) and
+    (
+      c instanceof ListElementContent
+      or
+      c instanceof SetElementContent
+    )
+  }
+
+  /**
+   * Step 2
+   * Data flows from `TIterableSequence(sequence)` to `sequence`
+   */
+  predicate iterableUnpackingTupleFlowStep(Node nodeFrom, Node nodeTo) {
+    exists(UnpackingAssignmentSequenceTarget target |
+      nodeFrom = TIterableSequenceNode(target) and
+      nodeTo.asCfgNode() = target
+    )
+  }
+
+  /**
+   * Step 3
+   * Data flows from `TIterableSequence(sequence)` into  `TIterableElement(sequence)`.
+   * As `sequence` is modeled as a tuple, we will not read tuple content as that would allow
+   * crosstalk.
+   */
+  predicate iterableUnpackingConvertingReadStep(Node nodeFrom, Content c, Node nodeTo) {
+    exists(UnpackingAssignmentSequenceTarget target |
+      nodeFrom = TIterableSequenceNode(target) and
+      nodeTo = TIterableElementNode(target) and
+      (
+        c instanceof ListElementContent
+        or
+        c instanceof SetElementContent
+        // TODO: dict content in iterable unpacking not handled
+      )
+    )
+  }
+
+  /**
+   * Step 4
+   * Data flows from `TIterableElement(sequence)` to `sequence`.
+   * Content type is `TupleElementContent` with indices taken from the syntax.
+   * For instance, if `sequence` is `(a, *b, c)`, content is written to index 0, 1, and 2.
+   */
+  predicate iterableUnpackingConvertingStoreStep(Node nodeFrom, Content c, Node nodeTo) {
+    exists(UnpackingAssignmentSequenceTarget target |
+      nodeFrom = TIterableElementNode(target) and
+      nodeTo.asCfgNode() = target and
+      exists(int index | exists(target.getElement(index)) |
+        c.(TupleElementContent).getIndex() = index
+      )
+    )
+  }
+
+  /**
+   * Step 5
+   * For a sequence node inside an iterable unpacking, data flows from the sequence to its elements. There are
+   * three cases for what `toNode` should be:
+   *    a) If the element is a plain variable, `toNode` is the corresponding essa node.
+   *
+   *    b) If the element is itself a sequence, with control-flow node `seq`, `toNode` is `TIterableSequence(seq)`.
+   *
+   *    c) If the element is a starred variable, with control-flow node `v`, `toNode` is `TIterableElement(v)`.
+   */
+  predicate iterableUnpackingElementReadStep(Node nodeFrom, Content c, Node nodeTo) {
+    exists(
+      UnpackingAssignmentSequenceTarget target, int index, ControlFlowNode element, int starIndex
+    |
+      target.getElement(starIndex) instanceof StarredNode
+      or
+      not exists(target.getAnElement().(StarredNode)) and
+      starIndex = -1
+    |
+      nodeFrom.asCfgNode() = target and
+      element = target.getElement(index) and
+      (
+        if starIndex = -1 or index < starIndex
+        then c.(TupleElementContent).getIndex() = index
+        else
+          // This could get big if big tuples exist
+          if index = starIndex
+          then c.(TupleElementContent).getIndex() >= index
+          else c.(TupleElementContent).getIndex() >= index - 1
+      ) and
+      (
+        if element instanceof SequenceNode
+        then
+          // Step 5b
+          nodeTo = TIterableSequenceNode(element)
+        else
+          if element instanceof StarredNode
+          then
+            // Step 5c
+            nodeTo = TIterableElementNode(element)
+          else
+            // Step 5a
+            nodeTo.asVar().getDefinition().(MultiAssignmentDefinition).getDefiningNode() = element
+      )
+    )
+  }
+
+  /**
+   * Step 6
+   * Data flows from `TIterableElement(v)` to the essa variable for `v`, with
+   * content type `ListElementContent`.
+   */
+  predicate iterableUnpackingStarredElementStoreStep(Node nodeFrom, Content c, Node nodeTo) {
+    exists(ControlFlowNode starred | starred.getNode() instanceof Starred |
+      nodeFrom = TIterableElementNode(starred) and
+      nodeTo.asVar().getDefinition().(MultiAssignmentDefinition).getDefiningNode() = starred and
+      c instanceof ListElementContent
+    )
+  }
+
+  /** All read steps associated with unpacking assignment. */
+  predicate iterableUnpackingReadStep(Node nodeFrom, Content c, Node nodeTo) {
+    iterableUnpackingForReadStep(nodeFrom, c, nodeTo)
+    or
+    iterableUnpackingElementReadStep(nodeFrom, c, nodeTo)
+    or
+    iterableUnpackingConvertingReadStep(nodeFrom, c, nodeTo)
+  }
+
+  /** All store steps associated with unpacking assignment. */
+  predicate iterableUnpackingStoreStep(Node nodeFrom, Content c, Node nodeTo) {
+    iterableUnpackingStarredElementStoreStep(nodeFrom, c, nodeTo)
+    or
+    iterableUnpackingConvertingStoreStep(nodeFrom, c, nodeTo)
+  }
+
+  /** All flow steps associated with unpacking assignment. */
+  predicate iterableUnpackingFlowStep(Node nodeFrom, Node nodeTo) {
+    iterableUnpackingAssignmentFlowStep(nodeFrom, nodeTo)
+    or
+    iterableUnpackingTupleFlowStep(nodeFrom, nodeTo)
+  }
+}
+
+import IterableUnpacking
 
 /** Data flows from a sequence to a call to `pop` on the sequence. */
 predicate popReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
@@ -1041,32 +1506,22 @@ predicate popReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
   )
 }
 
-/** Data flows from a iterated sequence to the variable iterating over the sequence. */
-predicate comprehensionReadStep(CfgNode nodeFrom, Content c, EssaNode nodeTo) {
-  // Comprehension
-  //   `[x+1 for x in l]`
-  //   nodeFrom is `l`, cfg node
-  //   nodeTo is `x`, essa var
-  //   c denotes element of list or set
-  exists(Comp comp |
-    // outermost for
-    nodeFrom.getNode().getNode() = comp.getIterable() and
-    nodeTo.getVar().getDefinition().(AssignmentDefinition).getDefiningNode().getNode() =
-      comp.getIterationVariable(0).getAStore()
-    or
-    // an inner for
-    exists(int n | n > 0 |
-      nodeFrom.getNode().getNode() = comp.getNthInnerLoop(n).getIter() and
-      nodeTo.getVar().getDefinition().(AssignmentDefinition).getDefiningNode().getNode() =
-        comp.getNthInnerLoop(n).getTarget()
-    )
+predicate forReadStep(CfgNode nodeFrom, Content c, Node nodeTo) {
+  exists(ForTarget target |
+    nodeFrom.asExpr() = target.getSource() and
+    nodeTo.asVar().(EssaNodeDefinition).getDefiningNode() = target
   ) and
   (
     c instanceof ListElementContent
     or
     c instanceof SetElementContent
+    or
+    c = small_tuple()
   )
 }
+
+pragma[noinline]
+TupleElementContent small_tuple() { result.getIndex() <= 7 }
 
 /**
  * Holds if `nodeTo` is a read of an attribute (corresponding to `c`) of the object in `nodeFrom`.
@@ -1093,7 +1548,7 @@ predicate attributeReadStep(CfgNode nodeFrom, AttributeContent c, CfgNode nodeTo
 predicate kwUnpackReadStep(CfgNode nodeFrom, DictionaryElementContent c, Node nodeTo) {
   exists(CallNode call, CallableValue callable, string name |
     nodeFrom.asCfgNode() = call.getNode().getKwargs().getAFlowNode() and
-    nodeTo = TKwUnpacked(call, callable, name) and
+    nodeTo = TKwUnpackedNode(call, callable, name) and
     name = c.getKey()
   )
 }
@@ -1103,7 +1558,6 @@ predicate kwUnpackReadStep(CfgNode nodeFrom, DictionaryElementContent c, Node no
  * any value stored inside `f` is cleared at the pre-update node associated with `x`
  * in `x.f = newValue`.
  */
-cached
 predicate clearsContent(Node n, Content c) {
   exists(CallNode call, CallableValue callable, string name |
     call_unpacks(call, _, callable, name, _) and
@@ -1152,3 +1606,14 @@ int accessPathLimit() { result = 5 }
 
 /** Holds if `n` should be hidden from path explanations. */
 predicate nodeIsHidden(Node n) { none() }
+
+class LambdaCallKind = Unit;
+
+/** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
+predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) { none() }
+
+/** Holds if `call` is a lambda call of kind `kind` where `receiver` is the lambda expression. */
+predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) { none() }
+
+/** Extra data-flow steps needed for lambda flow analysis. */
+predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }

@@ -51,8 +51,8 @@ lock object is created for each thread allowing them to execute concurrently.
 
 
 <li>
-  The CERT Oracle Secure Coding Standard for Java:
-  <a href="https://www.securecoding.cert.org/confluence/display/java/LCK01-J.+Do+not+synchronize+on+objects+that+may+be+reused">LCK01-J. Do not synchronize on objects that may be reused</a>,
+  SEI CERT Oracle Coding Standard for Java:
+  <a href="https://wiki.sei.cmu.edu/confluence/display/java/LCK01-J.+Do+not+synchronize+on+objects+that+may+be+reused">LCK01-J. Do not synchronize on objects that may be reused</a>,
 </li>
 
 

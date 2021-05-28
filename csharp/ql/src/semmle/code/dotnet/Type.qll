@@ -49,6 +49,9 @@ class ValueOrRefType extends Type, @dotnet_valueorreftype {
 
   /** Gets a base type of this type, if any. */
   ValueOrRefType getABaseType() { none() }
+
+  /** Holds if this type is a `record`. */
+  predicate isRecord() { exists(RecordCloneCallable c | c.getDeclaringType() = this) }
 }
 
 /**

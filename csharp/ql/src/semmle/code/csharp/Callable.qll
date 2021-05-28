@@ -26,7 +26,9 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
   /** Gets the annotated return type of this callable. */
   final AnnotatedType getAnnotatedReturnType() { result.appliesTo(this) }
 
-  override Callable getSourceDeclaration() { result = Parameterizable.super.getSourceDeclaration() }
+  override Callable getUnboundDeclaration() {
+    result = Parameterizable.super.getUnboundDeclaration()
+  }
 
   /**
    * Gets the body of this callable, if any.
@@ -204,7 +206,11 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
     exists(ReturnStmt ret | ret.getEnclosingCallable() = this | e = ret.getExpr())
     or
     e = this.getExpressionBody() and
-    not this.getReturnType() instanceof VoidType
+    not this.getReturnType() instanceof VoidType and
+    (
+      not this.(Modifiable).isAsync() or
+      this.getReturnType() instanceof Generic
+    )
   }
 
   /** Holds if this callable can yield return the expression `e`. */
@@ -241,7 +247,7 @@ class Method extends Callable, Virtualizable, Attributable, @method {
 
   override Type getReturnType() { methods(this, _, _, getTypeRef(result), _) }
 
-  override Method getSourceDeclaration() { methods(this, _, _, _, result) }
+  override Method getUnboundDeclaration() { methods(this, _, _, _, result) }
 
   override Method getOverridee() { result = Virtualizable.super.getOverridee() }
 
@@ -350,7 +356,7 @@ class Constructor extends DotNet::Constructor, Callable, Member, Attributable, @
 
   override ValueOrRefType getDeclaringType() { constructors(this, _, result, _) }
 
-  override Constructor getSourceDeclaration() { constructors(this, _, _, result) }
+  override Constructor getUnboundDeclaration() { constructors(this, _, _, result) }
 
   override Location getALocation() { constructor_location(this, result) }
 
@@ -420,7 +426,7 @@ class Destructor extends DotNet::Destructor, Callable, Member, Attributable, @de
 
   override ValueOrRefType getDeclaringType() { destructors(this, _, result, _) }
 
-  override Destructor getSourceDeclaration() { destructors(this, _, _, result) }
+  override Destructor getUnboundDeclaration() { destructors(this, _, _, result) }
 
   override Location getALocation() { destructor_location(this, result) }
 
@@ -450,13 +456,22 @@ class Operator extends Callable, Member, Attributable, @operator {
 
   override Type getReturnType() { operators(this, _, _, _, getTypeRef(result), _) }
 
-  override Operator getSourceDeclaration() { operators(this, _, _, _, _, result) }
+  override Operator getUnboundDeclaration() { operators(this, _, _, _, _, result) }
 
   override Location getALocation() { operator_location(this, result) }
 
   override string toString() { result = Callable.super.toString() }
 
   override Parameter getRawParameter(int i) { result = getParameter(i) }
+}
+
+/** A clone method on a record. */
+class RecordCloneMethod extends Method, DotNet::RecordCloneCallable {
+  override Constructor getConstructor() {
+    result = DotNet::RecordCloneCallable.super.getConstructor()
+  }
+
+  override string toString() { result = Method.super.toString() }
 }
 
 /**
@@ -970,17 +985,17 @@ class ExplicitConversionOperator extends ConversionOperator {
  * }
  * ```
  */
-class LocalFunction extends Callable, Modifiable, @local_function {
+class LocalFunction extends Callable, Modifiable, Attributable, @local_function {
   override string getName() { local_functions(this, result, _, _) }
 
-  override LocalFunction getSourceDeclaration() { local_functions(this, _, _, result) }
+  override LocalFunction getUnboundDeclaration() { local_functions(this, _, _, result) }
 
   override Type getReturnType() { local_functions(this, _, result, _) }
 
   override Element getParent() { result = getStatement().getParent() }
 
   /** Gets the local function statement defining this function. */
-  LocalFunctionStmt getStatement() { result.getLocalFunction() = getSourceDeclaration() }
+  LocalFunctionStmt getStatement() { result.getLocalFunction() = getUnboundDeclaration() }
 
   override Callable getEnclosingCallable() { result = this.getStatement().getEnclosingCallable() }
 
@@ -994,4 +1009,6 @@ class LocalFunction extends Callable, Modifiable, @local_function {
   override Parameter getRawParameter(int i) { result = getParameter(i) }
 
   override string getAPrimaryQlClass() { result = "LocalFunction" }
+
+  override string toString() { result = Callable.super.toString() }
 }

@@ -15,6 +15,7 @@
  */
 
 private import cpp
+private import semmle.code.cpp.models.interfaces.PointerWrapper
 
 /**
  * Holds if `f` is an instantiation of the `std::move` or `std::forward`
@@ -81,6 +82,8 @@ private predicate pointerToPointerStep(Expr pointerIn, Expr pointerOut) {
   or
   pointerIn.getConversion() = pointerOut.(ParenthesisExpr)
   or
+  pointerIn.getConversion() = pointerOut.(TemporaryObjectExpr)
+  or
   pointerIn = pointerOut.(ConditionalExpr).getThen().getFullyConverted()
   or
   pointerIn = pointerOut.(ConditionalExpr).getElse().getFullyConverted()
@@ -92,6 +95,12 @@ private predicate pointerToPointerStep(Expr pointerIn, Expr pointerOut) {
 
 private predicate lvalueToReferenceStep(Expr lvalueIn, Expr referenceOut) {
   lvalueIn.getConversion() = referenceOut.(ReferenceToExpr)
+  or
+  exists(PointerWrapper wrapper, Call call | call = referenceOut |
+    referenceOut.getUnspecifiedType() instanceof ReferenceType and
+    call = wrapper.getAnUnwrapperFunction().getACallToThisFunction() and
+    lvalueIn = call.getQualifier().getFullyConverted()
+  )
 }
 
 private predicate referenceToLvalueStep(Expr referenceIn, Expr lvalueOut) {
@@ -104,6 +113,13 @@ private predicate referenceToPointerStep(Expr referenceIn, Expr pointerOut) {
       stdAddressOf(call.getTarget()) and
       referenceIn = call.getArgument(0).getFullyConverted()
     )
+  or
+  exists(CopyConstructor copy, Call call | call = pointerOut |
+    copy.getDeclaringType() instanceof PointerWrapper and
+    call.getTarget() = copy and
+    // The 0'th argument is the value being copied.
+    referenceIn = call.getArgument(0).getFullyConverted()
+  )
 }
 
 private predicate referenceToReferenceStep(Expr referenceIn, Expr referenceOut) {
@@ -129,7 +145,22 @@ private predicate lvalueToUpdate(Expr lvalue, Expr outer, ControlFlowNode node) 
     exists(Call call | node = call |
       outer = call.getQualifier().getFullyConverted() and
       outer.getUnspecifiedType() instanceof Class and
-      not call.getTarget().hasSpecifier("const")
+      not (
+        call.getTarget().hasSpecifier("const") and
+        // Given the following program:
+        // ```
+        // struct C {
+        //   void* data_;
+        //   void* data() const { return data; }
+        // };
+        // C c;
+        // memcpy(c.data(), source, 16)
+        // ```
+        // the data pointed to by `c.data_` is potentially modified by the call to `memcpy` even though
+        // `C::data` has a const specifier. So we further place the restriction that the type returned
+        // by `call` should not be of the form `const T*` (for some deeply const type `T`).
+        call.getType().isDeeplyConstBelow()
+      )
     )
     or
     assignmentTo(outer, node)
@@ -168,7 +199,24 @@ private predicate pointerToUpdate(Expr pointer, Expr outer, ControlFlowNode node
       or
       outer = call.getQualifier().getFullyConverted() and
       outer.getUnspecifiedType() instanceof PointerType and
-      not call.getTarget().hasSpecifier("const")
+      not (
+        call.getTarget().hasSpecifier("const") and
+        // See the `lvalueToUpdate` case for an explanation of this conjunct.
+        call.getType().isDeeplyConstBelow()
+      )
+      or
+      // Pointer wrappers behave as raw pointers for dataflow purposes.
+      outer = call.getAnArgument().getFullyConverted() and
+      exists(PointerWrapper wrapper | wrapper = outer.getType().stripTopLevelSpecifiers() |
+        not wrapper.pointsToConst()
+      )
+      or
+      outer = call.getQualifier().getFullyConverted() and
+      outer.getUnspecifiedType() instanceof PointerWrapper and
+      not (
+        call.getTarget().hasSpecifier("const") and
+        call.getType().isDeeplyConstBelow()
+      )
     )
     or
     exists(PointerFieldAccess fa |
@@ -197,7 +245,9 @@ private predicate referenceToUpdate(Expr reference, Expr outer, ControlFlowNode 
     not stdIdentityFunction(call.getTarget()) and
     not stdAddressOf(call.getTarget()) and
     exists(ReferenceType rt | rt = outer.getType().stripTopLevelSpecifiers() |
-      not rt.getBaseType().isConst()
+      not rt.getBaseType().isConst() or
+      rt.getBaseType().getUnspecifiedType() =
+        any(PointerWrapper wrapper | not wrapper.pointsToConst())
     )
   ) and
   reference = outer

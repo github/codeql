@@ -12,7 +12,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             // to the extent that the stack has been known to overflow.
             using (info.Context.StackGuard)
             {
-                if (info.Node == null)
+                if (info.Node is null)
                 {
                     info.Context.ModelError("Attempt to create a null expression");
                     return new Unknown(info);
@@ -83,6 +83,9 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
                     case SyntaxKind.ObjectCreationExpression:
                         return ExplicitObjectCreation.Create(info);
+
+                    case SyntaxKind.ImplicitObjectCreationExpression:
+                        return ImplicitObjectCreation.Create(info);
 
                     case SyntaxKind.ArrayCreationExpression:
                         return NormalArrayCreation.Create(info);
@@ -179,7 +182,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                         return ImplicitArrayCreation.Create(info);
 
                     case SyntaxKind.AnonymousObjectCreationExpression:
-                        return ImplicitObjectCreation.Create(info);
+                        return AnonymousObjectCreation.Create(info);
 
                     case SyntaxKind.ComplexElementInitializerExpression:
                         return CollectionInitializer.Create(info);
@@ -246,6 +249,9 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
                     case SyntaxKind.SuppressNullableWarningExpression:
                         return PostfixUnary.Create(info.SetKind(ExprKind.SUPPRESS_NULLABLE_WARNING), ((PostfixUnaryExpressionSyntax)info.Node).Operand);
+
+                    case SyntaxKind.WithExpression:
+                        return WithExpression.Create(info);
 
                     default:
                         info.Context.ModelError(info.Node, $"Unhandled expression '{info.Node}' of kind '{info.Node.Kind()}'");

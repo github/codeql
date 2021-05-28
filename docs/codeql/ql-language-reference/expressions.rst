@@ -37,7 +37,7 @@ You can express certain values directly in QL, such as numbers, booleans, and st
   possibly starting with a minus sign (``-``).
   For example:
 
-.. code-block:: ql
+  .. code-block:: ql
 
     0
     42
@@ -45,7 +45,9 @@ You can express certain values directly in QL, such as numbers, booleans, and st
 
 - :ref:`Float <float>` literals: These are sequences of decimal digits separated by a dot 
   (``.``), possibly starting with a minus sign (``-``).
-  For example::
+  For example:
+  
+  .. code-block:: ql
       
     2.0
     123.456
@@ -56,12 +58,12 @@ You can express certain values directly in QL, such as numbers, booleans, and st
   characters represent themselves, but there are a few characters that you need to "escape"
   with a backslash. The following are examples of string literals:
 
-.. code-block:: ql
+  .. code-block:: ql
 
     "hello"
     "They said, \"Please escape quotation marks!\""
   
-  See `String literals <ql-language-specification#string-literals-string>`_ 
+  See `String literals <https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#string-literals-string>`__
   in the QL language specification for more details. 
     
   Note: there is no "date literal" in QL. Instead, to specify a :ref:`date <date>`, you should
@@ -135,7 +137,7 @@ In the following example, the class ``C`` inherits two definitions of the predic
 ``getANumber()``—one from ``A`` and one from ``B``. 
 Instead of overriding both definitions, it uses the definition from ``B``.
 
-::
+.. code-block:: ql
    
     class A extends int {
       A() { this = 1 }
@@ -213,7 +215,7 @@ The following aggregates are available in QL:
   For example, the following aggregation returns the number of files that have more than 
   ``500`` lines:
 
-.. code-block:: ql
+  .. code-block:: ql
 
       count(File f | f.getTotalNumberOfLines() > 500 | f)
   
@@ -229,7 +231,7 @@ The following aggregates are available in QL:
   For example, the following aggregation returns the name of the ``.js`` file (or files) with the 
   largest number of lines:
 
-.. code-block:: ql
+  .. code-block:: ql
 
       max(File f | f.getExtension() = "js" | f.getBaseName() order by f.getTotalNumberOfLines())
 
@@ -237,7 +239,7 @@ The following aggregates are available in QL:
   below, that is, the string that comes first in the lexicographic ordering of all the possible
   values of ``s``. (In this case, it returns ``"De Morgan"``.)
   
-  ::
+  .. code-block:: ql
 
       min(string s | s = "Tarski" or s = "Dedekind" or s = "De Morgan" | s)
 
@@ -249,7 +251,9 @@ The following aggregates are available in QL:
   returns no values. In other words, it evaluates to the empty set.
   
   For example, the following aggregation returns the average of the integers ``0``, ``1``,
-  ``2``, and ``3``::
+  ``2``, and ``3``:
+
+  .. code-block:: ql
 
       avg(int i | i = [0 .. 3] | i)
 
@@ -260,7 +264,9 @@ The following aggregates are available in QL:
   If there are no possible assignments to the aggregation variables that satisfy the formula, then the sum is ``0``.
 
   For example, the following aggregation returns the sum of ``i * j`` for all possible values
-  of ``i`` and ``j``::
+  of ``i`` and ``j``:
+
+  .. code-block:: ql
 
       sum(int i, int j | i = [0 .. 2] and j = [3 .. 5] | i * j)
 
@@ -274,14 +280,16 @@ The following aggregates are available in QL:
   For example, the following aggregation returns the string ``"3210"``, that is, the
   concatenation of the strings ``"0"``, ``"1"``, ``"2"``, and ``"3"`` in descending order:
 
-.. code-block:: ql
+  .. code-block:: ql
 
       concat(int i | i = [0 .. 3] | i.toString() order by i desc)
 
   The ``concat`` aggregate can also take a second expression, separated from the first one by
   a comma. This second expression is inserted as a separator between each concatenated value.
 
-  For example, the following aggregation returns ``"0|1|2|3"``::
+  For example, the following aggregation returns ``"0|1|2|3"``:
+
+  .. code-block:: ql
 
       concat(int i | i = [0 .. 3] | i.toString(), "|")
 
@@ -294,7 +302,9 @@ The following aggregates are available in QL:
 
   For example, the following aggregation returns the value that is ranked 4th out of all the
   possible values. In this case, ``8`` is the 4th integer in the range from ``5`` through
-  ``15``::
+  ``15``:
+
+  .. code-block:: ql
 
       rank[4](int i | i = [5 .. 15] | i)
 
@@ -317,7 +327,9 @@ The following aggregates are available in QL:
 
   For example, the following query returns the positive integers ``1``, ``2``, ``3``, ``4``, ``5``.
   For negative integers ``x``, the expressions ``x`` and ``x.abs()`` have different values, so the
-  value for ``y`` in the aggregate expression is not uniquely determined. ::
+  value for ``y`` in the aggregate expression is not uniquely determined.
+
+  .. code-block:: ql
 
       from int x
       where x in [-5 .. 5] and x != 0
@@ -394,48 +406,54 @@ aggregation in a simpler form:
    then you can omit the ``<variable declarations>`` and ``<formula>`` parts and write it 
    as follows:
 
-.. code-block:: ql
+   .. code-block:: ql
 
        <aggregate>(<expression>)
 
    For example, the following aggregations determine how many times the letter ``l`` occurs in
-   string ``"hello"``. These forms are equivalent::
+   string ``"hello"``. These forms are equivalent:
+
+   .. code-block:: ql
    
        count(int i | i = "hello".indexOf("l") | i)
        count("hello".indexOf("l"))
 
-#. If there only one aggregation variable, you can omit the ``<expression>`` part instead.
+#. If there is only one aggregation variable, you can omit the ``<expression>`` part instead.
    In this case, the expression is considered to be the aggregation variable itself.
-   For example, the following aggregations are equivalent::
-   
+   For example, the following aggregations are equivalent:
+
+   .. code-block:: ql
+
        avg(int i | i = [0 .. 3] | i)
        avg(int i | i = [0 .. 3])
    
 #. As a special case, you can omit the ``<expression>`` part from ``count`` even if there is more
    than one aggregation variable. In such a case, it counts the number of distinct tuples of
    aggregation variables that satisfy the formula. In other words, the expression part is
-   considered to be the constant ``1``. For example, the following aggregations are equivalent::
-   
+   considered to be the constant ``1``. For example, the following aggregations are equivalent:
+
+   .. code-block:: ql
+  
        count(int i, int j | i in [1 .. 3] and j in [1 .. 3] | 1)
        count(int i, int j | i in [1 .. 3] and j in [1 .. 3])
 
 #. You can omit the ``<formula>`` part, but in that case you should include two vertical bars:
 
-.. code-block:: ql
+   .. code-block:: ql
 
        <aggregate>(<variable declarations> | | <expression>)
 
    This is useful if you don't want to restrict the aggregation variables any further. 
    For example, the following aggregation returns the maximum number of lines across all files:
 
-.. code-block:: ql
+   .. code-block:: ql
 
        max(File f | | f.getTotalNumberOfLines())
 
 #. Finally, you can also omit both the ``<formula>`` and ``<expression>`` parts. For example,
    the following aggregations are equivalent ways to count the number of files in a database:
 
-.. code-block:: ql
+   .. code-block:: ql
 
        count(File f | any() | 1)
        count(File f | | 1)
@@ -552,8 +570,9 @@ The following table lists some examples of different forms of ``any`` expression
 | ``any(int i | i = [0 .. 3] | i * i)``    | the integers ``0``, ``1``, ``4``, and ``9``     |
 +------------------------------------------+-------------------------------------------------+
 
-.. note::
-   There is also a `built-in predicate <ql-language-specification#non-member-built-ins>`_
+.. pull-quote:: Note
+
+   There is also a `built-in predicate <https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#non-member-built-ins>`_
    ``any()``. This is a predicate that always holds.
 
 Unary operations
@@ -637,7 +656,9 @@ is exactly equivalent to ``((Foo)x)``.
 Casts are useful if you want to call a :ref:`member predicate <member-predicates>` that is only defined for a more 
 specific type. For example, the following query selects Java 
 `classes <https://codeql.github.com/codeql-standard-libraries/java/semmle/code/java/Type.qll/type.Type$Class.html>`_
-that have a direct supertype called "List":: 
+that have a direct supertype called "List":
+
+.. code-block:: ql
 
     import java
     
@@ -668,7 +689,9 @@ Unlike other expressions, a don't-care expression does not have a type. In pract
 means that ``_`` doesn't have any :ref:`member predicates <member-predicates>`, so you can't
 call ``_.somePredicate()``.
 
-For example, the following query selects all the characters in the string ``"hello"``::
+For example, the following query selects all the characters in the string ``"hello"``:
+
+.. code-block:: ql
 
     from string s
     where s = "hello".charAt(_)

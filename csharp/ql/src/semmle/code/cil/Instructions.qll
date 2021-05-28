@@ -482,6 +482,22 @@ module Opcodes {
     override string getOpcodeName() { result = "call" }
   }
 
+  /** A `calli` instruction. */
+  class Calli extends Call, @cil_calli {
+    override string getOpcodeName() { result = "calli" }
+
+    override Callable getTarget() { none() }
+
+    /** Gets the function pointer type targetted by this instruction. */
+    FunctionPointerType getTargetType() { cil_access(this, result) }
+
+    // The number of items popped/pushed from the stack depends on the target of
+    // the call. Also, we need to pop the function pointer itself too.
+    override int getPopCount() { result = getTargetType().getCallPopCount() + 1 }
+
+    override int getPushCount() { result = getTargetType().getCallPushCount() }
+  }
+
   /** A `callvirt` instruction. */
   class Callvirt extends Call, @cil_callvirt {
     override string getOpcodeName() { result = "callvirt" }
@@ -626,35 +642,43 @@ module Opcodes {
   class Ldarg_0 extends ParameterReadAccess, @cil_ldarg_0 {
     override string getOpcodeName() { result = "ldarg.0" }
 
-    override Parameter getTarget() { result = getImplementation().getMethod().getRawParameter(0) }
+    override MethodParameter getTarget() {
+      result = getImplementation().getMethod().getRawParameter(0)
+    }
   }
 
   /** An `ldarg.1` instruction. */
   class Ldarg_1 extends ParameterReadAccess, @cil_ldarg_1 {
     override string getOpcodeName() { result = "ldarg.1" }
 
-    override Parameter getTarget() { result = getImplementation().getMethod().getRawParameter(1) }
+    override MethodParameter getTarget() {
+      result = getImplementation().getMethod().getRawParameter(1)
+    }
   }
 
   /** An `ldarg.2` instruction. */
   class Ldarg_2 extends ParameterReadAccess, @cil_ldarg_2 {
     override string getOpcodeName() { result = "ldarg.2" }
 
-    override Parameter getTarget() { result = getImplementation().getMethod().getRawParameter(2) }
+    override MethodParameter getTarget() {
+      result = getImplementation().getMethod().getRawParameter(2)
+    }
   }
 
   /** An `ldarg.3` instruction. */
   class Ldarg_3 extends ParameterReadAccess, @cil_ldarg_3 {
     override string getOpcodeName() { result = "ldarg.3" }
 
-    override Parameter getTarget() { result = getImplementation().getMethod().getRawParameter(3) }
+    override MethodParameter getTarget() {
+      result = getImplementation().getMethod().getRawParameter(3)
+    }
   }
 
   /** An `ldarg.s` instruction. */
   class Ldarg_s extends ParameterReadAccess, @cil_ldarg_s {
     override string getOpcodeName() { result = "ldarg.s" }
 
-    override Parameter getTarget() { cil_access(this, result) }
+    override MethodParameter getTarget() { cil_access(this, result) }
 
     override string getExtra() { result = this.getTarget().getIndex().toString() }
   }
@@ -663,21 +687,21 @@ module Opcodes {
   class Ldarg extends ParameterReadAccess, @cil_ldarg {
     override string getOpcodeName() { result = "ldarg" }
 
-    override Parameter getTarget() { cil_access(this, result) }
+    override MethodParameter getTarget() { cil_access(this, result) }
   }
 
   /** An `ldarga.s` instruction. */
   class Ldarga_s extends ParameterReadAccess, ReadRefAccess, @cil_ldarga_s {
     override string getOpcodeName() { result = "ldarga.s" }
 
-    override Parameter getTarget() { cil_access(this, result) }
+    override MethodParameter getTarget() { cil_access(this, result) }
   }
 
   /** An `starg.s` instruction. */
   class Starg_s extends ParameterWriteAccess, @cil_starg_s {
     override string getOpcodeName() { result = "starg.s" }
 
-    override Parameter getTarget() { cil_access(this, result) }
+    override MethodParameter getTarget() { cil_access(this, result) }
   }
 
   /** An `ldfld` instruction. */

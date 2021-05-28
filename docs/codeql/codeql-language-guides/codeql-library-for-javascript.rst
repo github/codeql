@@ -156,12 +156,12 @@ The class `Comment <https://codeql.github.com/codeql-standard-libraries/javascri
 
          -  `HtmlCommentStart <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Comments.qll/type.Comments$HtmlCommentStart.html>`__: an HTML comment starting with ``<!--``
 
-            -  `HtmlCommentEnd <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Comments.qll/type.Comments$HtmlCommentEnd.html>`__: an HTML comment ending with ``-->``
+         -  `HtmlCommentEnd <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Comments.qll/type.Comments$HtmlCommentEnd.html>`__: an HTML comment ending with ``-->``
 
--  `BlockComment <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Comments.qll/type.Comments$BlockComment.html>`__: a block comment potentially spanning multiple lines
+   -  `BlockComment <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Comments.qll/type.Comments$BlockComment.html>`__: a block comment potentially spanning multiple lines
 
-   -  `SlashStarComment <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Comments.qll/type.Comments$SlashStarComment.html>`__: a plain JavaScript block comment surrounded with ``/*...*/``
-   -  `DocComment <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Comments.qll/type.Comments$DocComment.html>`__: a documentation block comment surrounded with ``/**...*/``
+      -  `SlashStarComment <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Comments.qll/type.Comments$SlashStarComment.html>`__: a plain JavaScript block comment surrounded with ``/*...*/``
+      -  `DocComment <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Comments.qll/type.Comments$DocComment.html>`__: a documentation block comment surrounded with ``/**...*/``
 
 The most important member predicates are as follows:
 
@@ -184,7 +184,7 @@ As an example of a query using only lexical information, consider the following 
 Syntactic level
 ~~~~~~~~~~~~~~~
 
-The majority of classes in the JavaScript library is concerned with representing a JavaScript program as a collection of `abstract syntax trees <http://en.wikipedia.org/wiki/Abstract_syntax_tree>`__ (ASTs).
+The majority of classes in the JavaScript library is concerned with representing a JavaScript program as a collection of `abstract syntax trees <https://en.wikipedia.org/wiki/Abstract_syntax_tree>`__ (ASTs).
 
 The class `ASTNode <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/AST.qll/type.AST$ASTNode.html>`__ contains all entities representing nodes in the abstract syntax trees and defines generic tree traversal predicates:
 
@@ -215,7 +215,7 @@ From a syntactic point of view, each JavaScript program is composed of one or mo
       -  `EventHandlerCode <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/AST.qll/type.AST$EventHandlerCode.html>`__: code from an event handler attribute such as ``onload``
       -  `JavaScriptURL <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/AST.qll/type.AST$JavaScriptURL.html>`__: code from a URL with the ``javascript:`` scheme
 
-   -  `Externs <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/AST.qll/type.AST$Externs.html>`__: a JavaScript file containing `externs <https://developers.google.com/closure/compiler/docs/api-tutorial3#externs>`__ definitions
+   -  `Externs <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/AST.qll/type.AST$Externs.html>`__: a JavaScript file containing `externs <https://developers.google.com/closure/compiler/docs/externs-and-exports>`__ definitions
 
 Every `TopLevel <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/AST.qll/type.AST$TopLevel.html>`__ class is contained in a `File <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Files.qll/type.Files$File.html>`__ class, but a single `File <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Files.qll/type.Files$File.html>`__ may contain more than one `TopLevel <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/AST.qll/type.AST$TopLevel.html>`__. To go from a ``TopLevel tl`` to its `File <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Files.qll/type.Files$File.html>`__, use ``tl.getFile()``; conversely, for a ``File f``, predicate ``f.getATopLevel()`` returns a top-level contained in ``f``. For every AST node, predicate ``ASTNode.getTopLevel()`` can be used to find the top-level it belongs to.
 
@@ -361,7 +361,7 @@ JavaScript provides several ways of defining functions: in ECMAScript 5, there a
 
 -  ``Function.getId()`` returns the `Identifier <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Expr.qll/type.Expr$Identifier.html>`__ naming the function, which may not be defined for function expressions.
 -  ``Function.getParameter(i)`` and ``Function.getAParameter()`` access the ``i``\ th parameter or any parameter, respectively; parameters are modeled by the class `Parameter <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Variables.qll/type.Variables$Parameter.html>`__, which is a subclass of `BindingPattern <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Variables.qll/type.Variables$BindingPattern.html>`__ (see below).
--  ``Function.getBody()`` returns the body of the function, which is usually a `Stmt <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Stmt.qll/type.Stmt$Stmt.html>`__, but may be an `Expr <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Expr.qll/type.Expr$Expr.html>`__ for arrow function expressions and legacy `expression closures <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Expression_closures>`__.
+-  ``Function.getBody()`` returns the body of the function, which is usually a `Stmt <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Stmt.qll/type.Stmt$Stmt.html>`__, but may be an `Expr <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Expr.qll/type.Expr$Expr.html>`__ for arrow function expressions and legacy `expression closures <https://developer.mozilla.org/en-US/docs/Archive/Web/JavaScript/Expression_closures>`__.
 
 As an example, here is a query that finds all expression closures:
 
@@ -560,10 +560,10 @@ The structure of the control flow graph is reflected in the member predicates of
 -  ``ControlFlowNode.isJoin()`` determines whether this node has more than one predecessor.
 -  ``ControlFlowNode.isStart()`` determines whether this node is a start node.
 
-Many control-flow-based analyses are phrased in terms of `basic blocks <http://en.wikipedia.org/wiki/Basic_block>`__ rather than single control flow nodes, where a basic block is a maximal sequence of control flow nodes without branches or joins. The class `BasicBlock <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/BasicBlocks.qll/type.BasicBlocks$BasicBlock.html>`__ from `BasicBlocks.qll <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/BasicBlocks.qll/module.BasicBlocks.html>`__ represents all such basic blocks. Similar to `ControlFlowNode <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/CFG.qll/type.CFG$ControlFlowNode.html>`__, it provides member predicates ``getASuccessor()`` and ``getAPredecessor()`` to navigate the control flow graph at the level of basic blocks, and member predicates ``getANode()``, ``getNode(int)``, ``getFirstNode()`` and ``getLastNode()`` to access individual control flow nodes within a basic block. The predicate
+Many control-flow-based analyses are phrased in terms of `basic blocks <https://en.wikipedia.org/wiki/Basic_block>`__ rather than single control flow nodes, where a basic block is a maximal sequence of control flow nodes without branches or joins. The class `BasicBlock <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/BasicBlocks.qll/type.BasicBlocks$BasicBlock.html>`__ from `BasicBlocks.qll <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/BasicBlocks.qll/module.BasicBlocks.html>`__ represents all such basic blocks. Similar to `ControlFlowNode <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/CFG.qll/type.CFG$ControlFlowNode.html>`__, it provides member predicates ``getASuccessor()`` and ``getAPredecessor()`` to navigate the control flow graph at the level of basic blocks, and member predicates ``getANode()``, ``getNode(int)``, ``getFirstNode()`` and ``getLastNode()`` to access individual control flow nodes within a basic block. The predicate
 ``Function.getEntryBB()`` returns the entry basic block in a function, that is, the basic block containing the function's entry node. Similarly, ``Function.getStartBB()`` provides access to the start basic block, which contains the function's start node. As for CFG nodes, ``getStartBB()`` should normally be preferred over ``getEntryBB()``.
 
-As an example of an analysis using basic blocks, ``BasicBlock.isLiveAtEntry(v, u)`` determines whether variable ``v`` is `live <http://en.wikipedia.org/wiki/Live_variable_analysis>`__ at the entry of the given basic block, and if so binds ``u`` to a use of ``v`` that refers to its value at the entry. We can use it to find global variables that are used in a function where they are not live (that is, every read of the variable is preceded by a write), suggesting that the variable was meant to be declared as a local variable instead:
+As an example of an analysis using basic blocks, ``BasicBlock.isLiveAtEntry(v, u)`` determines whether variable ``v`` is `live <https://en.wikipedia.org/wiki/Live_variable_analysis>`__ at the entry of the given basic block, and if so binds ``u`` to a use of ``v`` that refers to its value at the entry. We can use it to find global variables that are used in a function where they are not live (that is, every read of the variable is preceded by a write), suggesting that the variable was meant to be declared as a local variable instead:
 
 .. code-block:: ql
 
@@ -582,7 +582,7 @@ Data flow
 Definitions and uses
 ^^^^^^^^^^^^^^^^^^^^
 
-Library `DefUse.qll <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/DefUse.qll/module.DefUse.html>`__ provides classes and predicates to determine `def-use <http://en.wikipedia.org/wiki/Use-define_chain>`__ relationships between definitions and uses of variables.
+Library `DefUse.qll <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/DefUse.qll/module.DefUse.html>`__ provides classes and predicates to determine `def-use <https://en.wikipedia.org/wiki/Use-define_chain>`__ relationships between definitions and uses of variables.
 
 Classes `VarDef <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/DefUse.qll/type.DefUse$VarDef.html>`__ and `VarUse <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/DefUse.qll/type.DefUse$VarUse.html>`__ contain all expressions that define and use a variable, respectively. For the former, you can use predicate ``VarDef.getAVariable()`` to find out which variables are defined by a given variable definition (recall that destructuring assignments in ECMAScript 2015 define several variables at the same time). Similarly, predicate ``VarUse.getVariable()`` returns the (single) variable being accessed by a variable use.
 
@@ -686,7 +686,7 @@ You can add custom type inference rules by defining new subclasses of ``DataFlow
 Call graph
 ~~~~~~~~~~
 
-The JavaScript library implements a simple `call graph <http://en.wikipedia.org/wiki/Call_graph>`__ construction algorithm to statically approximate the possible call targets of function calls and ``new`` expressions. Due to the dynamically typed nature of JavaScript and its support for higher-order functions and reflective language features, building static call graphs is quite difficult. Simple call graph algorithms tend to be incomplete, that is, they often fail to resolve all possible call targets. More sophisticated algorithms can suffer from the opposite problem of imprecision, that is, they may infer many spurious call targets.
+The JavaScript library implements a simple `call graph <https://en.wikipedia.org/wiki/Call_graph>`__ construction algorithm to statically approximate the possible call targets of function calls and ``new`` expressions. Due to the dynamically typed nature of JavaScript and its support for higher-order functions and reflective language features, building static call graphs is quite difficult. Simple call graph algorithms tend to be incomplete, that is, they often fail to resolve all possible call targets. More sophisticated algorithms can suffer from the opposite problem of imprecision, that is, they may infer many spurious call targets.
 
 The call graph is represented by the member predicate ``getACallee()`` of class `DataFlow::InvokeNode <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/dataflow/Nodes.qll/type.Nodes$InvokeNode.html>`__, which computes possible callees of the given invocation, that is, functions that may at runtime be invoked by this expression.
 
@@ -801,7 +801,7 @@ Frameworks
 AngularJS
 ^^^^^^^^^
 
-The ``semmle.javascript.frameworks.AngularJS`` library provides support for working with `AngularJS (Angular 1.x) <https://www.angularjs.org/>`__ code. Its most important classes are:
+The ``semmle.javascript.frameworks.AngularJS`` library provides support for working with `AngularJS (Angular 1.x) <https://angularjs.org/>`__ code. Its most important classes are:
 
 -  `AngularJS::AngularModule <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/frameworks/AngularJS/AngularJSCore.qll/type.AngularJSCore$AngularModule.html>`__: an Angular module
 -  `AngularJS::DirectiveDefinition <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/frameworks/AngularJS/ServiceDefinitions.qll/type.ServiceDefinitions$DirectiveDefinition.html>`__, `AngularJS::FactoryRecipeDefinition <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/frameworks/AngularJS/ServiceDefinitions.qll/type.ServiceDefinitions$FactoryRecipeDefinition.html>`__, `AngularJS::FilterDefinition <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/frameworks/AngularJS/ServiceDefinitions.qll/type.ServiceDefinitions$FilterDefinition.html>`__, `AngularJS::ControllerDefinition <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/frameworks/AngularJS/ServiceDefinitions.qll/type.ServiceDefinitions$ControllerDefinition.html>`__: a definition of a directive, service, filter or controller, respectively
@@ -812,7 +812,7 @@ HTTP framework libraries
 
 The library ``semmle.javacript.frameworks.HTTP`` provides classes modeling common concepts from various HTTP frameworks. 
 
-Currently supported frameworks are `Express <https://expressjs.com/>`__, the standard Node.js ``http`` and ``https`` modules, `Connect <https://github.com/senchalabs/connect>`__, `Koa <https://koajs.com>`__, `Hapi <https://hapijs.com/>`__ and `Restify <http://restify.com/>`__.
+Currently supported frameworks are `Express <https://expressjs.com/>`__, the standard Node.js ``http`` and ``https`` modules, `Connect <https://github.com/senchalabs/connect>`__, `Koa <https://koajs.com>`__, `Hapi <https://hapi.dev/>`__ and `Restify <http://restify.com/>`__.
 
 The most important classes include (all in module ``HTTP``):
 
@@ -848,7 +848,7 @@ As an example of the use of these classes, here is a query that counts for every
 NPM
 ^^^
 
-The ``semmle.javascript.NPM`` library provides support for working with `NPM <http://npmjs.org/>`__ packages through the following classes:
+The ``semmle.javascript.NPM`` library provides support for working with `NPM <https://www.npmjs.com/>`__ packages through the following classes:
 
 -  `PackageJSON <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/NPM.qll/type.NPM$PackageJSON.html>`__: a ``package.json`` file describing an NPM package; various getter predicates are available for accessing detailed information about the package, which are described in the `online API documentation <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/NPM.qll/module.NPM.html>`__.
 -  `BugTrackerInfo <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/NPM.qll/type.NPM$BugTrackerInfo.html>`__, `ContributorInfo <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/NPM.qll/type.NPM$ContributorInfo.html>`__, `RepositoryInfo <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/NPM.qll/type.NPM$RepositoryInfo.html>`__: these classes model parts of the ``package.json`` file providing information on bug tracking systems, contributors and repositories.
@@ -877,7 +877,7 @@ As an example of the use of these classes, here is a query that identifies unuse
 React
 ^^^^^
 
-The ``semmle.javascript.frameworks.React`` library provides support for working with `React <https://facebook.github.io/react/>`__ code through the `ReactComponent <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/frameworks/React.qll/type.React$ReactComponent.html>`__ class, which models a React component defined either in the functional style or the class-based style (both ECMAScript 2015 classes and old-style ``React.createClass`` classes are supported).
+The ``semmle.javascript.frameworks.React`` library provides support for working with `React <https://reactjs.org/>`__ code through the `ReactComponent <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/frameworks/React.qll/type.React$ReactComponent.html>`__ class, which models a React component defined either in the functional style or the class-based style (both ECMAScript 2015 classes and old-style ``React.createClass`` classes are supported).
 
 Databases
 ^^^^^^^^^
@@ -940,7 +940,7 @@ Both ``HTML::Element`` and ``HTML::Attribute`` have a predicate ``getRoot()`` th
 JSDoc
 ^^^^^
 
-The ``semmle.javascript.JSDoc`` library provides support for working with `JSDoc comments <http://usejsdoc.org/>`__. Documentation comments are parsed into an abstract syntax tree representation closely following the format employed by the `Doctrine <https://github.com/Constellation/doctrine>`__ JSDoc parser.
+The ``semmle.javascript.JSDoc`` library provides support for working with `JSDoc comments <https://jsdoc.app/>`__. Documentation comments are parsed into an abstract syntax tree representation closely following the format employed by the `Doctrine <https://github.com/eslint/doctrine>`__ JSDoc parser.
 
 A JSDoc comment as a whole is represented by an entity of class `JSDoc <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/JSDoc.qll/type.JSDoc$JSDoc.html>`__, while individual tags are represented by class `JSDocTag <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/JSDoc.qll/type.JSDoc$JSDocTag.html>`__. Important member predicates of these two classes include:
 
@@ -972,7 +972,7 @@ For full details on these and other classes representing JSDoc comments and type
 JSX
 ^^^
 
-The ``semmle.javascript.JSX`` library provides support for working with `JSX code <https://facebook.github.io/react/docs/jsx-in-depth.html>`__.
+The ``semmle.javascript.JSX`` library provides support for working with `JSX code <https://reactjs.org/docs/jsx-in-depth.html>`__.
 
 Similar to the representation of HTML documents, JSX fragments are modeled as a tree of `JSXElement <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/JSX.qll/type.JSX$JSXElement.html>`__\ s, each of which may have zero or more `JSXAttribute <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/JSX.qll/type.JSX$JSXAttribute.html>`__\ s.
 
@@ -1011,7 +1011,7 @@ Various subclasses of `RegExpTerm <https://codeql.github.com/codeql-standard-lib
 YAML
 ^^^^
 
-The ``semmle.javascript.YAML`` library provides support for working with `YAML <http://yaml.org/>`__ files that were processed by the JavaScript extractor when building the CodeQL database.
+The ``semmle.javascript.YAML`` library provides support for working with `YAML <https://yaml.org/>`__ files that were processed by the JavaScript extractor when building the CodeQL database.
 
 YAML files are modeled as trees of YAML nodes. Each YAML node is represented by an entity of class `YAMLNode <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/YAML.qll/type.YAML$YAMLNode.html>`__, which provides, among others, the following member predicates:
 

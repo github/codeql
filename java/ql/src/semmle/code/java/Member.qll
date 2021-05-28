@@ -23,6 +23,14 @@ class Member extends Element, Annotatable, Modifiable, @member {
   /** Gets the qualified name of this member. */
   string getQualifiedName() { result = getDeclaringType().getName() + "." + getName() }
 
+  /**
+   * Holds if this member has the specified name and is declared in the
+   * specified package and type.
+   */
+  predicate hasQualifiedName(string package, string type, string name) {
+    this.getDeclaringType().hasQualifiedName(package, type) and this.hasName(name)
+  }
+
   /** Holds if this member is package protected, that is, neither public nor private nor protected. */
   predicate isPackageProtected() {
     not isPrivate() and

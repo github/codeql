@@ -87,7 +87,7 @@ abstract class MutexType extends Type {
 private Function mustlockCandidate() {
   exists(string name | name = result.getName() |
     name = "lock" or
-    name.suffix(name.length() - 10) = "mutex_lock"
+    name.matches("%mutex\\_lock")
   )
 }
 
@@ -97,7 +97,7 @@ private Function mustlockCandidate() {
 private Function trylockCandidate() {
   exists(string name | name = result.getName() |
     name = "try_lock" or
-    name.suffix(name.length() - 13) = "mutex_trylock"
+    name.matches("%mutex\\_trylock")
   )
 }
 
@@ -107,7 +107,7 @@ private Function trylockCandidate() {
 private Function unlockCandidate() {
   exists(string name | name = result.getName() |
     name = "unlock" or
-    name.suffix(name.length() - 12) = "mutex_unlock"
+    name.matches("%mutex\\_unlock")
   )
 }
 
