@@ -77,6 +77,63 @@ class ClassType extends Type, TClass {
     or
     result = super.getAnInternalSuperType()
   }
+
+  ClassPredicate getClassPredicate(string name, int arity) {
+    result = classPredCandidate(this, name, arity) and
+    not exists(ClassPredicate other | other = classPredCandidate(this, name, arity) |
+      other.getDeclaringType().getASuperType+() = result.getDeclaringType()
+    )
+  }
+
+  VarDecl getField(string name) {
+    result = fieldCandidate(this, name) and
+    not exists(VarDecl other | other = fieldCandidate(this, name) |
+      other.getDeclaringType().getASuperType+() = result.getDeclaringType()
+    )
+  }
+}
+
+private ClassPredicate declaredPred(ClassType ty, string name, int arity) {
+  result = ty.getDeclaration().getAClassPredicate() and
+  result.getName() = name and
+  result.getArity() = arity
+}
+
+private ClassPredicate classPredCandidate(ClassType ty, string name, int arity) {
+  result = declaredPred(ty, name, arity)
+  or
+  not exists(declaredPred(ty, name, arity)) and
+  result = inherClassPredCandidate(ty, name, arity)
+}
+
+private ClassPredicate inherClassPredCandidate(ClassType ty, string name, int arity) {
+  result = classPredCandidate(ty.getASuperType(), name, arity) and
+  not result.isPrivate()
+}
+
+predicate predOverrides(ClassPredicate sub, ClassPredicate sup) {
+  sup = inherClassPredCandidate(sub.getDeclaringType(), sub.getName(), sub.getArity())
+}
+
+private VarDecl declaredField(ClassType ty, string name) {
+  result = ty.getDeclaration().getAField() and
+  result.getName() = name
+}
+
+private VarDecl fieldCandidate(ClassType ty, string name) {
+  result = declaredField(ty, name)
+  or
+  not exists(declaredField(ty, name)) and
+  result = inherFieldCandidate(ty, name)
+}
+
+private VarDecl inherFieldCandidate(ClassType ty, string name) {
+  result = fieldCandidate(ty.getASuperType(), name) and
+  not result.isPrivate()
+}
+
+predicate fieldOverrides(VarDecl sub, VarDecl sup) {
+  sup = inherFieldCandidate(sub.getDeclaringType(), sub.getName())
 }
 
 class ClassCharType extends Type, TClassChar {
