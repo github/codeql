@@ -5,7 +5,7 @@
  * @problem.severity error
  * @id ql/primary-ql-class-consistency
  * @tags correctness
- * @precision low
+ * @precision very-high
  */
 
 import ql
