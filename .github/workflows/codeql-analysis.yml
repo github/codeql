@@ -16,6 +16,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Fetch CodeQL
+        run: |
+          LATEST=$(gh release list --repo https://github.com/github/codeql-cli-binaries | cut -f 1 | sort --version-sort | tail -1)
+          gh release download --repo https://github.com/github/codeql-cli-binaries --pattern codeql-linux64.zip "$LATEST"
+          unzip -q codeql-linux64.zip
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+
       - uses: actions/cache@v2
         with:
           path: |
@@ -25,7 +33,7 @@ jobs:
           key: ${{ runner.os }}-qltest-cargo-${{ hashFiles('**/Cargo.lock') }}
 
       - name: Build Extractor
-        run: ./create-extractor-pack.sh
+        run: env "PATH=$PATH:${{ github.workspace }}/codeql" ./create-extractor-pack.sh
 # TODO
 
 #  analyze:
