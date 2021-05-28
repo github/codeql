@@ -84,19 +84,13 @@ class TopLevel extends TTopLevel, AstNode {
   /** Gets a top-level predicate in this module. */
   ClasslessPredicate getAPredicate() { result = this.getAMember() }
 
-  /**
-   * Gets a QLDoc comment for a top-level entity in this module.
-   *
-   * Use `getQLDoc` if you want the QLDoc for the module itself.
-   */
-  QLDoc getAQLDocComment() { result = getQLDocFor(_) }
-
-  /** Gets a module defined at the top-level module of this module. */
+  /** Gets a module defined at the top-level of this module. */
   Module getAModule() { result = this.getAMember() }
 
+  /** Gets a `newtype` defined at the top-level of this module. */
+  NewType getANewType() { result = this.getAMember() }
+
   override ModuleMember getAChild(string pred) {
-    pred = directMember("getAQLDocComment") and result = this.getAQLDocComment()
-    or
     pred = directMember("getQLDoc") and result = this.getQLDoc()
     or
     pred = directMember("getAnImport") and result = this.getAnImport()
@@ -104,6 +98,10 @@ class TopLevel extends TTopLevel, AstNode {
     pred = directMember("getAClass") and result = this.getAClass()
     or
     pred = directMember("getAPredicate") and result = this.getAPredicate()
+    or
+    pred = directMember("getAModule") and result = this.getAModule()
+    or
+    pred = directMember("getANewType") and result = this.getANewType()
   }
 
   QLDoc getQLDocFor(ModuleMember m) {
