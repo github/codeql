@@ -1,0 +1,2 @@
+| Test.qll:12:27:12:35 | succ | succ was $@ in the super class. | Test.qll:4:27:4:35 | pred | named pred |
+| Test.qll:12:38:12:46 | pred | pred was $@ in the super class. | Test.qll:4:38:4:46 | succ | named succ |
