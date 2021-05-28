@@ -22,15 +22,12 @@ newtype TAstNode =
   TComparisonFormula(Generated::CompTerm comp) or
   TComparisonOp(Generated::Compop op) or
   TQuantifier(Generated::Quantified quant) or
-  TAggregate(Generated::Aggregate agg) {
-    agg.getChild(_) instanceof Generated::FullAggregateBody or
-    agg.getChild(_) instanceof Generated::ExprAggregateBody
-  } or
+  TAggregate(Generated::Aggregate agg) { agg.getChild(_) instanceof Generated::FullAggregateBody } or
   TExprAggregate(Generated::Aggregate agg) {
     agg.getChild(_) instanceof Generated::ExprAggregateBody
   } or
   TIdentifier(Generated::Variable var) or
-  TAsExpr(Generated::AsExpr asExpr) or
+  TAsExpr(Generated::AsExpr asExpr) { asExpr.getChild(1) instanceof Generated::VarName } or
   TPredicateCall(Generated::CallOrUnqualAggExpr call) or
   TMemberCall(Generated::QualifiedExpr expr) {
     not expr.getChild(_).(Generated::QualifiedRhs).getChild(_) instanceof Generated::TypeExpr
@@ -68,13 +65,13 @@ class TBinOpExpr = TAddSubExpr or TMulDivModExpr;
 
 class TExpr =
   TBinOpExpr or TLiteral or TAggregate or TExprAggregate or TIdentifier or TInlineCast or TCall or
-      TUnaryExpr or TExprAnnotation or TDontCare or TRange or TSet;
+      TUnaryExpr or TExprAnnotation or TDontCare or TRange or TSet or TAsExpr;
 
 class TCall = TPredicateCall or TMemberCall or TNoneCall or TAnyCall;
 
 class TModuleRef = TImport or TModuleExpr;
 
-Generated::AstNode toGeneratedFormula(AST::AstNode n) {
+private Generated::AstNode toGeneratedFormula(AST::AstNode n) {
   n = TConjunction(result) or
   n = TDisjunction(result) or
   n = TComparisonFormula(result) or
@@ -90,7 +87,7 @@ Generated::AstNode toGeneratedFormula(AST::AstNode n) {
   n = TInFormula(result)
 }
 
-Generated::AstNode toGeneratedExpr(AST::AstNode n) {
+private Generated::AstNode toGeneratedExpr(AST::AstNode n) {
   n = TAddSubExpr(result) or
   n = TMulDivModExpr(result) or
   n = TRange(result) or
@@ -113,6 +110,12 @@ Generated::AstNode toGenerated(AST::AstNode n) {
   result = toGeneratedFormula(n)
   or
   result.(Generated::ParExpr).getChild() = toGenerated(n)
+  or
+  result =
+    any(Generated::AsExpr ae |
+      not ae.getChild(1) instanceof Generated::VarName and
+      toGenerated(n) = ae.getChild(0)
+    )
   or
   n = TTopLevel(result)
   or
