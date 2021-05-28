@@ -210,9 +210,17 @@ private predicate fullBarrier(Node node, Configuration config) {
 /**
  * Holds if data can flow in one local step from `node1` to `node2`.
  */
+bindingset[f1]
 private predicate localFlowStep(Node node1, Formula f1, Node node2, Formula f2, Configuration config) {
+  localFlowStep(node1, node2, config) and
+  f2 = [f1, getACondition(node2)]
+}
+
+/**
+ * Holds if data can flow in one local step from `node1` to `node2`.
+ */
+private predicate localFlowStep(Node node1, Node node2, Configuration config) {
   simpleLocalFlowStepExt(node1, node2) and
-  f2 = [f1, getACondition(node2)] and
   not outBarrier(node1, config) and
   not inBarrier(node2, config) and
   not fullBarrier(node1, config) and
@@ -222,12 +230,20 @@ private predicate localFlowStep(Node node1, Formula f1, Node node2, Formula f2, 
 /**
  * Holds if the additional step from `node1` to `node2` does not jump between callables.
  */
+bindingset[f1]
 private predicate additionalLocalFlowStep(
   Node node1, Formula f1, Node node2, Formula f2, Configuration config
 ) {
+  additionalLocalFlowStep(node1, node2, config) and
+  f2 = [f1, getACondition(node2)]
+}
+
+/**
+ * Holds if the additional step from `node1` to `node2` does not jump between callables.
+ */
+private predicate additionalLocalFlowStep(Node node1, Node node2, Configuration config) {
   config.isAdditionalFlowStep(node1, node2) and
   getNodeEnclosingCallable(node1) = getNodeEnclosingCallable(node2) and
-  f2 = [f1, getACondition(node2)] and
   not outBarrier(node1, config) and
   not inBarrier(node2, config) and
   not fullBarrier(node1, config) and
@@ -278,7 +294,8 @@ private module Stage1 {
    * The Boolean `cc` records whether the node is reached through an
    * argument in a call.
    */
-  predicate fwdFlow(Node node, Cc cc, Formula f, Configuration config) {
+  predicate fwdFlow(Node node, Formula f, Cc cc, Configuration config) {
+    // satisfiable(stringOfFormula(f)) and
     not fullBarrier(node, config) and
     (
       config.isSource(node) and
@@ -286,12 +303,12 @@ private module Stage1 {
       f = getACondition(node)
       or
       exists(Node mid, Formula fMid |
-        fwdFlow(mid, cc, fMid, config) and
+        fwdFlow(mid, fMid, cc, config) and
         localFlowStep(mid, fMid, node, f, config)
       )
       or
       exists(Node mid, Formula fMid |
-        fwdFlow(mid, cc, fMid, config) and
+        fwdFlow(mid, fMid, cc, config) and
         additionalLocalFlowStep(mid, fMid, node, f, config)
       )
       or
@@ -312,21 +329,21 @@ private module Stage1 {
       // store
       exists(Node mid |
         useFieldFlow(config) and
-        fwdFlow(mid, cc, f, config) and
+        fwdFlow(mid, f, cc, config) and
         store(mid, _, node, _) and
         not outBarrier(mid, config)
       )
       or
       // read
       exists(Content c |
-        fwdFlowRead(c, node, cc, f, config) and
+        fwdFlowRead(c, node, f, cc, config) and
         fwdFlowConsCand(c, config) and
         not inBarrier(node, config)
       )
       or
       // flow into a callable
       exists(Node arg |
-        fwdFlow(arg, _, f, config) and
+        fwdFlow(arg, f, _, config) and
         viableParamArg(_, node, arg) and
         cc = true
       )
@@ -338,19 +355,19 @@ private module Stage1 {
         f instanceof True
         or
         fwdFlowOutFromArg(call, node, config) and
-        fwdFlowIsEntered(call, cc, f, config)
+        fwdFlowIsEntered(call, f, cc, config)
       )
     )
   }
 
   private predicate fwdFlow(Node node, Formula f, Configuration config) {
-    fwdFlow(node, _, f, config)
+    fwdFlow(node, f, _, config)
   }
 
   pragma[nomagic]
-  private predicate fwdFlowRead(Content c, Node node, Cc cc, Formula f, Configuration config) {
+  private predicate fwdFlowRead(Content c, Node node, Formula f, Cc cc, Configuration config) {
     exists(Node mid |
-      fwdFlow(mid, cc, f, config) and
+      fwdFlow(mid, f, cc, config) and
       read(mid, c, node)
     )
   }
@@ -372,7 +389,7 @@ private module Stage1 {
   pragma[nomagic]
   private predicate fwdFlowReturnPosition(ReturnPosition pos, Cc cc, Configuration config) {
     exists(ReturnNodeExt ret |
-      fwdFlow(ret, cc, _, config) and
+      fwdFlow(ret, _, cc, config) and
       getReturnPosition(ret) = pos
     )
   }
@@ -394,22 +411,15 @@ private module Stage1 {
    * Holds if an argument to `call` is reached in the flow covered by `fwdFlow`.
    */
   pragma[nomagic]
-  private predicate fwdFlowIsEntered(DataFlowCall call, Cc cc, Formula f, Configuration config) {
+  private predicate fwdFlowIsEntered(DataFlowCall call, Formula f, Cc cc, Configuration config) {
     exists(ArgNode arg |
-      fwdFlow(arg, cc, f, config) and
+      fwdFlow(arg, f, cc, config) and
       viableParamArg(call, _, arg)
     )
   }
 
   string getCondition(Node node, Configuration config) {
-    exists(int n | n = count(Formula cond | fwdFlow(node, cond, config)) |
-      n = 1 and result = stringOfFormula(any(Formula cond | fwdFlow(node, cond, config)))
-      or
-      n > 1 and
-      result =
-        "(and " + concat(Formula cond | fwdFlow(node, cond, config) | stringOfFormula(cond), " ") +
-          ")"
-    )
+    result = "(and " + concat(Formula f | fwdFlow(node, f, config) | stringOfFormula(f), " ") + ")"
   }
 
   /**
@@ -433,12 +443,12 @@ private module Stage1 {
     toReturn = false
     or
     exists(Node mid |
-      localFlowStep(node, _, mid, _, config) and
+      localFlowStep(node, mid, config) and
       revFlow(mid, toReturn, config)
     )
     or
     exists(Node mid |
-      additionalLocalFlowStep(node, _, mid, _, config) and
+      additionalLocalFlowStep(node, mid, config) and
       revFlow(mid, toReturn, config)
     )
     or
@@ -593,7 +603,7 @@ private module Stage1 {
 
   private predicate throughFlowNodeCand(Node node, Configuration config) {
     revFlow(node, true, config) and
-    fwdFlow(node, true, _, config) and
+    fwdFlow(node, _, true, config) and
     not inBarrier(node, config) and
     not outBarrier(node, config)
   }
@@ -632,7 +642,7 @@ private module Stage1 {
     nodes = count(Node node | fwdFlow(node, _, config)) and
     fields = count(Content f0 | fwdFlowConsCand(f0, config)) and
     conscand = -1 and
-    tuples = count(Node n, boolean b, Formula f | fwdFlow(n, b, f, config))
+    tuples = count(Node n, boolean b, Formula f | fwdFlow(n, f, b, config))
     or
     fwd = false and
     nodes = count(Node node | revFlow(node, _, config)) and
@@ -646,13 +656,13 @@ private module Stage1 {
 pragma[noinline]
 private predicate localFlowStepNodeCand1(Node node1, Node node2, Configuration config) {
   Stage1::revFlow(node2, config) and
-  localFlowStep(node1, _, node2, _, config)
+  localFlowStep(node1, node2, config)
 }
 
 pragma[noinline]
 private predicate additionalLocalFlowStepNodeCand1(Node node1, Node node2, Configuration config) {
   Stage1::revFlow(node2, config) and
-  additionalLocalFlowStep(node1, _, node2, _, config)
+  additionalLocalFlowStep(node1, node2, config)
 }
 
 pragma[nomagic]
@@ -3798,14 +3808,14 @@ private module FlowExploration {
   ) {
     not isUnreachableInCallCached(node, cc.(CallContextSpecificCall).getCall()) and
     (
-      localFlowStep(mid.getNode(), _, node, _, config) and
+      localFlowStep(mid.getNode(), node, config) and
       cc = mid.getCallContext() and
       sc1 = mid.getSummaryCtx1() and
       sc2 = mid.getSummaryCtx2() and
       ap = mid.getAp() and
       config = mid.getConfiguration()
       or
-      additionalLocalFlowStep(mid.getNode(), _, node, _, config) and
+      additionalLocalFlowStep(mid.getNode(), node, config) and
       cc = mid.getCallContext() and
       sc1 = mid.getSummaryCtx1() and
       sc2 = mid.getSummaryCtx2() and
@@ -4012,13 +4022,13 @@ private module FlowExploration {
     PartialPathNodeRev mid, Node node, TRevSummaryCtx1 sc1, TRevSummaryCtx2 sc2,
     RevPartialAccessPath ap, Configuration config
   ) {
-    localFlowStep(node, _, mid.getNode(), _, config) and
+    localFlowStep(node, mid.getNode(), config) and
     sc1 = mid.getSummaryCtx1() and
     sc2 = mid.getSummaryCtx2() and
     ap = mid.getAp() and
     config = mid.getConfiguration()
     or
-    additionalLocalFlowStep(node, _, mid.getNode(), _, config) and
+    additionalLocalFlowStep(node, mid.getNode(), config) and
     sc1 = mid.getSummaryCtx1() and
     sc2 = mid.getSummaryCtx2() and
     mid.getAp() instanceof RevPartialAccessPathNil and
