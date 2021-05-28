@@ -59,112 +59,110 @@ nodes
 | Foo.qll:10:44:10:44 | ComparisonOp | semmle.order | 29 |
 | Foo.qll:10:46:10:50 | String | semmle.label | [String] String |
 | Foo.qll:10:46:10:50 | String | semmle.order | 30 |
-| Foo.qll:10:54:10:58 | AsExpr | semmle.label | [AsExpr] AsExpr |
-| Foo.qll:10:54:10:58 | AsExpr | semmle.order | 31 |
 | Foo.qll:10:54:10:58 | inner | semmle.label | [VarAccess] inner |
 | Foo.qll:10:54:10:58 | inner | semmle.order | 31 |
 | Foo.qll:10:69:10:73 | inner | semmle.label | [VarAccess] inner |
-| Foo.qll:10:69:10:73 | inner | semmle.order | 33 |
+| Foo.qll:10:69:10:73 | inner | semmle.order | 32 |
 | Foo.qll:10:69:10:84 | MemberCall | semmle.label | [MemberCall] MemberCall |
-| Foo.qll:10:69:10:84 | MemberCall | semmle.order | 33 |
+| Foo.qll:10:69:10:84 | MemberCall | semmle.order | 32 |
 | Foo.qll:13:1:25:1 | calls | semmle.label | [ClasslessPredicate] calls |
-| Foo.qll:13:1:25:1 | calls | semmle.order | 35 |
+| Foo.qll:13:1:25:1 | calls | semmle.order | 34 |
 | Foo.qll:13:17:13:19 | TypeExpr | semmle.label | [TypeExpr] TypeExpr |
-| Foo.qll:13:17:13:19 | TypeExpr | semmle.order | 36 |
+| Foo.qll:13:17:13:19 | TypeExpr | semmle.order | 35 |
 | Foo.qll:13:17:13:21 | f | semmle.label | [VarDecl] f |
-| Foo.qll:13:17:13:21 | f | semmle.order | 36 |
+| Foo.qll:13:17:13:21 | f | semmle.order | 35 |
 | Foo.qll:14:3:14:10 | PredicateCall | semmle.label | [PredicateCall] PredicateCall |
-| Foo.qll:14:3:14:10 | PredicateCall | semmle.order | 38 |
+| Foo.qll:14:3:14:10 | PredicateCall | semmle.order | 37 |
 | Foo.qll:14:3:16:29 | Disjunction | semmle.label | [Disjunction] Disjunction |
-| Foo.qll:14:3:16:29 | Disjunction | semmle.order | 38 |
+| Foo.qll:14:3:16:29 | Disjunction | semmle.order | 37 |
 | Foo.qll:14:3:18:28 | Disjunction | semmle.label | [Disjunction] Disjunction |
-| Foo.qll:14:3:18:28 | Disjunction | semmle.order | 38 |
+| Foo.qll:14:3:18:28 | Disjunction | semmle.order | 37 |
 | Foo.qll:14:3:20:13 | Disjunction | semmle.label | [Disjunction] Disjunction |
-| Foo.qll:14:3:20:13 | Disjunction | semmle.order | 38 |
+| Foo.qll:14:3:20:13 | Disjunction | semmle.order | 37 |
 | Foo.qll:14:3:22:16 | Disjunction | semmle.label | [Disjunction] Disjunction |
-| Foo.qll:14:3:22:16 | Disjunction | semmle.order | 38 |
+| Foo.qll:14:3:22:16 | Disjunction | semmle.order | 37 |
 | Foo.qll:14:3:24:23 | Disjunction | semmle.label | [Disjunction] Disjunction |
-| Foo.qll:14:3:24:23 | Disjunction | semmle.order | 38 |
+| Foo.qll:14:3:24:23 | Disjunction | semmle.order | 37 |
 | Foo.qll:14:9:14:9 | f | semmle.label | [VarAccess] f |
-| Foo.qll:14:9:14:9 | f | semmle.order | 44 |
+| Foo.qll:14:9:14:9 | f | semmle.order | 43 |
 | Foo.qll:16:3:16:7 | String | semmle.label | [String] String |
-| Foo.qll:16:3:16:7 | String | semmle.order | 45 |
+| Foo.qll:16:3:16:7 | String | semmle.order | 44 |
 | Foo.qll:16:3:16:29 | ComparisonFormula | semmle.label | [ComparisonFormula] ComparisonFormula |
-| Foo.qll:16:3:16:29 | ComparisonFormula | semmle.order | 45 |
+| Foo.qll:16:3:16:29 | ComparisonFormula | semmle.order | 44 |
 | Foo.qll:16:9:16:9 | ComparisonOp | semmle.label | [ComparisonOp] ComparisonOp |
-| Foo.qll:16:9:16:9 | ComparisonOp | semmle.order | 47 |
+| Foo.qll:16:9:16:9 | ComparisonOp | semmle.order | 46 |
 | Foo.qll:16:11:16:11 | f | semmle.label | [VarAccess] f |
-| Foo.qll:16:11:16:11 | f | semmle.order | 48 |
+| Foo.qll:16:11:16:11 | f | semmle.order | 47 |
 | Foo.qll:16:11:16:29 | MemberCall | semmle.label | [MemberCall] MemberCall |
-| Foo.qll:16:11:16:29 | MemberCall | semmle.order | 48 |
+| Foo.qll:16:11:16:29 | MemberCall | semmle.order | 47 |
 | Foo.qll:16:22:16:22 | Integer | semmle.label | [Integer] Integer |
-| Foo.qll:16:22:16:22 | Integer | semmle.order | 50 |
+| Foo.qll:16:22:16:22 | Integer | semmle.order | 49 |
 | Foo.qll:16:25:16:25 | Integer | semmle.label | [Integer] Integer |
-| Foo.qll:16:25:16:25 | Integer | semmle.order | 51 |
+| Foo.qll:16:25:16:25 | Integer | semmle.order | 50 |
 | Foo.qll:16:28:16:28 | Integer | semmle.label | [Integer] Integer |
-| Foo.qll:16:28:16:28 | Integer | semmle.order | 52 |
+| Foo.qll:16:28:16:28 | Integer | semmle.order | 51 |
 | Foo.qll:18:3:18:3 | f | semmle.label | [VarAccess] f |
-| Foo.qll:18:3:18:3 | f | semmle.order | 53 |
+| Foo.qll:18:3:18:3 | f | semmle.order | 52 |
 | Foo.qll:18:3:18:9 | InlineCast | semmle.label | [InlineCast] InlineCast |
-| Foo.qll:18:3:18:9 | InlineCast | semmle.order | 53 |
+| Foo.qll:18:3:18:9 | InlineCast | semmle.order | 52 |
 | Foo.qll:18:3:18:20 | MemberCall | semmle.label | [MemberCall] MemberCall |
-| Foo.qll:18:3:18:20 | MemberCall | semmle.order | 53 |
+| Foo.qll:18:3:18:20 | MemberCall | semmle.order | 52 |
 | Foo.qll:18:3:18:28 | ComparisonFormula | semmle.label | [ComparisonFormula] ComparisonFormula |
-| Foo.qll:18:3:18:28 | ComparisonFormula | semmle.order | 53 |
+| Foo.qll:18:3:18:28 | ComparisonFormula | semmle.order | 52 |
 | Foo.qll:18:6:18:8 | TypeExpr | semmle.label | [TypeExpr] TypeExpr |
-| Foo.qll:18:6:18:8 | TypeExpr | semmle.order | 57 |
+| Foo.qll:18:6:18:8 | TypeExpr | semmle.order | 56 |
 | Foo.qll:18:22:18:22 | ComparisonOp | semmle.label | [ComparisonOp] ComparisonOp |
-| Foo.qll:18:22:18:22 | ComparisonOp | semmle.order | 58 |
+| Foo.qll:18:22:18:22 | ComparisonOp | semmle.order | 57 |
 | Foo.qll:18:24:18:28 | String | semmle.label | [String] String |
-| Foo.qll:18:24:18:28 | String | semmle.order | 59 |
+| Foo.qll:18:24:18:28 | String | semmle.order | 58 |
 | Foo.qll:20:3:20:3 | f | semmle.label | [VarAccess] f |
-| Foo.qll:20:3:20:3 | f | semmle.order | 60 |
+| Foo.qll:20:3:20:3 | f | semmle.order | 59 |
 | Foo.qll:20:3:20:9 | InlineCast | semmle.label | [InlineCast] InlineCast |
-| Foo.qll:20:3:20:9 | InlineCast | semmle.order | 60 |
+| Foo.qll:20:3:20:9 | InlineCast | semmle.order | 59 |
 | Foo.qll:20:3:20:13 | ComparisonFormula | semmle.label | [ComparisonFormula] ComparisonFormula |
-| Foo.qll:20:3:20:13 | ComparisonFormula | semmle.order | 60 |
+| Foo.qll:20:3:20:13 | ComparisonFormula | semmle.order | 59 |
 | Foo.qll:20:6:20:8 | TypeExpr | semmle.label | [TypeExpr] TypeExpr |
-| Foo.qll:20:6:20:8 | TypeExpr | semmle.order | 63 |
+| Foo.qll:20:6:20:8 | TypeExpr | semmle.order | 62 |
 | Foo.qll:20:11:20:11 | ComparisonOp | semmle.label | [ComparisonOp] ComparisonOp |
-| Foo.qll:20:11:20:11 | ComparisonOp | semmle.order | 64 |
+| Foo.qll:20:11:20:11 | ComparisonOp | semmle.order | 63 |
 | Foo.qll:20:13:20:13 | f | semmle.label | [VarAccess] f |
-| Foo.qll:20:13:20:13 | f | semmle.order | 65 |
+| Foo.qll:20:13:20:13 | f | semmle.order | 64 |
 | Foo.qll:22:3:22:3 | f | semmle.label | [VarAccess] f |
-| Foo.qll:22:3:22:3 | f | semmle.order | 66 |
+| Foo.qll:22:3:22:3 | f | semmle.order | 65 |
 | Foo.qll:22:3:22:16 | ComparisonFormula | semmle.label | [ComparisonFormula] ComparisonFormula |
-| Foo.qll:22:3:22:16 | ComparisonFormula | semmle.order | 66 |
+| Foo.qll:22:3:22:16 | ComparisonFormula | semmle.order | 65 |
 | Foo.qll:22:5:22:5 | ComparisonOp | semmle.label | [ComparisonOp] ComparisonOp |
-| Foo.qll:22:5:22:5 | ComparisonOp | semmle.order | 68 |
+| Foo.qll:22:5:22:5 | ComparisonOp | semmle.order | 67 |
 | Foo.qll:22:7:22:16 | Aggregate[any] | semmle.label | [Aggregate[any]] Aggregate[any] |
-| Foo.qll:22:7:22:16 | Aggregate[any] | semmle.order | 69 |
+| Foo.qll:22:7:22:16 | Aggregate[any] | semmle.order | 68 |
 | Foo.qll:22:11:22:13 | TypeExpr | semmle.label | [TypeExpr] TypeExpr |
-| Foo.qll:22:11:22:13 | TypeExpr | semmle.order | 70 |
+| Foo.qll:22:11:22:13 | TypeExpr | semmle.order | 69 |
 | Foo.qll:22:11:22:15 | f | semmle.label | [VarDecl] f |
-| Foo.qll:22:11:22:15 | f | semmle.order | 70 |
+| Foo.qll:22:11:22:15 | f | semmle.order | 69 |
 | Foo.qll:24:3:24:3 | Integer | semmle.label | [Integer] Integer |
-| Foo.qll:24:3:24:3 | Integer | semmle.order | 72 |
+| Foo.qll:24:3:24:3 | Integer | semmle.order | 71 |
 | Foo.qll:24:3:24:23 | ComparisonFormula | semmle.label | [ComparisonFormula] ComparisonFormula |
-| Foo.qll:24:3:24:23 | ComparisonFormula | semmle.order | 72 |
+| Foo.qll:24:3:24:23 | ComparisonFormula | semmle.order | 71 |
 | Foo.qll:24:5:24:5 | ComparisonOp | semmle.label | [ComparisonOp] ComparisonOp |
-| Foo.qll:24:5:24:5 | ComparisonOp | semmle.order | 74 |
+| Foo.qll:24:5:24:5 | ComparisonOp | semmle.order | 73 |
 | Foo.qll:24:7:24:7 | Integer | semmle.label | [Integer] Integer |
-| Foo.qll:24:7:24:7 | Integer | semmle.order | 75 |
+| Foo.qll:24:7:24:7 | Integer | semmle.order | 74 |
 | Foo.qll:24:7:24:23 | AddExpr | semmle.label | [AddExpr] AddExpr |
-| Foo.qll:24:7:24:23 | AddExpr | semmle.order | 75 |
+| Foo.qll:24:7:24:23 | AddExpr | semmle.order | 74 |
 | Foo.qll:24:12:24:12 | Integer | semmle.label | [Integer] Integer |
-| Foo.qll:24:12:24:12 | Integer | semmle.order | 77 |
+| Foo.qll:24:12:24:12 | Integer | semmle.order | 76 |
 | Foo.qll:24:12:24:22 | AddExpr | semmle.label | [AddExpr] AddExpr |
-| Foo.qll:24:12:24:22 | AddExpr | semmle.order | 77 |
+| Foo.qll:24:12:24:22 | AddExpr | semmle.order | 76 |
 | Foo.qll:24:17:24:17 | Integer | semmle.label | [Integer] Integer |
-| Foo.qll:24:17:24:17 | Integer | semmle.order | 79 |
+| Foo.qll:24:17:24:17 | Integer | semmle.order | 78 |
 | Foo.qll:24:17:24:21 | AddExpr | semmle.label | [AddExpr] AddExpr |
-| Foo.qll:24:17:24:21 | AddExpr | semmle.order | 79 |
+| Foo.qll:24:17:24:21 | AddExpr | semmle.order | 78 |
 | Foo.qll:24:21:24:21 | Integer | semmle.label | [Integer] Integer |
-| Foo.qll:24:21:24:21 | Integer | semmle.order | 81 |
+| Foo.qll:24:21:24:21 | Integer | semmle.order | 80 |
 | printAst.ql:1:1:1:28 | Import | semmle.label | [Import] Import |
-| printAst.ql:1:1:1:28 | Import | semmle.order | 82 |
+| printAst.ql:1:1:1:28 | Import | semmle.order | 81 |
 | printAst.ql:1:1:1:29 | TopLevel | semmle.label | [TopLevel] TopLevel |
-| printAst.ql:1:1:1:29 | TopLevel | semmle.order | 82 |
+| printAst.ql:1:1:1:29 | TopLevel | semmle.order | 81 |
 edges
 | Foo.qll:1:1:25:2 | TopLevel | Foo.qll:1:1:1:17 | Import | semmle.label | 1 |
 | Foo.qll:1:1:25:2 | TopLevel | Foo.qll:1:1:1:17 | Import | semmle.order | 1 |
@@ -173,7 +171,7 @@ edges
 | Foo.qll:1:1:25:2 | TopLevel | Foo.qll:9:7:11:1 | foo | semmle.label | 3 |
 | Foo.qll:1:1:25:2 | TopLevel | Foo.qll:9:7:11:1 | foo | semmle.order | 16 |
 | Foo.qll:1:1:25:2 | TopLevel | Foo.qll:13:1:25:1 | calls | semmle.label | 4 |
-| Foo.qll:1:1:25:2 | TopLevel | Foo.qll:13:1:25:1 | calls | semmle.order | 35 |
+| Foo.qll:1:1:25:2 | TopLevel | Foo.qll:13:1:25:1 | calls | semmle.order | 34 |
 | Foo.qll:3:1:7:1 | Foo | Foo.qll:3:19:3:22 | TypeExpr | semmle.label | 1 |
 | Foo.qll:3:1:7:1 | Foo | Foo.qll:3:19:3:22 | TypeExpr | semmle.order | 4 |
 | Foo.qll:3:1:7:1 | Foo | Foo.qll:4:3:4:17 | CharPred | semmle.label | 2 |
@@ -216,10 +214,10 @@ edges
 | Foo.qll:10:7:10:85 | Rank | Foo.qll:10:15:10:23 | inner | semmle.order | 24 |
 | Foo.qll:10:7:10:85 | Rank | Foo.qll:10:27:10:50 | ComparisonFormula | semmle.label | 3 |
 | Foo.qll:10:7:10:85 | Rank | Foo.qll:10:27:10:50 | ComparisonFormula | semmle.order | 26 |
-| Foo.qll:10:7:10:85 | Rank | Foo.qll:10:54:10:58 | AsExpr | semmle.label | 4 |
-| Foo.qll:10:7:10:85 | Rank | Foo.qll:10:54:10:58 | AsExpr | semmle.order | 31 |
+| Foo.qll:10:7:10:85 | Rank | Foo.qll:10:54:10:58 | inner | semmle.label | 4 |
+| Foo.qll:10:7:10:85 | Rank | Foo.qll:10:54:10:58 | inner | semmle.order | 31 |
 | Foo.qll:10:7:10:85 | Rank | Foo.qll:10:69:10:84 | MemberCall | semmle.label | 5 |
-| Foo.qll:10:7:10:85 | Rank | Foo.qll:10:69:10:84 | MemberCall | semmle.order | 33 |
+| Foo.qll:10:7:10:85 | Rank | Foo.qll:10:69:10:84 | MemberCall | semmle.order | 32 |
 | Foo.qll:10:15:10:23 | inner | Foo.qll:10:15:10:17 | TypeExpr | semmle.label | 1 |
 | Foo.qll:10:15:10:23 | inner | Foo.qll:10:15:10:17 | TypeExpr | semmle.order | 24 |
 | Foo.qll:10:27:10:42 | MemberCall | Foo.qll:10:27:10:31 | inner | semmle.label | 1 |
@@ -230,103 +228,101 @@ edges
 | Foo.qll:10:27:10:50 | ComparisonFormula | Foo.qll:10:44:10:44 | ComparisonOp | semmle.order | 29 |
 | Foo.qll:10:27:10:50 | ComparisonFormula | Foo.qll:10:46:10:50 | String | semmle.label | 3 |
 | Foo.qll:10:27:10:50 | ComparisonFormula | Foo.qll:10:46:10:50 | String | semmle.order | 30 |
-| Foo.qll:10:54:10:58 | AsExpr | Foo.qll:10:54:10:58 | inner | semmle.label | 1 |
-| Foo.qll:10:54:10:58 | AsExpr | Foo.qll:10:54:10:58 | inner | semmle.order | 31 |
 | Foo.qll:10:69:10:84 | MemberCall | Foo.qll:10:69:10:73 | inner | semmle.label | 1 |
-| Foo.qll:10:69:10:84 | MemberCall | Foo.qll:10:69:10:73 | inner | semmle.order | 33 |
+| Foo.qll:10:69:10:84 | MemberCall | Foo.qll:10:69:10:73 | inner | semmle.order | 32 |
 | Foo.qll:13:1:25:1 | calls | Foo.qll:13:17:13:21 | f | semmle.label | 1 |
-| Foo.qll:13:1:25:1 | calls | Foo.qll:13:17:13:21 | f | semmle.order | 36 |
+| Foo.qll:13:1:25:1 | calls | Foo.qll:13:17:13:21 | f | semmle.order | 35 |
 | Foo.qll:13:1:25:1 | calls | Foo.qll:14:3:24:23 | Disjunction | semmle.label | 2 |
-| Foo.qll:13:1:25:1 | calls | Foo.qll:14:3:24:23 | Disjunction | semmle.order | 38 |
+| Foo.qll:13:1:25:1 | calls | Foo.qll:14:3:24:23 | Disjunction | semmle.order | 37 |
 | Foo.qll:13:17:13:21 | f | Foo.qll:13:17:13:19 | TypeExpr | semmle.label | 1 |
-| Foo.qll:13:17:13:21 | f | Foo.qll:13:17:13:19 | TypeExpr | semmle.order | 36 |
+| Foo.qll:13:17:13:21 | f | Foo.qll:13:17:13:19 | TypeExpr | semmle.order | 35 |
 | Foo.qll:14:3:14:10 | PredicateCall | Foo.qll:14:9:14:9 | f | semmle.label | 1 |
-| Foo.qll:14:3:14:10 | PredicateCall | Foo.qll:14:9:14:9 | f | semmle.order | 44 |
+| Foo.qll:14:3:14:10 | PredicateCall | Foo.qll:14:9:14:9 | f | semmle.order | 43 |
 | Foo.qll:14:3:16:29 | Disjunction | Foo.qll:14:3:14:10 | PredicateCall | semmle.label | 1 |
-| Foo.qll:14:3:16:29 | Disjunction | Foo.qll:14:3:14:10 | PredicateCall | semmle.order | 38 |
+| Foo.qll:14:3:16:29 | Disjunction | Foo.qll:14:3:14:10 | PredicateCall | semmle.order | 37 |
 | Foo.qll:14:3:16:29 | Disjunction | Foo.qll:16:3:16:29 | ComparisonFormula | semmle.label | 2 |
-| Foo.qll:14:3:16:29 | Disjunction | Foo.qll:16:3:16:29 | ComparisonFormula | semmle.order | 45 |
+| Foo.qll:14:3:16:29 | Disjunction | Foo.qll:16:3:16:29 | ComparisonFormula | semmle.order | 44 |
 | Foo.qll:14:3:18:28 | Disjunction | Foo.qll:14:3:16:29 | Disjunction | semmle.label | 1 |
-| Foo.qll:14:3:18:28 | Disjunction | Foo.qll:14:3:16:29 | Disjunction | semmle.order | 38 |
+| Foo.qll:14:3:18:28 | Disjunction | Foo.qll:14:3:16:29 | Disjunction | semmle.order | 37 |
 | Foo.qll:14:3:18:28 | Disjunction | Foo.qll:18:3:18:28 | ComparisonFormula | semmle.label | 2 |
-| Foo.qll:14:3:18:28 | Disjunction | Foo.qll:18:3:18:28 | ComparisonFormula | semmle.order | 53 |
+| Foo.qll:14:3:18:28 | Disjunction | Foo.qll:18:3:18:28 | ComparisonFormula | semmle.order | 52 |
 | Foo.qll:14:3:20:13 | Disjunction | Foo.qll:14:3:18:28 | Disjunction | semmle.label | 1 |
-| Foo.qll:14:3:20:13 | Disjunction | Foo.qll:14:3:18:28 | Disjunction | semmle.order | 38 |
+| Foo.qll:14:3:20:13 | Disjunction | Foo.qll:14:3:18:28 | Disjunction | semmle.order | 37 |
 | Foo.qll:14:3:20:13 | Disjunction | Foo.qll:20:3:20:13 | ComparisonFormula | semmle.label | 2 |
-| Foo.qll:14:3:20:13 | Disjunction | Foo.qll:20:3:20:13 | ComparisonFormula | semmle.order | 60 |
+| Foo.qll:14:3:20:13 | Disjunction | Foo.qll:20:3:20:13 | ComparisonFormula | semmle.order | 59 |
 | Foo.qll:14:3:22:16 | Disjunction | Foo.qll:14:3:20:13 | Disjunction | semmle.label | 1 |
-| Foo.qll:14:3:22:16 | Disjunction | Foo.qll:14:3:20:13 | Disjunction | semmle.order | 38 |
+| Foo.qll:14:3:22:16 | Disjunction | Foo.qll:14:3:20:13 | Disjunction | semmle.order | 37 |
 | Foo.qll:14:3:22:16 | Disjunction | Foo.qll:22:3:22:16 | ComparisonFormula | semmle.label | 2 |
-| Foo.qll:14:3:22:16 | Disjunction | Foo.qll:22:3:22:16 | ComparisonFormula | semmle.order | 66 |
+| Foo.qll:14:3:22:16 | Disjunction | Foo.qll:22:3:22:16 | ComparisonFormula | semmle.order | 65 |
 | Foo.qll:14:3:24:23 | Disjunction | Foo.qll:14:3:22:16 | Disjunction | semmle.label | 1 |
-| Foo.qll:14:3:24:23 | Disjunction | Foo.qll:14:3:22:16 | Disjunction | semmle.order | 38 |
+| Foo.qll:14:3:24:23 | Disjunction | Foo.qll:14:3:22:16 | Disjunction | semmle.order | 37 |
 | Foo.qll:14:3:24:23 | Disjunction | Foo.qll:24:3:24:23 | ComparisonFormula | semmle.label | 2 |
-| Foo.qll:14:3:24:23 | Disjunction | Foo.qll:24:3:24:23 | ComparisonFormula | semmle.order | 72 |
+| Foo.qll:14:3:24:23 | Disjunction | Foo.qll:24:3:24:23 | ComparisonFormula | semmle.order | 71 |
 | Foo.qll:16:3:16:29 | ComparisonFormula | Foo.qll:16:3:16:7 | String | semmle.label | 1 |
-| Foo.qll:16:3:16:29 | ComparisonFormula | Foo.qll:16:3:16:7 | String | semmle.order | 45 |
+| Foo.qll:16:3:16:29 | ComparisonFormula | Foo.qll:16:3:16:7 | String | semmle.order | 44 |
 | Foo.qll:16:3:16:29 | ComparisonFormula | Foo.qll:16:9:16:9 | ComparisonOp | semmle.label | 2 |
-| Foo.qll:16:3:16:29 | ComparisonFormula | Foo.qll:16:9:16:9 | ComparisonOp | semmle.order | 47 |
+| Foo.qll:16:3:16:29 | ComparisonFormula | Foo.qll:16:9:16:9 | ComparisonOp | semmle.order | 46 |
 | Foo.qll:16:3:16:29 | ComparisonFormula | Foo.qll:16:11:16:29 | MemberCall | semmle.label | 3 |
-| Foo.qll:16:3:16:29 | ComparisonFormula | Foo.qll:16:11:16:29 | MemberCall | semmle.order | 48 |
+| Foo.qll:16:3:16:29 | ComparisonFormula | Foo.qll:16:11:16:29 | MemberCall | semmle.order | 47 |
 | Foo.qll:16:11:16:29 | MemberCall | Foo.qll:16:11:16:11 | f | semmle.label | 1 |
-| Foo.qll:16:11:16:29 | MemberCall | Foo.qll:16:11:16:11 | f | semmle.order | 48 |
+| Foo.qll:16:11:16:29 | MemberCall | Foo.qll:16:11:16:11 | f | semmle.order | 47 |
 | Foo.qll:16:11:16:29 | MemberCall | Foo.qll:16:22:16:22 | Integer | semmle.label | 2 |
-| Foo.qll:16:11:16:29 | MemberCall | Foo.qll:16:22:16:22 | Integer | semmle.order | 50 |
+| Foo.qll:16:11:16:29 | MemberCall | Foo.qll:16:22:16:22 | Integer | semmle.order | 49 |
 | Foo.qll:16:11:16:29 | MemberCall | Foo.qll:16:25:16:25 | Integer | semmle.label | 3 |
-| Foo.qll:16:11:16:29 | MemberCall | Foo.qll:16:25:16:25 | Integer | semmle.order | 51 |
+| Foo.qll:16:11:16:29 | MemberCall | Foo.qll:16:25:16:25 | Integer | semmle.order | 50 |
 | Foo.qll:16:11:16:29 | MemberCall | Foo.qll:16:28:16:28 | Integer | semmle.label | 4 |
-| Foo.qll:16:11:16:29 | MemberCall | Foo.qll:16:28:16:28 | Integer | semmle.order | 52 |
+| Foo.qll:16:11:16:29 | MemberCall | Foo.qll:16:28:16:28 | Integer | semmle.order | 51 |
 | Foo.qll:18:3:18:9 | InlineCast | Foo.qll:18:3:18:3 | f | semmle.label | 1 |
-| Foo.qll:18:3:18:9 | InlineCast | Foo.qll:18:3:18:3 | f | semmle.order | 53 |
+| Foo.qll:18:3:18:9 | InlineCast | Foo.qll:18:3:18:3 | f | semmle.order | 52 |
 | Foo.qll:18:3:18:9 | InlineCast | Foo.qll:18:6:18:8 | TypeExpr | semmle.label | 2 |
-| Foo.qll:18:3:18:9 | InlineCast | Foo.qll:18:6:18:8 | TypeExpr | semmle.order | 57 |
+| Foo.qll:18:3:18:9 | InlineCast | Foo.qll:18:6:18:8 | TypeExpr | semmle.order | 56 |
 | Foo.qll:18:3:18:20 | MemberCall | Foo.qll:18:3:18:9 | InlineCast | semmle.label | 1 |
-| Foo.qll:18:3:18:20 | MemberCall | Foo.qll:18:3:18:9 | InlineCast | semmle.order | 53 |
+| Foo.qll:18:3:18:20 | MemberCall | Foo.qll:18:3:18:9 | InlineCast | semmle.order | 52 |
 | Foo.qll:18:3:18:28 | ComparisonFormula | Foo.qll:18:3:18:20 | MemberCall | semmle.label | 1 |
-| Foo.qll:18:3:18:28 | ComparisonFormula | Foo.qll:18:3:18:20 | MemberCall | semmle.order | 53 |
+| Foo.qll:18:3:18:28 | ComparisonFormula | Foo.qll:18:3:18:20 | MemberCall | semmle.order | 52 |
 | Foo.qll:18:3:18:28 | ComparisonFormula | Foo.qll:18:22:18:22 | ComparisonOp | semmle.label | 2 |
-| Foo.qll:18:3:18:28 | ComparisonFormula | Foo.qll:18:22:18:22 | ComparisonOp | semmle.order | 58 |
+| Foo.qll:18:3:18:28 | ComparisonFormula | Foo.qll:18:22:18:22 | ComparisonOp | semmle.order | 57 |
 | Foo.qll:18:3:18:28 | ComparisonFormula | Foo.qll:18:24:18:28 | String | semmle.label | 3 |
-| Foo.qll:18:3:18:28 | ComparisonFormula | Foo.qll:18:24:18:28 | String | semmle.order | 59 |
+| Foo.qll:18:3:18:28 | ComparisonFormula | Foo.qll:18:24:18:28 | String | semmle.order | 58 |
 | Foo.qll:20:3:20:9 | InlineCast | Foo.qll:20:3:20:3 | f | semmle.label | 1 |
-| Foo.qll:20:3:20:9 | InlineCast | Foo.qll:20:3:20:3 | f | semmle.order | 60 |
+| Foo.qll:20:3:20:9 | InlineCast | Foo.qll:20:3:20:3 | f | semmle.order | 59 |
 | Foo.qll:20:3:20:9 | InlineCast | Foo.qll:20:6:20:8 | TypeExpr | semmle.label | 2 |
-| Foo.qll:20:3:20:9 | InlineCast | Foo.qll:20:6:20:8 | TypeExpr | semmle.order | 63 |
+| Foo.qll:20:3:20:9 | InlineCast | Foo.qll:20:6:20:8 | TypeExpr | semmle.order | 62 |
 | Foo.qll:20:3:20:13 | ComparisonFormula | Foo.qll:20:3:20:9 | InlineCast | semmle.label | 1 |
-| Foo.qll:20:3:20:13 | ComparisonFormula | Foo.qll:20:3:20:9 | InlineCast | semmle.order | 60 |
+| Foo.qll:20:3:20:13 | ComparisonFormula | Foo.qll:20:3:20:9 | InlineCast | semmle.order | 59 |
 | Foo.qll:20:3:20:13 | ComparisonFormula | Foo.qll:20:11:20:11 | ComparisonOp | semmle.label | 2 |
-| Foo.qll:20:3:20:13 | ComparisonFormula | Foo.qll:20:11:20:11 | ComparisonOp | semmle.order | 64 |
+| Foo.qll:20:3:20:13 | ComparisonFormula | Foo.qll:20:11:20:11 | ComparisonOp | semmle.order | 63 |
 | Foo.qll:20:3:20:13 | ComparisonFormula | Foo.qll:20:13:20:13 | f | semmle.label | 3 |
-| Foo.qll:20:3:20:13 | ComparisonFormula | Foo.qll:20:13:20:13 | f | semmle.order | 65 |
+| Foo.qll:20:3:20:13 | ComparisonFormula | Foo.qll:20:13:20:13 | f | semmle.order | 64 |
 | Foo.qll:22:3:22:16 | ComparisonFormula | Foo.qll:22:3:22:3 | f | semmle.label | 1 |
-| Foo.qll:22:3:22:16 | ComparisonFormula | Foo.qll:22:3:22:3 | f | semmle.order | 66 |
+| Foo.qll:22:3:22:16 | ComparisonFormula | Foo.qll:22:3:22:3 | f | semmle.order | 65 |
 | Foo.qll:22:3:22:16 | ComparisonFormula | Foo.qll:22:5:22:5 | ComparisonOp | semmle.label | 2 |
-| Foo.qll:22:3:22:16 | ComparisonFormula | Foo.qll:22:5:22:5 | ComparisonOp | semmle.order | 68 |
+| Foo.qll:22:3:22:16 | ComparisonFormula | Foo.qll:22:5:22:5 | ComparisonOp | semmle.order | 67 |
 | Foo.qll:22:3:22:16 | ComparisonFormula | Foo.qll:22:7:22:16 | Aggregate[any] | semmle.label | 3 |
-| Foo.qll:22:3:22:16 | ComparisonFormula | Foo.qll:22:7:22:16 | Aggregate[any] | semmle.order | 69 |
+| Foo.qll:22:3:22:16 | ComparisonFormula | Foo.qll:22:7:22:16 | Aggregate[any] | semmle.order | 68 |
 | Foo.qll:22:7:22:16 | Aggregate[any] | Foo.qll:22:11:22:15 | f | semmle.label | 1 |
-| Foo.qll:22:7:22:16 | Aggregate[any] | Foo.qll:22:11:22:15 | f | semmle.order | 70 |
+| Foo.qll:22:7:22:16 | Aggregate[any] | Foo.qll:22:11:22:15 | f | semmle.order | 69 |
 | Foo.qll:22:11:22:15 | f | Foo.qll:22:11:22:13 | TypeExpr | semmle.label | 1 |
-| Foo.qll:22:11:22:15 | f | Foo.qll:22:11:22:13 | TypeExpr | semmle.order | 70 |
+| Foo.qll:22:11:22:15 | f | Foo.qll:22:11:22:13 | TypeExpr | semmle.order | 69 |
 | Foo.qll:24:3:24:23 | ComparisonFormula | Foo.qll:24:3:24:3 | Integer | semmle.label | 1 |
-| Foo.qll:24:3:24:23 | ComparisonFormula | Foo.qll:24:3:24:3 | Integer | semmle.order | 72 |
+| Foo.qll:24:3:24:23 | ComparisonFormula | Foo.qll:24:3:24:3 | Integer | semmle.order | 71 |
 | Foo.qll:24:3:24:23 | ComparisonFormula | Foo.qll:24:5:24:5 | ComparisonOp | semmle.label | 2 |
-| Foo.qll:24:3:24:23 | ComparisonFormula | Foo.qll:24:5:24:5 | ComparisonOp | semmle.order | 74 |
+| Foo.qll:24:3:24:23 | ComparisonFormula | Foo.qll:24:5:24:5 | ComparisonOp | semmle.order | 73 |
 | Foo.qll:24:3:24:23 | ComparisonFormula | Foo.qll:24:7:24:23 | AddExpr | semmle.label | 3 |
-| Foo.qll:24:3:24:23 | ComparisonFormula | Foo.qll:24:7:24:23 | AddExpr | semmle.order | 75 |
+| Foo.qll:24:3:24:23 | ComparisonFormula | Foo.qll:24:7:24:23 | AddExpr | semmle.order | 74 |
 | Foo.qll:24:7:24:23 | AddExpr | Foo.qll:24:7:24:7 | Integer | semmle.label | 1 |
-| Foo.qll:24:7:24:23 | AddExpr | Foo.qll:24:7:24:7 | Integer | semmle.order | 75 |
+| Foo.qll:24:7:24:23 | AddExpr | Foo.qll:24:7:24:7 | Integer | semmle.order | 74 |
 | Foo.qll:24:7:24:23 | AddExpr | Foo.qll:24:12:24:22 | AddExpr | semmle.label | 2 |
-| Foo.qll:24:7:24:23 | AddExpr | Foo.qll:24:12:24:22 | AddExpr | semmle.order | 77 |
+| Foo.qll:24:7:24:23 | AddExpr | Foo.qll:24:12:24:22 | AddExpr | semmle.order | 76 |
 | Foo.qll:24:12:24:22 | AddExpr | Foo.qll:24:12:24:12 | Integer | semmle.label | 1 |
-| Foo.qll:24:12:24:22 | AddExpr | Foo.qll:24:12:24:12 | Integer | semmle.order | 77 |
+| Foo.qll:24:12:24:22 | AddExpr | Foo.qll:24:12:24:12 | Integer | semmle.order | 76 |
 | Foo.qll:24:12:24:22 | AddExpr | Foo.qll:24:17:24:21 | AddExpr | semmle.label | 2 |
-| Foo.qll:24:12:24:22 | AddExpr | Foo.qll:24:17:24:21 | AddExpr | semmle.order | 79 |
+| Foo.qll:24:12:24:22 | AddExpr | Foo.qll:24:17:24:21 | AddExpr | semmle.order | 78 |
 | Foo.qll:24:17:24:21 | AddExpr | Foo.qll:24:17:24:17 | Integer | semmle.label | 1 |
-| Foo.qll:24:17:24:21 | AddExpr | Foo.qll:24:17:24:17 | Integer | semmle.order | 79 |
+| Foo.qll:24:17:24:21 | AddExpr | Foo.qll:24:17:24:17 | Integer | semmle.order | 78 |
 | Foo.qll:24:17:24:21 | AddExpr | Foo.qll:24:21:24:21 | Integer | semmle.label | 2 |
-| Foo.qll:24:17:24:21 | AddExpr | Foo.qll:24:21:24:21 | Integer | semmle.order | 81 |
+| Foo.qll:24:17:24:21 | AddExpr | Foo.qll:24:21:24:21 | Integer | semmle.order | 80 |
 | printAst.ql:1:1:1:29 | TopLevel | printAst.ql:1:1:1:28 | Import | semmle.label | 1 |
-| printAst.ql:1:1:1:29 | TopLevel | printAst.ql:1:1:1:28 | Import | semmle.order | 82 |
+| printAst.ql:1:1:1:29 | TopLevel | printAst.ql:1:1:1:28 | Import | semmle.order | 81 |
 graphProperties
 | semmle.graphKind | tree |

@@ -27,6 +27,8 @@ class AstNode extends TAstNode {
   AstNode getParent() {
     toGenerated(result) = toGenerated(this).getParent() and
     not result = this
+    or
+    result.getAChild(_) = this
   }
 
   /**
@@ -65,19 +67,21 @@ class Select extends TSelect, AstNode {
 
   Formula getWhere() { toGenerated(result) = sel.getChild(_) }
 
-  AsExpr getAsExpr(int i) { toGenerated(result) = sel.getChild(_).(Generated::AsExprs).getChild(i) }
+  Expr getExpr(int i) { toGenerated(result) = sel.getChild(_).(Generated::AsExprs).getChild(i) }
 
   Expr getOrderBy(int i) {
     toGenerated(result) = sel.getChild(_).(Generated::OrderBys).getChild(i).getChild(0)
   }
 
   override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
     pred = "getWhere" and result = this.getWhere()
     or
     exists(int i |
       pred = indexedMember("getVarDecl", i) and result = this.getVarDecl(i)
       or
-      pred = indexedMember("getAsExpr", i) and result = this.getAsExpr(i)
+      pred = indexedMember("getExpr", i) and result = this.getExpr(i)
       or
       pred = indexedMember("getOrderBy", i) and result = this.getOrderBy(i)
     )
@@ -110,6 +114,8 @@ class Predicate extends TPredicate, AstNode {
 
   // TODO: ReturnType.
   override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
     pred = "getBody" and result = this.getBody()
     or
     exists(int i | pred = indexedMember("getParameter", i) and result = this.getParameter(i))
@@ -150,10 +156,16 @@ class PredicateExpr extends TPredicateExpr, AstNode {
   Predicate getResolvedPredicate() { resolvePredicateExpr(this, result) }
 
   override AstNode getParent() {
+    result = super.getParent()
+    or
     this in [result.(ClasslessPredicate).getAlias(), result.(HigherOrderFormula).getInput(_)]
   }
 
-  override AstNode getAChild(string pred) { pred = "getQualifier" and result = this.getQualifier() }
+  override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
+    pred = "getQualifier" and result = this.getQualifier()
+  }
 
   override string getAPrimaryQlClass() { result = "PredicateExpr" }
 }
@@ -190,6 +202,8 @@ class ClasslessPredicate extends TClasslessPredicate, Predicate, ModuleDeclarati
   }
 
   override AstNode getAChild(string pred_name) {
+    result = Predicate.super.getAChild(pred_name)
+    or
     pred_name = "getAlias" and result = this.getAlias()
     or
     pred_name = "getBody" and result = this.getBody()
@@ -231,6 +245,8 @@ class ClassPredicate extends TClassPredicate, Predicate {
   predicate overrides(ClassPredicate other) { predOverrides(this, other) }
 
   override AstNode getAChild(string pred_name) {
+    result = super.getAChild(pred_name)
+    or
     pred_name = "getBody" and result = this.getBody()
     or
     exists(int i | pred_name = indexedMember("getParameter", i) and result = this.getParameter(i))
@@ -253,7 +269,11 @@ class CharPred extends TCharPred, Predicate {
 
   override Class getParent() { result.getCharPred() = this }
 
-  override AstNode getAChild(string pred_name) { pred_name = "getBody" and result = this.getBody() }
+  override AstNode getAChild(string pred_name) {
+    result = super.getAChild(pred_name)
+    or
+    pred_name = "getBody" and result = this.getBody()
+  }
 }
 
 /**
@@ -305,7 +325,11 @@ class VarDecl extends TVarDecl, VarDef {
 
   predicate overrides(VarDecl other) { fieldOverrides(this, other) }
 
-  override AstNode getAChild(string pred) { pred = "getType" and result = this.getType() }
+  override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
+    pred = "getType" and result = this.getType()
+  }
 }
 
 /**
@@ -395,6 +419,8 @@ class Module extends TModule, ModuleDeclaration {
   }
 
   override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
     pred = "getAlias" and result = this.getAlias()
     or
     pred = "getAMember" and result = this.getAMember()
@@ -406,6 +432,8 @@ class Module extends TModule, ModuleDeclaration {
  */
 class ModuleMember extends TModuleMember, AstNode {
   override AstNode getParent() {
+    result = super.getParent()
+    or
     this in [result.(Module).getAMember(), result.(TopLevel).getAMember()]
   }
 
@@ -492,6 +520,8 @@ class Class extends TClass, TypeDeclaration, ModuleDeclaration {
   Type getType() { result.getDeclaration() = this }
 
   override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
     pred = "getAliasType" and result = this.getAliasType()
     or
     pred = "getUnionMember" and result = this.getUnionMember()
@@ -533,7 +563,11 @@ class NewType extends TNewType, TypeDeclaration, ModuleDeclaration {
    */
   NewTypeBranch getABranch() { toGenerated(result) = type.getChild().getChild(_) }
 
-  override AstNode getAChild(string pred) { pred = "getABranch" and result = this.getABranch() }
+  override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
+    pred = "getABranch" and result = this.getABranch()
+  }
 }
 
 /**
@@ -560,6 +594,8 @@ class NewTypeBranch extends TNewTypeBranch, TypeDeclaration {
   override NewType getParent() { result.getABranch() = this }
 
   override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
     pred = "getBody" and result = this.getBody()
     or
     exists(int i | pred = indexedMember("getField", i) and result = this.getField(i))
@@ -599,6 +635,8 @@ class PredicateCall extends TPredicateCall, Call {
   }
 
   override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
     exists(int i | pred = indexedMember("getArgument", i) and result = this.getArgument(i))
     or
     pred = "getQualifier" and result = this.getQualifier()
@@ -637,6 +675,8 @@ class MemberCall extends TMemberCall, Call {
   Expr getBase() { toGenerated(result) = expr.getChild(0) }
 
   override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
     pred = "getBase" and result = this.getBase()
     or
     pred = "getSuperType" and result = this.getSuperType()
@@ -760,7 +800,11 @@ class Conjunction extends TConjunction, AstNode, Formula {
   /** Gets an operand to this formula. */
   Formula getAnOperand() { toGenerated(result) in [conj.getLeft(), conj.getRight()] }
 
-  override AstNode getAChild(string pred) { pred = "getAnOperand" and result = this.getAnOperand() }
+  override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
+    pred = "getAnOperand" and result = this.getAnOperand()
+  }
 }
 
 /** An `or` formula, with 2 or more operands. */
@@ -774,7 +818,11 @@ class Disjunction extends TDisjunction, AstNode {
   /** Gets an operand to this formula. */
   Formula getAnOperand() { toGenerated(result) in [disj.getLeft(), disj.getRight()] }
 
-  override AstNode getAChild(string pred) { pred = "getAnOperand" and result = this.getAnOperand() }
+  override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
+    pred = "getAnOperand" and result = this.getAnOperand()
+  }
 }
 
 /**
@@ -861,6 +909,8 @@ class ComparisonFormula extends TComparisonFormula, Formula {
   override string getAPrimaryQlClass() { result = "ComparisonFormula" }
 
   override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
     pred = "getLeftOperand" and result = this.getLeftOperand()
     or
     pred = "getRightOperand" and result = this.getRightOperand()
@@ -909,6 +959,8 @@ class Quantifier extends TQuantifier, Formula {
   override string getAPrimaryQlClass() { result = "Quantifier" }
 
   override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
     exists(int i | pred = indexedMember("getArgument", i) and result = this.getArgument(i))
     or
     pred = "getRange" and result = this.getRange()
@@ -958,6 +1010,8 @@ class IfFormula extends TIfFormula, Formula {
   override string getAPrimaryQlClass() { result = "IfFormula" }
 
   override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
     pred = "getCondition" and result = this.getCondition()
     or
     pred = "getThenPart" and result = this.getThenPart()
@@ -983,6 +1037,8 @@ class Implication extends TImplication, Formula {
   override string getAPrimaryQlClass() { result = "Implication" }
 
   override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
     pred = "getLeftOperand" and result = this.getLeftOperand()
     or
     pred = "getRightOperand" and result = this.getRightOperand()
@@ -1008,6 +1064,8 @@ class InstanceOf extends TInstanceOf, Formula {
   override string getAPrimaryQlClass() { result = "InstanceOf" }
 
   override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
     pred = "getExpr" and result = this.getExpr()
     or
     pred = "getType" and result = this.getType()
@@ -1026,6 +1084,8 @@ class InFormula extends TInFormula, Formula {
   override string getAPrimaryQlClass() { result = "InFormula" }
 
   override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
     pred = "getExpr" and result = this.getExpr()
     or
     pred = "getRange" and result = this.getRange()
@@ -1048,6 +1108,8 @@ class HigherOrderFormula extends THigherOrderFormula, Formula {
   override string getAPrimaryQlClass() { result = "HigherOrderFormula" }
 
   override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
     exists(int i |
       pred = indexedMember("getInput", i) and result = this.getInput(i)
       or
@@ -1072,7 +1134,7 @@ class ExprAggregate extends TExprAggregate, Expr {
   /**
    * Gets the ith "as" expression of this aggregate, if any.
    */
-  AsExpr getAsExpr(int i) { toGenerated(result) = body.getAsExprs().getChild(i) }
+  Expr getExpr(int i) { toGenerated(result) = body.getAsExprs().getChild(i) }
 
   /**
    * Gets the ith "order by" expression of this aggregate, if any.
@@ -1089,8 +1151,10 @@ class ExprAggregate extends TExprAggregate, Expr {
   override string getAPrimaryQlClass() { result = "ExprAggregate[" + kind + "]" }
 
   override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
     exists(int i |
-      pred = indexedMember("getAsExpr", i) and result = this.getAsExpr(i)
+      pred = indexedMember("getExpr", i) and result = this.getExpr(i)
       or
       pred = indexedMember("getOrderBy", i) and result = this.getOrderBy(i)
     )
@@ -1101,20 +1165,18 @@ class ExprAggregate extends TExprAggregate, Expr {
 class Aggregate extends TAggregate, Expr {
   Generated::Aggregate agg;
   string kind;
+  Generated::FullAggregateBody body;
 
   Aggregate() {
     this = TAggregate(agg) and
-    kind = agg.getChild(0).(Generated::AggId).getValue()
+    kind = agg.getChild(0).(Generated::AggId).getValue() and
+    body = agg.getChild(_)
   }
-
-  private Generated::FullAggregateBody getBody1() { result = agg.getChild(_) }
-
-  private Generated::ExprAggregateBody getBody2() { result = agg.getChild(_) }
 
   string getKind() { result = kind }
 
   /** Gets the ith declared argument of this quantifier. */
-  VarDecl getArgument(int i) { toGenerated(result) = this.getBody1().getChild(i) }
+  VarDecl getArgument(int i) { toGenerated(result) = body.getChild(i) }
 
   /** Gets an argument of this quantifier. */
   VarDecl getAnArgument() { result = this.getArgument(_) }
@@ -1122,42 +1184,34 @@ class Aggregate extends TAggregate, Expr {
   /**
    * Gets the formula restricting the range of this quantifier, if any.
    */
-  Formula getRange() { toGenerated(result) = this.getBody1().getGuard() }
+  Formula getRange() { toGenerated(result) = body.getGuard() }
 
   /**
    * Gets the ith "as" expression of this aggregate, if any.
    */
-  AsExpr getAsExpr(int i) {
-    toGenerated(result) = [this.getBody1().getAsExprs(), this.getBody2().getAsExprs()].getChild(i)
-  }
+  Expr getExpr(int i) { toGenerated(result) = body.getAsExprs().getChild(i) }
 
   /**
    * Gets the ith "order by" expression of this aggregate, if any.
    */
-  Expr getOrderBy(int i) {
-    toGenerated(result) =
-      [this.getBody1().getOrderBys(), this.getBody2().getOrderBys()].getChild(i).getChild(0)
-  }
+  Expr getOrderBy(int i) { toGenerated(result) = body.getOrderBys().getChild(i).getChild(0) }
 
   /**
    * Gets the direction (ascending or descending) of the ith "order by" expression of this aggregate.
    */
   string getOrderbyDirection(int i) {
-    result =
-      [this.getBody1().getOrderBys(), this.getBody2().getOrderBys()]
-          .getChild(i)
-          .getChild(1)
-          .(Generated::Direction)
-          .getValue()
+    result = body.getOrderBys().getChild(i).getChild(1).(Generated::Direction).getValue()
   }
 
   override string getAPrimaryQlClass() { result = "Aggregate[" + kind + "]" }
 
   override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
     exists(int i |
       pred = indexedMember("getArgument", i) and result = this.getArgument(i)
       or
-      pred = indexedMember("getAsExpr", i) and result = this.getAsExpr(i)
+      pred = indexedMember("getExpr", i) and result = this.getExpr(i)
       or
       pred = indexedMember("getOrderBy", i) and result = this.getOrderBy(i)
     )
@@ -1177,13 +1231,17 @@ class Rank extends Aggregate {
    */
   Expr getRankExpr() { toGenerated(result) = agg.getChild(1) }
 
-  override AstNode getAChild(string pred) { pred = "getRankExpr" and result = this.getRankExpr() }
+  override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
+    pred = "getRankExpr" and result = this.getRankExpr()
+  }
 }
 
 /**
  * An "as" expression, such as `foo as bar`.
  */
-class AsExpr extends TAsExpr, VarDef {
+class AsExpr extends TAsExpr, VarDef, Expr {
   Generated::AsExpr asExpr;
 
   AsExpr() { this = TAsExpr(asExpr) }
@@ -1193,7 +1251,7 @@ class AsExpr extends TAsExpr, VarDef {
   final override string getName() { result = this.getAsName() }
 
   /**
-   * Gets the name the inner expression gets "saved" under, if it exists.
+   * Gets the name the inner expression gets "saved" under.
    * For example this is `bar` in the expression `foo as bar`.
    */
   string getAsName() { result = asExpr.getChild(1).(Generated::VarName).getChild().getValue() }
@@ -1207,20 +1265,17 @@ class AsExpr extends TAsExpr, VarDef {
   override AstNode getParent() {
     result = super.getParent()
     or
-    result.(Aggregate).getAsExpr(_) = this
+    result.(Aggregate).getExpr(_) = this
     or
-    result.(ExprAggregate).getAsExpr(_) = this
+    result.(ExprAggregate).getExpr(_) = this
     or
-    result.(Select).getAsExpr(_) = this
+    result.(Select).getExpr(_) = this
   }
 
-  override AstNode getAChild(string pred) { pred = "getInnerExpr" and result = this.getInnerExpr() }
-
-  override string toString() {
-    result = this.getName()
+  override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
     or
-    not exists(this.getName()) and
-    result = "AsExpr"
+    pred = "getInnerExpr" and result = this.getInnerExpr()
   }
 }
 
@@ -1293,7 +1348,11 @@ class Negation extends TNegation, Formula {
 
   override string getAPrimaryQlClass() { result = "Negation" }
 
-  override AstNode getAChild(string pred) { pred = "getFormula" and result = this.getFormula() }
+  override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
+    pred = "getFormula" and result = this.getFormula()
+  }
 }
 
 /** An expression, such as `x+4`. */
@@ -1325,6 +1384,8 @@ class ExprAnnotation extends TExprAnnotation, Expr {
   override string getAPrimaryQlClass() { result = "ExprAnnotation" }
 
   override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
     pred = "getExpression" and result = this.getExpression()
   }
 }
@@ -1361,6 +1422,8 @@ class AddSubExpr extends TAddSubExpr, BinOpExpr {
   FunctionSymbol getOperator() { result = operator }
 
   override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
     pred = "getLeftOperand" and result = this.getLeftOperand()
     or
     pred = "getRightOperand" and result = this.getRightOperand()
@@ -1407,6 +1470,8 @@ class MulDivModExpr extends TMulDivModExpr, BinOpExpr {
   FunctionSymbol getOperator() { result = operator }
 
   override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
     pred = "getLeftOperand" and result = this.getLeftOperand()
     or
     pred = "getRightOperand" and result = this.getRightOperand()
@@ -1461,6 +1526,8 @@ class Range extends TRange, Expr {
   override string getAPrimaryQlClass() { result = "Range" }
 
   override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
     pred = "getLowEndpoint" and result = this.getLowEndpoint()
     or
     pred = "getHighEndpoint" and result = this.getHighEndpoint()
@@ -1483,6 +1550,8 @@ class Set extends TSet, Expr {
   override string getAPrimaryQlClass() { result = "Set" }
 
   override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
     exists(int i | pred = indexedMember("getElement", i) and result = getElement(i))
   }
 }
@@ -1501,7 +1570,11 @@ class UnaryExpr extends TUnaryExpr, Expr {
 
   override string getAPrimaryQlClass() { result = "UnaryExpr" }
 
-  override AstNode getAChild(string pred) { pred = "getOperand" and result = this.getOperand() }
+  override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
+    pred = "getOperand" and result = this.getOperand()
+  }
 }
 
 /** A "don't care" expression, denoted by `_`. */
@@ -1558,5 +1631,9 @@ class ModuleExpr extends TModuleExpr, ModuleRef {
     result.(Module).getAlias() = this
   }
 
-  override AstNode getAChild(string pred) { pred = "getQualifier" and result = this.getQualifier() }
+  override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
+    pred = "getQualifier" and result = this.getQualifier()
+  }
 }
