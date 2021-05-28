@@ -22,7 +22,10 @@ newtype TAstNode =
   TComparisonFormula(Generated::CompTerm comp) or
   TComparisonOp(Generated::Compop op) or
   TQuantifier(Generated::Quantified quant) or
-  TAggregate(Generated::Aggregate agg) { agg.getChild(_) instanceof Generated::FullAggregateBody } or
+  TAggregate(Generated::Aggregate agg) {
+    agg.getChild(_) instanceof Generated::FullAggregateBody or
+    agg.getChild(_) instanceof Generated::ExprAggregateBody
+  } or
   TExprAggregate(Generated::Aggregate agg) {
     agg.getChild(_) instanceof Generated::ExprAggregateBody
   } or
@@ -161,3 +164,5 @@ class TDeclaration = TTypeDeclaration or TModuleDeclaration;
 class TTypeDeclaration = TClass or TNewType or TNewTypeBranch;
 
 class TModuleDeclaration = TClasslessPredicate or TModule or TClass or TNewType;
+
+class TVarDef = TVarDecl or TAsExpr;

@@ -10,14 +10,33 @@ class VariableScope extends TScope, AstNode {
   VariableScope getOuterScope() { result = scopeOf(this) }
 
   /** Gets a variable declared directly in this scope. */
-  VarDecl getADeclaration() { result.getParent() = this }
+  VarDef getADefinition() { result.getParent() = this }
 
-  /** Holds if this scope contains declaration `decl`, either directly or inherited. */
-  predicate contains(VarDecl decl) {
-    decl = this.getADeclaration()
+  /** Holds if this scope contains variable `decl`, either directly or inherited. */
+  predicate containsVar(VarDef decl) {
+    not this instanceof Class and
+    decl = this.getADefinition()
     or
-    this.getOuterScope().contains(decl) and
-    not this.getADeclaration().getName() = decl.getName()
+    decl = this.(Select).getAsExpr(_)
+    or
+    decl = this.(Aggregate).getAsExpr(_)
+    or
+    this.getOuterScope().containsVar(decl) and
+    not this.getADefinition().getName() = decl.getName()
+  }
+
+  /** Holds if this scope contains field `decl`, either directly or inherited. */
+  predicate containsField(VarDef decl) {
+    decl = this.(Class).getAField()
+    or
+    this.getOuterScope().containsField(decl) and
+    not this.getADefinition().getName() = decl.getName()
+    or
+    exists(VariableScope sup |
+      sup = this.(Class).getASuperType().getResolvedType().(ClassType).getDeclaration() and
+      sup.containsField(decl) and
+      not this.(Class).getAField().getName() = decl.getName()
+    )
   }
 }
 
@@ -28,14 +47,31 @@ private AstNode parent(AstNode child) {
 
 VariableScope scopeOf(AstNode n) { result = parent*(n.getParent()) }
 
-predicate resolveVariable(Identifier i, VarDecl decl) {
-  scopeOf(i).contains(decl) and
-  decl.getName() = i.getName()
+private string getName(Identifier i) {
+  exists(Generated::Variable v |
+    i = TIdentifier(v) and
+    result = v.getChild().(Generated::VarName).getChild().getValue()
+  )
+}
+
+predicate resolveVariable(Identifier i, VarDef decl) {
+  scopeOf(i).containsVar(decl) and
+  decl.getName() = getName(i)
+}
+
+predicate resolveField(Identifier i, VarDef decl) {
+  scopeOf(i).containsField(decl) and
+  decl.getName() = getName(i)
 }
 
 module VarConsistency {
-  query predicate multipleVarDecls(VarAccess v, VarDecl decl) {
+  query predicate multipleVarDefs(VarAccess v, VarDef decl) {
     decl = v.getDeclaration() and
     strictcount(v.getDeclaration()) > 1
+  }
+
+  query predicate multipleFieldDefs(FieldAccess f, VarDef decl) {
+    decl = f.getDeclaration() and
+    strictcount(f.getDeclaration()) > 1
   }
 }
