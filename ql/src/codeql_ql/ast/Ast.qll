@@ -650,6 +650,8 @@ class NewTypeBranch extends TNewTypeBranch, TypeDeclaration {
   /** Gets the body of this branch. */
   Formula getBody() { toGenerated(result) = branch.getChild(_).(Generated::Body).getChild() }
 
+  NewType getNewType() { result.getABranch() = this }
+
   override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
     or

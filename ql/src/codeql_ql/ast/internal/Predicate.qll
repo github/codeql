@@ -1,18 +1,30 @@
 import ql
 private import Builtins
 private import codeql_ql.ast.internal.Module
+private import codeql_ql.ast.internal.AstNodes as AstNodes
 
-private predicate definesPredicate(FileOrModule m, string name, ClasslessPredicate p, boolean public) {
+private class TClasslessPredicateOrNewTypeBranch =
+  AstNodes::TClasslessPredicate or AstNodes::TNewTypeBranch;
+
+string getPredicateName(TClasslessPredicateOrNewTypeBranch p) {
+  result = p.(ClasslessPredicate).getName() or
+  result = p.(NewTypeBranch).getName()
+}
+
+private predicate definesPredicate(
+  FileOrModule m, string name, int arity, TClasslessPredicateOrNewTypeBranch p, boolean public
+) {
   m = getEnclosingModule(p) and
-  name = p.getName() and
-  public = getPublicBool(p)
+  name = getPredicateName(p) and
+  public = getPublicBool(p) and
+  arity = [p.(ClasslessPredicate).getArity(), count(p.(NewTypeBranch).getField(_))]
   or
   // import X
   exists(Import imp, FileOrModule m0 |
     m = getEnclosingModule(imp) and
     m0 = imp.getResolvedModule() and
     not exists(imp.importedAs()) and
-    definesPredicate(m0, name, p, true) and
+    definesPredicate(m0, name, arity, p, true) and
     public = getPublicBool(imp)
   )
   or
@@ -21,7 +33,8 @@ private predicate definesPredicate(FileOrModule m, string name, ClasslessPredica
     m = getEnclosingModule(alias) and
     name = alias.getName() and
     resolvePredicateExpr(alias.getAlias(), p) and
-    public = getPublicBool(alias)
+    public = getPublicBool(alias) and
+    arity = alias.getArity()
   )
 }
 
@@ -34,8 +47,7 @@ predicate resolvePredicateExpr(PredicateExpr pe, ClasslessPredicate p) {
     m = pe.getQualifier().getResolvedModule() and
     public = true
   |
-    definesPredicate(m, pe.getName(), p, public) and
-    count(p.getParameter(_)) = pe.getArity()
+    definesPredicate(m, pe.getName(), count(p.getParameter(_)), p, public)
   )
 }
 
@@ -54,8 +66,7 @@ private predicate resolvePredicateCall(PredicateCall pc, PredicateOrBuiltin p) {
     m = pc.getQualifier().getResolvedModule() and
     public = true
   |
-    definesPredicate(m, pc.getPredicateName(), p.getDeclaration(), public) and
-    p.getArity() = pc.getNumberOfArguments()
+    definesPredicate(m, pc.getPredicateName(), pc.getNumberOfArguments(), p.getDeclaration(), public)
   )
 }
 
@@ -74,6 +85,7 @@ predicate resolveCall(Call c, PredicateOrBuiltin p) {
 
 private newtype TPredOrBuiltin =
   TPred(Predicate p) or
+  TNewTypeBranch(NewTypeBranch b) or
   TBuiltinClassless(string ret, string name, string args) { isBuiltinClassless(ret, name, args) } or
   TBuiltinMember(string qual, string ret, string name, string args) {
     isBuiltinMember(qual, ret, name, args)
@@ -101,7 +113,7 @@ class PredicateOrBuiltin extends TPredOrBuiltin {
     )
   }
 
-  Predicate getDeclaration() { none() }
+  AstNode getDeclaration() { none() }
 
   Type getDeclaringType() { none() }
 
@@ -127,6 +139,7 @@ private class DefinedPredicate extends PredicateOrBuiltin, TPred {
 
   override Type getParameterType(int i) { result = decl.getParameter(i).getType() }
 
+  // Can be removed when all types can be resolved
   override int getArity() { result = decl.getArity() }
 
   override Type getDeclaringType() {
@@ -138,6 +151,27 @@ private class DefinedPredicate extends PredicateOrBuiltin, TPred {
   override predicate isPrivate() {
     decl.(ClassPredicate).isPrivate() or decl.(ClassPredicate).isPrivate()
   }
+}
+
+private class DefinedNewTypeBranch extends PredicateOrBuiltin, TNewTypeBranch {
+  NewTypeBranch b;
+
+  DefinedNewTypeBranch() { this = TNewTypeBranch(b) }
+
+  override NewTypeBranch getDeclaration() { result = b }
+
+  override string getName() { result = b.getName() }
+
+  override NewTypeBranchType getReturnType() { result.getDeclaration() = b }
+
+  override Type getParameterType(int i) { result = b.getField(i).getType() }
+
+  // Can be removed when all types can be resolved
+  override int getArity() { result = count(b.getField(_)) }
+
+  override Type getDeclaringType() { none() }
+
+  override predicate isPrivate() { b.getNewType().isPrivate() }
 }
 
 private class TBuiltin = TBuiltinClassless or TBuiltinMember;
@@ -183,6 +217,7 @@ module PredConsistency {
 
   query predicate noResolveCall(Call c) {
     not resolveCall(c, _) and
+    not c instanceof NoneCall and
     not c.getLocation().getFile().getAbsolutePath().regexpMatch(".*/(test|examples)/.*")
   }
 

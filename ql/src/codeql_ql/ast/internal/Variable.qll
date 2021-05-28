@@ -10,34 +10,43 @@ class VariableScope extends TScope, AstNode {
   VariableScope getOuterScope() { result = scopeOf(this) }
 
   /** Gets a variable declared directly in this scope. */
-  VarDef getADefinition() { result.getParent() = this }
+  VarDef getADefinition(string name) {
+    result.getParent() = this and
+    name = result.getName()
+  }
 
   /** Holds if this scope contains variable `decl`, either directly or inherited. */
-  predicate containsVar(VarDef decl) {
-    not this instanceof Class and
-    decl = this.getADefinition()
-    or
-    decl = this.(Select).getExpr(_).(AsExpr)
-    or
-    decl = this.(Aggregate).getExpr(_).(AsExpr)
-    or
-    decl = this.(ExprAggregate).getExpr(_).(AsExpr)
-    or
-    this.getOuterScope().containsVar(decl) and
-    not this.getADefinition().getName() = decl.getName()
+  predicate containsVar(VarDef decl, string name) {
+    name = decl.getName() and
+    (
+      not this instanceof Class and
+      decl = this.getADefinition(name)
+      or
+      decl = this.(Select).getExpr(_).(AsExpr)
+      or
+      decl = this.(Aggregate).getExpr(_).(AsExpr)
+      or
+      decl = this.(ExprAggregate).getExpr(_).(AsExpr)
+      or
+      this.getOuterScope().containsVar(decl, name) and
+      not exists(this.getADefinition(name))
+    )
   }
 
   /** Holds if this scope contains field `decl`, either directly or inherited. */
-  predicate containsField(VarDef decl) {
-    decl = this.(Class).getAField()
-    or
-    this.getOuterScope().containsField(decl) and
-    not this.getADefinition().getName() = decl.getName()
-    or
-    exists(VariableScope sup |
-      sup = this.(Class).getASuperType().getResolvedType().(ClassType).getDeclaration() and
-      sup.containsField(decl) and
-      not this.(Class).getAField().getName() = decl.getName()
+  predicate containsField(VarDef decl, string name) {
+    name = decl.getName() and
+    (
+      decl = this.(Class).getAField()
+      or
+      this.getOuterScope().containsField(decl, name) and
+      not exists(this.getADefinition(name))
+      or
+      exists(VariableScope sup |
+        sup = this.(Class).getASuperType().getResolvedType().(ClassType).getDeclaration() and
+        sup.containsField(decl, name) and
+        not this.(Class).getAField().getName() = name
+      )
     )
   }
 }
@@ -56,15 +65,9 @@ private string getName(Identifier i) {
   )
 }
 
-predicate resolveVariable(Identifier i, VarDef decl) {
-  scopeOf(i).containsVar(decl) and
-  decl.getName() = getName(i)
-}
+predicate resolveVariable(Identifier i, VarDef decl) { scopeOf(i).containsVar(decl, getName(i)) }
 
-predicate resolveField(Identifier i, VarDef decl) {
-  scopeOf(i).containsField(decl) and
-  decl.getName() = getName(i)
-}
+predicate resolveField(Identifier i, VarDef decl) { scopeOf(i).containsField(decl, getName(i)) }
 
 module VarConsistency {
   query predicate multipleVarDefs(VarAccess v, VarDef decl) {
