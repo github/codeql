@@ -166,7 +166,11 @@ predicate resolveModuleExpr(ModuleExpr me, FileOrModule m) {
   )
 }
 
-boolean getPublicBool(ModuleMember m) { if m.isPrivate() then result = false else result = true }
+boolean getPublicBool(AstNode n) {
+  if n.(ModuleMember).isPrivate() or n.(NewTypeBranch).getNewType().isPrivate()
+  then result = false
+  else result = true
+}
 
 /**
  * Holds if `container` defines module `m` with name `name`.
