@@ -228,10 +228,14 @@ class ClassPredicate extends TClassPredicate, Predicate {
 
   override string getAPrimaryQlClass() { result = "ClassPredicate" }
 
-  predicate isPrivate() {
+  override Class getParent() { result.getAClassPredicate() = this }
+
+  predicate isPrivate() { hasAnnotation("private") }
+
+  predicate hasAnnotation(string name) {
     exists(Generated::ClassMember member |
       pred = member.getChild(_) and
-      member.getAFieldOrChild().(Generated::Annotation).getName().getValue() = "private"
+      member.getAFieldOrChild().(Generated::Annotation).getName().getValue() = name
     )
   }
 
