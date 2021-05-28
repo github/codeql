@@ -199,7 +199,11 @@ class ClasslessPredicate extends TClasslessPredicate, Predicate, ModuleDeclarati
 
   override VarDecl getParameter(int i) {
     toGenerated(result) =
-      rank[i](Generated::VarDecl decl, int index | decl = pred.getChild(index) | decl order by index)
+      rank[i + 1](Generated::VarDecl decl, int index |
+        decl = pred.getChild(index)
+      |
+        decl order by index
+      )
   }
 
   override TypeExpr getReturnTypeExpr() { toGenerated(result) = pred.getReturnType() }
@@ -244,7 +248,11 @@ class ClassPredicate extends TClassPredicate, Predicate {
 
   override VarDecl getParameter(int i) {
     toGenerated(result) =
-      rank[i](Generated::VarDecl decl, int index | decl = pred.getChild(index) | decl order by index)
+      rank[i + 1](Generated::VarDecl decl, int index |
+        decl = pred.getChild(index)
+      |
+        decl order by index
+      )
   }
 
   ClassType getDeclaringType() { result.getDeclaration() = getParent() }
