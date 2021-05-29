@@ -15,7 +15,7 @@ In the worst case, it results in remote code execution.
 <p>
 Use only strings and primitive types in parameters of remote objects.
 </p>
-</p>
+<p>
 Set a filter for incoming serialized data by wrapping remote objects using either <code>UnicastRemoteObject.exportObject(Remote, int, ObjectInputFilter)</code>
 or <code>UnicastRemoteObject.exportObject(Remote, int, RMIClientSocketFactory, RMIServerSocketFactory, ObjectInputFilter)</code> methods.
 Those methods accept an <code>ObjectInputFilter</code> that decides which classes are allowed for deserialization.
@@ -26,6 +26,7 @@ It is also possible to set a process-wide deserialization filter.
 The filter can be set by with <code>ObjectInputFilter.Config.setSerialFilter(ObjectInputFilter)</code> method,
 or by setting system or security property <code>jdk.serialFilter</code>.
 Make sure that you use the latest Java versions that include JEP 290.
+Please note that the query is not sensitive to this mitigation.
 </p>
 <p>
 If switching to the latest Java versions is not possible,
@@ -62,11 +63,11 @@ Oracle:
 </li>
 <li>
 ITNEXT:
-<a href="https://itnext.io/java-rmi-for-pentesters-part-two-reconnaissance-attack-against-non-jmx-registries-187a6561314d">Java RMI for pentesters part two — reconnaissance & attack against non-JMX registries</a>.
+<a href="https://itnext.io/java-rmi-for-pentesters-part-two-reconnaissance-attack-against-non-jmx-registries-187a6561314d">Java RMI for pentesters part two - reconnaissance &amp; attack against non-JMX registries</a>.
 </li>
 <li>
 MOGWAI LABS:
-<a href="https://mogwailabs.de/en/blog/2019/03/attacking-java-rmi-services-after-jep-290/">Attacking Java RMI services after JEP 290</a>
+<a href="https://mogwailabs.de/en/blog/2019/03/attacking-java-rmi-services-after-jep-290">Attacking Java RMI services after JEP 290</a>
 </li>
 <li>
 OWASP:
