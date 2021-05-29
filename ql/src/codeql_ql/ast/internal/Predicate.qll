@@ -251,7 +251,12 @@ module PredConsistency {
   }
 
   query predicate multipleResolveCall(Call call, int c, PredicateOrBuiltin p) {
-    c = strictcount(PredicateOrBuiltin p0 | resolveCall(call, p0)) and
+    c =
+      strictcount(PredicateOrBuiltin p0 |
+        resolveCall(call, p0) and
+        // aliases are expected to resolve to multiple.
+        not exists(p0.getDeclaration().(ClasslessPredicate).getAlias())
+      ) and
     c > 1 and
     resolveCall(call, p)
   }
