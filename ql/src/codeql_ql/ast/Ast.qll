@@ -56,6 +56,15 @@ class AstNode extends TAstNode {
    * Gets the primary QL class for the ast node.
    */
   string getAPrimaryQlClass() { result = "???" }
+
+  /**
+   * Gets the predicate that contains this AST node.
+   */
+  pragma[noinline]
+  Predicate getEnclosingPredicate() {
+    not this instanceof Predicate and
+    toGenerated(result) = toGenerated(this).getParent+()
+  }
 }
 
 /** A toplevel QL program, i.e. a file. */
