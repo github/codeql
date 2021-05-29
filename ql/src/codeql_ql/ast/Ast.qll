@@ -154,7 +154,14 @@ class Predicate extends TPredicate, AstNode {
   /**
    * Gets the number of parameters.
    */
-  int getArity() { result = count(getParameter(_)) }
+  int getArity() {
+    not this.(ClasslessPredicate).getAlias() instanceof PredicateExpr and
+    result = count(getParameter(_))
+    or
+    exists(PredicateExpr alias | alias = this.(ClasslessPredicate).getAlias() |
+      result = alias.getArity()
+    )
+  }
 
   /**
    * Gets the return type (if any) of the predicate.
