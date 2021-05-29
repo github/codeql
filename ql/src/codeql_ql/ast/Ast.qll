@@ -990,6 +990,21 @@ class Float extends Literal {
   float getValue() { result = lit.getChild().(Generated::Float).getValue().toFloat() }
 }
 
+/** A boolean literal */
+class Boolean extends Literal {
+  Generated::Bool bool;
+
+  Boolean() { lit.getChild() = bool }
+
+  /** Holds if the value is `true` */
+  predicate isTrue() { bool.getChild() instanceof Generated::True }
+
+  /** Holds if the value is `false` */
+  predicate isFalse() { bool.getChild() instanceof Generated::False }
+
+  override string getAPrimaryQlClass() { result = "Boolean" }
+}
+
 /** A comparison symbol, such as `"<"` or `"="`. */
 class ComparisonSymbol extends string {
   ComparisonSymbol() {
