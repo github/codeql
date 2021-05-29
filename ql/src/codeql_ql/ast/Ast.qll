@@ -1523,6 +1523,13 @@ class ThisAccess extends Identifier {
   override string getAPrimaryQlClass() { result = "ThisAccess" }
 }
 
+/** A use of `super`. */
+class Super extends TSuper, Expr {
+  Super() { this = TSuper(_) }
+
+  override string getAPrimaryQlClass() { result = "SuperAccess" }
+}
+
 /** An access to `result`. */
 class ResultAccess extends Identifier {
   ResultAccess() { any(Generated::Result r).getParent() = id }
