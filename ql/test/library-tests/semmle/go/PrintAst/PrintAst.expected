@@ -60,7 +60,7 @@ input.go:
 #   20|           1: [StringLit] "Hi"
 #   20|               Type = string
 #   20|               Value = [StringLit] Hi
-#   22|       2: [LabelledStmt] labeled statement
+#   22|       2: [LabeledStmt] labeled statement
 #   22|         0: [Ident, LabelName] outer
 #   23|         1: [ForStmt] for statement
 #   23|           0: [ConstantName, Ident] true
