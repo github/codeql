@@ -116,7 +116,7 @@ class LabeledStmt extends @labeledstmt, Stmt {
 
   override string toString() { result = "labeled statement" }
 
-  override string getAPrimaryQlClass() { result = "LabelledStmt" }
+  override string getAPrimaryQlClass() { result = "LabeledStmt" }
 }
 
 /**
