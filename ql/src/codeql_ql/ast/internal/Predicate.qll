@@ -79,6 +79,13 @@ private module Cached {
       t = mc.getBase().getType() and
       p = t.getClassPredicate(mc.getMemberName(), mc.getNumberOfArguments())
     )
+    or
+    // super calls
+    exists(Super sup, ClassType type |
+      mc.getBase() = sup and
+      sup.getEnclosingPredicate().(ClassPredicate).getParent().getType() = type and
+      p = type.getASuperType().getClassPredicate(mc.getMemberName(), mc.getNumberOfArguments())
+    )
   }
 
   cached
@@ -233,6 +240,7 @@ module PredConsistency {
   query predicate noResolveCall(Call c) {
     not resolveCall(c, _) and
     not c instanceof NoneCall and
+    not c instanceof AnyCall and
     not c.getLocation().getFile().getAbsolutePath().regexpMatch(".*/(test|examples)/.*")
   }
 
@@ -243,7 +251,12 @@ module PredConsistency {
   }
 
   query predicate multipleResolveCall(Call call, int c, PredicateOrBuiltin p) {
-    c = strictcount(PredicateOrBuiltin p0 | resolveCall(call, p0)) and
+    c =
+      strictcount(PredicateOrBuiltin p0 |
+        resolveCall(call, p0) and
+        // aliases are expected to resolve to multiple.
+        not exists(p0.getDeclaration().(ClasslessPredicate).getAlias())
+      ) and
     c > 1 and
     resolveCall(call, p)
   }
