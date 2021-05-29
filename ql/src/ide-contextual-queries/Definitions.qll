@@ -48,6 +48,11 @@ private predicate resolveVar(VarAccess va, VarDecl decl, string kind) {
   kind = "variable"
 }
 
+private predicate resolveField(FieldAccess va, VarDecl decl, string kind) {
+  decl = va.getDeclaration() and
+  kind = "field"
+}
+
 private predicate resolveCall(Call c, Predicate p, string kind) {
   p = c.getTarget().getDeclaration() and
   kind = "call"
@@ -60,6 +65,8 @@ predicate resolve(Loc ref, Loc target, string kind) {
   resolveType(ref.asAst(), target.asAst(), kind)
   or
   resolvePredicate(ref.asAst(), target.asAst(), kind)
+  or
+  resolveField(ref.asAst(), target.asAst(), kind)
   or
   resolveVar(ref.asAst(), target.asAst(), kind)
   or
