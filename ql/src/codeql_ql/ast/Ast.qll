@@ -1339,6 +1339,19 @@ class ExprAggregate extends TExprAggregate, Expr {
       pred = indexedMember("getOrderBy", i) and result = this.getOrderBy(i)
     )
   }
+
+  override Type getType() {
+    exists(PrimitiveType prim | prim = result |
+      kind.regexpMatch("(strict)?count|sum|min|max|rank") and
+      result.getName() = "int"
+      or
+      kind.regexpMatch("(strict)?concat") and
+      result.getName() = "string"
+    )
+    or
+    not kind = ["count", "strictcount"] and
+    result = getExpr(0).getType()
+  }
 }
 
 /** An aggregate expression, such as `count` or `sum`. */
@@ -1389,12 +1402,21 @@ class Aggregate extends TAggregate, Expr {
 
   override string getAPrimaryQlClass() { result = "Aggregate[" + kind + "]" }
 
-  override PrimitiveType getType() {
-    kind.regexpMatch("(strict)?count|sum|min|max|rank") and
-    result.getName() = "int"
+  override Type getType() {
+    exists(PrimitiveType prim | prim = result |
+      kind.regexpMatch("(strict)?count|sum|min|max|rank") and
+      result.getName() = "int"
+      or
+      kind.regexpMatch("(strict)?concat") and
+      result.getName() = "string"
+    )
     or
-    kind.regexpMatch("(strict)?concat") and
-    result.getName() = "string"
+    kind = ["any", "min", "max"] and
+    not exists(getExpr(_)) and
+    result = getArgument(0).getTypeExpr().getResolvedType()
+    or
+    not kind = ["count", "strictcount"] and
+    result = getExpr(0).getType()
   }
 
   override AstNode getAChild(string pred) {
