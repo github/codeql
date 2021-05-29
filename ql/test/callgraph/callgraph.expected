@@ -1,3 +1,4 @@
 | Foo.qll:5:26:5:30 | PredicateCall | Foo.qll:3:1:3:26 | foo |
 | Foo.qll:10:21:10:25 | PredicateCall | Foo.qll:8:3:8:28 | ClassPredicate |
 | Foo.qll:14:30:14:40 | MemberCall | Foo.qll:10:3:10:27 | ClassPredicate |
+| Foo.qll:17:27:17:42 | MemberCall | Foo.qll:8:3:8:28 | ClassPredicate |
