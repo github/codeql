@@ -56,6 +56,15 @@ class AstNode extends TAstNode {
    * Gets the primary QL class for the ast node.
    */
   string getAPrimaryQlClass() { result = "???" }
+
+  /**
+   * Gets the predicate that contains this AST node.
+   */
+  pragma[noinline]
+  Predicate getEnclosingPredicate() {
+    not this instanceof Predicate and
+    toGenerated(result) = toGenerated(this).getParent+()
+  }
 }
 
 /** A toplevel QL program, i.e. a file. */
@@ -145,7 +154,14 @@ class Predicate extends TPredicate, AstNode {
   /**
    * Gets the number of parameters.
    */
-  int getArity() { result = count(getParameter(_)) }
+  int getArity() {
+    not this.(ClasslessPredicate).getAlias() instanceof PredicateExpr and
+    result = count(getParameter(_))
+    or
+    exists(PredicateExpr alias | alias = this.(ClasslessPredicate).getAlias() |
+      result = alias.getArity()
+    )
+  }
 
   /**
    * Gets the return type (if any) of the predicate.
@@ -990,6 +1006,21 @@ class Float extends Literal {
   float getValue() { result = lit.getChild().(Generated::Float).getValue().toFloat() }
 }
 
+/** A boolean literal */
+class Boolean extends Literal {
+  Generated::Bool bool;
+
+  Boolean() { lit.getChild() = bool }
+
+  /** Holds if the value is `true` */
+  predicate isTrue() { bool.getChild() instanceof Generated::True }
+
+  /** Holds if the value is `false` */
+  predicate isFalse() { bool.getChild() instanceof Generated::False }
+
+  override string getAPrimaryQlClass() { result = "Boolean" }
+}
+
 /** A comparison symbol, such as `"<"` or `"="`. */
 class ComparisonSymbol extends string {
   ComparisonSymbol() {
@@ -1315,6 +1346,19 @@ class ExprAggregate extends TExprAggregate, Expr {
       pred = indexedMember("getOrderBy", i) and result = this.getOrderBy(i)
     )
   }
+
+  override Type getType() {
+    exists(PrimitiveType prim | prim = result |
+      kind.regexpMatch("(strict)?count|sum|min|max|rank") and
+      result.getName() = "int"
+      or
+      kind.regexpMatch("(strict)?concat") and
+      result.getName() = "string"
+    )
+    or
+    not kind = ["count", "strictcount"] and
+    result = getExpr(0).getType()
+  }
 }
 
 /** An aggregate expression, such as `count` or `sum`. */
@@ -1365,12 +1409,21 @@ class Aggregate extends TAggregate, Expr {
 
   override string getAPrimaryQlClass() { result = "Aggregate[" + kind + "]" }
 
-  override PrimitiveType getType() {
-    kind.regexpMatch("(strict)?count|sum|min|max|rank") and
-    result.getName() = "int"
+  override Type getType() {
+    exists(PrimitiveType prim | prim = result |
+      kind.regexpMatch("(strict)?count|sum|min|max|rank") and
+      result.getName() = "int"
+      or
+      kind.regexpMatch("(strict)?concat") and
+      result.getName() = "string"
+    )
     or
-    kind.regexpMatch("(strict)?concat") and
-    result.getName() = "string"
+    kind = ["any", "min", "max"] and
+    not exists(getExpr(_)) and
+    result = getArgument(0).getTypeExpr().getResolvedType()
+    or
+    not kind = ["count", "strictcount"] and
+    result = getExpr(0).getType()
   }
 
   override AstNode getAChild(string pred) {
@@ -1497,6 +1550,13 @@ class ThisAccess extends Identifier {
   override string getName() { result = "this" }
 
   override string getAPrimaryQlClass() { result = "ThisAccess" }
+}
+
+/** A use of `super`. */
+class Super extends TSuper, Expr {
+  Super() { this = TSuper(_) }
+
+  override string getAPrimaryQlClass() { result = "SuperAccess" }
 }
 
 /** An access to `result`. */
