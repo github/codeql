@@ -29,7 +29,9 @@ pub fn write(language: &Language, classes: &[ql::TopLevel]) -> std::io::Result<(
 fn create_ast_node_class<'a>() -> ql::Class<'a> {
     // Default implementation of `toString` calls `this.getAPrimaryQlClass()`
     let to_string = ql::Predicate {
-        qldoc: Some(String::from("Gets a string representation of this element.")),
+        qldoc: Some(String::from(
+            "Gets a string representation of this element.",
+        )),
         name: "toString",
         overridden: false,
         return_type: Some(ql::Type::String),
@@ -43,10 +45,18 @@ fn create_ast_node_class<'a>() -> ql::Class<'a> {
             )),
         ),
     };
-    let get_location =
-        create_none_predicate(Some(String::from("Gets the location of this element.")), "getLocation", false, Some(ql::Type::Normal("Location")));
-    let get_a_field_or_child =
-        create_none_predicate(Some(String::from("Gets a field or child node of this node.")),"getAFieldOrChild", false, Some(ql::Type::Normal("AstNode")));
+    let get_location = create_none_predicate(
+        Some(String::from("Gets the location of this element.")),
+        "getLocation",
+        false,
+        Some(ql::Type::Normal("Location")),
+    );
+    let get_a_field_or_child = create_none_predicate(
+        Some(String::from("Gets a field or child node of this node.")),
+        "getAFieldOrChild",
+        false,
+        Some(ql::Type::Normal("AstNode")),
+    );
     let get_parent = ql::Predicate {
         qldoc: Some(String::from("Gets the parent of this element.")),
         name: "getParent",
@@ -63,7 +73,9 @@ fn create_ast_node_class<'a>() -> ql::Class<'a> {
         ),
     };
     let get_parent_index = ql::Predicate {
-        qldoc: Some(String::from("Gets the index of this node among the children of its parent.")),
+        qldoc: Some(String::from(
+            "Gets the index of this node among the children of its parent.",
+        )),
         name: "getParentIndex",
         overridden: false,
         return_type: Some(ql::Type::Int),
@@ -78,7 +90,9 @@ fn create_ast_node_class<'a>() -> ql::Class<'a> {
         ),
     };
     let get_a_primary_ql_class = ql::Predicate {
-        qldoc: Some(String::from("Gets the name of the primary QL class for this element.")),
+        qldoc: Some(String::from(
+            "Gets the name of the primary QL class for this element.",
+        )),
         name: "getAPrimaryQlClass",
         overridden: false,
         return_type: Some(ql::Type::String),
@@ -124,7 +138,9 @@ fn create_token_class<'a>() -> ql::Class<'a> {
         body: create_get_field_expr_for_column_storage("result", "tokeninfo", 4, tokeninfo_arity),
     };
     let to_string = ql::Predicate {
-        qldoc: Some(String::from("Gets a string representation of this element.")),
+        qldoc: Some(String::from(
+            "Gets a string representation of this element.",
+        )),
         name: "toString",
         overridden: true,
         return_type: Some(ql::Type::String),
@@ -189,7 +205,9 @@ fn create_none_predicate<'a>(
 /// name.
 fn create_get_a_primary_ql_class<'a>(class_name: &'a str) -> ql::Predicate<'a> {
     ql::Predicate {
-        qldoc: Some(String::from("Gets the name of the primary QL class for this element.")),
+        qldoc: Some(String::from(
+            "Gets the name of the primary QL class for this element.",
+        )),
         name: "getAPrimaryQlClass",
         overridden: true,
         return_type: Some(ql::Type::String),
@@ -434,7 +452,10 @@ fn create_field_getters<'a>(
     };
     (
         ql::Predicate {
-            qldoc: field.name.as_ref().map(|name| format!("Gets the node corresponding to the field `{}`.", name)),
+            qldoc: field
+                .name
+                .as_ref()
+                .map(|name| format!("Gets the node corresponding to the field `{}`.", name)),
             name: &field.getter_name,
             overridden: false,
             return_type,
