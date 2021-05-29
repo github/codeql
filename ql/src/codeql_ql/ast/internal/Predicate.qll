@@ -240,6 +240,7 @@ module PredConsistency {
   query predicate noResolveCall(Call c) {
     not resolveCall(c, _) and
     not c instanceof NoneCall and
+    not c instanceof AnyCall and
     not c.getLocation().getFile().getAbsolutePath().regexpMatch(".*/(test|examples)/.*")
   }
 
