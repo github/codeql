@@ -16,6 +16,7 @@ import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.XSS
+import semmle.code.java.security.InformationLeak
 
 /**
  * One of the `printStackTrace()` overloads on `Throwable`.
@@ -83,14 +84,17 @@ predicate stackTraceExpr(Expr exception, MethodAccess stackTraceString) {
   )
 }
 
-class StackTraceStringToXssSinkFlowConfig extends TaintTracking::Configuration {
-  StackTraceStringToXssSinkFlowConfig() {
-    this = "StackTraceExposure::StackTraceStringToXssSinkFlowConfig"
+class StackTraceStringToHTTPResponseSinkFlowConfig extends TaintTracking::Configuration {
+  StackTraceStringToHTTPResponseSinkFlowConfig() {
+    this = "StackTraceExposure::StackTraceStringToHTTPResponseSinkFlowConfig"
   }
 
   override predicate isSource(DataFlow::Node src) { stackTraceExpr(_, src.asExpr()) }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof XssSink }
+  override predicate isSink(DataFlow::Node sink) {
+    sink instanceof XssSink or
+    sink instanceof InformationLeakSink
+  }
 }
 
 /**
@@ -106,7 +110,7 @@ predicate printsStackExternally(MethodAccess call, Expr stackTrace) {
  * A stringified stack trace flows to an external sink.
  */
 predicate stringifiedStackFlowsExternally(XssSink externalExpr, Expr stackTrace) {
-  exists(MethodAccess stackTraceString, StackTraceStringToXssSinkFlowConfig conf |
+  exists(MethodAccess stackTraceString, StackTraceStringToHTTPResponseSinkFlowConfig conf |
     stackTraceExpr(stackTrace, stackTraceString) and
     conf.hasFlow(DataFlow::exprNode(stackTraceString), externalExpr)
   )
