@@ -79,6 +79,13 @@ private module Cached {
       t = mc.getBase().getType() and
       p = t.getClassPredicate(mc.getMemberName(), mc.getNumberOfArguments())
     )
+    or
+    // super calls
+    exists(Super sup, ClassType type |
+      mc.getBase() = sup and
+      sup.getEnclosingPredicate().(ClassPredicate).getParent().getType() = type and
+      p = type.getASuperType().getClassPredicate(mc.getMemberName(), mc.getNumberOfArguments())
+    )
   }
 
   cached
