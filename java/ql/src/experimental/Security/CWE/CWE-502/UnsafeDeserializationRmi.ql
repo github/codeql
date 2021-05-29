@@ -66,11 +66,7 @@ private class BindingUnsafeRemoteObjectConfig extends TaintTracking::Configurati
     exists(MethodAccess ma, Method m | m = ma.getMethod() |
       m.getDeclaringType().hasQualifiedName("java.rmi.server", "UnicastRemoteObject") and
       m.hasName("exportObject") and
-      not ma.getArgument([2, 4])
-          .getType()
-          .(RefType)
-          .getASupertype*()
-          .hasQualifiedName("java.io", "ObjectInputFilter") and
+      not m.getParameterType([2, 4]).(RefType).hasQualifiedName("java.io", "ObjectInputFilter") and
       ma.getArgument(0) = fromNode.asExpr() and
       ma = toNode.asExpr()
     )
