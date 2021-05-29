@@ -22,4 +22,6 @@ predicate calls(Foo f) {
   f = any(Foo f)
   or
   2 = 1 + (2 + (3 + 4))
+  or
+  true = false
 }
