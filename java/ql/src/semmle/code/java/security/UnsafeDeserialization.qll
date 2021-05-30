@@ -181,6 +181,9 @@ class SafeKryo extends DataFlow2::Configuration {
   }
 }
 
+/**
+ * Tracks flow from `enableDefaultTyping` calls to a subsequent Jackson deserialization method call.
+ */
 private class EnableJacksonDefaultTypingConfig extends DataFlow2::Configuration {
   EnableJacksonDefaultTypingConfig() { this = "EnableJacksonDefaultTypingConfig" }
 
@@ -191,6 +194,12 @@ private class EnableJacksonDefaultTypingConfig extends DataFlow2::Configuration 
   override predicate isSink(DataFlow::Node sink) { sink instanceof ObjectMapperReadSink }
 }
 
+/**
+ * Tracks flow from calls, which set a type validator, to a subsequent Jackson deserialization method call,
+ * including across builder method calls.
+ *
+ * Such a Jackson deserialization method call is safe because validation will likely prevent instantiating unexpected types.
+ */
 private class SafeObjectMapperConfig extends DataFlow2::Configuration {
   SafeObjectMapperConfig() { this = "SafeObjectMapperConfig" }
 
@@ -217,6 +226,12 @@ private class SafeObjectMapperConfig extends DataFlow2::Configuration {
   }
 }
 
+/**
+ * Tracks flow from a remote source to a type descriptor (e.g. a `java.lang.Class` instance)
+ * passed to a Jackson deserialization method.
+ *
+ * If this is user-controlled, arbitrary code could be executed while instantiating the user-specified type.
+ */
 private class UnsafeTypeConfig extends TaintTracking2::Configuration {
   UnsafeTypeConfig() { this = "UnsafeTypeConfig" }
 
@@ -232,6 +247,10 @@ private class UnsafeTypeConfig extends TaintTracking2::Configuration {
 
   /**
    * Holds if `fromNode` to `toNode` is a dataflow step that looks like resolving a class.
+   *
+   * Note any method that returns a `Class` or similar is assumed to propagate taint from all
+   * of its arguments, so methods that accept user-controlled data but sanitize it or use it for some
+   * completely different purpose before returning a `Class` could result in false positives.
    */
   override predicate isAdditionalTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
     exists(MethodAccess ma, RefType returnType | returnType = ma.getMethod().getReturnType() |
@@ -244,6 +263,9 @@ private class UnsafeTypeConfig extends TaintTracking2::Configuration {
 
 /**
  * Holds if `fromNode` to `toNode` is a dataflow step that creates a Jackson parser.
+ *
+ * For example, a `createParser(userString)` call yields a `JsonParser` which becomes dangerous
+ * if passed to an unsafely-configured `ObjectMapper`'s `readValue` method.
  */
 predicate createJacksonJsonParserStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
   exists(MethodAccess ma, Method m | m = ma.getMethod() |
@@ -256,6 +278,9 @@ predicate createJacksonJsonParserStep(DataFlow::Node fromNode, DataFlow::Node to
 
 /**
  * Holds if `fromNode` to `toNode` is a dataflow step that creates a Jackson `TreeNode`.
+ *
+ * These are parse trees of user-supplied JSON, which may lead to arbitrary code execution
+ * if passed to an unsafely-configured `ObjectMapper`'s `treeToValue` method.
  */
 predicate createJacksonTreeNodeStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
   exists(MethodAccess ma, Method m | m = ma.getMethod() |
@@ -291,6 +316,17 @@ private predicate hasFieldWithJsonTypeAnnotation(RefType type) {
     type.getAField().getAnAnnotation() = a and
     a.getType().hasQualifiedName("com.fasterxml.jackson.annotation", "JsonTypeInfo") and
     a.getValue("use").(VarAccess).getVariable().hasName(["CLASS", "MINIMAL_CLASS"])
+  )
+}
+
+/**
+ * Holds if `call` is a method call to a Jackson deserialization method such as `ObjectMapper.readValue(String, Class)`,
+ * and the target deserialized class has a field with a `JsonTypeInfo` annotation that enables polymorphic typing.
+ */
+private predicate hasArgumentWithUnsafeJacksonAnnotation(MethodAccess call) {
+  call.getMethod() instanceof ObjectMapperReadMethod and
+  exists(RefType argType, int i | i > 0 and argType = call.getArgument(i).getType() |
+    hasJsonTypeInfoAnnotation(argType.(ParameterizedType).getATypeArgument())
   )
 }
 
@@ -350,9 +386,7 @@ predicate unsafeDeserialization(MethodAccess ma, Expr sink) {
       or
       exists(EnableJacksonDefaultTypingConfig config | config.hasFlowToExpr(ma.getQualifier()))
       or
-      exists(RefType argType, int i | i > 0 and argType = ma.getArgument(i).getType() |
-        hasJsonTypeInfoAnnotation(argType.(ParameterizedType).getATypeArgument())
-      )
+      hasArgumentWithUnsafeJacksonAnnotation(ma)
     ) and
     not exists(SafeObjectMapperConfig config | config.hasFlowToExpr(ma.getQualifier()))
   )
