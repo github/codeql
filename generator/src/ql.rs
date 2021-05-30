@@ -17,6 +17,7 @@ impl<'a> fmt::Display for TopLevel<'a> {
 
 #[derive(Clone, Eq, PartialEq, Hash)]
 pub struct Class<'a> {
+    pub qldoc: Option<String>,
     pub name: &'a str,
     pub is_abstract: bool,
     pub supertypes: BTreeSet<Type<'a>>,
@@ -26,6 +27,9 @@ pub struct Class<'a> {
 
 impl<'a> fmt::Display for Class<'a> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        if let Some(qldoc) = &self.qldoc {
+            write!(f, "/** {} */", qldoc)?;
+        }
         if self.is_abstract {
             write!(f, "abstract ")?;
         }
@@ -43,6 +47,7 @@ impl<'a> fmt::Display for Class<'a> {
                 f,
                 "  {}\n",
                 Predicate {
+                    qldoc: None,
                     name: self.name.clone(),
                     overridden: false,
                     return_type: None,
@@ -176,6 +181,7 @@ impl<'a> fmt::Display for Expression<'a> {
 
 #[derive(Clone, Eq, PartialEq, Hash)]
 pub struct Predicate<'a> {
+    pub qldoc: Option<String>,
     pub name: &'a str,
     pub overridden: bool,
     pub return_type: Option<Type<'a>>,
@@ -185,6 +191,9 @@ pub struct Predicate<'a> {
 
 impl<'a> fmt::Display for Predicate<'a> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        if let Some(qldoc) = &self.qldoc {
+            write!(f, "/** {} */", qldoc)?;
+        }
         if self.overridden {
             write!(f, "override ")?;
         }
