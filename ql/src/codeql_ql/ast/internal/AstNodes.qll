@@ -25,6 +25,7 @@ newtype TAstNode =
   TExprAggregate(Generated::Aggregate agg) {
     agg.getChild(_) instanceof Generated::ExprAggregateBody
   } or
+  TSuper(Generated::SuperRef sup) or
   TIdentifier(Generated::Variable var) or
   TAsExpr(Generated::AsExpr asExpr) { asExpr.getChild(1) instanceof Generated::VarName } or
   TPredicateCall(Generated::CallOrUnqualAggExpr call) or
@@ -64,7 +65,7 @@ class TBinOpExpr = TAddSubExpr or TMulDivModExpr;
 
 class TExpr =
   TBinOpExpr or TLiteral or TAggregate or TExprAggregate or TIdentifier or TInlineCast or TCall or
-      TUnaryExpr or TExprAnnotation or TDontCare or TRange or TSet or TAsExpr;
+      TUnaryExpr or TExprAnnotation or TDontCare or TRange or TSet or TAsExpr or TSuper;
 
 class TCall = TPredicateCall or TMemberCall or TNoneCall or TAnyCall;
 
@@ -157,6 +158,8 @@ Generated::AstNode toGenerated(AST::AstNode n) {
   n = TNoneCall(result)
   or
   n = TAnyCall(result)
+  or
+  n = TSuper(result)
 }
 
 class TPredicate = TCharPred or TClasslessPredicate or TClassPredicate;
