@@ -28,7 +28,7 @@ private class File_ extends FileOrModule, TFile {
 
   override ContainerOrModule getEnclosing() { result = TFolder(f.getParentContainer()) }
 
-  override string getName() { result = f.getStem() }
+  override string getName() { result = f.getStem().replaceAll(" ", "_") }
 
   override string toString() { result = f.toString() }
 
@@ -54,7 +54,7 @@ private class Folder_ extends ContainerOrModule, TFolder {
     not exists(f.getFile("qlpack.yml"))
   }
 
-  override string getName() { result = f.getStem() }
+  override string getName() { result = f.getStem().replaceAll(" ", "_") }
 
   override string toString() { result = f.toString() }
 
