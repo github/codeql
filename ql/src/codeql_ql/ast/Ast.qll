@@ -77,7 +77,7 @@ class TopLevel extends TTopLevel, AstNode {
    * Gets a member from contained in this top-level module.
    * Includes private members.
    */
-  ModuleMember getAMember() { toGenerated(result) = file.getChild(_).getChild(_) }
+  ModuleMember getAMember() { toGenerated(result) = file.getChild(_).(Generated::ModuleMember).getChild(_) }
 
   override ModuleMember getAChild(string pred) {
     pred = directMember("getAMember") and result = this.getAMember()
