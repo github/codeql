@@ -7,7 +7,7 @@ Test.java:
 #    2|         0: [Parameter] s
 #    2|           0: [TypeAccess] String
 #    2|       5: [BlockStmt] { ... }
-#    3|         0: [LocalVariableDeclStmt] local variable declaration
+#    3|         0: [LocalVariableDeclStmt] var ...;
 #    3|           0: [TypeAccess] int
 #    3|           1: [LocalVariableDeclExpr] x
 #    3|             0: [SwitchExpr] switch (...)

@@ -20,7 +20,7 @@
 | Logic.java:17:11:17:15 | ... > ... | true | Logic.java:17:18:17:23 | break |
 | Logic.java:19:9:19:12 | g(...) | false | Logic.java:24:7:24:17 | case ... |
 | Logic.java:19:9:19:12 | g(...) | false | Logic.java:26:7:26:14 | default |
-| Logic.java:19:9:19:12 | g(...) | true | Logic.java:20:7:20:16 | ...; |
+| Logic.java:19:9:19:12 | g(...) | true | Logic.java:20:7:20:16 | <Expr>; |
 | Logic.java:22:7:22:17 | case ... | false | Logic.java:26:7:26:14 | default |
 | Logic.java:22:7:22:17 | case ... | true | Logic.java:22:7:22:17 | case ... |
 | Logic.java:24:7:24:17 | case ... | false | Logic.java:26:7:26:14 | default |
@@ -30,19 +30,19 @@
 | Logic.java:29:16:29:19 | g(...) | false | Logic.java:30:30:31:5 | { ... } |
 | Logic.java:29:16:29:19 | g(...) | true | Logic.java:29:23:29:26 | null |
 | Logic.java:30:9:30:27 | ...instanceof... | true | Logic.java:30:30:31:5 | { ... } |
-| Logic.java:35:5:35:29 | checkTrue(...) | true | Logic.java:36:5:36:28 | ...; |
+| Logic.java:35:5:35:29 | checkTrue(...) | true | Logic.java:36:5:36:28 | <Expr>; |
 | Logic.java:35:5:35:29 | checkTrue(...) | true | Logic.java:37:5:37:15 | if (...) |
 | Logic.java:35:5:35:29 | checkTrue(...) | true | Logic.java:37:17:39:5 | { ... } |
-| Logic.java:35:5:35:29 | checkTrue(...) | true | Logic.java:40:5:40:18 | local variable declaration |
-| Logic.java:35:15:35:19 | ... > ... | true | Logic.java:36:5:36:28 | ...; |
+| Logic.java:35:5:35:29 | checkTrue(...) | true | Logic.java:40:5:40:18 | var ...; |
+| Logic.java:35:15:35:19 | ... > ... | true | Logic.java:36:5:36:28 | <Expr>; |
 | Logic.java:35:15:35:19 | ... > ... | true | Logic.java:37:5:37:15 | if (...) |
 | Logic.java:35:15:35:19 | ... > ... | true | Logic.java:37:17:39:5 | { ... } |
-| Logic.java:35:15:35:19 | ... > ... | true | Logic.java:40:5:40:18 | local variable declaration |
+| Logic.java:35:15:35:19 | ... > ... | true | Logic.java:40:5:40:18 | var ...; |
 | Logic.java:36:5:36:27 | checkFalse(...) | false | Logic.java:37:5:37:15 | if (...) |
 | Logic.java:36:5:36:27 | checkFalse(...) | false | Logic.java:37:17:39:5 | { ... } |
-| Logic.java:36:5:36:27 | checkFalse(...) | false | Logic.java:40:5:40:18 | local variable declaration |
+| Logic.java:36:5:36:27 | checkFalse(...) | false | Logic.java:40:5:40:18 | var ...; |
 | Logic.java:36:16:36:21 | g(...) | false | Logic.java:37:5:37:15 | if (...) |
 | Logic.java:36:16:36:21 | g(...) | false | Logic.java:37:17:39:5 | { ... } |
-| Logic.java:36:16:36:21 | g(...) | false | Logic.java:40:5:40:18 | local variable declaration |
+| Logic.java:36:16:36:21 | g(...) | false | Logic.java:40:5:40:18 | var ...; |
 | Logic.java:37:9:37:14 | ... > ... | true | Logic.java:37:17:39:5 | { ... } |
 | Logic.java:44:10:44:10 | b | false | Logic.java:44:33:44:35 | msg |

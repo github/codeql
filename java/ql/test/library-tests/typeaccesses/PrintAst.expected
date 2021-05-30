@@ -13,7 +13,7 @@ typeaccesses/Outer.java:
 #    3|   1: [Class] Outer
 #    4|     3: [Class] Inner
 #    5|     4: [BlockStmt] { ... }
-#    6|       0: [LocalVariableDeclStmt] local variable declaration
+#    6|       0: [LocalVariableDeclStmt] var ...;
 #    6|         0: [TypeAccess] Object
 #    6|         1: [LocalVariableDeclExpr] o
 #    6|           0: [ArrayCreationExpr] new Outer[]
@@ -51,7 +51,7 @@ typeaccesses/TA.java:
 #    9|     5: [Method] method3
 #    9|       3: [TypeAccess] void
 #    9|       5: [BlockStmt] { ... }
-#    9|         0: [LocalVariableDeclStmt] local variable declaration
+#    9|         0: [LocalVariableDeclStmt] var ...;
 #    9|           0: [TypeAccess] ArrayList<TA>
 #    9|             0: [TypeAccess] TA
 #    9|           1: [LocalVariableDeclExpr] local

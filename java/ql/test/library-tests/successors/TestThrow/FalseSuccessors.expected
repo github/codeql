@@ -9,4 +9,4 @@
 | TestThrow.java:108:9:108:14 | ... == ... | TestThrow.java:111:12:111:22 | if (...) |
 | TestThrow.java:111:16:111:21 | ... == ... | TestThrow.java:114:12:114:22 | if (...) |
 | TestThrow.java:114:16:114:21 | ... == ... | TestThrow.java:124:3:126:3 | { ... } |
-| TestThrow.java:128:7:128:12 | ... == ... | TestThrow.java:133:3:133:9 | ...; |
+| TestThrow.java:128:7:128:12 | ... == ... | TestThrow.java:133:3:133:9 | <Expr>; |

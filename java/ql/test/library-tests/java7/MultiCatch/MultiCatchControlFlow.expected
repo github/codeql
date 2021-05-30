@@ -12,10 +12,10 @@
 | MultiCatch.java:14:11:14:28 | new SQLException(...) | MultiCatch.java:14:5:14:29 | throw ... |
 | MultiCatch.java:15:5:15:37 | catch (...) | MultiCatch.java:15:36:15:36 | e |
 | MultiCatch.java:15:36:15:36 | e | MultiCatch.java:16:3:19:3 | { ... } |
-| MultiCatch.java:16:3:19:3 | { ... } | MultiCatch.java:17:4:17:23 | ...; |
+| MultiCatch.java:16:3:19:3 | { ... } | MultiCatch.java:17:4:17:23 | <Expr>; |
 | MultiCatch.java:17:4:17:4 | e | MultiCatch.java:17:4:17:22 | printStackTrace(...) |
 | MultiCatch.java:17:4:17:22 | printStackTrace(...) | MultiCatch.java:18:10:18:10 | e |
-| MultiCatch.java:17:4:17:23 | ...; | MultiCatch.java:17:4:17:4 | e |
+| MultiCatch.java:17:4:17:23 | <Expr>; | MultiCatch.java:17:4:17:4 | e |
 | MultiCatch.java:18:4:18:11 | throw ... | MultiCatch.java:7:14:7:23 | multiCatch |
 | MultiCatch.java:18:10:18:10 | e | MultiCatch.java:18:4:18:11 | throw ... |
 | MultiCatch.java:23:2:33:2 | { ... } | MultiCatch.java:24:3:32:4 | try ... |

@@ -203,7 +203,7 @@ class ForStmt extends ConditionalStmt, @forstmt {
 
   override string pp() { result = "for (...;...;...) " + this.getStmt().pp() }
 
-  override string toString() { result = "for (...)" }
+  override string toString() { result = "for (...;...;...)" }
 
   override string getHalsteadID() { result = "ForStmt" }
 
@@ -706,9 +706,9 @@ class ExprStmt extends Stmt, @exprstmt {
   /** Gets the expression of this expression statement. */
   Expr getExpr() { result.getParent() = this }
 
-  override string pp() { result = "...;" }
+  override string pp() { result = "<Expr>;" }
 
-  override string toString() { result = "...;" }
+  override string toString() { result = "<Expr>;" }
 
   override string getHalsteadID() { result = "ExprStmt" }
 
@@ -739,7 +739,7 @@ class LabeledStmt extends Stmt, @labeledstmt {
 
   override string getHalsteadID() { result = this.getLabel() + ":" }
 
-  override string toString() { result = "labeled statement" }
+  override string toString() { result = "<Label>: ..." }
 
   override string getAPrimaryQlClass() { result = "LabeledStmt" }
 }
@@ -777,9 +777,9 @@ class LocalVariableDeclStmt extends Stmt, @localvariabledeclstmt {
   /** Gets an index of a variable declared in this local variable declaration statement. */
   int getAVariableIndex() { exists(getVariable(result)) }
 
-  override string pp() { result = "local variable declaration" }
+  override string pp() { result = "var ...;" }
 
-  override string toString() { result = "local variable declaration" }
+  override string toString() { result = "var ...;" }
 
   override string getHalsteadID() { result = "LocalVariableDeclStmt" }
 
@@ -791,9 +791,9 @@ class LocalClassDeclStmt extends Stmt, @localclassdeclstmt {
   /** Gets the local class declared by this statement. */
   LocalClass getLocalClass() { isLocalClass(result, this) }
 
-  override string pp() { result = "local class declaration: " + this.getLocalClass().toString() }
+  override string pp() { result = "class " + this.getLocalClass().toString() }
 
-  override string toString() { result = "local class declaration" }
+  override string toString() { result = "class ..." }
 
   override string getHalsteadID() { result = "LocalClassDeclStmt" }
 
