@@ -53,7 +53,7 @@ class PrintAstNode extends AstNode {
     result =
       any(int i |
         this =
-          rank[i](AstNode p, Location l, File f |
+          rank[i](PrintAstNode p, Location l, File f |
             l = p.getLocation() and
             f = l.getFile()
           |
