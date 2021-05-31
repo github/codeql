@@ -266,12 +266,14 @@ predicate resolveTypeExpr(TypeExpr te, Type t) {
     if primTypeName(te.getClassName())
     then t = TPrimitive(te.getClassName())
     else
-      exists(FileOrModule m, boolean public | qualifier(te, m, public) |
-        defines(m, te.getClassName(), t, public)
+      exists(FileOrModule m, boolean public, string clName | qualifier(te, m, public, clName) |
+        defines(m, clName, t, public)
       )
 }
 
-private predicate qualifier(TypeExpr te, FileOrModule m, boolean public) {
+pragma[noinline]
+private predicate qualifier(TypeExpr te, FileOrModule m, boolean public, string clName) {
+  te.getClassName() = clName and
   if exists(te.getModule())
   then (
     public = true and m = te.getModule().getResolvedModule()
