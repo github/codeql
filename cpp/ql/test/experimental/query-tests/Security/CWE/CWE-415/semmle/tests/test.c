@@ -56,7 +56,7 @@ void workFunction_5(char *s, int intFlag) {
   }
   free(buf); // BAD
 }
-void workFunction_6(char *s, int intFlag;) {
+void workFunction_6(char *s, int intFlag) {
   int intSize = 10;
   char *buf;
   char *tmpbuf;
