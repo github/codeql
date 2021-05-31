@@ -22,9 +22,9 @@ class UnsafeDeserializationConfig extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof UnsafeDeserializationSink }
 
-  override predicate isAdditionalTaintStep(DataFlow::Node prod, DataFlow::Node succ) {
+  override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(ClassInstanceExpr cie |
-      cie.getArgument(0) = prod.asExpr() and
+      cie.getArgument(0) = pred.asExpr() and
       cie = succ.asExpr() and
       (
         cie.getConstructor().getDeclaringType() instanceof JsonIoJsonReader or
@@ -36,7 +36,7 @@ class UnsafeDeserializationConfig extends TaintTracking::Configuration {
     or
     exists(MethodAccess ma |
       ma.getMethod() instanceof BurlapInputInitMethod and
-      ma.getArgument(0) = prod.asExpr() and
+      ma.getArgument(0) = pred.asExpr() and
       ma.getQualifier() = succ.asExpr()
     )
   }
