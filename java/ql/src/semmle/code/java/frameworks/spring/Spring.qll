@@ -36,6 +36,7 @@ import semmle.code.java.frameworks.spring.SpringSet
 import semmle.code.java.frameworks.spring.SpringUtil
 import semmle.code.java.frameworks.spring.SpringValidation
 import semmle.code.java.frameworks.spring.SpringValue
+import semmle.code.java.frameworks.spring.SpringWebMultipart
 import semmle.code.java.frameworks.spring.SpringXMLElement
 import semmle.code.java.frameworks.spring.metrics.MetricSpringBean
 import semmle.code.java.frameworks.spring.metrics.MetricSpringBeanFile
