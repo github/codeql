@@ -4,6 +4,7 @@ import TreeSitter
 cached
 newtype TAstNode =
   TTopLevel(Generated::Ql file) or
+  TQLDoc(Generated::Qldoc qldoc) or
   TClasslessPredicate(Generated::ClasslessPredicate pred) or
   TVarDecl(Generated::VarDecl decl) or
   TClass(Generated::Dataclass dc) or
@@ -118,6 +119,8 @@ Generated::AstNode toGenerated(AST::AstNode n) {
   or
   n = TTopLevel(result)
   or
+  n = TQLDoc(result)
+  or
   n = TClasslessPredicate(result)
   or
   n = TVarDecl(result)
@@ -161,9 +164,9 @@ Generated::AstNode toGenerated(AST::AstNode n) {
 
 class TPredicate = TCharPred or TClasslessPredicate or TClassPredicate;
 
-class TModuleMember = TModuleDeclaration or TImport or TSelect;
+class TModuleMember = TModuleDeclaration or TImport or TSelect or TQLDoc;
 
-class TDeclaration = TTypeDeclaration or TModuleDeclaration;
+class TDeclaration = TTypeDeclaration or TModuleDeclaration or TPredicate or TVarDecl;
 
 class TTypeDeclaration = TClass or TNewType or TNewTypeBranch;
 
