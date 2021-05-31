@@ -186,12 +186,20 @@ private module Cached {
   predicate resolveModuleExpr(ModuleExpr me, FileOrModule m) {
     not m = TFile(any(File f | f.getExtension() = "ql")) and
     not exists(me.getQualifier()) and
-    definesModule(getEnclosingModule(me).getEnclosing*(), me.getName(), m, _)
+    exists(ContainerOrModule enclosing, string name | resolveModuleExprHelper(me, enclosing, name) |
+      definesModule(enclosing.getEnclosing*(), name, m, _)
+    )
     or
     exists(FileOrModule mid |
       resolveModuleExpr(me.getQualifier(), mid) and
       definesModule(mid, me.getName(), m, true)
     )
+  }
+
+  pragma[noinline]
+  private predicate resolveModuleExprHelper(ModuleExpr me, ContainerOrModule enclosing, string name) {
+    enclosing = getEnclosingModule(me) and
+    name = me.getName()
   }
 }
 
