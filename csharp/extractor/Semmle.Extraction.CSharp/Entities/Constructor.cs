@@ -148,8 +148,11 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             if (!SymbolEqualityComparer.Default.Equals(Symbol, Symbol.OriginalDefinition))
             {
+                trapFile.WriteSubId(ContainingType!);
+                trapFile.Write(".");
                 trapFile.WriteSubId(OriginalDefinition);
-                trapFile.Write(':');
+                trapFile.Write(";constructor");
+                return;
             }
 
             if (Symbol.IsStatic)
