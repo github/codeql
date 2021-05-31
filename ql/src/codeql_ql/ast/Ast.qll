@@ -122,7 +122,7 @@ class TopLevel extends TTopLevel, AstNode {
 
   override string getAPrimaryQlClass() { result = "TopLevel" }
 
-  override QLDoc getQLDoc() { toGenerated(result) = file.getChild(0).getChild(0) }
+  override QLDoc getQLDoc() { result = this.getMember(0) }
 }
 
 class QLDoc extends TQLDoc, AstNode {
