@@ -841,9 +841,10 @@ private module Stage2 {
     DataFlowCall call, ReturnNodeExt node1, Node node2, boolean allowsFieldFlow,
     Configuration config
   ) {
-    flowOutOfCall(call, node1, node2, allowsFieldFlow, config) and
-    PrevStage::callMayFlowThroughRev(call, config) and
-    PrevStage::parameterMayFlowThrough(_, getNodeEnclosingCallable(node1), _, config)
+    flowOutOfCall(call, node1, node2, allowsFieldFlow, pragma[only_bind_into](config)) and
+    PrevStage::callMayFlowThroughRev(call, pragma[only_bind_into](config)) and
+    PrevStage::parameterMayFlowThrough(_, getNodeEnclosingCallable(node1), _,
+      pragma[only_bind_into](config))
   }
 
   /**
@@ -1515,9 +1516,10 @@ private module Stage3 {
     DataFlowCall call, ReturnNodeExt node1, Node node2, boolean allowsFieldFlow,
     Configuration config
   ) {
-    flowOutOfCall(call, node1, node2, allowsFieldFlow, config) and
-    PrevStage::callMayFlowThroughRev(call, config) and
-    PrevStage::parameterMayFlowThrough(_, getNodeEnclosingCallable(node1), _, config)
+    flowOutOfCall(call, node1, node2, allowsFieldFlow, pragma[only_bind_into](config)) and
+    PrevStage::callMayFlowThroughRev(call, pragma[only_bind_into](config)) and
+    PrevStage::parameterMayFlowThrough(_, getNodeEnclosingCallable(node1), _,
+      pragma[only_bind_into](config))
   }
 
   /**
@@ -2270,9 +2272,10 @@ private module Stage4 {
     DataFlowCall call, ReturnNodeExt node1, Node node2, boolean allowsFieldFlow,
     Configuration config
   ) {
-    flowOutOfCall(call, node1, node2, allowsFieldFlow, config) and
-    PrevStage::callMayFlowThroughRev(call, config) and
-    PrevStage::parameterMayFlowThrough(_, getNodeEnclosingCallable(node1), _, config)
+    flowOutOfCall(call, node1, node2, allowsFieldFlow, pragma[only_bind_into](config)) and
+    PrevStage::callMayFlowThroughRev(call, pragma[only_bind_into](config)) and
+    PrevStage::parameterMayFlowThrough(_, getNodeEnclosingCallable(node1), _,
+      pragma[only_bind_into](config))
   }
 
   /**
