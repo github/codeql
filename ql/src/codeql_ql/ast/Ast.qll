@@ -80,7 +80,7 @@ class TopLevel extends TTopLevel, AstNode {
    * Gets a member from contained in this top-level module.
    * Includes private members.
    */
-  ModuleMember getAMember() { toGenerated(result) = file.getChild(_).getChild(_) }
+  ModuleMember getAMember() { result = getMember(_) }
 
   ModuleMember getMember(int i) { toGenerated(result) = file.getChild(i).getChild(_) }
 
