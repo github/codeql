@@ -57,6 +57,9 @@ class AstNode extends TAstNode {
    */
   string getAPrimaryQlClass() { result = "???" }
 
+  /** Gets the QLDoc comment for this AST node, if any. */
+  QLDoc getQLDoc() { none() }
+
   /**
    * Gets the predicate that contains this AST node.
    */
@@ -77,13 +80,56 @@ class TopLevel extends TTopLevel, AstNode {
    * Gets a member from contained in this top-level module.
    * Includes private members.
    */
-  ModuleMember getAMember() { toGenerated(result) = file.getChild(_).getChild(_) }
+  ModuleMember getAMember() { result = getMember(_) }
+
+  ModuleMember getMember(int i) { toGenerated(result) = file.getChild(i).getChild(_) }
+
+  /** Gets a top-level import in this module. */
+  Import getAnImport() { result = this.getAMember() }
+
+  /** Gets a top-level class in this module. */
+  Class getAClass() { result = this.getAMember() }
+
+  /** Gets a top-level predicate in this module. */
+  ClasslessPredicate getAPredicate() { result = this.getAMember() }
+
+  /** Gets a module defined at the top-level of this module. */
+  Module getAModule() { result = this.getAMember() }
+
+  /** Gets a `newtype` defined at the top-level of this module. */
+  NewType getANewType() { result = this.getAMember() }
 
   override ModuleMember getAChild(string pred) {
-    pred = directMember("getAMember") and result = this.getAMember()
+    pred = directMember("getQLDoc") and result = this.getQLDoc()
+    or
+    pred = directMember("getAnImport") and result = this.getAnImport()
+    or
+    pred = directMember("getAClass") and result = this.getAClass()
+    or
+    pred = directMember("getAPredicate") and result = this.getAPredicate()
+    or
+    pred = directMember("getAModule") and result = this.getAModule()
+    or
+    pred = directMember("getANewType") and result = this.getANewType()
+  }
+
+  QLDoc getQLDocFor(ModuleMember m) {
+    exists(int i | i > 0 and result = this.getMember(i) and m = this.getMember(i + 1))
   }
 
   override string getAPrimaryQlClass() { result = "TopLevel" }
+
+  override QLDoc getQLDoc() { toGenerated(result) = file.getChild(0).getChild(0) }
+}
+
+class QLDoc extends TQLDoc, AstNode {
+  Generated::Qldoc qldoc;
+
+  QLDoc() { this = TQLDoc(qldoc) }
+
+  string getContents() { result = qldoc.getValue() }
+
+  override string getAPrimaryQlClass() { result = "QLDoc" }
 }
 
 /**
@@ -135,7 +181,7 @@ class Select extends TSelect, AstNode {
  * A QL predicate.
  * Either a classless predicate, a class predicate, or a characteristic predicate.
  */
-class Predicate extends TPredicate, AstNode {
+class Predicate extends TPredicate, AstNode, Declaration {
   /**
    * Gets the body of the predicate.
    */
@@ -144,7 +190,7 @@ class Predicate extends TPredicate, AstNode {
   /**
    * Gets the name of the predicate.
    */
-  string getName() { none() }
+  override string getName() { none() }
 
   /**
    * Gets the `i`th parameter of the predicate.
@@ -389,7 +435,7 @@ class VarDef extends TVarDef, AstNode {
 /**
  * A variable declaration, with a type and a name.
  */
-class VarDecl extends TVarDecl, VarDef {
+class VarDecl extends TVarDecl, VarDef, Declaration {
   Generated::VarDecl var;
 
   VarDecl() { this = TVarDecl(var) }
@@ -428,6 +474,8 @@ class VarDecl extends TVarDecl, VarDef {
     or
     pred = directMember("getTypeExpr") and result = this.getTypeExpr()
   }
+
+  override string toString() { result = this.getName() }
 }
 
 /**
@@ -501,6 +549,14 @@ class Module extends TModule, ModuleDeclaration {
     toGenerated(result) = mod.getChild(_).(Generated::ModuleMember).getChild(_)
   }
 
+  AstNode getMember(int i) {
+    toGenerated(result) = mod.getChild(i).(Generated::ModuleMember).getChild(_)
+  }
+
+  QLDoc getQLDocFor(AstNode m) {
+    exists(int i | result = this.getMember(i) and m = this.getMember(i + 1))
+  }
+
   /** Gets the module expression that this module is an alias for, if any. */
   ModuleExpr getAlias() {
     toGenerated(result) = mod.getAFieldOrChild().(Generated::ModuleAliasBody).getChild()
@@ -528,7 +584,21 @@ class Declaration extends TDeclaration, AstNode {
   /** Gets the name of this declaration. */
   string getName() { none() }
 
-  final override string toString() { result = this.getName() }
+  override string toString() { result = this.getAPrimaryQlClass() + " " + this.getName() }
+
+  override QLDoc getQLDoc() {
+    result = any(TopLevel m).getQLDocFor(this)
+    or
+    result = any(Module m).getQLDocFor(this)
+    or
+    result = any(Class c).getQLDocFor(this)
+  }
+
+  override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
+    pred = directMember("getQLDoc") and result = this.getQLDoc()
+  }
 }
 
 /** An entity that can be declared in a module. */
@@ -554,6 +624,16 @@ class Class extends TClass, TypeDeclaration, ModuleDeclaration {
    */
   CharPred getCharPred() {
     toGenerated(result) = cls.getChild(_).(Generated::ClassMember).getChild(_)
+  }
+
+  AstNode getMember(int i) {
+    toGenerated(result) = cls.getChild(i).(Generated::ClassMember).getChild(_) or
+    toGenerated(result) =
+      cls.getChild(i).(Generated::ClassMember).getChild(_).(Generated::Field).getChild()
+  }
+
+  QLDoc getQLDocFor(AstNode m) {
+    exists(int i | result = this.getMember(i) and m = this.getMember(i + 1))
   }
 
   /**
@@ -667,6 +747,8 @@ class NewTypeBranch extends TNewTypeBranch, TypeDeclaration {
   /** Gets the body of this branch. */
   Formula getBody() { toGenerated(result) = branch.getChild(_).(Generated::Body).getChild() }
 
+  override QLDoc getQLDoc() { toGenerated(result) = branch.getChild(_) }
+
   NewType getNewType() { result.getABranch() = this }
 
   override AstNode getAChild(string pred) {
@@ -675,6 +757,8 @@ class NewTypeBranch extends TNewTypeBranch, TypeDeclaration {
     pred = directMember("getBody") and result = this.getBody()
     or
     exists(int i | pred = indexedMember("getField", i) and result = this.getField(i))
+    or
+    pred = directMember("getQLDoc") and result = this.getQLDoc()
   }
 }
 
