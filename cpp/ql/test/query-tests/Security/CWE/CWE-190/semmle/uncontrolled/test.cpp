@@ -43,8 +43,8 @@ unsigned rand(int max);
 
 void test_with_bounded_randomness() {
   int r = rand(0, 10);
-  r++; // GOOD [FALSE POSITIVE]
+  r++; // GOOD
 
 	unsigned unsigned_r = rand(10);
-	unsigned_r++; // GOOD [FALSE POSITIVE]
+	unsigned_r++; // GOOD
 }

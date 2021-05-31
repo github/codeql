@@ -18,8 +18,16 @@ import semmle.code.cpp.security.TaintTracking
 import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 import TaintedWithPath
 
+string getAMinPattern() { result = ["%min%", "l%"] }
+
+string getAMaxPattern() { result = ["%max%", "%bound%", "h%"] }
+
 predicate isUnboundedRandCall(FunctionCall fc) {
-  fc.getTarget().getName() = "rand" and not bounded(fc)
+  exists(Function func | func = fc.getTarget() |
+    func.getName() = "rand" and
+    not bounded(fc) and
+    not func.getAParameter().getName().toLowerCase().matches([getAMinPattern(), getAMaxPattern()])
+  )
 }
 
 /**
@@ -84,6 +92,10 @@ predicate bounded(Expr e) {
   boundedDiv(e, any(DivExpr div).getLeftOperand())
   or
   boundedDiv(e, any(AssignDivExpr div).getLValue())
+  or
+  boundedDiv(e, any(RShiftExpr shift).getLeftOperand())
+  or
+  boundedDiv(e, any(AssignRShiftExpr div).getLValue())
 }
 
 predicate isUnboundedRandCallOrParent(Expr e) {
