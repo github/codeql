@@ -14,16 +14,14 @@ calls/calls.rb:
 #  314| [StmtSequence] ...
 #  314|   getStmt: [SetterMethodCall] call to foo=
 #  314|     getReceiver: [Self] self
-#  314|     getNumberOfArguments: [IntegerLiteral] 1
 #  314|     getArgument: [AssignExpr] ... = ...
 #  314|       getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0
 #  314|       getAnOperand/getRightOperand: [IntegerLiteral] 10
 #  314|   getStmt: [LocalVariableAccess] __synth__0
 #  315| [StmtSequence] ...
-#  315|   getStmt: [ElementReference, SetterMethodCall] ...[...]
+#  315|   getStmt: [SetterMethodCall] call to []=
 #  315|     getReceiver: [MethodCall] call to foo
 #  315|       getReceiver: [Self] self
-#  315|     getNumberOfArguments: [IntegerLiteral] 2
 #  315|     getArgument: [AssignExpr] ... = ...
 #  315|       getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0
 #  315|       getAnOperand/getRightOperand: [IntegerLiteral] 10
@@ -31,7 +29,6 @@ calls/calls.rb:
 #  315|   getStmt: [LocalVariableAccess] __synth__0
 #  318| [StmtSequence] ...
 #  318|   getStmt: [SetterMethodCall] call to count=
-#  318|     getNumberOfArguments: [IntegerLiteral] 2
 #  318|     getReceiver: [LocalVariableAccess] __synth__0
 #  318|     getArgument: [LocalVariableAccess] __synth__1
 #  318|   getStmt: [AssignExpr] ... = ...
@@ -45,39 +42,37 @@ calls/calls.rb:
 #  318|     getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__1
 #  318|   getStmt: [LocalVariableAccess] __synth__1
 #  319| [StmtSequence] ...
+#  319|   getStmt: [SetterMethodCall] call to []=
+#  319|     getReceiver: [LocalVariableAccess] __synth__0
+#  319|     getArgument: [LocalVariableAccess] __synth__1
+#  319|     getArgument: [LocalVariableAccess] __synth__2
 #  319|   getStmt: [AssignExpr] ... = ...
 #  319|     getAnOperand/getRightOperand: [MethodCall] call to foo
 #  319|       getReceiver: [Self] self
 #  319|     getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0
-#  319|   getStmt: [ElementReference, SetterMethodCall] ...[...]
-#  319|     getNumberOfArguments: [IntegerLiteral] 3
-#  319|     getReceiver: [LocalVariableAccess] __synth__0
-#  319|     getArgument: [LocalVariableAccess] __synth__1
-#  319|     getArgument: [LocalVariableAccess] __synth__2
 #  319|   getStmt: [AssignExpr] ... = ...
 #  319|     getAnOperand/getRightOperand: [IntegerLiteral] 0
 #  319|     getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__1
 #  319|   getStmt: [AssignExpr] ... = ...
 #  319|     getAnOperand/getRightOperand: [AddExpr] ... + ...
-#  319|       getAnOperand/getLeftOperand: [ElementReference] ...[...]
+#  319|       getAnOperand/getLeftOperand: [MethodCall] call to []
 #  319|         getReceiver: [LocalVariableAccess] __synth__0
 #  319|         getArgument: [LocalVariableAccess] __synth__1
 #  319|       getAnOperand/getRightOperand: [IntegerLiteral] 1
 #  319|     getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__2
 #  319|   getStmt: [LocalVariableAccess] __synth__2
 #  320| [StmtSequence] ...
-#  320|   getStmt: [AssignExpr] ... = ...
-#  320|     getAnOperand/getRightOperand: [MethodCall] call to bar
-#  320|       getReceiver: [MethodCall] call to foo
-#  320|         getReceiver: [Self] self
-#  320|     getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0
-#  320|   getStmt: [ElementReference, SetterMethodCall] ...[...]
-#  320|     getNumberOfArguments: [IntegerLiteral] 5
+#  320|   getStmt: [SetterMethodCall] call to []=
 #  320|     getReceiver: [LocalVariableAccess] __synth__0
 #  320|     getArgument: [LocalVariableAccess] __synth__1
 #  320|     getArgument: [LocalVariableAccess] __synth__2
 #  320|     getArgument: [LocalVariableAccess] __synth__3
 #  320|     getArgument: [LocalVariableAccess] __synth__4
+#  320|   getStmt: [AssignExpr] ... = ...
+#  320|     getAnOperand/getRightOperand: [MethodCall] call to bar
+#  320|       getReceiver: [MethodCall] call to foo
+#  320|         getReceiver: [Self] self
+#  320|     getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0
 #  320|   getStmt: [AssignExpr] ... = ...
 #  320|     getAnOperand/getRightOperand: [IntegerLiteral] 0
 #  320|     getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__1
@@ -95,7 +90,7 @@ calls/calls.rb:
 #  320|     getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__3
 #  320|   getStmt: [AssignExpr] ... = ...
 #  320|     getAnOperand/getRightOperand: [MulExpr] ... * ...
-#  320|       getAnOperand/getLeftOperand: [ElementReference] ...[...]
+#  320|       getAnOperand/getLeftOperand: [MethodCall] call to []
 #  320|         getReceiver: [LocalVariableAccess] __synth__0
 #  320|         getArgument: [LocalVariableAccess] __synth__1
 #  320|         getArgument: [LocalVariableAccess] __synth__2

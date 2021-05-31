@@ -82,7 +82,7 @@ class MethodCall extends Call, TMethodCall {
    *
    * the result is `"bar"`.
    */
-  string getMethodName() { none() }
+  final string getMethodName() { result = this.(MethodCallImpl).getMethodNameImpl() }
 
   /**
    * Gets the block of this method call, if any.
@@ -111,13 +111,7 @@ class MethodCall extends Call, TMethodCall {
  * ```
  */
 class SetterMethodCall extends MethodCall {
-  SetterMethodCall() {
-    this instanceof LhsExpr
-    or
-    this = any(Assignment a).getDesugared()
-    or
-    this = any(Assignment a).getDesugared().(StmtSequence).getAStmt()
-  }
+  SetterMethodCall() { this = TMethodCallSynth(_, _, _, true, _) }
 
   final override string getAPrimaryQlClass() { result = "SetterMethodCall" }
 }
@@ -130,8 +124,6 @@ class SetterMethodCall extends MethodCall {
  */
 class ElementReference extends MethodCall, TElementReference {
   final override string getAPrimaryQlClass() { result = "ElementReference" }
-
-  final override string getMethodName() { result = getMethodName(this, "[]") }
 
   final override string toString() { result = "...[...]" }
 }

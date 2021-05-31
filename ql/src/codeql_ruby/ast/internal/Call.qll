@@ -7,35 +7,9 @@ predicate isIdentifierMethodCall(Generated::Identifier g) { vcall(g) and not acc
 
 predicate isRegularMethodCall(Generated::Call g) { not g.getMethod() instanceof Generated::Super }
 
-string regularMethodCallName(Generated::Call g) {
-  isRegularMethodCall(g) and
-  (
-    result = "call" and g.getMethod() instanceof Generated::ArgumentList
-    or
-    result = g.getMethod().(Generated::Token).getValue()
-    or
-    result = g.getMethod().(Generated::ScopeResolution).getName().(Generated::Token).getValue()
-  )
-}
-
 predicate isScopeResolutionMethodCall(Generated::ScopeResolution g, Generated::Identifier i) {
   i = g.getName() and
   not exists(Generated::Call c | c.getMethod() = g)
-}
-
-string methodCallName(MethodCall mc) {
-  exists(Generated::AstNode g | g = toGenerated(mc) |
-    isIdentifierMethodCall(g) and result = g.(Generated::Identifier).getValue()
-    or
-    result = regularMethodCallName(g)
-    or
-    isScopeResolutionMethodCall(g, any(Generated::Identifier i | result = i.getValue()))
-  )
-}
-
-bindingset[s]
-string getMethodName(MethodCall mc, string s) {
-  if mc instanceof SetterMethodCall then result = s + "=" else result = s
 }
 
 abstract class CallImpl extends Call {
@@ -55,21 +29,16 @@ abstract class CallImpl extends Call {
 
 abstract class MethodCallImpl extends CallImpl, MethodCall {
   abstract Expr getReceiverImpl();
-}
 
-/**
- * Gets the special integer literal used to specify the number of arguments
- * in a synthesized call.
- */
-private TIntegerLiteralSynth getNumberOfArgumentsSynth(MethodCall mc, int value) {
-  result = TIntegerLiteralSynth(mc, -2, value)
+  abstract string getMethodNameImpl();
 }
 
 class MethodCallSynth extends MethodCallImpl, TMethodCallSynth {
-  final override string getMethodName() {
-    exists(string name |
-      this = TMethodCallSynth(_, _, name) and
-      result = getMethodName(this, name)
+  final override string getMethodNameImpl() {
+    exists(boolean setter, string name | this = TMethodCallSynth(_, _, name, setter, _) |
+      setter = true and result = name + "="
+      or
+      setter = false and result = name
     )
   }
 
@@ -77,14 +46,7 @@ class MethodCallSynth extends MethodCallImpl, TMethodCallSynth {
 
   final override Expr getArgumentImpl(int n) { synthChild(this, n + 1, result) and n >= 0 }
 
-  final override int getNumberOfArgumentsImpl() { exists(getNumberOfArgumentsSynth(this, result)) }
-
-  final override AstNode getAChild(string pred) {
-    result = super.getAChild(pred)
-    or
-    pred = "getNumberOfArguments" and
-    result = getNumberOfArgumentsSynth(this, _)
-  }
+  final override int getNumberOfArgumentsImpl() { this = TMethodCallSynth(_, _, _, _, result) }
 }
 
 class IdentifierMethodCall extends MethodCallImpl, TIdentifierMethodCall {
@@ -92,7 +54,7 @@ class IdentifierMethodCall extends MethodCallImpl, TIdentifierMethodCall {
 
   IdentifierMethodCall() { this = TIdentifierMethodCall(g) }
 
-  final override string getMethodName() { result = getMethodName(this, g.getValue()) }
+  final override string getMethodNameImpl() { result = g.getValue() }
 
   final override Self getReceiverImpl() { result = TSelfSynth(this, 0) }
 
@@ -107,7 +69,7 @@ class ScopeResolutionMethodCall extends MethodCallImpl, TScopeResolutionMethodCa
 
   ScopeResolutionMethodCall() { this = TScopeResolutionMethodCall(g, i) }
 
-  final override string getMethodName() { result = getMethodName(this, i.getValue()) }
+  final override string getMethodNameImpl() { result = i.getValue() }
 
   final override Expr getReceiverImpl() { toGenerated(result) = g.getScope() }
 
@@ -130,7 +92,16 @@ class RegularMethodCall extends MethodCallImpl, TRegularMethodCall {
     result = TSelfSynth(this, 0)
   }
 
-  final override string getMethodName() { result = getMethodName(this, regularMethodCallName(g)) }
+  final override string getMethodNameImpl() {
+    isRegularMethodCall(g) and
+    (
+      result = "call" and g.getMethod() instanceof Generated::ArgumentList
+      or
+      result = g.getMethod().(Generated::Token).getValue()
+      or
+      result = g.getMethod().(Generated::ScopeResolution).getName().(Generated::Token).getValue()
+    )
+  }
 
   final override Expr getArgumentImpl(int n) {
     toGenerated(result) = g.getArguments().getChild(n)
@@ -147,39 +118,32 @@ class RegularMethodCall extends MethodCallImpl, TRegularMethodCall {
   final override Block getBlock() { toGenerated(result) = g.getBlock() }
 }
 
-class ElementReferenceReal extends MethodCallImpl, TElementReferenceReal {
+class ElementReferenceImpl extends MethodCallImpl, TElementReference {
   private Generated::ElementReference g;
 
-  ElementReferenceReal() { this = TElementReferenceReal(g) }
+  ElementReferenceImpl() { this = TElementReference(g) }
 
   final override Expr getReceiverImpl() { toGenerated(result) = g.getObject() }
 
   final override Expr getArgumentImpl(int n) { toGenerated(result) = g.getChild(n) }
 
   final override int getNumberOfArgumentsImpl() { result = count(g.getChild(_)) }
+
+  final override string getMethodNameImpl() { result = "[]" }
 }
 
-class ElementReferenceSynth extends MethodCallImpl, TElementReferenceSynth {
-  final override Expr getReceiverImpl() { synthChild(this, 0, result) }
-
-  final override Expr getArgumentImpl(int n) { synthChild(this, n + 1, result) and n >= 0 }
-
-  final override int getNumberOfArgumentsImpl() { exists(getNumberOfArgumentsSynth(this, result)) }
-
-  final override AstNode getAChild(string pred) {
-    result = super.getAChild(pred)
-    or
-    pred = "getNumberOfArguments" and
-    result = getNumberOfArgumentsSynth(this, _)
-  }
-}
-
-class TokenSuperCall extends SuperCall, TTokenSuperCall {
+class TokenSuperCall extends SuperCall, MethodCallImpl, TTokenSuperCall {
   private Generated::Super g;
 
   TokenSuperCall() { this = TTokenSuperCall(g) }
 
-  final override string getMethodName() { result = getMethodName(this, g.getValue()) }
+  final override string getMethodNameImpl() { result = g.getValue() }
+
+  final override Expr getReceiverImpl() { none() }
+
+  final override Expr getArgumentImpl(int n) { none() }
+
+  final override int getNumberOfArgumentsImpl() { result = 0 }
 }
 
 class RegularSuperCall extends SuperCall, MethodCallImpl, TRegularSuperCall {
@@ -187,9 +151,7 @@ class RegularSuperCall extends SuperCall, MethodCallImpl, TRegularSuperCall {
 
   RegularSuperCall() { this = TRegularSuperCall(g) }
 
-  final override string getMethodName() {
-    result = getMethodName(this, g.getMethod().(Generated::Super).getValue())
-  }
+  final override string getMethodNameImpl() { result = g.getMethod().(Generated::Super).getValue() }
 
   final override Expr getReceiverImpl() { none() }
 

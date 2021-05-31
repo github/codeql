@@ -17,7 +17,6 @@ newtype SynthKind =
   BitwiseXorExprKind() or
   ClassVariableAccessKind(ClassVariable v) or
   DivExprKind() or
-  ElementReferenceKind() or
   ExponentExprKind() or
   GlobalVariableAccessKind(GlobalVariable v) or
   InstanceVariableAccessKind(InstanceVariable v) or
@@ -27,12 +26,8 @@ newtype SynthKind =
   LocalVariableAccessSynthKind(TLocalVariableSynth v) or
   LogicalAndExprKind() or
   LogicalOrExprKind() or
-  MethodCallKind(string name) {
-    exists(Generated::Identifier g | isIdentifierMethodCall(g) and name = g.getValue())
-    or
-    exists(Generated::Identifier i | isScopeResolutionMethodCall(_, i) and name = i.getValue())
-    or
-    name = regularMethodCallName(_)
+  MethodCallKind(string name, boolean setter, int arity) {
+    any(Synthesis s).methodCall(name, setter, arity)
   } or
   ModuloExprKind() or
   MulExprKind() or
@@ -76,6 +71,11 @@ class Synthesis extends TSynthesis {
   predicate localVariable(AstNode n, int i) { none() }
 
   /**
+   * Holds if a method call to `name` with arity `arity` is needed.
+   */
+  predicate methodCall(string name, boolean setter, int arity) { none() }
+
+  /**
    * Holds if `n` should be excluded from `ControlFlowTree` in the CFG construction.
    */
   predicate excludeFromControlFlowTree(AstNode n) { none() }
@@ -107,11 +107,9 @@ private predicate assign(
   )
 }
 
-private SynthKind getCallKind(MethodCall mc) {
-  result = MethodCallKind(methodCallName(mc))
-  or
-  mc instanceof ElementReference and
-  result = ElementReferenceKind()
+bindingset[arity, setter]
+private SynthKind getCallKind(MethodCall mc, boolean setter, int arity) {
+  result = MethodCallKind(mc.getMethodName(), setter, arity)
 }
 
 private SomeLocation getSomeLocation(AstNode n) {
@@ -169,7 +167,7 @@ private module SetterDesugar {
         exists(AstNode seq | seq = getSynthChild(ae, -1) |
           parent = seq and
           i = 0 and
-          child = SynthChild(getCallKind(mc)) and
+          child = SynthChild(getCallKind(mc, true, mc.getNumberOfArguments() + 1)) and
           l = getSomeLocation(mc)
           or
           exists(AstNode call | call = getSynthChild(seq, 0) |
@@ -197,12 +195,6 @@ private module SetterDesugar {
                 child = RealChild(ae.getRightOperand())
               )
             )
-            or
-            parent = call and
-            // special "number of arguments argument"; required to avoid non-monotonic recursion
-            i = -2 and
-            child = SynthChild(IntegerLiteralKind(mc.getNumberOfArguments() + 1)) and
-            l = NoneLocation()
           )
           or
           parent = seq and
@@ -220,6 +212,15 @@ private module SetterDesugar {
     final override predicate localVariable(AstNode n, int i) {
       n.(AssignExpr).getLeftOperand() instanceof MethodCall and
       i = 0
+    }
+
+    final override predicate methodCall(string name, boolean setter, int arity) {
+      exists(AssignExpr ae, MethodCall mc |
+        mc = ae.getLeftOperand() and
+        name = mc.getMethodName() and
+        setter = true and
+        arity = mc.getNumberOfArguments() + 1
+      )
     }
   }
 }
@@ -380,7 +381,7 @@ private module AssignOperationDesugar {
               exists(AstNode op | op = getSynthChild(assign, 1) |
                 parent = op and
                 i = 0 and
-                child = SynthChild(getCallKind(mc)) and
+                child = SynthChild(getCallKind(mc, false, mc.getNumberOfArguments())) and
                 l = getSomeLocation(mc)
                 or
                 parent = getSynthChild(op, 0) and
@@ -402,7 +403,7 @@ private module AssignOperationDesugar {
             // `__synth__0.[]=(__synth__1, __synth__2);`
             parent = seq and
             i = opAssignIndex + 1 and
-            child = SynthChild(getCallKind(mc)) and
+            child = SynthChild(getCallKind(mc, true, opAssignIndex)) and
             l = getSomeLocation(mc)
             or
             exists(AstNode setter | setter = getSynthChild(seq, opAssignIndex + 1) |
@@ -420,12 +421,6 @@ private module AssignOperationDesugar {
               child =
                 SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(ao, opAssignIndex))) and
               l = SomeLocation(getAssignOperationLocation(ao))
-              or
-              // special "number of arguments argument"; required to avoid non-monotonic recursion
-              parent = setter and
-              i = -2 and
-              child = SynthChild(IntegerLiteralKind(opAssignIndex + 1)) and
-              l = NoneLocation()
             )
             or
             parent = seq and
@@ -440,6 +435,18 @@ private module AssignOperationDesugar {
     final override predicate localVariable(AstNode n, int i) {
       exists(MethodCall mc | n = assignOperationMethodCall(mc) |
         i in [0 .. mc.getNumberOfArguments() + 1]
+      )
+    }
+
+    final override predicate methodCall(string name, boolean setter, int arity) {
+      exists(MethodCall mc | exists(assignOperationMethodCall(mc)) |
+        name = mc.getMethodName() and
+        setter = false and
+        arity = mc.getNumberOfArguments()
+        or
+        name = mc.getMethodName() and
+        setter = true and
+        arity = mc.getNumberOfArguments() + 1
       )
     }
 

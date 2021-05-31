@@ -115,10 +115,7 @@ private module Cached {
     TDivExprSynth(AST::AstNode parent, int i) { mkSynthChild(DivExprKind(), parent, i) } or
     TDo(Generated::Do g) or
     TDoBlock(Generated::DoBlock g) { not g.getParent() instanceof Generated::Lambda } or
-    TElementReferenceReal(Generated::ElementReference g) or
-    TElementReferenceSynth(AST::AstNode parent, int i) {
-      mkSynthChild(ElementReferenceKind(), parent, i)
-    } or
+    TElementReference(Generated::ElementReference g) or
     TElse(Generated::Else g) or
     TElsif(Generated::Elsif g) or
     TEmptyStmt(Generated::EmptyStatement g) or
@@ -183,8 +180,8 @@ private module Cached {
     } or
     TLogicalOrExprSynth(AST::AstNode parent, int i) { mkSynthChild(LogicalOrExprKind(), parent, i) } or
     TMethod(Generated::Method g) or
-    TMethodCallSynth(AST::AstNode parent, int i, string name) {
-      mkSynthChild(MethodCallKind(name), parent, i)
+    TMethodCallSynth(AST::AstNode parent, int i, string name, boolean setter, int arity) {
+      mkSynthChild(MethodCallKind(name, setter, arity), parent, i)
     } or
     TModuleDeclaration(Generated::Module g) or
     TModuloExprReal(Generated::Binary g) { g instanceof @binary_percent } or
@@ -323,7 +320,7 @@ private module Cached {
     n = TDivExprReal(result) or
     n = TDo(result) or
     n = TDoBlock(result) or
-    n = TElementReferenceReal(result) or
+    n = TElementReference(result) or
     n = TElse(result) or
     n = TElsif(result) or
     n = TEmptyStmt(result) or
@@ -439,8 +436,6 @@ private module Cached {
     or
     result = TDivExprSynth(parent, i)
     or
-    result = TElementReferenceSynth(parent, i)
-    or
     result = TExponentExprSynth(parent, i)
     or
     result = TGlobalVariableAccessSynth(parent, i, _)
@@ -457,7 +452,7 @@ private module Cached {
     or
     result = TLogicalOrExprSynth(parent, i)
     or
-    result = TMethodCallSynth(parent, i, _)
+    result = TMethodCallSynth(parent, i, _, _, _)
     or
     result = TModuloExprSynth(parent, i)
     or
@@ -523,8 +518,6 @@ class TCall = TMethodCall or TYieldCall;
 class TMethodCall =
   TMethodCallSynth or TIdentifierMethodCall or TScopeResolutionMethodCall or TRegularMethodCall or
       TElementReference or TSuperCall;
-
-class TElementReference = TElementReferenceReal or TElementReferenceSynth;
 
 class TSuperCall = TTokenSuperCall or TRegularSuperCall;
 
