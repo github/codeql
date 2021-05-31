@@ -178,11 +178,11 @@ class ThrowingAllocator extends Function {
       //
       // So we say an allocator might throw if:
       // 1. It doesn't have a body
-      // 2. there is a parameter that is not `nothrow`
+      // 2. there isn't a parameter with type `nothrow_t`
       // 3. the allocator isn't marked with `throw()` or `noexcept`.
       not exists(this.getBlock()) and
-      exists(Parameter p | p = this.getAParameter() |
-        not p.getUnspecifiedType() instanceof NoThrowType
+      not exists(Parameter p | p = this.getAParameter() |
+        p.getUnspecifiedType() instanceof NoThrowType
       ) and
       not this.isNoExcept() and
       not this.isNoThrow()
