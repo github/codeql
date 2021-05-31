@@ -3,6 +3,7 @@ import semmle.code.java.frameworks.XStream
 import semmle.code.java.frameworks.SnakeYaml
 import semmle.code.java.frameworks.FastJson
 import semmle.code.java.frameworks.apache.Lang
+import semmle.code.java.frameworks.spring.SpringOxm
 
 class ObjectInputStreamReadObjectMethod extends Method {
   ObjectInputStreamReadObjectMethod() {
@@ -139,6 +140,9 @@ predicate unsafeDeserialization(MethodAccess ma, Expr sink) {
     or
     ma.getMethod() instanceof FastJsonParseMethod and
     not fastJsonLooksSafe() and
+    sink = ma.getArgument(0)
+    or
+    ma.getMethod() instanceof XStreamMarshallerUnmarshalMethod and
     sink = ma.getArgument(0)
   )
 }

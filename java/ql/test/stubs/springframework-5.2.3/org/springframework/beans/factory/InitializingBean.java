@@ -1,3 +1,5 @@
 package org.springframework.beans.factory;
 
-public interface InitializingBean {}
+public interface InitializingBean {
+    void afterPropertiesSet() throws Exception;
+}
