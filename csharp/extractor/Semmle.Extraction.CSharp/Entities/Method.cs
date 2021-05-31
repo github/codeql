@@ -129,9 +129,11 @@ namespace Semmle.Extraction.CSharp.Entities
         /// </summary>
         private static void BuildMethodId(Method m, EscapingTextWriter trapFile)
         {
-            if (m.Symbol.IsGenericMethod && !SymbolEqualityComparer.Default.Equals(m.Symbol, m.Symbol.OriginalDefinition))
+            if (!SymbolEqualityComparer.Default.Equals(m.Symbol, m.Symbol.OriginalDefinition))
             {
-                m.Symbol.OriginalDefinition.BuildOrWriteId(m.Context, trapFile, m.Symbol);
+                trapFile.WriteSubId(m.ContainingType!);
+                trapFile.Write(".");
+                trapFile.WriteSubId(m.OriginalDefinition);
                 trapFile.Write('<');
                 // Encode the nullability of the type arguments in the label.
                 // Type arguments with different nullability can result in
@@ -139,6 +141,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 // so we need to create a distinct database entity for it.
                 trapFile.BuildList(",", m.Symbol.GetAnnotatedTypeArguments(), ta => { ta.Symbol.BuildOrWriteId(m.Context, trapFile, m.Symbol); trapFile.Write((int)ta.Nullability); });
                 trapFile.Write('>');
+                WritePostfix(m, trapFile);
                 return;
             }
 
@@ -159,6 +162,11 @@ namespace Semmle.Extraction.CSharp.Entities
             }
 
             AddParametersToId(m.Context, trapFile, m.Symbol);
+            WritePostfix(m, trapFile);
+        }
+
+        private static void WritePostfix(Method m, EscapingTextWriter trapFile)
+        {
             switch (m.Symbol.MethodKind)
             {
                 case MethodKind.PropertyGet:
