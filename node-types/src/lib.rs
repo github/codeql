@@ -267,7 +267,7 @@ fn add_field(
             named: parent_type_name.named,
         },
         type_info,
-        name: field_name,
+        name: field_name.map(|name| escape_name(&name)),
         getter_name,
         storage,
     });
