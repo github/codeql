@@ -193,8 +193,16 @@ async def test_taint(request: web.Request): # $ requestHandler
     )
 
 
+class TaintTestClass(web.View):
+    def get(self):
+        ensure_tainted(
+            self.request, # $ MISSING: tainted
+        )
+
+
 app = web.Application()
 app.router.add_get(r"/test_taint/{name}/{number:\d+}", test_taint)  # $ routeSetup="/test_taint/{name}/{number:\d+}"
+app.router.add_view(r"/test_taint_class", TaintTestClass)  # $ routeSetup="/test_taint_class"
 
 
 if __name__ == "__main__":
