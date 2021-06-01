@@ -1,5 +1,6 @@
 import codeql.Locations
 private import TreeSitter
+private import codeql_ruby.ast.internal.Call
 private import codeql_ruby.ast.internal.Parameter
 private import codeql_ruby.ast.internal.Variable
 private import codeql_ruby.AST as AST
@@ -18,7 +19,7 @@ module MethodName {
 }
 
 private predicate mkSynthChild(SynthKind kind, AST::AstNode parent, int i) {
-  any(Synthesis s).child(parent, i, SynthChild(kind))
+  any(Synthesis s).child(parent, i, SynthChild(kind), _)
 }
 
 cached
@@ -149,7 +150,10 @@ private module Cached {
     TInstanceVariableAccessSynth(AST::AstNode parent, int i, AST::InstanceVariable v) {
       mkSynthChild(InstanceVariableAccessKind(v), parent, i)
     } or
-    TIntegerLiteral(Generated::Integer g) { not any(Generated::Rational r).getChild() = g } or
+    TIntegerLiteralReal(Generated::Integer g) { not any(Generated::Rational r).getChild() = g } or
+    TIntegerLiteralSynth(AST::AstNode parent, int i, int value) {
+      mkSynthChild(IntegerLiteralKind(value), parent, i)
+    } or
     TKeywordParameter(Generated::KeywordParameter g) or
     TLEExpr(Generated::Binary g) { g instanceof @binary_langleequal } or
     TLShiftExprReal(Generated::Binary g) { g instanceof @binary_langlelangle } or
@@ -176,6 +180,9 @@ private module Cached {
     } or
     TLogicalOrExprSynth(AST::AstNode parent, int i) { mkSynthChild(LogicalOrExprKind(), parent, i) } or
     TMethod(Generated::Method g) or
+    TMethodCallSynth(AST::AstNode parent, int i, string name, boolean setter, int arity) {
+      mkSynthChild(MethodCallKind(name, setter, arity), parent, i)
+    } or
     TModuleDeclaration(Generated::Module g) or
     TModuloExprReal(Generated::Binary g) { g instanceof @binary_percent } or
     TModuloExprSynth(AST::AstNode parent, int i) { mkSynthChild(ModuloExprKind(), parent, i) } or
@@ -216,8 +223,7 @@ private module Cached {
       )
     } or
     TScopeResolutionMethodCall(Generated::ScopeResolution g, Generated::Identifier i) {
-      i = g.getName() and
-      not exists(Generated::Call c | c.getMethod() = g)
+      isScopeResolutionMethodCall(g, i)
     } or
     TSelfReal(Generated::Self g) or
     TSelfSynth(AST::AstNode parent, int i) { mkSynthChild(SelfKind(), parent, i) } or
@@ -265,14 +271,6 @@ private module Cached {
     TWhileExpr(Generated::While g) or
     TWhileModifierExpr(Generated::WhileModifier g) or
     TYieldCall(Generated::Yield g)
-
-  private predicate isIdentifierMethodCall(Generated::Identifier g) {
-    vcall(g) and not access(g, _)
-  }
-
-  private predicate isRegularMethodCall(Generated::Call g) {
-    not g.getMethod() instanceof Generated::Super
-  }
 
   /**
    * Gets the underlying TreeSitter entity for a given AST node. This does not
@@ -346,7 +344,7 @@ private module Cached {
     n = TIf(result) or
     n = TIfModifierExpr(result) or
     n = TInstanceVariableAccessReal(result, _) or
-    n = TIntegerLiteral(result) or
+    n = TIntegerLiteralReal(result) or
     n = TKeywordParameter(result) or
     n = TLEExpr(result) or
     n = TLShiftExprReal(result) or
@@ -424,76 +422,49 @@ private module Cached {
   /** Gets the `i`th synthesized child of `parent`. */
   cached
   AST::AstNode getSynthChild(AST::AstNode parent, int i) {
-    exists(SynthKind kind | mkSynthChild(kind, parent, i) |
-      kind = AddExprKind() and
-      result = TAddExprSynth(parent, i)
-      or
-      kind = AssignExprKind() and
-      result = TAssignExprSynth(parent, i)
-      or
-      kind = BitwiseAndExprKind() and
-      result = TBitwiseAndExprSynth(parent, i)
-      or
-      kind = BitwiseOrExprKind() and
-      result = TBitwiseOrExprSynth(parent, i)
-      or
-      kind = BitwiseXorExprKind() and
-      result = TBitwiseXorExprSynth(parent, i)
-      or
-      exists(AST::ClassVariable v |
-        kind = ClassVariableAccessKind(v) and
-        result = TClassVariableAccessSynth(parent, i, v)
-      )
-      or
-      kind = DivExprKind() and
-      result = TDivExprSynth(parent, i)
-      or
-      kind = ExponentExprKind() and
-      result = TExponentExprSynth(parent, i)
-      or
-      exists(AST::GlobalVariable v |
-        kind = GlobalVariableAccessKind(v) and
-        result = TGlobalVariableAccessSynth(parent, i, v)
-      )
-      or
-      exists(AST::InstanceVariable v |
-        kind = InstanceVariableAccessKind(v) and
-        result = TInstanceVariableAccessSynth(parent, i, v)
-      )
-      or
-      kind = LShiftExprKind() and
-      result = TLShiftExprSynth(parent, i)
-      or
-      exists(AST::LocalVariable v | result = TLocalVariableAccessSynth(parent, i, v) |
-        kind = LocalVariableAccessRealKind(v)
-        or
-        kind = LocalVariableAccessSynthKind(v)
-      )
-      or
-      kind = LogicalAndExprKind() and
-      result = TLogicalAndExprSynth(parent, i)
-      or
-      kind = LogicalOrExprKind() and
-      result = TLogicalOrExprSynth(parent, i)
-      or
-      kind = ModuloExprKind() and
-      result = TModuloExprSynth(parent, i)
-      or
-      kind = MulExprKind() and
-      result = TMulExprSynth(parent, i)
-      or
-      kind = RShiftExprKind() and
-      result = TRShiftExprSynth(parent, i)
-      or
-      kind = SelfKind() and
-      result = TSelfSynth(parent, i)
-      or
-      kind = StmtSequenceKind() and
-      result = TStmtSequenceSynth(parent, i)
-      or
-      kind = SubExprKind() and
-      result = TSubExprSynth(parent, i)
-    )
+    result = TAddExprSynth(parent, i)
+    or
+    result = TAssignExprSynth(parent, i)
+    or
+    result = TBitwiseAndExprSynth(parent, i)
+    or
+    result = TBitwiseOrExprSynth(parent, i)
+    or
+    result = TBitwiseXorExprSynth(parent, i)
+    or
+    result = TClassVariableAccessSynth(parent, i, _)
+    or
+    result = TDivExprSynth(parent, i)
+    or
+    result = TExponentExprSynth(parent, i)
+    or
+    result = TGlobalVariableAccessSynth(parent, i, _)
+    or
+    result = TInstanceVariableAccessSynth(parent, i, _)
+    or
+    result = TIntegerLiteralSynth(parent, i, _)
+    or
+    result = TLShiftExprSynth(parent, i)
+    or
+    result = TLocalVariableAccessSynth(parent, i, _)
+    or
+    result = TLogicalAndExprSynth(parent, i)
+    or
+    result = TLogicalOrExprSynth(parent, i)
+    or
+    result = TMethodCallSynth(parent, i, _, _, _)
+    or
+    result = TModuloExprSynth(parent, i)
+    or
+    result = TMulExprSynth(parent, i)
+    or
+    result = TRShiftExprSynth(parent, i)
+    or
+    result = TSelfSynth(parent, i)
+    or
+    result = TStmtSequenceSynth(parent, i)
+    or
+    result = TSubExprSynth(parent, i)
   }
 
   /**
@@ -504,7 +475,7 @@ private module Cached {
   predicate synthChild(AST::AstNode parent, int i, AST::AstNode child) {
     child = getSynthChild(parent, i)
     or
-    any(Synthesis s).child(parent, i, RealChild(child))
+    any(Synthesis s).child(parent, i, RealChild(child), _)
   }
 
   /**
@@ -521,6 +492,21 @@ private module Cached {
       result = toGeneratedInclSynth(parent)
     )
   }
+
+  private Location synthLocation(AST::AstNode n) {
+    exists(Synthesis s, AST::AstNode parent, int i |
+      s.child(parent, i, _, SomeLocation(result)) and
+      n = getSynthChild(parent, i)
+    )
+  }
+
+  cached
+  Location getLocation(AST::AstNode n) {
+    result = synthLocation(n)
+    or
+    not exists(synthLocation(n)) and
+    result = toGeneratedInclSynth(n).getLocation()
+  }
 }
 
 import Cached
@@ -530,8 +516,8 @@ TAstNode fromGenerated(Generated::AstNode n) { n = toGenerated(result) }
 class TCall = TMethodCall or TYieldCall;
 
 class TMethodCall =
-  TIdentifierMethodCall or TScopeResolutionMethodCall or TRegularMethodCall or TElementReference or
-      TSuperCall;
+  TMethodCallSynth or TIdentifierMethodCall or TScopeResolutionMethodCall or TRegularMethodCall or
+      TElementReference or TSuperCall;
 
 class TSuperCall = TTokenSuperCall or TRegularSuperCall;
 
@@ -567,6 +553,8 @@ class TLiteral =
       TArrayLiteral or THashLiteral or TRangeLiteral or TTokenMethodName;
 
 class TNumericLiteral = TIntegerLiteral or TFloatLiteral or TRationalLiteral or TComplexLiteral;
+
+class TIntegerLiteral = TIntegerLiteralReal or TIntegerLiteralSynth;
 
 class TBooleanLiteral = TTrueLiteral or TFalseLiteral;
 

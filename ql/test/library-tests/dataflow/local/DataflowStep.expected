@@ -16,10 +16,10 @@
 | local_dataflow.rb:5:7:5:13 | ( ... ) | local_dataflow.rb:5:3:5:13 | ... = ... |
 | local_dataflow.rb:5:8:5:12 | ... = ... | local_dataflow.rb:5:7:5:13 | ( ... ) |
 | local_dataflow.rb:5:12:5:12 | a | local_dataflow.rb:5:8:5:12 | ... = ... |
-| local_dataflow.rb:5:12:5:12 | a | local_dataflow.rb:6:8:6:13 | a |
+| local_dataflow.rb:5:12:5:12 | a | local_dataflow.rb:6:8:6:8 | a |
 | local_dataflow.rb:6:7:6:14 | ( ... ) | local_dataflow.rb:6:3:6:14 | ... = ... |
-| local_dataflow.rb:6:8:6:13 | ... + ... | local_dataflow.rb:6:8:6:13 | ... = ... |
 | local_dataflow.rb:6:8:6:13 | ... = ... | local_dataflow.rb:6:7:6:14 | ( ... ) |
+| local_dataflow.rb:6:10:6:11 | ... + ... | local_dataflow.rb:6:8:6:13 | ... = ... |
 | local_dataflow.rb:9:1:9:15 | ... = ... | local_dataflow.rb:10:14:10:18 | array |
 | local_dataflow.rb:9:9:9:15 | [...] | local_dataflow.rb:9:1:9:15 | ... = ... |
 | local_dataflow.rb:9:9:9:15 | [...] | local_dataflow.rb:9:1:9:15 | ... = ... |

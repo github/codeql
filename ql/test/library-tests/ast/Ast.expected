@@ -522,22 +522,22 @@ calls/calls.rb:
 #  311|       getReceiver: [Self] self
 #  311|     getArgument: [IntegerLiteral] 1
 #  314|   getStmt: [AssignExpr] ... = ...
-#  314|     getAnOperand/getLeftOperand: [SetterMethodCall] call to foo=
+#  314|     getAnOperand/getLeftOperand: [MethodCall] call to foo
 #  314|       getReceiver: [Self] self
 #  314|     getAnOperand/getRightOperand: [IntegerLiteral] 10
 #  315|   getStmt: [AssignExpr] ... = ...
-#  315|     getAnOperand/getLeftOperand: [ElementReference, SetterMethodCall] ...[...]
+#  315|     getAnOperand/getLeftOperand: [ElementReference] ...[...]
 #  315|       getReceiver: [MethodCall] call to foo
 #  315|         getReceiver: [Self] self
 #  315|       getArgument: [IntegerLiteral] 0
 #  315|     getAnOperand/getRightOperand: [IntegerLiteral] 10
 #  316|   getStmt: [AssignExpr] ... = ...
 #  316|     getLeftOperand: [TuplePattern] (..., ...)
-#  316|       getElement: [SetterMethodCall] call to foo=
+#  316|       getElement: [MethodCall] call to foo
 #  316|         getReceiver: [Self] self
-#  316|       getElement: [SetterMethodCall] call to bar=
+#  316|       getElement: [MethodCall] call to bar
 #  316|         getReceiver: [Self] self
-#  316|       getElement: [ElementReference, SetterMethodCall] ...[...]
+#  316|       getElement: [ElementReference] ...[...]
 #  316|         getReceiver: [MethodCall] call to foo
 #  316|           getReceiver: [Self] self
 #  316|         getArgument: [IntegerLiteral] 4
@@ -549,7 +549,7 @@ calls/calls.rb:
 #  317|   getStmt: [AssignExpr] ... = ...
 #  317|     getLeftOperand: [TuplePattern] (..., ...)
 #  317|       getElement: [LocalVariableAccess] a
-#  317|       getElement: [ElementReference, SetterMethodCall] ...[...]
+#  317|       getElement: [ElementReference] ...[...]
 #  317|         getReceiver: [MethodCall] call to foo
 #  317|           getReceiver: [Self] self
 #  317|         getArgument: [IntegerLiteral] 5
@@ -558,17 +558,17 @@ calls/calls.rb:
 #  317|       getElement: [IntegerLiteral] 2
 #  317|       getElement: [IntegerLiteral] 3
 #  318|   getStmt: [AssignAddExpr] ... += ...
-#  318|     getAnOperand/getLeftOperand: [SetterMethodCall] call to count/count=
+#  318|     getAnOperand/getLeftOperand: [MethodCall] call to count
 #  318|       getReceiver: [Self] self
 #  318|     getAnOperand/getRightOperand: [IntegerLiteral] 1
 #  319|   getStmt: [AssignAddExpr] ... += ...
-#  319|     getAnOperand/getLeftOperand: [ElementReference, SetterMethodCall] ...[...]
+#  319|     getAnOperand/getLeftOperand: [ElementReference] ...[...]
 #  319|       getReceiver: [MethodCall] call to foo
 #  319|         getReceiver: [Self] self
 #  319|       getArgument: [IntegerLiteral] 0
 #  319|     getAnOperand/getRightOperand: [IntegerLiteral] 1
 #  320|   getStmt: [AssignMulExpr] ... *= ...
-#  320|     getAnOperand/getLeftOperand: [ElementReference, SetterMethodCall] ...[...]
+#  320|     getAnOperand/getLeftOperand: [ElementReference] ...[...]
 #  320|       getReceiver: [MethodCall] call to bar
 #  320|         getReceiver: [MethodCall] call to foo
 #  320|           getReceiver: [Self] self

@@ -3,10 +3,18 @@ def m1 x
 end
 
 def m2 x
+  x.foo.count = 1
+end
+
+def m3 x
+  x.foo[0] = 1
+end
+
+def m4 x
   x.foo.count += 1
 end
 
-def m3 x, y
+def m5 x, y
   x.foo[0, y.bar, x.baz + 3] += 1
 end
 

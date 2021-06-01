@@ -1,5 +1,6 @@
 private import codeql_ruby.AST
 private import internal.AST
+private import internal.Call
 private import internal.TreeSitter
 
 /**
@@ -20,7 +21,7 @@ class Call extends Expr, TCall {
    * yield 0, bar: 1
    * ```
    */
-  Expr getArgument(int n) { none() }
+  final Expr getArgument(int n) { result = this.(CallImpl).getArgumentImpl(n) }
 
   /**
    * Gets an argument of this method call.
@@ -46,22 +47,9 @@ class Call extends Expr, TCall {
   /**
    * Gets the number of arguments of this method call.
    */
-  final int getNumberOfArguments() { result = count(this.getAnArgument()) }
+  final int getNumberOfArguments() { result = this.(CallImpl).getNumberOfArgumentsImpl() }
 
   override AstNode getAChild(string pred) { pred = "getArgument" and result = this.getArgument(_) }
-}
-
-bindingset[s]
-private string getMethodName(MethodCall mc, string s) {
-  (
-    not mc instanceof LhsExpr
-    or
-    mc.getParent() instanceof AssignOperation
-  ) and
-  result = s
-  or
-  mc instanceof LhsExpr and
-  result = s + "="
 }
 
 /**
@@ -83,22 +71,7 @@ class MethodCall extends Call, TMethodCall {
    * the call to `qux` is the `Expr` for `Baz`; for the call to `corge` there
    * is no result.
    */
-  Expr getReceiver() { none() }
-
-  /**
-   * Holds if the receiver is `self` or there is no receiver, which has the same
-   * meaning as an explict `self`. For example:
-   *
-   * ```rb
-   * self.foo
-   * foo
-   * ```
-   */
-  predicate receiverIsSelf() {
-    this.getReceiver() instanceof Self
-    or
-    not exists(this.getReceiver())
-  }
+  final Expr getReceiver() { result = this.(MethodCallImpl).getReceiverImpl() }
 
   /**
    * Gets the name of the method being called. For example, in:
@@ -109,7 +82,7 @@ class MethodCall extends Call, TMethodCall {
    *
    * the result is `"bar"`.
    */
-  string getMethodName() { none() }
+  final string getMethodName() { result = this.(MethodCallImpl).getMethodNameImpl() }
 
   /**
    * Gets the block of this method call, if any.
@@ -119,69 +92,15 @@ class MethodCall extends Call, TMethodCall {
    */
   Block getBlock() { none() }
 
-  override string toString() { result = "call to " + concat(this.getMethodName(), "/") }
+  override string toString() { result = "call to " + this.getMethodName() }
 
-  final override AstNode getAChild(string pred) {
-    result = Call.super.getAChild(pred)
+  override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
     or
     pred = "getReceiver" and result = this.getReceiver()
     or
     pred = "getBlock" and result = this.getBlock()
   }
-}
-
-private class IdentifierMethodCall extends MethodCall, TIdentifierMethodCall {
-  private Generated::Identifier g;
-
-  IdentifierMethodCall() { this = TIdentifierMethodCall(g) }
-
-  final override string getMethodName() { result = getMethodName(this, g.getValue()) }
-
-  final override Self getReceiver() { result = TSelfSynth(this, 0) }
-}
-
-private class ScopeResolutionMethodCall extends MethodCall, TScopeResolutionMethodCall {
-  private Generated::ScopeResolution g;
-  private Generated::Identifier i;
-
-  ScopeResolutionMethodCall() { this = TScopeResolutionMethodCall(g, i) }
-
-  final override Expr getReceiver() { toGenerated(result) = g.getScope() }
-
-  final override string getMethodName() { result = getMethodName(this, i.getValue()) }
-}
-
-private class RegularMethodCall extends MethodCall, TRegularMethodCall {
-  private Generated::Call g;
-
-  RegularMethodCall() { this = TRegularMethodCall(g) }
-
-  final override Expr getReceiver() {
-    toGenerated(result) = g.getReceiver()
-    or
-    not exists(g.getReceiver()) and
-    toGenerated(result) = g.getMethod().(Generated::ScopeResolution).getScope()
-    or
-    result = TSelfSynth(this, 0)
-  }
-
-  final override string getMethodName() {
-    exists(string res | result = getMethodName(this, res) |
-      res = "call" and g.getMethod() instanceof Generated::ArgumentList
-      or
-      res = g.getMethod().(Generated::Token).getValue()
-      or
-      res = g.getMethod().(Generated::ScopeResolution).getName().(Generated::Token).getValue()
-    )
-  }
-
-  final override Expr getArgument(int n) {
-    toGenerated(result) = g.getArguments().getChild(n)
-    or
-    toGenerated(result) = g.getMethod().(Generated::ArgumentList).getChild(n)
-  }
-
-  final override Block getBlock() { toGenerated(result) = g.getBlock() }
 }
 
 /**
@@ -191,7 +110,9 @@ private class RegularMethodCall extends MethodCall, TRegularMethodCall {
  * a[0] = 10
  * ```
  */
-class SetterMethodCall extends MethodCall, LhsExpr {
+class SetterMethodCall extends MethodCall {
+  SetterMethodCall() { this = TMethodCallSynth(_, _, _, true, _) }
+
   final override string getAPrimaryQlClass() { result = "SetterMethodCall" }
 }
 
@@ -202,17 +123,7 @@ class SetterMethodCall extends MethodCall, LhsExpr {
  * ```
  */
 class ElementReference extends MethodCall, TElementReference {
-  private Generated::ElementReference g;
-
-  ElementReference() { this = TElementReference(g) }
-
   final override string getAPrimaryQlClass() { result = "ElementReference" }
-
-  final override Expr getReceiver() { toGenerated(result) = g.getObject() }
-
-  final override string getMethodName() { result = getMethodName(this, "[]") }
-
-  final override Expr getArgument(int n) { toGenerated(result) = g.getChild(n) }
 
   final override string toString() { result = "...[...]" }
 }
@@ -224,13 +135,11 @@ class ElementReference extends MethodCall, TElementReference {
  * ```
  */
 class YieldCall extends Call, TYieldCall {
-  private Generated::Yield g;
+  Generated::Yield g;
 
   YieldCall() { this = TYieldCall(g) }
 
   final override string getAPrimaryQlClass() { result = "YieldCall" }
-
-  final override Expr getArgument(int n) { toGenerated(result) = g.getChild().getChild(n) }
 
   final override string toString() { result = "yield ..." }
 }
@@ -247,28 +156,6 @@ class YieldCall extends Call, TYieldCall {
  */
 class SuperCall extends MethodCall, TSuperCall {
   final override string getAPrimaryQlClass() { result = "SuperCall" }
-}
-
-private class TokenSuperCall extends SuperCall, TTokenSuperCall {
-  private Generated::Super g;
-
-  TokenSuperCall() { this = TTokenSuperCall(g) }
-
-  final override string getMethodName() { result = getMethodName(this, g.getValue()) }
-}
-
-private class RegularSuperCall extends SuperCall, TRegularSuperCall {
-  private Generated::Call g;
-
-  RegularSuperCall() { this = TRegularSuperCall(g) }
-
-  final override string getMethodName() {
-    result = getMethodName(this, g.getMethod().(Generated::Super).getValue())
-  }
-
-  final override Expr getArgument(int n) { toGenerated(result) = g.getArguments().getChild(n) }
-
-  final override Block getBlock() { toGenerated(result) = g.getBlock() }
 }
 
 /**

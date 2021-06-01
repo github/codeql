@@ -1,6 +1,7 @@
 private import codeql_ruby.AST
 private import internal.AST
 private import internal.TreeSitter
+private import internal.Operation
 
 /**
  * An operation.
@@ -492,10 +493,10 @@ class NoRegexMatchExpr extends BinaryOperation, TNoRegexMatchExpr {
  */
 class Assignment extends Operation, TAssignment {
   /** Gets the left hand side of this assignment. */
-  Pattern getLeftOperand() { none() }
+  final Pattern getLeftOperand() { result = this.(AssignmentImpl).getLeftOperandImpl() }
 
   /** Gets the right hand side of this assignment. */
-  Expr getRightOperand() { none() }
+  final Expr getRightOperand() { result = this.(AssignmentImpl).getRightOperandImpl() }
 
   final override Expr getAnOperand() {
     result = this.getLeftOperand() or result = this.getRightOperand()
@@ -524,35 +525,15 @@ class AssignExpr extends Assignment, TAssignExpr {
   final override string getAPrimaryQlClass() { result = "AssignExpr" }
 }
 
-private class AssignExprReal extends AssignExpr, TAssignExprReal {
-  private Generated::Assignment g;
-
-  AssignExprReal() { this = TAssignExprReal(g) }
-
-  final override Pattern getLeftOperand() { toGenerated(result) = g.getLeft() }
-
-  final override Expr getRightOperand() { toGenerated(result) = g.getRight() }
-}
-
-private class AssignExprSynth extends AssignExpr, TAssignExprSynth {
-  final override Pattern getLeftOperand() { synthChild(this, 0, result) }
-
-  final override Expr getRightOperand() { synthChild(this, 1, result) }
-}
-
 /**
  * A binary assignment operation other than `=`.
  */
 class AssignOperation extends Assignment, TAssignOperation {
-  private Generated::OperatorAssignment g;
+  Generated::OperatorAssignment g;
 
   AssignOperation() { g = toGenerated(this) }
 
   final override string getOperator() { result = g.getOperator() }
-
-  final override LhsExpr getLeftOperand() { toGenerated(result) = g.getLeft() }
-
-  final override Expr getRightOperand() { toGenerated(result) = g.getRight() }
 }
 
 /**

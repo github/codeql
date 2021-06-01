@@ -254,6 +254,9 @@ module ExprNodes {
     /** Gets the `n`th argument of this call. */
     final ExprCfgNode getArgument(int n) { e.hasCfgChild(e.getArgument(n), this, result) }
 
+    /** Gets the number of arguments of this call. */
+    final int getNumberOfArguments() { result = e.getNumberOfArguments() }
+
     /** Gets the receiver of this call. */
     final ExprCfgNode getReceiver() { e.hasCfgChild(e.(MethodCall).getReceiver(), this, result) }
 
