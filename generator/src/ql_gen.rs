@@ -398,6 +398,7 @@ fn create_field_getters<'a>(
         node_types::Storage::Table {
             name: field_table_name,
             has_index,
+            column_name: _,
         } => (
             create_get_field_expr_for_table_storage(
                 get_value_result_var_name,
