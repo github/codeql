@@ -17,7 +17,7 @@ private predicate isTotalAccess(Allocation var, AddressOperand addrOperand, IRTy
  * variable if its address never escapes and all reads and writes of that variable access the entire
  * variable using the original type of the variable.
  */
-private predicate isVariableModeled(Allocation var) {
+predicate isVariableModeled(Allocation var) {
   not allocationEscapes(var) and
   forall(Instruction instr, AddressOperand addrOperand, IRType type |
     addrOperand = instr.getResultAddressOperand() and
@@ -33,6 +33,17 @@ private predicate isVariableModeled(Allocation var) {
   |
     isTotalAccess(var, addrOperand, type) and not memOperand.hasMayReadMemoryAccess()
   )
+}
+
+/**
+ * Holds if the SSA use/def chain for the specified variable can be safely reused by later
+ * iterations of SSA construction. This will hold only if we modeled the variable soundly, so that
+ * subsequent iterations will recompute SSA for any variable that we assumed did not escape, but
+ * actually would have escaped if we had used a sound escape analysis.
+ */
+predicate canReuseSSAForVariable(IRAutomaticVariable var) {
+  isVariableModeled(var) and
+  not allocationEscapes(var)
 }
 
 private newtype TMemoryLocation = MkMemoryLocation(Allocation var) { isVariableModeled(var) }
@@ -57,7 +68,11 @@ class MemoryLocation extends TMemoryLocation {
   final Language::LanguageType getType() { result = var.getLanguageType() }
 
   final string getUniqueId() { result = var.getUniqueId() }
+
+  final predicate canReuseSSA() { canReuseSSAForVariable(var) }
 }
+
+predicate canReuseSSAForOldResult(Instruction instr) { none() }
 
 /**
  * Represents a set of `MemoryLocation`s that cannot overlap with
