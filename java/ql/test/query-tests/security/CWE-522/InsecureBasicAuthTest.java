@@ -11,21 +11,21 @@ import java.net.HttpURLConnection;
 import java.net.URLConnection;
 import java.util.Base64;
 
-public class InsecureBasicAuth {
+public class InsecureBasicAuthTest {
 	/**
 	 * Test basic authentication with Apache HTTP POST request using string constructor.
 	 */
 	public void testApacheHttpRequest(String username, String password) {
 		String host = "www.example.com";
-		HttpRequestBase post = new HttpPost("http://"+host+"/rest/getuser.do?uid=abcdx");
+		HttpRequestBase post = new HttpPost("http://" + host + "/rest/getuser.do?uid=abcdx");
 		post.setHeader("Accept", "application/json");
 		post.setHeader("Content-type", "application/json");
-		
+
 		String authString = username + ":" + password;
 		byte[] authEncBytes = Base64.getEncoder().encode(authString.getBytes());
 		String authStringEnc = new String(authEncBytes);
 
-		post.addHeader("Authorization", "Basic " + authStringEnc);
+		post.addHeader("Authorization", "Basic " + authStringEnc); // $hasInsecureBasicAuth
 	}
 
 	/**
@@ -35,7 +35,8 @@ public class InsecureBasicAuth {
 		String urlStr = "http://www.example.com:8000/payment/retrieve";
 		HttpGet get = new HttpGet(urlStr);
 		get.setHeader("Accept", "application/json");
-		get.setHeader("Authorization", "Basic " + new String(Base64.getEncoder().encode("admin:test".getBytes())));
+		get.setHeader("Authorization", // $hasInsecureBasicAuth
+				"Basic " + new String(Base64.getEncoder().encode("admin:test".getBytes())));
 	}
 
 	/**
@@ -46,16 +47,17 @@ public class InsecureBasicAuth {
 		HttpRequestBase post = new HttpPost(URI.create(uriStr));
 		post.setHeader("Accept", "application/json");
 		post.setHeader("Content-type", "application/json");
-		
+
 		String authString = username + ":" + password;
 		byte[] authEncBytes = Base64.getEncoder().encode(authString.getBytes());
 		String authStringEnc = new String(authEncBytes);
 
-		post.addHeader("Authorization", "Basic " + authStringEnc);
+		post.addHeader("Authorization", "Basic " + authStringEnc); // $hasInsecureBasicAuth
 	}
 
 	/**
-	 * Test basic authentication with Apache HTTP POST request using the URI constructor with one argument.
+	 * Test basic authentication with Apache HTTP POST request using the URI constructor with one
+	 * argument.
 	 */
 	public void testApacheHttpRequest4(String username, String password) throws Exception {
 		String uriStr = "http://www.example.com/rest/getuser.do?uid=abcdx";
@@ -63,27 +65,29 @@ public class InsecureBasicAuth {
 		HttpRequestBase post = new HttpPost(uri);
 		post.setHeader("Accept", "application/json");
 		post.setHeader("Content-type", "application/json");
-		
+
 		String authString = username + ":" + password;
 		byte[] authEncBytes = Base64.getEncoder().encode(authString.getBytes());
 		String authStringEnc = new String(authEncBytes);
 
-		post.addHeader("Authorization", "Basic " + authStringEnc);
+		post.addHeader("Authorization", "Basic " + authStringEnc); // $hasInsecureBasicAuth
 	}
 
 	/**
-	 * Test basic authentication with Apache HTTP POST request using a URI constructor with multiple arguments.
+	 * Test basic authentication with Apache HTTP POST request using a URI constructor with multiple
+	 * arguments.
 	 */
 	public void testApacheHttpRequest5(String username, String password) throws Exception {
-		HttpRequestBase post = new HttpPost(new URI("http", "www.example.com", "/test", "abc=123", null));
+		HttpRequestBase post =
+				new HttpPost(new URI("http", "www.example.com", "/test", "abc=123", null));
 		post.setHeader("Accept", "application/json");
 		post.setHeader("Content-type", "application/json");
-		
+
 		String authString = username + ":" + password;
 		byte[] authEncBytes = Base64.getEncoder().encode(authString.getBytes());
 		String authStringEnc = new String(authEncBytes);
 
-		post.addHeader("Authorization", "Basic " + authStringEnc);
+		post.addHeader("Authorization", "Basic " + authStringEnc); // $hasInsecureBasicAuth
 	}
 
 	/**
@@ -94,12 +98,12 @@ public class InsecureBasicAuth {
 		BasicHttpRequest post = new BasicHttpRequest("POST", uriStr);
 		post.setHeader("Accept", "application/json");
 		post.setHeader("Content-type", "application/json");
-		
+
 		String authString = username + ":" + password;
 		byte[] authEncBytes = Base64.getEncoder().encode(authString.getBytes());
 		String authStringEnc = new String(authEncBytes);
 
-		post.addHeader("Authorization", "Basic " + authStringEnc);
+		post.addHeader("Authorization", "Basic " + authStringEnc); // $hasInsecureBasicAuth
 	}
 
 	/**
@@ -111,16 +115,17 @@ public class InsecureBasicAuth {
 		BasicHttpRequest post = new BasicHttpRequest(requestLine);
 		post.setHeader("Accept", "application/json");
 		post.setHeader("Content-type", "application/json");
-		
+
 		String authString = username + ":" + password;
 		byte[] authEncBytes = Base64.getEncoder().encode(authString.getBytes());
 		String authStringEnc = new String(authEncBytes);
 
-		post.addHeader("Authorization", "Basic " + authStringEnc);
+		post.addHeader("Authorization", "Basic " + authStringEnc); // $hasInsecureBasicAuth
 	}
 
 	/**
-	 * Test basic authentication with Java HTTP URL connection using the `URL(String spec)` constructor.
+	 * Test basic authentication with Java HTTP URL connection using the `URL(String spec)`
+	 * constructor.
 	 */
 	public void testHttpUrlConnection(String username, String password) throws Exception {
 		String urlStr = "http://www.example.com/rest/getuser.do?uid=abcdx";
@@ -130,11 +135,12 @@ public class InsecureBasicAuth {
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setRequestMethod("POST");
 		conn.setDoOutput(true);
-		conn.setRequestProperty("Authorization", "Basic " + encoding);
+		conn.setRequestProperty("Authorization", "Basic " + encoding); // $hasInsecureBasicAuth
 	}
 
 	/**
-	 * Test basic authentication with Java HTTP URL connection using the `URL(String protocol, String host, String file)` constructor.
+	 * Test basic authentication with Java HTTP URL connection using the `URL(String protocol,
+	 * String host, String file)` constructor.
 	 */
 	public void testHttpUrlConnection2(String username, String password) throws Exception {
 		String host = "www.example.com";
@@ -146,7 +152,7 @@ public class InsecureBasicAuth {
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setRequestMethod("POST");
 		conn.setDoOutput(true);
-		conn.setRequestProperty("Authorization", "Basic " + encoding);
+		conn.setRequestProperty("Authorization", "Basic " + encoding); // $hasInsecureBasicAuth
 	}
 
 	/**
@@ -156,9 +162,10 @@ public class InsecureBasicAuth {
 		String host = "LOCALHOST";
 		String authString = username + ":" + password;
 		String encoding = Base64.getEncoder().encodeToString(authString.getBytes("UTF-8"));
-		HttpURLConnection conn = (HttpURLConnection) new URL("http://"+(((host+"/rest/getuser.do")+"?uid=abcdx"))).openConnection();
+		HttpURLConnection conn = (HttpURLConnection) new URL(
+				"http://" + (((host + "/rest/getuser.do") + "?uid=abcdx"))).openConnection();
 		conn.setRequestMethod("POST");
 		conn.setDoOutput(true);
-		conn.setRequestProperty("Authorization", "Basic " + encoding);
+		conn.setRequestProperty("Authorization", "Basic " + encoding); // Safe
 	}
 }
