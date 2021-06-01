@@ -19,7 +19,11 @@ import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 import TaintedWithPath
 
 predicate isUnboundedRandCall(FunctionCall fc) {
-  fc.getTarget().hasGlobalOrStdOrBslName("rand") and not bounded(fc)
+  exists(Function func | func = fc.getTarget() |
+    func.hasGlobalOrStdOrBslName("rand") and
+    not bounded(fc) and
+    func.getNumberOfParameters() = 0
+  )
 }
 
 /**
