@@ -98,6 +98,17 @@ private module Cached {
 
 import Cached
 
+/**
+ * These configurations add a number of configuration-dependent additional taint
+ * steps to all taint configurations. For each sink or additional step provided
+ * by a given configuration the types are inspected to find those implicit
+ * collection or array read steps that might be required at the sink or step
+ * input. The corresponding store steps are then added as additional taint steps
+ * to provide backwards-compatible taint flow to such sinks and steps.
+ *
+ * This is a temporary measure until support is added for such sinks that
+ * require implicit read steps.
+ */
 private module StoreTaintSteps {
   private import semmle.code.java.dataflow.TaintTracking
   private import semmle.code.java.dataflow.TaintTracking2

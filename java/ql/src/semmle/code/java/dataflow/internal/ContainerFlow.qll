@@ -710,6 +710,11 @@ predicate containerStep(Expr n1, Expr n2) {
   containerUpdateStep(n1, n2)
 }
 
+/**
+ * Holds if the step from `node1` to `node2` stores a value in an array.
+ * This covers array assignments and initializers as well as implicit array
+ * creations for varargs.
+ */
 predicate arrayStoreStep(Node node1, Node node2) {
   exists(Argument arg |
     node1.asExpr() = arg and
@@ -734,6 +739,11 @@ private predicate enhancedForStmtStep(Node node1, Node node2, Type containerType
   )
 }
 
+/**
+ * Holds if the step from `node1` to `node2` reads a value from an array.
+ * This covers ordinary array reads as well as array iteration through enhanced
+ * `for` statements.
+ */
 predicate arrayReadStep(Node node1, Node node2, Type elemType) {
   exists(ArrayAccess aa |
     aa.getArray() = node1.asExpr() and
@@ -747,6 +757,10 @@ predicate arrayReadStep(Node node1, Node node2, Type elemType) {
   )
 }
 
+/**
+ * Holds if the step from `node1` to `node2` reads a value from a collection.
+ * This only covers iteration through enhanced `for` statements.
+ */
 predicate collectionReadStep(Node node1, Node node2) {
   enhancedForStmtStep(node1, node2, any(Type t | not t instanceof Array))
 }
