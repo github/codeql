@@ -15,7 +15,6 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.security.XSS
 import semmle.code.java.security.InformationLeak
 
 /**
@@ -91,10 +90,7 @@ class StackTraceStringToHTTPResponseSinkFlowConfig extends TaintTracking::Config
 
   override predicate isSource(DataFlow::Node src) { stackTraceExpr(_, src.asExpr()) }
 
-  override predicate isSink(DataFlow::Node sink) {
-    sink instanceof XssSink or
-    sink instanceof InformationLeakSink
-  }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof InformationLeakSink }
 }
 
 /**
@@ -134,10 +130,7 @@ class GetMessageFlowSourceToHTTPResponseSinkFlowConfig extends TaintTracking::Co
 
   override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof GetMessageFlowSource }
 
-  override predicate isSink(DataFlow::Node sink) {
-    sink instanceof XssSink or
-    sink instanceof InformationLeakSink
-  }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof InformationLeakSink }
 }
 
 /**
