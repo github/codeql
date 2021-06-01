@@ -88,6 +88,7 @@ private predicate maybeCredentialName(string name) {
   not name.suffix(name.length() - 4) = "file"
 }
 
+// A parameter that may represent a credential value
 private DataFlow::LocalSourceNode credentialParameter(TypeTracker t) {
   t.start() and
   exists(Method m, NamedParameter p, int idx |
