@@ -15,7 +15,11 @@ class Operation extends Expr, TOperation {
   /** Gets an operand of this operation. */
   Expr getAnOperand() { none() }
 
-  override AstNode getAChild(string pred) { pred = "getAnOperand" and result = this.getAnOperand() }
+  override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
+    pred = "getAnOperand" and result = this.getAnOperand()
+  }
 }
 
 /** A unary operation. */
@@ -32,7 +36,7 @@ class UnaryOperation extends Operation, TUnaryOperation {
   final override Expr getAnOperand() { result = this.getOperand() }
 
   final override AstNode getAChild(string pred) {
-    result = Operation.super.getAChild(pred)
+    result = super.getAChild(pred)
     or
     pred = "getOperand" and result = this.getOperand()
   }
@@ -109,7 +113,7 @@ class BinaryOperation extends Operation, TBinaryOperation {
   final override string toString() { result = "... " + this.getOperator() + " ..." }
 
   override AstNode getAChild(string pred) {
-    result = Operation.super.getAChild(pred)
+    result = super.getAChild(pred)
     or
     pred = "getLeftOperand" and result = this.getLeftOperand()
     or
@@ -392,7 +396,7 @@ class RelationalOperation extends ComparisonOperation, TRelationalOperation {
   Expr getLesserOperand() { none() }
 
   final override AstNode getAChild(string pred) {
-    result = ComparisonOperation.super.getAChild(pred)
+    result = super.getAChild(pred)
     or
     pred = "getGreaterOperand" and result = this.getGreaterOperand()
     or
@@ -505,7 +509,7 @@ class Assignment extends Operation, TAssignment {
   final override string toString() { result = "... " + this.getOperator() + " ..." }
 
   override AstNode getAChild(string pred) {
-    result = Operation.super.getAChild(pred)
+    result = super.getAChild(pred)
     or
     pred = "getLeftOperand" and result = getLeftOperand()
     or

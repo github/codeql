@@ -49,7 +49,11 @@ class Call extends Expr, TCall {
    */
   final int getNumberOfArguments() { result = this.(CallImpl).getNumberOfArgumentsImpl() }
 
-  override AstNode getAChild(string pred) { pred = "getArgument" and result = this.getArgument(_) }
+  override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
+    pred = "getArgument" and result = this.getArgument(_)
+  }
 }
 
 /**
@@ -182,7 +186,11 @@ class BlockArgument extends Expr, TBlockArgument {
 
   final override string toString() { result = "&..." }
 
-  final override AstNode getAChild(string pred) { pred = "getValue" and result = this.getValue() }
+  final override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
+    pred = "getValue" and result = this.getValue()
+  }
 }
 
 /**
@@ -209,7 +217,11 @@ class SplatArgument extends Expr, TSplatArgument {
 
   final override string toString() { result = "*..." }
 
-  final override AstNode getAChild(string pred) { pred = "getValue" and result = this.getValue() }
+  final override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
+    pred = "getValue" and result = this.getValue()
+  }
 }
 
 /**
@@ -236,5 +248,9 @@ class HashSplatArgument extends Expr, THashSplatArgument {
 
   final override string toString() { result = "**..." }
 
-  final override AstNode getAChild(string pred) { pred = "getValue" and result = this.getValue() }
+  final override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
+    pred = "getValue" and result = this.getValue()
+  }
 }

@@ -37,12 +37,19 @@ class PrintAstConfiguration extends string {
       not n = parent.getDesugared()
     )
   }
+
+  predicate shouldPrintEdge(AstNode parent, string edgeName, AstNode child) {
+    child = parent.getAChild(edgeName) and
+    not child = parent.getDesugared()
+  }
 }
 
 /**
  * A node in the output tree.
  */
 class PrintAstNode extends AstNode {
+  PrintAstNode() { shouldPrintNode(this) }
+
   string getProperty(string key) {
     key = "semmle.label" and
     result = "[" + concat(this.getAPrimaryQlClass(), ", ") + "] " + this.toString()
@@ -51,7 +58,7 @@ class PrintAstNode extends AstNode {
     result =
       any(int i |
         this =
-          rank[i](AstNode p, Location l, File f |
+          rank[i](PrintAstNode p, Location l, File f |
             l = p.getLocation() and
             f = l.getFile()
           |
@@ -61,38 +68,30 @@ class PrintAstNode extends AstNode {
   }
 
   /**
-   * Holds if this node should be printed in the output. By default, all nodes
-   * are printed, but the query can override
-   * `PrintAstConfiguration.shouldPrintNode` to filter the output.
-   */
-  predicate shouldPrint() { shouldPrintNode(this) }
-
-  /**
    * Gets the child node that is accessed using the predicate `edgeName`.
    */
-  PrintAstNode getChild(string edgeName) { result = this.getAChild(edgeName) }
+  PrintAstNode getChild(string edgeName) { shouldPrintEdge(this, edgeName, result) }
 }
 
 private predicate shouldPrintNode(AstNode n) {
-  exists(PrintAstConfiguration config | config.shouldPrintNode(n))
+  any(PrintAstConfiguration config).shouldPrintNode(n)
+}
+
+private predicate shouldPrintEdge(PrintAstNode parent, string edgeName, PrintAstNode child) {
+  any(PrintAstConfiguration config).shouldPrintEdge(parent, edgeName, child)
 }
 
 /**
  * Holds if `node` belongs to the output tree, and its property `key` has the
  * given `value`.
  */
-query predicate nodes(PrintAstNode node, string key, string value) {
-  node.shouldPrint() and
-  value = node.getProperty(key)
-}
+query predicate nodes(PrintAstNode node, string key, string value) { value = node.getProperty(key) }
 
 /**
  * Holds if `target` is a child of `source` in the AST, and property `key` of
  * the edge has the given `value`.
  */
 query predicate edges(PrintAstNode source, PrintAstNode target, string key, string value) {
-  source.shouldPrint() and
-  target.shouldPrint() and
   target = source.getChild(_) and
   (
     key = "semmle.label" and

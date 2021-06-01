@@ -38,7 +38,11 @@ class ConstantAccess extends Expr, TConstantAccess {
 
   override string toString() { result = this.getName() }
 
-  override AstNode getAChild(string pred) { pred = "getScopeExpr" and result = this.getScopeExpr() }
+  override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
+    pred = "getScopeExpr" and result = this.getScopeExpr()
+  }
 }
 
 private class TokenConstantAccess extends ConstantAccess, TTokenConstantAccess {

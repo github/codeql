@@ -53,6 +53,8 @@ class ArgumentList extends Expr, TArgumentList {
   final override string toString() { result = "..., ..." }
 
   final override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
     pred = "getElement" and result = this.getElement(_)
   }
 }
@@ -76,7 +78,11 @@ class StmtSequence extends Expr, TStmtSequence {
   /** Holds if this sequence has no statements. */
   final predicate isEmpty() { this.getNumberOfStatements() = 0 }
 
-  override AstNode getAChild(string pred) { pred = "getStmt" and result = this.getStmt(_) }
+  override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
+    pred = "getStmt" and result = this.getStmt(_)
+  }
 }
 
 private class StmtSequenceSynth extends StmtSequence, TStmtSequenceSynth {
@@ -265,6 +271,8 @@ class Pair extends Expr, TPair {
   final override string toString() { result = "Pair" }
 
   override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
     pred = "getKey" and result = this.getKey()
     or
     pred = "getValue" and result = this.getValue()
@@ -332,6 +340,8 @@ class RescueClause extends Expr, TRescueClause {
   final override string toString() { result = "rescue ..." }
 
   override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
     pred = "getException" and result = this.getException(_)
     or
     pred = "getVariableExpr" and result = this.getVariableExpr()
@@ -372,6 +382,8 @@ class RescueModifierExpr extends Expr, TRescueModifierExpr {
   final override string toString() { result = "... rescue ..." }
 
   override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
     pred = "getBody" and result = this.getBody()
     or
     pred = "getHandler" and result = this.getHandler()
@@ -430,5 +442,9 @@ class StringConcatenation extends Expr, TStringConcatenation {
 
   final override string toString() { result = "\"...\" \"...\"" }
 
-  override AstNode getAChild(string pred) { pred = "getString" and result = this.getString(_) }
+  override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
+    pred = "getString" and result = this.getString(_)
+  }
 }

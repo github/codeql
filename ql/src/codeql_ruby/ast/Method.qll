@@ -15,6 +15,8 @@ class Callable extends Expr, Scope, TCallable {
   Parameter getParameter(int n) { none() }
 
   override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
     pred = "getParameter" and result = this.getParameter(_)
   }
 }
@@ -87,7 +89,7 @@ class SingletonMethod extends MethodBase, TSingletonMethod {
   final override string toString() { result = this.getName() }
 
   final override AstNode getAChild(string pred) {
-    result = MethodBase.super.getAChild(pred)
+    result = super.getAChild(pred)
     or
     pred = "getObject" and result = this.getObject()
   }

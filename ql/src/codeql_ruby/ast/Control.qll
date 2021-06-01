@@ -35,6 +35,8 @@ class ConditionalExpr extends ControlExpr, TConditionalExpr {
   Stmt getBranch(boolean cond) { none() }
 
   override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
     pred = "getCondition" and result = this.getCondition()
     or
     pred = "getBranch" and result = this.getBranch(_)
@@ -100,7 +102,7 @@ class IfExpr extends ConditionalExpr, TIfExpr {
   }
 
   override AstNode getAChild(string pred) {
-    result = ConditionalExpr.super.getAChild(pred)
+    result = super.getAChild(pred)
     or
     pred = "getThen" and result = this.getThen()
     or
@@ -360,6 +362,8 @@ class CaseExpr extends ControlExpr, TCaseExpr {
   final override string toString() { result = "case ..." }
 
   override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
     pred = "getValue" and result = this.getValue()
     or
     pred = "getBranch" and result = this.getBranch(_)
@@ -410,6 +414,8 @@ class WhenExpr extends Expr, TWhenExpr {
   final override string toString() { result = "when ..." }
 
   override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
     pred = "getBody" and result = this.getBody()
     or
     pred = "getPattern" and result = this.getPattern(_)
@@ -424,7 +430,11 @@ class Loop extends ControlExpr, TLoop {
   /** Gets the body of this loop. */
   Stmt getBody() { none() }
 
-  override AstNode getAChild(string pred) { pred = "getBody" and result = this.getBody() }
+  override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
+    pred = "getBody" and result = this.getBody()
+  }
 }
 
 /**

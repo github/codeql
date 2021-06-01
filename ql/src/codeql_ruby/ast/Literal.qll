@@ -404,6 +404,8 @@ class StringlikeLiteral extends Literal, TStringlikeLiteral {
   }
 
   final override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
     pred = "getComponent" and result = this.getComponent(_)
   }
 }
@@ -661,6 +663,8 @@ class ArrayLiteral extends Literal, TArrayLiteral {
   final int getNumberOfElements() { result = count(this.getAnElement()) }
 
   final override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
     pred = "getElement" and result = this.getElement(_)
   }
 }
@@ -733,6 +737,8 @@ class HashLiteral extends Literal, THashLiteral {
   final override string toString() { result = "{...}" }
 
   final override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
     pred = "getElement" and result = this.getElement(_)
   }
 }
@@ -773,6 +779,8 @@ class RangeLiteral extends Literal, TRangeLiteral {
   final override string toString() { result = "_ " + g.getOperator() + " _" }
 
   final override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
     pred = "getBegin" and result = this.getBegin()
     or
     pred = "getEnd" and result = this.getEnd()

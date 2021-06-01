@@ -1,4 +1,5 @@
 import codeql_ruby.AST
+import codeql_ruby.ast.internal.Synthesis
 
 private string getAPrimaryQlClass(AstNode node) {
   result = node.getAPrimaryQlClass()
@@ -13,16 +14,18 @@ query predicate missingParent(AstNode node, string cls) {
   cls = getAPrimaryQlClass(node)
 }
 
+pragma[noinline]
+private AstNode parent(AstNode child, int desugarLevel) {
+  result = child.getParent() and
+  desugarLevel = desugarLevel(result)
+}
+
 query predicate multipleParents(AstNode node, AstNode parent, string cls) {
   parent = node.getParent() and
   cls = getAPrimaryQlClass(parent) and
-  exists(AstNode one, AstNode two |
-    one = node.getParent() and
-    two = node.getParent() and
+  exists(AstNode one, AstNode two, int desugarLevel |
+    one = parent(node, desugarLevel) and
+    two = parent(node, desugarLevel) and
     one != two
-  |
-    one.isSynthesized() and two.isSynthesized()
-    or
-    not one.isSynthesized() and not two.isSynthesized()
   )
 }

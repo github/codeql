@@ -195,7 +195,7 @@ private class ForIn extends AstNode, ASTInternal::TForIn {
 // TODO: remove this class; it should be replaced with an implicit non AST node
 private class ForRange extends ForExpr {
   override AstNode getAChild(string pred) {
-    result = ForExpr.super.getAChild(pred)
+    result = super.getAChild(pred)
     or
     pred = "<in>" and
     result = this.getIn()
