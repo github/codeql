@@ -50,110 +50,130 @@ module AiohttpWebModel {
     result = applicationInstance().getMember("router")
   }
 
-  /** A route setup in `aiohttp.web` */
-  abstract class AiohttpRouteSetup extends HTTP::Server::RouteSetup::Range {
+  /**
+   * A route setup in `aiohttp.web`. Since all route-setups can technically use either
+   * coroutines or view-classes as the handler argument (although that's not how you're
+   * **supposed** to do things), we also need to handle this.
+   *
+   * Extend this class to refine existing API models. If you want to model new APIs,
+   * extend `AiohttpRouteSetup::Range` instead.
+   */
+  class AiohttpRouteSetup extends HTTP::Server::RouteSetup::Range {
+    AiohttpRouteSetup::Range range;
+
+    AiohttpRouteSetup() { this = range }
+
     override Parameter getARoutedParameter() { none() }
 
     override string getFramework() { result = "aiohttp.web" }
+
+    /** Gets the argument specifying the handler (either a coroutine or a view-class). */
+    DataFlow::Node getHandlerArg() { result = range.getHandlerArg() }
+
+    override DataFlow::Node getUrlPatternArg() { result = range.getUrlPatternArg() }
+
+    /** Gets the view-class that is referenced in the view-class handler argument, if any. */
+    Class getViewClass() { result = range.getViewClass() }
+
+    override Function getARequestHandler() { result = range.getARequestHandler() }
+  }
+
+  /** Provides a class for modeling new aiohttp.web route setups. */
+  private module AiohttpRouteSetup {
+    /**
+     * A route setup in `aiohttp.web`. Since all route-setups can technically use either
+     * coroutines or view-classes as the handler argument (although that's not how you're
+     * **supposed** to do things), we also need to handle this.
+     *
+     * Extend this class to model new APIs. If you want to refine existing API models,
+     * extend `AiohttpRouteSetup` instead.
+     */
+    abstract class Range extends DataFlow::Node {
+      /** Gets the argument used to set the URL pattern. */
+      abstract DataFlow::Node getUrlPatternArg();
+
+      /** Gets the argument specifying the handler (either a coroutine or a view-class). */
+      abstract DataFlow::Node getHandlerArg();
+
+      /** Gets the view-class that is referenced in the view-class handler argument, if any. */
+      Class getViewClass() { result = getBackTrackedViewClass(this.getHandlerArg()) }
+
+      /**
+       * Gets a function that will handle incoming requests for this route, if any.
+       *
+       * NOTE: This will be modified in the near future to have a `RequestHandler` result, instead of a `Function`.
+       */
+      Function getARequestHandler() {
+        this.getHandlerArg() = poorMansFunctionTracker(result)
+        or
+        exists(AiohttpViewClass cls |
+          cls = this.getViewClass() and
+          result = cls.getARequestHandler()
+        )
+      }
+    }
+
+    /**
+     * Gets a reference to a class, that has been backtracked from the view-class handler
+     * argument `origin` (to a route-setup for view-classes).
+     */
+    private DataFlow::LocalSourceNode viewClassBackTracker(
+      DataFlow::TypeBackTracker t, DataFlow::Node origin
+    ) {
+      t.start() and
+      origin = any(Range rs).getHandlerArg() and
+      result = origin.getALocalSource()
+      or
+      exists(DataFlow::TypeBackTracker t2 |
+        result = viewClassBackTracker(t2, origin).backtrack(t2, t)
+      )
+    }
+
+    /**
+     * Gets a reference to a class, that has been backtracked from the view-class handler
+     * argument `origin` (to a route-setup for view-classes).
+     */
+    DataFlow::LocalSourceNode viewClassBackTracker(DataFlow::Node origin) {
+      result = viewClassBackTracker(DataFlow::TypeBackTracker::end(), origin)
+    }
+
+    Class getBackTrackedViewClass(DataFlow::Node origin) {
+      result.getParent() = viewClassBackTracker(origin).asExpr()
+    }
   }
 
   /** An aiohttp route setup that uses coroutines (async function) as request handler. */
-  abstract class AiohttpCoroutineRouteSetup extends AiohttpRouteSetup {
-    /** Gets the argument specifying the request handler (which is a coroutine/async function) */
-    abstract DataFlow::Node getRequestHandlerArg();
-
-    override Function getARequestHandler() {
-      this.getRequestHandlerArg() = poorMansFunctionTracker(result)
-    }
-  }
-
-  /**
-   * Gets a reference to a class, that has been backtracked from the view-class handler
-   * argument `origin` (to a route-setup for view-classes).
-   */
-  private DataFlow::LocalSourceNode viewClassBackTracker(
-    DataFlow::TypeBackTracker t, DataFlow::Node origin
-  ) {
-    t.start() and
-    origin = any(AiohttpViewRouteSetup rs).getViewClassArg() and
-    result = origin.getALocalSource()
-    or
-    exists(DataFlow::TypeBackTracker t2 |
-      result = viewClassBackTracker(t2, origin).backtrack(t2, t)
-    )
-  }
-
-  /**
-   * Gets a reference to a class, that has been backtracked from the view-class handler
-   * argument `origin` (to a route-setup for view-classes).
-   */
-  DataFlow::LocalSourceNode viewClassBackTracker(DataFlow::Node origin) {
-    result = viewClassBackTracker(DataFlow::TypeBackTracker::end(), origin)
-  }
-
-  Class getBackTrackedViewClass(DataFlow::Node origin) {
-    result.getParent() = viewClassBackTracker(origin).asExpr()
+  class AiohttpCoroutineRouteSetup extends AiohttpRouteSetup {
+    AiohttpCoroutineRouteSetup() { this.getHandlerArg() = poorMansFunctionTracker(_) }
   }
 
   /** An aiohttp route setup that uses view-classes as request handlers. */
-  abstract class AiohttpViewRouteSetup extends AiohttpRouteSetup {
-    /** Gets the argument specifying the view-class handler. */
-    abstract DataFlow::Node getViewClassArg();
-
-    /** Gets the view-class that is referenced in the view-class handler argument. */
-    Class getViewClass() { result = getBackTrackedViewClass(this.getViewClassArg()) }
-
-    override Function getARequestHandler() {
-      exists(AiohttpViewClass cls |
-        cls = this.getViewClass() and
-        result = cls.getARequestHandler()
-      )
-    }
+  class AiohttpViewRouteSetup extends AiohttpRouteSetup {
+    AiohttpViewRouteSetup() { exists(this.getViewClass()) }
   }
 
   /**
-   * A route-setup from `add_route` or any of `add_get`, `add_post`, etc. on an
-   *    `aiohttp.web.UrlDispatcher`.
+   * A route-setup from
+   * - `add_route`, `add_view`, `add_get`, `add_post`, , etc. on an `aiohttp.web.UrlDispatcher`.
+   * - `route`, `view`, `get`, `post`, etc. functions from `aiohttp.web`.
    */
-  class AiohttpUrlDispatcherAddRouteCall extends AiohttpCoroutineRouteSetup, DataFlow::CallCfgNode {
+  class AiohttpAddRouteCall extends AiohttpRouteSetup::Range, DataFlow::CallCfgNode {
     /** At what index route arguments starts, so we can handle "route" version together with get/post/... */
     int routeArgsStart;
 
-    AiohttpUrlDispatcherAddRouteCall() {
-      this = urlDispathcerInstance().getMember("add_" + HTTP::httpVerbLower()).getACall() and
-      routeArgsStart = 0
-      or
-      this = urlDispathcerInstance().getMember("add_route").getACall() and
-      routeArgsStart = 1
-    }
-
-    override DataFlow::Node getUrlPatternArg() {
-      result in [this.getArg(routeArgsStart + 0), this.getArgByName("path")]
-    }
-
-    override DataFlow::Node getRequestHandlerArg() {
-      result in [this.getArg(routeArgsStart + 1), this.getArgByName("handler")]
-    }
-  }
-
-  /**
-   * A route-setup from using `route` or any of `get`, `post`, etc. functions from `aiohttp.web`.
-   *
-   * Note that technically, this does not set up a route in itself (since it needs to be added to an application first).
-   * However, modeling this way makes it easier, and we don't expect it to lead to many problems.
-   */
-  class AiohttpWebRouteCall extends AiohttpCoroutineRouteSetup, DataFlow::CallCfgNode {
-    /** At what index route arguments starts, so we can handle "route" version together with get/post/... */
-    int routeArgsStart;
-
-    AiohttpWebRouteCall() {
+    AiohttpAddRouteCall() {
       exists(string funcName |
         funcName = HTTP::httpVerbLower() and
+        routeArgsStart = 0
+        or
+        funcName = "view" and
         routeArgsStart = 0
         or
         funcName = "route" and
         routeArgsStart = 1
       |
+        this = urlDispathcerInstance().getMember("add_" + funcName).getACall()
+        or
         this = API::moduleImport("aiohttp").getMember("web").getMember(funcName).getACall()
       )
     }
@@ -162,19 +182,22 @@ module AiohttpWebModel {
       result in [this.getArg(routeArgsStart + 0), this.getArgByName("path")]
     }
 
-    override DataFlow::Node getRequestHandlerArg() {
+    override DataFlow::Node getHandlerArg() {
       result in [this.getArg(routeArgsStart + 1), this.getArgByName("handler")]
     }
   }
 
-  /** A route-setup from using a `route` or any of `get`, `post`, etc. decorators from a `aiohttp.web.RouteTableDef`. */
-  class AiohttpRouteTableDefRouteCall extends AiohttpCoroutineRouteSetup, DataFlow::CallCfgNode {
+  /** A route-setup using a decorator, such as `route`, `view`, `get`, `post`, etc. on a `aiohttp.web.RouteTableDef`. */
+  class AiohttpDecoratorRouteSetup extends AiohttpRouteSetup::Range, DataFlow::CallCfgNode {
     /** At what index route arguments starts, so we can handle "route" version together with get/post/... */
     int routeArgsStart;
 
-    AiohttpRouteTableDefRouteCall() {
+    AiohttpDecoratorRouteSetup() {
       exists(string decoratorName |
         decoratorName = HTTP::httpVerbLower() and
+        routeArgsStart = 0
+        or
+        decoratorName = "view" and
         routeArgsStart = 0
         or
         decoratorName = "route" and
@@ -194,61 +217,19 @@ module AiohttpWebModel {
       result in [this.getArg(routeArgsStart + 0), this.getArgByName("path")]
     }
 
-    override DataFlow::Node getRequestHandlerArg() { none() }
-
-    override Function getARequestHandler() { result.getADecorator() = this.asExpr() }
-  }
-
-  /**
-   * A view-class route-setup from either:
-   * - `add_view` method on a `aiohttp.web.UrlDispatcher`
-   * - `view` function from `aiohttp.web`
-   */
-  class AiohttpViewRouteSetupFromFunction extends AiohttpViewRouteSetup, DataFlow::CallCfgNode {
-    AiohttpViewRouteSetupFromFunction() {
-      this = urlDispathcerInstance().getMember("add_view").getACall()
-      or
-      this = API::moduleImport("aiohttp").getMember("web").getMember("view").getACall()
-      or
-      this =
-        API::moduleImport("aiohttp")
-            .getMember("web")
-            .getMember("RouteTableDef")
-            .getReturn()
-            .getMember("view")
-            .getACall()
-    }
-
-    override DataFlow::Node getUrlPatternArg() {
-      result in [this.getArg(0), this.getArgByName("path")]
-    }
-
-    override DataFlow::Node getViewClassArg() {
-      result in [this.getArg(1), this.getArgByName("handler")]
-    }
-  }
-
-  /**
-   * A view-class route-setup from the `view` decorator from a `aiohttp.web.RouteTableDef`.
-   */
-  class AiohttpViewRouteSetupFromDecorator extends AiohttpViewRouteSetup, DataFlow::CallCfgNode {
-    AiohttpViewRouteSetupFromDecorator() {
-      this =
-        API::moduleImport("aiohttp")
-            .getMember("web")
-            .getMember("RouteTableDef")
-            .getReturn()
-            .getMember("view")
-            .getACall()
-    }
-
-    override DataFlow::Node getUrlPatternArg() {
-      result in [this.getArg(0), this.getArgByName("path")]
-    }
-
-    override DataFlow::Node getViewClassArg() { none() }
+    override DataFlow::Node getHandlerArg() { none() }
 
     override Class getViewClass() { result.getADecorator() = this.asExpr() }
+
+    override Function getARequestHandler() {
+      // we're decorating a class
+      exists(this.getViewClass()) and
+      result = super.getARequestHandler()
+      or
+      // we're decorating a function
+      not exists(this.getViewClass()) and
+      result.getADecorator() = this.asExpr()
+    }
   }
 
   /** A class that we consider a aiohttp.web View class. */
@@ -269,7 +250,7 @@ module AiohttpWebModel {
 
   /** A class that is used in a route-setup, therefore being considered a aiohttp.web View class. */
   class AiohttpViewClassFromRouteSetup extends AiohttpViewClass {
-    AiohttpViewClassFromRouteSetup() { this = any(AiohttpViewRouteSetup rs).getViewClass() }
+    AiohttpViewClassFromRouteSetup() { this = any(AiohttpRouteSetup rs).getViewClass() }
   }
 
   /** A request handler defined in an `aiohttp.web` view class, that has no known route. */
