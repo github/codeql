@@ -122,6 +122,23 @@ if True:
 
         app.router.add_view("/MyWebViewNoSubclassButRoute", MyWebViewNoSubclassButRoute)  # $ routeSetup="/MyWebViewNoSubclassButRoute"
 
+
+# Apparently there is no enforcement that `add_view` is only for views, and vice-versa
+# for `add_get` only being for async functions.
+if True:
+    async def no_rules(request): # $ MISSING: requestHandler
+        return web.Response(text="no_rules")
+
+    app.router.add_view("/no_rules", no_rules) # $ routeSetup="/no_rules"
+
+
+    class NoRulesView(web.View):
+        async def get(self):  # $ requestHandler
+            return web.Response(text="NoRulesView.get")
+
+    app.router.add_get("/NoRulesView", NoRulesView) # $ routeSetup="/NoRulesView"
+
+
 ## =================== ##
 ## "Routed parameters" ##
 ## =================== ##
