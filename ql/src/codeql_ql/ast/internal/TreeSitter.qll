@@ -63,6 +63,7 @@ module Generated {
     /** Gets the node corresponding to the field `right`. */
     AstNode getRight() { add_expr_def(this, _, result, _, _) }
 
+    /** Gets the child of this node. */
     Addop getChild() { add_expr_def(this, _, _, result, _) }
 
     /** Gets a field or child node of this node. */
@@ -93,6 +94,7 @@ module Generated {
     /** Gets the location of this element. */
     override Location getLocation() { aggregate_def(this, result) }
 
+    /** Gets the `i`th child of this node. */
     AstNode getChild(int i) { aggregate_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
@@ -107,6 +109,7 @@ module Generated {
     /** Gets the location of this element. */
     override Location getLocation() { annot_arg_def(this, _, result) }
 
+    /** Gets the child of this node. */
     AstNode getChild() { annot_arg_def(this, result, _) }
 
     /** Gets a field or child node of this node. */
@@ -150,6 +153,7 @@ module Generated {
     /** Gets the node corresponding to the field `name`. */
     LiteralId getName() { arityless_predicate_expr_def(this, result, _) }
 
+    /** Gets the child of this node. */
     ModuleExpr getChild() { arityless_predicate_expr_child(this, result) }
 
     /** Gets a field or child node of this node. */
@@ -166,6 +170,7 @@ module Generated {
     /** Gets the location of this element. */
     override Location getLocation() { as_expr_def(this, result) }
 
+    /** Gets the `i`th child of this node. */
     AstNode getChild(int i) { as_expr_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
@@ -180,6 +185,7 @@ module Generated {
     /** Gets the location of this element. */
     override Location getLocation() { as_exprs_def(this, result) }
 
+    /** Gets the `i`th child of this node. */
     AsExpr getChild(int i) { as_exprs_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
@@ -200,6 +206,7 @@ module Generated {
     /** Gets the location of this element. */
     override Location getLocation() { body_def(this, _, result) }
 
+    /** Gets the child of this node. */
     AstNode getChild() { body_def(this, result, _) }
 
     /** Gets a field or child node of this node. */
@@ -214,6 +221,7 @@ module Generated {
     /** Gets the location of this element. */
     override Location getLocation() { bool_def(this, _, result) }
 
+    /** Gets the child of this node. */
     AstNode getChild() { bool_def(this, result, _) }
 
     /** Gets a field or child node of this node. */
@@ -228,6 +236,7 @@ module Generated {
     /** Gets the location of this element. */
     override Location getLocation() { call_body_def(this, result) }
 
+    /** Gets the `i`th child of this node. */
     AstNode getChild(int i) { call_body_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
@@ -242,6 +251,7 @@ module Generated {
     /** Gets the location of this element. */
     override Location getLocation() { call_or_unqual_agg_expr_def(this, result) }
 
+    /** Gets the `i`th child of this node. */
     AstNode getChild(int i) { call_or_unqual_agg_expr_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
@@ -259,6 +269,7 @@ module Generated {
     /** Gets the node corresponding to the field `body`. */
     AstNode getBody() { charpred_def(this, result, _, _) }
 
+    /** Gets the child of this node. */
     ClassName getChild() { charpred_def(this, _, result, _) }
 
     /** Gets a field or child node of this node. */
@@ -275,6 +286,7 @@ module Generated {
     /** Gets the location of this element. */
     override Location getLocation() { class_member_def(this, result) }
 
+    /** Gets the `i`th child of this node. */
     AstNode getChild(int i) { class_member_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
@@ -301,6 +313,7 @@ module Generated {
     /** Gets the node corresponding to the field `returnType`. */
     AstNode getReturnType() { classless_predicate_def(this, _, result, _) }
 
+    /** Gets the `i`th child of this node. */
     AstNode getChild(int i) { classless_predicate_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
@@ -331,6 +344,7 @@ module Generated {
     /** Gets the node corresponding to the field `right`. */
     AstNode getRight() { comp_term_def(this, _, result, _, _) }
 
+    /** Gets the child of this node. */
     Compop getChild() { comp_term_def(this, _, _, result, _) }
 
     /** Gets a field or child node of this node. */
@@ -378,6 +392,7 @@ module Generated {
     /** Gets the node corresponding to the field `name`. */
     ClassName getName() { dataclass_def(this, result, _) }
 
+    /** Gets the `i`th child of this node. */
     AstNode getChild(int i) { dataclass_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
@@ -397,6 +412,7 @@ module Generated {
     /** Gets the node corresponding to the field `name`. */
     ClassName getName() { datatype_def(this, result, _, _) }
 
+    /** Gets the child of this node. */
     DatatypeBranches getChild() { datatype_def(this, _, result, _) }
 
     /** Gets a field or child node of this node. */
@@ -416,6 +432,7 @@ module Generated {
     /** Gets the node corresponding to the field `name`. */
     ClassName getName() { datatype_branch_def(this, result, _) }
 
+    /** Gets the `i`th child of this node. */
     AstNode getChild(int i) { datatype_branch_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
@@ -432,6 +449,7 @@ module Generated {
     /** Gets the location of this element. */
     override Location getLocation() { datatype_branches_def(this, result) }
 
+    /** Gets the `i`th child of this node. */
     DatatypeBranch getChild(int i) { datatype_branches_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
@@ -469,6 +487,7 @@ module Generated {
     /** Gets the node corresponding to the field `name`. */
     AnnotName getName() { db_args_annotation_def(this, result, _) }
 
+    /** Gets the `i`th child of this node. */
     SimpleId getChild(int i) { db_args_annotation_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
@@ -494,6 +513,7 @@ module Generated {
     /** Gets the node corresponding to the field `qldoc`. */
     Qldoc getQldoc() { db_branch_qldoc(this, result) }
 
+    /** Gets the `i`th child of this node. */
     AstNode getChild(int i) { db_branch_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
@@ -522,6 +542,7 @@ module Generated {
     /** Gets the node corresponding to the field `discriminator`. */
     SimpleId getDiscriminator() { db_case_decl_def(this, _, result, _) }
 
+    /** Gets the `i`th child of this node. */
     AstNode getChild(int i) { db_case_decl_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
@@ -540,6 +561,7 @@ module Generated {
     /** Gets the location of this element. */
     override Location getLocation() { db_col_type_def(this, _, result) }
 
+    /** Gets the child of this node. */
     AstNode getChild() { db_col_type_def(this, result, _) }
 
     /** Gets a field or child node of this node. */
@@ -597,6 +619,7 @@ module Generated {
     /** Gets the location of this element. */
     override Location getLocation() { db_entry_def(this, _, result) }
 
+    /** Gets the child of this node. */
     AstNode getChild() { db_entry_def(this, result, _) }
 
     /** Gets a field or child node of this node. */
@@ -629,6 +652,7 @@ module Generated {
     /** Gets the location of this element. */
     override Location getLocation() { db_repr_type_def(this, result) }
 
+    /** Gets the `i`th child of this node. */
     AstNode getChild(int i) { db_repr_type_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
@@ -652,6 +676,7 @@ module Generated {
     /** Gets the node corresponding to the field `tableName`. */
     DbTableName getTableName() { db_table_def(this, result, _) }
 
+    /** Gets the `i`th child of this node. */
     AstNode getChild(int i) { db_table_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
@@ -668,6 +693,7 @@ module Generated {
     /** Gets the location of this element. */
     override Location getLocation() { db_table_name_def(this, _, result) }
 
+    /** Gets the child of this node. */
     SimpleId getChild() { db_table_name_def(this, result, _) }
 
     /** Gets a field or child node of this node. */
@@ -685,6 +711,7 @@ module Generated {
     /** Gets the node corresponding to the field `base`. */
     Dbtype getBase() { db_union_decl_def(this, result, _) }
 
+    /** Gets the `i`th child of this node. */
     Dbtype getChild(int i) { db_union_decl_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
@@ -777,6 +804,7 @@ module Generated {
     /** Gets the node corresponding to the field `name`. */
     AnnotName getName() { expr_annotation_def(this, _, result, _, _) }
 
+    /** Gets the child of this node. */
     AstNode getChild() { expr_annotation_def(this, _, _, result, _) }
 
     /** Gets a field or child node of this node. */
@@ -801,6 +829,7 @@ module Generated {
     /** Gets the location of this element. */
     override Location getLocation() { field_def(this, _, result) }
 
+    /** Gets the child of this node. */
     VarDecl getChild() { field_def(this, result, _) }
 
     /** Gets a field or child node of this node. */
@@ -830,6 +859,7 @@ module Generated {
     /** Gets the node corresponding to the field `orderBys`. */
     OrderBys getOrderBys() { full_aggregate_body_order_bys(this, result) }
 
+    /** Gets the `i`th child of this node. */
     VarDecl getChild(int i) { full_aggregate_body_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
@@ -852,6 +882,7 @@ module Generated {
     /** Gets the node corresponding to the field `name`. */
     LiteralId getName() { higher_order_term_def(this, result, _) }
 
+    /** Gets the `i`th child of this node. */
     AstNode getChild(int i) { higher_order_term_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
@@ -913,6 +944,7 @@ module Generated {
     /** Gets the location of this element. */
     override Location getLocation() { import_directive_def(this, result) }
 
+    /** Gets the `i`th child of this node. */
     AstNode getChild(int i) { import_directive_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
@@ -930,6 +962,7 @@ module Generated {
     /** Gets the node corresponding to the field `name`. */
     SimpleId getName(int i) { import_module_expr_name(this, i, result) }
 
+    /** Gets the child of this node. */
     QualModuleExpr getChild() { import_module_expr_def(this, result, _) }
 
     /** Gets a field or child node of this node. */
@@ -966,6 +999,7 @@ module Generated {
     /** Gets the location of this element. */
     override Location getLocation() { instance_of_def(this, result) }
 
+    /** Gets the `i`th child of this node. */
     AstNode getChild(int i) { instance_of_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
@@ -992,6 +1026,7 @@ module Generated {
     /** Gets the location of this element. */
     override Location getLocation() { literal_def(this, _, result) }
 
+    /** Gets the child of this node. */
     AstNode getChild() { literal_def(this, result, _) }
 
     /** Gets a field or child node of this node. */
@@ -1018,6 +1053,7 @@ module Generated {
     /** Gets the node corresponding to the field `returnType`. */
     AstNode getReturnType() { member_predicate_def(this, _, result, _) }
 
+    /** Gets the `i`th child of this node. */
     AstNode getChild(int i) { member_predicate_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
@@ -1039,6 +1075,7 @@ module Generated {
     /** Gets the node corresponding to the field `name`. */
     ModuleName getName() { module_def(this, result, _) }
 
+    /** Gets the `i`th child of this node. */
     AstNode getChild(int i) { module_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
@@ -1055,6 +1092,7 @@ module Generated {
     /** Gets the location of this element. */
     override Location getLocation() { module_alias_body_def(this, _, result) }
 
+    /** Gets the child of this node. */
     ModuleExpr getChild() { module_alias_body_def(this, result, _) }
 
     /** Gets a field or child node of this node. */
@@ -1072,6 +1110,7 @@ module Generated {
     /** Gets the node corresponding to the field `name`. */
     SimpleId getName() { module_expr_name(this, result) }
 
+    /** Gets the child of this node. */
     AstNode getChild() { module_expr_def(this, result, _) }
 
     /** Gets a field or child node of this node. */
@@ -1088,6 +1127,7 @@ module Generated {
     /** Gets the location of this element. */
     override Location getLocation() { module_member_def(this, result) }
 
+    /** Gets the `i`th child of this node. */
     AstNode getChild(int i) { module_member_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
@@ -1102,6 +1142,7 @@ module Generated {
     /** Gets the location of this element. */
     override Location getLocation() { module_name_def(this, _, result) }
 
+    /** Gets the child of this node. */
     SimpleId getChild() { module_name_def(this, result, _) }
 
     /** Gets a field or child node of this node. */
@@ -1122,6 +1163,7 @@ module Generated {
     /** Gets the node corresponding to the field `right`. */
     AstNode getRight() { mul_expr_def(this, _, result, _, _) }
 
+    /** Gets the child of this node. */
     Mulop getChild() { mul_expr_def(this, _, _, result, _) }
 
     /** Gets a field or child node of this node. */
@@ -1146,6 +1188,7 @@ module Generated {
     /** Gets the location of this element. */
     override Location getLocation() { negation_def(this, _, result) }
 
+    /** Gets the child of this node. */
     AstNode getChild() { negation_def(this, result, _) }
 
     /** Gets a field or child node of this node. */
@@ -1160,6 +1203,7 @@ module Generated {
     /** Gets the location of this element. */
     override Location getLocation() { order_by_def(this, result) }
 
+    /** Gets the `i`th child of this node. */
     AstNode getChild(int i) { order_by_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
@@ -1174,6 +1218,7 @@ module Generated {
     /** Gets the location of this element. */
     override Location getLocation() { order_bys_def(this, result) }
 
+    /** Gets the `i`th child of this node. */
     OrderBy getChild(int i) { order_bys_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
@@ -1188,6 +1233,7 @@ module Generated {
     /** Gets the location of this element. */
     override Location getLocation() { par_expr_def(this, _, result) }
 
+    /** Gets the child of this node. */
     AstNode getChild() { par_expr_def(this, result, _) }
 
     /** Gets a field or child node of this node. */
@@ -1208,6 +1254,7 @@ module Generated {
     /** Gets the location of this element. */
     override Location getLocation() { predicate_alias_body_def(this, _, result) }
 
+    /** Gets the child of this node. */
     PredicateExpr getChild() { predicate_alias_body_def(this, result, _) }
 
     /** Gets a field or child node of this node. */
@@ -1222,6 +1269,7 @@ module Generated {
     /** Gets the location of this element. */
     override Location getLocation() { predicate_expr_def(this, result) }
 
+    /** Gets the `i`th child of this node. */
     AstNode getChild(int i) { predicate_expr_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
@@ -1242,6 +1290,7 @@ module Generated {
     /** Gets the location of this element. */
     override Location getLocation() { prefix_cast_def(this, result) }
 
+    /** Gets the `i`th child of this node. */
     AstNode getChild(int i) { prefix_cast_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
@@ -1262,6 +1311,7 @@ module Generated {
     /** Gets the location of this element. */
     override Location getLocation() { ql_def(this, result) }
 
+    /** Gets the `i`th child of this node. */
     AstNode getChild(int i) { ql_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
@@ -1300,6 +1350,7 @@ module Generated {
     /** Gets the node corresponding to the field `name`. */
     PredicateName getName() { qualified_rhs_name(this, result) }
 
+    /** Gets the `i`th child of this node. */
     AstNode getChild(int i) { qualified_rhs_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
@@ -1316,6 +1367,7 @@ module Generated {
     /** Gets the location of this element. */
     override Location getLocation() { qualified_expr_def(this, result) }
 
+    /** Gets the `i`th child of this node. */
     AstNode getChild(int i) { qualified_expr_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
@@ -1339,6 +1391,7 @@ module Generated {
     /** Gets the node corresponding to the field `range`. */
     AstNode getRange() { quantified_range(this, result) }
 
+    /** Gets the `i`th child of this node. */
     AstNode getChild(int i) { quantified_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
@@ -1390,6 +1443,7 @@ module Generated {
     /** Gets the location of this element. */
     override Location getLocation() { select_def(this, result) }
 
+    /** Gets the `i`th child of this node. */
     AstNode getChild(int i) { select_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
@@ -1404,6 +1458,7 @@ module Generated {
     /** Gets the location of this element. */
     override Location getLocation() { set_literal_def(this, result) }
 
+    /** Gets the `i`th child of this node. */
     AstNode getChild(int i) { set_literal_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
@@ -1430,6 +1485,7 @@ module Generated {
     /** Gets the location of this element. */
     override Location getLocation() { special_call_def(this, _, result) }
 
+    /** Gets the child of this node. */
     SpecialId getChild() { special_call_def(this, result, _) }
 
     /** Gets a field or child node of this node. */
@@ -1456,6 +1512,7 @@ module Generated {
     /** Gets the location of this element. */
     override Location getLocation() { super_ref_def(this, result) }
 
+    /** Gets the `i`th child of this node. */
     AstNode getChild(int i) { super_ref_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
@@ -1482,6 +1539,7 @@ module Generated {
     /** Gets the location of this element. */
     override Location getLocation() { type_alias_body_def(this, _, result) }
 
+    /** Gets the child of this node. */
     TypeExpr getChild() { type_alias_body_def(this, result, _) }
 
     /** Gets a field or child node of this node. */
@@ -1499,6 +1557,7 @@ module Generated {
     /** Gets the node corresponding to the field `name`. */
     ClassName getName() { type_expr_name(this, result) }
 
+    /** Gets the child of this node. */
     AstNode getChild() { type_expr_child(this, result) }
 
     /** Gets a field or child node of this node. */
@@ -1515,6 +1574,7 @@ module Generated {
     /** Gets the location of this element. */
     override Location getLocation() { type_union_body_def(this, result) }
 
+    /** Gets the `i`th child of this node. */
     TypeExpr getChild(int i) { type_union_body_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
@@ -1529,6 +1589,7 @@ module Generated {
     /** Gets the location of this element. */
     override Location getLocation() { unary_expr_def(this, result) }
 
+    /** Gets the `i`th child of this node. */
     AstNode getChild(int i) { unary_expr_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
@@ -1561,6 +1622,7 @@ module Generated {
     /** Gets the node corresponding to the field `guard`. */
     AstNode getGuard() { unqual_agg_body_guard(this, result) }
 
+    /** Gets the `i`th child of this node. */
     VarDecl getChild(int i) { unqual_agg_body_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
@@ -1579,6 +1641,7 @@ module Generated {
     /** Gets the location of this element. */
     override Location getLocation() { var_decl_def(this, result) }
 
+    /** Gets the `i`th child of this node. */
     AstNode getChild(int i) { var_decl_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
@@ -1593,6 +1656,7 @@ module Generated {
     /** Gets the location of this element. */
     override Location getLocation() { var_name_def(this, _, result) }
 
+    /** Gets the child of this node. */
     SimpleId getChild() { var_name_def(this, result, _) }
 
     /** Gets a field or child node of this node. */
@@ -1607,6 +1671,7 @@ module Generated {
     /** Gets the location of this element. */
     override Location getLocation() { variable_def(this, _, result) }
 
+    /** Gets the child of this node. */
     AstNode getChild() { variable_def(this, result, _) }
 
     /** Gets a field or child node of this node. */
