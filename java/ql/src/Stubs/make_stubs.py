@@ -4,7 +4,7 @@ import sys
 import os
 import subprocess
 import json
-
+import glob
 
 def print_usage(exit_code=1):
     print("Usage: python3 make_stubs.py testDir stubDir\n",

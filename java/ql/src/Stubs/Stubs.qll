@@ -23,7 +23,8 @@ abstract private class GeneratedType extends RefType {
   private string stubKeyword() {
     this instanceof Interface and result = "interface"
     or
-    this instanceof Class and (if this instanceof EnumType then result = "enum" else result = "class")
+    this instanceof Class and
+    (if this instanceof EnumType then result = "enum" else result = "class")
   }
 
   private string stubAbstractModifier() {
@@ -50,6 +51,7 @@ abstract private class GeneratedType extends RefType {
     result = this.getASupertype() and
     not result instanceof TypeObject and
     not this instanceof EnumType and
+    // generic types have their source declaation (the corresponding raw type) as a supertype of themselves
     result.getSourceDeclaration() != this
   }
 
@@ -330,20 +332,20 @@ private string stubMember(Member m) {
   then result = ""
   else (
     result =
-      "    " + stubModifiers(m) + stubGenericMethodParams(m) + stubTypeName(m.(Method).getReturnType()) +
-        " " + m.getName() + "(" + stubParameters(m) + ")" + stubImplementation(m) + "\n"
+      "    " + stubModifiers(m) + stubGenericMethodParams(m) +
+        stubTypeName(m.(Method).getReturnType()) + " " + m.getName() + "(" + stubParameters(m) + ")"
+        + stubImplementation(m) + "\n"
     or
     m instanceof Constructor and
     result =
       "    " + stubModifiers(m) + m.getName() + "(" + stubParameters(m) + ")" +
         stubImplementation(m) + "\n"
     or
-    m instanceof Field and
     result =
-      "    " + stubModifiers(m) + stubTypeName(m.getType()) + " " + m.getName() + " = " +
-        stubDefaultValue(m.getType()) + ";\n"
+      "    " + stubModifiers(m) + stubTypeName(m.(Field).getType()) + " " + m.getName() + " = " +
+        stubDefaultValue(m.(Field).getType()) + ";\n"
     or
-   result = indent(m.(NestedType).(GeneratedType).getStub()))
+    result = indent(m.(NestedType).(GeneratedType).getStub())
   )
 }
 
@@ -357,6 +359,7 @@ private string stubFakeConstructor(RefType t) {
   then result = ""
   else
     exists(string mod |
+      // this won't conflict with any existing private constructors, since we don't generate stubs for any private members.
       if t instanceof EnumType then mod = "    private " else mod = "    protected "
     |
       if hasNoArgConstructor(t) then result = "" else result = mod + t.getName() + "() {}\n"
