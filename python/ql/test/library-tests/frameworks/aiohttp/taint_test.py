@@ -196,7 +196,8 @@ async def test_taint(request: web.Request): # $ requestHandler
 class TaintTestClass(web.View):
     def get(self): # $ requestHandler
         ensure_tainted(
-            self.request, # $ MISSING: tainted
+            self.request, # $ tainted
+            self.request.url # $ tainted
         )
 
 

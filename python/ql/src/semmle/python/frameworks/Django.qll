@@ -12,6 +12,7 @@ private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.PEP249
 private import semmle.python.regex
 private import semmle.python.frameworks.internal.PoorMansFunctionResolution
+private import semmle.python.frameworks.internal.SelfRefMixin
 
 /**
  * Provides models for the `django` PyPI package.
@@ -1388,31 +1389,7 @@ private module PrivateDjango {
   // Helpers
   // ---------------------------------------------------------------------------
 
-  /** Adds the `getASelfRef` member predicate when modeling a class. */
-  abstract private class SelfRefMixin extends Class {
-    /**
-     * Gets a reference to instances of this class, originating from a self parameter of
-     * a method defined on this class.
-     *
-     * Note: TODO: This doesn't take MRO into account
-     * Note: TODO: This doesn't take staticmethod/classmethod into account
-     */
-    private DataFlow::LocalSourceNode getASelfRef(DataFlow::TypeTracker t) {
-      t.start() and
-      result.(DataFlow::ParameterNode).getParameter() = this.getAMethod().getArg(0)
-      or
-      exists(DataFlow::TypeTracker t2 | result = this.getASelfRef(t2).track(t2, t))
-    }
 
-    /**
-     * Gets a reference to instances of this class, originating from a self parameter of
-     * a method defined on this class.
-     *
-     * Note: TODO: This doesn't take MRO into account
-     * Note: TODO: This doesn't take staticmethod/classmethod into account
-     */
-    DataFlow::Node getASelfRef() { this.getASelfRef(DataFlow::TypeTracker::end()).flowsTo(result) }
-  }
 
   // ---------------------------------------------------------------------------
   // Form and form field modeling

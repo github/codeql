@@ -10,6 +10,7 @@ private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.internal.PoorMansFunctionResolution
+private import semmle.python.frameworks.internal.SelfRefMixin
 private import semmle.python.frameworks.Multidict
 private import semmle.python.frameworks.Yarl
 
@@ -251,7 +252,7 @@ module AiohttpWebModel {
   }
 
   /** A class that we consider a aiohttp.web View class. */
-  abstract class AiohttpViewClass extends Class {
+  abstract class AiohttpViewClass extends Class, SelfRefMixin {
     /** Gets a function that could handle incoming requests, if any. */
     Function getARequestHandler() {
       // TODO: This doesn't handle attribute assignment. Should be OK, but analysis is not as complete as with
@@ -341,14 +342,21 @@ module AiohttpWebModel {
         this.getParameter() =
           max(Parameter param, int i | param = requestHandler.getArg(i) | param order by i)
       )
-      or
-      exists(AiohttpViewClass vc |
-        // TODO
-        none()
-      )
     }
 
     override string getSourceType() { result = "aiohttp.web.Request" }
+  }
+
+  class AiohttpViewClassRequestAttributeRead extends Request::InstanceSource,
+    RemoteFlowSource::Range, DataFlow::Node {
+    AiohttpViewClassRequestAttributeRead() {
+      this.(DataFlow::AttrRead).getObject() = any(AiohttpViewClass vc).getASelfRef() and
+      this.(DataFlow::AttrRead).getAttributeName() = "request"
+    }
+
+    override string getSourceType() {
+      result = "aiohttp.web.Request from self.request in View class"
+    }
   }
 
   /**
