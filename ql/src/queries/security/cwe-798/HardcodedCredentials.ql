@@ -108,10 +108,12 @@ private DataFlow::Node credentialParameter() {
 private Expr credentialComparison() {
   exists(EqualityOperation op, VariableReadAccess vra |
     maybeCredentialName(vra.getVariable().getName()) and
-    op.getLeftOperand() = result and
-    op.getRightOperand() = vra
-    or
-    op.getLeftOperand() = vra and op.getRightOperand() = result
+    (
+      op.getLeftOperand() = result and
+      op.getRightOperand() = vra
+      or
+      op.getLeftOperand() = vra and op.getRightOperand() = result
+    )
   )
 }
 
@@ -147,4 +149,5 @@ class HardcodedCredentialsConfiguration extends DataFlow::Configuration {
 from DataFlow::PathNode source, DataFlow::PathNode sink, HardcodedCredentialsConfiguration conf
 where conf.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "Use of $@.", source.getNode(), "hardcoded credentials"
+
 // TODO: debug duplicate rows
