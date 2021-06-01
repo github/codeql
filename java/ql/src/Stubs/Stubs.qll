@@ -51,7 +51,7 @@ abstract private class GeneratedType extends RefType {
     result = this.getASupertype() and
     not result instanceof TypeObject and
     not this instanceof EnumType and
-    // generic types have their source declaation (the corresponding raw type) as a supertype of themselves
+    // generic types have their source declaration (the corresponding raw type) as a supertype of themselves
     result.getSourceDeclaration() != this
   }
 
