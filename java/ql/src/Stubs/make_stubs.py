@@ -5,6 +5,7 @@ import os
 import subprocess
 import json
 import glob
+import shlex
 from shutil import copyfile
 
 def print_usage(exit_code=1):
@@ -79,7 +80,7 @@ def print_javac_output():
 
 def run(cmd):
     """Runs the given command, returning the exit code (nonzero on failure)"""
-    print('\nRunning ' + ' '.join(cmd) + '\n')
+    print('\nRunning: ' + shlex.join(cmd) + '\n')
     return subprocess.call(cmd)
 
 print("Stubbing qltest in", testDir)
