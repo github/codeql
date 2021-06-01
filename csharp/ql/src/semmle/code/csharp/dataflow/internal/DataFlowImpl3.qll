@@ -607,9 +607,9 @@ private module Stage1 {
 
   pragma[nomagic]
   predicate callMayFlowThroughRev(DataFlowCall call, Configuration config) {
-    exists(Node node, boolean toReturn |
-      revFlow(node, toReturn, config) and
-      revFlowInToReturn(call, node, config) and
+    exists(ArgNode arg, boolean toReturn |
+      revFlow(arg, toReturn, config) and
+      revFlowInToReturn(call, arg, config) and
       revFlowIsReturned(call, toReturn, config)
     )
   }
@@ -838,12 +838,11 @@ private module Stage2 {
 
   pragma[nomagic]
   private predicate flowThroughOutOfCall(
-    DataFlowCall call, ReturnNodeExt node1, Node node2, boolean allowsFieldFlow,
-    Configuration config
+    DataFlowCall call, ReturnNodeExt ret, Node out, boolean allowsFieldFlow, Configuration config
   ) {
-    flowOutOfCall(call, node1, node2, allowsFieldFlow, pragma[only_bind_into](config)) and
+    flowOutOfCall(call, ret, out, allowsFieldFlow, pragma[only_bind_into](config)) and
     PrevStage::callMayFlowThroughRev(call, pragma[only_bind_into](config)) and
-    PrevStage::parameterMayFlowThrough(_, getNodeEnclosingCallable(node1), _,
+    PrevStage::parameterMayFlowThrough(_, getNodeEnclosingCallable(ret), _,
       pragma[only_bind_into](config))
   }
 
@@ -1029,10 +1028,10 @@ private module Stage2 {
 
   pragma[nomagic]
   private predicate callMayFlowThroughFwd(DataFlowCall call, Configuration config) {
-    exists(Ap argAp0, Node node, Cc cc, ApOption argAp, Ap ap |
-      fwdFlow(node, pragma[only_bind_into](cc), pragma[only_bind_into](argAp), ap,
+    exists(Ap argAp0, Node out, Cc cc, ApOption argAp, Ap ap |
+      fwdFlow(out, pragma[only_bind_into](cc), pragma[only_bind_into](argAp), ap,
         pragma[only_bind_into](config)) and
-      fwdFlowOutFromArg(call, node, argAp0, ap, config) and
+      fwdFlowOutFromArg(call, out, argAp0, ap, config) and
       fwdFlowIsEntered(call, pragma[only_bind_into](cc), pragma[only_bind_into](argAp), argAp0,
         pragma[only_bind_into](config))
     )
@@ -1040,11 +1039,11 @@ private module Stage2 {
 
   pragma[nomagic]
   private predicate flowThroughIntoCall(
-    DataFlowCall call, ArgNode node1, ParamNode node2, boolean allowsFieldFlow, Configuration config
+    DataFlowCall call, ArgNode arg, ParamNode p, boolean allowsFieldFlow, Configuration config
   ) {
-    flowIntoCall(call, node1, node2, allowsFieldFlow, config) and
-    fwdFlow(node1, _, _, _, pragma[only_bind_into](config)) and
-    PrevStage::parameterMayFlowThrough(node2, _, _, pragma[only_bind_into](config)) and
+    flowIntoCall(call, arg, p, allowsFieldFlow, config) and
+    fwdFlow(arg, _, _, _, pragma[only_bind_into](config)) and
+    PrevStage::parameterMayFlowThrough(p, _, _, pragma[only_bind_into](config)) and
     callMayFlowThroughFwd(call, pragma[only_bind_into](config))
   }
 
@@ -1256,9 +1255,9 @@ private module Stage2 {
 
   pragma[nomagic]
   predicate callMayFlowThroughRev(DataFlowCall call, Configuration config) {
-    exists(Ap returnAp0, Node node, boolean toReturn, ApOption returnAp, Ap ap |
-      revFlow(node, toReturn, returnAp, ap, config) and
-      revFlowInToReturn(call, node, returnAp0, ap, config) and
+    exists(Ap returnAp0, ArgNode arg, boolean toReturn, ApOption returnAp, Ap ap |
+      revFlow(arg, toReturn, returnAp, ap, config) and
+      revFlowInToReturn(call, arg, returnAp0, ap, config) and
       revFlowIsReturned(call, toReturn, returnAp, returnAp0, config)
     )
   }
@@ -1513,12 +1512,11 @@ private module Stage3 {
 
   pragma[nomagic]
   private predicate flowThroughOutOfCall(
-    DataFlowCall call, ReturnNodeExt node1, Node node2, boolean allowsFieldFlow,
-    Configuration config
+    DataFlowCall call, ReturnNodeExt ret, Node out, boolean allowsFieldFlow, Configuration config
   ) {
-    flowOutOfCall(call, node1, node2, allowsFieldFlow, pragma[only_bind_into](config)) and
+    flowOutOfCall(call, ret, out, allowsFieldFlow, pragma[only_bind_into](config)) and
     PrevStage::callMayFlowThroughRev(call, pragma[only_bind_into](config)) and
-    PrevStage::parameterMayFlowThrough(_, getNodeEnclosingCallable(node1), _,
+    PrevStage::parameterMayFlowThrough(_, getNodeEnclosingCallable(ret), _,
       pragma[only_bind_into](config))
   }
 
@@ -1711,10 +1709,10 @@ private module Stage3 {
 
   pragma[nomagic]
   private predicate callMayFlowThroughFwd(DataFlowCall call, Configuration config) {
-    exists(Ap argAp0, Node node, Cc cc, ApOption argAp, Ap ap |
-      fwdFlow(node, pragma[only_bind_into](cc), pragma[only_bind_into](argAp), ap,
+    exists(Ap argAp0, Node out, Cc cc, ApOption argAp, Ap ap |
+      fwdFlow(out, pragma[only_bind_into](cc), pragma[only_bind_into](argAp), ap,
         pragma[only_bind_into](config)) and
-      fwdFlowOutFromArg(call, node, argAp0, ap, config) and
+      fwdFlowOutFromArg(call, out, argAp0, ap, config) and
       fwdFlowIsEntered(call, pragma[only_bind_into](cc), pragma[only_bind_into](argAp), argAp0,
         pragma[only_bind_into](config))
     )
@@ -1722,11 +1720,11 @@ private module Stage3 {
 
   pragma[nomagic]
   private predicate flowThroughIntoCall(
-    DataFlowCall call, ArgNode node1, ParamNode node2, boolean allowsFieldFlow, Configuration config
+    DataFlowCall call, ArgNode arg, ParamNode p, boolean allowsFieldFlow, Configuration config
   ) {
-    flowIntoCall(call, node1, node2, allowsFieldFlow, config) and
-    fwdFlow(node1, _, _, _, pragma[only_bind_into](config)) and
-    PrevStage::parameterMayFlowThrough(node2, _, _, pragma[only_bind_into](config)) and
+    flowIntoCall(call, arg, p, allowsFieldFlow, config) and
+    fwdFlow(arg, _, _, _, pragma[only_bind_into](config)) and
+    PrevStage::parameterMayFlowThrough(p, _, _, pragma[only_bind_into](config)) and
     callMayFlowThroughFwd(call, pragma[only_bind_into](config))
   }
 
@@ -1938,9 +1936,9 @@ private module Stage3 {
 
   pragma[nomagic]
   predicate callMayFlowThroughRev(DataFlowCall call, Configuration config) {
-    exists(Ap returnAp0, Node node, boolean toReturn, ApOption returnAp, Ap ap |
-      revFlow(node, toReturn, returnAp, ap, config) and
-      revFlowInToReturn(call, node, returnAp0, ap, config) and
+    exists(Ap returnAp0, ArgNode arg, boolean toReturn, ApOption returnAp, Ap ap |
+      revFlow(arg, toReturn, returnAp, ap, config) and
+      revFlowInToReturn(call, arg, returnAp0, ap, config) and
       revFlowIsReturned(call, toReturn, returnAp, returnAp0, config)
     )
   }
@@ -2269,12 +2267,11 @@ private module Stage4 {
 
   pragma[nomagic]
   private predicate flowThroughOutOfCall(
-    DataFlowCall call, ReturnNodeExt node1, Node node2, boolean allowsFieldFlow,
-    Configuration config
+    DataFlowCall call, ReturnNodeExt ret, Node out, boolean allowsFieldFlow, Configuration config
   ) {
-    flowOutOfCall(call, node1, node2, allowsFieldFlow, pragma[only_bind_into](config)) and
+    flowOutOfCall(call, ret, out, allowsFieldFlow, pragma[only_bind_into](config)) and
     PrevStage::callMayFlowThroughRev(call, pragma[only_bind_into](config)) and
-    PrevStage::parameterMayFlowThrough(_, getNodeEnclosingCallable(node1), _,
+    PrevStage::parameterMayFlowThrough(_, getNodeEnclosingCallable(ret), _,
       pragma[only_bind_into](config))
   }
 
@@ -2467,10 +2464,10 @@ private module Stage4 {
 
   pragma[nomagic]
   private predicate callMayFlowThroughFwd(DataFlowCall call, Configuration config) {
-    exists(Ap argAp0, Node node, Cc cc, ApOption argAp, Ap ap |
-      fwdFlow(node, pragma[only_bind_into](cc), pragma[only_bind_into](argAp), ap,
+    exists(Ap argAp0, Node out, Cc cc, ApOption argAp, Ap ap |
+      fwdFlow(out, pragma[only_bind_into](cc), pragma[only_bind_into](argAp), ap,
         pragma[only_bind_into](config)) and
-      fwdFlowOutFromArg(call, node, argAp0, ap, config) and
+      fwdFlowOutFromArg(call, out, argAp0, ap, config) and
       fwdFlowIsEntered(call, pragma[only_bind_into](cc), pragma[only_bind_into](argAp), argAp0,
         pragma[only_bind_into](config))
     )
@@ -2478,11 +2475,11 @@ private module Stage4 {
 
   pragma[nomagic]
   private predicate flowThroughIntoCall(
-    DataFlowCall call, ArgNode node1, ParamNode node2, boolean allowsFieldFlow, Configuration config
+    DataFlowCall call, ArgNode arg, ParamNode p, boolean allowsFieldFlow, Configuration config
   ) {
-    flowIntoCall(call, node1, node2, allowsFieldFlow, config) and
-    fwdFlow(node1, _, _, _, pragma[only_bind_into](config)) and
-    PrevStage::parameterMayFlowThrough(node2, _, _, pragma[only_bind_into](config)) and
+    flowIntoCall(call, arg, p, allowsFieldFlow, config) and
+    fwdFlow(arg, _, _, _, pragma[only_bind_into](config)) and
+    PrevStage::parameterMayFlowThrough(p, _, _, pragma[only_bind_into](config)) and
     callMayFlowThroughFwd(call, pragma[only_bind_into](config))
   }
 
@@ -2694,9 +2691,9 @@ private module Stage4 {
 
   pragma[nomagic]
   predicate callMayFlowThroughRev(DataFlowCall call, Configuration config) {
-    exists(Ap returnAp0, Node node, boolean toReturn, ApOption returnAp, Ap ap |
-      revFlow(node, toReturn, returnAp, ap, config) and
-      revFlowInToReturn(call, node, returnAp0, ap, config) and
+    exists(Ap returnAp0, ArgNode arg, boolean toReturn, ApOption returnAp, Ap ap |
+      revFlow(arg, toReturn, returnAp, ap, config) and
+      revFlowInToReturn(call, arg, returnAp0, ap, config) and
       revFlowIsReturned(call, toReturn, returnAp, returnAp0, config)
     )
   }
