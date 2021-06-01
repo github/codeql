@@ -109,6 +109,19 @@ if True:
 
     app.router.add_view("/MyWebView3", MyWebView3)  # $ MISSING: routeSetup
 
+    # no route-setup
+    class MyWebViewNoRoute(web.View):
+        async def get(self):  # $ MISSING: requestHandler
+            return web.Response(text="MyWebViewNoRoute.get")
+
+    if len(__name__) < 0: # avoid running, but fool analysis to not consider dead code
+        # no explicit-view subclass (but route-setup)
+        class MyWebViewNoSubclassButRoute(somelib.someclass):
+            async def get(self):  # $ MISSING: requestHandler
+                return web.Response(text="MyWebViewNoSubclassButRoute.get")
+
+        app.router.add_view("/MyWebViewNoSubclassButRoute", MyWebViewNoSubclassButRoute)  # $ MISSING: routeSetup
+
 ## =================== ##
 ## "Routed parameters" ##
 ## =================== ##
