@@ -11,20 +11,11 @@
 
 import cpp
 import semmle.code.cpp.controlflow.StackVariableReachability
+import semmle.code.cpp.valuenumbering.GlobalValueNumbering
+import semmle.code.cpp.controlflow.Guards
 
 /** `e` is an expression that frees the memory pointed to by `v`. */
-predicate isFreeExpr(Expr e, StackVariable v) {
-  exists(VariableAccess va | va.getTarget() = v |
-    exists(FunctionCall fc | fc = e |
-      fc.getTarget().hasGlobalOrStdName("free") and
-      va = fc.getArgument(0)
-    )
-    or
-    e.(DeleteExpr).getExpr() = va
-    or
-    e.(DeleteArrayExpr).getExpr() = va
-  )
-}
+predicate isFreeExpr(DeallocationExpr e, StackVariable v) { e.getFreedExpr() = v.getAnAccess() }
 
 /** `e` is an expression that (may) dereference `v`. */
 predicate isDerefExpr(Expr e, StackVariable v) {
@@ -54,8 +45,22 @@ class UseAfterFreeReachability extends StackVariableReachability {
   override predicate isSink(ControlFlowNode node, StackVariable v) { isDerefExpr(node, v) }
 
   override predicate isBarrier(ControlFlowNode node, StackVariable v) {
-    definitionBarrier(v, node) or
+    definitionBarrier(v, node)
+    or
     isFreeExpr(node, v)
+    or
+    exists(GuardCondition guard, ControlFlowNode defNode, boolean testIsTrue, SsaDefinition def |
+      // `node` may use the definition provided by `defNode`
+      def.getAUse(v) = node and
+      def.getAnUltimateDefiningValue(v) = defNode and
+      // `guard` controls the execution of `node`
+      guard.controls(node.getBasicBlock(), testIsTrue) and
+      // An equivalent guard controls the execution of `defNode`
+      globalValueNumber(guard)
+          .getAnExpr()
+          .(GuardCondition)
+          .controls(defNode.getBasicBlock(), testIsTrue)
+    )
   }
 }
 
