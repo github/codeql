@@ -56,6 +56,7 @@ private AstNode parent(AstNode child) {
   not child instanceof VariableScope
 }
 
+pragma[nomagic]
 VariableScope scopeOf(AstNode n) { result = parent*(n.getParent()) }
 
 private string getName(Identifier i) {

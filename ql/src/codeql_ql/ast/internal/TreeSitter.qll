@@ -438,6 +438,273 @@ module Generated {
     override AstNode getAFieldOrChild() { datatype_branches_child(this, _, result) }
   }
 
+  /** A class representing `db_annotation` nodes. */
+  class DbAnnotation extends @db_annotation, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "DbAnnotation" }
+
+    /** Gets the location of this element. */
+    override Location getLocation() { db_annotation_def(this, result) }
+
+    /** Gets the node corresponding to the field `argsAnnotation`. */
+    DbArgsAnnotation getArgsAnnotation() { db_annotation_args_annotation(this, result) }
+
+    /** Gets the node corresponding to the field `simpleAnnotation`. */
+    AnnotName getSimpleAnnotation() { db_annotation_simple_annotation(this, result) }
+
+    /** Gets a field or child node of this node. */
+    override AstNode getAFieldOrChild() {
+      db_annotation_args_annotation(this, result) or db_annotation_simple_annotation(this, result)
+    }
+  }
+
+  /** A class representing `db_argsAnnotation` nodes. */
+  class DbArgsAnnotation extends @db_args_annotation, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "DbArgsAnnotation" }
+
+    /** Gets the location of this element. */
+    override Location getLocation() { db_args_annotation_def(this, _, result) }
+
+    /** Gets the node corresponding to the field `name`. */
+    AnnotName getName() { db_args_annotation_def(this, result, _) }
+
+    SimpleId getChild(int i) { db_args_annotation_child(this, i, result) }
+
+    /** Gets a field or child node of this node. */
+    override AstNode getAFieldOrChild() {
+      db_args_annotation_def(this, result, _) or db_args_annotation_child(this, _, result)
+    }
+  }
+
+  /** A class representing `db_boolean` tokens. */
+  class DbBoolean extends @token_db_boolean, Token {
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "DbBoolean" }
+  }
+
+  /** A class representing `db_branch` nodes. */
+  class DbBranch extends @db_branch, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "DbBranch" }
+
+    /** Gets the location of this element. */
+    override Location getLocation() { db_branch_def(this, result) }
+
+    /** Gets the node corresponding to the field `qldoc`. */
+    Qldoc getQldoc() { db_branch_qldoc(this, result) }
+
+    AstNode getChild(int i) { db_branch_child(this, i, result) }
+
+    /** Gets a field or child node of this node. */
+    override AstNode getAFieldOrChild() {
+      db_branch_qldoc(this, result) or db_branch_child(this, _, result)
+    }
+  }
+
+  /** A class representing `db_case` tokens. */
+  class DbCase extends @token_db_case, Token {
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "DbCase" }
+  }
+
+  /** A class representing `db_caseDecl` nodes. */
+  class DbCaseDecl extends @db_case_decl, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "DbCaseDecl" }
+
+    /** Gets the location of this element. */
+    override Location getLocation() { db_case_decl_def(this, _, _, result) }
+
+    /** Gets the node corresponding to the field `base`. */
+    Dbtype getBase() { db_case_decl_def(this, result, _, _) }
+
+    /** Gets the node corresponding to the field `discriminator`. */
+    SimpleId getDiscriminator() { db_case_decl_def(this, _, result, _) }
+
+    AstNode getChild(int i) { db_case_decl_child(this, i, result) }
+
+    /** Gets a field or child node of this node. */
+    override AstNode getAFieldOrChild() {
+      db_case_decl_def(this, result, _, _) or
+      db_case_decl_def(this, _, result, _) or
+      db_case_decl_child(this, _, result)
+    }
+  }
+
+  /** A class representing `db_colType` nodes. */
+  class DbColType extends @db_col_type, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "DbColType" }
+
+    /** Gets the location of this element. */
+    override Location getLocation() { db_col_type_def(this, _, result) }
+
+    AstNode getChild() { db_col_type_def(this, result, _) }
+
+    /** Gets a field or child node of this node. */
+    override AstNode getAFieldOrChild() { db_col_type_def(this, result, _) }
+  }
+
+  /** A class representing `db_column` nodes. */
+  class DbColumn extends @db_column, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "DbColumn" }
+
+    /** Gets the location of this element. */
+    override Location getLocation() { db_column_def(this, _, _, _, result) }
+
+    /** Gets the node corresponding to the field `colName`. */
+    SimpleId getColName() { db_column_def(this, result, _, _, _) }
+
+    /** Gets the node corresponding to the field `colType`. */
+    DbColType getColType() { db_column_def(this, _, result, _, _) }
+
+    /** Gets the node corresponding to the field `isRef`. */
+    DbRef getIsRef() { db_column_is_ref(this, result) }
+
+    /** Gets the node corresponding to the field `isUnique`. */
+    DbUnique getIsUnique() { db_column_is_unique(this, result) }
+
+    /** Gets the node corresponding to the field `qldoc`. */
+    Qldoc getQldoc() { db_column_qldoc(this, result) }
+
+    /** Gets the node corresponding to the field `reprType`. */
+    DbReprType getReprType() { db_column_def(this, _, _, result, _) }
+
+    /** Gets a field or child node of this node. */
+    override AstNode getAFieldOrChild() {
+      db_column_def(this, result, _, _, _) or
+      db_column_def(this, _, result, _, _) or
+      db_column_is_ref(this, result) or
+      db_column_is_unique(this, result) or
+      db_column_qldoc(this, result) or
+      db_column_def(this, _, _, result, _)
+    }
+  }
+
+  /** A class representing `db_date` tokens. */
+  class DbDate extends @token_db_date, Token {
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "DbDate" }
+  }
+
+  /** A class representing `db_entry` nodes. */
+  class DbEntry extends @db_entry, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "DbEntry" }
+
+    /** Gets the location of this element. */
+    override Location getLocation() { db_entry_def(this, _, result) }
+
+    AstNode getChild() { db_entry_def(this, result, _) }
+
+    /** Gets a field or child node of this node. */
+    override AstNode getAFieldOrChild() { db_entry_def(this, result, _) }
+  }
+
+  /** A class representing `db_float` tokens. */
+  class DbFloat extends @token_db_float, Token {
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "DbFloat" }
+  }
+
+  /** A class representing `db_int` tokens. */
+  class DbInt extends @token_db_int, Token {
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "DbInt" }
+  }
+
+  /** A class representing `db_ref` tokens. */
+  class DbRef extends @token_db_ref, Token {
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "DbRef" }
+  }
+
+  /** A class representing `db_reprType` nodes. */
+  class DbReprType extends @db_repr_type, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "DbReprType" }
+
+    /** Gets the location of this element. */
+    override Location getLocation() { db_repr_type_def(this, result) }
+
+    AstNode getChild(int i) { db_repr_type_child(this, i, result) }
+
+    /** Gets a field or child node of this node. */
+    override AstNode getAFieldOrChild() { db_repr_type_child(this, _, result) }
+  }
+
+  /** A class representing `db_string` tokens. */
+  class DbString extends @token_db_string, Token {
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "DbString" }
+  }
+
+  /** A class representing `db_table` nodes. */
+  class DbTable extends @db_table, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "DbTable" }
+
+    /** Gets the location of this element. */
+    override Location getLocation() { db_table_def(this, _, result) }
+
+    /** Gets the node corresponding to the field `tableName`. */
+    DbTableName getTableName() { db_table_def(this, result, _) }
+
+    AstNode getChild(int i) { db_table_child(this, i, result) }
+
+    /** Gets a field or child node of this node. */
+    override AstNode getAFieldOrChild() {
+      db_table_def(this, result, _) or db_table_child(this, _, result)
+    }
+  }
+
+  /** A class representing `db_tableName` nodes. */
+  class DbTableName extends @db_table_name, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "DbTableName" }
+
+    /** Gets the location of this element. */
+    override Location getLocation() { db_table_name_def(this, _, result) }
+
+    SimpleId getChild() { db_table_name_def(this, result, _) }
+
+    /** Gets a field or child node of this node. */
+    override AstNode getAFieldOrChild() { db_table_name_def(this, result, _) }
+  }
+
+  /** A class representing `db_unionDecl` nodes. */
+  class DbUnionDecl extends @db_union_decl, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "DbUnionDecl" }
+
+    /** Gets the location of this element. */
+    override Location getLocation() { db_union_decl_def(this, _, result) }
+
+    /** Gets the node corresponding to the field `base`. */
+    Dbtype getBase() { db_union_decl_def(this, result, _) }
+
+    Dbtype getChild(int i) { db_union_decl_child(this, i, result) }
+
+    /** Gets a field or child node of this node. */
+    override AstNode getAFieldOrChild() {
+      db_union_decl_def(this, result, _) or db_union_decl_child(this, _, result)
+    }
+  }
+
+  /** A class representing `db_unique` tokens. */
+  class DbUnique extends @token_db_unique, Token {
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "DbUnique" }
+  }
+
+  /** A class representing `db_varchar` tokens. */
+  class DbVarchar extends @token_db_varchar, Token {
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "DbVarchar" }
+  }
+
   /** A class representing `dbtype` tokens. */
   class Dbtype extends @token_dbtype, Token {
     /** Gets the name of the primary QL class for this element. */
@@ -995,7 +1262,7 @@ module Generated {
     /** Gets the location of this element. */
     override Location getLocation() { ql_def(this, result) }
 
-    ModuleMember getChild(int i) { ql_child(this, i, result) }
+    AstNode getChild(int i) { ql_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
     override AstNode getAFieldOrChild() { ql_child(this, _, result) }
@@ -1344,5 +1611,31 @@ module Generated {
 
     /** Gets a field or child node of this node. */
     override AstNode getAFieldOrChild() { variable_def(this, result, _) }
+  }
+
+  /** A class representing `yaml_entry` nodes. */
+  class YamlEntry extends @yaml_entry, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "YamlEntry" }
+
+    /** Gets the location of this element. */
+    override Location getLocation() { yaml_entry_def(this, _, _, result) }
+
+    /** Gets the node corresponding to the field `key`. */
+    SimpleId getKey() { yaml_entry_def(this, result, _, _) }
+
+    /** Gets the node corresponding to the field `value`. */
+    YamlValue getValue() { yaml_entry_def(this, _, result, _) }
+
+    /** Gets a field or child node of this node. */
+    override AstNode getAFieldOrChild() {
+      yaml_entry_def(this, result, _, _) or yaml_entry_def(this, _, result, _)
+    }
+  }
+
+  /** A class representing `yaml_value` tokens. */
+  class YamlValue extends @token_yaml_value, Token {
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "YamlValue" }
   }
 }

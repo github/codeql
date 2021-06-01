@@ -82,7 +82,10 @@ class TopLevel extends TTopLevel, AstNode {
    */
   ModuleMember getAMember() { result = getMember(_) }
 
-  ModuleMember getMember(int i) { toGenerated(result) = file.getChild(i).getChild(_) }
+  /** Gets the `i`'th member of this top-level module. */
+  ModuleMember getMember(int i) {
+    toGenerated(result) = file.getChild(i).(Generated::ModuleMember).getChild(_)
+  }
 
   /** Gets a top-level import in this module. */
   Import getAnImport() { result = this.getAMember() }
@@ -119,7 +122,7 @@ class TopLevel extends TTopLevel, AstNode {
 
   override string getAPrimaryQlClass() { result = "TopLevel" }
 
-  override QLDoc getQLDoc() { toGenerated(result) = file.getChild(0).getChild(0) }
+  override QLDoc getQLDoc() { result = this.getMember(0) }
 }
 
 class QLDoc extends TQLDoc, AstNode {
