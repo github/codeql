@@ -1,3 +1,5 @@
+/** Definitions related to the Spring Object/XML Marshalling library. */
+
 import java
 
 /**
