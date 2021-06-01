@@ -291,12 +291,12 @@ datatype_branches_def(
 
 db_annotation_args_annotation(
   unique int db_annotation: @db_annotation ref,
-  unique int argsAnnotation: @db_args_annotation ref
+  unique int args_annotation: @db_args_annotation ref
 );
 
 db_annotation_simple_annotation(
   unique int db_annotation: @db_annotation ref,
-  unique int simpleAnnotation: @token_annot_name ref
+  unique int simple_annotation: @token_annot_name ref
 );
 
 db_annotation_def(
@@ -362,12 +362,12 @@ db_col_type_def(
 
 db_column_is_ref(
   unique int db_column: @db_column ref,
-  unique int isRef: @token_db_ref ref
+  unique int is_ref: @token_db_ref ref
 );
 
 db_column_is_unique(
   unique int db_column: @db_column ref,
-  unique int isUnique: @token_db_unique ref
+  unique int is_unique: @token_db_unique ref
 );
 
 db_column_qldoc(
@@ -452,7 +452,7 @@ disjunction_def(
 
 expr_aggregate_body_order_bys(
   unique int expr_aggregate_body: @expr_aggregate_body ref,
-  unique int orderBys: @order_bys ref
+  unique int order_bys: @order_bys ref
 );
 
 expr_aggregate_body_def(
@@ -479,7 +479,7 @@ field_def(
 
 full_aggregate_body_as_exprs(
   unique int full_aggregate_body: @full_aggregate_body ref,
-  unique int asExprs: @as_exprs ref
+  unique int as_exprs: @as_exprs ref
 );
 
 @full_aggregate_body_guard_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @variable
@@ -491,7 +491,7 @@ full_aggregate_body_guard(
 
 full_aggregate_body_order_bys(
   unique int full_aggregate_body: @full_aggregate_body ref,
-  unique int orderBys: @order_bys ref
+  unique int order_bys: @order_bys ref
 );
 
 #keyset[full_aggregate_body, index]
@@ -974,7 +974,7 @@ unary_expr_def(
 unqual_agg_body_as_exprs(
   int unqual_agg_body: @unqual_agg_body ref,
   int index: int ref,
-  unique int asExprs: @unqual_agg_body_asExprs_type ref
+  unique int as_exprs: @unqual_agg_body_asExprs_type ref
 );
 
 @unqual_agg_body_guard_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @variable

@@ -70,9 +70,15 @@ fn name_for_field_or_child(name: &Option<String>) -> String {
 pub enum Storage {
     /// the field is stored as a column in the parent table
     Column { name: String },
-    /// the field is stored in a link table, and may or may not have an
-    /// associated index column
-    Table { name: String, has_index: bool },
+    /// the field is stored in a link table
+    Table {
+        /// the name of the table
+        name: String,
+        /// the name of the column for the field in the dbscheme
+        column_name: String,
+        /// does it have an associated index column?
+        has_index: bool,
+    },
 }
 
 pub fn read_node_types(node_types_path: &Path) -> std::io::Result<NodeTypeMap> {
@@ -206,12 +212,11 @@ fn add_field(
     token_kinds: &Set<TypeName>,
 ) {
     let parent_flattened_name = node_type_name(&parent_type_name.kind, parent_type_name.named);
+    let column_name = escape_name(&name_for_field_or_child(&field_name));
     let storage = if !field_info.multiple && field_info.required {
         // This field must appear exactly once, so we add it as
         // a column to the main table for the node type.
-        Storage::Column {
-            name: escape_name(&name_for_field_or_child(&field_name)),
-        }
+        Storage::Column { name: column_name }
     } else {
         // Put the field in an auxiliary table.
         let has_index = field_info.multiple;
@@ -223,6 +228,7 @@ fn add_field(
         Storage::Table {
             has_index,
             name: field_table_name,
+            column_name,
         }
     };
     let converted_types = convert_types(&field_info.types);

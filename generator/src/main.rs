@@ -66,6 +66,7 @@ fn make_field_type<'a>(
 fn add_field_for_table_storage<'a>(
     field: &'a node_types::Field,
     table_name: &'a str,
+    column_name: &'a str,
     has_index: bool,
     nodes: &'a node_types::NodeTypeMap,
 ) -> (dbscheme::Table<'a>, Option<dbscheme::Entry<'a>>) {
@@ -90,10 +91,7 @@ fn add_field_for_table_storage<'a>(
     let field_column = dbscheme::Column {
         unique: true,
         db_type: dbscheme::DbColumnType::Int,
-        name: match &field.name {
-            None => "child",
-            Some(name) => name,
-        },
+        name: column_name,
         ql_type: field_ql_type,
         ql_type_is_ref: true,
     };
@@ -205,9 +203,18 @@ fn convert_nodes<'a>(nodes: &'a node_types::NodeTypeMap) -> Vec<dbscheme::Entry<
                             }
                             main_table.columns.push(field_column);
                         }
-                        node_types::Storage::Table { name, has_index } => {
-                            let (field_table, field_type_entry) =
-                                add_field_for_table_storage(field, name, *has_index, nodes);
+                        node_types::Storage::Table {
+                            name,
+                            has_index,
+                            column_name,
+                        } => {
+                            let (field_table, field_type_entry) = add_field_for_table_storage(
+                                field,
+                                name,
+                                column_name,
+                                *has_index,
+                                nodes,
+                            );
                             if let Some(field_type_entry) = field_type_entry {
                                 entries.push(field_type_entry);
                             }
