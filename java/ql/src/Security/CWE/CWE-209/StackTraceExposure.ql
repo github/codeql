@@ -109,7 +109,7 @@ predicate printsStackExternally(MethodAccess call, Expr stackTrace) {
 /**
  * A stringified stack trace flows to an external sink.
  */
-predicate stringifiedStackFlowsExternally(XssSink externalExpr, Expr stackTrace) {
+predicate stringifiedStackFlowsExternally(DataFlow::Node externalExpr, Expr stackTrace) {
   exists(MethodAccess stackTraceString, StackTraceStringToHTTPResponseSinkFlowConfig conf |
     stackTraceExpr(stackTrace, stackTraceString) and
     conf.hasFlow(DataFlow::exprNode(stackTraceString), externalExpr)
@@ -127,21 +127,24 @@ class GetMessageFlowSource extends MethodAccess {
   }
 }
 
-class GetMessageFlowSourceToXssSinkFlowConfig extends TaintTracking::Configuration {
-  GetMessageFlowSourceToXssSinkFlowConfig() {
-    this = "StackTraceExposure::GetMessageFlowSourceToXssSinkFlowConfig"
+class GetMessageFlowSourceToHTTPResponseSinkFlowConfig extends TaintTracking::Configuration {
+  GetMessageFlowSourceToHTTPResponseSinkFlowConfig() {
+    this = "StackTraceExposure::GetMessageFlowSourceToHTTPResponseSinkFlowConfig"
   }
 
   override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof GetMessageFlowSource }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof XssSink }
+  override predicate isSink(DataFlow::Node sink) {
+    sink instanceof XssSink or
+    sink instanceof InformationLeakSink
+  }
 }
 
 /**
  * A call to `getMessage()` that then flows to a servlet response.
  */
-predicate getMessageFlowsExternally(XssSink externalExpr, GetMessageFlowSource getMessage) {
-  any(GetMessageFlowSourceToXssSinkFlowConfig conf)
+predicate getMessageFlowsExternally(DataFlow::Node externalExpr, GetMessageFlowSource getMessage) {
+  any(GetMessageFlowSourceToHTTPResponseSinkFlowConfig conf)
       .hasFlow(DataFlow::exprNode(getMessage), externalExpr)
 }
 
