@@ -1073,7 +1073,10 @@ module SSAConsistency {
       locationCount > 1 and
       func = operand.getEnclosingIRFunction() and
       funcText = Language::getIdentityString(func.getFunction()) and
-      message = "Operand has " + locationCount.toString() + " memory accesses in function '$@'."
+      message =
+        operand.getUse().toString() + " " + "Operand has " + locationCount.toString() +
+          " memory accesses in function '$@': " +
+          strictconcat(Alias::getOperandMemoryLocation(operand).toString(), ", ")
     )
   }
 
