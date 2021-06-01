@@ -1,8 +1,8 @@
 methodCallTargets
 | methods.cs:19:13:19:22 | call to method Ext0 | methods.cs:8:28:8:34 | Ext0 | Ext0<int>(string, int) |
 | methods.cs:20:13:20:27 | call to method Ext0 | methods.cs:8:28:8:34 | Ext0 | Ext0<int>(string, int) |
-| methods.cs:21:13:21:30 | call to method Ext0 | methods.cs:8:28:8:34 | Ext0 | Ext0<double>(double) |
-| methods.cs:22:13:22:33 | call to method Ext0 | methods.cs:8:28:8:34 | Ext0 | Ext0<object>(object) |
+| methods.cs:21:13:21:30 | call to method Ext0 | methods.cs:8:28:8:34 | Ext0 | Ext0<double>(string, double) |
+| methods.cs:22:13:22:33 | call to method Ext0 | methods.cs:8:28:8:34 | Ext0 | Ext0<object>(string, object) |
 | methods.cs:23:13:23:34 | call to method Ext0 | methods.cs:8:28:8:34 | Ext0 | Ext0<int>(string, int) |
 | methods.cs:24:13:24:39 | call to method Ext0 | methods.cs:8:28:8:34 | Ext0 | Ext0<int>(string, int) |
 | methods.cs:25:13:25:42 | call to method Ext0 | methods.cs:8:28:8:34 | Ext0 | Ext0<double>(string, double) |
@@ -22,8 +22,8 @@ methodCallTargets
 genericMethodCallTargets
 | methods.cs:19:13:19:22 | call to method Ext0 | methods.cs:8:28:8:34 | Ext0 | Ext0<int>(string, int) | methods.cs:8:28:8:34 | Ext0 | Ext0<T>(string, T) |
 | methods.cs:20:13:20:27 | call to method Ext0 | methods.cs:8:28:8:34 | Ext0 | Ext0<int>(string, int) | methods.cs:8:28:8:34 | Ext0 | Ext0<T>(string, T) |
-| methods.cs:21:13:21:30 | call to method Ext0 | methods.cs:8:28:8:34 | Ext0 | Ext0<double>(double) | methods.cs:8:28:8:34 | Ext0 | Ext0<T>(string, T) |
-| methods.cs:22:13:22:33 | call to method Ext0 | methods.cs:8:28:8:34 | Ext0 | Ext0<object>(object) | methods.cs:8:28:8:34 | Ext0 | Ext0<T>(string, T) |
+| methods.cs:21:13:21:30 | call to method Ext0 | methods.cs:8:28:8:34 | Ext0 | Ext0<double>(string, double) | methods.cs:8:28:8:34 | Ext0 | Ext0<T>(string, T) |
+| methods.cs:22:13:22:33 | call to method Ext0 | methods.cs:8:28:8:34 | Ext0 | Ext0<object>(string, object) | methods.cs:8:28:8:34 | Ext0 | Ext0<T>(string, T) |
 | methods.cs:23:13:23:34 | call to method Ext0 | methods.cs:8:28:8:34 | Ext0 | Ext0<int>(string, int) | methods.cs:8:28:8:34 | Ext0 | Ext0<T>(string, T) |
 | methods.cs:24:13:24:39 | call to method Ext0 | methods.cs:8:28:8:34 | Ext0 | Ext0<int>(string, int) | methods.cs:8:28:8:34 | Ext0 | Ext0<T>(string, T) |
 | methods.cs:25:13:25:42 | call to method Ext0 | methods.cs:8:28:8:34 | Ext0 | Ext0<double>(string, double) | methods.cs:8:28:8:34 | Ext0 | Ext0<T>(string, T) |
