@@ -83,20 +83,20 @@ if True:
 
     # `app.add_routes` with list
     class MyWebView1(web.View):
-        async def get(self):  # $ MISSING: requestHandler
+        async def get(self):  # $ requestHandler
             return web.Response(text="MyWebView1.get")
 
     app.add_routes([
-        web.view("/MyWebView1", MyWebView1)   # $ MISSING: routeSetup
+        web.view("/MyWebView1", MyWebView1)   # $ routeSetup="/MyWebView1"
     ])
 
 
     # using decorator
     routes = web.RouteTableDef()
 
-    @routes.view("/MyWebView2")  # $ MISSING: routeSetup
+    @routes.view("/MyWebView2")  # $ routeSetup="/MyWebView2"
     class MyWebView2(web.View):
-        async def get(self):  # $ MISSING: requestHandler
+        async def get(self):  # $ requestHandler
             return web.Response(text="MyWebView2.get")
 
     app.add_routes(routes)
@@ -104,23 +104,23 @@ if True:
 
     # `app.router.add_view`
     class MyWebView3(web.View):
-        async def get(self):  # $ MISSING: requestHandler
+        async def get(self):  # $ requestHandler
             return web.Response(text="MyWebView3.get")
 
-    app.router.add_view("/MyWebView3", MyWebView3)  # $ MISSING: routeSetup
+    app.router.add_view("/MyWebView3", MyWebView3)  # $ routeSetup="/MyWebView3"
 
     # no route-setup
     class MyWebViewNoRoute(web.View):
-        async def get(self):  # $ MISSING: requestHandler
+        async def get(self):  # $ requestHandler
             return web.Response(text="MyWebViewNoRoute.get")
 
     if len(__name__) < 0: # avoid running, but fool analysis to not consider dead code
         # no explicit-view subclass (but route-setup)
         class MyWebViewNoSubclassButRoute(somelib.someclass):
-            async def get(self):  # $ MISSING: requestHandler
+            async def get(self):  # $ requestHandler
                 return web.Response(text="MyWebViewNoSubclassButRoute.get")
 
-        app.router.add_view("/MyWebViewNoSubclassButRoute", MyWebViewNoSubclassButRoute)  # $ MISSING: routeSetup
+        app.router.add_view("/MyWebViewNoSubclassButRoute", MyWebViewNoSubclassButRoute)  # $ routeSetup="/MyWebViewNoSubclassButRoute"
 
 ## =================== ##
 ## "Routed parameters" ##
