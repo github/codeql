@@ -150,5 +150,4 @@ class HardcodedCredentialsConfiguration extends DataFlow::Configuration {
 from DataFlow::PathNode source, DataFlow::PathNode sink, HardcodedCredentialsConfiguration conf
 where conf.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "Use of $@.", source.getNode(), "hardcoded credentials"
-
 // TODO: debug duplicate rows
