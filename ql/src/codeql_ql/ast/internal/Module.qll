@@ -28,7 +28,7 @@ private class File_ extends FileOrModule, TFile {
 
   override ContainerOrModule getEnclosing() { result = TFolder(f.getParentContainer()) }
 
-  override string getName() { result = f.getStem() }
+  override string getName() { result = f.getStem().replaceAll(" ", "_") }
 
   override string toString() { result = f.toString() }
 
@@ -48,9 +48,13 @@ private class Folder_ extends ContainerOrModule, TFolder {
 
   Folder_() { this = TFolder(f) }
 
-  override ContainerOrModule getEnclosing() { result = TFolder(f.getParentContainer()) }
+  override ContainerOrModule getEnclosing() {
+    result = TFolder(f.getParentContainer()) and
+    // if this the the root, then we stop.
+    not exists(f.getFile("qlpack.yml"))
+  }
 
-  override string getName() { result = f.getStem() }
+  override string getName() { result = f.getStem().replaceAll(" ", "_") }
 
   override string toString() { result = f.toString() }
 
@@ -63,6 +67,11 @@ private class Folder_ extends ContainerOrModule, TFolder {
     endline = 0 and
     endcolumn = 0
   }
+
+  /**
+   * Gets the folder that this IPA type represents.
+   */
+  Folder getFolder() { result = f }
 }
 
 // TODO: Use `AstNode::getParent` once it is total
@@ -108,6 +117,7 @@ private predicate resolveQualifiedName(Import imp, ContainerOrModule m, int i) {
       exists(Container c, Container parent |
         // should ideally look at `qlpack.yml` files
         parent = imp.getLocation().getFile().getParentContainer+() and
+        exists(parent.getFile("qlpack.yml")) and
         c.getParentContainer() = parent and
         q = m.getName()
       |
@@ -116,7 +126,17 @@ private predicate resolveQualifiedName(Import imp, ContainerOrModule m, int i) {
         m = TFolder(c)
       )
       or
-      definesModule(getEnclosingModule(imp).getEnclosing*(), q, m, _)
+      q = imp.getQualifiedName(i) and
+      exists(ContainerOrModule container | container = getEnclosingModule(imp).getEnclosing+() |
+        definesModule(container, q, m, _) and
+        (
+          exists(container.(Folder_).getFolder().getFile("qlpack.yml")) or
+          container.(Folder_).getFolder() = imp.getLocation().getFile().getParentContainer() or
+          not container instanceof Folder_
+        )
+      )
+      or
+      definesModule(getEnclosingModule(imp), q, m, _)
     )
     or
     exists(Folder_ mid |
@@ -166,12 +186,20 @@ private module Cached {
   predicate resolveModuleExpr(ModuleExpr me, FileOrModule m) {
     not m = TFile(any(File f | f.getExtension() = "ql")) and
     not exists(me.getQualifier()) and
-    definesModule(getEnclosingModule(me).getEnclosing*(), me.getName(), m, _)
+    exists(ContainerOrModule enclosing, string name | resolveModuleExprHelper(me, enclosing, name) |
+      definesModule(enclosing.getEnclosing*(), name, m, _)
+    )
     or
     exists(FileOrModule mid |
       resolveModuleExpr(me.getQualifier(), mid) and
       definesModule(mid, me.getName(), m, true)
     )
+  }
+
+  pragma[noinline]
+  private predicate resolveModuleExprHelper(ModuleExpr me, ContainerOrModule enclosing, string name) {
+    enclosing = getEnclosingModule(me) and
+    name = me.getName()
   }
 }
 

@@ -289,6 +289,156 @@ datatype_branches_def(
   int loc: @location ref
 );
 
+db_annotation_args_annotation(
+  unique int db_annotation: @db_annotation ref,
+  unique int argsAnnotation: @db_args_annotation ref
+);
+
+db_annotation_simple_annotation(
+  unique int db_annotation: @db_annotation ref,
+  unique int simpleAnnotation: @token_annot_name ref
+);
+
+db_annotation_def(
+  unique int id: @db_annotation,
+  int loc: @location ref
+);
+
+#keyset[db_args_annotation, index]
+db_args_annotation_child(
+  int db_args_annotation: @db_args_annotation ref,
+  int index: int ref,
+  unique int child: @token_simple_id ref
+);
+
+db_args_annotation_def(
+  unique int id: @db_args_annotation,
+  int name: @token_annot_name ref,
+  int loc: @location ref
+);
+
+db_branch_qldoc(
+  unique int db_branch: @db_branch ref,
+  unique int qldoc: @token_qldoc ref
+);
+
+@db_branch_child_type = @token_dbtype | @token_integer
+
+#keyset[db_branch, index]
+db_branch_child(
+  int db_branch: @db_branch ref,
+  int index: int ref,
+  unique int child: @db_branch_child_type ref
+);
+
+db_branch_def(
+  unique int id: @db_branch,
+  int loc: @location ref
+);
+
+@db_caseDecl_child_type = @db_branch | @token_db_case
+
+#keyset[db_case_decl, index]
+db_case_decl_child(
+  int db_case_decl: @db_case_decl ref,
+  int index: int ref,
+  unique int child: @db_caseDecl_child_type ref
+);
+
+db_case_decl_def(
+  unique int id: @db_case_decl,
+  int base: @token_dbtype ref,
+  int discriminator: @token_simple_id ref,
+  int loc: @location ref
+);
+
+@db_colType_child_type = @token_db_boolean | @token_db_date | @token_db_float | @token_db_int | @token_db_string | @token_dbtype
+
+db_col_type_def(
+  unique int id: @db_col_type,
+  int child: @db_colType_child_type ref,
+  int loc: @location ref
+);
+
+db_column_is_ref(
+  unique int db_column: @db_column ref,
+  unique int isRef: @token_db_ref ref
+);
+
+db_column_is_unique(
+  unique int db_column: @db_column ref,
+  unique int isUnique: @token_db_unique ref
+);
+
+db_column_qldoc(
+  unique int db_column: @db_column ref,
+  unique int qldoc: @token_qldoc ref
+);
+
+db_column_def(
+  unique int id: @db_column,
+  int col_name: @token_simple_id ref,
+  int col_type: @db_col_type ref,
+  int repr_type: @db_repr_type ref,
+  int loc: @location ref
+);
+
+@db_entry_child_type = @db_case_decl | @db_table | @db_union_decl | @token_qldoc
+
+db_entry_def(
+  unique int id: @db_entry,
+  int child: @db_entry_child_type ref,
+  int loc: @location ref
+);
+
+@db_reprType_child_type = @token_db_boolean | @token_db_date | @token_db_float | @token_db_int | @token_db_string | @token_db_varchar | @token_integer
+
+#keyset[db_repr_type, index]
+db_repr_type_child(
+  int db_repr_type: @db_repr_type ref,
+  int index: int ref,
+  unique int child: @db_reprType_child_type ref
+);
+
+db_repr_type_def(
+  unique int id: @db_repr_type,
+  int loc: @location ref
+);
+
+@db_table_child_type = @db_annotation | @db_column
+
+#keyset[db_table, index]
+db_table_child(
+  int db_table: @db_table ref,
+  int index: int ref,
+  unique int child: @db_table_child_type ref
+);
+
+db_table_def(
+  unique int id: @db_table,
+  int table_name: @db_table_name ref,
+  int loc: @location ref
+);
+
+db_table_name_def(
+  unique int id: @db_table_name,
+  int child: @token_simple_id ref,
+  int loc: @location ref
+);
+
+#keyset[db_union_decl, index]
+db_union_decl_child(
+  int db_union_decl: @db_union_decl ref,
+  int index: int ref,
+  unique int child: @token_dbtype ref
+);
+
+db_union_decl_def(
+  unique int id: @db_union_decl,
+  int base: @token_dbtype ref,
+  int loc: @location ref
+);
+
 @disjunction_left_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @variable
 
 @disjunction_right_type = @add_expr | @aggregate | @call_or_unqual_agg_expr | @comp_term | @conjunction | @disjunction | @expr_annotation | @if_term | @implication | @in_expr | @instance_of | @literal | @mul_expr | @negation | @par_expr | @prefix_cast | @qualified_expr | @quantified | @range | @set_literal | @special_call | @super_ref | @unary_expr | @variable
@@ -616,11 +766,13 @@ prefix_cast_def(
   int loc: @location ref
 );
 
+@ql_child_type = @db_entry | @module_member | @yaml_entry
+
 #keyset[ql, index]
 ql_child(
   int ql: @ql ref,
   int index: int ref,
-  unique int child: @module_member ref
+  unique int child: @ql_child_type ref
 );
 
 ql_def(
@@ -872,6 +1024,13 @@ variable_def(
   int loc: @location ref
 );
 
+yaml_entry_def(
+  unique int id: @yaml_entry,
+  int key__: @token_simple_id ref,
+  int value: @token_yaml_value ref,
+  int loc: @location ref
+);
+
 tokeninfo(
   unique int id: @token,
   int kind: int ref,
@@ -890,29 +1049,39 @@ case @token.kind of
 | 5 = @token_class_name
 | 6 = @token_closure
 | 7 = @token_compop
-| 8 = @token_dbtype
-| 9 = @token_direction
-| 10 = @token_empty
-| 11 = @token_false
-| 12 = @token_float
-| 13 = @token_integer
-| 14 = @token_line_comment
-| 15 = @token_literal_id
-| 16 = @token_mulop
-| 17 = @token_predicate
-| 18 = @token_predicate_name
-| 19 = @token_primitive_type
-| 20 = @token_qldoc
-| 21 = @token_quantifier
-| 22 = @token_result
-| 23 = @token_simple_id
-| 24 = @token_special_id
-| 25 = @token_string
-| 26 = @token_super
-| 27 = @token_this
-| 28 = @token_true
-| 29 = @token_underscore
-| 30 = @token_unop
+| 8 = @token_db_boolean
+| 9 = @token_db_case
+| 10 = @token_db_date
+| 11 = @token_db_float
+| 12 = @token_db_int
+| 13 = @token_db_ref
+| 14 = @token_db_string
+| 15 = @token_db_unique
+| 16 = @token_db_varchar
+| 17 = @token_dbtype
+| 18 = @token_direction
+| 19 = @token_empty
+| 20 = @token_false
+| 21 = @token_float
+| 22 = @token_integer
+| 23 = @token_line_comment
+| 24 = @token_literal_id
+| 25 = @token_mulop
+| 26 = @token_predicate
+| 27 = @token_predicate_name
+| 28 = @token_primitive_type
+| 29 = @token_qldoc
+| 30 = @token_quantifier
+| 31 = @token_result
+| 32 = @token_simple_id
+| 33 = @token_special_id
+| 34 = @token_string
+| 35 = @token_super
+| 36 = @token_this
+| 37 = @token_true
+| 38 = @token_underscore
+| 39 = @token_unop
+| 40 = @token_yaml_value
 ;
 
 
@@ -933,7 +1102,7 @@ case @diagnostic.severity of
 ;
 
 
-@ast_node = @add_expr | @aggregate | @annot_arg | @annotation | @arityless_predicate_expr | @as_expr | @as_exprs | @body | @bool | @call_body | @call_or_unqual_agg_expr | @charpred | @class_member | @classless_predicate | @comp_term | @conjunction | @dataclass | @datatype | @datatype_branch | @datatype_branches | @disjunction | @expr_aggregate_body | @expr_annotation | @field | @full_aggregate_body | @higher_order_term | @if_term | @implication | @import_directive | @import_module_expr | @in_expr | @instance_of | @literal | @member_predicate | @module | @module_alias_body | @module_expr | @module_member | @module_name | @mul_expr | @negation | @order_by | @order_bys | @par_expr | @predicate_alias_body | @predicate_expr | @prefix_cast | @ql | @qual_module_expr | @qualified_expr | @qualified_rhs | @quantified | @range | @select | @set_literal | @special_call | @super_ref | @token | @type_alias_body | @type_expr | @type_union_body | @unary_expr | @unqual_agg_body | @var_decl | @var_name | @variable
+@ast_node = @add_expr | @aggregate | @annot_arg | @annotation | @arityless_predicate_expr | @as_expr | @as_exprs | @body | @bool | @call_body | @call_or_unqual_agg_expr | @charpred | @class_member | @classless_predicate | @comp_term | @conjunction | @dataclass | @datatype | @datatype_branch | @datatype_branches | @db_annotation | @db_args_annotation | @db_branch | @db_case_decl | @db_col_type | @db_column | @db_entry | @db_repr_type | @db_table | @db_table_name | @db_union_decl | @disjunction | @expr_aggregate_body | @expr_annotation | @field | @full_aggregate_body | @higher_order_term | @if_term | @implication | @import_directive | @import_module_expr | @in_expr | @instance_of | @literal | @member_predicate | @module | @module_alias_body | @module_expr | @module_member | @module_name | @mul_expr | @negation | @order_by | @order_bys | @par_expr | @predicate_alias_body | @predicate_expr | @prefix_cast | @ql | @qual_module_expr | @qualified_expr | @qualified_rhs | @quantified | @range | @select | @set_literal | @special_call | @super_ref | @token | @type_alias_body | @type_expr | @type_union_body | @unary_expr | @unqual_agg_body | @var_decl | @var_name | @variable | @yaml_entry
 
 @ast_node_parent = @ast_node | @file
 
