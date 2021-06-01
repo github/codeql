@@ -25,13 +25,13 @@ stubDir = sys.argv[2].rstrip("/")
 
 def check_dir_exists(path):
     if not os.path.isdir(path):
-        print("Directory", path, "does not exist")
+        print(path, "does not exist or is not a directory")
         exit(1)
 
 
 def check_file_exists(path):
     if not os.path.isfile(path):
-        print("File", path, "does not exist")
+        print(path, "does not exist or is not a regular file")
         exit(1)
 
 
@@ -79,18 +79,7 @@ dbDir = os.path.join(testDir, os.path.basename(testDir) + ".testproj")
 
 
 def print_javac_output():
-    logDir = os.path.join(dbDir, "log")
-    if not os.path.isdir(logDir):
-        print("No database logs found")
-        return
-
-    logFile = None
-    for file in os.listdir(logDir):
-        if file.startswith("javac-output"):
-            logFile = os.path.join(logDir, file)
-            break
-    else:
-        print("No javac output found")
+    logFiles = glob.glob(os.path.join(dbDir, "log", "javac-output*"))
 
     print("\nJavac output:\n")
 

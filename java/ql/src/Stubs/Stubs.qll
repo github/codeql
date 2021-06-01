@@ -23,9 +23,7 @@ abstract private class GeneratedType extends RefType {
   private string stubKeyword() {
     this instanceof Interface and result = "interface"
     or
-    this instanceof Class and result = "class" and not this instanceof EnumType
-    or
-    this instanceof EnumType and result = "enum"
+    this instanceof Class and (if this instanceof EnumType then result = "enum" else result = "class")
   }
 
   private string stubAbstractModifier() {
@@ -235,7 +233,7 @@ private string stubGenericArguments(RefType t) {
         concat(int n |
           exists(t.(GenericType).getTypeParameter(n))
         |
-          t.(GenericType).getTypeParameter(n).getName(), "," order by n
+          t.(GenericType).getTypeParameter(n).getName(), ", " order by n
         ) + ">"
   else
     if t instanceof ParameterizedType
@@ -245,7 +243,7 @@ private string stubGenericArguments(RefType t) {
           concat(int n |
             exists(t.(ParameterizedType).getTypeArgument(n))
           |
-            stubTypeName(t.(ParameterizedType).getTypeArgument(n)), "," order by n
+            stubTypeName(t.(ParameterizedType).getTypeArgument(n)), ", " order by n
           ) + ">"
     else result = ""
 }
@@ -258,7 +256,7 @@ private string stubGenericMethodParams(Method m) {
         concat(int n, TypeVariable param |
           param = m.(GenericMethod).getTypeParameter(n)
         |
-          param.getName(), "," order by n
+          param.getName(), ", " order by n
         ) + "> "
   else result = ""
 }
@@ -322,36 +320,30 @@ private string stubEnumConstants(RefType t) {
 private predicate excludedMember(Member m) {
   m instanceof EnumConstant
   or
-  exists(Method c | m = c |
-    c.getDeclaringType() instanceof EnumType and
-    m.hasName(["values", "valueOf"]) and
-    m.isStatic()
-  )
+  m.(Method).getDeclaringType() instanceof EnumType and
+  m.hasName(["values", "valueOf"]) and
+  m.isStatic()
 }
 
 private string stubMember(Member m) {
   if excludedMember(m)
   then result = ""
   else (
-    exists(Method c | m = c |
-      result =
-        "    " + stubModifiers(c) + stubGenericMethodParams(c) + stubTypeName(c.getReturnType()) +
-          " " + c.getName() + "(" + stubParameters(c) + ")" + stubImplementation(c) + "\n"
-    )
+    result =
+      "    " + stubModifiers(m) + stubGenericMethodParams(m) + stubTypeName(m.(Method).getReturnType()) +
+        " " + m.getName() + "(" + stubParameters(m) + ")" + stubImplementation(m) + "\n"
     or
-    exists(Constructor c | m = c |
-      result =
-        "    " + stubModifiers(m) + c.getName() + "(" + stubParameters(c) + ")" +
-          stubImplementation(c) + "\n"
-    )
+    m instanceof Constructor and
+    result =
+      "    " + stubModifiers(m) + m.getName() + "(" + stubParameters(m) + ")" +
+        stubImplementation(m) + "\n"
     or
-    exists(Field f | f = m |
-      result =
-        "    " + stubModifiers(m) + stubTypeName(f.getType()) + " " + f.getName() + " = " +
-          stubDefaultValue(f.getType()) + ";\n"
-    )
+    m instanceof Field and
+    result =
+      "    " + stubModifiers(m) + stubTypeName(m.getType()) + " " + m.getName() + " = " +
+        stubDefaultValue(m.getType()) + ";\n"
     or
-    exists(NestedType nt | nt = m | result = indent(nt.(GeneratedType).getStub()))
+   result = indent(m.(NestedType).(GeneratedType).getStub()))
   )
 }
 
