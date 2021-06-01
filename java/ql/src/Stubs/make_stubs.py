@@ -5,6 +5,7 @@ import os
 import subprocess
 import json
 import glob
+from shutil import copyfile
 
 def print_usage(exit_code=1):
     print("Usage: python3 make_stubs.py testDir stubDir\n",
@@ -34,13 +35,6 @@ def check_file_exists(path):
         print(path, "does not exist or is not a regular file")
         exit(1)
 
-
-def copy_file(src, dest):
-    with open(src) as srcf:
-        with open(dest, "w") as destf:
-            destf.write(srcf.read())
-
-
 check_dir_exists(testDir)
 check_dir_exists(stubDir)
 
@@ -53,14 +47,8 @@ check_file_exists(options1File)
 
 # Does it contain a .ql file and a .java file?
 
-foundJava = False
-foundQL = False
-
-for file in os.listdir(testDir):
-    if file.endswith(".java"):
-        foundJava = True
-    if file.endswith(".ql") or file.endswith(".qlref"):
-        foundQL = True
+foundJava = any(f.endswith(".java") for f in os.listdir(testDir))
+foundQL = any(f.endswith(".ql") or f.endswith(".qlref") for f in os.listdir(testDir))
 
 if not foundQL:
     print("Test directory does not contain .ql files. Please specify a working qltest directory.")
@@ -89,14 +77,16 @@ def print_javac_output():
             b2 = line.find(']', b1+1)
             print(line[b2+2:], end="")
 
+def run(cmd):
+    """Runs the given command, returning the exit code (nonzero on failure)"""
+    print('\nRunning ' + ' '.join(cmd) + '\n')
+    return subprocess.call(cmd)
 
 print("Stubbing qltest in", testDir)
 
-copy_file(options0File, optionsFile)
+copyfile(options0File, optionsFile)
 
-cmd = ['codeql', 'test', 'run', '--keep-databases', testDir]
-print('Running ' + ' '.join(cmd))
-if subprocess.call(cmd):
+if run(['codeql', 'test', 'run', '--keep-databases', testDir]):
     print_javac_output()
     print("codeql test failed. Please fix up the test before proceeding.")
     exit(1)
@@ -105,22 +95,20 @@ if not os.path.isdir(dbDir):
     print("Expected database directory " + dbDir + " not found.")
     exit(1)
 
-cmd = ['codeql', 'query', 'run', os.path.join(
-    javaQueries, 'MinimalStubsFromSource.ql'), '--database', dbDir, '--output', outputBqrsFile]
-print('Running ' + ' '.join(cmd))
-if subprocess.call(cmd):
+if run(['codeql', 'query', 'run', os.path.join(javaQueries, 'MinimalStubsFromSource.ql'), '--database', dbDir, '--output', outputBqrsFile]):
     print('Failed to run the query to generate the stubs.')
     exit(1)
 
-cmd = ['codeql', 'bqrs', 'decode', outputBqrsFile,
-       '--format=json', '--output', outputJsonFile]
-print('Running ' + ' '.join(cmd))
-if subprocess.call(cmd):
+if run(['codeql', 'bqrs', 'decode', outputBqrsFile, '--format=json', '--output', outputJsonFile]):
     print('Failed to convert ' + outputBqrsFile + ' to JSON.')
     exit(1)
 
 with open(outputJsonFile) as f:
     results = json.load(f)
+
+if not '#select' in results or not 'tuples' in results['#select']:
+    print('Unexpected JSON output - no tuples found')
+    exit(1)
 
 for (typ, stub) in results['#select']['tuples']:
     stubFile = os.path.join(stubDir, typ.replace(".", "/") + ".java")
@@ -130,11 +118,9 @@ for (typ, stub) in results['#select']['tuples']:
 
 print("Verifying stub correctness")
 
-copy_file(options1File, optionsFile)
+copyfile(options1File, optionsFile)
 
-cmd = ['codeql', 'test', 'run', testDir]
-print('Running ' + ' '.join(cmd))
-if subprocess.call(cmd):
+if run(['codeql', 'test', 'run', testDir]):
     print_javac_output()
     print('\nTest failed. You may need to fix up the generated stubs.')
     exit(1)
