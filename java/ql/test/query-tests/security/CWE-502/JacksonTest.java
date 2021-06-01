@@ -171,6 +171,21 @@ class UnsafeCatDeserialization {
             mapper.readValue(data, clazz);
         });
     }
+
+    // BAD: an attacker can control both data and type of deserialized object
+    private static void testUnsafeDeserializationWithUnsafeClassAndCustomTypeResolver() throws Exception {
+        JacksonTest.withSocket(input -> {
+            String[] parts = input.split(";");
+            String data = parts[0];
+            String type = parts[1];
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.readValue(data, resolveTypeImpl(type));
+        });
+    }
+
+    private static Class resolveTypeImpl(String type) throws Exception {
+        return Class.forName(type);
+    }
 }
 
 class SaferCatDeserialization {

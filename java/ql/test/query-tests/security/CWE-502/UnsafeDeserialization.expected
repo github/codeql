@@ -89,6 +89,7 @@ edges
 | JacksonTest.java:21:28:21:35 | jexlExpr : String | JacksonTest.java:147:32:147:37 | string : String |
 | JacksonTest.java:21:28:21:35 | jexlExpr : String | JacksonTest.java:156:32:156:37 | string : String |
 | JacksonTest.java:21:28:21:35 | jexlExpr : String | JacksonTest.java:165:32:165:36 | input : String |
+| JacksonTest.java:21:28:21:35 | jexlExpr : String | JacksonTest.java:177:32:177:36 | input : String |
 | JacksonTest.java:73:32:73:37 | string : String | JacksonTest.java:75:30:75:35 | string |
 | JacksonTest.java:82:32:82:37 | string : String | JacksonTest.java:84:30:84:35 | string |
 | JacksonTest.java:91:32:91:37 | string : String | JacksonTest.java:93:30:93:35 | string |
@@ -96,6 +97,7 @@ edges
 | JacksonTest.java:147:32:147:37 | string : String | JacksonTest.java:150:31:150:68 | createParser(...) |
 | JacksonTest.java:156:32:156:37 | string : String | JacksonTest.java:159:32:159:54 | readTree(...) |
 | JacksonTest.java:165:32:165:36 | input : String | JacksonTest.java:171:30:171:33 | data |
+| JacksonTest.java:177:32:177:36 | input : String | JacksonTest.java:182:30:182:33 | data |
 | TestMessageBodyReader.java:20:55:20:78 | entityStream : InputStream | TestMessageBodyReader.java:22:18:22:52 | new ObjectInputStream(...) |
 | TestMessageBodyReader.java:20:55:20:78 | entityStream : InputStream | TestMessageBodyReader.java:22:40:22:51 | entityStream : InputStream |
 | TestMessageBodyReader.java:22:40:22:51 | entityStream : InputStream | TestMessageBodyReader.java:22:18:22:52 | new ObjectInputStream(...) |
@@ -209,6 +211,8 @@ nodes
 | JacksonTest.java:159:32:159:54 | readTree(...) | semmle.label | readTree(...) |
 | JacksonTest.java:165:32:165:36 | input : String | semmle.label | input : String |
 | JacksonTest.java:171:30:171:33 | data | semmle.label | data |
+| JacksonTest.java:177:32:177:36 | input : String | semmle.label | input : String |
+| JacksonTest.java:182:30:182:33 | data | semmle.label | data |
 | TestMessageBodyReader.java:20:55:20:78 | entityStream : InputStream | semmle.label | entityStream : InputStream |
 | TestMessageBodyReader.java:22:18:22:52 | new ObjectInputStream(...) | semmle.label | new ObjectInputStream(...) |
 | TestMessageBodyReader.java:22:40:22:51 | entityStream : InputStream | semmle.label | entityStream : InputStream |
@@ -266,4 +270,5 @@ nodes
 | JacksonTest.java:150:13:150:80 | readValues(...) | JacksonTest.java:19:25:19:47 | getInputStream(...) : InputStream | JacksonTest.java:150:31:150:68 | createParser(...) | Unsafe deserialization of $@. | JacksonTest.java:19:25:19:47 | getInputStream(...) | user input |
 | JacksonTest.java:159:13:159:66 | treeToValue(...) | JacksonTest.java:19:25:19:47 | getInputStream(...) : InputStream | JacksonTest.java:159:32:159:54 | readTree(...) | Unsafe deserialization of $@. | JacksonTest.java:19:25:19:47 | getInputStream(...) | user input |
 | JacksonTest.java:171:13:171:41 | readValue(...) | JacksonTest.java:19:25:19:47 | getInputStream(...) : InputStream | JacksonTest.java:171:30:171:33 | data | Unsafe deserialization of $@. | JacksonTest.java:19:25:19:47 | getInputStream(...) | user input |
+| JacksonTest.java:182:13:182:57 | readValue(...) | JacksonTest.java:19:25:19:47 | getInputStream(...) : InputStream | JacksonTest.java:182:30:182:33 | data | Unsafe deserialization of $@. | JacksonTest.java:19:25:19:47 | getInputStream(...) | user input |
 | TestMessageBodyReader.java:22:18:22:65 | readObject(...) | TestMessageBodyReader.java:20:55:20:78 | entityStream : InputStream | TestMessageBodyReader.java:22:18:22:52 | new ObjectInputStream(...) | Unsafe deserialization of $@. | TestMessageBodyReader.java:20:55:20:78 | entityStream | user input |

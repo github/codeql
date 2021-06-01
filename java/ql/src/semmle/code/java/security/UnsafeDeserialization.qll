@@ -10,6 +10,7 @@ import semmle.code.java.frameworks.YamlBeans
 import semmle.code.java.frameworks.HessianBurlap
 import semmle.code.java.frameworks.Castor
 import semmle.code.java.frameworks.apache.Lang
+import semmle.code.java.Reflection
 
 class ObjectInputStreamReadObjectMethod extends Method {
   ObjectInputStreamReadObjectMethod() {
@@ -246,19 +247,45 @@ private class UnsafeTypeConfig extends TaintTracking2::Configuration {
   }
 
   /**
-   * Holds if `fromNode` to `toNode` is a dataflow step that looks like resolving a class.
-   *
-   * Note any method that returns a `Class` or similar is assumed to propagate taint from all
-   * of its arguments, so methods that accept user-controlled data but sanitize it or use it for some
-   * completely different purpose before returning a `Class` could result in false positives.
+   * Holds if `fromNode` to `toNode` is a dataflow step that resolves a class
+   * or at least looks like resolving a class.
    */
   override predicate isAdditionalTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-    exists(MethodAccess ma, RefType returnType | returnType = ma.getMethod().getReturnType() |
-      returnType instanceof JacksonTypeDescriptorType and
-      ma.getAnArgument() = fromNode.asExpr() and
-      ma = toNode.asExpr()
-    )
+    resolveClassStep(fromNode, toNode) or
+    looksLikeResolveClassStep(fromNode, toNode)
   }
+}
+
+/**
+ * Holds if `fromNode` to `toNode` is a dataflow step that resolves a class.
+ */
+private predicate resolveClassStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
+  exists(ReflectiveClassIdentifierMethodAccess ma |
+    ma.getArgument(0) = fromNode.asExpr() and
+    ma = toNode.asExpr()
+  )
+}
+
+/**
+ * Holds if `fromNode` to `toNode` is a dataflow step that looks like resolving a class.
+ * A method probably resolves a class if it is external, takes a string, returns a type descriptor
+ * and its name contains "resolve", "load", etc.
+ *
+ * Any method call that satisfies the rule above is assumed to propagate taint from its string arguments,
+ * so methods that accept user-controlled data but sanitize it or use it for some
+ * completely different purpose before returning a type descriptor could result in false positives.
+ */
+private predicate looksLikeResolveClassStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
+  exists(MethodAccess ma, Method m, int i, Expr arg |
+    m = ma.getMethod() and arg = ma.getArgument(i)
+  |
+    m.getReturnType() instanceof JacksonTypeDescriptorType and
+    m.getName().toLowerCase().regexpMatch("resolve|load|class|type") and
+    m.fromSource() and
+    arg.getType() instanceof TypeString and
+    arg = fromNode.asExpr() and
+    ma = toNode.asExpr()
+  )
 }
 
 /**
