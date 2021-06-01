@@ -13,7 +13,7 @@ In the worst case, it results in remote code execution.
 
 <recommendation>
 <p>
-Use only strings and primitive types in parameters of remote objects.
+Use only strings and primitive types for parameters of remotely invokable methods.
 </p>
 <p>
 Set a filter for incoming serialized data by wrapping remote objects using either <code>UnicastRemoteObject.exportObject(Remote, int, ObjectInputFilter)</code>
