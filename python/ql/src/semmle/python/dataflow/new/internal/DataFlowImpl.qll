@@ -532,7 +532,9 @@ private module Stage1 {
   }
 
   /**
-   * Holds if an output from `call` is reached in the flow covered by `revFlow`.
+   * Holds if an output from `call` is reached in the flow covered by `revFlow`
+   * and data might flow through the target callable resulting in reverse flow
+   * reaching an argument of `call`.
    */
   pragma[nomagic]
   private predicate revFlowIsReturned(DataFlowCall call, boolean toReturn, Configuration config) {
