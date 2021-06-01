@@ -1,0 +1,19 @@
+edges
+| NotConstantTimeCryptoComparison.java:14:28:14:44 | doFinal(...) : byte[] | NotConstantTimeCryptoComparison.java:15:43:15:51 | actualMac |
+| NotConstantTimeCryptoComparison.java:28:36:28:50 | digest(...) : byte[] | NotConstantTimeCryptoComparison.java:29:16:29:21 | actual |
+| NotConstantTimeCryptoComparison.java:44:28:44:40 | sign(...) : byte[] | NotConstantTimeCryptoComparison.java:45:40:45:48 | signature |
+| NotConstantTimeCryptoComparison.java:61:22:61:46 | doFinal(...) : byte[] | NotConstantTimeCryptoComparison.java:62:40:62:42 | tag |
+nodes
+| NotConstantTimeCryptoComparison.java:14:28:14:44 | doFinal(...) : byte[] | semmle.label | doFinal(...) : byte[] |
+| NotConstantTimeCryptoComparison.java:15:43:15:51 | actualMac | semmle.label | actualMac |
+| NotConstantTimeCryptoComparison.java:28:36:28:50 | digest(...) : byte[] | semmle.label | digest(...) : byte[] |
+| NotConstantTimeCryptoComparison.java:29:16:29:21 | actual | semmle.label | actual |
+| NotConstantTimeCryptoComparison.java:44:28:44:40 | sign(...) : byte[] | semmle.label | sign(...) : byte[] |
+| NotConstantTimeCryptoComparison.java:45:40:45:48 | signature | semmle.label | signature |
+| NotConstantTimeCryptoComparison.java:61:22:61:46 | doFinal(...) : byte[] | semmle.label | doFinal(...) : byte[] |
+| NotConstantTimeCryptoComparison.java:62:40:62:42 | tag | semmle.label | tag |
+#select
+| NotConstantTimeCryptoComparison.java:15:43:15:51 | actualMac | NotConstantTimeCryptoComparison.java:14:28:14:44 | doFinal(...) : byte[] | NotConstantTimeCryptoComparison.java:15:43:15:51 | actualMac | Using a not-constant time algorithm for comparison results of a cryptographic operation. |
+| NotConstantTimeCryptoComparison.java:29:16:29:21 | actual | NotConstantTimeCryptoComparison.java:28:36:28:50 | digest(...) : byte[] | NotConstantTimeCryptoComparison.java:29:16:29:21 | actual | Using a not-constant time algorithm for comparison results of a cryptographic operation. |
+| NotConstantTimeCryptoComparison.java:45:40:45:48 | signature | NotConstantTimeCryptoComparison.java:44:28:44:40 | sign(...) : byte[] | NotConstantTimeCryptoComparison.java:45:40:45:48 | signature | Using a not-constant time algorithm for comparison results of a cryptographic operation. |
+| NotConstantTimeCryptoComparison.java:62:40:62:42 | tag | NotConstantTimeCryptoComparison.java:61:22:61:46 | doFinal(...) : byte[] | NotConstantTimeCryptoComparison.java:62:40:62:42 | tag | Using a not-constant time algorithm for comparison results of a cryptographic operation. |
