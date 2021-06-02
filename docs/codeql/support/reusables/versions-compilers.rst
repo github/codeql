@@ -17,7 +17,7 @@
 
    .NET 5","``.sln``, ``.csproj``, ``.cs``, ``.cshtml``, ``.xaml``"
    Go (aka Golang), "Go up to 1.16", "Go 1.11 or more recent", ``.go``
-   Java,"Java 7 to 15 [3]_, Java 16 (partially)","javac (OpenJDK and Oracle JDK),
+   Java,"Java 7 to 16 [3]_","javac (OpenJDK and Oracle JDK),
 
    Eclipse compiler for Java (ECJ) [4]_",``.java``
    JavaScript,ECMAScript 2021 or lower,Not applicable,"``.js``, ``.jsx``, ``.mjs``, ``.es``, ``.es6``, ``.htm``, ``.html``, ``.xhm``, ``.xhtml``, ``.vue``, ``.json``, ``.yaml``, ``.yml``, ``.raml``, ``.xml`` [5]_"
