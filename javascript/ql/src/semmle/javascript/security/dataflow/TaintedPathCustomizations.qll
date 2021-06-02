@@ -651,6 +651,27 @@ module TaintedPath {
   }
 
   /**
+   * An argument given to the `prettier` library specificing the location of a config file.
+   */
+  private class PrettierFileSink extends TaintedPath::Sink {
+    PrettierFileSink() {
+      this =
+        API::moduleImport("prettier")
+            .getMember(["resolveConfig", "resolveConfigFile", "getFileInfo"])
+            .getACall()
+            .getArgument(0)
+      or
+      this =
+        API::moduleImport("prettier")
+            .getMember("resolveConfig")
+            .getACall()
+            .getParameter(1)
+            .getMember("config")
+            .getARhs()
+    }
+  }
+
+  /**
    * Holds if there is a step `src -> dst` mapping `srclabel` to `dstlabel` relevant for path traversal vulnerabilities.
    */
   predicate isAdditionalTaintedPathFlowStep(

@@ -26,27 +26,4 @@ private module Prettier {
       )
     }
   }
-
-  private import semmle.javascript.security.dataflow.TaintedPathCustomizations::TaintedPath as TaintedPath
-
-  /**
-   * An argument given to the `prettier` library specificing the location of a config file.
-   */
-  private class PrettierFileSink extends TaintedPath::Sink {
-    PrettierFileSink() {
-      this =
-        API::moduleImport("prettier")
-            .getMember(["resolveConfig", "resolveConfigFile", "getFileInfo"])
-            .getACall()
-            .getArgument(0)
-      or
-      this =
-        API::moduleImport("prettier")
-            .getMember("resolveConfig")
-            .getACall()
-            .getParameter(1)
-            .getMember("config")
-            .getARhs()
-    }
-  }
 }
