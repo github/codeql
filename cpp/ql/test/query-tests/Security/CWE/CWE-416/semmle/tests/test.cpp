@@ -216,7 +216,7 @@ void regression_test_for_static_var_handling()
 
 void test16(int n, bool b) {
   char* data = NULL;
-	for(int i = 0; i < n; ++i) {
+  for(int i = 0; i < n; ++i) {
     if(b) data = (char*)malloc(10 * sizeof(char));
     if(!b || data == NULL) return;
     use(data); // GOOD
