@@ -16,13 +16,13 @@ if True:
 
     # `app.add_routes` with list
     async def foo(request):  # $ requestHandler
-        return web.Response(text="foo")
+        return web.Response(text="foo") # $ HttpResponse
 
     async def foo2(request):  # $ requestHandler
-        return web.Response(text="foo2")
+        return web.Response(text="foo2") # $ HttpResponse
 
     async def foo3(request):  # $ requestHandler
-        return web.Response(text="foo3")
+        return web.Response(text="foo3") # $ HttpResponse
 
     app.add_routes([
         web.get("/foo", foo),  # $ routeSetup="/foo"
@@ -36,32 +36,32 @@ if True:
 
     @routes.get("/bar")  # $ routeSetup="/bar"
     async def bar(request):  # $ requestHandler
-        return web.Response(text="bar")
+        return web.Response(text="bar") # $ HttpResponse
 
     @routes.route("*", "/bar2")  # $ routeSetup="/bar2"
     async def bar2(request):  # $ requestHandler
-        return web.Response(text="bar2")
+        return web.Response(text="bar2") # $ HttpResponse
 
     @routes.get(path="/bar3")  # $ routeSetup="/bar3"
     async def bar3(request):  # $ requestHandler
-        return web.Response(text="bar3")
+        return web.Response(text="bar3") # $ HttpResponse
 
     app.add_routes(routes)
 
 
     # `app.router.add_get` / `app.router.add_route`
     async def baz(request):  # $ requestHandler
-        return web.Response(text="baz")
+        return web.Response(text="baz") # $ HttpResponse
 
     app.router.add_get("/baz", baz)  # $ routeSetup="/baz"
 
     async def baz2(request):  # $ requestHandler
-        return web.Response(text="baz2")
+        return web.Response(text="baz2") # $ HttpResponse
 
     app.router.add_route("*", "/baz2", baz2)  # $ routeSetup="/baz2"
 
     async def baz3(request):  # $ requestHandler
-        return web.Response(text="baz3")
+        return web.Response(text="baz3") # $ HttpResponse
 
     app.router.add_get(path="/baz3", handler=baz3)  # $ routeSetup="/baz3"
 
@@ -73,7 +73,7 @@ if True:
     class MyCustomHandlerClass:
 
         async def foo_handler(self, request):  # $ MISSING: requestHandler
-            return web.Response(text="MyCustomHandlerClass.foo")
+            return web.Response(text="MyCustomHandlerClass.foo") # $ HttpResponse
 
     my_custom_handler = MyCustomHandlerClass()
     app.router.add_get("/MyCustomHandlerClass/foo", my_custom_handler.foo_handler)   # $ routeSetup="/MyCustomHandlerClass/foo"
@@ -84,7 +84,7 @@ if True:
     # `app.add_routes` with list
     class MyWebView1(web.View):
         async def get(self):  # $ requestHandler
-            return web.Response(text="MyWebView1.get")
+            return web.Response(text="MyWebView1.get") # $ HttpResponse
 
     app.add_routes([
         web.view("/MyWebView1", MyWebView1)   # $ routeSetup="/MyWebView1"
@@ -97,7 +97,7 @@ if True:
     @routes.view("/MyWebView2")  # $ routeSetup="/MyWebView2"
     class MyWebView2(web.View):
         async def get(self):  # $ requestHandler
-            return web.Response(text="MyWebView2.get")
+            return web.Response(text="MyWebView2.get") # $ HttpResponse
 
     app.add_routes(routes)
 
@@ -105,20 +105,20 @@ if True:
     # `app.router.add_view`
     class MyWebView3(web.View):
         async def get(self):  # $ requestHandler
-            return web.Response(text="MyWebView3.get")
+            return web.Response(text="MyWebView3.get") # $ HttpResponse
 
     app.router.add_view("/MyWebView3", MyWebView3)  # $ routeSetup="/MyWebView3"
 
     # no route-setup
     class MyWebViewNoRoute(web.View):
         async def get(self):  # $ requestHandler
-            return web.Response(text="MyWebViewNoRoute.get")
+            return web.Response(text="MyWebViewNoRoute.get") # $ HttpResponse
 
     if len(__name__) < 0: # avoid running, but fool analysis to not consider dead code
         # no explicit-view subclass (but route-setup)
         class MyWebViewNoSubclassButRoute(somelib.someclass):
             async def get(self):  # $ requestHandler
-                return web.Response(text="MyWebViewNoSubclassButRoute.get")
+                return web.Response(text="MyWebViewNoSubclassButRoute.get") # $ HttpResponse
 
         app.router.add_view("/MyWebViewNoSubclassButRoute", MyWebViewNoSubclassButRoute)  # $ routeSetup="/MyWebViewNoSubclassButRoute"
 
@@ -127,14 +127,14 @@ if True:
 # for `add_get` only being for async functions.
 if True:
     async def no_rules(request): # $ requestHandler
-        return web.Response(text="no_rules")
+        return web.Response(text="no_rules") # $ HttpResponse
 
     app.router.add_view("/no_rules", no_rules) # $ routeSetup="/no_rules"
 
 
     class NoRulesView(web.View):
         async def get(self):  # $ requestHandler
-            return web.Response(text="NoRulesView.get")
+            return web.Response(text="NoRulesView.get") # $ HttpResponse
 
     app.router.add_get("/NoRulesView", NoRulesView) # $ routeSetup="/NoRulesView"
 
@@ -149,7 +149,7 @@ if True:
     async def matching(request: web.Request):  # $ requestHandler
         name = request.match_info['name']
         number = request.match_info['number']
-        return web.Response(text="matching name={} number={}".format(name, number))
+        return web.Response(text="matching name={} number={}".format(name, number)) # $ HttpResponse
 
     app.router.add_get(r"/matching/{name}/{number:\d+}", matching)  # $ routeSetup="/matching/{name}/{number:\d+}"
 
@@ -161,7 +161,7 @@ if True:
     subapp = web.Application()
 
     async def subapp_handler(request):  # $ requestHandler
-        return web.Response(text="subapp_handler")
+        return web.Response(text="subapp_handler") # $ HttpResponse
 
     subapp.router.add_get("/subapp_handler", subapp_handler)  # $ routeSetup="/subapp_handler"
 
@@ -177,7 +177,7 @@ if True:
 
 if True:
     async def manual_dispatcher_instance(request):  # $ requestHandler
-        return web.Response(text="manual_dispatcher_instance")
+        return web.Response(text="manual_dispatcher_instance") # $ HttpResponse
 
     url_dispatcher = web.UrlDispatcher()
     url_dispatcher.add_get("/manual_dispatcher_instance", manual_dispatcher_instance)  # $ routeSetup="/manual_dispatcher_instance"

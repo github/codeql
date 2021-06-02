@@ -391,4 +391,89 @@ module AiohttpWebModel {
       this.(DataFlow::AttrRead).getAttributeName() in ["url", "rel_url"]
     }
   }
+
+  // ---------------------------------------------------------------------------
+  // aiohttp.web Response modeling
+  // ---------------------------------------------------------------------------
+  /**
+   * An instantiation of `aiohttp.web.Response`.
+   *
+   * Note that `aiohttp.web.HTTPException` (and it's subclasses) is a subclass of `aiohttp.web.Response`.
+   *
+   * See
+   * - https://docs.aiohttp.org/en/stable/web_reference.html#aiohttp.web.Response
+   * - https://docs.aiohttp.org/en/stable/web_quickstart.html#aiohttp-web-exceptions
+   */
+  class AiohttpWebResponseInstantiation extends HTTP::Server::HttpResponse::Range,
+    DataFlow::CallCfgNode {
+    AiohttpWebResponseInstantiation() {
+      this = API::moduleImport("aiohttp").getMember("web").getMember("Response").getACall()
+      or
+      exists(string httpExceptionClassName |
+        httpExceptionClassName in [
+            "HTTPException", "HTTPSuccessful", "HTTPOk", "HTTPCreated", "HTTPAccepted",
+            "HTTPNonAuthoritativeInformation", "HTTPNoContent", "HTTPResetContent",
+            "HTTPPartialContent", "HTTPRedirection", "HTTPMultipleChoices", "HTTPMovedPermanently",
+            "HTTPFound", "HTTPSeeOther", "HTTPNotModified", "HTTPUseProxy", "HTTPTemporaryRedirect",
+            "HTTPPermanentRedirect", "HTTPError", "HTTPClientError", "HTTPBadRequest",
+            "HTTPUnauthorized", "HTTPPaymentRequired", "HTTPForbidden", "HTTPNotFound",
+            "HTTPMethodNotAllowed", "HTTPNotAcceptable", "HTTPProxyAuthenticationRequired",
+            "HTTPRequestTimeout", "HTTPConflict", "HTTPGone", "HTTPLengthRequired",
+            "HTTPPreconditionFailed", "HTTPRequestEntityTooLarge", "HTTPRequestURITooLong",
+            "HTTPUnsupportedMediaType", "HTTPRequestRangeNotSatisfiable", "HTTPExpectationFailed",
+            "HTTPMisdirectedRequest", "HTTPUnprocessableEntity", "HTTPFailedDependency",
+            "HTTPUpgradeRequired", "HTTPPreconditionRequired", "HTTPTooManyRequests",
+            "HTTPRequestHeaderFieldsTooLarge", "HTTPUnavailableForLegalReasons", "HTTPServerError",
+            "HTTPInternalServerError", "HTTPNotImplemented", "HTTPBadGateway",
+            "HTTPServiceUnavailable", "HTTPGatewayTimeout", "HTTPVersionNotSupported",
+            "HTTPVariantAlsoNegotiates", "HTTPInsufficientStorage", "HTTPNotExtended",
+            "HTTPNetworkAuthenticationRequired"
+          ] and
+        this =
+          API::moduleImport("aiohttp").getMember("web").getMember(httpExceptionClassName).getACall()
+      )
+    }
+
+    override DataFlow::Node getBody() {
+      result in [this.getArgByName("text"), this.getArgByName("body")]
+    }
+
+    override DataFlow::Node getMimetypeOrContentTypeArg() {
+      result = this.getArgByName("content_type")
+    }
+
+    override string getMimetypeDefault() {
+      exists(this.getArgByName("text")) and
+      result = "text/plain"
+      or
+      not exists(this.getArgByName("text")) and
+      result = "application/octet-stream"
+    }
+  }
+
+  /**
+   * An instantiation of aiohttp.web HTTP redirect exception.
+   *
+   * See the part about redirects at https://docs.aiohttp.org/en/stable/web_quickstart.html#aiohttp-web-exceptions
+   */
+  class AiohttpRedirectExceptionInstantiation extends AiohttpWebResponseInstantiation,
+    HTTP::Server::HttpRedirectResponse::Range {
+    AiohttpRedirectExceptionInstantiation() {
+      exists(string httpRedirectExceptionClassName |
+        httpRedirectExceptionClassName in [
+            "HTTPMultipleChoices", "HTTPMovedPermanently", "HTTPFound", "HTTPSeeOther",
+            "HTTPNotModified", "HTTPUseProxy", "HTTPTemporaryRedirect", "HTTPPermanentRedirect"
+          ] and
+        this =
+          API::moduleImport("aiohttp")
+              .getMember("web")
+              .getMember(httpRedirectExceptionClassName)
+              .getACall()
+      )
+    }
+
+    override DataFlow::Node getRedirectLocation() {
+      result in [this.getArg(0), this.getArgByName("location")]
+    }
+  }
 }
