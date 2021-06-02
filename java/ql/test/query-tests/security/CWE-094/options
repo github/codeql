@@ -1,1 +1,1 @@
-//semmle-extractor-options: --javac-args -cp ${testdir}/../../../stubs/validation-api-2.0.1.Final
+//semmle-extractor-options: --javac-args -cp ${testdir}/../../../stubs/validation-api-2.0.1.Final:${testdir}/../../../stubs/mvel2-2.4.7:${testdir}/../../../stubs/scriptengine:${testdir}/../../../stubs/jsr223-api:${testdir}
