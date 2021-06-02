@@ -2271,6 +2271,25 @@ nodes
 | other-fs-libraries.js:52:24:52:27 | path |
 | other-fs-libraries.js:52:24:52:27 | path |
 | other-fs-libraries.js:52:24:52:27 | path |
+| prettier.js:6:11:6:28 | p |
+| prettier.js:6:11:6:28 | p |
+| prettier.js:6:11:6:28 | p |
+| prettier.js:6:11:6:28 | p |
+| prettier.js:6:13:6:13 | p |
+| prettier.js:6:13:6:13 | p |
+| prettier.js:6:13:6:13 | p |
+| prettier.js:6:13:6:13 | p |
+| prettier.js:6:13:6:13 | p |
+| prettier.js:7:28:7:28 | p |
+| prettier.js:7:28:7:28 | p |
+| prettier.js:7:28:7:28 | p |
+| prettier.js:7:28:7:28 | p |
+| prettier.js:7:28:7:28 | p |
+| prettier.js:11:44:11:44 | p |
+| prettier.js:11:44:11:44 | p |
+| prettier.js:11:44:11:44 | p |
+| prettier.js:11:44:11:44 | p |
+| prettier.js:11:44:11:44 | p |
 | pupeteer.js:5:9:5:71 | tainted |
 | pupeteer.js:5:9:5:71 | tainted |
 | pupeteer.js:5:9:5:71 | tainted |
@@ -6668,6 +6687,30 @@ edges
 | other-fs-libraries.js:49:24:49:30 | req.url | other-fs-libraries.js:49:14:49:37 | url.par ... , true) |
 | other-fs-libraries.js:49:24:49:30 | req.url | other-fs-libraries.js:49:14:49:37 | url.par ... , true) |
 | other-fs-libraries.js:49:24:49:30 | req.url | other-fs-libraries.js:49:14:49:37 | url.par ... , true) |
+| prettier.js:6:11:6:28 | p | prettier.js:7:28:7:28 | p |
+| prettier.js:6:11:6:28 | p | prettier.js:7:28:7:28 | p |
+| prettier.js:6:11:6:28 | p | prettier.js:7:28:7:28 | p |
+| prettier.js:6:11:6:28 | p | prettier.js:7:28:7:28 | p |
+| prettier.js:6:11:6:28 | p | prettier.js:7:28:7:28 | p |
+| prettier.js:6:11:6:28 | p | prettier.js:7:28:7:28 | p |
+| prettier.js:6:11:6:28 | p | prettier.js:7:28:7:28 | p |
+| prettier.js:6:11:6:28 | p | prettier.js:7:28:7:28 | p |
+| prettier.js:6:11:6:28 | p | prettier.js:11:44:11:44 | p |
+| prettier.js:6:11:6:28 | p | prettier.js:11:44:11:44 | p |
+| prettier.js:6:11:6:28 | p | prettier.js:11:44:11:44 | p |
+| prettier.js:6:11:6:28 | p | prettier.js:11:44:11:44 | p |
+| prettier.js:6:11:6:28 | p | prettier.js:11:44:11:44 | p |
+| prettier.js:6:11:6:28 | p | prettier.js:11:44:11:44 | p |
+| prettier.js:6:11:6:28 | p | prettier.js:11:44:11:44 | p |
+| prettier.js:6:11:6:28 | p | prettier.js:11:44:11:44 | p |
+| prettier.js:6:13:6:13 | p | prettier.js:6:11:6:28 | p |
+| prettier.js:6:13:6:13 | p | prettier.js:6:11:6:28 | p |
+| prettier.js:6:13:6:13 | p | prettier.js:6:11:6:28 | p |
+| prettier.js:6:13:6:13 | p | prettier.js:6:11:6:28 | p |
+| prettier.js:6:13:6:13 | p | prettier.js:6:11:6:28 | p |
+| prettier.js:6:13:6:13 | p | prettier.js:6:11:6:28 | p |
+| prettier.js:6:13:6:13 | p | prettier.js:6:11:6:28 | p |
+| prettier.js:6:13:6:13 | p | prettier.js:6:11:6:28 | p |
 | pupeteer.js:5:9:5:71 | tainted | pupeteer.js:9:28:9:34 | tainted |
 | pupeteer.js:5:9:5:71 | tainted | pupeteer.js:9:28:9:34 | tainted |
 | pupeteer.js:5:9:5:71 | tainted | pupeteer.js:9:28:9:34 | tainted |
@@ -8295,6 +8338,8 @@ edges
 | other-fs-libraries.js:42:53:42:56 | path | other-fs-libraries.js:38:24:38:30 | req.url | other-fs-libraries.js:42:53:42:56 | path | This path depends on $@. | other-fs-libraries.js:38:24:38:30 | req.url | a user-provided value |
 | other-fs-libraries.js:51:19:51:22 | path | other-fs-libraries.js:49:24:49:30 | req.url | other-fs-libraries.js:51:19:51:22 | path | This path depends on $@. | other-fs-libraries.js:49:24:49:30 | req.url | a user-provided value |
 | other-fs-libraries.js:52:24:52:27 | path | other-fs-libraries.js:49:24:49:30 | req.url | other-fs-libraries.js:52:24:52:27 | path | This path depends on $@. | other-fs-libraries.js:49:24:49:30 | req.url | a user-provided value |
+| prettier.js:7:28:7:28 | p | prettier.js:6:13:6:13 | p | prettier.js:7:28:7:28 | p | This path depends on $@. | prettier.js:6:13:6:13 | p | a user-provided value |
+| prettier.js:11:44:11:44 | p | prettier.js:6:13:6:13 | p | prettier.js:11:44:11:44 | p | This path depends on $@. | prettier.js:6:13:6:13 | p | a user-provided value |
 | pupeteer.js:9:28:9:34 | tainted | pupeteer.js:5:28:5:53 | parseTo ... t).name | pupeteer.js:9:28:9:34 | tainted | This path depends on $@. | pupeteer.js:5:28:5:53 | parseTo ... t).name | a user-provided value |
 | pupeteer.js:13:37:13:43 | tainted | pupeteer.js:5:28:5:53 | parseTo ... t).name | pupeteer.js:13:37:13:43 | tainted | This path depends on $@. | pupeteer.js:5:28:5:53 | parseTo ... t).name | a user-provided value |
 | tainted-access-paths.js:8:19:8:22 | path | tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:8:19:8:22 | path | This path depends on $@. | tainted-access-paths.js:6:24:6:30 | req.url | a user-provided value |

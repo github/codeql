@@ -104,6 +104,7 @@ import semmle.javascript.frameworks.Nest
 import semmle.javascript.frameworks.Next
 import semmle.javascript.frameworks.NoSQL
 import semmle.javascript.frameworks.PkgCloud
+import semmle.javascript.frameworks.Prettier
 import semmle.javascript.frameworks.PropertyProjection
 import semmle.javascript.frameworks.Puppeteer
 import semmle.javascript.frameworks.React
