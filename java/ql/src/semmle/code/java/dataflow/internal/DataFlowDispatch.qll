@@ -4,13 +4,21 @@ private import DataFlowUtil
 private import semmle.code.java.dataflow.InstanceAccess
 private import semmle.code.java.dataflow.FlowSummary
 private import semmle.code.java.dispatch.VirtualDispatch as VirtualDispatch
+private import semmle.code.java.dataflow.internal.FlowSummaryImplSpecific
 
 private module DispatchImpl {
   /** Gets a viable implementation of the target of the given `Call`. */
   Callable viableCallable(Call c) {
     result = VirtualDispatch::viableCallable(c)
     or
-    result.(SummarizedCallable) = c.getCallee().getSourceDeclaration()
+    result = c.getCallee().getSourceDeclaration() and
+    (
+      result instanceof SummarizedCallable
+      or
+      sourceElement(result, _, _)
+      or
+      sinkElement(result, _, _)
+    )
   }
 
   /**

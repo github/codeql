@@ -51,22 +51,22 @@ DataFlowType getCallbackParameterType(DataFlowType t, int i) { none() }
  */
 DataFlowType getCallbackReturnType(DataFlowType t, ReturnKind rk) { none() }
 
-/** Holds if `spec` is a relevant external specification. */
-predicate relevantSpec(string spec) { spec = inOutSpec() }
-
 /**
  * Holds if an external flow summary exists for `c` with input specification
  * `input`, output specification `output`, and kind `kind`.
  */
-predicate externalSummary(DataFlowCallable c, string input, string output, string kind) {
-  summaryElement(c, input, output, kind)
+predicate summaryElement(DataFlowCallable c, string input, string output, string kind) {
+  exists(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext
+  |
+    summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind) and
+    c = interpretElement(namespace, type, subtypes, name, signature, ext)
+  )
 }
 
 /** Gets the summary component for specification component `c`, if any. */
 bindingset[c]
 SummaryComponent interpretComponentSpecific(string c) {
-  c = "ReturnValue" and result = SummaryComponent::return(_)
-  or
   c = "ArrayElement" and result = SummaryComponent::content(any(ArrayContent c0))
   or
   c = "Element" and result = SummaryComponent::content(any(CollectionContent c0))
@@ -74,4 +74,93 @@ SummaryComponent interpretComponentSpecific(string c) {
   c = "MapKey" and result = SummaryComponent::content(any(MapKeyContent c0))
   or
   c = "MapValue" and result = SummaryComponent::content(any(MapValueContent c0))
+}
+
+class SourceOrSinkElement = Top;
+
+/**
+ * Holds if an external source specification exists for `e` with output specification
+ * `output` and kind `kind`.
+ */
+predicate sourceElement(SourceOrSinkElement e, string output, string kind) {
+  exists(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext
+  |
+    sourceModel(namespace, type, subtypes, name, signature, ext, output, kind) and
+    e = interpretElement(namespace, type, subtypes, name, signature, ext)
+  )
+}
+
+/**
+ * Holds if an external sink specification exists for `e` with input specification
+ * `input` and kind `kind`.
+ */
+predicate sinkElement(SourceOrSinkElement e, string input, string kind) {
+  exists(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext
+  |
+    sinkModel(namespace, type, subtypes, name, signature, ext, input, kind) and
+    e = interpretElement(namespace, type, subtypes, name, signature, ext)
+  )
+}
+
+/** Gets the return kind corresponding to specification `"ReturnValue"`. */
+ReturnKind getReturnValueKind() { any() }
+
+private newtype TInterpretNode =
+  TElement(SourceOrSinkElement n) or
+  TNode(Node n)
+
+/** An entity used to interpret a source/sink specification. */
+class InterpretNode extends TInterpretNode {
+  /** Gets the element that this node corresponds to, if any. */
+  SourceOrSinkElement asElement() { this = TElement(result) }
+
+  /** Gets the data-flow node that this node corresponds to, if any. */
+  Node asNode() { this = TNode(result) }
+
+  /** Gets the call that this node corresponds to, if any. */
+  DataFlowCall asCall() { result = this.asElement() }
+
+  /** Gets the callable that this node corresponds to, if any. */
+  DataFlowCallable asCallable() { result = this.asElement() }
+
+  /** Gets a textual representation of this node. */
+  string toString() {
+    result = this.asElement().toString()
+    or
+    result = this.asNode().toString()
+  }
+
+  /** Gets the location of this node. */
+  Location getLocation() {
+    result = this.asElement().getLocation()
+    or
+    result = this.asNode().getLocation()
+  }
+}
+
+/** Provides additional sink specification logic required for annotations. */
+pragma[inline]
+predicate interpretOutputSpecific(string c, InterpretNode mid, InterpretNode node) {
+  exists(Node n, Top ast |
+    n = node.asNode() and
+    ast = mid.asElement()
+  |
+    (c = "Parameter" or c = "") and
+    node.asNode().asParameter() = mid.asElement()
+    or
+    c = "" and
+    n.asExpr().(FieldRead).getField() = ast
+  )
+}
+
+/** Provides additional source specification logic required for annotations. */
+pragma[inline]
+predicate interpretInputSpecific(string c, InterpretNode mid, InterpretNode n) {
+  exists(FieldWrite fw |
+    c = "" and
+    fw.getField() = mid.asElement() and
+    n.asNode().asExpr() = fw.getRHS()
+  )
 }
