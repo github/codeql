@@ -13,7 +13,7 @@ it may allow the attacker to run arbitrary code.</p>
 
 <recommendation>
 <p>It is generally recommended to avoid using untrusted input in a JShell expression.
-If it is not possible,JShell expressions should be run in a sandbox that allows accessing only 
+If it is not possible, JShell expressions should be run in a sandbox that allows accessing only 
 explicitly allowed classes.</p>
 </recommendation>
 
@@ -25,7 +25,7 @@ to execute untrusted data.</p>
 
 <references>
 <li>
-Java 9 jshell tutorial: <a href="https://examples.javacodegeeks.com/core-java/java-9-jshell-tutorial/">JShell introduction</a>
+Introduction to JShell: <a href="https://docs.oracle.com/en/java/javase/11/jshell/introduction-jshell.html">Java Shell User’s Guide</a>
 </li>
 </references>
 </qhelp>
