@@ -67,6 +67,7 @@
 import java
 private import semmle.code.java.dataflow.DataFlow::DataFlow
 private import internal.DataFlowPrivate
+private import internal.FlowSummaryImpl::Private::External
 private import FlowSummary
 
 /**
@@ -498,10 +499,15 @@ module CsvValidation {
       or
       summaryModel(_, _, _, _, _, _, input, _, _) and pred = "summary"
     |
-      specSplit(input, part, _) and
-      not part.regexpMatch("|ReturnValue|ArrayElement|Element|MapKey|MapValue") and
-      not (part = "Argument" and pred = "sink") and
-      not parseArg(part, _) and
+      (
+        invalidSpecComponent(input, part) and
+        not part = "" and
+        not (part = "Argument" and pred = "sink") and
+        not parseArg(part, _)
+        or
+        specSplit(input, part, _) and
+        parseParam(part, _)
+      ) and
       msg = "Unrecognized input specification \"" + part + "\" in " + pred + " model."
     )
     or
@@ -510,11 +516,9 @@ module CsvValidation {
       or
       summaryModel(_, _, _, _, _, _, _, output, _) and pred = "summary"
     |
-      specSplit(output, part, _) and
-      not part.regexpMatch("|ReturnValue|ArrayElement|Element|MapKey|MapValue") and
+      invalidSpecComponent(output, part) and
+      not part = "" and
       not (part = ["Argument", "Parameter"] and pred = "source") and
-      not parseArg(part, _) and
-      not parseParam(part, _) and
       msg = "Unrecognized output specification \"" + part + "\" in " + pred + " model."
     )
     or
@@ -624,7 +628,11 @@ private predicate sinkElement(Element e, string input, string kind) {
   )
 }
 
-private predicate summaryElement(Element e, string input, string output, string kind) {
+/**
+ * Holds if an external flow summary exists for `e` with input specification
+ * `input`, output specification `output`, and kind `kind`.
+ */
+predicate summaryElement(Element e, string input, string output, string kind) {
   exists(
     string namespace, string type, boolean subtypes, string name, string signature, string ext
   |
@@ -633,50 +641,12 @@ private predicate summaryElement(Element e, string input, string output, string 
   )
 }
 
-private string inOutSpec() {
+/** Gets a specification used in a source model, sink model, or summary model. */
+string inOutSpec() {
   sourceModel(_, _, _, _, _, _, result, _) or
   sinkModel(_, _, _, _, _, _, result, _) or
   summaryModel(_, _, _, _, _, _, result, _, _) or
   summaryModel(_, _, _, _, _, _, _, result, _)
-}
-
-private predicate specSplit(string s, string c, int n) {
-  inOutSpec() = s and s.splitAt(" of ", n) = c
-}
-
-private predicate len(string s, int len) { len = 1 + max(int n | specSplit(s, _, n)) }
-
-private string getLast(string s) {
-  exists(int len |
-    len(s, len) and
-    specSplit(s, result, len - 1)
-  )
-}
-
-private predicate parseParam(string c, int n) {
-  specSplit(_, c, _) and
-  (
-    c.regexpCapture("Parameter\\[([-0-9]+)\\]", 1).toInt() = n
-    or
-    exists(int n1, int n2 |
-      c.regexpCapture("Parameter\\[([-0-9]+)\\.\\.([0-9]+)\\]", 1).toInt() = n1 and
-      c.regexpCapture("Parameter\\[([-0-9]+)\\.\\.([0-9]+)\\]", 2).toInt() = n2 and
-      n = [n1 .. n2]
-    )
-  )
-}
-
-private predicate parseArg(string c, int n) {
-  specSplit(_, c, _) and
-  (
-    c.regexpCapture("Argument\\[([-0-9]+)\\]", 1).toInt() = n
-    or
-    exists(int n1, int n2 |
-      c.regexpCapture("Argument\\[([-0-9]+)\\.\\.([0-9]+)\\]", 1).toInt() = n1 and
-      c.regexpCapture("Argument\\[([-0-9]+)\\.\\.([0-9]+)\\]", 2).toInt() = n2 and
-      n = [n1 .. n2]
-    )
-  )
 }
 
 private predicate inputNeedsReference(string c) {
@@ -693,7 +663,7 @@ private predicate outputNeedsReference(string c) {
 private predicate sourceElementRef(Top ref, string output, string kind) {
   exists(Element e |
     sourceElement(e, output, kind) and
-    if outputNeedsReference(getLast(output))
+    if outputNeedsReference(specLast(output))
     then ref.(Call).getCallee().getSourceDeclaration() = e
     else ref = e
   )
@@ -702,7 +672,7 @@ private predicate sourceElementRef(Top ref, string output, string kind) {
 private predicate sinkElementRef(Top ref, string input, string kind) {
   exists(Element e |
     sinkElement(e, input, kind) and
-    if inputNeedsReference(getLast(input))
+    if inputNeedsReference(specLast(input))
     then ref.(Call).getCallee().getSourceDeclaration() = e
     else ref = e
   )
@@ -711,79 +681,10 @@ private predicate sinkElementRef(Top ref, string input, string kind) {
 private predicate summaryElementRef(Top ref, string input, string output, string kind) {
   exists(Element e |
     summaryElement(e, input, output, kind) and
-    if inputNeedsReference(getLast(input))
+    if inputNeedsReference(specLast(input))
     then ref.(Call).getCallee().getSourceDeclaration() = e
     else ref = e
   )
-}
-
-private SummaryComponent interpretComponent(string c) {
-  specSplit(_, c, _) and
-  (
-    exists(int pos | parseArg(c, pos) and result = SummaryComponent::argument(pos))
-    or
-    exists(int pos | parseParam(c, pos) and result = SummaryComponent::parameter(pos))
-    or
-    c = "ReturnValue" and result = SummaryComponent::return()
-    or
-    c = "ArrayElement" and result = SummaryComponent::content(any(ArrayContent c0))
-    or
-    c = "Element" and result = SummaryComponent::content(any(CollectionContent c0))
-    or
-    c = "MapKey" and result = SummaryComponent::content(any(MapKeyContent c0))
-    or
-    c = "MapValue" and result = SummaryComponent::content(any(MapValueContent c0))
-  )
-}
-
-private predicate interpretSpec(string spec, int idx, SummaryComponentStack stack) {
-  exists(string c |
-    summaryElement(_, spec, _, _) or
-    summaryElement(_, _, spec, _)
-  |
-    len(spec, idx + 1) and
-    specSplit(spec, c, idx) and
-    stack = SummaryComponentStack::singleton(interpretComponent(c))
-  )
-  or
-  exists(SummaryComponent head, SummaryComponentStack tail |
-    interpretSpec(spec, idx, head, tail) and
-    stack = SummaryComponentStack::push(head, tail)
-  )
-}
-
-private predicate interpretSpec(
-  string output, int idx, SummaryComponent head, SummaryComponentStack tail
-) {
-  exists(string c |
-    interpretSpec(output, idx + 1, tail) and
-    specSplit(output, c, idx) and
-    head = interpretComponent(c)
-  )
-}
-
-private class MkStack extends RequiredSummaryComponentStack {
-  MkStack() { interpretSpec(_, _, _, this) }
-
-  override predicate required(SummaryComponent c) { interpretSpec(_, _, c, this) }
-}
-
-private class SummarizedCallableExternal extends SummarizedCallable {
-  SummarizedCallableExternal() { summaryElement(this, _, _, _) }
-
-  override predicate propagatesFlow(
-    SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
-  ) {
-    exists(string inSpec, string outSpec, string kind |
-      summaryElement(this, inSpec, outSpec, kind) and
-      interpretSpec(inSpec, 0, input) and
-      interpretSpec(outSpec, 0, output)
-    |
-      kind = "value" and preservesValue = true
-      or
-      kind = "taint" and preservesValue = false
-    )
-  }
 }
 
 private newtype TAstOrNode =
@@ -795,7 +696,7 @@ private predicate interpretOutput(string output, int idx, Top ref, TAstOrNode no
     sourceElementRef(ref, output, _) or
     summaryElementRef(ref, _, output, _)
   ) and
-  len(output, idx) and
+  specLength(output, idx) and
   node = TAst(ref)
   or
   exists(Top mid, string c, Node n |
@@ -827,7 +728,7 @@ private predicate interpretInput(string input, int idx, Top ref, TAstOrNode node
     sinkElementRef(ref, input, _) or
     summaryElementRef(ref, input, _, _)
   ) and
-  len(input, idx) and
+  specLength(input, idx) and
   node = TAst(ref)
   or
   exists(Top mid, string c, Node n |

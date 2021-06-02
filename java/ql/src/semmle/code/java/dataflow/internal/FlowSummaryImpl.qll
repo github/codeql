@@ -580,87 +580,111 @@ module Private {
    * summaries into a `SummarizedCallable`s.
    */
   module External {
-    /**
-     * Provides a means of translating an externally (e.g., CSV) defined flow
-     * summary into a `SummarizedCallable`.
-     */
-    abstract class ExternalSummaryCompilation extends string {
-      bindingset[this]
-      ExternalSummaryCompilation() { any() }
+    /** Holds if the `n`th component of specification `s` is `c`. */
+    predicate specSplit(string s, string c, int n) { relevantSpec(s) and s.splitAt(" of ", n) = c }
 
-      /** Holds if this flow summary is for callable `c`. */
-      abstract predicate callable(DataFlowCallable c, boolean preservesValue);
+    /** Holds if specification `s` has length `len`. */
+    predicate specLength(string s, int len) { len = 1 + max(int n | specSplit(s, _, n)) }
 
-      /** Holds if the `i`th input component is `c`. */
-      abstract predicate input(int i, SummaryComponent c);
-
-      /** Holds if the `i`th output component is `c`. */
-      abstract predicate output(int i, SummaryComponent c);
-
-      /**
-       * Holds if the input components starting from index `i` translate into `suffix`.
-       */
-      final predicate translateInput(int i, SummaryComponentStack suffix) {
-        exists(SummaryComponent comp | this.input(i, comp) |
-          i = max(int j | this.input(j, _)) and
-          suffix = TSingletonSummaryComponentStack(comp)
-          or
-          exists(TSummaryComponent head, SummaryComponentStack tail |
-            this.translateInputCons(i, head, tail) and
-            suffix = TConsSummaryComponentStack(head, tail)
-          )
-        )
-      }
-
-      final predicate translateInputCons(int i, SummaryComponent head, SummaryComponentStack tail) {
-        this.input(i, head) and
-        this.translateInput(i + 1, tail)
-      }
-
-      /**
-       * Holds if the output components starting from index `i` translate into `suffix`.
-       */
-      predicate translateOutput(int i, SummaryComponentStack suffix) {
-        exists(SummaryComponent comp | this.output(i, comp) |
-          i = max(int j | this.output(j, _)) and
-          suffix = TSingletonSummaryComponentStack(comp)
-          or
-          exists(TSummaryComponent head, SummaryComponentStack tail |
-            this.translateOutputCons(i, head, tail) and
-            suffix = TConsSummaryComponentStack(head, tail)
-          )
-        )
-      }
-
-      predicate translateOutputCons(int i, SummaryComponent head, SummaryComponentStack tail) {
-        this.output(i, head) and
-        this.translateOutput(i + 1, tail)
-      }
+    /** Gets the last component of specification `s`. */
+    string specLast(string s) {
+      exists(int len |
+        specLength(s, len) and
+        specSplit(s, result, len - 1)
+      )
     }
 
-    private class ExternalRequiredSummaryComponentStack extends RequiredSummaryComponentStack {
-      private SummaryComponent head;
-
-      ExternalRequiredSummaryComponentStack() {
-        any(ExternalSummaryCompilation s).translateInputCons(_, head, this) or
-        any(ExternalSummaryCompilation s).translateOutputCons(_, head, this)
-      }
-
-      override predicate required(SummaryComponent c) { c = head }
+    /** Holds if specification component `c` parses as parameter `n`. */
+    predicate parseParam(string c, int n) {
+      specSplit(_, c, _) and
+      (
+        c.regexpCapture("Parameter\\[([-0-9]+)\\]", 1).toInt() = n
+        or
+        exists(int n1, int n2 |
+          c.regexpCapture("Parameter\\[([-0-9]+)\\.\\.([0-9]+)\\]", 1).toInt() = n1 and
+          c.regexpCapture("Parameter\\[([-0-9]+)\\.\\.([0-9]+)\\]", 2).toInt() = n2 and
+          n = [n1 .. n2]
+        )
+      )
     }
 
-    class ExternalSummarizedCallableAdaptor extends SummarizedCallable {
-      ExternalSummarizedCallableAdaptor() { any(ExternalSummaryCompilation s).callable(this, _) }
+    /** Holds if specification component `c` parses as argument `n`. */
+    predicate parseArg(string c, int n) {
+      specSplit(_, c, _) and
+      (
+        c.regexpCapture("Argument\\[([-0-9]+)\\]", 1).toInt() = n
+        or
+        exists(int n1, int n2 |
+          c.regexpCapture("Argument\\[([-0-9]+)\\.\\.([0-9]+)\\]", 1).toInt() = n1 and
+          c.regexpCapture("Argument\\[([-0-9]+)\\.\\.([0-9]+)\\]", 2).toInt() = n2 and
+          n = [n1 .. n2]
+        )
+      )
+    }
+
+    private SummaryComponent interpretComponent(string c) {
+      specSplit(_, c, _) and
+      (
+        exists(int pos | parseArg(c, pos) and result = SummaryComponent::argument(pos))
+        or
+        exists(int pos | parseParam(c, pos) and result = SummaryComponent::parameter(pos))
+        or
+        result = interpretComponentSpecific(c)
+      )
+    }
+
+    private predicate interpretSpec(string spec, int idx, SummaryComponentStack stack) {
+      exists(string c |
+        relevantSpec(spec) and
+        specLength(spec, idx + 1) and
+        specSplit(spec, c, idx) and
+        stack = SummaryComponentStack::singleton(interpretComponent(c))
+      )
+      or
+      exists(SummaryComponent head, SummaryComponentStack tail |
+        interpretSpec(spec, idx, head, tail) and
+        stack = SummaryComponentStack::push(head, tail)
+      )
+    }
+
+    private predicate interpretSpec(
+      string output, int idx, SummaryComponent head, SummaryComponentStack tail
+    ) {
+      exists(string c |
+        interpretSpec(output, idx + 1, tail) and
+        specSplit(output, c, idx) and
+        head = interpretComponent(c)
+      )
+    }
+
+    private class MkStack extends RequiredSummaryComponentStack {
+      MkStack() { interpretSpec(_, _, _, this) }
+
+      override predicate required(SummaryComponent c) { interpretSpec(_, _, c, this) }
+    }
+
+    private class SummarizedCallableExternal extends SummarizedCallable {
+      SummarizedCallableExternal() { externalSummary(this, _, _, _) }
 
       override predicate propagatesFlow(
         SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
       ) {
-        exists(ExternalSummaryCompilation s |
-          s.callable(this, preservesValue) and
-          s.translateInput(0, input) and
-          s.translateOutput(0, output)
+        exists(string inSpec, string outSpec, string kind |
+          externalSummary(this, inSpec, outSpec, kind) and
+          interpretSpec(inSpec, 0, input) and
+          interpretSpec(outSpec, 0, output)
+        |
+          kind = "value" and preservesValue = true
+          or
+          kind = "taint" and preservesValue = false
         )
       }
+    }
+
+    /** Holds if component `c` of specification `spec` cannot be parsed. */
+    predicate invalidSpecComponent(string spec, string c) {
+      specSplit(spec, c, _) and
+      not exists(interpretComponent(c))
     }
   }
 
