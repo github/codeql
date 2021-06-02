@@ -15,7 +15,7 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.security.XSS
+import semmle.code.java.security.InformationLeak
 
 /**
  * One of the `printStackTrace()` overloads on `Throwable`.
@@ -83,14 +83,14 @@ predicate stackTraceExpr(Expr exception, MethodAccess stackTraceString) {
   )
 }
 
-class StackTraceStringToXssSinkFlowConfig extends TaintTracking::Configuration {
-  StackTraceStringToXssSinkFlowConfig() {
-    this = "StackTraceExposure::StackTraceStringToXssSinkFlowConfig"
+class StackTraceStringToHttpResponseSinkFlowConfig extends TaintTracking::Configuration {
+  StackTraceStringToHttpResponseSinkFlowConfig() {
+    this = "StackTraceExposure::StackTraceStringToHttpResponseSinkFlowConfig"
   }
 
   override predicate isSource(DataFlow::Node src) { stackTraceExpr(_, src.asExpr()) }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof XssSink }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof InformationLeakSink }
 }
 
 /**
@@ -105,8 +105,8 @@ predicate printsStackExternally(MethodAccess call, Expr stackTrace) {
 /**
  * A stringified stack trace flows to an external sink.
  */
-predicate stringifiedStackFlowsExternally(XssSink externalExpr, Expr stackTrace) {
-  exists(MethodAccess stackTraceString, StackTraceStringToXssSinkFlowConfig conf |
+predicate stringifiedStackFlowsExternally(DataFlow::Node externalExpr, Expr stackTrace) {
+  exists(MethodAccess stackTraceString, StackTraceStringToHttpResponseSinkFlowConfig conf |
     stackTraceExpr(stackTrace, stackTraceString) and
     conf.hasFlow(DataFlow::exprNode(stackTraceString), externalExpr)
   )
@@ -123,21 +123,21 @@ class GetMessageFlowSource extends MethodAccess {
   }
 }
 
-class GetMessageFlowSourceToXssSinkFlowConfig extends TaintTracking::Configuration {
-  GetMessageFlowSourceToXssSinkFlowConfig() {
-    this = "StackTraceExposure::GetMessageFlowSourceToXssSinkFlowConfig"
+class GetMessageFlowSourceToHttpResponseSinkFlowConfig extends TaintTracking::Configuration {
+  GetMessageFlowSourceToHttpResponseSinkFlowConfig() {
+    this = "StackTraceExposure::GetMessageFlowSourceToHttpResponseSinkFlowConfig"
   }
 
   override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof GetMessageFlowSource }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof XssSink }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof InformationLeakSink }
 }
 
 /**
  * A call to `getMessage()` that then flows to a servlet response.
  */
-predicate getMessageFlowsExternally(XssSink externalExpr, GetMessageFlowSource getMessage) {
-  any(GetMessageFlowSourceToXssSinkFlowConfig conf)
+predicate getMessageFlowsExternally(DataFlow::Node externalExpr, GetMessageFlowSource getMessage) {
+  any(GetMessageFlowSourceToHttpResponseSinkFlowConfig conf)
       .hasFlow(DataFlow::exprNode(getMessage), externalExpr)
 }
 

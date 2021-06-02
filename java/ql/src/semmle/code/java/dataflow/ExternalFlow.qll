@@ -80,6 +80,7 @@ private module Frameworks {
   private import semmle.code.java.frameworks.guava.Guava
   private import semmle.code.java.frameworks.jackson.JacksonSerializability
   private import semmle.code.java.security.ResponseSplitting
+  private import semmle.code.java.security.InformationLeak
   private import semmle.code.java.security.XSS
   private import semmle.code.java.security.LdapInjection
   private import semmle.code.java.security.XPath
