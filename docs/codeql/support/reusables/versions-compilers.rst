@@ -17,11 +17,11 @@
 
    .NET 5","``.sln``, ``.csproj``, ``.cs``, ``.cshtml``, ``.xaml``"
    Go (aka Golang), "Go up to 1.16", "Go 1.11 or more recent", ``.go``
-   Java,"Java 7 to 15 [3]_","javac (OpenJDK and Oracle JDK),
+   Java,"Java 7 to 15 [3]_, Java 16 (partially)","javac (OpenJDK and Oracle JDK),
 
    Eclipse compiler for Java (ECJ) [4]_",``.java``
    JavaScript,ECMAScript 2021 or lower,Not applicable,"``.js``, ``.jsx``, ``.mjs``, ``.es``, ``.es6``, ``.htm``, ``.html``, ``.xhm``, ``.xhtml``, ``.vue``, ``.json``, ``.yaml``, ``.yml``, ``.raml``, ``.xml`` [5]_"
-   Python,"2.7, 3.5, 3.6, 3.7, 3.8",Not applicable,``.py``
+   Python,"2.7, 3.5, 3.6, 3.7, 3.8, 3.9",Not applicable,``.py``
    TypeScript [6]_,"2.6-4.2",Standard TypeScript compiler,"``.ts``, ``.tsx``"
 
 .. container:: footnote-group
