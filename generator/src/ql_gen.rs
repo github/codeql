@@ -398,6 +398,7 @@ fn create_field_getters<'a>(
         node_types::Storage::Table {
             name: field_table_name,
             has_index,
+            column_name: _,
         } => (
             create_get_field_expr_for_table_storage(
                 get_value_result_var_name,
@@ -450,12 +451,21 @@ fn create_field_getters<'a>(
             (get_value, Some(get_value_any_index))
         }
     };
+    let qldoc = match &field.name {
+        Some(name) => {
+            format!("Gets the node corresponding to the field `{}`.", name)
+        }
+        None => {
+            if formal_parameters.len() == 0 {
+                "Gets the child of this node.".to_owned()
+            } else {
+                "Gets the `i`th child of this node.".to_owned()
+            }
+        }
+    };
     (
         ql::Predicate {
-            qldoc: field
-                .name
-                .as_ref()
-                .map(|name| format!("Gets the node corresponding to the field `{}`.", name)),
+            qldoc: Some(qldoc),
             name: &field.getter_name,
             overridden: false,
             return_type,
