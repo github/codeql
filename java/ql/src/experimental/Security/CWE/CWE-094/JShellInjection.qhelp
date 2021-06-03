@@ -25,7 +25,7 @@ to execute untrusted data.</p>
 
 <references>
 <li>
-Introduction to JShell: <a href="https://docs.oracle.com/en/java/javase/11/jshell/introduction-jshell.html">Java Shell User’s Guide</a>
+Java Shell User’s Guide: <a href="https://docs.oracle.com/en/java/javase/11/jshell/introduction-jshell.html">Introduction to JShell</a>
 </li>
 </references>
 </qhelp>
