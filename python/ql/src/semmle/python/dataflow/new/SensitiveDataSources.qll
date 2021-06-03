@@ -149,4 +149,15 @@ private module SensitiveDataModeling {
 
     override SensitiveDataClassification getClassification() { result = classification }
   }
+
+  /** A parameter where the name indicates it will receive sensitive data. */
+  class SensitiveParameter extends SensitiveDataSource::Range, DataFlow::ParameterNode {
+    SensitiveDataClassification classification;
+
+    SensitiveParameter() {
+      nameIndicatesSensitiveData(this.getParameter().getName(), classification)
+    }
+
+    override SensitiveDataClassification getClassification() { result = classification }
+  }
 }

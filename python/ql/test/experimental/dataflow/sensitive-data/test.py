@@ -29,7 +29,10 @@ foo = ObjectFromDatabase()
 foo.secret # $ SensitiveDataSource=secret
 foo.username # $ SensitiveDataSource=id
 
-# plain variables
+# based on variable/parameter names
+def my_func(password): # $ SensitiveDataSource=password
+    print(password) # $ SensitiveUse=password
+
 password = some_function()
 print(password) # $ MISSING: SensitiveUse=password
 
