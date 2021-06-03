@@ -1,5 +1,6 @@
 /**
  * Provides classes for working with concepts from the [`clevergo.tech/clevergo@v0.5.2`](https://pkg.go.dev/clevergo.tech/clevergo@v0.5.2) package.
+ * CodeQL generated from the `CleverGo.json` codemill spec file.
  */
 
 import go
