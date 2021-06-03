@@ -1,0 +1,53 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+When comparing results of cryptographic operations, such as MAC or cryptographic hash,
+a constant time algorithm should be used. In other words, the comparison time should not depend on
+the content of the input. Otherwise, an attacker may be able to implement a timing attack.
+A successful timing attack may result in leaking secrets or authentication bypass.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Use <code>MessageDigest.isEqual()</code> method to compare results of cryptographic operations.
+If this method is used, then the calculation time depends only on the length of input byte arrays,
+and does not depend on the contents of the arrays.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example uses <code>Arrays.equals()</code> method for comparing cryptographic hashes.
+This method implements a not-constant time algorithm:
+</p>
+<sample src="UnsafeCryptoHashComparison.java" />
+
+<p>
+The next example example uses a safe not-constant time algorithm for comparing cryptographic hashes:
+</p>
+<sample src="SafeCryptoHashComparison.java" />
+
+</example>
+
+<references>
+<li>
+  Wikipedia:
+  <a href="https://en.wikipedia.org/wiki/Timing_attack">Timint attack</a>.
+</li>
+li>
+  Common Weakness Enumeration:
+  <a href="https://cwe.mitre.org/data/definitions/208.html">CWE-208: Observable Timing Discrepancy</a>.
+</li>
+<li>
+  Common Weakness Enumeration:
+  <a href="https://cwe.mitre.org/data/definitions/385.html">CWE-385: Covert Timing Channel</a>.
+</li>
+<li>
+  Java API Specification:
+  <a href="https://docs.oracle.com/javase/8/docs/api/java/security/MessageDigest.html#isEqual-byte:A-byte:A-">MessageDigest.isEqual() method</a>
+</li>
+</references>
+</qhelp>
