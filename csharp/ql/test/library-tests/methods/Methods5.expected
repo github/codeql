@@ -21,10 +21,8 @@
 | methods.cs:125:21:125:24 | Main | methods.cs:110:27:110:34 | Slice | methods.cs:122:18:122:31 | TestExtensions |
 | methods.cs:179:67:179:76 | SkipTwoInt | methods.cs:174:65:174:74 | SkipTwo | methods.cs:167:18:167:47 | TestDefaultExtensionParameters |
 | methods.cs:190:21:190:25 | Calls | methods.cs:187:21:187:21 | M | methods.cs:185:18:185:40 | TestCollidingMethods<> |
-| methods.cs:190:21:190:25 | Calls | methods.cs:187:21:187:21 | M | methods.cs:185:18:185:40 | TestCollidingMethods<> |
 | methods.cs:190:21:190:25 | Calls | methods.cs:188:21:188:21 | M | methods.cs:185:18:185:40 | TestCollidingMethods<> |
 | methods.cs:190:21:190:25 | Calls | methods.cs:188:21:188:21 | M | methods.cs:185:18:185:40 | TestCollidingMethods<> |
 | methods.cs:203:20:203:25 | Nested | methods.cs:202:20:202:25 | Nested | methods.cs:200:22:200:27 | Nested |
 | methods.cs:203:20:203:25 | Nested | methods.cs:202:20:202:25 | Nested | methods.cs:200:22:200:27 | Nested |
-| methods.cs:203:20:203:25 | Nested | methods.cs:203:20:203:25 | Nested | methods.cs:200:22:200:27 | Nested |
 | methods.cs:203:20:203:25 | Nested | methods.cs:203:20:203:25 | Nested | methods.cs:200:22:200:27 | Nested |
