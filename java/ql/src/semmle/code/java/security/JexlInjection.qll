@@ -83,7 +83,7 @@ private class DefaultJexlInjectionAdditionalTaintStep extends JexlInjectionAddit
  */
 private predicate createJexlScriptStep(DataFlow::Node n1, DataFlow::Node n2) {
   exists(MethodAccess ma, Method m | m = ma.getMethod() and n2.asExpr() = ma |
-    isUnsafeEngine(ma.getQualifier()) and
+    not isSafeEngine(ma.getQualifier()) and
     m instanceof CreateJexlScriptMethod and
     n1.asExpr() = ma.getArgument(0) and
     n1.asExpr().getType() instanceof TypeString
@@ -96,7 +96,7 @@ private predicate createJexlScriptStep(DataFlow::Node n1, DataFlow::Node n2) {
  */
 private predicate createJexlExpressionStep(DataFlow::Node n1, DataFlow::Node n2) {
   exists(MethodAccess ma, Method m | m = ma.getMethod() and n2.asExpr() = ma |
-    isUnsafeEngine(ma.getQualifier()) and
+    not isSafeEngine(ma.getQualifier()) and
     m instanceof CreateJexlExpressionMethod and
     n1.asExpr() = ma.getAnArgument() and
     n1.asExpr().getType() instanceof TypeString
@@ -111,7 +111,7 @@ private predicate createJexlTemplateStep(DataFlow::Node n1, DataFlow::Node n2) {
   exists(MethodAccess ma, Method m, RefType taintType |
     m = ma.getMethod() and n2.asExpr() = ma and taintType = n1.asExpr().getType()
   |
-    isUnsafeEngine(ma.getQualifier()) and
+    not isSafeEngine(ma.getQualifier()) and
     m instanceof CreateJexlTemplateMethod and
     n1.asExpr() = ma.getArgument([0, 1]) and
     (taintType instanceof TypeString or taintType instanceof Reader)
@@ -119,10 +119,10 @@ private predicate createJexlTemplateStep(DataFlow::Node n1, DataFlow::Node n2) {
 }
 
 /**
- * Holds if `expr` is a JEXL engine that is not configured with a sandbox.
+ * Holds if `expr` is a JEXL engine that is configured with a sandbox.
  */
-private predicate isUnsafeEngine(Expr expr) {
-  not exists(SandboxedJexlFlowConfig config | config.hasFlowTo(DataFlow::exprNode(expr)))
+private predicate isSafeEngine(Expr expr) {
+  exists(SandboxedJexlFlowConfig config | config.hasFlowTo(DataFlow::exprNode(expr)))
 }
 
 /**
