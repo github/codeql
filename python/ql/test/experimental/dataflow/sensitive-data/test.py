@@ -20,14 +20,24 @@ fetch_certificate() # $ SensitiveDataSource=certificate
 account_id() # $ SensitiveDataSource=id
 safe_to_store = encrypt_password(pwd)
 
+f = get_password
+f() # $ SensitiveDataSource=password
+
 # attributes
 foo = ObjectFromDatabase()
 foo.secret # $ SensitiveDataSource=secret
 foo.username # $ SensitiveDataSource=id
 
+# plain variables
+password = some_function()
+print(password) # $ MISSING: SensitiveDataSource=password
+
 # Special handling of lookups of sensitive properties
 request.args["password"], # $ MISSING: SensitiveDataSource=password
 request.args.get("password") # $ SensitiveDataSource=password
+
+x = "password"
+request.args.get(x) # $ SensitiveDataSource=password
 
 # I don't think handling `getlist` is super important, just included it to show what we don't handle
 request.args.getlist("password")[0] # $ MISSING: SensitiveDataSource=password
