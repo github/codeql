@@ -53,3 +53,10 @@ function foo() {
         self.importScripts(e); // NOT OK
     }
 })();
+
+const history = require('history').createBrowserHistory();
+function bar() {
+    var payload = document.location.search.substr(1);
+
+    history.push(payload); // NOT OK
+}
