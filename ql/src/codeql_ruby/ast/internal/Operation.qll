@@ -3,9 +3,9 @@ private import AST
 private import TreeSitter
 
 class AssignmentImpl extends Operation, TAssignment {
-  abstract Pattern getLeftOperandImpl();
+  abstract AstNode getLeftOperandImpl();
 
-  abstract Expr getRightOperandImpl();
+  abstract AstNode getRightOperandImpl();
 }
 
 class AssignExprReal extends AssignmentImpl, AssignExpr, TAssignExprReal {
@@ -13,19 +13,19 @@ class AssignExprReal extends AssignmentImpl, AssignExpr, TAssignExprReal {
 
   AssignExprReal() { this = TAssignExprReal(g) }
 
-  final override Pattern getLeftOperandImpl() { toGenerated(result) = g.getLeft() }
+  final override AstNode getLeftOperandImpl() { toGenerated(result) = g.getLeft() }
 
-  final override Expr getRightOperandImpl() { toGenerated(result) = g.getRight() }
+  final override AstNode getRightOperandImpl() { toGenerated(result) = g.getRight() }
 }
 
 class AssignExprSynth extends AssignmentImpl, AssignExpr, TAssignExprSynth {
-  final override Pattern getLeftOperandImpl() { synthChild(this, 0, result) }
+  final override AstNode getLeftOperandImpl() { synthChild(this, 0, result) }
 
-  final override Expr getRightOperandImpl() { synthChild(this, 1, result) }
+  final override AstNode getRightOperandImpl() { synthChild(this, 1, result) }
 }
 
 class AssignOperationImpl extends AssignmentImpl, AssignOperation {
-  final override LhsExpr getLeftOperandImpl() { toGenerated(result) = g.getLeft() }
+  final override AstNode getLeftOperandImpl() { toGenerated(result) = g.getLeft() }
 
-  final override Expr getRightOperandImpl() { toGenerated(result) = g.getRight() }
+  final override AstNode getRightOperandImpl() { toGenerated(result) = g.getRight() }
 }

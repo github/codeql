@@ -13,7 +13,7 @@ predicate isScopeResolutionMethodCall(Generated::ScopeResolution g, Generated::I
 }
 
 abstract class CallImpl extends Call {
-  abstract Expr getArgumentImpl(int n);
+  abstract AstNode getArgumentImpl(int n);
 
   /**
    * It is not possible to define this predicate as
@@ -28,7 +28,7 @@ abstract class CallImpl extends Call {
 }
 
 abstract class MethodCallImpl extends CallImpl, MethodCall {
-  abstract Expr getReceiverImpl();
+  abstract AstNode getReceiverImpl();
 
   abstract string getMethodNameImpl();
 }
@@ -42,9 +42,9 @@ class MethodCallSynth extends MethodCallImpl, TMethodCallSynth {
     )
   }
 
-  final override Expr getReceiverImpl() { synthChild(this, 0, result) }
+  final override AstNode getReceiverImpl() { synthChild(this, 0, result) }
 
-  final override Expr getArgumentImpl(int n) { synthChild(this, n + 1, result) and n >= 0 }
+  final override AstNode getArgumentImpl(int n) { synthChild(this, n + 1, result) and n >= 0 }
 
   final override int getNumberOfArgumentsImpl() { this = TMethodCallSynth(_, _, _, _, result) }
 }
@@ -56,7 +56,7 @@ class IdentifierMethodCall extends MethodCallImpl, TIdentifierMethodCall {
 
   final override string getMethodNameImpl() { result = g.getValue() }
 
-  final override Self getReceiverImpl() { result = TSelfSynth(this, 0) }
+  final override AstNode getReceiverImpl() { result = TSelfSynth(this, 0) }
 
   final override Expr getArgumentImpl(int n) { none() }
 
