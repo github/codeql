@@ -9,6 +9,12 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.Frameworks
 private import semmle.python.Concepts
 private import semmle.python.security.SensitiveData as OldSensitiveData
+private import semmle.python.security.internal.SensitiveDataHeuristics as SensitiveDataHeuristics
+
+// We export these explicitly, so we don't also export the `HeuristicNames` module.
+class SensitiveDataClassification = SensitiveDataHeuristics::SensitiveDataClassification;
+
+module SensitiveDataClassification = SensitiveDataHeuristics::SensitiveDataClassification;
 
 /**
  * A data flow source of sensitive data, such as secrets, certificates, or passwords.
@@ -22,13 +28,9 @@ class SensitiveDataSource extends DataFlow::Node {
   SensitiveDataSource() { this = range }
 
   /**
-   * INTERNAL: Do not use.
-   *
-   * This will be rewritten to have better types soon, and therefore should only be used internally until then.
-   *
    * Gets the classification of the sensitive data.
    */
-  string getClassification() { result = range.getClassification() }
+  SensitiveDataClassification getClassification() { result = range.getClassification() }
 }
 
 /** Provides a class for modeling new sources of sensitive data, such as secrets, certificates, or passwords. */
@@ -41,22 +43,19 @@ module SensitiveDataSource {
    */
   abstract class Range extends DataFlow::Node {
     /**
-     * INTERNAL: Do not use.
-     *
-     * This will be rewritten to have better types soon, and therefore should only be used internally until then.
-     *
      * Gets the classification of the sensitive data.
      */
-    abstract string getClassification();
+    abstract SensitiveDataClassification getClassification();
   }
 }
 
+// TODO: rewrite this to not rely on the old points-to implementation
 private class PortOfOldModeling extends SensitiveDataSource::Range {
   OldSensitiveData::SensitiveData::Source oldSensitiveSource;
 
   PortOfOldModeling() { this.asCfgNode() = oldSensitiveSource }
 
-  override string getClassification() {
+  override SensitiveDataClassification getClassification() {
     exists(OldSensitiveData::SensitiveData classification |
       oldSensitiveSource.isSourceOf(classification)
     |
