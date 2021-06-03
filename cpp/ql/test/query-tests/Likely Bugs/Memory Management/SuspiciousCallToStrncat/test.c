@@ -39,3 +39,46 @@ void bad1(char *s) {
 	strncat(buf, ".", 1); // BAD [NOT DETECTED] -- Need to check if any space is left
 }
 
+void strncat_test1(char *s) {
+  char buf[80];
+  strncat(buf, s, sizeof(buf) - strlen(buf) - 1); // GOOD
+  strncat(buf, s, sizeof(buf) - strlen(buf));  // BAD
+}
+
+void* malloc(size_t);
+
+void strncat_test2(char *s) {
+  int len = 80;
+  char* buf = (char *)malloc(len);
+  strncat(buf, s, len - strlen(buf) - 1); // GOOD
+  strncat(buf, s, len - strlen(buf));  // BAD [NOT DETECTED]
+}
+
+struct buffers
+{
+  char array[50];
+  char* pointer;
+};
+
+void strncat_test3(char* s, struct buffers* buffers) {
+  unsigned len_array = strlen(buffers->array);
+  unsigned max_size = sizeof(buffers->array);
+  unsigned free_size = max_size - len_array;
+  strncat(buffers->array, s, free_size); // BAD
+}
+
+#define MAX_SIZE 80
+
+void strncat_test4(char *s) {
+  char buf[MAX_SIZE];
+  strncat(buf, s, MAX_SIZE - strlen(buf) - 1); // GOOD
+  strncat(buf, s, MAX_SIZE - strlen(buf));  // BAD
+  strncat(buf, "...", MAX_SIZE - strlen(buf)); // BAD
+}
+
+void strncat_test5(char *s) {
+  int len = 80;
+  char* buf = (char *) malloc(len + 1);
+  strncat(buf, s, len - strlen(buf) - 1); // GOOD
+  strncat(buf, s, len - strlen(buf)); // GOOD
+}

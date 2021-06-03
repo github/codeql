@@ -77,3 +77,30 @@ DataFlowType getCallbackReturnType(DataFlowType t, ReturnKind rk) {
     result = Gvn::getGlobalValueNumber(dt.getDelegateType().getReturnType())
   )
 }
+
+/** Holds if `spec` is a relevant external specification. */
+predicate relevantSpec(string spec) { none() }
+
+/**
+ * Holds if an external flow summary exists for `c` with input specification
+ * `input`, output specification `output`, and kind `kind`.
+ */
+predicate externalSummary(DataFlowCallable c, string input, string output, string kind) { none() }
+
+/** Gets the summary component for specification component `c`, if any. */
+bindingset[c]
+SummaryComponent interpretComponentSpecific(string c) {
+  c = "ReturnValue" and result = SummaryComponent::return(any(NormalReturnKind nrk))
+  or
+  c = "Element" and result = SummaryComponent::content(any(ElementContent ec))
+  or
+  exists(Field f |
+    c.regexpCapture("Field\\[(.+)\\]", 1) = f.getQualifiedName() and
+    result = SummaryComponent::content(any(FieldContent fc | fc.getField() = f))
+  )
+  or
+  exists(Property p |
+    c.regexpCapture("Property\\[(.+)\\]", 1) = p.getQualifiedName() and
+    result = SummaryComponent::content(any(PropertyContent pc | pc.getProperty() = p))
+  )
+}

@@ -1,0 +1,6 @@
+| MultipleArgumentsToSetConstructorBad.js:1:29:1:31 | 'e' | All but the first argument to the Set constructor are ignored. |
+| MultipleArgumentsToSetConstructorBad.js:1:34:1:36 | 'i' | All but the first argument to the Set constructor are ignored. |
+| MultipleArgumentsToSetConstructorBad.js:1:39:1:41 | 'o' | All but the first argument to the Set constructor are ignored. |
+| MultipleArgumentsToSetConstructorBad.js:1:44:1:46 | 'u' | All but the first argument to the Set constructor are ignored. |
+| tst.js:3:12:3:13 | xs | All but the first argument to the Set constructor are ignored. |
+| tst.js:3:19:3:20 | ys | All but the first argument to the Set constructor are ignored. |

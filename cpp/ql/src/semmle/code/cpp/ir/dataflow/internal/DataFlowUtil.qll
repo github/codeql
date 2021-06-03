@@ -12,10 +12,20 @@ private import semmle.code.cpp.controlflow.IRGuards
 private import semmle.code.cpp.models.interfaces.DataFlow
 
 cached
-private newtype TIRDataFlowNode =
-  TInstructionNode(Instruction i) or
-  TOperandNode(Operand op) or
-  TVariableNode(Variable var)
+private module Cached {
+  cached
+  newtype TIRDataFlowNode =
+    TInstructionNode(Instruction i) or
+    TOperandNode(Operand op) or
+    TVariableNode(Variable var)
+
+  cached
+  predicate localFlowStepCached(Node nodeFrom, Node nodeTo) {
+    simpleLocalFlowStep(nodeFrom, nodeTo)
+  }
+}
+
+private import Cached
 
 /**
  * A node in a data flow graph.
@@ -590,7 +600,7 @@ Node uninitializedNode(LocalVariable v) { none() }
  * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
  * (intra-procedural) step.
  */
-predicate localFlowStep(Node nodeFrom, Node nodeTo) { simpleLocalFlowStep(nodeFrom, nodeTo) }
+predicate localFlowStep = localFlowStepCached/2;
 
 /**
  * INTERNAL: do not use.
@@ -598,7 +608,6 @@ predicate localFlowStep(Node nodeFrom, Node nodeTo) { simpleLocalFlowStep(nodeFr
  * This is the local flow predicate that's used as a building block in global
  * data flow. It may have less flow than the `localFlowStep` predicate.
  */
-cached
 predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   // Operand -> Instruction flow
   simpleInstructionLocalFlowStep(nodeFrom.asOperand(), nodeTo.asInstruction())
@@ -656,7 +665,7 @@ private predicate simpleOperandLocalFlowStep(Instruction iFrom, Operand opTo) {
   exists(LoadInstruction load |
     load.getSourceValueOperand() = opTo and
     opTo.getAnyDef() = iFrom and
-    isSingleFieldClass(iFrom.getResultType(), opTo)
+    isSingleFieldClass(pragma[only_bind_out](pragma[only_bind_out](iFrom).getResultType()), opTo)
   )
 }
 
@@ -739,14 +748,8 @@ private predicate modelFlow(Operand opFrom, Instruction iTo) {
       )
       or
       exists(int index, ReadSideEffectInstruction read |
-        modelIn.isParameterDeref(index) and
+        modelIn.isParameterDerefOrQualifierObject(index) and
         read = getSideEffectFor(call, index) and
-        opFrom = read.getSideEffectOperand()
-      )
-      or
-      exists(ReadSideEffectInstruction read |
-        modelIn.isQualifierObject() and
-        read = getSideEffectFor(call, -1) and
         opFrom = read.getSideEffectOperand()
       )
     )

@@ -13,39 +13,111 @@
 import cpp
 import semmle.code.cpp.security.Encryption
 
-abstract class InsecureCryptoSpec extends Locatable {
-  abstract string description();
-}
-
-Function getAnInsecureFunction() {
-  result.getName().regexpMatch(getInsecureAlgorithmRegex()) and
+/**
+ * A function which may relate to an insecure encryption algorithm.
+ */
+Function getAnInsecureEncryptionFunction() {
+  (
+    isInsecureEncryption(result.getName()) or
+    isInsecureEncryption(result.getAParameter().getName()) or
+    isInsecureEncryption(result.getDeclaringType().getName())
+  ) and
   exists(result.getACallToThisFunction())
 }
 
-class InsecureFunctionCall extends InsecureCryptoSpec, FunctionCall {
-  InsecureFunctionCall() { this.getTarget() = getAnInsecureFunction() }
-
-  override string description() { result = "function call" }
-
-  override string toString() { result = FunctionCall.super.toString() }
-
-  override Location getLocation() { result = FunctionCall.super.getLocation() }
+/**
+ * A function with additional evidence it is related to encryption.
+ */
+Function getAdditionalEvidenceFunction() {
+  (
+    isEncryptionAdditionalEvidence(result.getName()) or
+    isEncryptionAdditionalEvidence(result.getAParameter().getName())
+  ) and
+  exists(result.getACallToThisFunction())
 }
 
-Macro getAnInsecureMacro() {
-  result.getName().regexpMatch(getInsecureAlgorithmRegex()) and
+/**
+ * A macro which may relate to an insecure encryption algorithm.
+ */
+Macro getAnInsecureEncryptionMacro() {
+  isInsecureEncryption(result.getName()) and
   exists(result.getAnInvocation())
 }
 
-class InsecureMacroSpec extends InsecureCryptoSpec, MacroInvocation {
-  InsecureMacroSpec() { this.getMacro() = getAnInsecureMacro() }
-
-  override string description() { result = "macro invocation" }
-
-  override string toString() { result = MacroInvocation.super.toString() }
-
-  override Location getLocation() { result = MacroInvocation.super.getLocation() }
+/**
+ * A macro with additional evidence it is related to encryption.
+ */
+Macro getAdditionalEvidenceMacro() {
+  isEncryptionAdditionalEvidence(result.getName()) and
+  exists(result.getAnInvocation())
 }
 
-from InsecureCryptoSpec c
-select c, "This " + c.description() + " specifies a broken or weak cryptographic algorithm."
+/**
+ * An enum constant which may relate to an insecure encryption algorithm.
+ */
+EnumConstant getAnInsecureEncryptionEnumConst() { isInsecureEncryption(result.getName()) }
+
+/**
+ * An enum constant with additional evidence it is related to encryption.
+ */
+EnumConstant getAdditionalEvidenceEnumConst() { isEncryptionAdditionalEvidence(result.getName()) }
+
+/**
+ * A function call we have a high confidence is related to use of an insecure
+ * encryption algorithm.
+ */
+class InsecureFunctionCall extends FunctionCall {
+  Element blame;
+  string explain;
+
+  InsecureFunctionCall() {
+    // find use of an insecure algorithm name
+    (
+      getTarget() = getAnInsecureEncryptionFunction() and
+      blame = this and
+      explain = "function call"
+      or
+      exists(MacroInvocation mi |
+        (
+          mi.getAnExpandedElement() = this or
+          mi.getAnExpandedElement() = this.getAnArgument()
+        ) and
+        mi.getMacro() = getAnInsecureEncryptionMacro() and
+        blame = mi and
+        explain = "macro invocation"
+      )
+      or
+      exists(EnumConstantAccess ec |
+        ec = this.getAnArgument() and
+        ec.getTarget() = getAnInsecureEncryptionEnumConst() and
+        blame = ec and
+        explain = "enum constant access"
+      )
+    ) and
+    // find additional evidence that this function is related to encryption.
+    (
+      getTarget() = getAdditionalEvidenceFunction()
+      or
+      exists(MacroInvocation mi |
+        (
+          mi.getAnExpandedElement() = this or
+          mi.getAnExpandedElement() = this.getAnArgument()
+        ) and
+        mi.getMacro() = getAdditionalEvidenceMacro()
+      )
+      or
+      exists(EnumConstantAccess ec |
+        ec = this.getAnArgument() and
+        ec.getTarget() = getAdditionalEvidenceEnumConst()
+      )
+    )
+  }
+
+  Element getBlame() { result = blame }
+
+  string getDescription() { result = explain }
+}
+
+from InsecureFunctionCall c
+select c.getBlame(),
+  "This " + c.getDescription() + " specifies a broken or weak cryptographic algorithm."

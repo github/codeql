@@ -739,7 +739,7 @@ class LabeledStmt extends Stmt, @labeledstmt {
   /** This statement's Halstead ID (used to compute Halstead metrics). */
   override string getHalsteadID() { result = this.getLabel() + ":" }
 
-  override string getAPrimaryQlClass() { result = "LabelStmt" }
+  override string getAPrimaryQlClass() { result = "LabeledStmt" }
 }
 
 /** An `assert` statement. */

@@ -170,7 +170,8 @@ namespace Semmle.Extraction.CSharp.Entities
         public static Expression? CreateGenerated(Context cx, IParameterSymbol parameter, IExpressionParentEntity parent,
             int childIndex, Extraction.Entities.Location location)
         {
-            if (!parameter.HasExplicitDefaultValue)
+            if (!parameter.HasExplicitDefaultValue ||
+                parameter.Type is IErrorTypeSymbol)
             {
                 return null;
             }

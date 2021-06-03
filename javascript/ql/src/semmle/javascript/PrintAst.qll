@@ -73,7 +73,12 @@ private newtype TPrintAstNode =
   THTMLAttributesNodes(HTML::Element e) { shouldPrint(e, _) and not isNotNeeded(e) } or
   THTMLAttributeNode(HTML::Attribute attr) { shouldPrint(attr, _) and not isNotNeeded(attr) } or
   THTMLScript(Script script) { shouldPrint(script, _) and not isNotNeeded(script) } or
-  THTMLCodeInAttr(CodeInAttribute attr) { shouldPrint(attr, _) and not isNotNeeded(attr) }
+  THTMLCodeInAttr(CodeInAttribute attr) { shouldPrint(attr, _) and not isNotNeeded(attr) } or
+  TRegExpTermNode(RegExpTerm term) {
+    shouldPrint(term, _) and
+    term.isUsedAsRegExp() and
+    any(RegExpLiteral lit).getRoot() = term.getRootTerm()
+  }
 
 /**
  * A node in the output tree.
@@ -280,6 +285,39 @@ private module PrintJavaScript {
       exists(element.getATypeArgument()) and
       result.(InvokeTypeArgumentsNode).getInvokeExpr() = element
     }
+  }
+
+  /**
+   * A print node for regexp literals.
+   *
+   * The single child of this node is the root `RegExpTerm`.
+   */
+  class RegexpNode extends ElementNode {
+    override RegExpLiteral element;
+
+    override PrintAstNode getChild(int childIndex) {
+      childIndex = 0 and
+      result.(RegExpTermNode).getTerm() = element.getRoot()
+    }
+  }
+
+  /**
+   * A print node for regexp terms.
+   */
+  class RegExpTermNode extends PrintAstNode, TRegExpTermNode {
+    RegExpTerm term;
+
+    RegExpTermNode() { this = TRegExpTermNode(term) }
+
+    RegExpTerm getTerm() { result = term }
+
+    override PrintAstNode getChild(int childIndex) {
+      result.(RegExpTermNode).getTerm() = term.getChild(childIndex)
+    }
+
+    override string toString() { result = getQlClass(term) + term.toString() }
+
+    override Location getLocation() { result = term.getLocation() }
   }
 
   /**

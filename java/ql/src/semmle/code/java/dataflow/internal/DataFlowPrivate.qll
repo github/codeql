@@ -284,7 +284,6 @@ private class ConstantBooleanArgumentNode extends ArgumentNode, ExprNode {
 /**
  * Holds if the node `n` is unreachable when the call context is `call`.
  */
-cached
 predicate isUnreachableInCall(Node n, DataFlowCall call) {
   exists(
     ExplicitParameterNode paramNode, ConstantBooleanArgumentNode arg, SsaImplicitInit param,
@@ -297,7 +296,9 @@ predicate isUnreachableInCall(Node n, DataFlowCall call) {
     // which is used in a guard
     param.getAUse() = guard and
     // which controls `n` with the opposite value of `arg`
-    guard.controls(n.asExpr().getBasicBlock(), arg.getBooleanValue().booleanNot())
+    guard
+        .controls(n.asExpr().getBasicBlock(),
+          pragma[only_bind_out](arg.getBooleanValue()).booleanNot())
   )
 }
 

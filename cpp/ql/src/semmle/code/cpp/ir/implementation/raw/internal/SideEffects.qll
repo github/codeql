@@ -7,6 +7,7 @@
 
 private import cpp
 private import semmle.code.cpp.ir.implementation.Opcode
+private import semmle.code.cpp.models.interfaces.PointerWrapper
 private import semmle.code.cpp.models.interfaces.SideEffect
 
 /**
@@ -39,7 +40,8 @@ private predicate hasDefaultSideEffect(Call call, ParameterIndex i, boolean buff
       exists(Type t | t = expr.getUnspecifiedType() |
         t instanceof ArrayType or
         t instanceof PointerType or
-        t instanceof ReferenceType
+        t instanceof ReferenceType or
+        t instanceof PointerWrapper
       ) and
       (
         isWrite = true and

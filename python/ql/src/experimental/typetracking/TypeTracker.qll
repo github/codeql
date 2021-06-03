@@ -57,11 +57,60 @@ class StepSummary extends TStepSummary {
 module StepSummary {
   /**
    * Gets the summary that corresponds to having taken a forwards
-   * heap and/or inter-procedural step from `nodeFrom` to `nodeTo`.
+   * heap and/or intra-procedural step from `nodeFrom` to `nodeTo`.
+   *
+   * Steps contained in this predicate should _not_ depend on the call graph.
    */
   cached
+  private predicate stepNoCall(LocalSourceNode nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
+    exists(Node mid | nodeFrom.flowsTo(mid) and smallstepNoCall(mid, nodeTo, summary))
+  }
+
+  /**
+   * Gets the summary that corresponds to having taken a forwards
+   * inter-procedural step from `nodeFrom` to `nodeTo`.
+   */
+  cached
+  private predicate stepCall(LocalSourceNode nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
+    exists(Node mid | nodeFrom.flowsTo(mid) and smallstepCall(mid, nodeTo, summary))
+  }
+
+  /**
+   * Gets the summary that corresponds to having taken a forwards
+   * heap and/or inter-procedural step from `nodeFrom` to `nodeTo`.
+   *
+   * This predicate is inlined, which enables better join-orders when
+   * the call graph construction and type tracking are mutually recursive.
+   * In such cases, non-linear recursion involving `step` will be limited
+   * to non-linear recursion for the parts of `step` that involve the
+   * call graph.
+   */
+  pragma[inline]
   predicate step(LocalSourceNode nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
-    exists(Node mid | nodeFrom.flowsTo(mid) and smallstep(mid, nodeTo, summary))
+    stepNoCall(nodeFrom, nodeTo, summary)
+    or
+    stepCall(nodeFrom, nodeTo, summary)
+  }
+
+  pragma[noinline]
+  private predicate smallstepNoCall(Node nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
+    jumpStep(nodeFrom, nodeTo) and
+    summary = LevelStep()
+    or
+    exists(string content |
+      localSourceStoreStep(nodeFrom, nodeTo, content) and
+      summary = StoreStep(content)
+      or
+      basicLoadStep(nodeFrom, nodeTo, content) and summary = LoadStep(content)
+    )
+  }
+
+  pragma[noinline]
+  private predicate smallstepCall(Node nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
+    callStep(nodeFrom, nodeTo) and summary = CallStep()
+    or
+    returnStep(nodeFrom, nodeTo) and
+    summary = ReturnStep()
   }
 
   /**
@@ -71,21 +120,11 @@ module StepSummary {
    * Unlike `StepSummary::step`, this predicate does not compress
    * type-preserving steps.
    */
+  pragma[inline]
   predicate smallstep(Node nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
-    jumpStep(nodeFrom, nodeTo) and
-    summary = LevelStep()
+    smallstepNoCall(nodeFrom, nodeTo, summary)
     or
-    callStep(nodeFrom, nodeTo) and summary = CallStep()
-    or
-    returnStep(nodeFrom, nodeTo) and
-    summary = ReturnStep()
-    or
-    exists(string content |
-      localSourceStoreStep(nodeFrom, nodeTo, content) and
-      summary = StoreStep(content)
-      or
-      basicLoadStep(nodeFrom, nodeTo, content) and summary = LoadStep(content)
-    )
+    smallstepCall(nodeFrom, nodeTo, summary)
   }
 
   /**

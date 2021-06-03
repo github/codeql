@@ -2,6 +2,7 @@
 
 import csharp
 private import semmle.code.csharp.ExprOrStmtParent
+private import semmle.code.csharp.commons.Compilation
 private import ControlFlow
 private import ControlFlow::BasicBlocks
 private import SuccessorTypes
@@ -22,7 +23,12 @@ class ControlFlowElement extends ExprOrStmtParent, @control_flow_element {
   Callable getEnclosingCallable() { none() }
 
   /** Gets the assembly that this element was compiled into. */
-  Assembly getAssembly() { result = this.getEnclosingCallable().getDeclaringType().getALocation() }
+  Assembly getAssembly() {
+    exists(Compilation c |
+      c.getAFileCompiled() = this.getFile() and
+      result = c.getOutputAssembly()
+    )
+  }
 
   /**
    * Gets a control flow node for this element. That is, a node in the

@@ -1,0 +1,45 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Constructing a regular expression with unsanitized user input is dangerous as a malicious user may
+be able to modify the meaning of the expression. In particular, such a user may be able to provide
+a regular expression fragment that takes exponential time in the worst case, and use that to
+perform a Denial of Service attack.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Before embedding user input into a regular expression, use a sanitization function such as
+<code>re.escape</code> to escape meta-characters that have a special meaning regarding 
+regular expressions' syntax.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following examples are based on a simple Flask web server environment.
+</p>
+<p>
+The following example shows a HTTP request parameter that is used to construct a regular expression
+without sanitizing it first:
+</p>
+<sample src="re_bad.py" />
+<p>
+Instead, the request parameter should be sanitized first, for example using the function
+<code>re.escape</code>. This ensures that the user cannot insert characters which have a
+special meaning in regular expressions.
+</p>
+<sample src="re_good.py" />
+</example>
+
+<references>
+<li>OWASP: <a href="https://www.owasp.org/index.php/Regular_expression_Denial_of_Service_-_ReDoS">Regular expression Denial of Service - ReDoS</a>.</li>
+<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/ReDoS">ReDoS</a>.</li>
+<li>Python docs: <a href="https://docs.python.org/3/library/re.html">re</a>.</li>
+<li>SonarSource: <a href="https://rules.sonarsource.com/python/type/Vulnerability/RSPEC-2631">RSPEC-2631</a>.</li>
+</references>
+</qhelp>

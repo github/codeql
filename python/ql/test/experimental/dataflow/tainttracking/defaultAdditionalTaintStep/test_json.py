@@ -11,54 +11,43 @@ if TYPE_CHECKING:
 # Actual tests
 
 from io import StringIO
-
-# Workaround for Python3 not having unicode
-import sys
-if sys.version_info[0] == 3:
-    unicode = str
+import json
 
 def test():
     print("\n# test")
     ts = TAINTED_STRING
-    import json
+
+    encoded = json.dumps(ts)
 
     ensure_tainted(
+        encoded, # $ tainted
         json.dumps(ts), # $ tainted
-        json.loads(json.dumps(ts)), # $ tainted
+        json.dumps(obj=ts), # $ tainted
+        json.loads(encoded), # $ tainted
+        json.loads(s=encoded), # $ tainted
     )
 
-    # For Python2, need to convert to unicode for StringIO to work
-    tainted_filelike = StringIO(unicode(json.dumps(ts)))
+    # load/dump with file-like
+    tainted_filelike = StringIO()
+    json.dump(ts, tainted_filelike)
 
+    tainted_filelike.seek(0)
     ensure_tainted(
-        tainted_filelike, # $ MISSING: tainted
-        json.load(tainted_filelike), # $ MISSING: tainted
+        tainted_filelike, # $ tainted
+        json.load(tainted_filelike), # $ tainted
     )
 
-def non_syntacical():
-    print("\n# non_syntacical")
-    ts = TAINTED_STRING
+    # load/dump with file-like using keyword-args
+    tainted_filelike = StringIO()
+    json.dump(obj=ts, fp=tainted_filelike)
 
-    # a less syntactical approach
-    from json import load, loads, dumps
-
-    dumps_alias = dumps
-
+    tainted_filelike.seek(0)
     ensure_tainted(
-        dumps(ts), # $ tainted
-        dumps_alias(ts), # $ tainted
-        loads(dumps(ts)), # $ tainted
+        tainted_filelike, # $ tainted
+        json.load(fp=tainted_filelike), # $ tainted
     )
 
-    # For Python2, need to convert to unicode for StringIO to work
-    tainted_filelike = StringIO(unicode(dumps(ts)))
-
-    ensure_tainted(
-        tainted_filelike, # $ MISSING: tainted
-        load(tainted_filelike), # $ MISSING: tainted
-    )
 
 # Make tests runable
 
 test()
-non_syntacical()

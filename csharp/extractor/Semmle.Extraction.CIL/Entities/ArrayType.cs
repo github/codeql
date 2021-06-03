@@ -29,7 +29,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override int GetHashCode() => HashCode.Combine(elementType, rank);
 
-        public override void WriteId(TextWriter trapFile, bool inContext)
+        public override void WriteId(EscapingTextWriter trapFile, bool inContext)
         {
             elementType.WriteId(trapFile, inContext);
             trapFile.Write('[');

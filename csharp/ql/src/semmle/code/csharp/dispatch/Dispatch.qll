@@ -387,7 +387,8 @@ private module Internal {
       result = this.getAStaticTarget()
       or
       result.getUnboundDeclaration() =
-        this.getASubsumedStaticTarget0(Gvn::getGlobalValueNumber(result.getDeclaringType()))
+        this.getASubsumedStaticTarget0(pragma[only_bind_out](Gvn::getGlobalValueNumber(result
+                .getDeclaringType())))
     }
 
     /**
