@@ -16,9 +16,6 @@
 
   <references>
     <li>
-      <a href="https://cwe.mitre.org/data/definitions/522">CWE-522</a>
-    </li>
-    <li>
       SonarSource rule:
       <a href="https://rules.sonarsource.com/java/tag/owasp/RSPEC-2647">Basic authentication should not be used</a>
     </li>
