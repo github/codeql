@@ -1,0 +1,5 @@
+| unsecurable.js:4:1:4:32 | fsExtra ... file1') | message |
+| unsecurable.js:5:1:5:36 | fsExtra ... file2') | message |
+| unsecurable.js:6:1:6:32 | fsExtra ... file3') | message |
+| unsecurable.js:7:1:7:36 | fsExtra ... file4') | message |
+| unsecurable.js:8:1:8:19 | trash('/tmp/file5') | message |

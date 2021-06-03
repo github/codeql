@@ -1,0 +1,3 @@
+| transport.js:6:43:6:48 | unsafe | message |
+| transport.js:8:28:8:33 | unsafe | message |
+| transport.js:10:40:10:45 | unsafe | message |

@@ -1,0 +1,1 @@
+ERROR: Characteristic predicate named ImmediateOrObjectArgument1DirectoryCreation expected (/home/user/codeql/sft/codeql-repo/javascript/ql/src/experimental/Security/CWE-732/ModableDirectoryCreation.qll:22,3-48)

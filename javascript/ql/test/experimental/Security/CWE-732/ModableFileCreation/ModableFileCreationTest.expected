@@ -1,0 +1,17 @@
+| modable.js:6:1:6:33 | fs.crea ... file1') |
+| modable.js:7:1:7:34 | fs.crea ... file2') |
+| modable.js:8:1:8:31 | fs.open ...  => {}) |
+| modable.js:9:1:9:25 | fs.open ... file4') |
+| modable.js:10:1:10:29 | fsPromi ... file5') |
+| modable.js:11:1:11:41 | fs.appe ...  => {}) |
+| modable.js:12:1:12:35 | fs.appe ... 7', '') |
+| modable.js:13:1:13:40 | fs.writ ...  => {}) |
+| modable.js:14:1:14:34 | fs.writ ... 9', '') |
+| modable.js:15:1:15:39 | fsPromi ... 0', '') |
+| modable.js:16:1:16:38 | fsPromi ... 1', '') |
+| modable.js:17:1:17:47 | jsonfil ...  => {}) |
+| modable.js:18:1:18:41 | jsonfil ... 3', {}) |
+| modable.js:19:1:19:36 | fsExtra ... 4', {}) |
+| modable.js:20:1:20:40 | fsExtra ... 5', {}) |
+| modable.js:21:1:21:36 | fsExtra ... 6', {}) |
+| modable.js:22:1:22:40 | fsExtra ... 7', {}) |
