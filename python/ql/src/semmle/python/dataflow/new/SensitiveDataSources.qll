@@ -5,9 +5,8 @@
 
 private import python
 private import semmle.python.dataflow.new.DataFlow
-// Need to import since frameworks can extend `RemoteFlowSource::Range`
+// Need to import `semmle.python.Frameworks` since frameworks can extend `SensitiveDataSource::Range`
 private import semmle.python.Frameworks
-private import semmle.python.Concepts
 private import semmle.python.security.internal.SensitiveDataHeuristics as SensitiveDataHeuristics
 
 // We export these explicitly, so we don't also export the `HeuristicNames` module.
