@@ -296,7 +296,9 @@ predicate isUnreachableInCall(Node n, DataFlowCall call) {
     // which is used in a guard
     param.getAUse() = guard and
     // which controls `n` with the opposite value of `arg`
-    guard.controls(n.asExpr().getBasicBlock(), arg.getBooleanValue().booleanNot())
+    guard
+        .controls(n.asExpr().getBasicBlock(),
+          pragma[only_bind_out](arg.getBooleanValue()).booleanNot())
   )
 }
 
