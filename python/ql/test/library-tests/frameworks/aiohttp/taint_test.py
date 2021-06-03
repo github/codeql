@@ -5,11 +5,12 @@ async def test_taint(request: web.Request): # $ requestHandler
     ensure_tainted(
         request, # $ tainted
 
-        # yarl.URL instances
+        # yarl.URL instances, see tests under `yarl` framework tests
         # https://yarl.readthedocs.io/en/stable/api.html#yarl.URL
-        # see below
         request.url, # $ tainted
+        request.url.human_repr(), # $ tainted
         request.rel_url, # $ tainted
+        request.rel_url.human_repr(), # $ tainted
 
         request.forwarded, # $ tainted
 
@@ -128,68 +129,6 @@ async def test_taint(request: web.Request): # $ requestHandler
 
         request.app,
         request.config_dict,
-    )
-
-    # TODO: Should have a better way to capture that we in fact _do_ model this as a
-    # an instance of the right class, and have the actual taint_test for that in a
-    # different file!
-    import yarl
-
-    ensure_tainted(
-        # see https://yarl.readthedocs.io/en/stable/api.html#yarl.URL
-        request.url.user, # $ tainted
-        request.url.raw_user, # $ tainted
-
-        request.url.password, # $ tainted
-        request.url.raw_password, # $ tainted
-
-        request.url.host, # $ tainted
-        request.url.raw_host, # $ tainted
-
-        request.url.port, # $ tainted
-        request.url.explicit_port, # $ tainted
-
-        request.url.authority, # $ tainted
-        request.url.raw_authority, # $ tainted
-
-        request.url.path, # $ tainted
-        request.url.raw_path, # $ tainted
-
-        request.url.path_qs, # $ tainted
-        request.url.raw_path_qs, # $ tainted
-
-        request.url.query_string, # $ tainted
-        request.url.raw_query_string, # $ tainted
-
-        request.url.fragment, # $ tainted
-        request.url.raw_fragment, # $ tainted
-
-        request.url.parts, # $ tainted
-        request.url.raw_parts, # $ tainted
-
-        request.url.name, # $ tainted
-        request.url.raw_name, # $ tainted
-
-        # multidict.MultiDictProxy[str]
-        request.url.query, # $ tainted
-        request.url.query.getone("key"), # $ tainted
-
-        request.url.with_scheme("foo"), # $ tainted
-        request.url.with_user("foo"), # $ tainted
-        request.url.with_password("foo"), # $ tainted
-        request.url.with_host("foo"), # $ tainted
-        request.url.with_port("foo"), # $ tainted
-        request.url.with_path("foo"), # $ tainted
-        request.url.with_query({"foo": 42}), # $ tainted
-        request.url.with_query(foo=42), # $ tainted
-        request.url.update_query({"foo": 42}), # $ tainted
-        request.url.update_query(foo=42), # $ tainted
-        request.url.with_fragment("foo"), # $ tainted
-        request.url.with_name("foo"), # $ tainted
-
-        request.url.join(yarl.URL("wat.html")), # $ tainted
-
-        request.url.human_repr(), # $ tainted
     )
 
 

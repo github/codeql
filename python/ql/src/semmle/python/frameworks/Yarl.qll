@@ -34,6 +34,11 @@ module Yarl {
      */
     abstract class InstanceSource extends DataFlow::LocalSourceNode { }
 
+    /** A direct instantiation of `yarl.URL`. */
+    private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
+      ClassInstantiation() { this = API::moduleImport("yarl").getMember("URL").getACall() }
+    }
+
     /** Gets a reference to an instance of `yarl.URL`. */
     private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
       t.start() and
@@ -52,6 +57,12 @@ module Yarl {
      */
     class YarlUrlAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
       override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+        // class instantiation
+        exists(ClassInstantiation call |
+          nodeFrom in [call.getArg(0), call.getArgByName("val")] and
+          nodeTo = call
+        )
+        or
         // Methods
         //
         // TODO: When we have tools that make it easy, model these properly to handle
