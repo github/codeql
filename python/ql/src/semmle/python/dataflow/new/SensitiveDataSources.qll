@@ -126,6 +126,18 @@ private module SensitiveDataModeling {
     override SensitiveDataClassification getClassification() { result = classification }
   }
 
+  /** A subscript, where the key indicates the result will be sensitive data. */
+  class SensitiveSubscript extends SensitiveDataSource::Range {
+    SensitiveDataClassification classification;
+
+    SensitiveSubscript() {
+      this.asCfgNode().(SubscriptNode).getIndex() =
+        sensitiveLookupStringConst(classification).asCfgNode()
+    }
+
+    override SensitiveDataClassification getClassification() { result = classification }
+  }
+
   /** A call to `get` on an object, where the key indicates the result will be sensitive data. */
   class SensitiveGetCall extends SensitiveDataSource::Range, DataFlow::CallCfgNode {
     SensitiveDataClassification classification;

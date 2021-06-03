@@ -34,7 +34,7 @@ password = some_function()
 print(password) # $ MISSING: SensitiveUse=password
 
 # Special handling of lookups of sensitive properties
-request.args["password"], # $ MISSING: SensitiveDataSource=password
+request.args["password"], # $ SensitiveDataSource=password
 request.args.get("password") # $ SensitiveDataSource=password
 
 x = "password"
