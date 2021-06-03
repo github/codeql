@@ -24,6 +24,11 @@ module Multidict {
    * See https://multidict.readthedocs.io/en/stable/multidict.html#multidictproxy
    */
   module MultiDictProxy {
+    /** Gets a reference to a `MultiDictProxy` class. */
+    API::Node classRef() {
+      result = API::moduleImport("multidict").getMember(["MultiDictProxy", "CIMultiDictProxy"])
+    }
+
     /**
      * A source of instances of `multidict.MultiDictProxy`, extend this class to model
      * new instances.
@@ -37,7 +42,12 @@ module Multidict {
      */
     abstract class InstanceSource extends DataFlow::LocalSourceNode { }
 
-    /** Gets a reference to an instance of `multidict.MultiDictProxy`. */
+    /** A direct instantiation of a `MultiDictProxy` class. */
+    private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
+      ClassInstantiation() { this = classRef().getACall() }
+    }
+
+    /** Gets a reference to an instance of a `MultiDictProxy` class. */
     private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
       t.start() and
       result instanceof InstanceSource
@@ -45,7 +55,7 @@ module Multidict {
       exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
     }
 
-    /** Gets a reference to an instance of `multidict.MultiDictProxy`. */
+    /** Gets a reference to an instance of a `MultiDictProxy` class. */
     DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
 
     /**
@@ -55,6 +65,12 @@ module Multidict {
      */
     class MultiDictProxyAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
       override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+        // class instantiation
+        exists(ClassInstantiation call |
+          nodeFrom = call.getArg(0) and
+          nodeTo = call
+        )
+        or
         // Methods
         //
         // TODO: When we have tools that make it easy, model these properly to handle

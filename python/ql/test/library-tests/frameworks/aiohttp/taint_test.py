@@ -5,8 +5,7 @@ async def test_taint(request: web.Request): # $ requestHandler
     ensure_tainted(
         request, # $ tainted
 
-        # yarl.URL instances, see tests under `yarl` framework tests
-        # https://yarl.readthedocs.io/en/stable/api.html#yarl.URL
+        # yarl.URL (see `yarl` framework tests)
         request.url, # $ tainted
         request.url.human_repr(), # $ tainted
         request.rel_url, # $ tainted
@@ -25,28 +24,11 @@ async def test_taint(request: web.Request): # $ requestHandler
         request.match_info["key"], # $ tainted
         request.match_info.get("key"), # $ tainted
 
-        # multidict.MultiDictProxy[str]
-        # see https://multidict.readthedocs.io/en/stable/multidict.html#multidict.MultiDictProxy
-        # TODO: Should have a better way to capture that we in fact _do_ model this as a
-        # an instance of the right class, and have the actual taint_test for that in a
-        # different file!
+        # multidict.MultiDictProxy[str] (see `multidict` framework tests)
         request.query, # $ tainted
-        request.query["key"], # $ tainted
-        request.query.get("key"), # $ tainted
         request.query.getone("key"), # $ tainted
-        request.query.getall("key"), # $ tainted
-        request.query.keys(), # $ MISSING: tainted
-        request.query.values(), # $ tainted
-        request.query.items(), # $ tainted
-        request.query.copy(), # $ tainted
-        list(request.query), # $ tainted
-        iter(request.query), # $ tainted
 
-        # multidict.CIMultiDictProxy[str]
-        # see https://multidict.readthedocs.io/en/stable/multidict.html#multidict.CIMultiDictProxy
-        # TODO: Should have a better way to capture that we in fact _do_ model this as a
-        # an instance of the right class, and have the actual taint_test for that in a
-        # different file!
+        # multidict.CIMultiDictProxy[str] (see `multidict` framework tests)
         request.headers, # $ tainted
         request.headers.getone("key"), # $ tainted
 
@@ -99,7 +81,7 @@ async def test_taint(request: web.Request): # $ requestHandler
         # aiohttp.multipart.MultipartReader
         await request.multipart(), # $ tainted
 
-        # multidict.MultiDictProxy[str]
+        # multidict.MultiDictProxy[str] (see `multidict` framework tests)
         await request.post(), # $ tainted
         (await request.post()).getone("key"), # $ MISSING: tainted
     )
