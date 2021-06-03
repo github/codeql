@@ -2,11 +2,12 @@ import java
 import semmle.code.java.dataflow.internal.DataFlowPrivate
 import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.dataflow.FlowSummary
+import semmle.code.java.dataflow.internal.FlowSummaryImpl
 
 bindingset[this]
 abstract class CsvRow extends string { }
 
-Type getParameterType(SummarizedCallableExternal callable, int i) {
+Type getParameterType(Private::External::SummarizedCallableExternal callable, int i) {
   if i = -1 then result = callable.getDeclaringType() else result = callable.getParameterType(i)
 }
 
@@ -66,7 +67,7 @@ Type getRootSourceDeclaration(Type t) {
 
 newtype TRowTestSnippet =
   MkSnippet(
-    CsvRow row, SummarizedCallableExternal callable, SummaryComponentStack input,
+    CsvRow row, Private::External::SummarizedCallableExternal callable, SummaryComponentStack input,
     SummaryComponentStack output, boolean preservesValue
   ) {
     callable.propagatesFlowForRow(input, output, preservesValue, row)
@@ -74,7 +75,7 @@ newtype TRowTestSnippet =
 
 class RowTestSnippet extends TRowTestSnippet {
   string row;
-  SummarizedCallableExternal callable;
+  Private::External::SummarizedCallableExternal callable;
   SummaryComponentStack input;
   SummaryComponentStack output;
   SummaryComponentStack baseInput;
@@ -122,7 +123,10 @@ class RowTestSnippet extends TRowTestSnippet {
     // new Type(filler, in, out, filler);
     exists(string storePrefix, string invokePrefix, string args |
       (
-        if baseOutput = SummaryComponentStack::return()
+        if
+          baseOutput = SummaryComponentStack::return()
+          or
+          callable instanceof Constructor and baseOutput = SummaryComponentStack::argument(-1)
         then storePrefix = "out = "
         else storePrefix = ""
       ) and
@@ -213,7 +217,7 @@ class RowTestSnippet extends TRowTestSnippet {
 
   string getASupportMethodModel() {
     exists(SummaryComponent c, string contentSsvDescription |
-      c = input.drop(_).head() and c = interpretComponent(contentSsvDescription)
+      c = input.drop(_).head() and c = Private::External::interpretComponent(contentSsvDescription)
     |
       result =
         "generatedtest;Test;false;newWith" + contentToken(getContent(c)) + ";;;Argument[0];" +
@@ -221,7 +225,7 @@ class RowTestSnippet extends TRowTestSnippet {
     )
     or
     exists(SummaryComponent c, string contentSsvDescription |
-      c = output.drop(_).head() and c = interpretComponent(contentSsvDescription)
+      c = output.drop(_).head() and c = Private::External::interpretComponent(contentSsvDescription)
     |
       result =
         "generatedtest;Test;false;get" + contentToken(getContent(c)) + ";;;" + contentSsvDescription

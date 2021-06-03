@@ -32,7 +32,7 @@ class HasFlowTest extends InlineExpectationsTest {
     )
     or
     tag = "hasTaintFlow" and
-    exists(DataFlow::Node src, DataFlow::Node sink, TaintFlowConf conf | conf.hasFlow(src, sink) |
+    exists(DataFlow::Node src, DataFlow::Node sink, TaintFlowConf conf | conf.hasFlow(src, sink) and not any(ValueFlowConf c).hasFlow(src, sink) |
       sink.getLocation() = location and
       element = sink.toString() and
       value = ""

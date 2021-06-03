@@ -31,7 +31,7 @@ if os.path.exists(resultJava) or os.path.exists(resultQl):
 
 workDir = tempfile.mkdtemp()
 
-# Step 1: make a database that touches all types whose methods we want to test:
+# Make a database that touches all types whose methods we want to test:
 print("Creating Maven project")
 projectDir = os.path.join(workDir, "mavenProject")
 os.makedirs(projectDir)
@@ -137,6 +137,10 @@ with open(resultQl, "w") as f:
   f.write(", ".join('"%s"' % modelSpecRow[0].strip() for modelSpecRow in supportModelRows))
   with open(os.path.join(scriptPath, "testFooter.qlfrag"), "r") as header:
     shutil.copyfileobj(header, f)
+
+# Make an empty .expected file, since this is an inline-exectations test
+with open(os.path.join(sys.argv[3], "test.expected")):
+  pass
 
 cmd = ['codeql', 'query', 'format', '-qq', '-i', resultQl]
 subprocess.call(cmd)
