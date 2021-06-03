@@ -28,7 +28,7 @@
 
     .. [1] Support for the clang-cl compiler is preliminary.
     .. [2] Support for the Arm Compiler (armcc) is preliminary.
-    .. [3] Builds that execute on Java 7 to 15 can be analyzed. The analysis understands Java 15 standard language features.
+    .. [3] Builds that execute on Java 7 to 16 can be analyzed. The analysis understands Java 16 standard language features.
     .. [4] ECJ is supported when the build invokes it via the Maven Compiler plugin or the Takari Lifecycle plugin.
     .. [5] JSX and Flow code, YAML, JSON, HTML, and XML files may also be analyzed with JavaScript files.
     .. [6] TypeScript analysis is performed by running the JavaScript extractor with TypeScript enabled. This is the default for LGTM.
