@@ -255,6 +255,7 @@
 | System.Collections.Concurrent.ConcurrentStack<>.CopyTo(Array, int) | element of argument -1 -> element of return (out parameter 0) | true |
 | System.Collections.Concurrent.ConcurrentStack<>.CopyTo(T[], int) | element of argument -1 -> element of return (out parameter 0) | true |
 | System.Collections.Concurrent.ConcurrentStack<>.GetEnumerator() | element of argument -1 -> property Current of return (normal) | true |
+| System.Collections.Concurrent.ConcurrentStack<>.GetEnumerator(Node) | element of argument -1 -> property Current of return (normal) | true |
 | System.Collections.Concurrent.IProducerConsumerCollection<>.CopyTo(T[], int) | element of argument -1 -> element of return (out parameter 0) | true |
 | System.Collections.Concurrent.OrderablePartitioner<>.EnumerableDropIndices.GetEnumerator() | element of argument -1 -> property Current of return (normal) | true |
 | System.Collections.Concurrent.Partitioner.<CreateRanges>d__7.GetEnumerator() | element of argument -1 -> property Current of return (normal) | true |
@@ -405,6 +406,7 @@
 | System.Collections.Generic.SortedList<,>.Add(object, object) | argument 1 -> property Value of element of argument -1 | true |
 | System.Collections.Generic.SortedList<,>.CopyTo(Array, int) | element of argument -1 -> element of return (out parameter 0) | true |
 | System.Collections.Generic.SortedList<,>.CopyTo(KeyValuePair<TKey,TValue>[], int) | element of argument -1 -> element of return (out parameter 0) | true |
+| System.Collections.Generic.SortedList<,>.GetByIndex(int) | property Value of element of argument -1 -> return (normal) | true |
 | System.Collections.Generic.SortedList<,>.GetEnumerator() | element of argument -1 -> property Current of return (normal) | true |
 | System.Collections.Generic.SortedList<,>.KeyList.Add(TKey) | argument 0 -> element of argument -1 | true |
 | System.Collections.Generic.SortedList<,>.KeyList.CopyTo(Array, int) | element of argument -1 -> element of return (out parameter 0) | true |
@@ -467,6 +469,8 @@
 | System.Collections.Hashtable.SyncHashtable.Clone() | element of argument 0 -> element of return (normal) | true |
 | System.Collections.Hashtable.SyncHashtable.CopyTo(Array, int) | element of argument -1 -> element of return (out parameter 0) | true |
 | System.Collections.Hashtable.SyncHashtable.GetEnumerator() | element of argument -1 -> property Current of return (normal) | true |
+| System.Collections.Hashtable.SyncHashtable.SyncHashtable(Hashtable) | property Key of element of argument 0 -> property Key of element of return (normal) | true |
+| System.Collections.Hashtable.SyncHashtable.SyncHashtable(Hashtable) | property Value of element of argument 0 -> property Value of element of return (normal) | true |
 | System.Collections.Hashtable.SyncHashtable.get_Item(object) | property Value of element of argument -1 -> return (normal) | true |
 | System.Collections.Hashtable.SyncHashtable.get_Keys() | property Key of element of argument -1 -> element of return (normal) | true |
 | System.Collections.Hashtable.SyncHashtable.get_Values() | property Value of element of argument -1 -> element of return (normal) | true |
@@ -585,6 +589,8 @@
 | System.Collections.SortedList.SyncSortedList.CopyTo(Array, int) | element of argument -1 -> element of return (out parameter 0) | true |
 | System.Collections.SortedList.SyncSortedList.GetByIndex(int) | property Value of element of argument -1 -> return (normal) | true |
 | System.Collections.SortedList.SyncSortedList.GetValueList() | property Value of element of argument -1 -> element of return (normal) | true |
+| System.Collections.SortedList.SyncSortedList.SyncSortedList(SortedList) | property Key of element of argument 0 -> property Key of element of return (normal) | true |
+| System.Collections.SortedList.SyncSortedList.SyncSortedList(SortedList) | property Value of element of argument 0 -> property Value of element of return (normal) | true |
 | System.Collections.SortedList.SyncSortedList.get_Item(object) | property Value of element of argument -1 -> return (normal) | true |
 | System.Collections.SortedList.SyncSortedList.set_Item(object, object) | argument 0 -> property Key of element of argument -1 | true |
 | System.Collections.SortedList.SyncSortedList.set_Item(object, object) | argument 1 -> property Value of element of argument -1 | true |
@@ -633,6 +639,8 @@
 | System.Collections.Specialized.OrderedDictionary.AsReadOnly() | element of argument 0 -> element of return (normal) | true |
 | System.Collections.Specialized.OrderedDictionary.CopyTo(Array, int) | element of argument -1 -> element of return (out parameter 0) | true |
 | System.Collections.Specialized.OrderedDictionary.GetEnumerator() | element of argument -1 -> property Current of return (normal) | true |
+| System.Collections.Specialized.OrderedDictionary.OrderedDictionary(OrderedDictionary) | property Key of element of argument 0 -> property Key of element of return (normal) | true |
+| System.Collections.Specialized.OrderedDictionary.OrderedDictionary(OrderedDictionary) | property Value of element of argument 0 -> property Value of element of return (normal) | true |
 | System.Collections.Specialized.OrderedDictionary.OrderedDictionaryKeyValueCollection.CopyTo(Array, int) | element of argument -1 -> element of return (out parameter 0) | true |
 | System.Collections.Specialized.OrderedDictionary.OrderedDictionaryKeyValueCollection.GetEnumerator() | element of argument -1 -> property Current of return (normal) | true |
 | System.Collections.Specialized.OrderedDictionary.get_Item(int) | property Value of element of argument -1 -> return (normal) | true |
@@ -725,6 +733,10 @@
 | System.ComponentModel.PropertyDescriptorCollection.PropertyDescriptorCollection(PropertyDescriptor[]) | property Value of element of argument 0 -> property Value of element of return (normal) | true |
 | System.ComponentModel.PropertyDescriptorCollection.PropertyDescriptorCollection(PropertyDescriptor[], bool) | property Key of element of argument 0 -> property Key of element of return (normal) | true |
 | System.ComponentModel.PropertyDescriptorCollection.PropertyDescriptorCollection(PropertyDescriptor[], bool) | property Value of element of argument 0 -> property Value of element of return (normal) | true |
+| System.ComponentModel.PropertyDescriptorCollection.PropertyDescriptorCollection(PropertyDescriptor[], int, String[], IComparer) | property Key of element of argument 0 -> property Key of element of return (normal) | true |
+| System.ComponentModel.PropertyDescriptorCollection.PropertyDescriptorCollection(PropertyDescriptor[], int, String[], IComparer) | property Key of element of argument 2 -> property Key of element of return (normal) | true |
+| System.ComponentModel.PropertyDescriptorCollection.PropertyDescriptorCollection(PropertyDescriptor[], int, String[], IComparer) | property Value of element of argument 0 -> property Value of element of return (normal) | true |
+| System.ComponentModel.PropertyDescriptorCollection.PropertyDescriptorCollection(PropertyDescriptor[], int, String[], IComparer) | property Value of element of argument 2 -> property Value of element of return (normal) | true |
 | System.ComponentModel.PropertyDescriptorCollection.get_Item(int) | element of argument -1 -> return (normal) | true |
 | System.ComponentModel.PropertyDescriptorCollection.get_Item(int) | property Value of element of argument -1 -> return (normal) | true |
 | System.ComponentModel.PropertyDescriptorCollection.get_Item(object) | element of argument -1 -> return (normal) | true |
@@ -747,12 +759,28 @@
 | System.Convert.ChangeType(object, Type, IFormatProvider) | argument 0 -> return (normal) | false |
 | System.Convert.ChangeType(object, TypeCode) | argument 0 -> return (normal) | false |
 | System.Convert.ChangeType(object, TypeCode, IFormatProvider) | argument 0 -> return (normal) | false |
+| System.Convert.ConvertToBase64Array(char*, byte*, int, int, bool) | argument 0 -> return (normal) | false |
+| System.Convert.CopyToTempBufferWithoutWhiteSpace(ReadOnlySpan<Char>, Span<Char>, out int, out int) | argument 0 -> return (normal) | false |
+| System.Convert.Decode(ref char, ref sbyte) | argument 0 -> return (normal) | false |
+| System.Convert.DefaultToType(IConvertible, Type, IFormatProvider) | argument 0 -> return (normal) | false |
 | System.Convert.FromBase64CharArray(Char[], int, int) | argument 0 -> return (normal) | false |
+| System.Convert.FromBase64CharPtr(char*, int) | argument 0 -> return (normal) | false |
 | System.Convert.FromBase64String(string) | argument 0 -> return (normal) | false |
+| System.Convert.FromBase64_ComputeResultLength(char*, int) | argument 0 -> return (normal) | false |
 | System.Convert.FromHexString(ReadOnlySpan<Char>) | argument 0 -> return (normal) | false |
 | System.Convert.FromHexString(string) | argument 0 -> return (normal) | false |
 | System.Convert.GetTypeCode(object) | argument 0 -> return (normal) | false |
 | System.Convert.IsDBNull(object) | argument 0 -> return (normal) | false |
+| System.Convert.IsSpace(char) | argument 0 -> return (normal) | false |
+| System.Convert.ThrowByteOverflowException() | argument 0 -> return (normal) | false |
+| System.Convert.ThrowCharOverflowException() | argument 0 -> return (normal) | false |
+| System.Convert.ThrowInt16OverflowException() | argument 0 -> return (normal) | false |
+| System.Convert.ThrowInt32OverflowException() | argument 0 -> return (normal) | false |
+| System.Convert.ThrowInt64OverflowException() | argument 0 -> return (normal) | false |
+| System.Convert.ThrowSByteOverflowException() | argument 0 -> return (normal) | false |
+| System.Convert.ThrowUInt16OverflowException() | argument 0 -> return (normal) | false |
+| System.Convert.ThrowUInt32OverflowException() | argument 0 -> return (normal) | false |
+| System.Convert.ThrowUInt64OverflowException() | argument 0 -> return (normal) | false |
 | System.Convert.ToBase64CharArray(Byte[], int, int, Char[], int) | argument 0 -> return (normal) | false |
 | System.Convert.ToBase64CharArray(Byte[], int, int, Char[], int, Base64FormattingOptions) | argument 0 -> return (normal) | false |
 | System.Convert.ToBase64String(Byte[]) | argument 0 -> return (normal) | false |
@@ -760,6 +788,7 @@
 | System.Convert.ToBase64String(Byte[], int, int) | argument 0 -> return (normal) | false |
 | System.Convert.ToBase64String(Byte[], int, int, Base64FormattingOptions) | argument 0 -> return (normal) | false |
 | System.Convert.ToBase64String(ReadOnlySpan<Byte>, Base64FormattingOptions) | argument 0 -> return (normal) | false |
+| System.Convert.ToBase64_CalculateAndValidateOutputLength(int, bool) | argument 0 -> return (normal) | false |
 | System.Convert.ToBoolean(DateTime) | argument 0 -> return (normal) | false |
 | System.Convert.ToBoolean(bool) | argument 0 -> return (normal) | false |
 | System.Convert.ToBoolean(byte) | argument 0 -> return (normal) | false |
@@ -1059,9 +1088,11 @@
 | System.Convert.ToUInt64(uint) | argument 0 -> return (normal) | false |
 | System.Convert.ToUInt64(ulong) | argument 0 -> return (normal) | false |
 | System.Convert.ToUInt64(ushort) | argument 0 -> return (normal) | false |
+| System.Convert.TryDecodeFromUtf16(ReadOnlySpan<Char>, Span<Byte>, out int, out int) | argument 0 -> return (normal) | false |
 | System.Convert.TryFromBase64Chars(ReadOnlySpan<Char>, Span<Byte>, out int) | argument 0 -> return (normal) | false |
 | System.Convert.TryFromBase64String(string, Span<Byte>, out int) | argument 0 -> return (normal) | false |
 | System.Convert.TryToBase64Chars(ReadOnlySpan<Byte>, Span<Char>, out int, Base64FormattingOptions) | argument 0 -> return (normal) | false |
+| System.Convert.WriteThreeLowOrderBytes(ref byte, int) | argument 0 -> return (normal) | false |
 | System.Diagnostics.Tracing.CounterPayload.<get_ForEnumeration>d__51.GetEnumerator() | element of argument -1 -> property Current of return (normal) | true |
 | System.Diagnostics.Tracing.CounterPayload.GetEnumerator() | element of argument -1 -> property Current of return (normal) | true |
 | System.Diagnostics.Tracing.EventPayload.Add(KeyValuePair<String, Object>) | argument 0 -> element of argument -1 | true |
@@ -1070,6 +1101,10 @@
 | System.Diagnostics.Tracing.EventPayload.Add(string, object) | argument 0 -> property Key of element of argument -1 | true |
 | System.Diagnostics.Tracing.EventPayload.Add(string, object) | argument 1 -> property Value of element of argument -1 | true |
 | System.Diagnostics.Tracing.EventPayload.CopyTo(KeyValuePair<String,Object>[], int) | element of argument -1 -> element of return (out parameter 0) | true |
+| System.Diagnostics.Tracing.EventPayload.EventPayload(List<String>, List<Object>) | property Key of element of argument 0 -> property Key of element of return (normal) | true |
+| System.Diagnostics.Tracing.EventPayload.EventPayload(List<String>, List<Object>) | property Key of element of argument 1 -> property Key of element of return (normal) | true |
+| System.Diagnostics.Tracing.EventPayload.EventPayload(List<String>, List<Object>) | property Value of element of argument 0 -> property Value of element of return (normal) | true |
+| System.Diagnostics.Tracing.EventPayload.EventPayload(List<String>, List<Object>) | property Value of element of argument 1 -> property Value of element of return (normal) | true |
 | System.Diagnostics.Tracing.EventPayload.GetEnumerator() | element of argument -1 -> property Current of return (normal) | true |
 | System.Diagnostics.Tracing.EventPayload.get_Item(string) | property Value of element of argument -1 -> return (normal) | true |
 | System.Diagnostics.Tracing.EventPayload.get_Keys() | property Key of element of argument -1 -> element of return (normal) | true |
@@ -1126,8 +1161,11 @@
 | System.IO.Compression.DeflateStream.CopyToStream.WriteAsync(Byte[], int, int, CancellationToken) | argument 0 -> argument -1 | false |
 | System.IO.Compression.DeflateStream.DeflateStream(Stream, CompressionLevel) | argument 0 -> return (normal) | false |
 | System.IO.Compression.DeflateStream.DeflateStream(Stream, CompressionLevel, bool) | argument 0 -> return (normal) | false |
+| System.IO.Compression.DeflateStream.DeflateStream(Stream, CompressionLevel, bool, int) | argument 0 -> return (normal) | false |
 | System.IO.Compression.DeflateStream.DeflateStream(Stream, CompressionMode) | argument 0 -> return (normal) | false |
 | System.IO.Compression.DeflateStream.DeflateStream(Stream, CompressionMode, bool) | argument 0 -> return (normal) | false |
+| System.IO.Compression.DeflateStream.DeflateStream(Stream, CompressionMode, bool, int, long) | argument 0 -> return (normal) | false |
+| System.IO.Compression.DeflateStream.DeflateStream(Stream, CompressionMode, long) | argument 0 -> return (normal) | false |
 | System.IO.Compression.DeflateStream.Read(Byte[], int, int) | argument -1 -> return (out parameter 0) | false |
 | System.IO.Compression.DeflateStream.ReadAsync(Byte[], int, int, CancellationToken) | argument -1 -> return (out parameter 0) | false |
 | System.IO.Compression.DeflateStream.Write(Byte[], int, int) | argument 0 -> argument -1 | false |
@@ -1181,6 +1219,7 @@
 | System.IO.Path.Combine(string, string, string, string) | argument 3 -> return (normal) | false |
 | System.IO.Path.GetDirectoryName(ReadOnlySpan<Char>) | argument 0 -> return (normal) | false |
 | System.IO.Path.GetDirectoryName(string) | argument 0 -> return (normal) | false |
+| System.IO.Path.GetDirectoryNameOffset(ReadOnlySpan<Char>) | argument 0 -> return (normal) | false |
 | System.IO.Path.GetExtension(ReadOnlySpan<Char>) | argument 0 -> return (normal) | false |
 | System.IO.Path.GetExtension(string) | argument 0 -> return (normal) | false |
 | System.IO.Path.GetFileName(ReadOnlySpan<Char>) | argument 0 -> return (normal) | false |
@@ -1192,20 +1231,28 @@
 | System.IO.Path.GetPathRoot(ReadOnlySpan<Char>) | argument 0 -> return (normal) | false |
 | System.IO.Path.GetPathRoot(string) | argument 0 -> return (normal) | false |
 | System.IO.Path.GetRelativePath(string, string) | argument 1 -> return (normal) | false |
+| System.IO.Path.GetRelativePath(string, string, StringComparison) | argument 1 -> return (normal) | false |
 | System.IO.Pipes.PipeStream.BeginRead(Byte[], int, int, AsyncCallback, object) | argument -1 -> return (out parameter 0) | false |
 | System.IO.Pipes.PipeStream.BeginWrite(Byte[], int, int, AsyncCallback, object) | argument 0 -> argument -1 | false |
 | System.IO.Pipes.PipeStream.Read(Byte[], int, int) | argument -1 -> return (out parameter 0) | false |
 | System.IO.Pipes.PipeStream.ReadAsync(Byte[], int, int, CancellationToken) | argument -1 -> return (out parameter 0) | false |
 | System.IO.Pipes.PipeStream.Write(Byte[], int, int) | argument 0 -> argument -1 | false |
 | System.IO.Pipes.PipeStream.WriteAsync(Byte[], int, int, CancellationToken) | argument 0 -> argument -1 | false |
+| System.IO.Stream.BeginEndReadAsync(Byte[], int, int) | argument -1 -> return (out parameter 0) | false |
+| System.IO.Stream.BeginEndWriteAsync(Byte[], int, int) | argument 0 -> argument -1 | false |
 | System.IO.Stream.BeginRead(Byte[], int, int, AsyncCallback, object) | argument -1 -> return (out parameter 0) | false |
+| System.IO.Stream.BeginReadInternal(Byte[], int, int, AsyncCallback, object, bool, bool) | argument -1 -> return (out parameter 0) | false |
 | System.IO.Stream.BeginWrite(Byte[], int, int, AsyncCallback, object) | argument 0 -> argument -1 | false |
+| System.IO.Stream.BeginWriteInternal(Byte[], int, int, AsyncCallback, object, bool, bool) | argument 0 -> argument -1 | false |
+| System.IO.Stream.BlockingBeginRead(Byte[], int, int, AsyncCallback, object) | argument -1 -> return (out parameter 0) | false |
+| System.IO.Stream.BlockingBeginWrite(Byte[], int, int, AsyncCallback, object) | argument 0 -> argument -1 | false |
 | System.IO.Stream.CopyTo(Stream) | argument -1 -> return (out parameter 0) | false |
 | System.IO.Stream.CopyTo(Stream, int) | argument -1 -> return (out parameter 0) | false |
 | System.IO.Stream.CopyToAsync(Stream) | argument -1 -> return (out parameter 0) | false |
 | System.IO.Stream.CopyToAsync(Stream, CancellationToken) | argument -1 -> return (out parameter 0) | false |
 | System.IO.Stream.CopyToAsync(Stream, int) | argument -1 -> return (out parameter 0) | false |
 | System.IO.Stream.CopyToAsync(Stream, int, CancellationToken) | argument -1 -> return (out parameter 0) | false |
+| System.IO.Stream.CopyToAsyncInternal(Stream, int, CancellationToken) | argument -1 -> return (out parameter 0) | false |
 | System.IO.Stream.NullStream.BeginRead(Byte[], int, int, AsyncCallback, object) | argument -1 -> return (out parameter 0) | false |
 | System.IO.Stream.NullStream.BeginWrite(Byte[], int, int, AsyncCallback, object) | argument 0 -> argument -1 | false |
 | System.IO.Stream.NullStream.CopyTo(Stream, int) | argument -1 -> return (out parameter 0) | false |
@@ -1247,6 +1294,7 @@
 | System.IO.TextReader.ReadBlock(Span<Char>) | argument -1 -> return (normal) | false |
 | System.IO.TextReader.ReadBlockAsync(Char[], int, int) | argument -1 -> return (normal) | false |
 | System.IO.TextReader.ReadBlockAsync(Memory<Char>, CancellationToken) | argument -1 -> return (normal) | false |
+| System.IO.TextReader.ReadBlockAsyncInternal(Memory<Char>, CancellationToken) | argument -1 -> return (normal) | false |
 | System.IO.TextReader.ReadLine() | argument -1 -> return (normal) | false |
 | System.IO.TextReader.ReadLineAsync() | argument -1 -> return (normal) | false |
 | System.IO.TextReader.ReadToEnd() | argument -1 -> return (normal) | false |
@@ -1271,6 +1319,7 @@
 | System.Int32.TryParse(string, out int) | argument 0 -> return (out parameter 1) | false |
 | System.Lazy<>.Lazy(Func<T>) | return (normal) of argument 0 -> property Value of return (normal) | true |
 | System.Lazy<>.Lazy(Func<T>, LazyThreadSafetyMode) | return (normal) of argument 0 -> property Value of return (normal) | true |
+| System.Lazy<>.Lazy(Func<T>, LazyThreadSafetyMode, bool) | return (normal) of argument 0 -> property Value of return (normal) | true |
 | System.Lazy<>.Lazy(Func<T>, bool) | return (normal) of argument 0 -> property Value of return (normal) | true |
 | System.Lazy<>.get_Value() | argument -1 -> return (normal) | false |
 | System.Linq.EmptyPartition<>.GetEnumerator() | element of argument -1 -> property Current of return (normal) | true |
@@ -1529,13 +1578,16 @@
 | System.Linq.Lookup<,>.<ApplyResultSelector>d__19<>.GetEnumerator() | element of argument -1 -> property Current of return (normal) | true |
 | System.Linq.Lookup<,>.GetEnumerator() | element of argument -1 -> property Current of return (normal) | true |
 | System.Linq.OrderedEnumerable<>.GetEnumerator() | element of argument -1 -> property Current of return (normal) | true |
+| System.Linq.OrderedEnumerable<>.GetEnumerator(int, int) | element of argument -1 -> property Current of return (normal) | true |
 | System.Linq.OrderedPartition<>.GetEnumerator() | element of argument -1 -> property Current of return (normal) | true |
 | System.Linq.Parallel.CancellableEnumerable.<Wrap>d__0<>.GetEnumerator() | element of argument -1 -> property Current of return (normal) | true |
 | System.Linq.Parallel.EnumerableWrapperWeakToStrong.GetEnumerator() | element of argument -1 -> property Current of return (normal) | true |
 | System.Linq.Parallel.ExceptionAggregator.<WrapEnumerable>d__0<>.GetEnumerator() | element of argument -1 -> property Current of return (normal) | true |
 | System.Linq.Parallel.ExceptionAggregator.<WrapQueryEnumerator>d__1<,>.GetEnumerator() | element of argument -1 -> property Current of return (normal) | true |
 | System.Linq.Parallel.GroupByGrouping<,>.GetEnumerator() | element of argument -1 -> property Current of return (normal) | true |
+| System.Linq.Parallel.ListChunk<>.Add(TInputOutput) | argument 0 -> element of argument -1 | true |
 | System.Linq.Parallel.ListChunk<>.GetEnumerator() | element of argument -1 -> property Current of return (normal) | true |
+| System.Linq.Parallel.Lookup<,>.Add(IGrouping<TKey, TElement>) | argument 0 -> element of argument -1 | true |
 | System.Linq.Parallel.Lookup<,>.GetEnumerator() | element of argument -1 -> property Current of return (normal) | true |
 | System.Linq.Parallel.MergeExecutor<>.GetEnumerator() | element of argument -1 -> property Current of return (normal) | true |
 | System.Linq.Parallel.OrderedGroupByGrouping<,,>.GetEnumerator() | element of argument -1 -> property Current of return (normal) | true |
@@ -1556,8 +1608,12 @@
 | System.Linq.ParallelEnumerable.Aggregate<TSource, TAccumulate>(ParallelQuery<TSource>, TAccumulate, Func<TAccumulate, TSource, TAccumulate>) | argument 1 -> parameter 0 of argument 2 | true |
 | System.Linq.ParallelEnumerable.Aggregate<TSource, TAccumulate>(ParallelQuery<TSource>, TAccumulate, Func<TAccumulate, TSource, TAccumulate>) | element of argument 0 -> parameter 1 of argument 2 | true |
 | System.Linq.ParallelEnumerable.Aggregate<TSource, TAccumulate>(ParallelQuery<TSource>, TAccumulate, Func<TAccumulate, TSource, TAccumulate>) | return (normal) of argument 2 -> return (normal) | true |
+| System.Linq.ParallelEnumerable.Aggregate<TSource, TAccumulate>(ParallelQuery<TSource>, TAccumulate, Func<TAccumulate, TSource, TAccumulate>, QueryAggregationOptions) | argument 1 -> parameter 0 of argument 2 | true |
+| System.Linq.ParallelEnumerable.Aggregate<TSource, TAccumulate>(ParallelQuery<TSource>, TAccumulate, Func<TAccumulate, TSource, TAccumulate>, QueryAggregationOptions) | element of argument 0 -> parameter 1 of argument 2 | true |
+| System.Linq.ParallelEnumerable.Aggregate<TSource, TAccumulate>(ParallelQuery<TSource>, TAccumulate, Func<TAccumulate, TSource, TAccumulate>, QueryAggregationOptions) | return (normal) of argument 3 -> return (normal) | true |
 | System.Linq.ParallelEnumerable.Aggregate<TSource>(ParallelQuery<TSource>, Func<TSource, TSource, TSource>) | element of argument 0 -> parameter 1 of argument 1 | true |
 | System.Linq.ParallelEnumerable.Aggregate<TSource>(ParallelQuery<TSource>, Func<TSource, TSource, TSource>) | return (normal) of argument 1 -> return (normal) | true |
+| System.Linq.ParallelEnumerable.Aggregate<TSource>(ParallelQuery<TSource>, Func<TSource, TSource, TSource>, QueryAggregationOptions) | return (normal) of argument 2 -> return (normal) | true |
 | System.Linq.ParallelEnumerable.All<TSource>(ParallelQuery<TSource>, Func<TSource, Boolean>) | element of argument 0 -> parameter 0 of argument 1 | true |
 | System.Linq.ParallelEnumerable.Any<TSource>(ParallelQuery<TSource>, Func<TSource, Boolean>) | element of argument 0 -> parameter 0 of argument 1 | true |
 | System.Linq.ParallelEnumerable.AsEnumerable<TSource>(ParallelQuery<TSource>) | element of argument 0 -> element of return (normal) | true |
@@ -2000,6 +2056,7 @@
 | System.Net.Security.SslStream.ReadAsync(Byte[], int, int, CancellationToken) | argument -1 -> return (out parameter 0) | false |
 | System.Net.Security.SslStream.Write(Byte[], int, int) | argument 0 -> argument -1 | false |
 | System.Net.Security.SslStream.WriteAsync(Byte[], int, int, CancellationToken) | argument 0 -> argument -1 | false |
+| System.Net.WebUtility.HtmlEncode(ReadOnlySpan<Char>, ref ValueStringBuilder) | argument 0 -> return (normal) | false |
 | System.Net.WebUtility.HtmlEncode(string) | argument 0 -> return (normal) | false |
 | System.Net.WebUtility.HtmlEncode(string, TextWriter) | argument 0 -> return (normal) | false |
 | System.Net.WebUtility.UrlEncode(string) | argument 0 -> return (normal) | false |
@@ -2305,6 +2362,7 @@
 | System.Threading.Tasks.Task.ContinueWith(Action<Task, Object>, object, CancellationToken, TaskContinuationOptions, TaskScheduler) | argument 1 -> parameter 1 of argument 0 | true |
 | System.Threading.Tasks.Task.ContinueWith(Action<Task, Object>, object, TaskContinuationOptions) | argument 1 -> parameter 1 of argument 0 | true |
 | System.Threading.Tasks.Task.ContinueWith(Action<Task, Object>, object, TaskScheduler) | argument 1 -> parameter 1 of argument 0 | true |
+| System.Threading.Tasks.Task.ContinueWith(Action<Task, Object>, object, TaskScheduler, CancellationToken, TaskContinuationOptions) | argument 1 -> parameter 1 of argument 0 | true |
 | System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, Object, TResult>, object) | argument 1 -> parameter 1 of argument 0 | true |
 | System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, Object, TResult>, object) | return (normal) of argument 0 -> property Result of return (normal) | true |
 | System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, Object, TResult>, object, CancellationToken) | argument 1 -> parameter 1 of argument 0 | true |
@@ -2315,11 +2373,14 @@
 | System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, Object, TResult>, object, TaskContinuationOptions) | return (normal) of argument 0 -> property Result of return (normal) | true |
 | System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, Object, TResult>, object, TaskScheduler) | argument 1 -> parameter 1 of argument 0 | true |
 | System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, Object, TResult>, object, TaskScheduler) | return (normal) of argument 0 -> property Result of return (normal) | true |
+| System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, Object, TResult>, object, TaskScheduler, CancellationToken, TaskContinuationOptions) | argument 1 -> parameter 1 of argument 0 | true |
+| System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, Object, TResult>, object, TaskScheduler, CancellationToken, TaskContinuationOptions) | return (normal) of argument 0 -> property Result of return (normal) | true |
 | System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, TResult>) | return (normal) of argument 0 -> property Result of return (normal) | true |
 | System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, TResult>, CancellationToken) | return (normal) of argument 0 -> property Result of return (normal) | true |
 | System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, TResult>, CancellationToken, TaskContinuationOptions, TaskScheduler) | return (normal) of argument 0 -> property Result of return (normal) | true |
 | System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, TResult>, TaskContinuationOptions) | return (normal) of argument 0 -> property Result of return (normal) | true |
 | System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, TResult>, TaskScheduler) | return (normal) of argument 0 -> property Result of return (normal) | true |
+| System.Threading.Tasks.Task.ContinueWith<TResult>(Func<Task, TResult>, TaskScheduler, CancellationToken, TaskContinuationOptions) | return (normal) of argument 0 -> property Result of return (normal) | true |
 | System.Threading.Tasks.Task.FromResult<TResult>(TResult) | argument 0 -> property Result of return (normal) | true |
 | System.Threading.Tasks.Task.Run<TResult>(Func<TResult>) | return (normal) of argument 0 -> property Result of return (normal) | true |
 | System.Threading.Tasks.Task.Run<TResult>(Func<TResult>, CancellationToken) | return (normal) of argument 0 -> property Result of return (normal) | true |
@@ -2346,11 +2407,14 @@
 | System.Threading.Tasks.Task<>.ContinueWith(Action<Task<>, Object>, object, TaskContinuationOptions) | argument -1 -> parameter 0 of argument 0 | true |
 | System.Threading.Tasks.Task<>.ContinueWith(Action<Task<>, Object>, object, TaskScheduler) | argument 1 -> parameter 1 of argument 0 | true |
 | System.Threading.Tasks.Task<>.ContinueWith(Action<Task<>, Object>, object, TaskScheduler) | argument -1 -> parameter 0 of argument 0 | true |
+| System.Threading.Tasks.Task<>.ContinueWith(Action<Task<>, Object>, object, TaskScheduler, CancellationToken, TaskContinuationOptions) | argument 1 -> parameter 1 of argument 0 | true |
+| System.Threading.Tasks.Task<>.ContinueWith(Action<Task<>, Object>, object, TaskScheduler, CancellationToken, TaskContinuationOptions) | argument -1 -> parameter 0 of argument 0 | true |
 | System.Threading.Tasks.Task<>.ContinueWith(Action<Task<>>) | argument -1 -> parameter 0 of argument 0 | true |
 | System.Threading.Tasks.Task<>.ContinueWith(Action<Task<>>, CancellationToken) | argument -1 -> parameter 0 of argument 0 | true |
 | System.Threading.Tasks.Task<>.ContinueWith(Action<Task<>>, CancellationToken, TaskContinuationOptions, TaskScheduler) | argument -1 -> parameter 0 of argument 0 | true |
 | System.Threading.Tasks.Task<>.ContinueWith(Action<Task<>>, TaskContinuationOptions) | argument -1 -> parameter 0 of argument 0 | true |
 | System.Threading.Tasks.Task<>.ContinueWith(Action<Task<>>, TaskScheduler) | argument -1 -> parameter 0 of argument 0 | true |
+| System.Threading.Tasks.Task<>.ContinueWith(Action<Task<>>, TaskScheduler, CancellationToken, TaskContinuationOptions) | argument -1 -> parameter 0 of argument 0 | true |
 | System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, Object, TNewResult>, object) | argument 1 -> parameter 1 of argument 0 | true |
 | System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, Object, TNewResult>, object) | argument -1 -> parameter 0 of argument 0 | true |
 | System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, Object, TNewResult>, object) | return (normal) of argument 0 -> property Result of return (normal) | true |
@@ -2366,6 +2430,9 @@
 | System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, Object, TNewResult>, object, TaskScheduler) | argument 1 -> parameter 1 of argument 0 | true |
 | System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, Object, TNewResult>, object, TaskScheduler) | argument -1 -> parameter 0 of argument 0 | true |
 | System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, Object, TNewResult>, object, TaskScheduler) | return (normal) of argument 0 -> property Result of return (normal) | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, Object, TNewResult>, object, TaskScheduler, CancellationToken, TaskContinuationOptions) | argument 1 -> parameter 1 of argument 0 | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, Object, TNewResult>, object, TaskScheduler, CancellationToken, TaskContinuationOptions) | argument -1 -> parameter 0 of argument 0 | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, Object, TNewResult>, object, TaskScheduler, CancellationToken, TaskContinuationOptions) | return (normal) of argument 0 -> property Result of return (normal) | true |
 | System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, TNewResult>) | argument -1 -> parameter 0 of argument 0 | true |
 | System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, TNewResult>) | return (normal) of argument 0 -> property Result of return (normal) | true |
 | System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, TNewResult>, CancellationToken) | argument -1 -> parameter 0 of argument 0 | true |
@@ -2376,6 +2443,8 @@
 | System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, TNewResult>, TaskContinuationOptions) | return (normal) of argument 0 -> property Result of return (normal) | true |
 | System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, TNewResult>, TaskScheduler) | argument -1 -> parameter 0 of argument 0 | true |
 | System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, TNewResult>, TaskScheduler) | return (normal) of argument 0 -> property Result of return (normal) | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, TNewResult>, TaskScheduler, CancellationToken, TaskContinuationOptions) | argument -1 -> parameter 0 of argument 0 | true |
+| System.Threading.Tasks.Task<>.ContinueWith<TNewResult>(Func<Task<>, TNewResult>, TaskScheduler, CancellationToken, TaskContinuationOptions) | return (normal) of argument 0 -> property Result of return (normal) | true |
 | System.Threading.Tasks.Task<>.GetAwaiter() | argument -1 -> field m_task of return (normal) | true |
 | System.Threading.Tasks.Task<>.Task(Func<Object, TResult>, object) | argument 1 -> parameter 0 of argument 0 | true |
 | System.Threading.Tasks.Task<>.Task(Func<Object, TResult>, object) | return (normal) of argument 0 -> property Result of return (normal) | true |
@@ -2388,6 +2457,7 @@
 | System.Threading.Tasks.Task<>.Task(Func<TResult>) | return (normal) of argument 0 -> property Result of return (normal) | true |
 | System.Threading.Tasks.Task<>.Task(Func<TResult>, CancellationToken) | return (normal) of argument 0 -> property Result of return (normal) | true |
 | System.Threading.Tasks.Task<>.Task(Func<TResult>, CancellationToken, TaskCreationOptions) | return (normal) of argument 0 -> property Result of return (normal) | true |
+| System.Threading.Tasks.Task<>.Task(Func<TResult>, Task, CancellationToken, TaskCreationOptions, InternalTaskOptions, TaskScheduler) | return (normal) of argument 0 -> property Result of return (normal) | true |
 | System.Threading.Tasks.Task<>.Task(Func<TResult>, TaskCreationOptions) | return (normal) of argument 0 -> property Result of return (normal) | true |
 | System.Threading.Tasks.Task<>.get_Result() | argument -1 -> return (normal) | false |
 | System.Threading.Tasks.TaskFactory.ContinueWhenAll<TAntecedentResult, TResult>(Task<TAntecedentResult>[], Func<Task, TResult>) | argument 0 -> parameter 0 of argument 1 | true |
