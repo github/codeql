@@ -12,6 +12,19 @@
  */
 
 import go
+import semmle.go.security.InsecureFeatureFlag::InsecureFeatureFlag
+
+/**
+ * A flag indicating a check for satisfied permissions or test configuration.
+ */
+class AllowedFlag extends FlagKind {
+  AllowedFlag() { this = "allowed" }
+
+  bindingset[result]
+  override string getAFlagName() {
+    result.regexpMatch("(?i).*(allow|match|check|debug|devel|insecure).*")
+  }
+}
 
 /**
  * Provides the name of the `Access-Control-Allow-Origin` header key.
@@ -34,6 +47,14 @@ class FlowsUntrustedToAllowOriginHeader extends TaintTracking::Configuration {
 
   predicate isSink(DataFlow::Node sink, HTTP::HeaderWrite hw) {
     hw.getHeaderName() = headerAllowOrigin() and sink = hw.getValue()
+  }
+
+  override predicate isSanitizer(DataFlow::Node node) {
+    exists(ControlFlow::ConditionGuardNode cgn |
+      cgn.ensures(any(AllowedFlag f).getAFlag().getANode(), _)
+    |
+      cgn.dominates(node.getBasicBlock())
+    )
   }
 
   override predicate isSink(DataFlow::Node sink) { isSink(sink, _) }
@@ -88,5 +109,10 @@ where
     flowsFromUntrustedToAllowOrigin(allowOriginHW, message)
     or
     allowOriginIsWildcardOrNull(allowOriginHW, message)
+  ) and
+  not exists(ControlFlow::ConditionGuardNode cgn |
+    cgn.ensures(any(AllowedFlag f).getAFlag().getANode(), _)
+  |
+    cgn.dominates(allowOriginHW.getBasicBlock())
   )
 select allowOriginHW, message
