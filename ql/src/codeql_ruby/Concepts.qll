@@ -4,7 +4,7 @@
  * provide concrete subclasses.
  */
 
-import ruby
+private import codeql_ruby.DataFlow
 
 /**
  * A data-flow node that executes SQL statements.
