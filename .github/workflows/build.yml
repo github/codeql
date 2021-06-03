@@ -81,7 +81,6 @@ jobs:
       - name: Build Query Pack
         run: |
           codeql/codeql pack create ql/src --output target/packs
-          codeql/codeql pack create upgrades --output target/packs
           cp -r ql/src/codeql-suites target/packs/github_codeql-ruby_*/
       - name: Compile with previous CodeQL versions
         run: |
