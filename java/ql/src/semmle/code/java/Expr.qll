@@ -1793,11 +1793,27 @@ class WildcardTypeAccess extends Expr, @wildcardtypeaccess {
   /** Gets the lower bound of this wildcard type access, if any. */
   Expr getLowerBound() { result.isNthChildOf(this, 1) }
 
+  /**
+   * Gets the bound of this wildcard type access, if any. That is, either
+   * the upper or the lower bound.
+   */
+  Expr getBound() {
+    result = getUpperBound() or
+    result = getLowerBound()
+  }
+
   /** Holds if this wildcard is not bounded by any type bounds. */
-  predicate hasNoBound() { not exists(TypeAccess t | t.getParent() = this) }
+  predicate hasNoBound() { not exists(getBound()) }
 
   /** Gets a printable representation of this expression. */
-  override string toString() { result = "? ..." }
+  override string toString() {
+    if exists(getUpperBound())
+    then result = "? extends ..."
+    else
+      if exists(getLowerBound())
+      then result = "? super ..."
+      else result = "?"
+  }
 
   override string getAPrimaryQlClass() { result = "WildcardTypeAccess" }
 }

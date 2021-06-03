@@ -46,6 +46,6 @@ dependency/A.java:
 #-----|       4: (Parameters)
 #   28|         0: [Parameter] t
 #   28|           0: [TypeAccess] Collection<? extends Number>
-#   28|             0: [WildcardTypeAccess] ? ...
+#   28|             0: [WildcardTypeAccess] ? extends ...
 #   28|               0: [TypeAccess] Number
 #   28|       5: [BlockStmt] stmt

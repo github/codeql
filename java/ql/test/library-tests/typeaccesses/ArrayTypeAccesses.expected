@@ -1,2 +1,6 @@
 | typeaccesses/Arrays.java:4:2:4:9 | ...[] |
 | typeaccesses/Arrays.java:5:2:5:25 | ...[] |
+| typeaccesses/TA.java:19:43:19:50 | ...[] |
+| typeaccesses/TA.java:20:41:20:48 | ...[] |
+| typeaccesses/TA.java:31:80:31:82 | ...[] |
+| typeaccesses/TA.java:31:124:31:137 | ...[] |

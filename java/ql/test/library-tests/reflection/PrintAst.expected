@@ -15,7 +15,7 @@ reflection/ReflectiveAccess.java:
 #-----|       4: (Parameters)
 #   13|         0: [Parameter] classContainingAnnotation
 #   13|           0: [TypeAccess] Class<?>
-#   13|             0: [WildcardTypeAccess] ? ...
+#   13|             0: [WildcardTypeAccess] ?
 #   13|         1: [Parameter] annotationClass
 #   13|           0: [TypeAccess] Class<A>
 #   13|             0: [TypeAccess] A
@@ -33,7 +33,7 @@ reflection/ReflectiveAccess.java:
 #   17|       5: [BlockStmt] stmt
 #   18|         0: [LocalVariableDeclStmt] stmt
 #   18|           0: [TypeAccess] Class<?>
-#   18|             0: [WildcardTypeAccess] ? ...
+#   18|             0: [WildcardTypeAccess] ?
 #   18|           1: [LocalVariableDeclExpr] testClass
 #   18|             0: [MethodAccess] forName(...)
 #   18|               -1: [TypeAccess] Class<>

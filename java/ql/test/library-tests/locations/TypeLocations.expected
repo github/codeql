@@ -1,8 +1,12 @@
 | file://:0:0:0:0 | <nulltype> |
 | file://:0:0:0:0 | ? |
 | file://:0:0:0:0 | ? extends Number |
+| file://:0:0:0:0 | ? extends Number[] |
 | file://:0:0:0:0 | ? super Double |
+| file://:0:0:0:0 | ? super Double[] |
+| file://:0:0:0:0 | Double[] |
 | file://:0:0:0:0 | G[] |
+| file://:0:0:0:0 | Number[] |
 | file://:0:0:0:0 | Object[] |
 | file://:0:0:0:0 | Object[][] |
 | file://:0:0:0:0 | boolean |
