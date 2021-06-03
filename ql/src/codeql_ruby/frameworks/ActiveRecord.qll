@@ -33,39 +33,6 @@ class ActiveRecordModelClass extends ClassDeclaration {
   }
 }
 
-// TODO: methods are class methods rather than instance?
-// A parameter that may represent a credential value
-/*
- * private DataFlow::LocalSourceNode activeRecordModelAccess(TypeTracker t) {
- *  t.start() and
- *  exists(AssignExpr ae, Ssa::WriteDefinition def, ActiveRecordModelClass cls |
- *    result.asExpr().getExpr() = def.getWriteAccess() and
- *    result.asExpr().getExpr() = ae.getLeftOperand() and
- *    resolveScopeExpr(ae.getRightOperand()) = cls.getModule()
- *  )
- *  or
- *  exists(TypeTracker t2 | result = activeRecordModelAccess(t2).track(t2, t))
- * }
- *
- * private DataFlow::Node activeRecordModelAccess() {
- *  activeRecordModelAccess(TypeTracker::end()).flowsTo(result)
- * }
- *
- * class ActiveRecordNode extends DataFlow::Node {
- *  ActiveRecordNode() {
- *    this = activeRecordModelAccess()
- *  }
- * }
- */
-
-/*
- * class ActiveRecordModelReadAccess extends VariableReadAccess {
- *  ActiveRecordModelReadAccess() {
- *
- *  }
- * }
- */
-
 // A class method call whose receiver is an ActiveRecord model class
 class ActiveRecordModelClassMethodCall extends MethodCall {
   // The model class that receives this call
