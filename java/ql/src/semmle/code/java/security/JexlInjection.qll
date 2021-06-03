@@ -6,7 +6,7 @@ private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A sink for Expresssion Language injection vulnerabilities via Jexl,
- * i.e. method calls that run evaluation of a JEXL expression.
+ * that is, method calls that run evaluation of a JEXL expression.
  */
 abstract class JexlEvaluationSink extends DataFlow::ExprNode { }
 
@@ -79,7 +79,7 @@ private class DefaultJexlInjectionAdditionalTaintStep extends JexlInjectionAddit
 
 /**
  * Holds if `n1` to `n2` is a dataflow step that creates a JEXL script using an unsafe engine
- * i.e. `tainted.createScript(jexlExpr)`.
+ * by calling `tainted.createScript(jexlExpr)`.
  */
 private predicate createJexlScriptStep(DataFlow::Node n1, DataFlow::Node n2) {
   exists(MethodAccess ma, Method m | m = ma.getMethod() and n2.asExpr() = ma |
@@ -92,7 +92,7 @@ private predicate createJexlScriptStep(DataFlow::Node n1, DataFlow::Node n2) {
 
 /**
  * Holds if `n1` to `n2` is a dataflow step that creates a JEXL expression using an unsafe engine
- * i.e. `tainted.createExpression(jexlExpr)`.
+ * by calling `tainted.createExpression(jexlExpr)`.
  */
 private predicate createJexlExpressionStep(DataFlow::Node n1, DataFlow::Node n2) {
   exists(MethodAccess ma, Method m | m = ma.getMethod() and n2.asExpr() = ma |
@@ -105,7 +105,7 @@ private predicate createJexlExpressionStep(DataFlow::Node n1, DataFlow::Node n2)
 
 /**
  * Holds if `n1` to `n2` is a dataflow step that creates a JEXL template using an unsafe engine
- * i.e. `tainted.createTemplate(jexlExpr)`.
+ * by calling `tainted.createTemplate(jexlExpr)`.
  */
 private predicate createJexlTemplateStep(DataFlow::Node n1, DataFlow::Node n2) {
   exists(MethodAccess ma, Method m, RefType taintType |
