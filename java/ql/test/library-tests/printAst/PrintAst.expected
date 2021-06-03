@@ -97,7 +97,7 @@ A.java:
 #   45|         0: [TryStmt] try ...
 #   45|           -1: [BlockStmt] { ... }
 #   46|             0: [EnhancedForStmt] for (... : ...)
-#-----|               0: (Single var ...;)
+#-----|               0: (Single Local Variable Declaration)
 #   46|                 0: [TypeAccess] Object
 #   46|                 1: [LocalVariableDeclExpr] thing
 #   46|               1: [VarAccess] things
@@ -110,7 +110,7 @@ A.java:
 #   48|                     0: [ReturnStmt] return ...
 #   50|                 1: [IfStmt] if (...)
 #   50|                   0: [InstanceOfExpr] ...instanceof...
-#-----|                     0: (Single var ...;)
+#-----|                     0: (Single Local Variable Declaration)
 #   50|                       0: [TypeAccess] String
 #   50|                       1: [LocalVariableDeclExpr] s
 #   50|                         0: [VarAccess] thing
@@ -120,7 +120,7 @@ A.java:
 #   51|                         -3: [TypeAccess] RuntimeException
 #   51|                         0: [VarAccess] s
 #   55|           0: [CatchClause] catch (...)
-#-----|             0: (Single var ...;)
+#-----|             0: (Single Local Variable Declaration)
 #   55|               0: [TypeAccess] RuntimeException
 #   55|               1: [LocalVariableDeclExpr] rte
 #   55|             1: [BlockStmt] { ... }

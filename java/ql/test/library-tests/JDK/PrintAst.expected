@@ -69,14 +69,14 @@ jdk/SystemGetPropertyCall.java:
 #    6|     4: [Method] a
 #    6|       3: [TypeAccess] void
 #    6|       5: [BlockStmt] { ... }
-#    7|         0: [ExprStmt] ...;
+#    7|         0: [ExprStmt] <Expr>;
 #    7|           0: [MethodAccess] getProperty(...)
 #    7|             -1: [TypeAccess] System
 #    7|             0: [StringLiteral] "user.dir"
 #   10|     5: [Method] b
 #   10|       3: [TypeAccess] void
 #   10|       5: [BlockStmt] { ... }
-#   11|         0: [ExprStmt] ...;
+#   11|         0: [ExprStmt] <Expr>;
 #   11|           0: [MethodAccess] getProperty(...)
 #   11|             -1: [TypeAccess] System
 #   11|             0: [StringLiteral] "user.dir"
@@ -84,14 +84,14 @@ jdk/SystemGetPropertyCall.java:
 #   14|     6: [Method] c
 #   14|       3: [TypeAccess] void
 #   14|       5: [BlockStmt] { ... }
-#   15|         0: [ExprStmt] ...;
+#   15|         0: [ExprStmt] <Expr>;
 #   15|           0: [MethodAccess] getProperty(...)
 #   15|             -1: [TypeAccess] System
 #   15|             0: [VarAccess] USER_DIR_PROPERTY
 #   18|     7: [Method] d
 #   18|       3: [TypeAccess] void
 #   18|       5: [BlockStmt] { ... }
-#   19|         0: [ExprStmt] ...;
+#   19|         0: [ExprStmt] <Expr>;
 #   19|           0: [MethodAccess] getProperty(...)
 #   19|             -1: [TypeAccess] System
 #   19|             0: [StringLiteral] "random.property"

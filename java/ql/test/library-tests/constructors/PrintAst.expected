@@ -17,7 +17,7 @@ constructors/A.java:
 #   10|           0: [ArrayTypeAccess] ...[]
 #   10|             0: [TypeAccess] String
 #   10|       5: [BlockStmt] { ... }
-#   11|         0: [ExprStmt] ...;
+#   11|         0: [ExprStmt] <Expr>;
 #   11|           0: [ClassInstanceExpr] new A(...)
 #   11|             -3: [TypeAccess] A
 #   14|     6: [FieldDeclaration] String STATIC, ...;
@@ -27,13 +27,13 @@ constructors/A.java:
 #   15|       -1: [TypeAccess] String
 #   15|       0: [StringLiteral] "instance string"
 #   17|     8: [BlockStmt] { ... }
-#   18|       0: [ExprStmt] ...;
+#   18|       0: [ExprStmt] <Expr>;
 #   18|         0: [MethodAccess] println(...)
 #   18|           -1: [VarAccess] System.out
 #   18|             -1: [TypeAccess] System
 #   18|           0: [StringLiteral] "<obinit>"
 #   21|     9: [BlockStmt] { ... }
-#   22|       0: [ExprStmt] ...;
+#   22|       0: [ExprStmt] <Expr>;
 #   22|         0: [MethodAccess] println(...)
 #   22|           -1: [VarAccess] System.out
 #   22|             -1: [TypeAccess] System
