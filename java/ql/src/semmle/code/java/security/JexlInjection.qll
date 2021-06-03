@@ -131,43 +131,40 @@ private predicate isSafeEngine(Expr expr) {
 private class SandboxedJexlFlowConfig extends DataFlow2::Configuration {
   SandboxedJexlFlowConfig() { this = "JexlInjection::SandboxedJexlFlowConfig" }
 
-  override predicate isSource(DataFlow::Node node) { sourceNode(node, "sandboxed-jexl") }
+  override predicate isSource(DataFlow::Node node) { node instanceof SandboxedJexlSource }
 
-  override predicate isSink(DataFlow::Node node) { sinkNode(node, "sandboxed-jexl") }
+  override predicate isSink(DataFlow::Node node) {
+    exists(MethodAccess ma, Method m |
+      m instanceof CreateJexlScriptMethod or
+      m instanceof CreateJexlExpressionMethod or
+      m instanceof CreateJexlTemplateMethod
+    |
+      ma.getMethod() = m and ma.getQualifier() = node.asExpr()
+    )
+  }
 
   override predicate isAdditionalFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
     createJexlEngineStep(fromNode, toNode)
   }
 }
 
-private class SandoboxedJexlSourceModel extends SourceModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        // JEXL2
-        "org.apache.commons.jexl2;JexlEngine;false;JexlEngine;(Uberspect,JexlArithmetic,Map<String,Object>,Log);;ReturnValue;sandboxed-jexl",
-        // JEXL3
-        "org.apache.commons.jexl3;JexlBuilder;false;uberspect;(JexlUberspect);;ReturnValue;sandboxed-jexl",
-        "org.apache.commons.jexl3;JexlBuilder;false;sandbox;(JexlSandbox);;ReturnValue;sandboxed-jexl"
-      ]
-  }
-}
-
-private class SandoboxedJexlSinkModel extends SinkModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        // JEXL2
-        "org.apache.commons.jexl2;JexlEngine;false;createScript;;;Argument[-1];sandboxed-jexl",
-        "org.apache.commons.jexl2;JexlEngine;false;createExpression;;;Argument[-1];sandboxed-jexl",
-        "org.apache.commons.jexl2;UnifiedJEXL;false;parse;;;Argument[-1];sandboxed-jexl",
-        "org.apache.commons.jexl2;UnifiedJEXL;false;createTemplate;;;Argument[-1];sandboxed-jexl",
-        // JEXL3
-        "org.apache.commons.jexl3;JexlEngine;false;createScript;;;Argument[-1];sandboxed-jexl",
-        "org.apache.commons.jexl3;JexlEngine;false;createExpression;;;Argument[-1];sandboxed-jexl",
-        "org.apache.commons.jexl3;JxltEngine;false;createExpression;;;Argument[-1];sandboxed-jexl",
-        "org.apache.commons.jexl3;JxltEngine;false;createTemplate;;;Argument[-1];sandboxed-jexl"
-      ]
+/**
+ * Defines a data flow source for JEXL engines configured with a sandbox.
+ */
+private class SandboxedJexlSource extends DataFlow::ExprNode {
+  SandboxedJexlSource() {
+    exists(MethodAccess ma, Method m | m = ma.getMethod() |
+      m.getDeclaringType() instanceof JexlBuilder and
+      m.hasName(["uberspect", "sandbox"]) and
+      m.getReturnType() instanceof JexlBuilder and
+      this.asExpr() = [ma, ma.getQualifier()]
+    )
+    or
+    exists(ConstructorCall cc |
+      cc.getConstructedType() instanceof JexlEngine and
+      cc.getArgument(0).getType() instanceof JexlUberspect and
+      cc = this.asExpr()
+    )
   }
 }
 
@@ -236,6 +233,13 @@ private class JxltEngine extends JexlRefType {
 
 private class UnifiedJexl extends JexlRefType {
   UnifiedJexl() { hasName("UnifiedJEXL") }
+}
+
+private class JexlUberspect extends Interface {
+  JexlUberspect() {
+    hasQualifiedName("org.apache.commons.jexl2.introspection", "Uberspect") or
+    hasQualifiedName("org.apache.commons.jexl3.introspection", "JexlUberspect")
+  }
 }
 
 private class Reader extends RefType {
