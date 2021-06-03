@@ -95,6 +95,11 @@ with open(qlFile, "w") as f:
   f.write("import java\nimport utils.GenerateFlowTestCase\n\nclass GenRow extends CsvRow {\n\n\tGenRow() {\n\t\tthis = [\n")
   f.write(",\n".join('\t\t\t"%s"' % spec.strip() for spec in specs))
   f.write("\n\t\t]\n\t}\n}\n")
+  f.write("""
+query string getAFailedRow() {
+  result = any(GenRow row | not exists(RowTestSnippet r | exists(r.getATestSnippetForRow(row))) | row)
+}
+  """)
 
 print("Generating tests")
 generatedBqrs = os.path.join(queryDir, "out.bqrs")
@@ -121,10 +126,15 @@ with open(generatedJson, "r") as f:
   generateOutput = json.load(f)
   testCaseRows = getTuples("getTestCase", generateOutput, generatedJson)
   supportModelRows = getTuples("getASupportMethodModel", generateOutput, generatedJson)
+  failedRows = getTuples("getAFailedRow", generateOutput, generatedJson)
   if len(testCaseRows) != 1 or len(testCaseRows[0]) != 1:
     print("Expected exactly one getTestCase result with one column (got: %s)" % json.dumps(testCaseRows), file = sys.stderr)
   if any(len(row) != 1 for row in supportModelRows):
     print("Expected exactly one column in getASupportMethodModel relation (got: %s)" % json.dumps(supportModelRows), file = sys.stderr)
+  if any(len(row) != 1 for row in failedRows):
+    print("Expected exactly one column in getAFailedRow relation (got: %s)" % json.dumps(failedRows), file = sys.stderr)
+  if len(failedRows) != 0:
+    print("The following rows failed to generate any test case. Check package, class and method name spelling, and argument and result specifications:\n%s" % "\n".join(r[0] for r in failedRows), file = sys.stderr)
 
 with open(resultJava, "w") as f:
   f.write(generateOutput["getTestCase"]["tuples"][0][0])
