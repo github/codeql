@@ -57,6 +57,8 @@ class NamedParameter extends Parameter, TNamedParameter {
   final VariableAccess getDefiningAccess() { result = this.getVariable().getDefiningAccess() }
 
   override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
     pred = "getDefiningAccess" and
     result = this.getDefiningAccess()
   }
@@ -164,7 +166,7 @@ class KeywordParameter extends NamedParameter, TKeywordParameter {
   final override Location getLocation() { result = g.getName().getLocation() }
 
   final override AstNode getAChild(string pred) {
-    result = NamedParameter.super.getAChild(pred)
+    result = super.getAChild(pred)
     or
     pred = "getDefaultValue" and result = this.getDefaultValue()
   }
@@ -201,7 +203,7 @@ class OptionalParameter extends NamedParameter, TOptionalParameter {
   final override Location getLocation() { result = g.getName().getLocation() }
 
   final override AstNode getAChild(string pred) {
-    result = NamedParameter.super.getAChild(pred)
+    result = super.getAChild(pred)
     or
     pred = "getDefaultValue" and result = this.getDefaultValue()
   }

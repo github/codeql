@@ -109,7 +109,7 @@ class Toplevel extends ModuleBase, TToplevel {
   final BeginBlock getABeginBlock() { result = getBeginBlock(_) }
 
   final override AstNode getAChild(string pred) {
-    result = ModuleBase.super.getAChild(pred)
+    result = super.getAChild(pred)
     or
     pred = "getBeginBlock" and result = this.getBeginBlock(_)
   }
@@ -252,7 +252,7 @@ class ClassDeclaration extends Namespace, TClassDeclaration {
   }
 
   final override AstNode getAChild(string pred) {
-    result = Namespace.super.getAChild(pred)
+    result = super.getAChild(pred)
     or
     pred = "getSuperclassExpr" and result = this.getSuperclassExpr()
   }
@@ -290,7 +290,7 @@ class SingletonClass extends ModuleBase, TSingletonClass {
   final override string toString() { result = "class << ..." }
 
   final override AstNode getAChild(string pred) {
-    result = ModuleBase.super.getAChild(pred)
+    result = super.getAChild(pred)
     or
     pred = "getValue" and result = this.getValue()
   }

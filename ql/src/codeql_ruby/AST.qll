@@ -57,18 +57,17 @@ class AstNode extends TAstNode {
   final AstNode getAChild() { result = this.getAChild(_) }
 
   /** Gets the parent of this `AstNode`, if this node is not a root node. */
-  final AstNode getParent() {
-    result.getAChild() = this
-    or
-    result.getAChild().getDesugared() = this
-  }
+  final AstNode getParent() { result.getAChild() = this }
 
   /**
    * Gets a child of this node, which can also be retrieved using a predicate
    * named `pred`.
    */
   cached
-  AstNode getAChild(string pred) { none() }
+  AstNode getAChild(string pred) {
+    pred = "getDesugared" and
+    result = this.getDesugared()
+  }
 
   /**
    * Holds if this node was synthesized to represent an implicit AST node not

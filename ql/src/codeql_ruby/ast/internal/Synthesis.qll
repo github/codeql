@@ -83,6 +83,19 @@ class Synthesis extends TSynthesis {
   final string toString() { none() }
 }
 
+private class Desugared extends AstNode {
+  Desugared() { this = any(AstNode sugar).getDesugared() }
+
+  AstNode getADescendant() { result = this.getAChild*() }
+}
+
+/**
+ * Gets the desugaring level of `n`. That is, the number of desugaring
+ * transformations required before the context in which `n` occurs is
+ * fully desugared.
+ */
+int desugarLevel(AstNode n) { result = count(Desugared desugared | n = desugared.getADescendant()) }
+
 /**
  * Use this predicate in `Synthesis::child` to generate an assignment of `value` to
  * synthesized variable `v`, where the assignment is a child of `assignParent` at
