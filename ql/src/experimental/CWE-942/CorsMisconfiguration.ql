@@ -47,7 +47,7 @@ class FlowsUntrustedToAllowOriginHeader extends TaintTracking::Configuration {
 predicate allowCredentialsIsSetToTrue(HTTP::HeaderWrite allowOriginHW) {
   exists(HTTP::HeaderWrite allowCredentialsHW |
     allowCredentialsHW.getHeaderName() = headerAllowCredentials() and
-    allowCredentialsHW.getHeaderValue() = "true"
+    allowCredentialsHW.getHeaderValue().toLowerCase() = "true"
   |
     allowOriginHW.getResponseWriter() = allowCredentialsHW.getResponseWriter()
   )
@@ -75,7 +75,7 @@ predicate flowsFromUntrustedToAllowOrigin(HTTP::HeaderWrite allowOriginHW, strin
  */
 predicate allowOriginIsWildcardOrNull(HTTP::HeaderWrite allowOriginHW, string message) {
   allowOriginHW.getHeaderName() = headerAllowOrigin() and
-  allowOriginHW.getHeaderValue() = ["*", "null"] and
+  allowOriginHW.getHeaderValue().toLowerCase() = ["*", "null"] and
   message =
     headerAllowOrigin() + " header is set to `" + allowOriginHW.getHeaderValue() + "`, and " +
       headerAllowCredentials() + " is set to `true`"
