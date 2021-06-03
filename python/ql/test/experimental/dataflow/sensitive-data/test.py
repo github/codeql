@@ -1,5 +1,6 @@
 
-from not_found import get_passwd, account_id
+from not_found import get_passwd # $ SensitiveDataSource=password
+from not_found import account_id # $ SensitiveDataSource=id
 
 def get_password():
     pass
@@ -30,7 +31,7 @@ foo.username # $ SensitiveDataSource=id
 
 # plain variables
 password = some_function()
-print(password) # $ MISSING: SensitiveDataSource=password
+print(password) # $ MISSING: SensitiveUse=password
 
 # Special handling of lookups of sensitive properties
 request.args["password"], # $ MISSING: SensitiveDataSource=password
@@ -41,3 +42,6 @@ request.args.get(x) # $ SensitiveDataSource=password
 
 # I don't think handling `getlist` is super important, just included it to show what we don't handle
 request.args.getlist("password")[0] # $ MISSING: SensitiveDataSource=password
+
+from not_found import password2 as foo # $ SensitiveDataSource=password
+print(foo) # $ SensitiveUse=password
