@@ -75,6 +75,7 @@ private import FlowSummary
  * ensuring that they are visible to the taint tracking / data flow library.
  */
 private module Frameworks {
+  private import internal.ContainerFlow
   private import semmle.code.java.frameworks.ApacheHttp
   private import semmle.code.java.frameworks.apache.Lang
   private import semmle.code.java.frameworks.guava.Guava
@@ -482,7 +483,7 @@ module CsvValidation {
       not namespace.regexpMatch("[a-zA-Z0-9_\\.]+") and
       msg = "Dubious namespace \"" + namespace + "\" in " + pred + " model."
       or
-      not type.regexpMatch("[a-zA-Z0-9_\\$]+") and
+      not type.regexpMatch("[a-zA-Z0-9_\\$<>]+") and
       msg = "Dubious type \"" + type + "\" in " + pred + " model."
       or
       not name.regexpMatch("[a-zA-Z0-9_]*") and
@@ -566,7 +567,7 @@ private RefType interpretType(string namespace, string type, boolean subtypes) {
 private string paramsStringPart(Callable c, int i) {
   i = -1 and result = "("
   or
-  exists(int n, string p | c.getParameterType(n).toString() = p |
+  exists(int n, string p | c.getParameterType(n).getErasure().toString() = p |
     i = 2 * n and result = p
     or
     i = 2 * n - 1 and result = "," and n != 0
