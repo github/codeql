@@ -88,8 +88,8 @@ private predicate expressionCompilationStep(DataFlow::Node node1, DataFlow::Node
 }
 
 /**
- * Holds if `node1` to `node2` is a dataflow step creates `ExpressionCompiler`,
- * i.e. `new ExpressionCompiler(tainted)`.
+ * Holds if `node1` to `node2` is a dataflow step that creates `ExpressionCompiler`
+ * by calling `new ExpressionCompiler(tainted)`.
  */
 private predicate createExpressionCompilerStep(DataFlow::Node node1, DataFlow::Node node2) {
   exists(ConstructorCall cc |
@@ -100,8 +100,8 @@ private predicate createExpressionCompilerStep(DataFlow::Node node1, DataFlow::N
 }
 
 /**
- * Holds if `node1` to `node2` is a dataflow step creates `CompiledAccExpression`,
- * i.e. `new CompiledAccExpression(tainted, ...)`.
+ * Holds if `node1` to `node2` is a dataflow step creates `CompiledAccExpression`
+ * by calling `new CompiledAccExpression(tainted, ...)`.
  */
 private predicate createCompiledAccExpressionStep(DataFlow::Node node1, DataFlow::Node node2) {
   exists(ConstructorCall cc |
@@ -125,8 +125,8 @@ private predicate expressionCompilerCompileStep(DataFlow::Node node1, DataFlow::
 }
 
 /**
- * Holds if `node1` to `node2` is a dataflow step that compiles a script via `MvelScriptEngine`,
- * i.e. `engine.compile(tainted)` or `engine.compiledScript(tainted)`.
+ * Holds if `node1` to `node2` is a dataflow step that compiles a script via `MvelScriptEngine`
+ * by calling `engine.compile(tainted)` or `engine.compiledScript(tainted)`.
  */
 private predicate scriptCompileStep(DataFlow::Node node1, DataFlow::Node node2) {
   exists(MethodAccess ma, Method m | ma.getMethod() = m |
@@ -137,8 +137,8 @@ private predicate scriptCompileStep(DataFlow::Node node1, DataFlow::Node node2) 
 }
 
 /**
- * Holds if `node1` to `node2` is a dataflow step creates `MvelCompiledScript`,
- * i.e. `new MvelCompiledScript(engine, tainted)`.
+ * Holds if `node1` to `node2` is a dataflow step that creates `MvelCompiledScript`
+ * by calling `new MvelCompiledScript(engine, tainted)`.
  */
 private predicate createMvelCompiledScriptStep(DataFlow::Node node1, DataFlow::Node node2) {
   exists(ConstructorCall cc |
@@ -149,8 +149,8 @@ private predicate createMvelCompiledScriptStep(DataFlow::Node node1, DataFlow::N
 }
 
 /**
- * Holds if `node1` to `node2` is a dataflow step creates `TemplateCompiler`,
- * i.e. `new TemplateCompiler(tainted)`.
+ * Holds if `node1` to `node2` is a dataflow step creates `TemplateCompiler`
+ * by calling `new TemplateCompiler(tainted)`.
  */
 private predicate createTemplateCompilerStep(DataFlow::Node node1, DataFlow::Node node2) {
   exists(ConstructorCall cc |
@@ -161,8 +161,8 @@ private predicate createTemplateCompilerStep(DataFlow::Node node1, DataFlow::Nod
 }
 
 /**
- * Holds if `node1` to `node2` is a dataflow step that compiles a script via `TemplateCompiler`,
- * i.e. `compiler.compile()` or `TemplateCompiler.compileTemplate(tainted)`.
+ * Holds if `node1` to `node2` is a dataflow step that compiles a script via `TemplateCompiler`
+ * by calling `compiler.compile()` or `TemplateCompiler.compileTemplate(tainted)`.
  */
 private predicate templateCompileStep(DataFlow::Node node1, DataFlow::Node node2) {
   exists(MethodAccess ma, Method m | ma.getMethod() = m |
