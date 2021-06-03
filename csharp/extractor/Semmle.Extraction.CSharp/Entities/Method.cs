@@ -250,10 +250,11 @@ namespace Semmle.Extraction.CSharp.Entities
                 case MethodKind.Constructor:
                     return Constructor.Create(cx, methodDecl);
                 case MethodKind.ReducedExtension:
-                    return OrdinaryMethod.Create(cx,
-                        methodDecl.ReducedFrom!.IsGenericMethod && methodDecl.TypeArguments.Any()
-                            ? methodDecl.ReducedFrom!.Construct(methodDecl.TypeArguments, methodDecl.TypeArgumentNullableAnnotations)
-                            : methodDecl.ReducedFrom!);
+                    if (SymbolEqualityComparer.Default.Equals(methodDecl, methodDecl.ConstructedFrom))
+                    {
+                        return OrdinaryMethod.Create(cx, methodDecl.ReducedFrom!);
+                    }
+                    return OrdinaryMethod.Create(cx, methodDecl.ReducedFrom!.Construct(methodDecl.TypeArguments, methodDecl.TypeArgumentNullableAnnotations));
                 case MethodKind.Ordinary:
                 case MethodKind.DelegateInvoke:
                     return OrdinaryMethod.Create(cx, methodDecl);

@@ -10,6 +10,10 @@ namespace Test
         public static void Ext1(this string self, int arg) { }
 
         public static void Ext2<T>(this T self, int arg) { }
+
+        public static void Ext3<T>(this T self, int arg) { self.Ext3(arg); }
+
+        public static void Ext4<T>(this T self, int arg) { Ext4(self, arg); }
     }
 
     public class Program
