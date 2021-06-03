@@ -15,7 +15,6 @@ import org.mvel2.compiler.ExpressionCompiler;
 import org.mvel2.integration.impl.ImmutableDefaultFactory;
 import org.mvel2.jsr223.MvelCompiledScript;
 import org.mvel2.jsr223.MvelScriptEngine;
-import org.mvel2.templates.CompiledTemplate;
 import org.mvel2.templates.TemplateCompiler;
 import org.mvel2.templates.TemplateRuntime;
 
