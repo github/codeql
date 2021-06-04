@@ -22,7 +22,7 @@ jobs:
       uses: actions/checkout@v2
       with:
         path: codeqlModels
-        ref: github.event.inputs.qlModelShaOverride
+        ref: ${{ github.event.inputs.qlModelShaOverride }}
     - name: Clone self (github/codeql) for analysis
       if: github.event.inputs.qlModelShaOverride == ''
       uses: actions/checkout@v2
