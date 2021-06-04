@@ -62,7 +62,7 @@ private class UnsafeSearchControlsSink extends JndiInjectionSink {
 }
 
 /**
- * Tainted value passed to env `Hashtable` as the provider URL, i.e.
+ * Tainted value passed to env `Hashtable` as the provider URL by calling
  * `env.put(Context.PROVIDER_URL, tainted)` or `env.setProperty(Context.PROVIDER_URL, tainted)`.
  */
 private class ProviderUrlJndiInjectionSink extends JndiInjectionSink, DataFlow::ExprNode {
@@ -231,7 +231,7 @@ private class DefaultJndiInjectionAdditionalTaintStep extends JndiInjectionAddit
 
 /**
  * Holds if `n1` to `n2` is a dataflow step that converts between `String` and `CompositeName` or
- * `CompoundName`, i.e. `new CompositeName(tainted)` or `new CompoundName(tainted)`.
+ * `CompoundName` by calling `new CompositeName(tainted)` or `new CompoundName(tainted)`.
  */
 private predicate nameStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2) {
   exists(ConstructorCall cc |
@@ -245,7 +245,7 @@ private predicate nameStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2) {
 
 /**
  * Holds if `n1` to `n2` is a dataflow step that converts between `String` and `CompositeName` or
- * `CompoundName`, i.e. `new CompositeName().add(tainted)` or `new CompoundName().add(tainted)`.
+ * `CompoundName` by calling `new CompositeName().add(tainted)` or `new CompoundName().add(tainted)`.
  */
 private predicate nameAddStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2) {
   exists(Method m, MethodAccess ma |
@@ -262,8 +262,8 @@ private predicate nameAddStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2) {
 }
 
 /**
- * Holds if `n1` to `n2` is a dataflow step that converts between `String` and `JMXServiceURL`,
- * i.e. `new JMXServiceURL(tainted)`.
+ * Holds if `n1` to `n2` is a dataflow step that converts between `String` and `JMXServiceURL`
+ * by calling `new JMXServiceURL(tainted)`.
  */
 private predicate jmxServiceUrlStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2) {
   exists(ConstructorCall cc | cc.getConstructedType() instanceof TypeJMXServiceURL |
@@ -274,7 +274,7 @@ private predicate jmxServiceUrlStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2
 
 /**
  * Holds if `n1` to `n2` is a dataflow step that converts between `JMXServiceURL` and
- * `JMXConnector`, i.e. `JMXConnectorFactory.newJMXConnector(tainted)`.
+ * `JMXConnector` by calling `JMXConnectorFactory.newJMXConnector(tainted)`.
  */
 private predicate jmxConnectorStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2) {
   exists(MethodAccess ma, Method m | n1.asExpr() = ma.getArgument(0) and n2.asExpr() = ma |
@@ -286,7 +286,7 @@ private predicate jmxConnectorStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2)
 
 /**
  * Holds if `n1` to `n2` is a dataflow step that converts between `JMXServiceURL` and
- * `RMIConnector`, i.e. `new RMIConnector(tainted)`.
+ * `RMIConnector` by calling `new RMIConnector(tainted)`.
  */
 private predicate rmiConnectorStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2) {
   exists(ConstructorCall cc | cc.getConstructedType() instanceof TypeRMIConnector |
