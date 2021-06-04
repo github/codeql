@@ -853,10 +853,6 @@ module Trees {
     final override ControlFlowTree getChildNode(int i) { result = this.getElement(i) }
   }
 
-  private class HashSplatArgumentTree extends StandardPostOrderTree, HashSplatArgument {
-    final override ControlFlowTree getChildNode(int i) { result = this.getValue() and i = 0 }
-  }
-
   private class HashSplatParameterTree extends NonDefaultValueParameterTree, HashSplatParameter { }
 
   private class HereDocTree extends StandardPreOrderTree, HereDoc {
@@ -1170,10 +1166,6 @@ module Trees {
       succ = this and
       c instanceof NormalCompletion
     }
-  }
-
-  private class SplatArgumentTree extends StandardPostOrderTree, SplatArgument {
-    final override ControlFlowTree getChildNode(int i) { result = this.getValue() and i = 0 }
   }
 
   private class SplatParameterTree extends NonDefaultValueParameterTree, SplatParameter { }

@@ -432,23 +432,23 @@ calls/calls.rb:
 #  267|         getReceiver: [ConstantReadAccess] X
 #  270|   getStmt: [MethodCall] call to foo
 #  270|     getReceiver: [Self] self
-#  270|     getArgument: [SplatArgument] *...
-#  270|       getValue: [MethodCall] call to bar
+#  270|     getArgument: [SplatExpr] * ...
+#  270|       getAnOperand/getOperand: [MethodCall] call to bar
 #  270|         getReceiver: [Self] self
 #  271|   getStmt: [MethodCall] call to foo
 #  271|     getReceiver: [Self] self
-#  271|     getArgument: [SplatArgument] *...
-#  271|       getValue: [MethodCall] call to bar
+#  271|     getArgument: [SplatExpr] * ...
+#  271|       getAnOperand/getOperand: [MethodCall] call to bar
 #  271|         getReceiver: [ConstantReadAccess] X
 #  274|   getStmt: [MethodCall] call to foo
 #  274|     getReceiver: [Self] self
-#  274|     getArgument: [HashSplatArgument] **...
-#  274|       getValue: [MethodCall] call to bar
+#  274|     getArgument: [HashSplatExpr] ** ...
+#  274|       getAnOperand/getOperand: [MethodCall] call to bar
 #  274|         getReceiver: [Self] self
 #  275|   getStmt: [MethodCall] call to foo
 #  275|     getReceiver: [Self] self
-#  275|     getArgument: [HashSplatArgument] **...
-#  275|       getValue: [MethodCall] call to bar
+#  275|     getArgument: [HashSplatExpr] ** ...
+#  275|       getAnOperand/getOperand: [MethodCall] call to bar
 #  275|         getReceiver: [ConstantReadAccess] X
 #  278|   getStmt: [MethodCall] call to foo
 #  278|     getReceiver: [Self] self
@@ -1102,8 +1102,8 @@ literals/literals.rb:
 #  114|     getElement: [Pair] Pair
 #  114|       getKey: [SymbolLiteral] :foo
 #  114|       getValue: [IntegerLiteral] 7
-#  114|     getElement: [HashSplatArgument] **...
-#  114|       getValue: [MethodCall] call to bar
+#  114|     getElement: [HashSplatExpr] ** ...
+#  114|       getAnOperand/getOperand: [MethodCall] call to bar
 #  114|         getReceiver: [Self] self
 #  117|   getStmt: [ParenthesizedExpr] ( ... )
 #  117|     getStmt: [RangeLiteral] _ .. _
@@ -1621,14 +1621,14 @@ operations/operations.rb:
 #   29|     getStmt: [ReturnStmt] return
 #   29|       getValue: [ArgumentList] ..., ...
 #   29|         getElement: [IntegerLiteral] 1
-#   29|         getElement: [SplatArgument] *...
-#   29|           getValue: [ArrayLiteral] [...]
+#   29|         getElement: [SplatExpr] * ...
+#   29|           getAnOperand/getOperand: [ArrayLiteral] [...]
 #   29|             getElement: [IntegerLiteral] 2
 #   29|         getElement: [Pair] Pair
 #   29|           getKey: [SymbolLiteral] :a
 #   29|           getValue: [IntegerLiteral] 3
-#   29|         getElement: [HashSplatArgument] **...
-#   29|           getValue: [HashLiteral] {...}
+#   29|         getElement: [HashSplatExpr] ** ...
+#   29|           getAnOperand/getOperand: [HashLiteral] {...}
 #   29|             getElement: [Pair] Pair
 #   29|               getKey: [SymbolLiteral] :b
 #   29|               getValue: [IntegerLiteral] 4

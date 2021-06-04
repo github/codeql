@@ -622,7 +622,7 @@ hashLiteralElements
 | literals.rb:113:1:113:33 | {...} | 1 | literals.rb:113:11:113:19 | Pair | Pair |
 | literals.rb:113:1:113:33 | {...} | 2 | literals.rb:113:22:113:31 | Pair | Pair |
 | literals.rb:114:1:114:17 | {...} | 0 | literals.rb:114:3:114:8 | Pair | Pair |
-| literals.rb:114:1:114:17 | {...} | 1 | literals.rb:114:11:114:15 | **... | HashSplatArgument |
+| literals.rb:114:1:114:17 | {...} | 1 | literals.rb:114:11:114:15 | ** ... | HashSplatExpr |
 hashLiteralKeyValuePairs
 | literals.rb:84:1:84:14 | {...} | literals.rb:84:3:84:12 | Pair | literals.rb:84:3:84:5 | :foo | literals.rb:84:8:84:12 | "bar" |
 | literals.rb:113:1:113:33 | {...} | literals.rb:113:3:113:8 | Pair | literals.rb:113:3:113:5 | :foo | literals.rb:113:8:113:8 | 1 |

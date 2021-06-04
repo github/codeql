@@ -585,7 +585,8 @@ class TNamespace = TClassDeclaration or TModuleDeclaration;
 class TOperation = TUnaryOperation or TBinaryOperation or TAssignment;
 
 class TUnaryOperation =
-  TUnaryLogicalOperation or TUnaryArithmeticOperation or TUnaryBitwiseOperation or TDefinedExpr;
+  TUnaryLogicalOperation or TUnaryArithmeticOperation or TUnaryBitwiseOperation or TDefinedExpr or
+      TSplatArgument or THashSplatArgument;
 
 class TUnaryLogicalOperation = TNotExpr;
 
