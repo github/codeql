@@ -293,7 +293,7 @@ string getShortNameIfPossible(Type t) {
   if t instanceof RefType
   then
     exists(RefType replaced, string nestedName |
-      replaced = replaceTypeVariable(t) and
+      replaced = replaceTypeVariable(t).getSourceDeclaration() and
       nestedName = replaced.nestedName().replaceAll("$", ".")
     |
       if isImportable(getRootSourceDeclaration(t))
