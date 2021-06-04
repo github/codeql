@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import errno
 import json
 import os
@@ -8,6 +10,24 @@ import shutil
 import subprocess
 import sys
 import tempfile
+
+if any(s == "--help" for s in sys.argv):
+  print("""Usage:
+GenerateFlowTestCase.py specsToTest.ssv projectPom.xml outdir
+
+This generates test cases exercising taint flow specifications found in specsToTest.ssv
+producing files Test.java, test.ql and test.expected in outdir.
+
+projectPom.xml should be a Maven pom sufficient to resolve the classes named in specsToTest.ssv.
+Typically this means supplying a skeleton POM <dependencies> section that retrieves whatever jars
+contain the needed classes.
+
+Requirements: `mvn` and `codeql` should both appear on your path.
+
+After test generation completes, any lines in specsToTest.ssv that didn't produce tests are output.
+If this happens, check the spelling of class and method names, and the syntax of input and output specifications.
+""")
+  sys.exit(0)
 
 if len(sys.argv) != 4:
   print("Usage: GenerateFlowTestCase.py specsToTest.ssv projectPom.xml outdir", file=sys.stderr)
