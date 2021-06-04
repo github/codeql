@@ -125,6 +125,9 @@ class InterpretNode extends TInterpretNode {
   /** Gets the callable that this node corresponds to, if any. */
   DataFlowCallable asCallable() { result = this.asElement() }
 
+  /** Gets the target of this call, if any. */
+  Callable getCallTarget() { result = this.asCall().getCallee().getSourceDeclaration() }
+
   /** Gets a textual representation of this node. */
   string toString() {
     result = this.asElement().toString()

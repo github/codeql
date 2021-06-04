@@ -712,8 +712,8 @@ module Private {
       exists(SourceOrSinkElement e |
         sourceElement(e, output, kind) and
         if outputNeedsReference(specLast(output))
-        then viableCallable(ref.asCall()) = any(InterpretNode n | n.asElement() = e).asCallable()
-        else ref.asElement() = e
+        then e = ref.getCallTarget()
+        else e = ref.asElement()
       )
     }
 
@@ -721,8 +721,8 @@ module Private {
       exists(SourceOrSinkElement e |
         sinkElement(e, input, kind) and
         if inputNeedsReference(specLast(input))
-        then viableCallable(ref.asCall()) = any(InterpretNode n | n.asElement() = e).asCallable()
-        else ref.asElement() = e
+        then e = ref.getCallTarget()
+        else e = ref.asElement()
       )
     }
 
