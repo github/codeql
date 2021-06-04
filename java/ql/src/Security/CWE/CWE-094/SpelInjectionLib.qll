@@ -10,10 +10,7 @@ import SpringFrameworkLib
 class ExpressionInjectionConfig extends TaintTracking::Configuration {
   ExpressionInjectionConfig() { this = "ExpressionInjectionConfig" }
 
-  override predicate isSource(DataFlow::Node source) {
-    source instanceof RemoteFlowSource or
-    source instanceof WebRequestSource
-  }
+  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof ExpressionEvaluationSink }
 
