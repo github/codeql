@@ -163,7 +163,7 @@ class ClearBitExpr extends Expr {
   }
 
   Expr getAnInput() {
-    this instanceof MaskIverseExpr and result = this.(MaskInverseExpr).getAnInput()
+    this instanceof MaskInverseExpr and result = this.(MaskInverseExpr).getAnInput()
     or
     this instanceof ExclusiveDisjunction and result = this.(ExclusiveDisjunction).getAnInput()
   }
@@ -505,7 +505,7 @@ abstract class IncludedEntryModeCorruption extends EntryModeCorruption {
 }
 
 /** A data flow configuration for corruption of a mode copmuted by excluding mode constants. */
-abstarct class ExcludedEntryModeCorruption extends EntryModeCorruption {
+abstract class ExcludedEntryModeCorruption extends EntryModeCorruption {
   ExcludedEntryModeCorruption() { this = "EntryModeCorruption" }
 
   override predicate isAdditionalFlowStep(

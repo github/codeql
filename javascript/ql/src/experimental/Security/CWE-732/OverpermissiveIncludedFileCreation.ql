@@ -23,7 +23,7 @@ class OverpermissiveIncludedFileCreation extends TaintTracking::Configuration {
 
   override predicate isAdditionalTaintStep(DataFlow::Node predecessor, DataFlow::Node successor) {
     exists(InclusiveDisjunction disjunction |
-      predecessor.asExpr() = disjunction.getAFactor() and
+      predecessor.asExpr() = disjunction.getAnInput() and
       successor = disjunction.flow()
     )
   }
