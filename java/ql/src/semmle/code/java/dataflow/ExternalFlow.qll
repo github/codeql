@@ -68,6 +68,7 @@ import java
 private import semmle.code.java.dataflow.DataFlow::DataFlow
 private import internal.DataFlowPrivate
 private import internal.FlowSummaryImpl::Private::External
+private import internal.FlowSummaryImplSpecific
 private import FlowSummary
 
 /**
@@ -360,7 +361,8 @@ private predicate summaryModel(string row) {
   any(SummaryModelCsv s).row(row)
 }
 
-private predicate sourceModel(
+/** Holds if a source model exists for the given parameters. */
+predicate sourceModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
   string output, string kind
 ) {
@@ -378,7 +380,8 @@ private predicate sourceModel(
   )
 }
 
-private predicate sinkModel(
+/** Holds if a sink model exists for the given parameters. */
+predicate sinkModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
   string input, string kind
 ) {
@@ -396,7 +399,8 @@ private predicate sinkModel(
   )
 }
 
-private predicate summaryModel(
+/** Holds if a summary model exists for the given parameters. */
+predicate summaryModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
   string input, string output, string kind
 ) {
@@ -601,7 +605,8 @@ private Element interpretElement0(
   )
 }
 
-private Element interpretElement(
+/** Gets the source/sink/summary element corresponding to the supplied parameters. */
+Element interpretElement(
   string namespace, string type, boolean subtypes, string name, string signature, string ext
 ) {
   elementSpec(namespace, type, subtypes, name, signature, ext) and
@@ -612,166 +617,25 @@ private Element interpretElement(
   )
 }
 
-private predicate sourceElement(Element e, string output, string kind) {
-  exists(
-    string namespace, string type, boolean subtypes, string name, string signature, string ext
-  |
-    sourceModel(namespace, type, subtypes, name, signature, ext, output, kind) and
-    e = interpretElement(namespace, type, subtypes, name, signature, ext)
-  )
+cached
+private module Cached {
+  /**
+   * Holds if `node` is specified as a source with the given kind in a CSV flow
+   * model.
+   */
+  cached
+  predicate sourceNode(Node node, string kind) {
+    exists(InterpretNode n | isSourceNode(n, kind) and n.asNode() = node)
+  }
+
+  /**
+   * Holds if `node` is specified as a sink with the given kind in a CSV flow
+   * model.
+   */
+  cached
+  predicate sinkNode(Node node, string kind) {
+    exists(InterpretNode n | isSinkNode(n, kind) and n.asNode() = node)
+  }
 }
 
-private predicate sinkElement(Element e, string input, string kind) {
-  exists(
-    string namespace, string type, boolean subtypes, string name, string signature, string ext
-  |
-    sinkModel(namespace, type, subtypes, name, signature, ext, input, kind) and
-    e = interpretElement(namespace, type, subtypes, name, signature, ext)
-  )
-}
-
-/**
- * Holds if an external flow summary exists for `e` with input specification
- * `input`, output specification `output`, and kind `kind`.
- */
-predicate summaryElement(Element e, string input, string output, string kind) {
-  exists(
-    string namespace, string type, boolean subtypes, string name, string signature, string ext
-  |
-    summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind) and
-    e = interpretElement(namespace, type, subtypes, name, signature, ext)
-  )
-}
-
-/** Gets a specification used in a source model, sink model, or summary model. */
-string inOutSpec() {
-  sourceModel(_, _, _, _, _, _, result, _) or
-  sinkModel(_, _, _, _, _, _, result, _) or
-  summaryModel(_, _, _, _, _, _, result, _, _) or
-  summaryModel(_, _, _, _, _, _, _, result, _)
-}
-
-private predicate inputNeedsReference(string c) {
-  c = "Argument" or
-  parseArg(c, _)
-}
-
-private predicate outputNeedsReference(string c) {
-  c = "Argument" or
-  parseArg(c, _) or
-  c = "ReturnValue"
-}
-
-private predicate sourceElementRef(Top ref, string output, string kind) {
-  exists(Element e |
-    sourceElement(e, output, kind) and
-    if outputNeedsReference(specLast(output))
-    then ref.(Call).getCallee().getSourceDeclaration() = e
-    else ref = e
-  )
-}
-
-private predicate sinkElementRef(Top ref, string input, string kind) {
-  exists(Element e |
-    sinkElement(e, input, kind) and
-    if inputNeedsReference(specLast(input))
-    then ref.(Call).getCallee().getSourceDeclaration() = e
-    else ref = e
-  )
-}
-
-private predicate summaryElementRef(Top ref, string input, string output, string kind) {
-  exists(Element e |
-    summaryElement(e, input, output, kind) and
-    if inputNeedsReference(specLast(input))
-    then ref.(Call).getCallee().getSourceDeclaration() = e
-    else ref = e
-  )
-}
-
-private newtype TAstOrNode =
-  TAst(Top t) or
-  TNode(Node n)
-
-private predicate interpretOutput(string output, int idx, Top ref, TAstOrNode node) {
-  (
-    sourceElementRef(ref, output, _) or
-    summaryElementRef(ref, _, output, _)
-  ) and
-  specLength(output, idx) and
-  node = TAst(ref)
-  or
-  exists(Top mid, string c, Node n |
-    interpretOutput(output, idx + 1, ref, TAst(mid)) and
-    specSplit(output, c, idx) and
-    node = TNode(n)
-  |
-    exists(int pos | n.(PostUpdateNode).getPreUpdateNode().(ArgumentNode).argumentOf(mid, pos) |
-      c = "Argument" or parseArg(c, pos)
-    )
-    or
-    exists(int pos | n.(ParameterNode).isParameterOf(mid, pos) |
-      c = "Parameter" or parseParam(c, pos)
-    )
-    or
-    (c = "Parameter" or c = "") and
-    n.asParameter() = mid
-    or
-    c = "ReturnValue" and
-    n.asExpr().(Call) = mid
-    or
-    c = "" and
-    n.asExpr().(FieldRead).getField() = mid
-  )
-}
-
-private predicate interpretInput(string input, int idx, Top ref, TAstOrNode node) {
-  (
-    sinkElementRef(ref, input, _) or
-    summaryElementRef(ref, input, _, _)
-  ) and
-  specLength(input, idx) and
-  node = TAst(ref)
-  or
-  exists(Top mid, string c, Node n |
-    interpretInput(input, idx + 1, ref, TAst(mid)) and
-    specSplit(input, c, idx) and
-    node = TNode(n)
-  |
-    exists(int pos | n.(ArgumentNode).argumentOf(mid, pos) | c = "Argument" or parseArg(c, pos))
-    or
-    exists(ReturnStmt ret |
-      c = "ReturnValue" and
-      n.asExpr() = ret.getResult() and
-      mid = ret.getEnclosingCallable()
-    )
-    or
-    exists(FieldWrite fw |
-      c = "" and
-      fw.getField() = mid and
-      n.asExpr() = fw.getRHS()
-    )
-  )
-}
-
-/**
- * Holds if `node` is specified as a source with the given kind in a CSV flow
- * model.
- */
-predicate sourceNode(Node node, string kind) {
-  exists(Top ref, string output |
-    sourceElementRef(ref, output, kind) and
-    interpretOutput(output, 0, ref, TNode(node))
-  )
-}
-
-/**
- * Holds if `node` is specified as a sink with the given kind in a CSV flow
- * model.
- */
-predicate sinkNode(Node node, string kind) {
-  exists(Top ref, string input |
-    sinkElementRef(ref, input, kind) and
-    interpretInput(input, 0, ref, TNode(node))
-  )
-}
+import Cached
