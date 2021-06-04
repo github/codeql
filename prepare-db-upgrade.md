@@ -83,9 +83,9 @@ To create the upgrade directory manually, without using `prepare-db-upgrade.sh`:
 
 1. Get a hash of the old `.dbscheme` file, from just before your changes. You can do this by checking out the code prior to your changes and running `git hash-object ql/src/ruby.dbscheme`
 
-2. Go back to your branch and create an upgrade directory with that hash as its name, for example: `mkdir upgrades/454f1e15151422355049dc4f1f0486a03baeffef`
+2. Go back to your branch and create an upgrade directory with that hash as its name, for example: `mkdir ql/src/upgrades/454f1e15151422355049dc4f1f0486a03baeffef`
 
 3. Copy the old `.dbscheme` file to that directory, using the name old.dbscheme.
-   `cp ql/src/ruby.dbscheme upgrades/454f1e15151422355049dc4f1f0486a03baeffef/old.dbscheme`
+   `cp ql/src/ruby.dbscheme ql/src/upgrades/454f1e15151422355049dc4f1f0486a03baeffef/old.dbscheme`
  
 4. Put a copy of your new `.dbscheme` file in that directory and create an `upgrade.properties` file (as described above).

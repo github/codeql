@@ -62,7 +62,7 @@ if [ $# -gt 0 ]; then
 fi
 
 scheme_file="ql/src/ruby.dbscheme"
-upgrade_root="upgrades"
+upgrade_root="ql/src/upgrades"
 
 check_hash_valid()
 {
