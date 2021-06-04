@@ -1,3 +1,13 @@
+/**
+ * @name Overpermissive excluded directory creation
+ * @description Creating program directories world writable may allow an attacker to control
+ *              program behavior by creating files in them.
+ * @kind path-problem
+ * @id js/insecure-fs/overpermissive-excluded-directory-creation
+ * @tags security
+ *       external/cwe/cwe-732
+ */
+
 import ModableDirectoryCreation
 
 /**

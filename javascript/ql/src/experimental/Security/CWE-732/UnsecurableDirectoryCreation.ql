@@ -1,3 +1,14 @@
+/**
+ * @name Unsecurable directory creation
+ * @description A directory creation function that takes no mode defaults to world writable.
+ *              Creating program directories world writable may allow an attacker to control
+ *              program behavior by creating files in them.
+ * @kind problem
+ * @id js/insecure-fs/unsecurable-directory-creation
+ * @tags security
+ *       external/cwe/cwe-732
+ */
+
 import OverpermissiveFileSystemMode
 
 /** A directory creation that cannot be secured, because it offers no way to specify mode. */

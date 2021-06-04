@@ -1,3 +1,13 @@
+/**
+ * @name Overpermissive included file creation
+ * @description Creating program files world writable may allow an attacker to control program
+ *              behavior by modifying them.
+ * @kind path-problem
+ * @id js/insecure-fs/overpermissive-included-file-creation
+ * @tags security
+ *       external/cwe/cwe-732
+ */
+
 import ModableFileCreation
 
 /**

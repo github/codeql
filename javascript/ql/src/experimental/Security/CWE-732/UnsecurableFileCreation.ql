@@ -1,3 +1,14 @@
+/**
+ * @name Unsecurable file creation
+ * @description A file creation function that takes no mode defaults to world writable.
+ *              Creating program files world writable may allow an attacker to control program
+ *              behavior by modifying them.
+ * @kind problem
+ * @id js/insecure-fs/unsecurable-file-creation
+ * @tags security
+ *       external/cwe/cwe-732
+ */
+
 import OverpermissiveFileSystemMode
 
 /** A file creation that cannot be secured, because it offers no way to specify mode. */

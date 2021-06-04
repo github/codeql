@@ -1,3 +1,13 @@
+/**
+ * @name Overpermissive literal directory creation
+ * @description Creating program directories world writable may allow an attacker to control
+ *              program behavior by creating files in them.
+ * @kind problem
+ * @id js/insecure-fs/overpermissive-literal-directory-creation
+ * @tags security
+ *       external/cwe/cwe-732
+ */
+
 import ModableDirectoryCreation
 
 /** A directory creation that provides mode as a literal. */

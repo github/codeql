@@ -1,3 +1,13 @@
+/**
+ * @name Modeless directory creation
+ * @description Creating program directories world writable may allow an attacker to control
+ *              program behavior by creating files in them.
+ * @kind problem
+ * @id js/insecure-fs/modeless-directory-creation
+ * @tags security
+ *       external/cwe/cwe-732
+ */
+
 import ModableDirectoryCreation
 
 from ModableDirectoryCreation creation

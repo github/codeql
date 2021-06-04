@@ -1,3 +1,13 @@
+/**
+ * @name Overpermissive literal file creation
+ * @description Creating program files world writable may allow an attacker to control program
+ *              behavior by modifying them.
+ * @kind problem
+ * @id js/insecure-fs/overpermissive-literal-file-creation
+ * @tags security
+ *       external/cwe/cwe-732
+ */
+
 import ModableFileCreation
 
 /** A file creation that provides mode as a literal. */
