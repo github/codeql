@@ -1,39 +1,15 @@
-import subprocess
 import csv
 import sys
 import os
 import shutil
 import settings
+import utils
 
 """
 This script runs the CSV coverage report QL query, and transforms it to a more readable format.
 There are two main outputs: (i) a CSV file containing the coverage data, and (ii) an RST page containing the coverage
 data.
  """
-
-
-def subprocess_run(cmd):
-    """Runs a command through subprocess.run, with a few tweaks. Raises an Exception if exit code != 0."""
-    return subprocess.run(cmd, capture_output=True, text=True, env=os.environ.copy(), check=True)
-
-
-def create_empty_database(lang, extension, database):
-    """Creates an empty database for the given language."""
-    subprocess_run(["codeql", "database", "init", "--language=" + lang,
-                   "--source-root=/tmp/empty", "--allow-missing-source-root", database])
-    subprocess_run(["mkdir", "-p", database + "/src/tmp/empty"])
-    subprocess_run(["touch", database + "/src/tmp/empty/empty" + extension])
-    subprocess_run(["codeql", "database", "finalize",
-                   database, "--no-pre-finalize"])
-
-
-def run_codeql_query(query, database, output):
-    """Runs a codeql query on the given database."""
-    subprocess_run(["codeql", "query", "run", query,
-                   "--database", database, "--output", output + ".bqrs"])
-    subprocess_run(["codeql", "bqrs", "decode", output + ".bqrs",
-                   "--format=csv", "--no-titles", "--output", output])
-    os.remove(output + ".bqrs")
 
 
 def append_csv_number(list, value):
@@ -117,7 +93,7 @@ class LanguageConfig:
 
 
 try:  # Check for `codeql` on path
-    subprocess_run(["codeql", "--version"])
+    utils.subprocess_run(["codeql", "--version"])
 except Exception as e:
     print("Error: couldn't invoke CodeQL CLI 'codeql'. Is it on the path? Aborting.", file=sys.stderr)
     raise e
@@ -165,8 +141,8 @@ for config in configs:
     lang = config.lang
     db = "empty-" + lang
     ql_output = output_ql_csv.format(language=lang)
-    create_empty_database(lang, config.ext, db)
-    run_codeql_query(config.ql_path, db, ql_output)
+    utils.create_empty_database(lang, config.ext, db)
+    utils.run_codeql_query(config.ql_path, db, ql_output)
     shutil.rmtree(db)
 
     packages = {}
