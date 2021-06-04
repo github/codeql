@@ -13,7 +13,7 @@ import ModableDirectoryCreation
  * ```
  */
 class ExcludedDirectoryModeConstruction extends ExcludedEntryModeConstruction {
-  ExcludedDirectoryModeConstruction() { this = "ExcludedDirectoryModeConstruction" }
+  ExcludedDirectoryModeConstruction() { this = "ExcludedEntryModeConstruction" }
 
   override predicate isSink(DataFlow::Node node) {
     exists(ModableDirectoryCreation creation | creation.getSpecifier() = node.asExpr())
