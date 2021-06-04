@@ -28,5 +28,7 @@ class FooController < ApplicationController
     User.where(<<-SQL, MAX_USER_ID)
       id BETWEEN #{params[:min_id]} AND ?
     SQL
+
+    UserGroup.joins(:users).where("user.id = #{params[:id]}")
   end
 end

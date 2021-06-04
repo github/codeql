@@ -5,11 +5,17 @@ activeRecordModelClasses
 activeRecordSqlExecutionRanges
 | ActiveRecordInjection.rb:22:21:22:41 | "id = #{...}" |
 | ActiveRecordInjection.rb:28:16:28:21 | <<-SQL |
+| ActiveRecordInjection.rb:32:21:32:26 | :users |
+| ActiveRecordInjection.rb:32:35:32:60 | "user.id = #{...}" |
 activeRecordModelClassMethodCalls
 | ActiveRecordInjection.rb:19:5:19:45 | call to calculate |
 | ActiveRecordInjection.rb:22:5:22:42 | call to delete_all |
 | ActiveRecordInjection.rb:25:5:25:45 | call to destroy_all |
 | ActiveRecordInjection.rb:28:5:28:35 | call to where |
+| ActiveRecordInjection.rb:32:5:32:27 | call to joins |
+| ActiveRecordInjection.rb:32:5:32:61 | call to where |
 potentiallyUnsafeSqlExecutingMethodCall
 | ActiveRecordInjection.rb:22:5:22:42 | call to delete_all |
 | ActiveRecordInjection.rb:28:5:28:35 | call to where |
+| ActiveRecordInjection.rb:32:5:32:27 | call to joins |
+| ActiveRecordInjection.rb:32:5:32:61 | call to where |

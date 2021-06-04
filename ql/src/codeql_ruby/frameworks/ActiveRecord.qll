@@ -35,13 +35,22 @@ class ActiveRecordModelClass extends ClassDeclaration {
 
 // A class method call whose receiver is an ActiveRecord model class
 class ActiveRecordModelClassMethodCall extends MethodCall {
-  // The model class that receives this call
+  // The model class that receives this call, if any
   private ActiveRecordModelClass recvCls;
 
-  ActiveRecordModelClassMethodCall() { recvCls.getModule() = resolveScopeExpr(this.getReceiver()) }
+  ActiveRecordModelClassMethodCall() {
+    // e.g. Foo.where(...)
+    recvCls.getModule() = resolveScopeExpr(this.getReceiver())
+    or
+    // e.g. Foo.joins(:bars).where(...)
+    this.getReceiver() instanceof ActiveRecordModelClassMethodCall
+  }
 
-  // TODO: handle some cases of non-constant receiver expressions
-  ActiveRecordModelClass getResolvedReceiverScope() { result = recvCls }
+  // TODO: do we need this?
+  ActiveRecordModelClass getAnActiveRecordModelClass() {
+    result = recvCls or
+    result = this.getReceiver().(ActiveRecordModelClassMethodCall).getAnActiveRecordModelClass()
+  }
 }
 
 class PotentiallyUnsafeSqlExecutingMethodCall extends ActiveRecordModelClassMethodCall {
