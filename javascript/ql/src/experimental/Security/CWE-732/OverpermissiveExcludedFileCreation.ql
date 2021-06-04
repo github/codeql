@@ -9,6 +9,7 @@
  */
 
 import ModableFileCreation
+import DataFlow::PathGraph
 
 /**
  * A data flow configuration for a file creation mode
@@ -71,17 +72,16 @@ from
   ExcludedFileModeConstruction construction,
   ExcludedFileModeCorruption corruption,
   WorldWriteExcludedFileCreation worldWriteExclusion,
-  WorldExecuteExcludedFileCreation worldExecuteExclusion,
-  DataFlow::Node source,
-  DataFlow::Node sink
+  DataFlow::PathNode source,
+  DataFlow::PathNode sink
 where
-  construction.hasFlow(source, sink) and
-  not corruption.hasFlow(_, sink) and
-  not worldWriteExclusion.hasFlow(_, sink) and
+  construction.hasFlowPath(source, sink) and
+  not corruption.hasFlowPath(_, sink) and
+  not worldWriteExclusion.hasFlowPath(_, sink)
 select
-  source.toString(),
-  sink.toString(),
-  source.getStartLine(),
-  source.getStartColumn(),
-  sink.getStartLine(),
-  sink.getStartColumn()
+  sink.getNode(),
+  source,
+  sink,
+  "This call uses an overpermissive mode from $@ that creates world writable files.",
+  source.getNode(),
+  "here"

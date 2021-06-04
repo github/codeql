@@ -9,6 +9,7 @@
  */
 
 import ModableDirectoryCreation
+import DataFlow::PathGraph
 
 /**
  * A taint tracking configuration for directory creation
@@ -54,15 +55,16 @@ class IncludedDirectoryModeCorruption extends IncludedEntryModeCorruption {
 from
   OverpermissiveIncludedDirectoryCreation construction,
   IncludedDirectoryModeCorruption corruption,
-  DataFlow::Node source,
-  DataFlow::Node sink
+  DataFlow::PathNode source,
+  DataFlow::PathNode sink
 where
-  construction.hasFlow(source, sink) and
-  not corruption.hasFlow(_, sink)
+  construction.hasFlowPath(source, sink) and
+  not corruption.hasFlowPath(_, sink)
 select
-  source.toString(),
-  sink.toString(),
-  source.getStartLine(),
-  source.getStartColumn(),
-  sink.getStartLine(),
-  sink.getStartColumn()
+  sink.getNode(),
+  source,
+  sink,
+  "This call uses an overpermissive mode constant from $@" +
+    " that creates world writable directories.",
+  source.getNode(),
+  "here"

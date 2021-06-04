@@ -9,6 +9,7 @@
  */
 
 import ModableDirectoryCreation
+import DataFlow::PathGraph
 
 /**
  * A data flow configuration for directory creation with a mode
@@ -40,7 +41,13 @@ class OverpermissiveTransportedDirectoryCreation extends DataFlow::Configuration
 
 from
   OverpermissiveTransportedDirectoryCreation transport,
-  DataFlow::Node source,
-  DataFlow::Node sink
-where transport.hasFlow(source, sink)
-select sink, "message"
+  DataFlow::PathNode source,
+  DataFlow::PathNode sink
+where transport.hasFlowPath(source, sink)
+select
+  sink.getNode(),
+  source,
+  sink,
+  "This call uses an overpermissive mode from $@ that creates world writable directories.",
+  source.getNode(),
+  "here"

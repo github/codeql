@@ -9,6 +9,7 @@
  */
 
 import ModableFileCreation
+import DataFlow::PathGraph
 
 /**
  * A data flow configuration for file creation with a mode
@@ -38,7 +39,13 @@ class OverpermissiveTransportedFileCreation extends DataFlow::Configuration {
 
 from
   OverpermissiveTransportedFileCreation transport,
-  DataFlow::Node source,
-  DataFlow::Node sink
-where transport.hasFlow(source, sink)
-select sink, "message"
+  DataFlow::PathNode source,
+  DataFlow::PathNode sink
+where transport.hasFlowPath(source, sink)
+select
+  sink.getNode(),
+  source,
+  sink,
+  "This call uses an overpermissive mode from $@ that creates world writable files.",
+  source.getNode(),
+  "here"
