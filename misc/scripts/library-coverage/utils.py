@@ -24,3 +24,11 @@ def run_codeql_query(query, database, output):
     subprocess_run(["codeql", "bqrs", "decode", output + ".bqrs",
                    "--format=csv", "--no-titles", "--output", output])
     os.remove(output + ".bqrs")
+
+
+class LanguageConfig:
+    def __init__(self, lang, capitalized_lang, ext, ql_path):
+        self.lang = lang
+        self.capitalized_lang = capitalized_lang
+        self.ext = ext
+        self.ql_path = ql_path

@@ -84,14 +84,6 @@ def add_package_stats_to_row(row, sorted_cwes, collect):
     return row, processed_packages
 
 
-class LanguageConfig:
-    def __init__(self, lang, capitalized_lang, ext, ql_path):
-        self.lang = lang
-        self.capitalized_lang = capitalized_lang
-        self.ext = ext
-        self.ql_path = ql_path
-
-
 try:  # Check for `codeql` on path
     utils.subprocess_run(["codeql", "--version"])
 except Exception as e:
@@ -121,7 +113,7 @@ if len(sys.argv) > 2:
 
 # Languages for which we want to generate coverage reports.
 configs = [
-    LanguageConfig(
+    utils.LanguageConfig(
         "java", "Java", ".java", query_prefix + "java/ql/src/meta/frameworks/Coverage.ql")
 ]
 
