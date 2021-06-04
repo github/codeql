@@ -57,28 +57,28 @@ class PermissivePermissionsExpr extends Expr {
   }
 }
 
-/** A call to a method of File or FileUtils that may modify file permissions */
-class PermissionSettingMethodCall extends MethodCall {
+/** A permissions argument of a call to a File/FileUtils method that may modify file permissions */
+class PermissionArgument extends Expr {
+  private MethodCall call;
   private string methodName;
-  private Expr permArg;
 
-  PermissionSettingMethodCall() {
-    this.getReceiver() instanceof FileModuleAccess and
-    this.getMethodName() = methodName and
+  PermissionArgument() {
+    call.getReceiver() instanceof FileModuleAccess and
+    call.getMethodName() = methodName and
     (
-      methodName in ["chmod", "chmod_R", "lchmod"] and permArg = this.getArgument(0)
+      methodName in ["chmod", "chmod_R", "lchmod"] and this = call.getArgument(0)
       or
-      methodName = "mkfifo" and permArg = this.getArgument(1)
+      methodName = "mkfifo" and this = call.getArgument(1)
       or
-      methodName in ["new", "open"] and permArg = this.getArgument(2)
+      methodName in ["new", "open"] and this = call.getArgument(2)
       or
       methodName in ["install", "makedirs", "mkdir", "mkdir_p", "mkpath"] and
-      permArg = this.getKeywordArgument("mode")
+      this = call.getKeywordArgument("mode")
       // TODO: defaults for optional args? This may depend on the umask
     )
   }
 
-  Expr getPermissionArgument() { result = permArg }
+  MethodCall getCall() { result = call }
 }
 
 class PermissivePermissionsConfig extends DataFlow::Configuration {
@@ -89,11 +89,13 @@ class PermissivePermissionsConfig extends DataFlow::Configuration {
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(PermissionSettingMethodCall c | sink.asExpr().getExpr() = c.getPermissionArgument())
+    exists(PermissionArgument arg | sink.asExpr().getExpr() = arg)
   }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, PermissivePermissionsConfig conf
-where conf.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "Overly permissive mask sets file to $@.", source.getNode(),
-  source.getNode().toString()
+from
+  DataFlow::PathNode source, DataFlow::PathNode sink, PermissivePermissionsConfig conf,
+  PermissionArgument arg
+where conf.hasFlowPath(source, sink) and arg = sink.getNode().asExpr().getExpr()
+select source.getNode(), source, sink, "Overly permissive mask in $@ sets file to $@.",
+  arg.getCall(), arg.getCall().toString(), source.getNode(), source.getNode().toString()
