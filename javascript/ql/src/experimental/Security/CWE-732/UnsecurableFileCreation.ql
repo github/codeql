@@ -2,11 +2,13 @@ import OverpermissiveFileSystemMode
 
 class UnsecurableFileCreation extends UnsecurableEntryCreation, FileCreation {
   UnsecurableFileCreation() {
-    this = DataFlow::moduleMember("fs-extra", "createFile").getAnInvocation() or
-    this = DataFlow::moduleMember("fs-extra", "createFileSync").getAnInvocation() or
-    this = DataFlow::moduleMember("fs-extra", "ensureFile").getAnInvocation() or
-    this = DataFlow::moduleMember("fs-extra", "ensureFileSync").getAnInvocation() or
-    this = DataFlow::moduleImport("trash").getAnInvocation()
+    this = [
+      DataFlow::moduleMember("fs-extra", "createFile"),
+      DataFlow::moduleMember("fs-extra", "createFileSync"),
+      DataFlow::moduleMember("fs-extra", "ensureFile"),
+      DataFlow::moduleMember("fs-extra", "ensureFileSync"),
+      DataFlow::moduleImport("trash")
+    ].getAnInvocation()
   }
 }
 

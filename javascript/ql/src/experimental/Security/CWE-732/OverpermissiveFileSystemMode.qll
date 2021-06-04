@@ -7,17 +7,10 @@ Mask getOverpermissiveFileMask() { result = 3 }
 Mask getOverpermissiveDirectoryMask() { result = 2 }
 
 // Group/world, write/execute
-string getAnOverpermissiveFileConstant() {
-  result = "S_IRWXO" or
-  result = "S_IWOTH" or
-  result = "S_IXOTH"
-}
+string getAnOverpermissiveFileConstant() { result = ["S_IRWXO", "S_IWOTH", "S_IXOTH"] }
 
 // Group/world, write
-string getAnOverpermissiveDirectoryConstant() {
-  result = "S_IRWXO" or
-  result = "S_IWOTH"
-}
+string getAnOverpermissiveDirectoryConstant() { result = ["S_IRWXO", "S_IWOTH"] }
 
 class ModifyExpr extends Expr {
   ModifyExpr() {
@@ -34,10 +27,10 @@ class ModifyExpr extends Expr {
     or
     this instanceof BinaryExpr and result = this.(BinaryExpr).getAnOperand()
     or
-    this instanceof CompoundAssignExpr and (
-      result = this.(CompoundAssignExpr).getLhs() or
-      result = this.(CompoundAssignExpr).getRhs()
-    )
+    this instanceof CompoundAssignExpr and result = [
+      this.(CompoundAssignExpr).getLhs(),
+      this.(CompoundAssignExpr).getRhs()
+    ]
     or
     this instanceof InvokeExpr and result = this.(InvokeExpr).getAnArgument()
   }
@@ -52,10 +45,10 @@ class InclusiveDisjunction extends Expr {
   Expr getAFactor() {
     this instanceof BitOrExpr and result = this.(BitOrExpr).getAnOperand()
     or
-    this instanceof AssignOrExpr and (
-      result = this.(AssignOrExpr).getLhs() or
-      result = this.(AssignOrExpr).getRhs()
-    )
+    this instanceof AssignOrExpr and result = [
+      this.(AssignOrExpr).getLhs(),
+      this.(AssignOrExpr).getRhs()
+    ]
   }
 }
 
@@ -68,10 +61,10 @@ class ExclusiveDisjunction extends Expr {
   Expr getAFactor() {
     this instanceof XOrExpr and result = this.(XOrExpr).getAnOperand()
     or
-    this instanceof AssignXOrExpr and (
-      result = this.(AssignXOrExpr).getLhs() or
-      result = this.(AssignXOrExpr).getRhs()
-    )
+    this instanceof AssignXOrExpr and result = [
+      this.(AssignXOrExpr).getLhs(),
+      this.(AssignXOrExpr).getRhs()
+    ]
   }
 }
 
@@ -79,9 +72,11 @@ class MaskInverseExpr extends BitAndExpr {
   MaskInverseExpr() { this.getAnOperand() instanceof BitNotExpr }
 
   Expr getAFactor() {
-    result = this.getAnOperand() or
-    result = this.getAnOperand().(BitNotExpr).getOperand() or
-    result = this.getAnOperand().(BitNotExpr).getOperand().(ParExpr).getExpression()
+    result = [
+      this.getAnOperand(),
+      this.getAnOperand().(BitNotExpr).getOperand(),
+      this.getAnOperand().(BitNotExpr).getOperand().(ParExpr).getExpression()
+    ]
   }
 }
 
@@ -227,10 +222,7 @@ abstract class Argument2EntryCreation extends ModableEntryCreation {
 abstract class ImmediateSpecifierEntryCreation extends ModableEntryCreation {
   override Expr getSpecifier() { this.hasModeArgument() and result = this.getArgument() }
 
-  private predicate hasModeArgument() {
-    this.getArgumentType() = "number" or
-    this.getArgumentType() = "string"
-  }
+  private predicate hasModeArgument() { this.getArgumentType() = ["number", "string"] }
 }
 
 abstract class PropertySpecifierEntryCreation extends ModableEntryCreation {
@@ -247,10 +239,7 @@ abstract class ImmediateOrPropertySpecifierEntryCreation extends ModableEntryCre
     this.hasObjectArgument() and result = this.getPropertySpecifier()
   }
 
-  private predicate hasModeArgument() {
-    this.getArgumentType() = "number" or
-    this.getArgumentType() = "string"
-  }
+  private predicate hasModeArgument() { this.getArgumentType() = ["number", "string"] }
 
   private predicate hasObjectArgument() { this.getArgumentType() = "object" }
 
@@ -360,10 +349,7 @@ class WorldWriteExcludedEntryCreation extends DataFlow::Configuration {
     node.(DataFlow::PropRead).getPropertyName() = this.getOverpermissiveConstants()
   }
 
-  private string getOverpermissiveConstants() {
-    result = "S_IWOTH" or
-    result = "S_IRWXO"
-  }
+  private string getOverpermissiveConstants() { result = ["S_IWOTH", "S_IRWXO"] }
 
   override predicate isAdditionalFlowStep(DataFlow::Node predecessor, DataFlow::Node successor) {
     exists(ClearBitExpr clear |
@@ -381,10 +367,7 @@ class WorldExecuteExcludedEntryCreation extends DataFlow::Configuration {
     node.(DataFlow::PropRead).getPropertyName() = this.getOverpermissiveConstants()
   }
 
-  private string getOverpermissiveConstants() {
-    result = "S_IXOTH" or
-    result = "S_IRWXO"
-  }
+  private string getOverpermissiveConstants() { result = ["S_IXOTH", "S_IRWXO"] }
 
   override predicate isAdditionalFlowStep(DataFlow::Node predecessor, DataFlow::Node successor) {
     exists(ClearBitExpr clear |
