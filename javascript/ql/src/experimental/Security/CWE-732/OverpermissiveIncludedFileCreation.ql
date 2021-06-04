@@ -9,8 +9,8 @@ import ModableFileCreation
  * fs.open('/tmp/file', 'r', fs.constants.S_IRWXU | fs.constants.S_IRWXG | fs.constants.S_IRWXO)
  * ```
  */
-class OverpermissiveIncludedFileCreation extends TaintTracking::Configuration {
-  OverpermissiveIncludedFileCreation() { this = "OverpermissiveIncludedFileCreation" }
+class OverpermissiveIncludedFileCreation extends OverpermissiveIncludedEntryCreation {
+  OverpermissiveIncludedFileCreation() { this = "OverpermissiveIncludedEntryCreation" }
 
   override predicate isSource(DataFlow::Node node) {
     node = NodeJSLib::FS::moduleMember("constants").getAPropertyRead() and
@@ -19,13 +19,6 @@ class OverpermissiveIncludedFileCreation extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node node) {
     exists(ModableFileCreation creation | creation.getSpecifier() = node.asExpr())
-  }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node predecessor, DataFlow::Node successor) {
-    exists(InclusiveDisjunction disjunction |
-      predecessor.asExpr() = disjunction.getAnInput() and
-      successor = disjunction.flow()
-    )
   }
 }
 
