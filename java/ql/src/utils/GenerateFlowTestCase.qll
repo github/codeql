@@ -29,10 +29,13 @@ string getZero(PrimitiveType t) {
   t.hasName("long") and result = "0L"
 }
 
-string getFiller(Type t) {
-  t instanceof RefType and result = "null"
-  or
-  result = getZero(t)
+predicate mayBeAmbiguous(Callable c) {
+  exists(Callable other, string package, string type, string name |
+    c.hasQualifiedName(package, type, name) and
+    other.hasQualifiedName(package, type, name) and
+    other.getNumberOfParameters() = c.getNumberOfParameters() and
+    other != c
+  )
 }
 
 Content getContent(SummaryComponent component) { component = SummaryComponent::content(result) }
@@ -61,8 +64,16 @@ RefType getRootType(RefType t) {
   else result = t
 }
 
+RefType replaceTypeVariable(RefType t) {
+  if t instanceof TypeVariable
+  then result = t.(TypeVariable).getFirstUpperBoundType()
+  else result = t
+}
+
 Type getRootSourceDeclaration(Type t) {
-  if t instanceof RefType then result = getRootType(t).getSourceDeclaration() else result = t
+  if t instanceof RefType
+  then result = getRootType(replaceTypeVariable(t)).getSourceDeclaration()
+  else result = t
 }
 
 newtype TRowTestSnippet =
@@ -94,6 +105,19 @@ class RowTestSnippet extends TRowTestSnippet {
         baseOutput + " / " + preservesValue
   }
 
+  string getFiller(int argIdx) {
+    exists(Type t | t = callable.getParameterType(argIdx) |
+      t instanceof RefType and
+      (
+        if mayBeAmbiguous(callable)
+        then result = "(" + getShortNameIfPossible(t.(RefType).getSourceDeclaration()) + ")null"
+        else result = "null"
+      )
+      or
+      result = getZero(t)
+    )
+  }
+
   string getArgument(int i) {
     (i = -1 or exists(callable.getParameter(i))) and
     if baseInput = SummaryComponentStack::argument(i)
@@ -102,7 +126,7 @@ class RowTestSnippet extends TRowTestSnippet {
       if baseOutput = SummaryComponentStack::argument(i)
       then result = "out"
       else (
-        if i = -1 then result = "instance" else result = getFiller(getParameterType(callable, i))
+        if i = -1 then result = "instance" else result = this.getFiller(i)
       )
     )
   }
@@ -238,6 +262,9 @@ class RowTestSnippet extends TRowTestSnippet {
       getRootSourceDeclaration([
           this.getOutputType(), this.getInputType(), callable.getDeclaringType()
         ])
+    or
+    // Will refer to parameter types in disambiguating casts, like `(String)null`
+    mayBeAmbiguous(callable) and result = getRootSourceDeclaration(callable.getAParamType())
   }
 
   string getATestSnippetForRow(string row_) {
@@ -263,8 +290,16 @@ predicate isImportable(Type t) {
 
 string getShortNameIfPossible(Type t) {
   getRootSourceDeclaration(t) = any(RowTestSnippet r).getADesiredImport() and
-  if t instanceof RefType and not isImportable(getRootSourceDeclaration(t))
-  then result = t.(RefType).getPackage().getName() + "." + t.getName()
+  if t instanceof RefType
+  then
+    exists(RefType replaced, string nestedName |
+      replaced = replaceTypeVariable(t) and
+      nestedName = replaced.nestedName().replaceAll("$", ".")
+    |
+      if isImportable(getRootSourceDeclaration(t))
+      then result = nestedName
+      else result = replaced.getPackage().getName() + "." + nestedName
+    )
   else result = t.getName()
 }
 
