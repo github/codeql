@@ -67,6 +67,8 @@ class SqlExecutingMethodCall extends ActiveRecordModelClassMethodCall {
         or
         methodName = "find_by"
         or
+        methodName = "find_by_sql"
+        or
         methodName = "from"
         or
         methodName = "group"
