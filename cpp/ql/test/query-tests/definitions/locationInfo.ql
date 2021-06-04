@@ -11,7 +11,7 @@ class Link extends Top {
  * Gets the length of the longest line in file `f`.
  */
 pragma[nomagic]
-private int maxCols(File f) { result = max(Location l | l.getFile() = f | l.getEndColumn()) }
+private int maxCols(File f) { result = max(Location l | l.getFile() = f | [l.getStartColumn(), l.getEndColumn()]) }
 
 /**
  * Gets the location of an element that has a link-to-definition (in a similar manner to
