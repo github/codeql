@@ -1,19 +1,16 @@
 import ModableDirectoryCreation
 
-abstract class LiteralDirectoryCreation extends
-  LiteralEntryCreation,
-  DirectoryCreation
-{
+abstract class LiteralDirectoryCreation extends LiteralEntryCreation, DirectoryCreation {
   override Mask getMask() { result = getOverpermissiveDirectoryMask() }
 }
 
 class LiteralObjectArgument1DirectoryCreation extends
   ObjectArgument1DirectoryCreation,
-  LiteralDirectoryCreation {}
+  LiteralDirectoryCreation { }
 
 class LiteralImmediateOrObjectArgument1DirectoryCreation extends
   ImmediateOrObjectArgument1DirectoryCreation,
-  LiteralDirectoryCreation {}
+  LiteralDirectoryCreation { }
 
 from LiteralDirectoryCreation creation
 where creation.isOverpermissive()

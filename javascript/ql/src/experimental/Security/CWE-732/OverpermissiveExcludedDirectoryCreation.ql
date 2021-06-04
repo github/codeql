@@ -4,36 +4,24 @@ class DirectoryModeFromLiteral extends EntryModeFromLiteral {
   DirectoryModeFromLiteral() { this = "EntryModeFromLiteral" }
 
   override predicate isSink(DataFlow::Node node) {
-    exists(ModableDirectoryCreation creation |
-      creation.getSpecifier() = node.asExpr()
-    )
+    exists(ModableDirectoryCreation creation | creation.getSpecifier() = node.asExpr())
   }
 }
 
-class ExcludedDirectoryCreationCorruption extends
-  ExcludedEntryCreationCorruption
-{
+class ExcludedDirectoryCreationCorruption extends ExcludedEntryCreationCorruption {
   ExcludedDirectoryCreationCorruption() { this = "EntryCreationCorruption" }
 
   override predicate isSink(DataFlow::Node node, DataFlow::FlowLabel label) {
-    exists(ModableDirectoryCreation creation |
-      creation.getSpecifier() = node.asExpr()
-    ) and
+    exists(ModableDirectoryCreation creation | creation.getSpecifier() = node.asExpr()) and
     label instanceof CorruptLabel
   }
 }
 
-class WorldWriteExcludedDirectoryCreation extends
-  WorldWriteExcludedEntryCreation
-{
-  WorldWriteExcludedDirectoryCreation() {
-    this = "WorldWriteExcludedEntryCreation"
-  }
+class WorldWriteExcludedDirectoryCreation extends WorldWriteExcludedEntryCreation {
+  WorldWriteExcludedDirectoryCreation() { this = "WorldWriteExcludedEntryCreation" }
 
   override predicate isSink(DataFlow::Node node) {
-    exists(ModableDirectoryCreation creation |
-      creation.getSpecifier() = node.asExpr()
-    )
+    exists(ModableDirectoryCreation creation | creation.getSpecifier() = node.asExpr())
   }
 }
 

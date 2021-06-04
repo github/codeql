@@ -1,8 +1,6 @@
 import ModableDirectoryCreation
 
-class OverpermissiveTransportedDirectoryCreation extends
-  DataFlow::Configuration
-{
+class OverpermissiveTransportedDirectoryCreation extends DataFlow::Configuration {
   OverpermissiveTransportedDirectoryCreation() {
     this = "OverpermissiveTransportedDirectoryCreation"
   }
@@ -13,13 +11,12 @@ class OverpermissiveTransportedDirectoryCreation extends
   }
 
   override predicate isSink(DataFlow::Node node) {
-    exists(ModableDirectoryCreation creation |
-      creation.getSpecifier() = node.asExpr()
-    )
+    exists(ModableDirectoryCreation creation | creation.getSpecifier() = node.asExpr())
   }
 }
 
-from OverpermissiveTransportedDirectoryCreation transport,
+from
+  OverpermissiveTransportedDirectoryCreation transport,
   DataFlow::Node source,
   DataFlow::Node sink
 where transport.hasFlow(source, sink)

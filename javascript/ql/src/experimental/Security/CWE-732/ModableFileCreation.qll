@@ -1,7 +1,6 @@
 import OverpermissiveFileSystemMode
 
-abstract class ModableFileCreation extends
-  ModableEntryCreation, FileCreation {}
+abstract class ModableFileCreation extends ModableEntryCreation, FileCreation { }
 
 class ObjectArgument1FileCreation extends
   ModableFileCreation,

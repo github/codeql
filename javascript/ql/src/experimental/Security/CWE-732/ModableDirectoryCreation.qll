@@ -1,7 +1,6 @@
 import OverpermissiveFileSystemMode
 
-abstract class ModableDirectoryCreation extends
-  ModableEntryCreation, DirectoryCreation {}
+abstract class ModableDirectoryCreation extends ModableEntryCreation, DirectoryCreation { }
 
 class ObjectArgument1DirectoryCreation extends
   ModableDirectoryCreation,

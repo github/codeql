@@ -30,13 +30,16 @@ class ModifyExpr extends Expr {
   }
 
   Expr getAFactor() {
-    (this instanceof UnaryExpr and result = this.(UnaryExpr).getOperand()) or
-    (this instanceof BinaryExpr and result = this.(BinaryExpr).getAnOperand()) or
-    (this instanceof CompoundAssignExpr and (
+    this instanceof UnaryExpr and result = this.(UnaryExpr).getOperand()
+    or
+    this instanceof BinaryExpr and result = this.(BinaryExpr).getAnOperand()
+    or
+    this instanceof CompoundAssignExpr and (
       result = this.(CompoundAssignExpr).getLhs() or
       result = this.(CompoundAssignExpr).getRhs()
-    )) or
-    (this instanceof InvokeExpr and result = this.(InvokeExpr).getAnArgument())
+    )
+    or
+    this instanceof InvokeExpr and result = this.(InvokeExpr).getAnArgument()
   }
 }
 
@@ -47,11 +50,12 @@ class InclusiveDisjunction extends Expr {
   }
 
   Expr getAFactor() {
-    (this instanceof BitOrExpr and result = this.(BitOrExpr).getAnOperand()) or
-    (this instanceof AssignOrExpr and (
+    this instanceof BitOrExpr and result = this.(BitOrExpr).getAnOperand()
+    or
+    this instanceof AssignOrExpr and (
       result = this.(AssignOrExpr).getLhs() or
       result = this.(AssignOrExpr).getRhs()
-    ))
+    )
   }
 }
 
@@ -62,11 +66,12 @@ class ExclusiveDisjunction extends Expr {
   }
 
   Expr getAFactor() {
-    (this instanceof XOrExpr and result = this.(XOrExpr).getAnOperand()) or
-    (this instanceof AssignXOrExpr and (
+    this instanceof XOrExpr and result = this.(XOrExpr).getAnOperand()
+    or
+    this instanceof AssignXOrExpr and (
       result = this.(AssignXOrExpr).getLhs() or
       result = this.(AssignXOrExpr).getRhs()
-    ))
+    )
   }
 }
 
@@ -93,9 +98,14 @@ class ClearBitExpr extends Expr {
   }
 
   Expr getAFactor() {
-    (this instanceof MaskInverseExpr and result = this.(MaskInverseExpr).getAFactor()) or
-    (this instanceof ExclusiveDisjunction and result = this.(ExclusiveDisjunction).getAFactor())
+    this instanceof MaskIverseExpr and result = this.(MaskInverseExpr).getAFactor()
+    or
+    this instanceof ExclusiveDisjunction and result = this.(ExclusiveDisjunction).getAFactor()
   }
+}
+
+class InclusionCorruptingExpr extends ModifyExpr {
+  InclusionCorruptingExpr() { not this instanceof InclusiveDisjunction }
 }
 
 class ExclusionCorruptingExpr extends ModifyExpr {
@@ -122,24 +132,20 @@ private int getStringMode(StringLiteral specifier) {
 }
 
 private string getRelevantDigits(StringLiteral specifier) {
-  result = specifier
-    .getStringValue()
-    .regexpCapture("^[0-7]*([0-7]{1,3})$", 1)
+  result = specifier.getStringValue().regexpCapture("^[0-7]*([0-7]{1,3})$", 1)
 }
 
 bindingset[digits]
 private int fromOctalString(string digits) {
-  result = sum(int i | |
-    digits
-      .charAt(i)
-      .toInt()
-      .bitShiftLeft(3 * (digits.length() - i - 1))
+  result = sum(int i | i in [0 .. digits.length()] |
+    digits.charAt(i).toInt().bitShiftLeft(3 * (digits.length() - i - 1))
   )
 }
 
 private int getMode(LiteralSpecifier specifier) {
-  (specifier instanceof NumberLiteral and result = getNumberMode(specifier)) or
-  (specifier instanceof StringLiteral and result = getStringMode(specifier))
+  specifier instanceof NumberLiteral and result = getNumberMode(specifier)
+  or
+  specifier instanceof StringLiteral and result = getStringMode(specifier)
 }
 
 predicate specifierOverpermissive(LiteralSpecifier specifier, Mask mask) {
@@ -147,7 +153,7 @@ predicate specifierOverpermissive(LiteralSpecifier specifier, Mask mask) {
 }
 
 // 000-777
-class Mask extends int { Mask() { this in [0..511] } }
+class Mask extends int { Mask() { this in [0 .. 511] } }
 
 class LiteralSpecifier extends Literal {
   LiteralSpecifier() {
@@ -167,34 +173,35 @@ abstract class UnsecurableEntryCreation extends EvaluableEntryCreation {
 }
 
 abstract class ModableEntryCreation extends EntryCreation {
-  cached abstract Expr getArgument();
-  cached abstract Expr getSpecifier();
+  cached
+  abstract Expr getArgument();
+
+  cached
+  abstract Expr getSpecifier();
 
   cached string getArgumentType() {
     result = this.getArgument().flow().analyze().getAType().getTypeofTag()
   }
 
   predicate hasArgument() { exists(this.getArgument()) }
+
   predicate hasElidedArgument() { not this.hasArgument() }
 
   predicate hasUndefinedArgument() {
     this.getArgument().analyze().getAValue() instanceof AbstractUndefined
   }
 
-  predicate hasDefinedArgument() {
-    this.hasArgument() and not this.hasUndefinedArgument()
-  }
+  predicate hasDefinedArgument() { this.hasArgument() and not this.hasUndefinedArgument() }
 
   predicate hasSpecifier() { exists(this.getSpecifier()) }
+
   predicate hasElidedSpecifier() { not this.hasSpecifier() }
 
   predicate hasUndefinedSpecifier() {
     this.getSpecifier().analyze().getAValue() instanceof AbstractUndefined
   }
 
-  predicate hasDefinedSpecifier() {
-    this.hasSpecifier() and not this.hasUndefinedSpecifier()
-  }
+  predicate hasDefinedSpecifier() { this.hasSpecifier() and not this.hasUndefinedSpecifier() }
 
   predicate isModeless() {
     this.hasElidedArgument() or
@@ -218,9 +225,7 @@ abstract class Argument2EntryCreation extends ModableEntryCreation {
 }
 
 abstract class ImmediateSpecifierEntryCreation extends ModableEntryCreation {
-  override Expr getSpecifier() {
-    this.hasModeArgument() and result = this.getArgument()
-  }
+  override Expr getSpecifier() { this.hasModeArgument() and result = this.getArgument() }
 
   private predicate hasModeArgument() {
     this.getArgumentType() = "number" or
@@ -235,12 +240,11 @@ abstract class PropertySpecifierEntryCreation extends ModableEntryCreation {
   }
 }
 
-abstract class ImmediateOrPropertySpecifierEntryCreation extends
-  ModableEntryCreation
-{
+abstract class ImmediateOrPropertySpecifierEntryCreation extends ModableEntryCreation {
   override Expr getSpecifier() {
-    (this.hasModeArgument() and result = this.getImmediateSpecifier()) or
-    (this.hasObjectArgument() and result = this.getPropertySpecifier())
+    this.hasModeArgument() and result = this.getImmediateSpecifier()
+    or
+    this.hasObjectArgument() and result = this.getPropertySpecifier()
   }
 
   private predicate hasModeArgument() {
@@ -249,6 +253,7 @@ abstract class ImmediateOrPropertySpecifierEntryCreation extends
   }
 
   private predicate hasObjectArgument() { this.getArgumentType() = "object" }
+
   private Expr getImmediateSpecifier() { result = this.getArgument() }
 
   private Expr getPropertySpecifier() {
@@ -256,10 +261,7 @@ abstract class ImmediateOrPropertySpecifierEntryCreation extends
   }
 }
 
-abstract class LiteralEntryCreation extends
-  ModableEntryCreation,
-  EvaluableEntryCreation
-{
+abstract class LiteralEntryCreation extends ModableEntryCreation, EvaluableEntryCreation {
   LiteralEntryCreation() { this.getSpecifier() instanceof LiteralSpecifier }
 
   abstract Mask getMask();
@@ -270,14 +272,11 @@ abstract class LiteralEntryCreation extends
 }
 
 abstract class FileCreation extends EntryCreation {}
+
 abstract class DirectoryCreation extends EntryCreation {}
 
-abstract class OverpermissiveIncludedEntryCreation extends
-  TaintTracking::Configuration
-{
-  OverpermissiveIncludedEntryCreation() {
-    this = "OverpermissiveIncludedEntryCreation"
-  }
+abstract class OverpermissiveIncludedEntryCreation extends TaintTracking::Configuration {
+  OverpermissiveIncludedEntryCreation() { this = "OverpermissiveIncludedEntryCreation" }
 
   override predicate isAdditionalTaintStep(
     DataFlow::Node predecessor,
@@ -285,7 +284,7 @@ abstract class OverpermissiveIncludedEntryCreation extends
   ) {
     exists(InclusiveDisjunction disjunction |
       predecessor.asExpr() = disjunction.getAFactor() and
-      successor.asExpr() = disjunction
+      successor = disjunction.flow()
     )
   }
 }
@@ -304,7 +303,7 @@ abstract class EntryModeFromLiteral extends DataFlow::Configuration {
   ) {
     exists(ClearBitExpr clear |
       predecessor.asExpr() = clear.getAFactor() and
-      successor.asExpr() = clear
+      successor = clear.flow()
     )
   }
 }
@@ -315,9 +314,7 @@ abstract class EntryCreationCorruption extends DataFlow::Configuration {
   override predicate isSource(DataFlow::Node node) { any() }
 }
 
-abstract class IncludedEntryCreationCorruption extends
-  EntryCreationCorruption
-{
+abstract class IncludedEntryCreationCorruption extends EntryCreationCorruption {
   IncludedEntryCreationCorruption() { this = "EntryCreationCorruption" }
 
   override predicate isAdditionalFlowStep(
@@ -328,18 +325,15 @@ abstract class IncludedEntryCreationCorruption extends
   ) {
     exists(ModifyExpr modification |
       predecessor.asExpr() = modification.getAFactor() and
-      successor.asExpr() = modification and (
-        (predLabel instanceof CorruptLabel and succLabel instanceof CorruptLabel) or
-        (not modification instanceof InclusiveDisjunction and succLabel instanceof CorruptLabel) or
-        not succLabel instanceof CorruptLabel
-      )
+      successor = modification.flow() and
+      if predLabel instanceof CorruptLabel or modification instanceof InclusionCorruptingExpr
+      then succLabel instanceof CorruptLabel
+      else not succLabel instanceof CorruptLabel
     )
   }
 }
 
-abstract class ExcludedEntryCreationCorruption extends
-  EntryCreationCorruption
-{
+abstract class ExcludedEntryCreationCorruption extends EntryCreationCorruption {
   ExcludedEntryCreationCorruption() { this = "EntryCreationCorruption" }
 
   override predicate isAdditionalFlowStep(
@@ -350,20 +344,16 @@ abstract class ExcludedEntryCreationCorruption extends
   ) {
     exists(ModifyExpr modification |
       predecessor.asExpr() = modification.getAFactor() and
-      successor.asExpr() = modification and (
-        (predLabel instanceof CorruptLabel and succLabel instanceof CorruptLabel) or
-        (modification instanceof ExclusionCorruptingExpr and succLabel instanceof CorruptLabel) or
-        not succLabel instanceof CorruptLabel
-      )
+      successor = modification.flow() and
+      if predLabel instanceof CorruptLabel or modification instanceof ExclusionCorruptingExpr
+      then succLabel instanceof CorruptLabel
+      else not succLabel instanceof CorruptLabel
     )
   }
 }
 
-class WorldWriteExcludedEntryCreation extends DataFlow::Configuration
-{
-  WorldWriteExcludedEntryCreation() {
-    this = "WorldWriteExcludedEntryCreation"
-  }
+class WorldWriteExcludedEntryCreation extends DataFlow::Configuration {
+  WorldWriteExcludedEntryCreation() { this = "WorldWriteExcludedEntryCreation" }
 
   override predicate isSource(DataFlow::Node node) {
     node = NodeJSLib::FS::moduleMember("constants").getAPropertyRead() and
@@ -375,22 +365,16 @@ class WorldWriteExcludedEntryCreation extends DataFlow::Configuration
     result = "S_IRWXO"
   }
 
-  override predicate isAdditionalFlowStep(
-    DataFlow::Node predecessor,
-    DataFlow::Node successor
-  ) {
+  override predicate isAdditionalFlowStep(DataFlow::Node predecessor, DataFlow::Node successor) {
     exists(ClearBitExpr clear |
       predecessor.asExpr() = clear.getAFactor() and
-      successor.asExpr() = clear
+      successor = clear.flow()
     )
   }
 }
 
-class WorldExecuteExcludedEntryCreation extends DataFlow::Configuration
-{
-  WorldExecuteExcludedEntryCreation() {
-    this = "WorldExecuteExcludedEntryCreation"
-  }
+class WorldExecuteExcludedEntryCreation extends DataFlow::Configuration {
+  WorldExecuteExcludedEntryCreation() { this = "WorldExecuteExcludedEntryCreation" }
 
   override predicate isSource(DataFlow::Node node) {
     node = NodeJSLib::FS::moduleMember("constants").getAPropertyRead() and
@@ -402,13 +386,10 @@ class WorldExecuteExcludedEntryCreation extends DataFlow::Configuration
     result = "S_IRWXO"
   }
 
-  override predicate isAdditionalFlowStep(
-    DataFlow::Node predecessor,
-    DataFlow::Node successor
-  ) {
+  override predicate isAdditionalFlowStep(DataFlow::Node predecessor, DataFlow::Node successor) {
     exists(ClearBitExpr clear |
       predecessor.asExpr() = clear.getAFactor() and
-      successor.asExpr() = clear
+      successor = clear.flow()
     )
   }
 }

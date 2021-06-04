@@ -4,48 +4,32 @@ class FileModeFromLiteral extends EntryModeFromLiteral {
   FileModeFromLiteral() { this = "EntryModeFromLiteral" }
 
   override predicate isSink(DataFlow::Node node) {
-    exists(ModableFileCreation creation |
-      creation.getSpecifier() = node.asExpr()
-    )
+    exists(ModableFileCreation creation | creation.getSpecifier() = node.asExpr())
   }
 }
 
-class ExcludedFileCreationCorruption extends
-  ExcludedEntryCreationCorruption
-{
+class ExcludedFileCreationCorruption extends ExcludedEntryCreationCorruption {
   ExcludedFileCreationCorruption() { this = "EntryCreationCorruption" }
 
   override predicate isSink(DataFlow::Node node, DataFlow::FlowLabel label) {
-    exists(ModableFileCreation creation |
-      creation.getSpecifier() = node.asExpr()
-    ) and
+    exists(ModableFileCreation creation | creation.getSpecifier() = node.asExpr()) and
     label instanceof CorruptLabel
   }
 }
 
 class WorldWriteExcludedFileCreation extends WorldWriteExcludedEntryCreation {
-  WorldWriteExcludedFileCreation() {
-    this = "WorldWriteExcludedEntryCreation"
-  }
+  WorldWriteExcludedFileCreation() { this = "WorldWriteExcludedEntryCreation" }
 
   override predicate isSink(DataFlow::Node node) {
-    exists(ModableFileCreation creation |
-      creation.getSpecifier() = node.asExpr()
-    )
+    exists(ModableFileCreation creation | creation.getSpecifier() = node.asExpr())
   }
 }
 
-class WorldExecuteExcludedFileCreation extends
-  WorldExecuteExcludedEntryCreation
-{
-  WorldExecuteExcludedFileCreation() {
-    this = "WorldExecuteExcludedEntryCreation"
-  }
+class WorldExecuteExcludedFileCreation extends WorldExecuteExcludedEntryCreation {
+  WorldExecuteExcludedFileCreation() { this = "WorldExecuteExcludedEntryCreation" }
 
   override predicate isSink(DataFlow::Node node) {
-    exists(ModableFileCreation creation |
-      creation.getSpecifier() = node.asExpr()
-    )
+    exists(ModableFileCreation creation | creation.getSpecifier() = node.asExpr())
   }
 }
 

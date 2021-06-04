@@ -1,11 +1,7 @@
 import ModableDirectoryCreation
 
-class OverpermissiveIncludedDirectoryCreation extends
-  OverpermissiveIncludedEntryCreation
-{
-  OverpermissiveIncludedDirectoryCreation() {
-    this = "OverpermissiveIncludedEntryCreation"
-  }
+class OverpermissiveIncludedDirectoryCreation extends OverpermissiveIncludedEntryCreation {
+  OverpermissiveIncludedDirectoryCreation() { this = "OverpermissiveIncludedEntryCreation" }
 
   override predicate isSource(DataFlow::Node node) {
     node = NodeJSLib::FS::moduleMember("constants").getAPropertyRead() and
@@ -13,21 +9,15 @@ class OverpermissiveIncludedDirectoryCreation extends
   }
 
   override predicate isSink(DataFlow::Node node) {
-    exists(ModableDirectoryCreation creation |
-      creation.getSpecifier() = node.asExpr()
-    )
+    exists(ModableDirectoryCreation creation | creation.getSpecifier() = node.asExpr())
   }
 }
 
-class IncludedDirectoryCreationCorruption extends
-  IncludedEntryCreationCorruption
-{
+class IncludedDirectoryCreationCorruption extends IncludedEntryCreationCorruption {
   IncludedDirectoryCreationCorruption() { this = "EntryCreationCorruption" }
 
   override predicate isSink(DataFlow::Node node, DataFlow::FlowLabel label) {
-    exists(ModableDirectoryCreation creation |
-      creation.getSpecifier() = node.asExpr()
-    ) and
+    exists(ModableDirectoryCreation creation | creation.getSpecifier() = node.asExpr()) and
     label instanceof CorruptLabel
   }
 }

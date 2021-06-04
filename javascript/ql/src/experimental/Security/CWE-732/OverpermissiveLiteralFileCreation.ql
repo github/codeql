@@ -6,15 +6,15 @@ abstract class LiteralFileCreation extends LiteralEntryCreation, FileCreation {
 
 class LiteralObjectArgument1FileCreation extends
   ObjectArgument1FileCreation,
-  LiteralFileCreation {}
+  LiteralFileCreation { }
 
 class LiteralImmediateArgument2FileCreation extends
   ImmediateArgument2FileCreation,
-  LiteralFileCreation {}
+  LiteralFileCreation { }
 
 class LiteralObjectArgument2FileCreation extends
   ObjectArgument2FileCreation,
-  LiteralFileCreation {}
+  LiteralFileCreation { }
 
 from LiteralFileCreation creation
 where creation.isOverpermissive()

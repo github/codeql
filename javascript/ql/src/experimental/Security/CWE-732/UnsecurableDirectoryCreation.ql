@@ -1,9 +1,6 @@
 import OverpermissiveFileSystemMode
 
-class UnsecurableDirectoryCreation extends
-  UnsecurableEntryCreation,
-  DirectoryCreation
-{
+class UnsecurableDirectoryCreation extends UnsecurableEntryCreation, DirectoryCreation {
   UnsecurableDirectoryCreation() {
     this = DataFlow::moduleMember("fs-extra", "createFile").getAnInvocation() or
     this = DataFlow::moduleMember("fs-extra", "createFileSync").getAnInvocation() or
