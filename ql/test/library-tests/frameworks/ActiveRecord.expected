@@ -3,14 +3,13 @@ activeRecordModelClasses
 | ActiveRecordInjection.rb:5:1:7:3 | User |
 | ActiveRecordInjection.rb:9:1:10:3 | Admin |
 activeRecordSqlExecutionRanges
-| ActiveRecordInjection.rb:17:30:17:44 | ...[...] |
-| ActiveRecordInjection.rb:20:21:20:41 | "id = #{...}" |
-| ActiveRecordInjection.rb:23:22:23:44 | [...] |
+| ActiveRecordInjection.rb:22:21:22:41 | "id = #{...}" |
+| ActiveRecordInjection.rb:28:16:28:21 | <<-SQL |
 activeRecordModelClassMethodCalls
-| ActiveRecordInjection.rb:17:5:17:45 | call to calculate |
-| ActiveRecordInjection.rb:20:5:20:42 | call to delete_all |
-| ActiveRecordInjection.rb:23:5:23:45 | call to destroy_all |
-sqlExecutingMethodCall
-| ActiveRecordInjection.rb:17:5:17:45 | call to calculate |
-| ActiveRecordInjection.rb:20:5:20:42 | call to delete_all |
-| ActiveRecordInjection.rb:23:5:23:45 | call to destroy_all |
+| ActiveRecordInjection.rb:19:5:19:45 | call to calculate |
+| ActiveRecordInjection.rb:22:5:22:42 | call to delete_all |
+| ActiveRecordInjection.rb:25:5:25:45 | call to destroy_all |
+| ActiveRecordInjection.rb:28:5:28:35 | call to where |
+potentiallyUnsafeSqlExecutingMethodCall
+| ActiveRecordInjection.rb:22:5:22:42 | call to delete_all |
+| ActiveRecordInjection.rb:28:5:28:35 | call to where |

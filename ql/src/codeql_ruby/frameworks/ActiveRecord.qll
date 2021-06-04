@@ -44,7 +44,7 @@ class ActiveRecordModelClassMethodCall extends MethodCall {
   ActiveRecordModelClass getResolvedReceiverScope() { result = recvCls }
 }
 
-class SqlExecutingMethodCall extends ActiveRecordModelClassMethodCall {
+class PotentiallyUnsafeSqlExecutingMethodCall extends ActiveRecordModelClassMethodCall {
   // The name of the method invoked
   private string methodName;
   // The zero-indexed position of the SQL fragment sink argument
@@ -57,7 +57,7 @@ class SqlExecutingMethodCall extends ActiveRecordModelClassMethodCall {
   // concatenation, certain arrays, etc. and still have a potentially
   // vulnerable call
   // TODO: `find` with `lock:` option also takes an SQL fragment
-  SqlExecutingMethodCall() {
+  PotentiallyUnsafeSqlExecutingMethodCall() {
     methodName = this.getMethodName() and
     sqlFragmentExpr = this.getArgument(sqlFragmentArgumentIndex) and
     (
@@ -104,7 +104,7 @@ class ActiveRecordSqlExecutionRange extends SqlExecution::Range {
   ExprCfgNode sql;
 
   ActiveRecordSqlExecutionRange() {
-    exists(SqlExecutingMethodCall mc | this.asExpr().getNode() = mc.getSqlFragmentSinkArgument())
+    exists(PotentiallyUnsafeSqlExecutingMethodCall mc | this.asExpr().getNode() = mc.getSqlFragmentSinkArgument())
   }
 
   override DataFlow::Node getSql() { result.asExpr() = sql }
