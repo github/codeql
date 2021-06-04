@@ -1,6 +1,5 @@
 import java.io.IOException;
 import javax.management.remote.JMXConnectorServerFactory;
-
 import javax.management.remote.rmi.RMIConnectorServer;
 
 import java.util.HashMap;
@@ -16,7 +15,6 @@ public class InsecureRmiJmxEnvironmentConfiguration {
   public void initInsecureRmiDueToNullEnv() throws IOException {
     // Bad initializing env (arg1) with null
     new RMIConnectorServer(null, null, null, null);
-
   }
 
   public void initInsecureRmiDueToMissingEnvKeyValue() throws IOException {
@@ -71,7 +69,7 @@ public class InsecureRmiJmxEnvironmentConfiguration {
     new RMIConnectorServer(null, env, null, null);
   }
 
-  public void secureeJmxConnectorServerConstants2() throws IOException {
+  public void secureJmxConnectorServerConstants2() throws IOException {
     // Good
     Map<String, Object> env = new HashMap<>();
     env.put("jmx.remote.x.daemon", "true");
@@ -80,7 +78,7 @@ public class InsecureRmiJmxEnvironmentConfiguration {
     JMXConnectorServerFactory.newJMXConnectorServer(null, env, null);
   }
 
-  public void secureeRmiConnectorServerConstants2() throws IOException {
+  public void secureRmiConnectorServerConstants2() throws IOException {
     // Good
     Map<String, Object> env = new HashMap<>();
     env.put("jmx.remote.x.daemon", "true");
