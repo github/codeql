@@ -1,0 +1,126 @@
+* 
+  The gist https://gist.github.com/hohn/b4c32ce35b6bdc2ade04c911985c7d46
+
+  * fix: Get("X-Redirect") is "X-Auth-Request-Redirect"
+
+  Our main goals:
+
+  1. a data source with the structure
+     redirect = req.Header.Get("X-Auth-Request-Redirect")
+
+  2. a data sink with the structure
+     strings.HasPrefix(redirect, "/") && !strings.HasPrefix(redirect, "//")
+
+  3. a taint flow configuration to connect the source and sink
+
+  from..select
+
+  introduce Function
+
+  introduce member predicates, f.getBody() -- use select to find them and their types
+
+  completion
+
+  jump to source 
+
+  difference between completion and class content
+
+  cartesian product in the select
+
+  mapping from ast to Go and back
+  look at this
+  https://codeql.github.com/docs/codeql-language-guides/abstract-syntax-tree-classes-for-working-with-go-programs/
+
+  In that, find the CallExpr
+
+  from CallExpr c 
+  select c.getCalleeName()
+
+  show the table sort, find "Get" to make sure it exists.
+
+  pick up the type from the select and then...
+
+  from CallExpr c, string funcName
+  where funcName = c.getCalleeName()
+      and funcName = "Get"
+  select funcName
+
+  Narrow some
+  from CallExpr c, string funcName
+  where funcName = c.getCalleeName()
+    and funcName = "Get" 
+  select funcName, c, c.getAnArgument()
+    
+  Point out the AST parts we now get in the query; at the above url, find
+  | Ident.Ident | QualifiedName | SelectorExpr |
+
+  Given this: _.Get(_)
+  choices are: 
+  1. don't narrow
+  2. narrow on argument name
+  3. narrow on 
+
+  Let's also narrow by argument name
+
+  from CallExpr c, string funcName, QualifiedName qn, Expr arg
+  where funcName = c.getCalleeName()
+    and funcName = "Get" 
+    and c.getCalleeExpr() = qn
+    and arg = c.getAnArgument()
+  select funcName, c, qn, arg
+
+  arg has type Expr, view results, see quoted strings, check ast reference for ",
+  find 
+  | "Hello" | StringLit | BasicLit |
+  
+  introduce the cast operator, which now gives access to StringLit member
+  predicates -- especially .getValue()
+
+  from CallExpr c, string funcName, QualifiedName qn, Expr arg
+  where funcName = c.getCalleeName()
+    and funcName = "Get" 
+    and c.getCalleeExpr() = qn
+    and arg = c.getAnArgument()
+  select funcName, c, qn, arg, arg.(StringLit).getValue()
+
+  Turn into predicate
+  
+  #+BEGIN_SRC text
+    predicate xAuthSource(CallExpr c, string funcName, QualifiedName qn, Expr arg) {
+     funcName = c.getCalleeName()
+      and funcName = "Get" 
+      and c.getCalleeExpr() = qn
+      and arg = c.getAnArgument() 
+      and arg.(StringLit).getValue() = "X-Auth-Request-Redirect"
+    }
+
+    from CallExpr c, string funcName, QualifiedName qn, Expr arg
+    where xAuthSource(c, funcName, qn, arg)
+    select funcName, c, qn, arg
+  #+END_SRC
+
+
+    
+
+
+
+  ======================
+  Query done.  Now generalize sources.
+  Look under semmle/go/security for general-purpose APIs
+  see FlowSources.qll,
+  find UntrustedFlowSource.
+
+  Hacky way: look for "Header" in the libraries.
+
+
+  ======================
+
+  For advanced session / later:
+
+  UntrustedFlowSource
+
+  from CallExpr c, string funcName, Expr e
+  where funcName = c.getCalleeName() and
+  e = c.getAnArgument()
+  and e.(StringLit).getStringValue().matches("X-%")
+  select funcName, c, e
