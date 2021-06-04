@@ -249,7 +249,7 @@ module ExprNodes {
   class CallCfgNode extends ExprCfgNode {
     override CallExprChildMapping e;
 
-    final override Call getExpr() { result = ExprCfgNode.super.getExpr() }
+    override Call getExpr() { result = super.getExpr() }
 
     /** Gets the `n`th argument of this call. */
     final ExprCfgNode getArgument(int n) { e.hasCfgChild(e.getArgument(n), this, result) }
@@ -270,7 +270,9 @@ module ExprNodes {
 
   /** A control-flow node that wraps a `MethodCall` AST expression. */
   class MethodCallCfgNode extends CallCfgNode {
-    MethodCallCfgNode() { this.getExpr() instanceof MethodCall }
+    MethodCallCfgNode() { super.getExpr() instanceof MethodCall }
+
+    final override MethodCall getExpr() { result = super.getExpr() }
   }
 
   /** A control-flow node that wraps a `CaseExpr` AST expression. */

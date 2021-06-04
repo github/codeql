@@ -177,17 +177,16 @@ private module Cached {
 
   cached
   newtype TContent = TTodoContent() // stub
-
-  /** Holds if `n` should be hidden from path explanations. */
-  cached
-  predicate nodeIsHidden(Node n) {
-    exists(Ssa::Definition def | def = n.(SsaDefinitionNode).getDefinition() |
-      def instanceof Ssa::PhiNode
-    )
-  }
 }
 
 import Cached
+
+/** Holds if `n` should be hidden from path explanations. */
+predicate nodeIsHidden(Node n) {
+  exists(Ssa::Definition def | def = n.(SsaDefinitionNode).getDefinition() |
+    def instanceof Ssa::PhiNode
+  )
+}
 
 /** An SSA definition, viewed as a node in a data flow graph. */
 class SsaDefinitionNode extends NodeImpl, TSsaDefinitionNode {
@@ -308,7 +307,6 @@ import ParameterNodes
 /** A data-flow node that represents a call argument. */
 abstract class ArgumentNode extends Node {
   /** Holds if this argument occurs at the given position in the given call. */
-  cached
   abstract predicate argumentOf(DataFlowCall call, int pos);
 
   /** Gets the call in which this node is an argument. */
@@ -420,7 +418,6 @@ import ReturnNodes
 /** A data-flow node that represents the output of a call. */
 abstract class OutNode extends Node {
   /** Gets the underlying call, where this node is a corresponding output of kind `kind`. */
-  cached
   abstract DataFlowCall getCall(ReturnKind kind);
 }
 
@@ -556,13 +553,39 @@ class BarrierGuard extends Expr {
   Node getAGuardedNode() { none() }
 }
 
-class LambdaCallKind = Unit;
+newtype LambdaCallKind =
+  TYieldCallKind() or
+  TLambdaCallKind()
 
 /** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
-predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) { none() }
+predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) {
+  kind = TYieldCallKind() and
+  creation.asExpr().getExpr() = c.(Block)
+  or
+  kind = TLambdaCallKind() and
+  (
+    creation.asExpr().getExpr() = c.(Lambda)
+    or
+    creation.asExpr() =
+      any(CfgNodes::ExprNodes::MethodCallCfgNode mc |
+        c = mc.getBlock().getExpr() and
+        mc.getExpr().getMethodName() = "lambda"
+      )
+  )
+}
 
 /** Holds if `call` is a lambda call of kind `kind` where `receiver` is the lambda expression. */
-predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) { none() }
+predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
+  kind = TYieldCallKind() and
+  receiver.(BlockParameterNode).getMethod() = call.getExpr().(YieldCall).getEnclosingMethod()
+  or
+  kind = TLambdaCallKind() and
+  call =
+    any(CfgNodes::ExprNodes::MethodCallCfgNode mc |
+      receiver.asExpr() = mc.getReceiver() and
+      mc.getExpr().getMethodName() = "call"
+    )
+}
 
 /** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }

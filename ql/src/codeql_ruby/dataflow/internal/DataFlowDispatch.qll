@@ -282,7 +282,10 @@ private DataFlow::LocalSourceNode trackModule(Module tp) {
 }
 
 /** Gets a viable run-time target for the call `call`. */
-DataFlowCallable viableCallable(DataFlowCall call) { result = call.getTarget() }
+DataFlowCallable viableCallable(DataFlowCall call) {
+  result = call.getTarget() and
+  not call.getExpr() instanceof YieldCall // handled by `lambdaCreation`/`lambdaCall`
+}
 
 /**
  * Holds if the set of viable implementations that can be called by `call`
