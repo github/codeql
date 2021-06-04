@@ -67,24 +67,6 @@ class WorldWriteExcludedFileCreation extends WorldWriteExcludedEntryCreation {
   }
 }
 
-/**
- * A data flow configuration for file creation with a computed mode
- * from which world execute permission has been excluded.
- *
- * For example:
- * ```js
- * const mode = 0o777 & ~fs.constants.S_IXOTH
- * fs.open('/tmp/file', 'r', mode)
- * ```
- */
-class WorldExecuteExcludedFileCreation extends WorldExecuteExcludedEntryCreation {
-  WorldExecuteExcludedFileCreation() { this = "WorldExecuteExcludedEntryCreation" }
-
-  override predicate isSink(DataFlow::Node node) {
-    exists(ModableFileCreation creation | creation.getSpecifier() = node.asExpr())
-  }
-}
-
 from
   ExcludedFileModeConstruction construction,
   ExcludedFileModeCorruption corruption,
@@ -95,10 +77,7 @@ from
 where
   construction.hasFlow(source, sink) and
   not corruption.hasFlow(_, sink) and
-  not (
-    worldWriteExclusion.hasFlow(_, sink) and
-    worldExecuteExclusion.hasFlow(_, sink)
-  )
+  not worldWriteExclusion.hasFlow(_, sink) and
 select
   source.toString(),
   sink.toString(),

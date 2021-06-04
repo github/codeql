@@ -7,9 +7,9 @@ import javascript
 
 /**
  * Gets the overpermissive mode mask for file creations.
- * This detects world write/execute permission.
+ * This detects world write permission.
  */
-Mask getOverpermissiveFileMask() { result = 3 /* 003 o+wx */ }
+Mask getOverpermissiveFileMask() { result = 2 /* 002 o+w */ }
 
 /**
  * Get the overpermissive mode mask for directory creations.
@@ -19,9 +19,9 @@ Mask getOverpermissiveDirectoryMask() { result = 2 /* 002 o+w */ }
 
 /**
  * Gets the overpermissive mode constants for file creations.
- * This detects world write/execute permission.
+ * This detects world write permission.
  */
-string getAnOverpermissiveFileConstant() { result = ["S_IRWXO", "S_IWOTH", "S_IXOTH"] }
+string getAnOverpermissiveFileConstant() { result = ["S_IRWXO", "S_IWOTH"] }
 
 /**
  * Gets the overpermissive mode constants for directory creations.
@@ -534,26 +534,6 @@ class WorldWriteExcludedEntryCreation extends DataFlow::Configuration {
   override predicate isSource(DataFlow::Node node) {
     node = NodeJSLib::FS::moduleMember("constants").getAPropertyRead() and
     node.(DataFlow::PropRead).getPropertyName() = ["S_IWOTH", "S_IRWXO"]
-  }
-
-  override predicate isAdditionalFlowStep(DataFlow::Node predecessor, DataFlow::Node successor) {
-    exists(ClearBitExpr clear |
-      predecessor.asExpr() = clear.getAnInput() and
-      successor = clear.flow()
-    )
-  }
-}
-
-/**
- * A data flow configuration for entry creation with a computed mode
- * from which world execute permission has been excluded.
- */
-class WorldExecuteExcludedEntryCreation extends DataFlow::Configuration {
-  WorldExecuteExcludedEntryCreation() { this = "WorldExecuteExcludedEntryCreation" }
-
-  override predicate isSource(DataFlow::Node node) {
-    node = NodeJSLib::FS::moduleMember("constants").getAPropertyRead() and
-    node.(DataFlow::PropRead).getPropertyName() = ["S_IXOTH", "S_IRWXO"]
   }
 
   override predicate isAdditionalFlowStep(DataFlow::Node predecessor, DataFlow::Node successor) {
