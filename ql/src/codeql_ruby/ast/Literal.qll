@@ -752,31 +752,25 @@ class HashLiteral extends Literal, THashLiteral {
  * ```
  */
 class RangeLiteral extends Literal, TRangeLiteral {
-  private Generated::Range g;
-
-  RangeLiteral() { this = TRangeLiteral(g) }
-
   final override string getAPrimaryQlClass() { result = "RangeLiteral" }
 
   /** Gets the begin expression of this range, if any. */
-  final Expr getBegin() { toGenerated(result) = g.getBegin() }
+  Expr getBegin() { none() }
 
   /** Gets the end expression of this range, if any. */
-  final Expr getEnd() { toGenerated(result) = g.getEnd() }
+  Expr getEnd() { none() }
 
   /**
    * Holds if the range is inclusive of the end value, i.e. uses the `..`
    * operator.
    */
-  final predicate isInclusive() { g instanceof @range_dotdot }
+  predicate isInclusive() { none() }
 
   /**
    * Holds if the range is exclusive of the end value, i.e. uses the `...`
    * operator.
    */
-  final predicate isExclusive() { g instanceof @range_dotdotdot }
-
-  final override string toString() { result = "_ " + g.getOperator() + " _" }
+  predicate isExclusive() { none() }
 
   final override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
@@ -785,6 +779,44 @@ class RangeLiteral extends Literal, TRangeLiteral {
     or
     pred = "getEnd" and result = this.getEnd()
   }
+
+  final override string toString() {
+    exists(string op |
+      this.isInclusive() and op = ".."
+      or
+      this.isExclusive() and op = "..."
+    |
+      result = "_ " + op + " _"
+    )
+  }
+}
+
+private class RangeLiteralReal extends RangeLiteral, TRangeLiteralReal {
+  private Generated::Range g;
+
+  RangeLiteralReal() { this = TRangeLiteralReal(g) }
+
+  final override Expr getBegin() { toGenerated(result) = g.getBegin() }
+
+  final override Expr getEnd() { toGenerated(result) = g.getEnd() }
+
+  final override predicate isInclusive() { g instanceof @range_dotdot }
+
+  final override predicate isExclusive() { g instanceof @range_dotdotdot }
+}
+
+private class RangeLiteralSynth extends RangeLiteral, TRangeLiteralSynth {
+  private boolean inclusive;
+
+  RangeLiteralSynth() { this = TRangeLiteralSynth(_, _, inclusive) }
+
+  final override Expr getBegin() { result = TIntegerLiteralSynth(this, 0, _) }
+
+  final override Expr getEnd() { result = TIntegerLiteralSynth(this, 1, _) }
+
+  final override predicate isInclusive() { inclusive = true }
+
+  final override predicate isExclusive() { inclusive = false }
 }
 
 /**

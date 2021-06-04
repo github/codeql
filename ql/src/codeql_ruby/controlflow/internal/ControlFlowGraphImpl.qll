@@ -287,7 +287,12 @@ module Trees {
   }
 
   private class AssignExprTree extends StandardPostOrderTree, AssignExpr {
-    AssignExprTree() { not this.getLeftOperand() instanceof MethodCall }
+    AssignExprTree() {
+      exists(Expr left | left = this.getLeftOperand() |
+        left instanceof VariableAccess or
+        left instanceof ConstantAccess
+      )
+    }
 
     final override ControlFlowTree getChildNode(int i) {
       result = this.getLeftOperand() and i = 0

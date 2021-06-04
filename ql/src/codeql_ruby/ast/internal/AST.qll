@@ -138,7 +138,7 @@ private module Cached {
     } or
     THashKeySymbolLiteral(Generated::HashKeySymbol g) or
     THashLiteral(Generated::Hash g) or
-    THashSplatArgument(Generated::HashSplatArgument g) or
+    THashSplatExpr(Generated::HashSplatArgument g) or
     THashSplatParameter(Generated::HashSplatParameter g) or
     THereDoc(Generated::HeredocBeginning g) or
     TIdentifierMethodCall(Generated::Identifier g) { isIdentifierMethodCall(g) } or
@@ -198,7 +198,10 @@ private module Cached {
     TParenthesizedExpr(Generated::ParenthesizedStatements g) or
     TRShiftExprReal(Generated::Binary g) { g instanceof @binary_ranglerangle } or
     TRShiftExprSynth(AST::AstNode parent, int i) { mkSynthChild(RShiftExprKind(), parent, i) } or
-    TRangeLiteral(Generated::Range g) or
+    TRangeLiteralReal(Generated::Range g) or
+    TRangeLiteralSynth(AST::AstNode parent, int i, boolean inclusive) {
+      mkSynthChild(RangeLiteralKind(inclusive), parent, i)
+    } or
     TRationalLiteral(Generated::Rational g) or
     TRedoStmt(Generated::Redo g) or
     TRegexLiteral(Generated::Regex g) or
@@ -232,7 +235,8 @@ private module Cached {
     TSingletonClass(Generated::SingletonClass g) or
     TSingletonMethod(Generated::SingletonMethod g) or
     TSpaceshipExpr(Generated::Binary g) { g instanceof @binary_langleequalrangle } or
-    TSplatArgument(Generated::SplatArgument g) or
+    TSplatExprReal(Generated::SplatArgument g) or
+    TSplatExprSynth(AST::AstNode parent, int i) { mkSynthChild(SplatExprKind(), parent, i) } or
     TSplatParameter(Generated::SplatParameter g) or
     TStmtSequenceSynth(AST::AstNode parent, int i) { mkSynthChild(StmtSequenceKind(), parent, i) } or
     TStringArrayLiteral(Generated::StringArray g) or
@@ -337,7 +341,7 @@ private module Cached {
     n = TGlobalVariableAccessReal(result, _) or
     n = THashKeySymbolLiteral(result) or
     n = THashLiteral(result) or
-    n = THashSplatArgument(result) or
+    n = THashSplatExpr(result) or
     n = THashSplatParameter(result) or
     n = THereDoc(result) or
     n = TIdentifierMethodCall(result) or
@@ -367,7 +371,7 @@ private module Cached {
     n = TPair(result) or
     n = TParenthesizedExpr(result) or
     n = TRShiftExprReal(result) or
-    n = TRangeLiteral(result) or
+    n = TRangeLiteralReal(result) or
     n = TRationalLiteral(result) or
     n = TRedoStmt(result) or
     n = TRegexLiteral(result) or
@@ -388,7 +392,7 @@ private module Cached {
     n = TSingletonClass(result) or
     n = TSingletonMethod(result) or
     n = TSpaceshipExpr(result) or
-    n = TSplatArgument(result) or
+    n = TSplatExprReal(result) or
     n = TSplatParameter(result) or
     n = TStringArrayLiteral(result) or
     n = TStringConcatenation(result) or
@@ -458,9 +462,13 @@ private module Cached {
     or
     result = TMulExprSynth(parent, i)
     or
+    result = TRangeLiteralSynth(parent, i, _)
+    or
     result = TRShiftExprSynth(parent, i)
     or
     result = TSelfSynth(parent, i)
+    or
+    result = TSplatExprSynth(parent, i)
     or
     result = TStmtSequenceSynth(parent, i)
     or
@@ -493,18 +501,11 @@ private module Cached {
     )
   }
 
-  private Location synthLocation(AST::AstNode n) {
-    exists(Synthesis s, AST::AstNode parent, int i |
-      s.child(parent, i, _, SomeLocation(result)) and
-      n = getSynthChild(parent, i)
-    )
-  }
-
   cached
   Location getLocation(AST::AstNode n) {
-    result = synthLocation(n)
+    synthLocation(n, result)
     or
-    not exists(synthLocation(n)) and
+    not synthLocation(n, _) and
     result = toGeneratedInclSynth(n).getLocation()
   }
 }
@@ -538,9 +539,10 @@ class TSelf = TSelfReal or TSelfSynth;
 
 class TExpr =
   TSelf or TArgumentList or TRescueClause or TRescueModifierExpr or TPair or TStringConcatenation or
-      TCall or TBlockArgument or TSplatArgument or THashSplatArgument or TConstantAccess or
-      TControlExpr or TWhenExpr or TLiteral or TCallable or TVariableAccess or TStmtSequence or
-      TOperation or TSimpleParameter;
+      TCall or TBlockArgument or TConstantAccess or TControlExpr or TWhenExpr or TLiteral or
+      TCallable or TVariableAccess or TStmtSequence or TOperation or TSimpleParameter;
+
+class TSplatExpr = TSplatExprReal or TSplatExprSynth;
 
 class TStmtSequence =
   TBeginBlock or TEndBlock or TThen or TElse or TDo or TEnsure or TStringInterpolationComponent or
@@ -586,7 +588,7 @@ class TOperation = TUnaryOperation or TBinaryOperation or TAssignment;
 
 class TUnaryOperation =
   TUnaryLogicalOperation or TUnaryArithmeticOperation or TUnaryBitwiseOperation or TDefinedExpr or
-      TSplatArgument or THashSplatArgument;
+      TSplatExpr or THashSplatExpr;
 
 class TUnaryLogicalOperation = TNotExpr;
 
@@ -623,6 +625,8 @@ class TBinaryBitwiseOperation =
   TLShiftExpr or TRShiftExpr or TBitwiseAndExpr or TBitwiseOrExpr or TBitwiseXorExpr;
 
 class TLShiftExpr = TLShiftExprReal or TLShiftExprSynth;
+
+class TRangeLiteral = TRangeLiteralReal or TRangeLiteralSynth;
 
 class TRShiftExpr = TRShiftExprReal or TRShiftExprSynth;
 

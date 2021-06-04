@@ -4,6 +4,7 @@ private import AST
 private import TreeSitter
 private import codeql_ruby.ast.internal.Call
 private import codeql_ruby.ast.internal.Variable
+private import codeql_ruby.ast.internal.Pattern
 private import codeql_ruby.AST
 
 /** A synthesized AST node kind. */
@@ -18,7 +19,7 @@ newtype SynthKind =
   ExponentExprKind() or
   GlobalVariableAccessKind(GlobalVariable v) or
   InstanceVariableAccessKind(InstanceVariable v) or
-  IntegerLiteralKind(int i) { i in [0 .. 1000] } or
+  IntegerLiteralKind(int i) { i in [-1000 .. 1000] } or
   LShiftExprKind() or
   LocalVariableAccessRealKind(LocalVariableReal v) or
   LocalVariableAccessSynthKind(TLocalVariableSynth v) or
@@ -29,7 +30,9 @@ newtype SynthKind =
   } or
   ModuloExprKind() or
   MulExprKind() or
+  RangeLiteralKind(boolean inclusive) { inclusive in [false, true] } or
   RShiftExprKind() or
+  SplatExprKind() or
   StmtSequenceKind() or
   SelfKind() or
   SubExprKind()
@@ -118,8 +121,18 @@ private predicate assign(
   )
 }
 
+/** Holds if synthesized node `n` should have location `l`. */
+predicate synthLocation(AstNode n, Location l) {
+  exists(Synthesis s, AstNode parent, int i |
+    s.child(parent, i, _, SomeLocation(l)) and
+    n = getSynthChild(parent, i)
+  )
+}
+
 private SomeLocation getSomeLocation(AstNode n) {
   result = SomeLocation(toGenerated(n).getLocation())
+  or
+  result = SomeLocation(any(Location l | synthLocation(n, l)))
 }
 
 private module ImplicitSelfSynthesis {
@@ -547,6 +560,162 @@ private module AssignOperationDesugar {
 
     final override predicate excludeFromControlFlowTree(AstNode n) {
       n = any(SetterAssignOperation sao).getMethodCall()
+    }
+  }
+}
+
+private module CompoundAssignDesugar {
+  /** An assignment where the left-hand side is a tuple pattern. */
+  private class TupleAssignExpr extends AssignExpr {
+    private TuplePattern tp;
+
+    pragma[nomagic]
+    TupleAssignExpr() { tp = this.getLeftOperand() }
+
+    TuplePattern getTuplePattern() { result = tp }
+
+    pragma[nomagic]
+    Pattern getElement(int i) { result = tp.getElement(i) }
+
+    pragma[nomagic]
+    int getNumberOfElements() {
+      toGenerated(tp) = any(TuplePatternImpl impl | result = count(impl.getChildNode(_)))
+    }
+
+    pragma[nomagic]
+    int getRestIndexOrNumberOfElements() {
+      result = tp.getRestIndex()
+      or
+      toGenerated(tp) = any(TuplePatternImpl impl | not exists(impl.getRestIndex())) and
+      result = this.getNumberOfElements()
+    }
+
+    pragma[nomagic]
+    SomeLocation getRightOperandLocation() { result = getSomeLocation(this.getRightOperand()) }
+  }
+
+  pragma[nomagic]
+  private predicate compoundAssignSynthesis(AstNode parent, int i, Child child, LocationOption l) {
+    exists(TupleAssignExpr tae |
+      parent = tae and
+      i = -1 and
+      child = SynthChild(StmtSequenceKind()) and
+      l = NoneLocation()
+      or
+      exists(AstNode seq | seq = TStmtSequenceSynth(tae, -1) |
+        parent = seq and
+        i = 0 and
+        child = SynthChild(AssignExprKind()) and
+        l = tae.getRightOperandLocation()
+        or
+        exists(AstNode assign | assign = TAssignExprSynth(seq, 0) |
+          parent = assign and
+          i = 0 and
+          child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(tae, 0))) and
+          l = tae.getRightOperandLocation()
+          or
+          parent = assign and
+          i = 1 and
+          child = SynthChild(SplatExprKind()) and
+          l = tae.getRightOperandLocation()
+          or
+          parent = TSplatExprSynth(assign, 1) and
+          i = 0 and
+          child = RealChild(tae.getRightOperand()) and
+          l = NoneLocation()
+        )
+        or
+        exists(Pattern p, int j, int restIndex |
+          p = tae.getElement(j) and
+          restIndex = tae.getRestIndexOrNumberOfElements()
+        |
+          parent = seq and
+          i = j + 1 and
+          child = SynthChild(AssignExprKind()) and
+          l = getSomeLocation(p)
+          or
+          exists(AstNode assign | assign = TAssignExprSynth(seq, j + 1) |
+            parent = assign and
+            i = 0 and
+            child = RealChild(p) and
+            l = NoneLocation()
+            or
+            parent = assign and
+            i = 1 and
+            child = SynthChild(MethodCallKind("[]", false, 1)) and
+            l = getSomeLocation(p)
+            or
+            l = getSomeLocation(p) and
+            (
+              parent = TMethodCallSynth(assign, 1, _, _, _) and
+              i = 0 and
+              child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(tae, 0)))
+              or
+              j < restIndex and
+              parent = TMethodCallSynth(assign, 1, _, _, _) and
+              i = 1 and
+              child = SynthChild(IntegerLiteralKind(j))
+              or
+              j = restIndex and
+              (
+                parent = TMethodCallSynth(assign, 1, _, _, _) and
+                i = 1 and
+                child = SynthChild(RangeLiteralKind(true))
+                or
+                exists(AstNode call |
+                  call = TMethodCallSynth(assign, 1, _, _, _) and
+                  parent = TRangeLiteralSynth(call, 1, _)
+                |
+                  i = 0 and
+                  child = SynthChild(IntegerLiteralKind(j))
+                  or
+                  i = 1 and
+                  child = SynthChild(IntegerLiteralKind(restIndex - tae.getNumberOfElements()))
+                )
+              )
+              or
+              j > restIndex and
+              parent = TMethodCallSynth(assign, 1, _, _, _) and
+              i = 1 and
+              child = SynthChild(IntegerLiteralKind(j - tae.getNumberOfElements()))
+            )
+          )
+        )
+      )
+    )
+  }
+
+  /**
+   * ```rb
+   * x, *y, z = w
+   * ```
+   * desguars to
+   *
+   * ```rb
+   * __synth__0 = *w;
+   * x = __synth__0[0];
+   * y = __synth__0[1..-2];
+   * z = __synth__0[-1];
+   * ```
+   */
+  private class CompoundAssignSynthesis extends Synthesis {
+    final override predicate child(AstNode parent, int i, Child child, LocationOption l) {
+      compoundAssignSynthesis(parent, i, child, l)
+    }
+
+    final override predicate localVariable(AstNode n, int i) {
+      n instanceof TupleAssignExpr and
+      i = 0
+    }
+
+    final override predicate methodCall(string name, boolean setter, int arity) {
+      name = "[]" and
+      setter = false and
+      arity = 1
+    }
+
+    final override predicate excludeFromControlFlowTree(AstNode n) {
+      n = any(TupleAssignExpr tae).getTuplePattern()
     }
   }
 }

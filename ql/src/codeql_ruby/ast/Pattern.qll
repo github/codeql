@@ -1,6 +1,7 @@
 private import codeql_ruby.AST
 private import codeql.Locations
 private import internal.AST
+private import internal.Pattern
 private import internal.TreeSitter
 private import internal.Variable
 
@@ -62,20 +63,9 @@ class VariablePattern extends Pattern, LhsExpr, TVariablePattern { }
 class TuplePattern extends Pattern, TTuplePattern {
   override string getAPrimaryQlClass() { result = "TuplePattern" }
 
-  private Generated::AstNode getChild(int i) {
-    result = toGenerated(this).(Generated::DestructuredParameter).getChild(i)
-    or
-    result = toGenerated(this).(Generated::DestructuredLeftAssignment).getChild(i)
-    or
-    toGenerated(this) =
-      any(Generated::LeftAssignmentList lal |
-        if
-          strictcount(int j | exists(lal.getChild(j))) = 1 and
-          lal.getChild(0) instanceof Generated::DestructuredLeftAssignment
-        then result = lal.getChild(0).(Generated::DestructuredLeftAssignment).getChild(i)
-        else result = lal.getChild(i)
-      )
-  }
+  private TuplePatternImpl getImpl() { result = toGenerated(this) }
+
+  private Generated::AstNode getChild(int i) { result = this.getImpl().getChildNode(i) }
 
   /** Gets the `i`th pattern in this tuple pattern. */
   final Pattern getElement(int i) {
@@ -96,9 +86,7 @@ class TuplePattern extends Pattern, TTuplePattern {
    * a, b, *rest, c, d = value
    * ```
    */
-  final int getRestIndex() {
-    result = unique(int i | getChild(i) instanceof Generated::RestAssignment)
-  }
+  final int getRestIndex() { result = this.getImpl().getRestIndex() }
 
   override Variable getAVariable() { result = this.getElement(_).getAVariable() }
 
