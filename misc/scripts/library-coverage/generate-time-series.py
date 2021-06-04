@@ -54,20 +54,33 @@ def get_stats(lang, query):
         sinks = 0
         summaries = 0
 
+        packages = {}
+
         with open(ql_output) as csvfile:
             reader = csv.reader(csvfile)
             for row in reader:
                 # row: "android.util",1,"remote","source",16
+                package = row[0]
+                if package not in packages:
+                    packages[package] = {
+                        "sources": 0,
+                        "sinks": 0,
+                        "summaries": 0
+                    }
+
                 if row[3] == "source":
                     sources += int(row[4])
+                    packages[package]["sources"] += int(row[4])
                 if row[3] == "sink":
                     sinks += int(row[4])
+                    packages[package]["sinks"] += int(row[4])
                 if row[3] == "summary":
                     summaries += int(row[4])
+                    packages[package]["summaries"] += int(row[4])
 
         os.remove(ql_output)
 
-        return (sources, sinks, summaries)
+        return (sources, sinks, summaries, packages)
     except:
         print("Unexpected error:", sys.exc_info()[0])
         raise Exception()
@@ -88,35 +101,44 @@ configs = [
 # todo: change this when we cover multiple languages. We should compute the SHAs
 # only once and not per language
 for config in configs:
-    with open("timeseries-" + config.lang + ".csv", 'w', newline='') as csvfile:
-        csvwriter = csv.writer(csvfile)
-        csvwriter.writerow(["SHA", "Date", "Sources", "Sinks", "Summaries"])
+    with open("timeseries-" + config.lang + ".csv", 'w', newline='') as csvfile_total:
+        with open("timeseries-" + config.lang + "-packages.csv", 'w', newline='') as csvfile_packages:
+            csvwriter_total = csv.writer(csvfile_total)
+            csvwriter_packages = csv.writer(csvfile_packages)
+            csvwriter_total.writerow(
+                ["SHA", "Date", "Sources", "Sinks", "Summaries"])
+            csvwriter_packages.writerow(
+                ["SHA", "Date", "Package", "Sources", "Sinks", "Summaries"])
 
-        os.chdir(working_dir)
+            os.chdir(working_dir)
 
-        utils.subprocess_run(["git", "checkout", "main"])
+            utils.subprocess_run(["git", "checkout", "main"])
 
-        current_sha = get_str_output(["git", "rev-parse", "HEAD"])
-        current_date = get_date(current_sha)
+            current_sha = get_str_output(["git", "rev-parse", "HEAD"])
+            current_date = get_date(current_sha)
 
-        while True:
-            print("Getting stats for " + current_sha)
-            utils.subprocess_run(["git", "checkout", current_sha])
+            while True:
+                print("Getting stats for " + current_sha)
+                utils.subprocess_run(["git", "checkout", current_sha])
 
-            try:
-                stats = get_stats(config.lang, config.ql_path)
+                try:
+                    stats = get_stats(config.lang, config.ql_path)
 
-                csvwriter.writerow(
-                    [current_sha, current_date, stats[0], stats[1], stats[2]])
+                    csvwriter_total.writerow(
+                        [current_sha, current_date, stats[0], stats[1], stats[2]])
 
-                print("Collected stats for " + current_sha +
-                      " at " + current_date.isoformat())
-            except:
-                print("Error getting stats for " +
-                      current_sha + ". Stopping iteration.")
-                break
+                    for package in stats[3]:
+                        csvwriter_packages.writerow(
+                            [current_sha, current_date, package, stats[3][package]["sources"], stats[3][package]["sinks"], stats[3][package]["summaries"]])
 
-            current_sha, current_date = get_previous_sha(
-                current_sha, current_date)
+                    print("Collected stats for " + current_sha +
+                          " at " + current_date.isoformat())
+                except:
+                    print("Error getting stats for " +
+                          current_sha + ". Stopping iteration.")
+                    break
+
+                current_sha, current_date = get_previous_sha(
+                    current_sha, current_date)
 
     utils.subprocess_run(["git", "checkout", "main"])
