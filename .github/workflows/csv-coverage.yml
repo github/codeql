@@ -1,4 +1,4 @@
-name: Build/check CSV flow coverage report
+name: Build CSV flow coverage report
 
 on:
   workflow_dispatch:
@@ -6,22 +6,6 @@ on:
       qlModelShaOverride:
         description: 'github/codeql repo SHA used for looking up the CSV models'
         required: false
-  push:
-    branches:
-     - main
-     - 'rc/**'
-  pull_request:
-    paths:
-      - '.github/workflows/csv-coverage.yml'
-      - '*/ql/src/**/*.ql'
-      - '*/ql/src/**/*.qll'
-      - 'misc/scripts/library-coverage/*.py'
-      # input data files
-      - '*/documentation/library-coverage/cwe-sink.csv'
-      - '*/documentation/library-coverage/frameworks.csv'
-      # coverage report files
-      - '*/documentation/library-coverage/flow-model-coverage.csv'
-      - '*/documentation/library-coverage/flow-model-coverage.rst'
 
 jobs:
   build:
@@ -70,8 +54,4 @@ jobs:
       with:
         name: rst-flow-model-coverage
         path: flow-model-coverage-*.rst
-    # - name: Check coverage files
-    #   if: github.event.pull_request
-    #   run: |
-    #     python script/misc/scripts/library-coverage/compare-files.py codeqlModels
 
