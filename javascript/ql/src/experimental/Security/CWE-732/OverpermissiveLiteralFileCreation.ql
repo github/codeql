@@ -32,4 +32,4 @@ class LiteralObjectArgument2FileCreation extends
 
 from LiteralFileCreation creation
 where creation.isOverpermissive()
-select creation, "message"
+select creation, "This call uses an overpermissive mode that creates world writable files."

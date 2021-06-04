@@ -50,4 +50,4 @@ class UnsecurableDirectoryCreation extends UnsecurableEntryCreation, DirectoryCr
 }
 
 from UnsecurableDirectoryCreation creation
-select creation, "message"
+select creation, "This unsecurable function creates world writable directories."

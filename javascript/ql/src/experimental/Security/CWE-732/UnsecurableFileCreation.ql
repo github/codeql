@@ -25,4 +25,4 @@ class UnsecurableFileCreation extends UnsecurableEntryCreation, FileCreation {
 }
 
 from UnsecurableFileCreation creation
-select creation, "message"
+select creation, "This unsecurable function creates world writable files."

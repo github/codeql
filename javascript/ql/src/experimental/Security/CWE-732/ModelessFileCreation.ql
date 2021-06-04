@@ -12,4 +12,4 @@ import ModableFileCreation
 
 from ModableFileCreation creation
 where creation.isModeless()
-select creation, "message"
+select creation, "This modeless call creates world writable files."

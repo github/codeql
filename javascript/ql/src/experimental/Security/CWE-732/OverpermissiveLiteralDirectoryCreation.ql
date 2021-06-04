@@ -30,4 +30,4 @@ class LiteralImmediateOrObjectArgument1DirectoryCreation extends
 
 from LiteralDirectoryCreation creation
 where creation.isOverpermissive()
-select creation, "message"
+select creation, "This call uses an overpermissive mode that creates world writable directories."
