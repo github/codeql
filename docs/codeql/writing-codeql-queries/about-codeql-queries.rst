@@ -58,6 +58,7 @@ Query metadata is used to identify your custom queries when they are added to th
     Queries that are contributed to the open source repository, added to a query pack in LGTM, or used to analyze a database with the :ref:`CodeQL CLI <codeql-cli>` must have a query type (``@kind``) specified. The ``@kind`` property indicates how to interpret and display the results of the query analysis:
 
     - Alert query metadata must contain ``@kind problem``.
+    - Diagnostic query metadata must contain ``@kind diagnostic``.
     - Path query metadata must contain ``@kind path-problem``.
 
     When you define the ``@kind`` property of a custom query you must also ensure that the rest of your query has the correct structure in order to be valid, as described below.
@@ -113,6 +114,8 @@ Select clauses for alert queries (``@kind problem``) consist of two 'columns', w
 You can modify the alert message defined in the final column of the ``select`` statement to give more detail about the alert or path found by the query using links and placeholders. For more information, see ":doc:`Defining the results of a query <defining-the-results-of-a-query>`." 
 
 Select clauses for path queries (``@kind path-problem``) are crafted to display both an alert and the source and sink of an associated path graph. For more information, see ":doc:`Creating path queries <creating-path-queries>`."
+
+Select clauses for diagnostic queries (``@kind diagnostic``) have different requirements. For examples, see the `diagnostic queries in the CodeQL repository <https://github.com/github/codeql/search?q=%22%40kind+diagnostic%22>`__.
 
 Viewing the standard CodeQL queries
 ***********************************

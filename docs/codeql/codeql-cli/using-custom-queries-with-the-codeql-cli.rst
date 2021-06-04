@@ -33,8 +33,8 @@ following two properties to ensure that the results are interpreted correctly:
 
 - Query identifier (``@id``): a sequence of words composed of lowercase letters or
   digits, delimited by ``/`` or ``-``, identifying and classifying the query. 
-- Query type (``@kind``): identifies the query is an alert (``@kind problem``)
-  or a path (``@kind path-problem``).
+- Query type (``@kind``): identifies the query is an alert (``@kind problem``),
+  a path (``@kind path-problem``), or a diagnostic metric (``@kind diagnostic``).
 
 For more information about these metadata properties, see ":ref:`Metadata for CodeQL queries
 <metadata-for-codeql-queries>`" and the `Query metadata style guide
