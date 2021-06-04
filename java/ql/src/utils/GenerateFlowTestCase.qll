@@ -4,13 +4,22 @@ import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.dataflow.FlowSummary
 import semmle.code.java.dataflow.internal.FlowSummaryImpl
 
+/**
+ * A CSV row to generate tests for. Users should extend this to define their input rows.
+ */
 bindingset[this]
 abstract class CsvRow extends string { }
 
+/**
+ * Returns type of parameter `i` of `callable`, including the type of `this` for parameter -1.
+ */
 Type getParameterType(Private::External::SummarizedCallableExternal callable, int i) {
   if i = -1 then result = callable.getDeclaringType() else result = callable.getParameterType(i)
 }
 
+/**
+ * Returns a zero value of primitive type `t`.
+ */
 string getZero(PrimitiveType t) {
   t.hasName("float") and result = "0.0f"
   or
@@ -29,6 +38,9 @@ string getZero(PrimitiveType t) {
   t.hasName("long") and result = "0L"
 }
 
+/**
+ * Holds if `c` may require disambiguation from an overload with the same argument count.
+ */
 predicate mayBeAmbiguous(Callable c) {
   exists(Callable other, string package, string type, string name |
     c.hasQualifiedName(package, type, name) and
@@ -38,14 +50,23 @@ predicate mayBeAmbiguous(Callable c) {
   )
 }
 
+/**
+ * Returns the `content` wrapped by `component`, if any.
+ */
 Content getContent(SummaryComponent component) { component = SummaryComponent::content(result) }
 
+/**
+ * Returns a valid Java token naming the field `fc`.
+ */
 string getFieldToken(FieldContent fc) {
   result =
     fc.getField().getDeclaringType().getSourceDeclaration().getName() + "_" +
       fc.getField().getName()
 }
 
+/**
+ * Returns a token suitable for incorporation into a Java method name describing content `c`.
+ */
 string contentToken(Content c) {
   c instanceof ArrayContent and result = "ArrayElement"
   or
@@ -58,24 +79,38 @@ string contentToken(Content c) {
   result = getFieldToken(c)
 }
 
+/**
+ * Returns the outermost type enclosing type `t` (which may be `t` itself).
+ */
 RefType getRootType(RefType t) {
   if t instanceof NestedType
   then result = getRootType(t.(NestedType).getEnclosingType())
   else result = t
 }
 
+/**
+ * Returns `t`'s first upper bound if `t` is a type variable; otherwise returns `t`.
+ */
 RefType replaceTypeVariable(RefType t) {
   if t instanceof TypeVariable
   then result = t.(TypeVariable).getFirstUpperBoundType()
   else result = t
 }
 
+/**
+ * Returns `t`'s outermost enclosing type, in raw form (i.e. generic types are given without generic parameters, and type variables are replaced by their bounds).
+ */
 Type getRootSourceDeclaration(Type t) {
   if t instanceof RefType
   then result = getRootType(replaceTypeVariable(t)).getSourceDeclaration()
   else result = t
 }
 
+/**
+ * A test snippet (a fragment of Java code that checks that `row` causes `callable` to propagate value/taint (according to `preservesValue`)
+ * from `input` to `output`). Usually there is one of these per CSV row (`row`), but there may be more if `row` describes more than one
+ * override or overload of a particular method, or if the input or output specifications cover more than one argument.
+ */
 newtype TRowTestSnippet =
   MkSnippet(
     CsvRow row, Private::External::SummarizedCallableExternal callable, SummaryComponentStack input,
@@ -84,6 +119,10 @@ newtype TRowTestSnippet =
     callable.propagatesFlowForRow(input, output, preservesValue, row)
   }
 
+/**
+ * A test snippet (as `TRowTestSnippet`, except `baseInput` and `baseOutput` hold the bottom of the summary stacks
+ * `input` and `output` respectively (hence, `baseInput` and `baseOutput` are parameters or return values).
+ */
 class RowTestSnippet extends TRowTestSnippet {
   string row;
   Private::External::SummarizedCallableExternal callable;
@@ -105,12 +144,16 @@ class RowTestSnippet extends TRowTestSnippet {
         baseOutput + " / " + preservesValue
   }
 
+  /**
+   * Returns a value to pass as `callable`'s `argIdx`th argument whose value is irrelevant to the test
+   * being generated. This will be a zero or a null value, perhaps typecast if we need to disambiguate overloads.
+   */
   string getFiller(int argIdx) {
     exists(Type t | t = callable.getParameterType(argIdx) |
       t instanceof RefType and
       (
         if mayBeAmbiguous(callable)
-        then result = "(" + getShortNameIfPossible(t.(RefType).getSourceDeclaration()) + ")null"
+        then result = "(" + getShortNameIfPossible(t) + ")null"
         else result = "null"
       )
       or
@@ -118,6 +161,11 @@ class RowTestSnippet extends TRowTestSnippet {
     )
   }
 
+  /**
+   * Returns the value to pass for `callable`'s `i`th argument, which may be `in` if this is the input argument for
+   * this test, `out` if it is the output, `instance` if this is an instance method and the instance is neither the
+   * input nor the output, or a zero/null filler value otherwise.
+   */
   string getArgument(int i) {
     (i = -1 or exists(callable.getParameter(i))) and
     if baseInput = SummaryComponentStack::argument(i)
@@ -131,7 +179,11 @@ class RowTestSnippet extends TRowTestSnippet {
     )
   }
 
+  /**
+   * Returns a statement invoking `callable`, passing `input` and capturing `output` as needed.
+   */
   string makeCall() {
+    // For example, one of:
     // out = in.method(filler);
     // or
     // out = filler.method(filler, in, filler);
@@ -159,9 +211,7 @@ class RowTestSnippet extends TRowTestSnippet {
         then invokePrefix = "new "
         else
           if callable.(Method).isStatic()
-          then
-            invokePrefix =
-              getShortNameIfPossible(callable.getDeclaringType().getSourceDeclaration()) + "."
+          then invokePrefix = getShortNameIfPossible(callable.getDeclaringType()) + "."
           else invokePrefix = this.getArgument(-1) + "."
       ) and
       args = concat(int i | i >= 0 | this.getArgument(i), ", " order by i) and
@@ -169,12 +219,18 @@ class RowTestSnippet extends TRowTestSnippet {
     )
   }
 
+  /**
+   * Returns an inline test expectation appropriate to this CSV row.
+   */
   string getExpectation() {
     preservesValue = true and result = "// $hasValueFlow"
     or
     preservesValue = false and result = "// $hasTaintFlow"
   }
 
+  /**
+   * Returns a declaration and initialisation of a variable named `instance` if required; otherwise returns an empty string.
+   */
   string getInstancePrefix() {
     if
       callable instanceof Method and
@@ -187,6 +243,9 @@ class RowTestSnippet extends TRowTestSnippet {
     else result = ""
   }
 
+  /**
+   * Returns the type of the output for this test.
+   */
   Type getOutputType() {
     if baseOutput = SummaryComponentStack::return()
     then result = callable.getReturnType()
@@ -197,6 +256,9 @@ class RowTestSnippet extends TRowTestSnippet {
       )
   }
 
+  /**
+   * Returns the type of the input for this test.
+   */
   Type getInputType() {
     exists(int i |
       baseInput = SummaryComponentStack::argument(i) and
@@ -204,8 +266,16 @@ class RowTestSnippet extends TRowTestSnippet {
     )
   }
 
+  /**
+   * Returns the Java name for the type of the input to this test.
+   */
   string getInputTypeString() { result = getShortNameIfPossible(this.getInputType()) }
 
+  /**
+   * Returns a call to `source()` wrapped in `newWith` methods as needed according to `input`.
+   * For example, if the input specification is `ArrayElement of MapValue of Argument[0]`, this
+   * will return `newWithArrayElement(newWithMapValue(source()))`.
+   */
   string getInput(SummaryComponentStack componentStack) {
     componentStack = input.drop(_) and
     (
@@ -218,6 +288,11 @@ class RowTestSnippet extends TRowTestSnippet {
     )
   }
 
+  /**
+   * Returns `out` wrapped in `get` methods as needed according to `output`.
+   * For example, if the output specification is `ArrayElement of MapValue of Argument[0]`, this
+   * will return `getArrayElement(getMapValue(out))`.
+   */
   string getOutput(SummaryComponentStack componentStack) {
     componentStack = output.drop(_) and
     (
@@ -230,6 +305,9 @@ class RowTestSnippet extends TRowTestSnippet {
     )
   }
 
+  /**
+   * Returns the definition of a `newWith` method needed to set up the input or a `get` method needed to set up the output for this test.
+   */
   string getASupportMethod() {
     result =
       "Object newWith" + contentToken(getContent(input.drop(_).head())) +
@@ -239,6 +317,12 @@ class RowTestSnippet extends TRowTestSnippet {
         "(Object container) { return null; }"
   }
 
+  /**
+   * Returns a CSV row describing a support method (`newWith` or `get` method) needed to set up the output for this test.
+   *
+   * For example, `newWithMapValue` will propagate a value from `Argument[0]` to `MapValue of ReturnValue`, and `getMapValue`
+   * will do the opposite.
+   */
   string getASupportMethodModel() {
     exists(SummaryComponent c, string contentSsvDescription |
       c = input.drop(_).head() and c = Private::External::interpretComponent(contentSsvDescription)
@@ -257,6 +341,10 @@ class RowTestSnippet extends TRowTestSnippet {
     )
   }
 
+  /**
+   * Gets an outer class name that this test would ideally import (and will, unless it clashes with another
+   * type of the same name).
+   */
   Type getADesiredImport() {
     result =
       getRootSourceDeclaration([
@@ -267,6 +355,10 @@ class RowTestSnippet extends TRowTestSnippet {
     mayBeAmbiguous(callable) and result = getRootSourceDeclaration(callable.getAParamType())
   }
 
+  /**
+   * Gets a test snippet (test body fragment) testing this `callable` propagates value or taint from
+   * `input` to `output`, as specified by `row_` (which necessarily equals `row`).
+   */
   string getATestSnippetForRow(string row_) {
     row_ = row and
     result =
@@ -277,6 +369,9 @@ class RowTestSnippet extends TRowTestSnippet {
   }
 }
 
+/**
+ * Holds if type `t` does not clash with another type we want to import that has the same base name.
+ */
 predicate isImportable(Type t) {
   t = any(RowTestSnippet r).getADesiredImport() and
   t =
@@ -288,6 +383,11 @@ predicate isImportable(Type t) {
     )
 }
 
+/**
+ * Returns a printable name for type `t`, stripped of generics and, if a type variable,
+ * replaced by its bound. Usually this is a short name, but it may be package-qualified
+ * if we cannot import it due to a name clash.
+ */
 string getShortNameIfPossible(Type t) {
   getRootSourceDeclaration(t) = any(RowTestSnippet r).getADesiredImport() and
   if t instanceof RefType
@@ -303,6 +403,9 @@ string getShortNameIfPossible(Type t) {
   else result = t.getName()
 }
 
+/**
+ * Returns an import statement to include in the test case header.
+ */
 string getAnImportStatement() {
   exists(RefType t |
     t = any(RowTestSnippet r).getADesiredImport() and
@@ -313,14 +416,23 @@ string getAnImportStatement() {
   )
 }
 
+/**
+ * Returns a support method to include in the generated test class.
+ */
 string getASupportMethod() {
   result = "Object source() { return null; }" or
   result = "void sink(Object o) { }" or
   result = any(RowTestSnippet r).getASupportMethod()
 }
 
+/**
+ * Returns a CSV specification of the taint-/value-propagation behaviour of a test support method (`get` or `newWith` method).
+ */
 query string getASupportMethodModel() { result = any(RowTestSnippet r).getASupportMethodModel() }
 
+/**
+ * Gets a Java file body testing all `CsvRow` instances in scope against whatever classes and methods they resolve against.
+ */
 query string getTestCase() {
   result =
     "package generatedtest;\n\n" + concat(getAnImportStatement() + "\n") +
