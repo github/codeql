@@ -49,11 +49,17 @@ class SqlExecutingMethodCall extends ActiveRecordModelClassMethodCall {
   private string methodName;
   // The zero-indexed position of the SQL fragment sink argument
   private int sqlFragmentArgumentIndex;
+  // The SQL fragment argument itself
+  private Expr sqlFragmentExpr;
 
-  // TODO: determine when the argument may be a string, rather than a key-value pair
+  // TODO: This is slightly too restricted, we only look for StringlikeLiterals
+  // as arguments, but we could instead have a variable read, a string
+  // concatenation, certain arrays, etc. and still have a potentially
+  // vulnerable call
   // TODO: `find` with `lock:` option also takes an SQL fragment
   SqlExecutingMethodCall() {
     methodName = this.getMethodName() and
+    sqlFragmentExpr = this.getArgument(sqlFragmentArgumentIndex) and
     (
       methodName = "calculate" and sqlFragmentArgumentIndex = 1
       or
@@ -87,10 +93,11 @@ class SqlExecutingMethodCall extends ActiveRecordModelClassMethodCall {
         or
         methodName = "where"
       )
-    )
+    ) and
+    sqlFragmentExpr instanceof StringlikeLiteral
   }
 
-  Expr getSqlFragmentSinkArgument() { result = this.getArgument(sqlFragmentArgumentIndex) }
+  Expr getSqlFragmentSinkArgument() { result = sqlFragmentExpr }
 }
 
 class ActiveRecordSqlExecutionRange extends SqlExecution::Range {
