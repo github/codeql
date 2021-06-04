@@ -16,10 +16,10 @@ callsWithArguments
 | calls.rb:235:1:235:14 | ...[...] | [] | 0 | calls.rb:235:8:235:13 | call to bar |
 | calls.rb:266:1:266:9 | call to foo | foo | 0 | calls.rb:266:5:266:8 | &... |
 | calls.rb:267:1:267:12 | call to foo | foo | 0 | calls.rb:267:5:267:11 | &... |
-| calls.rb:270:1:270:9 | call to foo | foo | 0 | calls.rb:270:5:270:8 | *... |
-| calls.rb:271:1:271:12 | call to foo | foo | 0 | calls.rb:271:5:271:11 | *... |
-| calls.rb:274:1:274:10 | call to foo | foo | 0 | calls.rb:274:5:274:9 | **... |
-| calls.rb:275:1:275:13 | call to foo | foo | 0 | calls.rb:275:5:275:12 | **... |
+| calls.rb:270:1:270:9 | call to foo | foo | 0 | calls.rb:270:5:270:8 | * ... |
+| calls.rb:271:1:271:12 | call to foo | foo | 0 | calls.rb:271:5:271:11 | * ... |
+| calls.rb:274:1:274:10 | call to foo | foo | 0 | calls.rb:274:5:274:9 | ** ... |
+| calls.rb:275:1:275:13 | call to foo | foo | 0 | calls.rb:275:5:275:12 | ** ... |
 | calls.rb:278:1:278:14 | call to foo | foo | 0 | calls.rb:278:5:278:13 | Pair |
 | calls.rb:279:1:279:17 | call to foo | foo | 0 | calls.rb:279:5:279:16 | Pair |
 | calls.rb:288:5:288:16 | call to super | super | 0 | calls.rb:288:11:288:16 | "blah" |

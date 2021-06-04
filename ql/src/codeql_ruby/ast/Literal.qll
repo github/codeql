@@ -717,7 +717,7 @@ class HashLiteral extends Literal, THashLiteral {
    * Gets the `n`th element in this array literal.
    *
    * In the following example, the 0th element is a `Pair`, and the 1st element
-   * is a `HashSplatArgument`.
+   * is a `HashSplatExpr`.
    *
    * ```rb
    * { foo: 123, **bar }

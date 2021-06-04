@@ -24,14 +24,8 @@ class Operation extends Expr, TOperation {
 
 /** A unary operation. */
 class UnaryOperation extends Operation, TUnaryOperation {
-  private Generated::Unary g;
-
-  UnaryOperation() { g = toGenerated(this) }
-
   /** Gets the operand of this unary operation. */
-  final Expr getOperand() { toGenerated(result) = g.getOperand() }
-
-  final override string getOperator() { result = g.getOperator() }
+  Expr getOperand() { none() }
 
   final override Expr getAnOperand() { result = this.getOperand() }
 
@@ -44,8 +38,18 @@ class UnaryOperation extends Operation, TUnaryOperation {
   final override string toString() { result = this.getOperator() + " ..." }
 }
 
+private class UnaryOperationGenerated extends UnaryOperation, TUnaryOperation {
+  private Generated::Unary g;
+
+  UnaryOperationGenerated() { g = toGenerated(this) }
+
+  final override Expr getOperand() { toGenerated(result) = g.getOperand() }
+
+  final override string getOperator() { result = g.getOperator() }
+}
+
 /** A unary logical operation. */
-class UnaryLogicalOperation extends UnaryOperation, TUnaryLogicalOperation { }
+class UnaryLogicalOperation extends UnaryOperationGenerated, TUnaryLogicalOperation { }
 
 /**
  * A logical NOT operation, using either `!` or `not`.
@@ -59,7 +63,7 @@ class NotExpr extends UnaryLogicalOperation, TNotExpr {
 }
 
 /** A unary arithmetic operation. */
-class UnaryArithmeticOperation extends UnaryOperation, TUnaryArithmeticOperation { }
+class UnaryArithmeticOperation extends UnaryOperationGenerated, TUnaryArithmeticOperation { }
 
 /**
  * A unary plus expression.
@@ -79,6 +83,42 @@ class UnaryPlusExpr extends UnaryArithmeticOperation, TUnaryPlusExpr {
  */
 class UnaryMinusExpr extends UnaryArithmeticOperation, TUnaryMinusExpr {
   final override string getAPrimaryQlClass() { result = "UnaryMinusExpr" }
+}
+
+/**
+ * A splat expression.
+ * ```rb
+ * foo(*args)
+ * ```
+ */
+class SplatExpr extends UnaryOperation, TSplatArgument {
+  private Generated::SplatArgument g;
+
+  SplatExpr() { this = TSplatArgument(g) }
+
+  final override Expr getOperand() { toGenerated(result) = g.getChild() }
+
+  final override string getOperator() { result = "*" }
+
+  final override string getAPrimaryQlClass() { result = "SplatExpr" }
+}
+
+/**
+ * A hash-splat (or 'double-splat') expression.
+ * ```rb
+ * foo(**options)
+ * ```
+ */
+class HashSplatExpr extends UnaryOperation, THashSplatArgument {
+  private Generated::HashSplatArgument g;
+
+  HashSplatExpr() { this = THashSplatArgument(g) }
+
+  final override Expr getOperand() { toGenerated(result) = g.getChild() }
+
+  final override string getOperator() { result = "**" }
+
+  final override string getAPrimaryQlClass() { result = "HashSplatExpr" }
 }
 
 /** A unary bitwise operation. */
