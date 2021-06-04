@@ -1,5 +1,6 @@
 import python
 import semmle.python.dataflow.new.DataFlow
+import semmle.python.dataflow.new.TaintTracking
 import TestUtilities.InlineExpectationsTest
 import semmle.python.dataflow.new.SensitiveDataSources
 private import semmle.python.ApiGraphs
@@ -21,7 +22,7 @@ class SensitiveDataSourcesTest extends InlineExpectationsTest {
       or
       exists(DataFlow::Node use |
         use = API::builtin("print").getACall().getArg(_) and
-        DataFlow::localFlow(source, use) and
+        TaintTracking::localTaint(source, use) and
         location = use.getLocation() and
         element = use.toString() and
         value = source.getClassification() and

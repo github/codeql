@@ -111,6 +111,43 @@ private module SensitiveDataModeling {
     override SensitiveDataClassification getClassification() { result = classification }
   }
 
+  /**
+   * Any kind of variable assignment (also including with/for) where the name indicates
+   * it contains sensitive data.
+   *
+   * Note: We _could_ make any access to a variable with a sensitive name a source of
+   * sensitive data, but to make path explanations in data-flow/taint-tracking good,
+   * we don't want that, since it works against allowing users to understand the flow
+   * in the program (which is the whole point).
+   *
+   * Note: To make data-flow/taint-tracking work, the expression that is _assigned_ to
+   * the variable is marked as the source (as compared to marking the variable as the
+   * source).
+   */
+  class SensitiveVariableAssignment extends SensitiveDataSource::Range {
+    SensitiveDataClassification classification;
+
+    SensitiveVariableAssignment() {
+      exists(DefinitionNode def |
+        nameIndicatesSensitiveData(def.(NameNode).getId(), classification) and
+        (
+          this.asCfgNode() = def.getValue()
+          or
+          this.asCfgNode() = def.getValue().(ForNode).getSequence()
+        ) and
+        not this.asExpr() instanceof FunctionExpr and
+        not this.asExpr() instanceof ClassExpr
+      )
+      or
+      exists(With with |
+        nameIndicatesSensitiveData(with.getOptionalVars().(Name).getId(), classification) and
+        this.asExpr() = with.getContextExpr()
+      )
+    }
+
+    override SensitiveDataClassification getClassification() { result = classification }
+  }
+
   /** An attribute access that is considered a source of sensitive data. */
   class SensitiveAttributeAccess extends SensitiveDataSource::Range {
     SensitiveDataClassification classification;
