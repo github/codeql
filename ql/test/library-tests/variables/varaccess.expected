@@ -219,7 +219,7 @@ explicitWrite
 | scopes.rb:13:4:13:4 | a | scopes.rb:13:4:13:32 | ... = ... |
 | scopes.rb:13:7:13:7 | b | scopes.rb:13:4:13:32 | ... = ... |
 | scopes.rb:13:7:13:7 | b | scopes.rb:13:7:13:7 | ... = ... |
-| scopes.rb:13:10:13:15 | __synth__0 | scopes.rb:13:10:13:15 | ... = ... |
+| scopes.rb:13:10:13:15 | __synth__0__1 | scopes.rb:13:10:13:15 | ... = ... |
 | scopes.rb:13:11:13:11 | c | scopes.rb:13:4:13:32 | ... = ... |
 | scopes.rb:13:11:13:11 | c | scopes.rb:13:11:13:11 | ... = ... |
 | scopes.rb:13:14:13:14 | d | scopes.rb:13:4:13:32 | ... = ... |
@@ -343,8 +343,8 @@ readAccess
 | scopes.rb:13:4:13:4 | __synth__0 |
 | scopes.rb:13:7:13:7 | __synth__0 |
 | scopes.rb:13:10:13:15 | __synth__0 |
-| scopes.rb:13:11:13:11 | __synth__0 |
-| scopes.rb:13:14:13:14 | __synth__0 |
+| scopes.rb:13:11:13:11 | __synth__0__1 |
+| scopes.rb:13:14:13:14 | __synth__0__1 |
 | scopes.rb:14:9:14:9 | a |
 | scopes.rb:15:9:15:9 | b |
 | scopes.rb:16:9:16:9 | c |

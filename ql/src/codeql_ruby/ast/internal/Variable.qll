@@ -434,7 +434,11 @@ class LocalVariableSynth extends LocalVariable, TLocalVariableSynth {
 
   LocalVariableSynth() { this = TLocalVariableSynth(n, i) }
 
-  final override string getName() { result = "__synth__" + i }
+  final override string getName() {
+    exists(int level | level = desugarLevel(n) |
+      if level > 0 then result = "__synth__" + i + "__" + level else result = "__synth__" + i
+    )
+  }
 
   final override Location getLocation() { result = n.getLocation() }
 
