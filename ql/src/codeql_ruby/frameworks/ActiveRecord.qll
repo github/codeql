@@ -104,7 +104,9 @@ class ActiveRecordSqlExecutionRange extends SqlExecution::Range {
   ExprCfgNode sql;
 
   ActiveRecordSqlExecutionRange() {
-    exists(PotentiallyUnsafeSqlExecutingMethodCall mc | this.asExpr().getNode() = mc.getSqlFragmentSinkArgument())
+    exists(PotentiallyUnsafeSqlExecutingMethodCall mc |
+      this.asExpr().getNode() = mc.getSqlFragmentSinkArgument()
+    )
   }
 
   override DataFlow::Node getSql() { result.asExpr() = sql }

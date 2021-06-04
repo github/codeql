@@ -7,4 +7,6 @@ query predicate activeRecordSqlExecutionRanges(ActiveRecordSqlExecutionRange ran
 
 query predicate activeRecordModelClassMethodCalls(ActiveRecordModelClassMethodCall call) { any() }
 
-query predicate potentiallyUnsafeSqlExecutingMethodCall(PotentiallyUnsafeSqlExecutingMethodCall call) { any() }
+query predicate potentiallyUnsafeSqlExecutingMethodCall(PotentiallyUnsafeSqlExecutingMethodCall call) {
+  any()
+}
