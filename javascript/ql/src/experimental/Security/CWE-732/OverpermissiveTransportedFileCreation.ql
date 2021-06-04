@@ -1,5 +1,18 @@
 import ModableFileCreation
 
+/**
+ * A data flow configuration for file creation with a mode
+ * transported through expressions and variables.
+ *
+ * For example:
+ * ```js
+ * function getMode() {
+ *   const mode = 0o700
+ *   return mode
+ * }
+ * fs.open('/tmp/file', 'r', getMode())
+ * ```
+ */
 class OverpermissiveTransportedFileCreation extends DataFlow::Configuration {
   OverpermissiveTransportedFileCreation() { this = "OverpermissiveTransportedFileCreation" }
 

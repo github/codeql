@@ -1,7 +1,11 @@
+/** Provides classes for finding modable directory creations. */
+
 import OverpermissiveFileSystemMode
 
+/** A directory creation that takes mode. */
 abstract class ModableDirectoryCreation extends ModableEntryCreation, DirectoryCreation { }
 
+/** A directory creation that takes mode as an object property in argument 1. */
 class ObjectArgument1DirectoryCreation extends
   ModableDirectoryCreation,
   Argument1EntryCreation,
@@ -15,6 +19,10 @@ class ObjectArgument1DirectoryCreation extends
   }
 }
 
+/**
+ * A directory creation that takes mode in argument 1
+ * as either an immediate value or an object property.
+ */
 class ImmediateOrObjectArgument1DirectoryCreation extends
   ModableDirectoryCreation,
   Argument1EntryCreation,

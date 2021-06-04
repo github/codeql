@@ -1,5 +1,14 @@
 import ModableDirectoryCreation
 
+/**
+ * A taint tracking configuration for directory creation
+ * with an overpermissive mode computed by excluding mode constants.
+ *
+ * For example:
+ * ```js
+ * fs.mkdir('/tmp/dir', fs.constants.S_IRWXU | fs.constants.S_IRWXG | fs.constants.S_IRWXO)
+ * ```
+ */
 class OverpermissiveIncludedDirectoryCreation extends OverpermissiveIncludedEntryCreation {
   OverpermissiveIncludedDirectoryCreation() { this = "OverpermissiveIncludedEntryCreation" }
 
@@ -13,8 +22,18 @@ class OverpermissiveIncludedDirectoryCreation extends OverpermissiveIncludedEntr
   }
 }
 
-class IncludedDirectoryCreationCorruption extends IncludedEntryCreationCorruption {
-  IncludedDirectoryCreationCorruption() { this = "EntryCreationCorruption" }
+/**
+ * A data flow configuration for corruption of a directory creation mode
+ * computed by including mode constants.
+ *
+ * For example:
+ * ```js
+ * const mode = fs.constants.S_IRWXU | fs.constants.S_IRWXG
+ * fs.mkdir('/tmp/dir', mode + 1)
+ * ```
+ */
+class IncludedDirectoryModeCorruption extends IncludedEntryModeCorruption {
+  IncludedDirectoryModeCorruption() { this = "EntryModeCorruption" }
 
   override predicate isSink(DataFlow::Node node, DataFlow::FlowLabel label) {
     exists(ModableDirectoryCreation creation | creation.getSpecifier() = node.asExpr()) and
@@ -24,7 +43,7 @@ class IncludedDirectoryCreationCorruption extends IncludedEntryCreationCorruptio
 
 from
   OverpermissiveIncludedDirectoryCreation construction,
-  IncludedDirectoryCreationCorruption corruption,
+  IncludedDirectoryModeCorruption corruption,
   DataFlow::Node source,
   DataFlow::Node sink
 where

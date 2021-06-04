@@ -1,5 +1,14 @@
 import ModableFileCreation
 
+/**
+ * A taint tracking configuration for file creation
+ * with an overpermissive mode computed by including mode constants.
+ *
+ * For example:
+ * ```js
+ * fs.open('/tmp/file', 'r', fs.constants.S_IRWXU | fs.constants.S_IRWXG | fs.constants.S_IRWXO)
+ * ```
+ */
 class OverpermissiveIncludedFileCreation extends TaintTracking::Configuration {
   OverpermissiveIncludedFileCreation() { this = "OverpermissiveIncludedFileCreation" }
 
@@ -20,8 +29,18 @@ class OverpermissiveIncludedFileCreation extends TaintTracking::Configuration {
   }
 }
 
-class IncludedFileCreationCorruption extends IncludedEntryCreationCorruption {
-  IncludedFileCreationCorruption() { this = "EntryCreationCorruption" }
+/**
+ * A data flow configuration for corruption of a file creation mode
+ * computed by including mode constants.
+ *
+ * For example:
+ * ```js
+ * const mode = fs.constants.S_IRWXU | fs.constants.S_IRWXG
+ * fs.open('/tmp/file', 'r', mode + 1)
+ * ```
+ */
+class IncludedFileModeCorruption extends IncludedEntryModeCorruption {
+  IncludedFileModeCorruption() { this = "EntryModeCorruption" }
 
   override predicate isSink(DataFlow::Node node, DataFlow::FlowLabel label) {
     exists(ModableFileCreation creation | creation.getSpecifier() = node.asExpr()) and
@@ -31,7 +50,7 @@ class IncludedFileCreationCorruption extends IncludedEntryCreationCorruption {
 
 from
   OverpermissiveIncludedFileCreation construction,
-  IncludedFileCreationCorruption corruption,
+  IncludedFileModeCorruption corruption,
   DataFlow::Node source,
   DataFlow::Node sink
 where

@@ -1,7 +1,11 @@
+/** Provides classes for finding modable file creations. */
+
 import OverpermissiveFileSystemMode
 
+/** A file creation that takes mode. */
 abstract class ModableFileCreation extends ModableEntryCreation, FileCreation { }
 
+/** A file creation that takes mode as an object property in argument 1. */
 class ObjectArgument1FileCreation extends
   ModableFileCreation,
   Argument1EntryCreation,
@@ -15,6 +19,7 @@ class ObjectArgument1FileCreation extends
   }
 }
 
+/** A file creation that takes mode as an immediate value in argument 2. */
 class ImmediateArgument2FileCreation extends
   ModableFileCreation,
   Argument2EntryCreation,
@@ -29,6 +34,7 @@ class ImmediateArgument2FileCreation extends
   }
 }
 
+/** A file creation that takes mode as an object property in argument 2. */
 class ObjectArgument2FileCreation extends
   ModableFileCreation,
   Argument2EntryCreation,

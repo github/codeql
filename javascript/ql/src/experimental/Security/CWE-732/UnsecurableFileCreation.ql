@@ -1,5 +1,6 @@
 import OverpermissiveFileSystemMode
 
+/** A file creation that cannot be secured, because it offers no way to specify mode. */
 class UnsecurableFileCreation extends UnsecurableEntryCreation, FileCreation {
   UnsecurableFileCreation() {
     this = [

@@ -1,5 +1,6 @@
 import OverpermissiveFileSystemMode
 
+/** A directory creation that cannot be secured, because it offers no way to specify mode. */
 class UnsecurableDirectoryCreation extends UnsecurableEntryCreation, DirectoryCreation {
   UnsecurableDirectoryCreation() {
     this = [

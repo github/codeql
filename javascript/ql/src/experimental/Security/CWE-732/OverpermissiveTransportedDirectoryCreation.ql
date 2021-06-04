@@ -1,5 +1,18 @@
 import ModableDirectoryCreation
 
+/**
+ * A data flow configuration for directory creation with a mode
+ * transported through expressions and variables.
+ *
+ * For example:
+ * ```js
+ * function getMode() {
+ *   const mode = 0o700
+ *   return mode
+ * }
+ * fs.mkdir('/tmp/dir', getMode())
+ * ```
+ */
 class OverpermissiveTransportedDirectoryCreation extends DataFlow::Configuration {
   OverpermissiveTransportedDirectoryCreation() {
     this = "OverpermissiveTransportedDirectoryCreation"
