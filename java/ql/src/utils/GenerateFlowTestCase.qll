@@ -183,7 +183,7 @@ class RowTestSnippet extends TRowTestSnippet {
       baseInput != SummaryComponentStack::argument(-1)
     then
       // In this case `out` is the instance.
-      result = getShortNameIfPossible(callable.getDeclaringType()) + " instance = null;\n"
+      result = getShortNameIfPossible(callable.getDeclaringType()) + " instance = null;\n\t\t\t"
     else result = ""
   }
 
