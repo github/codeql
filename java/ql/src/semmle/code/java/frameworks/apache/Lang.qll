@@ -668,3 +668,29 @@ private class ApacheObjectUtilsModel extends SummaryModelCsv {
       ]
   }
 }
+
+private class ApacheToStringBuilderModel extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "org.apache.commons.lang3.builder;ToStringBuilder;false;toString;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.lang3.builder;ToStringBuilder;false;append;(java.lang.Object);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.builder;ToStringBuilder;false;append;(java.lang.Object[]);;ArrayElement of Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.builder;ToStringBuilder;false;append;(java.lang.String,java.lang.Object[]);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.builder;ToStringBuilder;false;append;(java.lang.String,java.lang.Object[]);;ArrayElement of Argument[1];Argument[-1];taint",
+        "org.apache.commons.lang3.builder;ToStringBuilder;false;append;(java.lang.String,boolean);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.builder;ToStringBuilder;false;append;(java.lang.String,java.lang.Object);;Argument[0..1];Argument[-1];taint",
+        "org.apache.commons.lang3.builder;ToStringBuilder;false;append;(java.lang.String,java.lang.Object[],boolean);;Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.builder;ToStringBuilder;false;append;(java.lang.String,java.lang.Object[],boolean);;ArrayElement of Argument[1];Argument[-1];taint",
+        "org.apache.commons.lang3.builder;ToStringBuilder;false;build;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.lang3.builder;ToStringBuilder;false;getStringBuffer;;;Argument[-1];ReturnValue;taint",
+        "org.apache.commons.lang3.builder;ToStringBuilder;false;appendToString;;;Argument[0];Argument[-1];taint",
+        "org.apache.commons.lang3.builder;ToStringBuilder;false;appendSuper;;;Argument[0];Argument[-1];taint",
+        // The following are value-preserving steps for fluent methods:
+        "org.apache.commons.lang3.builder;ToStringBuilder;false;append;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.lang3.builder;ToStringBuilder;false;appendAsObjectToString;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.lang3.builder;ToStringBuilder;false;appendSuper;;;Argument[-1];ReturnValue;value",
+        "org.apache.commons.lang3.builder;ToStringBuilder;false;appendToString;;;Argument[-1];ReturnValue;value"
+      ]
+  }
+}
