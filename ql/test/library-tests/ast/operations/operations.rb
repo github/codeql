@@ -26,6 +26,7 @@ not b
 -7
 ~x
 defined? foo
+def foo; return 1, *[2], a:3, **{b:4, c:5} end
 
 # Binary arithmetic operations
 w + 234
