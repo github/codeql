@@ -93,7 +93,7 @@ RefType getRootType(RefType t) {
  */
 RefType replaceTypeVariable(RefType t) {
   if t instanceof TypeVariable
-  then result = t.(TypeVariable).getFirstUpperBoundType()
+  then result = replaceTypeVariable(t.(TypeVariable).getFirstUpperBoundType())
   else result = t
 }
 
