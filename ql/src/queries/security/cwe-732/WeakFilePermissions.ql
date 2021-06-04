@@ -98,4 +98,4 @@ from
   PermissionArgument arg
 where conf.hasFlowPath(source, sink) and arg = sink.getNode().asExpr().getExpr()
 select source.getNode(), source, sink, "Overly permissive mask in $@ sets file to $@.",
-  arg.getCall(), arg.getCall(), source.getNode(), source.getNode().toString()
+  arg.getCall(), arg.getCall().toString(), source.getNode(), source.getNode().toString()
