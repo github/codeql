@@ -1,0 +1,1 @@
+//semmle-extractor-options: --javac-args -cp ${testdir}/../../../../experimental/stubs/jwtk-jjwt-0.11.2:${testdir}/../../../../experimental/stubs/jose4j-0.7.7

@@ -63,4 +63,15 @@ public final class Jwts {
     public static JwtParserBuilder parserBuilder() {
         return null;
     }
+
+    /**
+     * Returns a new {@link JwtBuilder} instance that can be configured and then used to create JWT compact serialized
+     * strings.
+     *
+     * @return a new {@link JwtBuilder} instance that can be configured and then used to create JWT compact serialized
+     * strings.
+     */
+    public static JwtBuilder builder() {
+        return null;
+    }
 }
