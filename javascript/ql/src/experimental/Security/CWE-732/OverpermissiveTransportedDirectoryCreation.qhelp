@@ -1,0 +1,34 @@
+<!DOCTYPE qhelp SYSTEM "qhelp.dtd">
+<qhelp>
+<overview>
+
+<p>Creating program directories world writable may allow an attacker to control program behavior by creating files in them.</p>
+
+<p>This query finds directory creations with an insecure mode transported through variables and expressions.</p>
+
+</overview>
+<recommendation>
+
+<p>Specify a secure mode for every directory creation. Mode <code>700</code> is a secure choice that only allows the owner to access the directory.</p>
+
+</recommendation>
+<example>
+
+<p>This example creates a world writable configuration directory.</p>
+
+<sample src="examples/OverpermissiveTransportedDirectoryCreationBad.js" />
+
+<p>A secure replacement specifies a restricted mode for the created directory.</p>
+
+<sample src="examples/OverpermissiveTransportedDirectoryCreationGood.js" />
+
+</example>
+<references>
+
+<li>
+  Wikipedia:
+  <a href="https://en.wikipedia.org/wiki/File-system_permissions">File-system permissions</a>
+</li>
+
+</references>
+</qhelp>

@@ -1,0 +1,34 @@
+<!DOCTYPE qhelp SYSTEM "qhelp.dtd">
+<qhelp>
+<overview>
+
+<p>Creating program directories world writable may allow an attacker to control program behavior by creating files in them.</p>
+
+<p>Directory creation functions that offer no way to specify mode are unsecurable. They always create directories world writable. File creation functions in several popular packages implicity create directories with no way to specify mode.</p>
+
+</overview>
+<recommendation>
+
+<p>Replace unsecurable functions with securable ones and specify a mode for every directory creation. Mode <code>700</code> is a secure choice that only allows the owner to access the directory.</p>
+
+</recommendation>
+<example>
+
+<p>This example creates a world writable configuration directory.</p>
+
+<sample src="examples/UnsecurableDirectoryCreationBad.js" />
+
+<p>A secure replacement uses a function that can take a mode.</p>
+
+<sample src="examples/UnsecurableDirectoryCreationGood.js" />
+
+</example>
+<references>
+
+<li>
+  Wikipedia:
+  <a href="https://en.wikipedia.org/wiki/File-system_permissions">File-system permissions</a>
+</li>
+
+</references>
+</qhelp>

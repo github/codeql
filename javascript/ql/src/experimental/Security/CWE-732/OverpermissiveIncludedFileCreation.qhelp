@@ -1,0 +1,34 @@
+<!DOCTYPE qhelp SYSTEM "qhelp.dtd">
+<qhelp>
+<overview>
+
+<p>Creating program files world writable may allow an attacker to control program behavior by modifying them.</p>
+
+<p>This query finds file creations with an insecure mode computed by including mode constants with bitwise or operations.</p>
+
+</overview>
+<recommendation>
+
+<p>Construct a mode that does not grant world write permission. That means not including the constants <code>fs.constants.S_IWOTH</code> or <code>fs.constants.S_IRWXO</code>.</p>
+
+</recommendation>
+<example>
+
+<p>This example creates a world writable configuration file.</p>
+
+<sample src="examples/OverpermissiveIncludedFileCreationBad.js" />
+
+<p>A secure replacement constructs a restricted mode for the created file.</p>
+
+<sample src="examples/OverpermissiveIncludedFileCreationGood.js" />
+
+</example>
+<references>
+
+<li>
+  Wikipedia:
+  <a href="https://en.wikipedia.org/wiki/File-system_permissions">File-system permissions</a>
+</li>
+
+</references>
+</qhelp>

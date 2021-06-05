@@ -1,0 +1,34 @@
+<!DOCTYPE qhelp SYSTEM "qhelp.dtd">
+<qhelp>
+<overview>
+
+<p>Creating program files world writable may allow an attacker to control program behavior by modifying them.</p>
+
+<p>File creation functions that offer no way to specify mode are unsecurable. They always create files world writable.</p>
+
+</overview>
+<recommendation>
+
+<p>Replace unsecurable functions with securable ones and specify a mode for every file creation. Mode <code>600</code> is a secure choice that only allows the owner to access the file.</p>
+
+</recommendation>
+<example>
+
+<p>This example creates a world writable configuration file.</p>
+
+<sample src="examples/UnsecurableFileCreationBad.js" />
+
+<p>A secure replacement uses a function that can take a mode.</p>
+
+<sample src="examples/UnsecurableFileCreationGood.js" />
+
+</example>
+<references>
+
+<li>
+  Wikipedia:
+  <a href="https://en.wikipedia.org/wiki/File-system_permissions">File-system permissions</a>
+</li>
+
+</references>
+</qhelp>
