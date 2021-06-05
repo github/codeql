@@ -92,11 +92,11 @@ predicate flowsFromUntrustedToAllowOrigin(HTTP::HeaderWrite allowOriginHW, strin
 
 /**
  * Holds if the provided `allowOriginHW` HeaderWrite is for a `Access-Control-Allow-Origin`
- * header and the value is set to `*` or `null`.
+ * header and the value is set to `null`.
  */
-predicate allowOriginIsWildcardOrNull(HTTP::HeaderWrite allowOriginHW, string message) {
+predicate allowOriginIsNull(HTTP::HeaderWrite allowOriginHW, string message) {
   allowOriginHW.getHeaderName() = headerAllowOrigin() and
-  allowOriginHW.getHeaderValue().toLowerCase() = ["*", "null"] and
+  allowOriginHW.getHeaderValue().toLowerCase() = "null" and
   message =
     headerAllowOrigin() + " header is set to `" + allowOriginHW.getHeaderValue() + "`, and " +
       headerAllowCredentials() + " is set to `true`"
@@ -108,7 +108,7 @@ where
   (
     flowsFromUntrustedToAllowOrigin(allowOriginHW, message)
     or
-    allowOriginIsWildcardOrNull(allowOriginHW, message)
+    allowOriginIsNull(allowOriginHW, message)
   ) and
   not exists(ControlFlow::ConditionGuardNode cgn |
     cgn.ensures(any(AllowedFlag f).getAFlag().getANode(), _)

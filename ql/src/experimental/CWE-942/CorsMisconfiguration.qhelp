@@ -40,7 +40,7 @@
 	especially if the cookies grant session permissions on the user's account.
 </p>
 <p>
-	It also can be very dangerous to set the allowed origins to <code>*</code> or <code>null</code> (which can be bypassed).
+	It also can be very dangerous to set the allowed origins to <code>null</code> (which can be bypassed).
 </p>
 </recommendation>
 <example>

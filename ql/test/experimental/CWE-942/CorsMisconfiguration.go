@@ -10,24 +10,6 @@ const (
 func main() {
 	{
 		http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
-			// BAD: all origins are allowed,
-			// and Access-Control-Allow-Credentials is set to 'true'.
-			w.Header().Set("Access-Control-Allow-Origin", "*")
-			w.Header().Set("Access-Control-Allow-Credentials", "true")
-		})
-		http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
-			// BAD: all origins are allowed,
-			// and `Access-Control-Allow-Credentials` is set to 'true':
-			w.Header().Set(HeaderAllowOrigin, "*")
-			w.Header().Set("Access-Control-Allow-Credentials", "true")
-		})
-		http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
-			// OK: all origins are allowed,
-			// but Access-Control-Allow-Credentials is set to 'false'.
-			w.Header().Set("Access-Control-Allow-Origin", "*")
-			w.Header().Set("Access-Control-Allow-Credentials", "false")
-		})
-		http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
 			// OK: all origins are allowed,
 			// but Access-Control-Allow-Credentials is not set.
 			w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -57,24 +39,6 @@ func main() {
 			// OK: 'null' origin is allowed,
 			// but Access-Control-Allow-Credentials is not set.
 			w.Header().Set("Access-Control-Allow-Origin", Null)
-		})
-	}
-
-	{
-		http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
-			// BAD: all origins are allowed,
-			// and some write methods are allowed,
-			// and `Access-Control-Allow-Credentials` is set to 'true':
-			w.Header().Set("Access-Control-Allow-Origin", "*")
-			w.Header().Set("Access-Control-Allow-Methods", "GET,POST,PUT")
-			w.Header().Set("Access-Control-Allow-Credentials", "true")
-		})
-		http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
-			// OK: all origins are allowed,
-			// and some write methods are allowed,
-			// BUT `Access-Control-Allow-Credentials` is not set:
-			w.Header().Set("Access-Control-Allow-Origin", "*")
-			w.Header().Set("Access-Control-Allow-Methods", "GET,POST,PUT")
 		})
 	}
 
@@ -149,8 +113,8 @@ func main() {
 				w.Header().Set("Access-Control-Allow-Origin", "*")
 			} else if allowedHost {
 				w.Header().Set("Access-Control-Allow-Origin", origin)
+				w.Header().Set(HeaderAllowCredentials, "true")
 			}
-			w.Header().Set(HeaderAllowCredentials, "true")
 		})
 	}
 }
