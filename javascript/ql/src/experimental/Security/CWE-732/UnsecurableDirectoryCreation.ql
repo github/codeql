@@ -4,6 +4,7 @@
  *              Creating program directories world writable may allow an attacker to control
  *              program behavior by creating files in them.
  * @kind problem
+ * @problem.severity warning
  * @id js/insecure-fs/unsecurable-directory-creation
  * @tags security
  *       external/cwe/cwe-732

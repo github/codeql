@@ -526,6 +526,25 @@ abstract class ExcludedEntryModeCorruption extends EntryModeCorruption {
 
 /**
  * A data flow configuration for entry creation with a computed mode
+ * from which some permission has been excluded.
+ */
+class ExcludedEntryCreation extends DataFlow::Configuration {
+  ExcludedEntryCreation() { this = "ExcludedEntryCreation" }
+
+  override predicate isSource(DataFlow::Node node) {
+    node = NodeJSLib::FS::moduleMember("constants").getAPropertyRead()
+  }
+
+  override predicate isAdditionalFlowStep(DataFlow::Node predecessor, DataFlow::Node successor) {
+    exists(ClearBitExpr clear |
+      predecessor.asExpr() = clear.getAnInput() and
+      successor = clear.flow()
+    )
+  }
+}
+
+/**
+ * A data flow configuration for entry creation with a computed mode
  * from which world write permission has been excluded.
  */
 class WorldWriteExcludedEntryCreation extends DataFlow::Configuration {

@@ -1,2 +1,22 @@
-| transport.js:6:23:6:28 | unsafe | message |
-| transport.js:7:31:7:36 | unsafe | message |
+nodes
+| transport.js:3:7:3:20 | unsafe |
+| transport.js:3:16:3:20 | 0o777 |
+| transport.js:3:16:3:20 | 0o777 |
+| transport.js:6:23:6:28 | unsafe |
+| transport.js:6:23:6:28 | unsafe |
+| transport.js:7:31:7:36 | unsafe |
+| transport.js:7:31:7:36 | unsafe |
+| transport.js:10:31:10:35 | 0o777 |
+| transport.js:10:31:10:35 | 0o777 |
+| transport.js:10:31:10:35 | 0o777 |
+edges
+| transport.js:3:7:3:20 | unsafe | transport.js:6:23:6:28 | unsafe |
+| transport.js:3:7:3:20 | unsafe | transport.js:6:23:6:28 | unsafe |
+| transport.js:3:7:3:20 | unsafe | transport.js:7:31:7:36 | unsafe |
+| transport.js:3:7:3:20 | unsafe | transport.js:7:31:7:36 | unsafe |
+| transport.js:3:16:3:20 | 0o777 | transport.js:3:7:3:20 | unsafe |
+| transport.js:3:16:3:20 | 0o777 | transport.js:3:7:3:20 | unsafe |
+| transport.js:10:31:10:35 | 0o777 | transport.js:10:31:10:35 | 0o777 |
+#select
+| transport.js:6:23:6:28 | unsafe | transport.js:3:16:3:20 | 0o777 | transport.js:6:23:6:28 | unsafe | This call uses an overpermissive mode from $@ that creates world writable directories. | transport.js:3:16:3:20 | 0o777 | here |
+| transport.js:7:31:7:36 | unsafe | transport.js:3:16:3:20 | 0o777 | transport.js:7:31:7:36 | unsafe | This call uses an overpermissive mode from $@ that creates world writable directories. | transport.js:3:16:3:20 | 0o777 | here |

@@ -3,6 +3,7 @@
  * @description Creating program files world writable may allow an attacker to control program
  *              behavior by modifying them.
  * @kind problem
+ * @problem.severity warning
  * @id js/insecure-fs/overpermissive-literal-file-creation
  * @tags security
  *       external/cwe/cwe-732

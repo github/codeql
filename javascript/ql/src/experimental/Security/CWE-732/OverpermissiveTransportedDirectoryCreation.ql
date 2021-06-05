@@ -3,6 +3,7 @@
  * @description Creating program directories world writable may allow an attacker to control
  *              program behavior by creating files in them.
  * @kind path-problem
+ * @problem.severity warning
  * @id js/insecure-fs/overpermissive-transported-directory-creation
  * @tags security
  *       external/cwe/cwe-732
@@ -43,7 +44,9 @@ from
   OverpermissiveTransportedDirectoryCreation transport,
   DataFlow::PathNode source,
   DataFlow::PathNode sink
-where transport.hasFlowPath(source, sink)
+where
+  transport.hasFlowPath(source, sink) and
+  source.getNode() != sink.getNode()
 select
   sink.getNode(),
   source,

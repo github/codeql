@@ -1,30 +1,30 @@
-| unsecurable.js:8:1:8:20 | fsExtra.createFile() | message |
-| unsecurable.js:9:1:9:24 | fsExtra ... eSync() | message |
-| unsecurable.js:10:1:10:20 | fsExtra.createLink() | message |
-| unsecurable.js:11:1:11:24 | fsExtra ... kSync() | message |
-| unsecurable.js:12:1:12:23 | fsExtra ... mlink() | message |
-| unsecurable.js:13:1:13:27 | fsExtra ... kSync() | message |
-| unsecurable.js:14:1:14:18 | fsExtra.emptyDir() | message |
-| unsecurable.js:15:1:15:22 | fsExtra ... rSync() | message |
-| unsecurable.js:16:1:16:18 | fsExtra.emptydir() | message |
-| unsecurable.js:17:1:17:22 | fsExtra ... rSync() | message |
-| unsecurable.js:18:1:18:20 | fsExtra.ensureFile() | message |
-| unsecurable.js:19:1:19:24 | fsExtra ... eSync() | message |
-| unsecurable.js:20:1:20:20 | fsExtra.ensureLink() | message |
-| unsecurable.js:21:1:21:24 | fsExtra ... kSync() | message |
-| unsecurable.js:22:1:22:23 | fsExtra ... mlink() | message |
-| unsecurable.js:23:1:23:27 | fsExtra ... kSync() | message |
-| unsecurable.js:24:1:24:20 | fsExtra.outputFile() | message |
-| unsecurable.js:25:1:25:24 | fsExtra ... eSync() | message |
-| unsecurable.js:26:1:26:20 | fsExtra.outputJSON() | message |
-| unsecurable.js:27:1:27:24 | fsExtra ... NSync() | message |
-| unsecurable.js:28:1:28:20 | fsExtra.outputJson() | message |
-| unsecurable.js:29:1:29:24 | fsExtra ... nSync() | message |
-| unsecurable.js:30:1:30:8 | cpFile() | message |
-| unsecurable.js:31:1:31:13 | cpFile.sync() | message |
-| unsecurable.js:32:1:32:5 | cpy() | message |
-| unsecurable.js:33:1:33:10 | moveFile() | message |
-| unsecurable.js:34:1:34:15 | moveFile.sync() | message |
-| unsecurable.js:35:1:35:13 | npmMoveFile() | message |
-| unsecurable.js:36:1:36:18 | npmMoveFile.sync() | message |
-| unsecurable.js:37:1:37:7 | trash() | message |
+| unsecurable.js:8:1:8:20 | fsExtra.createFile() | This unsecurable function creates world writable directories. |
+| unsecurable.js:9:1:9:24 | fsExtra ... eSync() | This unsecurable function creates world writable directories. |
+| unsecurable.js:10:1:10:20 | fsExtra.createLink() | This unsecurable function creates world writable directories. |
+| unsecurable.js:11:1:11:24 | fsExtra ... kSync() | This unsecurable function creates world writable directories. |
+| unsecurable.js:12:1:12:23 | fsExtra ... mlink() | This unsecurable function creates world writable directories. |
+| unsecurable.js:13:1:13:27 | fsExtra ... kSync() | This unsecurable function creates world writable directories. |
+| unsecurable.js:14:1:14:18 | fsExtra.emptyDir() | This unsecurable function creates world writable directories. |
+| unsecurable.js:15:1:15:22 | fsExtra ... rSync() | This unsecurable function creates world writable directories. |
+| unsecurable.js:16:1:16:18 | fsExtra.emptydir() | This unsecurable function creates world writable directories. |
+| unsecurable.js:17:1:17:22 | fsExtra ... rSync() | This unsecurable function creates world writable directories. |
+| unsecurable.js:18:1:18:20 | fsExtra.ensureFile() | This unsecurable function creates world writable directories. |
+| unsecurable.js:19:1:19:24 | fsExtra ... eSync() | This unsecurable function creates world writable directories. |
+| unsecurable.js:20:1:20:20 | fsExtra.ensureLink() | This unsecurable function creates world writable directories. |
+| unsecurable.js:21:1:21:24 | fsExtra ... kSync() | This unsecurable function creates world writable directories. |
+| unsecurable.js:22:1:22:23 | fsExtra ... mlink() | This unsecurable function creates world writable directories. |
+| unsecurable.js:23:1:23:27 | fsExtra ... kSync() | This unsecurable function creates world writable directories. |
+| unsecurable.js:24:1:24:20 | fsExtra.outputFile() | This unsecurable function creates world writable directories. |
+| unsecurable.js:25:1:25:24 | fsExtra ... eSync() | This unsecurable function creates world writable directories. |
+| unsecurable.js:26:1:26:20 | fsExtra.outputJSON() | This unsecurable function creates world writable directories. |
+| unsecurable.js:27:1:27:24 | fsExtra ... NSync() | This unsecurable function creates world writable directories. |
+| unsecurable.js:28:1:28:20 | fsExtra.outputJson() | This unsecurable function creates world writable directories. |
+| unsecurable.js:29:1:29:24 | fsExtra ... nSync() | This unsecurable function creates world writable directories. |
+| unsecurable.js:30:1:30:8 | cpFile() | This unsecurable function creates world writable directories. |
+| unsecurable.js:31:1:31:13 | cpFile.sync() | This unsecurable function creates world writable directories. |
+| unsecurable.js:32:1:32:5 | cpy() | This unsecurable function creates world writable directories. |
+| unsecurable.js:33:1:33:10 | moveFile() | This unsecurable function creates world writable directories. |
+| unsecurable.js:34:1:34:15 | moveFile.sync() | This unsecurable function creates world writable directories. |
+| unsecurable.js:35:1:35:13 | npmMoveFile() | This unsecurable function creates world writable directories. |
+| unsecurable.js:36:1:36:18 | npmMoveFile.sync() | This unsecurable function creates world writable directories. |
+| unsecurable.js:37:1:37:7 | trash() | This unsecurable function creates world writable directories. |

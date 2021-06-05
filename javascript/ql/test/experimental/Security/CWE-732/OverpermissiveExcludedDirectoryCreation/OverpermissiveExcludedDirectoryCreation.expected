@@ -1,0 +1,148 @@
+nodes
+| exclusion.js:3:7:3:42 | safe |
+| exclusion.js:3:7:3:42 | safe |
+| exclusion.js:3:7:3:42 | safe |
+| exclusion.js:3:14:3:18 | 0o777 |
+| exclusion.js:3:14:3:18 | 0o777 |
+| exclusion.js:3:14:3:42 | 0o777 & ... S_IRWXO |
+| exclusion.js:3:14:3:42 | 0o777 & ... S_IRWXO |
+| exclusion.js:3:14:3:42 | 0o777 & ... S_IRWXO |
+| exclusion.js:3:23:3:42 | fs.constants.S_IRWXO |
+| exclusion.js:3:23:3:42 | fs.constants.S_IRWXO |
+| exclusion.js:3:23:3:42 | fs.constants.S_IRWXO |
+| exclusion.js:3:23:3:42 | fs.constants.S_IRWXO |
+| exclusion.js:4:7:4:44 | unsafe |
+| exclusion.js:4:7:4:44 | unsafe |
+| exclusion.js:4:7:4:44 | unsafe |
+| exclusion.js:4:7:4:44 | unsafe |
+| exclusion.js:4:7:4:44 | unsafe |
+| exclusion.js:4:16:4:20 | 0o777 |
+| exclusion.js:4:16:4:20 | 0o777 |
+| exclusion.js:4:16:4:20 | 0o777 |
+| exclusion.js:4:16:4:20 | 0o777 |
+| exclusion.js:4:16:4:44 | 0o777 & ... S_IRWXG |
+| exclusion.js:4:16:4:44 | 0o777 & ... S_IRWXG |
+| exclusion.js:4:16:4:44 | 0o777 & ... S_IRWXG |
+| exclusion.js:4:16:4:44 | 0o777 & ... S_IRWXG |
+| exclusion.js:4:16:4:44 | 0o777 & ... S_IRWXG |
+| exclusion.js:4:24:4:44 | ~fs.con ... S_IRWXG |
+| exclusion.js:4:24:4:44 | ~fs.con ... S_IRWXG |
+| exclusion.js:4:24:4:44 | ~fs.con ... S_IRWXG |
+| exclusion.js:4:25:4:44 | fs.constants.S_IRWXG |
+| exclusion.js:4:25:4:44 | fs.constants.S_IRWXG |
+| exclusion.js:4:25:4:44 | fs.constants.S_IRWXG |
+| exclusion.js:4:25:4:44 | fs.constants.S_IRWXG |
+| exclusion.js:5:7:5:25 | transported |
+| exclusion.js:5:21:5:25 | 0o777 |
+| exclusion.js:5:21:5:25 | 0o777 |
+| exclusion.js:7:23:7:26 | safe |
+| exclusion.js:7:23:7:26 | safe |
+| exclusion.js:7:23:7:26 | safe |
+| exclusion.js:7:23:7:26 | safe |
+| exclusion.js:7:23:7:26 | safe |
+| exclusion.js:7:23:7:26 | safe |
+| exclusion.js:8:23:8:28 | unsafe |
+| exclusion.js:8:23:8:28 | unsafe |
+| exclusion.js:8:23:8:28 | unsafe |
+| exclusion.js:8:23:8:28 | unsafe |
+| exclusion.js:9:23:9:28 | unsafe |
+| exclusion.js:9:23:9:28 | unsafe |
+| exclusion.js:9:23:9:51 | unsafe  ... S_IRWXO |
+| exclusion.js:9:23:9:51 | unsafe  ... S_IRWXO |
+| exclusion.js:9:23:9:51 | unsafe  ... S_IRWXO |
+| exclusion.js:9:23:9:51 | unsafe  ... S_IRWXO |
+| exclusion.js:9:23:9:51 | unsafe  ... S_IRWXO |
+| exclusion.js:9:23:9:51 | unsafe  ... S_IRWXO |
+| exclusion.js:9:32:9:51 | fs.constants.S_IRWXO |
+| exclusion.js:9:32:9:51 | fs.constants.S_IRWXO |
+| exclusion.js:9:32:9:51 | fs.constants.S_IRWXO |
+| exclusion.js:9:32:9:51 | fs.constants.S_IRWXO |
+| exclusion.js:10:23:10:28 | unsafe |
+| exclusion.js:10:23:10:28 | unsafe |
+| exclusion.js:10:23:10:28 | unsafe |
+| exclusion.js:10:23:10:32 | unsafe - 1 |
+| exclusion.js:10:23:10:32 | unsafe - 1 |
+| exclusion.js:10:32:10:32 | 1 |
+| exclusion.js:10:32:10:32 | 1 |
+| exclusion.js:11:23:11:27 | 0o777 |
+| exclusion.js:11:23:11:27 | 0o777 |
+| exclusion.js:11:23:11:27 | 0o777 |
+| exclusion.js:12:23:12:33 | transported |
+| exclusion.js:12:23:12:33 | transported |
+edges
+| exclusion.js:3:7:3:42 | safe | exclusion.js:7:23:7:26 | safe |
+| exclusion.js:3:7:3:42 | safe | exclusion.js:7:23:7:26 | safe |
+| exclusion.js:3:7:3:42 | safe | exclusion.js:7:23:7:26 | safe |
+| exclusion.js:3:7:3:42 | safe | exclusion.js:7:23:7:26 | safe |
+| exclusion.js:3:7:3:42 | safe | exclusion.js:7:23:7:26 | safe |
+| exclusion.js:3:7:3:42 | safe | exclusion.js:7:23:7:26 | safe |
+| exclusion.js:3:14:3:18 | 0o777 | exclusion.js:3:14:3:42 | 0o777 & ... S_IRWXO |
+| exclusion.js:3:14:3:18 | 0o777 | exclusion.js:3:14:3:42 | 0o777 & ... S_IRWXO |
+| exclusion.js:3:14:3:42 | 0o777 & ... S_IRWXO | exclusion.js:3:7:3:42 | safe |
+| exclusion.js:3:14:3:42 | 0o777 & ... S_IRWXO | exclusion.js:3:7:3:42 | safe |
+| exclusion.js:3:14:3:42 | 0o777 & ... S_IRWXO | exclusion.js:3:7:3:42 | safe |
+| exclusion.js:3:23:3:42 | fs.constants.S_IRWXO | exclusion.js:3:14:3:42 | 0o777 & ... S_IRWXO |
+| exclusion.js:3:23:3:42 | fs.constants.S_IRWXO | exclusion.js:3:14:3:42 | 0o777 & ... S_IRWXO |
+| exclusion.js:3:23:3:42 | fs.constants.S_IRWXO | exclusion.js:3:14:3:42 | 0o777 & ... S_IRWXO |
+| exclusion.js:3:23:3:42 | fs.constants.S_IRWXO | exclusion.js:3:14:3:42 | 0o777 & ... S_IRWXO |
+| exclusion.js:4:7:4:44 | unsafe | exclusion.js:8:23:8:28 | unsafe |
+| exclusion.js:4:7:4:44 | unsafe | exclusion.js:8:23:8:28 | unsafe |
+| exclusion.js:4:7:4:44 | unsafe | exclusion.js:8:23:8:28 | unsafe |
+| exclusion.js:4:7:4:44 | unsafe | exclusion.js:8:23:8:28 | unsafe |
+| exclusion.js:4:7:4:44 | unsafe | exclusion.js:9:23:9:28 | unsafe |
+| exclusion.js:4:7:4:44 | unsafe | exclusion.js:9:23:9:28 | unsafe |
+| exclusion.js:4:7:4:44 | unsafe | exclusion.js:10:23:10:28 | unsafe |
+| exclusion.js:4:7:4:44 | unsafe | exclusion.js:10:23:10:28 | unsafe |
+| exclusion.js:4:7:4:44 | unsafe | exclusion.js:10:23:10:28 | unsafe |
+| exclusion.js:4:16:4:20 | 0o777 | exclusion.js:4:16:4:44 | 0o777 & ... S_IRWXG |
+| exclusion.js:4:16:4:20 | 0o777 | exclusion.js:4:16:4:44 | 0o777 & ... S_IRWXG |
+| exclusion.js:4:16:4:20 | 0o777 | exclusion.js:4:16:4:44 | 0o777 & ... S_IRWXG |
+| exclusion.js:4:16:4:20 | 0o777 | exclusion.js:4:16:4:44 | 0o777 & ... S_IRWXG |
+| exclusion.js:4:16:4:20 | 0o777 | exclusion.js:4:16:4:44 | 0o777 & ... S_IRWXG |
+| exclusion.js:4:16:4:20 | 0o777 | exclusion.js:4:16:4:44 | 0o777 & ... S_IRWXG |
+| exclusion.js:4:16:4:44 | 0o777 & ... S_IRWXG | exclusion.js:4:7:4:44 | unsafe |
+| exclusion.js:4:16:4:44 | 0o777 & ... S_IRWXG | exclusion.js:4:7:4:44 | unsafe |
+| exclusion.js:4:16:4:44 | 0o777 & ... S_IRWXG | exclusion.js:4:7:4:44 | unsafe |
+| exclusion.js:4:16:4:44 | 0o777 & ... S_IRWXG | exclusion.js:4:7:4:44 | unsafe |
+| exclusion.js:4:16:4:44 | 0o777 & ... S_IRWXG | exclusion.js:4:7:4:44 | unsafe |
+| exclusion.js:4:24:4:44 | ~fs.con ... S_IRWXG | exclusion.js:4:16:4:44 | 0o777 & ... S_IRWXG |
+| exclusion.js:4:24:4:44 | ~fs.con ... S_IRWXG | exclusion.js:4:16:4:44 | 0o777 & ... S_IRWXG |
+| exclusion.js:4:24:4:44 | ~fs.con ... S_IRWXG | exclusion.js:4:16:4:44 | 0o777 & ... S_IRWXG |
+| exclusion.js:4:24:4:44 | ~fs.con ... S_IRWXG | exclusion.js:4:16:4:44 | 0o777 & ... S_IRWXG |
+| exclusion.js:4:24:4:44 | ~fs.con ... S_IRWXG | exclusion.js:4:16:4:44 | 0o777 & ... S_IRWXG |
+| exclusion.js:4:24:4:44 | ~fs.con ... S_IRWXG | exclusion.js:4:16:4:44 | 0o777 & ... S_IRWXG |
+| exclusion.js:4:25:4:44 | fs.constants.S_IRWXG | exclusion.js:4:16:4:44 | 0o777 & ... S_IRWXG |
+| exclusion.js:4:25:4:44 | fs.constants.S_IRWXG | exclusion.js:4:16:4:44 | 0o777 & ... S_IRWXG |
+| exclusion.js:4:25:4:44 | fs.constants.S_IRWXG | exclusion.js:4:24:4:44 | ~fs.con ... S_IRWXG |
+| exclusion.js:4:25:4:44 | fs.constants.S_IRWXG | exclusion.js:4:24:4:44 | ~fs.con ... S_IRWXG |
+| exclusion.js:4:25:4:44 | fs.constants.S_IRWXG | exclusion.js:4:24:4:44 | ~fs.con ... S_IRWXG |
+| exclusion.js:4:25:4:44 | fs.constants.S_IRWXG | exclusion.js:4:24:4:44 | ~fs.con ... S_IRWXG |
+| exclusion.js:5:7:5:25 | transported | exclusion.js:12:23:12:33 | transported |
+| exclusion.js:5:7:5:25 | transported | exclusion.js:12:23:12:33 | transported |
+| exclusion.js:5:21:5:25 | 0o777 | exclusion.js:5:7:5:25 | transported |
+| exclusion.js:5:21:5:25 | 0o777 | exclusion.js:5:7:5:25 | transported |
+| exclusion.js:9:23:9:28 | unsafe | exclusion.js:9:23:9:51 | unsafe  ... S_IRWXO |
+| exclusion.js:9:23:9:28 | unsafe | exclusion.js:9:23:9:51 | unsafe  ... S_IRWXO |
+| exclusion.js:9:23:9:28 | unsafe | exclusion.js:9:23:9:51 | unsafe  ... S_IRWXO |
+| exclusion.js:9:23:9:28 | unsafe | exclusion.js:9:23:9:51 | unsafe  ... S_IRWXO |
+| exclusion.js:9:32:9:51 | fs.constants.S_IRWXO | exclusion.js:9:23:9:51 | unsafe  ... S_IRWXO |
+| exclusion.js:9:32:9:51 | fs.constants.S_IRWXO | exclusion.js:9:23:9:51 | unsafe  ... S_IRWXO |
+| exclusion.js:9:32:9:51 | fs.constants.S_IRWXO | exclusion.js:9:23:9:51 | unsafe  ... S_IRWXO |
+| exclusion.js:9:32:9:51 | fs.constants.S_IRWXO | exclusion.js:9:23:9:51 | unsafe  ... S_IRWXO |
+| exclusion.js:9:32:9:51 | fs.constants.S_IRWXO | exclusion.js:9:23:9:51 | unsafe  ... S_IRWXO |
+| exclusion.js:9:32:9:51 | fs.constants.S_IRWXO | exclusion.js:9:23:9:51 | unsafe  ... S_IRWXO |
+| exclusion.js:9:32:9:51 | fs.constants.S_IRWXO | exclusion.js:9:23:9:51 | unsafe  ... S_IRWXO |
+| exclusion.js:9:32:9:51 | fs.constants.S_IRWXO | exclusion.js:9:23:9:51 | unsafe  ... S_IRWXO |
+| exclusion.js:10:23:10:28 | unsafe | exclusion.js:10:23:10:32 | unsafe - 1 |
+| exclusion.js:10:23:10:28 | unsafe | exclusion.js:10:23:10:32 | unsafe - 1 |
+| exclusion.js:10:23:10:28 | unsafe | exclusion.js:10:23:10:32 | unsafe - 1 |
+| exclusion.js:10:23:10:28 | unsafe | exclusion.js:10:23:10:32 | unsafe - 1 |
+| exclusion.js:10:23:10:28 | unsafe | exclusion.js:10:23:10:32 | unsafe - 1 |
+| exclusion.js:10:23:10:28 | unsafe | exclusion.js:10:23:10:32 | unsafe - 1 |
+| exclusion.js:10:32:10:32 | 1 | exclusion.js:10:23:10:32 | unsafe - 1 |
+| exclusion.js:10:32:10:32 | 1 | exclusion.js:10:23:10:32 | unsafe - 1 |
+| exclusion.js:10:32:10:32 | 1 | exclusion.js:10:23:10:32 | unsafe - 1 |
+| exclusion.js:10:32:10:32 | 1 | exclusion.js:10:23:10:32 | unsafe - 1 |
+| exclusion.js:11:23:11:27 | 0o777 | exclusion.js:11:23:11:27 | 0o777 |
+#select
+| exclusion.js:8:23:8:28 | unsafe | exclusion.js:4:16:4:20 | 0o777 | exclusion.js:8:23:8:28 | unsafe | This call uses an overpermissive mode from $@ that creates world writable directories. | exclusion.js:4:16:4:20 | 0o777 | here |

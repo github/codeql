@@ -3,6 +3,7 @@
  * @description Creating program files without specifying mode defaults to world writable
  *              which may allow an attacker to control program behavior by modifying them.
  * @kind problem
+ * @problem.severity warning
  * @id js/insecure-fs/modeless-file-creation
  * @tags security
  *       external/cwe/cwe-732

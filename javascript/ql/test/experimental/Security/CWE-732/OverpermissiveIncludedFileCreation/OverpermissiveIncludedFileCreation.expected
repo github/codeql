@@ -1,0 +1,62 @@
+nodes
+| inclusion.js:4:7:4:58 | unsafe |
+| inclusion.js:4:7:4:58 | unsafe |
+| inclusion.js:4:7:4:58 | unsafe |
+| inclusion.js:4:7:4:58 | unsafe |
+| inclusion.js:4:16:4:35 | fs.constants.S_IRWXU |
+| inclusion.js:4:16:4:35 | fs.constants.S_IRWXU |
+| inclusion.js:4:16:4:58 | fs.cons ... S_IRWXO |
+| inclusion.js:4:16:4:58 | fs.cons ... S_IRWXO |
+| inclusion.js:4:16:4:58 | fs.cons ... S_IRWXO |
+| inclusion.js:4:16:4:58 | fs.cons ... S_IRWXO |
+| inclusion.js:4:39:4:58 | fs.constants.S_IRWXO |
+| inclusion.js:4:39:4:58 | fs.constants.S_IRWXO |
+| inclusion.js:4:39:4:58 | fs.constants.S_IRWXO |
+| inclusion.js:4:39:4:58 | fs.constants.S_IRWXO |
+| inclusion.js:8:43:8:48 | unsafe |
+| inclusion.js:8:43:8:48 | unsafe |
+| inclusion.js:9:43:9:48 | unsafe |
+| inclusion.js:9:43:9:48 | unsafe |
+| inclusion.js:9:43:9:48 | unsafe |
+| inclusion.js:9:43:9:48 | unsafe |
+| inclusion.js:9:43:9:52 | unsafe + 1 |
+| inclusion.js:9:43:9:52 | unsafe + 1 |
+| inclusion.js:9:43:9:52 | unsafe + 1 |
+| inclusion.js:9:43:9:52 | unsafe + 1 |
+| inclusion.js:9:52:9:52 | 1 |
+| inclusion.js:9:52:9:52 | 1 |
+edges
+| inclusion.js:4:7:4:58 | unsafe | inclusion.js:8:43:8:48 | unsafe |
+| inclusion.js:4:7:4:58 | unsafe | inclusion.js:8:43:8:48 | unsafe |
+| inclusion.js:4:7:4:58 | unsafe | inclusion.js:9:43:9:48 | unsafe |
+| inclusion.js:4:7:4:58 | unsafe | inclusion.js:9:43:9:48 | unsafe |
+| inclusion.js:4:7:4:58 | unsafe | inclusion.js:9:43:9:48 | unsafe |
+| inclusion.js:4:7:4:58 | unsafe | inclusion.js:9:43:9:48 | unsafe |
+| inclusion.js:4:16:4:35 | fs.constants.S_IRWXU | inclusion.js:4:16:4:58 | fs.cons ... S_IRWXO |
+| inclusion.js:4:16:4:35 | fs.constants.S_IRWXU | inclusion.js:4:16:4:58 | fs.cons ... S_IRWXO |
+| inclusion.js:4:16:4:35 | fs.constants.S_IRWXU | inclusion.js:4:16:4:58 | fs.cons ... S_IRWXO |
+| inclusion.js:4:16:4:35 | fs.constants.S_IRWXU | inclusion.js:4:16:4:58 | fs.cons ... S_IRWXO |
+| inclusion.js:4:16:4:58 | fs.cons ... S_IRWXO | inclusion.js:4:7:4:58 | unsafe |
+| inclusion.js:4:16:4:58 | fs.cons ... S_IRWXO | inclusion.js:4:7:4:58 | unsafe |
+| inclusion.js:4:16:4:58 | fs.cons ... S_IRWXO | inclusion.js:4:7:4:58 | unsafe |
+| inclusion.js:4:16:4:58 | fs.cons ... S_IRWXO | inclusion.js:4:7:4:58 | unsafe |
+| inclusion.js:4:39:4:58 | fs.constants.S_IRWXO | inclusion.js:4:16:4:58 | fs.cons ... S_IRWXO |
+| inclusion.js:4:39:4:58 | fs.constants.S_IRWXO | inclusion.js:4:16:4:58 | fs.cons ... S_IRWXO |
+| inclusion.js:4:39:4:58 | fs.constants.S_IRWXO | inclusion.js:4:16:4:58 | fs.cons ... S_IRWXO |
+| inclusion.js:4:39:4:58 | fs.constants.S_IRWXO | inclusion.js:4:16:4:58 | fs.cons ... S_IRWXO |
+| inclusion.js:4:39:4:58 | fs.constants.S_IRWXO | inclusion.js:4:16:4:58 | fs.cons ... S_IRWXO |
+| inclusion.js:4:39:4:58 | fs.constants.S_IRWXO | inclusion.js:4:16:4:58 | fs.cons ... S_IRWXO |
+| inclusion.js:9:43:9:48 | unsafe | inclusion.js:9:43:9:52 | unsafe + 1 |
+| inclusion.js:9:43:9:48 | unsafe | inclusion.js:9:43:9:52 | unsafe + 1 |
+| inclusion.js:9:43:9:48 | unsafe | inclusion.js:9:43:9:52 | unsafe + 1 |
+| inclusion.js:9:43:9:48 | unsafe | inclusion.js:9:43:9:52 | unsafe + 1 |
+| inclusion.js:9:43:9:48 | unsafe | inclusion.js:9:43:9:52 | unsafe + 1 |
+| inclusion.js:9:43:9:48 | unsafe | inclusion.js:9:43:9:52 | unsafe + 1 |
+| inclusion.js:9:43:9:48 | unsafe | inclusion.js:9:43:9:52 | unsafe + 1 |
+| inclusion.js:9:43:9:48 | unsafe | inclusion.js:9:43:9:52 | unsafe + 1 |
+| inclusion.js:9:52:9:52 | 1 | inclusion.js:9:43:9:52 | unsafe + 1 |
+| inclusion.js:9:52:9:52 | 1 | inclusion.js:9:43:9:52 | unsafe + 1 |
+| inclusion.js:9:52:9:52 | 1 | inclusion.js:9:43:9:52 | unsafe + 1 |
+| inclusion.js:9:52:9:52 | 1 | inclusion.js:9:43:9:52 | unsafe + 1 |
+#select
+| inclusion.js:8:43:8:48 | unsafe | inclusion.js:4:39:4:58 | fs.constants.S_IRWXO | inclusion.js:8:43:8:48 | unsafe | This call uses an overpermissive mode constant from $@ that creates world writable files. | inclusion.js:4:39:4:58 | fs.constants.S_IRWXO | here |

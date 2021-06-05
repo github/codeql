@@ -1,3 +1,27 @@
-| transport.js:6:43:6:48 | unsafe | message |
-| transport.js:8:28:8:33 | unsafe | message |
-| transport.js:10:40:10:45 | unsafe | message |
+nodes
+| transport.js:3:7:3:20 | unsafe |
+| transport.js:3:16:3:20 | 0o777 |
+| transport.js:3:16:3:20 | 0o777 |
+| transport.js:6:43:6:48 | unsafe |
+| transport.js:6:43:6:48 | unsafe |
+| transport.js:8:28:8:33 | unsafe |
+| transport.js:8:28:8:33 | unsafe |
+| transport.js:10:40:10:45 | unsafe |
+| transport.js:10:40:10:45 | unsafe |
+| transport.js:12:28:12:32 | 0o777 |
+| transport.js:12:28:12:32 | 0o777 |
+| transport.js:12:28:12:32 | 0o777 |
+edges
+| transport.js:3:7:3:20 | unsafe | transport.js:6:43:6:48 | unsafe |
+| transport.js:3:7:3:20 | unsafe | transport.js:6:43:6:48 | unsafe |
+| transport.js:3:7:3:20 | unsafe | transport.js:8:28:8:33 | unsafe |
+| transport.js:3:7:3:20 | unsafe | transport.js:8:28:8:33 | unsafe |
+| transport.js:3:7:3:20 | unsafe | transport.js:10:40:10:45 | unsafe |
+| transport.js:3:7:3:20 | unsafe | transport.js:10:40:10:45 | unsafe |
+| transport.js:3:16:3:20 | 0o777 | transport.js:3:7:3:20 | unsafe |
+| transport.js:3:16:3:20 | 0o777 | transport.js:3:7:3:20 | unsafe |
+| transport.js:12:28:12:32 | 0o777 | transport.js:12:28:12:32 | 0o777 |
+#select
+| transport.js:6:43:6:48 | unsafe | transport.js:3:16:3:20 | 0o777 | transport.js:6:43:6:48 | unsafe | This call uses an overpermissive mode from $@ that creates world writable files. | transport.js:3:16:3:20 | 0o777 | here |
+| transport.js:8:28:8:33 | unsafe | transport.js:3:16:3:20 | 0o777 | transport.js:8:28:8:33 | unsafe | This call uses an overpermissive mode from $@ that creates world writable files. | transport.js:3:16:3:20 | 0o777 | here |
+| transport.js:10:40:10:45 | unsafe | transport.js:3:16:3:20 | 0o777 | transport.js:10:40:10:45 | unsafe | This call uses an overpermissive mode from $@ that creates world writable files. | transport.js:3:16:3:20 | 0o777 | here |

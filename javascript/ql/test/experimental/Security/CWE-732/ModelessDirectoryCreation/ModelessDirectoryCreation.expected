@@ -1,7 +1,7 @@
-| ImmediateOrPropertyArgument1.js:3:1:3:31 | fs.mkdi ...  => {}) | message |
-| ImmediateOrPropertyArgument1.js:4:1:4:42 | fs.mkdi ...  => {}) | message |
-| ImmediateOrPropertyArgument1.js:7:1:7:35 | fs.mkdi ...  => {}) | message |
-| ImmediateOrPropertyArgument1.js:8:1:8:52 | fs.mkdi ...  => {}) | message |
-| ObjectArgument1.js:3:1:3:20 | makeDir('/tmp/dir1') | message |
-| ObjectArgument1.js:4:1:4:24 | makeDir ... 2', {}) | message |
-| ObjectArgument1.js:5:1:5:41 | makeDir ... ined }) | message |
+| ImmediateOrPropertyArgument1.js:3:1:3:31 | fs.mkdi ...  => {}) | This modeless call creates world writable directories. |
+| ImmediateOrPropertyArgument1.js:4:1:4:42 | fs.mkdi ...  => {}) | This modeless call creates world writable directories. |
+| ImmediateOrPropertyArgument1.js:7:1:7:35 | fs.mkdi ...  => {}) | This modeless call creates world writable directories. |
+| ImmediateOrPropertyArgument1.js:8:1:8:52 | fs.mkdi ...  => {}) | This modeless call creates world writable directories. |
+| ObjectArgument1.js:3:1:3:20 | makeDir('/tmp/dir1') | This modeless call creates world writable directories. |
+| ObjectArgument1.js:4:1:4:24 | makeDir ... 2', {}) | This modeless call creates world writable directories. |
+| ObjectArgument1.js:5:1:5:41 | makeDir ... ined }) | This modeless call creates world writable directories. |

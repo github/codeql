@@ -3,6 +3,7 @@
  * @description Creating program files world writable may allow an attacker to control program
  *              behavior by modifying them.
  * @kind path-problem
+ * @problem.severity warning
  * @id js/insecure-fs/overpermissive-excluded-file-creation
  * @tags security
  *       external/cwe/cwe-732
@@ -52,6 +53,18 @@ class ExcludedFileModeCorruption extends ExcludedEntryModeCorruption {
 
 /**
  * A data flow configuration for file creation with a computed mode
+ * from which some permission has been excluded.
+ */
+class ExcludedFileCreation extends ExcludedEntryCreation {
+  ExcludedFileCreation() { this = "ExcludedEntryCreation" }
+
+  override predicate isSink(DataFlow::Node node) {
+    exists(ModableFileCreation creation | creation.getSpecifier() = node.asExpr())
+  }
+}
+
+/**
+ * A data flow configuration for file creation with a computed mode
  * from which world write permission has been excluded.
  *
  * For example:
@@ -71,13 +84,16 @@ class WorldWriteExcludedFileCreation extends WorldWriteExcludedEntryCreation {
 from
   ExcludedFileModeConstruction construction,
   ExcludedFileModeCorruption corruption,
+  ExcludedFileCreation exclusion,
   WorldWriteExcludedFileCreation worldWriteExclusion,
   DataFlow::PathNode source,
   DataFlow::PathNode sink
 where
   construction.hasFlowPath(source, sink) and
-  not corruption.hasFlowPath(_, sink) and
-  not worldWriteExclusion.hasFlowPath(_, sink)
+  source.getNode() != sink.getNode() and
+  not corruption.hasFlow(_, sink.getNode()) and
+  exclusion.hasFlow(_, sink.getNode()) and
+  not worldWriteExclusion.hasFlow(_, sink.getNode())
 select
   sink.getNode(),
   source,

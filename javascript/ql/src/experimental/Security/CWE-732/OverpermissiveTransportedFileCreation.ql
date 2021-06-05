@@ -3,6 +3,7 @@
  * @description Creating program files world writable may allow an attacker to control program
  *              behavior by modifying them.
  * @kind path-problem
+ * @problem.severity warning
  * @id js/insecure-fs/overpermissive-transported-file-creation
  * @tags security
  *       external/cwe/cwe-732
@@ -41,7 +42,9 @@ from
   OverpermissiveTransportedFileCreation transport,
   DataFlow::PathNode source,
   DataFlow::PathNode sink
-where transport.hasFlowPath(source, sink)
+where
+  transport.hasFlowPath(source, sink) and
+  source.getNode() != sink.getNode()
 select
   sink.getNode(),
   source,
