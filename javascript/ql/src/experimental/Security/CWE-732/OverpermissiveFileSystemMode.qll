@@ -286,24 +286,19 @@ abstract class ModableEntryCreation extends EntryCreation {
   cached
   abstract Expr getSpecifier();
 
-  /** Gets the type of the argument through which mode is specified. */
-  cached
-  string getArgumentType() {
-    result = this.getArgument().flow().analyze().getAType().getTypeofTag()
-  }
-
   /** Holds if the invocation provides the mode argument. */
   predicate hasArgument() { exists(this.getArgument()) }
 
   /** Holds if the invocation does not provide the mode argument. */
   predicate hasElidedArgument() { not this.hasArgument() }
 
-  /** Holds if the invocation provides `undefined` for the mode argument. */
+  /** Holds if the invocation may provide `undefined` for the mode argument. */
   predicate hasUndefinedArgument() {
-    this.getArgument().analyze().getAValue() instanceof AbstractUndefined
+    SyntacticConstants::isUndefined(this.getArgument()) or
+    this.getArgument().getType() instanceof UndefinedType
   }
 
-  /** Holds if the invocation provides a mode argument that is not `undefined`. */
+  /** Holds if the invocation may provide a mode argument that is not `undefined`. */
   predicate hasDefinedArgument() { this.hasArgument() and not this.hasUndefinedArgument() }
 
   /** Holds if the invocation provides a mode specifier. */
@@ -312,12 +307,13 @@ abstract class ModableEntryCreation extends EntryCreation {
   /** Holds if the invocation does not provide a mode specifier. */
   predicate hasElidedSpecifier() { not this.hasSpecifier() }
 
-  /** Holds if the invocation provides `undefined` for the mode specifier. */
+  /** Holds if the invocation may provide `undefined` for the mode specifier. */
   predicate hasUndefinedSpecifier() {
-    this.getSpecifier().analyze().getAValue() instanceof AbstractUndefined
+    SyntacticConstants::isUndefined(this.getSpecifier()) or
+    this.getSpecifier().getType() instanceof UndefinedType
   }
 
-  /** Holds if the invocation provides a mode specifier that is not `undefined`. */
+  /** Holds if the invocation may provide a mode specifier that is not `undefined`. */
   predicate hasDefinedSpecifier() { this.hasSpecifier() and not this.hasUndefinedSpecifier() }
 
   /** Holds if the invocation does not specify mode. */
@@ -354,9 +350,12 @@ abstract class Argument2EntryCreation extends ModableEntryCreation {
  * ```
  */
 abstract class ImmediateSpecifierEntryCreation extends ModableEntryCreation {
-  override Expr getSpecifier() { this.hasModeArgument() and result = this.getArgument() }
-
-  private predicate hasModeArgument() { this.getArgumentType() = ["number", "string"] }
+  override Expr getSpecifier() {
+    this.getArgument() instanceof ObjectExpr or
+    this.getArgument() instanceof FunctionExpr or
+    this.getArgument() instanceof ArrowFunctionExpr or
+    result = this.getArgument()
+  }
 }
 
 /**
@@ -369,7 +368,6 @@ abstract class ImmediateSpecifierEntryCreation extends ModableEntryCreation {
  */
 abstract class PropertySpecifierEntryCreation extends ModableEntryCreation {
   override Expr getSpecifier() {
-    this.getArgumentType() = "object" and
     result = this.getArgument().(ObjectExpr).getPropertyByName("mode").getInit()
   }
 }
@@ -386,23 +384,22 @@ abstract class PropertySpecifierEntryCreation extends ModableEntryCreation {
  */
 abstract class ImmediateOrPropertySpecifierEntryCreation extends ModableEntryCreation {
   override Expr getSpecifier() {
-    this.hasImmediateMode() and result = this.getImmediateSpecifier()
+    this.getArgument() instanceof ObjectExpr and result = this.getPropertySpecifier()
     or
-    this.hasPropertyMode() and result = this.getPropertySpecifier()
+    this.getArgument() instanceof ImmediateSpecifier and result = this.getArgument()
   }
 
-  /** Holds if the invocation provides an immediate mode. */
-  private predicate hasImmediateMode() { this.getArgumentType() = ["number", "string"] }
-
-  /** Holds if the invocation provides an object for the mode argument. */
-  private predicate hasPropertyMode() { this.getArgumentType() = "object" }
-
-  /** Gets the mode specifier provided as an immediate value. */
-  private Expr getImmediateSpecifier() { result = this.getArgument() }
-
-  /** Gets the mode specifier provided in an object property name `mode`. */
+  /** Gets the mode specifier provided in an object property named `mode`. */
   private Expr getPropertySpecifier() {
     result = this.getArgument().(ObjectExpr).getPropertyByName("mode").getInit()
+  }
+}
+
+class ImmediateSpecifier extends Expr {
+  ImmediateSpecifier() {
+    not this instanceof ObjectExpr and
+    not this instanceof FunctionExpr and
+    not this instanceof ArrowFunctionExpr
   }
 }
 
