@@ -262,6 +262,15 @@ class LiteralSpecifier extends Literal {
   }
 }
 
+/** An expression that is likely to be an immediate specifier. */
+class ImmediateSpecifier extends Expr {
+  ImmediateSpecifier() {
+    not this instanceof ObjectExpr and
+    not this instanceof FunctionExpr and
+    not this instanceof ArrowFunctionExpr
+  }
+}
+
 /** An invocation that can create a file system entry. */
 abstract class EntryCreation extends DataFlow::InvokeNode { }
 
@@ -392,14 +401,6 @@ abstract class ImmediateOrPropertySpecifierEntryCreation extends ModableEntryCre
   /** Gets the mode specifier provided in an object property named `mode`. */
   private Expr getPropertySpecifier() {
     result = this.getArgument().(ObjectExpr).getPropertyByName("mode").getInit()
-  }
-}
-
-class ImmediateSpecifier extends Expr {
-  ImmediateSpecifier() {
-    not this instanceof ObjectExpr and
-    not this instanceof FunctionExpr and
-    not this instanceof ArrowFunctionExpr
   }
 }
 
