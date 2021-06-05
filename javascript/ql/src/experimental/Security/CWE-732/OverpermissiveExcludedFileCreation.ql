@@ -82,22 +82,15 @@ class WorldWriteExcludedFileCreation extends WorldWriteExcludedEntryCreation {
 }
 
 from
-  ExcludedFileModeConstruction construction,
-  ExcludedFileModeCorruption corruption,
-  ExcludedFileCreation exclusion,
-  WorldWriteExcludedFileCreation worldWriteExclusion,
-  DataFlow::PathNode source,
-  DataFlow::PathNode sink
+  ExcludedFileModeConstruction construction, ExcludedFileModeCorruption corruption,
+  ExcludedFileCreation exclusion, WorldWriteExcludedFileCreation worldWriteExclusion,
+  DataFlow::PathNode source, DataFlow::PathNode sink
 where
   construction.hasFlowPath(source, sink) and
   source.getNode() != sink.getNode() and
   not corruption.hasFlow(_, sink.getNode()) and
   exclusion.hasFlow(_, sink.getNode()) and
   not worldWriteExclusion.hasFlow(_, sink.getNode())
-select
-  sink.getNode(),
-  source,
-  sink,
+select sink.getNode(), source, sink,
   "This call uses an overpermissive mode from $@ that creates world writable files.",
-  source.getNode(),
-  "here"
+  source.getNode(), "here"

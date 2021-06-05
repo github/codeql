@@ -39,16 +39,11 @@ class OverpermissiveTransportedFileCreation extends DataFlow::Configuration {
 }
 
 from
-  OverpermissiveTransportedFileCreation transport,
-  DataFlow::PathNode source,
+  OverpermissiveTransportedFileCreation transport, DataFlow::PathNode source,
   DataFlow::PathNode sink
 where
   transport.hasFlowPath(source, sink) and
   source.getNode() != sink.getNode()
-select
-  sink.getNode(),
-  source,
-  sink,
+select sink.getNode(), source, sink,
   "This call uses an overpermissive mode from $@ that creates world writable files.",
-  source.getNode(),
-  "here"
+  source.getNode(), "here"

@@ -82,22 +82,15 @@ class WorldWriteExcludedDirectoryCreation extends WorldWriteExcludedEntryCreatio
 }
 
 from
-  ExcludedDirectoryModeConstruction construction,
-  ExcludedDirectoryModeCorruption corruption,
-  ExcludedDirectoryCreation exclusion,
-  WorldWriteExcludedDirectoryCreation worldWriteExclusion,
-  DataFlow::PathNode source,
-  DataFlow::PathNode sink
+  ExcludedDirectoryModeConstruction construction, ExcludedDirectoryModeCorruption corruption,
+  ExcludedDirectoryCreation exclusion, WorldWriteExcludedDirectoryCreation worldWriteExclusion,
+  DataFlow::PathNode source, DataFlow::PathNode sink
 where
   construction.hasFlowPath(source, sink) and
   source.getNode() != sink.getNode() and
   not corruption.hasFlow(_, sink.getNode()) and
   exclusion.hasFlow(_, sink.getNode()) and
   not worldWriteExclusion.hasFlow(_, sink.getNode())
-select
-  sink.getNode(),
-  source,
-  sink,
+select sink.getNode(), source, sink,
   "This call uses an overpermissive mode from $@ that creates world writable directories.",
-  source.getNode(),
-  "here"
+  source.getNode(), "here"

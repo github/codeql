@@ -54,17 +54,11 @@ class IncludedFileModeCorruption extends IncludedEntryModeCorruption {
 }
 
 from
-  OverpermissiveIncludedFileCreation construction,
-  IncludedFileModeCorruption corruption,
-  DataFlow::PathNode source,
-  DataFlow::PathNode sink
+  OverpermissiveIncludedFileCreation construction, IncludedFileModeCorruption corruption,
+  DataFlow::PathNode source, DataFlow::PathNode sink
 where
   construction.hasFlowPath(source, sink) and
   not corruption.hasFlow(_, sink.getNode())
-select
-  sink.getNode(),
-  source,
-  sink,
+select sink.getNode(), source, sink,
   "This call uses an overpermissive mode constant from $@ that creates world writable files.",
-  source.getNode(),
-  "here"
+  source.getNode(), "here"

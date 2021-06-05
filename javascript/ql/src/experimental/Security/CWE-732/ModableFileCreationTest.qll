@@ -3,6 +3,4 @@
 import ModableFileCreation
 
 /** Holds if `node` is a modable file creation. */
-query predicate modableFileCreation(DataFlow::Node node) {
-  node instanceof ModableFileCreation
-}
+query predicate modableFileCreation(DataFlow::Node node) { node instanceof ModableFileCreation }

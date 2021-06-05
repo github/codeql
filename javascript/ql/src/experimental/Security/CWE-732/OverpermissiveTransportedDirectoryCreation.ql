@@ -41,16 +41,11 @@ class OverpermissiveTransportedDirectoryCreation extends DataFlow::Configuration
 }
 
 from
-  OverpermissiveTransportedDirectoryCreation transport,
-  DataFlow::PathNode source,
+  OverpermissiveTransportedDirectoryCreation transport, DataFlow::PathNode source,
   DataFlow::PathNode sink
 where
   transport.hasFlowPath(source, sink) and
   source.getNode() != sink.getNode()
-select
-  sink.getNode(),
-  source,
-  sink,
+select sink.getNode(), source, sink,
   "This call uses an overpermissive mode from $@ that creates world writable directories.",
-  source.getNode(),
-  "here"
+  source.getNode(), "here"

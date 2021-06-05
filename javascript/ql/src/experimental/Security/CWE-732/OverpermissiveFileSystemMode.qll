@@ -51,10 +51,8 @@ class ModifyExpr extends Expr {
     or
     this instanceof BinaryExpr and result = this.(BinaryExpr).getAnOperand()
     or
-    this instanceof CompoundAssignExpr and result = [
-      this.(CompoundAssignExpr).getLhs(),
-      this.(CompoundAssignExpr).getRhs()
-    ]
+    this instanceof CompoundAssignExpr and
+    result = [this.(CompoundAssignExpr).getLhs(), this.(CompoundAssignExpr).getRhs()]
     or
     this instanceof InvokeExpr and result = this.(InvokeExpr).getAnArgument()
   }
@@ -81,10 +79,8 @@ class InclusiveDisjunction extends Expr {
   Expr getAnInput() {
     this instanceof BitOrExpr and result = this.(BitOrExpr).getAnOperand()
     or
-    this instanceof AssignOrExpr and result = [
-      this.(AssignOrExpr).getLhs(),
-      this.(AssignOrExpr).getRhs()
-    ]
+    this instanceof AssignOrExpr and
+    result = [this.(AssignOrExpr).getLhs(), this.(AssignOrExpr).getRhs()]
   }
 }
 
@@ -109,10 +105,8 @@ class ExclusiveDisjunction extends Expr {
   Expr getAnInput() {
     this instanceof XOrExpr and result = this.(XOrExpr).getAnOperand()
     or
-    this instanceof AssignXOrExpr and result = [
-      this.(AssignXOrExpr).getLhs(),
-      this.(AssignXOrExpr).getRhs()
-    ]
+    this instanceof AssignXOrExpr and
+    result = [this.(AssignXOrExpr).getLhs(), this.(AssignXOrExpr).getRhs()]
   }
 }
 
@@ -129,19 +123,17 @@ class MaskInverseExpr extends BitAndExpr {
 
   /** Gets an input to this expression. */
   Expr getAnInput() {
-    result = [
-      this.getAnOperand(),
-      this.getAnOperand().(BitNotExpr).getOperand(),
-      this.getAnOperand().(BitNotExpr).getOperand().(ParExpr).getExpression()
-    ]
+    result =
+      [
+        this.getAnOperand(), this.getAnOperand().(BitNotExpr).getOperand(),
+        this.getAnOperand().(BitNotExpr).getOperand().(ParExpr).getExpression()
+      ]
   }
 }
 
 /** A bitwise negation that is used in a mask inverse expression. */
 class MaskInverseNotExpr extends BitNotExpr {
-  MaskInverseNotExpr() {
-    exists(BitAndExpr conjunction | this = conjunction.getAnOperand())
-  }
+  MaskInverseNotExpr() { exists(BitAndExpr conjunction | this = conjunction.getAnOperand()) }
 }
 
 /**
@@ -206,9 +198,7 @@ class CorruptLabel extends DataFlow::FlowLabel {
  * Gets the integer value of `specifier`,
  * or the maximum integer if the specifier is larger than that.
  */
-private int getNumberMode(NumberLiteral specifier) {
-  result = specifier.getFloatValue().ceil()
-}
+private int getNumberMode(NumberLiteral specifier) { result = specifier.getFloatValue().ceil() }
 
 /**
  * Gets the integer value of the low 3 digits of `specifier`,
@@ -226,9 +216,12 @@ private string getRelevantDigits(StringLiteral specifier) {
 /** Gets the integer value of `digits`, interpreted as an octal numeric string. */
 bindingset[digits]
 private int fromOctalString(string digits) {
-  result = sum(int i | i in [0 .. digits.length()] |
-    digits.charAt(i).toInt().bitShiftLeft(3 * (digits.length() - i - 1))
-  )
+  result =
+    sum(int i |
+      i in [0 .. digits.length()]
+    |
+      digits.charAt(i).toInt().bitShiftLeft(3 * (digits.length() - i - 1))
+    )
 }
 
 /** Gets the mode represented by `specifier`. */
@@ -270,7 +263,7 @@ class LiteralSpecifier extends Literal {
 }
 
 /** An invocation that can create a file system entry. */
-abstract class EntryCreation extends DataFlow::InvokeNode {}
+abstract class EntryCreation extends DataFlow::InvokeNode { }
 
 /** An entry creation whose mode can be evaluated statically. */
 abstract class EvaluableEntryCreation extends EntryCreation {
@@ -434,10 +427,10 @@ abstract class LiteralEntryCreation extends ModableEntryCreation, EvaluableEntry
 }
 
 /** An entry creation that can create a file. */
-abstract class FileCreation extends EntryCreation {}
+abstract class FileCreation extends EntryCreation { }
 
 /** An entry creation that can create a directory. */
-abstract class DirectoryCreation extends EntryCreation {}
+abstract class DirectoryCreation extends EntryCreation { }
 
 /**
  * A taint tracking configuration for file system entry creation
@@ -446,10 +439,7 @@ abstract class DirectoryCreation extends EntryCreation {}
 abstract class OverpermissiveIncludedEntryCreation extends TaintTracking::Configuration {
   OverpermissiveIncludedEntryCreation() { this = "OverpermissiveIncludedEntryCreation" }
 
-  override predicate isAdditionalTaintStep(
-    DataFlow::Node predecessor,
-    DataFlow::Node successor
-  ) {
+  override predicate isAdditionalTaintStep(DataFlow::Node predecessor, DataFlow::Node successor) {
     exists(InclusiveDisjunction disjunction |
       predecessor.asExpr() = disjunction.getAnInput() and
       successor = disjunction.flow()
@@ -466,10 +456,7 @@ abstract class ExcludedEntryModeConstruction extends DataFlow::Configuration {
     node.asExpr().(NumberLiteral).getFloatValue().ceil() >= 511 // >= 0o777
   }
 
-  override predicate isAdditionalFlowStep(
-    DataFlow::Node predecessor,
-    DataFlow::Node successor
-  ) {
+  override predicate isAdditionalFlowStep(DataFlow::Node predecessor, DataFlow::Node successor) {
     exists(ClearBitExpr clear |
       predecessor.asExpr() = clear.getAnInput() and
       successor = clear.flow()
@@ -489,9 +476,7 @@ abstract class IncludedEntryModeCorruption extends EntryModeCorruption {
   IncludedEntryModeCorruption() { this = "EntryModeCorruption" }
 
   override predicate isAdditionalFlowStep(
-    DataFlow::Node predecessor,
-    DataFlow::Node successor,
-    DataFlow::FlowLabel predLabel,
+    DataFlow::Node predecessor, DataFlow::Node successor, DataFlow::FlowLabel predLabel,
     DataFlow::FlowLabel succLabel
   ) {
     exists(ModifyExpr modification |
@@ -509,9 +494,7 @@ abstract class ExcludedEntryModeCorruption extends EntryModeCorruption {
   ExcludedEntryModeCorruption() { this = "EntryModeCorruption" }
 
   override predicate isAdditionalFlowStep(
-    DataFlow::Node predecessor,
-    DataFlow::Node successor,
-    DataFlow::FlowLabel predLabel,
+    DataFlow::Node predecessor, DataFlow::Node successor, DataFlow::FlowLabel predLabel,
     DataFlow::FlowLabel succLabel
   ) {
     exists(ModifyExpr modification |
