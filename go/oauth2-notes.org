@@ -129,15 +129,15 @@
 
 SINK
 
--do bare bones CallExpr select - you can be quick about this because they've seenit before
+-do bare bones CallExpr select - you can be quick about this because they've seen it before
 
-- add where clause - demo the chaining of the predicates. i.e .getTarget() returns Function but we want string "HasPrefix" so we . again and go through member predicates 
+- add where clause - demo the chaining of the predicates. i.e .getTarget() returns Function but we want string "HasPrefix" so we . again and go through member predicates and see if there's anything that suits what we're looking for.  
 
-- expalin that strings.HasPrefix checkes that a given string argumenet begins with a certain prefix 
+- explain that strings.HasPrefix checkes that a given string argumenet begins with a certain prefix 
 
 - For prefix check do the chaining of the member predicates (oo principles) 
 
-import go
+` import go
 
 //strings.HasPrefix(redirect, "/") && !strings.HasPrefix(redirect, "//")
 from CallExpr call, Expr checked, string prefix
@@ -145,7 +145,7 @@ where
   call.getTarget().getName() = "HasPrefix" and
   call.getArgument(0) = checked and
   call.getArgument(1).getStringValue() = prefix
-select call, checked, prefix
+select call, checked, prefix `
 
 
 
