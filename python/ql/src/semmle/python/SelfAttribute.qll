@@ -88,3 +88,8 @@ private predicate attr_assigned_in_method_arg_n(FunctionObject method, string na
 predicate attribute_assigned_in_method(FunctionObject method, string name) {
   attr_assigned_in_method_arg_n(method, name, 0)
 }
+
+predicate same_attribute_store_read(SelfAttributeStore selfstore, SelfAttributeRead selfread) {
+  selfstore.getName() = selfread.getName() and
+  selfstore.getClass() = selfread.getClass()
+}

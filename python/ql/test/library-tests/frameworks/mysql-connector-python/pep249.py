@@ -35,3 +35,15 @@ cnx.commit()
 
 cursor.close()
 cnx.close()
+
+class Conn:
+  def __init__(self):
+    self.conn = mysql.connector.connect(user='scott', database='employees')
+
+  def query(self, query, params):
+    cur = self.conn.cursor()
+    cur.execute(query, params)  # $getSql=query
+    cur.close()
+
+classconn = Conn()
+classconn.query(add_salary, data_salary)

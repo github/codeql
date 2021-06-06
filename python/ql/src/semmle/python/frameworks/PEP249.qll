@@ -54,15 +54,23 @@ module Connection {
   }
 
   /** Gets a reference to an instance of `db.Connection`. */
-  private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
+  private DataFlow::LocalSourceNode local_instance(DataFlow::TypeTracker t) {
     t.start() and
     result instanceof InstanceSource
     or
-    exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    exists(DataFlow::TypeTracker t2 | result = local_instance(t2).track(t2, t))
   }
 
   /** Gets a reference to an instance of `db.Connection`. */
-  DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+  private DataFlow::Node local_instance() {
+    local_instance(DataFlow::TypeTracker::end()).flowsTo(result)
+  }
+
+  DataFlow::Node instance() {
+    result = local_instance()
+    or
+    same_attribute_store_read(local_instance().asExpr(), result.asExpr())
+  }
 }
 
 /**
@@ -79,18 +87,26 @@ module cursor {
   }
 
   /** Gets a reference to the `cursor` method on a connection. */
-  DataFlow::Node methodRef() { methodRef(DataFlow::TypeTracker::end()).flowsTo(result) }
+  private DataFlow::Node methodRef() { methodRef(DataFlow::TypeTracker::end()).flowsTo(result) }
 
   /** Gets a reference to a result of calling the `cursor` method on a connection. */
-  private DataFlow::LocalSourceNode methodResult(DataFlow::TypeTracker t) {
+  private DataFlow::LocalSourceNode local_methodResult(DataFlow::TypeTracker t) {
     t.start() and
     result.asCfgNode().(CallNode).getFunction() = methodRef().asCfgNode()
     or
-    exists(DataFlow::TypeTracker t2 | result = methodResult(t2).track(t2, t))
+    exists(DataFlow::TypeTracker t2 | result = local_methodResult(t2).track(t2, t))
   }
 
   /** Gets a reference to a result of calling the `cursor` method on a connection. */
-  DataFlow::Node methodResult() { methodResult(DataFlow::TypeTracker::end()).flowsTo(result) }
+  private DataFlow::Node local_methodResult() {
+    local_methodResult(DataFlow::TypeTracker::end()).flowsTo(result)
+  }
+
+  DataFlow::Node methodResult() {
+    result = local_methodResult()
+    or
+    same_attribute_store_read(local_methodResult().asExpr(), result.asExpr())
+  }
 }
 
 /**
