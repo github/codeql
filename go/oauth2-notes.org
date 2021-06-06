@@ -124,3 +124,33 @@
   e = c.getAnArgument()
   and e.(StringLit).getStringValue().matches("X-%")
   select funcName, c, e
+
+====================
+
+SINK
+
+-do bare bones CallExpr select - you can be quick about this because they've seenit before
+
+- add where clause - demo the chaining of the predicates. i.e .getTarget() returns Function but we want string "HasPrefix" so we . again and go through member predicates 
+
+- expalin that strings.HasPrefix checkes that a given string argumenet begins with a certain prefix 
+
+- For prefix check do the chaining of the member predicates (oo principles) 
+
+import go
+
+//strings.HasPrefix(redirect, "/") && !strings.HasPrefix(redirect, "//")
+from CallExpr call, Expr checked, string prefix
+where
+  call.getTarget().getName() = "HasPrefix" and
+  call.getArgument(0) = checked and
+  call.getArgument(1).getStringValue() = prefix
+select call, checked, prefix
+
+
+
+
+
+
+
+
