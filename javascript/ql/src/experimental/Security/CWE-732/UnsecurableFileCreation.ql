@@ -20,7 +20,11 @@ class UnsecurableFileCreation extends UnsecurableEntryCreation, FileCreation {
         DataFlow::moduleMember("fs-extra", "createFile"),
         DataFlow::moduleMember("fs-extra", "createFileSync"),
         DataFlow::moduleMember("fs-extra", "ensureFile"),
-        DataFlow::moduleMember("fs-extra", "ensureFileSync"), DataFlow::moduleImport("trash")
+        DataFlow::moduleMember("fs-extra", "ensureFileSync"),
+        DataFlow::moduleMember("fs-extra-p", "createFile"),
+        DataFlow::moduleMember("fs-extra-p", "createFileSync"),
+        DataFlow::moduleMember("fs-extra-p", "ensureFile"),
+        DataFlow::moduleMember("fs-extra-p", "ensureFileSync"), DataFlow::moduleImport("trash")
       ].getAnInvocation()
   }
 }

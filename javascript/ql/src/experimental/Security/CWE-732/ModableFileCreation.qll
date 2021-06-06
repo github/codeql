@@ -44,7 +44,11 @@ class ObjectArgument2FileCreation extends ModableFileCreation, Argument2EntryCre
         DataFlow::moduleMember("fs-extra", "writeJSON"),
         DataFlow::moduleMember("fs-extra", "writeJSONSync"),
         DataFlow::moduleMember("fs-extra", "writeJson"),
-        DataFlow::moduleMember("fs-extra", "writeJsonSync")
+        DataFlow::moduleMember("fs-extra", "writeJsonSync"),
+        DataFlow::moduleMember("fs-extra-p", "writeJSON"),
+        DataFlow::moduleMember("fs-extra-p", "writeJSONSync"),
+        DataFlow::moduleMember("fs-extra-p", "writeJson"),
+        DataFlow::moduleMember("fs-extra-p", "writeJsonSync")
       ].getAnInvocation()
   }
 }
