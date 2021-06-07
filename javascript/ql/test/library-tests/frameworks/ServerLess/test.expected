@@ -3,3 +3,4 @@
 | tst3/function/index.js:1:36:1:40 | event |
 | tst4/app.js:1:36:1:40 | event |
 | tst5/app.js:1:36:1:40 | event |
+| tst6/handler.js:6:23:6:36 | req.query.name |
