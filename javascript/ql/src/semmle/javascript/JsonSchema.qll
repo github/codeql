@@ -8,8 +8,8 @@ import javascript
  * Provides classes and predicates for working with JSON schema libraries.
  */
 module JsonSchema {
-  /** A call that validates an input against a JSON schema. */
-  abstract class ValidationCall extends DataFlow::CallNode {
+  /** A node that validates an input against a JSON schema. */
+  abstract class ValidationCall extends DataFlow::Node {
     /** Gets the data flow node whose value is being validated. */
     abstract DataFlow::Node getInput();
 
@@ -89,7 +89,7 @@ module JsonSchema {
     }
 
     /** A call to the `validate` method of `ajv`. */
-    class AjvValidationCall extends ValidationCall {
+    class AjvValidationCall extends ValidationCall, DataFlow::CallNode {
       Instance instance;
       int argIndex;
 
@@ -124,6 +124,57 @@ module JsonSchema {
               .getParameter(0)
               .getARhs()
       }
+    }
+  }
+
+  /** Provides a model for working with the [`joi`](https://npmjs.org/package/joi) library. */
+  module Joi {
+    /** A schema created using `joi.object()` or other schemas that might refer an object schema. */
+    private API::Node objectSchema() {
+      // A call that creates a schema that might be an object schema.
+      result =
+        API::moduleImport("joi")
+            .getMember([
+                "object", "alternatives", "all", "link", "compile", "allow", "valid", "when",
+                "build", "options"
+              ])
+            .getReturn()
+      or
+      // A call to a schema that returns another schema.
+      // Read from the [index.d.ts](https://github.com/sideway/joi/blob/master/lib/index.d.ts) file.
+      result =
+        objectSchema()
+            .getMember([
+                // AnySchema
+                "allow", "alter", "bind", "cache", "cast", "concat", "default", "description",
+                "disallow", "empty", "equal", "error", "example", "exist", "external", "failover",
+                "forbidden", "fork", "id", "invalid", "keep", "label", "message", "messages",
+                "meta", "not", "note", "only", "optional", "options", "prefs", "preferences",
+                "presence", "raw", "required", "rule", "shared", "strict", "strip", "tag", "tailor",
+                "unit", "valid", "warn", "warning", "when",
+                // ObjectSchema
+                "and", "append", "assert", "instance", "keys", "length", "max", "min", "nand", "or",
+                "oxor", "pattern", "ref", "regex", "rename", "schema", "unknown", "with", "without",
+                "xor"
+              ])
+            .getReturn()
+    }
+
+    /**
+     * A read of the `error` property from a validation result, seen as a `ValidationCall`.
+     * If `error` exists, then the validation failed.
+     */
+    class JoiValidationErrorRead extends ValidationCall {
+      API::CallNode validateCall;
+
+      JoiValidationErrorRead() {
+        validateCall = objectSchema().getMember("validate").getACall() and
+        this = validateCall.getReturn().getMember("error").getAnImmediateUse()
+      }
+
+      override DataFlow::Node getInput() { result = validateCall.getArgument(0) }
+
+      override boolean getPolarity() { result = false }
     }
   }
 }
