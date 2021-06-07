@@ -492,7 +492,10 @@ class MavenPlugin extends ProtoPom {
 
 class MavenShadePlugin extends MavenPlugin {
   MavenShadePlugin() {
-    this.getGroup().getValue() = "org.apache.maven.plugins" and
+    (
+      this.getGroup().getValue() = "org.apache.maven.plugins" or
+      not exists(this.getGroup()) // org.apache.maven.plugins is the default
+    ) and
     this.getArtifact().getValue() = "maven-shade-plugin"
   }
 
