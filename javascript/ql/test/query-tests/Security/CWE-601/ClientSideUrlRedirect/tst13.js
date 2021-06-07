@@ -61,7 +61,7 @@ function bar() {
     history.push(payload); // NOT OK
 }
 function baz() {
-    const history = require('history').createHashHistory();
+    const history = require('history').createBrowserHistory();
     var payload = history.location.hash.substr(1);
 
     history.replace(payload); // NOT OK

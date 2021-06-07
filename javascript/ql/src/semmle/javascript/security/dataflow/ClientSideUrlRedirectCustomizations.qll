@@ -198,7 +198,7 @@ module ClientSideUrlRedirect {
     HistoryWriteUrlSink() {
       this =
         API::moduleImport("history")
-            .getMember(["createBrowserHistory", "createHashHistory"])
+            .getMember("createBrowserHistory")
             .getReturn()
             .getMember(["push", "replace"])
             .getACall()
