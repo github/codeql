@@ -15,7 +15,6 @@
 import ruby
 import codeql_ruby.DataFlow
 import DataFlow::PathGraph
-private import codeql_ruby.typetracking.TypeTracker
 private import codeql_ruby.controlflow.CfgNodes
 
 bindingset[char, fraction]
@@ -88,21 +87,21 @@ private predicate maybeCredentialName(string name) {
   not name.suffix(name.length() - 4) = "file"
 }
 
-// A parameter that may represent a credential value
-private DataFlow::LocalSourceNode credentialParameter(TypeTracker t) {
-  t.start() and
+// Positional parameter
+private DataFlow::Node credentialParameter() {
   exists(Method m, NamedParameter p, int idx |
-    // TODO: this does not capture keyword params
     result.asParameter() = p and
     p = m.getParameter(idx) and
     maybeCredentialName(p.getName())
   )
-  or
-  exists(TypeTracker t2 | result = credentialParameter(t2).track(t2, t))
 }
 
-private DataFlow::Node credentialParameter() {
-  credentialParameter(TypeTracker::end()).flowsTo(result)
+// Keyword argument
+private Expr credentialKeywordArgument() {
+  exists(MethodCall mc, string argKey |
+    result = mc.getKeywordArgument(argKey) and
+    maybeCredentialName(argKey)
+  )
 }
 
 // An equality check against a credential value
@@ -120,6 +119,8 @@ private Expr credentialComparison() {
 
 private predicate isCredentialSink(DataFlow::Node node) {
   node = credentialParameter()
+  or
+  node.asExpr().getExpr() = credentialKeywordArgument()
   or
   node.asExpr().getExpr() = credentialComparison()
 }
@@ -150,4 +151,3 @@ class HardcodedCredentialsConfiguration extends DataFlow::Configuration {
 from DataFlow::PathNode source, DataFlow::PathNode sink, HardcodedCredentialsConfiguration conf
 where conf.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "Use of $@.", source.getNode(), "hardcoded credentials"
-// TODO: debug duplicate rows
