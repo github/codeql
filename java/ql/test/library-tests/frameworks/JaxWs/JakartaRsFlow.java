@@ -16,6 +16,7 @@ import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.Link;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.MultivaluedMap;
+import jakarta.ws.rs.core.NewCookie;
 import jakarta.ws.rs.core.PathSegment;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriBuilder;
@@ -35,6 +36,14 @@ public class JakartaRsFlow {
 
   private static class IntSource {
     static int taint() { return 0; }
+  }
+
+  private static class BooleanSource {
+    static boolean taint() { return false; }
+  }
+
+  private static class DateSource {
+    static Date taint() { return null; }
   }
 
   private static class SetStringSource {
@@ -172,6 +181,68 @@ public class JakartaRsFlow {
     sink(Cookie.valueOf(taint()).getValue()); // $hasTaintFlow
     sink(Cookie.valueOf(taint()).getVersion()); // $hasTaintFlow
     sink(Cookie.valueOf(taint()).toString()); // $hasTaintFlow
+  }
+
+  void testNewCookie() {
+    sink(new NewCookie(Cookie.valueOf(taint()))); // $hasTaintFlow
+
+    sink(new NewCookie(Cookie.valueOf(taint()), "", 0, true)); // $hasTaintFlow
+    sink(new NewCookie(Cookie.valueOf(""), taint(), 0, false)); // $hasTaintFlow
+    sink(new NewCookie(Cookie.valueOf(""), "", IntSource.taint(), true)); // $hasTaintFlow
+    sink(new NewCookie(Cookie.valueOf(""), "", 0, BooleanSource.taint())); // $hasTaintFlow
+
+    sink(new NewCookie(Cookie.valueOf(taint()), "", 0, new Date(), true, true)); // $hasTaintFlow
+    sink(new NewCookie(Cookie.valueOf(""), taint(), 0, new Date(), true, false)); // $hasTaintFlow
+    sink(new NewCookie(Cookie.valueOf(""), "", IntSource.taint(), new Date(), false, true)); // $hasTaintFlow
+    sink(new NewCookie(Cookie.valueOf(""), "", 0, DateSource.taint(), false, false)); // $hasTaintFlow
+    sink(new NewCookie(Cookie.valueOf(""), "", 0, new Date(), BooleanSource.taint(), false)); // $hasTaintFlow
+    sink(new NewCookie(Cookie.valueOf(""), "", 0, new Date(), true, BooleanSource.taint())); // $hasTaintFlow
+
+    sink(new NewCookie(taint(), "")); // $hasTaintFlow
+    sink(new NewCookie("", taint())); // $hasTaintFlow
+
+    sink(new NewCookie(taint(), "", "", "", 0, "", 0, true)); // $hasTaintFlow
+    sink(new NewCookie("", taint(), "", "", 0, "", 0, false)); // $hasTaintFlow
+    sink(new NewCookie("", "", taint(), "", 0, "", 0, true)); // $hasTaintFlow
+    sink(new NewCookie("", "", "", taint(), 0, "", 0, false)); // $hasTaintFlow
+    sink(new NewCookie("", "", "", "", IntSource.taint(), "", 0, true)); // $hasTaintFlow
+    sink(new NewCookie("", "", "", "", 0, taint(), 0, false)); // $hasTaintFlow
+    sink(new NewCookie("", "", "", "", 0, "", IntSource.taint(), true)); // $hasTaintFlow
+    sink(new NewCookie("", "", "", "", 0, "", 0, BooleanSource.taint())); // $hasTaintFlow
+
+    sink(new NewCookie(taint(), "", "", "", 0, "", 0, new Date(), true, true)); // $hasTaintFlow
+    sink(new NewCookie("", taint(), "", "", 0, "", 0, new Date(), false, true)); // $hasTaintFlow
+    sink(new NewCookie("", "", taint(), "", 0, "", 0, new Date(), true, false)); // $hasTaintFlow
+    sink(new NewCookie("", "", "", taint(), 0, "", 0, new Date(), false, false)); // $hasTaintFlow
+    sink(new NewCookie("", "", "", "", IntSource.taint(), "", 0, new Date(), true, true)); // $hasTaintFlow
+    sink(new NewCookie("", "", "", "", 0, taint(), 0, new Date(), true, false)); // $hasTaintFlow
+    sink(new NewCookie("", "", "", "", 0, "", IntSource.taint(), new Date(), false, true)); // $hasTaintFlow
+    sink(new NewCookie("", "", "", "", 0, "", 0, DateSource.taint(), false, false)); // $hasTaintFlow
+    sink(new NewCookie("", "", "", "", 0, "", 0, new Date(), BooleanSource.taint(), true)); // $hasTaintFlow
+    sink(new NewCookie("", "", "", "", 0, "", 0, new Date(), false, BooleanSource.taint())); // $hasTaintFlow
+
+    sink(new NewCookie(taint(), "", "", "", "", 0, true)); // $hasTaintFlow
+    sink(new NewCookie("", taint(), "", "", "", 0, false)); // $hasTaintFlow
+    sink(new NewCookie("", "", taint(), "", "", 0, true)); // $hasTaintFlow
+    sink(new NewCookie("", "", "", taint(), "", 0, false)); // $hasTaintFlow
+    sink(new NewCookie("", "", "", "", taint(), 0, false)); // $hasTaintFlow
+    sink(new NewCookie("", "", "", "", "", IntSource.taint(), true)); // $hasTaintFlow
+    sink(new NewCookie("", "", "", "", "", 0, BooleanSource.taint())); // $hasTaintFlow
+
+    sink(new NewCookie(taint(), "", "", "", "", 0, true, true)); // $hasTaintFlow
+    sink(new NewCookie("", taint(), "", "", "", 0, false, true)); // $hasTaintFlow
+    sink(new NewCookie("", "", taint(), "", "", 0, true, false)); // $hasTaintFlow
+    sink(new NewCookie("", "", "", taint(), "", 0, false, false)); // $hasTaintFlow
+    sink(new NewCookie("", "", "", "", taint(), 0, true, true)); // $hasTaintFlow
+    sink(new NewCookie("", "", "", "", "", IntSource.taint(), false, true)); // $hasTaintFlow
+    sink(new NewCookie("", "", "", "", "", 0, BooleanSource.taint(), false)); // $hasTaintFlow
+    sink(new NewCookie("", "", "", "", "", 0, true, BooleanSource.taint())); // $hasTaintFlow
+
+    sink(NewCookie.valueOf(taint()).getComment()); // $hasTaintFlow
+    sink(NewCookie.valueOf(taint()).getExpiry()); // $hasTaintFlow
+    sink(NewCookie.valueOf(taint()).getMaxAge()); // $hasTaintFlow
+    sink(NewCookie.valueOf(taint()).toCookie()); // $hasTaintFlow
+    sink(NewCookie.valueOf(taint())); // $hasTaintFlow
   }
 
   void testForm(MultivaluedMap<String, String> mm1, MultivaluedMap<String, String> mm2) {

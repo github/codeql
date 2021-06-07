@@ -540,6 +540,29 @@ private class CookieModel extends SummaryModelCsv {
 }
 
 /**
+ * Model NewCookie, a simple tuple type.
+ */
+private class NewCookieModel extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "javax.ws.rs.core;NewCookie;true;getComment;;;Argument[-1];ReturnValue;taint",
+        "javax.ws.rs.core;NewCookie;true;getExpiry;;;Argument[-1];ReturnValue;taint",
+        "javax.ws.rs.core;NewCookie;true;getMaxAge;;;Argument[-1];ReturnValue;taint",
+        "javax.ws.rs.core;NewCookie;true;toCookie;;;Argument[-1];ReturnValue;taint",
+        "javax.ws.rs.core;NewCookie;false;NewCookie;;;Argument[0..9];Argument[-1];taint",
+        "javax.ws.rs.core;NewCookie;false;valueOf;;;Argument[0];ReturnValue;taint",
+        "jakarta.ws.rs.core;NewCookie;true;getComment;;;Argument[-1];ReturnValue;taint",
+        "jakarta.ws.rs.core;NewCookie;true;getExpiry;;;Argument[-1];ReturnValue;taint",
+        "jakarta.ws.rs.core;NewCookie;true;getMaxAge;;;Argument[-1];ReturnValue;taint",
+        "jakarta.ws.rs.core;NewCookie;true;toCookie;;;Argument[-1];ReturnValue;taint",
+        "jakarta.ws.rs.core;NewCookie;false;NewCookie;;;Argument[0..9];Argument[-1];taint",
+        "jakarta.ws.rs.core;NewCookie;false;valueOf;;;Argument[0];ReturnValue;taint"
+      ]
+  }
+}
+
+/**
  * Model Form, a simple container type.
  */
 private class FormModel extends SummaryModelCsv {
