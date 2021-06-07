@@ -15,28 +15,28 @@
  */
 
 package jakarta.ws.rs.client;
-import java.net.URI;
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLContext;
+// import java.net.URI;
+// import javax.net.ssl.HostnameVerifier;
+// import javax.net.ssl.SSLContext;
 import jakarta.ws.rs.core.Configurable;
-import jakarta.ws.rs.core.Link;
-import jakarta.ws.rs.core.UriBuilder;
+// import jakarta.ws.rs.core.Link;
+// import jakarta.ws.rs.core.UriBuilder;
 
 public interface Client extends Configurable<Client> {
     public void close();
 
-    public WebTarget target(String uri);
+    // public WebTarget target(String uri);
 
-    public WebTarget target(URI uri);
+    // public WebTarget target(URI uri);
 
-    public WebTarget target(UriBuilder uriBuilder);
+    // public WebTarget target(UriBuilder uriBuilder);
 
-    public WebTarget target(Link link);
+    // public WebTarget target(Link link);
 
-    public Invocation.Builder invocation(Link link);
+    // public Invocation.Builder invocation(Link link);
 
-    public SSLContext getSslContext();
+    // public SSLContext getSslContext();
 
-    public HostnameVerifier getHostnameVerifier();
+    // public HostnameVerifier getHostnameVerifier();
 
 }

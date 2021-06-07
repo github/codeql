@@ -18,7 +18,7 @@ package jakarta.ws.rs.core;
 import java.util.Map;
 
 public interface Configurable<C extends Configurable> {
-    public Configuration getConfiguration();
+    // public Configuration getConfiguration();
 
     public C property(String name, Object value);
 

@@ -18,8 +18,8 @@ package jakarta.ws.rs.core;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
-import javax.xml.namespace.QName;
-import jakarta.xml.bind.annotation.adapters.XmlAdapter;
+// import javax.xml.namespace.QName;
+// import jakarta.xml.bind.annotation.adapters.XmlAdapter;
 
 public abstract class Link {
     public abstract URI getUri();
@@ -106,16 +106,16 @@ public abstract class Link {
         public JaxbLink(final URI uri) {
         }
 
-        public JaxbLink(final URI uri, final Map<QName, Object> params) {
-        }
+        // public JaxbLink(final URI uri, final Map<QName, Object> params) {
+        // }
 
         public URI getUri() {
           return null;
         }
 
-        public Map<QName, Object> getParams() {
-          return null;
-        }
+        // public Map<QName, Object> getParams() {
+        //   return null;
+        // }
 
         @Override
         public boolean equals(final Object o) {
@@ -128,16 +128,16 @@ public abstract class Link {
         }
 
     }
-    public static class JaxbAdapter extends XmlAdapter<JaxbLink, Link> {
-        @Override
-        public Link unmarshal(final JaxbLink v) {
-          return null;
-        }
+    // public static class JaxbAdapter extends XmlAdapter<JaxbLink, Link> {
+    //     @Override
+    //     public Link unmarshal(final JaxbLink v) {
+    //       return null;
+    //     }
 
-        @Override
-        public JaxbLink marshal(final Link v) {
-          return null;
-        }
+    //     @Override
+    //     public JaxbLink marshal(final Link v) {
+    //       return null;
+    //     }
 
-    }
+    // }
 }

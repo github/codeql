@@ -32,11 +32,11 @@ public abstract class Response implements AutoCloseable {
 
     public abstract <T> T readEntity(Class<T> entityType);
 
-    public abstract <T> T readEntity(GenericType<T> entityType);
+    // public abstract <T> T readEntity(GenericType<T> entityType);
 
     public abstract <T> T readEntity(Class<T> entityType, Annotation[] annotations);
 
-    public abstract <T> T readEntity(GenericType<T> entityType, Annotation[] annotations);
+    // public abstract <T> T readEntity(GenericType<T> entityType, Annotation[] annotations);
 
     public abstract boolean hasEntity();
 

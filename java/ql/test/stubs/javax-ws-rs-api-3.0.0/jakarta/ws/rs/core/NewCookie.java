@@ -19,6 +19,7 @@ import java.util.Date;
 
 public class NewCookie extends Cookie {
     public NewCookie(final String name, final String value) {
+      super("", "");
     }
 
     public NewCookie(final String name,
@@ -28,6 +29,7 @@ public class NewCookie extends Cookie {
             final String comment,
             final int maxAge,
             final boolean secure) {
+              super("", "");
     }
 
     public NewCookie(final String name,
@@ -38,6 +40,7 @@ public class NewCookie extends Cookie {
             final int maxAge,
             final boolean secure,
             final boolean httpOnly) {
+              super("", "");
     }
 
     public NewCookie(final String name,
@@ -48,6 +51,7 @@ public class NewCookie extends Cookie {
             final String comment,
             final int maxAge,
             final boolean secure) {
+              super("", "");
     }
 
     public NewCookie(final String name,
@@ -60,15 +64,19 @@ public class NewCookie extends Cookie {
             final Date expiry,
             final boolean secure,
             final boolean httpOnly) {
-    }
+              super("", "");
+            }
 
     public NewCookie(final Cookie cookie) {
+      super("", "");
     }
 
     public NewCookie(final Cookie cookie, final String comment, final int maxAge, final boolean secure) {
+      super("", "");
     }
 
     public NewCookie(final Cookie cookie, final String comment, final int maxAge, final Date expiry, final boolean secure, final boolean httpOnly) {
+      super("", "");
     }
 
     public static NewCookie valueOf(final String value) {
