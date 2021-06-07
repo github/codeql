@@ -57,9 +57,10 @@ Query metadata is used to identify your custom queries when they are added to th
 
     Queries that are contributed to the open source repository, added to a query pack in LGTM, or used to analyze a database with the :ref:`CodeQL CLI <codeql-cli>` must have a query type (``@kind``) specified. The ``@kind`` property indicates how to interpret and display the results of the query analysis:
 
-    - Alert query metadata must contain ``@kind problem``.
-    - Diagnostic query metadata must contain ``@kind diagnostic``.
-    - Path query metadata must contain ``@kind path-problem``.
+    - Alert query metadata must contain ``@kind problem`` to identify the results as a simple alert.
+    - Path query metadata must contain ``@kind path-problem`` to identify the results as an alert documented by a sequence of code locations.
+    - Diagnostic query metadata must contain ``@kind diagnostic`` to identify the results as troubleshooting data about the extraction process.
+    - Summary query metadata must contain ``@kind metric`` and ``@tags summary`` to identify the results as summary metrics for the CodeQL database.
 
     When you define the ``@kind`` property of a custom query you must also ensure that the rest of your query has the correct structure in order to be valid, as described below.
 
@@ -115,7 +116,7 @@ You can modify the alert message defined in the final column of the ``select`` s
 
 Select clauses for path queries (``@kind path-problem``) are crafted to display both an alert and the source and sink of an associated path graph. For more information, see ":doc:`Creating path queries <creating-path-queries>`."
 
-Select clauses for diagnostic queries (``@kind diagnostic``) have different requirements. For examples, see the `diagnostic queries in the CodeQL repository <https://github.com/github/codeql/search?q=%22%40kind+diagnostic%22>`__.
+Select clauses for diagnostic queries (``@kind diagnostic``) and summary metric queries (``@kind metric`` and ``@tags summary``) have different requirements. For examples, see the `diagnostic queries <https://github.com/github/codeql/search?q=%22%40kind+diagnostic%22>`__ and the `summary metric queries <https://github.com/github/codeql/search?q=%22%40kind+metric%22+%22%40tags+summary%22>`__  in the CodeQL repository.
 
 Viewing the standard CodeQL queries
 ***********************************

@@ -143,12 +143,12 @@ These are stored alongside the code scanning suites with names of the form: ``<l
 For information about creating custom query suites, see ":doc:`Creating
 CodeQL query suites <creating-codeql-query-suites>`."
 
-Diagnostic information
-......................
+Diagnostic and summary information
+..................................
 
-The code scanning query suites include additional diagnostic queries. When the database analysis is complete, the CLI generates the results file and reports any diagnostic data to standard output. If you choose to generate SARIF output, the diagnostic data is also included as `notification objects <https://docs.oasis-open.org/sarif/sarif/v2.1.0/os/sarif-v2.1.0-os.html#_Toc34317894>`__ in the SARIF file.
+The code scanning query suites include additional diagnostic and summary queries. When the database analysis is complete, the CLI generates the results file and reports any diagnostic and summary data to standard output. If you choose to generate SARIF output, the additional data is also included in the SARIF file.
 
-If the analysis found fewer results for standard queries than you expected, review the results of the diagnostic queries to check whether the CodeQL database is likely to be a good representation of the codebase that you want to analyze.
+If the analysis found fewer results for standard queries than you expected, review the results of the diagnostic and summary queries to check whether the CodeQL database is likely to be a good representation of the codebase that you want to analyze.
 
 Running all queries in a directory
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
