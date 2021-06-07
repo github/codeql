@@ -486,10 +486,16 @@ class MavenRepoJar extends File {
   }
 }
 
+/**
+ * A `<plugin>` element in a Maven POM file.
+ */
 class MavenPlugin extends ProtoPom {
   MavenPlugin() { this.hasName("plugin") }
 }
 
+/**
+ * A `maven-shade-plugin` plugin element in a Maven POM file.
+ */
 class MavenShadePlugin extends MavenPlugin {
   MavenShadePlugin() {
     (
@@ -502,6 +508,9 @@ class MavenShadePlugin extends MavenPlugin {
   MavenShadeRelocation getARelocation() { result.getPlugin() = this }
 }
 
+/**
+ * A `<relocation>` specification within a `maven-shade-plugin` configuration.
+ */
 class MavenShadeRelocation extends XMLElement {
   MavenShadePlugin plugin;
 
@@ -510,25 +519,44 @@ class MavenShadeRelocation extends XMLElement {
     this.hasName("relocation")
   }
 
+  /**
+   * Gets the `<plugin>` ancestor of this relocation.
+   */
   MavenShadePlugin getPlugin() { result = plugin }
 
+  /**
+   * Gets the pattern this relocation replaces (e.g. `org.foo`)
+   */
   string getPattern() {
     exists(XMLElement el | el.getName() = "pattern" and el.getParent() = this |
       result = el.getTextValue()
     )
   }
 
+  /**
+   * Gets the shaded package that replaces `getPattern()` (e.g. `org.bar.shaded.org.foo`).
+   */
   string getShadedPattern() {
     exists(XMLElement el | el.getName() = "shadedPattern" and el.getParent() = this |
       result = el.getTextValue()
     )
   }
 
+  /**
+   * Holds if this `<relocation>` specification relocates `fromPackage` to `toPackage`.
+   */
   predicate relocates(string fromPackage, string toPackage) {
     this.getPattern() = fromPackage and this.getShadedPattern() = toPackage
   }
 }
 
+/**
+ * Returns a package name that may be used to refer to `package` after shading, including `package`
+ * itself.
+ *
+ * For example, if `package` is `org.foo.sub` and we have a `<relocation>` specification relocating
+ * `org.foo` to `org.bar.shaded.org.foo` then this will return `{"org.foo.sub", "org.bar.shaded.org.foo.sub"}`.
+ */
 bindingset[package]
 string getAShadedPackage(string package) {
   result = package
