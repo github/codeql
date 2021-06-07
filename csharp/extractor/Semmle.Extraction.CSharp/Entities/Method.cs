@@ -20,26 +20,6 @@ namespace Semmle.Extraction.CSharp.Entities
             IEnumerable<IParameterSymbol> parameters = Symbol.Parameters;
             IEnumerable<IParameterSymbol> originalParameters = originalMethod.Symbol.Parameters;
 
-            if (IsReducedExtension)
-            {
-                if (this == originalMethod)
-                {
-                    // Non-generic reduced extensions must be extracted exactly like the
-                    // non-reduced counterparts
-                    parameters = Symbol.ReducedFrom!.Parameters;
-                }
-                else
-                {
-                    // Constructed reduced extensions are special because their non-reduced
-                    // counterparts are not constructed. Therefore, we need to manually add
-                    // the `this` parameter based on the type of the receiver
-                    var originalThisParamSymbol = originalMethod.Symbol.Parameters.First();
-                    var originalThisParam = Parameter.Create(Context, originalThisParamSymbol, originalMethod);
-                    ConstructedExtensionParameter.Create(Context, this, originalThisParam);
-                    originalParameters = originalParameters.Skip(1);
-                }
-            }
-
             foreach (var p in parameters.Zip(originalParameters, (paramSymbol, originalParam) => new { paramSymbol, originalParam }))
             {
                 var original = SymbolEqualityComparer.Default.Equals(p.paramSymbol, p.originalParam)
@@ -208,9 +188,7 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.Write('(');
             var index = 0;
 
-            var @params = method.MethodKind == MethodKind.ReducedExtension
-                ? method.ReducedFrom!.Parameters
-                : method.Parameters;
+            var @params = method.Parameters;
 
             foreach (var param in @params)
             {
@@ -272,6 +250,11 @@ namespace Semmle.Extraction.CSharp.Entities
                 case MethodKind.Constructor:
                     return Constructor.Create(cx, methodDecl);
                 case MethodKind.ReducedExtension:
+                    if (SymbolEqualityComparer.Default.Equals(methodDecl, methodDecl.ConstructedFrom))
+                    {
+                        return OrdinaryMethod.Create(cx, methodDecl.ReducedFrom!);
+                    }
+                    return OrdinaryMethod.Create(cx, methodDecl.ReducedFrom!.Construct(methodDecl.TypeArguments, methodDecl.TypeArgumentNullableAnnotations));
                 case MethodKind.Ordinary:
                 case MethodKind.DelegateInvoke:
                     return OrdinaryMethod.Create(cx, methodDecl);
@@ -297,10 +280,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public Method OriginalDefinition =>
-            IsReducedExtension
-                ? Create(Context, Symbol.ReducedFrom!)
-                : Create(Context, Symbol.OriginalDefinition);
+        public Method OriginalDefinition => Create(Context, Symbol.OriginalDefinition);
 
         public override Location? FullLocation => ReportingLocation;
 
@@ -318,9 +298,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public bool IsBoundGeneric => IsGeneric && !IsUnboundGeneric;
 
-        private bool IsReducedExtension => Symbol.MethodKind == MethodKind.ReducedExtension;
-
-        protected IMethodSymbol ConstructedFromSymbol => Symbol.ConstructedFrom.ReducedFrom ?? Symbol.ConstructedFrom;
+        protected IMethodSymbol ConstructedFromSymbol => Symbol.ConstructedFrom;
 
         bool IExpressionParentEntity.IsTopLevelParent => true;
 
