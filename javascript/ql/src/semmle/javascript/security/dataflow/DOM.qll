@@ -272,30 +272,3 @@ private class WindowLocationFlowSource extends ClientSideRemoteFlowSource {
 
   override ClientSideRemoteFlowKind getKind() { result = kind }
 }
-
-/**
- * A user-controlled location value read from the [history](http://npmjs.org/package/history) library.
- */
-private class HistoryLibaryRemoteFlow extends ClientSideRemoteFlowSource {
-  ClientSideRemoteFlowKind kind;
-
-  HistoryLibaryRemoteFlow() {
-    exists(API::Node loc |
-      loc =
-        API::moduleImport("history")
-            .getMember(["createBrowserHistory", "createHashHistory"])
-            .getReturn()
-            .getMember("location")
-    |
-      this = loc.getMember("hash").getAnImmediateUse() and kind.isFragment()
-      or
-      this = loc.getMember("pathname").getAnImmediateUse() and kind.isPath()
-      or
-      this = loc.getMember("search").getAnImmediateUse() and kind.isQuery()
-    )
-  }
-
-  override string getSourceType() { result = "Window location" }
-
-  override ClientSideRemoteFlowKind getKind() { result = kind }
-}

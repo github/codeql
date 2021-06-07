@@ -66,3 +66,10 @@ function baz() {
 
     history.replace(payload); // NOT OK
 }
+
+function quz() {
+    const history = HistoryLibrary.createBrowserHistory();
+    var payload = history.location.hash.substr(1);
+
+    history.replace(payload); // NOT OK
+}
