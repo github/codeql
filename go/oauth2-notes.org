@@ -129,12 +129,19 @@
 
 SINK
 
-do bare bones CallExpr select - you can be quick about this because they've seen it before OR
-you can show that it is CallExpr by looking at AST viewer???
+you can show that strings.HasPrefix(redirect, "/")  is CallExpr by looking at AST viewer
 
 add where clause - demo the chaining of the predicates. i.e .getTarget() returns Function but we want string "HasPrefix" so we . again and go through member predicates and see if there's anything that suits what we're looking for.  
 
-explain that strings.HasPrefix checkes that a given string argumenet begins with a certain prefix 
+#+BEGIN_SRC text
+from CallExpr call
+where
+  call.getTarget().getName() = "HasPrefix" 
+select call
+#+END_SRC
+
+
+Explain that strings.HasPrefix checkes that a given string argumenet begins with a certain prefix 
 
 For prefix check do the chaining of the member predicates (oo principles), first put it in the select and then move it down to the where
 
@@ -151,11 +158,170 @@ select call, checked, prefix
 
 #+END_SRC
 
+- Write class for HasPrefix 
+- Mention that a class is a type
+- Inheritence 
+- Characteristic predicate
+- the this value - similar to O-O constructors 
+- Replace CallExpr in from to HasPrefix 
+
+#+BEGIN_SRC text 
+
+import go
+
+class HasPrefix extends CallExpr {
+  HasPrefix() { this.getTarget().getName() = "HasPrefix" }
+}
+
+//strings.HasPrefix(redirect, "/") && //!strings.HasPrefix(redirect, "//")
+from HasPrefix call, Expr checked, string prefix
+where
+  call.getArgument(0) = checked and
+  call.getArgument(1).getStringValue() = prefix
+select call, checked, prefix
+#+END_SRC
+
+- Mention that there could be other ways of searching for string prefixes in Go. 
+- Take strings.HasPrefix(redirect, "/") and search for it in vscode 
+- Explain how you don't want to reinvent the wheel, and that it's always good to check the qll libraries to see what's already provided out of the box
+- Go through the StringOps.qll and notice how the HasPrefix class extends DataFlow::Node and that the return types of the interesting predicates are also DataFlow::Node
+- Change your query and arrive at this
+
+#+BEGIN_SRC
+import go
+
+class HasPrefix extends CallExpr {
+  HasPrefix() { this.getTarget().getName() = "HasPrefix" }
+}
+
+//strings.HasPrefix(redirect, "/") && !strings.HasPrefix(redirect, "//")
+from StringOps::HasPrefix call, DataFlow::Node checked, DataFlow::Node prefix
+where
+  call.getBaseString() = checked and
+  call.getSubstring() = prefix
+select call, checked, prefix
+#+END_SRC
+
+- Notice that the first result is selection of ProxyPrefix which you're not interested in, you're interested in String values '/' or '//'
+
+- THIS IS A BIT OF A STRETCH BUT 
+find this through exploration   call.getSubstring().asExpr().getStringValue() = prefix
+Technically, it can be justified, because you've already shown that it was an Expr you just want the equivalent of the old query
+
+- Run query. Notice the second result. That wouldn't have been there if you didn't use StringOps::HasPrefix. Re-emphasise the need to have exploration mindset when writing queries. Try to leverage the libraries as much as possible 
+
+- Notice that all the checked results correspond to a Variable. Model this. First do checked = v and then .getARead
+
+#+BEGIN_SRC
+import go
+
+class HasPrefix extends CallExpr {
+  HasPrefix() { this.getTarget().getName() = "HasPrefix" }
+}
+
+//strings.HasPrefix(redirect, "/") && !strings.HasPrefix(redirect, "//")
+from StringOps::HasPrefix call, DataFlow::Node checked, string prefix, Variable v
+where
+  call.getBaseString() = checked and
+  checked = v.getARead() and 
+  call.getSubstring().asExpr().getStringValue() = prefix
+select call, checked, prefix
+#+END_SRC
 
 
+- Revisit what we are trying to find.  We are looking for cases where the variable is checked against some prefixes but not others. This means we will have to reuse the logic of the previous query later, but with different string prefixes.
 
+- We can use predicates! 
+- Use variable decl in from to predicate params
+- Use where for predicate logic
 
+#+BEGIN_SRC
+import go
 
+predicate prefixCheck(StringOps::HasPrefix call, DataFlow::Node checked, string prefix, Variable v) {
+  call.getBaseString() = checked and
+  checked = v.getARead() and
+  call.getSubstring().asExpr().getStringValue() = prefix
+}
 
+class HasPrefix extends CallExpr {
+  HasPrefix() { this.getTarget().getName() = "HasPrefix" }
+}
 
+//strings.HasPrefix(redirect, "/") && !strings.HasPrefix(redirect, "//")
+from StringOps::HasPrefix call, DataFlow::Node checked, string prefix, Variable v
+where prefixCheck(call, checked, prefix, v)
+select call, checked, prefix, v
 
+#+END_SRC 
+
+Code that checks URL prefixes usually has a check for /.
+Write predicate insufficientPrefixCheck. Take params from the prefixCheck and body call PrefixCheck and change the prefix var to '/' and remove prefix var from everywhere. Extend check to '//' and '/\\'
+
+#+BEGIN_SRC
+import go
+
+predicate prefixCheck(StringOps::HasPrefix call, DataFlow::Node checked, string prefix, Variable v) {
+  call.getBaseString() = checked and
+  checked = v.getARead() and
+  call.getSubstring().asExpr().getStringValue() = prefix
+}
+
+predicate insufficientPrefixCheck(
+  StringOps::HasPrefix singleSlashCheck, DataFlow::Node checked, Variable v
+) {
+  prefixCheck(singleSlashCheck, checked, "/", v) and
+  (not prefixCheck(_, _, "//", v) or not prefixCheck(_, _, "/\\", v))
+}
+
+class HasPrefix extends CallExpr {
+  HasPrefix() { this.getTarget().getName() = "HasPrefix" }
+}
+
+//strings.HasPrefix(redirect, "/") && !strings.HasPrefix(redirect, "//")
+from StringOps::HasPrefix call, DataFlow::Node checked, Variable v
+where insufficientPrefixCheck(call, checked, v)
+select call, checked, v
+#+END_SRC
+
+GLOBAL FLOW
+
+TO DO
+
+#+BEGIN_SRC
+/**
+ * @kind path-problem
+ */
+
+import go
+import DataFlow::PathGraph
+
+predicate prefixCheck(StringOps::HasPrefix call, DataFlow::Node checked, Variable v, string prefix) {
+  call.getBaseString() = checked and
+  checked = v.getARead() and
+  call.getSubstring().asExpr().getStringValue() = prefix
+}
+
+predicate insufficientPrefixChecks(
+  StringOps::HasPrefix singleSlashCheck, DataFlow::Node checked, Variable v
+) {
+  prefixCheck(singleSlashCheck, checked, v, "/") and
+  (
+    not prefixCheck(_, _, v, "//") or
+    not prefixCheck(_, _, v, "/\\")
+  )
+}
+
+class Config extends TaintTracking::Configuration {
+  Config() { this = "Config" }
+
+  override predicate isSource(DataFlow::Node source) { source instanceof UntrustedFlowSource }
+
+  override predicate isSink(DataFlow::Node sink) { insufficientPrefixChecks(_, sink, _) }
+}
+
+from DataFlow::PathNode source, DataFlow::PathNode sink, Config c
+where c.hasFlowPath(source, sink)
+select sink, source, sink, "Untrusted value reaches insufficient redirect check"
+
+#+END_SRC
