@@ -13,12 +13,10 @@ class SensitiveDataSourcesTest extends InlineExpectationsTest {
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and
     exists(SensitiveDataSource source |
-      (
-        location = source.getLocation() and
-        element = source.toString() and
-        value = source.getClassification() and
-        tag = "SensitiveDataSource"
-      )
+      location = source.getLocation() and
+      element = source.toString() and
+      value = source.getClassification() and
+      tag = "SensitiveDataSource"
       or
       exists(DataFlow::Node use |
         use = API::builtin("print").getACall().getArg(_) and
@@ -27,7 +25,6 @@ class SensitiveDataSourcesTest extends InlineExpectationsTest {
         element = use.toString() and
         value = source.getClassification() and
         tag = "SensitiveUse"
-
       )
     )
   }
