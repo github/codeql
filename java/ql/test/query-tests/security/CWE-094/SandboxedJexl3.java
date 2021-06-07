@@ -15,17 +15,17 @@ public class SandboxedJexl3 {
         JexlSandbox sandbox = new JexlSandbox(false);
         sandbox.white(SandboxedJexl3.class.getCanonicalName());
         JexlEngine jexl = new JexlBuilder().sandbox(sandbox).create();
-        JexlExpression e = jexl.createExpression(jexlExpr);
+        JexlExpression e = jexl.createExpression(jexlExpr); // Safe
         JexlContext jc = new MapContext();
-        e.evaluate(jc);
+        e.evaluate(jc); // Safe
     }
 
     private static void runJexlExpressionWithUberspectSandbox(String jexlExpr) {
         JexlUberspect sandbox = new JexlUberspectSandbox();
         JexlEngine jexl = new JexlBuilder().uberspect(sandbox).create();
-        JexlExpression e = jexl.createExpression(jexlExpr);
+        JexlExpression e = jexl.createExpression(jexlExpr); // Safe
         JexlContext jc = new MapContext();
-        e.evaluate(jc);
+        e.evaluate(jc); // Safe
     }
 
     private static JexlBuilder STATIC_JEXL_BUILDER;
@@ -39,7 +39,7 @@ public class SandboxedJexl3 {
     private static void runJexlExpressionViaJxltEngineWithSandbox(String jexlExpr) {
         JexlEngine jexl = STATIC_JEXL_BUILDER.create();
         JxltEngine jxlt = jexl.createJxltEngine();
-        jxlt.createExpression(jexlExpr).evaluate(new MapContext());
+        jxlt.createExpression(jexlExpr).evaluate(new MapContext()); // Safe
     }
 
     private static class JexlUberspectSandbox implements JexlUberspect {
