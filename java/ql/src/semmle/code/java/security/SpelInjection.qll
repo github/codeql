@@ -56,7 +56,7 @@ private class DefaultSpelExpressionInjectionAdditionalTaintStep extends SpelExpr
 /**
  * A configuration for safe evaluation context that may be used in expression evaluation.
  */
-class SafeEvaluationContextFlowConfig extends DataFlow2::Configuration {
+private class SafeEvaluationContextFlowConfig extends DataFlow2::Configuration {
   SafeEvaluationContextFlowConfig() { this = "SpelInjection::SafeEvaluationContextFlowConfig" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof SafeContextSource }

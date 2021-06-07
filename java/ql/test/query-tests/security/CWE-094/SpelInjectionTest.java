@@ -7,7 +7,7 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.SimpleEvaluationContext;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
-public class SpelInjection {
+public class SpelInjectionTest {
 
   private static final ExpressionParser PARSER = new SpelExpressionParser();
 
@@ -20,7 +20,7 @@ public class SpelInjection {
 
     ExpressionParser parser = new SpelExpressionParser();
     Expression expression = parser.parseExpression(input);
-    expression.getValue();
+    expression.getValue(); // $hasSpelInjection
   }
 
   public void testGetValueWithChainedCalls(Socket socket) throws IOException {
@@ -31,7 +31,7 @@ public class SpelInjection {
     String input = new String(bytes, 0, n);
 
     Expression expression = new SpelExpressionParser().parseExpression(input);
-    expression.getValue();
+    expression.getValue(); // $hasSpelInjection
   }
 
   public void testSetValueWithRootObject(Socket socket) throws IOException {
@@ -45,7 +45,7 @@ public class SpelInjection {
 
     Object root = new Object();
     Object value = new Object();
-    expression.setValue(root, value);
+    expression.setValue(root, value); // $hasSpelInjection
   }
 
   public void testGetValueWithStaticParser(Socket socket) throws IOException {
@@ -56,7 +56,7 @@ public class SpelInjection {
     String input = new String(bytes, 0, n);
 
     Expression expression = PARSER.parseExpression(input);
-    expression.getValue();
+    expression.getValue(); // $hasSpelInjection
   }
 
   public void testGetValueType(Socket socket) throws IOException {
@@ -67,7 +67,7 @@ public class SpelInjection {
     String input = new String(bytes, 0, n);
 
     Expression expression = PARSER.parseExpression(input);
-    expression.getValueType();
+    expression.getValueType(); // $hasSpelInjection
   }
 
   public void testWithStandardEvaluationContext(Socket socket) throws IOException {
@@ -80,7 +80,7 @@ public class SpelInjection {
     Expression expression = PARSER.parseExpression(input);
 
     StandardEvaluationContext context = new StandardEvaluationContext();
-    expression.getValue(context);
+    expression.getValue(context); // $hasSpelInjection
   }
 
   public void testWithSimpleEvaluationContext(Socket socket) throws IOException {
@@ -93,8 +93,7 @@ public class SpelInjection {
     Expression expression = PARSER.parseExpression(input);
     SimpleEvaluationContext context = SimpleEvaluationContext.forReadWriteDataBinding().build();
 
-    // the expression is evaluated in a limited context
-    expression.getValue(context);
+    expression.getValue(context); // Safe - the expression is evaluated in a limited context
   }
 
 }
