@@ -328,6 +328,10 @@ module AiohttpWebModel {
     override string getSourceType() { result = "aiohttp.web.Request" }
   }
 
+  /**
+   * A read of the `request` attribute on an instance of a aiohttp.web View class,
+   * which is the request being processed currently.
+   */
   class AiohttpViewClassRequestAttributeRead extends Request::InstanceSource,
     RemoteFlowSource::Range, DataFlow::Node {
     AiohttpViewClassRequestAttributeRead() {
@@ -378,6 +382,7 @@ module AiohttpWebModel {
     }
   }
 
+  /** An attribute read on a `aiohttp.web.Request` that is a `MultiDictProxy` instance. */
   class AiohttpRequestMultiDictProxyInstances extends Multidict::MultiDictProxy::InstanceSource {
     AiohttpRequestMultiDictProxyInstances() {
       this.(DataFlow::AttrRead).getObject() = Request::instance() and
@@ -385,6 +390,7 @@ module AiohttpWebModel {
     }
   }
 
+  /** An attribute read on a `aiohttp.web.Request` that is a `yarl.URL` instance. */
   class AiohttpRequestYarlUrlInstances extends Yarl::Url::InstanceSource {
     AiohttpRequestYarlUrlInstances() {
       this.(DataFlow::AttrRead).getObject() = Request::instance() and
