@@ -1,11 +1,14 @@
 /**
- * Provides classes for working with Spring classes and interfaces from
+ * Provides classes and predicates for working with Spring classes and interfaces from
  * `org.springframework.beans`.
  */
 
 import java
 import semmle.code.java.dataflow.ExternalFlow
 
+/**
+ * Provides models for the `org.springframework.beans` package.
+ */
 module SpringBeans {
   private class FlowSummaries extends SummaryModelCsv {
     override predicate row(string row) {
