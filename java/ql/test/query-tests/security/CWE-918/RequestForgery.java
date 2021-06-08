@@ -24,7 +24,8 @@ public class RequestForgery extends HttpServlet {
 
             // GOOD: sanitisation by concatenation with a prefix that prevents targeting an arbitrary host.
             // We test a few different ways of sanitisation: via string conctentation (perhaps nested),
-            // via a stringbuilder and via String.format.
+            // via a stringbuilder (for which we consider appends done in the constructor, chained onto
+            // the constructor and applied in subsequent statements) and via String.format.
             String safeUri3 = "https://example.com/" + request.getParameter("uri3");
             HttpRequest r3 = HttpRequest.newBuilder(new URI(safeUri3)).build();
             client.send(r3, null);
@@ -37,6 +38,21 @@ public class RequestForgery extends HttpServlet {
             safeUri5.append("https://example.com/").append(request.getParameter("uri5"));
             HttpRequest r5 = HttpRequest.newBuilder(new URI(safeUri5.toString())).build();
             client.send(r5, null);
+
+            StringBuilder safeUri5a = new StringBuilder("https://example.com/");
+            safeUri5a.append(request.getParameter("uri5a"));
+            HttpRequest r5a = HttpRequest.newBuilder(new URI(safeUri5a.toString())).build();
+            client.send(r5a, null);
+
+            StringBuilder safeUri5b = (new StringBuilder("https://example.com/")).append("dir/");
+            safeUri5b.append(request.getParameter("uri5b"));
+            HttpRequest r5b = HttpRequest.newBuilder(new URI(safeUri5b.toString())).build();
+            client.send(r5b, null);
+
+            StringBuilder safeUri5c = (new StringBuilder("prefix")).append("https://example.com/dir/");
+            safeUri5c.append(request.getParameter("uri5c"));
+            HttpRequest r5c = HttpRequest.newBuilder(new URI(safeUri5c.toString())).build();
+            client.send(r5c, null);
 
             String safeUri6 = String.format("https://example.com/%s", request.getParameter("uri6"));
             HttpRequest r6 = HttpRequest.newBuilder(new URI(safeUri6)).build();
@@ -68,6 +84,21 @@ public class RequestForgery extends HttpServlet {
             unsafeUri5.append(request.getParameter("baduri5")).append("https://example.com/");
             HttpRequest unsafer5 = HttpRequest.newBuilder(new URI(unsafeUri5.toString())).build();
             client.send(unsafer5, null);
+
+            StringBuilder unafeUri5a = new StringBuilder(request.getParameter("uri5a"));
+            unafeUri5a.append("https://example.com/");
+            HttpRequest unsafer5a = HttpRequest.newBuilder(new URI(unafeUri5a.toString())).build();
+            client.send(unsafer5a, null);
+
+            StringBuilder unsafeUri5b = (new StringBuilder(request.getParameter("uri5b"))).append("dir/");
+            unsafeUri5b.append("https://example.com/");
+            HttpRequest unsafer5b = HttpRequest.newBuilder(new URI(unsafeUri5b.toString())).build();
+            client.send(unsafer5b, null);
+
+            StringBuilder unsafeUri5c = (new StringBuilder("https")).append(request.getParameter("uri5c"));
+            unsafeUri5c.append("://example.com/dir/");
+            HttpRequest unsafer5c = HttpRequest.newBuilder(new URI(unsafeUri5c.toString())).build();
+            client.send(unsafer5c, null);
 
             String unsafeUri6 = String.format("%shttps://example.com/", request.getParameter("baduri6"));
             HttpRequest unsafer6 = HttpRequest.newBuilder(new URI(unsafeUri6)).build();

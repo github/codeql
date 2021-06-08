@@ -248,20 +248,85 @@ private Expr getAHostnameSanitizingPrefix() {
   result.(AddExpr).getAnOperand() = getAHostnameSanitizingPrefix()
 }
 
-private MethodAccess getNextAppend(MethodAccess append) {
-  result = any(StringBuilderVar sbv).getNextAppend(append)
+private class StringBuilderAppend extends MethodAccess {
+  StringBuilderAppend() {
+    this.getMethod().getDeclaringType() instanceof StringBuildingType and
+    this.getMethod().hasName("append")
+  }
 }
 
-private Expr getQualifier(MethodAccess e) { result = e.getQualifier() }
+private class StringBuilderConstructorOrAppend extends Call {
+  StringBuilderConstructorOrAppend() {
+    this instanceof StringBuilderAppend or
+    this.(ClassInstanceExpr).getConstructedType() instanceof StringBuildingType
+  }
+}
 
-private MethodAccess getAChainedAppend(Expr e) {
-  (
-    result.getQualifier() = e
+private Expr getQualifier(Expr e) { result = e.(MethodAccess).getQualifier() }
+
+/**
+ * An extension of `StringBuilderVar` that also accounts for strings appended in StringBuilder/Buffer's constructor
+ * and in `append` calls chained onto the constructor call.
+ *
+ * The original `StringBuilderVar` doesn't care about these because it is designed to model taint, and
+ * in taint rules terms these are not needed, as the connection between construction, appends and the
+ * eventual `toString` is more obvious.
+ */
+private class StringBuilderVarExt extends StringBuilderVar {
+  /**
+   * Returns a first assignment after this StringBuilderVar is first assigned.
+   *
+   * For example, for `StringBuilder sbv = new StringBuilder("1").append("2"); sbv.append("3").append("4");`
+   * this returns the append of `"3"`.
+   */
+  private StringBuilderAppend getAFirstAppendAfterAssignment() {
+    //
+    result = this.getAnAppend() and not result = this.getNextAppend(_)
+  }
+
+  /**
+   * Gets the next `append` after `prev`, where `prev` is, perhaps after some more `append` or other
+   * chained calls, assigned to this `StringBuilderVar`.
+   */
+  private StringBuilderAppend getNextAssignmentChainedAppend(StringBuilderConstructorOrAppend prev) {
+    getQualifier*(result) = this.getAnAssignedValue() and
+    result.getQualifier() = prev
+  }
+
+  /**
+   * Get a constructor call or `append` call that contributes a string to this string builder.
+   */
+  StringBuilderConstructorOrAppend getAConstructorOrAppend() {
+    exists(this.getNextAssignmentChainedAppend(result)) or
+    result = this.getAnAssignedValue() or
+    result = this.getAnAppend()
+  }
+
+  /**
+   * Like `StringBuilderVar.getNextAppend`, except including appends and constructors directly
+   * assigned to this `StringBuilderVar`.
+   */
+  private StringBuilderAppend getNextAppendIncludingAssignmentChains(
+    StringBuilderConstructorOrAppend prev
+  ) {
+    result = getNextAssignmentChainedAppend(prev)
     or
-    result.getQualifier() = getAChainedAppend(e)
-  ) and
-  result.getCallee().getDeclaringType() instanceof StringBuildingType and
-  result.getCallee().getName() = "append"
+    prev = this.getAnAssignedValue() and
+    result = this.getAFirstAppendAfterAssignment()
+    or
+    result = this.getNextAppend(prev)
+  }
+
+  /**
+   * Implements `StringBuilderVarExt.getNextAppendIncludingAssignmentChains+(prev)`.
+   */
+  StringBuilderAppend getSubsequentAppendIncludingAssignmentChains(
+    StringBuilderConstructorOrAppend prev
+  ) {
+    result = this.getNextAppendIncludingAssignmentChains(prev) or
+    result =
+      this.getSubsequentAppendIncludingAssignmentChains(this.getNextAppendIncludingAssignmentChains(prev))
+  }
 }
 
 /**
@@ -275,25 +340,14 @@ private class HostnameSanitizedExpr extends Expr {
     this =
       any(AddExpr add | add.getLeftOperand() = getAHostnameSanitizingPrefix()).getRightOperand()
     or
-    // Sanitize all appends to a StringBuilder that is initialized with a sanitizing prefix:
-    // (note imprecision: if the same StringBuilder/StringBuffer has more than one constructor call,
-    //  this sanitizes all of its append calls, not just those that may follow the constructor).
-    exists(StringBuilderVar sbv, ConstructorCall constructor, Expr initializer |
-      initializer = sbv.getAnAssignedValue() and
-      constructor = getQualifier*(initializer) and
-      constructor.getArgument(0) = getAHostnameSanitizingPrefix() and
-      (
-        this = sbv.getAnAppend().getArgument(0)
-        or
-        this = getAChainedAppend(constructor).getArgument(0)
-      )
-    )
-    or
     // Sanitize expressions that come after a sanitizing prefix in a sequence of StringBuilder operations:
-    exists(MethodAccess appendSanitizingConstant, MethodAccess subsequentAppend |
-      appendSanitizingConstant = any(StringBuilderVar v).getAnAppend() and
+    exists(
+      StringBuilderConstructorOrAppend appendSanitizingConstant,
+      StringBuilderAppend subsequentAppend, StringBuilderVarExt v
+    |
+      appendSanitizingConstant = v.getAConstructorOrAppend() and
       appendSanitizingConstant.getArgument(0) = getAHostnameSanitizingPrefix() and
-      getNextAppend*(appendSanitizingConstant) = subsequentAppend and
+      v.getSubsequentAppendIncludingAssignmentChains(appendSanitizingConstant) = subsequentAppend and
       this = subsequentAppend.getArgument(0)
     )
     or
