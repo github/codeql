@@ -30,6 +30,15 @@ def test_incompatible_types():
     x.field = str("Hello") # $str=field str SPURIOUS: int=field int
     expects_string(x) # $ str=field SPURIOUS: int=field
 
+# set in different function
+def set_foo(some_class_instance): # $ tracked=foo
+    some_class_instance.foo = tracked # $ tracked=foo tracked
+
+def test_set_x():
+    x = SomeClass()
+    set_foo(x)
+    print(x.foo) # MISSING: tracked
+
 # ------------------------------------------------------------------------------
 # Attributes assigned statically to a class
 # ------------------------------------------------------------------------------
