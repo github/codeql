@@ -1,5 +1,7 @@
 import subprocess
 import os
+import csv
+import sys
 
 
 def subprocess_run(cmd):
@@ -32,3 +34,19 @@ class LanguageConfig:
         self.capitalized_lang = capitalized_lang
         self.ext = ext
         self.ql_path = ql_path
+
+
+def read_cwes(path):
+    cwes = {}
+    with open(path) as csvfile:
+        reader = csv.reader(csvfile)
+        next(reader)
+        for row in reader:
+            # row: CWE-89,sql,SQL injection
+            cwe = row[0]
+            if cwe not in cwes:
+                cwes[cwe] = {
+                    "sink": row[1],
+                    "label": row[2]
+                }
+    return cwes

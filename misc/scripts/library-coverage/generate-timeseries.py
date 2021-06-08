@@ -6,42 +6,43 @@ import shutil
 from datetime import date
 import datetime
 import utils
+import settings
+import packages as pack
+import frameworks as fr
 
 """
-    Gets the sink/source/summary statistics for different days.
+Gets the sink/source/summary statistics for different days.
 """
 
 # the distance between commits to include in the output
 day_distance = 1
 
 
-def get_str_output(arr):
-    r = subprocess.check_output(arr)
-    return r.decode("utf-8").strip("\n'")
+class Git:
+    def get_output(arr):
+        r = subprocess.check_output(arr, text=True, env=os.environ.copy())
+        return r.strip("\n'")
+
+    def get_date(sha):
+        d = Git.get_output(
+            ["git", "show",  "--no-patch",  "--no-notes", "--pretty='%cd'",  "--date=short", sha])
+        return date.fromisoformat(d)
+
+    def get_parent(sha):
+        parent_sha = Git.get_output(
+            ["git", "rev-parse",  sha + "^"])
+        parent_date = Git.get_date(parent_sha)
+        return (parent_sha, parent_date)
+
+    def get_previous_sha(sha, date):
+        parent_sha, parent_date = Git.get_parent(sha)
+        while parent_date > date + datetime.timedelta(days=-1 * day_distance):
+            parent_sha, parent_date = Git.get_parent(parent_sha)
+
+        return (parent_sha, parent_date)
 
 
-def get_date(sha):
-    d = get_str_output(
-        ["git", "show",  "--no-patch",  "--no-notes", "--pretty='%cd'",  "--date=short", sha])
-    return date.fromisoformat(d)
-
-
-def get_parent(sha, date):
-    parent_sha = get_str_output(
-        ["git", "rev-parse",  sha + "^"])
-    parent_date = get_date(parent_sha)
-    return (parent_sha, parent_date)
-
-
-def get_previous_sha(sha, date):
-    parent_sha, parent_date = get_parent(sha, date)
-    while parent_date > date + datetime.timedelta(days=-1 * day_distance):
-        parent_sha, parent_date = get_parent(parent_sha, parent_date)
-
-    return (parent_sha, parent_date)
-
-
-def get_stats(lang, query):
+def get_packages(lang, query):
     try:
         db = "empty_" + lang
         ql_output = "output-" + lang + ".csv"
@@ -50,41 +51,14 @@ def get_stats(lang, query):
         utils.create_empty_database(lang, ".java", db)
         utils.run_codeql_query(query, db, ql_output)
 
-        sources = 0
-        sinks = 0
-        summaries = 0
-
-        packages = {}
-
-        with open(ql_output) as csvfile:
-            reader = csv.reader(csvfile)
-            for row in reader:
-                # row: "android.util",1,"remote","source",16
-                package = row[0]
-                if package not in packages:
-                    packages[package] = {
-                        "sources": 0,
-                        "sinks": 0,
-                        "summaries": 0
-                    }
-
-                if row[3] == "source":
-                    sources += int(row[4])
-                    packages[package]["sources"] += int(row[4])
-                if row[3] == "sink":
-                    sinks += int(row[4])
-                    packages[package]["sinks"] += int(row[4])
-                if row[3] == "summary":
-                    summaries += int(row[4])
-                    packages[package]["summaries"] += int(row[4])
-
-        os.remove(ql_output)
-
-        return (sources, sinks, summaries, packages)
+        return pack.PackageCollection(ql_output)
     except:
         print("Unexpected error:", sys.exc_info()[0])
         raise Exception()
     finally:
+        if os.path.isfile(ql_output):
+            os.remove(ql_output)
+
         if os.path.isdir(db):
             shutil.rmtree(db)
 
@@ -108,28 +82,79 @@ for config in configs:
             csvwriter_total.writerow(
                 ["SHA", "Date", "Sources", "Sinks", "Summaries"])
             csvwriter_packages.writerow(
-                ["SHA", "Date", "Package", "Sources", "Sinks", "Summaries"])
+                ["SHA", "Date", "Framework", "Package", "Sources", "Sinks", "Summaries"])
 
             os.chdir(working_dir)
 
             utils.subprocess_run(["git", "checkout", "main"])
 
-            current_sha = get_str_output(["git", "rev-parse", "HEAD"])
-            current_date = get_date(current_sha)
+            current_sha = Git.get_output(["git", "rev-parse", "HEAD"])
+            current_date = Git.get_date(current_sha)
+
+            # Read the additional framework data, such as URL, friendly name from the latest commit
+            input_framework_csv = settings.documentation_folder_no_prefix + "frameworks.csv"
+            frameworks = fr.FrameworkCollection(
+                input_framework_csv.format(language=config.lang))
 
             while True:
                 print("Getting stats for " + current_sha)
                 utils.subprocess_run(["git", "checkout", current_sha])
 
                 try:
-                    stats = get_stats(config.lang, config.ql_path)
+                    packages = get_packages(config.lang, config.ql_path)
 
-                    csvwriter_total.writerow(
-                        [current_sha, current_date, stats[0], stats[1], stats[2]])
+                    csvwriter_total.writerow([
+                        current_sha,
+                        current_date,
+                        packages.get_part_count("source"),
+                        packages.get_part_count("sink"),
+                        packages.get_part_count("summary")])
 
-                    for package in stats[3]:
-                        csvwriter_packages.writerow(
-                            [current_sha, current_date, package, stats[3][package]["sources"], stats[3][package]["sinks"], stats[3][package]["summaries"]])
+                    matched_packages = set()
+
+                    for framework in frameworks.get_frameworks():
+                        framework: fr.Framework = framework
+
+                        row = [current_sha, current_date,
+                               framework.name, framework.package_pattern]
+
+                        sources = 0
+                        sinks = 0
+                        summaries = 0
+
+                        for package in packages.get_packages():
+                            if frameworks.get_package_filter(framework)(package):
+                                sources += package.get_part_count("source")
+                                sinks += package.get_part_count("sink")
+                                summaries += package.get_part_count("summary")
+                                matched_packages.add(package.name)
+
+                        row.append(sources)
+                        row.append(sinks)
+                        row.append(summaries)
+
+                        csvwriter_packages.writerow(row)
+
+                    row = [current_sha, current_date, "Others"]
+
+                    sources = 0
+                    sinks = 0
+                    summaries = 0
+                    other_packages = set()
+
+                    for package in packages.get_packages():
+                        if not package.name in matched_packages:
+                            sources += package.get_part_count("source")
+                            sinks += package.get_part_count("sink")
+                            summaries += package.get_part_count("summary")
+                            other_packages.add(package.name)
+
+                    row.append(", ".join(sorted(other_packages)))
+                    row.append(sources)
+                    row.append(sinks)
+                    row.append(summaries)
+
+                    csvwriter_packages.writerow(row)
 
                     print("Collected stats for " + current_sha +
                           " at " + current_date.isoformat())
@@ -138,7 +163,7 @@ for config in configs:
                           current_sha + ". Stopping iteration.")
                     break
 
-                current_sha, current_date = get_previous_sha(
+                current_sha, current_date = Git.get_previous_sha(
                     current_sha, current_date)
 
     utils.subprocess_run(["git", "checkout", "main"])
