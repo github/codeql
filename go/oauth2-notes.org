@@ -129,9 +129,14 @@
 
 SINK
 
+ask this -  a data sink with the structure
+strings.HasPrefix(redirect, "/") && !strings.HasPrefix(redirect, "//")
+
 you can show that strings.HasPrefix(redirect, "/")  is CallExpr by looking at AST viewer
 
 add where clause - demo the chaining of the predicates. i.e .getTarget() returns Function but we want string "HasPrefix" so we . again and go through member predicates and see if there's anything that suits what we're looking for.  
+
+We are matching just this - _.HasPrefix(_, _)
 
 #+BEGIN_SRC text
 from CallExpr call
@@ -145,10 +150,24 @@ Explain that strings.HasPrefix checkes that a given string argumenet begins with
 
 For prefix check do the chaining of the member predicates (oo principles), first put it in the select and then move it down to the where
 
+
+//We are matching just this - _.HasPrefix(checked, _)
 #+BEGIN_SRC text
 import go
 
-//strings.HasPrefix(redirect, "/") && !strings.HasPrefix(redirect, "//")
+from CallExpr call, Expr checked, 
+where
+  call.getTarget().getName() = "HasPrefix" and
+  call.getArgument(0) = checked and
+select call, checked 
+
+#+END_SRC
+
+
+
+#+BEGIN_SRC text
+import go
+
 from CallExpr call, Expr checked, string prefix
 where
   call.getTarget().getName() = "HasPrefix" and
