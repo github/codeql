@@ -1,11 +1,14 @@
 package com.semmle.js.extractor;
 
-import com.semmle.js.ast.Position;
-import com.semmle.js.ast.SourceElement;
-import com.semmle.util.trap.TrapWriter;
-import com.semmle.util.trap.TrapWriter.Label;
+import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import com.semmle.js.ast.Position;
+import com.semmle.js.ast.SourceElement;
+import com.semmle.util.locations.SourceMap;
+import com.semmle.util.trap.TrapWriter;
+import com.semmle.util.trap.TrapWriter.Label;
 
 /**
  * Extractor for populating purely textual information about a file, namely its lines and their line
@@ -21,19 +24,75 @@ public class TextualExtractor {
   private final Label fileLabel;
   private final boolean extractLines;
   private final ExtractionMetrics metrics;
+  private final File extractedFile;
+  private SourceMap sourceMap;
 
   public TextualExtractor(
       TrapWriter trapwriter,
       LocationManager locationManager,
       String source,
       boolean extractLines,
-      ExtractionMetrics metrics) {
+      ExtractionMetrics metrics,
+      File extractedFile) {
+    this(trapwriter, locationManager, source, extractLines, metrics, extractedFile, null);
+  }
+
+  public TextualExtractor(
+      TrapWriter trapwriter,
+      LocationManager locationManager,
+      String source,
+      boolean extractLines,
+      ExtractionMetrics metrics,
+      File extractedFile,
+      SourceMap sourceMap) {
     this.trapwriter = trapwriter;
     this.locationManager = locationManager;
     this.source = source;
     this.fileLabel = locationManager.getFileLabel();
     this.extractLines = extractLines;
     this.metrics = metrics;
+    this.extractedFile = extractedFile;
+    this.sourceMap = sourceMap;
+  }
+
+  /**
+   * Returns the source map mapping the characters of {@link #getSource()} back to the
+   * original file locations.
+   */
+  public SourceMap getSourceMap() {
+    // The SourceMap should ideally be owned by the location manager, but the location manager does not
+    // have access to the source code. We construct a source map lazily since, at the time of writing,
+    // most code does not operate with source maps.
+    if (sourceMap == null) {
+      sourceMap = locationManager.adjustSourceMap(SourceMap.fromString(source));
+    }
+    return sourceMap;
+  }
+
+  /**
+   * Returns true if the source map that would be returned by {@link #getSourceMap()} might not be a 1:1 mapping
+   * to the original source file.
+   */
+  public boolean hasNonTrivialSourceMap() {
+    return sourceMap != null || locationManager.getStartLine() != 1 || locationManager.getStartColumn() != 1;
+  }
+
+  /**
+   * Returns the file whose contents should be extracted, and is contained
+   * in {@link #source}.
+   *
+   * <p>This may differ from the source file of the location manager, which refers
+   * to the original file that this was derived from.
+   */
+  public File getExtractedFile() {
+    return extractedFile;
+  }
+
+  /**
+   * Returns true if the extracted file and the source location files are different.
+   */
+  public boolean isSnippet() {
+    return !extractedFile.equals(locationManager.getSourceFile());
   }
 
   public TrapWriter getTrapwriter() {

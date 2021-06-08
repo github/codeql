@@ -38,4 +38,16 @@ http.createServer(function(req, res) {
   var path = url.parse(req.url, true).query.path;
 
   util.promisify(fs.readFileSync)(path); // NOT OK
+  require("bluebird").promisify(fs.readFileSync)(path); // NOT OK
+  require("bluebird").promisifyAll(fs).readFileSync(path); // NOT OK
+});
+
+
+const asyncFS = require("./my-async-fs-module");
+
+http.createServer(function(req, res) {
+  var path = url.parse(req.url, true).query.path;
+
+  fs.readFileSync(path); // NOT OK
+  asyncFS.readFileSync(path); // NOT OK
 });

@@ -40,15 +40,18 @@ var server = http.createServer(function(req, res) {
 
     let args = [];
     args[0] = "-c";
-    args[1] = cmd;
-    cp.execFile("/bin/bash", args); // NOT OK
+    args[1] = cmd;  // NOT OK
+    cp.execFile("/bin/bash", args);
 
+    let args = [];
+    args[0] = "-c";
+    args[1] = cmd;  // NOT OK
     run("sh", args);
 
     let args = [];
     args[0] = `-` + "c";
-    args[1] = cmd;
-    cp.execFile(`/bin` + "/bash", args); // NOT OK
+    args[1] = cmd; // NOT OK
+    cp.execFile(`/bin` + "/bash", args);
 
     cp.spawn('cmd.exe', ['/C', 'foo'].concat(["bar", cmd])); // NOT OK
     cp.spawn('cmd.exe', ['/C', 'foo'].concat(cmd)); // NOT OK
@@ -56,12 +59,12 @@ var server = http.createServer(function(req, res) {
 	let myArgs = [];
     myArgs.push(`-` + "c");
     myArgs.push(cmd);
-    cp.execFile(`/bin` + "/bash", args); // NOT OK
+    cp.execFile(`/bin` + "/bash", args); // NOT OK - but no support for `[].push()` for indirect arguments [INCONSISTENCY] 
 
 });
 
 function run(cmd, args) {
-  cp.spawn(cmd, args); // NOT OK
+  cp.spawn(cmd, args); // OK - the alert happens where `args` is build.
 }
 
 var util = require("util")
@@ -72,3 +75,14 @@ http.createServer(function(req, res) {
     util.promisify(cp.exec)(cmd); // NOT OK
 });
 
+
+const webpackDevServer = require('webpack-dev-server');
+new webpackDevServer(compiler, {
+    before: function (app) {
+        app.use(function (req, res, next) {
+          cp.exec(req.query.fileName); // NOT OK
+
+          require("my-sub-lib").foo(req.query.fileName); // calls lib/subLib/index.js#foo
+        });
+    }
+});

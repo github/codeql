@@ -3,18 +3,19 @@
  * constants.
  */
 
-import Element
-import Callable
-import Type
 import Assignable
+import Callable
+import Element
+import Type
 private import dotnet
 private import semmle.code.csharp.ExprOrStmtParent
+private import TypeRef
 
 /**
  * A variable. Either a variable with local scope (`LocalScopeVariable`) or a field (`Field`).
  */
 class Variable extends Assignable, DotNet::Variable, @variable {
-  override Variable getSourceDeclaration() { result = this }
+  override Variable getUnboundDeclaration() { result = this }
 
   override VariableAccess getAnAccess() { result.getTarget() = this }
 
@@ -36,7 +37,7 @@ class LocalScopeVariable extends Variable, @local_scope_variable {
    * Holds if this variable is captured by a nested callable. For example,
    * `v` is captured by the nested lambda expression in
    *
-   * ```
+   * ```csharp
    * void M() {
    *   var v = "captured";
    *   Action a = () => {
@@ -51,7 +52,7 @@ class LocalScopeVariable extends Variable, @local_scope_variable {
    * Gets a callable that captures this variable, if any. For example,
    * `v` is captured by the nested lambda expression in
    *
-   * ```
+   * ```csharp
    * void M() {
    *   var v = "captured";
    *   Action a = () => {
@@ -77,7 +78,7 @@ class LocalScopeVariable extends Variable, @local_scope_variable {
  * A parameter of a parameterizable declaration (callable, delegate, or indexer).
  * For example, `p` in
  *
- * ```
+ * ```csharp
  * void M(int p) {
  *   ...
  * }
@@ -89,7 +90,7 @@ class Parameter extends DotNet::Parameter, LocalScopeVariable, Attributable, Top
    * Gets the position of this parameter. For example, the position of `x` is
    * 0 and the position of `y` is 1 in
    *
-   * ```
+   * ```csharp
    * void M(int x, int y) {
    *   ...
    * }
@@ -103,7 +104,7 @@ class Parameter extends DotNet::Parameter, LocalScopeVariable, Attributable, Top
    * Holds if this parameter is a normal value parameter. For example, `p`
    * is a value parameter in
    *
-   * ```
+   * ```csharp
    * void M(int p) {
    *   ...
    * }
@@ -115,7 +116,7 @@ class Parameter extends DotNet::Parameter, LocalScopeVariable, Attributable, Top
    * Holds if this parameter is a reference parameter. For example, `p`
    * is a reference parameter in
    *
-   * ```
+   * ```csharp
    * void M(ref int p) {
    *   ...
    * }
@@ -127,7 +128,7 @@ class Parameter extends DotNet::Parameter, LocalScopeVariable, Attributable, Top
    * Holds if this parameter is an output parameter. For example, `p`
    * is an output parameter in
    *
-   * ```
+   * ```csharp
    * void M(out int p) {
    *   ...
    * }
@@ -139,7 +140,7 @@ class Parameter extends DotNet::Parameter, LocalScopeVariable, Attributable, Top
    * Holds if this parameter is a value type that is passed in by reference.
    * For example, `p` is an input parameter in
    *
-   * ```
+   * ```csharp
    * void M(in int p) {
    *   ...
    * }
@@ -154,7 +155,7 @@ class Parameter extends DotNet::Parameter, LocalScopeVariable, Attributable, Top
    * Holds if this parameter is a parameter array. For example, `args`
    * is a parameter array in
    *
-   * ```
+   * ```csharp
    * void M(params string[] args) {
    *   ...
    * }
@@ -167,7 +168,7 @@ class Parameter extends DotNet::Parameter, LocalScopeVariable, Attributable, Top
    * For example, `list` is the first parameter of the extension method
    * `Count` in
    *
-   * ```
+   * ```csharp
    * static int Count(this IEnumerable list) {
    *   ...
    * }
@@ -176,9 +177,9 @@ class Parameter extends DotNet::Parameter, LocalScopeVariable, Attributable, Top
   predicate hasExtensionMethodModifier() { params(this, _, _, _, 4, _, _) }
 
   /** Gets the declaring element of this parameter. */
-  Parameterizable getDeclaringElement() { params(this, _, _, _, _, result, _) }
+  override Parameterizable getDeclaringElement() { params(this, _, _, _, _, result, _) }
 
-  override Parameter getSourceDeclaration() { params(this, _, _, _, _, _, result) }
+  override Parameter getUnboundDeclaration() { params(this, _, _, _, _, _, result) }
 
   override ValueOrRefType getDeclaringType() {
     exists(Parameterizable p | p = this.getDeclaringElement() |
@@ -194,23 +195,25 @@ class Parameter extends DotNet::Parameter, LocalScopeVariable, Attributable, Top
 
   override string toString() { result = this.getName() }
 
+  override string getAPrimaryQlClass() { result = "Parameter" }
+
   /**
    * Gets the default value of this parameter, if any. For example, the
    * default value of `numberOfTries` is `3` in
    *
-   * ```
+   * ```csharp
    * void Connect(int numberOfTries = 3) {
    *   ...
    * }
    * ```
    */
-  Expr getDefaultValue() { result = this.getSourceDeclaration().getChildExpr(0) }
+  Expr getDefaultValue() { result = this.getUnboundDeclaration().getChildExpr(0) }
 
   /** Holds if this parameter has a default value. */
   predicate hasDefaultValue() { exists(getDefaultValue()) }
 
   /** Gets the callable to which this parameter belongs, if any. */
-  override Callable getCallable() { result.getAParameter() = this }
+  override Callable getCallable() { result = this.getDeclaringElement() }
 
   /**
    * Gets an argument which is assigned to this parameter in a call to the
@@ -220,7 +223,7 @@ class Parameter extends DotNet::Parameter, LocalScopeVariable, Attributable, Top
    *
    * Example:
    *
-   * ```
+   * ```csharp
    * class C {
    *   void M(int x, int y = 2, int z = 3) { }
    *
@@ -234,6 +237,7 @@ class Parameter extends DotNet::Parameter, LocalScopeVariable, Attributable, Top
    * The assigned arguments to `x` are `1` and `4`, the assigned argument to
    * `y` is `5`, and the assigned arguments to `z` are `3` and `6`, respectively.
    */
+  pragma[nomagic]
   Expr getAnAssignedArgument() { result = getCallable().getACall().getArgumentForParameter(this) }
 
   /** Holds if this parameter is potentially overwritten in the body of its callable. */
@@ -249,7 +253,7 @@ class Parameter extends DotNet::Parameter, LocalScopeVariable, Attributable, Top
  * special `value` parameter. For example, the `value` parameter of
  * `set_ReadOnly` in
  *
- * ```
+ * ```csharp
  * public bool ReadOnly {
  *   get {
  *     return flags.HasValue(Attribute.ReadOnly);
@@ -272,7 +276,7 @@ class ImplicitAccessorParameter extends Parameter {
  * A local variable, declared within the scope of a callable. For example,
  * the variables `total` and `s` in
  *
- * ```
+ * ```csharp
  * void M(string[] ss) {
  *   int total = 0;
  *   ...
@@ -290,7 +294,7 @@ class LocalVariable extends LocalScopeVariable, @local_variable {
    * For example, the initializer of `total` is `0`, and `s` has no
    * initializer, in
    *
-   * ```
+   * ```csharp
    * void M(string[] ss) {
    *   int total = 0;
    *   ...
@@ -305,7 +309,7 @@ class LocalVariable extends LocalScopeVariable, @local_variable {
    * Holds if this variable is implicitly typed. For example, the variable
    * `s` is implicitly type, and the variable `total` is not, in
    *
-   * ```
+   * ```csharp
    * void M(string[] ss) {
    *   int total = 0;
    *   ...
@@ -338,7 +342,7 @@ class LocalVariable extends LocalScopeVariable, @local_variable {
  * A local constant, modeled as a special kind of local variable. For example,
  * the local constant `maxTries` in
  *
- * ```
+ * ```csharp
  * void M() {
  *   const int maxTries = 10;
  *   ...
@@ -356,7 +360,7 @@ class LocalConstant extends LocalVariable, @local_constant {
 /**
  * A field. For example, the fields `x` and `y` in
  *
- * ```
+ * ```csharp
  * struct Coord {
  *   public int x, y;
  * }
@@ -368,7 +372,7 @@ class Field extends Variable, AssignableMember, Attributable, TopLevelExprParent
    * Gets the initial value of this field, if any. For example, the initial
    * value of `F` on line 2 is `20` in
    *
-   * ```
+   * ```csharp
    * class C {
    *   public int F = 20;
    * }
@@ -380,7 +384,7 @@ class Field extends Variable, AssignableMember, Attributable, TopLevelExprParent
    * Holds if this field has an initial value. For example, the initial
    * value of `F` on line 2 is `20` in
    *
-   * ```
+   * ```csharp
    * class C {
    *   public int F = 20;
    * }
@@ -394,7 +398,7 @@ class Field extends Variable, AssignableMember, Attributable, TopLevelExprParent
   /** Holds if this field is `readonly`. */
   predicate isReadOnly() { this.hasModifier("readonly") }
 
-  override Field getSourceDeclaration() { fields(this, _, _, _, _, result) }
+  override Field getUnboundDeclaration() { fields(this, _, _, _, _, result) }
 
   override FieldAccess getAnAccess() { result = Variable.super.getAnAccess() }
 
@@ -407,13 +411,15 @@ class Field extends Variable, AssignableMember, Attributable, TopLevelExprParent
   override Location getALocation() { field_location(this, result) }
 
   override string toString() { result = Variable.super.toString() }
+
+  override string getAPrimaryQlClass() { result = "Field" }
 }
 
 /**
  * A member constant, modeled a special kind of field. For example,
  * the constant `Separator` in
  *
- * ```
+ * ```csharp
  * class Path {
  *   const char Separator = `\\`;
  *   ...
@@ -428,7 +434,7 @@ class MemberConstant extends Field, @constant {
 /**
  * An `enum` member constant. For example, `ReadOnly` and `Shared` in
  *
- * ```
+ * ```csharp
  * enum Attribute {
  *   ReadOnly = 1,
  *   Shared = 2
@@ -445,7 +451,7 @@ class EnumConstant extends MemberConstant {
    * Gets the underlying integral type of this `enum` constant. For example,
    * the underlying type of `Attribute` is `byte` in
    *
-   * ```
+   * ```csharp
    * enum Attribute : byte {
    *   ReadOnly = 1,
    *   Shared = 2
@@ -460,7 +466,7 @@ class EnumConstant extends MemberConstant {
    * In this example, `ReadOnly` has an explicit value but
    * `Shared` does not have an explicit value.
    *
-   * ```
+   * ```csharp
    * enum Attribute {
    *   ReadOnly = 1,
    *   Shared

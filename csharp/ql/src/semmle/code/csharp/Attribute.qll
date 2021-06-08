@@ -4,12 +4,14 @@
 
 import Type
 private import semmle.code.csharp.ExprOrStmtParent
+private import TypeRef
 
 /**
  * An element that can have attributes. Either an assembly (`Assembly`), a field (`Field`),
  * a parameter (`Parameter`), an operator (`Operator`), a method (`Method`), a constructor (`Constructor`),
  * a destructor (`Destructor`), a callable accessor (`CallableAccessor`), a value or reference type
- * (`ValueOrRefType`), or a declaration with accessors (`DeclarationWithAccessors`).
+ * (`ValueOrRefType`), a declaration with accessors (`DeclarationWithAccessors`), or a local function
+ * (`LocalFunction`).
  */
 class Attributable extends @attributable {
   /** Gets an attribute attached to this element, if any. */
@@ -28,8 +30,7 @@ class Attributable extends @attributable {
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    this
-        .(Element)
+    this.(Element)
         .getLocation()
         .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
@@ -38,7 +39,7 @@ class Attributable extends @attributable {
 /**
  * An attribute, for example `[...]` on line 1 in
  *
- * ```
+ * ```csharp
  * [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
  * public static extern int GetFinalPathNameByHandle(
  *   SafeHandle handle,
@@ -64,7 +65,7 @@ class Attribute extends TopLevelExprParent, @attribute {
    * Gets the `i`th constructor argument of this attribute. For example, only
    * `true` is a constructor argument in
    *
-   * ```
+   * ```csharp
    * MyAttribute[true, Foo = 0]
    * ```
    */
@@ -76,7 +77,7 @@ class Attribute extends TopLevelExprParent, @attribute {
    * Gets the named argument `name` of this attribute. For example, only
    * `0` is a named argument in
    *
-   * ```
+   * ```csharp
    * MyAttribute[true, Foo = 0]
    * ```
    */
@@ -88,9 +89,11 @@ class Attribute extends TopLevelExprParent, @attribute {
   override Location getALocation() { attribute_location(this, result) }
 
   override string toString() {
-    exists(string type, string name | type = getType().toString() |
+    exists(string type, string name | type = getType().getName() |
       (if type.matches("%Attribute") then name = type.prefix(type.length() - 9) else name = type) and
       result = "[" + name + "(...)]"
     )
   }
+
+  override string getAPrimaryQlClass() { result = "Attribute" }
 }

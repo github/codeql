@@ -5,7 +5,7 @@
  * This will generate stubs for all the required dependencies as well.
  *
  * Use
- * ```
+ * ```ql
  * select generatedCode()
  * ```
  * to retrieve the generated C# code.
@@ -150,16 +150,18 @@ private class IndirectType extends GeneratedType {
     or
     this.(UnboundGenericType).getAConstructedGeneric().getASubType() instanceof GeneratedType
     or
-    exists(GeneratedType t | this = getAContainedType(t.getAGeneratedType()).getSourceDeclaration())
+    exists(GeneratedType t |
+      this = getAContainedType(t.getAGeneratedType()).getUnboundDeclaration()
+    )
     or
     exists(GeneratedDeclaration decl |
-      decl.(Member).getDeclaringType().getSourceDeclaration() = this
+      decl.(Member).getDeclaringType().getUnboundDeclaration() = this
     )
   }
 }
 
 private class RootGeneratedType extends GeneratedType {
-  RootGeneratedType() { this = any(GeneratedDeclaration decl).getSourceDeclaration() }
+  RootGeneratedType() { this = any(GeneratedDeclaration decl).getUnboundDeclaration() }
 }
 
 private Type getAContainedType(Type t) {
@@ -169,7 +171,7 @@ private Type getAContainedType(Type t) {
 }
 
 private class RootGeneratedMember extends GeneratedMember {
-  RootGeneratedMember() { this = any(GeneratedDeclaration d).getSourceDeclaration() }
+  RootGeneratedMember() { this = any(GeneratedDeclaration d).getUnboundDeclaration() }
 }
 
 private predicate declarationExists(Virtualizable m) {

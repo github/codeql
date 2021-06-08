@@ -53,3 +53,17 @@ class OperationMethod extends Method {
     )
   }
 }
+
+/**
+ * Data flow for WCF data contracts.
+ *
+ * Flow is defined from a WCF data contract object to any of its data member
+ * properties. This flow model only makes sense from a taint-tracking perspective
+ * (a tainted data contract object implies tainted data members).
+ */
+private class DataContractMember extends TaintTracking::TaintedMember {
+  DataContractMember() {
+    this.getAnAttribute() instanceof DataMemberAttribute and
+    this.getDeclaringType() instanceof DataContractClass
+  }
+}

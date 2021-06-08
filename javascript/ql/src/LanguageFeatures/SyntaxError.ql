@@ -13,4 +13,5 @@
 import javascript
 
 from JSParseError pe
+where not pe.getTopLevel() instanceof Angular2::TemplateTopLevel
 select pe, pe.getMessage()

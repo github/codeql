@@ -17,32 +17,8 @@
  */
 
 import python
-import semmle.python.security.Paths
-/* Sources */
-import semmle.python.web.HttpRequest
-/* Sinks */
-import semmle.python.security.injection.Path
+import semmle.python.security.dataflow.PathInjection
 
-class PathInjectionConfiguration extends TaintTracking::Configuration {
-    PathInjectionConfiguration() { this = "Path injection configuration" }
-
-    override predicate isSource(TaintTracking::Source source) {
-        source instanceof HttpRequestTaintSource
-    }
-
-    override predicate isSink(TaintTracking::Sink sink) { sink instanceof OpenNode }
-
-    override predicate isSanitizer(Sanitizer sanitizer) {
-        sanitizer instanceof PathSanitizer or
-        sanitizer instanceof NormalizedPathSanitizer
-    }
-
-    override predicate isExtension(TaintTracking::Extension extension) {
-        extension instanceof AbsPath
-    }
-}
-
-from PathInjectionConfiguration config, TaintedPathSource src, TaintedPathSink sink
-where config.hasFlowPath(src, sink)
-select sink.getSink(), src, sink, "This path depends on $@.", src.getSource(),
-    "a user-provided value"
+from CustomPathNode source, CustomPathNode sink
+where pathInjection(source, sink)
+select sink, source, sink, "This path depends on $@.", source, "a user-provided value"

@@ -183,6 +183,7 @@ namespace System.Web
         public NameValueCollection Values => null;
         public string this[string s] { get => null; set { } }
         public bool Secure { get; set; }
+        public System.DateTime Expires { get; set; }
     }
 
     public abstract class HttpCookieCollection : System.Collections.Specialized.NameObjectCollectionBase

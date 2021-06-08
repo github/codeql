@@ -13,7 +13,7 @@ import java.util.List;
  * class StringList extends List&lt;string&gt; {}
  * </pre>
  *
- * Above, <tt>List</tt> is a concrete expression whereas its type argument is a type.
+ * Above, <code>List</code> is a concrete expression whereas its type argument is a type.
  */
 public class ExpressionWithTypeArguments extends Expression {
   private final Expression expression;

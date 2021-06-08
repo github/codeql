@@ -22,6 +22,6 @@ where
   not s instanceof ControlStructure and
   // Exclude blocks; if a child of the block violates the rule that will still
   // be picked up so there is no point in blaming the block as well
-  not s instanceof Block and
+  not s instanceof BlockStmt and
   s.isPure()
 select s, "AV Rule 187: All non-null statements shall potentially have a side-effect."

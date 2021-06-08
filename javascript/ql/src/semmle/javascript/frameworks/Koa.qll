@@ -36,18 +36,11 @@ module Koa {
   /**
    * A Koa route handler.
    */
-  class RouteHandler extends HTTP::Servers::StandardRouteHandler, DataFlow::ValueNode {
-    Function function;
-
-    RouteHandler() {
-      function = astNode and
-      any(RouteSetup setup).getARouteHandler() = this
-    }
-
+  abstract class RouteHandler extends HTTP::Servers::StandardRouteHandler, DataFlow::SourceNode {
     /**
      * Gets the parameter of the route handler that contains the context object.
      */
-    SimpleParameter getContextParameter() { result = function.getParameter(0) }
+    Parameter getContextParameter() { result = getAFunctionValue().getFunction().getParameter(0) }
 
     /**
      * Gets an expression that contains the "context" object of
@@ -70,6 +63,35 @@ module Koa {
      * object of a route handler invocation.
      */
     Expr getARequestOrContextExpr() { result = getARequestExpr() or result = getAContextExpr() }
+
+    /**
+     * Gets a reference to a request parameter defined by this route handler.
+     */
+    DataFlow::Node getARequestParameterAccess() {
+      none() // overriden in subclasses.
+    }
+
+    /**
+     * Gets a dataflow node that can be given to a `RouteSetup` to register the handler.
+     */
+    abstract DataFlow::SourceNode getARouteHandlerRegistrationObject();
+  }
+
+  /**
+   * A koa route handler registered directly with a route-setup.
+   * Like:
+   * ```JavaScript
+   * var route = require('koa-route');
+   * var app = new Koa();
+   * app.use((context, next) => {
+   *     ...
+   * });
+   * ```
+   */
+  private class StandardRouteHandler extends RouteHandler {
+    StandardRouteHandler() { any(RouteSetup setup).getARouteHandler() = this }
+
+    override DataFlow::SourceNode getARouteHandlerRegistrationObject() { result = this }
   }
 
   /**
@@ -98,6 +120,77 @@ module Koa {
       or
       exists(DataFlow::TypeTracker t2 | result = ref(t2).track(t2, t))
     }
+  }
+
+  /**
+   * A Koa route handler registered using a routing library.
+   *
+   * Example of what that could look like:
+   * ```JavaScript
+   * const router = require('koa-router')();
+   * const Koa = require('koa');
+   * const app = new Koa();
+   * router.get('/', async (ctx, next) => {
+   *    // route handler stuff
+   * });
+   * app.use(router.routes());
+   * ```
+   */
+  private class RoutedRouteHandler extends RouteHandler {
+    DataFlow::InvokeNode router;
+    DataFlow::MethodCallNode call;
+
+    RoutedRouteHandler() {
+      router = DataFlow::moduleImport(["@koa/router", "koa-router"]).getAnInvocation() and
+      call =
+        router
+            .getAChainedMethodCall([
+                "use", "get", "post", "put", "link", "unlink", "delete", "del", "head", "options",
+                "patch", "all"
+              ]) and
+      this.flowsTo(call.getArgument(any(int i | i >= 1)))
+    }
+
+    override DataFlow::SourceNode getARouteHandlerRegistrationObject() {
+      result = call
+      or
+      result = router.getAMethodCall("routes")
+    }
+  }
+
+  /**
+   * A route handler registered using the `koa-route` library.
+   *
+   * Example of how `koa-route` can be used:
+   * ```JavaScript
+   * var route = require('koa-route');
+   * var Koa = require('koa');
+   * var app = new Koa();
+   *
+   * app.use(route.get('/pets', (context, param1, param2, param3, ...params) => {
+   *    // route handler stuff
+   * }));
+   */
+  class KoaRouteHandler extends RouteHandler {
+    DataFlow::CallNode call;
+
+    KoaRouteHandler() {
+      call =
+        DataFlow::moduleMember("koa-route",
+          [
+            "all", "acl", "bind", "checkout", "connect", "copy", "delete", "del", "get", "head",
+            "link", "lock", "msearch", "merge", "mkactivity", "mkcalendar", "mkcol", "move",
+            "notify", "options", "patch", "post", "propfind", "proppatch", "purge", "put", "rebind",
+            "report", "search", "subscribe", "trace", "unbind", "unlink", "unlock", "unsubscribe"
+          ]).getACall() and
+      this.flowsTo(call.getArgument(1))
+    }
+
+    override DataFlow::Node getARequestParameterAccess() {
+      result = call.getABoundCallbackParameter(1, any(int i | i >= 1))
+    }
+
+    override DataFlow::SourceNode getARouteHandlerRegistrationObject() { result = call }
   }
 
   /**
@@ -189,6 +282,9 @@ module Koa {
       kind = "parameter" and
       this = getAQueryParameterAccess(rh)
       or
+      kind = "parameter" and
+      this = rh.getARequestParameterAccess()
+      or
       exists(Expr e | rh.getARequestOrContextExpr() = e |
         // `ctx.request.url`, `ctx.request.originalUrl`, or `ctx.request.href`
         exists(string propName |
@@ -201,6 +297,10 @@ module Koa {
           or
           propName = "href"
         )
+        or
+        // params, when handler is registered by `koa-router` or similar.
+        kind = "parameter" and
+        this.asExpr().(PropAccess).accesses(e, "params")
         or
         // `ctx.request.body`
         e instanceof RequestExpr and
@@ -285,7 +385,13 @@ module Koa {
       getMethodName() = "use"
     }
 
-    override DataFlow::SourceNode getARouteHandler() { result.flowsToExpr(getArgument(0)) }
+    override DataFlow::SourceNode getARouteHandler() {
+      // `StandardRouteHandler` uses this predicate in it's charpred, so making this predicate return a `RouteHandler` would give an empty recursion.
+      result.flowsToExpr(getArgument(0))
+      or
+      // For the route-handlers that does not depend on this predicate in their charpred.
+      result.(RouteHandler).getARouteHandlerRegistrationObject().flowsToExpr(getArgument(0))
+    }
 
     override Expr getServer() { result = server }
   }
@@ -298,9 +404,8 @@ module Koa {
 
     ResponseSendArgument() {
       exists(DataFlow::PropWrite pwn |
-        pwn
-            .writes(DataFlow::valueNode(rh.getAResponseOrContextExpr()), "body",
-              DataFlow::valueNode(this))
+        pwn.writes(DataFlow::valueNode(rh.getAResponseOrContextExpr()), "body",
+          DataFlow::valueNode(this))
       )
     }
 

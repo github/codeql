@@ -40,6 +40,23 @@ class JSONValue extends @json_value, Locatable {
       result = loc.getFile()
     )
   }
+
+  /** If this is an object, gets the value of property `name`. */
+  JSONValue getPropValue(string name) { json_properties(this, name, result) }
+
+  /** If this is an array, gets the value of the `i`th element. */
+  JSONValue getElementValue(int i) { result = this.(JSONArray).getChild(i) }
+
+  /** If this is a string constant, gets the value of the string. */
+  string getStringValue() { result = this.(JSONString).getValue() }
+
+  /** If this is an integer constant, gets its numeric value. */
+  int getIntValue() { result = this.(JSONNumber).getValue().toInt() }
+
+  /** If this is a boolean constant, gets its boolean value. */
+  boolean getBooleanValue() { result.toString() = this.(JSONBoolean).getValue() }
+
+  override string getAPrimaryQlClass() { result = "JSONValue" }
 }
 
 /**
@@ -72,7 +89,9 @@ abstract class JSONPrimitiveValue extends JSONValue {
  * null
  * ```
  */
-class JSONNull extends @json_null, JSONPrimitiveValue { }
+class JSONNull extends @json_null, JSONPrimitiveValue {
+  override string getAPrimaryQlClass() { result = "JSONNull" }
+}
 
 /**
  * A JSON-encoded Boolean value.
@@ -84,7 +103,9 @@ class JSONNull extends @json_null, JSONPrimitiveValue { }
  * false
  * ```
  */
-class JSONBoolean extends @json_boolean, JSONPrimitiveValue { }
+class JSONBoolean extends @json_boolean, JSONPrimitiveValue {
+  override string getAPrimaryQlClass() { result = "JSONBoolean" }
+}
 
 /**
  * A JSON-encoded number.
@@ -96,7 +117,9 @@ class JSONBoolean extends @json_boolean, JSONPrimitiveValue { }
  * 1.0
  * ```
  */
-class JSONNumber extends @json_number, JSONPrimitiveValue { }
+class JSONNumber extends @json_number, JSONPrimitiveValue {
+  override string getAPrimaryQlClass() { result = "JSONNumber" }
+}
 
 /**
  * A JSON-encoded string value.
@@ -107,7 +130,9 @@ class JSONNumber extends @json_number, JSONPrimitiveValue { }
  * "a string"
  * ```
  */
-class JSONString extends @json_string, JSONPrimitiveValue { }
+class JSONString extends @json_string, JSONPrimitiveValue {
+  override string getAPrimaryQlClass() { result = "JSONString" }
+}
 
 /**
  * A JSON-encoded array.
@@ -119,11 +144,10 @@ class JSONString extends @json_string, JSONPrimitiveValue { }
  * ```
  */
 class JSONArray extends @json_array, JSONValue {
-  /** Gets the value of the `i`th element of this array. */
-  JSONValue getElementValue(int i) { result = getChild(i) }
+  override string getAPrimaryQlClass() { result = "JSONArray" }
 
   /** Gets the string value of the `i`th element of this array. */
-  string getElementStringValue(int i) { result = getElementValue(i).(JSONString).getValue() }
+  string getElementStringValue(int i) { result = getElementValue(i).getStringValue() }
 }
 
 /**
@@ -136,11 +160,10 @@ class JSONArray extends @json_array, JSONValue {
  * ```
  */
 class JSONObject extends @json_object, JSONValue {
-  /** Gets the value of property `name` of this object. */
-  JSONValue getPropValue(string name) { json_properties(this, name, result) }
+  override string getAPrimaryQlClass() { result = "JSONObject" }
 
   /** Gets the string value of property `name` of this object. */
-  string getPropStringValue(string name) { result = getPropValue(name).(JSONString).getValue() }
+  string getPropStringValue(string name) { result = getPropValue(name).getStringValue() }
 }
 
 /**

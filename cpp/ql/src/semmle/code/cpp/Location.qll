@@ -1,3 +1,7 @@
+/**
+ * Provides classes and predicates for locations in the source code.
+ */
+
 import semmle.code.cpp.Element
 import semmle.code.cpp.File
 
@@ -11,16 +15,16 @@ class Location extends @location {
   /** Gets the file corresponding to this location, if any. */
   File getFile() { result = this.getContainer() }
 
-  /** Gets the start line of this location. */
+  /** Gets the 1-based line number (inclusive) where this location starts. */
   int getStartLine() { this.fullLocationInfo(_, result, _, _, _) }
 
-  /** Gets the start column of this location. */
+  /** Gets the 1-based column number (inclusive) where this location starts. */
   int getStartColumn() { this.fullLocationInfo(_, _, result, _, _) }
 
-  /** Gets the end line of this location. */
+  /** Gets the 1-based line number (inclusive) where this location ends. */
   int getEndLine() { this.fullLocationInfo(_, _, _, result, _) }
 
-  /** Gets the end column of this location. */
+  /** Gets the 1-based column number (inclusive) where this location ends. */
   int getEndColumn() { this.fullLocationInfo(_, _, _, _, result) }
 
   /**
@@ -68,6 +72,7 @@ class Location extends @location {
   }
 
   /** Holds if `this` comes on a line strictly before `l`. */
+  pragma[inline]
   predicate isBefore(Location l) {
     this.getFile() = l.getFile() and this.getEndLine() < l.getStartLine()
   }
@@ -101,22 +106,31 @@ class Location extends @location {
 }
 
 /**
+ * DEPRECATED: Use `Location` instead.
  * A location of an element. Not used for expressions or statements, which
  * instead use LocationExpr and LocationStmt respectively.
  */
-library class LocationDefault extends Location, @location_default { }
+deprecated library class LocationDefault extends Location, @location_default { }
 
-/** A location of a statement. */
-library class LocationStmt extends Location, @location_stmt { }
+/**
+ * DEPRECATED: Use `Location` instead.
+ * A location of a statement.
+ */
+deprecated library class LocationStmt extends Location, @location_stmt { }
 
-/** A location of an expression. */
-library class LocationExpr extends Location, @location_expr { }
+/**
+ * DEPRECATED: Use `Location` instead.
+ * A location of an expression.
+ */
+deprecated library class LocationExpr extends Location, @location_expr { }
 
 /**
  * Gets the length of the longest line in file `f`.
  */
 pragma[nomagic]
-private int maxCols(File f) { result = max(Location l | l.getFile() = f | l.getEndColumn()) }
+private int maxCols(File f) {
+  result = max(Location l | l.getFile() = f | l.getStartColumn().maximum(l.getEndColumn()))
+}
 
 /**
  * A C/C++ element that has a location in a file

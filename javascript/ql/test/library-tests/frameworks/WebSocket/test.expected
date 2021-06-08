@@ -21,7 +21,7 @@ serverSend
 serverReceive
 | server.js:7:3:9:4 | ws.on(' ... );\\n\\t\\t}) |
 | sockjs.js:9:5:12:6 | conn.on ... \\n    }) |
-taintStep
+flowSteps
 | browser.js:5:15:5:32 | 'Hi from browser!' | server.js:7:38:7:44 | message |
 | browser.js:21:13:21:18 | 'test' | sockjs.js:9:31:9:37 | message |
 | client.js:7:11:7:27 | 'Hi from client!' | server.js:7:38:7:44 | message |

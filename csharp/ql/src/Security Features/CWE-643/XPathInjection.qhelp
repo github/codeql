@@ -42,7 +42,7 @@ variables in an <code>XsltArgumentList</code>.
 </example>
 
 <references>
-<li>OWASP: <a href="https://www.owasp.org/index.php?title=Testing_for_XPath_Injection_(OTG-INPVAL-010)">Testing for XPath Injection</a>.</li>
+<li>OWASP: <a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/09-Testing_for_XPath_Injection">Testing for XPath Injection</a>.</li>
 <li>OWASP: <a href="https://www.owasp.org/index.php/XPATH_Injection">XPath Injection</a>.</li>
 <li>MSDN: <a href="https://msdn.microsoft.com/en-us/library/dd567715.aspx">User Defined Functions and Variables</a>.</li>
 </references>

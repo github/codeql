@@ -15,39 +15,38 @@ void following_pointers(
     twoIntFields *sourceStruct1_ptr,
     int (*sourceFunctionPointer)())
 {
-  sink(sourceArray1); // flow
+  sink(sourceArray1); // $ ast,ir
 
   sink(sourceArray1[0]); // no flow
   sink(*sourceArray1); // no flow
-  sink(&sourceArray1); // flow (should probably be taint only)
+  sink(&sourceArray1); // $ ast // [should probably be taint only]
 
   sink(sourceStruct1.m1); // no flow
   sink(sourceStruct1_ptr->m1); // no flow
   sink(sourceStruct1_ptr->getFirst()); // no flow
 
   sourceStruct1_ptr->m1 = source();
-  sink(sourceStruct1_ptr->m1); // flow
-  sink(sourceStruct1_ptr->getFirst()); // flow
+  sink(sourceStruct1_ptr->m1); // $ ast,ir
+  sink(sourceStruct1_ptr->getFirst()); // $ ast,ir
   sink(sourceStruct1_ptr->m2); // no flow
   sink(sourceStruct1.m1); // no flow
 
   twoIntFields s = { source(), source() };
 
 
-  sink(s.m2); // flow
+  sink(s.m2); // $ ast,ir
 
   twoIntFields sArray[1] = { { source(), source() } };
   // TODO: fix this like above
-  sink(sArray[0].m2); // flow (AST dataflow misses this due to limitations of the analysis)
+  sink(sArray[0].m2); // $ ir MISSING: ast
 
   twoIntFields sSwapped = { .m2 = source(), .m1 = 0 };
 
-  sink(sSwapped.m2); // flow
+  sink(sSwapped.m2); // $ ast,ir
 
   sink(sourceFunctionPointer()); // no flow
 
   int stackArray[2] = { source(), source() };
   stackArray[0] = source();
-  sink(stackArray); // no flow
+  sink(stackArray); // $ ast MISSING: ir
 }
-

@@ -58,3 +58,8 @@ template<typename T> using Const = const T;
 using Const_int = Const<int>;
 
 typedef volatile Const_int volatile_Const_int;
+
+class TestConstexpr {
+    constexpr int member_constexpr() { return 0; } // const in C++11
+    constexpr int member_const_constexpr() const { return 0; }
+};

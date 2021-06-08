@@ -1,0 +1,28 @@
+canonicalTypeVariableType
+| T | GenericMethods.T in global scope |
+| T | Repeated.T in global scope |
+lexicalTypeVariableType
+| D | D |
+| E | E |
+| S | S |
+signatureTypeParameters
+| <D>(x: D): D | 0 | 1 | D | no bound |
+| <E>(x: () => E): E | 0 | 1 | E | no bound |
+| <E>(x: E[] \| (() => E)): E | 0 | 1 | E | no bound |
+| <E>(x: E[]): E | 0 | 1 | E | no bound |
+| <S extends any[]>(x: S, y: T[]): S | 0 | 1 | S | any[] |
+| <S>(x: S, y: S): S | 0 | 1 | S | no bound |
+| <S>(x: S, y: T): [S, T] | 0 | 1 | S | no bound |
+thisType
+| Apple.this | Apple |
+| Banana.this | Banana |
+typeVariableCanonicalNames
+| T | GenericMethods.T in global scope |
+| T | Repeated.T in global scope |
+typeVariableDecl
+| T | GenericMethods.T in global scope | tst.ts:22:26:22:26 | T |
+| T | Repeated.T in global scope | tst.ts:3:20:3:20 | T |
+| T | Repeated.T in global scope | tst.ts:7:20:7:20 | T |
+typeVariableHost
+| T | GenericMethods.T in global scope | GenericMethods in global scope |
+| T | Repeated.T in global scope | Repeated in global scope |

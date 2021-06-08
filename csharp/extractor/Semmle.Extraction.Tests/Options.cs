@@ -9,8 +9,8 @@ namespace Semmle.Extraction.Tests
 {
     public class OptionsTests
     {
-        CSharp.Options options;
-        CSharp.Standalone.Options standaloneOptions;
+        private CSharp.Options? options;
+        private CSharp.Standalone.Options? standaloneOptions;
 
         public OptionsTests()
         {
@@ -21,7 +21,7 @@ namespace Semmle.Extraction.Tests
         [Fact]
         public void DefaultOptions()
         {
-            options = CSharp.Options.CreateWithEnvironment(new string[] { });
+            options = CSharp.Options.CreateWithEnvironment(Array.Empty<string>());
             Assert.True(options.Cache);
             Assert.False(options.CIL);
             Assert.Null(options.Framework);
@@ -141,7 +141,7 @@ namespace Semmle.Extraction.Tests
         [Fact]
         public void StandaloneDefaults()
         {
-            standaloneOptions = CSharp.Standalone.Options.Create(new string[] { });
+            standaloneOptions = CSharp.Standalone.Options.Create(Array.Empty<string>());
             Assert.Equal(0, standaloneOptions.DllDirs.Count);
             Assert.True(standaloneOptions.UseNuGet);
             Assert.True(standaloneOptions.UseMscorlib);
@@ -184,14 +184,14 @@ namespace Semmle.Extraction.Tests
         public void Fast()
         {
             Environment.SetEnvironmentVariable("LGTM_INDEX_EXTRACTOR", "--fast");
-            options = CSharp.Options.CreateWithEnvironment(new string[] { });
+            options = CSharp.Options.CreateWithEnvironment(Array.Empty<string>());
             Assert.True(options.Fast);
         }
 
         [Fact]
         public void ArchiveArguments()
         {
-            var sw = new StringWriter();
+            using var sw = new StringWriter();
             var file = Path.GetTempFileName();
 
             try

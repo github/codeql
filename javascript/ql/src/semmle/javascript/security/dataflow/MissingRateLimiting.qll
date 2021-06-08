@@ -113,33 +113,53 @@ class DatabaseAccessAsExpensiveAction extends ExpensiveAction {
  * A route handler expression that is rate-limited by a rate-limiting middleware.
  */
 class RouteHandlerExpressionWithRateLimiter extends RateLimitedRouteHandlerExpr {
-  RouteHandlerExpressionWithRateLimiter() { getAMatchingAncestor() instanceof RateLimiter }
+  RouteHandlerExpressionWithRateLimiter() {
+    any(RateLimitingMiddleware m).ref().flowsToExpr(getAMatchingAncestor())
+  }
 }
 
 /**
+ * DEPRECATED. Use `RateLimitingMiddleware` instead.
+ *
  * A middleware that acts as a rate limiter.
  */
-abstract class RateLimiter extends Express::RouteHandlerExpr { }
+deprecated class RateLimiter extends Express::RouteHandlerExpr {
+  RateLimiter() { any(RateLimitingMiddleware m).ref().flowsToExpr(this) }
+}
+
+/**
+ * Creation of a middleware function that acts as a rate limiter.
+ */
+abstract class RateLimitingMiddleware extends DataFlow::SourceNode {
+  /** Gets a data flow node referring to this middleware. */
+  private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
+    t.start() and
+    result = this
+    or
+    DataFlow::functionOneWayForwardingStep(ref(t.continue()).getALocalUse(), result)
+    or
+    exists(DataFlow::TypeTracker t2 | result = ref(t2).track(t2, t))
+  }
+
+  /** Gets a data flow node referring to this middleware. */
+  DataFlow::SourceNode ref() { result = ref(DataFlow::TypeTracker::end()) }
+}
 
 /**
  * A rate limiter constructed using the `express-rate-limit` package.
  */
-class ExpressRateLimit extends RateLimiter {
+class ExpressRateLimit extends RateLimitingMiddleware {
   ExpressRateLimit() {
-    DataFlow::moduleImport("express-rate-limit").getAnInvocation().flowsToExpr(this)
+    this = API::moduleImport("express-rate-limit").getReturn().getAnImmediateUse()
   }
 }
 
 /**
  * A rate limiter constructed using the `express-brute` package.
  */
-class BruteForceRateLimit extends RateLimiter {
+class BruteForceRateLimit extends RateLimitingMiddleware {
   BruteForceRateLimit() {
-    exists(DataFlow::ModuleImportNode expressBrute, DataFlow::SourceNode prevent |
-      expressBrute.getPath() = "express-brute" and
-      prevent = expressBrute.getAnInstantiation().getAPropertyRead("prevent") and
-      prevent.flowsToExpr(this)
-    )
+    this = API::moduleImport("express-brute").getInstance().getMember("prevent").getAnImmediateUse()
   }
 }
 
@@ -148,11 +168,8 @@ class BruteForceRateLimit extends RateLimiter {
  */
 class RouteHandlerLimitedByExpressLimiter extends RateLimitedRouteHandlerExpr {
   RouteHandlerLimitedByExpressLimiter() {
-    exists(DataFlow::ModuleImportNode expressLimiter |
-      expressLimiter.getPath() = "express-limiter" and
-      expressLimiter.getACall().getArgument(0).getALocalSource().asExpr() =
-        this.getSetup().getRouter()
-    )
+    API::moduleImport("express-limiter").getParameter(0).getARhs().getALocalSource().asExpr() =
+      this.getSetup().getRouter()
   }
 }
 
@@ -175,14 +192,14 @@ class RouteHandlerLimitedByExpressLimiter extends RateLimitedRouteHandlerExpr {
 class RateLimiterFlexibleRateLimiter extends DataFlow::FunctionNode {
   RateLimiterFlexibleRateLimiter() {
     exists(
-      string rateLimiterClassName, DataFlow::SourceNode rateLimiterClass,
-      DataFlow::SourceNode rateLimiterInstance, DataFlow::ParameterNode request
+      string rateLimiterClassName, API::Node rateLimiterClass, API::Node rateLimiterConsume,
+      DataFlow::ParameterNode request
     |
       rateLimiterClassName.matches("RateLimiter%") and
-      rateLimiterClass = DataFlow::moduleMember("rate-limiter-flexible", rateLimiterClassName) and
-      rateLimiterInstance = rateLimiterClass.getAnInstantiation() and
+      rateLimiterClass = API::moduleImport("rate-limiter-flexible").getMember(rateLimiterClassName) and
+      rateLimiterConsume = rateLimiterClass.getInstance().getMember("consume") and
       request.getParameter() = getRouteHandlerParameter(getFunction(), "request") and
-      request.getAPropertyRead() = rateLimiterInstance.getAMemberCall("consume").getAnArgument()
+      request.getAPropertyRead().flowsTo(rateLimiterConsume.getAParameter().getARhs())
     )
   }
 }
@@ -190,8 +207,6 @@ class RateLimiterFlexibleRateLimiter extends DataFlow::FunctionNode {
 /**
  * A route-handler expression that is rate-limited by the `rate-limiter-flexible` package.
  */
-class RouteHandlerLimitedByRateLimiterFlexible extends RateLimiter {
-  RouteHandlerLimitedByRateLimiterFlexible() {
-    any(RateLimiterFlexibleRateLimiter rl).flowsToExpr(this)
-  }
+class RouteHandlerLimitedByRateLimiterFlexible extends RateLimitingMiddleware {
+  RouteHandlerLimitedByRateLimiterFlexible() { this instanceof RateLimiterFlexibleRateLimiter }
 }

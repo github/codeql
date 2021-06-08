@@ -1,4 +1,4 @@
-// semmle-extractor-options: /r:System.ComponentModel.Primitives.dll /r:System.ComponentModel.TypeConverter.dll /r:System.Data.Common.dll ${testdir}/../../../resources/stubs/EntityFramework.cs ${testdir}/../../../resources/stubs/System.Data.cs ${testdir}/../../../resources/stubs/System.Windows.cs
+// semmle-extractor-options: /r:System.ComponentModel.Primitives.dll /r:System.ComponentModel.TypeConverter.dll /r:System.Data.Common.dll ${testdir}/../../../resources/stubs/EntityFramework.cs ${testdir}/../../../resources/stubs/System.Data.cs ${testdir}/../../../resources/stubs/System.Windows.cs ${testdir}/../../../resources/stubs/Dapper.cs /r:System.Linq.Expressions.dll
 
 using System;
 

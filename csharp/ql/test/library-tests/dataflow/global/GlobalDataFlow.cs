@@ -2,6 +2,7 @@ using System;
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 /// <summary>
 /// All (tainted) sinks are named `sink[Param|Field|Property]N`, for some N, and all
@@ -231,6 +232,23 @@ public class DataFlow
         Check(nonSink);
     }
 
+    public async void M3()
+    {
+        // async await, tainted
+        var task = Task.Run(() => "taint source");
+        var sink41 = task.Result;
+        Check(sink41);
+        var sink42 = await task;
+        Check(sink42);
+
+        // async await, not tainted
+        task = Task.Run(() => "");
+        var nonSink0 = task.Result;
+        Check(nonSink0);
+        var nonSink1 = await task;
+        Check(nonSink1);
+    }
+
     static void Check<T>(T x) { }
 
     static void In0<T>(T sinkParam0)
@@ -420,6 +438,53 @@ public class DataFlow
     string NonOutProperty
     {
         get { return ""; }
+    }
+
+    static void AppendToStringBuilder(StringBuilder sb, string s)
+    {
+        sb.Append(s);
+    }
+
+    void TestStringBuilderFlow()
+    {
+        var sb = new StringBuilder();
+        AppendToStringBuilder(sb, "taint source");
+        var sink43 = sb.ToString();
+        Check(sink43);
+
+        sb.Clear();
+        var nonSink = sb.ToString();
+        Check(nonSink);
+    }
+
+    void TestStringFlow()
+    {
+        var sink44 = string.Join(",", "whatever", "taint source");
+        Check(sink44);
+
+        var nonSink = string.Join(",", "whatever", "not tainted");
+        Check(nonSink);
+    }
+
+    public void M4()
+    {
+        var task = Task.Run(() => "taint source");
+        var awaitable = task.ConfigureAwait(false);
+        var awaiter = awaitable.GetAwaiter();
+        var sink45 = awaiter.GetResult();
+        Check(sink45);
+    }
+
+    void M5(bool b)
+    {
+        void Inner(Action<string> a, bool b, string arg)
+        {
+            if (b)
+                a = s => Check(s);
+            a(arg);
+        }
+
+        Inner(_ => {}, b, "taint source");
     }
 }
 

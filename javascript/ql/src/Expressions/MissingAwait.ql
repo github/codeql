@@ -13,20 +13,20 @@ import javascript
 /**
  * Holds if `call` is a call to an `async` function.
  */
-predicate isAsyncCall(DataFlow::CallNode call) {
+predicate isAsyncCall(DataFlow::CallNode call, boolean nullable) {
   // If a callee is known, and all known callees are async, assume all
   // possible callees are async.
-  forex(Function callee | call.getACallee() = callee | callee.isAsync())
+  forex(Function callee | call.getACallee() = callee | callee.isAsync()) and
+  if call.asExpr() instanceof OptionalUse then nullable = true else nullable = false
 }
 
 /**
  * Holds if `node` is always a promise.
  */
 predicate isPromise(DataFlow::SourceNode node, boolean nullable) {
-  isAsyncCall(node) and
-  nullable = false
+  isAsyncCall(node, nullable)
   or
-  not isAsyncCall(node) and
+  not isAsyncCall(node, _) and
   node.asExpr().getType() instanceof PromiseType and
   nullable = true
 }

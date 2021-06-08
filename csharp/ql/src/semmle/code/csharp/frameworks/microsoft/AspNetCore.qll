@@ -27,6 +27,14 @@ class MicrosoftAspNetCoreMvcViewFeatures extends Namespace {
   }
 }
 
+/** The 'Microsoft.AspNetCore.Mvc.Rendering' namespace. */
+class MicrosoftAspNetCoreMvcRendering extends Namespace {
+  MicrosoftAspNetCoreMvcRendering() {
+    getParentNamespace() instanceof MicrosoftAspNetCoreMvcNamespace and
+    hasName("Rendering")
+  }
+}
+
 /** An attribute whose type is in the `Microsoft.AspNetCore.Mvc` namespace. */
 class MicrosoftAspNetCoreMvcAttribute extends Attribute {
   MicrosoftAspNetCoreMvcAttribute() {
@@ -187,15 +195,21 @@ class MicrosoftAspNetCoreMvcController extends Class {
   /** Gets a `Redirect*` method. */
   Method getARedirectMethod() {
     result = this.getAMethod() and
-    result.getName().matches("Redirect%")
+    (
+      result.getName().matches("Redirect%")
+      or
+      result.getName().matches("Accepted%")
+      or
+      result.getName().matches("Created%")
+    )
   }
 }
 
-/** The `Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelper` class. */
-class MicrosoftAspNetCoreMvcHtmlHelperClass extends Class {
-  MicrosoftAspNetCoreMvcHtmlHelperClass() {
-    getNamespace() instanceof MicrosoftAspNetCoreMvcViewFeatures and
-    hasName("HtmlHelper")
+/** The `Microsoft.AspNetCore.Mvc.Rendering.IHtmlHelper` interface. */
+class MicrosoftAspNetCoreMvcRenderingIHtmlHelperInterface extends Interface {
+  MicrosoftAspNetCoreMvcRenderingIHtmlHelperInterface() {
+    getNamespace() instanceof MicrosoftAspNetCoreMvcRendering and
+    hasName("IHtmlHelper")
   }
 
   /** Gets the `Raw` method. */

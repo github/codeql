@@ -8,6 +8,7 @@
 | test.cpp:2:7:2:7 | C | test.cpp:8:10:8:23 | f_template_C_D | C::f_template_C_D<T>(T) | getAMember(), getAMember(1), getAMemberFunction(), getCanonicalMember(1), getDeclaringType() |
 | test.cpp:2:7:2:7 | C | test.cpp:10:10:10:12 | f_C | C::f_C() | getAMember(), getAMember(2), getAMemberFunction(), getCanonicalMember(2), getDeclaringType() |
 | test.cpp:2:7:2:7 | C | test.cpp:11:10:11:14 | f_C_D | C::f_C_D() | getAMember(), getAMember(3), getAMemberFunction(), getCanonicalMember(3), getDeclaringType() |
+| test.cpp:14:7:14:7 | D | test.cpp:14:7:14:7 | D | D::D() | getAMember(), getAMember(6), getAMemberFunction(), getCanonicalMember(6), getDeclaringType() |
 | test.cpp:14:7:14:7 | D | test.cpp:14:7:14:7 | operator= | D::operator=(D &&) | getAMember(), getAMember(5), getAMemberFunction(), getCanonicalMember(5), getDeclaringType() |
 | test.cpp:14:7:14:7 | D | test.cpp:14:7:14:7 | operator= | D::operator=(const D &) | getAMember(), getAMember(4), getAMemberFunction(), getCanonicalMember(4), getDeclaringType() |
 | test.cpp:14:7:14:7 | D | test.cpp:17:10:17:10 | f_template_C_D | D::f_template_C_D<double>(double) | getAMember(), getAMember(0), getAMemberFunction(), getDeclaringType() |

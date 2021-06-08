@@ -1,0 +1,180 @@
+edges
+| JndiInjection.java:30:38:30:65 | nameStr : String | JndiInjection.java:34:16:34:22 | nameStr |
+| JndiInjection.java:30:38:30:65 | nameStr : String | JndiInjection.java:35:20:35:26 | nameStr |
+| JndiInjection.java:30:38:30:65 | nameStr : String | JndiInjection.java:36:29:36:35 | nameStr |
+| JndiInjection.java:30:38:30:65 | nameStr : String | JndiInjection.java:37:16:37:22 | nameStr |
+| JndiInjection.java:30:38:30:65 | nameStr : String | JndiInjection.java:38:14:38:20 | nameStr |
+| JndiInjection.java:30:38:30:65 | nameStr : String | JndiInjection.java:39:22:39:28 | nameStr |
+| JndiInjection.java:30:38:30:65 | nameStr : String | JndiInjection.java:41:16:41:19 | name |
+| JndiInjection.java:30:38:30:65 | nameStr : String | JndiInjection.java:42:20:42:23 | name |
+| JndiInjection.java:30:38:30:65 | nameStr : String | JndiInjection.java:43:29:43:32 | name |
+| JndiInjection.java:30:38:30:65 | nameStr : String | JndiInjection.java:44:16:44:19 | name |
+| JndiInjection.java:30:38:30:65 | nameStr : String | JndiInjection.java:45:14:45:17 | name |
+| JndiInjection.java:30:38:30:65 | nameStr : String | JndiInjection.java:46:22:46:25 | name |
+| JndiInjection.java:50:41:50:68 | nameStr : String | JndiInjection.java:54:16:54:22 | nameStr |
+| JndiInjection.java:50:41:50:68 | nameStr : String | JndiInjection.java:55:20:55:26 | nameStr |
+| JndiInjection.java:50:41:50:68 | nameStr : String | JndiInjection.java:56:16:56:22 | nameStr |
+| JndiInjection.java:50:41:50:68 | nameStr : String | JndiInjection.java:57:14:57:20 | nameStr |
+| JndiInjection.java:50:41:50:68 | nameStr : String | JndiInjection.java:58:22:58:28 | nameStr |
+| JndiInjection.java:50:41:50:68 | nameStr : String | JndiInjection.java:60:16:60:19 | name |
+| JndiInjection.java:50:41:50:68 | nameStr : String | JndiInjection.java:61:20:61:23 | name |
+| JndiInjection.java:50:41:50:68 | nameStr : String | JndiInjection.java:62:16:62:19 | name |
+| JndiInjection.java:50:41:50:68 | nameStr : String | JndiInjection.java:63:14:63:17 | name |
+| JndiInjection.java:50:41:50:68 | nameStr : String | JndiInjection.java:64:22:64:25 | name |
+| JndiInjection.java:68:42:68:69 | nameStr : String | JndiInjection.java:72:16:72:22 | nameStr |
+| JndiInjection.java:68:42:68:69 | nameStr : String | JndiInjection.java:73:20:73:26 | nameStr |
+| JndiInjection.java:68:42:68:69 | nameStr : String | JndiInjection.java:74:16:74:22 | nameStr |
+| JndiInjection.java:68:42:68:69 | nameStr : String | JndiInjection.java:75:14:75:20 | nameStr |
+| JndiInjection.java:68:42:68:69 | nameStr : String | JndiInjection.java:76:22:76:28 | nameStr |
+| JndiInjection.java:68:42:68:69 | nameStr : String | JndiInjection.java:78:16:78:19 | name |
+| JndiInjection.java:68:42:68:69 | nameStr : String | JndiInjection.java:79:20:79:23 | name |
+| JndiInjection.java:68:42:68:69 | nameStr : String | JndiInjection.java:80:16:80:19 | name |
+| JndiInjection.java:68:42:68:69 | nameStr : String | JndiInjection.java:81:14:81:17 | name |
+| JndiInjection.java:68:42:68:69 | nameStr : String | JndiInjection.java:82:22:82:25 | name |
+| JndiInjection.java:86:42:86:69 | nameStr : String | JndiInjection.java:89:16:89:22 | nameStr |
+| JndiInjection.java:86:42:86:69 | nameStr : String | JndiInjection.java:90:16:90:22 | nameStr |
+| JndiInjection.java:94:42:94:69 | nameStr : String | JndiInjection.java:98:16:98:22 | nameStr |
+| JndiInjection.java:94:42:94:69 | nameStr : String | JndiInjection.java:99:23:99:29 | nameStr |
+| JndiInjection.java:94:42:94:69 | nameStr : String | JndiInjection.java:100:18:100:21 | name |
+| JndiInjection.java:94:42:94:69 | nameStr : String | JndiInjection.java:101:16:101:19 | name |
+| JndiInjection.java:94:42:94:69 | nameStr : String | JndiInjection.java:102:14:102:17 | name |
+| JndiInjection.java:94:42:94:69 | nameStr : String | JndiInjection.java:103:22:103:25 | name |
+| JndiInjection.java:94:42:94:69 | nameStr : String | JndiInjection.java:104:16:104:22 | nameStr |
+| JndiInjection.java:94:42:94:69 | nameStr : String | JndiInjection.java:106:16:106:22 | nameStr |
+| JndiInjection.java:94:42:94:69 | nameStr : String | JndiInjection.java:107:16:107:22 | nameStr |
+| JndiInjection.java:94:42:94:69 | nameStr : String | JndiInjection.java:108:16:108:22 | nameStr |
+| JndiInjection.java:94:42:94:69 | nameStr : String | JndiInjection.java:109:16:109:22 | nameStr |
+| JndiInjection.java:94:42:94:69 | nameStr : String | JndiInjection.java:111:25:111:31 | nameStr |
+| JndiInjection.java:115:41:115:68 | nameStr : String | JndiInjection.java:118:16:118:22 | nameStr |
+| JndiInjection.java:115:41:115:68 | nameStr : String | JndiInjection.java:119:16:119:22 | nameStr |
+| JndiInjection.java:123:37:123:63 | urlStr : String | JndiInjection.java:124:33:124:57 | new JMXServiceURL(...) |
+| JndiInjection.java:123:37:123:63 | urlStr : String | JndiInjection.java:128:5:128:13 | connector |
+| JndiInjection.java:132:27:132:53 | urlStr : String | JndiInjection.java:135:35:135:40 | urlStr |
+| JndiInjection.java:140:27:140:53 | urlStr : String | JndiInjection.java:143:41:143:46 | urlStr |
+| JndiInjection.java:148:52:148:78 | urlStr : String | JndiInjection.java:151:37:151:42 | urlStr |
+| JndiInjection.java:156:52:156:78 | urlStr : String | JndiInjection.java:159:51:159:56 | urlStr |
+| JndiInjection.java:164:52:164:78 | urlStr : String | JndiInjection.java:167:51:167:56 | urlStr |
+nodes
+| JndiInjection.java:30:38:30:65 | nameStr : String | semmle.label | nameStr : String |
+| JndiInjection.java:34:16:34:22 | nameStr | semmle.label | nameStr |
+| JndiInjection.java:35:20:35:26 | nameStr | semmle.label | nameStr |
+| JndiInjection.java:36:29:36:35 | nameStr | semmle.label | nameStr |
+| JndiInjection.java:37:16:37:22 | nameStr | semmle.label | nameStr |
+| JndiInjection.java:38:14:38:20 | nameStr | semmle.label | nameStr |
+| JndiInjection.java:39:22:39:28 | nameStr | semmle.label | nameStr |
+| JndiInjection.java:41:16:41:19 | name | semmle.label | name |
+| JndiInjection.java:42:20:42:23 | name | semmle.label | name |
+| JndiInjection.java:43:29:43:32 | name | semmle.label | name |
+| JndiInjection.java:44:16:44:19 | name | semmle.label | name |
+| JndiInjection.java:45:14:45:17 | name | semmle.label | name |
+| JndiInjection.java:46:22:46:25 | name | semmle.label | name |
+| JndiInjection.java:50:41:50:68 | nameStr : String | semmle.label | nameStr : String |
+| JndiInjection.java:54:16:54:22 | nameStr | semmle.label | nameStr |
+| JndiInjection.java:55:20:55:26 | nameStr | semmle.label | nameStr |
+| JndiInjection.java:56:16:56:22 | nameStr | semmle.label | nameStr |
+| JndiInjection.java:57:14:57:20 | nameStr | semmle.label | nameStr |
+| JndiInjection.java:58:22:58:28 | nameStr | semmle.label | nameStr |
+| JndiInjection.java:60:16:60:19 | name | semmle.label | name |
+| JndiInjection.java:61:20:61:23 | name | semmle.label | name |
+| JndiInjection.java:62:16:62:19 | name | semmle.label | name |
+| JndiInjection.java:63:14:63:17 | name | semmle.label | name |
+| JndiInjection.java:64:22:64:25 | name | semmle.label | name |
+| JndiInjection.java:68:42:68:69 | nameStr : String | semmle.label | nameStr : String |
+| JndiInjection.java:72:16:72:22 | nameStr | semmle.label | nameStr |
+| JndiInjection.java:73:20:73:26 | nameStr | semmle.label | nameStr |
+| JndiInjection.java:74:16:74:22 | nameStr | semmle.label | nameStr |
+| JndiInjection.java:75:14:75:20 | nameStr | semmle.label | nameStr |
+| JndiInjection.java:76:22:76:28 | nameStr | semmle.label | nameStr |
+| JndiInjection.java:78:16:78:19 | name | semmle.label | name |
+| JndiInjection.java:79:20:79:23 | name | semmle.label | name |
+| JndiInjection.java:80:16:80:19 | name | semmle.label | name |
+| JndiInjection.java:81:14:81:17 | name | semmle.label | name |
+| JndiInjection.java:82:22:82:25 | name | semmle.label | name |
+| JndiInjection.java:86:42:86:69 | nameStr : String | semmle.label | nameStr : String |
+| JndiInjection.java:89:16:89:22 | nameStr | semmle.label | nameStr |
+| JndiInjection.java:90:16:90:22 | nameStr | semmle.label | nameStr |
+| JndiInjection.java:94:42:94:69 | nameStr : String | semmle.label | nameStr : String |
+| JndiInjection.java:98:16:98:22 | nameStr | semmle.label | nameStr |
+| JndiInjection.java:99:23:99:29 | nameStr | semmle.label | nameStr |
+| JndiInjection.java:100:18:100:21 | name | semmle.label | name |
+| JndiInjection.java:101:16:101:19 | name | semmle.label | name |
+| JndiInjection.java:102:14:102:17 | name | semmle.label | name |
+| JndiInjection.java:103:22:103:25 | name | semmle.label | name |
+| JndiInjection.java:104:16:104:22 | nameStr | semmle.label | nameStr |
+| JndiInjection.java:106:16:106:22 | nameStr | semmle.label | nameStr |
+| JndiInjection.java:107:16:107:22 | nameStr | semmle.label | nameStr |
+| JndiInjection.java:108:16:108:22 | nameStr | semmle.label | nameStr |
+| JndiInjection.java:109:16:109:22 | nameStr | semmle.label | nameStr |
+| JndiInjection.java:111:25:111:31 | nameStr | semmle.label | nameStr |
+| JndiInjection.java:115:41:115:68 | nameStr : String | semmle.label | nameStr : String |
+| JndiInjection.java:118:16:118:22 | nameStr | semmle.label | nameStr |
+| JndiInjection.java:119:16:119:22 | nameStr | semmle.label | nameStr |
+| JndiInjection.java:123:37:123:63 | urlStr : String | semmle.label | urlStr : String |
+| JndiInjection.java:124:33:124:57 | new JMXServiceURL(...) | semmle.label | new JMXServiceURL(...) |
+| JndiInjection.java:128:5:128:13 | connector | semmle.label | connector |
+| JndiInjection.java:132:27:132:53 | urlStr : String | semmle.label | urlStr : String |
+| JndiInjection.java:135:35:135:40 | urlStr | semmle.label | urlStr |
+| JndiInjection.java:140:27:140:53 | urlStr : String | semmle.label | urlStr : String |
+| JndiInjection.java:143:41:143:46 | urlStr | semmle.label | urlStr |
+| JndiInjection.java:148:52:148:78 | urlStr : String | semmle.label | urlStr : String |
+| JndiInjection.java:151:37:151:42 | urlStr | semmle.label | urlStr |
+| JndiInjection.java:156:52:156:78 | urlStr : String | semmle.label | urlStr : String |
+| JndiInjection.java:159:51:159:56 | urlStr | semmle.label | urlStr |
+| JndiInjection.java:164:52:164:78 | urlStr : String | semmle.label | urlStr : String |
+| JndiInjection.java:167:51:167:56 | urlStr | semmle.label | urlStr |
+#select
+| JndiInjection.java:34:16:34:22 | nameStr | JndiInjection.java:30:38:30:65 | nameStr : String | JndiInjection.java:34:16:34:22 | nameStr | JNDI lookup might include name from $@. | JndiInjection.java:30:38:30:65 | nameStr | this user input |
+| JndiInjection.java:35:20:35:26 | nameStr | JndiInjection.java:30:38:30:65 | nameStr : String | JndiInjection.java:35:20:35:26 | nameStr | JNDI lookup might include name from $@. | JndiInjection.java:30:38:30:65 | nameStr | this user input |
+| JndiInjection.java:36:29:36:35 | nameStr | JndiInjection.java:30:38:30:65 | nameStr : String | JndiInjection.java:36:29:36:35 | nameStr | JNDI lookup might include name from $@. | JndiInjection.java:30:38:30:65 | nameStr | this user input |
+| JndiInjection.java:37:16:37:22 | nameStr | JndiInjection.java:30:38:30:65 | nameStr : String | JndiInjection.java:37:16:37:22 | nameStr | JNDI lookup might include name from $@. | JndiInjection.java:30:38:30:65 | nameStr | this user input |
+| JndiInjection.java:38:14:38:20 | nameStr | JndiInjection.java:30:38:30:65 | nameStr : String | JndiInjection.java:38:14:38:20 | nameStr | JNDI lookup might include name from $@. | JndiInjection.java:30:38:30:65 | nameStr | this user input |
+| JndiInjection.java:39:22:39:28 | nameStr | JndiInjection.java:30:38:30:65 | nameStr : String | JndiInjection.java:39:22:39:28 | nameStr | JNDI lookup might include name from $@. | JndiInjection.java:30:38:30:65 | nameStr | this user input |
+| JndiInjection.java:41:16:41:19 | name | JndiInjection.java:30:38:30:65 | nameStr : String | JndiInjection.java:41:16:41:19 | name | JNDI lookup might include name from $@. | JndiInjection.java:30:38:30:65 | nameStr | this user input |
+| JndiInjection.java:42:20:42:23 | name | JndiInjection.java:30:38:30:65 | nameStr : String | JndiInjection.java:42:20:42:23 | name | JNDI lookup might include name from $@. | JndiInjection.java:30:38:30:65 | nameStr | this user input |
+| JndiInjection.java:43:29:43:32 | name | JndiInjection.java:30:38:30:65 | nameStr : String | JndiInjection.java:43:29:43:32 | name | JNDI lookup might include name from $@. | JndiInjection.java:30:38:30:65 | nameStr | this user input |
+| JndiInjection.java:44:16:44:19 | name | JndiInjection.java:30:38:30:65 | nameStr : String | JndiInjection.java:44:16:44:19 | name | JNDI lookup might include name from $@. | JndiInjection.java:30:38:30:65 | nameStr | this user input |
+| JndiInjection.java:45:14:45:17 | name | JndiInjection.java:30:38:30:65 | nameStr : String | JndiInjection.java:45:14:45:17 | name | JNDI lookup might include name from $@. | JndiInjection.java:30:38:30:65 | nameStr | this user input |
+| JndiInjection.java:46:22:46:25 | name | JndiInjection.java:30:38:30:65 | nameStr : String | JndiInjection.java:46:22:46:25 | name | JNDI lookup might include name from $@. | JndiInjection.java:30:38:30:65 | nameStr | this user input |
+| JndiInjection.java:54:16:54:22 | nameStr | JndiInjection.java:50:41:50:68 | nameStr : String | JndiInjection.java:54:16:54:22 | nameStr | JNDI lookup might include name from $@. | JndiInjection.java:50:41:50:68 | nameStr | this user input |
+| JndiInjection.java:55:20:55:26 | nameStr | JndiInjection.java:50:41:50:68 | nameStr : String | JndiInjection.java:55:20:55:26 | nameStr | JNDI lookup might include name from $@. | JndiInjection.java:50:41:50:68 | nameStr | this user input |
+| JndiInjection.java:56:16:56:22 | nameStr | JndiInjection.java:50:41:50:68 | nameStr : String | JndiInjection.java:56:16:56:22 | nameStr | JNDI lookup might include name from $@. | JndiInjection.java:50:41:50:68 | nameStr | this user input |
+| JndiInjection.java:57:14:57:20 | nameStr | JndiInjection.java:50:41:50:68 | nameStr : String | JndiInjection.java:57:14:57:20 | nameStr | JNDI lookup might include name from $@. | JndiInjection.java:50:41:50:68 | nameStr | this user input |
+| JndiInjection.java:58:22:58:28 | nameStr | JndiInjection.java:50:41:50:68 | nameStr : String | JndiInjection.java:58:22:58:28 | nameStr | JNDI lookup might include name from $@. | JndiInjection.java:50:41:50:68 | nameStr | this user input |
+| JndiInjection.java:60:16:60:19 | name | JndiInjection.java:50:41:50:68 | nameStr : String | JndiInjection.java:60:16:60:19 | name | JNDI lookup might include name from $@. | JndiInjection.java:50:41:50:68 | nameStr | this user input |
+| JndiInjection.java:61:20:61:23 | name | JndiInjection.java:50:41:50:68 | nameStr : String | JndiInjection.java:61:20:61:23 | name | JNDI lookup might include name from $@. | JndiInjection.java:50:41:50:68 | nameStr | this user input |
+| JndiInjection.java:62:16:62:19 | name | JndiInjection.java:50:41:50:68 | nameStr : String | JndiInjection.java:62:16:62:19 | name | JNDI lookup might include name from $@. | JndiInjection.java:50:41:50:68 | nameStr | this user input |
+| JndiInjection.java:63:14:63:17 | name | JndiInjection.java:50:41:50:68 | nameStr : String | JndiInjection.java:63:14:63:17 | name | JNDI lookup might include name from $@. | JndiInjection.java:50:41:50:68 | nameStr | this user input |
+| JndiInjection.java:64:22:64:25 | name | JndiInjection.java:50:41:50:68 | nameStr : String | JndiInjection.java:64:22:64:25 | name | JNDI lookup might include name from $@. | JndiInjection.java:50:41:50:68 | nameStr | this user input |
+| JndiInjection.java:72:16:72:22 | nameStr | JndiInjection.java:68:42:68:69 | nameStr : String | JndiInjection.java:72:16:72:22 | nameStr | JNDI lookup might include name from $@. | JndiInjection.java:68:42:68:69 | nameStr | this user input |
+| JndiInjection.java:73:20:73:26 | nameStr | JndiInjection.java:68:42:68:69 | nameStr : String | JndiInjection.java:73:20:73:26 | nameStr | JNDI lookup might include name from $@. | JndiInjection.java:68:42:68:69 | nameStr | this user input |
+| JndiInjection.java:74:16:74:22 | nameStr | JndiInjection.java:68:42:68:69 | nameStr : String | JndiInjection.java:74:16:74:22 | nameStr | JNDI lookup might include name from $@. | JndiInjection.java:68:42:68:69 | nameStr | this user input |
+| JndiInjection.java:75:14:75:20 | nameStr | JndiInjection.java:68:42:68:69 | nameStr : String | JndiInjection.java:75:14:75:20 | nameStr | JNDI lookup might include name from $@. | JndiInjection.java:68:42:68:69 | nameStr | this user input |
+| JndiInjection.java:76:22:76:28 | nameStr | JndiInjection.java:68:42:68:69 | nameStr : String | JndiInjection.java:76:22:76:28 | nameStr | JNDI lookup might include name from $@. | JndiInjection.java:68:42:68:69 | nameStr | this user input |
+| JndiInjection.java:78:16:78:19 | name | JndiInjection.java:68:42:68:69 | nameStr : String | JndiInjection.java:78:16:78:19 | name | JNDI lookup might include name from $@. | JndiInjection.java:68:42:68:69 | nameStr | this user input |
+| JndiInjection.java:79:20:79:23 | name | JndiInjection.java:68:42:68:69 | nameStr : String | JndiInjection.java:79:20:79:23 | name | JNDI lookup might include name from $@. | JndiInjection.java:68:42:68:69 | nameStr | this user input |
+| JndiInjection.java:80:16:80:19 | name | JndiInjection.java:68:42:68:69 | nameStr : String | JndiInjection.java:80:16:80:19 | name | JNDI lookup might include name from $@. | JndiInjection.java:68:42:68:69 | nameStr | this user input |
+| JndiInjection.java:81:14:81:17 | name | JndiInjection.java:68:42:68:69 | nameStr : String | JndiInjection.java:81:14:81:17 | name | JNDI lookup might include name from $@. | JndiInjection.java:68:42:68:69 | nameStr | this user input |
+| JndiInjection.java:82:22:82:25 | name | JndiInjection.java:68:42:68:69 | nameStr : String | JndiInjection.java:82:22:82:25 | name | JNDI lookup might include name from $@. | JndiInjection.java:68:42:68:69 | nameStr | this user input |
+| JndiInjection.java:89:16:89:22 | nameStr | JndiInjection.java:86:42:86:69 | nameStr : String | JndiInjection.java:89:16:89:22 | nameStr | JNDI lookup might include name from $@. | JndiInjection.java:86:42:86:69 | nameStr | this user input |
+| JndiInjection.java:90:16:90:22 | nameStr | JndiInjection.java:86:42:86:69 | nameStr : String | JndiInjection.java:90:16:90:22 | nameStr | JNDI lookup might include name from $@. | JndiInjection.java:86:42:86:69 | nameStr | this user input |
+| JndiInjection.java:98:16:98:22 | nameStr | JndiInjection.java:94:42:94:69 | nameStr : String | JndiInjection.java:98:16:98:22 | nameStr | JNDI lookup might include name from $@. | JndiInjection.java:94:42:94:69 | nameStr | this user input |
+| JndiInjection.java:99:23:99:29 | nameStr | JndiInjection.java:94:42:94:69 | nameStr : String | JndiInjection.java:99:23:99:29 | nameStr | JNDI lookup might include name from $@. | JndiInjection.java:94:42:94:69 | nameStr | this user input |
+| JndiInjection.java:100:18:100:21 | name | JndiInjection.java:94:42:94:69 | nameStr : String | JndiInjection.java:100:18:100:21 | name | JNDI lookup might include name from $@. | JndiInjection.java:94:42:94:69 | nameStr | this user input |
+| JndiInjection.java:101:16:101:19 | name | JndiInjection.java:94:42:94:69 | nameStr : String | JndiInjection.java:101:16:101:19 | name | JNDI lookup might include name from $@. | JndiInjection.java:94:42:94:69 | nameStr | this user input |
+| JndiInjection.java:102:14:102:17 | name | JndiInjection.java:94:42:94:69 | nameStr : String | JndiInjection.java:102:14:102:17 | name | JNDI lookup might include name from $@. | JndiInjection.java:94:42:94:69 | nameStr | this user input |
+| JndiInjection.java:103:22:103:25 | name | JndiInjection.java:94:42:94:69 | nameStr : String | JndiInjection.java:103:22:103:25 | name | JNDI lookup might include name from $@. | JndiInjection.java:94:42:94:69 | nameStr | this user input |
+| JndiInjection.java:104:16:104:22 | nameStr | JndiInjection.java:94:42:94:69 | nameStr : String | JndiInjection.java:104:16:104:22 | nameStr | JNDI lookup might include name from $@. | JndiInjection.java:94:42:94:69 | nameStr | this user input |
+| JndiInjection.java:106:16:106:22 | nameStr | JndiInjection.java:94:42:94:69 | nameStr : String | JndiInjection.java:106:16:106:22 | nameStr | JNDI lookup might include name from $@. | JndiInjection.java:94:42:94:69 | nameStr | this user input |
+| JndiInjection.java:107:16:107:22 | nameStr | JndiInjection.java:94:42:94:69 | nameStr : String | JndiInjection.java:107:16:107:22 | nameStr | JNDI lookup might include name from $@. | JndiInjection.java:94:42:94:69 | nameStr | this user input |
+| JndiInjection.java:108:16:108:22 | nameStr | JndiInjection.java:94:42:94:69 | nameStr : String | JndiInjection.java:108:16:108:22 | nameStr | JNDI lookup might include name from $@. | JndiInjection.java:94:42:94:69 | nameStr | this user input |
+| JndiInjection.java:109:16:109:22 | nameStr | JndiInjection.java:94:42:94:69 | nameStr : String | JndiInjection.java:109:16:109:22 | nameStr | JNDI lookup might include name from $@. | JndiInjection.java:94:42:94:69 | nameStr | this user input |
+| JndiInjection.java:111:25:111:31 | nameStr | JndiInjection.java:94:42:94:69 | nameStr : String | JndiInjection.java:111:25:111:31 | nameStr | JNDI lookup might include name from $@. | JndiInjection.java:94:42:94:69 | nameStr | this user input |
+| JndiInjection.java:118:16:118:22 | nameStr | JndiInjection.java:115:41:115:68 | nameStr : String | JndiInjection.java:118:16:118:22 | nameStr | JNDI lookup might include name from $@. | JndiInjection.java:115:41:115:68 | nameStr | this user input |
+| JndiInjection.java:119:16:119:22 | nameStr | JndiInjection.java:115:41:115:68 | nameStr : String | JndiInjection.java:119:16:119:22 | nameStr | JNDI lookup might include name from $@. | JndiInjection.java:115:41:115:68 | nameStr | this user input |
+| JndiInjection.java:124:33:124:57 | new JMXServiceURL(...) | JndiInjection.java:123:37:123:63 | urlStr : String | JndiInjection.java:124:33:124:57 | new JMXServiceURL(...) | JNDI lookup might include name from $@. | JndiInjection.java:123:37:123:63 | urlStr | this user input |
+| JndiInjection.java:128:5:128:13 | connector | JndiInjection.java:123:37:123:63 | urlStr : String | JndiInjection.java:128:5:128:13 | connector | JNDI lookup might include name from $@. | JndiInjection.java:123:37:123:63 | urlStr | this user input |
+| JndiInjection.java:135:35:135:40 | urlStr | JndiInjection.java:132:27:132:53 | urlStr : String | JndiInjection.java:135:35:135:40 | urlStr | JNDI lookup might include name from $@. | JndiInjection.java:132:27:132:53 | urlStr | this user input |
+| JndiInjection.java:143:41:143:46 | urlStr | JndiInjection.java:140:27:140:53 | urlStr : String | JndiInjection.java:143:41:143:46 | urlStr | JNDI lookup might include name from $@. | JndiInjection.java:140:27:140:53 | urlStr | this user input |
+| JndiInjection.java:151:37:151:42 | urlStr | JndiInjection.java:148:52:148:78 | urlStr : String | JndiInjection.java:151:37:151:42 | urlStr | JNDI lookup might include name from $@. | JndiInjection.java:148:52:148:78 | urlStr | this user input |
+| JndiInjection.java:159:51:159:56 | urlStr | JndiInjection.java:156:52:156:78 | urlStr : String | JndiInjection.java:159:51:159:56 | urlStr | JNDI lookup might include name from $@. | JndiInjection.java:156:52:156:78 | urlStr | this user input |
+| JndiInjection.java:167:51:167:56 | urlStr | JndiInjection.java:164:52:164:78 | urlStr : String | JndiInjection.java:167:51:167:56 | urlStr | JNDI lookup might include name from $@. | JndiInjection.java:164:52:164:78 | urlStr | this user input |

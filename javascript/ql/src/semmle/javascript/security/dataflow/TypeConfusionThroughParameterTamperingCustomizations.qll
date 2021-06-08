@@ -92,4 +92,18 @@ module TypeConfusionThroughParameterTampering {
       )
     }
   }
+
+  /**
+   * A value compared to the string `__proto__` or `constructor`, which may be bypassed by wrapping
+   * the payload in an array.
+   */
+  private class ProtoStringComparison extends Sink {
+    ProtoStringComparison() {
+      exists(EqualityTest test |
+        test.hasOperands(this.asExpr(),
+          any(Expr e | e.getStringValue() = ["__proto__", "constructor"])) and
+        test.isStrict()
+      )
+    }
+  }
 }

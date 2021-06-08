@@ -3,7 +3,7 @@
  * @description Using broken or weak cryptographic algorithms can allow an attacker to compromise security.
  * @kind path-problem
  * @problem.severity warning
- * @precision medium
+ * @precision high
  * @id java/weak-cryptographic-algorithm
  * @tags security
  *       external/cwe/cwe-327
@@ -21,7 +21,7 @@ private class ShortStringLiteral extends StringLiteral {
 
 class BrokenAlgoLiteral extends ShortStringLiteral {
   BrokenAlgoLiteral() {
-    getValue().regexpMatch(algorithmBlacklistRegex()) and
+    getValue().regexpMatch(getInsecureAlgorithmRegex()) and
     // Exclude German and French sentences.
     not getValue().regexpMatch(".*\\p{IsLowercase} des \\p{IsLetter}.*")
   }

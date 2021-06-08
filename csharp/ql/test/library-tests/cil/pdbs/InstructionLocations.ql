@@ -11,4 +11,4 @@ from CIL::Instruction instruction, CIL::Location location
 where
   location = instruction.getLocation() and
   filterMethod(instruction.getImplementation().getMethod())
-select location.toString(), instruction.toString()
+select location.toString(), instruction.toStringExtra()

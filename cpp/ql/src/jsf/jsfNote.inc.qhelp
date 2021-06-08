@@ -1,0 +1,18 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<fragment>
+<p>
+This query is part of a suite that tests code against 
+the <em>Joint Strike Fighter Air Vehicle C++ Coding Standard</em> (JSF). 
+Alerts reported by this query highlight code that may break the 
+JSF rule listed in the References section.
+</p>
+
+<p>
+The JSF rule this query tests is likely to be too strict for projects 
+that do not follow the JSF standard.
+</p>
+</fragment>
+</qhelp>

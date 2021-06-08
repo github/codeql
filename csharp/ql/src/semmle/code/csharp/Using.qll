@@ -5,6 +5,7 @@
  */
 
 import Element
+private import TypeRef
 
 /**
  * A `using` directive. Either a namespace `using` directive
@@ -17,7 +18,7 @@ class UsingDirective extends Element, @using_directive {
    *
    * Example:
    *
-   * ```
+   * ```csharp
    * using System;
    *
    * namespace N {
@@ -48,6 +49,8 @@ class UsingNamespaceDirective extends UsingDirective, @using_namespace_directive
   Namespace getImportedNamespace() { using_namespace_directives(this, result) }
 
   override string toString() { result = "using ...;" }
+
+  override string getAPrimaryQlClass() { result = "UsingNamespaceDirective" }
 }
 
 /**
@@ -61,4 +64,6 @@ class UsingStaticDirective extends UsingDirective, @using_static_directive {
   ValueOrRefType getTarget() { using_static_directives(this, getTypeRef(result)) }
 
   override string toString() { result = "using static ...;" }
+
+  override string getAPrimaryQlClass() { result = "UsingStaticDirective" }
 }

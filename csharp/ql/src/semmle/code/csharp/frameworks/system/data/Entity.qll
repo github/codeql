@@ -5,6 +5,7 @@
 private import csharp as csharp
 private import semmle.code.csharp.frameworks.system.Data as Data
 
+/** Definitions relating to the `System.Data.Entity` namespace. */
 module SystemDataEntity {
   /** The `System.Data.Entity` namespace. */
   class Namespace extends csharp::Namespace {
@@ -38,7 +39,7 @@ module SystemDataEntity {
   /** The `System.Data.Entity.DbSet` class. */
   class DbSet extends Class {
     DbSet() {
-      this.getSourceDeclaration().(csharp::UnboundGenericClass).getNameWithoutBrackets() = "DbSet"
+      this.getUnboundDeclaration().(csharp::UnboundGenericClass).getNameWithoutBrackets() = "DbSet"
     }
 
     /** Gets the `SqlQuery` method. */
@@ -78,6 +79,7 @@ module SystemDataEntity {
   }
 }
 
+/** Definitions relating to the `System.Data.Entity.Infrastructure` namespace. */
 module SystemDataEntityInfrastructure {
   /** The `System.Data.Entity.Infrastructure` namespace. */
   class Namespace extends csharp::Namespace {
@@ -95,9 +97,8 @@ module SystemDataEntityInfrastructure {
   /** A class that extends or is constructed from `System.Entity.Data.Infrastructure.DbRawSqlQuery`. */
   class DbRawSqlQuery extends Class {
     DbRawSqlQuery() {
-      this
-          .getABaseType*()
-          .getSourceDeclaration()
+      this.getABaseType*()
+          .getUnboundDeclaration()
           .(csharp::UnboundGenericClass)
           .getNameWithoutBrackets() = "DbRawSqlQuery"
     }

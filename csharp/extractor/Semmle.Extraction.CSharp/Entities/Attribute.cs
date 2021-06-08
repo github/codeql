@@ -1,85 +1,150 @@
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Semmle.Extraction.CSharp.Populators;
-using Semmle.Extraction.Entities;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Semmle.Extraction.Entities;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    class Attribute : FreshEntity, IExpressionParentEntity
+    internal class Attribute : CachedEntity<AttributeData>, IExpressionParentEntity
     {
         bool IExpressionParentEntity.IsTopLevelParent => true;
 
-        private readonly AttributeData AttributeData;
-        private readonly IEntity Entity;
+        private readonly AttributeSyntax? attributeSyntax;
+        private readonly IEntity entity;
 
-        public Attribute(Context cx, AttributeData attribute, IEntity entity)
-            : base(cx)
+        private Attribute(Context cx, AttributeData attributeData, IEntity entity)
+            : base(cx, attributeData)
         {
-            AttributeData = attribute;
-            Entity = entity;
-            TryPopulate();
+            this.attributeSyntax = attributeData.ApplicationSyntaxReference?.GetSyntax() as AttributeSyntax;
+            this.entity = entity;
         }
 
-        protected override void Populate(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
-            if (AttributeData.ApplicationSyntaxReference != null)
+            if (ReportingLocation?.IsInSource == true)
             {
-                // !! Extract attributes from assemblies.
-                // This is harder because the "expression" entities presume the
-                // existence of a syntax tree. This is not the case for compiled
-                // attributes.
-                var syntax = AttributeData.ApplicationSyntaxReference.GetSyntax() as AttributeSyntax;
-                ExtractAttribute(cx.TrapWriter.Writer, syntax, AttributeData.AttributeClass, Entity);
+                trapFile.WriteSubId(Location);
+                trapFile.Write(";attribute");
+            }
+            else
+            {
+                trapFile.Write('*');
             }
         }
 
-        public Attribute(Context cx, AttributeSyntax attribute, IEntity entity)
-            : base(cx)
+        public sealed override void WriteQuotedId(EscapingTextWriter trapFile)
         {
-            var info = cx.GetSymbolInfo(attribute);
-            ExtractAttribute(cx.TrapWriter.Writer, attribute, info.Symbol.ContainingType, entity);
+            if (ReportingLocation?.IsInSource == true)
+            {
+                base.WriteQuotedId(trapFile);
+            }
+            else
+            {
+                trapFile.Write('*');
+            }
         }
 
-        void ExtractAttribute(System.IO.TextWriter trapFile, AttributeSyntax syntax, ITypeSymbol attributeClass, IEntity entity)
+        public override void Populate(TextWriter trapFile)
         {
-            var type = Type.Create(cx, attributeClass);
+            var type = Type.Create(Context, Symbol.AttributeClass);
             trapFile.attributes(this, type.TypeRef, entity);
+            trapFile.attribute_location(this, Location);
 
-            trapFile.attribute_location(this, cx.Create(syntax.Name.GetLocation()));
-
-            if (cx.Extractor.OutputPath != null)
-                trapFile.attribute_location(this, Assembly.CreateOutputAssembly(cx));
-
-            TypeMention.Create(cx, syntax.Name, this, type);
-
-            if (syntax.ArgumentList != null)
+            if (attributeSyntax is not null)
             {
-                cx.PopulateLater(() =>
+                if (!Context.Extractor.Standalone)
                 {
-                    int child = 0;
-                    foreach (var arg in syntax.ArgumentList.Arguments)
-                    {
-                        var expr = Expression.Create(cx, arg.Expression, this, child++);
-                        if (!(arg.NameEquals is null))
-                        {
-                            trapFile.expr_argument_name(expr, arg.NameEquals.Name.Identifier.Text);
-                        }
-                    }
-                });
+                    trapFile.attribute_location(this, Assembly.CreateOutputAssembly(Context));
+                }
+
+                TypeMention.Create(Context, attributeSyntax.Name, this, type);
+            }
+
+            ExtractArguments(trapFile);
+        }
+
+        private void ExtractArguments(TextWriter trapFile)
+        {
+            var ctorArguments = attributeSyntax?.ArgumentList?.Arguments.Where(a => a.NameEquals is null).ToList();
+
+            var childIndex = 0;
+            for (var i = 0; i < Symbol.ConstructorArguments.Length; i++)
+            {
+                var constructorArgument = Symbol.ConstructorArguments[i];
+                var paramName = Symbol.AttributeConstructor?.Parameters[i].Name;
+                var argSyntax = ctorArguments?.SingleOrDefault(a => a.NameColon is not null && a.NameColon.Name.Identifier.Text == paramName);
+
+                if (argSyntax is null &&                            // couldn't find named argument
+                    ctorArguments?.Count > childIndex &&            // there're more arguments
+                    ctorArguments[childIndex].NameColon is null)    // the argument is positional
+                {
+                    argSyntax = ctorArguments[childIndex];
+                }
+
+                CreateExpressionFromArgument(
+                    constructorArgument,
+                    argSyntax?.Expression,
+                    this,
+                    childIndex++);
+            }
+
+            foreach (var namedArgument in Symbol.NamedArguments)
+            {
+                var expr = CreateExpressionFromArgument(
+                    namedArgument.Value,
+                    attributeSyntax?.ArgumentList?.Arguments.Single(a => a.NameEquals?.Name?.Identifier.Text == namedArgument.Key).Expression,
+                    this,
+                    childIndex++);
+
+                if (expr is not null)
+                {
+                    trapFile.expr_argument_name(expr, namedArgument.Key);
+                }
             }
         }
+
+        private Expression? CreateExpressionFromArgument(TypedConstant constant, ExpressionSyntax? syntax, IExpressionParentEntity parent,
+            int childIndex)
+        {
+            return syntax is null
+                ? Expression.CreateGenerated(Context, constant, parent, childIndex, Location)
+                : Expression.Create(Context, syntax, parent, childIndex);
+        }
+
+        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.OptionalLabel;
+
+        public override Microsoft.CodeAnalysis.Location? ReportingLocation => attributeSyntax?.Name.GetLocation();
+
+        private Semmle.Extraction.Entities.Location? location;
+
+        private Semmle.Extraction.Entities.Location Location =>
+            location ??= Context.CreateLocation(attributeSyntax is null
+                ? entity.ReportingLocation
+                : attributeSyntax.Name.GetLocation());
+
+        public override bool NeedsPopulation => true;
 
         public static void ExtractAttributes(Context cx, ISymbol symbol, IEntity entity)
         {
             foreach (var attribute in symbol.GetAttributes())
             {
-                new Attribute(cx, attribute, entity);
+                Create(cx, attribute, entity);
             }
         }
 
-        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.OptionalLabel;
+        public static Attribute Create(Context cx, AttributeData attributeData, IEntity entity)
+        {
+            var init = (attributeData, entity);
+            return AttributeFactory.Instance.CreateEntity(cx, attributeData, init);
+        }
+
+        private class AttributeFactory : CachedEntityFactory<(AttributeData attributeData, IEntity receiver), Attribute>
+        {
+            public static readonly AttributeFactory Instance = new AttributeFactory();
+
+            public override Attribute Create(Context cx, (AttributeData attributeData, IEntity receiver) init) =>
+                new Attribute(cx, init.attributeData, init.receiver);
+        }
     }
 }

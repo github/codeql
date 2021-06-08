@@ -5,6 +5,7 @@
  */
 
 import javascript
+private import semmle.javascript.internal.CachedStages
 
 /**
  * A module, which may either be an ECMAScript 2015-style module,
@@ -24,9 +25,11 @@ abstract class Module extends TopLevel {
   Module getAnImportedModule() { result = getAnImport().getImportedModule() }
 
   /** Gets a symbol exported by this module. */
-  string getAnExportedSymbol() { exports(result, _) }
+  string getAnExportedSymbol() { exists(getAnExportedValue(result)) }
 
   /**
+   * DEPRECATED. Use `getAnExportedValue` instead.
+   *
    * Holds if this module explicitly exports symbol `name` at the
    * program element `export`.
    *
@@ -36,9 +39,77 @@ abstract class Module extends TopLevel {
    * that are explicitly defined on the module object.
    *
    * Symbols defined in another module that are re-exported by
-   * this module are not considered either.
+   * this module are only sometimes considered.
    */
-  abstract predicate exports(string name, ASTNode export);
+  deprecated predicate exports(string name, ASTNode export) {
+    this instanceof AmdModule and
+    exists(DataFlow::PropWrite pwn | export = pwn.getAstNode() |
+      pwn.getBase().analyze().getAValue() = this.(AmdModule).getDefine().getAModuleExportsValue() and
+      name = pwn.getPropertyName()
+    )
+    or
+    this instanceof Closure::ClosureModule and
+    exists(DataFlow::PropWrite write, Expr base |
+      write.getAstNode() = export and
+      write.writes(base.flow(), name, _) and
+      (
+        base = this.(Closure::ClosureModule).getExportsVariable().getAReference()
+        or
+        base = this.(Closure::ClosureModule).getExportsVariable().getAnAssignedExpr()
+      )
+    )
+    or
+    this instanceof NodeModule and
+    (
+      // a property write whose base is `exports` or `module.exports`
+      exists(DataFlow::PropWrite pwn | export = pwn.getAstNode() |
+        pwn.getBase() = this.(NodeModule).getAModuleExportsNode() and
+        name = pwn.getPropertyName()
+      )
+      or
+      // a re-export using spread-operator. E.g. `const foo = require("./foo"); module.exports = {bar: bar, ...foo};`
+      exists(ObjectExpr obj | obj = this.(NodeModule).getAModuleExportsNode().asExpr() |
+        obj.getAProperty()
+            .(SpreadProperty)
+            .getInit()
+            .(SpreadElement)
+            .getOperand()
+            .flow()
+            .getALocalSource()
+            .asExpr()
+            .(Import)
+            .getImportedModule()
+            .exports(name, export)
+      )
+      or
+      // an externs definition (where appropriate)
+      exists(PropAccess pacc | export = pacc |
+        pacc.getBase() = this.(NodeModule).getAModuleExportsNode().asExpr() and
+        name = pacc.getPropertyName() and
+        isExterns() and
+        exists(pacc.getDocumentation())
+      )
+    )
+    or
+    this instanceof ES2015Module and
+    exists(ExportDeclaration ed | ed = this.(ES2015Module).getAnExport() and ed = export |
+      ed.exportsAs(_, name)
+    )
+  }
+
+  /**
+   * Get a value that is explicitly exported from this module with under `name`.
+   *
+   * Note that in some module systems (notably CommonJS and AMD)
+   * modules are arbitrary objects that export all their
+   * properties. This predicate only considers properties
+   * that are explicitly defined on the module object.
+   *
+   * Symbols defined in another module that are re-exported by
+   * this module are only sometimes considered.
+   */
+  cached
+  abstract DataFlow::Node getAnExportedValue(string name);
 
   /**
    * Gets the root folder relative to which the given import path (which must
@@ -167,14 +238,17 @@ abstract class Import extends ASTNode {
    * behavior of Node.js imports, which prefer core modules such as `fs` over any
    * source module of the same name.
    */
+  cached
   Module getImportedModule() {
+    Stages::Imports::ref() and
     if exists(resolveExternsImport())
     then result = resolveExternsImport()
     else (
       result = resolveAsProvidedModule() or
       result = resolveImportedPath() or
       result = resolveFromTypeRoot() or
-      result = resolveFromTypeScriptSymbol()
+      result = resolveFromTypeScriptSymbol() or
+      result = resolveNeighbourPackage(this.getImportedPath().getValue())
     )
   }
 
@@ -195,4 +269,29 @@ abstract deprecated class PathExprInModule extends PathExpr {
     or
     this.(Comment).getTopLevel() instanceof Module
   }
+}
+
+/**
+ * Gets a module imported from another package in the same repository.
+ *
+ * No support for importing from folders inside the other package.
+ */
+private Module resolveNeighbourPackage(PathString importPath) {
+  exists(PackageJSON json | importPath = json.getPackageName() and result = json.getMainModule())
+  or
+  exists(string package |
+    result.getFile().getParentContainer() = getPackageFolder(package) and
+    importPath = package + "/" + [result.getFile().getBaseName(), result.getFile().getStem()]
+  )
+}
+
+/**
+ * Gets the folder for a package that has name `package` according to a package.json file in the resulting folder.
+ */
+pragma[noinline]
+private Folder getPackageFolder(string package) {
+  exists(PackageJSON json |
+    json.getPackageName() = package and
+    result = json.getFile().getParentContainer()
+  )
 }

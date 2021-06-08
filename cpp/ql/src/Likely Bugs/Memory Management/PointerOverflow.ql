@@ -8,6 +8,7 @@
  * @id cpp/pointer-overflow-check
  * @tags reliability
  *       security
+ *       external/cwe/cwe-758
  */
 
 import cpp

@@ -1,10 +1,10 @@
 /**
- * @name Cross-site scripting through DOM
- * @description Writing user-controlled DOM to HTML can allow for
- *              a cross-site scripting vulnerability.
+ * @name DOM text reinterpreted as HTML
+ * @description Reinterpreting text from the DOM as HTML
+ *              can lead to a cross-site scripting vulnerability.
  * @kind path-problem
- * @problem.severity error
- * @precision medium
+ * @problem.severity warning
+ * @precision high
  * @id js/xss-through-dom
  * @tags security
  *       external/cwe/cwe-079
@@ -17,5 +17,5 @@ import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "Cross-site scripting vulnerability due to $@.",
-  source.getNode(), "DOM text"
+select sink.getNode(), source, sink,
+  "$@ is reinterpreted as HTML without escaping meta-characters.", source.getNode(), "DOM text"

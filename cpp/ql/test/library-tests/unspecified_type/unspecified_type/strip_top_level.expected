@@ -1,8 +1,8 @@
+| file://:0:0:0:0 | (unnamed parameter 0) | reference to {const {struct __va_list_tag}} | reference to {const {struct __va_list_tag}} |
+| file://:0:0:0:0 | (unnamed parameter 0) | rvalue reference to {struct __va_list_tag} | rvalue reference to {struct __va_list_tag} |
 | file://:0:0:0:0 | fp_offset | unsigned int | unsigned int |
 | file://:0:0:0:0 | gp_offset | unsigned int | unsigned int |
 | file://:0:0:0:0 | overflow_arg_area | pointer to {void} | pointer to {void} |
-| file://:0:0:0:0 | p#0 | reference to {const {struct __va_list_tag}} | reference to {const {struct __va_list_tag}} |
-| file://:0:0:0:0 | p#0 | rvalue reference to {struct __va_list_tag} | rvalue reference to {struct __va_list_tag} |
 | file://:0:0:0:0 | reg_save_area | pointer to {void} | pointer to {void} |
 | unspecified_type.cpp:2:5:2:7 | vv1 | int | int |
 | unspecified_type.cpp:3:11:3:13 | vv2 | const {int} | int |

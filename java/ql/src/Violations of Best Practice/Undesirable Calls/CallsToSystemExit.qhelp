@@ -56,10 +56,10 @@ exit code as an integer makes that use-case impossible.</p>
   <em>Effective Java (second edition)</em>, p. 232.
   Addison-Wesley, 2008.
 </li>
-<li>Java Platform, Standard Edition 7, API Specification:
-<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/System.html#exit(int)">System.exit(int)</a>,
-<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Runtime.html#halt(int)">Runtime.halt(int)</a>,
-<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Runtime.html#exit(int)">Runtime.exit(int)</a>.
+<li>Java API Specification:
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/System.html#exit(int)">System.exit(int)</a>,
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Runtime.html#halt(int)">Runtime.halt(int)</a>,
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Runtime.html#exit(int)">Runtime.exit(int)</a>.
 </li>
 
 </references>

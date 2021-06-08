@@ -84,6 +84,8 @@
 | ax{3,} | last | 1 | 6 |
 | ax{3,} | last | 5 | 6 |
 | ax{3} | first | 0 | 1 |
+| ax{3} | last | 1 | 2 |
+| ax{3} | last | 1 | 5 |
 | ax{3} | last | 4 | 5 |
 | ax{,3} | first | 0 | 1 |
 | ax{,3} | last | 0 | 1 |

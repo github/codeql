@@ -48,11 +48,10 @@ namespace Semmle.Util
         /// </returns>
         public LinkedList<T> GetUnprocessedElements()
         {
-            LinkedList<T> result = internalList;
+            var result = internalList;
             internalList = new LinkedList<T>();
             hasNewElements = false;
             return result;
         }
     }
 }
-

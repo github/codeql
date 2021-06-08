@@ -11,9 +11,21 @@ private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.controlflow.IRGuards
 private import semmle.code.cpp.models.interfaces.DataFlow
 
-private newtype TIRDataFlowNode =
-  TInstructionNode(Instruction i) or
-  TVariableNode(Variable var)
+cached
+private module Cached {
+  cached
+  newtype TIRDataFlowNode =
+    TInstructionNode(Instruction i) or
+    TOperandNode(Operand op) or
+    TVariableNode(Variable var)
+
+  cached
+  predicate localFlowStepCached(Node nodeFrom, Node nodeTo) {
+    simpleLocalFlowStep(nodeFrom, nodeTo)
+  }
+}
+
+private import Cached
 
 /**
  * A node in a data flow graph.
@@ -32,15 +44,23 @@ class Node extends TIRDataFlowNode {
   Function getFunction() { none() } // overridden in subclasses
 
   /** Gets the type of this node. */
-  Type getType() { none() } // overridden in subclasses
+  IRType getType() { none() } // overridden in subclasses
 
   /** Gets the instruction corresponding to this node, if any. */
   Instruction asInstruction() { result = this.(InstructionNode).getInstruction() }
 
+  /** Gets the operands corresponding to this node, if any. */
+  Operand asOperand() { result = this.(OperandNode).getOperand() }
+
   /**
-   * Gets the non-conversion expression corresponding to this node, if any. If
-   * this node strictly (in the sense of `asConvertedExpr`) corresponds to a
-   * `Conversion`, then the result is that `Conversion`'s non-`Conversion` base
+   * Gets the non-conversion expression corresponding to this node, if any.
+   * This predicate only has a result on nodes that represent the value of
+   * evaluating the expression. For data flowing _out of_ an expression, like
+   * when an argument is passed by reference, use `asDefiningArgument` instead
+   * of `asExpr`.
+   *
+   * If this node strictly (in the sense of `asConvertedExpr`) corresponds to
+   * a `Conversion`, then the result is the underlying non-`Conversion` base
    * expression.
    */
   Expr asExpr() { result = this.(ExprNode).getExpr() }
@@ -51,7 +71,13 @@ class Node extends TIRDataFlowNode {
    */
   Expr asConvertedExpr() { result = this.(ExprNode).getConvertedExpr() }
 
-  /** Gets the argument that defines this `DefinitionByReferenceNode`, if any. */
+  /**
+   * Gets the argument that defines this `DefinitionByReferenceNode`, if any.
+   * This predicate should be used instead of `asExpr` when referring to the
+   * value of a reference argument _after_ the call has returned. For example,
+   * in `f(&x)`, this predicate will have `&x` as its result for the `Node`
+   * that represents the new value of `x`.
+   */
   Expr asDefiningArgument() { result = this.(DefinitionByReferenceNode).getArgument() }
 
   /** Gets the positional parameter corresponding to this node, if any. */
@@ -59,7 +85,7 @@ class Node extends TIRDataFlowNode {
 
   /**
    * Gets the variable corresponding to this node, if any. This can be used for
-   * modelling flow in and out of global variables.
+   * modeling flow in and out of global variables.
    */
   Variable asVariable() { result = this.(VariableNode).getVariable() }
 
@@ -79,12 +105,12 @@ class Node extends TIRDataFlowNode {
    * Gets the uninitialized local variable corresponding to this node, if
    * any.
    */
-  LocalVariable asUninitialized() { none() }
+  deprecated LocalVariable asUninitialized() { none() }
 
   /**
    * Gets an upper bound on the type of this node.
    */
-  Type getTypeBound() { result = getType() }
+  IRType getTypeBound() { result = getType() }
 
   /** Gets the location of this element. */
   Location getLocation() { none() } // overridden by subclasses
@@ -121,7 +147,7 @@ class InstructionNode extends Node, TInstructionNode {
 
   override Function getFunction() { result = instr.getEnclosingFunction() }
 
-  override Type getType() { result = instr.getResultType() }
+  override IRType getType() { result = instr.getResultIRType() }
 
   override Location getLocation() { result = instr.getLocation() }
 
@@ -130,6 +156,28 @@ class InstructionNode extends Node, TInstructionNode {
     // does not use `Instruction.toString` because that's expensive to compute.
     result = this.getInstruction().getOpcode().toString()
   }
+}
+
+/**
+ * An operand, viewed as a node in a data flow graph.
+ */
+class OperandNode extends Node, TOperandNode {
+  Operand op;
+
+  OperandNode() { this = TOperandNode(op) }
+
+  /** Gets the operand corresponding to this node. */
+  Operand getOperand() { result = op }
+
+  override Declaration getEnclosingCallable() { result = this.getFunction() }
+
+  override Function getFunction() { result = op.getUse().getEnclosingFunction() }
+
+  override IRType getType() { result = op.getIRType() }
+
+  override Location getLocation() { result = op.getLocation() }
+
+  override string toString() { result = this.getOperand().toString() }
 }
 
 /**
@@ -228,10 +276,8 @@ class ParameterIndirectionNode extends ParameterNode {
 
   override predicate isParameterOf(Function f, int pos) {
     exists(int index |
-      f.getParameter(index) = instr.getParameter()
-      or
-      index = -1 and
-      instr.getIRVariable().(IRThisVariable).getEnclosingFunction() = f
+      instr.getEnclosingFunction() = f and
+      instr.hasIndex(index)
     |
       pos = getArgumentPosOfSideEffect(index)
     )
@@ -291,26 +337,96 @@ abstract class PostUpdateNode extends InstructionNode {
  * setY(&x); // a partial definition of the object `x`.
  * ```
  */
-abstract private class PartialDefinitionNode extends PostUpdateNode, TInstructionNode {
+abstract private class PartialDefinitionNode extends PostUpdateNode {
   abstract Expr getDefinedExpr();
 }
 
 private class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
   override ChiInstruction instr;
-  FieldAddressInstruction field;
+  StoreInstruction store;
 
   ExplicitFieldStoreQualifierNode() {
     not instr.isResultConflated() and
-    exists(StoreInstruction store |
-      instr.getPartial() = store and field = store.getDestinationAddress()
+    instr.getPartial() = store and
+    (
+      instr.getUpdatedInterval(_, _) or
+      store.getDestinationAddress() instanceof FieldAddressInstruction
     )
   }
 
-  // There might be multiple `ChiInstructions` that has a particular instruction as
-  // the total operand - so this definition gives consistency errors in
-  // DataFlowImplConsistency::Consistency. However, it's not clear what (if any) implications
-  // this consistency failure has.
-  override Node getPreUpdateNode() { result.asInstruction() = instr.getTotal() }
+  // By using an operand as the result of this predicate we avoid the dataflow inconsistency errors
+  // caused by having multiple nodes sharing the same pre update node. This inconsistency error can cause
+  // a tuple explosion in the big step dataflow relation since it can make many nodes be the entry node
+  // into a big step.
+  override Node getPreUpdateNode() { result.asOperand() = instr.getTotalOperand() }
+
+  override Expr getDefinedExpr() {
+    result =
+      store
+          .getDestinationAddress()
+          .(FieldAddressInstruction)
+          .getObjectAddress()
+          .getUnconvertedResultExpression()
+  }
+}
+
+/**
+ * Not every store instruction generates a chi instruction that we can attach a PostUpdateNode to.
+ * For instance, an update to a field of a struct containing only one field. Even if the store does
+ * have a chi instruction, a subsequent use of the result of the store may be linked directly to the
+ * result of the store as an inexact definition if the store totally overlaps the use. For these
+ * cases we attach the PostUpdateNode to the store instruction. There's no obvious pre update node
+ * for this case (as the entire memory is updated), so `getPreUpdateNode` is implemented as
+ * `none()`.
+ */
+private class ExplicitSingleFieldStoreQualifierNode extends PartialDefinitionNode {
+  override StoreInstruction instr;
+
+  ExplicitSingleFieldStoreQualifierNode() {
+    (
+      instr.getAUse().isDefinitionInexact()
+      or
+      not exists(ChiInstruction chi | chi.getPartial() = instr)
+    ) and
+    // Without this condition any store would create a `PostUpdateNode`.
+    instr.getDestinationAddress() instanceof FieldAddressInstruction
+  }
+
+  override Node getPreUpdateNode() { none() }
+
+  override Expr getDefinedExpr() {
+    result =
+      instr
+          .getDestinationAddress()
+          .(FieldAddressInstruction)
+          .getObjectAddress()
+          .getUnconvertedResultExpression()
+  }
+}
+
+private FieldAddressInstruction getFieldInstruction(Instruction instr) {
+  result = instr or
+  result = instr.(CopyValueInstruction).getUnary()
+}
+
+/**
+ * The target of a `fieldStoreStepAfterArraySuppression` store step, which is used to convert
+ * an `ArrayContent` to a `FieldContent` when the `WriteSideEffect` instruction stores
+ * into a field. See the QLDoc for `suppressArrayRead` for an example of where such a conversion
+ * is inserted.
+ */
+private class WriteSideEffectFieldStoreQualifierNode extends PartialDefinitionNode {
+  override ChiInstruction instr;
+  WriteSideEffectInstruction write;
+  FieldAddressInstruction field;
+
+  WriteSideEffectFieldStoreQualifierNode() {
+    not instr.isResultConflated() and
+    instr.getPartial() = write and
+    field = getFieldInstruction(write.getDestinationAddress())
+  }
+
+  override Node getPreUpdateNode() { result.asOperand() = instr.getTotalOperand() }
 
   override Expr getDefinedExpr() {
     result = field.getObjectAddress().getUnconvertedResultExpression()
@@ -318,25 +434,42 @@ private class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
 }
 
 /**
- * Not every store instruction generates a chi instruction that we can attach a PostUpdateNode to.
- * For instance, an update to a field of a struct containing only one field. For these cases we
- * attach the PostUpdateNode to the store instruction. There's no obvious pre update node for this case
- * (as the entire memory is updated), so `getPreUpdateNode` is implemented as `none()`.
+ * The `PostUpdateNode` that is the target of a `arrayStoreStepChi` store step. The overriden
+ * `ChiInstruction` corresponds to the instruction represented by `node2` in `arrayStoreStepChi`.
  */
-private class ExplicitSingleFieldStoreQualifierNode extends PartialDefinitionNode {
-  override StoreInstruction instr;
-  FieldAddressInstruction field;
+private class ArrayStoreNode extends PartialDefinitionNode {
+  override ChiInstruction instr;
+  PointerAddInstruction add;
 
-  ExplicitSingleFieldStoreQualifierNode() {
-    field = instr.getDestinationAddress() and
-    not exists(ChiInstruction chi | chi.getPartial() = instr)
+  ArrayStoreNode() {
+    not instr.isResultConflated() and
+    exists(StoreInstruction store |
+      instr.getPartial() = store and
+      add = store.getDestinationAddress()
+    )
   }
 
-  override Node getPreUpdateNode() { none() }
+  override Node getPreUpdateNode() { result.asOperand() = instr.getTotalOperand() }
 
-  override Expr getDefinedExpr() {
-    result = field.getObjectAddress().getUnconvertedResultExpression()
+  override Expr getDefinedExpr() { result = add.getLeft().getUnconvertedResultExpression() }
+}
+
+/**
+ * The `PostUpdateNode` that is the target of a `arrayStoreStepChi` store step. The overriden
+ * `ChiInstruction` corresponds to the instruction represented by `node2` in `arrayStoreStepChi`.
+ */
+private class PointerStoreNode extends PostUpdateNode {
+  override ChiInstruction instr;
+
+  PointerStoreNode() {
+    not instr.isResultConflated() and
+    exists(StoreInstruction store |
+      instr.getPartial() = store and
+      store.getDestinationAddress().(CopyValueInstruction).getUnary() instanceof LoadInstruction
+    )
   }
+
+  override Node getPreUpdateNode() { result.asOperand() = instr.getTotalOperand() }
 }
 
 /**
@@ -352,22 +485,14 @@ private class ExplicitSingleFieldStoreQualifierNode extends PartialDefinitionNod
 class DefinitionByReferenceNode extends InstructionNode {
   override WriteSideEffectInstruction instr;
 
-  /** Gets the argument corresponding to this node. */
+  /** Gets the unconverted argument corresponding to this node. */
   Expr getArgument() {
     result =
       instr
           .getPrimaryInstruction()
           .(CallInstruction)
-          .getPositionalArgument(instr.getIndex())
+          .getArgument(instr.getIndex())
           .getUnconvertedResultExpression()
-    or
-    result =
-      instr
-          .getPrimaryInstruction()
-          .(CallInstruction)
-          .getThisArgument()
-          .getUnconvertedResultExpression() and
-    instr.getIndex() = -1
   }
 
   /** Gets the parameter through which this value is assigned. */
@@ -388,21 +513,9 @@ class DefinitionByReferenceNode extends InstructionNode {
 }
 
 /**
- * A node representing the memory pointed to by a function argument.
- *
- * This class exists only in order to override `toString`, which would
- * otherwise be the default implementation inherited from `InstructionNode`.
- */
-private class ArgumentIndirectionNode extends InstructionNode {
-  override ReadSideEffectInstruction instr;
-
-  override string toString() { result = "Argument " + instr.getIndex() + " indirection" }
-}
-
-/**
  * A `Node` corresponding to a variable in the program, as opposed to the
  * value of that variable at some particular point. This can be used for
- * modelling flow in and out of global variables.
+ * modeling flow in and out of global variables.
  */
 class VariableNode extends Node, TVariableNode {
   Variable v;
@@ -423,7 +536,7 @@ class VariableNode extends Node, TVariableNode {
     result = v
   }
 
-  override Type getType() { result = v.getType() }
+  override IRType getType() { result.getCanonicalLanguageType().hasUnspecifiedType(v.getType(), _) }
 
   override Location getLocation() { result = v.getLocation() }
 
@@ -436,20 +549,26 @@ class VariableNode extends Node, TVariableNode {
 InstructionNode instructionNode(Instruction instr) { result.getInstruction() = instr }
 
 /**
+ * DEPRECATED: use `definitionByReferenceNodeFromArgument` instead.
+ *
  * Gets the `Node` corresponding to a definition by reference of the variable
  * that is passed as `argument` of a call.
  */
-DefinitionByReferenceNode definitionByReferenceNode(Expr e) { result.getArgument() = e }
+deprecated DefinitionByReferenceNode definitionByReferenceNode(Expr e) { result.getArgument() = e }
 
 /**
- * Gets a `Node` corresponding to `e` or any of its conversions. There is no
- * result if `e` is a `Conversion`.
+ * Gets the `Node` corresponding to the value of evaluating `e` or any of its
+ * conversions. There is no result if `e` is a `Conversion`. For data flowing
+ * _out of_ an expression, like when an argument is passed by reference, use
+ * `definitionByReferenceNodeFromArgument` instead.
  */
 ExprNode exprNode(Expr e) { result.getExpr() = e }
 
 /**
- * Gets the `Node` corresponding to `e`, if any. Here, `e` may be a
- * `Conversion`.
+ * Gets the `Node` corresponding to the value of evaluating `e`. Here, `e` may
+ * be a `Conversion`. For data flowing _out of_ an expression, like when an
+ * argument is passed by reference, use
+ * `definitionByReferenceNodeFromArgument` instead.
  */
 ExprNode convertedExprNode(Expr e) { result.getConvertedExpr() = e }
 
@@ -457,6 +576,14 @@ ExprNode convertedExprNode(Expr e) { result.getConvertedExpr() = e }
  * Gets the `Node` corresponding to the value of `p` at function entry.
  */
 ExplicitParameterNode parameterNode(Parameter p) { result.getParameter() = p }
+
+/**
+ * Gets the `Node` corresponding to a definition by reference of the variable
+ * that is passed as unconverted `argument` of a call.
+ */
+DefinitionByReferenceNode definitionByReferenceNodeFromArgument(Expr argument) {
+  result.getArgument() = argument
+}
 
 /** Gets the `VariableNode` corresponding to the variable `v`. */
 VariableNode variableNode(Variable v) { result.getVariable() = v }
@@ -473,7 +600,7 @@ Node uninitializedNode(LocalVariable v) { none() }
  * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
  * (intra-procedural) step.
  */
-predicate localFlowStep(Node nodeFrom, Node nodeTo) { simpleLocalFlowStep(nodeFrom, nodeTo) }
+predicate localFlowStep = localFlowStepCached/2;
 
 /**
  * INTERNAL: do not use.
@@ -482,28 +609,37 @@ predicate localFlowStep(Node nodeFrom, Node nodeTo) { simpleLocalFlowStep(nodeFr
  * data flow. It may have less flow than the `localFlowStep` predicate.
  */
 predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
-  simpleInstructionLocalFlowStep(nodeFrom.asInstruction(), nodeTo.asInstruction())
+  // Operand -> Instruction flow
+  simpleInstructionLocalFlowStep(nodeFrom.asOperand(), nodeTo.asInstruction())
+  or
+  // Instruction -> Operand flow
+  simpleOperandLocalFlowStep(nodeFrom.asInstruction(), nodeTo.asOperand())
 }
 
 pragma[noinline]
 private predicate getFieldSizeOfClass(Class c, Type type, int size) {
   exists(Field f |
     f.getDeclaringType() = c and
-    f.getType() = type and
+    f.getUnderlyingType() = type and
     type.getSize() = size
   )
 }
 
-cached
-private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction iTo) {
-  iTo.(CopyInstruction).getSourceValue() = iFrom
+private predicate isSingleFieldClass(Type type, Operand op) {
+  exists(int size, Class c |
+    c = op.getType().getUnderlyingType() and
+    c.getSize() = size and
+    getFieldSizeOfClass(c, type, size)
+  )
+}
+
+private predicate simpleOperandLocalFlowStep(Instruction iFrom, Operand opTo) {
+  // Propagate flow from an instruction to its exact uses.
+  opTo.getDef() = iFrom
   or
-  iTo.(PhiInstruction).getAnOperand().getDef() = iFrom
-  or
-  // A read side effect is almost never exact since we don't know exactly how
-  // much memory the callee will read.
-  iTo.(ReadSideEffectInstruction).getSideEffectOperand().getAnyDef() = iFrom and
-  not iFrom.isResultConflated()
+  opTo = any(ReadSideEffectInstruction read).getSideEffectOperand() and
+  not iFrom.isResultConflated() and
+  iFrom = opTo.getAnyDef()
   or
   // Loading a single `int` from an `int *` parameter is not an exact load since
   // the parameter may point to an entire array rather than a single `int`. The
@@ -517,20 +653,33 @@ private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction 
   // leads to a phi node.
   exists(InitializeIndirectionInstruction init |
     iFrom = init and
-    iTo.(LoadInstruction).getSourceValueOperand().getAnyDef() = init and
+    opTo.(LoadOperand).getAnyDef() = init and
     // Check that the types match. Otherwise we can get flow from an object to
     // its fields, which leads to field conflation when there's flow from other
     // fields to the object elsewhere.
     init.getParameter().getType().getUnspecifiedType().(DerivedType).getBaseType() =
-      iTo.getResultType().getUnspecifiedType()
+      opTo.getType().getUnspecifiedType()
   )
   or
+  // Flow from stores to structs with a single field to a load of that field.
+  exists(LoadInstruction load |
+    load.getSourceValueOperand() = opTo and
+    opTo.getAnyDef() = iFrom and
+    isSingleFieldClass(pragma[only_bind_out](pragma[only_bind_out](iFrom).getResultType()), opTo)
+  )
+}
+
+private predicate simpleInstructionLocalFlowStep(Operand opFrom, Instruction iTo) {
+  iTo.(CopyInstruction).getSourceValueOperand() = opFrom
+  or
+  iTo.(PhiInstruction).getAnInputOperand() = opFrom
+  or
   // Treat all conversions as flow, even conversions between different numeric types.
-  iTo.(ConvertInstruction).getUnary() = iFrom
+  iTo.(ConvertInstruction).getUnaryOperand() = opFrom
   or
-  iTo.(CheckedConvertOrNullInstruction).getUnary() = iFrom
+  iTo.(CheckedConvertOrNullInstruction).getUnaryOperand() = opFrom
   or
-  iTo.(InheritanceConversionInstruction).getUnary() = iFrom
+  iTo.(InheritanceConversionInstruction).getUnaryOperand() = opFrom
   or
   // A chi instruction represents a point where a new value (the _partial_
   // operand) may overwrite an old value (the _total_ operand), but the alias
@@ -543,7 +692,7 @@ private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction 
   //
   // Flow through the partial operand belongs in the taint-tracking libraries
   // for now.
-  iTo.getAnOperand().(ChiTotalOperand).getDef() = iFrom
+  iTo.getAnOperand().(ChiTotalOperand) = opFrom
   or
   // Add flow from write side-effects to non-conflated chi instructions through their
   // partial operands. From there, a `readStep` will find subsequent reads of that field.
@@ -558,24 +707,20 @@ private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction 
   // Here, a `WriteSideEffectInstruction` will provide a new definition for `p->x` after the call to
   // `setX`, which will be melded into `p` through a chi instruction.
   exists(ChiInstruction chi | chi = iTo |
-    chi.getPartialOperand().getDef() = iFrom.(WriteSideEffectInstruction) and
-    not chi.isResultConflated()
-  )
-  or
-  // Flow from stores to structs with a single field to a load of that field.
-  iTo.(LoadInstruction).getSourceValueOperand().getAnyDef() = iFrom and
-  exists(int size, Type type, Class cTo |
-    type = iFrom.getResultType() and
-    cTo = iTo.getResultType() and
-    cTo.getSize() = size and
-    getFieldSizeOfClass(cTo, type, size)
+    opFrom.getAnyDef() instanceof WriteSideEffectInstruction and
+    chi.getPartialOperand() = opFrom and
+    not chi.isResultConflated() and
+    // In a call such as `set_value(&x->val);` we don't want the memory representing `x` to receive
+    // dataflow by a simple step. Instead, this is handled by field flow. If we add a simple step here
+    // we can get field-to-object flow.
+    not chi.isPartialUpdate()
   )
   or
   // Flow through modeled functions
-  modelFlow(iFrom, iTo)
+  modelFlow(opFrom, iTo)
 }
 
-private predicate modelFlow(Instruction iFrom, Instruction iTo) {
+private predicate modelFlow(Operand opFrom, Instruction iTo) {
   exists(
     CallInstruction call, DataFlowFunction func, FunctionInput modelIn, FunctionOutput modelOut
   |
@@ -591,27 +736,22 @@ private predicate modelFlow(Instruction iFrom, Instruction iTo) {
       iTo = call
       or
       exists(int index, WriteSideEffectInstruction outNode |
-        modelOut.isParameterDeref(index) and
+        modelOut.isParameterDerefOrQualifierObject(index) and
         iTo = outNode and
         outNode = getSideEffectFor(call, index)
       )
-      // TODO: add write side effects for qualifiers
     ) and
     (
       exists(int index |
-        modelIn.isParameter(index) and
-        iFrom = call.getPositionalArgument(index)
+        modelIn.isParameterOrQualifierAddress(index) and
+        opFrom = call.getArgumentOperand(index)
       )
       or
       exists(int index, ReadSideEffectInstruction read |
-        modelIn.isParameterDeref(index) and
+        modelIn.isParameterDerefOrQualifierObject(index) and
         read = getSideEffectFor(call, index) and
-        iFrom = read.getSideEffectOperand().getAnyDef()
+        opFrom = read.getSideEffectOperand()
       )
-      or
-      modelIn.isQualifierAddress() and
-      iFrom = call.getThisArgument()
-      // TODO: add read side effects for qualifiers
     )
   )
 }
@@ -659,13 +799,20 @@ predicate localExprFlow(Expr e1, Expr e2) { localFlow(exprNode(e1), exprNode(e2)
  */
 class BarrierGuard extends IRGuardCondition {
   /** Override this predicate to hold if this guard validates `instr` upon evaluating to `b`. */
-  abstract predicate checks(Instruction instr, boolean b);
+  predicate checksInstr(Instruction instr, boolean b) { none() }
+
+  /** Override this predicate to hold if this guard validates `expr` upon evaluating to `b`. */
+  predicate checks(Expr e, boolean b) { none() }
 
   /** Gets a node guarded by this guard. */
   final Node getAGuardedNode() {
     exists(ValueNumber value, boolean edge |
+      (
+        this.checksInstr(value.getAnInstruction(), edge)
+        or
+        this.checks(value.getAnInstruction().getConvertedResultExpression(), edge)
+      ) and
       result.asInstruction() = value.getAnInstruction() and
-      this.checks(value.getAnInstruction(), edge) and
       this.controls(result.asInstruction().getBlock(), edge)
     )
   }

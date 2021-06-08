@@ -41,7 +41,7 @@ execSync(`cat ${newpath} > ${destpath}`).toString(); // OK.
 
 execSync(`cat ${files.join(' ')} > ${outFile}`); // OK
 
-execSync(`cat ${files.join(' ')}`); // OK [but flagged] - not just a simple file read
+execSync(`cat ${files.join(' ')}`); // OK  - but flagged - not just a simple file read [INCONSISTENCY]
 
 exec("cat /proc/cpuinfo | grep name"); // OK - pipes
 
@@ -51,7 +51,7 @@ function cat(file) {
 	return execSync('cat ' + file).toString(); // NOT OK
 }
 
-execSync("sh -c 'cat " + newpath + "'"); // NOT OK. [but not flagged]
+execSync("sh -c 'cat " + newpath + "'"); // NOT OK - but not flagged [INCONSISTENCY]
 
 var execFile = child_process.execFile;
 var execFileSync = child_process.execFileSync;

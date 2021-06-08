@@ -12,7 +12,7 @@ import python
 
 from IfExp e, ClassObject cls1, ClassObject cls2
 where
-    e.getBody().refersTo(_, cls1, _) and
-    e.getOrelse().refersTo(_, cls2, _) and
-    cls1 != cls2
+  e.getBody().refersTo(_, cls1, _) and
+  e.getOrelse().refersTo(_, cls2, _) and
+  cls1 != cls2
 select e

@@ -1,4 +1,4 @@
-/*
+/**
  * Security pack options.
  *
  * see https://semmle.com/wiki/display/SD/_Configuring+SecurityOptions+for+your+code+base
@@ -9,6 +9,10 @@
 
 import semmle.code.cpp.security.Security
 
+/**
+ * This class overrides `SecurityOptions` and can be used to add project
+ * specific customization.
+ */
 class CustomSecurityOptions extends SecurityOptions {
   override predicate sqlArgument(string function, int arg) {
     SecurityOptions.super.sqlArgument(function, arg)

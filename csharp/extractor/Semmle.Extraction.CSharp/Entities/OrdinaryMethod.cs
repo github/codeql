@@ -6,56 +6,61 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    class OrdinaryMethod : Method
+    internal class OrdinaryMethod : Method
     {
-        OrdinaryMethod(Context cx, IMethodSymbol init)
+        private OrdinaryMethod(Context cx, IMethodSymbol init)
             : base(cx, init) { }
 
-        public override string Name => symbol.GetName();
+        public override string Name => Symbol.GetName();
 
-        public IMethodSymbol SourceDeclaration
-        {
-            get
-            {
-                var reducedFrom = symbol.ReducedFrom ?? symbol;
-                return reducedFrom.OriginalDefinition;
-            }
-        }
+        protected override IMethodSymbol BodyDeclaringSymbol => Symbol.PartialImplementationPart ?? Symbol;
 
-        public override Microsoft.CodeAnalysis.Location ReportingLocation => symbol.GetSymbolLocation();
+        public IMethodSymbol SourceDeclaration => Symbol.OriginalDefinition;
+
+        public override Microsoft.CodeAnalysis.Location ReportingLocation => Symbol.GetSymbolLocation();
 
         public override void Populate(TextWriter trapFile)
         {
             PopulateMethod(trapFile);
             PopulateModifiers(trapFile);
-            ContainingType.PopulateGenerics();
+            ContainingType!.PopulateGenerics();
 
-            var returnType = Type.Create(Context, symbol.ReturnType);
+            var returnType = Type.Create(Context, Symbol.ReturnType);
             trapFile.methods(this, Name, ContainingType, returnType.TypeRef, OriginalDefinition);
 
             if (IsSourceDeclaration)
-                foreach (var declaration in symbol.DeclaringSyntaxReferences.Select(s => s.GetSyntax()).OfType<MethodDeclarationSyntax>())
+            {
+                foreach (var declaration in Symbol.DeclaringSyntaxReferences.Select(s => s.GetSyntax()).OfType<MethodDeclarationSyntax>())
                 {
                     Context.BindComments(this, declaration.Identifier.GetLocation());
                     TypeMention.Create(Context, declaration.ReturnType, this, returnType);
                 }
+            }
 
             foreach (var l in Locations)
                 trapFile.method_location(this, l);
 
             PopulateGenerics(trapFile);
             Overrides(trapFile);
-            ExtractRefReturn(trapFile);
+            ExtractRefReturn(trapFile, Symbol, this);
             ExtractCompilerGenerated(trapFile);
         }
 
-        public new static OrdinaryMethod Create(Context cx, IMethodSymbol method) => OrdinaryMethodFactory.Instance.CreateEntity(cx, method);
-
-        class OrdinaryMethodFactory : ICachedEntityFactory<IMethodSymbol, OrdinaryMethod>
+        public static new OrdinaryMethod Create(Context cx, IMethodSymbol method)
         {
-            public static readonly OrdinaryMethodFactory Instance = new OrdinaryMethodFactory();
+            if (method.MethodKind == MethodKind.ReducedExtension)
+            {
+                cx.Extractor.Logger.Log(Util.Logging.Severity.Warning, "Reduced extension method symbols should not be directly extracted.");
+            }
 
-            public OrdinaryMethod Create(Context cx, IMethodSymbol init) => new OrdinaryMethod(cx, init);
+            return OrdinaryMethodFactory.Instance.CreateEntityFromSymbol(cx, method);
+        }
+
+        private class OrdinaryMethodFactory : CachedEntityFactory<IMethodSymbol, OrdinaryMethod>
+        {
+            public static OrdinaryMethodFactory Instance { get; } = new OrdinaryMethodFactory();
+
+            public override OrdinaryMethod Create(Context cx, IMethodSymbol init) => new OrdinaryMethod(cx, init);
         }
     }
 }

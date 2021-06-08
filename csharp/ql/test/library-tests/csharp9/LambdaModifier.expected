@@ -1,0 +1,11 @@
+| Discard.cs:7:33:7:52 | (...) => ... | private |
+| Discard.cs:8:13:8:24 | (...) => ... | private |
+| Discard.cs:9:13:9:32 | (...) => ... | private |
+| Discard.cs:10:13:10:49 | delegate(...) { ... } | private |
+| LambdaModifier.cs:11:11:11:27 | (...) => ... | private |
+| LambdaModifier.cs:11:11:11:27 | (...) => ... | static |
+| LambdaModifier.cs:12:11:12:20 | (...) => ... | private |
+| LambdaModifier.cs:13:11:13:51 | delegate(...) { ... } | private |
+| LambdaModifier.cs:13:11:13:51 | delegate(...) { ... } | static |
+| LambdaModifier.cs:15:24:15:64 | (...) => ... | async |
+| LambdaModifier.cs:15:24:15:64 | (...) => ... | private |

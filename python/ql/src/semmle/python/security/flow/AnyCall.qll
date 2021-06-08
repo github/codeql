@@ -3,7 +3,7 @@ import semmle.python.security.strings.Basic
 
 /** Assume that taint flows from argument to result for *any* call */
 class AnyCallStringFlow extends DataFlowExtension::DataFlowNode {
-    AnyCallStringFlow() { any(CallNode call).getAnArg() = this }
+  AnyCallStringFlow() { any(CallNode call).getAnArg() = this }
 
-    override ControlFlowNode getASuccessorNode() { result.(CallNode).getAnArg() = this }
+  override ControlFlowNode getASuccessorNode() { result.(CallNode).getAnArg() = this }
 }

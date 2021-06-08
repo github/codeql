@@ -5,16 +5,79 @@ private import DataFlowPublic
 private import DataFlowDispatch
 private import DataFlowImplCommon
 private import ControlFlowReachability
-private import DelegateDataFlow
-private import semmle.code.csharp.Caching
+private import FlowSummaryImpl as FlowSummaryImpl
+private import semmle.code.csharp.dataflow.FlowSummary
 private import semmle.code.csharp.Conversion
+private import semmle.code.csharp.dataflow.internal.SsaImpl as SsaImpl
 private import semmle.code.csharp.ExprOrStmtParent
 private import semmle.code.csharp.Unification
 private import semmle.code.csharp.controlflow.Guards
-private import semmle.code.csharp.dataflow.LibraryTypeDataFlow
 private import semmle.code.csharp.dispatch.Dispatch
 private import semmle.code.csharp.frameworks.EntityFramework
 private import semmle.code.csharp.frameworks.NHibernate
+private import semmle.code.csharp.frameworks.system.Collections
+private import semmle.code.csharp.frameworks.system.threading.Tasks
+
+abstract class NodeImpl extends Node {
+  /** Do not call: use `getEnclosingCallable()` instead. */
+  abstract DataFlowCallable getEnclosingCallableImpl();
+
+  /** Do not call: use `getType()` instead. */
+  cached
+  abstract DotNet::Type getTypeImpl();
+
+  /** Gets the type of this node used for type pruning. */
+  Gvn::GvnType getDataFlowType() {
+    forceCachingInSameStage() and
+    exists(Type t0 | result = Gvn::getGlobalValueNumber(t0) |
+      t0 = getCSharpType(this.getType())
+      or
+      not exists(getCSharpType(this.getType())) and
+      t0 instanceof ObjectType
+    )
+  }
+
+  /** Do not call: use `getControlFlowNode()` instead. */
+  cached
+  abstract ControlFlow::Node getControlFlowNodeImpl();
+
+  /** Do not call: use `getLocation()` instead. */
+  cached
+  abstract Location getLocationImpl();
+
+  /** Do not call: use `toString()` instead. */
+  cached
+  abstract string toStringImpl();
+}
+
+private class ExprNodeImpl extends ExprNode, NodeImpl {
+  override DataFlowCallable getEnclosingCallableImpl() {
+    result = this.getExpr().getEnclosingCallable()
+  }
+
+  override DotNet::Type getTypeImpl() {
+    forceCachingInSameStage() and
+    result = this.getExpr().getType()
+  }
+
+  override ControlFlow::Nodes::ElementNode getControlFlowNodeImpl() {
+    forceCachingInSameStage() and this = TExprNode(result)
+  }
+
+  override Location getLocationImpl() {
+    forceCachingInSameStage() and result = this.getExpr().getLocation()
+  }
+
+  override string toStringImpl() {
+    forceCachingInSameStage() and
+    result = this.getControlFlowNodeImpl().toString()
+    or
+    exists(CIL::Expr e |
+      this = TCilExprNode(e) and
+      result = e.toString()
+    )
+  }
+}
 
 /** Calculation of the relative order in which `this` references are read. */
 private module ThisFlow {
@@ -71,9 +134,35 @@ private module ThisFlow {
   }
 }
 
+/**
+ * Holds if there is a control-flow path from `n1` to `n2`. `n2` is either an
+ * expression node or an SSA definition node.
+ */
+pragma[nomagic]
+predicate hasNodePath(ControlFlowReachabilityConfiguration conf, ExprNode n1, Node n2) {
+  exists(Expr e1, ControlFlow::Node cfn1, Expr e2, ControlFlow::Node cfn2 |
+    conf.hasExprPath(e1, cfn1, e2, cfn2)
+  |
+    cfn1 = n1.getControlFlowNode() and
+    cfn2 = n2.(ExprNode).getControlFlowNode()
+  )
+  or
+  exists(
+    Expr e, ControlFlow::Node cfn, AssignableDefinition def, ControlFlow::Node cfnDef,
+    Ssa::ExplicitDefinition ssaDef
+  |
+    conf.hasDefPath(e, cfn, def, cfnDef)
+  |
+    cfn = n1.getControlFlowNode() and
+    ssaDef.getADefinition() = def and
+    ssaDef.getControlFlowNode() = cfnDef and
+    n2.(SsaDefinitionNode).getDefinition() = ssaDef
+  )
+}
+
 /** Provides predicates related to local data flow. */
 module LocalFlow {
-  class LocalExprStepConfiguration extends ControlFlowReachabilityConfiguration {
+  private class LocalExprStepConfiguration extends ControlFlowReachabilityConfiguration {
     LocalExprStepConfiguration() { this = "LocalExprStepConfiguration" }
 
     override predicate candidate(
@@ -87,7 +176,7 @@ module LocalFlow {
         or
         e1 = e2.(NullCoalescingExpr).getAnOperand() and
         scope = e2 and
-        isSuccessor = false
+        isSuccessor = true
         or
         e1 = e2.(SuppressNullableWarningExpr).getExpr() and
         scope = e2 and
@@ -99,13 +188,9 @@ module LocalFlow {
             e1 = ce.getElse()
           ) and
         scope = e2 and
-        isSuccessor = false
-        or
-        e1 = e2.(Cast).getExpr() and
-        scope = e2 and
         isSuccessor = true
         or
-        e1 = e2.(AwaitExpr).getExpr() and
+        e1 = e2.(Cast).getExpr() and
         scope = e2 and
         isSuccessor = true
         or
@@ -117,6 +202,39 @@ module LocalFlow {
           ) and
         scope = e2 and
         isSuccessor = true
+        or
+        e1 = e2.(ObjectCreation).getInitializer() and
+        scope = e2 and
+        isSuccessor = false
+        or
+        e1 = e2.(ArrayCreation).getInitializer() and
+        scope = e2 and
+        isSuccessor = false
+        or
+        e1 = e2.(SwitchExpr).getACase().getBody() and
+        scope = e2 and
+        isSuccessor = true
+        or
+        exists(WithExpr we |
+          scope = we and
+          isSuccessor = true
+        |
+          e1 = we.getExpr() and
+          e2 = we.getInitializer()
+          or
+          e1 = we.getInitializer() and
+          e2 = we
+        )
+        or
+        scope = any(AssignExpr ae | ae.getLValue().(TupleExpr) = e2 and ae.getRValue() = e1) and
+        isSuccessor = false
+        or
+        isSuccessor = true and
+        exists(ControlFlowElement cfe | cfe = e2.(TupleExpr).(PatternExpr).getPatternMatch() |
+          cfe.(IsExpr).getExpr() = e1 and scope = cfe
+          or
+          exists(Switch sw | sw.getACase() = cfe and sw.getExpr() = e1 and scope = sw)
+        )
       )
     }
 
@@ -151,7 +269,7 @@ module LocalFlow {
     result = node.asExpr()
   }
 
-  predicate localFlowStepCil(Node nodeFrom, Node nodeTo) {
+  private predicate localFlowStepCil(Node nodeFrom, Node nodeTo) {
     asCilDataFlowNode(nodeFrom).getALocalFlowSucc(asCilDataFlowNode(nodeTo), any(CIL::Untainted t))
   }
 
@@ -174,17 +292,22 @@ module LocalFlow {
   }
 
   /**
-   * Holds if `nodeFrom` is a last node referencing SSA definition `def`.
-   * Either an SSA definition node for `def` when there is no read of `def`,
-   * or a last read of `def`.
+   * Holds if `nodeFrom` is a last node referencing SSA definition `def`, which
+   * can reach `next`.
    */
-  private predicate localFlowSsaInput(Node nodeFrom, Ssa::Definition def) {
-    def = nodeFrom.(SsaDefinitionNode).getDefinition() and
-    not exists(def.getARead())
-    or
-    exists(AssignableRead read, ControlFlow::Node cfn | read = nodeFrom.asExprAtNode(cfn) |
-      def.getALastReadAtNode(cfn) = read
+  private predicate localFlowSsaInput(Node nodeFrom, Ssa::Definition def, Ssa::Definition next) {
+    exists(ControlFlow::BasicBlock bb, int i | SsaImpl::lastRefBeforeRedef(def, bb, i, next) |
+      def.definesAt(_, bb, i) and
+      def = getSsaDefinition(nodeFrom)
+      or
+      nodeFrom.asExprAtNode(bb.getNode(i)) instanceof AssignableRead
     )
+  }
+
+  private Ssa::Definition getSsaDefinition(Node n) {
+    result = n.(SsaDefinitionNode).getDefinition()
+    or
+    result = n.(ExplicitParameterNode).getSsaDefinition()
   }
 
   /**
@@ -192,15 +315,15 @@ module LocalFlow {
    * SSA definition `def.
    */
   predicate localSsaFlowStep(Ssa::Definition def, Node nodeFrom, Node nodeTo) {
-    // Flow from SSA definition to first read
+    // Flow from SSA definition/parameter to first read
     exists(ControlFlow::Node cfn |
-      def = nodeFrom.(SsaDefinitionNode).getDefinition() and
+      def = getSsaDefinition(nodeFrom) and
       nodeTo.asExprAtNode(cfn) = def.getAFirstReadAtNode(cfn)
     )
     or
     // Flow from read to next read
     exists(ControlFlow::Node cfnFrom, ControlFlow::Node cfnTo |
-      Ssa::Internal::adjacentReadPairSameVar(def, cfnFrom, cfnTo) and
+      SsaImpl::adjacentReadPairSameVar(def, cfnFrom, cfnTo) and
       nodeTo = TExprNode(cfnTo)
     |
       nodeFrom = TExprNode(cfnFrom)
@@ -208,16 +331,16 @@ module LocalFlow {
       cfnFrom = nodeFrom.(PostUpdateNode).getPreUpdateNode().getControlFlowNode()
     )
     or
-    // Flow into SSA pseudo definition
-    exists(Ssa::PseudoDefinition pseudo |
-      localFlowSsaInput(nodeFrom, def) and
-      pseudo = nodeTo.(SsaDefinitionNode).getDefinition() and
-      def = pseudo.getAnInput()
+    // Flow into phi node
+    exists(Ssa::PhiNode phi |
+      localFlowSsaInput(nodeFrom, def, phi) and
+      phi = nodeTo.(SsaDefinitionNode).getDefinition() and
+      def = phi.getAnInput()
     )
     or
     // Flow into uncertain SSA definition
     exists(LocalFlow::UncertainExplicitSsaDefinition uncertain |
-      localFlowSsaInput(nodeFrom, def) and
+      localFlowSsaInput(nodeFrom, def, uncertain) and
       uncertain = nodeTo.(SsaDefinitionNode).getDefinition() and
       def = uncertain.getPriorDefinition()
     )
@@ -228,19 +351,93 @@ module LocalFlow {
    */
   predicate usesInstanceField(Ssa::Definition def) {
     exists(Ssa::SourceVariables::FieldOrPropSourceVariable fp | fp = def.getSourceVariable() |
-      not fp.getAssignable().isStatic()
+      not fp.getAssignable().(Modifiable).isStatic()
     )
   }
 
-  predicate localFlowCapturedVarStep(SsaDefinitionNode nodeFrom, ImplicitCapturedArgumentNode nodeTo) {
+  predicate localFlowCapturedVarStep(Node nodeFrom, ImplicitCapturedArgumentNode nodeTo) {
     // Flow from SSA definition to implicit captured variable argument
     exists(Ssa::ExplicitDefinition def, ControlFlow::Nodes::ElementNode call |
-      def = nodeFrom.getDefinition()
-    |
+      def = getSsaDefinition(nodeFrom) and
       def.isCapturedVariableDefinitionFlowIn(_, call, _) and
       nodeTo = TImplicitCapturedArgumentNode(call, def.getSourceVariable().getAssignable())
     )
   }
+
+  predicate localFlowStepCommon(Node nodeFrom, Node nodeTo) {
+    exists(Ssa::Definition def |
+      localSsaFlowStep(def, nodeFrom, nodeTo) and
+      not usesInstanceField(def)
+    )
+    or
+    hasNodePath(any(LocalExprStepConfiguration x), nodeFrom, nodeTo)
+    or
+    ThisFlow::adjacentThisRefs(nodeFrom, nodeTo)
+    or
+    ThisFlow::adjacentThisRefs(nodeFrom.(PostUpdateNode).getPreUpdateNode(), nodeTo)
+    or
+    localFlowStepCil(nodeFrom, nodeTo)
+  }
+
+  /**
+   * Holds if node `n` should not be included in the exposed local data/taint
+   * flow relations. This is the case for nodes that are only relevant for
+   * inter-procedurality or field-sensitivity.
+   */
+  predicate excludeFromExposedRelations(Node n) {
+    n instanceof SummaryNode or
+    n instanceof ImplicitCapturedArgumentNode
+  }
+}
+
+/**
+ * This is the local flow predicate that is used as a building block in global
+ * data flow. It excludes SSA flow through instance fields, as flow through fields
+ * is handled by the global data-flow library, but includes various other steps
+ * that are only relevant for global flow.
+ */
+predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
+  LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
+  or
+  LocalFlow::localFlowCapturedVarStep(nodeFrom, nodeTo)
+  or
+  FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true)
+  or
+  nodeTo.(ObjectCreationNode).getPreUpdateNode() = nodeFrom.(ObjectInitializerNode)
+}
+
+pragma[noinline]
+private Expr getImplicitArgument(Call c, int pos) {
+  result = c.getArgument(pos) and
+  not exists(result.getExplicitArgumentName())
+}
+
+pragma[nomagic]
+private Expr getExplicitArgument(Call c, string name) {
+  result = c.getAnArgument() and
+  result.getExplicitArgumentName() = name
+}
+
+/**
+ * Holds if `arg` is a `params` argument of `c`, for parameter `p`, and `arg` will
+ * be wrapped in an array by the C# compiler.
+ */
+private predicate isParamsArg(Call c, Expr arg, Parameter p) {
+  exists(Callable target, int numArgs |
+    target = c.getTarget() and
+    p = target.getAParameter() and
+    p.isParams() and
+    numArgs = c.getNumberOfArguments() and
+    arg =
+      [
+        getImplicitArgument(c, [p.getPosition() .. numArgs - 1]),
+        getExplicitArgument(c, p.getName())
+      ]
+  |
+    numArgs > target.getNumberOfParameters()
+    or
+    not arg.getType().isImplicitlyConvertibleTo(p.getType())
+  )
 }
 
 /** An argument of a C# call (including qualifier arguments). */
@@ -251,12 +448,13 @@ private class Argument extends Expr {
   Argument() {
     call =
       any(DispatchCall dc |
-        this = dc.getArgument(arg)
+        this = dc.getArgument(arg) and
+        not isParamsArg(_, this, _)
         or
         this = dc.getQualifier() and arg = -1 and not dc.getAStaticTarget().(Modifiable).isStatic()
       ).getCall()
     or
-    this = call.(DelegateCall).getArgument(arg)
+    this = call.(DelegateLikeCall).getArgument(arg)
   }
 
   /**
@@ -269,88 +467,159 @@ private class Argument extends Expr {
 
 /**
  * Holds if `e` is an assignment of `src` to field or property `c` of `q`.
+ *
+ * `postUpdate` indicates whether the store targets a post-update node.
  */
-private predicate fieldOrPropertyAssign(Expr e, Content c, Expr src, Expr q) {
-  exists(FieldOrPropertyAccess fa, FieldOrProperty f, AssignableDefinition def |
-    def.getTargetAccess() = fa and
-    f = fa.getTarget() and
+private predicate fieldOrPropertyStore(Expr e, Content c, Expr src, Expr q, boolean postUpdate) {
+  exists(FieldOrProperty f |
     c = f.getContent() and
-    src = def.getSource() and
-    q = fa.getQualifier() and
-    e = def.getExpr()
-  |
-    f.isFieldLike() and
-    f instanceof InstanceFieldOrProperty
-    or
-    exists(AccessPath ap |
-      LibraryFlow::libraryFlow(_, _, ap, _, _, _) and
-      ap.contains(f.getContent())
+    (
+      f.isFieldLike() and
+      f instanceof InstanceFieldOrProperty
+      or
+      exists(SummarizedCallable callable, FlowSummaryImpl::Public::SummaryComponentStack input |
+        callable.propagatesFlow(input, _, _) and
+        input.contains(SummaryComponent::content(f.getContent()))
+      )
     )
-  )
-}
-
-/**
- * Holds if `oc` has an object initializer that assigns `src` to field or
- * property `c`.
- */
-private predicate fieldOrPropertyInit(ObjectCreation oc, Content c, Expr src) {
-  exists(MemberInitializer mi, FieldOrProperty f |
-    mi = oc.getInitializer().(ObjectInitializer).getAMemberInitializer() and
-    f = mi.getInitializedMember() and
-    c = f.getContent() and
-    src = mi.getRValue()
   |
-    f.isFieldLike() and
-    f instanceof InstanceFieldOrProperty
-    or
-    exists(AccessPath ap |
-      LibraryFlow::libraryFlow(_, _, ap, _, _, _) and
-      ap.contains(f.getContent())
+    // Direct assignment, `q.f = src`
+    exists(FieldOrPropertyAccess fa, AssignableDefinition def |
+      def.getTargetAccess() = fa and
+      f = fa.getTarget() and
+      src = def.getSource() and
+      q = fa.getQualifier() and
+      e = def.getExpr() and
+      postUpdate = true
     )
+    or
+    // `with` expression initializer, `x with { f = src }`
+    e =
+      any(WithExpr we |
+        exists(MemberInitializer mi |
+          q = we and
+          mi = we.getInitializer().getAMemberInitializer() and
+          f = mi.getInitializedMember() and
+          src = mi.getRValue() and
+          postUpdate = false
+        )
+      )
+    or
+    // Object initializer, `new C() { f = src }`
+    exists(MemberInitializer mi |
+      e = q and
+      mi = q.(ObjectInitializer).getAMemberInitializer() and
+      q.getParent() instanceof ObjectCreation and
+      f = mi.getInitializedMember() and
+      src = mi.getRValue() and
+      postUpdate = false
+    )
+    or
+    // Tuple element, `(..., src, ...)` `f` is `ItemX` of tuple `q`
+    e =
+      any(TupleExpr te |
+        exists(int i |
+          e = q and
+          src = te.getArgument(i) and
+          te.isConstruction() and
+          f = q.getType().(TupleType).getElement(i) and
+          postUpdate = false
+        )
+      )
   )
 }
 
 /** Holds if property `p1` overrides or implements source declaration property `p2`. */
 private predicate overridesOrImplementsSourceDecl(Property p1, Property p2) {
-  p1.getOverridee*().getSourceDeclaration() = p2
+  p1.getOverridee*().getUnboundDeclaration() = p2
   or
-  p1.getAnUltimateImplementee().getSourceDeclaration() = p2
+  p1.getAnUltimateImplementee().getUnboundDeclaration() = p2
 }
 
 /**
  * Holds if `e2` is an expression that reads field or property `c` from
- * expresion `e1`. This takes overriding into account for properties written
+ * expression `e1`. This takes overriding into account for properties written
  * from library code.
  */
 private predicate fieldOrPropertyRead(Expr e1, Content c, FieldOrPropertyRead e2) {
   e1 = e2.getQualifier() and
   exists(FieldOrProperty ret | c = ret.getContent() |
-    ret.isFieldLike() and
     ret = e2.getTarget()
     or
-    exists(AccessPath ap, Property target |
-      LibraryFlow::libraryFlow(_, _, _, _, ap, _) and
-      ap.contains(ret.getContent()) and
+    exists(Property target |
       target.getGetter() = e2.(PropertyCall).getARuntimeTarget() and
       overridesOrImplementsSourceDecl(target, ret)
     )
   )
 }
 
-Type getCSharpType(DotNet::Type t) {
+/**
+ * Holds if `e` is an expression that adds `src` to array `a`.
+ *
+ * `postUpdate` indicates whether the store targets a post-update node.
+ */
+private predicate arrayStore(Expr e, Expr src, Expr a, boolean postUpdate) {
+  // Direct assignment, `a[i] = src`
+  exists(AssignableDefinition def |
+    a = def.getTargetAccess().(ArrayWrite).getQualifier() and
+    src = def.getSource() and
+    e = def.getExpr() and
+    postUpdate = true
+  )
+  or
+  // Array initializer, `new [] { src }`
+  src = a.(ArrayInitializer).getAnElement() and
+  e = a and
+  postUpdate = false
+  or
+  // Member initalizer, `new C { Array = { [i] = src } }`
+  exists(MemberInitializer mi |
+    mi = a.(ObjectInitializer).getAMemberInitializer() and
+    mi.getLValue() instanceof ArrayAccess and
+    mi.getRValue() = src and
+    e = a and
+    postUpdate = false
+  )
+}
+
+/**
+ * Holds if `e2` is an expression that reads an array element from
+ * from expresion `e1`.
+ */
+private predicate arrayRead(Expr e1, ArrayRead e2) { e1 = e2.getQualifier() }
+
+private Type getCSharpType(DotNet::Type t) {
   result = t
   or
   result.matchesHandle(t)
 }
 
+private class RelevantDataFlowType extends DataFlowType {
+  RelevantDataFlowType() { this = any(NodeImpl n).getDataFlowType() }
+}
+
+/** A GVN type that is either a `DataFlowType` or unifiable with a `DataFlowType`. */
+private class DataFlowTypeOrUnifiable extends Gvn::GvnType {
+  pragma[nomagic]
+  DataFlowTypeOrUnifiable() {
+    this instanceof RelevantDataFlowType or
+    Gvn::unifiable(any(RelevantDataFlowType t), this)
+  }
+}
+
 pragma[noinline]
-private TypeParameter getATypeParameterSubType(DataFlowType t) {
+private TypeParameter getATypeParameterSubType(DataFlowTypeOrUnifiable t) {
   not t instanceof Gvn::TypeParameterGvnType and
   exists(Type t0 | t = Gvn::getGlobalValueNumber(t0) | implicitConversionRestricted(result, t0))
 }
 
 pragma[noinline]
-private DataFlowType getANonTypeParameterSubType(DataFlowType t) {
+private TypeParameter getATypeParameterSubTypeRestricted(RelevantDataFlowType t) {
+  result = getATypeParameterSubType(t)
+}
+
+pragma[noinline]
+private Gvn::GvnType getANonTypeParameterSubType(DataFlowTypeOrUnifiable t) {
   not t instanceof Gvn::TypeParameterGvnType and
   not result instanceof Gvn::TypeParameterGvnType and
   exists(Type t1, Type t2 |
@@ -360,41 +629,57 @@ private DataFlowType getANonTypeParameterSubType(DataFlowType t) {
   )
 }
 
+pragma[noinline]
+private Gvn::GvnType getANonTypeParameterSubTypeRestricted(RelevantDataFlowType t) {
+  result = getANonTypeParameterSubType(t)
+}
+
 /** A collection of cached types and predicates to be evaluated in the same stage. */
 cached
 private module Cached {
+  private import TaintTrackingPrivate as TaintTrackingPrivate
+
+  // Add artificial dependencies to enforce all cached predicates are evaluated
+  // in the "DataFlowImplCommon stage"
+  private predicate forceCaching() {
+    TaintTrackingPrivate::forceCachingInSameStage() or
+    exists(any(NodeImpl n).getTypeImpl()) or
+    exists(any(NodeImpl n).getControlFlowNodeImpl()) or
+    exists(any(NodeImpl n).getLocationImpl()) or
+    exists(any(NodeImpl n).toStringImpl())
+  }
+
   cached
   newtype TNode =
     TExprNode(ControlFlow::Nodes::ElementNode cfn) {
-      Stages::DataFlowStage::forceCachingInSameStage() and cfn.getElement() instanceof Expr
+      forceCaching() and
+      cfn.getElement() instanceof Expr
     } or
     TCilExprNode(CIL::Expr e) { e.getImplementation() instanceof CIL::BestImplementation } or
-    TSsaDefinitionNode(Ssa::Definition def) or
-    TInstanceParameterNode(Callable c) { c.hasBody() and not c.(Modifiable).isStatic() } or
-    TCilParameterNode(CIL::Parameter p) { p.getMethod().hasBody() } or
+    TSsaDefinitionNode(Ssa::Definition def) {
+      // Handled by `TExplicitParameterNode` below
+      not def.(Ssa::ExplicitDefinition).getADefinition() instanceof
+        AssignableDefinitions::ImplicitParameterDefinition
+    } or
+    TExplicitParameterNode(DotNet::Parameter p) { p.isUnboundDeclaration() } or
+    TInstanceParameterNode(Callable c) {
+      c.isUnboundDeclaration() and not c.(Modifiable).isStatic()
+    } or
     TYieldReturnNode(ControlFlow::Nodes::ElementNode cfn) {
       any(Callable c).canYieldReturn(cfn.getElement())
+    } or
+    TAsyncReturnNode(ControlFlow::Nodes::ElementNode cfn) {
+      any(Callable c | c.(Modifiable).isAsync()).canReturn(cfn.getElement())
     } or
     TImplicitCapturedArgumentNode(ControlFlow::Nodes::ElementNode cfn, LocalScopeVariable v) {
       exists(Ssa::ExplicitDefinition def | def.isCapturedVariableDefinitionFlowIn(_, cfn, _) |
         v = def.getSourceVariable().getAssignable()
       )
     } or
-    TImplicitDelegateOutNode(
-      ControlFlow::Nodes::ElementNode cfn, ControlFlow::Nodes::ElementNode call
-    ) {
-      cfn.getElement() instanceof DelegateArgumentToLibraryCallable and
-      any(DelegateArgumentConfiguration x).hasExprPath(_, cfn, _, call)
-    } or
-    TImplicitDelegateArgumentNode(ControlFlow::Nodes::ElementNode cfn, int i, int j) {
-      exists(Call call, CallableFlowSinkDelegateArg sink |
-        LibraryFlow::libraryFlow(call, _, _, sink, _, _) and
-        i = sink.getDelegateIndex() and
-        j = sink.getDelegateParameterIndex() and
-        call.getArgument(i).getAControlFlowNode() = cfn
-      )
-    } or
     TMallocNode(ControlFlow::Nodes::ElementNode cfn) { cfn.getElement() instanceof ObjectCreation } or
+    TObjectInitializerNode(ControlFlow::Nodes::ElementNode cfn) {
+      cfn.getElement().(ObjectCreation).hasInitializer()
+    } or
     TExprPostUpdateNode(ControlFlow::Nodes::ElementNode cfn) {
       exists(Argument a, Type t |
         a = cfn.getElement() and
@@ -406,7 +691,9 @@ private module Cached {
         t = any(TypeParameter tp | not tp.isValueType())
       )
       or
-      fieldOrPropertyAssign(_, _, _, cfn.getElement())
+      fieldOrPropertyStore(_, _, _, cfn.getElement(), true)
+      or
+      arrayStore(_, _, cfn.getElement(), true)
       or
       exists(TExprPostUpdateNode upd, FieldOrPropertyAccess fla |
         upd = TExprPostUpdateNode(fla.getAControlFlowNode())
@@ -414,117 +701,45 @@ private module Cached {
         cfn.getElement() = fla.getQualifier()
       )
     } or
-    TLibraryCodeNode(
-      ControlFlow::Node callCfn, CallableFlowSource source, AccessPath sourceAp,
-      CallableFlowSink sink, AccessPath sinkAp, boolean preservesValue
-    ) {
-      LibraryFlow::libraryFlow(callCfn.getElement(), source, sourceAp, sink, sinkAp, preservesValue)
+    TSummaryNode(SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state) {
+      FlowSummaryImpl::Private::summaryNodeRange(c, state)
+    } or
+    TParamsArgumentNode(ControlFlow::Node callCfn) {
+      callCfn = any(Call c | isParamsArg(c, _, _)).getAControlFlowNode()
     }
 
   /**
-   * This is the local flow predicate that is used as a building block in global
-   * data flow. It is a strict subset of the `localFlowStep` predicate, as it
-   * excludes SSA flow through instance fields.
+   * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
+   * (intra-procedural) step.
    */
   cached
-  predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
-    exists(Ssa::Definition def |
-      LocalFlow::localSsaFlowStep(def, nodeFrom, nodeTo) and
-      not LocalFlow::usesInstanceField(def)
-    )
+  predicate localFlowStepImpl(Node nodeFrom, Node nodeTo) {
+    LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
     or
-    any(LocalFlow::LocalExprStepConfiguration x).hasNodePath(nodeFrom, nodeTo)
-    or
-    ThisFlow::adjacentThisRefs(nodeFrom, nodeTo)
-    or
-    ThisFlow::adjacentThisRefs(nodeFrom.(PostUpdateNode).getPreUpdateNode(), nodeTo)
-    or
-    LocalFlow::localFlowCapturedVarStep(nodeFrom, nodeTo)
-    or
-    LocalFlow::localFlowStepCil(nodeFrom, nodeTo)
-    or
-    exists(LibraryCodeNode n | n.preservesValue() |
-      n = nodeTo and
-      nodeFrom = n.getPredecessor(AccessPath::empty())
-      or
-      n = nodeFrom and
-      nodeTo = n.getSuccessor(AccessPath::empty())
-    )
-  }
-
-  /**
-   * This is the extension of the predicate `simpleLocalFlowStep` that is exposed
-   * as the `localFlowStep` predicate. It includes SSA flow through instance fields.
-   */
-  cached
-  predicate extendedLocalFlowStep(Node nodeFrom, Node nodeTo) {
     exists(Ssa::Definition def |
       LocalFlow::localSsaFlowStep(def, nodeFrom, nodeTo) and
       LocalFlow::usesInstanceField(def)
     )
-  }
-
-  /**
-   * Holds if `pred` can flow to `succ`, by jumping from one callable to
-   * another. Additional steps specified by the configuration are *not*
-   * taken into account.
-   */
-  cached
-  predicate jumpStepImpl(ExprNode pred, ExprNode succ) {
-    pred.(NonLocalJumpNode).getAJumpSuccessor(true) = succ
+    or
+    // Simple flow through library code is included in the exposed local
+    // step relation, even though flow is technically inter-procedural
+    FlowSummaryImpl::Private::Steps::summaryThroughStep(nodeFrom, nodeTo, true)
   }
 
   cached
   newtype TContent =
-    TFieldContent(Field f) { f = f.getSourceDeclaration() } or
-    TPropertyContent(Property p) { p = p.getSourceDeclaration() }
+    TFieldContent(Field f) { f.isUnboundDeclaration() } or
+    TPropertyContent(Property p) { p.isUnboundDeclaration() } or
+    TElementContent()
 
-  /**
-   * Holds if data can flow from `node1` to `node2` via an assignment to
-   * content `c`.
-   */
-  cached
-  predicate storeStepImpl(Node node1, Content c, Node node2) {
-    exists(StoreStepConfiguration x, ExprNode preNode2 |
-      preNode2 = node2.(PostUpdateNode).getPreUpdateNode() and
-      x.hasNodePath(node1, preNode2) and
-      fieldOrPropertyAssign(_, c, node1.asExpr(), preNode2.getExpr())
-    )
+  pragma[nomagic]
+  private predicate commonSubTypeGeneral(DataFlowTypeOrUnifiable t1, RelevantDataFlowType t2) {
+    not t1 instanceof Gvn::TypeParameterGvnType and
+    t1 = t2
     or
-    exists(StoreStepConfiguration x | x.hasNodePath(node1, node2) |
-      fieldOrPropertyInit(node2.(ObjectCreationNode).getExpr(), c, node1.asExpr())
-    )
+    getATypeParameterSubType(t1) = getATypeParameterSubTypeRestricted(t2)
     or
-    node2 = node1.(LibraryCodeNode).getSuccessor(any(AccessPath ap | ap.getHead() = c))
-  }
-
-  /**
-   * Holds if data can flow from `node1` to `node2` via a read of content `c`.
-   */
-  cached
-  predicate readStepImpl(Node node1, Content c, Node node2) {
-    exists(ReadStepConfiguration x |
-      x.hasNodePath(node1, node2) and
-      fieldOrPropertyRead(node1.asExpr(), c, node2.asExpr())
-    )
-    or
-    node1 = node2.(LibraryCodeNode).getPredecessor(any(AccessPath ap | ap.getHead() = c))
-  }
-
-  /**
-   * Holds if the node `n` is unreachable when the call context is `call`.
-   */
-  cached
-  predicate isUnreachableInCall(Node n, DataFlowCall call) {
-    exists(
-      SsaDefinitionNode paramNode, Ssa::ExplicitDefinition param, Guard guard,
-      ControlFlow::SuccessorTypes::BooleanSuccessor bs
-    |
-      viableConstantBooleanParamArg(paramNode, bs.getValue().booleanNot(), call) and
-      paramNode.getDefinition() = param and
-      param.getARead() = guard and
-      guard.controlsBlock(n.getControlFlowNode().getBasicBlock(), bs)
-    )
+    getANonTypeParameterSubType(t1) = getANonTypeParameterSubTypeRestricted(t2)
   }
 
   /**
@@ -532,28 +747,55 @@ private module Cached {
    * `t2` are allowed to be type parameters.
    */
   cached
-  predicate commonSubType(DataFlowType t1, DataFlowType t2) {
-    not t1 instanceof Gvn::TypeParameterGvnType and
-    t1 = t2
-    or
-    getATypeParameterSubType(t1) = getATypeParameterSubType(t2)
-    or
-    getANonTypeParameterSubType(t1) = getANonTypeParameterSubType(t2)
+  predicate commonSubType(RelevantDataFlowType t1, RelevantDataFlowType t2) {
+    commonSubTypeGeneral(t1, t2)
   }
 
   cached
-  predicate commonSubTypeUnifiableLeft(DataFlowType t1, DataFlowType t2) {
-    exists(DataFlowType t |
+  predicate commonSubTypeUnifiableLeft(RelevantDataFlowType t1, RelevantDataFlowType t2) {
+    exists(Gvn::GvnType t |
       Gvn::unifiable(t1, t) and
-      commonSubType(t, t2)
+      commonSubTypeGeneral(t, t2)
     )
   }
 }
 
 import Cached
 
+/** Holds if `n` should be hidden from path explanations. */
+predicate nodeIsHidden(Node n) {
+  exists(Ssa::Definition def | def = n.(SsaDefinitionNode).getDefinition() |
+    def instanceof Ssa::PhiNode
+    or
+    def instanceof Ssa::ImplicitEntryDefinition
+    or
+    def instanceof Ssa::ImplicitCallDefinition
+  )
+  or
+  exists(Parameter p |
+    p = n.(ParameterNode).getParameter() and
+    not p.fromSource()
+  )
+  or
+  n = TInstanceParameterNode(any(Callable c | not c.fromSource()))
+  or
+  n instanceof YieldReturnNode
+  or
+  n instanceof AsyncReturnNode
+  or
+  n instanceof ImplicitCapturedArgumentNode
+  or
+  n instanceof MallocNode
+  or
+  n instanceof SummaryNode
+  or
+  n instanceof ParamsArgumentNode
+  or
+  n.asExpr() = any(WithExpr we).getInitializer()
+}
+
 /** An SSA definition, viewed as a node in a data flow graph. */
-class SsaDefinitionNode extends Node, TSsaDefinitionNode {
+class SsaDefinitionNode extends NodeImpl, TSsaDefinitionNode {
   Ssa::Definition def;
 
   SsaDefinitionNode() { this = TSsaDefinitionNode(def) }
@@ -561,53 +803,52 @@ class SsaDefinitionNode extends Node, TSsaDefinitionNode {
   /** Gets the underlying SSA definition. */
   Ssa::Definition getDefinition() { result = def }
 
-  override Callable getEnclosingCallable() { result = def.getEnclosingCallable() }
+  override DataFlowCallable getEnclosingCallableImpl() { result = def.getEnclosingCallable() }
 
-  override Type getType() { result = def.getSourceVariable().getType() }
+  override Type getTypeImpl() { result = def.getSourceVariable().getType() }
 
-  override Location getLocation() { result = def.getLocation() }
+  override ControlFlow::Node getControlFlowNodeImpl() { result = def.getControlFlowNode() }
 
-  override string toString() {
-    not explicitParameterNode(this, _) and
-    result = def.toString()
-  }
+  override Location getLocationImpl() { result = def.getLocation() }
+
+  override string toStringImpl() { result = def.toString() }
+}
+
+abstract class ParameterNodeImpl extends NodeImpl {
+  abstract predicate isParameterOf(DataFlowCallable c, int i);
 }
 
 private module ParameterNodes {
   /**
-   * Holds if definition node `node` is an entry definition for parameter `p`.
-   */
-  predicate explicitParameterNode(AssignableDefinitionNode node, Parameter p) {
-    p = node.getDefinition().(AssignableDefinitions::ImplicitParameterDefinition).getParameter()
-  }
-
-  /**
    * The value of an explicit parameter at function entry, viewed as a node in a data
    * flow graph.
    */
-  class ExplicitParameterNode extends ParameterNode {
+  class ExplicitParameterNode extends ParameterNodeImpl, TExplicitParameterNode {
     private DotNet::Parameter parameter;
 
-    ExplicitParameterNode() {
-      explicitParameterNode(this, parameter) or
-      this = TCilParameterNode(parameter)
-    }
+    ExplicitParameterNode() { this = TExplicitParameterNode(parameter) }
 
-    override DotNet::Parameter getParameter() { result = parameter }
+    /** Gets the SSA definition corresponding to this parameter, if any. */
+    Ssa::ExplicitDefinition getSsaDefinition() {
+      result.getADefinition().(AssignableDefinitions::ImplicitParameterDefinition).getParameter() =
+        parameter
+    }
 
     override predicate isParameterOf(DataFlowCallable c, int i) { c.getParameter(i) = parameter }
 
-    override DotNet::Callable getEnclosingCallable() { result = parameter.getCallable() }
+    override DataFlowCallable getEnclosingCallableImpl() { result = parameter.getCallable() }
 
-    override DotNet::Type getType() { result = parameter.getType() }
+    override DotNet::Type getTypeImpl() { result = parameter.getType() }
 
-    override Location getLocation() { result = parameter.getLocation() }
+    override ControlFlow::Node getControlFlowNodeImpl() { none() }
 
-    override string toString() { result = parameter.toString() }
+    override Location getLocationImpl() { result = parameter.getLocation() }
+
+    override string toStringImpl() { result = parameter.toString() }
   }
 
   /** An implicit instance (`this`) parameter. */
-  class InstanceParameterNode extends ParameterNode, TInstanceParameterNode {
+  class InstanceParameterNode extends ParameterNodeImpl, TInstanceParameterNode {
     private Callable callable;
 
     InstanceParameterNode() { this = TInstanceParameterNode(callable) }
@@ -617,13 +858,15 @@ private module ParameterNodes {
 
     override predicate isParameterOf(DataFlowCallable c, int pos) { callable = c and pos = -1 }
 
-    override Callable getEnclosingCallable() { result = callable }
+    override DataFlowCallable getEnclosingCallableImpl() { result = callable }
 
-    override Type getType() { result = callable.getDeclaringType() }
+    override Type getTypeImpl() { result = callable.getDeclaringType() }
 
-    override Location getLocation() { result = callable.getLocation() }
+    override ControlFlow::Node getControlFlowNodeImpl() { none() }
 
-    override string toString() { result = "this" }
+    override Location getLocationImpl() { result = callable.getLocation() }
+
+    override string toStringImpl() { result = "this" }
   }
 
   module ImplicitCapturedParameterNodeImpl {
@@ -679,7 +922,7 @@ private module ParameterNodes {
    * }                      }
    * ```
    */
-  class ImplicitCapturedParameterNode extends ParameterNode, SsaDefinitionNode {
+  class ImplicitCapturedParameterNode extends ParameterNodeImpl, SsaDefinitionNode {
     override SsaCapturedEntryDefinition def;
 
     ImplicitCapturedParameterNode() { def = this.getDefinition() }
@@ -696,32 +939,21 @@ private module ParameterNodes {
 
 import ParameterNodes
 
-/** A data flow node that represents a call argument. */
-abstract class ArgumentNode extends Node {
-  /** Holds if this argument occurs at the given position in the given call. */
-  cached
-  abstract predicate argumentOf(DataFlowCall call, int pos);
+/** A data-flow node that represents a call argument. */
+class ArgumentNode extends Node {
+  ArgumentNode() { this instanceof ArgumentNodeImpl }
 
-  /** Gets the call in which this node is an argument. */
-  final DataFlowCall getCall() { this.argumentOf(result, _) }
+  /** Holds if this argument occurs at the given position in the given call. */
+  final predicate argumentOf(DataFlowCall call, int pos) {
+    this.(ArgumentNodeImpl).argumentOf(call, pos)
+  }
+}
+
+abstract private class ArgumentNodeImpl extends Node {
+  abstract predicate argumentOf(DataFlowCall call, int pos);
 }
 
 private module ArgumentNodes {
-  class DelegateArgumentConfiguration extends ControlFlowReachabilityConfiguration {
-    DelegateArgumentConfiguration() { this = "DelegateArgumentConfiguration" }
-
-    override predicate candidate(
-      Expr e1, Expr e2, ControlFlowElement scope, boolean exactScope, boolean isSuccessor
-    ) {
-      exists(DelegateArgumentToLibraryCallable arg | e1 = arg.getCall().getAnArgument() |
-        e2 = arg.getCall() and
-        scope = e2 and
-        exactScope = false and
-        isSuccessor = true
-      )
-    }
-  }
-
   private class ArgumentConfiguration extends ControlFlowReachabilityConfiguration {
     ArgumentConfiguration() { this = "ArgumentConfiguration" }
 
@@ -735,8 +967,8 @@ private module ArgumentNodes {
     }
   }
 
-  /** A data flow node that represents an explicit call argument. */
-  private class ExplicitArgumentNode extends ArgumentNode {
+  /** A data-flow node that represents an explicit call argument. */
+  class ExplicitArgumentNode extends ArgumentNodeImpl {
     ExplicitArgumentNode() {
       this.asExpr() instanceof Argument
       or
@@ -744,7 +976,6 @@ private module ArgumentNodes {
     }
 
     override predicate argumentOf(DataFlowCall call, int pos) {
-      Stages::DataFlowStage::forceCachingInSameStage() and
       exists(ArgumentConfiguration x, Expr c, Argument arg |
         arg = this.asExpr() and
         c = call.getExpr() and
@@ -776,7 +1007,8 @@ private module ArgumentNodes {
    * }                                }
    * ```
    */
-  class ImplicitCapturedArgumentNode extends ArgumentNode, TImplicitCapturedArgumentNode {
+  class ImplicitCapturedArgumentNode extends ArgumentNodeImpl, NodeImpl,
+    TImplicitCapturedArgumentNode {
     private LocalScopeVariable v;
     private ControlFlow::Nodes::ElementNode cfn;
 
@@ -795,39 +1027,30 @@ private module ArgumentNodes {
     override predicate argumentOf(DataFlowCall call, int pos) {
       exists(ImplicitCapturedParameterNode p, boolean additionalCalls |
         this.flowsInto(p, additionalCalls) and
-        p.isParameterOf(call.getARuntimeTarget(), pos)
-      |
+        p.isParameterOf(call.getARuntimeTarget(), pos) and
+        call.getControlFlowNode() = cfn and
         if call instanceof TransitiveCapturedDataFlowCall
-        then additionalCalls = true and call.getControlFlowNode() = cfn
-        else (
-          additionalCalls = false and
-          (
-            call.getControlFlowNode() = cfn
-            or
-            exists(DataFlowCall parent |
-              call.(ImplicitDelegateDataFlowCall).isArgumentOf(parent, _)
-            |
-              parent.getControlFlowNode() = cfn
-            )
-          )
-        )
+        then additionalCalls = true
+        else additionalCalls = false
       )
     }
 
-    override Callable getEnclosingCallable() { result = cfn.getEnclosingCallable() }
+    override DataFlowCallable getEnclosingCallableImpl() { result = cfn.getEnclosingCallable() }
 
-    override Type getType() { result = v.getType() }
+    override Type getTypeImpl() { result = v.getType() }
 
-    override Location getLocation() { result = cfn.getLocation() }
+    override ControlFlow::Node getControlFlowNodeImpl() { none() }
 
-    override string toString() { result = "[implicit argument] " + v }
+    override Location getLocationImpl() { result = cfn.getLocation() }
+
+    override string toStringImpl() { result = "[implicit argument] " + v }
   }
 
   /**
    * A node that corresponds to the value of an object creation (`new C()`) before
    * the constructor has run.
    */
-  class MallocNode extends ArgumentNode, TMallocNode {
+  class MallocNode extends ArgumentNodeImpl, NodeImpl, TMallocNode {
     private ControlFlow::Nodes::ElementNode cfn;
 
     MallocNode() { this = TMallocNode(cfn) }
@@ -837,58 +1060,68 @@ private module ArgumentNodes {
       pos = -1
     }
 
-    override ControlFlow::Node getControlFlowNode() { result = cfn }
+    override ControlFlow::Node getControlFlowNodeImpl() { result = cfn }
 
-    override Callable getEnclosingCallable() { result = cfn.getEnclosingCallable() }
+    override DataFlowCallable getEnclosingCallableImpl() { result = cfn.getEnclosingCallable() }
 
-    override Type getType() { result = cfn.getElement().(Expr).getType() }
+    override Type getTypeImpl() { result = cfn.getElement().(Expr).getType() }
 
-    override Location getLocation() { result = cfn.getLocation() }
+    override Location getLocationImpl() { result = cfn.getLocation() }
 
-    override string toString() { result = "malloc" }
+    override string toStringImpl() { result = "malloc" }
   }
 
   /**
-   * A data flow node that represents an implicit argument of an implicit delegate
-   * call in library code. For example, in
+   * A data-flow node that represents the implicit array creation in a call to a
+   * callable with a `params` parameter. For example, there is an implicit array
+   * creation `new [] { "a", "b", "c" }` in
    *
    * ```csharp
-   * x.Select(Foo);
+   * void Foo(params string[] args) { ... }
+   * Foo("a", "b", "c");
    * ```
    *
-   * `x` is an implicit argument of the implicit call to `Foo`.
+   * Note that array creations are not inserted when there is only one argument,
+   * and that argument is itself a compatible array, for example
+   * `Foo(new[] { "a", "b", "c" })`.
    */
-  class ImplicitDelegateArgumentNode extends ArgumentNode, TImplicitDelegateArgumentNode {
-    private ControlFlow::Node cfn;
-    private int delegateIndex;
-    private int parameterIndex;
+  class ParamsArgumentNode extends ArgumentNodeImpl, NodeImpl, TParamsArgumentNode {
+    private ControlFlow::Node callCfn;
 
-    ImplicitDelegateArgumentNode() {
-      this = TImplicitDelegateArgumentNode(cfn, delegateIndex, parameterIndex)
+    ParamsArgumentNode() { this = TParamsArgumentNode(callCfn) }
+
+    private Parameter getParameter() {
+      callCfn = any(Call c | isParamsArg(c, _, result)).getAControlFlowNode()
     }
-
-    private ImplicitDelegateDataFlowCall getDelegateCall() { result.getControlFlowNode() = cfn }
 
     override predicate argumentOf(DataFlowCall call, int pos) {
-      call = this.getDelegateCall() and
-      pos = parameterIndex
+      callCfn = call.getControlFlowNode() and
+      pos = this.getParameter().getPosition()
     }
 
-    override Callable getEnclosingCallable() { result = cfn.getEnclosingCallable() }
+    override DataFlowCallable getEnclosingCallableImpl() { result = callCfn.getEnclosingCallable() }
 
-    override Type getType() {
-      result = this.getDelegateCall().getDelegateParameterType(parameterIndex)
+    override Type getTypeImpl() { result = this.getParameter().getType() }
+
+    override ControlFlow::Node getControlFlowNodeImpl() { none() }
+
+    override Location getLocationImpl() { result = callCfn.getLocation() }
+
+    override string toStringImpl() { result = "[implicit array creation] " + callCfn }
+  }
+
+  private class SummaryArgumentNode extends SummaryNode, ArgumentNodeImpl {
+    SummaryArgumentNode() { FlowSummaryImpl::Private::summaryArgumentNode(_, this, _) }
+
+    override predicate argumentOf(DataFlowCall call, int pos) {
+      FlowSummaryImpl::Private::summaryArgumentNode(call, this, pos)
     }
-
-    override Location getLocation() { result = cfn.getLocation() }
-
-    override string toString() { result = "[implicit argument " + parameterIndex + "] " + cfn }
   }
 }
 
 import ArgumentNodes
 
-/** A data flow node that represents a value returned by a callable. */
+/** A data-flow node that represents a value returned by a callable. */
 abstract class ReturnNode extends Node {
   /** Gets the kind of this return node. */
   abstract ReturnKind getKind();
@@ -896,25 +1129,21 @@ abstract class ReturnNode extends Node {
 
 private module ReturnNodes {
   /**
-   * A data flow node that represents an expression returned by a callable,
-   * either using a (`yield`) `return` statement or an expression body (`=>`).
+   * A data-flow node that represents an expression returned by a callable,
+   * either using a `return` statement or an expression body (`=>`).
    */
   class ExprReturnNode extends ReturnNode, ExprNode {
     ExprReturnNode() {
       exists(DotNet::Callable c, DotNet::Expr e | e = this.getExpr() |
-        c.canReturn(e)
-        or
-        c.(Callable).canYieldReturn(e)
+        c.canReturn(e) and not c.(Modifiable).isAsync()
       )
     }
 
-    override ReturnKind getKind() {
-      any(DotNet::Callable c).canReturn(this.getExpr()) and result instanceof NormalReturnKind
-    }
+    override NormalReturnKind getKind() { exists(result) }
   }
 
   /**
-   * A data flow node that represents an assignment to an `out` or a `ref`
+   * A data-flow node that represents an assignment to an `out` or a `ref`
    * parameter.
    */
   class OutRefReturnNode extends ReturnNode, SsaDefinitionNode {
@@ -922,7 +1151,7 @@ private module ReturnNodes {
 
     OutRefReturnNode() {
       exists(Parameter p |
-        this.getDefinition().(Ssa::ExplicitDefinition).isLiveOutRefParameterDefinition(p) and
+        this.getDefinition().isLiveOutRefParameterDefinition(p) and
         kind.getPosition() = p.getPosition()
       |
         p.isOut() and kind instanceof OutReturnKind
@@ -939,7 +1168,7 @@ private module ReturnNodes {
    * `yield return`s as stores into collections, i.e., there is flow from `e`
    * to `yield return e [e]`.
    */
-  class YieldReturnNode extends ReturnNode, PostUpdateNode, TYieldReturnNode {
+  class YieldReturnNode extends ReturnNode, NodeImpl, TYieldReturnNode {
     private ControlFlow::Nodes::ElementNode cfn;
     private YieldReturnStmt yrs;
 
@@ -947,17 +1176,41 @@ private module ReturnNodes {
 
     YieldReturnStmt getYieldReturnStmt() { result = yrs }
 
-    override YieldReturnKind getKind() { any() }
+    override NormalReturnKind getKind() { any() }
 
-    override ExprNode getPreUpdateNode() { result.getControlFlowNode() = cfn }
+    override DataFlowCallable getEnclosingCallableImpl() { result = yrs.getEnclosingCallable() }
 
-    override Callable getEnclosingCallable() { result = yrs.getEnclosingCallable() }
+    override Type getTypeImpl() { result = yrs.getEnclosingCallable().getReturnType() }
 
-    override Type getType() { result = yrs.getEnclosingCallable().getReturnType() }
+    override ControlFlow::Node getControlFlowNodeImpl() { result = cfn }
 
-    override Location getLocation() { result = yrs.getLocation() }
+    override Location getLocationImpl() { result = yrs.getLocation() }
 
-    override string toString() { result = yrs.toString() }
+    override string toStringImpl() { result = yrs.toString() }
+  }
+
+  /**
+   * A synthesized `return` node for returned expressions inside `async` methods.
+   */
+  class AsyncReturnNode extends ReturnNode, NodeImpl, TAsyncReturnNode {
+    private ControlFlow::Nodes::ElementNode cfn;
+    private Expr expr;
+
+    AsyncReturnNode() { this = TAsyncReturnNode(cfn) and expr = cfn.getElement() }
+
+    Expr getExpr() { result = expr }
+
+    override NormalReturnKind getKind() { any() }
+
+    override DataFlowCallable getEnclosingCallableImpl() { result = expr.getEnclosingCallable() }
+
+    override Type getTypeImpl() { result = expr.getEnclosingCallable().getReturnType() }
+
+    override ControlFlow::Node getControlFlowNodeImpl() { result = cfn }
+
+    override Location getLocationImpl() { result = expr.getLocation() }
+
+    override string toStringImpl() { result = expr.toString() }
   }
 
   /**
@@ -998,14 +1251,24 @@ private module ReturnNodes {
       result.getVariable() = edef.getSourceVariable().getAssignable()
     }
   }
+
+  private class SummaryReturnNode extends SummaryNode, ReturnNode {
+    private ReturnKind rk;
+
+    SummaryReturnNode() {
+      FlowSummaryImpl::Private::summaryReturnNode(this, rk) and
+      not rk instanceof JumpReturnKind
+    }
+
+    override ReturnKind getKind() { result = rk }
+  }
 }
 
 import ReturnNodes
 
-/** A data flow node that represents the output of a call. */
+/** A data-flow node that represents the output of a call. */
 abstract class OutNode extends Node {
   /** Gets the underlying call, where this node is a corresponding output of kind `kind`. */
-  cached
   abstract DataFlowCall getCall(ReturnKind kind);
 }
 
@@ -1015,26 +1278,11 @@ private module OutNodes {
 
   private DataFlowCall csharpCall(Expr e, ControlFlow::Node cfn) {
     e = any(DispatchCall dc | result = TNonDelegateCall(cfn, dc)).getCall() or
-    result = TExplicitDelegateCall(cfn, e)
-  }
-
-  /** A valid return type for a method that uses `yield return`. */
-  private class YieldReturnType extends Type {
-    YieldReturnType() {
-      exists(Type t | t = this.getSourceDeclaration() |
-        t instanceof SystemCollectionsIEnumerableInterface
-        or
-        t instanceof SystemCollectionsIEnumeratorInterface
-        or
-        t instanceof SystemCollectionsGenericIEnumerableTInterface
-        or
-        t instanceof SystemCollectionsGenericIEnumeratorInterface
-      )
-    }
+    result = TExplicitDelegateLikeCall(cfn, e)
   }
 
   /**
-   * A data flow node that reads a value returned directly by a callable,
+   * A data-flow node that reads a value returned directly by a callable,
    * either via a C# call or a CIL call.
    */
   class ExprOutNode extends OutNode, ExprNode {
@@ -1048,20 +1296,37 @@ private module OutNodes {
     }
 
     override DataFlowCall getCall(ReturnKind kind) {
-      Stages::DataFlowStage::forceCachingInSameStage() and
       result = call and
       (
         kind instanceof NormalReturnKind and
         not call.getExpr().getType() instanceof VoidType
+      )
+    }
+  }
+
+  class ObjectOrCollectionInitializerConfiguration extends ControlFlowReachabilityConfiguration {
+    ObjectOrCollectionInitializerConfiguration() {
+      this = "ObjectOrCollectionInitializerConfiguration"
+    }
+
+    override predicate candidate(
+      Expr e1, Expr e2, ControlFlowElement scope, boolean exactScope, boolean isSuccessor
+    ) {
+      exactScope = false and
+      scope = e1 and
+      isSuccessor = true and
+      exists(ObjectOrCollectionInitializer init | init = e1.(ObjectCreation).getInitializer() |
+        // E.g. `new Dictionary<int, string>{ {0, "a"}, {1, "b"} }`
+        e2 = init.(CollectionInitializer).getAnElementInitializer()
         or
-        kind instanceof YieldReturnKind and
-        call.getExpr().getType() instanceof YieldReturnType
+        // E.g. `new Dictionary<int, string>() { [0] = "a", [1] = "b" }`
+        e2 = init.(ObjectInitializer).getAMemberInitializer().getLValue()
       )
     }
   }
 
   /**
-   * A data flow node that reads a value returned implicitly by a callable
+   * A data-flow node that reads a value returned implicitly by a callable
    * using a captured variable.
    */
   class CapturedOutNode extends OutNode, SsaDefinitionNode {
@@ -1074,10 +1339,8 @@ private module OutNodes {
       |
         additionalCalls = false and call = csharpCall(_, cfn)
         or
-        additionalCalls = false and
-        call.(ImplicitDelegateDataFlowCall).isArgumentOf(csharpCall(_, cfn), _)
-        or
-        additionalCalls = true and call = TTransitiveCapturedCall(cfn, n.getEnclosingCallable())
+        additionalCalls = true and
+        call = TTransitiveCapturedCall(cfn, n.getEnclosingCallable())
       )
     }
 
@@ -1089,7 +1352,7 @@ private module OutNodes {
   }
 
   /**
-   * A data flow node that reads a value returned by a callable using an
+   * A data-flow node that reads a value returned by a callable using an
    * `out` or `ref` parameter.
    */
   class ParamOutNode extends OutNode, AssignableDefinitionNode {
@@ -1101,338 +1364,47 @@ private module OutNodes {
     override DataFlowCall getCall(ReturnKind kind) {
       result = csharpCall(_, cfn) and
       exists(Parameter p |
-        p.getSourceDeclaration().getPosition() = kind.(OutRefReturnKind).getPosition() and
+        p.getUnboundDeclaration().getPosition() = kind.(OutRefReturnKind).getPosition() and
         outRefDef.getTargetAccess() = result.getExpr().(Call).getArgumentForParameter(p)
       )
     }
   }
 
-  /**
-   * A data flow node that represents the output of an implicit delegate call,
-   * in a call to a library method. For example, the output from the implicit
-   * call to `M` in `new Lazy<int>(M)`.
-   */
-  class ImplicitDelegateOutNode extends OutNode, TImplicitDelegateOutNode {
-    private ControlFlow::Nodes::ElementNode cfn;
-    private ControlFlow::Nodes::ElementNode call;
+  private class SummaryOutNode extends SummaryNode, OutNode {
+    SummaryOutNode() { FlowSummaryImpl::Private::summaryOutNode(_, this, _) }
 
-    ImplicitDelegateOutNode() { this = TImplicitDelegateOutNode(cfn, call) }
-
-    /**
-     * Holds if the underlying delegate argument is the `i`th argument of the
-     * call `c` targeting a library callable. For example, `M` is the `0`th
-     * argument of `new Lazy<int>(M)`.
-     */
-    predicate isArgumentOf(DataFlowCall c, int i) {
-      c.getControlFlowNode() = call and
-      call.getElement().(Call).getArgument(i) = cfn.getElement()
+    override DataFlowCall getCall(ReturnKind kind) {
+      FlowSummaryImpl::Private::summaryOutNode(result, this, kind)
     }
-
-    override ControlFlow::Nodes::ElementNode getControlFlowNode() { result = cfn }
-
-    override ImplicitDelegateDataFlowCall getCall(ReturnKind kind) {
-      result.getNode() = this and
-      (
-        kind instanceof NormalReturnKind and
-        not result.getDelegateReturnType() instanceof VoidType
-        or
-        kind instanceof YieldReturnKind and
-        result.getDelegateReturnType() instanceof YieldReturnType
-      )
-    }
-
-    override Callable getEnclosingCallable() { result = cfn.getEnclosingCallable() }
-
-    override Type getType() {
-      exists(ImplicitDelegateDataFlowCall c | c.getNode() = this |
-        result = c.getDelegateReturnType()
-      )
-    }
-
-    override Location getLocation() { result = cfn.getLocation() }
-
-    override string toString() { result = "[output] " + cfn }
   }
 }
 
 import OutNodes
 
-/**
- * Provides predicates related to flow through library code, based on
- * the flow summaries in `LibraryTypeDataFlow.qll`.
- */
-module LibraryFlow {
-  pragma[nomagic]
-  private ValueOrRefType getPreciseSourceProperty0(
-    Call call, CallableFlowSource source, AccessPath sourceAp, Property p
-  ) {
-    exists(LibraryTypeDataFlow ltdf, Property p0 |
-      ltdf.callableFlow(source, sourceAp, _, _, call.getTarget().getSourceDeclaration()) and
-      sourceAp = AccessPath::property(p0) and
-      overridesOrImplementsSourceDecl(p, p0) and
-      result = source.getSourceType(call)
-    )
+/** A data-flow node used to model flow summaries. */
+private class SummaryNode extends NodeImpl, TSummaryNode {
+  private SummarizedCallable c;
+  private FlowSummaryImpl::Private::SummaryNodeState state;
+
+  SummaryNode() { this = TSummaryNode(c, state) }
+
+  override DataFlowCallable getEnclosingCallableImpl() { result = c }
+
+  override DataFlowType getDataFlowType() {
+    result = FlowSummaryImpl::Private::summaryNodeType(this)
   }
 
-  /**
-   * Gets a precise source property for source `source` and access path `sourceAp`,
-   * in the context of `call`. For example, in
-   *
-   * ```csharp
-   * var list = new List<string>();
-   * var count = list.Count();
-   * ```
-   *
-   * the step from `list` to `list.Count()`, which may be modeled as a read of
-   * the `Count` property from `ICollection<T>`, can be strengthened to be a
-   * read of the `Count` property from `List<T>`.
-   */
-  pragma[nomagic]
-  private Property getPreciseSourceProperty(
-    Call call, CallableFlowSource source, AccessPath sourceAp
-  ) {
-    getPreciseSourceProperty0(call, source, sourceAp, result).hasMember(result)
-  }
+  override DotNet::Type getTypeImpl() { none() }
 
-  pragma[nomagic]
-  private ValueOrRefType getPreciseSinkProperty0(
-    Call call, CallableFlowSink sink, AccessPath sinkAp, Property p
-  ) {
-    exists(LibraryTypeDataFlow ltdf, Property p0 |
-      ltdf.callableFlow(_, _, sink, sinkAp, call.getTarget().getSourceDeclaration()) and
-      sinkAp = AccessPath::property(p0) and
-      overridesOrImplementsSourceDecl(p, p0) and
-      result = sink.getSinkType(call)
-    )
-  }
+  override ControlFlow::Node getControlFlowNodeImpl() { none() }
 
-  /**
-   * Gets a precise sink property for sink `sink` and access path `sinkAp`,
-   * in the context of `call`. For example, in
-   *
-   * ```csharp
-   * var list = new List<string>();
-   * list.Add("taint");
-   * var enumerator = list.getEnumerator();
-   * ```
-   *
-   * the step from `list` to `list.getEnumerator()`, which may be modeled as a
-   * read of a collection element followed by a store into the `Current`
-   * property, can be strengthened to be a store into the `Current` property
-   * from `List<T>.Enumerator`, rather than the generic `Current` property
-   * from `IEnumerator<T>`.
-   */
-  pragma[nomagic]
-  private Property getPreciseSinkProperty(Call call, CallableFlowSink sink, AccessPath sinkAp) {
-    getPreciseSinkProperty0(call, sink, sinkAp, result).hasMember(result)
-  }
+  override Location getLocationImpl() { result = c.getLocation() }
 
-  /**
-   * Holds if data can flow from a node of kind `source` to a node of kind `sink`,
-   * using a call to a library callable.
-   *
-   * `sourceAp` describes the contents of the source node that flows to the sink
-   * (if any), and `sinkAp` describes the contents of the sink that it flows to
-   * (if any).
-   *
-   * `preservesValue = false` implies that both `sourceAp` and `sinkAp` are empty.
-   */
-  pragma[nomagic]
-  predicate libraryFlow(
-    Call call, CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink,
-    AccessPath sinkAp, boolean preservesValue
-  ) {
-    exists(LibraryTypeDataFlow ltdf, SourceDeclarationCallable c |
-      c = call.getTarget().getSourceDeclaration()
-    |
-      ltdf.callableFlow(source, sink, c, preservesValue) and
-      sourceAp = AccessPath::empty() and
-      sinkAp = AccessPath::empty()
-      or
-      preservesValue = true and
-      exists(AccessPath sourceAp0, AccessPath sinkAp0 |
-        ltdf.callableFlow(source, sourceAp0, sink, sinkAp0, c) and
-        (
-          not sourceAp0 = AccessPath::property(_) and
-          sourceAp = sourceAp0
-          or
-          exists(Property p |
-            overridesOrImplementsSourceDecl(p,
-              getPreciseSourceProperty(call, source, sourceAp0).getSourceDeclaration()) and
-            sourceAp = AccessPath::property(p)
-          )
-        ) and
-        (
-          not sinkAp0 = AccessPath::property(_) and
-          sinkAp = sinkAp0
-          or
-          sinkAp = AccessPath::property(getPreciseSinkProperty(call, sink, sinkAp0))
-        )
-      )
-    )
-  }
-
-  class LibrarySourceConfiguration extends ControlFlowReachabilityConfiguration {
-    LibrarySourceConfiguration() { this = "LibrarySourceConfiguration" }
-
-    override predicate candidate(
-      Expr e1, Expr e2, ControlFlowElement scope, boolean exactScope, boolean isSuccessor
-    ) {
-      exists(CallableFlowSource source |
-        libraryFlow(e2, source, _, _, _, _) and
-        e1 = source.getSource(e2) and
-        scope = e2 and
-        exactScope = false and
-        isSuccessor = true
-      )
-    }
-  }
-
-  class LibrarySinkConfiguration extends ControlFlowReachabilityConfiguration {
-    LibrarySinkConfiguration() { this = "LibrarySinkConfiguration" }
-
-    override predicate candidate(
-      Expr e1, Expr e2, ControlFlowElement scope, boolean exactScope, boolean isSuccessor
-    ) {
-      exists(CallableFlowSink sink |
-        libraryFlow(e1, _, _, sink, _, _) and
-        e2 = sink.getSink(e1) and
-        scope = e1 and
-        exactScope = false and
-        isSuccessor = false
-      )
-    }
-
-    override predicate candidateDef(
-      Expr e, AssignableDefinition def, ControlFlowElement scope, boolean exactScope,
-      boolean isSuccessor
-    ) {
-      exists(CallableFlowSinkArg sink |
-        libraryFlow(e, _, _, sink, _, _) and
-        scope = e and
-        exactScope = false and
-        isSuccessor = true and
-        def.getTargetAccess() = sink.getArgument(e) and
-        def instanceof AssignableDefinitions::OutRefDefinition
-      )
-    }
-  }
-}
-
-/** A data-flow node used to model flow through library code. */
-class LibraryCodeNode extends Node, TLibraryCodeNode {
-  private ControlFlow::Node callCfn;
-  private CallableFlowSource source;
-  private AccessPath sourceAp;
-  private CallableFlowSink sink;
-  private AccessPath sinkAp;
-  private boolean preservesValue;
-
-  LibraryCodeNode() {
-    this = TLibraryCodeNode(callCfn, source, sourceAp, sink, sinkAp, preservesValue)
-  }
-
-  /** Holds if this node is part of a value-preserving library step. */
-  predicate preservesValue() { preservesValue = true }
-
-  /**
-   * Gets the predecessor of this library-code node. The head of `ap` describes
-   * the content that is read from when entering this node (if any).
-   */
-  Node getPredecessor(AccessPath ap) {
-    ap = sourceAp and
-    (
-      // The source is either an argument or a qualifier, for example
-      // `s` in `int.Parse(s)`
-      exists(LibraryFlow::LibrarySourceConfiguration x, Call call |
-        callCfn = call.getAControlFlowNode() and
-        x.hasExprPath(source.getSource(call), result.(ExprNode).getControlFlowNode(), _, callCfn)
-      )
-      or
-      // The source is the output of a supplied delegate argument, for
-      // example the output of `Foo` in `new Lazy(Foo)`
-      exists(DataFlowCall call, int pos |
-        pos = source.(CallableFlowSourceDelegateArg).getArgumentIndex() and
-        result.(ImplicitDelegateOutNode).isArgumentOf(call, pos) and
-        callCfn = call.getControlFlowNode()
-      )
-    )
-  }
-
-  /**
-   * Gets the successor of this library-code node. The head of `ap` describes
-   * the content that is stored into when leaving this node (if any).
-   */
-  Node getSuccessor(AccessPath ap) {
-    ap = sinkAp and
-    (
-      exists(LibraryFlow::LibrarySinkConfiguration x, Call call, ExprNode e |
-        callCfn = call.getAControlFlowNode() and
-        x.hasExprPath(_, callCfn, sink.getSink(call), e.getControlFlowNode())
-      |
-        // The sink is an ordinary return value, for example `int.Parse(s)`
-        sink instanceof CallableFlowSinkReturn and
-        result = e
-        or
-        // The sink is a qualifier, for example `list` in `list.Add(x)`
-        sink instanceof CallableFlowSinkQualifier and
-        if sinkAp = AccessPath::empty()
-        then result = e
-        else result.(ExprPostUpdateNode).getPreUpdateNode() = e
-      )
-      or
-      // The sink is an `out`/`ref` argument, for example `out i` in
-      // `int.TryParse(s, out i)`
-      exists(LibraryFlow::LibrarySinkConfiguration x, OutRefReturnKind k |
-        result =
-          any(ParamOutNode out |
-            out.getCall(k).getControlFlowNode() = callCfn and
-            sink.(CallableFlowSinkArg).getArgumentIndex() = k.getPosition() and
-            x.hasDefPath(_, callCfn, out.getDefinition(), _)
-          )
-      )
-      or
-      // The sink is a parameter of a supplied delegate argument, for example
-      // the parameter of `Foo` in `list.Select(Foo)`.
-      //
-      // This is implemented using a node that represents the implicit argument
-      // (`ImplicitDelegateArgumentNode`) of the implicit call
-      // (`ImplicitDelegateDataFlowCall`) to `Foo`.
-      exists(
-        DataFlowCall call, ImplicitDelegateDataFlowCall dcall, int delegateIndex, int parameterIndex
-      |
-        sink =
-          any(CallableFlowSinkDelegateArg s |
-            delegateIndex = s.getDelegateIndex() and
-            parameterIndex = s.getDelegateParameterIndex()
-          ) and
-        result = TImplicitDelegateArgumentNode(dcall.getControlFlowNode(), _, parameterIndex) and
-        dcall.isArgumentOf(call, delegateIndex) and
-        callCfn = call.getControlFlowNode()
-      )
-    )
-  }
-
-  override Callable getEnclosingCallable() { result = callCfn.getEnclosingCallable() }
-
-  override DataFlowType getTypeBound() {
-    preservesValue = true and
-    sourceAp = AccessPath::empty() and
-    result = this.getPredecessor(_).getTypeBound()
-    or
-    result = sourceAp.getHead().getType()
-    or
-    preservesValue = false and
-    result = this.getSuccessor(_).getTypeBound()
-  }
-
-  override Location getLocation() { result = callCfn.getLocation() }
-
-  override string toString() { result = "[library code] " + callCfn }
+  override string toStringImpl() { result = "[summary] " + state + " in " + c }
 }
 
 /** A field or a property. */
-private class FieldOrProperty extends Assignable, Modifiable {
+class FieldOrProperty extends Assignable, Modifiable {
   FieldOrProperty() {
     this instanceof Field
     or
@@ -1455,9 +1427,9 @@ private class FieldOrProperty extends Assignable, Modifiable {
 
   /** Gets the content that matches this field or property. */
   Content getContent() {
-    result.(FieldContent).getField() = this.getSourceDeclaration()
+    result.(FieldContent).getField() = this.getUnboundDeclaration()
     or
-    result.(PropertyContent).getProperty() = this.getSourceDeclaration()
+    result.(PropertyContent).getProperty() = this.getUnboundDeclaration()
   }
 }
 
@@ -1475,8 +1447,6 @@ private class FieldOrPropertyRead extends FieldOrPropertyAccess, AssignableRead 
    * SSA updates.
    */
   predicate hasNonlocalValue() {
-    this = any(Ssa::ImplicitUntrackedDefinition udef).getARead()
-    or
     exists(Ssa::Definition def, Ssa::ImplicitDefinition idef |
       def.getARead() = this and
       idef = def.getAnUltimateDefinition()
@@ -1487,27 +1457,29 @@ private class FieldOrPropertyRead extends FieldOrPropertyAccess, AssignableRead 
   }
 }
 
-/** A write to a static field/property. */
-private class StaticFieldLikeJumpNode extends NonLocalJumpNode, ExprNode {
-  FieldOrProperty fl;
-  FieldOrPropertyRead flr;
-  ExprNode succ;
-
-  StaticFieldLikeJumpNode() {
+/**
+ * Holds if `pred` can flow to `succ`, by jumping from one callable to
+ * another. Additional steps specified by the configuration are *not*
+ * taken into account.
+ */
+predicate jumpStep(Node pred, Node succ) {
+  pred.(NonLocalJumpNode).getAJumpSuccessor(true) = succ
+  or
+  exists(FieldOrProperty fl, FieldOrPropertyRead flr |
     fl.isStatic() and
     fl.isFieldLike() and
-    fl.getAnAssignedValue() = this.getExpr() and
+    fl.getAnAssignedValue() = pred.asExpr() and
     fl.getAnAccess() = flr and
-    flr = succ.getExpr() and
+    flr = succ.asExpr() and
     flr.hasNonlocalValue()
-  }
-
-  override ExprNode getAJumpSuccessor(boolean preservesValue) {
-    result = succ and preservesValue = true
-  }
+  )
+  or
+  exists(JumpReturnKind jrk, DataFlowCall call |
+    FlowSummaryImpl::Private::summaryReturnNode(pred, jrk) and
+    viableCallable(call) = jrk.getTarget() and
+    succ = getAnOutNode(call, jrk.getTargetReturnKind())
+  )
 }
-
-predicate jumpStep = jumpStepImpl/2;
 
 private class StoreStepConfiguration extends ControlFlowReachabilityConfiguration {
   StoreStepConfiguration() { this = "StoreStepConfiguration" }
@@ -1516,17 +1488,58 @@ private class StoreStepConfiguration extends ControlFlowReachabilityConfiguratio
     Expr e1, Expr e2, ControlFlowElement scope, boolean exactScope, boolean isSuccessor
   ) {
     exactScope = false and
-    isSuccessor = false and
-    fieldOrPropertyAssign(scope, _, e1, e2)
+    fieldOrPropertyStore(scope, _, e1, e2, isSuccessor.booleanNot())
     or
     exactScope = false and
-    isSuccessor = false and
-    fieldOrPropertyInit(e2, _, e1) and
+    arrayStore(scope, e1, e2, isSuccessor.booleanNot())
+    or
+    exactScope = false and
+    isSuccessor = true and
+    isParamsArg(e2, e1, _) and
     scope = e2
   }
 }
 
-predicate storeStep = storeStepImpl/3;
+pragma[nomagic]
+private PropertyContent getResultContent() {
+  result.getProperty() = any(SystemThreadingTasksTaskTClass c_).getResultProperty()
+}
+
+/**
+ * Holds if data can flow from `node1` to `node2` via an assignment to
+ * content `c`.
+ */
+predicate storeStep(Node node1, Content c, Node node2) {
+  exists(StoreStepConfiguration x, ExprNode node, boolean postUpdate |
+    hasNodePath(x, node1, node) and
+    if postUpdate = true then node = node2.(PostUpdateNode).getPreUpdateNode() else node = node2
+  |
+    fieldOrPropertyStore(_, c, node1.asExpr(), node.getExpr(), postUpdate)
+    or
+    arrayStore(_, node1.asExpr(), node.getExpr(), postUpdate) and c instanceof ElementContent
+  )
+  or
+  exists(StoreStepConfiguration x, Expr arg, ControlFlow::Node callCfn |
+    x.hasExprPath(arg, node1.(ExprNode).getControlFlowNode(), _, callCfn) and
+    node2 = TParamsArgumentNode(callCfn) and
+    isParamsArg(_, arg, _) and
+    c instanceof ElementContent
+  )
+  or
+  exists(Expr e |
+    e = node1.asExpr() and
+    node2.(YieldReturnNode).getYieldReturnStmt().getExpr() = e and
+    c instanceof ElementContent
+  )
+  or
+  exists(Expr e |
+    e = node1.asExpr() and
+    node2.(AsyncReturnNode).getExpr() = e and
+    c = getResultContent()
+  )
+  or
+  FlowSummaryImpl::Private::Steps::summaryStoreStep(node1, c, node2)
+}
 
 private class ReadStepConfiguration extends ControlFlowReachabilityConfiguration {
   ReadStepConfiguration() { this = "ReadStepConfiguration" }
@@ -1538,12 +1551,173 @@ private class ReadStepConfiguration extends ControlFlowReachabilityConfiguration
     isSuccessor = true and
     fieldOrPropertyRead(e1, _, e2) and
     scope = e2
+    or
+    exactScope = false and
+    isSuccessor = true and
+    arrayRead(e1, e2) and
+    scope = e2
+    or
+    exactScope = false and
+    e1 = e2.(AwaitExpr).getExpr() and
+    scope = e2 and
+    isSuccessor = true
+    or
+    exactScope = false and
+    e2 = e1.(TupleExpr).getAnArgument() and
+    scope = e1 and
+    isSuccessor = false
+  }
+
+  override predicate candidateDef(
+    Expr e, AssignableDefinition defTo, ControlFlowElement scope, boolean exactScope,
+    boolean isSuccessor
+  ) {
+    exists(ForeachStmt fs |
+      e = fs.getIterableExpr() and
+      defTo.(AssignableDefinitions::LocalVariableDefinition).getDeclaration() =
+        fs.getVariableDeclExpr() and
+      isSuccessor = true
+    |
+      scope = fs and
+      exactScope = true
+      or
+      scope = fs.getIterableExpr() and
+      exactScope = false
+      or
+      scope = fs.getVariableDeclExpr() and
+      exactScope = false
+    )
+    or
+    scope =
+      any(AssignExpr ae |
+        ae = defTo.(AssignableDefinitions::TupleAssignmentDefinition).getAssignment() and
+        e = ae.getLValue().getAChildExpr*().(TupleExpr) and
+        exactScope = false and
+        isSuccessor = true
+      )
+    or
+    scope =
+      any(TupleExpr te |
+        te.getAnArgument() = defTo.(AssignableDefinitions::LocalVariableDefinition).getDeclaration() and
+        e = te and
+        exactScope = false and
+        isSuccessor = false
+      )
   }
 }
 
-predicate readStep = readStepImpl/3;
+/**
+ * Holds if data can flow from `node1` to `node2` via a read of content `c`.
+ */
+predicate readStep(Node node1, Content c, Node node2) {
+  exists(ReadStepConfiguration x |
+    hasNodePath(x, node1, node2) and
+    fieldOrPropertyRead(node1.asExpr(), c, node2.asExpr())
+    or
+    hasNodePath(x, node1, node2) and
+    arrayRead(node1.asExpr(), node2.asExpr()) and
+    c instanceof ElementContent
+    or
+    exists(ForeachStmt fs, Ssa::ExplicitDefinition def |
+      x.hasDefPath(fs.getIterableExpr(), node1.getControlFlowNode(), def.getADefinition(),
+        def.getControlFlowNode()) and
+      node2.(SsaDefinitionNode).getDefinition() = def and
+      c instanceof ElementContent
+    )
+    or
+    hasNodePath(x, node1, node2) and
+    node2.asExpr().(AwaitExpr).getExpr() = node1.asExpr() and
+    c = getResultContent()
+    or
+    // node1 = (..., node2, ...)
+    // node1.ItemX flows to node2
+    exists(TupleExpr te, int i, Expr item |
+      te = node1.asExpr() and
+      not te.isConstruction() and
+      c.(FieldContent).getField() = te.getType().(TupleType).getElement(i).getUnboundDeclaration() and
+      // node1 = (..., item, ...)
+      te.getArgument(i) = item
+    |
+      // item = (..., ..., ...) in node1 = (..., (..., ..., ...), ...)
+      node2.asExpr().(TupleExpr) = item and
+      hasNodePath(x, node1, node2)
+      or
+      // item = variable in node1 = (..., variable, ...)
+      exists(AssignableDefinitions::TupleAssignmentDefinition tad, Ssa::ExplicitDefinition def |
+        node2.(SsaDefinitionNode).getDefinition() = def and
+        def.getADefinition() = tad and
+        tad.getLeaf() = item and
+        hasNodePath(x, node1, node2)
+      )
+      or
+      // item = variable in node1 = (..., variable, ...) in a case/is var (..., ...)
+      te = any(PatternExpr pe).getAChildExpr*() and
+      exists(AssignableDefinitions::LocalVariableDefinition lvd, Ssa::ExplicitDefinition def |
+        node2.(SsaDefinitionNode).getDefinition() = def and
+        def.getADefinition() = lvd and
+        lvd.getDeclaration() = item and
+        hasNodePath(x, node1, node2)
+      )
+    )
+  )
+  or
+  FlowSummaryImpl::Private::Steps::summaryReadStep(node1, c, node2)
+}
 
-/** Gets a string representation of a type returned by `getErasedRepr`. */
+/**
+ * Holds if values stored inside content `c` are cleared at node `n`. For example,
+ * any value stored inside `f` is cleared at the pre-update node associated with `x`
+ * in `x.f = newValue`.
+ */
+predicate clearsContent(Node n, Content c) {
+  fieldOrPropertyStore(_, c, _, n.asExpr(), true)
+  or
+  fieldOrPropertyStore(_, c, _, n.(ObjectInitializerNode).getInitializer(), false)
+  or
+  FlowSummaryImpl::Private::Steps::summaryStoresIntoArg(c, n) and
+  not c instanceof ElementContent
+  or
+  FlowSummaryImpl::Private::Steps::summaryClearsContent(n, c)
+  or
+  exists(WithExpr we, ObjectInitializer oi, FieldOrProperty f |
+    oi = we.getInitializer() and
+    n.asExpr() = oi and
+    f = oi.getAMemberInitializer().getInitializedMember() and
+    c = f.getContent()
+  )
+}
+
+/**
+ * Holds if the node `n` is unreachable when the call context is `call`.
+ */
+predicate isUnreachableInCall(Node n, DataFlowCall call) {
+  exists(
+    ExplicitParameterNode paramNode, Guard guard, ControlFlow::SuccessorTypes::BooleanSuccessor bs
+  |
+    viableConstantBooleanParamArg(paramNode, bs.getValue().booleanNot(), call) and
+    paramNode.getSsaDefinition().getARead() = guard and
+    guard.controlsBlock(n.getControlFlowNode().getBasicBlock(), bs, _)
+  )
+}
+
+/**
+ * An entity used to represent the type of data-flow node. Two nodes will have
+ * the same `DataFlowType` when the underlying `Type`s are structurally equal
+ * modulo type parameters and identity conversions.
+ *
+ * For example, `Func<T, int>` and `Func<S, int>` are mapped to the same
+ * `DataFlowType`, while `Func<T, int>` and `Func<string, int>` are not, because
+ * `string` is not a type parameter.
+ */
+class DataFlowType = Gvn::GvnType;
+
+/** Gets the type of `n` used for type pruning. */
+pragma[inline]
+Gvn::GvnType getNodeType(NodeImpl n) {
+  pragma[only_bind_into](result) = pragma[only_bind_out](n).getDataFlowType()
+}
+
+/** Gets a string representation of a `DataFlowType`. */
 string ppReprType(DataFlowType t) { result = t.toString() }
 
 private class DataFlowNullType extends DataFlowType {
@@ -1595,25 +1769,83 @@ abstract class PostUpdateNode extends Node {
 
 private module PostUpdateNodes {
   class ObjectCreationNode extends PostUpdateNode, ExprNode, TExprNode {
-    ObjectCreationNode() { exists(ObjectCreation oc | this = TExprNode(oc.getAControlFlowNode())) }
+    private ObjectCreation oc;
 
-    override MallocNode getPreUpdateNode() { this = TExprNode(result.getControlFlowNode()) }
+    ObjectCreationNode() { this = TExprNode(oc.getAControlFlowNode()) }
+
+    override Node getPreUpdateNode() {
+      exists(ControlFlow::Nodes::ElementNode cfn | this = TExprNode(cfn) |
+        result.(ObjectInitializerNode).getControlFlowNode() = cfn
+        or
+        not oc.hasInitializer() and
+        result.(MallocNode).getControlFlowNode() = cfn
+      )
+    }
   }
 
-  class ExprPostUpdateNode extends PostUpdateNode, TExprPostUpdateNode {
+  /**
+   * A node that represents the value of a newly created object after the object
+   * has been created, but before the object initializer has been executed.
+   *
+   * Such a node acts as both a post-update node for the `MallocNode`, as well as
+   * a pre-update node for the `ObjectCreationNode`.
+   */
+  class ObjectInitializerNode extends PostUpdateNode, NodeImpl, ArgumentNodeImpl,
+    TObjectInitializerNode {
+    private ObjectCreation oc;
+    private ControlFlow::Nodes::ElementNode cfn;
+
+    ObjectInitializerNode() {
+      this = TObjectInitializerNode(cfn) and
+      cfn = oc.getAControlFlowNode()
+    }
+
+    /** Gets the initializer to which this initializer node belongs. */
+    ObjectOrCollectionInitializer getInitializer() { result = oc.getInitializer() }
+
+    override MallocNode getPreUpdateNode() { result.getControlFlowNode() = cfn }
+
+    override predicate argumentOf(DataFlowCall call, int pos) {
+      pos = -1 and
+      any(ObjectOrCollectionInitializerConfiguration x)
+          .hasExprPath(_, cfn, _, call.getControlFlowNode())
+    }
+
+    override DataFlowCallable getEnclosingCallableImpl() { result = cfn.getEnclosingCallable() }
+
+    override DotNet::Type getTypeImpl() { result = oc.getType() }
+
+    override ControlFlow::Nodes::ElementNode getControlFlowNodeImpl() { result = cfn }
+
+    override Location getLocationImpl() { result = cfn.getLocation() }
+
+    override string toStringImpl() { result = "[pre-initializer] " + cfn }
+  }
+
+  class ExprPostUpdateNode extends PostUpdateNode, NodeImpl, TExprPostUpdateNode {
     private ControlFlow::Nodes::ElementNode cfn;
 
     ExprPostUpdateNode() { this = TExprPostUpdateNode(cfn) }
 
     override ExprNode getPreUpdateNode() { cfn = result.getControlFlowNode() }
 
-    override Callable getEnclosingCallable() { result = cfn.getEnclosingCallable() }
+    override DataFlowCallable getEnclosingCallableImpl() { result = cfn.getEnclosingCallable() }
 
-    override Type getType() { result = cfn.getElement().(Expr).getType() }
+    override Type getTypeImpl() { result = cfn.getElement().(Expr).getType() }
 
-    override Location getLocation() { result = cfn.getLocation() }
+    override ControlFlow::Node getControlFlowNodeImpl() { none() }
 
-    override string toString() { result = "[post] " + cfn.toString() }
+    override Location getLocationImpl() { result = cfn.getLocation() }
+
+    override string toStringImpl() { result = "[post] " + cfn.toString() }
+  }
+
+  private class SummaryPostUpdateNode extends SummaryNode, PostUpdateNode {
+    SummaryPostUpdateNode() { FlowSummaryImpl::Private::summaryPostUpdateNode(this, _) }
+
+    override Node getPreUpdateNode() {
+      FlowSummaryImpl::Private::summaryPostUpdateNode(this, result)
+    }
   }
 }
 
@@ -1626,16 +1858,10 @@ class CastNode extends Node {
     or
     this.(AssignableDefinitionNode).getDefinition() instanceof
       AssignableDefinitions::PatternDefinition
-    or
-    readStep(_, _, this)
-    or
-    storeStep(this, _, _)
   }
 }
 
 class DataFlowExpr = DotNet::Expr;
-
-class DataFlowType = Gvn::GvnType;
 
 /** Holds if `e` is an expression that always has the same Boolean value `val`. */
 private predicate constantBooleanExpr(Expr e, boolean val) {
@@ -1658,7 +1884,7 @@ private class ConstantBooleanArgumentNode extends ExprNode {
 
 pragma[noinline]
 private predicate viableConstantBooleanParamArg(
-  SsaDefinitionNode paramNode, boolean b, DataFlowCall call
+  ParameterNode paramNode, boolean b, DataFlowCall call
 ) {
   exists(ConstantBooleanArgumentNode arg |
     viableParamArg(call, paramNode, arg) and
@@ -1666,7 +1892,16 @@ private predicate viableConstantBooleanParamArg(
   )
 }
 
-int accessPathLimit() { result = 3 }
+int accessPathLimit() { result = 5 }
+
+/** The unit type. */
+private newtype TUnit = TMkUnit()
+
+/** The trivial type with a single element. */
+class Unit extends TUnit {
+  /** Gets a textual representation of this element. */
+  string toString() { result = "unit" }
+}
 
 /**
  * Holds if `n` does not require a `PostUpdateNode` as it either cannot be
@@ -1677,5 +1912,68 @@ int accessPathLimit() { result = 3 }
  */
 predicate isImmutableOrUnobservable(Node n) { none() }
 
-pragma[inline]
-DataFlowType getErasedRepr(DataFlowType t) { result = t }
+class LambdaCallKind = Unit;
+
+/** Holds if `creation` is an expression that creates a delegate for `c`. */
+predicate lambdaCreation(ExprNode creation, LambdaCallKind kind, DataFlowCallable c) {
+  exists(Expr e | e = creation.getExpr() |
+    c = e.(AnonymousFunctionExpr)
+    or
+    c = e.(CallableAccess).getTarget().getUnboundDeclaration()
+    or
+    c = e.(AddressOfExpr).getOperand().(CallableAccess).getTarget().getUnboundDeclaration()
+  ) and
+  kind = TMkUnit()
+}
+
+private class LambdaConfiguration extends ControlFlowReachabilityConfiguration {
+  LambdaConfiguration() { this = "LambdaConfiguration" }
+
+  override predicate candidate(
+    Expr e1, Expr e2, ControlFlowElement scope, boolean exactScope, boolean isSuccessor
+  ) {
+    e1 = e2.(DelegateLikeCall).getExpr() and
+    exactScope = false and
+    scope = e2 and
+    isSuccessor = true
+    or
+    e1 = e2.(DelegateCreation).getArgument() and
+    exactScope = false and
+    scope = e2 and
+    isSuccessor = true
+  }
+}
+
+/** Holds if `call` is a lambda call where `receiver` is the lambda expression. */
+predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
+  (
+    exists(LambdaConfiguration x, DelegateLikeCall dc |
+      x.hasExprPath(dc.getExpr(), receiver.(ExprNode).getControlFlowNode(), dc,
+        call.getControlFlowNode())
+    )
+    or
+    receiver = call.(SummaryCall).getReceiver()
+  ) and
+  kind = TMkUnit()
+}
+
+/** Extra data-flow steps needed for lambda flow analysis. */
+predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) {
+  exists(Ssa::Definition def |
+    LocalFlow::localSsaFlowStep(def, nodeFrom, nodeTo) and
+    LocalFlow::usesInstanceField(def) and
+    preservesValue = true
+  )
+  or
+  exists(LambdaConfiguration x, DelegateCreation dc |
+    x.hasExprPath(dc.getArgument(), nodeFrom.(ExprNode).getControlFlowNode(), dc,
+      nodeTo.(ExprNode).getControlFlowNode()) and
+    preservesValue = false
+  )
+  or
+  exists(AddEventExpr aee |
+    nodeFrom.asExpr() = aee.getRValue() and
+    nodeTo.asExpr().(EventRead).getTarget() = aee.getTarget() and
+    preservesValue = false
+  )
+}

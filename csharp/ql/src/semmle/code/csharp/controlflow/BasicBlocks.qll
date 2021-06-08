@@ -34,7 +34,7 @@ class BasicBlock extends TBasicBlockStart {
    *
    * Example:
    *
-   * ```
+   * ```csharp
    * if (x < 0)
    *   x = -x;
    * ```
@@ -52,7 +52,7 @@ class BasicBlock extends TBasicBlockStart {
    *
    * Example:
    *
-   * ```
+   * ```csharp
    * if (!(x >= 0))
    *   x = -x;
    * ```
@@ -89,7 +89,7 @@ class BasicBlock extends TBasicBlockStart {
    *
    * Example:
    *
-   * ```
+   * ```csharp
    * int M(string s) {
    *   if (s == null)
    *     throw new ArgumentNullException(nameof(s));
@@ -112,7 +112,7 @@ class BasicBlock extends TBasicBlockStart {
    *
    * Example:
    *
-   * ```
+   * ```csharp
    * int M(string s) {
    *   if (s == null)
    *     throw new ArgumentNullException(nameof(s));
@@ -134,7 +134,7 @@ class BasicBlock extends TBasicBlockStart {
    *
    * Example:
    *
-   * ```
+   * ```csharp
    * int M(string s) {
    *   if (s == null)
    *     throw new ArgumentNullException(nameof(s));
@@ -161,7 +161,7 @@ class BasicBlock extends TBasicBlockStart {
    *
    * Example:
    *
-   * ```
+   * ```csharp
    * if (x < 0) {
    *   x = -x;
    *   if (x > 10)
@@ -195,7 +195,7 @@ class BasicBlock extends TBasicBlockStart {
    *
    * Example:
    *
-   * ```
+   * ```csharp
    * int M(string s) {
    *   if (s == null)
    *     throw new ArgumentNullException(nameof(s));
@@ -213,13 +213,13 @@ class BasicBlock extends TBasicBlockStart {
   /**
    * Holds if this basic block strictly post-dominates basic block `bb`.
    *
-   * That is, all paths reaching an exit point basic block from basic
+   * That is, all paths reaching a normal exit point basic block from basic
    * block `bb` must go through this basic block (which must be different
    * from `bb`).
    *
    * Example:
    *
-   * ```
+   * ```csharp
    * int M(string s) {
    *   try {
    *     return s.Length;
@@ -239,12 +239,12 @@ class BasicBlock extends TBasicBlockStart {
   /**
    * Holds if this basic block post-dominates basic block `bb`.
    *
-   * That is, all paths reaching an exit point basic block from basic
+   * That is, all paths reaching a normal exit point basic block from basic
    * block `bb` must go through this basic block.
    *
    * Example:
    *
-   * ```
+   * ```csharp
    * int M(string s) {
    *   try {
    *     return s.Length;
@@ -298,6 +298,19 @@ private module Internal {
     cfn.isJoin()
     or
     cfn.getAPredecessor().isBranch()
+    or
+    /*
+     * In cases such as
+     * ```csharp
+     * if (b)
+     *     M()
+     * ```
+     * where the `false` edge out of `b` is not present (because we can prove it
+     * impossible), we still split up the basic block in two, in order to generate
+     * a `ConditionBlock` which can be used by the guards library.
+     */
+
+    exists(cfn.getAPredecessorByType(any(ControlFlow::SuccessorTypes::ConditionalSuccessor s)))
   }
 
   /**
@@ -333,10 +346,15 @@ private module Internal {
   /** Holds if `pred` is a basic block predecessor of `succ`. */
   private predicate predBB(BasicBlock succ, BasicBlock pred) { succBB(pred, succ) }
 
+  /** Holds if `bb` is an exit basic block that represents normal exit. */
+  private predicate normalExitBB(BasicBlock bb) {
+    bb.getANode().(ControlFlow::Nodes::AnnotatedExitNode).isNormal()
+  }
+
   /** Holds if `dom` is an immediate post-dominator of `bb`. */
   cached
   predicate bbIPostDominates(BasicBlock dom, BasicBlock bb) =
-    idominance(exitBB/1, predBB/2)(_, dom, bb)
+    idominance(normalExitBB/1, predBB/2)(_, dom, bb)
 }
 
 private import Internal
@@ -355,31 +373,41 @@ private predicate entryBB(BasicBlock bb) {
 }
 
 /**
+ * An annotated exit basic block, that is, a basic block that contains
+ * an annotated exit node.
+ */
+class AnnotatedExitBasicBlock extends BasicBlock {
+  private boolean isNormal;
+
+  AnnotatedExitBasicBlock() {
+    this.getANode() =
+      any(ControlFlow::Nodes::AnnotatedExitNode n |
+        if n.isNormal() then isNormal = true else isNormal = false
+      )
+  }
+
+  /** Holds if this block represents a normal exit. */
+  predicate isNormal() { isNormal = true }
+}
+
+/**
  * An exit basic block, that is, a basic block whose last node is
  * the exit node of a callable.
  */
 class ExitBasicBlock extends BasicBlock {
-  ExitBasicBlock() { exitBB(this) }
+  ExitBasicBlock() { this.getLastNode() instanceof ControlFlow::Nodes::ExitNode }
 }
-
-/** Holds if `bb` is an exit basic block. */
-private predicate exitBB(BasicBlock bb) { bb.getLastNode() instanceof ControlFlow::Nodes::ExitNode }
 
 private module JoinBlockPredecessors {
   private import ControlFlow::Nodes
-
-  private class CallableOrCFE extends Element {
-    CallableOrCFE() { this instanceof Callable or this instanceof ControlFlowElement }
-  }
-
-  private predicate id(CallableOrCFE x, CallableOrCFE y) { x = y }
-
-  private predicate idOf(CallableOrCFE x, int y) = equivalenceRelation(id/2)(x, y)
+  private import semmle.code.csharp.controlflow.internal.ControlFlowGraphImpl
 
   int getId(JoinBlockPredecessor jbp) {
-    idOf(jbp.getFirstNode().(ElementNode).getElement(), result)
-    or
-    idOf(jbp.(EntryBasicBlock).getCallable(), result)
+    exists(ControlFlowTree::Range_ t | ControlFlowTree::idOf(t, result) |
+      t = jbp.getFirstNode().getElement()
+      or
+      t = jbp.(EntryBasicBlock).getCallable()
+    )
   }
 
   string getSplitString(JoinBlockPredecessor jbp) {
@@ -447,7 +475,7 @@ class ConditionBlock extends BasicBlock {
      * all predecessors of `this.getATrueSuccessor()` are either `this` or dominated by `this.getATrueSuccessor()`.
      *
      * For example, in the following C# snippet:
-     * ```
+     * ```csharp
      * if (x)
      *   controlled;
      * false_successor;
@@ -455,7 +483,7 @@ class ConditionBlock extends BasicBlock {
      * ```
      * `false_successor` dominates `uncontrolled`, but not all of its predecessors are `this` (`if (x)`)
      *  or dominated by itself. Whereas in the following code:
-     * ```
+     * ```csharp
      * if (x)
      *   while (controlled)
      *     also_controlled;

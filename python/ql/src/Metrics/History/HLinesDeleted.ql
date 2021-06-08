@@ -13,11 +13,11 @@ import external.VCS
 
 from Module m, int n
 where
-    n =
-        sum(Commit entry, int churn |
-            churn = entry.getRecentDeletionsForFile(m.getFile()) and not artificialChange(entry)
-        |
-            churn
-        ) and
-    exists(m.getMetrics().getNumberOfLinesOfCode())
+  n =
+    sum(Commit entry, int churn |
+      churn = entry.getRecentDeletionsForFile(m.getFile()) and not artificialChange(entry)
+    |
+      churn
+    ) and
+  exists(m.getMetrics().getNumberOfLinesOfCode())
 select m, n order by n desc

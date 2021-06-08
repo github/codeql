@@ -1,0 +1,117 @@
+nodes
+| main.js:1:55:1:55 | s |
+| main.js:1:55:1:55 | s |
+| main.js:2:29:2:29 | s |
+| main.js:2:29:2:29 | s |
+| main.js:6:49:6:49 | s |
+| main.js:6:49:6:49 | s |
+| main.js:7:49:7:49 | s |
+| main.js:7:49:7:49 | s |
+| main.js:11:60:11:60 | s |
+| main.js:11:60:11:60 | s |
+| main.js:12:49:12:49 | s |
+| main.js:12:49:12:49 | s |
+| main.js:21:47:21:47 | s |
+| main.js:21:47:21:47 | s |
+| main.js:22:34:22:34 | s |
+| main.js:22:34:22:34 | s |
+| main.js:41:17:41:17 | s |
+| main.js:42:21:42:21 | s |
+| main.js:47:65:47:73 | this.step |
+| main.js:47:65:47:73 | this.step |
+| main.js:52:41:52:41 | s |
+| main.js:52:41:52:41 | s |
+| main.js:53:20:53:20 | s |
+| main.js:56:28:56:34 | options |
+| main.js:56:28:56:34 | options |
+| main.js:57:11:59:5 | defaults |
+| main.js:57:22:59:5 | {\\n      ... "\\n    } |
+| main.js:60:11:60:48 | settings |
+| main.js:60:22:60:48 | $.exten ... ptions) |
+| main.js:60:31:60:38 | defaults |
+| main.js:60:41:60:47 | options |
+| main.js:62:19:62:26 | settings |
+| main.js:62:19:62:31 | settings.name |
+| main.js:62:19:62:31 | settings.name |
+| main.js:66:35:66:41 | attrVal |
+| main.js:66:35:66:41 | attrVal |
+| main.js:67:63:67:69 | attrVal |
+| main.js:67:63:67:69 | attrVal |
+| typed.ts:1:39:1:39 | s |
+| typed.ts:1:39:1:39 | s |
+| typed.ts:2:29:2:29 | s |
+| typed.ts:2:29:2:29 | s |
+| typed.ts:6:43:6:43 | s |
+| typed.ts:6:43:6:43 | s |
+| typed.ts:8:40:8:40 | s |
+| typed.ts:8:40:8:40 | s |
+| typed.ts:11:20:11:20 | s |
+| typed.ts:11:20:11:20 | s |
+| typed.ts:12:12:12:12 | s |
+| typed.ts:16:11:16:21 | s |
+| typed.ts:16:15:16:21 | id("x") |
+| typed.ts:17:29:17:29 | s |
+| typed.ts:17:29:17:29 | s |
+edges
+| main.js:1:55:1:55 | s | main.js:2:29:2:29 | s |
+| main.js:1:55:1:55 | s | main.js:2:29:2:29 | s |
+| main.js:1:55:1:55 | s | main.js:2:29:2:29 | s |
+| main.js:1:55:1:55 | s | main.js:2:29:2:29 | s |
+| main.js:6:49:6:49 | s | main.js:7:49:7:49 | s |
+| main.js:6:49:6:49 | s | main.js:7:49:7:49 | s |
+| main.js:6:49:6:49 | s | main.js:7:49:7:49 | s |
+| main.js:6:49:6:49 | s | main.js:7:49:7:49 | s |
+| main.js:11:60:11:60 | s | main.js:12:49:12:49 | s |
+| main.js:11:60:11:60 | s | main.js:12:49:12:49 | s |
+| main.js:11:60:11:60 | s | main.js:12:49:12:49 | s |
+| main.js:11:60:11:60 | s | main.js:12:49:12:49 | s |
+| main.js:21:47:21:47 | s | main.js:22:34:22:34 | s |
+| main.js:21:47:21:47 | s | main.js:22:34:22:34 | s |
+| main.js:21:47:21:47 | s | main.js:22:34:22:34 | s |
+| main.js:21:47:21:47 | s | main.js:22:34:22:34 | s |
+| main.js:41:17:41:17 | s | main.js:42:21:42:21 | s |
+| main.js:42:21:42:21 | s | main.js:47:65:47:73 | this.step |
+| main.js:42:21:42:21 | s | main.js:47:65:47:73 | this.step |
+| main.js:52:41:52:41 | s | main.js:53:20:53:20 | s |
+| main.js:52:41:52:41 | s | main.js:53:20:53:20 | s |
+| main.js:53:20:53:20 | s | main.js:41:17:41:17 | s |
+| main.js:56:28:56:34 | options | main.js:60:41:60:47 | options |
+| main.js:56:28:56:34 | options | main.js:60:41:60:47 | options |
+| main.js:57:11:59:5 | defaults | main.js:60:31:60:38 | defaults |
+| main.js:57:22:59:5 | {\\n      ... "\\n    } | main.js:57:11:59:5 | defaults |
+| main.js:60:11:60:48 | settings | main.js:62:19:62:26 | settings |
+| main.js:60:22:60:48 | $.exten ... ptions) | main.js:60:11:60:48 | settings |
+| main.js:60:31:60:38 | defaults | main.js:60:22:60:48 | $.exten ... ptions) |
+| main.js:60:41:60:47 | options | main.js:57:22:59:5 | {\\n      ... "\\n    } |
+| main.js:60:41:60:47 | options | main.js:60:22:60:48 | $.exten ... ptions) |
+| main.js:62:19:62:26 | settings | main.js:62:19:62:31 | settings.name |
+| main.js:62:19:62:26 | settings | main.js:62:19:62:31 | settings.name |
+| main.js:66:35:66:41 | attrVal | main.js:67:63:67:69 | attrVal |
+| main.js:66:35:66:41 | attrVal | main.js:67:63:67:69 | attrVal |
+| main.js:66:35:66:41 | attrVal | main.js:67:63:67:69 | attrVal |
+| main.js:66:35:66:41 | attrVal | main.js:67:63:67:69 | attrVal |
+| typed.ts:1:39:1:39 | s | typed.ts:2:29:2:29 | s |
+| typed.ts:1:39:1:39 | s | typed.ts:2:29:2:29 | s |
+| typed.ts:1:39:1:39 | s | typed.ts:2:29:2:29 | s |
+| typed.ts:1:39:1:39 | s | typed.ts:2:29:2:29 | s |
+| typed.ts:6:43:6:43 | s | typed.ts:8:40:8:40 | s |
+| typed.ts:6:43:6:43 | s | typed.ts:8:40:8:40 | s |
+| typed.ts:6:43:6:43 | s | typed.ts:8:40:8:40 | s |
+| typed.ts:6:43:6:43 | s | typed.ts:8:40:8:40 | s |
+| typed.ts:11:20:11:20 | s | typed.ts:12:12:12:12 | s |
+| typed.ts:11:20:11:20 | s | typed.ts:12:12:12:12 | s |
+| typed.ts:12:12:12:12 | s | typed.ts:16:15:16:21 | id("x") |
+| typed.ts:16:11:16:21 | s | typed.ts:17:29:17:29 | s |
+| typed.ts:16:11:16:21 | s | typed.ts:17:29:17:29 | s |
+| typed.ts:16:15:16:21 | id("x") | typed.ts:16:11:16:21 | s |
+#select
+| main.js:2:29:2:29 | s | main.js:1:55:1:55 | s | main.js:2:29:2:29 | s | $@ based on $@ might later cause $@. | main.js:2:29:2:29 | s | HTML construction | main.js:1:55:1:55 | s | library input | main.js:3:49:3:52 | html | cross-site scripting |
+| main.js:7:49:7:49 | s | main.js:6:49:6:49 | s | main.js:7:49:7:49 | s | $@ based on $@ might later cause $@. | main.js:7:49:7:49 | s | XML parsing | main.js:6:49:6:49 | s | library input | main.js:8:48:8:66 | doc.documentElement | cross-site scripting |
+| main.js:12:49:12:49 | s | main.js:11:60:11:60 | s | main.js:12:49:12:49 | s | $@ based on $@ might later cause $@. | main.js:12:49:12:49 | s | XML parsing | main.js:11:60:11:60 | s | library input | main.js:16:21:16:35 | xml.cloneNode() | cross-site scripting |
+| main.js:12:49:12:49 | s | main.js:11:60:11:60 | s | main.js:12:49:12:49 | s | $@ based on $@ might later cause $@. | main.js:12:49:12:49 | s | XML parsing | main.js:11:60:11:60 | s | library input | main.js:17:48:17:50 | tmp | cross-site scripting |
+| main.js:22:34:22:34 | s | main.js:21:47:21:47 | s | main.js:22:34:22:34 | s | $@ based on $@ might later cause $@. | main.js:22:34:22:34 | s | Markdown rendering | main.js:21:47:21:47 | s | library input | main.js:23:53:23:56 | html | cross-site scripting |
+| main.js:47:65:47:73 | this.step | main.js:52:41:52:41 | s | main.js:47:65:47:73 | this.step | $@ based on $@ might later cause $@. | main.js:47:65:47:73 | this.step | HTML construction | main.js:52:41:52:41 | s | library input | main.js:47:54:47:85 | "<span> ... /span>" | cross-site scripting |
+| main.js:62:19:62:31 | settings.name | main.js:56:28:56:34 | options | main.js:62:19:62:31 | settings.name | $@ based on $@ might later cause $@. | main.js:62:19:62:31 | settings.name | HTML construction | main.js:56:28:56:34 | options | library input | main.js:62:11:62:40 | "<b>" + ...  "</b>" | cross-site scripting |
+| main.js:67:63:67:69 | attrVal | main.js:66:35:66:41 | attrVal | main.js:67:63:67:69 | attrVal | $@ based on $@ might later cause $@. | main.js:67:63:67:69 | attrVal | HTML construction | main.js:66:35:66:41 | attrVal | library input | main.js:67:47:67:78 | "<img a ...  "\\"/>" | cross-site scripting |
+| typed.ts:2:29:2:29 | s | typed.ts:1:39:1:39 | s | typed.ts:2:29:2:29 | s | $@ based on $@ might later cause $@. | typed.ts:2:29:2:29 | s | HTML construction | typed.ts:1:39:1:39 | s | library input | typed.ts:3:31:3:34 | html | cross-site scripting |
+| typed.ts:8:40:8:40 | s | typed.ts:6:43:6:43 | s | typed.ts:8:40:8:40 | s | $@ based on $@ might later cause $@. | typed.ts:8:40:8:40 | s | HTML construction | typed.ts:6:43:6:43 | s | library input | typed.ts:8:29:8:52 | "<span> ... /span>" | cross-site scripting |

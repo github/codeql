@@ -22,8 +22,7 @@ private predicate ocniComment(OCNIComment ocni, Method m) {
   m.isNative() and
   // ... and the comment has to be contained in `m`.
   ocni.getFile() = m.getFile() and
-  ocni.getLocation().getStartLine() in [m.getLocation().getStartLine() .. m
-          .getLocation()
+  ocni.getLocation().getStartLine() in [m.getLocation().getStartLine() .. m.getLocation()
           .getEndLine()]
 }
 

@@ -1,4 +1,5 @@
 /**
+ * @deprecated
  * @name Duplicated lines in files
  * @description The number of lines in a file, including code, comment
  *              and whitespace lines, which are duplicated in at least
@@ -7,7 +8,6 @@
  * @treemap.warnOn highValues
  * @metricType file
  * @metricAggregate avg sum max
- * @precision high
  * @id cpp/duplicated-lines-in-files
  * @tags testability
  *       modularity

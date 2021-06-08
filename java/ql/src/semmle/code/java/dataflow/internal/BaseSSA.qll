@@ -321,7 +321,9 @@ private module SsaImpl {
 
     /** Holds if `v` occurs in `b` or one of `b`'s transitive successors. */
     private predicate blockPrecedesVar(BaseSsaSourceVariable v, BasicBlock b) {
-      varOccursInBlock(v, b.getABBSuccessor*())
+      varOccursInBlock(v, b)
+      or
+      ssaDefReachesEndOfBlock(v, _, b)
     }
 
     /**
@@ -330,7 +332,9 @@ private module SsaImpl {
      * between `b1` and `b2`.
      */
     private predicate varBlockReaches(BaseSsaSourceVariable v, BasicBlock b1, BasicBlock b2) {
-      varOccursInBlock(v, b1) and b2 = b1.getABBSuccessor()
+      varOccursInBlock(v, b1) and
+      b2 = b1.getABBSuccessor() and
+      blockPrecedesVar(v, b2)
       or
       exists(BasicBlock mid |
         varBlockReaches(v, b1, mid) and
@@ -353,6 +357,7 @@ private module SsaImpl {
      * Holds if `v` occurs at index `i1` in `b1` and at index `i2` in `b2` and
      * there is a path between them without any occurrence of `v`.
      */
+    pragma[nomagic]
     predicate adjacentVarRefs(BaseSsaSourceVariable v, BasicBlock b1, int i1, BasicBlock b2, int i2) {
       exists(int rankix |
         b1 = b2 and

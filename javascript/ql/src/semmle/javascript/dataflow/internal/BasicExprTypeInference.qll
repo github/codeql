@@ -111,7 +111,7 @@ private class AnalyzedNamespaceDeclaration extends DataFlow::AnalyzedValueNode {
 
   AbstractValue getPreviousValue() {
     exists(AnalyzedSsaDefinition def |
-      def.getVariable().getAUse() = astNode.getId() and
+      def.getVariable().getAUse() = astNode.getIdentifier() and
       result = def.getAnRhsValue()
     )
   }
@@ -388,8 +388,10 @@ private class AnalyzedUpdateExpr extends DataFlow::AnalyzedValueNode {
 /**
  * Flow analysis for compound assignments.
  */
-private class AnalyzedCompoundAssignExpr extends DataFlow::AnalyzedValueNode {
+private class AnalyzedCompoundNumericAssignExpr extends DataFlow::AnalyzedValueNode {
   override CompoundAssignExpr astNode;
+
+  AnalyzedCompoundNumericAssignExpr() { astNode.isNumeric() }
 
   override AbstractValue getALocalValue() { result = abstractValueOfType(TTNumber()) }
 }
@@ -397,7 +399,7 @@ private class AnalyzedCompoundAssignExpr extends DataFlow::AnalyzedValueNode {
 /**
  * Flow analysis for add-assign.
  */
-private class AnalyzedAssignAddExpr extends AnalyzedCompoundAssignExpr {
+private class AnalyzedAssignAddExpr extends DataFlow::AnalyzedValueNode {
   override AssignAddExpr astNode;
 
   override AbstractValue getALocalValue() {

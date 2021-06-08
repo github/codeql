@@ -1,6 +1,8 @@
 | file://:0:0:0:0 |  | Other |
+| file://:0:0:0:0 | & | Other |
+| file://:0:0:0:0 | && | Other |
 | file://:0:0:0:0 | (global namespace) | Other |
-| file://:0:0:0:0 | <unnamed> | Other |
+| file://:0:0:0:0 | (unnamed global/namespace variable) | Other |
 | file://:0:0:0:0 | _Complex __float128 | Other |
 | file://:0:0:0:0 | _Complex double | Other |
 | file://:0:0:0:0 | _Complex float | Other |
@@ -38,6 +40,7 @@
 | file://:0:0:0:0 | char32_t | Other |
 | file://:0:0:0:0 | const | Other |
 | file://:0:0:0:0 | declared_constexpr | Other |
+| file://:0:0:0:0 | declared_constinit | Other |
 | file://:0:0:0:0 | decltype(nullptr) | Other |
 | file://:0:0:0:0 | definition of fp_offset | Other |
 | file://:0:0:0:0 | definition of gp_offset | Other |
@@ -111,8 +114,8 @@
 | test.c:0:0:0:0 | test.c | Other |
 | test.c:2:6:2:6 | a | Other |
 | test.c:2:6:2:6 | definition of a | Other |
-| test.c:2:10:2:18 | <unnamed> | Variable access |
+| test.c:2:10:2:18 | (unnamed global/namespace variable) | Variable access |
 | test.c:2:10:2:18 | array to pointer conversion | Other |
 | test.c:2:10:2:18 | initializer for a | Other |
-| test.c:2:17:2:18 | initializer for <unnamed> | Other |
+| test.c:2:17:2:18 | initializer for (unnamed global/namespace variable) | Other |
 | test.c:2:17:2:18 | {...} | Other |

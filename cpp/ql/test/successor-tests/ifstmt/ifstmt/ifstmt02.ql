@@ -5,7 +5,7 @@
 
 import cpp
 
-from IfStmt is, Block t
+from IfStmt is, BlockStmt t
 where
   is.getEnclosingFunction().hasName("normal") and
   t = is.getThen() and

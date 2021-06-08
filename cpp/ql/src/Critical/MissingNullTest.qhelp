@@ -27,6 +27,6 @@ this cannot happen.
 </example>
 
 <references>
-<li>SEI CERT C Coding Standard: <a href="https://wiki.sei.cmu.edu/confluence/display/c/EXP34-C.+Do+not+dereference+null+pointerss">EXP34-C. Do not dereference null pointers</a>.</li>
+<li>SEI CERT C Coding Standard: <a href="https://wiki.sei.cmu.edu/confluence/display/c/EXP34-C.+Do+not+dereference+null+pointers">EXP34-C. Do not dereference null pointers</a>.</li>
 </references>
 </qhelp>

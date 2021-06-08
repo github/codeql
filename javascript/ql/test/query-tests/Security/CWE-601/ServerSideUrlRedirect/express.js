@@ -135,6 +135,13 @@ app.get('/redirect/:user', function(req, res) {
   res.redirect('//' + req.params.user); // BAD - could go to //evil.com
   res.redirect('u' + req.params.user); // BAD - could go to u.evil.com
 
-  res.redirect('/' + ('/u' + req.params.user)); // BAD - could go to //u.evil.com, but not flagged
+  res.redirect('/' + ('/u' + req.params.user)); // BAD - could go to //u.evil.com, but not flagged [INCONSISTENCY]
   res.redirect('/u' + req.params.user); // GOOD
 });
+
+app.get("foo", (req, res) => {
+  res.redirect(req.query.foo); // NOT OK
+});
+app.get("bar", ({query}, res) => {
+  res.redirect(query.foo); // NOT OK
+})

@@ -291,7 +291,7 @@ struct A {
 Point *NewAliasing(int x) {
   Point* p = new Point;
   Point* q = new Point;
-  int j = new A(new A(x))->i;
+  int j = (new A(new A(x)))->i;
   A* a = new A;
   return p;
 }
@@ -311,3 +311,89 @@ class ThisAliasTest {
     this->x = arg;
   }
 };
+
+void sink(char **);
+void sink(char *);
+
+// This test case comes from DefaultTaintTracking.
+void DoubleIndirectionEscapes(char *s)
+{
+	char buffer[1024];
+	char *ptr1, **ptr2;
+	char *ptr3, **ptr4;
+
+	ptr1 = buffer;
+	ptr2 = &ptr1;
+	memcpy(*ptr2, s, 1024);
+
+	sink(buffer); // $ MISSING: ast,ir
+	sink(ptr1); // $ ast MISSING: ir
+	sink(ptr2); // $ SPURIOUS: ast
+	sink(*ptr2); // $ ast MISSING: ir
+}
+
+int UnreachablePhiOperand(int x, int y) {
+  bool b = true;
+  int ret;
+
+  if(b) {
+    ret = x;
+  } else {
+    ret = y;
+  }
+
+  return ret;
+}
+
+int UnreachablePhiOperand2(int x, int y, int z, bool b1) {
+  bool b2 = true;
+  int ret;
+
+  if(b1) {
+    ret = x;
+  } else {
+    if(b2) {
+      ret = y;
+    } else {
+      ret = z;
+    }
+  }
+
+  return ret;
+}
+
+int DegeneratePhi(int x, int y, bool b1) {
+  bool b2 = true;
+  int ret1;
+  int ret2 = x;
+
+  if(b1) {
+    ret1 = x;
+  } else {
+    if(b2) {
+      ret1 = x;
+    } else {
+      ret2 = y;
+    }
+  }
+
+  return ret1 + ret2;
+}
+
+int FusedBlockPhiOperand(int x, int y, int z, bool b1) {
+  bool b2 = true;
+  int ret;
+
+  if(b1) {
+    ret = x;
+  } else {
+    if(b2) {
+      ret = y;
+    } else {
+      ret = z;
+    }
+    ; // creates a NoOp instruction with its own basic block
+  }
+
+  return ret;
+}

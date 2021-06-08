@@ -6,50 +6,42 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// A parameter entity.
     /// </summary>
-    interface IParameter : IExtractedEntity
+    internal sealed class Parameter : LabelledEntity
     {
-    }
+        private readonly IParameterizable parameterizable;
+        private readonly int index;
+        private readonly Type type;
 
-    /// <summary>
-    /// A parameter entity.
-    /// </summary>
-    sealed class Parameter : LabelledEntity, IParameter
-    {
-        readonly Method method;
-        readonly int index;
-        readonly Type type;
-
-        public Parameter(Context cx, Method m, int i, Type t) : base(cx)
+        public Parameter(Context cx, IParameterizable p, int i, Type t) : base(cx)
         {
-            method = m;
+            parameterizable = p;
             index = i;
             type = t;
         }
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
-            trapFile.WriteSubId(method);
+            trapFile.WriteSubId(parameterizable);
             trapFile.Write('_');
             trapFile.Write(index);
+            trapFile.Write(";cil-parameter");
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
-            return obj is Parameter param && method.Equals(param.method) && index == param.index;
+            return obj is Parameter param && parameterizable.Equals(param.parameterizable) && index == param.index;
         }
 
         public override int GetHashCode()
         {
-            return 23 * method.GetHashCode() + index;
+            return 23 * parameterizable.GetHashCode() + index;
         }
-
-        public override string IdSuffix => ";cil-parameter";
 
         public override IEnumerable<IExtractionProduct> Contents
         {
             get
             {
-                yield return Tuples.cil_parameter(this, method, index, type);
+                yield return Tuples.cil_parameter(this, parameterizable, index, type);
             }
         }
     }

@@ -26,8 +26,8 @@ private class ProducedFileName extends FileNameSource {
  */
 private class WalkSyncFileNameSource extends FileNameSource {
   WalkSyncFileNameSource() {
-    // `require('walkSync')()`
-    this = DataFlow::moduleImport("walkSync").getACall()
+    // `require('walk-sync')()`
+    this = DataFlow::moduleImport("walk-sync").getACall()
   }
 }
 

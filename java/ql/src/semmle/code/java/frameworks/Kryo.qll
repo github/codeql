@@ -3,19 +3,60 @@
  */
 
 import java
+private import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.dataflow.FlowSteps
 
 /**
  * The type `com.esotericsoftware.kryo.Kryo`.
  */
 class Kryo extends RefType {
-  Kryo() { this.hasQualifiedName("com.esotericsoftware.kryo", "Kryo") }
+  Kryo() {
+    hasQualifiedName("com.esotericsoftware.kryo", "Kryo") or
+    hasQualifiedName("com.esotericsoftware.kryo5", "Kryo")
+  }
 }
 
 /**
  * A Kryo input stream.
  */
 class KryoInput extends RefType {
-  KryoInput() { this.hasQualifiedName("com.esotericsoftware.kryo.io", "Input") }
+  KryoInput() {
+    hasQualifiedName("com.esotericsoftware.kryo.io", "Input") or
+    hasQualifiedName("com.esotericsoftware.kryo5.io", "Input")
+  }
+}
+
+/**
+ * A Kryo pool.
+ */
+class KryoPool extends RefType {
+  KryoPool() {
+    hasQualifiedName("com.esotericsoftware.kryo.pool", "KryoPool") or
+    hasQualifiedName("com.esotericsoftware.kryo5.pool", "KryoPool")
+  }
+}
+
+/**
+ * A Kryo pool builder.
+ */
+class KryoPoolBuilder extends RefType {
+  KryoPoolBuilder() {
+    hasQualifiedName("com.esotericsoftware.kryo.pool", "KryoPool$Builder") or
+    hasQualifiedName("com.esotericsoftware.kryo5.pool", "KryoPool$Builder")
+  }
+}
+
+/**
+ * A Kryo pool builder method used in a fluent API call chain.
+ */
+class KryoPoolBuilderMethod extends Method {
+  KryoPoolBuilderMethod() {
+    getDeclaringType() instanceof KryoPoolBuilder and
+    (
+      getReturnType() instanceof KryoPoolBuilder or
+      getReturnType() instanceof KryoPool
+    )
+  }
 }
 
 /**
@@ -43,5 +84,15 @@ class KryoEnableWhiteListing extends MethodAccess {
       m.hasName("setRegistrationRequired") and
       this.getAnArgument().(BooleanLiteral).getBooleanValue() = true
     )
+  }
+}
+
+/**
+ * A KryoPool method that uses a Kryo instance.
+ */
+class KryoPoolRunMethod extends Method {
+  KryoPoolRunMethod() {
+    getDeclaringType() instanceof KryoPool and
+    hasName("run")
   }
 }

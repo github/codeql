@@ -4,15 +4,15 @@ import semmle.python.dataflow.StateTracking
 predicate callTo(CallNode call, string name) { call.getFunction().(NameNode).getId() = name }
 
 class Initialized extends TrackableState {
-    Initialized() { this = "initialized" }
+  Initialized() { this = "initialized" }
 
-    override predicate startsAt(ControlFlowNode f) { callTo(f, "initialize") }
+  override predicate startsAt(ControlFlowNode f) { callTo(f, "initialize") }
 }
 
 class Frobnicated extends TrackableState {
-    Frobnicated() { this = "frobnicated" }
+  Frobnicated() { this = "frobnicated" }
 
-    override predicate startsAt(ControlFlowNode f) { callTo(f, "frobnicate") }
+  override predicate startsAt(ControlFlowNode f) { callTo(f, "frobnicate") }
 
-    override predicate endsAt(ControlFlowNode f) { callTo(f, "defrobnicate") }
+  override predicate endsAt(ControlFlowNode f) { callTo(f, "defrobnicate") }
 }

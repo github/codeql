@@ -422,5 +422,240 @@ void test17() {
   out(i); // 50
 
   i = 20 + (j -= 10);
-  out(i); // 60 [BUG: the analysis thinks it's 2^-31 .. 2^31-1]
+  out(i); // 60
+}
+
+// Tests for unsigned multiplication.
+int test_unsigned_mult01(unsigned int a, unsigned b) {
+  int total = 0;
+
+  if (3 <= a && a <= 11 && 5 <= b && b <= 23) {
+    int r = a*b;  // 15 .. 253
+    total += r;
+  }
+  if (3 <= a && a <= 11 && 0 <= b && b <= 23) {
+    int r = a*b;  // 0 .. 253
+    total += r;
+  }
+  if (3 <= a && a <= 11 && 13 <= b && b <= 23) {
+    int r = a*b;  // 39 .. 253
+    total += r;
+  }
+
+  return total;
+}
+
+int test_unsigned_mult02(unsigned b) {
+  int total = 0;
+
+  if (5 <= b && b <= 23) {
+    int r = 11*b;  // 55 .. 253
+    total += r;
+  }
+  if (0 <= b && b <= 23) {
+    int r = 11*b;  // 0 .. 253
+    total += r;
+  }
+  if (13 <= b && b <= 23) {
+    int r = 11*b;  // 143 .. 253
+    total += r;
+  }
+
+  return total;
+}
+
+unsigned long mult_rounding() {
+  unsigned long x, y, xy;
+  x = y = 1000000003UL; // 1e9 + 3
+  xy = x * y;
+  return xy; // BUG: upper bound should be >= 1000000006000000009UL
+}
+
+unsigned long mult_overflow() {
+  unsigned long x, y, xy;
+  x = 274177UL;
+  y = 67280421310721UL;
+  xy = x * y;
+  return xy; // BUG: upper bound should be >= 18446744073709551617UL
+}
+
+unsigned long mult_lower_bound(unsigned int ui, unsigned long ul) {
+  if (ui >= 10) {
+    unsigned long result = (unsigned long)ui * ui;
+    return result; // BUG: upper bound should be >= 18446744065119617025
+  }
+  if (ul >= 10) {
+    unsigned long result = ul * ul;
+    return result; // lower bound is correctly 0 (overflow is possible)
+  }
+  return 0;
+}
+
+unsigned long mul_assign(unsigned int ui) {
+  if (ui <= 10 && ui >= 2) {
+    ui *= ui + 0;
+    return ui; // 4 .. 100
+  }
+
+  unsigned int uiconst = 10;
+  uiconst *= 4;
+
+  unsigned long ulconst = 10;
+  ulconst *= 4;
+  return uiconst + ulconst; // 40 .. 40 for both
+}
+
+int mul_by_constant(int i, int j) {
+  if (i >= -1 && i <= 2) {
+    i = 5 * i;
+    out(i); // -5 .. 10
+
+    i = i * -3;
+    out(i); // -30 .. 15
+
+    i *= 7;
+    out(i); // -210 .. 105
+
+    i *= -11;
+    out(i); // -1155 .. 2310
+  }
+  if (i == -1) {
+    i = i * (int)0xffFFffFF; // fully converted literal is -1
+    out(i); // 1 .. 1
+  }
+  i = i * -1;
+  out(   i); // -2^31 .. 2^31-1
+
+  signed char sc = 1;
+  i = (*&sc *= 2);
+  out(sc); // demonstrate that we couldn't analyze the LHS of the `*=` above...
+  out(i); // -128 .. 127 // ... but we can still bound its result by its type.
+
+  return 0;
+}
+
+
+int notequal_type_endpoint(unsigned n) {
+  out(n); // 0 ..
+
+  if (n > 0) {
+    out(n); // 1 ..
+  }
+
+  if (n != 0) {
+    out(n); // 1 ..
+  } else {
+    out(n); // 0 .. 0
+  }
+
+  if (!n) {
+    out(n); // 0 .. 0
+  } else {
+    out(n); // 1 ..
+  }
+
+  while (n != 0) {
+    n--; // 1 ..
+  }
+
+  out(n); // 0 .. 0
+}
+
+void notequal_refinement(short n) {
+  if (n < 0)
+    return;
+
+  if (n == 0) {
+    out(n); // 0 .. 0
+  } else {
+    out(n); // 1 ..
+  }
+
+  if (n) {
+    out(n); // 1 ..
+  } else {
+    out(n); // 0 .. 0
+  }
+
+  while (n != 0) {
+    n--; // 1 ..
+  }
+
+  out(n); // 0 .. 0
+}
+
+void notequal_variations(short n, float f) {
+  if (n != 0) {
+    if (n >= 0) {
+      out(n); // 1 .. [BUG: we can't handle `!=` coming first]
+    }
+  }
+
+  if (n >= 5) {
+    if (2 * n - 10 == 0) { // Same as `n == 10/2` (modulo overflow)
+      return;
+    }
+    out(n); // 6 ..
+  }
+
+  if (n != -32768 && n != -32767) {
+    out(n); // -32766 ..
+  }
+
+  if (n >= 0) {
+    n  ? n : n; // ? 1..  : 0..0
+    !n ? n : n; // ? 0..0 : 1..
+  }
+}
+
+void two_bounds_from_one_test(short ss, unsigned short us) {
+  // These tests demonstrate how the range analysis is often able to deduce
+  // both an upper bound and a lower bound even when there is only one
+  // inequality in the source. For example `signedInt < 4U` establishes that
+  // `signedInt >= 0` since if `signedInt` were negative then it would be
+  // greater than 4 in the unsigned comparison.
+
+  if (ss < sizeof(int)) { // Lower bound added in `linearBoundFromGuard`
+    out(ss); // 0 .. 3
+  }
+
+  if (ss < 0x8001) { // Lower bound removed in `getDefLowerBounds`
+    out(ss); // -32768 .. 32767
+  }
+
+  if ((short)us >= 0) {
+    out(us); // 0 .. 32767
+  }
+
+  if ((short)us >= -1) {
+    out(us); // 0 .. 65535
+  }
+
+  if (ss >= sizeof(int)) { // test is true for negative numbers
+    out(ss); // -32768 .. 32767
+  }
+
+  if (ss + 1 < sizeof(int)) {
+    out(ss); // -1 .. 2
+  }
+}
+
+void widen_recursive_expr() {
+  int s;
+  for (s = 0; s < 10; s++) {
+    int result = s + s; // 0 .. 9 [BUG: upper bound is 15 due to widening]
+    out(result); // 0 .. 18 [BUG: upper bound is 127 due to double widening]
+  }
+}
+
+void guard_bound_out_of_range(void) {
+  int i = 0;
+  if (i < 0) {
+    out(i); // unreachable [BUG: is -max .. +max]
+  }
+
+  unsigned int u = 0;
+  if (u < 0) {
+    out(u); // unreachable [BUG: is 0 .. +max]
+  }
 }

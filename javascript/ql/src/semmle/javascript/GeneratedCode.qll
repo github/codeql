@@ -38,8 +38,7 @@ private predicate codeGeneratorMarkerComment(Comment c, string tool) {
     toolPattern =
       "js_of_ocaml|CoffeeScript|LiveScript|dart2js|ANTLR|PEG\\.js|Opal|JSX|jison(?:-lex)?|(?:Microsoft \\(R\\) AutoRest Code Generator)|purs" and
     tool =
-      c
-          .getText()
+      c.getText()
           .regexpCapture("(?s)[\\s*]*(?:parser |Code )?[gG]eneratedy? (?:from .*)?by (" +
               toolPattern + ")\\b.*", 1)
   )
@@ -55,9 +54,8 @@ private class GenericGeneratedCodeMarkerComment extends GeneratedCodeMarkerComme
         entity = "code|file|class|interface|art[ei]fact|module|script" and
         was = "was|is|has been" and
         automatically = "automatically |mechanically |auto[- ]?" and
-        line
-            .regexpMatch("(?i).*\\b(This|The following) (" + entity + ") (" + was + ") (" +
-                automatically + ")?gener(e?)ated\\b.*")
+        line.regexpMatch("(?i).*\\b(This|The following) (" + entity + ") (" + was + ") (" +
+            automatically + ")?gener(e?)ated\\b.*")
       )
     )
   }
@@ -164,7 +162,10 @@ private int countStartingHtmlElements(File f, int l) {
 /**
  * Holds if the base name of `f` is a number followed by a single extension.
  */
-predicate isGeneratedFileName(File f) { f.getStem().regexpMatch("[0-9]+") }
+predicate isGeneratedFileName(File f) {
+  f.getStem().regexpMatch("[0-9]+") and
+  not f.getExtension() = "vue"
+}
 
 /**
  * Holds if `tl` looks like it contains generated code.

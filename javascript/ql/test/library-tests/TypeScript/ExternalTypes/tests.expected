@@ -1,0 +1,28 @@
+globalQualifiedNames
+| LegacyClass | __Legacy.LegacyClass |
+| LegacySubclass | LegacyGlobals.LegacySubclass |
+| ModernClass | Modern.ModernClass |
+| ModernSubclass | ModernGlobals.ModernSubclass |
+moduleQualifiedName
+| Augmentation | esmodule | Augmentation |
+| ExternalType1 | esmodule | ExternalType1 |
+| ExternalType2 | esmodule | ExternalType2 |
+| LegacyClass | legacy | LegacyClass |
+| ModernClass | modern | ModernClass |
+| OtherClass | esmodule/otherfile | OtherClass |
+| UtilClass | esmodule/util | UtilClass |
+| UtilExtraClass | esmodule/util/extra | UtilExtraClass |
+types
+| Augmentation | defined in augmentation.ts |
+| ExternalType1 | has no definition |
+| ExternalType2 | has no definition |
+| InternalType | defined in client_esmodule.ts |
+| LegacyClass | has no definition |
+| LegacySubclass | has no definition |
+| ModernClass | has no definition |
+| ModernSubclass | has no definition |
+| OtherClass | has no definition |
+| UtilClass | has no definition |
+| UtilExtraClass | has no definition |
+uniqueSymbols
+| typeof externalSymbol | esmodule | externalSymbol |

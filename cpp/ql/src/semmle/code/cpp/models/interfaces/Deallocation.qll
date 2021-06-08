@@ -1,5 +1,5 @@
 /**
- * Provides an abstract class for modelling functions and expressions that
+ * Provides an abstract class for modeling functions and expressions that
  * deallocate memory, such as the standard `free` function.  To use this QL
  * library, create one or more QL classes extending a class here with a
  * characteristic predicate that selects the functions or expressions you are
@@ -29,4 +29,20 @@ abstract class DeallocationExpr extends Expr {
    * Gets the expression that is freed by this function.
    */
   Expr getFreedExpr() { none() }
+}
+
+/**
+ * An `operator delete` or `operator delete[]` function that may be associated
+ * with `delete` or `delete[]` expressions.  Note that `delete` and `delete[]`
+ * are not function calls, but these functions may also be called directly.
+ */
+class OperatorDeleteDeallocationFunction extends DeallocationFunction {
+  OperatorDeleteDeallocationFunction() {
+    hasGlobalName([
+        "operator delete", // operator delete(pointer, ...)
+        "operator delete[]" // operator delete[](pointer, ...)
+      ])
+  }
+
+  override int getFreedArg() { result = 0 }
 }

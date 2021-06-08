@@ -3,15 +3,15 @@ using Microsoft.CodeAnalysis;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    class PointerType : Type<IPointerTypeSymbol>
+    internal class PointerType : Type<IPointerTypeSymbol>
     {
-        PointerType(Context cx, IPointerTypeSymbol init)
+        private PointerType(Context cx, IPointerTypeSymbol init)
             : base(cx, init)
         {
-            PointedAtType = Create(cx, symbol.PointedAtType);
+            PointedAtType = Create(cx, Symbol.PointedAtType);
         }
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             trapFile.WriteSubId(PointedAtType);
             trapFile.Write("*;type");
@@ -29,13 +29,13 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public Type PointedAtType { get; private set; }
 
-        public static PointerType Create(Context cx, IPointerTypeSymbol symbol) => PointerTypeFactory.Instance.CreateEntity(cx, symbol);
+        public static PointerType Create(Context cx, IPointerTypeSymbol symbol) => PointerTypeFactory.Instance.CreateEntityFromSymbol(cx, symbol);
 
-        class PointerTypeFactory : ICachedEntityFactory<IPointerTypeSymbol, PointerType>
+        private class PointerTypeFactory : CachedEntityFactory<IPointerTypeSymbol, PointerType>
         {
-            public static readonly PointerTypeFactory Instance = new PointerTypeFactory();
+            public static PointerTypeFactory Instance { get; } = new PointerTypeFactory();
 
-            public PointerType Create(Context cx, IPointerTypeSymbol init) => new PointerType(cx, init);
+            public override PointerType Create(Context cx, IPointerTypeSymbol init) => new PointerType(cx, init);
         }
     }
 }

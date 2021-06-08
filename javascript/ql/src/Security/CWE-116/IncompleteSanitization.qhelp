@@ -5,7 +5,7 @@
 
 <overview>
 <p>
-Sanitizing untrusted input is an important technique for preventing injection attacks such as
+Sanitizing untrusted input is a common technique for preventing injection attacks such as
 SQL injection or cross-site scripting. Usually, this is done by escaping meta-characters such
 as quotes in a domain-specific way so that they are treated as normal characters.
 </p>
@@ -31,6 +31,14 @@ still have undesirable effects, such as badly rendered or confusing output.
 Use a (well-tested) sanitization library if at all possible. These libraries are much more
 likely to handle corner cases correctly than a custom implementation.
 </p>
+
+<p>
+
+An even safer alternative is to design the application so that sanitization is not
+needed, for instance by using prepared statements for SQL queries.
+
+</p>
+
 <p>
 Otherwise, make sure to use a regular expression with the <code>g</code> flag to ensure that
 all occurrences are replaced, and remember to escape backslashes if applicable.

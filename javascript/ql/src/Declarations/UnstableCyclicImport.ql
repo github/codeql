@@ -77,7 +77,7 @@ VarAccess getFirstCandidateAccess(ImportDeclaration decl) {
   result =
     min(decl.getASpecifier().getLocal().getVariable().getAnAccess().(CandidateVarAccess) as p
       order by
-        p.getFirstToken().getIndex()
+        p.getLocation().getStartLine(), p.getLocation().getStartColumn()
     )
 }
 

@@ -21,6 +21,11 @@ class SystemUnboundGenericClass extends UnboundGenericClass {
   SystemUnboundGenericClass() { this.getNamespace() instanceof SystemNamespace }
 }
 
+/** An unbound generic struct in the `System` namespace. */
+class SystemUnboundGenericStruct extends UnboundGenericStruct {
+  SystemUnboundGenericStruct() { this.getNamespace() instanceof SystemNamespace }
+}
+
 /** An interface in the `System` namespace. */
 class SystemInterface extends Interface {
   SystemInterface() { this.getNamespace() instanceof SystemNamespace }
@@ -215,6 +220,35 @@ class SystemLazyClass extends SystemUnboundGenericClass {
   }
 }
 
+/** The `System.Nullable<T>` struct. */
+class SystemNullableStruct extends SystemUnboundGenericStruct {
+  SystemNullableStruct() {
+    this.hasName("Nullable<>") and
+    this.getNumberOfTypeParameters() = 1
+  }
+
+  /** Gets the `Value` property. */
+  Property getValueProperty() {
+    result.getDeclaringType() = this and
+    result.hasName("Value") and
+    result.getType() = getTypeParameter(0)
+  }
+
+  /** Gets the `HasValue` property. */
+  Property getHasValueProperty() {
+    result.getDeclaringType() = this and
+    result.hasName("HasValue") and
+    result.getType() instanceof BoolType
+  }
+
+  /** Gets a `GetValueOrDefault()` method. */
+  Method getAGetValueOrDefaultMethod() {
+    result.getDeclaringType() = this and
+    result.hasName("GetValueOrDefault") and
+    result.getReturnType() = getTypeParameter(0)
+  }
+}
+
 /** The `System.NullReferenceException` class. */
 class SystemNullReferenceExceptionClass extends SystemClass {
   SystemNullReferenceExceptionClass() { this.hasName("NullReferenceException") }
@@ -360,12 +394,11 @@ class SystemStringClass extends StringType {
     result.getReturnType() instanceof StringType
   }
 
-  /** Gets a `Join(string, ...)` method. */
+  /** Gets a `Join(...)` method. */
   Method getJoinMethod() {
     result.getDeclaringType() = this and
     result.hasName("Join") and
     result.getNumberOfParameters() > 1 and
-    result.getParameter(0).getType() instanceof StringType and
     result.getReturnType() instanceof StringType
   }
 
@@ -407,6 +440,15 @@ class SystemStringClass extends StringType {
   Method getIsNullOrEmptyMethod() {
     result.getDeclaringType() = this and
     result.hasName("IsNullOrEmpty") and
+    result.isStatic() and
+    result.getNumberOfParameters() = 1 and
+    result.getReturnType() instanceof BoolType
+  }
+
+  /** Gets the `IsNullOrWhiteSpace(string)` method. */
+  Method getIsNullOrWhiteSpaceMethod() {
+    result.getDeclaringType() = this and
+    result.hasName("IsNullOrWhiteSpace") and
     result.isStatic() and
     result.getNumberOfParameters() = 1 and
     result.getReturnType() instanceof BoolType
@@ -521,7 +563,7 @@ class IEquatableEqualsMethod extends Method {
   IEquatableEqualsMethod() {
     exists(Method m |
       m = any(SystemIEquatableTInterface i).getAConstructedGeneric().getAMethod() and
-      m.getSourceDeclaration() = any(SystemIEquatableTInterface i).getEqualsMethod()
+      m.getUnboundDeclaration() = any(SystemIEquatableTInterface i).getEqualsMethod()
     |
       this = m or getAnUltimateImplementee() = m
     )
@@ -546,16 +588,19 @@ predicate implementsEquals(ValueOrRefType t) { getInvokedEqualsMethod(t).getDecl
  * from the `object.Equals(object)` method inherited by `t`.
  */
 Method getInvokedEqualsMethod(ValueOrRefType t) {
-  result = getInheritedEqualsMethod(t) and
+  result = getInheritedEqualsMethod(t, _) and
   not exists(getInvokedIEquatableEqualsMethod(t, result))
   or
   exists(EqualsMethod eq |
     result = getInvokedIEquatableEqualsMethod(t, eq) and
-    getInheritedEqualsMethod(t) = eq
+    getInheritedEqualsMethod(t, _) = eq
   )
 }
 
-private EqualsMethod getInheritedEqualsMethod(ValueOrRefType t) { t.hasMethod(result) }
+pragma[noinline]
+private EqualsMethod getInheritedEqualsMethod(ValueOrRefType t, ValueOrRefType decl) {
+  t.hasMethod(result) and decl = result.getDeclaringType()
+}
 
 /**
  * Equals method `eq` is inherited by `t`, `t` overrides `IEquatable<T>.Equals(T)`
@@ -564,7 +609,7 @@ private EqualsMethod getInheritedEqualsMethod(ValueOrRefType t) { t.hasMethod(re
  *
  * Example:
  *
- * ```
+ * ```csharp
  * abstract class A<T> : IEquatable<T> {
  *   public abstract bool Equals(T other);
  *   public override bool Equals(object other) { return other != null && GetType() == other.GetType() && Equals((T)other); }
@@ -579,10 +624,9 @@ private EqualsMethod getInheritedEqualsMethod(ValueOrRefType t) { t.hasMethod(re
  */
 private IEquatableEqualsMethod getInvokedIEquatableEqualsMethod(ValueOrRefType t, EqualsMethod eq) {
   t.hasMethod(result) and
-  eq = getInheritedEqualsMethod(t.getBaseClass()) and
   exists(IEquatableEqualsMethod ieem |
     result = ieem.getAnOverrider*() and
-    eq.getDeclaringType() = ieem.getDeclaringType()
+    eq = getInheritedEqualsMethod(t.getBaseClass(), ieem.getDeclaringType())
   |
     not ieem.fromSource()
     or
@@ -593,8 +637,8 @@ private IEquatableEqualsMethod getInvokedIEquatableEqualsMethod(ValueOrRefType t
 /** Whether `eq` calls `ieem` */
 private predicate callsEqualsMethod(EqualsMethod eq, IEquatableEqualsMethod ieem) {
   exists(MethodCall callToDerivedEquals |
-    callToDerivedEquals.getEnclosingCallable() = eq.getSourceDeclaration() and
-    callToDerivedEquals.getTarget() = ieem.getSourceDeclaration()
+    callToDerivedEquals.getEnclosingCallable() = eq.getUnboundDeclaration() and
+    callToDerivedEquals.getTarget() = ieem.getUnboundDeclaration()
   )
 }
 
@@ -653,7 +697,7 @@ private DisposeMethod getInheritedDisposeMethod(ValueOrRefType t) { t.hasMethod(
  *
  * Example:
  *
- * ```
+ * ```csharp
  * class A : IDisposable {
  *   public void Dispose() { Dispose(true); }
  *   public virtual void Dispose(bool disposing) { ... }
@@ -676,8 +720,8 @@ private DisposeBoolMethod getInvokedDiposeBoolMethod(ValueOrRefType t, DisposeMe
     not disp.fromSource()
     or
     exists(MethodCall callToDerivedDispose |
-      callToDerivedDispose.getEnclosingCallable() = disp.getSourceDeclaration() and
-      callToDerivedDispose.getTarget() = dbm.getSourceDeclaration()
+      callToDerivedDispose.getEnclosingCallable() = disp.getUnboundDeclaration() and
+      callToDerivedDispose.getTarget() = dbm.getUnboundDeclaration()
     )
   )
 }
@@ -695,4 +739,9 @@ class SystemGuid extends SystemStruct {
 /** The `System.NotImplementedException` class. */
 class SystemNotImplementedExceptionClass extends SystemClass {
   SystemNotImplementedExceptionClass() { this.hasName("NotImplementedException") }
+}
+
+/** The `System.DateTime` struct. */
+class SystemDateTimeStruct extends SystemStruct {
+  SystemDateTimeStruct() { this.hasName("DateTime") }
 }

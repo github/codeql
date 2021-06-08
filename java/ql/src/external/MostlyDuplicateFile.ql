@@ -1,4 +1,5 @@
 /**
+ * @deprecated
  * @name Mostly duplicate file
  * @description Files in which most of the lines are duplicated in another file make code more
  *              difficult to understand and introduce a risk of changes being made to only one copy.
@@ -15,9 +16,8 @@
  */
 
 import java
-import CodeDuplication
 
 from File f, File other, int percent
-where duplicateFiles(f, other, percent)
+where none()
 select f, percent + "% of the lines in " + f.getStem() + " are copies of lines in $@.", other,
   other.getStem()

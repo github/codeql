@@ -1,0 +1,2 @@
+| test0.cs:95:49:95:63 | typeof(...) | Unsafe type is used in data contract serializer. Make sure $@ comes from the trusted source. | test0.cs:95:49:95:63 | typeof(...) | typeof(...) |
+| test0.cs:96:49:96:77 | typeof(...) | Unsafe type is used in data contract serializer. Make sure $@ comes from the trusted source. | test0.cs:96:49:96:77 | typeof(...) | typeof(...) |

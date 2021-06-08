@@ -37,21 +37,12 @@ module Consistency {
     )
   }
 
-  query predicate uniqueTypeBound(Node n, string msg) {
+  query predicate uniqueType(Node n, string msg) {
     exists(int c |
       n instanceof RelevantNode and
-      c = count(n.getTypeBound()) and
+      c = count(getNodeType(n)) and
       c != 1 and
-      msg = "Node should have one type bound but has " + c + "."
-    )
-  }
-
-  query predicate uniqueTypeRepr(Node n, string msg) {
-    exists(int c |
-      n instanceof RelevantNode and
-      c = count(getErasedRepr(n.getTypeBound())) and
-      c != 1 and
-      msg = "Node should have one type representation but has " + c + "."
+      msg = "Node should have one type but has " + c + "."
     )
   }
 
@@ -104,7 +95,7 @@ module Consistency {
     msg = "Local flow step does not preserve enclosing callable."
   }
 
-  private DataFlowType typeRepr() { result = getErasedRepr(any(Node n).getTypeBound()) }
+  private DataFlowType typeRepr() { result = getNodeType(_) }
 
   query predicate compatibleTypesReflexive(DataFlowType t, string msg) {
     t = typeRepr() and
@@ -132,8 +123,18 @@ module Consistency {
     n.getEnclosingCallable() != call.getEnclosingCallable()
   }
 
+  // This predicate helps the compiler forget that in some languages
+  // it is impossible for a result of `getPreUpdateNode` to be an
+  // instance of `PostUpdateNode`.
+  private Node getPre(PostUpdateNode n) {
+    result = n.getPreUpdateNode()
+    or
+    none()
+  }
+
   query predicate postIsNotPre(PostUpdateNode n, string msg) {
-    n.getPreUpdateNode() = n and msg = "PostUpdateNode should not equal its pre-update node."
+    getPre(n) = n and
+    msg = "PostUpdateNode should not equal its pre-update node."
   }
 
   query predicate postHasUniquePre(PostUpdateNode n, string msg) {
@@ -161,15 +162,14 @@ module Consistency {
     msg = "Origin of readStep is missing a PostUpdateNode."
   }
 
-  query predicate storeIsPostUpdate(Node n, string msg) {
-    storeStep(_, _, n) and
-    not n instanceof PostUpdateNode and
-    msg = "Store targets should be PostUpdateNodes."
-  }
-
   query predicate argHasPostUpdate(ArgumentNode n, string msg) {
     not hasPost(n) and
     not isImmutableOrUnobservable(n) and
     msg = "ArgumentNode is missing PostUpdateNode."
+  }
+
+  query predicate postWithInFlow(PostUpdateNode n, string msg) {
+    simpleLocalFlowStep(_, n) and
+    msg = "PostUpdateNode should not be the target of local flow."
   }
 }

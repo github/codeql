@@ -1,14 +1,15 @@
 /** Provides classes for types. */
 
-import Location
-import Namespace
 import Callable
-import Property
 import Event
 import Generics
+import Location
+import Namespace
+import Property
 private import Conversion
-private import semmle.code.csharp.metrics.Coupling
 private import dotnet
+private import semmle.code.csharp.metrics.Coupling
+private import TypeRef
 
 /**
  * A type.
@@ -20,7 +21,7 @@ private import dotnet
 class Type extends DotNet::Type, Member, TypeContainer, @type {
   override string getName() { types(this, _, result) }
 
-  override Type getSourceDeclaration() { result = this }
+  override Type getUnboundDeclaration() { result = this }
 
   /** Holds if this type is implicitly convertible to `that` type. */
   predicate isImplicitlyConvertibleTo(Type that) { implicitConversion(this, that) }
@@ -44,6 +45,9 @@ class Type extends DotNet::Type, Member, TypeContainer, @type {
   /** Holds if this type is a value type, or a type parameter that is a value type. */
   predicate isValueType() { none() }
 }
+
+pragma[nomagic]
+private predicate isObjectClass(Class c) { c instanceof ObjectType }
 
 /**
  * A value or reference type.
@@ -96,7 +100,7 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
    * In the following example, only the class `C2` has a parent namespace declaration
    * returned by `getParentNamespaceDeclaration`.
    *
-   * ```
+   * ```csharp
    * class C1 { ... }
    *
    * namespace N {
@@ -111,7 +115,15 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
   }
 
   /** Gets the immediate base class of this class, if any. */
-  Class getBaseClass() { extend(this, getTypeRef(result)) }
+  final Class getBaseClass() {
+    extend(this, getTypeRef(result))
+    or
+    not extend(this, _) and
+    not isObjectClass(this) and
+    not this instanceof DynamicType and
+    not this instanceof NullType and
+    isObjectClass(result)
+  }
 
   /** Gets an immediate base interface of this type, if any. */
   Interface getABaseInterface() { implement(this, getTypeRef(result)) }
@@ -140,7 +152,7 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
    *
    * For example, `C` has the methods `A.M1()`, `B.M3()`, and `C.M4()` in
    *
-   * ```
+   * ```csharp
    * class A {
    *   public void M1() { }
    *   private void M2() { }
@@ -165,7 +177,7 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
    * For example, `C` has the callables `A.get_P1`, `A.set_P1`, `A.M2()`, `B.get_P2`,
    * `B.set_P2`, and `C.M3()` in
    *
-   * ```
+   * ```csharp
    * class A {
    *   public int P1 { get; set; }
    *   public virtual int P2 { get; set; }
@@ -194,7 +206,7 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
    *
    * For example, `C` has the members `A.P1`, `A.M2()`, `B.P2`, and `C.M3()` in
    *
-   * ```
+   * ```csharp
    * class A {
    *   public int P1 { get; set; }
    *   public virtual int P2 { get; set; }
@@ -246,8 +258,11 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
     getAMember().(Virtualizable).getOverridee() = v
   }
 
+  /** Gets a field (or member constant) with the given name. */
+  Field getField(string name) { result = getAMember() and result.hasName(name) }
+
   /** Gets a field (or member constant) of this type, if any. */
-  Field getAField() { result = getAMember() }
+  Field getAField() { result = this.getField(_) }
 
   /** Gets a member constant of this type, if any. */
   MemberConstant getAConstant() { result = getAMember() }
@@ -352,11 +367,11 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
   /** Gets the number of callables in this type. */
   int getNumberOfCallables() { result = count(Callable c | this.getAMember() = c) }
 
-  override ValueOrRefType getSourceDeclaration() {
+  override ValueOrRefType getUnboundDeclaration() {
     result = this and
     not this instanceof NestedType
     or
-    // We must use `nested_types` here, rather than overriding `getSourceDeclaration`
+    // We must use `nested_types` here, rather than overriding `getUnboundDeclaration`
     // in the class `NestedType` below. Otherwise, the overrides in `UnboundGenericType`
     // and its subclasses will not work
     nested_types(this, _, result)
@@ -368,7 +383,7 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
 /**
  * A nested type, for example `class B` in
  *
- * ```
+ * ```csharp
  * class A {
  *   class B {
  *     ...
@@ -608,7 +623,7 @@ class DecimalType extends SimpleType, @decimal_type {
 /**
  * An `enum`. For example
  *
- * ```
+ * ```csharp
  * enum Parity {
  *   Even,
  *   Odd
@@ -622,7 +637,7 @@ class Enum extends ValueType, @enum_type {
    *
    * For example, the underlying type of `Parity` is `int` in
    *
-   * ```
+   * ```csharp
    * enum Parity : int {
    *   Even,
    *   Odd
@@ -635,11 +650,12 @@ class Enum extends ValueType, @enum_type {
    * Gets an `enum` constant declared in this `enum`, for example `Even`
    * and `Odd` in
    *
-   * ```
+   * ```csharp
    * enum Parity : int {
    *   Even,
    *   Odd
    * }
+   * ```
    */
   EnumConstant getAnEnumConstant() { result.getDeclaringEnum() = this }
 
@@ -647,12 +663,14 @@ class Enum extends ValueType, @enum_type {
   EnumConstant getEnumConstant(string value) {
     result = this.getAnEnumConstant() and result.getValue() = value
   }
+
+  override string getAPrimaryQlClass() { result = "Enum" }
 }
 
 /**
  * A `struct`, for example
  *
- * ```
+ * ```csharp
  * struct S {
  *   ...
  * }
@@ -664,6 +682,8 @@ class Struct extends ValueType, @struct_type {
 
   /** Holds if this `struct` has a `readonly` modifier. */
   predicate isReadonly() { hasModifier("readonly") }
+
+  override string getAPrimaryQlClass() { result = "Struct" }
 }
 
 /**
@@ -706,25 +726,45 @@ private predicate isNonOverridden(Member m) { not m.(Virtualizable).isOverridden
 /**
  * A `class`, for example
  *
- * ```
+ * ```csharp
  * class C {
  *   ...
  * }
  * ```
  */
-class Class extends RefType, @class_type { }
+class Class extends RefType, @class_type {
+  override string getAPrimaryQlClass() { result = "Class" }
+}
+
+/**
+ * A `record`, for example
+ *
+ * ```csharp
+ * record R(object Prop) {
+ *   ...
+ * }
+ * ```
+ */
+class Record extends Class {
+  Record() { this.isRecord() }
+
+  /** Gets the clone method of this record. */
+  RecordCloneMethod getCloneMethod() { result = this.getAMember() }
+
+  override string getAPrimaryQlClass() { result = "Record" }
+}
 
 /**
  * A class generated by the compiler from an anonymous object creation.
  *
  * For example, the class with fields `X` and `Y` in
  *
- * ```
+ * ```csharp
  * new { X = 0, Y = 0 };
  * ```
  */
 class AnonymousClass extends Class {
-  AnonymousClass() { this.getName().matches("<%") }
+  AnonymousClass() { anonymous_types(this) }
 }
 
 /**
@@ -748,18 +788,20 @@ class StringType extends Class {
 /**
  * An `interface`, for example
  *
- * ```
+ * ```csharp
  * interface I {
  *   ...
  * }
  * ```
  */
-class Interface extends RefType, @interface_type { }
+class Interface extends RefType, @interface_type {
+  override string getAPrimaryQlClass() { result = "Interface" }
+}
 
 /**
  * A `delegate` type, for example
  *
- * ```
+ * ```csharp
  * delegate int D(int p);
  * ```
  */
@@ -769,6 +811,99 @@ class DelegateType extends RefType, Parameterizable, @delegate_type {
 
   /** Gets the annotated return type of this delegate. */
   AnnotatedType getAnnotatedReturnType() { result.appliesTo(this) }
+
+  override string getAPrimaryQlClass() { result = "DelegateType" }
+}
+
+private newtype TCallingConvention =
+  MkCallingConvention(int i) { function_pointer_calling_conventions(_, i) }
+
+/**
+ * Represents a signature calling convention. Specifies how arguments in a given
+ * signature are passed from the caller to the callee.
+ */
+class CallingConvention extends TCallingConvention {
+  /** Gets a textual representation of this calling convention. */
+  string toString() { result = "CallingConvention" }
+}
+
+/** Managed calling convention with fixed-length argument list. */
+class DefaultCallingConvention extends CallingConvention {
+  DefaultCallingConvention() { this = MkCallingConvention(0) }
+
+  override string toString() { result = "DefaultCallingConvention" }
+}
+
+/** Unmanaged C/C++-style calling convention where the call stack is cleaned by the caller. */
+class CDeclCallingConvention extends CallingConvention {
+  CDeclCallingConvention() { this = MkCallingConvention(1) }
+
+  override string toString() { result = "CDeclCallingConvention" }
+}
+
+/** Unmanaged calling convention where call stack is cleaned up by the callee. */
+class StdCallCallingConvention extends CallingConvention {
+  StdCallCallingConvention() { this = MkCallingConvention(2) }
+
+  override string toString() { result = "StdCallCallingConvention" }
+}
+
+/**
+ * Unmanaged C++-style calling convention for calling instance member functions
+ * with a fixed argument list.
+ */
+class ThisCallCallingConvention extends CallingConvention {
+  ThisCallCallingConvention() { this = MkCallingConvention(3) }
+
+  override string toString() { result = "ThisCallCallingConvention" }
+}
+
+/** Unmanaged calling convention where arguments are passed in registers when possible. */
+class FastCallCallingConvention extends CallingConvention {
+  FastCallCallingConvention() { this = MkCallingConvention(4) }
+
+  override string toString() { result = "FastCallCallingConvention" }
+}
+
+/** Managed calling convention for passing extra arguments. */
+class VarArgsCallingConvention extends CallingConvention {
+  VarArgsCallingConvention() { this = MkCallingConvention(5) }
+
+  override string toString() { result = "VarArgsCallingConvention" }
+}
+
+/**
+ * A function pointer type, for example
+ *
+ * ```csharp
+ * delegate*<int, void>
+ * ```
+ */
+class FunctionPointerType extends Type, Parameterizable, @function_pointer_type {
+  /** Gets the return type of this function pointer. */
+  Type getReturnType() { function_pointer_return_type(this, getTypeRef(result)) }
+
+  /** Gets the calling convention. */
+  CallingConvention getCallingConvention() {
+    exists(int i |
+      function_pointer_calling_conventions(this, i) and result = MkCallingConvention(i)
+    )
+  }
+
+  /** Gets the unmanaged calling convention at index `i`. */
+  Type getUnmanagedCallingConvention(int i) {
+    has_unmanaged_calling_conventions(this, i, getTypeRef(result))
+  }
+
+  /** Gets an unmanaged calling convention. */
+  Type getAnUnmanagedCallingConvention() { result = getUnmanagedCallingConvention(_) }
+
+  /** Gets the annotated return type of this function pointer type. */
+  AnnotatedType getAnnotatedReturnType() { result.appliesTo(this) }
+
+  override string getAPrimaryQlClass() { result = "FunctionPointerType" }
+
+  override string getLabel() { result = getName() }
 }
 
 /**
@@ -793,6 +928,8 @@ class NullableType extends ValueType, DotNet::ConstructedGeneric, @nullable_type
   override Location getALocation() { result = getUnderlyingType().getALocation() }
 
   override Type getTypeArgument(int p) { p = 0 and result = getUnderlyingType() }
+
+  override string getAPrimaryQlClass() { result = "NullableType" }
 }
 
 /**
@@ -874,6 +1011,8 @@ class PointerType extends DotNet::PointerType, Type, @pointer_type {
   override Location getALocation() { result = getReferentType().getALocation() }
 
   override string toString() { result = DotNet::PointerType.super.toString() }
+
+  override string getAPrimaryQlClass() { result = "PointerType" }
 }
 
 /**
@@ -881,6 +1020,8 @@ class PointerType extends DotNet::PointerType, Type, @pointer_type {
  */
 class DynamicType extends RefType, @dynamic_type {
   override string toStringWithTypes() { result = "dynamic" }
+
+  override string getAPrimaryQlClass() { result = "DynamicType" }
 }
 
 /**
@@ -888,6 +1029,8 @@ class DynamicType extends RefType, @dynamic_type {
  */
 class ArglistType extends Type, @arglist_type {
   override string toStringWithTypes() { result = "__arglist" }
+
+  override string getAPrimaryQlClass() { result = "ArglistType" }
 }
 
 /**
@@ -901,7 +1044,7 @@ class UnknownType extends Type, @unknown_type { }
  */
 class TupleType extends ValueType, @tuple_type {
   /** Gets the underlying type of this tuple, which is of type `System.ValueTuple`. */
-  ConstructedStruct getUnderlyingType() { tuple_underlying_type(this, getTypeRef(result)) }
+  Struct getUnderlyingType() { tuple_underlying_type(this, getTypeRef(result)) }
 
   /**
    * Gets the `n`th element of this tuple, indexed from 0.
@@ -959,7 +1102,7 @@ class TypeMention extends @type_mention {
    * Gets the element to which this type mention belongs, if any.
    * For example, `IEnumerable<int>` belongs to parameter `p` in
    *
-   * ```
+   * ```csharp
    * void M(IEnumerable<int> p) { }
    * ```
    */
@@ -969,7 +1112,7 @@ class TypeMention extends @type_mention {
    * Gets the parent of this type mention, if any.
    * For example, the parent of `int` is `IEnumerable<int>` in
    *
-   * ```
+   * ```csharp
    * void M(IEnumerable<int> p) {
    *   ...
    * }
@@ -982,16 +1125,4 @@ class TypeMention extends @type_mention {
 
   /** Gets the location of this type mention. */
   Location getLocation() { type_mention_location(this, result) }
-}
-
-/**
- * INTERNAL: Do not use.
- * Gets a type reference for a given type `type`.
- * This is used for extensionals that can be supplied
- * as either type references or types.
- */
-@type_or_ref getTypeRef(@type type) {
-  result = type
-  or
-  typeref_type(result, type)
 }

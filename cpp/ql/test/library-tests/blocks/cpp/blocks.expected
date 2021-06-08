@@ -22,11 +22,11 @@
 | blocks.cpp:43:29:43:29 | z | file://:0:0:0:0 | char | char |
 | blocks.cpp:45:10:45:10 | c | file://:0:0:0:0 | char | char |
 | blocks.cpp:55:7:55:10 | four | file://:0:0:0:0 | int | int |
+| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | Example && | rvalue reference to {struct Example} |
+| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | __va_list_tag && | rvalue reference to {struct __va_list_tag} |
+| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | const Example & | reference to {const {struct Example}} |
+| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | const __va_list_tag & | reference to {const {struct __va_list_tag}} |
 | file://:0:0:0:0 | fp_offset | file://:0:0:0:0 | unsigned int | unsigned int |
 | file://:0:0:0:0 | gp_offset | file://:0:0:0:0 | unsigned int | unsigned int |
 | file://:0:0:0:0 | overflow_arg_area | file://:0:0:0:0 | void * | pointer to {void} |
-| file://:0:0:0:0 | p#0 | file://:0:0:0:0 | Example && | rvalue reference to {struct Example} |
-| file://:0:0:0:0 | p#0 | file://:0:0:0:0 | __va_list_tag && | rvalue reference to {struct __va_list_tag} |
-| file://:0:0:0:0 | p#0 | file://:0:0:0:0 | const Example & | reference to {const {struct Example}} |
-| file://:0:0:0:0 | p#0 | file://:0:0:0:0 | const __va_list_tag & | reference to {const {struct __va_list_tag}} |
 | file://:0:0:0:0 | reg_save_area | file://:0:0:0:0 | void * | pointer to {void} |

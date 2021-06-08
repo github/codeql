@@ -6,7 +6,6 @@
 
 import javascript
 import RemoteFlowSources
-import UrlConcatenation
 
 module ServerSideUrlRedirect {
   /**

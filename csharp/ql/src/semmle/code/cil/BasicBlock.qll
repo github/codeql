@@ -23,7 +23,7 @@ class BasicBlock extends Cached::TBasicBlockStart {
    *
    * Example:
    *
-   * ```
+   * ```csharp
    * if (x < 0)
    *   x = -x;
    * ```
@@ -41,7 +41,7 @@ class BasicBlock extends Cached::TBasicBlockStart {
    *
    * Example:
    *
-   * ```
+   * ```csharp
    * if (!(x >= 0))
    *   x = -x;
    * ```
@@ -75,7 +75,7 @@ class BasicBlock extends Cached::TBasicBlockStart {
    *
    * Example:
    *
-   * ```
+   * ```csharp
    * int M(string s) {
    *   if (s == null)
    *     throw new ArgumentNullException(nameof(s));
@@ -97,7 +97,7 @@ class BasicBlock extends Cached::TBasicBlockStart {
    *
    * Example:
    *
-   * ```
+   * ```csharp
    * int M(string s) {
    *   if (s == null)
    *     throw new ArgumentNullException(nameof(s));
@@ -124,7 +124,7 @@ class BasicBlock extends Cached::TBasicBlockStart {
    *
    * Example:
    *
-   * ```
+   * ```csharp
    * if (x < 0) {
    *   x = -x;
    *   if (x > 10)
@@ -158,7 +158,7 @@ class BasicBlock extends Cached::TBasicBlockStart {
    *
    * Example:
    *
-   * ```
+   * ```csharp
    * int M(string s) {
    *   if (s == null)
    *     throw new ArgumentNullException(nameof(s));
@@ -182,7 +182,7 @@ class BasicBlock extends Cached::TBasicBlockStart {
    *
    * Example:
    *
-   * ```
+   * ```csharp
    * int M(string s) {
    *   try {
    *     return s.Length;
@@ -207,7 +207,7 @@ class BasicBlock extends Cached::TBasicBlockStart {
    *
    * Example:
    *
-   * ```
+   * ```csharp
    * int M(string s) {
    *   try {
    *     return s.Length;
@@ -240,6 +240,9 @@ class BasicBlock extends Cached::TBasicBlockStart {
 
   /** Gets a textual representation of this basic block. */
   string toString() { result = getFirstNode().toString() }
+
+  /** Gets the location of this basic block. */
+  Location getLocation() { result = this.getFirstNode().getLocation() }
 }
 
 /**
@@ -305,7 +308,7 @@ class EntryBasicBlock extends BasicBlock {
 }
 
 /** Holds if `bb` is an entry basic block. */
-private predicate entryBB(BasicBlock bb) { bb.getFirstNode() instanceof EntryPoint }
+private predicate entryBB(BasicBlock bb) { bb.getFirstNode() instanceof MethodImplementation }
 
 /**
  * An exit basic block, that is, a basic block whose last node is
@@ -353,7 +356,7 @@ class ConditionBlock extends BasicBlock {
      * all predecessors of `this.getATrueSuccessor()` are either `this` or dominated by `this.getATrueSuccessor()`.
      *
      * For example, in the following C# snippet:
-     * ```
+     * ```csharp
      * if (x)
      *   controlled;
      * false_successor;
@@ -361,7 +364,7 @@ class ConditionBlock extends BasicBlock {
      * ```
      * `false_successor` dominates `uncontrolled`, but not all of its predecessors are `this` (`if (x)`)
      *  or dominated by itself. Whereas in the following code:
-     * ```
+     * ```csharp
      * if (x)
      *   while (controlled)
      *     also_controlled;

@@ -51,12 +51,12 @@ module.exports.mz = function (name) {
 }
 
 module.exports.flow = function (name) {
-	var cmd1 = "rm -rf " + name;
-	cp.exec(cmd1); // NOT OK.
+	var cmd1 = "rm -rf " + name; // NOT OK.
+	cp.exec(cmd1); 
 
-	var cmd2 = "rm -rf " + name;
+	var cmd2 = "rm -rf " + name;  // NOT OK.
 	function myExec(cmd) {
-		cp.exec(cmd); // NOT OK.
+		cp.exec(cmd);
 	}
 	myExec(cmd2);
 }
@@ -83,8 +83,8 @@ module.exports.arrays = function (name) {
 	cp.exec("rm -rf " + name); // NOT OK.
 
 	var args1 = ["node"];
-	args1.push(name);
-	cp.exec(args1.join(" ")); // NOT OK.
+	args1.push(name); // NOT OK.
+	cp.exec(args1.join(" "));
 
 	cp.exec(["rm -rf", name].join(" ")); // NOT OK.
 
@@ -146,10 +146,10 @@ function Cla5(name) {
 module.exports.cla5 = new Cla5();
 
 module.exports.indirect = function (name) {
-	let cmd = "rm -rf " + name;
+	let cmd = "rm -rf " + name; // NOT OK
 	let sh = "sh";
 	let args = ["-c", cmd];
-	cp.spawn(sh, args, cb); // NOT OK
+	cp.spawn(sh, args, cb);
 }
 
 module.exports.indirect2 = function (name) {
@@ -221,7 +221,7 @@ module.exports.blackList2 = function (name) {
 		process.exit(-1);
 	}
 
-	cp.exec("rm -rf " + name); // OK - but FP due to tracking flow through `process.exit()`. 
+	cp.exec("rm -rf " + name); // OK - but FP due to tracking flow through `process.exit()`. [INCONSISTENCY]
 }
 
 module.exports.accessSync = function (name) {
@@ -233,7 +233,7 @@ module.exports.accessSync = function (name) {
 		return;
 	}
 
-	cp.exec("rm -rf " + name); // OK - but FP due to `path.accessSync` not being recognized as a sanitizer.
+	cp.exec("rm -rf " + name); // OK - but FP due to `path.accessSync` not being recognized as a sanitizer. [INCONSISTENCY]
 }
 
 var cleanInput = function (s) {
@@ -269,7 +269,7 @@ module.exports.sanitizerProperty = function (obj) {
 
 	obj.version = "";
 
-	cp.exec("rm -rf " + obj.version); // OK - but FP
+	cp.exec("rm -rf " + obj.version); // OK
 }
 
 module.exports.Foo = class Foo {
@@ -278,7 +278,7 @@ module.exports.Foo = class Foo {
 		this.opts = {};
 		this.opts.bla = opts.bla
 
-		cp.exec("rm -rf " + this.opts.bla); // NOT OK - but FN
+		cp.exec("rm -rf " + this.opts.bla); // NOT OK - but FN [INCONSISTENCY]
 	}
 }
 
@@ -319,4 +319,173 @@ module.exports.typeofcheck = function (name) {
 	} else {
 		cp.exec("rm -rf " + name); // NOT OK
 	}
+}
+
+module.exports.typeofcheck = function (arg) {
+	var cmd = "MyWindowCommand | findstr /i /c:" + arg; // NOT OK
+	cp.exec(cmd); 
+}
+
+function id(x) {
+	return x;
+}
+
+module.exports.id = id;
+
+module.exports.unproblematic = function() {
+	cp.exec("rm -rf " + id("test")); // OK
+};
+
+module.exports.problematic = function(n) {
+	cp.exec("rm -rf " + id(n)); // NOT OK
+};
+
+module.exports.typeofNumber = function(n) {
+	if (typeof n === "number") {
+		cp.exec("rm -rf " + n); // OK
+	}
+};
+
+function boundProblem(safe, unsafe) {
+	cp.exec("rm -rf " + safe); // OK
+	cp.exec("rm -rf " + unsafe); // NOT OK
+}
+
+Object.defineProperty(module.exports, "boundProblem", {
+	get: function () {
+		return boundProblem.bind(this, "safe");
+	}
+});
+
+function MyTrainer(opts) {
+	this.learn_args = opts.learn_args
+}
+
+MyTrainer.prototype = {
+	train: function() {
+		var command = "learn " + this.learn_args + " " + model; // NOT OK
+		cp.exec(command); 
+	}
+};
+module.exports.MyTrainer = MyTrainer;
+
+
+function yetAnohterSanitizer(str) {
+	const s = str || '';
+	let result = '';
+	for (let i = 0; i <= 2000; i++) {
+		if (!(s[i] === undefined ||
+			s[i] === '>' ||
+			s[i] === '<' ||
+			s[i] === '*' ||
+			s[i] === '?' ||
+			s[i] === '[' ||
+			s[i] === ']' ||
+			s[i] === '|' ||
+			s[i] === '˚' ||
+			s[i] === '$' ||
+			s[i] === ';' ||
+			s[i] === '&' ||
+			s[i] === '(' ||
+			s[i] === ')' ||
+			s[i] === ']' ||
+			s[i] === '#' ||
+			s[i] === '\\' ||
+			s[i] === '\t' ||
+			s[i] === '\n' ||
+			s[i] === '\'' ||
+			s[i] === '`' ||
+			s[i] === '"')) {
+			result = result + s[i];
+		}
+	}
+	return result;
+}
+
+module.exports.sanitizer3 = function (name) {
+	cp.exec("rm -rf " + name); // NOT OK
+
+	var sanitized = yetAnohterSanitizer(name);
+	cp.exec("rm -rf " + sanitized); // OK
+}
+
+const cp = require("child_process");
+const spawn = cp.spawn;
+module.exports.shellOption = function (name) {
+	cp.exec("rm -rf " + name); // NOT OK
+
+	cp.execFile("rm", ["-rf", name], {shell: true}, (err, out) => {}); // NOT OK
+	cp.spawn("rm", ["-rf", name], {shell: true}); // NOT OK
+	cp.execFileSync("rm", ["-rf", name], {shell: true}); // NOT OK
+	cp.spawnSync("rm", ["-rf", name], {shell: true}); // NOT OK
+
+	const SPAWN_OPT = {shell: true};
+
+	spawn("rm", ["first", name], SPAWN_OPT); // NOT OK
+	var arr = [];
+	arr.push(name); // NOT OK
+	spawn("rm", arr, SPAWN_OPT); 
+	spawn("rm", build("node", (name ? name + ':' : '') + '-'), SPAWN_OPT);  // This is bad, but the alert location is down in `build`.
+}
+
+function build(first, last) {
+	var arr = [];
+	if (something() === 'gm')
+		arr.push('convert');
+	first && arr.push(first);
+	last && arr.push(last); // NOT OK
+	return arr;
+};
+
+var asyncExec = require("async-execute");
+module.exports.asyncStuff = function (name) {
+	asyncExec("rm -rf " + name); // NOT OK
+}
+
+const myFuncs = {
+	myFunc: function (name) {
+		asyncExec("rm -rf " + name); // NOT OK
+	}
+};
+
+module.exports.blabity = {};
+
+Object.defineProperties(
+	module.exports.blabity,
+	Object.assign(
+		{},
+		Object.entries(myFuncs).reduce(
+			(props, [ key, value ]) => Object.assign(
+				props,
+				{
+					[key]: {
+						value,
+						configurable: true,
+					},
+				},
+			),
+			{}
+		)
+	)
+);
+
+const path = require('path');
+const {promisify} = require('util');
+
+const exec = promisify(require('child_process').exec);
+
+module.exports = function check(config) {
+    const cmd = path.join(config.installedPath, 'myBinary -v'); // NOT OK
+    return exec(cmd);
+}
+
+module.exports.splitConcat = function (name) {
+	let args = ' my name is ' + name; // NOT OK
+	let cmd = 'echo';
+	cp.exec(cmd + args);
+}
+
+module.exports.myCommand = function (myCommand) {
+	let cmd = `cd ${cwd} ; ${myCommand}`; // OK - the parameter name suggests that it is purposely a shell command.
+	cp.exec(cmd);
 }

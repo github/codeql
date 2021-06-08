@@ -1,3 +1,0 @@
-| tst.html:5:9:5:43 | <script>...</> | 0 | tst.html:5:17:5:33 | src=external.js |
-| tst.html:10:5:12:11 | <body>...</> | 0 | tst.html:10:11:10:16 | ng-app= |
-| tst.html:11:9:11:64 | <a>...</> | 0 | tst.html:11:12:11:49 | href=javascript:void(alert('Nope!')) |

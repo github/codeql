@@ -23,7 +23,9 @@ abstract class IncompleteBlacklistSanitizer extends DataFlow::Node {
  * Describes the characters represented by `rep`.
  */
 string describeCharacters(string rep) {
-  rep = "\"" and result = "quotes"
+  rep = "\"" and result = "double quotes"
+  or
+  rep = "'" and result = "single quotes"
   or
   rep = "&" and result = "ampersands"
   or
@@ -49,7 +51,9 @@ class StringReplaceCallSequence extends DataFlow::CallNode {
 
   /** Gets a string that is the replacement of this call. */
   string getAReplacementString() {
-    // this is more restrictive than `StringReplaceCall::replaces/2`, in the name of precision
+    getAMember().replaces(_, result)
+    or
+    // StringReplaceCall::replaces/2 can't always find the `old` string, so this is added as a fallback.
     getAMember().getRawReplacement().getStringValue() = result
   }
 
@@ -84,6 +88,12 @@ module HtmlSanitization {
       chain.getAReplacedString() = result or
       chain.getAReplacementString() = "&quot;" or
       chain.getAReplacementString() = "&#34;"
+    )
+    or
+    result = "'" and
+    (
+      chain.getAReplacedString() = result or
+      chain.getAReplacementString() = "&#39;"
     )
     or
     result = "&" and
@@ -123,11 +133,7 @@ module HtmlSanitization {
         // replaces `<` and `>`
         getALikelyReplacedCharacter(chain) = "<" and
         getALikelyReplacedCharacter(chain) = ">" and
-        (
-          unsanitized = "\""
-          or
-          unsanitized = "&"
-        )
+        unsanitized = ["\"", "'", "&"]
         or
         // replaces '&' and either `<` or `>`
         getALikelyReplacedCharacter(chain) = "&" and

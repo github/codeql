@@ -27,6 +27,8 @@ class UnaryArithmeticOperation extends ArithmeticOperation, UnaryOperation, @un_
  */
 class UnaryMinusExpr extends UnaryArithmeticOperation, @minus_expr {
   override string getOperator() { result = "-" }
+
+  override string getAPrimaryQlClass() { result = "UnaryMinusExpr" }
 }
 
 /**
@@ -34,6 +36,8 @@ class UnaryMinusExpr extends UnaryArithmeticOperation, @minus_expr {
  */
 class UnaryPlusExpr extends UnaryArithmeticOperation, @plus_expr {
   override string getOperator() { result = "+" }
+
+  override string getAPrimaryQlClass() { result = "UnaryPlusExpr" }
 }
 
 /**
@@ -61,18 +65,24 @@ class DecrementOperation extends MutatorOperation, @decr_op_expr {
 /**
  * A prefix increment operation, for example `++x`.
  */
-class PreIncrExpr extends IncrementOperation, @pre_incr_expr { }
+class PreIncrExpr extends IncrementOperation, @pre_incr_expr {
+  override string getAPrimaryQlClass() { result = "PreIncrExpr" }
+}
 
 /**
  * A prefix decrement operation, for example `--x`.
  */
-class PreDecrExpr extends DecrementOperation, @pre_decr_expr { }
+class PreDecrExpr extends DecrementOperation, @pre_decr_expr {
+  override string getAPrimaryQlClass() { result = "PreDecrExpr" }
+}
 
 /**
  * A postfix increment operation, for example `x++`.
  */
 class PostIncrExpr extends IncrementOperation, @post_incr_expr {
   override string toString() { result = "..." + this.getOperator() }
+
+  override string getAPrimaryQlClass() { result = "PostIncrExpr" }
 }
 
 /**
@@ -80,6 +90,8 @@ class PostIncrExpr extends IncrementOperation, @post_incr_expr {
  */
 class PostDecrExpr extends DecrementOperation, @post_decr_expr {
   override string toString() { result = "..." + this.getOperator() }
+
+  override string getAPrimaryQlClass() { result = "PostDecrExpr" }
 }
 
 /**
@@ -97,6 +109,8 @@ class BinaryArithmeticOperation extends ArithmeticOperation, BinaryOperation, @b
  */
 class AddExpr extends BinaryArithmeticOperation, @add_expr {
   override string getOperator() { result = "+" }
+
+  override string getAPrimaryQlClass() { result = "AddExpr" }
 }
 
 /**
@@ -104,6 +118,8 @@ class AddExpr extends BinaryArithmeticOperation, @add_expr {
  */
 class SubExpr extends BinaryArithmeticOperation, @sub_expr {
   override string getOperator() { result = "-" }
+
+  override string getAPrimaryQlClass() { result = "SubExpr" }
 }
 
 /**
@@ -111,6 +127,8 @@ class SubExpr extends BinaryArithmeticOperation, @sub_expr {
  */
 class MulExpr extends BinaryArithmeticOperation, @mul_expr {
   override string getOperator() { result = "*" }
+
+  override string getAPrimaryQlClass() { result = "MulExpr" }
 }
 
 /**
@@ -124,6 +142,8 @@ class DivExpr extends BinaryArithmeticOperation, @div_expr {
 
   /** Gets the denominator of this division operation. */
   Expr getDenominator() { result = getRightOperand() }
+
+  override string getAPrimaryQlClass() { result = "DivExpr" }
 }
 
 /**
@@ -131,4 +151,6 @@ class DivExpr extends BinaryArithmeticOperation, @div_expr {
  */
 class RemExpr extends BinaryArithmeticOperation, @rem_expr {
   override string getOperator() { result = "%" }
+
+  override string getAPrimaryQlClass() { result = "RemExpr" }
 }

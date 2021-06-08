@@ -149,19 +149,19 @@ variables(#20052,"o",#20000)
 #20053=*
 stmts(#20053,18,#20001,0,"var o = ... ;\n  }\n}")
 hasLocation(#20053,#20051)
-stmtContainers(#20053,#20001)
+stmt_containers(#20053,#20001)
 #20054=*
 exprs(#20054,64,#20053,0,"o = {\n  ... ;\n  }\n}")
 #20055=@"loc,{#10000},1,5,5,1"
 locations_default(#20055,#10000,1,5,5,1)
 hasLocation(#20054,#20055)
-enclosingStmt(#20054,#20053)
-exprContainers(#20054,#20001)
+enclosing_stmt(#20054,#20053)
+expr_containers(#20054,#20001)
 #20056=*
 exprs(#20056,78,#20054,0,"o")
 hasLocation(#20056,#20015)
-enclosingStmt(#20056,#20053)
-exprContainers(#20056,#20001)
+enclosing_stmt(#20056,#20053)
+expr_containers(#20056,#20001)
 literals("o","o",#20056)
 decl(#20056,#20052)
 #20057=*
@@ -169,8 +169,8 @@ exprs(#20057,8,#20054,1,"{\n  id< ... ;\n  }\n}")
 #20058=@"loc,{#10000},1,9,5,1"
 locations_default(#20058,#10000,1,9,5,1)
 hasLocation(#20057,#20058)
-enclosingStmt(#20057,#20053)
-exprContainers(#20057,#20001)
+enclosing_stmt(#20057,#20053)
+expr_containers(#20057,#20001)
 #20059=*
 properties(#20059,#20057,0,0,"id<A>(a ...  a;\n  }")
 #20060=@"loc,{#10000},2,3,4,3"
@@ -179,16 +179,16 @@ hasLocation(#20059,#20060)
 #20061=*
 exprs(#20061,0,#20059,0,"id")
 hasLocation(#20061,#20021)
-enclosingStmt(#20061,#20053)
-exprContainers(#20061,#20001)
+enclosing_stmt(#20061,#20053)
+expr_containers(#20061,#20001)
 literals("id","id",#20061)
 #20062=*
 exprs(#20062,9,#20059,1,"(a : A) ...  a;\n  }")
 #20063=@"loc,{#10000},2,8,4,3"
 locations_default(#20063,#10000,2,8,4,3)
 hasLocation(#20062,#20063)
-enclosingStmt(#20062,#20053)
-exprContainers(#20062,#20001)
+enclosing_stmt(#20062,#20053)
+expr_containers(#20062,#20001)
 #20064=*
 scopes(#20064,1)
 scopenodes(#20062,#20064)
@@ -200,32 +200,32 @@ exprs(#20066,78,#20062,0,"a : A")
 #20067=@"loc,{#10000},2,9,2,13"
 locations_default(#20067,#10000,2,9,2,13)
 hasLocation(#20066,#20067)
-exprContainers(#20066,#20062)
+expr_containers(#20066,#20062)
 literals("a","a",#20066)
 decl(#20066,#20065)
 #20068=@"var;{arguments};{#20064}"
 variables(#20068,"arguments",#20064)
-isArgumentsObject(#20068)
+is_arguments_object(#20068)
 #20069=*
 stmts(#20069,1,#20062,-2,"{\n    return a;\n  }")
 #20070=@"loc,{#10000},2,16,4,3"
 locations_default(#20070,#10000,2,16,4,3)
 hasLocation(#20069,#20070)
-stmtContainers(#20069,#20062)
+stmt_containers(#20069,#20062)
 #20071=*
 stmts(#20071,9,#20069,0,"return a;")
 #20072=@"loc,{#10000},3,5,3,13"
 locations_default(#20072,#10000,3,5,3,13)
 hasLocation(#20071,#20072)
-stmtContainers(#20071,#20062)
+stmt_containers(#20071,#20062)
 #20073=*
 exprs(#20073,79,#20071,0,"a")
 hasLocation(#20073,#20043)
-enclosingStmt(#20073,#20071)
-exprContainers(#20073,#20062)
+enclosing_stmt(#20073,#20071)
+expr_containers(#20073,#20062)
 literals("a","a",#20073)
 bind(#20073,#20065)
-isMethod(#20059)
+is_method(#20059)
 #20074=*
 entry_cfg_node(#20074,#20001)
 #20075=@"loc,{#10000},1,1,1,0"

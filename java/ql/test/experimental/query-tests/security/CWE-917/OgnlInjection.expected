@@ -1,0 +1,48 @@
+edges
+| OgnlInjection.java:15:39:15:63 | expr : String | OgnlInjection.java:17:19:17:22 | tree |
+| OgnlInjection.java:15:39:15:63 | expr : String | OgnlInjection.java:18:19:18:22 | tree |
+| OgnlInjection.java:15:39:15:63 | expr : String | OgnlInjection.java:20:17:20:27 | (...)... : Object |
+| OgnlInjection.java:20:17:20:27 | (...)... : Object | OgnlInjection.java:21:5:21:8 | node |
+| OgnlInjection.java:20:17:20:27 | (...)... : Object | OgnlInjection.java:22:5:22:8 | node |
+| OgnlInjection.java:26:41:26:65 | expr : String | OgnlInjection.java:28:19:28:22 | tree |
+| OgnlInjection.java:26:41:26:65 | expr : String | OgnlInjection.java:29:19:29:22 | tree |
+| OgnlInjection.java:26:41:26:65 | expr : String | OgnlInjection.java:31:5:31:8 | tree |
+| OgnlInjection.java:26:41:26:65 | expr : String | OgnlInjection.java:32:5:32:8 | tree |
+| OgnlInjection.java:36:40:36:64 | expr : String | OgnlInjection.java:37:19:37:22 | expr |
+| OgnlInjection.java:36:40:36:64 | expr : String | OgnlInjection.java:38:19:38:22 | expr |
+| OgnlInjection.java:42:26:42:50 | expr : String | OgnlInjection.java:44:19:44:22 | expr |
+| OgnlInjection.java:42:26:42:50 | expr : String | OgnlInjection.java:45:19:45:22 | expr |
+| OgnlInjection.java:42:26:42:50 | expr : String | OgnlInjection.java:46:31:46:34 | expr |
+nodes
+| OgnlInjection.java:15:39:15:63 | expr : String | semmle.label | expr : String |
+| OgnlInjection.java:17:19:17:22 | tree | semmle.label | tree |
+| OgnlInjection.java:18:19:18:22 | tree | semmle.label | tree |
+| OgnlInjection.java:20:17:20:27 | (...)... : Object | semmle.label | (...)... : Object |
+| OgnlInjection.java:21:5:21:8 | node | semmle.label | node |
+| OgnlInjection.java:22:5:22:8 | node | semmle.label | node |
+| OgnlInjection.java:26:41:26:65 | expr : String | semmle.label | expr : String |
+| OgnlInjection.java:28:19:28:22 | tree | semmle.label | tree |
+| OgnlInjection.java:29:19:29:22 | tree | semmle.label | tree |
+| OgnlInjection.java:31:5:31:8 | tree | semmle.label | tree |
+| OgnlInjection.java:32:5:32:8 | tree | semmle.label | tree |
+| OgnlInjection.java:36:40:36:64 | expr : String | semmle.label | expr : String |
+| OgnlInjection.java:37:19:37:22 | expr | semmle.label | expr |
+| OgnlInjection.java:38:19:38:22 | expr | semmle.label | expr |
+| OgnlInjection.java:42:26:42:50 | expr : String | semmle.label | expr : String |
+| OgnlInjection.java:44:19:44:22 | expr | semmle.label | expr |
+| OgnlInjection.java:45:19:45:22 | expr | semmle.label | expr |
+| OgnlInjection.java:46:31:46:34 | expr | semmle.label | expr |
+#select
+| OgnlInjection.java:17:19:17:22 | tree | OgnlInjection.java:15:39:15:63 | expr : String | OgnlInjection.java:17:19:17:22 | tree | OGNL expression might include input from $@. | OgnlInjection.java:15:39:15:63 | expr | this user input |
+| OgnlInjection.java:18:19:18:22 | tree | OgnlInjection.java:15:39:15:63 | expr : String | OgnlInjection.java:18:19:18:22 | tree | OGNL expression might include input from $@. | OgnlInjection.java:15:39:15:63 | expr | this user input |
+| OgnlInjection.java:21:5:21:8 | node | OgnlInjection.java:15:39:15:63 | expr : String | OgnlInjection.java:21:5:21:8 | node | OGNL expression might include input from $@. | OgnlInjection.java:15:39:15:63 | expr | this user input |
+| OgnlInjection.java:22:5:22:8 | node | OgnlInjection.java:15:39:15:63 | expr : String | OgnlInjection.java:22:5:22:8 | node | OGNL expression might include input from $@. | OgnlInjection.java:15:39:15:63 | expr | this user input |
+| OgnlInjection.java:28:19:28:22 | tree | OgnlInjection.java:26:41:26:65 | expr : String | OgnlInjection.java:28:19:28:22 | tree | OGNL expression might include input from $@. | OgnlInjection.java:26:41:26:65 | expr | this user input |
+| OgnlInjection.java:29:19:29:22 | tree | OgnlInjection.java:26:41:26:65 | expr : String | OgnlInjection.java:29:19:29:22 | tree | OGNL expression might include input from $@. | OgnlInjection.java:26:41:26:65 | expr | this user input |
+| OgnlInjection.java:31:5:31:8 | tree | OgnlInjection.java:26:41:26:65 | expr : String | OgnlInjection.java:31:5:31:8 | tree | OGNL expression might include input from $@. | OgnlInjection.java:26:41:26:65 | expr | this user input |
+| OgnlInjection.java:32:5:32:8 | tree | OgnlInjection.java:26:41:26:65 | expr : String | OgnlInjection.java:32:5:32:8 | tree | OGNL expression might include input from $@. | OgnlInjection.java:26:41:26:65 | expr | this user input |
+| OgnlInjection.java:37:19:37:22 | expr | OgnlInjection.java:36:40:36:64 | expr : String | OgnlInjection.java:37:19:37:22 | expr | OGNL expression might include input from $@. | OgnlInjection.java:36:40:36:64 | expr | this user input |
+| OgnlInjection.java:38:19:38:22 | expr | OgnlInjection.java:36:40:36:64 | expr : String | OgnlInjection.java:38:19:38:22 | expr | OGNL expression might include input from $@. | OgnlInjection.java:36:40:36:64 | expr | this user input |
+| OgnlInjection.java:44:19:44:22 | expr | OgnlInjection.java:42:26:42:50 | expr : String | OgnlInjection.java:44:19:44:22 | expr | OGNL expression might include input from $@. | OgnlInjection.java:42:26:42:50 | expr | this user input |
+| OgnlInjection.java:45:19:45:22 | expr | OgnlInjection.java:42:26:42:50 | expr : String | OgnlInjection.java:45:19:45:22 | expr | OGNL expression might include input from $@. | OgnlInjection.java:42:26:42:50 | expr | this user input |
+| OgnlInjection.java:46:31:46:34 | expr | OgnlInjection.java:42:26:42:50 | expr : String | OgnlInjection.java:46:31:46:34 | expr | OGNL expression might include input from $@. | OgnlInjection.java:42:26:42:50 | expr | this user input |

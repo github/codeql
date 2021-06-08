@@ -1,5 +1,9 @@
 | Assert.cs:10:22:10:30 | ... != ... | Assert.cs:10:22:10:22 | access to local variable s | false | true |
 | Assert.cs:10:22:10:30 | ... != ... | Assert.cs:10:22:10:22 | access to local variable s | true | false |
+| Assert.cs:14:23:14:23 | access to local variable s | Assert.cs:14:23:14:23 | access to local variable s | non-null | false |
+| Assert.cs:14:23:14:23 | access to local variable s | Assert.cs:14:23:14:23 | access to local variable s | null | true |
+| Assert.cs:18:26:18:26 | access to local variable s | Assert.cs:18:26:18:26 | access to local variable s | non-null | false |
+| Assert.cs:18:26:18:26 | access to local variable s | Assert.cs:18:26:18:26 | access to local variable s | null | true |
 | Assert.cs:22:23:22:31 | ... == ... | Assert.cs:22:23:22:23 | access to local variable s | false | false |
 | Assert.cs:22:23:22:31 | ... == ... | Assert.cs:22:23:22:23 | access to local variable s | true | true |
 | Assert.cs:26:23:26:31 | ... != ... | Assert.cs:26:23:26:23 | access to local variable s | false | true |
@@ -60,6 +64,10 @@
 | C.cs:41:22:41:30 | ... == ... | C.cs:41:22:41:22 | access to local variable s | true | true |
 | C.cs:45:22:45:30 | ... != ... | C.cs:45:22:45:22 | access to local variable s | false | true |
 | C.cs:45:22:45:30 | ... != ... | C.cs:45:22:45:22 | access to local variable s | true | false |
+| C.cs:56:23:56:24 | access to local variable o2 | C.cs:56:23:56:24 | access to local variable o2 | non-null | false |
+| C.cs:56:23:56:24 | access to local variable o2 | C.cs:56:23:56:24 | access to local variable o2 | null | true |
+| C.cs:71:26:71:27 | access to local variable o3 | C.cs:71:26:71:27 | access to local variable o3 | non-null | false |
+| C.cs:71:26:71:27 | access to local variable o3 | C.cs:71:26:71:27 | access to local variable o3 | null | true |
 | C.cs:78:13:78:24 | call to method IsNotNull | C.cs:78:23:78:23 | access to local variable o | false | true |
 | C.cs:78:13:78:24 | call to method IsNotNull | C.cs:78:23:78:23 | access to local variable o | true | false |
 | C.cs:82:14:82:22 | call to method IsNull | C.cs:82:21:82:21 | access to local variable o | false | false |
@@ -219,10 +227,12 @@
 | E.cs:175:19:175:29 | ... == ... | E.cs:175:19:175:21 | access to parameter obj | true | true |
 | E.cs:176:13:176:22 | ... == ... | E.cs:176:13:176:14 | (...) ... | false | false |
 | E.cs:176:13:176:22 | ... == ... | E.cs:176:13:176:14 | (...) ... | true | true |
+| E.cs:176:13:176:22 | ... == ... | E.cs:176:19:176:22 | null | true | false |
 | E.cs:180:13:180:23 | ... == ... | E.cs:180:13:180:15 | access to parameter obj | false | false |
 | E.cs:180:13:180:23 | ... == ... | E.cs:180:13:180:15 | access to parameter obj | true | true |
 | E.cs:184:13:184:22 | ... == ... | E.cs:184:13:184:14 | (...) ... | false | false |
 | E.cs:184:13:184:22 | ... == ... | E.cs:184:13:184:14 | (...) ... | true | true |
+| E.cs:184:13:184:22 | ... == ... | E.cs:184:19:184:22 | null | true | false |
 | E.cs:193:17:193:17 | access to parameter o | E.cs:193:17:193:17 | access to parameter o | non-null | false |
 | E.cs:193:17:193:17 | access to parameter o | E.cs:193:17:193:17 | access to parameter o | null | true |
 | E.cs:208:13:208:23 | ... is ... | E.cs:208:13:208:13 | access to parameter s | false | true |
@@ -276,6 +286,14 @@
 | E.cs:384:13:384:22 | ... == ... | E.cs:384:13:384:14 | access to parameter e1 | true | true |
 | E.cs:384:27:384:36 | ... == ... | E.cs:384:27:384:28 | access to parameter e2 | false | false |
 | E.cs:384:27:384:36 | ... == ... | E.cs:384:27:384:28 | access to parameter e2 | true | true |
+| E.cs:391:9:391:9 | access to parameter i | E.cs:391:9:391:9 | access to parameter i | non-null | false |
+| E.cs:391:9:391:9 | access to parameter i | E.cs:391:9:391:9 | access to parameter i | null | true |
+| E.cs:397:9:397:13 | access to parameter color | E.cs:397:9:397:13 | access to parameter color | non-null | false |
+| E.cs:397:9:397:13 | access to parameter color | E.cs:397:9:397:13 | access to parameter color | null | true |
+| E.cs:404:9:404:9 | access to local variable i | E.cs:404:9:404:9 | access to local variable i | non-null | false |
+| E.cs:404:9:404:9 | access to local variable i | E.cs:404:9:404:9 | access to local variable i | null | true |
+| E.cs:411:9:411:9 | access to local variable i | E.cs:411:9:411:9 | access to local variable i | non-null | false |
+| E.cs:411:9:411:9 | access to local variable i | E.cs:411:9:411:9 | access to local variable i | null | true |
 | Forwarding.cs:9:14:9:30 | call to method IsNullOrEmpty | Forwarding.cs:9:14:9:14 | access to local variable s | false | false |
 | Forwarding.cs:14:13:14:32 | call to method IsNotNullOrEmpty | Forwarding.cs:14:13:14:13 | access to local variable s | true | false |
 | Forwarding.cs:19:14:19:23 | call to method IsNull | Forwarding.cs:19:14:19:14 | access to local variable s | false | false |

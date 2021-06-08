@@ -17,3 +17,4 @@
 | A.java:74:5:74:47 | format(...) | This format call refers to 2 argument(s) but only supplies 1 argument(s). |
 | A.java:79:5:79:31 | format(...) | This format call refers to 3 argument(s) but only supplies 2 argument(s). |
 | A.java:84:5:84:31 | format(...) | This format call refers to 3 argument(s) but only supplies 2 argument(s). |
+| A.java:90:5:90:24 | formatted(...) | This format call refers to 2 argument(s) but only supplies 1 argument(s). |

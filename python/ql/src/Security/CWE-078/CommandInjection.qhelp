@@ -25,7 +25,7 @@ safe before using it.</p>
 
 <p>The following example shows two functions. The first is unsafe as it takes a shell script that can be changed
 by a user, and passes it straight to <code>subprocess.call()</code> without examining it first. 
-The second is safe as it selects the command from a predefined white-list.</p>
+The second is safe as it selects the command from a predefined allowlist.</p>
 
 <sample src="examples/command_injection.py" />
 

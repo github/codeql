@@ -1,8 +1,0 @@
-| esmodule | Augmentation | Augmentation |
-| esmodule | ExternalType1 | ExternalType1 |
-| esmodule | ExternalType2 | ExternalType2 |
-| esmodule/otherfile | OtherClass | OtherClass |
-| esmodule/util | UtilClass | UtilClass |
-| esmodule/util/extra | UtilExtraClass | UtilExtraClass |
-| legacy | LegacyClass | LegacyClass |
-| modern | ModernClass | ModernClass |

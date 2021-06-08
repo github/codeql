@@ -20,7 +20,7 @@ import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.ir.ValueNumbering
 private import semmle.code.cpp.ir.internal.CppType
 private import semmle.code.cpp.models.interfaces.Allocation
-private import semmle.code.cpp.rangeanalysis.RangeUtils
+private import experimental.semmle.code.cpp.rangeanalysis.RangeUtils
 
 private newtype TLength =
   TZeroLength() or

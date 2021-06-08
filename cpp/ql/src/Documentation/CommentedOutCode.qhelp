@@ -2,6 +2,6 @@
   "-//Semmle//qhelp//EN"
   "qhelp.dtd">
 <qhelp>
-  <include src="CommentedOutCodeQuery.qhelp" />
-  <include src="CommentedOutCodeReferences.qhelp" />
+  <include src="CommentedOutCodeQuery.inc.qhelp" />
+  <include src="../Metrics/Files/CommentedOutCodeReferences.inc.qhelp" />
 </qhelp>

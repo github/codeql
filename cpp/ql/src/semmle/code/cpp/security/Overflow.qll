@@ -1,19 +1,27 @@
-import cpp
-import semmle.code.cpp.controlflow.Dominance
-
-/*
- * Guarding
+/**
+ * Provides predicates for reasoning about when the value of an expression is
+ * guarded by an operation such as `<`, which confines its range.
  */
 
-/** is the size of this use guarded using 'abs'? */
+import cpp
+import semmle.code.cpp.controlflow.Dominance
+import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
+import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
+
+/**
+ * Holds if the value of `use` is guarded using `abs`.
+ */
 predicate guardedAbs(Operation e, Expr use) {
-  exists(FunctionCall fc | fc.getTarget().getName() = "abs" |
+  exists(FunctionCall fc | fc.getTarget().getName() = ["abs", "labs", "llabs", "imaxabs"] |
     fc.getArgument(0).getAChild*() = use and
     guardedLesser(e, fc)
   )
 }
 
-/** This is `BasicBlock.getNode`, restricted to `Stmt` for performance. */
+/**
+ * Gets the position of `stmt` in basic block `block` (this is a thin layer
+ * over `BasicBlock.getNode`, intended to improve performance).
+ */
 pragma[noinline]
 private int getStmtIndexInBlock(BasicBlock block, Stmt stmt) { block.getNode(result) = stmt }
 
@@ -30,7 +38,9 @@ private predicate stmtDominates(Stmt dominator, Stmt dominated) {
   bbStrictlyDominates(dominator.getBasicBlock(), dominated.getBasicBlock())
 }
 
-/** is the size of this use guarded to be less than something? */
+/**
+ * Holds if the value of `use` is guarded to be less than something.
+ */
 pragma[nomagic]
 predicate guardedLesser(Operation e, Expr use) {
   exists(IfStmt c, RelationalOperation guard |
@@ -54,7 +64,9 @@ predicate guardedLesser(Operation e, Expr use) {
   guardedAbs(e, use)
 }
 
-/** is the size of this use guarded to be greater than something? */
+/**
+ * Holds if the value of `use` is guarded to be greater than something.
+ */
 pragma[nomagic]
 predicate guardedGreater(Operation e, Expr use) {
   exists(IfStmt c, RelationalOperation guard |
@@ -78,11 +90,20 @@ predicate guardedGreater(Operation e, Expr use) {
   guardedAbs(e, use)
 }
 
-/** a use of a given variable */
+/**
+ * Gets a use of a given variable `v`.
+ */
 VariableAccess varUse(LocalScopeVariable v) { result = v.getAnAccess() }
 
-/** is e not guarded against overflow by use? */
+/**
+ * Holds if `e` potentially overflows and `use` is an operand of `e` that is not guarded.
+ */
 predicate missingGuardAgainstOverflow(Operation e, VariableAccess use) {
+  // Since `e` is guarenteed to be a `BinaryArithmeticOperation`, a `UnaryArithmeticOperation` or
+  // an `AssignArithmeticOperation` by the other constraints in this predicate, we know that
+  // `convertedExprMightOverflowPositively` will have a result even when `e` is not analyzable
+  // by `SimpleRangeAnalysis`.
+  convertedExprMightOverflowPositively(e) and
   use = e.getAnOperand() and
   exists(LocalScopeVariable v | use.getTarget() = v |
     // overflow possible if large
@@ -100,8 +121,15 @@ predicate missingGuardAgainstOverflow(Operation e, VariableAccess use) {
   )
 }
 
-/** is e not guarded against underflow by use? */
+/**
+ * Holds if `e` potentially underflows and `use` is an operand of `e` that is not guarded.
+ */
 predicate missingGuardAgainstUnderflow(Operation e, VariableAccess use) {
+  // Since `e` is guarenteed to be a `BinaryArithmeticOperation`, a `UnaryArithmeticOperation` or
+  // an `AssignArithmeticOperation` by the other constraints in this predicate, we know that
+  // `convertedExprMightOverflowNegatively` will have a result even when `e` is not analyzable
+  // by `SimpleRangeAnalysis`.
+  convertedExprMightOverflowNegatively(e) and
   use = e.getAnOperand() and
   exists(LocalScopeVariable v | use.getTarget() = v |
     // underflow possible if use is left operand and small

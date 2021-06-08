@@ -30,6 +30,8 @@
 | Capture.cs:203:28:203:30 | eh2 | Capture.cs:203:28:203:45 | MyEventHandler eh2 = ... | Capture.cs:204:27:204:29 | access to local variable eh2 |
 | Capture.cs:210:24:210:24 | p | Capture.cs:210:24:210:59 | Process p = ... | Capture.cs:213:17:213:17 | access to local variable p |
 | Capture.cs:212:30:212:35 | exited | Capture.cs:212:30:212:71 | EventHandler exited = ... | Capture.cs:213:29:213:34 | access to local variable exited |
+| Capture.cs:242:13:242:13 | i | Capture.cs:242:13:242:17 | Int32 i = ... | Capture.cs:254:27:254:27 | access to local variable i |
+| Capture.cs:242:13:242:13 | i | Capture.cs:254:27:254:27 | access to local variable i | Capture.cs:255:34:255:34 | access to local variable i |
 | Consistency.cs:7:25:7:25 | b | Consistency.cs:7:25:7:25 | b | Consistency.cs:11:17:11:17 | access to parameter b |
 | Consistency.cs:15:17:15:17 | i | Consistency.cs:15:17:15:21 | Int32 i = ... | Consistency.cs:16:17:16:17 | access to local variable i |
 | Consistency.cs:25:29:25:29 | c | Consistency.cs:25:29:25:29 | Consistency c | Consistency.cs:26:13:26:13 | access to local variable c |

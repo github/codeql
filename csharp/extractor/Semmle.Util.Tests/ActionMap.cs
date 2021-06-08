@@ -51,5 +51,3 @@ namespace SemmleTests.Semmle.Util
 
     }
 }
-
-

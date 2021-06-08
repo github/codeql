@@ -1,3 +1,7 @@
+/**
+ * Provides predicates and classes relating to encryption in Java.
+ */
+
 import java
 
 class SSLClass extends RefType {
@@ -25,13 +29,32 @@ class SSLContext extends RefType {
   SSLContext() { hasQualifiedName("javax.net.ssl", "SSLContext") }
 }
 
+/** The `javax.net.ssl.SSLSession` class. */
+class SSLSession extends RefType {
+  SSLSession() { hasQualifiedName("javax.net.ssl", "SSLSession") }
+}
+
 class HostnameVerifier extends RefType {
   HostnameVerifier() { hasQualifiedName("javax.net.ssl", "HostnameVerifier") }
 }
 
+/** The Java class `javax.crypto.KeyGenerator`. */
+class KeyGenerator extends RefType {
+  KeyGenerator() { this.hasQualifiedName("javax.crypto", "KeyGenerator") }
+}
+
+/** The Java class `java.security.KeyPairGenerator`. */
+class KeyPairGenerator extends RefType {
+  KeyPairGenerator() { this.hasQualifiedName("java.security", "KeyPairGenerator") }
+}
+
+/** The `verify` method of the class `javax.net.ssl.HostnameVerifier`. */
 class HostnameVerifierVerify extends Method {
   HostnameVerifierVerify() {
-    hasName("verify") and getDeclaringType().getASupertype*() instanceof HostnameVerifier
+    hasName("verify") and
+    getDeclaringType().getASupertype*() instanceof HostnameVerifier and
+    getParameterType(0) instanceof TypeString and
+    getParameterType(1) instanceof SSLSession
   }
 }
 
@@ -70,6 +93,14 @@ class SetHostnameVerifierMethod extends Method {
   }
 }
 
+/** The `setDefaultHostnameVerifier` method of the class `javax.net.ssl.HttpsURLConnection`. */
+class SetDefaultHostnameVerifierMethod extends Method {
+  SetDefaultHostnameVerifierMethod() {
+    hasName("setDefaultHostnameVerifier") and
+    getDeclaringType().getASupertype*() instanceof HttpsURLConnection
+  }
+}
+
 bindingset[algorithmString]
 private string algorithmRegex(string algorithmString) {
   // Algorithms usually appear in names surrounded by characters that are not
@@ -85,64 +116,106 @@ private string algorithmRegex(string algorithmString) {
       "((^|.*[A-Z]{2}|.*[^a-zA-Z])(" + algorithmString.toLowerCase() + ")([^a-z].*|$))"
 }
 
-/** Gets a blacklist of algorithms that are known to be insecure. */
-private string algorithmBlacklist() {
-  result = "DES" or
-  result = "RC2" or
-  result = "RC4" or
-  result = "RC5" or
-  result = "ARCFOUR" // a variant of RC4
+/**
+ * Gets the name of an algorithm that is known to be insecure.
+ */
+string getAnInsecureAlgorithmName() {
+  result =
+    [
+      "DES", "RC2", "RC4", "RC5",
+      // ARCFOUR is a variant of RC4
+      "ARCFOUR",
+      // Encryption mode ECB like AES/ECB/NoPadding is vulnerable to replay and other attacks
+      "ECB",
+      // CBC mode of operation with PKCS#5 or PKCS#7 padding is vulnerable to padding oracle attacks
+      "AES/CBC/PKCS[57]Padding"
+    ]
 }
 
-// These are only bad if they're being used for encryption.
-private string hashAlgorithmBlacklist() {
+/**
+ * Gets the name of a hash algorithm that is insecure if it is being used for
+ * encryption.
+ */
+string getAnInsecureHashAlgorithmName() {
   result = "SHA1" or
   result = "MD5"
 }
 
-private string rankedAlgorithmBlacklist(int i) {
+private string rankedInsecureAlgorithm(int i) {
   // In this case we know these are being used for encryption, so we want to match
   // weak hash algorithms too.
-  result = rank[i](string s | s = algorithmBlacklist() or s = hashAlgorithmBlacklist())
-}
-
-private string algorithmBlacklistString(int i) {
-  i = 1 and result = rankedAlgorithmBlacklist(i)
-  or
-  result = rankedAlgorithmBlacklist(i) + "|" + algorithmBlacklistString(i - 1)
-}
-
-/** Gets a regex for matching strings that look like they contain a blacklisted algorithm. */
-string algorithmBlacklistRegex() {
   result =
-    algorithmRegex(algorithmBlacklistString(max(int i | exists(rankedAlgorithmBlacklist(i)))))
+    rank[i](string s | s = getAnInsecureAlgorithmName() or s = getAnInsecureHashAlgorithmName())
 }
 
-/** Gets a whitelist of algorithms that are known to be secure. */
-private string algorithmWhitelist() {
-  result = "RSA" or
-  result = "SHA256" or
-  result = "SHA512" or
-  result = "CCM" or
-  result = "GCM" or
-  result = "AES" or
-  result = "Blowfish" or
-  result = "ECIES"
-}
-
-private string rankedAlgorithmWhitelist(int i) { result = rank[i](algorithmWhitelist()) }
-
-private string algorithmWhitelistString(int i) {
-  i = 1 and result = rankedAlgorithmWhitelist(i)
+private string insecureAlgorithmString(int i) {
+  i = 1 and result = rankedInsecureAlgorithm(i)
   or
-  result = rankedAlgorithmWhitelist(i) + "|" + algorithmWhitelistString(i - 1)
+  result = rankedInsecureAlgorithm(i) + "|" + insecureAlgorithmString(i - 1)
 }
 
-/** Gets a regex for matching strings that look like they contain a whitelisted algorithm. */
-string algorithmWhitelistRegex() {
-  result =
-    algorithmRegex(algorithmWhitelistString(max(int i | exists(rankedAlgorithmWhitelist(i)))))
+/**
+ * Gets the regular expression used for matching strings that look like they
+ * contain an algorithm that is known to be insecure.
+ */
+string getInsecureAlgorithmRegex() {
+  result = algorithmRegex(insecureAlgorithmString(max(int i | exists(rankedInsecureAlgorithm(i)))))
 }
+
+/**
+ * Gets the name of an algorithm that is known to be secure.
+ */
+string getASecureAlgorithmName() {
+  result =
+    [
+      "RSA", "SHA256", "SHA512", "CCM", "GCM", "AES([^a-zA-Z](?!ECB|CBC/PKCS[57]Padding)).*",
+      "Blowfish", "ECIES"
+    ]
+}
+
+private string rankedSecureAlgorithm(int i) { result = rank[i](getASecureAlgorithmName()) }
+
+private string secureAlgorithmString(int i) {
+  i = 1 and result = rankedSecureAlgorithm(i)
+  or
+  result = rankedSecureAlgorithm(i) + "|" + secureAlgorithmString(i - 1)
+}
+
+/**
+ * Gets a regular expression for matching strings that look like they
+ * contain an algorithm that is known to be secure.
+ */
+string getSecureAlgorithmRegex() {
+  result = algorithmRegex(secureAlgorithmString(max(int i | exists(rankedSecureAlgorithm(i)))))
+}
+
+/**
+ * DEPRECATED: Terminology has been updated. Use `getAnInsecureAlgorithmName()`
+ * instead.
+ */
+deprecated string algorithmBlacklist() { result = getAnInsecureAlgorithmName() }
+
+/**
+ * DEPRECATED: Terminology has been updated. Use
+ * `getAnInsecureHashAlgorithmName()` instead.
+ */
+deprecated string hashAlgorithmBlacklist() { result = getAnInsecureHashAlgorithmName() }
+
+/**
+ * DEPRECATED: Terminology has been updated. Use `getInsecureAlgorithmRegex()` instead.
+ */
+deprecated string algorithmBlacklistRegex() { result = getInsecureAlgorithmRegex() }
+
+/**
+ * DEPRECATED: Terminology has been updated. Use `getASecureAlgorithmName()`
+ * instead.
+ */
+deprecated string algorithmWhitelist() { result = getASecureAlgorithmName() }
+
+/**
+ * DEPRECATED: Terminology has been updated. Use `getSecureAlgorithmRegex()` instead.
+ */
+deprecated string algorithmWhitelistRegex() { result = getSecureAlgorithmRegex() }
 
 /**
  * Any use of a cryptographic element that specifies an encryption
@@ -185,7 +258,7 @@ class JavaxCryptoSecretKey extends JavaxCryptoAlgoSpec {
 class JavaxCryptoKeyGenerator extends JavaxCryptoAlgoSpec {
   JavaxCryptoKeyGenerator() {
     exists(Method m | m.getAReference() = this |
-      m.getDeclaringType().getQualifiedName() = "javax.crypto.KeyGenerator" and
+      m.getDeclaringType() instanceof KeyGenerator and
       m.getName() = "getInstance"
     )
   }
@@ -240,4 +313,16 @@ class JavaSecuritySignature extends JavaSecurityAlgoSpec {
   }
 
   override Expr getAlgoSpec() { result = this.(ConstructorCall).getArgument(0) }
+}
+
+/** A method call to the Java class `java.security.KeyPairGenerator`. */
+class JavaSecurityKeyPairGenerator extends JavaxCryptoAlgoSpec {
+  JavaSecurityKeyPairGenerator() {
+    exists(Method m | m.getAReference() = this |
+      m.getDeclaringType() instanceof KeyPairGenerator and
+      m.getName() = "getInstance"
+    )
+  }
+
+  override Expr getAlgoSpec() { result = this.(MethodAccess).getArgument(0) }
 }

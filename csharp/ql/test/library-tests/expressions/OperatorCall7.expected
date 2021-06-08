@@ -1,2 +1,2 @@
-| expressions.cs:452:21:452:35 | delegateCombine | expressions.cs:450:11:450:23 | OperatorCalls | expressions.cs:455:13:455:27 | access to local variable PropertyChanged | expressions.cs:479:30:479:39 | MyDelegate |
-| expressions.cs:452:21:452:35 | delegateCombine | expressions.cs:450:11:450:23 | OperatorCalls | expressions.cs:455:32:455:34 | access to parameter fun | expressions.cs:479:30:479:39 | MyDelegate |
+| expressions.cs:464:21:464:35 | delegateCombine | expressions.cs:462:11:462:23 | OperatorCalls | expressions.cs:467:13:467:27 | access to local variable PropertyChanged | expressions.cs:491:30:491:39 | MyDelegate |
+| expressions.cs:464:21:464:35 | delegateCombine | expressions.cs:462:11:462:23 | OperatorCalls | expressions.cs:467:32:467:34 | access to parameter fun | expressions.cs:491:30:491:39 | MyDelegate |

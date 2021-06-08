@@ -129,6 +129,9 @@ module Closure {
     container = result.getContainer()
   }
 
+  pragma[noinline]
+  private ClosureRequireCall getARequireInTopLevel(ClosureModule m) { result.getTopLevel() = m }
+
   /**
    * A module using the Closure module system, declared using `goog.module()` or `goog.declareModuleId()`.
    */
@@ -146,10 +149,8 @@ module Closure {
     string getClosureNamespace() { result = getModuleDeclaration().getClosureNamespace() }
 
     override Module getAnImportedModule() {
-      exists(ClosureRequireCall imprt |
-        imprt.getTopLevel() = this and
-        result.(ClosureModule).getClosureNamespace() = imprt.getClosureNamespace()
-      )
+      result.(ClosureModule).getClosureNamespace() =
+        getARequireInTopLevel(this).getClosureNamespace()
     }
 
     /**
@@ -165,9 +166,9 @@ module Closure {
       result = getScope().getVariable("exports")
     }
 
-    override predicate exports(string name, ASTNode export) {
+    override DataFlow::Node getAnExportedValue(string name) {
       exists(DataFlow::PropWrite write, Expr base |
-        write.getAstNode() = export and
+        result = write.getRhs() and
         write.writes(base.flow(), name, _) and
         (
           base = getExportsVariable().getAReference()

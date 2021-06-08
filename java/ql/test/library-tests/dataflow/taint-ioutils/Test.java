@@ -8,7 +8,7 @@ import java.util.List;
 import org.apache.commons.io.IOUtils;
 
 class Test {
-	public static void ioutils() {
+	public static void ioutils() throws java.io.FileNotFoundException, java.io.IOException {
 		InputStream inp = new FileInputStream("test"); // user input
 
 		InputStream buf = IOUtils.buffer(inp);
@@ -33,14 +33,14 @@ class Test {
 
 		byte x;
 		byte[] tgt = new byte[100];
-		x = tgt[0]; // not tainted
+		sink(tgt); // not tainted
 		IOUtils.read(inp, tgt);
-		x = tgt[0]; // tainted
+		sink(tgt); // tainted
 
 		tgt = new byte[100];
-		x = tgt[0]; // not tainted
+		sink(tgt); // not tainted
 		IOUtils.readFully(inp, tgt);
-		x = tgt[0]; // tainted
+		sink(tgt); // tainted
 
 		writer = new StringWriter();
 		writer.toString(); // not tainted
@@ -62,4 +62,6 @@ class Test {
 		IOUtils.writeLines(new ArrayList<String>(), s, writer);
 		writer.toString(); // tainted
 	}
+
+    static void sink(Object o) { }
 }

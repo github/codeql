@@ -70,7 +70,7 @@ predicate regExpMatchesString(RegExpTerm t, string s) {
 
 from MethodCallExpr repl, string s, string friendly
 where
-  repl.getMethodName() = "replace" and
+  repl.getMethodName() = ["replace", "replaceAll"] and
   matchesString(repl.getArgument(0), s) and
   repl.getArgument(1).getStringValue() = s and
   (if s = "" then friendly = "the empty string" else friendly = "'" + s + "'")

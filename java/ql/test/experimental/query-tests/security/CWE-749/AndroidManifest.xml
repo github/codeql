@@ -1,0 +1,51 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.app"
+    android:installLocation="auto"
+    android:versionCode="1"
+    android:versionName="0.1" >
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".UnsafeAndroidAccess"
+            android:icon="@drawable/ic_launcher"
+			android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".UnsafeActivity1" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+            </intent-filter>
+        </activity>
+        
+        <activity android:name=".UnsafeActivity2">
+            <intent-filter>
+            <action android:name="android.intent.action.VIEW"/>
+            </intent-filter>
+        </activity>
+        
+        <activity android:name=".SafeActivity1" android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".SafeActivity2" android:exported="false" />
+
+        <activity android:name=".SafeActivity3" />
+
+        <activity android:name=".UnsafeActivity3" android:exported="true" />
+        <activity android:name=".UnsafeActivity4" android:exported="true" />
+
+        <receiver android:name=".UnsafeAndroidBroadcastReceiver" android:exported="true" />        
+    </application>
+
+</manifest>

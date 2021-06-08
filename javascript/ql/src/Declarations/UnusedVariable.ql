@@ -58,6 +58,16 @@ predicate isReactForJSX(UnusedLocal v) {
         plugin.getJsxFactoryVariableName() = v.getName()
       )
     )
+    or
+    exists(JSONObject tsconfig |
+      tsconfig.isTopLevel() and tsconfig.getFile().getBaseName() = "tsconfig.json"
+    |
+      v.getName() =
+        tsconfig
+            .getPropValue("compilerOptions")
+            .getPropValue(["jsxFactory", "jsxFragmentFactory"])
+            .getStringValue()
+    )
   )
 }
 
@@ -93,7 +103,7 @@ predicate isEnumMember(VarDecl decl) { decl = any(EnumMember member).getIdentifi
  * "function f", "variable v" or "class c".
  */
 string describeVarDecl(VarDecl vd) {
-  if vd = any(Function f).getId()
+  if vd = any(Function f).getIdentifier()
   then result = "function " + vd.getName()
   else
     if vd = any(ClassDefinition c).getIdentifier()
@@ -115,7 +125,7 @@ class ImportVarDeclProvider extends Stmt {
    */
   VarDecl getAVarDecl() {
     result = this.(ImportDeclaration).getASpecifier().getLocal() or
-    result = this.(ImportEqualsDeclaration).getId()
+    result = this.(ImportEqualsDeclaration).getIdentifier()
   }
 
   /**

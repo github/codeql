@@ -1,32 +1,44 @@
 edges
 | ConditionalBypass.cs:14:26:14:48 | access to property QueryString : NameValueCollection | ConditionalBypass.cs:18:13:18:30 | ... == ... |
-| ConditionalBypass.cs:21:34:21:52 | access to property Cookies : HttpCookieCollection | ConditionalBypass.cs:24:13:24:29 | access to property Value : String |
-| ConditionalBypass.cs:21:34:21:52 | access to property Cookies : HttpCookieCollection | ConditionalBypass.cs:29:13:29:29 | access to property Value : String |
+| ConditionalBypass.cs:21:34:21:52 | access to property Cookies : HttpCookieCollection | ConditionalBypass.cs:24:13:24:23 | access to local variable adminCookie : HttpCookie |
+| ConditionalBypass.cs:21:34:21:52 | access to property Cookies : HttpCookieCollection | ConditionalBypass.cs:29:13:29:23 | access to local variable adminCookie : HttpCookie |
+| ConditionalBypass.cs:24:13:24:23 | access to local variable adminCookie : HttpCookie | ConditionalBypass.cs:24:13:24:29 | access to property Value : String |
 | ConditionalBypass.cs:24:13:24:29 | access to property Value : String | ConditionalBypass.cs:24:13:24:45 | call to method Equals |
+| ConditionalBypass.cs:29:13:29:23 | access to local variable adminCookie : HttpCookie | ConditionalBypass.cs:29:13:29:29 | access to property Value : String |
 | ConditionalBypass.cs:29:13:29:29 | access to property Value : String | ConditionalBypass.cs:29:13:29:40 | ... == ... |
-| ConditionalBypass.cs:44:32:44:66 | call to method GetHostByAddress : IPHostEntry | ConditionalBypass.cs:46:13:46:29 | access to property HostName : String |
-| ConditionalBypass.cs:44:32:44:66 | call to method GetHostByAddress : IPHostEntry | ConditionalBypass.cs:51:13:51:29 | access to property HostName |
+| ConditionalBypass.cs:44:32:44:66 | call to method GetHostByAddress : IPHostEntry | ConditionalBypass.cs:46:13:46:20 | access to local variable hostInfo : IPHostEntry |
+| ConditionalBypass.cs:44:32:44:66 | call to method GetHostByAddress : IPHostEntry | ConditionalBypass.cs:51:13:51:20 | access to local variable hostInfo : IPHostEntry |
+| ConditionalBypass.cs:46:13:46:20 | access to local variable hostInfo : IPHostEntry | ConditionalBypass.cs:46:13:46:29 | access to property HostName : String |
 | ConditionalBypass.cs:46:13:46:29 | access to property HostName : String | ConditionalBypass.cs:46:13:46:46 | ... == ... |
-| ConditionalBypass.cs:72:34:72:52 | access to property Cookies : HttpCookieCollection | ConditionalBypass.cs:74:13:74:29 | access to property Value : String |
+| ConditionalBypass.cs:51:13:51:20 | access to local variable hostInfo : IPHostEntry | ConditionalBypass.cs:51:13:51:29 | access to property HostName |
+| ConditionalBypass.cs:72:34:72:52 | access to property Cookies : HttpCookieCollection | ConditionalBypass.cs:74:13:74:23 | access to local variable adminCookie : HttpCookie |
+| ConditionalBypass.cs:74:13:74:23 | access to local variable adminCookie : HttpCookie | ConditionalBypass.cs:74:13:74:29 | access to property Value : String |
 | ConditionalBypass.cs:74:13:74:29 | access to property Value : String | ConditionalBypass.cs:74:13:74:40 | ... == ... |
-| ConditionalBypass.cs:85:34:85:52 | access to property Cookies : HttpCookieCollection | ConditionalBypass.cs:86:13:86:29 | access to property Value : String |
+| ConditionalBypass.cs:85:34:85:52 | access to property Cookies : HttpCookieCollection | ConditionalBypass.cs:86:13:86:23 | access to local variable adminCookie : HttpCookie |
+| ConditionalBypass.cs:86:13:86:23 | access to local variable adminCookie : HttpCookie | ConditionalBypass.cs:86:13:86:29 | access to property Value : String |
 | ConditionalBypass.cs:86:13:86:29 | access to property Value : String | ConditionalBypass.cs:86:13:86:40 | ... == ... |
 nodes
 | ConditionalBypass.cs:14:26:14:48 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
 | ConditionalBypass.cs:18:13:18:30 | ... == ... | semmle.label | ... == ... |
 | ConditionalBypass.cs:21:34:21:52 | access to property Cookies : HttpCookieCollection | semmle.label | access to property Cookies : HttpCookieCollection |
+| ConditionalBypass.cs:24:13:24:23 | access to local variable adminCookie : HttpCookie | semmle.label | access to local variable adminCookie : HttpCookie |
 | ConditionalBypass.cs:24:13:24:29 | access to property Value : String | semmle.label | access to property Value : String |
 | ConditionalBypass.cs:24:13:24:45 | call to method Equals | semmle.label | call to method Equals |
+| ConditionalBypass.cs:29:13:29:23 | access to local variable adminCookie : HttpCookie | semmle.label | access to local variable adminCookie : HttpCookie |
 | ConditionalBypass.cs:29:13:29:29 | access to property Value : String | semmle.label | access to property Value : String |
 | ConditionalBypass.cs:29:13:29:40 | ... == ... | semmle.label | ... == ... |
 | ConditionalBypass.cs:44:32:44:66 | call to method GetHostByAddress : IPHostEntry | semmle.label | call to method GetHostByAddress : IPHostEntry |
+| ConditionalBypass.cs:46:13:46:20 | access to local variable hostInfo : IPHostEntry | semmle.label | access to local variable hostInfo : IPHostEntry |
 | ConditionalBypass.cs:46:13:46:29 | access to property HostName : String | semmle.label | access to property HostName : String |
 | ConditionalBypass.cs:46:13:46:46 | ... == ... | semmle.label | ... == ... |
+| ConditionalBypass.cs:51:13:51:20 | access to local variable hostInfo : IPHostEntry | semmle.label | access to local variable hostInfo : IPHostEntry |
 | ConditionalBypass.cs:51:13:51:29 | access to property HostName | semmle.label | access to property HostName |
 | ConditionalBypass.cs:72:34:72:52 | access to property Cookies : HttpCookieCollection | semmle.label | access to property Cookies : HttpCookieCollection |
+| ConditionalBypass.cs:74:13:74:23 | access to local variable adminCookie : HttpCookie | semmle.label | access to local variable adminCookie : HttpCookie |
 | ConditionalBypass.cs:74:13:74:29 | access to property Value : String | semmle.label | access to property Value : String |
 | ConditionalBypass.cs:74:13:74:40 | ... == ... | semmle.label | ... == ... |
 | ConditionalBypass.cs:85:34:85:52 | access to property Cookies : HttpCookieCollection | semmle.label | access to property Cookies : HttpCookieCollection |
+| ConditionalBypass.cs:86:13:86:23 | access to local variable adminCookie : HttpCookie | semmle.label | access to local variable adminCookie : HttpCookie |
 | ConditionalBypass.cs:86:13:86:29 | access to property Value : String | semmle.label | access to property Value : String |
 | ConditionalBypass.cs:86:13:86:40 | ... == ... | semmle.label | ... == ... |
 #select

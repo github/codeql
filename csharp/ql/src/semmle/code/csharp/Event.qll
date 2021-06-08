@@ -4,11 +4,12 @@
 
 import Member
 import Type
+private import TypeRef
 
 /**
  * An event, for example `E` on line 3 in
  *
- * ```
+ * ```csharp
  * class C {
  *   delegate void D();
  *   public event D E;
@@ -42,7 +43,7 @@ class Event extends DeclarationWithAccessors, @event {
     not this.getAnEventAccessor().hasBody()
   }
 
-  override Event getSourceDeclaration() { events(this, _, _, _, result) }
+  override Event getUnboundDeclaration() { events(this, _, _, _, result) }
 
   override Event getOverridee() { result = DeclarationWithAccessors.super.getOverridee() }
 
@@ -61,13 +62,15 @@ class Event extends DeclarationWithAccessors, @event {
   }
 
   override Location getALocation() { event_location(this, result) }
+
+  override string getAPrimaryQlClass() { result = "Event" }
 }
 
 /**
  * An event accessor, for example `add` on line 4 or `remove`
  * on line 5 in
  *
- * ```
+ * ```csharp
  * class C {
  *   delegate void D();
  *   public event D E {
@@ -85,7 +88,7 @@ class EventAccessor extends Accessor, @event_accessor {
 
   override string getAssemblyName() { event_accessors(this, _, result, _, _) }
 
-  override EventAccessor getSourceDeclaration() { event_accessors(this, _, _, _, result) }
+  override EventAccessor getUnboundDeclaration() { event_accessors(this, _, _, _, result) }
 
   override Event getDeclaration() { event_accessors(this, _, _, result, _) }
 
@@ -95,7 +98,7 @@ class EventAccessor extends Accessor, @event_accessor {
 /**
  * An add event accessor, for example `add` on line 4 in
  *
- * ```
+ * ```csharp
  * class C {
  *   delegate void D();
  *   public event D E {
@@ -107,12 +110,14 @@ class EventAccessor extends Accessor, @event_accessor {
  */
 class AddEventAccessor extends EventAccessor, @add_event_accessor {
   override string getName() { result = "add" + "_" + getDeclaration().getName() }
+
+  override string getAPrimaryQlClass() { result = "AddEventAccessor" }
 }
 
 /**
  * A remove event accessor, for example `remove` on line 5 in
  *
- * ```
+ * ```csharp
  * class C {
  *   delegate void D();
  *   public event D E {
@@ -124,4 +129,6 @@ class AddEventAccessor extends EventAccessor, @add_event_accessor {
  */
 class RemoveEventAccessor extends EventAccessor, @remove_event_accessor {
   override string getName() { result = "remove" + "_" + getDeclaration().getName() }
+
+  override string getAPrimaryQlClass() { result = "RemoveEventAccessor" }
 }

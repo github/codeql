@@ -1,4 +1,0 @@
-| tst.ts:1:5:1:11 | hundred |
-| tst.ts:2:5:2:12 | bigValue |
-| tst.ts:3:5:3:20 | bigNegativeValue |
-| tst.ts:5:5:5:14 | bigintType |

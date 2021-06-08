@@ -29,8 +29,7 @@ class TaintTrackingConfiguration extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) {
     exists(MethodCall mc, string name, int arg |
       mc.getTarget().getName().matches(name) and
-      mc
-          .getTarget()
+      mc.getTarget()
           .getDeclaringType()
           .getABaseType*()
           .hasQualifiedName("System.Reflection.Assembly") and

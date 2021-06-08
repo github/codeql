@@ -1,0 +1,51 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Custom error messages for constraint validators support different types of interpolation, 
+including <a href="https://docs.jboss.org/hibernate/validator/5.1/reference/en-US/html/chapter-message-interpolation.html#section-interpolation-with-message-expressions">Java EL expressions</a>.
+Controlling part of the message template being passed to <code>ConstraintValidatorContext.buildConstraintViolationWithTemplate()</code>
+argument can lead to arbitrary Java code execution. Unfortunately, it is common that validated (and therefore, normally 
+untrusted) bean properties flow into the custom error message.</p>
+</overview>
+
+<recommendation>
+<p>There are different approaches to remediate the issue:</p>
+<ul>
+<li>Do not include validated bean properties in the custom error message.</li>
+<li>Use parameterized messages instead of string concatenation. For example:
+</li>
+</ul>
+<pre>HibernateConstraintValidatorContext context =
+   constraintValidatorContext.unwrap(HibernateConstraintValidatorContext.class);
+context.addMessageParameter("foo", "bar");
+context.buildConstraintViolationWithTemplate("My violation message contains a parameter {foo}")
+   .addConstraintViolation();</pre>
+<ul>
+<li>Sanitize the validated bean properties to make sure that there are no EL expressions. 
+An example of valid sanitization logic can be found <a href="https://github.com/hibernate/hibernate-validator/blob/master/engine/src/main/java/org/hibernate/validator/internal/engine/messageinterpolation/util/InterpolationHelper.java#L17">here</a>.</li>
+<li>Disable the EL interpolation and only use <code>ParameterMessageInterpolator</code>:
+</li>
+</ul>
+<pre>Validator validator = Validation.byDefaultProvider()
+   .configure()
+   .messageInterpolator(new ParameterMessageInterpolator())
+   .buildValidatorFactory()
+   .getValidator();</pre>
+<ul>
+<li>Replace Hibernate Validator with Apache BVal, which in its latest version does not interpolate EL expressions by default.
+Note that this replacement may not be a simple drop-in replacement.</li>
+</ul>
+</recommendation>
+
+<example>
+<p>The following validator could result in arbitrary Java code execution:</p>
+<sample src="InsecureBeanValidation.java" />
+</example>
+
+<references>
+<li>Hibernate Reference Guide: <a href="https://docs.jboss.org/hibernate/stable/validator/reference/en-US/html_single/#_the_code_constraintvalidatorcontext_code">ConstraintValidatorContext</a>.</li>
+<li>GitHub Security Lab research: <a href="https://securitylab.github.com/research/bean-validation-RCE">Bean validation</a>.</li>
+</references>
+</qhelp>

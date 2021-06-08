@@ -13,7 +13,7 @@ import Dereferenced
  * predicates that implement this analysis.
  */
 abstract class DataflowAnnotation extends string {
-  DataflowAnnotation() { this = "pointer-null" or this = "pointer-valid" }
+  DataflowAnnotation() { this = ["pointer-null", "pointer-valid"] }
 
   /** Holds if this annotation is the default annotation. */
   abstract predicate isDefault();
@@ -98,7 +98,7 @@ abstract class DataflowAnnotation extends string {
  * respectively.
  */
 class NullnessAnnotation extends DataflowAnnotation {
-  NullnessAnnotation() { this = "pointer-null" or this = "pointer-valid" }
+  NullnessAnnotation() { this = ["pointer-null", "pointer-valid"] }
 
   override predicate isDefault() { this = "pointer-valid" }
 

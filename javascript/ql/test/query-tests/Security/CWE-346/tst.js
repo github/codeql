@@ -48,7 +48,7 @@ server.on('request', (req, res) => {
 
 // syntactic header defintion
 probalyAServer.on('request', (req, res) => {
-    res.setHeader("Access-Control-Allow-Origin", null); // NOT OK (but not detected)
+    res.setHeader("Access-Control-Allow-Origin", null); // NOT OK (but not detected) [INCONSISTENCY]
     res.setHeader("Access-Control-Allow-Credentials", true);
 });
 

@@ -41,3 +41,5 @@
 | tst.js:79:1:79:45 | checkSh ... arg())) | OK |
 | tst.js:80:1:80:55 | checkSh ... arg())) | OK |
 | tst.js:81:1:81:51 | checkSh ... arg())) | OK |
+| tst.js:85:1:85:44 | checkDe ... arg())) | OK |
+| tst.js:86:1:86:61 | checkDe ... arg())) | OK |

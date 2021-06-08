@@ -14,6 +14,7 @@
 
 import File
 private import Attribute
+private import semmle.code.csharp.commons.Compilation
 
 /**
  * A location of a program element.
@@ -38,16 +39,16 @@ class Location extends @location {
   /** Gets a textual representation of this location. */
   string toString() { none() }
 
-  /** Gets the start line of this location. */
+  /** Gets the 1-based line number (inclusive) where this location starts. */
   final int getStartLine() { this.hasLocationInfo(_, result, _, _, _) }
 
-  /** Gets the end line of this location. */
+  /** Gets the 1-based line number (inclusive) where this location ends. */
   final int getEndLine() { this.hasLocationInfo(_, _, _, result, _) }
 
-  /** Gets the start column of this location. */
+  /** Gets the 1-based column number (inclusive) where this location starts. */
   final int getStartColumn() { this.hasLocationInfo(_, _, result, _, _) }
 
-  /** Gets the end column of this location. */
+  /** Gets the 1-based column number (inclusive) where this location ends. */
   final int getEndColumn() { this.hasLocationInfo(_, _, _, _, result) }
 }
 
@@ -61,6 +62,12 @@ class EmptyLocation extends Location {
  * within the file.
  */
 class SourceLocation extends Location, @location_default {
+  /** Gets the location that takes into account `#line` directives, if any. */
+  Location getMappedLocation() {
+    locations_mapped(this, result) and
+    not exists(LineDirective l | l.getALocation() = this)
+  }
+
   override File getFile() { locations_default(this, result, _, _, _, _) }
 
   override predicate hasLocationInfo(
@@ -170,6 +177,9 @@ class Assembly extends Location, Attributable, @assembly {
 
   /** Gets the version of this assembly. */
   Version getVersion() { assemblies(this, _, _, _, result) }
+
+  /** Gets the compilation producing this assembly, if any. */
+  Compilation getCompilation() { compilation_assembly(result, this) }
 
   override File getFile() { assemblies(this, result, _, _, _) }
 

@@ -11,7 +11,7 @@ private import semmle.code.cil.CallableReturns
 private import semmle.code.csharp.ExprOrStmtParent
 private import semmle.code.csharp.commons.Assertions
 private import semmle.code.csharp.frameworks.System
-private import semmle.code.csharp.controlflow.internal.Completion
+private import Completion
 
 /** A call that definitely does not return (conservative analysis). */
 abstract class NonReturningCall extends Call {
@@ -23,9 +23,7 @@ private class ExitingCall extends NonReturningCall {
   ExitingCall() {
     this.getTarget() instanceof ExitingCallable
     or
-    exists(AssertMethod m | m = this.(FailingAssertion).getAssertMethod() |
-      not exists(m.getExceptionClass())
-    )
+    this = any(FailingAssertion fa | fa.getAssertionFailure().isExit())
   }
 
   override ExitCompletion getACompletion() { not result instanceof NestedCompletion }
@@ -39,26 +37,41 @@ private class ThrowingCall extends NonReturningCall {
     (
       c = this.getTarget().(ThrowingCallable).getACallCompletion()
       or
-      exists(AssertMethod m | m = this.(FailingAssertion).getAssertMethod() |
-        c.getExceptionClass() = m.getExceptionClass()
-      )
+      this.(FailingAssertion).getAssertionFailure().isException(c.getExceptionClass())
       or
-      exists(CIL::Method m, CIL::Type ex |
-        this.getTarget().matchesHandle(m) and
+      exists(Callable target, CIL::Method m, CIL::Type ex |
+        target = this.getTarget() and
+        not target.hasBody() and
+        target.matchesHandle(m) and
         alwaysThrowsException(m, ex) and
         c.getExceptionClass().matchesHandle(ex) and
         not m.isVirtual()
       )
+      or
+      this =
+        any(MethodCall mc |
+          mc.getTarget()
+              .hasQualifiedName("System.Runtime.ExceptionServices.ExceptionDispatchInfo", "Throw") and
+          (
+            mc.hasNoArguments() and
+            c.getExceptionClass() instanceof SystemExceptionClass
+            or
+            c.getExceptionClass() = mc.getArgument(0).getType()
+          )
+        )
     )
   }
 
   override ThrowCompletion getACompletion() { result = c }
 }
 
+/** Holds if accessor `a` has an auto-implementation. */
+private predicate hasAccessorAutoImplementation(Accessor a) { not a.hasBody() }
+
 abstract private class NonReturningCallable extends Callable {
   NonReturningCallable() {
     not exists(ReturnStmt ret | ret.getEnclosingCallable() = this) and
-    not hasAccessorAutoImplementation(this, _) and
+    not hasAccessorAutoImplementation(this) and
     not exists(Virtualizable v | v.isOverridableOrImplementable() |
       v = this or
       v = this.(Accessor).getDeclaration()
@@ -80,7 +93,7 @@ private class DirectlyExitingCallable extends ExitingCallable {
 
 private class IndirectlyExitingCallable extends ExitingCallable {
   IndirectlyExitingCallable() {
-    forex(ControlFlowElement body | body = this.getABody() | body = getAnExitingElement())
+    forex(ControlFlowElement body | body = this.getBody() | body = getAnExitingElement())
   }
 }
 
@@ -104,11 +117,11 @@ private Stmt getAnExitingStmt() {
 
 private class ThrowingCallable extends NonReturningCallable {
   ThrowingCallable() {
-    forex(ControlFlowElement body | body = this.getABody() | body = getAThrowingElement(_))
+    forex(ControlFlowElement body | body = this.getBody() | body = getAThrowingElement(_))
   }
 
   /** Gets a valid completion for a call to this throwing callable. */
-  ThrowCompletion getACallCompletion() { this.getABody() = getAThrowingElement(result) }
+  ThrowCompletion getACallCompletion() { this.getBody() = getAThrowingElement(result) }
 }
 
 private predicate directlyThrows(ThrowElement te, ThrowCompletion c) {

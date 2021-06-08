@@ -1,12 +1,19 @@
+/**
+ * Provides classes for modeling output to standard output / standard error through various mechanisms such as `printf`, `puts` and `operator<<`.
+ */
+
 import cpp
 import FileWrite
 
 /**
- *  A function call that writes to standard output or standard error
+ * A function call that writes to standard output or standard error.
  */
 class OutputWrite extends Expr {
   OutputWrite() { outputWrite(this, _) }
 
+  /**
+   * Gets a source expression for this output.
+   */
   Expr getASource() { outputWrite(this, result) }
 }
 
@@ -41,25 +48,20 @@ private predicate outputFile(Expr e) {
       name = e.(VariableAccess).getTarget().(GlobalVariable).toString() or
       name = e.findRootCause().(Macro).getName()
     ) and
-    (
-      name = "stdout" or
-      name = "stderr"
-    )
+    name = ["stdout", "stderr"]
   )
 }
 
 /**
- * is the function call a write to standard output or standard error from 'source'
+ * Holds if the function call is a write to standard output or standard error from 'source'.
  */
 private predicate outputWrite(Expr write, Expr source) {
   exists(Function f, int arg |
     f = write.(Call).getTarget() and source = write.(Call).getArgument(arg)
   |
-    // printf
-    arg >= f.(Printf).getFormatParameterIndex()
-    or
-    // syslog
-    arg >= f.(Syslog).getFormatParameterIndex()
+    // printf / syslog
+    f.(FormattingFunction).isOutputGlobal() and
+    arg >= f.(FormattingFunction).getFormatParameterIndex()
     or
     // puts, putchar
     (

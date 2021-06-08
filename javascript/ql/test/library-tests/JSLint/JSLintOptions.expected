@@ -1,3 +1,0 @@
-| tst.js:11:2:11:50 | /*jslin ... en:80*/ | bitwise | false |
-| tst.js:11:2:11:50 | /*jslin ... en:80*/ | browser | true |
-| tst.js:11:2:11:50 | /*jslin ... en:80*/ | maxlen | 80 |

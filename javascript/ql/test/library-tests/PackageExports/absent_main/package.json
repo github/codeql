@@ -1,0 +1,4 @@
+{
+    "name": "foo",
+    "main": "dist/does-not-exist.js"
+}

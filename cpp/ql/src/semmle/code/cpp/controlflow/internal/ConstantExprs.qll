@@ -1,5 +1,6 @@
 import cpp
 private import PrimitiveBasicBlocks
+private import semmle.code.cpp.controlflow.internal.CFG
 
 private class Node = ControlFlowNodeBase;
 
@@ -103,9 +104,43 @@ private predicate loopConditionAlwaysUponEntry(ControlFlowNode loop, Expr condit
   )
 }
 
+/**
+ * This relation is the same as the `el instanceof Function`, only obfuscated
+ * so the optimizer will not understand that any `FunctionCall.getTarget()`
+ * should be in this relation.
+ */
+pragma[noinline]
+private predicate isFunction(Element el) {
+  el instanceof Function
+  or
+  el.(Expr).getParent() = el
+}
+
+/**
+ * Holds if `fc` is a `FunctionCall` with no return value for `getTarget`. This
+ * can happen in case of rare database inconsistencies.
+ */
+pragma[noopt]
+private predicate callHasNoTarget(@funbindexpr fc) {
+  exists(Function f |
+    funbind(fc, f) and
+    not isFunction(f)
+  )
+}
+
+// Pulled out for performance. See
+// https://github.com/github/codeql-coreql-team/issues/1044.
+private predicate potentiallyReturningFunctionCall_base(FunctionCall fc) {
+  fc.isVirtual()
+  or
+  callHasNoTarget(fc)
+}
+
 /** A function call that *may* return; if in doubt, we assume it may. */
 private predicate potentiallyReturningFunctionCall(FunctionCall fc) {
-  potentiallyReturningFunction(fc.getTarget()) or fc.isVirtual()
+  potentiallyReturningFunctionCall_base(fc)
+  or
+  potentiallyReturningFunction(fc.getTarget())
 }
 
 /** A function that *may* return; if in doubt, we assume it may. */
@@ -153,8 +188,8 @@ private predicate nonAnalyzableFunction(Function f) {
  */
 private predicate impossibleFalseEdge(Expr condition, Node succ) {
   conditionAlwaysTrue(condition) and
-  falsecond_base(condition, succ) and
-  not truecond_base(condition, succ)
+  qlCFGFalseSuccessor(condition, succ) and
+  not qlCFGTrueSuccessor(condition, succ)
 }
 
 /**
@@ -162,8 +197,8 @@ private predicate impossibleFalseEdge(Expr condition, Node succ) {
  */
 private predicate impossibleTrueEdge(Expr condition, Node succ) {
   conditionAlwaysFalse(condition) and
-  truecond_base(condition, succ) and
-  not falsecond_base(condition, succ)
+  qlCFGTrueSuccessor(condition, succ) and
+  not qlCFGFalseSuccessor(condition, succ)
 }
 
 /**
@@ -181,7 +216,7 @@ private int switchCaseRangeEnd(SwitchCase sc) {
  * body `switchBlock`. There may be several such expressions: for example, if
  * the condition is `(x ? y : z)` then the result is {`y`, `z`}.
  */
-private Node getASwitchExpr(SwitchStmt switch, Block switchBlock) {
+private Node getASwitchExpr(SwitchStmt switch, BlockStmt switchBlock) {
   switch.getStmt() = switchBlock and
   successors_extended(result, switchBlock)
 }
@@ -191,7 +226,7 @@ private Node getASwitchExpr(SwitchStmt switch, Block switchBlock) {
  * from `switchBlock` to `sc` is impossible. This considers only non-`default`
  * switch cases.
  */
-private predicate impossibleSwitchEdge(Block switchBlock, SwitchCase sc) {
+private predicate impossibleSwitchEdge(BlockStmt switchBlock, SwitchCase sc) {
   not sc instanceof DefaultCase and
   exists(SwitchStmt switch |
     switch = sc.getSwitchStmt() and
@@ -214,7 +249,7 @@ private predicate impossibleSwitchEdge(Block switchBlock, SwitchCase sc) {
  * If a switch provably always chooses a non-default case, then the edge to
  * the default case is impossible.
  */
-private predicate impossibleDefaultSwitchEdge(Block switchBlock, DefaultCase dc) {
+private predicate impossibleDefaultSwitchEdge(BlockStmt switchBlock, DefaultCase dc) {
   exists(SwitchStmt switch |
     switch = dc.getSwitchStmt() and
     switch.getStmt() = switchBlock and
@@ -278,20 +313,62 @@ private predicate reachableRecursive(ControlFlowNode n) {
   reachableRecursive(n.getAPredecessor())
 }
 
+/** Holds if `e` is a compile time constant with integer value `val`. */
 private predicate compileTimeConstantInt(Expr e, int val) {
-  val = e.getFullyConverted().getValue().toInt() and
-  not e instanceof StringLiteral and
-  not exists(Expr e1 | e1.getConversion() = e) // only values for fully converted expressions
+  (
+    // If we have an integer value then we are done.
+    if exists(e.getValue().toInt())
+    then val = e.getValue().toInt()
+    else
+      // Otherwise, if we are a conversion of another expression with an
+      // integer value, and that value can be converted into our type,
+      // then we have that value.
+      exists(Expr x, int valx |
+        x.getConversion() = e and
+        compileTimeConstantInt(x, valx) and
+        val = convertIntToType(valx, e.getType().getUnspecifiedType())
+      )
+  ) and
+  // If our unconverted expression is a string literal `"123"`, then we
+  // do not have integer value `123`.
+  not e.getUnconverted() instanceof StringLiteral
 }
 
-library class CompileTimeConstantInt extends Expr {
-  CompileTimeConstantInt() { compileTimeConstantInt(this, _) }
+/**
+ * Get `val` represented as type `t`, if that is possible without
+ * overflow or underflows.
+ */
+bindingset[val, t]
+private int convertIntToType(int val, IntegralType t) {
+  if t instanceof BoolType
+  then if val = 0 then result = 0 else result = 1
+  else
+    if t.isUnsigned()
+    then if val >= 0 and val.bitShiftRight(t.getSize() * 8) = 0 then result = val else none()
+    else
+      if val >= 0 and val.bitShiftRight(t.getSize() * 8 - 1) = 0
+      then result = val
+      else
+        if (-(val + 1)).bitShiftRight(t.getSize() * 8 - 1) = 0
+        then result = val
+        else none()
+}
 
-  int getIntValue() { compileTimeConstantInt(this, result) }
+/**
+ * INTERNAL: Do not use.
+ * An expression that has been found to have an integer value at compile
+ * time.
+ */
+class CompileTimeConstantInt extends Expr {
+  int val;
+
+  CompileTimeConstantInt() { compileTimeConstantInt(this.getFullyConverted(), val) }
+
+  int getIntValue() { result = val }
 }
 
 library class CompileTimeVariableExpr extends Expr {
-  CompileTimeVariableExpr() { not compileTimeConstantInt(this, _) }
+  CompileTimeVariableExpr() { not this instanceof CompileTimeConstantInt }
 }
 
 /** A helper class for evaluation of expressions. */
@@ -863,9 +940,9 @@ library class ConditionEvaluator extends ExprEvaluator {
   ConditionEvaluator() { this = 0 }
 
   override predicate interesting(Expr e) {
-    falsecond_base(e, _)
+    qlCFGFalseSuccessor(e, _)
     or
-    truecond_base(e, _)
+    qlCFGTrueSuccessor(e, _)
   }
 }
 

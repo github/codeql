@@ -1,0 +1,9 @@
+| test.cpp:2:6:2:17 | des_function | getInsecureAlgorithmRegex |
+| test.cpp:3:6:3:23 | function_using_des | getInsecureAlgorithmRegex |
+| test.cpp:4:6:4:19 | EncryptWithDES | getInsecureAlgorithmRegex |
+| test.cpp:6:6:6:17 | aes_function | getSecureAlgorithmRegex |
+| test.cpp:7:6:7:23 | function_using_aes | getSecureAlgorithmRegex |
+| test.cpp:8:6:8:22 | EncryptionWithAES | getSecureAlgorithmRegex |
+| test.cpp:10:6:10:17 | abc_function |  |
+| test.cpp:11:6:11:23 | function_using_abc |  |
+| test.cpp:12:6:12:22 | EncryptionWithABC |  |

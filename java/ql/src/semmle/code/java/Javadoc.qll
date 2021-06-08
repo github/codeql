@@ -53,6 +53,8 @@ class Javadoc extends JavadocParent, @javadoc {
 
   /** Gets the Java code element that is commented by this piece of Javadoc. */
   Documentable getCommentedElement() { result.getJavadoc() = this }
+
+  override string getAPrimaryQlClass() { result = "Javadoc" }
 }
 
 /** A documentable element that can have an attached Javadoc comment. */
@@ -79,7 +81,7 @@ abstract class JavadocElement extends @javadocElement, Top {
   abstract string getText();
 }
 
-/** A Javadoc tag. */
+/** A Javadoc block tag. This does not include inline tags. */
 class JavadocTag extends JavadocElement, JavadocParent, @javadocTag {
   /** Gets the name of this Javadoc tag. */
   string getTagName() { javadocTag(this, result, _, _) }
@@ -89,6 +91,8 @@ class JavadocTag extends JavadocElement, JavadocParent, @javadocTag {
 
   /** Gets the text associated with this Javadoc tag. */
   override string getText() { result = this.getChild(0).toString() }
+
+  override string getAPrimaryQlClass() { result = "JavadocTag" }
 }
 
 /** A Javadoc `@param` tag. */
@@ -139,4 +143,6 @@ class JavadocText extends JavadocElement, @javadocText {
 
   /** Gets a printable representation of this Javadoc element. */
   override string toString() { result = this.getText() }
+
+  override string getAPrimaryQlClass() { result = "JavadocText" }
 }

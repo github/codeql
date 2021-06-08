@@ -39,3 +39,13 @@
     factory2();
 
 })();
+
+(function pollute() {
+  class C {
+    foo() {
+      this.x; // Should not be a domValueRef
+    }
+  }
+  window.myApp = new C();
+  window.myApp.foo();
+})();

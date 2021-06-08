@@ -33,8 +33,8 @@ returned by <code>new</code> can never be null, so this check is superfluous.
 
 <li>
 Java Language Specification:
-<a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-12.html#jls-12.5">Creation of New Class Instances</a>,
-<a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-14.html#jls-14.20.1">Execution of try-catch</a>.
+<a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-12.html#jls-12.5">Creation of New Class Instances</a>,
+<a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-14.html#jls-14.20.1">Execution of try-catch</a>.
 </li>
 
 </references>

@@ -14,7 +14,7 @@ import cpp
 
 class ComplexStmt extends Stmt {
   ComplexStmt() {
-    exists(Block body |
+    exists(BlockStmt body |
       body = this.(Loop).getStmt() or
       body = this.(SwitchStmt).getStmt()
     |
@@ -24,7 +24,7 @@ class ComplexStmt extends Stmt {
   }
 }
 
-from Block b, int n, ComplexStmt complexStmt
+from BlockStmt b, int n, ComplexStmt complexStmt
 where
   n = strictcount(ComplexStmt s | s = b.getAStmt()) and
   n > 3 and

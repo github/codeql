@@ -8,23 +8,20 @@ import csharp
 /** An unsafe deserializer. */
 abstract class UnsafeDeserializer extends Callable { }
 
+/** An unsafe deserializer method in the `System.*` namespace. */
 class SystemDeserializer extends UnsafeDeserializer {
   SystemDeserializer() {
-    this
-        .hasQualifiedName("System.Runtime.Serialization.Formatters.Binary.BinaryFormatter",
-          "Deserialize")
+    this.hasQualifiedName("System.Runtime.Serialization.Formatters.Binary.BinaryFormatter",
+      "Deserialize")
     or
-    this
-        .hasQualifiedName("System.Runtime.Serialization.Formatters.Binary.BinaryFormatter",
-          "UnsafeDeserialize")
+    this.hasQualifiedName("System.Runtime.Serialization.Formatters.Binary.BinaryFormatter",
+      "UnsafeDeserialize")
     or
-    this
-        .hasQualifiedName("System.Runtime.Serialization.Formatters.Binary.BinaryFormatter",
-          "UnsafeDeserializeMethodResponse")
+    this.hasQualifiedName("System.Runtime.Serialization.Formatters.Binary.BinaryFormatter",
+      "UnsafeDeserializeMethodResponse")
     or
-    this
-        .hasQualifiedName("System.Runtime.Deserialization.Formatters.Soap.SoapFormatter",
-          "Deserialize")
+    this.hasQualifiedName("System.Runtime.Deserialization.Formatters.Soap.SoapFormatter",
+      "Deserialize")
     or
     this.hasQualifiedName("System.Web.UI.ObjectStateFormatter", "Deserialize")
     or
@@ -48,12 +45,17 @@ class SystemDeserializer extends UnsafeDeserializer {
   }
 }
 
+/** An unsafe deserializer method in the `Microsoft.*` namespace. */
 class MicrosoftDeserializer extends UnsafeDeserializer {
   MicrosoftDeserializer() {
     this.hasQualifiedName("Microsoft.Web.Design.Remote.ProxyObject", "DecodeValue")
   }
 }
 
+/**
+ * An unsafe deserializer method that calls any unsafe deserializer on any of
+ * the parameters.
+ */
 class WrapperDeserializer extends UnsafeDeserializer {
   WrapperDeserializer() {
     exists(Call call |

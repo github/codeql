@@ -1,3 +1,7 @@
+/**
+ * Provides classes related to the namespace `System.Text.RegularExpressions`.
+ */
+
 import default
 import semmle.code.csharp.frameworks.system.Text
 

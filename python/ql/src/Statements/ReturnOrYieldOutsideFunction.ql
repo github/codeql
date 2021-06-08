@@ -14,12 +14,12 @@ import python
 
 from AstNode node, string kind
 where
-    not node.getScope() instanceof Function and
-    (
-        node instanceof Return and kind = "return"
-        or
-        node instanceof Yield and kind = "yield"
-        or
-        node instanceof YieldFrom and kind = "yield from"
-    )
+  not node.getScope() instanceof Function and
+  (
+    node instanceof Return and kind = "return"
+    or
+    node instanceof Yield and kind = "yield"
+    or
+    node instanceof YieldFrom and kind = "yield from"
+  )
 select node, "'" + kind + "' is used outside a function."

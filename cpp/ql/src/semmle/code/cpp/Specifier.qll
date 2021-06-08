@@ -1,3 +1,7 @@
+/**
+ * Provides classes for modeling specifiers and attributes.
+ */
+
 import semmle.code.cpp.Element
 private import semmle.code.cpp.internal.ResolveClass
 
@@ -12,7 +16,7 @@ class Specifier extends Element, @specifier {
     result instanceof UnknownDefaultLocation
   }
 
-  override string getCanonicalQLClass() { result = "Specifier" }
+  override string getAPrimaryQlClass() { result = "Specifier" }
 
   /** Gets the name of this specifier. */
   string getName() { specifiers(underlyingElement(this), result) }
@@ -33,7 +37,7 @@ class FunctionSpecifier extends Specifier {
     this.hasName("explicit")
   }
 
-  override string getCanonicalQLClass() { result = "FunctionSpecifier)" }
+  override string getAPrimaryQlClass() { result = "FunctionSpecifier" }
 }
 
 /**
@@ -49,7 +53,7 @@ class StorageClassSpecifier extends Specifier {
     this.hasName("mutable")
   }
 
-  override string getCanonicalQLClass() { result = "StorageClassSpecifier" }
+  override string getAPrimaryQlClass() { result = "StorageClassSpecifier" }
 }
 
 /**
@@ -104,7 +108,7 @@ class AccessSpecifier extends Specifier {
     )
   }
 
-  override string getCanonicalQLClass() { result = "AccessSpecifier" }
+  override string getAPrimaryQlClass() { result = "AccessSpecifier" }
 }
 
 /**
@@ -167,8 +171,11 @@ class StdAttribute extends Attribute, @stdattribute {
 }
 
 /**
- * An attribute introduced by Microsoft's `__declspec(name)` syntax, for
- * example: `__declspec(dllimport)`.
+ * An attribute introduced by Microsoft's `__declspec(name)` syntax.  For
+ * example the attribute on the following declaration:
+ * ```
+ * __declspec(dllimport) void myFunction();
+ * ```
  */
 class Declspec extends Attribute, @declspec { }
 
@@ -182,8 +189,13 @@ class MicrosoftAttribute extends Attribute, @msattribute {
 }
 
 /**
- * A C++11 `alignas` construct.
- *
+ * A C++11 `alignas` construct. For example the attribute in the following
+ * code:
+ * ```
+ * struct alignas(16) MyStruct {
+ *   int x;
+ * };
+ * ```
  * Though it doesn't use the attribute syntax, `alignas(...)` is presented
  * as an `Attribute` for consistency with the `[[align(...)]]` attribute.
  */
@@ -193,7 +205,11 @@ class AlignAs extends Attribute, @alignas {
 
 /**
  * A GNU `format` attribute of the form `__attribute__((format(archetype, format-index, first-arg)))`
- * that declares a function to accept a `printf` style format string.
+ * that declares a function to accept a `printf` style format string.  For example the attribute
+ * on the following declaration:
+ * ```
+ * int myPrintf(const char *format, ...) __attribute__((format(printf, 1, 2)));
+ * ```
  */
 class FormatAttribute extends GnuAttribute {
   FormatAttribute() { getName() = "format" }
@@ -234,11 +250,15 @@ class FormatAttribute extends GnuAttribute {
     )
   }
 
-  override string getCanonicalQLClass() { result = "FormatAttribute" }
+  override string getAPrimaryQlClass() { result = "FormatAttribute" }
 }
 
 /**
- * An argument to an `Attribute`.
+ * An argument to an `Attribute`. For example the argument "dllimport" on the
+ * attribute in the following code:
+ * ```
+ * __declspec(dllimport) void myFunction();
+ * ```
  */
 class AttributeArgument extends Element, @attribute_arg {
   /**

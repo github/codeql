@@ -1,5 +1,5 @@
 WARNING: Predicate getNode has been deprecated and may be removed in future (TestStep.ql:6,77-84)
-WARNING: Predicate getNode has been deprecated and may be removed in future (TestStep.ql:8,17-24)
+WARNING: Predicate getNode has been deprecated and may be removed in future (TestStep.ql:8,15-22)
 | Taint simple.test | visitor.py:10 | arg | p2 = simple.test |  -->  | Taint simple.test | visitor.py:13 | arg | p2 = simple.test |
 | Taint simple.test | visitor.py:18 | arg |  |  -->  | Taint simple.test | visitor.py:19 | arg |  |
 | Taint simple.test | visitor.py:19 | arg |  |  -->  | Taint simple.test | visitor.py:26 | Attribute() |  |

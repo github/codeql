@@ -5,9 +5,9 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    class TypeAccess : Expression<ExpressionSyntax>
+    internal class TypeAccess : Expression<ExpressionSyntax>
     {
-        TypeAccess(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.TYPE_ACCESS)) { }
+        private TypeAccess(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.TYPE_ACCESS)) { }
 
         protected override void PopulateExpression(TextWriter trapFile)
         {
@@ -15,25 +15,39 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             {
                 case SyntaxKind.SimpleMemberAccessExpression:
                     var maes = (MemberAccessExpressionSyntax)Syntax;
-                    if (Type.Type.ContainingType == null)
+                    if (Type?.Symbol?.ContainingType is null)
                     {
                         // namespace qualifier
-                        TypeMention.Create(cx, maes.Name, this, Type, Syntax.GetLocation());
+                        TypeMention.Create(Context, maes.Name, this, Type, Syntax.GetLocation());
                     }
                     else
                     {
                         // type qualifier
-                        TypeMention.Create(cx, maes.Name, this, Type);
-                        Create(cx, maes.Expression, this, -1);
+                        TypeMention.Create(Context, maes.Name, this, Type);
+                        Create(Context, maes.Expression, this, -1);
                     }
                     return;
                 default:
-                    TypeMention.Create(cx, (TypeSyntax)Syntax, this, Type);
+                    TypeMention.Create(Context, (TypeSyntax)Syntax, this, Type);
                     return;
             }
         }
 
         public static Expression Create(ExpressionNodeInfo info) => new TypeAccess(info).TryPopulate();
+
+        public static Expression CreateGenerated(Context cx, IExpressionParentEntity parent, int childIndex, Microsoft.CodeAnalysis.ITypeSymbol type, Extraction.Entities.Location location)
+        {
+            var typeAccessInfo = new ExpressionInfo(
+                cx,
+                AnnotatedTypeSymbol.CreateNotAnnotated(type),
+                location,
+                ExprKind.TYPE_ACCESS,
+                parent,
+                childIndex,
+                true,
+                null);
+
+            return new Expression(typeAccessInfo);
+        }
     }
 }
-

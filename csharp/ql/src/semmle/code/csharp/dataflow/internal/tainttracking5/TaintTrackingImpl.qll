@@ -26,7 +26,7 @@ private import TaintTrackingParameter::Private
  * To create a configuration, extend this class with a subclass whose
  * characteristic predicate is a unique singleton string. For example, write
  *
- * ```
+ * ```ql
  * class MyAnalysisConfiguration extends TaintTracking::Configuration {
  *   MyAnalysisConfiguration() { this = "MyAnalysisConfiguration" }
  *   // Override `isSource` and `isSink`.
@@ -41,7 +41,7 @@ private import TaintTrackingParameter::Private
  * Then, to query whether there is flow between some `source` and `sink`,
  * write
  *
- * ```
+ * ```ql
  * exists(MyAnalysisConfiguration cfg | cfg.hasFlow(source, sink))
  * ```
  *
@@ -76,20 +76,20 @@ abstract class Configuration extends DataFlow::Configuration {
 
   final override predicate isBarrier(DataFlow::Node node) {
     isSanitizer(node) or
-    defaultTaintBarrier(node)
+    defaultTaintSanitizer(node)
   }
 
-  /** Holds if data flow into `node` is prohibited. */
+  /** Holds if taint propagation into `node` is prohibited. */
   predicate isSanitizerIn(DataFlow::Node node) { none() }
 
   final override predicate isBarrierIn(DataFlow::Node node) { isSanitizerIn(node) }
 
-  /** Holds if data flow out of `node` is prohibited. */
+  /** Holds if taint propagation out of `node` is prohibited. */
   predicate isSanitizerOut(DataFlow::Node node) { none() }
 
   final override predicate isBarrierOut(DataFlow::Node node) { isSanitizerOut(node) }
 
-  /** Holds if data flow through nodes guarded by `guard` is prohibited. */
+  /** Holds if taint propagation through nodes guarded by `guard` is prohibited. */
   predicate isSanitizerGuard(DataFlow::BarrierGuard guard) { none() }
 
   final override predicate isBarrierGuard(DataFlow::BarrierGuard guard) { isSanitizerGuard(guard) }

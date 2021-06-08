@@ -1,6 +1,7 @@
 private import cpp
 private import DataFlowUtil
 private import DataFlowDispatch
+private import FlowVar
 
 /** Gets the instance argument of a non-static call. */
 private Node getInstanceArgument(Call call) {
@@ -106,7 +107,7 @@ private class ExprOutNode extends OutNode, ExprNode {
   override DataFlowCall getCall() { result = this.getExpr() }
 }
 
-private class RefOutNode extends OutNode, DefinitionByReferenceNode {
+private class RefOutNode extends OutNode, DefinitionByReferenceOrIteratorNode {
   /** Gets the underlying call. */
   override DataFlowCall getCall() { result = this.getArgument().getParent() }
 }
@@ -120,7 +121,7 @@ OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
   kind = TNormalReturnKind()
   or
   exists(int i |
-    result.asDefiningArgument() = call.getArgument(i) and
+    result.(DefinitionByReferenceOrIteratorNode).getArgument() = call.getArgument(i) and
     kind = TRefReturnKind(i)
   )
 }
@@ -148,12 +149,6 @@ class Content extends TContent {
   predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     path = "" and sl = 0 and sc = 0 and el = 0 and ec = 0
   }
-
-  /** Gets the type of the object containing this content. */
-  abstract Type getContainerType();
-
-  /** Gets the type of this content. */
-  abstract Type getType();
 }
 
 private class FieldContent extends Content, TFieldContent {
@@ -168,26 +163,14 @@ private class FieldContent extends Content, TFieldContent {
   override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     f.getLocation().hasLocationInfo(path, sl, sc, el, ec)
   }
-
-  override Type getContainerType() { result = f.getDeclaringType() }
-
-  override Type getType() { result = f.getType() }
 }
 
 private class CollectionContent extends Content, TCollectionContent {
   override string toString() { result = "collection" }
-
-  override Type getContainerType() { none() }
-
-  override Type getType() { none() }
 }
 
 private class ArrayContent extends Content, TArrayContent {
   override string toString() { result = "array" }
-
-  override Type getContainerType() { none() }
-
-  override Type getType() { none() }
 }
 
 /**
@@ -235,16 +218,19 @@ predicate readStep(Node node1, Content f, Node node2) {
 }
 
 /**
- * Gets a representative (boxed) type for `t` for the purpose of pruning
- * possible flow. A single type is used for all numeric types to account for
- * numeric conversions, and otherwise the erasure is used.
+ * Holds if values stored inside content `c` are cleared at node `n`.
  */
-Type getErasedRepr(Type t) {
-  suppressUnusedType(t) and
+predicate clearsContent(Node n, Content c) {
+  none() // stub implementation
+}
+
+/** Gets the type of `n` used for type pruning. */
+Type getNodeType(Node n) {
+  suppressUnusedNode(n) and
   result instanceof VoidType // stub implementation
 }
 
-/** Gets a string representation of a type returned by `getErasedRepr`. */
+/** Gets a string representation of a type returned by `getNodeType`. */
 string ppReprType(Type t) { none() } // stub implementation
 
 /**
@@ -256,7 +242,7 @@ predicate compatibleTypes(Type t1, Type t2) {
   any() // stub implementation
 }
 
-private predicate suppressUnusedType(Type t) { any() }
+private predicate suppressUnusedNode(Node n) { any() }
 
 //////////////////////////////////////////////////////////////////////////////
 // Java QL library compatibility wrappers
@@ -294,6 +280,15 @@ predicate isUnreachableInCall(Node n, DataFlowCall call) { none() } // stub impl
 
 int accessPathLimit() { result = 5 }
 
+/** The unit type. */
+private newtype TUnit = TMkUnit()
+
+/** The trivial type with a single element. */
+class Unit extends TUnit {
+  /** Gets a textual representation of this element. */
+  string toString() { result = "unit" }
+}
+
 /**
  * Holds if `n` does not require a `PostUpdateNode` as it either cannot be
  * modified or its modification cannot be observed, for example if it is a
@@ -314,3 +309,17 @@ predicate isImmutableOrUnobservable(Node n) {
   // The above list of cases isn't exhaustive, but it narrows down the
   // consistency alerts enough that most of them are interesting.
 }
+
+/** Holds if `n` should be hidden from path explanations. */
+predicate nodeIsHidden(Node n) { none() }
+
+class LambdaCallKind = Unit;
+
+/** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
+predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) { none() }
+
+/** Holds if `call` is a lambda call of kind `kind` where `receiver` is the lambda expression. */
+predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) { none() }
+
+/** Extra data-flow steps needed for lambda flow analysis. */
+predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }

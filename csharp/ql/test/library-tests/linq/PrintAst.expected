@@ -1,0 +1,222 @@
+queries.cs:
+#    5| [Class] Queries
+#    7|   5: [Method] Queries1
+#    7|     -1: [TypeMention] Void
+#    8|     4: [BlockStmt] {...}
+#    9|       0: [LocalVariableDeclStmt] ... ...;
+#    9|         0: [LocalVariableDeclAndInitExpr] IList<Int32> list1 = ...
+#    9|           -1: [TypeMention] IList<Int32>
+#    9|             1: [TypeMention] int
+#    9|           0: [LocalVariableAccess] access to local variable list1
+#    9|           1: [ObjectCreation] object creation of type List<Int32>
+#    9|             -2: [TypeMention] List<Int32>
+#    9|               1: [TypeMention] int
+#    9|             -1: [CollectionInitializer] { ..., ... }
+#    9|               0: [ElementInitializer] call to method Add
+#    9|                 0: [IntLiteral] 1
+#    9|               1: [ElementInitializer] call to method Add
+#    9|                 0: [IntLiteral] 2
+#    9|               2: [ElementInitializer] call to method Add
+#    9|                 0: [IntLiteral] 3
+#   10|       1: [LocalVariableDeclStmt] ... ...;
+#   10|         0: [LocalVariableDeclAndInitExpr] IList<IList<Int32>> list2 = ...
+#   10|           -1: [TypeMention] IList<IList<Int32>>
+#   10|             1: [TypeMention] IList<Int32>
+#   10|               1: [TypeMention] int
+#   10|           0: [LocalVariableAccess] access to local variable list2
+#   10|           1: [ObjectCreation] object creation of type List<IList<Int32>>
+#   10|             -2: [TypeMention] List<IList<Int32>>
+#   10|               1: [TypeMention] IList<Int32>
+#   10|                 1: [TypeMention] int
+#   10|             -1: [CollectionInitializer] { ..., ... }
+#   10|               0: [ElementInitializer] call to method Add
+#   10|                 0: [LocalVariableAccess] access to local variable list1
+#   10|               1: [ElementInitializer] call to method Add
+#   10|                 0: [LocalVariableAccess] access to local variable list1
+#   12|       2: [LocalVariableDeclStmt] ... ...;
+#   12|         0: [LocalVariableDeclAndInitExpr] IEnumerable<Int32> list3 = ...
+#   12|           -1: [TypeMention] IEnumerable<Int32>
+#   12|           0: [LocalVariableAccess] access to local variable list3
+#   16|           1: [MethodCall] call to method Select
+#   15|             0: [MethodCall] call to method OrderBy
+#   14|               0: [MethodCall] call to method Where
+#   13|                 0: [LocalVariableDeclAndInitExpr] Int32 a = ...
+#   13|                   0: [LocalVariableAccess] access to local variable a
+#   13|                   1: [LocalVariableAccess] access to local variable list1
+#   14|                 1: [LogicalOrExpr] ... || ...
+#   14|                   0: [EQExpr] ... == ...
+#   14|                     0: [LocalVariableAccess] access to local variable a
+#   14|                     1: [IntLiteral] 2
+#   14|                   1: [EQExpr] ... == ...
+#   14|                     0: [LocalVariableAccess] access to local variable a
+#   14|                     1: [IntLiteral] 3
+#   15|               1: [LocalVariableAccess] access to local variable a
+#   16|             1: [AddExpr] ... + ...
+#   16|               0: [LocalVariableAccess] access to local variable a
+#   16|               1: [IntLiteral] 1
+#   18|       3: [LocalVariableDeclStmt] ... ...;
+#   18|         0: [LocalVariableDeclAndInitExpr] IEnumerable<Int32> list4 = ...
+#   18|           -1: [TypeMention] IEnumerable<Int32>
+#   18|           0: [LocalVariableAccess] access to local variable list4
+#   18|           1: [MethodCall] call to method Select
+#   18|             -1: [MethodCall] call to method OrderBy
+#   18|               -1: [MethodCall] call to method Where
+#   18|                 -1: [LocalVariableAccess] access to local variable list1
+#   19|                 0: [LambdaExpr] (...) => ...
+#-----|                   2: (Parameters)
+#   19|                     0: [Parameter] a
+#   19|                   4: [LogicalOrExpr] ... || ...
+#   19|                     0: [EQExpr] ... == ...
+#   19|                       0: [ParameterAccess] access to parameter a
+#   19|                       1: [IntLiteral] 2
+#   19|                     1: [EQExpr] ... == ...
+#   19|                       0: [ParameterAccess] access to parameter a
+#   19|                       1: [IntLiteral] 3
+#   20|               0: [LambdaExpr] (...) => ...
+#-----|                 2: (Parameters)
+#   20|                   0: [Parameter] a
+#   20|                 4: [ParameterAccess] access to parameter a
+#   21|             0: [LambdaExpr] (...) => ...
+#-----|               2: (Parameters)
+#   21|                 0: [Parameter] a
+#   21|               4: [AddExpr] ... + ...
+#   21|                 0: [ParameterAccess] access to parameter a
+#   21|                 1: [IntLiteral] 1
+#   23|       4: [LocalVariableDeclStmt] ... ...;
+#   23|         0: [LocalVariableDeclAndInitExpr] IEnumerable<Int32> list5 = ...
+#   23|           -1: [TypeMention] IEnumerable<Int32>
+#   23|           0: [LocalVariableAccess] access to local variable list5
+#   28|           1: [MethodCall] call to method 
+#   27|             0: [MethodCall] call to method Join
+#   26|               0: [MethodCall] call to method Select
+#   25|                 0: [MethodCall] call to method SelectMany
+#   24|                   0: [LocalVariableDeclAndInitExpr] IList<Int32> a = ...
+#   24|                     0: [LocalVariableAccess] access to local variable a
+#   24|                     1: [LocalVariableAccess] access to local variable list2
+#   25|                   1: [LocalVariableDeclAndInitExpr] IList<Int32> b = ...
+#   25|                     0: [LocalVariableAccess] access to local variable b
+#   25|                     1: [LocalVariableAccess] access to local variable a
+#   25|                   2: [LocalVariableAccess] access to local variable a
+#   26|                 1: [LocalVariableDeclAndInitExpr] Int32 next = ...
+#   26|                   0: [LocalVariableAccess] access to local variable next
+#   26|                   1: [AddExpr] ... + ...
+#   26|                     0: [LocalVariableAccess] access to local variable b
+#   26|                     1: [IntLiteral] 1
+#   26|                 2: [AddExpr] ... + ...
+#   26|                   0: [LocalVariableAccess] access to local variable b
+#   26|                   1: [IntLiteral] 1
+#   27|               1: [LocalVariableDeclAndInitExpr] IList<Int32> c = ...
+#   27|                 0: [LocalVariableAccess] access to local variable c
+#   27|                 1: [LocalVariableAccess] access to local variable list1
+#   27|               2: [LocalVariableAccess] access to local variable list1
+#   27|               3: [LocalVariableAccess] access to local variable next
+#   27|               4: [LocalVariableAccess] access to local variable c
+#   28|             1: [IntLiteral] 1
+#   30|       5: [LocalVariableDeclStmt] ... ...;
+#   30|         0: [LocalVariableDeclAndInitExpr] IEnumerable<IGrouping<Int32,Int32>> list6 = ...
+#   30|           -1: [TypeMention] IEnumerable<IGrouping<Int32,Int32>>
+#   30|           0: [LocalVariableAccess] access to local variable list6
+#   35|           1: [MethodCall] call to method GroupBy
+#   34|             0: [MethodCall] call to method OrderByDescending
+#   33|               0: [MethodCall] call to method Select
+#   32|                 0: [MethodCall] call to method SelectMany
+#   31|                   0: [LocalVariableDeclAndInitExpr] IList<Int32> a = ...
+#   31|                     0: [LocalVariableAccess] access to local variable a
+#   31|                     1: [LocalVariableAccess] access to local variable list2
+#   32|                   1: [LocalVariableDeclAndInitExpr] IList<Int32> b = ...
+#   32|                     0: [LocalVariableAccess] access to local variable b
+#   32|                     1: [LocalVariableAccess] access to local variable a
+#   32|                   2: [LocalVariableAccess] access to local variable a
+#   33|                 1: [LocalVariableDeclAndInitExpr] Int32 next = ...
+#   33|                   0: [LocalVariableAccess] access to local variable next
+#   33|                   1: [AddExpr] ... + ...
+#   33|                     0: [LocalVariableAccess] access to local variable b
+#   33|                     1: [IntLiteral] 1
+#   33|                 2: [AddExpr] ... + ...
+#   33|                   0: [LocalVariableAccess] access to local variable b
+#   33|                   1: [IntLiteral] 1
+#   34|               1: [MulExpr] ... * ...
+#   34|                 0: [LocalVariableAccess] access to local variable next
+#   34|                 1: [IntLiteral] 2
+#   35|             1: [LocalVariableAccess] access to local variable b
+#   35|             2: [LocalVariableAccess] access to local variable next
+#   37|       6: [LocalVariableDeclStmt] ... ...;
+#   37|         0: [LocalVariableDeclAndInitExpr] B list7 = ...
+#   37|           -1: [TypeMention] B
+#   37|           0: [LocalVariableAccess] access to local variable list7
+#   37|           1: [ObjectCreation] object creation of type B
+#   37|             0: [TypeMention] B
+#   39|       7: [LocalVariableDeclStmt] ... ...;
+#   39|         0: [LocalVariableDeclAndInitExpr] IEnumerable<Object> list8 = ...
+#   39|           -1: [TypeMention] IEnumerable<Object>
+#   39|           0: [LocalVariableAccess] access to local variable list8
+#   41|           1: [MethodCall] call to method Select
+#   40|             0: [LocalVariableDeclAndInitExpr] Object a = ...
+#   40|               -1: [TypeMention] object
+#   40|               0: [LocalVariableAccess] access to local variable a
+#   40|               1: [LocalVariableAccess] access to local variable list7
+#   41|             1: [LocalVariableAccess] access to local variable a
+#   43|       8: [LocalVariableDeclStmt] ... ...;
+#   43|         0: [LocalVariableDeclAndInitExpr] C list9 = ...
+#   43|           -1: [TypeMention] C
+#   43|           0: [LocalVariableAccess] access to local variable list9
+#   43|           1: [ObjectCreation] object creation of type C
+#   43|             0: [TypeMention] C
+#   45|       9: [LocalVariableDeclStmt] ... ...;
+#   45|         0: [LocalVariableDeclAndInitExpr] IEnumerable<Int32> list10 = ...
+#   45|           -1: [TypeMention] IEnumerable<Int32>
+#   45|           0: [LocalVariableAccess] access to local variable list10
+#   47|           1: [MethodCall] call to method Select
+#   46|             0: [LocalVariableDeclAndInitExpr] Int32 a = ...
+#   46|               0: [LocalVariableAccess] access to local variable a
+#   46|               1: [LocalVariableAccess] access to local variable list9
+#   47|             1: [LocalVariableAccess] access to local variable a
+#   49|       10: [LocalVariableDeclStmt] ... ...;
+#   49|         0: [LocalVariableDeclAndInitExpr] IEnumerable<String> list11 = ...
+#   49|           -1: [TypeMention] IEnumerable<String>
+#   49|           0: [LocalVariableAccess] access to local variable list11
+#   51|           1: [MethodCall] call to method Select
+#   50|             0: [LocalVariableDeclAndInitExpr] String a = ...
+#   50|               -1: [TypeMention] string
+#   50|               0: [LocalVariableAccess] access to local variable a
+#   50|               1: [LocalVariableAccess] access to local variable list7
+#   51|             1: [LocalVariableAccess] access to local variable a
+#   53|       11: [LocalVariableDeclStmt] ... ...;
+#   53|         0: [LocalVariableDeclAndInitExpr] IEnumerable<(Int32,IEnumerable<IList<Int32>>)> list12 = ...
+#   53|           -1: [TypeMention] IEnumerable<(Int32,IEnumerable<IList<Int32>>)>
+#   53|           0: [LocalVariableAccess] access to local variable list12
+#   56|           1: [MethodCall] call to method 
+#   55|             0: [MethodCall] call to method GroupJoin
+#   54|               0: [LocalVariableDeclAndInitExpr] Int32 a = ...
+#   54|                 0: [LocalVariableAccess] access to local variable a
+#   54|                 1: [LocalVariableAccess] access to local variable list1
+#   55|               1: [LocalVariableDeclAndInitExpr] IList<IList<Int32>> c = ...
+#   55|                 0: [LocalVariableAccess] access to local variable c
+#   55|                 1: [LocalVariableAccess] access to local variable list2
+#   55|               2: [LocalVariableAccess] access to local variable list2
+#   55|               3: [LocalVariableAccess] access to local variable a
+#   55|               4: [IndexerCall] access to indexer
+#   55|                 -1: [LocalVariableAccess] access to local variable c
+#   55|                 0: [IntLiteral] 0
+#   55|               5: [LocalVariableDeclAndInitExpr] IList<IList<Int32>> d = ...
+#   55|                 0: [LocalVariableAccess] access to local variable d
+#   55|                 1: [LocalVariableAccess] access to local variable list2
+#   56|             1: [TupleExpr] (..., ...)
+#   56|               0: [LocalVariableAccess] access to local variable a
+#   56|               1: [LocalVariableAccess] access to local variable d
+#   59|   6: [Class] A
+#-----|     3: (Base types)
+#   59|       1: [TypeMention] IEnumerable
+#   61|     5: [Method] GetEnumerator
+#   61|       -1: [TypeMention] IEnumerator
+#   62|       4: [BlockStmt] {...}
+#   63|         0: [ThrowStmt] throw ...;
+#   63|           0: [ObjectCreation] object creation of type NotImplementedException
+#   63|             0: [TypeMention] NotImplementedException
+#   67|   7: [Class] B
+#-----|     3: (Base types)
+#   67|       0: [TypeMention] A
+#   69|   8: [Class] C
+#-----|     3: (Base types)
+#   69|       0: [TypeMention] List<Int32>
+#   69|         1: [TypeMention] int

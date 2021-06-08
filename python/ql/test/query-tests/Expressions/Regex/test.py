@@ -30,12 +30,17 @@ re.compile(b"abc$ ")
 re.compile(b"abc$ (?s)")
 re.compile(b"\[$]  ")
 
-#Likely false positives for unmatchable dollar
-re.compile(b"[$]  ")
-re.compile(b"\$  ")
-re.compile(b"abc$(?m)")
-re.compile(b"abc$()")
-
+#Not unmatchable dollar
+re.match(b"[$]  ", b"$  ")
+re.match(b"\$  ", b"$  ")
+re.match(b"abc$(?m)", b"abc")
+re.match(b"abc$()", b"abc")
+re.match(b"((a$)|b)*", b"bba")
+re.match(b"((a$)|b){4}", b"bbba") # Inspired by FP report here: https://github.com/github/codeql/issues/2403
+re.match(b"((a$).*)", b"a")
+re.match("(\Aab$|\Aba$)$\Z", "ab")
+re.match(b"((a$\Z)|b){4}", b"bbba")
+re.match(b"(a){00}b", b"b")
 
 #Duplicate character in set
 re.compile(b"[AA]")
@@ -139,3 +144,10 @@ re.compile(r'(?:(?P<n1>^(?:|x)))')
 
 #Potentially mis-parsed character set
 re.compile(r"\[(?P<txt>[^[]*)\]\((?P<uri>[^)]*)")
+
+#Allow unicode in raw strings
+re.compile(r"[\U00010000-\U0010FFFF]")
+re.compile(r"[\u0000-\uFFFF]")
+
+#Allow unicode names
+re.compile(r"[\N{degree sign}\N{EM DASH}]")

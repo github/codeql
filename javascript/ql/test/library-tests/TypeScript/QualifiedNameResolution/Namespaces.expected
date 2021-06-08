@@ -20,7 +20,6 @@
 | Glob in global scope |
 | H in namespaces.ts:27 |
 | H.I in namespaces.ts:27 |
-| Intl in global scope |
 | N in library-tests/TypeScript/QualifiedNameResolution/export-specifiers.ts |
 | X in global scope |
 | X in library-tests/TypeScript/QualifiedNameResolution/namespaces.ts |

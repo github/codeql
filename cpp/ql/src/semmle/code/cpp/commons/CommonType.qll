@@ -6,7 +6,7 @@ import semmle.code.cpp.Type
 class CharPointerType extends PointerType {
   CharPointerType() { this.getBaseType() instanceof CharType }
 
-  override string getCanonicalQLClass() { result = "CharPointerType" }
+  override string getAPrimaryQlClass() { result = "CharPointerType" }
 }
 
 /**
@@ -15,7 +15,7 @@ class CharPointerType extends PointerType {
 class IntPointerType extends PointerType {
   IntPointerType() { this.getBaseType() instanceof IntType }
 
-  override string getCanonicalQLClass() { result = "IntPointerType" }
+  override string getAPrimaryQlClass() { result = "IntPointerType" }
 }
 
 /**
@@ -24,7 +24,7 @@ class IntPointerType extends PointerType {
 class VoidPointerType extends PointerType {
   VoidPointerType() { this.getBaseType() instanceof VoidType }
 
-  override string getCanonicalQLClass() { result = "VoidPointerType" }
+  override string getAPrimaryQlClass() { result = "VoidPointerType" }
 }
 
 /**
@@ -36,7 +36,7 @@ class Size_t extends Type {
     this.hasName("size_t")
   }
 
-  override string getCanonicalQLClass() { result = "Size_t" }
+  override string getAPrimaryQlClass() { result = "Size_t" }
 }
 
 /**
@@ -48,7 +48,7 @@ class Ssize_t extends Type {
     this.hasName("ssize_t")
   }
 
-  override string getCanonicalQLClass() { result = "Ssize_t" }
+  override string getAPrimaryQlClass() { result = "Ssize_t" }
 }
 
 /**
@@ -60,7 +60,7 @@ class Ptrdiff_t extends Type {
     this.hasName("ptrdiff_t")
   }
 
-  override string getCanonicalQLClass() { result = "Ptrdiff_t" }
+  override string getAPrimaryQlClass() { result = "Ptrdiff_t" }
 }
 
 /**
@@ -72,7 +72,7 @@ class Intmax_t extends Type {
     this.hasName("intmax_t")
   }
 
-  override string getCanonicalQLClass() { result = "Intmax_t" }
+  override string getAPrimaryQlClass() { result = "Intmax_t" }
 }
 
 /**
@@ -84,7 +84,7 @@ class Uintmax_t extends Type {
     this.hasName("uintmax_t")
   }
 
-  override string getCanonicalQLClass() { result = "Uintmax_t" }
+  override string getAPrimaryQlClass() { result = "Uintmax_t" }
 }
 
 /**
@@ -100,7 +100,7 @@ class Wchar_t extends Type {
     this.hasName("wchar_t")
   }
 
-  override string getCanonicalQLClass() { result = "Wchar_t" }
+  override string getAPrimaryQlClass() { result = "Wchar_t" }
 }
 
 /**
@@ -176,5 +176,5 @@ class MicrosoftInt64Type extends IntegralType {
 class BuiltInVarArgsList extends Type {
   BuiltInVarArgsList() { this.hasName("__builtin_va_list") }
 
-  override string getCanonicalQLClass() { result = "BuiltInVarArgsList" }
+  override string getAPrimaryQlClass() { result = "BuiltInVarArgsList" }
 }

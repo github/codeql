@@ -1,0 +1,6 @@
+| a.c:4:5:4:6 | definition of is | array of {int} | 1 |
+| a.h:2:12:2:13 | declaration of is | array of 4 {int} | 1 |
+| file://:0:0:0:0 | definition of fp_offset | unsigned int | 1 |
+| file://:0:0:0:0 | definition of gp_offset | unsigned int | 1 |
+| file://:0:0:0:0 | definition of overflow_arg_area | pointer to {void} | 1 |
+| file://:0:0:0:0 | definition of reg_save_area | pointer to {void} | 1 |

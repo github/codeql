@@ -9,6 +9,8 @@
 + semmlecode-cpp-queries/Likely Bugs/Conversion/CastArrayPointerArithmetic.ql: /Correctness/Dangerous Conversions
 + semmlecode-cpp-queries/Likely Bugs/Underspecified Functions/MistypedFunctionArguments.ql: /Correctness/Dangerous Conversions
 + semmlecode-cpp-queries/Security/CWE/CWE-253/HResultBooleanConversion.ql: /Correctness/Dangerous Conversions
++ semmlecode-cpp-queries/Likely Bugs/OO/UnsafeUseOfThis.ql: /Correctness/Dangerous Conversions
++ semmlecode-cpp-queries/Security/CWE/CWE-191/UnsignedDifferenceExpressionComparedZero.ql: /Correctness/Dangerous Conversions
   # Consistent Use
 + semmlecode-cpp-queries/Critical/ReturnValueIgnored.ql: /Correctness/Consistent Use
 + semmlecode-cpp-queries/Likely Bugs/InconsistentCheckReturnNull.ql: /Correctness/Consistent Use

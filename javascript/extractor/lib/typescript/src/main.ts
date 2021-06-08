@@ -41,16 +41,25 @@ import { Project } from "./common";
 import { TypeTable } from "./type_table";
 import { VirtualSourceRoot } from "./virtual_source_root";
 
+// Remove limit on stack trace depth.
+Error.stackTraceLimit = Infinity;
+
 interface ParseCommand {
     command: "parse";
     filename: string;
 }
-interface OpenProjectCommand {
-    command: "open-project";
+interface LoadCommand {
     tsConfig: string;
+    sourceRoot: string | null;
     virtualSourceRoot: string | null;
     packageEntryPoints: [string, string][];
     packageJsonFiles: [string, string][];
+}
+interface OpenProjectCommand extends LoadCommand {
+    command: "open-project";
+}
+interface GetOwnFilesCommand extends LoadCommand {
+    command: "get-own-files";
 }
 interface CloseProjectCommand {
     command: "close-project";
@@ -72,7 +81,7 @@ interface PrepareFilesCommand {
 interface GetMetadataCommand {
     command: "get-metadata";
 }
-type Command = ParseCommand | OpenProjectCommand | CloseProjectCommand
+type Command = ParseCommand | OpenProjectCommand | GetOwnFilesCommand | CloseProjectCommand
     | GetTypeTableCommand | ResetCommand | QuitCommand | PrepareFilesCommand | GetMetadataCommand;
 
 /** The state to be shared between commands. */
@@ -86,10 +95,84 @@ class State {
 
     /** Next response to be delivered. */
     public pendingResponse: string = null;
+
+    /** Map from `package.json` files to their contents. */
+    public parsedPackageJson = new Map<string, any>();
+
+    /** Map from `package.json` files to the file referenced in its `types` or `typings` field. */
+    public packageTypings = new Map<string, string | undefined>();
+
+    /** Map from file path to the enclosing `package.json` file, if any. Will not traverse outside node_modules. */
+    public enclosingPackageJson = new Map<string, string | undefined>();
 }
 let state = new State();
 
 const reloadMemoryThresholdMb = getEnvironmentVariable("SEMMLE_TYPESCRIPT_MEMORY_THRESHOLD", Number, 1000);
+
+function getPackageJson(file: string): any {
+    let cache = state.parsedPackageJson;
+    if (cache.has(file)) return cache.get(file);
+    let result = getPackageJsonRaw(file);
+    cache.set(file, result);
+    return result;
+}
+
+function getPackageJsonRaw(file: string): any {
+    if (!ts.sys.fileExists(file)) return undefined;
+    try {
+        let json = JSON.parse(ts.sys.readFile(file));
+        if (typeof json !== 'object') return undefined;
+        return json;
+    } catch (e) {
+        return undefined;
+    }
+}
+
+function getPackageTypings(file: string): string | undefined {
+    let cache = state.packageTypings;
+    if (cache.has(file)) return cache.get(file);
+    let result = getPackageTypingsRaw(file);
+    cache.set(file, result);
+    return result;
+}
+
+function getPackageTypingsRaw(packageJsonFile: string): string | undefined {
+    let json = getPackageJson(packageJsonFile);
+    if (json == null) return undefined;
+    let typings = json.types || json.typings; // "types" and "typings" are aliases
+    if (typeof typings !== 'string') return undefined;
+    let absolutePath = pathlib.join(pathlib.dirname(packageJsonFile), typings);
+    if (ts.sys.directoryExists(absolutePath)) {
+        absolutePath = pathlib.join(absolutePath, 'index.d.ts');
+    } else if (!absolutePath.endsWith('.ts')) {
+        absolutePath += '.d.ts';
+    }
+    if (!ts.sys.fileExists(absolutePath)) return undefined;
+    return ts.sys.resolvePath(absolutePath);
+}
+
+function getEnclosingPackageJson(file: string): string | undefined {
+    let cache = state.packageTypings;
+    if (cache.has(file)) return cache.get(file);
+    let result = getEnclosingPackageJsonRaw(file);
+    cache.set(file, result);
+    return result;
+}
+
+function getEnclosingPackageJsonRaw(file: string): string | undefined {
+    let packageJson = pathlib.join(file, 'package.json');
+    if (ts.sys.fileExists(packageJson)) {
+        return packageJson;
+    }
+    if (pathlib.basename(file) === 'node_modules') {
+        return undefined;
+    }
+    let dirname = pathlib.dirname(file);
+    if (dirname.length < file.length) {
+        return getEnclosingPackageJson(dirname);
+    }
+    return undefined;
+}
 
 /**
  * Debugging method for finding cycles in the TypeScript AST. Should not be used in production.
@@ -362,15 +445,22 @@ function parseSingleFile(filename: string): {ast: ts.SourceFile, code: string} {
  */
 const nodeModulesRex = /[/\\]node_modules[/\\]((?:@[\w.-]+[/\\])?\w[\w.-]*)[/\\](.*)/;
 
-function handleOpenProjectCommand(command: OpenProjectCommand) {
-    Error.stackTraceLimit = Infinity;
-    let tsConfigFilename = String(command.tsConfig);
-    let tsConfig = ts.readConfigFile(tsConfigFilename, ts.sys.readFile);
-    let basePath = pathlib.dirname(tsConfigFilename);
+interface LoadedConfig {
+    config: ts.ParsedCommandLine;
+    basePath: string;
+    packageEntryPoints: Map<string, string>;
+    packageJsonFiles: Map<string, string>;
+    virtualSourceRoot: VirtualSourceRoot;
+    ownFiles: string[];
+}
+
+function loadTsConfig(command: LoadCommand): LoadedConfig {
+    let tsConfig = ts.readConfigFile(command.tsConfig, ts.sys.readFile);
+    let basePath = pathlib.dirname(command.tsConfig);
 
     let packageEntryPoints = new Map(command.packageEntryPoints);
     let packageJsonFiles = new Map(command.packageJsonFiles);
-    let virtualSourceRoot = new VirtualSourceRoot(process.cwd(), command.virtualSourceRoot);
+    let virtualSourceRoot = new VirtualSourceRoot(command.sourceRoot, command.virtualSourceRoot);
 
     /**
      * Rewrites path segments of form `node_modules/PACK/suffix` to be relative to
@@ -398,7 +488,25 @@ function handleOpenProjectCommand(command: OpenProjectCommand) {
      */
     let parseConfigHost: ts.ParseConfigHost = {
         useCaseSensitiveFileNames: true,
-        readDirectory: ts.sys.readDirectory, // No need to override traversal/glob matching
+        readDirectory: (rootDir, extensions, excludes?, includes?, depth?) => {
+            // Perform the glob matching in both real and virtual source roots.
+            let exclusions = excludes == null ? [] : [...excludes];
+            if (virtualSourceRoot.virtualSourceRoot != null) {
+                // qltest puts the virtual source root inside the real source root (.testproj).
+                // Make sure we don't find files inside the virtual source root in this pass.
+                exclusions.push(virtualSourceRoot.virtualSourceRoot);
+            }
+            let originalResults = ts.sys.readDirectory(rootDir, extensions, exclusions, includes, depth)
+            let virtualDir = virtualSourceRoot.toVirtualPath(rootDir);
+            if (virtualDir == null) {
+                return originalResults;
+            }
+            // Make sure glob matching does not to discover anything in node_modules.
+            let virtualExclusions = excludes == null ? [] : [...excludes];
+            virtualExclusions.push('**/node_modules/**/*');
+            let virtualResults = ts.sys.readDirectory(virtualDir, extensions, virtualExclusions, includes, depth)
+            return [ ...originalResults, ...virtualResults ];
+        },
         fileExists: (path: string) => {
             return ts.sys.fileExists(path)
                 || virtualSourceRoot.toVirtualPathIfFileExists(path) != null
@@ -415,7 +523,29 @@ function handleOpenProjectCommand(command: OpenProjectCommand) {
         }
     };
     let config = ts.parseJsonConfigFileContent(tsConfig.config, parseConfigHost, basePath);
-    let project = new Project(tsConfigFilename, config, state.typeTable, packageEntryPoints, virtualSourceRoot);
+
+    let ownFiles = config.fileNames.map(file => pathlib.resolve(file));
+
+    return { config, basePath, packageJsonFiles, packageEntryPoints, virtualSourceRoot, ownFiles };
+}
+
+/**
+ * Returns the list of files included in the given tsconfig.json file's include pattern,
+ * (not including those only references through imports).
+ */
+function handleGetFileListCommand(command: GetOwnFilesCommand) {
+    let { config, ownFiles } = loadTsConfig(command);
+
+    console.log(JSON.stringify({
+        type: "file-list",
+        ownFiles,
+    }));
+}
+
+function handleOpenProjectCommand(command: OpenProjectCommand) {
+    let { config, packageEntryPoints, virtualSourceRoot, basePath, ownFiles } = loadTsConfig(command);
+
+    let project = new Project(command.tsConfig, config, state.typeTable, packageEntryPoints, virtualSourceRoot);
     project.load();
 
     state.project = project;
@@ -449,13 +579,17 @@ function handleOpenProjectCommand(command: OpenProjectCommand) {
     // inverse mapping, nor a way to enumerate all known module names. So we discover all
     // modules on the type roots (usually "node_modules/@types" but this is configurable).
     let typeRoots = ts.getEffectiveTypeRoots(config.options, {
-        directoryExists: (path) => fs.existsSync(path),
+        directoryExists: (path) => ts.sys.directoryExists(path),
         getCurrentDirectory: () => basePath,
     });
 
     for (let typeRoot of typeRoots || []) {
-        if (fs.existsSync(typeRoot) && fs.statSync(typeRoot).isDirectory()) {
+        if (ts.sys.directoryExists(typeRoot)) {
             traverseTypeRoot(typeRoot, "");
+        }
+        let virtualTypeRoot = virtualSourceRoot.toVirtualPathIfDirectoryExists(typeRoot);
+        if (virtualTypeRoot != null) {
+            traverseTypeRoot(virtualTypeRoot, "");
         }
     }
 
@@ -493,21 +627,24 @@ function handleOpenProjectCommand(command: OpenProjectCommand) {
             if (sourceFile == null) {
                 continue;
             }
-            addModuleBindingFromRelativePath(sourceFile, importPrefix, child);
+            let importPath = getImportPathFromFileInFolder(importPrefix, child);
+            addModuleBindingFromImportPath(sourceFile, importPath);
         }
+    }
+
+    function getImportPathFromFileInFolder(folder: string, baseName: string) {
+        let stem = getStem(baseName);
+        return (stem === "index")
+            ? folder
+            : joinModulePath(folder, stem);
     }
 
     /**
      * Emits module bindings for a module with relative path `folder/baseName`.
      */
-    function addModuleBindingFromRelativePath(sourceFile: ts.SourceFile, folder: string, baseName: string) {
+    function addModuleBindingFromImportPath(sourceFile: ts.SourceFile, importPath: string) {
         let symbol = typeChecker.getSymbolAtLocation(sourceFile);
         if (symbol == null) return; // Happens if the source file is not a module.
-
-        let stem = getStem(baseName);
-        let importPath = (stem === "index")
-            ? folder
-            : joinModulePath(folder, stem);
 
         let canonicalSymbol = getEffectiveExportTarget(symbol); // Follow `export = X` declarations.
         let symbolId = state.typeTable.getSymbolId(canonicalSymbol);
@@ -520,7 +657,7 @@ function handleOpenProjectCommand(command: OpenProjectCommand) {
         // Note: the `globalExports` map is stored on the original symbol, not the target of `export=`.
         if (symbol.globalExports != null) {
             symbol.globalExports.forEach((global: ts.Symbol) => {
-              state.typeTable.addGlobalMapping(symbolId, global.name);
+                state.typeTable.addGlobalMapping(symbolId, global.name);
             });
         }
     }
@@ -549,11 +686,30 @@ function handleOpenProjectCommand(command: OpenProjectCommand) {
         let fullPath = sourceFile.fileName;
         let index = fullPath.lastIndexOf('/node_modules/');
         if (index === -1) return;
+
         let relativePath = fullPath.substring(index + '/node_modules/'.length);
+
         // Ignore node_modules/@types folders here as they are typically handled as type roots.
         if (relativePath.startsWith("@types/")) return;
+
+        // If the enclosing package has a "typings" field, only add module bindings for that file.
+        let packageJsonFile = getEnclosingPackageJson(fullPath);
+        if (packageJsonFile != null) {
+            let json = getPackageJson(packageJsonFile);
+            let typings = getPackageTypings(packageJsonFile);
+            if (json != null && typings != null) {
+                let name = json.name;
+                if (typings === fullPath && typeof name === 'string') {
+                    addModuleBindingFromImportPath(sourceFile, name);
+                } else if (typings != null) {
+                    return; // Typings field prevents access to other files in package.
+                }
+            }
+        }
+
+        // Add module bindings relative to package directory.
         let { dir, base } = pathlib.parse(relativePath);
-        addModuleBindingFromRelativePath(sourceFile, dir, base);
+        addModuleBindingFromImportPath(sourceFile, getImportPathFromFileInFolder(dir, base));
     }
 
     /**
@@ -587,9 +743,14 @@ function handleOpenProjectCommand(command: OpenProjectCommand) {
         return symbol;
     }
 
+    // Unlike in the get-own-files command, this command gets all files we can possibly
+    // extract type information for, including files referenced outside the tsconfig's inclusion pattern.
+    let allFiles = program.getSourceFiles().map(sf => pathlib.resolve(sf.fileName));
+
     console.log(JSON.stringify({
         type: "project-opened",
-        files: program.getSourceFiles().map(sf => pathlib.resolve(sf.fileName)),
+        ownFiles,
+        allFiles,
     }));
 }
 
@@ -685,6 +846,9 @@ function runReadLineInterface() {
         case "open-project":
             handleOpenProjectCommand(req);
             break;
+        case "get-own-files":
+            handleGetFileListCommand(req);
+            break;
         case "close-project":
             handleCloseProjectCommand(req);
             break;
@@ -720,6 +884,7 @@ if (process.argv.length > 2) {
             tsConfig: argument,
             packageEntryPoints: [],
             packageJsonFiles: [],
+            sourceRoot: null,
             virtualSourceRoot: null,
         });
         for (let sf of state.project.program.getSourceFiles()) {

@@ -1,4 +1,13 @@
 test_ClientRequest
+| apollo.js:5:18:5:78 | new cre ... hql' }) |
+| apollo.js:10:1:10:54 | new Htt ... hql' }) |
+| apollo.js:14:16:14:69 | new Apo ... .com'}) |
+| apollo.js:17:1:17:34 | new Pre ... yurl"}) |
+| apollo.js:20:1:20:77 | createN ... phql'}) |
+| apollo.js:23:1:23:31 | new Web ... wsUri}) |
+| puppeteer.ts:6:11:6:42 | page.go ... e.com') |
+| puppeteer.ts:8:5:8:61 | page.ad ... css" }) |
+| puppeteer.ts:18:30:18:50 | page.go ... estUrl) |
 | tst.js:11:5:11:16 | request(url) |
 | tst.js:13:5:13:20 | request.get(url) |
 | tst.js:15:5:15:23 | request.delete(url) |
@@ -66,6 +75,20 @@ test_ClientRequest
 | tst.js:200:2:200:21 | $.get("example.php") |
 | tst.js:202:5:208:7 | $.ajax( ...     }}) |
 | tst.js:210:2:210:21 | $.get("example.php") |
+| tst.js:219:5:219:41 | data.so ... Host"}) |
+| tst.js:229:5:229:67 | needle( ... ptions) |
+| tst.js:231:5:233:6 | needle. ... \\n    }) |
+| tst.js:235:5:237:6 | needle. ... \\n    }) |
+| tst.js:247:24:247:68 | request ... o.png') |
+| tst.js:249:1:251:2 | form.su ... e();\\n}) |
+| tst.js:257:1:262:2 | form.su ... rs()\\n}) |
+| tst.js:267:1:267:61 | httpPro ... 9000'}) |
+| tst.js:269:13:269:48 | httpPro ... ptions) |
+| tst.js:271:3:271:61 | proxy.w ... 080' }) |
+| tst.js:274:1:283:2 | httpPro ... true\\n}) |
+| tst.js:286:20:286:55 | new Web ... :8080') |
+| tst.js:296:5:299:6 | axios({ ... \\n    }) |
+| tst.js:312:12:312:36 | fetchPo ... o/bar') |
 test_getADataNode
 | tst.js:53:5:53:23 | axios({data: data}) | tst.js:53:18:53:21 | data |
 | tst.js:57:5:57:39 | axios.p ... data2}) | tst.js:57:19:57:23 | data1 |
@@ -95,12 +118,34 @@ test_getADataNode
 | tst.js:179:2:179:60 | $.getJS ... a ) {}) | tst.js:179:31:179:38 | "MyData" |
 | tst.js:183:2:183:60 | $.post( ...  ) { }) | tst.js:183:28:183:37 | "PostData" |
 | tst.js:187:2:193:3 | $.ajax( ... on"\\n\\t}) | tst.js:190:11:190:20 | "AjaxData" |
+| tst.js:219:5:219:41 | data.so ... Host"}) | tst.js:223:23:223:30 | "foobar" |
+| tst.js:229:5:229:67 | needle( ... ptions) | tst.js:228:32:228:70 | { 'X-Cu ... tuna' } |
+| tst.js:229:5:229:67 | needle( ... ptions) | tst.js:229:50:229:57 | "MyData" |
+| tst.js:235:5:237:6 | needle. ... \\n    }) | tst.js:228:32:228:70 | { 'X-Cu ... tuna' } |
+| tst.js:235:5:237:6 | needle. ... \\n    }) | tst.js:235:44:235:49 | "data" |
+| tst.js:249:1:251:2 | form.su ... e();\\n}) | tst.js:245:25:245:34 | 'my value' |
+| tst.js:249:1:251:2 | form.su ... e();\\n}) | tst.js:246:26:246:43 | Buffer.from("foo") |
+| tst.js:249:1:251:2 | form.su ... e();\\n}) | tst.js:247:24:247:68 | request ... o.png') |
+| tst.js:257:1:262:2 | form.su ... rs()\\n}) | tst.js:255:25:255:35 | 'new_value' |
+| tst.js:286:20:286:55 | new Web ... :8080') | tst.js:288:21:288:35 | 'Hello Server!' |
 test_getHost
 | tst.js:87:5:87:39 | http.ge ...  host}) | tst.js:87:34:87:37 | host |
 | tst.js:89:5:89:23 | axios({host: host}) | tst.js:89:18:89:21 | host |
 | tst.js:91:5:91:34 | got(rel ...  host}) | tst.js:91:29:91:32 | host |
 | tst.js:93:5:93:35 | net.req ... host }) | tst.js:93:29:93:32 | host |
+| tst.js:219:5:219:41 | data.so ... Host"}) | tst.js:219:32:219:39 | "myHost" |
+| tst.js:257:1:262:2 | form.su ... rs()\\n}) | tst.js:259:11:259:23 | 'example.org' |
+| tst.js:274:1:283:2 | httpPro ... true\\n}) | tst.js:277:15:277:30 | 'my-domain-name' |
 test_getUrl
+| apollo.js:5:18:5:78 | new cre ... hql' }) | apollo.js:5:44:5:75 | 'https: ... raphql' |
+| apollo.js:10:1:10:54 | new Htt ... hql' }) | apollo.js:10:21:10:51 | 'http:/ ... raphql' |
+| apollo.js:14:16:14:69 | new Apo ... .com'}) | apollo.js:14:39:14:67 | 'https: ... le.com' |
+| apollo.js:17:1:17:34 | new Pre ... yurl"}) | apollo.js:17:26:17:32 | "myurl" |
+| apollo.js:20:1:20:77 | createN ... phql'}) | apollo.js:20:30:20:75 | 'https: ... raphql' |
+| apollo.js:23:1:23:31 | new Web ... wsUri}) | apollo.js:23:25:23:29 | wsUri |
+| puppeteer.ts:6:11:6:42 | page.go ... e.com') | puppeteer.ts:6:21:6:41 | 'https: ... le.com' |
+| puppeteer.ts:8:5:8:61 | page.ad ... css" }) | puppeteer.ts:8:29:8:58 | "http:/ ... le.css" |
+| puppeteer.ts:18:30:18:50 | page.go ... estUrl) | puppeteer.ts:18:40:18:49 | requestUrl |
 | tst.js:11:5:11:16 | request(url) | tst.js:11:13:11:15 | url |
 | tst.js:13:5:13:20 | request.get(url) | tst.js:13:17:13:19 | url |
 | tst.js:15:5:15:23 | request.delete(url) | tst.js:15:20:15:22 | url |
@@ -173,6 +218,20 @@ test_getUrl
 | tst.js:200:2:200:21 | $.get("example.php") | tst.js:200:8:200:20 | "example.php" |
 | tst.js:202:5:208:7 | $.ajax( ...     }}) | tst.js:203:10:203:22 | "example.php" |
 | tst.js:210:2:210:21 | $.get("example.php") | tst.js:210:8:210:20 | "example.php" |
+| tst.js:219:5:219:41 | data.so ... Host"}) | tst.js:219:25:219:40 | {host: "myHost"} |
+| tst.js:229:5:229:67 | needle( ... ptions) | tst.js:229:20:229:47 | "http:/ ... oo/bar" |
+| tst.js:231:5:233:6 | needle. ... \\n    }) | tst.js:231:16:231:35 | "http://example.org" |
+| tst.js:235:5:237:6 | needle. ... \\n    }) | tst.js:235:17:235:41 | "http:/ ... g/post" |
+| tst.js:247:24:247:68 | request ... o.png') | tst.js:247:32:247:67 | 'http:/ ... go.png' |
+| tst.js:249:1:251:2 | form.su ... e();\\n}) | tst.js:249:13:249:33 | 'http:/ ... e.org/' |
+| tst.js:257:1:262:2 | form.su ... rs()\\n}) | tst.js:257:13:262:1 | {\\n    m ... ers()\\n} |
+| tst.js:267:1:267:61 | httpPro ... 9000'}) | tst.js:267:37:267:59 | 'http:/ ... t:9000' |
+| tst.js:271:3:271:61 | proxy.w ... 080' }) | tst.js:271:33:271:58 | 'http:/ ... m:8080' |
+| tst.js:274:1:283:2 | httpPro ... true\\n}) | tst.js:275:13:281:5 | {\\n      ... ,\\n    } |
+| tst.js:286:20:286:55 | new Web ... :8080') | tst.js:286:34:286:54 | 'ws://l ... t:8080' |
+| tst.js:296:5:299:6 | axios({ ... \\n    }) | tst.js:296:11:299:5 | {\\n      ... ,\\n    } |
+| tst.js:296:5:299:6 | axios({ ... \\n    }) | tst.js:298:14:298:44 | "http:/ ... -axios" |
+| tst.js:312:12:312:36 | fetchPo ... o/bar') | tst.js:312:26:312:35 | '/foo/bar' |
 test_getAResponseDataNode
 | tst.js:19:5:19:23 | requestPromise(url) | tst.js:19:5:19:23 | requestPromise(url) | text | true |
 | tst.js:21:5:21:23 | superagent.get(url) | tst.js:21:5:21:23 | superagent.get(url) | stream | true |
@@ -233,3 +292,15 @@ test_getAResponseDataNode
 | tst.js:200:2:200:21 | $.get("example.php") | tst.js:200:37:200:44 | response |  | false |
 | tst.js:202:5:208:7 | $.ajax( ...     }}) | tst.js:207:21:207:36 | err.responseText | json | false |
 | tst.js:210:2:210:21 | $.get("example.php") | tst.js:210:55:210:70 | xhr.responseText |  | false |
+| tst.js:219:5:219:41 | data.so ... Host"}) | tst.js:221:29:221:32 | data | text | false |
+| tst.js:229:5:229:67 | needle( ... ptions) | tst.js:229:5:229:67 | needle( ... ptions) | fetch.response | true |
+| tst.js:231:5:233:6 | needle. ... \\n    }) | tst.js:231:44:231:47 | resp | fetch.response | false |
+| tst.js:231:5:233:6 | needle. ... \\n    }) | tst.js:231:50:231:53 | body | json | false |
+| tst.js:235:5:237:6 | needle. ... \\n    }) | tst.js:235:67:235:70 | resp | fetch.response | false |
+| tst.js:235:5:237:6 | needle. ... \\n    }) | tst.js:235:73:235:76 | body | json | false |
+| tst.js:286:20:286:55 | new Web ... :8080') | tst.js:291:44:291:53 | event.data | json | false |
+| tst.js:296:5:299:6 | axios({ ... \\n    }) | tst.js:296:5:299:6 | axios({ ... \\n    }) | json | true |
+| tst.js:296:5:299:6 | axios({ ... \\n    }) | tst.js:302:28:302:39 | err.response | json | false |
+| tst.js:296:5:299:6 | axios({ ... \\n    }) | tst.js:303:26:303:37 | err.response | json | false |
+| tst.js:296:5:299:6 | axios({ ... \\n    }) | tst.js:304:27:304:38 | err.response | json | false |
+| tst.js:312:12:312:36 | fetchPo ... o/bar') | tst.js:312:12:312:36 | fetchPo ... o/bar') | fetch.response | true |

@@ -36,16 +36,7 @@ module InsecureRandomness {
     }
 
     override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-      // Assume that all operations on tainted values preserve taint: crypto is hard
-      succ.asExpr().(BinaryExpr).getAnOperand() = pred.asExpr()
-      or
-      succ.asExpr().(UnaryExpr).getOperand() = pred.asExpr()
-      or
-      exists(DataFlow::MethodCallNode mc |
-        mc = DataFlow::globalVarRef("Math").getAMemberCall(_) and
-        pred = mc.getAnArgument() and
-        succ = mc
-      )
+      InsecureRandomness::isAdditionalTaintStep(pred, succ)
     }
   }
 }

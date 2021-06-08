@@ -85,4 +85,9 @@ public class A {
     String.format("%s%s", a2); // ok
     String.format("%s", a2); // unused
   }
+
+  void formatted() {
+    "%s%s".formatted(""); // missing
+    "%s".formatted("", ""); // unused
+  }
 }

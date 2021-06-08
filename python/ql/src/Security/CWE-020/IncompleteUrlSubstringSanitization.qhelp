@@ -6,7 +6,7 @@
     <overview>
         <p>
 
-            Sanitizing untrusted URLs is an important technique for
+            Sanitizing untrusted URLs is a common technique for
             preventing attacks such as request forgeries and malicious
             redirections. Usually, this is done by checking that the host of a URL
             is in a set of allowed hosts.
@@ -68,7 +68,7 @@
         <p>
 
             The second two examples show safe checks.
-            In <code>safe1</code>, a white-list is used. Although fairly inflexible,
+            In <code>safe1</code>, an allowlist is used. Although fairly inflexible,
             this is easy to get right and is most likely to be safe.
         </p>
         <p>

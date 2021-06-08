@@ -49,13 +49,6 @@ module LogForging {
   }
 
   /**
-   * A logger type that extends from an ILogger type.
-   */
-  private class LoggerType extends RefType {
-    LoggerType() { getABaseType*().hasName("ILogger") }
-  }
-
-  /**
    * An argument to a call to a method on a logger class.
    */
   class LogForgingLogMessageSink extends Sink, LogMessageSink { }

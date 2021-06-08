@@ -1,4 +1,6 @@
 | module-environment-detection.js:23:8:23:36 | typeof  ... efined' | This guard always evaluates to true. |
+| regression.js:9:9:9:12 | date | This guard always evaluates to true. |
+| regression.js:13:25:13:40 | obj != undefined | This guard always evaluates to true. |
 | tst2.js:4:12:4:35 | typeof  ... efined" | This guard always evaluates to true. |
 | tst.js:18:5:18:5 | u | This guard always evaluates to false. |
 | tst.js:19:5:19:5 | n | This guard always evaluates to false. |

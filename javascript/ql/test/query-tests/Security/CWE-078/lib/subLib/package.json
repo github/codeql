@@ -1,5 +1,5 @@
 {
-  "name": "mySubLib",
+  "name": "my-sub-lib",
   "version": "0.0.7",
   "main": "./index.js"
 }

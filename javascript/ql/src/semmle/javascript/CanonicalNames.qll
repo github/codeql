@@ -25,9 +25,17 @@ class CanonicalName extends @symbol {
   CanonicalName getParent() { symbol_parent(this, result) }
 
   /**
-   * Gets a child of this canonical name, i.e. an extension of its qualified name.
+   * Gets a child of this canonical name, that is, an extension of its qualified name.
    */
   CanonicalName getAChild() { result.getParent() = this }
+
+  /**
+   * Gets the child of this canonical name that has the given `name`, if any.
+   */
+  CanonicalName getChild(string name) {
+    result = getAChild() and
+    result.getName() = name
+  }
 
   /**
    * Gets the name without prefix.
@@ -139,7 +147,7 @@ class CanonicalName extends @symbol {
       else
         if exists(root.getGlobalName())
         then result instanceof GlobalScope
-        else result = getADefinitionNode().getContainer().getScope()
+        else result = getADefinition().getContainer().getScope()
     )
   }
 
@@ -149,10 +157,15 @@ class CanonicalName extends @symbol {
     else result = getParent().getRootName()
   }
 
-  private ExprOrStmt getADefinitionNode() {
-    result = this.(TypeName).getADefinition() or
-    result = this.(Namespace).getADefinition()
-  }
+  /**
+   * Gets a definition of the entity with this canonical name.
+   */
+  ASTNode getADefinition() { none() }
+
+  /**
+   * Gets a use that refers to the entity with this canonical name.
+   */
+  ExprOrType getAnAccess() { none() }
 
   /**
    * Gets a string describing the root scope of this canonical name.
@@ -168,11 +181,9 @@ class CanonicalName extends @symbol {
           if exists(root.getGlobalName())
           then result = "global scope"
           else
-            if exists(root.getADefinitionNode())
+            if exists(root.getADefinition())
             then
-              exists(StmtContainer container |
-                container = root.getADefinitionNode().getContainer()
-              |
+              exists(StmtContainer container | container = root.getADefinition().getContainer() |
                 result = container.(TopLevel).getFile().getRelativePath()
                 or
                 not container instanceof TopLevel and
@@ -218,12 +229,12 @@ class TypeName extends CanonicalName {
   /**
    * Gets a definition of the type with this canonical name, if any.
    */
-  TypeDefinition getADefinition() { ast_node_symbol(result, this) }
+  override TypeDefinition getADefinition() { ast_node_symbol(result, this) }
 
   /**
    * Gets a type annotation that refers to this type name.
    */
-  TypeAccess getAnAccess() { result.getTypeName() = this }
+  override TypeAccess getAnAccess() { result.getTypeName() = this }
 
   /**
    * Gets a type that refers to this canonical name.
@@ -258,14 +269,14 @@ class Namespace extends CanonicalName {
   }
 
   /**
-   * Gets a definition of the type with this canonical name, if any.
+   * Gets a definition of the namespace with this canonical name, if any.
    */
-  NamespaceDefinition getADefinition() { ast_node_symbol(result, this) }
+  override NamespaceDefinition getADefinition() { ast_node_symbol(result, this) }
 
   /**
    * Gets a part of a type annotation that refers to this namespace.
    */
-  NamespaceAccess getAnAccess() { result.getNamespace() = this }
+  override NamespaceAccess getAnAccess() { result.getNamespace() = this }
 
   /** Gets a namespace nested in this one. */
   Namespace getNamespaceMember(string name) {
@@ -307,7 +318,18 @@ class CanonicalFunctionName extends CanonicalName {
   /**
    * Gets a function with this canonical name.
    */
-  Function getADefinition() { ast_node_symbol(result, this) }
+  override Function getADefinition() { ast_node_symbol(result, this) }
+
+  /**
+   * Gets an expression (such as a callee expression in a function call or `new` expression)
+   * that refers to a function with this canonical name.
+   */
+  override Expr getAnAccess() {
+    exists(InvokeExpr invk | ast_node_symbol(invk, this) | result = invk.getCallee())
+    or
+    ast_node_symbol(result, this) and
+    not result instanceof InvokeExpr
+  }
 
   /**
    * Gets the implementation of this function, if it exists.

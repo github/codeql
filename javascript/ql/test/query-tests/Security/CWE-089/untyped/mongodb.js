@@ -84,3 +84,31 @@ app.post("/logs/count-by-tag", (req, res) => {
     // NOT OK: query is tainted by user-provided object value
     .count({ tags: tag });
 });
+
+
+app.get('/:id', (req, res) => {
+  useParams(req.param);
+});
+function useParams(params) {
+  let query = { id: params.id };
+  MongoClient.connect('mongodb://localhost:27017/test', (err, db) => {
+    let doc = db.collection('doc');
+
+    // OK: query is tainted, but only by string value
+    doc.find(query);
+  });
+}
+
+app.post('/documents/find', (req, res) => {
+  useQuery(req.query);
+});
+function useQuery(queries) {
+  const query = {};
+  query.title = queries.title;
+  MongoClient.connect('mongodb://localhost:27017/test', (err, db) => {
+    let doc = db.collection('doc');
+
+    // NOT OK: query is tainted by user-provided object value
+    doc.find(query);
+  });
+}

@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+
+<p>If you use cross-origin communication between Window objects and do expect to receive messages from other sites, always verify the sender's identity using the origin and possibly source properties of the recevied `MessageEvent`. </p>
+
+<p>Unexpected behaviours, like `DOM-based XSS` could occur, if the event handler for incoming data does not check the origin of the data received and handles the data in an unsafe way.</p>
+</overview>
+
+<recommendation>
+<p>
+Always verify the sender's identity of incoming messages.
+</p>
+
+</recommendation>
+
+<example>
+<p>In the first example, the `MessageEvent.data` is passed to the `eval` function withouth checking the origin. This means that any window can send arbitrary messages that will be executed in the window receiving the message</p>
+<sample src="examples/postMessageNoOriginCheck.js" />
+
+<p> In the second example, the `MessageEvent.origin` is verified with an unsecure check. For example, using `event.origin.indexOf('www.example.com') > -1` can be bypassed because the string `www.example.com` could appear anywhere in `event.origin` (i.e. `www.example.com.mydomain.com`)</p>
+<sample src="examples/postMessageInsufficientCheck.js" />
+
+<p> In the third example, the `MessageEvent.origin` is properly checked against a trusted origin. </p>
+<sample src="examples/postMessageWithOriginCheck.js" />
+
+</example>
+
+<references>
+
+<li><a href="https://cwe.mitre.org/data/definitions/20.html">CWE-020: Improper Input Validation</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage">Window.postMessage()</a></li>
+<li><a href="https://portswigger.net/web-security/dom-based/web-message-manipulation">Web-message manipulation</a></li>
+<li><a href="https://labs.detectify.com/2016/12/08/the-pitfalls-of-postmessage/">The pitfalls of postMessage</a></li>
+
+</references>
+</qhelp>

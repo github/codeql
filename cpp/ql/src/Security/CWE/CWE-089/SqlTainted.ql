@@ -27,6 +27,10 @@ class Configuration extends TaintTrackingConfiguration {
   override predicate isSink(Element tainted) {
     exists(SQLLikeFunction runSql | runSql.outermostWrapperFunctionCall(tainted, _))
   }
+
+  override predicate isBarrier(Expr e) {
+    super.isBarrier(e) or e.getUnspecifiedType() instanceof IntegralType
+  }
 }
 
 from

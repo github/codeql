@@ -5,13 +5,21 @@ class StubFile extends File {
 }
 
 class SourceControlFlowElement extends ControlFlowElement {
-  SourceControlFlowElement() { not this.getLocation().getFile() instanceof StubFile }
+  SourceControlFlowElement() {
+    this.fromSource() and not this.getLocation().getFile() instanceof StubFile
+  }
 }
 
 class SourceControlFlowNode extends ControlFlow::Node {
-  SourceControlFlowNode() { not this.getLocation().getFile() instanceof StubFile }
+  SourceControlFlowNode() {
+    not this.getLocation().getFile() instanceof StubFile and
+    not this.getLocation().getFile().fromLibrary()
+  }
 }
 
 class SourceBasicBlock extends ControlFlow::BasicBlock {
-  SourceBasicBlock() { not this.getLocation().getFile() instanceof StubFile }
+  SourceBasicBlock() {
+    not this.getLocation().getFile() instanceof StubFile and
+    not this.getLocation().getFile().fromLibrary()
+  }
 }

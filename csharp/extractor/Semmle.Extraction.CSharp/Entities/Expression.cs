@@ -1,73 +1,74 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Semmle.Extraction.CSharp.Populators;
-using Semmle.Extraction.Entities;
+using Semmle.Extraction.CSharp.Entities.Expressions;
 using Semmle.Extraction.Kinds;
+using System;
 using System.IO;
 using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    public interface IExpressionParentEntity : IEntity
+    internal class Expression : FreshEntity, IExpressionParentEntity
     {
-        /// <summary>
-        /// Whether this entity is the parent of a top-level expression.
-        /// </summary>
-        bool IsTopLevelParent { get; }
-    }
+        private readonly IExpressionInfo info;
+        public AnnotatedTypeSymbol? Type { get; private set; }
+        public Extraction.Entities.Location Location { get; }
+        public ExprKind Kind { get; }
 
-    class Expression : FreshEntity, IExpressionParentEntity
-    {
-        private readonly IExpressionInfo Info;
-        public readonly AnnotatedType Type;
-        public readonly Extraction.Entities.Location Location;
-        public readonly ExprKind Kind;
-
-        internal Expression(IExpressionInfo info)
+        internal Expression(IExpressionInfo info, bool shouldPopulate = true)
             : base(info.Context)
         {
-            Info = info;
+            this.info = info;
             Location = info.Location;
             Kind = info.Kind;
             Type = info.Type;
-            if (Type.Type is null)
-                Type = NullType.Create(cx);
 
-            TryPopulate();
+            if (shouldPopulate)
+            {
+                TryPopulate();
+            }
         }
 
         protected sealed override void Populate(TextWriter trapFile)
         {
-            trapFile.expressions(this, Kind, Type.Type.TypeRef);
-            if (Info.Parent.IsTopLevelParent)
-                trapFile.expr_parent_top_level(this, Info.Child, Info.Parent);
+            var type = Type.HasValue ? Entities.Type.Create(Context, Type.Value) : NullType.Create(Context);
+            trapFile.expressions(this, Kind, type.TypeRef);
+            if (info.Parent.IsTopLevelParent)
+                trapFile.expr_parent_top_level(this, info.Child, info.Parent);
             else
-                trapFile.expr_parent(this, Info.Child, Info.Parent);
+                trapFile.expr_parent(this, info.Child, info.Parent);
             trapFile.expr_location(this, Location);
 
-            var annotatedType = Type.Symbol;
-            if (!annotatedType.HasObliviousNullability())
+            if (Type.HasValue && !Type.Value.HasObliviousNullability())
             {
-                var n = NullabilityEntity.Create(cx, Nullability.Create(annotatedType));
+                var n = NullabilityEntity.Create(Context, Nullability.Create(Type.Value));
                 trapFile.type_nullability(this, n);
             }
 
-            if(Info.FlowState != NullableFlowState.None)
+            if (info.FlowState != NullableFlowState.None)
             {
-                trapFile.expr_flowstate(this, (int)Info.FlowState);
+                trapFile.expr_flowstate(this, (int)info.FlowState);
             }
 
-            if (Info.IsCompilerGenerated)
+            if (info.IsCompilerGenerated)
                 trapFile.expr_compiler_generated(this);
 
-            if (Info.ExprValue is string value)
+            if (info.ExprValue is string value)
                 trapFile.expr_value(this, value);
 
-            Type.Type.PopulateGenerics();
+            type.PopulateGenerics();
         }
 
-        public override Microsoft.CodeAnalysis.Location ReportingLocation => Location.symbol;
+        public override Location? ReportingLocation => Location.Symbol;
+
+        internal void SetType(ITypeSymbol? type)
+        {
+            if (type is not null)
+            {
+                Type = new AnnotatedTypeSymbol(type, type.NullableAnnotation);
+            }
+        }
 
         bool IExpressionParentEntity.IsTopLevelParent => false;
 
@@ -76,9 +77,15 @@ namespace Semmle.Extraction.CSharp.Entities
         /// </summary>
         /// <param name="obj">The value.</param>
         /// <returns>The string representation.</returns>
-        public static string ValueAsString(object value)
+        public static string ValueAsString(object? value)
         {
-            return value == null ? "null" : value is bool ? ((bool)value ? "true" : "false") : value.ToString();
+            return value is null
+                ? "null"
+                : value is bool b
+                    ? b
+                        ? "true"
+                        : "false"
+                    : value.ToString()!;
         }
 
         /// <summary>
@@ -116,8 +123,90 @@ namespace Semmle.Extraction.CSharp.Entities
                 cx.PopulateLater(() => Create(cx, node, parent, child));
         }
 
-        static bool ContainsPattern(SyntaxNode node) =>
+        private static bool ContainsPattern(SyntaxNode node) =>
             node is PatternSyntax || node is VariableDesignationSyntax || node.ChildNodes().Any(ContainsPattern);
+
+        /// <summary>
+        /// Creates a generated expression from a typed constant.
+        /// </summary>
+        public static Expression? CreateGenerated(Context cx, TypedConstant constant, IExpressionParentEntity parent,
+            int childIndex, Extraction.Entities.Location location)
+        {
+            if (constant.IsNull ||
+                constant.Type is null)
+            {
+                return Literal.CreateGeneratedNullLiteral(cx, parent, childIndex, location);
+            }
+
+            switch (constant.Kind)
+            {
+                case TypedConstantKind.Primitive:
+                    return Literal.CreateGenerated(cx, parent, childIndex, constant.Type, constant.Value, location);
+                case TypedConstantKind.Enum:
+                    // Enum value is generated in the following format: (Enum)value
+                    Action<Expression, int> createChild = (parent, index) => Literal.CreateGenerated(cx, parent, index, ((INamedTypeSymbol)constant.Type).EnumUnderlyingType!, constant.Value, location);
+                    var cast = Cast.CreateGenerated(cx, parent, childIndex, constant.Type!, constant.Value, createChild, location);
+                    return cast;
+                case TypedConstantKind.Type:
+                    var type = ((ITypeSymbol)constant.Value!).OriginalDefinition;
+                    return TypeOf.CreateGenerated(cx, parent, childIndex, type, location);
+                case TypedConstantKind.Array:
+                    // Single dimensional arrays are in the following format:
+                    // * new Type[N] { item1, item2, ..., itemN }
+                    // * new Type[0]
+                    //
+                    // itemI is generated recursively.
+                    return NormalArrayCreation.CreateGenerated(cx, parent, childIndex, constant.Type, constant.Values, location);
+                case TypedConstantKind.Error:
+                default:
+                    cx.ExtractionError("Couldn't extract constant in attribute", constant.ToString(), location);
+                    return null;
+            }
+        }
+
+        /// <summary>
+        /// Creates a generated expression for a default argument value.
+        /// </summary>
+        public static Expression? CreateGenerated(Context cx, IParameterSymbol parameter, IExpressionParentEntity parent,
+            int childIndex, Extraction.Entities.Location location)
+        {
+            if (!parameter.HasExplicitDefaultValue ||
+                parameter.Type is IErrorTypeSymbol)
+            {
+                return null;
+            }
+
+            var defaultValue = parameter.ExplicitDefaultValue;
+
+            if (parameter.Type is INamedTypeSymbol nt && nt.EnumUnderlyingType is not null)
+            {
+                // = (MyEnum)1, = MyEnum.Value1, = default(MyEnum), = new MyEnum()
+                // we're generating a (MyEnum)value cast expression:
+                defaultValue ??= 0;
+                Action<Expression, int> createChild = (parent, index) => Literal.CreateGenerated(cx, parent, index, nt.EnumUnderlyingType, defaultValue, location);
+                return Cast.CreateGenerated(cx, parent, childIndex, parameter.Type, defaultValue, createChild, location);
+            }
+
+            if (defaultValue is null)
+            {
+                // = null, = default, = default(T), = new MyStruct()
+                // we're generating a default expression:
+                return Default.CreateGenerated(cx, parent, childIndex, location, parameter.Type.IsReferenceType ? ValueAsString(null) : null);
+            }
+
+            if (parameter.Type.SpecialType == SpecialType.System_Object)
+            {
+                // this can happen in VB.NET
+                cx.ExtractionError($"Extracting default argument value 'object {parameter.Name} = default' instead of 'object {parameter.Name} = {defaultValue}'. The latter is not supported in C#.",
+                    null, null, severity: Util.Logging.Severity.Warning);
+
+                // we're generating a default expression:
+                return Default.CreateGenerated(cx, parent, childIndex, location, ValueAsString(null));
+            }
+
+            // const literal:
+            return Literal.CreateGenerated(cx, parent, childIndex, parameter.Type, defaultValue, location);
+        }
 
         /// <summary>
         /// Adapt the operator kind depending on whether it's a dynamic call or a user-operator call.
@@ -138,18 +227,18 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <param name="node">The expression.</param>
         public void OperatorCall(TextWriter trapFile, ExpressionSyntax node)
         {
-            var @operator = cx.GetSymbolInfo(node);
+            var @operator = Context.GetSymbolInfo(node);
             if (@operator.Symbol is IMethodSymbol method)
             {
-                var callType = GetCallType(cx, node);
+                var callType = GetCallType(Context, node);
                 if (callType == CallType.Dynamic)
                 {
-                    UserOperator.OperatorSymbol(method.Name, out string operatorName);
+                    UserOperator.OperatorSymbol(method.Name, out var operatorName);
                     trapFile.dynamic_member_name(this, operatorName);
                     return;
                 }
 
-                trapFile.expr_call(this, Method.Create(cx, method));
+                trapFile.expr_call(this, Method.Create(Context, method));
             }
         }
 
@@ -181,7 +270,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 switch (method.MethodKind)
                 {
                     case MethodKind.BuiltinOperator:
-                        if (method.ContainingType != null && method.ContainingType.TypeKind == Microsoft.CodeAnalysis.TypeKind.Delegate)
+                        if (method.ContainingType is not null && method.ContainingType.TypeKind == Microsoft.CodeAnalysis.TypeKind.Delegate)
                             return CallType.UserOperator;
                         return CallType.BuiltInOperator;
                     case MethodKind.Constructor:
@@ -200,7 +289,7 @@ namespace Semmle.Extraction.CSharp.Entities
         public static bool IsDynamic(Context cx, ExpressionSyntax node)
         {
             var ti = cx.GetTypeInfo(node).ConvertedType;
-            return ti != null && ti.TypeKind == Microsoft.CodeAnalysis.TypeKind.Dynamic;
+            return ti is not null && ti.TypeKind == Microsoft.CodeAnalysis.TypeKind.Dynamic;
         }
 
         /// <summary>
@@ -210,12 +299,13 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <returns>The qualifier of the conditional access.</returns>
         protected static ExpressionSyntax FindConditionalQualifier(ExpressionSyntax node)
         {
-            for (SyntaxNode n = node; n != null; n = n.Parent)
+            for (SyntaxNode? n = node; n is not null; n = n.Parent)
             {
-                var conditionalAccess = n.Parent as ConditionalAccessExpressionSyntax;
-
-                if (conditionalAccess != null && conditionalAccess.WhenNotNull == n)
+                if (n.Parent is ConditionalAccessExpressionSyntax conditionalAccess &&
+                    conditionalAccess.WhenNotNull == n)
+                {
                     return conditionalAccess.Expression;
+                }
             }
 
             throw new InternalError(node, "Unable to locate a ConditionalAccessExpression");
@@ -234,7 +324,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private void PopulateArgument(TextWriter trapFile, ArgumentSyntax arg, int child)
         {
-            var expr = Create(cx, arg.Expression, this, child);
+            var expr = Create(Context, arg.Expression, this, child);
             int mode;
             switch (arg.RefOrOutKeyword.Kind())
             {
@@ -255,7 +345,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
             trapFile.expr_argument(expr, mode);
 
-            if (arg.NameColon != null)
+            if (arg.NameColon is not null)
             {
                 trapFile.expr_argument_name(expr, arg.NameColon.Name.Identifier.Text);
             }
@@ -264,294 +354,5 @@ namespace Semmle.Extraction.CSharp.Entities
         public override string ToString() => Label.ToString();
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.OptionalLabel;
-    }
-
-    static class CallTypeExtensions
-    {
-        /// <summary>
-        /// Adjust the expression kind <paramref name="k"/> to match this call type.
-        /// </summary>
-        public static ExprKind AdjustKind(this Expression.CallType ct, ExprKind k)
-        {
-            switch (ct)
-            {
-                case Expression.CallType.Dynamic:
-                case Expression.CallType.UserOperator:
-                    return ExprKind.OPERATOR_INVOCATION;
-                default:
-                    return k;
-            }
-        }
-    }
-
-    abstract class Expression<SyntaxNode> : Expression
-        where SyntaxNode : ExpressionSyntax
-    {
-        public readonly SyntaxNode Syntax;
-
-        protected Expression(ExpressionNodeInfo info)
-            : base(info)
-        {
-           Syntax = (SyntaxNode)info.Node;
-        }
-
-        /// <summary>
-        /// Populates expression-type specific relations in the trap file. The general relations
-        /// <code>expressions</code> and <code>expr_location</code> are populated by the constructor
-        /// (should not fail), so even if expression-type specific population fails (e.g., in
-        /// standalone extraction), the expression created via
-        /// <see cref="Expression.Create(Context, ExpressionSyntax, IEntity, int, ITypeSymbol)"/> will
-        /// still be valid.
-        /// </summary>
-        protected abstract void PopulateExpression(TextWriter trapFile);
-
-        protected new Expression TryPopulate()
-        {
-            cx.Try(Syntax, null, ()=>PopulateExpression(cx.TrapWriter.Writer));
-            return this;
-        }
-    }
-
-    /// <summary>
-    /// Holds all information required to create an Expression entity.
-    /// </summary>
-    interface IExpressionInfo
-    {
-        Context Context { get; }
-
-        /// <summary>
-        /// The type of the expression.
-        /// </summary>
-        AnnotatedType Type { get; }
-
-        /// <summary>
-        /// The location of the expression.
-        /// </summary>
-        Extraction.Entities.Location Location { get; }
-
-        /// <summary>
-        /// The kind of the expression.
-        /// </summary>
-        ExprKind Kind { get; }
-
-        /// <summary>
-        /// The parent of the expression.
-        /// </summary>
-        IExpressionParentEntity Parent { get; }
-
-        /// <summary>
-        /// The child index of the expression.
-        /// </summary>
-        int Child { get; }
-
-        /// <summary>
-        /// Holds if this is an implicit expression.
-        /// </summary>
-        bool IsCompilerGenerated { get; }
-
-        /// <summary>
-        /// Gets a string representation of the value.
-        /// null is encoded as the string "null".
-        /// If the expression does not have a value, then this
-        /// is null.
-        /// </summary>
-        string ExprValue { get; }
-
-        NullableFlowState FlowState { get; }
-    }
-
-    /// <summary>
-    /// Explicitly constructed expression information.
-    /// </summary>
-    class ExpressionInfo : IExpressionInfo
-    {
-        public Context Context { get; }
-        public AnnotatedType Type { get; }
-        public Extraction.Entities.Location Location { get; }
-        public ExprKind Kind { get; }
-        public IExpressionParentEntity Parent { get; }
-        public int Child { get; }
-        public bool IsCompilerGenerated { get; }
-        public string ExprValue { get; }
-
-        public ExpressionInfo(Context cx, AnnotatedType type, Extraction.Entities.Location location, ExprKind kind,
-            IExpressionParentEntity parent, int child, bool isCompilerGenerated, string value)
-        {
-            Context = cx;
-            Type = type;
-            Location = location;
-            Kind = kind;
-            Parent = parent;
-            Child = child;
-            ExprValue = value;
-            IsCompilerGenerated = isCompilerGenerated;
-        }
-
-        // Synthetic expressions don't have a flow state.
-        public NullableFlowState FlowState => NullableFlowState.None;
-    }
-
-    /// <summary>
-    /// Expression information constructed from a syntax node.
-    /// </summary>
-    class ExpressionNodeInfo : IExpressionInfo
-    {
-        public ExpressionNodeInfo(Context cx, ExpressionSyntax node, IExpressionParentEntity parent, int child) :
-            this(cx, node, parent, child, cx.GetTypeInfo(node))
-        {
-        }
-
-        public ExpressionNodeInfo(Context cx, ExpressionSyntax node, IExpressionParentEntity parent, int child, TypeInfo typeInfo)
-        {
-            Context = cx;
-            Node = node;
-            Parent = parent;
-            Child = child;
-            TypeInfo = typeInfo;
-            Conversion = cx.GetModel(node).GetConversion(node);
-        }
-
-        public Context Context { get; }
-        public ExpressionSyntax Node { get; private set; }
-        public IExpressionParentEntity Parent { get; set; }
-        public int Child { get; set; }
-        public TypeInfo TypeInfo { get; }
-        public Microsoft.CodeAnalysis.CSharp.Conversion Conversion { get; }
-
-        public AnnotatedTypeSymbol ResolvedType => new AnnotatedTypeSymbol(TypeInfo.Type.DisambiguateType(), TypeInfo.Nullability.Annotation);
-        public AnnotatedTypeSymbol ConvertedType => new AnnotatedTypeSymbol(TypeInfo.ConvertedType.DisambiguateType(), TypeInfo.ConvertedNullability.Annotation);
-
-        public AnnotatedTypeSymbol ExpressionType
-        {
-            get
-            {
-                var type = ResolvedType;
-
-                if (type.Symbol == null)
-                    type.Symbol = (TypeInfo.Type ?? TypeInfo.ConvertedType).DisambiguateType();
-
-                // Roslyn workaround: It can't work out the type of "new object[0]"
-                // Clearly a bug.
-                if (type.Symbol?.TypeKind == Microsoft.CodeAnalysis.TypeKind.Error)
-                {
-                    var arrayCreation = Node as ArrayCreationExpressionSyntax;
-                    if (arrayCreation != null)
-                    {
-                        var elementType = Context.GetType(arrayCreation.Type.ElementType);
-
-                        if (elementType.Symbol != null)
-                            // There seems to be no way to create an array with a nullable element at present.
-                            return new AnnotatedTypeSymbol(Context.Compilation.CreateArrayTypeSymbol(elementType.Symbol, arrayCreation.Type.RankSpecifiers.Count), NullableAnnotation.NotAnnotated);
-                    }
-
-                    Context.ModelError(Node, "Failed to determine type");
-                }
-
-                return type;
-            }
-        }
-
-        Microsoft.CodeAnalysis.Location location;
-
-        public Microsoft.CodeAnalysis.Location CodeAnalysisLocation
-        {
-            get
-            {
-                if (location == null)
-                    location = Node.FixedLocation();
-                return location;
-            }
-            set
-            {
-                location = value;
-            }
-        }
-
-        public SemanticModel Model => Context.GetModel(Node);
-
-        public string ExprValue
-        {
-            get
-            {
-                var c = Model.GetConstantValue(Node);
-                return c.HasValue ? Expression.ValueAsString(c.Value) : null;
-            }
-        }
-
-        AnnotatedType cachedType;
-
-        public AnnotatedType Type
-        {
-            get
-            {
-                if (cachedType.Type == null)
-                    cachedType = Entities.Type.Create(Context, ExpressionType);
-                return cachedType;
-            }
-            set
-            {
-                cachedType = value;
-            }
-        }
-
-        Extraction.Entities.Location cachedLocation;
-
-        public Extraction.Entities.Location Location
-        {
-            get
-            {
-                if (cachedLocation == null)
-                    cachedLocation = Context.Create(CodeAnalysisLocation);
-                return cachedLocation;
-            }
-
-            set
-            {
-                cachedLocation = value;
-            }
-        }
-
-        public ExprKind Kind { get; set; } = ExprKind.UNKNOWN;
-
-        public bool IsCompilerGenerated { get; set; }
-
-        public ExpressionNodeInfo SetParent(IExpressionParentEntity parent, int child)
-        {
-            Parent = parent;
-            Child = child;
-            return this;
-        }
-
-        public ExpressionNodeInfo SetKind(ExprKind kind)
-        {
-            Kind = kind;
-            return this;
-        }
-
-        public ExpressionNodeInfo SetType(AnnotatedType type)
-        {
-            Type = type;
-            return this;
-        }
-
-        public ExpressionNodeInfo SetNode(ExpressionSyntax node)
-        {
-            Node = node;
-            return this;
-        }
-
-        SymbolInfo cachedSymbolInfo;
-
-        public SymbolInfo SymbolInfo
-        {
-            get
-            {
-                if (cachedSymbolInfo.Symbol == null && cachedSymbolInfo.CandidateReason == CandidateReason.None)
-                    cachedSymbolInfo = Model.GetSymbolInfo(Node);
-                return cachedSymbolInfo;
-            }
-        }
-
-        public NullableFlowState FlowState => TypeInfo.Nullability.FlowState;
     }
 }

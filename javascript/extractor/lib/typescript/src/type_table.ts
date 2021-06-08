@@ -1,4 +1,5 @@
 import * as ts from "./typescript";
+import { VirtualSourceRoot } from "./virtual_source_root";
 
 interface AugmentedSymbol extends ts.Symbol {
   parent?: AugmentedSymbol;
@@ -379,12 +380,15 @@ export class TypeTable {
    */
   public restrictedExpansion = false;
 
+  private virtualSourceRoot: VirtualSourceRoot;
+
   /**
    * Called when a new compiler instance has started.
    */
-  public setProgram(program: ts.Program) {
+  public setProgram(program: ts.Program, virtualSourceRoot: VirtualSourceRoot) {
     this.typeChecker = program.getTypeChecker();
     this.arbitraryAstNode = program.getSourceFiles()[0];
+    this.virtualSourceRoot = virtualSourceRoot;
   }
 
   /**
@@ -628,7 +632,14 @@ export class TypeTable {
           ? tupleType.minLength
           : this.typeChecker.getTypeArguments(tupleReference).length;
       let hasRestElement = tupleType.hasRestElement ? 't' : 'f';
-      let prefix = `tuple;${minLength};${hasRestElement}`;
+      let restIndex = -1;
+      for (let i = 0; i < tupleType.elementFlags.length; i++) {
+        if (tupleType.elementFlags[i] & ts.ElementFlags.Rest) {
+          restIndex = i;
+          break;
+        }
+      }
+      let prefix = `tuple;${minLength};${restIndex}`;
       return this.makeTypeStringVectorFromTypeReferenceArguments(prefix, type);
     }
     if (objectFlags & ts.ObjectFlags.Anonymous) {
@@ -703,12 +714,19 @@ export class TypeTable {
   private getSymbolString(symbol: AugmentedSymbol): string {
     let parent = symbol.parent;
     if (parent == null || parent.escapedName === ts.InternalSymbolName.Global) {
-      return "root;" + this.getSymbolDeclarationString(symbol) + ";;" + symbol.name;
+      return "root;" + this.getSymbolDeclarationString(symbol) + ";;" + this.rewriteSymbolName(symbol);
     } else if (parent.exports != null && parent.exports.get(symbol.escapedName) === symbol) {
-      return "member;;" + this.getSymbolId(parent) + ";" + symbol.name;
+      return "member;;" + this.getSymbolId(parent) + ";" + this.rewriteSymbolName(symbol);
     } else {
-      return "other;" + this.getSymbolDeclarationString(symbol) + ";" + this.getSymbolId(parent) + ";" + symbol.name;
+      return "other;" + this.getSymbolDeclarationString(symbol) + ";" + this.getSymbolId(parent) + ";" + this.rewriteSymbolName(symbol);
     }
+  }
+
+  private rewriteSymbolName(symbol: AugmentedSymbol) {
+    let { virtualSourceRoot, sourceRoot } = this.virtualSourceRoot;
+    let { name } = symbol;
+    if (virtualSourceRoot == null || sourceRoot == null) return name;
+    return name.replace(virtualSourceRoot, sourceRoot);
   }
 
   /**
@@ -875,21 +893,23 @@ export class TypeTable {
   }
 
   /**
-   * Returns the properties of the given type, or `null` if the properties of this
-   * type could not be computed.
+   * Returns the properties to extract for the given type or `null` if nothing should be extracted.
+   *
+   * For performance reasons we only extract properties needed to recognize promise types at the QL
+   * level.
    */
-  private tryGetProperties(type: ts.Type) {
-    // Workaround for https://github.com/Microsoft/TypeScript/issues/30845
-    // Should be safe to remove once that has been fixed.
-    try {
-      return type.getProperties();
-    } catch (e) {
-      return null;
+  private getPropertiesToExtract(type: ts.Type) {
+    if (this.getSelfType(type) === type) {
+      let thenSymbol = this.typeChecker.getPropertyOfType(type, "then");
+      if (thenSymbol != null) {
+        return [thenSymbol];
+      }
     }
+    return null;
   }
 
   private extractProperties(type: ts.Type, id: number) {
-    let props = this.tryGetProperties(type);
+    let props = this.getPropertiesToExtract(type);
     if (props == null) return;
     for (let symbol of props) {
       let propertyType = this.tryGetTypeOfSymbol(symbol);
@@ -927,6 +947,9 @@ export class TypeTable {
    * Returns a unique string for the given call/constructor signature.
    */
   private getSignatureString(kind: ts.SignatureKind, signature: AugmentedSignature): string {
+    let modifiers : ts.ModifiersArray = signature.getDeclaration()?.modifiers;
+    let isAbstract = modifiers && modifiers.filter(modifier => modifier.kind == ts.SyntaxKind.AbstractKeyword).length > 0
+
     let parameters = signature.getParameters();
     let numberOfTypeParameters = signature.typeParameters == null
         ? 0
@@ -958,7 +981,7 @@ export class TypeTable {
     if (returnTypeId == null) {
       return null;
     }
-    let tag = `${kind};${numberOfTypeParameters};${requiredParameters};${restParameterTag};${returnTypeId}`;
+    let tag = `${kind};${isAbstract ? "t" : "f"};${numberOfTypeParameters};${requiredParameters};${restParameterTag};${returnTypeId}`;
     for (let typeParameter of signature.typeParameters || []) {
       tag += ";" + typeParameter.symbol.name;
       let constraint = typeParameter.getConstraint();

@@ -14,6 +14,11 @@ module UnsafeDynamicMethodAccess {
   private import DataFlow::FlowLabel
   import UnsafeDynamicMethodAccessCustomizations::UnsafeDynamicMethodAccess
 
+  // Materialize flow labels
+  private class ConcreteUnsafeFunction extends UnsafeFunction {
+    ConcreteUnsafeFunction() { this = this }
+  }
+
   /**
    * A taint-tracking configuration for reasoning about unsafe dynamic method access.
    */

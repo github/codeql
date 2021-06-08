@@ -10,7 +10,7 @@ class ResolveCall extends CallExpr {
   string getDeclaredValue() {
     result = getVariable().getAnAssignedExpr().getStringValue()
     or
-    exists(NamespaceDeclaration decl | decl.getId() = getVariable().getADeclaration() |
+    exists(NamespaceDeclaration decl | decl.getIdentifier() = getVariable().getADeclaration() |
       result = getNamespaceName(decl)
     )
   }
@@ -21,7 +21,8 @@ string getNamespaceName(NamespaceDeclaration decl) {
   or
   not decl.getStmt(0).(ExprStmt).getExpr() instanceof ConstantString and
   result =
-    "Namespace " + decl.getId() + " on line " + decl.getFirstToken().getLocation().getStartLine()
+    "Namespace " + decl.getIdentifier() + " on line " +
+      decl.getFirstToken().getLocation().getStartLine()
 }
 
 from ResolveCall resolve

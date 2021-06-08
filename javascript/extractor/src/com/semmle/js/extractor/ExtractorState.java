@@ -1,6 +1,12 @@
 package com.semmle.js.extractor;
 
-import com.semmle.js.parser.TypeScriptParser;
+import java.io.File;
+import java.nio.file.Path;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.Optional;
+
+import com.semmle.ts.extractor.TypeScriptParser;
 
 /**
  * Contains the state to be shared between extractions of different files.
@@ -17,9 +23,31 @@ import com.semmle.js.parser.TypeScriptParser;
  */
 public class ExtractorState {
   private TypeScriptParser typeScriptParser = new TypeScriptParser();
+  
+  private final ConcurrentHashMap<Path, FileSnippet> snippets = new ConcurrentHashMap<>();
+
+  private static final ConcurrentMap<File, Optional<String>> packageTypeCache = new ConcurrentHashMap<>();
 
   public TypeScriptParser getTypeScriptParser() {
     return typeScriptParser;
+  }
+
+  /**
+   * Returns the mapping that denotes where a snippet file originated from.
+   *
+   * <p>The map is thread-safe and may be mutated by the caller.
+   */
+  public ConcurrentHashMap<Path, FileSnippet> getSnippets() {
+    return snippets;
+  }
+
+  /**
+   * Returns a cache for the "type" field in `package.json` files.
+   *
+   * <p>The map is thread-safe and may be mutated by the caller.
+   */
+  public ConcurrentMap<File, Optional<String>> getPackageTypeCache() {
+    return this.packageTypeCache;
   }
 
   /**
@@ -28,5 +56,7 @@ public class ExtractorState {
    */
   public void reset() {
     typeScriptParser.reset();
+    snippets.clear();
+    packageTypeCache.clear();
   }
 }

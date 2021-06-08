@@ -15,17 +15,15 @@ namespace Semmle.Extraction.CSharp.Populators
         /// <returns>Extended location.</returns>
         public static Location ExtendLocation(this Location l1, SyntaxNode n2)
         {
-            if (n2 == null)
+            if (n2 is null)
             {
                 return l1;
             }
-            else
-            {
-                var l2 = n2.FixedLocation();
-                int start = System.Math.Min(l1.SourceSpan.Start, l2.SourceSpan.Start);
-                int end = System.Math.Max(l1.SourceSpan.End, l2.SourceSpan.End);
-                return Location.Create(n2.SyntaxTree, new Microsoft.CodeAnalysis.Text.TextSpan(start, end - start));
-            }
+
+            var l2 = n2.FixedLocation();
+            var start = System.Math.Min(l1.SourceSpan.Start, l2.SourceSpan.Start);
+            var end = System.Math.Max(l1.SourceSpan.End, l2.SourceSpan.End);
+            return Location.Create(n2.SyntaxTree, new Microsoft.CodeAnalysis.Text.TextSpan(start, end - start));
         }
 
         /// <summary>
@@ -60,21 +58,21 @@ namespace Semmle.Extraction.CSharp.Populators
                 case SyntaxKind.DelegateDeclaration:
                     {
                         var decl = (DelegateDeclarationSyntax)node;
-                        return decl.Identifier.GetLocation().ExtendLocation(decl.TypeParameterList);
+                        return decl.Identifier.GetLocation().ExtendLocation(decl.TypeParameterList!);
                     }
                 case SyntaxKind.ClassDeclaration:
                 case SyntaxKind.StructDeclaration:
                 case SyntaxKind.InterfaceDeclaration:
                     {
                         var decl = (TypeDeclarationSyntax)node;
-                        return decl.Identifier.GetLocation().ExtendLocation(decl.TypeParameterList);
+                        return decl.Identifier.GetLocation().ExtendLocation(decl.TypeParameterList!);
                     }
                 case SyntaxKind.EnumDeclaration:
                     return ((EnumDeclarationSyntax)node).Identifier.GetLocation();
                 case SyntaxKind.MethodDeclaration:
                     {
                         var decl = (MethodDeclarationSyntax)node;
-                        return decl.Identifier.GetLocation().ExtendLocation(decl.TypeParameterList);
+                        return decl.Identifier.GetLocation().ExtendLocation(decl.TypeParameterList!);
                     }
                 case SyntaxKind.ConstructorDeclaration:
                     {

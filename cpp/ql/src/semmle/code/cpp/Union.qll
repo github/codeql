@@ -1,3 +1,7 @@
+/**
+ * Provides classes for modeling `union`s.
+ */
+
 import semmle.code.cpp.Type
 import semmle.code.cpp.Struct
 
@@ -13,7 +17,7 @@ import semmle.code.cpp.Struct
 class Union extends Struct {
   Union() { usertypes(underlyingElement(this), _, 3) }
 
-  override string getCanonicalQLClass() { result = "Union" }
+  override string getAPrimaryQlClass() { result = "Union" }
 
   override string explain() { result = "union " + this.getName() }
 
@@ -35,7 +39,7 @@ class Union extends Struct {
 class LocalUnion extends Union {
   LocalUnion() { isLocal() }
 
-  override string getCanonicalQLClass() { result = "LocalUnion" }
+  override string getAPrimaryQlClass() { result = "LocalUnion" }
 }
 
 /**
@@ -53,7 +57,7 @@ class LocalUnion extends Union {
 class NestedUnion extends Union {
   NestedUnion() { this.isMember() }
 
-  override string getCanonicalQLClass() { result = "NestedUnion" }
+  override string getAPrimaryQlClass() { result = "NestedUnion" }
 
   /** Holds if this member is private. */
   predicate isPrivate() { this.hasSpecifier("private") }

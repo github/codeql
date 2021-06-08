@@ -7,3 +7,7 @@
     tags contain:
       - ide-contextual-queries/local-definitions
       - ide-contextual-queries/local-references
+- query: Lexical/FCommentedOutCode.ql
+- query: Metrics/FLinesOfCode.ql
+- query: Metrics/FLinesOfComments.ql
+- query: Metrics/FNumberOfTests.ql

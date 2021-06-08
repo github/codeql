@@ -1,3 +1,7 @@
+/**
+ * Provides classes describing basic blocks in the IR of a function.
+ */
+
 private import internal.IRInternal
 import Instruction
 private import internal.IRBlockImports as Imports
@@ -16,53 +20,81 @@ private import Cached
  * Most consumers should use the class `IRBlock`.
  */
 class IRBlockBase extends TIRBlock {
+  /** Gets a textual representation of this block. */
   final string toString() { result = getFirstInstruction(this).toString() }
 
+  /** Gets the source location of the first non-`Phi` instruction in this block. */
   final Language::Location getLocation() { result = getFirstInstruction().getLocation() }
 
-  final string getUniqueId() { result = getFirstInstruction(this).getUniqueId() }
-
   /**
-   * Gets the zero-based index of the block within its function. This is used
-   * by debugging and printing code only.
+   * INTERNAL: Do not use.
+   *
+   * Gets the zero-based index of the block within its function.
+   *
+   * This predicate is used by debugging and printing code only.
    */
   int getDisplayIndex() {
     exists(IRConfiguration::IRConfiguration config |
       config.shouldEvaluateDebugStringsForFunction(this.getEnclosingFunction())
     ) and
     this =
-      rank[result + 1](IRBlock funcBlock, int sortOverride |
+      rank[result + 1](IRBlock funcBlock, int sortOverride, int sortKey1, int sortKey2 |
         funcBlock.getEnclosingFunction() = getEnclosingFunction() and
+        funcBlock.getFirstInstruction().hasSortKeys(sortKey1, sortKey2) and
         // Ensure that the block containing `EnterFunction` always comes first.
         if funcBlock.getFirstInstruction() instanceof EnterFunctionInstruction
         then sortOverride = 0
         else sortOverride = 1
       |
-        funcBlock order by sortOverride, funcBlock.getUniqueId()
+        funcBlock order by sortOverride, sortKey1, sortKey2
       )
   }
 
+  /**
+   * Gets the `index`th non-`Phi` instruction in this block.
+   */
   final Instruction getInstruction(int index) { result = getInstruction(this, index) }
 
+  /**
+   * Get the `Phi` instructions that appear at the start of this block.
+   */
   final PhiInstruction getAPhiInstruction() {
     Construction::getPhiInstructionBlockStart(result) = getFirstInstruction()
   }
 
+  /**
+   * Gets an instruction in this block. This includes `Phi` instructions.
+   */
   final Instruction getAnInstruction() {
     result = getInstruction(_) or
     result = getAPhiInstruction()
   }
 
+  /**
+   * Gets the first non-`Phi` instruction in this block.
+   */
   final Instruction getFirstInstruction() { result = getFirstInstruction(this) }
 
+  /**
+   * Gets the last instruction in this block.
+   */
   final Instruction getLastInstruction() { result = getInstruction(getInstructionCount() - 1) }
 
+  /**
+   * Gets the number of non-`Phi` instructions in this block.
+   */
   final int getInstructionCount() { result = getInstructionCount(this) }
 
+  /**
+   * Gets the `IRFunction` that contains this block.
+   */
   final IRFunction getEnclosingIRFunction() {
     result = getFirstInstruction(this).getEnclosingIRFunction()
   }
 
+  /**
+   * Gets the `Function` that contains this block.
+   */
   final Language::Function getEnclosingFunction() {
     result = getFirstInstruction(this).getEnclosingFunction()
   }
@@ -74,20 +106,57 @@ class IRBlockBase extends TIRBlock {
  * instruction of another block.
  */
 class IRBlock extends IRBlockBase {
+  /**
+   * Gets a block to which control flows directly from this block.
+   */
   final IRBlock getASuccessor() { blockSuccessor(this, result) }
 
+  /**
+   * Gets a block from which control flows directly to this block.
+   */
   final IRBlock getAPredecessor() { blockSuccessor(result, this) }
 
+  /**
+   * Gets the block to which control flows directly from this block along an edge of kind `kind`.
+   */
   final IRBlock getSuccessor(EdgeKind kind) { blockSuccessor(this, result, kind) }
 
+  /**
+   * Gets the block to which control flows directly from this block along a back edge of kind
+   * `kind`.
+   */
   final IRBlock getBackEdgeSuccessor(EdgeKind kind) { backEdgeSuccessor(this, result, kind) }
 
+  /**
+   * Holds if this block immediately dominates `block`.
+   *
+   * Block `A` immediate dominates block `B` if block `A` strictly dominates block `B` and block `B`
+   * is a direct successor of block `A`.
+   */
   final predicate immediatelyDominates(IRBlock block) { blockImmediatelyDominates(this, block) }
 
+  /**
+   * Holds if this block strictly dominates `block`.
+   *
+   * Block `A` strictly dominates block `B` if block `A` dominates block `B` and blocks `A` and `B`
+   * are not the same block.
+   */
   final predicate strictlyDominates(IRBlock block) { blockImmediatelyDominates+(this, block) }
 
+  /**
+   * Holds if this block dominates `block`.
+   *
+   * Block `A` dominates block `B` if any control flow path from the entry block of the function to
+   * block `B` must pass through block `A`. A block always dominates itself.
+   */
   final predicate dominates(IRBlock block) { strictlyDominates(block) or this = block }
 
+  /**
+   * Gets a block on the dominance frontier of this block.
+   *
+   * The dominance frontier of block `A` is the set of blocks `B` such that block `A` does not
+   * dominate block `B`, but block `A` does dominate an immediate predecessor of block `B`.
+   */
   pragma[noinline]
   final IRBlock dominanceFrontier() {
     dominates(result.getAPredecessor()) and
@@ -95,7 +164,47 @@ class IRBlock extends IRBlockBase {
   }
 
   /**
-   * Holds if this block is reachable from the entry point of its function
+   * Holds if this block immediately post-dominates `block`.
+   *
+   * Block `A` immediate post-dominates block `B` if block `A` strictly post-dominates block `B` and
+   * block `B` is a direct successor of block `A`.
+   */
+  final predicate immediatelyPostDominates(IRBlock block) {
+    blockImmediatelyPostDominates(this, block)
+  }
+
+  /**
+   * Holds if this block strictly post-dominates `block`.
+   *
+   * Block `A` strictly post-dominates block `B` if block `A` post-dominates block `B` and blocks `A`
+   * and `B` are not the same block.
+   */
+  final predicate strictlyPostDominates(IRBlock block) {
+    blockImmediatelyPostDominates+(this, block)
+  }
+
+  /**
+   * Holds if this block is a post-dominator of `block`.
+   *
+   * Block `A` post-dominates block `B` if any control flow path from `B` to the exit block of the
+   * function must pass through block `A`. A block always post-dominates itself.
+   */
+  final predicate postDominates(IRBlock block) { strictlyPostDominates(block) or this = block }
+
+  /**
+   * Gets a block on the post-dominance frontier of this block.
+   *
+   * The post-dominance frontier of block `A` is the set of blocks `B` such that block `A` does not
+   * post-dominate block `B`, but block `A` does post-dominate an immediate successor of block `B`.
+   */
+  pragma[noinline]
+  final IRBlock postPominanceFrontier() {
+    postDominates(result.getASuccessor()) and
+    not strictlyPostDominates(result)
+  }
+
+  /**
+   * Holds if this block is reachable from the entry block of its function.
    */
   final predicate isReachableFromFunctionEntry() {
     this = getEnclosingIRFunction().getEntryBlock() or
@@ -210,4 +319,13 @@ private module Cached {
     idominance(isEntryBlock/1, blockSuccessor/2)(_, dominator, block)
 }
 
-Instruction getFirstInstruction(TIRBlock block) { block = MkIRBlock(result) }
+private Instruction getFirstInstruction(TIRBlock block) { block = MkIRBlock(result) }
+
+private predicate blockFunctionExit(IRBlock exit) {
+  exit.getLastInstruction() instanceof ExitFunctionInstruction
+}
+
+private predicate blockPredecessor(IRBlock src, IRBlock pred) { src.getAPredecessor() = pred }
+
+private predicate blockImmediatelyPostDominates(IRBlock postDominator, IRBlock block) =
+  idominance(blockFunctionExit/1, blockPredecessor/2)(_, postDominator, block)

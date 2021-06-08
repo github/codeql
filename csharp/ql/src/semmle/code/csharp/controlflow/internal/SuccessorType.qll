@@ -5,7 +5,7 @@
  */
 
 import csharp
-private import semmle.code.csharp.controlflow.internal.Completion
+private import Completion
 private import semmle.code.csharp.Caching
 
 cached
@@ -28,7 +28,7 @@ class SuccessorType extends TSuccessorType {
   string toString() { none() }
 
   /** Holds if this successor type matches completion `c`. */
-  predicate matchesCompletion(Completion c) { none() }
+  deprecated predicate matchesCompletion(Completion c) { this = c.getAMatchingSuccessorType() }
 }
 
 /** Provides different types of control flow successor types. */
@@ -36,12 +36,6 @@ module SuccessorTypes {
   /** A normal control flow successor. */
   class NormalSuccessor extends SuccessorType, TSuccessorSuccessor {
     override string toString() { result = "successor" }
-
-    override predicate matchesCompletion(Completion c) {
-      c instanceof NormalCompletion and
-      not c instanceof ConditionalCompletion and
-      not c instanceof BreakNormalCompletion
-    }
   }
 
   /**
@@ -59,7 +53,7 @@ module SuccessorTypes {
    *
    * For example, this program fragment:
    *
-   * ```
+   * ```csharp
    * if (x < 0)
    *     return 0;
    * else
@@ -84,10 +78,6 @@ module SuccessorTypes {
     override boolean getValue() { this = TBooleanSuccessor(result) }
 
     override string toString() { result = getValue().toString() }
-
-    override predicate matchesCompletion(Completion c) {
-      c.(BooleanCompletion).getInnerCompletion().(BooleanCompletion).getValue() = this.getValue()
-    }
   }
 
   /**
@@ -95,7 +85,7 @@ module SuccessorTypes {
    *
    * For example, this program fragment:
    *
-   * ```
+   * ```csharp
    * int? M(string s) => s?.Length;
    * ```
    *
@@ -123,10 +113,6 @@ module SuccessorTypes {
     override boolean getValue() { this = TNullnessSuccessor(result) }
 
     override string toString() { if this.isNull() then result = "null" else result = "non-null" }
-
-    override predicate matchesCompletion(Completion c) {
-      if this.isNull() then c.(NullnessCompletion).isNull() else c.(NullnessCompletion).isNonNull()
-    }
   }
 
   /**
@@ -134,7 +120,7 @@ module SuccessorTypes {
    *
    * For example, this program fragment:
    *
-   * ```
+   * ```csharp
    * switch (x) {
    *     case 0 :
    *         return 0;
@@ -168,12 +154,6 @@ module SuccessorTypes {
     override boolean getValue() { this = TMatchingSuccessor(result) }
 
     override string toString() { if this.isMatch() then result = "match" else result = "no-match" }
-
-    override predicate matchesCompletion(Completion c) {
-      if this.isMatch()
-      then c.(MatchingCompletion).isMatch()
-      else c.(MatchingCompletion).isNonMatch()
-    }
   }
 
   /**
@@ -181,7 +161,7 @@ module SuccessorTypes {
    *
    * For example, this program fragment:
    *
-   * ```
+   * ```csharp
    * foreach (var arg in args)
    * {
    *     yield return arg;
@@ -215,12 +195,6 @@ module SuccessorTypes {
     override boolean getValue() { this = TEmptinessSuccessor(result) }
 
     override string toString() { if this.isEmpty() then result = "empty" else result = "non-empty" }
-
-    override predicate matchesCompletion(Completion c) {
-      if this.isEmpty()
-      then c.(EmptinessCompletion).isEmpty()
-      else c = any(EmptinessCompletion ec | not ec.isEmpty())
-    }
   }
 
   /**
@@ -228,7 +202,7 @@ module SuccessorTypes {
    *
    * Example:
    *
-   * ```
+   * ```csharp
    * void M()
    * {
    *     return;
@@ -240,8 +214,6 @@ module SuccessorTypes {
    */
   class ReturnSuccessor extends SuccessorType, TReturnSuccessor {
     override string toString() { result = "return" }
-
-    override predicate matchesCompletion(Completion c) { c instanceof ReturnCompletion }
   }
 
   /**
@@ -249,7 +221,7 @@ module SuccessorTypes {
    *
    * Example:
    *
-   * ```
+   * ```csharp
    * int M(int x)
    * {
    *     while (true)
@@ -265,11 +237,6 @@ module SuccessorTypes {
    */
   class BreakSuccessor extends SuccessorType, TBreakSuccessor {
     override string toString() { result = "break" }
-
-    override predicate matchesCompletion(Completion c) {
-      c instanceof BreakCompletion or
-      c instanceof BreakNormalCompletion
-    }
   }
 
   /**
@@ -277,7 +244,7 @@ module SuccessorTypes {
    *
    * Example:
    *
-   * ```
+   * ```csharp
    * int M(int x)
    * {
    *     while (true) {
@@ -293,8 +260,6 @@ module SuccessorTypes {
    */
   class ContinueSuccessor extends SuccessorType, TContinueSuccessor {
     override string toString() { result = "continue" }
-
-    override predicate matchesCompletion(Completion c) { c instanceof ContinueCompletion }
   }
 
   /**
@@ -302,7 +267,7 @@ module SuccessorTypes {
    *
    * Example:
    *
-   * ```
+   * ```csharp
    * int M(int x)
    * {
    *     while (true)
@@ -322,10 +287,6 @@ module SuccessorTypes {
     string getLabel() { this = TGotoSuccessor(result) }
 
     override string toString() { result = "goto(" + this.getLabel() + ")" }
-
-    override predicate matchesCompletion(Completion c) {
-      c.(GotoCompletion).getLabel() = this.getLabel()
-    }
   }
 
   /**
@@ -333,7 +294,7 @@ module SuccessorTypes {
    *
    * Example:
    *
-   * ```
+   * ```csharp
    * int M(string s)
    * {
    *     if (s == null)
@@ -350,10 +311,6 @@ module SuccessorTypes {
     ExceptionClass getExceptionClass() { this = TExceptionSuccessor(result) }
 
     override string toString() { result = "exception(" + getExceptionClass().getName() + ")" }
-
-    override predicate matchesCompletion(Completion c) {
-      c.(ThrowCompletion).getExceptionClass() = getExceptionClass()
-    }
   }
 
   /**
@@ -361,7 +318,7 @@ module SuccessorTypes {
    *
    * Example:
    *
-   * ```
+   * ```csharp
    * int M(string s)
    * {
    *     if (s == null)
@@ -374,7 +331,5 @@ module SuccessorTypes {
    */
   class ExitSuccessor extends SuccessorType, TExitSuccessor {
     override string toString() { result = "exit" }
-
-    override predicate matchesCompletion(Completion c) { c instanceof ExitCompletion }
   }
 }

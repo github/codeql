@@ -93,7 +93,7 @@ class QuotedCommandInCreateProcessFunctionConfiguration extends DataFlow2::Confi
 
 bindingset[s]
 predicate isQuotedOrNoSpaceApplicationNameOnCmd(string s) {
-  s.regexpMatch("\"([^\"])*\"(\\s|.)*") // The first element (path) is quoted
+  s.regexpMatch("\"([^\"])*\"[\\s\\S]*") // The first element (path) is quoted
   or
   s.regexpMatch("[^\\s]+") // There are no spaces in the string
 }

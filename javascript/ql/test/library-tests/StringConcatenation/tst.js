@@ -99,3 +99,9 @@ function concatCall() {
 function arrayConcat(a, b) {
   return [].concat(a, b);
 }
+
+function stringValue() {
+  var a = "foo" + "bar" + value;
+  var b = value + "foo" + "bar";
+  var c = "foo" + ("bar" + "baz")
+}

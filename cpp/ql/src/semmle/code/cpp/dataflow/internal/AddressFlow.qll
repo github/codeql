@@ -15,6 +15,7 @@
  */
 
 private import cpp
+private import semmle.code.cpp.models.interfaces.PointerWrapper
 
 /**
  * Holds if `f` is an instantiation of the `std::move` or `std::forward`
@@ -29,7 +30,7 @@ private predicate stdIdentityFunction(Function f) { f.hasQualifiedName("std", ["
  */
 private predicate stdAddressOf(Function f) { f.hasQualifiedName("std", "addressof") }
 
-private predicate lvalueToLvalueStep(Expr lvalueIn, Expr lvalueOut) {
+private predicate lvalueToLvalueStepPure(Expr lvalueIn, Expr lvalueOut) {
   lvalueIn.getConversion() = lvalueOut.(ParenthesisExpr)
   or
   // When an object is implicitly converted to a reference to one of its base
@@ -42,6 +43,10 @@ private predicate lvalueToLvalueStep(Expr lvalueIn, Expr lvalueOut) {
   // such casts.
   lvalueIn.getConversion() = lvalueOut and
   lvalueOut.(CStyleCast).isImplicit()
+}
+
+private predicate lvalueToLvalueStep(Expr lvalueIn, Expr lvalueOut) {
+  lvalueToLvalueStepPure(lvalueIn, lvalueOut)
   or
   // C++ only
   lvalueIn = lvalueOut.(PrefixCrementOperation).getOperand().getFullyConverted()
@@ -77,6 +82,8 @@ private predicate pointerToPointerStep(Expr pointerIn, Expr pointerOut) {
   or
   pointerIn.getConversion() = pointerOut.(ParenthesisExpr)
   or
+  pointerIn.getConversion() = pointerOut.(TemporaryObjectExpr)
+  or
   pointerIn = pointerOut.(ConditionalExpr).getThen().getFullyConverted()
   or
   pointerIn = pointerOut.(ConditionalExpr).getElse().getFullyConverted()
@@ -88,6 +95,12 @@ private predicate pointerToPointerStep(Expr pointerIn, Expr pointerOut) {
 
 private predicate lvalueToReferenceStep(Expr lvalueIn, Expr referenceOut) {
   lvalueIn.getConversion() = referenceOut.(ReferenceToExpr)
+  or
+  exists(PointerWrapper wrapper, Call call | call = referenceOut |
+    referenceOut.getUnspecifiedType() instanceof ReferenceType and
+    call = wrapper.getAnUnwrapperFunction().getACallToThisFunction() and
+    lvalueIn = call.getQualifier().getFullyConverted()
+  )
 }
 
 private predicate referenceToLvalueStep(Expr referenceIn, Expr lvalueOut) {
@@ -100,6 +113,13 @@ private predicate referenceToPointerStep(Expr referenceIn, Expr pointerOut) {
       stdAddressOf(call.getTarget()) and
       referenceIn = call.getArgument(0).getFullyConverted()
     )
+  or
+  exists(CopyConstructor copy, Call call | call = pointerOut |
+    copy.getDeclaringType() instanceof PointerWrapper and
+    call.getTarget() = copy and
+    // The 0'th argument is the value being copied.
+    referenceIn = call.getArgument(0).getFullyConverted()
+  )
 }
 
 private predicate referenceToReferenceStep(Expr referenceIn, Expr referenceOut) {
@@ -125,7 +145,22 @@ private predicate lvalueToUpdate(Expr lvalue, Expr outer, ControlFlowNode node) 
     exists(Call call | node = call |
       outer = call.getQualifier().getFullyConverted() and
       outer.getUnspecifiedType() instanceof Class and
-      not call.getTarget().hasSpecifier("const")
+      not (
+        call.getTarget().hasSpecifier("const") and
+        // Given the following program:
+        // ```
+        // struct C {
+        //   void* data_;
+        //   void* data() const { return data; }
+        // };
+        // C c;
+        // memcpy(c.data(), source, 16)
+        // ```
+        // the data pointed to by `c.data_` is potentially modified by the call to `memcpy` even though
+        // `C::data` has a const specifier. So we further place the restriction that the type returned
+        // by `call` should not be of the form `const T*` (for some deeply const type `T`).
+        call.getType().isDeeplyConstBelow()
+      )
     )
     or
     assignmentTo(outer, node)
@@ -164,7 +199,24 @@ private predicate pointerToUpdate(Expr pointer, Expr outer, ControlFlowNode node
       or
       outer = call.getQualifier().getFullyConverted() and
       outer.getUnspecifiedType() instanceof PointerType and
-      not call.getTarget().hasSpecifier("const")
+      not (
+        call.getTarget().hasSpecifier("const") and
+        // See the `lvalueToUpdate` case for an explanation of this conjunct.
+        call.getType().isDeeplyConstBelow()
+      )
+      or
+      // Pointer wrappers behave as raw pointers for dataflow purposes.
+      outer = call.getAnArgument().getFullyConverted() and
+      exists(PointerWrapper wrapper | wrapper = outer.getType().stripTopLevelSpecifiers() |
+        not wrapper.pointsToConst()
+      )
+      or
+      outer = call.getQualifier().getFullyConverted() and
+      outer.getUnspecifiedType() instanceof PointerWrapper and
+      not (
+        call.getTarget().hasSpecifier("const") and
+        call.getType().isDeeplyConstBelow()
+      )
     )
     or
     exists(PointerFieldAccess fa |
@@ -193,7 +245,9 @@ private predicate referenceToUpdate(Expr reference, Expr outer, ControlFlowNode 
     not stdIdentityFunction(call.getTarget()) and
     not stdAddressOf(call.getTarget()) and
     exists(ReferenceType rt | rt = outer.getType().stripTopLevelSpecifiers() |
-      not rt.getBaseType().isConst()
+      not rt.getBaseType().isConst() or
+      rt.getBaseType().getUnspecifiedType() =
+        any(PointerWrapper wrapper | not wrapper.pointsToConst())
     )
   ) and
   reference = outer
@@ -211,6 +265,69 @@ private predicate referenceToUpdate(Expr reference, Expr outer, ControlFlowNode 
   exists(Expr referenceMid |
     referenceToReferenceStep(reference, referenceMid) and
     referenceToUpdate(referenceMid, outer, node)
+  )
+}
+
+private predicate lvalueFromVariableAccess(VariableAccess va, Expr lvalue) {
+  // Base case for non-reference types.
+  lvalue = va and
+  not va.getConversion() instanceof ReferenceDereferenceExpr
+  or
+  // Base case for reference types where we pretend that they are
+  // non-reference types. The type of the target of `va` can be `ReferenceType`
+  // or `FunctionReferenceType`.
+  lvalue = va.getConversion().(ReferenceDereferenceExpr)
+  or
+  // lvalue -> lvalue
+  exists(Expr prev |
+    lvalueFromVariableAccess(va, prev) and
+    lvalueToLvalueStep(prev, lvalue)
+  )
+  or
+  // pointer -> lvalue
+  exists(Expr prev |
+    pointerFromVariableAccess(va, prev) and
+    pointerToLvalueStep(prev, lvalue)
+  )
+  or
+  // reference -> lvalue
+  exists(Expr prev |
+    referenceFromVariableAccess(va, prev) and
+    referenceToLvalueStep(prev, lvalue)
+  )
+}
+
+private predicate pointerFromVariableAccess(VariableAccess va, Expr pointer) {
+  // pointer -> pointer
+  exists(Expr prev |
+    pointerFromVariableAccess(va, prev) and
+    pointerToPointerStep(prev, pointer)
+  )
+  or
+  // reference -> pointer
+  exists(Expr prev |
+    referenceFromVariableAccess(va, prev) and
+    referenceToPointerStep(prev, pointer)
+  )
+  or
+  // lvalue -> pointer
+  exists(Expr prev |
+    lvalueFromVariableAccess(va, prev) and
+    lvalueToPointerStep(prev, pointer)
+  )
+}
+
+private predicate referenceFromVariableAccess(VariableAccess va, Expr reference) {
+  // reference -> reference
+  exists(Expr prev |
+    referenceFromVariableAccess(va, prev) and
+    referenceToReferenceStep(prev, reference)
+  )
+  or
+  // lvalue -> reference
+  exists(Expr prev |
+    lvalueFromVariableAccess(va, prev) and
+    lvalueToReferenceStep(prev, reference)
   )
 }
 
@@ -236,7 +353,7 @@ predicate valueToUpdate(Expr inner, Expr outer, ControlFlowNode node) {
   (
     inner instanceof VariableAccess and
     // Don't track non-field assignments
-    (assignmentTo(outer, _) implies inner instanceof FieldAccess)
+    not (assignmentTo(outer, _) and outer.(VariableAccess).getTarget() instanceof StackVariable)
     or
     inner instanceof ThisExpr
     or
@@ -244,4 +361,28 @@ predicate valueToUpdate(Expr inner, Expr outer, ControlFlowNode node) {
     // `inner` could also be `*` or `ReferenceDereferenceExpr`, but we
     // can't do anything useful with those at the moment.
   )
+}
+
+/**
+ * Holds if `e` is a fully-converted expression that evaluates to an lvalue
+ * derived from `va` and is used for reading from or assigning to. This is in
+ * contrast with a variable access that is used for taking an address (`&x`)
+ * or simply discarding its value (`x;`).
+ *
+ * This analysis does not propagate across assignments or calls, and unlike
+ * `variableAccessedAsValue` in `semmle.code.cpp.dataflow.EscapesTree` it
+ * propagates through array accesses but not field accesses. The analysis is
+ * also not concerned with whether the lvalue `e` is converted to an rvalue --
+ * to examine that, use the relevant member predicates on `Expr`.
+ *
+ * If `va` has reference type, the analysis concerns the value pointed to by
+ * the reference rather than the reference itself. The expression `e` may be a
+ * `Conversion`.
+ */
+predicate variablePartiallyAccessed(VariableAccess va, Expr e) {
+  lvalueFromVariableAccess(va, e) and
+  not lvalueToLvalueStepPure(e, _) and
+  not lvalueToPointerStep(e, _) and
+  not lvalueToReferenceStep(e, _) and
+  not e = any(ExprInVoidContext eivc | e = eivc.getConversion*())
 }

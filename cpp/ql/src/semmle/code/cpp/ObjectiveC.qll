@@ -1,3 +1,7 @@
+/**
+ * DEPRECATED: Objective-C is no longer supported.
+ */
+
 import semmle.code.cpp.Class
 private import semmle.code.cpp.internal.ResolveClass
 
@@ -132,7 +136,7 @@ deprecated class ObjcTryStmt extends TryStmt {
  * DEPRECATED: Objective-C is no longer supported.
  * An Objective C `@finally` block.
  */
-deprecated class FinallyBlock extends Block {
+deprecated class FinallyBlock extends BlockStmt {
   FinallyBlock() { none() }
 
   /** Gets the try statement corresponding to this finally block. */

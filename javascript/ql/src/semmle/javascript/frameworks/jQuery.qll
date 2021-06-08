@@ -72,8 +72,7 @@ private predicate neverReturnsJQuery(string name) {
     decl.getBaseName() = "jQuery" and
     decl.getName() = name
   |
-    not decl
-        .getDocumentation()
+    not decl.getDocumentation()
         .getATagByTitle("return")
         .getType()
         .getAnUnderlyingType()
@@ -133,7 +132,7 @@ private class JQueryParseXmlCall extends XML::ParserInvocation {
 /**
  * A call to `$(...)` that constructs a wrapped DOM element, such as `$("<div/>")`.
  */
-private class JQueryDomElementDefinition extends DOM::ElementDefinition, @callexpr {
+private class JQueryDomElementDefinition extends DOM::ElementDefinition, @call_expr {
   string tagName;
   CallExpr call;
 
@@ -194,7 +193,7 @@ private string attrOrProp() { result = "attr" or result = "prop" }
  * An attribute definition using `elt.attr(name, value)` or `elt.prop(name, value)`
  * where `elt` is a wrapped set.
  */
-private class JQueryAttr2Call extends JQueryAttributeDefinition, @callexpr {
+private class JQueryAttr2Call extends JQueryAttributeDefinition, @call_expr {
   JQueryAttr2Call() {
     exists(DataFlow::MethodCallNode call | this = call.asExpr() |
       call = JQuery::objectRef().getAMethodCall(attrOrProp()) and
@@ -258,7 +257,7 @@ private class JQueryBulkAttributeProp extends JQueryAttributeDefinition {
  * An attribute definition using `jQuery.attr(elt, name, value)` or `jQuery.prop(elt, name, value)`
  * where `elt` is a wrapped set or a plain DOM element.
  */
-private class JQueryAttr3Call extends JQueryAttributeDefinition, @callexpr {
+private class JQueryAttr3Call extends JQueryAttributeDefinition, @call_expr {
   MethodCallExpr mce;
 
   JQueryAttr3Call() {
@@ -364,11 +363,10 @@ private module JQueryClientRequest {
    */
   private DataFlow::SourceNode getAResponseNodeFromAnXHRObject(DataFlow::SourceNode obj) {
     result =
-      obj
-          .getAPropertyRead(any(string s |
-              s = "responseText" or
-              s = "responseXML"
-            ))
+      obj.getAPropertyRead(any(string s |
+          s = "responseText" or
+          s = "responseXML"
+        ))
   }
 
   /**
@@ -481,8 +479,8 @@ module JQuery {
         // either a reference to a global variable `$` or `jQuery`
         this = DataFlow::globalVarRef(any(string jq | jq = "$" or jq = "jQuery"))
         or
-        // or imported from a module named `jquery`
-        this = DataFlow::moduleImport("jquery")
+        // or imported from a module named `jquery` or `zepto`
+        this = DataFlow::moduleImport(["jquery", "zepto"])
         or
         this.hasUnderlyingType("JQueryStatic")
       }
@@ -546,17 +544,17 @@ module JQuery {
   }
 
   /** A source of jQuery objects from the AST-based `JQueryObject` class. */
-  private DataFlow::Node legacyObjectSource() { result = any(JQueryObjectInternal e).flow() }
+  private DataFlow::SourceNode legacyObjectSource() {
+    result = any(JQueryObjectInternal e).flow().getALocalSource()
+  }
 
   /** Gets a source of jQuery objects. */
   private DataFlow::SourceNode objectSource(DataFlow::TypeTracker t) {
     t.start() and
     result instanceof ObjectSource::Range
     or
-    exists(DataFlow::TypeTracker init |
-      init.start() and
-      t = init.smallstep(legacyObjectSource(), result)
-    )
+    t.start() and
+    result = legacyObjectSource()
   }
 
   /** Gets a data flow node referring to a jQuery object. */
@@ -592,10 +590,6 @@ module JQuery {
         read.getBase().getALocalSource() = [dollar(), objectRef()] and
         read.mayHavePropertyName(name)
       )
-      or
-      // Handle contributed JQuery objects that aren't source nodes (usually parameter uses)
-      getReceiver() = legacyObjectSource() and
-      this.(DataFlow::MethodCallNode).getMethodName() = name
     }
 
     /**

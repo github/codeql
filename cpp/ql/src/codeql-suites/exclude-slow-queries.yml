@@ -1,0 +1,11 @@
+- description: C/C++ queries which are infeasible to compute on large projects
+# These queries are infeasible to compute on large projects:
+- exclude:
+    query path:
+      - Security/CWE/CWE-497/ExposedSystemData.ql
+      - Critical/DescriptorMayNotBeClosed.ql
+      - Critical/DescriptorNeverClosed.ql
+      - Critical/FileMayNotBeClosed.ql
+      - Critical/FileNeverClosed.ql
+      - Critical/MemoryMayNotBeFreed.ql
+      - Critical/MemoryNeverFreed.ql

@@ -1,29 +1,17 @@
+/**
+ * Provides the class `IRFunction`, which represents the Intermediate Representation for the
+ * definition of a function.
+ */
+
 private import internal.IRInternal
+private import internal.IRFunctionImports as Imports
+import Imports::IRFunctionBase
 import Instruction
 
-private newtype TIRFunction =
-  MkIRFunction(Language::Function func) { Construction::functionHasIR(func) }
-
 /**
- * Represents the IR for a function.
+ * The IR for a function.
  */
-class IRFunction extends TIRFunction {
-  Language::Function func;
-
-  IRFunction() { this = MkIRFunction(func) }
-
-  final string toString() { result = "IR: " + func.toString() }
-
-  /**
-   * Gets the function whose IR is represented.
-   */
-  final Language::Function getFunction() { result = func }
-
-  /**
-   * Gets the location of the function.
-   */
-  final Language::Location getLocation() { result = func.getLocation() }
-
+class IRFunction extends IRFunctionBase {
   /**
    * Gets the entry point for this function.
    */

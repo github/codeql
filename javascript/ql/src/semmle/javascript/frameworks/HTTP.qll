@@ -3,6 +3,10 @@
  */
 
 import javascript
+private import semmle.javascript.DynamicPropertyAccess
+private import semmle.javascript.dataflow.internal.StepSummary
+private import semmle.javascript.dataflow.internal.CallGraphs
+private import DataFlow::PseudoProperties as PseudoProperties
 
 module HTTP {
   /**
@@ -232,6 +236,25 @@ module HTTP {
   }
 
   /**
+   * Holds if there exists a step from `pred` to `succ` for a RouteHandler - beyond the usual steps defined by TypeTracking.
+   */
+  predicate routeHandlerStep(DataFlow::SourceNode pred, DataFlow::SourceNode succ) {
+    // A forwarding call
+    DataFlow::functionOneWayForwardingStep(pred.getALocalUse(), succ)
+    or
+    // a container containing route-handlers.
+    exists(HTTP::RouteHandlerCandidateContainer container | pred = container.getRouteHandler(succ))
+    or
+    // (function (req, res) {}).bind(this);
+    exists(DataFlow::PartialInvokeNode call |
+      succ = call.getBoundFunction(any(DataFlow::Node n | pred.flowsTo(n)), 0)
+    )
+    or
+    // references to class methods
+    succ = CallGraph::callgraphStep(pred, DataFlow::TypeTracker::end())
+  }
+
+  /**
    * An expression that sets up a route on a server.
    */
   abstract class RouteSetup extends Expr { }
@@ -400,6 +423,23 @@ module HTTP {
        */
       abstract Expr getServer();
     }
+
+    /**
+     * A parameter containing data received by a NodeJS HTTP server.
+     * E.g. `chunk` in: `http.createServer().on('request', (req, res) => req.on("data", (chunk) => ...))`.
+     */
+    private class ServerRequestDataEvent extends RemoteFlowSource, DataFlow::ParameterNode {
+      RequestSource req;
+
+      ServerRequestDataEvent() {
+        exists(DataFlow::MethodCallNode mcn | mcn = req.ref().getAMethodCall(EventEmitter::on()) |
+          mcn.getArgument(0).mayHaveStringValue("data") and
+          this = mcn.getABoundCallbackParameter(1, 0)
+        )
+      }
+
+      override string getSourceType() { result = "NodeJS HTTP server data event" }
+    }
   }
 
   /**
@@ -495,5 +535,135 @@ module HTTP {
    */
   class CookieCryptographicKey extends CryptographicKey {
     CookieCryptographicKey() { this = any(CookieMiddlewareInstance instance).getASecretKey() }
+  }
+
+  /**
+   * An object that contains one or more potential route handlers.
+   */
+  class RouteHandlerCandidateContainer extends DataFlow::Node {
+    RouteHandlerCandidateContainer::Range self;
+
+    RouteHandlerCandidateContainer() { this = self }
+
+    /**
+     * Gets the route handler in this container that is accessed at `access`.
+     */
+    DataFlow::SourceNode getRouteHandler(DataFlow::SourceNode access) {
+      result = self.getRouteHandler(access)
+    }
+  }
+
+  /**
+   * Provides classes for working with objects that may contain one or more route handlers.
+   */
+  module RouteHandlerCandidateContainer {
+    private DataFlow::SourceNode ref(DataFlow::TypeTracker t, RouteHandlerCandidateContainer c) {
+      t.start() and result = c
+      or
+      exists(DataFlow::TypeTracker t2 | result = ref(t2, c).track(t2, t))
+    }
+
+    private DataFlow::SourceNode ref(RouteHandlerCandidateContainer c) {
+      result = ref(DataFlow::TypeTracker::end(), c)
+    }
+
+    /**
+     * A container for one or more potential route handlers.
+     *
+     * Extend this class and implement its abstract member predicates to model additional
+     * containers.
+     */
+    abstract class Range extends DataFlow::SourceNode {
+      /**
+       * Gets the route handler in this container that is accessed at `access`.
+       */
+      abstract DataFlow::SourceNode getRouteHandler(DataFlow::SourceNode access);
+    }
+
+    /**
+     * An object that contains one or more potential route handlers.
+     */
+    private class ContainerObject extends Range {
+      ContainerObject() {
+        (
+          this instanceof DataFlow::ObjectLiteralNode
+          or
+          exists(DataFlow::CallNode create | this = create |
+            create = DataFlow::globalVarRef("Object").getAMemberCall("create") and
+            create.getArgument(0).asExpr() instanceof NullLiteral
+          )
+        ) and
+        exists(RouteHandlerCandidate candidate |
+          getAPossiblyDecoratedHandler(candidate).flowsTo(getAPropertyWrite().getRhs())
+        )
+      }
+
+      override DataFlow::SourceNode getRouteHandler(DataFlow::SourceNode access) {
+        result instanceof RouteHandlerCandidate and
+        exists(DataFlow::PropWrite write, DataFlow::PropRead read |
+          access = read and
+          ref(this).getAPropertyRead() = read and
+          getAPossiblyDecoratedHandler(result).flowsTo(write.getRhs()) and
+          write = this.getAPropertyWrite()
+        |
+          write.getPropertyName() = read.getPropertyName()
+          or
+          exists(EnumeratedPropName prop | access = prop.getASourceProp())
+          or
+          read = DataFlow::lvalueNode(any(ForOfStmt stmt).getLValue())
+          or
+          // for forwarding calls to an element where the key is determined by the request.
+          getRequestParameterRead().flowsToExpr(read.getPropertyNameExpr())
+        )
+      }
+    }
+
+    /**
+     * Gets a (chained) property-read/method-call on the request parameter of the route-handler `f`.
+     */
+    private DataFlow::SourceNode getRequestParameterRead() {
+      result = any(RouteHandlerCandidate f).getParameter(0)
+      or
+      result = getRequestParameterRead().getAPropertyRead()
+      or
+      result = getRequestParameterRead().getAMethodCall()
+    }
+
+    /**
+     * Gets a node that is either `candidate`, or a call that decorates `candidate`.
+     */
+    DataFlow::SourceNode getAPossiblyDecoratedHandler(RouteHandlerCandidate candidate) {
+      result = candidate
+      or
+      DataFlow::functionOneWayForwardingStep(candidate, result)
+    }
+
+    private string mapValueProp() {
+      result = [PseudoProperties::mapValueAll(), PseudoProperties::mapValueUnknownKey()]
+    }
+
+    /**
+     * A collection that contains one or more route potential handlers.
+     */
+    private class ContainerCollection extends HTTP::RouteHandlerCandidateContainer::Range,
+      DataFlow::NewNode {
+      ContainerCollection() {
+        this = DataFlow::globalVarRef("Map").getAnInstantiation() and // restrict to Map for now
+        exists(DataFlow::Node use |
+          DataFlow::SharedTypeTrackingStep::storeStep(use, this, mapValueProp()) and
+          use.getALocalSource() instanceof RouteHandlerCandidate
+        )
+      }
+
+      override DataFlow::SourceNode getRouteHandler(DataFlow::SourceNode access) {
+        exists(DataFlow::Node input, string key, DataFlow::Node loadFrom |
+          getAPossiblyDecoratedHandler(result).flowsTo(input) and
+          DataFlow::SharedTypeTrackingStep::storeStep(input, this, key) and
+          ref(this).flowsTo(loadFrom) and
+          DataFlow::SharedTypeTrackingStep::loadStep(loadFrom, access,
+            [key, PseudoProperties::mapValueAll()])
+        )
+      }
+    }
   }
 }

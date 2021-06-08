@@ -5,7 +5,7 @@
 import csharp
 import DataFlow::PathGraph
 
-class Conf extends TaintTracking::Configuration {
+class Conf extends DataFlow::Configuration {
   Conf() { this = "ArrayFlowConf" }
 
   override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof ObjectCreation }
@@ -16,6 +16,8 @@ class Conf extends TaintTracking::Configuration {
       mc.getAnArgument() = sink.asExpr()
     )
   }
+
+  override int fieldFlowBranchLimit() { result = 10 }
 }
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, Conf conf

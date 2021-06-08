@@ -1,47 +1,50 @@
 private import csharp
 private import cil
 private import dotnet
+private import DataFlowImplCommon as DataFlowImplCommon
+private import DataFlowPublic
 private import DataFlowPrivate
-private import DelegateDataFlow
+private import FlowSummaryImpl as FlowSummaryImpl
+private import semmle.code.csharp.dataflow.FlowSummary
 private import semmle.code.csharp.dispatch.Dispatch
 private import semmle.code.csharp.frameworks.system.Collections
 private import semmle.code.csharp.frameworks.system.collections.Generic
 
+private predicate summarizedCallable(DataFlowCallable c) {
+  c instanceof SummarizedCallable
+  or
+  FlowSummaryImpl::Private::summaryReturnNode(_, TJumpReturnKind(c, _))
+}
+
 /**
- * Gets a source declaration of callable `c` that has a body.
+ * Gets a source declaration of callable `c` that has a body or has
+ * a flow summary.
+ *
  * If the callable has both CIL and source code, return only the source
  * code version.
  */
 DotNet::Callable getCallableForDataFlow(DotNet::Callable c) {
-  result.hasBody() and
-  exists(DotNet::Callable sourceDecl | sourceDecl = c.getSourceDeclaration() |
-    if sourceDecl.getFile().fromSource()
+  exists(DotNet::Callable unboundDecl | unboundDecl = c.getUnboundDeclaration() |
+    summarizedCallable(unboundDecl) and
+    result = unboundDecl
+    or
+    result.hasBody() and
+    if unboundDecl.getFile().fromSource()
     then
       // C# callable with C# implementation in the database
-      result = sourceDecl
+      result = unboundDecl
     else
-      if sourceDecl instanceof CIL::Callable
+      if unboundDecl instanceof CIL::Callable
       then
         // CIL callable with C# implementation in the database
-        sourceDecl.matchesHandle(result.(Callable))
+        unboundDecl.matchesHandle(result.(Callable))
         or
         // CIL callable without C# implementation in the database
-        not sourceDecl.matchesHandle(any(Callable k | k.hasBody())) and
-        result = sourceDecl
+        not unboundDecl.matchesHandle(any(Callable k | k.hasBody())) and
+        result = unboundDecl
       else
         // C# callable without C# implementation in the database
-        sourceDecl.matchesHandle(result.(CIL::Callable))
-  )
-}
-
-/**
- * Holds if callable `c` can return `e` as an `out`/`ref` value for parameter `p`.
- */
-private predicate callableReturnsOutOrRef(Callable c, Parameter p, Expr e) {
-  exists(Ssa::ExplicitDefinition def |
-    def.getADefinition().getSource() = e and
-    def.isLiveOutRefParameterDefinition(p) and
-    p = c.getAParameter()
+        unboundDecl.matchesHandle(result.(CIL::Callable))
   )
 }
 
@@ -65,37 +68,34 @@ private predicate transitiveCapturedCallTarget(ControlFlow::Nodes::ElementNode c
   )
 }
 
-cached
+newtype TReturnKind =
+  TNormalReturnKind() or
+  TOutReturnKind(int i) { i = any(Parameter p | p.isOut()).getPosition() } or
+  TRefReturnKind(int i) { i = any(Parameter p | p.isRef()).getPosition() } or
+  TImplicitCapturedReturnKind(LocalScopeVariable v) {
+    exists(Ssa::ExplicitDefinition def | def.isCapturedVariableDefinitionFlowOut(_, _) |
+      v = def.getSourceVariable().getAssignable()
+    )
+  } or
+  TJumpReturnKind(DataFlowCallable target, ReturnKind rk) {
+    rk instanceof NormalReturnKind and
+    (
+      target instanceof Constructor or
+      not target.getReturnType() instanceof VoidType
+    )
+    or
+    exists(target.getParameter(rk.(OutRefReturnKind).getPosition()))
+  }
+
 private module Cached {
-  private import CallContext
-  private import semmle.code.csharp.Caching
-
-  cached
-  newtype TReturnKind =
-    TNormalReturnKind() { Stages::DataFlowStage::forceCachingInSameStage() } or
-    TYieldReturnKind() or
-    TOutReturnKind(int i) {
-      exists(Parameter p | callableReturnsOutOrRef(_, p, _) and p.isOut() | i = p.getPosition())
-    } or
-    TRefReturnKind(int i) {
-      exists(Parameter p | callableReturnsOutOrRef(_, p, _) and p.isRef() | i = p.getPosition())
-    } or
-    TImplicitCapturedReturnKind(LocalScopeVariable v) {
-      exists(Ssa::ExplicitDefinition def | def.isCapturedVariableDefinitionFlowOut(_, _) |
-        v = def.getSourceVariable().getAssignable()
-      )
-    }
-
   cached
   newtype TDataFlowCall =
     TNonDelegateCall(ControlFlow::Nodes::ElementNode cfn, DispatchCall dc) {
+      DataFlowImplCommon::forceCachingInSameStage() and
       cfn.getElement() = dc.getCall()
     } or
-    TExplicitDelegateCall(ControlFlow::Nodes::ElementNode cfn, DelegateCall dc) {
+    TExplicitDelegateLikeCall(ControlFlow::Nodes::ElementNode cfn, DelegateLikeCall dc) {
       cfn.getElement() = dc
-    } or
-    TImplicitDelegateCall(ControlFlow::Nodes::ElementNode cfn, DelegateArgumentToLibraryCallable arg) {
-      cfn.getElement() = arg
     } or
     TTransitiveCapturedCall(ControlFlow::Nodes::ElementNode cfn, Callable target) {
       transitiveCapturedCallTarget(cfn, target)
@@ -103,86 +103,49 @@ private module Cached {
     TCilCall(CIL::Call call) {
       // No need to include calls that are compiled from source
       not call.getImplementation().getMethod().compiledFromSource()
+    } or
+    TSummaryCall(SummarizedCallable c, Node receiver) {
+      FlowSummaryImpl::Private::summaryCallbackRange(c, receiver)
     }
 
   /** Gets a viable run-time target for the call `call`. */
   cached
-  DataFlowCallable viableImpl(DataFlowCall call) { result = call.getARuntimeTarget() }
-
-  /**
-   * Gets a viable run-time target for the delegate call `call`, requiring
-   * call context `cc`.
-   */
-  private DotNet::Callable viableDelegateCallable(DataFlowCall call, CallContext cc) {
-    result = call.(DelegateDataFlowCall).getARuntimeTarget(cc)
-  }
-
-  /**
-   * Holds if the call context `ctx` reduces the set of viable run-time
-   * targets of call `call` in `c`.
-   */
-  cached
-  predicate reducedViableImplInCallContext(DataFlowCall call, DataFlowCallable c, DataFlowCall ctx) {
-    c = viableImpl(ctx) and
-    c = call.getEnclosingCallable() and
-    exists(CallContext cc | exists(viableDelegateCallable(call, cc)) |
-      not cc instanceof EmptyCallContext
-    )
-  }
-
-  private DotNet::Callable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
-    exists(ArgumentCallContext cc | result = viableDelegateCallable(call, cc) |
-      cc.isArgument(ctx.getExpr(), _)
-    )
-  }
-
-  /**
-   * Gets a viable run-time target for the call `call` in the context
-   * `ctx`. This is restricted to those call nodes for which a context
-   * might make a difference.
-   */
-  cached
-  DotNet::Callable prunedViableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
-    result = viableImplInCallContext(call, ctx) and
-    reducedViableImplInCallContext(call, _, ctx)
-  }
-
-  /**
-   * Holds if flow returning from callable `c` to call `call` might return
-   * further and if this path restricts the set of call sites that can be
-   * returned to.
-   */
-  cached
-  predicate reducedViableImplInReturn(DataFlowCallable c, DataFlowCall call) {
-    exists(int tgts, int ctxtgts |
-      c = viableImpl(call) and
-      ctxtgts = strictcount(DataFlowCall ctx | c = viableImplInCallContext(call, ctx)) and
-      tgts = strictcount(DataFlowCall ctx | viableImpl(ctx) = call.getEnclosingCallable()) and
-      ctxtgts < tgts
-    )
-  }
-
-  /**
-   * Gets a viable run-time target for the call `call` in the context `ctx`.
-   * This is restricted to those call nodes and results for which the return
-   * flow from the result to `call` restricts the possible context `ctx`.
-   */
-  cached
-  DataFlowCallable prunedViableImplInCallContextReverse(DataFlowCall call, DataFlowCall ctx) {
-    result = viableImplInCallContext(call, ctx) and
-    reducedViableImplInReturn(result, call)
-  }
+  DataFlowCallable viableCallable(DataFlowCall call) { result = call.getARuntimeTarget() }
 }
 
 import Cached
+
+private module DispatchImpl {
+  /**
+   * Holds if the set of viable implementations that can be called by `call`
+   * might be improved by knowing the call context. This is the case if the
+   * call is a delegate call, or if the qualifier accesses a parameter of
+   * the enclosing callable `c` (including the implicit `this` parameter).
+   */
+  predicate mayBenefitFromCallContext(NonDelegateDataFlowCall call, Callable c) {
+    c = call.getEnclosingCallable() and
+    call.getDispatchCall().mayBenefitFromCallContext()
+  }
+
+  /**
+   * Gets a viable dispatch target of `call` in the context `ctx`. This is
+   * restricted to those `call`s for which a context might make a difference.
+   */
+  DataFlowCallable viableImplInCallContext(NonDelegateDataFlowCall call, DataFlowCall ctx) {
+    result =
+      call.getDispatchCall()
+          .getADynamicTargetInCallContext(ctx.(NonDelegateDataFlowCall).getDispatchCall())
+          .getUnboundDeclaration()
+  }
+}
+
+import DispatchImpl
 
 /**
  * Gets a node that can read the value returned from `call` with return kind
  * `kind`.
  */
 OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) { call = result.getCall(kind) }
-
-predicate viableCallable = viableImpl/1;
 
 /**
  * A return kind. A return kind describes how a value can be returned
@@ -198,12 +161,7 @@ abstract class ReturnKind extends TReturnKind {
  * body, that is, a "normal" return.
  */
 class NormalReturnKind extends ReturnKind, TNormalReturnKind {
-  override string toString() { result = "return" }
-}
-
-/** A value returned from a callable using a `yield return` statement. */
-class YieldReturnKind extends ReturnKind, TYieldReturnKind {
-  override string toString() { result = "yield return" }
+  override string toString() { result = "normal" }
 }
 
 /** A value returned from a callable using an `out` or a `ref` parameter. */
@@ -214,16 +172,24 @@ abstract class OutRefReturnKind extends ReturnKind {
 
 /** A value returned from a callable using an `out` parameter. */
 class OutReturnKind extends OutRefReturnKind, TOutReturnKind {
-  override int getPosition() { this = TOutReturnKind(result) }
+  private int pos;
 
-  override string toString() { result = "out" }
+  OutReturnKind() { this = TOutReturnKind(pos) }
+
+  override int getPosition() { result = pos }
+
+  override string toString() { result = "out parameter " + pos }
 }
 
 /** A value returned from a callable using a `ref` parameter. */
 class RefReturnKind extends OutRefReturnKind, TRefReturnKind {
-  override int getPosition() { this = TRefReturnKind(result) }
+  private int pos;
 
-  override string toString() { result = "ref" }
+  RefReturnKind() { this = TRefReturnKind(pos) }
+
+  override int getPosition() { result = pos }
+
+  override string toString() { result = "ref parameter " + pos }
 }
 
 /** A value implicitly returned from a callable using a captured variable. */
@@ -238,7 +204,30 @@ class ImplicitCapturedReturnKind extends ReturnKind, TImplicitCapturedReturnKind
   override string toString() { result = "captured " + v }
 }
 
-class DataFlowCallable = DotNet::Callable;
+/**
+ * A value returned through the output of another callable.
+ *
+ * This is currently only used to model flow summaries where data may flow into
+ * one API entry point and out of another.
+ */
+class JumpReturnKind extends ReturnKind, TJumpReturnKind {
+  private DataFlowCallable target;
+  private ReturnKind rk;
+
+  JumpReturnKind() { this = TJumpReturnKind(target, rk) }
+
+  /** Gets the target of the jump. */
+  DataFlowCallable getTarget() { result = target }
+
+  /** Gets the return kind of the target. */
+  ReturnKind getTargetReturnKind() { result = rk }
+
+  override string toString() { result = "jump to " + target }
+}
+
+class DataFlowCallable extends DotNet::Callable {
+  DataFlowCallable() { this.isUnboundDeclaration() }
+}
 
 /** A call relevant for data flow. */
 abstract class DataFlowCall extends TDataFlowCall {
@@ -278,7 +267,10 @@ class NonDelegateDataFlowCall extends DataFlowCall, TNonDelegateCall {
 
   NonDelegateDataFlowCall() { this = TNonDelegateCall(cfn, dc) }
 
-  override DotNet::Callable getARuntimeTarget() {
+  /** Gets the underlying call. */
+  DispatchCall getDispatchCall() { result = dc }
+
+  override DataFlowCallable getARuntimeTarget() {
     result = getCallableForDataFlow(dc.getADynamicTarget())
   }
 
@@ -286,7 +278,7 @@ class NonDelegateDataFlowCall extends DataFlowCall, TNonDelegateCall {
 
   override DataFlow::ExprNode getNode() { result.getControlFlowNode() = cfn }
 
-  override Callable getEnclosingCallable() { result = cfn.getEnclosingCallable() }
+  override DataFlowCallable getEnclosingCallable() { result = cfn.getEnclosingCallable() }
 
   override string toString() { result = cfn.toString() }
 
@@ -294,75 +286,29 @@ class NonDelegateDataFlowCall extends DataFlowCall, TNonDelegateCall {
 }
 
 /** A delegate call relevant for data flow. */
-abstract class DelegateDataFlowCall extends DataFlowCall {
-  /** Gets a viable run-time target of this call requiring call context `cc`. */
-  abstract DotNet::Callable getARuntimeTarget(CallContext::CallContext cc);
+abstract class DelegateDataFlowCall extends DataFlowCall { }
 
-  override DotNet::Callable getARuntimeTarget() { result = this.getARuntimeTarget(_) }
-}
-
-/** An explicit delegate call relevant for data flow. */
-class ExplicitDelegateDataFlowCall extends DelegateDataFlowCall, TExplicitDelegateCall {
+/** An explicit delegate or function pointer call relevant for data flow. */
+class ExplicitDelegateLikeDataFlowCall extends DelegateDataFlowCall, TExplicitDelegateLikeCall {
   private ControlFlow::Nodes::ElementNode cfn;
-  private DelegateCall dc;
+  private DelegateLikeCall dc;
 
-  ExplicitDelegateDataFlowCall() { this = TExplicitDelegateCall(cfn, dc) }
+  ExplicitDelegateLikeDataFlowCall() { this = TExplicitDelegateLikeCall(cfn, dc) }
 
-  override DotNet::Callable getARuntimeTarget(CallContext::CallContext cc) {
-    result = dc.getARuntimeTarget(cc)
+  /** Gets the underlying call. */
+  DelegateLikeCall getCall() { result = dc }
+
+  override DataFlowCallable getARuntimeTarget() {
+    none() // handled by the shared library
   }
 
   override ControlFlow::Nodes::ElementNode getControlFlowNode() { result = cfn }
 
   override DataFlow::ExprNode getNode() { result.getControlFlowNode() = cfn }
 
-  override Callable getEnclosingCallable() { result = cfn.getEnclosingCallable() }
+  override DataFlowCallable getEnclosingCallable() { result = cfn.getEnclosingCallable() }
 
   override string toString() { result = cfn.toString() }
-
-  override Location getLocation() { result = cfn.getLocation() }
-}
-
-/**
- * An implicit delegate call in a call to a library method. For example, we add
- * an implicit call to `M` in `new Lazy<int>(M)` (although, technically, the delegate
- * would first be called when accessing the `Value` property).
- */
-class ImplicitDelegateDataFlowCall extends DelegateDataFlowCall, TImplicitDelegateCall {
-  private ControlFlow::Nodes::ElementNode cfn;
-  private DelegateArgumentToLibraryCallable arg;
-
-  ImplicitDelegateDataFlowCall() { this = TImplicitDelegateCall(cfn, arg) }
-
-  /**
-   * Holds if the underlying delegate argument is the `i`th argument of the
-   * call `c` targeting a library callable. For example, `M` is the `0`th
-   * argument of `new Lazy<int>(M)`.
-   */
-  predicate isArgumentOf(NonDelegateDataFlowCall c, int i) {
-    exists(ImplicitDelegateOutNode out | out.getControlFlowNode() = cfn | out.isArgumentOf(c, i))
-  }
-
-  /** Gets the number of parameters of the supplied delegate. */
-  int getNumberOfDelegateParameters() { result = arg.getDelegateType().getNumberOfParameters() }
-
-  /** Gets the type of the `i`th parameter of the supplied delegate. */
-  Type getDelegateParameterType(int i) { result = arg.getDelegateType().getParameter(i).getType() }
-
-  /** Gets the return type of the supplied delegate. */
-  Type getDelegateReturnType() { result = arg.getDelegateType().getReturnType() }
-
-  override DotNet::Callable getARuntimeTarget(CallContext::CallContext cc) {
-    result = arg.getARuntimeTarget(cc)
-  }
-
-  override ControlFlow::Nodes::ElementNode getControlFlowNode() { result = cfn }
-
-  override ImplicitDelegateOutNode getNode() { result.getControlFlowNode() = cfn }
-
-  override Callable getEnclosingCallable() { result = cfn.getEnclosingCallable() }
-
-  override string toString() { result = "[implicit call] " + cfn.toString() }
 
   override Location getLocation() { result = cfn.getLocation() }
 }
@@ -378,13 +324,13 @@ class TransitiveCapturedDataFlowCall extends DataFlowCall, TTransitiveCapturedCa
 
   TransitiveCapturedDataFlowCall() { this = TTransitiveCapturedCall(cfn, target) }
 
-  override Callable getARuntimeTarget() { result = target }
+  override DataFlowCallable getARuntimeTarget() { result = target }
 
   override ControlFlow::Nodes::ElementNode getControlFlowNode() { result = cfn }
 
   override DataFlow::ExprNode getNode() { none() }
 
-  override Callable getEnclosingCallable() { result = cfn.getEnclosingCallable() }
+  override DataFlowCallable getEnclosingCallable() { result = cfn.getEnclosingCallable() }
 
   override string toString() { result = "[transitive] " + cfn.toString() }
 
@@ -397,7 +343,7 @@ class CilDataFlowCall extends DataFlowCall, TCilCall {
 
   CilDataFlowCall() { this = TCilCall(call) }
 
-  override DotNet::Callable getARuntimeTarget() {
+  override DataFlowCallable getARuntimeTarget() {
     // There is no dispatch library for CIL, so do not consider overrides for now
     result = getCallableForDataFlow(call.getTarget())
   }
@@ -406,9 +352,40 @@ class CilDataFlowCall extends DataFlowCall, TCilCall {
 
   override DataFlow::ExprNode getNode() { result.getExpr() = call }
 
-  override CIL::Callable getEnclosingCallable() { result = call.getEnclosingCallable() }
+  override DataFlowCallable getEnclosingCallable() { result = call.getEnclosingCallable() }
 
   override string toString() { result = call.toString() }
 
   override Location getLocation() { result = call.getLocation() }
+}
+
+/**
+ * A synthesized call inside a callable with a flow summary.
+ *
+ * For example, in `ints.Select(i => i + 1)` there is a call to the delegate at
+ * parameter position `1` (counting the qualifier as the `0`th argument) inside
+ * the method `Select`.
+ */
+class SummaryCall extends DelegateDataFlowCall, TSummaryCall {
+  private SummarizedCallable c;
+  private Node receiver;
+
+  SummaryCall() { this = TSummaryCall(c, receiver) }
+
+  /** Gets the data flow node that this call targets. */
+  Node getReceiver() { result = receiver }
+
+  override DataFlowCallable getARuntimeTarget() {
+    none() // handled by the shared library
+  }
+
+  override ControlFlow::Nodes::ElementNode getControlFlowNode() { none() }
+
+  override DataFlow::Node getNode() { none() }
+
+  override DataFlowCallable getEnclosingCallable() { result = c }
+
+  override string toString() { result = "[summary] call to " + receiver + " in " + c }
+
+  override Location getLocation() { result = c.getLocation() }
 }

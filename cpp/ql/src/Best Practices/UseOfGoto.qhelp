@@ -41,11 +41,11 @@ this rule.
   E. W. Dijkstra Archive: <a href="http://www.cs.utexas.edu/users/EWD/transcriptions/EWD02xx/EWD215.html">A Case against the GO TO Statement (EWD-215)</a>.
 </li>
 <li>
-  MSDN Library: <a href="http://msdn.microsoft.com/en-gb/library/b34dt9cd%28v=vs.80%29.aspx">The goto Statement</a>.
+  MSDN Library: <a href="https://docs.microsoft.com/en-us/cpp/cpp/goto-statement-cpp">goto Statement (C++)</a>.
 </li>
 <li>
   Mats Henricson and Erik Nyquist, <i>Industrial Strength C++</i>, Rule 4.6. Prentice Hall PTR, 1997.
-  (<a href="http://mongers.org/industrial-c++/">PDF</a>).
+  (<a href="https://web.archive.org/web/20190919025638/https://mongers.org/industrial-c++/">PDF</a>).
 </li>
 <li>
   cplusplus.com: <a href="http://www.cplusplus.com/doc/tutorial/control/">Control Structures</a>.

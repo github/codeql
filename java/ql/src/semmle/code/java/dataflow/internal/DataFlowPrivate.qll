@@ -4,7 +4,9 @@ private import DataFlowImplCommon
 private import DataFlowDispatch
 private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.dataflow.SSA
-private import semmle.code.java.dataflow.TypeFlow
+private import ContainerFlow
+private import FlowSummaryImpl as FlowSummaryImpl
+import DataFlowNodes::Private
 
 private newtype TReturnKind = TNormalReturnKind()
 
@@ -24,54 +26,6 @@ class ReturnKind extends TReturnKind {
 OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
   result = call.getNode() and
   kind = TNormalReturnKind()
-}
-
-/**
- * A data flow node that occurs as the argument of a call and is passed as-is
- * to the callable. Arguments that are wrapped in an implicit varargs array
- * creation are not included, but the implicitly created array is.
- * Instance arguments are also included.
- */
-class ArgumentNode extends Node {
-  ArgumentNode() {
-    exists(Argument arg | this.asExpr() = arg | not arg.isVararg())
-    or
-    this instanceof ImplicitVarargsArray
-    or
-    this = getInstanceArgument(_)
-  }
-
-  /**
-   * Holds if this argument occurs at the given position in the given call.
-   * The instance argument is considered to have index `-1`.
-   */
-  predicate argumentOf(DataFlowCall call, int pos) {
-    exists(Argument arg | this.asExpr() = arg | call = arg.getCall() and pos = arg.getPosition())
-    or
-    call = this.(ImplicitVarargsArray).getCall() and
-    pos = call.getCallee().getNumberOfParameters() - 1
-    or
-    pos = -1 and this = getInstanceArgument(call)
-  }
-
-  /** Gets the call in which this node is an argument. */
-  DataFlowCall getCall() { this.argumentOf(result, _) }
-}
-
-/** A data flow node that occurs as the result of a `ReturnStmt`. */
-class ReturnNode extends ExprNode {
-  ReturnNode() { exists(ReturnStmt ret | this.getExpr() = ret.getResult()) }
-
-  /** Gets the kind of this returned value. */
-  ReturnKind getKind() { any() }
-}
-
-/** A data flow node that represents the output of a call. */
-class OutNode extends ExprNode {
-  OutNode() { this.getExpr() instanceof MethodAccess }
-
-  /** Gets the underlying call. */
-  DataFlowCall getCall() { result = this.getExpr() }
 }
 
 /**
@@ -129,19 +83,12 @@ private predicate instanceFieldAssign(Expr src, FieldAccess fa) {
   )
 }
 
-/**
- * Gets an upper bound on the type of `f`.
- */
-private Type getFieldTypeBound(Field f) {
-  fieldTypeFlow(f, result, _)
-  or
-  not fieldTypeFlow(f, _, _) and result = f.getType()
-}
-
 private newtype TContent =
   TFieldContent(InstanceField f) or
+  TArrayContent() or
   TCollectionContent() or
-  TArrayContent()
+  TMapKeyContent() or
+  TMapValueContent()
 
 /**
  * A reference contained in an object. Examples include instance fields, the
@@ -154,15 +101,9 @@ class Content extends TContent {
   predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     path = "" and sl = 0 and sc = 0 and el = 0 and ec = 0
   }
-
-  /** Gets the erased type of the object containing this content. */
-  abstract DataFlowType getContainerType();
-
-  /** Gets the erased type of this content. */
-  abstract DataFlowType getType();
 }
 
-private class FieldContent extends Content, TFieldContent {
+class FieldContent extends Content, TFieldContent {
   InstanceField f;
 
   FieldContent() { this = TFieldContent(f) }
@@ -174,26 +115,22 @@ private class FieldContent extends Content, TFieldContent {
   override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     f.getLocation().hasLocationInfo(path, sl, sc, el, ec)
   }
-
-  override DataFlowType getContainerType() { result = getErasedRepr(f.getDeclaringType()) }
-
-  override DataFlowType getType() { result = getErasedRepr(getFieldTypeBound(f)) }
 }
 
-private class CollectionContent extends Content, TCollectionContent {
-  override string toString() { result = "collection" }
-
-  override DataFlowType getContainerType() { none() }
-
-  override DataFlowType getType() { none() }
+class ArrayContent extends Content, TArrayContent {
+  override string toString() { result = "[]" }
 }
 
-private class ArrayContent extends Content, TArrayContent {
-  override string toString() { result = "array" }
+class CollectionContent extends Content, TCollectionContent {
+  override string toString() { result = "<element>" }
+}
 
-  override DataFlowType getContainerType() { none() }
+class MapKeyContent extends Content, TMapKeyContent {
+  override string toString() { result = "<map.key>" }
+}
 
-  override DataFlowType getType() { none() }
+class MapValueContent extends Content, TMapValueContent {
+  override string toString() { result = "<map.value>" }
 }
 
 /**
@@ -201,12 +138,16 @@ private class ArrayContent extends Content, TArrayContent {
  * Thus, `node2` references an object with a field `f` that contains the
  * value of `node1`.
  */
-predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
+predicate storeStep(Node node1, Content f, Node node2) {
   exists(FieldAccess fa |
     instanceFieldAssign(node1.asExpr(), fa) and
-    node2.getPreUpdateNode() = getFieldQualifier(fa) and
+    node2.(PostUpdateNode).getPreUpdateNode() = getFieldQualifier(fa) and
     f.(FieldContent).getField() = fa.getField()
   )
+  or
+  f instanceof ArrayContent and arrayStoreStep(node1, node2)
+  or
+  FlowSummaryImpl::Private::Steps::summaryStoreStep(node1, f, node2)
 }
 
 /**
@@ -220,6 +161,40 @@ predicate readStep(Node node1, Content f, Node node2) {
     fr.getField() = f.(FieldContent).getField() and
     fr = node2.asExpr()
   )
+  or
+  exists(Record r, Method getter, Field recf, MethodAccess get |
+    getter.getDeclaringType() = r and
+    recf.getDeclaringType() = r and
+    getter.getNumberOfParameters() = 0 and
+    getter.getName() = recf.getName() and
+    not exists(getter.getBody()) and
+    recf = f.(FieldContent).getField() and
+    get.getMethod() = getter and
+    node1.asExpr() = get.getQualifier() and
+    node2.asExpr() = get
+  )
+  or
+  f instanceof ArrayContent and arrayReadStep(node1, node2, _)
+  or
+  f instanceof CollectionContent and collectionReadStep(node1, node2)
+  or
+  FlowSummaryImpl::Private::Steps::summaryReadStep(node1, f, node2)
+}
+
+/**
+ * Holds if values stored inside content `c` are cleared at node `n`. For example,
+ * any value stored inside `f` is cleared at the pre-update node associated with `x`
+ * in `x.f = newValue`.
+ */
+predicate clearsContent(Node n, Content c) {
+  c instanceof FieldContent and
+  (
+    n = any(PostUpdateNode pun | storeStep(_, c, pun)).getPreUpdateNode()
+    or
+    FlowSummaryImpl::Private::Steps::summaryStoresIntoArg(c, n)
+  )
+  or
+  FlowSummaryImpl::Private::Steps::summaryClearsContent(n, c)
 }
 
 /**
@@ -238,6 +213,13 @@ DataFlowType getErasedRepr(Type t) {
   )
   or
   t instanceof NullType and result instanceof TypeObject
+}
+
+pragma[noinline]
+DataFlowType getNodeType(Node n) {
+  result = getErasedRepr(n.getTypeBound())
+  or
+  result = FlowSummaryImpl::Private::summaryNodeType(n)
 }
 
 /** Gets a string representation of a type returned by `getErasedRepr`. */
@@ -309,7 +291,6 @@ private class ConstantBooleanArgumentNode extends ArgumentNode, ExprNode {
 /**
  * Holds if the node `n` is unreachable when the call context is `call`.
  */
-cached
 predicate isUnreachableInCall(Node n, DataFlowCall call) {
   exists(
     ExplicitParameterNode paramNode, ConstantBooleanArgumentNode arg, SsaImplicitInit param,
@@ -322,7 +303,9 @@ predicate isUnreachableInCall(Node n, DataFlowCall call) {
     // which is used in a guard
     param.getAUse() = guard and
     // which controls `n` with the opposite value of `arg`
-    guard.controls(n.asExpr().getBasicBlock(), arg.getBooleanValue().booleanNot())
+    guard
+        .controls(n.asExpr().getBasicBlock(),
+          pragma[only_bind_out](arg.getBooleanValue()).booleanNot())
   )
 }
 
@@ -338,3 +321,17 @@ int accessPathLimit() { result = 5 }
 predicate isImmutableOrUnobservable(Node n) {
   n.getType() instanceof ImmutableType or n instanceof ImplicitVarargsArray
 }
+
+/** Holds if `n` should be hidden from path explanations. */
+predicate nodeIsHidden(Node n) { n instanceof SummaryNode }
+
+class LambdaCallKind = Unit;
+
+/** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
+predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) { none() }
+
+/** Holds if `call` is a lambda call of kind `kind` where `receiver` is the lambda expression. */
+predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) { none() }
+
+/** Extra data-flow steps needed for lambda flow analysis. */
+predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }

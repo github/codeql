@@ -26,9 +26,9 @@ class MethodAccessLockOrder {
 	public boolean initiateTransfer(boolean fromSavings, int amount) {
 		// AVOID: inconsistent lock order
 		if (fromSavings) {
-			primary.transferFrom(savings, amount);
+			return primary.transferFrom(savings, amount);
 		} else {
-			savings.transferFrom(primary, amount);
+			return savings.transferFrom(primary, amount);
 		}
 	}
 

@@ -574,10 +574,23 @@ module StringOps {
       not exists(getStringValue()) and
       result =
         strictconcat(StringLiteralLike leaf |
-          leaf = getALeaf().asExpr()
+          leaf = this.(SmallConcatenationRoot).getALeaf().asExpr()
         |
-          leaf.getStringValue() order by leaf.getFirstToken().getIndex()
+          leaf.getStringValue()
+          order by
+            leaf.getLocation().getStartLine(), leaf.getLocation().getStartColumn()
         )
+    }
+  }
+
+  /**
+   * A concatenation root where the combined length of the constant parts
+   * is less than 1 million chars.
+   */
+  private class SmallConcatenationRoot extends ConcatenationRoot {
+    SmallConcatenationRoot() {
+      sum(StringLiteralLike leaf | leaf = getALeaf().asExpr() | leaf.getStringValue().length()) <
+        1000 * 1000
     }
   }
 
@@ -720,14 +733,8 @@ module StringOps {
       override DataFlow::Node getStringOperand() { result = getArgument(0) }
     }
 
-    private class MatchesCall extends Range, DataFlow::MethodCallNode {
-      MatchesCall() { getMethodName() = "matches" }
-
-      override DataFlow::Node getRegExpOperand(boolean coerced) {
-        result = getArgument(0) and coerced = true
-      }
-
-      override DataFlow::Node getStringOperand() { result = getReceiver() }
+    private class MatchCall extends DataFlow::MethodCallNode {
+      MatchCall() { getMethodName() = "match" }
     }
 
     private class ExecCall extends DataFlow::MethodCallNode {
@@ -774,6 +781,23 @@ module StringOps {
       }
 
       override DataFlow::Node getStringOperand() { result = exec.getArgument(0) }
+
+      override boolean getPolarity() { result = polarity }
+    }
+
+    private class MatchTest extends Range, DataFlow::ValueNode {
+      MatchCall match;
+      boolean polarity;
+
+      MatchTest() {
+        exists(Expr use | match.flowsToExpr(use) | impliesNotNull(astNode, use, polarity))
+      }
+
+      override DataFlow::Node getRegExpOperand(boolean coerced) {
+        result = match.getArgument(0) and coerced = true
+      }
+
+      override DataFlow::Node getStringOperand() { result = match.getReceiver() }
 
       override boolean getPolarity() { result = polarity }
     }

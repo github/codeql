@@ -1,5 +1,9 @@
 | file://:0:0:0:0 |  |
+| file://:0:0:0:0 | & |
+| file://:0:0:0:0 | && |
 | file://:0:0:0:0 | (global namespace) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
 | file://:0:0:0:0 | <error expr> |
 | file://:0:0:0:0 | <error> |
 | file://:0:0:0:0 | There was an error during this compilation |
@@ -44,6 +48,7 @@
 | file://:0:0:0:0 | const __va_list_tag |
 | file://:0:0:0:0 | const __va_list_tag & |
 | file://:0:0:0:0 | declared_constexpr |
+| file://:0:0:0:0 | declared_constinit |
 | file://:0:0:0:0 | decltype(nullptr) |
 | file://:0:0:0:0 | definition of <error> |
 | file://:0:0:0:0 | definition of fp_offset |
@@ -84,8 +89,6 @@
 | file://:0:0:0:0 | optional |
 | file://:0:0:0:0 | overflow_arg_area |
 | file://:0:0:0:0 | override |
-| file://:0:0:0:0 | p#0 |
-| file://:0:0:0:0 | p#0 |
 | file://:0:0:0:0 | private |
 | file://:0:0:0:0 | protected |
 | file://:0:0:0:0 | public |

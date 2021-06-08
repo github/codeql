@@ -5,7 +5,13 @@ import cpp
  * relation) or 'non-strict' (a `<=` or `>=` relation).
  */
 newtype RelationStrictness =
+  /**
+   * Represents that a relation is 'strict' (that is, a `<` or `>` relation).
+   */
   Strict() or
+  /**
+   * Represents that a relation is 'non-strict' (that is, a `<=` or `>=` relation)
+   */
   Nonstrict()
 
 /**
@@ -13,7 +19,13 @@ newtype RelationStrictness =
  * relation) or 'lesser' (a `<` or `<=` relation).
  */
 newtype RelationDirection =
+  /**
+   * Represents that a relation is 'greater' (that is, a `>` or `>=` relation).
+   */
   Greater() or
+  /**
+   * Represents that a relation is 'lesser' (that is, a `<` or `<=` relation).
+   */
   Lesser()
 
 private RelationStrictness negateStrictness(RelationStrictness strict) {
@@ -28,12 +40,18 @@ private RelationDirection negateDirection(RelationDirection dir) {
   dir = Lesser() and result = Greater()
 }
 
+/**
+ * Holds if `dir` is `Greater` (that is, a `>` or `>=` relation)
+ */
 boolean directionIsGreater(RelationDirection dir) {
   dir = Greater() and result = true
   or
   dir = Lesser() and result = false
 }
 
+/**
+ * Holds if `dir` is `Lesser` (that is, a `<` or `<=` relation)
+ */
 boolean directionIsLesser(RelationDirection dir) {
   dir = Greater() and result = false
   or
@@ -154,6 +172,65 @@ predicate eqOpWithSwapAndNegate(EqualityOperation cmp, Expr a, Expr b, boolean i
 }
 
 /**
+ * Holds if `cmp` is an unconverted conversion of `a` to a Boolean that
+ * evalutes to `isEQ` iff `a` is 0.
+ *
+ * Note that `a` can be `cmp` itself or a conversion thereof.
+ */
+private predicate eqZero(Expr cmp, Expr a, boolean isEQ) {
+  // The `!a` expression tests `a` equal to zero when `a` is a number converted
+  // to a Boolean.
+  isEQ = true and
+  exists(Expr notOperand | notOperand = cmp.(NotExpr).getOperand().getFullyConverted() |
+    // In C++ code there will be a BoolConversion in `!myInt`
+    a = notOperand.(BoolConversion).getExpr()
+    or
+    // In C code there is no conversion since there was no bool type before C99
+    a = notOperand and
+    not a instanceof BoolConversion // avoid overlap with the case above
+  )
+  or
+  // The `(bool)a` expression tests `a` NOT equal to zero when `a` is a number
+  // converted to a Boolean. To avoid overlap with the case above, this case
+  // excludes conversions that are right below a `!`.
+  isEQ = false and
+  linearAccess(cmp, _, _, _) and
+  // This test for `isCondition` implies that `cmp` is unconverted and that the
+  // parent of `cfg` is not a `NotExpr` -- the CFG doesn't do branching from
+  // inside `NotExpr`.
+  cmp.isCondition() and
+  // The GNU two-operand conditional expression is not supported for the
+  // purpose of guards, but the value of the conditional expression itself is
+  // modeled in the range analysis.
+  not exists(ConditionalExpr cond | cmp = cond.getCondition() and cond.isTwoOperand()) and
+  (
+    // In C++ code there will be a BoolConversion in `if (myInt)`
+    a = cmp.getFullyConverted().(BoolConversion).getExpr()
+    or
+    // In C code there is no conversion since there was no bool type before C99
+    a = cmp.getFullyConverted() and
+    not a instanceof BoolConversion // avoid overlap with the case above
+  )
+}
+
+/**
+ * Holds if `branch` of `cmp` is taken when `a` compares `isEQ` to zero.
+ *
+ * Note that `a` can be `cmp` itself or a conversion thereof.
+ */
+predicate eqZeroWithNegate(Expr cmp, Expr a, boolean isEQ, boolean branch) {
+  // The comparison for _equality_ to zero is on the `true` branch when `cmp`
+  // compares equal to zero and on the `false` branch when `cmp` compares not
+  // equal to zero.
+  eqZero(cmp, a, branch) and isEQ = true
+  or
+  // The comparison for _inequality_ to zero is on the `false` branch when
+  // `cmp` compares equal to zero and on the `true` branch when `cmp` compares
+  // not equal to zero.
+  eqZero(cmp, a, branch.booleanNot()) and isEQ = false
+}
+
+/**
  * Holds if `expr` is equivalent to `p*v + q`, where `p` is a non-zero
  * number. This takes into account the associativity, commutativity and
  * distributivity of arithmetic operations.
@@ -172,6 +249,8 @@ predicate linearAccess(Expr expr, VariableAccess v, float p, float q) {
 private predicate linearAccessImpl(Expr expr, VariableAccess v, float p, float q) {
   // Base case
   expr = v and p = 1.0 and q = 0.0
+  or
+  expr.(ReferenceDereferenceExpr).getExpr() = v and p = 1.0 and q = 0.0
   or
   // a+(p*v+b) == p*v + (a+b)
   exists(AddExpr addExpr, float a, float b |
@@ -331,13 +410,20 @@ private predicate typeBounds(ArithmeticType t, float lb, float ub) {
   t instanceof FloatingPointType and lb = -(1.0 / 0.0) and ub = 1.0 / 0.0
 }
 
+private Type stripReference(Type t) {
+  if t instanceof ReferenceType then result = t.(ReferenceType).getBaseType() else result = t
+}
+
+/** Gets the type used by range analysis for the given `StackVariable`. */
+Type getVariableRangeType(StackVariable v) { result = stripReference(v.getUnspecifiedType()) }
+
 /**
  * Gets the lower bound for the unspecified type `t`.
  *
  * For example, if `t` is a signed 32-bit type then the result is
  * `-2^31`.
  */
-float typeLowerBound(ArithmeticType t) { typeBounds(t, result, _) }
+float typeLowerBound(Type t) { typeBounds(stripReference(t), result, _) }
 
 /**
  * Gets the upper bound for the unspecified type `t`.
@@ -345,7 +431,7 @@ float typeLowerBound(ArithmeticType t) { typeBounds(t, result, _) }
  * For example, if `t` is a signed 32-bit type then the result is
  * `2^31 - 1`.
  */
-float typeUpperBound(ArithmeticType t) { typeBounds(t, _, result) }
+float typeUpperBound(Type t) { typeBounds(stripReference(t), _, result) }
 
 /**
  * Gets the minimum value that this expression could represent, based on

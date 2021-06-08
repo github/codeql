@@ -1,0 +1,5 @@
+{
+  "name": "myLib",
+  "version": "0.0.7",
+  "main": "./lib/lib.js"
+}

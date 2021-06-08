@@ -61,3 +61,5 @@ import module1 as different
 #Use it
 different
 
+# FP reported in https://github.com/github/codeql/issues/4003
+from module_that_does_not_exist import *

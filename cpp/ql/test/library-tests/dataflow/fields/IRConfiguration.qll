@@ -1,8 +1,8 @@
 private import semmle.code.cpp.ir.dataflow.DataFlow
 private import DataFlow
 
-class Conf extends Configuration {
-  Conf() { this = "FieldFlowConf" }
+class IRConf extends Configuration {
+  IRConf() { this = "IRFieldFlowConf" }
 
   override predicate isSource(Node src) {
     src.asExpr() instanceof NewExpr
@@ -18,7 +18,7 @@ class Conf extends Configuration {
   override predicate isSink(Node sink) {
     exists(Call c |
       c.getTarget().hasName("sink") and
-      c.getAnArgument() = sink.asExpr()
+      c.getAnArgument() = sink.asConvertedExpr()
     )
   }
 

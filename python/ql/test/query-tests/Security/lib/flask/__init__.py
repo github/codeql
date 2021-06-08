@@ -28,3 +28,6 @@ def make_response(rv):
 
 def escape(txt):
     return Markup.escape(txt)
+
+def render_template_string(source, **context):
+    pass

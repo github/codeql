@@ -32,7 +32,7 @@ from RefType t
 where
   not extractionIsStandalone() and
   t.fromSource() and
-  t = t.getSourceDeclaration() and
+  t.isUnboundDeclaration() and
   not t instanceof AnonymousClass and
   not (t.isPublic() or t.isProtected()) and
   not exists(ValueOrRefType dependent | depends(dependent, t) and dependent != t) and

@@ -3,9 +3,9 @@ using Microsoft.CodeAnalysis;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    class NullType : Type
+    internal class NullType : Type
     {
-        NullType(Context cx)
+        private NullType(Context cx)
             : base(cx, null) { }
 
         public override void Populate(TextWriter trapFile)
@@ -13,7 +13,7 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.types(this, Kinds.TypeKind.NULL, "null");
         }
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             trapFile.Write("<null>;type");
         }
@@ -22,18 +22,18 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override int GetHashCode() => 987354;
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
-            return obj != null && obj.GetType() == typeof(NullType);
+            return obj is not null && obj.GetType() == typeof(NullType);
         }
 
-        public static AnnotatedType Create(Context cx) => new AnnotatedType(NullTypeFactory.Instance.CreateNullableEntity(cx, null), NullableAnnotation.None);
+        public static Type Create(Context cx) => NullTypeFactory.Instance.CreateEntity(cx, typeof(NullType), null);
 
-        class NullTypeFactory : ICachedEntityFactory<ITypeSymbol, NullType>
+        private class NullTypeFactory : CachedEntityFactory<ITypeSymbol?, NullType>
         {
-            public static readonly NullTypeFactory Instance = new NullTypeFactory();
+            public static NullTypeFactory Instance { get; } = new NullTypeFactory();
 
-            public NullType Create(Context cx, ITypeSymbol init) => new NullType(cx);
+            public override NullType Create(Context cx, ITypeSymbol? init) => new NullType(cx);
         }
     }
 }

@@ -6,8 +6,8 @@
 | 1 | file://:0:0:0:0 | __va_list_tag | file://:0:0:0:0 | operator= |
 | 1 | file://:0:0:0:0 | __va_list_tag | file://:0:0:0:0 | overflow_arg_area |
 | 1 | file://:0:0:0:0 | __va_list_tag | file://:0:0:0:0 | reg_save_area |
-| 1 | file://:0:0:0:0 | operator= | file://:0:0:0:0 | p#0 |
-| 1 | file://:0:0:0:0 | operator= | file://:0:0:0:0 | p#0 |
+| 1 | file://:0:0:0:0 | operator= | file://:0:0:0:0 | (unnamed parameter 0) |
+| 1 | file://:0:0:0:0 | operator= | file://:0:0:0:0 | (unnamed parameter 0) |
 | 1 | parents.cpp:2:11:2:13 | foo | parents.cpp:3:13:3:15 | foo::bar |
 | 1 | parents.cpp:3:13:3:15 | foo::bar | parents.cpp:4:10:4:10 | f |
 | 1 | parents.cpp:4:10:4:10 | f | parents.cpp:4:16:4:16 | i |

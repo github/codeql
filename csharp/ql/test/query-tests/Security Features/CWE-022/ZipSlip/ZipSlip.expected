@@ -1,25 +1,45 @@
 edges
-| ZipSlip.cs:16:52:16:65 | access to property FullName : String | ZipSlip.cs:32:41:32:52 | access to local variable destFilePath |
-| ZipSlip.cs:16:52:16:65 | access to property FullName : String | ZipSlip.cs:36:45:36:56 | access to local variable destFilePath |
-| ZipSlip.cs:16:52:16:65 | access to property FullName : String | ZipSlip.cs:40:41:40:52 | access to local variable destFilePath |
-| ZipSlip.cs:19:31:19:44 | access to property FullName : String | ZipSlip.cs:24:41:24:52 | access to local variable destFileName |
-| ZipSlip.cs:62:72:62:85 | access to property FullName : String | ZipSlip.cs:69:74:69:85 | access to local variable destFilePath |
-| ZipSlip.cs:62:72:62:85 | access to property FullName : String | ZipSlip.cs:76:71:76:82 | access to local variable destFilePath |
-| ZipSlip.cs:62:72:62:85 | access to property FullName : String | ZipSlip.cs:83:57:83:68 | access to local variable destFilePath |
-| ZipSlip.cs:62:72:62:85 | access to property FullName : String | ZipSlip.cs:91:58:91:69 | access to local variable destFilePath |
-| ZipSlipBad.cs:9:59:9:72 | access to property FullName : String | ZipSlipBad.cs:10:29:10:40 | access to local variable destFileName |
+| ZipSlip.cs:16:35:16:66 | call to method GetFullPath : String | ZipSlip.cs:31:71:31:78 | access to local variable fullPath : String |
+| ZipSlip.cs:16:35:16:66 | call to method GetFullPath : String | ZipSlip.cs:39:81:39:88 | access to local variable fullPath : String |
+| ZipSlip.cs:16:52:16:65 | access to property FullName : String | ZipSlip.cs:16:35:16:66 | call to method GetFullPath : String |
+| ZipSlip.cs:19:31:19:44 | access to property FullName : String | ZipSlip.cs:23:71:23:74 | access to local variable file : String |
+| ZipSlip.cs:23:43:23:75 | call to method Combine : String | ZipSlip.cs:24:41:24:52 | access to local variable destFileName |
+| ZipSlip.cs:23:71:23:74 | access to local variable file : String | ZipSlip.cs:23:43:23:75 | call to method Combine : String |
+| ZipSlip.cs:31:43:31:79 | call to method Combine : String | ZipSlip.cs:32:41:32:52 | access to local variable destFilePath |
+| ZipSlip.cs:31:43:31:79 | call to method Combine : String | ZipSlip.cs:36:45:36:56 | access to local variable destFilePath |
+| ZipSlip.cs:31:71:31:78 | access to local variable fullPath : String | ZipSlip.cs:31:43:31:79 | call to method Combine : String |
+| ZipSlip.cs:39:36:39:90 | call to method GetFullPath : String | ZipSlip.cs:40:41:40:52 | access to local variable destFilePath |
+| ZipSlip.cs:39:53:39:89 | call to method Combine : String | ZipSlip.cs:39:36:39:90 | call to method GetFullPath : String |
+| ZipSlip.cs:39:81:39:88 | access to local variable fullPath : String | ZipSlip.cs:39:53:39:89 | call to method Combine : String |
+| ZipSlip.cs:62:47:62:86 | call to method Combine : String | ZipSlip.cs:69:74:69:85 | access to local variable destFilePath |
+| ZipSlip.cs:62:47:62:86 | call to method Combine : String | ZipSlip.cs:76:71:76:82 | access to local variable destFilePath |
+| ZipSlip.cs:62:47:62:86 | call to method Combine : String | ZipSlip.cs:83:57:83:68 | access to local variable destFilePath |
+| ZipSlip.cs:62:47:62:86 | call to method Combine : String | ZipSlip.cs:91:58:91:69 | access to local variable destFilePath |
+| ZipSlip.cs:62:72:62:85 | access to property FullName : String | ZipSlip.cs:62:47:62:86 | call to method Combine : String |
+| ZipSlipBad.cs:9:31:9:73 | call to method Combine : String | ZipSlipBad.cs:10:29:10:40 | access to local variable destFileName |
+| ZipSlipBad.cs:9:59:9:72 | access to property FullName : String | ZipSlipBad.cs:9:31:9:73 | call to method Combine : String |
 nodes
+| ZipSlip.cs:16:35:16:66 | call to method GetFullPath : String | semmle.label | call to method GetFullPath : String |
 | ZipSlip.cs:16:52:16:65 | access to property FullName : String | semmle.label | access to property FullName : String |
 | ZipSlip.cs:19:31:19:44 | access to property FullName : String | semmle.label | access to property FullName : String |
+| ZipSlip.cs:23:43:23:75 | call to method Combine : String | semmle.label | call to method Combine : String |
+| ZipSlip.cs:23:71:23:74 | access to local variable file : String | semmle.label | access to local variable file : String |
 | ZipSlip.cs:24:41:24:52 | access to local variable destFileName | semmle.label | access to local variable destFileName |
+| ZipSlip.cs:31:43:31:79 | call to method Combine : String | semmle.label | call to method Combine : String |
+| ZipSlip.cs:31:71:31:78 | access to local variable fullPath : String | semmle.label | access to local variable fullPath : String |
 | ZipSlip.cs:32:41:32:52 | access to local variable destFilePath | semmle.label | access to local variable destFilePath |
 | ZipSlip.cs:36:45:36:56 | access to local variable destFilePath | semmle.label | access to local variable destFilePath |
+| ZipSlip.cs:39:36:39:90 | call to method GetFullPath : String | semmle.label | call to method GetFullPath : String |
+| ZipSlip.cs:39:53:39:89 | call to method Combine : String | semmle.label | call to method Combine : String |
+| ZipSlip.cs:39:81:39:88 | access to local variable fullPath : String | semmle.label | access to local variable fullPath : String |
 | ZipSlip.cs:40:41:40:52 | access to local variable destFilePath | semmle.label | access to local variable destFilePath |
+| ZipSlip.cs:62:47:62:86 | call to method Combine : String | semmle.label | call to method Combine : String |
 | ZipSlip.cs:62:72:62:85 | access to property FullName : String | semmle.label | access to property FullName : String |
 | ZipSlip.cs:69:74:69:85 | access to local variable destFilePath | semmle.label | access to local variable destFilePath |
 | ZipSlip.cs:76:71:76:82 | access to local variable destFilePath | semmle.label | access to local variable destFilePath |
 | ZipSlip.cs:83:57:83:68 | access to local variable destFilePath | semmle.label | access to local variable destFilePath |
 | ZipSlip.cs:91:58:91:69 | access to local variable destFilePath | semmle.label | access to local variable destFilePath |
+| ZipSlipBad.cs:9:31:9:73 | call to method Combine : String | semmle.label | call to method Combine : String |
 | ZipSlipBad.cs:9:59:9:72 | access to property FullName : String | semmle.label | access to property FullName : String |
 | ZipSlipBad.cs:10:29:10:40 | access to local variable destFileName | semmle.label | access to local variable destFileName |
 #select

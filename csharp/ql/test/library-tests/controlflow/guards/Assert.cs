@@ -1,7 +1,7 @@
 using System;
 using System.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+#nullable enable
 class AssertTests
 {
     void M1(bool b)
@@ -79,6 +79,19 @@ class AssertTests
         string s = b ? null : "";
         Assert.IsFalse(s != null || b);
         Console.WriteLine(s.Length);
+    }
+
+    private void AssertTrueFalse(
+           [System.Diagnostics.CodeAnalysis.DoesNotReturnIf(false)] bool condition1,
+           [System.Diagnostics.CodeAnalysis.DoesNotReturnIf(true)] bool condition2,
+           bool nonCondition)
+    {
+    }
+
+    bool M12(bool b1, bool b2)
+    {
+        AssertTrueFalse(b1, b2, b2);
+        return b1 && !b2;
     }
 }
 

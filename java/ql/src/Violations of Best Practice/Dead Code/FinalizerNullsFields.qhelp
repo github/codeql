@@ -77,11 +77,11 @@ severely affect performance, and you should avoid defining <code>finalize</code>
 </li>
 <li>
   IBM developerWorks:
-  <a href="http://www.ibm.com/developerworks/java/library/j-jtp01274/index.html#3.2">Explicit nulling</a>.
+  <a href="https://web.archive.org/web/20201111184342/https://www.ibm.com/developerworks/java/library/j-jtp01274/index.html#3.2">Java theory and practice: Explicit nulling</a>.
 </li>
 <li>
   Oracle Technology Network:
-  <a href="http://www.oracle.com/technetwork/articles/javase/finalization-137655.html">
+  <a href="https://www.oracle.com/technical-resources/articles/javase/finalization.html">
     How to Handle Java Finalization's Memory-Retention Issues
   </a>.
 </li>

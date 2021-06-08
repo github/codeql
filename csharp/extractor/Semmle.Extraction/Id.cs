@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace Semmle.Extraction
 {
@@ -25,7 +23,7 @@ namespace Semmle.Extraction
     /// </summary>
     public class FreshId : IId
     {
-        FreshId() { }
+        private FreshId() { }
 
         /// <summary>
         /// Gets the singleton <see cref="FreshId"/> instance.
@@ -50,26 +48,27 @@ namespace Semmle.Extraction
     /// </summary>
     public class Key : IId
     {
-        readonly StringWriter TrapBuilder = new StringWriter();
+        private readonly StringWriter trapBuilder = new StringWriter();
 
         /// <summary>
         /// Creates a new key by concatenating the contents of the supplied arguments.
         /// </summary>
         public Key(params object[] args)
         {
-            TrapBuilder = new StringWriter();
+            trapBuilder = new StringWriter();
             foreach (var arg in args)
             {
-                if (arg is IEntity)
+                if (arg is IEntity entity)
                 {
-                    var key = ((IEntity)arg).Label;
-                    TrapBuilder.Write("{#");
-                    TrapBuilder.Write(key.Value.ToString());
-                    TrapBuilder.Write("}");
+                    var key = entity.Label;
+                    trapBuilder.Write("{#");
+                    trapBuilder.Write(key.Value.ToString());
+                    trapBuilder.Write("}");
                 }
                 else
-                    TrapBuilder.Write(arg.ToString());
-
+                {
+                    trapBuilder.Write(arg.ToString());
+                }
             }
         }
 
@@ -79,12 +78,12 @@ namespace Semmle.Extraction
         /// </summary>
         public Key(Action<TextWriter> action)
         {
-            action(TrapBuilder);
+            action(trapBuilder);
         }
 
         public override string ToString()
         {
-            return TrapBuilder.ToString();
+            return trapBuilder.ToString();
         }
 
         public override bool Equals(object? obj)
@@ -92,15 +91,15 @@ namespace Semmle.Extraction
             if (obj is null || obj.GetType() != GetType())
                 return false;
             var id = (Key)obj;
-            return TrapBuilder.ToString() == id.TrapBuilder.ToString();
+            return trapBuilder.ToString() == id.trapBuilder.ToString();
         }
 
-        public override int GetHashCode() => TrapBuilder.ToString().GetHashCode();
+        public override int GetHashCode() => trapBuilder.ToString().GetHashCode();
 
         public void AppendTo(TextWriter trapFile)
         {
             trapFile.Write("@\"");
-            trapFile.Write(TrapBuilder.ToString());
+            trapFile.Write(trapBuilder.ToString());
             trapFile.Write("\"");
         }
     }
@@ -117,14 +116,14 @@ namespace Semmle.Extraction
 
         public int Value { get; private set; }
 
-        static public readonly Label InvalidLabel = new Label(0);
+        public static Label InvalidLabel { get; } = new Label(0);
 
         public bool Valid => Value > 0;
 
         public override string ToString()
         {
             if (!Valid)
-                throw new NullReferenceException("Attempt to use an invalid label");
+                throw new InvalidOperationException("Attempt to use an invalid label");
 
             return "#" + Value;
         }
@@ -135,7 +134,8 @@ namespace Semmle.Extraction
 
         public override bool Equals(object? other)
         {
-            if (other is null) return false;
+            if (other is null)
+                return false;
             return GetType() == other.GetType() && ((Label)other).Value == Value;
         }
 
@@ -148,7 +148,7 @@ namespace Semmle.Extraction
         public void AppendTo(System.IO.TextWriter trapFile)
         {
             if (!Valid)
-                throw new NullReferenceException("Attempt to use an invalid label");
+                throw new InvalidOperationException("Attempt to use an invalid label");
 
             trapFile.Write('#');
             trapFile.Write(Value);

@@ -1,0 +1,2 @@
+lgtm,codescanning
+* For string formatting methods, such as `System.Console.WriteLine(string format, params object[] arg)`, we now also recognize overloads without insertion parameters as string formatting methods. For example, `System.Console.WriteLine(string value)` is now also a member of the class `FormatMethod` in `frameworks/Format.qll`.

@@ -32,7 +32,7 @@ public class A {
           case 0: return p;
           case 1: return s;
           case 2: return b1.getElem();
-          case 3: return b2.getElem();
+          default:return b2.getElem();
         }
       }
     };

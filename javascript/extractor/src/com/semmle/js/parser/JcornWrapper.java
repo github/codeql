@@ -1,6 +1,8 @@
 package com.semmle.js.parser;
 
-import com.semmle.jcorn.CustomParser;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.semmle.jcorn.Options;
 import com.semmle.jcorn.SyntaxError;
 import com.semmle.jcorn.jsx.JSXOptions;
@@ -10,8 +12,6 @@ import com.semmle.js.ast.Token;
 import com.semmle.js.extractor.ExtractorConfig;
 import com.semmle.js.extractor.ExtractorConfig.ECMAVersion;
 import com.semmle.js.extractor.ExtractorConfig.SourceType;
-import java.util.ArrayList;
-import java.util.List;
 
 public class JcornWrapper {
   /** Parse source code as a program. */
@@ -41,7 +41,7 @@ public class JcornWrapper {
       if (config.isTolerateParseErrors())
         options.onRecoverableError((err) -> errors.add(mkParseError(err)));
 
-      program = new CustomParser(options, source, 0).parse();
+      program = sourceType.createParser(options, source, 0).parse();
     } catch (SyntaxError e) {
       errors.add(mkParseError(e));
     }

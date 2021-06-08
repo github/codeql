@@ -12,7 +12,7 @@ class TypeContainer extends DotNet::NamedElement, Element, @type_container { }
 /**
  * A namespace, for example
  *
- * ```
+ * ```csharp
  * namespace System.IO {
  *   ...
  * }
@@ -37,7 +37,7 @@ class Namespace extends DotNet::Namespace, TypeContainer, Declaration, @namespac
    * Gets a type directly declared in this namespace, if any.
    * For example, the class `File` in
    *
-   * ```
+   * ```csharp
    * namespace System.IO {
    *   public class File { ... }
    * }
@@ -49,7 +49,7 @@ class Namespace extends DotNet::Namespace, TypeContainer, Declaration, @namespac
    * Gets a class directly declared in this namespace, if any.
    * For example, the class `File` in
    *
-   * ```
+   * ```csharp
    * namespace System.IO {
    *   public class File { ... }
    * }
@@ -61,7 +61,7 @@ class Namespace extends DotNet::Namespace, TypeContainer, Declaration, @namespac
    * Gets an interface directly declared in this namespace, if any.
    * For example, the interface `IEnumerable` in
    *
-   * ```
+   * ```csharp
    * namespace System.Collections {
    *   public interface IEnumerable { ... }
    * }
@@ -73,7 +73,7 @@ class Namespace extends DotNet::Namespace, TypeContainer, Declaration, @namespac
    * Gets a struct directly declared in this namespace, if any.
    * For example, the struct `Timespan` in
    *
-   * ```
+   * ```csharp
    * namespace System {
    *   public struct Timespan { ... }
    * }
@@ -85,7 +85,7 @@ class Namespace extends DotNet::Namespace, TypeContainer, Declaration, @namespac
    * Gets an enum directly declared in this namespace, if any.
    * For example, the enum `DayOfWeek` in
    *
-   * ```
+   * ```csharp
    * namespace System {
    *   public enum DayOfWeek { ... }
    * }
@@ -97,7 +97,7 @@ class Namespace extends DotNet::Namespace, TypeContainer, Declaration, @namespac
    * Gets a delegate directly declared in this namespace, if any.
    * For example, the delegate `AsyncCallback` in
    *
-   * ```
+   * ```csharp
    * namespace System {
    *   public delegate void AsyncCallback(IAsyncResult ar);
    * }
@@ -135,7 +135,7 @@ class GlobalNamespace extends Namespace {
 /**
  * An explicit namespace declaration in a source file. For example:
  *
- * ```
+ * ```csharp
  * namespace N1.N2 {
  *   ...
  * }
@@ -145,7 +145,7 @@ class NamespaceDeclaration extends Element, @namespace_declaration {
   /**
    * Gets the declared namespace, for example `N1.N2` in
    *
-   * ```
+   * ```csharp
    * namespace N1.N2 {
    *   ...
    * }
@@ -159,7 +159,7 @@ class NamespaceDeclaration extends Element, @namespace_declaration {
    * declaration `namespace N1` on line 1, but `namespace N1` on line 1 and
    * `namespace N1.N2` on line 7 do not have parent namespace declarations.
    *
-   * ```
+   * ```csharp
    * namespace N1 {
    *   namespace N2 {
    *     ...
@@ -180,7 +180,7 @@ class NamespaceDeclaration extends Element, @namespace_declaration {
    * `namespace N2` on line 2 is a child namespace declaration of
    * `namespace N1` on line 1.
    *
-   * ```
+   * ```csharp
    * namespace N1 {
    *   namespace N2 {
    *     ...
@@ -196,7 +196,7 @@ class NamespaceDeclaration extends Element, @namespace_declaration {
    * Gets a type directly declared within this namespace declaration.
    * For example, class `C` in
    *
-   * ```
+   * ```csharp
    * namespace N {
    *   class C { ... }
    * }
@@ -207,4 +207,6 @@ class NamespaceDeclaration extends Element, @namespace_declaration {
   override Location getALocation() { namespace_declaration_location(this, result) }
 
   override string toString() { result = "namespace ... { ... }" }
+
+  override string getAPrimaryQlClass() { result = "NamespaceDeclaration" }
 }

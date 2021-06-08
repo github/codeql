@@ -1,12 +1,11 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Semmle.Extraction.CSharp.Populators;
 using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    static class Name
+    internal static class Name
     {
         public static Expression Create(ExpressionNodeInfo info)
         {
@@ -14,20 +13,32 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
             var target = symbolInfo.Symbol;
 
-            if (target == null && symbolInfo.CandidateReason == CandidateReason.OverloadResolutionFailure)
+            if (target is null &&
+                symbolInfo.CandidateReason == CandidateReason.OverloadResolutionFailure &&
+                info.Node.Parent.IsKind(SyntaxKind.SuppressNullableWarningExpression))
             {
-                // The expression is probably a cast
-                target = info.Context.GetSymbolInfo((CSharpSyntaxNode)info.Node.Parent).Symbol;
+                target = symbolInfo.CandidateSymbols.FirstOrDefault();
             }
 
-            if (target == null && (symbolInfo.CandidateReason == CandidateReason.Ambiguous || symbolInfo.CandidateReason == CandidateReason.MemberGroup))
+            if (target is null && symbolInfo.CandidateReason == CandidateReason.OverloadResolutionFailure)
+            {
+                // The expression is probably a cast
+                target = info.Context.GetSymbolInfo((CSharpSyntaxNode)info.Node.Parent!).Symbol;
+            }
+
+            if (target is null && (symbolInfo.CandidateReason == CandidateReason.Ambiguous || symbolInfo.CandidateReason == CandidateReason.MemberGroup))
             {
                 // Pick one at random - they probably resolve to the same ID
                 target = symbolInfo.CandidateSymbols.First();
             }
 
-            if (target == null)
+            if (target is null)
             {
+                if (IsInsideIfDirective(info.Node))
+                {
+                    return DefineSymbol.Create(info);
+                }
+
                 info.Context.ModelError(info.Node, "Failed to resolve name");
                 return new Unknown(info);
             }
@@ -65,6 +76,11 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 default:
                     throw new InternalError(info.Node, $"Unhandled identifier kind '{target.Kind}'");
             }
+        }
+
+        private static bool IsInsideIfDirective(ExpressionSyntax node)
+        {
+            return node.Ancestors().Any(a => a is ElifDirectiveTriviaSyntax || a is IfDirectiveTriviaSyntax);
         }
     }
 }

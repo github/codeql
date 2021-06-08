@@ -438,7 +438,7 @@ class C17 : C16<string, int>
         // Viable callables: C16<string, int>.M1()
         this.M1("");
 
-        // Viable callables: C16<string, int>.M2<int>()
+        // Viable callables: C17.M2<int>()
         this.M2(() => i);
     }
 

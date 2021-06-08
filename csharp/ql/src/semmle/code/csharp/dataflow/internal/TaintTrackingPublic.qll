@@ -18,13 +18,4 @@ predicate localExprTaint(Expr e1, Expr e2) {
 /** A member (property or field) that is tainted if its containing object is tainted. */
 abstract class TaintedMember extends AssignableMember { }
 
-/**
- * Holds if taint propagates from `nodeFrom` to `nodeTo` in exactly one local
- * (intra-procedural) step.
- */
-predicate localTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-  // Ordinary data flow
-  DataFlow::localFlowStep(nodeFrom, nodeTo)
-  or
-  localAdditionalTaintStep(nodeFrom, nodeTo)
-}
+predicate localTaintStep = localTaintStepImpl/2;

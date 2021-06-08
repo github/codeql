@@ -1,3 +1,8 @@
+/**
+ * Provides implementation classes modeling `gets` and various similar
+ * functions. See `semmle.code.cpp.models.Models` for usage information.
+ */
+
 import semmle.code.cpp.models.interfaces.DataFlow
 import semmle.code.cpp.models.interfaces.Taint
 import semmle.code.cpp.models.interfaces.ArrayFunction
@@ -8,14 +13,13 @@ import semmle.code.cpp.models.interfaces.FlowSource
 /**
  * The standard functions `gets` and `fgets`.
  */
-class GetsFunction extends DataFlowFunction, TaintFunction, ArrayFunction, AliasFunction,
-  SideEffectFunction, RemoteFlowFunction {
+private class GetsFunction extends DataFlowFunction, TaintFunction, ArrayFunction, AliasFunction,
+  SideEffectFunction, RemoteFlowSourceFunction {
   GetsFunction() {
-    exists(string name | hasGlobalOrStdName(name) |
-      name = "gets" or // gets(str)
-      name = "fgets" or // fgets(str, num, stream)
-      name = "fgetws" // fgetws(wstr, num, stream)
-    )
+    // gets(str)
+    // fgets(str, num, stream)
+    // fgetws(wstr, num, stream)
+    hasGlobalOrStdOrBslName(["gets", "fgets", "fgetws"])
   }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
@@ -48,4 +52,17 @@ class GetsFunction extends DataFlowFunction, TaintFunction, ArrayFunction, Alias
     output.isParameterDeref(0) and
     description = "String read by " + this.getName()
   }
+
+  override predicate hasArrayWithVariableSize(int bufParam, int countParam) {
+    not hasName("gets") and
+    bufParam = 0 and
+    countParam = 1
+  }
+
+  override predicate hasArrayWithUnknownSize(int bufParam) {
+    hasName("gets") and
+    bufParam = 0
+  }
+
+  override predicate hasArrayOutput(int bufParam) { bufParam = 0 }
 }

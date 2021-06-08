@@ -4,6 +4,7 @@
  */
 
 import csharp
+import IDEContextual
 
 /** An element with an associated definition. */
 abstract class Use extends @type_mention_parent {
@@ -82,7 +83,7 @@ private class MethodUse extends Use, QualifiableExpr {
     )
   }
 
-  override Method getDefinition() { result = getQualifiedDeclaration().getSourceDeclaration() }
+  override Method getDefinition() { result = getQualifiedDeclaration().getUnboundDeclaration() }
 
   override string getUseType() { result = "M" }
 
@@ -121,7 +122,7 @@ private class AccessUse extends Access, Use {
     Use.super.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 
-  override Declaration getDefinition() { result = this.getTarget().getSourceDeclaration() }
+  override Declaration getDefinition() { result = this.getTarget().getUnboundDeclaration() }
 
   override string getUseType() {
     if this instanceof Call or this instanceof LocalFunctionAccess
@@ -151,7 +152,24 @@ private class TypeMentionUse extends Use, TypeMention {
     )
   }
 
-  override Type getDefinition() { result = this.getType().getSourceDeclaration() }
+  override predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    Use.super.hasLocationInfo(filepath, startline, startcolumn, endline, _) and
+    endcolumn =
+      startcolumn +
+          this.getType().(ConstructedType).getUnboundGeneric().getNameWithoutBrackets().length() - 1
+    or
+    Use.super.hasLocationInfo(filepath, startline, startcolumn, endline, _) and
+    endcolumn =
+      startcolumn + this.getType().(UnboundGenericType).getNameWithoutBrackets().length() - 1
+    or
+    not this.getType() instanceof ConstructedType and
+    not this.getType() instanceof UnboundGenericType and
+    Use.super.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
+
+  override Type getDefinition() { result = this.getType().getUnboundDeclaration() }
 
   override string getUseType() {
     if this.getTarget() instanceof ObjectCreation
@@ -169,13 +187,11 @@ cached
 Declaration definitionOf(Use use, string kind) {
   result = use.getDefinition() and
   result.fromSource() and
-  kind = use.getUseType()
+  kind = use.getUseType() and
+  // Some entities have many locations. This can arise for files that
+  // are duplicated multiple times in the database at different
+  // locations. Rather than letting the result set explode, we just
+  // exclude results that are "too ambiguous" -- we could also arbitrarily
+  // pick one location later on.
+  strictcount(result.getLocation()) < 10
 }
-
-/**
- * Returns an appropriately encoded version of a filename `name`
- * passed by the VS Code extension in order to coincide with the
- * output of `.getFile()` on locatable entities.
- */
-cached
-File getEncodedFile(string name) { result.getAbsolutePath().replaceAll(":", "_") = name }

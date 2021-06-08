@@ -1,0 +1,270 @@
+nodes
+| unsafe-jquery-plugin.js:2:38:2:44 | options |
+| unsafe-jquery-plugin.js:2:38:2:44 | options |
+| unsafe-jquery-plugin.js:3:5:3:11 | options |
+| unsafe-jquery-plugin.js:3:5:3:11 | options |
+| unsafe-jquery-plugin.js:5:5:5:11 | options |
+| unsafe-jquery-plugin.js:5:5:5:18 | options.target |
+| unsafe-jquery-plugin.js:5:5:5:18 | options.target |
+| unsafe-jquery-plugin.js:7:17:7:23 | options |
+| unsafe-jquery-plugin.js:7:17:7:30 | options.target |
+| unsafe-jquery-plugin.js:11:7:11:29 | target |
+| unsafe-jquery-plugin.js:11:16:11:22 | options |
+| unsafe-jquery-plugin.js:11:16:11:29 | options.target |
+| unsafe-jquery-plugin.js:22:6:22:11 | target |
+| unsafe-jquery-plugin.js:22:6:22:11 | target |
+| unsafe-jquery-plugin.js:30:6:30:11 | target |
+| unsafe-jquery-plugin.js:30:6:30:11 | target |
+| unsafe-jquery-plugin.js:36:6:36:11 | target |
+| unsafe-jquery-plugin.js:36:6:36:11 | target |
+| unsafe-jquery-plugin.js:40:6:40:11 | target |
+| unsafe-jquery-plugin.js:40:6:40:11 | target |
+| unsafe-jquery-plugin.js:48:6:48:11 | target |
+| unsafe-jquery-plugin.js:48:6:48:11 | target |
+| unsafe-jquery-plugin.js:52:6:52:11 | target |
+| unsafe-jquery-plugin.js:52:6:52:11 | target |
+| unsafe-jquery-plugin.js:60:6:60:11 | target |
+| unsafe-jquery-plugin.js:60:6:60:11 | target |
+| unsafe-jquery-plugin.js:65:47:65:53 | options |
+| unsafe-jquery-plugin.js:65:47:65:53 | options |
+| unsafe-jquery-plugin.js:67:24:67:44 | $.exten ... ptions) |
+| unsafe-jquery-plugin.js:67:33:67:34 | {} |
+| unsafe-jquery-plugin.js:67:37:67:43 | options |
+| unsafe-jquery-plugin.js:68:7:68:18 | this.options |
+| unsafe-jquery-plugin.js:68:7:68:25 | this.options.parent |
+| unsafe-jquery-plugin.js:68:45:68:63 | this.options.parent |
+| unsafe-jquery-plugin.js:68:45:68:63 | this.options.parent |
+| unsafe-jquery-plugin.js:71:38:71:44 | options |
+| unsafe-jquery-plugin.js:71:38:71:44 | options |
+| unsafe-jquery-plugin.js:72:5:72:11 | options |
+| unsafe-jquery-plugin.js:72:5:72:15 | options.foo |
+| unsafe-jquery-plugin.js:72:5:72:19 | options.foo.bar |
+| unsafe-jquery-plugin.js:72:5:72:23 | options.foo.bar.baz |
+| unsafe-jquery-plugin.js:72:5:72:23 | options.foo.bar.baz |
+| unsafe-jquery-plugin.js:76:38:76:44 | options |
+| unsafe-jquery-plugin.js:76:38:76:44 | options |
+| unsafe-jquery-plugin.js:77:17:77:23 | options |
+| unsafe-jquery-plugin.js:77:17:77:27 | options.foo |
+| unsafe-jquery-plugin.js:77:17:77:31 | options.foo.bar |
+| unsafe-jquery-plugin.js:77:17:77:35 | options.foo.bar.baz |
+| unsafe-jquery-plugin.js:77:17:77:35 | options.foo.bar.baz |
+| unsafe-jquery-plugin.js:84:38:84:44 | options |
+| unsafe-jquery-plugin.js:84:38:84:44 | options |
+| unsafe-jquery-plugin.js:85:14:85:14 | o |
+| unsafe-jquery-plugin.js:86:13:86:27 | $.extend({}, o) |
+| unsafe-jquery-plugin.js:86:22:86:23 | {} |
+| unsafe-jquery-plugin.js:86:26:86:26 | o |
+| unsafe-jquery-plugin.js:87:8:87:24 | t |
+| unsafe-jquery-plugin.js:87:12:87:17 | this.o |
+| unsafe-jquery-plugin.js:87:12:87:24 | this.o.target |
+| unsafe-jquery-plugin.js:90:6:90:6 | t |
+| unsafe-jquery-plugin.js:90:6:90:6 | t |
+| unsafe-jquery-plugin.js:92:5:92:11 | options |
+| unsafe-jquery-plugin.js:101:38:101:44 | options |
+| unsafe-jquery-plugin.js:101:38:101:44 | options |
+| unsafe-jquery-plugin.js:102:3:105:13 | options |
+| unsafe-jquery-plugin.js:102:13:105:13 | $.exten ... ptions) |
+| unsafe-jquery-plugin.js:102:22:105:3 | {\\n\\t\\t\\tme ... in'\\n\\t\\t} |
+| unsafe-jquery-plugin.js:105:6:105:12 | options |
+| unsafe-jquery-plugin.js:107:5:107:11 | options |
+| unsafe-jquery-plugin.js:107:5:107:18 | options.target |
+| unsafe-jquery-plugin.js:107:5:107:18 | options.target |
+| unsafe-jquery-plugin.js:114:38:114:44 | options |
+| unsafe-jquery-plugin.js:114:38:114:44 | options |
+| unsafe-jquery-plugin.js:115:3:115:58 | options |
+| unsafe-jquery-plugin.js:115:13:115:58 | $.exten ... ptions) |
+| unsafe-jquery-plugin.js:115:22:115:23 | {} |
+| unsafe-jquery-plugin.js:115:51:115:57 | options |
+| unsafe-jquery-plugin.js:117:5:117:11 | options |
+| unsafe-jquery-plugin.js:117:5:117:18 | options.target |
+| unsafe-jquery-plugin.js:117:5:117:18 | options.target |
+| unsafe-jquery-plugin.js:121:40:121:46 | options |
+| unsafe-jquery-plugin.js:121:40:121:46 | options |
+| unsafe-jquery-plugin.js:122:5:122:11 | options |
+| unsafe-jquery-plugin.js:122:5:122:18 | options.target |
+| unsafe-jquery-plugin.js:122:5:122:18 | options.target |
+| unsafe-jquery-plugin.js:126:33:126:39 | options |
+| unsafe-jquery-plugin.js:126:33:126:39 | options |
+| unsafe-jquery-plugin.js:127:6:127:12 | options |
+| unsafe-jquery-plugin.js:127:6:127:19 | options.target |
+| unsafe-jquery-plugin.js:127:6:127:19 | options.target |
+| unsafe-jquery-plugin.js:131:34:131:40 | options |
+| unsafe-jquery-plugin.js:131:34:131:40 | options |
+| unsafe-jquery-plugin.js:132:5:132:11 | options |
+| unsafe-jquery-plugin.js:132:5:132:18 | options.target |
+| unsafe-jquery-plugin.js:132:5:132:18 | options.target |
+| unsafe-jquery-plugin.js:135:36:135:42 | options |
+| unsafe-jquery-plugin.js:135:36:135:42 | options |
+| unsafe-jquery-plugin.js:136:5:136:11 | options |
+| unsafe-jquery-plugin.js:136:5:136:20 | options.viewport |
+| unsafe-jquery-plugin.js:136:5:136:29 | options ... elector |
+| unsafe-jquery-plugin.js:136:5:136:29 | options ... elector |
+| unsafe-jquery-plugin.js:153:38:153:44 | options |
+| unsafe-jquery-plugin.js:153:38:153:44 | options |
+| unsafe-jquery-plugin.js:154:16:154:22 | options |
+| unsafe-jquery-plugin.js:154:16:154:29 | options.target |
+| unsafe-jquery-plugin.js:156:3:156:9 | options |
+| unsafe-jquery-plugin.js:156:3:156:16 | options.target |
+| unsafe-jquery-plugin.js:157:44:157:50 | options |
+| unsafe-jquery-plugin.js:157:44:157:57 | options.target |
+| unsafe-jquery-plugin.js:157:44:157:59 | options.target.a |
+| unsafe-jquery-plugin.js:157:44:157:59 | options.target.a |
+| unsafe-jquery-plugin.js:160:38:160:44 | options |
+| unsafe-jquery-plugin.js:160:38:160:44 | options |
+| unsafe-jquery-plugin.js:165:7:165:29 | target |
+| unsafe-jquery-plugin.js:165:16:165:22 | options |
+| unsafe-jquery-plugin.js:165:16:165:29 | options.target |
+| unsafe-jquery-plugin.js:170:6:170:11 | target |
+| unsafe-jquery-plugin.js:170:6:170:11 | target |
+| unsafe-jquery-plugin.js:178:27:178:33 | options |
+| unsafe-jquery-plugin.js:178:27:178:33 | options |
+| unsafe-jquery-plugin.js:179:5:179:11 | options |
+| unsafe-jquery-plugin.js:179:5:179:18 | options.target |
+| unsafe-jquery-plugin.js:179:5:179:18 | options.target |
+edges
+| unsafe-jquery-plugin.js:2:38:2:44 | options | unsafe-jquery-plugin.js:3:5:3:11 | options |
+| unsafe-jquery-plugin.js:2:38:2:44 | options | unsafe-jquery-plugin.js:3:5:3:11 | options |
+| unsafe-jquery-plugin.js:2:38:2:44 | options | unsafe-jquery-plugin.js:3:5:3:11 | options |
+| unsafe-jquery-plugin.js:2:38:2:44 | options | unsafe-jquery-plugin.js:3:5:3:11 | options |
+| unsafe-jquery-plugin.js:2:38:2:44 | options | unsafe-jquery-plugin.js:5:5:5:11 | options |
+| unsafe-jquery-plugin.js:2:38:2:44 | options | unsafe-jquery-plugin.js:5:5:5:11 | options |
+| unsafe-jquery-plugin.js:2:38:2:44 | options | unsafe-jquery-plugin.js:7:17:7:23 | options |
+| unsafe-jquery-plugin.js:2:38:2:44 | options | unsafe-jquery-plugin.js:7:17:7:23 | options |
+| unsafe-jquery-plugin.js:2:38:2:44 | options | unsafe-jquery-plugin.js:11:16:11:22 | options |
+| unsafe-jquery-plugin.js:2:38:2:44 | options | unsafe-jquery-plugin.js:11:16:11:22 | options |
+| unsafe-jquery-plugin.js:5:5:5:11 | options | unsafe-jquery-plugin.js:5:5:5:18 | options.target |
+| unsafe-jquery-plugin.js:5:5:5:11 | options | unsafe-jquery-plugin.js:5:5:5:18 | options.target |
+| unsafe-jquery-plugin.js:5:5:5:18 | options.target | unsafe-jquery-plugin.js:11:16:11:29 | options.target |
+| unsafe-jquery-plugin.js:7:17:7:23 | options | unsafe-jquery-plugin.js:7:17:7:30 | options.target |
+| unsafe-jquery-plugin.js:7:17:7:30 | options.target | unsafe-jquery-plugin.js:11:16:11:29 | options.target |
+| unsafe-jquery-plugin.js:11:7:11:29 | target | unsafe-jquery-plugin.js:22:6:22:11 | target |
+| unsafe-jquery-plugin.js:11:7:11:29 | target | unsafe-jquery-plugin.js:22:6:22:11 | target |
+| unsafe-jquery-plugin.js:11:7:11:29 | target | unsafe-jquery-plugin.js:30:6:30:11 | target |
+| unsafe-jquery-plugin.js:11:7:11:29 | target | unsafe-jquery-plugin.js:30:6:30:11 | target |
+| unsafe-jquery-plugin.js:11:7:11:29 | target | unsafe-jquery-plugin.js:36:6:36:11 | target |
+| unsafe-jquery-plugin.js:11:7:11:29 | target | unsafe-jquery-plugin.js:36:6:36:11 | target |
+| unsafe-jquery-plugin.js:11:7:11:29 | target | unsafe-jquery-plugin.js:40:6:40:11 | target |
+| unsafe-jquery-plugin.js:11:7:11:29 | target | unsafe-jquery-plugin.js:40:6:40:11 | target |
+| unsafe-jquery-plugin.js:11:7:11:29 | target | unsafe-jquery-plugin.js:48:6:48:11 | target |
+| unsafe-jquery-plugin.js:11:7:11:29 | target | unsafe-jquery-plugin.js:48:6:48:11 | target |
+| unsafe-jquery-plugin.js:11:7:11:29 | target | unsafe-jquery-plugin.js:52:6:52:11 | target |
+| unsafe-jquery-plugin.js:11:7:11:29 | target | unsafe-jquery-plugin.js:52:6:52:11 | target |
+| unsafe-jquery-plugin.js:11:7:11:29 | target | unsafe-jquery-plugin.js:60:6:60:11 | target |
+| unsafe-jquery-plugin.js:11:7:11:29 | target | unsafe-jquery-plugin.js:60:6:60:11 | target |
+| unsafe-jquery-plugin.js:11:16:11:22 | options | unsafe-jquery-plugin.js:11:16:11:29 | options.target |
+| unsafe-jquery-plugin.js:11:16:11:29 | options.target | unsafe-jquery-plugin.js:11:7:11:29 | target |
+| unsafe-jquery-plugin.js:65:47:65:53 | options | unsafe-jquery-plugin.js:67:37:67:43 | options |
+| unsafe-jquery-plugin.js:65:47:65:53 | options | unsafe-jquery-plugin.js:67:37:67:43 | options |
+| unsafe-jquery-plugin.js:67:24:67:44 | $.exten ... ptions) | unsafe-jquery-plugin.js:68:7:68:18 | this.options |
+| unsafe-jquery-plugin.js:67:33:67:34 | {} | unsafe-jquery-plugin.js:67:24:67:44 | $.exten ... ptions) |
+| unsafe-jquery-plugin.js:67:37:67:43 | options | unsafe-jquery-plugin.js:67:24:67:44 | $.exten ... ptions) |
+| unsafe-jquery-plugin.js:67:37:67:43 | options | unsafe-jquery-plugin.js:67:33:67:34 | {} |
+| unsafe-jquery-plugin.js:68:7:68:18 | this.options | unsafe-jquery-plugin.js:68:7:68:25 | this.options.parent |
+| unsafe-jquery-plugin.js:68:7:68:25 | this.options.parent | unsafe-jquery-plugin.js:68:45:68:63 | this.options.parent |
+| unsafe-jquery-plugin.js:68:7:68:25 | this.options.parent | unsafe-jquery-plugin.js:68:45:68:63 | this.options.parent |
+| unsafe-jquery-plugin.js:71:38:71:44 | options | unsafe-jquery-plugin.js:72:5:72:11 | options |
+| unsafe-jquery-plugin.js:71:38:71:44 | options | unsafe-jquery-plugin.js:72:5:72:11 | options |
+| unsafe-jquery-plugin.js:72:5:72:11 | options | unsafe-jquery-plugin.js:72:5:72:15 | options.foo |
+| unsafe-jquery-plugin.js:72:5:72:15 | options.foo | unsafe-jquery-plugin.js:72:5:72:19 | options.foo.bar |
+| unsafe-jquery-plugin.js:72:5:72:19 | options.foo.bar | unsafe-jquery-plugin.js:72:5:72:23 | options.foo.bar.baz |
+| unsafe-jquery-plugin.js:72:5:72:19 | options.foo.bar | unsafe-jquery-plugin.js:72:5:72:23 | options.foo.bar.baz |
+| unsafe-jquery-plugin.js:76:38:76:44 | options | unsafe-jquery-plugin.js:77:17:77:23 | options |
+| unsafe-jquery-plugin.js:76:38:76:44 | options | unsafe-jquery-plugin.js:77:17:77:23 | options |
+| unsafe-jquery-plugin.js:77:17:77:23 | options | unsafe-jquery-plugin.js:77:17:77:27 | options.foo |
+| unsafe-jquery-plugin.js:77:17:77:27 | options.foo | unsafe-jquery-plugin.js:77:17:77:31 | options.foo.bar |
+| unsafe-jquery-plugin.js:77:17:77:31 | options.foo.bar | unsafe-jquery-plugin.js:77:17:77:35 | options.foo.bar.baz |
+| unsafe-jquery-plugin.js:77:17:77:31 | options.foo.bar | unsafe-jquery-plugin.js:77:17:77:35 | options.foo.bar.baz |
+| unsafe-jquery-plugin.js:84:38:84:44 | options | unsafe-jquery-plugin.js:92:5:92:11 | options |
+| unsafe-jquery-plugin.js:84:38:84:44 | options | unsafe-jquery-plugin.js:92:5:92:11 | options |
+| unsafe-jquery-plugin.js:85:14:85:14 | o | unsafe-jquery-plugin.js:86:26:86:26 | o |
+| unsafe-jquery-plugin.js:86:13:86:27 | $.extend({}, o) | unsafe-jquery-plugin.js:87:12:87:17 | this.o |
+| unsafe-jquery-plugin.js:86:22:86:23 | {} | unsafe-jquery-plugin.js:86:13:86:27 | $.extend({}, o) |
+| unsafe-jquery-plugin.js:86:26:86:26 | o | unsafe-jquery-plugin.js:86:13:86:27 | $.extend({}, o) |
+| unsafe-jquery-plugin.js:86:26:86:26 | o | unsafe-jquery-plugin.js:86:22:86:23 | {} |
+| unsafe-jquery-plugin.js:87:8:87:24 | t | unsafe-jquery-plugin.js:90:6:90:6 | t |
+| unsafe-jquery-plugin.js:87:8:87:24 | t | unsafe-jquery-plugin.js:90:6:90:6 | t |
+| unsafe-jquery-plugin.js:87:12:87:17 | this.o | unsafe-jquery-plugin.js:87:12:87:24 | this.o.target |
+| unsafe-jquery-plugin.js:87:12:87:24 | this.o.target | unsafe-jquery-plugin.js:87:8:87:24 | t |
+| unsafe-jquery-plugin.js:92:5:92:11 | options | unsafe-jquery-plugin.js:85:14:85:14 | o |
+| unsafe-jquery-plugin.js:101:38:101:44 | options | unsafe-jquery-plugin.js:105:6:105:12 | options |
+| unsafe-jquery-plugin.js:101:38:101:44 | options | unsafe-jquery-plugin.js:105:6:105:12 | options |
+| unsafe-jquery-plugin.js:102:3:105:13 | options | unsafe-jquery-plugin.js:107:5:107:11 | options |
+| unsafe-jquery-plugin.js:102:13:105:13 | $.exten ... ptions) | unsafe-jquery-plugin.js:102:3:105:13 | options |
+| unsafe-jquery-plugin.js:102:22:105:3 | {\\n\\t\\t\\tme ... in'\\n\\t\\t} | unsafe-jquery-plugin.js:102:13:105:13 | $.exten ... ptions) |
+| unsafe-jquery-plugin.js:105:6:105:12 | options | unsafe-jquery-plugin.js:102:13:105:13 | $.exten ... ptions) |
+| unsafe-jquery-plugin.js:105:6:105:12 | options | unsafe-jquery-plugin.js:102:22:105:3 | {\\n\\t\\t\\tme ... in'\\n\\t\\t} |
+| unsafe-jquery-plugin.js:107:5:107:11 | options | unsafe-jquery-plugin.js:107:5:107:18 | options.target |
+| unsafe-jquery-plugin.js:107:5:107:11 | options | unsafe-jquery-plugin.js:107:5:107:18 | options.target |
+| unsafe-jquery-plugin.js:114:38:114:44 | options | unsafe-jquery-plugin.js:115:51:115:57 | options |
+| unsafe-jquery-plugin.js:114:38:114:44 | options | unsafe-jquery-plugin.js:115:51:115:57 | options |
+| unsafe-jquery-plugin.js:115:3:115:58 | options | unsafe-jquery-plugin.js:117:5:117:11 | options |
+| unsafe-jquery-plugin.js:115:13:115:58 | $.exten ... ptions) | unsafe-jquery-plugin.js:115:3:115:58 | options |
+| unsafe-jquery-plugin.js:115:22:115:23 | {} | unsafe-jquery-plugin.js:115:13:115:58 | $.exten ... ptions) |
+| unsafe-jquery-plugin.js:115:51:115:57 | options | unsafe-jquery-plugin.js:115:13:115:58 | $.exten ... ptions) |
+| unsafe-jquery-plugin.js:115:51:115:57 | options | unsafe-jquery-plugin.js:115:22:115:23 | {} |
+| unsafe-jquery-plugin.js:117:5:117:11 | options | unsafe-jquery-plugin.js:117:5:117:18 | options.target |
+| unsafe-jquery-plugin.js:117:5:117:11 | options | unsafe-jquery-plugin.js:117:5:117:18 | options.target |
+| unsafe-jquery-plugin.js:121:40:121:46 | options | unsafe-jquery-plugin.js:122:5:122:11 | options |
+| unsafe-jquery-plugin.js:121:40:121:46 | options | unsafe-jquery-plugin.js:122:5:122:11 | options |
+| unsafe-jquery-plugin.js:122:5:122:11 | options | unsafe-jquery-plugin.js:122:5:122:18 | options.target |
+| unsafe-jquery-plugin.js:122:5:122:11 | options | unsafe-jquery-plugin.js:122:5:122:18 | options.target |
+| unsafe-jquery-plugin.js:126:33:126:39 | options | unsafe-jquery-plugin.js:127:6:127:12 | options |
+| unsafe-jquery-plugin.js:126:33:126:39 | options | unsafe-jquery-plugin.js:127:6:127:12 | options |
+| unsafe-jquery-plugin.js:127:6:127:12 | options | unsafe-jquery-plugin.js:127:6:127:19 | options.target |
+| unsafe-jquery-plugin.js:127:6:127:12 | options | unsafe-jquery-plugin.js:127:6:127:19 | options.target |
+| unsafe-jquery-plugin.js:131:34:131:40 | options | unsafe-jquery-plugin.js:132:5:132:11 | options |
+| unsafe-jquery-plugin.js:131:34:131:40 | options | unsafe-jquery-plugin.js:132:5:132:11 | options |
+| unsafe-jquery-plugin.js:132:5:132:11 | options | unsafe-jquery-plugin.js:132:5:132:18 | options.target |
+| unsafe-jquery-plugin.js:132:5:132:11 | options | unsafe-jquery-plugin.js:132:5:132:18 | options.target |
+| unsafe-jquery-plugin.js:135:36:135:42 | options | unsafe-jquery-plugin.js:136:5:136:11 | options |
+| unsafe-jquery-plugin.js:135:36:135:42 | options | unsafe-jquery-plugin.js:136:5:136:11 | options |
+| unsafe-jquery-plugin.js:136:5:136:11 | options | unsafe-jquery-plugin.js:136:5:136:20 | options.viewport |
+| unsafe-jquery-plugin.js:136:5:136:20 | options.viewport | unsafe-jquery-plugin.js:136:5:136:29 | options ... elector |
+| unsafe-jquery-plugin.js:136:5:136:20 | options.viewport | unsafe-jquery-plugin.js:136:5:136:29 | options ... elector |
+| unsafe-jquery-plugin.js:153:38:153:44 | options | unsafe-jquery-plugin.js:154:16:154:22 | options |
+| unsafe-jquery-plugin.js:153:38:153:44 | options | unsafe-jquery-plugin.js:154:16:154:22 | options |
+| unsafe-jquery-plugin.js:153:38:153:44 | options | unsafe-jquery-plugin.js:156:3:156:9 | options |
+| unsafe-jquery-plugin.js:153:38:153:44 | options | unsafe-jquery-plugin.js:156:3:156:9 | options |
+| unsafe-jquery-plugin.js:153:38:153:44 | options | unsafe-jquery-plugin.js:157:44:157:50 | options |
+| unsafe-jquery-plugin.js:153:38:153:44 | options | unsafe-jquery-plugin.js:157:44:157:50 | options |
+| unsafe-jquery-plugin.js:154:16:154:22 | options | unsafe-jquery-plugin.js:154:16:154:29 | options.target |
+| unsafe-jquery-plugin.js:154:16:154:29 | options.target | unsafe-jquery-plugin.js:156:3:156:16 | options.target |
+| unsafe-jquery-plugin.js:154:16:154:29 | options.target | unsafe-jquery-plugin.js:157:44:157:57 | options.target |
+| unsafe-jquery-plugin.js:156:3:156:9 | options | unsafe-jquery-plugin.js:156:3:156:16 | options.target |
+| unsafe-jquery-plugin.js:156:3:156:16 | options.target | unsafe-jquery-plugin.js:157:44:157:57 | options.target |
+| unsafe-jquery-plugin.js:157:44:157:50 | options | unsafe-jquery-plugin.js:157:44:157:57 | options.target |
+| unsafe-jquery-plugin.js:157:44:157:57 | options.target | unsafe-jquery-plugin.js:157:44:157:59 | options.target.a |
+| unsafe-jquery-plugin.js:157:44:157:57 | options.target | unsafe-jquery-plugin.js:157:44:157:59 | options.target.a |
+| unsafe-jquery-plugin.js:160:38:160:44 | options | unsafe-jquery-plugin.js:165:16:165:22 | options |
+| unsafe-jquery-plugin.js:160:38:160:44 | options | unsafe-jquery-plugin.js:165:16:165:22 | options |
+| unsafe-jquery-plugin.js:165:7:165:29 | target | unsafe-jquery-plugin.js:170:6:170:11 | target |
+| unsafe-jquery-plugin.js:165:7:165:29 | target | unsafe-jquery-plugin.js:170:6:170:11 | target |
+| unsafe-jquery-plugin.js:165:16:165:22 | options | unsafe-jquery-plugin.js:165:16:165:29 | options.target |
+| unsafe-jquery-plugin.js:165:16:165:29 | options.target | unsafe-jquery-plugin.js:165:7:165:29 | target |
+| unsafe-jquery-plugin.js:178:27:178:33 | options | unsafe-jquery-plugin.js:179:5:179:11 | options |
+| unsafe-jquery-plugin.js:178:27:178:33 | options | unsafe-jquery-plugin.js:179:5:179:11 | options |
+| unsafe-jquery-plugin.js:179:5:179:11 | options | unsafe-jquery-plugin.js:179:5:179:18 | options.target |
+| unsafe-jquery-plugin.js:179:5:179:11 | options | unsafe-jquery-plugin.js:179:5:179:18 | options.target |
+#select
+| unsafe-jquery-plugin.js:3:5:3:11 | options | unsafe-jquery-plugin.js:2:38:2:44 | options | unsafe-jquery-plugin.js:3:5:3:11 | options | Potential XSS vulnerability in the $@. | unsafe-jquery-plugin.js:2:19:63:2 | functio ... \\t\\t}\\n\\n\\t} | '$.fn.my_plugin' plugin |
+| unsafe-jquery-plugin.js:5:5:5:18 | options.target | unsafe-jquery-plugin.js:2:38:2:44 | options | unsafe-jquery-plugin.js:5:5:5:18 | options.target | Potential XSS vulnerability in the $@. | unsafe-jquery-plugin.js:2:19:63:2 | functio ... \\t\\t}\\n\\n\\t} | '$.fn.my_plugin' plugin |
+| unsafe-jquery-plugin.js:22:6:22:11 | target | unsafe-jquery-plugin.js:2:38:2:44 | options | unsafe-jquery-plugin.js:22:6:22:11 | target | Potential XSS vulnerability in the $@. | unsafe-jquery-plugin.js:2:19:63:2 | functio ... \\t\\t}\\n\\n\\t} | '$.fn.my_plugin' plugin |
+| unsafe-jquery-plugin.js:30:6:30:11 | target | unsafe-jquery-plugin.js:2:38:2:44 | options | unsafe-jquery-plugin.js:30:6:30:11 | target | Potential XSS vulnerability in the $@. | unsafe-jquery-plugin.js:2:19:63:2 | functio ... \\t\\t}\\n\\n\\t} | '$.fn.my_plugin' plugin |
+| unsafe-jquery-plugin.js:36:6:36:11 | target | unsafe-jquery-plugin.js:2:38:2:44 | options | unsafe-jquery-plugin.js:36:6:36:11 | target | Potential XSS vulnerability in the $@. | unsafe-jquery-plugin.js:2:19:63:2 | functio ... \\t\\t}\\n\\n\\t} | '$.fn.my_plugin' plugin |
+| unsafe-jquery-plugin.js:40:6:40:11 | target | unsafe-jquery-plugin.js:2:38:2:44 | options | unsafe-jquery-plugin.js:40:6:40:11 | target | Potential XSS vulnerability in the $@. | unsafe-jquery-plugin.js:2:19:63:2 | functio ... \\t\\t}\\n\\n\\t} | '$.fn.my_plugin' plugin |
+| unsafe-jquery-plugin.js:48:6:48:11 | target | unsafe-jquery-plugin.js:2:38:2:44 | options | unsafe-jquery-plugin.js:48:6:48:11 | target | Potential XSS vulnerability in the $@. | unsafe-jquery-plugin.js:2:19:63:2 | functio ... \\t\\t}\\n\\n\\t} | '$.fn.my_plugin' plugin |
+| unsafe-jquery-plugin.js:52:6:52:11 | target | unsafe-jquery-plugin.js:2:38:2:44 | options | unsafe-jquery-plugin.js:52:6:52:11 | target | Potential XSS vulnerability in the $@. | unsafe-jquery-plugin.js:2:19:63:2 | functio ... \\t\\t}\\n\\n\\t} | '$.fn.my_plugin' plugin |
+| unsafe-jquery-plugin.js:60:6:60:11 | target | unsafe-jquery-plugin.js:2:38:2:44 | options | unsafe-jquery-plugin.js:60:6:60:11 | target | Potential XSS vulnerability in the $@. | unsafe-jquery-plugin.js:2:19:63:2 | functio ... \\t\\t}\\n\\n\\t} | '$.fn.my_plugin' plugin |
+| unsafe-jquery-plugin.js:68:45:68:63 | this.options.parent | unsafe-jquery-plugin.js:65:47:65:53 | options | unsafe-jquery-plugin.js:68:45:68:63 | this.options.parent | Potential XSS vulnerability in the $@. | unsafe-jquery-plugin.js:65:19:69:2 | functio ... T OK\\n\\t} | '$.fn.my_plugin' plugin |
+| unsafe-jquery-plugin.js:72:5:72:23 | options.foo.bar.baz | unsafe-jquery-plugin.js:71:38:71:44 | options | unsafe-jquery-plugin.js:72:5:72:23 | options.foo.bar.baz | Potential XSS vulnerability in the $@. | unsafe-jquery-plugin.js:71:19:74:2 | functio ... / OK\\n\\t} | '$.fn.my_plugin' plugin |
+| unsafe-jquery-plugin.js:77:17:77:35 | options.foo.bar.baz | unsafe-jquery-plugin.js:76:38:76:44 | options | unsafe-jquery-plugin.js:77:17:77:35 | options.foo.bar.baz | Potential XSS vulnerability in the $@. | unsafe-jquery-plugin.js:76:19:78:2 | functio ... T OK\\n\\t} | '$.fn.my_plugin' plugin |
+| unsafe-jquery-plugin.js:90:6:90:6 | t | unsafe-jquery-plugin.js:84:38:84:44 | options | unsafe-jquery-plugin.js:90:6:90:6 | t | Potential XSS vulnerability in the $@. | unsafe-jquery-plugin.js:84:19:93:2 | functio ... ns);\\n\\t} | '$.fn.my_plugin' plugin |
+| unsafe-jquery-plugin.js:107:5:107:18 | options.target | unsafe-jquery-plugin.js:101:38:101:44 | options | unsafe-jquery-plugin.js:107:5:107:18 | options.target | Potential XSS vulnerability in the $@. | unsafe-jquery-plugin.js:101:19:108:2 | functio ... T OK\\n\\t} | '$.fn.my_plugin' plugin |
+| unsafe-jquery-plugin.js:117:5:117:18 | options.target | unsafe-jquery-plugin.js:114:38:114:44 | options | unsafe-jquery-plugin.js:117:5:117:18 | options.target | Potential XSS vulnerability in the $@. | unsafe-jquery-plugin.js:114:19:118:2 | functio ... T OK\\n\\t} | '$.fn.my_plugin' plugin |
+| unsafe-jquery-plugin.js:122:5:122:18 | options.target | unsafe-jquery-plugin.js:121:40:121:46 | options | unsafe-jquery-plugin.js:122:5:122:18 | options.target | Potential XSS vulnerability in the $@. | unsafe-jquery-plugin.js:121:21:123:2 | functio ... T OK\\n\\t} | '$.fn.my_plugin' plugin |
+| unsafe-jquery-plugin.js:127:6:127:19 | options.target | unsafe-jquery-plugin.js:126:33:126:39 | options | unsafe-jquery-plugin.js:127:6:127:19 | options.target | Potential XSS vulnerability in the $@. | unsafe-jquery-plugin.js:126:14:128:3 | functio ...  OK\\n\\t\\t} | '$.fn.my_plugin' plugin |
+| unsafe-jquery-plugin.js:132:5:132:18 | options.target | unsafe-jquery-plugin.js:131:34:131:40 | options | unsafe-jquery-plugin.js:132:5:132:18 | options.target | Potential XSS vulnerability in the $@. | unsafe-jquery-plugin.js:131:15:133:2 | functio ... T OK\\n\\t} | '$.fn.affix' plugin |
+| unsafe-jquery-plugin.js:136:5:136:29 | options ... elector | unsafe-jquery-plugin.js:135:36:135:42 | options | unsafe-jquery-plugin.js:136:5:136:29 | options ... elector | Potential XSS vulnerability in the $@. | unsafe-jquery-plugin.js:135:17:137:2 | functio ... T OK\\n\\t} | '$.fn.tooltip' plugin |
+| unsafe-jquery-plugin.js:157:44:157:59 | options.target.a | unsafe-jquery-plugin.js:153:38:153:44 | options | unsafe-jquery-plugin.js:157:44:157:59 | options.target.a | Potential XSS vulnerability in the $@. | unsafe-jquery-plugin.js:153:19:158:2 | functio ... NCY]\\n\\t} | '$.fn.my_plugin' plugin |
+| unsafe-jquery-plugin.js:170:6:170:11 | target | unsafe-jquery-plugin.js:160:38:160:44 | options | unsafe-jquery-plugin.js:170:6:170:11 | target | Potential XSS vulnerability in the $@. | unsafe-jquery-plugin.js:160:19:173:2 | functio ... \\t\\t}\\n\\n\\t} | '$.fn.my_plugin' plugin |
+| unsafe-jquery-plugin.js:179:5:179:18 | options.target | unsafe-jquery-plugin.js:178:27:178:33 | options | unsafe-jquery-plugin.js:179:5:179:18 | options.target | Potential XSS vulnerability in the $@. | unsafe-jquery-plugin.js:178:18:180:2 | functio ... T OK\\n\\t} | '$.fn.my_plugin' plugin |

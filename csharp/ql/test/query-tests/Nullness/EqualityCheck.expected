@@ -191,8 +191,11 @@
 | E.cs:85:18:85:29 | ... != ... | false | E.cs:85:18:85:21 | access to parameter vals | E.cs:85:26:85:29 | null |
 | E.cs:85:18:85:29 | ... != ... | false | E.cs:85:26:85:29 | null | E.cs:85:18:85:21 | access to parameter vals |
 | E.cs:90:17:90:27 | access to local variable switchguard | match access to constant MY_CONST_A | E.cs:90:17:90:27 | access to local variable switchguard | E.cs:92:18:92:27 | access to constant MY_CONST_A |
+| E.cs:90:17:90:27 | access to local variable switchguard | match access to constant MY_CONST_A | E.cs:92:18:92:27 | access to constant MY_CONST_A | E.cs:90:17:90:27 | access to local variable switchguard |
 | E.cs:90:17:90:27 | access to local variable switchguard | match access to constant MY_CONST_B | E.cs:90:17:90:27 | access to local variable switchguard | E.cs:97:18:97:27 | access to constant MY_CONST_B |
+| E.cs:90:17:90:27 | access to local variable switchguard | match access to constant MY_CONST_B | E.cs:97:18:97:27 | access to constant MY_CONST_B | E.cs:90:17:90:27 | access to local variable switchguard |
 | E.cs:90:17:90:27 | access to local variable switchguard | match access to constant MY_CONST_C | E.cs:90:17:90:27 | access to local variable switchguard | E.cs:95:18:95:27 | access to constant MY_CONST_C |
+| E.cs:90:17:90:27 | access to local variable switchguard | match access to constant MY_CONST_C | E.cs:95:18:95:27 | access to constant MY_CONST_C | E.cs:90:17:90:27 | access to local variable switchguard |
 | E.cs:126:21:126:29 | ... == ... | true | E.cs:126:21:126:24 | access to local variable step | E.cs:126:29:126:29 | 0 |
 | E.cs:126:21:126:29 | ... == ... | true | E.cs:126:29:126:29 | 0 | E.cs:126:21:126:24 | access to local variable step |
 | E.cs:153:13:153:24 | ... != ... | false | E.cs:153:13:153:16 | access to local variable obj2 | E.cs:153:21:153:24 | null |
@@ -216,6 +219,7 @@
 | E.cs:293:13:293:24 | ... == ... | true | E.cs:293:15:293:19 | call to method M2 | E.cs:293:24:293:24 | (...) ... |
 | E.cs:293:13:293:24 | ... == ... | true | E.cs:293:24:293:24 | (...) ... | E.cs:293:15:293:19 | call to method M2 |
 | E.cs:321:13:321:30 | ... is ... | true | E.cs:321:14:321:21 | ... ?? ... | E.cs:321:27:321:30 | null |
+| E.cs:321:13:321:30 | ... is ... | true | E.cs:321:27:321:30 | null | E.cs:321:14:321:21 | ... ?? ... |
 | E.cs:355:13:355:21 | dynamic call to operator != | false | E.cs:355:13:355:13 | access to local variable x | E.cs:355:18:355:21 | null |
 | E.cs:355:13:355:21 | dynamic call to operator != | false | E.cs:355:18:355:21 | null | E.cs:355:13:355:13 | access to local variable x |
 | E.cs:362:13:362:29 | ... != ... | false | E.cs:362:13:362:13 | access to local variable x | E.cs:362:18:362:29 | (...) ... |

@@ -415,17 +415,6 @@ class TranslatedStringLiteralInitialization extends TranslatedDirectInitializati
     )
   }
 
-  override int getInstructionResultSize(InstructionTag tag) {
-    exists(int elementCount |
-      zeroInitRange(_, elementCount) and
-      (
-        tag = ZeroPadStringConstantTag() or
-        tag = ZeroPadStringStoreTag()
-      ) and
-      result = elementCount * getElementType().getSize()
-    )
-  }
-
   private Type getElementType() {
     result = getContext().getTargetType().getUnspecifiedType().(ArrayType).getBaseType()
   }
@@ -770,15 +759,6 @@ class TranslatedElementValueInitialization extends TranslatedElementInitializati
     or
     tag = getElementDefaultValueTag() and
     result = getZeroValue(getElementType())
-  }
-
-  override int getInstructionResultSize(InstructionTag tag) {
-    elementCount > 1 and
-    (
-      tag = getElementDefaultValueTag() or
-      tag = getElementDefaultValueStoreTag()
-    ) and
-    result = elementCount * getElementType().getSize()
   }
 
   override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {

@@ -38,7 +38,7 @@ information.</p>
 </example>
 
 <references>
-<li>OWASP: <a href="https://www.owasp.org/index.php/Information_Leak_(information_disclosure)">Information Leak</a>.</li>
+<li>OWASP: <a href="https://owasp.org/www-community/Improper_Error_Handling">Improper Error Handling</a>.</li>
 
 <li>CERT Java Coding Standard:
 <a href="https://www.securecoding.cert.org/confluence/display/java/ERR01-J.+Do+not+allow+exceptions+to+expose+sensitive+information">ERR01-J.

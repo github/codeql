@@ -1,4 +1,4 @@
-WARNING: Predicate ssa_variable_points_to has been deprecated and may be removed in future (SSA.ql:10,5-37)
+WARNING: Predicate ssa_variable_points_to has been deprecated and may be removed in future (SSA.ql:10,3-35)
 | __init__.py:0 | __name___0 = ScopeEntryDefinition | 'code' | builtin-class str |
 | __init__.py:0 | __name___0 = ScopeEntryDefinition | 'code.package' | builtin-class str |
 | __init__.py:0 | __name___0 = ScopeEntryDefinition | 'code.test_package' | builtin-class str |

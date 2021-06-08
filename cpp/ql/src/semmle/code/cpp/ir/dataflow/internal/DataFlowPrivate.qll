@@ -5,35 +5,75 @@ private import DataFlowDispatch
 
 /**
  * A data flow node that occurs as the argument of a call and is passed as-is
- * to the callable. Instance arguments (`this` pointer) are also included.
+ * to the callable. Instance arguments (`this` pointer) and read side effects
+ * on parameters are also included.
  */
-class ArgumentNode extends InstructionNode {
-  ArgumentNode() {
-    exists(CallInstruction call |
-      instr = call.getAnArgument()
-      or
-      instr.(ReadSideEffectInstruction).getPrimaryInstruction() = call
-    )
-  }
-
+abstract class ArgumentNode extends OperandNode {
   /**
    * Holds if this argument occurs at the given position in the given call.
    * The instance argument is considered to have index `-1`.
    */
-  predicate argumentOf(DataFlowCall call, int pos) {
-    instr = call.getPositionalArgument(pos)
-    or
-    instr = call.getThisArgument() and pos = -1
-    or
-    exists(ReadSideEffectInstruction read |
-      read = instr and
-      read.getPrimaryInstruction() = call and
-      pos = getArgumentPosOfSideEffect(read.getIndex())
-    )
-  }
+  abstract predicate argumentOf(DataFlowCall call, int pos);
 
   /** Gets the call in which this node is an argument. */
   DataFlowCall getCall() { this.argumentOf(result, _) }
+}
+
+/**
+ * A data flow node that occurs as the argument to a call, or an
+ * implicit `this` pointer argument.
+ */
+private class PrimaryArgumentNode extends ArgumentNode {
+  override ArgumentOperand op;
+
+  PrimaryArgumentNode() { exists(CallInstruction call | op = call.getAnArgumentOperand()) }
+
+  override predicate argumentOf(DataFlowCall call, int pos) { op = call.getArgumentOperand(pos) }
+
+  override string toString() {
+    exists(Expr unconverted |
+      unconverted = op.getDef().getUnconvertedResultExpression() and
+      result = unconverted.toString()
+    )
+    or
+    // Certain instructions don't map to an unconverted result expression. For these cases
+    // we fall back to a simpler naming scheme. This can happen in IR-generated constructors.
+    not exists(op.getDef().getUnconvertedResultExpression()) and
+    (
+      result = "Argument " + op.(PositionalArgumentOperand).getIndex()
+      or
+      op instanceof ThisArgumentOperand and result = "Argument this"
+    )
+  }
+}
+
+/**
+ * A data flow node representing the read side effect of a call on a
+ * specific parameter.
+ */
+private class SideEffectArgumentNode extends ArgumentNode {
+  override SideEffectOperand op;
+  ReadSideEffectInstruction read;
+
+  SideEffectArgumentNode() { op = read.getSideEffectOperand() }
+
+  override predicate argumentOf(DataFlowCall call, int pos) {
+    read.getPrimaryInstruction() = call and
+    pos = getArgumentPosOfSideEffect(read.getIndex())
+  }
+
+  override string toString() {
+    result = read.getArgumentDef().getUnconvertedResultExpression().toString() + " indirection"
+    or
+    // Some instructions don't map to an unconverted result expression. For these cases
+    // we fall back to a simpler naming scheme. This can happen in IR-generated constructors.
+    not exists(read.getArgumentDef().getUnconvertedResultExpression()) and
+    (
+      if read.getIndex() = -1
+      then result = "Argument this indirection"
+      else result = "Argument " + read.getIndex() + " indirection"
+    )
+  }
 }
 
 private newtype TReturnKind =
@@ -86,7 +126,12 @@ class ReturnValueNode extends ReturnNode {
 class ReturnIndirectionNode extends ReturnNode {
   override ReturnIndirectionInstruction primary;
 
-  override ReturnKind getKind() { result = TIndirectReturnKind(primary.getParameter().getIndex()) }
+  override ReturnKind getKind() {
+    exists(int index |
+      primary.hasIndex(index) and
+      result = TIndirectReturnKind(index)
+    )
+  }
 }
 
 /** A data flow node that represents the output of a call. */
@@ -123,8 +168,13 @@ private class SideEffectOutNode extends OutNode {
  * `kind`.
  */
 OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
-  result.getCall() = call and
-  result.getReturnKind() = kind
+  // There should be only one `OutNode` for a given `(call, kind)` pair. Showing the optimizer that
+  // this is true helps it make better decisions downstream, especially in virtual dispatch.
+  result =
+    unique(OutNode outNode |
+      outNode.getCall() = call and
+      outNode.getReturnKind() = kind
+    )
 }
 
 /**
@@ -134,8 +184,23 @@ OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
  */
 predicate jumpStep(Node n1, Node n2) { none() }
 
+/**
+ * Gets a field corresponding to the bit range `[startBit..endBit)` of class `c`, if any.
+ */
+private Field getAField(Class c, int startBit, int endBit) {
+  result.getDeclaringType() = c and
+  startBit = 8 * result.getByteOffset() and
+  endBit = 8 * result.getType().getSize() + startBit
+  or
+  exists(Field f, Class cInner |
+    f = c.getAField() and
+    cInner = f.getUnderlyingType() and
+    result = getAField(cInner, startBit - 8 * f.getByteOffset(), endBit - 8 * f.getByteOffset())
+  )
+}
+
 private newtype TContent =
-  TFieldContent(Field f) or
+  TFieldContent(Class c, int startBit, int endBit) { exists(getAField(c, startBit, endBit)) } or
   TCollectionContent() or
   TArrayContent()
 
@@ -150,63 +215,96 @@ class Content extends TContent {
   predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     path = "" and sl = 0 and sc = 0 and el = 0 and ec = 0
   }
-
-  /** Gets the type of the object containing this content. */
-  abstract Type getContainerType();
-
-  /** Gets the type of this content. */
-  abstract Type getType();
 }
 
 private class FieldContent extends Content, TFieldContent {
-  Field f;
+  Class c;
+  int startBit;
+  int endBit;
 
-  FieldContent() { this = TFieldContent(f) }
+  FieldContent() { this = TFieldContent(c, startBit, endBit) }
 
-  Field getField() { result = f }
+  // Ensure that there's just 1 result for `toString`.
+  override string toString() { result = min(Field f | f = getAField() | f.toString()) }
 
-  override string toString() { result = f.toString() }
+  predicate hasOffset(Class cl, int start, int end) { cl = c and start = startBit and end = endBit }
 
-  override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
-    f.getLocation().hasLocationInfo(path, sl, sc, el, ec)
-  }
-
-  override Type getContainerType() { result = f.getDeclaringType() }
-
-  override Type getType() { result = f.getType() }
+  Field getAField() { result = getAField(c, startBit, endBit) }
 }
 
 private class CollectionContent extends Content, TCollectionContent {
   override string toString() { result = "collection" }
-
-  override Type getContainerType() { none() }
-
-  override Type getType() { none() }
 }
 
 private class ArrayContent extends Content, TArrayContent {
-  override string toString() { result = "array" }
+  ArrayContent() { this = TArrayContent() }
 
-  override Type getContainerType() { none() }
-
-  override Type getType() { none() }
+  override string toString() { result = "array content" }
 }
 
-private predicate storeStepNoChi(Node node1, Content f, PostUpdateNode node2) {
-  exists(FieldAddressInstruction fa, StoreInstruction store |
+private predicate fieldStoreStepNoChi(Node node1, FieldContent f, PostUpdateNode node2) {
+  exists(StoreInstruction store, Class c |
     store = node2.asInstruction() and
-    store.getDestinationAddress() = fa and
-    store.getSourceValue() = node1.asInstruction() and
-    f.(FieldContent).getField() = fa.getField()
+    store.getSourceValueOperand() = node1.asOperand() and
+    getWrittenField(store, f.(FieldContent).getAField(), c) and
+    f.hasOffset(c, _, _)
   )
 }
 
-private predicate storeStepChi(Node node1, Content f, PostUpdateNode node2) {
-  exists(FieldAddressInstruction fa, StoreInstruction store |
-    node1.asInstruction() = store and
-    store.getDestinationAddress() = fa and
-    node2.asInstruction().(ChiInstruction).getPartial() = store and
-    f.(FieldContent).getField() = fa.getField()
+private FieldAddressInstruction getFieldInstruction(Instruction instr) {
+  result = instr or
+  result = instr.(CopyValueInstruction).getUnary()
+}
+
+pragma[noinline]
+private predicate getWrittenField(Instruction instr, Field f, Class c) {
+  exists(FieldAddressInstruction fa |
+    fa =
+      getFieldInstruction([
+          instr.(StoreInstruction).getDestinationAddress(),
+          instr.(WriteSideEffectInstruction).getDestinationAddress()
+        ]) and
+    f = fa.getField() and
+    c = f.getDeclaringType()
+  )
+}
+
+private predicate fieldStoreStepChi(Node node1, FieldContent f, PostUpdateNode node2) {
+  exists(ChiPartialOperand operand, ChiInstruction chi |
+    chi.getPartialOperand() = operand and
+    node1.asOperand() = operand and
+    node2.asInstruction() = chi and
+    exists(Class c |
+      c = chi.getResultType() and
+      exists(int startBit, int endBit |
+        chi.getUpdatedInterval(startBit, endBit) and
+        f.hasOffset(c, startBit, endBit)
+      )
+      or
+      getWrittenField(operand.getDef(), f.getAField(), c) and
+      f.hasOffset(c, _, _)
+    )
+  )
+}
+
+private predicate arrayStoreStepChi(Node node1, ArrayContent a, PostUpdateNode node2) {
+  a = TArrayContent() and
+  exists(ChiPartialOperand operand, ChiInstruction chi, StoreInstruction store |
+    chi.getPartialOperand() = operand and
+    store = operand.getDef() and
+    node1.asOperand() = operand and
+    // This `ChiInstruction` will always have a non-conflated result because both `ArrayStoreNode`
+    // and `PointerStoreNode` require it in their characteristic predicates.
+    node2.asInstruction() = chi and
+    (
+      // `x[i] = taint()`
+      // This matches the characteristic predicate in `ArrayStoreNode`.
+      store.getDestinationAddress() instanceof PointerAddInstruction
+      or
+      // `*p = taint()`
+      // This matches the characteristic predicate in `PointerStoreNode`.
+      store.getDestinationAddress().(CopyValueInstruction).getUnary() instanceof LoadInstruction
+    )
   )
 }
 
@@ -216,8 +314,146 @@ private predicate storeStepChi(Node node1, Content f, PostUpdateNode node2) {
  * value of `node1`.
  */
 predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
-  storeStepNoChi(node1, f, node2) or
-  storeStepChi(node1, f, node2)
+  fieldStoreStepNoChi(node1, f, node2) or
+  fieldStoreStepChi(node1, f, node2) or
+  arrayStoreStepChi(node1, f, node2) or
+  fieldStoreStepAfterArraySuppression(node1, f, node2)
+}
+
+// This predicate pushes the correct `FieldContent` onto the access path when the
+// `suppressArrayRead` predicate has popped off an `ArrayContent`.
+private predicate fieldStoreStepAfterArraySuppression(
+  Node node1, FieldContent f, PostUpdateNode node2
+) {
+  exists(WriteSideEffectInstruction write, ChiInstruction chi, Class c |
+    not chi.isResultConflated() and
+    node1.asInstruction() = chi and
+    node2.asInstruction() = chi and
+    chi.getPartial() = write and
+    getWrittenField(write, f.getAField(), c) and
+    f.hasOffset(c, _, _)
+  )
+}
+
+bindingset[result, i]
+private int unbindInt(int i) { i <= result and i >= result }
+
+pragma[noinline]
+private predicate getLoadedField(LoadInstruction load, Field f, Class c) {
+  exists(FieldAddressInstruction fa |
+    fa = load.getSourceAddress() and
+    f = fa.getField() and
+    c = f.getDeclaringType()
+  )
+}
+
+/**
+ * Holds if data can flow from `node1` to `node2` via a read of `f`.
+ * Thus, `node1` references an object with a field `f` whose value ends up in
+ * `node2`.
+ */
+private predicate fieldReadStep(Node node1, FieldContent f, Node node2) {
+  exists(LoadOperand operand |
+    node2.asOperand() = operand and
+    node1.asInstruction() = operand.getAnyDef() and
+    exists(Class c |
+      c = operand.getAnyDef().getResultType() and
+      exists(int startBit, int endBit |
+        operand.getUsedInterval(unbindInt(startBit), unbindInt(endBit)) and
+        f.hasOffset(c, startBit, endBit)
+      )
+      or
+      getLoadedField(operand.getUse(), f.getAField(), c) and
+      f.hasOffset(c, _, _)
+    )
+  )
+}
+
+/**
+ * When a store step happens in a function that looks like an array write such as:
+ * ```cpp
+ * void f(int* pa) {
+ *   pa = source();
+ * }
+ * ```
+ * it can be a write to an array, but it can also happen that `f` is called as `f(&a.x)`. If that is
+ * the case, the `ArrayContent` that was written by the call to `f` should be popped off the access
+ * path, and a `FieldContent` containing `x` should be pushed instead.
+ * So this case pops `ArrayContent` off the access path, and the `fieldStoreStepAfterArraySuppression`
+ * predicate in `storeStep` ensures that we push the right `FieldContent` onto the access path.
+ */
+predicate suppressArrayRead(Node node1, ArrayContent a, Node node2) {
+  a = TArrayContent() and
+  exists(WriteSideEffectInstruction write, ChiInstruction chi |
+    node1.asInstruction() = write and
+    node2.asInstruction() = chi and
+    chi.getPartial() = write and
+    getWrittenField(write, _, _)
+  )
+}
+
+private class ArrayToPointerConvertInstruction extends ConvertInstruction {
+  ArrayToPointerConvertInstruction() {
+    this.getUnary().getResultType() instanceof ArrayType and
+    this.getResultType() instanceof PointerType
+  }
+}
+
+private Instruction skipOneCopyValueInstructionRec(CopyValueInstruction copy) {
+  copy.getUnary() = result and not result instanceof CopyValueInstruction
+  or
+  result = skipOneCopyValueInstructionRec(copy.getUnary())
+}
+
+private Instruction skipCopyValueInstructions(Operand op) {
+  not result instanceof CopyValueInstruction and result = op.getDef()
+  or
+  result = skipOneCopyValueInstructionRec(op.getDef())
+}
+
+private predicate arrayReadStep(Node node1, ArrayContent a, Node node2) {
+  a = TArrayContent() and
+  // Explicit dereferences such as `*p` or `p[i]` where `p` is a pointer or array.
+  exists(LoadOperand operand, Instruction address |
+    operand.isDefinitionInexact() and
+    node1.asInstruction() = operand.getAnyDef() and
+    operand = node2.asOperand() and
+    address = skipCopyValueInstructions(operand.getAddressOperand()) and
+    (
+      address instanceof LoadInstruction or
+      address instanceof ArrayToPointerConvertInstruction or
+      address instanceof PointerOffsetInstruction
+    )
+  )
+}
+
+/**
+ * In cases such as:
+ * ```cpp
+ * void f(int* pa) {
+ *   *pa = source();
+ * }
+ * ...
+ * int x;
+ * f(&x);
+ * use(x);
+ * ```
+ * the load on `x` in `use(x)` will exactly overlap with its definition (in this case the definition
+ * is a `WriteSideEffect`). This predicate pops the `ArrayContent` (pushed by the store in `f`)
+ * from the access path.
+ */
+private predicate exactReadStep(Node node1, ArrayContent a, Node node2) {
+  a = TArrayContent() and
+  exists(WriteSideEffectInstruction write, ChiInstruction chi |
+    not chi.isResultConflated() and
+    chi.getPartial() = write and
+    node1.asInstruction() = write and
+    node2.asInstruction() = chi and
+    // To distinquish this case from the `arrayReadStep` case we require that the entire variable was
+    // overwritten by the `WriteSideEffectInstruction` (i.e., there is a load that reads the
+    // entire variable).
+    exists(LoadInstruction load | load.getSourceValue() = chi)
+  )
 }
 
 /**
@@ -226,37 +462,38 @@ predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
  * `node2`.
  */
 predicate readStep(Node node1, Content f, Node node2) {
-  exists(FieldAddressInstruction fa, LoadInstruction load |
-    load.getSourceAddress() = fa and
-    node1.asInstruction() = load.getSourceValueOperand().getAnyDef() and
-    fa.getField() = f.(FieldContent).getField() and
-    load = node2.asInstruction()
-  )
+  fieldReadStep(node1, f, node2) or
+  arrayReadStep(node1, f, node2) or
+  exactReadStep(node1, f, node2) or
+  suppressArrayRead(node1, f, node2)
 }
 
 /**
- * Gets a representative (boxed) type for `t` for the purpose of pruning
- * possible flow. A single type is used for all numeric types to account for
- * numeric conversions, and otherwise the erasure is used.
+ * Holds if values stored inside content `c` are cleared at node `n`.
  */
-Type getErasedRepr(Type t) {
-  suppressUnusedType(t) and
-  result instanceof VoidType // stub implementation
+predicate clearsContent(Node n, Content c) {
+  none() // stub implementation
 }
 
-/** Gets a string representation of a type returned by `getErasedRepr`. */
-string ppReprType(Type t) { none() } // stub implementation
+/** Gets the type of `n` used for type pruning. */
+IRType getNodeType(Node n) {
+  suppressUnusedNode(n) and
+  result instanceof IRVoidType // stub implementation
+}
+
+/** Gets a string representation of a type returned by `getNodeType`. */
+string ppReprType(IRType t) { none() } // stub implementation
 
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.
  */
 pragma[inline]
-predicate compatibleTypes(Type t1, Type t2) {
+predicate compatibleTypes(IRType t1, IRType t2) {
   any() // stub implementation
 }
 
-private predicate suppressUnusedType(Type t) { any() }
+private predicate suppressUnusedNode(Node n) { any() }
 
 //////////////////////////////////////////////////////////////////////////////
 // Java QL library compatibility wrappers
@@ -276,23 +513,25 @@ class DataFlowCallable = Declaration;
 
 class DataFlowExpr = Expr;
 
-class DataFlowType = Type;
+class DataFlowType = IRType;
 
 /** A function call relevant for data flow. */
 class DataFlowCall extends CallInstruction {
-  /**
-   * Gets the nth argument for this call.
-   *
-   * The range of `n` is from `0` to `getNumberOfArguments() - 1`.
-   */
-  Node getArgument(int n) { result.asInstruction() = this.getPositionalArgument(n) }
-
   Function getEnclosingCallable() { result = this.getEnclosingFunction() }
 }
 
 predicate isUnreachableInCall(Node n, DataFlowCall call) { none() } // stub implementation
 
 int accessPathLimit() { result = 5 }
+
+/** The unit type. */
+private newtype TUnit = TMkUnit()
+
+/** The trivial type with a single element. */
+class Unit extends TUnit {
+  /** Gets a textual representation of this element. */
+  string toString() { result = "unit" }
+}
 
 /**
  * Holds if `n` does not require a `PostUpdateNode` as it either cannot be
@@ -306,3 +545,17 @@ predicate isImmutableOrUnobservable(Node n) {
   // complex to model here.
   any()
 }
+
+/** Holds if `n` should be hidden from path explanations. */
+predicate nodeIsHidden(Node n) { n instanceof OperandNode and not n instanceof ArgumentNode }
+
+class LambdaCallKind = Unit;
+
+/** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
+predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) { none() }
+
+/** Holds if `call` is a lambda call of kind `kind` where `receiver` is the lambda expression. */
+predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) { none() }
+
+/** Extra data-flow steps needed for lambda flow analysis. */
+predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }

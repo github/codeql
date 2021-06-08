@@ -4,9 +4,20 @@ private import semmle.code.cpp.ir.implementation.internal.OperandTag
 private import semmle.code.cpp.ir.internal.CppType
 private import semmle.code.cpp.models.interfaces.SideEffect
 private import InstructionTag
+private import SideEffects
 private import TranslatedElement
 private import TranslatedExpr
 private import TranslatedFunction
+
+/**
+ * Gets the `CallInstruction` from the `TranslatedCallExpr` for the specified expression.
+ */
+private CallInstruction getTranslatedCallInstruction(Call call) {
+  exists(TranslatedCallExpr translatedCall |
+    translatedCall.getExpr() = call and
+    result = translatedCall.getInstruction(CallTag())
+  )
+}
 
 /**
  * The IR translation of a call to a function. The call may be from an actual
@@ -388,7 +399,7 @@ class TranslatedAllocationSideEffects extends TranslatedSideEffects,
     tag = OnlyInstructionTag() and
     if expr instanceof NewOrNewArrayExpr
     then result = getTranslatedAllocatorCall(expr).getInstruction(CallTag())
-    else result = getTranslatedExpr(expr).getInstruction(CallTag())
+    else result = getTranslatedCallInstruction(expr)
   }
 }
 
@@ -409,17 +420,20 @@ class TranslatedCallSideEffects extends TranslatedSideEffects, TTranslatedCallSi
 
   override Instruction getPrimaryInstructionForSideEffect(InstructionTag tag) {
     tag = OnlyInstructionTag() and
-    result = getTranslatedExpr(expr).getInstruction(CallTag())
+    result = getTranslatedCallInstruction(expr)
   }
 }
 
 class TranslatedStructorCallSideEffects extends TranslatedCallSideEffects {
-  TranslatedStructorCallSideEffects() { getParent().(TranslatedStructorCall).hasQualifier() }
+  TranslatedStructorCallSideEffects() {
+    getParent().(TranslatedStructorCall).hasQualifier() and
+    getASideEffectOpcode(expr, -1) instanceof WriteSideEffectOpcode
+  }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType t) {
-    opcode instanceof Opcode::IndirectMayWriteSideEffect and
     tag instanceof OnlyInstructionTag and
-    t = getTypeForPRValue(expr.getTarget().getDeclaringType())
+    t = getTypeForPRValue(expr.getTarget().getDeclaringType()) and
+    opcode = getASideEffectOpcode(expr, -1).(WriteSideEffectOpcode)
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
@@ -450,9 +464,11 @@ class TranslatedSideEffect extends TranslatedElement, TTranslatedArgumentSideEff
   Call call;
   Expr arg;
   int index;
-  boolean write;
+  SideEffectOpcode sideEffectOpcode;
 
-  TranslatedSideEffect() { this = TTranslatedArgumentSideEffect(call, arg, index, write) }
+  TranslatedSideEffect() {
+    this = TTranslatedArgumentSideEffect(call, arg, index, sideEffectOpcode)
+  }
 
   override Locatable getAST() { result = arg }
 
@@ -462,13 +478,13 @@ class TranslatedSideEffect extends TranslatedElement, TTranslatedArgumentSideEff
 
   int getArgumentIndex() { result = index }
 
-  predicate isWrite() { write = true }
+  predicate isWrite() { sideEffectOpcode instanceof WriteSideEffectOpcode }
 
   override string toString() {
-    write = true and
+    isWrite() and
     result = "(write side effect for " + arg.toString() + ")"
     or
-    write = false and
+    not isWrite() and
     result = "(read side effect for " + arg.toString() + ")"
   }
 
@@ -479,29 +495,29 @@ class TranslatedSideEffect extends TranslatedElement, TTranslatedArgumentSideEff
   override Instruction getFirstInstruction() { result = getInstruction(OnlyInstructionTag()) }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType type) {
-    isWrite() and
-    hasSpecificWriteSideEffect(opcode) and
     tag = OnlyInstructionTag() and
+    opcode = sideEffectOpcode and
     (
-      opcode instanceof BufferAccessOpcode and
-      type = getUnknownType()
-      or
-      not opcode instanceof BufferAccessOpcode and
-      exists(Type baseType | baseType = arg.getUnspecifiedType().(DerivedType).getBaseType() |
-        if baseType instanceof VoidType
-        then type = getUnknownType()
-        else type = getTypeForPRValueOrUnknown(baseType)
+      isWrite() and
+      (
+        opcode instanceof BufferAccessOpcode and
+        type = getUnknownType()
+        or
+        not opcode instanceof BufferAccessOpcode and
+        exists(Type baseType | baseType = arg.getUnspecifiedType().(DerivedType).getBaseType() |
+          if baseType instanceof VoidType
+          then type = getUnknownType()
+          else type = getTypeForPRValueOrUnknown(baseType)
+        )
+        or
+        index = -1 and
+        not arg.getUnspecifiedType() instanceof DerivedType and
+        type = getTypeForPRValueOrUnknown(arg.getUnspecifiedType())
       )
       or
-      index = -1 and
-      not arg.getUnspecifiedType() instanceof DerivedType and
-      type = getTypeForPRValueOrUnknown(arg.getUnspecifiedType())
+      not isWrite() and
+      type = getVoidType()
     )
-    or
-    not isWrite() and
-    hasSpecificReadSideEffect(opcode) and
-    tag = OnlyInstructionTag() and
-    type = getVoidType()
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
@@ -518,14 +534,14 @@ class TranslatedSideEffect extends TranslatedElement, TTranslatedArgumentSideEff
     tag instanceof OnlyInstructionTag and
     operandTag instanceof BufferSizeOperandTag and
     result =
-      getTranslatedExpr(call
-            .getArgument(call.getTarget().(SideEffectFunction).getParameterSizeIndex(index))
-            .getFullyConverted()).getResult()
+      getTranslatedExpr(call.getArgument(call.getTarget()
+              .(SideEffectFunction)
+              .getParameterSizeIndex(index)).getFullyConverted()).getResult()
   }
 
   override CppType getInstructionMemoryOperandType(InstructionTag tag, TypedOperandTag operandTag) {
     not isWrite() and
-    if hasSpecificReadSideEffect(any(BufferAccessOpcode op))
+    if sideEffectOpcode instanceof BufferAccessOpcode
     then
       result = getUnknownType() and
       tag instanceof OnlyInstructionTag and
@@ -547,59 +563,9 @@ class TranslatedSideEffect extends TranslatedElement, TTranslatedArgumentSideEff
       )
   }
 
-  predicate hasSpecificWriteSideEffect(Opcode op) {
-    exists(boolean buffer, boolean mustWrite |
-      if exists(call.getTarget().(SideEffectFunction).getParameterSizeIndex(index))
-      then
-        call.getTarget().(SideEffectFunction).hasSpecificWriteSideEffect(index, true, mustWrite) and
-        buffer = true and
-        (
-          mustWrite = false and op instanceof Opcode::SizedBufferMayWriteSideEffect
-          or
-          mustWrite = true and op instanceof Opcode::SizedBufferMustWriteSideEffect
-        )
-      else (
-        call.getTarget().(SideEffectFunction).hasSpecificWriteSideEffect(index, buffer, mustWrite) and
-        (
-          buffer = true and mustWrite = false and op instanceof Opcode::BufferMayWriteSideEffect
-          or
-          buffer = false and mustWrite = false and op instanceof Opcode::IndirectMayWriteSideEffect
-          or
-          buffer = true and mustWrite = true and op instanceof Opcode::BufferMustWriteSideEffect
-          or
-          buffer = false and mustWrite = true and op instanceof Opcode::IndirectMustWriteSideEffect
-        )
-      )
-    )
-    or
-    not call.getTarget() instanceof SideEffectFunction and
-    getArgumentIndex() != -1 and
-    op instanceof Opcode::BufferMayWriteSideEffect
-    or
-    not call.getTarget() instanceof SideEffectFunction and
-    getArgumentIndex() = -1 and
-    op instanceof Opcode::IndirectMayWriteSideEffect
-  }
-
-  predicate hasSpecificReadSideEffect(Opcode op) {
-    exists(boolean buffer |
-      call.getTarget().(SideEffectFunction).hasSpecificReadSideEffect(index, buffer) and
-      if exists(call.getTarget().(SideEffectFunction).getParameterSizeIndex(index))
-      then buffer = true and op instanceof Opcode::SizedBufferReadSideEffect
-      else (
-        buffer = true and op instanceof Opcode::BufferReadSideEffect
-        or
-        buffer = false and op instanceof Opcode::IndirectReadSideEffect
-      )
-    )
-    or
-    not call.getTarget() instanceof SideEffectFunction and
-    op instanceof Opcode::BufferReadSideEffect
-  }
-
   override Instruction getPrimaryInstructionForSideEffect(InstructionTag tag) {
     tag = OnlyInstructionTag() and
-    result = getTranslatedExpr(call).getInstruction(CallTag())
+    result = getTranslatedCallInstruction(call)
   }
 
   final override int getInstructionIndex(InstructionTag tag) {

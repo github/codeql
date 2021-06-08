@@ -7,6 +7,7 @@ void *malloc(size_t size);
 void *realloc(void *ptr, size_t size);
 void free(void *ptr);
 int atoi(const char *nptr);
+long atol(const char *nptr);
 struct MyStruct
 {
 	char data[256];
@@ -136,6 +137,15 @@ void more_bounded_tests() {
 
 	{
 		int size = atoi(getenv("USER"));
+
+		if (size > 0)
+		{
+			malloc(size * sizeof(int)); // GOOD (overflow not possible)
+		}
+	}
+
+	{
+		long size = atol(getenv("USER"));
 
 		if (size > 0)
 		{
@@ -302,7 +312,7 @@ void equality_cases() {
 
 		if ((size == 50) || (size == 100))
 		{
-			malloc(size * sizeof(int)); // GOOD [FALSE POSITIVE]
+			malloc(size * sizeof(int)); // GOOD
 		}
 	}
 	{
@@ -311,6 +321,15 @@ void equality_cases() {
 		if (size != 50 && size != 100)
 			return;
 
-		malloc(size * sizeof(int)); // GOOD [FALSE POSITIVE]
+		malloc(size * sizeof(int)); // GOOD
 	}
+}
+
+char * strstr(char *, const char *);
+
+void ptr_diff_case() {
+	char* user = getenv("USER");
+	char* admin_begin_pos = strstr(user, "ADMIN");
+	int offset = admin_begin_pos ? user - admin_begin_pos : 0; 
+	malloc(offset); // GOOD
 }

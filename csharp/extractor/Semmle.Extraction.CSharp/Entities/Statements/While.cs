@@ -4,9 +4,9 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Statements
 {
-    class While : Statement<WhileStatementSyntax>
+    internal class While : Statement<WhileStatementSyntax>
     {
-        While(Context cx, WhileStatementSyntax node, IStatementParentEntity parent, int child)
+        private While(Context cx, WhileStatementSyntax node, IStatementParentEntity parent, int child)
             : base(cx, node, StmtKind.WHILE, parent, child) { }
 
         public static While Create(Context cx, WhileStatementSyntax node, IStatementParentEntity parent, int child)
@@ -18,8 +18,8 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
 
         protected override void PopulateStatement(TextWriter trapFile)
         {
-            Expression.Create(cx, Stmt.Condition, this, 0);
-            Create(cx, Stmt.Statement, this, 1);
+            Expression.Create(Context, Stmt.Condition, this, 0);
+            Create(Context, Stmt.Statement, this, 1);
         }
     }
 }

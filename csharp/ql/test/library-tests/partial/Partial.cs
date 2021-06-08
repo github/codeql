@@ -1,11 +1,23 @@
-partial class A
+partial class TwoPartClass
 {
-    partial void M();
-    public void M2() { }
+    partial void PartialMethodWithBody1();
+    partial void PartialMethodWithoutBody1();
+    public void Method2() { }
 }
 
-partial class A
+partial class TwoPartClass
 {
-    partial void M() { }
-    public void M3() { }
+    partial void PartialMethodWithBody1() { }
+    public void Method3() { }
+}
+
+partial class OnePartPartialClass
+{
+    partial void PartialMethodWithoutBody2();
+    public void Method4() { }
+}
+
+class NonPartialClass
+{
+    public void Method5() { }
 }
