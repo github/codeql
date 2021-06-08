@@ -292,45 +292,60 @@ select call, checked, var
 
 GLOBAL FLOW
 
-TO DO
-
-#+BEGIN_SRC
-/**
- * @kind path-problem
- */
-
 import go
-import DataFlow::PathGraph
-
-predicate prefixCheck(StringOps::HasPrefix call, DataFlow::Node checked, Variable v, string prefix) {
-  call.getBaseString() = checked and
-  checked = v.getARead() and
-  call.getSubstring().asExpr().getStringValue() = prefix
-}
-
-predicate insufficientPrefixChecks(
-  StringOps::HasPrefix singleSlashCheck, DataFlow::Node checked, Variable v
-) {
-  prefixCheck(singleSlashCheck, checked, v, "/") and
-  (
-    not prefixCheck(_, _, v, "//") or
-    not prefixCheck(_, _, v, "/\\")
-  )
-}
 
 class Config extends TaintTracking::Configuration {
   Config() { this = "Config" }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof UntrustedFlowSource }
+  override predicate isSource(DataFlow::Node source) { xAuthSource(source.asExpr(), _, _, _) }
 
-  override predicate isSink(DataFlow::Node sink) { insufficientPrefixChecks(_, sink, _) }
+  override predicate isSink(DataFlow::Node sink) { insufficientPrefixCheck(_, sink.asExpr(), _) }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, Config c
-where c.hasFlowPath(source, sink)
+class HasPrefix extends CallExpr {
+  Expr checked;
+  string prefix;
+
+  HasPrefix() {
+    this.getTarget().getName() = "HasPrefix" and
+    checked = this.getArgument(0) and
+    prefix = this.getArgument(1).(StringLit).getStringValue()
+  }
+
+  Expr getBaseString() { result = checked }
+
+  string getSubString() { result = prefix }
+}
+
+predicate prefixCheck(HasPrefix call, Expr checked, string prefix, Variable var) {
+  call.getBaseString() = checked and
+  call.getSubString() = prefix and
+  checked = var.getARead().asExpr()
+}
+
+predicate insufficientPrefixCheck(HasPrefix call, Expr checked, Variable var) {
+  prefixCheck(call, checked, "/", var) and
+  (not prefixCheck(_, _, "//", var) or not prefixCheck(_, _, "/\\", var))
+}
+
+predicate xAuthSource(CallExpr c, string funcName, QualifiedName qn, Expr arg) {
+  funcName = c.getCalleeName() and
+  funcName = "Get" and
+  c.getCalleeExpr() = qn and
+  arg = c.getAnArgument() and
+  arg.(StringLit).getValue() = "X-Auth-Request-Redirect"
+}
+
+//strings.HasPrefix(redirect, "/") && !strings.HasPrefix(redirect, "//")
+// we want / & // & /\\
+// so logically / & (not // or not /\\)
+// from HasPrefix call, Expr checked, Variable var
+// where insufficientPrefixCheck(call, checked, var)
+// select call, checked, var
+from DataFlow::Node source, DataFlow::Node sink, Config c
+where c.hasFlow(source, sink)
 select sink, source, sink, "Untrusted value reaches insufficient redirect check"
 
-#+END_SRC
 
 
 
