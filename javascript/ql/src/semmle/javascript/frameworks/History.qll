@@ -2,6 +2,7 @@
 
 import javascript
 
+/** Provides classes modelling the [`history`](https://npmjs.org/package/history) library. */
 module History {
   /** The global variable `HistoryLibrary` as an entry point for API graphs. */
   private class HistoryGlobalEntry extends API::EntryPoint {
