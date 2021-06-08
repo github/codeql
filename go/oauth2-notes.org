@@ -210,52 +210,27 @@ where
 select call, checked, prefix
 #+END_SRC
 
-- Mention that there could be other ways of searching for string prefixes in Go. 
-- Take strings.HasPrefix(redirect, "/") and search for it in vscode 
-- Explain how you don't want to reinvent the wheel, and that it's always good to check the qll libraries to see what's already provided out of the box
-- Go through the StringOps.qll and notice how the HasPrefix class extends DataFlow::Node and that the return types of the interesting predicates are also DataFlow::Node
-- Change your query and arrive at this
-
-#+BEGIN_SRC
-import go
-
 class HasPrefix extends CallExpr {
-  HasPrefix() { this.getTarget().getName() = "HasPrefix" }
+  Expr checked;
+  string prefix;
+
+  HasPrefix() {
+    this.getTarget().getName() = "HasPrefix" and
+    checked = this.getArgument(0) and
+    prefix = this.getArgument(1).(StringLit).getStringValue()
+  }
+
+  Expr getBaseString() { result = checked }
+
+  string getSubString() { result = prefix }
 }
-
-//strings.HasPrefix(redirect, "/") && !strings.HasPrefix(redirect, "//")
-from StringOps::HasPrefix call, DataFlow::Node checked, DataFlow::Node prefix
-where
-  call.getBaseString() = checked and
-  call.getSubstring() = prefix
+from HasPrefix call, Expr checked, string prefix
+where call.getBaseString() = checked and call.getSubString() = prefix
 select call, checked, prefix
-#+END_SRC
 
-- Notice that the first result is selection of ProxyPrefix which you're not interested in, you're interested in String values '/' or '//'
+- introduce result, predicates with values 
+- only reason we gave those names to the predicate is later compatibility 
 
-- THIS IS A BIT OF A STRETCH BUT 
-find this through exploration   call.getSubstring().asExpr().getStringValue() = prefix
-Technically, it can be justified, because you've already shown that it was an Expr you just want the equivalent of the old query
-
-- Run query. Notice the second result. That wouldn't have been there if you didn't use StringOps::HasPrefix. Re-emphasise the need to have exploration mindset when writing queries. Try to leverage the libraries as much as possible 
-
-- Notice that all the checked results correspond to a Variable. Model this. First do checked = v and then .getARead
-
-#+BEGIN_SRC
-import go
-
-class HasPrefix extends CallExpr {
-  HasPrefix() { this.getTarget().getName() = "HasPrefix" }
-}
-
-//strings.HasPrefix(redirect, "/") && !strings.HasPrefix(redirect, "//")
-from StringOps::HasPrefix call, DataFlow::Node checked, string prefix, Variable v
-where
-  call.getBaseString() = checked and
-  checked = v.getARead() and 
-  call.getSubstring().asExpr().getStringValue() = prefix
-select call, checked, prefix
-#+END_SRC
 
 
 - Revisit what we are trying to find.  We are looking for cases where the variable is checked against some prefixes but not others. This means we will have to reuse the logic of the previous query later, but with different string prefixes.
@@ -354,3 +329,61 @@ where c.hasFlowPath(source, sink)
 select sink, source, sink, "Untrusted value reaches insufficient redirect check"
 
 #+END_SRC
+
+
+
+
+
+
+
+
+
+OPTIONAL 
+- Mention that there could be other ways of searching for string prefixes in Go. 
+- Take strings.HasPrefix(redirect, "/") and search for it in vscode 
+- Explain how you don't want to reinvent the wheel, and that it's always good to check the qll libraries to see what's already provided out of the box
+- Go through the StringOps.qll and notice how the HasPrefix class extends DataFlow::Node and that the return types of the interesting predicates are also DataFlow::Node
+- Change your query and arrive at this
+
+#+BEGIN_SRC
+import go
+
+class HasPrefix extends CallExpr {
+  HasPrefix() { this.getTarget().getName() = "HasPrefix" }
+}
+
+//strings.HasPrefix(redirect, "/") && !strings.HasPrefix(redirect, "//")
+from StringOps::HasPrefix call, DataFlow::Node checked, DataFlow::Node prefix
+where
+  call.getBaseString() = checked and
+  call.getSubstring() = prefix
+select call, checked, prefix
+#+END_SRC
+
+- Notice that the first result is selection of ProxyPrefix which you're not interested in, you're interested in String values '/' or '//'
+
+- THIS IS A BIT OF A STRETCH BUT 
+find this through exploration   call.getSubstring().asExpr().getStringValue() = prefix
+Technically, it can be justified, because you've already shown that it was an Expr you just want the equivalent of the old query
+
+- Run query. Notice the second result. That wouldn't have been there if you didn't use StringOps::HasPrefix. Re-emphasise the need to have exploration mindset when writing queries. Try to leverage the libraries as much as possible 
+
+- Notice that all the checked results correspond to a Variable. Model this. First do checked = v and then .getARead
+
+#+BEGIN_SRC
+import go
+
+class HasPrefix extends CallExpr {
+  HasPrefix() { this.getTarget().getName() = "HasPrefix" }
+}
+
+//strings.HasPrefix(redirect, "/") && !strings.HasPrefix(redirect, "//")
+from StringOps::HasPrefix call, DataFlow::Node checked, string prefix, Variable v
+where
+  call.getBaseString() = checked and
+  checked = v.getARead() and 
+  call.getSubstring().asExpr().getStringValue() = prefix
+select call, checked, prefix
+#+END_SRC
+
+
