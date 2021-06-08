@@ -1,4 +1,4 @@
-* 
+* overview
   The gist https://gist.github.com/hohn/b4c32ce35b6bdc2ade04c911985c7d46
 
   * fix: Get("X-Redirect") is "X-Auth-Request-Redirect"
@@ -13,6 +13,7 @@
 
   3. a taint flow configuration to connect the source and sink
 
+* Getting started
   from..select
 
   introduce Function
@@ -40,16 +41,21 @@
 
   pick up the type from the select and then...
 
+  #+BEGIN_SRC java
   from CallExpr c, string funcName
   where funcName = c.getCalleeName()
       and funcName = "Get"
   select funcName
+  #+END_SRC
+
 
   Narrow some
+  #+BEGIN_SRC java
   from CallExpr c, string funcName
   where funcName = c.getCalleeName()
     and funcName = "Get" 
   select funcName, c, c.getAnArgument()
+  #+END_SRC
     
   Point out the AST parts we now get in the query; at the above url, find
   | Ident.Ident | QualifiedName | SelectorExpr |
@@ -62,12 +68,14 @@
 
   Let's also narrow by argument name
 
+  #+BEGIN_SRC java
   from CallExpr c, string funcName, QualifiedName qn, Expr arg
   where funcName = c.getCalleeName()
     and funcName = "Get" 
     and c.getCalleeExpr() = qn
     and arg = c.getAnArgument()
   select funcName, c, qn, arg
+  #+END_SRC
 
   arg has type Expr, view results, see quoted strings, check ast reference for ",
   find 
@@ -76,12 +84,14 @@
   introduce the cast operator, which now gives access to StringLit member
   predicates -- especially .getValue()
 
+  #+BEGIN_SRC java
   from CallExpr c, string funcName, QualifiedName qn, Expr arg
   where funcName = c.getCalleeName()
     and funcName = "Get" 
     and c.getCalleeExpr() = qn
     and arg = c.getAnArgument()
   select funcName, c, qn, arg, arg.(StringLit).getValue()
+  #+END_SRC
 
   Turn into predicate
   
@@ -99,11 +109,6 @@
     select funcName, c, qn, arg
   #+END_SRC
 
-
-    
-
-
-
   ======================
   Query done.  Now generalize sources.
   Look under semmle/go/security for general-purpose APIs
@@ -112,22 +117,23 @@
 
   Hacky way: look for "Header" in the libraries.
 
-
   ======================
 
   For advanced session / later:
 
   UntrustedFlowSource
 
+  #+BEGIN_SRC java
   from CallExpr c, string funcName, Expr e
   where funcName = c.getCalleeName() and
   e = c.getAnArgument()
   and e.(StringLit).getStringValue().matches("X-%")
   select funcName, c, e
+  #+END_SRC
 
-====================
 
-SINK
+
+* SINK
 
 ask this -  a data sink with the structure
 strings.HasPrefix(redirect, "/") && !strings.HasPrefix(redirect, "//")
@@ -146,13 +152,15 @@ select call
 #+END_SRC
 
 
-Explain that strings.HasPrefix checkes that a given string argumenet begins with a certain prefix 
+Explain that strings.HasPrefix checkes that a given string argumenet begins with a
+certain prefix
 
-For prefix check do the chaining of the member predicates (oo principles), first put it in the select and then move it down to the where
+For prefix check do the chaining of the member predicates (oo principles), first
+put it in the select and then move it down to the where
 
 
-//We are matching just this - _.HasPrefix(checked, _)
-#+BEGIN_SRC text
+We are matching just this - _.HasPrefix(checked, _)
+#+BEGIN_SRC java
 import go
 
 from CallExpr call, Expr checked, 
@@ -166,7 +174,7 @@ select call, checked
 - .getStringValue will always work i.e if int it gets changed to string. 
 We dont want this. We want the prefix to be a string so we cast. It's not a cast is just restricts our set 
 
-#+BEGIN_SRC text
+#+BEGIN_SRC java
 import go
 from CallExpr call, Expr checked, string prefix
 where
@@ -185,8 +193,7 @@ select call, checked, prefix
 - Replace CallExpr in from to HasPrefix 
 - Mention that you can only refine the set not widen it
 
-#+BEGIN_SRC text 
-
+#+BEGIN_SRC java
 import go
 
 class HasPrefix extends CallExpr {
@@ -199,16 +206,18 @@ class HasPrefix extends CallExpr {
     prefix = this.getArgument(1).(StringLit).getStringValue()
   }
 }
+#+END_SRC
 
 Characteristic predicate has to initialise field in the class. It produces a table with all the fields set 
 
+#+BEGIN_SRC java
 //strings.HasPrefix(redirect, "/") && //!strings.HasPrefix(redirect, "//")
 from HasPrefix call, Expr checked, string prefix
 where
   call.getArgument(0) = checked and
   call.getArgument(1).getStringValue() = prefix
 select call, checked, prefix
-#+END_SRC
+
 
 class HasPrefix extends CallExpr {
   Expr checked;
@@ -227,11 +236,10 @@ class HasPrefix extends CallExpr {
 from HasPrefix call, Expr checked, string prefix
 where call.getBaseString() = checked and call.getSubString() = prefix
 select call, checked, prefix
+#+END_SRC
 
 - introduce result, predicates with values 
 - only reason we gave those names to the predicate is later compatibility 
-
-
 
 - Revisit what we are trying to find.  We are looking for cases where the variable is checked against some prefixes but not others. This means we will have to reuse the logic of the previous query later, but with different string prefixes.
 
@@ -239,23 +247,24 @@ select call, checked, prefix
 - Use variable decl in from to predicate params
 - Use where for predicate logic
 
-#+BEGIN_SRC
-import go
-
+: import go
 
 - We have Variables and we have read and write accesses to them. 
 - For write, a Control Flow node 
 
+#+BEGIN_SRC java
 from HasPrefix call, Expr checked, string prefix, Variable var
 where
   call.getBaseString() = checked and
   call.getSubString() = prefix and
   checked = var.getARead().asExpr()
 select call, checked, prefix, var
+#+END_SRC
 
 
 - A class is for modelling single logical items whilst predicates are good for connecting them. 
 
+#+BEGIN_SRC java
 predicate prefixCheck(HasPrefix call, Expr checked, string prefix, Variable var) {
   call.getBaseString() = checked and
   call.getSubString() = prefix and
@@ -265,6 +274,7 @@ predicate prefixCheck(HasPrefix call, Expr checked, string prefix, Variable var)
 from HasPrefix call, Expr checked, string prefix, Variable var
 where prefixCheck(call, checked, prefix, var)
 select call, checked, prefix, var
+#+END_SRC
 
 
 //strings.HasPrefix(redirect, "/") && !strings.HasPrefix(redirect, "//")
@@ -278,6 +288,7 @@ select call, checked, var
 we want / & // & /\\
 so logically / & (not // or not /\\)
 
+#+BEGIN_SRC java
 predicate insufficientPrefixCheck(HasPrefix call, Expr checked, Variable var) {
   prefixCheck(call, checked, "/", var) and
   (not prefixCheck(_, _, "//", var) or not prefixCheck(_, _, "/\\", var))
@@ -290,8 +301,11 @@ from HasPrefix call, Expr checked, Variable var
 where insufficientPrefixCheck(call, checked, var)
 select call, checked, var
 
+#+END_SRC
+
 GLOBAL FLOW
 
+#+BEGIN_SRC java
 import go
 
 class Config extends TaintTracking::Configuration {
@@ -346,14 +360,7 @@ from DataFlow::Node source, DataFlow::Node sink, Config c
 where c.hasFlow(source, sink)
 select sink, source, sink, "Untrusted value reaches insufficient redirect check"
 
-
-
-
-
-
-
-
-
+#+END_SRC
 
 OPTIONAL 
 - Mention that there could be other ways of searching for string prefixes in Go. 
@@ -377,7 +384,8 @@ where
 select call, checked, prefix
 #+END_SRC
 
-- Notice that the first result is selection of ProxyPrefix which you're not interested in, you're interested in String values '/' or '//'
+- Notice that the first result is selection of ProxyPrefix which you're not
+  interested in, you're interested in String values '/' or '//'
 
 - THIS IS A BIT OF A STRETCH BUT 
 find this through exploration   call.getSubstring().asExpr().getStringValue() = prefix
