@@ -1,3 +1,8 @@
+/**
+ * Provides classes for working with Spring classes and interfaces from
+ * `org.springframework.beans`.
+ */
+
 import java
 import semmle.code.java.dataflow.ExternalFlow
 
