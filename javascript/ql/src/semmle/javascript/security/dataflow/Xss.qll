@@ -618,7 +618,7 @@ module ExceptionXss {
     JsonSchemaValidationError() {
       this = any(JsonSchema::Ajv::Instance i).getAValidationError().getAnImmediateUse()
       or
-      this = any(JsonSchema::Joi::JoiValidationErrorRead r)
+      this = any(JsonSchema::Joi::JoiValidationErrorRead r).getAValidationResultAccess(_)
     }
 
     override string getDescription() { result = "JSON schema validation error" }

@@ -8,13 +8,24 @@ import javascript
  * Provides classes and predicates for working with JSON schema libraries.
  */
 module JsonSchema {
-  /** A node that validates an input against a JSON schema. */
-  abstract class ValidationCall extends DataFlow::Node {
+  /** A call that validates an input against a JSON schema. */
+  abstract class ValidationCall extends DataFlow::CallNode {
     /** Gets the data flow node whose value is being validated. */
     abstract DataFlow::Node getInput();
 
-    /** Gets the return value that indicates successful validation. */
+    /**
+     * Gets if the return value indicates successfull or unsuccessful validation.
+     * Is not defined if the return value from this call does not directly
+     * indicate success.
+     */
     boolean getPolarity() { result = true }
+
+    /**
+     * Gets a value that indicates whether the validation was successful.
+     */
+    DataFlow::Node getAValidationResultAccess(boolean polarity) {
+      result = this and polarity = getPolarity()
+    }
   }
 
   /** A data flow node that is used a JSON schema. */
@@ -89,7 +100,7 @@ module JsonSchema {
     }
 
     /** A call to the `validate` method of `ajv`. */
-    class AjvValidationCall extends ValidationCall, DataFlow::CallNode {
+    class AjvValidationCall extends ValidationCall {
       Instance instance;
       int argIndex;
 
@@ -161,20 +172,20 @@ module JsonSchema {
     }
 
     /**
-     * A read of the `error` property from a validation result, seen as a `ValidationCall`.
-     * If `error` exists, then the validation failed.
+     * A call to the `validate` method from the [`joi`](https://npmjs.org/package/joi) library.
+     * The `error` property in the result indicates whether the validation was successful.
      */
-    class JoiValidationErrorRead extends ValidationCall {
-      API::CallNode validateCall;
+    class JoiValidationErrorRead extends ValidationCall, API::CallNode {
+      JoiValidationErrorRead() { this = objectSchema().getMember("validate").getACall() }
 
-      JoiValidationErrorRead() {
-        validateCall = objectSchema().getMember("validate").getACall() and
-        this = validateCall.getReturn().getMember("error").getAnImmediateUse()
+      override DataFlow::Node getInput() { result = this.getArgument(0) }
+
+      override boolean getPolarity() { none() }
+
+      override DataFlow::Node getAValidationResultAccess(boolean polarity) {
+        result = this.getReturn().getMember("error").getAnImmediateUse() and
+        polarity = false
       }
-
-      override DataFlow::Node getInput() { result = validateCall.getArgument(0) }
-
-      override boolean getPolarity() { result = false }
     }
   }
 }
