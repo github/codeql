@@ -226,4 +226,33 @@ private module Twisted {
 
     override string getMimetypeDefault() { result = "text/html" }
   }
+
+  /**
+   * A call to the `redirect` function on a twisted request.
+   *
+   * See https://twistedmatrix.com/documents/21.2.0/api/twisted.web.http.Request.html#redirect
+   */
+  class TwistedRequestRedirectCall extends HTTP::Server::HttpRedirectResponse::Range,
+    DataFlow::CallCfgNode {
+    TwistedRequestRedirectCall() {
+      // TODO: When we have tools that make it easy, model these properly to handle
+      // `meth = obj.meth; meth()`. Until then, we'll use this more syntactic approach
+      // (since it allows us to at least capture the most common cases).
+      exists(DataFlow::AttrRead read |
+        this.getFunction() = read and
+        read.getObject() = Request::instance() and
+        read.getAttributeName() = "redirect"
+      )
+    }
+
+    override DataFlow::Node getBody() { none() }
+
+    override DataFlow::Node getRedirectLocation() {
+      result.asCfgNode() in [node.getArg(0), node.getArgByName("url")]
+    }
+
+    override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+
+    override string getMimetypeDefault() { result = "text/html" }
+  }
 }

@@ -38,7 +38,7 @@ class PlainText(Resource):
 
 class Redirect(Resource):
     def render_GET(self, request: Request): # $ requestHandler
-        request.redirect("/new-location") # $ MISSING: HttpRedirectResponse
+        request.redirect("/new-location") # $ HttpRedirectResponse redirectLocation="/new-location" HttpResponse mimetype=text/html
         # By default, this `hello` output is not returned... not even when
         # requested with curl.
         return b"hello" # $ SPURIOUS: HttpResponse mimetype=text/html responseBody=b"hello"
