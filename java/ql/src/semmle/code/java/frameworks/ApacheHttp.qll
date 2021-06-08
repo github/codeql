@@ -92,6 +92,37 @@ private class ApacheHttpXssSink extends SinkModelCsv {
   }
 }
 
+private class ApacheHttpOpenUrlSink extends SinkModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "org.apache.http;HttpRequest;true;setURI;;;Argument[0];open-url",
+        "org.apache.http.message;BasicHttpRequest;false;BasicHttpRequest;(RequestLine);;Argument[0];open-url",
+        "org.apache.http.message;BasicHttpRequest;false;BasicHttpRequest;(String,String);;Argument[1];open-url",
+        "org.apache.http.message;BasicHttpRequest;false;BasicHttpRequest;(String,String,ProtocolVersion);;Argument[1];open-url",
+        "org.apache.http.message;BasicHttpEntityEnclosingRequest;false;BasicHttpEntityEnclosingRequest;(RequestLine);;Argument[0];open-url",
+        "org.apache.http.message;BasicHttpEntityEnclosingRequest;false;BasicHttpEntityEnclosingRequest;(String,String);;Argument[1];open-url",
+        "org.apache.http.message;BasicHttpEntityEnclosingRequest;false;BasicHttpEntityEnclosingRequest;(String,String,ProtocolVersion);;Argument[1];open-url",
+        "org.apache.http.client.methods;HttpGet;false;HttpGet;;;Argument[0];open-url",
+        "org.apache.http.client.methods;HttpHead;false;HttpHead;;;Argument[0];open-url",
+        "org.apache.http.client.methods;HttpPut;false;HttpPut;;;Argument[0];open-url",
+        "org.apache.http.client.methods;HttpPost;false;HttpPost;;;Argument[0];open-url",
+        "org.apache.http.client.methods;HttpDelete;false;HttpDelete;;;Argument[0];open-url",
+        "org.apache.http.client.methods;HttpOptions;false;HttpOptions;;;Argument[0];open-url",
+        "org.apache.http.client.methods;HttpTrace;false;HttpTrace;;;Argument[0];open-url",
+        "org.apache.http.client.methods;HttpPatch;false;HttpPatch;;;Argument[0];open-url",
+        "org.apache.http.client.methods;HttpRequestBase;true;setURI;;;Argument[0];open-url",
+        "org.apache.http.client.methods;RequestBuilder;false;setUri;;;Argument[0];open-url",
+        "org.apache.http.client.methods;RequestBuilder;false;get;;;Argument[0];open-url",
+        "org.apache.http.client.methods;RequestBuilder;false;post;;;Argument[0];open-url",
+        "org.apache.http.client.methods;RequestBuilder;false;put;;;Argument[0];open-url",
+        "org.apache.http.client.methods;RequestBuilder;false;options;;;Argument[0];open-url",
+        "org.apache.http.client.methods;RequestBuilder;false;head;;;Argument[0];open-url",
+        "org.apache.http.client.methods;RequestBuilder;false;delete;;;Argument[0];open-url"
+      ]
+  }
+}
+
 private class ApacheHttpFlowStep extends SummaryModelCsv {
   override predicate row(string row) {
     row =

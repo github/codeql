@@ -48,12 +48,15 @@ edges
 | SpringSSRF.java:26:33:26:60 | getParameter(...) : String | SpringSSRF.java:37:43:37:56 | fooResourceUrl |
 | SpringSSRF.java:26:33:26:60 | getParameter(...) : String | SpringSSRF.java:41:42:41:55 | fooResourceUrl |
 | SpringSSRF.java:26:33:26:60 | getParameter(...) : String | SpringSSRF.java:45:47:45:60 | fooResourceUrl |
+| SpringSSRF.java:26:33:26:60 | getParameter(...) : String | SpringSSRF.java:50:40:50:62 | new URI(...) |
+| SpringSSRF.java:26:33:26:60 | getParameter(...) : String | SpringSSRF.java:50:48:50:61 | fooResourceUrl : String |
 | SpringSSRF.java:26:33:26:60 | getParameter(...) : String | SpringSSRF.java:54:59:54:72 | fooResourceUrl |
 | SpringSSRF.java:26:33:26:60 | getParameter(...) : String | SpringSSRF.java:58:74:58:96 | new URI(...) |
 | SpringSSRF.java:26:33:26:60 | getParameter(...) : String | SpringSSRF.java:58:82:58:95 | fooResourceUrl : String |
 | SpringSSRF.java:26:33:26:60 | getParameter(...) : String | SpringSSRF.java:62:57:62:70 | fooResourceUrl |
 | SpringSSRF.java:26:33:26:60 | getParameter(...) : String | SpringSSRF.java:66:48:66:61 | fooResourceUrl |
 | SpringSSRF.java:26:33:26:60 | getParameter(...) : String | SpringSSRF.java:69:30:69:43 | fooResourceUrl |
+| SpringSSRF.java:50:48:50:61 | fooResourceUrl : String | SpringSSRF.java:50:40:50:62 | new URI(...) |
 | SpringSSRF.java:58:82:58:95 | fooResourceUrl : String | SpringSSRF.java:58:74:58:96 | new URI(...) |
 nodes
 | JaxWsSSRF.java:21:22:21:48 | getParameter(...) : String | semmle.label | getParameter(...) : String |
@@ -106,6 +109,8 @@ nodes
 | SpringSSRF.java:37:43:37:56 | fooResourceUrl | semmle.label | fooResourceUrl |
 | SpringSSRF.java:41:42:41:55 | fooResourceUrl | semmle.label | fooResourceUrl |
 | SpringSSRF.java:45:47:45:60 | fooResourceUrl | semmle.label | fooResourceUrl |
+| SpringSSRF.java:50:40:50:62 | new URI(...) | semmle.label | new URI(...) |
+| SpringSSRF.java:50:48:50:61 | fooResourceUrl : String | semmle.label | fooResourceUrl : String |
 | SpringSSRF.java:54:59:54:72 | fooResourceUrl | semmle.label | fooResourceUrl |
 | SpringSSRF.java:58:74:58:96 | new URI(...) | semmle.label | new URI(...) |
 | SpringSSRF.java:58:82:58:95 | fooResourceUrl : String | semmle.label | fooResourceUrl : String |
@@ -136,6 +141,7 @@ nodes
 | SpringSSRF.java:37:43:37:56 | fooResourceUrl | SpringSSRF.java:26:33:26:60 | getParameter(...) : String | SpringSSRF.java:37:43:37:56 | fooResourceUrl | Potential server-side request forgery due to $@. | SpringSSRF.java:26:33:26:60 | getParameter(...) | a user-provided value |
 | SpringSSRF.java:41:42:41:55 | fooResourceUrl | SpringSSRF.java:26:33:26:60 | getParameter(...) : String | SpringSSRF.java:41:42:41:55 | fooResourceUrl | Potential server-side request forgery due to $@. | SpringSSRF.java:26:33:26:60 | getParameter(...) | a user-provided value |
 | SpringSSRF.java:45:47:45:60 | fooResourceUrl | SpringSSRF.java:26:33:26:60 | getParameter(...) : String | SpringSSRF.java:45:47:45:60 | fooResourceUrl | Potential server-side request forgery due to $@. | SpringSSRF.java:26:33:26:60 | getParameter(...) | a user-provided value |
+| SpringSSRF.java:50:40:50:62 | new URI(...) | SpringSSRF.java:26:33:26:60 | getParameter(...) : String | SpringSSRF.java:50:40:50:62 | new URI(...) | Potential server-side request forgery due to $@. | SpringSSRF.java:26:33:26:60 | getParameter(...) | a user-provided value |
 | SpringSSRF.java:54:59:54:72 | fooResourceUrl | SpringSSRF.java:26:33:26:60 | getParameter(...) : String | SpringSSRF.java:54:59:54:72 | fooResourceUrl | Potential server-side request forgery due to $@. | SpringSSRF.java:26:33:26:60 | getParameter(...) | a user-provided value |
 | SpringSSRF.java:58:74:58:96 | new URI(...) | SpringSSRF.java:26:33:26:60 | getParameter(...) : String | SpringSSRF.java:58:74:58:96 | new URI(...) | Potential server-side request forgery due to $@. | SpringSSRF.java:26:33:26:60 | getParameter(...) | a user-provided value |
 | SpringSSRF.java:62:57:62:70 | fooResourceUrl | SpringSSRF.java:26:33:26:60 | getParameter(...) : String | SpringSSRF.java:62:57:62:70 | fooResourceUrl | Potential server-side request forgery due to $@. | SpringSSRF.java:26:33:26:60 | getParameter(...) | a user-provided value |

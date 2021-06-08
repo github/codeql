@@ -82,6 +82,8 @@ private module Frameworks {
   private import semmle.code.java.frameworks.guava.Guava
   private import semmle.code.java.frameworks.jackson.JacksonSerializability
   private import semmle.code.java.frameworks.JaxWS
+  private import semmle.code.java.frameworks.spring.SpringHttp
+  private import semmle.code.java.frameworks.spring.SpringWebClient
   private import semmle.code.java.security.ResponseSplitting
   private import semmle.code.java.security.InformationLeak
   private import semmle.code.java.security.XSS
@@ -209,6 +211,8 @@ private predicate sinkModelCsv(string row) {
       // Open URL
       "java.net;URL;false;openConnection;;;Argument[-1];open-url",
       "java.net;URL;false;openStream;;;Argument[-1];open-url",
+      "java.net.http;HttpRequest;false;newBuilder;;;Argument[0];open-url",
+      "java.net.http;HttpRequest$Builder;false;uri;;;Argument[0];open-url",
       // Create file
       "java.io;FileOutputStream;false;FileOutputStream;;;Argument[0];create-file",
       "java.io;RandomAccessFile;false;RandomAccessFile;;;Argument[0];create-file",
