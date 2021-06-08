@@ -360,9 +360,7 @@ abstract class Argument2EntryCreation extends ModableEntryCreation {
  */
 abstract class ImmediateSpecifierEntryCreation extends ModableEntryCreation {
   override Expr getSpecifier() {
-    this.getArgument() instanceof ObjectExpr or
-    this.getArgument() instanceof FunctionExpr or
-    this.getArgument() instanceof ArrowFunctionExpr or
+    this.getArgument() instanceof ImmediateSpecifier and
     result = this.getArgument()
   }
 }
