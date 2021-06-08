@@ -163,17 +163,17 @@ select call, checked
 
 #+END_SRC
 
-
+- .getStringValue will always work i.e if int it gets changed to string. 
+We dont want this. We want the prefix to be a string so we cast. It's not a cast is just restricts our set 
 
 #+BEGIN_SRC text
 import go
-
 from CallExpr call, Expr checked, string prefix
 where
   call.getTarget().getName() = "HasPrefix" and
-  call.getArgument(0) = checked and
-  call.getArgument(1).getStringValue() = prefix
-select call, checked, prefix 
+  checked = call.getArgument(0) and
+  prefix = call.getArgument(1).(StringLit).getStringValue()
+select call, checked, prefix
 
 #+END_SRC
 
@@ -183,14 +183,24 @@ select call, checked, prefix
 - Characteristic predicate
 - the this value - similar to O-O constructors 
 - Replace CallExpr in from to HasPrefix 
+- Mention that you can only refine the set not widen it
 
 #+BEGIN_SRC text 
 
 import go
 
 class HasPrefix extends CallExpr {
-  HasPrefix() { this.getTarget().getName() = "HasPrefix" }
+  Expr checked;
+  string prefix;
+
+  HasPrefix() {
+    this.getTarget().getName() = "HasPrefix" and
+    checked = this.getArgument(0) and
+    prefix = this.getArgument(1).(StringLit).getStringValue()
+  }
 }
+
+Characteristic predicate has to initialise field in the class. It produces a table with all the fields set 
 
 //strings.HasPrefix(redirect, "/") && //!strings.HasPrefix(redirect, "//")
 from HasPrefix call, Expr checked, string prefix
