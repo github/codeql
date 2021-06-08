@@ -6,55 +6,55 @@ from twisted.internet import reactor, endpoints, defer
 root = Resource()
 
 class Now(Resource):
-    def render(self, request: Request):
-        return b"now"
+    def render(self, request: Request): # $ requestHandler
+        return b"now" # $ HttpResponse mimetype=text/html responseBody=b"now"
 
 
 class AlsoNow(Resource):
-    def render(self, request: Request):
-        request.write(b"also now")
-        return b""
+    def render(self, request: Request): # $ requestHandler
+        request.write(b"also now") # $ HttpResponse mimetype=text/html responseBody=b"also now"
+        return b"" # $ HttpResponse mimetype=text/html responseBody=b""
 
 
 def process_later(request: Request):
     print("process_later called")
-    request.write(b"later")
+    request.write(b"later") # $ MISSING: responseBody=b"later"
     request.finish()
 
 
 class Later(Resource):
-    def render(self, request: Request):
+    def render(self, request: Request): # $ requestHandler
         # process the request in 1 second
         print("setting up callback for process_later")
         reactor.callLater(1, process_later, request)
-        return NOT_DONE_YET
+        return NOT_DONE_YET # $ SPURIOUS: HttpResponse mimetype=text/html responseBody=NOT_DONE_YET
 
 
 class PlainText(Resource):
-    def render(self, request: Request):
+    def render(self, request: Request): # $ requestHandler
         request.setHeader(b"content-type", "text/plain")
-        return b"this is plain text"
+        return b"this is plain text" # $ HttpResponse responseBody=b"this is plain text" SPURIOUS: mimetype=text/html MISSING: mimetype=text/plain
 
 
 class Redirect(Resource):
-    def render_GET(self, request: Request):
-        request.redirect("/new-location")
+    def render_GET(self, request: Request): # $ requestHandler
+        request.redirect("/new-location") # $ MISSING: HttpRedirectResponse
         # By default, this `hello` output is not returned... not even when
         # requested with curl.
-        return b"hello"
+        return b"hello" # $ SPURIOUS: HttpResponse mimetype=text/html responseBody=b"hello"
 
 
 class NonHttpBodyOutput(Resource):
     """Examples of provides values in response that is not in the body
     """
-    def render_GET(self, request: Request):
+    def render_GET(self, request: Request): # $ requestHandler
         request.responseHeaders.addRawHeader("key", "value")
         request.setHeader("key2", "value")
 
         request.addCookie("key", "value")
         request.cookies.append(b"key2=value")
 
-        return b""
+        return b"" # $ HttpResponse mimetype=text/html responseBody=b""
 
 
 root.putChild(b"now", Now())

@@ -7,11 +7,11 @@ root = Resource()
 
 
 class Foo(Resource):
-    def render(self, request: Request):
+    def render(self, request: Request): # $ requestHandler
         print(f"{request.content=}")
         print(f"{request.cookies=}")
         print(f"{request.received_cookies=}")
-        return b"I am Foo"
+        return b"I am Foo" # $ HttpResponse
 
 
 root.putChild(b"foo", Foo())
@@ -21,17 +21,17 @@ class Child(Resource):
     def __init__(self, name):
         self.name = name.decode("utf-8")
 
-    def render_GET(self, request):
-        return f"Hi, I'm child '{self.name}'".encode("utf-8")
+    def render_GET(self, request): # $ requestHandler
+        return f"Hi, I'm child '{self.name}'".encode("utf-8") # $ HttpResponse
 
 
 class Parent(Resource):
-    def getChild(self, path, request):
+    def getChild(self, path, request): # $ requestHandler
         print(path, type(path))
         return Child(path)
 
-    def render_GET(self, request):
-        return b"Hi, I'm parent"
+    def render_GET(self, request): # $ requestHandler
+        return b"Hi, I'm parent" # $ HttpResponse
 
 
 root.putChild(b"parent", Parent())
