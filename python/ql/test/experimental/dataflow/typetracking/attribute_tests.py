@@ -30,8 +30,9 @@ def test_incompatible_types():
     x.field = str("Hello") # $str=field str SPURIOUS: int=field int
     expects_string(x) # $ str=field SPURIOUS: int=field
 
-
+# ------------------------------------------------------------------------------
 # Attributes assigned statically to a class
+# ------------------------------------------------------------------------------
 
 class MyClass: # $tracked=field
     field = tracked # $tracked
@@ -40,7 +41,9 @@ lookup = MyClass.field # $tracked tracked=field
 instance = MyClass() # $tracked=field
 lookup2 = instance.field # MISSING: tracked
 
-## Dynamic attribute access
+# ------------------------------------------------------------------------------
+# Dynamic attribute access
+# ------------------------------------------------------------------------------
 
 # Via `getattr`/`setattr`
 
@@ -105,6 +108,7 @@ def dunder_dict_indirect_read():
 
 # attribute set in method
 # inspired by https://github.com/github/codeql/pull/6023
+
 class MyClass2(object):
     def __init__(self): # $ tracked=foo
         self.foo = tracked # $ tracked=foo tracked
@@ -121,6 +125,7 @@ instance.print_foo() # $ MISSING: tracked=foo
 
 
 # attribute set from outside of class
+
 class MyClass3(object):
     def print_self(self): # $ tracked=foo
         print(self) # $ tracked=foo
