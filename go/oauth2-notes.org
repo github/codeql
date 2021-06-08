@@ -242,51 +242,53 @@ select call, checked, prefix
 #+BEGIN_SRC
 import go
 
-predicate prefixCheck(StringOps::HasPrefix call, DataFlow::Node checked, string prefix, Variable v) {
+
+- We have Variables and we have read and write accesses to them. 
+- For write, a Control Flow node 
+
+from HasPrefix call, Expr checked, string prefix, Variable var
+where
   call.getBaseString() = checked and
-  checked = v.getARead() and
-  call.getSubstring().asExpr().getStringValue() = prefix
+  call.getSubString() = prefix and
+  checked = var.getARead().asExpr()
+select call, checked, prefix, var
+
+
+- A class is for modelling single logical items whilst predicates are good for connecting them. 
+
+predicate prefixCheck(HasPrefix call, Expr checked, string prefix, Variable var) {
+  call.getBaseString() = checked and
+  call.getSubString() = prefix and
+  checked = var.getARead().asExpr()
 }
 
-class HasPrefix extends CallExpr {
-  HasPrefix() { this.getTarget().getName() = "HasPrefix" }
+from HasPrefix call, Expr checked, string prefix, Variable var
+where prefixCheck(call, checked, prefix, var)
+select call, checked, prefix, var
+
+
+//strings.HasPrefix(redirect, "/") && !strings.HasPrefix(redirect, "//")
+//We are matching just this - _.HasPrefix(checked, "prefix string")
+from HasPrefix call, Expr checked, Variable var
+where prefixCheck(call, checked, "/", var) and prefixCheck(_, _, "//", var)
+select call, checked, var
+- this finds one of the incomplete checks 
+- the correct check is The string is prefix-checked against / but not both // and /\, suggesting it will eventually be used as a redirect (a sink).
+
+we want / & // & /\\
+so logically / & (not // or not /\\)
+
+predicate insufficientPrefixCheck(HasPrefix call, Expr checked, Variable var) {
+  prefixCheck(call, checked, "/", var) and
+  (not prefixCheck(_, _, "//", var) or not prefixCheck(_, _, "/\\", var))
 }
 
 //strings.HasPrefix(redirect, "/") && !strings.HasPrefix(redirect, "//")
-from StringOps::HasPrefix call, DataFlow::Node checked, string prefix, Variable v
-where prefixCheck(call, checked, prefix, v)
-select call, checked, prefix, v
-
-#+END_SRC 
-
-Code that checks URL prefixes usually has a check for /.
-Write predicate insufficientPrefixCheck. Take params from the prefixCheck and body call PrefixCheck and change the prefix var to '/' and remove prefix var from everywhere. Extend check to '//' and '/\\'
-
-#+BEGIN_SRC
-import go
-
-predicate prefixCheck(StringOps::HasPrefix call, DataFlow::Node checked, string prefix, Variable v) {
-  call.getBaseString() = checked and
-  checked = v.getARead() and
-  call.getSubstring().asExpr().getStringValue() = prefix
-}
-
-predicate insufficientPrefixCheck(
-  StringOps::HasPrefix singleSlashCheck, DataFlow::Node checked, Variable v
-) {
-  prefixCheck(singleSlashCheck, checked, "/", v) and
-  (not prefixCheck(_, _, "//", v) or not prefixCheck(_, _, "/\\", v))
-}
-
-class HasPrefix extends CallExpr {
-  HasPrefix() { this.getTarget().getName() = "HasPrefix" }
-}
-
-//strings.HasPrefix(redirect, "/") && !strings.HasPrefix(redirect, "//")
-from StringOps::HasPrefix call, DataFlow::Node checked, Variable v
-where insufficientPrefixCheck(call, checked, v)
-select call, checked, v
-#+END_SRC
+// we want / & // & /\\
+// so logically / & (not // or not /\\)
+from HasPrefix call, Expr checked, Variable var
+where insufficientPrefixCheck(call, checked, var)
+select call, checked, var
 
 GLOBAL FLOW
 
