@@ -90,6 +90,7 @@ import semmle.javascript.frameworks.EventEmitter
 import semmle.javascript.frameworks.Files
 import semmle.javascript.frameworks.Firebase
 import semmle.javascript.frameworks.FormParsers
+import semmle.javascript.frameworks.GraphQL
 import semmle.javascript.frameworks.jQuery
 import semmle.javascript.frameworks.JWT
 import semmle.javascript.frameworks.Handlebars
