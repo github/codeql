@@ -368,7 +368,7 @@ class FormatString extends string {
   /*abstract*/ int getASkippedFmtSpecIndex() { none() }
 
   /**
-   * Gets an offset in this format string where argument `argNo` will be interpolated, if any.
+   * Gets an offset (zero-based) in this format string where argument `argNo` (1-based) will be interpolated, if any.
    */
   int getAnArgUsageOffset(int argNo) { none() }
 }
@@ -451,7 +451,6 @@ private class PrintfFormatString extends FormatString {
   override int getAnArgUsageOffset(int argNo) {
     argNo = fmtSpecRefersToSpecificIndex(result)
     or
-    fmtSpecRefersToSequentialIndex(result) and
     result = rank[argNo](int i | fmtSpecRefersToSequentialIndex(i))
     or
     fmtSpecRefersToPrevious(result) and
@@ -485,8 +484,5 @@ private class LoggerFormatString extends FormatString {
 
   override int getMaxFmtSpecIndex() { result = count(int i | fmtPlaceholder(i)) }
 
-  override int getAnArgUsageOffset(int argNo) {
-    fmtPlaceholder(result) and
-    argNo = count(int i | fmtPlaceholder(i) and i < result)
-  }
+  override int getAnArgUsageOffset(int argNo) { result = rank[argNo](int i | fmtPlaceholder(i)) }
 }
