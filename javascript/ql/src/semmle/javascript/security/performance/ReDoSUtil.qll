@@ -1017,12 +1017,13 @@ private predicate isReDoSAttackable(RegExpTerm term, string pump, State s) {
  */
 predicate hasReDoSResult(RegExpTerm t, string pump, State s, string prefixMsg) {
   isReDoSAttackable(t, pump, s) and
-  (
-    prefixMsg = "starting with '" + escape(PrefixConstruction::prefix(s)) + "' and " and
-    not PrefixConstruction::prefix(s) = ""
-    or
-    PrefixConstruction::prefix(s) = "" and prefixMsg = ""
-    or
-    not exists(PrefixConstruction::prefix(s)) and prefixMsg = ""
-  )
+  // (
+  //   prefixMsg = "starting with '" + escape(PrefixConstruction::prefix(s)) + "' and " and
+  //   not PrefixConstruction::prefix(s) = ""
+  //   or
+  //   PrefixConstruction::prefix(s) = "" and prefixMsg = ""
+  //   or
+  //   not exists(PrefixConstruction::prefix(s)) and prefixMsg = ""
+  // )
+  prefixMsg = ""
 }
