@@ -57,7 +57,7 @@ module Shared {
 
   /**
    * A call to `serialize-javascript`, which prevents XSS vulnerabilities unless
-   * the `unsafe` option is set.t
+   * the `unsafe` option is set to `true`.
    */
   class SerializeJavascriptSanitizer extends Sanitizer, DataFlow::CallNode {
     SerializeJavascriptSanitizer() {
