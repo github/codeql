@@ -578,6 +578,17 @@ module TaintedPath {
   }
 
   /**
+   * An expression whose value is resolved to a module using the [resolve](http://npmjs.com/package/resolve) library.
+   */
+  class ResolveModuleSink extends Sink {
+    ResolveModuleSink() {
+      this = API::moduleImport("resolve").getACall().getArgument(0)
+      or
+      this = API::moduleImport("resolve").getMember("sync").getACall().getArgument(0)
+    }
+  }
+
+  /**
    * A path argument to a file system access.
    */
   class FsPathSink extends Sink, DataFlow::ValueNode {
