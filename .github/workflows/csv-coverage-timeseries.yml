@@ -32,7 +32,7 @@ jobs:
       run: unzip -d codeql-cli codeql-linux64.zip
     - name: Build modeled package list
       run: |
-        PATH="$PATH:codeql-cli/codeql" python script/misc/scripts/library-coverage/generate-time-series.py codeqlModels
+        PATH="$PATH:codeql-cli/codeql" python script/misc/scripts/library-coverage/generate-timeseries.py codeqlModels
     - name: Upload timeseries CSV
       uses: actions/upload-artifact@v2
       with:
