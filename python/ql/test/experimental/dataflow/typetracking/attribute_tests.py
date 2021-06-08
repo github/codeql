@@ -99,3 +99,39 @@ def dunder_dict_indirect_read():
     do_stuff(y) # $ MISSING: tracked
 
 
+# ------------------------------------------------------------------------------
+# Tracking of attribute on class instance
+# ------------------------------------------------------------------------------
+
+# attribute set in method
+# inspired by https://github.com/github/codeql/pull/6023
+class MyClass2(object):
+    def __init__(self): # $ tracked=foo
+        self.foo = tracked # $ tracked=foo tracked
+
+    def print_foo(self): # $ MISSING: tracked=foo
+        print(self.foo) # $ MISSING: tracked=foo tracked
+
+    def possibly_uncalled_method(self):
+        print(self.foo) # $ MISSING: tracked
+
+instance = MyClass2()
+print(instance.foo) # $ MISSING: tracked=foo tracked
+instance.print_foo() # $ MISSING: tracked=foo
+
+
+# attribute set from outside of class
+class MyClass3(object):
+    def print_self(self): # $ tracked=foo
+        print(self) # $ tracked=foo
+
+    def print_foo(self): # $ tracked=foo
+        print(self.foo) # $ tracked=foo tracked
+
+    def possibly_uncalled_method(self):
+        print(self.foo) # $ MISSING: tracked
+
+instance = MyClass3() # $ tracked=foo
+instance.print_self() # $ tracked=foo
+instance.foo = tracked # $ tracked=foo tracked
+instance.print_foo() # $ tracked=foo
