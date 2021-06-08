@@ -651,7 +651,7 @@ module TaintedPath {
   }
 
   /**
-   * An argument given to the `prettier` library specificing the location of a config file.
+   * An argument given to the `prettier` library specifying the location of a config file.
    */
   private class PrettierFileSink extends TaintedPath::Sink {
     PrettierFileSink() {
