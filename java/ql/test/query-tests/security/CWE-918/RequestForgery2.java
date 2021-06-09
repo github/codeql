@@ -7,6 +7,17 @@ import java.net.Proxy.Type;
 import java.io.InputStream;
 
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpHead;
+import org.apache.http.client.methods.HttpOptions;
+import org.apache.http.client.methods.HttpTrace;
+import org.apache.http.client.methods.HttpPatch;
+import org.apache.http.client.methods.RequestBuilder;
+import org.apache.http.message.BasicHttpRequest;
+import org.apache.http.message.BasicHttpEntityEnclosingRequest;
+import org.apache.http.message.BasicRequestLine;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -67,6 +78,33 @@ public class RequestForgery2 extends HttpServlet {
             HttpGet httpGet = new HttpGet(uri);
             HttpGet httpGet2 = new HttpGet();
             httpGet2.setURI(uri2);
+
+            new HttpHead(uri);
+            new HttpPost(uri);
+            new HttpPut(uri);
+            new HttpDelete(uri);
+            new HttpOptions(uri);
+            new HttpTrace(uri);
+            new HttpPatch(uri);
+
+            new BasicHttpRequest(new BasicRequestLine("GET", uri2.toString(), null));
+            new BasicHttpRequest("GET", uri2.toString());
+            new BasicHttpRequest("GET", uri2.toString(), null);
+
+            new BasicHttpEntityEnclosingRequest(new BasicRequestLine("GET", uri2.toString(), null));
+            new BasicHttpEntityEnclosingRequest("GET", uri2.toString());
+            new BasicHttpEntityEnclosingRequest("GET", uri2.toString(), null);
+
+            RequestBuilder.get(uri2);
+            RequestBuilder.post(uri2);
+            RequestBuilder.put(uri2);
+            RequestBuilder.delete(uri2);
+            RequestBuilder.options(uri2);
+            RequestBuilder.head(uri2);
+            RequestBuilder.trace(uri2);
+            RequestBuilder.patch(uri2);
+            RequestBuilder.get("").setUri(uri2);
+
         } catch (Exception e) {
             // TODO: handle exception
         }

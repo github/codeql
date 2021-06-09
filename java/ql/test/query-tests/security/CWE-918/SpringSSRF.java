@@ -1,3 +1,4 @@
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -41,14 +42,22 @@ public class SpringSSRF extends HttpServlet {
                     restTemplate.execute(fooResourceUrl, HttpMethod.POST, null, null, "test");
         }
         {
-            ResponseEntity<String> response =
-                    restTemplate.getForEntity(fooResourceUrl, String.class, "test");
+            String response =
+                    restTemplate.getForObject(fooResourceUrl, String.class, "test");
         }
         {
             String body = new String("body");
+            URI uri = new URI(fooResourceUrl);
             RequestEntity<String> requestEntity =
-                    RequestEntity.post(new URI(fooResourceUrl)).body(body);
+                    RequestEntity.post(uri).body(body);
             ResponseEntity<String> response = restTemplate.exchange(requestEntity, String.class);
+            RequestEntity.get(uri);
+            RequestEntity.put(uri);
+            RequestEntity.delete(uri);
+            RequestEntity.options(uri);
+            RequestEntity.patch(uri);
+            RequestEntity.head(uri);
+            RequestEntity.method(null, uri);
         }
         {
             String response = restTemplate.patchForObject(fooResourceUrl, new String("object"),
@@ -67,6 +76,23 @@ public class SpringSSRF extends HttpServlet {
         }
         {
             restTemplate.put(fooResourceUrl, new String("object"));
+        }
+        {
+            URI uri = new URI(fooResourceUrl);
+            MultiValueMap<String, String> headers = null;
+            java.lang.reflect.Type type = null;
+            new RequestEntity<String>(null, uri);
+            new RequestEntity<String>(headers, null, uri);
+            new RequestEntity<String>("body", null, uri);
+            new RequestEntity<String>("body", headers, null, uri);
+            new RequestEntity<String>("body", null, uri, type);
+            new RequestEntity<String>("body", headers, null, uri, type);
+        }
+        {
+            URI uri = new URI(fooResourceUrl);
+            restTemplate.delete(uri);
+            restTemplate.headForHeaders(uri);
+            restTemplate.optionsForAllow(uri);
         }
         } catch (org.springframework.web.client.RestClientException | java.net.URISyntaxException e) {}
     }

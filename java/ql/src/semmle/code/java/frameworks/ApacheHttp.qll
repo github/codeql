@@ -118,7 +118,9 @@ private class ApacheHttpOpenUrlSink extends SinkModelCsv {
         "org.apache.http.client.methods;RequestBuilder;false;put;;;Argument[0];open-url",
         "org.apache.http.client.methods;RequestBuilder;false;options;;;Argument[0];open-url",
         "org.apache.http.client.methods;RequestBuilder;false;head;;;Argument[0];open-url",
-        "org.apache.http.client.methods;RequestBuilder;false;delete;;;Argument[0];open-url"
+        "org.apache.http.client.methods;RequestBuilder;false;delete;;;Argument[0];open-url",
+        "org.apache.http.client.methods;RequestBuilder;false;trace;;;Argument[0];open-url",
+        "org.apache.http.client.methods;RequestBuilder;false;patch;;;Argument[0];open-url"
       ]
   }
 }
