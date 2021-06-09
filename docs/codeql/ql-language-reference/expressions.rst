@@ -310,7 +310,7 @@ The following aggregates are available in QL:
 
   .. pull-quote:: Note
 
-     - Rank indices start at ``1``, so ``rank[0](...)`` returns no results.
+     - Rank indices start at ``1``, so ``rank[0](...)`` has no result.
      - ``rank[1](...)`` is the same as ``min(...)``.
 
 .. index:: strictconcat, strictcount, strictsum
