@@ -1,8 +1,11 @@
 Framework name,URL,Package prefix
 Java Standard Library,,java.*
-Google,,com.google.common.*
-Apache,,org.apache.*
+Java extensions,,javax.*
+Google Guava,https://guava.dev/,com.google.common.*
 Apache Commons IO,https://commons.apache.org/proper/commons-io/,org.apache.commons.io
+Apache Commons Lang,https://commons.apache.org/proper/commons-lang/,org.apache.commons.lang3
+Apache Commons Text,https://commons.apache.org/proper/commons-text/,org.apache.commons.text
+Apache HttpComponents,https://hc.apache.org/,org.apache.hc.core5.*
+Apache HttpComponents,https://hc.apache.org/,org.apache.http
 Android,,android.*
 Spring,https://spring.io/,org.springframework.*
-Java extensions,,javax.*
