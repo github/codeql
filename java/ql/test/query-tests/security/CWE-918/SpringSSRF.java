@@ -28,72 +28,43 @@ public class SpringSSRF extends HttpServlet {
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<String> request = new HttpEntity<>(new String("bar"));
         try {
-        {
-            ResponseEntity<String> response =
-                    restTemplate.getForEntity(fooResourceUrl + "/1", String.class); // $ SSRF
-        }
-
-        {
-            ResponseEntity<String> response =
-                    restTemplate.exchange(fooResourceUrl, HttpMethod.POST, request, String.class); // $ SSRF
-        }
-        {
-            ResponseEntity<String> response =
-                    restTemplate.execute(fooResourceUrl, HttpMethod.POST, null, null, "test"); // $ SSRF
-        }
-        {
-            String response =
-                    restTemplate.getForObject(fooResourceUrl, String.class, "test"); // $ SSRF
-        }
-        {
-            String body = new String("body");
-            URI uri = new URI(fooResourceUrl);
-            RequestEntity<String> requestEntity =
-                    RequestEntity.post(uri).body(body); // $ SSRF
-            ResponseEntity<String> response = restTemplate.exchange(requestEntity, String.class);
-            RequestEntity.get(uri); // $ SSRF
-            RequestEntity.put(uri); // $ SSRF
-            RequestEntity.delete(uri); // $ SSRF
-            RequestEntity.options(uri); // $ SSRF
-            RequestEntity.patch(uri); // $ SSRF
-            RequestEntity.head(uri); // $ SSRF
-            RequestEntity.method(null, uri); // $ SSRF
-        }
-        {
-            String response = restTemplate.patchForObject(fooResourceUrl, new String("object"), // $ SSRF
-                    String.class, "hi");
-        }
-        {
-            ResponseEntity<String> response = restTemplate.postForEntity(new URI(fooResourceUrl), // $ SSRF
-                    new String("object"), String.class);
-        }
-        {
-            URI response = restTemplate.postForLocation(fooResourceUrl, new String("object")); // $ SSRF
-        }
-        {
-            String response =
-                    restTemplate.postForObject(fooResourceUrl, new String("object"), String.class); // $ SSRF
-        }
-        {
+            restTemplate.getForEntity(fooResourceUrl + "/1", String.class); // $ SSRF
+            restTemplate.exchange(fooResourceUrl, HttpMethod.POST, request, String.class); // $ SSRF
+            restTemplate.execute(fooResourceUrl, HttpMethod.POST, null, null, "test"); // $ SSRF
+            restTemplate.getForObject(fooResourceUrl, String.class, "test"); // $ SSRF
+            restTemplate.patchForObject(fooResourceUrl, new String("object"), String.class, "hi"); // $ SSRF
+            restTemplate.postForEntity(new URI(fooResourceUrl), new String("object"), String.class); // $ SSRF
+            restTemplate.postForLocation(fooResourceUrl, new String("object")); // $ SSRF
+            restTemplate.postForObject(fooResourceUrl, new String("object"), String.class); // $ SSRF
             restTemplate.put(fooResourceUrl, new String("object")); // $ SSRF
-        }
-        {
-            URI uri = new URI(fooResourceUrl);
-            MultiValueMap<String, String> headers = null;
-            java.lang.reflect.Type type = null;
-            new RequestEntity<String>(null, uri); // $ SSRF
-            new RequestEntity<String>(headers, null, uri); // $ SSRF
-            new RequestEntity<String>("body", null, uri); // $ SSRF
-            new RequestEntity<String>("body", headers, null, uri); // $ SSRF
-            new RequestEntity<String>("body", null, uri, type); // $ SSRF
-            new RequestEntity<String>("body", headers, null, uri, type); // $ SSRF
-        }
-        {
-            URI uri = new URI(fooResourceUrl);
-            restTemplate.delete(uri); // $ SSRF
-            restTemplate.headForHeaders(uri); // $ SSRF
-            restTemplate.optionsForAllow(uri); // $ SSRF
-        }
+            restTemplate.delete(fooResourceUrl); // $ SSRF
+            restTemplate.headForHeaders(fooResourceUrl); // $ SSRF
+            restTemplate.optionsForAllow(fooResourceUrl); // $ SSRF
+            {
+                String body = new String("body");
+                URI uri = new URI(fooResourceUrl);
+                RequestEntity<String> requestEntity =
+                        RequestEntity.post(uri).body(body); // $ SSRF
+                ResponseEntity<String> response = restTemplate.exchange(requestEntity, String.class);
+                RequestEntity.get(uri); // $ SSRF
+                RequestEntity.put(uri); // $ SSRF
+                RequestEntity.delete(uri); // $ SSRF
+                RequestEntity.options(uri); // $ SSRF
+                RequestEntity.patch(uri); // $ SSRF
+                RequestEntity.head(uri); // $ SSRF
+                RequestEntity.method(null, uri); // $ SSRF
+            }
+            {
+                URI uri = new URI(fooResourceUrl);
+                MultiValueMap<String, String> headers = null;
+                java.lang.reflect.Type type = null;
+                new RequestEntity<String>(null, uri); // $ SSRF
+                new RequestEntity<String>(headers, null, uri); // $ SSRF
+                new RequestEntity<String>("body", null, uri); // $ SSRF
+                new RequestEntity<String>("body", headers, null, uri); // $ SSRF
+                new RequestEntity<String>("body", null, uri, type); // $ SSRF
+                new RequestEntity<String>("body", headers, null, uri, type); // $ SSRF
+            }
         } catch (org.springframework.web.client.RestClientException | java.net.URISyntaxException e) {}
     }
 }
