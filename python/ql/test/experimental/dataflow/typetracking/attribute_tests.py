@@ -39,6 +39,16 @@ def test_set_x():
     set_foo(x) # $ MISSING: tracked=foo
     print(x.foo) # $ MISSING: tracked=foo tracked
 
+# return from a different function
+def create_with_foo():
+    x = SomeClass() # $ tracked=foo
+    x.foo = tracked # $ tracked=foo tracked
+    return x # $ tracked=foo
+
+def test_create_with_foo():
+    x = create_with_foo() # $ tracked=foo
+    print(x.foo) # $ tracked=foo tracked
+
 # ------------------------------------------------------------------------------
 # Attributes assigned statically to a class
 # ------------------------------------------------------------------------------
