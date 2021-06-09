@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class RequestForgery extends HttpServlet {
+public class SanitizationTests extends HttpServlet {
     private static final String VALID_URI = "http://lgtm.com";
     private HttpClient client = HttpClient.newHttpClient();
 
