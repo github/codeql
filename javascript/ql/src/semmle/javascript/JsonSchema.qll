@@ -14,8 +14,9 @@ module JsonSchema {
     abstract DataFlow::Node getInput();
 
     /**
-     * Gets if the return value indicates successfull or unsuccessful validation.
-     * Is not defined if the return value from this call does not directly
+     * Gets the return value that indicates successful validation, if any.
+     *
+     * Has no result if the return value from this call does not directly
      * indicate success.
      */
     boolean getPolarity() { result = true }
