@@ -81,5 +81,3 @@ ssize_t sst;
 ptrdiff_t pdt;
 wchar_t wct;
 
-std::int8_t i8;
-
