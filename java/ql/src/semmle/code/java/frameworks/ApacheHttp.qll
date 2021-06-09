@@ -261,7 +261,10 @@ private class ApacheHttpFlowStep extends SummaryModelCsv {
         "org.apache.hc.core5.util;CharArrayBuffer;true;toString;();;Argument[-1];ReturnValue;taint",
         "org.apache.hc.core5.util;CharArrayBuffer;true;substring;(int,int);;Argument[-1];ReturnValue;taint",
         "org.apache.hc.core5.util;CharArrayBuffer;true;subSequence;(int,int);;Argument[-1];ReturnValue;taint",
-        "org.apache.hc.core5.util;CharArrayBuffer;true;substringTrimmed;(int,int);;Argument[-1];ReturnValue;taint"
+        "org.apache.hc.core5.util;CharArrayBuffer;true;substringTrimmed;(int,int);;Argument[-1];ReturnValue;taint",
+        "org.apache.http.message;BasicRequestLine;false;BasicRequestLine;;;Argument[1];Argument[-1];taint",
+        "org.apache.http;RequestLine;true;getUri;;;Argument[-1];ReturnValue;taint",
+        "org.apache.http;RequestLine;true;toString;;;Argument[-1];ReturnValue;taint"
       ]
   }
 }

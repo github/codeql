@@ -252,6 +252,8 @@ private predicate summaryModelCsv(string row) {
       "javax.xml.transform.stream;StreamSource;false;getInputStream;;;Argument[-1];ReturnValue;taint",
       "java.nio;ByteBuffer;false;get;;;Argument[-1];ReturnValue;taint",
       "java.net;URI;false;toURL;;;Argument[-1];ReturnValue;taint",
+      "java.net;URI;false;toString;;;Argument[-1];ReturnValue;taint",
+      "java.net;URI;false;toAsciiString;;;Argument[-1];ReturnValue;taint",
       "java.io;File;false;toURI;;;Argument[-1];ReturnValue;taint",
       "java.io;File;false;toPath;;;Argument[-1];ReturnValue;taint",
       "java.nio.file;Path;false;toFile;;;Argument[-1];ReturnValue;taint",

@@ -19,7 +19,7 @@ public class JaxWsSSRF extends HttpServlet {
             throws ServletException, IOException {
         Client client = ClientBuilder.newClient();
         String url = request.getParameter("url");
-        client.target(url);
+        client.target(url); // $ SSRF
     }
 
 }

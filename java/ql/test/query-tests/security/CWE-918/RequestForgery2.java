@@ -63,47 +63,47 @@ public class RequestForgery2 extends HttpServlet {
             // URL(URL context, String spec, URLStreamHandler handler)
             URL url6 = new URL(url3, "spec", new Helper2());
 
-            URLConnection c1 = url1.openConnection();
+            URLConnection c1 = url1.openConnection(); // $ SSRF
             SocketAddress sa = new SocketAddress() {
             };
-            URLConnection c2 = url1.openConnection(new Proxy(Type.HTTP, sa));
-            InputStream c3 = url1.openStream();
+            URLConnection c2 = url1.openConnection(new Proxy(Type.HTTP, sa)); // $ SSRF
+            InputStream c3 = url1.openStream(); // $ SSRF
 
             // java.net.http
             HttpClient client = HttpClient.newHttpClient();
-            HttpRequest request2 = HttpRequest.newBuilder().uri(uri2).build();
-            HttpRequest request3 = HttpRequest.newBuilder(uri).build();
+            HttpRequest request2 = HttpRequest.newBuilder().uri(uri2).build(); // $ SSRF
+            HttpRequest request3 = HttpRequest.newBuilder(uri).build(); // $ SSRF
 
             // Apache HTTPlib
-            HttpGet httpGet = new HttpGet(uri);
+            HttpGet httpGet = new HttpGet(uri); // $ SSRF
             HttpGet httpGet2 = new HttpGet();
-            httpGet2.setURI(uri2);
+            httpGet2.setURI(uri2); // $ SSRF
 
-            new HttpHead(uri);
-            new HttpPost(uri);
-            new HttpPut(uri);
-            new HttpDelete(uri);
-            new HttpOptions(uri);
-            new HttpTrace(uri);
-            new HttpPatch(uri);
+            new HttpHead(uri); // $ SSRF
+            new HttpPost(uri); // $ SSRF
+            new HttpPut(uri); // $ SSRF
+            new HttpDelete(uri); // $ SSRF
+            new HttpOptions(uri); // $ SSRF
+            new HttpTrace(uri); // $ SSRF
+            new HttpPatch(uri); // $ SSRF
 
-            new BasicHttpRequest(new BasicRequestLine("GET", uri2.toString(), null));
-            new BasicHttpRequest("GET", uri2.toString());
-            new BasicHttpRequest("GET", uri2.toString(), null);
+            new BasicHttpRequest(new BasicRequestLine("GET", uri2.toString(), null)); // $ SSRF
+            new BasicHttpRequest("GET", uri2.toString()); // $ SSRF
+            new BasicHttpRequest("GET", uri2.toString(), null); // $ SSRF
 
-            new BasicHttpEntityEnclosingRequest(new BasicRequestLine("GET", uri2.toString(), null));
-            new BasicHttpEntityEnclosingRequest("GET", uri2.toString());
-            new BasicHttpEntityEnclosingRequest("GET", uri2.toString(), null);
+            new BasicHttpEntityEnclosingRequest(new BasicRequestLine("GET", uri2.toString(), null)); // $ SSRF
+            new BasicHttpEntityEnclosingRequest("GET", uri2.toString()); // $ SSRF
+            new BasicHttpEntityEnclosingRequest("GET", uri2.toString(), null); // $ SSRF
 
-            RequestBuilder.get(uri2);
-            RequestBuilder.post(uri2);
-            RequestBuilder.put(uri2);
-            RequestBuilder.delete(uri2);
-            RequestBuilder.options(uri2);
-            RequestBuilder.head(uri2);
-            RequestBuilder.trace(uri2);
-            RequestBuilder.patch(uri2);
-            RequestBuilder.get("").setUri(uri2);
+            RequestBuilder.get(uri2); // $ SSRF
+            RequestBuilder.post(uri2); // $ SSRF
+            RequestBuilder.put(uri2); // $ SSRF
+            RequestBuilder.delete(uri2); // $ SSRF
+            RequestBuilder.options(uri2); // $ SSRF
+            RequestBuilder.head(uri2); // $ SSRF
+            RequestBuilder.trace(uri2); // $ SSRF
+            RequestBuilder.patch(uri2); // $ SSRF
+            RequestBuilder.get("").setUri(uri2); // $ SSRF
 
         } catch (Exception e) {
             // TODO: handle exception

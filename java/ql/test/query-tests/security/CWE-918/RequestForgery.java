@@ -19,7 +19,7 @@ public class RequestForgery extends HttpServlet {
             URI uri = new URI(request.getParameter("uri"));
             // BAD: a request parameter is incorporated without validation into a Http
             // request
-            HttpRequest r = HttpRequest.newBuilder(uri).build();
+            HttpRequest r = HttpRequest.newBuilder(uri).build(); // $ SSRF
             client.send(r, null);
 
             // GOOD: sanitisation by concatenation with a prefix that prevents targeting an arbitrary host.
@@ -73,47 +73,47 @@ public class RequestForgery extends HttpServlet {
             // BAD: cases where a string that would sanitise is used, but occurs in the wrong
             // place to sanitise user input:
             String unsafeUri3 = request.getParameter("baduri3") + "https://example.com/";
-            HttpRequest unsafer3 = HttpRequest.newBuilder(new URI(unsafeUri3)).build();
+            HttpRequest unsafer3 = HttpRequest.newBuilder(new URI(unsafeUri3)).build();  // $ SSRF
             client.send(unsafer3, null);
 
             String unsafeUri4 = ("someprefix" + request.getParameter("baduri4")) + "https://example.com/";
-            HttpRequest unsafer4 = HttpRequest.newBuilder(new URI(unsafeUri4)).build();
+            HttpRequest unsafer4 = HttpRequest.newBuilder(new URI(unsafeUri4)).build(); // $ SSRF
             client.send(unsafer4, null);
 
             StringBuilder unsafeUri5 = new StringBuilder();
             unsafeUri5.append(request.getParameter("baduri5")).append("https://example.com/");
-            HttpRequest unsafer5 = HttpRequest.newBuilder(new URI(unsafeUri5.toString())).build();
+            HttpRequest unsafer5 = HttpRequest.newBuilder(new URI(unsafeUri5.toString())).build(); // $ SSRF
             client.send(unsafer5, null);
 
             StringBuilder unafeUri5a = new StringBuilder(request.getParameter("uri5a"));
             unafeUri5a.append("https://example.com/");
-            HttpRequest unsafer5a = HttpRequest.newBuilder(new URI(unafeUri5a.toString())).build();
+            HttpRequest unsafer5a = HttpRequest.newBuilder(new URI(unafeUri5a.toString())).build(); // $ SSRF
             client.send(unsafer5a, null);
 
             StringBuilder unsafeUri5b = (new StringBuilder(request.getParameter("uri5b"))).append("dir/");
             unsafeUri5b.append("https://example.com/");
-            HttpRequest unsafer5b = HttpRequest.newBuilder(new URI(unsafeUri5b.toString())).build();
+            HttpRequest unsafer5b = HttpRequest.newBuilder(new URI(unsafeUri5b.toString())).build(); // $ SSRF
             client.send(unsafer5b, null);
 
             StringBuilder unsafeUri5c = (new StringBuilder("https")).append(request.getParameter("uri5c"));
             unsafeUri5c.append("://example.com/dir/");
-            HttpRequest unsafer5c = HttpRequest.newBuilder(new URI(unsafeUri5c.toString())).build();
+            HttpRequest unsafer5c = HttpRequest.newBuilder(new URI(unsafeUri5c.toString())).build(); // $ SSRF
             client.send(unsafer5c, null);
 
             String unsafeUri6 = String.format("%shttps://example.com/", request.getParameter("baduri6"));
-            HttpRequest unsafer6 = HttpRequest.newBuilder(new URI(unsafeUri6)).build();
+            HttpRequest unsafer6 = HttpRequest.newBuilder(new URI(unsafeUri6)).build(); // $ SSRF
             client.send(unsafer6, null);
 
             String unsafeUri7 = String.format("%s/%s", request.getParameter("baduri7"), "https://example.com");
-            HttpRequest unsafer7 = HttpRequest.newBuilder(new URI(unsafeUri7)).build();
+            HttpRequest unsafer7 = HttpRequest.newBuilder(new URI(unsafeUri7)).build(); // $ SSRF
             client.send(unsafer7, null);
 
             String unsafeUri8 = String.format("%s%s", request.getParameter("baduri8"), "https://example.com/");
-            HttpRequest unsafer8 = HttpRequest.newBuilder(new URI(unsafeUri8)).build();
+            HttpRequest unsafer8 = HttpRequest.newBuilder(new URI(unsafeUri8)).build(); // $ SSRF
             client.send(unsafer8, null);
 
             String unsafeUri9 = request.getParameter("baduri9") + "/" + String.format("http://%s", "myserver.com");
-            HttpRequest unsafer9 = HttpRequest.newBuilder(new URI(unsafeUri9)).build();
+            HttpRequest unsafer9 = HttpRequest.newBuilder(new URI(unsafeUri9)).build(); // $ SSRF
             client.send(unsafer9, null);
 
         } catch (Exception e) {
