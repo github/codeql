@@ -1,6 +1,6 @@
 import jmespath
 
-def test_idna():
+def test_taint():
     data = TAINTED_DICT
 
     expression = jmespath.compile("foo.bar")
