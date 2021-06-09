@@ -6,11 +6,11 @@ def test_idna():
     expression = jmespath.compile("foo.bar")
 
     ensure_tainted(
-        jmespath.search("foo.bar", data), # $ MISSING: tainted
-        jmespath.search("foo.bar", data=data), # $ MISSING: tainted
+        jmespath.search("foo.bar", data), # $ tainted
+        jmespath.search("foo.bar", data=data), # $ tainted
 
-        expression.search(data), # $ MISSING: tainted
-        expression.search(value=data) # $ MISSING: tainted
+        expression.search(data), # $ tainted
+        expression.search(value=data) # $ tainted
     )
 
     # since ```jmespath.search("{wat: `foo`}", {})``` works (and outputs a dictionary),

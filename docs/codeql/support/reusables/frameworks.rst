@@ -162,6 +162,7 @@ Python built-in support
    fabric, Utility library
    invoke, Utility library
    idna, Utility library
+   jmespath, Utility library
    mysql-connector-python, Database
    MySQLdb, Database
    psycopg2, Database
