@@ -35,9 +35,9 @@ def set_foo(some_class_instance): # $ tracked=foo
     some_class_instance.foo = tracked # $ tracked=foo tracked
 
 def test_set_x():
-    x = SomeClass()
-    set_foo(x)
-    print(x.foo) # MISSING: tracked
+    x = SomeClass() # $ MISSING: tracked=foo
+    set_foo(x) # $ MISSING: tracked=foo
+    print(x.foo) # $ MISSING: tracked=foo tracked
 
 # ------------------------------------------------------------------------------
 # Attributes assigned statically to a class
@@ -125,8 +125,8 @@ class MyClass2(object):
     def print_foo(self): # $ MISSING: tracked=foo
         print(self.foo) # $ MISSING: tracked=foo tracked
 
-    def possibly_uncalled_method(self):
-        print(self.foo) # $ MISSING: tracked
+    def possibly_uncalled_method(self): # $ MISSING: tracked=foo
+        print(self.foo) # $ MISSING: tracked=foo tracked
 
 instance = MyClass2()
 print(instance.foo) # $ MISSING: tracked=foo tracked
@@ -142,8 +142,8 @@ class MyClass3(object):
     def print_foo(self): # $ tracked=foo
         print(self.foo) # $ tracked=foo tracked
 
-    def possibly_uncalled_method(self):
-        print(self.foo) # $ MISSING: tracked
+    def possibly_uncalled_method(self): # $ MISSING: tracked=foo
+        print(self.foo) # $ MISSING: tracked=foo tracked
 
 instance = MyClass3() # $ tracked=foo
 instance.print_self() # $ tracked=foo
