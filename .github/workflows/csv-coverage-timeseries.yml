@@ -17,6 +17,7 @@ jobs:
       uses: actions/checkout@v2
       with:
         path: codeqlModels
+        fetch-depth: 0
     - name: Set up Python 3.8
       uses: actions/setup-python@v2
       with:
@@ -32,7 +33,9 @@ jobs:
       run: unzip -d codeql-cli codeql-linux64.zip
     - name: Build modeled package list
       run: |
-        PATH="$PATH:codeql-cli/codeql" python script/misc/scripts/library-coverage/generate-timeseries.py codeqlModels
+        CLI=$(realpath "codeql-cli/codeql")
+        echo $CLI
+        PATH="$PATH:$CLI" python script/misc/scripts/library-coverage/generate-timeseries.py codeqlModels
     - name: Upload timeseries CSV
       uses: actions/upload-artifact@v2
       with:

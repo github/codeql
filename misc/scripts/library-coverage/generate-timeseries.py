@@ -66,6 +66,9 @@ def get_packages(lang, query):
 working_dir = ""
 if len(sys.argv) > 1:
     working_dir = sys.argv[1]
+else:
+    print("Working directory is not specified")
+    exit(1)
 
 configs = [
     utils.LanguageConfig(
