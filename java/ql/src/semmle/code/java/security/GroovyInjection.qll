@@ -39,7 +39,8 @@ private class DefaultLdapInjectionSinkModel extends SinkModelCsv {
         "groovy.util;Eval;false;x;(Object,String);;Argument[1];groovy",
         "groovy.util;Eval;false;xy;(Object,Object,String);;Argument[2];groovy",
         "groovy.util;Eval;false;xyz;(Object,Object,Object,String);;Argument[3];groovy",
-        "groovy.lang;GroovyClassLoader;false;parseClass;;;Argument[0];groovy"
+        "groovy.lang;GroovyClassLoader;false;parseClass;;;Argument[0];groovy",
+        "org.codehaus.groovy.control;CompilationUnit;false;compile;;;Argument[-1];groovy"
       ]
   }
 }
@@ -47,13 +48,15 @@ private class DefaultLdapInjectionSinkModel extends SinkModelCsv {
 /** A set of additional taint steps to consider when taint tracking Groovy related data flows. */
 private class DefaultGroovyInjectionAdditionalTaintStep extends GroovyInjectionAdditionalTaintStep {
   override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
-    groovyCodeSourceTaintStep(node1, node2)
+    groovyCodeSourceTaintStep(node1, node2) or
+    groovyCompilationUnitTaintStep(node1, node2) or
+    groovySourceUnitTaintStep(node1, node2)
   }
 }
 
 /**
  * Holds if `fromNode` to `toNode` is a dataflow step from a tainted string to
- * a `GroovyCodeSource` instance, i.e. `new GroovyCodeSource(tainted, ...)`.
+ * a `GroovyCodeSource` instance by calling `new GroovyCodeSource(tainted, ...)`.
  */
 private predicate groovyCodeSourceTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
   exists(ConstructorCall gcscc |
@@ -63,7 +66,58 @@ private predicate groovyCodeSourceTaintStep(DataFlow::Node fromNode, DataFlow::N
   )
 }
 
+/**
+ * Holds if `fromNode` to `toNode` is a dataflow step from a tainted string to
+ * a `CompilationUnit` instance by calling `compilationUnit.addSource(..., tainted)`.
+ */
+private predicate groovyCompilationUnitTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
+  exists(MethodAccess ma, Method m |
+    ma.getMethod() = m and
+    m.hasName("addSource") and
+    m.getDeclaringType() instanceof TypeGroovyCompilationUnit
+  |
+    fromNode.asExpr() = ma.getArgument(ma.getNumArgument() - 1) and
+    toNode.asExpr() = ma.getQualifier()
+  )
+}
+
+/**
+ * Holds if `fromNode` to `toNode` is a dataflow step from a tainted string to
+ * a `SourceUnit` instance by calling `new SourceUnit(..., tainted, ...)`
+ * or `SourceUnit.create(..., tainted)`
+ */
+private predicate groovySourceUnitTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
+  exists(ClassInstanceExpr cie, Argument arg |
+    cie.getConstructedType() instanceof TypeGroovySourceUnit and
+    arg = cie.getArgument(1) and
+    arg.getType() instanceof TypeString
+  |
+    fromNode.asExpr() = arg and
+    toNode.asExpr() = cie
+  )
+  or
+  exists(MethodAccess ma, Method m |
+    ma.getMethod() = m and
+    m.hasName("create") and
+    m.getDeclaringType() instanceof TypeGroovySourceUnit
+  |
+    fromNode.asExpr() = ma.getArgument(1) and toNode.asExpr() = ma
+  )
+}
+
 /** The class `groovy.lang.GroovyCodeSource`. */
 private class TypeGroovyCodeSource extends RefType {
   TypeGroovyCodeSource() { this.hasQualifiedName("groovy.lang", "GroovyCodeSource") }
+}
+
+/** The class `org.codehaus.groovy.control.CompilationUnit`. */
+private class TypeGroovyCompilationUnit extends RefType {
+  TypeGroovyCompilationUnit() {
+    this.hasQualifiedName("org.codehaus.groovy.control", "CompilationUnit")
+  }
+}
+
+/** The class `org.codehaus.groovy.control.CompilationUnit`. */
+private class TypeGroovySourceUnit extends RefType {
+  TypeGroovySourceUnit() { this.hasQualifiedName("org.codehaus.groovy.control", "SourceUnit") }
 }
