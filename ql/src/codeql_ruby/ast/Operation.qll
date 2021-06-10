@@ -91,12 +91,8 @@ class UnaryMinusExpr extends UnaryArithmeticOperation, TUnaryMinusExpr {
  * foo(*args)
  * ```
  */
-class SplatExpr extends UnaryOperation, TSplatArgument {
-  private Generated::SplatArgument g;
-
-  SplatExpr() { this = TSplatArgument(g) }
-
-  final override Expr getOperand() { toGenerated(result) = g.getChild() }
+class SplatExpr extends UnaryOperation, TSplatExpr {
+  final override Expr getOperand() { result = this.(SplatExprImpl).getOperandImpl() }
 
   final override string getOperator() { result = "*" }
 
@@ -109,10 +105,10 @@ class SplatExpr extends UnaryOperation, TSplatArgument {
  * foo(**options)
  * ```
  */
-class HashSplatExpr extends UnaryOperation, THashSplatArgument {
+class HashSplatExpr extends UnaryOperation, THashSplatExpr {
   private Generated::HashSplatArgument g;
 
-  HashSplatExpr() { this = THashSplatArgument(g) }
+  HashSplatExpr() { this = THashSplatExpr(g) }
 
   final override Expr getOperand() { toGenerated(result) = g.getChild() }
 

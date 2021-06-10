@@ -43,10 +43,12 @@ definition
 | scopes.rb:7:1:7:5 | ... = ... | scopes.rb:7:1:7:1 | a |
 | scopes.rb:9:9:18:3 | <captured> | scopes.rb:7:1:7:1 | a |
 | scopes.rb:11:4:11:9 | ... = ... | scopes.rb:7:1:7:1 | a |
-| scopes.rb:13:4:13:32 | ... = ... | scopes.rb:7:1:7:1 | a |
-| scopes.rb:13:4:13:32 | ... = ... | scopes.rb:13:7:13:7 | b |
-| scopes.rb:13:4:13:32 | ... = ... | scopes.rb:13:11:13:11 | c |
-| scopes.rb:13:4:13:32 | ... = ... | scopes.rb:13:14:13:14 | d |
+| scopes.rb:13:4:13:4 | ... = ... | scopes.rb:7:1:7:1 | a |
+| scopes.rb:13:7:13:7 | ... = ... | scopes.rb:13:7:13:7 | b |
+| scopes.rb:13:10:13:15 | ... = ... | scopes.rb:13:10:13:15 | __synth__0__1 |
+| scopes.rb:13:11:13:11 | ... = ... | scopes.rb:13:11:13:11 | c |
+| scopes.rb:13:14:13:14 | ... = ... | scopes.rb:13:14:13:14 | d |
+| scopes.rb:13:19:13:32 | ... = ... | scopes.rb:13:4:13:32 | __synth__0 |
 | scopes.rb:27:1:27:5 | ... = ... | scopes.rb:27:1:27:1 | x |
 | scopes.rb:42:2:42:9 | ... = ... | scopes.rb:42:2:42:4 | var |
 | scopes.rb:46:5:46:13 | ... = ... | scopes.rb:46:5:46:8 | var2 |
@@ -128,10 +130,15 @@ read
 | scopes.rb:9:9:18:3 | <captured> | scopes.rb:7:1:7:1 | a | scopes.rb:10:9:10:9 | a |
 | scopes.rb:9:9:18:3 | <captured> | scopes.rb:7:1:7:1 | a | scopes.rb:11:4:11:4 | a |
 | scopes.rb:11:4:11:9 | ... = ... | scopes.rb:7:1:7:1 | a | scopes.rb:12:9:12:9 | a |
-| scopes.rb:13:4:13:32 | ... = ... | scopes.rb:7:1:7:1 | a | scopes.rb:14:9:14:9 | a |
-| scopes.rb:13:4:13:32 | ... = ... | scopes.rb:13:7:13:7 | b | scopes.rb:15:9:15:9 | b |
-| scopes.rb:13:4:13:32 | ... = ... | scopes.rb:13:11:13:11 | c | scopes.rb:16:9:16:9 | c |
-| scopes.rb:13:4:13:32 | ... = ... | scopes.rb:13:14:13:14 | d | scopes.rb:17:9:17:9 | d |
+| scopes.rb:13:4:13:4 | ... = ... | scopes.rb:7:1:7:1 | a | scopes.rb:14:9:14:9 | a |
+| scopes.rb:13:7:13:7 | ... = ... | scopes.rb:13:7:13:7 | b | scopes.rb:15:9:15:9 | b |
+| scopes.rb:13:10:13:15 | ... = ... | scopes.rb:13:10:13:15 | __synth__0__1 | scopes.rb:13:11:13:11 | __synth__0__1 |
+| scopes.rb:13:10:13:15 | ... = ... | scopes.rb:13:10:13:15 | __synth__0__1 | scopes.rb:13:14:13:14 | __synth__0__1 |
+| scopes.rb:13:11:13:11 | ... = ... | scopes.rb:13:11:13:11 | c | scopes.rb:16:9:16:9 | c |
+| scopes.rb:13:14:13:14 | ... = ... | scopes.rb:13:14:13:14 | d | scopes.rb:17:9:17:9 | d |
+| scopes.rb:13:19:13:32 | ... = ... | scopes.rb:13:4:13:32 | __synth__0 | scopes.rb:13:4:13:4 | __synth__0 |
+| scopes.rb:13:19:13:32 | ... = ... | scopes.rb:13:4:13:32 | __synth__0 | scopes.rb:13:7:13:7 | __synth__0 |
+| scopes.rb:13:19:13:32 | ... = ... | scopes.rb:13:4:13:32 | __synth__0 | scopes.rb:13:10:13:15 | __synth__0 |
 | scopes.rb:27:1:27:5 | ... = ... | scopes.rb:27:1:27:1 | x | scopes.rb:28:8:28:8 | x |
 | scopes.rb:27:1:27:5 | ... = ... | scopes.rb:27:1:27:1 | x | scopes.rb:31:10:31:10 | x |
 | scopes.rb:27:1:27:5 | ... = ... | scopes.rb:27:1:27:1 | x | scopes.rb:34:7:34:7 | x |
@@ -209,10 +216,12 @@ firstRead
 | scopes.rb:7:1:7:5 | ... = ... | scopes.rb:7:1:7:1 | a | scopes.rb:8:6:8:6 | a |
 | scopes.rb:9:9:18:3 | <captured> | scopes.rb:7:1:7:1 | a | scopes.rb:10:9:10:9 | a |
 | scopes.rb:11:4:11:9 | ... = ... | scopes.rb:7:1:7:1 | a | scopes.rb:12:9:12:9 | a |
-| scopes.rb:13:4:13:32 | ... = ... | scopes.rb:7:1:7:1 | a | scopes.rb:14:9:14:9 | a |
-| scopes.rb:13:4:13:32 | ... = ... | scopes.rb:13:7:13:7 | b | scopes.rb:15:9:15:9 | b |
-| scopes.rb:13:4:13:32 | ... = ... | scopes.rb:13:11:13:11 | c | scopes.rb:16:9:16:9 | c |
-| scopes.rb:13:4:13:32 | ... = ... | scopes.rb:13:14:13:14 | d | scopes.rb:17:9:17:9 | d |
+| scopes.rb:13:4:13:4 | ... = ... | scopes.rb:7:1:7:1 | a | scopes.rb:14:9:14:9 | a |
+| scopes.rb:13:7:13:7 | ... = ... | scopes.rb:13:7:13:7 | b | scopes.rb:15:9:15:9 | b |
+| scopes.rb:13:10:13:15 | ... = ... | scopes.rb:13:10:13:15 | __synth__0__1 | scopes.rb:13:11:13:11 | __synth__0__1 |
+| scopes.rb:13:11:13:11 | ... = ... | scopes.rb:13:11:13:11 | c | scopes.rb:16:9:16:9 | c |
+| scopes.rb:13:14:13:14 | ... = ... | scopes.rb:13:14:13:14 | d | scopes.rb:17:9:17:9 | d |
+| scopes.rb:13:19:13:32 | ... = ... | scopes.rb:13:4:13:32 | __synth__0 | scopes.rb:13:4:13:4 | __synth__0 |
 | scopes.rb:27:1:27:5 | ... = ... | scopes.rb:27:1:27:1 | x | scopes.rb:28:8:28:8 | x |
 | scopes.rb:42:2:42:9 | ... = ... | scopes.rb:42:2:42:4 | var | scopes.rb:44:5:44:7 | var |
 | scopes.rb:46:5:46:13 | ... = ... | scopes.rb:46:5:46:8 | var2 | scopes.rb:47:5:47:8 | var2 |
@@ -280,10 +289,12 @@ lastRead
 | scopes.rb:7:1:7:5 | ... = ... | scopes.rb:7:1:7:1 | a | scopes.rb:8:6:8:6 | a |
 | scopes.rb:9:9:18:3 | <captured> | scopes.rb:7:1:7:1 | a | scopes.rb:11:4:11:4 | a |
 | scopes.rb:11:4:11:9 | ... = ... | scopes.rb:7:1:7:1 | a | scopes.rb:12:9:12:9 | a |
-| scopes.rb:13:4:13:32 | ... = ... | scopes.rb:7:1:7:1 | a | scopes.rb:14:9:14:9 | a |
-| scopes.rb:13:4:13:32 | ... = ... | scopes.rb:13:7:13:7 | b | scopes.rb:15:9:15:9 | b |
-| scopes.rb:13:4:13:32 | ... = ... | scopes.rb:13:11:13:11 | c | scopes.rb:16:9:16:9 | c |
-| scopes.rb:13:4:13:32 | ... = ... | scopes.rb:13:14:13:14 | d | scopes.rb:17:9:17:9 | d |
+| scopes.rb:13:4:13:4 | ... = ... | scopes.rb:7:1:7:1 | a | scopes.rb:14:9:14:9 | a |
+| scopes.rb:13:7:13:7 | ... = ... | scopes.rb:13:7:13:7 | b | scopes.rb:15:9:15:9 | b |
+| scopes.rb:13:10:13:15 | ... = ... | scopes.rb:13:10:13:15 | __synth__0__1 | scopes.rb:13:14:13:14 | __synth__0__1 |
+| scopes.rb:13:11:13:11 | ... = ... | scopes.rb:13:11:13:11 | c | scopes.rb:16:9:16:9 | c |
+| scopes.rb:13:14:13:14 | ... = ... | scopes.rb:13:14:13:14 | d | scopes.rb:17:9:17:9 | d |
+| scopes.rb:13:19:13:32 | ... = ... | scopes.rb:13:4:13:32 | __synth__0 | scopes.rb:13:10:13:15 | __synth__0 |
 | scopes.rb:27:1:27:5 | ... = ... | scopes.rb:27:1:27:1 | x | scopes.rb:37:5:37:5 | x |
 | scopes.rb:42:2:42:9 | ... = ... | scopes.rb:42:2:42:4 | var | scopes.rb:44:5:44:7 | var |
 | scopes.rb:46:5:46:13 | ... = ... | scopes.rb:46:5:46:8 | var2 | scopes.rb:47:5:47:8 | var2 |
@@ -317,6 +328,9 @@ adjacentReads
 | parameters.rb:7:26:7:31 | pizzas | parameters.rb:7:26:7:31 | pizzas | parameters.rb:8:6:8:11 | pizzas | parameters.rb:11:14:11:19 | pizzas |
 | parameters.rb:25:15:25:18 | name | parameters.rb:25:15:25:18 | name | parameters.rb:25:40:25:43 | name | parameters.rb:26:8:26:11 | name |
 | scopes.rb:9:9:18:3 | <captured> | scopes.rb:7:1:7:1 | a | scopes.rb:10:9:10:9 | a | scopes.rb:11:4:11:4 | a |
+| scopes.rb:13:10:13:15 | ... = ... | scopes.rb:13:10:13:15 | __synth__0__1 | scopes.rb:13:11:13:11 | __synth__0__1 | scopes.rb:13:14:13:14 | __synth__0__1 |
+| scopes.rb:13:19:13:32 | ... = ... | scopes.rb:13:4:13:32 | __synth__0 | scopes.rb:13:4:13:4 | __synth__0 | scopes.rb:13:7:13:7 | __synth__0 |
+| scopes.rb:13:19:13:32 | ... = ... | scopes.rb:13:4:13:32 | __synth__0 | scopes.rb:13:7:13:7 | __synth__0 | scopes.rb:13:10:13:15 | __synth__0 |
 | scopes.rb:27:1:27:5 | ... = ... | scopes.rb:27:1:27:1 | x | scopes.rb:28:8:28:8 | x | scopes.rb:31:10:31:10 | x |
 | scopes.rb:27:1:27:5 | ... = ... | scopes.rb:27:1:27:1 | x | scopes.rb:31:10:31:10 | x | scopes.rb:34:7:34:7 | x |
 | scopes.rb:27:1:27:5 | ... = ... | scopes.rb:27:1:27:1 | x | scopes.rb:34:7:34:7 | x | scopes.rb:34:14:34:14 | x |
