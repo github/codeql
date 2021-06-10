@@ -1,4 +1,4 @@
-name: Build CSV timeseries flow coverage report
+name: Build framework coverage timeseries reports
 
 on:
   workflow_dispatch:

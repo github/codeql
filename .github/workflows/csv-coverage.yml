@@ -1,4 +1,4 @@
-name: Build CSV flow coverage report
+name: Build framework coverage reports
 
 on:
   workflow_dispatch:
