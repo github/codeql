@@ -66,7 +66,7 @@ class Ptrdiff_t extends Type {
 /**
  * A parent class representing C/C++ a typedef'd `UserType` such as `int8_t`.
  */
-private class IntegralUnderlyingUserType extends UserType {
+private abstract class IntegralUnderlyingUserType extends UserType {
   IntegralUnderlyingUserType() { this.getUnderlyingType() instanceof IntegralType }
 }
 
