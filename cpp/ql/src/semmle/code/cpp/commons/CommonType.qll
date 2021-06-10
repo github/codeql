@@ -64,28 +64,28 @@ class Ptrdiff_t extends Type {
 }
 
 /**
- * A common base type for describing the C/C++ fixed-width numeric types
+ * A C/C++ fixed-width numeric type, such as `int8_t`.
  */
 abstract class FixedWidthIntegralType extends UserType {
   FixedWidthIntegralType() { this.getUnderlyingType() instanceof IntegralType }
 }
 
 /**
- * A common base type for describing the C/C++ minimum-width numeric types.
+ * A C/C++ minimum-width numeric type, such as `int_least8_t` or `uint_fast16_t`.
  */
 abstract class MinimumWidthIntegralType extends UserType {
   MinimumWidthIntegralType() { this.getUnderlyingType() instanceof IntegralType }
 }
 
 /**
- * A common base type for describing the C/C++ maximum-width numeric types.
+ * A C/C++ maximum-width numeric type, either `intmax_t` or `uintmax_t`.
  */
 abstract class MaximumWidthIntegralType extends UserType {
   MaximumWidthIntegralType() { this.getUnderlyingType() instanceof IntegralType }
 }
 
 /**
- * A common base type for describing enum types that are based on fixed-width types.
+ * An enum type based on a fixed-width integer type. For instance, `enum e: uint8_t = { a, b };`
  */
 class FixedWidthEnumType extends UserType {
   FixedWidthEnumType() { this.(Enum).getExplicitUnderlyingType() instanceof FixedWidthIntegralType }
