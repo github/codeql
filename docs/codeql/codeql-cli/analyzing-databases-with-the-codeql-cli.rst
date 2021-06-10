@@ -24,11 +24,12 @@ Before starting an analysis you must:
 Running ``codeql database analyze``
 ------------------------------------
 
-When you run ``database analyze``, it does two things:
+When you run ``database analyze``, it:
 
 #. Executes one or more query files, by running them over a CodeQL database.
 #. Interprets the results, based on certain query metadata, so that alerts can be
    displayed in the correct location in the source code.
+#. Reports the results of any diagnostic and summary queries to standard output.
 
 You can analyze a database by running the following command::
 
@@ -141,6 +142,13 @@ These are stored alongside the code scanning suites with names of the form: ``<l
 
 For information about creating custom query suites, see ":doc:`Creating
 CodeQL query suites <creating-codeql-query-suites>`."
+
+Diagnostic and summary information
+..................................
+
+When you create a CodeQL database, the extractor stores diagnostic data in the database. The code scanning query suites include additional queries to report on this diagnostic data and calculate summary metrics. When the ``database analyze`` command completes, the CLI generates the results file and reports any diagnostic and summary data to standard output. If you choose to generate SARIF output, the additional data is also included in the SARIF file.
+
+If the analysis found fewer results for standard queries than you expected, review the results of the diagnostic and summary queries to check whether the CodeQL database is likely to be a good representation of the codebase that you want to analyze.
 
 Running all queries in a directory
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

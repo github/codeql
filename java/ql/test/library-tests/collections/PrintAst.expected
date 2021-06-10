@@ -11,8 +11,8 @@ collections/Test.java:
 #    6|         -3: [TypeAccess] LinkedHashMap<String,Integer>
 #    6|           0: [TypeAccess] String
 #    6|           1: [TypeAccess] Integer
-#    8|     4: [BlockStmt] stmt
-#    9|       0: [ExprStmt] stmt
+#    8|     4: [BlockStmt] { ... }
+#    9|       0: [ExprStmt] <Expr>;
 #    9|         0: [MethodAccess] put(...)
 #    9|           -1: [VarAccess] m
 #    9|           0: [StringLiteral] "key"

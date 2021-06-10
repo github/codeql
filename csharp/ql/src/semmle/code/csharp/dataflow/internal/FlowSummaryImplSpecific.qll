@@ -78,20 +78,15 @@ DataFlowType getCallbackReturnType(DataFlowType t, ReturnKind rk) {
   )
 }
 
-/** Holds if `spec` is a relevant external specification. */
-predicate relevantSpec(string spec) { none() }
-
 /**
  * Holds if an external flow summary exists for `c` with input specification
  * `input`, output specification `output`, and kind `kind`.
  */
-predicate externalSummary(DataFlowCallable c, string input, string output, string kind) { none() }
+predicate summaryElement(DataFlowCallable c, string input, string output, string kind) { none() }
 
 /** Gets the summary component for specification component `c`, if any. */
 bindingset[c]
 SummaryComponent interpretComponentSpecific(string c) {
-  c = "ReturnValue" and result = SummaryComponent::return(any(NormalReturnKind nrk))
-  or
   c = "Element" and result = SummaryComponent::content(any(ElementContent ec))
   or
   exists(Field f |
@@ -102,5 +97,83 @@ SummaryComponent interpretComponentSpecific(string c) {
   exists(Property p |
     c.regexpCapture("Property\\[(.+)\\]", 1) = p.getQualifiedName() and
     result = SummaryComponent::content(any(PropertyContent pc | pc.getProperty() = p))
+  )
+}
+
+class SourceOrSinkElement = Element;
+
+/**
+ * Holds if an external source specification exists for `e` with output specification
+ * `output` and kind `kind`.
+ */
+predicate sourceElement(Element e, string output, string kind) { none() }
+
+/**
+ * Holds if an external sink specification exists for `n` with input specification
+ * `input` and kind `kind`.
+ */
+predicate sinkElement(Element e, string input, string kind) { none() }
+
+/** Gets the return kind corresponding to specification `"ReturnValue"`. */
+NormalReturnKind getReturnValueKind() { any() }
+
+private newtype TInterpretNode =
+  TElement_(Element n) or
+  TNode_(Node n) or
+  TDataFlowCall_(DataFlowCall c)
+
+/** An entity used to interpret a source/sink specification. */
+class InterpretNode extends TInterpretNode {
+  /** Gets the element that this node corresponds to, if any. */
+  SourceOrSinkElement asElement() { this = TElement_(result) }
+
+  /** Gets the data-flow node that this node corresponds to, if any. */
+  Node asNode() { this = TNode_(result) }
+
+  /** Gets the call that this node corresponds to, if any. */
+  DataFlowCall asCall() { this = TDataFlowCall_(result) }
+
+  /** Gets the callable that this node corresponds to, if any. */
+  DataFlowCallable asCallable() { result = this.asElement() }
+
+  /** Gets the target of this call, if any. */
+  Callable getCallTarget() { result = this.asCall().getARuntimeTarget() }
+
+  /** Gets a textual representation of this node. */
+  string toString() {
+    result = this.asElement().toString()
+    or
+    result = this.asNode().toString()
+    or
+    result = this.asCall().toString()
+  }
+
+  /** Gets the location of this node. */
+  Location getLocation() {
+    result = this.asElement().getLocation()
+    or
+    result = this.asNode().getLocation()
+    or
+    result = this.asCall().getLocation()
+  }
+}
+
+/** Provides additional sink specification logic required for attributes. */
+predicate interpretOutputSpecific(string c, InterpretNode mid, InterpretNode node) {
+  exists(Node n | n = node.asNode() |
+    (c = "Parameter" or c = "") and
+    n.asParameter() = mid.asElement()
+    or
+    c = "" and
+    n.asExpr().(AssignableRead).getTarget().getUnboundDeclaration() = mid.asElement()
+  )
+}
+
+/** Provides additional sink specification logic required for attributes. */
+predicate interpretInputSpecific(string c, InterpretNode mid, InterpretNode n) {
+  c = "" and
+  exists(Assignable a |
+    n.asNode().asExpr() = a.getAnAssignedValue() and
+    a.getUnboundDeclaration() = mid.asElement()
   )
 }

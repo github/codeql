@@ -1,0 +1,91 @@
+members1
+members2
+| tuple.cs:7:17:7:22 | (Int32,Int32) | ValueTuple<Int32, Int32> | CompareTo((int, int)) |
+| tuple.cs:7:17:7:22 | (Int32,Int32) | ValueTuple<Int32, Int32> | CompareTo(object) |
+| tuple.cs:7:17:7:22 | (Int32,Int32) | ValueTuple<Int32, Int32> | CompareTo(object, IComparer) |
+| tuple.cs:7:17:7:22 | (Int32,Int32) | ValueTuple<Int32, Int32> | Equals((int, int)) |
+| tuple.cs:7:17:7:22 | (Int32,Int32) | ValueTuple<Int32, Int32> | Equals(object) |
+| tuple.cs:7:17:7:22 | (Int32,Int32) | ValueTuple<Int32, Int32> | Equals(object, IEqualityComparer) |
+| tuple.cs:7:17:7:22 | (Int32,Int32) | ValueTuple<Int32, Int32> | GetHashCode() |
+| tuple.cs:7:17:7:22 | (Int32,Int32) | ValueTuple<Int32, Int32> | GetHashCode(IEqualityComparer) |
+| tuple.cs:7:17:7:22 | (Int32,Int32) | ValueTuple<Int32, Int32> | GetHashCodeCore(IEqualityComparer) |
+| tuple.cs:7:17:7:22 | (Int32,Int32) | ValueTuple<Int32, Int32> | Item1 |
+| tuple.cs:7:17:7:22 | (Int32,Int32) | ValueTuple<Int32, Int32> | Item2 |
+| tuple.cs:7:17:7:22 | (Int32,Int32) | ValueTuple<Int32, Int32> | Item[int] |
+| tuple.cs:7:17:7:22 | (Int32,Int32) | ValueTuple<Int32, Int32> | Length |
+| tuple.cs:7:17:7:22 | (Int32,Int32) | ValueTuple<Int32, Int32> | ToString() |
+| tuple.cs:7:17:7:22 | (Int32,Int32) | ValueTuple<Int32, Int32> | ToStringEnd() |
+| tuple.cs:7:17:7:22 | (Int32,Int32) | ValueTuple<Int32, Int32> | ValueTuple() |
+| tuple.cs:7:17:7:22 | (Int32,Int32) | ValueTuple<Int32, Int32> | ValueTuple(int, int) |
+| tuple.cs:12:17:12:37 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32> | CompareTo((int, int, int, int, int, int, int)) |
+| tuple.cs:12:17:12:37 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32> | CompareTo(object) |
+| tuple.cs:12:17:12:37 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32> | CompareTo(object, IComparer) |
+| tuple.cs:12:17:12:37 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32> | Equals((int, int, int, int, int, int, int)) |
+| tuple.cs:12:17:12:37 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32> | Equals(object) |
+| tuple.cs:12:17:12:37 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32> | Equals(object, IEqualityComparer) |
+| tuple.cs:12:17:12:37 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32> | GetHashCode() |
+| tuple.cs:12:17:12:37 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32> | GetHashCode(IEqualityComparer) |
+| tuple.cs:12:17:12:37 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32> | GetHashCodeCore(IEqualityComparer) |
+| tuple.cs:12:17:12:37 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32> | Item1 |
+| tuple.cs:12:17:12:37 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32> | Item2 |
+| tuple.cs:12:17:12:37 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32> | Item3 |
+| tuple.cs:12:17:12:37 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32> | Item4 |
+| tuple.cs:12:17:12:37 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32> | Item5 |
+| tuple.cs:12:17:12:37 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32> | Item6 |
+| tuple.cs:12:17:12:37 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32> | Item7 |
+| tuple.cs:12:17:12:37 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32> | Item[int] |
+| tuple.cs:12:17:12:37 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32> | Length |
+| tuple.cs:12:17:12:37 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32> | ToString() |
+| tuple.cs:12:17:12:37 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32> | ToStringEnd() |
+| tuple.cs:12:17:12:37 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32> | ValueTuple() |
+| tuple.cs:12:17:12:37 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32> | ValueTuple(int, int, int, int, int, int, int) |
+| tuple.cs:15:17:15:40 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32)> | CompareTo((int, int, int, int, int, int, int, int)) |
+| tuple.cs:15:17:15:40 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32)> | CompareTo(object) |
+| tuple.cs:15:17:15:40 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32)> | CompareTo(object, IComparer) |
+| tuple.cs:15:17:15:40 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32)> | Equals((int, int, int, int, int, int, int, int)) |
+| tuple.cs:15:17:15:40 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32)> | Equals(object) |
+| tuple.cs:15:17:15:40 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32)> | Equals(object, IEqualityComparer) |
+| tuple.cs:15:17:15:40 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32)> | GetHashCode() |
+| tuple.cs:15:17:15:40 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32)> | GetHashCode(IEqualityComparer) |
+| tuple.cs:15:17:15:40 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32)> | GetHashCodeCore(IEqualityComparer) |
+| tuple.cs:15:17:15:40 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32)> | Item1 |
+| tuple.cs:15:17:15:40 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32)> | Item2 |
+| tuple.cs:15:17:15:40 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32)> | Item3 |
+| tuple.cs:15:17:15:40 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32)> | Item4 |
+| tuple.cs:15:17:15:40 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32)> | Item5 |
+| tuple.cs:15:17:15:40 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32)> | Item6 |
+| tuple.cs:15:17:15:40 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32)> | Item7 |
+| tuple.cs:15:17:15:40 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32)> | Item8 |
+| tuple.cs:15:17:15:40 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32)> | Item[int] |
+| tuple.cs:15:17:15:40 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32)> | Length |
+| tuple.cs:15:17:15:40 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32)> | Rest |
+| tuple.cs:15:17:15:40 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32)> | ToString() |
+| tuple.cs:15:17:15:40 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32)> | ToStringEnd() |
+| tuple.cs:15:17:15:40 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32)> | ValueTuple() |
+| tuple.cs:15:17:15:40 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32)> | ValueTuple(int, int, int, int, int, int, int, (int)) |
+| tuple.cs:18:17:18:47 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32,Int32,Int32)> | CompareTo((int, int, int, int, int, int, int, int, int, int)) |
+| tuple.cs:18:17:18:47 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32,Int32,Int32)> | CompareTo(object) |
+| tuple.cs:18:17:18:47 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32,Int32,Int32)> | CompareTo(object, IComparer) |
+| tuple.cs:18:17:18:47 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32,Int32,Int32)> | Equals((int, int, int, int, int, int, int, int, int, int)) |
+| tuple.cs:18:17:18:47 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32,Int32,Int32)> | Equals(object) |
+| tuple.cs:18:17:18:47 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32,Int32,Int32)> | Equals(object, IEqualityComparer) |
+| tuple.cs:18:17:18:47 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32,Int32,Int32)> | GetHashCode() |
+| tuple.cs:18:17:18:47 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32,Int32,Int32)> | GetHashCode(IEqualityComparer) |
+| tuple.cs:18:17:18:47 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32,Int32,Int32)> | GetHashCodeCore(IEqualityComparer) |
+| tuple.cs:18:17:18:47 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32,Int32,Int32)> | Item1 |
+| tuple.cs:18:17:18:47 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32,Int32,Int32)> | Item2 |
+| tuple.cs:18:17:18:47 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32,Int32,Int32)> | Item3 |
+| tuple.cs:18:17:18:47 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32,Int32,Int32)> | Item4 |
+| tuple.cs:18:17:18:47 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32,Int32,Int32)> | Item5 |
+| tuple.cs:18:17:18:47 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32,Int32,Int32)> | Item6 |
+| tuple.cs:18:17:18:47 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32,Int32,Int32)> | Item7 |
+| tuple.cs:18:17:18:47 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32,Int32,Int32)> | Item8 |
+| tuple.cs:18:17:18:47 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32,Int32,Int32)> | Item9 |
+| tuple.cs:18:17:18:47 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32,Int32,Int32)> | Item10 |
+| tuple.cs:18:17:18:47 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32,Int32,Int32)> | Item[int] |
+| tuple.cs:18:17:18:47 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32,Int32,Int32)> | Length |
+| tuple.cs:18:17:18:47 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32,Int32,Int32)> | Rest |
+| tuple.cs:18:17:18:47 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32,Int32,Int32)> | ToString() |
+| tuple.cs:18:17:18:47 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32,Int32,Int32)> | ToStringEnd() |
+| tuple.cs:18:17:18:47 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32,Int32,Int32)> | ValueTuple() |
+| tuple.cs:18:17:18:47 | (Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32,Int32) | ValueTuple<Int32, Int32, Int32, Int32, Int32, Int32, Int32, (Int32,Int32,Int32)> | ValueTuple(int, int, int, int, int, int, int, (int, int, int)) |
