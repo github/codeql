@@ -153,10 +153,12 @@ private module SensitiveDataModeling {
     SensitiveDataClassification classification;
 
     SensitiveAttributeAccess() {
-      nameIndicatesSensitiveData(this.(DataFlow::AttrRead).getAttributeName(), classification)
-      or
+      // Things like `foo.<sensitive-name>` or `from <module> import <sensitive-name>`
       // I considered excluding any `from ... import something_sensitive`, but then realized that
       // we should flag up `form ... import password as ...` as a password
+      nameIndicatesSensitiveData(this.(DataFlow::AttrRead).getAttributeName(), classification)
+      or
+      // Things like `getattr(foo, <reference-to-string>)`
       this.(DataFlow::AttrRead).getAttributeNameExpr() = sensitiveLookupStringConst(classification)
     }
 

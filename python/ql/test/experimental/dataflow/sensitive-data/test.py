@@ -29,6 +29,9 @@ foo = ObjectFromDatabase()
 foo.secret # $ SensitiveDataSource=secret
 foo.username # $ SensitiveDataSource=id
 
+getattr(foo, "password") # $ SensitiveDataSource=password
+x = "password"
+getattr(foo, x) # $ SensitiveDataSource=password
 
 # based on variable/parameter names
 def my_func(password): # $ SensitiveDataSource=password
