@@ -29,17 +29,17 @@ x = unkown_func_not_even_imported_get_password() # $ SensitiveDataSource=passwor
 print(x) # $ SensitiveUse=password
 
 f = get_passwd
-x = f() # $ MISSING: SensitiveDataSource=password
-print(x) # $ MISSING: SensitiveUse=password
+x = f()
+print(x) # $ SensitiveUse=password
 
 import not_found
 f = not_found.get_passwd # $ SensitiveDataSource=password
-x = f() # $ MISSING: SensitiveDataSource=password
-print(x) # $ MISSING: SensitiveUse=password
+x = f()
+print(x) # $ SensitiveUse=password
 
 def my_func(non_sensitive_name):
-    x = non_sensitive_name() # $ MISSING: SensitiveDataSource=password
-    print(x) # $ MISSING: SensitiveUse=password
+    x = non_sensitive_name()
+    print(x) # $ SensitiveUse=password
 f = not_found.get_passwd # $ SensitiveDataSource=password
 my_func(f)
 

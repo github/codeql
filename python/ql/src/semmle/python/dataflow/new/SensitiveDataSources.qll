@@ -93,6 +93,8 @@ private module SensitiveDataModeling {
   /**
    * Gets a reference to a string constant that, if used as the key in a lookup,
    * indicates the presence of sensitive data with `classification`.
+   *
+   * Also see `extraStepForCalls`.
    */
   DataFlow::Node sensitiveLookupStringConst(SensitiveDataClassification classification) {
     sensitiveLookupStringConst(DataFlow::TypeTracker::end(), classification).flowsTo(result)
@@ -105,10 +107,47 @@ private module SensitiveDataModeling {
     SensitiveFunctionCall() {
       this.getFunction() = sensitiveFunction(classification)
       or
+      // to cover functions that we don't have the definition for, and where the
+      // reference to the function has not already been marked as being sensitive
       nameIndicatesSensitiveData(this.getFunction().asCfgNode().(NameNode).getId(), classification)
     }
 
     override SensitiveDataClassification getClassification() { result = classification }
+  }
+
+  /**
+   * Holds if the step from `nodeFrom` to `nodeTo` should be considered a
+   * taint-flow step for sensitive-data, to ensure calls are handled correctly.
+   *
+   * To handle calls properly, while preserving a good source for path explanations,
+   * you need to include this predicate as an additional taint step in your taint-tracking
+   * configurations.
+   *
+   * The core problem can be illustrated by the example below. If we consider the
+   * `print` a sink, what path and what source do we want to show? My initial approach
+   * would be to use type-tracking to propagate from the `not_found.get_passwd` attribute
+   * lookup, to the use of `non_sensitive_name`, and then create a new `SensitiveDataSource::Range`
+   * like `SensitiveFunctionCall`. Although that seems likely to work, it will also end up
+   * with a non-optimal path, which starts at _bad source_, and therefore doesn't show
+   * how we figured out that `non_sensitive_name`
+   * could be a function that returns a password (and in cases where there is many calls to
+   * `my_func` it will be annoying for someone to figure this out manually).
+   *
+   * By including this additional taint-step in the taint-tracking configuration, it's possible
+   * to get a path explanation going from _good source_ to the sink.
+   *
+   * ```python
+   * def my_func(non_sensitive_name):
+   *     x = non_sensitive_name() # <-- bad source
+   *     print(x) # <-- sink
+   *
+   * import not_found
+   * f = not_found.get_passwd # <-- good source
+   * my_func(f)
+   * ```
+   */
+  predicate extraStepForCalls(DataFlow::Node nodeFrom, DataFlow::CallCfgNode nodeTo) {
+    nodeTo.getFunction() = nodeFrom
   }
 
   /**
@@ -200,3 +239,5 @@ private module SensitiveDataModeling {
     override SensitiveDataClassification getClassification() { result = classification }
   }
 }
+
+predicate sensitiveDataExtraStepForCalls = SensitiveDataModeling::extraStepForCalls/2;

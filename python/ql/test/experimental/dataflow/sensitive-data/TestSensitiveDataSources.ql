@@ -40,6 +40,10 @@ class SensitiveUseConfiguration extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node node) {
     node = API::builtin("print").getACall().getArg(_)
   }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+    sensitiveDataExtraStepForCalls(node1, node2)
+  }
 }
 // import DataFlow::PathGraph
 // from SensitiveUseConfiguration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
