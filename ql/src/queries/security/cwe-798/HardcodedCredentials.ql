@@ -3,7 +3,7 @@
  * @description Credentials are hard coded in the source code of the application.
  * @kind path-problem
  * @problem.severity error
- * @precision medium
+ * @precision high
  * @id rb/hardcoded-credentials
  * @tags security
  *       external/cwe/cwe-259
@@ -11,7 +11,6 @@
  *       external/cwe/cwe-798
  */
 
-// TODO: adjust precision
 import ruby
 import codeql_ruby.DataFlow
 import DataFlow::PathGraph
