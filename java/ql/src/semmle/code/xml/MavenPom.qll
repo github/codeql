@@ -515,8 +515,11 @@ class MavenShadeRelocation extends XMLElement {
   MavenShadePlugin plugin;
 
   MavenShadeRelocation() {
-    this.getParent().(XMLElement).getParent().(XMLElement).getParent() = plugin and
-    this.hasName("relocation")
+    this =
+      [plugin, plugin.getAChild("executions").getAChild("execution")]
+          .getAChild("configuration")
+          .getAChild("relocations")
+          .getAChild("relocation")
   }
 
   /**
@@ -527,20 +530,12 @@ class MavenShadeRelocation extends XMLElement {
   /**
    * Gets the pattern this relocation replaces (e.g. `org.foo`)
    */
-  string getPattern() {
-    exists(XMLElement el | el.getName() = "pattern" and el.getParent() = this |
-      result = el.getTextValue()
-    )
-  }
+  string getPattern() { result = this.getAChild("pattern").getTextValue() }
 
   /**
    * Gets the shaded package that replaces `getPattern()` (e.g. `org.bar.shaded.org.foo`).
    */
-  string getShadedPattern() {
-    exists(XMLElement el | el.getName() = "shadedPattern" and el.getParent() = this |
-      result = el.getTextValue()
-    )
-  }
+  string getShadedPattern() { result = this.getAChild("shadedPattern").getTextValue() }
 
   /**
    * Holds if this `<relocation>` specification relocates `fromPackage` to `toPackage`.

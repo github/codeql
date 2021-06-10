@@ -1,0 +1,3 @@
+| org.codehaus.plexus.abc | org.shaded.plexus.abc |
+| org.codehaus.plexus.def | org.shaded.plexus.def |
+| org.codehaus.plexus.util | org.shaded.plexus.util |
