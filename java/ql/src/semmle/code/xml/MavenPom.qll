@@ -546,11 +546,11 @@ class MavenShadeRelocation extends XMLElement {
 }
 
 /**
- * Returns a package name that may be used to refer to `package` after shading, including `package`
+ * Gets a package name that may be used to refer to `package` after shading, including `package`
  * itself.
  *
  * For example, if `package` is `org.foo.sub` and we have a `<relocation>` specification relocating
- * `org.foo` to `org.bar.shaded.org.foo` then this will return `{"org.foo.sub", "org.bar.shaded.org.foo.sub"}`.
+ * `org.foo` to `org.bar.shaded.org.foo` then the results will be `{"org.foo.sub", "org.bar.shaded.org.foo.sub"}`.
  */
 bindingset[package]
 string getAShadedPackage(string package) {
