@@ -15,7 +15,7 @@ public class GroovyClassLoaderTest extends HttpServlet {
         try {
             String script = request.getParameter("script");
             final GroovyClassLoader classLoader = new GroovyClassLoader();
-            Class groovy = classLoader.parseClass(script);
+            Class groovy = classLoader.parseClass(script); // $hasGroovyInjection
             GroovyObject groovyObj = (GroovyObject) groovy.newInstance();
 
         } catch (Exception e) {
@@ -29,7 +29,7 @@ public class GroovyClassLoaderTest extends HttpServlet {
             String script = request.getParameter("script");
             final GroovyClassLoader classLoader = new GroovyClassLoader();
             GroovyCodeSource gcs = new GroovyCodeSource(script, "test", "Test");
-            Class groovy = classLoader.parseClass(gcs);
+            Class groovy = classLoader.parseClass(gcs); // $hasGroovyInjection
             GroovyObject groovyObj = (GroovyObject) groovy.newInstance();
         } catch (Exception e) {
             // Ignore

@@ -13,28 +13,28 @@ public class GroovyShellTest extends HttpServlet {
             throws ServletException, IOException {
         GroovyShell shell = new GroovyShell();
         String script = request.getParameter("script");
-        shell.evaluate(script);
+        shell.evaluate(script); // $hasGroovyInjection
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         GroovyShell shell = new GroovyShell();
         String script = request.getParameter("script");
-        shell.evaluate(script, "test");
+        shell.evaluate(script, "test"); // $hasGroovyInjection
     }
 
     protected void doPut(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         GroovyShell shell = new GroovyShell();
         String script = request.getParameter("script");
-        shell.evaluate(script, "test", "test2");
+        shell.evaluate(script, "test", "test2"); // $hasGroovyInjection
     }
 
     protected void doOptions(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         GroovyShell shell = new GroovyShell();
         String script = request.getParameter("script");
-        shell.run(script, "_", new String[]{});
+        shell.run(script, "_", new String[] {}); // $hasGroovyInjection
     }
 
     protected void doHead(HttpServletRequest request, HttpServletResponse response)
@@ -42,7 +42,7 @@ public class GroovyShellTest extends HttpServlet {
         GroovyShell shell = new GroovyShell();
         String script = request.getParameter("script");
         GroovyCodeSource gcs = new GroovyCodeSource(script, "test", "Test");
-        shell.run(gcs, new String[]{});
+        shell.run(gcs, new String[] {}); // $hasGroovyInjection
     }
 
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
@@ -50,14 +50,14 @@ public class GroovyShellTest extends HttpServlet {
         GroovyShell shell = new GroovyShell();
         String script = request.getParameter("script");
         GroovyCodeSource gcs = new GroovyCodeSource(script, "test", "Test");
-        shell.evaluate(gcs);
+        shell.evaluate(gcs); // $hasGroovyInjection
     }
 
     protected void doPatch(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         GroovyShell shell = new GroovyShell();
         String script = request.getParameter("script");
-        shell.parse(script);
+        shell.parse(script); // $hasGroovyInjection
     }
 }
 
