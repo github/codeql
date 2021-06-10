@@ -74,13 +74,9 @@ class MatchesHttpOnlyConfiguration extends TaintTracking2::Configuration {
   }
 }
 
-/** A class descended from `javax.servlet.http.Cookie` or `javax/jakarta.ws.rs.core.NewCookie`. */
+/** A class descended from `javax.servlet.http.Cookie`. */
 class CookieClass extends RefType {
-  CookieClass() {
-    this.getASupertype*().hasQualifiedName("javax.servlet.http", "Cookie")
-    or
-    this.getASupertype*().hasQualifiedName(["javax.ws.rs.core", "jakarta.ws.rs.core"], "NewCookie")
-  }
+  CookieClass() { this.getASupertype*().hasQualifiedName("javax.servlet.http", "Cookie") }
 }
 
 /** Holds if `expr` is any boolean-typed expression other than literal `false`. */

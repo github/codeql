@@ -7,9 +7,8 @@ edges
 | SensitiveCookieNotHttpOnly.java:42:42:42:57 | ... + ... : String | SensitiveCookieNotHttpOnly.java:42:42:42:69 | ... + ... |
 | SensitiveCookieNotHttpOnly.java:52:42:52:113 | new NewCookie(...) : NewCookie | SensitiveCookieNotHttpOnly.java:52:42:52:124 | toString(...) |
 | SensitiveCookieNotHttpOnly.java:52:56:52:75 | "session-access-key" : String | SensitiveCookieNotHttpOnly.java:52:42:52:113 | new NewCookie(...) : NewCookie |
-| SensitiveCookieNotHttpOnly.java:52:56:52:75 | "session-access-key" : String | SensitiveCookieNotHttpOnly.java:52:42:52:124 | toString(...) |
-| SensitiveCookieNotHttpOnly.java:63:51:63:70 | "session-access-key" : String | SensitiveCookieNotHttpOnly.java:64:25:64:39 | accessKeyCookie : NewCookie |
-| SensitiveCookieNotHttpOnly.java:63:51:63:70 | "session-access-key" : String | SensitiveCookieNotHttpOnly.java:65:42:65:47 | keyStr |
+| SensitiveCookieNotHttpOnly.java:63:37:63:115 | new NewCookie(...) : NewCookie | SensitiveCookieNotHttpOnly.java:64:25:64:39 | accessKeyCookie : NewCookie |
+| SensitiveCookieNotHttpOnly.java:63:51:63:70 | "session-access-key" : String | SensitiveCookieNotHttpOnly.java:63:37:63:115 | new NewCookie(...) : NewCookie |
 | SensitiveCookieNotHttpOnly.java:64:25:64:39 | accessKeyCookie : NewCookie | SensitiveCookieNotHttpOnly.java:64:25:64:50 | toString(...) : String |
 | SensitiveCookieNotHttpOnly.java:64:25:64:50 | toString(...) : String | SensitiveCookieNotHttpOnly.java:65:42:65:47 | keyStr |
 | SensitiveCookieNotHttpOnly.java:70:28:70:35 | "token=" : String | SensitiveCookieNotHttpOnly.java:71:42:71:50 | secString |
@@ -32,6 +31,7 @@ nodes
 | SensitiveCookieNotHttpOnly.java:52:42:52:113 | new NewCookie(...) : NewCookie | semmle.label | new NewCookie(...) : NewCookie |
 | SensitiveCookieNotHttpOnly.java:52:42:52:124 | toString(...) | semmle.label | toString(...) |
 | SensitiveCookieNotHttpOnly.java:52:56:52:75 | "session-access-key" : String | semmle.label | "session-access-key" : String |
+| SensitiveCookieNotHttpOnly.java:63:37:63:115 | new NewCookie(...) : NewCookie | semmle.label | new NewCookie(...) : NewCookie |
 | SensitiveCookieNotHttpOnly.java:63:51:63:70 | "session-access-key" : String | semmle.label | "session-access-key" : String |
 | SensitiveCookieNotHttpOnly.java:64:25:64:39 | accessKeyCookie : NewCookie | semmle.label | accessKeyCookie : NewCookie |
 | SensitiveCookieNotHttpOnly.java:64:25:64:50 | toString(...) : String | semmle.label | toString(...) : String |
