@@ -11,8 +11,7 @@ Java framework & library support
    `Apache Commons IO <https://commons.apache.org/proper/commons-io/>`_,``org.apache.commons.io``,,22,,,,,,,,
    `Apache Commons Lang <https://commons.apache.org/proper/commons-lang/>`_,``org.apache.commons.lang3``,,370,,,,,,,,
    `Apache Commons Text <https://commons.apache.org/proper/commons-text/>`_,``org.apache.commons.text``,,272,,,,,,,,
-   `Apache HttpComponents <https://hc.apache.org/>`_,``org.apache.hc.core5.*``,2,66,1,,,1,,,,
-   `Apache HttpComponents <https://hc.apache.org/>`_,``org.apache.http``,3,67,2,,,2,,,,
+   `Apache HttpComponents <https://hc.apache.org/>`_,"``org.apache.hc.core5.*``, ``org.apache.http``",5,133,3,,,3,,,,
    `Google Guava <https://guava.dev/>`_,``com.google.common.*``,,107,6,,6,,,,,
    Java Standard Library,``java.*``,3,313,15,13,,,,,,2
    Java extensions,``javax.*``,22,8,12,,,,,1,1,

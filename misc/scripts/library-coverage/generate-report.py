@@ -207,7 +207,8 @@ for config in configs:
                     row_prefix + "`" + framework.name + " <" + framework.url + ">`_")
 
             # Add the package name to the row
-            row.append("``" + framework.package_pattern + "``")
+            row.append(", ".join("``{0}``".format(p)
+                       for p in framework.package_pattern.split(" ")))
 
             # Collect statistics on the current framework
             def collect_framework(): return collect_package_stats(

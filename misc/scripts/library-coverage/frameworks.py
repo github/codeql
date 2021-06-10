@@ -48,20 +48,23 @@ class FrameworkCollection:
                 return framework
         return None
 
-    def get_patterns(self):
-        return self.package_patterns
-
     def get_frameworks(self):
         return self.frameworks
 
-    def __package_match(self, package: packages.Package, pattern):
+    def __package_match_single(self, package: packages.Package, pattern):
         return (pattern.endswith("*") and package.name.startswith(pattern[:-1])) or (not pattern.endswith("*") and pattern == package.name)
+
+    def __package_match(self, package: packages.Package, pattern):
+        patterns = pattern.split(" ")
+        return any(self.__package_match_single(package, pattern) for pattern in patterns)
 
     def get_package_filter(self, framework: Framework):
         """
         Returns a lambda filter that holds for packages that match the current framework.
 
-        The pattern is either full name, such as "org.hibernate", or a prefix, such as "java.*"
+        The pattern is either full name, such as "org.hibernate", or a prefix, such as "java.*".
+        Patterns can also contain a space separated list of patterns, such as "java.sql javax.swing".
+
         Package patterns might overlap, in case of 'org.apache.commons.io' and 'org.apache.*', the statistics for
         the latter will not include the statistics for the former.
         """
@@ -69,4 +72,4 @@ class FrameworkCollection:
             self.__package_match(p, framework.package_pattern) and \
             all(
                 len(framework.package_pattern) >= len(pattern) or
-                not self.__package_match(p, pattern) for pattern in self.get_patterns())
+                not self.__package_match(p, pattern) for pattern in self.package_patterns)
