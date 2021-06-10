@@ -88,9 +88,7 @@ abstract class MaximumWidthIntegralType extends UserType {
  * A common base type for describing enum types that are based on fixed-width types.
  */
 class FixedWidthEnumType extends UserType {
-  FixedWidthEnumType() {
-    this.(Enum).getExplicitUnderlyingType() instanceof FixedWidthIntegralType
-  }
+  FixedWidthEnumType() { this.(Enum).getExplicitUnderlyingType() instanceof FixedWidthIntegralType }
 }
 
 /**
@@ -313,9 +311,7 @@ class UInt_fast64_t extends MinimumWidthIntegralType {
  * The C/C++ `intmax_t` type.
  */
 class Intmax_t extends MaximumWidthIntegralType {
-  Intmax_t() {
-    this.hasGlobalOrStdName("intmax_t")
-  }
+  Intmax_t() { this.hasGlobalOrStdName("intmax_t") }
 
   override string getAPrimaryQlClass() { result = "Intmax_t" }
 }
@@ -324,9 +320,7 @@ class Intmax_t extends MaximumWidthIntegralType {
  * The C/C++ `uintmax_t` type.
  */
 class Uintmax_t extends MaximumWidthIntegralType {
-  Uintmax_t() {
-    this.hasGlobalOrStdName("uintmax_t")
-  }
+  Uintmax_t() { this.hasGlobalOrStdName("uintmax_t") }
 
   override string getAPrimaryQlClass() { result = "Uintmax_t" }
 }
