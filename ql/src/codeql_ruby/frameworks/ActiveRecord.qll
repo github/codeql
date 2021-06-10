@@ -110,13 +110,11 @@ class PotentiallyUnsafeSqlExecutingMethodCall extends ActiveRecordModelClassMeth
 }
 
 class ActiveRecordSqlExecutionRange extends SqlExecution::Range {
-  ExprCfgNode sql;
-
   ActiveRecordSqlExecutionRange() {
     exists(PotentiallyUnsafeSqlExecutingMethodCall mc |
       this.asExpr().getNode() = mc.getSqlFragmentSinkArgument()
     )
   }
 
-  override DataFlow::Node getSql() { result.asExpr() = sql }
+  override DataFlow::Node getSql() { result = this }
 }
