@@ -349,7 +349,7 @@ class CryptographicOperationTest extends InlineExpectationsTest {
         tag = "CryptographicOperation"
         or
         element = cryptoOperation.toString() and
-        value = value_from_expr(cryptoOperation.getAnInput().asExpr()) and
+        value = prettyNodeForInlineTest(cryptoOperation.getAnInput()) and
         tag = "CryptographicOperationInput"
         or
         element = cryptoOperation.toString() and
