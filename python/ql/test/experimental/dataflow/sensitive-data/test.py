@@ -24,6 +24,25 @@ safe_to_store = encrypt_password(pwd)
 f = get_password
 f() # $ SensitiveDataSource=password
 
+# more tests of functions we don't have definition for
+x = unkown_func_not_even_imported_get_password() # $ SensitiveDataSource=password
+print(x) # $ SensitiveUse=password
+
+f = get_passwd
+x = f() # $ MISSING: SensitiveDataSource=password
+print(x) # $ MISSING: SensitiveUse=password
+
+import not_found
+f = not_found.get_passwd # $ SensitiveDataSource=password
+x = f() # $ MISSING: SensitiveDataSource=password
+print(x) # $ MISSING: SensitiveUse=password
+
+def my_func(non_sensitive_name):
+    x = non_sensitive_name() # $ MISSING: SensitiveDataSource=password
+    print(x) # $ MISSING: SensitiveUse=password
+f = not_found.get_passwd # $ SensitiveDataSource=password
+my_func(f)
+
 # attributes
 foo = ObjectFromDatabase()
 foo.secret # $ SensitiveDataSource=secret
