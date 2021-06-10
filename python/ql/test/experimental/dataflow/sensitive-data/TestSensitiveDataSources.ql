@@ -1,3 +1,6 @@
+// /**
+//  * @kind path-problem
+//  */
 import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
@@ -19,8 +22,7 @@ class SensitiveDataSourcesTest extends InlineExpectationsTest {
       tag = "SensitiveDataSource"
       or
       exists(DataFlow::Node use |
-        use = API::builtin("print").getACall().getArg(_) and
-        TaintTracking::localTaint(source, use) and
+        any(SensitiveUseConfiguration config).hasFlow(source, use) and
         location = use.getLocation() and
         element = use.toString() and
         value = source.getClassification() and
@@ -29,3 +31,17 @@ class SensitiveDataSourcesTest extends InlineExpectationsTest {
     )
   }
 }
+
+class SensitiveUseConfiguration extends TaintTracking::Configuration {
+  SensitiveUseConfiguration() { this = "SensitiveUseConfiguration" }
+
+  override predicate isSource(DataFlow::Node node) { node instanceof SensitiveDataSource }
+
+  override predicate isSink(DataFlow::Node node) {
+    node = API::builtin("print").getACall().getArg(_)
+  }
+}
+// import DataFlow::PathGraph
+// from SensitiveUseConfiguration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
+// where cfg.hasFlowPath(source, sink)
+// select sink, source, sink, "taint from $@", source.getNode(), "here"
