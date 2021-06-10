@@ -64,24 +64,69 @@ class Ptrdiff_t extends Type {
 }
 
 /**
- * A C/C++ fixed-width numeric type, such as `int8_t`.
+ * A parent class representing C/C++ typedef'd `UserTypes` such as `int8_t`.
  */
-abstract class FixedWidthIntegralType extends UserType {
-  FixedWidthIntegralType() { this.getUnderlyingType() instanceof IntegralType }
+private class IntegralUnderlyingUserType extends UserType {
+  IntegralUnderlyingUserType() { this.getUnderlyingType() instanceof IntegralType }
 }
 
 /**
- * A C/C++ minimum-width numeric type, such as `int_least8_t` or `uint_fast16_t`.
+ * A C/C++ fixed-width numeric type, such as `int8_t`.
  */
-abstract class MinimumWidthIntegralType extends UserType {
-  MinimumWidthIntegralType() { this.getUnderlyingType() instanceof IntegralType }
+class FixedWidthIntegralType extends UserType {
+  FixedWidthIntegralType() {
+    this instanceof Int8_t or
+    this instanceof Int16_t or
+    this instanceof Int32_t or
+    this instanceof Int64_t or
+    this instanceof UInt8_t or
+    this instanceof UInt16_t or
+    this instanceof UInt32_t or
+    this instanceof UInt64_t
+  }
+}
+
+/**
+ * A C/C++ minimum-width numeric type, such as `int_least8_t`.
+ */
+class MinimumWidthIntegralType extends UserType {
+  MinimumWidthIntegralType() {
+    this instanceof Int_least8_t or
+    this instanceof Int_least16_t or
+    this instanceof Int_least32_t or
+    this instanceof Int_least64_t or
+    this instanceof UInt_least8_t or
+    this instanceof UInt_least16_t or
+    this instanceof UInt_least32_t or
+    this instanceof UInt_least64_t
+  }
+}
+
+/**
+ * A C/C++ minimum-width numeric type, representing the fastest integer type with a
+ * width of at least `N` such as `int_fast8_t`.
+ */
+class FastestMinimumWidthIntegralType extends UserType {
+  FastestMinimumWidthIntegralType() {
+    this instanceof Int_fast8_t or
+    this instanceof Int_fast16_t or
+    this instanceof Int_fast32_t or
+    this instanceof Int_fast64_t or
+    this instanceof UInt_fast8_t or
+    this instanceof UInt_fast16_t or
+    this instanceof UInt_fast32_t or
+    this instanceof UInt_fast64_t
+  }
 }
 
 /**
  * A C/C++ maximum-width numeric type, either `intmax_t` or `uintmax_t`.
  */
-abstract class MaximumWidthIntegralType extends UserType {
-  MaximumWidthIntegralType() { this.getUnderlyingType() instanceof IntegralType }
+class MaximumWidthIntegralType extends UserType {
+  MaximumWidthIntegralType() {
+    this instanceof Intmax_t or
+    this instanceof Uintmax_t
+  }
 }
 
 /**
@@ -94,7 +139,7 @@ class FixedWidthEnumType extends UserType {
 /**
  *  The C/C++ `int8_t` type.
  */
-class Int8_t extends FixedWidthIntegralType {
+class Int8_t extends IntegralUnderlyingUserType {
   Int8_t() { this.hasGlobalOrStdName("int8_t") }
 
   override string getAPrimaryQlClass() { result = "Int8_t" }
@@ -103,7 +148,7 @@ class Int8_t extends FixedWidthIntegralType {
 /**
  *  The C/C++ `int16_t` type.
  */
-class Int16_t extends FixedWidthIntegralType {
+class Int16_t extends IntegralUnderlyingUserType {
   Int16_t() { this.hasGlobalOrStdName("int16_t") }
 
   override string getAPrimaryQlClass() { result = "Int16_t" }
@@ -112,7 +157,7 @@ class Int16_t extends FixedWidthIntegralType {
 /**
  *  The C/C++ `int32_t` type.
  */
-class Int32_t extends FixedWidthIntegralType {
+class Int32_t extends IntegralUnderlyingUserType {
   Int32_t() { this.hasGlobalOrStdName("int32_t") }
 
   override string getAPrimaryQlClass() { result = "Int32_t" }
@@ -121,7 +166,7 @@ class Int32_t extends FixedWidthIntegralType {
 /**
  *  The C/C++ `int64_t` type.
  */
-class Int64_t extends FixedWidthIntegralType {
+class Int64_t extends IntegralUnderlyingUserType {
   Int64_t() { this.hasGlobalOrStdName("int64_t") }
 
   override string getAPrimaryQlClass() { result = "Int64_t" }
@@ -130,7 +175,7 @@ class Int64_t extends FixedWidthIntegralType {
 /**
  *  The C/C++ `uint8_t` type.
  */
-class UInt8_t extends FixedWidthIntegralType {
+class UInt8_t extends IntegralUnderlyingUserType {
   UInt8_t() { this.hasGlobalOrStdName("uint8_t") }
 
   override string getAPrimaryQlClass() { result = "UInt8_t" }
@@ -139,7 +184,7 @@ class UInt8_t extends FixedWidthIntegralType {
 /**
  *  The C/C++ `uint16_t` type.
  */
-class UInt16_t extends FixedWidthIntegralType {
+class UInt16_t extends IntegralUnderlyingUserType {
   UInt16_t() { this.hasGlobalOrStdName("uint16_t") }
 
   override string getAPrimaryQlClass() { result = "UInt16_t" }
@@ -148,7 +193,7 @@ class UInt16_t extends FixedWidthIntegralType {
 /**
  *  The C/C++ `uint32_t` type.
  */
-class UInt32_t extends FixedWidthIntegralType {
+class UInt32_t extends IntegralUnderlyingUserType {
   UInt32_t() { this.hasGlobalOrStdName("uint32_t") }
 
   override string getAPrimaryQlClass() { result = "UInt32_t" }
@@ -157,7 +202,7 @@ class UInt32_t extends FixedWidthIntegralType {
 /**
  *  The C/C++ `uint64_t` type.
  */
-class UInt64_t extends FixedWidthIntegralType {
+class UInt64_t extends IntegralUnderlyingUserType {
   UInt64_t() { this.hasGlobalOrStdName("uint64_t") }
 
   override string getAPrimaryQlClass() { result = "UInt64_t" }
@@ -166,7 +211,7 @@ class UInt64_t extends FixedWidthIntegralType {
 /**
  *  The C/C++ `int_least8_t` type.
  */
-class Int_least8_t extends MinimumWidthIntegralType {
+class Int_least8_t extends IntegralUnderlyingUserType {
   Int_least8_t() { this.hasGlobalOrStdName("int_least8_t") }
 
   override string getAPrimaryQlClass() { result = "Int_least8_t" }
@@ -175,7 +220,7 @@ class Int_least8_t extends MinimumWidthIntegralType {
 /**
  *  The C/C++ `int_least16_t` type.
  */
-class Int_least16_t extends MinimumWidthIntegralType {
+class Int_least16_t extends IntegralUnderlyingUserType {
   Int_least16_t() { this.hasGlobalOrStdName("int_least16_t") }
 
   override string getAPrimaryQlClass() { result = "Int_least16_t" }
@@ -184,7 +229,7 @@ class Int_least16_t extends MinimumWidthIntegralType {
 /**
  *  The C/C++ `int_least32_t` type.
  */
-class Int_least32_t extends MinimumWidthIntegralType {
+class Int_least32_t extends IntegralUnderlyingUserType {
   Int_least32_t() { this.hasGlobalOrStdName("int_least32_t") }
 
   override string getAPrimaryQlClass() { result = "Int_least32_t" }
@@ -193,7 +238,7 @@ class Int_least32_t extends MinimumWidthIntegralType {
 /**
  *  The C/C++ `int_least64_t` type.
  */
-class Int_least64_t extends MinimumWidthIntegralType {
+class Int_least64_t extends IntegralUnderlyingUserType {
   Int_least64_t() { this.hasGlobalOrStdName("int_least64_t") }
 
   override string getAPrimaryQlClass() { result = "Int_least64_t" }
@@ -202,7 +247,7 @@ class Int_least64_t extends MinimumWidthIntegralType {
 /**
  *  The C/C++ `uint_least8_t` type.
  */
-class UInt_least8_t extends MinimumWidthIntegralType {
+class UInt_least8_t extends IntegralUnderlyingUserType {
   UInt_least8_t() { this.hasGlobalOrStdName("uint_least8_t") }
 
   override string getAPrimaryQlClass() { result = "UInt_least8_t" }
@@ -211,7 +256,7 @@ class UInt_least8_t extends MinimumWidthIntegralType {
 /**
  *  The C/C++ `uint_least16_t` type.
  */
-class UInt_least16_t extends MinimumWidthIntegralType {
+class UInt_least16_t extends IntegralUnderlyingUserType {
   UInt_least16_t() { this.hasGlobalOrStdName("uint_least16_t") }
 
   override string getAPrimaryQlClass() { result = "UInt_least16_t" }
@@ -220,7 +265,7 @@ class UInt_least16_t extends MinimumWidthIntegralType {
 /**
  *  The C/C++ `uint_least32_t` type.
  */
-class UInt_least32_t extends MinimumWidthIntegralType {
+class UInt_least32_t extends IntegralUnderlyingUserType {
   UInt_least32_t() { this.hasGlobalOrStdName("uint_least32_t") }
 
   override string getAPrimaryQlClass() { result = "UInt_least32_t" }
@@ -229,7 +274,7 @@ class UInt_least32_t extends MinimumWidthIntegralType {
 /**
  *  The C/C++ `uint_least64_t` type.
  */
-class UInt_least64_t extends MinimumWidthIntegralType {
+class UInt_least64_t extends IntegralUnderlyingUserType {
   UInt_least64_t() { this.hasGlobalOrStdName("uint_least64_t") }
 
   override string getAPrimaryQlClass() { result = "UInt_least64_t" }
@@ -238,7 +283,7 @@ class UInt_least64_t extends MinimumWidthIntegralType {
 /**
  *  The C/C++ `int_fast8_t` type.
  */
-class Int_fast8_t extends MinimumWidthIntegralType {
+class Int_fast8_t extends IntegralUnderlyingUserType {
   Int_fast8_t() { this.hasGlobalOrStdName("int_fast8_t") }
 
   override string getAPrimaryQlClass() { result = "Int_fast8_t" }
@@ -247,7 +292,7 @@ class Int_fast8_t extends MinimumWidthIntegralType {
 /**
  *  The C/C++ `int_fast16_t` type.
  */
-class Int_fast16_t extends MinimumWidthIntegralType {
+class Int_fast16_t extends IntegralUnderlyingUserType {
   Int_fast16_t() { this.hasGlobalOrStdName("int_fast16_t") }
 
   override string getAPrimaryQlClass() { result = "Int_fast16_t" }
@@ -256,7 +301,7 @@ class Int_fast16_t extends MinimumWidthIntegralType {
 /**
  *  The C/C++ `int_fast32_t` type.
  */
-class Int_fast32_t extends MinimumWidthIntegralType {
+class Int_fast32_t extends IntegralUnderlyingUserType {
   Int_fast32_t() { this.hasGlobalOrStdName("int_fast32_t") }
 
   override string getAPrimaryQlClass() { result = "Int_fast32_t" }
@@ -265,7 +310,7 @@ class Int_fast32_t extends MinimumWidthIntegralType {
 /**
  *  The C/C++ `int_fast64_t` type.
  */
-class Int_fast64_t extends MinimumWidthIntegralType {
+class Int_fast64_t extends IntegralUnderlyingUserType {
   Int_fast64_t() { this.hasGlobalOrStdName("int_fast64_t") }
 
   override string getAPrimaryQlClass() { result = "Int_fast64_t" }
@@ -274,7 +319,7 @@ class Int_fast64_t extends MinimumWidthIntegralType {
 /**
  *  The C/C++ `uint_fast8_t` type.
  */
-class UInt_fast8_t extends MinimumWidthIntegralType {
+class UInt_fast8_t extends IntegralUnderlyingUserType {
   UInt_fast8_t() { this.hasGlobalOrStdName("uint_fast8_t") }
 
   override string getAPrimaryQlClass() { result = "UInt_fast8_t" }
@@ -283,7 +328,7 @@ class UInt_fast8_t extends MinimumWidthIntegralType {
 /**
  *  The C/C++ `uint_fast16_t` type.
  */
-class UInt_fast16_t extends MinimumWidthIntegralType {
+class UInt_fast16_t extends IntegralUnderlyingUserType {
   UInt_fast16_t() { this.hasGlobalOrStdName("uint_fast16_t") }
 
   override string getAPrimaryQlClass() { result = "UInt_fast16_t" }
@@ -292,7 +337,7 @@ class UInt_fast16_t extends MinimumWidthIntegralType {
 /**
  *  The C/C++ `uint_fast32_t` type.
  */
-class UInt_fast32_t extends MinimumWidthIntegralType {
+class UInt_fast32_t extends IntegralUnderlyingUserType {
   UInt_fast32_t() { this.hasGlobalOrStdName("uint_fast32_t") }
 
   override string getAPrimaryQlClass() { result = "UInt_fast32_t" }
@@ -301,7 +346,7 @@ class UInt_fast32_t extends MinimumWidthIntegralType {
 /**
  *  The C/C++ `uint_fast64_t` type.
  */
-class UInt_fast64_t extends MinimumWidthIntegralType {
+class UInt_fast64_t extends IntegralUnderlyingUserType {
   UInt_fast64_t() { this.hasGlobalOrStdName("uint_fast64_t") }
 
   override string getAPrimaryQlClass() { result = "UInt_fast64_t" }
@@ -310,7 +355,7 @@ class UInt_fast64_t extends MinimumWidthIntegralType {
 /**
  * The C/C++ `intmax_t` type.
  */
-class Intmax_t extends MaximumWidthIntegralType {
+class Intmax_t extends IntegralUnderlyingUserType {
   Intmax_t() { this.hasGlobalOrStdName("intmax_t") }
 
   override string getAPrimaryQlClass() { result = "Intmax_t" }
@@ -319,7 +364,7 @@ class Intmax_t extends MaximumWidthIntegralType {
 /**
  * The C/C++ `uintmax_t` type.
  */
-class Uintmax_t extends MaximumWidthIntegralType {
+class Uintmax_t extends IntegralUnderlyingUserType {
   Uintmax_t() { this.hasGlobalOrStdName("uintmax_t") }
 
   override string getAPrimaryQlClass() { result = "Uintmax_t" }
