@@ -136,13 +136,14 @@ class HardcodedCredentialsConfiguration extends DataFlow::Configuration {
   override predicate isSink(DataFlow::Node sink) { sink instanceof CredentialSink }
 
   override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    // e.g. string concatenation
     exists(ExprNodes::BinaryOperationCfgNode binop |
       (
         binop.getLeftOperand() = node1.asExpr() or
         binop.getRightOperand() = node1.asExpr()
       ) and
-      binop = node2.asExpr()
+      binop = node2.asExpr() and
+      // string concatenation
+      binop.getExpr() instanceof AddExpr
     )
   }
 }
