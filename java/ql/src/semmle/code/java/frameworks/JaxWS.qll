@@ -477,6 +477,40 @@ private class MultivaluedMapModel extends SummaryModelCsv {
 }
 
 /**
+ * Model AbstractMultivaluedMap, which implements MultivaluedMap.
+ */
+private class AbstractMultivaluedMapModel extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "javax.ws.rs.core;AbstractMultivaluedMap;false;AbstractMultivaluedMap;;;MapKey of Argument[0];MapKey of Argument[-1];value",
+        "javax.ws.rs.core;AbstractMultivaluedMap;false;AbstractMultivaluedMap;;;MapValue of Argument[0];MapValue of Argument[-1];value",
+        "jakarta.ws.rs.core;AbstractMultivaluedMap;false;AbstractMultivaluedMap;;;MapKey of Argument[0];MapKey of Argument[-1];value",
+        "jakarta.ws.rs.core;AbstractMultivaluedMap;false;AbstractMultivaluedMap;;;MapValue of Argument[0];MapValue of Argument[-1];value"
+      ]
+  }
+}
+
+/**
+ * Model MultivaluedHashMap, which extends AbstractMultivaluedMap.
+ */
+private class MultivaluedHashMapModel extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "javax.ws.rs.core;MultivaluedHashMap;false;MultivaluedHashMap;(Map);;MapKey of Argument[0];MapKey of Argument[-1];value",
+        "javax.ws.rs.core;MultivaluedHashMap;false;MultivaluedHashMap;(Map);;MapValue of Argument[0];Element of MapValue of Argument[-1];value",
+        "javax.ws.rs.core;MultivaluedHashMap;false;MultivaluedHashMap;(MultivaluedMap);;MapKey of Argument[0];MapKey of Argument[-1];value",
+        "javax.ws.rs.core;MultivaluedHashMap;false;MultivaluedHashMap;(MultivaluedMap);;MapValue of Argument[0];MapValue of Argument[-1];value",
+        "jakarta.ws.rs.core;MultivaluedHashMap;false;MultivaluedHashMap;(Map);;MapKey of Argument[0];MapKey of Argument[-1];value",
+        "jakarta.ws.rs.core;MultivaluedHashMap;false;MultivaluedHashMap;(Map);;MapValue of Argument[0];Element of MapValue of Argument[-1];value",
+        "jakarta.ws.rs.core;MultivaluedHashMap;false;MultivaluedHashMap;(MultivaluedMap);;MapKey of Argument[0];MapKey of Argument[-1];value",
+        "jakarta.ws.rs.core;MultivaluedHashMap;false;MultivaluedHashMap;(MultivaluedMap);;MapValue of Argument[0];MapValue of Argument[-1];value"
+      ]
+  }
+}
+
+/**
  * Model PathSegment, which wraps a path and its associated matrix parameters.
  */
 private class PathSegmentModel extends SummaryModelCsv {

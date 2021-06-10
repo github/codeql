@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javax.ws.rs.core.AbstractMultivaluedMap;
 import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.EntityTag;
@@ -15,6 +16,7 @@ import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Link;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.PathSegment;
@@ -147,6 +149,42 @@ public class JaxRsFlow {
     sink(mm1.keySet().iterator().next()); // $hasValueFlow
     mm2.putSingle("key", taint());
     sink(mm2.get("key").get(0)); // $hasValueFlow
+  }
+
+  class MyAbstractMultivaluedMap<K, V> extends AbstractMultivaluedMap<K, V> {
+    public MyAbstractMultivaluedMap(Map<K, List<V>> map) {
+        super(map);
+    }
+  }
+
+  void testAbstractMultivaluedMap(Map<String, List<String>> map1, Map<String, List<String>> map2, List<String> list) {
+    map1.put(taint(), list);
+    AbstractMultivaluedMap<String, String> amm1 = new MyAbstractMultivaluedMap<String, String>(map1);
+    sink(amm1.keySet().iterator().next()); // $hasValueFlow
+
+    list.add(taint());
+    map2.put("key", list);
+    AbstractMultivaluedMap<String, String> amm2 = new MyAbstractMultivaluedMap<String, String>(map2);
+    sink(amm2.get("key").get(0)); // $hasValueFlow
+  }
+
+  void testMultivaluedHashMap(Map<String, String> map1, Map<String, String> map2,
+      MultivaluedMap<String, String> mm1, MultivaluedMap<String, String> mm2) {
+    map1.put(taint(), "value");
+    MultivaluedHashMap<String, String> mhm1 = new MultivaluedHashMap<String, String>(map1);
+    sink(mhm1.keySet().iterator().next()); // $hasValueFlow
+
+    map2.put("key", taint());
+    MultivaluedHashMap<String, String> mhm2 = new MultivaluedHashMap<String, String>(map2);
+    sink(mhm2.get("key").get(0)); // $hasValueFlow
+
+    mm1.add(taint(), "value");
+    MultivaluedHashMap<String, String> mhm3 = new MultivaluedHashMap<String, String>(mm1);
+    sink(mhm3.keySet().iterator().next()); // $hasValueFlow
+
+    mm2.add("key", taint());
+    MultivaluedHashMap<String, String> mhm4 = new MultivaluedHashMap<String, String>(mm2);
+    sink(mhm4.get("key").get(0)); // $hasValueFlow
   }
 
   void testPathSegment(PathSegment ps1, PathSegment ps2) {
