@@ -36,6 +36,6 @@ jobs:
     - name: Upload timeseries CSV
       uses: actions/upload-artifact@v2
       with:
-        name: csv-flow-model-coverage-timeseries
-        path: timeseries-*.csv
+        name: framework-coverage-timeseries
+        path: framework-coverage-timeseries-*.csv
 

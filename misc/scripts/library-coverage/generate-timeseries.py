@@ -74,9 +74,10 @@ configs = [
 
 # todo: change this when we cover multiple languages. We should compute the SHAs
 # only once and not per language
+output_prefix = "framework-coverage-timeseries-"
 for config in configs:
-    with open("timeseries-" + config.lang + ".csv", 'w', newline='') as csvfile_total:
-        with open("timeseries-" + config.lang + "-packages.csv", 'w', newline='') as csvfile_packages:
+    with open(output_prefix + config.lang + ".csv", 'w', newline='') as csvfile_total:
+        with open(output_prefix + config.lang + "-packages.csv", 'w', newline='') as csvfile_packages:
             csvwriter_total = csv.writer(csvfile_total)
             csvwriter_packages = csv.writer(csvfile_packages)
             csvwriter_total.writerow(

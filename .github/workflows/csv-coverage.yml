@@ -47,11 +47,11 @@ jobs:
     - name: Upload CSV package list
       uses: actions/upload-artifact@v2
       with:
-        name: csv-flow-model-coverage
-        path: flow-model-coverage-*.csv
+        name: framework-coverage-csv
+        path: framework-coverage-*.csv
     - name: Upload RST package list
       uses: actions/upload-artifact@v2
       with:
-        name: rst-flow-model-coverage
-        path: flow-model-coverage-*.rst
+        name: framework-coverage-rst
+        path: framework-coverage-*.rst
 
