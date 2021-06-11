@@ -3,6 +3,7 @@ from aiohttp import web
 async def test_taint(request: web.Request): # $ requestHandler
 
     ensure_tainted(
+        # see https://docs.aiohttp.org/en/stable/web_reference.html#request-and-base-request
         request, # $ tainted
 
         # yarl.URL (see `yarl` framework tests)
@@ -32,10 +33,7 @@ async def test_taint(request: web.Request): # $ requestHandler
         request.headers, # $ tainted
         request.headers.getone("key"), # $ tainted
 
-        # https://docs.python.org/3/library/asyncio-protocol.html#asyncio-transport
-        # TODO
-        request.transport, # $ tainted
-        request.transport.get_extra_info("key"), # $ MISSING: tainted
+
 
         # dict-like (readonly)
         request.cookies, # $ tainted
@@ -50,9 +48,22 @@ async def test_taint(request: web.Request): # $ requestHandler
 
         # aiohttp.StreamReader
         # see https://docs.aiohttp.org/en/stable/streams.html#aiohttp.StreamReader
-        # TODO
         request.content, # $ tainted
+        await request.content.read(), # $ MISSING: tainted
+        await request.content.readany(), # $ MISSING: tainted
+        await request.content.readexactly(42), # $ MISSING: tainted
+        await request.content.readline(), # $ MISSING: tainted
+        await request.content.readchunk(), # $ MISSING: tainted
+        (await request.content.readchunk())[0], # $ MISSING: tainted
+        [line async for line in request.content], # $ MISSING: tainted
+        [data async for data in request.content.iter_chunked(1024)], # $ MISSING: tainted
+        [data async for data in request.content.iter_any()], # $ MISSING: tainted
+        [data async for data, _ in request.content.iter_chunks()], # $ MISSING: tainted
+        request.content.read_nowait(), # $ MISSING: tainted
+
+        # aiohttp.StreamReader
         request._payload, # $ tainted
+        await request._payload.readany(), # $ MISSING: tainted
 
         request.content_type, # $ tainted
         request.charset, # $ tainted
@@ -66,8 +77,18 @@ async def test_taint(request: web.Request): # $ requestHandler
 
         request.clone(scheme="https"), # $ tainted
 
-        # TODO: like request.transport.get_extra_info
+        # asyncio.Transport
+        # https://docs.python.org/3/library/asyncio-protocol.html#asyncio-transport
+        # example given in https://docs.aiohttp.org/en/stable/web_reference.html#aiohttp.web.BaseRequest.transport
+        # uses `peername` to get IP address of client
+        request.transport, # $ tainted
+        request.transport.get_extra_info("key"), # $ MISSING: tainted
+
+        # Like request.transport.get_extra_info
         request.get_extra_info("key"), # $ tainted
+
+        # Like request.transport.get_extra_info
+        request.protocol.transport.get_extra_info("key"), # $ MISSING: tainted
 
         # bytes
         await request.read(), # $ tainted
