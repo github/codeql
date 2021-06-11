@@ -1017,6 +1017,7 @@ private predicate isReDoSAttackable(RegExpTerm term, string pump, State s) {
  * `prefixMsg` contains a friendly message for a prefix that reaches `s` (or `prefixMsg` is the empty string if the prefix is empty or if no prefix could be found).
  */
 predicate hasReDoSResult(RegExpTerm t, string pump, State s, string prefixMsg) {
+  not t.getRegex().getAMode() = "VERBOSE" and // exclude verbose mode regexes
   isReDoSAttackable(t, pump, s) and
   // (
   //   prefixMsg = "starting with '" + escape(PrefixConstruction::prefix(s)) + "' and " and

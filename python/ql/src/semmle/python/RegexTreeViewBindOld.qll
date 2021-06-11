@@ -227,6 +227,12 @@ class RegExpAlt extends RegExpTerm, TRegExpAlt {
 
 class RegExpEscape extends RegExpNormalChar {
   RegExpEscape() { re.escapedCharacter(start, end) }
+
+  /**
+   * Gets the name of the escaped; for example, `w` for `\w`.
+   * TODO: Handle unicode and named escapes.
+   */
+  override string getValue() { result = re.getText().substring(start + 1, end) }
 }
 
 /**
@@ -241,16 +247,15 @@ class RegExpEscape extends RegExpNormalChar {
  * ```
  */
 class RegExpCharacterClassEscape extends RegExpEscape {
-  string value;
-
+  // string value;
   RegExpCharacterClassEscape() {
-    value = re.getText().substring(start + 1, end) and
-    value in ["b", "B", "d", "D", "s", "S", "w", "W"]
+    // value = re.getText().substring(start + 1, end) and
+    // value in ["b", "B", "d", "D", "s", "S", "w", "W"]
+    this.getValue() in ["b", "B", "d", "D", "s", "S", "w", "W"]
   }
 
   /** Gets the name of the character class; for example, `w` for `\w`. */
-  override string getValue() { result = value }
-
+  // override string getValue() { result = value }
   override RegExpTerm getChild(int i) { none() }
 }
 
@@ -330,19 +335,25 @@ class RegExpNormalChar extends RegExpTerm, TRegExpNormalChar {
 }
 
 class RegExpConstant extends RegExpTerm {
+  string value;
+
   RegExpConstant() {
     this = TRegExpNormalChar(re, start, end) and
     not this instanceof RegExpCharacterClassEscape and
+    // exclude chars in qualifiers
     not exists(int qstart, int qend | re.qualifiedPart(_, qstart, qend, _, _) |
       qstart <= start and end <= qend
-    ) // exclude chars in qualifiers
+    ) and
+    value = this.(RegExpNormalChar).getValue()
     or
-    this = TRegExpSpecialChar(re, start, end) and re.inCharSet(start)
+    this = TRegExpSpecialChar(re, start, end) and
+    re.inCharSet(start) and
+    value = this.(RegExpSpecialChar).getChar()
   }
 
   predicate isCharacter() { any() }
 
-  string getValue() { result = re.getText().substring(start, end) }
+  string getValue() { result = value }
 
   override RegExpTerm getChild(int i) { none() }
 }
