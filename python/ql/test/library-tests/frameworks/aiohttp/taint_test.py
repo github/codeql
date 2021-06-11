@@ -104,7 +104,7 @@ async def test_taint(request: web.Request): # $ requestHandler
 
         # multidict.MultiDictProxy[str] (see `multidict` framework tests)
         await request.post(), # $ tainted
-        (await request.post()).getone("key"), # $ MISSING: tainted
+        (await request.post()).getone("key"), # $ tainted
     )
 
     import yarl

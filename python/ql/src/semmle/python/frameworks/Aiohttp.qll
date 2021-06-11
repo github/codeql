@@ -444,6 +444,18 @@ module AiohttpWebModel {
     AiohttpRequestMultiDictProxyInstances() {
       this.(DataFlow::AttrRead).getObject() = Request::instance() and
       this.(DataFlow::AttrRead).getAttributeName() in ["query", "headers"]
+      or
+      // Handle the common case of `x = await request.post()`
+      // but don't try to handle anything else, since we don't have an easy way to do this yet.
+      // TODO: more complete handling of `await request.post()`
+      exists(Await await, DataFlow::CallCfgNode call, DataFlow::AttrRead read |
+        this.asExpr() = await
+      |
+        read.(DataFlow::AttrRead).getObject() = Request::instance() and
+        read.(DataFlow::AttrRead).getAttributeName() = "post" and
+        call.getFunction() = read and
+        await.getValue() = call.asExpr()
+      )
     }
   }
 
