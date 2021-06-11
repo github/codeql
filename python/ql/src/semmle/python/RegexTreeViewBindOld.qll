@@ -113,7 +113,7 @@ class RegExpTerm extends RegExpParent {
 
   File getFile() { result = this.getLocation().getFile() }
 
-  string getRawValue() { result = re.getText() }
+  string getRawValue() { result = this.toString() }
 
   RegExpLiteral getLiteral() { result = TRegExpLiteral(re) }
 
