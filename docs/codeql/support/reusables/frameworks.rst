@@ -169,3 +169,4 @@ Python built-in support
    cryptography, Cryptography library
    pycryptodome, Cryptography library
    pycryptodomex, Cryptography library
+   rsa, Cryptography library
