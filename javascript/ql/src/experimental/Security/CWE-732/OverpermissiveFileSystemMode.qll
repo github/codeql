@@ -218,7 +218,7 @@ bindingset[digits]
 private int fromOctalString(string digits) {
   result =
     sum(int i |
-      i in [0 .. digits.length()]
+      i in [0 .. digits.length() - 1]
     |
       digits.charAt(i).toInt().bitShiftLeft(3 * (digits.length() - i - 1))
     )
