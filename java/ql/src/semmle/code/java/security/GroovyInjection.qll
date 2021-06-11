@@ -6,6 +6,7 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.ExternalFlow
+import semmle.code.java.frameworks.Networking
 
 /** A data flow sink for Groovy expression injection vulnerabilities. */
 abstract class GroovyInjectionSink extends DataFlow::ExprNode { }
@@ -31,9 +32,27 @@ private class DefaultLdapInjectionSinkModel extends SinkModelCsv {
   override predicate row(string row) {
     row =
       [
-        "groovy.lang;GroovyShell;false;evaluate;;;Argument[0];groovy",
-        "groovy.lang;GroovyShell;false;parse;;;Argument[0];groovy",
-        "groovy.lang;GroovyShell;false;run;;;Argument[0];groovy",
+        // Signatures are specified to exclude sinks of the type `File`
+        "groovy.lang;GroovyShell;false;evaluate;(GroovyCodeSource);;Argument[0];groovy",
+        "groovy.lang;GroovyShell;false;evaluate;(Reader);;Argument[0];groovy",
+        "groovy.lang;GroovyShell;false;evaluate;(Reader,String);;Argument[0];groovy",
+        "groovy.lang;GroovyShell;false;evaluate;(String);;Argument[0];groovy",
+        "groovy.lang;GroovyShell;false;evaluate;(String,String);;Argument[0];groovy",
+        "groovy.lang;GroovyShell;false;evaluate;(String,String,String);;Argument[0];groovy",
+        "groovy.lang;GroovyShell;false;evaluate;(URI);;Argument[0];groovy",
+        "groovy.lang;GroovyShell;false;parse;(Reader);;Argument[0];groovy",
+        "groovy.lang;GroovyShell;false;parse;(Reader,String);;Argument[0];groovy",
+        "groovy.lang;GroovyShell;false;parse;(String);;Argument[0];groovy",
+        "groovy.lang;GroovyShell;false;parse;(String,String);;Argument[0];groovy",
+        "groovy.lang;GroovyShell;false;parse;(URI);;Argument[0];groovy",
+        "groovy.lang;GroovyShell;false;run;(GroovyCodeSource,String[]);;Argument[0];groovy",
+        "groovy.lang;GroovyShell;false;run;(GroovyCodeSource,List);;Argument[0];groovy",
+        "groovy.lang;GroovyShell;false;run;(Reader,String,String[]);;Argument[0];groovy",
+        "groovy.lang;GroovyShell;false;run;(Reader,String,List);;Argument[0];groovy",
+        "groovy.lang;GroovyShell;false;run;(String,String,String[]);;Argument[0];groovy",
+        "groovy.lang;GroovyShell;false;run;(String,String,List);;Argument[0];groovy",
+        "groovy.lang;GroovyShell;false;run;(URI,String[]);;Argument[0];groovy",
+        "groovy.lang;GroovyShell;false;run;(URI,List);;Argument[0];groovy",
         "groovy.util;Eval;false;me;(String);;Argument[0];groovy",
         "groovy.util;Eval;false;me;(String,Object,String);;Argument[2];groovy",
         "groovy.util;Eval;false;x;(Object,String);;Argument[1];groovy",
@@ -50,7 +69,8 @@ private class DefaultGroovyInjectionAdditionalTaintStep extends GroovyInjectionA
   override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
     groovyCodeSourceTaintStep(node1, node2) or
     groovyCompilationUnitTaintStep(node1, node2) or
-    groovySourceUnitTaintStep(node1, node2)
+    groovySourceUnitTaintStep(node1, node2) or
+    groovyReaderSourceTaintStep(node1, node2)
   }
 }
 
@@ -67,7 +87,7 @@ private predicate groovyCodeSourceTaintStep(DataFlow::Node fromNode, DataFlow::N
 }
 
 /**
- * Holds if `fromNode` to `toNode` is a dataflow step from a tainted string to
+ * Holds if `fromNode` to `toNode` is a dataflow step from a tainted object to
  * a `CompilationUnit` instance by calling `compilationUnit.addSource(..., tainted)`.
  */
 private predicate groovyCompilationUnitTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
@@ -82,15 +102,20 @@ private predicate groovyCompilationUnitTaintStep(DataFlow::Node fromNode, DataFl
 }
 
 /**
- * Holds if `fromNode` to `toNode` is a dataflow step from a tainted string to
+ * Holds if `fromNode` to `toNode` is a dataflow step from a tainted object to
  * a `SourceUnit` instance by calling `new SourceUnit(..., tainted, ...)`
  * or `SourceUnit.create(..., tainted)`
  */
 private predicate groovySourceUnitTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-  exists(ClassInstanceExpr cie, Argument arg |
+  exists(ClassInstanceExpr cie, Argument arg, int index |
     cie.getConstructedType() instanceof TypeGroovySourceUnit and
-    arg = cie.getArgument(1) and
-    arg.getType() instanceof TypeString
+    arg = cie.getArgument(index) and
+    (
+      index = 0 and arg.getType() instanceof TypeUrl
+      or
+      index = 1 and
+      (arg.getType() instanceof TypeString or arg.getType() instanceof TypeReaderSource)
+    )
   |
     fromNode.asExpr() = arg and
     toNode.asExpr() = cie
@@ -102,6 +127,18 @@ private predicate groovySourceUnitTaintStep(DataFlow::Node fromNode, DataFlow::N
     m.getDeclaringType() instanceof TypeGroovySourceUnit
   |
     fromNode.asExpr() = ma.getArgument(1) and toNode.asExpr() = ma
+  )
+}
+
+/**
+ * Holds if `fromNode` to `toNode` is a dataflow step from a tainted object to
+ * a `ReaderSource` instance by calling `new *ReaderSource(tainted, ...)`
+ */
+private predicate groovyReaderSourceTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
+  exists(ClassInstanceExpr cie |
+    cie.getConstructedType().getASupertype*() instanceof TypeReaderSource
+  |
+    fromNode.asExpr() = cie.getArgument(0) and toNode.asExpr() = cie
   )
 }
 
@@ -120,4 +157,9 @@ private class TypeGroovyCompilationUnit extends RefType {
 /** The class `org.codehaus.groovy.control.CompilationUnit`. */
 private class TypeGroovySourceUnit extends RefType {
   TypeGroovySourceUnit() { this.hasQualifiedName("org.codehaus.groovy.control", "SourceUnit") }
+}
+
+/** The class `org.codehaus.groovy.control.io.ReaderSource`. */
+private class TypeReaderSource extends RefType {
+  TypeReaderSource() { this.hasQualifiedName("org.codehaus.groovy.control.io", "ReaderSource") }
 }
