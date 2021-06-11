@@ -49,22 +49,22 @@ public class B {
 
   void foo() throws InterruptedException {
     {
-      // "java.util;Map<>$Entry;true;getKey;;;MapKey of Argument[-1];ReturnValue;value",
+      // "java.util;Map$Entry;true;getKey;;;MapKey of Argument[-1];ReturnValue;value",
       Object out = null;
       Object in = storeMapKeyEntry(source()); out = ((Map.Entry)in).getKey(); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;Map<>$Entry;true;getValue;;;MapValue of Argument[-1];ReturnValue;value",
+      // "java.util;Map$Entry;true;getValue;;;MapValue of Argument[-1];ReturnValue;value",
       Object out = null;
       Object in = storeMapValueEntry(source()); out = ((Map.Entry)in).getValue(); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;Map<>$Entry;true;setValue;;;MapValue of Argument[-1];ReturnValue;value",
+      // "java.util;Map$Entry;true;setValue;;;MapValue of Argument[-1];ReturnValue;value",
       Object out = null;
       Object in = storeMapValueEntry(source()); out = ((Map.Entry)in).setValue(null); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;Map<>$Entry;true;setValue;;;Argument[0];MapValue of Argument[-1];value",
+      // "java.util;Map$Entry;true;setValue;;;Argument[0];MapValue of Argument[-1];value",
       Map.Entry out = null;
       Object in = source(); out.setValue(in); sink(readMapValue(out)); // $ hasValueFlow
     }
