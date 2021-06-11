@@ -1,4 +1,5 @@
-{ "provide": [ "*/ql/src/qlpack.yml",
+{ "provide": [ "*/ql/lib/qlpack.yml",
+               "*/ql/src/qlpack.yml",
                "*/ql/test/qlpack.yml",
                "cpp/ql/test/query-tests/Security/CWE/CWE-190/semmle/tainted/qlpack.yml",
                "*/ql/examples/qlpack.yml",

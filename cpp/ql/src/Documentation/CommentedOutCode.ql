@@ -9,7 +9,7 @@
  *       documentation
  */
 
-import CommentedOutCode
+import Documentation.CommentedOutCode
 
 from CommentedOutCode comment
 select comment, "This comment appears to contain commented-out code"

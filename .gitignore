@@ -5,6 +5,7 @@
 
 # query compilation caches
 .cache
+data
 
 # qltest projects and artifacts
 */ql/test/**/*.testproj
@@ -23,4 +24,8 @@
 # It's useful (though not required) to be able to unpack codeql in the ql checkout itself
 /codeql/
 
+# Exclude output directories for compiled packs.
+.codeql/
+
 csharp/extractor/Semmle.Extraction.CSharp.Driver/Properties/launchSettings.json
+

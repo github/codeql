@@ -8,7 +8,7 @@
  * @tags reliability
  */
 
-import NewDelete
+import Critical.NewDelete
 
 from Expr alloc, Expr free, Expr freed
 where

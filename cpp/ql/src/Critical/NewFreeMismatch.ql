@@ -11,7 +11,7 @@
  *       external/cwe/cwe-401
  */
 
-import NewDelete
+import Critical.NewDelete
 
 /**
  * Holds if `allocKind` and `freeKind` indicate corresponding
