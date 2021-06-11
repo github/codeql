@@ -78,8 +78,9 @@ class TestBase {
     }
 
     void test7() {
-        sink(MoreObjects.firstNonNull(taint(), "abc")); // $numTaintFlow=1
+        sink(MoreObjects.firstNonNull(taint(), taint())); // $numTaintFlow=2
         sink(MoreObjects.firstNonNull(null, taint())); // $numTaintFlow=1
+        sink(MoreObjects.firstNonNull(taint(), null)); // $numTaintFlow=1
         sink(MoreObjects.toStringHelper(taint()).add("x", 3).omitNullValues().toString()); // $numTaintFlow=1
         sink(MoreObjects.toStringHelper((Object) taint()).toString());
         sink(MoreObjects.toStringHelper("a").add("x", 3).add(taint(), 4).toString()); // $numTaintFlow=1
@@ -104,11 +105,5 @@ class TestBase {
         sink(Optional.absent().or(x)); // $numTaintFlow=1
         sink(Optional.absent().or(taint())); // $numTaintFlow=1
         sink(Optional.presentInstances(Optional.of(x).asSet())); // $numTaintFlow=1
-    }
-
-    void test5() {
-        sink(MoreObjects.firstNonNull(taint(), taint())); // $numTaintFlow=2
-        sink(MoreObjects.firstNonNull(null, taint())); // $numTaintFlow=1
-        sink(MoreObjects.firstNonNull(taint(), null)); // $numTaintFlow=1
     }
 }
