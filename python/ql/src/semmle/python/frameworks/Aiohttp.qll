@@ -27,14 +27,14 @@ module AiohttpWebModel {
    * See https://docs.aiohttp.org/en/stable/web_reference.html#view.
    */
   module View {
-    /** Gets a reference to the `flask.views.View` class or any subclass. */
+    /** Gets a reference to the `aiohttp.web.View` class or any subclass. */
     API::Node subclassRef() {
       result = API::moduleImport("aiohttp").getMember("web").getMember("View").getASubclass*()
     }
   }
 
   // -- route modeling --
-  /** Gets a reference to a `aiohttp.web.Application` instance. */
+  /** Gets a reference to an `aiohttp.web.Application` instance. */
   API::Node applicationInstance() {
     // Not sure whether you're allowed to add routes _after_ starting the app, for
     // example in the middle of handling a http request... but I'm guessing that for 99%
@@ -43,7 +43,7 @@ module AiohttpWebModel {
     result = API::moduleImport("aiohttp").getMember("web").getMember("Application").getReturn()
   }
 
-  /** Gets a reference to a `aiohttp.web.UrlDispatcher` instance. */
+  /** Gets a reference to an `aiohttp.web.UrlDispatcher` instance. */
   API::Node urlDispathcerInstance() {
     result = API::moduleImport("aiohttp").getMember("web").getMember("UrlDispatcher").getReturn()
     or
@@ -106,9 +106,7 @@ module AiohttpWebModel {
       Function getARequestHandler() {
         this.getHandlerArg() = poorMansFunctionTracker(result)
         or
-        exists(AiohttpViewClass cls |
-          cls = this.getViewClass() and
-          result = cls.getARequestHandler()
+       result = this.getViewClass().(AiohttpViewClass).getARequestHandler()
         )
       }
     }
@@ -142,7 +140,7 @@ module AiohttpWebModel {
     }
   }
 
-  /** An aiohttp route setup that uses coroutines (async function) as request handler. */
+  /** An aiohttp route setup that uses coroutines (async function) as request handlers. */
   class AiohttpCoroutineRouteSetup extends AiohttpRouteSetup {
     AiohttpCoroutineRouteSetup() { this.getHandlerArg() = poorMansFunctionTracker(_) }
   }
@@ -187,7 +185,7 @@ module AiohttpWebModel {
     }
   }
 
-  /** A route-setup using a decorator, such as `route`, `view`, `get`, `post`, etc. on a `aiohttp.web.RouteTableDef`. */
+  /** A route-setup using a decorator, such as `route`, `view`, `get`, `post`, etc. on an `aiohttp.web.RouteTableDef`. */
   class AiohttpDecoratorRouteSetup extends AiohttpRouteSetup::Range, DataFlow::CallCfgNode {
     /** At what index route arguments starts, so we can handle "route" version together with get/post/... */
     int routeArgsStart;
@@ -232,7 +230,7 @@ module AiohttpWebModel {
     }
   }
 
-  /** A class that we consider a aiohttp.web View class. */
+  /** A class that we consider an aiohttp.web View class. */
   abstract class AiohttpViewClass extends Class, SelfRefMixin {
     /** Gets a function that could handle incoming requests, if any. */
     Function getARequestHandler() {
@@ -243,12 +241,12 @@ module AiohttpWebModel {
     }
   }
 
-  /** A class that has a super-type which is a aiohttp.web View class. */
+  /** A class that has a super-type which is an aiohttp.web View class. */
   class AiohttpViewClassFromSuperClass extends AiohttpViewClass {
     AiohttpViewClassFromSuperClass() { this.getABase() = View::subclassRef().getAUse().asExpr() }
   }
 
-  /** A class that is used in a route-setup, therefore being considered a aiohttp.web View class. */
+  /** A class that is used in a route-setup, therefore being considered an aiohttp.web View class. */
   class AiohttpViewClassFromRouteSetup extends AiohttpViewClass {
     AiohttpViewClassFromRouteSetup() { this = any(AiohttpRouteSetup rs).getViewClass() }
   }
@@ -299,7 +297,7 @@ module AiohttpWebModel {
   }
 
   /**
-   * A parameter that will receive a `aiohttp.web.Request` instance when a request
+   * A parameter that will receive an `aiohttp.web.Request` instance when a request
    * handler is invoked.
    */
   class AiohttpRequestHandlerRequestParam extends Request::InstanceSource, RemoteFlowSource::Range,
@@ -329,7 +327,7 @@ module AiohttpWebModel {
   }
 
   /**
-   * A read of the `request` attribute on an instance of a aiohttp.web View class,
+   * A read of the `request` attribute on an instance of an aiohttp.web View class,
    * which is the request being processed currently.
    */
   class AiohttpViewClassRequestAttributeRead extends Request::InstanceSource,
@@ -382,7 +380,7 @@ module AiohttpWebModel {
     }
   }
 
-  /** An attribute read on a `aiohttp.web.Request` that is a `MultiDictProxy` instance. */
+  /** An attribute read on an `aiohttp.web.Request` that is a `MultiDictProxy` instance. */
   class AiohttpRequestMultiDictProxyInstances extends Multidict::MultiDictProxy::InstanceSource {
     AiohttpRequestMultiDictProxyInstances() {
       this.(DataFlow::AttrRead).getObject() = Request::instance() and
@@ -390,7 +388,7 @@ module AiohttpWebModel {
     }
   }
 
-  /** An attribute read on a `aiohttp.web.Request` that is a `yarl.URL` instance. */
+  /** An attribute read on an `aiohttp.web.Request` that is a `yarl.URL` instance. */
   class AiohttpRequestYarlUrlInstances extends Yarl::Url::InstanceSource {
     AiohttpRequestYarlUrlInstances() {
       this.(DataFlow::AttrRead).getObject() = Request::instance() and
