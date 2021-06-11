@@ -1,7 +1,4 @@
-/**
- * Provides classes and predicates for Groovy Code Injection
- * taint-tracking configuration.
- */
+/** Provides classes to reason about Groovy code injection attacks. */
 
 import java
 import semmle.code.java.dataflow.DataFlow
@@ -58,7 +55,12 @@ private class DefaultLdapInjectionSinkModel extends SinkModelCsv {
         "groovy.util;Eval;false;x;(Object,String);;Argument[1];groovy",
         "groovy.util;Eval;false;xy;(Object,Object,String);;Argument[2];groovy",
         "groovy.util;Eval;false;xyz;(Object,Object,Object,String);;Argument[3];groovy",
-        "groovy.lang;GroovyClassLoader;false;parseClass;;;Argument[0];groovy",
+        "groovy.lang;GroovyClassLoader;false;parseClass;(GroovyCodeSource);;Argument[0];groovy",
+        "groovy.lang;GroovyClassLoader;false;parseClass;(GroovyCodeSource,boolean);;Argument[0];groovy",
+        "groovy.lang;GroovyClassLoader;false;parseClass;(InputStream,String);;Argument[0];groovy",
+        "groovy.lang;GroovyClassLoader;false;parseClass;(Reader,String);;Argument[0];groovy",
+        "groovy.lang;GroovyClassLoader;false;parseClass;(String);;Argument[0];groovy",
+        "groovy.lang;GroovyClassLoader;false;parseClass;(String,String);;Argument[0];groovy",
         "org.codehaus.groovy.control;CompilationUnit;false;compile;;;Argument[-1];groovy"
       ]
   }
