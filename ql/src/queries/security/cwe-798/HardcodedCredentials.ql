@@ -1,4 +1,4 @@
-/*
+/**
  * @name Hard-coded credentials
  * @description Credentials are hard coded in the source code of the application.
  * @kind path-problem
