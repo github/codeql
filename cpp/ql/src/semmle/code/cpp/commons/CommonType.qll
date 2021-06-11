@@ -66,43 +66,43 @@ class Ptrdiff_t extends Type {
 /**
  * A parent class representing C/C++ a typedef'd `UserType` such as `int8_t`.
  */
-private abstract class IntegralUnderlyingUserType extends UserType {
+abstract private class IntegralUnderlyingUserType extends UserType {
   IntegralUnderlyingUserType() { this.getUnderlyingType() instanceof IntegralType }
 }
+
+abstract private class TFixedWidthIntegralType extends IntegralUnderlyingUserType { }
 
 /**
  * A C/C++ fixed-width numeric type, such as `int8_t`.
  */
-abstract private class TFixedWidthIntegralType extends IntegralUnderlyingUserType { }
-
 class FixedWidthIntegralType extends TFixedWidthIntegralType {
   FixedWidthIntegralType() { this instanceof TFixedWidthIntegralType }
 }
 
+abstract private class TMinimumWidthIntegralType extends IntegralUnderlyingUserType { }
+
 /**
  * A C/C++ minimum-width numeric type, such as `int_least8_t`.
  */
-abstract private class TMinimumWidthIntegralType extends IntegralUnderlyingUserType { }
-
 class MinimumWidthIntegralType extends TMinimumWidthIntegralType {
   MinimumWidthIntegralType() { this instanceof TMinimumWidthIntegralType }
 }
+
+abstract private class TFastestMinimumWidthIntegralType extends IntegralUnderlyingUserType { }
 
 /**
  * A C/C++ minimum-width numeric type, representing the fastest integer type with a
  * width of at least `N` such as `int_fast8_t`.
  */
-abstract private class TFastestMinimumWidthIntegralType extends IntegralUnderlyingUserType { }
-
 class FastestMinimumWidthIntegralType extends TFastestMinimumWidthIntegralType {
   FastestMinimumWidthIntegralType() { this instanceof TFastestMinimumWidthIntegralType }
 }
 
+abstract private class TMaximumWidthIntegralType extends IntegralUnderlyingUserType { }
+
 /**
  * A C/C++ maximum-width numeric type, either `intmax_t` or `uintmax_t`.
  */
-abstract private class TMaximumWidthIntegralType extends IntegralUnderlyingUserType { }
-
 class MaximumWidthIntegralType extends TMaximumWidthIntegralType {
   MaximumWidthIntegralType() { this instanceof TMaximumWidthIntegralType }
 }
