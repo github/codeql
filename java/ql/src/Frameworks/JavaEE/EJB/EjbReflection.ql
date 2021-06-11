@@ -4,6 +4,7 @@
  *              as this could compromise security.
  * @kind problem
  * @problem.severity error
+ * @security-severity 4.9
  * @precision low
  * @id java/ejb/reflection
  * @tags external/cwe/cwe-573
