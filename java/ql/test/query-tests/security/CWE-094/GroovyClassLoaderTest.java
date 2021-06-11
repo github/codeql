@@ -12,6 +12,7 @@ public class GroovyClassLoaderTest extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // "groovy.lang;GroovyClassLoader;false;parseClass;;;Argument[0];groovy",
         try {
             String script = request.getParameter("script");
             final GroovyClassLoader classLoader = new GroovyClassLoader();
@@ -21,10 +22,6 @@ public class GroovyClassLoaderTest extends HttpServlet {
         } catch (Exception e) {
             // Ignore
         }
-    }
-
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
         try {
             String script = request.getParameter("script");
             final GroovyClassLoader classLoader = new GroovyClassLoader();
