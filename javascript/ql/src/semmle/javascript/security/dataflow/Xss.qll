@@ -55,6 +55,17 @@ module Shared {
     }
   }
 
+  /**
+   * A call to `serialize-javascript`, which prevents XSS vulnerabilities unless
+   * the `unsafe` option is set to `true`.
+   */
+  class SerializeJavascriptSanitizer extends Sanitizer, DataFlow::CallNode {
+    SerializeJavascriptSanitizer() {
+      this = DataFlow::moduleImport("serialize-javascript").getACall() and
+      not this.getOptionArgument(1, "unsafe").mayHaveBooleanValue(true)
+    }
+  }
+
   private import semmle.javascript.security.dataflow.IncompleteHtmlAttributeSanitizationCustomizations::IncompleteHtmlAttributeSanitization as IncompleteHTML
 
   /**
@@ -359,6 +370,9 @@ module DomBasedXss {
 
   private class UriEncodingSanitizer extends Sanitizer, Shared::UriEncodingSanitizer { }
 
+  private class SerializeJavascriptSanitizer extends Sanitizer, Shared::SerializeJavascriptSanitizer {
+  }
+
   private class IsEscapedInSwitchSanitizer extends Sanitizer, Shared::IsEscapedInSwitchSanitizer { }
 
   private class QuoteGuard extends SanitizerGuard, Shared::QuoteGuard { }
@@ -497,6 +511,9 @@ module ReflectedXss {
 
   private class UriEncodingSanitizer extends Sanitizer, Shared::UriEncodingSanitizer { }
 
+  private class SerializeJavascriptSanitizer extends Sanitizer, Shared::SerializeJavascriptSanitizer {
+  }
+
   private class IsEscapedInSwitchSanitizer extends Sanitizer, Shared::IsEscapedInSwitchSanitizer { }
 
   private class QuoteGuard extends SanitizerGuard, Shared::QuoteGuard { }
@@ -533,6 +550,9 @@ module StoredXss {
   private class MetacharEscapeSanitizer extends Sanitizer, Shared::MetacharEscapeSanitizer { }
 
   private class UriEncodingSanitizer extends Sanitizer, Shared::UriEncodingSanitizer { }
+
+  private class SerializeJavascriptSanitizer extends Sanitizer, Shared::SerializeJavascriptSanitizer {
+  }
 
   private class IsEscapedInSwitchSanitizer extends Sanitizer, Shared::IsEscapedInSwitchSanitizer { }
 
@@ -597,6 +617,8 @@ module ExceptionXss {
   private class JsonSchemaValidationError extends Source {
     JsonSchemaValidationError() {
       this = any(JsonSchema::Ajv::Instance i).getAValidationError().getAnImmediateUse()
+      or
+      this = any(JsonSchema::Joi::JoiValidationErrorRead r).getAValidationResultAccess(_)
     }
 
     override string getDescription() { result = "JSON schema validation error" }

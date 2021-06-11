@@ -9,6 +9,7 @@
 private import FlowSummaryImplSpecific
 private import DataFlowImplSpecific::Private
 private import DataFlowImplSpecific::Public
+private import DataFlowImplCommon as DataFlowImplCommon
 
 /** Provides classes and predicates for defining flow summaries. */
 module Public {
@@ -178,7 +179,6 @@ module Public {
  */
 module Private {
   private import Public
-  private import DataFlowImplCommon as DataFlowImplCommon
 
   newtype TSummaryComponent =
     TContentSummaryComponent(Content c) or
@@ -580,6 +580,14 @@ module Private {
    * summaries into a `SummarizedCallable`s.
    */
   module External {
+    /** Holds if `spec` is a relevant external specification. */
+    private predicate relevantSpec(string spec) {
+      summaryElement(_, spec, _, _) or
+      summaryElement(_, _, spec, _) or
+      sourceElement(_, spec, _) or
+      sinkElement(_, spec, _)
+    }
+
     /** Holds if the `n`th component of specification `s` is `c`. */
     predicate specSplit(string s, string c, int n) { relevantSpec(s) and s.splitAt(" of ", n) = c }
 
@@ -629,6 +637,8 @@ module Private {
         or
         exists(int pos | parseParam(c, pos) and result = SummaryComponent::parameter(pos))
         or
+        c = "ReturnValue" and result = SummaryComponent::return(getReturnValueKind())
+        or
         result = interpretComponentSpecific(c)
       )
     }
@@ -664,13 +674,13 @@ module Private {
     }
 
     private class SummarizedCallableExternal extends SummarizedCallable {
-      SummarizedCallableExternal() { externalSummary(this, _, _, _) }
+      SummarizedCallableExternal() { summaryElement(this, _, _, _) }
 
       override predicate propagatesFlow(
         SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
       ) {
         exists(string inSpec, string outSpec, string kind |
-          externalSummary(this, inSpec, outSpec, kind) and
+          summaryElement(this, inSpec, outSpec, kind) and
           interpretSpec(inSpec, 0, input) and
           interpretSpec(outSpec, 0, output)
         |
@@ -685,6 +695,111 @@ module Private {
     predicate invalidSpecComponent(string spec, string c) {
       specSplit(spec, c, _) and
       not exists(interpretComponent(c))
+    }
+
+    private predicate inputNeedsReference(string c) {
+      c = "Argument" or
+      parseArg(c, _)
+    }
+
+    private predicate outputNeedsReference(string c) {
+      c = "Argument" or
+      parseArg(c, _) or
+      c = "ReturnValue"
+    }
+
+    private predicate sourceElementRef(InterpretNode ref, string output, string kind) {
+      exists(SourceOrSinkElement e |
+        sourceElement(e, output, kind) and
+        if outputNeedsReference(specLast(output))
+        then e = ref.getCallTarget()
+        else e = ref.asElement()
+      )
+    }
+
+    private predicate sinkElementRef(InterpretNode ref, string input, string kind) {
+      exists(SourceOrSinkElement e |
+        sinkElement(e, input, kind) and
+        if inputNeedsReference(specLast(input))
+        then e = ref.getCallTarget()
+        else e = ref.asElement()
+      )
+    }
+
+    private predicate interpretOutput(string output, int idx, InterpretNode ref, InterpretNode node) {
+      sourceElementRef(ref, output, _) and
+      specLength(output, idx) and
+      node = ref
+      or
+      exists(InterpretNode mid, string c |
+        interpretOutput(output, idx + 1, ref, mid) and
+        specSplit(output, c, idx)
+      |
+        exists(int pos |
+          node.asNode()
+              .(PostUpdateNode)
+              .getPreUpdateNode()
+              .(ArgumentNode)
+              .argumentOf(mid.asCall(), pos)
+        |
+          c = "Argument" or parseArg(c, pos)
+        )
+        or
+        exists(int pos | node.asNode().(ParameterNode).isParameterOf(mid.asCallable(), pos) |
+          c = "Parameter" or parseParam(c, pos)
+        )
+        or
+        c = "ReturnValue" and
+        node.asNode() = getAnOutNode(mid.asCall(), getReturnValueKind())
+        or
+        interpretOutputSpecific(c, mid, node)
+      )
+    }
+
+    private predicate interpretInput(string input, int idx, InterpretNode ref, InterpretNode node) {
+      sinkElementRef(ref, input, _) and
+      specLength(input, idx) and
+      node = ref
+      or
+      exists(InterpretNode mid, string c |
+        interpretInput(input, idx + 1, ref, mid) and
+        specSplit(input, c, idx)
+      |
+        exists(int pos | node.asNode().(ArgumentNode).argumentOf(mid.asCall(), pos) |
+          c = "Argument" or parseArg(c, pos)
+        )
+        or
+        exists(ReturnNode ret |
+          c = "ReturnValue" and
+          ret = node.asNode() and
+          ret.getKind() = getReturnValueKind() and
+          mid.asCallable() = DataFlowImplCommon::getNodeEnclosingCallable(ret)
+        )
+        or
+        interpretInputSpecific(c, mid, node)
+      )
+    }
+
+    /**
+     * Holds if `node` is specified as a source with the given kind in a CSV flow
+     * model.
+     */
+    predicate isSourceNode(InterpretNode node, string kind) {
+      exists(InterpretNode ref, string output |
+        sourceElementRef(ref, output, kind) and
+        interpretOutput(output, 0, ref, node)
+      )
+    }
+
+    /**
+     * Holds if `node` is specified as a sink with the given kind in a CSV flow
+     * model.
+     */
+    predicate isSinkNode(InterpretNode node, string kind) {
+      exists(InterpretNode ref, string input |
+        sinkElementRef(ref, input, kind) and
+        interpretInput(input, 0, ref, node)
+      )
     }
   }
 

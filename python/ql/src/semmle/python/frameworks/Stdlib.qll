@@ -9,7 +9,7 @@ private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
-private import PEP249
+private import semmle.python.frameworks.PEP249
 
 /** Provides models for the Python standard library. */
 private module Stdlib {
