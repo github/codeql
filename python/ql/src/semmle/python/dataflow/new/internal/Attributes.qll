@@ -191,7 +191,7 @@ private class ClassDefinitionAsAttrWrite extends AttrWrite, CfgNode {
  * - Dynamic attribute reads using `getattr`: `getattr(object, attr)`
  * - Qualified imports: `from module import attr as name`
  */
-abstract class AttrRead extends AttrRef, Node { }
+abstract class AttrRead extends AttrRef, Node, LocalSourceNode { }
 
 /** A simple attribute read, e.g. `object.attr` */
 private class AttributeReadAsAttrRead extends AttrRead, CfgNode {
