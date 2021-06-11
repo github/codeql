@@ -272,8 +272,8 @@ class RegExpCharacterClassEscape extends RegExpEscape {
   // string value;
   RegExpCharacterClassEscape() {
     // value = re.getText().substring(start + 1, end) and
-    // value in ["b", "B", "d", "D", "s", "S", "w", "W"]
-    this.getValue() in ["b", "B", "d", "D", "s", "S", "w", "W"]
+    // value in ["d", "D", "s", "S", "w", "W"]
+    this.getValue() in ["d", "D", "s", "S", "w", "W"]
   }
 
   /** Gets the name of the character class; for example, `w` for `\w`. */
