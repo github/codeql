@@ -7,6 +7,7 @@
  */
 
 import python
+import semmle.python.RegexTreeViewBindOld
 
 private newtype TPrintAstConfiguration = MkPrintAstConfiguration()
 
@@ -53,6 +54,9 @@ private newtype TPrintAstNode =
     not list = any(Module mod).getBody() and
     not forall(AstNode child | child = list.getAnItem() | isNotNeeded(child)) and
     exists(list.getAnItem())
+  } or
+  TRegExpTermNode(RegExpTerm term) {
+    exists(StrConst str | term.getRootTerm() = getParsedRegExp(str) and shouldPrint(str, _))
   }
 
 /**
@@ -417,6 +421,41 @@ class ParameterNode extends AstElementNode {
     or
     childIndex = 1 and result = param.getDefault()
   }
+}
+
+/**
+ * A print node for a `StrConst`.
+ *
+ * The string has a child, if the child is used as a regular expression,
+ * which is the root of the regular expression.
+ */
+class StrConstNode extends AstElementNode {
+  override StrConst element;
+
+  override PrintAstNode getChild(int childIndex) {
+    childIndex = 0 and result.(RegExpTermNode).getTerm() = getParsedRegExp(element)
+  }
+}
+
+/**
+ * A print node for a regular expression term.
+ */
+class RegExpTermNode extends TRegExpTermNode, PrintAstNode {
+  RegExpTerm term;
+
+  RegExpTermNode() { this = TRegExpTermNode(term) }
+
+  RegExpTerm getTerm() { result = term }
+
+  override PrintAstNode getChild(int childIndex) {
+    result.(RegExpTermNode).getTerm() = term.getChild(childIndex)
+  }
+
+  override string toString() {
+    result = "[" + strictconcat(term.getPrimaryQLClass(), " | ") + "] " + term.toString()
+  }
+
+  override Location getLocation() { result = term.getLocation() }
 }
 
 /**
