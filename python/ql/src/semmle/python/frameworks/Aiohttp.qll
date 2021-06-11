@@ -296,6 +296,66 @@ module AiohttpWebModel {
   }
 
   /**
+   * Provides models for the `aiohttp.StreamReader` class
+   *
+   * See https://docs.aiohttp.org/en/stable/streams.html#aiohttp.StreamReader
+   */
+  module StreamReader {
+    /**
+     * A source of instances of `aiohttp.StreamReader`, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use `StreamReader::instance()` predicate to get
+     * references to instances of `aiohttp.StreamReader`.
+     */
+    abstract class InstanceSource extends DataFlow::LocalSourceNode { }
+
+    /** Gets a reference to an instance of `aiohttp.StreamReader`. */
+    private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an instance of `aiohttp.StreamReader`. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    /**
+     * Taint propagation for `aiohttp.StreamReader`.
+     */
+    private class AiohttpStreamReaderAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+      override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+        // Methods
+        //
+        // TODO: When we have tools that make it easy, model these properly to handle
+        // `meth = obj.meth; meth()`. Until then, we'll use this more syntactic approach
+        // (since it allows us to at least capture the most common cases).
+        nodeFrom = StreamReader::instance() and
+        exists(DataFlow::AttrRead attr | attr.getObject() = nodeFrom |
+          // normal methods
+          attr.getAttributeName() in ["read_nowait"] and
+          nodeTo.(DataFlow::CallCfgNode).getFunction() = attr
+          or
+          // async methods
+          exists(Await await, DataFlow::CallCfgNode call |
+            attr.getAttributeName() in [
+                "read", "readany", "readexactly", "readline", "readchunk", "iter_chunked",
+                "iter_any", "iter_chunks"
+              ] and
+            call.getFunction() = attr and
+            await.getValue() = call.asExpr() and
+            nodeTo.asExpr() = await
+          )
+        )
+      }
+    }
+  }
+
+  /**
    * A parameter that will receive an `aiohttp.web.Request` instance when a request
    * handler is invoked.
    */
@@ -392,6 +452,14 @@ module AiohttpWebModel {
     AiohttpRequestYarlUrlInstances() {
       this.(DataFlow::AttrRead).getObject() = Request::instance() and
       this.(DataFlow::AttrRead).getAttributeName() in ["url", "rel_url"]
+    }
+  }
+
+  /** An attribute read on an `aiohttp.web.Request` that is a `aiohttp.StreamReader` instance. */
+  class AiohttpRequestStreamReaderInstances extends StreamReader::InstanceSource {
+    AiohttpRequestStreamReaderInstances() {
+      this.(DataFlow::AttrRead).getObject() = Request::instance() and
+      this.(DataFlow::AttrRead).getAttributeName() in ["content", "_payload"]
     }
   }
 

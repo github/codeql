@@ -49,21 +49,21 @@ async def test_taint(request: web.Request): # $ requestHandler
         # aiohttp.StreamReader
         # see https://docs.aiohttp.org/en/stable/streams.html#aiohttp.StreamReader
         request.content, # $ tainted
-        await request.content.read(), # $ MISSING: tainted
-        await request.content.readany(), # $ MISSING: tainted
-        await request.content.readexactly(42), # $ MISSING: tainted
-        await request.content.readline(), # $ MISSING: tainted
-        await request.content.readchunk(), # $ MISSING: tainted
-        (await request.content.readchunk())[0], # $ MISSING: tainted
+        await request.content.read(), # $ tainted
+        await request.content.readany(), # $ tainted
+        await request.content.readexactly(42), # $ tainted
+        await request.content.readline(), # $ tainted
+        await request.content.readchunk(), # $ tainted
+        (await request.content.readchunk())[0], # $ tainted
         [line async for line in request.content], # $ MISSING: tainted
         [data async for data in request.content.iter_chunked(1024)], # $ MISSING: tainted
         [data async for data in request.content.iter_any()], # $ MISSING: tainted
         [data async for data, _ in request.content.iter_chunks()], # $ MISSING: tainted
-        request.content.read_nowait(), # $ MISSING: tainted
+        request.content.read_nowait(), # $ tainted
 
         # aiohttp.StreamReader
         request._payload, # $ tainted
-        await request._payload.readany(), # $ MISSING: tainted
+        await request._payload.readany(), # $ tainted
 
         request.content_type, # $ tainted
         request.charset, # $ tainted
