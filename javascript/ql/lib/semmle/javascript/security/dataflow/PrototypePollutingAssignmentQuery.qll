@@ -116,7 +116,7 @@ private DataFlow::SourceNode prototypeLessObject(DataFlow::TypeTracker t) {
  * Objects created in such files are ignored in the `prototypeLessObject` predicate.
  */
 private class TestFile extends File {
-  TestFile() { ClassifyFiles::classify(this, "test") }
+  TestFile() { ClassifyFiles::isTestFile(this) }
 }
 
 /** Holds if `Object.prototype` has a member named `prop`. */
