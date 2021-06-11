@@ -106,8 +106,7 @@ module AiohttpWebModel {
       Function getARequestHandler() {
         this.getHandlerArg() = poorMansFunctionTracker(result)
         or
-       result = this.getViewClass().(AiohttpViewClass).getARequestHandler()
-        )
+        result = this.getViewClass().(AiohttpViewClass).getARequestHandler()
       }
     }
 
