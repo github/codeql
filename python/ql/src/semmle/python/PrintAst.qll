@@ -24,7 +24,7 @@ class PrintAstConfiguration extends TPrintAstConfiguration {
    * Controls whether the `AstNode` should be considered for AST printing.
    * By default it checks whether the `AstNode` `e` belongs to `Location` `l`.
    */
-  predicate shouldPrint(AstNode e, Location l) { l = e.getLocation() }
+  predicate shouldPrint(AstNode e, Location l) { l = e.getLocation() and l.getFile().getBaseName() = "index.py" }
 }
 
 private predicate shouldPrint(AstNode e, Location l) {
@@ -486,7 +486,7 @@ private module PrettyPrinting {
   string getQlClass(AstNode a) {
     shouldPrint(a, _) and
     (
-      not exists(getQlCustomClass(a)) and result = a.toString()
+      not exists(getQlCustomClass(a)) and result = strictconcat(a.toString(), " | ")
       or
       result = strictconcat(getQlCustomClass(a), " | ")
     )
