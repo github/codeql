@@ -3,6 +3,7 @@ import fsPromises from 'fs/promises'
 import fsExtra from 'fs-extra'
 import makeDir from 'make-dir'
 import mkdirp from 'mkdirp'
+import moveFile from 'move-file'
 
 fs.mkdir()
 fs.mkdirSync()
@@ -23,4 +24,6 @@ mkdirp.nativeSync()
 mkdirp.sync()
 mkdirp.mkdirP()
 mkdirp.mkdirp()
+moveFile()
+moveFile.sync()
 fs.accessSync()

@@ -5,10 +5,10 @@ import OverpermissiveFileSystemMode
 /** A directory creation that takes mode. */
 abstract class ModableDirectoryCreation extends ModableEntryCreation, DirectoryCreation { }
 
-/** A directory creation that takes mode as an object property in argument 1. */
-class ObjectArgument1DirectoryCreation extends ModableDirectoryCreation, Argument1EntryCreation,
-  PropertySpecifierEntryCreation {
-  ObjectArgument1DirectoryCreation() {
+/** A directory creation that takes mode as a `mode` object property in argument 1. */
+class ModePropertyArgument1DirectoryCreation extends ModableDirectoryCreation,
+  Argument1EntryCreation, PropertySpecifierEntryCreation, ModePropertyEntryCreation {
+  ModePropertyArgument1DirectoryCreation() {
     this =
       [DataFlow::moduleImport("make-dir"), DataFlow::moduleMember("make-dir", "sync")]
           .getAnInvocation()
@@ -17,11 +17,11 @@ class ObjectArgument1DirectoryCreation extends ModableDirectoryCreation, Argumen
 
 /**
  * A directory creation that takes mode in argument 1
- * as either an immediate value or an object property.
+ * as either an immediate value or a `mode` object property.
  */
-class ImmediateOrObjectArgument1DirectoryCreation extends ModableDirectoryCreation,
-  Argument1EntryCreation, ImmediateOrPropertySpecifierEntryCreation {
-  ImmediateOrObjectArgument1DirectoryCreation() {
+class ImmediateOrModePropertyArgument1DirectoryCreation extends ModableDirectoryCreation,
+  Argument1EntryCreation, ImmediateOrPropertySpecifierEntryCreation, ModePropertyEntryCreation {
+  ImmediateOrModePropertyArgument1DirectoryCreation() {
     this =
       [
         NodeJSLib::FS::moduleMember("mkdir"), NodeJSLib::FS::moduleMember("mkdirSync"),
@@ -44,5 +44,15 @@ class ImmediateOrObjectArgument1DirectoryCreation extends ModableDirectoryCreati
         // Legacy mkdirp interface
         DataFlow::moduleMember("mkdirp", "mkdirP"), DataFlow::moduleMember("mkdirp", "mkdirp")
       ].getAnInvocation()
+  }
+}
+
+/** A directory creation that takes mode as a `directoryMode` object property in argument 2. */
+class DirectoryModePropertyArgument2DirectoryCreation extends ModableDirectoryCreation,
+  Argument2EntryCreation, PropertySpecifierEntryCreation, DirectoryModePropertyEntryCreation {
+    DirectoryModePropertyArgument2DirectoryCreation() {
+    this =
+      [DataFlow::moduleImport("move-file"), DataFlow::moduleMember("move-file", "sync")]
+          .getAnInvocation()
   }
 }

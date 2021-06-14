@@ -5,10 +5,10 @@ import OverpermissiveFileSystemMode
 /** A file creation that takes mode. */
 abstract class ModableFileCreation extends ModableEntryCreation, FileCreation { }
 
-/** A file creation that takes mode as an object property in argument 1. */
-class ObjectArgument1FileCreation extends ModableFileCreation, Argument1EntryCreation,
-  PropertySpecifierEntryCreation {
-  ObjectArgument1FileCreation() {
+/** A file creation that takes mode as a `mode` property in argument 1. */
+class ModePropertyArgument1FileCreation extends ModableFileCreation, Argument1EntryCreation,
+  PropertySpecifierEntryCreation, ModePropertyEntryCreation {
+  ModePropertyArgument1FileCreation() {
     this =
       [
         NodeJSLib::FS::moduleMember("createReadStream"),
@@ -29,10 +29,10 @@ class ImmediateArgument2FileCreation extends ModableFileCreation, Argument2Entry
   }
 }
 
-/** A file creation that takes mode as an object property in argument 2. */
-class ObjectArgument2FileCreation extends ModableFileCreation, Argument2EntryCreation,
-  PropertySpecifierEntryCreation {
-  ObjectArgument2FileCreation() {
+/** A file creation that takes mode as a `mode` property in argument 2. */
+class ModePropertyArgument2FileCreation extends ModableFileCreation, Argument2EntryCreation,
+  PropertySpecifierEntryCreation, ModePropertyEntryCreation {
+  ModePropertyArgument2FileCreation() {
     this =
       [
         NodeJSLib::FS::moduleMember("appendFile"), NodeJSLib::FS::moduleMember("appendFileSync"),

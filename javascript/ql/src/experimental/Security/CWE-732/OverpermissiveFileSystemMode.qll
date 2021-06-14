@@ -391,8 +391,11 @@ abstract class ImmediateSpecifierEntryCreation extends ModableEntryCreation {
  * ```
  */
 abstract class PropertySpecifierEntryCreation extends ModableEntryCreation {
+  /** Gets the name of the object property through which mode is specified. */
+  abstract string getProperty();
+
   override Expr getSpecifier() {
-    result = this.getArgument().(ObjectExpr).getPropertyByName("mode").getInit()
+    result = this.getArgument().(ObjectExpr).getPropertyByName(this.getProperty()).getInit()
   }
 }
 
@@ -406,7 +409,7 @@ abstract class PropertySpecifierEntryCreation extends ModableEntryCreation {
  * fs.mkdir('/tmp/dir', { mode: 0o700 })
  * ```
  */
-abstract class ImmediateOrPropertySpecifierEntryCreation extends ModableEntryCreation {
+abstract class ImmediateOrPropertySpecifierEntryCreation extends PropertySpecifierEntryCreation {
   override Expr getSpecifier() {
     this.getArgument() instanceof ObjectExpr and result = this.getPropertySpecifier()
     or
@@ -415,8 +418,18 @@ abstract class ImmediateOrPropertySpecifierEntryCreation extends ModableEntryCre
 
   /** Gets the mode specifier provided in an object property named `mode`. */
   private Expr getPropertySpecifier() {
-    result = this.getArgument().(ObjectExpr).getPropertyByName("mode").getInit()
+    result = this.getArgument().(ObjectExpr).getPropertyByName(this.getProperty()).getInit()
   }
+}
+
+/** An entry creation that takes mode specifier in a `mode` property. */
+abstract class ModePropertyEntryCreation extends PropertySpecifierEntryCreation {
+  override string getProperty() { result = "mode" }
+}
+
+/** An entry creation that takes mode specifier in a `directoryMode` property. */
+abstract class DirectoryModePropertyEntryCreation extends PropertySpecifierEntryCreation {
+  override string getProperty() { result = "directoryMode" }
 }
 
 /**

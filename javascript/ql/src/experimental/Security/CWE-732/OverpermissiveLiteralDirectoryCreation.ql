@@ -16,15 +16,19 @@ abstract class LiteralDirectoryCreation extends LiteralEntryCreation, DirectoryC
   override Mask getMask() { result = getOverpermissiveDirectoryMask() }
 }
 
-/** A directory creation that provides a literal mode as an object property in argument 1. */
-class LiteralObjectArgument1DirectoryCreation extends ObjectArgument1DirectoryCreation,
+/** A directory creation that provides a literal mode as a `mode` property in argument 1. */
+class LiteralModePropertyArgument1DirectoryCreation extends ModePropertyArgument1DirectoryCreation,
+  LiteralDirectoryCreation { }
+
+/** A directory creation that provides a literal mode as a `directoryMode` property in argument 2. */
+class LiteralDirectoryModePropertyArgument2DirectoryCreation extends DirectoryModePropertyArgument2DirectoryCreation,
   LiteralDirectoryCreation { }
 
 /**
  * A directory creation that provides a literal mode in argument 1
- * as either an immediate value or an object property.
+ * as either an immediate value or a `mode` property.
  */
-class LiteralImmediateOrObjectArgument1DirectoryCreation extends ImmediateOrObjectArgument1DirectoryCreation,
+class LiteralImmediateOrModePropertyArgument1DirectoryCreation extends ImmediateOrModePropertyArgument1DirectoryCreation,
   LiteralDirectoryCreation { }
 
 from LiteralDirectoryCreation creation

@@ -62,7 +62,6 @@ class UnsecurableDirectoryCreation extends UnsecurableEntryCreation, DirectoryCr
         DataFlow::moduleMember("fs-extra-p", "outputJson"),
         DataFlow::moduleMember("fs-extra-p", "outputJsonSync"), DataFlow::moduleImport("cp-file"),
         DataFlow::moduleMember("cp-file", "sync"), DataFlow::moduleImport("cpy"),
-        DataFlow::moduleImport("move-file"), DataFlow::moduleMember("move-file", "sync"),
         DataFlow::moduleImport("@npmcli/move-file"),
         DataFlow::moduleMember("@npmcli/move-file", "sync"), DataFlow::moduleImport("trash")
       ].getAnInvocation()
