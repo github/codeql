@@ -69,9 +69,7 @@ of the active database schema (for example, ``<queries
 language="java"/>``).
 
 A ``qlpack.yml`` file defines a :ref:`QL pack <about-ql-packs>`.
-The content of a ``qlpack.yml`` file is described in the CodeQL CLI documentation. This file
-will not be recognized when using legacy tools that are not based
-on the CodeQL CLI (that is, LGTM.com and LGTM Enterprise).
+The content of a ``qlpack.yml`` file is described in the CodeQL CLI documentation.
 
 If both a ``queries.xml`` and a ``qlpack.yml`` exist in the same
 directory, the latter takes precedence (and the former is assumed to
