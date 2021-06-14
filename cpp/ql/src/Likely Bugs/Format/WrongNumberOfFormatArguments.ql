@@ -4,6 +4,7 @@
  *              a source of security issues.
  * @kind problem
  * @problem.severity error
+ * @security-severity 2.9
  * @precision high
  * @id cpp/wrong-number-format-arguments
  * @tags reliability

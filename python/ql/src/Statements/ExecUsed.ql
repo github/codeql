@@ -5,6 +5,7 @@
  * @tags security
  *       correctness
  * @problem.severity error
+ * @security-severity 4.2
  * @sub-severity high
  * @precision low
  * @id py/use-of-exec

@@ -5,14 +5,14 @@ def test():
     ts = TAINTED_STRING
     tainted_obj = {"foo": ts}
 
-    encoded = simplejson.dumps(tainted_obj) # $ encodeOutput=Attribute() encodeFormat=JSON encodeInput=tainted_obj
+    encoded = simplejson.dumps(tainted_obj) # $ encodeOutput=simplejson.dumps(..) encodeFormat=JSON encodeInput=tainted_obj
 
     ensure_tainted(
         encoded, # $ tainted
-        simplejson.dumps(tainted_obj), # $ tainted encodeOutput=Attribute() encodeFormat=JSON encodeInput=tainted_obj
-        simplejson.dumps(obj=tainted_obj), # $ tainted encodeOutput=Attribute() encodeFormat=JSON encodeInput=tainted_obj
-        simplejson.loads(encoded), # $ tainted decodeOutput=Attribute() decodeFormat=JSON decodeInput=encoded
-        simplejson.loads(s=encoded), # $ tainted decodeOutput=Attribute() decodeFormat=JSON decodeInput=encoded
+        simplejson.dumps(tainted_obj), # $ tainted encodeOutput=simplejson.dumps(..) encodeFormat=JSON encodeInput=tainted_obj
+        simplejson.dumps(obj=tainted_obj), # $ tainted encodeOutput=simplejson.dumps(..) encodeFormat=JSON encodeInput=tainted_obj
+        simplejson.loads(encoded), # $ tainted decodeOutput=simplejson.loads(..) decodeFormat=JSON decodeInput=encoded
+        simplejson.loads(s=encoded), # $ tainted decodeOutput=simplejson.loads(..) decodeFormat=JSON decodeInput=encoded
     )
 
     # load/dump with file-like
@@ -22,7 +22,7 @@ def test():
     tainted_filelike.seek(0)
     ensure_tainted(
         tainted_filelike, # $ MISSING: tainted
-        simplejson.load(tainted_filelike), # $ decodeOutput=Attribute() decodeFormat=JSON decodeInput=tainted_filelike MISSING: tainted
+        simplejson.load(tainted_filelike), # $ decodeOutput=simplejson.load(..) decodeFormat=JSON decodeInput=tainted_filelike MISSING: tainted
     )
 
     # load/dump with file-like using keyword-args
@@ -32,7 +32,7 @@ def test():
     tainted_filelike.seek(0)
     ensure_tainted(
         tainted_filelike, # $ MISSING: tainted
-        simplejson.load(fp=tainted_filelike), # $ decodeOutput=Attribute() decodeFormat=JSON decodeInput=tainted_filelike MISSING: tainted
+        simplejson.load(fp=tainted_filelike), # $ decodeOutput=simplejson.load(..) decodeFormat=JSON decodeInput=tainted_filelike MISSING: tainted
     )
 
 # To make things runable

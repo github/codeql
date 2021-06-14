@@ -4,6 +4,7 @@
  * @kind problem
  * @id cpp/global-use-before-init
  * @problem.severity warning
+ * @security-severity 6.9
  * @tags reliability
  *       security
  *       external/cwe/cwe-457

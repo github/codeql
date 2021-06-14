@@ -166,7 +166,7 @@ private module Mongoose {
   /**
    * A Mongoose function.
    */
-  private class MongooseFunction extends API::Node {
+  abstract private class MongooseFunction extends API::Node {
     /**
      * Gets the API-graph node for the result from this function (if the function returns a `Query`).
      */

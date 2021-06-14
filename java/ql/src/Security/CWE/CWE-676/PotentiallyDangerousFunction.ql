@@ -3,6 +3,7 @@
  * @description Certain standard library routines are dangerous to call.
  * @kind problem
  * @problem.severity warning
+ * @security-severity 10.0
  * @precision medium
  * @id java/potentially-dangerous-function
  * @tags reliability
