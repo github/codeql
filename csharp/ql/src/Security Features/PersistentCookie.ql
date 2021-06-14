@@ -3,6 +3,7 @@
  * @description Persistent cookies are vulnerable to attacks.
  * @kind problem
  * @problem.severity warning
+ * @security-severity 5.9
  * @precision high
  * @id cs/web/persistent-cookie
  * @tags security

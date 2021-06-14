@@ -69,11 +69,19 @@ class SpringProperty extends SpringXMLElement {
     )
   }
 
+  /**
+   * Gets a setter method declared on this property's enclosing bean that sets this property.
+   */
   Method getSetterMethod() {
     this.getEnclosingBean().getClass().hasMethod(result, _) and
     result.getName().toLowerCase() = "set" + this.getPropertyName().toLowerCase()
   }
 
+  /**
+   * Gets a setter method declared on bean `context` that sets this property.
+   *
+   * This property must be declared on a bean that is an ancestor of `context`.
+   */
   Method getSetterMethod(SpringBean context) {
     this.getEnclosingBean() = context.getBeanParent*() and
     context.getClass().hasMethod(result, _) and

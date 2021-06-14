@@ -21,11 +21,3 @@ Learn more about the files you can use when running CodeQL processes and the res
 - :doc:`SARIF output <sarif-output>`: CodeQL supports SARIF as an output format for sharing static analysis results.
 - :doc:`Exit codes <exit-codes>`: The CodeQL CLI reports the status of each command it runs as an exit code.
   This exit code provides information for subsequent commands or for other tools that rely on the CodeQL CLI.
-
-.. _cli-commands:
-
-CodeQL CLI manual
------------------
-
-To view detailed information about each CodeQL CLI command,
-including its usage and options, add the ``--help`` flag or visit the "`CodeQL CLI manual <../manual>`__."

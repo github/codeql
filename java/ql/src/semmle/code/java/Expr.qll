@@ -638,7 +638,21 @@ class BooleanLiteral extends Literal, @booleanliteral {
   override string getAPrimaryQlClass() { result = "BooleanLiteral" }
 }
 
-/** An integer literal. For example, `23`. */
+/**
+ * An integer literal. For example, `23`.
+ *
+ * An integer literal can never be negative except when:
+ * - It is written in binary, octal or hexadecimal notation
+ * - It is written in decimal notation, has the value `2147483648` and is preceded
+ *   by a minus; in this case the value of the IntegerLiteral is -2147483648 and
+ *   the preceding minus will *not* be modeled as `MinusExpr`.
+ *
+ * In all other cases the preceding minus, if any, will be modeled as a separate
+ * `MinusExpr`.
+ *
+ * The last exception is necessary because `2147483648` on its own would not be
+ * a valid integer literal (and could also not be parsed as CodeQL `int`).
+ */
 class IntegerLiteral extends Literal, @integerliteral {
   /** Gets the int representation of this literal. */
   int getIntValue() { result = getValue().toInt() }
@@ -646,12 +660,32 @@ class IntegerLiteral extends Literal, @integerliteral {
   override string getAPrimaryQlClass() { result = "IntegerLiteral" }
 }
 
-/** A long literal. For example, `23l`. */
+/**
+ * A long literal. For example, `23L`.
+ *
+ * A long literal can never be negative except when:
+ * - It is written in binary, octal or hexadecimal notation
+ * - It is written in decimal notation, has the value `9223372036854775808` and
+ *   is preceded by a minus; in this case the value of the LongLiteral is
+ *   -9223372036854775808 and the preceding minus will *not* be modeled as
+ *   `MinusExpr`.
+ *
+ * In all other cases the preceding minus, if any, will be modeled as a separate
+ * `MinusExpr`.
+ *
+ * The last exception is necessary because `9223372036854775808` on its own
+ * would not be a valid long literal.
+ */
 class LongLiteral extends Literal, @longliteral {
   override string getAPrimaryQlClass() { result = "LongLiteral" }
 }
 
-/** A floating point literal. For example, `4.2f`. */
+/**
+ * A float literal. For example, `4.2f`.
+ *
+ * A float literal is never negative; a preceding minus, if any, will always
+ * be modeled as separate `MinusExpr`.
+ */
 class FloatingPointLiteral extends Literal, @floatingpointliteral {
   /**
    * Gets the value of this literal as CodeQL 64-bit `float`. The value will
@@ -662,7 +696,12 @@ class FloatingPointLiteral extends Literal, @floatingpointliteral {
   override string getAPrimaryQlClass() { result = "FloatingPointLiteral" }
 }
 
-/** A double literal. For example, `4.2`. */
+/**
+ * A double literal. For example, `4.2`.
+ *
+ * A double literal is never negative; a preceding minus, if any, will always
+ * be modeled as separate `MinusExpr`.
+ */
 class DoubleLiteral extends Literal, @doubleliteral {
   /**
    * Gets the value of this literal as CodeQL 64-bit `float`. The result will
@@ -1241,7 +1280,7 @@ class ConditionalExpr extends Expr, @conditionalexpr {
 /**
  * A `switch` expression.
  */
-class SwitchExpr extends Expr, @switchexpr {
+class SwitchExpr extends Expr, StmtParent, @switchexpr {
   /** Gets an immediate child statement of this `switch` expression. */
   Stmt getAStmt() { result.getParent() = this }
 
@@ -1769,7 +1808,7 @@ class WildcardTypeAccess extends Expr, @wildcardtypeaccess {
  * This includes method calls, constructor and super constructor invocations,
  * and constructors invoked through class instantiation.
  */
-class Call extends Top, @caller {
+class Call extends ExprParent, @caller {
   /** Gets an argument supplied in this call. */
   /*abstract*/ Expr getAnArgument() { none() }
 

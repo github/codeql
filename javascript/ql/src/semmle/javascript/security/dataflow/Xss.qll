@@ -34,7 +34,12 @@ module Shared {
   class MetacharEscapeSanitizer extends Sanitizer, StringReplaceCall {
     MetacharEscapeSanitizer() {
       isGlobal() and
-      RegExp::alwaysMatchesMetaCharacter(getRegExp().getRoot(), ["<", "'", "\""])
+      (
+        RegExp::alwaysMatchesMetaCharacter(getRegExp().getRoot(), ["<", "'", "\""])
+        or
+        // or it's like a wild-card.
+        RegExp::isWildcardLike(getRegExp().getRoot())
+      )
     }
   }
 
@@ -47,6 +52,17 @@ module Shared {
       exists(string name | this = DataFlow::globalVarRef(name).getACall() |
         name = "encodeURI" or name = "encodeURIComponent"
       )
+    }
+  }
+
+  /**
+   * A call to `serialize-javascript`, which prevents XSS vulnerabilities unless
+   * the `unsafe` option is set to `true`.
+   */
+  class SerializeJavascriptSanitizer extends Sanitizer, DataFlow::CallNode {
+    SerializeJavascriptSanitizer() {
+      this = DataFlow::moduleImport("serialize-javascript").getACall() and
+      not this.getOptionArgument(1, "unsafe").mayHaveBooleanValue(true)
     }
   }
 
@@ -211,7 +227,7 @@ module DomBasedXss {
       exists(JQuery::MethodCall call |
         call.interpretsArgumentAsHtml(this) and
         call.interpretsArgumentAsSelector(this) and
-        analyze().getAType() = TTString()
+        pragma[only_bind_out](analyze()).getAType() = TTString()
       )
     }
 
@@ -354,6 +370,9 @@ module DomBasedXss {
 
   private class UriEncodingSanitizer extends Sanitizer, Shared::UriEncodingSanitizer { }
 
+  private class SerializeJavascriptSanitizer extends Sanitizer, Shared::SerializeJavascriptSanitizer {
+  }
+
   private class IsEscapedInSwitchSanitizer extends Sanitizer, Shared::IsEscapedInSwitchSanitizer { }
 
   private class QuoteGuard extends SanitizerGuard, Shared::QuoteGuard { }
@@ -492,6 +511,9 @@ module ReflectedXss {
 
   private class UriEncodingSanitizer extends Sanitizer, Shared::UriEncodingSanitizer { }
 
+  private class SerializeJavascriptSanitizer extends Sanitizer, Shared::SerializeJavascriptSanitizer {
+  }
+
   private class IsEscapedInSwitchSanitizer extends Sanitizer, Shared::IsEscapedInSwitchSanitizer { }
 
   private class QuoteGuard extends SanitizerGuard, Shared::QuoteGuard { }
@@ -528,6 +550,9 @@ module StoredXss {
   private class MetacharEscapeSanitizer extends Sanitizer, Shared::MetacharEscapeSanitizer { }
 
   private class UriEncodingSanitizer extends Sanitizer, Shared::UriEncodingSanitizer { }
+
+  private class SerializeJavascriptSanitizer extends Sanitizer, Shared::SerializeJavascriptSanitizer {
+  }
 
   private class IsEscapedInSwitchSanitizer extends Sanitizer, Shared::IsEscapedInSwitchSanitizer { }
 
@@ -592,6 +617,8 @@ module ExceptionXss {
   private class JsonSchemaValidationError extends Source {
     JsonSchemaValidationError() {
       this = any(JsonSchema::Ajv::Instance i).getAValidationError().getAnImmediateUse()
+      or
+      this = any(JsonSchema::Joi::JoiValidationErrorRead r).getAValidationResultAccess(_)
     }
 
     override string getDescription() { result = "JSON schema validation error" }

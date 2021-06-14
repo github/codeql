@@ -69,7 +69,7 @@ Or How I Learned to Start Worrying and Hate Java Object Deserialization</a>.
 </li>
 <li>
 Alvaro Muñoz &amp; Christian Schneider, RSAConference 2016:
-<a href="https://www.rsaconference.com/writable/presentations/file_upload/asd-f03-serial-killer-silently-pwning-your-java-endpoints.pdf">Serial Killer: Silently Pwning Your Java Endpoints</a>.
+<a href="https://speakerdeck.com/pwntester/serial-killer-silently-pwning-your-java-endpoints">Serial Killer: Silently Pwning Your Java Endpoints</a>.
 </li>
 <li>
 SnakeYaml documentation on deserialization:

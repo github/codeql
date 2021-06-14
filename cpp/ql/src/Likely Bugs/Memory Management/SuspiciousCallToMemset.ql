@@ -7,6 +7,7 @@
  * @kind problem
  * @id cpp/suspicious-call-to-memset
  * @problem.severity recommendation
+ * @security-severity 10.0
  * @precision medium
  * @tags reliability
  *       correctness

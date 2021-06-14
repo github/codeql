@@ -44,14 +44,8 @@ class PlayAddCsrfTokenAnnotation extends Annotation {
 /**
  * The type `play.libs.F.Promise<Result>`.
  */
-class PlayAsyncResultPromise extends Member {
-  PlayAsyncResultPromise() {
-    exists(Class c |
-      c.hasQualifiedName("play.libs", "F") and
-      this = c.getAMember() and
-      this.getQualifiedName() = "F.Promise<Result>"
-    )
-  }
+class PlayAsyncResultPromise extends MemberType {
+  PlayAsyncResultPromise() { hasQualifiedName("play.libs", "F$Promise<Result>") }
 }
 
 /**

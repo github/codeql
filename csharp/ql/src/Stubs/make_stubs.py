@@ -43,12 +43,6 @@ if not foundCS:
     print("Test directory does not contain .cs files. Please specify a working qltest directory.")
     exit(1)
 
-cmd = ['odasa', 'selfTest']
-print('Running ' + ' '.join(cmd))
-if subprocess.check_call(cmd):
-    print("odasa selfTest failed. Ensure odasa is on your current path.")
-    exit(1)
-
 csharpQueries = os.path.abspath(os.path.dirname(sys.argv[0]))
 outputFile = os.path.join(testDir, 'stubs.cs')
 
@@ -58,56 +52,75 @@ if os.path.isfile(outputFile):
     os.remove(outputFile)  # It would interfere with the test.
     print("Removed previous", outputFile)
 
-cmd = ['odasa', 'qltest', '--optimize', '--leave-temp-files', testDir]
+cmd = ['codeql', 'test', 'run', '--keep-databases', testDir]
 print('Running ' + ' '.join(cmd))
 if subprocess.check_call(cmd):
-    print("qltest failed. Please fix up the test before proceeding.")
+    print("codeql test failed. Please fix up the test before proceeding.")
     exit(1)
 
-dbDir = os.path.join(testDir, os.path.basename(testDir) + ".testproj", "db-csharp")
+dbDir = os.path.join(testDir, os.path.basename(testDir) + ".testproj")
 
 if not os.path.isdir(dbDir):
-    print("Expected database directory " + dbDir + " not found. Please contact Semmle.")
+    print("Expected database directory " + dbDir + " not found.")
     exit(1)
 
-cmd = ['odasa', 'runQuery', '--query', os.path.join(csharpQueries, 'MinimalStubsFromSource.ql'), '--db', dbDir, '--output-file', outputFile]
+cmd = ['codeql', 'query', 'run', os.path.join(
+    csharpQueries, 'MinimalStubsFromSource.ql'), '--database', dbDir, '--output', outputFile]
 print('Running ' + ' '.join(cmd))
 if subprocess.check_call(cmd):
-    print('Failed to run the query to generate output file. Please contact Semmle.')
+    print('Failed to run the query to generate output file.')
     exit(1)
 
-# Remove the leading " and trailing " bytes from the file
-len = os.stat(outputFile).st_size
-f = open(outputFile, "rb")
-try:
-    quote = f.read(1)
-    if quote != b'"':
-        print("Unexpected character in file. Please contact Semmle.")
-    contents = f.read(len-3)
-    quote = f.read(1)
-    if quote != b'"':
-        print("Unexpected end character. Please contact Semmle.", quote)
-finally:
-    f.close()
+# Remove the leading and trailing bytes from the file
+length = os.stat(outputFile).st_size
+if length < 20:
+    contents = b''
+else:
+    f = open(outputFile, "rb")
+    try:
+        countTillSlash = 0
+        foundSlash = False
+        slash = f.read(1)
+        while slash != b'':
+            if slash == b'/':
+                foundSlash = True
+                break
+            countTillSlash += 1
+            slash = f.read(1)
+
+        if not foundSlash:
+            countTillSlash = 0
+
+        f.seek(0)
+        quote = f.read(countTillSlash)
+        print("Start characters in file skipped.", quote)
+        post = b'\x0e\x01\x08#select\x01\x01\x00s\x00'
+        contents = f.read(length - len(post) - countTillSlash)
+        quote = f.read(len(post))
+        if quote != post:
+            print("Unexpected end character in file.", quote)
+    finally:
+        f.close()
 
 f = open(outputFile, "wb")
 f.write(contents)
 f.close()
 
-cmd = ['odasa', 'qltest', '--optimize', testDir]
+cmd = ['codeql', 'test', 'run', testDir]
 print('Running ' + ' '.join(cmd))
 if subprocess.check_call(cmd):
-  print('\nTest failed. You may need to fix up', outputFile)
-  print('It may help to view', outputFile, ' in Visual Studio')
-  print("Next steps:")
-  print('1. Look at the compilation errors, and fix up', outputFile, 'so that the test compiles')
-  print('2. Re-run odasa qltest --optimize "' + testDir + '"')
-  print('3. git add "' + outputFile + '"')
-  exit(1)
+    print('\nTest failed. You may need to fix up', outputFile)
+    print('It may help to view', outputFile, ' in Visual Studio')
+    print("Next steps:")
+    print('1. Look at the compilation errors, and fix up',
+          outputFile, 'so that the test compiles')
+    print('2. Re-run codeql test run "' + testDir + '"')
+    print('3. git add "' + outputFile + '"')
+    exit(1)
 
 print("\nStub generation successful! Next steps:")
 print('1. Edit "semmle-extractor-options" in the .cs files to remove unused references')
-print('2. Re-run odasa qltest --optimize "' + testDir + '"')
+print('2. Re-run codeql test run "' + testDir + '"')
 print('3. git add "' + outputFile + '"')
 print('4. Commit your changes.')
 

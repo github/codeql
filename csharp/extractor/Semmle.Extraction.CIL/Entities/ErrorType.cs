@@ -10,7 +10,7 @@ namespace Semmle.Extraction.CIL.Entities
         {
         }
 
-        public override void WriteId(TextWriter trapFile, bool inContext) => trapFile.Write("<ErrorType>");
+        public override void WriteId(EscapingTextWriter trapFile, bool inContext) => trapFile.Write("<ErrorType>");
 
         public override CilTypeKind Kind => CilTypeKind.ValueOrRefType;
 

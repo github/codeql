@@ -14,6 +14,7 @@ private import semmle.code.java.dataflow.internal.BaseSSA
 private import semmle.code.java.dataflow.internal.DataFlowUtil
 private import semmle.code.java.dataflow.internal.DataFlowPrivate
 private import semmle.code.java.dataflow.internal.ContainerFlow
+private import semmle.code.java.dataflow.InstanceAccess
 
 /**
  * Gets a viable dispatch target for `ma`. This is the input dispatch relation.
@@ -194,7 +195,7 @@ private predicate source(RefType t, ObjNode n) {
 private predicate sink(ObjNode n) {
   exists(MethodAccess toString |
     toString.getQualifier() = n.asExpr() and
-    toString.getMethod().hasName("toString")
+    toString.getMethod() instanceof ToStringMethod
   ) and
   n.getTypeBound().getErasure() instanceof TypeObject
 }

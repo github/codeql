@@ -206,19 +206,14 @@ module ClientRequest {
   /**
    * A model of a URL request made using the `axios` library.
    */
-  class AxiosUrlRequest extends ClientRequest::Range {
+  class AxiosUrlRequest extends ClientRequest::Range, API::CallNode {
     string method;
 
     AxiosUrlRequest() {
-      exists(string moduleName, DataFlow::SourceNode callee | this = callee.getACall() |
-        moduleName = "axios" and
-        (
-          callee = DataFlow::moduleImport(moduleName) and method = "request"
-          or
-          callee = DataFlow::moduleMember(moduleName, method) and
-          (method = httpMethodName() or method = "request")
-        )
-      )
+      this = API::moduleImport("axios").getACall() and method = "request"
+      or
+      this = API::moduleImport("axios").getMember(method).getACall() and
+      method = [httpMethodName(), "request"]
     }
 
     private int getOptionsArgIndex() {
@@ -247,12 +242,10 @@ module ClientRequest {
       method = "request" and
       result = getOptionArgument(0, "data")
       or
-      (method = "post" or method = "put" or method = "put") and
-      (result = getArgument(1) or result = getOptionArgument(2, "data"))
+      method = ["post", "put"] and
+      result = [getArgument(1), getOptionArgument(2, "data")]
       or
-      exists(string name | name = "headers" or name = "params" |
-        result = getOptionArgument([0 .. 2], name)
-      )
+      result = getOptionArgument([0 .. 2], ["headers", "params"])
     }
 
     /** Gets the response type from the options passed in. */
@@ -275,6 +268,10 @@ module ClientRequest {
       responseType = getResponseType() and
       promise = true and
       result = this
+      or
+      responseType = getResponseType() and
+      promise = false and
+      result = getReturn().getPromisedError().getMember("response").getAnImmediateUse()
     }
   }
 
@@ -304,6 +301,8 @@ module ClientRequest {
     FetchUrlRequest() {
       exists(DataFlow::SourceNode fetch |
         fetch = DataFlow::moduleImport(["node-fetch", "cross-fetch", "isomorphic-fetch"])
+        or
+        fetch = DataFlow::moduleMember("whatwg-fetch", "fetch")
         or
         fetch = DataFlow::globalVarRef("fetch") // https://fetch.spec.whatwg.org/#fetch-api
       |

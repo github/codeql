@@ -233,13 +233,7 @@ private module TypeScriptOutDir {
     tsconfig.getFile().getBaseName().regexpMatch("tsconfig.*\\.json") and
     tsconfig.isTopLevel() and
     tsconfig.getFile().getParentContainer() = parent and
-    result =
-      tsconfig
-          .getPropValue("compilerOptions")
-          .(JSONObject)
-          .getPropValue("outDir")
-          .(JSONString)
-          .getValue()
+    result = tsconfig.getPropValue("compilerOptions").getPropValue("outDir").getStringValue()
   }
 
   /**
@@ -281,12 +275,7 @@ private module TypeScriptOutDir {
   pragma[inline]
   private string getARootDirFromInclude(JSONObject tsconfig) {
     result =
-      getRootFolderFromPath(tsconfig
-            .getPropValue("include")
-            .(JSONArray)
-            .getElementValue(_)
-            .(JSONString)
-            .getValue())
+      getRootFolderFromPath(tsconfig.getPropValue("include").getElementValue(_).getStringValue())
   }
 
   /**
@@ -294,13 +283,7 @@ private module TypeScriptOutDir {
    */
   pragma[inline]
   private string getRootDir(JSONObject tsconfig) {
-    result =
-      tsconfig
-          .getPropValue("compilerOptions")
-          .(JSONObject)
-          .getPropValue("rootDir")
-          .(JSONString)
-          .getValue()
+    result = tsconfig.getPropValue("compilerOptions").getPropValue("rootDir").getStringValue()
   }
 }
 

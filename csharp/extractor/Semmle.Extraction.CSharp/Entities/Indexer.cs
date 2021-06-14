@@ -73,13 +73,13 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static new Indexer Create(Context cx, IPropertySymbol prop) => IndexerFactory.Instance.CreateEntityFromSymbol(cx, prop);
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             trapFile.WriteSubId(ContainingType!);
             trapFile.Write('.');
             trapFile.Write(Symbol.MetadataName);
             trapFile.Write('(');
-            trapFile.BuildList(",", Symbol.Parameters, (p, tb0) => tb0.WriteSubId(Type.Create(Context, p.Type)));
+            trapFile.BuildList(",", Symbol.Parameters, p => trapFile.WriteSubId(Type.Create(Context, p.Type)));
             trapFile.Write(");indexer");
         }
 

@@ -293,18 +293,6 @@ private class Overflowable extends UnaryOperation {
   }
 }
 
-private class CoreLib extends Assembly {
-  CoreLib() { this = any(SystemExceptionClass c).getALocation() }
-}
-
-/**
- * Holds if assembly `a` was definitely compiled with core library `core`.
- */
-pragma[noinline]
-private predicate assemblyCompiledWithCoreLib(Assembly a, CoreLib core) {
-  a.getAnAttribute().getType().getBaseClass*().(SystemAttributeClass).getALocation() = core
-}
-
 /** A control flow element that is inside a `try` block. */
 private class TriedControlFlowElement extends ControlFlowElement {
   TryStmt try;
@@ -317,7 +305,7 @@ private class TriedControlFlowElement extends ControlFlowElement {
   /**
    * Gets an exception class that is potentially thrown by this element, if any.
    */
-  private Class getAThrownException0() {
+  Class getAThrownException() {
     this instanceof Overflowable and
     result instanceof SystemOverflowExceptionClass
     or
@@ -375,41 +363,6 @@ private class TriedControlFlowElement extends ControlFlowElement {
     or
     this instanceof DynamicExpr and
     result instanceof SystemExceptionClass
-  }
-
-  private CoreLib getCoreLibFromACatchClause() {
-    exists(SpecificCatchClause scc | scc = try.getACatchClause() |
-      result = scc.getCaughtExceptionType().getBaseClass*().(SystemExceptionClass).getALocation()
-    )
-  }
-
-  private CoreLib getCoreLib() {
-    result = this.getCoreLibFromACatchClause()
-    or
-    not exists(this.getCoreLibFromACatchClause()) and
-    assemblyCompiledWithCoreLib(this.getAssembly(), result)
-  }
-
-  pragma[noinline]
-  private Class getAThrownExceptionFromPlausibleCoreLib(string name) {
-    result = this.getAThrownException0() and
-    name = result.getQualifiedName() and
-    (
-      not exists(this.getCoreLib())
-      or
-      this.getCoreLib() = result.getALocation()
-    )
-  }
-
-  Class getAThrownException() {
-    exists(string name | result = this.getAThrownExceptionFromPlausibleCoreLib(name) |
-      result =
-        min(Class c |
-          c = this.getAThrownExceptionFromPlausibleCoreLib(name)
-        |
-          c order by c.getLocation().(Assembly).getFullName()
-        )
-    )
   }
 }
 

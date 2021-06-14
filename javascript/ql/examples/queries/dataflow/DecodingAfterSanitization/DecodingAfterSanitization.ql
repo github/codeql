@@ -3,6 +3,7 @@
  * @description Tracks the return value of 'escapeHtml' into 'decodeURI', indicating
  *              an ineffective sanitization attempt.
  * @kind path-problem
+ * @problem.severity error
  * @tags security
  * @id js/examples/decoding-after-sanitization
  */

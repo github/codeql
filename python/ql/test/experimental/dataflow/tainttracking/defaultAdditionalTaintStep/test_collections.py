@@ -20,23 +20,23 @@ def test_construction():
     tainted_dict = {'key': tainted_string}
 
     ensure_tainted(
-        tainted_string,
-        tainted_list,
-        tainted_tuple,
-        tainted_set,
-        tainted_dict,
+        tainted_string, # $ tainted
+        tainted_list, # $ tainted
+        tainted_tuple, # $ tainted
+        tainted_set, # $ tainted
+        tainted_dict, # $ tainted
     )
 
     ensure_tainted(
-        list(tainted_list),
-        list(tainted_tuple),
-        list(tainted_set),
-        list(tainted_dict.values()),
-        list(tainted_dict.items()),
+        list(tainted_list), # $ tainted
+        list(tainted_tuple), # $ tainted
+        list(tainted_set), # $ tainted
+        list(tainted_dict.values()), # $ tainted
+        list(tainted_dict.items()), # $ tainted
 
-        tuple(tainted_list),
-        set(tainted_list),
-        frozenset(tainted_list),
+        tuple(tainted_list), # $ tainted
+        set(tainted_list), # $ tainted
+        frozenset(tainted_list), # $ tainted
     )
 
 
@@ -44,39 +44,39 @@ def test_access(x, y, z):
     tainted_list = TAINTED_LIST
 
     ensure_tainted(
-        tainted_list[0],
-        tainted_list[x],
-        tainted_list[y:z],
+        tainted_list[0], # $ tainted
+        tainted_list[x], # $ tainted
+        tainted_list[y:z], # $ tainted
 
-        sorted(tainted_list),
-        reversed(tainted_list),
-        iter(tainted_list),
-        next(iter(tainted_list)),
+        sorted(tainted_list), # $ tainted
+        reversed(tainted_list), # $ tainted
+        iter(tainted_list), # $ tainted
+        next(iter(tainted_list)), # $ tainted
     )
 
     a, b, c = tainted_list[0:3]
-    ensure_tainted(a, b, c)
+    ensure_tainted(a, b, c) # $ tainted
 
     for h in tainted_list:
-        ensure_tainted(h)
+        ensure_tainted(h) # $ tainted
     for i in reversed(tainted_list):
-        ensure_tainted(i)
+        ensure_tainted(i) # $ tainted
 
 
 def test_dict_access(x):
     tainted_dict = TAINTED_DICT
 
     ensure_tainted(
-        tainted_dict["name"],
-        tainted_dict.get("name"),
-        tainted_dict[x],
-        tainted_dict.copy(),
+        tainted_dict["name"], # $ tainted
+        tainted_dict.get("name"), # $ tainted
+        tainted_dict[x], # $ tainted
+        tainted_dict.copy(), # $ tainted
     )
 
     for v in tainted_dict.values():
-        ensure_tainted(v)
+        ensure_tainted(v) # $ tainted
     for k, v in tainted_dict.items():
-        ensure_tainted(v)
+        ensure_tainted(v) # $ tainted
 
 
 def test_named_tuple(): # TODO: namedtuple currently not handled
@@ -84,8 +84,8 @@ def test_named_tuple(): # TODO: namedtuple currently not handled
     point = Point(TAINTED_STRING, 'safe')
 
     ensure_tainted(
-        point[0],
-        point.x,
+        point[0], # $ MISSING: tainted
+        point.x, # $ MISSING: tainted
     )
 
     ensure_not_tainted(
@@ -94,7 +94,7 @@ def test_named_tuple(): # TODO: namedtuple currently not handled
     )
 
     a, b = point
-    ensure_tainted(a)
+    ensure_tainted(a) # $ MISSING: tainted
     ensure_not_tainted(b)
 
 
@@ -103,23 +103,23 @@ def test_defaultdict(key, x): # TODO: defaultdict currently not handled
     tainted_default_dict[key] += TAINTED_STRING
 
     ensure_tainted(
-        tainted_default_dict["name"],
-        tainted_default_dict.get("name"),
-        tainted_default_dict[x],
-        tainted_default_dict.copy(),
+        tainted_default_dict["name"], # $ MISSING: tainted
+        tainted_default_dict.get("name"), # $ MISSING: tainted
+        tainted_default_dict[x], # $ MISSING: tainted
+        tainted_default_dict.copy(), # $ MISSING: tainted
     )
     for v in tainted_default_dict.values():
-        ensure_tainted(v)
+        ensure_tainted(v) # $ MISSING: tainted
     for k, v in tainted_default_dict.items():
-        ensure_tainted(v)
+        ensure_tainted(v) # $ MISSING: tainted
 
 
 def test_copy_1():
     from copy import copy, deepcopy
 
     ensure_tainted(
-        copy(TAINTED_LIST),
-        deepcopy(TAINTED_LIST),
+        copy(TAINTED_LIST), # $ tainted
+        deepcopy(TAINTED_LIST), # $ tainted
     )
 
 
@@ -127,8 +127,8 @@ def test_copy_2():
     import copy
 
     ensure_tainted(
-        copy.copy(TAINTED_LIST),
-        copy.deepcopy(TAINTED_LIST),
+        copy.copy(TAINTED_LIST), # $ tainted
+        copy.deepcopy(TAINTED_LIST), # $ tainted
     )
 
 
@@ -139,7 +139,7 @@ def list_index_assign():
     ensure_not_tainted(my_list)
 
     my_list[0] = tainted_string
-    ensure_tainted(my_list)
+    ensure_tainted(my_list) # $ MISSING: tainted
 
 
 def list_index_aug_assign():
@@ -149,7 +149,7 @@ def list_index_aug_assign():
     ensure_not_tainted(my_list)
 
     my_list[0] += tainted_string
-    ensure_tainted(my_list)
+    ensure_tainted(my_list) # $ MISSING: tainted
 
 
 def list_append():
@@ -159,7 +159,7 @@ def list_append():
     ensure_not_tainted(my_list)
 
     my_list.append(tainted_string)
-    ensure_tainted(my_list)
+    ensure_tainted(my_list) # $ tainted
 
 
 def list_extend():
@@ -169,7 +169,7 @@ def list_extend():
     ensure_not_tainted(my_list)
 
     my_list.extend(tainted_list)
-    ensure_tainted(my_list)
+    ensure_tainted(my_list) # $ MISSING: tainted
 
 
 def dict_update_dict():
@@ -179,7 +179,7 @@ def dict_update_dict():
     ensure_not_tainted(my_dict)
 
     my_dict.update(tainted_dict)
-    ensure_tainted(my_dict)
+    ensure_tainted(my_dict) # $ MISSING: tainted
 
 
 def dict_update_kv_list():
@@ -189,7 +189,7 @@ def dict_update_kv_list():
     ensure_not_tainted(my_dict)
 
     my_dict.update(tainted_kv_list)
-    ensure_tainted(my_dict)
+    ensure_tainted(my_dict) # $ MISSING: tainted
 
 
 def dict_update_kv_arg():
@@ -198,7 +198,7 @@ def dict_update_kv_arg():
     ensure_not_tainted(my_dict)
 
     my_dict.update(key2=TAINTED_STRING)
-    ensure_tainted(my_dict)
+    ensure_tainted(my_dict) # $ MISSING: tainted
 
 
 def dict_manual_update():
@@ -209,7 +209,7 @@ def dict_manual_update():
 
     for k in tainted_dict:
         my_dict[k] = tainted_dict[k]
-    ensure_tainted(my_dict)
+    ensure_tainted(my_dict) # $ MISSING: tainted
 
 
 def dict_merge():
@@ -217,7 +217,7 @@ def dict_merge():
     tainted_dict = {"key2": TAINTED_STRING}
 
     merged = {**my_dict, **tainted_dict}
-    ensure_tainted(merged)
+    ensure_tainted(merged) # $ MISSING: tainted
 
 
 def set_add():
@@ -227,7 +227,7 @@ def set_add():
     ensure_not_tainted(my_set)
 
     my_set.add(tainted_string)
-    ensure_tainted(my_set)
+    ensure_tainted(my_set) # $ tainted
 
 
 # Make tests runable

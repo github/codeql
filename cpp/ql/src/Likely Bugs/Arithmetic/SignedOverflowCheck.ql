@@ -5,10 +5,13 @@
  *              unsigned integer values.
  * @kind problem
  * @problem.severity warning
+ * @security-severity 5.9
  * @precision high
  * @id cpp/signed-overflow-check
  * @tags correctness
  *       security
+ *       external/cwe/cwe-128
+ *       external/cwe/cwe-190
  */
 
 import cpp

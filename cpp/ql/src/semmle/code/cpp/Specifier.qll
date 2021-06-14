@@ -37,7 +37,7 @@ class FunctionSpecifier extends Specifier {
     this.hasName("explicit")
   }
 
-  override string getAPrimaryQlClass() { result = "FunctionSpecifier)" }
+  override string getAPrimaryQlClass() { result = "FunctionSpecifier" }
 }
 
 /**

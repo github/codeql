@@ -18,7 +18,7 @@ class TestBase {
         sink(Strings.lenientFormat(x, 3)); // $numTaintFlow=1
         sink(Strings.commonPrefix(x, "abc")); 
         sink(Strings.commonSuffix(x, "cde")); 
-        sink(Strings.lenientFormat("%s = %s", x, 3)); // $numTaintFlow=1
+        sink(Strings.lenientFormat("%s = %s", x, 3)); // $ numTaintFlow=1
     }
 
     void test2() {
@@ -59,5 +59,11 @@ class TestBase {
 
     void test4() {
         sink(Preconditions.checkNotNull(taint())); // $numTaintFlow=1
+    }
+
+    void test5() {
+        sink(MoreObjects.firstNonNull(taint(), taint())); // $numTaintFlow=2
+        sink(MoreObjects.firstNonNull(null, taint())); // $numTaintFlow=1
+        sink(MoreObjects.firstNonNull(taint(), null)); // $numTaintFlow=1
     }
 }
