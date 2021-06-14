@@ -636,10 +636,52 @@ abstract class StackVariableReachabilityWithReassignment extends StackVariableRe
     )
   }
 
+  private predicate bbSuccessorEntryReaches(
+    BasicBlock bb, SemanticStackVariable v, ControlFlowNode node,
+    boolean skipsFirstLoopAlwaysTrueUponEntry
+  ) {
+    exists(BasicBlock succ, boolean succSkipsFirstLoopAlwaysTrueUponEntry |
+      bbSuccessorEntryReachesLoopInvariant0(bb, succ, skipsFirstLoopAlwaysTrueUponEntry,
+        succSkipsFirstLoopAlwaysTrueUponEntry)
+    |
+      revBbEntryReachesLocally(succ, v, node, this) and
+      succSkipsFirstLoopAlwaysTrueUponEntry = false
+      or
+      not isBarrier(succ.getNode(_), v) and
+      bbSuccessorEntryReaches(succ, v, node, succSkipsFirstLoopAlwaysTrueUponEntry)
+    )
+  }
+
+  private predicate reaches0(ControlFlowNode source, SemanticStackVariable v, ControlFlowNode sink) {
+    /*
+     * Implementation detail: the predicates in this class are a generalization of
+     * those in DefinitionsAndUses.qll, and should be kept in sync.
+     *
+     * Unfortunately, caching of abstract predicates does not work well, so the
+     * predicates in DefinitionsAndUses.qll cannot use this library.
+     */
+
+    exists(BasicBlock bb, int i |
+      isSource(source, v) and
+      bb.getNode(i) = source and
+      not bb.isUnreachable()
+    |
+      exists(int j |
+        j > i and
+        sink = bb.getNode(j) and
+        isSink(sink, v) and
+        not isBarrier(bb.getNode(pragma[only_bind_into]([i + 1 .. j - 1])), v)
+      )
+      or
+      not exists(int k | isBarrier(bb.getNode(k), v) | k > i) and
+      bbSuccessorEntryReaches(bb, v, sink, _)
+    )
+  }
+
   private predicate reassignment(
     ControlFlowNode source, SemanticStackVariable v, ControlFlowNode def, SemanticStackVariable v0
   ) {
-    StackVariableReachability.super.reaches(source, v, def) and
+    reaches0(source, v, def) and
     exprDefinition(v0, def, v.getAnAccess())
   }
 
@@ -705,11 +747,11 @@ abstract class StackVariableReachabilityExt extends string {
     boolean skipsFirstLoopAlwaysTrueUponEntry
   ) {
     exists(BasicBlock succ, boolean succSkipsFirstLoopAlwaysTrueUponEntry |
-      bbSuccessorEntryReachesLoopInvariant(bb, succ, skipsFirstLoopAlwaysTrueUponEntry,
+      bbSuccessorEntryReachesLoopInvariant0(bb, succ, skipsFirstLoopAlwaysTrueUponEntry,
         succSkipsFirstLoopAlwaysTrueUponEntry) and
       not isBarrier(source, bb.getEnd(), succ.getStart(), v)
     |
-      bbEntryReachesLocally(source, succ, v, node) and
+      this.bbEntryReachesLocally(source, succ, v, node) and
       succSkipsFirstLoopAlwaysTrueUponEntry = false
       or
       not exists(int k | isBarrier(source, succ.getNode(k), succ.getNode(k + 1), v)) and
