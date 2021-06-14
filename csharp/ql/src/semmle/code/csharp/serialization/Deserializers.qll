@@ -18,6 +18,12 @@ class StrongTypeDeserializer extends Class {
     this instanceof DataContractSerializerClass
     or
     this instanceof XmlMessageFormatterClass
+    or
+    this instanceof FsPicklerSerializerClass
+    or
+    this instanceof CsPicklerSerializerClass
+    or
+    this instanceof CsPicklerTextSerializerClass
   }
 }
 
@@ -511,5 +517,110 @@ class ServiceStackTextXmlSerializerDeserializeFromStreamMethod extends Method, U
     this.getDeclaringType() instanceof ServiceStackTextXmlSerializerClass and
     this.hasName("DeserializeFromStream") and
     this.isStatic()
+  }
+}
+
+/** MBrace.FsPickler.FsPicklerSerializer */
+private class FsPicklerSerializerClass extends Class {
+  FsPicklerSerializerClass() { this.hasQualifiedName("MBrace.FsPickler.FsPicklerSerializer") }
+}
+
+/** `MBrace.FsPickler.FsPicklerSerializer.Deserialize` method */
+class FsPicklerSerializerClassDeserializeMethod extends Method, UnsafeDeserializer {
+  FsPicklerSerializerClassDeserializeMethod() {
+    this.getDeclaringType().getBaseClass*() instanceof FsPicklerSerializerClass and
+    this.hasName("Deserialize")
+  }
+}
+
+/** `MBrace.FsPickler.FsPicklerSerializer.DeserializeSequence` method */
+class FsPicklerSerializerClassDeserializeSequenceMethod extends Method, UnsafeDeserializer {
+  FsPicklerSerializerClassDeserializeSequenceMethod() {
+    this.getDeclaringType().getBaseClass*() instanceof FsPicklerSerializerClass and
+    this.hasName("DeserializeSequence")
+  }
+}
+
+/** `MBrace.FsPickler.FsPicklerSerializer.DeserializeSifted` method */
+class FsPicklerSerializerClasDeserializeSiftedMethod extends Method, UnsafeDeserializer {
+  FsPicklerSerializerClasDeserializeSiftedMethod() {
+    this.getDeclaringType().getBaseClass*() instanceof FsPicklerSerializerClass and
+    this.hasName("DeserializeSifted")
+  }
+}
+
+/** `MBrace.FsPickler.FsPicklerSerializer.UnPickle` method */
+class FsPicklerSerializerClassUnPickleMethod extends Method, UnsafeDeserializer {
+  FsPicklerSerializerClassUnPickleMethod() {
+    this.getDeclaringType().getBaseClass*() instanceof FsPicklerSerializerClass and
+    this.hasName("UnPickle")
+  }
+}
+
+/** `MBrace.FsPickler.FsPicklerSerializer.UnPickleSifted` method */
+class FsPicklerSerializerClassUnPickleSiftedMethod extends Method, UnsafeDeserializer {
+  FsPicklerSerializerClassUnPickleSiftedMethod() {
+    this.getDeclaringType().getBaseClass*() instanceof FsPicklerSerializerClass and
+    this.hasName("UnPickleSifted")
+  }
+}
+
+/** `MBrace.FsPickler.FsPicklerSerializer.DeserializeUntyped` method */
+class FsPicklerSerializerClassDeserializeUntypedMethod extends Method, UnsafeDeserializer {
+  FsPicklerSerializerClassDeserializeUntypedMethod() {
+    this.getDeclaringType().getBaseClass*() instanceof FsPicklerSerializerClass and
+    this.hasName("DeserializeUntyped")
+  }
+}
+
+/** `MBrace.FsPickler.FsPicklerSerializer.DeserializeSequenceUntyped` method */
+class FsPicklerSerializerClassDeserializeSequenceUntypedMethod extends Method, UnsafeDeserializer {
+  FsPicklerSerializerClassDeserializeSequenceUntypedMethod() {
+    this.getDeclaringType().getBaseClass*() instanceof FsPicklerSerializerClass and
+    this.hasName("DeserializeSequenceUntyped")
+  }
+}
+
+/** `MBrace.FsPickler.FsPicklerSerializer.UnPickleUntyped` method */
+class FsPicklerSerializerClassUnPickleUntypedMethod extends Method, UnsafeDeserializer {
+  FsPicklerSerializerClassUnPickleUntypedMethod() {
+    this.getDeclaringType().getBaseClass*() instanceof FsPicklerSerializerClass and
+    this.hasName("UnPickleUntyped")
+  }
+}
+
+/** MBrace.CsPickler.CsPicklerSerializer */
+private class CsPicklerSerializerClass extends Class {
+  CsPicklerSerializerClass() { this.hasQualifiedName("MBrace.CsPickler.CsPicklerSerializer") }
+}
+
+/** `MBrace.FsPickler.CsPicklerSerializer.Deserialize` method */
+class CsPicklerSerializerClassDeserializeMethod extends Method, UnsafeDeserializer {
+  CsPicklerSerializerClassDeserializeMethod() {
+    this.getDeclaringType().getBaseClass*() instanceof CsPicklerSerializerClass and
+    this.hasName("Deserialize")
+  }
+}
+
+/** `MBrace.FsPickler.CsPicklerSerializer.UnPickle` method */
+class CsPicklerSerializerClassUnPickleMethod extends Method, UnsafeDeserializer {
+  CsPicklerSerializerClassUnPickleMethod() {
+    this.getDeclaringType().getBaseClass*() instanceof CsPicklerSerializerClass and
+    this.hasName("UnPickle")
+  }
+}
+
+/** MBrace.CsPickler.CsPicklerTextSerializer */
+private class CsPicklerTextSerializerClass extends Class {
+  CsPicklerTextSerializerClass() {
+    this.hasQualifiedName("MBrace.CsPickler.CsPicklerTextSerializer")
+  }
+}
+
+/** `MBrace.FsPickler.CsPicklerTextSerializer.UnPickleOfString` method */
+class CsPicklerSerializerClassUnPickleOfStringMethod extends Method, UnsafeDeserializer {
+  CsPicklerSerializerClassUnPickleOfStringMethod() {
+    this.getDeclaringType().getBaseClass*() instanceof CsPicklerTextSerializerClass and
+    this.hasName("UnPickleOfString")
   }
 }

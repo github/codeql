@@ -750,4 +750,52 @@ module UnsafeDeserialization {
       )
     }
   }
+
+  /** FsPickler */
+  private predicate isWeakTypeFsPicklerCall(MethodCall mc, Method m) {
+    m = mc.getTarget() and
+    (
+      m instanceof FsPicklerSerializerClassUnPickleUntypedMethod or
+      m instanceof FsPicklerSerializerClassDeserializeUntypedMethod or
+      m instanceof FsPicklerSerializerClassDeserializeSequenceUntypedMethod
+    ) and
+    not mc.getArgument(0).hasValue()
+  }
+
+  abstract private class FsPicklerWeakTypeSink extends ConstructorOrStaticMethodSink { }
+
+  private class FsPicklerDeserializeWeakTypeMethodSink extends FsPicklerWeakTypeSink {
+    FsPicklerDeserializeWeakTypeMethodSink() {
+      exists(MethodCall mc, Method m |
+        isWeakTypeFsPicklerCall(mc, m) and
+        this.asExpr() = mc.getArgument(0)
+      )
+    }
+  }
+
+  private predicate isStrongTypeFsPicklerCall(MethodCall mc, Method m) {
+    m = mc.getTarget() and
+    (
+      m instanceof FsPicklerSerializerClassDeserializeMethod or
+      m instanceof FsPicklerSerializerClassDeserializeSequenceMethod or
+      m instanceof FsPicklerSerializerClasDeserializeSiftedMethod or
+      m instanceof FsPicklerSerializerClassUnPickleMethod or
+      m instanceof FsPicklerSerializerClassUnPickleSiftedMethod or
+      m instanceof CsPicklerSerializerClassDeserializeMethod or
+      m instanceof CsPicklerSerializerClassUnPickleMethod or
+      m instanceof CsPicklerSerializerClassUnPickleOfStringMethod
+    ) and
+    not mc.getArgument(0).hasValue()
+  }
+
+  abstract private class FsPicklerStrongTypeSink extends InstanceMethodSink { }
+
+  private class FsPicklerDeserializeStrongTypeMethodSink extends FsPicklerStrongTypeSink {
+    FsPicklerDeserializeStrongTypeMethodSink() {
+      exists(MethodCall mc, Method m |
+        isStrongTypeFsPicklerCall(mc, m) and
+        this.asExpr() = mc.getArgument(0)
+      )
+    }
+  }
 }
