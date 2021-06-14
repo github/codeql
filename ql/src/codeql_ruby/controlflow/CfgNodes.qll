@@ -113,6 +113,13 @@ class ReturningCfgNode extends AstCfgNode {
   }
 }
 
+private Expr desugar(Expr n) {
+  result = n.getDesugared()
+  or
+  not exists(n.getDesugared()) and
+  result = n
+}
+
 /**
  * A class for mapping parent-child AST nodes to parent-child CFG nodes.
  */
@@ -123,41 +130,17 @@ abstract private class ExprChildMapping extends Expr {
    */
   abstract predicate relevantChild(Expr child);
 
-  pragma[noinline]
-  private BasicBlock getABasicBlockInScope() {
-    result.getANode() = TAstCfgNode(this.getAChild*(), _)
-  }
-
   pragma[nomagic]
-  private predicate reachesBasicBlockBase(Expr child, CfgNode cfn, BasicBlock bb) {
+  private predicate reachesBasicBlock(Expr child, CfgNode cfn, BasicBlock bb) {
     this.relevantChild(child) and
     cfn = this.getAControlFlowNode() and
     bb.getANode() = cfn
-  }
-
-  pragma[nomagic]
-  private predicate reachesBasicBlock(Expr child, CfgNode cfn, BasicBlock bb) {
-    this.reachesBasicBlockBase(child, cfn, bb)
     or
-    this.relevantChild(child) and
-    this.reachesBasicBlockRec(child, cfn, bb) and
-    bb = this.getABasicBlockInScope()
-  }
-
-  pragma[nomagic]
-  private predicate reachesBasicBlockRec(Expr child, CfgNode cfn, BasicBlock bb) {
-    exists(BasicBlock mid | this.reachesBasicBlock(child, cfn, mid) |
-      bb = mid.getASuccessor()
-      or
-      bb = mid.getAPredecessor()
+    exists(BasicBlock mid |
+      this.reachesBasicBlock(child, cfn, mid) and
+      bb = mid.getAPredecessor() and
+      not mid.getANode().getNode() = child
     )
-  }
-
-  private Expr desugar(Expr n) {
-    result = n.getDesugared()
-    or
-    not exists(n.getDesugared()) and
-    result = n
   }
 
   /**
@@ -169,17 +152,8 @@ abstract private class ExprChildMapping extends Expr {
    */
   cached
   predicate hasCfgChild(Expr child, CfgNode cfn, CfgNode cfnChild) {
-    exists(BasicBlock bb |
-      this.reachesBasicBlockBase(child, cfn, bb) and
-      cfnChild = bb.getANode() and
-      cfnChild = desugar(child).getAControlFlowNode()
-    )
-    or
-    exists(BasicBlock bb |
-      this.reachesBasicBlockRec(child, cfn, bb) and
-      cfnChild = bb.getANode() and
-      cfnChild = desugar(child).getAControlFlowNode()
-    )
+    this.reachesBasicBlock(child, cfn, cfnChild.getBasicBlock()) and
+    cfnChild = desugar(child).getAControlFlowNode()
   }
 }
 
