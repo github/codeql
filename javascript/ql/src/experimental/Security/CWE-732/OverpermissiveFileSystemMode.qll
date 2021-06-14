@@ -194,11 +194,28 @@ class CorruptLabel extends DataFlow::FlowLabel {
   CorruptLabel() { this = "corrupt" }
 }
 
+/** Gets an integer value containing the permission bits of `specifier`. */
+private int getNumberMode(NumberLiteral specifier) {
+  if exists(specifier.getIntValue())
+  then result = specifier.getIntValue()
+  else result = getFloatMode(specifier)
+}
+
+/** Gets the digit characters containing the permission bits of `numeric`. */
+bindingset[numeric]
+private string getLowDigits(string numeric) {
+  if numeric.length() > 3 then result = numeric.suffix(numeric.length() - 3) else result = numeric
+}
+
 /**
- * Gets the integer value of `specifier`,
- * or the maximum integer if the specifier is larger than that.
+ * Gets the integer value containing the permission bits of `specifier`,
+ * by converting first to float to access the full possible range.
  */
-private int getNumberMode(NumberLiteral specifier) { result = specifier.getFloatValue().ceil() }
+private int getFloatMode(NumberLiteral specifier) {
+  if specifier.getFloatValue() >= 0
+  then result = getLowDigits(specifier.getFloatValue().toString().splitAt(".", 0)).toInt()
+  else none()
+}
 
 /**
  * Gets the integer value of the low 3 digits of `specifier`,
@@ -449,7 +466,7 @@ abstract class ExcludedEntryModeConstruction extends DataFlow::Configuration {
 
   override predicate isSource(DataFlow::Node node) {
     node.asExpr() instanceof NumberLiteral and
-    node.asExpr().(NumberLiteral).getFloatValue().ceil() >= 511 // >= 0o777
+    getNumberMode(node.asExpr()) >= 511 // >= 0o777
   }
 
   override predicate isAdditionalFlowStep(DataFlow::Node predecessor, DataFlow::Node successor) {
