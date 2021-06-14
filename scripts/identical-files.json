@@ -12,7 +12,7 @@
         "ql/src/codeql_ruby/dataflow/internal/DataFlowImpl.qll"
     ],
     "TypeTracker": [
-        "codeql/python/ql/src/experimental/typetracking/TypeTracker.qll",
+        "codeql/python/ql/src/semmle/python/dataflow/new/internal/TypeTracker.qll",
         "ql/src/codeql_ruby/typetracking/TypeTracker.qll"
     ]
 }
