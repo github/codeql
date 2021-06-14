@@ -291,7 +291,7 @@ class RegExpEscape extends RegExpNormalChar {
 
   /**
    * Gets the name of the escaped; for example, `w` for `\w`.
-   * TODO: Handle unicode and named escapes.
+   * TODO: Handle named escapes.
    */
   override string getValue() {
     this.isIdentityEscape() and result = this.getUnescaped()
@@ -299,15 +299,68 @@ class RegExpEscape extends RegExpNormalChar {
     this.getUnescaped() = "n" and result = "\n"
     or
     this.getUnescaped() = "r" and result = "\r"
+    or
+    isUnicode() and
+    result = getUnicode()
   }
 
   predicate isIdentityEscape() { not this.getUnescaped() in ["n", "r"] }
 
   override string getPrimaryQLClass() { result = "RegExpEscape" }
 
-  string getText() { result = re.getText().substring(start, end) }
-
   string getUnescaped() { result = this.getText().suffix(1) }
+
+  /**
+   * Gets the text for this escape. That is e.g. "\w".
+   */
+  private string getText() { result = re.getText().substring(start, end) }
+
+  /**
+   * Holds if this is a unicode escape.
+   */
+  private predicate isUnicode() { getText().prefix(2) = ["\\u", "\\U"] }
+
+  /**
+   * Gets the unicode char for this escape.
+   * E.g. for `\u0061` this returns "a".
+   */
+  private string getUnicode() {
+    exists(int codepoint | codepoint = sum(getHexValueFromUnicode(_)) |
+      result = codepoint.toUnicode()
+    )
+  }
+
+  /**
+   * Gets int value for the `index`th char in the hex number of the unicode escape.
+   * E.g. for `\u0061` and `index = 2` this returns 96 (the number `6` interpreted as hex).
+   */
+  private int getHexValueFromUnicode(int index) {
+    isUnicode() and
+    exists(string hex, string char | hex = getText().suffix(2) |
+      char = hex.charAt(index) and
+      result = 16.pow(hex.length() - index - 1) * toHex(char)
+    )
+  }
+}
+
+/**
+ * Gets the hex number for the `hex` char.
+ */
+private int toHex(string hex) {
+  hex = [0 .. 9].toString() and
+  result = hex.toInt()
+  or
+  result = 10 and hex = ["a", "A"]
+  or
+  result = 11 and hex = ["b", "B"]
+  or
+  result = 12 and hex = ["c", "C"]
+  or
+  result = 13 and hex = ["d", "D"]
+  or
+  result = 14 and hex = ["e", "E"]
+  or
+  result = 15 and hex = ["f", "F"]
 }
 
 /**
