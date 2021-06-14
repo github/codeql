@@ -1,13 +1,13 @@
 /**
  * Provides classes and predicates for working with serverless handlers.
- * E.g. AWS: https://docs.aws.amazon.com/lambda/latest/dg/nodejs-handler.html
+ * E.g. [AWS](https://docs.aws.amazon.com/lambda/latest/dg/nodejs-handler.html) or [serverless](https://npmjs.com/package/serverless)
  */
 
 import javascript
 
 /**
  * Provides classes and predicates for working with serverless handlers.
- * In particular a `RemoteFlowSource` is added for AWS and Alibaba serverless.
+ * In particular a `RemoteFlowSource` is added for AWS, Alibaba, and serverless.
  */
 private module ServerLess {
   /**
@@ -23,6 +23,14 @@ private module ServerLess {
         if exists(properties.lookup("CodeUri"))
         then codeURI = properties.lookup("CodeUri").(YAMLScalar).getValue()
         else codeURI = ""
+      )
+      or
+      // The `serverless` library, which specifies a top-level `functions` property
+      exists(YAMLMapping functions |
+        functions = resource.lookup("functions") and
+        not exists(resource.getParentNode()) and
+        handler = functions.getValue(_).(YAMLMapping).lookup("handler").(YAMLScalar).getValue() and
+        codeURI = ""
       )
     )
   }

@@ -30,12 +30,19 @@ private class GuavaBaseCsv extends SummaryModelCsv {
         "com.google.common.base;Joiner$MapJoiner;false;useForNull;(String);;Argument[-1];ReturnValue;taint",
         "com.google.common.base;Joiner$MapJoiner;false;appendTo;;;Argument[1];Argument[0];taint",
         "com.google.common.base;Joiner$MapJoiner;false;appendTo;;;Argument[0];ReturnValue;value",
-        "com.google.common.base;Joiner$MapJoiner;false;join;;;Argument[-1..0];ReturnValue;taint",
+        "com.google.common.base;Joiner$MapJoiner;false;join;;;Argument[-1];ReturnValue;taint",
+        "com.google.common.base;Joiner$MapJoiner;false;join;(Iterable);;MapKey of Element of Argument[0];ReturnValue;taint",
+        "com.google.common.base;Joiner$MapJoiner;false;join;(Iterable);;MapValue of Element of Argument[0];ReturnValue;taint",
+        "com.google.common.base;Joiner$MapJoiner;false;join;(Iterator);;MapKey of Element of Argument[0];ReturnValue;taint",
+        "com.google.common.base;Joiner$MapJoiner;false;join;(Iterator);;MapValue of Element of Argument[0];ReturnValue;taint",
+        "com.google.common.base;Joiner$MapJoiner;false;join;(Map);;MapKey of Argument[0];ReturnValue;taint",
+        "com.google.common.base;Joiner$MapJoiner;false;join;(Map);;MapValue of Argument[0];ReturnValue;taint",
         "com.google.common.base;Splitter;false;split;(CharSequence);;Argument[0];ReturnValue;taint",
         "com.google.common.base;Splitter;false;splitToList;(CharSequence);;Argument[0];ReturnValue;taint",
         "com.google.common.base;Splitter;false;splitToStream;(CharSequence);;Argument[0];ReturnValue;taint",
         "com.google.common.base;Splitter$MapSplitter;false;split;(CharSequence);;Argument[0];ReturnValue;taint",
-        "com.google.common.base;Preconditions;false;checkNotNull;;;Argument[0];ReturnValue;value"
+        "com.google.common.base;Preconditions;false;checkNotNull;;;Argument[0];ReturnValue;value",
+        "com.google.common.base;MoreObjects;false;firstNonNull;;;Argument[0..1];ReturnValue;value"
       ]
   }
 }

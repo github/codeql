@@ -151,17 +151,17 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardCondition {
     )
   }
 
-  override predicate comparesEq(Expr left, Expr right, int k, boolean isLessThan, boolean testIsTrue) {
+  override predicate comparesEq(Expr left, Expr right, int k, boolean areEqual, boolean testIsTrue) {
     exists(boolean partIsTrue, GuardCondition part |
       impliesValue(this.(BinaryLogicalOperation), part, partIsTrue, testIsTrue)
     |
-      part.comparesEq(left, right, k, isLessThan, partIsTrue)
+      part.comparesEq(left, right, k, areEqual, partIsTrue)
     )
   }
 
-  override predicate ensuresEq(Expr left, Expr right, int k, BasicBlock block, boolean isLessThan) {
+  override predicate ensuresEq(Expr left, Expr right, int k, BasicBlock block, boolean areEqual) {
     exists(boolean testIsTrue |
-      comparesEq(left, right, k, isLessThan, testIsTrue) and this.controls(block, testIsTrue)
+      comparesEq(left, right, k, areEqual, testIsTrue) and this.controls(block, testIsTrue)
     )
   }
 }
@@ -180,20 +180,20 @@ private class GuardConditionFromShortCircuitNot extends GuardCondition, LogicalN
     getOperand().(GuardCondition).controls(controlled, testIsTrue.booleanNot())
   }
 
-  override predicate comparesLt(Expr left, Expr right, int k, boolean areEqual, boolean testIsTrue) {
-    getOperand().(GuardCondition).comparesLt(left, right, k, areEqual, testIsTrue.booleanNot())
+  override predicate comparesLt(Expr left, Expr right, int k, boolean isLessThan, boolean testIsTrue) {
+    getOperand().(GuardCondition).comparesLt(left, right, k, isLessThan, testIsTrue.booleanNot())
   }
 
-  override predicate ensuresLt(Expr left, Expr right, int k, BasicBlock block, boolean testIsTrue) {
-    getOperand().(GuardCondition).ensuresLt(left, right, k, block, testIsTrue.booleanNot())
+  override predicate ensuresLt(Expr left, Expr right, int k, BasicBlock block, boolean isLessThan) {
+    getOperand().(GuardCondition).ensuresLt(left, right, k, block, isLessThan.booleanNot())
   }
 
   override predicate comparesEq(Expr left, Expr right, int k, boolean areEqual, boolean testIsTrue) {
     getOperand().(GuardCondition).comparesEq(left, right, k, areEqual, testIsTrue.booleanNot())
   }
 
-  override predicate ensuresEq(Expr left, Expr right, int k, BasicBlock block, boolean testIsTrue) {
-    getOperand().(GuardCondition).ensuresEq(left, right, k, block, testIsTrue.booleanNot())
+  override predicate ensuresEq(Expr left, Expr right, int k, BasicBlock block, boolean areEqual) {
+    getOperand().(GuardCondition).ensuresEq(left, right, k, block, areEqual.booleanNot())
   }
 }
 

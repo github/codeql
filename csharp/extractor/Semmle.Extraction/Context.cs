@@ -108,7 +108,7 @@ namespace Semmle.Extraction
                     Populate(init as ISymbol, entity);
 
 #if DEBUG_LABELS
-                using var id = new StringWriter();
+                using var id = new EscapingTextWriter();
                 entity.WriteQuotedId(id);
                 CheckEntityHasUniqueLabel(id.ToString(), entity);
 #endif

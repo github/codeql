@@ -23,8 +23,8 @@ Test.java:
 #-----|               1: (Annotations)
 #    4|                 1: [Annotation] Override
 #    4|               3: [TypeAccess] String
-#    4|               5: [BlockStmt] stmt
-#    4|                 0: [ReturnStmt] stmt
+#    4|               5: [BlockStmt] { ... }
+#    4|                 0: [ReturnStmt] return ...
 #    4|                   0: [StringLiteral] "red"
 #    4|           -3: [TypeAccess] NonFinalEnum
 #    5|       4: [FieldDeclaration] NonFinalEnum GREEN, ...;

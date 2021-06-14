@@ -129,6 +129,7 @@ JavaScript and TypeScript built-in support
    mssql, Database
    mysql, Database
    node, Runtime environment
+   nest.js, Server
    postgres, Database
    ramda, Utility library
    react, HTML framework
@@ -151,13 +152,19 @@ Python built-in support
    :widths: auto
 
    Name, Category
+   aiohttp.web, Web framework
    Django, Web framework
    Flask, Web framework
    Tornado, Web framework
    PyYAML, Serialization
    dill, Serialization
+   simplejson, Serialization
+   ujson, Serialization
    fabric, Utility library
+   idna, Utility library
    invoke, Utility library
+   multidict, Utility library
+   yarl, Utility library
    mysql-connector-python, Database
    MySQLdb, Database
    psycopg2, Database

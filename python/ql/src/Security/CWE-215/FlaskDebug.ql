@@ -3,6 +3,7 @@
  * @description Running a Flask app in debug mode may allow an attacker to run arbitrary code through the Werkzeug debugger.
  * @kind problem
  * @problem.severity error
+ * @security-severity 6.4
  * @precision high
  * @id py/flask-debug
  * @tags security

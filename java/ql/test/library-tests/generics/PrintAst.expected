@@ -42,7 +42,7 @@ generics/A.java:
 #   20|       -1: [TypeAccess] D<? super Double>
 #   20|         0: [WildcardTypeAccess] ? ...
 #   20|           1: [TypeAccess] Double
-#   21|     7: [BlockStmt] stmt
-#   21|       0: [ExprStmt] stmt
+#   21|     7: [BlockStmt] { ... }
+#   21|       0: [ExprStmt] <Expr>;
 #   21|         0: [MethodAccess] asList(...)
 #   21|           -1: [TypeAccess] Arrays

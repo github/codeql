@@ -2,49 +2,11 @@ char * strncat(char*, const char*, unsigned);
 unsigned strlen(const char*);
 void* malloc(unsigned);
 
-void strncat_test1(char *s) {
-  char buf[80];
-  strncat(buf, s, sizeof(buf) - strlen(buf) - 1); // GOOD
-  strncat(buf, s, sizeof(buf) - strlen(buf));  // BAD
-  strncat(buf, "fix", sizeof(buf)-strlen(buf)); // BAD
-}
-
-#define MAX_SIZE 80
-
-void strncat_test2(char *s) {
-  char buf[MAX_SIZE];
-  strncat(buf, s, MAX_SIZE - strlen(buf) - 1); // GOOD
-  strncat(buf, s, MAX_SIZE - strlen(buf));  // BAD
-  strncat(buf, "fix", MAX_SIZE - strlen(buf)); // BAD
-}
-
-void strncat_test3(char *s) {
-  int len = 80;
-  char* buf = (char *) malloc(len);
-  strncat(buf, s, len - strlen(buf) - 1); // GOOD
-  strncat(buf, s, len - strlen(buf));  // BAD [NOT DETECTED]
-  strncat(buf, "fix", len - strlen(buf)); // BAD [NOT DETECTED]
-}
-
-void strncat_test4(char *s) {
-  int len = 80;
-  char* buf = (char *) malloc(len + 1);
-  strncat(buf, s, len - strlen(buf) - 1); // GOOD
-  strncat(buf, s, len - strlen(buf)); // GOOD
-}
-
 struct buffers
 {
     unsigned char array[50];
     unsigned char *pointer;
 } globalBuff1,*globalBuff2,globalBuff1_c,*globalBuff2_c;
-
-void strncat_test5(char* s, struct buffers* buffers) {
-  unsigned len_array = strlen(buffers->array);
-  unsigned max_size = sizeof(buffers->array);
-  unsigned free_size = max_size - len_array;
-  strncat(buffers->array, s, free_size); // BAD
-}
 
 void strlen_test1(){
   unsigned char buff1[12];

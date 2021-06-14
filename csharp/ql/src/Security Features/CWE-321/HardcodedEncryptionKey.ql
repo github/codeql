@@ -4,7 +4,9 @@
  * @kind problem
  * @id cs/hardcoded-key
  * @problem.severity error
+ * @security-severity 5.9
  * @tags security
+ *       external/cwe/cwe-320
  */
 
 /*

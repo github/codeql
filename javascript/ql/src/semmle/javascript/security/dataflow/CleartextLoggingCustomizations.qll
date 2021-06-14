@@ -54,7 +54,7 @@ module CleartextLogging {
    */
   private class NameGuidedNonCleartextPassword extends NonCleartextPassword {
     NameGuidedNonCleartextPassword() {
-      exists(string name | name.regexpMatch(notSensitive()) |
+      exists(string name | name.regexpMatch(notSensitiveRegexp()) |
         this.asExpr().(VarAccess).getName() = name
         or
         this.(DataFlow::PropRead).getPropertyName() = name
@@ -94,7 +94,7 @@ module CleartextLogging {
    * A call that might obfuscate a password, for example through hashing.
    */
   private class ObfuscatorCall extends Barrier, DataFlow::InvokeNode {
-    ObfuscatorCall() { getCalleeName().regexpMatch(notSensitive()) }
+    ObfuscatorCall() { getCalleeName().regexpMatch(notSensitiveRegexp()) }
   }
 
   /**
@@ -113,7 +113,7 @@ module CleartextLogging {
     ObjectPasswordPropertySource() {
       exists(DataFlow::PropWrite write |
         name.regexpMatch(maybePassword()) and
-        not name.regexpMatch(notSensitive()) and
+        not name.regexpMatch(notSensitiveRegexp()) and
         write = this.(DataFlow::SourceNode).getAPropertyWrite(name) and
         // avoid safe values assigned to presumably unsafe names
         not write.getRhs() instanceof NonCleartextPassword
