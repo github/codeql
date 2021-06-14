@@ -26,9 +26,6 @@ private class ReturnCryptoOperatinoResultMethod extends Method {
     or
     getDeclaringType().hasQualifiedName("java.security", "Signature") and
     hasName("sign")
-    or
-    getDeclaringType().hasQualifiedName("java.security", "MessageDigest") and
-    hasName("digest")
   }
 }
 

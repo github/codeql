@@ -22,20 +22,6 @@ public class NotConstantTimeCryptoComparison {
         return MessageDigest.isEqual(expectedMac, actualMac);
     }
 
-    // BAD: compare hashes using a not-constant time method
-    public boolean unsafeCheckMessageDigest(String expectedHash, byte[] data) throws Exception {
-        MessageDigest md = MessageDigest.getInstance("SHA-256");
-        String actual = new String(md.digest(data));
-        return actual.equals(expectedHash);
-    }
-
-    // GOOD: compare hashes using a constant time method
-    public boolean saferCheckMessageDigest(byte[] expected, byte[] data) throws Exception {
-        MessageDigest md = MessageDigest.getInstance("SHA-256");
-        byte[] actual = md.digest(data);
-        return MessageDigest.isEqual(expected, actual);
-    }
-
     // BAD: compare signatures using a not-constant time method
     public boolean unsafeCheckSignatures(byte[] expected, byte[] data, PrivateKey key) throws Exception {
         Signature engine = Signature.getInstance("SHA256withRSA");

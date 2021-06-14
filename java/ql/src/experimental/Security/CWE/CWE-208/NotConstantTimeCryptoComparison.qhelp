@@ -3,7 +3,7 @@
 
 <overview>
 <p>
-When comparing results of cryptographic operations, such as MAC or cryptographic hash,
+When comparing results of cryptographic operations, such as MAC or digital signature,
 a constant time algorithm should be used. In other words, the comparison time should not depend on
 the content of the input. Otherwise, an attacker may be able to implement a timing attack.
 A successful timing attack may result in leaking secrets or authentication bypass.
@@ -20,15 +20,15 @@ and does not depend on the contents of the arrays.
 
 <example>
 <p>
-The following example uses <code>Arrays.equals()</code> method for comparing cryptographic hashes.
+The following example uses <code>Arrays.equals()</code> method for comparing MAC.
 This method implements a not-constant time algorithm:
 </p>
-<sample src="UnsafeCryptoHashComparison.java" />
+<sample src="UnsafeMacComparison.java" />
 
 <p>
-The next example example uses a safe not-constant time algorithm for comparing cryptographic hashes:
+The next example example uses a safe not-constant time algorithm for comparing MAC:
 </p>
-<sample src="SafeCryptoHashComparison.java" />
+<sample src="SafeMacComparison.java" />
 
 </example>
 
