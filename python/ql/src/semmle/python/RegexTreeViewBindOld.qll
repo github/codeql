@@ -24,8 +24,6 @@ class RegExpLiteral extends TRegExpLiteral, RegExpParent {
   override RegExpTerm getChild(int i) { i = 0 and result.getRegex() = re and result.isRootTerm() }
 
   predicate isDotAll() { re.getAMode() = "DOTALL" }
-
-  override string toString() { result = re.toString() }
 }
 
 predicate colocated(RegExpTerm a, string rawA, RegExpTerm b, string rawB) {
