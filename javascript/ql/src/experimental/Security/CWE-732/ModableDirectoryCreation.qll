@@ -53,6 +53,23 @@ class InsecureImmediateOrModePropertyArgument1DirectoryCreation extends ModableD
 }
 
 /**
+ * A secure default directory creation
+ * that takes mode as a `dirMode` object property in argument 1.
+ */
+class SecureDirModePropertyArgument1DirectoryCreation extends ModableDirectoryCreation,
+  SecureEntryCreation, Argument1EntryCreation, PropertySpecifierEntryCreation,
+  DirModePropertyEntryCreation {
+  SecureDirModePropertyArgument1DirectoryCreation() {
+    this = [
+      DataFlow::moduleMember("secure-fs-extra", "createFile"),
+      DataFlow::moduleMember("secure-fs-extra", "createFileSync"),
+      DataFlow::moduleMember("secure-fs-extra", "ensureFile"),
+      DataFlow::moduleMember("secure-fs-extra", "ensureFileSync")
+    ].getAnInvocation()
+  }
+}
+
+/**
  * A secure default directory creation that takes mode in argument 1
  * as either an immediate value or a `mode` object property.
  */
@@ -64,7 +81,17 @@ class SecureImmediateOrModePropertyArgument1DirectoryCreation extends ModableDir
       [
         DataFlow::moduleMember("secure-fs", "mkdir"),
         DataFlow::moduleMember("secure-fs", "mkdirSync"),
-        DataFlow::moduleMember("secure-fs/promises", "mkdir")
+        DataFlow::moduleMember("secure-fs/promises", "mkdir"),
+        DataFlow::moduleMember("secure-fs-extra", "emptyDir"),
+        DataFlow::moduleMember("secure-fs-extra", "emptyDirSync"),
+        DataFlow::moduleMember("secure-fs-extra", "emptydir"),
+        DataFlow::moduleMember("secure-fs-extra", "emptydirSync"),
+        DataFlow::moduleMember("secure-fs-extra", "ensureDir"),
+        DataFlow::moduleMember("secure-fs-extra", "ensureDirSync"),
+        DataFlow::moduleMember("secure-fs-extra", "mkdirp"),
+        DataFlow::moduleMember("secure-fs-extra", "mkdirpSync"),
+        DataFlow::moduleMember("secure-fs-extra", "mkdirs"),
+        DataFlow::moduleMember("secure-fs-extra", "mkdirsSync")
       ].getAnInvocation()
   }
 }
@@ -82,5 +109,32 @@ class InsecureDirectoryModePropertyArgument2DirectoryCreation extends ModableDir
         DataFlow::moduleImport("move-file"), DataFlow::moduleMember("move-file", "sync"),
         DataFlow::moduleImport("cp-file"), DataFlow::moduleMember("cp-file", "sync")
       ].getAnInvocation()
+  }
+}
+
+/**
+ * A secure default directory creation
+ * that takes mode as a `dirMode` object property in argument 2.
+ */
+class SecureDirModePropertyArgument2DirectoryCreation extends ModableDirectoryCreation,
+  SecureEntryCreation, Argument2EntryCreation, PropertySpecifierEntryCreation,
+  DirModePropertyEntryCreation {
+  SecureDirModePropertyArgument2DirectoryCreation() {
+    this = [
+      DataFlow::moduleMember("secure-fs-extra", "createLink"),
+      DataFlow::moduleMember("secure-fs-extra", "createLinkSync"),
+      DataFlow::moduleMember("secure-fs-extra", "createSymlink"),
+      DataFlow::moduleMember("secure-fs-extra", "createSymlinkSync"),
+      DataFlow::moduleMember("secure-fs-extra", "ensureLink"),
+      DataFlow::moduleMember("secure-fs-extra", "ensureLinkSync"),
+      DataFlow::moduleMember("secure-fs-extra", "ensureSymlink"),
+      DataFlow::moduleMember("secure-fs-extra", "ensureSymlinkSync"),
+      DataFlow::moduleMember("secure-fs-extra", "outputFile"),
+      DataFlow::moduleMember("secure-fs-extra", "outputFileSync"),
+      DataFlow::moduleMember("secure-fs-extra", "outputJSON"),
+      DataFlow::moduleMember("secure-fs-extra", "outputJSONSync"),
+      DataFlow::moduleMember("secure-fs-extra", "outputJson"),
+      DataFlow::moduleMember("secure-fs-extra", "outputJsonSync")
+    ].getAnInvocation()
   }
 }

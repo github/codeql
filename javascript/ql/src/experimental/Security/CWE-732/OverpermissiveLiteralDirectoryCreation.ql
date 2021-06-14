@@ -31,6 +31,13 @@ class LiteralInsecureDirectoryModePropertyArgument2DirectoryCreation extends Ins
   LiteralDirectoryCreation { }
 
 /**
+ * A secure default directory creation
+ * that provides a literal mode as a `dirMode` property in argument 1.
+ */
+class LiteralSecureDirModePropertyArgument1DirectoryCreation extends SecureDirModePropertyArgument1DirectoryCreation,
+  LiteralDirectoryCreation { }
+
+/**
  * An insecure default directory creation
  * that provides a literal mode in argument 1 as either an immediate value or a `mode` property.
  */
@@ -43,6 +50,12 @@ class LiteralInsecureImmediateOrModePropertyArgument1DirectoryCreation extends I
  */
 class LiteralSecureImmediateOrModePropertyArgument1DirectoryCreation extends SecureImmediateOrModePropertyArgument1DirectoryCreation,
   LiteralDirectoryCreation { }
+
+/**
+ * A secure default directory creation
+ * that provides a literal mode as a `dirMode` property in argument 2.
+ */
+class LiteralSecureDirModePropertyArgument2DirectoryCreation extends SecureDirModePropertyArgument2DirectoryCreation, LiteralDirectoryCreation { }
 
 from LiteralDirectoryCreation creation
 where creation.isOverpermissive()

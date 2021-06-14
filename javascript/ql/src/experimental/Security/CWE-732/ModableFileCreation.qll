@@ -89,7 +89,15 @@ class SecureModePropertyArgument2FileCreation extends ModableFileCreation, Secur
         DataFlow::moduleMember("secure-fs", "writeFile"),
         DataFlow::moduleMember("secure-fs", "writeFileSync"),
         DataFlow::moduleMember("secure-fs/promises", "appendFile"),
-        DataFlow::moduleMember("secure-fs/promises", "writeFile")
+        DataFlow::moduleMember("secure-fs/promises", "writeFile"),
+        DataFlow::moduleMember("secure-fs-extra", "createFile"),
+        DataFlow::moduleMember("secure-fs-extra", "createFileSync"),
+        DataFlow::moduleMember("secure-fs-extra", "ensureFile"),
+        DataFlow::moduleMember("secure-fs-extra", "ensureFileSync"),
+        DataFlow::moduleMember("secure-fs-extra", "writeJSON"),
+        DataFlow::moduleMember("secure-fs-extra", "writeJSONSync"),
+        DataFlow::moduleMember("secure-fs-extra", "writeJson"),
+        DataFlow::moduleMember("secure-fs-extra", "writeJsonSync")
       ].getAnInvocation()
   }
 }

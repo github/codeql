@@ -1,28 +1,36 @@
-| modable.js:8:1:8:33 | fs.crea ... file1') |
-| modable.js:9:1:9:34 | fs.crea ... file2') |
-| modable.js:10:1:10:31 | fs.open ...  => {}) |
-| modable.js:11:1:11:25 | fs.open ... file4') |
-| modable.js:12:1:12:29 | fsPromi ... file5') |
-| modable.js:13:1:13:41 | fs.appe ...  => {}) |
-| modable.js:14:1:14:35 | fs.appe ... 7', '') |
-| modable.js:15:1:15:40 | fs.writ ...  => {}) |
-| modable.js:16:1:16:34 | fs.writ ... 9', '') |
-| modable.js:17:1:17:40 | fsPromi ... 0', '') |
-| modable.js:18:1:18:39 | fsPromi ... 1', '') |
-| modable.js:19:1:19:47 | jsonfil ...  => {}) |
-| modable.js:20:1:20:41 | jsonfil ... 3', {}) |
-| modable.js:21:1:21:36 | fsExtra ... 4', {}) |
-| modable.js:22:1:22:40 | fsExtra ... 5', {}) |
-| modable.js:23:1:23:36 | fsExtra ... 6', {}) |
-| modable.js:24:1:24:40 | fsExtra ... 7', {}) |
-| modable.js:25:1:25:38 | secureF ... /file') |
-| modable.js:26:1:26:39 | secureF ... /file') |
-| modable.js:27:1:27:36 | secureF ...  => {}) |
-| modable.js:28:1:28:30 | secureF ... /file') |
-| modable.js:29:1:29:34 | secureF ... /file') |
-| modable.js:30:1:30:46 | secureF ...  => {}) |
-| modable.js:31:1:31:40 | secureF ... e', '') |
-| modable.js:32:1:32:45 | secureF ...  => {}) |
-| modable.js:33:1:33:39 | secureF ... e', '') |
-| modable.js:34:1:34:44 | secureF ... e', '') |
-| modable.js:35:1:35:43 | secureF ... e', '') |
+| modable.js:9:1:9:21 | fs.crea ... tream() |
+| modable.js:10:1:10:22 | fs.crea ... tream() |
+| modable.js:11:1:11:9 | fs.open() |
+| modable.js:12:1:12:13 | fs.openSync() |
+| modable.js:13:1:13:17 | fsPromises.open() |
+| modable.js:14:1:14:15 | fs.appendFile() |
+| modable.js:15:1:15:19 | fs.appendFileSync() |
+| modable.js:16:1:16:14 | fs.writeFile() |
+| modable.js:17:1:17:18 | fs.writeFileSync() |
+| modable.js:18:1:18:23 | fsPromi ... dFile() |
+| modable.js:19:1:19:22 | fsPromi ... eFile() |
+| modable.js:20:1:20:20 | jsonfile.writeFile() |
+| modable.js:21:1:21:24 | jsonfil ... eSync() |
+| modable.js:22:1:22:19 | fsExtra.writeJSON() |
+| modable.js:23:1:23:23 | fsExtra ... NSync() |
+| modable.js:24:1:24:19 | fsExtra.writeJson() |
+| modable.js:25:1:25:23 | fsExtra ... nSync() |
+| modable.js:26:1:26:27 | secureF ... tream() |
+| modable.js:27:1:27:28 | secureF ... tream() |
+| modable.js:28:1:28:15 | secureFs.open() |
+| modable.js:29:1:29:19 | secureFs.openSync() |
+| modable.js:30:1:30:23 | secureF ... .open() |
+| modable.js:31:1:31:21 | secureF ... dFile() |
+| modable.js:32:1:32:25 | secureF ... eSync() |
+| modable.js:33:1:33:20 | secureFs.writeFile() |
+| modable.js:34:1:34:24 | secureF ... eSync() |
+| modable.js:35:1:35:29 | secureF ... dFile() |
+| modable.js:36:1:36:28 | secureF ... eFile() |
+| modable.js:37:1:37:26 | secureF ... eFile() |
+| modable.js:38:1:38:30 | secureF ... eSync() |
+| modable.js:39:1:39:26 | secureF ... eFile() |
+| modable.js:40:1:40:30 | secureF ... eSync() |
+| modable.js:41:1:41:25 | secureF ... eJSON() |
+| modable.js:42:1:42:29 | secureF ... NSync() |
+| modable.js:43:1:43:25 | secureF ... eJson() |
+| modable.js:44:1:44:29 | secureF ... nSync() |

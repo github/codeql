@@ -445,6 +445,11 @@ abstract class DirectoryModePropertyEntryCreation extends PropertySpecifierEntry
   override string getProperty() { result = "directoryMode" }
 }
 
+/** An entry creation that takes mode specifier in a `dirMode` property. */
+abstract class DirModePropertyEntryCreation extends PropertySpecifierEntryCreation {
+  override string getProperty() { result = "dirMode" }
+}
+
 /**
  * An entry creation that provides a literal mode specifier.
  *
