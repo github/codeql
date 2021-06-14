@@ -1,7 +1,6 @@
 import fsExtra from 'fs-extra'
 import cpy from 'cpy'
 import npmMoveFile from '@npmcli/move-file'
-import trash from 'trash'
 
 fsExtra.createFile()
 fsExtra.createFileSync()
@@ -28,5 +27,4 @@ fsExtra.outputJsonSync()
 cpy()
 npmMoveFile()
 npmMoveFile.sync()
-trash()
 fsExtra.accessSync()
