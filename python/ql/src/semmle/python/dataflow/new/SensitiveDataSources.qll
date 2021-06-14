@@ -116,6 +116,25 @@ private module SensitiveDataModeling {
   }
 
   /**
+   * Tracks any modeled source of sensitive data (with any classification),
+   * to limit the scope of `extraStepForCalls`. See it's QLDoc for more context.
+   */
+  private DataFlow::LocalSourceNode possibleSensitiveCallable(DataFlow::TypeTracker t) {
+    t.start() and
+    result instanceof SensitiveDataSource
+    or
+    exists(DataFlow::TypeTracker t2 | result = possibleSensitiveCallable(t2).track(t2, t))
+  }
+
+  /**
+   * Tracks any modeled source of sensitive data (with any classification),
+   * to limit the scope of `extraStepForCalls`. See it's QLDoc for more context.
+   */
+  private DataFlow::Node possibleSensitiveCallable() {
+    possibleSensitiveCallable(DataFlow::TypeTracker::end()).flowsTo(result)
+  }
+
+  /**
    * Holds if the step from `nodeFrom` to `nodeTo` should be considered a
    * taint-flow step for sensitive-data, to ensure calls are handled correctly.
    *
@@ -147,7 +166,10 @@ private module SensitiveDataModeling {
    * ```
    */
   predicate extraStepForCalls(DataFlow::Node nodeFrom, DataFlow::CallCfgNode nodeTo) {
-    nodeTo.getFunction() = nodeFrom
+    // However, we do still use the type-tracking approach to limit the size of this
+    // predicate.
+    nodeTo.getFunction() = nodeFrom and
+    nodeFrom = possibleSensitiveCallable()
   }
 
   /**
