@@ -14,7 +14,8 @@
 import ruby
 import codeql_ruby.DataFlow
 import DataFlow::PathGraph
-private import codeql_ruby.controlflow.CfgNodes
+import codeql_ruby.TaintTracking
+import codeql_ruby.controlflow.CfgNodes
 
 bindingset[char, fraction]
 predicate fewer_characters_than(StringLiteral str, string char, float fraction) {

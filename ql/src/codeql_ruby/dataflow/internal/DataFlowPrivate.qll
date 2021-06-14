@@ -544,15 +544,6 @@ predicate isImmutableOrUnobservable(Node n) { none() }
  */
 predicate isUnreachableInCall(Node n, DataFlowCall call) { none() }
 
-/**
- * A guard that validates some expression.
- */
-class BarrierGuard extends Expr {
-  BarrierGuard() { none() }
-
-  Node getAGuardedNode() { none() }
-}
-
 newtype LambdaCallKind =
   TYieldCallKind() or
   TLambdaCallKind()
