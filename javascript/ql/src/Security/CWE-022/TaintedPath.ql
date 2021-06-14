@@ -4,6 +4,7 @@
  *              unexpected resources.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 6.4
  * @precision high
  * @id js/path-injection
  * @tags security

@@ -2,12 +2,15 @@ package org.apache.commons.jexl2;
 
 import java.util.Map;
 import org.apache.commons.jexl2.introspection.*;
+import org.apache.commons.logging.Log;
 
 public class JexlEngine {
 
-    public JexlEngine() {}
+    public JexlEngine() {
+    }
 
-    public JexlEngine(Uberspect uberspect, Object arithmetic, Map<String, Object> functions, Object log) {}
+    public JexlEngine(Uberspect uberspect, JexlArithmetic arithmetic, Map<String, Object> functions, Log log) {
+    }
 
     public Expression createExpression(String expression) {
         return null;
@@ -41,9 +44,10 @@ public class JexlEngine {
         return null;
     }
 
-    public void setProperty(Object bean, String expr, Object value) {}
+    public void setProperty(Object bean, String expr, Object value) {
+    }
 
-    public void setProperty(JexlContext context, Object bean, String expr, Object value) {}
-    
-      
+    public void setProperty(JexlContext context, Object bean, String expr, Object value) {
+    }
+
 }

@@ -30,8 +30,28 @@ def test_incompatible_types():
     x.field = str("Hello") # $str=field str SPURIOUS: int=field int
     expects_string(x) # $ str=field SPURIOUS: int=field
 
+# set in different function
+def set_foo(some_class_instance): # $ tracked=foo
+    some_class_instance.foo = tracked # $ tracked=foo tracked
 
+def test_set_x():
+    x = SomeClass() # $ MISSING: tracked=foo
+    set_foo(x) # $ MISSING: tracked=foo
+    print(x.foo) # $ MISSING: tracked=foo tracked
+
+# return from a different function
+def create_with_foo():
+    x = SomeClass() # $ tracked=foo
+    x.foo = tracked # $ tracked=foo tracked
+    return x # $ tracked=foo
+
+def test_create_with_foo():
+    x = create_with_foo() # $ tracked=foo
+    print(x.foo) # $ tracked=foo tracked
+
+# ------------------------------------------------------------------------------
 # Attributes assigned statically to a class
+# ------------------------------------------------------------------------------
 
 class MyClass: # $tracked=field
     field = tracked # $tracked
@@ -40,7 +60,9 @@ lookup = MyClass.field # $tracked tracked=field
 instance = MyClass() # $tracked=field
 lookup2 = instance.field # MISSING: tracked
 
-## Dynamic attribute access
+# ------------------------------------------------------------------------------
+# Dynamic attribute access
+# ------------------------------------------------------------------------------
 
 # Via `getattr`/`setattr`
 
@@ -99,3 +121,41 @@ def dunder_dict_indirect_read():
     do_stuff(y) # $ MISSING: tracked
 
 
+# ------------------------------------------------------------------------------
+# Tracking of attribute on class instance
+# ------------------------------------------------------------------------------
+
+# attribute set in method
+# inspired by https://github.com/github/codeql/pull/6023
+
+class MyClass2(object):
+    def __init__(self): # $ tracked=foo
+        self.foo = tracked # $ tracked=foo tracked
+
+    def print_foo(self): # $ MISSING: tracked=foo
+        print(self.foo) # $ MISSING: tracked=foo tracked
+
+    def possibly_uncalled_method(self): # $ MISSING: tracked=foo
+        print(self.foo) # $ MISSING: tracked=foo tracked
+
+instance = MyClass2()
+print(instance.foo) # $ MISSING: tracked=foo tracked
+instance.print_foo() # $ MISSING: tracked=foo
+
+
+# attribute set from outside of class
+
+class MyClass3(object):
+    def print_self(self): # $ tracked=foo
+        print(self) # $ tracked=foo
+
+    def print_foo(self): # $ tracked=foo
+        print(self.foo) # $ tracked=foo tracked
+
+    def possibly_uncalled_method(self): # $ MISSING: tracked=foo
+        print(self.foo) # $ MISSING: tracked=foo tracked
+
+instance = MyClass3() # $ tracked=foo
+instance.print_self() # $ tracked=foo
+instance.foo = tracked # $ tracked=foo tracked
+instance.print_foo() # $ tracked=foo

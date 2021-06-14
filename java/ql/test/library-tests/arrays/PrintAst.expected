@@ -16,8 +16,8 @@ arrays/B.java:
 #-----|       4: (Parameters)
 #    4|         0: [Parameter] a
 #    4|           0: [TypeAccess] A
-#    4|       5: [BlockStmt] stmt
-#    5|         0: [LocalVariableDeclStmt] stmt
+#    4|       5: [BlockStmt] { ... }
+#    5|         0: [LocalVariableDeclStmt] var ...;
 #    5|           0: [ArrayTypeAccess] ...[]
 #    5|             0: [TypeAccess] A
 #    5|           1: [LocalVariableDeclExpr] aa
@@ -25,7 +25,7 @@ arrays/B.java:
 #    5|               -2: [ArrayInit] {...}
 #    5|                 0: [VarAccess] a
 #    5|               -1: [TypeAccess] A
-#    6|         1: [LocalVariableDeclStmt] stmt
+#    6|         1: [LocalVariableDeclStmt] var ...;
 #    6|           0: [ArrayTypeAccess] ...[]
 #    6|             0: [ArrayTypeAccess] ...[]
 #    6|               0: [TypeAccess] A
@@ -36,7 +36,7 @@ arrays/B.java:
 #    6|                   0: [VarAccess] a
 #    6|               -1: [ArrayTypeAccess] ...[]
 #    6|                 0: [TypeAccess] A
-#    7|         2: [LocalVariableDeclStmt] stmt
+#    7|         2: [LocalVariableDeclStmt] var ...;
 #    7|           0: [ArrayTypeAccess] ...[]
 #    7|             0: [ArrayTypeAccess] ...[]
 #    7|               0: [ArrayTypeAccess] ...[]

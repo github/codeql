@@ -3,6 +3,7 @@
  * @description Marking a certificate as valid for a host without checking the certificate hostname allows an attacker to perform a machine-in-the-middle attack.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 4.9
  * @precision high
  * @id java/unsafe-hostname-verification
  * @tags security

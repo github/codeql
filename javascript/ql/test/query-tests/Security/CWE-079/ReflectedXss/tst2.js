@@ -36,3 +36,17 @@ app.get('/baz', function(req, res) {
   res.send(p); // NOT OK
   res.send(other.p); // NOT OK
 });
+
+const serializeJavaScript = require('serialize-javascript');
+
+app.get('/baz', function(req, res) {
+  let { p } = req.params;
+
+  var serialized = serializeJavaScript(p);
+
+  res.send(serialized); // OK
+  
+  var unsafe = serializeJavaScript(p, {unsafe: true});
+
+  res.send(unsafe); // NOT OK
+});

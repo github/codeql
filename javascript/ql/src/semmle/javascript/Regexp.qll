@@ -1237,8 +1237,18 @@ module RegExp {
     }
   }
 
-  private class DefaultMetaCharacter extends MetaCharacter {
-    DefaultMetaCharacter() { this = ["<", "'", "\""] }
+  /**
+   * A meta character used by HTML.
+   */
+  private class HTMLMetaCharacter extends MetaCharacter {
+    HTMLMetaCharacter() { this = ["<", "'", "\""] }
+  }
+
+  /**
+   * A meta character used by regular expressions.
+   */
+  private class RegexpMetaChars extends RegExp::MetaCharacter {
+    RegexpMetaChars() { this = ["{", "[", "+"] }
   }
 
   /**

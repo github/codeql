@@ -67,6 +67,8 @@
 import java
 private import semmle.code.java.dataflow.DataFlow::DataFlow
 private import internal.DataFlowPrivate
+private import internal.FlowSummaryImpl::Private::External
+private import internal.FlowSummaryImplSpecific
 private import FlowSummary
 
 /**
@@ -74,19 +76,29 @@ private import FlowSummary
  * ensuring that they are visible to the taint tracking / data flow library.
  */
 private module Frameworks {
+  private import internal.ContainerFlow
   private import semmle.code.java.frameworks.ApacheHttp
   private import semmle.code.java.frameworks.apache.Lang
   private import semmle.code.java.frameworks.guava.Guava
   private import semmle.code.java.frameworks.jackson.JacksonSerializability
   private import semmle.code.java.security.ResponseSplitting
+  private import semmle.code.java.security.InformationLeak
   private import semmle.code.java.security.XSS
   private import semmle.code.java.security.LdapInjection
   private import semmle.code.java.security.XPath
+  private import semmle.code.java.security.JexlInjection
 }
 
 private predicate sourceModelCsv(string row) {
   row =
     [
+      // org.springframework.security.web.savedrequest.SavedRequest
+      "org.springframework.security.web.savedrequest;SavedRequest;true;getRedirectUrl;;;ReturnValue;remote",
+      "org.springframework.security.web.savedrequest;SavedRequest;true;getCookies;;;ReturnValue;remote",
+      "org.springframework.security.web.savedrequest;SavedRequest;true;getHeaderValues;;;ReturnValue;remote",
+      "org.springframework.security.web.savedrequest;SavedRequest;true;getHeaderNames;;;ReturnValue;remote",
+      "org.springframework.security.web.savedrequest;SavedRequest;true;getParameterValues;;;ReturnValue;remote",
+      "org.springframework.security.web.savedrequest;SavedRequest;true;getParameterMap;;;ReturnValue;remote",
       // ServletRequestGetParameterMethod
       "javax.servlet;ServletRequest;false;getParameter;(String);;ReturnValue;remote",
       "javax.servlet;ServletRequest;false;getParameterValues;(String);;ReturnValue;remote",
@@ -350,7 +362,8 @@ private predicate summaryModel(string row) {
   any(SummaryModelCsv s).row(row)
 }
 
-private predicate sourceModel(
+/** Holds if a source model exists for the given parameters. */
+predicate sourceModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
   string output, string kind
 ) {
@@ -368,7 +381,8 @@ private predicate sourceModel(
   )
 }
 
-private predicate sinkModel(
+/** Holds if a sink model exists for the given parameters. */
+predicate sinkModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
   string input, string kind
 ) {
@@ -386,7 +400,8 @@ private predicate sinkModel(
   )
 }
 
-private predicate summaryModel(
+/** Holds if a summary model exists for the given parameters. */
+predicate summaryModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
   string input, string output, string kind
 ) {
@@ -473,7 +488,7 @@ module CsvValidation {
       not namespace.regexpMatch("[a-zA-Z0-9_\\.]+") and
       msg = "Dubious namespace \"" + namespace + "\" in " + pred + " model."
       or
-      not type.regexpMatch("[a-zA-Z0-9_\\$]+") and
+      not type.regexpMatch("[a-zA-Z0-9_\\$<>]+") and
       msg = "Dubious type \"" + type + "\" in " + pred + " model."
       or
       not name.regexpMatch("[a-zA-Z0-9_]*") and
@@ -491,10 +506,15 @@ module CsvValidation {
       or
       summaryModel(_, _, _, _, _, _, input, _, _) and pred = "summary"
     |
-      specSplit(input, part, _) and
-      not part.regexpMatch("|ReturnValue|ArrayElement|Element|MapKey|MapValue") and
-      not (part = "Argument" and pred = "sink") and
-      not parseArg(part, _) and
+      (
+        invalidSpecComponent(input, part) and
+        not part = "" and
+        not (part = "Argument" and pred = "sink") and
+        not parseArg(part, _)
+        or
+        specSplit(input, part, _) and
+        parseParam(part, _)
+      ) and
       msg = "Unrecognized input specification \"" + part + "\" in " + pred + " model."
     )
     or
@@ -503,11 +523,9 @@ module CsvValidation {
       or
       summaryModel(_, _, _, _, _, _, _, output, _) and pred = "summary"
     |
-      specSplit(output, part, _) and
-      not part.regexpMatch("|ReturnValue|ArrayElement|Element|MapKey|MapValue") and
+      invalidSpecComponent(output, part) and
+      not part = "" and
       not (part = ["Argument", "Parameter"] and pred = "source") and
-      not parseArg(part, _) and
-      not parseParam(part, _) and
       msg = "Unrecognized output specification \"" + part + "\" in " + pred + " model."
     )
     or
@@ -554,7 +572,7 @@ private RefType interpretType(string namespace, string type, boolean subtypes) {
 private string paramsStringPart(Callable c, int i) {
   i = -1 and result = "("
   or
-  exists(int n, string p | c.getParameterType(n).toString() = p |
+  exists(int n, string p | c.getParameterType(n).getErasure().toString() = p |
     i = 2 * n and result = p
     or
     i = 2 * n - 1 and result = "," and n != 0
@@ -588,7 +606,8 @@ private Element interpretElement0(
   )
 }
 
-private Element interpretElement(
+/** Gets the source/sink/summary element corresponding to the supplied parameters. */
+Element interpretElement(
   string namespace, string type, boolean subtypes, string name, string signature, string ext
 ) {
   elementSpec(namespace, type, subtypes, name, signature, ext) and
@@ -599,269 +618,25 @@ private Element interpretElement(
   )
 }
 
-private predicate sourceElement(Element e, string output, string kind) {
-  exists(
-    string namespace, string type, boolean subtypes, string name, string signature, string ext
-  |
-    sourceModel(namespace, type, subtypes, name, signature, ext, output, kind) and
-    e = interpretElement(namespace, type, subtypes, name, signature, ext)
-  )
-}
+cached
+private module Cached {
+  /**
+   * Holds if `node` is specified as a source with the given kind in a CSV flow
+   * model.
+   */
+  cached
+  predicate sourceNode(Node node, string kind) {
+    exists(InterpretNode n | isSourceNode(n, kind) and n.asNode() = node)
+  }
 
-private predicate sinkElement(Element e, string input, string kind) {
-  exists(
-    string namespace, string type, boolean subtypes, string name, string signature, string ext
-  |
-    sinkModel(namespace, type, subtypes, name, signature, ext, input, kind) and
-    e = interpretElement(namespace, type, subtypes, name, signature, ext)
-  )
-}
-
-private predicate summaryElement(Element e, string input, string output, string kind) {
-  exists(
-    string namespace, string type, boolean subtypes, string name, string signature, string ext
-  |
-    summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind) and
-    e = interpretElement(namespace, type, subtypes, name, signature, ext)
-  )
-}
-
-private string inOutSpec() {
-  sourceModel(_, _, _, _, _, _, result, _) or
-  sinkModel(_, _, _, _, _, _, result, _) or
-  summaryModel(_, _, _, _, _, _, result, _, _) or
-  summaryModel(_, _, _, _, _, _, _, result, _)
-}
-
-private predicate specSplit(string s, string c, int n) {
-  inOutSpec() = s and s.splitAt(" of ", n) = c
-}
-
-private predicate len(string s, int len) { len = 1 + max(int n | specSplit(s, _, n)) }
-
-private string getLast(string s) {
-  exists(int len |
-    len(s, len) and
-    specSplit(s, result, len - 1)
-  )
-}
-
-private predicate parseParam(string c, int n) {
-  specSplit(_, c, _) and
-  (
-    c.regexpCapture("Parameter\\[([-0-9]+)\\]", 1).toInt() = n
-    or
-    exists(int n1, int n2 |
-      c.regexpCapture("Parameter\\[([-0-9]+)\\.\\.([0-9]+)\\]", 1).toInt() = n1 and
-      c.regexpCapture("Parameter\\[([-0-9]+)\\.\\.([0-9]+)\\]", 2).toInt() = n2 and
-      n = [n1 .. n2]
-    )
-  )
-}
-
-private predicate parseArg(string c, int n) {
-  specSplit(_, c, _) and
-  (
-    c.regexpCapture("Argument\\[([-0-9]+)\\]", 1).toInt() = n
-    or
-    exists(int n1, int n2 |
-      c.regexpCapture("Argument\\[([-0-9]+)\\.\\.([0-9]+)\\]", 1).toInt() = n1 and
-      c.regexpCapture("Argument\\[([-0-9]+)\\.\\.([0-9]+)\\]", 2).toInt() = n2 and
-      n = [n1 .. n2]
-    )
-  )
-}
-
-private predicate inputNeedsReference(string c) {
-  c = "Argument" or
-  parseArg(c, _)
-}
-
-private predicate outputNeedsReference(string c) {
-  c = "Argument" or
-  parseArg(c, _) or
-  c = "ReturnValue"
-}
-
-private predicate sourceElementRef(Top ref, string output, string kind) {
-  exists(Element e |
-    sourceElement(e, output, kind) and
-    if outputNeedsReference(getLast(output))
-    then ref.(Call).getCallee().getSourceDeclaration() = e
-    else ref = e
-  )
-}
-
-private predicate sinkElementRef(Top ref, string input, string kind) {
-  exists(Element e |
-    sinkElement(e, input, kind) and
-    if inputNeedsReference(getLast(input))
-    then ref.(Call).getCallee().getSourceDeclaration() = e
-    else ref = e
-  )
-}
-
-private predicate summaryElementRef(Top ref, string input, string output, string kind) {
-  exists(Element e |
-    summaryElement(e, input, output, kind) and
-    if inputNeedsReference(getLast(input))
-    then ref.(Call).getCallee().getSourceDeclaration() = e
-    else ref = e
-  )
-}
-
-private SummaryComponent interpretComponent(string c) {
-  specSplit(_, c, _) and
-  (
-    exists(int pos | parseArg(c, pos) and result = SummaryComponent::argument(pos))
-    or
-    exists(int pos | parseParam(c, pos) and result = SummaryComponent::parameter(pos))
-    or
-    c = "ReturnValue" and result = SummaryComponent::return()
-    or
-    c = "ArrayElement" and result = SummaryComponent::content(any(ArrayContent c0))
-    or
-    c = "Element" and result = SummaryComponent::content(any(CollectionContent c0))
-    or
-    c = "MapKey" and result = SummaryComponent::content(any(MapKeyContent c0))
-    or
-    c = "MapValue" and result = SummaryComponent::content(any(MapValueContent c0))
-  )
-}
-
-private predicate interpretSpec(string spec, int idx, SummaryComponentStack stack) {
-  exists(string c |
-    summaryElement(_, spec, _, _) or
-    summaryElement(_, _, spec, _)
-  |
-    len(spec, idx + 1) and
-    specSplit(spec, c, idx) and
-    stack = SummaryComponentStack::singleton(interpretComponent(c))
-  )
-  or
-  exists(SummaryComponent head, SummaryComponentStack tail |
-    interpretSpec(spec, idx, head, tail) and
-    stack = SummaryComponentStack::push(head, tail)
-  )
-}
-
-private predicate interpretSpec(
-  string output, int idx, SummaryComponent head, SummaryComponentStack tail
-) {
-  exists(string c |
-    interpretSpec(output, idx + 1, tail) and
-    specSplit(output, c, idx) and
-    head = interpretComponent(c)
-  )
-}
-
-private class MkStack extends RequiredSummaryComponentStack {
-  MkStack() { interpretSpec(_, _, _, this) }
-
-  override predicate required(SummaryComponent c) { interpretSpec(_, _, c, this) }
-}
-
-private class SummarizedCallableExternal extends SummarizedCallable {
-  SummarizedCallableExternal() { summaryElement(this, _, _, _) }
-
-  override predicate propagatesFlow(
-    SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
-  ) {
-    exists(string inSpec, string outSpec, string kind |
-      summaryElement(this, inSpec, outSpec, kind) and
-      interpretSpec(inSpec, 0, input) and
-      interpretSpec(outSpec, 0, output)
-    |
-      kind = "value" and preservesValue = true
-      or
-      kind = "taint" and preservesValue = false
-    )
+  /**
+   * Holds if `node` is specified as a sink with the given kind in a CSV flow
+   * model.
+   */
+  cached
+  predicate sinkNode(Node node, string kind) {
+    exists(InterpretNode n | isSinkNode(n, kind) and n.asNode() = node)
   }
 }
 
-private newtype TAstOrNode =
-  TAst(Top t) or
-  TNode(Node n)
-
-private predicate interpretOutput(string output, int idx, Top ref, TAstOrNode node) {
-  (
-    sourceElementRef(ref, output, _) or
-    summaryElementRef(ref, _, output, _)
-  ) and
-  len(output, idx) and
-  node = TAst(ref)
-  or
-  exists(Top mid, string c, Node n |
-    interpretOutput(output, idx + 1, ref, TAst(mid)) and
-    specSplit(output, c, idx) and
-    node = TNode(n)
-  |
-    exists(int pos | n.(PostUpdateNode).getPreUpdateNode().(ArgumentNode).argumentOf(mid, pos) |
-      c = "Argument" or parseArg(c, pos)
-    )
-    or
-    exists(int pos | n.(ParameterNode).isParameterOf(mid, pos) |
-      c = "Parameter" or parseParam(c, pos)
-    )
-    or
-    (c = "Parameter" or c = "") and
-    n.asParameter() = mid
-    or
-    c = "ReturnValue" and
-    n.asExpr().(Call) = mid
-    or
-    c = "" and
-    n.asExpr().(FieldRead).getField() = mid
-  )
-}
-
-private predicate interpretInput(string input, int idx, Top ref, TAstOrNode node) {
-  (
-    sinkElementRef(ref, input, _) or
-    summaryElementRef(ref, input, _, _)
-  ) and
-  len(input, idx) and
-  node = TAst(ref)
-  or
-  exists(Top mid, string c, Node n |
-    interpretInput(input, idx + 1, ref, TAst(mid)) and
-    specSplit(input, c, idx) and
-    node = TNode(n)
-  |
-    exists(int pos | n.(ArgumentNode).argumentOf(mid, pos) | c = "Argument" or parseArg(c, pos))
-    or
-    exists(ReturnStmt ret |
-      c = "ReturnValue" and
-      n.asExpr() = ret.getResult() and
-      mid = ret.getEnclosingCallable()
-    )
-    or
-    exists(FieldWrite fw |
-      c = "" and
-      fw.getField() = mid and
-      n.asExpr() = fw.getRHS()
-    )
-  )
-}
-
-/**
- * Holds if `node` is specified as a source with the given kind in a CSV flow
- * model.
- */
-predicate sourceNode(Node node, string kind) {
-  exists(Top ref, string output |
-    sourceElementRef(ref, output, kind) and
-    interpretOutput(output, 0, ref, TNode(node))
-  )
-}
-
-/**
- * Holds if `node` is specified as a sink with the given kind in a CSV flow
- * model.
- */
-predicate sinkNode(Node node, string kind) {
-  exists(Top ref, string input |
-    sinkElementRef(ref, input, kind) and
-    interpretInput(input, 0, ref, TNode(node))
-  )
-}
+import Cached

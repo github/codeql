@@ -4,6 +4,7 @@
  * @kind problem
  * @id cpp/return-stack-allocated-object
  * @problem.severity warning
+ * @security-severity 2.9
  * @tags reliability
  *       security
  *       external/cwe/cwe-562

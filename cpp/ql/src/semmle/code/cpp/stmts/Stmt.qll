@@ -1136,6 +1136,11 @@ private predicate inForUpdate(Expr forUpdate, Expr child) {
   exists(Expr mid | inForUpdate(forUpdate, mid) and child.getParent() = mid)
 }
 
+/** Gets the `rnk`'th `case` statement in `b`. */
+private int indexOfSwitchCaseRank(BlockStmt b, int rnk) {
+  result = rank[rnk](int i | b.getStmt(i) instanceof SwitchCase)
+}
+
 /**
  * A C/C++ 'switch case' statement.
  *
@@ -1331,16 +1336,14 @@ class SwitchCase extends Stmt, @stmt_switch_case {
    * `default:` has results `{ x = 3; }, `x = 4;` and `break;`.
    */
   Stmt getAStmt() {
-    exists(BlockStmt b, int i, int j |
+    exists(BlockStmt b, int rnk, int i |
       b.getStmt(i) = this and
-      b.getStmt(j) = result and
-      i < j and
-      not result instanceof SwitchCase and
-      not exists(SwitchCase sc, int k |
-        b.getStmt(k) = sc and
-        i < k and
-        j > k
-      )
+      i = indexOfSwitchCaseRank(b, rnk)
+    |
+      pragma[only_bind_into](b).getStmt([i + 1 .. indexOfSwitchCaseRank(b, rnk + 1) - 1]) = result
+      or
+      not exists(indexOfSwitchCaseRank(b, rnk + 1)) and
+      b.getStmt([i + 1 .. b.getNumStmt() + 1]) = result
     )
   }
 

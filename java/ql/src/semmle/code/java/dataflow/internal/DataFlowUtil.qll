@@ -9,10 +9,11 @@ private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSteps
 private import semmle.code.java.dataflow.FlowSummary
-import semmle.code.java.dataflow.InstanceAccess
+private import semmle.code.java.dataflow.InstanceAccess
 private import FlowSummaryImpl as FlowSummaryImpl
 private import TaintTrackingUtil as TaintTrackingUtil
 import DataFlowNodes::Public
+import semmle.code.Unit
 
 /** Holds if `n` is an access to an unqualified `this` at `cfgnode`. */
 private predicate thisAccess(Node n, ControlFlowNode cfgnode) {
@@ -143,6 +144,8 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
   node2.asExpr().(ChooseExpr).getAResultExpr() = node1.asExpr()
   or
   node2.asExpr().(AssignExpr).getSource() = node1.asExpr()
+  or
+  node2.asExpr().(ArrayCreationExpr).getInit() = node1.asExpr()
   or
   exists(MethodAccess ma, ValuePreservingMethod m, int argNo |
     ma.getCallee().getSourceDeclaration() = m and m.returnsValue(argNo)

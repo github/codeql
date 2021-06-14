@@ -48,6 +48,15 @@ class MemberFunction extends Function {
   /** Holds if this member is public. */
   predicate isPublic() { this.hasSpecifier("public") }
 
+  /** Holds if this declaration has the lvalue ref-qualifier */
+  predicate isLValueRefQualified() { hasSpecifier("&") }
+
+  /** Holds if this declaration has the rvalue ref-qualifier */
+  predicate isRValueRefQualified() { hasSpecifier("&&") }
+
+  /** Holds if this declaration has a ref-qualifier */
+  predicate isRefQualified() { isLValueRefQualified() or isRValueRefQualified() }
+
   /** Holds if this function overrides that function. */
   predicate overrides(MemberFunction that) {
     overrides(underlyingElement(this), unresolveElement(that))

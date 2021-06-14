@@ -10,13 +10,13 @@ javadoc/Test.java:
 #    5|           0: [JavadocText] A javadoc
 #    6|           1: [JavadocText] comment
 #    7|       3: [TypeAccess] void
-#    7|       5: [BlockStmt] stmt
+#    7|       5: [BlockStmt] { ... }
 #   11|     3: [Method] g
 #-----|       0: (Javadoc)
 #    9|         1: [Javadoc] /** Another javadoc comment */
 #    9|           0: [JavadocText] Another javadoc comment
 #   11|       3: [TypeAccess] void
-#   11|       5: [BlockStmt] stmt
+#   11|       5: [BlockStmt] { ... }
 #   14|     4: [FieldDeclaration] int x, ...;
 #   14|       -1: [TypeAccess] int
 #   15|     5: [FieldDeclaration] int y, ...;
@@ -26,4 +26,4 @@ javadoc/Test.java:
 #   17|         1: [Javadoc] /** @deprecated */
 #   17|           0: [JavadocTag] @deprecated
 #   18|       3: [TypeAccess] void
-#   18|       5: [BlockStmt] stmt
+#   18|       5: [BlockStmt] { ... }

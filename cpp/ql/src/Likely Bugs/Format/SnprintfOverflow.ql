@@ -3,6 +3,7 @@
  * @description Using the return value from snprintf without proper checks can cause overflow.
  * @kind problem
  * @problem.severity warning
+ * @security-severity 5.9
  * @precision high
  * @id cpp/overflowing-snprintf
  * @tags reliability

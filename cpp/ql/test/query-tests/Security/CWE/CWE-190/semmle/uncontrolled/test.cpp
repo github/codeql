@@ -37,3 +37,14 @@ void randomTester2()
 		r = r + 100; // BAD
 	}
 }
+
+int rand(int min, int max);
+unsigned rand(int max);
+
+void test_with_bounded_randomness() {
+  int r = rand(0, 10);
+  r++; // GOOD
+
+	unsigned unsigned_r = rand(10);
+	unsigned_r++; // GOOD
+}
