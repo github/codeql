@@ -8,7 +8,6 @@
 | test.cpp:132:9:132:9 | j | The variable $@ may not be initialized here. | test.cpp:126:6:126:6 | j | j |
 | test.cpp:219:3:219:3 | x | The variable $@ may not be initialized here. | test.cpp:218:7:218:7 | x | x |
 | test.cpp:243:13:243:13 | i | The variable $@ may not be initialized here. | test.cpp:241:6:241:6 | i | i |
-| test.cpp:329:9:329:11 | val | The variable $@ may not be initialized here. | test.cpp:321:6:321:8 | val | val |
 | test.cpp:336:10:336:10 | a | The variable $@ may not be initialized here. | test.cpp:333:7:333:7 | a | a |
 | test.cpp:369:10:369:10 | a | The variable $@ may not be initialized here. | test.cpp:358:7:358:7 | a | a |
 | test.cpp:378:9:378:11 | val | The variable $@ may not be initialized here. | test.cpp:359:6:359:8 | val | val |

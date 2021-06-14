@@ -219,8 +219,8 @@ void test16(int n, bool b) {
 	for(int i = 0; i < n; ++i) {
     if(b) data = (char*)malloc(10 * sizeof(char));
     if(!b || data == NULL) return;
-    use(data); // GOOD [FALSE POSITIVE]
-    free(data); // GOOD [FALSE POSITIVE]
+    use(data); // GOOD
+    free(data); // GOOD
   }
 }
 
@@ -231,6 +231,6 @@ void test17(int n, bool b) {
   }
 
   if(!b) {
-    use(data); // GOOD [FALSE POSITIVE]
+    use(data); // GOOD
   }
 }
