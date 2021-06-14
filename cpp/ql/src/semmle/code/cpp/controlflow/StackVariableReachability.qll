@@ -3,7 +3,194 @@
  * reachability involving stack variables.
  */
 
-import cpp
+private import semmle.code.cpp.controlflow.Guards
+private import semmle.code.cpp.valuenumbering.GlobalValueNumbering
+
+private newtype TCondition =
+  TTrue() or
+  TLogicalCondition(LogicalGuardCondition guard, boolean testIsTrue) { testIsTrue = [false, true] }
+
+/** A `GuardCondition` which appear in a control-flow path to a sink. */
+abstract private class LogicalGuardCondition extends GuardCondition {
+  LogicalGuardCondition() {
+    // Either the `GuardCondition` is part of the path from a source to a sink
+    revBbSuccessorEntryReaches0(_, this.getBasicBlock(), _, _, _)
+    or
+    // or it controls the basic block that contains the source node.
+    this.controls(any(BasicBlock bb | fwdBbEntryReachesLocally(bb, _, _, _)), _)
+  }
+
+  /**
+   * Holds if the truth of this logical expression having value `wholeIsTrue`
+   * implies that the truth of the child expression `part` has truth value `partIsTrue`.
+   */
+  abstract predicate impliesCondition(
+    LogicalGuardCondition e, boolean testIsTrue, boolean condIsTrue
+  );
+}
+
+private class BinaryLogicalGuardCondition extends LogicalGuardCondition, BinaryLogicalOperation {
+  override predicate impliesCondition(
+    LogicalGuardCondition e, boolean testIsTrue, boolean condIsTrue
+  ) {
+    this.impliesValue(e, testIsTrue, condIsTrue)
+  }
+}
+
+private class VariableGuardCondition extends LogicalGuardCondition, VariableAccess {
+  override predicate impliesCondition(
+    LogicalGuardCondition e, boolean testIsTrue, boolean condIsTrue
+  ) {
+    this = e and
+    (
+      testIsTrue = true and condIsTrue = true
+      or
+      testIsTrue = false and condIsTrue = false
+    )
+  }
+}
+
+private class NotGuardCondition extends LogicalGuardCondition, NotExpr {
+  override predicate impliesCondition(
+    LogicalGuardCondition e, boolean testIsTrue, boolean condIsTrue
+  ) {
+    e = this.getOperand() and
+    (
+      testIsTrue = true and
+      condIsTrue = false
+      or
+      testIsTrue = false and
+      condIsTrue = true
+    )
+  }
+}
+
+/** A condition that either the trivial `True` condition, or a complex `LogicalCondition`. */
+abstract private class Condition extends TCondition {
+  abstract string toString();
+
+  /**
+   * Holds if this condition having the value `this.getTruthValue()` implies that `cond` has truth
+   * value `cond.getTruthValue()`.
+   */
+  pragma[nomagic]
+  abstract predicate impliesCondition(Condition cond);
+
+  /** Gets the value of this `Condition`. */
+  abstract boolean getTruthValue();
+
+  /** Gets the negated the expression represented by this `Condition`, if any. */
+  Condition negate() { none() }
+
+  /**
+   * Holds if this condition having the value `this.getTruthValue()` implies that `cond` cannot have
+   * the truth value `cond.getTruthValue()`.
+   */
+  final predicate refutesCondition(Condition cond) { this.impliesCondition(cond.negate()) }
+
+  /** Gets the `Location` of the expression that generated this `Condition`, if any. */
+  Location getLocation() { none() }
+}
+
+private class True extends Condition, TTrue {
+  True() { this = TTrue() }
+
+  override string toString() { result = "True" }
+
+  override boolean getTruthValue() { result = true }
+
+  override predicate impliesCondition(Condition cond) { cond instanceof True }
+}
+
+private class LogicalCondition extends Condition, TLogicalCondition {
+  boolean testIsTrue;
+  LogicalGuardCondition guard;
+
+  LogicalCondition() { this = TLogicalCondition(guard, testIsTrue) }
+
+  override string toString() { result = guard.toString() + " == " + testIsTrue.toString() }
+
+  override boolean getTruthValue() { result = testIsTrue }
+
+  LogicalGuardCondition getCondition() { result = guard }
+
+  override predicate impliesCondition(Condition cond) {
+    cond instanceof True
+    or
+    exists(LogicalGuardCondition other |
+      other = cond.(LogicalCondition).getCondition() and
+      this.getCondition()
+          .impliesCondition(globalValueNumber(other).getAnExpr(),
+            pragma[only_bind_into](pragma[only_bind_out](testIsTrue)),
+            pragma[only_bind_into](pragma[only_bind_out](cond.getTruthValue())))
+    )
+  }
+
+  override LogicalCondition negate() {
+    result.getCondition() = guard and
+    result.getTruthValue() = testIsTrue.booleanNot()
+  }
+
+  override Location getLocation() { result = guard.getLocation() }
+}
+
+/**
+ * Gets a `Condition` that controls `b`.
+ *
+ * Note: The trivial `True` condition always controls `b`.
+ */
+private Condition getADirectCondition(BasicBlock b) {
+  result instanceof True
+  or
+  result.(LogicalCondition).getCondition().controls(b, result.(LogicalCondition).getTruthValue())
+}
+
+private predicate fwdBbSuccessorEntryReaches0(
+  ControlFlowNode source, BasicBlock bb, SemanticStackVariable v,
+  boolean skipsFirstLoopAlwaysTrueUponEntry, StackVariableReachability config
+) {
+  fwdBbEntryReachesLocally(bb, v, source, config) and
+  skipsFirstLoopAlwaysTrueUponEntry = false
+  or
+  exists(BasicBlock pred, boolean predSkipsFirstLoopAlwaysTrueUponEntry |
+    bbSuccessorEntryReachesLoopInvariant0(pred, bb, predSkipsFirstLoopAlwaysTrueUponEntry,
+      skipsFirstLoopAlwaysTrueUponEntry)
+  |
+    // Note we cannot filter out barriers at this point.
+    // See the comment in `revBbSuccessorEntryReaches0` for an explanation why,
+    fwdBbSuccessorEntryReaches0(source, pred, v, predSkipsFirstLoopAlwaysTrueUponEntry, config)
+  )
+}
+
+private predicate revBbSuccessorEntryReaches0(
+  ControlFlowNode source, BasicBlock bb, SemanticStackVariable v,
+  boolean skipsFirstLoopAlwaysTrueUponEntry, StackVariableReachability config
+) {
+  exists(BasicBlock succ, boolean succSkipsFirstLoopAlwaysTrueUponEntry |
+    fwdBbSuccessorEntryReaches0(source, bb, v, skipsFirstLoopAlwaysTrueUponEntry, config) and
+    bbSuccessorEntryReachesLoopInvariant0(bb, succ, skipsFirstLoopAlwaysTrueUponEntry,
+      succSkipsFirstLoopAlwaysTrueUponEntry)
+  |
+    revBbEntryReachesLocally(succ, v, _, config) and
+    succSkipsFirstLoopAlwaysTrueUponEntry = false
+    or
+    // Note: We cannot rule out a successor block that contain a barrier here (like we do later in
+    // `bbSuccessorEntryReaches`) as we might later discover that the only way to get through a piece of
+    // code is through that barrier, and we want to discover this in
+    // `bbSuccessorEntryReachesLoopInvariant`. As an example, consider this piece of code:
+    // ```
+    // if(b) { (1) source(); }
+    // (2) if(b) { (3) barrier(); }
+    // (4) sink();
+    // ```
+    // here, we want the successor relation to contain:
+    // 1 -> {2}, 2 -> {3, 4}
+    // since the second stage will deduce that the edge (2) -> (3) is unconditional (as b is always true
+    // if we start at `source()`), and so there is actually no path from (1) to (4) without going through
+    // a barrier.
+    revBbSuccessorEntryReaches0(source, succ, v, succSkipsFirstLoopAlwaysTrueUponEntry, config)
+  )
+}
 
 /**
  * A reachability analysis for control-flow nodes involving stack variables.
@@ -60,7 +247,8 @@ abstract class StackVariableReachability extends string {
    * ```
    *
    * In addition to using a better performing implementation, this analysis
-   * accounts for loops where the condition is provably true upon entry.
+   * accounts for loops where the condition is provably true upon entry, and discards paths that require
+   * an infeasible combination of guard conditions (i.e., `if(b) { ... }` and `if(!b) { ... }`).
    */
   predicate reaches(ControlFlowNode source, SemanticStackVariable v, ControlFlowNode sink) {
     /*
@@ -80,46 +268,198 @@ abstract class StackVariableReachability extends string {
         j > i and
         sink = bb.getNode(j) and
         isSink(sink, v) and
-        not exists(int k | isBarrier(bb.getNode(k), v) | k in [i + 1 .. j - 1])
+        not isBarrier(bb.getNode(pragma[only_bind_into]([i + 1 .. j - 1])), v)
       )
       or
       not exists(int k | isBarrier(bb.getNode(k), v) | k > i) and
-      bbSuccessorEntryReaches(bb, v, sink, _)
+      bbSuccessorEntryReaches(source, bb, v, sink, _)
+    )
+  }
+
+  private Condition getASinkCondition(SemanticStackVariable v) {
+    exists(BasicBlock bb |
+      revBbEntryReachesLocally(bb, v, _, this) and
+      result
+          .(LogicalCondition)
+          .getCondition()
+          .controls(bb, result.(LogicalCondition).getTruthValue())
+    )
+  }
+
+  private Condition getABarrierCondition(SemanticStackVariable v) {
+    exists(BasicBlock bb |
+      isBarrier(bb.getANode(), v) and
+      result
+          .(LogicalCondition)
+          .getCondition()
+          .controls(bb, result.(LogicalCondition).getTruthValue())
+    )
+  }
+
+  private predicate successorExitsLoop(BasicBlock pred, BasicBlock succ, Loop loop) {
+    pred.getASuccessor() = succ and
+    bbDominates(loop.getStmt(), pred) and
+    not bbDominates(loop.getStmt(), succ)
+  }
+
+  private predicate successorExitsFirstDisjunct(BasicBlock pred, BasicBlock succ) {
+    exists(LogicalOrExpr orExpr | orExpr instanceof GuardCondition |
+      pred.getAFalseSuccessor() = succ and
+      pred.contains(orExpr.getLeftOperand())
+    )
+  }
+
+  /** Holds if `cond` is a condition with a known truth value in `bb`. */
+  private Condition getACondition(ControlFlowNode source, SemanticStackVariable v, BasicBlock bb) {
+    revBbSuccessorEntryReaches0(source, pragma[only_bind_into](bb), v, _, this) and
+    (
+      result = getADirectCondition(bb) and
+      (
+        result.refutesCondition(getASinkCondition(v))
+        or
+        result.impliesCondition(getABarrierCondition(v))
+      )
+      or
+      exists(BasicBlock pred, LogicalCondition cond |
+        cond = getACondition(source, v, pred) and
+        result = cond and
+        revBbSuccessorEntryReaches0(source, pragma[only_bind_into](pred), v, _, this) and
+        pred.getASuccessor() = bb and
+        // When we exit a loop, we filter out the conditions that arise from the loop's guard.
+        // To see why this is necessary, consider this example:
+        // ```
+        // (1) source();
+        // while (b) { (2) /* ... */ }
+        // (3) sink();
+        // ```
+        // If we keep all the conditions when we transition from (2) to (3) we learn that `b` is true at
+        // (3), but since we exited the loop we also learn that `b` is false at 3.
+        // Thus, when we transition from (2) to (3) we discard all those conditions that are true at (2),
+        // but NOT true at (3).
+        not exists(Loop loop, boolean testIsTrue | successorExitsLoop(pred, bb, loop) |
+          // the resulting `Condition` holds inside the loop
+          cond.getCondition().controls(pred, testIsTrue) and
+          // but not prior to the loop.
+          not cond.getCondition().controls(loop.getBasicBlock(), testIsTrue)
+        ) and
+        // Similarly, in this example:
+        // ```
+        // if((1) b1 || (2) b2) { (3) /* ... */ }
+        // ```
+        // it holds that `b1 == false` controls (2), and since (2) steps to (3) we learn that `b1 == false `
+        // holds at (3). So we filter out the conditions that we learn from leaving taking the false
+        // branch in a disjunction.
+        not exists(boolean testIsTrue |
+          successorExitsFirstDisjunct(pred, bb) and
+          // the resulting `Condition` holds after evaluating the left-hand side
+          cond.getCondition().controls(bb, testIsTrue) and
+          // but not before evaluating the left-hand side.
+          not cond.getCondition().controls(pred, testIsTrue)
+        )
+      )
+    )
+  }
+
+  /**
+   * Holds if `pred`, `succ`, `predSkipsFirstLoopAlwaysTrueUponEntry` and
+   * `succSkipsFirstLoopAlwaysTrueUponEntry` satisfy the loop invariants specified in the QLDoc
+   * for `bbSuccessorEntryReachesLoopInvariant0`.
+   *
+   * In addition, this predicate:
+   * 1. Rules out successor blocks that are unreachable due to contradictory path conditions.
+   * 2. Refines the successor relation when the edge `pred -> succ` is a conditional edge whose truth
+   *    value is known.
+   */
+  private predicate bbSuccessorEntryReachesLoopInvariant(
+    ControlFlowNode source, BasicBlock pred, SemanticStackVariable v, BasicBlock succ,
+    boolean predSkipsFirstLoopAlwaysTrueUponEntry, boolean succSkipsFirstLoopAlwaysTrueUponEntry
+  ) {
+    not exists(Condition cond |
+      cond = getACondition(source, v, pred) and
+      cond.refutesCondition(getADirectCondition(succ))
+    ) and
+    pred.getASuccessor() = succ and
+    revBbSuccessorEntryReaches0(source, pragma[only_bind_into](pred), v,
+      predSkipsFirstLoopAlwaysTrueUponEntry, this) and
+    bbSuccessorEntryReachesLoopInvariant0(pred, succ, predSkipsFirstLoopAlwaysTrueUponEntry,
+      succSkipsFirstLoopAlwaysTrueUponEntry) and
+    (
+      // If we picked the successor edge corresponding to a condition being true, there must not be
+      // another path condition that refutes that the condition is true.
+      succ = pred.getATrueSuccessor() and
+      not exists(Condition cond | cond = getACondition(source, v, pred) |
+        cond.refutesCondition(TLogicalCondition(pred.getEnd(), true))
+      )
+      or
+      // If we picked the successor edge corresponding to a condition being false, there must not be
+      // another path condition that refutes that the condition is false.
+      succ = pred.getAFalseSuccessor() and
+      not exists(Condition cond | cond = getACondition(source, v, pred) |
+        cond.refutesCondition(TLogicalCondition(pred.getEnd(), false))
+      )
+      or
+      // If it wasn't a conditional successor edge we require nothing.
+      not succ = [pred.getATrueSuccessor(), pred.getAFalseSuccessor()]
     )
   }
 
   private predicate bbSuccessorEntryReaches(
-    BasicBlock bb, SemanticStackVariable v, ControlFlowNode node,
+    ControlFlowNode source, BasicBlock bb, SemanticStackVariable v, ControlFlowNode node,
     boolean skipsFirstLoopAlwaysTrueUponEntry
   ) {
     exists(BasicBlock succ, boolean succSkipsFirstLoopAlwaysTrueUponEntry |
-      bbSuccessorEntryReachesLoopInvariant(bb, succ, skipsFirstLoopAlwaysTrueUponEntry,
+      bbSuccessorEntryReachesLoopInvariant(source, bb, v, succ, skipsFirstLoopAlwaysTrueUponEntry,
         succSkipsFirstLoopAlwaysTrueUponEntry)
     |
-      bbEntryReachesLocally(succ, v, node) and
+      revBbEntryReachesLocally(succ, v, node, this) and
       succSkipsFirstLoopAlwaysTrueUponEntry = false
       or
-      not isBarrier(succ.getNode(_), v) and
-      bbSuccessorEntryReaches(succ, v, node, succSkipsFirstLoopAlwaysTrueUponEntry)
+      bbSuccessorEntryReachesLoopInvariant(source, bb, v, succ, skipsFirstLoopAlwaysTrueUponEntry,
+        succSkipsFirstLoopAlwaysTrueUponEntry) and
+      not isBarrier(pragma[only_bind_out](succ.getANode()), v) and
+      pragma[only_bind_into](this)
+          .bbSuccessorEntryReaches(source, succ, v, node, succSkipsFirstLoopAlwaysTrueUponEntry)
     )
   }
+}
 
-  private predicate bbEntryReachesLocally(
-    BasicBlock bb, SemanticStackVariable v, ControlFlowNode node
-  ) {
-    exists(int n |
-      node = bb.getNode(n) and
-      isSink(node, v)
-    |
-      not exists(this.firstBarrierIndexIn(bb, v))
+private predicate fwdBbEntryReachesLocally(
+  BasicBlock bb, SemanticStackVariable v, ControlFlowNode node, StackVariableReachability config
+) {
+  exists(int n |
+    node = bb.getNode(n) and
+    config.isSource(node, v) and
+    (
+      not exists(lastBarrierIndexIn(bb, v, config))
       or
-      n <= this.firstBarrierIndexIn(bb, v)
+      lastBarrierIndexIn(bb, v, config) <= n
     )
-  }
+  )
+}
 
-  private int firstBarrierIndexIn(BasicBlock bb, SemanticStackVariable v) {
-    result = min(int m | isBarrier(bb.getNode(m), v))
-  }
+private predicate revBbEntryReachesLocally(
+  BasicBlock bb, SemanticStackVariable v, ControlFlowNode node, StackVariableReachability config
+) {
+  exists(int n |
+    node = bb.getNode(n) and
+    config.isSink(node, v)
+  |
+    not exists(firstBarrierIndexIn(bb, v, config))
+    or
+    n <= firstBarrierIndexIn(bb, v, config)
+  )
+}
+
+private int firstBarrierIndexIn(
+  BasicBlock bb, SemanticStackVariable v, StackVariableReachability config
+) {
+  result = min(int m | config.isBarrier(bb.getNode(m), v))
+}
+
+private int lastBarrierIndexIn(
+  BasicBlock bb, SemanticStackVariable v, StackVariableReachability config
+) {
+  result = max(int m | config.isBarrier(bb.getNode(m), v))
 }
 
 /**
@@ -182,7 +522,7 @@ private predicate bbLoopConditionAlwaysTrueUponEntrySuccessor(
  * is provably true upon entry, then `succ` is not allowed to skip
  * that loop (`succSkipsFirstLoopAlwaysTrueUponEntry = false`).
  */
-predicate bbSuccessorEntryReachesLoopInvariant(
+predicate bbSuccessorEntryReachesLoopInvariant0(
   BasicBlock pred, BasicBlock succ, boolean predSkipsFirstLoopAlwaysTrueUponEntry,
   boolean succSkipsFirstLoopAlwaysTrueUponEntry
 ) {
