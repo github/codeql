@@ -16,17 +16,47 @@ abstract class LiteralFileCreation extends LiteralEntryCreation, FileCreation {
   override Mask getMask() { result = getOverpermissiveFileMask() }
 }
 
-/** A file creation that provides a literal mode as a `mode` property in argument 1. */
-class LiteralModePropertyArgument1FileCreation extends ModePropertyArgument1FileCreation, LiteralFileCreation {
-}
-
-/** A file creation that provides a literal mode as an immediate value in argument 2. */
-class LiteralImmediateArgument2FileCreation extends ImmediateArgument2FileCreation,
+/**
+ * An insecure default file creation
+ * that provides a literal mode as a `mode` property in argument 1.
+ */
+class LiteralInsecureModePropertyArgument1FileCreation extends InsecureModePropertyArgument1FileCreation,
   LiteralFileCreation { }
 
-/** A file creation that provides a literal mode as a `mode` property in argument 2. */
-class LiteralModePropertyArgument2FileCreation extends ModePropertyArgument2FileCreation, LiteralFileCreation {
-}
+/**
+ * A secure default file creation
+ * that provides a literal mode as a `mode` property in argument 1.
+ */
+class LiteralSecureModePropertyArgument1FileCreation extends SecureModePropertyArgument1FileCreation,
+  LiteralFileCreation { }
+
+/**
+ * An insecure default file creation
+ * that provides a literal mode as an immediate value in argument 2.
+ */
+class LiteralInsecureImmediateArgument2FileCreation extends InsecureImmediateArgument2FileCreation,
+  LiteralFileCreation { }
+
+/**
+ * A secure default file creation
+ * that provides a literal mode as an immediate value in argument 2.
+ */
+class LiteralSecureImmediateArgument2FileCreation extends SecureImmediateArgument2FileCreation,
+  LiteralFileCreation { }
+
+/**
+ * An insecure default file creation
+ * that provides a literal mode as a `mode` property in argument 2.
+ */
+class LiteralInsecureModePropertyArgument2FileCreation extends InsecureModePropertyArgument2FileCreation,
+  LiteralFileCreation { }
+
+/**
+ * A secure default file creation
+ * that provides a literal mode as a `mode` property in argument 2.
+ */
+class LiteralSecureModePropertyArgument2FileCreation extends SecureModePropertyArgument2FileCreation,
+  LiteralFileCreation { }
 
 from LiteralFileCreation creation
 where creation.isOverpermissive()

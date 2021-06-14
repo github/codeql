@@ -5,10 +5,14 @@ import OverpermissiveFileSystemMode
 /** A directory creation that takes mode. */
 abstract class ModableDirectoryCreation extends ModableEntryCreation, DirectoryCreation { }
 
-/** A directory creation that takes mode as a `mode` object property in argument 1. */
-class ModePropertyArgument1DirectoryCreation extends ModableDirectoryCreation,
-  Argument1EntryCreation, PropertySpecifierEntryCreation, ModePropertyEntryCreation {
-  ModePropertyArgument1DirectoryCreation() {
+/**
+ * An insecure default directory creation
+ * that takes mode as a `mode` object property in argument 1.
+ */
+class InsecureModePropertyArgument1DirectoryCreation extends ModableDirectoryCreation,
+  InsecureEntryCreation, Argument1EntryCreation, PropertySpecifierEntryCreation,
+  ModePropertyEntryCreation {
+  InsecureModePropertyArgument1DirectoryCreation() {
     this =
       [DataFlow::moduleImport("make-dir"), DataFlow::moduleMember("make-dir", "sync")]
           .getAnInvocation()
@@ -16,12 +20,13 @@ class ModePropertyArgument1DirectoryCreation extends ModableDirectoryCreation,
 }
 
 /**
- * A directory creation that takes mode in argument 1
+ * An insecure default directory creation that takes mode in argument 1
  * as either an immediate value or a `mode` object property.
  */
-class ImmediateOrModePropertyArgument1DirectoryCreation extends ModableDirectoryCreation,
-  Argument1EntryCreation, ImmediateOrPropertySpecifierEntryCreation, ModePropertyEntryCreation {
-  ImmediateOrModePropertyArgument1DirectoryCreation() {
+class InsecureImmediateOrModePropertyArgument1DirectoryCreation extends ModableDirectoryCreation,
+  InsecureEntryCreation, Argument1EntryCreation, ImmediateOrPropertySpecifierEntryCreation,
+  ModePropertyEntryCreation {
+  InsecureImmediateOrModePropertyArgument1DirectoryCreation() {
     this =
       [
         NodeJSLib::FS::moduleMember("mkdir"), NodeJSLib::FS::moduleMember("mkdirSync"),
@@ -47,10 +52,31 @@ class ImmediateOrModePropertyArgument1DirectoryCreation extends ModableDirectory
   }
 }
 
-/** A directory creation that takes mode as a `directoryMode` object property in argument 2. */
-class DirectoryModePropertyArgument2DirectoryCreation extends ModableDirectoryCreation,
-  Argument2EntryCreation, PropertySpecifierEntryCreation, DirectoryModePropertyEntryCreation {
-  DirectoryModePropertyArgument2DirectoryCreation() {
+/**
+ * A secure default directory creation that takes mode in argument 1
+ * as either an immediate value or a `mode` object property.
+ */
+class SecureImmediateOrModePropertyArgument1DirectoryCreation extends ModableDirectoryCreation,
+  SecureEntryCreation, Argument1EntryCreation, ImmediateOrPropertySpecifierEntryCreation,
+  ModePropertyEntryCreation {
+    SecureImmediateOrModePropertyArgument1DirectoryCreation() {
+    this =
+      [
+        DataFlow::moduleMember("secure-fs", "mkdir"),
+        DataFlow::moduleMember("secure-fs", "mkdirSync"),
+        DataFlow::moduleMember("secure-fs/promises", "mkdir")
+      ].getAnInvocation()
+  }
+}
+
+/**
+ * An insecure default directory creation
+ * that takes mode as a `directoryMode` object property in argument 2.
+ */
+class InsecureDirectoryModePropertyArgument2DirectoryCreation extends ModableDirectoryCreation,
+  InsecureEntryCreation, Argument2EntryCreation, PropertySpecifierEntryCreation,
+  DirectoryModePropertyEntryCreation {
+  InsecureDirectoryModePropertyArgument2DirectoryCreation() {
     this =
       [
         DataFlow::moduleImport("move-file"), DataFlow::moduleMember("move-file", "sync"),

@@ -4,6 +4,8 @@ import fsExtra from 'fs-extra'
 import makeDir from 'make-dir'
 import mkdirp from 'mkdirp'
 import moveFile from 'move-file'
+import secureFs from 'secure-fs'
+import secureFsPromises from 'secure-fs/promises'
 
 fs.mkdir()
 fs.mkdirSync()
@@ -26,4 +28,7 @@ mkdirp.mkdirP()
 mkdirp.mkdirp()
 moveFile()
 moveFile.sync()
+secureFs.mkdir()
+secureFs.mkdirSync()
+secureFsPromises.mkdir()
 fs.accessSync()

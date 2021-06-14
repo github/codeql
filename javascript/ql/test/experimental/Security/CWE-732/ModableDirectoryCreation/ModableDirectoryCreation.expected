@@ -1,21 +1,24 @@
-| modable.js:8:1:8:10 | fs.mkdir() |
-| modable.js:9:1:9:14 | fs.mkdirSync() |
-| modable.js:10:1:10:18 | fsPromises.mkdir() |
-| modable.js:11:1:11:19 | fsExtra.ensureDir() |
-| modable.js:12:1:12:23 | fsExtra ... rSync() |
-| modable.js:13:1:13:16 | fsExtra.mkdirp() |
-| modable.js:14:1:14:20 | fsExtra.mkdirpSync() |
-| modable.js:15:1:15:16 | fsExtra.mkdirs() |
-| modable.js:16:1:16:20 | fsExtra.mkdirsSync() |
-| modable.js:17:1:17:9 | makeDir() |
-| modable.js:18:1:18:14 | makeDir.sync() |
-| modable.js:19:1:19:8 | mkdirp() |
-| modable.js:20:1:20:15 | mkdirp.manual() |
-| modable.js:21:1:21:19 | mkdirp.manualSync() |
-| modable.js:22:1:22:15 | mkdirp.native() |
-| modable.js:23:1:23:19 | mkdirp.nativeSync() |
-| modable.js:24:1:24:13 | mkdirp.sync() |
-| modable.js:25:1:25:15 | mkdirp.mkdirP() |
-| modable.js:26:1:26:15 | mkdirp.mkdirp() |
-| modable.js:27:1:27:10 | moveFile() |
-| modable.js:28:1:28:15 | moveFile.sync() |
+| modable.js:10:1:10:10 | fs.mkdir() |
+| modable.js:11:1:11:14 | fs.mkdirSync() |
+| modable.js:12:1:12:18 | fsPromises.mkdir() |
+| modable.js:13:1:13:19 | fsExtra.ensureDir() |
+| modable.js:14:1:14:23 | fsExtra ... rSync() |
+| modable.js:15:1:15:16 | fsExtra.mkdirp() |
+| modable.js:16:1:16:20 | fsExtra.mkdirpSync() |
+| modable.js:17:1:17:16 | fsExtra.mkdirs() |
+| modable.js:18:1:18:20 | fsExtra.mkdirsSync() |
+| modable.js:19:1:19:9 | makeDir() |
+| modable.js:20:1:20:14 | makeDir.sync() |
+| modable.js:21:1:21:8 | mkdirp() |
+| modable.js:22:1:22:15 | mkdirp.manual() |
+| modable.js:23:1:23:19 | mkdirp.manualSync() |
+| modable.js:24:1:24:15 | mkdirp.native() |
+| modable.js:25:1:25:19 | mkdirp.nativeSync() |
+| modable.js:26:1:26:13 | mkdirp.sync() |
+| modable.js:27:1:27:15 | mkdirp.mkdirP() |
+| modable.js:28:1:28:15 | mkdirp.mkdirp() |
+| modable.js:29:1:29:10 | moveFile() |
+| modable.js:30:1:30:15 | moveFile.sync() |
+| modable.js:31:1:31:16 | secureFs.mkdir() |
+| modable.js:32:1:32:20 | secureFs.mkdirSync() |
+| modable.js:33:1:33:24 | secureF ... mkdir() |

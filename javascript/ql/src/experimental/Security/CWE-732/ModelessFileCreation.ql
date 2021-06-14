@@ -12,5 +12,5 @@
 import ModableFileCreation
 
 from ModableFileCreation creation
-where creation.isModeless()
+where creation.isInsecure() and creation.isModeless()
 select creation, "This modeless call creates world writable files."

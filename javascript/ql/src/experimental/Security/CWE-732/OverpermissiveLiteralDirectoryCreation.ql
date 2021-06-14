@@ -16,19 +16,32 @@ abstract class LiteralDirectoryCreation extends LiteralEntryCreation, DirectoryC
   override Mask getMask() { result = getOverpermissiveDirectoryMask() }
 }
 
-/** A directory creation that provides a literal mode as a `mode` property in argument 1. */
-class LiteralModePropertyArgument1DirectoryCreation extends ModePropertyArgument1DirectoryCreation,
-  LiteralDirectoryCreation { }
-
-/** A directory creation that provides a literal mode as a `directoryMode` property in argument 2. */
-class LiteralDirectoryModePropertyArgument2DirectoryCreation extends DirectoryModePropertyArgument2DirectoryCreation,
+/**
+ * An insecure default directory creation
+ * that provides a literal mode as a `mode` property in argument 1.
+ */
+class LiteralInsecureModePropertyArgument1DirectoryCreation extends InsecureModePropertyArgument1DirectoryCreation,
   LiteralDirectoryCreation { }
 
 /**
- * A directory creation that provides a literal mode in argument 1
- * as either an immediate value or a `mode` property.
+ * An insecure default directory creation
+ * that provides a literal mode as a `directoryMode` property in argument 2.
  */
-class LiteralImmediateOrModePropertyArgument1DirectoryCreation extends ImmediateOrModePropertyArgument1DirectoryCreation,
+class LiteralInsecureDirectoryModePropertyArgument2DirectoryCreation extends InsecureDirectoryModePropertyArgument2DirectoryCreation,
+  LiteralDirectoryCreation { }
+
+/**
+ * An insecure default directory creation
+ * that provides a literal mode in argument 1 as either an immediate value or a `mode` property.
+ */
+class LiteralInsecureImmediateOrModePropertyArgument1DirectoryCreation extends InsecureImmediateOrModePropertyArgument1DirectoryCreation,
+  LiteralDirectoryCreation { }
+
+/**
+ * A secure default directory creation
+ * that provides a literal mode in argument 1 as either an immediate value or a `mode` property.
+ */
+class LiteralSecureImmediateOrModePropertyArgument1DirectoryCreation extends SecureImmediateOrModePropertyArgument1DirectoryCreation,
   LiteralDirectoryCreation { }
 
 from LiteralDirectoryCreation creation

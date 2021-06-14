@@ -312,6 +312,9 @@ abstract class ModableEntryCreation extends EntryCreation {
   cached
   abstract Expr getSpecifier();
 
+  /** Holds if the invocation uses insecure default modes. */
+  abstract predicate isInsecure();
+
   /** Holds if the invocation provides the mode argument. */
   predicate hasArgument() { exists(this.getArgument()) }
 
@@ -355,6 +358,16 @@ abstract class ModableEntryCreation extends EntryCreation {
     this.hasDefinedArgument() and
     this.hasDefinedSpecifier()
   }
+}
+
+/** An entry creation that uses secure default modes. */
+abstract class SecureEntryCreation extends ModableEntryCreation {
+  override predicate isInsecure() { none() }
+}
+
+/** An entry creation that uses insecure default modes. */
+abstract class InsecureEntryCreation extends ModableEntryCreation {
+  override predicate isInsecure() { any() }
 }
 
 /** An entry creation that takes mode through argument 1. */

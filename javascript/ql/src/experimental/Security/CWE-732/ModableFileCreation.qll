@@ -5,10 +5,10 @@ import OverpermissiveFileSystemMode
 /** A file creation that takes mode. */
 abstract class ModableFileCreation extends ModableEntryCreation, FileCreation { }
 
-/** A file creation that takes mode as a `mode` property in argument 1. */
-class ModePropertyArgument1FileCreation extends ModableFileCreation, Argument1EntryCreation,
-  PropertySpecifierEntryCreation, ModePropertyEntryCreation {
-  ModePropertyArgument1FileCreation() {
+/** An insecure default file creation that takes mode as a `mode` property in argument 1. */
+class InsecureModePropertyArgument1FileCreation extends ModableFileCreation, InsecureEntryCreation,
+  Argument1EntryCreation, PropertySpecifierEntryCreation, ModePropertyEntryCreation {
+  InsecureModePropertyArgument1FileCreation() {
     this =
       [
         NodeJSLib::FS::moduleMember("createReadStream"),
@@ -17,10 +17,22 @@ class ModePropertyArgument1FileCreation extends ModableFileCreation, Argument1En
   }
 }
 
-/** A file creation that takes mode as an immediate value in argument 2. */
-class ImmediateArgument2FileCreation extends ModableFileCreation, Argument2EntryCreation,
-  ImmediateSpecifierEntryCreation {
-  ImmediateArgument2FileCreation() {
+/** A secure default file creation that takes mode as a `mode` property in argument 1. */
+class SecureModePropertyArgument1FileCreation extends ModableFileCreation, SecureEntryCreation,
+  Argument1EntryCreation, PropertySpecifierEntryCreation, ModePropertyEntryCreation {
+  SecureModePropertyArgument1FileCreation() {
+    this =
+      [
+        DataFlow::moduleMember("secure-fs", "createReadStream"),
+        DataFlow::moduleMember("secure-fs", "createWriteStream")
+      ].getAnInvocation()
+  }
+}
+
+/** An insecure default file creation that takes mode as an immediate value in argument 2. */
+class InsecureImmediateArgument2FileCreation extends ModableFileCreation, InsecureEntryCreation,
+  Argument2EntryCreation, ImmediateSpecifierEntryCreation {
+  InsecureImmediateArgument2FileCreation() {
     this =
       [
         NodeJSLib::FS::moduleMember("open"), NodeJSLib::FS::moduleMember("openSync"),
@@ -29,10 +41,23 @@ class ImmediateArgument2FileCreation extends ModableFileCreation, Argument2Entry
   }
 }
 
-/** A file creation that takes mode as a `mode` property in argument 2. */
-class ModePropertyArgument2FileCreation extends ModableFileCreation, Argument2EntryCreation,
-  PropertySpecifierEntryCreation, ModePropertyEntryCreation {
-  ModePropertyArgument2FileCreation() {
+/** A secure default file creation that takes mode as an immediate value in argument 2. */
+class SecureImmediateArgument2FileCreation extends ModableFileCreation, SecureEntryCreation,
+  Argument2EntryCreation, ImmediateSpecifierEntryCreation {
+  SecureImmediateArgument2FileCreation() {
+    this =
+      [
+        DataFlow::moduleMember("secure-fs", "open"),
+        DataFlow::moduleMember("secure-fs", "openSync"),
+        DataFlow::moduleMember("secure-fs/promises", "open")
+      ].getAnInvocation()
+  }
+}
+
+/** An insecure default file creation that takes mode as a `mode` property in argument 2. */
+class InsecureModePropertyArgument2FileCreation extends ModableFileCreation, InsecureEntryCreation,
+  Argument2EntryCreation, PropertySpecifierEntryCreation, ModePropertyEntryCreation {
+  InsecureModePropertyArgument2FileCreation() {
     this =
       [
         NodeJSLib::FS::moduleMember("appendFile"), NodeJSLib::FS::moduleMember("appendFileSync"),
@@ -49,6 +74,22 @@ class ModePropertyArgument2FileCreation extends ModableFileCreation, Argument2En
         DataFlow::moduleMember("fs-extra-p", "writeJSONSync"),
         DataFlow::moduleMember("fs-extra-p", "writeJson"),
         DataFlow::moduleMember("fs-extra-p", "writeJsonSync")
+      ].getAnInvocation()
+  }
+}
+
+/** A secure default file creation that takes mode as a `mode` property in argument 2. */
+class SecureModePropertyArgument2FileCreation extends ModableFileCreation, SecureEntryCreation,
+  Argument2EntryCreation, PropertySpecifierEntryCreation, ModePropertyEntryCreation {
+  SecureModePropertyArgument2FileCreation() {
+    this =
+      [
+        DataFlow::moduleMember("secure-fs", "appendFile"),
+        DataFlow::moduleMember("secure-fs", "appendFileSync"),
+        DataFlow::moduleMember("secure-fs", "writeFile"),
+        DataFlow::moduleMember("secure-fs", "writeFileSync"),
+        DataFlow::moduleMember("secure-fs/promises", "appendFile"),
+        DataFlow::moduleMember("secure-fs/promises", "writeFile")
       ].getAnInvocation()
   }
 }

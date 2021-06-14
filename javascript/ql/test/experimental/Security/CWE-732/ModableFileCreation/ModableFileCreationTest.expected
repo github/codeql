@@ -1,17 +1,28 @@
-| modable.js:6:1:6:33 | fs.crea ... file1') |
-| modable.js:7:1:7:34 | fs.crea ... file2') |
-| modable.js:8:1:8:31 | fs.open ...  => {}) |
-| modable.js:9:1:9:25 | fs.open ... file4') |
-| modable.js:10:1:10:29 | fsPromi ... file5') |
-| modable.js:11:1:11:41 | fs.appe ...  => {}) |
-| modable.js:12:1:12:35 | fs.appe ... 7', '') |
-| modable.js:13:1:13:40 | fs.writ ...  => {}) |
-| modable.js:14:1:14:34 | fs.writ ... 9', '') |
-| modable.js:15:1:15:39 | fsPromi ... 0', '') |
-| modable.js:16:1:16:38 | fsPromi ... 1', '') |
-| modable.js:17:1:17:47 | jsonfil ...  => {}) |
-| modable.js:18:1:18:41 | jsonfil ... 3', {}) |
-| modable.js:19:1:19:36 | fsExtra ... 4', {}) |
-| modable.js:20:1:20:40 | fsExtra ... 5', {}) |
-| modable.js:21:1:21:36 | fsExtra ... 6', {}) |
-| modable.js:22:1:22:40 | fsExtra ... 7', {}) |
+| modable.js:8:1:8:33 | fs.crea ... file1') |
+| modable.js:9:1:9:34 | fs.crea ... file2') |
+| modable.js:10:1:10:31 | fs.open ...  => {}) |
+| modable.js:11:1:11:25 | fs.open ... file4') |
+| modable.js:12:1:12:29 | fsPromi ... file5') |
+| modable.js:13:1:13:41 | fs.appe ...  => {}) |
+| modable.js:14:1:14:35 | fs.appe ... 7', '') |
+| modable.js:15:1:15:40 | fs.writ ...  => {}) |
+| modable.js:16:1:16:34 | fs.writ ... 9', '') |
+| modable.js:17:1:17:40 | fsPromi ... 0', '') |
+| modable.js:18:1:18:39 | fsPromi ... 1', '') |
+| modable.js:19:1:19:47 | jsonfil ...  => {}) |
+| modable.js:20:1:20:41 | jsonfil ... 3', {}) |
+| modable.js:21:1:21:36 | fsExtra ... 4', {}) |
+| modable.js:22:1:22:40 | fsExtra ... 5', {}) |
+| modable.js:23:1:23:36 | fsExtra ... 6', {}) |
+| modable.js:24:1:24:40 | fsExtra ... 7', {}) |
+| modable.js:25:1:25:38 | secureF ... /file') |
+| modable.js:26:1:26:39 | secureF ... /file') |
+| modable.js:27:1:27:36 | secureF ...  => {}) |
+| modable.js:28:1:28:30 | secureF ... /file') |
+| modable.js:29:1:29:34 | secureF ... /file') |
+| modable.js:30:1:30:46 | secureF ...  => {}) |
+| modable.js:31:1:31:40 | secureF ... e', '') |
+| modable.js:32:1:32:45 | secureF ...  => {}) |
+| modable.js:33:1:33:39 | secureF ... e', '') |
+| modable.js:34:1:34:44 | secureF ... e', '') |
+| modable.js:35:1:35:43 | secureF ... e', '') |
