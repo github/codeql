@@ -63,6 +63,8 @@ class WeakTypeDeserializer extends Class {
     this instanceof ServiceStackTextCsvSerializerClass
     or
     this instanceof ServiceStackTextXmlSerializerClass
+    or
+    this instanceof SharpSerializerClass
   }
 }
 
@@ -622,5 +624,18 @@ class CsPicklerSerializerClassUnPickleOfStringMethod extends Method, UnsafeDeser
   CsPicklerSerializerClassUnPickleOfStringMethod() {
     this.getDeclaringType().getBaseClass*() instanceof CsPicklerTextSerializerClass and
     this.hasName("UnPickleOfString")
+  }
+}
+
+/** Polenter.Serialization.SharpSerializer */
+private class SharpSerializerClass extends Class {
+  SharpSerializerClass() { this.hasQualifiedName("Polenter.Serialization.SharpSerializer") }
+}
+
+/** `Polenter.Serialization.SharpSerializer.Deserialize` method */
+class SharpSerializerClassDeserializeMethod extends Method, UnsafeDeserializer {
+  SharpSerializerClassDeserializeMethod() {
+    this.getDeclaringType().getBaseClass*() instanceof SharpSerializerClass and
+    this.hasName("Deserialize")
   }
 }

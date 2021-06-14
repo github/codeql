@@ -798,4 +798,18 @@ module UnsafeDeserialization {
       )
     }
   }
+
+  /** SharpSerializer */
+  private class SharpSerializerDeserializeMethodSink extends InstanceMethodSink {
+    SharpSerializerDeserializeMethodSink() {
+      exists(MethodCall mc, Method m |
+        m = mc.getTarget() and
+        (
+          not mc.getArgument(0).hasValue() and
+          m instanceof SharpSerializerClassDeserializeMethod
+        ) and
+        this.asExpr() = mc.getArgument(0)
+      )
+    }
+  }
 }
