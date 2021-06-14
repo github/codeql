@@ -71,11 +71,11 @@ public class GroovyShell {
         return null;
     }
 
-    public Object run​(URI source, List<String> list) {
+    public Object run(URI source, List<String> list) {
         return null;
     }
 
-    public Object run​(URI source, String[] args) {
+    public Object run(URI source, String[] args) {
         return null;
     }
 
