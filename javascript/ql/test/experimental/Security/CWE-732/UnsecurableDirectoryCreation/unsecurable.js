@@ -1,5 +1,4 @@
 import fsExtra from 'fs-extra'
-import cpFile from 'cp-file'
 import cpy from 'cpy'
 import npmMoveFile from '@npmcli/move-file'
 import trash from 'trash'
@@ -26,8 +25,6 @@ fsExtra.outputJSON()
 fsExtra.outputJSONSync()
 fsExtra.outputJson()
 fsExtra.outputJsonSync()
-cpFile()
-cpFile.sync()
 cpy()
 npmMoveFile()
 npmMoveFile.sync()

@@ -50,9 +50,11 @@ class ImmediateOrModePropertyArgument1DirectoryCreation extends ModableDirectory
 /** A directory creation that takes mode as a `directoryMode` object property in argument 2. */
 class DirectoryModePropertyArgument2DirectoryCreation extends ModableDirectoryCreation,
   Argument2EntryCreation, PropertySpecifierEntryCreation, DirectoryModePropertyEntryCreation {
-    DirectoryModePropertyArgument2DirectoryCreation() {
+  DirectoryModePropertyArgument2DirectoryCreation() {
     this =
-      [DataFlow::moduleImport("move-file"), DataFlow::moduleMember("move-file", "sync")]
-          .getAnInvocation()
+      [
+        DataFlow::moduleImport("move-file"), DataFlow::moduleMember("move-file", "sync"),
+        DataFlow::moduleImport("cp-file"), DataFlow::moduleMember("cp-file", "sync")
+      ].getAnInvocation()
   }
 }
