@@ -1,3 +1,5 @@
 argumentToEnsureNotTaintedNotMarkedAsSpurious
 untaintedArgumentToEnsureTaintedNotMarkedAsMissing
+| test_string.py:35:9:35:19 | test_string.py:35 | ERROR, you should add `# $ MISSING: tainted` annotation | unicode(..) |
 failures
+| test_string.py:35:22:35:32 | Comment # $ tainted | Missing result:tainted= |
