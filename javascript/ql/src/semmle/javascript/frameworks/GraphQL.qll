@@ -62,7 +62,9 @@ private module Octokit {
   private class RequestClientRequest extends ClientRequest::Range, API::CallNode {
     RequestClientRequest() { this = requestCallee().getACall() }
 
-    override DataFlow::Node getUrl() { none() }
+    override DataFlow::Node getUrl() {
+      result = this.getArgument(0) // contains both the method and the URL, but it's close enough
+    }
 
     override DataFlow::Node getHost() { none() }
 
@@ -96,7 +98,22 @@ private module GraphQLLib {
               .getALocalSource()
               .getAPropertyWrite("query")
               .getRhs()
+      |
+        containsGraphQLIndicator(req.getUrl())
       )
     }
+  }
+
+  /**
+   * Holds if `node` is a node that likely contains an URL to a GraphQL endpoint.
+   */
+  private predicate containsGraphQLIndicator(DataFlow::Node node) {
+    node.getStringValue().regexpMatch("(?i).*graphql.*")
+    or
+    node.(DataFlow::PropRead).getPropertyName().regexpMatch("(?i).*graphql.*")
+    or
+    containsGraphQLIndicator(node.(StringOps::Concatenation).getAnOperand())
+    or
+    containsGraphQLIndicator(node.getAPredecessor())
   }
 }
