@@ -1,0 +1,7 @@
+| test.cpp:7:6:7:15 | ... \|\| ... | Logical and has a higher priority. |
+| test.cpp:14:6:14:14 | ... \|\| ... | Binary operations has higher priority. |
+| test.cpp:18:6:18:14 | ... \|\| ... | Binary operations has higher priority. |
+| test.cpp:23:6:23:13 | ... \| ... | Expression ranges do not match operation precedence. |
+| test.cpp:27:6:27:13 | ... ^ ... | Expression ranges do not match operation precedence. |
+| test.cpp:32:6:32:13 | ... \| ... | Expression ranges do not match operation precedence. |
+| test.cpp:37:6:37:13 | ... \| ... | specify the priority with parentheses. |
