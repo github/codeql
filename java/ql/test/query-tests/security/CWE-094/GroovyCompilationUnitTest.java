@@ -81,5 +81,15 @@ public class GroovyCompilationUnitTest extends HttpServlet {
             cu.addSource(su);
             cu.compile(); // Safe
         }
+        {
+            JavaAwareCompilationUnit cu = new JavaAwareCompilationUnit();
+            cu.addSource("test", request.getParameter("source"));
+            cu.compile(); // $hasGroovyInjection
+        }
+        {
+            JavaStubCompilationUnit cu = new JavaStubCompilationUnit(null, null);
+            cu.addSource("test", request.getParameter("source"));
+            cu.compile(); // Safe - JavaStubCompilationUnit only creates stubs
+        }
     }
 }
