@@ -274,7 +274,7 @@ private module Cached {
   predicate outNodeExt(Node n) {
     n instanceof OutNode
     or
-    n.getPreUpdateNode() instanceof ArgNode
+    n.(PostUpdateNode).getPreUpdateNode() instanceof ArgNode
   }
 
   cached
@@ -285,7 +285,7 @@ private module Cached {
     result = getAnOutNode(call, k.(ValueReturnKind).getKind())
     or
     exists(ArgNode arg |
-      result.getPreUpdateNode() = arg and
+      result.(PostUpdateNode).getPreUpdateNode() = arg and
       arg.argumentOf(call, k.(ParamUpdateReturnKind).getPosition())
     )
   }
@@ -729,8 +729,8 @@ private module Cached {
     containerType = getNodeDataFlowType(node2)
     or
     exists(Node n1, Node n2 |
-      n1 = node1.getPreUpdateNode() and
-      n2 = node2.getPreUpdateNode()
+      n1 = node1.(PostUpdateNode).getPreUpdateNode() and
+      n2 = node2.(PostUpdateNode).getPreUpdateNode()
     |
       argumentValueFlowsThrough(n2, TReadStepTypesSome(containerType, c, contentType), n1)
       or
