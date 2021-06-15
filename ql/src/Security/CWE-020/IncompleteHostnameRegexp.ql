@@ -4,6 +4,7 @@
  *              dot as part of the hostname might match more hostnames than expected.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 7.8
  * @precision high
  * @id go/incomplete-hostname-regexp
  * @tags correctness

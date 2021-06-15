@@ -5,6 +5,7 @@
  *              incomplete.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 6.1
  * @id go/bad-redirect-check
  * @tags security
  *       external/cwe/cwe-601

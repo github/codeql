@@ -4,6 +4,7 @@
  *              man-in-the-middle attacks.
  * @kind problem
  * @problem.severity warning
+ * @security-severity 7.5
  * @precision high
  * @id go/disabled-certificate-check
  * @tags security

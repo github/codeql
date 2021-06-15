@@ -4,6 +4,7 @@
  *              and "data:" suggests a logic error or even a security vulnerability.
  * @kind problem
  * @problem.severity warning
+ * @security-severity 7.8
  * @precision high
  * @id go/incomplete-url-scheme-check
  * @tags security

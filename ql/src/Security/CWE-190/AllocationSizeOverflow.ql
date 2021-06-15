@@ -4,6 +4,7 @@
  *              the result may overflow and cause a runtime panic.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 8.1
  * @precision high
  * @id go/allocation-size-overflow
  * @tags security

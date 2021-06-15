@@ -8,6 +8,7 @@
  * @kind path-problem
  * @id go/unsafe-unzip-symlink
  * @problem.severity error
+ * @security-severity 7.5
  * @precision high
  * @tags security
  *       external/cwe/cwe-022

@@ -5,6 +5,7 @@
  *              that are useful to an attacker for developing a subsequent exploit.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 5.4
  * @precision high
  * @id go/stack-trace-exposure
  * @tags security

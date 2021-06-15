@@ -5,6 +5,7 @@
  *              the overall string.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 9.3
  * @precision high
  * @id go/unsafe-quoting
  * @tags correctness
