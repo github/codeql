@@ -22,7 +22,7 @@ private module Cached {
     OldInstruction blockStartInstr, Alias::MemoryLocation defLocation
   ) {
     exists(OldBlock oldBlock |
-      definitionHasPhiNode(defLocation, oldBlock) and
+      definitionHasPhiNode(oldBlock, defLocation) and
       blockStartInstr = oldBlock.getFirstInstruction()
     )
   }
@@ -168,7 +168,7 @@ private module Cached {
       useLocation = Alias::getOperandMemoryLocation(oldOperand) and
       hasUseAtRank(useLocation, useBlock, useRank, oldInstruction) and
       definitionReachesUse(useLocation, defBlock, defRank, useBlock, useRank) and
-      hasDefinitionAtRank(useLocation, defLocation, defBlock, defRank, defOffset) and
+      hasDefinitionAtRank(useLocation, defBlock, defRank, defLocation, defOffset) and
       instr = getDefinitionOrChiInstruction(defBlock, defOffset, defLocation, actualDefLocation) and
       overlap = Alias::getOverlap(actualDefLocation, useLocation)
     )
@@ -344,7 +344,7 @@ private module Cached {
     |
       chiInstr = getChi(oldInstr) and
       vvar = Alias::getResultMemoryLocation(oldInstr).getVirtualVariable() and
-      hasDefinitionAtRank(vvar, defLocation, defBlock, defRank, defOffset) and
+      hasDefinitionAtRank(vvar, defBlock, defRank, defLocation, defOffset) and
       hasUseAtRank(vvar, useBlock, useRank, oldInstr) and
       definitionReachesUse(vvar, defBlock, defRank, useBlock, useRank) and
       result = getDefinitionOrChiInstruction(defBlock, defOffset, vvar, _)
@@ -545,29 +545,29 @@ private module PhiInsertion {
    */
   pragma[noinline]
   private predicate dominanceFrontierOfDefinition(
-    Alias::MemoryLocation defLocation, OldBlock phiBlock
+    OldBlock phiBlock, Alias::MemoryLocation defLocation
   ) {
     exists(OldBlock defBlock |
       phiBlock = Dominance::getDominanceFrontier(defBlock) and
-      definitionHasDefinitionInBlock(defLocation, defBlock)
+      definitionHasDefinitionInBlock(defBlock, defLocation)
     )
   }
 
   /**
    * Holds if a `Phi` instruction needs to be inserted for location `defLocation` at the beginning of block `phiBlock`.
    */
-  predicate definitionHasPhiNode(Alias::MemoryLocation defLocation, OldBlock phiBlock) {
-    dominanceFrontierOfDefinition(defLocation, phiBlock) and
+  predicate definitionHasPhiNode(OldBlock phiBlock, Alias::MemoryLocation defLocation) {
+    dominanceFrontierOfDefinition(phiBlock, defLocation) and
     /* We can also eliminate those nodes where the definition is not live on any incoming edge */
-    definitionLiveOnEntryToBlock(defLocation, phiBlock)
+    definitionLiveOnEntryToBlock(phiBlock, defLocation)
   }
 
   /**
    * Holds if the memory location `defLocation` has a definition in block `block`, either because of an existing
    * instruction, a `Phi` node, or a `Chi` node.
    */
-  private predicate definitionHasDefinitionInBlock(Alias::MemoryLocation defLocation, OldBlock block) {
-    definitionHasPhiNode(defLocation, block)
+  private predicate definitionHasDefinitionInBlock(OldBlock block, Alias::MemoryLocation defLocation) {
+    definitionHasPhiNode(block, defLocation)
     or
     exists(OldInstruction def, Alias::MemoryLocation resultLocation |
       def.getBlock() = block and
@@ -587,7 +587,7 @@ private module PhiInsertion {
    * Holds if there is a use at (`block`, `index`) that could consume the result of a `Phi` instruction for
    * `defLocation`.
    */
-  private predicate definitionHasUse(Alias::MemoryLocation defLocation, OldBlock block, int index) {
+  private predicate definitionHasUse(OldBlock block, Alias::MemoryLocation defLocation, int index) {
     exists(OldInstruction use |
       block.getInstruction(index) = use and
       if defLocation instanceof Alias::VirtualVariable
@@ -614,7 +614,7 @@ private module PhiInsertion {
    * of a `Phi` node that occurs after the redefinition.
    */
   private predicate definitionHasRedefinition(
-    Alias::MemoryLocation defLocation, OldBlock block, int index
+    OldBlock block, Alias::MemoryLocation defLocation, int index
   ) {
     exists(OldInstruction redef, Alias::MemoryLocation redefLocation |
       block.getInstruction(index) = redef and
@@ -640,19 +640,19 @@ private module PhiInsertion {
    * Holds if the definition `defLocation` is live on entry to block `block`. The definition is live if there is at
    * least one use of that definition before any intervening instruction that redefines the definition location.
    */
-  predicate definitionLiveOnEntryToBlock(Alias::MemoryLocation defLocation, OldBlock block) {
+  predicate definitionLiveOnEntryToBlock(OldBlock block, Alias::MemoryLocation defLocation) {
     exists(int firstAccess |
-      definitionHasUse(defLocation, block, firstAccess) and
+      definitionHasUse(block, defLocation, firstAccess) and
       firstAccess =
         min(int index |
-          definitionHasUse(defLocation, block, index)
+          definitionHasUse(block, defLocation, index)
           or
-          definitionHasRedefinition(defLocation, block, index)
+          definitionHasRedefinition(block, defLocation, index)
         )
     )
     or
-    definitionLiveOnExitFromBlock(defLocation, block) and
-    not definitionHasRedefinition(defLocation, block, _)
+    definitionLiveOnExitFromBlock(block, defLocation) and
+    not definitionHasRedefinition(block, defLocation, _)
   }
 
   /**
@@ -660,8 +660,8 @@ private module PhiInsertion {
    * live on entry to any of the successors of `block`.
    */
   pragma[noinline]
-  predicate definitionLiveOnExitFromBlock(Alias::MemoryLocation defLocation, OldBlock block) {
-    definitionLiveOnEntryToBlock(defLocation, block.getAFeasibleSuccessor())
+  predicate definitionLiveOnExitFromBlock(OldBlock block, Alias::MemoryLocation defLocation) {
+    definitionLiveOnEntryToBlock(block.getAFeasibleSuccessor(), defLocation)
   }
 }
 
@@ -716,7 +716,7 @@ module DefUse {
     )
     or
     defOffset = -1 and
-    hasDefinition(_, defLocation, defBlock, defOffset) and
+    hasDefinition(defOffset, defLocation, defBlock, _) and
     result = getPhi(defBlock, defLocation) and
     actualDefLocation = defLocation
   }
@@ -741,7 +741,7 @@ module DefUse {
     int useRank
   ) {
     defBlock = useBlock and
-    hasDefinitionAtRank(useLocation, _, defBlock, defRank, _) and
+    hasDefinitionAtRank(useLocation, defBlock, defRank, _, _) and
     hasUseAtRank(useLocation, useBlock, useRank, _) and
     definitionReachesRank(useLocation, defBlock, defRank, useRank)
   }
@@ -772,7 +772,7 @@ module DefUse {
   ) {
     // The def always reaches the next use, even if there is also a def on the
     // use instruction.
-    hasDefinitionAtRank(useLocation, _, block, defRank, _) and
+    hasDefinitionAtRank(useLocation, block, defRank, _, _) and
     reachesRank = defRank + 1
     or
     // If the def reached the previous rank, it also reaches the current rank,
@@ -781,7 +781,7 @@ module DefUse {
       reachesRank = prevRank + 1 and
       definitionReachesRank(useLocation, block, defRank, prevRank) and
       not prevRank = exitRank(useLocation, block) and
-      not hasDefinitionAtRank(useLocation, _, block, prevRank, _)
+      not hasDefinitionAtRank(useLocation, block, prevRank, _, _)
     )
   }
 
@@ -792,7 +792,7 @@ module DefUse {
   predicate definitionReachesEndOfBlock(
     Alias::MemoryLocation useLocation, OldBlock defBlock, int defRank, OldBlock block
   ) {
-    hasDefinitionAtRank(useLocation, _, defBlock, defRank, _) and
+    hasDefinitionAtRank(useLocation, defBlock, defRank, _, _) and
     (
       // If we're looking at the def's own block, just see if it reaches the exit
       // rank of the block.
@@ -813,7 +813,7 @@ module DefUse {
   ) {
     Dominance::blockImmediatelyDominates(idom, block) and // It is sufficient to traverse the dominator graph, cf. discussion above.
     locationLiveOnExitFromBlock(useLocation, block) and
-    not hasDefinition(useLocation, _, block, _)
+    not hasDefinition(_, _, block, useLocation)
   }
 
   /**
@@ -822,8 +822,8 @@ module DefUse {
    * Note that even a partially-overlapping definition blocks liveness, because such a definition will insert a `Chi`
    * instruction whose result totally overlaps the location.
    */
-  predicate locationLiveOnEntryToBlock(Alias::MemoryLocation useLocation, OldBlock block) {
-    definitionHasPhiNode(useLocation, block)
+  predicate locationLiveOnEntryToBlock(OldBlock block, Alias::MemoryLocation useLocation) {
+    definitionHasPhiNode(block, useLocation)
     or
     exists(int firstAccess |
       hasUse(useLocation, block, firstAccess, _) and
@@ -844,7 +844,7 @@ module DefUse {
    */
   pragma[noinline]
   predicate locationLiveOnExitFromBlock(Alias::MemoryLocation useLocation, OldBlock block) {
-    locationLiveOnEntryToBlock(useLocation, block.getAFeasibleSuccessor())
+    locationLiveOnEntryToBlock(block.getAFeasibleSuccessor(), useLocation)
   }
 
   /**
@@ -869,15 +869,15 @@ module DefUse {
    * This predicate includes definitions for Phi nodes (at offset -1).
    */
   private predicate hasDefinition(
-    Alias::MemoryLocation useLocation, Alias::MemoryLocation defLocation, OldBlock block, int offset
+    int offset, Alias::MemoryLocation defLocation, OldBlock block, Alias::MemoryLocation useLocation
   ) {
     (
       // If there is a Phi node for the use location itself, treat that as a definition at offset -1.
       offset = -1 and
-      if definitionHasPhiNode(useLocation, block)
+      if definitionHasPhiNode(block, useLocation)
       then defLocation = useLocation
       else (
-        definitionHasPhiNode(defLocation, block) and
+        definitionHasPhiNode(block, defLocation) and
         defLocation = useLocation.getVirtualVariable() and
         // Handle the unusual case where a virtual variable does not overlap one of its member
         // locations. For example, a definition of the virtual variable representing all aliased
@@ -904,10 +904,10 @@ module DefUse {
    * `rankIndex` is the rank of the definition as computed by `defUseRank()`.
    */
   predicate hasDefinitionAtRank(
-    Alias::MemoryLocation useLocation, Alias::MemoryLocation defLocation, OldBlock block,
-    int rankIndex, int offset
+    Alias::MemoryLocation useLocation, OldBlock block, int rankIndex,
+    Alias::MemoryLocation defLocation, int offset
   ) {
-    hasDefinition(useLocation, defLocation, block, offset) and
+    hasDefinition(offset, defLocation, block, useLocation) and
     defUseRank(useLocation, block, rankIndex, offset)
   }
 
@@ -952,8 +952,15 @@ module DefUse {
   ) {
     offset =
       rank[rankIndex](int j |
-        hasDefinition(useLocation, _, block, j) or hasUse(useLocation, block, j, _)
+        hasDefinition(j, _, block, useLocation) or hasUse(useLocation, block, j, _)
       )
+  }
+
+  private OldBlock getAFeasiblePredecessorOfPhiBlock(
+    OldBlock phiBlock, Alias::MemoryLocation useLocation
+  ) {
+    definitionHasPhiNode(phiBlock, useLocation) and
+    result = phiBlock.getAFeasiblePredecessor()
   }
 
   /**
@@ -966,10 +973,9 @@ module DefUse {
     OldBlock predBlock, OldBlock defBlock, int defOffset
   ) {
     exists(int defRank |
-      definitionHasPhiNode(useLocation, phiBlock) and
-      predBlock = phiBlock.getAFeasiblePredecessor() and
+      predBlock = getAFeasiblePredecessorOfPhiBlock(phiBlock, useLocation) and
       definitionReachesEndOfBlock(useLocation, defBlock, defRank, predBlock) and
-      hasDefinitionAtRank(useLocation, defLocation, defBlock, defRank, defOffset) and
+      hasDefinitionAtRank(useLocation, defBlock, defRank, defLocation, defOffset) and
       exists(Alias::getOverlap(defLocation, useLocation))
     )
   }

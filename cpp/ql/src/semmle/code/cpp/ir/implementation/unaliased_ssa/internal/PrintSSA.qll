@@ -52,7 +52,7 @@ class PropertyProvider extends IRPropertyProvider {
       )
     or
     exists(MemoryLocation useLocation, IRBlock defBlock, int defRank, int defOffset |
-      hasDefinitionAtRank(useLocation, _, defBlock, defRank, defOffset) and
+      hasDefinitionAtRank(useLocation, defBlock, defRank, _, defOffset) and
       defBlock.getInstruction(getIndexForOffset(defOffset)) = instruction and
       key = "DefinitionRank" + getKeySuffixForOffset(defOffset) + "[" + useLocation.toString() + "]" and
       result = defRank.toString()
@@ -65,7 +65,7 @@ class PropertyProvider extends IRPropertyProvider {
     )
     or
     exists(MemoryLocation useLocation, IRBlock defBlock, int defRank, int defOffset |
-      hasDefinitionAtRank(useLocation, _, defBlock, defRank, defOffset) and
+      hasDefinitionAtRank(useLocation, defBlock, defRank, _, defOffset) and
       defBlock.getInstruction(getIndexForOffset(defOffset)) = instruction and
       key =
         "DefinitionReachesUse" + getKeySuffixForOffset(defOffset) + "[" + useLocation.toString() +
@@ -87,14 +87,14 @@ class PropertyProvider extends IRPropertyProvider {
 
   override string getBlockProperty(IRBlock block, string key) {
     exists(MemoryLocation useLocation, int defRank, int defIndex |
-      hasDefinitionAtRank(useLocation, _, block, defRank, defIndex) and
+      hasDefinitionAtRank(useLocation, block, defRank, _, defIndex) and
       defIndex = -1 and
       key = "DefinitionRank(Phi)[" + useLocation.toString() + "]" and
       result = defRank.toString()
     )
     or
     exists(MemoryLocation useLocation, MemoryLocation defLocation, int defRank, int defIndex |
-      hasDefinitionAtRank(useLocation, defLocation, block, defRank, defIndex) and
+      hasDefinitionAtRank(useLocation, block, defRank, defLocation, defIndex) and
       defIndex = -1 and
       key = "DefinitionReachesUse(Phi)[" + useLocation.toString() + "]" and
       result =
@@ -125,7 +125,7 @@ class PropertyProvider extends IRPropertyProvider {
     key = "LiveOnEntry" and
     result =
       strictconcat(MemoryLocation useLocation |
-        locationLiveOnEntryToBlock(useLocation, block)
+        locationLiveOnEntryToBlock(block, useLocation)
       |
         useLocation.toString(), ", " order by useLocation.toString()
       )
@@ -141,7 +141,7 @@ class PropertyProvider extends IRPropertyProvider {
     key = "DefsLiveOnEntry" and
     result =
       strictconcat(MemoryLocation defLocation |
-        definitionLiveOnEntryToBlock(defLocation, block)
+        definitionLiveOnEntryToBlock(block, defLocation)
       |
         defLocation.toString(), ", " order by defLocation.toString()
       )
@@ -149,7 +149,7 @@ class PropertyProvider extends IRPropertyProvider {
     key = "DefsLiveOnExit" and
     result =
       strictconcat(MemoryLocation defLocation |
-        definitionLiveOnExitFromBlock(defLocation, block)
+        definitionLiveOnExitFromBlock(block, defLocation)
       |
         defLocation.toString(), ", " order by defLocation.toString()
       )

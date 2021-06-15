@@ -14,15 +14,15 @@ predicate isInfeasibleEdge(IRBlockBase block, EdgeKind kind) {
   isInfeasibleInstructionSuccessor(block.getLastInstruction(), kind)
 }
 
-private IRBlock getAFeasiblePredecessorBlock(IRBlock successor) {
+private predicate getAFeasiblePredecessorBlock(IRBlock successor, IRBlock block) {
   exists(EdgeKind kind |
-    result.getSuccessor(kind) = successor and
-    not isInfeasibleEdge(result, kind)
+    block.getSuccessor(kind) = successor and
+    not isInfeasibleEdge(block, kind)
   )
 }
 
 private predicate isBlockReachable(IRBlock block) {
-  exists(IRFunction f | getAFeasiblePredecessorBlock*(block) = f.getEntryBlock())
+  exists(IRFunction f | getAFeasiblePredecessorBlock*(block, f.getEntryBlock()))
 }
 
 /**
@@ -32,9 +32,11 @@ private predicate isBlockReachable(IRBlock block) {
 class ReachableBlock extends IRBlockBase {
   ReachableBlock() { isBlockReachable(this) }
 
-  final ReachableBlock getAFeasiblePredecessor() { result = getAFeasiblePredecessorBlock(this) }
+  pragma[inline]
+  final ReachableBlock getAFeasiblePredecessor() { getAFeasiblePredecessorBlock(this, result) }
 
-  final ReachableBlock getAFeasibleSuccessor() { this = getAFeasiblePredecessorBlock(result) }
+  pragma[inline]
+  final ReachableBlock getAFeasibleSuccessor() { getAFeasiblePredecessorBlock(result, this) }
 }
 
 /**
