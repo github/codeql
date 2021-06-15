@@ -1,5 +1,6 @@
 /**
- * Provides classes modeling security-relevant aspects of the `mysql-connector-python` package.
+ * Provides classes modeling security-relevant aspects of the `mysql-connector-python`
+ * and `mysql-connector` (old package name) PyPI packages (imported as `mysql`).
  * See
  * - https://dev.mysql.com/doc/connector-python/en/
  * - https://dev.mysql.com/doc/connector-python/en/connector-python-example-connecting.html
@@ -13,7 +14,8 @@ private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.PEP249
 
 /**
- * Provides models for the `mysql-connector-python` package.
+ * Provides classes modeling security-relevant aspects of the `mysql-connector-python`
+ * and `mysql-connector` (old package name) PyPI packages (imported as `mysql`).
  * See
  * - https://dev.mysql.com/doc/connector-python/en/
  * - https://dev.mysql.com/doc/connector-python/en/connector-python-example-connecting.html
