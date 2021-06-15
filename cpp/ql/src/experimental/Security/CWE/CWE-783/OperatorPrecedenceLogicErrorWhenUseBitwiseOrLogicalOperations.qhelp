@@ -1,0 +1,28 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Find places of confusing use of logical and bitwise operations.</p>
+
+
+</overview>
+<recommendation>
+
+<p>We recommend using parentheses to explicitly emphasize priority.</p>
+
+</recommendation>
+<example>
+<p>The following example demonstrates fallacious and fixed methods of using logical and bitwise operations.</p>
+<sample src="OperatorPrecedenceLogicErrorWhenUseBitwiseOrLogicalOperations.c" />
+
+</example>
+<references>
+
+<li>
+  CERT C Coding Standard:
+  <a href="https://wiki.sei.cmu.edu/confluence/display/c/EXP00-C.+Use+parentheses+for+precedence+of+operation">EXP00-C. Use parentheses for precedence of operation</a>.
+</li>
+
+</references>
+</qhelp>
