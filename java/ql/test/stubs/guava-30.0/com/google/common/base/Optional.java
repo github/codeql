@@ -31,11 +31,11 @@ public abstract class Optional<T> implements Serializable {
   }
 
   public static <T> @Nullable Optional<T> fromJavaUtil(
-      java.util.Optional<T> javaUtilOptional) {
+      java.util.@Nullable Optional<T> javaUtilOptional) {
     return null;
   }
 
-  public static <T> java.util.Optional<T> toJavaUtil(
+  public static <T> java.util.@Nullable Optional<T> toJavaUtil(
       @Nullable Optional<T> googleOptional) {
     return null;
   }
