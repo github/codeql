@@ -9,6 +9,8 @@ import org.codehaus.groovy.control.CompilationUnit;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.control.io.ReaderSource;
 import org.codehaus.groovy.control.io.StringReaderSource;
+import org.codehaus.groovy.tools.javac.JavaAwareCompilationUnit;
+import org.codehaus.groovy.tools.javac.JavaStubCompilationUnit;
 
 public class GroovyCompilationUnitTest extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -51,7 +53,7 @@ public class GroovyCompilationUnitTest extends HttpServlet {
         }
         {
             CompilationUnit cu = new CompilationUnit();
-            ReaderSource rs = new StringReaderSource(request.getParameter("source"), null);
+            StringReaderSource rs = new StringReaderSource(request.getParameter("source"), null);
             SourceUnit su = new SourceUnit("test", rs, null, null, null);
             cu.addSource(su);
             cu.compile(); // $hasGroovyInjection
