@@ -293,6 +293,62 @@ module SqlExecution {
   }
 }
 
+/**
+ * A data-flow node that escapes meta-characters, which could be used to prevent
+ * injection attacks.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `Escaping::Range` instead.
+ */
+class Escaping extends DataFlow::Node {
+  Escaping::Range range;
+
+  Escaping() { this = range }
+
+  /** Gets an input that will be escaped. */
+  DataFlow::Node getAnInput() { result = range.getAnInput() }
+
+  /** Gets the output that contains the escaped data. */
+  DataFlow::Node getOutput() { result = range.getOutput() }
+
+  /**
+   * Gets the context that this function escapes for, such as `html`, or `url`.
+   */
+  string getKind() { result = range.getKind() }
+}
+
+/** Provides a class for modeling new escaping APIs. */
+module Escaping {
+  /**
+   * A data-flow node that escapes meta-characters, which could be used to prevent
+   * injection attacks.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `Escaping` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets an input that will be escaped. */
+    abstract DataFlow::Node getAnInput();
+
+    /** Gets the output that contains the escaped data. */
+    abstract DataFlow::Node getOutput();
+
+    /**
+     * Gets the context that this function escapes for, such as `html`, or `url`.
+     */
+    abstract string getKind();
+  }
+}
+
+/**
+ * An escape of a string so it can be safely included in
+ * the body of an HTML element, for example, replacing `{}` in
+ * `<p>{}</p>`.
+ */
+class HtmlEscaping extends Escaping {
+  HtmlEscaping() { range.getKind() = "html" }
+}
+
 /** Provides classes for modeling HTTP-related APIs. */
 module HTTP {
   import semmle.python.web.HttpConstants
