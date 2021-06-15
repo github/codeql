@@ -4,7 +4,7 @@
  *              of data written may overflow.
  * @kind problem
  * @problem.severity error
- * @security-severity 5.9
+ * @security-severity 9.3
  * @precision medium
  * @id cpp/overrunning-write
  * @tags reliability
