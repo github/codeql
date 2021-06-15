@@ -9,14 +9,9 @@ db.init_app(app)
 
 class Movie(db.Document):
     title = db.StringField(required=True)
-    year = db.IntField()
-    rated = db.StringField()
-    director = db.StringField()
-    actors = db.ListField()
 
 
-Movie(title='aa').save()
-Movie(title='bb').save()
+Movie(title='test').save()
 
 
 @app.route("/")

@@ -7,14 +7,9 @@ app = Flask(__name__)
 
 class Movie(me.Document):
     title = me.StringField(required=True)
-    year = me.IntField()
-    rated = me.StringField()
-    director = me.StringField()
-    actors = me.ListField()
 
 
-Movie(title='aa').save()
-Movie(title='bb').save()
+Movie(title='test').save()
 
 
 @app.route("/")
