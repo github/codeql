@@ -166,7 +166,7 @@ private module NoSQL {
         API::moduleImport("mongosanitizer").getMember("sanitizer").getMember("sanitize").getACall()
     }
 
-    override DataFlow::Node getSanitizerNode() { result = this.getArg(0) }
+    override DataFlow::Node getAnInput() { result = this.getArg(0) }
   }
 
   /**
@@ -182,6 +182,6 @@ private module NoSQL {
             .getACall()
     }
 
-    override DataFlow::Node getSanitizerNode() { result = this.getArg(0) }
+    override DataFlow::Node getAnInput() { result = this.getArg(0) }
   }
 }

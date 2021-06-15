@@ -163,7 +163,7 @@ class NoSQLQuery extends DataFlow::Node {
 
 module NoSQLSanitizer {
   abstract class Range extends DataFlow::Node {
-    abstract DataFlow::Node getSanitizerNode();
+    abstract DataFlow::Node getAnInput();
   }
 }
 
@@ -172,5 +172,5 @@ class NoSQLSanitizer extends DataFlow::Node {
 
   NoSQLSanitizer() { this = range }
 
-  DataFlow::Node getSanitizerNode() { result = range.getSanitizerNode() }
+  DataFlow::Node getAnInput() { result = range.getAnInput() }
 }

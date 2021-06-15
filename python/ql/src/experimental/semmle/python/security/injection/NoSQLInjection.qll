@@ -42,7 +42,7 @@ class RFSToDictConfig extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { sink instanceof DataToDictSink }
 
   override predicate isSanitizer(DataFlow::Node sanitizer) {
-    sanitizer = any(NoSQLSanitizer noSQLSanitizer).getSanitizerNode()
+    sanitizer = any(NoSQLSanitizer noSQLSanitizer).getAnInput()
   }
 }
 
@@ -54,7 +54,7 @@ class FromDataDictToSink extends TaintTracking2::Configuration {
   override predicate isSink(DataFlow::Node sink) { sink = any(NoSQLQuery noSQLQuery).getQuery() }
 
   override predicate isSanitizer(DataFlow::Node sanitizer) {
-    sanitizer = any(NoSQLSanitizer noSQLSanitizer).getSanitizerNode()
+    sanitizer = any(NoSQLSanitizer noSQLSanitizer).getAnInput()
   }
 }
 
