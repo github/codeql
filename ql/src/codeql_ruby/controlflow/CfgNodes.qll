@@ -182,21 +182,33 @@ module ExprNodes {
     AssignExprCfgNode() { this.getExpr() instanceof AssignExpr }
   }
 
-  private class BinaryOperationExprChildMapping extends ExprChildMapping, BinaryOperation {
+  private class OperationExprChildMapping extends ExprChildMapping, Operation {
     override predicate relevantChild(Expr e) { e = this.getAnOperand() }
   }
 
-  /** A control-flow node that wraps a `BinaryOperation` AST expression. */
-  class BinaryOperationCfgNode extends ExprCfgNode {
-    override BinaryOperationExprChildMapping e;
+  /** A control-flow node that wraps an `Operation` AST expression. */
+  class OperationCfgNode extends ExprCfgNode {
+    override OperationExprChildMapping e;
 
-    final override BinaryOperation getExpr() { result = ExprCfgNode.super.getExpr() }
+    override Operation getExpr() { result = super.getExpr() }
+
+    /** Gets an operand of this operation. */
+    final ExprCfgNode getAnOperand() { e.hasCfgChild(e.getAnOperand(), this, result) }
+  }
+
+  /** A control-flow node that wraps a `BinaryOperation` AST expression. */
+  class BinaryOperationCfgNode extends OperationCfgNode {
+    private BinaryOperation bo;
+
+    BinaryOperationCfgNode() { e = bo }
+
+    final override BinaryOperation getExpr() { result = super.getExpr() }
 
     /** Gets the left operand of this binary operation. */
-    final ExprCfgNode getLeftOperand() { e.hasCfgChild(e.getLeftOperand(), this, result) }
+    final ExprCfgNode getLeftOperand() { e.hasCfgChild(bo.getLeftOperand(), this, result) }
 
     /** Gets the right operand of this binary operation. */
-    final ExprCfgNode getRightOperand() { e.hasCfgChild(e.getRightOperand(), this, result) }
+    final ExprCfgNode getRightOperand() { e.hasCfgChild(bo.getRightOperand(), this, result) }
   }
 
   private class BlockArgumentChildMapping extends ExprChildMapping, BlockArgument {

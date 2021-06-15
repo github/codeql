@@ -136,3 +136,12 @@ class Content extends TContent {
   /** Gets the location of this content. */
   Location getLocation() { none() }
 }
+
+/**
+ * A guard that validates some expression.
+ */
+class BarrierGuard extends CfgNodes::ExprCfgNode {
+  BarrierGuard() { none() }
+
+  Node getAGuardedNode() { none() }
+}
