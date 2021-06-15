@@ -32,7 +32,9 @@ module syntheticPreUpdateNode {
   class NeedsSyntheticPreUpdateNode extends PostUpdateNode {
     NeedsSyntheticPreUpdateNode() { this = objectCreationNode() }
 
-    override Node getPreUpdateNode() { result.(SyntheticPreUpdateNode).getPostUpdateNode() = this }
+    override Node getPreUpdateNodeImpl() {
+      result.(SyntheticPreUpdateNode).getPostUpdateNode() = this
+    }
 
     /**
      * A label for this kind of node. This will figure in the textual representation of the synthesized pre-update node.
@@ -60,7 +62,7 @@ module syntheticPostUpdateNode {
 
     SyntheticPostUpdateNode() { this = TSyntheticPostUpdateNode(pre) }
 
-    override Node getPreUpdateNode() { result = pre }
+    override Node getPreUpdateNodeImpl() { result = pre }
 
     override string toString() { result = "[post " + pre.label() + "] " + pre.toString() }
 
@@ -263,7 +265,7 @@ private predicate localEssaStep(EssaNode nodeFrom, EssaNode nodeTo) {
 private Node update(Node node) {
   result = node
   or
-  result.(PostUpdateNode).getPreUpdateNode() = node
+  result.getPreUpdateNode() = node
 }
 
 // TODO: Make modules for these headings

@@ -120,6 +120,14 @@ class Node extends TNode {
   Expr asExpr() { none() }
 
   /**
+   * Gets the pre-update node corresponding to this node, if any.
+   * Only holds if this node is itself a `PostUpdateNode`.
+   *
+   * See the class `PostUpdateNode` for more information
+   */
+  Node getPreUpdateNode() { result = this.(PostUpdateNode).getPreUpdateNodeImpl() }
+
+  /**
    * Gets a local source node from which data may flow to this node in zero or more local data-flow steps.
    */
   LocalSourceNode getALocalSource() { result.flowsTo(this) }
@@ -250,7 +258,7 @@ class ArgumentNode extends Node {
  */
 abstract class PostUpdateNode extends Node {
   /** Gets the node before the state update. */
-  abstract Node getPreUpdateNode();
+  abstract Node getPreUpdateNodeImpl();
 }
 
 /**
