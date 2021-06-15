@@ -20,6 +20,8 @@ private module Octokit {
   private API::Node octokit() {
     result =
       API::moduleImport(["@octokit/core", "@octokit/rest"]).getMember("Octokit").getInstance()
+    or
+    result = API::moduleImport("@actions/github").getMember("getOctokit").getReturn()
   }
 
   /**

@@ -111,3 +111,11 @@ app.get('/thing/:id', async function(req, res) {
     })
   })
 });
+
+const github = require('@actions/github');
+app.get('/event/:id/', async function(req, res) {
+    const kit = github.getOctokit("foo")
+
+    const id = req.params.id;
+    const result = await kit.graphql(`foo ${id}`); // NOT OK
+});
