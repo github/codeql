@@ -812,4 +812,18 @@ module UnsafeDeserialization {
       )
     }
   }
+
+  /** YamlDotNet */
+  private class YamlDotNetDeserializerDeserializeMethodSink extends ConstructorOrStaticMethodSink {
+    YamlDotNetDeserializerDeserializeMethodSink() {
+      exists(MethodCall mc, Method m |
+        m = mc.getTarget() and
+        (
+          not mc.getArgument(0).hasValue() and
+          m instanceof YamlDotNetDeserializerClasseserializeMethod
+        ) and
+        this.asExpr() = mc.getArgument(0)
+      )
+    }
+  }
 }

@@ -65,6 +65,8 @@ class WeakTypeDeserializer extends Class {
     this instanceof ServiceStackTextXmlSerializerClass
     or
     this instanceof SharpSerializerClass
+    or
+    this instanceof YamlDotNetDeserializerClass
   }
 }
 
@@ -637,5 +639,21 @@ class SharpSerializerClassDeserializeMethod extends Method, UnsafeDeserializer {
   SharpSerializerClassDeserializeMethod() {
     this.getDeclaringType().getBaseClass*() instanceof SharpSerializerClass and
     this.hasName("Deserialize")
+  }
+}
+
+/** YamlDotNet.Serialization.Deserializer */
+private class YamlDotNetDeserializerClass extends Class {
+  YamlDotNetDeserializerClass() { this.hasQualifiedName("YamlDotNet.Serialization.Deserializer") }
+}
+
+/** `YamlDotNet.Serialization.Deserializer.Deserialize` method */
+class YamlDotNetDeserializerClasseserializeMethod extends Method, UnsafeDeserializer {
+  YamlDotNetDeserializerClasseserializeMethod() {
+    exists(YamlDotNetDeserializerClass c |
+      this.getDeclaringType().getBaseClass*() = c and
+      this.hasName("Deserialize") and
+      c.getALocation().(Assembly).getVersion().getMajor() < 5
+    )
   }
 }
