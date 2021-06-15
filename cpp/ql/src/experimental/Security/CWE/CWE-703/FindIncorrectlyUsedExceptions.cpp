@@ -1,0 +1,16 @@
+...
+testClass1 :: ~testClass1()
+{
+   throw "my exception!";  // BAD
+}
+...
+testClass3 :: ~testClass3()
+{
+  try { throw "my exception!"; } // GOOD
+  catch (...) { clean(); }
+}
+...
+std::runtime_error("msg error"); // BAD
+...
+throw std::runtime_error("msg error"); // GOOD
+...
