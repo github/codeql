@@ -105,7 +105,7 @@ private predicate isSimpleEvaluationContextBuilderCall(Expr expr) {
  */
 private class ExpressionEvaluationMethod extends Method {
   ExpressionEvaluationMethod() {
-    this.getDeclaringType() instanceof Expression and
+    this.getDeclaringType().getASupertype*() instanceof Expression and
     this.hasName(["getValue", "getValueTypeDescriptor", "getValueType", "setValue"])
   }
 }
@@ -116,8 +116,8 @@ private class ExpressionEvaluationMethod extends Method {
  */
 private predicate expressionParsingStep(DataFlow::Node node1, DataFlow::Node node2) {
   exists(MethodAccess ma, Method m | ma.getMethod() = m |
-    m.getDeclaringType().getAnAncestor*() instanceof ExpressionParser and
-    m.hasName("parseExpression") and
+    m.getDeclaringType().getASupertype*() instanceof ExpressionParser and
+    m.hasName(["parseExpression", "parseRaw"]) and
     ma.getAnArgument() = node1.asExpr() and
     node2.asExpr() = ma
   )

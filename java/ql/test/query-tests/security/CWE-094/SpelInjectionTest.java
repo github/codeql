@@ -3,6 +3,7 @@ import java.io.InputStream;
 import java.net.Socket;
 import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
+import org.springframework.expression.spel.standard.SpelExpression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.SimpleEvaluationContext;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
@@ -20,6 +21,17 @@ public class SpelInjectionTest {
 
     ExpressionParser parser = new SpelExpressionParser();
     Expression expression = parser.parseExpression(input);
+    expression.getValue(); // $hasSpelInjection
+  }
+
+  public void testGetValueWithParseRaw(Socket socket) throws IOException {
+    InputStream in = socket.getInputStream();
+
+    byte[] bytes = new byte[1024];
+    int n = in.read(bytes);
+    String input = new String(bytes, 0, n);
+    SpelExpressionParser parser = new SpelExpressionParser();
+    SpelExpression expression = parser.parseRaw(input);
     expression.getValue(); // $hasSpelInjection
   }
 
