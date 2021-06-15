@@ -3,6 +3,7 @@
  * @description Non-HTTPS connections can be intercepted by third parties.
  * @kind problem
  * @problem.severity error
+ * @security-severity 5.9
  * @precision very-high
  * @id java/maven/non-https-url
  * @tags security

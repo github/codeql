@@ -4,6 +4,7 @@
  *              an attacker to compromise security.
  * @kind problem
  * @problem.severity error
+ * @security-severity 5.2
  * @precision medium
  * @id cpp/weak-cryptographic-algorithm
  * @tags security
@@ -28,7 +29,7 @@ Function getAnInsecureEncryptionFunction() {
 /**
  * A function with additional evidence it is related to encryption.
  */
-Function getAdditionalEvidenceFunction() {
+Function getAnAdditionalEvidenceFunction() {
   (
     isEncryptionAdditionalEvidence(result.getName()) or
     isEncryptionAdditionalEvidence(result.getAParameter().getName())
@@ -47,7 +48,7 @@ Macro getAnInsecureEncryptionMacro() {
 /**
  * A macro with additional evidence it is related to encryption.
  */
-Macro getAdditionalEvidenceMacro() {
+Macro getAnAdditionalEvidenceMacro() {
   isEncryptionAdditionalEvidence(result.getName()) and
   exists(result.getAnInvocation())
 }
@@ -63,61 +64,78 @@ EnumConstant getAnInsecureEncryptionEnumConst() { isInsecureEncryption(result.ge
 EnumConstant getAdditionalEvidenceEnumConst() { isEncryptionAdditionalEvidence(result.getName()) }
 
 /**
- * A function call we have a high confidence is related to use of an insecure
- * encryption algorithm.
+ * A function call we have a high confidence is related to use of an insecure encryption algorithm, along
+ * with an associated `Element` which might be the best point to blame, and a description of that element.
  */
-class InsecureFunctionCall extends FunctionCall {
-  Element blame;
-  string explain;
+predicate getInsecureEncryptionEvidence(FunctionCall fc, Element blame, string description) {
+  // find use of an insecure algorithm name
+  (
+    fc.getTarget() = getAnInsecureEncryptionFunction() and
+    blame = fc and
+    description = "call to " + fc.getTarget().getName()
+    or
+    exists(MacroInvocation mi |
+      (
+        mi.getAnExpandedElement() = fc or
+        mi.getAnExpandedElement() = fc.getAnArgument()
+      ) and
+      mi.getMacro() = getAnInsecureEncryptionMacro() and
+      blame = mi and
+      description = "invocation of macro " + mi.getMacro().getName()
+    )
+    or
+    exists(EnumConstantAccess ec |
+      ec = fc.getAnArgument() and
+      ec.getTarget() = getAnInsecureEncryptionEnumConst() and
+      blame = ec and
+      description = "access of enum constant " + ec.getTarget().getName()
+    )
+  ) and
+  // find additional evidence that this function is related to encryption.
+  (
+    fc.getTarget() = getAnAdditionalEvidenceFunction()
+    or
+    exists(MacroInvocation mi |
+      (
+        mi.getAnExpandedElement() = fc or
+        mi.getAnExpandedElement() = fc.getAnArgument()
+      ) and
+      mi.getMacro() = getAnAdditionalEvidenceMacro()
+    )
+    or
+    exists(EnumConstantAccess ec |
+      ec = fc.getAnArgument() and
+      ec.getTarget() = getAdditionalEvidenceEnumConst()
+    )
+  )
+}
 
-  InsecureFunctionCall() {
-    // find use of an insecure algorithm name
-    (
-      getTarget() = getAnInsecureEncryptionFunction() and
-      blame = this and
-      explain = "function call"
-      or
-      exists(MacroInvocation mi |
-        (
-          mi.getAnExpandedElement() = this or
-          mi.getAnExpandedElement() = this.getAnArgument()
-        ) and
-        mi.getMacro() = getAnInsecureEncryptionMacro() and
-        blame = mi and
-        explain = "macro invocation"
-      )
-      or
-      exists(EnumConstantAccess ec |
-        ec = this.getAnArgument() and
-        ec.getTarget() = getAnInsecureEncryptionEnumConst() and
-        blame = ec and
-        explain = "enum constant access"
-      )
-    ) and
-    // find additional evidence that this function is related to encryption.
-    (
-      getTarget() = getAdditionalEvidenceFunction()
-      or
-      exists(MacroInvocation mi |
-        (
-          mi.getAnExpandedElement() = this or
-          mi.getAnExpandedElement() = this.getAnArgument()
-        ) and
-        mi.getMacro() = getAdditionalEvidenceMacro()
-      )
-      or
-      exists(EnumConstantAccess ec |
-        ec = this.getAnArgument() and
-        ec.getTarget() = getAdditionalEvidenceEnumConst()
-      )
+/**
+ * An element that is the `blame` of an `InsecureFunctionCall`.
+ */
+class BlamedElement extends Element {
+  string description;
+
+  BlamedElement() { getInsecureEncryptionEvidence(_, this, description) }
+
+  /**
+   * Holds if this is the `num`-th `BlamedElement` in `f`.
+   */
+  predicate hasFileRank(File f, int num) {
+    exists(int loc |
+      getLocation().charLoc(f, loc, _) and
+      loc =
+        rank[num](BlamedElement other, int loc2 | other.getLocation().charLoc(f, loc2, _) | loc2)
     )
   }
 
-  Element getBlame() { result = blame }
-
-  string getDescription() { result = explain }
+  string getDescription() { result = description }
 }
 
-from InsecureFunctionCall c
-select c.getBlame(),
-  "This " + c.getDescription() + " specifies a broken or weak cryptographic algorithm."
+from File f, BlamedElement firstResult, BlamedElement thisResult
+where
+  firstResult.hasFileRank(f, 1) and
+  thisResult.hasFileRank(f, _)
+select firstResult,
+  "This file makes use of a broken or weak cryptographic algorithm (specified by $@).", thisResult,
+  thisResult.getDescription()

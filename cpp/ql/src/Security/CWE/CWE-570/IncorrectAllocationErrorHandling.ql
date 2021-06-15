@@ -153,12 +153,39 @@ predicate exprMayThrow(Expr e) {
   )
 }
 
+/** The `std::nothrow_t` class and its `bsl` variant. */
+class NoThrowType extends Struct {
+  NoThrowType() { this.hasGlobalOrStdOrBslName("nothrow_t") }
+}
+
 /** An allocator that might throw an exception. */
 class ThrowingAllocator extends Function {
   ThrowingAllocator() {
     exists(NewOrNewArrayExpr newExpr |
       newExpr.getAllocator() = this and
-      functionMayThrow(this)
+      // Exclude custom overloads of `operator new`.
+      // What we really want here is to only include the functions that satisfy `functionMayThrow`, but
+      // there seems to be examples where `throw()` isn't extracted (which causes false positives).
+      //
+      // As noted in the QLDoc for `Function.getAllocatorCall`:
+      //
+      // "As a rule of thumb, there will be an allocator call precisely when the type
+      // being allocated has a custom `operator new`, or when an argument list appears
+      // after the `new` keyword and before the name of the type being allocated.
+      //
+      // In particular note that uses of placement-new and nothrow-new will have an
+      // allocator call."
+      //
+      // So we say an allocator might throw if:
+      // 1. It doesn't have a body
+      // 2. there isn't a parameter with type `nothrow_t`
+      // 3. the allocator isn't marked with `throw()` or `noexcept`.
+      not exists(this.getBlock()) and
+      not exists(Parameter p | p = this.getAParameter() |
+        p.getUnspecifiedType() instanceof NoThrowType
+      ) and
+      not this.isNoExcept() and
+      not this.isNoThrow()
     )
   }
 }

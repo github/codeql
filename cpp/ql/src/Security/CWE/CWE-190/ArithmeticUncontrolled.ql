@@ -4,6 +4,7 @@
  *              validated can cause overflows.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 5.9
  * @precision medium
  * @id cpp/uncontrolled-arithmetic
  * @tags security
@@ -19,7 +20,11 @@ import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 import TaintedWithPath
 
 predicate isUnboundedRandCall(FunctionCall fc) {
-  fc.getTarget().getName() = "rand" and not bounded(fc)
+  exists(Function func | func = fc.getTarget() |
+    func.hasGlobalOrStdOrBslName("rand") and
+    not bounded(fc) and
+    func.getNumberOfParameters() = 0
+  )
 }
 
 /**
@@ -84,6 +89,10 @@ predicate bounded(Expr e) {
   boundedDiv(e, any(DivExpr div).getLeftOperand())
   or
   boundedDiv(e, any(AssignDivExpr div).getLValue())
+  or
+  boundedDiv(e, any(RShiftExpr shift).getLeftOperand())
+  or
+  boundedDiv(e, any(AssignRShiftExpr div).getLValue())
 }
 
 predicate isUnboundedRandCallOrParent(Expr e) {

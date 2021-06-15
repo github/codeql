@@ -250,6 +250,10 @@
     "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/internal/AliasAnalysis.qll",
     "csharp/ql/src/experimental/ir/implementation/unaliased_ssa/internal/AliasAnalysis.qll"
   ],
+  "SSA PrintAliasAnalysis": [
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/PrintAliasAnalysis.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/internal/PrintAliasAnalysis.qll"
+  ],
   "C++ SSA AliasAnalysisImports": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/AliasAnalysisImports.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/internal/AliasAnalysisImports.qll"

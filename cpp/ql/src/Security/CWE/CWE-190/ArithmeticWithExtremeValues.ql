@@ -6,6 +6,7 @@
  * @kind problem
  * @id cpp/arithmetic-with-extreme-values
  * @problem.severity warning
+ * @security-severity 5.9
  * @precision low
  * @tags security
  *       reliability

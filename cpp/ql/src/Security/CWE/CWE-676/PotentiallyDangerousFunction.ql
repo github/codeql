@@ -3,6 +3,7 @@
  * @description Use of a standard library function that is not thread-safe.
  * @kind problem
  * @problem.severity warning
+ * @security-severity 10.0
  * @precision high
  * @id cpp/potentially-dangerous-function
  * @tags reliability

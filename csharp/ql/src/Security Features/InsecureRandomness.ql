@@ -5,6 +5,7 @@
  *              be generated.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 5.9
  * @precision high
  * @id cs/insecure-randomness
  * @tags security

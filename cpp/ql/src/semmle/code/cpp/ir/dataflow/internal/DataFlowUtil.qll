@@ -665,7 +665,7 @@ private predicate simpleOperandLocalFlowStep(Instruction iFrom, Operand opTo) {
   exists(LoadInstruction load |
     load.getSourceValueOperand() = opTo and
     opTo.getAnyDef() = iFrom and
-    isSingleFieldClass(iFrom.getResultType(), opTo)
+    isSingleFieldClass(pragma[only_bind_out](pragma[only_bind_out](iFrom).getResultType()), opTo)
   )
 }
 

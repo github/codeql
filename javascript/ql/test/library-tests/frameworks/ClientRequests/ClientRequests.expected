@@ -88,6 +88,7 @@ test_ClientRequest
 | tst.js:274:1:283:2 | httpPro ... true\\n}) |
 | tst.js:286:20:286:55 | new Web ... :8080') |
 | tst.js:296:5:299:6 | axios({ ... \\n    }) |
+| tst.js:312:12:312:36 | fetchPo ... o/bar') |
 test_getADataNode
 | tst.js:53:5:53:23 | axios({data: data}) | tst.js:53:18:53:21 | data |
 | tst.js:57:5:57:39 | axios.p ... data2}) | tst.js:57:19:57:23 | data1 |
@@ -230,6 +231,7 @@ test_getUrl
 | tst.js:286:20:286:55 | new Web ... :8080') | tst.js:286:34:286:54 | 'ws://l ... t:8080' |
 | tst.js:296:5:299:6 | axios({ ... \\n    }) | tst.js:296:11:299:5 | {\\n      ... ,\\n    } |
 | tst.js:296:5:299:6 | axios({ ... \\n    }) | tst.js:298:14:298:44 | "http:/ ... -axios" |
+| tst.js:312:12:312:36 | fetchPo ... o/bar') | tst.js:312:26:312:35 | '/foo/bar' |
 test_getAResponseDataNode
 | tst.js:19:5:19:23 | requestPromise(url) | tst.js:19:5:19:23 | requestPromise(url) | text | true |
 | tst.js:21:5:21:23 | superagent.get(url) | tst.js:21:5:21:23 | superagent.get(url) | stream | true |
@@ -301,3 +303,4 @@ test_getAResponseDataNode
 | tst.js:296:5:299:6 | axios({ ... \\n    }) | tst.js:302:28:302:39 | err.response | json | false |
 | tst.js:296:5:299:6 | axios({ ... \\n    }) | tst.js:303:26:303:37 | err.response | json | false |
 | tst.js:296:5:299:6 | axios({ ... \\n    }) | tst.js:304:27:304:38 | err.response | json | false |
+| tst.js:312:12:312:36 | fetchPo ... o/bar') | tst.js:312:12:312:36 | fetchPo ... o/bar') | fetch.response | true |
