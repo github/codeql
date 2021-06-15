@@ -166,7 +166,8 @@ Python built-in support
    multidict, Utility library
    yarl, Utility library
    mysql-connector-python, Database
-   MySQLdb, Database
+   mysql-connector, Database
+   MySQL-python, Database
    psycopg2, Database
    sqlite3, Database
    cryptography, Cryptography library
