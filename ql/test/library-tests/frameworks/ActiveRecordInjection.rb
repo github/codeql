@@ -9,7 +9,7 @@ end
 class Admin < User
 end
 
-class FooController < ApplicationController
+class FooController < ActionController::Base
 
   MAX_USER_ID = 100_000
 
@@ -31,4 +31,21 @@ class FooController < ApplicationController
 
     UserGroup.joins(:users).where("user.id = #{params[:id]}")
   end
+end
+
+
+class BarController < ApplicationController
+
+  def some_other_request_handler
+    ps = params
+    # TODO: we don't pick up on this indirect params field reference
+    uid = ps[:id]
+
+    # DELETE FROM "users" WHERE (id = #{uid})
+    User.delete_all("id = " + uid)
+  end
+
+end
+
+class BazController < BarController
 end

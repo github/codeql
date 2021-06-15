@@ -53,6 +53,14 @@ class ActiveRecordModelClassMethodCall extends MethodCall {
   }
 }
 
+private predicate methodCanTakeSqlFragmentAsFirstArg(string methodName) {
+  methodName =
+    [
+      "delete_all", "destroy_all", "exists?", "find_by", "find_by_sql", "from", "group", "having",
+      "joins", "lock", "not", "order", "pluck", "where"
+    ]
+}
+
 class PotentiallyUnsafeSqlExecutingMethodCall extends ActiveRecordModelClassMethodCall {
   // The name of the method invoked
   private string methodName;
@@ -61,10 +69,6 @@ class PotentiallyUnsafeSqlExecutingMethodCall extends ActiveRecordModelClassMeth
   // The SQL fragment argument itself
   private Expr sqlFragmentExpr;
 
-  // TODO: This is slightly too restricted, we only look for StringlikeLiterals
-  // as arguments, but we could instead have a variable read, a string
-  // concatenation, certain arrays, etc. and still have a potentially
-  // vulnerable call
   // TODO: `find` with `lock:` option also takes an SQL fragment
   PotentiallyUnsafeSqlExecutingMethodCall() {
     methodName = this.getMethodName() and
@@ -73,37 +77,20 @@ class PotentiallyUnsafeSqlExecutingMethodCall extends ActiveRecordModelClassMeth
       methodName = "calculate" and sqlFragmentArgumentIndex = 1
       or
       sqlFragmentArgumentIndex = 0 and
-      (
-        methodName = "delete_all"
-        or
-        methodName = "destroy_all"
-        or
-        methodName = "exists?"
-        or
-        methodName = "find_by"
-        or
-        methodName = "find_by_sql"
-        or
-        methodName = "from"
-        or
-        methodName = "group"
-        or
-        methodName = "having"
-        or
-        methodName = "joins"
-        or
-        methodName = "lock"
-        or
-        methodName = "not"
-        or
-        methodName = "order"
-        or
-        methodName = "pluck"
-        or
-        methodName = "where"
-      )
+      methodCanTakeSqlFragmentAsFirstArg(methodName)
     ) and
-    sqlFragmentExpr instanceof StringlikeLiteral
+    (
+      // select only literals containing an interpolated value...
+      exists(StringInterpolationComponent interpolated |
+        interpolated = sqlFragmentExpr.(StringlikeLiteral).getComponent(_)
+      )
+      or
+      // ...or string concatenations...
+      sqlFragmentExpr instanceof AddExpr
+      or
+      // ...or variable reads
+      sqlFragmentExpr instanceof VariableReadAccess
+    )
   }
 
   Expr getSqlFragmentSinkArgument() { result = sqlFragmentExpr }
