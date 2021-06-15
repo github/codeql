@@ -84,7 +84,7 @@ class LocalSourceNode extends Node {
    * Includes both calls that have the syntactic shape of a method call (as in `obj.m(...)`), and
    * calls where the callee undergoes some additional local data flow (as in `tmp = obj.m; m(...)`).
    */
-  CallCfgNode getAMethodCall(string methodName) {
+  MethodCallNode getAMethodCall(string methodName) {
     result = this.getAnAttributeRead(methodName).getACall()
   }
 
