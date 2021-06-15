@@ -35,9 +35,7 @@ private module UjsonModel {
 
     override DataFlow::Node getAnInput() { result = this.getArg(0) }
 
-    override DataFlow::Node getOutput() {
-      result.(DataFlow::PostUpdateNode).getPreUpdateNode() = this.getArg(1)
-    }
+    override DataFlow::Node getOutput() { result.getPreUpdateNode() = this.getArg(1) }
 
     override string getFormat() { result = "JSON" }
   }

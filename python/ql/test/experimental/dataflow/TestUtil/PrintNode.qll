@@ -43,13 +43,13 @@ string prettyNodeForInlineTest(DataFlow::Node node) {
   exists(node.asExpr()) and
   result = prettyExpr(node.asExpr())
   or
-  exists(Expr e | e = node.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr() |
+  exists(Expr e | e = node.getPreUpdateNode().asExpr() |
     // since PostUpdateNode both has space in the `[post <thing>]` annotation, and does
     // not pretty print the pre-update node, we do custom handling of this.
     result = "[post]" + prettyExpr(e)
   )
   or
   not exists(node.asExpr()) and
-  not exists(Expr e | e = node.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr()) and
+  not exists(Expr e | e = node.getPreUpdateNode().asExpr()) and
   result = node.toString()
 }

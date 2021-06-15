@@ -178,8 +178,7 @@ predicate containerStep(DataFlow::CfgNode nodeFrom, DataFlow::Node nodeTo) {
   // list.append, set.add
   exists(CallNode call, string name |
     name in ["append", "add"] and
-    call.getFunction().(AttrNode).getObject(name) =
-      nodeTo.(DataFlow::PostUpdateNode).getPreUpdateNode().asCfgNode() and
+    call.getFunction().(AttrNode).getObject(name) = nodeTo.getPreUpdateNode().asCfgNode() and
     call.getArg(0) = nodeFrom.getNode()
   )
 }

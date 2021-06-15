@@ -558,9 +558,7 @@ private module Stdlib {
     override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("obj")] }
 
     override DataFlow::Node getOutput() {
-      result.(DataFlow::PostUpdateNode).getPreUpdateNode() in [
-          this.getArg(1), this.getArgByName("fp")
-        ]
+      result.getPreUpdateNode() in [this.getArg(1), this.getArgByName("fp")]
     }
 
     override string getFormat() { result = "JSON" }
