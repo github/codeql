@@ -111,13 +111,24 @@ module HardcodedCredentials {
   }
 
   /**
-   * Gets a regular expression for matching names of locations (variables, parameters, keys) that
-   * indicate the value being held is a credential.
+   * An assignable whose name indicates that the value being held is a credential.
    */
-  private string getACredentialRegex() {
-    result = "(?i).*pass(wd|word|code|phrase)(?!.*question).*" or
-    result = "(?i).*(puid|username|userid).*" or
-    result = "(?i).*(cert)(?!.*(format|name)).*"
+  private class CredentialVar extends Assignable {
+    pragma[noinline]
+    CredentialVar() {
+      exists(string name | name = this.getName() |
+        name.regexpMatch("(?i).*pass(wd|word|code|phrase)(?!.*question).*")
+        or
+        name.regexpMatch("(?i).*(puid|username|userid).*")
+        or
+        name.regexpMatch("(?i).*(cert)(?!.*(format|name)).*")
+      )
+    }
+  }
+
+  private class CredentialVariableAccess extends VariableAccess {
+    pragma[noinline]
+    CredentialVariableAccess() { this.getTarget() instanceof CredentialVar }
   }
 
   /**
@@ -128,11 +139,11 @@ module HardcodedCredentials {
   ) {
     // An argument to a library call that looks like a credential
     // "...flows to the [Username] parameter in [call to method CreateUser]"
-    exists(Call call |
+    exists(Call call, CredentialVar param |
       supplementaryElement = call and
       description = "the $@ parameter in $@" and
-      sink = call.getArgumentForName(sinkName) and
-      sinkName.regexpMatch(getACredentialRegex()) and
+      sink = call.getArgumentForParameter(param) and
+      sinkName = param.getName() and
       call.getTarget().fromLibrary()
     )
     or
@@ -144,22 +155,20 @@ module HardcodedCredentials {
       description = "the $@ in $@" and
       sink = call.getArgument(0) and
       sinkName = "setter call argument" and
-      p.getName().regexpMatch(getACredentialRegex()) and
+      p instanceof CredentialVar and
       p.fromLibrary()
     )
     or
     // Sink compared to password variable
     // "...flows to [] which is compared against [access of UserName]"
-    exists(ComparisonTest ct, VariableAccess credentialAccess, string varName |
+    exists(ComparisonTest ct, CredentialVariableAccess credentialAccess |
       sinkName = sink.toString() and
       supplementaryElement = credentialAccess and
       description = "$@ which is compared against $@" and
       ct.getAnArgument() = credentialAccess and
       ct.getAnArgument() = sink and
       ct.getComparisonKind().isEquality() and
-      not sink = credentialAccess and
-      varName = credentialAccess.getTarget().getName() and
-      varName.regexpMatch(getACredentialRegex())
+      not sink = credentialAccess
     )
   }
 

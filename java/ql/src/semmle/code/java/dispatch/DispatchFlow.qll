@@ -11,6 +11,7 @@ private import VirtualDispatch
 private import semmle.code.java.dataflow.internal.BaseSSA
 private import semmle.code.java.dataflow.internal.DataFlowUtil
 private import semmle.code.java.dataflow.internal.DataFlowPrivate
+private import semmle.code.java.dataflow.InstanceAccess
 private import semmle.code.java.Collections
 private import semmle.code.java.Maps
 

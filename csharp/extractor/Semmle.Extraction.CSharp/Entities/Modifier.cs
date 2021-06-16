@@ -10,7 +10,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override Location? ReportingLocation => null;
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             trapFile.Write(Symbol);
             trapFile.Write(";modifier");

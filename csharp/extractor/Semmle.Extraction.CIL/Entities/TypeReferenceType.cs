@@ -88,7 +88,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override IEnumerable<Type> ThisGenericArguments => typeParams.Value;
 
-        public override void WriteId(TextWriter trapFile, bool inContext)
+        public override void WriteId(EscapingTextWriter trapFile, bool inContext)
         {
             idWriter.WriteId(trapFile, inContext);
         }

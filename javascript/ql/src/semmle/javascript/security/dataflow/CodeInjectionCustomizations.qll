@@ -52,6 +52,37 @@ module CodeInjection {
   }
 
   /**
+   * Gets a reference to a `<script />` tag created using `document.createElement`.
+   */
+  private DataFlow::SourceNode scriptTag(DataFlow::TypeTracker t) {
+    t.start() and
+    exists(DataFlow::CallNode call | call = result |
+      call = DOM::documentRef().getAMethodCall("createElement") and
+      call.getArgument(0).mayHaveStringValue("script")
+    )
+    or
+    exists(DataFlow::TypeTracker t2 | result = scriptTag(t2).track(t2, t))
+  }
+
+  /**
+   * Gets a reference to a `<script />` tag created using `document.createElement`,
+   * or an element of type `HTMLScriptElement`.
+   */
+  private DataFlow::SourceNode scriptTag() {
+    result = scriptTag(DataFlow::TypeTracker::end())
+    or
+    result.hasUnderlyingType("HTMLScriptElement")
+  }
+
+  /**
+   * A write to the `textContent` property of a `<script />` tag,
+   * seen as a sink for code injection vulnerabilities.
+   */
+  class ScriptContentSink extends Sink {
+    ScriptContentSink() { this = scriptTag().getAPropertyWrite("textContent").getRhs() }
+  }
+
+  /**
    * An expression which may be evaluated as JavaScript.
    */
   class EvalJavaScriptSink extends Sink, DataFlow::ValueNode {

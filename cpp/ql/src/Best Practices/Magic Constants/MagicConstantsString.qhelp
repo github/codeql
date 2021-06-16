@@ -38,7 +38,7 @@ constant.</p>
 </li>
 <li>
   Mats Henricson and Erik Nyquist, <i>Industrial Strength C++</i>, published by Prentice Hall PTR (1997). 
-  Chapter 5: Object Life Cycle, Rec 5.4 (<a href="http://mongers.org/industrial-c++/">PDF</a>).
+  Chapter 5: Object Life Cycle, Rec 5.4 (<a href="https://web.archive.org/web/20190919025638/https://mongers.org/industrial-c++/">PDF</a>).
 </li>
 <li>
   <a href="https://www.securecoding.cert.org/confluence/display/c/DCL06-C.+Use+meaningful+symbolic+constants+to+represent+literal+values">DCL06-C. Use meaningful symbolic constants to represent literal values</a>

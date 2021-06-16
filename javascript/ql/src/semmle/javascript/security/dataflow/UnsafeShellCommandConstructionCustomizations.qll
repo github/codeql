@@ -53,7 +53,12 @@ module UnsafeShellCommandConstruction {
   class ExternalInputSource extends Source, DataFlow::ParameterNode {
     ExternalInputSource() {
       this = Exports::getALibraryInputParameter() and
-      not this.getName() = ["cmd", "command"] // looks to be on purpose.
+      not (
+        // looks to be on purpose.
+        this.getName() = ["cmd", "command"]
+        or
+        this.getName().regexpMatch(".*(Cmd|Command)$") // ends with "Cmd" or "Command"
+      )
     }
   }
 
@@ -69,6 +74,12 @@ module UnsafeShellCommandConstruction {
     or
     exists(DataFlow::TypeBackTracker t2 |
       t2 = t.smallstep(result, isExecutedAsShellCommand(t2, sys))
+    )
+    or
+    exists(DataFlow::TypeBackTracker t2, StringOps::ConcatenationRoot prev |
+      t = t2.continue() and
+      isExecutedAsShellCommand(t2, sys) = prev and
+      result = prev.getALeaf()
     )
   }
 

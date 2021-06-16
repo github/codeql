@@ -9,7 +9,7 @@
 private import javascript
 private import internal.FlowSteps
 private import internal.StepSummary
-private import internal.Unit
+private import semmle.javascript.Unit
 private import semmle.javascript.internal.CachedStages
 
 private newtype TTypeTracker = MkTypeTracker(Boolean hasCall, OptionalPropertyName prop)

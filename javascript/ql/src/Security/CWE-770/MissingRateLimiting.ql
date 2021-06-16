@@ -5,6 +5,7 @@
  *              to denial-of-service attacks.
  * @kind problem
  * @problem.severity error
+ * @security-severity 3.6
  * @precision high
  * @id js/missing-rate-limiting
  * @tags security

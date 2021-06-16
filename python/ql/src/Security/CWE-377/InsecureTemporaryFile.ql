@@ -4,6 +4,7 @@
  * @kind problem
  * @id py/insecure-temporary-file
  * @problem.severity error
+ * @security-severity 5.9
  * @sub-severity high
  * @precision high
  * @tags external/cwe/cwe-377

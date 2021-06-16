@@ -72,7 +72,7 @@ private import javascript
 private import internal.FlowSteps
 private import internal.AccessPaths
 private import internal.CallGraphs
-private import internal.Unit
+private import semmle.javascript.Unit
 private import semmle.javascript.internal.CachedStages
 
 /**
@@ -2067,4 +2067,15 @@ class VarAccessBarrier extends DataFlow::Node {
       guard.getOutcome() = false
     )
   }
+}
+
+/**
+ *  Holds if there is a path without unmatched return steps from `source` to `sink`.
+ */
+predicate hasPathWithoutUnmatchedReturn(SourcePathNode source, SinkPathNode sink) {
+  exists(MidPathNode mid |
+    source.getASuccessor*() = mid and
+    sink = mid.getASuccessor() and
+    mid.getPathSummary().hasReturn() = false
+  )
 }

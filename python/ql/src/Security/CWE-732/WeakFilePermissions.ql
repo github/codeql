@@ -4,6 +4,7 @@
  * @kind problem
  * @id py/overly-permissive-file
  * @problem.severity warning
+ * @security-severity 5.9
  * @sub-severity high
  * @precision medium
  * @tags external/cwe/cwe-732

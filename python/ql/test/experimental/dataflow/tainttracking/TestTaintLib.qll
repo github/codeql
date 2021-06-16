@@ -46,6 +46,6 @@ query predicate test_taint(string arg_location, string test_res, string scope_na
     arg_location = arg.getLocation().toString() and
     test_res = test_res and
     scope_name = call.getScope().getName() and
-    repr = prettyExp(arg)
+    repr = prettyExpr(arg)
   )
 }

@@ -187,5 +187,11 @@ cached
 Declaration definitionOf(Use use, string kind) {
   result = use.getDefinition() and
   result.fromSource() and
-  kind = use.getUseType()
+  kind = use.getUseType() and
+  // Some entities have many locations. This can arise for files that
+  // are duplicated multiple times in the database at different
+  // locations. Rather than letting the result set explode, we just
+  // exclude results that are "too ambiguous" -- we could also arbitrarily
+  // pick one location later on.
+  strictcount(result.getLocation()) < 10
 }

@@ -725,9 +725,9 @@ abstract class TranslatedReadEffect extends TranslatedElement {
 
   override Instruction getChildSuccessor(TranslatedElement child) { none() }
 
-  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind edge) {
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     tag = OnlyInstructionTag() and
-    edge = EdgeKind::gotoEdge() and
+    kind = EdgeKind::gotoEdge() and
     result = getParent().getChildSuccessor(this)
   }
 

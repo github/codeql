@@ -3,6 +3,8 @@
     kind:
     - problem
     - path-problem
+    - alert
+    - path-alert
     precision:
     - high
     - very-high
@@ -11,8 +13,15 @@
     - warning
     tags contain:
     - security
+- include:
+    kind:
+    - diagnostic
+- include:
+    kind:
+    - metric
+    tags contain:
+    - summary
 - exclude:
     deprecated: //
 - exclude:
     query path: /^experimental\/.*/
-

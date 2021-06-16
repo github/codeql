@@ -5,6 +5,7 @@
  *              attack.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 6.4
  * @precision medium
  * @id cpp/tainted-permissions-check
  * @tags security

@@ -86,7 +86,12 @@ class Modifiable extends Declaration, @modifiable {
   predicate isConst() { this.hasModifier("const") }
 
   /** Holds if this declaration is `unsafe`. */
-  predicate isUnsafe() { this.hasModifier("unsafe") }
+  predicate isUnsafe() {
+    this.hasModifier("unsafe") or
+    this.(Parameterizable).getAParameter().getType() instanceof PointerType or
+    this.(Property).getType() instanceof PointerType or
+    this.(Callable).getReturnType() instanceof PointerType
+  }
 
   /** Holds if this declaration is `async`. */
   predicate isAsync() { this.hasModifier("async") }

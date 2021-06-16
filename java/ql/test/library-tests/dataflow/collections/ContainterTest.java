@@ -89,7 +89,7 @@ class ContainerTest {
 		sink(stack.peek());
 		sink(stack.pop());
 		sink(stack.push("value")); // not tainted
-		sink(new Stack().push(source("value")));
+		sink(new Stack().push(source("value"))); // $ hasValueFlow
 		mkSink(Stack.class).push(source("value"));
 
 		// java.util.Queue

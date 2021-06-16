@@ -103,7 +103,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             string kind;
             IEntity containingEntity;

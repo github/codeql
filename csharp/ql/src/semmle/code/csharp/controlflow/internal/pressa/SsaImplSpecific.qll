@@ -15,13 +15,37 @@ class ExitBasicBlock extends BasicBlock {
   ExitBasicBlock() { scopeLast(_, this.getLastElement(), _) }
 }
 
-pragma[noinline]
+/** Holds if `a` is assigned in non-constructor callable `c`. */
+pragma[nomagic]
+private predicate assignableDefinition(Assignable a, Callable c) {
+  exists(AssignableDefinition def | def.getTarget() = a |
+    c = def.getEnclosingCallable() and
+    not c instanceof Constructor
+  )
+}
+
+/** Holds if `a` is accessed in callable `c`. */
+pragma[nomagic]
+private predicate assignableAccess(Assignable a, Callable c) {
+  exists(AssignableAccess aa | aa.getTarget() = a | c = aa.getEnclosingCallable())
+}
+
+pragma[nomagic]
 private predicate assignableNoCapturing(Assignable a, Callable c) {
-  exists(AssignableAccess aa | aa.getTarget() = a | c = aa.getEnclosingCallable()) and
-  forall(AssignableDefinition def | def.getTarget() = a |
-    c = def.getEnclosingCallable()
+  assignableAccess(a, c) and
+  /*
+   * The code below is equivalent to
+   * ```ql
+   * not exists(Callable other | assignableDefinition(a, other) | other != c)
+   * ```
+   * but it avoids a Cartesian product in the compiler generated antijoin
+   * predicate.
+   */
+
+  (
+    not assignableDefinition(a, _)
     or
-    def.getEnclosingCallable() instanceof Constructor
+    c = unique(Callable c0 | assignableDefinition(a, c0) | c0)
   )
 }
 
@@ -41,7 +65,7 @@ class SourceVariable extends Assignable {
     (
       this instanceof LocalScopeVariable
       or
-      this instanceof Field
+      this = any(Field f | not f.isVolatile())
       or
       this = any(TrivialProperty tp | not tp.isOverridableOrImplementable())
     ) and

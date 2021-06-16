@@ -53,6 +53,11 @@ class SourceNode extends DataFlow::Node {
   predicate flowsToExpr(Expr sink) { flowsTo(DataFlow::valueNode(sink)) }
 
   /**
+   * Gets a node into which data may flow from this node in zero or more local steps.
+   */
+  DataFlow::Node getALocalUse() { flowsTo(result) }
+
+  /**
    * Gets a reference (read or write) of property `propName` on this node.
    */
   DataFlow::PropRef getAPropertyReference(string propName) {

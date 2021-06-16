@@ -1,0 +1,47 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>Spring Boot is a popular framework that facilitates the development of stand-alone applications
+and micro services. Spring Boot Actuator helps to expose production-ready support features against 
+Spring Boot applications.</p>
+
+    <p>Endpoints of Spring Boot Actuator allow to monitor and interact with a Spring Boot application. 
+Exposing unprotected actuator endpoints through configuration files can lead to information disclosure 
+or even remote code execution vulnerability.</p>
+
+    <p>Rather than programmatically permitting endpoint requests or enforcing access control, frequently
+developers simply leave management endpoints publicly accessible in the application configuration file 
+<code>application.properties</code> without enforcing access control through Spring Security.</p>
+  </overview>
+
+  <recommendation>
+    <p>Declare the Spring Boot Starter Security module in XML configuration or programmatically enforce 
+security checks on management endpoints using Spring Security. Otherwise accessing management endpoints 
+on a different HTTP port other than the port that the web application is listening on also helps to 
+improve the security.</p>
+  </recommendation>
+
+  <example>
+    <p>The following examples show both 'BAD' and 'GOOD' configurations. In the 'BAD' configuration, 
+no security module is declared and sensitive management endpoints are exposed. In the 'GOOD' configuration, 
+security is enforced and only endpoints requiring exposure are exposed.</p>
+    <sample src="pom_good.xml" />
+    <sample src="pom_bad.xml" />
+    <sample src="application.properties" />
+  </example>
+
+  <references>
+    <li>
+      Spring Boot documentation:
+      <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-features.html">Spring Boot Actuator: Production-ready Features</a>
+    </li>
+    <li>
+      VERACODE Blog:
+      <a href="https://www.veracode.com/blog/research/exploiting-spring-boot-actuators">Exploiting Spring Boot Actuators</a>
+    </li>
+    <li>
+      HackerOne Report:
+      <a href="https://hackerone.com/reports/862589">Spring Actuator endpoints publicly available, leading to account takeover</a>
+    </li>
+  </references>
+</qhelp>
