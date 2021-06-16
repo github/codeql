@@ -2,7 +2,7 @@ import java.net.HttpURLConnection;
 import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
 
-class Test {
+class UseSSLTest {
   public void m1(HttpURLConnection connection) throws java.io.IOException {
     InputStream input;
     if (connection instanceof HttpsURLConnection) {
