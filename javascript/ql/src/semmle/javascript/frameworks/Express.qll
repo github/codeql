@@ -19,6 +19,9 @@ module Express {
     or
     // `app = express.createServer()`
     result = DataFlow::moduleMember("express", "createServer").getAnInvocation()
+    or
+    // `app = express().disable(x)`, and other chaining methods
+    result = appCreation().getAMemberCall(["engine", "set", "param", "enable", "disable", "on"])
   }
 
   /**

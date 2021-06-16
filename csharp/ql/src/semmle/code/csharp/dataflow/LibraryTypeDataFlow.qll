@@ -1848,8 +1848,15 @@ class SystemTupleFlow extends LibraryTypeDataFlow, ValueOrRefType {
         c.(Constructor).getDeclaringType() = this and
         t = this
         or
-        c = this.getAMethod(any(string name | name.regexpMatch("Create(<,*>)?"))) and
-        t = c.getReturnType().getUnboundDeclaration()
+        exists(ValueOrRefType namedType |
+          namedType = this or namedType = this.(TupleType).getUnderlyingType()
+        |
+          c = namedType.getAMethod(any(string name | name.regexpMatch("Create(<,*>)?"))) and
+          (
+            t = c.getReturnType().getUnboundDeclaration() or
+            t = c.getReturnType().(TupleType).getUnderlyingType().getUnboundDeclaration()
+          )
+        )
       )
       or
       c =

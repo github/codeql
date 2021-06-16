@@ -4,6 +4,7 @@
  *              proper validation, can lead to index out of bound exceptions.
  * @kind path-problem
  * @problem.severity recommendation
+ * @security-severity 5.9
  * @precision medium
  * @id java/improper-validation-of-array-index-code-specified
  * @tags security

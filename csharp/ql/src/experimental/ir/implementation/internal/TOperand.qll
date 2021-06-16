@@ -93,6 +93,16 @@ module RawOperands {
   }
 
   /**
+   * Returns the Phi operand with the specified parameters.
+   */
+  TPhiOperand reusedPhiOperand(
+    Raw::PhiInstruction useInstr, Raw::Instruction defInstr, Raw::IRBlock predecessorBlock,
+    Overlap overlap
+  ) {
+    none()
+  }
+
+  /**
    * Returns the Chi operand with the specified parameters.
    */
   TChiOperand chiOperand(Raw::Instruction useInstr, ChiOperandTag tag) { none() }
@@ -121,6 +131,16 @@ module UnaliasedSSAOperands {
     Unaliased::IRBlock predecessorBlock, Overlap overlap
   ) {
     result = Internal::TUnaliasedPhiOperand(useInstr, defInstr, predecessorBlock, overlap)
+  }
+
+  /**
+   * Returns the Phi operand with the specified parameters.
+   */
+  TPhiOperand reusedPhiOperand(
+    Unaliased::PhiInstruction useInstr, Unaliased::Instruction defInstr,
+    Unaliased::IRBlock predecessorBlock, Overlap overlap
+  ) {
+    none()
   }
 
   /**

@@ -3,6 +3,7 @@
  * @description Sanitizing an HTTP request parameter may be ineffective if the user controls its type.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 5.9
  * @precision high
  * @id js/type-confusion-through-parameter-tampering
  * @tags security

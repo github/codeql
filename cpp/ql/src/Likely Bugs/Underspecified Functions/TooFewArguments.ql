@@ -7,6 +7,7 @@
  *              undefined data.
  * @kind problem
  * @problem.severity error
+ * @security-severity 2.9
  * @precision very-high
  * @id cpp/too-few-arguments
  * @tags correctness
