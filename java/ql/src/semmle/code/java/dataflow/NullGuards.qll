@@ -5,6 +5,7 @@
 import java
 import SSA
 private import semmle.code.java.controlflow.internal.GuardsLogic
+private import semmle.code.java.frameworks.apache.Collections
 private import RangeUtils
 private import IntegerGuards
 
@@ -144,11 +145,7 @@ predicate nullCheckMethod(Method m, boolean branch, boolean isnull) {
   branch = false and
   isnull = false
   or
-  (
-    m.getDeclaringType().hasQualifiedName("org.apache.commons.collections4", "CollectionUtils") or
-    m.getDeclaringType().hasQualifiedName("org.apache.commons.collections", "CollectionUtils")
-  ) and
-  m.hasName("isNotEmpty") and
+  m instanceof MethodApacheCollectionsIsNotEmpty and
   branch = true and
   isnull = false
   or
