@@ -323,3 +323,69 @@ void test_assert(int algo, algorithmInfo *algoInfo)
 	// ...
 }
 
+// --- string comparisons ---
+
+int strcmp(const char *s1, const char *s2);
+void abort(void);
+
+#define ENCRYPTION_DES_NAME "DES"
+#define ENCRYPTION_AES_NAME "AES"
+
+void test_string_comparisons1(const char *algo_name)
+{
+	if (strcmp(algo_name, ENCRYPTION_DES_NAME) == 0) // GOOD [FALSE POSITIVE]
+	{
+		abort();
+	}
+	if (strcmp(algo_name, ENCRYPTION_AES_NAME) == 0) // GOOD
+	{
+		// ...
+	}
+}
+
+const char *getEncryptionNameDES()
+{
+	return "DES";
+}
+
+const char *getEncryptionNameAES()
+{
+	return "AES";
+}
+
+void test_string_comparisons2(const char *algo_name)
+{
+	if (strcmp(algo_name, getEncryptionNameDES()) == 0) // GOOD [FALSE POSITIVE]
+	{
+		abort();
+	}
+	if (strcmp(algo_name, getEncryptionNameAES()) == 0) // GOOD
+	{
+		// ...
+	}
+}
+
+const char *getEncryptionName(int algo)
+{
+	switch (algo)
+	{
+	case ALGO_DES:
+		return getEncryptionNameDES(); // GOOD [FALSE POSITIVE]
+	case ALGO_AES:
+		return getEncryptionNameAES(); // GOOD
+	default:
+		abort();
+	}
+}
+
+void test_string_comparisons3(const char *algo_name)
+{
+	if (strcmp(algo_name, getEncryptionName(ALGO_DES)) == 0) // GOOD [FALSE POSITIVE]
+	{
+		abort();
+	}
+	if (strcmp(algo_name, getEncryptionName(ALGO_AES)) == 0) // GOOD
+	{
+		// ...
+	}
+}
