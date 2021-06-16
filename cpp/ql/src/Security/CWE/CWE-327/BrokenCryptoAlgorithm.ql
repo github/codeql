@@ -5,7 +5,7 @@
  * @kind problem
  * @problem.severity error
  * @security-severity 5.2
- * @precision medium
+ * @precision high
  * @id cpp/weak-cryptographic-algorithm
  * @tags security
  *       external/cwe/cwe-327
