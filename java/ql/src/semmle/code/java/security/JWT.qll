@@ -104,7 +104,7 @@ private class InsecureJwtParseHandlerSinkModel extends SinkModelCsv {
   override predicate row(string row) {
     row =
       [
-        "io.jsonwebtoken;JwtParser;true;parse;(String,JwtHandler<T>);;Argument[-1];jwt-insecure-parse-handler"
+        "io.jsonwebtoken;JwtParser;true;parse;(String,JwtHandler);;Argument[-1];jwt-insecure-parse-handler"
       ]
   }
 }
