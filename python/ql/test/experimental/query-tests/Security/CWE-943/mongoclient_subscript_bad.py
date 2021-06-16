@@ -18,7 +18,7 @@ def home_page():
     json_search = json.loads(unsafe_search)
 
     db = me.connect('mydb')  
-    data = db['mydb']['movie'].find({'name': json_search})
+    data = db['movie'].find({'name': json_search})
 
 # if __name__ == "__main__":
 #     app.run(debug=True)

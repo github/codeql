@@ -20,7 +20,7 @@ def home_page():
     safe_search = sanitize(json_search)
 
     db = me.connect('mydb')  
-    data = db.mydb.movie.find({'name': safe_search})
+    data = db.movie.find({'name': json_search})
 
 # if __name__ == "__main__":
 #     app.run(debug=True)
