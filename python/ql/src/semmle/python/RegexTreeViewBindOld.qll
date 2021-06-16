@@ -26,15 +26,6 @@ class RegExpLiteral extends TRegExpLiteral, RegExpParent {
   predicate isDotAll() { re.getAMode() = "DOTALL" }
 }
 
-predicate colocated(RegExpTerm a, string rawA, RegExpTerm b, string rawB) {
-  a.getRegex() = b.getRegex() and
-  a.getStart() = b.getStart() and
-  a.getEnd() = b.getEnd() and
-  not a = b and
-  rawA = a.getAQlClass() and
-  rawB = b.getAQlClass()
-}
-
 class RegExpTerm extends RegExpParent {
   Regex re;
   int start;
