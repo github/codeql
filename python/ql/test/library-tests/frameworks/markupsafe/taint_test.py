@@ -32,11 +32,11 @@ def test():
 
     ensure_tainted(
         ts, # $ tainted
-        m_unsafe, # $ MISSING: tainted
+        m_unsafe, # $ tainted
         m_unsafe + SAFE, # $ MISSING: tainted
         SAFE + m_unsafe, # $ MISSING: tainted
         m_unsafe.format(SAFE), # $ MISSING: tainted
-        m_unsafe + ts, # $ tainted
+        m_unsafe + ts, # $ MISSING: tainted
 
         m_safe.format(m_unsafe), # $ MISSING: tainted
 
@@ -51,13 +51,13 @@ def test():
         Markup.escape(ts),
 
         m_safe,
-        m_safe + ts, # $ SPURIOUS: tainted
-        ts + m_safe, # $ SPURIOUS: tainted
-        m_safe.format(ts), # $ SPURIOUS: tainted
+        m_safe + ts,
+        ts + m_safe,
+        m_safe.format(ts),
 
-        escape(ts) + ts, # $ SPURIOUS: tainted
-        escape_silent(ts) + ts, # $ SPURIOUS: tainted
-        Markup.escape(ts) + ts, # $ SPURIOUS: tainted
+        escape(ts) + ts,
+        escape_silent(ts) + ts,
+        Markup.escape(ts) + ts,
     )
 
     # flask re-exports these, as:
@@ -66,7 +66,7 @@ def test():
     import flask
 
     ensure_tainted(
-        flask.Markup(ts), # $ MISSING: tainted
+        flask.Markup(ts), # $ tainted
     )
 
     ensure_not_tainted(

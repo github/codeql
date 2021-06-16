@@ -172,3 +172,4 @@ Python built-in support
    cryptography, Cryptography library
    pycryptodome, Cryptography library
    pycryptodomex, Cryptography library
+   MarkupSafe, Escaping Library

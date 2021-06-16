@@ -24,3 +24,4 @@ private import semmle.python.frameworks.Tornado
 private import semmle.python.frameworks.Ujson
 private import semmle.python.frameworks.Yaml
 private import semmle.python.frameworks.Yarl
+private import semmle.python.frameworks.MarkupSafe
