@@ -747,18 +747,20 @@ private module PrefixConstruction {
   private int lengthFromStart(State state) { result = prefixLength(_, state) }
 
   /**
-   * Gets a string for which the regular expression will reach `state`.
+   * Gets a string for which the regular expression will reach `state` after `i` steps.
    *
    * Has at most one result for any given `state`.
    * This predicate will not always have a result even if there is a ReDoS issue in
    * the regular expression.
    */
-  string prefix(State state) {
+  string prefix(State state, int i) {
     lastStartState(state) and
-    result = ""
+    result = "" and
+    i = 0
     or
     // the search stops past the last redos candidate state.
     lengthFromStart(state) <= max(lengthFromStart(any(State s | isReDoSCandidate(s, _)))) and
+    lengthFromStart(state) = i and
     exists(State prev |
       // select a unique predecessor (by an arbitrary measure)
       prev =
@@ -771,10 +773,10 @@ private module PrefixConstruction {
         )
     |
       // greedy search for the shortest prefix
-      result = prefix(prev) and delta(prev, Epsilon(), state)
+      result = prefix(prev, i - 1) and delta(prev, Epsilon(), state)
       or
       not delta(prev, Epsilon(), state) and
-      result = prefix(prev) + getCanonicalEdgeChar(prev, state)
+      result = prefix(prev, i - 1) + getCanonicalEdgeChar(prev, state)
     )
   }
 
@@ -1018,11 +1020,11 @@ private predicate isReDoSAttackable(RegExpTerm term, string pump, State s) {
 predicate hasReDoSResult(RegExpTerm t, string pump, State s, string prefixMsg) {
   isReDoSAttackable(t, pump, s) and
   (
-    prefixMsg = "starting with '" + escape(PrefixConstruction::prefix(s)) + "' and " and
-    not PrefixConstruction::prefix(s) = ""
+    prefixMsg = "starting with '" + escape(PrefixConstruction::prefix(s, _)) + "' and " and
+    not PrefixConstruction::prefix(s, _) = ""
     or
-    PrefixConstruction::prefix(s) = "" and prefixMsg = ""
+    PrefixConstruction::prefix(s, _) = "" and prefixMsg = ""
     or
-    not exists(PrefixConstruction::prefix(s)) and prefixMsg = ""
+    not exists(PrefixConstruction::prefix(s, _)) and prefixMsg = ""
   )
 }

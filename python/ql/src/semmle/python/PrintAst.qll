@@ -24,7 +24,7 @@ class PrintAstConfiguration extends TPrintAstConfiguration {
    * Controls whether the `AstNode` should be considered for AST printing.
    * By default it checks whether the `AstNode` `e` belongs to `Location` `l`.
    */
-  predicate shouldPrint(AstNode e, Location l) { l = e.getLocation() and l.getFile().getBaseName() = "index.py" }
+  predicate shouldPrint(AstNode e, Location l) { l = e.getLocation() }
 }
 
 private predicate shouldPrint(AstNode e, Location l) {
