@@ -100,7 +100,7 @@ predicate unsafeDeserialization(MethodAccess ma, Expr sink) {
     or
     ma.getMethod() instanceof UnsafeHessianInputReadObjectMethod and sink = ma.getQualifier()
     or
-    ma.getMethod() instanceof UnmarshalMethod and sink = ma.getAnArgument()
+    ma.getMethod() instanceof CastorUnmarshalMethod and sink = ma.getAnArgument()
     or
     ma.getMethod() instanceof BurlapInputReadObjectMethod and sink = ma.getQualifier()
   )

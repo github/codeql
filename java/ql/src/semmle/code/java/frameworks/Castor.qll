@@ -12,8 +12,8 @@ class CastorUnmarshaller extends RefType {
 }
 
 /** A method with the name `unmarshal` declared in `org.exolab.castor.xml.Unmarshaller`. */
-class UnmarshalMethod extends Method {
-  UnmarshalMethod() {
+class CastorUnmarshalMethod extends Method {
+  CastorUnmarshalMethod() {
     this.getDeclaringType() instanceof CastorUnmarshaller and
     this.getName() = "unmarshal"
   }
