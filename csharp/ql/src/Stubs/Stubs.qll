@@ -429,13 +429,16 @@ private string stubClassName(Type t) {
                       else
                         if t instanceof TupleType
                         then
-                          result =
-                            "(" +
-                              concat(int i, Type element |
-                                element = t.(TupleType).getElementType(i)
-                              |
-                                stubClassName(element), "," order by i
-                              ) + ")"
+                          if t.(TupleType).getArity() < 2
+                          then result = stubClassName(t.(TupleType).getUnderlyingType())
+                          else
+                            result =
+                              "(" +
+                                concat(int i, Type element |
+                                  element = t.(TupleType).getElementType(i)
+                                |
+                                  stubClassName(element), "," order by i
+                                ) + ")"
                         else
                           if t instanceof ValueOrRefType
                           then
