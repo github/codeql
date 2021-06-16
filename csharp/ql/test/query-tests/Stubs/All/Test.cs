@@ -1,9 +1,14 @@
+using System;
+
 namespace Test
 {
     public class Class1
     {
         public struct Struct1
         {
+            public ValueTuple<int> t1;
+            public (int, int) t2;
+
             public int i;
             public const int j = 42;
 
