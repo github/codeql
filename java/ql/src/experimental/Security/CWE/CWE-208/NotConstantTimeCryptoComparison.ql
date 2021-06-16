@@ -53,6 +53,10 @@ private class NonConstantTimeCryptoComparisonConfig extends TaintTracking::Confi
       m.hasName("equals") and
       ma.getAnArgument() = sink.asExpr()
       or
+      m.getDeclaringType().hasQualifiedName("java.util", "Objects") and
+      m.hasName("deepEquals") and
+      ma.getAnArgument() = sink.asExpr()
+      or
       m.getDeclaringType().hasQualifiedName("org.apache.commons.lang3", "StringUtils") and
       m.hasName(["equals", "equalsAny", "equalsAnyIgnoreCase", "equalsIgnoreCase"]) and
       ma.getAnArgument() = sink.asExpr()

@@ -3,6 +3,7 @@ import java.security.MessageDigest;
 import java.security.PrivateKey;
 import java.security.Signature;
 import java.util.Arrays;
+import java.util.Objects;
 import javax.crypto.Cipher;
 import javax.crypto.Mac;
 
@@ -45,7 +46,7 @@ public class NotConstantTimeCryptoComparison {
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         cipher.init(Cipher.ENCRYPT_MODE, key);
         byte[] tag = cipher.doFinal(plaintext);
-        return Arrays.equals(expected, tag);
+        return Objects.deepEquals(expected, tag);
     }
 
     // GOOD: compare ciphertexts using a constant time method
