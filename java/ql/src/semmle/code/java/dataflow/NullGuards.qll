@@ -145,6 +145,10 @@ predicate nullCheckMethod(Method m, boolean branch, boolean isnull) {
   branch = false and
   isnull = false
   or
+  m instanceof MethodApacheCollectionsIsEmpty and
+  branch = false and
+  isnull = false
+  or
   m instanceof MethodApacheCollectionsIsNotEmpty and
   branch = true and
   isnull = false
