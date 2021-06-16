@@ -24,3 +24,5 @@
 | Modifiers.cs:60:22:60:23 | I1 | public |
 | Modifiers.cs:62:14:62:15 | M1 | public |
 | Modifiers.cs:63:14:63:15 | M2 | public |
+| Modifiers.cs:68:14:68:15 | M1 | internal |
+| Modifiers.cs:71:18:71:19 | C2 | public |
