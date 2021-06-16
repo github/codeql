@@ -334,10 +334,21 @@ module Escaping {
     abstract DataFlow::Node getOutput();
 
     /**
-     * Gets the context that this function escapes for, such as `html`, or `url`.
+     * Gets the context that this function escapes for.
+     *
+     * While kinds are represented as strings, this should not be relied upon. Use the
+     * predicates in  the `Escaping` module, such as `getHtmlKind`.
      */
     abstract string getKind();
   }
+
+  /** Gets the escape-kind for escaping a string so it can safely be included in HTML. */
+  string getHtmlKind() { result = "html" }
+  // TODO: If adding an XML kind, update the modeling of the `MarkupSafe` PyPI package.
+  //
+  // Technically it claims to escape for both HTML and XML, but for now we don't have
+  // anything that relies on XML escaping, so I'm going to defer deciding whether they
+  // should be the same kind, or whether they deserve to be treated differently.
 }
 
 /**
@@ -346,7 +357,7 @@ module Escaping {
  * `<p>{}</p>`.
  */
 class HtmlEscaping extends Escaping {
-  HtmlEscaping() { range.getKind() = "html" }
+  HtmlEscaping() { range.getKind() = Escaping::getHtmlKind() }
 }
 
 /** Provides classes for modeling HTTP-related APIs. */
