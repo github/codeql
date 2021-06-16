@@ -260,3 +260,48 @@ void do_fn_ptr(char *data, size_t amount, keytype key)
 	impl = &my_aes_implementation; // GOOD
 	impl(data, amount, key);
 }
+
+// --- template classes ---
+
+class desEncryptor
+{
+public:
+	desEncryptor();
+
+	void doDesEncryption(char *data);
+};
+
+template <class C>
+class container
+{
+public:
+	container() {
+		obj = new C(); // GOOD [FALSE POSITIVE]
+	}
+
+	~container() {
+		delete obj;
+	}
+
+	C *obj;
+};
+
+template <class C>
+class templateDesEncryptor
+{
+public:
+	templateDesEncryptor();
+
+	void doDesEncryption(C &data);
+};
+
+void do_template_classes(char *data)
+{
+	desEncryptor *p = new desEncryptor(); // BAD
+	container<desEncryptor> c; // BAD [NOT DETECTED]
+	templateDesEncryptor<char *> t; // BAD [NOT DETECTED]
+
+	p->doDesEncryption(data); // BAD
+	c.obj->doDesEncryption(data); // BAD
+	t.doDesEncryption(data); // BAD [NOT DETECTED]
+}
