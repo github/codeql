@@ -56,7 +56,7 @@ jobs:
       run: |
         PR=$(cat "pr/NR")
         python misc/scripts/library-coverage/compare-files-comment-pr.py \
-          out_merge out_base comparison.md ${{ github.repository }} $PR $RUN_ID
+          out_merge out_base comparison.md "$GITHUB_REPOSITORY" "$PR" "$RUN_ID"
     - name: Upload comparison results
       uses: actions/upload-artifact@v2
       with:
