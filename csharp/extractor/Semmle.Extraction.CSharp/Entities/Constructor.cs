@@ -146,6 +146,15 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void WriteId(EscapingTextWriter trapFile)
         {
+            if (!SymbolEqualityComparer.Default.Equals(Symbol, Symbol.OriginalDefinition))
+            {
+                trapFile.WriteSubId(ContainingType!);
+                trapFile.Write(".");
+                trapFile.WriteSubId(OriginalDefinition);
+                trapFile.Write(";constructor");
+                return;
+            }
+
             if (Symbol.IsStatic)
                 trapFile.Write("static");
             trapFile.WriteSubId(ContainingType!);

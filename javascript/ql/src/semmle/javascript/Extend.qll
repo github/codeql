@@ -188,3 +188,23 @@ private class CloneStep extends PreCallGraphStep {
     )
   }
 }
+
+/**
+ * A deep extend call from the [webpack-merge](https://npmjs.org/package/webpack-merge) library.
+ */
+private class WebpackMergeDeep extends ExtendCall, DataFlow::CallNode {
+  WebpackMergeDeep() {
+    this = DataFlow::moduleMember("webpack-merge", "merge").getACall()
+    or
+    this =
+      DataFlow::moduleMember("webpack-merge", ["mergeWithCustomize", "mergeWithRules"])
+          .getACall()
+          .getACall()
+  }
+
+  override DataFlow::Node getASourceOperand() { result = getAnArgument() }
+
+  override DataFlow::Node getDestinationOperand() { none() }
+
+  override predicate isDeep() { any() }
+}

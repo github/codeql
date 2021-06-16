@@ -4,6 +4,7 @@
  *              Such use could compromise security and system stability.
  * @kind problem
  * @problem.severity error
+ * @security-severity 4.9
  * @precision low
  * @id java/ejb/native-code
  * @tags reliability

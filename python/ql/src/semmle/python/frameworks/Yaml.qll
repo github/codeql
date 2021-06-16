@@ -1,6 +1,6 @@
 /**
- * Provides classes modeling security-relevant aspects of the PyYAML package (obtained
- * via `import yaml`)
+ * Provides classes modeling security-relevant aspects of the `PyYAML` PyPI package
+ * (imported as `yaml`)
  *
  * See
  * - https://pyyaml.org/wiki/PyYAMLDocumentation
@@ -14,8 +14,8 @@ private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 
 /**
- * Provides classes modeling security-relevant aspects of the PyYAML package (obtained
- * via `import yaml`)
+ * Provides classes modeling security-relevant aspects of the `PyYAML` PyPI package
+ * (imported as `yaml`)
  *
  * See
  * - https://pyyaml.org/wiki/PyYAMLDocumentation

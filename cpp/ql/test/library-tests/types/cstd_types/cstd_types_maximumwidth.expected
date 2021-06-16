@@ -1,0 +1,2 @@
+| cstd_types.cpp:55:10:55:11 | im | CTypedefType, Intmax_t, MaximumWidthIntegralType |
+| cstd_types.cpp:56:11:56:13 | uim | CTypedefType, MaximumWidthIntegralType, Uintmax_t |

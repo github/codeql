@@ -4,6 +4,7 @@
  * @kind problem
  * @id cpp/hresult-boolean-conversion
  * @problem.severity error
+ * @security-severity 4.2
  * @precision high
  * @tags security
  *       external/cwe/cwe-253
