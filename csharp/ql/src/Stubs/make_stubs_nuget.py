@@ -4,6 +4,18 @@ import helpers
 import json
 import shutil
 
+
+def write_csproj_prefix(ioWrapper):
+    ioWrapper.write('<Project Sdk="Microsoft.NET.Sdk">\n')
+    ioWrapper.write('  <PropertyGroup>\n')
+    ioWrapper.write('    <TargetFramework>net5.0</TargetFramework>\n')
+    ioWrapper.write('    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>\n')
+    ioWrapper.write('    <OutputPath>bin\</OutputPath>\n')
+    ioWrapper.write(
+        '    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>\n')
+    ioWrapper.write('  </PropertyGroup>\n\n')
+
+
 print('Script to generate stub file from a nuget package')
 print(' Usage: python ' + sys.argv[0] +
       ' NUGET_PACKAGE_NAME [VERSION=latest] [WORK_DIR=tempDir]')
@@ -78,7 +90,7 @@ helpers.run_cmd(['dotnet', 'new', 'classlib', "--language", "C#",
                 '--name', rawSrcOutputDirName, '--output', rawSrcOutputDir])
 helpers.remove_files(rawSrcOutputDir, '.cs')
 
-# load json from file
+# load json from query result file and split it into separate .cs files
 pathInfos = {}
 with open(jsonFile) as json_data:
     data = json.load(json_data)
@@ -93,7 +105,6 @@ print("\n* Formatting files")
 helpers.run_cmd(['dotnet', 'format', rawSrcOutputDir])
 
 print("\n --> Generated (formatted) stub files: " + rawSrcOutputDir)
-
 
 print("\n* Processing project.assets.json to generate folder structure")
 stubsDirName = 'stubs'
@@ -124,14 +135,7 @@ with open(assetsJsonFile) as json_data:
         print('  * Processing package: ' + name + '/' + version)
         with open(os.path.join(packageDir, name + '.csproj'), 'a') as pf:
 
-            pf.write('<Project Sdk="Microsoft.NET.Sdk">\n')
-            pf.write('  <PropertyGroup>\n')
-            pf.write('    <TargetFramework>net5.0</TargetFramework>\n')
-            pf.write('    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>\n')
-            pf.write('    <OutputPath>bin\</OutputPath>\n')
-            pf.write(
-                '    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>\n')
-            pf.write('  </PropertyGroup>\n\n')
+            write_csproj_prefix(pf)
             pf.write('  <ItemGroup>\n')
 
             dlls = set()
@@ -167,20 +171,21 @@ with open(assetsJsonFile) as json_data:
                     pf.write('    <ProjectReference Include="../../' +
                              frameworksDirName + '/' + framework + '/' + framework + '.csproj" />\n')
 
+            pf.write('    <ProjectReference Include="../../' +
+                     frameworksDirName + '/Microsoft.NETCore.App/Microsoft.NETCore.App.csproj" />\n')
+
             pf.write('  </ItemGroup>\n')
             pf.write('</Project>\n')
 
+# Processing references frameworks
 for framework in frameworks:
     with open(os.path.join(frameworksDir, framework, framework + '.csproj'), 'a') as pf:
 
-        pf.write('<Project Sdk="Microsoft.NET.Sdk">\n')
-        pf.write('  <PropertyGroup>\n')
-        pf.write('    <TargetFramework>net5.0</TargetFramework>\n')
-        pf.write('    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>\n')
-        pf.write('    <OutputPath>bin\</OutputPath>\n')
+        write_csproj_prefix(pf)
+        pf.write('  <ItemGroup>\n')
         pf.write(
-            '    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>\n')
-        pf.write('  </PropertyGroup>\n')
+            '    <ProjectReference Include="../Microsoft.NETCore.App/Microsoft.NETCore.App.csproj" />\n')
+        pf.write('  </ItemGroup>\n')
         pf.write('</Project>\n')
 
         for pathInfo in pathInfos:
@@ -189,6 +194,19 @@ for framework in frameworks:
                 shutil.copy2(pathInfos[pathInfo], os.path.join(
                     frameworksDir, framework))
 
+# Processing assemblies in  Microsoft.NETCore.App.Ref
+frameworkDir = os.path.join(frameworksDir, 'Microsoft.NETCore.App')
+if not os.path.exists(frameworkDir):
+    os.makedirs(frameworkDir)
+with open(os.path.join(frameworksDir, 'Microsoft.NETCore.App', 'Microsoft.NETCore.App.csproj'), 'a') as pf:
+    write_csproj_prefix(pf)
+    pf.write('</Project>\n')
+
+    for pathInfo in pathInfos:
+        if 'packs/microsoft.netcore.app.ref/' in pathInfo.lower():
+            copiedFiles.add(pathInfo)
+            shutil.copy2(pathInfos[pathInfo], frameworkDir)
+
 for pathInfo in pathInfos:
     if pathInfo not in copiedFiles:
         print('Not copied to nuget or framework folder: ' + pathInfo)
@@ -196,12 +214,6 @@ for pathInfo in pathInfos:
         if not os.path.exists(othersDir):
             os.makedirs(othersDir)
         shutil.copy2(pathInfos[pathInfo], othersDir)
-
-print("\n --> Generated structured stub files: " + stubsDir)
-
-print("\n* Building raw output project")
-helpers.run_cmd(['dotnet', 'build', '/t:rebuild', '/p:AllowUnsafeBlocks=true', '/p:WarningLevel=0', rawSrcOutputDir],
-                'ERR: Build failed. Script failed to generate a stub that builds. Please touch up manually the stubs.')
 
 print("\n --> Generated structured stub files: " + stubsDir)
 
