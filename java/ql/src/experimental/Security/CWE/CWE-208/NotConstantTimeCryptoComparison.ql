@@ -50,7 +50,7 @@ private class NonConstantTimeCryptoComparisonConfig extends TaintTracking::Confi
       sink.asExpr() = [ma.getQualifier(), ma.getAnArgument()]
       or
       m.getDeclaringType().hasQualifiedName("java.util", "Arrays") and
-      m.hasName("equals") and
+      m.hasName(["equals", "deepEquals"]) and
       ma.getAnArgument() = sink.asExpr()
       or
       m.getDeclaringType().hasQualifiedName("java.util", "Objects") and

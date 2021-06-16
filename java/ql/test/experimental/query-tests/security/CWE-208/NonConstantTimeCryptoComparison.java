@@ -7,13 +7,29 @@ import java.util.Objects;
 import javax.crypto.Cipher;
 import javax.crypto.Mac;
 
-public class NotConstantTimeCryptoComparison {
+public class NonConstantTimeCryptoComparison {
 
-    // BAD: compare MACs using a not-constant time method
+    // BAD: compare MACs using a non-constant time method
     public boolean unsafeMacCheck(byte[] expectedMac, byte[] data) throws Exception {
         Mac mac = Mac.getInstance("HmacSHA256");
         byte[] actualMac = mac.doFinal(data);
         return Arrays.equals(expectedMac, actualMac);
+    }
+
+
+    // BAD: compare MACs using a non-constant time method
+    public boolean unsafeMacCheckWithArraysDeepEquals(byte[] expectedMac, byte[] data) throws Exception {
+        Mac mac = Mac.getInstance("HmacSHA256");
+        byte[] actualMac = mac.doFinal(data);
+        return Arrays.deepEquals(cast(expectedMac), cast(actualMac));
+    }
+
+    private static Object[] cast(byte[] array) {
+        Object[] result = new Object[array.length];
+        for (int i = 0; i < array.length; i++) {
+            result[i] = array[i];
+        }
+        return result;
     }
 
     // GOOD: compare MACs using a constant time method
@@ -23,7 +39,7 @@ public class NotConstantTimeCryptoComparison {
         return MessageDigest.isEqual(expectedMac, actualMac);
     }
 
-    // BAD: compare signatures using a not-constant time method
+    // BAD: compare signatures using a non-constant time method
     public boolean unsafeCheckSignatures(byte[] expected, byte[] data, PrivateKey key) throws Exception {
         Signature engine = Signature.getInstance("SHA256withRSA");
         engine.initSign(key);
@@ -41,7 +57,7 @@ public class NotConstantTimeCryptoComparison {
         return MessageDigest.isEqual(expected, signature);
     }
 
-    // BAD: compare ciphertexts using a not-constant time method
+    // BAD: compare ciphertexts using a non-constant time method
     public boolean unsafeCheckCustomMac(byte[] expected, byte[] plaintext, Key key) throws Exception {
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         cipher.init(Cipher.ENCRYPT_MODE, key);
