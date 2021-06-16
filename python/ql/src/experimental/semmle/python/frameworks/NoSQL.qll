@@ -11,64 +11,76 @@ private import experimental.semmle.python.Concepts
 private import semmle.python.ApiGraphs
 
 private module NoSQL {
-  /** Gets a reference to a `MongoClient` instance. */
-  private API::Node mongoClientInstance() {
-    result = API::moduleImport("pymongo").getMember("MongoClient").getReturn() or
-    result =
-      API::moduleImport("flask_mongoengine")
-          .getMember("MongoEngine")
-          .getReturn()
-          .getMember("get_db")
-          .getReturn() or
-    result =
-      API::moduleImport(["mongoengine", "mongoengine.connection"])
-          .getMember(["get_db", "connect"])
-          .getReturn() or
+  /** API Nodes returning `Mongo` instances. */
+  private API::Node pyMongo() {
+    result = API::moduleImport("pymongo").getMember("MongoClient").getReturn()
+  }
+
+  private API::Node flask_PyMongo() {
     result = API::moduleImport("flask_pymongo").getMember("PyMongo").getReturn()
   }
 
-  /** Gets a reference to a `MongoClient` DB. */
-  private DataFlow::LocalSourceNode mongoClientDB(DataFlow::TypeTracker t) {
+  private API::Node mongoEngine() { result = API::moduleImport("mongoengine") }
+
+  private API::Node flask_MongoEngine() {
+    result = API::moduleImport("flask_mongoengine").getMember("MongoEngine").getReturn()
+  }
+
+  /** Gets a reference to a initialized `Mongo` instance. */
+  private API::Node mongoInstance() {
+    result = pyMongo() or
+    result = flask_PyMongo()
+  }
+
+  /** Gets a reference to a initialized `Mongo` DB instance. */
+  private API::Node mongoDBInstance() {
+    result = mongoEngine().getMember(["get_db", "connect"]).getReturn() or
+    result = mongoEngine().getMember("connection").getMember(["get_db", "connect"]).getReturn() or
+    result = flask_MongoEngine().getMember("get_db").getReturn()
+  }
+
+  /** Gets a reference to a `Mongo` DB use. */
+  private DataFlow::LocalSourceNode mongoDB(DataFlow::TypeTracker t) {
+    t.start() and
+    (
+      exists(SubscriptNode subscript |
+        subscript.getObject() = mongoInstance().getAUse().asCfgNode() and
+        result.asCfgNode() = subscript
+      )
+      or
+      result.(DataFlow::AttrRead).getObject() = mongoInstance().getAUse()
+      or
+      result = mongoDBInstance().getAUse()
+    )
+    or
+    exists(DataFlow::TypeTracker t2 | result = mongoDB(t2).track(t2, t))
+  }
+
+  /** Gets a reference to a `Mongo` DB use. */
+  private DataFlow::Node mongoDB() { mongoDB(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+  /** Gets a reference to a `Mongo` collection use. */
+  private DataFlow::LocalSourceNode mongoCollection(DataFlow::TypeTracker t) {
     t.start() and
     (
       exists(SubscriptNode subscript | result.asCfgNode() = subscript |
-        subscript.getObject() = mongoClientInstance().getAUse().asCfgNode()
+        subscript.getObject() = mongoDB().asCfgNode()
       )
       or
-      result.(DataFlow::AttrRead).getObject() = mongoClientInstance().getAUse()
+      result.(DataFlow::AttrRead).getObject() = mongoDB()
     )
     or
-    exists(DataFlow::TypeTracker t2 | result = mongoClientDB(t2).track(t2, t))
+    exists(DataFlow::TypeTracker t2 | result = mongoCollection(t2).track(t2, t))
   }
 
-  /** Gets a reference to a `MongoClient` DB. */
-  private DataFlow::Node mongoClientDB() {
-    mongoClientDB(DataFlow::TypeTracker::end()).flowsTo(result)
+  /** Gets a reference to a `Mongo` collection use. */
+  private DataFlow::Node mongoCollection() {
+    mongoCollection(DataFlow::TypeTracker::end()).flowsTo(result)
   }
 
-  /** Gets a reference to a `MongoClient` collection. */
-  private DataFlow::LocalSourceNode mongoClientCollection(DataFlow::TypeTracker t) {
-    t.start() and
-    (
-      exists(SubscriptNode subscript | result.asCfgNode() = subscript |
-        subscript.getObject() = mongoClientDB().asCfgNode()
-      )
-      or
-      result.(DataFlow::AttrRead).getObject() = mongoClientDB()
-    )
-    or
-    exists(DataFlow::TypeTracker t2 | result = mongoClientCollection(t2).track(t2, t))
-  }
-
-  /** Gets a reference to a `MongoClient` collection. */
-  private DataFlow::Node mongoClientCollection() {
-    mongoClientCollection(DataFlow::TypeTracker::end()).flowsTo(result)
-  }
-
-  /** This class represents names of find_* relevant MongoClient collection level operation methods. */
-  private class MongoClientMethodNames extends string {
-    MongoClientMethodNames() {
-      // the find_one_or_404 method is only found in the Pymongo Flask library.
+  /** This class represents names of find_* relevant `Mongo` collection-level operation methods. */
+  private class MongoCollectionMethodNames extends string {
+    MongoCollectionMethodNames() {
       this in [
           "find", "find_raw_batches", "find_one", "find_one_and_delete", "find_and_modify",
           "find_one_and_replace", "find_one_and_update", "find_one_or_404"
@@ -76,18 +88,15 @@ private module NoSQL {
     }
   }
 
-  /** Gets a reference to a `MongoClient` Collection method. */
-  private DataFlow::Node mongoClientMethod() {
-    result.(DataFlow::AttrRead).getAttributeName() instanceof MongoClientMethodNames and
-    (
-      result.(DataFlow::AttrRead).getObject() = mongoClientCollection() or
-      result.(DataFlow::AttrRead) = mongoClientCollection()
-    )
+  /** Gets a reference to a `Mongo` collection method. */
+  private DataFlow::Node mongoCollectionMethod() {
+    mongoCollection() in [result.(DataFlow::AttrRead), result.(DataFlow::AttrRead).getObject()] and
+    result.(DataFlow::AttrRead).getAttributeName() instanceof MongoCollectionMethodNames
   }
 
-  /** Gets a reference to a `MongoClient` call */
-  private class MongoClientCall extends DataFlow::CallCfgNode, NoSQLQuery::Range {
-    MongoClientCall() { this.getFunction() = mongoClientMethod() }
+  /** Gets a reference to a `Mongo` collection method call */
+  private class MongoCollectionCall extends DataFlow::CallCfgNode, NoSQLQuery::Range {
+    MongoCollectionCall() { this.getFunction() = mongoCollectionMethod() }
 
     override DataFlow::Node getQuery() { result = this.getArg(0) }
   }
@@ -95,66 +104,11 @@ private module NoSQL {
   private class MongoEngineObjectsCall extends DataFlow::CallCfgNode, NoSQLQuery::Range {
     MongoEngineObjectsCall() {
       this =
-        API::moduleImport("mongoengine")
+        [mongoEngine(), flask_MongoEngine()]
             .getMember(["Document", "EmbeddedDocument"])
             .getASubclass()
             .getMember("objects")
             .getACall()
-    }
-
-    override DataFlow::Node getQuery() { result = this.getArgByName(_) }
-  }
-
-  private class FlaskMongoEngineObjectsCall extends DataFlow::CallCfgNode, NoSQLQuery::Range {
-    FlaskMongoEngineObjectsCall() {
-      this =
-        API::moduleImport("flask_mongoengine")
-            .getMember("MongoEngine")
-            .getReturn()
-            .getMember(["Document", "EmbeddedDocument"])
-            .getASubclass()
-            .getMember("objects")
-            .getACall()
-    }
-
-    override DataFlow::Node getQuery() { result = this.getArgByName(_) }
-  }
-
-  private DataFlow::Node flaskMongoEngineInstance() {
-    result = API::moduleImport("flask_mongoengine").getMember("MongoEngine").getReturn().getAUse()
-  }
-
-  /**
-   * A MongoEngine.Document or MongoEngine.EmbeddedDocument subclass which represents a MongoDB document.
-   */
-  private class FlaskMongoEngineDocumentClass extends ClassValue {
-    FlaskMongoEngineDocumentClass() {
-      this.getASuperType().getName() in ["Document", "EmbeddedDocument"] and
-      exists(AttrNode documentClass |
-        documentClass.getName() in ["Document", "EmbeddedDocument"] and
-        documentClass.getObject() = flaskMongoEngineInstance().asCfgNode() and
-        // This is super hacky. It checks to see if the class is a subclass of a flaskMongoEngineInstance.Document
-        this.getASuperType()
-            .getAReference()
-            .getNode()
-            .(ClassExpr)
-            .contains(documentClass.getNode().getObject())
-      )
-    }
-  }
-
-  private class FlaskMongoEngineDocumentSubclassInstanceCall extends DataFlow::CallCfgNode,
-    NoSQLQuery::Range {
-    FlaskMongoEngineDocumentSubclassInstanceCall() {
-      exists(
-        DataFlow::CallCfgNode objectsCall,
-        FlaskMongoEngineDocumentClass flaskMongoEngineDocumentClass
-      |
-        objectsCall.getFunction().asExpr().(Attribute).getObject().getAFlowNode() =
-          flaskMongoEngineDocumentClass.getAReference() and
-        objectsCall.asCfgNode().(CallNode).getNode().getFunc().(Attribute).getName() = "objects" and
-        this = objectsCall
-      )
     }
 
     override DataFlow::Node getQuery() { result = this.getArgByName(_) }
