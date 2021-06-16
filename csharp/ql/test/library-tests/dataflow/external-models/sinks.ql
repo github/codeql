@@ -9,7 +9,7 @@ class SinkModelTest extends SinkModelCsv {
     row =
       [
         //"namespace;type;overrides;name;signature;ext;spec;kind",
-        "My.Qltest;B;false;Sink1;(object);;Argument[0];qltest",
+        "My.Qltest;B;false;Sink1;(System.Object);;Argument[0];qltest",
         "My.Qltest;B;false;SinkMethod;();;ReturnValue;qltest",
         "My.Qltest;SinkAttribute;false;;;Attribute;ReturnValue;qltest-retval",
         "My.Qltest;SinkAttribute;false;;;Attribute;Argument;qltest-arg",

@@ -336,7 +336,22 @@ private UnboundValueOrRefType interpretType(string namespace, string type, boole
   )
 }
 
-private string paramsStringPartA(Callable c, int i) {
+private Member interpretMember(
+  string namespace, string type, boolean subtypes, string name, string signature
+) {
+  elementSpec(namespace, type, subtypes, name, signature, _) and
+  exists(UnboundValueOrRefType t |
+    t = interpretType(namespace, type, subtypes) and
+    result.getDeclaringType() = t and
+    result.hasName(name)
+  )
+}
+
+private class InterpretedCallable extends Callable {
+  InterpretedCallable() { this = interpretMember(_, _, _, _, _) }
+}
+
+private string paramsStringPartA(InterpretedCallable c, int i) {
   i = -1 and result = "("
   or
   exists(int n |
@@ -349,23 +364,19 @@ private string paramsStringPartA(Callable c, int i) {
   i = 2 * c.getNumberOfParameters() and result = ")"
 }
 
-private string paramsStringPartB(Callable c, int i, boolean fullyQualified) {
+private string paramsStringPartB(InterpretedCallable c, int i) {
   exists(int n, string p, Type t |
     t = c.getParameter(n).getType() and
     i = 2 * n and
-    result = p
-  |
-    fullyQualified = true and p = t.getQualifiedName()
-    or
-    fullyQualified = false and p = t.toStringWithTypes()
+    result = p and
+    p = t.getQualifiedName()
   )
 }
 
-private string paramsString(Callable c, boolean fullyQualified) {
-  fullyQualified in [false, true] and
+private string paramsString(InterpretedCallable c) {
   result =
     strictconcat(int i, string s |
-      s in [paramsStringPartA(c, i), paramsStringPartB(c, i, fullyQualified)]
+      s in [paramsStringPartA(c, i), paramsStringPartB(c, i)]
     |
       s order by i
     )
@@ -383,7 +394,7 @@ private Element interpretElement0(
     |
       signature = ""
       or
-      paramsString(m, _) = signature
+      paramsString(m) = signature
     )
     or
     result = t and
