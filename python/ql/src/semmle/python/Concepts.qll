@@ -303,7 +303,12 @@ module SqlExecution {
 class Escaping extends DataFlow::Node {
   Escaping::Range range;
 
-  Escaping() { this = range }
+  Escaping() {
+    this = range and
+    // escapes that don't have _both_ input/output defined are not valid
+    exists(range.getAnInput()) and
+    exists(range.getOutput())
+  }
 
   /** Gets an input that will be escaped. */
   DataFlow::Node getAnInput() { result = range.getAnInput() }

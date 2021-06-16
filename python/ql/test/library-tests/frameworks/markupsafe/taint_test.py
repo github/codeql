@@ -38,7 +38,7 @@ def test():
         m_unsafe.format(SAFE), # $ escapeInput=SAFE escapeKind=html escapeOutput=m_unsafe.format(..) MISSING: tainted
         m_unsafe + ts, # $ escapeInput=ts escapeKind=html escapeOutput=BinaryExpr MISSING: tainted
 
-        m_safe.format(m_unsafe), # $ escapeKind=html escapeOutput=m_safe.format(..) MISSING: tainted
+        m_safe.format(m_unsafe), # $ tainted
 
         escape(ts).unescape(), # $ escapeInput=ts escapeKind=html escapeOutput=escape(..) MISSING: tainted
         escape_silent(ts).unescape(), # $ escapeInput=ts escapeKind=html escapeOutput=escape_silent(..) MISSING: tainted
