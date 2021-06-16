@@ -4,7 +4,9 @@
  * @kind problem
  * @tags security
  *       correctness
+ *       security/cwe/cwe-78
  * @problem.severity error
+ * @security-severity 5.9
  * @sub-severity high
  * @precision high
  * @id py/use-of-input

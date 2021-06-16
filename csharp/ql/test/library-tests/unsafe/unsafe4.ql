@@ -1,3 +1,3 @@
 import csharp
 
-select any(Modifiable m | m.isUnsafe())
+select any(Modifiable m | m.isUnsafe() and m.fromSource())

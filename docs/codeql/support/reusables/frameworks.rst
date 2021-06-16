@@ -1,7 +1,7 @@
 C and C++ built-in support
 ================================
 
-.. csv-table:: 
+.. csv-table::
    :header-rows: 1
    :class: fullWidthTable
    :widths: auto
@@ -14,7 +14,7 @@ C and C++ built-in support
 C# built-in support
 ================================
 
-.. csv-table:: 
+.. csv-table::
    :header-rows: 1
    :class: fullWidthTable
    :widths: auto
@@ -84,7 +84,7 @@ Go built-in support
 Java built-in support
 ==================================
 
-.. csv-table:: 
+.. csv-table::
    :header-rows: 1
    :class: fullWidthTable
    :widths: auto
@@ -109,7 +109,7 @@ Java built-in support
 JavaScript and TypeScript built-in support
 =======================================================
 
-.. csv-table:: 
+.. csv-table::
    :header-rows: 1
    :class: fullWidthTable
    :widths: auto
@@ -152,6 +152,7 @@ Python built-in support
    :widths: auto
 
    Name, Category
+   aiohttp.web, Web framework
    Django, Web framework
    Flask, Web framework
    Tornado, Web framework
@@ -160,10 +161,15 @@ Python built-in support
    simplejson, Serialization
    ujson, Serialization
    fabric, Utility library
-   invoke, Utility library
    idna, Utility library
+   invoke, Utility library
+   multidict, Utility library
+   yarl, Utility library
+   aioch, Database
+   clickhouse-driver, Database
    mysql-connector-python, Database
-   MySQLdb, Database
+   mysql-connector, Database
+   MySQL-python, Database
    psycopg2, Database
    sqlite3, Database
    cryptography, Cryptography library

@@ -127,6 +127,54 @@ getExprType
 | tst.ts:69:24:69:45 | {yetAno ... : true} | MyUnion2 |
 | tst.ts:69:25:69:38 | yetAnotherType | true |
 | tst.ts:69:41:69:44 | true | true |
+| tst.ts:71:8:71:11 | TS43 | typeof TS43 in library-tests/TypeScript/Types/tst.ts |
+| tst.ts:74:5:74:22 | get size(): number | number |
+| tst.ts:74:9:74:12 | size | number |
+| tst.ts:75:5:75:47 | set siz ... olean); | number |
+| tst.ts:75:9:75:12 | size | number |
+| tst.ts:75:14:75:18 | value | string \| number \| boolean |
+| tst.ts:78:16:78:20 | Thing | Thing |
+| tst.ts:79:13:79:13 | 0 | 0 |
+| tst.ts:81:5:83:5 | get siz ... ;\\n    } | number |
+| tst.ts:81:9:81:12 | size | number |
+| tst.ts:82:14:82:23 | this.#size | number |
+| tst.ts:85:5:87:5 | set siz ... ;\\n    } | number |
+| tst.ts:85:9:85:12 | size | number |
+| tst.ts:85:14:85:18 | value | string \| number \| boolean |
+| tst.ts:86:7:86:16 | this.#size | number |
+| tst.ts:86:7:86:32 | this.#s ... (value) | number |
+| tst.ts:86:20:86:25 | Number | NumberConstructor |
+| tst.ts:86:20:86:32 | Number(value) | number |
+| tst.ts:86:27:86:31 | value | string \| number \| boolean |
+| tst.ts:91:9:91:13 | Super | Super |
+| tst.ts:92:5:92:10 | random | () => number |
+| tst.ts:92:5:94:5 | random( ... ;\\n    } | () => number |
+| tst.ts:93:14:93:14 | 4 | 4 |
+| tst.ts:97:9:97:11 | Sub | Sub |
+| tst.ts:97:21:97:25 | Super | Super |
+| tst.ts:98:5:100:5 | overrid ... ;\\n    } | () => number |
+| tst.ts:98:14:98:19 | random | () => number |
+| tst.ts:99:14:99:25 | super.random | () => number |
+| tst.ts:99:14:99:27 | super.random() | number |
+| tst.ts:99:14:99:32 | super.random() * 10 | number |
+| tst.ts:99:20:99:25 | random | () => number |
+| tst.ts:99:31:99:32 | 10 | 10 |
+| tst.ts:104:16:104:16 | s | string |
+| tst.ts:106:13:106:18 | hello  | any |
+| tst.ts:106:21:106:21 | s | string |
+| tst.ts:110:15:110:16 | s2 | "1-2-3" |
+| tst.ts:112:3:112:9 | s1 = s2 | "1-2-3" |
+| tst.ts:112:8:112:9 | s2 | "1-2-3" |
+| tst.ts:116:9:116:11 | Foo | Foo |
+| tst.ts:117:5:119:5 | #someMe ... ;\\n    } | () => number |
+| tst.ts:118:14:118:15 | 42 | 42 |
+| tst.ts:121:5:123:5 | get #so ... ;\\n    } | number |
+| tst.ts:122:14:122:16 | 100 | 100 |
+| tst.ts:125:5:125:16 | publicMethod | () => number |
+| tst.ts:125:5:128:5 | publicM ... ;\\n    } | () => number |
+| tst.ts:126:7:126:22 | this.#someMethod | () => number |
+| tst.ts:126:7:126:24 | this.#someMethod() | number |
+| tst.ts:127:14:127:28 | this.#someValue | number |
 | type_alias.ts:3:5:3:5 | b | boolean |
 | type_alias.ts:7:5:7:5 | c | ValueOrArray<number> |
 | type_alias.ts:14:9:14:32 | [proper ... ]: Json | any |
@@ -180,6 +228,11 @@ getTypeDefinitionType
 | tst.ts:58:1:60:1 | interfa ... mber;\\n} | HasArea |
 | tst.ts:65:1:65:54 | type My ...  true}; | MyUnion |
 | tst.ts:68:1:68:49 | type My ...  true}; | MyUnion2 |
+| tst.ts:73:3:76:3 | interfa ... n);\\n  } | ThingI |
+| tst.ts:78:10:88:3 | class T ...   }\\n  } | Thing |
+| tst.ts:91:3:95:3 | class S ...   }\\n  } | Super |
+| tst.ts:97:3:101:3 | class S ...   }\\n  } | Sub |
+| tst.ts:116:3:129:3 | class F ...   }\\n  } | Foo |
 | type_alias.ts:1:1:1:17 | type B = boolean; | boolean |
 | type_alias.ts:5:1:5:50 | type Va ... ay<T>>; | ValueOrArray<T> |
 | type_alias.ts:9:1:15:13 | type Js ... Json[]; | Json |
@@ -288,6 +341,34 @@ getTypeExprType
 | tst.ts:68:27:68:48 | {yetAno ... : true} | { yetAnotherType: true; } |
 | tst.ts:68:44:68:47 | true | true |
 | tst.ts:69:13:69:20 | MyUnion2 | MyUnion2 |
+| tst.ts:73:13:73:18 | ThingI | ThingI |
+| tst.ts:74:17:74:22 | number | number |
+| tst.ts:75:21:75:26 | number | number |
+| tst.ts:75:21:75:45 | number  ... boolean | string \| number \| boolean |
+| tst.ts:75:30:75:35 | string | string |
+| tst.ts:75:39:75:45 | boolean | boolean |
+| tst.ts:78:33:78:38 | ThingI | ThingI |
+| tst.ts:81:17:81:22 | number | number |
+| tst.ts:85:21:85:26 | string | string |
+| tst.ts:85:21:85:45 | string  ... boolean | string \| number \| boolean |
+| tst.ts:85:30:85:35 | number | number |
+| tst.ts:85:39:85:45 | boolean | boolean |
+| tst.ts:92:15:92:20 | number | number |
+| tst.ts:98:24:98:29 | number | number |
+| tst.ts:104:19:104:24 | string | string |
+| tst.ts:104:29:104:34 | hello  | any |
+| tst.ts:104:37:104:42 | string | string |
+| tst.ts:109:22:109:27 | number | number |
+| tst.ts:109:29:109:29 | - | any |
+| tst.ts:109:32:109:37 | number | number |
+| tst.ts:109:39:109:39 | - | any |
+| tst.ts:109:42:109:47 | number | number |
+| tst.ts:110:19:110:25 | `1-2-3` | "1-2-3" |
+| tst.ts:110:19:110:25 | `1-2-3` | any |
+| tst.ts:111:22:111:27 | number | number |
+| tst.ts:111:29:111:32 | -2-3 | any |
+| tst.ts:117:20:117:25 | number | number |
+| tst.ts:121:23:121:28 | number | number |
 | type_alias.ts:1:6:1:6 | B | boolean |
 | type_alias.ts:1:10:1:16 | boolean | boolean |
 | type_alias.ts:3:8:3:8 | B | boolean |
@@ -360,6 +441,7 @@ referenceDefinition
 | Color.red | type_definitions.ts:14:3:14:5 | red |
 | E | type_definition_objects.ts:6:8:6:16 | enum E {} |
 | EnumWithOneMember | type_definitions.ts:18:26:18:31 | member |
+| Foo | tst.ts:116:3:129:3 | class F ...   }\\n  } |
 | HasArea | tst.ts:58:1:60:1 | interfa ... mber;\\n} |
 | I<S> | type_definitions.ts:3:1:5:1 | interfa ... x: S;\\n} |
 | I<number> | type_definitions.ts:3:1:5:1 | interfa ... x: S;\\n} |
@@ -367,6 +449,11 @@ referenceDefinition
 | MyUnion | tst.ts:65:1:65:54 | type My ...  true}; |
 | MyUnion2 | tst.ts:68:1:68:49 | type My ...  true}; |
 | NonAbstractDummy | tst.ts:54:1:56:1 | interfa ... mber;\\n} |
+| Sub | tst.ts:97:3:101:3 | class S ...   }\\n  } |
+| Super | tst.ts:91:3:95:3 | class S ...   }\\n  } |
+| Super | tst.ts:91:3:95:3 | class S ...   }\\n  } |
+| Thing | tst.ts:78:10:88:3 | class T ...   }\\n  } |
+| ThingI | tst.ts:73:3:76:3 | interfa ... n);\\n  } |
 | ValueOrArray<T> | type_alias.ts:5:1:5:50 | type Va ... ay<T>>; |
 | ValueOrArray<number> | type_alias.ts:5:1:5:50 | type Va ... ay<T>>; |
 | VirtualNode | type_alias.ts:19:1:21:57 | type Vi ... ode[]]; |

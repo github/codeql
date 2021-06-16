@@ -227,6 +227,10 @@
 | file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWith | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in ContinueWith |
 | file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWith | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in ContinueWith |
 | file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWith | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in ContinueWith |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWith | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in ContinueWith |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWith | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in ContinueWith |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWith | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in ContinueWith |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWith | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in ContinueWith |
 | file://:0:0:0:0 | [summary] call to elementSelector in GroupBy | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 2 in GroupBy |
 | file://:0:0:0:0 | [summary] call to elementSelector in GroupBy | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 2 in GroupBy |
 | file://:0:0:0:0 | [summary] call to elementSelector in GroupBy | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 2 in GroupBy |
@@ -313,3 +317,5 @@
 | file://:0:0:0:0 | [summary] call to valueFactory in Lazy | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in Lazy |
 | file://:0:0:0:0 | [summary] call to valueFactory in Lazy | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in Lazy |
 | file://:0:0:0:0 | [summary] call to valueFactory in Lazy | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in Lazy |
+| file://:0:0:0:0 | [summary] call to valueFactory in Lazy | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in Lazy |
+| file://:0:0:0:0 | [summary] call to valueSelector in Task | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in Task |

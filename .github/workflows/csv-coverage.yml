@@ -70,8 +70,8 @@ jobs:
       with:
         name: rst-flow-model-coverage
         path: flow-model-coverage-*.rst
-    - name: Check coverage files
-      if: github.event.pull_request
-      run: |
-        python script/misc/scripts/library-coverage/compare-files.py codeqlModels
+    # - name: Check coverage files
+    #   if: github.event.pull_request
+    #   run: |
+    #     python script/misc/scripts/library-coverage/compare-files.py codeqlModels
 

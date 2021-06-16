@@ -6,6 +6,7 @@
  * @kind problem
  * @id cs/insecure-request-validation-mode
  * @problem.severity warning
+ * @security-severity 6.9
  * @tags security
  *       external/cwe/cwe-016
  */

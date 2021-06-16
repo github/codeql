@@ -305,3 +305,12 @@ function moreAxios() {
         }
     );
 }
+
+import { fetch as fetchPolyfill } from 'whatwg-fetch'
+
+function usePolyfill() {
+    return fetchPolyfill('/foo/bar')
+        .then(function (response) {
+            return response.text()
+        })
+}

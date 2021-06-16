@@ -1,0 +1,2 @@
+lgtm,codescanning
+* The "Potential input resource leak" (`java/input-resource-leak`) and "Potential output resource leak" (`java/output-resource-leak`) queries no longer confuse `java.io` classes such as `Reader` with others that happen to share the same base name. Additionally the number of false positives has been reduced by recognizing `CharArrayReader` and `CharArrayWriter` as types that don't need to be closed.

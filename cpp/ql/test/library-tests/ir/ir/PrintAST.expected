@@ -11445,6 +11445,145 @@ smart_ptr.cpp:
 #   19|             Type = [ClassTemplateInstantiation] shared_ptr<float>
 #   19|             ValueCategory = lvalue
 #   20|     getStmt(2): [ReturnStmt] return ...
+#   22| [TopLevelFunction] void shared_ptr_const_int(std::shared_ptr<int const>)
+#   22|   <params>: 
+#   22|     getParameter(0): [Parameter] (unnamed parameter 0)
+#   22|         Type = [ClassTemplateInstantiation] shared_ptr<const int>
+#   23| [TopLevelFunction] void shared_ptr_const_int_ptr(std::shared_ptr<int* const>)
+#   23|   <params>: 
+#   23|     getParameter(0): [Parameter] (unnamed parameter 0)
+#   23|         Type = [ClassTemplateInstantiation] shared_ptr<int *const>
+#   24| [TopLevelFunction] void shared_ptr_shared_ptr_const_int(std::shared_ptr<std::shared_ptr<int const>>)
+#   24|   <params>: 
+#   24|     getParameter(0): [Parameter] (unnamed parameter 0)
+#   24|         Type = [ClassTemplateInstantiation] shared_ptr<shared_ptr<const int>>
+#   25| [TopLevelFunction] void shared_ptr_const_shared_ptr_int(std::shared_ptr<std::shared_ptr<int> const>)
+#   25|   <params>: 
+#   25|     getParameter(0): [Parameter] (unnamed parameter 0)
+#   25|         Type = [ClassTemplateInstantiation] shared_ptr<const shared_ptr<int>>
+#   26| [TopLevelFunction] void shared_ptr_const_shared_ptr_const_int(std::shared_ptr<std::shared_ptr<int const> const>)
+#   26|   <params>: 
+#   26|     getParameter(0): [Parameter] (unnamed parameter 0)
+#   26|         Type = [ClassTemplateInstantiation] shared_ptr<const shared_ptr<const int>>
+#   28| [TopLevelFunction] void call_shared_ptr_consts()
+#   28|   <params>: 
+#   28|   getEntryPoint(): [BlockStmt] { ... }
+#   29|     getStmt(0): [DeclStmt] declaration
+#   29|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of sp_const_int
+#   29|           Type = [ClassTemplateInstantiation] shared_ptr<const int>
+#   31|     getStmt(1): [ExprStmt] ExprStmt
+#   31|       getExpr(): [FunctionCall] call to shared_ptr_const_int
+#   31|           Type = [VoidType] void
+#   31|           ValueCategory = prvalue
+#   31|         getArgument(0): [ConstructorCall] call to shared_ptr
+#   31|             Type = [VoidType] void
+#   31|             ValueCategory = prvalue
+#   31|           getArgument(0): [VariableAccess] sp_const_int
+#   31|               Type = [ClassTemplateInstantiation] shared_ptr<const int>
+#   31|               ValueCategory = lvalue
+#   31|           getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+#   31|               Type = [LValueReferenceType] const shared_ptr<const int> &
+#   31|               ValueCategory = prvalue
+#   31|             getExpr(): [CStyleCast] (const shared_ptr<const int>)...
+#   31|                 Conversion = [GlvalueConversion] glvalue conversion
+#   31|                 Type = [SpecifiedType] const shared_ptr<const int>
+#   31|                 ValueCategory = lvalue
+#   31|         getArgument(0).getFullyConverted(): [TemporaryObjectExpr] temporary object
+#   31|             Type = [ClassTemplateInstantiation] shared_ptr<const int>
+#   31|             ValueCategory = lvalue
+#   33|     getStmt(2): [DeclStmt] declaration
+#   33|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of sp_const_int_pointer
+#   33|           Type = [ClassTemplateInstantiation] shared_ptr<int *const>
+#   35|     getStmt(3): [ExprStmt] ExprStmt
+#   35|       getExpr(): [FunctionCall] call to shared_ptr_const_int_ptr
+#   35|           Type = [VoidType] void
+#   35|           ValueCategory = prvalue
+#   35|         getArgument(0): [ConstructorCall] call to shared_ptr
+#   35|             Type = [VoidType] void
+#   35|             ValueCategory = prvalue
+#   35|           getArgument(0): [VariableAccess] sp_const_int_pointer
+#   35|               Type = [ClassTemplateInstantiation] shared_ptr<int *const>
+#   35|               ValueCategory = lvalue
+#   35|           getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+#   35|               Type = [LValueReferenceType] const shared_ptr<int *const> &
+#   35|               ValueCategory = prvalue
+#   35|             getExpr(): [CStyleCast] (const shared_ptr<int *const>)...
+#   35|                 Conversion = [GlvalueConversion] glvalue conversion
+#   35|                 Type = [SpecifiedType] const shared_ptr<int *const>
+#   35|                 ValueCategory = lvalue
+#   35|         getArgument(0).getFullyConverted(): [TemporaryObjectExpr] temporary object
+#   35|             Type = [ClassTemplateInstantiation] shared_ptr<int *const>
+#   35|             ValueCategory = lvalue
+#   37|     getStmt(4): [DeclStmt] declaration
+#   37|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of sp_sp_const_int
+#   37|           Type = [ClassTemplateInstantiation] shared_ptr<shared_ptr<const int>>
+#   39|     getStmt(5): [ExprStmt] ExprStmt
+#   39|       getExpr(): [FunctionCall] call to shared_ptr_shared_ptr_const_int
+#   39|           Type = [VoidType] void
+#   39|           ValueCategory = prvalue
+#   39|         getArgument(0): [ConstructorCall] call to shared_ptr
+#   39|             Type = [VoidType] void
+#   39|             ValueCategory = prvalue
+#   39|           getArgument(0): [VariableAccess] sp_sp_const_int
+#   39|               Type = [ClassTemplateInstantiation] shared_ptr<shared_ptr<const int>>
+#   39|               ValueCategory = lvalue
+#   39|           getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+#   39|               Type = [LValueReferenceType] const shared_ptr<shared_ptr<const int>> &
+#   39|               ValueCategory = prvalue
+#   39|             getExpr(): [CStyleCast] (const shared_ptr<shared_ptr<const int>>)...
+#   39|                 Conversion = [GlvalueConversion] glvalue conversion
+#   39|                 Type = [SpecifiedType] const shared_ptr<shared_ptr<const int>>
+#   39|                 ValueCategory = lvalue
+#   39|         getArgument(0).getFullyConverted(): [TemporaryObjectExpr] temporary object
+#   39|             Type = [ClassTemplateInstantiation] shared_ptr<shared_ptr<const int>>
+#   39|             ValueCategory = lvalue
+#   41|     getStmt(6): [DeclStmt] declaration
+#   41|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of sp_const_sp_int
+#   41|           Type = [ClassTemplateInstantiation] shared_ptr<const shared_ptr<int>>
+#   43|     getStmt(7): [ExprStmt] ExprStmt
+#   43|       getExpr(): [FunctionCall] call to shared_ptr_const_shared_ptr_int
+#   43|           Type = [VoidType] void
+#   43|           ValueCategory = prvalue
+#   43|         getArgument(0): [ConstructorCall] call to shared_ptr
+#   43|             Type = [VoidType] void
+#   43|             ValueCategory = prvalue
+#   43|           getArgument(0): [VariableAccess] sp_const_sp_int
+#   43|               Type = [ClassTemplateInstantiation] shared_ptr<const shared_ptr<int>>
+#   43|               ValueCategory = lvalue
+#   43|           getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+#   43|               Type = [LValueReferenceType] const shared_ptr<const shared_ptr<int>> &
+#   43|               ValueCategory = prvalue
+#   43|             getExpr(): [CStyleCast] (const shared_ptr<const shared_ptr<int>>)...
+#   43|                 Conversion = [GlvalueConversion] glvalue conversion
+#   43|                 Type = [SpecifiedType] const shared_ptr<const shared_ptr<int>>
+#   43|                 ValueCategory = lvalue
+#   43|         getArgument(0).getFullyConverted(): [TemporaryObjectExpr] temporary object
+#   43|             Type = [ClassTemplateInstantiation] shared_ptr<const shared_ptr<int>>
+#   43|             ValueCategory = lvalue
+#   45|     getStmt(8): [DeclStmt] declaration
+#   45|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of sp_const_sp_const_int
+#   45|           Type = [ClassTemplateInstantiation] shared_ptr<const shared_ptr<const int>>
+#   47|     getStmt(9): [ExprStmt] ExprStmt
+#   47|       getExpr(): [FunctionCall] call to shared_ptr_const_shared_ptr_const_int
+#   47|           Type = [VoidType] void
+#   47|           ValueCategory = prvalue
+#   47|         getArgument(0): [ConstructorCall] call to shared_ptr
+#   47|             Type = [VoidType] void
+#   47|             ValueCategory = prvalue
+#   47|           getArgument(0): [VariableAccess] sp_const_sp_const_int
+#   47|               Type = [ClassTemplateInstantiation] shared_ptr<const shared_ptr<const int>>
+#   47|               ValueCategory = lvalue
+#   47|           getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+#   47|               Type = [LValueReferenceType] const shared_ptr<const shared_ptr<const int>> &
+#   47|               ValueCategory = prvalue
+#   47|             getExpr(): [CStyleCast] (const shared_ptr<const shared_ptr<const int>>)...
+#   47|                 Conversion = [GlvalueConversion] glvalue conversion
+#   47|                 Type = [SpecifiedType] const shared_ptr<const shared_ptr<const int>>
+#   47|                 ValueCategory = lvalue
+#   47|         getArgument(0).getFullyConverted(): [TemporaryObjectExpr] temporary object
+#   47|             Type = [ClassTemplateInstantiation] shared_ptr<const shared_ptr<const int>>
+#   47|             ValueCategory = lvalue
+#   48|     getStmt(10): [ReturnStmt] return ...
 struct_init.cpp:
 #    1| [TopLevelFunction] int handler1(void*)
 #    1|   <params>: 
