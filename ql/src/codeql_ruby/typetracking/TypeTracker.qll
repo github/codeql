@@ -23,15 +23,57 @@ class OptionalContentName extends string {
   OptionalContentName() { this instanceof ContentName or this = "" }
 }
 
-/**
- * A description of a step on an inter-procedural data flow path.
- */
-private newtype TStepSummary =
-  LevelStep() or
-  CallStep() or
-  ReturnStep() or
-  StoreStep(ContentName content) or
-  LoadStep(ContentName content)
+cached
+private module Cached {
+  /**
+   * A description of a step on an inter-procedural data flow path.
+   */
+  cached
+  newtype TStepSummary =
+    LevelStep() or
+    CallStep() or
+    ReturnStep() or
+    StoreStep(ContentName content) or
+    LoadStep(ContentName content)
+
+  /** Gets the summary resulting from appending `step` to type-tracking summary `tt`. */
+  cached
+  TypeTracker append(TypeTracker tt, StepSummary step) {
+    exists(Boolean hasCall, OptionalContentName content | tt = MkTypeTracker(hasCall, content) |
+      step = LevelStep() and result = tt
+      or
+      step = CallStep() and result = MkTypeTracker(true, content)
+      or
+      step = ReturnStep() and hasCall = false and result = tt
+      or
+      step = LoadStep(content) and result = MkTypeTracker(hasCall, "")
+      or
+      exists(string p | step = StoreStep(p) and content = "" and result = MkTypeTracker(hasCall, p))
+    )
+  }
+
+  /**
+   * Gets the summary that corresponds to having taken a forwards
+   * heap and/or intra-procedural step from `nodeFrom` to `nodeTo`.
+   *
+   * Steps contained in this predicate should _not_ depend on the call graph.
+   */
+  cached
+  predicate stepNoCall(LocalSourceNode nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
+    exists(Node mid | nodeFrom.flowsTo(mid) and smallstepNoCall(mid, nodeTo, summary))
+  }
+
+  /**
+   * Gets the summary that corresponds to having taken a forwards
+   * inter-procedural step from `nodeFrom` to `nodeTo`.
+   */
+  cached
+  predicate stepCall(LocalSourceNode nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
+    exists(Node mid | nodeFrom.flowsTo(mid) and smallstepCall(mid, nodeTo, summary))
+  }
+}
+
+private import Cached
 
 /**
  * INTERNAL: Use `TypeTracker` or `TypeBackTracker` instead.
@@ -53,28 +95,29 @@ class StepSummary extends TStepSummary {
   }
 }
 
+pragma[noinline]
+private predicate smallstepNoCall(Node nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
+  jumpStep(nodeFrom, nodeTo) and
+  summary = LevelStep()
+  or
+  exists(string content |
+    StepSummary::localSourceStoreStep(nodeFrom, nodeTo, content) and
+    summary = StoreStep(content)
+    or
+    basicLoadStep(nodeFrom, nodeTo, content) and summary = LoadStep(content)
+  )
+}
+
+pragma[noinline]
+private predicate smallstepCall(Node nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
+  callStep(nodeFrom, nodeTo) and summary = CallStep()
+  or
+  returnStep(nodeFrom, nodeTo) and
+  summary = ReturnStep()
+}
+
 /** Provides predicates for updating step summaries (`StepSummary`s). */
 module StepSummary {
-  /**
-   * Gets the summary that corresponds to having taken a forwards
-   * heap and/or intra-procedural step from `nodeFrom` to `nodeTo`.
-   *
-   * Steps contained in this predicate should _not_ depend on the call graph.
-   */
-  cached
-  private predicate stepNoCall(LocalSourceNode nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
-    exists(Node mid | nodeFrom.flowsTo(mid) and smallstepNoCall(mid, nodeTo, summary))
-  }
-
-  /**
-   * Gets the summary that corresponds to having taken a forwards
-   * inter-procedural step from `nodeFrom` to `nodeTo`.
-   */
-  cached
-  private predicate stepCall(LocalSourceNode nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
-    exists(Node mid | nodeFrom.flowsTo(mid) and smallstepCall(mid, nodeTo, summary))
-  }
-
   /**
    * Gets the summary that corresponds to having taken a forwards
    * heap and/or inter-procedural step from `nodeFrom` to `nodeTo`.
@@ -90,27 +133,6 @@ module StepSummary {
     stepNoCall(nodeFrom, nodeTo, summary)
     or
     stepCall(nodeFrom, nodeTo, summary)
-  }
-
-  pragma[noinline]
-  private predicate smallstepNoCall(Node nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
-    jumpStep(nodeFrom, nodeTo) and
-    summary = LevelStep()
-    or
-    exists(string content |
-      localSourceStoreStep(nodeFrom, nodeTo, content) and
-      summary = StoreStep(content)
-      or
-      basicLoadStep(nodeFrom, nodeTo, content) and summary = LoadStep(content)
-    )
-  }
-
-  pragma[noinline]
-  private predicate smallstepCall(Node nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
-    callStep(nodeFrom, nodeTo) and summary = CallStep()
-    or
-    returnStep(nodeFrom, nodeTo) and
-    summary = ReturnStep()
   }
 
   /**
@@ -193,18 +215,7 @@ class TypeTracker extends TTypeTracker {
   TypeTracker() { this = MkTypeTracker(hasCall, content) }
 
   /** Gets the summary resulting from appending `step` to this type-tracking summary. */
-  cached
-  TypeTracker append(StepSummary step) {
-    step = LevelStep() and result = this
-    or
-    step = CallStep() and result = MkTypeTracker(true, content)
-    or
-    step = ReturnStep() and hasCall = false and result = this
-    or
-    step = LoadStep(content) and result = MkTypeTracker(hasCall, "")
-    or
-    exists(string p | step = StoreStep(p) and content = "" and result = MkTypeTracker(hasCall, p))
-  }
+  TypeTracker append(StepSummary step) { result = append(this, step) }
 
   /** Gets a textual representation of this summary. */
   string toString() {
