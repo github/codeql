@@ -5,6 +5,7 @@
  * @id py/insecure-default-protocol
  * @kind problem
  * @problem.severity warning
+ * @security-severity 5.2
  * @precision high
  * @tags security
  *       external/cwe/cwe-327

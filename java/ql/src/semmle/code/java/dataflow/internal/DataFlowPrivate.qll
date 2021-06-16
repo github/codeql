@@ -4,6 +4,7 @@ private import DataFlowImplCommon
 private import DataFlowDispatch
 private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.dataflow.SSA
+private import ContainerFlow
 private import FlowSummaryImpl as FlowSummaryImpl
 import DataFlowNodes::Private
 
@@ -137,12 +138,14 @@ class MapValueContent extends Content, TMapValueContent {
  * Thus, `node2` references an object with a field `f` that contains the
  * value of `node1`.
  */
-predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
+predicate storeStep(Node node1, Content f, Node node2) {
   exists(FieldAccess fa |
     instanceFieldAssign(node1.asExpr(), fa) and
-    node2.getPreUpdateNode() = getFieldQualifier(fa) and
+    node2.(PostUpdateNode).getPreUpdateNode() = getFieldQualifier(fa) and
     f.(FieldContent).getField() = fa.getField()
   )
+  or
+  f instanceof ArrayContent and arrayStoreStep(node1, node2)
   or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1, f, node2)
 }
@@ -170,6 +173,10 @@ predicate readStep(Node node1, Content f, Node node2) {
     node1.asExpr() = get.getQualifier() and
     node2.asExpr() = get
   )
+  or
+  f instanceof ArrayContent and arrayReadStep(node1, node2, _)
+  or
+  f instanceof CollectionContent and collectionReadStep(node1, node2)
   or
   FlowSummaryImpl::Private::Steps::summaryReadStep(node1, f, node2)
 }
@@ -296,7 +303,9 @@ predicate isUnreachableInCall(Node n, DataFlowCall call) {
     // which is used in a guard
     param.getAUse() = guard and
     // which controls `n` with the opposite value of `arg`
-    guard.controls(n.asExpr().getBasicBlock(), arg.getBooleanValue().booleanNot())
+    guard
+        .controls(n.asExpr().getBasicBlock(),
+          pragma[only_bind_out](arg.getBooleanValue()).booleanNot())
   )
 }
 

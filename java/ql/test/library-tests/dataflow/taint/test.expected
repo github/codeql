@@ -3,7 +3,6 @@
 | A.java:33:23:33:29 | taint(...) | A.java:34:10:34:27 | toByteArray(...) |
 | A.java:46:27:46:33 | taint(...) | A.java:47:10:47:30 | toByteArray(...) |
 | A.java:55:58:55:64 | taint(...) | A.java:61:10:61:16 | dh.data |
-| A.java:72:16:72:22 | taint(...) | A.java:73:10:73:10 | b |
 | B.java:15:21:15:27 | taint(...) | B.java:18:10:18:16 | aaaargs |
 | B.java:15:21:15:27 | taint(...) | B.java:21:10:21:10 | s |
 | B.java:15:21:15:27 | taint(...) | B.java:24:10:24:15 | concat |
