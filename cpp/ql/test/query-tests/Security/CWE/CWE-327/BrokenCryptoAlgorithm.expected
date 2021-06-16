@@ -3,8 +3,6 @@
 | test2.cpp:49:4:49:24 | call to my_des_implementation | This file makes use of a broken or weak cryptographic algorithm (specified by $@). | test2.cpp:66:31:66:38 | ALGO_DES | invocation of macro ALGO_DES |
 | test2.cpp:49:4:49:24 | call to my_des_implementation | This file makes use of a broken or weak cryptographic algorithm (specified by $@). | test2.cpp:128:4:128:24 | call to my_des_implementation | call to my_des_implementation |
 | test2.cpp:49:4:49:24 | call to my_des_implementation | This file makes use of a broken or weak cryptographic algorithm (specified by $@). | test2.cpp:148:27:148:29 | DES | access of enum constant DES |
-| test2.cpp:49:4:49:24 | call to my_des_implementation | This file makes use of a broken or weak cryptographic algorithm (specified by $@). | test2.cpp:176:28:176:35 | ALGO_DES | invocation of macro ALGO_DES |
-| test2.cpp:49:4:49:24 | call to my_des_implementation | This file makes use of a broken or weak cryptographic algorithm (specified by $@). | test2.cpp:179:28:179:34 | USE_DES | access of enum constant USE_DES |
 | test2.cpp:49:4:49:24 | call to my_des_implementation | This file makes use of a broken or weak cryptographic algorithm (specified by $@). | test2.cpp:186:38:186:45 | ALGO_DES | invocation of macro ALGO_DES |
 | test2.cpp:49:4:49:24 | call to my_des_implementation | This file makes use of a broken or weak cryptographic algorithm (specified by $@). | test2.cpp:189:38:189:44 | USE_DES | access of enum constant USE_DES |
 | test2.cpp:49:4:49:24 | call to my_des_implementation | This file makes use of a broken or weak cryptographic algorithm (specified by $@). | test2.cpp:242:2:242:20 | call to encrypt | call to encrypt |
@@ -12,12 +10,6 @@
 | test2.cpp:49:4:49:24 | call to my_des_implementation | This file makes use of a broken or weak cryptographic algorithm (specified by $@). | test2.cpp:304:20:304:37 | call to desEncryptor | call to desEncryptor |
 | test2.cpp:49:4:49:24 | call to my_des_implementation | This file makes use of a broken or weak cryptographic algorithm (specified by $@). | test2.cpp:308:5:308:19 | call to doDesEncryption | call to doDesEncryption |
 | test2.cpp:49:4:49:24 | call to my_des_implementation | This file makes use of a broken or weak cryptographic algorithm (specified by $@). | test2.cpp:309:9:309:23 | call to doDesEncryption | call to doDesEncryption |
-| test2.cpp:49:4:49:24 | call to my_des_implementation | This file makes use of a broken or weak cryptographic algorithm (specified by $@). | test2.cpp:325:2:325:57 | ALGO_DES | invocation of macro ALGO_DES |
-| test2.cpp:49:4:49:24 | call to my_des_implementation | This file makes use of a broken or weak cryptographic algorithm (specified by $@). | test2.cpp:340:24:340:42 | ENCRYPTION_DES_NAME | invocation of macro ENCRYPTION_DES_NAME |
-| test2.cpp:49:4:49:24 | call to my_des_implementation | This file makes use of a broken or weak cryptographic algorithm (specified by $@). | test2.cpp:362:24:362:43 | call to getEncryptionNameDES | call to getEncryptionNameDES |
-| test2.cpp:49:4:49:24 | call to my_des_implementation | This file makes use of a broken or weak cryptographic algorithm (specified by $@). | test2.cpp:377:10:377:29 | call to getEncryptionNameDES | call to getEncryptionNameDES |
-| test2.cpp:49:4:49:24 | call to my_des_implementation | This file makes use of a broken or weak cryptographic algorithm (specified by $@). | test2.cpp:387:42:387:49 | ALGO_DES | invocation of macro ALGO_DES |
-| test2.cpp:49:4:49:24 | call to my_des_implementation | This file makes use of a broken or weak cryptographic algorithm (specified by $@). | test2.cpp:403:26:403:45 | call to getEncryptionNameDES | call to getEncryptionNameDES |
 | test.cpp:38:2:38:31 | ENCRYPT_WITH_DES(data,amount) | This file makes use of a broken or weak cryptographic algorithm (specified by $@). | test.cpp:38:2:38:31 | ENCRYPT_WITH_DES(data,amount) | invocation of macro ENCRYPT_WITH_DES |
 | test.cpp:38:2:38:31 | ENCRYPT_WITH_DES(data,amount) | This file makes use of a broken or weak cryptographic algorithm (specified by $@). | test.cpp:39:2:39:31 | ENCRYPT_WITH_RC2(data,amount) | invocation of macro ENCRYPT_WITH_RC2 |
 | test.cpp:38:2:38:31 | ENCRYPT_WITH_DES(data,amount) | This file makes use of a broken or weak cryptographic algorithm (specified by $@). | test.cpp:41:2:41:32 | ENCRYPT_WITH_3DES(data,amount) | invocation of macro ENCRYPT_WITH_3DES |
@@ -31,5 +23,3 @@
 | test.cpp:38:2:38:31 | ENCRYPT_WITH_DES(data,amount) | This file makes use of a broken or weak cryptographic algorithm (specified by $@). | test.cpp:91:2:91:12 | call to encrypt3DES | call to encrypt3DES |
 | test.cpp:38:2:38:31 | ENCRYPT_WITH_DES(data,amount) | This file makes use of a broken or weak cryptographic algorithm (specified by $@). | test.cpp:92:2:92:17 | call to encryptTripleDES | call to encryptTripleDES |
 | test.cpp:38:2:38:31 | ENCRYPT_WITH_DES(data,amount) | This file makes use of a broken or weak cryptographic algorithm (specified by $@). | test.cpp:101:2:101:15 | call to do_des_encrypt | call to do_des_encrypt |
-| test.cpp:38:2:38:31 | ENCRYPT_WITH_DES(data,amount) | This file makes use of a broken or weak cryptographic algorithm (specified by $@). | test.cpp:102:2:102:12 | call to DES_Set_Key | call to DES_Set_Key |
-| test.cpp:38:2:38:31 | ENCRYPT_WITH_DES(data,amount) | This file makes use of a broken or weak cryptographic algorithm (specified by $@). | test.cpp:121:2:121:24 | INIT_ENCRYPT_WITH_DES() | invocation of macro INIT_ENCRYPT_WITH_DES |

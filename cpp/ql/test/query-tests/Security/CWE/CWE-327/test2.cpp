@@ -173,10 +173,10 @@ const char *get_algorithm3();
 
 void do_unseen_encrypts(char *data, size_t amount, keytype key)
 {
-	set_encryption_algorithm1(ALGO_DES); // BAD
+	set_encryption_algorithm1(ALGO_DES); // BAD [NOT DETECTED]
 	set_encryption_algorithm1(ALGO_AES); // GOOD
 
-	set_encryption_algorithm2(USE_DES); // BAD
+	set_encryption_algorithm2(USE_DES); // BAD [NOT DETECTED]
 	set_encryption_algorithm2(USE_AES); // GOOD
 
 	set_encryption_algorithm3("DES"); // BAD [NOT DETECTED]
@@ -322,7 +322,7 @@ const algorithmInfo *getEncryptionAlgorithmInfo(int algo);
 void test_assert(int algo, algorithmInfo *algoInfo)
 {
 	assert(algo != ALGO_DES); // GOOD
-	assert(algoInfo != getEncryptionAlgorithmInfo(ALGO_DES)); // GOOD [FALSE POSITIVE]
+	assert(algoInfo != getEncryptionAlgorithmInfo(ALGO_DES)); // GOOD
 
 	// ...
 }
@@ -337,7 +337,7 @@ void abort(void);
 
 void test_string_comparisons1(const char *algo_name)
 {
-	if (strcmp(algo_name, ENCRYPTION_DES_NAME) == 0) // GOOD [FALSE POSITIVE]
+	if (strcmp(algo_name, ENCRYPTION_DES_NAME) == 0) // GOOD
 	{
 		abort();
 	}
@@ -359,7 +359,7 @@ const char *getEncryptionNameAES()
 
 void test_string_comparisons2(const char *algo_name)
 {
-	if (strcmp(algo_name, getEncryptionNameDES()) == 0) // GOOD [FALSE POSITIVE]
+	if (strcmp(algo_name, getEncryptionNameDES()) == 0) // GOOD
 	{
 		abort();
 	}
@@ -374,7 +374,7 @@ const char *getEncryptionName(int algo)
 	switch (algo)
 	{
 	case ALGO_DES:
-		return getEncryptionNameDES(); // GOOD [FALSE POSITIVE]
+		return getEncryptionNameDES(); // GOOD
 	case ALGO_AES:
 		return getEncryptionNameAES(); // GOOD
 	default:
@@ -384,7 +384,7 @@ const char *getEncryptionName(int algo)
 
 void test_string_comparisons3(const char *algo_name)
 {
-	if (strcmp(algo_name, getEncryptionName(ALGO_DES)) == 0) // GOOD [FALSE POSITIVE]
+	if (strcmp(algo_name, getEncryptionName(ALGO_DES)) == 0) // GOOD
 	{
 		abort();
 	}
@@ -400,6 +400,6 @@ void doEncryption(char *data, size_t len, const char *algorithmName);
 
 void test_fn_in_fn(char *data, size_t len)
 {
-	doEncryption(data, len, getEncryptionNameDES()); // BAD
+	doEncryption(data, len, getEncryptionNameDES()); // BAD [NOT DETECTED]
 	doEncryption(data, len, getEncryptionNameAES()); // GOOD
 }

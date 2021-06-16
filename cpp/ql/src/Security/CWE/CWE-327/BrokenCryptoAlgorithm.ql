@@ -110,7 +110,25 @@ predicate getInsecureEncryptionEvidence(FunctionCall fc, Element blame, string d
   ) and
   // exclude calls from templates as this is rarely the right place to flag an
   // issue
-  not fc.isFromTemplateInstantiation(_)
+  not fc.isFromTemplateInstantiation(_) and
+  (
+    // the function should have an input that looks like a non-constant buffer
+    exists(Expr e |
+      fc.getAnArgument() = e and
+      (
+        e.getUnspecifiedType() instanceof PointerType or
+        e.getUnspecifiedType() instanceof ReferenceType or
+        e.getUnspecifiedType() instanceof ArrayType
+      ) and
+      not e.getType().isDeeplyConstBelow() and
+      not e.isConstant()
+    )
+    or
+    // or be a non-const member function of an object
+    fc.getTarget() instanceof MemberFunction and
+    not fc.getTarget() instanceof ConstMemberFunction and
+    not fc.getTarget().isStatic()
+  )
 }
 
 /**
