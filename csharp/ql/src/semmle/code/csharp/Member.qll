@@ -109,7 +109,7 @@ class Modifiable extends Declaration, @modifiable {
    * - the declaring and its nested types, similarly to `private` declarations, and
    * - the enclosing types.
    *
-   * Note that explicit interface implementation are also considered effectively
+   * Note that explicit interface implementations are also considered effectively
    * `private` if the implemented interface is itself effectively `private`. Finally,
    * `private protected` members are not considered effectively `private`, because
    * they can be overriden within the declaring assembly.
@@ -135,7 +135,7 @@ class Modifiable extends Declaration, @modifiable {
    * effectively `internal` if it can only be referenced from the declaring assembly.
    *
    * Note that friend assemblies declared in `InternalsVisibleToAttribute` are not
-   * considered. Explicit interface implementation are also considered effectively
+   * considered. Explicit interface implementations are also considered effectively
    * `internal` if the implemented interface is itself effectively `internal`. Finally,
    * `internal protected` members are not considered effectively `internal`, because
    * they can be overriden outside the declaring assembly.
@@ -192,7 +192,7 @@ class Virtualizable extends Member, @virtualizable {
   }
 
   override predicate isPrivate() {
-    Member.super.isPrivate() and
+    super.isPrivate() and
     not implementsExplicitInterface()
   }
 
