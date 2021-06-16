@@ -27,37 +27,37 @@ def test():
     # as tainted even after it has been escaped in some place. This _might_ not be the
     # case since data-flow library has taint-steps from adjacent uses...
     ensure_tainted(ts) # $ tainted
-    ensure_not_tainted(escape(ts))
+    ensure_not_tainted(escape(ts)) # $ escapeInput=ts escapeKind=html escapeOutput=escape(..)
     ensure_tainted(ts) # $ tainted
 
     ensure_tainted(
         ts, # $ tainted
         m_unsafe, # $ tainted
-        m_unsafe + SAFE, # $ MISSING: tainted
-        SAFE + m_unsafe, # $ MISSING: tainted
-        m_unsafe.format(SAFE), # $ MISSING: tainted
-        m_unsafe + ts, # $ MISSING: tainted
+        m_unsafe + SAFE, # $ escapeInput=SAFE escapeKind=html escapeOutput=BinaryExpr MISSING: tainted
+        SAFE + m_unsafe, # $ escapeInput=SAFE escapeKind=html escapeOutput=BinaryExpr MISSING: tainted
+        m_unsafe.format(SAFE), # $ escapeInput=SAFE escapeKind=html escapeOutput=m_unsafe.format(..) MISSING: tainted
+        m_unsafe + ts, # $ escapeInput=ts escapeKind=html escapeOutput=BinaryExpr MISSING: tainted
 
-        m_safe.format(m_unsafe), # $ MISSING: tainted
+        m_safe.format(m_unsafe), # $ escapeKind=html escapeOutput=m_safe.format(..) MISSING: tainted
 
-        escape(ts).unescape(), # $ MISSING: tainted
-        escape_silent(ts).unescape(), # $ MISSING: tainted
+        escape(ts).unescape(), # $ escapeInput=ts escapeKind=html escapeOutput=escape(..) MISSING: tainted
+        escape_silent(ts).unescape(), # $ escapeInput=ts escapeKind=html escapeOutput=escape_silent(..) MISSING: tainted
     )
 
     ensure_not_tainted(
-        escape(ts),
-        escape_silent(ts),
+        escape(ts), # $ escapeInput=ts escapeKind=html escapeOutput=escape(..)
+        escape_silent(ts), # $ escapeInput=ts escapeKind=html escapeOutput=escape_silent(..)
 
-        Markup.escape(ts),
+        Markup.escape(ts), # $ escapeInput=ts escapeKind=html escapeOutput=Markup.escape(..)
 
         m_safe,
-        m_safe + ts,
-        ts + m_safe,
-        m_safe.format(ts),
+        m_safe + ts, # $ escapeInput=ts escapeKind=html escapeOutput=BinaryExpr
+        ts + m_safe, # $ escapeInput=ts escapeKind=html escapeOutput=BinaryExpr
+        m_safe.format(ts), # $ escapeInput=ts escapeKind=html escapeOutput=m_safe.format(..)
 
-        escape(ts) + ts,
-        escape_silent(ts) + ts,
-        Markup.escape(ts) + ts,
+        escape(ts) + ts, # $ escapeInput=ts escapeKind=html escapeOutput=BinaryExpr escapeOutput=escape(..)
+        escape_silent(ts) + ts, # $ escapeInput=ts escapeKind=html escapeOutput=BinaryExpr escapeOutput=escape_silent(..)
+        Markup.escape(ts) + ts, # $ escapeInput=ts escapeKind=html escapeOutput=BinaryExpr escapeOutput=Markup.escape(..)
     )
 
     # flask re-exports these, as:
@@ -70,8 +70,8 @@ def test():
     )
 
     ensure_not_tainted(
-        flask.escape(ts),
-        flask.Markup.escape(ts),
+        flask.escape(ts), # $ escapeInput=ts escapeKind=html escapeOutput=flask.escape(..)
+        flask.Markup.escape(ts), # $ escapeInput=ts escapeKind=html escapeOutput=flask.Markup.escape(..)
     )
 
 
