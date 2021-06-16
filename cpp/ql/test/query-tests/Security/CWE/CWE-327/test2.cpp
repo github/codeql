@@ -305,3 +305,21 @@ void do_template_classes(char *data)
 	c.obj->doDesEncryption(data); // BAD
 	t.doDesEncryption(data); // BAD [NOT DETECTED]
 }
+
+// --- assert ---
+
+int assertFunc(const char *file, int line);
+#define assert(_cond) ((_cond) || assertFunc(__FILE__, __LINE__))
+
+struct algorithmInfo;
+
+const algorithmInfo *getEncryptionAlgorithmInfo(int algo);
+
+void test_assert(int algo, algorithmInfo *algoInfo)
+{
+	assert(algo != ALGO_DES); // GOOD
+	assert(algoInfo != getEncryptionAlgorithmInfo(ALGO_DES)); // GOOD [FALSE POSITIVE]
+
+	// ...
+}
+
