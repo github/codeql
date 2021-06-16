@@ -21,12 +21,12 @@ and does not depend on the contents of the arrays.
 <example>
 <p>
 The following example uses <code>Arrays.equals()</code> method for comparing MAC.
-This method implements a not-constant time algorithm:
+This method implements a non-constant time algorithm:
 </p>
 <sample src="UnsafeMacComparison.java" />
 
 <p>
-The next example example uses a safe not-constant time algorithm for comparing MAC:
+The next example uses a safe constant time algorithm for comparing MAC:
 </p>
 <sample src="SafeMacComparison.java" />
 
@@ -35,19 +35,11 @@ The next example example uses a safe not-constant time algorithm for comparing M
 <references>
 <li>
   Wikipedia:
-  <a href="https://en.wikipedia.org/wiki/Timing_attack">Timint attack</a>.
-</li>
-li>
-  Common Weakness Enumeration:
-  <a href="https://cwe.mitre.org/data/definitions/208.html">CWE-208: Observable Timing Discrepancy</a>.
-</li>
-<li>
-  Common Weakness Enumeration:
-  <a href="https://cwe.mitre.org/data/definitions/385.html">CWE-385: Covert Timing Channel</a>.
+  <a href="https://en.wikipedia.org/wiki/Timing_attack">Timing attack</a>.
 </li>
 <li>
   Java API Specification:
-  <a href="https://docs.oracle.com/javase/8/docs/api/java/security/MessageDigest.html#isEqual-byte:A-byte:A-">MessageDigest.isEqual() method</a>
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/security/MessageDigest.html#isEqual(byte[],byte[])">MessageDigest.isEqual() method</a>
 </li>
 </references>
 </qhelp>

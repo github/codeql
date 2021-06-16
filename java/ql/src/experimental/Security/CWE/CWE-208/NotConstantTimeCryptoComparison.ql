@@ -1,13 +1,14 @@
 /**
- * @name Using a not-constant time algorithm for comparison results of a cryptographic operation
+ * @name Using a non-constant time algorithm for comparing results of a cryptographic operation
  * @description When comparing results of a cryptographic operation, a constant time algorithm should be used.
  *              Otherwise, an attacker may be able to implement a timing attack.
  *              A successful attack may result in leaking secrets or authentication bypass.
  * @kind path-problem
  * @problem.severity error
  * @precision high
- * @id java/not-constant-time-crypto-comparison
+ * @id java/non-constant-time-crypto-comparison
  * @tags security
+ *       external/cwe/cwe-385
  *       external/cwe/cwe-208
  */
 
@@ -16,11 +17,11 @@ import semmle.code.java.dataflow.TaintTracking
 import DataFlow::PathGraph
 
 /**
- * A method that returns a result of a cryptographic operation
+ * A method that returns the result of a cryptographic operation
  * such as encryption, decryption, signing, etc.
  */
-private class ReturnCryptoOperatinoResultMethod extends Method {
-  ReturnCryptoOperatinoResultMethod() {
+private class ReturnCryptoOperationResultMethod extends Method {
+  ReturnCryptoOperationResultMethod() {
     getDeclaringType().hasQualifiedName("javax.crypto", ["Mac", "Cipher"]) and
     hasName("doFinal")
     or
@@ -30,14 +31,14 @@ private class ReturnCryptoOperatinoResultMethod extends Method {
 }
 
 /**
- * A configuration that tracks data flows from cryptographic operations
- * to methods that compare data using a not-constant time algorithm.
+ * A configuration that tracks data flow from cryptographic operations
+ * to methods that compare data using a non-constant time algorithm.
  */
-private class NotConstantTimeCryptoComparisonConfig extends TaintTracking::Configuration {
-  NotConstantTimeCryptoComparisonConfig() { this = "NotConstantTimeCryptoComparisonConfig" }
+private class NonConstantTimeCryptoComparisonConfig extends TaintTracking::Configuration {
+  NonConstantTimeCryptoComparisonConfig() { this = "NonConstantTimeCryptoComparisonConfig" }
 
   override predicate isSource(DataFlow::Node source) {
-    exists(MethodAccess ma | ma.getMethod() instanceof ReturnCryptoOperatinoResultMethod |
+    exists(MethodAccess ma | ma.getMethod() instanceof ReturnCryptoOperationResultMethod |
       ma = source.asExpr()
     )
   }
@@ -59,7 +60,7 @@ private class NotConstantTimeCryptoComparisonConfig extends TaintTracking::Confi
   }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, NotConstantTimeCryptoComparisonConfig conf
+from DataFlow::PathNode source, DataFlow::PathNode sink, NonConstantTimeCryptoComparisonConfig conf
 where conf.hasFlowPath(source, sink)
 select sink.getNode(), source, sink,
-  "Using a not-constant time algorithm for comparison results of a cryptographic operation."
+  "Using a non-constant time algorithm for comparing results of a cryptographic operation."
