@@ -89,7 +89,10 @@ class File extends Container {
         i.getTest().(Compare).compares(name, op, main) and
         name.getId() = "__name__" and
         main.getText() = "__main__"
-      )
+      ) and
+      // Exclude files named `__main__.py`. These are often _not_ meant to be run directly, but
+      // contain this construct anyway.
+      not this.getShortName() = "__main__.py"
       or
       // The file contains a `#!` line referencing the python interpreter
       exists(Comment c |
