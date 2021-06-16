@@ -3,6 +3,7 @@
  * @description If a literal bell character or backspace appears in a regular expression, the start of text or word boundary may have been intended.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 7.8
  * @precision high
  * @id go/suspicious-character-in-regex
  * @tags correctness

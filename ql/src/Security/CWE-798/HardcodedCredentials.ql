@@ -4,6 +4,7 @@
  *              to gain unauthorized access.
  * @kind problem
  * @problem.severity warning
+ * @security-severity 9.8
  * @precision medium
  * @id go/hardcoded-credentials
  * @tags security

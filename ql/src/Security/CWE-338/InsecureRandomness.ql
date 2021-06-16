@@ -3,6 +3,7 @@
  * @description Using insufficient randomness as the key of a cryptographic algorithm can allow an attacker to compromise security.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 7.8
  * @precision high
  * @id go/insecure-randomness
  * @tags security

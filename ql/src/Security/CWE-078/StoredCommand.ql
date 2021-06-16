@@ -4,6 +4,7 @@
  *              can lead to execution of malicious code by the user.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 9.8
  * @precision low
  * @id go/stored-command
  * @tags security

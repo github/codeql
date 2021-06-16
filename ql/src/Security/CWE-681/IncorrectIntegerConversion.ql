@@ -5,6 +5,7 @@
  *              can produce unexpected values.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 8.1
  * @id go/incorrect-integer-conversion
  * @tags security
  *       external/cwe/cwe-190

@@ -4,6 +4,7 @@
  *              susceptible to CSRF attacks.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 8.8
  * @precision high
  * @id go/constant-oauth2-state
  * @tags security

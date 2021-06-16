@@ -6,6 +6,7 @@
  * @id go/email-injection
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 9.8
  * @tags security
  *       external/cwe/cwe-640
  * @precision high

@@ -4,6 +4,7 @@
  *              machine-in-the-middle and other attacks.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 7.5
  * @precision very-high
  * @id go/insecure-tls
  * @tags security
