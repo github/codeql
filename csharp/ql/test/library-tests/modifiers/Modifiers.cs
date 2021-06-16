@@ -56,4 +56,10 @@ namespace N
         /*private*/
         int P3 { /*private*/ get; /*private*/ set; }
     }
+
+    public interface I1
+    {
+        void M1();
+        void M2() => throw null;
+    }
 }
