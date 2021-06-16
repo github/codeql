@@ -4,12 +4,12 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 
-namespace Semmle.BuildAnalyser
+namespace Semmle.Extraction.CSharp
 {
     /// <summary>
     /// Represents a .csproj file and reads information from it.
     /// </summary>
-    internal class CsProjFile
+    public class CsProjFile
     {
         private string Filename { get; }
 
@@ -38,14 +38,14 @@ namespace Semmle.BuildAnalyser
                 // unrecognised content or is the wrong version.
                 // This currently always fails on Linux because
                 // Microsoft.Build is not cross platform.
-                (csFiles, references) = ReadMsBuildProject(filename);
+                (csFiles, references, projectReferences) = ReadMsBuildProject(filename);
             }
             catch  // lgtm[cs/catch-of-all-exceptions]
             {
                 // There was some reason why the project couldn't be loaded.
                 // Fall back to reading the Xml document directly.
                 // This method however doesn't handle variable expansion.
-                (csFiles, references) = ReadProjectFileAsXml(filename, Directory);
+                (csFiles, references, projectReferences) = ReadProjectFileAsXml(filename, Directory);
             }
         }
 
@@ -55,12 +55,17 @@ namespace Semmle.BuildAnalyser
         /// and there seems to be no way to make it succeed. Fails on Linux.
         /// </summary>
         /// <param name="filename">The file to read.</param>
-        private static (string[] csFiles, string[] references) ReadMsBuildProject(FileInfo filename)
+        private static (string[] csFiles, string[] references, string[] projectReferences) ReadMsBuildProject(FileInfo filename)
         {
             var msbuildProject = new Microsoft.Build.Execution.ProjectInstance(filename.FullName);
 
             var references = msbuildProject.Items
                 .Where(item => item.ItemType == "Reference")
+                .Select(item => item.EvaluatedInclude)
+                .ToArray();
+
+            var projectReferences = msbuildProject.Items
+                .Where(item => item.ItemType == "ProjectReference")
                 .Select(item => item.EvaluatedInclude)
                 .ToArray();
 
@@ -70,7 +75,7 @@ namespace Semmle.BuildAnalyser
                 .Where(fn => fn.EndsWith(".cs"))
                 .ToArray();
 
-            return (csFiles, references);
+            return (csFiles, references, projectReferences);
         }
 
         /// <summary>
@@ -79,7 +84,7 @@ namespace Semmle.BuildAnalyser
         /// fallback if ReadMsBuildProject() fails.
         /// </summary>
         /// <param name="fileName">The .csproj file.</param>
-        private static (string[] csFiles, string[] references) ReadProjectFileAsXml(FileInfo fileName, string directoryName)
+        private static (string[] csFiles, string[] references, string[] projectReferences) ReadProjectFileAsXml(FileInfo fileName, string directoryName)
         {
             var projFile = new XmlDocument();
             var mgr = new XmlNamespaceManager(projFile.NameTable);
@@ -109,8 +114,16 @@ namespace Semmle.BuildAnalyser
 
                 var additionalCsFiles = System.IO.Directory.GetFiles(directoryName, "*.cs", SearchOption.AllDirectories);
 
+                var projectReferences = root
+                    .SelectNodes("/Project/ItemGroup/ProjectReference/@Include", mgr)
+                    ?.NodeList()
+                    .Select(node => node.Value)
+                    .Select(csproj => GetFullPath(csproj, projDir))
+                    .Where(s => s is not null)
+                    ?? Enumerable.Empty<string>();
+
 #nullable disable warnings
-                return (explicitCsFiles.Concat(additionalCsFiles).ToArray(), Array.Empty<string>());
+                return (explicitCsFiles.Concat(additionalCsFiles).ToArray(), Array.Empty<string>(), projectReferences.ToArray());
 #nullable restore warnings
             }
 
@@ -135,7 +148,7 @@ namespace Semmle.BuildAnalyser
                 .ToArray();
 
 #nullable disable warnings
-            return (csFiles, references);
+            return (csFiles, references, Array.Empty<string>());
 #nullable restore warnings
         }
 
@@ -150,12 +163,18 @@ namespace Semmle.BuildAnalyser
         }
 
         private readonly string[] references;
+        private readonly string[] projectReferences;
         private readonly string[] csFiles;
 
         /// <summary>
         /// The list of references as a list of assembly IDs.
         /// </summary>
         public IEnumerable<string> References => references;
+
+        /// <summary>
+        /// The list of project references in full path format.
+        /// </summary>
+        public IEnumerable<string> ProjectReferences => projectReferences;
 
         /// <summary>
         /// The list of C# source files in full path format.
