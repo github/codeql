@@ -12,6 +12,7 @@
 
 import java
 import JShellInjection
+import semmle.code.java.dataflow.DataFlow2
 import semmle.code.java.dataflow.FlowSources
 import DataFlow::PathGraph
 
@@ -23,15 +24,12 @@ class JShellInjectionConfiguration extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { sink instanceof JShellInjectionSink }
 
   override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(MethodAccess ma |
-      ma.getMethod().hasName("analyzeCompletion") and
-      ma.getMethod().getNumberOfParameters() = 1 and
-      ma.getMethod()
-          .getDeclaringType()
-          .getASupertype*()
-          .hasQualifiedName("jdk.jshell", "SourceCodeAnalysis") and
-      ma.getArgument(0) = pred.asExpr() and
-      ma = succ.asExpr()
+    exists(
+      SourceCodeAnalysisAnalyzeCompletionCall scaacc, CompletionInfoSourceOrRemainingCall cisorc
+    |
+      scaacc.getArgument(0) = pred.asExpr() and
+      cisorc = succ.asExpr() and
+      DataFlow2::localExprFlow(scaacc, cisorc.getQualifier())
     )
   }
 }
