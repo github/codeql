@@ -280,7 +280,7 @@ class container
 {
 public:
 	container() {
-		obj = new C(); // GOOD [FALSE POSITIVE]
+		obj = new C(); // GOOD
 	}
 
 	~container() {

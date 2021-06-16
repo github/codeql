@@ -107,7 +107,10 @@ predicate getInsecureEncryptionEvidence(FunctionCall fc, Element blame, string d
       ec = fc.getAnArgument() and
       ec.getTarget() = getAdditionalEvidenceEnumConst()
     )
-  )
+  ) and
+  // exclude calls from templates as this is rarely the right place to flag an
+  // issue
+  not fc.isFromTemplateInstantiation(_)
 }
 
 /**
