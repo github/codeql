@@ -34,7 +34,12 @@ class Declaration extends DotNet::Declaration, Element, @declaration {
    * ```
    */
   string getQualifiedNameWithTypes() {
-    result = this.getDeclaringType().getQualifiedName() + "." + this.toStringWithTypes()
+    exists(string qual |
+      qual = this.getDeclaringType().getQualifiedName() and
+      if this instanceof NestedType
+      then result = qual + "+" + this.toStringWithTypes()
+      else result = qual + "." + this.toStringWithTypes()
+    )
   }
 
   /**
