@@ -8,7 +8,6 @@
  * @precision high
  * @id java/non-constant-time-crypto-comparison
  * @tags security
- *       external/cwe/cwe-385
  *       external/cwe/cwe-208
  */
 
@@ -17,17 +16,95 @@ import semmle.code.java.dataflow.TaintTracking
 import DataFlow::PathGraph
 
 /**
- * A method that returns the result of a cryptographic operation
- * such as encryption, decryption, signing, etc.
+ * A source that produces a MAC.
  */
-private class ReturnCryptoOperationResultMethod extends Method {
-  ReturnCryptoOperationResultMethod() {
-    getDeclaringType().hasQualifiedName("javax.crypto", ["Mac", "Cipher"]) and
-    hasName("doFinal")
-    or
-    getDeclaringType().hasQualifiedName("java.security", "Signature") and
-    hasName("sign")
+private class MacSource extends DataFlow::Node {
+  MacSource() {
+    exists(MethodAccess ma, Method m | m = ma.getMethod() |
+      m.hasQualifiedName("javax.crypto", "Mac", "doFinal") and
+      (
+        m.getReturnType() instanceof Array and ma = this.asExpr()
+        or
+        m.getParameterType(0) instanceof Array and ma.getArgument(0) = this.asExpr()
+      )
+    )
   }
+}
+
+/**
+ * A source that produces a signature.
+ */
+private class SignatureSource extends DataFlow::Node {
+  SignatureSource() {
+    exists(MethodAccess ma, Method m | m = ma.getMethod() |
+      m.hasQualifiedName("java.security", "Signature", "sign") and
+      (
+        m.getReturnType() instanceof Array and ma = this.asExpr()
+        or
+        m.getParameterType(0) instanceof Array and ma.getArgument(0) = this.asExpr()
+      )
+    )
+  }
+}
+
+/**
+ * A source that produces a ciphertext.
+ */
+private class CiphertextSource extends DataFlow::Node {
+  CiphertextSource() {
+    exists(MethodAccess ma, Method m | m = ma.getMethod() |
+      m.hasQualifiedName("javax.crypto", "Cipher", "doFinal") and
+      (
+        m.getReturnType() instanceof Array and ma = this.asExpr()
+        or
+        m.getParameterType([0, 3]) instanceof Array and ma.getArgument([0, 3]) = this.asExpr()
+        or
+        m.getParameterType(1).(RefType).hasQualifiedName("java.nio", "ByteBuffer") and
+        ma.getArgument(1) = this.asExpr()
+      )
+    )
+  }
+}
+
+/**
+ * A sink that compares input using a non-constant time algorithm.
+ */
+private class KnownNonConstantTimeComparisonSink extends DataFlow::Node {
+  KnownNonConstantTimeComparisonSink() {
+    exists(MethodAccess ma, Method m | m = ma.getMethod() |
+      m.hasQualifiedName("java.lang", "String", ["equals", "contentEquals", "equalsIgnoreCase"]) and
+      this.asExpr() = [ma.getQualifier(), ma.getAnArgument()]
+      or
+      m.hasQualifiedName("java.nio", "ByteBuffer", ["equals", "compareTo"]) and
+      this.asExpr() = [ma.getQualifier(), ma.getAnArgument()]
+      or
+      m.hasQualifiedName("java.util", "Arrays", ["equals", "deepEquals"]) and
+      ma.getAnArgument() = this.asExpr()
+      or
+      m.hasQualifiedName("java.util", "Objects", "deepEquals") and
+      ma.getAnArgument() = this.asExpr()
+      or
+      m.hasQualifiedName("org.apache.commons.lang3", "StringUtils",
+        ["equals", "equalsAny", "equalsAnyIgnoreCase", "equalsIgnoreCase"]) and
+      ma.getAnArgument() = this.asExpr()
+    )
+  }
+}
+
+/**
+ * Holds if `fromNode` to `toNode` is a dataflow step
+ * that converts a `ByteBuffer` to a byte array and vice versa.
+ */
+private predicate convertByteBufferStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
+  exists(MethodAccess ma, Method m | m = ma.getMethod() |
+    m.hasQualifiedName("java.nio", "ByteBuffer", "array") and
+    ma.getQualifier() = fromNode.asExpr() and
+    ma = toNode.asExpr()
+    or
+    m.hasQualifiedName("java.nio", "ByteBuffer", "wrap") and
+    ma.getAnArgument() = fromNode.asExpr() and
+    ma = toNode.asExpr()
+  )
 }
 
 /**
@@ -38,29 +115,19 @@ private class NonConstantTimeCryptoComparisonConfig extends TaintTracking::Confi
   NonConstantTimeCryptoComparisonConfig() { this = "NonConstantTimeCryptoComparisonConfig" }
 
   override predicate isSource(DataFlow::Node source) {
-    exists(MethodAccess ma | ma.getMethod() instanceof ReturnCryptoOperationResultMethod |
-      ma = source.asExpr()
-    )
+    source instanceof MacSource
+    or
+    source instanceof SignatureSource
+    or
+    source instanceof CiphertextSource
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma, Method m | m = ma.getMethod() |
-      m.getDeclaringType() instanceof TypeString and
-      m.hasName(["equals", "contentEquals", "equalsIgnoreCase"]) and
-      sink.asExpr() = [ma.getQualifier(), ma.getAnArgument()]
-      or
-      m.getDeclaringType().hasQualifiedName("java.util", "Arrays") and
-      m.hasName(["equals", "deepEquals"]) and
-      ma.getAnArgument() = sink.asExpr()
-      or
-      m.getDeclaringType().hasQualifiedName("java.util", "Objects") and
-      m.hasName("deepEquals") and
-      ma.getAnArgument() = sink.asExpr()
-      or
-      m.getDeclaringType().hasQualifiedName("org.apache.commons.lang3", "StringUtils") and
-      m.hasName(["equals", "equalsAny", "equalsAnyIgnoreCase", "equalsIgnoreCase"]) and
-      ma.getAnArgument() = sink.asExpr()
-    )
+    sink instanceof KnownNonConstantTimeComparisonSink
+  }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
+    convertByteBufferStep(fromNode, toNode)
   }
 }
 
