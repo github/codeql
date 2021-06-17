@@ -3,8 +3,8 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>If an LDAP query is built using string concatenation or string formatting, and it doesn't carry any kind of authentication, 
-anonymous binds causes an empty or None-set password to result in a successful authentication.</p>
+<p>If an LDAP query doesn't carry any kind of authentication, anonymous binds causes an empty or None-set password 
+to result in a successful authentication.</p>
 </overview>
 
 <recommendation>
@@ -12,8 +12,7 @@ anonymous binds causes an empty or None-set password to result in a successful a
 </recommendation>
 
 <example>
-<p>In the following examples, the code accepts both <code>username</code> and <code>dc</code> from the user, 
-which it then uses to build a LDAP query and DN while the connection carries no authentication or binds anonymously.</p>
+<p>In the following examples, the code builds a LDAP query whose execution carries no authentication or binds anonymously.</p>
 
 <sample src="examples/auth_bad_2.py" />
 <sample src="examples/auth_bad_3.py" />
