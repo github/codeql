@@ -70,9 +70,12 @@ EnumConstant getAdditionalEvidenceEnumConst() { isEncryptionAdditionalEvidence(r
 predicate getInsecureEncryptionEvidence(FunctionCall fc, Element blame, string description) {
   // find use of an insecure algorithm name
   (
-    fc.getTarget() = getAnInsecureEncryptionFunction() and
-    blame = fc and
-    description = "call to " + fc.getTarget().getName()
+    exists(FunctionCall fc2 |
+      fc.getAChild*() = fc2 and
+      fc2.getTarget() = getAnInsecureEncryptionFunction() and
+      blame = fc2 and
+      description = "call to " + fc.getTarget().getName()
+    )
     or
     exists(MacroInvocation mi |
       (
@@ -93,7 +96,10 @@ predicate getInsecureEncryptionEvidence(FunctionCall fc, Element blame, string d
   ) and
   // find additional evidence that this function is related to encryption.
   (
-    fc.getTarget() = getAnAdditionalEvidenceFunction()
+    exists(FunctionCall fc2 |
+      fc.getAChild*() = fc2 and
+      fc2.getTarget() = getAnAdditionalEvidenceFunction()
+    )
     or
     exists(MacroInvocation mi |
       (
