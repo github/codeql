@@ -53,11 +53,11 @@ private class UrlOpenSink extends SinkModelCsv {
         "org.springframework.http;RequestEntity;false;put;;;Argument[0];open-url",
         "org.springframework.http;RequestEntity;false;method;;;Argument[1];open-url",
         "org.springframework.http;RequestEntity;false;RequestEntity;(HttpMethod,URI);;Argument[1];open-url",
-        "org.springframework.http;RequestEntity;false;RequestEntity;(MultiValueMap<String,String>,HttpMethod,URI);;Argument[2];open-url",
-        "org.springframework.http;RequestEntity;false;RequestEntity;(T,HttpMethod,URI);;Argument[2];open-url",
-        "org.springframework.http;RequestEntity;false;RequestEntity;(T,HttpMethod,URI,Type);;Argument[2];open-url",
-        "org.springframework.http;RequestEntity;false;RequestEntity;(T,MultiValueMap<String,String>,HttpMethod,URI);;Argument[3];open-url",
-        "org.springframework.http;RequestEntity;false;RequestEntity;(T,MultiValueMap<String,String>,HttpMethod,URI,Type);;Argument[3];open-url"
+        "org.springframework.http;RequestEntity;false;RequestEntity;(MultiValueMap,HttpMethod,URI);;Argument[2];open-url",
+        "org.springframework.http;RequestEntity;false;RequestEntity;(Object,HttpMethod,URI);;Argument[2];open-url",
+        "org.springframework.http;RequestEntity;false;RequestEntity;(Object,HttpMethod,URI,Type);;Argument[2];open-url",
+        "org.springframework.http;RequestEntity;false;RequestEntity;(Object,MultiValueMap,HttpMethod,URI);;Argument[3];open-url",
+        "org.springframework.http;RequestEntity;false;RequestEntity;(Object,MultiValueMap,HttpMethod,URI,Type);;Argument[3];open-url"
       ]
   }
 }
