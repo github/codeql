@@ -111,7 +111,7 @@ namespace My.Qltest
 
         void StepElementSetter(object value) => throw null;
 
-        static T Apply<S, T>(Func<S, T> f, T t) => throw null;
+        static T Apply<S, T>(Func<S, T> f, S s) => throw null;
 
         static S[] Map<S, T>(S[] elements, Func<S, T> f) => throw null;
 

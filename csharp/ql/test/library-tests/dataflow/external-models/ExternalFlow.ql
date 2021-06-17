@@ -21,10 +21,10 @@ class SummaryModelTest extends SummaryModelCsv {
         "My.Qltest;D;false;StepPropertySetter;(System.Object);;Argument[0];Property[My.Qltest.D.Property] of Argument[-1];value",
         "My.Qltest;D;false;StepElementGetter;();;Element of Argument[-1];ReturnValue;value",
         "My.Qltest;D;false;StepElementSetter;(System.Object);;Argument[0];Element of Argument[-1];value",
-        "My.Qltest;D;false;Apply;(System.Func<My.Qltest.D.Apply.<0>,My.Qltest.D.Apply.<1>>,My.Qltest.D.Apply.<1>);;Argument[1];Parameter[0] of Argument[0];value",
-        "My.Qltest;D;false;Apply;(System.Func<My.Qltest.D.Apply.<0>,My.Qltest.D.Apply.<1>>,My.Qltest.D.Apply.<1>);;ReturnValue of Argument[0];ReturnValue;value",
-        "My.Qltest;D;false;Map;(My.Qltest.D.Map.<0>[],System.Func<My.Qltest.D.Map.<0>,My.Qltest.D.Map.<1>>);;Element of Argument[0];Parameter[0] of Argument[1];value",
-        "My.Qltest;D;false;Map;(My.Qltest.D.Map.<0>[],System.Func<My.Qltest.D.Map.<0>,My.Qltest.D.Map.<1>>);;ReturnValue of Argument[1];Element of ReturnValue;value"
+        "My.Qltest;D;false;Apply;(System.Func<S,T>,S);;Argument[1];Parameter[0] of Argument[0];value",
+        "My.Qltest;D;false;Apply;(System.Func<S,T>,S);;ReturnValue of Argument[0];ReturnValue;value",
+        "My.Qltest;D;false;Map;(S[],System.Func<S,T>);;Element of Argument[0];Parameter[0] of Argument[1];value",
+        "My.Qltest;D;false;Map;(S[],System.Func<S,T>);;ReturnValue of Argument[1];Element of ReturnValue;value"
       ]
   }
 }

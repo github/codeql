@@ -186,8 +186,8 @@ class TypeParameter extends DotNet::TypeParameter, Type, @type_parameter {
   UnboundGeneric getGeneric() { type_parameters(this, _, result, _) }
 
   final override predicate hasQualifiedName(string qualifier, string name) {
-    qualifier = this.getGeneric().getQualifiedName() and
-    name = "<" + this.getIndex().toString() + ">"
+    qualifier = "" and
+    name = this.getName()
   }
 
   override string getAPrimaryQlClass() { result = "TypeParameter" }

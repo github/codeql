@@ -117,7 +117,7 @@ test28
 | generics.cs:45:14:45:17 | f | generics.B<>.f<X>() |
 | generics.cs:45:14:45:17 | f | generics.B<System.Object>.f<X>() |
 | generics.cs:45:14:45:17 | f | generics.B<System.String>.f<X>() |
-| generics.cs:45:14:45:17 | f | generics.B<generics.B<>.f.<0>>.f<X>() |
+| generics.cs:45:14:45:17 | f | generics.B<X>.f<X>() |
 | generics.cs:51:22:51:29 | Inner<> | generics.Outer<>+Inner<U> |
 | generics.cs:51:22:51:29 | Inner<> | generics.Outer<System.Object>+Inner<U> |
 | generics.cs:137:21:137:25 | fs | generics.Subtle.fs<X>(int) |
@@ -167,12 +167,12 @@ test30
 | Nesting.cs:24:10:24:18 | Construct | A<System.String>.Construct() |
 | generics.cs:29:21:29:23 | foo | generics.B<System.Object>.foo() |
 | generics.cs:29:21:29:23 | foo | generics.B<System.String>.foo() |
-| generics.cs:29:21:29:23 | foo | generics.B<generics.B<>.f.<0>>.foo() |
+| generics.cs:29:21:29:23 | foo | generics.B<X>.foo() |
 | generics.cs:31:21:31:29 | fooParams | generics.B<System.Object>.fooParams(params Object[]) |
 | generics.cs:31:21:31:29 | fooParams | generics.B<System.String>.fooParams(params String[]) |
-| generics.cs:31:21:31:29 | fooParams | generics.B<generics.B<>.f.<0>>.fooParams(params X[]) |
+| generics.cs:31:21:31:29 | fooParams | generics.B<X>.fooParams(params X[]) |
 | generics.cs:33:28:33:36 | staticFoo | generics.B<System.Object>.staticFoo() |
 | generics.cs:33:28:33:36 | staticFoo | generics.B<System.String>.staticFoo() |
-| generics.cs:33:28:33:36 | staticFoo | generics.B<generics.B<>.f.<0>>.staticFoo() |
-| generics.cs:175:14:175:16 | set | generics.Interface<generics.Inheritance<>.<0>>.set(T) |
+| generics.cs:33:28:33:36 | staticFoo | generics.B<X>.staticFoo() |
+| generics.cs:175:14:175:16 | set | generics.Interface<T>.set(T) |
 test31
