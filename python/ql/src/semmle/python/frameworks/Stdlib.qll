@@ -1097,7 +1097,7 @@ private DataFlow::CallCfgNode hashlibNewCall(string algorithmName) {
     result = API::moduleImport("hashlib").getMember("new").getACall() and
     nameArg in [result.getArg(0), result.getArgByName("name")] and
     exists(StrConst str |
-      DataFlow::exprNode(str).(DataFlow::LocalSourceNode).flowsTo(nameArg) and
+      nameArg.getALocalSource() = DataFlow::exprNode(str) and
       algorithmName = str.getText()
     )
   )

@@ -349,7 +349,7 @@ private module Tornado {
 
     TornadoRouteRegex() {
       this instanceof StrConst and
-      DataFlow::exprNode(this).(DataFlow::LocalSourceNode).flowsTo(setup.getUrlPatternArg())
+      setup.getUrlPatternArg().getALocalSource() = DataFlow::exprNode(this)
     }
 
     TornadoRouteSetup getRouteSetup() { result = setup }
