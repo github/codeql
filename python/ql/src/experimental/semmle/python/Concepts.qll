@@ -159,12 +159,7 @@ module LDAPBind {
     /**
      * Gets the argument containing the binding expression.
      */
-    abstract DataFlow::Node getPasswordNode();
-
-    /**
-     * Gets the argument containing the executed query.
-     */
-    abstract DataFlow::Node getQueryNode();
+    abstract DataFlow::Node getPassword();
   }
 }
 
@@ -179,7 +174,5 @@ class LDAPBind extends DataFlow::Node {
 
   LDAPBind() { this = range }
 
-  DataFlow::Node getPasswordNode() { result = range.getPasswordNode() }
-
-  DataFlow::Node getQueryNode() { result = range.getQueryNode() }
+  DataFlow::Node getPassword() { result = range.getPassword() }
 }

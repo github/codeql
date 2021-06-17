@@ -1,7 +1,7 @@
 /**
  * @name Improper LDAP Authentication
  * @description A user-controlled query carries no authentication
- * @kind path-problem
+ * @kind problem
  * @problem.severity warning
  * @id py/improper-ldap-auth
  * @tags experimental
@@ -12,10 +12,7 @@
 // Determine precision above
 import python
 import experimental.semmle.python.security.LDAPImproperAuth
-import DataFlow::PathGraph
 
-from LDAPImproperAuthenticationConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
-select sink.getNode(), source, sink,
-  "$@ LDAP query parameter contains $@ and is executed without authentication.", sink.getNode(),
-  "This", source.getNode(), "a user-provided value"
+from LDAPBind ldapBind
+where authenticatesImproperly(ldapBind)
+select "The following LDAP bind operation is executed without authentication", ldapBind
