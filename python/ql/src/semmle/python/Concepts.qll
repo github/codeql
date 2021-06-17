@@ -72,6 +72,39 @@ module FileSystemAccess {
   }
 }
 
+/**
+ * A data flow node that writes data to the file system access.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `FileSystemWriteAccess::Range` instead.
+ */
+class FileSystemWriteAccess extends FileSystemAccess {
+  override FileSystemWriteAccess::Range range;
+
+  /**
+   * Gets a node that represents data to be written to the file system (possibly with
+   * some transformation happening before it is written, like JSON encoding).
+   */
+  DataFlow::Node getADataNode() { result = range.getADataNode() }
+}
+
+/** Provides a class for modeling new file system writes. */
+module FileSystemWriteAccess {
+  /**
+   * A data flow node that writes data to the file system access.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `FileSystemWriteAccess` instead.
+   */
+  abstract class Range extends FileSystemAccess::Range {
+    /**
+     * Gets a node that represents data to be written to the file system (possibly with
+     * some transformation happening before it is written, like JSON encoding).
+     */
+    abstract DataFlow::Node getADataNode();
+  }
+}
+
 /** Provides classes for modeling path-related APIs. */
 module Path {
   /**

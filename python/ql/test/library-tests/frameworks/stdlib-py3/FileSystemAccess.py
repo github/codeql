@@ -11,11 +11,13 @@ windows.chmod(0o777)  # $ getAPathArgument=windows
 with p.open() as f:  # $ getAPathArgument=p
     f.read()
 
-p.write_bytes(b"hello")  # $ getAPathArgument=p
+p.write_bytes(b"hello")  # $ getAPathArgument=p fileWriteData=b"hello"
+p.write_text("hello")  # $ getAPathArgument=p fileWriteData="hello"
+p.open("wt").write("hello")  # $ getAPathArgument=p MISSING: fileWriteData="hello"
 
 name = windows.parent.name
 o = open
 o(name)  # $ getAPathArgument=name
 
 wb = p.write_bytes
-wb(b"hello")  # $ getAPathArgument=p
+wb(b"hello")  # $ getAPathArgument=p fileWriteData=b"hello"

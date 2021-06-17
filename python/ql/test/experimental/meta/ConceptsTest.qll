@@ -269,6 +269,23 @@ class FileSystemAccessTest extends InlineExpectationsTest {
   }
 }
 
+class FileSystemWriteAccessTest extends InlineExpectationsTest {
+  FileSystemWriteAccessTest() { this = "FileSystemWriteAccessTest" }
+
+  override string getARelevantTag() { result = "fileWriteData" }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(FileSystemWriteAccess write, DataFlow::Node data |
+      data = write.getADataNode() and
+      location = data.getLocation() and
+      element = data.toString() and
+      value = prettyNodeForInlineTest(data) and
+      tag = "fileWriteData"
+    )
+  }
+}
+
 class PathNormalizationTest extends InlineExpectationsTest {
   PathNormalizationTest() { this = "PathNormalizationTest" }
 
