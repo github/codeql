@@ -4,6 +4,7 @@
  *              denial-of-service attacks.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 3.6
  * @precision medium
  * @id js/remote-property-injection
  * @tags security

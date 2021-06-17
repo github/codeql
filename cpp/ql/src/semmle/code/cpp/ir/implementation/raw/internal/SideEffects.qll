@@ -7,7 +7,66 @@
 
 private import cpp
 private import semmle.code.cpp.ir.implementation.Opcode
+private import semmle.code.cpp.models.interfaces.PointerWrapper
 private import semmle.code.cpp.models.interfaces.SideEffect
+
+private predicate isDeeplyConst(Type t) {
+  t.isConst() and
+  isDeeplyConstBelow(t)
+  or
+  isDeeplyConst(t.(Decltype).getBaseType())
+  or
+  isDeeplyConst(t.(ReferenceType).getBaseType())
+  or
+  exists(SpecifiedType specType | specType = t |
+    specType.getASpecifier().getName() = "const" and
+    isDeeplyConstBelow(specType.getBaseType())
+  )
+  or
+  isDeeplyConst(t.(ArrayType).getBaseType())
+}
+
+private predicate isDeeplyConstBelow(Type t) {
+  t instanceof BuiltInType
+  or
+  not t instanceof PointerWrapper and
+  t instanceof Class
+  or
+  t instanceof Enum
+  or
+  isDeeplyConstBelow(t.(Decltype).getBaseType())
+  or
+  isDeeplyConst(t.(PointerType).getBaseType())
+  or
+  isDeeplyConst(t.(ReferenceType).getBaseType())
+  or
+  isDeeplyConstBelow(t.(SpecifiedType).getBaseType())
+  or
+  isDeeplyConst(t.(ArrayType).getBaseType())
+  or
+  isDeeplyConst(t.(GNUVectorType).getBaseType())
+  or
+  isDeeplyConst(t.(FunctionPointerIshType).getBaseType())
+  or
+  isDeeplyConst(t.(PointerWrapper).getTemplateArgument(0))
+  or
+  isDeeplyConst(t.(PointerToMemberType).getBaseType())
+  or
+  isDeeplyConstBelow(t.(TypedefType).getBaseType())
+}
+
+private predicate isConstPointerLike(Type t) {
+  (
+    t instanceof PointerWrapper
+    or
+    t instanceof PointerType
+    or
+    t instanceof ArrayType
+    or
+    t instanceof ReferenceType
+  ) and
+  isDeeplyConstBelow(t)
+}
 
 /**
  * Holds if the specified call has a side effect that does not come from a `SideEffectFunction`
@@ -39,11 +98,12 @@ private predicate hasDefaultSideEffect(Call call, ParameterIndex i, boolean buff
       exists(Type t | t = expr.getUnspecifiedType() |
         t instanceof ArrayType or
         t instanceof PointerType or
-        t instanceof ReferenceType
+        t instanceof ReferenceType or
+        t instanceof PointerWrapper
       ) and
       (
         isWrite = true and
-        not call.getTarget().getParameter(i).getType().isDeeplyConstBelow()
+        not isConstPointerLike(call.getTarget().getParameter(i).getUnderlyingType())
         or
         isWrite = false
       )

@@ -34,7 +34,6 @@ private class DefaultXssSinkModel extends SinkModelCsv {
   override predicate row(string row) {
     row =
       [
-        "javax.servlet.http;HttpServletResponse;false;sendError;(int,String);;Argument[1];xss",
         "android.webkit;WebView;false;loadData;;;Argument[0];xss",
         "android.webkit;WebView;false;loadDataWithBaseURL;;;Argument[1];xss",
         "android.webkit;WebView;false;evaluateJavascript;;;Argument[0];xss"

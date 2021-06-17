@@ -32,7 +32,7 @@ namespace Semmle.Extraction.CIL.Entities
             file = new File(cx, cx.AssemblyPath);
         }
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             trapFile.Write(FullName);
             trapFile.Write("#file:///");

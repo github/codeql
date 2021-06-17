@@ -215,7 +215,9 @@ class InfiniteRepetitionQuantifier extends RegExpQuantifier {
  * \w
  * ```
  */
-class RegExpEscape extends RegExpTerm, @regexp_escape { }
+class RegExpEscape extends RegExpTerm, @regexp_escape {
+  override string getAPrimaryQlClass() { result = "RegExpEscape" }
+}
 
 /**
  * A constant regular expression term, that is, a regular expression
@@ -240,6 +242,8 @@ class RegExpConstant extends RegExpTerm, @regexp_constant {
   override predicate isNullable() { none() }
 
   override string getConstantValue() { result = getValue() }
+
+  override string getAPrimaryQlClass() { result = "RegExpConstant" }
 }
 
 /**
@@ -264,6 +268,8 @@ class RegExpCharEscape extends RegExpEscape, RegExpConstant, @regexp_char_escape
       )
     )
   }
+
+  override string getAPrimaryQlClass() { result = "RegExpCharEscape" }
 }
 
 /**
@@ -285,6 +291,8 @@ class RegExpAlt extends RegExpTerm, @regexp_alt {
   override predicate isNullable() { getAlternative().isNullable() }
 
   override string getAMatchedString() { result = getAlternative().getAMatchedString() }
+
+  override string getAPrimaryQlClass() { result = "RegExpAlt" }
 }
 
 /**
@@ -332,6 +340,8 @@ class RegExpSequence extends RegExpTerm, @regexp_seq {
       result = this.getChild(i + 1)
     )
   }
+
+  override string getAPrimaryQlClass() { result = "RegExpSequence" }
 }
 
 /**
@@ -346,6 +356,8 @@ class RegExpSequence extends RegExpTerm, @regexp_seq {
  */
 class RegExpAnchor extends RegExpTerm, @regexp_anchor {
   override predicate isNullable() { any() }
+
+  override string getAPrimaryQlClass() { result = "RegExpAnchor" }
 }
 
 /**
@@ -357,7 +369,9 @@ class RegExpAnchor extends RegExpTerm, @regexp_anchor {
  * ^
  * ```
  */
-class RegExpCaret extends RegExpAnchor, @regexp_caret { }
+class RegExpCaret extends RegExpAnchor, @regexp_caret {
+  override string getAPrimaryQlClass() { result = "RegExpCaret" }
+}
 
 /**
  * A dollar assertion `$` matching the end of a line.
@@ -368,7 +382,9 @@ class RegExpCaret extends RegExpAnchor, @regexp_caret { }
  * $
  * ```
  */
-class RegExpDollar extends RegExpAnchor, @regexp_dollar { }
+class RegExpDollar extends RegExpAnchor, @regexp_dollar {
+  override string getAPrimaryQlClass() { result = "RegExpDollar" }
+}
 
 /**
  * A word boundary assertion.
@@ -381,6 +397,8 @@ class RegExpDollar extends RegExpAnchor, @regexp_dollar { }
  */
 class RegExpWordBoundary extends RegExpTerm, @regexp_wordboundary {
   override predicate isNullable() { any() }
+
+  override string getAPrimaryQlClass() { result = "RegExpWordBoundary" }
 }
 
 /**
@@ -394,6 +412,8 @@ class RegExpWordBoundary extends RegExpTerm, @regexp_wordboundary {
  */
 class RegExpNonWordBoundary extends RegExpTerm, @regexp_nonwordboundary {
   override predicate isNullable() { any() }
+
+  override string getAPrimaryQlClass() { result = "RegExpNonWordBoundary" }
 }
 
 /**
@@ -425,7 +445,9 @@ class RegExpSubPattern extends RegExpTerm, @regexp_subpattern {
  * (?!\n)
  * ```
  */
-class RegExpLookahead extends RegExpSubPattern, @regexp_lookahead { }
+class RegExpLookahead extends RegExpSubPattern, @regexp_lookahead {
+  override string getAPrimaryQlClass() { result = "RegExpLookahead" }
+}
 
 /**
  * A zero-width lookbehind assertion.
@@ -437,7 +459,9 @@ class RegExpLookahead extends RegExpSubPattern, @regexp_lookahead { }
  * (?<!\\)
  * ```
  */
-class RegExpLookbehind extends RegExpSubPattern, @regexp_lookbehind { }
+class RegExpLookbehind extends RegExpSubPattern, @regexp_lookbehind {
+  override string getAPrimaryQlClass() { result = "RegExpLookbehind" }
+}
 
 /**
  * A positive-lookahead assertion.
@@ -448,7 +472,9 @@ class RegExpLookbehind extends RegExpSubPattern, @regexp_lookbehind { }
  * (?=\w)
  * ```
  */
-class RegExpPositiveLookahead extends RegExpLookahead, @regexp_positive_lookahead { }
+class RegExpPositiveLookahead extends RegExpLookahead, @regexp_positive_lookahead {
+  override string getAPrimaryQlClass() { result = "RegExpPositiveLookahead" }
+}
 
 /**
  * A negative-lookahead assertion.
@@ -459,7 +485,9 @@ class RegExpPositiveLookahead extends RegExpLookahead, @regexp_positive_lookahea
  * (?!\n)
  * ```
  */
-class RegExpNegativeLookahead extends RegExpLookahead, @regexp_negative_lookahead { }
+class RegExpNegativeLookahead extends RegExpLookahead, @regexp_negative_lookahead {
+  override string getAPrimaryQlClass() { result = "RegExpNegativeLookahead" }
+}
 
 /**
  * A positive-lookbehind assertion.
@@ -470,7 +498,9 @@ class RegExpNegativeLookahead extends RegExpLookahead, @regexp_negative_lookahea
  * (?<=\.)
  * ```
  */
-class RegExpPositiveLookbehind extends RegExpLookbehind, @regexp_positive_lookbehind { }
+class RegExpPositiveLookbehind extends RegExpLookbehind, @regexp_positive_lookbehind {
+  override string getAPrimaryQlClass() { result = "RegExpPositiveLookbehind" }
+}
 
 /**
  * A negative-lookbehind assertion.
@@ -481,7 +511,9 @@ class RegExpPositiveLookbehind extends RegExpLookbehind, @regexp_positive_lookbe
  * (?<!\\)
  * ```
  */
-class RegExpNegativeLookbehind extends RegExpLookbehind, @regexp_negative_lookbehind { }
+class RegExpNegativeLookbehind extends RegExpLookbehind, @regexp_negative_lookbehind {
+  override string getAPrimaryQlClass() { result = "RegExpNegativeLookbehind" }
+}
 
 /**
  * A star-quantified term.
@@ -494,6 +526,8 @@ class RegExpNegativeLookbehind extends RegExpLookbehind, @regexp_negative_lookbe
  */
 class RegExpStar extends RegExpQuantifier, @regexp_star {
   override predicate isNullable() { any() }
+
+  override string getAPrimaryQlClass() { result = "RegExpStar" }
 }
 
 /**
@@ -507,6 +541,8 @@ class RegExpStar extends RegExpQuantifier, @regexp_star {
  */
 class RegExpPlus extends RegExpQuantifier, @regexp_plus {
   override predicate isNullable() { getAChild().isNullable() }
+
+  override string getAPrimaryQlClass() { result = "RegExpPlus" }
 }
 
 /**
@@ -520,6 +556,8 @@ class RegExpPlus extends RegExpQuantifier, @regexp_plus {
  */
 class RegExpOpt extends RegExpQuantifier, @regexp_opt {
   override predicate isNullable() { any() }
+
+  override string getAPrimaryQlClass() { result = "RegExpOpt" }
 }
 
 /**
@@ -550,6 +588,8 @@ class RegExpRange extends RegExpQuantifier, @regexp_range {
     getAChild().isNullable() or
     getLowerBound() = 0
   }
+
+  override string getAPrimaryQlClass() { result = "RegExpRange" }
 }
 
 /**
@@ -563,6 +603,8 @@ class RegExpRange extends RegExpQuantifier, @regexp_range {
  */
 class RegExpDot extends RegExpTerm, @regexp_dot {
   override predicate isNullable() { none() }
+
+  override string getAPrimaryQlClass() { result = "RegExpDot" }
 }
 
 /**
@@ -602,6 +644,8 @@ class RegExpGroup extends RegExpTerm, @regexp_group {
   override string getConstantValue() { result = getAChild().getConstantValue() }
 
   override string getAMatchedString() { result = getAChild().getAMatchedString() }
+
+  override string getAPrimaryQlClass() { result = "RegExpGroup" }
 }
 
 /**
@@ -614,7 +658,9 @@ class RegExpGroup extends RegExpTerm, @regexp_group {
  * ;
  * ```
  */
-class RegExpNormalConstant extends RegExpConstant, @regexp_normal_constant { }
+class RegExpNormalConstant extends RegExpConstant, @regexp_normal_constant {
+  override string getAPrimaryQlClass() { result = "RegExpNormalConstant" }
+}
 
 /**
  * DEPRECATED. Use `RegExpNormalConstant` instead.
@@ -634,7 +680,9 @@ deprecated class RegExpNormalChar = RegExpNormalConstant;
  * \x0a
  * ```
  */
-class RegExpHexEscape extends RegExpCharEscape, @regexp_hex_escape { }
+class RegExpHexEscape extends RegExpCharEscape, @regexp_hex_escape {
+  override string getAPrimaryQlClass() { result = "RegExpHexEscape" }
+}
 
 /**
  * A unicode character escape in a regular expression.
@@ -645,7 +693,9 @@ class RegExpHexEscape extends RegExpCharEscape, @regexp_hex_escape { }
  * \u000a
  * ```
  */
-class RegExpUnicodeEscape extends RegExpCharEscape, @regexp_unicode_escape { }
+class RegExpUnicodeEscape extends RegExpCharEscape, @regexp_unicode_escape {
+  override string getAPrimaryQlClass() { result = "RegExpUnicodeEscape" }
+}
 
 /**
  * A decimal character escape in a regular expression.
@@ -656,7 +706,9 @@ class RegExpUnicodeEscape extends RegExpCharEscape, @regexp_unicode_escape { }
  * \0
  * ```
  */
-class RegExpDecimalEscape extends RegExpCharEscape, @regexp_dec_escape { }
+class RegExpDecimalEscape extends RegExpCharEscape, @regexp_dec_escape {
+  override string getAPrimaryQlClass() { result = "RegExpDecimalEscape" }
+}
 
 /**
  * An octal character escape in a regular expression.
@@ -667,7 +719,9 @@ class RegExpDecimalEscape extends RegExpCharEscape, @regexp_dec_escape { }
  * \0177
  * ```
  */
-class RegExpOctalEscape extends RegExpCharEscape, @regexp_oct_escape { }
+class RegExpOctalEscape extends RegExpCharEscape, @regexp_oct_escape {
+  override string getAPrimaryQlClass() { result = "RegExpOctalEscape" }
+}
 
 /**
  * A control character escape in a regular expression.
@@ -678,7 +732,9 @@ class RegExpOctalEscape extends RegExpCharEscape, @regexp_oct_escape { }
  * \ca
  * ```
  */
-class RegExpControlEscape extends RegExpCharEscape, @regexp_ctrl_escape { }
+class RegExpControlEscape extends RegExpCharEscape, @regexp_ctrl_escape {
+  override string getAPrimaryQlClass() { result = "RegExpControlEscape" }
+}
 
 /**
  * A character class escape in a regular expression.
@@ -695,6 +751,8 @@ class RegExpCharacterClassEscape extends RegExpEscape, @regexp_char_class_escape
   string getValue() { char_class_escape(this, result) }
 
   override predicate isNullable() { none() }
+
+  override string getAPrimaryQlClass() { result = "RegExpCharacterClassEscape" }
 }
 
 /**
@@ -723,6 +781,8 @@ class RegExpUnicodePropertyEscape extends RegExpEscape, @regexp_unicode_property
   string getValue() { unicode_property_escapevalue(this, result) }
 
   override predicate isNullable() { none() }
+
+  override string getAPrimaryQlClass() { result = "RegExpUnicodePropertyEscape" }
 }
 
 /**
@@ -736,7 +796,9 @@ class RegExpUnicodePropertyEscape extends RegExpEscape, @regexp_unicode_property
  * \/
  * ```
  */
-class RegExpIdentityEscape extends RegExpCharEscape, @regexp_id_escape { }
+class RegExpIdentityEscape extends RegExpCharEscape, @regexp_id_escape {
+  override string getAPrimaryQlClass() { result = "RegExpIdentityEscape" }
+}
 
 /**
  * A back reference, that is, a term of the form `\i` or `\k<name>`
@@ -770,6 +832,8 @@ class RegExpBackRef extends RegExpTerm, @regexp_backref {
   }
 
   override predicate isNullable() { getGroup().isNullable() }
+
+  override string getAPrimaryQlClass() { result = "RegExpBackRef" }
 }
 
 /**
@@ -808,6 +872,8 @@ class RegExpCharacterClass extends RegExpTerm, @regexp_char_class {
       cce1 != cce2 and cce1.toLowerCase() = cce2.toLowerCase()
     )
   }
+
+  override string getAPrimaryQlClass() { result = "RegExpCharacterClass" }
 }
 
 /**
@@ -827,6 +893,8 @@ class RegExpCharacterRange extends RegExpTerm, @regexp_char_range {
     lo = getChild(0).(RegExpConstant).getValue() and
     hi = getChild(1).(RegExpConstant).getValue()
   }
+
+  override string getAPrimaryQlClass() { result = "RegExpCharacterRange" }
 }
 
 /** A parse error encountered while processing a regular expression literal. */
@@ -1169,8 +1237,18 @@ module RegExp {
     }
   }
 
-  private class DefaultMetaCharacter extends MetaCharacter {
-    DefaultMetaCharacter() { this = ["<", "'", "\""] }
+  /**
+   * A meta character used by HTML.
+   */
+  private class HTMLMetaCharacter extends MetaCharacter {
+    HTMLMetaCharacter() { this = ["<", "'", "\""] }
+  }
+
+  /**
+   * A meta character used by regular expressions.
+   */
+  private class RegexpMetaChars extends RegExp::MetaCharacter {
+    RegexpMetaChars() { this = ["{", "[", "+"] }
   }
 
   /**

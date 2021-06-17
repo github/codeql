@@ -19,5 +19,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh api 'repos/${{github.repository}}/pulls/${{github.event.number}}/files' --paginate |
-          jq 'any(.[].filename ; test("/change-notes/.*[.]md$"))' --exit-status
+          gh api 'repos/${{github.repository}}/pulls/${{github.event.number}}/files' --paginate --jq 'any(.[].filename ; test("/change-notes/.*[.]md$"))' |
+          grep true -c

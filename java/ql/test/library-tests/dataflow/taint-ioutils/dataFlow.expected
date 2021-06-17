@@ -28,14 +28,10 @@
 | Test.java:32:3:32:19 | toString(...) |
 | Test.java:37:16:37:18 | inp |
 | Test.java:37:21:37:23 | tgt [post update] |
-| Test.java:38:3:38:12 | ...=... |
-| Test.java:38:7:38:9 | tgt |
-| Test.java:38:7:38:12 | ...[...] |
+| Test.java:38:8:38:10 | tgt |
 | Test.java:42:21:42:23 | inp |
 | Test.java:42:26:42:28 | tgt [post update] |
-| Test.java:43:3:43:12 | ...=... |
-| Test.java:43:7:43:9 | tgt |
-| Test.java:43:7:43:12 | ...[...] |
+| Test.java:43:8:43:10 | tgt |
 | Test.java:47:17:47:21 | chars |
 | Test.java:47:24:47:29 | writer [post update] |
 | Test.java:48:3:48:8 | writer |

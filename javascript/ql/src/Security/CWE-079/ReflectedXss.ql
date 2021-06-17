@@ -4,6 +4,7 @@
  *              a cross-site scripting vulnerability.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 2.9
  * @precision high
  * @id js/reflected-xss
  * @tags security

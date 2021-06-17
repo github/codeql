@@ -37,7 +37,7 @@ void randomTester() {
 
   {
     int r = RANDN(100);
-    r += 100; // GOOD: The return from RANDN is bounded [FALSE POSITIVE]
+    r += 100; // GOOD: The return from RANDN is bounded
   }
 
   {
@@ -53,7 +53,7 @@ void randomTester() {
   {
     int r = rand();
     r = r / 10;
-    r += 100; // GOOD [FALSE POSITIVE]
+    r += 100; // GOOD
   }
   
   {
@@ -64,7 +64,7 @@ void randomTester() {
   
   {
     int r = rand() & 0xFF;
-    r += 100; // GOOD [FALSE POSITIVE]
+    r += 100; // GOOD
   }
 
   {

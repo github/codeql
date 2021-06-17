@@ -128,7 +128,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private bool IsAnonymousType() => Symbol.IsAnonymousType || Symbol.Name.Contains("__AnonymousType");
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             if (IsAnonymousType())
             {
@@ -141,7 +141,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public override void WriteQuotedId(TextWriter trapFile)
+        public sealed override void WriteQuotedId(EscapingTextWriter trapFile)
         {
             if (IsAnonymousType())
                 trapFile.Write('*');
@@ -195,7 +195,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override bool NeedsPopulation => true;
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             trapFile.WriteSubId(referencedType);
             trapFile.Write(";typeRef");

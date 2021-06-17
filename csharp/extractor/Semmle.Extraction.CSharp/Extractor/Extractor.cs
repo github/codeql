@@ -416,9 +416,10 @@ namespace Semmle.Extraction.CSharp
                         compilerArguments.CompilationName,
                         syntaxTrees,
                         references,
-                        compilerArguments.CompilationOptions.
-                            WithAssemblyIdentityComparer(DesktopAssemblyIdentityComparer.Default).
-                            WithStrongNameProvider(new DesktopStrongNameProvider(compilerArguments.KeyFileSearchPaths))
+                        compilerArguments.CompilationOptions
+                            .WithAssemblyIdentityComparer(DesktopAssemblyIdentityComparer.Default)
+                            .WithStrongNameProvider(new DesktopStrongNameProvider(compilerArguments.KeyFileSearchPaths))
+                            .WithMetadataImportOptions(MetadataImportOptions.All)
                         );
                 },
                 (compilation, options) => analyser.EndInitialize(compilerArguments, options, compilation),

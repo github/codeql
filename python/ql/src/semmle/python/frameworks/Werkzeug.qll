@@ -1,5 +1,8 @@
 /**
- * Provides classes modeling security-relevant aspects of the `flask` package.
+ * Provides classes modeling security-relevant aspects of the `Werkzeug` PyPI package.
+ * See
+ * - https://pypi.org/project/Werkzeug/
+ * - https://werkzeug.palletsprojects.com/en/1.0.x/#werkzeug
  */
 
 private import python
