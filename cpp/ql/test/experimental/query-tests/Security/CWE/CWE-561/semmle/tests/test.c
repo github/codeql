@@ -1,6 +1,6 @@
-void testFunction()
+void testFunction(char c1)
 {
-  char c1;
+
 
   switch(c1){ // GOOD
     case 12:
