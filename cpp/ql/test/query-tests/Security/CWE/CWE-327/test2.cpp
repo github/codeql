@@ -212,32 +212,32 @@ void do_unseen_encrypts(char *data, size_t amount, keytype key)
 class desEncrypt
 {
 public:
-	static void encrypt(const char *data);
+	static void encrypt(char *data);
 	static void doSomethingElse();
 };
 
 class aes256Encrypt
 {
 public:
-	static void encrypt(const char *data);
+	static void encrypt(char *data);
 	static void doSomethingElse();
 };
 
 class desCipher
 {
 public:
-	void encrypt(const char *data);
+	void encrypt(char *data);
 	void doSomethingElse();
 };
 
 class aesCipher
 {
 public:
-	void encrypt(const char *data);
+	void encrypt(char *data);
 	void doSomethingElse();
 };
 
-void do_classes(const char *data)
+void do_classes(char *data)
 {
 	desEncrypt::encrypt(data); // BAD
 	aes256Encrypt::encrypt(data); // GOOD
