@@ -147,6 +147,6 @@ public class UnsafeAndroidAccess extends Activity {
 
 		String thisUrl = getIntent().getStringExtra("url");
 		// This should be considered safe - the query lacks a proper sanitizer for partial URLs.
-		wv.loadUrl("https://www.mycorp.com/" + thisUrl); // $ SPURIOUS: hasUnsafeAndroidAccess
+		wv.loadUrl("https://www.mycorp.com/" + thisUrl);
 	}
 }

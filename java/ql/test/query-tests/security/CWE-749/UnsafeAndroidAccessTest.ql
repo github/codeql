@@ -1,8 +1,9 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.FlowSources
-import TestUtilities.InlineExpectationsTest
+import semmle.code.java.security.RequestForgeryConfig
 import semmle.code.java.security.UnsafeAndroidAccess
+import TestUtilities.InlineExpectationsTest
 
 class Conf extends TaintTracking::Configuration {
   Conf() { this = "qltest:cwe:unsafe-android-access" }
@@ -10,6 +11,10 @@ class Conf extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof UrlResourceSink }
+
+  override predicate isSanitizer(DataFlow::Node sanitizer) {
+    sanitizer instanceof RequestForgerySanitizer
+  }
 }
 
 class UnsafeAndroidAccessTest extends InlineExpectationsTest {
