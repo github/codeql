@@ -138,6 +138,13 @@ class InterceptorsAnnotation extends Annotation {
  */
 
 /**
+ * A `@javax.jws.WebMethod` annotation.
+ */
+class WebMethodAnnotation extends Annotation {
+  WebMethodAnnotation() { this.getType().hasQualifiedName("javax.jws", "WebMethod") }
+}
+
+/**
  * A `@javax.jws.WebService` annotation.
  */
 class WebServiceAnnotation extends Annotation {
