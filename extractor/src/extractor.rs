@@ -756,7 +756,7 @@ struct Label(u32);
 
 impl fmt::Display for Label {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "#{}", self.0)
+        write!(f, "#{:x}", self.0)
     }
 }
 
