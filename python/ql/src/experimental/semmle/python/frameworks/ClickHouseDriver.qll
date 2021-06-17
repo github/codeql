@@ -80,6 +80,6 @@ module ClickHouseDriver {
   private class ExecuteCall extends SqlExecution::Range, DataFlow::CallCfgNode {
     ExecuteCall() { this.getFunction() = clickhouse_execute() }
 
-    override DataFlow::Node getSql() { result.asCfgNode() = node.getArg(0) }
+    override DataFlow::Node getSql() { result = this.getArg(0) }
   }
 }

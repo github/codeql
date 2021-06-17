@@ -11,15 +11,14 @@ class SSLContextCreation extends ContextCreation, DataFlow::CallCfgNode {
   SSLContextCreation() { this = API::moduleImport("ssl").getMember("SSLContext").getACall() }
 
   override string getProtocol() {
-    exists(ControlFlowNode protocolArg, Ssl ssl |
-      protocolArg in [node.getArg(0), node.getArgByName("protocol")]
+    exists(DataFlow::Node protocolArg, Ssl ssl |
+      protocolArg in [this.getArg(0), this.getArgByName("protocol")]
     |
       protocolArg =
         [ssl.specific_version(result).getAUse(), ssl.unspecific_version(result).getAUse()]
-            .asCfgNode()
     )
     or
-    not exists(node.getAnArg()) and
+    not exists(this.getArg(_)) and
     result = "TLS"
   }
 }
@@ -133,7 +132,7 @@ class ContextSetVersion extends ProtocolRestriction, ProtocolUnrestriction, Data
 
   ContextSetVersion() {
     exists(DataFlow::AttrWrite aw |
-      aw.getObject().asCfgNode() = node and
+      this = aw.getObject() and
       aw.getAttributeName() = "minimum_version" and
       aw.getValue() =
         API::moduleImport("ssl").getMember("TLSVersion").getMember(restriction).getAUse()
