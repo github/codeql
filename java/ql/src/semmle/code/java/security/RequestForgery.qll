@@ -110,7 +110,6 @@ private class StringBuilderVarExt extends StringBuilderVar {
    * this returns the append of `"3"`.
    */
   private StringBuilderAppend getAFirstAppendAfterAssignment() {
-    //
     result = this.getAnAppend() and not result = this.getNextAppend(_)
   }
 
