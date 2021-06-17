@@ -368,7 +368,8 @@ abstract class RegexString extends Expr {
       or
       this.escapedCharacter(start, end)
     ) and
-    not exists(int x, int y | this.group_start(x, y) and x <= start and y >= end)
+    not exists(int x, int y | this.group_start(x, y) and x <= start and y >= end) and
+    not exists(int x, int y | this.backreference(x, y) and x <= start and y >= end)
   }
 
   predicate normalCharacter(int start, int end) {
@@ -650,6 +651,8 @@ abstract class RegexString extends Expr {
     this.group(start, end)
     or
     this.charSet(start, end)
+    or
+    this.backreference(start, end)
   }
 
   private predicate qualifier(int start, int end, boolean maybe_empty, boolean may_repeat_forever) {
@@ -748,7 +751,8 @@ abstract class RegexString extends Expr {
   private predicate item_start(int start) {
     this.character(start, _) or
     this.isGroupStart(start) or
-    this.charSet(start, _)
+    this.charSet(start, _) or
+    this.backreference(start, _)
   }
 
   private predicate item_end(int end) {
