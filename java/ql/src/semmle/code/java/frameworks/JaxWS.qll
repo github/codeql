@@ -786,3 +786,13 @@ private class UriBuilderModel extends SummaryModelCsv {
       ]
   }
 }
+
+private class JaxRsUrlOpenSink extends SinkModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "javax.ws.rs.client;Client;true;target;;;Argument[0];open-url",
+        "jakarta.ws.rs.client;Client;true;target;;;Argument[0];open-url"
+      ]
+  }
+}

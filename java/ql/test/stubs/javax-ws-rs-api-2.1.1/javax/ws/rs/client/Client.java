@@ -15,23 +15,23 @@
  */
 
 package javax.ws.rs.client;
-// import java.net.URI;
+import java.net.URI;
 import javax.ws.rs.core.Configurable;
-// import javax.ws.rs.core.Link;
-// import javax.ws.rs.core.UriBuilder;
+import javax.ws.rs.core.Link;
+import javax.ws.rs.core.UriBuilder;
 // import javax.net.ssl.HostnameVerifier;
 // import javax.net.ssl.SSLContext;
 
 public interface Client extends Configurable<Client> {
     public void close();
 
-    // public WebTarget target(String uri);
+    public WebTarget target(String uri);
 
-    // public WebTarget target(URI uri);
+    public WebTarget target(URI uri);
 
-    // public WebTarget target(UriBuilder uriBuilder);
+    public WebTarget target(UriBuilder uriBuilder);
 
-    // public WebTarget target(Link link);
+    public WebTarget target(Link link);
 
     // public Invocation.Builder invocation(Link link);
 
