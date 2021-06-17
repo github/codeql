@@ -1,5 +1,6 @@
 import re
 
+# linear
 # https://github.com/github/codeql-python-CVE-coverage/issues/439
 rex_blame = re.compile(r'\s*(\d+)\s*(\S+) (.*)')
 
@@ -21,8 +22,9 @@ re.compile(r'(%new)(\s*)(\()(\s*.*?\s*)(\))')
 re.compile(r'(\$)(evoque|overlay)(\{(%)?)(\s*[#\w\-"\'.]+[^=,%}]+?)?')
 re.compile(r'(\.\w+\b)(\s*=\s*)([^;]*)(\s*;)')
 
+# linear
 # https://github.com/github/codeql-python-CVE-coverage/issues/392
-_simple_email_re = re.compile(r"^\S+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+$")
+simple_email_re = re.compile(r"^\S+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+$")
 
 # https://github.com/github/codeql-python-CVE-coverage/issues/249
 rx = re.compile('(?:.*,)*[ \t]*([^ \t]+)[ \t]+'
@@ -88,3 +90,5 @@ URL_REGEX = (
      r'(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|'
      r'[^\s`!()\[\]{};:\'".,<>?«»“”‘’]))'  # "emacs!
 )
+
+url = re.compile(URL_REGEX)
