@@ -81,13 +81,13 @@ class JaxRsResourceMethod extends Method {
     result = this.getAnAnnotation()
     or
     // No direct annotations
-    not exists(this.getAnAnnotation().(JaxRSProducesAnnotation)) and
+    not this.getAnAnnotation() instanceof JaxRSProducesAnnotation and
     (
       // Annotations on a method we've overridden
       result = this.getAnOverride().getAnAnnotation()
       or
       // No annotations on this method, or a method we've overridden, so look to the class
-      not exists(this.getAnOverride().getAnAnnotation().(JaxRSProducesAnnotation)) and
+      not this.getAnOverride().getAnAnnotation() instanceof JaxRSProducesAnnotation and
       result = this.getDeclaringType().getAnAnnotation()
     )
   }
@@ -267,7 +267,7 @@ class MessageBodyReader extends GenericInterface {
  */
 class MessageBodyReaderReadFrom extends Method {
   MessageBodyReaderReadFrom() {
-    this.getDeclaringType().(RefType).getSourceDeclaration() instanceof MessageBodyReader and
+    this.getDeclaringType().getSourceDeclaration() instanceof MessageBodyReader and
     this.hasName("readFrom")
   }
 }
