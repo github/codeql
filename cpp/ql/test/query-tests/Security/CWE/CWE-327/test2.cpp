@@ -58,12 +58,12 @@ void encrypt_bad(char *data, size_t amount, keytype key, int algo)
 
 void do_encrypts(char *data, size_t amount, keytype key)
 {
-
+	char data2[128];
 
 	encrypt_good(data, amount, key, ALGO_AES); // GOOD
 	encrypt_bad(data, amount, key, ALGO_DES); // BAD
-
-
+	encrypt_good(data2, 128, key, ALGO_AES); // GOOD
+	encrypt_bad(data2, 128, key, ALGO_DES); // BAD
 }
 
 // --- more involved CPP-style example ---
