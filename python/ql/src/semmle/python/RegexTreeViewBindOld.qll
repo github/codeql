@@ -293,7 +293,21 @@ class RegExpEscape extends RegExpNormalChar {
    * Gets the name of the escaped; for example, `w` for `\w`.
    * TODO: Handle unicode and named escapes.
    */
-  override string getValue() { result = re.getText().substring(start + 1, end) }
+  override string getValue() {
+    this.isIdentityEscape() and result = this.getUnescaped()
+    or
+    this.getUnescaped() = "n" and result = "\n"
+    or
+    this.getUnescaped() = "r" and result = "\r"
+  }
+
+  predicate isIdentityEscape() { not this.getUnescaped() in ["n", "r"] }
+
+  override string getPrimaryQLClass() { result = "RegExpEscape" }
+
+  string getText() { result = re.getText().substring(start, end) }
+
+  string getUnescaped() { result = this.getText().suffix(1) }
 }
 
 /**
