@@ -349,7 +349,7 @@ abstract class RegexString extends Expr {
         or
         start = z - 2
         or
-        start > y and start < z - 2 and not c = "-"
+        start > y and start < z - 2 and not this.charRange(_, _, start, end, _)
       )
       or
       not this.inCharSet(start) and
