@@ -60,6 +60,11 @@ class LocalSourceNode extends Node {
   AttrRead getAnAttributeRead(string attrName) { result = getAnAttributeReference(attrName) }
 
   /**
+   * Gets a write of attribute `attrName` on this node.
+   */
+  AttrWrite getAnAttributeWrite(string attrName) { result = getAnAttributeReference(attrName) }
+
+  /**
    * Gets a reference (read or write) of any attribute on this node.
    */
   AttrRef getAnAttributeReference() {
@@ -72,6 +77,11 @@ class LocalSourceNode extends Node {
    * Gets a read of any attribute on this node.
    */
   AttrRead getAnAttributeRead() { result = getAnAttributeReference() }
+
+  /**
+   * Gets a write of any attribute on this node.
+   */
+  AttrWrite getAnAttributeWrite() { result = getAnAttributeReference() }
 
   /**
    * Gets a call to this node.
