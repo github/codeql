@@ -25,75 +25,75 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.MessageBodyReader;
 
 @Path("")
-public class JaxRs1 { // $RootResourceClass
-  public JaxRs1() { // $InjectableConstructor
+public class JaxRs1 { // $ RootResourceClass
+  public JaxRs1() { // $ InjectableConstructor
   }
 
   @GET
-  int Get() { // $ResourceMethod $ResourceMethodOnResourceClass
-    return 0; // $XssSink
+  int Get() { // $ ResourceMethod ResourceMethodOnResourceClass
+    return 0; // $ XssSink
   }
 
   @POST
-  void Post() { // $ResourceMethod $ResourceMethodOnResourceClass
+  void Post() { // $ ResourceMethod ResourceMethodOnResourceClass
   }
 
-  @Produces("text/plain") // $ProducesAnnotation=text/plain
+  @Produces("text/plain") // $ ProducesAnnotation=text/plain
   @DELETE
-  double Delete() { // $ResourceMethod=text/plain $ResourceMethodOnResourceClass
-    return 0.0; // $XssSink
+  double Delete() { // $ ResourceMethod=text/plain ResourceMethodOnResourceClass
+    return 0.0; // $ XssSink
   }
 
-  @Produces(MediaType.TEXT_HTML) // $ProducesAnnotation=text/html
+  @Produces(MediaType.TEXT_HTML) // $ ProducesAnnotation=text/html
   @PUT
-  void Put() { // $ResourceMethod=text/html $ResourceMethodOnResourceClass
+  void Put() { // $ ResourceMethod=text/html ResourceMethodOnResourceClass
   }
 
   @OPTIONS
-  void Options() { // $ResourceMethod $ResourceMethodOnResourceClass
+  void Options() { // $ ResourceMethod ResourceMethodOnResourceClass
   }
 
   @HEAD
-  void Head() { // $ResourceMethod $ResourceMethodOnResourceClass
+  void Head() { // $ ResourceMethod ResourceMethodOnResourceClass
   }
 
   @Path("")
-  NonRootResourceClass subResourceLocator() { // $SubResourceLocator
+  NonRootResourceClass subResourceLocator() { // $ SubResourceLocator
     return null;
   }
 
-  public class NonRootResourceClass { // $NonRootResourceClass
+  public class NonRootResourceClass { // $ NonRootResourceClass
     @GET
-    int Get() { // $ResourceMethod $ResourceMethodOnResourceClass
-      return 0; // $XssSink
+    int Get() { // $ ResourceMethod ResourceMethodOnResourceClass
+      return 0; // $ XssSink
     }
 
-    @Produces("text/html") // $ProducesAnnotation=text/html
+    @Produces("text/html") // $ ProducesAnnotation=text/html
     @POST
-    boolean Post() { // $ResourceMethod=text/html $ResourceMethodOnResourceClass
+    boolean Post() { // $ ResourceMethod=text/html ResourceMethodOnResourceClass
       return false;
     }
 
-    @Produces(MediaType.TEXT_PLAIN) // $ProducesAnnotation=text/plain
+    @Produces(MediaType.TEXT_PLAIN) // $ ProducesAnnotation=text/plain
     @DELETE
-    double Delete() { // $ResourceMethod=text/plain $ResourceMethodOnResourceClass
-      return 0.0; // $XssSink
+    double Delete() { // $ ResourceMethod=text/plain ResourceMethodOnResourceClass
+      return 0.0; // $ XssSink
     }
 
     @Path("")
-    AnotherNonRootResourceClass subResourceLocator1() { // $SubResourceLocator
+    AnotherNonRootResourceClass subResourceLocator1() { // $ SubResourceLocator
       return null;
     }
 
     @GET
     @Path("")
-    NotAResourceClass1 NotASubResourceLocator1() { // $ResourceMethod $ResourceMethodOnResourceClass
-      return null; // $XssSink
+    NotAResourceClass1 NotASubResourceLocator1() { // $ ResourceMethod ResourceMethodOnResourceClass
+      return null; // $ XssSink
     }
 
     @GET
-    NotAResourceClass2 NotASubResourceLocator2() { // $ResourceMethod $ResourceMethodOnResourceClass
-      return null; // $XssSink
+    NotAResourceClass2 NotASubResourceLocator2() { // $ ResourceMethod ResourceMethodOnResourceClass
+      return null; // $ XssSink
     }
 
     NotAResourceClass2 NotASubResourceLocator3() {
@@ -102,50 +102,50 @@ public class JaxRs1 { // $RootResourceClass
   }
 }
 
-class AnotherNonRootResourceClass { // $NonRootResourceClass
+class AnotherNonRootResourceClass { // $ NonRootResourceClass
   public AnotherNonRootResourceClass() {
   }
 
   public AnotherNonRootResourceClass(
-      @BeanParam int beanParam, // $InjectionAnnotation
-      @CookieParam("") int cookieParam, // $InjectionAnnotation
-      @FormParam("") int formParam, // $InjectionAnnotation
-      @HeaderParam("") int headerParam, // $InjectionAnnotation
-      @MatrixParam("") int matrixParam, // $InjectionAnnotation
-      @PathParam("") int pathParam, // $InjectionAnnotation
-      @QueryParam("") int queryParam, // $InjectionAnnotation
-      @Context int context) { // $InjectionAnnotation
+      @BeanParam int beanParam, // $ InjectionAnnotation
+      @CookieParam("") int cookieParam, // $ InjectionAnnotation
+      @FormParam("") int formParam, // $ InjectionAnnotation
+      @HeaderParam("") int headerParam, // $ InjectionAnnotation
+      @MatrixParam("") int matrixParam, // $ InjectionAnnotation
+      @PathParam("") int pathParam, // $ InjectionAnnotation
+      @QueryParam("") int queryParam, // $ InjectionAnnotation
+      @Context int context) { // $ InjectionAnnotation
   }
 
   @Path("")
-  public void resourceMethodWithBeanParamParameter(@BeanParam Foo foo) { // $SubResourceLocator $InjectionAnnotation
+  public void resourceMethodWithBeanParamParameter(@BeanParam Foo foo) { // $ SubResourceLocator InjectionAnnotation
   }
 }
 
 class Foo {
-  Foo() { // $BeanParamConstructor
+  Foo() { // $ BeanParamConstructor
   }
 
-  public Foo( // $BeanParamConstructor
-      @BeanParam int beanParam, // $InjectionAnnotation
-      @CookieParam("") int cookieParam, // $InjectionAnnotation
-      @FormParam("") int formParam, // $InjectionAnnotation
-      @HeaderParam("") int headerParam, // $InjectionAnnotation
-      @MatrixParam("") int matrixParam, // $InjectionAnnotation
-      @PathParam("") int pathParam, // $InjectionAnnotation
-      @QueryParam("") int queryParam, // $InjectionAnnotation
-      @Context int context) { // $InjectionAnnotation
+  public Foo( // $ BeanParamConstructor
+      @BeanParam int beanParam, // $ InjectionAnnotation
+      @CookieParam("") int cookieParam, // $ InjectionAnnotation
+      @FormParam("") int formParam, // $ InjectionAnnotation
+      @HeaderParam("") int headerParam, // $ InjectionAnnotation
+      @MatrixParam("") int matrixParam, // $ InjectionAnnotation
+      @PathParam("") int pathParam, // $ InjectionAnnotation
+      @QueryParam("") int queryParam, // $ InjectionAnnotation
+      @Context int context) { // $ InjectionAnnotation
   }
 
   public Foo(
-      @BeanParam int beanParam, // $InjectionAnnotation
-      @CookieParam("") int cookieParam, // $InjectionAnnotation
-      @FormParam("") int formParam, // $InjectionAnnotation
-      @HeaderParam("") int headerParam, // $InjectionAnnotation
-      @MatrixParam("") int matrixParam, // $InjectionAnnotation
-      @PathParam("") int pathParam, // $InjectionAnnotation
-      @QueryParam("") int queryParam, // $InjectionAnnotation
-      @Context int context, // $InjectionAnnotation
+      @BeanParam int beanParam, // $ InjectionAnnotation
+      @CookieParam("") int cookieParam, // $ InjectionAnnotation
+      @FormParam("") int formParam, // $ InjectionAnnotation
+      @HeaderParam("") int headerParam, // $ InjectionAnnotation
+      @MatrixParam("") int matrixParam, // $ InjectionAnnotation
+      @PathParam("") int pathParam, // $ InjectionAnnotation
+      @QueryParam("") int queryParam, // $ InjectionAnnotation
+      @Context int context, // $ InjectionAnnotation
       int paramWithoutAnnotation) {
   }
 }
@@ -158,58 +158,58 @@ class NotAResourceClass2 {
 
 class ExtendsJaxRs1 extends JaxRs1 {
   @Override
-  int Get() { // $ResourceMethod
+  int Get() { // $ ResourceMethod
     return 1;
   }
   
   @Override
-  @QueryParam("") // $InjectionAnnotation
+  @QueryParam("") // $ InjectionAnnotation
   void Post() {
   }
 
   @Override
-  double Delete() { // $ResourceMethod=text/plain
+  double Delete() { // $ ResourceMethod=text/plain
     return 1.0;
   }
 
   @Override
-  void Put() { // $ResourceMethod=text/html
+  void Put() { // $ ResourceMethod=text/html
   }
 
-  @Produces("application/json") // $ProducesAnnotation=application/json
+  @Produces("application/json") // $ ProducesAnnotation=application/json
   @Override
   void Options() {
   }
 
-  @Produces(MediaType.TEXT_XML) // $ProducesAnnotation=text/xml
+  @Produces(MediaType.TEXT_XML) // $ ProducesAnnotation=text/xml
   @Override
   void Head() {
   }
 
 }
 
-@Produces(MediaType.TEXT_XML) // $ProducesAnnotation=text/xml
+@Produces(MediaType.TEXT_XML) // $ ProducesAnnotation=text/xml
 class ExtendsJaxRs1WithProducesAnnotation extends JaxRs1 {
   @Override
-  int Get() { // $ResourceMethod=text/xml
+  int Get() { // $ ResourceMethod=text/xml
     return 2;
   }
   
   @Override
-  @QueryParam("") // $InjectionAnnotation
+  @QueryParam("") // $ InjectionAnnotation
   void Post() {
   }
 
   @Override
-  double Delete() { // $ResourceMethod=text/plain
+  double Delete() { // $ ResourceMethod=text/plain
     return 2.0;
   }
 
   @Override
-  void Put() { // $ResourceMethod=text/html
+  void Put() { // $ ResourceMethod=text/html
   }
 
   @Override
-  void Options() { // $ResourceMethod=text/xml
+  void Options() { // $ ResourceMethod=text/xml
   }
 }

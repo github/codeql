@@ -5,40 +5,40 @@ import javax.xml.ws.WebServiceClient;
 import javax.xml.ws.WebServiceProvider;
 
 @WebService
-class WebServiceClass { // $JaxWsEndpoint
+class WebServiceClass { // $ JaxWsEndpoint
 
   @WebMethod
-  void WebMethodMethod() { // $JaxWsEndpointRemoteMethod
+  void WebMethodMethod() { // $ JaxWsEndpointRemoteMethod
   }
 
   @WebEndpoint
-  void WebEndpointMethod() { // $JaxWsEndpointRemoteMethod
+  void WebEndpointMethod() { // $ JaxWsEndpointRemoteMethod
   }
 
 }
 
 @WebServiceProvider
-class WebServiceProviderClass { // $JaxWsEndpoint
+class WebServiceProviderClass { // $ JaxWsEndpoint
 
   @WebMethod
-  void WebMethodMethod() { // $JaxWsEndpointRemoteMethod
+  void WebMethodMethod() { // $ JaxWsEndpointRemoteMethod
   }
 
   @WebEndpoint
-  void WebEndpointMethod() { // $JaxWsEndpointRemoteMethod
+  void WebEndpointMethod() { // $ JaxWsEndpointRemoteMethod
   }
 
 }
 
 @WebServiceClient
-class WebServiceClientClass { // $JaxWsEndpoint
+class WebServiceClientClass { // $ JaxWsEndpoint
 
   @WebMethod
-  void WebMethodMethod() { // $JaxWsEndpointRemoteMethod
+  void WebMethodMethod() { // $ JaxWsEndpointRemoteMethod
   }
 
   @WebEndpoint
-  void WebEndpointMethod() { // $JaxWsEndpointRemoteMethod
+  void WebEndpointMethod() { // $ JaxWsEndpointRemoteMethod
   }
 
 }

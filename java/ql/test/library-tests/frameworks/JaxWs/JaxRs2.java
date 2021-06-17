@@ -25,49 +25,49 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.MessageBodyReader;
 
 @Path("")
-class JaxRs2 { // $RootResourceClass
+class JaxRs2 { // $ RootResourceClass
   JaxRs2() {
   }
 
-  public JaxRs2(// $InjectableConstructor
-      @BeanParam int beanParam, // $InjectionAnnotation
-      @CookieParam("") int cookieParam, // $InjectionAnnotation
-      @FormParam("") int formParam, // $InjectionAnnotation
-      @HeaderParam("") int headerParam, // $InjectionAnnotation
-      @MatrixParam("") int matrixParam, // $InjectionAnnotation
-      @PathParam("") int pathParam, // $InjectionAnnotation
-      @QueryParam("") int queryParam, // $InjectionAnnotation
-      @Context int context) { // $InjectionAnnotation
+  public JaxRs2(// $ InjectableConstructor
+      @BeanParam int beanParam, // $ InjectionAnnotation
+      @CookieParam("") int cookieParam, // $ InjectionAnnotation
+      @FormParam("") int formParam, // $ InjectionAnnotation
+      @HeaderParam("") int headerParam, // $ InjectionAnnotation
+      @MatrixParam("") int matrixParam, // $ InjectionAnnotation
+      @PathParam("") int pathParam, // $ InjectionAnnotation
+      @QueryParam("") int queryParam, // $ InjectionAnnotation
+      @Context int context) { // $ InjectionAnnotation
   }
 
   public JaxRs2(
-      @BeanParam int beanParam, // $InjectionAnnotation
-      @CookieParam("") int cookieParam, // $InjectionAnnotation
-      @FormParam("") int formParam, // $InjectionAnnotation
-      @HeaderParam("") int headerParam, // $InjectionAnnotation
-      @MatrixParam("") int matrixParam, // $InjectionAnnotation
-      @PathParam("") int pathParam, // $InjectionAnnotation
-      @QueryParam("") int queryParam, // $InjectionAnnotation
-      @Context int context, // $InjectionAnnotation
+      @BeanParam int beanParam, // $ InjectionAnnotation
+      @CookieParam("") int cookieParam, // $ InjectionAnnotation
+      @FormParam("") int formParam, // $ InjectionAnnotation
+      @HeaderParam("") int headerParam, // $ InjectionAnnotation
+      @MatrixParam("") int matrixParam, // $ InjectionAnnotation
+      @PathParam("") int pathParam, // $ InjectionAnnotation
+      @QueryParam("") int queryParam, // $ InjectionAnnotation
+      @Context int context, // $ InjectionAnnotation
       int paramWithoutAnnotation) {
   }
 
-  @BeanParam // $InjectionAnnotation
-  int beanField; // $InjectableField
-  @CookieParam("") // $InjectionAnnotation
-  int cookieField; // $InjectableField
-  @FormParam("") // $InjectionAnnotation
-  int formField; // $InjectableField
-  @HeaderParam("") // $InjectionAnnotation
-  int headerField; // $InjectableField
-  @MatrixParam("") // $InjectionAnnotation
-  int matrixField; // $InjectableField
-  @PathParam("") // $InjectionAnnotation
-  int pathField; // $InjectableField
-  @QueryParam("") // $InjectionAnnotation
-  int queryField; // $InjectableField
-  @Context // $InjectionAnnotation
-  int context; // $InjectableField
+  @BeanParam // $ InjectionAnnotation
+  int beanField; // $ InjectableField
+  @CookieParam("") // $ InjectionAnnotation
+  int cookieField; // $ InjectableField
+  @FormParam("") // $ InjectionAnnotation
+  int formField; // $ InjectableField
+  @HeaderParam("") // $ InjectionAnnotation
+  int headerField; // $ InjectableField
+  @MatrixParam("") // $ InjectionAnnotation
+  int matrixField; // $ InjectableField
+  @PathParam("") // $ InjectionAnnotation
+  int pathField; // $ InjectableField
+  @QueryParam("") // $ InjectionAnnotation
+  int queryField; // $ InjectableField
+  @Context // $ InjectionAnnotation
+  int context; // $ InjectableField
   int fieldWithoutAnnotation;
 }
 
@@ -86,14 +86,14 @@ class CustomUnmarshaller implements MessageBodyReader {
 }
 
 class Miscellaneous {
-  @Consumes("") // $ConsumesAnnotation
+  @Consumes("") // $ ConsumesAnnotation
   public static void miscellaneous() throws IOException {
-    Response.ResponseBuilder responseBuilder = Response.accepted(); // $ResponseBuilderDeclaration
-    Response response = responseBuilder.build(); // $ResponseDeclaration
-    Client client; // $ClientDeclaration
-    MessageBodyReader<String> messageBodyReader = null; // $MessageBodyReaderDeclaration
-    messageBodyReader.readFrom(null, null, null, null, null, null); // $MessageBodyReaderReadFromCall $MessageBodyReaderReadCall
+    Response.ResponseBuilder responseBuilder = Response.accepted(); // $ ResponseBuilderDeclaration
+    Response response = responseBuilder.build(); // $ ResponseDeclaration
+    Client client; // $ ClientDeclaration
+    MessageBodyReader<String> messageBodyReader = null; // $ MessageBodyReaderDeclaration
+    messageBodyReader.readFrom(null, null, null, null, null, null); // $ MessageBodyReaderReadFromCall MessageBodyReaderReadCall
     CustomUnmarshaller customUnmarshaller = null;
-    customUnmarshaller.readFrom(null, null, null, null, null, null); // $MessageBodyReaderReadCall
+    customUnmarshaller.readFrom(null, null, null, null, null, null); // $ MessageBodyReaderReadCall
   }
 }
