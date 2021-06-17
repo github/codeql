@@ -3,102 +3,161 @@
 import java
 private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.FlowSteps
+private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.Collections
 
 private string guavaCollectPackage() { result = "com.google.common.collect" }
 
-/** A reference type that extends a parameterization of one of the various immutable container types. */
-private class ImmutableContainerType extends RefType {
-  string kind;
-
-  ImmutableContainerType() {
-    this.getSourceDeclaration().getASourceSupertype*().hasQualifiedName(guavaCollectPackage(), kind) and
-    kind = ["ImmutableCollection", "ImmutableMap", "ImmutableMultimap", "ImmutableTable"]
+private class GuavaCollectCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        //"package;type;overrides;name;signature;ext;inputspec;outputspec;kind",
+        // Multisets
+        "com.google.common.collect;Multiset;true;add;(Object,int);;Argument[0];Element of Argument[-1];value",
+        "com.google.common.collect;Multiset;true;setCount;(Object,int);;Argument[0];Element of Argument[-1];value",
+        "com.google.common.collect;Multiset;true;setCount;(Object,int,int);;Argument[0];Element of Argument[-1];value",
+        "com.google.common.collect;Multiset;true;elementSet;();;Element of Argument[-1];Element of ReturnValue;value",
+        "com.google.common.collect;Multiset;true;entrySet;();;Element of Argument[-1];Element of Element of ReturnValue;value",
+        "com.google.common.collect;Multiset<>$Entry;true;getElement;();;Element of Argument[-1];ReturnValue;value",
+        // Multimaps (aliasing between the collection 'views' returned by some methods and the original collection is not implemented)
+        "com.google.common.collect;Multimap;true;asMap;();;MapKey of Argument[-1];MapKey of ReturnValue;value",
+        "com.google.common.collect;Multimap;true;asMap;();;MapValue of Argument[-1];Element of MapValue of ReturnValue;value",
+        "com.google.common.collect;Multimap;true;entries;();;MapKey of Argument[-1];MapKey of Element of ReturnValue;value",
+        "com.google.common.collect;Multimap;true;entries;();;MapValue of Argument[-1];MapValue of Element of ReturnValue;value",
+        "com.google.common.collect;Multimap;true;get;(Object);;MapValue of Argument[-1];Element of ReturnValue;value",
+        "com.google.common.collect;Multimap;true;keys;();;MapKey of Argument[-1];Element of ReturnValue;value",
+        "com.google.common.collect;Multimap;true;keySet;();;MapKey of Argument[-1];Element of ReturnValue;value",
+        "com.google.common.collect;Multimap;true;values();;MapValue of Argument[-1];Element of ReturnValue;value",
+        "com.google.common.collect;Multimap;true;put;(Object,Object);;Argument[0];MapKey of Argument[-1];value",
+        "com.google.common.collect;Multimap;true;put;(Object,Object);;Argument[1];MapValue of Argument[-1];value",
+        "com.google.common.collect;Multimap;true;putAll;(Object,Iterable);;Argument[0];MapKey of Argument[-1];value",
+        "com.google.common.collect;Multimap;true;putAll;(Object,Iterable);;Element of Argument[1];MapValue of Argument[-1];value",
+        "com.google.common.collect;Multimap;true;putAll;(Multimap);;MapKey of Argument[0];MapKey of Argument[-1];value",
+        "com.google.common.collect;Multimap;true;putAll;(Multimap);;MapValue of Argument[0];MapValue of Argument[-1];value",
+        "com.google.common.collect;Multimap;true;removeAll;(Object);;MapValue of Argument[-1];MapValue of ReturnValue;value",
+        "com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;MapValue of Argument[-1];MapValue of ReturnValue;value",
+        "com.google.common.collect;Multimap;true;replaceValues(Object,Iterable);;Argument[0];MapKey of Argument[-1];value",
+        "com.google.common.collect;Multimap;true;replaceValues(Object,Iterable);;Element of Argument[0];MapValue of Argument[-1];value",
+        "com.google.common.collect;ImmutableMultimap;true;inverse;();;MapKey of Argument[-1];MapValue of ReturnValue;value",
+        "com.google.common.collect;ImmutableMultimap;true;inverse;();;MapValue of Argument[-1];MapKey of ReturnValue;value",
+        // Tables (TODO)
+        // Misc collections and utilities
+        "com.google.common.collect;ImmutableCollection;true;asList;();;Element of Argument[-1];Element of ReturnValue;value",
+        "com.google.common.collect;ImmutableList;true;reverse;();;Element of Argument[-1];Element of ReturnValue;value",
+        "com.google.common.collect;ImmutableCollection;true;subList;(int,int);;Element of Argument[-1];Element of ReturnValue;value",
+        "com.google.common.collect;BiMap;true;forcePut;(Object,Object);;Argument[0];MapKey of Argument[-1];value",
+        "com.google.common.collect;BiMap;true;forcePut;(Object,Object);;Argument[1];MapValue of Argument[-1];value",
+        "com.google.common.collect;BiMap;true;inverse;();;MapKey of Argument[-1];MapValue of ReturnValue;value",
+        "com.google.common.collect;BiMap;true;inverse;();;MapValue of Argument[-1];MapKey of ReturnValue;value",
+        "com.google.common.collect;ClassToInstanceMap;true;getInstance;(Class);;MapValue of Argument[-1];ReturnValue;value",
+        "com.google.common.collect;ClassToInstanceMap;true;putInstance;(Class,Object);;MapValue of Argument[-1];ReturnValue;value",
+        "com.google.common.collect;ClassToInstanceMap;true;putInstance;(Class,Object);;Argument[1];MapValue of Argument[-1];value",
+        // Builders
+        "com.google.common.collect;ImmutableCollection<>$Builder;true;build;();;Element of Argument[-1];Element of ReturnValue;value",
+        "com.google.common.collect;ImmutableCollection<>$Builder;true;add;(Object);;Argument[-1];ReturnValue;value",
+        "com.google.common.collect;ImmutableCollection<>$Builder;true;add;(Object);;Argument[0];Element of Argument[-1];value",
+        "com.google.common.collect;ImmutableCollection<>$Builder;true;addAll;;;Argument[-1];ReturnValue;value",
+        "com.google.common.collect;ImmutableCollection<>$Builder;true;addAll;(Object[]);;ArrayElement of Argument[0];Element of Argument[-1];value",
+        "com.google.common.collect;ImmutableCollection<>$Builder;true;addAll;(Iterable);;Element of Argument[0];Element of Argument[-1];value",
+        "com.google.common.collect;ImmutableCollection<>$Builder;true;addAll;(Iterator);;Element of Argument[0];Element of Argument[-1];value",
+        "com.google.common.collect;ImmutableMultiset<>$Builder;true;addCopies;(Object,int);;Argument[-1];ReturnValue;value",
+        "com.google.common.collect;ImmutableMultiset<>$Builder;true;addCopies;(Object,int);;Argument[0];Element of Argument[-1];value",
+        "com.google.common.collect;ImmutableMap<>$Builder;true;build;();;MapKey of Argument[-1];MapKey of ReturnValue;value",
+        "com.google.common.collect;ImmutableMap<>$Builder;true;build;();;MapValue of Argument[-1];MapValue of ReturnValue;value",
+        "com.google.common.collect;ImmutableMap<>$Builder;true;orderEntriesByValue;(Comparator);;Argument[-1];ReturnValue;value",
+        "com.google.common.collect;ImmutableMap<>$Builder;true;put;;;Argument[-1];ReturnValue;value",
+        "com.google.common.collect;ImmutableMap<>$Builder;true;put;(Entry);;MapKey of Argument[0];MapKey of Argument[-1];value",
+        "com.google.common.collect;ImmutableMap<>$Builder;true;put;(Entry);;MapValue of Argument[0];MapValue of Argument[-1];value",
+        "com.google.common.collect;ImmutableMap<>$Builder;true;put;(Object,Object);;Argument[0];MapKey of Argument[-1];value",
+        "com.google.common.collect;ImmutableMap<>$Builder;true;put;(Object,Object);;Argument[1];MapValue of Argument[-1];value",
+        "com.google.common.collect;ImmutableMap<>$Builder;true;putAll;;;Argument[-1];ReturnValue;value",
+        "com.google.common.collect;ImmutableMap<>$Builder;true;putAll;(Iterable);;MapKey of Element of Argument[0];MapKey of Argument[-1];value",
+        "com.google.common.collect;ImmutableMap<>$Builder;true;putAll;(Iterable);;MapValue of Element of Argument[0];MapValue of Argument[-1];value",
+        "com.google.common.collect;ImmutableMap<>$Builder;true;putAll;(Map);;MapKey of Argument[0];MapKey of Argument[-1];value",
+        "com.google.common.collect;ImmutableMap<>$Builder;true;putAll;(Map);;MapValue of Argument[0];MapValue of Argument[-1];value",
+        "com.google.common.collect;ImmutableMultimap<>$Builder;true;build;();;MapKey of Argument[-1];MapKey of ReturnValue;value",
+        "com.google.common.collect;ImmutableMultimap<>$Builder;true;build;();;MapValue of Argument[-1];MapValue of ReturnValue;value",
+        "com.google.common.collect;ImmutableMultimap<>$Builder;true;orderKeysBy;(Comparator);;Argument[-1];ReturnValue;value",
+        "com.google.common.collect;ImmutableMultimap<>$Builder;true;orderValuesBy;(Comparator);;Argument[-1];ReturnValue;value",
+        "com.google.common.collect;ImmutableMultimap<>$Builder;true;put;;;Argument[-1];ReturnValue;value",
+        "com.google.common.collect;ImmutableMultimap<>$Builder;true;put;(Entry);;MapKey of Argument[0];MapKey of Argument[-1];value",
+        "com.google.common.collect;ImmutableMultimap<>$Builder;true;put;(Entry);;MapValue of Argument[0];MapValue of Argument[-1];value",
+        "com.google.common.collect;ImmutableMultimap<>$Builder;true;put;(Object,Object);;Argument[0];MapKey of Argument[-1];value",
+        "com.google.common.collect;ImmutableMultimap<>$Builder;true;put;(Object,Object);;Argument[1];MapValue of Argument[-1];value",
+        "com.google.common.collect;ImmutableMultimap<>$Builder;true;putAll;;;Argument[-1];ReturnValue;value",
+        "com.google.common.collect;ImmutableMultimap<>$Builder;true;putAll;(Iterable);;MapKey of Element of Argument[0];MapKey of Argument[-1];value",
+        "com.google.common.collect;ImmutableMultimap<>$Builder;true;putAll;(Iterable);;MapValue of Element of Argument[0];MapValue of Argument[-1];value",
+        "com.google.common.collect;ImmutableMultimap<>$Builder;true;putAll;(Multimap);;MapKey of Argument[0];MapKey of Argument[-1];value",
+        "com.google.common.collect;ImmutableMultimap<>$Builder;true;putAll;(Multimap);;MapValue of Argument[0];MapValue of Argument[-1];value",
+        "com.google.common.collect;ImmutableMultimap<>$Builder;true;putAll;(Object,Iterable);;Argument[0];MapKey of Argument[-1];value",
+        "com.google.common.collect;ImmutableMultimap<>$Builder;true;putAll;(Object,Iterable);;Element of Argument[1];MapValue of Argument[-1];value",
+        "com.google.common.collect;ImmutableMultimap<>$Builder;true;putAll;(Object,Iterable);;Argument[0];MapKey of Argument[-1];value",
+        "com.google.common.collect;ImmutableMultimap<>$Builder;true;putAll;(Object,Object[]);;ArrayElement of Argument[1];MapValue of Argument[-1];value",
+        // `of` methods
+        "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value",
+        "com.google.common.collect;ImmutableList;true;of;;;ArrayElement of Argument[12];Element of ReturnValue;value",
+        "com.google.common.collect;ImmutableSet;true;of;;;Argument[0..5];Element of ReturnValue;value",
+        "com.google.common.collect;ImmutableSet;true;of;;;ArrayElement of Argument[6];Element of ReturnValue;value",
+        "com.google.common.collect;ImmutableMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value",
+        "com.google.common.collect;ImmutableMultiset;true;of;;;Element of Argument[6];Element of ReturnValue;value",
+        "com.google.common.collect;ImmutableMap;true;of;;;Argument[0];MapKey of ReturnValue;value",
+        "com.google.common.collect;ImmutableMap;true;of;;;Argument[1];MapValue of ReturnValue;value",
+        "com.google.common.collect;ImmutableMap;true;of;;;Argument[2];MapKey of ReturnValue;value",
+        "com.google.common.collect;ImmutableMap;true;of;;;Argument[3];MapValue of ReturnValue;value",
+        "com.google.common.collect;ImmutableMap;true;of;;;Argument[4];MapKey of ReturnValue;value",
+        "com.google.common.collect;ImmutableMap;true;of;;;Argument[5];MapValue of ReturnValue;value",
+        "com.google.common.collect;ImmutableMap;true;of;;;Argument[6];MapKey of ReturnValue;value",
+        "com.google.common.collect;ImmutableMap;true;of;;;Argument[7];MapValue of ReturnValue;value",
+        "com.google.common.collect;ImmutableMap;true;of;;;Argument[8];MapKey of ReturnValue;value",
+        "com.google.common.collect;ImmutableMap;true;of;;;Argument[9];MapValue of ReturnValue;value",
+        "com.google.common.collect;ImmutableMap;true;of;;;Argument[10];MapKey of ReturnValue;value",
+        "com.google.common.collect;ImmutableMap;true;of;;;Argument[11];MapValue of ReturnValue;value",
+        "com.google.common.collect;ImmutableMultimap;true;of;;;Argument[0];MapKey of ReturnValue;value",
+        "com.google.common.collect;ImmutableMultimap;true;of;;;Argument[1];MapValue of ReturnValue;value",
+        "com.google.common.collect;ImmutableMultimap;true;of;;;Argument[2];MapKey of ReturnValue;value",
+        "com.google.common.collect;ImmutableMultimap;true;of;;;Argument[3];MapValue of ReturnValue;value",
+        "com.google.common.collect;ImmutableMultimap;true;of;;;Argument[4];MapKey of ReturnValue;value",
+        "com.google.common.collect;ImmutableMultimap;true;of;;;Argument[5];MapValue of ReturnValue;value",
+        "com.google.common.collect;ImmutableMultimap;true;of;;;Argument[6];MapKey of ReturnValue;value",
+        "com.google.common.collect;ImmutableMultimap;true;of;;;Argument[7];MapValue of ReturnValue;value",
+        "com.google.common.collect;ImmutableMultimap;true;of;;;Argument[8];MapKey of ReturnValue;value",
+        "com.google.common.collect;ImmutableMultimap;true;of;;;Argument[9];MapValue of ReturnValue;value",
+        // `copyOf` methods
+        "com.google.common.collect;ImmutableList;true;copyOf;(Object[]);;ArrayElement of Argument[0];Element of ReturnValue;value",
+        "com.google.common.collect;ImmutableList;true;copyOf;(Iterable);;Element of Argument[0];Element of ReturnValue;value",
+        "com.google.common.collect;ImmutableList;true;copyOf;(Iterator);;Element of Argument[0];Element of ReturnValue;value",
+        "com.google.common.collect;ImmutableList;true;copyOf;(Collection);;Element of Argument[0];Element of ReturnValue;value",
+        "com.google.common.collect;ImmutableList;true;sortedCopyOf;(Iterable);;Element of Argument[0];Element of ReturnValue;value",
+        "com.google.common.collect;ImmutableList;true;sortedCopyOf;(Comparator,Iterable);;Element of Argument[1];Element of ReturnValue;value",
+        "com.google.common.collect;ImmutableSet;true;copyOf;(Object[]);;ArrayElement of Argument[0];Element of ReturnValue;value",
+        "com.google.common.collect;ImmutableSet;true;copyOf;(Iterable);;Element of Argument[0];Element of ReturnValue;value",
+        "com.google.common.collect;ImmutableSet;true;copyOf;(Iterator);;Element of Argument[0];Element of ReturnValue;value",
+        "com.google.common.collect;ImmutableSet;true;copyOf;(Collection);;Element of Argument[0];Element of ReturnValue;value",
+        "com.google.common.collect;ImmutableSortedSet;true;copyOf;(Comparator,Iterable);;Element of Argument[1];Element of ReturnValue;value",
+        "com.google.common.collect;ImmutableSortedSet;true;copyOf;(Comparator,Iterator);;Element of Argument[1];Element of ReturnValue;value",
+        "com.google.common.collect;ImmutableSortedSet;true;copyOf;(Comparator,Collection);;Element of Argument[1];Element of ReturnValue;value",
+        "com.google.common.collect;ImmutableSortedSet;true;copyOfSorted;(SortedSet);;Element of Argument[0];Element of ReturnValue;value",
+        "com.google.common.collect;ImmutableMultiset;true;copyOf;(Object[]);;ArrayElement of Argument[0];Element of ReturnValue;value",
+        "com.google.common.collect;ImmutableMultiset;true;copyOf;(Iterable);;Element of Argument[0];Element of ReturnValue;value",
+        "com.google.common.collect;ImmutableMultiset;true;copyOf;(Iterator);;Element of Argument[0];Element of ReturnValue;value",
+        "com.google.common.collect;ImmutableSortedMultiset;true;copyOf;(Comparator,Iterable);;Element of Argument[1];Element of ReturnValue;value",
+        "com.google.common.collect;ImmutableSortedMultiset;true;copyOf;(Comparator,Iterator);;Element of Argument[1];Element of ReturnValue;value",
+        "com.google.common.collect;ImmutableSortedMultiset;true;copyOf;(Comparator,Collection);;Element of Argument[1];Element of ReturnValue;value",
+        "com.google.common.collect;ImmutableSortedMultiset;true;copyOfSorted;(SortedMultiSet);;Element of Argument[0];Element of ReturnValue;value",
+        "com.google.common.collect;ImmutableMap;true;copyOf;(Map);;MapKey of Argument[0];MapKey of ReturnValue;value",
+        "com.google.common.collect;ImmutableMap;true;copyOf;(Map);;MapValue of Argument[0];MapValue of ReturnValue;value",
+        "com.google.common.collect;ImmutableMap;true;copyOf;(Iterable);;MapKey of Element of Argument[0];MapKey of ReturnValue;value",
+        "com.google.common.collect;ImmutableMap;true;copyOf;(Iterable);;MapValue of Element of Argument[0];MapValue of ReturnValue;value",
+        "com.google.common.collect;ImmutableSortedMap;true;copyOfSorted;(SortedMap);;MapKey of Argument[0];MapKey of ReturnValue;value",
+        "com.google.common.collect;ImmutableSortedMap;true;copyOfSorted;(SortedMap);;MapValue of Argument[0];MapValue of ReturnValue;value",
+        "com.google.common.collect;ImmutableMultimap;true;copyOf;(Multimap);;MapKey of Argument[0];MapKey of ReturnValue;value",
+        "com.google.common.collect;ImmutableMultimap;true;copyOf;(Multimap);;MapValue of Argument[0];MapValue of ReturnValue;value",
+        "com.google.common.collect;ImmutableMultimap;true;copyOf;(Iterable);;MapKey of Element of Argument[0];MapKey of ReturnValue;value",
+        "com.google.common.collect;ImmutableMultimap;true;copyOf;(Iterable);;MapValue of Element of Argument[0];MapValue of ReturnValue;value"
+        // Utility classes
+      ]
   }
-
-  /**
-   * Gets the name of the most general superclass of this type
-   * from among `ImmutableCollection`, `ImmutableMap`, `ImmutableMultimap`, and `ImmutableTable`.
-   */
-  string getKind() { result = kind }
-}
-
-/** A nested `Builder` class of one of the various immutable container classes */
-private class ContainerBuilder extends NestedType {
-  ContainerBuilder() {
-    this.hasName("Builder") and
-    this.getEnclosingType() instanceof ImmutableContainerType
-  }
-}
-
-private class BuilderBuildMethod extends TaintPreservingCallable {
-  BuilderBuildMethod() {
-    this.getDeclaringType().getASourceSupertype*() instanceof ContainerBuilder and
-    // abstract ImmutableCollection<E> build()
-    // similar for other builder types
-    this.hasName("build")
-  }
-
-  override predicate returnsTaintFrom(int arg) { arg = -1 }
-}
-
-/** A method on a `Builder` class that adds elements to the container being built */
-private class BuilderAddMethod extends TaintPreservingCallable {
-  int argument;
-
-  BuilderAddMethod() {
-    this.getDeclaringType().getASourceSupertype*() instanceof ContainerBuilder and
-    (
-      // abstract ImmutableCollection.Builder<E> add(E element)
-      // ImmutableCollection.Builder<E> add(E... elements)
-      // ImmutableCollection.Builder<E> addAll(Iterable<? extends E> elements)
-      // ImmutableCollection.Builder<E> addAll(Iterator<? extends E> elements)
-      // ImmutableMultiset.Builder<E> addCopies(E element, int occurrences)
-      // ImmutableMultiset.Builder<E> setCount(E element, int count)
-      this.hasName(["add", "addAll", "addCopies", "setCount"]) and
-      argument = 0
-      or
-      // ImmutableMap.Builder<K,V> put(K key, V value)
-      // ImmutableMap.Builder<K,V> put(Map.Entry<? extends K,? extends V> entry)
-      // ImmutableMap.Builder<K,V> putAll(Map<? extends K,? extends V> map)
-      // ImmutableMap.Builder<K,V> putAll(Iterable<? extends Map.Entry<? extends K,? extends V>> entries)
-      // ImmutableMultimap.Builder<K,V> put(K key, V value)
-      // ImmutableMultimap.Builder<K,V> put(Map.Entry<? extends K,? extends V> entry)
-      // ImmutableMultimap.Builder<K,V> putAll(Iterable<? extends Map.Entry<? extends K,? extends V>> entries)
-      // ImmutableMultimap.Builder<K,V> putAll(K key, Iterable<? extends V> values)
-      // ImmutableMultimap.Builder<K,V> putAll(K key, V... values)
-      // ImmutableMultimap.Builder<K,V> putAll(Multimap<? extends K,? extends V> multimap)
-      // ImmutableTable.Builder<R,C,V> put(R rowKey, C columnKey, V value)
-      // ImmutableTable.Builder<R,C,V> put(Table.Cell<? extends R,? extends C,? extends V> cell)
-      // ImmutableTable.Builder<R,C,V> putAll(Table<? extends R,? extends C,? extends V> table)
-      this.hasName(["put", "putAll"]) and
-      argument = getNumberOfParameters() - 1
-    )
-  }
-
-  override predicate returnsTaintFrom(int arg) { arg = [-1, argument] }
-
-  override predicate transfersTaint(int src, int sink) { src = argument and sink = -1 }
-}
-
-/**
- * In a chained call `b.add(x).add(y).add(z)`, represents a flow step from the return value of
- * this expression to the post update node of `b` (valid because the builder add methods return their qualifier).
- * This is sufficient to express flow from `y` and `z` to `b`.
- */
-private class ChainedBuilderAddStep extends AdditionalTaintStep {
-  override predicate step(DataFlow::Node src, DataFlow::Node sink) {
-    exists(MethodAccess ma |
-      ma.getMethod() instanceof BuilderAddMethod and
-      src.asExpr() = ma and
-      chainedBuilderMethod+(sink.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr()) = ma
-    )
-  }
-}
-
-private MethodAccess chainedBuilderMethod(Expr e) {
-  result.getQualifier() = e and
-  result.getMethod() instanceof BuilderAddMethod
 }
 
 /**
@@ -124,39 +183,6 @@ class MultimapType extends RefType {
       indirectlyInstantiates(this, map, 1, result)
     )
   }
-}
-
-private class MultimapWriteMethod extends TaintPreservingCallable {
-  MultimapWriteMethod() {
-    this.getDeclaringType() instanceof MultimapType and
-    // boolean put(K key, V value)
-    // boolean putAll(K key, Iterable<? extends V> values)
-    // boolean putAll(Multimap<? extends K,? extends V> multimap)
-    // Collection<V> replaceValues(K key, Iterable<? extends V> values)
-    this.hasName(["put", "putAll", "replaceValues"])
-  }
-
-  override predicate transfersTaint(int src, int sink) {
-    src = getNumberOfParameters() - 1 and
-    sink = -1
-  }
-}
-
-private class MultimapReadMethod extends TaintPreservingCallable {
-  MultimapReadMethod() {
-    this.getDeclaringType() instanceof MultimapType and
-    // Collection<V> replaceValues(K key, Iterable<? extends V> values)
-    // Collection<V> removeAll(@CompatibleWith("K") Object key)
-    // Collection<V> get(K key)
-    // Collection<V> values()
-    // Collection<Map.Entry<K,V>> entries()
-    // Map<K,Collection<V>> asMap()
-    this.hasName(["replaceValues", "removeAll", "get", "values", "entries", "asMap"])
-  }
-
-  override predicate returnsTaintFrom(int arg) { arg = -1 }
-  // Not implemented: Some of these methods return "views", which when modified will modify the map itself.
-  // However, taint flow from these views to the map is not implemented.
 }
 
 /**
@@ -189,130 +215,6 @@ class TableType extends RefType {
       indirectlyInstantiates(this, table, 2, result)
     )
   }
-}
-
-private class TableWriteMethod extends TaintPreservingCallable {
-  TableWriteMethod() {
-    this.getDeclaringType() instanceof TableType and
-    // V put(R rowKey, C columnKey, V value)
-    // void putAll(Table<? extends R,? extends C,? extends V> table)
-    this.hasName(["put", "putAll"])
-  }
-
-  override predicate transfersTaint(int src, int sink) {
-    src = getNumberOfParameters() - 1 and
-    sink = -1
-  }
-}
-
-private class TableReadMethod extends TaintPreservingCallable {
-  TableReadMethod() {
-    this.getDeclaringType() instanceof TableType and
-    // V put(R rowKey, C columnKey, V value)
-    // V remove(@CompatibleWith("R") Object rowKey, @CompatibleWith("C") Object columnKey)
-    // V get(@CompatibleWith("R") Object rowKey, @CompatibleWith("C") Object columnKey)
-    // Map<C,V> row(R rowKey)
-    // Map<R,V> column(C columnKey)
-    // Set<Table.Cell<R,C,V>> cellSet()
-    // Collection<V> values()
-    // Map<R,Map<C,V>> rowMap()
-    // Map<C,Map<R,V>> columnMap()
-    this.hasName([
-        "put", "remove", "get", "row", "column", "cellSet", "values", "rowMap", "columnMap"
-      ])
-  }
-
-  override predicate returnsTaintFrom(int arg) { arg = -1 }
-  // Not implemented: Some of these methods return "views", which when modified will modify the table itself.
-  // However, taint flow from these views to the table is not implemented.
-}
-
-private class TableCellReadMethod extends TaintPreservingCallable {
-  TableCellReadMethod() {
-    exists(NestedType cell |
-      cell.getEnclosingType() instanceof TableType and
-      cell.hasName("Cell") and
-      this.getDeclaringType().getSourceDeclaration().getASourceSupertype*() = cell and
-      // V getValue()
-      this.hasName("getValue")
-    )
-  }
-
-  override predicate returnsTaintFrom(int arg) { arg = -1 }
-}
-
-/**
- * An `of` static method on the various immutable container types.
- */
-private class OfMethod extends TaintPreservingCallable {
-  string kind;
-
-  OfMethod() {
-    this.getDeclaringType().(ImmutableContainerType).getKind() = kind and
-    // static <E> ImmutableList<E> of(E e1, E e2, E e3, E e4, E e5, E e6)
-    // static <K,V> ImmutableMap<K,V> of(K k1, V v1, K k2, V v2, K k3, V v3, K k4, V v4)
-    // static <K,V> ImmutableMultimap<K,V> of(K k1, V v1, K k2, V v2, K k3, V v3, K k4, V v4)
-    // static <R,C,V> ImmutableTable<R,C,V> of(R rowKey, C columnKey, V value)
-    // etc for other types and numbers of parameters
-    this.hasName("of") and
-    this.isStatic()
-  }
-
-  override predicate returnsTaintFrom(int arg) {
-    arg = [0 .. getNumberOfParameters()] and
-    (kind.regexpMatch(".*[Mm]ap") implies arg % 2 = 1) and
-    (kind = "ImmutableTable" implies arg % 3 = 2)
-  }
-}
-
-private class ComparatorType extends RefType {
-  ComparatorType() { this.getASourceSupertype*().hasQualifiedName("java.util", "Comparator") }
-}
-
-/**
- * A `copyOf`, `sortedCopyOf`, or `copyOfSorted` static method on the various immutable container types.
- */
-private class CopyOfMethod extends TaintPreservingCallable {
-  CopyOfMethod() {
-    this.getDeclaringType() instanceof ImmutableContainerType and
-    // static <E> ImmutableList<E> copyOf(E[] elements)
-    // static <E> ImmutableList<E> copyOf(Iterable<? extends E> elements)
-    // static <E> ImmutableList<E> copyOf(Collection<? extends E> elements)
-    // static <E> ImmutableList<E> copyOf(Iterator<? extends E> elements)
-    // static <E extends Comparable<? super E>> ImmutableList<E> sortedCopyOf(Iterable<? extends E> elements)
-    // static <E> ImmutableList<E> sortedCopyOf(Comparator<? super E> comparator, Iterable<? extends E> elements)
-    // static <K,V> ImmutableMap<K,V> copyOf(Map<? extends K,? extends V> map)
-    // static <K,V> ImmutableMap<K,V> copyOf(Iterable<? extends Map.Entry<? extends K,? extends V>> entries)
-    // static <K,V> ImmutableMultimap<K,V> copyOf(Multimap<? extends K,? extends V> multimap)
-    // static <K,V> ImmutableMultimap<K,V> copyOf(Iterable<? extends Map.Entry<? extends K,? extends V>> entries)
-    // static <R,C,V> ImmutableTable<R,C,V> copyOf(Table<? extends R,? extends C,? extends V> table)
-    // static <K, V> ImmutableSortedMap<K, V> copyOf(Map<? extends K, ? extends V> map)
-    // static <K, V> ImmutableSortedMap<K, V> copyOf(Map<? extends K, ? extends V> map, Comparator<? super K> comparator)
-    // static <K, V> ImmutableSortedMap<K, V> copyOfSorted(SortedMap<K, ? extends V> map)
-    // static <E> ImmutableSortedSet<E> copyOf(Iterator<? extends E> elements)
-    // static <E> ImmutableSortedSet<E> copyOf(Comparator<? super E> comparator, Iterator<? extends E> elements)
-    // static <E> ImmutableSortedSet<E> copyOfSorted(SortedSet<E> sortedSet)
-    // etc
-    this.hasName(["copyOf", "sortedCopyOf", "copyOfSorted"]) and
-    this.isStatic()
-  }
-
-  override predicate returnsTaintFrom(int arg) {
-    arg = [0 .. getNumberOfParameters()] and
-    not getParameterType(arg) instanceof ComparatorType
-  }
-}
-
-private class CollectionAsListMethod extends TaintPreservingCallable {
-  CollectionAsListMethod() {
-    this.getDeclaringType()
-        .getASourceSupertype*()
-        .hasQualifiedName(guavaCollectPackage(), "ImmutableCollection") and
-    // public ImmutableList<E> asList()
-    this.hasName("asList")
-  }
-
-  override predicate returnsTaintFrom(int arg) { arg = -1 }
 }
 
 /**
