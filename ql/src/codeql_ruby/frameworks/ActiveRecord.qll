@@ -53,12 +53,15 @@ class ActiveRecordModelClassMethodCall extends MethodCall {
   }
 }
 
-private predicate methodCanTakeSqlFragmentAsFirstArg(string methodName) {
+private predicate methodWithSqlFragmentArg(string methodName, int argIndex) {
   methodName =
     [
       "delete_all", "destroy_all", "exists?", "find_by", "find_by_sql", "from", "group", "having",
       "joins", "lock", "not", "order", "pluck", "where"
-    ]
+    ] and
+  argIndex = 0
+  or
+  methodName = "calculate" and argIndex = 1
 }
 
 class PotentiallyUnsafeSqlExecutingMethodCall extends ActiveRecordModelClassMethodCall {
@@ -73,12 +76,7 @@ class PotentiallyUnsafeSqlExecutingMethodCall extends ActiveRecordModelClassMeth
   PotentiallyUnsafeSqlExecutingMethodCall() {
     methodName = this.getMethodName() and
     sqlFragmentExpr = this.getArgument(sqlFragmentArgumentIndex) and
-    (
-      methodName = "calculate" and sqlFragmentArgumentIndex = 1
-      or
-      sqlFragmentArgumentIndex = 0 and
-      methodCanTakeSqlFragmentAsFirstArg(methodName)
-    ) and
+    methodWithSqlFragmentArg(methodName, sqlFragmentArgumentIndex) and
     (
       // select only literals containing an interpolated value...
       exists(StringInterpolationComponent interpolated |
