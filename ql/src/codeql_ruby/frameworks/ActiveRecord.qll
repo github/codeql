@@ -44,21 +44,14 @@ class ActiveRecordModelClass extends ClassDeclaration {
 
 /** A class method call whose receiver is an `ActiveRecordModelClass`. */
 class ActiveRecordModelClassMethodCall extends MethodCall {
-  // The model class that receives this call, if any
-  private ActiveRecordModelClass recvCls;
-
   ActiveRecordModelClassMethodCall() {
     // e.g. Foo.where(...)
-    recvCls.getModule() = resolveScopeExpr(this.getReceiver())
+    exists(ActiveRecordModelClass recvCls |
+      recvCls.getModule() = resolveScopeExpr(this.getReceiver())
+    )
     or
     // e.g. Foo.joins(:bars).where(...)
     this.getReceiver() instanceof ActiveRecordModelClassMethodCall
-  }
-
-  // TODO: do we need this?
-  ActiveRecordModelClass getAnActiveRecordModelClass() {
-    result = recvCls or
-    result = this.getReceiver().(ActiveRecordModelClassMethodCall).getAnActiveRecordModelClass()
   }
 }
 
