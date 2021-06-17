@@ -720,9 +720,9 @@ impl fmt::Display for Program {
 }
 
 enum TrapEntry {
-    /// Maps the label to a fresh id, e.g. `#123 = *`.
+    /// Maps the label to a fresh id, e.g. `#123=*`.
     FreshId(Label),
-    /// Maps the label to a key, e.g. `#7 = @"foo"`.
+    /// Maps the label to a key, e.g. `#7=@"foo"`.
     MapLabelToKey(Label, String),
     /// foo_bar(arg*)
     GenericTuple(String, Vec<Arg>),
@@ -731,15 +731,15 @@ enum TrapEntry {
 impl fmt::Display for TrapEntry {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            TrapEntry::FreshId(label) => write!(f, "{} = *", label),
+            TrapEntry::FreshId(label) => write!(f, "{}=*", label),
             TrapEntry::MapLabelToKey(label, key) => {
-                write!(f, "{} = @\"{}\"", label, key.replace("\"", "\"\""))
+                write!(f, "{}=@\"{}\"", label, key.replace("\"", "\"\""))
             }
             TrapEntry::GenericTuple(name, args) => {
                 write!(f, "{}(", name)?;
                 for (index, arg) in args.iter().enumerate() {
                     if index > 0 {
-                        write!(f, ", ")?;
+                        write!(f, ",")?;
                     }
                     write!(f, "{}", arg)?;
                 }
@@ -756,7 +756,7 @@ struct Label(u32);
 
 impl fmt::Display for Label {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "#{}", self.0)
+        write!(f, "#{:x}", self.0)
     }
 }
 
