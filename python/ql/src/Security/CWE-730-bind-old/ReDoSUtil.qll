@@ -726,7 +726,10 @@ private module PrefixConstruction {
         max(State s, Location l |
           isStartState(s) and getRoot(s.getRepr()) = root and l = s.getRepr().getLocation()
         |
-          s order by l.getStartLine(), l.getStartColumn()
+          s
+          order by
+            l.getStartLine(), l.getStartColumn(), s.getRepr().toString(), l.getEndColumn(),
+            l.getEndLine()
         )
     )
   }
@@ -748,20 +751,18 @@ private module PrefixConstruction {
   private int lengthFromStart(State state) { result = prefixLength(_, state) }
 
   /**
-   * Gets a string for which the regular expression will reach `state` after `i` steps.
+   * Gets a string for which the regular expression will reach `state`.
    *
    * Has at most one result for any given `state`.
    * This predicate will not always have a result even if there is a ReDoS issue in
    * the regular expression.
    */
-  string prefix(State state, int i) {
+  string prefix(State state) {
     lastStartState(state) and
-    result = "" and
-    i = 0
+    result = ""
     or
     // the search stops past the last redos candidate state.
     lengthFromStart(state) <= max(lengthFromStart(any(State s | isReDoSCandidate(s, _)))) and
-    lengthFromStart(state) = i and
     exists(State prev |
       // select a unique predecessor (by an arbitrary measure)
       prev =
@@ -770,14 +771,17 @@ private module PrefixConstruction {
           loc = s.getRepr().getLocation() and
           delta(s, _, state)
         |
-          s order by loc.getStartLine(), loc.getStartColumn(), loc.getEndLine(), loc.getEndColumn()
+          s
+          order by
+            loc.getStartLine(), loc.getStartColumn(), loc.getEndLine(), loc.getEndColumn(),
+            s.getRepr().toString()
         )
     |
       // greedy search for the shortest prefix
-      result = prefix(prev, i - 1) and delta(prev, Epsilon(), state)
+      result = prefix(prev) and delta(prev, Epsilon(), state)
       or
       not delta(prev, Epsilon(), state) and
-      result = prefix(prev, i - 1) + getCanonicalEdgeChar(prev, state)
+      result = prefix(prev) + getCanonicalEdgeChar(prev, state)
     )
   }
 
@@ -1022,11 +1026,11 @@ predicate hasReDoSResult(RegExpTerm t, string pump, State s, string prefixMsg) {
   not t.getRegex().getAMode() = "VERBOSE" and // exclude verbose mode regexes
   isReDoSAttackable(t, pump, s) and
   (
-    prefixMsg = "starting with '" + escape(PrefixConstruction::prefix(s, _)) + "' and " and
-    not PrefixConstruction::prefix(s, _) = ""
+    prefixMsg = "starting with '" + escape(PrefixConstruction::prefix(s)) + "' and " and
+    not PrefixConstruction::prefix(s) = ""
     or
-    PrefixConstruction::prefix(s, _) = "" and prefixMsg = ""
+    PrefixConstruction::prefix(s) = "" and prefixMsg = ""
     or
-    not exists(PrefixConstruction::prefix(s, _)) and prefixMsg = ""
+    not exists(PrefixConstruction::prefix(s)) and prefixMsg = ""
   )
 }
