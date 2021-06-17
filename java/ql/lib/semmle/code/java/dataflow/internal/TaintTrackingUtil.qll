@@ -11,6 +11,7 @@ private import semmle.code.java.frameworks.spring.SpringController
 private import semmle.code.java.frameworks.spring.SpringHttp
 private import semmle.code.java.frameworks.Networking
 private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.internal.DataFlowPrivate
 import semmle.code.java.dataflow.FlowSteps
 private import FlowSummaryImpl as FlowSummaryImpl
@@ -91,6 +92,8 @@ private module Cached {
     )
     or
     FlowSummaryImpl::Private::Steps::summaryLocalStep(src, sink, false)
+    or
+    entrypointFieldStep(src, sink)
   }
 
   /**
@@ -590,4 +593,19 @@ module StringBuilderVarModule {
 private MethodAccess callReturningSameType(Expr ref) {
   ref = result.getQualifier() and
   result.getMethod().getReturnType() = ref.getType()
+}
+
+private SrcRefType entrypointType() {
+  result =
+    pragma[only_bind_out](any(RemoteFlowSource s | s instanceof DataFlow::ExplicitParameterNode))
+        .getType()
+        .(RefType)
+        .getASubtype*()
+        .getSourceDeclaration() or
+  result = entrypointType().getAField().getType().(RefType).getSourceDeclaration()
+}
+
+private predicate entrypointFieldStep(DataFlow::Node src, DataFlow::Node sink) {
+  src = DataFlow::getFieldQualifier(sink.asExpr().(FieldRead)) and
+  src.getType().(RefType).getSourceDeclaration() = entrypointType()
 }
