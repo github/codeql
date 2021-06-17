@@ -1,11 +1,7 @@
-name: Build framework coverage reports
+name: Build framework coverage timeseries reports
 
 on:
   workflow_dispatch:
-    inputs:
-      qlModelShaOverride:
-        description: 'github/codeql repo SHA used for looking up the CSV models'
-        required: false
 
 jobs:
   build:
@@ -21,7 +17,7 @@ jobs:
       uses: actions/checkout@v2
       with:
         path: codeqlModels
-        ref: ${{ github.event.inputs.qlModelShaOverride || github.ref }}
+        fetch-depth: 0
     - name: Set up Python 3.8
       uses: actions/setup-python@v2
       with:
@@ -35,15 +31,12 @@ jobs:
       run: unzip -d codeql-cli codeql-linux64.zip
     - name: Build modeled package list
       run: |
-        PATH="$PATH:codeql-cli/codeql" python script/misc/scripts/library-coverage/generate-report.py ci codeqlModels script
-    - name: Upload CSV package list
+        CLI=$(realpath "codeql-cli/codeql")
+        echo $CLI
+        PATH="$PATH:$CLI" python script/misc/scripts/library-coverage/generate-timeseries.py codeqlModels
+    - name: Upload timeseries CSV
       uses: actions/upload-artifact@v2
       with:
-        name: framework-coverage-csv
-        path: framework-coverage-*.csv
-    - name: Upload RST package list
-      uses: actions/upload-artifact@v2
-      with:
-        name: framework-coverage-rst
-        path: framework-coverage-*.rst
+        name: framework-coverage-timeseries
+        path: framework-coverage-timeseries-*.csv
 
