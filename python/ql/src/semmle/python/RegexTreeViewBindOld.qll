@@ -34,6 +34,8 @@ class RegExpTerm extends RegExpParent {
   RegExpTerm() {
     this = TRegExpAlt(re, start, end)
     or
+    this = TRegExpBackRef(re, start, end)
+    or
     this = TRegExpCharacterClass(re, start, end)
     or
     this = TRegExpCharacterRange(re, start, end)
@@ -62,6 +64,8 @@ class RegExpTerm extends RegExpParent {
 
   override RegExpTerm getChild(int i) {
     result = this.(RegExpAlt).getChild(i)
+    or
+    result = this.(RegExpBackRef).getChild(i)
     or
     result = this.(RegExpCharacterClass).getChild(i)
     or
@@ -106,6 +110,28 @@ class RegExpTerm extends RegExpParent {
 
   RegExpLiteral getLiteral() { result = TRegExpLiteral(re) }
 
+  /** Gets the regular expression term that is matched (textually) before this one, if any. */
+  RegExpTerm getPredecessor() {
+    exists(RegExpTerm parent | parent = getParent() |
+      result = parent.(RegExpSequence).previousElement(this)
+      or
+      not exists(parent.(RegExpSequence).previousElement(this)) and
+      not parent instanceof RegExpSubPattern and
+      result = parent.getPredecessor()
+    )
+  }
+
+  /** Gets the regular expression term that is matched (textually) after this one, if any. */
+  RegExpTerm getSuccessor() {
+    exists(RegExpTerm parent | parent = getParent() |
+      result = parent.(RegExpSequence).nextElement(this)
+      or
+      not exists(parent.(RegExpSequence).nextElement(this)) and
+      not parent instanceof RegExpSubPattern and
+      result = parent.getSuccessor()
+    )
+  }
+
   string getPrimaryQLClass() { result = "RegExpTerm" }
 }
 
@@ -118,7 +144,8 @@ newtype TRegExpParent =
   TRegExpCharacterRange(Regex re, int start, int end) { re.charRange(_, start, _, _, end) } or
   TRegExpGroup(Regex re, int start, int end) { re.group(start, end) } or
   TRegExpSpecialChar(Regex re, int start, int end) { re.specialCharacter(start, end, _) } or
-  TRegExpNormalChar(Regex re, int start, int end) { re.normalCharacter(start, end) }
+  TRegExpNormalChar(Regex re, int start, int end) { re.normalCharacter(start, end) } or
+  TRegExpBackRef(Regex re, int start, int end) { re.backreference(start, end) }
 
 class RegExpQuantifier extends RegExpTerm, TRegExpQuantifier {
   int part_end;
@@ -176,6 +203,18 @@ class RegExpRange extends RegExpQuantifier {
 
   string getLower() { result = lower }
 
+  /**
+   * Gets the upper bound of the range, if any.
+   *
+   * If there is no upper bound, any number of repetitions is allowed.
+   * For a term of the form `r{lo}`, both the lower and the upper bound
+   * are `lo`.
+   */
+  int getUpperBound() { result = this.getUpper().toInt() }
+
+  /** Gets the lower bound of the range. */
+  int getLowerBound() { result = this.getLower().toInt() }
+
   override string getPrimaryQLClass() { result = "RegExpRange" }
 }
 
@@ -186,6 +225,17 @@ class RegExpSequence extends RegExpTerm, TRegExpSequence {
   }
 
   override RegExpTerm getChild(int i) { result = seqChild(re, start, end, i) }
+
+  /** Gets the element preceding `element` in this sequence. */
+  RegExpTerm previousElement(RegExpTerm element) { element = nextElement(result) }
+
+  /** Gets the element following `element` in this sequence. */
+  RegExpTerm nextElement(RegExpTerm element) {
+    exists(int i |
+      element = this.getChild(i) and
+      result = this.getChild(i + 1)
+    )
+  }
 
   override string getPrimaryQLClass() { result = "RegExpSequence" }
 }
@@ -362,6 +412,7 @@ class RegExpConstant extends RegExpTerm {
     this = TRegExpNormalChar(re, start, end) and
     not this instanceof RegExpCharacterClassEscape and
     // exclude chars in qualifiers
+    // TODO: push this into regex library
     not exists(int qstart, int qend | re.qualifiedPart(_, qstart, qend, _, _) |
       qstart <= start and end <= qend
     ) and
@@ -383,6 +434,23 @@ class RegExpConstant extends RegExpTerm {
 
 class RegExpGroup extends RegExpTerm, TRegExpGroup {
   RegExpGroup() { this = TRegExpGroup(re, start, end) }
+
+  /**
+   * Gets the index of this capture group within the enclosing regular
+   * expression literal.
+   *
+   * For example, in the regular expression `/((a?).)(?:b)/`, the
+   * group `((a?).)` has index 1, the group `(a?)` nested inside it
+   * has index 2, and the group `(?:b)` has no index, since it is
+   * not a capture group.
+   */
+  int getNumber() { result = re.getGroupNumber(start, end) }
+
+  /** Holds if this is a named capture group. */
+  predicate isNamed() { exists(this.getName()) }
+
+  /** Gets the name of this capture group, if any. */
+  string getName() { result = re.getGroupName(start, end) }
 
   predicate isCharacter() { any() }
 
@@ -442,7 +510,23 @@ class RegExpZeroWidthMatch extends RegExpGroup {
   override string getPrimaryQLClass() { result = "RegExpZeroWidthMatch" }
 }
 
-abstract class RegExpLookahead extends RegExpZeroWidthMatch { }
+/**
+ * A zero-width lookahead or lookbehind assertion.
+ *
+ * Examples:
+ *
+ * ```
+ * (?=\w)
+ * (?!\n)
+ * (?<=\.)
+ * (?<!\\)
+ * ```
+ */
+class RegExpSubPattern extends RegExpZeroWidthMatch {
+  RegExpSubPattern() { not re.emptyGroup(start, end) }
+}
+
+abstract class RegExpLookahead extends RegExpSubPattern { }
 
 class RegExpPositiveLookahead extends RegExpLookahead {
   RegExpPositiveLookahead() { re.positiveLookaheadAssertionGroup(start, end) }
@@ -456,7 +540,7 @@ class RegExpNegativeLookahead extends RegExpLookahead {
   override string getPrimaryQLClass() { result = "RegExpNegativeLookahead" }
 }
 
-abstract class RegExpLookbehind extends RegExpZeroWidthMatch { }
+abstract class RegExpLookbehind extends RegExpSubPattern { }
 
 class RegExpPositiveLookbehind extends RegExpLookbehind {
   RegExpPositiveLookbehind() { re.positiveLookbehindAssertionGroup(start, end) }
@@ -468,6 +552,33 @@ class RegExpNegativeLookbehind extends RegExpLookbehind {
   RegExpNegativeLookbehind() { re.negativeLookbehindAssertionGroup(start, end) }
 
   override string getPrimaryQLClass() { result = "RegExpNegativeLookbehind" }
+}
+
+class RegExpBackRef extends RegExpTerm, TRegExpBackRef {
+  RegExpBackRef() { this = TRegExpBackRef(re, start, end) }
+
+  /**
+   * Gets the number of the capture group this back reference refers to, if any.
+   */
+  int getNumber() { result = re.getBackrefNumber(start, end) }
+
+  /**
+   * Gets the name of the capture group this back reference refers to, if any.
+   */
+  string getName() { result = re.getBackrefName(start, end) }
+
+  /** Gets the capture group this back reference refers to. */
+  RegExpGroup getGroup() {
+    result.getLiteral() = this.getLiteral() and
+    (
+      result.getNumber() = this.getNumber() or
+      result.getName() = this.getName()
+    )
+  }
+
+  override RegExpTerm getChild(int i) { none() }
+
+  override string getPrimaryQLClass() { result = "RegExpBackRef" }
 }
 
 RegExpTerm getParsedRegExp(StrConst re) { result.getRegex() = re and result.isRootTerm() }
