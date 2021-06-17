@@ -9,7 +9,7 @@
 </overview>
 
 <example>
-<p>The following example demonstrates fallacious and fixed methods of using switch.</p>
+<p>The following example demonstrates fallacious and fixed ways of using a <code>switch</code> statement.</p>
 <sample src="FindIncorrectlyUsedSwitch.c" />
 
 </example>
