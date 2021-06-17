@@ -29,14 +29,27 @@ class JaxRs2 { // $RootResourceClass
   JaxRs2() {
   }
 
-  public JaxRs2(@BeanParam int beanParam, @CookieParam("") int cookieParam, @FormParam("") int formParam, // $InjectionAnnotation $InjectableConstructor
-      @HeaderParam("") int headerParam, @MatrixParam("") int matrixParam, @PathParam("") int pathParam, @QueryParam("") int queryParam, // $InjectionAnnotation
+  public JaxRs2(// $InjectableConstructor
+      @BeanParam int beanParam, // $InjectionAnnotation
+      @CookieParam("") int cookieParam, // $InjectionAnnotation
+      @FormParam("") int formParam, // $InjectionAnnotation
+      @HeaderParam("") int headerParam, // $InjectionAnnotation
+      @MatrixParam("") int matrixParam, // $InjectionAnnotation
+      @PathParam("") int pathParam, // $InjectionAnnotation
+      @QueryParam("") int queryParam, // $InjectionAnnotation
       @Context int context) { // $InjectionAnnotation
   }
 
-  public JaxRs2(@BeanParam int beanParam, @CookieParam("") int cookieParam, @FormParam("") int formParam, // $InjectionAnnotation
-      @HeaderParam("") int headerParam, @MatrixParam("") int matrixParam, @PathParam("") int pathParam, @QueryParam("") int queryParam, // $InjectionAnnotation
-      @Context int context, int paramWithoutAnnotation) { // $InjectionAnnotation
+  public JaxRs2(
+      @BeanParam int beanParam, // $InjectionAnnotation
+      @CookieParam("") int cookieParam, // $InjectionAnnotation
+      @FormParam("") int formParam, // $InjectionAnnotation
+      @HeaderParam("") int headerParam, // $InjectionAnnotation
+      @MatrixParam("") int matrixParam, // $InjectionAnnotation
+      @PathParam("") int pathParam, // $InjectionAnnotation
+      @QueryParam("") int queryParam, // $InjectionAnnotation
+      @Context int context, // $InjectionAnnotation
+      int paramWithoutAnnotation) {
   }
 
   @BeanParam // $InjectionAnnotation
