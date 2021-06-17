@@ -389,3 +389,13 @@ void test_string_comparisons3(const char *algo_name)
 		// ...
 	}
 }
+
+// --- function call in a function call ---
+
+void doEncryption(char *data, size_t len, const char *algorithmName);
+
+void test_fn_in_fn(char *data, size_t len)
+{
+	doEncryption(data, len, getEncryptionNameDES()); // BAD
+	doEncryption(data, len, getEncryptionNameAES()); // GOOD
+}
