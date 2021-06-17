@@ -331,6 +331,7 @@ class Virtualizable extends Member, @virtualizable {
    *   (An example where `getOverridee*().getImplementee()` would be incorrect.)
    * - If this member is `D.M` then `I.M = getAnUltimateImplementee()`.
    */
+  pragma[nomagic]
   Virtualizable getAnUltimateImplementee() {
     exists(Virtualizable implementation, ValueOrRefType implementationType |
       implements(implementation, result, implementationType)
