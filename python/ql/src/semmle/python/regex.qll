@@ -418,7 +418,7 @@ abstract class RegexString extends Expr {
     this.positiveLookbehindAssertionGroup(start, end)
   }
 
-  private predicate emptyGroup(int start, int end) {
+  predicate emptyGroup(int start, int end) {
     exists(int endm1 | end = endm1 + 1 |
       this.group_start(start, endm1) and
       this.isGroupEnd(endm1)
