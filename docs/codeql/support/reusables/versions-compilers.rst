@@ -6,7 +6,7 @@
    Language,Variants,Compilers,Extensions
    C/C++,"C89, C99, C11, C18, C++98, C++03, C++11, C++14, C++17","Clang (and clang-cl [1]_) extensions (up to Clang 12.0),
 
-   GNU extensions (up to GCC 9.4),
+   GNU extensions (up to GCC 11.1),
 
    Microsoft extensions (up to VS 2019),
 
