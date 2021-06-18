@@ -184,64 +184,6 @@ OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
  */
 predicate jumpStep(Node n1, Node n2) { none() }
 
-/**
- * Gets a field corresponding to the bit range `[startBit..endBit)` of class `c`, if any.
- */
-private Field getAField(Class c, int startBit, int endBit) {
-  result.getDeclaringType() = c and
-  startBit = 8 * result.getByteOffset() and
-  endBit = 8 * result.getType().getSize() + startBit
-  or
-  exists(Field f, Class cInner |
-    f = c.getAField() and
-    cInner = f.getUnderlyingType() and
-    result = getAField(cInner, startBit - 8 * f.getByteOffset(), endBit - 8 * f.getByteOffset())
-  )
-}
-
-private newtype TContent =
-  TFieldContent(Class c, int startBit, int endBit) { exists(getAField(c, startBit, endBit)) } or
-  TCollectionContent() or
-  TArrayContent()
-
-/**
- * A reference contained in an object. Examples include instance fields, the
- * contents of a collection object, or the contents of an array.
- */
-class Content extends TContent {
-  /** Gets a textual representation of this element. */
-  abstract string toString();
-
-  predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
-    path = "" and sl = 0 and sc = 0 and el = 0 and ec = 0
-  }
-}
-
-private class FieldContent extends Content, TFieldContent {
-  Class c;
-  int startBit;
-  int endBit;
-
-  FieldContent() { this = TFieldContent(c, startBit, endBit) }
-
-  // Ensure that there's just 1 result for `toString`.
-  override string toString() { result = min(Field f | f = getAField() | f.toString()) }
-
-  predicate hasOffset(Class cl, int start, int end) { cl = c and start = startBit and end = endBit }
-
-  Field getAField() { result = getAField(c, startBit, endBit) }
-}
-
-private class CollectionContent extends Content, TCollectionContent {
-  override string toString() { result = "collection" }
-}
-
-private class ArrayContent extends Content, TArrayContent {
-  ArrayContent() { this = TArrayContent() }
-
-  override string toString() { result = "array content" }
-}
-
 private predicate fieldStoreStepNoChi(Node node1, FieldContent f, PostUpdateNode node2) {
   exists(StoreInstruction store, Class c |
     store = node2.asInstruction() and
@@ -288,7 +230,7 @@ private predicate fieldStoreStepChi(Node node1, FieldContent f, PostUpdateNode n
 }
 
 private predicate arrayStoreStepChi(Node node1, ArrayContent a, PostUpdateNode node2) {
-  a = TArrayContent() and
+  exists(a) and
   exists(ChiPartialOperand operand, ChiInstruction chi, StoreInstruction store |
     chi.getPartialOperand() = operand and
     store = operand.getDef() and
@@ -383,7 +325,7 @@ private predicate fieldReadStep(Node node1, FieldContent f, Node node2) {
  * predicate in `storeStep` ensures that we push the right `FieldContent` onto the access path.
  */
 predicate suppressArrayRead(Node node1, ArrayContent a, Node node2) {
-  a = TArrayContent() and
+  exists(a) and
   exists(WriteSideEffectInstruction write, ChiInstruction chi |
     node1.asInstruction() = write and
     node2.asInstruction() = chi and
@@ -412,7 +354,7 @@ private Instruction skipCopyValueInstructions(Operand op) {
 }
 
 private predicate arrayReadStep(Node node1, ArrayContent a, Node node2) {
-  a = TArrayContent() and
+  exists(a) and
   // Explicit dereferences such as `*p` or `p[i]` where `p` is a pointer or array.
   exists(LoadOperand operand, Instruction address |
     operand.isDefinitionInexact() and
@@ -443,7 +385,7 @@ private predicate arrayReadStep(Node node1, ArrayContent a, Node node2) {
  * from the access path.
  */
 private predicate exactReadStep(Node node1, ArrayContent a, Node node2) {
-  a = TArrayContent() and
+  exists(a) and
   exists(WriteSideEffectInstruction write, ChiInstruction chi |
     not chi.isResultConflated() and
     chi.getPartial() = write and

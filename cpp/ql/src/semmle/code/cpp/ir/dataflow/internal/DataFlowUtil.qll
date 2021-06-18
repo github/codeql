@@ -789,6 +789,66 @@ predicate localInstructionFlow(Instruction e1, Instruction e2) {
 predicate localExprFlow(Expr e1, Expr e2) { localFlow(exprNode(e1), exprNode(e2)) }
 
 /**
+ * Gets a field corresponding to the bit range `[startBit..endBit)` of class `c`, if any.
+ */
+private Field getAField(Class c, int startBit, int endBit) {
+  result.getDeclaringType() = c and
+  startBit = 8 * result.getByteOffset() and
+  endBit = 8 * result.getType().getSize() + startBit
+  or
+  exists(Field f, Class cInner |
+    f = c.getAField() and
+    cInner = f.getUnderlyingType() and
+    result = getAField(cInner, startBit - 8 * f.getByteOffset(), endBit - 8 * f.getByteOffset())
+  )
+}
+
+private newtype TContent =
+  TFieldContent(Class c, int startBit, int endBit) { exists(getAField(c, startBit, endBit)) } or
+  TCollectionContent() or
+  TArrayContent()
+
+/**
+ * A description of the way data may be stored inside an object. Examples
+ * include instance fields, the contents of a collection object, or the contents
+ * of an array.
+ */
+class Content extends TContent {
+  /** Gets a textual representation of this element. */
+  abstract string toString();
+
+  predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
+    path = "" and sl = 0 and sc = 0 and el = 0 and ec = 0
+  }
+}
+
+/** A reference through an instance field. */
+class FieldContent extends Content, TFieldContent {
+  Class c;
+  int startBit;
+  int endBit;
+
+  FieldContent() { this = TFieldContent(c, startBit, endBit) }
+
+  // Ensure that there's just 1 result for `toString`.
+  override string toString() { result = min(Field f | f = getAField() | f.toString()) }
+
+  predicate hasOffset(Class cl, int start, int end) { cl = c and start = startBit and end = endBit }
+
+  Field getAField() { result = getAField(c, startBit, endBit) }
+}
+
+/** A reference through an array. */
+class ArrayContent extends Content, TArrayContent {
+  override string toString() { result = "[]" }
+}
+
+/** A reference through the contents of some collection-like container. */
+private class CollectionContent extends Content, TCollectionContent {
+  override string toString() { result = "<element>" }
+}
+
+/**
  * A guard that validates some instruction.
  *
  * To use this in a configuration, extend the class and provide a
