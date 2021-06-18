@@ -26,7 +26,7 @@
 
 .. container:: footnote-group
 
-    .. [1] C++20 beta extractor supports GCC on Linux, modules are *not* supported.
+    .. [1] C++20 support is currently in beta. Supported for GCC on Linux only. Modules are *not* supported.
     .. [2] Support for the clang-cl compiler is preliminary.
     .. [3] Support for the Arm Compiler (armcc) is preliminary.
     .. [4] Builds that execute on Java 7 to 16 can be analyzed. The analysis understands Java 15 standard language features.
