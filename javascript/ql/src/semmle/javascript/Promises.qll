@@ -59,6 +59,22 @@ private predicate hasHandler(DataFlow::InvokeNode promise, string m, int i) {
 }
 
 /**
+ * Gets a reference to the `Promise` object.
+ * Either from the standard library, a polyfill import, or a polyfill that defines the global `Promise` variable.
+ */
+private DataFlow::SourceNode getAPromiseObject() {
+  // Standard library, or polyfills like [es6-shim](https://npmjs.org/package/es6-shim).
+  result = DataFlow::globalVarRef("Promise")
+  or
+  // polyfills from the [`promise`](https://npmjs.org/package/promise) library.
+  result =
+    DataFlow::moduleImport([
+        "promise", "promise/domains", "promise/setimmediate", "promise/lib/es6-extensions",
+        "promise/domains/es6-extensions", "promise/setimmediate/es6-extensions"
+      ])
+}
+
+/**
  * A call that looks like a Promise.
  *
  * For example, this could be the call `promise(f).then(function(v){...})`
@@ -75,7 +91,7 @@ class PromiseCandidate extends DataFlow::InvokeNode {
  * A promise object created by the standard ECMAScript 2015 `Promise` constructor.
  */
 private class ES2015PromiseDefinition extends PromiseDefinition, DataFlow::NewNode {
-  ES2015PromiseDefinition() { this = DataFlow::globalVarRef("Promise").getAnInstantiation() }
+  ES2015PromiseDefinition() { this = getAPromiseObject().getAnInstantiation() }
 
   override DataFlow::FunctionNode getExecutor() { result = getCallback(0) }
 }
@@ -109,9 +125,7 @@ abstract class PromiseAllCreation extends PromiseCreationCall {
  * A resolved promise created by the standard ECMAScript 2015 `Promise.resolve` function.
  */
 class ResolvedES2015PromiseDefinition extends ResolvedPromiseDefinition {
-  ResolvedES2015PromiseDefinition() {
-    this = DataFlow::globalVarRef("Promise").getAMemberCall("resolve")
-  }
+  ResolvedES2015PromiseDefinition() { this = getAPromiseObject().getAMemberCall("resolve") }
 
   override DataFlow::Node getValue() { result = getArgument(0) }
 }
@@ -121,8 +135,7 @@ class ResolvedES2015PromiseDefinition extends ResolvedPromiseDefinition {
  */
 class AggregateES2015PromiseDefinition extends PromiseCreationCall {
   AggregateES2015PromiseDefinition() {
-    exists(string m | m = "all" or m = "race" or m = "any" |
-      this = DataFlow::globalVarRef("Promise").getAMemberCall(m)
+      this = getAPromiseObject().getAMemberCall(m)
     )
   }
 

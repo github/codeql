@@ -36,6 +36,8 @@ test_ResolvedPromiseDefinition
 | promises.js:62:19:62:41 | Promise ... source) | promises.js:62:35:62:40 | source |
 | promises.js:71:5:71:27 | Promise ... source) | promises.js:71:21:71:26 | source |
 | promises.js:79:19:79:41 | Promise ... source) | promises.js:79:35:79:40 | source |
+| promises.js:99:3:99:26 | Promise ... source) | promises.js:99:20:99:25 | source |
+| promises.js:100:3:100:26 | Promise ... source) | promises.js:100:20:100:25 | source |
 test_PromiseDefinition_getARejectHandler
 | flow.js:26:2:26:49 | new Pro ... ource)) | flow.js:26:69:26:80 | y => sink(y) |
 | flow.js:32:2:32:49 | new Pro ... ource)) | flow.js:32:57:32:68 | x => sink(x) |
@@ -407,3 +409,7 @@ typetrack
 | promises.js:75:27:75:29 | val | promises.js:75:5:75:20 | resolver.promise | load $PromiseResolveField$ |
 | promises.js:88:17:90:4 | Q.Promi ... );\\n  }) | promises.js:89:15:89:20 | source | copy $PromiseResolveField$ |
 | promises.js:88:17:90:4 | Q.Promi ... );\\n  }) | promises.js:89:15:89:20 | source | store $PromiseResolveField$ |
+| promises.js:99:3:99:26 | Promise ... source) | promises.js:99:20:99:25 | source | copy $PromiseResolveField$ |
+| promises.js:99:3:99:26 | Promise ... source) | promises.js:99:20:99:25 | source | store $PromiseResolveField$ |
+| promises.js:100:3:100:26 | Promise ... source) | promises.js:100:20:100:25 | source | copy $PromiseResolveField$ |
+| promises.js:100:3:100:26 | Promise ... source) | promises.js:100:20:100:25 | source | store $PromiseResolveField$ |

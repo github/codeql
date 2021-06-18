@@ -92,3 +92,10 @@
       var sink = val;
   });
 })();
+
+(function() {
+  var PromiseA = require('promise');
+  var PromiseB = require('promise/domains');
+  PromiseA.resolve(source);
+  PromiseB.resolve(source);
+})();
