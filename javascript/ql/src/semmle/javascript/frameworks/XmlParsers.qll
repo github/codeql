@@ -2,7 +2,9 @@
  * Provides classes for working with XML parser APIs.
  */
 
-import javascript as js
+private import javascript as js
+private import js::DataFlow as DataFlow
+private import js::API as API
 
 module XML {
   /**
@@ -12,9 +14,9 @@ module XML {
     /** Internal general entity. */
     InternalEntity() or
     /** External general entity, either parsed or unparsed. */
-    ExternalEntity(boolean parsed) { parsed = true or parsed = false } or
+    ExternalEntity(boolean parsed) { parsed = [true, false] } or
     /** Parameter entity, either internal or external. */
-    ParameterEntity(boolean external) { external = true or external = false }
+    ParameterEntity(boolean external) { external = [true, false] }
 
   /**
    * A call to an XML parsing function.
@@ -27,16 +29,19 @@ module XML {
     abstract predicate resolvesEntities(EntityKind kind);
 
     /** Gets a reference to a value resulting from parsing the XML. */
-    js::DataFlow::Node getAResult() { none() }
+    DataFlow::Node getAResult() { none() }
   }
 
   /**
    * An invocation of `libxmljs.parseXml` or `libxmljs.parseXmlString`.
    */
   class LibXmlJsParserInvocation extends ParserInvocation {
+    API::CallNode call;
+
     LibXmlJsParserInvocation() {
       exists(string m |
-        this = js::DataFlow::moduleMember("libxmljs", m).getACall().asExpr() and
+        call = API::moduleImport("libxmljs").getMember(m).getACall() and
+        this = call.asExpr() and
         m.matches("parseXml%")
       )
     }
@@ -53,24 +58,67 @@ module XML {
         noent.mayHaveBooleanValue(true)
       )
     }
-  }
 
-  /**
-   * Gets a call to method `methodName` on an instance of class `className` from module `modName`.
-   */
-  private js::MethodCallExpr moduleMethodCall(string modName, string className, string methodName) {
-    exists(js::DataFlow::ModuleImportNode mod |
-      mod.getPath() = modName and
-      result = mod.getAConstructorInvocation(className).getAMethodCall(methodName).asExpr()
-    )
+    /**
+     * A document from the `libxmljs` library.
+     * The API is based on https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/libxmljs/index.d.ts
+     */
+    private API::Node doc() {
+      result = call.getReturn()
+      or
+      result = doc().getMember("encoding").getReturn()
+      or
+      result = element().getMember("doc").getReturn()
+      or
+      result = element().getMember("parent").getReturn()
+    }
+
+    /**
+     * An `Element` from the `libxmljs` library.
+     */
+    private API::Node element() {
+      result = doc().getMember(["child", "get", "node", "root"]).getReturn()
+      or
+      result = [doc(), element()].getMember(["childNodes", "find"]).getReturn().getAMember()
+      or
+      result =
+        element()
+            .getMember([
+                "parent", "prevSibling", "nextSibling", "remove", "clone", "node", "child",
+                "prevElement", "nextElement"
+              ])
+            .getReturn()
+    }
+
+    /**
+     * An `Attr` from the `libxmljs` library.
+     */
+    private API::Node attr() {
+      result = element().getMember("attr").getReturn()
+      or
+      result = element().getMember("attrs").getReturn().getAMember()
+    }
+
+    override DataFlow::Node getAResult() {
+      result = [doc(), element(), attr()].getAnImmediateUse()
+      or
+      result = element().getMember(["name", "text"]).getACall()
+      or
+      result = attr().getMember(["name", "value"]).getACall()
+      or
+      result = element().getMember("namespace").getReturn().getMember(["href", "prefix"]).getACall()
+    }
   }
 
   /**
    * An invocation of `libxmljs.SaxParser.parseString`.
    */
   class LibXmlJsSaxParserInvocation extends ParserInvocation {
+    API::Node parser;
+
     LibXmlJsSaxParserInvocation() {
-      this = moduleMethodCall("libxmljs", "SaxParser", "parseString")
+      parser = API::moduleImport("libxmljs").getMember("SaxParser").getInstance() and
+      this = parser.getMember("parseString").getACall().asExpr()
     }
 
     override js::Expr getSourceArgument() { result = getArgument(0) }
@@ -78,6 +126,10 @@ module XML {
     override predicate resolvesEntities(EntityKind kind) {
       // entities are resolved by default
       any()
+    }
+
+    override DataFlow::Node getAResult() {
+      result = parser.getMember("on").getACall().getABoundCallbackParameter(1, _)
     }
   }
 
@@ -85,8 +137,11 @@ module XML {
    * An invocation of `libxmljs.SaxPushParser.push`.
    */
   class LibXmlJsSaxPushParserInvocation extends ParserInvocation {
+    API::Node parser;
+
     LibXmlJsSaxPushParserInvocation() {
-      this = moduleMethodCall("libxmljs", "SaxPushParser", "push")
+      parser = API::moduleImport("libxmljs").getMember("SaxPushParser").getInstance() and
+      this = parser.getMember("push").getACall().asExpr()
     }
 
     override js::Expr getSourceArgument() { result = getArgument(0) }
@@ -95,17 +150,21 @@ module XML {
       // entities are resolved by default
       any()
     }
+
+    override DataFlow::Node getAResult() {
+      result = parser.getMember("on").getACall().getABoundCallbackParameter(1, _)
+    }
   }
 
   /**
    * An invocation of `expat.Parser.parse` or `expat.Parser.write`.
    */
   class ExpatParserInvocation extends ParserInvocation {
-    js::DataFlow::NewNode parser;
+    API::Node parser;
 
     ExpatParserInvocation() {
-      parser = js::DataFlow::moduleMember("node-expat", "Parser").getAnInstantiation() and
-      this = parser.getAMemberCall(["parse", "write"]).asExpr()
+      parser = API::moduleImport("node-expat").getMember("Parser").getInstance() and
+      this = parser.getMember(["parse", "write"]).getACall().asExpr()
     }
 
     override js::Expr getSourceArgument() { result = getArgument(0) }
@@ -115,8 +174,8 @@ module XML {
       kind = InternalEntity()
     }
 
-    override js::DataFlow::Node getAResult() {
-      result = parser.getAMemberCall("on").getABoundCallbackParameter(1, _)
+    override DataFlow::Node getAResult() {
+      result = parser.getMember("on").getACall().getABoundCallbackParameter(1, _)
     }
   }
 
@@ -125,17 +184,22 @@ module XML {
    */
   private class DOMParserXmlParserInvocation extends XML::ParserInvocation {
     DOMParserXmlParserInvocation() {
-      exists(js::DataFlow::GlobalVarRefNode domparser |
-        domparser.getName() = "DOMParser" and
-        this = domparser.getAnInstantiation().getAMethodCall("parseFromString").asExpr() and
-        // type contains the string `xml`, that is, it's not `text/html`
-        getArgument(1).mayHaveStringValue(any(string tp | tp.matches("%xml%")))
-      )
+      this =
+        DataFlow::globalVarRef("DOMParser")
+            .getAnInstantiation()
+            .getAMethodCall("parseFromString")
+            .asExpr() and
+      // type contains the string `xml`, that is, it's not `text/html`
+      getArgument(1).mayHaveStringValue(any(string tp | tp.matches("%xml%")))
     }
 
     override js::Expr getSourceArgument() { result = getArgument(0) }
 
     override predicate resolvesEntities(XML::EntityKind kind) { kind = InternalEntity() }
+
+    // The result is an XMLDocument (https://developer.mozilla.org/en-US/docs/Web/API/XMLDocument).
+    // The API of the XMLDocument is not modelled.
+    override DataFlow::Node getAResult() { result.asExpr() = this }
   }
 
   /**
@@ -143,8 +207,8 @@ module XML {
    */
   private class IELegacyXmlParserInvocation extends XML::ParserInvocation {
     IELegacyXmlParserInvocation() {
-      exists(js::DataFlow::NewNode activeXObject, string activeXType |
-        activeXObject = js::DataFlow::globalVarRef("ActiveXObject").getAnInstantiation() and
+      exists(DataFlow::NewNode activeXObject, string activeXType |
+        activeXObject = DataFlow::globalVarRef("ActiveXObject").getAnInstantiation() and
         activeXObject.getArgument(0).asExpr().mayHaveStringValue(activeXType) and
         activeXType.regexpMatch("Microsoft\\.XMLDOM|Msxml.*\\.DOMDocument.*") and
         this = activeXObject.getAMethodCall("loadXML").asExpr()
@@ -173,10 +237,10 @@ module XML {
    * An invocation of `xml2js`.
    */
   private class Xml2JSInvocation extends XML::ParserInvocation {
-    js::DataFlow::CallNode call;
+    API::CallNode call;
 
     Xml2JSInvocation() {
-      exists(js::API::Node imp | imp = js::API::moduleImport("xml2js") |
+      exists(API::Node imp | imp = API::moduleImport("xml2js") |
         call = [imp, imp.getMember("Parser").getInstance()].getMember("parseString").getACall() and
         this = call.asExpr()
       )
@@ -189,7 +253,7 @@ module XML {
       none()
     }
 
-    override js::DataFlow::Node getAResult() {
+    override DataFlow::Node getAResult() {
       result = call.getABoundCallbackParameter(call.getNumArgument() - 1, 1)
     }
   }
@@ -198,10 +262,10 @@ module XML {
    * An invocation of `sax`.
    */
   private class SaxInvocation extends XML::ParserInvocation {
-    js::DataFlow::InvokeNode parser;
+    API::InvokeNode parser;
 
     SaxInvocation() {
-      exists(js::API::Node imp | imp = js::API::moduleImport("sax") |
+      exists(API::Node imp | imp = API::moduleImport("sax") |
         parser = imp.getMember("parser").getACall()
         or
         parser = imp.getMember("SAXParser").getAnInstantiation()
@@ -216,13 +280,13 @@ module XML {
       none()
     }
 
-    override js::DataFlow::Node getAResult() {
+    override DataFlow::Node getAResult() {
       result =
         parser
-            .getAPropertyWrite(any(string s | s.matches("on%")))
-            .getRhs()
-            .getAFunctionValue()
+            .getReturn()
+            .getMember(any(string s | s.matches("on%")))
             .getAParameter()
+            .getAnImmediateUse()
     }
   }
 
@@ -232,7 +296,8 @@ module XML {
   private class XmlJSInvocation extends XML::ParserInvocation {
     XmlJSInvocation() {
       this =
-        js::DataFlow::moduleMember("xml-js", ["xml2json", "xml2js", "json2xml", "js2xml"])
+        API::moduleImport("xml-js")
+            .getMember(["xml2json", "xml2js", "json2xml", "js2xml"])
             .getACall()
             .asExpr()
     }
@@ -244,18 +309,18 @@ module XML {
       none()
     }
 
-    override js::DataFlow::Node getAResult() { result.asExpr() = this }
+    override DataFlow::Node getAResult() { result.asExpr() = this }
   }
 
   /**
    * An invocation of `htmlparser2`.
    */
   private class HtmlParser2Invocation extends XML::ParserInvocation {
-    js::DataFlow::NewNode parser;
+    API::NewNode parser;
 
     HtmlParser2Invocation() {
-      parser = js::DataFlow::moduleMember("htmlparser2", "Parser").getAnInstantiation() and
-      this = parser.getAMemberCall("write").asExpr()
+      parser = API::moduleImport("htmlparser2").getMember("Parser").getAnInstantiation() and
+      this = parser.getReturn().getMember("write").getACall().asExpr()
     }
 
     override js::Expr getSourceArgument() { result = getArgument(0) }
@@ -265,7 +330,7 @@ module XML {
       none()
     }
 
-    override js::DataFlow::Node getAResult() {
+    override DataFlow::Node getAResult() {
       result =
         parser
             .getArgument(0)
@@ -277,7 +342,7 @@ module XML {
   }
 
   private class XMLParserTaintStep extends js::TaintTracking::SharedTaintStep {
-    override predicate deserializeStep(js::DataFlow::Node pred, js::DataFlow::Node succ) {
+    override predicate deserializeStep(DataFlow::Node pred, DataFlow::Node succ) {
       exists(XML::ParserInvocation parser |
         pred.asExpr() = parser.getSourceArgument() and
         succ = parser.getAResult()

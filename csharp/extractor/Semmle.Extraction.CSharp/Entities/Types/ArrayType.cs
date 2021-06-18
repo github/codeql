@@ -30,7 +30,7 @@ namespace Semmle.Extraction.CSharp.Entities
             PopulateType(trapFile);
         }
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             trapFile.WriteSubId(ElementType);
             Symbol.BuildArraySuffix(trapFile);

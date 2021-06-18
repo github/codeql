@@ -4,6 +4,7 @@
  *              may be dangerous.
  * @kind problem
  * @problem.severity error
+ * @security-severity 10.0
  * @precision high
  * @id cpp/dangerous-cin
  * @tags reliability

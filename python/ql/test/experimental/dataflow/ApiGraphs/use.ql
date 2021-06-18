@@ -9,7 +9,12 @@ class ApiUseTest extends InlineExpectationsTest {
   override string getARelevantTag() { result = "use" }
 
   private predicate relevant_node(API::Node a, DataFlow::Node n, Location l) {
-    n = a.getAUse() and l = n.getLocation()
+    n = a.getAUse() and
+    l = n.getLocation() and
+    // Module variable nodes have no suitable location, so it's best to simply exclude them entirely
+    // from the inline tests.
+    not n instanceof DataFlow::ModuleVariableNode and
+    exists(l.getFile().getRelativePath())
   }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {

@@ -297,7 +297,8 @@ class Instruction extends Construction::TStageInstruction {
   /**
    * Gets the opcode that specifies the operation performed by this instruction.
    */
-  final Opcode getOpcode() { result = Construction::getInstructionOpcode(this) }
+  pragma[inline]
+  final Opcode getOpcode() { Construction::getInstructionOpcode(result, this) }
 
   /**
    * Gets all direct uses of the result of this instruction. The result can be
@@ -1645,6 +1646,19 @@ class CallInstruction extends Instruction {
    * Gets the number of arguments of the call, including the `this` pointer, if any.
    */
   final int getNumberOfArguments() { result = count(this.getAnArgumentOperand()) }
+
+  /**
+   * Holds if the result is a side effect for the argument at the specified index, or `this` if
+   * `index` is `-1`.
+   *
+   * This helper predicate makes it easy to join on both of these columns at once, avoiding
+   * pathological join orders in case the argument index should get joined first.
+   */
+  pragma[noinline]
+  final SideEffectInstruction getAParameterSideEffect(int index) {
+    this = result.getPrimaryInstruction() and
+    index = result.(IndexedInstruction).getIndex()
+  }
 }
 
 /**
@@ -1980,6 +1994,14 @@ class PhiInstruction extends Instruction {
    */
   pragma[noinline]
   final Instruction getAnInput() { result = this.getAnInputOperand().getDef() }
+
+  /**
+   * Gets the input operand representing the value that flows from the specified predecessor block.
+   */
+  final PhiInputOperand getInputOperand(IRBlock predecessorBlock) {
+    result = this.getAnOperand() and
+    result.getPredecessorBlock() = predecessorBlock
+  }
 }
 
 /**

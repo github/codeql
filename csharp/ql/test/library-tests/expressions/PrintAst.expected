@@ -835,7 +835,14 @@ expressions.cs:
 #  129|     21: [Class] Nested
 #-----|       3: (Base types)
 #  129|         0: [TypeMention] Class
-#  133|       4: [InstanceConstructor] Nested
+#  131|       4: [StaticConstructor] Nested
+#  131|         4: [BlockStmt] {...}
+#  132|       5: [InstanceConstructor] Nested
+#-----|         2: (Parameters)
+#  132|           0: [Parameter] b
+#  132|             -1: [TypeMention] bool
+#  132|         4: [BlockStmt] {...}
+#  133|       6: [InstanceConstructor] Nested
 #-----|         2: (Parameters)
 #  133|           0: [Parameter] i
 #  133|             -1: [TypeMention] int
@@ -844,7 +851,7 @@ expressions.cs:
 #  133|             0: [ParameterAccess] access to parameter i
 #  133|             1: [IntLiteral] 1
 #  133|         4: [BlockStmt] {...}
-#  135|       5: [Method] OtherAccesses
+#  135|       7: [Method] OtherAccesses
 #  135|         -1: [TypeMention] Void
 #  136|         4: [BlockStmt] {...}
 #  137|           0: [ExprStmt] ...;

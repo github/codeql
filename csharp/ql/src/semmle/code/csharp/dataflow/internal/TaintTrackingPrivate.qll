@@ -1,6 +1,5 @@
 private import csharp
 private import TaintTrackingPublic
-private import DataFlowImplCommon
 private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.csharp.Caching
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
@@ -79,7 +78,6 @@ private class LocalTaintExprStepConfiguration extends ControlFlowReachabilityCon
 }
 
 private predicate localTaintStepCommon(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-  Stages::DataFlowStage::forceCachingInSameStage() and
   hasNodePath(any(LocalTaintExprStepConfiguration x), nodeFrom, nodeTo)
   or
   localTaintStepCil(nodeFrom, nodeTo)
@@ -87,6 +85,11 @@ private predicate localTaintStepCommon(DataFlow::Node nodeFrom, DataFlow::Node n
 
 cached
 private module Cached {
+  private import DataFlowImplCommon as DataFlowImplCommon
+
+  cached
+  predicate forceCachingInSameStage() { DataFlowImplCommon::forceCachingInSameStage() }
+
   /**
    * Holds if taint propagates from `nodeFrom` to `nodeTo` in exactly one local
    * (intra-procedural) step.

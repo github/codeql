@@ -1,0 +1,26 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Using variables with the same name is dangerous. However, such a situation inside the while loop can create an infinite loop exhausting resources. Requires the attention of developers.</p>
+
+</overview>
+<recommendation>
+<p>We recommend not to use local variables inside a loop if their names are the same as the variables in the condition of this loop.</p>
+
+</recommendation>
+<example>
+<p>The following example demonstrates an erroneous and corrected use of a local variable within a loop.</p>
+<sample src="DeclarationOfVariableWithUnnecessarilyWideScope.c" />
+
+</example>
+<references>
+
+<li>
+  CERT C Coding Standard:
+  <a href="https://wiki.sei.cmu.edu/confluence/display/c/DCL01-C.+Do+not+reuse+variable+names+in+subscopes">DCL01-C. Do not reuse variable names in subscopes</a>.
+</li>
+
+</references>
+</qhelp>

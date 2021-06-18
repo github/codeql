@@ -20,26 +20,6 @@ namespace Semmle.Extraction.CSharp.Entities
             IEnumerable<IParameterSymbol> parameters = Symbol.Parameters;
             IEnumerable<IParameterSymbol> originalParameters = originalMethod.Symbol.Parameters;
 
-            if (IsReducedExtension)
-            {
-                if (this == originalMethod)
-                {
-                    // Non-generic reduced extensions must be extracted exactly like the
-                    // non-reduced counterparts
-                    parameters = Symbol.ReducedFrom!.Parameters;
-                }
-                else
-                {
-                    // Constructed reduced extensions are special because their non-reduced
-                    // counterparts are not constructed. Therefore, we need to manually add
-                    // the `this` parameter based on the type of the receiver
-                    var originalThisParamSymbol = originalMethod.Symbol.Parameters.First();
-                    var originalThisParam = Parameter.Create(Context, originalThisParamSymbol, originalMethod);
-                    ConstructedExtensionParameter.Create(Context, this, originalThisParam);
-                    originalParameters = originalParameters.Skip(1);
-                }
-            }
-
             foreach (var p in parameters.Zip(originalParameters, (paramSymbol, originalParam) => new { paramSymbol, originalParam }))
             {
                 var original = SymbolEqualityComparer.Default.Equals(p.paramSymbol, p.originalParam)
@@ -127,8 +107,32 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <summary>
         ///  Factored out to share logic between `Method` and `UserOperator`.
         /// </summary>
-        private static void BuildMethodId(Method m, TextWriter trapFile)
+        private static void BuildMethodId(Method m, EscapingTextWriter trapFile)
         {
+            if (!SymbolEqualityComparer.Default.Equals(m.Symbol, m.Symbol.OriginalDefinition))
+            {
+                if (!SymbolEqualityComparer.Default.Equals(m.Symbol, m.ConstructedFromSymbol))
+                {
+                    trapFile.WriteSubId(Create(m.Context, m.ConstructedFromSymbol));
+                    trapFile.Write('<');
+                    // Encode the nullability of the type arguments in the label.
+                    // Type arguments with different nullability can result in
+                    // a constructed method with different nullability of its parameters and return type,
+                    // so we need to create a distinct database entity for it.
+                    trapFile.BuildList(",", m.Symbol.GetAnnotatedTypeArguments(), ta => { ta.Symbol.BuildOrWriteId(m.Context, trapFile, m.Symbol); trapFile.Write((int)ta.Nullability); });
+                    trapFile.Write('>');
+                }
+                else
+                {
+                    trapFile.WriteSubId(m.ContainingType!);
+                    trapFile.Write(".");
+                    trapFile.WriteSubId(m.OriginalDefinition);
+                }
+
+                WritePostfix(m, trapFile);
+                return;
+            }
+
             m.Symbol.ReturnType.BuildOrWriteId(m.Context, trapFile, m.Symbol);
             trapFile.Write(" ");
 
@@ -141,24 +145,16 @@ namespace Semmle.Extraction.CSharp.Entities
 
             if (m.Symbol.IsGenericMethod)
             {
-                if (SymbolEqualityComparer.Default.Equals(m.Symbol, m.Symbol.OriginalDefinition))
-                {
-                    trapFile.Write('`');
-                    trapFile.Write(m.Symbol.TypeParameters.Length);
-                }
-                else
-                {
-                    trapFile.Write('<');
-                    // Encode the nullability of the type arguments in the label.
-                    // Type arguments with different nullability can result in
-                    // a constructed method with different nullability of its parameters and return type,
-                    // so we need to create a distinct database entity for it.
-                    trapFile.BuildList(",", m.Symbol.GetAnnotatedTypeArguments(), (ta, tb0) => { ta.Symbol.BuildOrWriteId(m.Context, tb0, m.Symbol); trapFile.Write((int)ta.Nullability); });
-                    trapFile.Write('>');
-                }
+                trapFile.Write('`');
+                trapFile.Write(m.Symbol.TypeParameters.Length);
             }
 
             AddParametersToId(m.Context, trapFile, m.Symbol);
+            WritePostfix(m, trapFile);
+        }
+
+        private static void WritePostfix(Method m, EscapingTextWriter trapFile)
+        {
             switch (m.Symbol.MethodKind)
             {
                 case MethodKind.PropertyGet:
@@ -182,19 +178,17 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             BuildMethodId(this, trapFile);
         }
 
-        protected static void AddParametersToId(Context cx, TextWriter trapFile, IMethodSymbol method)
+        protected static void AddParametersToId(Context cx, EscapingTextWriter trapFile, IMethodSymbol method)
         {
             trapFile.Write('(');
             var index = 0;
 
-            var @params = method.MethodKind == MethodKind.ReducedExtension
-                ? method.ReducedFrom!.Parameters
-                : method.Parameters;
+            var @params = method.Parameters;
 
             foreach (var param in @params)
             {
@@ -222,7 +216,7 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.Write(')');
         }
 
-        public static void AddExplicitInterfaceQualifierToId(Context cx, System.IO.TextWriter trapFile, IEnumerable<ISymbol> explicitInterfaceImplementations)
+        public static void AddExplicitInterfaceQualifierToId(Context cx, EscapingTextWriter trapFile, IEnumerable<ISymbol> explicitInterfaceImplementations)
         {
             if (explicitInterfaceImplementations.Any())
                 trapFile.AppendList(",", explicitInterfaceImplementations.Select(impl => cx.CreateEntity(impl.ContainingType)));
@@ -256,6 +250,11 @@ namespace Semmle.Extraction.CSharp.Entities
                 case MethodKind.Constructor:
                     return Constructor.Create(cx, methodDecl);
                 case MethodKind.ReducedExtension:
+                    if (SymbolEqualityComparer.Default.Equals(methodDecl, methodDecl.ConstructedFrom))
+                    {
+                        return OrdinaryMethod.Create(cx, methodDecl.ReducedFrom!);
+                    }
+                    return OrdinaryMethod.Create(cx, methodDecl.ReducedFrom!.Construct(methodDecl.TypeArguments, methodDecl.TypeArgumentNullableAnnotations));
                 case MethodKind.Ordinary:
                 case MethodKind.DelegateInvoke:
                     return OrdinaryMethod.Create(cx, methodDecl);
@@ -281,10 +280,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public Method OriginalDefinition =>
-            IsReducedExtension
-                ? Create(Context, Symbol.ReducedFrom!)
-                : Create(Context, Symbol.OriginalDefinition);
+        public Method OriginalDefinition => Create(Context, Symbol.OriginalDefinition);
 
         public override Location? FullLocation => ReportingLocation;
 
@@ -302,9 +298,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public bool IsBoundGeneric => IsGeneric && !IsUnboundGeneric;
 
-        private bool IsReducedExtension => Symbol.MethodKind == MethodKind.ReducedExtension;
-
-        protected IMethodSymbol ConstructedFromSymbol => Symbol.ConstructedFrom.ReducedFrom ?? Symbol.ConstructedFrom;
+        protected IMethodSymbol ConstructedFromSymbol => Symbol.ConstructedFrom;
 
         bool IExpressionParentEntity.IsTopLevelParent => true;
 

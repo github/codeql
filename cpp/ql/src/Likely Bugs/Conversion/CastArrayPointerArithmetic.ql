@@ -6,13 +6,14 @@
  *              use the width of the base type, leading to misaligned reads.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 10.0
  * @precision high
+ * @id cpp/upcast-array-pointer-arithmetic
  * @tags correctness
  *       reliability
  *       security
  *       external/cwe/cwe-119
  *       external/cwe/cwe-843
- * @id cpp/upcast-array-pointer-arithmetic
  */
 
 import cpp

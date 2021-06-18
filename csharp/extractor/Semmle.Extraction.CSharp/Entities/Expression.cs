@@ -165,6 +165,50 @@ namespace Semmle.Extraction.CSharp.Entities
         }
 
         /// <summary>
+        /// Creates a generated expression for a default argument value.
+        /// </summary>
+        public static Expression? CreateGenerated(Context cx, IParameterSymbol parameter, IExpressionParentEntity parent,
+            int childIndex, Extraction.Entities.Location location)
+        {
+            if (!parameter.HasExplicitDefaultValue ||
+                parameter.Type is IErrorTypeSymbol)
+            {
+                return null;
+            }
+
+            var defaultValue = parameter.ExplicitDefaultValue;
+
+            if (parameter.Type is INamedTypeSymbol nt && nt.EnumUnderlyingType is not null)
+            {
+                // = (MyEnum)1, = MyEnum.Value1, = default(MyEnum), = new MyEnum()
+                // we're generating a (MyEnum)value cast expression:
+                defaultValue ??= 0;
+                Action<Expression, int> createChild = (parent, index) => Literal.CreateGenerated(cx, parent, index, nt.EnumUnderlyingType, defaultValue, location);
+                return Cast.CreateGenerated(cx, parent, childIndex, parameter.Type, defaultValue, createChild, location);
+            }
+
+            if (defaultValue is null)
+            {
+                // = null, = default, = default(T), = new MyStruct()
+                // we're generating a default expression:
+                return Default.CreateGenerated(cx, parent, childIndex, location, parameter.Type.IsReferenceType ? ValueAsString(null) : null);
+            }
+
+            if (parameter.Type.SpecialType == SpecialType.System_Object)
+            {
+                // this can happen in VB.NET
+                cx.ExtractionError($"Extracting default argument value 'object {parameter.Name} = default' instead of 'object {parameter.Name} = {defaultValue}'. The latter is not supported in C#.",
+                    null, null, severity: Util.Logging.Severity.Warning);
+
+                // we're generating a default expression:
+                return Default.CreateGenerated(cx, parent, childIndex, location, ValueAsString(null));
+            }
+
+            // const literal:
+            return Literal.CreateGenerated(cx, parent, childIndex, parameter.Type, defaultValue, location);
+        }
+
+        /// <summary>
         /// Adapt the operator kind depending on whether it's a dynamic call or a user-operator call.
         /// </summary>
         /// <param name="cx"></param>

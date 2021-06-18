@@ -53,7 +53,12 @@ module UnsafeShellCommandConstruction {
   class ExternalInputSource extends Source, DataFlow::ParameterNode {
     ExternalInputSource() {
       this = Exports::getALibraryInputParameter() and
-      not this.getName() = ["cmd", "command"] // looks to be on purpose.
+      not (
+        // looks to be on purpose.
+        this.getName() = ["cmd", "command"]
+        or
+        this.getName().regexpMatch(".*(Cmd|Command)$") // ends with "Cmd" or "Command"
+      )
     }
   }
 

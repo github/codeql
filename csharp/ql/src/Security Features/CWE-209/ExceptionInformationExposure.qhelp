@@ -36,7 +36,4 @@ use the error log, but remote users will not see the information.</p>
 <sample src="ExceptionInformationExposure.cs" />
 </example>
 
-<references>
-<li>OWASP: <a href="https://www.owasp.org/index.php/Information_Leak_(information_disclosure)">Information Leak</a>.</li>
-</references>
 </qhelp>

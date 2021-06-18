@@ -1280,7 +1280,7 @@ class ConditionalExpr extends Expr, @conditionalexpr {
 /**
  * A `switch` expression.
  */
-class SwitchExpr extends Expr, @switchexpr {
+class SwitchExpr extends Expr, StmtParent, @switchexpr {
   /** Gets an immediate child statement of this `switch` expression. */
   Stmt getAStmt() { result.getParent() = this }
 
@@ -1808,7 +1808,7 @@ class WildcardTypeAccess extends Expr, @wildcardtypeaccess {
  * This includes method calls, constructor and super constructor invocations,
  * and constructors invoked through class instantiation.
  */
-class Call extends Top, @caller {
+class Call extends ExprParent, @caller {
   /** Gets an argument supplied in this call. */
   /*abstract*/ Expr getAnArgument() { none() }
 
