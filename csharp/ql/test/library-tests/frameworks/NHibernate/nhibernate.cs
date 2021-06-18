@@ -1,4 +1,4 @@
-// semmle-extractor-options: /r:System.Data.dll /r:System.ComponentModel.Primitives.dll  ${testdir}/../../../resources/stubs/NHibernate.cs ${testdir}/../../../resources/stubs/System.Data.cs /r:System.ComponentModel.TypeConverter.dll /r:System.Data.Common.dll
+// semmle-extractor-options: /nostdlib /noconfig --load-sources-from-project:../../../resources/stubs/NHibernate/5.3.8/NHibernate.csproj
 
 
 using NHibernate;
@@ -6,57 +6,57 @@ using NHibernate.SqlCommand;
 
 namespace NHibernateTest
 {
-  class Test
-  {
-    ISession session;
-
-    void SqlExprs()
+    class Test
     {
-        var sql = "sql";
-        new SqlString(sql); // SQL expression
-        session.Delete(sql);  // SQL expression
-    }
+        ISession session;
 
-    class Person
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Address { get; set; }
-    }
+        void SqlExprs()
+        {
+            var sql = "sql";
+            new SqlString(sql); // SQL expression
+            session.Delete(sql);  // SQL expression
+        }
 
-    class Person2
-    {
-        public int Id { get; set; }
-        public int Age { get; set; }
-        public string Address { get; set; }
-    }
+        class Person
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public string Address { get; set; }
+        }
 
-    void FlowSources()
-    {
-        session.Query<Person>();
-        session.Save(new Person2());
-    }
+        class Person2
+        {
+            public int Id { get; set; }
+            public int Age { get; set; }
+            public string Address { get; set; }
+        }
 
-    void DataFlow()
-    {
-        var p = new Person();
-        var p2 = new Person2();
-        
-        string taint = "tainted";
-        p.Name = taint;
-        p2.Address = taint;
+        void FlowSources()
+        {
+            session.Query<Person>();
+            session.Save(new Person2());
+        }
 
-        Sink(p.Id);  // Not tainted
-        Sink(p.Name); // Tainted
-        Sink(p.Address);  // Not tainted
-        
-        Sink(p2.Id); // Not tainted
-        Sink(p2.Age);  // Not tainted
-        Sink(p2.Address);  // Tainted
-    }
+        void DataFlow()
+        {
+            var p = new Person();
+            var p2 = new Person2();
 
-    void Sink(object sink)
-    {
+            string taint = "tainted";
+            p.Name = taint;
+            p2.Address = taint;
+
+            Sink(p.Id);  // Not tainted
+            Sink(p.Name); // Tainted
+            Sink(p.Address);  // Not tainted
+
+            Sink(p2.Id); // Not tainted
+            Sink(p2.Age);  // Not tainted
+            Sink(p2.Address);  // Tainted
+        }
+
+        void Sink(object sink)
+        {
+        }
     }
-  }
 }
