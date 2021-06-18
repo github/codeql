@@ -10,15 +10,15 @@
 // determine precision above
 import python
 import experimental.semmle.python.Concepts
-import experimental.semmle.python.security.JWT
+import experimental.semmle.python.frameworks.JWT
 
 from JWTEncoding jwtEncoding, string affectedComponent
 where
   exists( |
     affectedComponent = "algorithm" and
-    isEmptyOrNone(jwtEncoding.getAlgorithmNode())
+    isEmptyOrNone(jwtEncoding.getAlgorithm())
     or
     affectedComponent = "key" and
-    isEmptyOrNone(jwtEncoding.getKeyNode())
+    isEmptyOrNone(jwtEncoding.getKey())
   )
 select jwtEncoding, affectedComponent, "is empty."

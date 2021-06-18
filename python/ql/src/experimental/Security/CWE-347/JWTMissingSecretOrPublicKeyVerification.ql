@@ -13,5 +13,5 @@ import python
 import experimental.semmle.python.Concepts
 
 from JWTDecoding jwtDecoding
-where not jwtDecoding.verifiesSignature()
+where jwtDecoding.verifiesSignature() = false
 select jwtDecoding, "does not verify the JWT payload with a cryptographic secret or public key."

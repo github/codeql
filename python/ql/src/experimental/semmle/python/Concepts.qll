@@ -24,19 +24,24 @@ module JWTEncoding {
    */
   abstract class Range extends DataFlow::Node {
     /**
+     * Gets the argument containing the encoding payload.
+     */
+    abstract DataFlow::Node getPayload();
+
+    /**
      * Gets the argument containing the encoding key.
      */
-    abstract DataFlow::Node getKeyNode();
+    abstract DataFlow::Node getKey();
 
     /**
      * Gets the algorithm Node used in the encoding.
      */
-    abstract DataFlow::Node getAlgorithmNode();
+    abstract DataFlow::Node getAlgorithm();
 
     /**
      * Tries to get the algorithm used in the encoding.
      */
-    abstract string getAlgorithm();
+    abstract string getAlgorithmString();
   }
 }
 
@@ -51,11 +56,25 @@ class JWTEncoding extends DataFlow::Node {
 
   JWTEncoding() { this = range }
 
-  DataFlow::Node getKeyNode() { result = range.getKeyNode() }
+  /**
+   * Gets the argument containing the payload.
+   */
+  DataFlow::Node getPayload() { result = range.getPayload() }
 
-  DataFlow::Node getAlgorithmNode() { result = range.getAlgorithmNode() }
+  /**
+   * Gets the argument containing the encoding key.
+   */
+  DataFlow::Node getKey() { result = range.getKey() }
 
-  string getAlgorithm() { result = range.getAlgorithm() }
+  /**
+   * Gets the algorithm Node used in the encoding.
+   */
+  DataFlow::Node getAlgorithm() { result = range.getAlgorithm() }
+
+  /**
+   * Tries to get the algorithm used in the encoding.
+   */
+  string getAlgorithmString() { result = range.getAlgorithmString() }
 }
 
 /** Provides classes for modeling JWT decoding-related APIs. */
@@ -67,7 +86,35 @@ module JWTDecoding {
    * extend `JWTDecoding` instead.
    */
   abstract class Range extends DataFlow::Node {
-    abstract predicate verifiesSignature();
+    /**
+     * Gets the argument containing the encoding payload.
+     */
+    abstract DataFlow::Node getPayload();
+
+    /**
+     * Gets the argument containing the encoding key.
+     */
+    abstract DataFlow::Node getKey();
+
+    /**
+     * Gets the algorithm Node used in the encoding.
+     */
+    abstract DataFlow::Node getAlgorithm();
+
+    /**
+     * Tries to get the algorithm used in the encoding.
+     */
+    abstract string getAlgorithmString();
+
+    /**
+     * Gets the options Node used in the encoding.
+     */
+    abstract DataFlow::Node getOptions();
+
+    /**
+     * Checks if the signature gets verified while decoding.
+     */
+    abstract boolean verifiesSignature();
   }
 }
 
@@ -82,5 +129,33 @@ class JWTDecoding extends DataFlow::Node {
 
   JWTDecoding() { this = range }
 
-  predicate verifiesSignature() { range.verifiesSignature() }
+  /**
+   * Gets the argument containing the payload.
+   */
+  DataFlow::Node getPayload() { result = range.getPayload() }
+
+  /**
+   * Gets the argument containing the encoding key.
+   */
+  DataFlow::Node getKey() { result = range.getKey() }
+
+  /**
+   * Gets the algorithm Node used in the encoding.
+   */
+  DataFlow::Node getAlgorithm() { result = range.getAlgorithm() }
+
+  /**
+   * Tries to get the algorithm used in the encoding.
+   */
+  string getAlgorithmString() { result = range.getAlgorithmString() }
+
+  /**
+   * Gets the options Node used in the encoding.
+   */
+  DataFlow::Node getOptions() { result = range.getOptions() }
+
+  /**
+   * Checks if the signature gets verified while decoding.
+   */
+  boolean verifiesSignature() { result = range.verifiesSignature() }
 }
