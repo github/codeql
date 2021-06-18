@@ -44,3 +44,17 @@
 | Modifiers.cs:57:13:57:14 | P3 | file://:0:0:0:0 | private |
 | Modifiers.cs:57:30:57:32 | get_P3 | file://:0:0:0:0 | private |
 | Modifiers.cs:57:47:57:49 | set_P3 | file://:0:0:0:0 | private |
+| Modifiers.cs:60:22:60:23 | I1 | file://:0:0:0:0 | public |
+| Modifiers.cs:62:14:62:15 | M1 | file://:0:0:0:0 | abstract |
+| Modifiers.cs:62:14:62:15 | M1 | file://:0:0:0:0 | public |
+| Modifiers.cs:63:14:63:15 | M2 | file://:0:0:0:0 | public |
+| Modifiers.cs:63:14:63:15 | M2 | file://:0:0:0:0 | virtual |
+| Modifiers.cs:66:24:66:25 | I2 | file://:0:0:0:0 | internal |
+| Modifiers.cs:68:14:68:15 | M1 | file://:0:0:0:0 | public |
+| Modifiers.cs:68:14:68:15 | M1 | file://:0:0:0:0 | virtual |
+| Modifiers.cs:71:18:71:19 | C2 | file://:0:0:0:0 | public |
+| Modifiers.cs:73:17:73:18 | M1 | file://:0:0:0:0 | private |
+| Modifiers.cs:75:32:75:33 | M2 | file://:0:0:0:0 | private |
+| Modifiers.cs:75:32:75:33 | M2 | file://:0:0:0:0 | protected |
+| Modifiers.cs:76:33:76:34 | M3 | file://:0:0:0:0 | internal |
+| Modifiers.cs:76:33:76:34 | M3 | file://:0:0:0:0 | protected |

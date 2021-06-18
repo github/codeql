@@ -4,7 +4,7 @@
  *              exponential time on certain input.
  * @kind path-problem
  * @problem.severity error
- * @security-severity 3.6
+ * @security-severity 7.5
  * @precision high
  * @id cs/redos
  * @tags security

@@ -4,7 +4,7 @@
  *              passing through authentication systems.
  * @kind path-problem
  * @problem.severity error
- * @security-severity 6.4
+ * @security-severity 7.5
  * @precision high
  * @id cs/user-controlled-bypass
  * @tags security

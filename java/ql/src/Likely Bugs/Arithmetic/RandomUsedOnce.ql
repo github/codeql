@@ -4,7 +4,7 @@
  *              guarantee an evenly distributed sequence of random numbers.
  * @kind problem
  * @problem.severity warning
- * @security-severity 5.9
+ * @security-severity 9.8
  * @precision medium
  * @id java/random-used-once
  * @tags reliability

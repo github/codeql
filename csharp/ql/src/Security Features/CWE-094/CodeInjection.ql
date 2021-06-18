@@ -4,7 +4,7 @@
  *              malicious code.
  * @kind path-problem
  * @problem.severity error
- * @security-severity 10.0
+ * @security-severity 9.3
  * @precision high
  * @id cs/code-injection
  * @tags security
