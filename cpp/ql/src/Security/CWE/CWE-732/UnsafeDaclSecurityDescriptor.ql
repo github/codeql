@@ -7,7 +7,7 @@
  * @id cpp/unsafe-dacl-security-descriptor
  * @kind problem
  * @problem.severity error
- * @security-severity 5.9
+ * @security-severity 7.8
  * @precision high
  * @tags security
  *       external/cwe/cwe-732

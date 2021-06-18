@@ -4,7 +4,7 @@
  *              tags may lead to cross-site scripting vulnerabilities.
  * @kind problem
  * @problem.severity warning
- * @security-severity 2.9
+ * @security-severity 6.1
  * @precision very-high
  * @id js/unsafe-html-expansion
  * @tags correctness

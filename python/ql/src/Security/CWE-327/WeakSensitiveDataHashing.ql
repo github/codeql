@@ -3,7 +3,7 @@
  * @description Using broken or weak cryptographic hashing algorithms can compromise security.
  * @kind path-problem
  * @problem.severity warning
- * @security-severity 5.9
+ * @security-severity 7.5
  * @precision high
  * @id py/weak-sensitive-data-hashing
  * @tags security
