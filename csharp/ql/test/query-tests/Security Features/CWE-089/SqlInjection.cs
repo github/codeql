@@ -1,13 +1,13 @@
-// semmle-extractor-options: /r:System.ComponentModel.Primitives.dll /r:System.ComponentModel.TypeConverter.dll /r:System.Data.Common.dll ${testdir}/../../../resources/stubs/EntityFramework.cs ${testdir}/../../../resources/stubs/System.Data.cs ${testdir}/../../../resources/stubs/System.Windows.cs ${testdir}/../../../resources/stubs/Dapper.cs /r:System.Linq.Expressions.dll
-
+// semmle-extractor-options: /nostdlib /noconfig
+// semmle-extractor-options: --load-sources-from-project:../../../resources/stubs/Dapper/2.0.90/Dapper.csproj
+// semmle-extractor-options: --load-sources-from-project:../../../resources/stubs/System.Data.SqlClient/4.8.2/System.Data.SqlClient.csproj
+// semmle-extractor-options: ${testdir}/../../../resources/stubs/EntityFramework.cs
+// semmle-extractor-options: ${testdir}/../../../resources/stubs/System.Windows.cs
 using System;
 
 namespace System.Web.UI.WebControls
 {
-    public class TextBox
-    {
-        public string Text { get; set; }
-    }
+    public class TextBox { public string Text { get; set; } }
 }
 
 namespace Test
