@@ -51,8 +51,7 @@ string callName(Nameable call) {
 }
 
 string configName(ProtocolConfiguration protocolConfiguration) {
-  result =
-    "call to " + callName(protocolConfiguration.(DataFlow::CallCfgNode).getFunction())
+  result = "call to " + callName(protocolConfiguration.(DataFlow::CallCfgNode).getFunction())
   or
   not protocolConfiguration instanceof DataFlow::CallCfgNode and
   not protocolConfiguration instanceof ContextCreation and
