@@ -24,6 +24,7 @@ explicitly allowed classes.
 The following example uses untrusted data to build and run a BeanShell expression.
 </p>
 <sample src="BeanShellInjection.java" />
+</example>
 
 <references>
 <li>
