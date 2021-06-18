@@ -160,26 +160,21 @@ abstract private class ExprChildMapping extends Expr {
 /** Provides classes for control-flow nodes that wrap AST expressions. */
 module ExprNodes {
   // TODO: Add more classes
-  private class AssignmentExprChildMapping extends ExprChildMapping, Assignment {
+  private class AssignExprChildMapping extends ExprChildMapping, AssignExpr {
     override predicate relevantChild(Expr e) { e = this.getAnOperand() }
   }
 
-  /** A control-flow node that wraps an `Assignment` AST expression. */
-  class AssignmentCfgNode extends ExprCfgNode {
-    override AssignmentExprChildMapping e;
+  /** A control-flow node that wraps an `AssignExpr` AST expression. */
+  class AssignExprCfgNode extends ExprCfgNode {
+    override AssignExprChildMapping e;
 
-    final override Assignment getExpr() { result = ExprCfgNode.super.getExpr() }
+    final override AssignExpr getExpr() { result = ExprCfgNode.super.getExpr() }
 
     /** Gets the LHS of this assignment. */
     final ExprCfgNode getLhs() { e.hasCfgChild(e.getLeftOperand(), this, result) }
 
     /** Gets the RHS of this assignment. */
     final ExprCfgNode getRhs() { e.hasCfgChild(e.getRightOperand(), this, result) }
-  }
-
-  /** A control-flow node that wraps an `AssignExpr` AST expression. */
-  class AssignExprCfgNode extends AssignmentCfgNode {
-    AssignExprCfgNode() { this.getExpr() instanceof AssignExpr }
   }
 
   private class OperationExprChildMapping extends ExprChildMapping, Operation {

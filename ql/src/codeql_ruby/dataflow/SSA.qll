@@ -203,6 +203,18 @@ module Ssa {
     /** Gets the underlying write access. */
     final VariableWriteAccess getWriteAccess() { result = write }
 
+    /**
+     * Holds if this SSA definition represents a direct assignment of `value`
+     * to the underlying variable.
+     */
+    predicate assigns(CfgNodes::ExprCfgNode value) {
+      exists(CfgNodes::ExprNodes::AssignExprCfgNode a, BasicBlock bb, int i |
+        this.definesAt(_, bb, i) and
+        a = bb.getNode(i) and
+        value = a.getRhs()
+      )
+    }
+
     final override string toString() { result = Definition.super.toString() }
 
     final override Location getLocation() { result = this.getControlFlowNode().getLocation() }
