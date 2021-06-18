@@ -14,16 +14,35 @@ private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
 private import experimental.semmle.python.Frameworks
 
+/** Provides classes for modeling HTTP Header APIs. */
 module HeaderDeclaration {
+  /**
+   * A data-flow node that collects functions setting HTTP Headers' content.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `HeaderDeclaration` instead.
+   */
   abstract class Range extends DataFlow::Node {
-    abstract DataFlow::Node getHeaderInputNode();
+    /**
+     * Gets the argument containing the header value.
+     */
+    abstract DataFlow::Node getHeaderInput();
   }
 }
 
+/**
+ * A data-flow node that collects functions setting HTTP Headers' content.
+ *
+ * Extend this class to model new APIs. If you want to refine existing API models,
+ * extend `HeaderDeclaration` instead.
+ */
 class HeaderDeclaration extends DataFlow::Node {
   HeaderDeclaration::Range range;
 
   HeaderDeclaration() { this = range }
 
-  DataFlow::Node getHeaderInputNode() { result = range.getHeaderInputNode() }
+  /**
+   * Gets the argument containing the header value.
+   */
+  DataFlow::Node getHeaderInput() { result = range.getHeaderInput() }
 }
