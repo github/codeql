@@ -61,16 +61,16 @@ private module Cached {
     localAdditionalTaintUpdateStep(src.asExpr(),
       sink.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr())
     or
-    exists(Content f |
+    exists(DataFlow::Content f |
       readStep(src, f, sink) and
       not sink.getTypeBound() instanceof PrimitiveType and
       not sink.getTypeBound() instanceof BoxedType and
       not sink.getTypeBound() instanceof NumberType
     |
-      f instanceof ArrayContent or
-      f instanceof CollectionContent or
-      f instanceof MapKeyContent or
-      f instanceof MapValueContent
+      f instanceof DataFlow::ArrayContent or
+      f instanceof DataFlow::CollectionContent or
+      f instanceof DataFlow::MapKeyContent or
+      f instanceof DataFlow::MapValueContent
     )
     or
     FlowSummaryImpl::Private::Steps::summaryLocalStep(src, sink, false)
@@ -122,7 +122,7 @@ private module StoreTaintSteps {
 
     override predicate isSink(DataFlow::Node n) { none() }
 
-    private predicate needsTaintStore(RefType container, Type elem, Content f) {
+    private predicate needsTaintStore(RefType container, Type elem, DataFlow::Content f) {
       exists(DataFlow::Node arg |
         (isSink(arg) or isAdditionalTaintStep(arg, _)) and
         (arg.asExpr() instanceof Argument or arg instanceof ArgumentNode) and
@@ -131,18 +131,18 @@ private module StoreTaintSteps {
         needsTaintStore(_, container, _)
       |
         container.(Array).getComponentType() = elem and
-        f instanceof ArrayContent
+        f instanceof DataFlow::ArrayContent
         or
         container.(CollectionType).getElementType() = elem and
-        f instanceof CollectionContent
+        f instanceof DataFlow::CollectionContent
         or
         container.(MapType).getValueType() = elem and
-        f instanceof MapValueContent
+        f instanceof DataFlow::MapValueContent
       )
     }
 
     override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-      exists(Content f, Type elem |
+      exists(DataFlow::Content f, Type elem |
         storeStep(node1, f, node2) and
         needsTaintStore(_, elem, f) and
         not exists(Type srctyp | srctyp = node1.getTypeBound() | not compatibleTypes(srctyp, elem))
@@ -157,7 +157,7 @@ private module StoreTaintSteps {
 
     override predicate isSink(DataFlow::Node n) { none() }
 
-    private predicate needsTaintStore(RefType container, Type elem, Content f) {
+    private predicate needsTaintStore(RefType container, Type elem, DataFlow::Content f) {
       exists(DataFlow::Node arg |
         (isSink(arg) or isAdditionalTaintStep(arg, _)) and
         (arg.asExpr() instanceof Argument or arg instanceof ArgumentNode) and
@@ -166,18 +166,18 @@ private module StoreTaintSteps {
         needsTaintStore(_, container, _)
       |
         container.(Array).getComponentType() = elem and
-        f instanceof ArrayContent
+        f instanceof DataFlow::ArrayContent
         or
         container.(CollectionType).getElementType() = elem and
-        f instanceof CollectionContent
+        f instanceof DataFlow::CollectionContent
         or
         container.(MapType).getValueType() = elem and
-        f instanceof MapValueContent
+        f instanceof DataFlow::MapValueContent
       )
     }
 
     override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-      exists(Content f, Type elem |
+      exists(DataFlow::Content f, Type elem |
         storeStep(node1, f, node2) and
         needsTaintStore(_, elem, f) and
         not exists(Type srctyp | srctyp = node1.getTypeBound() | not compatibleTypes(srctyp, elem))
