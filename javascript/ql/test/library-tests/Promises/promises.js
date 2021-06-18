@@ -106,3 +106,10 @@
   PromiseA.resolve(source);
   PromiseB.resolve(source);
 })();
+
+(function() {
+  var RSVP = require('rsvp');
+  var promise = new RSVP.Promise(function(resolve, reject) {});
+  var Promise = require('es6-promise').Promise;
+  Promise.resolve(source);
+})();
