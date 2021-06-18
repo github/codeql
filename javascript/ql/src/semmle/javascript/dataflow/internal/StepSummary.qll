@@ -45,6 +45,12 @@ private module Cached {
       CopyStep(PropertyName prop) or
       LoadStoreStep(PropertyName fromProp, PropertyName toProp) {
         SharedTypeTrackingStep::loadStoreStep(_, _, fromProp, toProp)
+      } or
+      ReverseLevelStep() or
+      ReverseCallStep() or
+      ReverseCopyStep(PropertyName prop) or
+      ReverseLoadStoreStep(PropertyName fromProp, PropertyName toProp) {
+        SharedTypeTrackingStep::loadStoreStep(_, _, fromProp, toProp)
       }
   }
 
@@ -53,7 +59,13 @@ private module Cached {
    */
   cached
   predicate step(DataFlow::SourceNode pred, DataFlow::SourceNode succ, StepSummary summary) {
-    exists(DataFlow::Node mid | pred.flowsTo(mid) | StepSummary::smallstep(mid, succ, summary))
+    stepAux(pred, succ, summary)
+    or
+    stepAux(succ, pred, summary.reverse())
+  }
+
+  private predicate stepAux(DataFlow::SourceNode pred, DataFlow::SourceNode succ, StepSummary summary) {
+    exists(DataFlow::Node mid | pred.flowsTo(mid) | smallstepAux(mid, succ, summary))
   }
 
   /**
@@ -61,6 +73,12 @@ private module Cached {
    */
   cached
   predicate smallstep(DataFlow::Node pred, DataFlow::Node succ, StepSummary summary) {
+    smallstepAux(pred, succ, summary)
+    or
+    smallstepAux(succ, pred, summary.reverse())
+  }
+
+  private predicate smallstepAux(DataFlow::Node pred, DataFlow::Node succ, StepSummary summary) {
     // Flow through properties of objects
     propertyFlowStep(pred, succ) and
     summary = LevelStep()
@@ -188,6 +206,45 @@ class StepSummary extends TStepSummary {
     exists(string fromProp, string toProp | this = LoadStoreStep(fromProp, toProp) |
       result = "load " + fromProp + " and store to " + toProp
     )
+    or
+    this instanceof ReverseLevelStep and result = "reverse level"
+    or
+    this instanceof ReverseCallStep and result = "reverse call"
+    or
+    exists(string prop | this = ReverseCopyStep(prop) | result = "reverse copy " + prop)
+    or
+    exists(string fromProp, string toProp | this = ReverseLoadStoreStep(fromProp, toProp) |
+      result = "reverse load " + fromProp + " and store to " + toProp
+    )
+  }
+
+  /**
+   * Maps a forward step to the corresponding reverse step, if any.
+   * Does not map reverse steps back to forward steps.
+   */
+  StepSummary toReverse() {
+    this = LevelStep() and result = ReverseLevelStep()
+    or
+    this = CallStep() and result = ReverseCallStep()
+    or
+    exists(PropertyName prop |
+      this = CopyStep(prop) and result = ReverseCopyStep(prop)
+    )
+    or
+    exists(PropertyName fromProp, PropertyName toProp |
+      this = LoadStoreStep(fromProp, toProp) and
+      result = ReverseLoadStoreStep(fromProp, toProp)
+    )
+  }
+
+  /**
+   * Maps a forward step to the correpsonding reverse step, if any,
+   * and vice versa.
+   */
+  StepSummary reverse() {
+    result = this.toReverse()
+    or
+    result.toReverse() = this
   }
 }
 

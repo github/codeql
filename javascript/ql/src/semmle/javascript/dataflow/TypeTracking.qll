@@ -12,7 +12,9 @@ private import internal.StepSummary
 private import semmle.javascript.Unit
 private import semmle.javascript.internal.CachedStages
 
-private newtype TTypeTracker = MkTypeTracker(Boolean hasCall, OptionalPropertyName prop)
+private newtype TTypeTracker = MkTypeTracker(Boolean hasCall, Boolean isReverse, OptionalPropertyName prop) {
+  not (isReverse = true and prop = "") // can only reverse while in a property
+}
 
 /**
  * Summary of the steps needed to track a value to a given dataflow node.
@@ -46,51 +48,82 @@ private newtype TTypeTracker = MkTypeTracker(Boolean hasCall, OptionalPropertyNa
  */
 class TypeTracker extends TTypeTracker {
   Boolean hasCall;
+  Boolean isReverse;
   OptionalPropertyName prop;
 
-  TypeTracker() { this = MkTypeTracker(hasCall, prop) }
+  TypeTracker() { this = MkTypeTracker(hasCall, isReverse, prop) }
 
   /** Gets the summary resulting from appending `step` to this type-tracking summary. */
   cached
   TypeTracker append(StepSummary step) {
     Stages::TypeTracking::ref() and
-    step = LevelStep() and
-    result = this
-    or
-    exists(string toProp | step = LoadStoreStep(prop, toProp) |
-      result = MkTypeTracker(hasCall, toProp)
+    (
+      step = LevelStep() and
+      result = unreversed()
+      or
+      exists(string toProp | step = pragma[only_bind_out](LoadStoreStep(prop, toProp)) |
+        result = MkTypeTracker(hasCall, false, pragma[only_bind_out](toProp))
+      )
+      or
+      step = CopyStep(prop) and result = unreversed()
+      or
+      step = CallStep() and result = MkTypeTracker(true, false, prop)
+      or
+      step = ReturnStep() and hasCall = false and result = unreversed()
+      or
+      step = LoadStep(prop) and result = MkTypeTracker(hasCall, false, "")
+      or
+      exists(string p |
+        step = StoreStep(p) and
+        prop = "" and
+        result = MkTypeTracker(hasCall, true, pragma[only_bind_out](p))
+      )
+      or
+      isReverse = true and
+      step = ReverseLevelStep() and
+      result = this
+      or
+      isReverse = true and
+      exists(string fromProp | step = pragma[only_bind_out](ReverseLoadStoreStep(fromProp, prop)) |
+        result = MkTypeTracker(hasCall, true, pragma[only_bind_out](fromProp))
+      )
+      or
+      isReverse = true and
+      step = ReverseCopyStep(prop) and
+      result = this
+      or
+      hasCall = false and
+      isReverse = true and
+      step = ReverseCallStep() and
+      result = this
     )
-    or
-    step = CopyStep(prop) and result = this
-    or
-    step = CallStep() and result = MkTypeTracker(true, prop)
-    or
-    step = ReturnStep() and hasCall = false and result = this
-    or
-    step = LoadStep(prop) and result = MkTypeTracker(hasCall, "")
-    or
-    exists(string p | step = StoreStep(p) and prop = "" and result = MkTypeTracker(hasCall, p))
+  }
+
+  /** Gets this type tracker with `isReverse` set to false. */
+  private TypeTracker unreversed() {
+    result = MkTypeTracker(hasCall, false, prop)
   }
 
   /** Gets a textual representation of this summary. */
   string toString() {
-    exists(string withCall, string withProp |
+    exists(string withCall, string withProp, string withReverse |
+      (if isReverse = true then withReverse = "reversed " else withReverse = "") and
       (if hasCall = true then withCall = "with" else withCall = "without") and
       (if prop != "" then withProp = " with property " + prop else withProp = "") and
-      result = "type tracker " + withCall + " call steps" + withProp
+      result = "type tracker " + withReverse + withCall + " call steps" + withProp
     )
   }
 
   /**
    * Holds if this is the starting point of type tracking.
    */
-  predicate start() { hasCall = false and prop = "" }
+  predicate start() { hasCall = false and isReverse = false and prop = "" }
 
   /**
    * Holds if this is the starting point of type tracking, and the value starts in the property named `propName`.
    * The type tracking only ends after the property has been loaded.
    */
-  predicate startInProp(PropertyName propName) { hasCall = false and prop = propName }
+  predicate startInProp(PropertyName propName) { hasCall = false and isReverse = false and prop = propName }
 
   /**
    * Holds if this is the starting point of type tracking, and the initial value is a promise.
@@ -102,7 +135,7 @@ class TypeTracker extends TTypeTracker {
    * Holds if this is the starting point of type tracking
    * when tracking a parameter into a call, but not out of it.
    */
-  predicate call() { hasCall = true and prop = "" }
+  predicate call() { hasCall = true and isReverse = false and prop = "" }
 
   /**
    * Holds if this is the end point of type tracking.
@@ -122,7 +155,7 @@ class TypeTracker extends TTypeTracker {
    *
    * This predicate is only defined if the type has not been tracked into a property.
    */
-  TypeTracker continue() { prop = "" and result = this }
+  TypeTracker continue() { prop = "" and isReverse = false and result = this }
 
   /**
    * Gets the summary that corresponds to having taken a forwards
