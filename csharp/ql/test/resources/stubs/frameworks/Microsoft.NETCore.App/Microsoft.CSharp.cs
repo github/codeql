@@ -32,7 +32,6 @@ namespace Microsoft
             [System.Flags]
             public enum CSharpArgumentInfoFlags
             {
-                // Stub generator skipped constructor 
                 Constant,
                 IsOut,
                 IsRef,
@@ -47,7 +46,6 @@ namespace Microsoft
             public enum CSharpBinderFlags
             {
                 BinaryOperationLogical,
-                // Stub generator skipped constructor 
                 CheckedContext,
                 ConvertArrayIndex,
                 ConvertExplicit,

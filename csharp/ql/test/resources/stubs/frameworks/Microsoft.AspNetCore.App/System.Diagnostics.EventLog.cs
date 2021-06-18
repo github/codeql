@@ -117,7 +117,6 @@ namespace System
         public enum EventLogEntryType
         {
             Error,
-            // Stub generator skipped constructor 
             FailureAudit,
             Information,
             SuccessAudit,
@@ -159,7 +158,6 @@ namespace System
         public enum OverflowAction
         {
             DoNotOverwrite,
-            // Stub generator skipped constructor 
             OverwriteAsNeeded,
             OverwriteOlder,
         }
@@ -256,7 +254,6 @@ namespace System
                 {
                     Application,
                     Custom,
-                    // Stub generator skipped constructor 
                     System,
                 }
 
@@ -273,7 +270,6 @@ namespace System
                 {
                     AutoBackup,
                     Circular,
-                    // Stub generator skipped constructor 
                     Retain,
                 }
 
@@ -411,7 +407,6 @@ namespace System
                     Administrative,
                     Analytical,
                     Debug,
-                    // Stub generator skipped constructor 
                     Operational,
                 }
 
@@ -512,7 +507,6 @@ namespace System
                 {
                     FilePath,
                     LogName,
-                    // Stub generator skipped constructor 
                 }
 
                 // Generated from `System.Diagnostics.Eventing.Reader.ProviderMetadata` in `System.Diagnostics.EventLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
@@ -544,7 +538,6 @@ namespace System
                     Kerberos,
                     Negotiate,
                     Ntlm,
-                    // Stub generator skipped constructor 
                 }
 
                 // Generated from `System.Diagnostics.Eventing.Reader.StandardEventKeywords` in `System.Diagnostics.EventLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
@@ -559,7 +552,6 @@ namespace System
                     None,
                     ResponseTime,
                     Sqm,
-                    // Stub generator skipped constructor 
                     WdiContext,
                     WdiDiagnostic,
                 }
@@ -571,7 +563,6 @@ namespace System
                     Error,
                     Informational,
                     LogAlways,
-                    // Stub generator skipped constructor 
                     Verbose,
                     Warning,
                 }
@@ -587,7 +578,6 @@ namespace System
                     Reply,
                     Resume,
                     Send,
-                    // Stub generator skipped constructor 
                     Start,
                     Stop,
                     Suspend,
@@ -597,7 +587,6 @@ namespace System
                 public enum StandardEventTask
                 {
                     None,
-                    // Stub generator skipped constructor 
                 }
 
             }

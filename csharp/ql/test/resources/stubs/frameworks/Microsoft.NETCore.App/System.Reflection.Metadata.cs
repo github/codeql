@@ -8,7 +8,6 @@ namespace System
         [System.Flags]
         public enum AssemblyFlags
         {
-            // Stub generator skipped constructor 
             ContentTypeMask,
             DisableJitCompileOptimizer,
             EnableJitCompileTracking,
@@ -20,7 +19,6 @@ namespace System
         // Generated from `System.Reflection.AssemblyHashAlgorithm` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public enum AssemblyHashAlgorithm
         {
-            // Stub generator skipped constructor 
             MD5,
             None,
             Sha1,
@@ -33,7 +31,6 @@ namespace System
         public enum DeclarativeSecurityAction
         {
             Assert,
-            // Stub generator skipped constructor 
             Demand,
             Deny,
             InheritanceDemand,
@@ -49,7 +46,6 @@ namespace System
         [System.Flags]
         public enum ManifestResourceAttributes
         {
-            // Stub generator skipped constructor 
             Private,
             Public,
             VisibilityMask,
@@ -73,7 +69,6 @@ namespace System
             CharSetMask,
             CharSetUnicode,
             ExactSpelling,
-            // Stub generator skipped constructor 
             None,
             SetLastError,
             ThrowOnUnmappableCharDisable,
@@ -87,7 +82,6 @@ namespace System
         {
             Adder,
             Getter,
-            // Stub generator skipped constructor 
             Other,
             Raiser,
             Remover,
@@ -131,10 +125,10 @@ namespace System
                 public bool Equals(System.Reflection.Metadata.AssemblyDefinitionHandle other) => throw null;
                 public override int GetHashCode() => throw null;
                 public bool IsNil { get => throw null; }
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator System.Reflection.Metadata.AssemblyDefinitionHandle(System.Reflection.Metadata.Handle handle) => throw null;
+                public static explicit operator System.Reflection.Metadata.AssemblyDefinitionHandle(System.Reflection.Metadata.EntityHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.AssemblyDefinitionHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.EntityHandle(System.Reflection.Metadata.AssemblyDefinitionHandle handle) => throw null;
             }
 
             // Generated from `System.Reflection.Metadata.AssemblyFile` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -157,10 +151,10 @@ namespace System
                 public bool Equals(System.Reflection.Metadata.AssemblyFileHandle other) => throw null;
                 public override int GetHashCode() => throw null;
                 public bool IsNil { get => throw null; }
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator System.Reflection.Metadata.AssemblyFileHandle(System.Reflection.Metadata.Handle handle) => throw null;
+                public static explicit operator System.Reflection.Metadata.AssemblyFileHandle(System.Reflection.Metadata.EntityHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.AssemblyFileHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.EntityHandle(System.Reflection.Metadata.AssemblyFileHandle handle) => throw null;
             }
 
             // Generated from `System.Reflection.Metadata.AssemblyFileHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -209,10 +203,10 @@ namespace System
                 public bool Equals(System.Reflection.Metadata.AssemblyReferenceHandle other) => throw null;
                 public override int GetHashCode() => throw null;
                 public bool IsNil { get => throw null; }
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator System.Reflection.Metadata.AssemblyReferenceHandle(System.Reflection.Metadata.Handle handle) => throw null;
+                public static explicit operator System.Reflection.Metadata.AssemblyReferenceHandle(System.Reflection.Metadata.EntityHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.AssemblyReferenceHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.EntityHandle(System.Reflection.Metadata.AssemblyReferenceHandle handle) => throw null;
             }
 
             // Generated from `System.Reflection.Metadata.AssemblyReferenceHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -352,8 +346,8 @@ namespace System
                 public bool Equals(System.Reflection.Metadata.BlobHandle other) => throw null;
                 public override int GetHashCode() => throw null;
                 public bool IsNil { get => throw null; }
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator System.Reflection.Metadata.BlobHandle(System.Reflection.Metadata.Handle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.BlobHandle handle) => throw null;
             }
 
             // Generated from `System.Reflection.Metadata.BlobReader` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -477,10 +471,10 @@ namespace System
                 public bool Equals(System.Reflection.Metadata.ConstantHandle other) => throw null;
                 public override int GetHashCode() => throw null;
                 public bool IsNil { get => throw null; }
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator System.Reflection.Metadata.ConstantHandle(System.Reflection.Metadata.Handle handle) => throw null;
+                public static explicit operator System.Reflection.Metadata.ConstantHandle(System.Reflection.Metadata.EntityHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.ConstantHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.EntityHandle(System.Reflection.Metadata.ConstantHandle handle) => throw null;
             }
 
             // Generated from `System.Reflection.Metadata.ConstantTypeCode` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -489,7 +483,6 @@ namespace System
                 Boolean,
                 Byte,
                 Char,
-                // Stub generator skipped constructor 
                 Double,
                 Int16,
                 Int32,
@@ -524,10 +517,10 @@ namespace System
                 public bool Equals(System.Reflection.Metadata.CustomAttributeHandle other) => throw null;
                 public override int GetHashCode() => throw null;
                 public bool IsNil { get => throw null; }
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator System.Reflection.Metadata.CustomAttributeHandle(System.Reflection.Metadata.Handle handle) => throw null;
+                public static explicit operator System.Reflection.Metadata.CustomAttributeHandle(System.Reflection.Metadata.EntityHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.CustomAttributeHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.EntityHandle(System.Reflection.Metadata.CustomAttributeHandle handle) => throw null;
             }
 
             // Generated from `System.Reflection.Metadata.CustomAttributeHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -566,7 +559,6 @@ namespace System
             // Generated from `System.Reflection.Metadata.CustomAttributeNamedArgumentKind` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum CustomAttributeNamedArgumentKind
             {
-                // Stub generator skipped constructor 
                 Field,
                 Property,
             }
@@ -608,10 +600,10 @@ namespace System
                 public bool Equals(System.Reflection.Metadata.CustomDebugInformationHandle other) => throw null;
                 public override int GetHashCode() => throw null;
                 public bool IsNil { get => throw null; }
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator System.Reflection.Metadata.CustomDebugInformationHandle(System.Reflection.Metadata.Handle handle) => throw null;
+                public static explicit operator System.Reflection.Metadata.CustomDebugInformationHandle(System.Reflection.Metadata.EntityHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.CustomDebugInformationHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.EntityHandle(System.Reflection.Metadata.CustomDebugInformationHandle handle) => throw null;
             }
 
             // Generated from `System.Reflection.Metadata.CustomDebugInformationHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -663,10 +655,10 @@ namespace System
                 public bool Equals(System.Reflection.Metadata.DeclarativeSecurityAttributeHandle other) => throw null;
                 public override int GetHashCode() => throw null;
                 public bool IsNil { get => throw null; }
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator System.Reflection.Metadata.DeclarativeSecurityAttributeHandle(System.Reflection.Metadata.Handle handle) => throw null;
+                public static explicit operator System.Reflection.Metadata.DeclarativeSecurityAttributeHandle(System.Reflection.Metadata.EntityHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.DeclarativeSecurityAttributeHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.EntityHandle(System.Reflection.Metadata.DeclarativeSecurityAttributeHandle handle) => throw null;
             }
 
             // Generated from `System.Reflection.Metadata.DeclarativeSecurityAttributeHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -711,10 +703,10 @@ namespace System
                 public bool Equals(System.Reflection.Metadata.DocumentHandle other) => throw null;
                 public override int GetHashCode() => throw null;
                 public bool IsNil { get => throw null; }
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator System.Reflection.Metadata.DocumentHandle(System.Reflection.Metadata.Handle handle) => throw null;
+                public static explicit operator System.Reflection.Metadata.DocumentHandle(System.Reflection.Metadata.EntityHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.DocumentHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.EntityHandle(System.Reflection.Metadata.DocumentHandle handle) => throw null;
             }
 
             // Generated from `System.Reflection.Metadata.DocumentHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -749,8 +741,8 @@ namespace System
                 public bool Equals(System.Reflection.Metadata.DocumentNameBlobHandle other) => throw null;
                 public override int GetHashCode() => throw null;
                 public bool IsNil { get => throw null; }
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator System.Reflection.Metadata.DocumentNameBlobHandle(System.Reflection.Metadata.BlobHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.BlobHandle(System.Reflection.Metadata.DocumentNameBlobHandle handle) => throw null;
             }
 
             // Generated from `System.Reflection.Metadata.EntityHandle` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -766,8 +758,8 @@ namespace System
                 public bool IsNil { get => throw null; }
                 public System.Reflection.Metadata.HandleKind Kind { get => throw null; }
                 public static System.Reflection.Metadata.ModuleDefinitionHandle ModuleDefinition;
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator System.Reflection.Metadata.EntityHandle(System.Reflection.Metadata.Handle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.EntityHandle handle) => throw null;
             }
 
             // Generated from `System.Reflection.Metadata.EventAccessors` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -801,10 +793,10 @@ namespace System
                 // Stub generator skipped constructor 
                 public override int GetHashCode() => throw null;
                 public bool IsNil { get => throw null; }
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator System.Reflection.Metadata.EventDefinitionHandle(System.Reflection.Metadata.Handle handle) => throw null;
+                public static explicit operator System.Reflection.Metadata.EventDefinitionHandle(System.Reflection.Metadata.EntityHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.EventDefinitionHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.EntityHandle(System.Reflection.Metadata.EventDefinitionHandle handle) => throw null;
             }
 
             // Generated from `System.Reflection.Metadata.EventDefinitionHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -846,7 +838,6 @@ namespace System
             public enum ExceptionRegionKind
             {
                 Catch,
-                // Stub generator skipped constructor 
                 Fault,
                 Filter,
                 Finally,
@@ -875,10 +866,10 @@ namespace System
                 // Stub generator skipped constructor 
                 public override int GetHashCode() => throw null;
                 public bool IsNil { get => throw null; }
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator System.Reflection.Metadata.ExportedTypeHandle(System.Reflection.Metadata.Handle handle) => throw null;
+                public static explicit operator System.Reflection.Metadata.ExportedTypeHandle(System.Reflection.Metadata.EntityHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.ExportedTypeHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.EntityHandle(System.Reflection.Metadata.ExportedTypeHandle handle) => throw null;
             }
 
             // Generated from `System.Reflection.Metadata.ExportedTypeHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -929,10 +920,10 @@ namespace System
                 // Stub generator skipped constructor 
                 public override int GetHashCode() => throw null;
                 public bool IsNil { get => throw null; }
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator System.Reflection.Metadata.FieldDefinitionHandle(System.Reflection.Metadata.Handle handle) => throw null;
+                public static explicit operator System.Reflection.Metadata.FieldDefinitionHandle(System.Reflection.Metadata.EntityHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.FieldDefinitionHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.EntityHandle(System.Reflection.Metadata.FieldDefinitionHandle handle) => throw null;
             }
 
             // Generated from `System.Reflection.Metadata.FieldDefinitionHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -988,10 +979,10 @@ namespace System
                 // Stub generator skipped constructor 
                 public override int GetHashCode() => throw null;
                 public bool IsNil { get => throw null; }
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator System.Reflection.Metadata.GenericParameterConstraintHandle(System.Reflection.Metadata.Handle handle) => throw null;
+                public static explicit operator System.Reflection.Metadata.GenericParameterConstraintHandle(System.Reflection.Metadata.EntityHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.GenericParameterConstraintHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.EntityHandle(System.Reflection.Metadata.GenericParameterConstraintHandle handle) => throw null;
             }
 
             // Generated from `System.Reflection.Metadata.GenericParameterConstraintHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1027,10 +1018,10 @@ namespace System
                 // Stub generator skipped constructor 
                 public override int GetHashCode() => throw null;
                 public bool IsNil { get => throw null; }
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator System.Reflection.Metadata.GenericParameterHandle(System.Reflection.Metadata.Handle handle) => throw null;
+                public static explicit operator System.Reflection.Metadata.GenericParameterHandle(System.Reflection.Metadata.EntityHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.GenericParameterHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.EntityHandle(System.Reflection.Metadata.GenericParameterHandle handle) => throw null;
             }
 
             // Generated from `System.Reflection.Metadata.GenericParameterHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1066,8 +1057,8 @@ namespace System
                 public override int GetHashCode() => throw null;
                 // Stub generator skipped constructor 
                 public bool IsNil { get => throw null; }
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator System.Reflection.Metadata.GuidHandle(System.Reflection.Metadata.Handle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.GuidHandle handle) => throw null;
             }
 
             // Generated from `System.Reflection.Metadata.Handle` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1115,7 +1106,6 @@ namespace System
                 GenericParameter,
                 GenericParameterConstraint,
                 Guid,
-                // Stub generator skipped constructor 
                 ImportScope,
                 InterfaceImplementation,
                 LocalConstant,
@@ -1245,7 +1235,6 @@ namespace System
                 Dup,
                 Endfilter,
                 Endfinally,
-                // Stub generator skipped constructor 
                 Initblk,
                 Initobj,
                 Isinst,
@@ -1466,7 +1455,6 @@ namespace System
                 AliasType,
                 ImportAssemblyNamespace,
                 ImportAssemblyReferenceAlias,
-                // Stub generator skipped constructor 
                 ImportNamespace,
                 ImportType,
                 ImportXmlNamespace,
@@ -1513,10 +1501,10 @@ namespace System
                 public override int GetHashCode() => throw null;
                 // Stub generator skipped constructor 
                 public bool IsNil { get => throw null; }
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator System.Reflection.Metadata.ImportScopeHandle(System.Reflection.Metadata.Handle handle) => throw null;
+                public static explicit operator System.Reflection.Metadata.ImportScopeHandle(System.Reflection.Metadata.EntityHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.ImportScopeHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.EntityHandle(System.Reflection.Metadata.ImportScopeHandle handle) => throw null;
             }
 
             // Generated from `System.Reflection.Metadata.InterfaceImplementation` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1537,10 +1525,10 @@ namespace System
                 public override int GetHashCode() => throw null;
                 // Stub generator skipped constructor 
                 public bool IsNil { get => throw null; }
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator System.Reflection.Metadata.InterfaceImplementationHandle(System.Reflection.Metadata.Handle handle) => throw null;
+                public static explicit operator System.Reflection.Metadata.InterfaceImplementationHandle(System.Reflection.Metadata.EntityHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.InterfaceImplementationHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.EntityHandle(System.Reflection.Metadata.InterfaceImplementationHandle handle) => throw null;
             }
 
             // Generated from `System.Reflection.Metadata.InterfaceImplementationHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1583,10 +1571,10 @@ namespace System
                 public override int GetHashCode() => throw null;
                 public bool IsNil { get => throw null; }
                 // Stub generator skipped constructor 
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator System.Reflection.Metadata.LocalConstantHandle(System.Reflection.Metadata.Handle handle) => throw null;
+                public static explicit operator System.Reflection.Metadata.LocalConstantHandle(System.Reflection.Metadata.EntityHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.LocalConstantHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.EntityHandle(System.Reflection.Metadata.LocalConstantHandle handle) => throw null;
             }
 
             // Generated from `System.Reflection.Metadata.LocalConstantHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1635,10 +1623,10 @@ namespace System
                 public override int GetHashCode() => throw null;
                 public bool IsNil { get => throw null; }
                 // Stub generator skipped constructor 
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator System.Reflection.Metadata.LocalScopeHandle(System.Reflection.Metadata.Handle handle) => throw null;
+                public static explicit operator System.Reflection.Metadata.LocalScopeHandle(System.Reflection.Metadata.EntityHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.LocalScopeHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.EntityHandle(System.Reflection.Metadata.LocalScopeHandle handle) => throw null;
             }
 
             // Generated from `System.Reflection.Metadata.LocalScopeHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1689,7 +1677,6 @@ namespace System
             public enum LocalVariableAttributes
             {
                 DebuggerHidden,
-                // Stub generator skipped constructor 
                 None,
             }
 
@@ -1703,10 +1690,10 @@ namespace System
                 public override int GetHashCode() => throw null;
                 public bool IsNil { get => throw null; }
                 // Stub generator skipped constructor 
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator System.Reflection.Metadata.LocalVariableHandle(System.Reflection.Metadata.Handle handle) => throw null;
+                public static explicit operator System.Reflection.Metadata.LocalVariableHandle(System.Reflection.Metadata.EntityHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.LocalVariableHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.EntityHandle(System.Reflection.Metadata.LocalVariableHandle handle) => throw null;
             }
 
             // Generated from `System.Reflection.Metadata.LocalVariableHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1752,10 +1739,10 @@ namespace System
                 public override int GetHashCode() => throw null;
                 public bool IsNil { get => throw null; }
                 // Stub generator skipped constructor 
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator System.Reflection.Metadata.ManifestResourceHandle(System.Reflection.Metadata.Handle handle) => throw null;
+                public static explicit operator System.Reflection.Metadata.ManifestResourceHandle(System.Reflection.Metadata.EntityHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.ManifestResourceHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.EntityHandle(System.Reflection.Metadata.ManifestResourceHandle handle) => throw null;
             }
 
             // Generated from `System.Reflection.Metadata.ManifestResourceHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1803,10 +1790,10 @@ namespace System
                 public override int GetHashCode() => throw null;
                 public bool IsNil { get => throw null; }
                 // Stub generator skipped constructor 
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator System.Reflection.Metadata.MemberReferenceHandle(System.Reflection.Metadata.Handle handle) => throw null;
+                public static explicit operator System.Reflection.Metadata.MemberReferenceHandle(System.Reflection.Metadata.EntityHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.MemberReferenceHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.EntityHandle(System.Reflection.Metadata.MemberReferenceHandle handle) => throw null;
             }
 
             // Generated from `System.Reflection.Metadata.MemberReferenceHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1835,7 +1822,6 @@ namespace System
             public enum MemberReferenceKind
             {
                 Field,
-                // Stub generator skipped constructor 
                 Method,
             }
 
@@ -1844,7 +1830,6 @@ namespace System
             {
                 Ecma335,
                 ManagedWindowsMetadata,
-                // Stub generator skipped constructor 
                 WindowsMetadata,
             }
 
@@ -1939,7 +1924,6 @@ namespace System
             {
                 ApplyWindowsRuntimeProjections,
                 Default,
-                // Stub generator skipped constructor 
                 None,
             }
 
@@ -1962,7 +1946,6 @@ namespace System
             {
                 Default,
                 LeaveOpen,
-                // Stub generator skipped constructor 
                 PrefetchMetadata,
             }
 
@@ -2025,10 +2008,10 @@ namespace System
                 public bool IsNil { get => throw null; }
                 // Stub generator skipped constructor 
                 public System.Reflection.Metadata.MethodDefinitionHandle ToDefinitionHandle() => throw null;
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator System.Reflection.Metadata.MethodDebugInformationHandle(System.Reflection.Metadata.Handle handle) => throw null;
+                public static explicit operator System.Reflection.Metadata.MethodDebugInformationHandle(System.Reflection.Metadata.EntityHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.MethodDebugInformationHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.EntityHandle(System.Reflection.Metadata.MethodDebugInformationHandle handle) => throw null;
             }
 
             // Generated from `System.Reflection.Metadata.MethodDebugInformationHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2082,10 +2065,10 @@ namespace System
                 public bool IsNil { get => throw null; }
                 // Stub generator skipped constructor 
                 public System.Reflection.Metadata.MethodDebugInformationHandle ToDebugInformationHandle() => throw null;
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator System.Reflection.Metadata.MethodDefinitionHandle(System.Reflection.Metadata.Handle handle) => throw null;
+                public static explicit operator System.Reflection.Metadata.MethodDefinitionHandle(System.Reflection.Metadata.EntityHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.MethodDefinitionHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.EntityHandle(System.Reflection.Metadata.MethodDefinitionHandle handle) => throw null;
             }
 
             // Generated from `System.Reflection.Metadata.MethodDefinitionHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2130,10 +2113,10 @@ namespace System
                 public override int GetHashCode() => throw null;
                 public bool IsNil { get => throw null; }
                 // Stub generator skipped constructor 
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator System.Reflection.Metadata.MethodImplementationHandle(System.Reflection.Metadata.Handle handle) => throw null;
+                public static explicit operator System.Reflection.Metadata.MethodImplementationHandle(System.Reflection.Metadata.EntityHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.MethodImplementationHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.EntityHandle(System.Reflection.Metadata.MethodImplementationHandle handle) => throw null;
             }
 
             // Generated from `System.Reflection.Metadata.MethodImplementationHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2199,10 +2182,10 @@ namespace System
                 public override int GetHashCode() => throw null;
                 public bool IsNil { get => throw null; }
                 // Stub generator skipped constructor 
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator System.Reflection.Metadata.MethodSpecificationHandle(System.Reflection.Metadata.Handle handle) => throw null;
+                public static explicit operator System.Reflection.Metadata.MethodSpecificationHandle(System.Reflection.Metadata.EntityHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.MethodSpecificationHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.EntityHandle(System.Reflection.Metadata.MethodSpecificationHandle handle) => throw null;
             }
 
             // Generated from `System.Reflection.Metadata.ModuleDefinition` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2227,10 +2210,10 @@ namespace System
                 public override int GetHashCode() => throw null;
                 public bool IsNil { get => throw null; }
                 // Stub generator skipped constructor 
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator System.Reflection.Metadata.ModuleDefinitionHandle(System.Reflection.Metadata.Handle handle) => throw null;
+                public static explicit operator System.Reflection.Metadata.ModuleDefinitionHandle(System.Reflection.Metadata.EntityHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.ModuleDefinitionHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.EntityHandle(System.Reflection.Metadata.ModuleDefinitionHandle handle) => throw null;
             }
 
             // Generated from `System.Reflection.Metadata.ModuleReference` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2251,10 +2234,10 @@ namespace System
                 public override int GetHashCode() => throw null;
                 public bool IsNil { get => throw null; }
                 // Stub generator skipped constructor 
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator System.Reflection.Metadata.ModuleReferenceHandle(System.Reflection.Metadata.Handle handle) => throw null;
+                public static explicit operator System.Reflection.Metadata.ModuleReferenceHandle(System.Reflection.Metadata.EntityHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.ModuleReferenceHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.EntityHandle(System.Reflection.Metadata.ModuleReferenceHandle handle) => throw null;
             }
 
             // Generated from `System.Reflection.Metadata.NamespaceDefinition` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2278,8 +2261,8 @@ namespace System
                 public override int GetHashCode() => throw null;
                 public bool IsNil { get => throw null; }
                 // Stub generator skipped constructor 
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator System.Reflection.Metadata.NamespaceDefinitionHandle(System.Reflection.Metadata.Handle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.NamespaceDefinitionHandle handle) => throw null;
             }
 
             // Generated from `System.Reflection.Metadata.PEReaderExtensions` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2313,10 +2296,10 @@ namespace System
                 public override int GetHashCode() => throw null;
                 public bool IsNil { get => throw null; }
                 // Stub generator skipped constructor 
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator System.Reflection.Metadata.ParameterHandle(System.Reflection.Metadata.Handle handle) => throw null;
+                public static explicit operator System.Reflection.Metadata.ParameterHandle(System.Reflection.Metadata.EntityHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.ParameterHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.EntityHandle(System.Reflection.Metadata.ParameterHandle handle) => throw null;
             }
 
             // Generated from `System.Reflection.Metadata.ParameterHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2351,7 +2334,6 @@ namespace System
                 Int16,
                 Int32,
                 Int64,
-                // Stub generator skipped constructor 
                 SByte,
                 Single,
                 String,
@@ -2372,7 +2354,6 @@ namespace System
                 Int64,
                 IntPtr,
                 Object,
-                // Stub generator skipped constructor 
                 SByte,
                 Single,
                 String,
@@ -2416,10 +2397,10 @@ namespace System
                 public override int GetHashCode() => throw null;
                 public bool IsNil { get => throw null; }
                 // Stub generator skipped constructor 
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator System.Reflection.Metadata.PropertyDefinitionHandle(System.Reflection.Metadata.Handle handle) => throw null;
+                public static explicit operator System.Reflection.Metadata.PropertyDefinitionHandle(System.Reflection.Metadata.EntityHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.PropertyDefinitionHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.EntityHandle(System.Reflection.Metadata.PropertyDefinitionHandle handle) => throw null;
             }
 
             // Generated from `System.Reflection.Metadata.PropertyDefinitionHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2505,7 +2486,6 @@ namespace System
                 Invalid,
                 SByte,
                 SZArray,
-                // Stub generator skipped constructor 
                 Single,
                 String,
                 TaggedObject,
@@ -2523,7 +2503,6 @@ namespace System
                 Generic,
                 Instance,
                 None,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Reflection.Metadata.SignatureCallingConvention` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2532,7 +2511,6 @@ namespace System
                 CDecl,
                 Default,
                 FastCall,
-                // Stub generator skipped constructor 
                 StdCall,
                 ThisCall,
                 Unmanaged,
@@ -2569,7 +2547,6 @@ namespace System
                 Method,
                 MethodSpecification,
                 Property,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Reflection.Metadata.SignatureTypeCode` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2598,7 +2575,6 @@ namespace System
                 SByte,
                 SZArray,
                 Sentinel,
-                // Stub generator skipped constructor 
                 Single,
                 String,
                 TypeHandle,
@@ -2614,7 +2590,6 @@ namespace System
             public enum SignatureTypeKind
             {
                 Class,
-                // Stub generator skipped constructor 
                 Unknown,
                 ValueType,
             }
@@ -2640,10 +2615,10 @@ namespace System
                 public override int GetHashCode() => throw null;
                 public bool IsNil { get => throw null; }
                 // Stub generator skipped constructor 
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator System.Reflection.Metadata.StandaloneSignatureHandle(System.Reflection.Metadata.Handle handle) => throw null;
+                public static explicit operator System.Reflection.Metadata.StandaloneSignatureHandle(System.Reflection.Metadata.EntityHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.StandaloneSignatureHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.EntityHandle(System.Reflection.Metadata.StandaloneSignatureHandle handle) => throw null;
             }
 
             // Generated from `System.Reflection.Metadata.StandaloneSignatureKind` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2651,7 +2626,6 @@ namespace System
             {
                 LocalVariables,
                 Method,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Reflection.Metadata.StringHandle` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2664,8 +2638,8 @@ namespace System
                 public override int GetHashCode() => throw null;
                 public bool IsNil { get => throw null; }
                 // Stub generator skipped constructor 
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator System.Reflection.Metadata.StringHandle(System.Reflection.Metadata.Handle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.StringHandle handle) => throw null;
             }
 
             // Generated from `System.Reflection.Metadata.TypeDefinition` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2702,10 +2676,10 @@ namespace System
                 public override int GetHashCode() => throw null;
                 public bool IsNil { get => throw null; }
                 // Stub generator skipped constructor 
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator System.Reflection.Metadata.TypeDefinitionHandle(System.Reflection.Metadata.Handle handle) => throw null;
+                public static explicit operator System.Reflection.Metadata.TypeDefinitionHandle(System.Reflection.Metadata.EntityHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.TypeDefinitionHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.EntityHandle(System.Reflection.Metadata.TypeDefinitionHandle handle) => throw null;
             }
 
             // Generated from `System.Reflection.Metadata.TypeDefinitionHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2759,10 +2733,10 @@ namespace System
                 public override int GetHashCode() => throw null;
                 public bool IsNil { get => throw null; }
                 // Stub generator skipped constructor 
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator System.Reflection.Metadata.TypeReferenceHandle(System.Reflection.Metadata.Handle handle) => throw null;
+                public static explicit operator System.Reflection.Metadata.TypeReferenceHandle(System.Reflection.Metadata.EntityHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.TypeReferenceHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.EntityHandle(System.Reflection.Metadata.TypeReferenceHandle handle) => throw null;
             }
 
             // Generated from `System.Reflection.Metadata.TypeReferenceHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2806,10 +2780,10 @@ namespace System
                 public override int GetHashCode() => throw null;
                 public bool IsNil { get => throw null; }
                 // Stub generator skipped constructor 
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator System.Reflection.Metadata.TypeSpecificationHandle(System.Reflection.Metadata.Handle handle) => throw null;
+                public static explicit operator System.Reflection.Metadata.TypeSpecificationHandle(System.Reflection.Metadata.EntityHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.TypeSpecificationHandle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.EntityHandle(System.Reflection.Metadata.TypeSpecificationHandle handle) => throw null;
             }
 
             // Generated from `System.Reflection.Metadata.UserStringHandle` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2822,8 +2796,8 @@ namespace System
                 public override int GetHashCode() => throw null;
                 public bool IsNil { get => throw null; }
                 // Stub generator skipped constructor 
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator System.Reflection.Metadata.UserStringHandle(System.Reflection.Metadata.Handle handle) => throw null;
+                public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.UserStringHandle handle) => throw null;
             }
 
             namespace Ecma335
@@ -2958,7 +2932,6 @@ namespace System
                     AddParameter,
                     AddProperty,
                     Default,
-                    // Stub generator skipped constructor 
                 }
 
                 // Generated from `System.Reflection.Metadata.Ecma335.ExceptionRegionEncoder` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2994,7 +2967,6 @@ namespace System
                 // Generated from `System.Reflection.Metadata.Ecma335.FunctionPointerAttributes` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public enum FunctionPointerAttributes
                 {
-                    // Stub generator skipped constructor 
                     HasExplicitThis,
                     HasThis,
                     None,
@@ -3014,7 +2986,6 @@ namespace System
                 {
                     Blob,
                     Guid,
-                    // Stub generator skipped constructor 
                     String,
                     UserString,
                 }
@@ -3283,7 +3254,6 @@ namespace System
                 public enum MethodBodyAttributes
                 {
                     InitLocals,
-                    // Stub generator skipped constructor 
                     None,
                 }
 
@@ -3516,7 +3486,6 @@ namespace System
                     PropertyPtr,
                     StandAloneSig,
                     StateMachineMethod,
-                    // Stub generator skipped constructor 
                     TypeDef,
                     TypeRef,
                     TypeSpec,
@@ -3543,7 +3512,6 @@ namespace System
                 Bit32Machine,
                 BytesReversedHi,
                 BytesReversedLo,
-                // Stub generator skipped constructor 
                 DebugStripped,
                 Dll,
                 ExecutableImage,
@@ -3582,7 +3550,6 @@ namespace System
             [System.Flags]
             public enum CorFlags
             {
-                // Stub generator skipped constructor 
                 ILLibrary,
                 ILOnly,
                 NativeEntryPoint,
@@ -3640,7 +3607,6 @@ namespace System
             {
                 CodeView,
                 Coff,
-                // Stub generator skipped constructor 
                 EmbeddedPortablePdb,
                 PdbChecksum,
                 Reproducible,
@@ -3661,7 +3627,6 @@ namespace System
             public enum DllCharacteristics
             {
                 AppContainer,
-                // Stub generator skipped constructor 
                 DynamicBase,
                 HighEntropyVirtualAddressSpace,
                 NoBind,
@@ -3691,7 +3656,6 @@ namespace System
                 IA64,
                 M32R,
                 MIPS16,
-                // Stub generator skipped constructor 
                 MipsFpu,
                 MipsFpu16,
                 PowerPC,
@@ -3867,7 +3831,6 @@ namespace System
             {
                 PE32,
                 PE32Plus,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Reflection.PortableExecutable.PEMemoryBlock` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -3914,7 +3877,6 @@ namespace System
                 Default,
                 IsLoadedImage,
                 LeaveOpen,
-                // Stub generator skipped constructor 
                 PrefetchEntireImage,
                 PrefetchMetadata,
             }
@@ -3977,7 +3939,6 @@ namespace System
                 MemSysheap,
                 MemWrite,
                 NoDeferSpecExc,
-                // Stub generator skipped constructor 
                 TypeCopy,
                 TypeDSect,
                 TypeGroup,
@@ -4023,7 +3984,6 @@ namespace System
                 NativeWindows,
                 OS2Cui,
                 PosixCui,
-                // Stub generator skipped constructor 
                 Unknown,
                 WindowsBootApplication,
                 WindowsCEGui,

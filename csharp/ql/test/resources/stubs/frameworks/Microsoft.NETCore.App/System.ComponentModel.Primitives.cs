@@ -130,7 +130,6 @@ namespace System
         public enum DesignerSerializationVisibility
         {
             Content,
-            // Stub generator skipped constructor 
             Hidden,
             Visible,
         }
@@ -336,7 +335,6 @@ namespace System
         {
             All,
             None,
-            // Stub generator skipped constructor 
             Repaint,
         }
 

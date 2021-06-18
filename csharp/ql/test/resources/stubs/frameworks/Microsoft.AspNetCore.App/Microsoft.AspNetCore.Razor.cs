@@ -46,7 +46,6 @@ namespace Microsoft
                 public enum HtmlAttributeValueStyle
                 {
                     DoubleQuotes,
-                    // Stub generator skipped constructor 
                     Minimized,
                     NoQuotes,
                     SingleQuotes,
@@ -243,14 +242,12 @@ namespace Microsoft
                     SelfClosing,
                     StartTagAndEndTag,
                     StartTagOnly,
-                    // Stub generator skipped constructor 
                 }
 
                 // Generated from `Microsoft.AspNetCore.Razor.TagHelpers.TagStructure` in `Microsoft.AspNetCore.Razor, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public enum TagStructure
                 {
                     NormalOrSelfClosing,
-                    // Stub generator skipped constructor 
                     Unspecified,
                     WithoutEndTag,
                 }

@@ -19,7 +19,7 @@ namespace Microsoft
                 public int Id { get => throw null; }
                 public string Name { get => throw null; }
                 public override string ToString() => throw null;
-                // Stub generator skipped operator: implicit conversion
+                public static implicit operator Microsoft.Extensions.Logging.EventId(int i) => throw null;
             }
 
             // Generated from `Microsoft.Extensions.Logging.IExternalScopeProvider` in `Microsoft.Extensions.Logging.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
@@ -68,7 +68,6 @@ namespace Microsoft
                 Debug,
                 Error,
                 Information,
-                // Stub generator skipped constructor 
                 None,
                 Trace,
                 Warning,

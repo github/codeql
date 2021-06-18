@@ -147,7 +147,6 @@ namespace Microsoft
                 // Generated from `Microsoft.AspNetCore.Mvc.Razor.LanguageViewLocationExpanderFormat` in `Microsoft.AspNetCore.Mvc.Razor, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public enum LanguageViewLocationExpanderFormat
                 {
-                    // Stub generator skipped constructor 
                     SubFolder,
                     Suffix,
                 }

@@ -554,7 +554,6 @@ namespace Microsoft
                 public enum InputFormatterExceptionPolicy
                 {
                     AllExceptions,
-                    // Stub generator skipped constructor 
                     MalformedInputExceptions,
                 }
 
@@ -650,7 +649,6 @@ namespace Microsoft
                     Allow,
                     Default,
                     Disallow,
-                    // Stub generator skipped constructor 
                 }
 
                 // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.EnumGroupAndName` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
@@ -1031,7 +1029,6 @@ namespace Microsoft
                 public enum ModelValidationState
                 {
                     Invalid,
-                    // Stub generator skipped constructor 
                     Skipped,
                     Unvalidated,
                     Valid,
@@ -1077,8 +1074,8 @@ namespace Microsoft
                     public ValueProviderResult(Microsoft.Extensions.Primitives.StringValues values) => throw null;
                     // Stub generator skipped constructor 
                     public Microsoft.Extensions.Primitives.StringValues Values { get => throw null; }
-                    // Stub generator skipped operator: explicit conversion
-                    // Stub generator skipped operator: explicit conversion
+                    public static explicit operator string[](Microsoft.AspNetCore.Mvc.ModelBinding.ValueProviderResult result) => throw null;
+                    public static explicit operator string(Microsoft.AspNetCore.Mvc.ModelBinding.ValueProviderResult result) => throw null;
                 }
 
                 namespace Metadata
@@ -1126,7 +1123,6 @@ namespace Microsoft
                     public enum ModelMetadataKind
                     {
                         Constructor,
-                        // Stub generator skipped constructor 
                         Parameter,
                         Property,
                         Type,

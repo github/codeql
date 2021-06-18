@@ -70,7 +70,6 @@ namespace System
             public enum FromBase64TransformMode
             {
                 DoNotIgnoreWhiteSpaces,
-                // Stub generator skipped constructor 
                 IgnoreWhiteSpaces,
             }
 
@@ -122,7 +121,6 @@ namespace System
                 ExtensionOrAttribute,
                 HashAlgorithm,
                 KeyDerivationFunction,
-                // Stub generator skipped constructor 
                 Policy,
                 PublicKeyAlgorithm,
                 SignatureAlgorithm,

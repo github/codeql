@@ -134,7 +134,6 @@ namespace Microsoft
             public enum FileHandleType
             {
                 Auto,
-                // Stub generator skipped constructor 
                 Pipe,
                 Tcp,
             }
@@ -173,7 +172,6 @@ namespace Microsoft
             {
                 Binary,
                 Text,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `Microsoft.AspNetCore.Connections.UriEndPoint` in `Microsoft.AspNetCore.Connections.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`

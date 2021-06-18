@@ -10,7 +10,6 @@ namespace System
             [System.Flags]
             public enum CodeGenerationOptions
             {
-                // Stub generator skipped constructor 
                 EnableDataBinding,
                 GenerateNewAsync,
                 GenerateOldAsync,
@@ -345,7 +344,6 @@ namespace System
                 None,
                 Read,
                 Write,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Xml.Serialization.XmlMemberMapping` in `System.Xml.XmlSerializer, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`

@@ -9,7 +9,6 @@ namespace System
         public enum AuthenticationSchemes
         {
             Anonymous,
-            // Stub generator skipped constructor 
             Basic,
             Digest,
             IntegratedWindowsAuthentication,
@@ -117,7 +116,6 @@ namespace System
         {
             All,
             Brotli,
-            // Stub generator skipped constructor 
             Deflate,
             GZip,
             None,
@@ -163,7 +161,6 @@ namespace System
             Found,
             GatewayTimeout,
             Gone,
-            // Stub generator skipped constructor 
             HttpVersionNotSupported,
             IMUsed,
             InsufficientStorage,
@@ -358,7 +355,6 @@ namespace System
                 Default,
                 NoCacheNoStore,
                 Reload,
-                // Stub generator skipped constructor 
                 Revalidate,
             }
 
@@ -396,7 +392,6 @@ namespace System
             // Generated from `System.Net.Security.AuthenticationLevel` in `System.Net.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum AuthenticationLevel
             {
-                // Stub generator skipped constructor 
                 MutualAuthRequested,
                 MutualAuthRequired,
                 None,
@@ -410,7 +405,6 @@ namespace System
                 RemoteCertificateChainErrors,
                 RemoteCertificateNameMismatch,
                 RemoteCertificateNotAvailable,
-                // Stub generator skipped constructor 
             }
 
         }
@@ -419,7 +413,6 @@ namespace System
             // Generated from `System.Net.Sockets.AddressFamily` in `System.Net.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum AddressFamily
             {
-                // Stub generator skipped constructor 
                 AppleTalk,
                 Atm,
                 Banyan,
@@ -496,7 +489,6 @@ namespace System
                 ProtocolType,
                 Shutdown,
                 SocketError,
-                // Stub generator skipped constructor 
                 SocketNotSupported,
                 Success,
                 SystemNotReady,
@@ -532,7 +524,6 @@ namespace System
                 Aes128,
                 Aes192,
                 Aes256,
-                // Stub generator skipped constructor 
                 Des,
                 None,
                 Null,
@@ -545,7 +536,6 @@ namespace System
             public enum ExchangeAlgorithmType
             {
                 DiffieHellman,
-                // Stub generator skipped constructor 
                 None,
                 RsaKeyX,
                 RsaSign,
@@ -554,7 +544,6 @@ namespace System
             // Generated from `System.Security.Authentication.HashAlgorithmType` in `System.Net.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum HashAlgorithmType
             {
-                // Stub generator skipped constructor 
                 Md5,
                 None,
                 Sha1,
@@ -571,7 +560,6 @@ namespace System
                 None,
                 Ssl2,
                 Ssl3,
-                // Stub generator skipped constructor 
                 Tls,
                 Tls11,
                 Tls12,
@@ -591,7 +579,6 @@ namespace System
                 // Generated from `System.Security.Authentication.ExtendedProtection.ChannelBindingKind` in `System.Net.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public enum ChannelBindingKind
                 {
-                    // Stub generator skipped constructor 
                     Endpoint,
                     Unique,
                     Unknown,

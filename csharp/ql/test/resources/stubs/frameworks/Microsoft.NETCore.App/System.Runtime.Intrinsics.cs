@@ -3392,7 +3392,6 @@ namespace System
                 // Generated from `System.Runtime.Intrinsics.X86.FloatComparisonMode` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public enum FloatComparisonMode
                 {
-                    // Stub generator skipped constructor 
                     OrderedEqualNonSignaling,
                     OrderedEqualSignaling,
                     OrderedFalseNonSignaling,

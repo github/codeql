@@ -276,7 +276,6 @@ namespace System
             InfoText,
             Ivory,
             Khaki,
-            // Stub generator skipped constructor 
             Lavender,
             LavenderBlush,
             LawnGreen,
@@ -395,8 +394,8 @@ namespace System
             public static System.Drawing.Point Truncate(System.Drawing.PointF value) => throw null;
             public int X { get => throw null; set => throw null; }
             public int Y { get => throw null; set => throw null; }
-            // Stub generator skipped operator: explicit conversion
-            // Stub generator skipped operator: implicit conversion
+            public static explicit operator System.Drawing.Size(System.Drawing.Point p) => throw null;
+            public static implicit operator System.Drawing.PointF(System.Drawing.Point p) => throw null;
         }
 
         // Generated from `System.Drawing.PointF` in `System.Drawing.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -503,7 +502,7 @@ namespace System
             public float Width { get => throw null; set => throw null; }
             public float X { get => throw null; set => throw null; }
             public float Y { get => throw null; set => throw null; }
-            // Stub generator skipped operator: implicit conversion
+            public static implicit operator System.Drawing.RectangleF(System.Drawing.Rectangle r) => throw null;
         }
 
         // Generated from `System.Drawing.Size` in `System.Drawing.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -535,8 +534,8 @@ namespace System
             public override string ToString() => throw null;
             public static System.Drawing.Size Truncate(System.Drawing.SizeF value) => throw null;
             public int Width { get => throw null; set => throw null; }
-            // Stub generator skipped operator: explicit conversion
-            // Stub generator skipped operator: implicit conversion
+            public static explicit operator System.Drawing.Point(System.Drawing.Size size) => throw null;
+            public static implicit operator System.Drawing.SizeF(System.Drawing.Size p) => throw null;
         }
 
         // Generated from `System.Drawing.SizeF` in `System.Drawing.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -565,7 +564,7 @@ namespace System
             public System.Drawing.Size ToSize() => throw null;
             public override string ToString() => throw null;
             public float Width { get => throw null; set => throw null; }
-            // Stub generator skipped operator: explicit conversion
+            public static explicit operator System.Drawing.PointF(System.Drawing.SizeF size) => throw null;
         }
 
         // Generated from `System.Drawing.SystemColors` in `System.Drawing.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`

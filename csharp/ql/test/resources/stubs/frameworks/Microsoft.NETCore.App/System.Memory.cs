@@ -320,7 +320,7 @@ namespace System
             public System.Char Symbol { get => throw null; }
             public override string ToString() => throw null;
             public static bool TryParse(System.ReadOnlySpan<System.Char> format, out System.Buffers.StandardFormat result) => throw null;
-            // Stub generator skipped operator: implicit conversion
+            public static implicit operator System.Buffers.StandardFormat(System.Char symbol) => throw null;
         }
 
         namespace Binary

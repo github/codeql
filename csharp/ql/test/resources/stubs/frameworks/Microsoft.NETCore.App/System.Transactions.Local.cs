@@ -23,7 +23,6 @@ namespace System
         public enum DependentCloneOption
         {
             BlockCommitUntilComplete,
-            // Stub generator skipped constructor 
             RollbackIfNotComplete,
         }
 
@@ -45,7 +44,6 @@ namespace System
         public enum EnlistmentOptions
         {
             EnlistDuringPrepareRequired,
-            // Stub generator skipped constructor 
             None,
         }
 
@@ -53,7 +51,6 @@ namespace System
         public enum EnterpriseServicesInteropOption
         {
             Automatic,
-            // Stub generator skipped constructor 
             Full,
             None,
         }
@@ -108,7 +105,6 @@ namespace System
         public enum IsolationLevel
         {
             Chaos,
-            // Stub generator skipped constructor 
             ReadCommitted,
             ReadUncommitted,
             RepeatableRead,
@@ -298,7 +294,6 @@ namespace System
         {
             Enabled,
             Suppress,
-            // Stub generator skipped constructor 
         }
 
         // Generated from `System.Transactions.TransactionScopeOption` in `System.Transactions.Local, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
@@ -307,7 +302,6 @@ namespace System
             Required,
             RequiresNew,
             Suppress,
-            // Stub generator skipped constructor 
         }
 
         // Generated from `System.Transactions.TransactionStartedEventHandler` in `System.Transactions.Local, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
@@ -320,7 +314,6 @@ namespace System
             Active,
             Committed,
             InDoubt,
-            // Stub generator skipped constructor 
         }
 
     }

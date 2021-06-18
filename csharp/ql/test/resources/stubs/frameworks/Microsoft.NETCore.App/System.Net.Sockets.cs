@@ -25,7 +25,6 @@ namespace System
                 GetExtensionFunctionPointer,
                 GetGroupQos,
                 GetQos,
-                // Stub generator skipped constructor 
                 KeepAliveValues,
                 LimitBroadcasts,
                 MulticastInterface,
@@ -62,7 +61,6 @@ namespace System
             public enum IPProtectionLevel
             {
                 EdgeRestricted,
-                // Stub generator skipped constructor 
                 Restricted,
                 Unrestricted,
                 Unspecified,
@@ -168,7 +166,6 @@ namespace System
                 NetworkDesigners,
                 Osi,
                 Packet,
-                // Stub generator skipped constructor 
                 Pup,
                 Sna,
                 Unix,
@@ -197,7 +194,6 @@ namespace System
                 Igmp,
                 Ipx,
                 ND,
-                // Stub generator skipped constructor 
                 Pup,
                 Raw,
                 Spx,
@@ -219,7 +215,6 @@ namespace System
             public enum SelectMode
             {
                 SelectError,
-                // Stub generator skipped constructor 
                 SelectRead,
                 SelectWrite,
             }
@@ -439,7 +434,6 @@ namespace System
                 Send,
                 SendPackets,
                 SendTo,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Net.Sockets.SocketFlags` in `System.Net.Sockets, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -454,7 +448,6 @@ namespace System
                 OutOfBand,
                 Partial,
                 Peek,
-                // Stub generator skipped constructor 
                 Truncated,
             }
 
@@ -473,7 +466,6 @@ namespace System
                 Connected,
                 Listening,
                 NonBlocking,
-                // Stub generator skipped constructor 
                 UseOnlyOverlappedIO,
             }
 
@@ -483,7 +475,6 @@ namespace System
                 IP,
                 IPv6,
                 Socket,
-                // Stub generator skipped constructor 
                 Tcp,
                 Udp,
             }
@@ -531,7 +522,6 @@ namespace System
                 SendBuffer,
                 SendLowWater,
                 SendTimeout,
-                // Stub generator skipped constructor 
                 TcpKeepAliveInterval,
                 TcpKeepAliveRetryCount,
                 TcpKeepAliveTime,
@@ -567,7 +557,6 @@ namespace System
                 Both,
                 Receive,
                 Send,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Net.Sockets.SocketTaskExtensions` in `System.Net.Sockets, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -601,7 +590,6 @@ namespace System
                 Raw,
                 Rdm,
                 Seqpacket,
-                // Stub generator skipped constructor 
                 Stream,
                 Unknown,
             }
@@ -677,7 +665,6 @@ namespace System
             {
                 Disconnect,
                 ReuseSocket,
-                // Stub generator skipped constructor 
                 UseDefaultWorkerThread,
                 UseKernelApc,
                 UseSystemThread,

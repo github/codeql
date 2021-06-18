@@ -32,7 +32,6 @@ namespace System
             public enum EncryptionPolicy
             {
                 AllowNoEncryption,
-                // Stub generator skipped constructor 
                 NoEncryption,
                 RequireEncryption,
             }
@@ -112,7 +111,6 @@ namespace System
             {
                 EncryptAndSign,
                 None,
-                // Stub generator skipped constructor 
                 Sign,
             }
 
@@ -611,7 +609,6 @@ namespace System
                 TLS_SRP_SHA_WITH_3DES_EDE_CBC_SHA,
                 TLS_SRP_SHA_WITH_AES_128_CBC_SHA,
                 TLS_SRP_SHA_WITH_AES_256_CBC_SHA,
-                // Stub generator skipped constructor 
             }
 
         }
@@ -662,14 +659,12 @@ namespace System
                 {
                     Always,
                     Never,
-                    // Stub generator skipped constructor 
                     WhenSupported,
                 }
 
                 // Generated from `System.Security.Authentication.ExtendedProtection.ProtectionScenario` in `System.Net.Security, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public enum ProtectionScenario
                 {
-                    // Stub generator skipped constructor 
                     TransportSelected,
                     TrustedProxy,
                 }

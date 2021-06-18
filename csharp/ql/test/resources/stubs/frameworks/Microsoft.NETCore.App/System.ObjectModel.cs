@@ -150,7 +150,6 @@ namespace System
             {
                 Add,
                 Move,
-                // Stub generator skipped constructor 
                 Remove,
                 Replace,
                 Reset,

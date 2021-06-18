@@ -90,9 +90,9 @@ namespace Microsoft
                 public Microsoft.Extensions.Primitives.StringSegment TrimEnd() => throw null;
                 public Microsoft.Extensions.Primitives.StringSegment TrimStart() => throw null;
                 public string Value { get => throw null; }
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static implicit operator System.ReadOnlySpan<System.Char>(Microsoft.Extensions.Primitives.StringSegment segment) => throw null;
+                public static implicit operator System.ReadOnlyMemory<System.Char>(Microsoft.Extensions.Primitives.StringSegment segment) => throw null;
+                public static implicit operator Microsoft.Extensions.Primitives.StringSegment(string value) => throw null;
             }
 
             // Generated from `Microsoft.Extensions.Primitives.StringSegmentComparer` in `Microsoft.Extensions.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
@@ -194,10 +194,10 @@ namespace Microsoft
                 // Stub generator skipped constructor 
                 public string[] ToArray() => throw null;
                 public override string ToString() => throw null;
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static implicit operator string[](Microsoft.Extensions.Primitives.StringValues value) => throw null;
+                public static implicit operator string(Microsoft.Extensions.Primitives.StringValues values) => throw null;
+                public static implicit operator Microsoft.Extensions.Primitives.StringValues(string[] values) => throw null;
+                public static implicit operator Microsoft.Extensions.Primitives.StringValues(string value) => throw null;
             }
 
         }

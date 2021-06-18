@@ -52,7 +52,6 @@ namespace System
             [System.Flags]
             public enum AssemblyBuilderAccess
             {
-                // Stub generator skipped constructor 
                 Run,
                 RunAndCollect,
             }

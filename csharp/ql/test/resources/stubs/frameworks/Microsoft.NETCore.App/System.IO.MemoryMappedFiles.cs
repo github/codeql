@@ -63,7 +63,6 @@ namespace System
             public enum MemoryMappedFileAccess
             {
                 CopyOnWrite,
-                // Stub generator skipped constructor 
                 Read,
                 ReadExecute,
                 ReadWrite,
@@ -76,7 +75,6 @@ namespace System
             public enum MemoryMappedFileOptions
             {
                 DelayAllocatePages,
-                // Stub generator skipped constructor 
                 None,
             }
 
@@ -90,7 +88,6 @@ namespace System
                 Delete,
                 Execute,
                 FullControl,
-                // Stub generator skipped constructor 
                 Read,
                 ReadExecute,
                 ReadPermissions,

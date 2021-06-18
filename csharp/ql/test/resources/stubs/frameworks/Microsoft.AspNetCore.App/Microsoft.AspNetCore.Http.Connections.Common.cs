@@ -20,7 +20,6 @@ namespace Microsoft
                 [System.Flags]
                 public enum HttpTransportType
                 {
-                    // Stub generator skipped constructor 
                     LongPolling,
                     None,
                     ServerSentEvents,

@@ -113,28 +113,28 @@ namespace System
             public bool TryWriteBytes(System.Span<System.Byte> destination, out int bytesWritten, bool isUnsigned = default(bool), bool isBigEndian = default(bool)) => throw null;
             public static System.Numerics.BigInteger Zero { get => throw null; }
             public static System.Numerics.BigInteger operator ^(System.Numerics.BigInteger left, System.Numerics.BigInteger right) => throw null;
-            // Stub generator skipped operator: explicit conversion
-            // Stub generator skipped operator: explicit conversion
-            // Stub generator skipped operator: explicit conversion
-            // Stub generator skipped operator: explicit conversion
-            // Stub generator skipped operator: explicit conversion
-            // Stub generator skipped operator: explicit conversion
-            // Stub generator skipped operator: explicit conversion
-            // Stub generator skipped operator: explicit conversion
-            // Stub generator skipped operator: explicit conversion
-            // Stub generator skipped operator: explicit conversion
-            // Stub generator skipped operator: explicit conversion
-            // Stub generator skipped operator: explicit conversion
-            // Stub generator skipped operator: explicit conversion
-            // Stub generator skipped operator: explicit conversion
-            // Stub generator skipped operator: implicit conversion
-            // Stub generator skipped operator: implicit conversion
-            // Stub generator skipped operator: implicit conversion
-            // Stub generator skipped operator: implicit conversion
-            // Stub generator skipped operator: implicit conversion
-            // Stub generator skipped operator: implicit conversion
-            // Stub generator skipped operator: implicit conversion
-            // Stub generator skipped operator: implicit conversion
+            public static explicit operator int(System.Numerics.BigInteger value) => throw null;
+            public static explicit operator float(System.Numerics.BigInteger value) => throw null;
+            public static explicit operator double(System.Numerics.BigInteger value) => throw null;
+            public static explicit operator System.UInt64(System.Numerics.BigInteger value) => throw null;
+            public static explicit operator System.UInt32(System.Numerics.BigInteger value) => throw null;
+            public static explicit operator System.UInt16(System.Numerics.BigInteger value) => throw null;
+            public static explicit operator System.SByte(System.Numerics.BigInteger value) => throw null;
+            public static explicit operator System.Numerics.BigInteger(float value) => throw null;
+            public static explicit operator System.Numerics.BigInteger(double value) => throw null;
+            public static explicit operator System.Numerics.BigInteger(System.Decimal value) => throw null;
+            public static explicit operator System.Int64(System.Numerics.BigInteger value) => throw null;
+            public static explicit operator System.Int16(System.Numerics.BigInteger value) => throw null;
+            public static explicit operator System.Decimal(System.Numerics.BigInteger value) => throw null;
+            public static explicit operator System.Byte(System.Numerics.BigInteger value) => throw null;
+            public static implicit operator System.Numerics.BigInteger(int value) => throw null;
+            public static implicit operator System.Numerics.BigInteger(System.UInt64 value) => throw null;
+            public static implicit operator System.Numerics.BigInteger(System.UInt32 value) => throw null;
+            public static implicit operator System.Numerics.BigInteger(System.UInt16 value) => throw null;
+            public static implicit operator System.Numerics.BigInteger(System.SByte value) => throw null;
+            public static implicit operator System.Numerics.BigInteger(System.Int64 value) => throw null;
+            public static implicit operator System.Numerics.BigInteger(System.Int16 value) => throw null;
+            public static implicit operator System.Numerics.BigInteger(System.Byte value) => throw null;
             public static System.Numerics.BigInteger operator |(System.Numerics.BigInteger left, System.Numerics.BigInteger right) => throw null;
             public static System.Numerics.BigInteger operator ~(System.Numerics.BigInteger value) => throw null;
         }
@@ -211,18 +211,18 @@ namespace System
             public string ToString(System.IFormatProvider provider) => throw null;
             public override string ToString() => throw null;
             public static System.Numerics.Complex Zero;
-            // Stub generator skipped operator: explicit conversion
-            // Stub generator skipped operator: explicit conversion
-            // Stub generator skipped operator: implicit conversion
-            // Stub generator skipped operator: implicit conversion
-            // Stub generator skipped operator: implicit conversion
-            // Stub generator skipped operator: implicit conversion
-            // Stub generator skipped operator: implicit conversion
-            // Stub generator skipped operator: implicit conversion
-            // Stub generator skipped operator: implicit conversion
-            // Stub generator skipped operator: implicit conversion
-            // Stub generator skipped operator: implicit conversion
-            // Stub generator skipped operator: implicit conversion
+            public static explicit operator System.Numerics.Complex(System.Numerics.BigInteger value) => throw null;
+            public static explicit operator System.Numerics.Complex(System.Decimal value) => throw null;
+            public static implicit operator System.Numerics.Complex(int value) => throw null;
+            public static implicit operator System.Numerics.Complex(float value) => throw null;
+            public static implicit operator System.Numerics.Complex(double value) => throw null;
+            public static implicit operator System.Numerics.Complex(System.UInt64 value) => throw null;
+            public static implicit operator System.Numerics.Complex(System.UInt32 value) => throw null;
+            public static implicit operator System.Numerics.Complex(System.UInt16 value) => throw null;
+            public static implicit operator System.Numerics.Complex(System.SByte value) => throw null;
+            public static implicit operator System.Numerics.Complex(System.Int64 value) => throw null;
+            public static implicit operator System.Numerics.Complex(System.Int16 value) => throw null;
+            public static implicit operator System.Numerics.Complex(System.Byte value) => throw null;
         }
 
     }

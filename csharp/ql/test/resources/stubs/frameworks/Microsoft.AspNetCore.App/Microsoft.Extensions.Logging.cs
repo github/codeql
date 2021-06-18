@@ -20,7 +20,6 @@ namespace Microsoft
             [System.Flags]
             public enum ActivityTrackingOptions
             {
-                // Stub generator skipped constructor 
                 None,
                 ParentId,
                 SpanId,

@@ -120,7 +120,6 @@ namespace System
             // Generated from `System.Formats.Asn1.AsnEncodingRules` in `System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public enum AsnEncodingRules
             {
-                // Stub generator skipped constructor 
                 BER,
                 CER,
                 DER,
@@ -235,7 +234,6 @@ namespace System
                 Application,
                 ContextSpecific,
                 Private,
-                // Stub generator skipped constructor 
                 Universal,
             }
 
@@ -279,7 +277,6 @@ namespace System
                 TimeOfDay,
                 UTF8String,
                 UniversalString,
-                // Stub generator skipped constructor 
                 UnrestrictedCharacterString,
                 UtcTime,
                 VideotexString,

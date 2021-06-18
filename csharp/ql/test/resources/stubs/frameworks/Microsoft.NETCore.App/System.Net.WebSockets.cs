@@ -56,7 +56,6 @@ namespace System
                 NormalClosure,
                 PolicyViolation,
                 ProtocolError,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Net.WebSockets.WebSocketContext` in `System.Net.WebSockets, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -90,7 +89,6 @@ namespace System
                 Success,
                 UnsupportedProtocol,
                 UnsupportedVersion,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Net.WebSockets.WebSocketException` in `System.Net.WebSockets, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -121,7 +119,6 @@ namespace System
                 Binary,
                 Close,
                 Text,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Net.WebSockets.WebSocketReceiveResult` in `System.Net.WebSockets, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -146,7 +143,6 @@ namespace System
                 Connecting,
                 None,
                 Open,
-                // Stub generator skipped constructor 
             }
 
         }

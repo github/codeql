@@ -69,7 +69,6 @@ namespace System
                     IncludeArchived,
                     MaxAllowed,
                     OpenExistingOnly,
-                    // Stub generator skipped constructor 
                     ReadOnly,
                     ReadWrite,
                 }
@@ -97,7 +96,6 @@ namespace System
                 {
                     CurrentUser,
                     LocalMachine,
-                    // Stub generator skipped constructor 
                 }
 
                 // Generated from `System.Security.Cryptography.X509Certificates.StoreName` in `System.Security.Cryptography.X509Certificates, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -109,7 +107,6 @@ namespace System
                     Disallowed,
                     My,
                     Root,
-                    // Stub generator skipped constructor 
                     TrustedPeople,
                     TrustedPublisher,
                 }
@@ -154,7 +151,6 @@ namespace System
                     UseSemicolons,
                     UseT61Encoding,
                     UseUTF8Encoding,
-                    // Stub generator skipped constructor 
                 }
 
                 // Generated from `System.Security.Cryptography.X509Certificates.X509BasicConstraintsExtension` in `System.Security.Cryptography.X509Certificates, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -467,7 +463,6 @@ namespace System
                     RevocationStatusUnknown,
                     Revoked,
                     UntrustedRoot,
-                    // Stub generator skipped constructor 
                 }
 
                 // Generated from `System.Security.Cryptography.X509Certificates.X509ChainTrustMode` in `System.Security.Cryptography.X509Certificates, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -475,7 +470,6 @@ namespace System
                 {
                     CustomRootTrust,
                     System,
-                    // Stub generator skipped constructor 
                 }
 
                 // Generated from `System.Security.Cryptography.X509Certificates.X509ContentType` in `System.Security.Cryptography.X509Certificates, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -489,7 +483,6 @@ namespace System
                     SerializedCert,
                     SerializedStore,
                     Unknown,
-                    // Stub generator skipped constructor 
                 }
 
                 // Generated from `System.Security.Cryptography.X509Certificates.X509EnhancedKeyUsageExtension` in `System.Security.Cryptography.X509Certificates, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -558,7 +551,6 @@ namespace System
                     FindByTimeExpired,
                     FindByTimeNotYetValid,
                     FindByTimeValid,
-                    // Stub generator skipped constructor 
                 }
 
                 // Generated from `System.Security.Cryptography.X509Certificates.X509IncludeOption` in `System.Security.Cryptography.X509Certificates, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -568,7 +560,6 @@ namespace System
                     ExcludeRoot,
                     None,
                     WholeChain,
-                    // Stub generator skipped constructor 
                 }
 
                 // Generated from `System.Security.Cryptography.X509Certificates.X509KeyStorageFlags` in `System.Security.Cryptography.X509Certificates, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -582,7 +573,6 @@ namespace System
                     PersistKeySet,
                     UserKeySet,
                     UserProtected,
-                    // Stub generator skipped constructor 
                 }
 
                 // Generated from `System.Security.Cryptography.X509Certificates.X509KeyUsageExtension` in `System.Security.Cryptography.X509Certificates, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -609,7 +599,6 @@ namespace System
                     KeyEncipherment,
                     NonRepudiation,
                     None,
-                    // Stub generator skipped constructor 
                 }
 
                 // Generated from `System.Security.Cryptography.X509Certificates.X509NameType` in `System.Security.Cryptography.X509Certificates, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -621,7 +610,6 @@ namespace System
                     SimpleName,
                     UpnName,
                     UrlName,
-                    // Stub generator skipped constructor 
                 }
 
                 // Generated from `System.Security.Cryptography.X509Certificates.X509RevocationFlag` in `System.Security.Cryptography.X509Certificates, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -630,7 +618,6 @@ namespace System
                     EndCertificateOnly,
                     EntireChain,
                     ExcludeRoot,
-                    // Stub generator skipped constructor 
                 }
 
                 // Generated from `System.Security.Cryptography.X509Certificates.X509RevocationMode` in `System.Security.Cryptography.X509Certificates, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -639,7 +626,6 @@ namespace System
                     NoCheck,
                     Offline,
                     Online,
-                    // Stub generator skipped constructor 
                 }
 
                 // Generated from `System.Security.Cryptography.X509Certificates.X509SignatureGenerator` in `System.Security.Cryptography.X509Certificates, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -700,7 +686,6 @@ namespace System
                     CapiSha1,
                     Sha1,
                     ShortSha1,
-                    // Stub generator skipped constructor 
                 }
 
                 // Generated from `System.Security.Cryptography.X509Certificates.X509VerificationFlags` in `System.Security.Cryptography.X509Certificates, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -721,7 +706,6 @@ namespace System
                     IgnoreRootRevocationUnknown,
                     IgnoreWrongUsage,
                     NoFlag,
-                    // Stub generator skipped constructor 
                 }
 
             }

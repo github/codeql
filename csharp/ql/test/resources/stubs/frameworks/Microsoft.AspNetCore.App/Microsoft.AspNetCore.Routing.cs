@@ -837,7 +837,6 @@ namespace Microsoft
                 {
                     CatchAll,
                     Optional,
-                    // Stub generator skipped constructor 
                     Standard,
                 }
 
@@ -877,7 +876,6 @@ namespace Microsoft
                 {
                     Literal,
                     Parameter,
-                    // Stub generator skipped constructor 
                     Separator,
                 }
 

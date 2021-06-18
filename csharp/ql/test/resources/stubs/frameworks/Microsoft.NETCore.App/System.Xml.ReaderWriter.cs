@@ -8,7 +8,6 @@ namespace System
         public enum ConformanceLevel
         {
             Auto,
-            // Stub generator skipped constructor 
             Document,
             Fragment,
         }
@@ -16,7 +15,6 @@ namespace System
         // Generated from `System.Xml.DtdProcessing` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public enum DtdProcessing
         {
-            // Stub generator skipped constructor 
             Ignore,
             Parse,
             Prohibit,
@@ -25,7 +23,6 @@ namespace System
         // Generated from `System.Xml.EntityHandling` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public enum EntityHandling
         {
-            // Stub generator skipped constructor 
             ExpandCharEntities,
             ExpandEntities,
         }
@@ -33,7 +30,6 @@ namespace System
         // Generated from `System.Xml.Formatting` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public enum Formatting
         {
-            // Stub generator skipped constructor 
             Indented,
             None,
         }
@@ -81,7 +77,6 @@ namespace System
         public enum NamespaceHandling
         {
             Default,
-            // Stub generator skipped constructor 
             OmitDuplicates,
         }
 
@@ -89,7 +84,6 @@ namespace System
         public enum NewLineHandling
         {
             Entitize,
-            // Stub generator skipped constructor 
             None,
             Replace,
         }
@@ -102,7 +96,6 @@ namespace System
             Error,
             Initial,
             Interactive,
-            // Stub generator skipped constructor 
         }
 
         // Generated from `System.Xml.ValidationType` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -112,7 +105,6 @@ namespace System
             DTD,
             None,
             Schema,
-            // Stub generator skipped constructor 
             XDR,
         }
 
@@ -122,7 +114,6 @@ namespace System
             All,
             None,
             Significant,
-            // Stub generator skipped constructor 
         }
 
         // Generated from `System.Xml.WriteState` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -135,7 +126,6 @@ namespace System
             Error,
             Prolog,
             Start,
-            // Stub generator skipped constructor 
         }
 
         // Generated from `System.Xml.XmlAttribute` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -304,7 +294,6 @@ namespace System
             RoundtripKind,
             Unspecified,
             Utc,
-            // Stub generator skipped constructor 
         }
 
         // Generated from `System.Xml.XmlDeclaration` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -584,7 +573,6 @@ namespace System
             All,
             ExcludeXml,
             Local,
-            // Stub generator skipped constructor 
         }
 
         // Generated from `System.Xml.XmlNode` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -646,7 +634,6 @@ namespace System
             Change,
             Insert,
             Remove,
-            // Stub generator skipped constructor 
         }
 
         // Generated from `System.Xml.XmlNodeChangedEventArgs` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -684,7 +671,6 @@ namespace System
             Before,
             Same,
             Unknown,
-            // Stub generator skipped constructor 
         }
 
         // Generated from `System.Xml.XmlNodeReader` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -758,7 +744,6 @@ namespace System
             Text,
             Whitespace,
             XmlDeclaration,
-            // Stub generator skipped constructor 
         }
 
         // Generated from `System.Xml.XmlNotation` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -784,7 +769,6 @@ namespace System
             Html,
             Text,
             Xml,
-            // Stub generator skipped constructor 
         }
 
         // Generated from `System.Xml.XmlParserContext` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1048,7 +1032,6 @@ namespace System
             Default,
             None,
             Preserve,
-            // Stub generator skipped constructor 
         }
 
         // Generated from `System.Xml.XmlText` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1208,7 +1191,6 @@ namespace System
             NOTATION,
             None,
             QName,
-            // Stub generator skipped constructor 
         }
 
         // Generated from `System.Xml.XmlUrlResolver` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1440,7 +1422,6 @@ namespace System
                 None,
                 Rss091,
                 Xhtml10,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Xml.Resolvers.XmlPreloadedResolver` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1745,7 +1726,6 @@ namespace System
                 None,
                 Skip,
                 Strict,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Xml.Schema.XmlSchemaContentType` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1755,7 +1735,6 @@ namespace System
                 Empty,
                 Mixed,
                 TextOnly,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Xml.Schema.XmlSchemaDatatype` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1777,7 +1756,6 @@ namespace System
                 Atomic,
                 List,
                 Union,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Xml.Schema.XmlSchemaDerivationMethod` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1792,7 +1770,6 @@ namespace System
                 Restriction,
                 Substitution,
                 Union,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Xml.Schema.XmlSchemaDocumentation` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1874,7 +1851,6 @@ namespace System
                 None,
                 Qualified,
                 Unqualified,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Xml.Schema.XmlSchemaFractionDigitsFacet` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1940,7 +1916,6 @@ namespace System
                 // Generated from `System.Xml.Schema.XmlSchemaInference.InferenceOption` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public enum InferenceOption
                 {
-                    // Stub generator skipped constructor 
                     Relaxed,
                     Restricted,
                 }
@@ -2267,7 +2242,6 @@ namespace System
                 Optional,
                 Prohibited,
                 Required,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Xml.Schema.XmlSchemaValidationException` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2293,7 +2267,6 @@ namespace System
                 ProcessInlineSchema,
                 ProcessSchemaLocation,
                 ReportValidationWarnings,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Xml.Schema.XmlSchemaValidator` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2332,7 +2305,6 @@ namespace System
                 Invalid,
                 NotKnown,
                 Valid,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Xml.Schema.XmlSchemaWhiteSpaceFacet` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2353,7 +2325,6 @@ namespace System
             {
                 Error,
                 Warning,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Xml.Schema.XmlTypeCode` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2413,7 +2384,6 @@ namespace System
                 UnsignedLong,
                 UnsignedShort,
                 UntypedAtomic,
-                // Stub generator skipped constructor 
                 YearMonthDuration,
             }
 
@@ -2584,7 +2554,6 @@ namespace System
                 All,
                 ExcludeXml,
                 Local,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Xml.XPath.XPathNavigator` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2734,7 +2703,6 @@ namespace System
                 SignificantWhitespace,
                 Text,
                 Whitespace,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Xml.XPath.XPathResultType` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2747,7 +2715,6 @@ namespace System
                 NodeSet,
                 Number,
                 String,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Xml.XPath.XmlCaseOrder` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2756,7 +2723,6 @@ namespace System
                 LowerFirst,
                 None,
                 UpperFirst,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Xml.XPath.XmlDataType` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2764,7 +2730,6 @@ namespace System
             {
                 Number,
                 Text,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Xml.XPath.XmlSortOrder` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2772,7 +2737,6 @@ namespace System
             {
                 Ascending,
                 Descending,
-                // Stub generator skipped constructor 
             }
 
         }

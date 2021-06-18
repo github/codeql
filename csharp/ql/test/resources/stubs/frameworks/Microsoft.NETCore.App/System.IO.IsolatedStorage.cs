@@ -141,7 +141,6 @@ namespace System
                 Application,
                 Assembly,
                 Domain,
-                // Stub generator skipped constructor 
                 Machine,
                 None,
                 Roaming,

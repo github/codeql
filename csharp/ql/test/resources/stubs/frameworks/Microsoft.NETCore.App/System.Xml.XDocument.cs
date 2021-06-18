@@ -33,7 +33,6 @@ namespace System
             [System.Flags]
             public enum LoadOptions
             {
-                // Stub generator skipped constructor 
                 None,
                 PreserveWhitespace,
                 SetBaseUri,
@@ -46,7 +45,6 @@ namespace System
             {
                 None,
                 OmitDuplicateNamespaces,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Xml.Linq.SaveOptions` in `System.Xml.XDocument, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -56,7 +54,6 @@ namespace System
                 DisableFormatting,
                 None,
                 OmitDuplicateNamespaces,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Xml.Linq.XAttribute` in `System.Xml.XDocument, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -74,31 +71,31 @@ namespace System
                 public string Value { get => throw null; set => throw null; }
                 public XAttribute(System.Xml.Linq.XName name, object value) => throw null;
                 public XAttribute(System.Xml.Linq.XAttribute other) => throw null;
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
+                public static explicit operator string(System.Xml.Linq.XAttribute attribute) => throw null;
+                public static explicit operator int?(System.Xml.Linq.XAttribute attribute) => throw null;
+                public static explicit operator int(System.Xml.Linq.XAttribute attribute) => throw null;
+                public static explicit operator float?(System.Xml.Linq.XAttribute attribute) => throw null;
+                public static explicit operator float(System.Xml.Linq.XAttribute attribute) => throw null;
+                public static explicit operator double?(System.Xml.Linq.XAttribute attribute) => throw null;
+                public static explicit operator double(System.Xml.Linq.XAttribute attribute) => throw null;
+                public static explicit operator bool?(System.Xml.Linq.XAttribute attribute) => throw null;
+                public static explicit operator bool(System.Xml.Linq.XAttribute attribute) => throw null;
+                public static explicit operator System.UInt64?(System.Xml.Linq.XAttribute attribute) => throw null;
+                public static explicit operator System.UInt64(System.Xml.Linq.XAttribute attribute) => throw null;
+                public static explicit operator System.UInt32?(System.Xml.Linq.XAttribute attribute) => throw null;
+                public static explicit operator System.UInt32(System.Xml.Linq.XAttribute attribute) => throw null;
+                public static explicit operator System.TimeSpan?(System.Xml.Linq.XAttribute attribute) => throw null;
+                public static explicit operator System.TimeSpan(System.Xml.Linq.XAttribute attribute) => throw null;
+                public static explicit operator System.Int64?(System.Xml.Linq.XAttribute attribute) => throw null;
+                public static explicit operator System.Int64(System.Xml.Linq.XAttribute attribute) => throw null;
+                public static explicit operator System.Guid?(System.Xml.Linq.XAttribute attribute) => throw null;
+                public static explicit operator System.Guid(System.Xml.Linq.XAttribute attribute) => throw null;
+                public static explicit operator System.Decimal?(System.Xml.Linq.XAttribute attribute) => throw null;
+                public static explicit operator System.Decimal(System.Xml.Linq.XAttribute attribute) => throw null;
+                public static explicit operator System.DateTimeOffset?(System.Xml.Linq.XAttribute attribute) => throw null;
+                public static explicit operator System.DateTimeOffset(System.Xml.Linq.XAttribute attribute) => throw null;
+                public static explicit operator System.DateTime?(System.Xml.Linq.XAttribute attribute) => throw null;
+                public static explicit operator System.DateTime(System.Xml.Linq.XAttribute attribute) => throw null;
             }
 
             // Generated from `System.Xml.Linq.XCData` in `System.Xml.XDocument, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -273,31 +270,31 @@ namespace System
                 public XElement(System.Xml.Linq.XName name, object content) => throw null;
                 public XElement(System.Xml.Linq.XName name) => throw null;
                 public XElement(System.Xml.Linq.XElement other) => throw null;
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
+                public static explicit operator string(System.Xml.Linq.XElement element) => throw null;
+                public static explicit operator int?(System.Xml.Linq.XElement element) => throw null;
+                public static explicit operator int(System.Xml.Linq.XElement element) => throw null;
+                public static explicit operator float?(System.Xml.Linq.XElement element) => throw null;
+                public static explicit operator float(System.Xml.Linq.XElement element) => throw null;
+                public static explicit operator double?(System.Xml.Linq.XElement element) => throw null;
+                public static explicit operator double(System.Xml.Linq.XElement element) => throw null;
+                public static explicit operator bool?(System.Xml.Linq.XElement element) => throw null;
+                public static explicit operator bool(System.Xml.Linq.XElement element) => throw null;
+                public static explicit operator System.UInt64?(System.Xml.Linq.XElement element) => throw null;
+                public static explicit operator System.UInt64(System.Xml.Linq.XElement element) => throw null;
+                public static explicit operator System.UInt32?(System.Xml.Linq.XElement element) => throw null;
+                public static explicit operator System.UInt32(System.Xml.Linq.XElement element) => throw null;
+                public static explicit operator System.TimeSpan?(System.Xml.Linq.XElement element) => throw null;
+                public static explicit operator System.TimeSpan(System.Xml.Linq.XElement element) => throw null;
+                public static explicit operator System.Int64?(System.Xml.Linq.XElement element) => throw null;
+                public static explicit operator System.Int64(System.Xml.Linq.XElement element) => throw null;
+                public static explicit operator System.Guid?(System.Xml.Linq.XElement element) => throw null;
+                public static explicit operator System.Guid(System.Xml.Linq.XElement element) => throw null;
+                public static explicit operator System.Decimal?(System.Xml.Linq.XElement element) => throw null;
+                public static explicit operator System.Decimal(System.Xml.Linq.XElement element) => throw null;
+                public static explicit operator System.DateTimeOffset?(System.Xml.Linq.XElement element) => throw null;
+                public static explicit operator System.DateTimeOffset(System.Xml.Linq.XElement element) => throw null;
+                public static explicit operator System.DateTime?(System.Xml.Linq.XElement element) => throw null;
+                public static explicit operator System.DateTime(System.Xml.Linq.XElement element) => throw null;
             }
 
             // Generated from `System.Xml.Linq.XName` in `System.Xml.XDocument, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -315,7 +312,7 @@ namespace System
                 public System.Xml.Linq.XNamespace Namespace { get => throw null; }
                 public string NamespaceName { get => throw null; }
                 public override string ToString() => throw null;
-                // Stub generator skipped operator: implicit conversion
+                public static implicit operator System.Xml.Linq.XName(string expandedName) => throw null;
             }
 
             // Generated from `System.Xml.Linq.XNamespace` in `System.Xml.XDocument, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -333,7 +330,7 @@ namespace System
                 public override string ToString() => throw null;
                 public static System.Xml.Linq.XNamespace Xml { get => throw null; }
                 public static System.Xml.Linq.XNamespace Xmlns { get => throw null; }
-                // Stub generator skipped operator: implicit conversion
+                public static implicit operator System.Xml.Linq.XNamespace(string namespaceName) => throw null;
             }
 
             // Generated from `System.Xml.Linq.XNode` in `System.Xml.XDocument, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -420,7 +417,6 @@ namespace System
                 Name,
                 Remove,
                 Value,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Xml.Linq.XObjectChangeEventArgs` in `System.Xml.XDocument, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`

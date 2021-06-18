@@ -67,7 +67,6 @@ namespace Microsoft
             public enum HttpOnlyPolicy
             {
                 Always,
-                // Stub generator skipped constructor 
                 None,
             }
 

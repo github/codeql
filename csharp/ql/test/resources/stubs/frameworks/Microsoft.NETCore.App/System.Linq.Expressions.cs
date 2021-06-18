@@ -790,7 +790,6 @@ namespace System
                 Equal,
                 ExclusiveOr,
                 ExclusiveOrAssign,
-                // Stub generator skipped constructor 
                 Extension,
                 Goto,
                 GreaterThan,
@@ -915,7 +914,6 @@ namespace System
                 Break,
                 Continue,
                 Goto,
-                // Stub generator skipped constructor 
                 Return,
             }
 
@@ -1044,7 +1042,6 @@ namespace System
                 Assignment,
                 ListBinding,
                 MemberBinding,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Linq.Expressions.MemberExpression` in `System.Linq.Expressions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`

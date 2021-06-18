@@ -61,7 +61,6 @@ namespace System
             Error,
             Information,
             Off,
-            // Stub generator skipped constructor 
             Verbose,
             Warning,
         }
@@ -173,7 +172,6 @@ namespace System
             Start,
             Stop,
             Suspend,
-            // Stub generator skipped constructor 
             Transfer,
             Verbose,
             Warning,
@@ -192,7 +190,6 @@ namespace System
             Error,
             Info,
             Off,
-            // Stub generator skipped constructor 
             Verbose,
             Warning,
         }
@@ -276,7 +273,6 @@ namespace System
             ProcessId,
             ThreadId,
             Timestamp,
-            // Stub generator skipped constructor 
         }
 
         // Generated from `System.Diagnostics.TraceSource` in `System.Diagnostics.TraceSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`

@@ -118,7 +118,6 @@ namespace System
         // Generated from `System.ComponentModel.BindableSupport` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public enum BindableSupport
         {
-            // Stub generator skipped constructor 
             Default,
             No,
             Yes,
@@ -127,7 +126,6 @@ namespace System
         // Generated from `System.ComponentModel.BindingDirection` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public enum BindingDirection
         {
-            // Stub generator skipped constructor 
             OneWay,
             TwoWay,
         }
@@ -215,7 +213,6 @@ namespace System
         public enum CollectionChangeAction
         {
             Add,
-            // Stub generator skipped constructor 
             Refresh,
             Remove,
         }
@@ -379,7 +376,6 @@ namespace System
         // Generated from `System.ComponentModel.DataObjectMethodType` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public enum DataObjectMethodType
         {
-            // Stub generator skipped constructor 
             Delete,
             Fill,
             Insert,
@@ -739,7 +735,6 @@ namespace System
         // Generated from `System.ComponentModel.InheritanceLevel` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public enum InheritanceLevel
         {
-            // Stub generator skipped constructor 
             Inherited,
             InheritedReadOnly,
             NotInherited,
@@ -860,7 +855,6 @@ namespace System
         public enum LicenseUsageMode
         {
             Designtime,
-            // Stub generator skipped constructor 
             Runtime,
         }
 
@@ -901,7 +895,6 @@ namespace System
             ItemChanged,
             ItemDeleted,
             ItemMoved,
-            // Stub generator skipped constructor 
             PropertyDescriptorAdded,
             PropertyDescriptorChanged,
             PropertyDescriptorDeleted,
@@ -944,7 +937,6 @@ namespace System
         {
             Ascending,
             Descending,
-            // Stub generator skipped constructor 
         }
 
         // Generated from `System.ComponentModel.LookupBindingPropertiesAttribute` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1071,7 +1063,6 @@ namespace System
             DigitExpected,
             InvalidInput,
             LetterExpected,
-            // Stub generator skipped constructor 
             NoEffect,
             NonEditPosition,
             PositionOutOfRange,
@@ -1275,7 +1266,6 @@ namespace System
             Component,
             Document,
             Global,
-            // Stub generator skipped constructor 
             Static,
         }
 
@@ -1427,7 +1417,6 @@ namespace System
             Custom,
             Prevent,
             Require,
-            // Stub generator skipped constructor 
         }
 
         // Generated from `System.ComponentModel.TypeConverter` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1874,7 +1863,6 @@ namespace System
             public enum HelpContextType
             {
                 Ambient,
-                // Stub generator skipped constructor 
                 Selection,
                 ToolWindowSelection,
                 Window,
@@ -1899,7 +1887,6 @@ namespace System
                 F1Keyword,
                 FilterKeyword,
                 GeneralKeyword,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.ComponentModel.Design.IComponentChangeService` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2177,7 +2164,6 @@ namespace System
                 Primary,
                 Remove,
                 Replace,
-                // Stub generator skipped constructor 
                 Toggle,
                 Valid,
             }
@@ -2290,7 +2276,6 @@ namespace System
             {
                 Default,
                 Passthrough,
-                // Stub generator skipped constructor 
                 WindowsForms,
             }
 

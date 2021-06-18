@@ -176,7 +176,6 @@ namespace Microsoft
             public enum CookieSecurePolicy
             {
                 Always,
-                // Stub generator skipped constructor 
                 None,
                 SameAsRequest,
             }
@@ -445,8 +444,8 @@ namespace Microsoft
                 public override string ToString() => throw null;
                 public string ToUriComponent() => throw null;
                 public string Value { get => throw null; }
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static implicit operator string(Microsoft.AspNetCore.Http.PathString path) => throw null;
+                public static implicit operator Microsoft.AspNetCore.Http.PathString(string s) => throw null;
             }
 
             // Generated from `Microsoft.AspNetCore.Http.QueryString` in `Microsoft.AspNetCore.Http.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`

@@ -52,7 +52,6 @@ namespace System
             [System.Flags]
             public enum AccessControlActions
             {
-                // Stub generator skipped constructor 
                 Change,
                 None,
                 View,
@@ -61,7 +60,6 @@ namespace System
             // Generated from `System.Security.AccessControl.AccessControlModification` in `System.Security.AccessControl, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum AccessControlModification
             {
-                // Stub generator skipped constructor 
                 Add,
                 Remove,
                 RemoveAll,
@@ -75,7 +73,6 @@ namespace System
             public enum AccessControlSections
             {
                 Access,
-                // Stub generator skipped constructor 
                 All,
                 Audit,
                 Group,
@@ -86,7 +83,6 @@ namespace System
             // Generated from `System.Security.AccessControl.AccessControlType` in `System.Security.AccessControl, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum AccessControlType
             {
-                // Stub generator skipped constructor 
                 Allow,
                 Deny,
             }
@@ -121,7 +117,6 @@ namespace System
             [System.Flags]
             public enum AceFlags
             {
-                // Stub generator skipped constructor 
                 AuditFlags,
                 ContainerInherit,
                 FailedAccess,
@@ -139,7 +134,6 @@ namespace System
             {
                 AccessAllowed,
                 AccessDenied,
-                // Stub generator skipped constructor 
                 SystemAlarm,
                 SystemAudit,
             }
@@ -156,7 +150,6 @@ namespace System
                 AccessDeniedCallback,
                 AccessDeniedCallbackObject,
                 AccessDeniedObject,
-                // Stub generator skipped constructor 
                 MaxDefinedAceType,
                 SystemAlarm,
                 SystemAlarmCallback,
@@ -172,7 +165,6 @@ namespace System
             [System.Flags]
             public enum AuditFlags
             {
-                // Stub generator skipped constructor 
                 Failure,
                 None,
                 Success,
@@ -297,7 +289,6 @@ namespace System
             // Generated from `System.Security.AccessControl.CompoundAceType` in `System.Security.AccessControl, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum CompoundAceType
             {
-                // Stub generator skipped constructor 
                 Impersonation,
             }
 
@@ -305,7 +296,6 @@ namespace System
             [System.Flags]
             public enum ControlFlags
             {
-                // Stub generator skipped constructor 
                 DiscretionaryAclAutoInheritRequired,
                 DiscretionaryAclAutoInherited,
                 DiscretionaryAclDefaulted,
@@ -416,7 +406,6 @@ namespace System
             public enum InheritanceFlags
             {
                 ContainerInherit,
-                // Stub generator skipped constructor 
                 None,
                 ObjectInherit,
             }
@@ -475,7 +464,6 @@ namespace System
             {
                 InheritedObjectAceTypePresent,
                 None,
-                // Stub generator skipped constructor 
                 ObjectAceTypePresent,
             }
 
@@ -583,7 +571,6 @@ namespace System
                 InheritOnly,
                 NoPropagateInherit,
                 None,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Security.AccessControl.QualifiedAce` in `System.Security.AccessControl, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -638,7 +625,6 @@ namespace System
                 ProviderDefined,
                 RegistryKey,
                 RegistryWow6432Key,
-                // Stub generator skipped constructor 
                 Service,
                 Unknown,
                 WindowObject,
@@ -652,7 +638,6 @@ namespace System
                 DiscretionaryAcl,
                 Group,
                 Owner,
-                // Stub generator skipped constructor 
                 SystemAcl,
             }
 

@@ -108,7 +108,6 @@ namespace Microsoft
             {
                 Lax,
                 None,
-                // Stub generator skipped constructor 
                 Strict,
                 Unspecified,
             }
@@ -165,7 +164,6 @@ namespace Microsoft
                     Compress,
                     Default,
                     DoNotCompress,
-                    // Stub generator skipped constructor 
                 }
 
                 // Generated from `Microsoft.AspNetCore.Http.Features.IFeatureCollection` in `Microsoft.AspNetCore.Http.Features, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`

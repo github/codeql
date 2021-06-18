@@ -118,7 +118,6 @@ namespace Microsoft
                     AES_192_GCM,
                     AES_256_CBC,
                     AES_256_GCM,
-                    // Stub generator skipped constructor 
                 }
 
                 // Generated from `Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.IAuthenticatedEncryptor` in `Microsoft.AspNetCore.DataProtection, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
@@ -146,7 +145,6 @@ namespace Microsoft
                 {
                     HMACSHA256,
                     HMACSHA512,
-                    // Stub generator skipped constructor 
                 }
 
                 namespace ConfigurationModel
@@ -458,7 +456,6 @@ namespace Microsoft
                 [System.Flags]
                 public enum DpapiNGProtectionDescriptorFlags
                 {
-                    // Stub generator skipped constructor 
                     MachineKey,
                     NamedDescriptor,
                     None,

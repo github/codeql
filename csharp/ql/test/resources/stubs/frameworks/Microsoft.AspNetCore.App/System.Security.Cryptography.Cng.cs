@@ -132,7 +132,6 @@ namespace System
                 AllowExport,
                 AllowPlaintextArchiving,
                 AllowPlaintextExport,
-                // Stub generator skipped constructor 
                 None,
             }
 
@@ -198,7 +197,6 @@ namespace System
             [System.Flags]
             public enum CngKeyCreationOptions
             {
-                // Stub generator skipped constructor 
                 MachineKey,
                 None,
                 OverwriteExistingKey,
@@ -221,7 +219,6 @@ namespace System
             [System.Flags]
             public enum CngKeyHandleOpenOptions
             {
-                // Stub generator skipped constructor 
                 EphemeralKey,
                 None,
             }
@@ -230,7 +227,6 @@ namespace System
             [System.Flags]
             public enum CngKeyOpenOptions
             {
-                // Stub generator skipped constructor 
                 MachineKey,
                 None,
                 Silent,
@@ -242,7 +238,6 @@ namespace System
             public enum CngKeyUsages
             {
                 AllUsages,
-                // Stub generator skipped constructor 
                 Decryption,
                 KeyAgreement,
                 None,
@@ -274,7 +269,6 @@ namespace System
             [System.Flags]
             public enum CngPropertyOptions
             {
-                // Stub generator skipped constructor 
                 CustomProperty,
                 None,
                 Persist,
@@ -314,7 +308,6 @@ namespace System
             [System.Flags]
             public enum CngUIProtectionLevels
             {
-                // Stub generator skipped constructor 
                 ForceHighProtection,
                 None,
                 ProtectKey,
@@ -389,7 +382,6 @@ namespace System
             // Generated from `System.Security.Cryptography.ECDiffieHellmanKeyDerivationFunction` in `System.Security.Cryptography.Cng, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum ECDiffieHellmanKeyDerivationFunction
             {
-                // Stub generator skipped constructor 
                 Hash,
                 Hmac,
                 Tls,
@@ -428,7 +420,6 @@ namespace System
             // Generated from `System.Security.Cryptography.ECKeyXmlFormat` in `System.Security.Cryptography.Cng, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum ECKeyXmlFormat
             {
-                // Stub generator skipped constructor 
                 Rfc4050,
             }
 

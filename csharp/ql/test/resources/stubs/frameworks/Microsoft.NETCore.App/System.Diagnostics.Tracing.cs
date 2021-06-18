@@ -24,7 +24,6 @@ namespace System
             {
                 Detachable,
                 Disable,
-                // Stub generator skipped constructor 
                 None,
                 Recursive,
             }
@@ -51,7 +50,6 @@ namespace System
                 Admin,
                 Analytic,
                 Debug,
-                // Stub generator skipped constructor 
                 None,
                 Operational,
             }
@@ -61,7 +59,6 @@ namespace System
             {
                 Disable,
                 Enable,
-                // Stub generator skipped constructor 
                 SendManifest,
                 Update,
             }
@@ -104,7 +101,6 @@ namespace System
             {
                 Boolean,
                 Default,
-                // Stub generator skipped constructor 
                 HResult,
                 Hexadecimal,
                 Json,
@@ -116,7 +112,6 @@ namespace System
             [System.Flags]
             public enum EventFieldTags
             {
-                // Stub generator skipped constructor 
                 None,
             }
 
@@ -134,7 +129,6 @@ namespace System
                 AuditFailure,
                 AuditSuccess,
                 CorrelationHint,
-                // Stub generator skipped constructor 
                 EventLogClassic,
                 MicrosoftTelemetry,
                 None,
@@ -148,7 +142,6 @@ namespace System
             {
                 Critical,
                 Error,
-                // Stub generator skipped constructor 
                 Informational,
                 LogAlways,
                 Verbose,
@@ -177,7 +170,6 @@ namespace System
             {
                 AllCultures,
                 AllowEventSourceOverride,
-                // Stub generator skipped constructor 
                 None,
                 OnlyIfNeededForRegistration,
                 Strict,
@@ -188,7 +180,6 @@ namespace System
             {
                 DataCollectionStart,
                 DataCollectionStop,
-                // Stub generator skipped constructor 
                 Extension,
                 Info,
                 Receive,
@@ -314,7 +305,6 @@ namespace System
                 Default,
                 EtwManifestEventFormat,
                 EtwSelfDescribingEventFormat,
-                // Stub generator skipped constructor 
                 ThrowOnEventWriteErrors,
             }
 
@@ -322,14 +312,12 @@ namespace System
             [System.Flags]
             public enum EventTags
             {
-                // Stub generator skipped constructor 
                 None,
             }
 
             // Generated from `System.Diagnostics.Tracing.EventTask` in `System.Diagnostics.Tracing, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum EventTask
             {
-                // Stub generator skipped constructor 
                 None,
             }
 

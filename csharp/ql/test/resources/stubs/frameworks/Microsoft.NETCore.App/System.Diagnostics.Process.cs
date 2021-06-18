@@ -159,7 +159,6 @@ namespace System
             High,
             Idle,
             Normal,
-            // Stub generator skipped constructor 
             RealTime,
         }
 
@@ -236,7 +235,6 @@ namespace System
             Maximized,
             Minimized,
             Normal,
-            // Stub generator skipped constructor 
         }
 
         // Generated from `System.Diagnostics.ThreadPriorityLevel` in `System.Diagnostics.Process, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -248,7 +246,6 @@ namespace System
             Idle,
             Lowest,
             Normal,
-            // Stub generator skipped constructor 
             TimeCritical,
         }
 
@@ -260,7 +257,6 @@ namespace System
             Running,
             Standby,
             Terminated,
-            // Stub generator skipped constructor 
             Transition,
             Unknown,
             Wait,
@@ -280,7 +276,6 @@ namespace System
             PageOut,
             Suspended,
             SystemAllocation,
-            // Stub generator skipped constructor 
             Unknown,
             UserRequest,
             VirtualMemory,

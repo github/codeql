@@ -87,7 +87,6 @@ namespace Microsoft
                 // Generated from `Microsoft.Extensions.Caching.Memory.CacheItemPriority` in `Microsoft.Extensions.Caching.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public enum CacheItemPriority
                 {
-                    // Stub generator skipped constructor 
                     High,
                     Low,
                     NeverRemove,
@@ -98,7 +97,6 @@ namespace Microsoft
                 public enum EvictionReason
                 {
                     Capacity,
-                    // Stub generator skipped constructor 
                     Expired,
                     None,
                     Removed,

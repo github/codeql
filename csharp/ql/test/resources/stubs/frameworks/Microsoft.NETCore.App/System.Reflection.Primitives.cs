@@ -13,7 +13,6 @@ namespace System
                 Break,
                 Call,
                 Cond_Branch,
-                // Stub generator skipped constructor 
                 Meta,
                 Next,
                 Phi,
@@ -48,7 +47,6 @@ namespace System
                 Macro,
                 Nternal,
                 Objmodel,
-                // Stub generator skipped constructor 
                 Prefix,
                 Primitive,
             }
@@ -302,7 +300,6 @@ namespace System
                 InlineTok,
                 InlineType,
                 InlineVar,
-                // Stub generator skipped constructor 
                 ShortInlineBrTarget,
                 ShortInlineI,
                 ShortInlineR,
@@ -312,7 +309,6 @@ namespace System
             // Generated from `System.Reflection.Emit.PackingSize` in `System.Reflection.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum PackingSize
             {
-                // Stub generator skipped constructor 
                 Size1,
                 Size128,
                 Size16,
@@ -354,7 +350,6 @@ namespace System
                 Pushr4,
                 Pushr8,
                 Pushref,
-                // Stub generator skipped constructor 
                 Varpop,
                 Varpush,
             }

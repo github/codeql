@@ -21,7 +21,6 @@ namespace System
                 DestinationScopeMismatch,
                 DestinationUnreachable,
                 HardwareError,
-                // Stub generator skipped constructor 
                 IcmpError,
                 NoResources,
                 PacketTooBig,

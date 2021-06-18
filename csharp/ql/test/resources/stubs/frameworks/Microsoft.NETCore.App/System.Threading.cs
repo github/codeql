@@ -119,7 +119,6 @@ namespace System
         public enum EventResetMode
         {
             AutoReset,
-            // Stub generator skipped constructor 
             ManualReset,
         }
 
@@ -249,7 +248,6 @@ namespace System
         // Generated from `System.Threading.LockRecursionPolicy` in `System.Threading, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public enum LockRecursionPolicy
         {
-            // Stub generator skipped constructor 
             NoRecursion,
             SupportsRecursion,
         }

@@ -160,7 +160,6 @@ namespace System
                 // Generated from `System.Runtime.Serialization.Formatters.FormatterAssemblyStyle` in `System.Runtime.Serialization.Formatters, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public enum FormatterAssemblyStyle
                 {
-                    // Stub generator skipped constructor 
                     Full,
                     Simple,
                 }
@@ -168,7 +167,6 @@ namespace System
                 // Generated from `System.Runtime.Serialization.Formatters.FormatterTypeStyle` in `System.Runtime.Serialization.Formatters, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public enum FormatterTypeStyle
                 {
-                    // Stub generator skipped constructor 
                     TypesAlways,
                     TypesWhenNeeded,
                     XsdString,
@@ -186,7 +184,6 @@ namespace System
                 {
                     Full,
                     Low,
-                    // Stub generator skipped constructor 
                 }
 
                 namespace Binary

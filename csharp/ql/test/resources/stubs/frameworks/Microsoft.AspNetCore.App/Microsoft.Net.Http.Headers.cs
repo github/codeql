@@ -360,7 +360,6 @@ namespace Microsoft
                 {
                     Lax,
                     None,
-                    // Stub generator skipped constructor 
                     Strict,
                     Unspecified,
                 }

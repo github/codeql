@@ -82,7 +82,6 @@ namespace System
             public enum DeliveryNotificationOptions
             {
                 Delay,
-                // Stub generator skipped constructor 
                 Never,
                 None,
                 OnFailure,
@@ -177,7 +176,6 @@ namespace System
             {
                 High,
                 Low,
-                // Stub generator skipped constructor 
                 Normal,
             }
 
@@ -222,7 +220,6 @@ namespace System
             {
                 International,
                 SevenBit,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Net.Mail.SmtpDeliveryMethod` in `System.Net.Mail, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
@@ -230,7 +227,6 @@ namespace System
             {
                 Network,
                 PickupDirectoryFromIis,
-                // Stub generator skipped constructor 
                 SpecifiedPickupDirectory,
             }
 
@@ -298,7 +294,6 @@ namespace System
                 ServiceClosingTransmissionChannel,
                 ServiceNotAvailable,
                 ServiceReady,
-                // Stub generator skipped constructor 
                 StartMailInput,
                 SyntaxError,
                 SystemStatus,
@@ -394,7 +389,6 @@ namespace System
                 EightBit,
                 QuotedPrintable,
                 SevenBit,
-                // Stub generator skipped constructor 
                 Unknown,
             }
 

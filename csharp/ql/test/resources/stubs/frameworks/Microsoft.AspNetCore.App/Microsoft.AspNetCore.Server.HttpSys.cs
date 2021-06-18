@@ -31,7 +31,6 @@ namespace Microsoft
                 [System.Flags]
                 public enum AuthenticationSchemes
                 {
-                    // Stub generator skipped constructor 
                     Basic,
                     Kerberos,
                     NTLM,
@@ -44,7 +43,6 @@ namespace Microsoft
                 {
                     AllowCertificate,
                     AllowRenegotation,
-                    // Stub generator skipped constructor 
                     NoCertificate,
                 }
 
@@ -61,7 +59,6 @@ namespace Microsoft
                 {
                     Basic,
                     Full,
-                    // Stub generator skipped constructor 
                     Limited,
                 }
 
@@ -122,7 +119,6 @@ namespace Microsoft
                     Attach,
                     Create,
                     CreateOrAttach,
-                    // Stub generator skipped constructor 
                 }
 
                 // Generated from `Microsoft.AspNetCore.Server.HttpSys.TimeoutManager` in `Microsoft.AspNetCore.Server.HttpSys, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`

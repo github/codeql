@@ -100,7 +100,6 @@ namespace System
                 In,
                 InOut,
                 Out,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.IO.Pipes.PipeOptions` in `System.IO.Pipes, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -110,7 +109,6 @@ namespace System
                 Asynchronous,
                 CurrentUserOnly,
                 None,
-                // Stub generator skipped constructor 
                 WriteThrough,
             }
 
@@ -167,7 +165,6 @@ namespace System
             {
                 Byte,
                 Message,
-                // Stub generator skipped constructor 
             }
 
         }

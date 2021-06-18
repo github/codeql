@@ -504,7 +504,7 @@ namespace System
         public System.ArraySegment<T> Slice(int index, int count) => throw null;
         public System.ArraySegment<T> Slice(int index) => throw null;
         public T[] ToArray() => throw null;
-        // Stub generator skipped operator: implicit conversion
+        public static implicit operator System.ArraySegment<T>(T[] array) => throw null;
     }
 
     // Generated from `System.ArrayTypeMismatchException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -578,7 +578,6 @@ namespace System
     {
         All,
         Assembly,
-        // Stub generator skipped constructor 
         Class,
         Constructor,
         Delegate,
@@ -624,7 +623,6 @@ namespace System
     [System.Flags]
     public enum Base64FormattingOptions
     {
-        // Stub generator skipped constructor 
         InsertLineBreaks,
         None,
     }
@@ -1380,7 +1378,6 @@ namespace System
     // Generated from `System.DateTimeKind` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public enum DateTimeKind
     {
-        // Stub generator skipped constructor 
         Local,
         Unspecified,
         Utc,
@@ -1479,13 +1476,12 @@ namespace System
         public static System.DateTimeOffset UtcNow { get => throw null; }
         public System.Int64 UtcTicks { get => throw null; }
         public int Year { get => throw null; }
-        // Stub generator skipped operator: implicit conversion
+        public static implicit operator System.DateTimeOffset(System.DateTime dateTime) => throw null;
     }
 
     // Generated from `System.DayOfWeek` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public enum DayOfWeek
     {
-        // Stub generator skipped constructor 
         Friday,
         Monday,
         Saturday,
@@ -1595,28 +1591,28 @@ namespace System
         public static bool TryParse(System.ReadOnlySpan<System.Char> s, out System.Decimal result) => throw null;
         public static bool TryParse(System.ReadOnlySpan<System.Char> s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out System.Decimal result) => throw null;
         public const System.Decimal Zero = default;
-        // Stub generator skipped operator: explicit conversion
-        // Stub generator skipped operator: explicit conversion
-        // Stub generator skipped operator: explicit conversion
-        // Stub generator skipped operator: explicit conversion
-        // Stub generator skipped operator: explicit conversion
-        // Stub generator skipped operator: explicit conversion
-        // Stub generator skipped operator: explicit conversion
-        // Stub generator skipped operator: explicit conversion
-        // Stub generator skipped operator: explicit conversion
-        // Stub generator skipped operator: explicit conversion
-        // Stub generator skipped operator: explicit conversion
-        // Stub generator skipped operator: explicit conversion
-        // Stub generator skipped operator: explicit conversion
-        // Stub generator skipped operator: implicit conversion
-        // Stub generator skipped operator: implicit conversion
-        // Stub generator skipped operator: implicit conversion
-        // Stub generator skipped operator: implicit conversion
-        // Stub generator skipped operator: implicit conversion
-        // Stub generator skipped operator: implicit conversion
-        // Stub generator skipped operator: implicit conversion
-        // Stub generator skipped operator: implicit conversion
-        // Stub generator skipped operator: implicit conversion
+        public static explicit operator int(System.Decimal value) => throw null;
+        public static explicit operator float(System.Decimal value) => throw null;
+        public static explicit operator double(System.Decimal value) => throw null;
+        public static explicit operator System.UInt64(System.Decimal value) => throw null;
+        public static explicit operator System.UInt32(System.Decimal value) => throw null;
+        public static explicit operator System.UInt16(System.Decimal value) => throw null;
+        public static explicit operator System.SByte(System.Decimal value) => throw null;
+        public static explicit operator System.Int64(System.Decimal value) => throw null;
+        public static explicit operator System.Int16(System.Decimal value) => throw null;
+        public static explicit operator System.Decimal(float value) => throw null;
+        public static explicit operator System.Decimal(double value) => throw null;
+        public static explicit operator System.Char(System.Decimal value) => throw null;
+        public static explicit operator System.Byte(System.Decimal value) => throw null;
+        public static implicit operator System.Decimal(int value) => throw null;
+        public static implicit operator System.Decimal(System.UInt64 value) => throw null;
+        public static implicit operator System.Decimal(System.UInt32 value) => throw null;
+        public static implicit operator System.Decimal(System.UInt16 value) => throw null;
+        public static implicit operator System.Decimal(System.SByte value) => throw null;
+        public static implicit operator System.Decimal(System.Int64 value) => throw null;
+        public static implicit operator System.Decimal(System.Int16 value) => throw null;
+        public static implicit operator System.Decimal(System.Char value) => throw null;
+        public static implicit operator System.Decimal(System.Byte value) => throw null;
     }
 
     // Generated from `System.Delegate` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1872,7 +1868,6 @@ namespace System
             Recent,
             Resources,
             SendTo,
-            // Stub generator skipped constructor 
             StartMenu,
             Startup,
             System,
@@ -1889,7 +1884,6 @@ namespace System
             Create,
             DoNotVerify,
             None,
-            // Stub generator skipped constructor 
         }
 
 
@@ -1908,7 +1902,6 @@ namespace System
     // Generated from `System.EnvironmentVariableTarget` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public enum EnvironmentVariableTarget
     {
-        // Stub generator skipped constructor 
         Machine,
         Process,
         User,
@@ -2102,7 +2095,6 @@ namespace System
     {
         Default,
         Forced,
-        // Stub generator skipped constructor 
         Optimized,
     }
 
@@ -2123,7 +2115,6 @@ namespace System
         Background,
         Ephemeral,
         FullBlocking,
-        // Stub generator skipped constructor 
     }
 
     // Generated from `System.GCMemoryInfo` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2153,7 +2144,6 @@ namespace System
     {
         Canceled,
         Failed,
-        // Stub generator skipped constructor 
         NotApplicable,
         Succeeded,
         Timeout,
@@ -2175,7 +2165,6 @@ namespace System
         DontConvertPathBackslashes,
         DontUnescapePathDotsAndSlashes,
         GenericAuthority,
-        // Stub generator skipped constructor 
         Idn,
         IriParsing,
         NoFragment,
@@ -2268,10 +2257,10 @@ namespace System
         public static bool TryParse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out System.Half result) => throw null;
         public static bool TryParse(System.ReadOnlySpan<System.Char> s, out System.Half result) => throw null;
         public static bool TryParse(System.ReadOnlySpan<System.Char> s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out System.Half result) => throw null;
-        // Stub generator skipped operator: explicit conversion
-        // Stub generator skipped operator: explicit conversion
-        // Stub generator skipped operator: explicit conversion
-        // Stub generator skipped operator: explicit conversion
+        public static explicit operator float(System.Half value) => throw null;
+        public static explicit operator double(System.Half value) => throw null;
+        public static explicit operator System.Half(float value) => throw null;
+        public static explicit operator System.Half(double value) => throw null;
     }
 
     // Generated from `System.HashCode` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2420,7 +2409,7 @@ namespace System
         public static System.Index Start { get => throw null; }
         public override string ToString() => throw null;
         public int Value { get => throw null; }
-        // Stub generator skipped operator: implicit conversion
+        public static implicit operator System.Index(int value) => throw null;
     }
 
     // Generated from `System.IndexOutOfRangeException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2612,12 +2601,12 @@ namespace System
         public static bool TryParse(string s, out System.IntPtr result) => throw null;
         public static bool TryParse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out System.IntPtr result) => throw null;
         public static System.IntPtr Zero;
-        // Stub generator skipped operator: explicit conversion
-        // Stub generator skipped operator: explicit conversion
-        // Stub generator skipped operator: explicit conversion
-        // Stub generator skipped operator: explicit conversion
-        // Stub generator skipped operator: explicit conversion
-        // Stub generator skipped operator: explicit conversion
+        unsafe public static explicit operator void*(System.IntPtr value) => throw null;
+        unsafe public static explicit operator System.IntPtr(void* value) => throw null;
+        public static explicit operator int(System.IntPtr value) => throw null;
+        public static explicit operator System.IntPtr(int value) => throw null;
+        public static explicit operator System.IntPtr(System.Int64 value) => throw null;
+        public static explicit operator System.Int64(System.IntPtr value) => throw null;
     }
 
     // Generated from `System.InvalidCastException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2694,7 +2683,6 @@ namespace System
     {
         DisallowBindings,
         DomainMask,
-        // Stub generator skipped constructor 
         MultiDomain,
         MultiDomainHost,
         NotSpecified,
@@ -2906,9 +2894,9 @@ namespace System
         public T[] ToArray() => throw null;
         public override string ToString() => throw null;
         public bool TryCopyTo(System.Memory<T> destination) => throw null;
-        // Stub generator skipped operator: implicit conversion
-        // Stub generator skipped operator: implicit conversion
-        // Stub generator skipped operator: implicit conversion
+        public static implicit operator System.ReadOnlyMemory<T>(System.Memory<T> memory) => throw null;
+        public static implicit operator System.Memory<T>(T[] array) => throw null;
+        public static implicit operator System.Memory<T>(System.ArraySegment<T> segment) => throw null;
     }
 
     // Generated from `System.MethodAccessException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2924,7 +2912,6 @@ namespace System
     public enum MidpointRounding
     {
         AwayFromZero,
-        // Stub generator skipped constructor 
         ToEven,
         ToNegativeInfinity,
         ToPositiveInfinity,
@@ -3099,8 +3086,8 @@ namespace System
         // Stub generator skipped constructor 
         public override string ToString() => throw null;
         public T Value { get => throw null; }
-        // Stub generator skipped operator: explicit conversion
-        // Stub generator skipped operator: implicit conversion
+        public static explicit operator T(System.Nullable<T> value) => throw null;
+        public static implicit operator System.Nullable<T>(T value) => throw null;
     }
 
     // Generated from `System.Object` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -3214,7 +3201,6 @@ namespace System
     {
         MacOSX,
         Other,
-        // Stub generator skipped constructor 
         Unix,
         Win32NT,
         Win32S,
@@ -3305,8 +3291,8 @@ namespace System
         public T[] ToArray() => throw null;
         public override string ToString() => throw null;
         public bool TryCopyTo(System.Memory<T> destination) => throw null;
-        // Stub generator skipped operator: implicit conversion
-        // Stub generator skipped operator: implicit conversion
+        public static implicit operator System.ReadOnlyMemory<T>(T[] array) => throw null;
+        public static implicit operator System.ReadOnlyMemory<T>(System.ArraySegment<T> segment) => throw null;
     }
 
     // Generated from `System.ReadOnlySpan<>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -3341,8 +3327,8 @@ namespace System
         public T[] ToArray() => throw null;
         public override string ToString() => throw null;
         public bool TryCopyTo(System.Span<T> destination) => throw null;
-        // Stub generator skipped operator: implicit conversion
-        // Stub generator skipped operator: implicit conversion
+        public static implicit operator System.ReadOnlySpan<T>(T[] array) => throw null;
+        public static implicit operator System.ReadOnlySpan<T>(System.ArraySegment<T> segment) => throw null;
     }
 
     // Generated from `System.ResolveEventArgs` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -3556,9 +3542,9 @@ namespace System
         public T[] ToArray() => throw null;
         public override string ToString() => throw null;
         public bool TryCopyTo(System.Span<T> destination) => throw null;
-        // Stub generator skipped operator: implicit conversion
-        // Stub generator skipped operator: implicit conversion
-        // Stub generator skipped operator: implicit conversion
+        public static implicit operator System.Span<T>(T[] array) => throw null;
+        public static implicit operator System.Span<T>(System.ArraySegment<T> segment) => throw null;
+        public static implicit operator System.ReadOnlySpan<T>(System.Span<T> span) => throw null;
     }
 
     // Generated from `System.StackOverflowException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -3752,7 +3738,7 @@ namespace System
         public string TrimStart(params System.Char[] trimChars) => throw null;
         public string TrimStart(System.Char trimChar) => throw null;
         public string TrimStart() => throw null;
-        // Stub generator skipped operator: implicit conversion
+        public static implicit operator System.ReadOnlySpan<System.Char>(string value) => throw null;
     }
 
     // Generated from `System.StringComparer` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -3785,7 +3771,6 @@ namespace System
         InvariantCultureIgnoreCase,
         Ordinal,
         OrdinalIgnoreCase,
-        // Stub generator skipped constructor 
     }
 
     // Generated from `System.StringNormalizationExtensions` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -3803,7 +3788,6 @@ namespace System
     {
         None,
         RemoveEmptyEntries,
-        // Stub generator skipped constructor 
         TrimEntries,
     }
 
@@ -4488,7 +4472,6 @@ namespace System
         SByte,
         Single,
         String,
-        // Stub generator skipped constructor 
         UInt16,
         UInt32,
         UInt64,
@@ -4701,12 +4684,12 @@ namespace System
         public UIntPtr(System.UInt32 value) => throw null;
         // Stub generator skipped constructor 
         public static System.UIntPtr Zero;
-        // Stub generator skipped operator: explicit conversion
-        // Stub generator skipped operator: explicit conversion
-        // Stub generator skipped operator: explicit conversion
-        // Stub generator skipped operator: explicit conversion
-        // Stub generator skipped operator: explicit conversion
-        // Stub generator skipped operator: explicit conversion
+        unsafe public static explicit operator void*(System.UIntPtr value) => throw null;
+        unsafe public static explicit operator System.UIntPtr(void* value) => throw null;
+        public static explicit operator System.UIntPtr(System.UInt64 value) => throw null;
+        public static explicit operator System.UIntPtr(System.UInt32 value) => throw null;
+        public static explicit operator System.UInt64(System.UIntPtr value) => throw null;
+        public static explicit operator System.UInt32(System.UIntPtr value) => throw null;
     }
 
     // Generated from `System.UnauthorizedAccessException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -4855,7 +4838,6 @@ namespace System
         SerializationInfoString,
         StrongAuthority,
         StrongPort,
-        // Stub generator skipped constructor 
         UserInfo,
     }
 
@@ -4865,7 +4847,6 @@ namespace System
         SafeUnescaped,
         Unescaped,
         UriEscaped,
-        // Stub generator skipped constructor 
     }
 
     // Generated from `System.UriFormatException` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -4886,7 +4867,6 @@ namespace System
         IPv4,
         IPv6,
         Unknown,
-        // Stub generator skipped constructor 
     }
 
     // Generated from `System.UriKind` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -4895,7 +4875,6 @@ namespace System
         Absolute,
         Relative,
         RelativeOrAbsolute,
-        // Stub generator skipped constructor 
     }
 
     // Generated from `System.UriParser` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -4920,7 +4899,6 @@ namespace System
         Path,
         Query,
         Scheme,
-        // Stub generator skipped constructor 
     }
 
     // Generated from `System.ValueTuple` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -5260,7 +5238,6 @@ namespace System
             Done,
             InvalidData,
             NeedMoreData,
-            // Stub generator skipped constructor 
         }
 
         // Generated from `System.Buffers.ReadOnlySpanAction<,>` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -5812,7 +5789,6 @@ namespace System
         {
             Advanced,
             Always,
-            // Stub generator skipped constructor 
             Never,
         }
 
@@ -5824,7 +5800,6 @@ namespace System
             // Generated from `System.Configuration.Assemblies.AssemblyHashAlgorithm` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum AssemblyHashAlgorithm
             {
-                // Stub generator skipped constructor 
                 MD5,
                 None,
                 SHA1,
@@ -5836,7 +5811,6 @@ namespace System
             // Generated from `System.Configuration.Assemblies.AssemblyVersionCompatibility` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum AssemblyVersionCompatibility
             {
-                // Stub generator skipped constructor 
                 SameDomain,
                 SameMachine,
                 SameProcess,
@@ -5900,7 +5874,6 @@ namespace System
             [System.Flags]
             public enum DebuggingModes
             {
-                // Stub generator skipped constructor 
                 Default,
                 DisableOptimizations,
                 EnableEditAndContinue,
@@ -5936,7 +5909,6 @@ namespace System
         public enum DebuggerBrowsableState
         {
             Collapsed,
-            // Stub generator skipped constructor 
             Never,
             RootHidden,
         }
@@ -6068,7 +6040,6 @@ namespace System
             public enum DynamicallyAccessedMemberTypes
             {
                 All,
-                // Stub generator skipped constructor 
                 NonPublicConstructors,
                 NonPublicEvents,
                 NonPublicFields,
@@ -6240,7 +6211,6 @@ namespace System
         // Generated from `System.Globalization.CalendarAlgorithmType` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public enum CalendarAlgorithmType
         {
-            // Stub generator skipped constructor 
             LunarCalendar,
             LunisolarCalendar,
             SolarCalendar,
@@ -6250,7 +6220,6 @@ namespace System
         // Generated from `System.Globalization.CalendarWeekRule` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public enum CalendarWeekRule
         {
-            // Stub generator skipped constructor 
             FirstDay,
             FirstFourDayWeek,
             FirstFullWeek,
@@ -6357,7 +6326,6 @@ namespace System
         [System.Flags]
         public enum CompareOptions
         {
-            // Stub generator skipped constructor 
             IgnoreCase,
             IgnoreKanaType,
             IgnoreNonSpace,
@@ -6443,7 +6411,6 @@ namespace System
         public enum CultureTypes
         {
             AllCultures,
-            // Stub generator skipped constructor 
             FrameworkCultures,
             InstalledWin32Cultures,
             NeutralCultures,
@@ -6513,7 +6480,6 @@ namespace System
             AllowWhiteSpaces,
             AssumeLocal,
             AssumeUniversal,
-            // Stub generator skipped constructor 
             NoCurrentDateDefault,
             None,
             RoundtripKind,
@@ -6532,7 +6498,6 @@ namespace System
         public enum DigitShapes
         {
             Context,
-            // Stub generator skipped constructor 
             NativeNational,
             None,
         }
@@ -6605,7 +6570,6 @@ namespace System
         public enum GregorianCalendarTypes
         {
             Arabic,
-            // Stub generator skipped constructor 
             Localized,
             MiddleEastFrench,
             TransliteratedEnglish,
@@ -6873,7 +6837,6 @@ namespace System
             Integer,
             None,
             Number,
-            // Stub generator skipped constructor 
         }
 
         // Generated from `System.Globalization.PersianCalendar` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -7082,7 +7045,6 @@ namespace System
         {
             AssumeNegative,
             None,
-            // Stub generator skipped constructor 
         }
 
         // Generated from `System.Globalization.UmAlQuraCalendar` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -7147,7 +7109,6 @@ namespace System
             SpacingCombiningMark,
             Surrogate,
             TitlecaseLetter,
-            // Stub generator skipped constructor 
             UppercaseLetter,
         }
 
@@ -7289,7 +7250,6 @@ namespace System
         [System.Flags]
         public enum FileAccess
         {
-            // Stub generator skipped constructor 
             Read,
             ReadWrite,
             Write,
@@ -7304,7 +7264,6 @@ namespace System
             Device,
             Directory,
             Encrypted,
-            // Stub generator skipped constructor 
             Hidden,
             IntegrityStream,
             NoScrubData,
@@ -7340,7 +7299,6 @@ namespace System
             Append,
             Create,
             CreateNew,
-            // Stub generator skipped constructor 
             Open,
             OpenOrCreate,
             Truncate,
@@ -7369,7 +7327,6 @@ namespace System
             Asynchronous,
             DeleteOnClose,
             Encrypted,
-            // Stub generator skipped constructor 
             None,
             RandomAccess,
             SequentialScan,
@@ -7381,7 +7338,6 @@ namespace System
         public enum FileShare
         {
             Delete,
-            // Stub generator skipped constructor 
             Inheritable,
             None,
             Read,
@@ -7444,7 +7400,6 @@ namespace System
         // Generated from `System.IO.HandleInheritability` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public enum HandleInheritability
         {
-            // Stub generator skipped constructor 
             Inheritable,
             None,
         }
@@ -7577,7 +7532,6 @@ namespace System
             Begin,
             Current,
             End,
-            // Stub generator skipped constructor 
         }
 
         // Generated from `System.IO.Stream` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -8049,7 +8003,6 @@ namespace System
         // Generated from `System.Reflection.AssemblyContentType` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public enum AssemblyContentType
         {
-            // Stub generator skipped constructor 
             Default,
             WindowsRuntime,
         }
@@ -8169,7 +8122,6 @@ namespace System
         [System.Flags]
         public enum AssemblyNameFlags
         {
-            // Stub generator skipped constructor 
             EnableJITcompileOptimizer,
             EnableJITcompileTracking,
             None,
@@ -8236,7 +8188,6 @@ namespace System
         [System.Flags]
         public enum BindingFlags
         {
-            // Stub generator skipped constructor 
             CreateInstance,
             DeclaredOnly,
             Default,
@@ -8265,7 +8216,6 @@ namespace System
         public enum CallingConventions
         {
             Any,
-            // Stub generator skipped constructor 
             ExplicitThis,
             HasThis,
             Standard,
@@ -8397,7 +8347,6 @@ namespace System
         [System.Flags]
         public enum EventAttributes
         {
-            // Stub generator skipped constructor 
             None,
             RTSpecialName,
             ReservedMask,
@@ -8451,7 +8400,6 @@ namespace System
         public enum ExceptionHandlingClauseOptions
         {
             Clause,
-            // Stub generator skipped constructor 
             Fault,
             Filter,
             Finally,
@@ -8466,7 +8414,6 @@ namespace System
             FamORAssem,
             Family,
             FieldAccessMask,
-            // Stub generator skipped constructor 
             HasDefault,
             HasFieldMarshal,
             HasFieldRVA,
@@ -8529,7 +8476,6 @@ namespace System
             Contravariant,
             Covariant,
             DefaultConstructorConstraint,
-            // Stub generator skipped constructor 
             None,
             NotNullableValueTypeConstraint,
             ReferenceTypeConstraint,
@@ -8575,7 +8521,6 @@ namespace System
             ARM,
             I386,
             IA64,
-            // Stub generator skipped constructor 
         }
 
         // Generated from `System.Reflection.InterfaceMapping` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -8657,7 +8602,6 @@ namespace System
             Custom,
             Event,
             Field,
-            // Stub generator skipped constructor 
             Method,
             NestedType,
             Property,
@@ -8678,7 +8622,6 @@ namespace System
             HasSecurity,
             HideBySig,
             MemberAccessMask,
-            // Stub generator skipped constructor 
             NewSlot,
             PinvokeImpl,
             Private,
@@ -8762,7 +8705,6 @@ namespace System
             Managed,
             ManagedMask,
             MaxMethodImplVal,
-            // Stub generator skipped constructor 
             Native,
             NoInlining,
             NoOptimization,
@@ -8888,7 +8830,6 @@ namespace System
             None,
             Optional,
             Out,
-            // Stub generator skipped constructor 
             Reserved3,
             Reserved4,
             ReservedMask,
@@ -8953,7 +8894,6 @@ namespace System
             ILOnly,
             NotAPortableExecutableImage,
             PE32Plus,
-            // Stub generator skipped constructor 
             Preferred32Bit,
             Required32Bit,
             Unmanaged32Bit,
@@ -8967,7 +8907,6 @@ namespace System
             IA64,
             MSIL,
             None,
-            // Stub generator skipped constructor 
             X86,
         }
 
@@ -8977,7 +8916,6 @@ namespace System
         {
             HasDefault,
             None,
-            // Stub generator skipped constructor 
             RTSpecialName,
             Reserved2,
             Reserved3,
@@ -9048,7 +8986,6 @@ namespace System
         {
             Private,
             Public,
-            // Stub generator skipped constructor 
         }
 
         // Generated from `System.Reflection.ResourceLocation` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -9058,7 +8995,6 @@ namespace System
             ContainedInAnotherAssembly,
             ContainedInManifestFile,
             Embedded,
-            // Stub generator skipped constructor 
         }
 
         // Generated from `System.Reflection.RuntimeReflectionExtensions` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -9146,7 +9082,6 @@ namespace System
             Serializable,
             SpecialName,
             StringFormatMask,
-            // Stub generator skipped constructor 
             UnicodeClass,
             VisibilityMask,
             WindowsRuntime,
@@ -9351,7 +9286,6 @@ namespace System
         {
             MainAssembly,
             Satellite,
-            // Stub generator skipped constructor 
         }
 
     }
@@ -9377,14 +9311,12 @@ namespace System
         {
             CompactOnce,
             Default,
-            // Stub generator skipped constructor 
         }
 
         // Generated from `System.Runtime.GCLatencyMode` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public enum GCLatencyMode
         {
             Batch,
-            // Stub generator skipped constructor 
             Interactive,
             LowLatency,
             NoGCRegion,
@@ -9582,7 +9514,6 @@ namespace System
             [System.Flags]
             public enum CompilationRelaxations
             {
-                // Stub generator skipped constructor 
                 NoStringInterning,
             }
 
@@ -9888,7 +9819,6 @@ namespace System
             {
                 Always,
                 Default,
-                // Stub generator skipped constructor 
                 Sometimes,
             }
 
@@ -9896,7 +9826,6 @@ namespace System
             public enum MethodCodeType
             {
                 IL,
-                // Stub generator skipped constructor 
                 Native,
                 OPTIL,
                 Runtime,
@@ -9920,7 +9849,6 @@ namespace System
                 AggressiveOptimization,
                 ForwardRef,
                 InternalCall,
-                // Stub generator skipped constructor 
                 NoInlining,
                 NoOptimization,
                 PreserveSig,
@@ -10153,7 +10081,6 @@ namespace System
             // Generated from `System.Runtime.ConstrainedExecution.Cer` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum Cer
             {
-                // Stub generator skipped constructor 
                 MayFail,
                 None,
                 Success,
@@ -10162,7 +10089,6 @@ namespace System
             // Generated from `System.Runtime.ConstrainedExecution.Consistency` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum Consistency
             {
-                // Stub generator skipped constructor 
                 MayCorruptAppDomain,
                 MayCorruptInstance,
                 MayCorruptProcess,
@@ -10224,7 +10150,6 @@ namespace System
             {
                 Ansi,
                 Auto,
-                // Stub generator skipped constructor 
                 None,
                 Unicode,
             }
@@ -10287,14 +10212,13 @@ namespace System
                 public bool IsAllocated { get => throw null; }
                 public object Target { get => throw null; set => throw null; }
                 public static System.IntPtr ToIntPtr(System.Runtime.InteropServices.GCHandle value) => throw null;
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
+                public static explicit operator System.Runtime.InteropServices.GCHandle(System.IntPtr value) => throw null;
+                public static explicit operator System.IntPtr(System.Runtime.InteropServices.GCHandle value) => throw null;
             }
 
             // Generated from `System.Runtime.InteropServices.GCHandleType` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum GCHandleType
             {
-                // Stub generator skipped constructor 
                 Normal,
                 Pinned,
                 Weak,
@@ -10312,7 +10236,6 @@ namespace System
             {
                 Auto,
                 Explicit,
-                // Stub generator skipped constructor 
                 Sequential,
             }
 
@@ -10573,7 +10496,6 @@ namespace System
                 Other,
                 Persistence,
                 Remoting,
-                // Stub generator skipped constructor 
             }
 
         }
@@ -10590,7 +10512,6 @@ namespace System
             [System.Flags]
             public enum ComponentGuaranteesOptions
             {
-                // Stub generator skipped constructor 
                 Exchange,
                 None,
                 SideBySide,
@@ -10649,7 +10570,6 @@ namespace System
                 None,
                 Private,
                 Process,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Runtime.Versioning.SupportedOSPlatformAttribute` in `Microsoft.Win32.Registry, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Diagnostics.EventLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Security.AccessControl, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Security.Cryptography.Cng, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Security.Cryptography.Xml, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Security.Principal.Windows, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a; System.Windows.Extensions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
@@ -10726,7 +10646,6 @@ namespace System
         public enum PartialTrustVisibilityLevel
         {
             NotVisibleByDefault,
-            // Stub generator skipped constructor 
             VisibleToAllHosts,
         }
 
@@ -10784,7 +10703,6 @@ namespace System
         {
             Everything,
             Explicit,
-            // Stub generator skipped constructor 
         }
 
         // Generated from `System.Security.SecurityElement` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -10841,7 +10759,6 @@ namespace System
             Level1,
             Level2,
             None,
-            // Stub generator skipped constructor 
         }
 
         // Generated from `System.Security.SecurityRulesAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -10917,7 +10834,6 @@ namespace System
             public enum PermissionState
             {
                 None,
-                // Stub generator skipped constructor 
                 Unrestricted,
             }
 
@@ -10933,7 +10849,6 @@ namespace System
                 RequestMinimum,
                 RequestOptional,
                 RequestRefuse,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Security.Permissions.SecurityAttribute` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -10984,7 +10899,6 @@ namespace System
                 Infrastructure,
                 NoFlags,
                 RemotingConfiguration,
-                // Stub generator skipped constructor 
                 SerializationFormatter,
                 SkipVerification,
                 UnmanagedCode,
@@ -11012,7 +10926,6 @@ namespace System
             public enum PrincipalPolicy
             {
                 NoPrincipal,
-                // Stub generator skipped constructor 
                 UnauthenticatedPrincipal,
                 WindowsPrincipal,
             }
@@ -11025,7 +10938,6 @@ namespace System
                 Identification,
                 Impersonation,
                 None,
-                // Stub generator skipped constructor 
             }
 
         }
@@ -11332,7 +11244,6 @@ namespace System
             FormD,
             FormKC,
             FormKD,
-            // Stub generator skipped constructor 
         }
 
         // Generated from `System.Text.Rune` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -11395,9 +11306,9 @@ namespace System
             public int Utf16SequenceLength { get => throw null; }
             public int Utf8SequenceLength { get => throw null; }
             public int Value { get => throw null; }
-            // Stub generator skipped operator: explicit conversion
-            // Stub generator skipped operator: explicit conversion
-            // Stub generator skipped operator: explicit conversion
+            public static explicit operator System.Text.Rune(int value) => throw null;
+            public static explicit operator System.Text.Rune(System.UInt32 value) => throw null;
+            public static explicit operator System.Text.Rune(System.Char ch) => throw null;
         }
 
         // Generated from `System.Text.StringBuilder` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -11587,7 +11498,6 @@ namespace System
         public enum LazyThreadSafetyMode
         {
             ExecutionAndPublication,
-            // Stub generator skipped constructor 
             None,
             PublicationOnly,
         }
@@ -11887,7 +11797,6 @@ namespace System
                 OnlyOnRanToCompletion,
                 PreferFairness,
                 RunContinuationsAsynchronously,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Threading.Tasks.TaskCreationOptions` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -11901,7 +11810,6 @@ namespace System
                 None,
                 PreferFairness,
                 RunContinuationsAsynchronously,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Threading.Tasks.TaskExtensions` in `Microsoft.AspNetCore.Http.Connections, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -12079,7 +11987,6 @@ namespace System
                 Faulted,
                 RanToCompletion,
                 Running,
-                // Stub generator skipped constructor 
                 WaitingForActivation,
                 WaitingForChildrenToComplete,
                 WaitingToRun,
@@ -12184,7 +12091,6 @@ namespace System
                     FlowExecutionContext,
                     None,
                     UseSchedulingContext,
-                    // Stub generator skipped constructor 
                 }
 
                 // Generated from `System.Threading.Tasks.Sources.ValueTaskSourceStatus` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -12194,7 +12100,6 @@ namespace System
                     Faulted,
                     Pending,
                     Succeeded,
-                    // Stub generator skipped constructor 
                 }
 
             }

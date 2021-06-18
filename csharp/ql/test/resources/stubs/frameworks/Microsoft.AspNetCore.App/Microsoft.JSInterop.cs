@@ -65,7 +65,6 @@ namespace Microsoft
         public enum JSCallResultType
         {
             Default,
-            // Stub generator skipped constructor 
             JSObjectReference,
         }
 

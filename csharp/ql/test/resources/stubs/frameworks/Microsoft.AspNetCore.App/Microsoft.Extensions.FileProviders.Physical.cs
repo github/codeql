@@ -42,7 +42,6 @@ namespace Microsoft
                 public enum ExclusionFilters
                 {
                     DotPrefixed,
-                    // Stub generator skipped constructor 
                     Hidden,
                     None,
                     Sensitive,

@@ -115,7 +115,6 @@ namespace Microsoft
                         Http1AndHttp2AndHttp3,
                         Http2,
                         Http3,
-                        // Stub generator skipped constructor 
                         None,
                     }
 
@@ -261,7 +260,6 @@ namespace Microsoft
                                 Delete,
                                 Get,
                                 Head,
-                                // Stub generator skipped constructor 
                                 None,
                                 Options,
                                 Patch,
@@ -283,7 +281,6 @@ namespace Microsoft
                             public enum HttpScheme
                             {
                                 Http,
-                                // Stub generator skipped constructor 
                                 Https,
                                 Unknown,
                             }
@@ -295,7 +292,6 @@ namespace Microsoft
                                 Http11,
                                 Http2,
                                 Http3,
-                                // Stub generator skipped constructor 
                                 Unknown,
                             }
 
@@ -359,7 +355,6 @@ namespace Microsoft
                     public enum ClientCertificateMode
                     {
                         AllowCertificate,
-                        // Stub generator skipped constructor 
                         NoCertificate,
                         RequireCertificate,
                     }

@@ -79,7 +79,6 @@ namespace System
             {
                 Assert,
                 Assume,
-                // Stub generator skipped constructor 
                 Invariant,
                 Postcondition,
                 PostconditionOnException,

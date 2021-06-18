@@ -342,7 +342,6 @@ namespace Microsoft
                 // Generated from `Microsoft.AspNetCore.Mvc.Rendering.CheckBoxHiddenInputRenderMode` in `Microsoft.AspNetCore.Mvc.ViewFeatures, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public enum CheckBoxHiddenInputRenderMode
                 {
-                    // Stub generator skipped constructor 
                     EndOfForm,
                     Inline,
                     None,
@@ -351,7 +350,6 @@ namespace Microsoft
                 // Generated from `Microsoft.AspNetCore.Mvc.Rendering.FormMethod` in `Microsoft.AspNetCore.Mvc.ViewFeatures, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public enum FormMethod
                 {
-                    // Stub generator skipped constructor 
                     Get,
                     Post,
                 }
@@ -360,7 +358,6 @@ namespace Microsoft
                 public enum Html5DateRenderingMode
                 {
                     CurrentCulture,
-                    // Stub generator skipped constructor 
                     Rfc3339,
                 }
 
@@ -691,7 +688,6 @@ namespace Microsoft
                 // Generated from `Microsoft.AspNetCore.Mvc.Rendering.RenderMode` in `Microsoft.AspNetCore.Mvc.ViewFeatures, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public enum RenderMode
                 {
-                    // Stub generator skipped constructor 
                     Server,
                     ServerPrerendered,
                     Static,
@@ -763,7 +759,6 @@ namespace Microsoft
                     Normal,
                     SelfClosing,
                     StartTag,
-                    // Stub generator skipped constructor 
                 }
 
                 // Generated from `Microsoft.AspNetCore.Mvc.Rendering.ViewComponentHelperExtensions` in `Microsoft.AspNetCore.Mvc.ViewFeatures, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
@@ -1352,7 +1347,6 @@ namespace Microsoft
                 {
                     CheckBox,
                     Hidden,
-                    // Stub generator skipped constructor 
                     Password,
                     Radio,
                     Text,

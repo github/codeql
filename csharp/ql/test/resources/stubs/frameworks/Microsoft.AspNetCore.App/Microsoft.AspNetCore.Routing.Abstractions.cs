@@ -95,7 +95,6 @@ namespace Microsoft
             public enum RouteDirection
             {
                 IncomingRequest,
-                // Stub generator skipped constructor 
                 UrlGeneration,
             }
 

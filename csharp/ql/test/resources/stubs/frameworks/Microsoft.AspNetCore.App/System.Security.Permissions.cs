@@ -185,7 +185,6 @@ namespace System
             Administer,
             Audit,
             Browse,
-            // Stub generator skipped constructor 
             Instrument,
             None,
             Write,
@@ -244,7 +243,6 @@ namespace System
             Browse,
             Instrument,
             None,
-            // Stub generator skipped constructor 
             Read,
             Write,
         }
@@ -320,7 +318,6 @@ namespace System
                 AllPrinting,
                 DefaultPrinting,
                 NoPrinting,
-                // Stub generator skipped constructor 
                 SafePrinting,
             }
 
@@ -364,7 +361,6 @@ namespace System
         {
             Accept,
             Connect,
-            // Stub generator skipped constructor 
         }
 
         // Generated from `System.Net.SocketPermission` in `System.Security.Permissions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
@@ -403,7 +399,6 @@ namespace System
             ConnectionOriented,
             Connectionless,
             Tcp,
-            // Stub generator skipped constructor 
             Udp,
         }
 
@@ -446,7 +441,6 @@ namespace System
                 Connect,
                 ConnectToUnrestrictedPort,
                 None,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Net.Mail.SmtpPermission` in `System.Security.Permissions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
@@ -481,7 +475,6 @@ namespace System
             [System.Flags]
             public enum NetworkInformationAccess
             {
-                // Stub generator skipped constructor 
                 None,
                 Ping,
                 Read,
@@ -540,7 +533,6 @@ namespace System
                 All,
                 Global,
                 LinkLocal,
-                // Stub generator skipped constructor 
                 SiteLocal,
             }
 
@@ -633,7 +625,6 @@ namespace System
             HostDetermineApplicationTrust,
             HostPolicyLevel,
             HostResolvePolicy,
-            // Stub generator skipped constructor 
             None,
         }
 
@@ -673,7 +664,6 @@ namespace System
             AppDomain,
             Enterprise,
             Machine,
-            // Stub generator skipped constructor 
             User,
         }
 
@@ -696,7 +686,6 @@ namespace System
         {
             CurrentAppDomain,
             CurrentAssembly,
-            // Stub generator skipped constructor 
         }
 
         // Generated from `System.Security.SecurityManager` in `System.Security.Permissions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
@@ -735,7 +724,6 @@ namespace System
             Intranet,
             MyComputer,
             NoZone,
-            // Stub generator skipped constructor 
             Trusted,
             Untrusted,
         }
@@ -784,7 +772,6 @@ namespace System
             public enum DataProtectionPermissionFlags
             {
                 AllFlags,
-                // Stub generator skipped constructor 
                 NoFlags,
                 ProtectData,
                 ProtectMemory,
@@ -814,7 +801,6 @@ namespace System
             public enum EnvironmentPermissionAccess
             {
                 AllAccess,
-                // Stub generator skipped constructor 
                 NoAccess,
                 Read,
                 Write,
@@ -849,7 +835,6 @@ namespace System
             [System.Flags]
             public enum FileDialogPermissionAccess
             {
-                // Stub generator skipped constructor 
                 None,
                 Open,
                 OpenSave,
@@ -897,7 +882,6 @@ namespace System
             {
                 AllAccess,
                 Append,
-                // Stub generator skipped constructor 
                 NoAccess,
                 PathDiscovery,
                 Read,
@@ -966,7 +950,6 @@ namespace System
                 All,
                 ExternalProcessMgmt,
                 ExternalThreading,
-                // Stub generator skipped constructor 
                 MayLeakOnAbort,
                 None,
                 SecurityInfrastructure,
@@ -996,7 +979,6 @@ namespace System
                 DomainIsolationByMachine,
                 DomainIsolationByRoamingUser,
                 DomainIsolationByUser,
-                // Stub generator skipped constructor 
                 None,
                 UnrestrictedIsolatedStorage,
             }
@@ -1122,7 +1104,6 @@ namespace System
                 Delete,
                 Export,
                 Import,
-                // Stub generator skipped constructor 
                 NoFlags,
                 Open,
                 Sign,
@@ -1164,7 +1145,6 @@ namespace System
             public enum MediaPermissionAudio
             {
                 AllAudio,
-                // Stub generator skipped constructor 
                 NoAudio,
                 SafeAudio,
                 SiteOfOriginAudio,
@@ -1174,7 +1154,6 @@ namespace System
             public enum MediaPermissionImage
             {
                 AllImage,
-                // Stub generator skipped constructor 
                 NoImage,
                 SafeImage,
                 SiteOfOriginImage,
@@ -1184,7 +1163,6 @@ namespace System
             public enum MediaPermissionVideo
             {
                 AllVideo,
-                // Stub generator skipped constructor 
                 NoVideo,
                 SafeVideo,
                 SiteOfOriginVideo,
@@ -1291,7 +1269,6 @@ namespace System
                 MemberAccess,
                 NoFlags,
                 ReflectionEmit,
-                // Stub generator skipped constructor 
                 RestrictedMemberAccess,
                 TypeInformation,
             }
@@ -1323,7 +1300,6 @@ namespace System
                 Create,
                 NoAccess,
                 Read,
-                // Stub generator skipped constructor 
                 Write,
             }
 
@@ -1452,7 +1428,6 @@ namespace System
                 NoFlags,
                 OpenStore,
                 RemoveFromStore,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Security.Permissions.StrongNameIdentityPermission` in `System.Security.Permissions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
@@ -1520,7 +1495,6 @@ namespace System
             {
                 NoFlags,
                 RestrictedRegistrationAccess,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Security.Permissions.UIPermission` in `System.Security.Permissions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
@@ -1556,7 +1530,6 @@ namespace System
                 AllClipboard,
                 NoClipboard,
                 OwnClipboard,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Security.Permissions.UIPermissionWindow` in `System.Security.Permissions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
@@ -1566,7 +1539,6 @@ namespace System
                 NoWindows,
                 SafeSubWindows,
                 SafeTopLevelWindows,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Security.Permissions.UrlIdentityPermission` in `System.Security.Permissions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
@@ -1621,7 +1593,6 @@ namespace System
                 None,
                 Safe,
                 Unrestricted,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Security.Permissions.ZoneIdentityPermission` in `System.Security.Permissions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
@@ -1741,7 +1712,6 @@ namespace System
             // Generated from `System.Security.Policy.ApplicationVersionMatch` in `System.Security.Permissions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public enum ApplicationVersionMatch
             {
-                // Stub generator skipped constructor 
                 MatchAllVersions,
                 MatchExactVersion,
             }
@@ -2019,7 +1989,6 @@ namespace System
                 Exclusive,
                 LevelFinal,
                 Nothing,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Security.Policy.Publisher` in `System.Security.Permissions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
@@ -2129,7 +2098,6 @@ namespace System
             {
                 Install,
                 Run,
-                // Stub generator skipped constructor 
                 Upgrade,
             }
 
@@ -2221,7 +2189,6 @@ namespace System
             Browse,
             Control,
             None,
-            // Stub generator skipped constructor 
         }
 
         // Generated from `System.ServiceProcess.ServiceControllerPermissionAttribute` in `System.Security.Permissions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
@@ -2315,7 +2282,6 @@ namespace System
         // Generated from `System.Web.AspNetHostingPermissionLevel` in `System.Security.Permissions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public enum AspNetHostingPermissionLevel
         {
-            // Stub generator skipped constructor 
             High,
             Low,
             Medium,

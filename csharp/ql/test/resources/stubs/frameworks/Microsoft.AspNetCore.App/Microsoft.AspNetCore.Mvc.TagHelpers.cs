@@ -14,7 +14,6 @@ namespace Microsoft
                     All,
                     ModelOnly,
                     None,
-                    // Stub generator skipped constructor 
                 }
 
             }

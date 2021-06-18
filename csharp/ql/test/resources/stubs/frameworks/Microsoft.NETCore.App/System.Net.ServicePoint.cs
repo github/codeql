@@ -11,7 +11,6 @@ namespace System
         [System.Flags]
         public enum SecurityProtocolType
         {
-            // Stub generator skipped constructor 
             Ssl3,
             SystemDefault,
             Tls,

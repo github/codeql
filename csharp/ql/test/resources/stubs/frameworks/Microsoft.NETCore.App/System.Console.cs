@@ -109,7 +109,6 @@ namespace System
     {
         Black,
         Blue,
-        // Stub generator skipped constructor 
         Cyan,
         DarkBlue,
         DarkCyan,
@@ -144,7 +143,6 @@ namespace System
         BrowserStop,
         C,
         Clear,
-        // Stub generator skipped constructor 
         CrSel,
         D,
         D0,
@@ -296,7 +294,6 @@ namespace System
     public enum ConsoleModifiers
     {
         Alt,
-        // Stub generator skipped constructor 
         Control,
         Shift,
     }
@@ -304,7 +301,6 @@ namespace System
     // Generated from `System.ConsoleSpecialKey` in `System.Console, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public enum ConsoleSpecialKey
     {
-        // Stub generator skipped constructor 
         ControlBreak,
         ControlC,
     }

@@ -37,7 +37,7 @@ namespace Microsoft
                 public string SearchedLocation { get => throw null; }
                 public override string ToString() => throw null;
                 public string Value { get => throw null; }
-                // Stub generator skipped operator: implicit conversion
+                public static implicit operator string(Microsoft.Extensions.Localization.LocalizedString localizedString) => throw null;
             }
 
             // Generated from `Microsoft.Extensions.Localization.StringLocalizer<>` in `Microsoft.Extensions.Localization.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`

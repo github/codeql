@@ -120,7 +120,6 @@ namespace Microsoft
             public enum ServiceLifetime
             {
                 Scoped,
-                // Stub generator skipped constructor 
                 Singleton,
                 Transient,
             }

@@ -145,7 +145,6 @@ namespace System
             // Generated from `System.Runtime.InteropServices.CallingConvention` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum CallingConvention
             {
-                // Stub generator skipped constructor 
                 Cdecl,
                 FastCall,
                 StdCall,
@@ -166,7 +165,6 @@ namespace System
             {
                 AutoDispatch,
                 AutoDual,
-                // Stub generator skipped constructor 
                 None,
             }
 
@@ -259,7 +257,6 @@ namespace System
             // Generated from `System.Runtime.InteropServices.ComInterfaceType` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum ComInterfaceType
             {
-                // Stub generator skipped constructor 
                 InterfaceIsDual,
                 InterfaceIsIDispatch,
                 InterfaceIsIInspectable,
@@ -269,7 +266,6 @@ namespace System
             // Generated from `System.Runtime.InteropServices.ComMemberType` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum ComMemberType
             {
-                // Stub generator skipped constructor 
                 Method,
                 PropGet,
                 PropSet,
@@ -336,7 +332,6 @@ namespace System
             public enum CreateComInterfaceFlags
             {
                 CallerDefinedIUnknown,
-                // Stub generator skipped constructor 
                 None,
                 TrackerSupport,
             }
@@ -345,7 +340,6 @@ namespace System
             [System.Flags]
             public enum CreateObjectFlags
             {
-                // Stub generator skipped constructor 
                 None,
                 TrackerObject,
                 UniqueInstance,
@@ -363,14 +357,12 @@ namespace System
             public enum CustomQueryInterfaceMode
             {
                 Allow,
-                // Stub generator skipped constructor 
                 Ignore,
             }
 
             // Generated from `System.Runtime.InteropServices.CustomQueryInterfaceResult` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum CustomQueryInterfaceResult
             {
-                // Stub generator skipped constructor 
                 Failed,
                 Handled,
                 NotHandled,
@@ -435,7 +427,6 @@ namespace System
             {
                 ApplicationDirectory,
                 AssemblyDirectory,
-                // Stub generator skipped constructor 
                 LegacyBehavior,
                 SafeDirectories,
                 System32,
@@ -486,7 +477,7 @@ namespace System
                 // Stub generator skipped constructor 
                 public static System.IntPtr ToIntPtr(System.Runtime.InteropServices.HandleRef value) => throw null;
                 public object Wrapper { get => throw null; }
-                // Stub generator skipped operator: explicit conversion
+                public static explicit operator System.IntPtr(System.Runtime.InteropServices.HandleRef value) => throw null;
             }
 
             // Generated from `System.Runtime.InteropServices.ICustomAdapter` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -878,7 +869,6 @@ namespace System
                 FSource,
                 FUiDefault,
                 FUsesGetLastError,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Runtime.InteropServices.TypeLibImportClassAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -914,7 +904,6 @@ namespace System
                 FReplaceable,
                 FRestricted,
                 FReverseBind,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Runtime.InteropServices.TypeLibVarAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -942,7 +931,6 @@ namespace System
                 FRestricted,
                 FSource,
                 FUiDefault,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Runtime.InteropServices.TypeLibVersionAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1018,7 +1006,6 @@ namespace System
                 U2,
                 U4,
                 U8,
-                // Stub generator skipped constructor 
                 VBByRefStr,
                 VariantBool,
             }
@@ -1070,7 +1057,6 @@ namespace System
                 VT_VARIANT,
                 VT_VECTOR,
                 VT_VOID,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Runtime.InteropServices.VariantWrapper` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1086,7 +1072,6 @@ namespace System
                 [System.Flags]
                 public enum ADVF
                 {
-                    // Stub generator skipped constructor 
                     ADVFCACHE_FORCEBUILTIN,
                     ADVFCACHE_NOHANDLER,
                     ADVFCACHE_ONSAVE,
@@ -1118,7 +1103,6 @@ namespace System
                 // Generated from `System.Runtime.InteropServices.ComTypes.CALLCONV` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public enum CALLCONV
                 {
-                    // Stub generator skipped constructor 
                     CC_CDECL,
                     CC_MACPASCAL,
                     CC_MAX,
@@ -1142,7 +1126,6 @@ namespace System
                 // Generated from `System.Runtime.InteropServices.ComTypes.DATADIR` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public enum DATADIR
                 {
-                    // Stub generator skipped constructor 
                     DATADIR_GET,
                     DATADIR_SET,
                 }
@@ -1150,7 +1133,6 @@ namespace System
                 // Generated from `System.Runtime.InteropServices.ComTypes.DESCKIND` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public enum DESCKIND
                 {
-                    // Stub generator skipped constructor 
                     DESCKIND_FUNCDESC,
                     DESCKIND_IMPLICITAPPOBJ,
                     DESCKIND_MAX,
@@ -1173,7 +1155,6 @@ namespace System
                 [System.Flags]
                 public enum DVASPECT
                 {
-                    // Stub generator skipped constructor 
                     DVASPECT_CONTENT,
                     DVASPECT_DOCPRINT,
                     DVASPECT_ICON,
@@ -1253,7 +1234,6 @@ namespace System
                 [System.Flags]
                 public enum FUNCFLAGS
                 {
-                    // Stub generator skipped constructor 
                     FUNCFLAG_FBINDABLE,
                     FUNCFLAG_FDEFAULTBIND,
                     FUNCFLAG_FDEFAULTCOLLELEM,
@@ -1272,7 +1252,6 @@ namespace System
                 // Generated from `System.Runtime.InteropServices.ComTypes.FUNCKIND` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public enum FUNCKIND
                 {
-                    // Stub generator skipped constructor 
                     FUNC_DISPATCH,
                     FUNC_NONVIRTUAL,
                     FUNC_PUREVIRTUAL,
@@ -1334,7 +1313,6 @@ namespace System
                 [System.Flags]
                 public enum IDLFLAG
                 {
-                    // Stub generator skipped constructor 
                     IDLFLAG_FIN,
                     IDLFLAG_FLCID,
                     IDLFLAG_FOUT,
@@ -1423,7 +1401,6 @@ namespace System
                 [System.Flags]
                 public enum IMPLTYPEFLAGS
                 {
-                    // Stub generator skipped constructor 
                     IMPLTYPEFLAG_FDEFAULT,
                     IMPLTYPEFLAG_FDEFAULTVTABLE,
                     IMPLTYPEFLAG_FRESTRICTED,
@@ -1459,7 +1436,6 @@ namespace System
                 [System.Flags]
                 public enum INVOKEKIND
                 {
-                    // Stub generator skipped constructor 
                     INVOKE_FUNC,
                     INVOKE_PROPERTYGET,
                     INVOKE_PROPERTYPUT,
@@ -1613,7 +1589,6 @@ namespace System
                 [System.Flags]
                 public enum LIBFLAGS
                 {
-                    // Stub generator skipped constructor 
                     LIBFLAG_FCONTROL,
                     LIBFLAG_FHASDISKIMAGE,
                     LIBFLAG_FHIDDEN,
@@ -1632,7 +1607,6 @@ namespace System
                 [System.Flags]
                 public enum PARAMFLAG
                 {
-                    // Stub generator skipped constructor 
                     PARAMFLAG_FHASCUSTDATA,
                     PARAMFLAG_FHASDEFAULT,
                     PARAMFLAG_FIN,
@@ -1682,7 +1656,6 @@ namespace System
                 // Generated from `System.Runtime.InteropServices.ComTypes.SYSKIND` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public enum SYSKIND
                 {
-                    // Stub generator skipped constructor 
                     SYS_MAC,
                     SYS_WIN16,
                     SYS_WIN32,
@@ -1693,7 +1666,6 @@ namespace System
                 [System.Flags]
                 public enum TYMED
                 {
-                    // Stub generator skipped constructor 
                     TYMED_ENHMF,
                     TYMED_FILE,
                     TYMED_GDI,
@@ -1741,7 +1713,6 @@ namespace System
                 [System.Flags]
                 public enum TYPEFLAGS
                 {
-                    // Stub generator skipped constructor 
                     TYPEFLAG_FAGGREGATABLE,
                     TYPEFLAG_FAPPOBJECT,
                     TYPEFLAG_FCANCREATE,
@@ -1771,7 +1742,6 @@ namespace System
                     TKIND_MODULE,
                     TKIND_RECORD,
                     TKIND_UNION,
-                    // Stub generator skipped constructor 
                 }
 
                 // Generated from `System.Runtime.InteropServices.ComTypes.TYPELIBATTR` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1811,7 +1781,6 @@ namespace System
                 [System.Flags]
                 public enum VARFLAGS
                 {
-                    // Stub generator skipped constructor 
                     VARFLAG_FBINDABLE,
                     VARFLAG_FDEFAULTBIND,
                     VARFLAG_FDEFAULTCOLLELEM,
@@ -1830,7 +1799,6 @@ namespace System
                 // Generated from `System.Runtime.InteropServices.ComTypes.VARKIND` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public enum VARKIND
                 {
-                    // Stub generator skipped constructor 
                     VAR_CONST,
                     VAR_DISPATCH,
                     VAR_PERINSTANCE,

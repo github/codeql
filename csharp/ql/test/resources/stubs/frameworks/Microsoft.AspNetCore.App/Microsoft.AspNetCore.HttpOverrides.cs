@@ -74,7 +74,6 @@ namespace Microsoft
             public enum ForwardedHeaders
             {
                 All,
-                // Stub generator skipped constructor 
                 None,
                 XForwardedFor,
                 XForwardedHost,

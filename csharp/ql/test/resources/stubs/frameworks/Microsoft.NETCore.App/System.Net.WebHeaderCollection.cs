@@ -28,7 +28,6 @@ namespace System
             Expires,
             From,
             Host,
-            // Stub generator skipped constructor 
             IfMatch,
             IfModifiedSince,
             IfNoneMatch,
@@ -69,7 +68,6 @@ namespace System
             Date,
             ETag,
             Expires,
-            // Stub generator skipped constructor 
             KeepAlive,
             LastModified,
             Location,

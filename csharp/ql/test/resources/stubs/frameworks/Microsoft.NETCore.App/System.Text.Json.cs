@@ -11,7 +11,6 @@ namespace System
             {
                 Allow,
                 Disallow,
-                // Stub generator skipped constructor 
                 Skip,
             }
 
@@ -219,7 +218,6 @@ namespace System
             public enum JsonSerializerDefaults
             {
                 General,
-                // Stub generator skipped constructor 
                 Web,
             }
 
@@ -256,7 +254,6 @@ namespace System
                 EndArray,
                 EndObject,
                 False,
-                // Stub generator skipped constructor 
                 None,
                 Null,
                 Number,
@@ -272,7 +269,6 @@ namespace System
             {
                 Array,
                 False,
-                // Stub generator skipped constructor 
                 Null,
                 Number,
                 Object,
@@ -535,7 +531,6 @@ namespace System
                 public enum JsonIgnoreCondition
                 {
                     Always,
-                    // Stub generator skipped constructor 
                     Never,
                     WhenWritingDefault,
                     WhenWritingNull,
@@ -553,7 +548,6 @@ namespace System
                 {
                     AllowNamedFloatingPointLiterals,
                     AllowReadingFromString,
-                    // Stub generator skipped constructor 
                     Strict,
                     WriteAsString,
                 }

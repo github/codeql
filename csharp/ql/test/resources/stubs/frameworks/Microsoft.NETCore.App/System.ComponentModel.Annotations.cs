@@ -66,7 +66,6 @@ namespace System
                 CreditCard,
                 Currency,
                 Custom,
-                // Stub generator skipped constructor 
                 Date,
                 DateTime,
                 Duration,
@@ -410,7 +409,6 @@ namespace System
                 public enum DatabaseGeneratedOption
                 {
                     Computed,
-                    // Stub generator skipped constructor 
                     Identity,
                     None,
                 }

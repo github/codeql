@@ -51,7 +51,6 @@ namespace Microsoft
                 // Generated from `Microsoft.Extensions.Logging.Console.ConsoleLoggerFormat` in `Microsoft.Extensions.Logging.Console, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public enum ConsoleLoggerFormat
                 {
-                    // Stub generator skipped constructor 
                     Default,
                     Systemd,
                 }
@@ -92,7 +91,6 @@ namespace Microsoft
                     Default,
                     Disabled,
                     Enabled,
-                    // Stub generator skipped constructor 
                 }
 
                 // Generated from `Microsoft.Extensions.Logging.Console.SimpleConsoleFormatterOptions` in `Microsoft.Extensions.Logging.Console, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`

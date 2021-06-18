@@ -268,7 +268,6 @@ namespace Microsoft
                 public enum NavLinkMatch
                 {
                     All,
-                    // Stub generator skipped constructor 
                     Prefix,
                 }
 

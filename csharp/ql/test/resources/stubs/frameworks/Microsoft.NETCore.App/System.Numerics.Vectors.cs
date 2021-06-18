@@ -512,16 +512,16 @@ namespace System
             // Stub generator skipped constructor 
             public static System.Numerics.Vector<T> Zero { get => throw null; }
             public static System.Numerics.Vector<T> operator ^(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) => throw null;
-            // Stub generator skipped operator: explicit conversion
-            // Stub generator skipped operator: explicit conversion
-            // Stub generator skipped operator: explicit conversion
-            // Stub generator skipped operator: explicit conversion
-            // Stub generator skipped operator: explicit conversion
-            // Stub generator skipped operator: explicit conversion
-            // Stub generator skipped operator: explicit conversion
-            // Stub generator skipped operator: explicit conversion
-            // Stub generator skipped operator: explicit conversion
-            // Stub generator skipped operator: explicit conversion
+            public static explicit operator System.Numerics.Vector<int>(System.Numerics.Vector<T> value) => throw null;
+            public static explicit operator System.Numerics.Vector<float>(System.Numerics.Vector<T> value) => throw null;
+            public static explicit operator System.Numerics.Vector<double>(System.Numerics.Vector<T> value) => throw null;
+            public static explicit operator System.Numerics.Vector<System.UInt64>(System.Numerics.Vector<T> value) => throw null;
+            public static explicit operator System.Numerics.Vector<System.UInt32>(System.Numerics.Vector<T> value) => throw null;
+            public static explicit operator System.Numerics.Vector<System.UInt16>(System.Numerics.Vector<T> value) => throw null;
+            public static explicit operator System.Numerics.Vector<System.SByte>(System.Numerics.Vector<T> value) => throw null;
+            public static explicit operator System.Numerics.Vector<System.Int64>(System.Numerics.Vector<T> value) => throw null;
+            public static explicit operator System.Numerics.Vector<System.Int16>(System.Numerics.Vector<T> value) => throw null;
+            public static explicit operator System.Numerics.Vector<System.Byte>(System.Numerics.Vector<T> value) => throw null;
             public static System.Numerics.Vector<T> operator |(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) => throw null;
             public static System.Numerics.Vector<T> operator ~(System.Numerics.Vector<T> value) => throw null;
         }

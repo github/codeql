@@ -92,7 +92,6 @@ namespace Microsoft
             {
                 ContinueRules,
                 EndResponse,
-                // Stub generator skipped constructor 
                 SkipRemainingRules,
             }
 

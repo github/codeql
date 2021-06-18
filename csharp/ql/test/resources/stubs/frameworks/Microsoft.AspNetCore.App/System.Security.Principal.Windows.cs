@@ -139,7 +139,6 @@ namespace System
                 Query,
                 QuerySource,
                 Read,
-                // Stub generator skipped constructor 
                 Write,
             }
 
@@ -206,7 +205,6 @@ namespace System
                 ServiceSid,
                 TerminalServerSid,
                 ThisOrganizationSid,
-                // Stub generator skipped constructor 
                 WinAccountReadonlyControllersSid,
                 WinApplicationPackageAuthoritySid,
                 WinBuiltinAnyPackageSid,
@@ -252,7 +250,6 @@ namespace System
                 Guest,
                 Normal,
                 System,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Security.Principal.WindowsBuiltInRole` in `System.Security.Principal.Windows, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -267,7 +264,6 @@ namespace System
                 Replicator,
                 SystemOperator,
                 User,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Security.Principal.WindowsIdentity` in `System.Security.Principal.Windows, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`

@@ -325,7 +325,7 @@ namespace Microsoft
                 // Stub generator skipped constructor 
                 public override string ToString() => throw null;
                 public string Value { get => throw null; }
-                // Stub generator skipped operator: explicit conversion
+                public static explicit operator Microsoft.AspNetCore.Components.MarkupString(string value) => throw null;
             }
 
             // Generated from `Microsoft.AspNetCore.Components.NavigationException` in `Microsoft.AspNetCore.Components, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
@@ -528,7 +528,6 @@ namespace Microsoft
                     PrependFrame,
                     RemoveAttribute,
                     RemoveFrame,
-                    // Stub generator skipped constructor 
                     SetAttribute,
                     StepIn,
                     StepOut,
@@ -575,7 +574,6 @@ namespace Microsoft
                     Markup,
                     None,
                     Region,
-                    // Stub generator skipped constructor 
                     Text,
                 }
 

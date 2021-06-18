@@ -391,7 +391,6 @@ namespace Microsoft
             {
                 IdentityV2,
                 IdentityV3,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `Microsoft.AspNetCore.Identity.PasswordHasherOptions` in `Microsoft.Extensions.Identity.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
@@ -430,7 +429,6 @@ namespace Microsoft
             public enum PasswordVerificationResult
             {
                 Failed,
-                // Stub generator skipped constructor 
                 Success,
                 SuccessRehashNeeded,
             }

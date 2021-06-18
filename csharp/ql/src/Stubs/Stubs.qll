@@ -744,11 +744,9 @@ private string stubMember(Member m, Assembly assembly) {
           stubParameters(m) + ")" + stubTypeParametersConstraints(m) + stubImplementation(m) + ";\n"
     else result = "    // Stub generator skipped method: " + m.getName() + "\n"
   else
-    if m instanceof Operator
+    if m instanceof Operator and not m instanceof ConversionOperator
     then
-      if
-        not m.getDeclaringType() instanceof Enum and
-        not m instanceof ConversionOperator
+      if not m.getDeclaringType() instanceof Enum
       then
         result =
           "    " + stubModifiers(m) + stubClassName(m.(Operator).getReturnType()) + " operator " +
@@ -774,17 +772,17 @@ private string stubMember(Member m, Assembly assembly) {
           else
             if m instanceof Constructor
             then
-              if
-                not m.getDeclaringType() instanceof Enum and
-                (
+              if m.getDeclaringType() instanceof Enum
+              then result = ""
+              else
+                if
                   not m.getDeclaringType() instanceof StructEx or
                   m.(Constructor).getNumberOfParameters() > 0
-                )
-              then
-                result =
-                  "    " + stubModifiers(m) + m.getName() + "(" + stubParameters(m) + ")" +
-                    stubConstructorInitializer(m) + " => throw null;\n"
-              else result = "    // Stub generator skipped constructor \n"
+                then
+                  result =
+                    "    " + stubModifiers(m) + m.getName() + "(" + stubParameters(m) + ")" +
+                      stubConstructorInitializer(m) + " => throw null;\n"
+                else result = "    // Stub generator skipped constructor \n"
             else
               if m instanceof Indexer
               then

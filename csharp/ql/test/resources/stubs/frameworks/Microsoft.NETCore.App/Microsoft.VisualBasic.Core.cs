@@ -7,7 +7,6 @@ namespace Microsoft
         // Generated from `Microsoft.VisualBasic.AppWinStyle` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public enum AppWinStyle
         {
-            // Stub generator skipped constructor 
             Hide,
             MaximizedFocus,
             MinimizedFocus,
@@ -19,7 +18,6 @@ namespace Microsoft
         // Generated from `Microsoft.VisualBasic.CallType` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public enum CallType
         {
-            // Stub generator skipped constructor 
             Get,
             Let,
             Method,
@@ -74,7 +72,6 @@ namespace Microsoft
         public enum CompareMethod
         {
             Binary,
-            // Stub generator skipped constructor 
             Text,
         }
 
@@ -279,7 +276,6 @@ namespace Microsoft
         // Generated from `Microsoft.VisualBasic.DateFormat` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public enum DateFormat
         {
-            // Stub generator skipped constructor 
             GeneralDate,
             LongDate,
             LongTime,
@@ -290,7 +286,6 @@ namespace Microsoft
         // Generated from `Microsoft.VisualBasic.DateInterval` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public enum DateInterval
         {
-            // Stub generator skipped constructor 
             Day,
             DayOfYear,
             Hour,
@@ -307,7 +302,6 @@ namespace Microsoft
         public enum DueDate
         {
             BegOfPeriod,
-            // Stub generator skipped constructor 
             EndOfPeriod,
         }
 
@@ -332,7 +326,6 @@ namespace Microsoft
         {
             Archive,
             Directory,
-            // Stub generator skipped constructor 
             Hidden,
             Normal,
             ReadOnly,
@@ -449,7 +442,6 @@ namespace Microsoft
         // Generated from `Microsoft.VisualBasic.FirstDayOfWeek` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public enum FirstDayOfWeek
         {
-            // Stub generator skipped constructor 
             Friday,
             Monday,
             Saturday,
@@ -465,7 +457,6 @@ namespace Microsoft
         {
             FirstFourDays,
             FirstFullWeek,
-            // Stub generator skipped constructor 
             Jan1,
             System,
         }
@@ -529,7 +520,6 @@ namespace Microsoft
             Abort,
             Cancel,
             Ignore,
-            // Stub generator skipped constructor 
             No,
             Ok,
             Retry,
@@ -552,7 +542,6 @@ namespace Microsoft
             MsgBoxRight,
             MsgBoxRtlReading,
             MsgBoxSetForeground,
-            // Stub generator skipped constructor 
             OkCancel,
             OkOnly,
             Question,
@@ -576,7 +565,6 @@ namespace Microsoft
         public enum OpenAccess
         {
             Default,
-            // Stub generator skipped constructor 
             Read,
             ReadWrite,
             Write,
@@ -588,7 +576,6 @@ namespace Microsoft
             Append,
             Binary,
             Input,
-            // Stub generator skipped constructor 
             Output,
             Random,
         }
@@ -600,7 +587,6 @@ namespace Microsoft
             LockRead,
             LockReadWrite,
             LockWrite,
-            // Stub generator skipped constructor 
             Shared,
         }
 
@@ -684,7 +670,6 @@ namespace Microsoft
         public enum TriState
         {
             False,
-            // Stub generator skipped constructor 
             True,
             UseDefault,
         }
@@ -737,7 +722,6 @@ namespace Microsoft
             String,
             UserDefinedType,
             Variant,
-            // Stub generator skipped constructor 
         }
 
         // Generated from `Microsoft.VisualBasic.VbStrConv` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -754,7 +738,6 @@ namespace Microsoft
             SimplifiedChinese,
             TraditionalChinese,
             Uppercase,
-            // Stub generator skipped constructor 
             Wide,
         }
 
@@ -1121,7 +1104,6 @@ namespace Microsoft
             public enum DeleteDirectoryOption
             {
                 DeleteAllContents,
-                // Stub generator skipped constructor 
                 ThrowIfDirectoryNonEmpty,
             }
 
@@ -1129,7 +1111,6 @@ namespace Microsoft
             public enum FieldType
             {
                 Delimited,
-                // Stub generator skipped constructor 
                 FixedWidth,
             }
 
@@ -1212,7 +1193,6 @@ namespace Microsoft
             public enum RecycleOption
             {
                 DeletePermanently,
-                // Stub generator skipped constructor 
                 SendToRecycleBin,
             }
 
@@ -1220,7 +1200,6 @@ namespace Microsoft
             public enum SearchOption
             {
                 SearchAllSubDirectories,
-                // Stub generator skipped constructor 
                 SearchTopLevelOnly,
             }
 
@@ -1277,7 +1256,6 @@ namespace Microsoft
             {
                 DoNothing,
                 ThrowException,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `Microsoft.VisualBasic.FileIO.UIOption` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1285,7 +1263,6 @@ namespace Microsoft
             {
                 AllDialogs,
                 OnlyErrorDialogs,
-                // Stub generator skipped constructor 
             }
 
         }

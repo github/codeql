@@ -21,7 +21,6 @@ namespace System
             {
                 Always,
                 AsNeeded,
-                // Stub generator skipped constructor 
                 Never,
             }
 

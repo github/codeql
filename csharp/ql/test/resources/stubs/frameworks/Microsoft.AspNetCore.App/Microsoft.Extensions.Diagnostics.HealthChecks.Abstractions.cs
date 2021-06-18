@@ -71,7 +71,6 @@ namespace Microsoft
                 public enum HealthStatus
                 {
                     Degraded,
-                    // Stub generator skipped constructor 
                     Healthy,
                     Unhealthy,
                 }

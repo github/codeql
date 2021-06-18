@@ -182,7 +182,6 @@ namespace System
             [System.Flags]
             public enum EnumerablePartitionerOptions
             {
-                // Stub generator skipped constructor 
                 NoBuffering,
                 None,
             }

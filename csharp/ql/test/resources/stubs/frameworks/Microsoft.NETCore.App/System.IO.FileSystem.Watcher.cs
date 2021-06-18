@@ -77,7 +77,6 @@ namespace System
             FileName,
             LastAccess,
             LastWrite,
-            // Stub generator skipped constructor 
             Security,
             Size,
         }
@@ -112,7 +111,6 @@ namespace System
             Created,
             Deleted,
             Renamed,
-            // Stub generator skipped constructor 
         }
 
     }

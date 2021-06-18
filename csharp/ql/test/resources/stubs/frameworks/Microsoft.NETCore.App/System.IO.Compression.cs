@@ -9,7 +9,6 @@ namespace System
             // Generated from `System.IO.Compression.CompressionLevel` in `System.IO.Compression, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089`
             public enum CompressionLevel
             {
-                // Stub generator skipped constructor 
                 Fastest,
                 NoCompression,
                 Optimal,
@@ -19,7 +18,6 @@ namespace System
             public enum CompressionMode
             {
                 Compress,
-                // Stub generator skipped constructor 
                 Decompress,
             }
 
@@ -133,7 +131,6 @@ namespace System
                 Create,
                 Read,
                 Update,
-                // Stub generator skipped constructor 
             }
 
         }

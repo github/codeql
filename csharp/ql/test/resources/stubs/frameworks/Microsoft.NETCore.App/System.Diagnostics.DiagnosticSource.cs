@@ -101,7 +101,6 @@ namespace System
         // Generated from `System.Diagnostics.ActivityIdFormat` in `System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public enum ActivityIdFormat
         {
-            // Stub generator skipped constructor 
             Hierarchical,
             Unknown,
             W3C,
@@ -110,7 +109,6 @@ namespace System
         // Generated from `System.Diagnostics.ActivityKind` in `System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public enum ActivityKind
         {
-            // Stub generator skipped constructor 
             Client,
             Consumer,
             Internal,
@@ -147,7 +145,6 @@ namespace System
         // Generated from `System.Diagnostics.ActivitySamplingResult` in `System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public enum ActivitySamplingResult
         {
-            // Stub generator skipped constructor 
             AllData,
             AllDataAndRecorded,
             None,
@@ -226,7 +223,6 @@ namespace System
         [System.Flags]
         public enum ActivityTraceFlags
         {
-            // Stub generator skipped constructor 
             None,
             Recorded,
         }

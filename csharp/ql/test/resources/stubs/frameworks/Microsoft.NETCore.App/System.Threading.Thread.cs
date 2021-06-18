@@ -13,7 +13,6 @@ namespace System
         // Generated from `System.Threading.ApartmentState` in `System.Threading.Thread, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public enum ApartmentState
         {
-            // Stub generator skipped constructor 
             MTA,
             STA,
             Unknown,
@@ -150,7 +149,6 @@ namespace System
             Highest,
             Lowest,
             Normal,
-            // Stub generator skipped constructor 
         }
 
         // Generated from `System.Threading.ThreadStart` in `System.Threading.Thread, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -173,7 +171,6 @@ namespace System
             Stopped,
             SuspendRequested,
             Suspended,
-            // Stub generator skipped constructor 
             Unstarted,
             WaitSleepJoin,
         }

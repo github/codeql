@@ -9,7 +9,6 @@ namespace System
             // Generated from `System.Threading.Channels.BoundedChannelFullMode` in `System.Threading.Channels, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public enum BoundedChannelFullMode
             {
-                // Stub generator skipped constructor 
                 DropNewest,
                 DropOldest,
                 DropWrite,
@@ -39,8 +38,8 @@ namespace System
                 protected Channel() => throw null;
                 public System.Threading.Channels.ChannelReader<TRead> Reader { get => throw null; set => throw null; }
                 public System.Threading.Channels.ChannelWriter<TWrite> Writer { get => throw null; set => throw null; }
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static implicit operator System.Threading.Channels.ChannelWriter<TWrite>(System.Threading.Channels.Channel<TWrite, TRead> channel) => throw null;
+                public static implicit operator System.Threading.Channels.ChannelReader<TRead>(System.Threading.Channels.Channel<TWrite, TRead> channel) => throw null;
             }
 
             // Generated from `System.Threading.Channels.Channel<>` in `System.Threading.Channels, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`

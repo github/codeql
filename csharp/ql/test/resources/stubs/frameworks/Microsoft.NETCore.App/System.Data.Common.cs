@@ -7,7 +7,6 @@ namespace System
         // Generated from `System.Data.AcceptRejectRule` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public enum AcceptRejectRule
         {
-            // Stub generator skipped constructor 
             Cascade,
             None,
         }
@@ -17,7 +16,6 @@ namespace System
         public enum CommandBehavior
         {
             CloseConnection,
-            // Stub generator skipped constructor 
             Default,
             KeyInfo,
             SchemaOnly,
@@ -29,7 +27,6 @@ namespace System
         // Generated from `System.Data.CommandType` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public enum CommandType
         {
-            // Stub generator skipped constructor 
             StoredProcedure,
             TableDirect,
             Text,
@@ -40,7 +37,6 @@ namespace System
         {
             CompareAllSearchableValues,
             CompareRowVersion,
-            // Stub generator skipped constructor 
             OverwriteChanges,
         }
 
@@ -51,7 +47,6 @@ namespace System
             Broken,
             Closed,
             Connecting,
-            // Stub generator skipped constructor 
             Executing,
             Fetching,
             Open,
@@ -346,7 +341,6 @@ namespace System
             ChangeCurrentAndOriginal,
             ChangeOriginal,
             Commit,
-            // Stub generator skipped constructor 
             Delete,
             Nothing,
             Rollback,
@@ -422,7 +416,6 @@ namespace System
         public enum DataRowState
         {
             Added,
-            // Stub generator skipped constructor 
             Deleted,
             Detached,
             Modified,
@@ -433,7 +426,6 @@ namespace System
         public enum DataRowVersion
         {
             Current,
-            // Stub generator skipped constructor 
             Default,
             Original,
             Proposed,
@@ -583,7 +575,6 @@ namespace System
         // Generated from `System.Data.DataSetDateTime` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public enum DataSetDateTime
         {
-            // Stub generator skipped constructor 
             Local,
             Unspecified,
             UnspecifiedLocal,
@@ -962,7 +953,6 @@ namespace System
         {
             Added,
             CurrentRows,
-            // Stub generator skipped constructor 
             Deleted,
             ModifiedCurrent,
             ModifiedOriginal,
@@ -1010,7 +1000,6 @@ namespace System
             DateTime,
             DateTime2,
             DateTimeOffset,
-            // Stub generator skipped constructor 
             Decimal,
             Double,
             Guid,
@@ -1337,7 +1326,6 @@ namespace System
         public enum IsolationLevel
         {
             Chaos,
-            // Stub generator skipped constructor 
             ReadCommitted,
             ReadUncommitted,
             RepeatableRead,
@@ -1350,14 +1338,12 @@ namespace System
         public enum KeyRestrictionBehavior
         {
             AllowOnly,
-            // Stub generator skipped constructor 
             PreventUsage,
         }
 
         // Generated from `System.Data.LoadOption` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public enum LoadOption
         {
-            // Stub generator skipped constructor 
             OverwriteChanges,
             PreserveChanges,
             Upsert,
@@ -1369,7 +1355,6 @@ namespace System
             Attribute,
             Element,
             Hidden,
-            // Stub generator skipped constructor 
             SimpleContent,
         }
 
@@ -1389,7 +1374,6 @@ namespace System
         {
             Error,
             Ignore,
-            // Stub generator skipped constructor 
             Passthrough,
         }
 
@@ -1409,7 +1393,6 @@ namespace System
             AddWithKey,
             Error,
             Ignore,
-            // Stub generator skipped constructor 
         }
 
         // Generated from `System.Data.NoNullAllowedException` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1432,7 +1415,6 @@ namespace System
             Input,
             InputOutput,
             Output,
-            // Stub generator skipped constructor 
             ReturnValue,
         }
 
@@ -1467,7 +1449,6 @@ namespace System
         {
             Cascade,
             None,
-            // Stub generator skipped constructor 
             SetDefault,
             SetNull,
         }
@@ -1477,14 +1458,12 @@ namespace System
         {
             ExcludeSchema,
             IncludeSchema,
-            // Stub generator skipped constructor 
         }
 
         // Generated from `System.Data.SchemaType` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public enum SchemaType
         {
             Mapped,
-            // Stub generator skipped constructor 
             Source,
         }
 
@@ -1492,7 +1471,6 @@ namespace System
         public enum SerializationFormat
         {
             Binary,
-            // Stub generator skipped constructor 
             Xml,
         }
 
@@ -1519,7 +1497,6 @@ namespace System
             SmallDateTime,
             SmallInt,
             SmallMoney,
-            // Stub generator skipped constructor 
             Structured,
             Text,
             Time,
@@ -1561,7 +1538,6 @@ namespace System
             Delete,
             Insert,
             Select,
-            // Stub generator skipped constructor 
             Update,
         }
 
@@ -1632,7 +1608,6 @@ namespace System
             FirstReturnedRecord,
             None,
             OutputParameters,
-            // Stub generator skipped constructor 
         }
 
         // Generated from `System.Data.UpdateStatus` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1642,7 +1617,6 @@ namespace System
             ErrorsOccurred,
             SkipAllRemainingRows,
             SkipCurrentRow,
-            // Stub generator skipped constructor 
         }
 
         // Generated from `System.Data.VersionNotFoundException` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1664,7 +1638,6 @@ namespace System
             InferSchema,
             InferTypedSchema,
             ReadSchema,
-            // Stub generator skipped constructor 
         }
 
         // Generated from `System.Data.XmlWriteMode` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1673,7 +1646,6 @@ namespace System
             DiffGram,
             IgnoreSchema,
             WriteSchema,
-            // Stub generator skipped constructor 
         }
 
         namespace Common
@@ -1681,7 +1653,6 @@ namespace System
             // Generated from `System.Data.Common.CatalogLocation` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum CatalogLocation
             {
-                // Stub generator skipped constructor 
                 End,
                 Start,
             }
@@ -2398,7 +2369,6 @@ namespace System
             public enum GroupByBehavior
             {
                 ExactMatch,
-                // Stub generator skipped constructor 
                 MustContainAll,
                 NotSupported,
                 Unknown,
@@ -2414,7 +2384,6 @@ namespace System
             // Generated from `System.Data.Common.IdentifierCase` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum IdentifierCase
             {
-                // Stub generator skipped constructor 
                 Insensitive,
                 Sensitive,
                 Unknown,
@@ -2499,7 +2468,6 @@ namespace System
                 LeftOuter,
                 None,
                 RightOuter,
-                // Stub generator skipped constructor 
             }
 
         }
@@ -2554,9 +2522,9 @@ namespace System
                 public override string ToString() => throw null;
                 public System.Byte[] Value { get => throw null; }
                 void System.Xml.Serialization.IXmlSerializable.WriteXml(System.Xml.XmlWriter writer) => throw null;
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator System.Data.SqlTypes.SqlBinary(System.Data.SqlTypes.SqlGuid x) => throw null;
+                public static explicit operator System.Byte[](System.Data.SqlTypes.SqlBinary x) => throw null;
+                public static implicit operator System.Data.SqlTypes.SqlBinary(System.Byte[] x) => throw null;
             }
 
             // Generated from `System.Data.SqlTypes.SqlBoolean` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2613,18 +2581,18 @@ namespace System
                 public static System.Data.SqlTypes.SqlBoolean Xor(System.Data.SqlTypes.SqlBoolean x, System.Data.SqlTypes.SqlBoolean y) => throw null;
                 public static System.Data.SqlTypes.SqlBoolean Zero;
                 public static System.Data.SqlTypes.SqlBoolean operator ^(System.Data.SqlTypes.SqlBoolean x, System.Data.SqlTypes.SqlBoolean y) => throw null;
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
+                public static explicit operator bool(System.Data.SqlTypes.SqlBoolean x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlBoolean(System.Data.SqlTypes.SqlString x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlBoolean(System.Data.SqlTypes.SqlSingle x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlBoolean(System.Data.SqlTypes.SqlMoney x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlBoolean(System.Data.SqlTypes.SqlInt64 x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlBoolean(System.Data.SqlTypes.SqlInt32 x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlBoolean(System.Data.SqlTypes.SqlInt16 x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlBoolean(System.Data.SqlTypes.SqlDouble x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlBoolean(System.Data.SqlTypes.SqlDecimal x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlBoolean(System.Data.SqlTypes.SqlByte x) => throw null;
                 public static bool operator false(System.Data.SqlTypes.SqlBoolean x) => throw null;
-                // Stub generator skipped operator: implicit conversion
+                public static implicit operator System.Data.SqlTypes.SqlBoolean(bool x) => throw null;
                 public static bool operator true(System.Data.SqlTypes.SqlBoolean x) => throw null;
                 public static System.Data.SqlTypes.SqlBoolean operator |(System.Data.SqlTypes.SqlBoolean x, System.Data.SqlTypes.SqlBoolean y) => throw null;
                 public static System.Data.SqlTypes.SqlBoolean operator ~(System.Data.SqlTypes.SqlBoolean x) => throw null;
@@ -2689,17 +2657,17 @@ namespace System
                 public static System.Data.SqlTypes.SqlByte Xor(System.Data.SqlTypes.SqlByte x, System.Data.SqlTypes.SqlByte y) => throw null;
                 public static System.Data.SqlTypes.SqlByte Zero;
                 public static System.Data.SqlTypes.SqlByte operator ^(System.Data.SqlTypes.SqlByte x, System.Data.SqlTypes.SqlByte y) => throw null;
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator System.Data.SqlTypes.SqlByte(System.Data.SqlTypes.SqlString x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlByte(System.Data.SqlTypes.SqlSingle x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlByte(System.Data.SqlTypes.SqlMoney x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlByte(System.Data.SqlTypes.SqlInt64 x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlByte(System.Data.SqlTypes.SqlInt32 x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlByte(System.Data.SqlTypes.SqlInt16 x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlByte(System.Data.SqlTypes.SqlDouble x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlByte(System.Data.SqlTypes.SqlDecimal x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlByte(System.Data.SqlTypes.SqlBoolean x) => throw null;
+                public static explicit operator System.Byte(System.Data.SqlTypes.SqlByte x) => throw null;
+                public static implicit operator System.Data.SqlTypes.SqlByte(System.Byte x) => throw null;
                 public static System.Data.SqlTypes.SqlByte operator |(System.Data.SqlTypes.SqlByte x, System.Data.SqlTypes.SqlByte y) => throw null;
                 public static System.Data.SqlTypes.SqlByte operator ~(System.Data.SqlTypes.SqlByte x) => throw null;
             }
@@ -2730,8 +2698,8 @@ namespace System
                 public System.Byte[] Value { get => throw null; }
                 public void Write(System.Int64 offset, System.Byte[] buffer, int offsetInBuffer, int count) => throw null;
                 void System.Xml.Serialization.IXmlSerializable.WriteXml(System.Xml.XmlWriter writer) => throw null;
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
+                public static explicit operator System.Data.SqlTypes.SqlBytes(System.Data.SqlTypes.SqlBinary value) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlBinary(System.Data.SqlTypes.SqlBytes value) => throw null;
             }
 
             // Generated from `System.Data.SqlTypes.SqlChars` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2758,8 +2726,8 @@ namespace System
                 public System.Char[] Value { get => throw null; }
                 public void Write(System.Int64 offset, System.Char[] buffer, int offsetInBuffer, int count) => throw null;
                 void System.Xml.Serialization.IXmlSerializable.WriteXml(System.Xml.XmlWriter writer) => throw null;
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
+                public static explicit operator System.Data.SqlTypes.SqlString(System.Data.SqlTypes.SqlChars value) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlChars(System.Data.SqlTypes.SqlString value) => throw null;
             }
 
             // Generated from `System.Data.SqlTypes.SqlCompareOptions` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2773,7 +2741,6 @@ namespace System
                 IgnoreNonSpace,
                 IgnoreWidth,
                 None,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Data.SqlTypes.SqlDateTime` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2823,9 +2790,9 @@ namespace System
                 public override string ToString() => throw null;
                 public System.DateTime Value { get => throw null; }
                 void System.Xml.Serialization.IXmlSerializable.WriteXml(System.Xml.XmlWriter writer) => throw null;
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator System.DateTime(System.Data.SqlTypes.SqlDateTime x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlDateTime(System.Data.SqlTypes.SqlString x) => throw null;
+                public static implicit operator System.Data.SqlTypes.SqlDateTime(System.DateTime value) => throw null;
             }
 
             // Generated from `System.Data.SqlTypes.SqlDecimal` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2900,19 +2867,19 @@ namespace System
                 public static System.Data.SqlTypes.SqlDecimal Truncate(System.Data.SqlTypes.SqlDecimal n, int position) => throw null;
                 public System.Decimal Value { get => throw null; }
                 void System.Xml.Serialization.IXmlSerializable.WriteXml(System.Xml.XmlWriter writer) => throw null;
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator System.Decimal(System.Data.SqlTypes.SqlDecimal x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlDecimal(double x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlDecimal(System.Data.SqlTypes.SqlString x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlDecimal(System.Data.SqlTypes.SqlSingle x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlDecimal(System.Data.SqlTypes.SqlDouble x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlDecimal(System.Data.SqlTypes.SqlBoolean x) => throw null;
+                public static implicit operator System.Data.SqlTypes.SqlDecimal(System.Int64 x) => throw null;
+                public static implicit operator System.Data.SqlTypes.SqlDecimal(System.Decimal x) => throw null;
+                public static implicit operator System.Data.SqlTypes.SqlDecimal(System.Data.SqlTypes.SqlMoney x) => throw null;
+                public static implicit operator System.Data.SqlTypes.SqlDecimal(System.Data.SqlTypes.SqlInt64 x) => throw null;
+                public static implicit operator System.Data.SqlTypes.SqlDecimal(System.Data.SqlTypes.SqlInt32 x) => throw null;
+                public static implicit operator System.Data.SqlTypes.SqlDecimal(System.Data.SqlTypes.SqlInt16 x) => throw null;
+                public static implicit operator System.Data.SqlTypes.SqlDecimal(System.Data.SqlTypes.SqlByte x) => throw null;
             }
 
             // Generated from `System.Data.SqlTypes.SqlDouble` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2966,17 +2933,17 @@ namespace System
                 public double Value { get => throw null; }
                 void System.Xml.Serialization.IXmlSerializable.WriteXml(System.Xml.XmlWriter writer) => throw null;
                 public static System.Data.SqlTypes.SqlDouble Zero;
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator double(System.Data.SqlTypes.SqlDouble x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlDouble(System.Data.SqlTypes.SqlString x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlDouble(System.Data.SqlTypes.SqlBoolean x) => throw null;
+                public static implicit operator System.Data.SqlTypes.SqlDouble(double x) => throw null;
+                public static implicit operator System.Data.SqlTypes.SqlDouble(System.Data.SqlTypes.SqlSingle x) => throw null;
+                public static implicit operator System.Data.SqlTypes.SqlDouble(System.Data.SqlTypes.SqlMoney x) => throw null;
+                public static implicit operator System.Data.SqlTypes.SqlDouble(System.Data.SqlTypes.SqlInt64 x) => throw null;
+                public static implicit operator System.Data.SqlTypes.SqlDouble(System.Data.SqlTypes.SqlInt32 x) => throw null;
+                public static implicit operator System.Data.SqlTypes.SqlDouble(System.Data.SqlTypes.SqlInt16 x) => throw null;
+                public static implicit operator System.Data.SqlTypes.SqlDouble(System.Data.SqlTypes.SqlDecimal x) => throw null;
+                public static implicit operator System.Data.SqlTypes.SqlDouble(System.Data.SqlTypes.SqlByte x) => throw null;
             }
 
             // Generated from `System.Data.SqlTypes.SqlGuid` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -3015,10 +2982,10 @@ namespace System
                 public override string ToString() => throw null;
                 public System.Guid Value { get => throw null; }
                 void System.Xml.Serialization.IXmlSerializable.WriteXml(System.Xml.XmlWriter writer) => throw null;
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator System.Guid(System.Data.SqlTypes.SqlGuid x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlGuid(System.Data.SqlTypes.SqlString x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlGuid(System.Data.SqlTypes.SqlBinary x) => throw null;
+                public static implicit operator System.Data.SqlTypes.SqlGuid(System.Guid x) => throw null;
             }
 
             // Generated from `System.Data.SqlTypes.SqlInt16` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -3081,17 +3048,17 @@ namespace System
                 public static System.Data.SqlTypes.SqlInt16 Xor(System.Data.SqlTypes.SqlInt16 x, System.Data.SqlTypes.SqlInt16 y) => throw null;
                 public static System.Data.SqlTypes.SqlInt16 Zero;
                 public static System.Data.SqlTypes.SqlInt16 operator ^(System.Data.SqlTypes.SqlInt16 x, System.Data.SqlTypes.SqlInt16 y) => throw null;
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator System.Int16(System.Data.SqlTypes.SqlInt16 x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlInt16(System.Data.SqlTypes.SqlString x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlInt16(System.Data.SqlTypes.SqlSingle x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlInt16(System.Data.SqlTypes.SqlMoney x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlInt16(System.Data.SqlTypes.SqlInt64 x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlInt16(System.Data.SqlTypes.SqlInt32 x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlInt16(System.Data.SqlTypes.SqlDouble x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlInt16(System.Data.SqlTypes.SqlDecimal x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlInt16(System.Data.SqlTypes.SqlBoolean x) => throw null;
+                public static implicit operator System.Data.SqlTypes.SqlInt16(System.Int16 x) => throw null;
+                public static implicit operator System.Data.SqlTypes.SqlInt16(System.Data.SqlTypes.SqlByte x) => throw null;
                 public static System.Data.SqlTypes.SqlInt16 operator |(System.Data.SqlTypes.SqlInt16 x, System.Data.SqlTypes.SqlInt16 y) => throw null;
                 public static System.Data.SqlTypes.SqlInt16 operator ~(System.Data.SqlTypes.SqlInt16 x) => throw null;
             }
@@ -3156,17 +3123,17 @@ namespace System
                 public static System.Data.SqlTypes.SqlInt32 Xor(System.Data.SqlTypes.SqlInt32 x, System.Data.SqlTypes.SqlInt32 y) => throw null;
                 public static System.Data.SqlTypes.SqlInt32 Zero;
                 public static System.Data.SqlTypes.SqlInt32 operator ^(System.Data.SqlTypes.SqlInt32 x, System.Data.SqlTypes.SqlInt32 y) => throw null;
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator int(System.Data.SqlTypes.SqlInt32 x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlInt32(System.Data.SqlTypes.SqlString x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlInt32(System.Data.SqlTypes.SqlSingle x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlInt32(System.Data.SqlTypes.SqlMoney x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlInt32(System.Data.SqlTypes.SqlInt64 x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlInt32(System.Data.SqlTypes.SqlDouble x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlInt32(System.Data.SqlTypes.SqlDecimal x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlInt32(System.Data.SqlTypes.SqlBoolean x) => throw null;
+                public static implicit operator System.Data.SqlTypes.SqlInt32(int x) => throw null;
+                public static implicit operator System.Data.SqlTypes.SqlInt32(System.Data.SqlTypes.SqlInt16 x) => throw null;
+                public static implicit operator System.Data.SqlTypes.SqlInt32(System.Data.SqlTypes.SqlByte x) => throw null;
                 public static System.Data.SqlTypes.SqlInt32 operator |(System.Data.SqlTypes.SqlInt32 x, System.Data.SqlTypes.SqlInt32 y) => throw null;
                 public static System.Data.SqlTypes.SqlInt32 operator ~(System.Data.SqlTypes.SqlInt32 x) => throw null;
             }
@@ -3231,17 +3198,17 @@ namespace System
                 public static System.Data.SqlTypes.SqlInt64 Xor(System.Data.SqlTypes.SqlInt64 x, System.Data.SqlTypes.SqlInt64 y) => throw null;
                 public static System.Data.SqlTypes.SqlInt64 Zero;
                 public static System.Data.SqlTypes.SqlInt64 operator ^(System.Data.SqlTypes.SqlInt64 x, System.Data.SqlTypes.SqlInt64 y) => throw null;
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator System.Int64(System.Data.SqlTypes.SqlInt64 x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlInt64(System.Data.SqlTypes.SqlString x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlInt64(System.Data.SqlTypes.SqlSingle x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlInt64(System.Data.SqlTypes.SqlMoney x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlInt64(System.Data.SqlTypes.SqlDouble x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlInt64(System.Data.SqlTypes.SqlDecimal x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlInt64(System.Data.SqlTypes.SqlBoolean x) => throw null;
+                public static implicit operator System.Data.SqlTypes.SqlInt64(System.Int64 x) => throw null;
+                public static implicit operator System.Data.SqlTypes.SqlInt64(System.Data.SqlTypes.SqlInt32 x) => throw null;
+                public static implicit operator System.Data.SqlTypes.SqlInt64(System.Data.SqlTypes.SqlInt16 x) => throw null;
+                public static implicit operator System.Data.SqlTypes.SqlInt64(System.Data.SqlTypes.SqlByte x) => throw null;
                 public static System.Data.SqlTypes.SqlInt64 operator |(System.Data.SqlTypes.SqlInt64 x, System.Data.SqlTypes.SqlInt64 y) => throw null;
                 public static System.Data.SqlTypes.SqlInt64 operator ~(System.Data.SqlTypes.SqlInt64 x) => throw null;
             }
@@ -3304,19 +3271,19 @@ namespace System
                 public System.Decimal Value { get => throw null; }
                 void System.Xml.Serialization.IXmlSerializable.WriteXml(System.Xml.XmlWriter writer) => throw null;
                 public static System.Data.SqlTypes.SqlMoney Zero;
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator System.Decimal(System.Data.SqlTypes.SqlMoney x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlMoney(double x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlMoney(System.Data.SqlTypes.SqlString x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlMoney(System.Data.SqlTypes.SqlSingle x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlMoney(System.Data.SqlTypes.SqlDouble x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlMoney(System.Data.SqlTypes.SqlDecimal x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlMoney(System.Data.SqlTypes.SqlBoolean x) => throw null;
+                public static implicit operator System.Data.SqlTypes.SqlMoney(System.Int64 x) => throw null;
+                public static implicit operator System.Data.SqlTypes.SqlMoney(System.Decimal x) => throw null;
+                public static implicit operator System.Data.SqlTypes.SqlMoney(System.Data.SqlTypes.SqlInt64 x) => throw null;
+                public static implicit operator System.Data.SqlTypes.SqlMoney(System.Data.SqlTypes.SqlInt32 x) => throw null;
+                public static implicit operator System.Data.SqlTypes.SqlMoney(System.Data.SqlTypes.SqlInt16 x) => throw null;
+                public static implicit operator System.Data.SqlTypes.SqlMoney(System.Data.SqlTypes.SqlByte x) => throw null;
             }
 
             // Generated from `System.Data.SqlTypes.SqlNotFilledException` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -3387,17 +3354,17 @@ namespace System
                 public float Value { get => throw null; }
                 void System.Xml.Serialization.IXmlSerializable.WriteXml(System.Xml.XmlWriter writer) => throw null;
                 public static System.Data.SqlTypes.SqlSingle Zero;
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator float(System.Data.SqlTypes.SqlSingle x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlSingle(System.Data.SqlTypes.SqlString x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlSingle(System.Data.SqlTypes.SqlDouble x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlSingle(System.Data.SqlTypes.SqlBoolean x) => throw null;
+                public static implicit operator System.Data.SqlTypes.SqlSingle(float x) => throw null;
+                public static implicit operator System.Data.SqlTypes.SqlSingle(System.Data.SqlTypes.SqlMoney x) => throw null;
+                public static implicit operator System.Data.SqlTypes.SqlSingle(System.Data.SqlTypes.SqlInt64 x) => throw null;
+                public static implicit operator System.Data.SqlTypes.SqlSingle(System.Data.SqlTypes.SqlInt32 x) => throw null;
+                public static implicit operator System.Data.SqlTypes.SqlSingle(System.Data.SqlTypes.SqlInt16 x) => throw null;
+                public static implicit operator System.Data.SqlTypes.SqlSingle(System.Data.SqlTypes.SqlDecimal x) => throw null;
+                public static implicit operator System.Data.SqlTypes.SqlSingle(System.Data.SqlTypes.SqlByte x) => throw null;
             }
 
             // Generated from `System.Data.SqlTypes.SqlString` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -3463,19 +3430,19 @@ namespace System
                 public override string ToString() => throw null;
                 public string Value { get => throw null; }
                 void System.Xml.Serialization.IXmlSerializable.WriteXml(System.Xml.XmlWriter writer) => throw null;
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: explicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static explicit operator string(System.Data.SqlTypes.SqlString x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlString(System.Data.SqlTypes.SqlSingle x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlString(System.Data.SqlTypes.SqlMoney x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlString(System.Data.SqlTypes.SqlInt64 x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlString(System.Data.SqlTypes.SqlInt32 x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlString(System.Data.SqlTypes.SqlInt16 x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlString(System.Data.SqlTypes.SqlGuid x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlString(System.Data.SqlTypes.SqlDouble x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlString(System.Data.SqlTypes.SqlDecimal x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlString(System.Data.SqlTypes.SqlDateTime x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlString(System.Data.SqlTypes.SqlByte x) => throw null;
+                public static explicit operator System.Data.SqlTypes.SqlString(System.Data.SqlTypes.SqlBoolean x) => throw null;
+                public static implicit operator System.Data.SqlTypes.SqlString(string x) => throw null;
             }
 
             // Generated from `System.Data.SqlTypes.SqlTruncateException` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -3515,7 +3482,6 @@ namespace System
             public enum StorageState
             {
                 Buffer,
-                // Stub generator skipped constructor 
                 Stream,
                 UnmanagedBuffer,
             }

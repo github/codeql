@@ -26,7 +26,6 @@ namespace Microsoft
             CurrentUser,
             LocalMachine,
             PerformanceData,
-            // Stub generator skipped constructor 
             Users,
         }
 
@@ -84,7 +83,6 @@ namespace Microsoft
             Default,
             ReadSubTree,
             ReadWriteSubTree,
-            // Stub generator skipped constructor 
         }
 
         // Generated from `Microsoft.Win32.RegistryOptions` in `Microsoft.Win32.Registry, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -92,7 +90,6 @@ namespace Microsoft
         public enum RegistryOptions
         {
             None,
-            // Stub generator skipped constructor 
             Volatile,
         }
 
@@ -105,7 +102,6 @@ namespace Microsoft
             MultiString,
             None,
             QWord,
-            // Stub generator skipped constructor 
             String,
             Unknown,
         }
@@ -116,7 +112,6 @@ namespace Microsoft
         {
             DoNotExpandEnvironmentNames,
             None,
-            // Stub generator skipped constructor 
         }
 
         // Generated from `Microsoft.Win32.RegistryView` in `Microsoft.Win32.Registry, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -125,7 +120,6 @@ namespace Microsoft
             Default,
             Registry32,
             Registry64,
-            // Stub generator skipped constructor 
         }
 
         namespace SafeHandles
@@ -221,7 +215,6 @@ namespace System
                 QueryValues,
                 ReadKey,
                 ReadPermissions,
-                // Stub generator skipped constructor 
                 SetValue,
                 TakeOwnership,
                 WriteKey,

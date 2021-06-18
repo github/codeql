@@ -83,7 +83,6 @@ namespace System
                 {
                     MultiSelection,
                     SingleSelection,
-                    // Stub generator skipped constructor 
                 }
 
             }

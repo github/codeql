@@ -67,7 +67,6 @@ namespace System
             public enum CspProviderFlags
             {
                 CreateEphemeralKey,
-                // Stub generator skipped constructor 
                 NoFlags,
                 NoPrompt,
                 UseArchivableKey,
@@ -134,7 +133,6 @@ namespace System
             public enum KeyNumber
             {
                 Exchange,
-                // Stub generator skipped constructor 
                 Signature,
             }
 

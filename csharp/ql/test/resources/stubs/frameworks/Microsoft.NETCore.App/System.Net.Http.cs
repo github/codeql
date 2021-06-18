@@ -23,7 +23,6 @@ namespace System
             public enum ClientCertificateOption
             {
                 Automatic,
-                // Stub generator skipped constructor 
                 Manual,
             }
 
@@ -145,7 +144,6 @@ namespace System
             // Generated from `System.Net.Http.HttpCompletionOption` in `System.Net.Http, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum HttpCompletionOption
             {
-                // Stub generator skipped constructor 
                 ResponseContentRead,
                 ResponseHeadersRead,
             }
@@ -185,7 +183,6 @@ namespace System
             public enum HttpKeepAlivePingPolicy
             {
                 Always,
-                // Stub generator skipped constructor 
                 WithActiveRequests,
             }
 
@@ -314,7 +311,6 @@ namespace System
             // Generated from `System.Net.Http.HttpVersionPolicy` in `System.Net.Http, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum HttpVersionPolicy
             {
-                // Stub generator skipped constructor 
                 RequestVersionExact,
                 RequestVersionOrHigher,
                 RequestVersionOrLower,

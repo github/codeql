@@ -35,7 +35,6 @@ namespace System
         public enum DriveType
         {
             CDRom,
-            // Stub generator skipped constructor 
             Fixed,
             Network,
             NoRootDirectory,

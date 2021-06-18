@@ -387,7 +387,6 @@ namespace System
             MaxDepth,
             MaxNameTableCharCount,
             MaxStringContentLength,
-            // Stub generator skipped constructor 
         }
 
         // Generated from `System.Xml.XmlDictionaryReaderQuotas` in `System.Runtime.Serialization.Xml, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`

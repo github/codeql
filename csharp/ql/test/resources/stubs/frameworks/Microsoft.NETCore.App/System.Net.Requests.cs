@@ -100,7 +100,6 @@ namespace System
             FileActionOK,
             FileCommandPending,
             FileStatus,
-            // Stub generator skipped constructor 
             LoggedInProceed,
             NeedLoginAccount,
             NotLoggedIn,
@@ -345,7 +344,6 @@ namespace System
             Timeout,
             TrustFailure,
             UnknownError,
-            // Stub generator skipped constructor 
         }
 
         // Generated from `System.Net.WebRequest` in `System.Net.Requests, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -458,7 +456,6 @@ namespace System
             // Generated from `System.Net.Cache.HttpCacheAgeControl` in `System.Net.Requests, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum HttpCacheAgeControl
             {
-                // Stub generator skipped constructor 
                 MaxAge,
                 MaxAgeAndMaxStale,
                 MaxAgeAndMinFresh,
@@ -475,7 +472,6 @@ namespace System
                 CacheOnly,
                 CacheOrNextCacheOnly,
                 Default,
-                // Stub generator skipped constructor 
                 NoCacheNoStore,
                 Refresh,
                 Reload,

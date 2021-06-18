@@ -223,7 +223,6 @@ namespace System
         {
             Default,
             ForceParallelism,
-            // Stub generator skipped constructor 
         }
 
         // Generated from `System.Linq.ParallelMergeOptions` in `System.Linq.Parallel, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -233,7 +232,6 @@ namespace System
             Default,
             FullyBuffered,
             NotBuffered,
-            // Stub generator skipped constructor 
         }
 
         // Generated from `System.Linq.ParallelQuery` in `System.Linq.Parallel, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`

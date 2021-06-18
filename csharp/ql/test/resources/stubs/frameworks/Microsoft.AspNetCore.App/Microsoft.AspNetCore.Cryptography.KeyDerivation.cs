@@ -20,7 +20,6 @@ namespace Microsoft
                     HMACSHA1,
                     HMACSHA256,
                     HMACSHA512,
-                    // Stub generator skipped constructor 
                 }
 
             }

@@ -11,7 +11,6 @@ namespace System
             {
                 Deprecated,
                 Duplicate,
-                // Stub generator skipped constructor 
                 Invalid,
                 Preferred,
                 Tentative,
@@ -299,7 +298,6 @@ namespace System
                 Broadcast,
                 Hybrid,
                 Mixed,
-                // Stub generator skipped constructor 
                 Peer2Peer,
                 Unknown,
             }
@@ -362,7 +360,6 @@ namespace System
             {
                 IPv4,
                 IPv6,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Net.NetworkInformation.NetworkInterfaceType` in `System.Net.NetworkInformation, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -383,7 +380,6 @@ namespace System
                 Isdn,
                 Loopback,
                 MultiRateSymmetricDsl,
-                // Stub generator skipped constructor 
                 Ppp,
                 PrimaryIsdn,
                 RateAdaptDsl,
@@ -406,7 +402,6 @@ namespace System
                 Down,
                 LowerLayerDown,
                 NotPresent,
-                // Stub generator skipped constructor 
                 Testing,
                 Unknown,
                 Up,
@@ -433,7 +428,6 @@ namespace System
                 Dhcp,
                 Manual,
                 Other,
-                // Stub generator skipped constructor 
                 RouterAdvertisement,
                 WellKnown,
             }
@@ -447,7 +441,6 @@ namespace System
                 Link,
                 None,
                 Organization,
-                // Stub generator skipped constructor 
                 Site,
                 Subnet,
             }
@@ -460,7 +453,6 @@ namespace System
                 OriginDhcp,
                 Other,
                 Random,
-                // Stub generator skipped constructor 
                 WellKnown,
             }
 
@@ -487,7 +479,6 @@ namespace System
                 Listen,
                 SynReceived,
                 SynSent,
-                // Stub generator skipped constructor 
                 TimeWait,
                 Unknown,
             }

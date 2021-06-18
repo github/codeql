@@ -231,7 +231,6 @@ namespace System
                 public enum DataflowMessageStatus
                 {
                     Accepted,
-                    // Stub generator skipped constructor 
                     Declined,
                     DecliningPermanently,
                     NotAvailable,

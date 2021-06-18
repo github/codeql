@@ -251,7 +251,6 @@ namespace System
                 IgnorePatternWhitespace,
                 Multiline,
                 None,
-                // Stub generator skipped constructor 
                 RightToLeft,
                 Singleline,
             }
@@ -279,7 +278,6 @@ namespace System
                 NestedQuantifiersNotParenthesized,
                 QuantifierAfterNothing,
                 QuantifierOrCaptureGroupOutOfRange,
-                // Stub generator skipped constructor 
                 ReversedCharacterRange,
                 ReversedQuantifierRange,
                 ShorthandClassInCharacterRange,

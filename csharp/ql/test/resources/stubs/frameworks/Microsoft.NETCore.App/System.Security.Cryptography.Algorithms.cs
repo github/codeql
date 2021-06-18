@@ -215,7 +215,6 @@ namespace System
             // Generated from `System.Security.Cryptography.DSASignatureFormat` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum DSASignatureFormat
             {
-                // Stub generator skipped constructor 
                 IeeeP1363FixedFieldConcatenation,
                 Rfc3279DerSequence,
             }
@@ -255,7 +254,6 @@ namespace System
                 public enum ECCurveType
                 {
                     Characteristic2,
-                    // Stub generator skipped constructor 
                     Implicit,
                     Named,
                     PrimeMontgomery,
@@ -659,7 +657,6 @@ namespace System
             {
                 Oaep,
                 Pkcs1,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Security.Cryptography.RSAOAEPKeyExchangeDeformatter` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -761,7 +758,6 @@ namespace System
             {
                 Pkcs1,
                 Pss,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `System.Security.Cryptography.RandomNumberGenerator` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`

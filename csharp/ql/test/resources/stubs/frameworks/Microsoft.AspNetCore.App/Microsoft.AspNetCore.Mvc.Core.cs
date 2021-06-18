@@ -122,8 +122,8 @@ namespace Microsoft
                 Microsoft.AspNetCore.Mvc.IActionResult Microsoft.AspNetCore.Mvc.Infrastructure.IConvertToActionResult.Convert() => throw null;
                 public Microsoft.AspNetCore.Mvc.ActionResult Result { get => throw null; }
                 public TValue Value { get => throw null; }
-                // Stub generator skipped operator: implicit conversion
-                // Stub generator skipped operator: implicit conversion
+                public static implicit operator Microsoft.AspNetCore.Mvc.ActionResult<TValue>(TValue value) => throw null;
+                public static implicit operator Microsoft.AspNetCore.Mvc.ActionResult<TValue>(Microsoft.AspNetCore.Mvc.ActionResult result) => throw null;
             }
 
             // Generated from `Microsoft.AspNetCore.Mvc.AntiforgeryValidationFailedResult` in `Microsoft.AspNetCore.Mvc.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
@@ -264,7 +264,6 @@ namespace Microsoft
             // Generated from `Microsoft.AspNetCore.Mvc.CompatibilityVersion` in `Microsoft.AspNetCore.Mvc.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public enum CompatibilityVersion
             {
-                // Stub generator skipped constructor 
                 Latest,
                 Version_2_0,
                 Version_2_1,
@@ -1081,7 +1080,6 @@ namespace Microsoft
                 Any,
                 Client,
                 None,
-                // Stub generator skipped constructor 
             }
 
             // Generated from `Microsoft.AspNetCore.Mvc.RouteAttribute` in `Microsoft.AspNetCore.Mvc.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
@@ -1276,7 +1274,6 @@ namespace Microsoft
                 public enum ApiConventionNameMatchBehavior
                 {
                     Any,
-                    // Stub generator skipped constructor 
                     Exact,
                     Prefix,
                     Suffix,
@@ -1300,7 +1297,6 @@ namespace Microsoft
                 public enum ApiConventionTypeMatchBehavior
                 {
                     Any,
-                    // Stub generator skipped constructor 
                     AssignableFrom,
                 }
 
@@ -2774,7 +2770,6 @@ namespace Microsoft
                 // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.BindingBehavior` in `Microsoft.AspNetCore.Mvc.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public enum BindingBehavior
                 {
-                    // Stub generator skipped constructor 
                     Never,
                     Optional,
                     Required,

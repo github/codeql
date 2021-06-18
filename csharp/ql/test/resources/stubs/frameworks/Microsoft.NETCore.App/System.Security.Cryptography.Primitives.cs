@@ -46,7 +46,6 @@ namespace System
                 CBC,
                 CFB,
                 CTS,
-                // Stub generator skipped constructor 
                 ECB,
                 OFB,
             }
@@ -86,7 +85,6 @@ namespace System
             // Generated from `System.Security.Cryptography.CryptoStreamMode` in `System.Security.Cryptography.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum CryptoStreamMode
             {
-                // Stub generator skipped constructor 
                 Read,
                 Write,
             }
@@ -216,7 +214,6 @@ namespace System
                 ISO10126,
                 None,
                 PKCS7,
-                // Stub generator skipped constructor 
                 Zeros,
             }
 
@@ -226,7 +223,6 @@ namespace System
                 Aes128Cbc,
                 Aes192Cbc,
                 Aes256Cbc,
-                // Stub generator skipped constructor 
                 TripleDes3KeyPkcs12,
                 Unknown,
             }
