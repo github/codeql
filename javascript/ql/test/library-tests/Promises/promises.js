@@ -81,3 +81,14 @@
         var sink = val;
     });
 })();
+
+
+(function() {
+  var Q = require("kew");
+  var promise = Q.Promise(function (resolve, reject) {
+      resolve(source);
+  });
+  promise.then(function (val) {
+      var sink = val;
+  });
+})();

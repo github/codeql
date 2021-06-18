@@ -562,14 +562,14 @@ module Bluebird {
 }
 
 /**
- * Provides classes for working with the `q` library (https://github.com/kriskowal/q).
+ * Provides classes for working with the `q` library (https://github.com/kriskowal/q) and the compatible `kew` library (https://github.com/Medium/kew).
  */
 module Q {
   /**
    * A promise object created by the q `Promise` constructor.
    */
   private class QPromiseDefinition extends PromiseDefinition, DataFlow::CallNode {
-    QPromiseDefinition() { this = DataFlow::moduleMember("q", "Promise").getACall() }
+    QPromiseDefinition() { this = DataFlow::moduleMember(["q", "kew"], "Promise").getACall() }
 
     override DataFlow::FunctionNode getExecutor() { result = getCallback(0) }
   }

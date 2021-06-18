@@ -79,3 +79,4 @@
 | promises.js:71:5:71:27 | Promise ... source) |
 | promises.js:72:5:72:41 | new Pro ... ource)) |
 | promises.js:79:19:79:41 | Promise ... source) |
+| promises.js:88:17:90:4 | Q.Promi ... );\\n  }) |
