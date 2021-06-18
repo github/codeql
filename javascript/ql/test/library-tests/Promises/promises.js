@@ -99,3 +99,10 @@
   PromiseA.resolve(source);
   PromiseB.resolve(source);
 })();
+
+(function() {
+  var PromiseA = require('promise-polyfill').default;
+  import PromiseB from 'promise-polyfill';
+  PromiseA.resolve(source);
+  PromiseB.resolve(source);
+})();

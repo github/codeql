@@ -72,6 +72,11 @@ private DataFlow::SourceNode getAPromiseObject() {
         "promise", "promise/domains", "promise/setimmediate", "promise/lib/es6-extensions",
         "promise/domains/es6-extensions", "promise/setimmediate/es6-extensions"
       ])
+  or
+  // polyfill from the [`promise-polyfill`](https://npmjs.org/package/promise-polyfill) library.
+  result = DataFlow::moduleMember(["promise-polyfill", "promise-polyfill/src/polyfill"], "default")
+  or
+  result = DataFlow::moduleImport(["promise-polyfill", "promise-polyfill/src/polyfill"])
 }
 
 /**
