@@ -35,6 +35,13 @@ predicate defaultAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
 }
 
 /**
+ * Holds if default `TaintTracking::Configuration`s should allow implicit reads
+ * of `c` at sinks and inputs to additional taint steps.
+ */
+bindingset[node]
+predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::Content c) { none() }
+
+/**
  * Holds if `node` should be a sanitizer in all global taint flow configurations
  * but not in local taint.
  */

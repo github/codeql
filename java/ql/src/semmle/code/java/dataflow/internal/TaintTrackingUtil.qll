@@ -100,6 +100,33 @@ private module Cached {
 
 import Cached
 
+private RefType getElementType(RefType container) {
+  result = container.(Array).getComponentType() or
+  result = container.(CollectionType).getElementType() or
+  result = container.(MapType).getValueType()
+}
+
+/**
+ * Holds if default `TaintTracking::Configuration`s should allow implicit reads
+ * of `c` at sinks and inputs to additional taint steps.
+ */
+bindingset[node]
+predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::Content c) {
+  exists(RefType container |
+    (node.asExpr() instanceof Argument or node instanceof ArgumentNode) and
+    getElementType*(node.getType()) = container
+  |
+    container instanceof Array and
+    c instanceof DataFlow::ArrayContent
+    or
+    container instanceof CollectionType and
+    c instanceof DataFlow::CollectionContent
+    or
+    container instanceof MapType and
+    c instanceof DataFlow::MapValueContent
+  )
+}
+
 /**
  * These configurations add a number of configuration-dependent additional taint
  * steps to all taint configurations. For each sink or additional step provided

@@ -105,6 +105,11 @@ abstract class Configuration extends DataFlow::Configuration {
     defaultAdditionalTaintStep(node1, node2)
   }
 
+  override predicate allowImplicitRead(DataFlow::Node node, DataFlow::Content c) {
+    (this.isSink(node) or this.isAdditionalTaintStep(node, _)) and
+    defaultImplicitTaintRead(node, c)
+  }
+
   /**
    * Holds if taint may flow from `source` to `sink` for this configuration.
    */
