@@ -21,10 +21,9 @@ module ExperimentalFlask {
    * - https://flask.palletsprojects.com/en/1.1.x/api/#flask.make_response
    */
   private API::Node flaskMakeResponse() {
-    result in [
-        API::moduleImport("flask").getMember("make_response"),
-        Flask::FlaskApp::instance().getMember("make_response")
-      ]
+    result =
+      [API::moduleImport("flask"), Flask::FlaskApp::instance()]
+          .getMember(["make_response", "jsonify", "make_default_options_response"])
   }
 
   /** Gets a reference to a header instance. */
@@ -63,7 +62,7 @@ module ExperimentalFlask {
   private class FlaskMakeResponseExtend extends DataFlow::CallCfgNode, HeaderDeclaration::Range {
     FlaskMakeResponseExtend() { this.getFunction() = headerInstanceCall() }
 
-    override DataFlow::Node getHeaderInput() { result = this.getArg(0) }
+    override DataFlow::Node getHeaderInput() { result = this.getArg(_) }
   }
 
   private class FlaskResponse extends DataFlow::CallCfgNode, HeaderDeclaration::Range {
