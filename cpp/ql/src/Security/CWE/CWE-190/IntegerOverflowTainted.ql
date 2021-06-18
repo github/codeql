@@ -5,6 +5,7 @@
  * @kind problem
  * @id cpp/integer-overflow-tainted
  * @problem.severity warning
+ * @security-severity 8.1
  * @precision low
  * @tags security
  *       external/cwe/cwe-190
@@ -28,6 +29,7 @@ predicate outOfBoundsExpr(Expr expr, string kind) {
 
 from Expr use, Expr origin, string kind
 where
+  not use.getUnspecifiedType() instanceof PointerType and
   outOfBoundsExpr(use, kind) and
   tainted(origin, use) and
   origin != use and

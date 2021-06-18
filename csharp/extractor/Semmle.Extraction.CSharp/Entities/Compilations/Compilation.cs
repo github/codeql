@@ -81,7 +81,7 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.compilation_finished(this, (float)p.Total.Cpu.TotalSeconds, (float)p.Total.Elapsed.TotalSeconds);
         }
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             trapFile.Write(hashCode);
             trapFile.Write(";compilation");

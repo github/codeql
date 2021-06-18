@@ -13,7 +13,7 @@ def test_access():
     tainted_list = TAINTED_LIST
 
     ensure_tainted(
-        tainted_list.copy(),
+        tainted_list.copy(), # $ tainted
     )
 
 
@@ -21,10 +21,10 @@ def list_clear():
     tainted_string = TAINTED_STRING
     tainted_list = [tainted_string]
 
-    ensure_tainted(tainted_list)
+    ensure_tainted(tainted_list) # $ tainted
 
     tainted_list.clear()
-    ensure_not_tainted(tainted_list)
+    ensure_not_tainted(tainted_list) # $ SPURIOUS: tainted
 
 # Make tests runable
 

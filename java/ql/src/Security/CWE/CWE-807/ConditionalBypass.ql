@@ -4,6 +4,7 @@
  *              passing through authentication systems.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 7.8
  * @precision medium
  * @id java/user-controlled-bypass
  * @tags security

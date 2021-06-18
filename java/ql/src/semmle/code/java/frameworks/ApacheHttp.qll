@@ -92,6 +92,39 @@ private class ApacheHttpXssSink extends SinkModelCsv {
   }
 }
 
+private class ApacheHttpOpenUrlSink extends SinkModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "org.apache.http;HttpRequest;true;setURI;;;Argument[0];open-url",
+        "org.apache.http.message;BasicHttpRequest;false;BasicHttpRequest;(RequestLine);;Argument[0];open-url",
+        "org.apache.http.message;BasicHttpRequest;false;BasicHttpRequest;(String,String);;Argument[1];open-url",
+        "org.apache.http.message;BasicHttpRequest;false;BasicHttpRequest;(String,String,ProtocolVersion);;Argument[1];open-url",
+        "org.apache.http.message;BasicHttpEntityEnclosingRequest;false;BasicHttpEntityEnclosingRequest;(RequestLine);;Argument[0];open-url",
+        "org.apache.http.message;BasicHttpEntityEnclosingRequest;false;BasicHttpEntityEnclosingRequest;(String,String);;Argument[1];open-url",
+        "org.apache.http.message;BasicHttpEntityEnclosingRequest;false;BasicHttpEntityEnclosingRequest;(String,String,ProtocolVersion);;Argument[1];open-url",
+        "org.apache.http.client.methods;HttpGet;false;HttpGet;;;Argument[0];open-url",
+        "org.apache.http.client.methods;HttpHead;false;HttpHead;;;Argument[0];open-url",
+        "org.apache.http.client.methods;HttpPut;false;HttpPut;;;Argument[0];open-url",
+        "org.apache.http.client.methods;HttpPost;false;HttpPost;;;Argument[0];open-url",
+        "org.apache.http.client.methods;HttpDelete;false;HttpDelete;;;Argument[0];open-url",
+        "org.apache.http.client.methods;HttpOptions;false;HttpOptions;;;Argument[0];open-url",
+        "org.apache.http.client.methods;HttpTrace;false;HttpTrace;;;Argument[0];open-url",
+        "org.apache.http.client.methods;HttpPatch;false;HttpPatch;;;Argument[0];open-url",
+        "org.apache.http.client.methods;HttpRequestBase;true;setURI;;;Argument[0];open-url",
+        "org.apache.http.client.methods;RequestBuilder;false;setUri;;;Argument[0];open-url",
+        "org.apache.http.client.methods;RequestBuilder;false;get;;;Argument[0];open-url",
+        "org.apache.http.client.methods;RequestBuilder;false;post;;;Argument[0];open-url",
+        "org.apache.http.client.methods;RequestBuilder;false;put;;;Argument[0];open-url",
+        "org.apache.http.client.methods;RequestBuilder;false;options;;;Argument[0];open-url",
+        "org.apache.http.client.methods;RequestBuilder;false;head;;;Argument[0];open-url",
+        "org.apache.http.client.methods;RequestBuilder;false;delete;;;Argument[0];open-url",
+        "org.apache.http.client.methods;RequestBuilder;false;trace;;;Argument[0];open-url",
+        "org.apache.http.client.methods;RequestBuilder;false;patch;;;Argument[0];open-url"
+      ]
+  }
+}
+
 private class ApacheHttpFlowStep extends SummaryModelCsv {
   override predicate row(string row) {
     row =
@@ -149,9 +182,8 @@ private class ApacheHttpFlowStep extends SummaryModelCsv {
         "org.apache.hc.core5.http.message;RequestLine;true;getMethod;();;Argument[-1];ReturnValue;taint",
         "org.apache.hc.core5.http.message;RequestLine;true;getUri;();;Argument[-1];ReturnValue;taint",
         "org.apache.hc.core5.http.message;RequestLine;true;toString;();;Argument[-1];ReturnValue;taint",
-        "org.apache.hc.core5.http.message;RequestLine;true;RequestLine;(HttpRequest);;Argument[0];ReturnValue;taint",
-        "org.apache.hc.core5.http.message;RequestLine;true;RequestLine;(String,String,ProtocolVersion);;Argument[1];ReturnValue;taint",
-        "org.apache.hc.core5.http.message;RequestLine;true;RequestLine;(String,String,ProtocolVersion);;Argument[1];ReturnValue;taint",
+        "org.apache.hc.core5.http.message;RequestLine;true;RequestLine;(HttpRequest);;Argument[0];Argument[-1];taint",
+        "org.apache.hc.core5.http.message;RequestLine;true;RequestLine;(String,String,ProtocolVersion);;Argument[1];Argument[-1];taint",
         "org.apache.hc.core5.function;Supplier;true;get;();;Argument[-1];ReturnValue;taint",
         "org.apache.hc.core5.net;URIAuthority;true;getHostName;();;Argument[-1];ReturnValue;taint",
         "org.apache.hc.core5.net;URIAuthority;true;toString;();;Argument[-1];ReturnValue;taint",
@@ -166,14 +198,17 @@ private class ApacheHttpFlowStep extends SummaryModelCsv {
         "org.apache.http.util;EncodingUtils;true;getAsciiString;;;Argument[0];ReturnValue;taint",
         "org.apache.http.util;EncodingUtils;true;getBytes;(String,String);;Argument[0];ReturnValue;taint",
         "org.apache.http.util;EncodingUtils;true;getString;;;Argument[0];ReturnValue;taint",
-        "org.apache.http.util;Args;true;containsNoBlanks;(T,String);;Argument[0];ReturnValue;value",
-        "org.apache.http.util;Args;true;notNull;(T,String);;Argument[0];ReturnValue;value",
-        "org.apache.http.util;Args;true;notEmpty;(T,String);;Argument[0];ReturnValue;value",
-        "org.apache.http.util;Args;true;notBlank;(T,String);;Argument[0];ReturnValue;value",
-        "org.apache.hc.core5.util;Args;true;containsNoBlanks;(T,String);;Argument[0];ReturnValue;value",
-        "org.apache.hc.core5.util;Args;true;notNull;(T,String);;Argument[0];ReturnValue;value",
-        "org.apache.hc.core5.util;Args;true;notEmpty;(T,String);;Argument[0];ReturnValue;value",
-        "org.apache.hc.core5.util;Args;true;notBlank;(T,String);;Argument[0];ReturnValue;value",
+        "org.apache.http.util;Args;true;containsNoBlanks;(CharSequence,String);;Argument[0];ReturnValue;value",
+        "org.apache.http.util;Args;true;notNull;(Object,String);;Argument[0];ReturnValue;value",
+        "org.apache.http.util;Args;true;notEmpty;(CharSequence,String);;Argument[0];ReturnValue;value",
+        "org.apache.http.util;Args;true;notEmpty;(Collection,String);;Argument[0];ReturnValue;value",
+        "org.apache.http.util;Args;true;notBlank;(CharSequence,String);;Argument[0];ReturnValue;value",
+        "org.apache.hc.core5.util;Args;true;containsNoBlanks;(CharSequence,String);;Argument[0];ReturnValue;value",
+        "org.apache.hc.core5.util;Args;true;notNull;(Object,String);;Argument[0];ReturnValue;value",
+        "org.apache.hc.core5.util;Args;true;notEmpty;(Collection,String);;Argument[0];ReturnValue;value",
+        "org.apache.hc.core5.util;Args;true;notEmpty;(CharSequence,String);;Argument[0];ReturnValue;value",
+        "org.apache.hc.core5.util;Args;true;notEmpty;(Object,String);;Argument[0];ReturnValue;value",
+        "org.apache.hc.core5.util;Args;true;notBlank;(CharSequence,String);;Argument[0];ReturnValue;value",
         "org.apache.hc.core5.http.io.entity;HttpEntities;true;create;;;Argument[0];ReturnValue;taint",
         "org.apache.hc.core5.http.io.entity;HttpEntities;true;createGzipped;;;Argument[0];ReturnValue;taint",
         "org.apache.hc.core5.http.io.entity;HttpEntities;true;createUrlEncoded;;;Argument[0];ReturnValue;taint",
@@ -181,16 +216,16 @@ private class ApacheHttpFlowStep extends SummaryModelCsv {
         "org.apache.hc.core5.http.io.entity;HttpEntities;true;withTrailers;;;Argument[0];ReturnValue;taint",
         "org.apache.http.entity;BasicHttpEntity;true;setContent;(InputStream);;Argument[0];Argument[-1];taint",
         "org.apache.http.entity;BufferedHttpEntity;true;BufferedHttpEntity;(HttpEntity);;Argument[0];ReturnValue;taint",
-        "org.apache.http.entity;ByteArrayEntity;true;ByteArrayEntity;;;Argument[0];ReturnValue;taint",
+        "org.apache.http.entity;ByteArrayEntity;true;ByteArrayEntity;;;Argument[0];Argument[-1];taint",
         "org.apache.http.entity;HttpEntityWrapper;true;HttpEntityWrapper;(HttpEntity);;Argument[0];ReturnValue;taint",
         "org.apache.http.entity;InputStreamEntity;true;InputStreamEntity;;;Argument[0];ReturnValue;taint",
-        "org.apache.http.entity;StringEntity;true;StringEntity;;;Argument[0];ReturnValue;taint",
+        "org.apache.http.entity;StringEntity;true;StringEntity;;;Argument[0];Argument[-1];taint",
         "org.apache.hc.core5.http.io.entity;BasicHttpEntity;true;BasicHttpEntity;;;Argument[0];ReturnValue;taint",
         "org.apache.hc.core5.http.io.entity;BufferedHttpEntity;true;BufferedHttpEntity;(HttpEntity);;Argument[0];ReturnValue;taint",
-        "org.apache.hc.core5.http.io.entity;ByteArrayEntity;true;ByteArrayEntity;;;Argument[0];ReturnValue;taint",
+        "org.apache.hc.core5.http.io.entity;ByteArrayEntity;true;ByteArrayEntity;;;Argument[0];Argument[-1];taint",
         "org.apache.hc.core5.http.io.entity;HttpEntityWrapper;true;HttpEntityWrapper;(HttpEntity);;Argument[0];ReturnValue;taint",
         "org.apache.hc.core5.http.io.entity;InputStreamEntity;true;InputStreamEntity;;;Argument[0];ReturnValue;taint",
-        "org.apache.hc.core5.http.io.entity;StringEntity;true;StringEntity;;;Argument[0];ReturnValue;taint",
+        "org.apache.hc.core5.http.io.entity;StringEntity;true;StringEntity;;;Argument[0];Argument[-1];taint",
         "org.apache.http.util;ByteArrayBuffer;true;append;(byte[],int,int);;Argument[0];Argument[-1];taint",
         "org.apache.http.util;ByteArrayBuffer;true;append;(char[],int,int);;Argument[0];Argument[-1];taint",
         "org.apache.http.util;ByteArrayBuffer;true;append;(CharArrayBuffer,int,int);;Argument[0];Argument[-1];taint",
@@ -226,7 +261,10 @@ private class ApacheHttpFlowStep extends SummaryModelCsv {
         "org.apache.hc.core5.util;CharArrayBuffer;true;toString;();;Argument[-1];ReturnValue;taint",
         "org.apache.hc.core5.util;CharArrayBuffer;true;substring;(int,int);;Argument[-1];ReturnValue;taint",
         "org.apache.hc.core5.util;CharArrayBuffer;true;subSequence;(int,int);;Argument[-1];ReturnValue;taint",
-        "org.apache.hc.core5.util;CharArrayBuffer;true;substringTrimmed;(int,int);;Argument[-1];ReturnValue;taint"
+        "org.apache.hc.core5.util;CharArrayBuffer;true;substringTrimmed;(int,int);;Argument[-1];ReturnValue;taint",
+        "org.apache.http.message;BasicRequestLine;false;BasicRequestLine;;;Argument[1];Argument[-1];taint",
+        "org.apache.http;RequestLine;true;getUri;;;Argument[-1];ReturnValue;taint",
+        "org.apache.http;RequestLine;true;toString;;;Argument[-1];ReturnValue;taint"
       ]
   }
 }

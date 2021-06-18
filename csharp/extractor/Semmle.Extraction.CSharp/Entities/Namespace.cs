@@ -23,7 +23,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override bool NeedsPopulation => true;
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             if (!Symbol.IsGlobalNamespace)
             {

@@ -53,7 +53,12 @@ module UnsafeShellCommandConstruction {
   class ExternalInputSource extends Source, DataFlow::ParameterNode {
     ExternalInputSource() {
       this = Exports::getALibraryInputParameter() and
-      not this.getName() = ["cmd", "command"] // looks to be on purpose.
+      not (
+        // looks to be on purpose.
+        this.getName() = ["cmd", "command"]
+        or
+        this.getName().regexpMatch(".*(Cmd|Command)$") // ends with "Cmd" or "Command"
+      )
     }
   }
 
@@ -69,6 +74,12 @@ module UnsafeShellCommandConstruction {
     or
     exists(DataFlow::TypeBackTracker t2 |
       t2 = t.smallstep(result, isExecutedAsShellCommand(t2, sys))
+    )
+    or
+    exists(DataFlow::TypeBackTracker t2, StringOps::ConcatenationRoot prev |
+      t = t2.continue() and
+      isExecutedAsShellCommand(t2, sys) = prev and
+      result = prev.getALeaf()
     )
   }
 
@@ -184,6 +195,27 @@ module UnsafeShellCommandConstruction {
     }
 
     override string getSinkType() { result = "Shell argument" }
+
+    override SystemCommandExecution getCommandExecution() { result = sys }
+
+    override DataFlow::Node getAlertLocation() { result = this }
+  }
+
+  /**
+   * A joined path (`path.{resolve/join}(..)`) that is later executed as a shell command.
+   * Joining a path is similar to string concatenation that automatically inserts slashes.
+   */
+  class JoinedPathEndingInCommandExecutionSink extends Sink {
+    DataFlow::MethodCallNode joinCall;
+    SystemCommandExecution sys;
+
+    JoinedPathEndingInCommandExecutionSink() {
+      this = joinCall.getAnArgument() and
+      joinCall = DataFlow::moduleMember("path", ["resolve", "join"]).getACall() and
+      joinCall = isExecutedAsShellCommand(DataFlow::TypeBackTracker::end(), sys)
+    }
+
+    override string getSinkType() { result = "Path concatenation" }
 
     override SystemCommandExecution getCommandExecution() { result = sys }
 

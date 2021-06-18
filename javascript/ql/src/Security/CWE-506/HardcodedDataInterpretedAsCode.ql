@@ -5,6 +5,7 @@
  *              be avoided.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 9.1
  * @precision medium
  * @id js/hardcoded-data-interpreted-as-code
  * @tags security

@@ -72,6 +72,7 @@ class Location extends @location {
   }
 
   /** Holds if `this` comes on a line strictly before `l`. */
+  pragma[inline]
   predicate isBefore(Location l) {
     this.getFile() = l.getFile() and this.getEndLine() < l.getStartLine()
   }
@@ -127,7 +128,9 @@ deprecated library class LocationExpr extends Location, @location_expr { }
  * Gets the length of the longest line in file `f`.
  */
 pragma[nomagic]
-private int maxCols(File f) { result = max(Location l | l.getFile() = f | l.getEndColumn()) }
+private int maxCols(File f) {
+  result = max(Location l | l.getFile() = f | l.getStartColumn().maximum(l.getEndColumn()))
+}
 
 /**
  * A C/C++ element that has a location in a file

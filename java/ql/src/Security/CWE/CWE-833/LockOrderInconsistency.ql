@@ -3,6 +3,7 @@
  * @description Acquiring multiple locks in a different order may cause deadlock.
  * @kind problem
  * @problem.severity recommendation
+ * @security-severity 5.0
  * @precision medium
  * @id java/lock-order-inconsistency
  * @tags security

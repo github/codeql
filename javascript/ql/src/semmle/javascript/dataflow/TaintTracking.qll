@@ -15,7 +15,7 @@
 
 import javascript
 private import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps
-private import semmle.javascript.dataflow.internal.Unit
+private import semmle.javascript.Unit
 private import semmle.javascript.dataflow.InferredTypes
 private import semmle.javascript.internal.CachedStages
 
@@ -550,7 +550,8 @@ module TaintTracking {
       // reading from a tainted object yields a tainted result
       succ.(DataFlow::PropRead).getBase() = pred and
       not AccessPath::DominatingPaths::hasDominatingWrite(succ) and
-      not isSafeClientSideUrlProperty(succ)
+      not isSafeClientSideUrlProperty(succ) and
+      not ClassValidator::isAccessToSanitizedField(succ)
       or
       // iterating over a tainted iterator taints the loop variable
       exists(ForOfStmt fos |

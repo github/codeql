@@ -7,30 +7,10 @@ edges
 | test.c:34:13:34:18 | call to rand | test.c:35:5:35:5 | r |
 | test.c:34:13:34:18 | call to rand | test.c:35:5:35:5 | r |
 | test.c:34:13:34:18 | call to rand | test.c:35:5:35:5 | r |
-| test.c:39:13:39:21 | ... % ... | test.c:40:5:40:5 | r |
-| test.c:39:13:39:21 | ... % ... | test.c:40:5:40:5 | r |
-| test.c:39:13:39:21 | ... % ... | test.c:40:5:40:5 | r |
-| test.c:39:13:39:21 | ... % ... | test.c:40:5:40:5 | r |
 | test.c:44:13:44:16 | call to rand | test.c:45:5:45:5 | r |
 | test.c:44:13:44:16 | call to rand | test.c:45:5:45:5 | r |
 | test.c:44:13:44:16 | call to rand | test.c:45:5:45:5 | r |
 | test.c:44:13:44:16 | call to rand | test.c:45:5:45:5 | r |
-| test.c:54:13:54:16 | call to rand | test.c:56:5:56:5 | r |
-| test.c:54:13:54:16 | call to rand | test.c:56:5:56:5 | r |
-| test.c:54:13:54:16 | call to rand | test.c:56:5:56:5 | r |
-| test.c:54:13:54:16 | call to rand | test.c:56:5:56:5 | r |
-| test.c:60:13:60:16 | call to rand | test.c:61:5:61:5 | r |
-| test.c:60:13:60:16 | call to rand | test.c:61:5:61:5 | r |
-| test.c:60:13:60:16 | call to rand | test.c:61:5:61:5 | r |
-| test.c:60:13:60:16 | call to rand | test.c:61:5:61:5 | r |
-| test.c:60:13:60:16 | call to rand | test.c:62:5:62:5 | r |
-| test.c:60:13:60:16 | call to rand | test.c:62:5:62:5 | r |
-| test.c:60:13:60:16 | call to rand | test.c:62:5:62:5 | r |
-| test.c:60:13:60:16 | call to rand | test.c:62:5:62:5 | r |
-| test.c:66:13:66:16 | call to rand | test.c:67:5:67:5 | r |
-| test.c:66:13:66:16 | call to rand | test.c:67:5:67:5 | r |
-| test.c:66:13:66:16 | call to rand | test.c:67:5:67:5 | r |
-| test.c:66:13:66:16 | call to rand | test.c:67:5:67:5 | r |
 | test.c:75:13:75:19 | ... ^ ... | test.c:77:9:77:9 | r |
 | test.c:75:13:75:19 | ... ^ ... | test.c:77:9:77:9 | r |
 | test.c:75:13:75:19 | ... ^ ... | test.c:77:9:77:9 | r |
@@ -67,34 +47,11 @@ nodes
 | test.c:35:5:35:5 | r | semmle.label | r |
 | test.c:35:5:35:5 | r | semmle.label | r |
 | test.c:35:5:35:5 | r | semmle.label | r |
-| test.c:39:13:39:21 | ... % ... | semmle.label | ... % ... |
-| test.c:39:13:39:21 | ... % ... | semmle.label | ... % ... |
-| test.c:40:5:40:5 | r | semmle.label | r |
-| test.c:40:5:40:5 | r | semmle.label | r |
-| test.c:40:5:40:5 | r | semmle.label | r |
 | test.c:44:13:44:16 | call to rand | semmle.label | call to rand |
 | test.c:44:13:44:16 | call to rand | semmle.label | call to rand |
 | test.c:45:5:45:5 | r | semmle.label | r |
 | test.c:45:5:45:5 | r | semmle.label | r |
 | test.c:45:5:45:5 | r | semmle.label | r |
-| test.c:54:13:54:16 | call to rand | semmle.label | call to rand |
-| test.c:54:13:54:16 | call to rand | semmle.label | call to rand |
-| test.c:56:5:56:5 | r | semmle.label | r |
-| test.c:56:5:56:5 | r | semmle.label | r |
-| test.c:56:5:56:5 | r | semmle.label | r |
-| test.c:60:13:60:16 | call to rand | semmle.label | call to rand |
-| test.c:60:13:60:16 | call to rand | semmle.label | call to rand |
-| test.c:61:5:61:5 | r | semmle.label | r |
-| test.c:61:5:61:5 | r | semmle.label | r |
-| test.c:61:5:61:5 | r | semmle.label | r |
-| test.c:62:5:62:5 | r | semmle.label | r |
-| test.c:62:5:62:5 | r | semmle.label | r |
-| test.c:62:5:62:5 | r | semmle.label | r |
-| test.c:66:13:66:16 | call to rand | semmle.label | call to rand |
-| test.c:66:13:66:16 | call to rand | semmle.label | call to rand |
-| test.c:67:5:67:5 | r | semmle.label | r |
-| test.c:67:5:67:5 | r | semmle.label | r |
-| test.c:67:5:67:5 | r | semmle.label | r |
 | test.c:75:13:75:19 | ... ^ ... | semmle.label | ... ^ ... |
 | test.c:75:13:75:19 | ... ^ ... | semmle.label | ... ^ ... |
 | test.c:77:9:77:9 | r | semmle.label | r |
@@ -133,10 +90,7 @@ nodes
 #select
 | test.c:21:17:21:17 | r | test.c:18:13:18:16 | call to rand | test.c:21:17:21:17 | r | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test.c:18:13:18:16 | call to rand | Uncontrolled value |
 | test.c:35:5:35:5 | r | test.c:34:13:34:18 | call to rand | test.c:35:5:35:5 | r | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test.c:34:13:34:18 | call to rand | Uncontrolled value |
-| test.c:40:5:40:5 | r | test.c:39:13:39:21 | ... % ... | test.c:40:5:40:5 | r | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test.c:39:13:39:21 | ... % ... | Uncontrolled value |
 | test.c:45:5:45:5 | r | test.c:44:13:44:16 | call to rand | test.c:45:5:45:5 | r | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test.c:44:13:44:16 | call to rand | Uncontrolled value |
-| test.c:56:5:56:5 | r | test.c:54:13:54:16 | call to rand | test.c:56:5:56:5 | r | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test.c:54:13:54:16 | call to rand | Uncontrolled value |
-| test.c:67:5:67:5 | r | test.c:66:13:66:16 | call to rand | test.c:67:5:67:5 | r | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test.c:66:13:66:16 | call to rand | Uncontrolled value |
 | test.c:77:9:77:9 | r | test.c:75:13:75:19 | ... ^ ... | test.c:77:9:77:9 | r | $@ flows to here and is used in arithmetic, potentially causing an underflow. | test.c:75:13:75:19 | ... ^ ... | Uncontrolled value |
 | test.c:100:5:100:5 | r | test.c:99:14:99:19 | call to rand | test.c:100:5:100:5 | r | $@ flows to here and is used in arithmetic, potentially causing an underflow. | test.c:99:14:99:19 | call to rand | Uncontrolled value |
 | test.cpp:25:7:25:7 | r | test.cpp:8:9:8:12 | call to rand | test.cpp:25:7:25:7 | r | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test.cpp:8:9:8:12 | call to rand | Uncontrolled value |

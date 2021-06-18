@@ -10,6 +10,9 @@ abstract class Error extends Locatable {
   abstract string getMessage();
 
   override string toString() { result = getMessage() }
+
+  /** Holds if this error prevented the file from being extracted. */
+  predicate isFatal() { any() }
 }
 
 /** A JavaScript parse error encountered during extraction. */
@@ -21,4 +24,6 @@ class JSParseError extends @js_parse_error, Error {
 
   /** Gets the source text of the line this error occurs on. */
   string getLine() { js_parse_errors(this, _, _, result) }
+
+  override predicate isFatal() { not getTopLevel() instanceof Angular2::TemplateTopLevel }
 }

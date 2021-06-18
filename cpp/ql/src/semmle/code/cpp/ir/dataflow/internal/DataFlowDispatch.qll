@@ -2,11 +2,14 @@ private import cpp
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.ir.dataflow.DataFlow
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate
+private import DataFlowImplCommon as DataFlowImplCommon
 
 /**
  * Gets a function that might be called by `call`.
  */
+cached
 Function viableCallable(CallInstruction call) {
+  DataFlowImplCommon::forceCachingInSameStage() and
   result = call.getStaticCallTarget()
   or
   // If the target of the call does not have a body in the snapshot, it might
@@ -43,7 +46,6 @@ private module VirtualDispatch {
     abstract DataFlow::Node getDispatchValue();
 
     /** Gets a candidate target for this call. */
-    cached
     abstract Function resolve();
 
     /**

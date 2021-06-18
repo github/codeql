@@ -29,31 +29,27 @@ class XssAdditionalTaintStep extends Unit {
   abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);
 }
 
+/** CSV sink models representing methods susceptible to XSS attacks. */
+private class DefaultXssSinkModel extends SinkModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "android.webkit;WebView;false;loadData;;;Argument[0];xss",
+        "android.webkit;WebView;false;loadUrl;;;Argument[0];xss",
+        "android.webkit;WebView;false;loadDataWithBaseURL;;;Argument[1];xss"
+      ]
+  }
+}
+
 /** A default sink representing methods susceptible to XSS attacks. */
 private class DefaultXssSink extends XssSink {
   DefaultXssSink() {
     sinkNode(this, "xss")
     or
-    exists(HttpServletResponseSendErrorMethod m, MethodAccess ma |
-      ma.getMethod() = m and
-      this.asExpr() = ma.getArgument(1)
-    )
-    or
     exists(ServletWriterSourceToWritingMethodFlowConfig writer, MethodAccess ma |
       ma.getMethod() instanceof WritingMethod and
       writer.hasFlowToExpr(ma.getQualifier()) and
       this.asExpr() = ma.getArgument(_)
-    )
-    or
-    exists(Method m |
-      m.getDeclaringType() instanceof TypeWebView and
-      (
-        m.getAReference().getArgument(0) = this.asExpr() and m.getName() = "loadData"
-        or
-        m.getAReference().getArgument(0) = this.asExpr() and m.getName() = "loadUrl"
-        or
-        m.getAReference().getArgument(1) = this.asExpr() and m.getName() = "loadDataWithBaseURL"
-      )
     )
     or
     exists(SpringRequestMappingMethod requestMappingMethod, ReturnStmt rs |

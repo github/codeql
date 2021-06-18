@@ -321,5 +321,5 @@ predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c)
 /** Holds if `call` is a lambda call of kind `kind` where `receiver` is the lambda expression. */
 predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) { none() }
 
-/** Extra data-flow steps needed for lamba flow analysis. */
+/** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }

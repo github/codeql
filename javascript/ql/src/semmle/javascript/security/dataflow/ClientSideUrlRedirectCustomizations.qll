@@ -192,6 +192,15 @@ module ClientSideUrlRedirect {
   }
 
   /**
+   * A write to the location using the [history](https://npmjs.com/package/history) library
+   */
+  class HistoryWriteUrlSink extends ScriptUrlSink {
+    HistoryWriteUrlSink() {
+      this = History::getBrowserHistory().getMember(["push", "replace"]).getACall().getArgument(0)
+    }
+  }
+
+  /**
    * A call to change the current url with a Next.js router.
    */
   class NextRoutePushUrlSink extends ScriptUrlSink {

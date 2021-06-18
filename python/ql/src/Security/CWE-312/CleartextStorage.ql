@@ -4,6 +4,7 @@
  *              attacker.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 7.5
  * @precision high
  * @id py/clear-text-storage-sensitive-data
  * @tags security

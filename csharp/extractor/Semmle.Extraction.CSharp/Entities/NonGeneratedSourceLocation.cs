@@ -41,7 +41,7 @@ namespace Semmle.Extraction.CSharp.Entities
             get;
         }
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             trapFile.Write("loc,");
             trapFile.WriteSubId(FileEntity);

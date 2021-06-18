@@ -59,4 +59,14 @@ module RequestForgery {
 
     override string getKind() { result = kind }
   }
+
+  /**
+   * Holds if there is a taint step from `pred` to `succ` for request forgery.
+   */
+  predicate isAdditionalRequestForgeryStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(DataFlow::NewNode url | url = DataFlow::globalVarRef("URL").getAnInstantiation() |
+      succ = url and
+      pred = url.getArgument(0)
+    )
+  }
 }

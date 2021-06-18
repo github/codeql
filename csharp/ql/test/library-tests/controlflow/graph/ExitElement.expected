@@ -2325,7 +2325,9 @@
 | Initializers.cs:6:27:6:27 | access to field H | Initializers.cs:6:27:6:27 | access to field H | normal |
 | Initializers.cs:6:27:6:31 | ... + ... | Initializers.cs:6:27:6:31 | ... + ... | normal |
 | Initializers.cs:6:31:6:31 | 2 | Initializers.cs:6:31:6:31 | 2 | normal |
+| Initializers.cs:8:5:8:16 | call to constructor Object | Initializers.cs:8:5:8:16 | call to constructor Object | normal |
 | Initializers.cs:8:20:8:22 | {...} | Initializers.cs:8:20:8:22 | {...} | normal |
+| Initializers.cs:10:5:10:16 | call to constructor Object | Initializers.cs:10:5:10:16 | call to constructor Object | normal |
 | Initializers.cs:10:28:10:30 | {...} | Initializers.cs:10:28:10:30 | {...} | normal |
 | Initializers.cs:13:5:16:5 | {...} | Initializers.cs:15:13:15:63 | Initializers[] iz = ... | normal |
 | Initializers.cs:14:9:14:54 | ... ...; | Initializers.cs:14:13:14:53 | Initializers i = ... | normal |
@@ -2373,6 +2375,7 @@
 | Initializers.cs:33:31:33:35 | ... = ... | Initializers.cs:33:31:33:35 | ... = ... | normal |
 | Initializers.cs:33:31:33:36 | ...; | Initializers.cs:33:31:33:35 | ... = ... | normal |
 | Initializers.cs:33:35:33:35 | access to parameter i | Initializers.cs:33:35:33:35 | access to parameter i | normal |
+| Initializers.cs:35:9:35:11 | call to constructor NoConstructor | Initializers.cs:35:9:35:11 | call to constructor NoConstructor | normal |
 | Initializers.cs:35:27:35:40 | {...} | Initializers.cs:35:29:35:37 | ... = ... | normal |
 | Initializers.cs:35:29:35:29 | access to field I | Initializers.cs:35:29:35:29 | this access | normal |
 | Initializers.cs:35:29:35:29 | this access | Initializers.cs:35:29:35:29 | this access | normal |
@@ -2697,6 +2700,7 @@
 | MultiImplementationA.cs:17:5:19:5 | {...} | MultiImplementationA.cs:18:9:18:22 | M2(...) | normal |
 | MultiImplementationA.cs:18:9:18:22 | M2(...) | MultiImplementationA.cs:18:9:18:22 | M2(...) | normal |
 | MultiImplementationA.cs:18:21:18:21 | 0 | MultiImplementationA.cs:18:21:18:21 | 0 | normal |
+| MultiImplementationA.cs:20:12:20:13 | call to constructor Object | MultiImplementationA.cs:20:12:20:13 | call to constructor Object | normal |
 | MultiImplementationA.cs:20:22:20:31 | {...} | MultiImplementationA.cs:20:24:20:28 | ... = ... | normal |
 | MultiImplementationA.cs:20:24:20:24 | access to field F | MultiImplementationA.cs:20:24:20:24 | this access | normal |
 | MultiImplementationA.cs:20:24:20:24 | this access | MultiImplementationA.cs:20:24:20:24 | this access | normal |
@@ -2741,6 +2745,7 @@
 | MultiImplementationB.cs:16:9:16:31 | M2(...) | MultiImplementationB.cs:16:9:16:31 | M2(...) | normal |
 | MultiImplementationB.cs:16:21:16:30 | throw ... | MultiImplementationB.cs:16:21:16:30 | throw ... | throw(NullReferenceException) |
 | MultiImplementationB.cs:16:27:16:30 | null | MultiImplementationB.cs:16:27:16:30 | null | normal |
+| MultiImplementationB.cs:18:12:18:13 | call to constructor Object | MultiImplementationB.cs:18:12:18:13 | call to constructor Object | normal |
 | MultiImplementationB.cs:18:22:18:36 | {...} | MultiImplementationB.cs:18:24:18:34 | throw ...; | throw(NullReferenceException) |
 | MultiImplementationB.cs:18:24:18:34 | throw ...; | MultiImplementationB.cs:18:24:18:34 | throw ...; | throw(NullReferenceException) |
 | MultiImplementationB.cs:18:30:18:33 | null | MultiImplementationB.cs:18:30:18:33 | null | normal |
@@ -2821,6 +2826,18 @@
 | NullCoalescing.cs:17:13:17:24 | ... ?? ... | NullCoalescing.cs:17:13:17:24 | ... ?? ... | normal |
 | NullCoalescing.cs:17:19:17:19 | access to parameter i | NullCoalescing.cs:17:19:17:19 | access to parameter i | normal |
 | NullCoalescing.cs:17:24:17:24 | 1 | NullCoalescing.cs:17:24:17:24 | 1 | normal |
+| PartialImplementationA.cs:3:12:3:18 | call to constructor Object | PartialImplementationA.cs:3:12:3:18 | call to constructor Object | normal |
+| PartialImplementationA.cs:3:27:3:29 | {...} | PartialImplementationA.cs:3:27:3:29 | {...} | normal |
+| PartialImplementationB.cs:3:16:3:16 | access to field F | PartialImplementationB.cs:3:16:3:16 | this access | normal |
+| PartialImplementationB.cs:3:16:3:16 | this access | PartialImplementationB.cs:3:16:3:16 | this access | normal |
+| PartialImplementationB.cs:3:16:3:20 | ... = ... | PartialImplementationB.cs:3:16:3:20 | ... = ... | normal |
+| PartialImplementationB.cs:3:20:3:20 | 0 | PartialImplementationB.cs:3:20:3:20 | 0 | normal |
+| PartialImplementationB.cs:4:12:4:18 | call to constructor Object | PartialImplementationB.cs:4:12:4:18 | call to constructor Object | normal |
+| PartialImplementationB.cs:4:22:4:24 | {...} | PartialImplementationB.cs:4:22:4:24 | {...} | normal |
+| PartialImplementationB.cs:5:16:5:16 | access to property P | PartialImplementationB.cs:5:16:5:16 | this access | normal |
+| PartialImplementationB.cs:5:16:5:16 | this access | PartialImplementationB.cs:5:16:5:16 | this access | normal |
+| PartialImplementationB.cs:5:32:5:34 | ... = ... | PartialImplementationB.cs:5:32:5:34 | ... = ... | normal |
+| PartialImplementationB.cs:5:34:5:34 | 0 | PartialImplementationB.cs:5:34:5:34 | 0 | normal |
 | Patterns.cs:6:5:43:5 | {...} | Patterns.cs:40:17:40:17 | access to local variable o | normal |
 | Patterns.cs:7:9:7:24 | ... ...; | Patterns.cs:7:16:7:23 | Object o = ... | normal |
 | Patterns.cs:7:16:7:23 | Object o = ... | Patterns.cs:7:16:7:23 | Object o = ... | normal |
@@ -3868,6 +3885,7 @@
 | cflow.cs:127:68:127:80 | ... = ... | cflow.cs:127:68:127:80 | ... = ... | normal |
 | cflow.cs:127:68:127:81 | ...; | cflow.cs:127:68:127:80 | ... = ... | normal |
 | cflow.cs:127:76:127:80 | access to parameter value | cflow.cs:127:76:127:80 | access to parameter value | normal |
+| cflow.cs:129:5:129:15 | call to constructor Object | cflow.cs:129:5:129:15 | call to constructor Object | normal |
 | cflow.cs:130:5:132:5 | {...} | cflow.cs:131:9:131:17 | ... = ... | normal |
 | cflow.cs:131:9:131:13 | access to field Field | cflow.cs:131:9:131:13 | this access | normal |
 | cflow.cs:131:9:131:13 | this access | cflow.cs:131:9:131:13 | this access | normal |
@@ -4272,6 +4290,7 @@
 | cflow.cs:291:38:291:38 | access to parameter f | cflow.cs:291:38:291:38 | access to parameter f | normal |
 | cflow.cs:291:38:291:41 | delegate call | cflow.cs:291:38:291:41 | delegate call | normal |
 | cflow.cs:291:40:291:40 | 0 | cflow.cs:291:40:291:40 | 0 | normal |
+| cflow.cs:296:5:296:25 | call to constructor Object | cflow.cs:296:5:296:25 | call to constructor Object | normal |
 | cflow.cs:296:52:296:54 | {...} | cflow.cs:296:52:296:54 | {...} | normal |
 | cflow.cs:299:5:301:5 | {...} | cflow.cs:300:9:300:72 | object creation of type NegationInConstructor | normal |
 | cflow.cs:300:9:300:72 | object creation of type NegationInConstructor | cflow.cs:300:9:300:72 | object creation of type NegationInConstructor | normal |

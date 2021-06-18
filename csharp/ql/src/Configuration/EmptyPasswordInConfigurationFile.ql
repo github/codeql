@@ -3,6 +3,7 @@
  * @description Finds empty passwords in configuration files.
  * @kind problem
  * @problem.severity warning
+ * @security-severity 7.8
  * @precision medium
  * @id cs/empty-password-in-configuration
  * @tags security

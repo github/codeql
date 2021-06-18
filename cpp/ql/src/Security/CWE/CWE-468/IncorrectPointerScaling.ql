@@ -4,6 +4,7 @@
  *              can cause buffer overflow conditions.
  * @kind problem
  * @problem.severity warning
+ * @security-severity 8.8
  * @precision medium
  * @id cpp/suspicious-pointer-scaling
  * @tags security

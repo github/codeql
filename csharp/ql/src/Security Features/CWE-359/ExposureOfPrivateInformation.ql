@@ -4,6 +4,7 @@
  *              unauthorized persons.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 6.5
  * @precision high
  * @id cs/exposure-of-sensitive-information
  * @tags security

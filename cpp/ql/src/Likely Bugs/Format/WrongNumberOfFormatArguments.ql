@@ -4,11 +4,13 @@
  *              a source of security issues.
  * @kind problem
  * @problem.severity error
+ * @security-severity 5.0
  * @precision high
  * @id cpp/wrong-number-format-arguments
  * @tags reliability
  *       correctness
  *       security
+ *       external/cwe/cwe-234
  *       external/cwe/cwe-685
  */
 

@@ -167,7 +167,9 @@
 | Splitting.cs:32:9:32:16 | [b (line 24): false] dynamic call to method Check | normal | Splitting.cs:32:9:32:16 | [b (line 24): false] dynamic call to method Check |
 | Splitting.cs:32:9:32:16 | [b (line 24): true] dynamic call to method Check | normal | Splitting.cs:32:9:32:16 | [b (line 24): true] dynamic call to method Check |
 | Splitting.cs:34:13:34:20 | dynamic call to method Check | normal | Splitting.cs:34:13:34:20 | dynamic call to method Check |
+| This.cs:7:5:7:8 | call to constructor Object | normal | This.cs:7:5:7:8 | call to constructor Object |
 | This.cs:17:9:17:18 | object creation of type This | normal | This.cs:17:9:17:18 | object creation of type This |
+| This.cs:22:9:22:11 | call to constructor This | normal | This.cs:22:9:22:11 | call to constructor This |
 | This.cs:28:13:28:21 | object creation of type Sub | normal | This.cs:28:13:28:21 | object creation of type Sub |
 | file://:0:0:0:0 | [summary] call to collectionSelector in SelectMany | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in SelectMany |
 | file://:0:0:0:0 | [summary] call to collectionSelector in SelectMany | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in SelectMany |
@@ -205,6 +207,10 @@
 | file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWhenAny | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in ContinueWhenAny |
 | file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWhenAny | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in ContinueWhenAny |
 | file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWhenAny | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 1 in ContinueWhenAny |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWith | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in ContinueWith |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWith | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in ContinueWith |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWith | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in ContinueWith |
+| file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWith | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in ContinueWith |
 | file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWith | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in ContinueWith |
 | file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWith | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in ContinueWith |
 | file://:0:0:0:0 | [summary] call to continuationFunction in ContinueWith | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in ContinueWith |
@@ -311,3 +317,5 @@
 | file://:0:0:0:0 | [summary] call to valueFactory in Lazy | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in Lazy |
 | file://:0:0:0:0 | [summary] call to valueFactory in Lazy | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in Lazy |
 | file://:0:0:0:0 | [summary] call to valueFactory in Lazy | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in Lazy |
+| file://:0:0:0:0 | [summary] call to valueFactory in Lazy | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in Lazy |
+| file://:0:0:0:0 | [summary] call to valueSelector in Task | normal | file://:0:0:0:0 | [summary] read: return (normal) of argument 0 in Task |
