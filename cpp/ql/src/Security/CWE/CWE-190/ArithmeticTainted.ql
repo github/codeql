@@ -17,6 +17,7 @@ import semmle.code.cpp.security.Overflow
 import semmle.code.cpp.security.Security
 import semmle.code.cpp.security.TaintTracking
 import TaintedWithPath
+import Bounded
 
 bindingset[op]
 predicate missingGuard(Operation op, Expr e, string effect) {
@@ -36,6 +37,10 @@ class Configuration extends TaintTrackingConfiguration {
       op instanceof UnaryArithmeticOperation or
       op instanceof BinaryArithmeticOperation
     )
+  }
+
+  override predicate isBarrier(Expr e) {
+    super.isBarrier(e) or bounded(e) or e.getUnspecifiedType().(IntegralType).getSize() <= 1
   }
 }
 
