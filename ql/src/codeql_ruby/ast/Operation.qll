@@ -507,23 +507,23 @@ class SpaceshipExpr extends BinaryOperation, TSpaceshipExpr {
 }
 
 /**
- * A regex match expression.
+ * A regexp match expression.
  * ```rb
  * input =~ /\d/
  * ```
  */
-class RegexMatchExpr extends BinaryOperation, TRegexMatchExpr {
-  final override string getAPrimaryQlClass() { result = "RegexMatchExpr" }
+class RegExpMatchExpr extends BinaryOperation, TRegExpMatchExpr {
+  final override string getAPrimaryQlClass() { result = "RegExpMatchExpr" }
 }
 
 /**
- * A regex-doesn't-match expression.
+ * A regexp-doesn't-match expression.
  * ```rb
  * input !~ /\d/
  * ```
  */
-class NoRegexMatchExpr extends BinaryOperation, TNoRegexMatchExpr {
-  final override string getAPrimaryQlClass() { result = "NoRegexMatchExpr" }
+class NoRegExpMatchExpr extends BinaryOperation, TNoRegExpMatchExpr {
+  final override string getAPrimaryQlClass() { result = "NoRegExpMatchExpr" }
 }
 
 /**

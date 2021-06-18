@@ -285,7 +285,7 @@ class StringInterpolationComponent extends StringComponent, StmtSequence,
 }
 
 /**
- * A string, symbol, regex, or subshell literal.
+ * A string, symbol, regexp, or subshell literal.
  */
 class StringlikeLiteral extends Literal, TStringlikeLiteral {
   /**
@@ -326,7 +326,7 @@ class StringlikeLiteral extends Literal, TStringlikeLiteral {
     this instanceof TStringLiteral and
     result = "\""
     or
-    this instanceof TRegexLiteral and
+    this instanceof TRegExpLiteral and
     result = "/"
     or
     this instanceof TSimpleSymbolLiteral and
@@ -349,7 +349,7 @@ class StringlikeLiteral extends Literal, TStringlikeLiteral {
     this instanceof TStringLiteral and
     result = "\""
     or
-    this instanceof TRegexLiteral and
+    this instanceof TRegExpLiteral and
     result = "/"
     or
     this instanceof TSimpleSymbolLiteral and
@@ -445,17 +445,17 @@ private class BareStringLiteral extends StringLiteral, TBareStringLiteral {
  * /[a-z]+/
  * ```
  */
-class RegexLiteral extends StringlikeLiteral, TRegexLiteral {
+class RegExpLiteral extends StringlikeLiteral, TRegExpLiteral {
   private Generated::Regex g;
 
-  RegexLiteral() { this = TRegexLiteral(g) }
+  RegExpLiteral() { this = TRegExpLiteral(g) }
 
-  final override string getAPrimaryQlClass() { result = "RegexLiteral" }
+  final override string getAPrimaryQlClass() { result = "RegExpLiteral" }
 
   final override StringComponent getComponent(int i) { toGenerated(result) = g.getChild(i) }
 
   /**
-   * Gets the regex flags as a string.
+   * Gets the regexp flags as a string.
    *
    * ```rb
    * /foo/     # => ""
@@ -474,7 +474,7 @@ class RegexLiteral extends StringlikeLiteral, TRegexLiteral {
   }
 
   /**
-   * Holds if the regex was specified using the `i` flag to indicate case
+   * Holds if the regexp was specified using the `i` flag to indicate case
    * insensitivity, as in the following example:
    *
    * ```rb

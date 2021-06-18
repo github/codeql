@@ -19,7 +19,7 @@ query predicate stringLiterals(StringLiteral l, string valueText) {
   stringlikeLiterals(l, valueText)
 }
 
-query predicate regexLiterals(RegexLiteral l, string valueText, string flags) {
+query predicate regExpLiterals(RegExpLiteral l, string valueText, string flags) {
   stringlikeLiterals(l, valueText) and flags = l.getFlagString()
 }
 
