@@ -403,20 +403,49 @@ private module Stdlib {
     }
   }
 
+  /** Gets a reference to an open file. */
+  private DataFlow::LocalSourceNode openFile(DataFlow::TypeTracker t, FileSystemAccess openCall) {
+    t.start() and
+    result = openCall and
+    (
+      openCall instanceof OpenCall
+      or
+      openCall instanceof PathLibOpenCall
+    )
+    or
+    exists(DataFlow::TypeTracker t2 | result = openFile(t2, openCall).track(t2, t))
+  }
+
+  /** Gets a reference to an open file. */
+  private DataFlow::Node openFile(FileSystemAccess openCall) {
+    openFile(DataFlow::TypeTracker::end(), openCall).flowsTo(result)
+  }
+
+  /** Gets a reference to the `write` or `writelines` method on an open file. */
+  private DataFlow::LocalSourceNode writeMethodOnOpenFile(
+    DataFlow::TypeTracker t, FileSystemAccess openCall
+  ) {
+    t.startInAttr(["write", "writelines"]) and
+    result = openFile(openCall)
+    or
+    exists(DataFlow::TypeTracker t2 | result = writeMethodOnOpenFile(t2, openCall).track(t2, t))
+  }
+
+  /** Gets a reference to the `write` or `writelines` method on an open file. */
+  private DataFlow::Node writeMethodOnOpenFile(FileSystemAccess openCall) {
+    writeMethodOnOpenFile(DataFlow::TypeTracker::end(), openCall).flowsTo(result)
+  }
+
   /** A call to the `write` or `writelines` method on an opened file, such as `open("foo", "w").write(...)`. */
-  private class WriteOnOpenFile extends FileSystemWriteAccess::Range, DataFlow::CallCfgNode {
-    WriteOnOpenFile() {
-      this = getOpenFunctionRef().getReturn().getMember(["write", "writelines"]).getACall()
-    }
+  private class WriteCallOnOpenFile extends FileSystemWriteAccess::Range, DataFlow::CallCfgNode {
+    FileSystemAccess openCall;
+
+    WriteCallOnOpenFile() { this.getFunction() = writeMethodOnOpenFile(openCall) }
 
     override DataFlow::Node getAPathArgument() {
-      // best effort attempt to give the path argument, that was initially given to the `open` call.
-      exists(OpenCall openCall, DataFlow::AttrRead read |
-        read.getAttributeName() in ["write", "writelines"] and
-        openCall.flowsTo(read.getObject()) and
-        read.(DataFlow::LocalSourceNode).flowsTo(this.getFunction()) and
-        result = openCall.getAPathArgument()
-      )
+      // best effort attempt to give the path argument, that was initially given to the
+      // `open` call.
+      result = openCall.getAPathArgument()
     }
 
     override DataFlow::Node getADataNode() { result in [this.getArg(0), this.getArgByName("data")] }
@@ -1049,6 +1078,11 @@ private module Stdlib {
     PathlibFileWrites() { attrbuteName in ["write_bytes", "write_text"] }
 
     override DataFlow::Node getADataNode() { result in [this.getArg(0), this.getArgByName("data")] }
+  }
+
+  /** A call to the `open` method on a `pathlib.Path` instance. */
+  private class PathLibOpenCall extends PathlibFileAccess {
+    PathLibOpenCall() { attrbuteName = "open" }
   }
 
   /** An additional taint steps for objects of type `pathlib.Path` */

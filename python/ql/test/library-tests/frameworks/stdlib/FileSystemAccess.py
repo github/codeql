@@ -24,6 +24,6 @@ f.writelines(lines) # $ getAPathArgument="path" fileWriteData=lines
 
 
 def through_function(open_file):
-    open_file.write("foo") # $ fileWriteData="foo" MISSING: getAPathArgument="path"
+    open_file.write("foo") # $ fileWriteData="foo" getAPathArgument="path"
 
 through_function(f)
