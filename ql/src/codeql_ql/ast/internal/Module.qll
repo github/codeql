@@ -258,12 +258,18 @@ private predicate definesModule(
 module ModConsistency {
   query predicate noResolve(Import imp) {
     not resolve(imp, _) and
-    not imp.getLocation().getFile().getAbsolutePath().regexpMatch(".*/(test|examples)/.*")
+    not imp.getLocation()
+        .getFile()
+        .getAbsolutePath()
+        .regexpMatch(".*/(test|examples|ql-training|recorded-call-graph-metrics)/.*")
   }
 
   query predicate noResolveModuleExpr(ModuleExpr me) {
     not resolveModuleExpr(me, _) and
-    not me.getLocation().getFile().getAbsolutePath().regexpMatch(".*/(test|examples)/.*")
+    not me.getLocation()
+        .getFile()
+        .getAbsolutePath()
+        .regexpMatch(".*/(test|examples|ql-training|recorded-call-graph-metrics)/.*")
   }
 
   query predicate multipleResolve(Import imp, int c, ContainerOrModule m) {
