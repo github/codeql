@@ -2,7 +2,7 @@ import ql
 import codeql_ql.ast.internal.AstNodes
 
 private class TScope =
-  TClass or TFullAggregate or TExprAggregate or TQuantifier or TSelect or TPredicate or TNewTypeBranch;
+  TClass or TAggregate or TQuantifier or TSelect or TPredicate or TNewTypeBranch;
 
 /** A variable scope. */
 class VariableScope extends TScope, AstNode {

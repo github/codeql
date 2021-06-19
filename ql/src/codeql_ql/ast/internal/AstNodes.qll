@@ -68,8 +68,8 @@ class TBinOpExpr = TAddSubExpr or TMulDivModExpr;
 class TAggregate = TFullAggregate or TExprAggregate;
 
 class TExpr =
-  TBinOpExpr or TLiteral or TAggregate or TIdentifier or TInlineCast or
-      TCall or TUnaryExpr or TExprAnnotation or TDontCare or TRange or TSet or TAsExpr or TSuper;
+  TBinOpExpr or TLiteral or TAggregate or TIdentifier or TInlineCast or TCall or TUnaryExpr or
+      TExprAnnotation or TDontCare or TRange or TSet or TAsExpr or TSuper;
 
 class TCall = TPredicateCall or TMemberCall or TNoneCall or TAnyCall;
 
