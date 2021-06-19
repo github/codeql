@@ -257,17 +257,22 @@ private predicate sinkModelCsv(string row) {
     ]
 }
 
+// TODO: add ByteBuffer
 private predicate summaryModelCsv(string row) {
   row =
     [
       // qualifier to arg
       "java.io;InputStream;true;read;(byte[]);;Argument[-1];Argument[0];taint",
       "java.io;InputStream;true;read;(byte[],int,int);;Argument[-1];Argument[0];taint",
+      "java.io;InputStream;true;readNBytes;(byte[],int,int);;Argument[-1];Argument[0];taint",
+      "java.io;InputStream;true;transferTo;(OutputStream);;Argument[-1];Argument[0];taint",
       "java.io;ByteArrayOutputStream;false;writeTo;;;Argument[-1];Argument[0];taint",
       "java.io;Reader;true;read;;;Argument[-1];Argument[0];taint",
       // qualifier to return
       "java.io;ByteArrayOutputStream;false;toByteArray;;;Argument[-1];ReturnValue;taint",
       "java.io;ByteArrayOutputStream;false;toString;;;Argument[-1];ReturnValue;taint",
+      "java.io;InputStream;true;readAllBytes;;;Argument[-1];ReturnValue;taint",
+      "java.io;InputStream;true;readNBytes;(int);;Argument[-1];ReturnValue;taint",
       "java.util;StringTokenizer;false;nextElement;();;Argument[-1];ReturnValue;taint",
       "java.util;StringTokenizer;false;nextToken;;;Argument[-1];ReturnValue;taint",
       "javax.xml.transform.sax;SAXSource;false;getInputSource;;;Argument[-1];ReturnValue;taint",
@@ -278,10 +283,12 @@ private predicate summaryModelCsv(string row) {
       "java.net;URI;false;toAsciiString;;;Argument[-1];ReturnValue;taint",
       "java.io;File;false;toURI;;;Argument[-1];ReturnValue;taint",
       "java.io;File;false;toPath;;;Argument[-1];ReturnValue;taint",
+      "java.nio;ByteBuffer;false;array;();;Argument[-1];ReturnValue;taint",
       "java.nio.file;Path;false;toFile;;;Argument[-1];ReturnValue;taint",
       "java.io;BufferedReader;true;readLine;;;Argument[-1];ReturnValue;taint",
       "java.io;Reader;true;read;();;Argument[-1];ReturnValue;taint",
       // arg to return
+      "java.nio;ByteBuffer;false;wrap;(byte[]);;Argument[0];ReturnValue;taint",
       "java.util;Base64$Encoder;false;encode;(byte[]);;Argument[0];ReturnValue;taint",
       "java.util;Base64$Encoder;false;encode;(ByteBuffer);;Argument[0];ReturnValue;taint",
       "java.util;Base64$Encoder;false;encodeToString;(byte[]);;Argument[0];ReturnValue;taint",
