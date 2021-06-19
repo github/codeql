@@ -54,7 +54,7 @@ module ExperimentalFlask {
       headerInput.asCfgNode() = this.asCfgNode().(DefinitionNode).getValue()
     }
 
-    override DataFlow::Node getHeaderInput() {
+    override DataFlow::Node getAnInput() {
       result.asExpr() in [headerInput.asExpr(), this.asExpr().(Subscript).getIndex()]
     }
   }
@@ -62,12 +62,12 @@ module ExperimentalFlask {
   private class FlaskMakeResponseExtend extends DataFlow::CallCfgNode, HeaderDeclaration::Range {
     FlaskMakeResponseExtend() { this.getFunction() = headerInstanceCall() }
 
-    override DataFlow::Node getHeaderInput() { result = this.getArg(_) }
+    override DataFlow::Node getAnInput() { result = this.getArg(_) }
   }
 
   private class FlaskResponse extends DataFlow::CallCfgNode, HeaderDeclaration::Range {
     FlaskResponse() { this = Flask::Response::classRef().getACall() }
 
-    override DataFlow::Node getHeaderInput() { result = this.getArgByName("headers") }
+    override DataFlow::Node getAnInput() { result = this.getArgByName("headers") }
   }
 }

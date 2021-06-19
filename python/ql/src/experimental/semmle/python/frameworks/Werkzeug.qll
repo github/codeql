@@ -24,7 +24,7 @@ private module Werkzeug {
           this.getFunction().(DataFlow::AttrRead).getAttributeName() = "add"
         }
 
-        override DataFlow::Node getHeaderInput() { result = this.getArg(_) }
+        override DataFlow::Node getAnInput() { result = this.getArg(_) }
       }
     }
   }

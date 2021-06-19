@@ -56,7 +56,7 @@ private module PrivateDjango {
           class DjangoResponseSetItemCall extends DataFlow::CallCfgNode, HeaderDeclaration::Range {
             DjangoResponseSetItemCall() { this.getFunction() = headerSetItemCall() }
 
-            override DataFlow::Node getHeaderInput() { result = this.getArg([0, 1]) }
+            override DataFlow::Node getAnInput() { result = this.getArg([0, 1]) }
           }
 
           class DjangoResponseDefinition extends DataFlow::Node, HeaderDeclaration::Range {
@@ -67,7 +67,7 @@ private module PrivateDjango {
               headerInput.asCfgNode() = this.asCfgNode().(DefinitionNode).getValue()
             }
 
-            override DataFlow::Node getHeaderInput() {
+            override DataFlow::Node getAnInput() {
               result.asExpr() in [headerInput.asExpr(), this.asExpr().(Subscript).getIndex()]
             }
           }

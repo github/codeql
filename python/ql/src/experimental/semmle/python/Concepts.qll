@@ -159,7 +159,7 @@ module HeaderDeclaration {
     /**
      * Gets the argument containing the header value.
      */
-    abstract DataFlow::Node getHeaderInput();
+    abstract DataFlow::Node getAnInput();
   }
 }
 
@@ -177,5 +177,5 @@ class HeaderDeclaration extends DataFlow::Node {
   /**
    * Gets the argument containing the header value.
    */
-  DataFlow::Node getHeaderInput() { result = range.getHeaderInput() }
+  DataFlow::Node getAnInput() { result = range.getAnInput() }
 }
