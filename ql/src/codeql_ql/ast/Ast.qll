@@ -1506,14 +1506,14 @@ class Aggregate extends TAggregate, Expr {
 
   override Type getType() {
     exists(PrimitiveType prim | prim = result |
-      kind.regexpMatch("(strict)?count|sum|min|max|rank") and
+      kind.regexpMatch("(strict)?(count|sum|min|max|rank)") and
       result.getName() = "int"
       or
       kind.regexpMatch("(strict)?concat") and
       result.getName() = "string"
     )
     or
-    kind = ["any", "min", "max"] and
+    kind = ["any", "min", "max", "unique"] and
     not exists(getExpr(_)) and
     result = getArgument(0).getTypeExpr().getResolvedType()
     or
