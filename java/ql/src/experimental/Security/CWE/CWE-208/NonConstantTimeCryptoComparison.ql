@@ -4,7 +4,7 @@
  *              Otherwise, an attacker may be able to implement a timing attack.
  *              A successful attack may result in leaking secrets or authentication bypass.
  * @kind path-problem
- * @problem.severity error
+ * @problem.severity warning
  * @precision high
  * @id java/non-constant-time-crypto-comparison
  * @tags security
