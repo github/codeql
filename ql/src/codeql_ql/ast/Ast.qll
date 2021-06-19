@@ -1392,11 +1392,17 @@ class HigherOrderFormula extends THigherOrderFormula, Formula {
   }
 }
 
+class Aggregate extends TAggregate, Expr {
+  string getKind() { none() }
+
+  Generated::Aggregate getAggregate() { none() }
+}
+
 /**
  * An aggregate containing an expression.
  * E.g. `min(getAPredicate().getArity())`.
  */
-class ExprAggregate extends TExprAggregate, Expr {
+class ExprAggregate extends TExprAggregate, Aggregate {
   Generated::Aggregate agg;
   Generated::ExprAggregateBody body;
   string kind;
@@ -1411,7 +1417,9 @@ class ExprAggregate extends TExprAggregate, Expr {
    * Gets the kind of aggregate.
    * E.g. for `min(foo())` the result is "min".
    */
-  string getKind() { result = kind }
+  override string getKind() { result = kind }
+
+  override Generated::Aggregate getAggregate() { result = agg }
 
   /**
    * Gets the ith "as" expression of this aggregate, if any.
@@ -1457,13 +1465,13 @@ class ExprAggregate extends TExprAggregate, Expr {
 }
 
 /** An aggregate expression, such as `count` or `sum`. */
-class Aggregate extends TAggregate, Expr {
+class FullAggregate extends TFullAggregate, Aggregate {
   Generated::Aggregate agg;
   string kind;
   Generated::FullAggregateBody body;
 
-  Aggregate() {
-    this = TAggregate(agg) and
+  FullAggregate() {
+    this = TFullAggregate(agg) and
     kind = agg.getChild(0).(Generated::AggId).getValue() and
     body = agg.getChild(_)
   }
@@ -1472,7 +1480,9 @@ class Aggregate extends TAggregate, Expr {
    * Gets the kind of aggregate.
    * E.g. for `min(int i | foo(i))` the result is "foo".
    */
-  string getKind() { result = kind }
+  override string getKind() { result = kind }
+
+  override Generated::Aggregate getAggregate() { result = agg }
 
   /** Gets the ith declared argument of this quantifier. */
   VarDecl getArgument(int i) { toGenerated(result) = body.getChild(i) }
@@ -1502,7 +1512,7 @@ class Aggregate extends TAggregate, Expr {
     result = body.getOrderBys().getChild(i).getChild(1).(Generated::Direction).getValue()
   }
 
-  override string getAPrimaryQlClass() { result = "Aggregate[" + kind + "]" }
+  override string getAPrimaryQlClass() { kind != "rank" and result = "FullAggregate[" + kind + "]" }
 
   override Type getType() {
     exists(PrimitiveType prim | prim = result |
@@ -1540,14 +1550,14 @@ class Aggregate extends TAggregate, Expr {
  * A "rank" expression, such as `rank[4](int i | i = [5 .. 15] | i)`.
  */
 class Rank extends Aggregate {
-  Rank() { kind = "rank" }
+  Rank() { this.getKind() = "rank" }
 
   override string getAPrimaryQlClass() { result = "Rank" }
 
   /**
    * The `i` in `rank[i]( | | )`.
    */
-  Expr getRankExpr() { toGenerated(result) = agg.getChild(1) }
+  Expr getRankExpr() { toGenerated(result) = this.getAggregate().getChild(1) }
 
   override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
