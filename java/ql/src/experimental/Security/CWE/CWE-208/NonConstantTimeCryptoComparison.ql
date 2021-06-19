@@ -1,7 +1,7 @@
 /**
  * @name Using a non-constant time algorithm for comparing results of a cryptographic operation
  * @description When comparing results of a cryptographic operation, a constant time algorithm should be used.
- *              Otherwise, an attacker may be able to implement a timing attack.
+ *              Otherwise, attackers may be able to implement a timing attack if they can control input.
  *              A successful attack may result in leaking secrets or authentication bypass.
  * @kind path-problem
  * @problem.severity warning
@@ -21,12 +21,15 @@ private class ByteBuffer extends Class {
   ByteBuffer() { hasQualifiedName("java.nio", "ByteBuffer") }
 }
 
+/** A method call that produces cryptographic result. */
 abstract private class ProduceCryptoCall extends MethodAccess {
   Expr output;
 
+  /** Return the result of cryptographic operation. */
   Expr output() { result = output }
 }
 
+/** A method call that produces a MAC. */
 private class ProduceMacCall extends ProduceCryptoCall {
   ProduceMacCall() {
     getMethod().hasQualifiedName("javax.crypto", "Mac", "doFinal") and
@@ -38,6 +41,7 @@ private class ProduceMacCall extends ProduceCryptoCall {
   }
 }
 
+/** A method call that produces a signature. */
 private class ProduceSignatureCall extends ProduceCryptoCall {
   ProduceSignatureCall() {
     getMethod().hasQualifiedName("java.security", "Signature", "sign") and
@@ -49,6 +53,7 @@ private class ProduceSignatureCall extends ProduceCryptoCall {
   }
 }
 
+/** A method call that produces a ciphertext. */
 private class ProduceCiphertextCall extends ProduceCryptoCall {
   ProduceCiphertextCall() {
     getMethod().hasQualifiedName("javax.crypto", "Cipher", "doFinal") and
@@ -63,6 +68,10 @@ private class ProduceCiphertextCall extends ProduceCryptoCall {
   }
 }
 
+/**
+ * A config that tracks data flow from remote user input to a cryptographic operation
+ * such as cipher, MAC or signature.
+ */
 private class UserInputInCryptoOperationConfig extends TaintTracking2::Configuration {
   UserInputInCryptoOperationConfig() { this = "UserInputInCryptoOperationConfig" }
 
@@ -72,6 +81,7 @@ private class UserInputInCryptoOperationConfig extends TaintTracking2::Configura
     exists(ProduceCryptoCall call | call.getQualifier() = sink.asExpr())
   }
 
+  /** Holds if `fromNode` to `toNode` is a dataflow step that updates a cryptographic operation. */
   override predicate isAdditionalTaintStep(DataFlow2::Node fromNode, DataFlow2::Node toNode) {
     exists(MethodAccess call, Method m |
       m = call.getMethod() and
@@ -90,6 +100,7 @@ private class UserInputInCryptoOperationConfig extends TaintTracking2::Configura
   }
 }
 
+/** A source that produces result of cryptographic operation. */
 private class CryptoOperationSource extends DataFlow::Node {
   Expr cryptoOperation;
 
@@ -99,6 +110,7 @@ private class CryptoOperationSource extends DataFlow::Node {
     )
   }
 
+  /** Holds if remote user input was used in the cryptographic operation. */
   predicate includesUserInput() {
     exists(
       DataFlow2::PathNode source, DataFlow2::PathNode sink, UserInputInCryptoOperationConfig config
@@ -128,6 +140,10 @@ private class NonConstantTimeComparisonCall extends StaticMethodAccess {
   }
 }
 
+/**
+ * A config that tracks data flow from remote user input to methods
+ * that compare inputs using a non-constant time algorithm.
+ */
 private class UserInputInComparisonConfig extends TaintTracking2::Configuration {
   UserInputInComparisonConfig() { this = "UserInputInComparisonConfig" }
 
@@ -142,15 +158,14 @@ private class UserInputInComparisonConfig extends TaintTracking2::Configuration 
   }
 }
 
+/** Holds if `expr` looks like a constant. */
 private predicate looksLikeConstant(Expr expr) {
   expr.isCompileTimeConstant()
   or
   expr.(VarAccess).getVariable().isFinal() and expr.getType() instanceof TypeString
 }
 
-/**
- * A sink that compares input using a non-constant time algorithm.
- */
+/** A sink that compares input using a non-constant time algorithm. */
 private class NonConstantTimeComparisonSink extends DataFlow::Node {
   Expr anotherParameter;
 
@@ -176,6 +191,7 @@ private class NonConstantTimeComparisonSink extends DataFlow::Node {
     not looksLikeConstant(anotherParameter)
   }
 
+  /** Holds if remote user input was used in the comparison. */
   predicate includesUserInput() {
     exists(UserInputInComparisonConfig config |
       config.hasFlowTo(DataFlow2::exprNode(anotherParameter))

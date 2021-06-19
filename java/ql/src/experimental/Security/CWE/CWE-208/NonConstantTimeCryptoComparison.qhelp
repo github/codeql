@@ -5,8 +5,8 @@
 <p>
 When comparing results of cryptographic operations, such as MAC or digital signature,
 a constant time algorithm should be used. In other words, the comparison time should not depend on
-the content of the input. Otherwise, an attacker may be able to implement a timing attack.
-A successful timing attack may result in leaking secrets or authentication bypass.
+the content of the input. Otherwise, attackers may be able to implement a timing attack
+if they can control input. A successful timing attack may result in leaking secrets or authentication bypass.
 </p>
 </overview>
 
