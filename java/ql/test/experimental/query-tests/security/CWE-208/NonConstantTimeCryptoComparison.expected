@@ -1,41 +1,43 @@
 edges
-| NonConstantTimeCryptoComparison.java:16:28:16:44 | doFinal(...) : byte[] | NonConstantTimeCryptoComparison.java:17:43:17:51 | actualMac |
-| NonConstantTimeCryptoComparison.java:23:28:23:44 | doFinal(...) : byte[] | NonConstantTimeCryptoComparison.java:24:84:24:92 | actualMac : byte[] |
-| NonConstantTimeCryptoComparison.java:24:84:24:92 | actualMac : byte[] | NonConstantTimeCryptoComparison.java:24:66:24:93 | castToObjectArray(...) |
-| NonConstantTimeCryptoComparison.java:31:21:31:29 | actualMac : byte[] | NonConstantTimeCryptoComparison.java:32:43:32:51 | actualMac |
-| NonConstantTimeCryptoComparison.java:47:28:47:40 | sign(...) : byte[] | NonConstantTimeCryptoComparison.java:48:40:48:48 | signature |
-| NonConstantTimeCryptoComparison.java:56:21:56:29 | signature : byte[] | NonConstantTimeCryptoComparison.java:57:40:57:48 | signature |
-| NonConstantTimeCryptoComparison.java:73:22:73:46 | doFinal(...) : byte[] | NonConstantTimeCryptoComparison.java:74:45:74:47 | tag |
-| NonConstantTimeCryptoComparison.java:83:24:83:26 | tag : byte[] | NonConstantTimeCryptoComparison.java:84:40:84:42 | tag |
-| NonConstantTimeCryptoComparison.java:93:52:93:54 | tag : ByteBuffer | NonConstantTimeCryptoComparison.java:94:40:94:50 | array(...) |
-| NonConstantTimeCryptoComparison.java:103:52:103:54 | tag : ByteBuffer | NonConstantTimeCryptoComparison.java:104:49:104:51 | tag |
+| NonConstantTimeCryptoComparison.java:19:28:19:44 | doFinal(...) : byte[] | NonConstantTimeCryptoComparison.java:20:43:20:51 | actualMac |
+| NonConstantTimeCryptoComparison.java:28:28:28:40 | doFinal(...) : byte[] | NonConstantTimeCryptoComparison.java:29:84:29:92 | actualMac : byte[] |
+| NonConstantTimeCryptoComparison.java:29:84:29:92 | actualMac : byte[] | NonConstantTimeCryptoComparison.java:29:66:29:93 | castToObjectArray(...) |
+| NonConstantTimeCryptoComparison.java:36:21:36:29 | actualMac : byte[] | NonConstantTimeCryptoComparison.java:38:43:38:51 | actualMac |
+| NonConstantTimeCryptoComparison.java:56:28:56:40 | sign(...) : byte[] | NonConstantTimeCryptoComparison.java:57:40:57:48 | signature |
+| NonConstantTimeCryptoComparison.java:67:21:67:29 | signature : byte[] | NonConstantTimeCryptoComparison.java:68:40:68:48 | signature |
+| NonConstantTimeCryptoComparison.java:85:22:85:46 | doFinal(...) : byte[] | NonConstantTimeCryptoComparison.java:87:45:87:47 | tag |
+| NonConstantTimeCryptoComparison.java:97:24:97:26 | tag : byte[] | NonConstantTimeCryptoComparison.java:98:40:98:42 | tag |
+| NonConstantTimeCryptoComparison.java:107:52:107:54 | tag : ByteBuffer | NonConstantTimeCryptoComparison.java:109:40:109:42 | tag : ByteBuffer |
+| NonConstantTimeCryptoComparison.java:109:40:109:42 | tag : ByteBuffer | NonConstantTimeCryptoComparison.java:109:40:109:50 | array(...) |
+| NonConstantTimeCryptoComparison.java:119:52:119:54 | tag : ByteBuffer | NonConstantTimeCryptoComparison.java:120:49:120:51 | tag |
 nodes
-| NonConstantTimeCryptoComparison.java:16:28:16:44 | doFinal(...) : byte[] | semmle.label | doFinal(...) : byte[] |
-| NonConstantTimeCryptoComparison.java:17:43:17:51 | actualMac | semmle.label | actualMac |
-| NonConstantTimeCryptoComparison.java:23:28:23:44 | doFinal(...) : byte[] | semmle.label | doFinal(...) : byte[] |
-| NonConstantTimeCryptoComparison.java:24:66:24:93 | castToObjectArray(...) | semmle.label | castToObjectArray(...) |
-| NonConstantTimeCryptoComparison.java:24:84:24:92 | actualMac : byte[] | semmle.label | actualMac : byte[] |
-| NonConstantTimeCryptoComparison.java:31:21:31:29 | actualMac : byte[] | semmle.label | actualMac : byte[] |
-| NonConstantTimeCryptoComparison.java:32:43:32:51 | actualMac | semmle.label | actualMac |
-| NonConstantTimeCryptoComparison.java:47:28:47:40 | sign(...) : byte[] | semmle.label | sign(...) : byte[] |
-| NonConstantTimeCryptoComparison.java:48:40:48:48 | signature | semmle.label | signature |
-| NonConstantTimeCryptoComparison.java:56:21:56:29 | signature : byte[] | semmle.label | signature : byte[] |
+| NonConstantTimeCryptoComparison.java:19:28:19:44 | doFinal(...) : byte[] | semmle.label | doFinal(...) : byte[] |
+| NonConstantTimeCryptoComparison.java:20:43:20:51 | actualMac | semmle.label | actualMac |
+| NonConstantTimeCryptoComparison.java:28:28:28:40 | doFinal(...) : byte[] | semmle.label | doFinal(...) : byte[] |
+| NonConstantTimeCryptoComparison.java:29:66:29:93 | castToObjectArray(...) | semmle.label | castToObjectArray(...) |
+| NonConstantTimeCryptoComparison.java:29:84:29:92 | actualMac : byte[] | semmle.label | actualMac : byte[] |
+| NonConstantTimeCryptoComparison.java:36:21:36:29 | actualMac : byte[] | semmle.label | actualMac : byte[] |
+| NonConstantTimeCryptoComparison.java:38:43:38:51 | actualMac | semmle.label | actualMac |
+| NonConstantTimeCryptoComparison.java:56:28:56:40 | sign(...) : byte[] | semmle.label | sign(...) : byte[] |
 | NonConstantTimeCryptoComparison.java:57:40:57:48 | signature | semmle.label | signature |
-| NonConstantTimeCryptoComparison.java:73:22:73:46 | doFinal(...) : byte[] | semmle.label | doFinal(...) : byte[] |
-| NonConstantTimeCryptoComparison.java:74:45:74:47 | tag | semmle.label | tag |
-| NonConstantTimeCryptoComparison.java:83:24:83:26 | tag : byte[] | semmle.label | tag : byte[] |
-| NonConstantTimeCryptoComparison.java:84:40:84:42 | tag | semmle.label | tag |
-| NonConstantTimeCryptoComparison.java:93:52:93:54 | tag : ByteBuffer | semmle.label | tag : ByteBuffer |
-| NonConstantTimeCryptoComparison.java:94:40:94:50 | array(...) | semmle.label | array(...) |
-| NonConstantTimeCryptoComparison.java:103:52:103:54 | tag : ByteBuffer | semmle.label | tag : ByteBuffer |
-| NonConstantTimeCryptoComparison.java:104:49:104:51 | tag | semmle.label | tag |
+| NonConstantTimeCryptoComparison.java:67:21:67:29 | signature : byte[] | semmle.label | signature : byte[] |
+| NonConstantTimeCryptoComparison.java:68:40:68:48 | signature | semmle.label | signature |
+| NonConstantTimeCryptoComparison.java:85:22:85:46 | doFinal(...) : byte[] | semmle.label | doFinal(...) : byte[] |
+| NonConstantTimeCryptoComparison.java:87:45:87:47 | tag | semmle.label | tag |
+| NonConstantTimeCryptoComparison.java:97:24:97:26 | tag : byte[] | semmle.label | tag : byte[] |
+| NonConstantTimeCryptoComparison.java:98:40:98:42 | tag | semmle.label | tag |
+| NonConstantTimeCryptoComparison.java:107:52:107:54 | tag : ByteBuffer | semmle.label | tag : ByteBuffer |
+| NonConstantTimeCryptoComparison.java:109:40:109:42 | tag : ByteBuffer | semmle.label | tag : ByteBuffer |
+| NonConstantTimeCryptoComparison.java:109:40:109:50 | array(...) | semmle.label | array(...) |
+| NonConstantTimeCryptoComparison.java:119:52:119:54 | tag : ByteBuffer | semmle.label | tag : ByteBuffer |
+| NonConstantTimeCryptoComparison.java:120:49:120:51 | tag | semmle.label | tag |
 #select
-| NonConstantTimeCryptoComparison.java:17:43:17:51 | actualMac | NonConstantTimeCryptoComparison.java:16:28:16:44 | doFinal(...) : byte[] | NonConstantTimeCryptoComparison.java:17:43:17:51 | actualMac | Using a non-constant time algorithm for comparing results of a cryptographic operation. |
-| NonConstantTimeCryptoComparison.java:24:66:24:93 | castToObjectArray(...) | NonConstantTimeCryptoComparison.java:23:28:23:44 | doFinal(...) : byte[] | NonConstantTimeCryptoComparison.java:24:66:24:93 | castToObjectArray(...) | Using a non-constant time algorithm for comparing results of a cryptographic operation. |
-| NonConstantTimeCryptoComparison.java:32:43:32:51 | actualMac | NonConstantTimeCryptoComparison.java:31:21:31:29 | actualMac : byte[] | NonConstantTimeCryptoComparison.java:32:43:32:51 | actualMac | Using a non-constant time algorithm for comparing results of a cryptographic operation. |
-| NonConstantTimeCryptoComparison.java:48:40:48:48 | signature | NonConstantTimeCryptoComparison.java:47:28:47:40 | sign(...) : byte[] | NonConstantTimeCryptoComparison.java:48:40:48:48 | signature | Using a non-constant time algorithm for comparing results of a cryptographic operation. |
-| NonConstantTimeCryptoComparison.java:57:40:57:48 | signature | NonConstantTimeCryptoComparison.java:56:21:56:29 | signature : byte[] | NonConstantTimeCryptoComparison.java:57:40:57:48 | signature | Using a non-constant time algorithm for comparing results of a cryptographic operation. |
-| NonConstantTimeCryptoComparison.java:74:45:74:47 | tag | NonConstantTimeCryptoComparison.java:73:22:73:46 | doFinal(...) : byte[] | NonConstantTimeCryptoComparison.java:74:45:74:47 | tag | Using a non-constant time algorithm for comparing results of a cryptographic operation. |
-| NonConstantTimeCryptoComparison.java:84:40:84:42 | tag | NonConstantTimeCryptoComparison.java:83:24:83:26 | tag : byte[] | NonConstantTimeCryptoComparison.java:84:40:84:42 | tag | Using a non-constant time algorithm for comparing results of a cryptographic operation. |
-| NonConstantTimeCryptoComparison.java:94:40:94:50 | array(...) | NonConstantTimeCryptoComparison.java:93:52:93:54 | tag : ByteBuffer | NonConstantTimeCryptoComparison.java:94:40:94:50 | array(...) | Using a non-constant time algorithm for comparing results of a cryptographic operation. |
-| NonConstantTimeCryptoComparison.java:104:49:104:51 | tag | NonConstantTimeCryptoComparison.java:103:52:103:54 | tag : ByteBuffer | NonConstantTimeCryptoComparison.java:104:49:104:51 | tag | Using a non-constant time algorithm for comparing results of a cryptographic operation. |
+| NonConstantTimeCryptoComparison.java:20:43:20:51 | actualMac | NonConstantTimeCryptoComparison.java:19:28:19:44 | doFinal(...) : byte[] | NonConstantTimeCryptoComparison.java:20:43:20:51 | actualMac | Using a non-constant time algorithm for comparing results of a cryptographic operation. |
+| NonConstantTimeCryptoComparison.java:29:66:29:93 | castToObjectArray(...) | NonConstantTimeCryptoComparison.java:28:28:28:40 | doFinal(...) : byte[] | NonConstantTimeCryptoComparison.java:29:66:29:93 | castToObjectArray(...) | Using a non-constant time algorithm for comparing results of a cryptographic operation. |
+| NonConstantTimeCryptoComparison.java:38:43:38:51 | actualMac | NonConstantTimeCryptoComparison.java:36:21:36:29 | actualMac : byte[] | NonConstantTimeCryptoComparison.java:38:43:38:51 | actualMac | Using a non-constant time algorithm for comparing results of a cryptographic operation. |
+| NonConstantTimeCryptoComparison.java:57:40:57:48 | signature | NonConstantTimeCryptoComparison.java:56:28:56:40 | sign(...) : byte[] | NonConstantTimeCryptoComparison.java:57:40:57:48 | signature | Using a non-constant time algorithm for comparing results of a cryptographic operation. |
+| NonConstantTimeCryptoComparison.java:68:40:68:48 | signature | NonConstantTimeCryptoComparison.java:67:21:67:29 | signature : byte[] | NonConstantTimeCryptoComparison.java:68:40:68:48 | signature | Using a non-constant time algorithm for comparing results of a cryptographic operation. |
+| NonConstantTimeCryptoComparison.java:87:45:87:47 | tag | NonConstantTimeCryptoComparison.java:85:22:85:46 | doFinal(...) : byte[] | NonConstantTimeCryptoComparison.java:87:45:87:47 | tag | Using a non-constant time algorithm for comparing results of a cryptographic operation. |
+| NonConstantTimeCryptoComparison.java:98:40:98:42 | tag | NonConstantTimeCryptoComparison.java:97:24:97:26 | tag : byte[] | NonConstantTimeCryptoComparison.java:98:40:98:42 | tag | Using a non-constant time algorithm for comparing results of a cryptographic operation. |
+| NonConstantTimeCryptoComparison.java:109:40:109:50 | array(...) | NonConstantTimeCryptoComparison.java:107:52:107:54 | tag : ByteBuffer | NonConstantTimeCryptoComparison.java:109:40:109:50 | array(...) | Using a non-constant time algorithm for comparing results of a cryptographic operation. |
+| NonConstantTimeCryptoComparison.java:120:49:120:51 | tag | NonConstantTimeCryptoComparison.java:119:52:119:54 | tag : ByteBuffer | NonConstantTimeCryptoComparison.java:120:49:120:51 | tag | Using a non-constant time algorithm for comparing results of a cryptographic operation. |
