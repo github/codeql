@@ -1065,6 +1065,8 @@ class String extends Literal {
 
   override string getAPrimaryQlClass() { result = "String" }
 
+  override PrimitiveType getType() { result.getName() = "string" }
+
   /** Gets the string value of this literal. */
   string getValue() {
     exists(string raw | raw = lit.getChild().(Generated::String).getValue() |
@@ -1079,6 +1081,8 @@ class Integer extends Literal {
 
   override string getAPrimaryQlClass() { result = "Integer" }
 
+  override PrimitiveType getType() { result.getName() = "int" }
+
   /** Gets the integer value of this literal. */
   int getValue() { result = lit.getChild().(Generated::Integer).getValue().toInt() }
 }
@@ -1088,6 +1092,8 @@ class Float extends Literal {
   Float() { lit.getChild() instanceof Generated::Float }
 
   override string getAPrimaryQlClass() { result = "Float" }
+
+  override PrimitiveType getType() { result.getName() = "float" }
 
   /** Gets the float value of this literal. */
   float getValue() { result = lit.getChild().(Generated::Float).getValue().toFloat() }
@@ -1104,6 +1110,8 @@ class Boolean extends Literal {
 
   /** Holds if the value is `false` */
   predicate isFalse() { bool.getChild() instanceof Generated::False }
+
+  override PrimitiveType getType() { result.getName() = "boolean" }
 
   override string getAPrimaryQlClass() { result = "Boolean" }
 }
@@ -1643,6 +1651,8 @@ class ThisAccess extends Identifier {
 class Super extends TSuper, Expr {
   Super() { this = TSuper(_) }
 
+  override Type getType() { result = this.getParent+().(Class).getType() }
+
   override string getAPrimaryQlClass() { result = "SuperAccess" }
 }
 
@@ -1704,6 +1714,8 @@ class ExprAnnotation extends TExprAnnotation, Expr {
    */
   Expr getExpression() { toGenerated(result) = expr_anno.getChild() }
 
+  override Type getType() { result = this.getExpression().getType() }
+
   override string getAPrimaryQlClass() { result = "ExprAnnotation" }
 
   override AstNode getAChild(string pred) {
@@ -1743,6 +1755,27 @@ class AddSubExpr extends TAddSubExpr, BinOpExpr {
 
   /** Gets the operator of the binary expression. */
   FunctionSymbol getOperator() { result = operator }
+
+  override PrimitiveType getType() {
+    // Both operands are the same type
+    result = this.getLeftOperand().getType() and
+    result = this.getRightOperand().getType()
+    or
+    // Both operands are subtypes of `int`
+    result.getName() = "int" and
+    result = this.getLeftOperand().getType().getASuperType*() and
+    result = this.getRightOperand().getType().getASuperType*()
+    or
+    // Coercion to from `int` to `float`
+    exists(PrimitiveType i | result.getName() = "float" and i.getName() = "int" |
+      this.getAnOperand().getType() = result and
+      this.getAnOperand().getType().getASuperType*() = i
+    )
+    or
+    // Coercion to `string`
+    result.getName() = "string" and
+    this.getAnOperand().getType() = result
+  }
 
   override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
@@ -1791,6 +1824,23 @@ class MulDivModExpr extends TMulDivModExpr, BinOpExpr {
 
   /** Gets the operator of the binary expression. */
   FunctionSymbol getOperator() { result = operator }
+
+  override PrimitiveType getType() {
+    // Both operands are of the same type
+    this.getLeftOperand().getType() = result and
+    this.getRightOperand().getType() = result
+    or
+    // Both operands are subtypes of `int`
+    result.getName() = "int" and
+    result = this.getLeftOperand().getType().getASuperType*() and
+    result = this.getRightOperand().getType().getASuperType*()
+    or
+    // Coercion from `int` to `float`
+    exists(PrimitiveType i | result.getName() = "float" and i.getName() = "int" |
+      this.getAnOperand().getType() = result and
+      this.getAnOperand().getType().getASuperType*() = i
+    )
+  }
 
   override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
@@ -1846,6 +1896,8 @@ class Range extends TRange, Expr {
    */
   Expr getHighEndpoint() { toGenerated(result) = range.getUpper() }
 
+  override PrimitiveType getType() { result.getName() = "int" }
+
   override string getAPrimaryQlClass() { result = "Range" }
 
   override AstNode getAChild(string pred) {
@@ -1870,6 +1922,8 @@ class Set extends TSet, Expr {
    */
   Expr getElement(int i) { toGenerated(result) = set.getChild(i) }
 
+  override Type getType() { result = this.getElement(0).getType() }
+
   override string getAPrimaryQlClass() { result = "Set" }
 
   override AstNode getAChild(string pred) {
@@ -1891,6 +1945,8 @@ class UnaryExpr extends TUnaryExpr, Expr {
   /** Gets the operator of the unary expression as a string. */
   FunctionSymbol getOperator() { result = unaryexpr.getChild(0).toString() }
 
+  override Type getType() { result = this.getOperand().getType() }
+
   override string getAPrimaryQlClass() { result = "UnaryExpr" }
 
   override AstNode getAChild(string pred) {
@@ -1905,6 +1961,8 @@ class DontCare extends TDontCare, Expr {
   Generated::Underscore dontcare;
 
   DontCare() { this = TDontCare(dontcare) }
+
+  override DontCareType getType() { any() }
 
   override string getAPrimaryQlClass() { result = "DontCare" }
 }
