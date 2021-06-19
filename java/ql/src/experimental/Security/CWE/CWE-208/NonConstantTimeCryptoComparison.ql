@@ -142,6 +142,12 @@ private class UserInputInComparisonConfig extends TaintTracking2::Configuration 
   }
 }
 
+private predicate looksLikeConstant(Expr expr) {
+  expr.isCompileTimeConstant()
+  or
+  expr.(VarAccess).getVariable().isFinal() and expr.getType() instanceof TypeString
+}
+
 /**
  * A sink that compares input using a non-constant time algorithm.
  */
@@ -149,7 +155,6 @@ private class NonConstantTimeComparisonSink extends DataFlow::Node {
   Expr anotherParameter;
 
   NonConstantTimeComparisonSink() {
-    not anotherParameter.isCompileTimeConstant() and
     (
       exists(NonConstantTimeEqualsCall call |
         this.asExpr() = call.getQualifier() and
@@ -167,7 +172,8 @@ private class NonConstantTimeComparisonSink extends DataFlow::Node {
           this.asExpr() = call.getArgument(1) and anotherParameter = call.getArgument(0)
         )
       )
-    )
+    ) and
+    not looksLikeConstant(anotherParameter)
   }
 
   predicate includesUserInput() {
