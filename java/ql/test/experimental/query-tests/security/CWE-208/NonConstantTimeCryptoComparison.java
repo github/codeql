@@ -129,6 +129,23 @@ public class NonConstantTimeCryptoComparison {
         return MessageDigest.isEqual(expected, tag);
     }
 
+    // GOOD: compare ciphertexts using a constant time method, but no user input
+    public boolean noUserInputWhenCheckingCiphertext(byte[] expected, byte[] plaintext, Key key) throws Exception {
+        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        cipher.init(Cipher.ENCRYPT_MODE, key);
+        byte[] tag = cipher.doFinal(plaintext);
+        return Arrays.equals(expected, tag);
+    }
+
+    // GOOD: compare MAC with constant using a constant time method
+    public boolean compareMacWithConstant(Socket socket) throws Exception {
+        Mac mac = Mac.getInstance("HmacSHA256");
+        byte[] data = new byte[1024];
+        socket.getInputStream().read(data);
+        byte[] actualMac = mac.doFinal(data);
+        return "constant".equals(new String(actualMac));
+    }
+
     private static Object[] castToObjectArray(byte[] array) {
         Object[] result = new Object[array.length];
         for (int i = 0; i < array.length; i++) {

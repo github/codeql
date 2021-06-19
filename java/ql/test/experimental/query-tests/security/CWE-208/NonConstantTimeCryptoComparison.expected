@@ -10,6 +10,7 @@ edges
 | NonConstantTimeCryptoComparison.java:107:52:107:54 | tag : ByteBuffer | NonConstantTimeCryptoComparison.java:109:40:109:42 | tag : ByteBuffer |
 | NonConstantTimeCryptoComparison.java:109:40:109:42 | tag : ByteBuffer | NonConstantTimeCryptoComparison.java:109:40:109:50 | array(...) |
 | NonConstantTimeCryptoComparison.java:119:52:119:54 | tag : ByteBuffer | NonConstantTimeCryptoComparison.java:120:49:120:51 | tag |
+| NonConstantTimeCryptoComparison.java:136:22:136:46 | doFinal(...) : byte[] | NonConstantTimeCryptoComparison.java:137:40:137:42 | tag |
 nodes
 | NonConstantTimeCryptoComparison.java:19:28:19:44 | doFinal(...) : byte[] | semmle.label | doFinal(...) : byte[] |
 | NonConstantTimeCryptoComparison.java:20:43:20:51 | actualMac | semmle.label | actualMac |
@@ -31,6 +32,8 @@ nodes
 | NonConstantTimeCryptoComparison.java:109:40:109:50 | array(...) | semmle.label | array(...) |
 | NonConstantTimeCryptoComparison.java:119:52:119:54 | tag : ByteBuffer | semmle.label | tag : ByteBuffer |
 | NonConstantTimeCryptoComparison.java:120:49:120:51 | tag | semmle.label | tag |
+| NonConstantTimeCryptoComparison.java:136:22:136:46 | doFinal(...) : byte[] | semmle.label | doFinal(...) : byte[] |
+| NonConstantTimeCryptoComparison.java:137:40:137:42 | tag | semmle.label | tag |
 #select
 | NonConstantTimeCryptoComparison.java:20:43:20:51 | actualMac | NonConstantTimeCryptoComparison.java:19:28:19:44 | doFinal(...) : byte[] | NonConstantTimeCryptoComparison.java:20:43:20:51 | actualMac | Using a non-constant time algorithm for comparing results of a cryptographic operation. |
 | NonConstantTimeCryptoComparison.java:29:66:29:93 | castToObjectArray(...) | NonConstantTimeCryptoComparison.java:28:28:28:40 | doFinal(...) : byte[] | NonConstantTimeCryptoComparison.java:29:66:29:93 | castToObjectArray(...) | Using a non-constant time algorithm for comparing results of a cryptographic operation. |
