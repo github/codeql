@@ -1661,8 +1661,6 @@ class ThisAccess extends Identifier {
 class Super extends TSuper, Expr {
   Super() { this = TSuper(_) }
 
-  override Type getType() { result = this.getParent+().(Class).getType() }
-
   override string getAPrimaryQlClass() { result = "SuperAccess" }
 }
 
