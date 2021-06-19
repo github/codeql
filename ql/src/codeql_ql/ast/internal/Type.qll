@@ -325,7 +325,10 @@ private predicate defines(FileOrModule m, string name, Type t, boolean public) {
 module TyConsistency {
   query predicate noResolve(TypeExpr te) {
     not resolveTypeExpr(te, _) and
-    not te.getLocation().getFile().getAbsolutePath().regexpMatch(".*/(test|examples|ql-training|recorded-call-graph-metrics)/.*")
+    not te.getLocation()
+        .getFile()
+        .getAbsolutePath()
+        .regexpMatch(".*/(test|examples|ql-training|recorded-call-graph-metrics)/.*")
   }
 
   query predicate multipleResolve(TypeExpr te, int c, Type t) {
@@ -336,7 +339,10 @@ module TyConsistency {
 
   query predicate varDefNoType(VarDef def) {
     not exists(def.getType()) and
-    not def.getLocation().getFile().getAbsolutePath().regexpMatch(".*/(test|examples|ql-training|recorded-call-graph-metrics)/.*")
+    not def.getLocation()
+        .getFile()
+        .getAbsolutePath()
+        .regexpMatch(".*/(test|examples|ql-training|recorded-call-graph-metrics)/.*")
   }
 
   query predicate exprNoType(Expr e) {
@@ -346,6 +352,9 @@ module TyConsistency {
       not exists(p.getReturnType())
     ) and
     not e instanceof Formula and
-    not e.getLocation().getFile().getAbsolutePath().regexpMatch(".*/(test|examples|ql-training|recorded-call-graph-metrics)/.*")
+    not e.getLocation()
+        .getFile()
+        .getAbsolutePath()
+        .regexpMatch(".*/(test|examples|ql-training|recorded-call-graph-metrics)/.*")
   }
 }
