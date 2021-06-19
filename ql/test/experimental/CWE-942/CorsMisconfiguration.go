@@ -1,6 +1,9 @@
 package main
 
-import "net/http"
+import (
+	"net/http"
+	"strings"
+)
 
 const (
 	HeaderAllowOrigin      = "Access-Control-Allow-Origin"
@@ -116,8 +119,116 @@ func main() {
 				w.Header().Set(HeaderAllowCredentials, "true")
 			}
 		})
+		http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
+			// OK-ish: the input origin header is validated agains a whitelist.
+			responseHeader := w.Header()
+			{
+				origin := req.Header.Get("origin")
+				if origin != "" && origin != "null" {
+					if len(AccessControlAllowOrigins) == 0 ||
+						AccessControlAllowOrigins[origin] {
+						responseHeader.Set("Access-Control-Allow-Origin", origin)
+						responseHeader.Set("Access-Control-Allow-Credentials", "true")
+					}
+				} else {
+					responseHeader.Set("Access-Control-Allow-Origin", "*")
+				}
+			}
+		})
+		http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
+			originSuffix := ".example.com"
+			// OK-ish: the input origin header is validated agains a suffix.
+			origin := req.Header.Get("Origin")
+			if origin != "" && (originSuffix == "" || strings.HasSuffix(origin, originSuffix)) {
+				w.Header().Set("Access-Control-Allow-Origin", origin)
+				w.Header().Set("Access-Control-Allow-Credentials", "true")
+				w.Header().Set("Access-Control-Allow-Headers", "Content-Type, x-requested-by, *")
+				w.Header().Set("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, OPTIONS")
+				if req.Method == http.MethodOptions {
+					w.WriteHeader(http.StatusOK)
+					return
+				}
+			}
+		})
+		http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
+			originSuffix := ".example.com"
+			// OK-ish: the input origin header is validated agains a whitelist.
+			origin := req.Header.Get("Origin")
+			if origin != "" && (originSuffix == "" || AccessControlAllowOrigins[origin]) {
+				w.Header().Set("Access-Control-Allow-Origin", origin)
+				w.Header().Set("Access-Control-Allow-Credentials", "true")
+				w.Header().Set("Access-Control-Allow-Headers", "Content-Type, x-requested-by, *")
+				w.Header().Set("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, OPTIONS")
+				if req.Method == http.MethodOptions {
+					w.WriteHeader(http.StatusOK)
+					return
+				}
+			}
+		})
+		http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
+			// OK-ish: the input origin header is validated agains a whitelist.
+			origin := req.Header.Get("origin")
+			if origin != "" && origin != "null" {
+				if len(AccessControlAllowOrigins) == 0 || AccessControlAllowOrigins[origin] {
+					w.Header().Set("Access-Control-Allow-Origin", origin)
+					w.Header().Set("Access-Control-Allow-Credentials", "true")
+				}
+			} else {
+				w.Header().Set("Access-Control-Allow-Origin", "*")
+			}
+		})
+		// http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
+		//  // OK-ish: the input origin header is validated agains a whitelist.
+		// 	origin := req.Header.Get("origin")
+		// 	if origin != "" && origin != "null" {
+		// 		if _, ok := AccessControlAllowOrigins[origin]; ok {
+		// 			w.Header().Set("Access-Control-Allow-Origin", origin)
+		// 			w.Header().Set("Access-Control-Allow-Credentials", "true")
+		// 		}
+		// 	} else {
+		// 		w.Header().Set("Access-Control-Allow-Origin", "*")
+		// 	}
+		// })
+		http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
+			// OK-ish: the input origin header is validated agains a whitelist.
+			if origin := req.Header.Get("Origin"); cors[origin] {
+				w.Header().Set("Access-Control-Allow-Origin", origin)
+			} else if len(origin) > 0 && cors["*"] {
+				w.Header().Set("Access-Control-Allow-Origin", origin)
+			}
+
+			w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
+			w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-Token, X-Client")
+			w.Header().Set("Access-Control-Allow-Credentials", "true")
+		})
+		http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
+			// OK-ish: the input origin header is validated agains a whitelist.
+			origin := req.Header.Get("origin")
+			for _, v := range GetAllowOrigin() {
+				if v == origin {
+					w.Header().Add("Access-Control-Allow-Origin", origin)
+					break
+				}
+			}
+
+			w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
+			w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-Token, X-Client")
+			w.Header().Set("Access-Control-Allow-Credentials", "true")
+		})
 	}
 }
+
+var (
+	cors = map[string]bool{"*": true}
+)
+
+func GetAllowOrigin() []string {
+	return []string{
+		"example.com",
+	}
+}
+
+var AccessControlAllowOrigins map[string]bool
 
 func isAllowedHost(allowed []string, try string) bool {
 	for _, v := range allowed {

@@ -102,6 +102,83 @@ predicate allowOriginIsNull(HTTP::HeaderWrite allowOriginHW, string message) {
       headerAllowCredentials() + " is set to `true`"
 }
 
+/**
+ * A read on a map type.
+ */
+class MapRead extends DataFlow::ElementReadNode {
+  MapRead() { this.getBase().getType() instanceof MapType }
+}
+
+/**
+ * A taint-tracking configuration for reasoning about when an UntrustedFlowSource
+ * flows somewhere.
+ */
+class FlowsFromUntrusted extends TaintTracking::Configuration {
+  FlowsFromUntrusted() { this = "from-untrusted" }
+
+  override predicate isSource(DataFlow::Node source) { source instanceof UntrustedFlowSource }
+
+  override predicate isSink(DataFlow::Node sink) { any() }
+}
+
+/**
+ * Holds if the provided `dst` is also destination of a `UntrustedFlowSource`.
+ */
+predicate untrustedFlowsToExpr(Expr dst) {
+  exists(FlowsFromUntrusted cfg, DataFlow::PathNode source, DataFlow::PathNode sink |
+    cfg.hasFlowPath(source, sink) and
+    sink.getNode().asExpr() = dst
+  )
+}
+
+/**
+ * Holds if the provided `dst` is also destination of a `UntrustedFlowSource`.
+ */
+predicate untrustedFlowsTo(DataFlow::Node dst) { untrustedFlowsToExpr(dst.asExpr()) }
+
+/**
+ * Holds if the provided `allowOriginHW` is guarded by a check on an `UntrustedFlowSource`
+ * which (supposedly) is an `Origin` header.
+ */
+predicate isGuardedByCheckOnUntrusted(HTTP::HeaderWrite allowOriginHW) {
+  exists(ControlFlow::ConditionGuardNode cgn, IfStmt ifs |
+    exists(Expr child, Expr operand |
+      child = ifs.getCond().getAChildExpr*() and
+      (
+        operand = child or
+        operand = child.(LorExpr).getAnOperand() or
+        operand = child.(LandExpr).getAnOperand()
+      ) and
+      (
+        exists(DataFlow::CallExpr call | call = operand |
+          call.getTarget().hasQualifiedName("strings", "HasSuffix") and
+          untrustedFlowsToExpr(call.getArgument(0))
+        )
+        or
+        exists(MapRead mapRead |
+          operand = mapRead.asExpr() and
+          untrustedFlowsTo(mapRead.getIndex().getAPredecessor*())
+          // TODO: add _, ok : map[untrusted]; ok
+        )
+        or
+        exists(EqlExpr comp |
+          operand = comp and
+          (
+            untrustedFlowsToExpr(comp.getLeftOperand()) and
+            not comp.getRightOperand().(StringLit).getStringValue() = ""
+            or
+            untrustedFlowsToExpr(comp.getRightOperand()) and
+            not comp.getLeftOperand().(StringLit).getStringValue() = ""
+          )
+        )
+      )
+    )
+  |
+    cgn.getCondition() = ifs.getCond() and
+    cgn.dominates(allowOriginHW.getBasicBlock())
+  )
+}
+
 from HTTP::HeaderWrite allowOriginHW, string message
 where
   allowCredentialsIsSetToTrue(allowOriginHW) and
@@ -110,6 +187,7 @@ where
     or
     allowOriginIsNull(allowOriginHW, message)
   ) and
+  not isGuardedByCheckOnUntrusted(allowOriginHW) and
   not exists(ControlFlow::ConditionGuardNode cgn |
     cgn.ensures(any(AllowedFlag f).getAFlag().getANode(), _)
   |

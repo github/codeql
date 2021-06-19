@@ -1,5 +1,5 @@
-| CorsMisconfiguration.go:23:4:23:56 | call to Set | access-control-allow-origin header is set to `null`, and access-control-allow-credentials is set to `true` |
-| CorsMisconfiguration.go:29:4:29:42 | call to Set | access-control-allow-origin header is set to `null`, and access-control-allow-credentials is set to `true` |
-| CorsMisconfiguration.go:50:4:50:44 | call to Set | access-control-allow-origin header is set to a user-defined value, and access-control-allow-credentials is set to `true` |
-| CorsMisconfiguration.go:57:4:57:56 | call to Set | access-control-allow-origin header is set to a user-defined value, and access-control-allow-credentials is set to `true` |
-| CorsMisconfiguration.go:64:5:64:57 | call to Set | access-control-allow-origin header is set to a user-defined value, and access-control-allow-credentials is set to `true` |
+| CorsMisconfiguration.go:26:4:26:56 | call to Set | access-control-allow-origin header is set to `null`, and access-control-allow-credentials is set to `true` |
+| CorsMisconfiguration.go:32:4:32:42 | call to Set | access-control-allow-origin header is set to `null`, and access-control-allow-credentials is set to `true` |
+| CorsMisconfiguration.go:53:4:53:44 | call to Set | access-control-allow-origin header is set to a user-defined value, and access-control-allow-credentials is set to `true` |
+| CorsMisconfiguration.go:60:4:60:56 | call to Set | access-control-allow-origin header is set to a user-defined value, and access-control-allow-credentials is set to `true` |
+| CorsMisconfiguration.go:67:5:67:57 | call to Set | access-control-allow-origin header is set to a user-defined value, and access-control-allow-credentials is set to `true` |
