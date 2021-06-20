@@ -142,3 +142,8 @@
   // is technically not a promise, but behaves like one.
   var promise = SynchronousPromise.resolve(source);
 })();
+
+(function() {
+  var Promise = require('any-promise');
+  return new Promise(function(resolve, reject){})
+})();

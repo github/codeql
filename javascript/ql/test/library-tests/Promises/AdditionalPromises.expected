@@ -84,3 +84,4 @@
 | promises.js:124:19:124:30 | when(source) |
 | promises.js:130:14:130:69 | new Pro ... s'); }) |
 | promises.js:135:3:137:4 | new Pro ... );\\n  }) |
+| promises.js:148:10:148:49 | new Pro ... ect){}) |
