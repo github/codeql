@@ -685,7 +685,7 @@ module Promisify {
     PromisifyCall() {
       this = DataFlow::moduleImport(["util", "bluebird"]).getAMemberCall("promisify")
       or
-      this = DataFlow::moduleImport("pify").getACall()
+      this = DataFlow::moduleImport(["pify", "util.promisify"]).getACall()
     }
   }
 }
