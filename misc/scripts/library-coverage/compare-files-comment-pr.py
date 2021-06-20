@@ -3,10 +3,15 @@ import os
 import settings
 import difflib
 import utils
+import shutil
+import json
+import filecmp
 
 """
 This script compares the generated CSV coverage files with the ones in the codebase.
 """
+
+artifacts_worflow_name = "Check framework coverage changes"
 
 
 def check_file_exists(file):
@@ -41,20 +46,27 @@ def compare_files_str(file1, file2):
     return ret
 
 
-def comment_pr(output_file, repo, run_id):
+def write_diff_for_run(output_file, repo, run_id):
     folder1 = "out_base"
     folder2 = "out_merge"
-    utils.subprocess_run(["gh", "run", "download", "--repo", repo, "--name",
-                         "csv-framework-coverage-base", "--dir", folder1, str(run_id)])
-    utils.subprocess_run(["gh", "run", "download", "--repo", repo, "--name",
-                         "csv-framework-coverage-merge", "--dir", folder2, str(run_id)])
-    utils.subprocess_run(["gh", "run", "download", "--repo", repo, "--name",
-                         "pr", "--dir", "pr", str(run_id)])
+    try:
+        utils.subprocess_run(["gh", "run", "download", "--repo", repo, "--name",
+                              "csv-framework-coverage-base", "--dir", folder1, str(run_id)])
+        utils.subprocess_run(["gh", "run", "download", "--repo", repo, "--name",
+                              "csv-framework-coverage-merge", "--dir", folder2, str(run_id)])
+        utils.subprocess_run(["gh", "run", "download", "--repo", repo, "--name",
+                              "pr", "--dir", "pr", str(run_id)])
 
-    with open("pr/NR") as file:
-        pr_number = int(file.read())
+        compare_folders(folder1, folder2, output_file)
+    finally:
+        if os.path.isdir(folder1):
+            shutil.rmtree(folder1)
 
-    compare_folders(folder1, folder2, output_file)
+        if os.path.isdir(folder2):
+            shutil.rmtree(folder2)
+
+
+def get_comment_text(output_file, repo, run_id):
     size = os.path.getsize(output_file)
     if size == 0:
         print("No difference in the coverage reports")
@@ -74,16 +86,60 @@ def comment_pr(output_file, repo, run_id):
         comment += "The differences can be found in the " + \
             output_file + " artifact of this job."
 
-    # post_comment(comment, repo, pr_number)
+    return comment
+
+
+def comment_pr(output_file, repo, run_id):
+    """
+    Generates coverage diff produced by the changes in the current PR. If the diff is not empty, then post it as a comment.
+    If a workflow run produces the same diff as the directly preceeding one, then don't post a comment.
+    """
+
+    # Store diff for current run
+    write_diff_for_run(output_file, repo, run_id)
+
+    try:
+        with open("pr/NR") as file:
+            pr_number = int(file.read())
+    finally:
+        if os.path.isdir("pr"):
+            shutil.rmtree("pr")
+
+    # Try storing diff for previous run:
+    prev_output_file = "prev_" + output_file
+    try:
+        prev_run_id = get_previous_run_id(repo, run_id, pr_number)
+        write_diff_for_run(prev_output_file, repo, prev_run_id)
+
+        if filecmp.cmp(output_file, prev_output_file, shallow=False):
+            print("Previous run " + str(prev_run_id) +
+                  " resulted in the same diff, so not commenting again.")
+            return
+        else:
+            print("Diff of previous run " +
+                  str(prev_run_id) + " differs, commenting.")
+    except Exception:
+        # this is not mecessarily a failure, it can also mean that there was no previous run yet.
+        print("Couldn't generate diff for previous run:", sys.exc_info()[1])
+    finally:
+        if os.path.isfile(prev_output_file):
+            os.remove(prev_output_file)
+
+    comment = get_comment_text(output_file, repo, run_id)
+    post_comment(comment, repo, pr_number)
 
 
 def post_comment(comment, repo, pr_number):
     print("Posting comment to PR #" + str(pr_number))
-    utils.subprocess_run(["gh", "pr", "comment", pr_number,
+    utils.subprocess_run(["gh", "pr", "comment", str(pr_number),
                          "--repo", repo, "--body", comment])
 
 
 def compare_folders(folder1, folder2, output_file):
+    """
+    Compares the contents of two folders and writes the differences to the output file.
+    """
+
     languages = ['java']
 
     return_md = ""
@@ -137,5 +193,49 @@ def compare_folders(folder1, folder2, output_file):
         out.write(return_md)
 
 
-# comment_pr(sys.argv[1], sys.argv[2], sys.argv[3])
-comment_pr("x.md", "dsp-testing/codeql-csv-coverage-pr-commenter", 938931471)
+def get_previous_run_id(repo, run_id, pr_number):
+    """
+    Gets the previous run id for a given workflow run, considering that the previous workflow run needs to come from the same PR.
+    """
+
+    # Get branch and repo from run:
+    this_run = utils.subprocess_check_output(["gh", "api", "-X", "GET", "repos/" + repo + "/actions/runs/" + str(
+        run_id), "--jq", "{ head_branch: .head_branch, head_repository: .head_repository.full_name }"])
+
+    this_run = json.loads(this_run)
+    pr_branch = this_run["head_branch"]
+    pr_repo = this_run["head_repository"]
+
+    # Get all previous runs that match branch, repo and workflow name:
+    ids = utils.subprocess_check_output(["gh", "api", "-X", "GET", "repos/" + repo + "/actions/runs", "-f", "event=pull_request", "-f", "status=success", "-f", "name=\"" + artifacts_worflow_name + "\"", "--jq",
+                                        "[.workflow_runs.[] | select(.head_branch==\"" + pr_branch + "\" and .head_repository.full_name==\"" + pr_repo + "\") | { created_at: .created_at, run_id: .id}] | sort_by(.created_at) | reverse | [.[].run_id]"])
+
+    ids = json.loads(ids)
+    if ids[0] != run_id:
+        raise Exception("Expected to find " + str(run_id) +
+                        " in the list of matching runs.")
+
+    for previous_run_id in ids[1:]:
+        utils.subprocess_run(["gh", "run", "download", "--repo", repo,
+                             "--name", "pr", "--dir", "prev_run_pr", str(previous_run_id)])
+
+        try:
+            with open("prev_run_pr/NR") as file:
+                prev_pr_number = int(file.read())
+                print("PR number: " + str(prev_pr_number))
+        finally:
+            if os.path.isdir("prev_run_pr"):
+                shutil.rmtree("prev_run_pr")
+
+        # the previous run needs to be coming from the same PR:
+        if pr_number == prev_pr_number:
+            return previous_run_id
+
+    raise Exception("Couldn't find previous run.")
+
+
+output_file = sys.argv[1]
+repo = sys.argv[2]
+run_id = sys.argv[3]
+
+comment_pr(output_file, repo, run_id)

@@ -1,4 +1,3 @@
-import subprocess
 import csv
 import sys
 import os
@@ -20,7 +19,7 @@ day_distance = 1
 
 class Git:
     def get_output(arr):
-        r = subprocess.check_output(arr, text=True, env=os.environ.copy())
+        r = utils.subprocess_check_output(arr)
         return r.strip("\n'")
 
     def get_date(sha):
