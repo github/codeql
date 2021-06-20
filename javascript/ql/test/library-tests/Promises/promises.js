@@ -147,3 +147,8 @@
   var Promise = require('any-promise');
   return new Promise(function(resolve, reject){})
 })();
+
+(function() {
+  var Promise = require('lie');
+  var promise = Promise.resolve(source);
+})();
