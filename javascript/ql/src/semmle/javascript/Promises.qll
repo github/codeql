@@ -85,6 +85,8 @@ private DataFlow::SourceNode getAPromiseObject() {
   result = DataFlow::moduleImport("when")
   or
   result = DataFlow::moduleImport("pinkie-promise")
+  or
+  result = DataFlow::moduleImport("pinkie")
 }
 
 /**

@@ -129,3 +129,10 @@
   var Promise = require('pinkie-promise');
   var prom = new Promise(function (resolve) { resolve('unicorns'); });
 })();
+
+(function() {
+  var Promise = require('pinkie');
+  new Promise(function (resolve, reject) {
+    resolve(data);
+  });
+})();
