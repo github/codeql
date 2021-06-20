@@ -672,10 +672,8 @@ module Promisify {
   class PromisifyAllCall extends DataFlow::CallNode {
     PromisifyAllCall() {
       this =
-        [
-          DataFlow::moduleMember("bluebird", "promisifyAll"),
-          DataFlow::moduleImport("util-promisifyall")
-        ].getACall()
+        [DataFlow::moduleMember("bluebird", "promisifyAll"), DataFlow::moduleImport("pify")]
+            .getACall()
     }
   }
 
@@ -686,6 +684,8 @@ module Promisify {
   class PromisifyCall extends DataFlow::CallNode {
     PromisifyCall() {
       this = DataFlow::moduleImport(["util", "bluebird"]).getAMemberCall("promisify")
+      or
+      this = DataFlow::moduleImport("pify").getACall()
     }
   }
 }
