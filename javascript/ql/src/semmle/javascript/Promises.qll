@@ -87,6 +87,8 @@ private DataFlow::SourceNode getAPromiseObject() {
   result = DataFlow::moduleImport("pinkie-promise")
   or
   result = DataFlow::moduleImport("pinkie")
+  or
+  result = DataFlow::moduleMember("synchronous-promise", "SynchronousPromise")
 }
 
 /**

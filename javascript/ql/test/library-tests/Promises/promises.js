@@ -136,3 +136,9 @@
     resolve(data);
   });
 })();
+
+(function() {
+  import { SynchronousPromise } from 'synchronous-promise';
+  // is technically not a promise, but behaves like one.
+  var promise = SynchronousPromise.resolve(source);
+})();

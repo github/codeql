@@ -43,6 +43,7 @@ test_ResolvedPromiseDefinition
 | promises.js:114:3:114:25 | Promise ... source) | promises.js:114:19:114:24 | source |
 | promises.js:119:3:119:25 | Promise ... source) | promises.js:119:19:119:24 | source |
 | promises.js:125:20:125:39 | when.resolve(source) | promises.js:125:33:125:38 | source |
+| promises.js:143:17:143:50 | Synchro ... source) | promises.js:143:44:143:49 | source |
 test_PromiseDefinition_getARejectHandler
 | flow.js:26:2:26:49 | new Pro ... ource)) | flow.js:26:69:26:80 | y => sink(y) |
 | flow.js:32:2:32:49 | new Pro ... ource)) | flow.js:32:57:32:68 | x => sink(x) |
@@ -442,3 +443,5 @@ typetrack
 | promises.js:125:20:125:39 | when.resolve(source) | promises.js:125:33:125:38 | source | store $PromiseResolveField$ |
 | promises.js:135:3:137:4 | new Pro ... );\\n  }) | promises.js:136:13:136:16 | data | copy $PromiseResolveField$ |
 | promises.js:135:3:137:4 | new Pro ... );\\n  }) | promises.js:136:13:136:16 | data | store $PromiseResolveField$ |
+| promises.js:143:17:143:50 | Synchro ... source) | promises.js:143:44:143:49 | source | copy $PromiseResolveField$ |
+| promises.js:143:17:143:50 | Synchro ... source) | promises.js:143:44:143:49 | source | store $PromiseResolveField$ |
