@@ -118,3 +118,9 @@
   var Promise = require('native-promise-only');
   Promise.resolve(source);
 })();
+
+(function() {
+  const when = require('when');
+  const promise = when(source);
+  const promise2 = when.resolve(source);
+})();

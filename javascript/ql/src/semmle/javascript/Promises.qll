@@ -81,6 +81,8 @@ private DataFlow::SourceNode getAPromiseObject() {
   result = DataFlow::moduleMember(["es6-promise", "rsvp"], "Promise")
   or
   result = DataFlow::moduleImport("native-promise-only")
+  or
+  result = DataFlow::moduleImport("when")
 }
 
 /**
@@ -97,10 +99,11 @@ class PromiseCandidate extends DataFlow::InvokeNode {
 }
 
 /**
- * A promise object created by the standard ECMAScript 2015 `Promise` constructor.
+ * A promise object created by the standard ECMAScript 2015 `Promise` constructor,
+ * or a polyfill implementing a superset of the ECMAScript 2015 `Promise` API.
  */
-private class ES2015PromiseDefinition extends PromiseDefinition, DataFlow::NewNode {
-  ES2015PromiseDefinition() { this = getAPromiseObject().getAnInstantiation() }
+private class ES2015PromiseDefinition extends PromiseDefinition, DataFlow::InvokeNode {
+  ES2015PromiseDefinition() { this = getAPromiseObject().getAnInvocation() }
 
   override DataFlow::FunctionNode getExecutor() { result = getCallback(0) }
 }
