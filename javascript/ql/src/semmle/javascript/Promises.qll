@@ -157,8 +157,11 @@ class ResolvedES2015PromiseDefinition extends ResolvedPromiseDefinition {
  */
 class AggregateES2015PromiseDefinition extends PromiseCreationCall {
   AggregateES2015PromiseDefinition() {
+    exists(string m | m = "all" or m = "race" or m = "any" or m = "allSettled" |
       this = getAPromiseObject().getAMemberCall(m)
     )
+    or
+    this = DataFlow::moduleImport("promise.allsettled").getACall()
   }
 
   override DataFlow::Node getValue() {
