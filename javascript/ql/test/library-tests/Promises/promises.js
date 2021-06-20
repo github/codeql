@@ -113,3 +113,8 @@
   var Promise = require('es6-promise').Promise;
   Promise.resolve(source);
 })();
+
+(function() {
+  var Promise = require('native-promise-only');
+  Promise.resolve(source);
+})();

@@ -79,6 +79,8 @@ private DataFlow::SourceNode getAPromiseObject() {
   result = DataFlow::moduleImport(["promise-polyfill", "promise-polyfill/src/polyfill"])
   or
   result = DataFlow::moduleMember(["es6-promise", "rsvp"], "Promise")
+  or
+  result = DataFlow::moduleImport("native-promise-only")
 }
 
 /**
