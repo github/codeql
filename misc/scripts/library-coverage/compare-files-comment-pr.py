@@ -41,7 +41,19 @@ def compare_files_str(file1, file2):
     return ret
 
 
-def comment_pr(folder1, folder2, output_file, repo, pr_number, run_id):
+def comment_pr(output_file, repo, run_id):
+    folder1 = "out_base"
+    folder2 = "out_merge"
+    utils.subprocess_run(["gh", "run", "download", "--repo", repo, "--name",
+                         "csv-framework-coverage-base", "--dir", folder1, str(run_id)])
+    utils.subprocess_run(["gh", "run", "download", "--repo", repo, "--name",
+                         "csv-framework-coverage-merge", "--dir", folder2, str(run_id)])
+    utils.subprocess_run(["gh", "run", "download", "--repo", repo, "--name",
+                         "pr", "--dir", "pr", str(run_id)])
+
+    with open("pr/NR") as file:
+        pr_number = int(file.read())
+
     compare_folders(folder1, folder2, output_file)
     size = os.path.getsize(output_file)
     if size == 0:
@@ -49,7 +61,7 @@ def comment_pr(folder1, folder2, output_file, repo, pr_number, run_id):
         return
 
     comment = ":warning: The head of this PR and the base branch were compared for differences in the framework coverage reports. " + \
-        "The generated reports are available in the [artifacts of this workflow run](https://github.com/" + repo + "/actions/runs/" + run_id + "). " + \
+        "The generated reports are available in the [artifacts of this workflow run](https://github.com/" + repo + "/actions/runs/" + str(run_id) + "). " + \
         "The differences will be picked up by the nightly job after the PR gets merged. "
 
     if size < 2000:
@@ -62,7 +74,7 @@ def comment_pr(folder1, folder2, output_file, repo, pr_number, run_id):
         comment += "The differences can be found in the " + \
             output_file + " artifact of this job."
 
-    post_comment(comment, repo, pr_number)
+    # post_comment(comment, repo, pr_number)
 
 
 def post_comment(comment, repo, pr_number):
@@ -125,5 +137,5 @@ def compare_folders(folder1, folder2, output_file):
         out.write(return_md)
 
 
-comment_pr(sys.argv[1], sys.argv[2], sys.argv[3],
-           sys.argv[4], sys.argv[5], sys.argv[6])
+# comment_pr(sys.argv[1], sys.argv[2], sys.argv[3])
+comment_pr("x.md", "dsp-testing/codeql-csv-coverage-pr-commenter", 938931471)
