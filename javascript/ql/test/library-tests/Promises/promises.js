@@ -124,3 +124,8 @@
   const promise = when(source);
   const promise2 = when.resolve(source);
 })();
+
+(function() {
+  var Promise = require('pinkie-promise');
+  var prom = new Promise(function (resolve) { resolve('unicorns'); });
+})();

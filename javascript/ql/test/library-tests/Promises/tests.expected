@@ -91,6 +91,7 @@ test_PromiseDefinition_getExecutor
 | promises.js:43:19:45:6 | Q.Promi ... \\n    }) | promises.js:43:29:45:5 | functio ... ;\\n    } |
 | promises.js:88:17:90:4 | Q.Promi ... );\\n  }) | promises.js:88:27:90:3 | functio ... e);\\n  } |
 | promises.js:112:17:112:62 | new RSV ... ct) {}) | promises.js:112:34:112:61 | functio ... ect) {} |
+| promises.js:130:14:130:69 | new Pro ... s'); }) | promises.js:130:26:130:68 | functio ... ns'); } |
 test_PromiseDefinition_getAFinallyHandler
 | flow.js:105:2:105:48 | new Pro ... "BLA")) | flow.js:105:58:105:76 | x => {throw source} |
 | flow.js:109:2:109:48 | new Pro ... "BLA")) | flow.js:109:58:109:70 | x => rejected |
@@ -129,6 +130,7 @@ test_PromiseDefinition
 | promises.js:88:17:90:4 | Q.Promi ... );\\n  }) |
 | promises.js:112:17:112:62 | new RSV ... ct) {}) |
 | promises.js:124:19:124:30 | when(source) |
+| promises.js:130:14:130:69 | new Pro ... s'); }) |
 test_PromiseDefinition_getAResolveHandler
 | flow.js:24:2:24:49 | new Pro ... ource)) | flow.js:24:56:24:67 | x => sink(x) |
 | flow.js:26:2:26:49 | new Pro ... ource)) | flow.js:26:56:26:66 | x => foo(x) |
@@ -211,6 +213,7 @@ test_PromiseDefinition_getResolveParameter
 | promises.js:43:19:45:6 | Q.Promi ... \\n    }) | promises.js:43:39:43:45 | resolve |
 | promises.js:88:17:90:4 | Q.Promi ... );\\n  }) | promises.js:88:37:88:43 | resolve |
 | promises.js:112:17:112:62 | new RSV ... ct) {}) | promises.js:112:43:112:49 | resolve |
+| promises.js:130:14:130:69 | new Pro ... s'); }) | promises.js:130:36:130:42 | resolve |
 test_PromiseDefinition_getACatchHandler
 | flow.js:32:2:32:49 | new Pro ... ource)) | flow.js:32:57:32:68 | x => sink(x) |
 | flow.js:48:2:48:36 | new Pro ... urce }) | flow.js:48:44:48:55 | x => sink(x) |

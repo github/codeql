@@ -83,6 +83,8 @@ private DataFlow::SourceNode getAPromiseObject() {
   result = DataFlow::moduleImport("native-promise-only")
   or
   result = DataFlow::moduleImport("when")
+  or
+  result = DataFlow::moduleImport("pinkie-promise")
 }
 
 /**

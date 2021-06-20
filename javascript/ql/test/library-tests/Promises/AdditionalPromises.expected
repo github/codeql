@@ -82,3 +82,4 @@
 | promises.js:88:17:90:4 | Q.Promi ... );\\n  }) |
 | promises.js:112:17:112:62 | new RSV ... ct) {}) |
 | promises.js:124:19:124:30 | when(source) |
+| promises.js:130:14:130:69 | new Pro ... s'); }) |
