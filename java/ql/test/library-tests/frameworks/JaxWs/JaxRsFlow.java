@@ -160,12 +160,12 @@ public class JaxRsFlow {
   void testAbstractMultivaluedMap(Map<String, List<String>> map1, Map<String, List<String>> map2, List<String> list) {
     map1.put(taint(), list);
     AbstractMultivaluedMap<String, String> amm1 = new MyAbstractMultivaluedMap<String, String>(map1);
-    sink(amm1.keySet().iterator().next()); // $  MISSING: hasValueFlow
+    sink(amm1.keySet().iterator().next()); // $ hasValueFlow
 
     list.add(taint());
     map2.put("key", list);
     AbstractMultivaluedMap<String, String> amm2 = new MyAbstractMultivaluedMap<String, String>(map2);
-    sink(amm2.get("key").get(0)); // $  MISSING: hasValueFlow SPURIOUS: hasTaintFlow
+    sink(amm2.get("key").get(0)); // $ hasValueFlow
   }
 
   void testMultivaluedHashMap(Map<String, String> map1, Map<String, String> map2,
