@@ -1,2 +1,2 @@
-| test.cpp:47:1:47:1 | call to ~testClass1 | This distructor contains exeption no wrapped to try..catch blocks |
-| test.cpp:47:1:47:1 | call to ~testClass2 | This distructor contains exeption no wrapped to try..catch blocks |
+| test.cpp:45:6:45:15 | call to testMethod | Exception inside this function requires more handling. |
+| test.cpp:47:6:47:15 | call to testMethod | Exception inside this function requires more handling. |

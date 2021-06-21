@@ -5,11 +5,11 @@ void clean();
 class testClass1
 {
 public:
-	~testClass1();
+	void testMethod();
 };
 
 
-testClass1 :: ~testClass1()
+void testClass1 :: testMethod()
 {
    throw "my exception!";  // BAD
 }
@@ -17,11 +17,11 @@ testClass1 :: ~testClass1()
 class testClass2
 {
 public:
-	~testClass2();
+	void testMethod();
 };
 
 
-testClass2 :: ~testClass2()
+void testClass2 :: testMethod()
 {
   try { throw "my exception!"; } // BAD
   catch (...) {  }
@@ -30,11 +30,11 @@ testClass2 :: ~testClass2()
 class testClass3
 {
 public:
-	~testClass3();
+	void testMethod();
 };
 
 
-testClass3 :: ~testClass3()
+void testClass3 :: testMethod()
 {
   try { throw "my exception!"; } // GOOD
   catch (...) { clean(); }
@@ -42,6 +42,9 @@ testClass3 :: ~testClass3()
 void TestFunc()
 {
   testClass1 cl1;
+	cl1.testMethod();
   testClass2 cl2;
+	cl2.testMethod();
   testClass3 cl3;
+	cl3.testMethod();
 }
