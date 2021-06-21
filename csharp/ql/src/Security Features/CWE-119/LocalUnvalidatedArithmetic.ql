@@ -5,6 +5,7 @@
  *              to return any value.
  * @kind problem
  * @problem.severity warning
+ * @security-severity 9.3
  * @precision high
  * @id cs/unvalidated-local-pointer-arithmetic
  * @tags security

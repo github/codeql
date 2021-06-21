@@ -5,6 +5,7 @@
  *              information leaks.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 4.3
  * @precision high
  * @id js/cross-window-information-leak
  * @tags security

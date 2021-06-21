@@ -69,6 +69,7 @@ private module Cached {
     |
       f instanceof ArrayContent or
       f instanceof CollectionContent or
+      f instanceof MapKeyContent or
       f instanceof MapValueContent
     )
     or

@@ -3,6 +3,7 @@
  * @description Using a hard-coded credential in a call to a sensitive Java API may compromise security.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 9.8
  * @precision medium
  * @id java/hardcoded-credential-api-call
  * @tags security

@@ -4,9 +4,11 @@
  *              attacks.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 7.5
  * @precision high
  * @id js/server-crash
  * @tags security
+ *       external/cwe/cwe-248
  *       external/cwe/cwe-730
  */
 

@@ -308,7 +308,10 @@ The following aggregates are available in QL:
 
       rank[4](int i | i = [5 .. 15] | i)
 
-  Note that the rank indices start at ``1``, so ``rank[0](...)`` returns no results.
+  .. pull-quote:: Note
+
+     - Rank indices start at ``1``, so ``rank[0](...)`` has no result.
+     - ``rank[1](...)`` is the same as ``min(...)``.
 
 .. index:: strictconcat, strictcount, strictsum
 
@@ -530,14 +533,21 @@ The query produces these results:
 
 +-----------+---------+------+
 |  variant  | person  | cost |
-+-----------+---------+------+
++===========+=========+======+
 | default   | Alice   | 201  |
++-----------+---------+------+
 | default   | Bob     | 100  |
++-----------+---------+------+
 | default   | Charles | 100  |
++-----------+---------+------+
 | default   | Diane   | 0    |
++-----------+---------+------+
 | monotonic | Alice   | 101  |
++-----------+---------+------+
 | monotonic | Alice   | 200  |
++-----------+---------+------+
 | monotonic | Bob     | 100  |
++-----------+---------+------+
 | monotonic | Diane   | 0    |
 +-----------+---------+------+
 

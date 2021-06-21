@@ -35,12 +35,14 @@ namespace Semmle.Extraction
         // A recursion guard against writing to the trap file whilst writing an id to the trap file.
         private bool writingLabel = false;
 
+        private readonly Queue<IEntity> labelQueue = new();
+
         protected void DefineLabel(IEntity entity)
         {
             if (writingLabel)
             {
                 // Don't define a label whilst writing a label.
-                PopulateLater(() => DefineLabel(entity));
+                labelQueue.Enqueue(entity);
             }
             else
             {
@@ -52,6 +54,10 @@ namespace Semmle.Extraction
                 finally
                 {
                     writingLabel = false;
+                    if (labelQueue.Any())
+                    {
+                        DefineLabel(labelQueue.Dequeue());
+                    }
                 }
             }
         }

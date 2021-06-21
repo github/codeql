@@ -72,15 +72,11 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static void ExtractModifiers(Context cx, TextWriter trapFile, IEntity key, ISymbol symbol)
         {
-            var interfaceDefinition = symbol.ContainingType is not null
-                && symbol.ContainingType.Kind == SymbolKind.NamedType
-                && symbol.ContainingType.TypeKind == TypeKind.Interface;
-
             HasAccessibility(cx, trapFile, key, symbol.DeclaredAccessibility);
             if (symbol.Kind == SymbolKind.ErrorType)
                 trapFile.has_modifiers(key, Modifier.Create(cx, Accessibility.Public));
 
-            if (symbol.IsAbstract && (symbol.Kind != SymbolKind.NamedType || ((INamedTypeSymbol)symbol).TypeKind != TypeKind.Interface) && !interfaceDefinition)
+            if (symbol.IsAbstract && (symbol.Kind != SymbolKind.NamedType || ((INamedTypeSymbol)symbol).TypeKind != TypeKind.Interface))
                 HasModifier(cx, trapFile, key, "abstract");
 
             if (symbol.IsSealed)
@@ -92,10 +88,6 @@ namespace Semmle.Extraction.CSharp.Entities
                 HasModifier(cx, trapFile, key, "static");
 
             if (symbol.IsVirtual)
-                HasModifier(cx, trapFile, key, "virtual");
-
-            // For some reason, method in interfaces are "virtual", not "abstract"
-            if (symbol.IsAbstract && interfaceDefinition)
                 HasModifier(cx, trapFile, key, "virtual");
 
             if (symbol.Kind == SymbolKind.Field && ((IFieldSymbol)symbol).IsReadOnly)

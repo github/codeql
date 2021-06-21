@@ -6,6 +6,7 @@
  * @kind path-problem
  * @id py/tarslip
  * @problem.severity error
+ * @security-severity 7.5
  * @precision medium
  * @tags security
  *       external/cwe/cwe-022

@@ -13,6 +13,7 @@ private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.Concepts
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.BarrierGuards
+private import semmle.python.dataflow.new.SensitiveDataSources
 
 /**
  * Provides a taint-tracking configuration for detecting use of a broken or weak
@@ -37,6 +38,10 @@ module NormalHashFunction {
       super.isSanitizer(node)
       or
       node instanceof Sanitizer
+    }
+
+    override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+      sensitiveDataExtraStepForCalls(node1, node2)
     }
   }
 }
@@ -69,6 +74,10 @@ module ComputationallyExpensiveHashFunction {
       super.isSanitizer(node)
       or
       node instanceof Sanitizer
+    }
+
+    override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+      sensitiveDataExtraStepForCalls(node1, node2)
     }
   }
 }

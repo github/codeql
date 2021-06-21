@@ -106,7 +106,7 @@ class TestIO {
     }
 
     void test4() throws IOException {
-        sink(Closer.create().register((Closeable) taint())); // $numTaintFlow=1
+        sink(Closer.create().register((Closeable) taint())); // $numValueFlow=1
         sink(new LineReader(rtaint()).readLine()); // $numTaintFlow=1
         sink(Files.simplifyPath(staint())); // $numTaintFlow=1
         sink(Files.getFileExtension(staint())); // $numTaintFlow=1
