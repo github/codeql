@@ -1,6 +1,6 @@
 /**
- * Provides classes modeling security-relevant aspects of the `MySQL-python` PyPI package
- * (imported as `MySQLdb`).
+ * Provides classes modeling security-relevant aspects of the `MySQL-python` and `mysqlclient` PyPI packages
+ * (both imported as `MySQLdb`) -- the `mysqlclient` package is a fork of `MySQL-python`.
  *
  * See
  * - https://mysqlclient.readthedocs.io/index.html
@@ -15,10 +15,13 @@ private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.PEP249
 
 /**
- * Provides models for the `MySQL-python` PyPI package (imported as `MySQLdb`).
+ * Provides models for the `MySQL-python` and `mysqlclient` PyPI packages
+ * (both imported as `MySQLdb`) -- the `mysqlclient` package is a fork of `MySQL-python`.
+ *
  * See
  * - https://mysqlclient.readthedocs.io/index.html
  * - https://pypi.org/project/MySQL-python/
+ * - https://pypi.org/project/mysqlclient/
  */
 private module MySQLdb {
   // ---------------------------------------------------------------------------
