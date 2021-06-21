@@ -36,7 +36,7 @@ predicate boundedDiv(Expr e, Expr left) { e = left }
 
 /**
  * An operand `e` of a remainder expression `rem` (i.e., `rem` is either a `RemExpr` or
- * an `AssignRemExpr`) with left-hand side `left` and right-ahnd side `right` is bounded
+ * an `AssignRemExpr`) with left-hand side `left` and right-hand side `right` is bounded
  * when `e` is `left` and `right` is upper bounded by some number that is less than the maximum integer
  * allowed by the result type of `rem`.
  */
@@ -59,10 +59,15 @@ predicate boundedBitwiseAnd(Expr e, Expr andExpr, Expr operand1, Expr operand2) 
 }
 
 /**
- * Holds if `fc` is a part of the left operand of a binary operation that greatly reduces the range
- * of possible values.
+ * Holds if `e` is an operand of an operation that greatly reduces the range of possible values.
  */
 predicate bounded(Expr e) {
+  (
+    e instanceof UnaryArithmeticOperation or
+    e instanceof BinaryArithmeticOperation
+  ) and
+  not convertedExprMightOverflow(e)
+  or
   //  For `%` and `&` we require that `e` is bounded by a value that is strictly smaller than the
   //  maximum possible value of the result type of the operation.
   //  For example, the function call `rand()` is considered bounded in the following program:
