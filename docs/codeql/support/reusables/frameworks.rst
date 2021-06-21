@@ -156,6 +156,7 @@ Python built-in support
    Django, Web framework
    Flask, Web framework
    Tornado, Web framework
+   Twisted, Web framework
    PyYAML, Serialization
    dill, Serialization
    simplejson, Serialization
