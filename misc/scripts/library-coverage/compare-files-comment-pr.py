@@ -211,7 +211,7 @@ def get_previous_run_id(repo, run_id, pr_number):
                                         "[.workflow_runs.[] | select(.head_branch==\"" + pr_branch + "\" and .head_repository.full_name==\"" + pr_repo + "\") | { created_at: .created_at, run_id: .id}] | sort_by(.created_at) | reverse | [.[].run_id]"])
 
     ids = json.loads(ids)
-    if ids[0] != run_id:
+    if ids[0] != int(run_id):
         raise Exception("Expected to find " + str(run_id) +
                         " in the list of matching runs.")
 
