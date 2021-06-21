@@ -5,7 +5,7 @@
  *              behave unexpectedly.
  * @kind problem
  * @problem.severity error
- * @security-severity 5.9
+ * @security-severity 7.8
  * @precision high
  * @id js/useless-regexp-character-escape
  * @tags correctness

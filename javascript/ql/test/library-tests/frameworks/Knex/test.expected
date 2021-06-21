@@ -1,0 +1,232 @@
+rawCall
+| tst.js:5:1:10:52 | knex({  ... mn_2']) |
+| tst.js:25:25:25:84 | knex.ra ... 'Test') |
+| tst.js:100:3:100:78 | this.se ... ts.id') |
+| tst.js:103:27:103:102 | knex.se ... ts.id') |
+| tst.js:106:3:106:78 | this.se ... ts.id') |
+| tst.js:113:1:113:37 | knex('u ... ', [1]) |
+| tst.js:134:66:134:89 | knex.ra ... dmin']) |
+| tst.js:150:1:150:69 | knex.se ... able1') |
+| tst.js:162:1:162:89 | knex.se ... OLLUP') |
+| tst.js:162:21:162:43 | knex.ra ... ofit)') |
+| tst.js:166:1:166:64 | knex.se ...  LAST') |
+| tst.js:175:1:178:32 | knex('u ...  [100]) |
+sqlString
+| tst.js:10:13:10:21 | '?? = ??' |
+| tst.js:25:34:25:75 | 'select ... r" = ?' |
+| tst.js:100:46:100:77 | 'users. ... nts.id' |
+| tst.js:103:70:103:101 | 'users. ... nts.id' |
+| tst.js:106:46:106:77 | 'users. ... nts.id' |
+| tst.js:113:24:113:31 | 'id = ?' |
+| tst.js:134:75:134:77 | '?' |
+| tst.js:150:43:150:68 | 'natura ... table1' |
+| tst.js:162:30:162:42 | 'SUM(profit)' |
+| tst.js:162:71:162:88 | 'year WITH ROLLUP' |
+| tst.js:166:43:166:63 | 'col DE ... S LAST' |
+| tst.js:178:14:178:24 | 'count > ?' |
+knexLibrary
+| file://:0:0:0:0 | use (member exports (module knex)) |
+knexObject
+| tst.js:3:14:3:30 | use (return (member exports (module knex))) |
+| tst.js:5:1:5:32 | use (return (return (member exports (module knex)))) |
+| tst.js:5:1:9:4 | use (return (member select (return (return (member exports (module knex)))))) |
+| tst.js:5:1:10:52 | use (return (member whereRaw (return (member select (return (return (member exports (module knex)))))))) |
+| tst.js:12:1:12:48 | use (return (member withUserParams (return (member exports (module knex))))) |
+| tst.js:12:1:12:59 | use (return (member table (return (member withUserParams (return (member exports (module knex))))))) |
+| tst.js:12:1:12:71 | use (return (member select (return (member table (return (member withUserParams (return (member exports (module knex))))))))) |
+| tst.js:14:1:14:13 | use (return (member select (return (member exports (module knex))))) |
+| tst.js:14:1:14:27 | use (return (member from (return (member select (return (member exports (module knex))))))) |
+| tst.js:14:1:14:41 | use (return (member timeout (return (member from (return (member select (return (member exports (module knex))))))))) |
+| tst.js:15:1:15:38 | use (return (member select (return (member exports (module knex))))) |
+| tst.js:15:1:15:52 | use (return (member from (return (member select (return (member exports (module knex))))))) |
+| tst.js:17:1:17:23 | use (return (member avg (return (member exports (module knex))))) |
+| tst.js:17:1:19:4 | use (return (member from (return (member avg (return (member exports (module knex))))))) |
+| tst.js:17:1:19:24 | use (return (member as (return (member from (return (member avg (return (member exports (module knex))))))))) |
+| tst.js:17:30:17:29 | use (parameter -1 (parameter 0 (member from (return (member avg (return (member exports (module knex)))))))) |
+| tst.js:18:5:18:38 | use (return (member sum (parameter -1 (parameter 0 (member from (return (member avg (return (member exports (module knex)))))))))) |
+| tst.js:18:5:18:49 | use (return (member from (return (member sum (parameter -1 (parameter 0 (member from (return (member avg (return (member exports (module knex)))))))))))) |
+| tst.js:18:5:18:68 | use (return (member groupBy (return (member from (return (member sum (parameter -1 (parameter 0 (member from (return (member avg (return (member exports (module knex)))))))))))))) |
+| tst.js:18:5:18:77 | use (return (member as (return (member groupBy (return (member from (return (member sum (parameter -1 (parameter 0 (member from (return (member avg (return (member exports (module knex)))))))))))))))) |
+| tst.js:21:1:21:38 | use (return (member column (return (member exports (module knex))))) |
+| tst.js:21:1:21:47 | use (return (member select (return (member column (return (member exports (module knex))))))) |
+| tst.js:21:1:21:61 | use (return (member from (return (member select (return (member column (return (member exports (module knex))))))))) |
+| tst.js:23:1:23:16 | use (return (member select (return (member exports (module knex))))) |
+| tst.js:23:1:23:30 | use (return (member from (return (member select (return (member exports (module knex))))))) |
+| tst.js:25:1:25:85 | use (return (member with (return (member exports (module knex))))) |
+| tst.js:25:1:25:97 | use (return (member select (return (member with (return (member exports (module knex))))))) |
+| tst.js:25:1:25:116 | use (return (member from (return (member select (return (member with (return (member exports (module knex))))))))) |
+| tst.js:25:25:25:84 | use (return (member raw (return (member exports (module knex))))) |
+| tst.js:27:1:31:4 | use (return (member withRecursive (return (member exports (module knex))))) |
+| tst.js:27:1:31:16 | use (return (member select (return (member withRecursive (return (member exports (module knex))))))) |
+| tst.js:27:1:31:34 | use (return (member from (return (member select (return (member withRecursive (return (member exports (module knex))))))))) |
+| tst.js:33:1:33:25 | use (return (member withSchema (return (member exports (module knex))))) |
+| tst.js:33:1:33:37 | use (return (member select (return (member withSchema (return (member exports (module knex))))))) |
+| tst.js:33:1:33:51 | use (return (member from (return (member select (return (member withSchema (return (member exports (module knex))))))))) |
+| tst.js:35:1:35:13 | use (return (return (member exports (module knex)))) |
+| tst.js:35:1:38:4 | use (return (member where (return (return (member exports (module knex)))))) |
+| tst.js:35:1:38:17 | use (return (member select (return (member where (return (return (member exports (module knex)))))))) |
+| tst.js:40:1:40:13 | use (return (return (member exports (module knex)))) |
+| tst.js:40:1:40:28 | use (return (member where (return (return (member exports (module knex)))))) |
+| tst.js:42:1:42:13 | use (return (return (member exports (module knex)))) |
+| tst.js:42:1:45:3 | use (return (member where (return (return (member exports (module knex)))))) |
+| tst.js:42:1:48:4 | use (return (member andWhere (return (member where (return (return (member exports (module knex)))))))) |
+| tst.js:46:13:46:12 | use (parameter -1 (parameter 0 (member andWhere (return (member where (return (return (member exports (module knex))))))))) |
+| tst.js:47:5:47:29 | use (return (member where (parameter -1 (parameter 0 (member andWhere (return (member where (return (return (member exports (module knex))))))))))) |
+| tst.js:50:1:50:13 | use (return (return (member exports (module knex)))) |
+| tst.js:50:1:52:2 | use (return (member where (return (return (member exports (module knex)))))) |
+| tst.js:50:1:52:28 | use (return (member orWhere (return (member where (return (return (member exports (module knex)))))))) |
+| tst.js:50:21:50:20 | use (parameter -1 (parameter 0 (member where (return (return (member exports (module knex))))))) |
+| tst.js:51:3:51:21 | use (return (member where (parameter -1 (parameter 0 (member where (return (return (member exports (module knex))))))))) |
+| tst.js:51:3:51:44 | use (return (member orWhere (return (member where (parameter -1 (parameter 0 (member where (return (return (member exports (module knex))))))))))) |
+| tst.js:54:1:54:13 | use (return (return (member exports (module knex)))) |
+| tst.js:54:1:54:56 | use (return (member where (return (return (member exports (module knex)))))) |
+| tst.js:56:1:56:13 | use (return (return (member exports (module knex)))) |
+| tst.js:56:1:56:38 | use (return (member where (return (return (member exports (module knex)))))) |
+| tst.js:58:18:58:30 | use (return (return (member exports (module knex)))) |
+| tst.js:58:18:58:55 | use (return (member where (return (return (member exports (module knex)))))) |
+| tst.js:58:18:58:84 | use (return (member andWhere (return (member where (return (return (member exports (module knex)))))))) |
+| tst.js:58:18:58:108 | use (return (member orWhere (return (member andWhere (return (member where (return (return (member exports (module knex)))))))))) |
+| tst.js:58:18:58:121 | use (return (member select (return (member orWhere (return (member andWhere (return (member where (return (return (member exports (module knex)))))))))))) |
+| tst.js:59:1:59:16 | use (return (return (member exports (module knex)))) |
+| tst.js:59:1:59:44 | use (return (member where (return (return (member exports (module knex)))))) |
+| tst.js:61:1:61:13 | use (return (return (member exports (module knex)))) |
+| tst.js:61:1:61:28 | use (return (member where (return (return (member exports (module knex)))))) |
+| tst.js:61:1:61:64 | use (return (member orWhere (return (member where (return (return (member exports (module knex)))))))) |
+| tst.js:63:1:63:13 | use (return (return (member exports (module knex)))) |
+| tst.js:63:1:66:2 | use (return (member whereNot (return (return (member exports (module knex)))))) |
+| tst.js:63:1:66:15 | use (return (member select (return (member whereNot (return (return (member exports (module knex)))))))) |
+| tst.js:68:1:68:13 | use (return (return (member exports (module knex)))) |
+| tst.js:68:1:68:31 | use (return (member whereNot (return (return (member exports (module knex)))))) |
+| tst.js:70:1:70:13 | use (return (return (member exports (module knex)))) |
+| tst.js:70:1:72:2 | use (return (member whereNot (return (return (member exports (module knex)))))) |
+| tst.js:70:1:72:31 | use (return (member orWhereNot (return (member whereNot (return (return (member exports (module knex)))))))) |
+| tst.js:70:24:70:23 | use (parameter -1 (parameter 0 (member whereNot (return (return (member exports (module knex))))))) |
+| tst.js:71:3:71:21 | use (return (member where (parameter -1 (parameter 0 (member whereNot (return (return (member exports (module knex))))))))) |
+| tst.js:71:3:71:47 | use (return (member orWhereNot (return (member where (parameter -1 (parameter 0 (member whereNot (return (return (member exports (module knex))))))))))) |
+| tst.js:74:19:74:31 | use (return (return (member exports (module knex)))) |
+| tst.js:74:19:75:30 | use (return (member whereNot (return (return (member exports (module knex)))))) |
+| tst.js:74:19:76:31 | use (return (member andWhere (return (member whereNot (return (return (member exports (module knex)))))))) |
+| tst.js:74:19:77:26 | use (return (member orWhere (return (member andWhere (return (member whereNot (return (return (member exports (module knex)))))))))) |
+| tst.js:74:19:78:15 | use (return (member select (return (member orWhere (return (member andWhere (return (member whereNot (return (return (member exports (module knex)))))))))))) |
+| tst.js:80:1:80:16 | use (return (return (member exports (module knex)))) |
+| tst.js:80:1:80:49 | use (return (member where (return (return (member exports (module knex)))))) |
+| tst.js:82:1:82:19 | use (return (member select (return (member exports (module knex))))) |
+| tst.js:82:1:82:33 | use (return (member from (return (member select (return (member exports (module knex))))))) |
+| tst.js:82:1:83:27 | use (return (member whereIn (return (member from (return (member select (return (member exports (module knex))))))))) |
+| tst.js:82:1:84:29 | use (return (member orWhereIn (return (member whereIn (return (member from (return (member select (return (member exports (module knex))))))))))) |
+| tst.js:86:1:86:19 | use (return (member select (return (member exports (module knex))))) |
+| tst.js:86:1:86:33 | use (return (member from (return (member select (return (member exports (module knex))))))) |
+| tst.js:86:1:89:4 | use (return (member whereIn (return (member from (return (member select (return (member exports (module knex))))))))) |
+| tst.js:91:1:91:13 | use (return (return (member exports (module knex)))) |
+| tst.js:91:1:91:41 | use (return (member whereNotIn (return (return (member exports (module knex)))))) |
+| tst.js:93:1:93:13 | use (return (return (member exports (module knex)))) |
+| tst.js:93:1:93:45 | use (return (member where (return (return (member exports (module knex)))))) |
+| tst.js:93:1:93:75 | use (return (member orWhereNotIn (return (member where (return (return (member exports (module knex)))))))) |
+| tst.js:95:1:95:13 | use (return (return (member exports (module knex)))) |
+| tst.js:95:1:95:37 | use (return (member whereNull (return (return (member exports (module knex)))))) |
+| tst.js:97:1:97:13 | use (return (return (member exports (module knex)))) |
+| tst.js:97:1:97:40 | use (return (member whereNotNull (return (return (member exports (module knex)))))) |
+| tst.js:99:1:99:13 | use (return (return (member exports (module knex)))) |
+| tst.js:99:1:101:2 | use (return (member whereExists (return (return (member exports (module knex)))))) |
+| tst.js:99:27:99:26 | use (parameter -1 (parameter 0 (member whereExists (return (return (member exports (module knex))))))) |
+| tst.js:100:3:100:18 | use (return (member select (parameter -1 (parameter 0 (member whereExists (return (return (member exports (module knex))))))))) |
+| tst.js:100:3:100:35 | use (return (member from (return (member select (parameter -1 (parameter 0 (member whereExists (return (return (member exports (module knex))))))))))) |
+| tst.js:100:3:100:78 | use (return (member whereRaw (return (member from (return (member select (parameter -1 (parameter 0 (member whereExists (return (return (member exports (module knex))))))))))))) |
+| tst.js:103:1:103:13 | use (return (return (member exports (module knex)))) |
+| tst.js:103:1:103:103 | use (return (member whereExists (return (return (member exports (module knex)))))) |
+| tst.js:103:27:103:42 | use (return (member select (return (member exports (module knex))))) |
+| tst.js:103:27:103:59 | use (return (member from (return (member select (return (member exports (module knex))))))) |
+| tst.js:103:27:103:102 | use (return (member whereRaw (return (member from (return (member select (return (member exports (module knex))))))))) |
+| tst.js:105:1:105:13 | use (return (return (member exports (module knex)))) |
+| tst.js:105:1:107:2 | use (return (member whereNotExists (return (return (member exports (module knex)))))) |
+| tst.js:105:30:105:29 | use (parameter -1 (parameter 0 (member whereNotExists (return (return (member exports (module knex))))))) |
+| tst.js:106:3:106:18 | use (return (member select (parameter -1 (parameter 0 (member whereNotExists (return (return (member exports (module knex))))))))) |
+| tst.js:106:3:106:35 | use (return (member from (return (member select (parameter -1 (parameter 0 (member whereNotExists (return (return (member exports (module knex))))))))))) |
+| tst.js:106:3:106:78 | use (return (member whereRaw (return (member from (return (member select (parameter -1 (parameter 0 (member whereNotExists (return (return (member exports (module knex))))))))))))) |
+| tst.js:109:1:109:13 | use (return (return (member exports (module knex)))) |
+| tst.js:109:1:109:45 | use (return (member whereBetween (return (return (member exports (module knex)))))) |
+| tst.js:111:1:111:13 | use (return (return (member exports (module knex)))) |
+| tst.js:111:1:111:48 | use (return (member whereNotBetween (return (return (member exports (module knex)))))) |
+| tst.js:113:1:113:13 | use (return (return (member exports (module knex)))) |
+| tst.js:113:1:113:37 | use (return (member whereRaw (return (return (member exports (module knex)))))) |
+| tst.js:115:1:115:13 | use (return (return (member exports (module knex)))) |
+| tst.js:115:1:116:56 | use (return (member join (return (return (member exports (module knex)))))) |
+| tst.js:115:1:117:39 | use (return (member select (return (member join (return (return (member exports (module knex)))))))) |
+| tst.js:119:1:119:13 | use (return (return (member exports (module knex)))) |
+| tst.js:119:1:120:51 | use (return (member join (return (return (member exports (module knex)))))) |
+| tst.js:119:1:121:39 | use (return (member select (return (member join (return (return (member exports (module knex)))))))) |
+| tst.js:123:1:123:16 | use (return (member select (return (member exports (module knex))))) |
+| tst.js:123:1:123:30 | use (return (member from (return (member select (return (member exports (module knex))))))) |
+| tst.js:123:1:125:2 | use (return (member join (return (member from (return (member select (return (member exports (module knex))))))))) |
+| tst.js:127:1:127:16 | use (return (member select (return (member exports (module knex))))) |
+| tst.js:127:1:127:30 | use (return (member from (return (member select (return (member exports (module knex))))))) |
+| tst.js:127:1:132:2 | use (return (member join (return (member from (return (member select (return (member exports (module knex))))))))) |
+| tst.js:134:1:134:16 | use (return (member select (return (member exports (module knex))))) |
+| tst.js:134:1:134:30 | use (return (member from (return (member select (return (member exports (module knex))))))) |
+| tst.js:134:1:134:90 | use (return (member join (return (member from (return (member select (return (member exports (module knex))))))))) |
+| tst.js:134:66:134:89 | use (return (member raw (return (member exports (module knex))))) |
+| tst.js:136:1:136:18 | use (return (member from (return (member exports (module knex))))) |
+| tst.js:136:1:136:72 | use (return (member innerJoin (return (member from (return (member exports (module knex))))))) |
+| tst.js:138:1:138:16 | use (return (member select (return (member exports (module knex))))) |
+| tst.js:138:1:138:30 | use (return (member from (return (member select (return (member exports (module knex))))))) |
+| tst.js:138:1:138:83 | use (return (member leftJoin (return (member from (return (member select (return (member exports (module knex))))))))) |
+| tst.js:140:1:140:16 | use (return (member select (return (member exports (module knex))))) |
+| tst.js:140:1:140:30 | use (return (member from (return (member select (return (member exports (module knex))))))) |
+| tst.js:140:1:140:88 | use (return (member leftOuterJoin (return (member from (return (member select (return (member exports (module knex))))))))) |
+| tst.js:142:1:142:16 | use (return (member select (return (member exports (module knex))))) |
+| tst.js:142:1:142:30 | use (return (member from (return (member select (return (member exports (module knex))))))) |
+| tst.js:142:1:142:84 | use (return (member rightJoin (return (member from (return (member select (return (member exports (module knex))))))))) |
+| tst.js:144:1:144:16 | use (return (member select (return (member exports (module knex))))) |
+| tst.js:144:1:144:30 | use (return (member from (return (member select (return (member exports (module knex))))))) |
+| tst.js:144:1:144:89 | use (return (member rightOuterJoin (return (member from (return (member select (return (member exports (module knex))))))))) |
+| tst.js:146:1:146:16 | use (return (member select (return (member exports (module knex))))) |
+| tst.js:146:1:146:30 | use (return (member from (return (member select (return (member exports (module knex))))))) |
+| tst.js:146:1:146:88 | use (return (member fullOuterJoin (return (member from (return (member select (return (member exports (module knex))))))))) |
+| tst.js:148:1:148:16 | use (return (member select (return (member exports (module knex))))) |
+| tst.js:148:1:148:30 | use (return (member from (return (member select (return (member exports (module knex))))))) |
+| tst.js:148:1:148:52 | use (return (member crossJoin (return (member from (return (member select (return (member exports (module knex))))))))) |
+| tst.js:150:1:150:16 | use (return (member select (return (member exports (module knex))))) |
+| tst.js:150:1:150:33 | use (return (member from (return (member select (return (member exports (module knex))))))) |
+| tst.js:150:1:150:69 | use (return (member joinRaw (return (member from (return (member select (return (member exports (module knex))))))))) |
+| tst.js:150:1:150:84 | use (return (member where (return (member joinRaw (return (member from (return (member select (return (member exports (module knex))))))))))) |
+| tst.js:152:1:152:16 | use (return (member select (return (member exports (module knex))))) |
+| tst.js:152:1:152:30 | use (return (member from (return (member select (return (member exports (module knex))))))) |
+| tst.js:152:1:154:2 | use (return (member join (return (member from (return (member select (return (member exports (module knex))))))))) |
+| tst.js:156:1:156:28 | use (return (member select (return (member exports (module knex))))) |
+| tst.js:156:1:156:42 | use (return (member from (return (member select (return (member exports (module knex))))))) |
+| tst.js:156:1:156:63 | use (return (member where (return (member from (return (member select (return (member exports (module knex))))))))) |
+| tst.js:156:1:156:79 | use (return (member clear (return (member where (return (member from (return (member select (return (member exports (module knex))))))))))) |
+| tst.js:156:1:156:94 | use (return (member clear (return (member clear (return (member where (return (member from (return (member select (return (member exports (module knex))))))))))))) |
+| tst.js:158:1:158:17 | use (return (return (member exports (module knex)))) |
+| tst.js:158:1:158:53 | use (return (member distinct (return (return (member exports (module knex)))))) |
+| tst.js:160:1:160:13 | use (return (return (member exports (module knex)))) |
+| tst.js:160:1:160:31 | use (return (member distinctOn (return (return (member exports (module knex)))))) |
+| tst.js:162:1:162:44 | use (return (member select (return (member exports (module knex))))) |
+| tst.js:162:1:162:58 | use (return (member from (return (member select (return (member exports (module knex))))))) |
+| tst.js:162:1:162:89 | use (return (member groupByRaw (return (member from (return (member select (return (member exports (module knex))))))))) |
+| tst.js:162:21:162:43 | use (return (member raw (return (member exports (module knex))))) |
+| tst.js:164:1:164:13 | use (return (return (member exports (module knex)))) |
+| tst.js:164:1:164:30 | use (return (member orderBy (return (return (member exports (module knex)))))) |
+| tst.js:166:1:166:16 | use (return (member select (return (member exports (module knex))))) |
+| tst.js:166:1:166:30 | use (return (member from (return (member select (return (member exports (module knex))))))) |
+| tst.js:166:1:166:64 | use (return (member orderByRaw (return (member from (return (member select (return (member exports (module knex))))))))) |
+| tst.js:168:1:168:13 | use (return (return (member exports (module knex)))) |
+| tst.js:168:1:169:19 | use (return (member groupBy (return (return (member exports (module knex)))))) |
+| tst.js:168:1:170:26 | use (return (member orderBy (return (member groupBy (return (return (member exports (module knex)))))))) |
+| tst.js:168:1:171:28 | use (return (member having (return (member orderBy (return (member groupBy (return (return (member exports (module knex)))))))))) |
+| tst.js:173:1:173:16 | use (return (member select (return (member exports (module knex))))) |
+| tst.js:173:1:173:30 | use (return (member from (return (member select (return (member exports (module knex))))))) |
+| tst.js:173:1:173:61 | use (return (member havingIn (return (member from (return (member select (return (member exports (module knex))))))))) |
+| tst.js:175:1:175:13 | use (return (return (member exports (module knex)))) |
+| tst.js:175:1:176:19 | use (return (member groupBy (return (return (member exports (module knex)))))) |
+| tst.js:175:1:177:26 | use (return (member orderBy (return (member groupBy (return (return (member exports (module knex)))))))) |
+| tst.js:175:1:178:32 | use (return (member havingRaw (return (member orderBy (return (member groupBy (return (return (member exports (module knex)))))))))) |
+| tst.js:180:1:180:16 | use (return (member select (return (member exports (module knex))))) |
+| tst.js:181:1:181:16 | use (return (member select (return (member exports (module knex))))) |
+| tst.js:182:1:182:16 | use (return (member select (return (member exports (module knex))))) |
+| tst.js:183:1:183:16 | use (return (member select (return (member exports (module knex))))) |
+| tst.js:184:1:184:16 | use (return (member select (return (member exports (module knex))))) |
+| tst.js:185:1:185:16 | use (return (member select (return (member exports (module knex))))) |
+| tst.js:186:1:186:16 | use (return (member select (return (member exports (module knex))))) |
+| tst.js:187:1:187:16 | use (return (member select (return (member exports (module knex))))) |
+| tst.js:188:1:188:16 | use (return (member select (return (member exports (module knex))))) |

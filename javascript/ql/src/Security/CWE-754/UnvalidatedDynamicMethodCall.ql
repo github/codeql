@@ -4,7 +4,7 @@
  *              an unexpected target, which could cause an exception.
  * @kind path-problem
  * @problem.severity warning
- * @security-severity 4.2
+ * @security-severity 7.5
  * @precision high
  * @id js/unvalidated-dynamic-method-call
  * @tags security

@@ -3,7 +3,7 @@
  * @description Hard-coding a password string may compromise security.
  * @kind problem
  * @problem.severity error
- * @security-severity 5.9
+ * @security-severity 9.8
  * @precision low
  * @id java/hardcoded-password-field
  * @tags security

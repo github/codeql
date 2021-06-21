@@ -5,7 +5,7 @@
  *              state, and reading the variable may result in undefined behavior.
  * @kind problem
  * @problem.severity warning
- * @security-severity 6.9
+ * @security-severity 7.8
  * @opaque-id SM02313
  * @id cpp/conditionally-uninitialized-variable
  * @tags security

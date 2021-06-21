@@ -12,6 +12,8 @@ class TaintFlowConf extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node n) {
     exists(MethodAccess ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
   }
+
+  override int fieldFlowBranchLimit() { result = 1000 }
 }
 
 class ValueFlowConf extends DataFlow::Configuration {
@@ -24,6 +26,8 @@ class ValueFlowConf extends DataFlow::Configuration {
   override predicate isSink(DataFlow::Node n) {
     exists(MethodAccess ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
   }
+
+  override int fieldFlowBranchLimit() { result = 1000 }
 }
 
 class HasFlowTest extends InlineExpectationsTest {
