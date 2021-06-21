@@ -5,10 +5,48 @@ import semmle.code.java.dataflow.FlowSummary
 import semmle.code.java.dataflow.internal.FlowSummaryImpl
 
 /**
- * A CSV row to generate tests for. Users should extend this to define their input rows.
+ * A CSV row to generate tests for. Users should extend this to define which
+ * tests to generate. Rows specified here should also satisfy `SummaryModelCsv.row`.
  */
 bindingset[this]
-abstract class CsvRow extends string { }
+abstract class TargetSummaryModelCsv extends string {
+  predicate modelRowExists() { any(SummaryModelCsv smc).row(this) }
+}
+
+/**
+ * Gets a CSV row for which a test has been requested, but `SummaryModelCsv.row` does not hold of it.
+ */
+query TargetSummaryModelCsv missingSummaryModelCsv() { not result.modelRowExists() }
+
+/**
+ * Gets a CSV row for which a test has been requested, and `SummaryModelCsv.row` does hold, but
+ * nonetheless we can't generate a test case for it, indicating we cannot resolve either the callable
+ * spec or an input or output spec.
+ */
+query TargetSummaryModelCsv getAParseFailure(string reason) {
+  result.modelRowExists() and
+  (
+    exists(
+      string namespace, string type, boolean subtypes, string name, string signature, string ext
+    |
+      summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _, result) and
+      not exists(interpretElement(namespace, type, subtypes, name, signature, ext)) and
+      reason = "callable could not be resolved"
+    )
+    or
+    exists(string inputSpec |
+      summaryModel(_, _, _, _, _, _, inputSpec, _, _, result) and
+      not Private::External::interpretSpec(inputSpec, _) and
+      reason = "input spec could not be parsed"
+    )
+    or
+    exists(string outputSpec |
+      summaryModel(_, _, _, _, _, _, _, outputSpec, _, result) and
+      not Private::External::interpretSpec(outputSpec, _) and
+      reason = "output spec could not be parsed"
+    )
+  )
+}
 
 /**
  * Returns type of parameter `i` of `callable`, including the type of `this` for parameter -1.
