@@ -58,13 +58,8 @@ module LocalFlow {
     )
     or
     // Flow from assignment into SSA definition
-    exists(CfgNodes::ExprNodes::AssignmentCfgNode a, BasicBlock bb, int i |
-      def.definesAt(_, bb, i) and
-      a = bb.getNode(i) and
-      a.getExpr() instanceof AssignExpr and
-      nodeFrom.asExpr() = a.getRhs() and
-      nodeTo.(SsaDefinitionNode).getDefinition() = def
-    )
+    def.(Ssa::WriteDefinition).assigns(nodeFrom.asExpr()) and
+    nodeTo.(SsaDefinitionNode).getDefinition() = def
     or
     // Flow from SSA definition to first read
     def = nodeFrom.(SsaDefinitionNode).getDefinition() and
