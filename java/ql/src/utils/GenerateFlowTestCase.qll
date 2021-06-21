@@ -8,23 +8,26 @@ import semmle.code.java.dataflow.internal.FlowSummaryImpl
  * A CSV row to generate tests for. Users should extend this to define which
  * tests to generate. Rows specified here should also satisfy `SummaryModelCsv.row`.
  */
-bindingset[this]
-abstract class TargetSummaryModelCsv extends string {
-  predicate modelRowExists() { any(SummaryModelCsv smc).row(this) }
+class TargetSummaryModelCsv extends Unit {
+  abstract predicate row(string r);
 }
 
 /**
  * Gets a CSV row for which a test has been requested, but `SummaryModelCsv.row` does not hold of it.
  */
-query TargetSummaryModelCsv missingSummaryModelCsv() { not result.modelRowExists() }
+query string missingSummaryModelCsv() {
+  any(TargetSummaryModelCsv target).row(result) and
+  not any(SummaryModelCsv model).row(result)
+}
 
 /**
  * Gets a CSV row for which a test has been requested, and `SummaryModelCsv.row` does hold, but
  * nonetheless we can't generate a test case for it, indicating we cannot resolve either the callable
  * spec or an input or output spec.
  */
-query TargetSummaryModelCsv getAParseFailure(string reason) {
-  result.modelRowExists() and
+query string getAParseFailure(string reason) {
+  any(TargetSummaryModelCsv target).row(result) and
+  any(SummaryModelCsv model).row(result) and
   (
     exists(
       string namespace, string type, boolean subtypes, string name, string signature, string ext
