@@ -48,10 +48,21 @@ query TargetSummaryModelCsv getAParseFailure(string reason) {
   )
 }
 
+private class CallableToTest extends Callable {
+  CallableToTest() {
+    exists(
+      string namespace, string type, boolean subtypes, string name, string signature, string ext
+    |
+      summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _) and
+      this = interpretElement(namespace, type, subtypes, name, signature, ext)
+    )
+  }
+}
+
 /**
  * Returns type of parameter `i` of `callable`, including the type of `this` for parameter -1.
  */
-Type getParameterType(Private::External::SummarizedCallableExternal callable, int i) {
+Type getParameterType(CallableToTest callable, int i) {
   if i = -1 then result = callable.getDeclaringType() else result = callable.getParameterType(i)
 }
 
@@ -149,29 +160,37 @@ Type getRootSourceDeclaration(Type t) {
  * from `input` to `output`). Usually there is one of these per CSV row (`row`), but there may be more if `row` describes more than one
  * override or overload of a particular method, or if the input or output specifications cover more than one argument.
  */
-newtype TRowTestSnippet =
-  MkSnippet(
-    CsvRow row, Private::External::SummarizedCallableExternal callable, SummaryComponentStack input,
-    SummaryComponentStack output, boolean preservesValue
+newtype TTestCase =
+  MkTestCase(
+    CallableToTest callable, SummaryComponentStack input, SummaryComponentStack output, string kind,
+    string row
   ) {
-    callable.propagatesFlowForRow(input, output, preservesValue, row)
+    exists(
+      string namespace, string type, boolean subtypes, string name, string signature, string ext,
+      string inputSpec, string outputSpec
+    |
+      summaryModel(namespace, type, subtypes, name, signature, ext, inputSpec, outputSpec, kind, row) and
+      callable = interpretElement(namespace, type, subtypes, name, signature, ext) and
+      Private::External::interpretSpec(inputSpec, input) and
+      Private::External::interpretSpec(outputSpec, output)
+    )
   }
 
 /**
- * A test snippet (as `TRowTestSnippet`, except `baseInput` and `baseOutput` hold the bottom of the summary stacks
+ * A test snippet (as `TTestCase`, except `baseInput` and `baseOutput` hold the bottom of the summary stacks
  * `input` and `output` respectively (hence, `baseInput` and `baseOutput` are parameters or return values).
  */
-class RowTestSnippet extends TRowTestSnippet {
-  string row;
-  Private::External::SummarizedCallableExternal callable;
+class TestCase extends TTestCase {
+  CallableToTest callable;
   SummaryComponentStack input;
   SummaryComponentStack output;
   SummaryComponentStack baseInput;
   SummaryComponentStack baseOutput;
-  boolean preservesValue;
+  string kind;
+  string row;
 
-  RowTestSnippet() {
-    this = MkSnippet(row, callable, input, output, preservesValue) and
+  TestCase() {
+    this = MkTestCase(callable, input, output, kind, row) and
     baseInput = input.drop(input.length() - 1) and
     baseOutput = output.drop(output.length() - 1)
   }
@@ -179,7 +198,7 @@ class RowTestSnippet extends TRowTestSnippet {
   string toString() {
     result =
       row + " / " + callable + " / " + input + " / " + output + " / " + baseInput + " / " +
-        baseOutput + " / " + preservesValue
+        baseOutput + " / " + kind
   }
 
   /**
@@ -261,9 +280,9 @@ class RowTestSnippet extends TRowTestSnippet {
    * Returns an inline test expectation appropriate to this CSV row.
    */
   string getExpectation() {
-    preservesValue = true and result = "// $hasValueFlow"
+    kind = "value" and result = "// $hasValueFlow"
     or
-    preservesValue = false and result = "// $hasTaintFlow"
+    kind = "taint" and result = "// $hasTaintFlow"
   }
 
   /**
@@ -372,6 +391,26 @@ class RowTestSnippet extends TRowTestSnippet {
   }
 
   /**
+   * Gets a string that specifies summary component `c` in a summary specification CSV row.
+   */
+  string getComponentSpec(SummaryComponent c) {
+    exists(Content content |
+      c = SummaryComponent::content(content) and
+      (
+        content instanceof ArrayContent and result = "ArrayElement"
+        or
+        content instanceof MapValueContent and result = "MapValue"
+        or
+        content instanceof MapKeyContent and result = "MapKey"
+        or
+        content instanceof CollectionContent and result = "Element"
+        or
+        result = "Field[" + content.(FieldContent).getField().getQualifiedName() + "]"
+      )
+    )
+  }
+
+  /**
    * Returns a CSV row describing a support method (`newWith` or `get` method) needed to set up the output for this test.
    *
    * For example, `newWithMapValue` will propagate a value from `Argument[0]` to `MapValue of ReturnValue`, and `getMapValue`
@@ -379,7 +418,7 @@ class RowTestSnippet extends TRowTestSnippet {
    */
   string getASupportMethodModel() {
     exists(SummaryComponent c, string contentSsvDescription |
-      c = input.drop(_).head() and c = Private::External::interpretComponent(contentSsvDescription)
+      c = input.drop(_).head() and contentSsvDescription = getComponentSpec(c)
     |
       result =
         "generatedtest;Test;false;newWith" + contentToken(getContent(c)) + ";;;Argument[0];" +
@@ -387,7 +426,7 @@ class RowTestSnippet extends TRowTestSnippet {
     )
     or
     exists(SummaryComponent c, string contentSsvDescription |
-      c = output.drop(_).head() and c = Private::External::interpretComponent(contentSsvDescription)
+      c = output.drop(_).head() and contentSsvDescription = getComponentSpec(c)
     |
       result =
         "generatedtest;Test;false;get" + contentToken(getContent(c)) + ";;;" + contentSsvDescription
@@ -428,10 +467,10 @@ class RowTestSnippet extends TRowTestSnippet {
  * Holds if type `t` does not clash with another type we want to import that has the same base name.
  */
 predicate isImportable(Type t) {
-  t = any(RowTestSnippet r).getADesiredImport() and
+  t = any(TestCase tc).getADesiredImport() and
   t =
     unique(Type sharesBaseName |
-      sharesBaseName = any(RowTestSnippet r).getADesiredImport() and
+      sharesBaseName = any(TestCase tc).getADesiredImport() and
       sharesBaseName.getName() = t.getName()
     |
       sharesBaseName
@@ -444,7 +483,7 @@ predicate isImportable(Type t) {
  * if we cannot import it due to a name clash.
  */
 string getShortNameIfPossible(Type t) {
-  getRootSourceDeclaration(t) = any(RowTestSnippet r).getADesiredImport() and
+  getRootSourceDeclaration(t) = any(TestCase tc).getADesiredImport() and
   if t instanceof RefType
   then
     exists(RefType replaced, string nestedName |
@@ -463,7 +502,7 @@ string getShortNameIfPossible(Type t) {
  */
 string getAnImportStatement() {
   exists(RefType t |
-    t = any(RowTestSnippet r).getADesiredImport() and
+    t = any(TestCase tc).getADesiredImport() and
     isImportable(t) and
     t.getPackage().getName() != "java.lang"
   |
@@ -477,24 +516,24 @@ string getAnImportStatement() {
 string getASupportMethod() {
   result = "Object source() { return null; }" or
   result = "void sink(Object o) { }" or
-  result = any(RowTestSnippet r).getASupportMethod()
+  result = any(TestCase tc).getASupportMethod()
 }
 
 /**
  * Returns a CSV specification of the taint-/value-propagation behaviour of a test support method (`get` or `newWith` method).
  */
-query string getASupportMethodModel() { result = any(RowTestSnippet r).getASupportMethodModel() }
+query string getASupportMethodModel() { result = any(TestCase tc).getASupportMethodModel() }
 
 /**
- * Gets a Java file body testing all `CsvRow` instances in scope against whatever classes and methods they resolve against.
+ * Gets a Java file body testing all requested SSV rows against whatever classes and methods they resolve against.
  */
 query string getTestCase() {
   result =
     "package generatedtest;\n\n" + concat(getAnImportStatement() + "\n") +
-      "\n//Test case generated by GenerateFlowTestCase.ql\npublic class Test {\n\n" +
+      "\n// Test case generated by GenerateFlowTestCase.ql\npublic class Test {\n\n" +
       concat("\t" + getASupportMethod() + "\n") + "\n\tpublic void test() {\n\n" +
       concat(string row, string snippet |
-        snippet = any(RowTestSnippet r).getATestSnippetForRow(row)
+        snippet = any(TestCase tc).getATestSnippetForRow(row)
       |
         snippet order by row
       ) + "\n\t}\n\n}"
