@@ -94,7 +94,7 @@ class TestBase {
 
     void test8() {
         Optional<String> x = Optional.of(taint());
-        sink(x); // $numTaintFlow=1
+        sink(x); // no flow
         sink(x.get()); // $numValueFlow=1
         sink(x.or("hi")); // $numValueFlow=1
         sink(x.orNull()); // $numValueFlow=1

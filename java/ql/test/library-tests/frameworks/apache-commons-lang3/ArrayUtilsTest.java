@@ -31,11 +31,11 @@ class ArrayUtilsTest {
       sink(ArrayUtils.addFirst(clean, taint())); // $hasTaintFlow
       sink(ArrayUtils.addFirst(alreadyTainted, "clean")); // $hasTaintFlow
       sink(ArrayUtils.clone(alreadyTainted)); // $hasTaintFlow
-      sink(ArrayUtils.get(alreadyTainted, 0)); // $hasTaintFlow
+      sink(ArrayUtils.get(alreadyTainted, 0)); // $hasValueFlow
       sink(ArrayUtils.get(clean, IntSource.taint())); // Index argument does not contribute taint
-      sink(ArrayUtils.get(alreadyTainted, 0, "default value")); // $hasTaintFlow
+      sink(ArrayUtils.get(alreadyTainted, 0, "default value")); // $hasValueFlow
       sink(ArrayUtils.get(clean, IntSource.taint(), "default value")); // Index argument does not contribute taint
-      sink(ArrayUtils.get(clean, 0, taint())); // $hasTaintFlow
+      sink(ArrayUtils.get(clean, 0, taint())); // $hasValueFlow
       sink(ArrayUtils.insert(IntSource.taint(), clean, "value1", "value2")); // Index argument does not contribute taint
       sink(ArrayUtils.insert(0, alreadyTainted, "value1", "value2")); // $hasTaintFlow
       sink(ArrayUtils.insert(0, clean, taint(), "value2")); // $hasTaintFlow
