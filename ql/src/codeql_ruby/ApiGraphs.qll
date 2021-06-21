@@ -313,23 +313,26 @@ module API {
         // pred = `Rails` part of `Rails::Whatever`
         // lbl = `Whatever`
         // ref = `Rails::Whatever`
-        exists(ConstantAccess c |
+        exists(ConstantAccess c, DataFlow::Node node |
           not exists(resolveScopeExpr(c)) and
-          pred.asExpr().getExpr() = c.getScopeExpr() and
+          pred.flowsTo(node) and
+          node.asExpr().getExpr() = c.getScopeExpr() and
           lbl = Label::member(c.getName()) and
           ref.asExpr().getExpr() = c
         )
         or
         // Calling a method on a node that is a use of `base`
-        exists(MethodCall call |
-          pred.asExpr().getExpr() = call.getReceiver() and
+        exists(MethodCall call, DataFlow::Node node |
+          pred.flowsTo(node) and
+          node.asExpr().getExpr() = call.getReceiver() and
           lbl = Label::return(call.getMethodName()) and
           call.getMethodName() != "new" and
           ref.asExpr().getExpr() = call
         )
         or
-        exists(MethodCall call |
-          pred.asExpr().getExpr() = call.getReceiver() and
+        exists(MethodCall call, DataFlow::Node node |
+          pred.flowsTo(node) and
+          node.asExpr().getExpr() = call.getReceiver() and
           lbl = Label::instance() and
           call.getMethodName() = "new" and
           ref.asExpr().getExpr() = call
