@@ -58,6 +58,9 @@ private module Moment {
   private API::Node moment() {
     result = API::moduleImport(["moment", "moment-timezone"])
     or
+    // `dayjs` largely has a similar API to `moment`
+    result = API::moduleImport("dayjs")
+    or
     result = moment().getReturn()
     or
     result = moment().getAMember()

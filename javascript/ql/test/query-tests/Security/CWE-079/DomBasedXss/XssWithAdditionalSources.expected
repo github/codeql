@@ -126,6 +126,10 @@ nodes
 | dates.js:18:31:18:66 | `Time i ... aint)}` |
 | dates.js:18:42:18:64 | datefor ...  taint) |
 | dates.js:18:59:18:63 | taint |
+| dates.js:21:31:21:68 | `Time i ... aint)}` |
+| dates.js:21:31:21:68 | `Time i ... aint)}` |
+| dates.js:21:42:21:66 | dayjs(t ... (taint) |
+| dates.js:21:61:21:65 | taint |
 | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' |
 | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' |
 | event-handler-receiver.js:2:49:2:61 | location.href |
@@ -773,6 +777,7 @@ edges
 | dates.js:9:9:9:69 | taint | dates.js:13:59:13:63 | taint |
 | dates.js:9:9:9:69 | taint | dates.js:16:62:16:66 | taint |
 | dates.js:9:9:9:69 | taint | dates.js:18:59:18:63 | taint |
+| dates.js:9:9:9:69 | taint | dates.js:21:61:21:65 | taint |
 | dates.js:9:17:9:69 | decodeU ... ing(1)) | dates.js:9:9:9:69 | taint |
 | dates.js:9:36:9:55 | window.location.hash | dates.js:9:36:9:68 | window. ... ring(1) |
 | dates.js:9:36:9:55 | window.location.hash | dates.js:9:36:9:68 | window. ... ring(1) |
@@ -792,6 +797,9 @@ edges
 | dates.js:18:42:18:64 | datefor ...  taint) | dates.js:18:31:18:66 | `Time i ... aint)}` |
 | dates.js:18:42:18:64 | datefor ...  taint) | dates.js:18:31:18:66 | `Time i ... aint)}` |
 | dates.js:18:59:18:63 | taint | dates.js:18:42:18:64 | datefor ...  taint) |
+| dates.js:21:42:21:66 | dayjs(t ... (taint) | dates.js:21:31:21:68 | `Time i ... aint)}` |
+| dates.js:21:42:21:66 | dayjs(t ... (taint) | dates.js:21:31:21:68 | `Time i ... aint)}` |
+| dates.js:21:61:21:65 | taint | dates.js:21:42:21:66 | dayjs(t ... (taint) |
 | event-handler-receiver.js:2:49:2:61 | location.href | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' |
 | event-handler-receiver.js:2:49:2:61 | location.href | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' |
 | event-handler-receiver.js:2:49:2:61 | location.href | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' |

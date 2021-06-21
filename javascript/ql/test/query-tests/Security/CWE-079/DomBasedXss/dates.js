@@ -16,4 +16,7 @@ function main() {
     document.body.innerHTML = `Time is ${moment(time).format(taint)}`; // NOT OK
     document.body.innerHTML = `Time is ${moment(taint).format()}`; // OK
     document.body.innerHTML = `Time is ${dateformat(time, taint)}`; // NOT OK
+
+    import dayjs from 'dayjs';
+    document.body.innerHTML = `Time is ${dayjs(time).format(taint)}`; // NOT OK
 }
