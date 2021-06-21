@@ -37,17 +37,107 @@
     tail users.log
   #+END_SRC
 
+** Identify the problem
+   =./add-user= is reading from =STDIN=, and writing to a database; looking at the code in
+   [[./add-user.c]] leads to
+   : count = read(STDIN_FILENO, buf, BUFSIZE - 1);
+   for the read and 
+   : rc = sqlite3_exec(db, query, NULL, 0, &zErrMsg);
+   for the write.
+
+   This problem is thus a dataflow problem; in codeql terminology we have
+   - a /source/ at the =read(STDIN_FILENO, buf, BUFSIZE - 1);=
+   - a /sink/ at the =sqlite3_exec(db, query, NULL, 0, &zErrMsg);=
+
+   We write codeql to identify these two, and then connect them via
+   - a /dataflow configuration/ -- for this problem, the more general /taintflow
+     configuration/. 
+   
 ** Build codeql database
+   To get started, build the codeql database (adjust paths to your setup):
    #+BEGIN_SRC sh
      # Build the db with source commit id.
-     export PATH=$HOME/local/vmsync/codeql224:"$PATH"
-     SRCDIR=$HOME/local/codeql-training-material/c/codeql-dataflow-sql-injection
-     DB=$HOME/local/db/codeql-dataflow-sql-injection-$(cd $SRCDIR && git rev-parse --short HEAD)
+     export PATH=$HOME/local/vmsync/codeql250:"$PATH"
+     SRCDIR=$HOME/local/codeql-training-material.cpp-sqli/cpp/codeql-dataflow-sql-injection
+     DB=$SRCDIR/cpp-sqli-$(cd $SRCDIR && git rev-parse --short HEAD)
 
      echo $DB
      test -d "$DB" && rm -fR "$DB"
      mkdir -p "$DB"
 
-     cd $SRCDIR
-     codeql database create --language=cpp -s $SRCDIR  -j 8 -v $DB --command='./build.sh'
+     cd $SRCDIR && codeql database create --language=cpp -s . -j 8 -v $DB --command='./build.sh'
+   #+END_SRC
+
+   Then add this database directory to your VS Code =DATABASES= tab.
+
+** Develop the query bottom-up
+   1. Identify the /source/ part of the 
+      : read(STDIN_FILENO, buf, BUFSIZE - 1);
+      expression, the =buf= argument.  
+      Start from a =from..where..select=, then convert to a predicate.
+
+   2. Identify the /sink/ part of the
+      : sqlite3_exec(db, query, NULL, 0, &zErrMsg);
+      expression, the =query= argument.  Again start from =from..where..select=,
+      then convert to a predicate.
+
+   3. Fill in the /taintflow configuration/ boilerplate
+      #+BEGIN_SRC java
+        class CppSqli extends TaintTracking::Configuration {
+            CppSqli() { this = "CppSqli" }
+
+            override predicate isSource(DataFlow::Node node) {
+                none()
+                    }
+
+            override predicate isSink(DataFlow::Node node) {
+                none()
+                    }
+        }
+      #+END_SRC
+
+      Note that an inout-argument in C/C++ (the =buf= pointer is passed to =read=
+      and points to updated data after the return) is accessed as a codeql source
+      via
+      : source.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr()
+      instead of the usual
+      : source.asExpr()
+
+   The final query (without =isAdditionalTaintStep=) is
+   #+BEGIN_SRC java
+     /**
+      ,* @name SQLI Vulnerability
+      ,* @description Using untrusted strings in a sql query allows sql injection attacks.
+      ,* @kind path-problem
+      ,* @id cpp/SQLIVulnerable
+      ,* @problem.severity warning
+      ,*/
+
+     import cpp
+     import semmle.code.cpp.dataflow.TaintTracking
+     import DataFlow::PathGraph
+
+     class SqliFlowConfig extends TaintTracking::Configuration {
+         SqliFlowConfig() { this = "SqliFlow" }
+
+         override predicate isSource(DataFlow::Node source) {
+             // count = read(STDIN_FILENO, buf, BUFSIZE);
+             exists(FunctionCall read |
+                 read.getTarget().getName() = "read" and
+                 read.getArgument(1) = source.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr()
+             )
+         }
+
+         override predicate isSink(DataFlow::Node sink) {
+             // rc = sqlite3_exec(db, query, NULL, 0, &zErrMsg);
+             exists(FunctionCall exec |
+                 exec.getTarget().getName() = "sqlite3_exec" and
+                 exec.getArgument(1) = sink.asExpr()
+             )
+         }
+     }
+
+     from SqliFlowConfig conf, DataFlow::PathNode source, DataFlow::PathNode sink
+     where conf.hasFlowPath(source, sink)
+     select sink, source, sink, "Possible SQL injection"
    #+END_SRC
