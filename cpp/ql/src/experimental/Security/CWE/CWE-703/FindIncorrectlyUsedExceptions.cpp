@@ -1,10 +1,10 @@
 ...
-testClass1 :: testMethod()
+void testClass1 :: testMethod()
 {
    throw "my exception!";  // BAD
 }
 ...
-testClass3 :: testMethod()
+void testClass3 :: testMethod()
 {
   try { throw "my exception!"; } // GOOD
   catch (...) { clean(); }
