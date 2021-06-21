@@ -54,14 +54,14 @@ query predicate spaceshipExprs(
   binaryOperations(e, operator, left, right, pClass)
 }
 
-query predicate regexMatchExprs(
-  RegexMatchExpr e, string operator, Expr left, Expr right, string pClass
+query predicate regExpMatchExprs(
+  RegExpMatchExpr e, string operator, Expr left, Expr right, string pClass
 ) {
   binaryOperations(e, operator, left, right, pClass)
 }
 
-query predicate noRegexMatchExprs(
-  NoRegexMatchExpr e, string operator, Expr left, Expr right, string pClass
+query predicate noRegExpMatchExprs(
+  NoRegExpMatchExpr e, string operator, Expr left, Expr right, string pClass
 ) {
   binaryOperations(e, operator, left, right, pClass)
 }

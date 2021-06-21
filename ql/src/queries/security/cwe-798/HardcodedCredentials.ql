@@ -75,7 +75,7 @@ class HardcodedValueSource extends DataFlow::Node {
  * Gets a regular expression for matching names of locations (variables, parameters, keys) that
  * indicate the value being held is a credential.
  */
-private string getACredentialRegex() {
+private string getACredentialRegExp() {
   result = "(?i).*pass(wd|word|code|phrase)(?!.*question).*" or
   result = "(?i).*(puid|username|userid).*" or
   result = "(?i).*(cert)(?!.*(format|name)).*"
@@ -83,7 +83,7 @@ private string getACredentialRegex() {
 
 bindingset[name]
 private predicate maybeCredentialName(string name) {
-  name.regexpMatch(getACredentialRegex()) and
+  name.regexpMatch(getACredentialRegExp()) and
   not name.suffix(name.length() - 4) = "file"
 }
 

@@ -191,7 +191,7 @@ private module Cached {
     TNEExpr(Generated::Binary g) { g instanceof @binary_bangequal } or
     TNextStmt(Generated::Next g) or
     TNilLiteral(Generated::Nil g) or
-    TNoRegexMatchExpr(Generated::Binary g) { g instanceof @binary_bangtilde } or
+    TNoRegExpMatchExpr(Generated::Binary g) { g instanceof @binary_bangtilde } or
     TNotExpr(Generated::Unary g) { g instanceof @unary_bang or g instanceof @unary_not } or
     TOptionalParameter(Generated::OptionalParameter g) or
     TPair(Generated::Pair g) or
@@ -204,8 +204,8 @@ private module Cached {
     } or
     TRationalLiteral(Generated::Rational g) or
     TRedoStmt(Generated::Redo g) or
-    TRegexLiteral(Generated::Regex g) or
-    TRegexMatchExpr(Generated::Binary g) { g instanceof @binary_equaltilde } or
+    TRegExpLiteral(Generated::Regex g) or
+    TRegExpMatchExpr(Generated::Binary g) { g instanceof @binary_equaltilde } or
     TRegularArrayLiteral(Generated::Array g) or
     TRegularMethodCall(Generated::Call g) { isRegularMethodCall(g) } or
     TRegularStringLiteral(Generated::String g) or
@@ -365,7 +365,7 @@ private module Cached {
     n = TNEExpr(result) or
     n = TNextStmt(result) or
     n = TNilLiteral(result) or
-    n = TNoRegexMatchExpr(result) or
+    n = TNoRegExpMatchExpr(result) or
     n = TNotExpr(result) or
     n = TOptionalParameter(result) or
     n = TPair(result) or
@@ -374,8 +374,8 @@ private module Cached {
     n = TRangeLiteralReal(result) or
     n = TRationalLiteral(result) or
     n = TRedoStmt(result) or
-    n = TRegexLiteral(result) or
-    n = TRegexMatchExpr(result) or
+    n = TRegExpLiteral(result) or
+    n = TRegExpMatchExpr(result) or
     n = TRegularArrayLiteral(result) or
     n = TRegularMethodCall(result) or
     n = TRegularStringLiteral(result) or
@@ -564,7 +564,7 @@ class TStringComponent =
   TStringTextComponent or TStringEscapeSequenceComponent or TStringInterpolationComponent;
 
 class TStringlikeLiteral =
-  TStringLiteral or TRegexLiteral or TSymbolLiteral or TSubshellLiteral or THereDoc;
+  TStringLiteral or TRegExpLiteral or TSymbolLiteral or TSubshellLiteral or THereDoc;
 
 class TStringLiteral = TRegularStringLiteral or TBareStringLiteral;
 
@@ -598,7 +598,7 @@ class TUnaryBitwiseOperation = TComplementExpr;
 
 class TBinaryOperation =
   TBinaryArithmeticOperation or TBinaryLogicalOperation or TBinaryBitwiseOperation or
-      TComparisonOperation or TSpaceshipExpr or TRegexMatchExpr or TNoRegexMatchExpr;
+      TComparisonOperation or TSpaceshipExpr or TRegExpMatchExpr or TNoRegExpMatchExpr;
 
 class TBinaryArithmeticOperation =
   TAddExpr or TSubExpr or TMulExpr or TDivExpr or TModuloExpr or TExponentExpr;

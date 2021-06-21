@@ -22,8 +22,8 @@ binaryOperations
 | operations.rb:60:1:60:5 | ... < ... | < | operations.rb:60:1:60:1 | a | operations.rb:60:5:60:5 | b | LTExpr |
 | operations.rb:61:1:61:8 | ... <= ... | <= | operations.rb:61:1:61:1 | 7 | operations.rb:61:6:61:8 | foo | LEExpr |
 | operations.rb:64:1:64:7 | ... <=> ... | <=> | operations.rb:64:1:64:1 | a | operations.rb:64:7:64:7 | b | SpaceshipExpr |
-| operations.rb:65:1:65:15 | ... =~ ... | =~ | operations.rb:65:1:65:4 | name | operations.rb:65:9:65:15 | /foo.*/ | RegexMatchExpr |
-| operations.rb:66:1:66:17 | ... !~ ... | !~ | operations.rb:66:1:66:6 | handle | operations.rb:66:11:66:17 | /.*bar/ | NoRegexMatchExpr |
+| operations.rb:65:1:65:15 | ... =~ ... | =~ | operations.rb:65:1:65:4 | name | operations.rb:65:9:65:15 | /foo.*/ | RegExpMatchExpr |
+| operations.rb:66:1:66:17 | ... !~ ... | !~ | operations.rb:66:1:66:6 | handle | operations.rb:66:11:66:17 | /.*bar/ | NoRegExpMatchExpr |
 | operations.rb:69:3:69:4 | ... + ... | + | operations.rb:69:1:69:1 | x | operations.rb:69:6:69:8 | 128 | AddExpr |
 | operations.rb:70:3:70:4 | ... - ... | - | operations.rb:70:1:70:1 | y | operations.rb:70:6:70:7 | 32 | SubExpr |
 | operations.rb:71:3:71:4 | ... * ... | * | operations.rb:71:1:71:1 | a | operations.rb:71:6:71:7 | 12 | MulExpr |
@@ -93,7 +93,7 @@ relationalOperations
 | operations.rb:61:1:61:8 | ... <= ... | <= | operations.rb:61:1:61:1 | 7 | operations.rb:61:6:61:8 | foo | LEExpr |
 spaceshipExprs
 | operations.rb:64:1:64:7 | ... <=> ... | <=> | operations.rb:64:1:64:1 | a | operations.rb:64:7:64:7 | b | SpaceshipExpr |
-regexMatchExprs
-| operations.rb:65:1:65:15 | ... =~ ... | =~ | operations.rb:65:1:65:4 | name | operations.rb:65:9:65:15 | /foo.*/ | RegexMatchExpr |
-noRegexMatchExprs
-| operations.rb:66:1:66:17 | ... !~ ... | !~ | operations.rb:66:1:66:6 | handle | operations.rb:66:11:66:17 | /.*bar/ | NoRegexMatchExpr |
+regExpMatchExprs
+| operations.rb:65:1:65:15 | ... =~ ... | =~ | operations.rb:65:1:65:4 | name | operations.rb:65:9:65:15 | /foo.*/ | RegExpMatchExpr |
+noRegExpMatchExprs
+| operations.rb:66:1:66:17 | ... !~ ... | !~ | operations.rb:66:1:66:6 | handle | operations.rb:66:11:66:17 | /.*bar/ | NoRegExpMatchExpr |
