@@ -19,3 +19,6 @@ re.compile(u'[\U00010000-\U0010ffff]') #$ charSet=0:5
 
 #Misparsed on LGTM
 re.compile(r"\[(?P<txt>[^[]*)\]\((?P<uri>[^)]*)") #$ charSet=10:14 charSet=28:32
+
+ # parses wrongly, sees this   \|/ as a char set start
+re.compile(r'''(?:[\s;,"'<>(){}|[\]@=+*]|:(?![/\\]))+''') #$ charSet=3:25 charSet=30:35
