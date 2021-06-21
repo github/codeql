@@ -26,8 +26,10 @@ class TestCollect {
     void test2() {
         sink(ImmutableList.of(taint(), taint(), taint(), taint(),taint(), taint(), taint(), taint(),taint(), taint(), taint(), taint(),taint(), taint(), taint(), taint()).toArray()[0]); // $numValueFlow=16
         sink(ImmutableSet.of(taint(), taint(), taint(), taint(),taint(), taint(), taint(), taint(),taint(), taint(), taint(), taint(),taint(), taint(), taint(), taint()).toArray()[0]); // $numValueFlow=16
-        sink(ImmutableMap.of(taint(), taint(), taint(), taint()));  // $numValueFlow=2
-        sink(ImmutableMultimap.of(taint(), taint(), taint(), taint()));  // $numValueFlow=2
+        sink(ImmutableMap.of(taint(), taint(), taint(), taint()).keys().toArray()[0]);  // $numValueFlow=2
+        sink(ImmutableMap.of(taint(), taint(), taint(), taint()).values().toArray()[0]);  // $numValueFlow=2
+        sink(ImmutableMultimap.of(taint(), taint(), taint(), taint()).keys().toArray()[0]);  // $numValueFlow=2
+        sink(ImmutableMultimap.of(taint(), taint(), taint(), taint()).values().toArray()[0]);  // $numValueFlow=2
         sink(ImmutableTable.of(taint(),taint(), taint()));  // $numValueFlow=1
     }
 

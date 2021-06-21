@@ -123,6 +123,8 @@ private class GuavaCollectCsv extends SummaryModelCsv {
         "com.google.common.collect;ImmutableMultimap;true;of;;;Argument[7];MapValue of ReturnValue;value",
         "com.google.common.collect;ImmutableMultimap;true;of;;;Argument[8];MapKey of ReturnValue;value",
         "com.google.common.collect;ImmutableMultimap;true;of;;;Argument[9];MapValue of ReturnValue;value",
+        "com.google.common.collect;ImmutableClassToInstanceMap;true;of;(Class,Object);;Argument[0];MapKey of ReturnValue;value",
+        "com.google.common.collect;ImmutableClassToInstanceMap;true;of;(Class,Object);;Argument[1];MapValue of ReturnValue;value",
         // `copyOf` methods
         "com.google.common.collect;ImmutableList;true;copyOf;(Object[]);;ArrayElement of Argument[0];Element of ReturnValue;value",
         "com.google.common.collect;ImmutableList;true;copyOf;(Iterable);;Element of Argument[0];Element of ReturnValue;value",
@@ -154,7 +156,28 @@ private class GuavaCollectCsv extends SummaryModelCsv {
         "com.google.common.collect;ImmutableMultimap;true;copyOf;(Multimap);;MapKey of Argument[0];MapKey of ReturnValue;value",
         "com.google.common.collect;ImmutableMultimap;true;copyOf;(Multimap);;MapValue of Argument[0];MapValue of ReturnValue;value",
         "com.google.common.collect;ImmutableMultimap;true;copyOf;(Iterable);;MapKey of Element of Argument[0];MapKey of ReturnValue;value",
-        "com.google.common.collect;ImmutableMultimap;true;copyOf;(Iterable);;MapValue of Element of Argument[0];MapValue of ReturnValue;value"
+        "com.google.common.collect;ImmutableMultimap;true;copyOf;(Iterable);;MapValue of Element of Argument[0];MapValue of ReturnValue;value",
+        "com.google.common.collect;ImmutableClassToInstanceMap;true;copyOf;(Map);;MapKey of Argument[0];MapKey of ReturnValue;value",
+        "com.google.common.collect;ImmutableClassToInstanceMap;true;copyOf;(Map);;MapValue of Argument[0];MapValue of ReturnValue;value",
+        // `create` methods
+        "com.google.common.collect;HashMultiset;true;create;(Iterable);;Element of Argument[0];Element of ReturnValue;value",
+        "com.google.common.collect;LinkdHashMultiset;true;create;(Iterable);;Element of Argument[0];Element of ReturnValue;value",
+        "com.google.common.collect;TreeMultiset;true;create;(Iterable);;Element of Argument[0];Element of ReturnValue;value",
+        "com.google.common.collect;ConcurrentHashMultiset;true;create;(Iterable);;Element of Argument[0];Element of ReturnValue;value",
+        "com.google.common.collect;HashMultimap;true;create;(Multimap);;MapKey of Argument[0];MapKey of ReturnValue;value",
+        "com.google.common.collect;HashMultimap;true;create;(Multimap);;MapValue of Argument[0];MapValue of ReturnValue;value",
+        "com.google.common.collect;LinkedHashMultimap;true;create;(Multimap);;MapKey of Argument[0];MapKey of ReturnValue;value",
+        "com.google.common.collect;LinkedHashMultimap;true;create;(Multimap);;MapValue of Argument[0];MapValue of ReturnValue;value",
+        "com.google.common.collect;LinkedListMultimap;true;create;(Multimap);;MapKey of Argument[0];MapKey of ReturnValue;value",
+        "com.google.common.collect;LinkedListMultimap;true;create;(Multimap);;MapValue of Argument[0];MapValue of ReturnValue;value",
+        "com.google.common.collect;ArrayListMultimap;true;create;(Multimap);;MapKey of Argument[0];MapKey of ReturnValue;value",
+        "com.google.common.collect;ArrayListMultimap;true;create;(Multimap);;MapValue of Argument[0];MapValue of ReturnValue;value",
+        "com.google.common.collect;TreeMultimap;true;create;(Multimap);;MapKey of Argument[0];MapKey of ReturnValue;value",
+        "com.google.common.collect;TreeMultimap;true;create;(Multimap);;MapValue of Argument[0];MapValue of ReturnValue;value",
+        "com.google.common.collect;HashBiMap;true;create;(Map);;MapKey of Argument[0];MapKey of ReturnValue;value",
+        "com.google.common.collect;HashBiMap;true;create;(Map);;MapValue of Argument[0];MapValue of ReturnValue;value",
+        "com.google.common.collect;MutableClassToInstanceMap;true;create;(Multimap);;MapKey of Argument[0];MapKey of ReturnValue;value",
+        "com.google.common.collect;MutableClassToInstanceMap;true;create;(Multimap);;MapValue of Argument[0];MapValue of ReturnValue;value",
         // Utility classes
       ]
   }
