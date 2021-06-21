@@ -30,6 +30,8 @@ namespace Semmle.Extraction
         /// </summary>
         public bool ShouldAddAssemblyTrapPrefix { get; }
 
+        public bool UseTrapStack { get; set; } = true;
+
         private int GetNewId() => TrapWriter.IdCounter++;
 
         // A recursion guard against writing to the trap file whilst writing an id to the trap file.
@@ -270,31 +272,34 @@ namespace Semmle.Extraction
                 return;
             }
 
-            bool duplicationGuard;
-            bool deferred;
+            var duplicationGuard = false;
+            var deferred = false;
 
-            switch (entity.TrapStackBehaviour)
+            if (UseTrapStack)
             {
-                case TrapStackBehaviour.NeedsLabel:
-                    if (!tagStack.Any())
-                        ExtractionError("TagStack unexpectedly empty", optionalSymbol, entity);
-                    duplicationGuard = false;
-                    deferred = false;
-                    break;
-                case TrapStackBehaviour.NoLabel:
-                    duplicationGuard = false;
-                    deferred = tagStack.Any();
-                    break;
-                case TrapStackBehaviour.OptionalLabel:
-                    duplicationGuard = false;
-                    deferred = false;
-                    break;
-                case TrapStackBehaviour.PushesLabel:
-                    duplicationGuard = true;
-                    deferred = tagStack.Any();
-                    break;
-                default:
-                    throw new InternalError("Unexpected TrapStackBehaviour");
+                switch (entity.TrapStackBehaviour)
+                {
+                    case TrapStackBehaviour.NeedsLabel:
+                        if (!tagStack.Any())
+                            ExtractionError("TagStack unexpectedly empty", optionalSymbol, entity);
+                        duplicationGuard = false;
+                        deferred = false;
+                        break;
+                    case TrapStackBehaviour.NoLabel:
+                        duplicationGuard = false;
+                        deferred = tagStack.Any();
+                        break;
+                    case TrapStackBehaviour.OptionalLabel:
+                        duplicationGuard = false;
+                        deferred = false;
+                        break;
+                    case TrapStackBehaviour.PushesLabel:
+                        duplicationGuard = true;
+                        deferred = tagStack.Any();
+                        break;
+                    default:
+                        throw new InternalError("Unexpected TrapStackBehaviour");
+                }
             }
 
             var a = duplicationGuard && IsEntityDuplicationGuarded(entity, out var loc)

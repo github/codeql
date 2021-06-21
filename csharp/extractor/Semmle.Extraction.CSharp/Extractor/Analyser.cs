@@ -212,8 +212,10 @@ namespace Semmle.Extraction.CSharp
                         Entities.File.Create(cx, root.SyntaxTree.FilePath);
 
                         var csNode = (CSharpSyntaxNode)root;
+                        var directiveVisitor = new DirectiveVisitor(cx);
+                        csNode.Accept(directiveVisitor);
+                        cx.UseTrapStack = !directiveVisitor.ConditionalCompilation;
                         csNode.Accept(new CompilationUnitVisitor(cx));
-                        csNode.Accept(new DirectiveVisitor(cx));
                         cx.PopulateAll();
                         CommentPopulator.ExtractCommentBlocks(cx, cx.CommentGenerator);
                         cx.PopulateAll();

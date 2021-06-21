@@ -9,6 +9,8 @@ namespace Semmle.Extraction.CSharp.Populators
     {
         private readonly Context cx;
 
+        public bool ConditionalCompilation { get; private set; } = false;
+
         public DirectiveVisitor(Context cx) : base(SyntaxWalkerDepth.StructuredTrivia)
         {
             this.cx = cx;
@@ -91,6 +93,7 @@ namespace Semmle.Extraction.CSharp.Populators
 
         public override void VisitIfDirectiveTrivia(IfDirectiveTriviaSyntax node)
         {
+            ConditionalCompilation = true;
             var ifStart = new Entities.IfDirective(cx, node);
             ifStarts.Push(new IfDirectiveStackElement(ifStart));
         }
