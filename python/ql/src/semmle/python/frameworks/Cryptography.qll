@@ -267,8 +267,11 @@ private module CryptographyModel {
       string algorithmName;
 
       CryptographyGenericCipherOperation() {
-        this.getMethodName() in ["update", "update_into"] and
-        this.getReceiver() in [cipherEncryptor(algorithmName), cipherDecryptor(algorithmName)]
+        exists(DataFlow::Node object, string method |
+          object in [cipherEncryptor(algorithmName), cipherDecryptor(algorithmName)] and
+          method in ["update", "update_into"] and
+          this.calls(object, method)
+        )
       }
 
       override Cryptography::CryptographicAlgorithm getAlgorithm() {

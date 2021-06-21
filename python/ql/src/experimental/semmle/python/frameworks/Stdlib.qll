@@ -70,7 +70,7 @@ private module Re {
     CompiledRegex() {
       exists(DataFlow::MethodCallNode patternCall |
         patternCall = API::moduleImport("re").getMember("compile").getACall() and
-        patternCall.flowsTo(this.getReceiver()) and
+        patternCall.flowsTo(this.getObject()) and
         this.getMethodName() instanceof RegexExecutionMethods and
         regexNode = patternCall.getArg(0)
       )

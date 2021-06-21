@@ -42,7 +42,7 @@ API::Node sslContextInstance() {
 class WrapSocketCall extends ConnectionCreation, DataFlow::MethodCallNode {
   WrapSocketCall() { this = sslContextInstance().getMember("wrap_socket").getACall() }
 
-  override DataFlow::Node getContext() { result = this.getReceiver() }
+  override DataFlow::Node getContext() { result = this.getObject() }
 }
 
 class OptionsAugOr extends ProtocolRestriction, DataFlow::CfgNode {
