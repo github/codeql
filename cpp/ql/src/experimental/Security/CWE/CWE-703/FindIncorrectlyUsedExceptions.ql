@@ -1,7 +1,6 @@
 /**
  * @name Operator Find Incorrectly Used Exceptions
- * @description --Finding places for the dangerous use of exceptions.
- *              --For example, when the distructor throws an exception but does not handle it.
+ * @description --Finding for places of incomplete use of objects, type exception.
  * @kind problem
  * @id cpp/operator-find-incorrectly-used-exceptions
  * @problem.severity warning
@@ -18,12 +17,12 @@ import cpp
 from FunctionCall fc, string msg
 where
   exists(ThrowExpr texp |
-    texp.getEnclosingFunction() = fc.(DestructorCall).getTarget() and
+    texp.getEnclosingFunction() = fc.getTarget() and
     not exists(TryStmt ts |
       texp.getEnclosingStmt().getParentStmt*() = ts.getStmt() and
       not ts.getACatchClause().isEmpty()
     ) and
-    msg = "This distructor contains exeption no wrapped to try..catch blocks"
+    msg = "Exception inside this function requires more handling."
   )
   or
   fc.getTarget() instanceof Constructor and

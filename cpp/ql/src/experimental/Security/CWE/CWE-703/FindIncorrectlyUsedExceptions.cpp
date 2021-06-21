@@ -1,10 +1,10 @@
 ...
-testClass1 :: ~testClass1()
+testClass1 :: testMethod()
 {
    throw "my exception!";  // BAD
 }
 ...
-testClass3 :: ~testClass3()
+testClass3 :: testMethod()
 {
   try { throw "my exception!"; } // GOOD
   catch (...) { clean(); }

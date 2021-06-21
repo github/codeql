@@ -7,13 +7,9 @@
 
 
 </overview>
-<recommendation>
 
-<p>We recommend that you handle exceptions inside the destructor.</p>
-
-</recommendation>
 <example>
-<p>The following example demonstrates erroneous and fixed methods for using exceptions.</p>
+<p>Finding for places of incomplete use of objects, type exception.</p>
 <sample src="FindIncorrectlyUsedExceptions.cpp" />
 
 </example>
@@ -21,7 +17,7 @@
 
 <li>
   CERT CPP Coding Standard:
-  <a href="https://wiki.sei.cmu.edu/confluence/display/cplusplus/DCL57-CPP.+Do+not+let+exceptions+escape+from+destructors+or+deallocation+functions">DCL57-CPP. Do not let exceptions escape from destructors or deallocation functions</a>.
+  <a href="https://wiki.sei.cmu.edu/confluence/display/java/ERR00-J.+Do+not+suppress+or+ignore+checked+exceptions">ERR00-J. Do not suppress or ignore checked exceptions</a>.
 </li>
 
 </references>
