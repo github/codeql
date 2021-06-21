@@ -39,3 +39,14 @@ function dateio() {
     document.body.innerHTML = `Time is ${moment.formatByString(moment.date(), taint)}`; // NOT OK
     document.body.innerHTML = `Time is ${dayjs.formatByString(dayjs.date(), taint)}`; // NOT OK
 }
+
+import { DateTime } from "luxon";
+
+function luxon() {
+    let taint = decodeURIComponent(window.location.hash.substring(1));
+
+    document.body.innerHTML = `Time is ${DateTime.now().plus({years: 1}).toFormat(taint)}`; // NOT OK
+    document.body.innerHTML = `Time is ${new DateTime().setLocale('fr').toFormat(taint)}`; // NOT OK
+    document.body.innerHTML = `Time is ${DateTime.fromISO("2020-01-01").startOf('day').toFormat(taint)}`; // NOT OK
+}
+

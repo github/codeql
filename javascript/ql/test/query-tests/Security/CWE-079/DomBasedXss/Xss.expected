@@ -151,6 +151,23 @@ nodes
 | dates.js:40:31:40:84 | `Time i ... aint)}` |
 | dates.js:40:42:40:82 | dayjs.f ...  taint) |
 | dates.js:40:77:40:81 | taint |
+| dates.js:46:9:46:69 | taint |
+| dates.js:46:17:46:69 | decodeU ... ing(1)) |
+| dates.js:46:36:46:55 | window.location.hash |
+| dates.js:46:36:46:55 | window.location.hash |
+| dates.js:46:36:46:68 | window. ... ring(1) |
+| dates.js:48:31:48:90 | `Time i ... aint)}` |
+| dates.js:48:31:48:90 | `Time i ... aint)}` |
+| dates.js:48:42:48:88 | DateTim ... (taint) |
+| dates.js:48:83:48:87 | taint |
+| dates.js:49:31:49:89 | `Time i ... aint)}` |
+| dates.js:49:31:49:89 | `Time i ... aint)}` |
+| dates.js:49:42:49:87 | new Dat ... (taint) |
+| dates.js:49:82:49:86 | taint |
+| dates.js:50:31:50:104 | `Time i ... aint)}` |
+| dates.js:50:31:50:104 | `Time i ... aint)}` |
+| dates.js:50:42:50:102 | DateTim ... (taint) |
+| dates.js:50:97:50:101 | taint |
 | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' |
 | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' |
 | event-handler-receiver.js:2:49:2:61 | location.href |
@@ -823,6 +840,22 @@ edges
 | dates.js:40:42:40:82 | dayjs.f ...  taint) | dates.js:40:31:40:84 | `Time i ... aint)}` |
 | dates.js:40:42:40:82 | dayjs.f ...  taint) | dates.js:40:31:40:84 | `Time i ... aint)}` |
 | dates.js:40:77:40:81 | taint | dates.js:40:42:40:82 | dayjs.f ...  taint) |
+| dates.js:46:9:46:69 | taint | dates.js:48:83:48:87 | taint |
+| dates.js:46:9:46:69 | taint | dates.js:49:82:49:86 | taint |
+| dates.js:46:9:46:69 | taint | dates.js:50:97:50:101 | taint |
+| dates.js:46:17:46:69 | decodeU ... ing(1)) | dates.js:46:9:46:69 | taint |
+| dates.js:46:36:46:55 | window.location.hash | dates.js:46:36:46:68 | window. ... ring(1) |
+| dates.js:46:36:46:55 | window.location.hash | dates.js:46:36:46:68 | window. ... ring(1) |
+| dates.js:46:36:46:68 | window. ... ring(1) | dates.js:46:17:46:69 | decodeU ... ing(1)) |
+| dates.js:48:42:48:88 | DateTim ... (taint) | dates.js:48:31:48:90 | `Time i ... aint)}` |
+| dates.js:48:42:48:88 | DateTim ... (taint) | dates.js:48:31:48:90 | `Time i ... aint)}` |
+| dates.js:48:83:48:87 | taint | dates.js:48:42:48:88 | DateTim ... (taint) |
+| dates.js:49:42:49:87 | new Dat ... (taint) | dates.js:49:31:49:89 | `Time i ... aint)}` |
+| dates.js:49:42:49:87 | new Dat ... (taint) | dates.js:49:31:49:89 | `Time i ... aint)}` |
+| dates.js:49:82:49:86 | taint | dates.js:49:42:49:87 | new Dat ... (taint) |
+| dates.js:50:42:50:102 | DateTim ... (taint) | dates.js:50:31:50:104 | `Time i ... aint)}` |
+| dates.js:50:42:50:102 | DateTim ... (taint) | dates.js:50:31:50:104 | `Time i ... aint)}` |
+| dates.js:50:97:50:101 | taint | dates.js:50:42:50:102 | DateTim ... (taint) |
 | event-handler-receiver.js:2:49:2:61 | location.href | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' |
 | event-handler-receiver.js:2:49:2:61 | location.href | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' |
 | event-handler-receiver.js:2:49:2:61 | location.href | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' |
@@ -1339,6 +1372,9 @@ edges
 | dates.js:38:31:38:84 | `Time i ... aint)}` | dates.js:30:36:30:55 | window.location.hash | dates.js:38:31:38:84 | `Time i ... aint)}` | Cross-site scripting vulnerability due to $@. | dates.js:30:36:30:55 | window.location.hash | user-provided value |
 | dates.js:39:31:39:86 | `Time i ... aint)}` | dates.js:30:36:30:55 | window.location.hash | dates.js:39:31:39:86 | `Time i ... aint)}` | Cross-site scripting vulnerability due to $@. | dates.js:30:36:30:55 | window.location.hash | user-provided value |
 | dates.js:40:31:40:84 | `Time i ... aint)}` | dates.js:30:36:30:55 | window.location.hash | dates.js:40:31:40:84 | `Time i ... aint)}` | Cross-site scripting vulnerability due to $@. | dates.js:30:36:30:55 | window.location.hash | user-provided value |
+| dates.js:48:31:48:90 | `Time i ... aint)}` | dates.js:46:36:46:55 | window.location.hash | dates.js:48:31:48:90 | `Time i ... aint)}` | Cross-site scripting vulnerability due to $@. | dates.js:46:36:46:55 | window.location.hash | user-provided value |
+| dates.js:49:31:49:89 | `Time i ... aint)}` | dates.js:46:36:46:55 | window.location.hash | dates.js:49:31:49:89 | `Time i ... aint)}` | Cross-site scripting vulnerability due to $@. | dates.js:46:36:46:55 | window.location.hash | user-provided value |
+| dates.js:50:31:50:104 | `Time i ... aint)}` | dates.js:46:36:46:55 | window.location.hash | dates.js:50:31:50:104 | `Time i ... aint)}` | Cross-site scripting vulnerability due to $@. | dates.js:46:36:46:55 | window.location.hash | user-provided value |
 | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' | event-handler-receiver.js:2:49:2:61 | location.href | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' | Cross-site scripting vulnerability due to $@. | event-handler-receiver.js:2:49:2:61 | location.href | user-provided value |
 | express.js:7:15:7:33 | req.param("wobble") | express.js:7:15:7:33 | req.param("wobble") | express.js:7:15:7:33 | req.param("wobble") | Cross-site scripting vulnerability due to $@. | express.js:7:15:7:33 | req.param("wobble") | user-provided value |
 | jquery.js:7:5:7:34 | "<div i ... + "\\">" | jquery.js:2:17:2:40 | documen ... .search | jquery.js:7:5:7:34 | "<div i ... + "\\">" | Cross-site scripting vulnerability due to $@. | jquery.js:2:17:2:40 | documen ... .search | user-provided value |

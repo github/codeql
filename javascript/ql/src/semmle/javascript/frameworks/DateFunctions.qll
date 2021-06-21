@@ -75,6 +75,45 @@ private module DateIO {
   }
 }
 
+/**
+ * Provides classes and predicates modelling the `luxon` library.
+ */
+private module Luxon {
+  /**
+   * Gets a reference to a `DateTime` object from the `luxon` library.
+   */
+  private API::Node luxonDateTime() {
+    exists(API::Node constructor | constructor = API::moduleImport("luxon").getMember("DateTime") |
+      result = constructor.getInstance()
+      or
+      result =
+        constructor
+            .getMember([
+                "fromJSDate", "fromJSDate", "fromISO", "now", "fromMillis", "fromHTTP",
+                "fromObject", "fromRFC2822", "fromSeconds", "fromSQL", "fromFormat", "fromString",
+                "invalid", "local", "utc"
+              ])
+            .getReturn()
+      or
+      // fluent API that return immutable objects
+      result = luxonDateTime().getAMember()
+      or
+      result = luxonDateTime().getReturn()
+    )
+  }
+
+  /**
+   * A step of the form: `f -> luxonDateTime.toFormat(f)`.
+   */
+  private class ToFormatStep extends TaintTracking::SharedTaintStep {
+    override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(API::CallNode call | call = luxonDateTime().getMember("toFormat").getACall() |
+        pred = call.getArgument(0) and succ = call
+      )
+    }
+  }
+}
+
 private module Moment {
   /** Gets a reference to a `moment` object. */
   private API::Node moment() {
