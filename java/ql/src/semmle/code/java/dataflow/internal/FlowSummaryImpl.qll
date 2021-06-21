@@ -643,7 +643,14 @@ module Private {
       )
     }
 
-    private predicate interpretSpec(string spec, int idx, SummaryComponentStack stack) {
+    /**
+     * Holds if `spec` specifies summary component stack `stack`.
+     */
+    predicate interpretSpec(string spec, SummaryComponentStack stack) {
+      interpretSpec(spec, 0, stack)
+    }
+
+    predicate interpretSpec(string spec, int idx, SummaryComponentStack stack) {
       exists(string c |
         relevantSpec(spec) and
         specLength(spec, idx + 1) and
