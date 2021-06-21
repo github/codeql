@@ -161,12 +161,17 @@ with open(resultJava, "w") as f:
 
 scriptPath = os.path.dirname(sys.argv[0])
 
+def copyfile(fromName, toFileHandle):
+  with open(os.path.join(scriptPath, fromName), "r") as fromFileHandle:
+    shutil.copyfileobj(fromFileHandle, toFileHandle)
+
 with open(resultQl, "w") as f:
-  with open(os.path.join(scriptPath, "testHeader.qlfrag"), "r") as header:
-    shutil.copyfileobj(header, f)
-  f.write(", ".join('"%s"' % modelSpecRow[0].strip() for modelSpecRow in supportModelRows))
-  with open(os.path.join(scriptPath, "testFooter.qlfrag"), "r") as header:
-    shutil.copyfileobj(header, f)
+  copyfile("testHeader.qlfrag", f)
+  if len(supportModelRows) != 0:
+    copyfile("testModelsHeader.qlfrag", f)
+    f.write(", ".join('"%s"' % modelSpecRow[0].strip() for modelSpecRow in supportModelRows))
+    copyfile("testModelsFooter.qlfrag", f)
+  copyfile("testFooter.qlfrag", f)
 
 # Make an empty .expected file, since this is an inline-exectations test
 with open(os.path.join(sys.argv[3], "test.expected"), "w"):
