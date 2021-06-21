@@ -1163,20 +1163,23 @@ abstract class BarrierGuard extends Node {
    * Holds if `guard` markes a point in the control-flow graph where this node
    * is known to validate `nd`.
    */
+  pragma[noopt]
   private predicate guards(ControlFlow::ConditionGuardNode guard, Node nd) {
-    exists(boolean branch |
-      this.checks(nd.asExpr(), branch) and
+    exists(boolean branch, Expr expr |
+      expr = nd.asExpr() and
+      this.checks(expr, branch) and
       guard.ensures(this, branch)
     )
     or
     exists(
       Function f, FunctionInput inp, FunctionOutput outp, DataFlow::Property p, CallNode c,
-      Node resNode, Node check, boolean outcome
+      Node resNode, Node check, boolean outcome, Node functionOutput
     |
       guardingFunction(f, inp, outp, p) and
       c = f.getACall() and
       nd = inp.getNode(c) and
-      localFlow(outp.getNode(c), resNode) and
+      functionOutput = outp.getNode(c) and
+      localFlow(functionOutput, resNode) and
       p.checkOn(check, outcome, resNode) and
       guard.ensures(check, outcome)
     )
