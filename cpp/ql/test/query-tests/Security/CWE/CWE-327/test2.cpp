@@ -58,8 +58,12 @@ void encrypt_bad(char *data, size_t amount, keytype key, int algo)
 
 void do_encrypts(char *data, size_t amount, keytype key)
 {
+	char data2[128];
+
 	encrypt_good(data, amount, key, ALGO_AES); // GOOD
 	encrypt_bad(data, amount, key, ALGO_DES); // BAD
+	encrypt_good(data2, 128, key, ALGO_AES); // GOOD
+	encrypt_bad(data2, 128, key, ALGO_DES); // BAD
 }
 
 // --- more involved CPP-style example ---
@@ -169,10 +173,10 @@ const char *get_algorithm3();
 
 void do_unseen_encrypts(char *data, size_t amount, keytype key)
 {
-	set_encryption_algorithm1(ALGO_DES); // BAD
+	set_encryption_algorithm1(ALGO_DES); // BAD [NOT DETECTED]
 	set_encryption_algorithm1(ALGO_AES); // GOOD
 
-	set_encryption_algorithm2(USE_DES); // BAD
+	set_encryption_algorithm2(USE_DES); // BAD [NOT DETECTED]
 	set_encryption_algorithm2(USE_AES); // GOOD
 
 	set_encryption_algorithm3("DES"); // BAD [NOT DETECTED]
@@ -208,32 +212,32 @@ void do_unseen_encrypts(char *data, size_t amount, keytype key)
 class desEncrypt
 {
 public:
-	static void encrypt(const char *data);
+	static void encrypt(char *data);
 	static void doSomethingElse();
 };
 
 class aes256Encrypt
 {
 public:
-	static void encrypt(const char *data);
+	static void encrypt(char *data);
 	static void doSomethingElse();
 };
 
 class desCipher
 {
 public:
-	void encrypt(const char *data);
+	void encrypt(char *data);
 	void doSomethingElse();
 };
 
 class aesCipher
 {
 public:
-	void encrypt(const char *data);
+	void encrypt(char *data);
 	void doSomethingElse();
 };
 
-void do_classes(const char *data)
+void do_classes(char *data)
 {
 	desEncrypt::encrypt(data); // BAD
 	aes256Encrypt::encrypt(data); // GOOD
@@ -259,4 +263,143 @@ void do_fn_ptr(char *data, size_t amount, keytype key)
 
 	impl = &my_aes_implementation; // GOOD
 	impl(data, amount, key);
+}
+
+// --- template classes ---
+
+class desEncryptor
+{
+public:
+	desEncryptor();
+
+	void doDesEncryption(char *data);
+};
+
+template <class C>
+class container
+{
+public:
+	container() {
+		obj = new C(); // GOOD
+	}
+
+	~container() {
+		delete obj;
+	}
+
+	C *obj;
+};
+
+template <class C>
+class templateDesEncryptor
+{
+public:
+	templateDesEncryptor();
+
+	void doDesEncryption(C &data);
+};
+
+void do_template_classes(char *data)
+{
+	desEncryptor *p = new desEncryptor(); // BAD
+	container<desEncryptor> c; // BAD [NOT DETECTED]
+	templateDesEncryptor<char *> t; // BAD [NOT DETECTED]
+
+	p->doDesEncryption(data); // BAD
+	c.obj->doDesEncryption(data); // BAD
+	t.doDesEncryption(data); // BAD [NOT DETECTED]
+}
+
+// --- assert ---
+
+int assertFunc(const char *file, int line);
+#define assert(_cond) ((_cond) || assertFunc(__FILE__, __LINE__))
+
+struct algorithmInfo;
+
+const algorithmInfo *getEncryptionAlgorithmInfo(int algo);
+
+void test_assert(int algo, algorithmInfo *algoInfo)
+{
+	assert(algo != ALGO_DES); // GOOD
+	assert(algoInfo != getEncryptionAlgorithmInfo(ALGO_DES)); // GOOD
+
+	// ...
+}
+
+// --- string comparisons ---
+
+int strcmp(const char *s1, const char *s2);
+void abort(void);
+
+#define ENCRYPTION_DES_NAME "DES"
+#define ENCRYPTION_AES_NAME "AES"
+
+void test_string_comparisons1(const char *algo_name)
+{
+	if (strcmp(algo_name, ENCRYPTION_DES_NAME) == 0) // GOOD
+	{
+		abort();
+	}
+	if (strcmp(algo_name, ENCRYPTION_AES_NAME) == 0) // GOOD
+	{
+		// ...
+	}
+}
+
+const char *getEncryptionNameDES()
+{
+	return "DES";
+}
+
+const char *getEncryptionNameAES()
+{
+	return "AES";
+}
+
+void test_string_comparisons2(const char *algo_name)
+{
+	if (strcmp(algo_name, getEncryptionNameDES()) == 0) // GOOD
+	{
+		abort();
+	}
+	if (strcmp(algo_name, getEncryptionNameAES()) == 0) // GOOD
+	{
+		// ...
+	}
+}
+
+const char *getEncryptionName(int algo)
+{
+	switch (algo)
+	{
+	case ALGO_DES:
+		return getEncryptionNameDES(); // GOOD
+	case ALGO_AES:
+		return getEncryptionNameAES(); // GOOD
+	default:
+		abort();
+	}
+}
+
+void test_string_comparisons3(const char *algo_name)
+{
+	if (strcmp(algo_name, getEncryptionName(ALGO_DES)) == 0) // GOOD
+	{
+		abort();
+	}
+	if (strcmp(algo_name, getEncryptionName(ALGO_AES)) == 0) // GOOD
+	{
+		// ...
+	}
+}
+
+// --- function call in a function call ---
+
+void doEncryption(char *data, size_t len, const char *algorithmName);
+
+void test_fn_in_fn(char *data, size_t len)
+{
+	doEncryption(data, len, getEncryptionNameDES()); // BAD
+	doEncryption(data, len, getEncryptionNameAES()); // GOOD
 }

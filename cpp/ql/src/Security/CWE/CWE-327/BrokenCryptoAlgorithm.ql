@@ -5,7 +5,7 @@
  * @kind problem
  * @problem.severity error
  * @security-severity 7.5
- * @precision medium
+ * @precision high
  * @id cpp/weak-cryptographic-algorithm
  * @tags security
  *       external/cwe/cwe-327
@@ -70,9 +70,12 @@ EnumConstant getAdditionalEvidenceEnumConst() { isEncryptionAdditionalEvidence(r
 predicate getInsecureEncryptionEvidence(FunctionCall fc, Element blame, string description) {
   // find use of an insecure algorithm name
   (
-    fc.getTarget() = getAnInsecureEncryptionFunction() and
-    blame = fc and
-    description = "call to " + fc.getTarget().getName()
+    exists(FunctionCall fc2 |
+      fc.getAChild*() = fc2 and
+      fc2.getTarget() = getAnInsecureEncryptionFunction() and
+      blame = fc2 and
+      description = "call to " + fc.getTarget().getName()
+    )
     or
     exists(MacroInvocation mi |
       (
@@ -93,7 +96,10 @@ predicate getInsecureEncryptionEvidence(FunctionCall fc, Element blame, string d
   ) and
   // find additional evidence that this function is related to encryption.
   (
-    fc.getTarget() = getAnAdditionalEvidenceFunction()
+    exists(FunctionCall fc2 |
+      fc.getAChild*() = fc2 and
+      fc2.getTarget() = getAnAdditionalEvidenceFunction()
+    )
     or
     exists(MacroInvocation mi |
       (
@@ -107,6 +113,27 @@ predicate getInsecureEncryptionEvidence(FunctionCall fc, Element blame, string d
       ec = fc.getAnArgument() and
       ec.getTarget() = getAdditionalEvidenceEnumConst()
     )
+  ) and
+  // exclude calls from templates as this is rarely the right place to flag an
+  // issue
+  not fc.isFromTemplateInstantiation(_) and
+  (
+    // the function should have an input that looks like a non-constant buffer
+    exists(Expr e |
+      fc.getAnArgument() = e and
+      (
+        e.getUnspecifiedType() instanceof PointerType or
+        e.getUnspecifiedType() instanceof ReferenceType or
+        e.getUnspecifiedType() instanceof ArrayType
+      ) and
+      not e.getType().isDeeplyConstBelow() and
+      not e.isConstant()
+    )
+    or
+    // or be a non-const member function of an object
+    fc.getTarget() instanceof MemberFunction and
+    not fc.getTarget() instanceof ConstMemberFunction and
+    not fc.getTarget().isStatic()
   )
 }
 
