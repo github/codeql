@@ -789,3 +789,72 @@ private class ApacheToStringBuilderModel extends SummaryModelCsv {
       ]
   }
 }
+
+/**
+ * Value-propagating models for `Pair`, `ImmutablePair` and `MutablePair`.
+ */
+private class ApachePairModel extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "org.apache.commons.lang3.tuple;Pair;false;getKey;;;Field[org.apache.commons.lang3.tuple.ImmutablePair.left] of Argument[-1];ReturnValue;value",
+        "org.apache.commons.lang3.tuple;Pair;false;getValue;;;Field[org.apache.commons.lang3.tuple.ImmutablePair.right] of Argument[-1];ReturnValue;value",
+        "org.apache.commons.lang3.tuple;Pair;false;getKey;;;Field[org.apache.commons.lang3.tuple.MutablePair.left] of Argument[-1];ReturnValue;value",
+        "org.apache.commons.lang3.tuple;Pair;false;getValue;;;Field[org.apache.commons.lang3.tuple.MutablePair.right] of Argument[-1];ReturnValue;value",
+        "org.apache.commons.lang3.tuple;Pair;false;of;(java.lang.Object,java.lang.Object);;Argument[0];Field[org.apache.commons.lang3.tuple.ImmutablePair.left] of ReturnValue;value",
+        "org.apache.commons.lang3.tuple;Pair;false;of;(java.lang.Object,java.lang.Object);;Argument[1];Field[org.apache.commons.lang3.tuple.ImmutablePair.right] of ReturnValue;value",
+        "org.apache.commons.lang3.tuple;ImmutablePair;false;ImmutablePair;(java.lang.Object,java.lang.Object);;Argument[0];Field[org.apache.commons.lang3.tuple.ImmutablePair.left] of Argument[-1];value",
+        "org.apache.commons.lang3.tuple;ImmutablePair;false;ImmutablePair;(java.lang.Object,java.lang.Object);;Argument[1];Field[org.apache.commons.lang3.tuple.ImmutablePair.right] of Argument[-1];value",
+        "org.apache.commons.lang3.tuple;ImmutablePair;false;getLeft;;;Field[org.apache.commons.lang3.tuple.ImmutablePair.left] of Argument[-1];ReturnValue;value",
+        "org.apache.commons.lang3.tuple;ImmutablePair;false;getRight;;;Field[org.apache.commons.lang3.tuple.ImmutablePair.right] of Argument[-1];ReturnValue;value",
+        "org.apache.commons.lang3.tuple;ImmutablePair;false;left;;;Argument[0];Field[org.apache.commons.lang3.tuple.ImmutablePair.left] of ReturnValue;value",
+        "org.apache.commons.lang3.tuple;ImmutablePair;false;right;;;Argument[0];Field[org.apache.commons.lang3.tuple.ImmutablePair.right] of ReturnValue;value",
+        "org.apache.commons.lang3.tuple;ImmutablePair;false;of;(java.lang.Object,java.lang.Object);;Argument[0];Field[org.apache.commons.lang3.tuple.ImmutablePair.left] of ReturnValue;value",
+        "org.apache.commons.lang3.tuple;ImmutablePair;false;of;(java.lang.Object,java.lang.Object);;Argument[1];Field[org.apache.commons.lang3.tuple.ImmutablePair.right] of ReturnValue;value",
+        "org.apache.commons.lang3.tuple;MutablePair;false;MutablePair;(java.lang.Object,java.lang.Object);;Argument[0];Field[org.apache.commons.lang3.tuple.MutablePair.left] of Argument[-1];value",
+        "org.apache.commons.lang3.tuple;MutablePair;false;MutablePair;(java.lang.Object,java.lang.Object);;Argument[1];Field[org.apache.commons.lang3.tuple.MutablePair.right] of Argument[-1];value",
+        "org.apache.commons.lang3.tuple;MutablePair;false;getLeft;;;Field[org.apache.commons.lang3.tuple.MutablePair.left] of Argument[-1];ReturnValue;value",
+        "org.apache.commons.lang3.tuple;MutablePair;false;getRight;;;Field[org.apache.commons.lang3.tuple.MutablePair.right] of Argument[-1];ReturnValue;value",
+        "org.apache.commons.lang3.tuple;MutablePair;false;setLeft;;;Argument[0];Field[org.apache.commons.lang3.tuple.MutablePair.left] of Argument[-1];value",
+        "org.apache.commons.lang3.tuple;MutablePair;false;setRight;;;Argument[0];Field[org.apache.commons.lang3.tuple.MutablePair.right] of Argument[-1];value",
+        "org.apache.commons.lang3.tuple;MutablePair;false;setValue;;;Argument[0];Field[org.apache.commons.lang3.tuple.MutablePair.right] of Argument[-1];value",
+        "org.apache.commons.lang3.tuple;MutablePair;false;of;(java.lang.Object,java.lang.Object);;Argument[0];Field[org.apache.commons.lang3.tuple.MutablePair.left] of ReturnValue;value",
+        "org.apache.commons.lang3.tuple;MutablePair;false;of;(java.lang.Object,java.lang.Object);;Argument[1];Field[org.apache.commons.lang3.tuple.MutablePair.right] of ReturnValue;value"
+      ]
+  }
+}
+
+/**
+ * Value-propagating models for `Triple`, `ImmutableTriple` and `MutableTriple`.
+ */
+private class ApacheTripleModel extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "org.apache.commons.lang3.tuple;Triple;false;of;(java.lang.Object,java.lang.Object,java.lang.Object);;Argument[0];Field[org.apache.commons.lang3.tuple.ImmutableTriple.left] of ReturnValue;value",
+        "org.apache.commons.lang3.tuple;Triple;false;of;(java.lang.Object,java.lang.Object,java.lang.Object);;Argument[1];Field[org.apache.commons.lang3.tuple.ImmutableTriple.middle] of ReturnValue;value",
+        "org.apache.commons.lang3.tuple;Triple;false;of;(java.lang.Object,java.lang.Object,java.lang.Object);;Argument[2];Field[org.apache.commons.lang3.tuple.ImmutableTriple.right] of ReturnValue;value",
+        "org.apache.commons.lang3.tuple;ImmutableTriple;false;ImmutableTriple;(java.lang.Object,java.lang.Object,java.lang.Object);;Argument[0];Field[org.apache.commons.lang3.tuple.ImmutableTriple.left] of Argument[-1];value",
+        "org.apache.commons.lang3.tuple;ImmutableTriple;false;ImmutableTriple;(java.lang.Object,java.lang.Object,java.lang.Object);;Argument[1];Field[org.apache.commons.lang3.tuple.ImmutableTriple.middle] of Argument[-1];value",
+        "org.apache.commons.lang3.tuple;ImmutableTriple;false;ImmutableTriple;(java.lang.Object,java.lang.Object,java.lang.Object);;Argument[2];Field[org.apache.commons.lang3.tuple.ImmutableTriple.right] of Argument[-1];value",
+        "org.apache.commons.lang3.tuple;ImmutableTriple;false;getLeft;;;Field[org.apache.commons.lang3.tuple.ImmutableTriple.left] of Argument[-1];ReturnValue;value",
+        "org.apache.commons.lang3.tuple;ImmutableTriple;false;getMiddle;;;Field[org.apache.commons.lang3.tuple.ImmutableTriple.middle] of Argument[-1];ReturnValue;value",
+        "org.apache.commons.lang3.tuple;ImmutableTriple;false;getRight;;;Field[org.apache.commons.lang3.tuple.ImmutableTriple.right] of Argument[-1];ReturnValue;value",
+        "org.apache.commons.lang3.tuple;ImmutableTriple;false;of;(java.lang.Object,java.lang.Object,java.lang.Object);;Argument[0];Field[org.apache.commons.lang3.tuple.ImmutableTriple.left] of ReturnValue;value",
+        "org.apache.commons.lang3.tuple;ImmutableTriple;false;of;(java.lang.Object,java.lang.Object,java.lang.Object);;Argument[1];Field[org.apache.commons.lang3.tuple.ImmutableTriple.middle] of ReturnValue;value",
+        "org.apache.commons.lang3.tuple;ImmutableTriple;false;of;(java.lang.Object,java.lang.Object,java.lang.Object);;Argument[2];Field[org.apache.commons.lang3.tuple.ImmutableTriple.right] of ReturnValue;value",
+        "org.apache.commons.lang3.tuple;MutableTriple;false;MutableTriple;(java.lang.Object,java.lang.Object,java.lang.Object);;Argument[0];Field[org.apache.commons.lang3.tuple.MutableTriple.left] of Argument[-1];value",
+        "org.apache.commons.lang3.tuple;MutableTriple;false;MutableTriple;(java.lang.Object,java.lang.Object,java.lang.Object);;Argument[1];Field[org.apache.commons.lang3.tuple.MutableTriple.middle] of Argument[-1];value",
+        "org.apache.commons.lang3.tuple;MutableTriple;false;MutableTriple;(java.lang.Object,java.lang.Object,java.lang.Object);;Argument[2];Field[org.apache.commons.lang3.tuple.MutableTriple.right] of Argument[-1];value",
+        "org.apache.commons.lang3.tuple;MutableTriple;false;getLeft;;;Field[org.apache.commons.lang3.tuple.MutableTriple.left] of Argument[-1];ReturnValue;value",
+        "org.apache.commons.lang3.tuple;MutableTriple;false;getMiddle;;;Field[org.apache.commons.lang3.tuple.MutableTriple.middle] of Argument[-1];ReturnValue;value",
+        "org.apache.commons.lang3.tuple;MutableTriple;false;getRight;;;Field[org.apache.commons.lang3.tuple.MutableTriple.right] of Argument[-1];ReturnValue;value",
+        "org.apache.commons.lang3.tuple;MutableTriple;false;setLeft;;;Argument[0];Field[org.apache.commons.lang3.tuple.MutableTriple.left] of Argument[-1];value",
+        "org.apache.commons.lang3.tuple;MutableTriple;false;setMiddle;;;Argument[0];Field[org.apache.commons.lang3.tuple.MutableTriple.middle] of Argument[-1];value",
+        "org.apache.commons.lang3.tuple;MutableTriple;false;setRight;;;Argument[0];Field[org.apache.commons.lang3.tuple.MutableTriple.right] of Argument[-1];value",
+        "org.apache.commons.lang3.tuple;MutableTriple;false;of;(java.lang.Object,java.lang.Object,java.lang.Object);;Argument[0];Field[org.apache.commons.lang3.tuple.MutableTriple.left] of ReturnValue;value",
+        "org.apache.commons.lang3.tuple;MutableTriple;false;of;(java.lang.Object,java.lang.Object,java.lang.Object);;Argument[1];Field[org.apache.commons.lang3.tuple.MutableTriple.middle] of ReturnValue;value",
+        "org.apache.commons.lang3.tuple;MutableTriple;false;of;(java.lang.Object,java.lang.Object,java.lang.Object);;Argument[2];Field[org.apache.commons.lang3.tuple.MutableTriple.right] of ReturnValue;value"
+      ]
+  }
+}

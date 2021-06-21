@@ -3,7 +3,7 @@
  * @description Disabling webSecurity can cause critical security vulnerabilities.
  * @kind problem
  * @problem.severity error
- * @security-severity 2.9
+ * @security-severity 6.1
  * @precision very-high
  * @tags security
  *       frameworks/electron

@@ -4,7 +4,7 @@
  *              user is vulnerable to insertion of malicious code by the user.
  * @kind path-problem
  * @problem.severity error
- * @security-severity 5.9
+ * @security-severity 9.8
  * @precision medium
  * @id cs/xml/stored-xpath-injection
  * @tags security

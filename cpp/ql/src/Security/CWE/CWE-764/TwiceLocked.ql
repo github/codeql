@@ -5,7 +5,7 @@
  * @kind problem
  * @id cpp/twice-locked
  * @problem.severity error
- * @security-severity 6.9
+ * @security-severity 5.0
  * @precision low
  * @tags security
  *       external/cwe/cwe-764

@@ -49,3 +49,12 @@
 | Modifiers.cs:62:14:62:15 | M1 | file://:0:0:0:0 | public |
 | Modifiers.cs:63:14:63:15 | M2 | file://:0:0:0:0 | public |
 | Modifiers.cs:63:14:63:15 | M2 | file://:0:0:0:0 | virtual |
+| Modifiers.cs:66:24:66:25 | I2 | file://:0:0:0:0 | internal |
+| Modifiers.cs:68:14:68:15 | M1 | file://:0:0:0:0 | public |
+| Modifiers.cs:68:14:68:15 | M1 | file://:0:0:0:0 | virtual |
+| Modifiers.cs:71:18:71:19 | C2 | file://:0:0:0:0 | public |
+| Modifiers.cs:73:17:73:18 | M1 | file://:0:0:0:0 | private |
+| Modifiers.cs:75:32:75:33 | M2 | file://:0:0:0:0 | private |
+| Modifiers.cs:75:32:75:33 | M2 | file://:0:0:0:0 | protected |
+| Modifiers.cs:76:33:76:34 | M3 | file://:0:0:0:0 | internal |
+| Modifiers.cs:76:33:76:34 | M3 | file://:0:0:0:0 | protected |

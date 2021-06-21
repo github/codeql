@@ -3,7 +3,7 @@
  * @description Finds places where header checking is disabled.
  * @kind problem
  * @problem.severity warning
- * @security-severity 3.6
+ * @security-severity 6.1
  * @precision high
  * @id cs/web/disabled-header-checking
  * @tags security

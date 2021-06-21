@@ -5,7 +5,7 @@
  *              compromise security or interfere with the EJB container's operation.
  * @kind problem
  * @problem.severity error
- * @security-severity 4.9
+ * @security-severity 5.8
  * @precision low
  * @id java/ejb/socket-or-stream-handler-factory
  * @tags reliability
