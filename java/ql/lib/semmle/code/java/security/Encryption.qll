@@ -34,6 +34,19 @@ class SSLSession extends RefType {
   SSLSession() { this.hasQualifiedName("javax.net.ssl", "SSLSession") }
 }
 
+class SSLEngine extends RefType {
+  SSLEngine() { this.hasQualifiedName("javax.net.ssl", "SSLEngine") }
+}
+
+class SSLSocket extends RefType {
+  SSLSocket() { this.hasQualifiedName("javax.net.ssl", "SSLSocket") }
+}
+
+/** The `javax.net.ssl.SSLParameters` class. */
+class SSLParameters extends RefType {
+  SSLParameters() { this.hasQualifiedName("javax.net.ssl", "SSLParameters") }
+}
+
 class HostnameVerifier extends RefType {
   HostnameVerifier() { this.hasQualifiedName("javax.net.ssl", "HostnameVerifier") }
 }
@@ -79,6 +92,14 @@ class GetSocketFactory extends Method {
   }
 }
 
+/** The `createSSLEngine` method of the class `javax.net.ssl.SSLContext` */
+class CreateSslEngineMethod extends Method {
+  CreateSslEngineMethod() {
+    this.hasName("createSSLEngine") and
+    this.getDeclaringType() instanceof SSLContext
+  }
+}
+
 class SetConnectionFactoryMethod extends Method {
   SetConnectionFactoryMethod() {
     this.hasName("setSSLSocketFactory") and
@@ -98,6 +119,14 @@ class SetDefaultHostnameVerifierMethod extends Method {
   SetDefaultHostnameVerifierMethod() {
     this.hasName("setDefaultHostnameVerifier") and
     this.getDeclaringType().getASupertype*() instanceof HttpsURLConnection
+  }
+}
+
+/** The `getSession` method of the class `javax.net.ssl.SSLSession`.select */
+class GetSslSessionMethod extends Method {
+  GetSslSessionMethod() {
+    hasName("getSession") and
+    getDeclaringType().getASupertype*() instanceof SSLSession
   }
 }
 
@@ -168,7 +197,7 @@ string getInsecureAlgorithmRegex() {
 string getASecureAlgorithmName() {
   result =
     [
-      "RSA", "SHA256", "SHA512", "CCM", "GCM", "AES(?![^a-zA-Z](ECB|CBC/PKCS[57]Padding))",
+      "RSA", "SHA256", "SHA512", "CCM", "GCM", "AES([^a-zA-Z](?!ECB|CBC/PKCS[57]Padding)).*",
       "Blowfish", "ECIES"
     ]
 }
