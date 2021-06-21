@@ -20,3 +20,22 @@ function main() {
     import dayjs from 'dayjs';
     document.body.innerHTML = `Time is ${dayjs(time).format(taint)}`; // NOT OK
 }
+
+import LuxonAdapter from "@date-io/luxon";
+import DateFnsAdapter from "@date-io/date-fns";
+import MomentAdapter from "@date-io/moment";
+import DayJSAdapter from "@date-io/dayjs"
+
+function dateio() {
+    let taint = decodeURIComponent(window.location.hash.substring(1));
+
+    const dateFns = new DateFnsAdapter();
+    const luxon = new LuxonAdapter();
+    const moment = new MomentAdapter();
+    const dayjs = new DayJSAdapter();
+
+    document.body.innerHTML = `Time is ${dateFns.formatByString(new Date(), taint)}`; // NOT OK
+    document.body.innerHTML = `Time is ${luxon.formatByString(luxon.date(), taint)}`; // NOT OK
+    document.body.innerHTML = `Time is ${moment.formatByString(moment.date(), taint)}`; // NOT OK
+    document.body.innerHTML = `Time is ${dayjs.formatByString(dayjs.date(), taint)}`; // NOT OK
+}

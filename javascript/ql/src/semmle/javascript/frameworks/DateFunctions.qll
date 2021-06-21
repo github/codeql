@@ -53,6 +53,28 @@ private module DateFns {
   }
 }
 
+/**
+ * Provides classes and predicates modelling the `@date-io` libraries.
+ */
+private module DateIO {
+  private class FormatStep extends TaintTracking::SharedTaintStep {
+    override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(API::CallNode formatCall |
+        formatCall =
+          API::moduleImport("@date-io/" +
+              ["date-fns", "moment", "luxon", "dayjs", "date-fns-jalali", "jalaali", "hijri"])
+              .getInstance()
+              // the `format` function only select between a predefined list of formats, but the `formatByString` function formats using any string.
+              .getMember(["formatByString", "formatNumber"])
+              .getACall()
+      |
+        pred = formatCall.getArgument(1) and
+        succ = formatCall
+      )
+    }
+  }
+}
+
 private module Moment {
   /** Gets a reference to a `moment` object. */
   private API::Node moment() {
