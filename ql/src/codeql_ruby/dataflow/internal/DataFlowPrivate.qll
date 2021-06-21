@@ -117,7 +117,14 @@ private module Cached {
     TNormalParameterNode(Parameter p) { not p instanceof BlockParameter } or
     TSelfParameterNode(MethodBase m) or
     TBlockParameterNode(MethodBase m) or
-    TExprPostUpdateNode(CfgNodes::ExprCfgNode n) { n.getNode() instanceof Argument }
+    TExprPostUpdateNode(CfgNodes::ExprCfgNode n) {
+      exists(AstNode node | node = n.getNode() |
+        node instanceof Argument and
+        not node instanceof BlockArgument
+        or
+        n = any(CfgNodes::ExprNodes::CallCfgNode call).getReceiver()
+      )
+    }
 
   class TParameterNode = TNormalParameterNode or TBlockParameterNode or TSelfParameterNode;
 
@@ -137,7 +144,7 @@ private module Cached {
     nodeTo.(ParameterNode).getParameter().(KeywordParameter).getDefaultValue() =
       nodeFrom.asExpr().getExpr()
     or
-    nodeFrom.(SelfParameterNode).getMethod() = nodeTo.asExpr().getExpr().getEnclosingMethod() and
+    nodeFrom.(SelfParameterNode).getMethod() = nodeTo.asExpr().getExpr().getEnclosingCallable() and
     nodeTo.asExpr().getExpr() instanceof Self
     or
     nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::AssignExprCfgNode).getRhs()
@@ -441,6 +448,13 @@ predicate jumpStep(Node pred, Node succ) {
   or
   SsaImpl::captureFlowOut(pred.(SsaDefinitionNode).getDefinition(),
     succ.(SsaDefinitionNode).getDefinition())
+  or
+  exists(Self s, Method m |
+    s = succ.asExpr().getExpr() and
+    pred.(SelfParameterNode).getMethod() = m and
+    m = s.getEnclosingMethod() and
+    m != s.getEnclosingCallable()
+  )
 }
 
 predicate storeStep(Node node1, Content c, Node node2) { none() }
@@ -532,7 +546,7 @@ class Unit extends TUnit {
  *
  * This predicate is only used for consistency checks.
  */
-predicate isImmutableOrUnobservable(Node n) { none() }
+predicate isImmutableOrUnobservable(Node n) { n instanceof BlockArgumentNode }
 
 /**
  * Holds if the node `n` is unreachable when the call context is `call`.
