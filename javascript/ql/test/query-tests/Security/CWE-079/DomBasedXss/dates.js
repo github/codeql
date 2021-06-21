@@ -50,3 +50,13 @@ function luxon() {
     document.body.innerHTML = `Time is ${DateTime.fromISO("2020-01-01").startOf('day').toFormat(taint)}`; // NOT OK
 }
 
+function dateio2() {
+    let taint = decodeURIComponent(window.location.hash.substring(1));
+
+    const moment = new MomentAdapter();
+    document.body.innerHTML = `Time is ${moment.addDays(moment.date("2020-06-21"), 1).format(taint)}`; // NOT OK
+    const luxon = new LuxonAdapter();
+    document.body.innerHTML = `Time is ${luxon.endOfDay(luxon.date()).toFormat(taint)}`; // NOT OK
+    const dayjs = new DayJSAdapter();
+    document.body.innerHTML = `Time is ${dayjs.setHours(dayjs.date(), 4).format(taint)}`; // NOT OK
+}

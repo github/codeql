@@ -73,6 +73,35 @@ private module DateIO {
       )
     }
   }
+
+  /** Gets a method name from an `@date-io` adapter that returns an instance of the adapted library. */
+  private string getAnAdapterMethodName() {
+    result =
+      [
+        "addSeconds", "addMinutes", "addHours", "addDays", "addWeeks", "addMonths", "endOfDay",
+        "setHours", "setMinutes", "setSeconds", "startOfMonth", "endOfMonth", "startOfWeek",
+        "endOfWeek", "setYear", "date", "parse", "setMonth", "getNextMonth", "getPreviousMonth"
+      ]
+  }
+
+  /**
+   * Gets an instance of `library` that has been created by an `@date-io` adapter.
+   * Library is one of: "moment", "luxon", or "dayjs".
+   */
+  API::Node getAnAdaptedInstance(string library) {
+    exists(API::Node adapter |
+      library = "moment" and
+      adapter = API::moduleImport("@date-io/moment")
+      or
+      library = "luxon" and
+      adapter = API::moduleImport("@date-io/luxon")
+      or
+      library = "dayjs" and
+      adapter = API::moduleImport("@date-io/dayjs")
+    |
+      result = adapter.getInstance().getMember(getAnAdapterMethodName()).getReturn()
+    )
+  }
 }
 
 /**
@@ -99,6 +128,8 @@ private module Luxon {
       result = luxonDateTime().getAMember()
       or
       result = luxonDateTime().getReturn()
+      or
+      result = DateIO::getAnAdaptedInstance("luxon")
     )
   }
 
@@ -125,6 +156,8 @@ private module Moment {
     result = moment().getReturn()
     or
     result = moment().getAMember()
+    or
+    result = DateIO::getAnAdaptedInstance(["moment", "dayjs"])
   }
 
   /**
