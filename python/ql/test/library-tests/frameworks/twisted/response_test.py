@@ -45,7 +45,7 @@ class Redirect(Resource):
 
 
 class NonHttpBodyOutput(Resource):
-    """Examples of provides values in response that is not in the body
+    """Examples of providing values in response that is not in the body
     """
     def render_GET(self, request: Request): # $ requestHandler
         request.responseHeaders.addRawHeader("key", "value")

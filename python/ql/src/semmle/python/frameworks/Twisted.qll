@@ -79,7 +79,7 @@ private module Twisted {
 
   /**
    * A "render" method on a `twisted.web.resource.Resource` subclass, whose return value
-   * is written as the body fo the HTTP response.
+   * is written as the body of the HTTP response.
    */
   class TwistedResourceRenderMethod extends TwistedResourceRequestHandler {
     TwistedResourceRenderMethod() {

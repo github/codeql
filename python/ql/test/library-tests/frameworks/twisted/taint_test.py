@@ -57,7 +57,7 @@ class MyTaintTest(Resource):
             request.getRequestHostname(), # $ tainted
         )
 
-        # technically user-controlled, but unlike to lead to vulnerabilities.
+        # technically user-controlled, but unlikely to lead to vulnerabilities.
         ensure_not_tainted(
             request.method,
         )
