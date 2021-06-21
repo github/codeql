@@ -41,36 +41,28 @@ private module Twisted {
       // TODO: This doesn't handle attribute assignment. Should be OK, but analysis is not as complete as with
       // points-to and `.lookup`, which would handle `post = my_post_handler` inside class def
       result = this.getAMethod() and
-      resourceMethodRequestParamIndex(result.getName(), _)
+      exists(getRequestParamIndex(result.getName()))
     }
   }
 
   /**
-   * Holds if the request parameter is supposed to be at index `requestParamIndex` for
-   * the method named `methodName` in `twisted.web.resource.Resource`.
+   * Gets the index the request parameter is supposed to be at for the method named
+   * `methodName` in a `twisted.web.resource.Resource` subclass.
    */
   bindingset[methodName]
-  private predicate resourceMethodRequestParamIndex(string methodName, int requestParamIndex) {
-    methodName.matches("render_%") and requestParamIndex = 1
+  private int getRequestParamIndex(string methodName) {
+    methodName.matches("render_%") and result = 1
     or
-    methodName in ["render", "listDynamicEntities", "getChildForRequest"] and requestParamIndex = 1
+    methodName in ["render", "listDynamicEntities", "getChildForRequest"] and result = 1
     or
-    methodName = ["getDynamicEntity", "getChild", "getChildWithDefault"] and requestParamIndex = 2
+    methodName = ["getDynamicEntity", "getChild", "getChildWithDefault"] and result = 2
   }
 
   /** A method that handles incoming requests, on a `twisted.web.resource.Resource` subclass. */
   class TwistedResourceRequestHandler extends HTTP::Server::RequestHandler::Range {
-    TwistedResourceRequestHandler() {
-      any(TwistedResourceSubclass cls).getAMethod() = this and
-      resourceMethodRequestParamIndex(this.getName(), _)
-    }
+    TwistedResourceRequestHandler() { this = any(TwistedResourceSubclass cls).getARequestHandler() }
 
-    Parameter getRequestParameter() {
-      exists(int i |
-        resourceMethodRequestParamIndex(this.getName(), i) and
-        result = this.getArg(i)
-      )
-    }
+    Parameter getRequestParameter() { result = this.getArg(getRequestParamIndex(this.getName())) }
 
     override Parameter getARoutedParameter() { none() }
 
