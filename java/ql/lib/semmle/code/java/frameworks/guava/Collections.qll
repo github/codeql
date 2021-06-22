@@ -28,7 +28,7 @@ private class GuavaCollectCsv extends SummaryModelCsv {
         "com.google.common.collect;Multimap;true;get;(Object);;MapValue of Argument[-1];Element of ReturnValue;value",
         "com.google.common.collect;Multimap;true;keys;();;MapKey of Argument[-1];Element of ReturnValue;value",
         "com.google.common.collect;Multimap;true;keySet;();;MapKey of Argument[-1];Element of ReturnValue;value",
-        "com.google.common.collect;Multimap;true;values();;MapValue of Argument[-1];Element of ReturnValue;value",
+        "com.google.common.collect;Multimap;true;values;();;MapValue of Argument[-1];Element of ReturnValue;value",
         "com.google.common.collect;Multimap;true;put;(Object,Object);;Argument[0];MapKey of Argument[-1];value",
         "com.google.common.collect;Multimap;true;put;(Object,Object);;Argument[1];MapValue of Argument[-1];value",
         "com.google.common.collect;Multimap;true;putAll;(Object,Iterable);;Argument[0];MapKey of Argument[-1];value",
@@ -36,12 +36,37 @@ private class GuavaCollectCsv extends SummaryModelCsv {
         "com.google.common.collect;Multimap;true;putAll;(Multimap);;MapKey of Argument[0];MapKey of Argument[-1];value",
         "com.google.common.collect;Multimap;true;putAll;(Multimap);;MapValue of Argument[0];MapValue of Argument[-1];value",
         "com.google.common.collect;Multimap;true;removeAll;(Object);;MapValue of Argument[-1];MapValue of ReturnValue;value",
-        "com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;MapValue of Argument[-1];MapValue of ReturnValue;value",
-        "com.google.common.collect;Multimap;true;replaceValues(Object,Iterable);;Argument[0];MapKey of Argument[-1];value",
-        "com.google.common.collect;Multimap;true;replaceValues(Object,Iterable);;Element of Argument[0];MapValue of Argument[-1];value",
+        "com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;MapValue of Argument[-1];Element of ReturnValue;value",
+        "com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;Argument[0];MapKey of Argument[-1];value",
+        "com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;Element of Argument[1];MapValue of Argument[-1];value",
         "com.google.common.collect;ImmutableMultimap;true;inverse;();;MapKey of Argument[-1];MapValue of ReturnValue;value",
         "com.google.common.collect;ImmutableMultimap;true;inverse;();;MapValue of Argument[-1];MapKey of ReturnValue;value",
-        // Tables (TODO)
+        // Tables
+        "com.google.common.collect;Table<>$Cell;true;getRowKey;();;SyntheticField[com.google.common.collect.Table.rowKey] of MapKey of Argument[-1];ReturnValue;value",
+        "com.google.common.collect;Table<>$Cell;true;getColumnKey;();;SyntheticField[com.google.common.collect.Table.columnKey] of MapKey of Argument[-1];ReturnValue;value",
+        "com.google.common.collect;Table<>$Cell;true;getValue;();;MapValue of Argument[-1];ReturnValue;value",
+        "com.google.common.collect;Table;true;cellSet;();;MapKey of Argument[-1];MapKey of Element of ReturnValue;value",
+        "com.google.common.collect;Table;true;cellSet;();;MapValue of Argument[-1];MapValue of Element of ReturnValue;value",
+        "com.google.common.collect;Table;true;row;(Object);;SyntheticField[com.google.common.collect.Table.columnKey] of MapKey of Argument[-1];MapKey of ReturnValue;value",
+        "com.google.common.collect;Table;true;row;(Object);;MapValue of Argument[-1];MapValue of ReturnValue;value",
+        "com.google.common.collect;Table;true;rowKeySet;();;SyntheticField[com.google.common.collect.Table.rowKey] of MapKey of Argument[-1];Element of ReturnValue;value",
+        "com.google.common.collect;Table;true;rowMap;();;SyntheticField[com.google.common.collect.Table.rowKey] of MapKey of Argument[-1];MapKey of ReturnValue;value",
+        "com.google.common.collect;Table;true;rowMap;();;SyntheticField[com.google.common.collect.Table.columnKey] of MapKey of Argument[-1];MapKey of MapValue of ReturnValue;value",
+        "com.google.common.collect;Table;true;rowMap;();;MapValue of Argument[-1];MapValue of MapValue of ReturnValue;value",
+        "com.google.common.collect;Table;true;column;(Object);;SyntheticField[com.google.common.collect.Table.rowKey] of MapKey of Argument[-1];MapKey of ReturnValue;value",
+        "com.google.common.collect;Table;true;column;(Object);;MapValue of Argument[-1];MapValue of ReturnValue;value",
+        "com.google.common.collect;Table;true;columnKeySet;();;SyntheticField[com.google.common.collect.Table.columnKey] of MapKey of Argument[-1];Element of ReturnValue;value",
+        "com.google.common.collect;Table;true;columnMap;();;SyntheticField[com.google.common.collect.Table.columnKey] of MapKey of Argument[-1];MapKey of ReturnValue;value",
+        "com.google.common.collect;Table;true;columnMap;();;SyntheticField[com.google.common.collect.Table.rowKey] of MapKey of Argument[-1];MapKey of MapValue of ReturnValue;value",
+        "com.google.common.collect;Table;true;columnMap;();;MapValue of Argument[-1];MapValue of MapValue of ReturnValue;value",
+        "com.google.common.collect;Table;true;values;();;MapValue of Argument[-1];Element of ReturnValue;value",
+        "com.google.common.collect;Table;true;get;(Object,Object);;MapValue of Argument[-1];ReturnValue;value",
+        "com.google.common.collect;Table;true;remove;(Object,Object);;MapValue of Argument[-1];ReturnValue;value",
+        "com.google.common.collect;Table;true;put;(Object,Object,Object);;Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of MapKey of Argument[-1];value",
+        "com.google.common.collect;Table;true;put;(Object,Object,Object);;Argument[1];SyntheticField[com.google.common.collect.Table.columnKey] of MapKey of Argument[-1];value",
+        "com.google.common.collect;Table;true;put;(Object,Object,Object);;Argument[2];MapValue of Argument[-1];value",
+        "com.google.common.collect;Table;true;putAll;(Table);;MapKey of Argument[0];MapKey of Argument[-1];value",
+        "com.google.common.collect;Table;true;putAll;(Table);;MapValue of Argument[0];MapValue of Argument[-1];value",
         // Misc collections and utilities
         "com.google.common.collect;ImmutableCollection;true;asList;();;Element of Argument[-1];Element of ReturnValue;value",
         "com.google.common.collect;ImmutableList;true;reverse;();;Element of Argument[-1];Element of ReturnValue;value",
@@ -94,6 +119,21 @@ private class GuavaCollectCsv extends SummaryModelCsv {
         "com.google.common.collect;ImmutableMultimap<>$Builder;true;putAll;(Object,Iterable);;Element of Argument[1];MapValue of Argument[-1];value",
         "com.google.common.collect;ImmutableMultimap<>$Builder;true;putAll;(Object,Iterable);;Argument[0];MapKey of Argument[-1];value",
         "com.google.common.collect;ImmutableMultimap<>$Builder;true;putAll;(Object,Object[]);;ArrayElement of Argument[1];MapValue of Argument[-1];value",
+        "com.google.common.collect;ImmutableTable<>$Builder;true;build;();;SyntheticField[com.google.common.collect.Table.rowKey] of MapKey of Argument[-1];SyntheticField[com.google.common.collect.Table.rowKey] of MapKey of ReturnValue;value",
+        "com.google.common.collect;ImmutableTable<>$Builder;true;build;();;SyntheticField[com.google.common.collect.Table.columnKey] of MapKey of Argument[-1];SyntheticField[com.google.common.collect.Table.columnKey] of MapKey of ReturnValue;value",
+        "com.google.common.collect;ImmutableTable<>$Builder;true;build;();;MapValue of Argument[-1];MapValue of ReturnValue;value",
+        "com.google.common.collect;ImmutableTable<>$Builder;true;orderRowsBy;(Comparator);;Argument[-1];ReturnValue;value",
+        "com.google.common.collect;ImmutableTable<>$Builder;true;orderColumnsBy;(Comparator);;Argument[-1];ReturnValue;value",
+        "com.google.common.collect;ImmutableTable<>$Builder;true;put;(Object,Object,Object);;Argument[-1];ReturnValue;value",
+        "com.google.common.collect;ImmutableTable<>$Builder;true;put;(Cell);;Argument[-1];ReturnValue;value",
+        "com.google.common.collect;ImmutableTable<>$Builder;true;putAll;(Table);;Argument[-1];ReturnValue;value",
+        "com.google.common.collect;ImmutableTable<>$Builder;true;put;(Object,Object,Object);;Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of MapKey of Argument[-1];value",
+        "com.google.common.collect;ImmutableTable<>$Builder;true;put;(Object,Object,Object);;Argument[1];SyntheticField[com.google.common.collect.Table.columnKey] of MapKey of Argument[-1];value",
+        "com.google.common.collect;ImmutableTable<>$Builder;true;put;(Object,Object,Object);;Argument[2];MapValue of Argument[-1];value",
+        "com.google.common.collect;ImmutableTable<>$Builder;true;put;(Cell);;MapKey of Argument[0];MapKey of Argument[-1];value",
+        "com.google.common.collect;ImmutableTable<>$Builder;true;put;(Cell);;MapValue of Argument[0];MapValue of Argument[-1];value",
+        "com.google.common.collect;ImmutableTable<>$Builder;true;putAll;(Table);;MapKey of Argument[0];MapKey of Argument[-1];value",
+        "com.google.common.collect;ImmutableTable<>$Builder;true;putAll;(Table);;MapValue of Argument[0];MapValue of Argument[-1];value",
         // `of` methods
         "com.google.common.collect;ImmutableList;true;of;;;Argument[0..11];Element of ReturnValue;value",
         "com.google.common.collect;ImmutableList;true;of;;;ArrayElement of Argument[12];Element of ReturnValue;value",
@@ -125,6 +165,9 @@ private class GuavaCollectCsv extends SummaryModelCsv {
         "com.google.common.collect;ImmutableMultimap;true;of;;;Argument[9];MapValue of ReturnValue;value",
         "com.google.common.collect;ImmutableClassToInstanceMap;true;of;(Class,Object);;Argument[0];MapKey of ReturnValue;value",
         "com.google.common.collect;ImmutableClassToInstanceMap;true;of;(Class,Object);;Argument[1];MapValue of ReturnValue;value",
+        "com.google.common.collect;ImmutableTable;true;of;(Object,Object,Object);;Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of MapKey of ReturnValue;value",
+        "com.google.common.collect;ImmutableTable;true;of;(Object,Object,Object);;Argument[1];SyntheticField[com.google.common.collect.Table.columnKey] of MapKey of ReturnValue;value",
+        "com.google.common.collect;ImmutableTable;true;of;(Object,Object,Object);;Argument[2];MapValue of ReturnValue;value",
         // `copyOf` methods
         "com.google.common.collect;ImmutableList;true;copyOf;(Object[]);;ArrayElement of Argument[0];Element of ReturnValue;value",
         "com.google.common.collect;ImmutableList;true;copyOf;(Iterable);;Element of Argument[0];Element of ReturnValue;value",
@@ -153,12 +196,16 @@ private class GuavaCollectCsv extends SummaryModelCsv {
         "com.google.common.collect;ImmutableMap;true;copyOf;(Iterable);;MapValue of Element of Argument[0];MapValue of ReturnValue;value",
         "com.google.common.collect;ImmutableSortedMap;true;copyOfSorted;(SortedMap);;MapKey of Argument[0];MapKey of ReturnValue;value",
         "com.google.common.collect;ImmutableSortedMap;true;copyOfSorted;(SortedMap);;MapValue of Argument[0];MapValue of ReturnValue;value",
+        "com.google.common.collect;ImmutableSortedMap;true;copyOf;(Map,Comparator);;MapKey of Argument[0];MapKey of ReturnValue;value",
+        "com.google.common.collect;ImmutableSortedMap;true;copyOf;(Map,Comparator);;MapValue of Argument[0];MapValue of ReturnValue;value",
         "com.google.common.collect;ImmutableMultimap;true;copyOf;(Multimap);;MapKey of Argument[0];MapKey of ReturnValue;value",
         "com.google.common.collect;ImmutableMultimap;true;copyOf;(Multimap);;MapValue of Argument[0];MapValue of ReturnValue;value",
         "com.google.common.collect;ImmutableMultimap;true;copyOf;(Iterable);;MapKey of Element of Argument[0];MapKey of ReturnValue;value",
         "com.google.common.collect;ImmutableMultimap;true;copyOf;(Iterable);;MapValue of Element of Argument[0];MapValue of ReturnValue;value",
         "com.google.common.collect;ImmutableClassToInstanceMap;true;copyOf;(Map);;MapKey of Argument[0];MapKey of ReturnValue;value",
         "com.google.common.collect;ImmutableClassToInstanceMap;true;copyOf;(Map);;MapValue of Argument[0];MapValue of ReturnValue;value",
+        "com.google.common.collect;ImmutableTable;true;copyOf;(Table);;MapKey of Argument[0];MapKey of ReturnValue;value",
+        "com.google.common.collect;ImmutableTable;true;copyOf;(Table);;MapValue of Argument[0];MapValue of ReturnValue;value",
         // `create` methods
         "com.google.common.collect;HashMultiset;true;create;(Iterable);;Element of Argument[0];Element of ReturnValue;value",
         "com.google.common.collect;LinkdHashMultiset;true;create;(Iterable);;Element of Argument[0];Element of ReturnValue;value",
@@ -178,6 +225,12 @@ private class GuavaCollectCsv extends SummaryModelCsv {
         "com.google.common.collect;HashBiMap;true;create;(Map);;MapValue of Argument[0];MapValue of ReturnValue;value",
         "com.google.common.collect;MutableClassToInstanceMap;true;create;(Multimap);;MapKey of Argument[0];MapKey of ReturnValue;value",
         "com.google.common.collect;MutableClassToInstanceMap;true;create;(Multimap);;MapValue of Argument[0];MapValue of ReturnValue;value",
+        "com.google.common.collect;HashBasedTable;true;create;(Table);;MapKey of Argument[0];MapKey of ReturnValue;value",
+        "com.google.common.collect;HashBasedTable;true;create;(Table);;MapValue of Argument[0];MapValue of ReturnValue;value",
+        "com.google.common.collect;TreeBasedTable;true;create;(Table);;MapKey of Argument[0];MapKey of ReturnValue;value",
+        "com.google.common.collect;TreeBasedTable;true;create;(Table);;MapValue of Argument[0];MapValue of ReturnValue;value",
+        "com.google.common.collect;ArrayTable;true;create;(Iterable,Iterable);;Element of Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of MapKey of ReturnValue;value",
+        "com.google.common.collect;ArrayTable;true;create;(Iterable,Iterable);;Element of Argument[1];SyntheticField[com.google.common.collect.Table.columnKey] of MapKey of ReturnValue;value"
         // Utility classes
       ]
   }
@@ -237,6 +290,22 @@ class TableType extends RefType {
     exists(GenericInterface table | table.hasQualifiedName(guavaCollectPackage(), "Table") |
       indirectlyInstantiates(this, table, 2, result)
     )
+  }
+}
+
+private class TableRowField extends SyntheticField {
+  override predicate fieldSpec(RefType owningType, string fieldName, Type fieldType) {
+    owningType.hasQualifiedName(guavaCollectPackage(), "Table") and
+    fieldName = "rowKey" and
+    fieldType instanceof TypeObject
+  }
+}
+
+private class TableColumnField extends SyntheticField {
+  override predicate fieldSpec(RefType owningType, string fieldName, Type fieldType) {
+    owningType.hasQualifiedName(guavaCollectPackage(), "Table") and
+    fieldName = "columnKey" and
+    fieldType instanceof TypeObject
   }
 }
 
