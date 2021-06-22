@@ -28,7 +28,7 @@ abstract class EmailSender extends DataFlow::CallCfgNode {
    * Gets a data flow node holding the subject of the email.
    */
   abstract DataFlow::Node getSubject();
-}\
+}
 
 class FlaskMailEmailSender extends EmailSender {
   FlaskMailEmailSender() {
