@@ -659,3 +659,39 @@ private module DynamicImportSteps {
     }
   }
 }
+
+/**
+ * Provides classes modeling libraries implementing `promisify` functions.
+ * That is, functions that convert callback style functions to functions that return a promise.
+ */
+module Promisify {
+  /**
+   * Gets a call to a `promisifyAll` function.
+   * E.g. `require("bluebird").promisifyAll(...)`.
+   */
+  class PromisifyAllCall extends DataFlow::CallNode {
+    PromisifyAllCall() {
+      this =
+        [
+          DataFlow::moduleMember("bluebird", "promisifyAll"),
+          DataFlow::moduleImport(["util-promisifyall", "pify"])
+        ].getACall()
+    }
+  }
+
+  /**
+   * Gets a call to a `promisify` function.
+   * E.g. `require("util").promisify(...)`.
+   */
+  class PromisifyCall extends DataFlow::CallNode {
+    PromisifyCall() {
+      this = DataFlow::moduleImport(["util", "bluebird"]).getAMemberCall("promisify")
+      or
+      this = DataFlow::moduleImport(["pify", "util.promisify"]).getACall()
+      or
+      this = DataFlow::moduleImport("thenify").getACall()
+      or
+      this = DataFlow::moduleMember("thenify", "withCallback").getACall()
+    }
+  }
+}
