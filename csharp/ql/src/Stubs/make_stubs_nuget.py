@@ -111,7 +111,7 @@ stubsDirName = 'stubs'
 stubsDir = os.path.join(outputDir, stubsDirName)
 os.makedirs(stubsDir)
 
-frameworksDirName = 'frameworks'
+frameworksDirName = '_frameworks'
 frameworksDir = os.path.join(stubsDir, frameworksDirName)
 
 frameworks = set()
