@@ -30,3 +30,12 @@ const server = http.createServer((req, res) => {
         console.error(`[ERROR] Error: "${error}"`); // NOT OK
     }
 });
+
+const ansiColors = require('ansi-colors');
+
+const server2 = http.createServer((req, res) => {
+    let q = url.parse(req.url, true);
+    let username = q.query.username;
+
+    console.info(ansiColors.yellow.underline(username)); // NOT OK
+});

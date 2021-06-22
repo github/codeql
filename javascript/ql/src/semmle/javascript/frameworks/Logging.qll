@@ -201,3 +201,15 @@ private class DebugLoggerCall extends LoggerCall, API::CallNode {
 
   override DataFlow::Node getAMessageComponent() { result = getAnArgument() }
 }
+
+/**
+ * A step through the [`ansi-colors`](https://https://npmjs.org/package/ansi-colors) library.
+ */
+class AnsiColorsStep extends TaintTracking::SharedTaintStep {
+  override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(API::CallNode call | call = API::moduleImport("ansi-colors").getAMember*().getACall() |
+      pred = call.getArgument(0) and
+      succ = call
+    )
+  }
+}

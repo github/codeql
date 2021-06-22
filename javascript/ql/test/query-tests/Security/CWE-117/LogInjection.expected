@@ -22,6 +22,17 @@ nodes
 | logInjectionBad.js:30:23:30:49 | `[ERROR ... rror}"` |
 | logInjectionBad.js:30:23:30:49 | `[ERROR ... rror}"` |
 | logInjectionBad.js:30:42:30:46 | error |
+| logInjectionBad.js:37:9:37:36 | q |
+| logInjectionBad.js:37:13:37:36 | url.par ... , true) |
+| logInjectionBad.js:37:23:37:29 | req.url |
+| logInjectionBad.js:37:23:37:29 | req.url |
+| logInjectionBad.js:38:9:38:35 | username |
+| logInjectionBad.js:38:20:38:20 | q |
+| logInjectionBad.js:38:20:38:26 | q.query |
+| logInjectionBad.js:38:20:38:35 | q.query.username |
+| logInjectionBad.js:40:18:40:54 | ansiCol ... ername) |
+| logInjectionBad.js:40:18:40:54 | ansiCol ... ername) |
+| logInjectionBad.js:40:46:40:53 | username |
 edges
 | logInjectionBad.js:19:9:19:36 | q | logInjectionBad.js:20:20:20:20 | q |
 | logInjectionBad.js:19:13:19:36 | url.par ... , true) | logInjectionBad.js:19:9:19:36 | q |
@@ -45,9 +56,20 @@ edges
 | logInjectionBad.js:29:14:29:18 | error | logInjectionBad.js:30:42:30:46 | error |
 | logInjectionBad.js:30:42:30:46 | error | logInjectionBad.js:30:23:30:49 | `[ERROR ... rror}"` |
 | logInjectionBad.js:30:42:30:46 | error | logInjectionBad.js:30:23:30:49 | `[ERROR ... rror}"` |
+| logInjectionBad.js:37:9:37:36 | q | logInjectionBad.js:38:20:38:20 | q |
+| logInjectionBad.js:37:13:37:36 | url.par ... , true) | logInjectionBad.js:37:9:37:36 | q |
+| logInjectionBad.js:37:23:37:29 | req.url | logInjectionBad.js:37:13:37:36 | url.par ... , true) |
+| logInjectionBad.js:37:23:37:29 | req.url | logInjectionBad.js:37:13:37:36 | url.par ... , true) |
+| logInjectionBad.js:38:9:38:35 | username | logInjectionBad.js:40:46:40:53 | username |
+| logInjectionBad.js:38:20:38:20 | q | logInjectionBad.js:38:20:38:26 | q.query |
+| logInjectionBad.js:38:20:38:26 | q.query | logInjectionBad.js:38:20:38:35 | q.query.username |
+| logInjectionBad.js:38:20:38:35 | q.query.username | logInjectionBad.js:38:9:38:35 | username |
+| logInjectionBad.js:40:46:40:53 | username | logInjectionBad.js:40:18:40:54 | ansiCol ... ername) |
+| logInjectionBad.js:40:46:40:53 | username | logInjectionBad.js:40:18:40:54 | ansiCol ... ername) |
 #select
 | logInjectionBad.js:22:18:22:43 | `[INFO] ... rname}` | logInjectionBad.js:19:23:19:29 | req.url | logInjectionBad.js:22:18:22:43 | `[INFO] ... rname}` | $@ flows to log entry. | logInjectionBad.js:19:23:19:29 | req.url | User-provided value |
 | logInjectionBad.js:23:37:23:44 | username | logInjectionBad.js:19:23:19:29 | req.url | logInjectionBad.js:23:37:23:44 | username | $@ flows to log entry. | logInjectionBad.js:19:23:19:29 | req.url | User-provided value |
 | logInjectionBad.js:24:35:24:42 | username | logInjectionBad.js:19:23:19:29 | req.url | logInjectionBad.js:24:35:24:42 | username | $@ flows to log entry. | logInjectionBad.js:19:23:19:29 | req.url | User-provided value |
 | logInjectionBad.js:25:36:25:43 | username | logInjectionBad.js:19:23:19:29 | req.url | logInjectionBad.js:25:36:25:43 | username | $@ flows to log entry. | logInjectionBad.js:19:23:19:29 | req.url | User-provided value |
 | logInjectionBad.js:30:23:30:49 | `[ERROR ... rror}"` | logInjectionBad.js:19:23:19:29 | req.url | logInjectionBad.js:30:23:30:49 | `[ERROR ... rror}"` | $@ flows to log entry. | logInjectionBad.js:19:23:19:29 | req.url | User-provided value |
+| logInjectionBad.js:40:18:40:54 | ansiCol ... ername) | logInjectionBad.js:37:23:37:29 | req.url | logInjectionBad.js:40:18:40:54 | ansiCol ... ername) | $@ flows to log entry. | logInjectionBad.js:37:23:37:29 | req.url | User-provided value |
