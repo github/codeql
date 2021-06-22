@@ -49,19 +49,23 @@ jobs:
          gh release download --repo "github/codeql-cli-binaries" --pattern "codeql-linux64.zip"
     - name: Unzip CodeQL CLI
       run: unzip -d codeql-cli codeql-linux64.zip
-    - name: Generate CSV files on merge and base of the PR
+    - name: Generate CSV files on merge commit of the PR
       run: |
         echo "Running generator on merge"
         PATH="$PATH:codeql-cli/codeql" python merge/misc/scripts/library-coverage/generate-report.py ci merge merge
         mkdir out_merge
         cp framework-coverage-*.csv out_merge/
         cp framework-coverage-*.rst out_merge/
-
+    - name: Generate CSV files on base commit of the PR
+      run: |
         echo "Running generator on base"
         PATH="$PATH:codeql-cli/codeql" python base/misc/scripts/library-coverage/generate-report.py ci base base
         mkdir out_base
         cp framework-coverage-*.csv out_base/
         cp framework-coverage-*.rst out_base/
+    - name: Generate diff of coverage reports
+      run: |
+        python base/misc/scripts/library-coverage/compare-folders.py out_base out_merge comparison.md
     - name: Upload CSV package list
       uses: actions/upload-artifact@v2
       with:
@@ -76,6 +80,12 @@ jobs:
         path: |
           out_base/framework-coverage-*.csv
           out_base/framework-coverage-*.rst
+    - name: Upload comparison results
+      uses: actions/upload-artifact@v2
+      with:
+        name: comparison
+        path: |
+          comparison.md
     - name: Save PR number
       run: |
         mkdir -p pr

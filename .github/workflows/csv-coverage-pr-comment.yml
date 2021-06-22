@@ -31,11 +31,4 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         RUN_ID: ${{ github.event.workflow_run.id }}
       run: |
-        python misc/scripts/library-coverage/compare-files-comment-pr.py \
-          comparison.md "$GITHUB_REPOSITORY" "$RUN_ID"
-    - name: Upload comparison results
-      uses: actions/upload-artifact@v2
-      with:
-        name: comparison
-        path: |
-          comparison.md
+        python misc/scripts/library-coverage/comment-pr.py "$GITHUB_REPOSITORY" "$RUN_ID"

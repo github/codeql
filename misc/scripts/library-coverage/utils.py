@@ -2,6 +2,7 @@ import subprocess
 import os
 import csv
 import shlex
+import sys
 
 
 def subprocess_run(cmd):
@@ -57,3 +58,15 @@ def read_cwes(path):
                     "label": row[2]
                 }
     return cwes
+
+
+def check_file_exists(file):
+    if not os.path.exists(file):
+        print(f"Expected file '{file}' doesn't exist.", file=sys.stderr)
+        return False
+    return True
+
+
+def download_artifact(repo, name, dir, run_id):
+    subprocess_run(["gh", "run", "download", "--repo",
+                    repo, "--name", name, "--dir", dir, str(run_id)])
