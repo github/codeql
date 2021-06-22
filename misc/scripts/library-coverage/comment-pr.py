@@ -14,13 +14,16 @@ comparison_artifact_name = "comparison"
 comparison_artifact_file_name = "comparison.md"
 
 
+comment_first_line = ":warning: The head of this PR and the base branch were compared for differences in the framework coverage reports. "
+
+
 def get_comment_text(output_file, repo, run_id):
     size = os.path.getsize(output_file)
     if size == 0:
         print("No difference in the coverage reports")
         return
 
-    comment = ":warning: The head of this PR and the base branch were compared for differences in the framework coverage reports. " + \
+    comment = comment_first_line + \
         f"The generated reports are available in the [artifacts of this workflow run](https://github.com/{repo}/actions/runs/{run_id}). " + \
         "The differences will be picked up by the nightly job after the PR gets merged. "
 
@@ -57,6 +60,7 @@ def comment_pr(repo, run_id):
             shutil.rmtree("pr")
 
     # Try storing diff for previous run:
+    prev_run_id = 0
     try:
         prev_run_id = get_previous_run_id(repo, run_id, pr_number)
         prev_diff_folder = "prev_diff"
@@ -75,6 +79,14 @@ def comment_pr(repo, run_id):
 
     comment = get_comment_text(
         f"{current_diff_folder}/{comparison_artifact_file_name}", repo, run_id)
+
+    if comment == None:
+        if prev_run_id == 0:
+            print("Nothing to comment.")
+            return
+        print("Previous run found, and current run removes coverage change.")
+        comment = comment_first_line + \
+            "A recent commit removed the previously reported differences."
     post_comment(comment, repo, pr_number)
 
 
@@ -119,7 +131,7 @@ def get_previous_run_id(repo, run_id, pr_number):
 
         # the previous run needs to be coming from the same PR:
         if pr_number == prev_pr_number:
-            return previous_run_id
+            return int(previous_run_id)
 
     raise Exception("Couldn't find previous run.")
 
