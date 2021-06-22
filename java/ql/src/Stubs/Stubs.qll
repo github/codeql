@@ -61,7 +61,7 @@ abstract private class GeneratedType extends RefType {
       exists(string cls, string interface, string int_kw | result = cls + int_kw + interface |
         (
           if exists(getAnInterestingBaseType().(Class))
-          then cls = " extends " + stubTypeName(getAnInterestingBaseType())
+          then cls = " extends " + stubTypeName(getAnInterestingBaseType().(Class))
           else cls = ""
         ) and
         (
