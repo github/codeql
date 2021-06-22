@@ -19,6 +19,7 @@ class SSLContextCreation extends ContextCreation, DataFlow::CallCfgNode {
     )
     or
     not exists(this.getArg(_)) and
+    not exists(this.getArgByName(_)) and
     result = "TLS"
   }
 }
