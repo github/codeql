@@ -165,20 +165,20 @@ predicate containerStep(DataFlow::CfgNode nodeFrom, DataFlow::Node nodeTo) {
   )
   or
   // methods
-  exists(DataFlow::CallCfgNode call, string name | call = nodeTo |
-    name in [
+  exists(DataFlow::MethodCallNode call, string methodName | call = nodeTo |
+    methodName in [
         // general
         "copy", "pop",
         // dict
         "values", "items", "get", "popitem"
       ] and
-    call.getFunction().(DataFlow::AttrRead).getObject(name) = nodeFrom
+    call.calls(nodeFrom, methodName)
   )
   or
   // list.append, set.add
-  exists(DataFlow::CallCfgNode call, string name |
-    name in ["append", "add"] and
-    call.getFunction().(DataFlow::AttrRead).getObject(name).getPostUpdateNode() = nodeTo and
+  exists(DataFlow::MethodCallNode call, DataFlow::Node obj |
+    call.calls(obj, ["append", "add"]) and
+    obj.getPostUpdateNode() = nodeTo and
     call.getArg(0) = nodeFrom
   )
 }
