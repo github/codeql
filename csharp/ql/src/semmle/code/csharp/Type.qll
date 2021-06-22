@@ -55,6 +55,28 @@ private predicate isObjectClass(Class c) { c instanceof ObjectType }
  * Either a value type (`ValueType`) or a reference type (`RefType`).
  */
 class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_or_ref_type {
+  /** Gets the name of this type without `<...>` brackets, in case it is a constructed type. */
+  private string getNameWithoutBrackets() {
+    exists(UnboundGenericType unbound, string name |
+      unbound = this.(ConstructedType).getUnboundDeclaration() and
+      name = unbound.getName() and
+      result = name.prefix(name.length() - unbound.getNumberOfTypeParameters() - 1)
+    )
+    or
+    not this instanceof ConstructedType and
+    result = this.getName()
+  }
+
+  language[monotonicAggregates]
+  private string getQualifiedTypeArguments() {
+    result =
+      strictconcat(Type t, int i |
+        t = this.(ConstructedType).getTypeArgument(i)
+      |
+        t.getQualifiedName(), "," order by i
+      )
+  }
+
   /**
    * Holds if this type has the qualified name `qualifier`.`name`.
    *
@@ -62,10 +84,21 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
    * `qualifier`=`System.IO` and `name`=`IOException`.
    */
   override predicate hasQualifiedName(string qualifier, string name) {
-    name = this.getName() and
-    if exists(this.getDeclaringType())
-    then qualifier = this.getDeclaringType().getQualifiedName()
-    else qualifier = this.getNamespace().getQualifiedName()
+    exists(string name0 |
+      not this instanceof ConstructedType and
+      name = name0
+      or
+      name = name0 + "<" + this.getQualifiedTypeArguments() + ">"
+    |
+      exists(string enclosing |
+        this.getDeclaringType().hasQualifiedName(qualifier, enclosing) and
+        name0 = enclosing + "+" + this.getNameWithoutBrackets()
+      )
+      or
+      not exists(this.getDeclaringType()) and
+      qualifier = this.getNamespace().getQualifiedName() and
+      name0 = this.getNameWithoutBrackets()
+    )
   }
 
   /** Gets the namespace containing this type. */
@@ -994,6 +1027,13 @@ class ArrayType extends DotNet::ArrayType, RefType, @array_type {
     not type_location(this, _) and
     result = this.getElementType().getALocation()
   }
+
+  final override predicate hasQualifiedName(string qualifier, string name) {
+    exists(Type elementType, string name0 |
+      elementType.hasQualifiedName(qualifier, name0) and
+      name = name0 + this.getDimensionString(elementType)
+    )
+  }
 }
 
 /**
@@ -1013,6 +1053,13 @@ class PointerType extends DotNet::PointerType, Type, @pointer_type {
   override string toString() { result = DotNet::PointerType.super.toString() }
 
   override string getAPrimaryQlClass() { result = "PointerType" }
+
+  final override predicate hasQualifiedName(string qualifier, string name) {
+    exists(string name0 |
+      this.getReferentType().hasQualifiedName(qualifier, name0) and
+      name = name0 + "*"
+    )
+  }
 }
 
 /**
@@ -1083,6 +1130,10 @@ class TupleType extends ValueType, @tuple_type {
   override string getLabel() { result = getUnderlyingType().getLabel() }
 
   override Type getChild(int i) { result = this.getUnderlyingType().getChild(i) }
+
+  final override predicate hasQualifiedName(string qualifier, string name) {
+    this.getUnderlyingType().hasQualifiedName(qualifier, name)
+  }
 }
 
 /**

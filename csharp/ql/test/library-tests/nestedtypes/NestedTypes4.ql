@@ -8,7 +8,7 @@ from Class base, Class derived, Class nested
 where
   base.hasQualifiedName("NestedTypes.Base") and
   derived.hasQualifiedName("NestedTypes.Derived") and
-  nested.hasQualifiedName("NestedTypes.Derived.Nested") and
+  nested.hasQualifiedName("NestedTypes.Derived+Nested") and
   nested.getNamespace().hasName("NestedTypes") and
   derived.getBaseClass() = base and
   derived.isInternal() and
