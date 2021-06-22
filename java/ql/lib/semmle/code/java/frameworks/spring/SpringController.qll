@@ -121,9 +121,18 @@ class SpringRequestMappingMethod extends SpringControllerMethod {
   SpringRequestMappingParameter getARequestParameter() { result = getAParameter() }
 
   /** Gets the "produces" @RequestMapping annotation value, if present. */
+  Expr getProducesExpr() { result = requestMappingAnnotation.getValue("produces") }
+
+  /** Gets the "produces" @RequestMapping annotation value, if present. */
+  Expr getAProducesExpr() {
+    result = this.getProducesExpr() and not result instanceof ArrayInit
+    or
+    result = this.getProducesExpr().(ArrayInit).getAnInit()
+  }
+
+  /** Gets the "produces" @RequestMapping annotation value, if present and a string constant. */
   string getProduces() {
-    result =
-      requestMappingAnnotation.getValue("produces").(CompileTimeConstantExpr).getStringValue()
+    result = this.getProducesExpr().(CompileTimeConstantExpr).getStringValue()
   }
 
   /** Gets the "value" @RequestMapping annotation value, if present. */

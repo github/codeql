@@ -60,7 +60,7 @@ public class SpringXSS {
 
   @GetMapping(value = "/xyz", produces = MediaType.TEXT_HTML_VALUE)
   public static ResponseEntity<String> methodContentTypeUnsafe(String userControlled) {
-    return ResponseEntity.ok(userControlled); // $MISSING: xss
+    return ResponseEntity.ok(userControlled); // $xss
   }
 
   @GetMapping(value = "/xyz", produces = "text/html")

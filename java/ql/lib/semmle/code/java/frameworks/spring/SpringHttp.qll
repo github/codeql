@@ -145,14 +145,19 @@ private class SpringHttpFlowStep extends SummaryModelCsv {
   }
 }
 
+private predicate specifiesContentType(SpringRequestMappingMethod method) {
+  method.getProducesExpr().(ArrayInit).getSize() != 0 or
+  not method.getProducesExpr() instanceof ArrayInit
+}
+
 private class SpringXssSink extends XSS::XssSink {
   SpringXssSink() {
     exists(SpringRequestMappingMethod requestMappingMethod, ReturnStmt rs |
       requestMappingMethod = rs.getEnclosingCallable() and
       this.asExpr() = rs.getResult() and
       (
-        not exists(requestMappingMethod.getProduces()) or
-        requestMappingMethod.getProduces().matches("text/%")
+        not specifiesContentType(requestMappingMethod) or
+        isXssVulnerableContentTypeExpr(requestMappingMethod.getAProducesExpr())
       )
     |
       // If a Spring request mapping method is either annotated with @ResponseBody (or equivalent),
@@ -249,6 +254,11 @@ private string getSpringConstantContentType(FieldAccess e) {
     or
     fieldName = "TEXT_XML" + ["", "_VALUE"] and result = "text/xml"
   )
+}
+
+private predicate isXssVulnerableContentTypeExpr(Expr e) {
+  XSS::isXssVulnerableContentType(e.(CompileTimeConstantExpr).getStringValue()) or
+  XSS::isXssVulnerableContentType(getSpringConstantContentType(e))
 }
 
 private predicate isXssSafeContentTypeExpr(Expr e) {
