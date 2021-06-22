@@ -99,46 +99,51 @@ public class SpringXSS {
     }
   }
 
+  @RestController
   @RequestMapping(produces = {"application/json"})
   private static class ClassContentTypeSafe {
+    @GetMapping(value = "/abc")
     public ResponseEntity<String> test(String userControlled) {
-      return ResponseEntity.ok(userControlled);
+      return ResponseEntity.ok(userControlled); // $SPURIOUS: xss
     }
 
     @GetMapping(value = "/abc")
     public String testDirectReturn(String userControlled) {
-      return userControlled;
+      return userControlled; // $SPURIOUS: xss
     }
 
     @GetMapping(value = "/xyz", produces = {"text/html"})
     public ResponseEntity<String> overridesWithUnsafe(String userControlled) {
-      return ResponseEntity.ok(userControlled); // $MISSING: xss
+      return ResponseEntity.ok(userControlled); // $xss
     }
 
     @GetMapping(value = "/abc")
     public ResponseEntity<String> overridesWithUnsafe2(String userControlled) {
-      return ResponseEntity.ok().contentType(MediaType.TEXT_HTML).body(userControlled); // $MISSING: xss
+      return ResponseEntity.ok().contentType(MediaType.TEXT_HTML).body(userControlled); // $xss
     }
   }
 
+  @RestController
   @RequestMapping(produces = {"text/html"})
   private static class ClassContentTypeUnsafe {
+    @GetMapping(value = "/abc")
     public ResponseEntity<String> test(String userControlled) {
-      return ResponseEntity.ok(userControlled); // $MISSING: xss
+      return ResponseEntity.ok(userControlled); // $xss
     }
 
     @GetMapping(value = "/abc")
     public String testDirectReturn(String userControlled) {
-      return userControlled; //$MISSING: xss
+      return userControlled; // $xss
     }
 
     @GetMapping(value = "/xyz", produces = {"application/json"})
     public ResponseEntity<String> overridesWithSafe(String userControlled) {
-      return ResponseEntity.ok(userControlled);
+      return ResponseEntity.ok(userControlled); // $SPURIOUS: xss
     }
 
+    @GetMapping(value = "/abc")
     public ResponseEntity<String> overridesWithSafe2(String userControlled) {
-      return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(userControlled);
+      return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(userControlled); // $SPURIOUS: xss
     }
   }
 
