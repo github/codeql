@@ -36,6 +36,7 @@ const colors = require('colors');
 import wrapAnsi from 'wrap-ansi';
 import { blue, bold, underline } from "colorette"
 const highlight = require('cli-highlight').highlight;
+var clc = require("cli-color");
 
 const server2 = http.createServer((req, res) => {
     let q = url.parse(req.url, true);
@@ -46,4 +47,5 @@ const server2 = http.createServer((req, res) => {
     console.info(wrapAnsi(colors.red.underline(username), 20)); // NOT OK
     console.log(underline(bold(blue(username)))); // NOT OK
     console.log(highlight(username, {language: 'sql', ignoreIllegals: true})); // NOT OK
+    console.log(clc.red.bgWhite.underline(username)); // NOT OK
 });

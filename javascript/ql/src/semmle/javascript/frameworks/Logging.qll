@@ -266,3 +266,15 @@ class CliHighlightStep extends TaintTracking::SharedTaintStep {
     )
   }
 }
+
+/**
+ * A step through the [`cli-color`](https://npmjs.org/package/cli-color) library.
+ */
+class CliColorStep extends TaintTracking::SharedTaintStep {
+  override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(API::CallNode call | call = API::moduleImport("cli-color").getAMember*().getACall() |
+      pred = call.getArgument(0) and
+      succ = call
+    )
+  }
+}
