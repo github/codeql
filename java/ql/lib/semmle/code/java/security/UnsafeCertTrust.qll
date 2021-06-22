@@ -8,6 +8,7 @@ private import semmle.code.java.dataflow.DataFlow2
 
 /**
  * The creation of an object that prepares an SSL connection.
+ * This is a source for `SslEndpointIdentificationFlowConfig`.
  */
 class SslConnectionInit extends DataFlow::Node {
   SslConnectionInit() {
@@ -18,6 +19,7 @@ class SslConnectionInit extends DataFlow::Node {
 
 /**
  * A call to a method that establishes an SSL connection.
+ * This is a sink for `SslEndpointIdentificationFlowConfig`.
  */
 class SslConnectionCreation extends DataFlow::Node {
   SslConnectionCreation() {
@@ -41,12 +43,14 @@ class SslConnectionCreation extends DataFlow::Node {
 }
 
 /**
- * An SSL object that was assigned a safe `SSLParameters` object an can be considered safe.
+ * An SSL object that was assigned a safe `SSLParameters` object and can be considered safe.
+ * This is a sanitizer for `SslEndpointIdentificationFlowConfig`.
  */
-class SslConnectionWithSafeSslParameters extends Expr {
+class SslConnectionWithSafeSslParameters extends DataFlow::Node {
   SslConnectionWithSafeSslParameters() {
     exists(SafeSslParametersFlowConfig config, DataFlow::Node safe |
-      config.hasFlowTo(safe) and this = safe.asExpr().(Argument).getCall().getQualifier()
+      config.hasFlowTo(safe) and
+      this = DataFlow::exprNode(safe.asExpr().(Argument).getCall().getQualifier())
     )
   }
 }
