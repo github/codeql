@@ -34,6 +34,7 @@ const server = http.createServer((req, res) => {
 const ansiColors = require('ansi-colors');
 const colors = require('colors');
 import wrapAnsi from 'wrap-ansi';
+import { blue, bold, underline } from "colorette"
 
 const server2 = http.createServer((req, res) => {
     let q = url.parse(req.url, true);
@@ -42,4 +43,5 @@ const server2 = http.createServer((req, res) => {
     console.info(ansiColors.yellow.underline(username)); // NOT OK
     console.info(colors.red.underline(username)); // NOT OK
     console.info(wrapAnsi(colors.red.underline(username), 20)); // NOT OK
+    console.log(underline(bold(blue(username)))); // NOT OK
 });
