@@ -3,6 +3,7 @@
 package org.apache.commons.collections4;
 
 import java.io.PrintStream;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Properties;
 import java.util.ResourceBundle;

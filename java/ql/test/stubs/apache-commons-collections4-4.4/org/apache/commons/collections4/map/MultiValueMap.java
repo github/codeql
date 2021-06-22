@@ -11,10 +11,10 @@ import org.apache.commons.collections4.Factory;
 import org.apache.commons.collections4.MultiMap;
 import org.apache.commons.collections4.map.AbstractMapDecorator;
 
-public class MultiValueMap<K, V> extends MultiMap<K, V> implements MultiMap<K, V>, Serializable
+public class MultiValueMap<K, V> extends AbstractMapDecorator<K, Object> implements MultiMap<K, V>, Serializable
 {
     protected Collection<V> createCollection(int p0){ return null; }
-    protected MultiValueMap(Map<K, ? super C> p0, Factory<C> p1){}
+    protected <C> MultiValueMap(Map<K, ? super C> p0, Factory<C> p1){}
     public Collection<Object> values(){ return null; }
     public Collection<V> getCollection(Object p0){ return null; }
     public Iterator<Map.Entry<K, V>> iterator(){ return null; }
@@ -33,4 +33,8 @@ public class MultiValueMap<K, V> extends MultiMap<K, V> implements MultiMap<K, V
     public static  <K, V> MultiValueMap<K, V> multiValueMap(Map<K, ? super Collection<V>> p0){ return null; }
     public void clear(){}
     public void putAll(Map<? extends K, ?> p0){}
+    public int size(){ return 0; }
+    public Object remove(Object key){ return null; }
+    public Object get(Object key){ return null; }
+    public boolean isEmpty(){ return false; }
 }

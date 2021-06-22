@@ -14,4 +14,6 @@ public class UnmodifiableMapEntry<K, V> extends AbstractMapEntry<K, V> implement
     public UnmodifiableMapEntry(KeyValue<? extends K, ? extends V> p0){}
     public UnmodifiableMapEntry(Map.Entry<? extends K, ? extends V> p0){}
     public V setValue(V p0){ return null; }
+    public V getValue(){ return null; }
+    public K getKey(){ return null; }
 }

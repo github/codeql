@@ -12,4 +12,6 @@ public class DefaultMapEntry<K, V> extends AbstractMapEntry<K, V>
     public DefaultMapEntry(K p0, V p1){}
     public DefaultMapEntry(KeyValue<? extends K, ? extends V> p0){}
     public DefaultMapEntry(Map.Entry<? extends K, ? extends V> p0){}
+    public V getValue(){ return null; }
+    public K getKey(){ return null; }
 }
