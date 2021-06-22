@@ -230,8 +230,32 @@ private class GuavaCollectCsv extends SummaryModelCsv {
         "com.google.common.collect;TreeBasedTable;true;create;(Table);;MapKey of Argument[0];MapKey of ReturnValue;value",
         "com.google.common.collect;TreeBasedTable;true;create;(Table);;MapValue of Argument[0];MapValue of ReturnValue;value",
         "com.google.common.collect;ArrayTable;true;create;(Iterable,Iterable);;Element of Argument[0];SyntheticField[com.google.common.collect.Table.rowKey] of MapKey of ReturnValue;value",
-        "com.google.common.collect;ArrayTable;true;create;(Iterable,Iterable);;Element of Argument[1];SyntheticField[com.google.common.collect.Table.columnKey] of MapKey of ReturnValue;value"
-        // Utility classes
+        "com.google.common.collect;ArrayTable;true;create;(Iterable,Iterable);;Element of Argument[1];SyntheticField[com.google.common.collect.Table.columnKey] of MapKey of ReturnValue;value",
+        // Utility classes (a few methods depending on lambda flow are not included)
+        "com.google.common.collect;Sets$SetView;true;immutableCopy;();;Element of Argument[-1];Element of ReturnValue;value",
+        "com.google.common.collect;Sets$SetView;true;copyInto;(Set);;Element of Argument[-1];Element of Argument[0];value",
+        "com.google.common.collect;Sets;false;cartesanProduct;(List);;Element of Element of Argument[0];Element of Element of ReturnValue;value",
+        "com.google.common.collect;Sets;false;cartesanProduct;(Set[]);;Element of ArrayElement of Argument[0];Element of Element of ReturnValue;value",
+        "com.google.common.collect;Sets;false;combinations;(Set,int);;Element of Argument[0];Element of Element of ReturnValue;value",
+        "com.google.common.collect;Sets;false;difference;(Set,Set);;Element of Argument[0];Element of ReturnValue;value",
+        "com.google.common.collect;Sets;false;filter;(NavigableSet,Predicate);;Element of Argument[0];Element of ReturnValue;value",
+        "com.google.common.collect;Sets;false;filter;(Set,Predicate);;Element of Argument[0];Element of ReturnValue;value",
+        "com.google.common.collect;Sets;false;filter;(SortedSet,Predicate);;Element of Argument[0];Element of ReturnValue;value",
+        "com.google.common.collect;Sets;false;newConcurrentHashSet;(Iterable);;Element of Argument[0];Element of ReturnValue;value",
+        "com.google.common.collect;Sets;false;newCopyOnWriteArraySet;(Iterable);;Element of Argument[0];Element of ReturnValue;value",
+        "com.google.common.collect;Sets;false;newConcurrentHashSet;(Iterable);;Element of Argument[0];Element of ReturnValue;value",
+        "com.google.common.collect;Sets;false;newHashSet;(Iterable);;Element of Argument[0];Element of ReturnValue;value",
+        "com.google.common.collect;Sets;false;newHashSet;(Iterator);;Element of Argument[0];Element of ReturnValue;value",
+        "com.google.common.collect;Sets;false;newHashSet;(Object[]);;ArrayElement of Argument[0];Element of ReturnValue;value",
+        "com.google.common.collect;Sets;false;newLinkedHashSet;(Iterable);;Element of Argument[0];Element of ReturnValue;value",
+        "com.google.common.collect;Sets;false;newTreeSet;(Iterable);;Element of Argument[0];Element of ReturnValue;value",
+        "com.google.common.collect;Sets;false;newSetFromMap;(Map);;MapKey of Argument[0];Element of ReturnValue;value",
+        "com.google.common.collect;Sets;false;powerSet;(Set);;Element of Argument[0];Element of Element of ReturnValue;value",
+        "com.google.common.collect;Sets;false;subSet;(NavigableSet,Range);;Element of Argument[0];Element of ReturnValue;value",
+        "com.google.common.collect;Sets;false;symmetricDifference;(Set,Set);;Element of Argument[0..1]; Element of ReturnValue;value",
+        "com.google.common.collect;Sets;false;union;(Set,Set);;Element of Argument[0..1];Element of ReturnValue;value",
+        "com.google.common.collect;Sets;false;synchronizedNavigableSet;(NavigableSet);;Element of Argument[0];Element of ReturnValue;value",
+        "com.google.common.collect;Sets;false;unmodifiableNavigableSet;(NavigableSet);;Element of Argument[0];Element of ReturnValue;value"
       ]
   }
 }
@@ -307,48 +331,4 @@ private class TableColumnField extends SyntheticField {
     fieldName = "columnKey" and
     fieldType instanceof TypeObject
   }
-}
-
-/**
- * A taint-preserving static method of `com.google.common.collect.Sets`.
- */
-private class SetsMethod extends TaintPreservingCallable {
-  int arg;
-
-  SetsMethod() {
-    this.getDeclaringType().hasQualifiedName(guavaCollectPackage(), "Sets") and
-    this.isStatic() and
-    (
-      // static <E> HashSet<E> newHashSet(E... elements)
-      // static <E> Set<E> newConcurrentHashSet(Iterable<? extends E> elements)
-      // static <E> CopyOnWriteArraySet<E> newCopyOnWriteArraySet(Iterable<? extends E> elements)
-      // etc
-      this.getName().matches("new%Set") and
-      arg = 0
-      or
-      // static <B> Set<List<B>> cartesianProduct(List<? extends Set<? extends B>> sets)
-      // static <B> Set<List<B>> cartesianProduct(Set<? extends B>... sets)
-      // static <E> Set<Set<E>> combinations(Set<E> set, int size)
-      // static <E> Sets.SetView<E> difference(Set<E> set1, Set<?> set2)
-      // static <E> NavigableSet<E> filter(NavigableSet<E> unfiltered, Predicate<? super E> predicate)
-      // static <E> Set<E> filter(Set<E> unfiltered, Predicate<? super E> predicate)
-      // static <E> SortedSet<E> filter(SortedSet<E> unfiltered, Predicate<? super E> predicate)
-      // static <E> Set<Set<E>> powerSet(Set<E> set)
-      // static <K extends Comparable<? super K>> NavigableSet<K> subSet(NavigableSet<K> set, Range<K> range)
-      // static <E> NavigableSet<E> synchronizedNavigableSet(NavigableSet<E> navigableSet)
-      // static <E> NavigableSet<E> unmodifiableNavigableSet(NavigableSet<E> set)
-      this.hasName([
-          "cartesianProduct", "combinations", "difference", "filter", "powerSet", "subSet",
-          "synchronizedNavigableSet", "unmodifyableNavigableSet"
-        ]) and
-      arg = 0
-      or
-      // static <E> Sets.SetView<E> symmetricDifference(Set<? extends E> set1, Set<? extends E> set2)
-      // static <E> Sets.SetView<E> union(Set<? extends E> set1, Set<? extends E> set2)
-      this.hasName(["symmetricDifference", "union"]) and
-      arg = [0, 1]
-    )
-  }
-
-  override predicate returnsTaintFrom(int arg_) { arg_ = arg }
 }

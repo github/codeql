@@ -51,9 +51,9 @@ class TestCollect {
 
         ImmutableSet<String> ys = ImmutableSet.of("a", "b", "c");
 
-        sink(element(Sets.filter(Sets.union(xs, ys), y -> true))); // $numTaintFlow=1
+        sink(element(Sets.filter(Sets.union(xs, ys), y -> true))); // $numValueFlow=1
 
-        sink(element(Sets.newHashSet("a", "b", "c", "d", x))); // $numTaintFlow=1
+        sink(element(Sets.newHashSet("a", "b", "c", "d", x))); // $numValueFlow=1
     }
 
     void test2() {
