@@ -22,39 +22,42 @@ nodes
 | logInjectionBad.js:30:23:30:49 | `[ERROR ... rror}"` |
 | logInjectionBad.js:30:23:30:49 | `[ERROR ... rror}"` |
 | logInjectionBad.js:30:42:30:46 | error |
-| logInjectionBad.js:43:9:43:36 | q |
-| logInjectionBad.js:43:13:43:36 | url.par ... , true) |
-| logInjectionBad.js:43:23:43:29 | req.url |
-| logInjectionBad.js:43:23:43:29 | req.url |
-| logInjectionBad.js:44:9:44:35 | username |
-| logInjectionBad.js:44:20:44:20 | q |
-| logInjectionBad.js:44:20:44:26 | q.query |
-| logInjectionBad.js:44:20:44:35 | q.query.username |
-| logInjectionBad.js:46:18:46:54 | ansiCol ... ername) |
-| logInjectionBad.js:46:18:46:54 | ansiCol ... ername) |
-| logInjectionBad.js:46:46:46:53 | username |
-| logInjectionBad.js:47:18:47:47 | colors. ... ername) |
-| logInjectionBad.js:47:18:47:47 | colors. ... ername) |
-| logInjectionBad.js:47:39:47:46 | username |
-| logInjectionBad.js:48:18:48:61 | wrapAns ... e), 20) |
-| logInjectionBad.js:48:18:48:61 | wrapAns ... e), 20) |
-| logInjectionBad.js:48:27:48:56 | colors. ... ername) |
-| logInjectionBad.js:48:48:48:55 | username |
-| logInjectionBad.js:49:17:49:47 | underli ... name))) |
-| logInjectionBad.js:49:17:49:47 | underli ... name))) |
-| logInjectionBad.js:49:27:49:46 | bold(blue(username)) |
-| logInjectionBad.js:49:32:49:45 | blue(username) |
-| logInjectionBad.js:49:37:49:44 | username |
-| logInjectionBad.js:50:17:50:76 | highlig ...  true}) |
-| logInjectionBad.js:50:17:50:76 | highlig ...  true}) |
-| logInjectionBad.js:50:27:50:34 | username |
-| logInjectionBad.js:51:17:51:51 | clc.red ... ername) |
-| logInjectionBad.js:51:17:51:51 | clc.red ... ername) |
-| logInjectionBad.js:51:43:51:50 | username |
-| logInjectionBad.js:52:17:52:65 | sliceAn ... 20, 30) |
-| logInjectionBad.js:52:17:52:65 | sliceAn ... 20, 30) |
-| logInjectionBad.js:52:27:52:56 | colors. ... ername) |
-| logInjectionBad.js:52:48:52:55 | username |
+| logInjectionBad.js:44:9:44:36 | q |
+| logInjectionBad.js:44:13:44:36 | url.par ... , true) |
+| logInjectionBad.js:44:23:44:29 | req.url |
+| logInjectionBad.js:44:23:44:29 | req.url |
+| logInjectionBad.js:45:9:45:35 | username |
+| logInjectionBad.js:45:20:45:20 | q |
+| logInjectionBad.js:45:20:45:26 | q.query |
+| logInjectionBad.js:45:20:45:35 | q.query.username |
+| logInjectionBad.js:47:18:47:54 | ansiCol ... ername) |
+| logInjectionBad.js:47:18:47:54 | ansiCol ... ername) |
+| logInjectionBad.js:47:46:47:53 | username |
+| logInjectionBad.js:48:18:48:47 | colors. ... ername) |
+| logInjectionBad.js:48:18:48:47 | colors. ... ername) |
+| logInjectionBad.js:48:39:48:46 | username |
+| logInjectionBad.js:49:18:49:61 | wrapAns ... e), 20) |
+| logInjectionBad.js:49:18:49:61 | wrapAns ... e), 20) |
+| logInjectionBad.js:49:27:49:56 | colors. ... ername) |
+| logInjectionBad.js:49:48:49:55 | username |
+| logInjectionBad.js:50:17:50:47 | underli ... name))) |
+| logInjectionBad.js:50:17:50:47 | underli ... name))) |
+| logInjectionBad.js:50:27:50:46 | bold(blue(username)) |
+| logInjectionBad.js:50:32:50:45 | blue(username) |
+| logInjectionBad.js:50:37:50:44 | username |
+| logInjectionBad.js:51:17:51:76 | highlig ...  true}) |
+| logInjectionBad.js:51:17:51:76 | highlig ...  true}) |
+| logInjectionBad.js:51:27:51:34 | username |
+| logInjectionBad.js:52:17:52:51 | clc.red ... ername) |
+| logInjectionBad.js:52:17:52:51 | clc.red ... ername) |
+| logInjectionBad.js:52:43:52:50 | username |
+| logInjectionBad.js:53:17:53:65 | sliceAn ... 20, 30) |
+| logInjectionBad.js:53:17:53:65 | sliceAn ... 20, 30) |
+| logInjectionBad.js:53:27:53:56 | colors. ... ername) |
+| logInjectionBad.js:53:48:53:55 | username |
+| logInjectionBad.js:54:17:54:55 | kleur.b ... ername) |
+| logInjectionBad.js:54:17:54:55 | kleur.b ... ername) |
+| logInjectionBad.js:54:47:54:54 | username |
 edges
 | logInjectionBad.js:19:9:19:36 | q | logInjectionBad.js:20:20:20:20 | q |
 | logInjectionBad.js:19:13:19:36 | url.par ... , true) | logInjectionBad.js:19:9:19:36 | q |
@@ -78,48 +81,52 @@ edges
 | logInjectionBad.js:29:14:29:18 | error | logInjectionBad.js:30:42:30:46 | error |
 | logInjectionBad.js:30:42:30:46 | error | logInjectionBad.js:30:23:30:49 | `[ERROR ... rror}"` |
 | logInjectionBad.js:30:42:30:46 | error | logInjectionBad.js:30:23:30:49 | `[ERROR ... rror}"` |
-| logInjectionBad.js:43:9:43:36 | q | logInjectionBad.js:44:20:44:20 | q |
-| logInjectionBad.js:43:13:43:36 | url.par ... , true) | logInjectionBad.js:43:9:43:36 | q |
-| logInjectionBad.js:43:23:43:29 | req.url | logInjectionBad.js:43:13:43:36 | url.par ... , true) |
-| logInjectionBad.js:43:23:43:29 | req.url | logInjectionBad.js:43:13:43:36 | url.par ... , true) |
-| logInjectionBad.js:44:9:44:35 | username | logInjectionBad.js:46:46:46:53 | username |
-| logInjectionBad.js:44:9:44:35 | username | logInjectionBad.js:47:39:47:46 | username |
-| logInjectionBad.js:44:9:44:35 | username | logInjectionBad.js:48:48:48:55 | username |
-| logInjectionBad.js:44:9:44:35 | username | logInjectionBad.js:49:37:49:44 | username |
-| logInjectionBad.js:44:9:44:35 | username | logInjectionBad.js:50:27:50:34 | username |
-| logInjectionBad.js:44:9:44:35 | username | logInjectionBad.js:51:43:51:50 | username |
-| logInjectionBad.js:44:9:44:35 | username | logInjectionBad.js:52:48:52:55 | username |
-| logInjectionBad.js:44:20:44:20 | q | logInjectionBad.js:44:20:44:26 | q.query |
-| logInjectionBad.js:44:20:44:26 | q.query | logInjectionBad.js:44:20:44:35 | q.query.username |
-| logInjectionBad.js:44:20:44:35 | q.query.username | logInjectionBad.js:44:9:44:35 | username |
-| logInjectionBad.js:46:46:46:53 | username | logInjectionBad.js:46:18:46:54 | ansiCol ... ername) |
-| logInjectionBad.js:46:46:46:53 | username | logInjectionBad.js:46:18:46:54 | ansiCol ... ername) |
-| logInjectionBad.js:47:39:47:46 | username | logInjectionBad.js:47:18:47:47 | colors. ... ername) |
-| logInjectionBad.js:47:39:47:46 | username | logInjectionBad.js:47:18:47:47 | colors. ... ername) |
-| logInjectionBad.js:48:27:48:56 | colors. ... ername) | logInjectionBad.js:48:18:48:61 | wrapAns ... e), 20) |
-| logInjectionBad.js:48:27:48:56 | colors. ... ername) | logInjectionBad.js:48:18:48:61 | wrapAns ... e), 20) |
-| logInjectionBad.js:48:48:48:55 | username | logInjectionBad.js:48:27:48:56 | colors. ... ername) |
-| logInjectionBad.js:49:27:49:46 | bold(blue(username)) | logInjectionBad.js:49:17:49:47 | underli ... name))) |
-| logInjectionBad.js:49:27:49:46 | bold(blue(username)) | logInjectionBad.js:49:17:49:47 | underli ... name))) |
-| logInjectionBad.js:49:32:49:45 | blue(username) | logInjectionBad.js:49:27:49:46 | bold(blue(username)) |
-| logInjectionBad.js:49:37:49:44 | username | logInjectionBad.js:49:32:49:45 | blue(username) |
-| logInjectionBad.js:50:27:50:34 | username | logInjectionBad.js:50:17:50:76 | highlig ...  true}) |
-| logInjectionBad.js:50:27:50:34 | username | logInjectionBad.js:50:17:50:76 | highlig ...  true}) |
-| logInjectionBad.js:51:43:51:50 | username | logInjectionBad.js:51:17:51:51 | clc.red ... ername) |
-| logInjectionBad.js:51:43:51:50 | username | logInjectionBad.js:51:17:51:51 | clc.red ... ername) |
-| logInjectionBad.js:52:27:52:56 | colors. ... ername) | logInjectionBad.js:52:17:52:65 | sliceAn ... 20, 30) |
-| logInjectionBad.js:52:27:52:56 | colors. ... ername) | logInjectionBad.js:52:17:52:65 | sliceAn ... 20, 30) |
-| logInjectionBad.js:52:48:52:55 | username | logInjectionBad.js:52:27:52:56 | colors. ... ername) |
+| logInjectionBad.js:44:9:44:36 | q | logInjectionBad.js:45:20:45:20 | q |
+| logInjectionBad.js:44:13:44:36 | url.par ... , true) | logInjectionBad.js:44:9:44:36 | q |
+| logInjectionBad.js:44:23:44:29 | req.url | logInjectionBad.js:44:13:44:36 | url.par ... , true) |
+| logInjectionBad.js:44:23:44:29 | req.url | logInjectionBad.js:44:13:44:36 | url.par ... , true) |
+| logInjectionBad.js:45:9:45:35 | username | logInjectionBad.js:47:46:47:53 | username |
+| logInjectionBad.js:45:9:45:35 | username | logInjectionBad.js:48:39:48:46 | username |
+| logInjectionBad.js:45:9:45:35 | username | logInjectionBad.js:49:48:49:55 | username |
+| logInjectionBad.js:45:9:45:35 | username | logInjectionBad.js:50:37:50:44 | username |
+| logInjectionBad.js:45:9:45:35 | username | logInjectionBad.js:51:27:51:34 | username |
+| logInjectionBad.js:45:9:45:35 | username | logInjectionBad.js:52:43:52:50 | username |
+| logInjectionBad.js:45:9:45:35 | username | logInjectionBad.js:53:48:53:55 | username |
+| logInjectionBad.js:45:9:45:35 | username | logInjectionBad.js:54:47:54:54 | username |
+| logInjectionBad.js:45:20:45:20 | q | logInjectionBad.js:45:20:45:26 | q.query |
+| logInjectionBad.js:45:20:45:26 | q.query | logInjectionBad.js:45:20:45:35 | q.query.username |
+| logInjectionBad.js:45:20:45:35 | q.query.username | logInjectionBad.js:45:9:45:35 | username |
+| logInjectionBad.js:47:46:47:53 | username | logInjectionBad.js:47:18:47:54 | ansiCol ... ername) |
+| logInjectionBad.js:47:46:47:53 | username | logInjectionBad.js:47:18:47:54 | ansiCol ... ername) |
+| logInjectionBad.js:48:39:48:46 | username | logInjectionBad.js:48:18:48:47 | colors. ... ername) |
+| logInjectionBad.js:48:39:48:46 | username | logInjectionBad.js:48:18:48:47 | colors. ... ername) |
+| logInjectionBad.js:49:27:49:56 | colors. ... ername) | logInjectionBad.js:49:18:49:61 | wrapAns ... e), 20) |
+| logInjectionBad.js:49:27:49:56 | colors. ... ername) | logInjectionBad.js:49:18:49:61 | wrapAns ... e), 20) |
+| logInjectionBad.js:49:48:49:55 | username | logInjectionBad.js:49:27:49:56 | colors. ... ername) |
+| logInjectionBad.js:50:27:50:46 | bold(blue(username)) | logInjectionBad.js:50:17:50:47 | underli ... name))) |
+| logInjectionBad.js:50:27:50:46 | bold(blue(username)) | logInjectionBad.js:50:17:50:47 | underli ... name))) |
+| logInjectionBad.js:50:32:50:45 | blue(username) | logInjectionBad.js:50:27:50:46 | bold(blue(username)) |
+| logInjectionBad.js:50:37:50:44 | username | logInjectionBad.js:50:32:50:45 | blue(username) |
+| logInjectionBad.js:51:27:51:34 | username | logInjectionBad.js:51:17:51:76 | highlig ...  true}) |
+| logInjectionBad.js:51:27:51:34 | username | logInjectionBad.js:51:17:51:76 | highlig ...  true}) |
+| logInjectionBad.js:52:43:52:50 | username | logInjectionBad.js:52:17:52:51 | clc.red ... ername) |
+| logInjectionBad.js:52:43:52:50 | username | logInjectionBad.js:52:17:52:51 | clc.red ... ername) |
+| logInjectionBad.js:53:27:53:56 | colors. ... ername) | logInjectionBad.js:53:17:53:65 | sliceAn ... 20, 30) |
+| logInjectionBad.js:53:27:53:56 | colors. ... ername) | logInjectionBad.js:53:17:53:65 | sliceAn ... 20, 30) |
+| logInjectionBad.js:53:48:53:55 | username | logInjectionBad.js:53:27:53:56 | colors. ... ername) |
+| logInjectionBad.js:54:47:54:54 | username | logInjectionBad.js:54:17:54:55 | kleur.b ... ername) |
+| logInjectionBad.js:54:47:54:54 | username | logInjectionBad.js:54:17:54:55 | kleur.b ... ername) |
 #select
 | logInjectionBad.js:22:18:22:43 | `[INFO] ... rname}` | logInjectionBad.js:19:23:19:29 | req.url | logInjectionBad.js:22:18:22:43 | `[INFO] ... rname}` | $@ flows to log entry. | logInjectionBad.js:19:23:19:29 | req.url | User-provided value |
 | logInjectionBad.js:23:37:23:44 | username | logInjectionBad.js:19:23:19:29 | req.url | logInjectionBad.js:23:37:23:44 | username | $@ flows to log entry. | logInjectionBad.js:19:23:19:29 | req.url | User-provided value |
 | logInjectionBad.js:24:35:24:42 | username | logInjectionBad.js:19:23:19:29 | req.url | logInjectionBad.js:24:35:24:42 | username | $@ flows to log entry. | logInjectionBad.js:19:23:19:29 | req.url | User-provided value |
 | logInjectionBad.js:25:36:25:43 | username | logInjectionBad.js:19:23:19:29 | req.url | logInjectionBad.js:25:36:25:43 | username | $@ flows to log entry. | logInjectionBad.js:19:23:19:29 | req.url | User-provided value |
 | logInjectionBad.js:30:23:30:49 | `[ERROR ... rror}"` | logInjectionBad.js:19:23:19:29 | req.url | logInjectionBad.js:30:23:30:49 | `[ERROR ... rror}"` | $@ flows to log entry. | logInjectionBad.js:19:23:19:29 | req.url | User-provided value |
-| logInjectionBad.js:46:18:46:54 | ansiCol ... ername) | logInjectionBad.js:43:23:43:29 | req.url | logInjectionBad.js:46:18:46:54 | ansiCol ... ername) | $@ flows to log entry. | logInjectionBad.js:43:23:43:29 | req.url | User-provided value |
-| logInjectionBad.js:47:18:47:47 | colors. ... ername) | logInjectionBad.js:43:23:43:29 | req.url | logInjectionBad.js:47:18:47:47 | colors. ... ername) | $@ flows to log entry. | logInjectionBad.js:43:23:43:29 | req.url | User-provided value |
-| logInjectionBad.js:48:18:48:61 | wrapAns ... e), 20) | logInjectionBad.js:43:23:43:29 | req.url | logInjectionBad.js:48:18:48:61 | wrapAns ... e), 20) | $@ flows to log entry. | logInjectionBad.js:43:23:43:29 | req.url | User-provided value |
-| logInjectionBad.js:49:17:49:47 | underli ... name))) | logInjectionBad.js:43:23:43:29 | req.url | logInjectionBad.js:49:17:49:47 | underli ... name))) | $@ flows to log entry. | logInjectionBad.js:43:23:43:29 | req.url | User-provided value |
-| logInjectionBad.js:50:17:50:76 | highlig ...  true}) | logInjectionBad.js:43:23:43:29 | req.url | logInjectionBad.js:50:17:50:76 | highlig ...  true}) | $@ flows to log entry. | logInjectionBad.js:43:23:43:29 | req.url | User-provided value |
-| logInjectionBad.js:51:17:51:51 | clc.red ... ername) | logInjectionBad.js:43:23:43:29 | req.url | logInjectionBad.js:51:17:51:51 | clc.red ... ername) | $@ flows to log entry. | logInjectionBad.js:43:23:43:29 | req.url | User-provided value |
-| logInjectionBad.js:52:17:52:65 | sliceAn ... 20, 30) | logInjectionBad.js:43:23:43:29 | req.url | logInjectionBad.js:52:17:52:65 | sliceAn ... 20, 30) | $@ flows to log entry. | logInjectionBad.js:43:23:43:29 | req.url | User-provided value |
+| logInjectionBad.js:47:18:47:54 | ansiCol ... ername) | logInjectionBad.js:44:23:44:29 | req.url | logInjectionBad.js:47:18:47:54 | ansiCol ... ername) | $@ flows to log entry. | logInjectionBad.js:44:23:44:29 | req.url | User-provided value |
+| logInjectionBad.js:48:18:48:47 | colors. ... ername) | logInjectionBad.js:44:23:44:29 | req.url | logInjectionBad.js:48:18:48:47 | colors. ... ername) | $@ flows to log entry. | logInjectionBad.js:44:23:44:29 | req.url | User-provided value |
+| logInjectionBad.js:49:18:49:61 | wrapAns ... e), 20) | logInjectionBad.js:44:23:44:29 | req.url | logInjectionBad.js:49:18:49:61 | wrapAns ... e), 20) | $@ flows to log entry. | logInjectionBad.js:44:23:44:29 | req.url | User-provided value |
+| logInjectionBad.js:50:17:50:47 | underli ... name))) | logInjectionBad.js:44:23:44:29 | req.url | logInjectionBad.js:50:17:50:47 | underli ... name))) | $@ flows to log entry. | logInjectionBad.js:44:23:44:29 | req.url | User-provided value |
+| logInjectionBad.js:51:17:51:76 | highlig ...  true}) | logInjectionBad.js:44:23:44:29 | req.url | logInjectionBad.js:51:17:51:76 | highlig ...  true}) | $@ flows to log entry. | logInjectionBad.js:44:23:44:29 | req.url | User-provided value |
+| logInjectionBad.js:52:17:52:51 | clc.red ... ername) | logInjectionBad.js:44:23:44:29 | req.url | logInjectionBad.js:52:17:52:51 | clc.red ... ername) | $@ flows to log entry. | logInjectionBad.js:44:23:44:29 | req.url | User-provided value |
+| logInjectionBad.js:53:17:53:65 | sliceAn ... 20, 30) | logInjectionBad.js:44:23:44:29 | req.url | logInjectionBad.js:53:17:53:65 | sliceAn ... 20, 30) | $@ flows to log entry. | logInjectionBad.js:44:23:44:29 | req.url | User-provided value |
+| logInjectionBad.js:54:17:54:55 | kleur.b ... ername) | logInjectionBad.js:44:23:44:29 | req.url | logInjectionBad.js:54:17:54:55 | kleur.b ... ername) | $@ flows to log entry. | logInjectionBad.js:44:23:44:29 | req.url | User-provided value |

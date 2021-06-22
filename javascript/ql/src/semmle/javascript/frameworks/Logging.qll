@@ -290,3 +290,21 @@ class SliceAnsiStep extends TaintTracking::SharedTaintStep {
     )
   }
 }
+
+/**
+ * A step through the [`kleur`](https://npmjs.org/package/kleur) library.
+ */
+class KleurStep extends TaintTracking::SharedTaintStep {
+  private API::Node kleurInstance() {
+    result = API::moduleImport("kleur")
+    or
+    result = kleurInstance().getAMember().getReturn()
+  }
+
+  override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(API::CallNode call | call = kleurInstance().getAMember().getACall() |
+      pred = call.getArgument(0) and
+      succ = call
+    )
+  }
+}
