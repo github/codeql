@@ -235,6 +235,11 @@ module ExprNodes {
     /** Gets the `n`th argument of this call. */
     final ExprCfgNode getArgument(int n) { e.hasCfgChild(e.getArgument(n), this, result) }
 
+    /** Gets the the keyword argument whose key is `keyword` of this call. */
+    final ExprCfgNode getKeywordArgument(string keyword) {
+      e.hasCfgChild(e.getKeywordArgument(keyword), this, result)
+    }
+
     /** Gets the number of arguments of this call. */
     final int getNumberOfArguments() { result = e.getNumberOfArguments() }
 

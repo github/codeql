@@ -39,6 +39,22 @@ class Node extends TNode {
   }
 }
 
+/** A data-flow node corresponding to a call in the control-flow graph. */
+class CallNode extends LocalSourceNode {
+  private CfgNodes::ExprNodes::CallCfgNode node;
+
+  CallNode() { node = this.asExpr() }
+
+  /** Gets the data-flow node corresponding to the receiver of the call corresponding to this data-flow node */
+  Node getReceiver() { result.asExpr() = node.getReceiver() }
+
+  /** Gets the data-flow node corresponding to the `n`th argument of the call corresponding to this data-flow node */
+  Node getArgument(int n) { result.asExpr() = node.getArgument(n) }
+
+  /** Gets the data-flow node corresponding to the named argument of the call corresponding to this data-flow node */
+  Node getKeywordArgument(string name) { result.asExpr() = node.getKeywordArgument(name) }
+}
+
 /**
  * An expression, viewed as a node in a data flow graph.
  *

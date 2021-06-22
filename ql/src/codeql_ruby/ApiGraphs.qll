@@ -46,7 +46,7 @@ module API {
     /**
      * Gets a call to a method on the receiver represented by this API component.
      */
-    DataFlow::Node getAMethodCall(string method) {
+    DataFlow::CallNode getAMethodCall(string method) {
       result = getMethodCallNode(method).getAnImmediateUse()
     }
 
