@@ -3,7 +3,7 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>Finding places the dangerous use of a switch.</p>
+<p>A mismatch between conditionals and <code>switch</code> cases can lead to control-flow violations (CWE-691) where the developer either does not handle all combinations of conditions or unintentionally created dead code (CWE-561).</p>
 
 
 </overview>
