@@ -194,58 +194,60 @@ private class SpringXssSink extends XSS::XssSink {
 private string getSpringConstantContentType(FieldAccess e) {
   e.getQualifier().getType().(RefType).hasQualifiedName("org.springframework.http", "MediaType") and
   exists(string fieldName | e.getField().hasName(fieldName) |
-    fieldName = "APPLICATION_ATOM_XML" and result = "application/atom+xml"
+    fieldName = "APPLICATION_ATOM_XML" + ["", "_VALUE"] and result = "application/atom+xml"
     or
-    fieldName = "APPLICATION_CBOR" and result = "application/cbor"
+    fieldName = "APPLICATION_CBOR" + ["", "_VALUE"] and result = "application/cbor"
     or
-    fieldName = "APPLICATION_FORM_URLENCODED" and result = "application/x-www-form-urlencoded"
+    fieldName = "APPLICATION_FORM_URLENCODED" + ["", "_VALUE"] and
+    result = "application/x-www-form-urlencoded"
     or
-    fieldName = "APPLICATION_JSON" and result = "application/json"
+    fieldName = "APPLICATION_JSON" + ["", "_VALUE"] and result = "application/json"
     or
-    fieldName = "APPLICATION_JSON_UTF8" and result = "application/json;charset=UTF-8"
+    fieldName = "APPLICATION_JSON_UTF8" + ["", "_VALUE"] and
+    result = "application/json;charset=UTF-8"
     or
-    fieldName = "APPLICATION_NDJSON" and result = "application/x-ndjson"
+    fieldName = "APPLICATION_NDJSON" + ["", "_VALUE"] and result = "application/x-ndjson"
     or
-    fieldName = "APPLICATION_OCTET_STREAM" and result = "application/octet-stream"
+    fieldName = "APPLICATION_OCTET_STREAM" + ["", "_VALUE"] and result = "application/octet-stream"
     or
-    fieldName = "APPLICATION_PDF" and result = "application/pdf"
+    fieldName = "APPLICATION_PDF" + ["", "_VALUE"] and result = "application/pdf"
     or
-    fieldName = "APPLICATION_PROBLEM_JSON" and result = "application/problem+json"
+    fieldName = "APPLICATION_PROBLEM_JSON" + ["", "_VALUE"] and result = "application/problem+json"
     or
-    fieldName = "APPLICATION_PROBLEM_JSON_UTF8" and
+    fieldName = "APPLICATION_PROBLEM_JSON_UTF8" + ["", "_VALUE"] and
     result = "application/problem+json;charset=UTF-8"
     or
-    fieldName = "APPLICATION_PROBLEM_XML" and result = "application/problem+xml"
+    fieldName = "APPLICATION_PROBLEM_XML" + ["", "_VALUE"] and result = "application/problem+xml"
     or
-    fieldName = "APPLICATION_RSS_XML" and result = "application/rss+xml"
+    fieldName = "APPLICATION_RSS_XML" + ["", "_VALUE"] and result = "application/rss+xml"
     or
-    fieldName = "APPLICATION_STREAM_JSON" and result = "application/stream+json"
+    fieldName = "APPLICATION_STREAM_JSON" + ["", "_VALUE"] and result = "application/stream+json"
     or
-    fieldName = "APPLICATION_XHTML_XML" and result = "application/xhtml+xml"
+    fieldName = "APPLICATION_XHTML_XML" + ["", "_VALUE"] and result = "application/xhtml+xml"
     or
-    fieldName = "APPLICATION_XML" and result = "application/xml"
+    fieldName = "APPLICATION_XML" + ["", "_VALUE"] and result = "application/xml"
     or
-    fieldName = "IMAGE_GIF" and result = "image/gif"
+    fieldName = "IMAGE_GIF" + ["", "_VALUE"] and result = "image/gif"
     or
-    fieldName = "IMAGE_JPEG" and result = "image/jpeg"
+    fieldName = "IMAGE_JPEG" + ["", "_VALUE"] and result = "image/jpeg"
     or
-    fieldName = "IMAGE_PNG" and result = "image/png"
+    fieldName = "IMAGE_PNG" + ["", "_VALUE"] and result = "image/png"
     or
-    fieldName = "MULTIPART_FORM_DATA" and result = "multipart/form-data"
+    fieldName = "MULTIPART_FORM_DATA" + ["", "_VALUE"] and result = "multipart/form-data"
     or
-    fieldName = "MULTIPART_MIXED" and result = "multipart/mixed"
+    fieldName = "MULTIPART_MIXED" + ["", "_VALUE"] and result = "multipart/mixed"
     or
-    fieldName = "MULTIPART_RELATED" and result = "multipart/related"
+    fieldName = "MULTIPART_RELATED" + ["", "_VALUE"] and result = "multipart/related"
     or
-    fieldName = "TEXT_EVENT_STREAM" and result = "text/event-stream"
+    fieldName = "TEXT_EVENT_STREAM" + ["", "_VALUE"] and result = "text/event-stream"
     or
-    fieldName = "TEXT_HTML" and result = "text/html"
+    fieldName = "TEXT_HTML" + ["", "_VALUE"] and result = "text/html"
     or
-    fieldName = "TEXT_MARKDOWN" and result = "text/markdown"
+    fieldName = "TEXT_MARKDOWN" + ["", "_VALUE"] and result = "text/markdown"
     or
-    fieldName = "TEXT_PLAIN" and result = "text/plain"
+    fieldName = "TEXT_PLAIN" + ["", "_VALUE"] and result = "text/plain"
     or
-    fieldName = "TEXT_XML" and result = "text/xml"
+    fieldName = "TEXT_XML" + ["", "_VALUE"] and result = "text/xml"
   )
 }
 
