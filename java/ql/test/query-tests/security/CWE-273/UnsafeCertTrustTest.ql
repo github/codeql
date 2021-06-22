@@ -12,7 +12,7 @@ class Conf extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { sink instanceof SslConnectionCreation }
 
   override predicate isSanitizer(DataFlow::Node sanitizer) {
-    sanitizer instanceof SslConnectionWithSafeSslParameters
+    sanitizer instanceof SslUnsafeCertTrustSanitizer
   }
 }
 

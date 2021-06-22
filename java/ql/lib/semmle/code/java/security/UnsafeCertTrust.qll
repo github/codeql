@@ -8,6 +8,7 @@ private import semmle.code.java.dataflow.DataFlow2
 
 /**
  * The creation of an object that prepares an SSL connection.
+ *
  * This is a source for `SslEndpointIdentificationFlowConfig`.
  */
 class SslConnectionInit extends DataFlow::Node {
@@ -19,12 +20,15 @@ class SslConnectionInit extends DataFlow::Node {
 
 /**
  * A call to a method that establishes an SSL connection.
+ *
  * This is a sink for `SslEndpointIdentificationFlowConfig`.
  */
 class SslConnectionCreation extends DataFlow::Node {
   SslConnectionCreation() {
     exists(MethodAccess ma, Method m |
-      m instanceof GetSslSessionMethod or
+      m instanceof BeginHandshakeMethod or
+      m instanceof SslWrapMethod or
+      m instanceof SslUnwrapMethod or
       m instanceof SocketConnectMethod
     |
       ma.getMethod() = m and
@@ -44,14 +48,35 @@ class SslConnectionCreation extends DataFlow::Node {
 }
 
 /**
- * An SSL object that was assigned a safe `SSLParameters` object and can be considered safe.
+ * An SSL object that correctly verifies hostnames, or doesn't need to (because e.g. it's a server).
+ *
  * This is a sanitizer for `SslEndpointIdentificationFlowConfig`.
  */
-class SslConnectionWithSafeSslParameters extends DataFlow::Node {
+abstract class SslUnsafeCertTrustSanitizer extends DataFlow::Node { }
+
+/**
+ * An SSL object that was assigned a safe `SSLParameters` object and can be considered safe.
+ */
+private class SslConnectionWithSafeSslParameters extends SslUnsafeCertTrustSanitizer {
   SslConnectionWithSafeSslParameters() {
     exists(SafeSslParametersFlowConfig config, DataFlow::Node safe |
       config.hasFlowTo(safe) and
       this = DataFlow::exprNode(safe.asExpr().(Argument).getCall().getQualifier())
+    )
+  }
+}
+
+/**
+ * An `SSLEngine` set in server mode.
+ */
+private class SslEngineServerMode extends SslUnsafeCertTrustSanitizer {
+  SslEngineServerMode() {
+    exists(MethodAccess ma, Method m |
+      m.hasName("setUseClientMode") and
+      m.getDeclaringType().getASupertype*() instanceof SSLEngine and
+      ma.getMethod() = m and
+      ma.getArgument(0).(CompileTimeConstantExpr).getBooleanValue() = false and
+      this = DataFlow::exprNode(ma.getQualifier())
     )
   }
 }
