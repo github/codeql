@@ -79,6 +79,16 @@ class LocalSourceNode extends Node {
   CallCfgNode getACall() { Cached::call(this, result) }
 
   /**
+   * Gets a call to the method `methodName` on this node.
+   *
+   * Includes both calls that have the syntactic shape of a method call (as in `obj.m(...)`), and
+   * calls where the callee undergoes some additional local data flow (as in `tmp = obj.m; m(...)`).
+   */
+  MethodCallNode getAMethodCall(string methodName) {
+    result = this.getAnAttributeRead(methodName).getACall()
+  }
+
+  /**
    * Gets a node that this node may flow to using one heap and/or interprocedural step.
    *
    * See `TypeTracker` for more details about how to use this.

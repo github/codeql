@@ -4,7 +4,7 @@
  *              of malicious SQL code by the user.
  * @kind path-problem
  * @problem.severity error
- * @security-severity 6.4
+ * @security-severity 8.8
  * @precision medium
  * @id cs/second-order-sql-injection
  * @tags security

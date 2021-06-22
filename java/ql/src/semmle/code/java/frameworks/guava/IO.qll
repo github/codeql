@@ -7,7 +7,7 @@ private class GuavaIoCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        //"package;type;overrides;name;signature;ext;inputspec;outputspec;kind",
+        //`namespace; type; subtypes; name; signature; ext; input; output; kind`
         "com.google.common.io;BaseEncoding;true;decode;(CharSequence);;Argument[0];ReturnValue;taint",
         "com.google.common.io;BaseEncoding;true;decodingStream;(Reader);;Argument[0];ReturnValue;taint",
         "com.google.common.io;BaseEncoding;true;decodingSource;(CharSource);;Argument[0];ReturnValue;taint",
@@ -89,7 +89,7 @@ private class GuavaIoSinkCsv extends SinkModelCsv {
   override predicate row(string row) {
     row =
       [
-        //"package;type;overrides;name;signature;ext;inputspec;kind",
+        //`namespace; type; subtypes; name; signature; ext; input; kind`
         "com.google.common.io;Resources;false;asByteSource;(URL);;Argument[0];url-open-stream",
         "com.google.common.io;Resources;false;asCharSource;(URL,Charset);;Argument[0];url-open-stream",
         "com.google.common.io;Resources;false;copy;(URL,OutputStream);;Argument[0];url-open-stream",

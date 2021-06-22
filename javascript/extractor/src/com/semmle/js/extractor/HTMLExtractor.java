@@ -271,7 +271,7 @@ public class HTMLExtractor implements IExtractor {
 
   private boolean isTypeScriptTag(Element script) {
     String language = getScriptLanguage(script);
-    if ("ts".equals(language) || "typescript".equals(language)) return true;
+    if ("ts".equals(language) || "tsx".equals(language) || "typescript".equals(language)) return true;
     String type = getAttributeValueLC(script, "type");
     if (type != null && type.contains("typescript")) return true;
     return false;

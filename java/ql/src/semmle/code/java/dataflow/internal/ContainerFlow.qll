@@ -95,6 +95,7 @@ private class ContainerFlowSummaries extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
+        "java.util;Map<>$Entry;true;getKey;;;MapKey of Argument[-1];ReturnValue;value",
         "java.util;Map<>$Entry;true;getValue;;;MapValue of Argument[-1];ReturnValue;value",
         "java.util;Map<>$Entry;true;setValue;;;MapValue of Argument[-1];ReturnValue;value",
         "java.util;Map<>$Entry;true;setValue;;;Argument[0];MapValue of Argument[-1];value",
@@ -193,6 +194,7 @@ private class ContainerFlowSummaries extends SummaryModelCsv {
         "java.util.concurrent;ConcurrentHashMap;true;elements;();;MapValue of Argument[-1];Element of ReturnValue;value",
         "java.util;Dictionary;true;elements;();;MapValue of Argument[-1];Element of ReturnValue;value",
         "java.util;Dictionary;true;get;(Object);;MapValue of Argument[-1];ReturnValue;value",
+        "java.util;Dictionary;true;keys;();;MapKey of Argument[-1];Element of ReturnValue;value",
         "java.util;Dictionary;true;put;(Object,Object);;MapValue of Argument[-1];ReturnValue;value",
         "java.util;Dictionary;true;put;(Object,Object);;Argument[0];MapKey of Argument[-1];value",
         "java.util;Dictionary;true;put;(Object,Object);;Argument[1];MapValue of Argument[-1];value",

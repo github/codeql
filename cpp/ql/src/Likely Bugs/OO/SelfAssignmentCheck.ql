@@ -6,7 +6,7 @@
  * @kind problem
  * @id cpp/self-assignment-check
  * @problem.severity warning
- * @security-severity 5.9
+ * @security-severity 7.0
  * @tags reliability
  *       security
  *       external/cwe/cwe-826

@@ -3,7 +3,7 @@
  * @description Calling 'strncat' with an incorrect size argument may result in a buffer overflow.
  * @kind problem
  * @problem.severity warning
- * @security-severity 10.0
+ * @security-severity 9.3
  * @precision medium
  * @id cpp/unsafe-strncat
  * @tags reliability
