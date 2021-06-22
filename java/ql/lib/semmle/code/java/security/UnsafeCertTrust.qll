@@ -34,8 +34,9 @@ class SslConnectionCreation extends DataFlow::Node {
     // calls to SocketFactory.createSocket with parameters immediately create the connection
     exists(MethodAccess ma, Method m |
       ma.getMethod() = m and
-      m instanceof CreateSocket and
-      m.getNumberOfParameters() > 0
+      m instanceof CreateSocketMethod and
+      m.getNumberOfParameters() > 0 and
+      isSslSocket(ma)
     |
       this.asExpr() = ma
     )
@@ -53,6 +54,20 @@ class SslConnectionWithSafeSslParameters extends DataFlow::Node {
       this = DataFlow::exprNode(safe.asExpr().(Argument).getCall().getQualifier())
     )
   }
+}
+
+/**
+ * Holds if the return value of `createSocket` is cast to `SSLSocket`
+ * or the qualifier of `createSocket` is an instance of `SSLSocketFactory`.
+ */
+private predicate isSslSocket(MethodAccess createSocket) {
+  exists(Variable ssl, CastExpr ce |
+    ce.getExpr() = createSocket and
+    ce.getControlFlowNode().getASuccessor().(VariableAssign).getDestVar() = ssl and
+    ssl.getType() instanceof SSLSocket
+  )
+  or
+  createSocket.getQualifier().getType().(RefType).getASupertype*() instanceof SSLSocketFactory
 }
 
 private class SafeSslParametersFlowConfig extends DataFlow2::Configuration {
@@ -85,7 +100,7 @@ private class SafeSetEndpointIdentificationAlgorithm extends MethodAccess {
 
 /**
  * A call to the method `useSslProtocol` on an instance of `com.rabbitmq.client.ConnectionFactory`
- * that doesn't have `enableHostnameVerification` set.
+ * that doesn't set `enableHostnameVerification`.
  */
 class RabbitMQEnableHostnameVerificationNotSet extends MethodAccess {
   RabbitMQEnableHostnameVerificationNotSet() {

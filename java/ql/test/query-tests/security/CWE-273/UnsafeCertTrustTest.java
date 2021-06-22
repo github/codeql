@@ -19,7 +19,7 @@ public class UnsafeCertTrustTest {
 		SSLParameters sslParameters = sslEngine.getSSLParameters();
 		sslParameters.setEndpointIdentificationAlgorithm(null);
 		sslEngine.setSSLParameters(sslParameters);
-		sslEngine.getSession();
+		sslEngine.getSession(); // $hasUnsafeCertTrust
 	}
 
 	/**
@@ -28,7 +28,7 @@ public class UnsafeCertTrustTest {
 	public void testSSLEngineEndpointIdNotSet() throws java.security.NoSuchAlgorithmException {
 		SSLContext sslContext = SSLContext.getInstance("TLS");
 		SSLEngine sslEngine = sslContext.createSSLEngine();
-		sslEngine.getSession();
+		sslEngine.getSession(); // $hasUnsafeCertTrust
 	}
 
 	/**
@@ -40,7 +40,7 @@ public class UnsafeCertTrustTest {
 		SSLParameters sslParameters = sslEngine.getSSLParameters();
 		sslParameters.setEndpointIdentificationAlgorithm("HTTPS");
 		sslEngine.setSSLParameters(sslParameters);
-		sslEngine.getSession();
+		sslEngine.getSession(); // Safe
 	}
 
 	/**
@@ -49,8 +49,8 @@ public class UnsafeCertTrustTest {
 	public void testSSLSocketImmediatelyConnects()
 			throws java.security.NoSuchAlgorithmException, java.io.IOException {
 		SSLContext sslContext = SSLContext.getInstance("TLS");
-		final SSLSocketFactory socketFactory = sslContext.getSocketFactory();
-		SSLSocket socket = (SSLSocket) socketFactory.createSocket("www.example.com", 443);
+		SocketFactory socketFactory = sslContext.getSocketFactory();
+		SSLSocket socket = (SSLSocket) socketFactory.createSocket("www.example.com", 443); // $hasUnsafeCertTrust
 	}
 
 	/**
@@ -59,9 +59,9 @@ public class UnsafeCertTrustTest {
 	public void testSSLSocketEndpointIdNotSet()
 			throws java.security.NoSuchAlgorithmException, java.io.IOException {
 		SSLContext sslContext = SSLContext.getInstance("TLS");
-		final SSLSocketFactory socketFactory = sslContext.getSocketFactory();
+		SSLSocketFactory socketFactory = sslContext.getSocketFactory();
 		SSLSocket socket = (SSLSocket) socketFactory.createSocket();
-		socket.connect(new InetSocketAddress("www.example.com", 443));
+		socket.connect(new InetSocketAddress("www.example.com", 443)); // $hasUnsafeCertTrust
 	}
 
 	/**
@@ -70,12 +70,12 @@ public class UnsafeCertTrustTest {
 	public void testSSLSocketEndpointIdSetNull()
 			throws java.security.NoSuchAlgorithmException, java.io.IOException {
 		SSLContext sslContext = SSLContext.getInstance("TLS");
-		final SSLSocketFactory socketFactory = sslContext.getSocketFactory();
+		SSLSocketFactory socketFactory = sslContext.getSocketFactory();
 		SSLSocket socket = (SSLSocket) socketFactory.createSocket();
 		SSLParameters sslParameters = socket.getSSLParameters();
 		sslParameters.setEndpointIdentificationAlgorithm(null);
 		socket.setSSLParameters(sslParameters);
-		socket.connect(new InetSocketAddress("www.example.com", 443));
+		socket.connect(new InetSocketAddress("www.example.com", 443)); // $hasUnsafeCertTrust
 	}
 
 	/**
@@ -84,12 +84,12 @@ public class UnsafeCertTrustTest {
 	public void testSSLSocketEndpointIdSetEmpty()
 			throws java.security.NoSuchAlgorithmException, java.io.IOException {
 		SSLContext sslContext = SSLContext.getInstance("TLS");
-		final SSLSocketFactory socketFactory = sslContext.getSocketFactory();
+		SSLSocketFactory socketFactory = sslContext.getSocketFactory();
 		SSLSocket socket = (SSLSocket) socketFactory.createSocket();
 		SSLParameters sslParameters = socket.getSSLParameters();
 		sslParameters.setEndpointIdentificationAlgorithm("");
 		socket.setSSLParameters(sslParameters);
-		socket.connect(new InetSocketAddress("www.example.com", 443));
+		socket.connect(new InetSocketAddress("www.example.com", 443)); // $hasUnsafeCertTrust
 	}
 
 	/**
@@ -98,8 +98,8 @@ public class UnsafeCertTrustTest {
 	public void testSSLSocketEndpointIdAfterConnecting()
 			throws java.security.NoSuchAlgorithmException, java.io.IOException {
 		SSLContext sslContext = SSLContext.getInstance("TLS");
-		final SSLSocketFactory socketFactory = sslContext.getSocketFactory();
-		SSLSocket socket = (SSLSocket) socketFactory.createSocket("www.example.com", 443);
+		SSLSocketFactory socketFactory = sslContext.getSocketFactory();
+		SSLSocket socket = (SSLSocket) socketFactory.createSocket("www.example.com", 443); // $hasUnsafeCertTrust
 		SSLParameters sslParameters = socket.getSSLParameters();
 		sslParameters.setEndpointIdentificationAlgorithm("HTTPS");
 		socket.setSSLParameters(sslParameters);
@@ -111,12 +111,12 @@ public class UnsafeCertTrustTest {
 	public void testSSLSocketEndpointIdSafe()
 			throws java.security.NoSuchAlgorithmException, java.io.IOException {
 		SSLContext sslContext = SSLContext.getInstance("TLS");
-		final SSLSocketFactory socketFactory = sslContext.getSocketFactory();
+		SSLSocketFactory socketFactory = sslContext.getSocketFactory();
 		SSLSocket socket = (SSLSocket) socketFactory.createSocket();
 		SSLParameters sslParameters = socket.getSSLParameters();
 		sslParameters.setEndpointIdentificationAlgorithm("HTTPS");
 		socket.setSSLParameters(sslParameters);
-		socket.connect(new InetSocketAddress("www.example.com", 443));
+		socket.connect(new InetSocketAddress("www.example.com", 443)); // Safe
 	}
 
 	/**
@@ -124,7 +124,7 @@ public class UnsafeCertTrustTest {
 	 */
 	public void testSocketEndpointIdNotSet() throws java.io.IOException {
 		SocketFactory socketFactory = SocketFactory.getDefault();
-		Socket socket = socketFactory.createSocket("www.example.com", 80);
+		Socket socket = socketFactory.createSocket("www.example.com", 80); // Safe
 	}
 
 	/**
@@ -132,7 +132,7 @@ public class UnsafeCertTrustTest {
 	 */
 	public void testRabbitMQFactoryEnableHostnameVerificationNotSet() throws Exception {
 		ConnectionFactory connectionFactory = new ConnectionFactory();
-		connectionFactory.useSslProtocol();
+		connectionFactory.useSslProtocol(); // $hasUnsafeCertTrust
 	}
 
 	/**
@@ -140,7 +140,7 @@ public class UnsafeCertTrustTest {
 	 */
 	public void testRabbitMQFactorySafe() throws Exception {
 		ConnectionFactory connectionFactory = new ConnectionFactory();
-		connectionFactory.useSslProtocol();
+		connectionFactory.useSslProtocol(); // Safe
 		connectionFactory.enableHostnameVerification();
 	}
 }

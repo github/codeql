@@ -27,10 +27,10 @@ class SslEndpointIdentificationFlowConfig extends TaintTracking::Configuration {
   }
 }
 
-from Expr unsafeConfig
+from Expr unsafeTrust
 where
-  unsafeConfig instanceof RabbitMQEnableHostnameVerificationNotSet or
+  unsafeTrust instanceof RabbitMQEnableHostnameVerificationNotSet or
   exists(SslEndpointIdentificationFlowConfig config |
-    config.hasFlowTo(DataFlow::exprNode(unsafeConfig))
+    config.hasFlowTo(DataFlow::exprNode(unsafeTrust))
   )
-select unsafeConfig, "Unsafe configuration of trusted certificates"
+select unsafeTrust, "Unsafe configuration of trusted certificates"
