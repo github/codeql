@@ -2,8 +2,3 @@
 - qlpack: codeql-ruby
 - apply: code-scanning-selectors.yml
   from: codeql-suite-helpers
-# TODO: remove the selectors below
-- include:
-    id: 
-    - rb/use-detect
-    - rb/overly-permissive-file
