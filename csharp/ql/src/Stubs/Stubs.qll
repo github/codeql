@@ -126,6 +126,7 @@ abstract private class GeneratedType extends Type, GeneratedElement {
   }
 
   /** Gets the entire C# stub code for this type. */
+  pragma[nomagic]
   final string getStub(Assembly assembly) {
     if this.isDuplicate(assembly)
     then
@@ -176,8 +177,8 @@ abstract private class GeneratedType extends Type, GeneratedElement {
   language[monotonicAggregates]
   private string stubMembers(Assembly assembly) {
     result =
-      concat(Member m |
-        m = this.getAGeneratedMember() and m.getALocation() = assembly
+      concat(GeneratedMember m |
+        m = this.getAGeneratedMember(assembly)
       |
         stubMember(m, assembly) order by m.getName()
       )
@@ -200,6 +201,11 @@ abstract private class GeneratedType extends Type, GeneratedElement {
   }
 
   private GeneratedMember getAGeneratedMember() { result.getDeclaringType() = this }
+
+  pragma[noinline]
+  private GeneratedMember getAGeneratedMember(Assembly assembly) {
+    result = this.getAGeneratedMember() and assembly = result.getALocation()
+  }
 
   final Type getAGeneratedType() {
     result = getAnInterestingBaseType()
@@ -733,85 +739,135 @@ private string stubExplicitImplementation(Member c) {
   else result = ""
 }
 
-private string stubMember(Member m, Assembly assembly) {
-  if m instanceof Method
+pragma[noinline]
+private string stubMethod(Method m, Assembly assembly) {
+  m instanceof GeneratedMember and
+  m.getALocation() = assembly and
+  if not m.getDeclaringType() instanceof Enum
   then
-    if not m.getDeclaringType() instanceof Enum
+    result =
+      "    " + stubModifiers(m) + stubClassName(m.(Method).getReturnType()) + " " +
+        stubExplicitImplementation(m) + m.getName() + stubGenericMethodParams(m) + "(" +
+        stubParameters(m) + ")" + stubTypeParametersConstraints(m) + stubImplementation(m) + ";\n"
+  else result = "    // Stub generator skipped method: " + m.getName() + "\n"
+}
+
+pragma[noinline]
+private string stubOperator(Operator o, Assembly assembly) {
+  o instanceof GeneratedMember and
+  o.getALocation() = assembly and
+  if o instanceof ConversionOperator
+  then
+    result =
+      "    " + stubModifiers(o) + stubExplicit(o) + "operator " + stubClassName(o.getReturnType()) +
+        "(" + stubParameters(o) + ") => throw null;\n"
+  else
+    if not o.getDeclaringType() instanceof Enum
     then
       result =
-        "    " + stubModifiers(m) + stubClassName(m.(Method).getReturnType()) + " " +
-          stubExplicitImplementation(m) + m.getName() + stubGenericMethodParams(m) + "(" +
-          stubParameters(m) + ")" + stubTypeParametersConstraints(m) + stubImplementation(m) + ";\n"
-    else result = "    // Stub generator skipped method: " + m.getName() + "\n"
+        "    " + stubModifiers(o) + stubClassName(o.getReturnType()) + " operator " + o.getName() +
+          "(" + stubParameters(o) + ") => throw null;\n"
+    else result = "    // Stub generator skipped operator: " + o.getName() + "\n"
+}
+
+pragma[noinline]
+private string stubEnumConstant(EnumConstant ec, Assembly assembly) {
+  ec instanceof GeneratedMember and
+  ec.getALocation() = assembly and
+  result = "    " + ec.getName() + ",\n"
+}
+
+pragma[noinline]
+private string stubProperty(Property p, Assembly assembly) {
+  p instanceof GeneratedMember and
+  p.getALocation() = assembly and
+  result =
+    "    " + stubModifiers(p) + stubClassName(p.getType()) + " " + stubExplicitImplementation(p) +
+      p.getName() + " { " + stubGetter(p) + stubSetter(p) + "}\n"
+}
+
+pragma[noinline]
+private string stubConstructor(Constructor c, Assembly assembly) {
+  c instanceof GeneratedMember and
+  c.getALocation() = assembly and
+  if c.getDeclaringType() instanceof Enum
+  then result = ""
   else
-    if m instanceof Operator and not m instanceof ConversionOperator
+    if
+      not c.getDeclaringType() instanceof StructEx or
+      c.getNumberOfParameters() > 0
     then
-      if not m.getDeclaringType() instanceof Enum
-      then
-        result =
-          "    " + stubModifiers(m) + stubClassName(m.(Operator).getReturnType()) + " operator " +
-            m.getName() + "(" + stubParameters(m) + ") => throw null;\n"
-      else result = "    // Stub generator skipped operator: " + m.getName() + "\n"
-    else
-      if m instanceof ConversionOperator
-      then
-        result =
-          "    " + stubModifiers(m) + stubExplicit(m) + "operator " +
-            stubClassName(m.(ConversionOperator).getReturnType()) + "(" + stubParameters(m) +
-            ") => throw null;\n"
-      else
-        if m instanceof EnumConstant
-        then result = "    " + m.(EnumConstant).getName() + ",\n"
-        else
-          if m instanceof Property
-          then
-            result =
-              "    " + stubModifiers(m) + stubClassName(m.(Property).getType()) + " " +
-                stubExplicitImplementation(m) + m.getName() + " { " + stubGetter(m) + stubSetter(m) +
-                "}\n"
-          else
-            if m instanceof Constructor
-            then
-              if m.getDeclaringType() instanceof Enum
-              then result = ""
-              else
-                if
-                  not m.getDeclaringType() instanceof StructEx or
-                  m.(Constructor).getNumberOfParameters() > 0
-                then
-                  result =
-                    "    " + stubModifiers(m) + m.getName() + "(" + stubParameters(m) + ")" +
-                      stubConstructorInitializer(m) + " => throw null;\n"
-                else result = "    // Stub generator skipped constructor \n"
-            else
-              if m instanceof Indexer
-              then
-                result =
-                  "    " + stubIndexerNameAttribute(m) + stubModifiers(m) +
-                    stubClassName(m.(Indexer).getType()) + " " + stubExplicitImplementation(m) +
-                    "this[" + stubParameters(m) + "] { " + stubGetter(m) + stubSetter(m) + "}\n"
-              else
-                if m instanceof Field // EnumConstants are already stubbed
-                then
-                  exists(string impl |
-                    (if m.(Field).isConst() then impl = " = default" else impl = "") and
-                    result =
-                      "    " + stubModifiers(m) + stubClassName(m.(Field).getType()) + " " +
-                        escapeIfKeyword(m.(Field).getName()) + impl + ";\n"
-                  )
-                else
-                  if m instanceof Event
-                  then
-                    result =
-                      "    " + stubModifiers(m) + "event " + stubClassName(m.(Event).getType()) +
-                        " " + stubExplicitImplementation(m) + m.getName() + stubEventAccessors(m) +
-                        "\n"
-                  else
-                    if m instanceof GeneratedType
-                    then result = m.(GeneratedType).getStub(assembly) + "\n"
-                    else
-                      result =
-                        "    // ERR: Stub generator didn't handle member: " + m.getName() + "\n"
+      result =
+        "    " + stubModifiers(c) + c.getName() + "(" + stubParameters(c) + ")" +
+          stubConstructorInitializer(c) + " => throw null;\n"
+    else result = "    // Stub generator skipped constructor \n"
+}
+
+pragma[noinline]
+private string stubIndexer(Indexer i, Assembly assembly) {
+  i instanceof GeneratedMember and
+  i.getALocation() = assembly and
+  result =
+    "    " + stubIndexerNameAttribute(i) + stubModifiers(i) + stubClassName(i.getType()) + " " +
+      stubExplicitImplementation(i) + "this[" + stubParameters(i) + "] { " + stubGetter(i) +
+      stubSetter(i) + "}\n"
+}
+
+pragma[noinline]
+private string stubField(Field f, Assembly assembly) {
+  f instanceof GeneratedMember and
+  f.getALocation() = assembly and
+  not f instanceof EnumConstant and // EnumConstants are already stubbed
+  exists(string impl |
+    (if f.isConst() then impl = " = default" else impl = "") and
+    result =
+      "    " + stubModifiers(f) + stubClassName(f.getType()) + " " + escapeIfKeyword(f.getName()) +
+        impl + ";\n"
+  )
+}
+
+pragma[noinline]
+private string stubEvent(Event e, Assembly assembly) {
+  e instanceof GeneratedMember and
+  e.getALocation() = assembly and
+  result =
+    "    " + stubModifiers(e) + "event " + stubClassName(e.getType()) + " " +
+      stubExplicitImplementation(e) + e.getName() + stubEventAccessors(e) + "\n"
+}
+
+pragma[nomagic]
+private string stubMember(GeneratedMember m, Assembly assembly) {
+  result = stubMethod(m, assembly)
+  or
+  result = stubOperator(m, assembly)
+  or
+  result = stubEnumConstant(m, assembly)
+  or
+  result = stubProperty(m, assembly)
+  or
+  result = stubConstructor(m, assembly)
+  or
+  result = stubIndexer(m, assembly)
+  or
+  result = stubField(m, assembly)
+  or
+  result = stubEvent(m, assembly)
+  or
+  not m instanceof Method and
+  not m instanceof Operator and
+  not m instanceof EnumConstant and
+  not m instanceof Property and
+  not m instanceof Constructor and
+  not m instanceof Indexer and
+  not m instanceof Field and
+  not m instanceof Event and
+  m.getALocation() = assembly and
+  (
+    result = m.(GeneratedType).getStub(assembly) + "\n"
+    or
+    not m instanceof GeneratedType and
+    result = "    // ERR: Stub generator didn't handle member: " + m.getName() + "\n"
+  )
 }
 
 private string stubIndexerNameAttribute(Indexer i) {
