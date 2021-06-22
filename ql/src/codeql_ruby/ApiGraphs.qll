@@ -47,7 +47,7 @@ module API {
      * Gets a call to a method on the receiver represented by this API component.
      */
     DataFlow::CallNode getAMethodCall(string method) {
-      result = getMethodCallNode(method).getAnImmediateUse()
+      result = getReturn(method).getAnImmediateUse()
     }
 
     /**
@@ -91,12 +91,9 @@ module API {
     Node getInstance() { result = getASuccessor(Label::instance()) }
 
     /**
-     * Gets a node representing the result of calling a method on a receiver represented by this node.
-     *
-     * This predicate may have multiple results when there are multiple of the method on this API component.
-     * Consider using `getAMethodCall()` if there is a need to distinguish between individual calls.
+     * Gets a node representing the result of calling a method on the receiver represented by this node.
      */
-    Node getMethodCallNode(string method) { result = getASuccessor(Label::return(method)) }
+    Node getReturn(string method) { result = getASuccessor(Label::return(method)) }
 
     /**
      * Gets a `new` call to the function represented by this API component.
@@ -227,9 +224,6 @@ module API {
    */
   Node moduleImport(string m) { result = Impl::MkModuleImport(m) }
 
-  /** Gets a node corresponding to the built-in with the given name, if any. */
-  Node builtin(string n) { result = moduleImport("builtins").getMember(n) }
-
   /**
    * Provides the actual implementation of API graphs, cached for performance.
    *
@@ -330,6 +324,7 @@ module API {
           ref.asExpr().getExpr() = call
         )
         or
+        // Calling the `new` method on a node that is a use of `base`, which creates a new instance
         exists(MethodCall call, DataFlow::Node node |
           pred.flowsTo(node) and
           node.asExpr().getExpr() = call.getReceiver() and

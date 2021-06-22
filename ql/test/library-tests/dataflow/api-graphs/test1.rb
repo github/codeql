@@ -9,3 +9,4 @@ rescue AttributeError => e #$ use=moduleImport("AttributeError") // missing beca
     Kernel.print(e)  #$ use=moduleImport("Kernel").getReturn("print")
 end
 Unknown.new.run #$ use=moduleImport("Unknown").instance.getReturn("run")
+Foo::Bar::Baz #$ use=moduleImport("Foo").getMember("Bar").getMember("Baz")
