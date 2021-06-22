@@ -45,11 +45,11 @@ class PermissivePermissionsExpr extends Expr {
 /** A permissions argument of a call to a File/FileUtils method that may modify file permissions */
 class PermissionArgument extends DataFlow::Node {
   private DataFlow::CallNode call;
-  private string methodName;
 
   PermissionArgument() {
-    call = API::moduleImport(["File", "FileUtils"]).getAMethodCall(methodName) and
-    (
+    exists(string methodName |
+      call = API::moduleImport(["File", "FileUtils"]).getAMethodCall(methodName)
+    |
       methodName in ["chmod", "chmod_R", "lchmod"] and this = call.getArgument(0)
       or
       methodName = "mkfifo" and this = call.getArgument(1)
