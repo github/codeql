@@ -213,3 +213,18 @@ class AnsiColorsStep extends TaintTracking::SharedTaintStep {
     )
   }
 }
+
+/**
+ * A step through the [`colors`](https://npmjs.org/package/colors) library.
+ * This step ignores the `String.prototype` modifying part of the `colors` library.
+ */
+class ColorsStep extends TaintTracking::SharedTaintStep {
+  override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(API::CallNode call |
+      call = API::moduleImport(["colors", "colors/safe"]).getAMember*().getACall()
+    |
+      pred = call.getArgument(0) and
+      succ = call
+    )
+  }
+}

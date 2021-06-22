@@ -32,10 +32,12 @@ const server = http.createServer((req, res) => {
 });
 
 const ansiColors = require('ansi-colors');
+const colors = require('colors');
 
 const server2 = http.createServer((req, res) => {
     let q = url.parse(req.url, true);
     let username = q.query.username;
 
     console.info(ansiColors.yellow.underline(username)); // NOT OK
+    console.info(colors.red.underline(username)); // NOT OK
 });
