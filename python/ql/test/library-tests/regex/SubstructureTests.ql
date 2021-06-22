@@ -19,3 +19,21 @@ class CharacterSetTest extends InlineExpectationsTest {
     )
   }
 }
+
+class CharacterRangeTest extends InlineExpectationsTest {
+  CharacterRangeTest() { this = "CharacterRangeTest" }
+
+  override string getARelevantTag() { result = "charRange" }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    location.getFile().getBaseName() = "charRangeTest.py" and
+    exists(Regex re, int start, int lower_end, int upper_start, int end |
+      re.charRange(_, start, lower_end, upper_start, end) and
+      location = re.getLocation() and
+      element = re.toString().substring(start, end) and
+      value = start + ":" + lower_end + "-" + upper_start + ":" + end and
+      tag = "charRange"
+    )
+  }
+}

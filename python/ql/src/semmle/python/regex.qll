@@ -134,10 +134,25 @@ abstract class RegexString extends Expr {
       (
         index = 1 and result = true // if a '[' is first in the string (among brackets), it starts a char set
         or
-        exists(int p |
-          char_set_delimiter(index - 1, p) = false and // if it is preceded by a closing bracket, it starts a char set
-          if char_set_delimiter(index - 2, p) = true // but the closing bracket only closes...
-          then result = char_set_start(p - 1).booleanNot() // ...if it is not the first in a char set
+        index > 1 and
+        not char_set_delimiter(index - 1, _) = false and
+        result = false
+        or
+        exists(int p1 |
+          char_set_delimiter(index - 1, p1) = false and // if it is preceded by a closing bracket, it starts a char set
+          if
+            exists(int p2 |
+              p1 = p2 + 1
+              or
+              this.getChar(p2 + 1) = "^" and
+              p1 = p2 + 2
+            |
+              char_set_delimiter(index - 2, p2) = true // but the closing bracket only closes...
+            )
+          then
+            exists(int p2 | char_set_delimiter(index - 2, p2) = true |
+              result = char_set_start(p2).booleanNot() // ...if it is not the first in a char set
+            )
           else result = true
         )
       )
@@ -154,11 +169,7 @@ abstract class RegexString extends Expr {
     )
   }
 
-  // This is imprecise, consider the example:
-  //    r'[[]'
-  // where we would report both `start`=0 and `start`=1.
   predicate char_set_start(int start, int end) {
-    // this.nonEscapedCharAt(start) = "[" and
     this.char_set_start(start) = true and
     (
       this.getChar(start + 1) = "^" and end = start + 2
@@ -229,26 +240,19 @@ abstract class RegexString extends Expr {
     (
       index in [1, 2] and result = false
       or
-      exists(int lower_start, int connector_start, int upper_start |
-        this.char_set_token(charset_start, index - 2, lower_start, _) and
-        not this.nonEscapedCharAt(lower_start) = "-" and
+      index > 2 and
+      exists(int connector_start |
         this.char_set_token(charset_start, index - 1, connector_start, _) and
         this.nonEscapedCharAt(connector_start) = "-" and
-        this.char_set_token(charset_start, index, upper_start, _) and
-        not this.nonEscapedCharAt(upper_start) = "-" and
         result =
           this.charRangeEnd(charset_start, index - 2)
               .booleanNot()
               .booleanAnd(this.charRangeEnd(charset_start, index - 1).booleanNot())
       )
       or
-      not exists(int lower_start, int connector_start, int upper_start |
-        this.char_set_token(charset_start, index - 2, lower_start, _) and
-        not this.nonEscapedCharAt(lower_start) = "-" and
+      not exists(int connector_start |
         this.char_set_token(charset_start, index - 1, connector_start, _) and
-        this.nonEscapedCharAt(connector_start) = "-" and
-        this.char_set_token(charset_start, index, upper_start, _) and
-        not this.nonEscapedCharAt(upper_start) = "-"
+        this.nonEscapedCharAt(connector_start) = "-"
       ) and
       result = false
     )
@@ -305,14 +309,18 @@ abstract class RegexString extends Expr {
 
   predicate escapedCharacter(int start, int end) {
     this.escapingChar(start) and
-    not exists(this.getText().substring(start + 1, end + 1).toInt()) and
+    not this.numbered_backreference(start, _, _) and
     (
       // hex value \xhh
       this.getChar(start + 1) = "x" and end = start + 4
       or
       // octal value \ooo
       end in [start + 2 .. start + 4] and
-      exists(this.getText().substring(start + 1, end).toInt())
+      this.getText().substring(start + 1, end).toInt() >= 0 and
+      not (
+        end < start + 4 and
+        exists(this.getText().substring(start + 1, end + 1).toInt())
+      )
       or
       // 16-bit hex value \uhhhh
       this.getChar(start + 1) = "u" and end = start + 6
@@ -324,6 +332,7 @@ abstract class RegexString extends Expr {
       or
       // escape not handled above, update when adding a new case
       not this.getChar(start + 1) in ["x", "u", "U", "N"] and
+      not exists(this.getChar(start + 1).toInt()) and
       end = start + 2
     )
   }
@@ -619,6 +628,7 @@ abstract class RegexString extends Expr {
 
   private predicate numbered_backreference(int start, int end, int value) {
     this.escapingChar(start) and
+    not this.getChar(start + 1) = "0" and
     exists(string text, string svalue, int len |
       end = start + len and
       text = this.getText() and
@@ -627,7 +637,7 @@ abstract class RegexString extends Expr {
       svalue = text.substring(start + 1, start + len) and
       value = svalue.toInt() and
       not exists(text.substring(start + 1, start + len + 1).toInt()) and
-      value != 0
+      value > 0
     )
   }
 

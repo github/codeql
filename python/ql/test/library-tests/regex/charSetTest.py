@@ -10,6 +10,11 @@ re.compile("[.][.]") #$ charSet=0:3 charSet=3:6
 re.compile("[[]]") #$ charSet=0:3
 re.compile("[^]]") #$ charSet=0:4
 re.compile("[^-]") #$ charSet=0:4
+re.compile("[]-[]") #$ charSet=0:5
+re.compile("[^]-[]") #$ charSet=0:6
+
+re.compile("]]][[[[]") #$ charSet=3:8
+
 
 #ODASA-3985
 #Half Surrogate pairs
