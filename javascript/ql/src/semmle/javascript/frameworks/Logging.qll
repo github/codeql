@@ -252,3 +252,17 @@ class ColoretteStep extends TaintTracking::SharedTaintStep {
     )
   }
 }
+
+/**
+ * A step through the [`cli-highlight`](https://npmjs.org/package/cli-highlight) library.
+ */
+class CliHighlightStep extends TaintTracking::SharedTaintStep {
+  override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(API::CallNode call |
+      call = API::moduleImport("cli-highlight").getMember("highlight").getACall()
+    |
+      pred = call.getArgument(0) and
+      succ = call
+    )
+  }
+}
