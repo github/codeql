@@ -11,7 +11,7 @@ import filecmp
 This script compares the generated CSV coverage files with the ones in the codebase.
 """
 
-artifacts_worflow_name = "Check framework coverage changes"
+artifacts_workflow_name = "Check framework coverage changes"
 
 
 def check_file_exists(file):
@@ -46,24 +46,24 @@ def compare_files_str(file1, file2):
     return ret
 
 
+def download_artifact(repo, name, dir, run_id):
+    utils.subprocess_run(["gh", "run", "download", "--repo",
+                         repo, "--name", name, "--dir", dir, str(run_id)])
+
+
 def write_diff_for_run(output_file, repo, run_id):
     folder1 = "out_base"
     folder2 = "out_merge"
     try:
-        utils.subprocess_run(["gh", "run", "download", "--repo", repo, "--name",
-                              "csv-framework-coverage-base", "--dir", folder1, str(run_id)])
-        utils.subprocess_run(["gh", "run", "download", "--repo", repo, "--name",
-                              "csv-framework-coverage-merge", "--dir", folder2, str(run_id)])
-        utils.subprocess_run(["gh", "run", "download", "--repo", repo, "--name",
-                              "pr", "--dir", "pr", str(run_id)])
+        download_artifact(repo, "csv-framework-coverage-base", folder1, run_id)
+        download_artifact(
+            repo, "csv-framework-coverage-merge", folder2, run_id)
 
         compare_folders(folder1, folder2, output_file)
     finally:
-        if os.path.isdir(folder1):
-            shutil.rmtree(folder1)
-
-        if os.path.isdir(folder2):
-            shutil.rmtree(folder2)
+        for folder in [folder1, folder2]:
+            if os.path.isdir(folder):
+                shutil.rmtree(folder)
 
 
 def get_comment_text(output_file, repo, run_id):
@@ -97,6 +97,8 @@ def comment_pr(output_file, repo, run_id):
 
     # Store diff for current run
     write_diff_for_run(output_file, repo, run_id)
+
+    download_artifact(repo, "pr", "pr", run_id)
 
     try:
         with open("pr/NR") as file:
@@ -207,7 +209,7 @@ def get_previous_run_id(repo, run_id, pr_number):
     pr_repo = this_run["head_repository"]
 
     # Get all previous runs that match branch, repo and workflow name:
-    ids = utils.subprocess_check_output(["gh", "api", "-X", "GET", "repos/" + repo + "/actions/runs", "-f", "event=pull_request", "-f", "status=success", "-f", "name=\"" + artifacts_worflow_name + "\"", "--jq",
+    ids = utils.subprocess_check_output(["gh", "api", "-X", "GET", "repos/" + repo + "/actions/runs", "-f", "event=pull_request", "-f", "status=success", "-f", "name=\"" + artifacts_workflow_name + "\"", "--jq",
                                         "[.workflow_runs.[] | select(.head_branch==\"" + pr_branch + "\" and .head_repository.full_name==\"" + pr_repo + "\") | { created_at: .created_at, run_id: .id}] | sort_by(.created_at) | reverse | [.[].run_id]"])
 
     ids = json.loads(ids)
@@ -216,8 +218,7 @@ def get_previous_run_id(repo, run_id, pr_number):
                         " in the list of matching runs.")
 
     for previous_run_id in ids[1:]:
-        utils.subprocess_run(["gh", "run", "download", "--repo", repo,
-                             "--name", "pr", "--dir", "prev_run_pr", str(previous_run_id)])
+        download_artifact(repo, "pr", "prev_run_pr", previous_run_id)
 
         try:
             with open("prev_run_pr/NR") as file:
