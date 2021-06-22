@@ -146,3 +146,38 @@ class LDAPEscape extends DataFlow::Node {
    */
   DataFlow::Node getAnInput() { result = range.getAnInput() }
 }
+
+/**
+ * An operation that sends an email.
+ */
+abstract class EmailSender extends DataFlow::CallCfgNode {
+  /**
+   * Gets a data flow node holding the plaintext version of the email body.
+   */
+  abstract DataFlow::Node getPlainTextBody();
+
+  /**
+   * Gets a data flow node holding the html version of the email body.
+   */
+  abstract DataFlow::Node getHtmlBody();
+
+  /**
+   * Gets a data flow node holding the recipients of the email.
+   */
+  abstract DataFlow::Node getTo();
+
+  /**
+   * Gets a data flow node holding the senders of the email.
+   */
+  abstract DataFlow::Node getFrom();
+
+  /**
+   * Gets a data flow node holding the subject of the email.
+   */
+  abstract DataFlow::Node getSubject();
+
+  /**
+   * Gets a data flow node that refers to the HTML body or plaintext body of the email.
+   */
+  DataFlow::Node getABody() { result in [getPlainTextBody(), getHtmlBody()] }
+}
