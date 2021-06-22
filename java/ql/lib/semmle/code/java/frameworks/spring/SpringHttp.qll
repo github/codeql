@@ -5,6 +5,8 @@
 
 import java
 private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.security.XSS as XSS
 
 /** The class `org.springframework.http.HttpEntity` or an instantiation of it. */
 class SpringHttpEntity extends Class {
@@ -138,5 +140,98 @@ private class SpringHttpFlowStep extends SummaryModelCsv {
         "org.springframework.http;HttpHeaders;true;formatHeaders;(MultiValueMap);;Element of MapValue of Argument[0];ReturnValue;taint",
         "org.springframework.http;HttpHeaders;true;encodeBasicAuth;(String,String,Charset);;Argument[0..1];ReturnValue;taint"
       ]
+  }
+}
+
+private string getSpringConstantContentType(FieldAccess e) {
+  e.getQualifier().getType().(RefType).hasQualifiedName("org.springframework.http", "MediaType") and
+  exists(string fieldName | e.getField().hasName(fieldName) |
+    fieldName = "APPLICATION_ATOM_XML" and result = "application/atom+xml"
+    or
+    fieldName = "APPLICATION_CBOR" and result = "application/cbor"
+    or
+    fieldName = "APPLICATION_FORM_URLENCODED" and result = "application/x-www-form-urlencoded"
+    or
+    fieldName = "APPLICATION_JSON" and result = "application/json"
+    or
+    fieldName = "APPLICATION_JSON_UTF8" and result = "application/json;charset=UTF-8"
+    or
+    fieldName = "APPLICATION_NDJSON" and result = "application/x-ndjson"
+    or
+    fieldName = "APPLICATION_OCTET_STREAM" and result = "application/octet-stream"
+    or
+    fieldName = "APPLICATION_PDF" and result = "application/pdf"
+    or
+    fieldName = "APPLICATION_PROBLEM_JSON" and result = "application/problem+json"
+    or
+    fieldName = "APPLICATION_PROBLEM_JSON_UTF8" and
+    result = "application/problem+json;charset=UTF-8"
+    or
+    fieldName = "APPLICATION_PROBLEM_XML" and result = "application/problem+xml"
+    or
+    fieldName = "APPLICATION_RSS_XML" and result = "application/rss+xml"
+    or
+    fieldName = "APPLICATION_STREAM_JSON" and result = "application/stream+json"
+    or
+    fieldName = "APPLICATION_XHTML_XML" and result = "application/xhtml+xml"
+    or
+    fieldName = "APPLICATION_XML" and result = "application/xml"
+    or
+    fieldName = "IMAGE_GIF" and result = "image/gif"
+    or
+    fieldName = "IMAGE_JPEG" and result = "image/jpeg"
+    or
+    fieldName = "IMAGE_PNG" and result = "image/png"
+    or
+    fieldName = "MULTIPART_FORM_DATA" and result = "multipart/form-data"
+    or
+    fieldName = "MULTIPART_MIXED" and result = "multipart/mixed"
+    or
+    fieldName = "MULTIPART_RELATED" and result = "multipart/related"
+    or
+    fieldName = "TEXT_EVENT_STREAM" and result = "text/event-stream"
+    or
+    fieldName = "TEXT_HTML" and result = "text/html"
+    or
+    fieldName = "TEXT_MARKDOWN" and result = "text/markdown"
+    or
+    fieldName = "TEXT_PLAIN" and result = "text/plain"
+    or
+    fieldName = "TEXT_XML" and result = "text/xml"
+  )
+}
+
+private predicate isXssSafeContentTypeExpr(Expr e) {
+  XSS::isXssSafeContentType(e.(CompileTimeConstantExpr).getStringValue()) or
+  XSS::isXssSafeContentType(getSpringConstantContentType(e))
+}
+
+private DataFlow::Node getASanitizedBodyBuilder() {
+  result.asExpr() =
+    any(MethodAccess ma |
+      ma.getCallee()
+          .hasQualifiedName("org.springframework.http", "ResponseEntity<>$BodyBuilder",
+            "contentType") and
+      isXssSafeContentTypeExpr(ma.getArgument(0))
+    )
+  or
+  result.asExpr() =
+    any(MethodAccess ma |
+      ma.getQualifier() = getASanitizedBodyBuilder().asExpr() and
+      ma.getType()
+          .(RefType)
+          .hasQualifiedName("org.springframework.http", "ResponseEntity<>$BodyBuilder")
+    )
+  or
+  DataFlow::localFlow(getASanitizedBodyBuilder(), result)
+}
+
+private class SanitizedBodyCall extends XSS::XssSanitizer {
+  SanitizedBodyCall() {
+    this.asExpr() =
+      any(MethodAccess ma |
+        ma.getQualifier() = getASanitizedBodyBuilder().asExpr() and
+        ma.getCallee().hasName("body")
+      ).getArgument(0)
   }
 }

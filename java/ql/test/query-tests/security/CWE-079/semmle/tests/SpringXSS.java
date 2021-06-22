@@ -28,11 +28,11 @@ public class SpringXSS {
     }
     else {
       if(chainDirectly) {
-        return builder.contentType(MediaType.APPLICATION_JSON).body(userControlled); // $SPURIOUS: xss
+        return builder.contentType(MediaType.APPLICATION_JSON).body(userControlled);
       }
       else {
         ResponseEntity.BodyBuilder builder2 = builder.contentType(MediaType.APPLICATION_JSON);
-        return builder2.body(userControlled); // $SPURIOUS: xss
+        return builder2.body(userControlled);
       }
     }
 
