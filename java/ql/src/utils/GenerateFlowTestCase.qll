@@ -172,6 +172,7 @@ newtype TTestCase =
       string namespace, string type, boolean subtypes, string name, string signature, string ext,
       string inputSpec, string outputSpec
     |
+      any(TargetSummaryModelCsv tsmc).row(row) and
       summaryModel(namespace, type, subtypes, name, signature, ext, inputSpec, outputSpec, kind, row) and
       callable = interpretElement(namespace, type, subtypes, name, signature, ext) and
       Private::External::interpretSpec(inputSpec, input) and
