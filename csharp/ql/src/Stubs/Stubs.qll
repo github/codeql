@@ -13,7 +13,6 @@
 
 import csharp
 private import semmle.code.csharp.frameworks.System
-private import semmle.code.dotnet.DotNet as DotNet
 
 /** An element that should be in the generated code. */
 abstract class GeneratedElement extends Element { }
@@ -22,8 +21,8 @@ abstract class GeneratedElement extends Element { }
 abstract class GeneratedMember extends Member, GeneratedElement { }
 
 /** Class representing all `struct`s, such as user defined ones and built-in ones, like `int`. */
-private class StructEx extends Type {
-  StructEx() {
+private class StructExt extends Type {
+  StructExt() {
     this instanceof Struct or
     this instanceof SimpleType or
     this instanceof VoidType or
@@ -39,7 +38,7 @@ abstract private class GeneratedType extends Type, GeneratedElement {
       or
       this instanceof Class
       or
-      this instanceof StructEx
+      this instanceof StructExt
       or
       this instanceof Enum
       or
@@ -88,7 +87,7 @@ abstract private class GeneratedType extends Type, GeneratedElement {
   private string stubKeyword() {
     this instanceof Interface and result = "interface"
     or
-    this instanceof StructEx and result = "struct"
+    this instanceof StructExt and result = "struct"
     or
     this instanceof Class and result = "class"
     or
@@ -333,7 +332,7 @@ private class GeneratedNamespace extends Namespace, GeneratedElement {
   }
 
   private predicate isInAssembly(Assembly assembly) {
-    any(GeneratedType gt | gt.(DotNet::ValueOrRefType).getDeclaringNamespace() = this)
+    any(GeneratedType gt | gt.(ValueOrRefType).getDeclaringNamespace() = this)
         .isInAssembly(assembly)
     or
     this.getChildNamespace(_).isInAssembly(assembly)
@@ -354,7 +353,7 @@ private class GeneratedNamespace extends Namespace, GeneratedElement {
     this.isInAssembly(assembly) and
     result =
       concat(GeneratedType gt |
-        gt.(DotNet::ValueOrRefType).getDeclaringNamespace() = this and gt.isInAssembly(assembly)
+        gt.(ValueOrRefType).getDeclaringNamespace() = this and gt.isInAssembly(assembly)
       |
         gt.getStub(assembly) order by gt.getName()
       )
@@ -794,7 +793,7 @@ private string stubConstructor(Constructor c, Assembly assembly) {
   then result = ""
   else
     if
-      not c.getDeclaringType() instanceof StructEx or
+      not c.getDeclaringType() instanceof StructExt or
       c.getNumberOfParameters() > 0
     then
       result =
