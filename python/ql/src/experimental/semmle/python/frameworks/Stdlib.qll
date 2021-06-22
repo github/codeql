@@ -64,15 +64,14 @@ private module Re {
    *
    * See https://docs.python.org/3/library/re.html#regular-expression-objects
    */
-  private class CompiledRegex extends DataFlow::CallCfgNode, RegexExecution::Range {
+  private class CompiledRegex extends DataFlow::MethodCallNode, RegexExecution::Range {
     DataFlow::Node regexNode;
 
     CompiledRegex() {
-      exists(DataFlow::CallCfgNode patternCall, DataFlow::AttrRead reMethod |
-        this.getFunction() = reMethod and
+      exists(DataFlow::MethodCallNode patternCall |
         patternCall = API::moduleImport("re").getMember("compile").getACall() and
-        patternCall.flowsTo(reMethod.getObject()) and
-        reMethod.getAttributeName() instanceof RegexExecutionMethods and
+        patternCall.flowsTo(this.getObject()) and
+        this.getMethodName() instanceof RegexExecutionMethods and
         regexNode = patternCall.getArg(0)
       )
     }

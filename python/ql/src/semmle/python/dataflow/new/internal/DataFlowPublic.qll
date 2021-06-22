@@ -181,6 +181,45 @@ class CallCfgNode extends CfgNode, LocalSourceNode {
 }
 
 /**
+ * A data-flow node corresponding to a method call, that is `foo.bar(...)`.
+ *
+ * Also covers the case where the method lookup is done separately from the call itself, as in
+ * `temp = foo.bar; temp(...)`. Note that this is only tracked through local scope.
+ */
+class MethodCallNode extends CallCfgNode {
+  AttrRead method_lookup;
+
+  MethodCallNode() { method_lookup = this.getFunction().getALocalSource() }
+
+  /**
+   * Gets the name of the method being invoked (the `bar` in `foo.bar(...)`) if it can be determined.
+   *
+   * Note that this method may have multiple results if a single call node represents calls to
+   * multiple different objects and methods. If you want to link up objects and method names
+   * accurately, use the `calls` method instead.
+   */
+  string getMethodName() { result = method_lookup.getAttributeName() }
+
+  /**
+   * Gets the data-flow node corresponding to the object receiving this call. That is, the `foo` in
+   * `foo.bar(...)`.
+   *
+   * Note that this method may have multiple results if a single call node represents calls to
+   * multiple different objects and methods. If you want to link up objects and method names
+   * accurately, use the `calls` method instead.
+   */
+  Node getObject() { result = method_lookup.getObject() }
+
+  /** Holds if this data-flow node calls method `methodName` on the object node `object`. */
+  predicate calls(Node object, string methodName) {
+    // As `getObject` and `getMethodName` may both have multiple results, we must look up the object
+    // and method name directly on `method_lookup`.
+    object = method_lookup.getObject() and
+    methodName = method_lookup.getAttributeName()
+  }
+}
+
+/**
  * An expression, viewed as a node in a data flow graph.
  *
  * Note that because of control-flow splitting, one `Expr` may correspond
