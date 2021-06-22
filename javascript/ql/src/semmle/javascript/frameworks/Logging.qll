@@ -228,3 +228,15 @@ class ColorsStep extends TaintTracking::SharedTaintStep {
     )
   }
 }
+
+/**
+ * A step through the [`wrap-ansi`](https://npmjs.org/package/wrap-ansi) library.
+ */
+class WrapAnsiStep extends TaintTracking::SharedTaintStep {
+  override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(API::CallNode call | call = API::moduleImport("wrap-ansi").getACall() |
+      pred = call.getArgument(0) and
+      succ = call
+    )
+  }
+}
