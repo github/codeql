@@ -452,3 +452,21 @@ private class LibraryAccess extends FileSystemAccess, DataFlow::InvokeNode {
 
   override DataFlow::Node getAPathArgument() { result = getArgument(pathArgument) }
 }
+
+/**
+ * A call to the library [`chokidar`](https://www.npmjs.com/package/chokidar), where a call to `on` receives file names.
+ */
+class Chokidar extends FileNameProducer, FileSystemAccess, API::CallNode {
+  Chokidar() { this = API::moduleImport("chokidar").getMember("watch").getACall() }
+
+  override DataFlow::Node getAPathArgument() { result = getArgument(0) }
+
+  override DataFlow::Node getAFileName() {
+    exists(DataFlow::CallNode onCall, int pathIndex |
+      onCall = getAChainedMethodCall("on") and
+      if onCall.getArgument(0).mayHaveStringValue("all") then pathIndex = 1 else pathIndex = 0
+    |
+      result = onCall.getCallback(1).getParameter(pathIndex)
+    )
+  }
+}
