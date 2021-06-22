@@ -320,3 +320,15 @@ class ChalkStep extends TaintTracking::SharedTaintStep {
     )
   }
 }
+
+/**
+ * A step through the [`strip-ansi`](https://npmjs.org/package/strip-ansi) library.
+ */
+class StripAnsiStep extends TaintTracking::SharedTaintStep {
+  override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(API::CallNode call | call = API::moduleImport("strip-ansi").getACall() |
+      pred = call.getArgument(0) and
+      succ = call
+    )
+  }
+}
