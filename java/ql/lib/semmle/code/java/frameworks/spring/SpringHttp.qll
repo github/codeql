@@ -266,24 +266,32 @@ private predicate isXssSafeContentTypeExpr(Expr e) {
   XSS::isXssSafeContentType(getSpringConstantContentType(e))
 }
 
-private DataFlow::Node getASanitizedBodyBuilder() {
+private DataFlow::Node getABodyBuilderWithExplicitContentType(Expr contentType) {
   result.asExpr() =
     any(MethodAccess ma |
       ma.getCallee()
           .hasQualifiedName("org.springframework.http", "ResponseEntity<>$BodyBuilder",
             "contentType") and
-      isXssSafeContentTypeExpr(ma.getArgument(0))
+      contentType = ma.getArgument(0)
     )
   or
   result.asExpr() =
     any(MethodAccess ma |
-      ma.getQualifier() = getASanitizedBodyBuilder().asExpr() and
+      ma.getQualifier() = getABodyBuilderWithExplicitContentType(contentType).asExpr() and
       ma.getType()
           .(RefType)
           .hasQualifiedName("org.springframework.http", "ResponseEntity<>$BodyBuilder")
     )
   or
-  DataFlow::localFlow(getASanitizedBodyBuilder(), result)
+  DataFlow::localFlow(getABodyBuilderWithExplicitContentType(contentType), result)
+}
+
+private DataFlow::Node getASanitizedBodyBuilder() {
+  result = getABodyBuilderWithExplicitContentType(any(Expr e | isXssSafeContentTypeExpr(e)))
+}
+
+private DataFlow::Node getAVulnerableBodyBuilder() {
+  result = getABodyBuilderWithExplicitContentType(any(Expr e | isXssVulnerableContentTypeExpr(e)))
 }
 
 private class SanitizedBodyCall extends XSS::XssSanitizer {
@@ -291,6 +299,24 @@ private class SanitizedBodyCall extends XSS::XssSanitizer {
     this.asExpr() =
       any(MethodAccess ma |
         ma.getQualifier() = getASanitizedBodyBuilder().asExpr() and
+        ma.getCallee().hasName("body")
+      ).getArgument(0)
+  }
+}
+
+/**
+ * Mark BodyBuilder.body calls with an explicitly vulnerable Content-Type as themselves sinks,
+ * as the eventual return site from a RequestHandler may have a benign @Produces annotation that
+ * would otherwise sanitise the result.
+ *
+ * Note these are SinkBarriers so that a return from a RequestHandlerMethod is not also flagged
+ * for the same path.
+ */
+private class ExplicitlyVulnerableBodyArgument extends XSS::XssSinkBarrier {
+  ExplicitlyVulnerableBodyArgument() {
+    this.asExpr() =
+      any(MethodAccess ma |
+        ma.getQualifier() = getAVulnerableBodyBuilder().asExpr() and
         ma.getCallee().hasName("body")
       ).getArgument(0)
   }

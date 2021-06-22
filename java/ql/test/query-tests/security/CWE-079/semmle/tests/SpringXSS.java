@@ -75,7 +75,7 @@ public class SpringXSS {
 
   @GetMapping(value = "/xyz", produces = MediaType.APPLICATION_JSON_VALUE)
   public static ResponseEntity<String> methodContentTypeSafeOverriddenWithUnsafe(String userControlled) {
-    return ResponseEntity.ok().contentType(MediaType.TEXT_HTML).body(userControlled); // $MISSING: xss
+    return ResponseEntity.ok().contentType(MediaType.TEXT_HTML).body(userControlled); // $xss
   }
 
   @GetMapping(value = "/xyz", produces = MediaType.TEXT_HTML_VALUE)
