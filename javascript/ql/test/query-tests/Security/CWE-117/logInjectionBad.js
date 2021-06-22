@@ -39,6 +39,7 @@ const highlight = require('cli-highlight').highlight;
 var clc = require("cli-color");
 import sliceAnsi from 'slice-ansi';
 import kleur from 'kleur';
+const chalk = require('chalk');
 
 const server2 = http.createServer((req, res) => {
     let q = url.parse(req.url, true);
@@ -52,4 +53,5 @@ const server2 = http.createServer((req, res) => {
     console.log(clc.red.bgWhite.underline(username)); // NOT OK
     console.log(sliceAnsi(colors.red.underline(username), 20, 30)); // NOT OK
     console.log(kleur.blue().bold().underline(username)); // NOT OK
+    console.log(chalk.underline.bgBlue(username)); // NOT OK
 });

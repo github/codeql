@@ -308,3 +308,15 @@ class KleurStep extends TaintTracking::SharedTaintStep {
     )
   }
 }
+
+/**
+ * A step through the [`chalk`](https://npmjs.org/package/chalk) library.
+ */
+class ChalkStep extends TaintTracking::SharedTaintStep {
+  override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(API::CallNode call | call = API::moduleImport("chalk").getAMember*().getACall() |
+      pred = call.getArgument(0) and
+      succ = call
+    )
+  }
+}
