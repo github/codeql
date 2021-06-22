@@ -37,6 +37,7 @@ import wrapAnsi from 'wrap-ansi';
 import { blue, bold, underline } from "colorette"
 const highlight = require('cli-highlight').highlight;
 var clc = require("cli-color");
+import sliceAnsi from 'slice-ansi';
 
 const server2 = http.createServer((req, res) => {
     let q = url.parse(req.url, true);
@@ -48,4 +49,5 @@ const server2 = http.createServer((req, res) => {
     console.log(underline(bold(blue(username)))); // NOT OK
     console.log(highlight(username, {language: 'sql', ignoreIllegals: true})); // NOT OK
     console.log(clc.red.bgWhite.underline(username)); // NOT OK
+    console.log(sliceAnsi(colors.red.underline(username), 20, 30)); // NOT OK
 });

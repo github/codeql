@@ -278,3 +278,15 @@ class CliColorStep extends TaintTracking::SharedTaintStep {
     )
   }
 }
+
+/**
+ * A step through the [`slice-ansi`](https://npmjs.org/package/slice-ansi) library.
+ */
+class SliceAnsiStep extends TaintTracking::SharedTaintStep {
+  override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(API::CallNode call | call = API::moduleImport("slice-ansi").getACall() |
+      pred = call.getArgument(0) and
+      succ = call
+    )
+  }
+}
