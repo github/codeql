@@ -18,9 +18,6 @@ private module Flask {
   }
 
   private class FlaskMail extends DataFlow::CallCfgNode, EmailSender {
-    /** A message variable to avoid multiple results in case consequential results are needed */
-    DataFlow::CallCfgNode message;
-
     FlaskMail() {
       this =
         [flaskMailInstance(), flaskMailInstance().getMember("connect").getReturn()]
