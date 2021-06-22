@@ -8,6 +8,7 @@ import glob
 import shlex
 from shutil import copyfile
 
+
 def print_usage(exit_code=1):
     print("Usage: python3 make_stubs.py testDir stubDir\n",
           "testDir: the directory containing the qltest to be stubbed. Should contain an `options0` file pointing to the jars to stub, and an `options1` file pointing to `stubdir`\n",
@@ -36,6 +37,7 @@ def check_file_exists(path):
         print(path, "does not exist or is not a regular file")
         exit(1)
 
+
 check_dir_exists(testDir)
 check_dir_exists(stubDir)
 
@@ -49,7 +51,8 @@ check_file_exists(options1File)
 # Does it contain a .ql file and a .java file?
 
 foundJava = any(f.endswith(".java") for f in os.listdir(testDir))
-foundQL = any(f.endswith(".ql") or f.endswith(".qlref") for f in os.listdir(testDir))
+foundQL = any(f.endswith(".ql") or f.endswith(".qlref")
+              for f in os.listdir(testDir))
 
 if not foundQL:
     print("Test directory does not contain .ql files. Please specify a working qltest directory.")
@@ -70,18 +73,24 @@ dbDir = os.path.join(testDir, os.path.basename(testDir) + ".testproj")
 def print_javac_output():
     logFiles = glob.glob(os.path.join(dbDir, "log", "javac-output*"))
 
-    print("\nJavac output:\n")
+    if not(logFiles):
+        print("\nNo javac output found.")
+    else:
+        logFile = os.path.join(dbDir, "log", logFiles[0])
+        print("\nJavac output:\n")
 
-    with open(logFile) as f:
-        for line in f:
-            b1 = line.find(']')
-            b2 = line.find(']', b1+1)
-            print(line[b2+2:], end="")
+        with open(logFile) as f:
+            for line in f:
+                b1 = line.find(']')
+                b2 = line.find(']', b1+1)
+                print(line[b2+2:], end="")
+
 
 def run(cmd):
     """Runs the given command, returning the exit code (nonzero on failure)"""
     print('\nRunning: ' + shlex.join(cmd) + '\n')
     return subprocess.call(cmd)
+
 
 print("Stubbing qltest in", testDir)
 
