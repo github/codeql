@@ -105,12 +105,12 @@ public class SpringXSS {
   private static class ClassContentTypeSafe {
     @GetMapping(value = "/abc")
     public ResponseEntity<String> test(String userControlled) {
-      return ResponseEntity.ok(userControlled); // $SPURIOUS: xss
+      return ResponseEntity.ok(userControlled);
     }
 
     @GetMapping(value = "/abc")
     public String testDirectReturn(String userControlled) {
-      return userControlled; // $SPURIOUS: xss
+      return userControlled;
     }
 
     @GetMapping(value = "/xyz", produces = {"text/html"})

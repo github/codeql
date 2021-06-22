@@ -100,11 +100,23 @@ class SpringResponseBodyAnnotationType extends AnnotationType {
   }
 }
 
+private class SpringRequestMappingAnnotation extends Annotation {
+  SpringRequestMappingAnnotation() { this.getType() instanceof SpringRequestMappingAnnotationType }
+}
+
+private Expr getProducesExpr(RefType rt) {
+  result = rt.getAnAnnotation().(SpringRequestMappingAnnotation).getValue("produces")
+  or
+  rt.getAnAnnotation().(SpringRequestMappingAnnotation).getValue("produces").(ArrayInit).getSize() =
+    0 and
+  result = getProducesExpr(rt.getASupertype())
+}
+
 /**
  * A method on a Spring controller that is executed in response to a web request.
  */
 class SpringRequestMappingMethod extends SpringControllerMethod {
-  Annotation requestMappingAnnotation;
+  SpringRequestMappingAnnotation requestMappingAnnotation;
 
   SpringRequestMappingMethod() {
     // Any method that declares the @RequestMapping annotation, or overrides a method that declares
@@ -112,8 +124,7 @@ class SpringRequestMappingMethod extends SpringControllerMethod {
     // not declared with @Inherited.
     exists(Method superMethod |
       this.overrides*(superMethod) and
-      requestMappingAnnotation = superMethod.getAnAnnotation() and
-      requestMappingAnnotation.getType() instanceof SpringRequestMappingAnnotationType
+      requestMappingAnnotation = superMethod.getAnAnnotation()
     )
   }
 
@@ -121,7 +132,12 @@ class SpringRequestMappingMethod extends SpringControllerMethod {
   SpringRequestMappingParameter getARequestParameter() { result = getAParameter() }
 
   /** Gets the "produces" @RequestMapping annotation value, if present. */
-  Expr getProducesExpr() { result = requestMappingAnnotation.getValue("produces") }
+  Expr getProducesExpr() {
+    result = requestMappingAnnotation.getValue("produces")
+    or
+    requestMappingAnnotation.getValue("produces").(ArrayInit).getSize() = 0 and
+    result = getProducesExpr(this.getDeclaringType())
+  }
 
   /** Gets the "produces" @RequestMapping annotation value, if present. */
   Expr getAProducesExpr() {
