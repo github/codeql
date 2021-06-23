@@ -4,6 +4,10 @@ end
 
 class User < ApplicationRecord
   belongs_to :user_group
+
+  def self.authenticate(name, pass)
+    find(:first, :conditions => "name='#{name}' and pass='#{pass}'")
+  end
 end
 
 class Admin < User
@@ -30,6 +34,8 @@ class FooController < ActionController::Base
     SQL
 
     UserGroup.joins(:users).where("user.id = #{params[:id]}")
+
+    User.authenticate(params[:name], params[:pass])
   end
 end
 
