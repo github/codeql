@@ -59,12 +59,14 @@ predicate boundedBitwiseAnd(Expr e, Expr andExpr, Expr operand1, Expr operand2) 
 }
 
 /**
- * Holds if `e` is an operand of an operation that greatly reduces the range of possible values.
+ * Holds if `e` is an arithmetic expression that cannot overflow, or if `e` is an operand of an
+ * operation that may greatly reduces the range of possible values.
  */
 predicate bounded(Expr e) {
   (
     e instanceof UnaryArithmeticOperation or
-    e instanceof BinaryArithmeticOperation
+    e instanceof BinaryArithmeticOperation or
+    e instanceof AssignArithmeticOperation
   ) and
   not convertedExprMightOverflow(e)
   or
@@ -90,7 +92,7 @@ predicate bounded(Expr e) {
     boundedBitwiseAnd(e, andExpr, andExpr.getAnOperand(), andExpr.getAnOperand())
   )
   or
-  // Optimitically assume that a division always yields a much smaller value.
+  // Optimitically assume that a division or right shift always yields a much smaller value.
   boundedDiv(e, any(DivExpr div).getLeftOperand())
   or
   boundedDiv(e, any(AssignDivExpr div).getLValue())
