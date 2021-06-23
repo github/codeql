@@ -40,7 +40,7 @@ private predicate boundedBitwiseAnd(Expr e, Expr andExpr, Expr operand1, Expr op
 
 /**
  * Holds if `e` is an arithmetic expression that cannot overflow, or if `e` is an operand of an
- * operation that may greatly reduces the range of possible values.
+ * operation that may greatly reduce the range of possible values.
  */
 predicate bounded(Expr e) {
   (
