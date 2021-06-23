@@ -62,11 +62,7 @@ private module MarkupSafeModel {
 
       StringConcat() {
         node.getOp() instanceof Add and
-        (
-          instance().asCfgNode() = node.getLeft()
-          or
-          instance().asCfgNode() = node.getRight()
-        )
+        instance().asCfgNode() in [node.getLeft(), node.getRight()]
       }
     }
 
