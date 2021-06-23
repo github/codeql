@@ -71,7 +71,7 @@ private module Rsa {
       // hashing part
       exists(StrConst str, DataFlow::Node hashNameArg |
         hashNameArg in [this.getArg(2), this.getArgByName("hash_method")] and
-        DataFlow::exprNode(str).(DataFlow::LocalSourceNode).flowsTo(hashNameArg) and
+        DataFlow::exprNode(str) = hashNameArg.getALocalSource() and
         result.matchesName(str.getText())
       )
     }
@@ -114,7 +114,7 @@ private module Rsa {
     override Cryptography::CryptographicAlgorithm getAlgorithm() {
       exists(StrConst str, DataFlow::Node hashNameArg |
         hashNameArg in [this.getArg(1), this.getArgByName("method_name")] and
-        DataFlow::exprNode(str).(DataFlow::LocalSourceNode).flowsTo(hashNameArg) and
+        DataFlow::exprNode(str) = hashNameArg.getALocalSource() and
         result.matchesName(str.getText())
       )
     }
