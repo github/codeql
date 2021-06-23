@@ -330,4 +330,41 @@ module ExprNodes {
 
     final override VariableReadAccess getExpr() { result = ExprCfgNode.super.getExpr() }
   }
+
+  /** A control-flow node that wraps a `StringlikeLiteral` AST expression. */
+  class StringlikeLiteralCfgNode extends ExprCfgNode {
+    override StringlikeLiteral e;
+
+    final override StringlikeLiteral getExpr() { result = ExprCfgNode.super.getExpr() }
+  }
+
+  /** A control-flow node that wraps a `StringLiteral` AST expression. */
+  class StringLiteralCfgNode extends ExprCfgNode {
+    override StringLiteral e;
+
+    final override StringLiteral getExpr() { result = ExprCfgNode.super.getExpr() }
+  }
+
+  /** A control-flow node that wraps a `ComparisonOperation` AST expression. */
+  class ComparisonOperationCfgNode extends ExprCfgNode {
+    override ComparisonOperation e;
+
+    final override ComparisonOperation getExpr() { result = ExprCfgNode.super.getExpr() }
+
+    /** Whether left and right are a pair of operands for this comparison */
+    predicate operands(CfgNode left, CfgNode right) {
+      exists(Expr eleft, Expr eright | left.getNode() = eleft and right.getNode() = eright |
+        eleft = e.getLeftOperand() and eright = e.getRightOperand()
+      ) and
+      left.getBasicBlock().dominates(this.getBasicBlock()) and
+      right.getBasicBlock().dominates(this.getBasicBlock())
+    }
+  }
+
+  /** A control-flow node that wraps an `ElementReference` AST expression. */
+  class ElementReferenceCfgNode extends ExprCfgNode {
+    override ElementReference e;
+
+    final override ElementReference getExpr() { result = ExprCfgNode.super.getExpr() }
+  }
 }
