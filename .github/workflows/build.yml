@@ -81,7 +81,7 @@ jobs:
       - name: Build Query Pack
         run: |
           codeql/codeql pack create ql/src --output target/packs
-          PACK_FOLDER=$(readlink -f target/packs/github_codeql-ruby_*)
+          PACK_FOLDER=$(readlink -f target/packs/github/codeql-ruby/*)
           cp -r ql/src/codeql-suites "${PACK_FOLDER}"/
           (cd ql/src; find queries \( -name '*.rb' -o -name '*.erb' \) -exec cp "{}" "${PACK_FOLDER}/{}" \;)
       - name: Compile with previous CodeQL versions
