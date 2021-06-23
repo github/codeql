@@ -116,6 +116,18 @@ public class UnsafeCertTrustTest {
 		sslParameters.setEndpointIdentificationAlgorithm("HTTPS");
 	}
 
+	public void testSSLSocketEndpointIdSafeWithConditionalSanitizer(boolean safe) throws Exception {
+		SSLContext sslContext = SSLContext.getInstance("TLS");
+		SSLSocketFactory socketFactory = sslContext.getSocketFactory();
+		SSLSocket socket = (SSLSocket) socketFactory.createSocket();
+		if (safe) {
+			SSLParameters sslParameters = socket.getSSLParameters();
+			onSetSSLParameters(sslParameters);
+			socket.setSSLParameters(sslParameters);
+		}
+		socket.getOutputStream(); // Safe
+	}
+
 	public void testSocketEndpointIdNotSet() throws Exception {
 		SocketFactory socketFactory = SocketFactory.getDefault();
 		Socket socket = socketFactory.createSocket("www.example.com", 80);

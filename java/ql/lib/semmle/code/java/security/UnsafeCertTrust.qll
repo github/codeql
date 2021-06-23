@@ -55,9 +55,10 @@ abstract class SslUnsafeCertTrustSanitizer extends DataFlow::Node { }
  */
 private class SslConnectionWithSafeSslParameters extends SslUnsafeCertTrustSanitizer {
   SslConnectionWithSafeSslParameters() {
-    exists(SafeSslParametersFlowConfig config, DataFlow::Node safe |
+    exists(SafeSslParametersFlowConfig config, DataFlow::Node safe, DataFlow::Node sanitizer |
       config.hasFlowTo(safe) and
-      this = DataFlow::exprNode(safe.asExpr().(Argument).getCall().getQualifier())
+      sanitizer = DataFlow::exprNode(safe.asExpr().(Argument).getCall().getQualifier()) and
+      DataFlow::localFlow(sanitizer, this)
     )
   }
 }
@@ -72,7 +73,7 @@ private class SslEngineServerMode extends SslUnsafeCertTrustSanitizer {
       m.getDeclaringType().getASupertype*() instanceof SSLEngine and
       ma.getMethod() = m and
       ma.getArgument(0).(CompileTimeConstantExpr).getBooleanValue() = false and
-      this = DataFlow::exprNode(ma.getQualifier())
+      this.asExpr() = ma.getQualifier()
     )
   }
 }
