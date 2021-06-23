@@ -1,9 +1,0 @@
-[2021-06-14 08:53:53] [javac-extractor-9926] Starting extraction for:
-                                             sun.java.command=com.semmle.extractor.java.JavaExtractor --javacOptions -source 8 --strict-javac-errors --encoding UTF-8 --files SafeMacComparison.java UnsafeMacComparison.java
-                                             user.dir=/media/i504100/Artem_Flash_1T/codeql-bounties/codeql-repo/java/ql/src/experimental/Security/CWE/CWE-208
-[2021-06-14 08:53:54] [javac-extractor-9926] Javac init time: 0.6s
-[2021-06-14 08:53:54] [javac-extractor-9926] Javac attr time: 0.0s
-[2021-06-14 08:53:54] [javac-extractor-9926] Extractor time: 0.0s
-[2021-06-14 08:53:54] [javac-extractor-9926] Other time: 0.2s
-[2021-06-14 08:53:54] [javac-extractor-9926] Total time: 0.7s
-[2021-06-14 08:53:54] [javac-extractor-9926] [ERROR] 10 errors were reported by javac.

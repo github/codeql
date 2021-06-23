@@ -281,7 +281,6 @@ private predicate looksLikeResolveClassStep(DataFlow::Node fromNode, DataFlow::N
   |
     m.getReturnType() instanceof JacksonTypeDescriptorType and
     m.getName().toLowerCase().regexpMatch("resolve|load|class|type") and
-    m.fromSource() and
     arg.getType() instanceof TypeString and
     arg = fromNode.asExpr() and
     ma = toNode.asExpr()
