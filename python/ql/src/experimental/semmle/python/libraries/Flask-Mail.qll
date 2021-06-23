@@ -8,7 +8,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import experimental.semmle.python.Concepts
 private import semmle.python.ApiGraphs
 
-private module Flask {
+private module FlaskMail {
   /** https://pythonhosted.org/Flask-Mail/#module-flask_mail */
   private API::Node flaskMail() {
     result = API::moduleImport(["flask_mail", "flask_sendmail", "flask.ext.sendmail"])
