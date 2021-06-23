@@ -16,7 +16,8 @@ import cpp
 import semmle.code.cpp.controlflow.Guards
 
 /**
- * An operation on a filename.
+ * An operation on a filename that is likely to modify the corresponding file
+ * and may return an indication of success.
  *
  * Note: we're not interested in operations on file descriptors, as they
  * are better behaved.
@@ -48,7 +49,8 @@ FunctionCall filenameOperation(Expr path) {
 }
 
 /**
- * A use of `access` (or similar) on a filename.
+ * An operation on a filename that returns information in the return value but
+ * does not modify the corresponding file.  For example, `access`.
  */
 FunctionCall accessCheck(Expr path) {
   exists(string name | name = result.getTarget().getName() |
@@ -62,7 +64,9 @@ FunctionCall accessCheck(Expr path) {
 }
 
 /**
- * A use of `stat` (or similar) on a filename.
+ * An operation on a filename that returns information via a pointer argument
+ * and any return value, but does not modify the corresponding file.  For
+ * example, `stat`.
  */
 FunctionCall stat(Expr path, Expr buf) {
   exists(string name | name = result.getTarget().getName() |
@@ -77,7 +81,7 @@ FunctionCall stat(Expr path, Expr buf) {
 }
 
 /**
- * Holds if `use` points to `source`, either by being the same or by
+ * Holds if `use` refers to `source`, either by being the same or by
  * one step of variable indirection.
  */
 predicate referenceTo(Expr source, Expr use) {
