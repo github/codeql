@@ -7,11 +7,11 @@ private import semmle.code.java.dataflow.ExternalFlow
 
 private class EntryType extends RefType {
   EntryType() {
-    this.getSourceDeclaration().getASourceSupertype*().hasQualifiedName("java.util", "Map<>$Entry")
+    this.getSourceDeclaration().getASourceSupertype*().hasQualifiedName("java.util", "Map$Entry")
   }
 
   RefType getValueType() {
-    exists(GenericType t | t.hasQualifiedName("java.util", "Map<>$Entry") |
+    exists(GenericType t | t.hasQualifiedName("java.util", "Map$Entry") |
       indirectlyInstantiates(this, t, 1, result)
     )
   }
@@ -95,10 +95,10 @@ private class ContainerFlowSummaries extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        "java.util;Map<>$Entry;true;getKey;;;MapKey of Argument[-1];ReturnValue;value",
-        "java.util;Map<>$Entry;true;getValue;;;MapValue of Argument[-1];ReturnValue;value",
-        "java.util;Map<>$Entry;true;setValue;;;MapValue of Argument[-1];ReturnValue;value",
-        "java.util;Map<>$Entry;true;setValue;;;Argument[0];MapValue of Argument[-1];value",
+        "java.util;Map$Entry;true;getKey;;;MapKey of Argument[-1];ReturnValue;value",
+        "java.util;Map$Entry;true;getValue;;;MapValue of Argument[-1];ReturnValue;value",
+        "java.util;Map$Entry;true;setValue;;;MapValue of Argument[-1];ReturnValue;value",
+        "java.util;Map$Entry;true;setValue;;;Argument[0];MapValue of Argument[-1];value",
         "java.lang;Iterable;true;iterator;();;Element of Argument[-1];Element of ReturnValue;value",
         "java.lang;Iterable;true;spliterator;();;Element of Argument[-1];Element of ReturnValue;value",
         "java.util;Iterator;true;next;;;Element of Argument[-1];ReturnValue;value",
