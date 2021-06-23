@@ -349,7 +349,7 @@ private module Tornado {
 
     TornadoRouteRegex() {
       this instanceof StrConst and
-      DataFlow::exprNode(this).(DataFlow::LocalSourceNode).flowsTo(setup.getUrlPatternArg())
+      setup.getUrlPatternArg().getALocalSource() = DataFlow::exprNode(this)
     }
 
     TornadoRouteSetup getRouteSetup() { result = setup }
@@ -431,7 +431,7 @@ private module Tornado {
     }
 
     override DataFlow::Node getRedirectLocation() {
-      result.asCfgNode() in [node.getArg(0), node.getArgByName("url")]
+      result in [this.getArg(0), this.getArgByName("url")]
     }
 
     override DataFlow::Node getBody() { none() }
@@ -452,9 +452,7 @@ private module Tornado {
       this.getFunction() = tornado::web::RequestHandler::writeMethod()
     }
 
-    override DataFlow::Node getBody() {
-      result.asCfgNode() in [node.getArg(0), node.getArgByName("chunk")]
-    }
+    override DataFlow::Node getBody() { result in [this.getArg(0), this.getArgByName("chunk")] }
 
     override string getMimetypeDefault() { result = "text/html" }
 
