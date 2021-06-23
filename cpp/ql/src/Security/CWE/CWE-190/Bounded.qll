@@ -39,10 +39,17 @@ private predicate boundedBitwiseAnd(Expr e, Expr andExpr, Expr operand1, Expr op
 }
 
 /**
- * Holds if `e` is an operand of a binary operation that greatly reduces the range of possible
- * output values. For instance, if `e` is the left operand of a remainder expression.
+ * Holds if `e` is an arithmetic expression that cannot overflow, or if `e` is an operand of an
+ * operation that may greatly reduces the range of possible values.
  */
 predicate bounded(Expr e) {
+  (
+    e instanceof UnaryArithmeticOperation or
+    e instanceof BinaryArithmeticOperation or
+    e instanceof AssignArithmeticOperation
+  ) and
+  not convertedExprMightOverflow(e)
+  or
   //  For `%` and `&` we require that `e` is bounded by a value that is strictly smaller than the
   //  maximum possible value of the result type of the operation.
   //  For example, the function call `rand()` is considered bounded in the following program:
