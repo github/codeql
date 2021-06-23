@@ -32,8 +32,12 @@ jobs:
     - name: Clone self (github/codeql) - BASE
       uses: actions/checkout@v2
       with:
-        ref: ${{ github.event.pull_request.base.sha }}
+        fetch-depth: 2
         path: base
+    - run: |
+        git checkout HEAD^1
+        git log -1 --format='%H'
+      working-directory: base
     - name: Set up Python 3.8
       uses: actions/setup-python@v2
       with:
@@ -47,13 +51,13 @@ jobs:
       run: unzip -d codeql-cli codeql-linux64.zip
     - name: Generate CSV files on merge and base of the PR
       run: |
-        echo "Running generator on ${{github.sha}}"
+        echo "Running generator on merge"
         PATH="$PATH:codeql-cli/codeql" python merge/misc/scripts/library-coverage/generate-report.py ci merge merge
         mkdir out_merge
         cp framework-coverage-*.csv out_merge/
         cp framework-coverage-*.rst out_merge/
 
-        echo "Running generator on ${{github.event.pull_request.base.sha}}"
+        echo "Running generator on base"
         PATH="$PATH:codeql-cli/codeql" python base/misc/scripts/library-coverage/generate-report.py ci base base
         mkdir out_base
         cp framework-coverage-*.csv out_base/
