@@ -52,6 +52,13 @@ class ActiveRecordModelClassMethodCall extends MethodCall {
     or
     // e.g. Foo.joins(:bars).where(...)
     this.getReceiver() instanceof ActiveRecordModelClassMethodCall
+    or
+    // e.g. self.where(...) within an ActiveRecordModelClass
+    (
+      this.getReceiver() instanceof Self
+      and
+      this.getEnclosingModule() instanceof ActiveRecordModelClass
+    )
   }
 }
 
