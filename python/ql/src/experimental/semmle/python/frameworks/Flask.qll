@@ -20,6 +20,18 @@ private module Flask {
 
   private DataFlow::CallCfgNode flaskMessageCall() { result = flaskMessageInstance().getACall() }
 
+  private DataFlow::Node getFlaskMailArgument(int argumentPosition, string argumentName) {
+    result in [
+        flaskMessageCall().getArg(argumentPosition), flaskMessageCall().getArgByName(argumentName)
+      ]
+    or
+    exists(DataFlow::AttrWrite write |
+      write.getObject().getALocalSource() = flaskMessageCall() and
+      write.getAttributeName() = argumentName and
+      result = write.getValue()
+    )
+  }
+
   private class FlaskMail extends DataFlow::CallCfgNode, EmailSender {
     FlaskMail() {
       this =
@@ -28,57 +40,18 @@ private module Flask {
             .getACall()
     }
 
-    override DataFlow::Node getPlainTextBody() {
-      result in [flaskMessageCall().getArg(2), flaskMessageCall().getArgByName("body")]
-      or
-      exists(DataFlow::AttrWrite bodyWrite |
-        bodyWrite.getObject().getALocalSource() = flaskMessageCall() and
-        bodyWrite.getAttributeName() = "body" and
-        result = bodyWrite.getValue()
-      )
-    }
+    override DataFlow::Node getPlainTextBody() { result = getFlaskMailArgument(2, "body") }
 
-    override DataFlow::Node getHtmlBody() {
-      result in [flaskMessageCall().getArg(3), flaskMessageCall().getArgByName("html")]
-      or
-      exists(DataFlow::AttrWrite bodyWrite |
-        bodyWrite.getObject().getALocalSource() = flaskMessageCall() and
-        bodyWrite.getAttributeName() = "html" and
-        result = bodyWrite.getValue()
-      )
-    }
+    override DataFlow::Node getHtmlBody() { result = getFlaskMailArgument(3, "html") }
 
     override DataFlow::Node getTo() {
-      result in [flaskMessageCall().getArg(1), flaskMessageCall().getArgByName("recipients")]
+      result = getFlaskMailArgument(1, "recipients")
       or
-      exists(DataFlow::AttrWrite bodyWrite |
-        bodyWrite.getObject().getALocalSource() = flaskMessageCall() and
-        bodyWrite.getAttributeName() = "recipients" and
-        result = bodyWrite.getValue()
-      )
-      or
-      // https://pythonhosted.org/Flask-Mail/#flask_mail.Message.add_recipient
       result = flaskMessageInstance().getMember("add_recipient").getACall().getArg(0)
     }
 
-    override DataFlow::Node getFrom() {
-      result in [flaskMessageCall().getArg(5), flaskMessageCall().getArgByName("sender")]
-      or
-      exists(DataFlow::AttrWrite bodyWrite |
-        bodyWrite.getObject().getALocalSource() = flaskMessageCall() and
-        bodyWrite.getAttributeName() = "sender" and
-        result = bodyWrite.getValue()
-      )
-    }
+    override DataFlow::Node getFrom() { result = getFlaskMailArgument(5, "sender") }
 
-    override DataFlow::Node getSubject() {
-      result in [flaskMessageCall().getArg(0), flaskMessageCall().getArgByName("subject")]
-      or
-      exists(DataFlow::AttrWrite bodyWrite |
-        bodyWrite.getObject().getALocalSource() = flaskMessageCall() and
-        bodyWrite.getAttributeName() = "subject" and
-        result = bodyWrite.getValue()
-      )
-    }
+    override DataFlow::Node getSubject() { result = getFlaskMailArgument(0, "subject") }
   }
 }
