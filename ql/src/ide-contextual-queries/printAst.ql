@@ -7,8 +7,9 @@
  * @tags ide-contextual-queries/print-ast
  */
 
-import codeql_ruby.printAst
-import codeql.IDEContextual
+private import codeql.IDEContextual
+private import codeql_ruby.AST
+private import codeql_ruby.printAst
 
 /**
  * The source file to generate an AST from.
