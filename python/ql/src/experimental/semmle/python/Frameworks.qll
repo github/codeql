@@ -4,6 +4,6 @@
 
 private import experimental.semmle.python.frameworks.Stdlib
 private import experimental.semmle.python.frameworks.LDAP
-private import experimental.semmle.python.frameworks.Flask
+private import experimental.semmle.python.libraries.FlaskMail
 private import experimental.semmle.python.frameworks.Django
 private import experimental.semmle.python.frameworks.Sendgrid
