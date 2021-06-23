@@ -66,6 +66,31 @@ private predicate methodWithSqlFragmentArg(string methodName, int argIndex) {
   methodName = "calculate" and argIndex = 1
 }
 
+// An expression that, if tainted by unsanitized input, should not be used as
+// part of an argument to an SQL executing method
+private predicate basicUnsafeSqlArg(Expr sqlFragmentExpr) {
+  // Literals containing an interpolated value
+  exists(StringInterpolationComponent interpolated |
+    interpolated = sqlFragmentExpr.(StringlikeLiteral).getComponent(_)
+  )
+  or
+  // String concatenations
+  sqlFragmentExpr instanceof AddExpr
+  or
+  // Variable reads
+  sqlFragmentExpr instanceof VariableReadAccess
+  or
+  // Method call
+  sqlFragmentExpr instanceof MethodCall
+}
+
+// An expression that, if used as an argument to an SQL executing method,
+// may be unsafe if tainted by unsanitized input
+private predicate unsafeSqlArg(Expr sqlFragmentExpr) {
+  basicUnsafeSqlArg(sqlFragmentExpr) or
+  basicUnsafeSqlArg(sqlFragmentExpr.(ArrayLiteral).getElement(0))
+}
+
 /**
  * A method call that may result in executing unintended user-controlled SQL
  * queries if the `getSqlFragmentSinkArgument()` expression is tainted by
@@ -89,22 +114,13 @@ class PotentiallyUnsafeSqlExecutingMethodCall extends ActiveRecordModelClassMeth
   private Expr sqlFragmentExpr;
 
   // TODO: `find` with `lock:` option also takes an SQL fragment
+  // TODO: refine this further to account for cases where the method called has
+  //       been overriden to perform validation on its arguments
   PotentiallyUnsafeSqlExecutingMethodCall() {
     methodName = this.getMethodName() and
     sqlFragmentExpr = this.getArgument(sqlFragmentArgumentIndex) and
     methodWithSqlFragmentArg(methodName, sqlFragmentArgumentIndex) and
-    (
-      // select only literals containing an interpolated value...
-      exists(StringInterpolationComponent interpolated |
-        interpolated = sqlFragmentExpr.(StringlikeLiteral).getComponent(_)
-      )
-      or
-      // ...or string concatenations...
-      sqlFragmentExpr instanceof AddExpr
-      or
-      // ...or variable reads
-      sqlFragmentExpr instanceof VariableReadAccess
-    )
+    unsafeSqlArg(sqlFragmentExpr)
   }
 
   Expr getSqlFragmentSinkArgument() { result = sqlFragmentExpr }
@@ -124,3 +140,5 @@ class ActiveRecordSqlExecutionRange extends SqlExecution::Range {
 
   override DataFlow::Node getSql() { result = this }
 }
+// TODO: model `ActiveRecord` sanitizers
+// https://api.rubyonrails.org/classes/ActiveRecord/Sanitization/ClassMethods.html
