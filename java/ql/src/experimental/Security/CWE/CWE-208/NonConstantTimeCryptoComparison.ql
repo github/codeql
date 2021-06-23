@@ -32,11 +32,11 @@ abstract private class ProduceCryptoCall extends MethodAccess {
 /** A method call that produces a MAC. */
 private class ProduceMacCall extends ProduceCryptoCall {
   ProduceMacCall() {
-    getMethod().hasQualifiedName("javax.crypto", "Mac", "doFinal") and
+    getMethod().getDeclaringType().hasQualifiedName("javax.crypto", "Mac") and
     (
-      getMethod().getReturnType() instanceof Array and this = output
+      getMethod().hasStringSignature(["doFinal()", "doFinal(byte[])"]) and this = output
       or
-      getMethod().getParameterType(0) instanceof Array and getArgument(0) = output
+      getMethod().hasStringSignature("doFinal(byte[], int)") and getArgument(0) = output
     )
   }
 }
@@ -44,11 +44,11 @@ private class ProduceMacCall extends ProduceCryptoCall {
 /** A method call that produces a signature. */
 private class ProduceSignatureCall extends ProduceCryptoCall {
   ProduceSignatureCall() {
-    getMethod().hasQualifiedName("java.security", "Signature", "sign") and
+    getMethod().getDeclaringType().hasQualifiedName("java.security", "Signature") and
     (
-      getMethod().getReturnType() instanceof Array and this = output
+      getMethod().hasStringSignature("sign()") and this = output
       or
-      getMethod().getParameterType(0) instanceof Array and getArgument(0) = output
+      getMethod().hasStringSignature("sign(byte[], int, int)") and getArgument(0) = output
     )
   }
 }
@@ -56,14 +56,20 @@ private class ProduceSignatureCall extends ProduceCryptoCall {
 /** A method call that produces a ciphertext. */
 private class ProduceCiphertextCall extends ProduceCryptoCall {
   ProduceCiphertextCall() {
-    getMethod().hasQualifiedName("javax.crypto", "Cipher", "doFinal") and
+    getMethod().getDeclaringType().hasQualifiedName("javax.crypto", "Cipher") and
     (
-      getMethod().getReturnType() instanceof Array and this = output
+      getMethod().hasStringSignature(["doFinal()", "doFinal(byte[])", "doFinal(byte[], int, int)"]) and
+      this = output
       or
-      getMethod().getParameterType([0, 3]) instanceof Array and getArgument([0, 3]) = output
+      getMethod().hasStringSignature("doFinal(byte[], int)") and getArgument(0) = output
       or
-      getMethod().getParameterType(1) instanceof ByteBuffer and
-      getArgument(1) = output
+      getMethod()
+          .hasStringSignature([
+              "doFinal(byte[], int, int, byte[])", "doFinal(byte[], int, int, byte[], int)"
+            ]) and
+      getArgument(3) = output
+      or
+      getMethod().hasStringSignature("doFinal(ByteBuffer, ByteBuffer)") and getArgument(1) = output
     )
   }
 }
@@ -88,14 +94,12 @@ private class UserInputInCryptoOperationConfig extends TaintTracking2::Configura
       call.getQualifier() = toNode.asExpr() and
       call.getArgument(0) = fromNode.asExpr()
     |
-      (
-        m.hasQualifiedName("java.security", "Signature", "update")
-        or
-        m.hasQualifiedName("javax.crypto", ["Mac", "Cipher"], "update")
-        or
-        m.hasQualifiedName("javax.crypto", ["Mac", "Cipher"], "doFinal") and
-        not m.hasStringSignature("doFinal(byte[],int)")
-      )
+      m.hasQualifiedName("java.security", "Signature", "update")
+      or
+      m.hasQualifiedName("javax.crypto", ["Mac", "Cipher"], "update")
+      or
+      m.hasQualifiedName("javax.crypto", ["Mac", "Cipher"], "doFinal") and
+      not m.hasStringSignature("doFinal(byte[], int)")
     )
   }
 }
@@ -179,13 +183,10 @@ private class NonConstantTimeComparisonSink extends DataFlow::Node {
         anotherParameter = call.getQualifier()
       )
       or
-      exists(NonConstantTimeComparisonCall call |
-        call.getAnArgument() = this.asExpr() and
-        (
-          this.asExpr() = call.getArgument(0) and anotherParameter = call.getArgument(1)
-          or
-          this.asExpr() = call.getArgument(1) and anotherParameter = call.getArgument(0)
-        )
+      exists(NonConstantTimeComparisonCall call | call.getAnArgument() = this.asExpr() |
+        this.asExpr() = call.getArgument(0) and anotherParameter = call.getArgument(1)
+        or
+        this.asExpr() = call.getArgument(1) and anotherParameter = call.getArgument(0)
       )
     ) and
     not looksLikeConstant(anotherParameter)
