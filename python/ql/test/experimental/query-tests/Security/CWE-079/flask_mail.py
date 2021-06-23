@@ -1,6 +1,7 @@
 # https://pythonhosted.org/Flask-Mail/
 # https://github.com/mattupstate/flask-mail/blob/1709c70d839a7cc7b1f7eeb97333b71cd420fe32/flask_mail.py#L239
 
+from flask import request, Flask
 from flask_mail import Mail, Message
 
 app = Flask(__name__)
