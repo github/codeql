@@ -1,11 +1,11 @@
 (function(x){
 
-	"http://evil.com/?http://good.com".match("https?://good.com"); // NOT OK
-	"http://evil.com/?http://good.com".match(new RegExp("https?://good.com")); // NOT OK
-	"http://evil.com/?http://good.com".match("^https?://good.com"); // NOT OK - missing post-anchor
-	"http://evil.com/?http://good.com".match(/^https?:\/\/good.com/); // NOT OK - missing post-anchor
-	"http://evil.com/?http://good.com".match("(^https?://good1.com)|(^https?://good2.com)"); // NOT OK - missing post-anchor
-	"http://evil.com/?http://good.com".match("(https?://good.com)|(^https?://goodie.com)"); // NOT OK - missing post-anchor
+	if ("http://evil.com/?http://good.com".match("https?://good.com")) {} // NOT OK
+	if ("http://evil.com/?http://good.com".match(new RegExp("https?://good.com"))) {} // NOT OK
+	if ("http://evil.com/?http://good.com".match("^https?://good.com")) {} // NOT OK - missing post-anchor
+	if ("http://evil.com/?http://good.com".match(/^https?:\/\/good.com/)) {} // NOT OK - missing post-anchor
+	if ("http://evil.com/?http://good.com".match("(^https?://good1.com)|(^https?://good2.com)")) {} // NOT OK - missing post-anchor
+	if ("http://evil.com/?http://good.com".match("(https?://good.com)|(^https?://goodie.com)")) {} // NOT OK - missing post-anchor
 
 	/https?:\/\/good.com/.exec("http://evil.com/?http://good.com"); // NOT OK
 	new RegExp("https?://good.com").exec("http://evil.com/?http://good.com"); // NOT OK
@@ -14,10 +14,10 @@
 
 	new RegExp("https?://good.com").test("http://evil.com/?http://good.com"); // NOT OK
 
-	"something".match("other"); // OK
-	"something".match("x.commissary"); // OK
-	"http://evil.com/?http://good.com".match("https?://good.com"); // NOT OK
-	"http://evil.com/?http://good.com".match("https?://good.com:8080"); // NOT OK
+	if ("something".match("other")) {} // OK
+	if ("something".match("x.commissary")) {} // OK
+	if ("http://evil.com/?http://good.com".match("https?://good.com")) {} // NOT OK
+	if ("http://evil.com/?http://good.com".match("https?://good.com:8080")) {} // NOT OK
 
 	let trustedUrls = [
 		"https?://good.com", // NOT OK, referenced below
