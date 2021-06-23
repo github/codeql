@@ -10,16 +10,15 @@ private import semmle.python.ApiGraphs
 
 private module Flask {
   /** https://pythonhosted.org/Flask-Mail/#module-flask_mail */
-  private API::Node flaskMail() { result = API::moduleImport(["flask_mail", "flask_sendmail", "flask.ext.sendmail"]) }
+  private API::Node flaskMail() {
+    result = API::moduleImport(["flask_mail", "flask_sendmail", "flask.ext.sendmail"])
+  }
 
   private API::Node flaskMailInstance() { result = flaskMail().getMember("Mail").getReturn() }
 
-  private DataFlow::CallCfgNode flaskMessageInstance() {
-    result = flaskMail().getMember("Message")
-  }
-  private DataFlow::CallCfgNode flaskMessageCall() {
-    result = flaskMessageInstance().getACall()
-  }
+  private API::Node flaskMessageInstance() { result = flaskMail().getMember("Message") }
+
+  private DataFlow::CallCfgNode flaskMessageCall() { result = flaskMessageInstance().getACall() }
 
   private class FlaskMail extends DataFlow::CallCfgNode, EmailSender {
     FlaskMail() {
@@ -56,8 +55,9 @@ private module Flask {
         bodyWrite.getObject().getALocalSource() = flaskMessageCall() and
         bodyWrite.getAttributeName() = "recipients" and
         result = bodyWrite.getValue()
-      ) or
-      /** https://pythonhosted.org/Flask-Mail/#flask_mail.Message.add_recipient */
+      )
+      or
+      // https://pythonhosted.org/Flask-Mail/#flask_mail.Message.add_recipient
       result = flaskMessageInstance().getMember("add_recipient").getACall().getArg(0)
     }
 
