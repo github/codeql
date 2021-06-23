@@ -19,9 +19,7 @@ class ReflectedXssConfiguration extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSink(DataFlow::Node sink) {
-    sink = any(EmailSender email).getHtmlBody()
-  }
+  override predicate isSink(DataFlow::Node sink) { sink = any(EmailSender email).getHtmlBody() }
 
   override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
     guard instanceof StringConstCompare
