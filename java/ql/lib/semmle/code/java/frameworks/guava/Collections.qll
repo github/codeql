@@ -255,7 +255,25 @@ private class GuavaCollectCsv extends SummaryModelCsv {
         "com.google.common.collect;Sets;false;symmetricDifference;(Set,Set);;Element of Argument[0..1]; Element of ReturnValue;value",
         "com.google.common.collect;Sets;false;union;(Set,Set);;Element of Argument[0..1];Element of ReturnValue;value",
         "com.google.common.collect;Sets;false;synchronizedNavigableSet;(NavigableSet);;Element of Argument[0];Element of ReturnValue;value",
-        "com.google.common.collect;Sets;false;unmodifiableNavigableSet;(NavigableSet);;Element of Argument[0];Element of ReturnValue;value"
+        "com.google.common.collect;Sets;false;unmodifiableNavigableSet;(NavigableSet);;Element of Argument[0];Element of ReturnValue;value",
+        "com.google.common.collect;Lists;false;asList;(Object,Object);;Argument[0..1];Element of ReturnValue;value",
+        "com.google.common.collect;Lists;false;asList;(Object,Object[]);;Argument[0];Element of ReturnValue;value",
+        "com.google.common.collect;Lists;false;asList;(Object,Object[]);;ArrayElememnt of Argument[1];Element of ReturnValue;value",
+        "com.google.common.collect;Lists;false;cartesanProduct;(List);;Element of Element of Argument[0];Element of Element of ReturnValue;value",
+        "com.google.common.collect;Lists;false;cartesanProduct;(List[]);;Element of ArrayElement of Argument[0];Element of Element of ReturnValue;value",
+        "com.google.common.collect;Lists;false;charactersOf;(CharSequence);;Argument[0];Element of ReturnValue;taint",
+        "com.google.common.collect;Lists;false;charactersOf;(String);;Argument[0];Element of ReturnValue;taint",
+        "com.google.common.collect;Lists;false;newArrayList;(Object[]);;ArrayElement of Argument[0];Element of ReturnValue;value",
+        "com.google.common.collect;Lists;false;newArrayList;(Iterator);;Element of Argument[0];Element of ReturnValue;value",
+        "com.google.common.collect;Lists;false;newArrayList;(Iterable);;Element of Argument[0];Element of ReturnValue;value",
+        "com.google.common.collect;Lists;false;newCopyOnWriteArrayList;(Iterable);;Element of Argument[0];Element of ReturnValue;value",
+        "com.google.common.collect;Lists;false;newLinkedList;(Iterable);;Element of Argument[0];Element of ReturnValue;value",
+        "com.google.common.collect;Lists;false;partition;(List,int);;Element of Argument[0];Element of Element of ReturnValue;value",
+        "com.google.common.collect;Lists;false;reverse;(List);;Element of Argument[0];Element of ReturnValue;value",
+        "com.google.common.collect;Collections2;false;filter;(Collection,Predicate);;Element of Argument[0];Element of ReturnValue;value",
+        "com.google.common.collect;Collections2;false;orderedPermutations;(Iterable,Comparator);;Element of Argument[0];Element of ReturnValue;value",
+        "com.google.common.collect;Collections2;false;orderedPermutations;(Iterable);;Element of Argument[0];Element of ReturnValue;value",
+        "com.google.common.collect;Collections2;false;permutations;(Collection);;Element of Argument[0];Element of ReturnValue;value"
       ]
   }
 }
