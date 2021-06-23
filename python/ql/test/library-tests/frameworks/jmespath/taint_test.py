@@ -1,16 +1,16 @@
 import jmespath
 
 def test_taint():
-    data = TAINTED_DICT
+    untrusted_data = TAINTED_DICT
 
-    expression = jmespath.compile("foo.bar")
+    safe_expression = jmespath.compile("foo.bar")
 
     ensure_tainted(
-        jmespath.search("foo.bar", data), # $ tainted
-        jmespath.search("foo.bar", data=data), # $ tainted
+        jmespath.search("foo.bar", untrusted_data), # $ tainted
+        jmespath.search("foo.bar", data=untrusted_data), # $ tainted
 
-        expression.search(data), # $ tainted
-        expression.search(value=data) # $ tainted
+        safe_expression.search(untrusted_data), # $ tainted
+        safe_expression.search(value=untrusted_data) # $ tainted
     )
 
     # since ```jmespath.search("{wat: `foo`}", {})``` works (and outputs a dictionary),
