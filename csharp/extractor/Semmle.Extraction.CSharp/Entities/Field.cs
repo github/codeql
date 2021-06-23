@@ -2,6 +2,7 @@ using Microsoft.CodeAnalysis;
 using System.Linq;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
+using System.Collections.Generic;
 using Semmle.Extraction.Entities;
 using Semmle.Extraction.Kinds;
 using Semmle.Extraction.CSharp.Entities.Expressions;
@@ -23,6 +24,18 @@ namespace Semmle.Extraction.CSharp.Entities
         // Populate Tuple fields.
         public override bool NeedsPopulation =>
             (base.NeedsPopulation && !Symbol.IsImplicitlyDeclared) || Symbol.ContainingType.IsTupleType;
+
+        private IEnumerable<VariableDeclaratorSyntax> GetVariableDeclarators() =>
+            Symbol.DeclaringSyntaxReferences
+                .Select(n => n.GetSyntax())
+                .OfType<VariableDeclaratorSyntax>()
+                .Where(n => n.Initializer is not null);
+
+        private IEnumerable<EnumMemberDeclarationSyntax> GetEnumDeclarations() =>
+            Symbol.DeclaringSyntaxReferences
+                .Select(n => n.GetSyntax())
+                .OfType<EnumMemberDeclarationSyntax>()
+                .Where(n => n.EqualsValue is not null);
 
         public override void Populate(TextWriter trapFile)
         {
@@ -58,10 +71,7 @@ namespace Semmle.Extraction.CSharp.Entities
             Context.BindComments(this, Location.Symbol);
 
             var child = 0;
-            foreach (var initializer in Symbol.DeclaringSyntaxReferences
-                .Select(n => n.GetSyntax())
-                .OfType<VariableDeclaratorSyntax>()
-                .Where(n => n.Initializer is not null))
+            foreach (var initializer in GetVariableDeclarators())
             {
                 Context.PopulateLater(() =>
                 {
@@ -76,10 +86,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 });
             }
 
-            foreach (var initializer in Symbol.DeclaringSyntaxReferences
-                .Select(n => n.GetSyntax())
-                .OfType<EnumMemberDeclarationSyntax>()
-                .Where(n => n.EqualsValue is not null))
+            foreach (var initializer in GetEnumDeclarations())
             {
                 // Mark fields that have explicit initializers.
                 var constValue = Symbol.HasConstantValue
@@ -136,6 +143,23 @@ namespace Semmle.Extraction.CSharp.Entities
 
             public override Field Create(Context cx, IFieldSymbol init) => new Field(cx, init);
         }
-        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.PushesLabel;
+        public override TrapStackBehaviour TrapStackBehaviour
+        {
+            get
+            {
+                var start = ReportingLocation?.SourceSpan.Start ?? 0;
+                var end = 0;
+                foreach (var initializer in GetVariableDeclarators())
+                {
+                    end = Math.Max(end, initializer.FullSpan.End);
+                }
+
+                foreach (var initializer in GetEnumDeclarations())
+                {
+                    end = Math.Max(end, initializer.FullSpan.End);
+                }
+                return new PushesLabel(start, end);
+            }
+        }
     }
 }

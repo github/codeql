@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -8,8 +9,7 @@ namespace Semmle.Extraction.CSharp.Populators
     internal class DirectiveVisitor : CSharpSyntaxWalker
     {
         private readonly Context cx;
-
-        public bool ConditionalCompilation { get; private set; } = false;
+        private readonly List<(int Start, int End)> conditionSpans = new();
 
         public DirectiveVisitor(Context cx) : base(SyntaxWalkerDepth.StructuredTrivia)
         {
@@ -93,7 +93,6 @@ namespace Semmle.Extraction.CSharp.Populators
 
         public override void VisitIfDirectiveTrivia(IfDirectiveTriviaSyntax node)
         {
-            ConditionalCompilation = true;
             var ifStart = new Entities.IfDirective(cx, node);
             ifStarts.Push(new IfDirectiveStackElement(ifStart));
         }
@@ -108,7 +107,8 @@ namespace Semmle.Extraction.CSharp.Populators
             }
 
             var start = ifStarts.Pop();
-            new Entities.EndIfDirective(cx, node, start.Entity);
+            var endIf = new Entities.EndIfDirective(cx, node, start.Entity);
+            conditionSpans.Add((start.Entity.ReportingLocation.SourceSpan.Start, endIf.ReportingLocation.SourceSpan.End));
         }
 
         public override void VisitElifDirectiveTrivia(ElifDirectiveTriviaSyntax node)
@@ -136,5 +136,14 @@ namespace Semmle.Extraction.CSharp.Populators
             var start = ifStarts.Peek();
             new Entities.ElseDirective(cx, node, start.Entity, start.SiblingCount++);
         }
+
+        /// <summary>
+        /// Whether an entity specified to push a TRAP stack label may be affected
+        /// by a preprocessor condition. In such cases, the TRAP stack should not
+        /// be used, as we want to include multiple implementations in the case where
+        /// the file is compiled multiple times.
+        /// </summary>
+        public bool AffectedByCondition(PushesLabel push) =>
+            conditionSpans.Any(span => span.Start <= push.End && span.End >= push.Start);
     }
 }

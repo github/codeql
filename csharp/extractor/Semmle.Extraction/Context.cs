@@ -30,7 +30,7 @@ namespace Semmle.Extraction
         /// </summary>
         public bool ShouldAddAssemblyTrapPrefix { get; }
 
-        public bool UseTrapStack { get; set; } = true;
+        public Predicate<PushesLabel> UseTrapStack { get; set; } = _ => true;
 
         private int GetNewId() => TrapWriter.IdCounter++;
 
@@ -272,34 +272,28 @@ namespace Semmle.Extraction
                 return;
             }
 
-            var duplicationGuard = false;
-            var deferred = false;
+            bool duplicationGuard, deferred;
 
-            if (UseTrapStack)
+            switch (entity.TrapStackBehaviour)
             {
-                switch (entity.TrapStackBehaviour)
-                {
-                    case TrapStackBehaviour.NeedsLabel:
-                        if (!tagStack.Any())
-                            ExtractionError("TagStack unexpectedly empty", optionalSymbol, entity);
-                        duplicationGuard = false;
-                        deferred = false;
-                        break;
-                    case TrapStackBehaviour.NoLabel:
-                        duplicationGuard = false;
-                        deferred = tagStack.Any();
-                        break;
-                    case TrapStackBehaviour.OptionalLabel:
-                        duplicationGuard = false;
-                        deferred = false;
-                        break;
-                    case TrapStackBehaviour.PushesLabel:
-                        duplicationGuard = true;
-                        deferred = tagStack.Any();
-                        break;
-                    default:
-                        throw new InternalError("Unexpected TrapStackBehaviour");
-                }
+                case NeedsLabel:
+                    duplicationGuard = false;
+                    deferred = false;
+                    break;
+                case NoLabel:
+                    duplicationGuard = false;
+                    deferred = tagStack.Any();
+                    break;
+                case OptionalLabel:
+                    duplicationGuard = false;
+                    deferred = false;
+                    break;
+                case PushesLabel push:
+                    duplicationGuard = UseTrapStack(push);
+                    deferred = duplicationGuard && tagStack.Any();
+                    break;
+                default:
+                    throw new InternalError("Unexpected TrapStackBehaviour");
             }
 
             var a = duplicationGuard && IsEntityDuplicationGuarded(entity, out var loc)
@@ -353,28 +347,6 @@ namespace Semmle.Extraction
         {
             var msg = new Message(message, entityText, location, stackTrace, severity);
             ExtractionError(msg);
-        }
-
-        /// <summary>
-        /// Log an extraction error.
-        /// </summary>
-        /// <param name="message">The text of the message.</param>
-        /// <param name="optionalSymbol">The symbol of the error, or null.</param>
-        /// <param name="optionalEntity">The entity of the error, or null.</param>
-        private void ExtractionError(string message, ISymbol? optionalSymbol, Entity optionalEntity)
-        {
-            if (!(optionalSymbol is null))
-            {
-                ExtractionError(message, optionalSymbol.ToDisplayString(), CreateLocation(optionalSymbol.Locations.FirstOrDefault()));
-            }
-            else if (!(optionalEntity is null))
-            {
-                ExtractionError(message, optionalEntity.Label.ToString(), CreateLocation(optionalEntity.ReportingLocation));
-            }
-            else
-            {
-                ExtractionError(message, null, CreateLocation());
-            }
         }
 
         /// <summary>

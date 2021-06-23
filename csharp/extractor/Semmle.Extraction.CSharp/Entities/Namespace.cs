@@ -43,8 +43,6 @@ namespace Semmle.Extraction.CSharp.Entities
             public override Namespace Create(Context cx, INamespaceSymbol init) => new Namespace(cx, init);
         }
 
-        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
-
         public override int GetHashCode() => QualifiedName.GetHashCode();
 
         private string QualifiedName => Symbol.ToDisplayString();

@@ -356,6 +356,14 @@ namespace Semmle.Extraction.CSharp.Entities
             PopulateNullability(trapFile, Symbol.GetAnnotatedReturnType());
         }
 
-        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.PushesLabel;
+        public override TrapStackBehaviour TrapStackBehaviour
+        {
+            get
+            {
+                var start = ReportingLocation?.SourceSpan.Start ?? 0;
+                var end = Block is BlockSyntax block ? block.FullSpan.End : ExpressionBody is ExpressionSyntax body ? body.FullSpan.End : 0;
+                return new PushesLabel(start, end);
+            }
+        }
     }
 }

@@ -2,8 +2,8 @@ using System;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.CSharp.Entities.Expressions;
-using Semmle.Extraction.Entities;
 using Semmle.Extraction.Kinds;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -32,6 +32,12 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.Write(";property");
         }
 
+        private IEnumerable<PropertyDeclarationSyntax> GetSyntaxDeclarations() =>
+            IsSourceDeclaration ?
+                Symbol.DeclaringSyntaxReferences.
+                Select(d => d.GetSyntax()).OfType<PropertyDeclarationSyntax>().ToArray()
+                : Enumerable.Empty<PropertyDeclarationSyntax>();
+
         public override void Populate(TextWriter trapFile)
         {
             PopulateMetadataHandle(trapFile);
@@ -53,10 +59,7 @@ namespace Semmle.Extraction.CSharp.Entities
             if (!(setter is null))
                 Method.Create(Context, setter);
 
-            var declSyntaxReferences = IsSourceDeclaration ?
-                Symbol.DeclaringSyntaxReferences.
-                Select(d => d.GetSyntax()).OfType<PropertyDeclarationSyntax>().ToArray()
-                : Enumerable.Empty<PropertyDeclarationSyntax>();
+            var declSyntaxReferences = GetSyntaxDeclarations();
 
             foreach (var explicitInterface in Symbol.ExplicitInterfaceImplementations.Select(impl => Type.Create(Context, impl.ContainingType)))
             {
@@ -131,6 +134,36 @@ namespace Semmle.Extraction.CSharp.Entities
             public override Property Create(Context cx, IPropertySymbol init) => new Property(cx, init);
         }
 
-        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.PushesLabel;
+        public override TrapStackBehaviour TrapStackBehaviour
+        {
+            get
+            {
+                var start = ReportingLocation?.SourceSpan.Start ?? 0;
+                var end = 0;
+
+                var expressionBody = ExpressionBody;
+                if (expressionBody is not null)
+                {
+                    end = expressionBody.FullSpan.End;
+                }
+
+                if (Symbol.GetMethod is not null)
+                {
+                    end = Symbol.GetMethod.Locations.Aggregate(end, (e, l) => Math.Max(e, l.SourceSpan.End));
+                }
+
+                if (Symbol.SetMethod is not null)
+                {
+                    end = Symbol.SetMethod.Locations.Aggregate(end, (e, l) => Math.Max(e, l.SourceSpan.End));
+                }
+
+                foreach (var initializer in GetSyntaxDeclarations().Select(n => n.Initializer))
+                {
+                    end = Math.Max(end, initializer?.FullSpan.End ?? 0);
+                }
+
+                return new PushesLabel(start, end);
+            }
+        }
     }
 }

@@ -2,7 +2,7 @@
 // Start of trivia.cs
 // Unassociated
 #define DEBUG
-
+#define DEBUG2
 #undef DEBUG
 
 using System;
@@ -74,5 +74,18 @@ class Tr4
 #else
         var i = 2;
 #endif
+    }
+}
+
+class Tr5
+{
+#if DEBUG2
+    static void M1()
+    {
+    }
+#endif
+
+    static void M2()
+    {
     }
 }

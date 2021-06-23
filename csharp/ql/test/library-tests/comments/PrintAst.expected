@@ -177,3 +177,10 @@ trivia.cs:
 #   73|           -1: [TypeMention] int
 #   73|           0: [LocalVariableAccess] access to local variable i
 #   73|           1: [IntLiteral] 1
+#   80| [Class] Tr5
+#   83|   5: [Method] M1
+#   83|     -1: [TypeMention] Void
+#   84|     4: [BlockStmt] {...}
+#   88|   6: [Method] M2
+#   88|     -1: [TypeMention] Void
+#   89|     4: [BlockStmt] {...}
