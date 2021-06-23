@@ -78,7 +78,7 @@ namespace Microsoft
                 public RouteData(Microsoft.AspNetCore.Routing.RouteValueDictionary values) => throw null;
                 public RouteData(Microsoft.AspNetCore.Routing.RouteData other) => throw null;
                 public RouteData() => throw null;
-                // Generated from `Microsoft.AspNetCore.Routing.RouteData.RouteDataSnapshot` in `Microsoft.AspNetCore.Routing.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Routing.RouteData+RouteDataSnapshot` in `Microsoft.AspNetCore.Routing.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public struct RouteDataSnapshot
                 {
                     public void Restore() => throw null;

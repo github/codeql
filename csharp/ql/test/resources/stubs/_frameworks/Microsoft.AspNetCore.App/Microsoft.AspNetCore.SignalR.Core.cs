@@ -195,7 +195,7 @@ namespace Microsoft
             {
                 public void Add(Microsoft.AspNetCore.SignalR.HubConnectionContext connection) => throw null;
                 public int Count { get => throw null; }
-                // Generated from `Microsoft.AspNetCore.SignalR.HubConnectionStore.Enumerator` in `Microsoft.AspNetCore.SignalR.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.SignalR.HubConnectionStore+Enumerator` in `Microsoft.AspNetCore.SignalR.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public struct Enumerator : System.IDisposable, System.Collections.IEnumerator, System.Collections.Generic.IEnumerator<Microsoft.AspNetCore.SignalR.HubConnectionContext>
                 {
                     public Microsoft.AspNetCore.SignalR.HubConnectionContext Current { get => throw null; }

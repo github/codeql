@@ -1459,7 +1459,7 @@ namespace System
             public bool GetStandardValuesSupported() => throw null;
             public virtual bool IsValid(System.ComponentModel.ITypeDescriptorContext context, object value) => throw null;
             public bool IsValid(object value) => throw null;
-            // Generated from `System.ComponentModel.TypeConverter.SimplePropertyDescriptor` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.TypeConverter+SimplePropertyDescriptor` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             protected abstract class SimplePropertyDescriptor : System.ComponentModel.PropertyDescriptor
             {
                 public override bool CanResetValue(object component) => throw null;
@@ -1474,7 +1474,7 @@ namespace System
 
 
             protected System.ComponentModel.PropertyDescriptorCollection SortProperties(System.ComponentModel.PropertyDescriptorCollection props, string[] names) => throw null;
-            // Generated from `System.ComponentModel.TypeConverter.StandardValuesCollection` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.TypeConverter+StandardValuesCollection` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class StandardValuesCollection : System.Collections.IEnumerable, System.Collections.ICollection
             {
                 public void CopyTo(System.Array array, int index) => throw null;
@@ -1748,7 +1748,7 @@ namespace System
             public abstract class DesignerOptionService : System.ComponentModel.Design.IDesignerOptionService
             {
                 protected System.ComponentModel.Design.DesignerOptionService.DesignerOptionCollection CreateOptionCollection(System.ComponentModel.Design.DesignerOptionService.DesignerOptionCollection parent, string name, object value) => throw null;
-                // Generated from `System.ComponentModel.Design.DesignerOptionService.DesignerOptionCollection` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.ComponentModel.Design.DesignerOptionService+DesignerOptionCollection` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class DesignerOptionCollection : System.Collections.IList, System.Collections.IEnumerable, System.Collections.ICollection
                 {
                     int System.Collections.IList.Add(object value) => throw null;

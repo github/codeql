@@ -72,7 +72,7 @@ namespace System
                 public TValue this[TKey key] { get => throw null; }
                 object System.Collections.IDictionary.this[object key] { get => throw null; set => throw null; }
                 TValue System.Collections.Generic.IDictionary<TKey, TValue>.this[TKey key] { get => throw null; set => throw null; }
-                // Generated from `System.Collections.ObjectModel.ReadOnlyDictionary<,>.KeyCollection` in `System.ObjectModel, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Collections.ObjectModel.ReadOnlyDictionary<,>+KeyCollection` in `System.ObjectModel, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class KeyCollection : System.Collections.IEnumerable, System.Collections.ICollection, System.Collections.Generic.IReadOnlyCollection<TKey>, System.Collections.Generic.IEnumerable<TKey>, System.Collections.Generic.ICollection<TKey>
                 {
                     void System.Collections.Generic.ICollection<TKey>.Add(TKey item) => throw null;
@@ -100,7 +100,7 @@ namespace System
                 bool System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>.Remove(System.Collections.Generic.KeyValuePair<TKey, TValue> item) => throw null;
                 object System.Collections.ICollection.SyncRoot { get => throw null; }
                 public bool TryGetValue(TKey key, out TValue value) => throw null;
-                // Generated from `System.Collections.ObjectModel.ReadOnlyDictionary<,>.ValueCollection` in `System.ObjectModel, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Collections.ObjectModel.ReadOnlyDictionary<,>+ValueCollection` in `System.ObjectModel, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class ValueCollection : System.Collections.IEnumerable, System.Collections.ICollection, System.Collections.Generic.IReadOnlyCollection<TValue>, System.Collections.Generic.IEnumerable<TValue>, System.Collections.Generic.ICollection<TValue>
                 {
                     void System.Collections.Generic.ICollection<TValue>.Add(TValue item) => throw null;

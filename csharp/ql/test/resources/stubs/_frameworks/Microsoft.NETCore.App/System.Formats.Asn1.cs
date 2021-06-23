@@ -195,7 +195,7 @@ namespace System
                 public System.Formats.Asn1.AsnWriter.Scope PushSetOf(System.Formats.Asn1.Asn1Tag? tag = default(System.Formats.Asn1.Asn1Tag?)) => throw null;
                 public void Reset() => throw null;
                 public System.Formats.Asn1.AsnEncodingRules RuleSet { get => throw null; }
-                // Generated from `System.Formats.Asn1.AsnWriter.Scope` in `System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+                // Generated from `System.Formats.Asn1.AsnWriter+Scope` in `System.Formats.Asn1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public struct Scope : System.IDisposable
                 {
                     public void Dispose() => throw null;

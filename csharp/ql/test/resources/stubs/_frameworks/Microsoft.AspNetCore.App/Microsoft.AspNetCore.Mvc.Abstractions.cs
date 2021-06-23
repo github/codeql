@@ -759,7 +759,7 @@ namespace Microsoft
                     public abstract string ModelName { get; set; }
                     public abstract Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary ModelState { get; set; }
                     public virtual System.Type ModelType { get => throw null; }
-                    // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.ModelBindingContext.NestedScope` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                    // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.ModelBindingContext+NestedScope` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public struct NestedScope : System.IDisposable
                     {
                         public void Dispose() => throw null;
@@ -907,7 +907,7 @@ namespace Microsoft
                     public bool ContainsKey(string key) => throw null;
                     public int Count { get => throw null; }
                     public static int DefaultMaxAllowedErrors;
-                    // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary.Enumerator` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                    // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary+Enumerator` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public struct Enumerator : System.IDisposable, System.Collections.IEnumerator, System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateEntry>>
                     {
                         public System.Collections.Generic.KeyValuePair<string, Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateEntry> Current { get => throw null; }
@@ -930,7 +930,7 @@ namespace Microsoft
                     public bool HasReachedMaxErrors { get => throw null; }
                     public bool IsValid { get => throw null; }
                     public Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateEntry this[string key] { get => throw null; }
-                    // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary.KeyEnumerable` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                    // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary+KeyEnumerable` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public struct KeyEnumerable : System.Collections.IEnumerable, System.Collections.Generic.IEnumerable<string>
                     {
                         public Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary.KeyEnumerator GetEnumerator() => throw null;
@@ -941,7 +941,7 @@ namespace Microsoft
                     }
 
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary.KeyEnumerator` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                    // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary+KeyEnumerator` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public struct KeyEnumerator : System.IDisposable, System.Collections.IEnumerator, System.Collections.Generic.IEnumerator<string>
                     {
                         public string Current { get => throw null; }
@@ -963,7 +963,7 @@ namespace Microsoft
                     public ModelStateDictionary(int maxAllowedErrors) => throw null;
                     public ModelStateDictionary(Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary dictionary) => throw null;
                     public ModelStateDictionary() => throw null;
-                    // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary.PrefixEnumerable` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                    // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary+PrefixEnumerable` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public struct PrefixEnumerable : System.Collections.IEnumerable, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateEntry>>
                     {
                         public Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary.Enumerator GetEnumerator() => throw null;
@@ -984,7 +984,7 @@ namespace Microsoft
                     public bool TryAddModelException(string key, System.Exception exception) => throw null;
                     public bool TryGetValue(string key, out Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateEntry value) => throw null;
                     public Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState ValidationState { get => throw null; }
-                    // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary.ValueEnumerable` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                    // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary+ValueEnumerable` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public struct ValueEnumerable : System.Collections.IEnumerable, System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateEntry>
                     {
                         public Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary.ValueEnumerator GetEnumerator() => throw null;
@@ -995,7 +995,7 @@ namespace Microsoft
                     }
 
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary.ValueEnumerator` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                    // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary+ValueEnumerator` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public struct ValueEnumerator : System.IDisposable, System.Collections.IEnumerator, System.Collections.Generic.IEnumerator<Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateEntry>
                     {
                         public Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateEntry Current { get => throw null; }

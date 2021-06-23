@@ -25,7 +25,7 @@ namespace Microsoft
                 // Generated from `Microsoft.Extensions.Logging.EventSource.LoggingEventSource` in `Microsoft.Extensions.Logging.EventSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class LoggingEventSource : System.Diagnostics.Tracing.EventSource
                 {
-                    // Generated from `Microsoft.Extensions.Logging.EventSource.LoggingEventSource.Keywords` in `Microsoft.Extensions.Logging.EventSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                    // Generated from `Microsoft.Extensions.Logging.EventSource.LoggingEventSource+Keywords` in `Microsoft.Extensions.Logging.EventSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public static class Keywords
                     {
                         public const System.Diagnostics.Tracing.EventKeywords FormattedMessage = default;

@@ -297,7 +297,7 @@ namespace System
             // Generated from `System.Runtime.InteropServices.ComWrappers` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class ComWrappers
             {
-                // Generated from `System.Runtime.InteropServices.ComWrappers.ComInterfaceDispatch` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Runtime.InteropServices.ComWrappers+ComInterfaceDispatch` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct ComInterfaceDispatch
                 {
                     // Stub generator skipped constructor 
@@ -306,7 +306,7 @@ namespace System
                 }
 
 
-                // Generated from `System.Runtime.InteropServices.ComWrappers.ComInterfaceEntry` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Runtime.InteropServices.ComWrappers+ComInterfaceEntry` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct ComInterfaceEntry
                 {
                     // Stub generator skipped constructor 
@@ -1164,7 +1164,7 @@ namespace System
                 // Generated from `System.Runtime.InteropServices.ComTypes.ELEMDESC` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct ELEMDESC
                 {
-                    // Generated from `System.Runtime.InteropServices.ComTypes.ELEMDESC.DESCUNION` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                    // Generated from `System.Runtime.InteropServices.ComTypes.ELEMDESC+DESCUNION` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                     public struct DESCUNION
                     {
                         // Stub generator skipped constructor 
@@ -1759,7 +1759,7 @@ namespace System
                 // Generated from `System.Runtime.InteropServices.ComTypes.VARDESC` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct VARDESC
                 {
-                    // Generated from `System.Runtime.InteropServices.ComTypes.VARDESC.DESCUNION` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                    // Generated from `System.Runtime.InteropServices.ComTypes.VARDESC+DESCUNION` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                     public struct DESCUNION
                     {
                         // Stub generator skipped constructor 

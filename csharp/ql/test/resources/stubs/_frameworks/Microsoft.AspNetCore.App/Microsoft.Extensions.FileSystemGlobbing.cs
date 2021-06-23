@@ -237,7 +237,7 @@ namespace Microsoft
                     public abstract class PatternContextLinear : Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts.PatternContext<Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts.PatternContextLinear.FrameData>
                     {
                         protected string CalculateStem(Microsoft.Extensions.FileSystemGlobbing.Abstractions.FileInfoBase matchedFile) => throw null;
-                        // Generated from `Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts.PatternContextLinear.FrameData` in `Microsoft.Extensions.FileSystemGlobbing, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                        // Generated from `Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts.PatternContextLinear+FrameData` in `Microsoft.Extensions.FileSystemGlobbing, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                         public struct FrameData
                         {
                             // Stub generator skipped constructor 
@@ -276,7 +276,7 @@ namespace Microsoft
                     public abstract class PatternContextRagged : Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts.PatternContext<Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts.PatternContextRagged.FrameData>
                     {
                         protected string CalculateStem(Microsoft.Extensions.FileSystemGlobbing.Abstractions.FileInfoBase matchedFile) => throw null;
-                        // Generated from `Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts.PatternContextRagged.FrameData` in `Microsoft.Extensions.FileSystemGlobbing, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                        // Generated from `Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts.PatternContextRagged+FrameData` in `Microsoft.Extensions.FileSystemGlobbing, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                         public struct FrameData
                         {
                             public int BacktrackAvailable;

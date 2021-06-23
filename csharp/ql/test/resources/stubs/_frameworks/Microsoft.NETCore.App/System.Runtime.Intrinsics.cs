@@ -473,7 +473,7 @@ namespace System
                     public static System.Runtime.Intrinsics.Vector128<System.Int64> And(System.Runtime.Intrinsics.Vector128<System.Int64> left, System.Runtime.Intrinsics.Vector128<System.Int64> right) => throw null;
                     public static System.Runtime.Intrinsics.Vector128<System.Int16> And(System.Runtime.Intrinsics.Vector128<System.Int16> left, System.Runtime.Intrinsics.Vector128<System.Int16> right) => throw null;
                     public static System.Runtime.Intrinsics.Vector128<System.Byte> And(System.Runtime.Intrinsics.Vector128<System.Byte> left, System.Runtime.Intrinsics.Vector128<System.Byte> right) => throw null;
-                    // Generated from `System.Runtime.Intrinsics.Arm.AdvSimd.Arm64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+                    // Generated from `System.Runtime.Intrinsics.Arm.AdvSimd+Arm64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                     public abstract class Arm64 : System.Runtime.Intrinsics.Arm.ArmBase.Arm64
                     {
                         public static System.Runtime.Intrinsics.Vector128<double> Abs(System.Runtime.Intrinsics.Vector128<double> value) => throw null;
@@ -2479,7 +2479,7 @@ namespace System
                 // Generated from `System.Runtime.Intrinsics.Arm.Aes` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public abstract class Aes : System.Runtime.Intrinsics.Arm.ArmBase
                 {
-                    // Generated from `System.Runtime.Intrinsics.Arm.Aes.Arm64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+                    // Generated from `System.Runtime.Intrinsics.Arm.Aes+Arm64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                     public abstract class Arm64 : System.Runtime.Intrinsics.Arm.ArmBase.Arm64
                     {
                         public static bool IsSupported { get => throw null; }
@@ -2500,7 +2500,7 @@ namespace System
                 // Generated from `System.Runtime.Intrinsics.Arm.ArmBase` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public abstract class ArmBase
                 {
-                    // Generated from `System.Runtime.Intrinsics.Arm.ArmBase.Arm64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+                    // Generated from `System.Runtime.Intrinsics.Arm.ArmBase+Arm64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                     public abstract class Arm64
                     {
                         internal Arm64() => throw null;
@@ -2525,7 +2525,7 @@ namespace System
                 // Generated from `System.Runtime.Intrinsics.Arm.Crc32` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public abstract class Crc32 : System.Runtime.Intrinsics.Arm.ArmBase
                 {
-                    // Generated from `System.Runtime.Intrinsics.Arm.Crc32.Arm64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+                    // Generated from `System.Runtime.Intrinsics.Arm.Crc32+Arm64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                     public abstract class Arm64 : System.Runtime.Intrinsics.Arm.ArmBase.Arm64
                     {
                         public static System.UInt32 ComputeCrc32(System.UInt32 crc, System.UInt64 data) => throw null;
@@ -2546,7 +2546,7 @@ namespace System
                 // Generated from `System.Runtime.Intrinsics.Arm.Dp` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public abstract class Dp : System.Runtime.Intrinsics.Arm.AdvSimd
                 {
-                    // Generated from `System.Runtime.Intrinsics.Arm.Dp.Arm64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+                    // Generated from `System.Runtime.Intrinsics.Arm.Dp+Arm64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                     public abstract class Arm64 : System.Runtime.Intrinsics.Arm.AdvSimd.Arm64
                     {
                         public static bool IsSupported { get => throw null; }
@@ -2571,7 +2571,7 @@ namespace System
                 // Generated from `System.Runtime.Intrinsics.Arm.Rdm` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public abstract class Rdm : System.Runtime.Intrinsics.Arm.AdvSimd
                 {
-                    // Generated from `System.Runtime.Intrinsics.Arm.Rdm.Arm64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+                    // Generated from `System.Runtime.Intrinsics.Arm.Rdm+Arm64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                     public abstract class Arm64 : System.Runtime.Intrinsics.Arm.AdvSimd.Arm64
                     {
                         public static bool IsSupported { get => throw null; }
@@ -2620,7 +2620,7 @@ namespace System
                 // Generated from `System.Runtime.Intrinsics.Arm.Sha1` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public abstract class Sha1 : System.Runtime.Intrinsics.Arm.ArmBase
                 {
-                    // Generated from `System.Runtime.Intrinsics.Arm.Sha1.Arm64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+                    // Generated from `System.Runtime.Intrinsics.Arm.Sha1+Arm64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                     public abstract class Arm64 : System.Runtime.Intrinsics.Arm.ArmBase.Arm64
                     {
                         public static bool IsSupported { get => throw null; }
@@ -2639,7 +2639,7 @@ namespace System
                 // Generated from `System.Runtime.Intrinsics.Arm.Sha256` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public abstract class Sha256 : System.Runtime.Intrinsics.Arm.ArmBase
                 {
-                    // Generated from `System.Runtime.Intrinsics.Arm.Sha256.Arm64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+                    // Generated from `System.Runtime.Intrinsics.Arm.Sha256+Arm64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                     public abstract class Arm64 : System.Runtime.Intrinsics.Arm.ArmBase.Arm64
                     {
                         public static bool IsSupported { get => throw null; }
@@ -2666,7 +2666,7 @@ namespace System
                     public static System.Runtime.Intrinsics.Vector128<System.Byte> InverseMixColumns(System.Runtime.Intrinsics.Vector128<System.Byte> value) => throw null;
                     public static bool IsSupported { get => throw null; }
                     public static System.Runtime.Intrinsics.Vector128<System.Byte> KeygenAssist(System.Runtime.Intrinsics.Vector128<System.Byte> value, System.Byte control) => throw null;
-                    // Generated from `System.Runtime.Intrinsics.X86.Aes.X64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+                    // Generated from `System.Runtime.Intrinsics.X86.Aes+X64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                     public abstract class X64 : System.Runtime.Intrinsics.X86.Sse2.X64
                     {
                         public static bool IsSupported { get => throw null; }
@@ -2921,7 +2921,7 @@ namespace System
                     public static System.Runtime.Intrinsics.Vector256<double> UnpackHigh(System.Runtime.Intrinsics.Vector256<double> left, System.Runtime.Intrinsics.Vector256<double> right) => throw null;
                     public static System.Runtime.Intrinsics.Vector256<float> UnpackLow(System.Runtime.Intrinsics.Vector256<float> left, System.Runtime.Intrinsics.Vector256<float> right) => throw null;
                     public static System.Runtime.Intrinsics.Vector256<double> UnpackLow(System.Runtime.Intrinsics.Vector256<double> left, System.Runtime.Intrinsics.Vector256<double> right) => throw null;
-                    // Generated from `System.Runtime.Intrinsics.X86.Avx.X64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+                    // Generated from `System.Runtime.Intrinsics.X86.Avx+X64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                     public abstract class X64 : System.Runtime.Intrinsics.X86.Sse42.X64
                     {
                         public static bool IsSupported { get => throw null; }
@@ -3322,7 +3322,7 @@ namespace System
                     public static System.Runtime.Intrinsics.Vector256<System.Int64> UnpackLow(System.Runtime.Intrinsics.Vector256<System.Int64> left, System.Runtime.Intrinsics.Vector256<System.Int64> right) => throw null;
                     public static System.Runtime.Intrinsics.Vector256<System.Int16> UnpackLow(System.Runtime.Intrinsics.Vector256<System.Int16> left, System.Runtime.Intrinsics.Vector256<System.Int16> right) => throw null;
                     public static System.Runtime.Intrinsics.Vector256<System.Byte> UnpackLow(System.Runtime.Intrinsics.Vector256<System.Byte> left, System.Runtime.Intrinsics.Vector256<System.Byte> right) => throw null;
-                    // Generated from `System.Runtime.Intrinsics.X86.Avx2.X64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+                    // Generated from `System.Runtime.Intrinsics.X86.Avx2+X64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                     public abstract class X64 : System.Runtime.Intrinsics.X86.Avx.X64
                     {
                         public static bool IsSupported { get => throw null; }
@@ -3350,7 +3350,7 @@ namespace System
                     public static bool IsSupported { get => throw null; }
                     public static System.UInt32 ResetLowestSetBit(System.UInt32 value) => throw null;
                     public static System.UInt32 TrailingZeroCount(System.UInt32 value) => throw null;
-                    // Generated from `System.Runtime.Intrinsics.X86.Bmi1.X64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+                    // Generated from `System.Runtime.Intrinsics.X86.Bmi1+X64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                     public abstract class X64 : System.Runtime.Intrinsics.X86.X86Base.X64
                     {
                         public static System.UInt64 AndNot(System.UInt64 left, System.UInt64 right) => throw null;
@@ -3374,7 +3374,7 @@ namespace System
                     public static System.UInt32 MultiplyNoFlags(System.UInt32 left, System.UInt32 right) => throw null;
                     public static System.UInt32 ParallelBitDeposit(System.UInt32 value, System.UInt32 mask) => throw null;
                     public static System.UInt32 ParallelBitExtract(System.UInt32 value, System.UInt32 mask) => throw null;
-                    // Generated from `System.Runtime.Intrinsics.X86.Bmi2.X64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+                    // Generated from `System.Runtime.Intrinsics.X86.Bmi2+X64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                     public abstract class X64 : System.Runtime.Intrinsics.X86.X86Base.X64
                     {
                         public static bool IsSupported { get => throw null; }
@@ -3462,7 +3462,7 @@ namespace System
                     public static System.Runtime.Intrinsics.Vector128<double> MultiplySubtractNegatedScalar(System.Runtime.Intrinsics.Vector128<double> a, System.Runtime.Intrinsics.Vector128<double> b, System.Runtime.Intrinsics.Vector128<double> c) => throw null;
                     public static System.Runtime.Intrinsics.Vector128<float> MultiplySubtractScalar(System.Runtime.Intrinsics.Vector128<float> a, System.Runtime.Intrinsics.Vector128<float> b, System.Runtime.Intrinsics.Vector128<float> c) => throw null;
                     public static System.Runtime.Intrinsics.Vector128<double> MultiplySubtractScalar(System.Runtime.Intrinsics.Vector128<double> a, System.Runtime.Intrinsics.Vector128<double> b, System.Runtime.Intrinsics.Vector128<double> c) => throw null;
-                    // Generated from `System.Runtime.Intrinsics.X86.Fma.X64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+                    // Generated from `System.Runtime.Intrinsics.X86.Fma+X64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                     public abstract class X64 : System.Runtime.Intrinsics.X86.Avx.X64
                     {
                         public static bool IsSupported { get => throw null; }
@@ -3476,7 +3476,7 @@ namespace System
                 {
                     public static bool IsSupported { get => throw null; }
                     public static System.UInt32 LeadingZeroCount(System.UInt32 value) => throw null;
-                    // Generated from `System.Runtime.Intrinsics.X86.Lzcnt.X64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+                    // Generated from `System.Runtime.Intrinsics.X86.Lzcnt+X64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                     public abstract class X64 : System.Runtime.Intrinsics.X86.X86Base.X64
                     {
                         public static bool IsSupported { get => throw null; }
@@ -3492,7 +3492,7 @@ namespace System
                     public static System.Runtime.Intrinsics.Vector128<System.UInt64> CarrylessMultiply(System.Runtime.Intrinsics.Vector128<System.UInt64> left, System.Runtime.Intrinsics.Vector128<System.UInt64> right, System.Byte control) => throw null;
                     public static System.Runtime.Intrinsics.Vector128<System.Int64> CarrylessMultiply(System.Runtime.Intrinsics.Vector128<System.Int64> left, System.Runtime.Intrinsics.Vector128<System.Int64> right, System.Byte control) => throw null;
                     public static bool IsSupported { get => throw null; }
-                    // Generated from `System.Runtime.Intrinsics.X86.Pclmulqdq.X64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+                    // Generated from `System.Runtime.Intrinsics.X86.Pclmulqdq+X64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                     public abstract class X64 : System.Runtime.Intrinsics.X86.Sse2.X64
                     {
                         public static bool IsSupported { get => throw null; }
@@ -3506,7 +3506,7 @@ namespace System
                 {
                     public static bool IsSupported { get => throw null; }
                     public static System.UInt32 PopCount(System.UInt32 value) => throw null;
-                    // Generated from `System.Runtime.Intrinsics.X86.Popcnt.X64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+                    // Generated from `System.Runtime.Intrinsics.X86.Popcnt+X64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                     public abstract class X64 : System.Runtime.Intrinsics.X86.Sse42.X64
                     {
                         public static bool IsSupported { get => throw null; }
@@ -3607,7 +3607,7 @@ namespace System
                     public static System.Runtime.Intrinsics.Vector128<float> SubtractScalar(System.Runtime.Intrinsics.Vector128<float> left, System.Runtime.Intrinsics.Vector128<float> right) => throw null;
                     public static System.Runtime.Intrinsics.Vector128<float> UnpackHigh(System.Runtime.Intrinsics.Vector128<float> left, System.Runtime.Intrinsics.Vector128<float> right) => throw null;
                     public static System.Runtime.Intrinsics.Vector128<float> UnpackLow(System.Runtime.Intrinsics.Vector128<float> left, System.Runtime.Intrinsics.Vector128<float> right) => throw null;
-                    // Generated from `System.Runtime.Intrinsics.X86.Sse.X64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+                    // Generated from `System.Runtime.Intrinsics.X86.Sse+X64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                     public abstract class X64 : System.Runtime.Intrinsics.X86.X86Base.X64
                     {
                         public static System.Runtime.Intrinsics.Vector128<float> ConvertScalarToVector128Single(System.Runtime.Intrinsics.Vector128<float> upper, System.Int64 value) => throw null;
@@ -3916,7 +3916,7 @@ namespace System
                     public static System.Runtime.Intrinsics.Vector128<System.Int64> UnpackLow(System.Runtime.Intrinsics.Vector128<System.Int64> left, System.Runtime.Intrinsics.Vector128<System.Int64> right) => throw null;
                     public static System.Runtime.Intrinsics.Vector128<System.Int16> UnpackLow(System.Runtime.Intrinsics.Vector128<System.Int16> left, System.Runtime.Intrinsics.Vector128<System.Int16> right) => throw null;
                     public static System.Runtime.Intrinsics.Vector128<System.Byte> UnpackLow(System.Runtime.Intrinsics.Vector128<System.Byte> left, System.Runtime.Intrinsics.Vector128<System.Byte> right) => throw null;
-                    // Generated from `System.Runtime.Intrinsics.X86.Sse2.X64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+                    // Generated from `System.Runtime.Intrinsics.X86.Sse2+X64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                     public abstract class X64 : System.Runtime.Intrinsics.X86.Sse.X64
                     {
                         public static System.Runtime.Intrinsics.Vector128<double> ConvertScalarToVector128Double(System.Runtime.Intrinsics.Vector128<double> upper, System.Int64 value) => throw null;
@@ -3967,7 +3967,7 @@ namespace System
                     public static System.Runtime.Intrinsics.Vector128<float> MoveHighAndDuplicate(System.Runtime.Intrinsics.Vector128<float> source) => throw null;
                     public static System.Runtime.Intrinsics.Vector128<float> MoveLowAndDuplicate(System.Runtime.Intrinsics.Vector128<float> source) => throw null;
                     internal Sse3() => throw null;
-                    // Generated from `System.Runtime.Intrinsics.X86.Sse3.X64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+                    // Generated from `System.Runtime.Intrinsics.X86.Sse3+X64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                     public abstract class X64 : System.Runtime.Intrinsics.X86.Sse2.X64
                     {
                         public static bool IsSupported { get => throw null; }
@@ -4121,7 +4121,7 @@ namespace System
                     public static bool TestZ(System.Runtime.Intrinsics.Vector128<System.Int64> left, System.Runtime.Intrinsics.Vector128<System.Int64> right) => throw null;
                     public static bool TestZ(System.Runtime.Intrinsics.Vector128<System.Int16> left, System.Runtime.Intrinsics.Vector128<System.Int16> right) => throw null;
                     public static bool TestZ(System.Runtime.Intrinsics.Vector128<System.Byte> left, System.Runtime.Intrinsics.Vector128<System.Byte> right) => throw null;
-                    // Generated from `System.Runtime.Intrinsics.X86.Sse41.X64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+                    // Generated from `System.Runtime.Intrinsics.X86.Sse41+X64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                     public abstract class X64 : System.Runtime.Intrinsics.X86.Ssse3.X64
                     {
                         public static System.UInt64 Extract(System.Runtime.Intrinsics.Vector128<System.UInt64> value, System.Byte index) => throw null;
@@ -4144,7 +4144,7 @@ namespace System
                     public static System.UInt32 Crc32(System.UInt32 crc, System.Byte data) => throw null;
                     public static bool IsSupported { get => throw null; }
                     internal Sse42() => throw null;
-                    // Generated from `System.Runtime.Intrinsics.X86.Sse42.X64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+                    // Generated from `System.Runtime.Intrinsics.X86.Sse42+X64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                     public abstract class X64 : System.Runtime.Intrinsics.X86.Sse41.X64
                     {
                         public static System.UInt64 Crc32(System.UInt64 crc, System.UInt64 data) => throw null;
@@ -4184,7 +4184,7 @@ namespace System
                     public static System.Runtime.Intrinsics.Vector128<System.SByte> Sign(System.Runtime.Intrinsics.Vector128<System.SByte> left, System.Runtime.Intrinsics.Vector128<System.SByte> right) => throw null;
                     public static System.Runtime.Intrinsics.Vector128<System.Int16> Sign(System.Runtime.Intrinsics.Vector128<System.Int16> left, System.Runtime.Intrinsics.Vector128<System.Int16> right) => throw null;
                     internal Ssse3() => throw null;
-                    // Generated from `System.Runtime.Intrinsics.X86.Ssse3.X64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+                    // Generated from `System.Runtime.Intrinsics.X86.Ssse3+X64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                     public abstract class X64 : System.Runtime.Intrinsics.X86.Sse3.X64
                     {
                         public static bool IsSupported { get => throw null; }
@@ -4199,7 +4199,7 @@ namespace System
                 {
                     public static (int, int, int, int) CpuId(int functionId, int subFunctionId) => throw null;
                     public static bool IsSupported { get => throw null; }
-                    // Generated from `System.Runtime.Intrinsics.X86.X86Base.X64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+                    // Generated from `System.Runtime.Intrinsics.X86.X86Base+X64` in `System.Runtime.Intrinsics, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                     public abstract class X64
                     {
                         public static bool IsSupported { get => throw null; }

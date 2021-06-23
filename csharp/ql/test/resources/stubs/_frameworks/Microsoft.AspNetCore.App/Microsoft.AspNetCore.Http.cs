@@ -68,7 +68,7 @@ namespace Microsoft
                 public bool ContainsKey(string key) => throw null;
                 public int Count { get => throw null; }
                 public static Microsoft.AspNetCore.Http.FormCollection Empty;
-                // Generated from `Microsoft.AspNetCore.Http.FormCollection.Enumerator` in `Microsoft.AspNetCore.Http, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Http.FormCollection+Enumerator` in `Microsoft.AspNetCore.Http, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public struct Enumerator : System.IDisposable, System.Collections.IEnumerator, System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>>
                 {
                     public System.Collections.Generic.KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues> Current { get => throw null; }
@@ -125,7 +125,7 @@ namespace Microsoft
                 public System.Int64? ContentLength { get => throw null; set => throw null; }
                 public void CopyTo(System.Collections.Generic.KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>[] array, int arrayIndex) => throw null;
                 public int Count { get => throw null; }
-                // Generated from `Microsoft.AspNetCore.Http.HeaderDictionary.Enumerator` in `Microsoft.AspNetCore.Http, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Http.HeaderDictionary+Enumerator` in `Microsoft.AspNetCore.Http, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public struct Enumerator : System.IDisposable, System.Collections.IEnumerator, System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>>
                 {
                     public System.Collections.Generic.KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues> Current { get => throw null; }
@@ -194,7 +194,7 @@ namespace Microsoft
                 public bool ContainsKey(string key) => throw null;
                 public int Count { get => throw null; }
                 public static Microsoft.AspNetCore.Http.QueryCollection Empty;
-                // Generated from `Microsoft.AspNetCore.Http.QueryCollection.Enumerator` in `Microsoft.AspNetCore.Http, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Http.QueryCollection+Enumerator` in `Microsoft.AspNetCore.Http, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public struct Enumerator : System.IDisposable, System.Collections.IEnumerator, System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>>
                 {
                     public System.Collections.Generic.KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues> Current { get => throw null; }

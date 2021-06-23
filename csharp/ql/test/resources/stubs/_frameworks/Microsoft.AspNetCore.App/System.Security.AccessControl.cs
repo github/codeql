@@ -421,7 +421,7 @@ namespace System
             // Generated from `System.Security.AccessControl.NativeObjectSecurity` in `System.Security.AccessControl, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class NativeObjectSecurity : System.Security.AccessControl.CommonObjectSecurity
             {
-                // Generated from `System.Security.AccessControl.NativeObjectSecurity.ExceptionFromErrorCode` in `System.Security.AccessControl, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Security.AccessControl.NativeObjectSecurity+ExceptionFromErrorCode` in `System.Security.AccessControl, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 protected internal delegate System.Exception ExceptionFromErrorCode(int errorCode, string name, System.Runtime.InteropServices.SafeHandle handle, object context);
 
 

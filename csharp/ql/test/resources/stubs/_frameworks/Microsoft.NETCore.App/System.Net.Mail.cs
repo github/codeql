@@ -348,7 +348,7 @@ namespace System
             // Generated from `System.Net.Mime.MediaTypeNames` in `System.Net.Mail, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public static class MediaTypeNames
             {
-                // Generated from `System.Net.Mime.MediaTypeNames.Application` in `System.Net.Mail, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+                // Generated from `System.Net.Mime.MediaTypeNames+Application` in `System.Net.Mail, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public static class Application
                 {
                     public const string Json = default;
@@ -361,7 +361,7 @@ namespace System
                 }
 
 
-                // Generated from `System.Net.Mime.MediaTypeNames.Image` in `System.Net.Mail, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+                // Generated from `System.Net.Mime.MediaTypeNames+Image` in `System.Net.Mail, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public static class Image
                 {
                     public const string Gif = default;
@@ -370,7 +370,7 @@ namespace System
                 }
 
 
-                // Generated from `System.Net.Mime.MediaTypeNames.Text` in `System.Net.Mail, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+                // Generated from `System.Net.Mime.MediaTypeNames+Text` in `System.Net.Mail, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public static class Text
                 {
                     public const string Html = default;

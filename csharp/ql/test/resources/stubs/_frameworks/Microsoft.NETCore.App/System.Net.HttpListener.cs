@@ -19,7 +19,7 @@ namespace System
             void System.IDisposable.Dispose() => throw null;
             public System.Net.HttpListenerContext EndGetContext(System.IAsyncResult asyncResult) => throw null;
             public System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy ExtendedProtectionPolicy { get => throw null; set => throw null; }
-            // Generated from `System.Net.HttpListener.ExtendedProtectionSelector` in `System.Net.HttpListener, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+            // Generated from `System.Net.HttpListener+ExtendedProtectionSelector` in `System.Net.HttpListener, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public delegate System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy ExtendedProtectionSelector(System.Net.HttpListenerRequest request);
 
 

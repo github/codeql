@@ -201,7 +201,7 @@ namespace System
         {
             public static System.Buffers.ReadOnlySequence<T> Empty;
             public System.SequencePosition End { get => throw null; }
-            // Generated from `System.Buffers.ReadOnlySequence<>.Enumerator` in `System.Memory, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+            // Generated from `System.Buffers.ReadOnlySequence<>+Enumerator` in `System.Memory, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public struct Enumerator
             {
                 public System.ReadOnlyMemory<T> Current { get => throw null; }

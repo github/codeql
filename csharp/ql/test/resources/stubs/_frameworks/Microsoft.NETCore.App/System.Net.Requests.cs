@@ -390,7 +390,7 @@ namespace System
         // Generated from `System.Net.WebRequestMethods` in `System.Net.Requests, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class WebRequestMethods
         {
-            // Generated from `System.Net.WebRequestMethods.File` in `System.Net.Requests, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Net.WebRequestMethods+File` in `System.Net.Requests, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class File
             {
                 public const string DownloadFile = default;
@@ -398,7 +398,7 @@ namespace System
             }
 
 
-            // Generated from `System.Net.WebRequestMethods.Ftp` in `System.Net.Requests, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Net.WebRequestMethods+Ftp` in `System.Net.Requests, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class Ftp
             {
                 public const string AppendFile = default;
@@ -417,7 +417,7 @@ namespace System
             }
 
 
-            // Generated from `System.Net.WebRequestMethods.Http` in `System.Net.Requests, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Net.WebRequestMethods+Http` in `System.Net.Requests, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class Http
             {
                 public const string Connect = default;

@@ -344,7 +344,7 @@ namespace System
                     public X509CertificateCollection(System.Security.Cryptography.X509Certificates.X509Certificate[] value) => throw null;
                     public X509CertificateCollection(System.Security.Cryptography.X509Certificates.X509CertificateCollection value) => throw null;
                     public X509CertificateCollection() => throw null;
-                    // Generated from `System.Security.Cryptography.X509Certificates.X509CertificateCollection.X509CertificateEnumerator` in `System.Security.Cryptography.X509Certificates, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                    // Generated from `System.Security.Cryptography.X509Certificates.X509CertificateCollection+X509CertificateEnumerator` in `System.Security.Cryptography.X509Certificates, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                     public class X509CertificateEnumerator : System.Collections.IEnumerator
                     {
                         public System.Security.Cryptography.X509Certificates.X509Certificate Current { get => throw null; }

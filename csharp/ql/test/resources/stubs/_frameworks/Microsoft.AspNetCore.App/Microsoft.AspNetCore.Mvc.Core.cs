@@ -2182,7 +2182,7 @@ namespace Microsoft
                 {
                     protected abstract int Count { get; }
                     int System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<string, object>>.Count { get => throw null; }
-                    // Generated from `Microsoft.AspNetCore.Mvc.Diagnostics.EventData.Enumerator` in `Microsoft.AspNetCore.Mvc.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                    // Generated from `Microsoft.AspNetCore.Mvc.Diagnostics.EventData+Enumerator` in `Microsoft.AspNetCore.Mvc.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public struct Enumerator : System.IDisposable, System.Collections.IEnumerator, System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, object>>
                     {
                         public System.Collections.Generic.KeyValuePair<string, object> Current { get => throw null; }
@@ -2691,7 +2691,7 @@ namespace Microsoft
                 public class PhysicalFileResultExecutor : Microsoft.AspNetCore.Mvc.Infrastructure.FileResultExecutorBase, Microsoft.AspNetCore.Mvc.Infrastructure.IActionResultExecutor<Microsoft.AspNetCore.Mvc.PhysicalFileResult>
                 {
                     public virtual System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Mvc.ActionContext context, Microsoft.AspNetCore.Mvc.PhysicalFileResult result) => throw null;
-                    // Generated from `Microsoft.AspNetCore.Mvc.Infrastructure.PhysicalFileResultExecutor.FileMetadata` in `Microsoft.AspNetCore.Mvc.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                    // Generated from `Microsoft.AspNetCore.Mvc.Infrastructure.PhysicalFileResultExecutor+FileMetadata` in `Microsoft.AspNetCore.Mvc.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     protected class FileMetadata
                     {
                         public bool Exists { get => throw null; set => throw null; }
@@ -3723,7 +3723,7 @@ namespace Microsoft
                         protected Microsoft.AspNetCore.Mvc.ModelBinding.IModelMetadataProvider MetadataProvider { get => throw null; }
                         protected object Model { get => throw null; set => throw null; }
                         protected Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary ModelState { get => throw null; }
-                        // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidationVisitor.StateManager` in `Microsoft.AspNetCore.Mvc.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                        // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidationVisitor+StateManager` in `Microsoft.AspNetCore.Mvc.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                         protected struct StateManager : System.IDisposable
                         {
                             public void Dispose() => throw null;

@@ -509,7 +509,7 @@ namespace System
                 protected void AddTarget(string id, object o) => throw null;
                 protected void CheckReaderCount(ref int whileIterations, ref int readerCount) => throw null;
                 protected string CollapseWhitespace(string value) => throw null;
-                // Generated from `System.Xml.Serialization.XmlSerializationReader.CollectionFixup` in `System.Xml.XmlSerializer, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Xml.Serialization.XmlSerializationReader+CollectionFixup` in `System.Xml.XmlSerializer, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 protected class CollectionFixup
                 {
                     public System.Xml.Serialization.XmlSerializationCollectionFixupCallback Callback { get => throw null; }
@@ -533,7 +533,7 @@ namespace System
                 protected bool DecodeName { get => throw null; set => throw null; }
                 protected System.Xml.XmlDocument Document { get => throw null; }
                 protected System.Array EnsureArrayIndex(System.Array a, int index, System.Type elementType) => throw null;
-                // Generated from `System.Xml.Serialization.XmlSerializationReader.Fixup` in `System.Xml.XmlSerializer, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Xml.Serialization.XmlSerializationReader+Fixup` in `System.Xml.XmlSerializer, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 protected class Fixup
                 {
                     public System.Xml.Serialization.XmlSerializationFixupCallback Callback { get => throw null; }

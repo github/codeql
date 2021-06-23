@@ -199,7 +199,7 @@ namespace System
                 public void Dispose() => throw null;
                 protected virtual void Dispose(bool disposing) => throw null;
                 public event System.EventHandler<System.Diagnostics.Tracing.EventCommandEventArgs> EventCommandExecuted;
-                // Generated from `System.Diagnostics.Tracing.EventSource.EventData` in `System.Diagnostics.Tracing, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Diagnostics.Tracing.EventSource+EventData` in `System.Diagnostics.Tracing, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 protected internal struct EventData
                 {
                     public System.IntPtr DataPointer { get => throw null; set => throw null; }

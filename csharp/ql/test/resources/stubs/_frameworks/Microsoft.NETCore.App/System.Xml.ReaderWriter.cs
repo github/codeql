@@ -1913,7 +1913,7 @@ namespace System
             {
                 public System.Xml.Schema.XmlSchemaSet InferSchema(System.Xml.XmlReader instanceDocument, System.Xml.Schema.XmlSchemaSet schemas) => throw null;
                 public System.Xml.Schema.XmlSchemaSet InferSchema(System.Xml.XmlReader instanceDocument) => throw null;
-                // Generated from `System.Xml.Schema.XmlSchemaInference.InferenceOption` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Xml.Schema.XmlSchemaInference+InferenceOption` in `System.Xml.ReaderWriter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public enum InferenceOption
                 {
                     Relaxed,

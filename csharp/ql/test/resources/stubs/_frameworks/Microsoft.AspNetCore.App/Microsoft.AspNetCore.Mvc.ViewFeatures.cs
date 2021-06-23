@@ -1043,7 +1043,7 @@ namespace Microsoft
                     public bool ContainsKey(string key) => throw null;
                     public void CopyTo(System.Collections.Generic.KeyValuePair<string, string>[] array, int arrayIndex) => throw null;
                     public int Count { get => throw null; }
-                    // Generated from `Microsoft.AspNetCore.Mvc.ViewFeatures.AttributeDictionary.Enumerator` in `Microsoft.AspNetCore.Mvc.ViewFeatures, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                    // Generated from `Microsoft.AspNetCore.Mvc.ViewFeatures.AttributeDictionary+Enumerator` in `Microsoft.AspNetCore.Mvc.ViewFeatures, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public struct Enumerator : System.IDisposable, System.Collections.IEnumerator, System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, string>>
                     {
                         public System.Collections.Generic.KeyValuePair<string, string> Current { get => throw null; }

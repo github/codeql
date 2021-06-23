@@ -108,7 +108,7 @@ namespace Microsoft
             // Generated from `Microsoft.Extensions.Primitives.StringTokenizer` in `Microsoft.Extensions.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public struct StringTokenizer : System.Collections.IEnumerable, System.Collections.Generic.IEnumerable<Microsoft.Extensions.Primitives.StringSegment>
             {
-                // Generated from `Microsoft.Extensions.Primitives.StringTokenizer.Enumerator` in `Microsoft.Extensions.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.Extensions.Primitives.StringTokenizer+Enumerator` in `Microsoft.Extensions.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public struct Enumerator : System.IDisposable, System.Collections.IEnumerator, System.Collections.Generic.IEnumerator<Microsoft.Extensions.Primitives.StringSegment>
                 {
                     public Microsoft.Extensions.Primitives.StringSegment Current { get => throw null; }
@@ -155,7 +155,7 @@ namespace Microsoft
                 void System.Collections.Generic.ICollection<string>.CopyTo(string[] array, int arrayIndex) => throw null;
                 public int Count { get => throw null; }
                 public static Microsoft.Extensions.Primitives.StringValues Empty;
-                // Generated from `Microsoft.Extensions.Primitives.StringValues.Enumerator` in `Microsoft.Extensions.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.Extensions.Primitives.StringValues+Enumerator` in `Microsoft.Extensions.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public struct Enumerator : System.IDisposable, System.Collections.IEnumerator, System.Collections.Generic.IEnumerator<string>
                 {
                     public string Current { get => throw null; }

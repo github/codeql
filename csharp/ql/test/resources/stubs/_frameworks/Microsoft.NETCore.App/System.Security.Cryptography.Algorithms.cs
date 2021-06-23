@@ -250,7 +250,7 @@ namespace System
                 public static System.Security.Cryptography.ECCurve CreateFromValue(string oidValue) => throw null;
                 public System.Security.Cryptography.ECCurve.ECCurveType CurveType;
                 // Stub generator skipped constructor 
-                // Generated from `System.Security.Cryptography.ECCurve.ECCurveType` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Security.Cryptography.ECCurve+ECCurveType` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public enum ECCurveType
                 {
                     Characteristic2,
@@ -268,7 +268,7 @@ namespace System
                 public bool IsExplicit { get => throw null; }
                 public bool IsNamed { get => throw null; }
                 public bool IsPrime { get => throw null; }
-                // Generated from `System.Security.Cryptography.ECCurve.NamedCurves` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Security.Cryptography.ECCurve+NamedCurves` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public static class NamedCurves
                 {
                     public static System.Security.Cryptography.ECCurve brainpoolP160r1 { get => throw null; }

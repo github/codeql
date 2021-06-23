@@ -195,7 +195,7 @@ namespace System
             public bool ContainsKey(string key) => throw null;
             public void CopyTo(System.Collections.Generic.KeyValuePair<string, object>[] array, int arrayIndex) => throw null;
             public int Count { get => throw null; }
-            // Generated from `System.Diagnostics.ActivityTagsCollection.Enumerator` in `System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+            // Generated from `System.Diagnostics.ActivityTagsCollection+Enumerator` in `System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public struct Enumerator : System.IDisposable, System.Collections.IEnumerator, System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, object>>
             {
                 public System.Collections.Generic.KeyValuePair<string, object> Current { get => throw null; }

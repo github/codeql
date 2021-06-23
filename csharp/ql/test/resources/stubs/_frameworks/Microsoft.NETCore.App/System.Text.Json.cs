@@ -42,7 +42,7 @@ namespace System
             // Generated from `System.Text.Json.JsonElement` in `System.Text.Json, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public struct JsonElement
             {
-                // Generated from `System.Text.Json.JsonElement.ArrayEnumerator` in `System.Text.Json, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+                // Generated from `System.Text.Json.JsonElement+ArrayEnumerator` in `System.Text.Json, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public struct ArrayEnumerator : System.IDisposable, System.Collections.IEnumerator, System.Collections.IEnumerable, System.Collections.Generic.IEnumerator<System.Text.Json.JsonElement>, System.Collections.Generic.IEnumerable<System.Text.Json.JsonElement>
                 {
                     // Stub generator skipped constructor 
@@ -84,7 +84,7 @@ namespace System
                 public System.UInt64 GetUInt64() => throw null;
                 public System.Text.Json.JsonElement this[int index] { get => throw null; }
                 // Stub generator skipped constructor 
-                // Generated from `System.Text.Json.JsonElement.ObjectEnumerator` in `System.Text.Json, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+                // Generated from `System.Text.Json.JsonElement+ObjectEnumerator` in `System.Text.Json, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public struct ObjectEnumerator : System.IDisposable, System.Collections.IEnumerator, System.Collections.IEnumerable, System.Collections.Generic.IEnumerator<System.Text.Json.JsonProperty>, System.Collections.Generic.IEnumerable<System.Text.Json.JsonProperty>
                 {
                     public System.Text.Json.JsonProperty Current { get => throw null; }

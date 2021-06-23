@@ -474,7 +474,7 @@ namespace System
         public void CopyTo(System.ArraySegment<T> destination) => throw null;
         public int Count { get => throw null; }
         public static System.ArraySegment<T> Empty { get => throw null; }
-        // Generated from `System.ArraySegment<>.Enumerator` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ArraySegment<>+Enumerator` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct Enumerator : System.IDisposable, System.Collections.IEnumerator, System.Collections.Generic.IEnumerator<T>
         {
             public T Current { get => throw null; }
@@ -1825,7 +1825,7 @@ namespace System
         public static int ProcessorCount { get => throw null; }
         public static void SetEnvironmentVariable(string variable, string value, System.EnvironmentVariableTarget target) => throw null;
         public static void SetEnvironmentVariable(string variable, string value) => throw null;
-        // Generated from `System.Environment.SpecialFolder` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Environment+SpecialFolder` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public enum SpecialFolder
         {
             AdminTools,
@@ -1878,7 +1878,7 @@ namespace System
         }
 
 
-        // Generated from `System.Environment.SpecialFolderOption` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Environment+SpecialFolderOption` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public enum SpecialFolderOption
         {
             Create,
@@ -3302,7 +3302,7 @@ namespace System
         public static bool operator ==(System.ReadOnlySpan<T> left, System.ReadOnlySpan<T> right) => throw null;
         public void CopyTo(System.Span<T> destination) => throw null;
         public static System.ReadOnlySpan<T> Empty { get => throw null; }
-        // Generated from `System.ReadOnlySpan<>.Enumerator` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ReadOnlySpan<>+Enumerator` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct Enumerator
         {
             public T Current { get => throw null; }
@@ -3516,7 +3516,7 @@ namespace System
         public void Clear() => throw null;
         public void CopyTo(System.Span<T> destination) => throw null;
         public static System.Span<T> Empty { get => throw null; }
-        // Generated from `System.Span<>.Enumerator` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Span<>+Enumerator` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct Enumerator
         {
             public T Current { get => throw null; }
@@ -3912,7 +3912,7 @@ namespace System
     // Generated from `System.TimeZoneInfo` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class TimeZoneInfo : System.Runtime.Serialization.ISerializable, System.Runtime.Serialization.IDeserializationCallback, System.IEquatable<System.TimeZoneInfo>
     {
-        // Generated from `System.TimeZoneInfo.AdjustmentRule` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.TimeZoneInfo+AdjustmentRule` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class AdjustmentRule : System.Runtime.Serialization.ISerializable, System.Runtime.Serialization.IDeserializationCallback, System.IEquatable<System.TimeZoneInfo.AdjustmentRule>
         {
             public static System.TimeZoneInfo.AdjustmentRule CreateAdjustmentRule(System.DateTime dateStart, System.DateTime dateEnd, System.TimeSpan daylightDelta, System.TimeZoneInfo.TransitionTime daylightTransitionStart, System.TimeZoneInfo.TransitionTime daylightTransitionEnd) => throw null;
@@ -3969,7 +3969,7 @@ namespace System
         public bool SupportsDaylightSavingTime { get => throw null; }
         public string ToSerializedString() => throw null;
         public override string ToString() => throw null;
-        // Generated from `System.TimeZoneInfo.TransitionTime` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.TimeZoneInfo+TransitionTime` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct TransitionTime : System.Runtime.Serialization.ISerializable, System.Runtime.Serialization.IDeserializationCallback, System.IEquatable<System.TimeZoneInfo.TransitionTime>
         {
             public static bool operator !=(System.TimeZoneInfo.TransitionTime t1, System.TimeZoneInfo.TransitionTime t2) => throw null;
@@ -5152,11 +5152,6 @@ namespace System
         public Version() => throw null;
     }
 
-    // Generated from `System.Void` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public struct Void
-    {
-    }
-
     // Generated from `System.WeakReference` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class WeakReference : System.Runtime.Serialization.ISerializable
     {
@@ -5870,7 +5865,7 @@ namespace System
             public DebuggableAttribute(bool isJITTrackingEnabled, bool isJITOptimizerDisabled) => throw null;
             public DebuggableAttribute(System.Diagnostics.DebuggableAttribute.DebuggingModes modes) => throw null;
             public System.Diagnostics.DebuggableAttribute.DebuggingModes DebuggingFlags { get => throw null; }
-            // Generated from `System.Diagnostics.DebuggableAttribute.DebuggingModes` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Diagnostics.DebuggableAttribute+DebuggingModes` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
             public enum DebuggingModes
             {
@@ -9544,7 +9539,7 @@ namespace System
                 public void AddOrUpdate(TKey key, TValue value) => throw null;
                 public void Clear() => throw null;
                 public ConditionalWeakTable() => throw null;
-                // Generated from `System.Runtime.CompilerServices.ConditionalWeakTable<,>.CreateValueCallback` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Runtime.CompilerServices.ConditionalWeakTable<,>+CreateValueCallback` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public delegate TValue CreateValueCallback(TKey key);
 
 
@@ -9568,7 +9563,7 @@ namespace System
             {
                 public System.Runtime.CompilerServices.ConfiguredCancelableAsyncEnumerable<T> ConfigureAwait(bool continueOnCapturedContext) => throw null;
                 // Stub generator skipped constructor 
-                // Generated from `System.Runtime.CompilerServices.ConfiguredCancelableAsyncEnumerable<>.Enumerator` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Runtime.CompilerServices.ConfiguredCancelableAsyncEnumerable<>+Enumerator` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct Enumerator
                 {
                     public T Current { get => throw null; }
@@ -9586,7 +9581,7 @@ namespace System
             public struct ConfiguredTaskAwaitable
             {
                 // Stub generator skipped constructor 
-                // Generated from `System.Runtime.CompilerServices.ConfiguredTaskAwaitable.ConfiguredTaskAwaiter` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Runtime.CompilerServices.ConfiguredTaskAwaitable+ConfiguredTaskAwaiter` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct ConfiguredTaskAwaiter : System.Runtime.CompilerServices.INotifyCompletion, System.Runtime.CompilerServices.ICriticalNotifyCompletion
                 {
                     // Stub generator skipped constructor 
@@ -9604,7 +9599,7 @@ namespace System
             public struct ConfiguredTaskAwaitable<TResult>
             {
                 // Stub generator skipped constructor 
-                // Generated from `System.Runtime.CompilerServices.ConfiguredTaskAwaitable<>.ConfiguredTaskAwaiter` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Runtime.CompilerServices.ConfiguredTaskAwaitable<>+ConfiguredTaskAwaiter` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct ConfiguredTaskAwaiter : System.Runtime.CompilerServices.INotifyCompletion, System.Runtime.CompilerServices.ICriticalNotifyCompletion
                 {
                     // Stub generator skipped constructor 
@@ -9622,7 +9617,7 @@ namespace System
             public struct ConfiguredValueTaskAwaitable
             {
                 // Stub generator skipped constructor 
-                // Generated from `System.Runtime.CompilerServices.ConfiguredValueTaskAwaitable.ConfiguredValueTaskAwaiter` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Runtime.CompilerServices.ConfiguredValueTaskAwaitable+ConfiguredValueTaskAwaiter` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct ConfiguredValueTaskAwaiter : System.Runtime.CompilerServices.INotifyCompletion, System.Runtime.CompilerServices.ICriticalNotifyCompletion
                 {
                     // Stub generator skipped constructor 
@@ -9640,7 +9635,7 @@ namespace System
             public struct ConfiguredValueTaskAwaitable<TResult>
             {
                 // Stub generator skipped constructor 
-                // Generated from `System.Runtime.CompilerServices.ConfiguredValueTaskAwaitable<>.ConfiguredValueTaskAwaiter` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Runtime.CompilerServices.ConfiguredValueTaskAwaitable<>+ConfiguredValueTaskAwaiter` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct ConfiguredValueTaskAwaiter : System.Runtime.CompilerServices.INotifyCompletion, System.Runtime.CompilerServices.ICriticalNotifyCompletion
                 {
                     // Stub generator skipped constructor 
@@ -9899,7 +9894,7 @@ namespace System
             public static class RuntimeHelpers
             {
                 public static System.IntPtr AllocateTypeAssociatedMemory(System.Type type, int size) => throw null;
-                // Generated from `System.Runtime.CompilerServices.RuntimeHelpers.CleanupCode` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Runtime.CompilerServices.RuntimeHelpers+CleanupCode` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public delegate void CleanupCode(object userData, bool exceptionThrown);
 
 
@@ -9922,7 +9917,7 @@ namespace System
                 public static void ProbeForSufficientStack() => throw null;
                 public static void RunClassConstructor(System.RuntimeTypeHandle type) => throw null;
                 public static void RunModuleConstructor(System.ModuleHandle module) => throw null;
-                // Generated from `System.Runtime.CompilerServices.RuntimeHelpers.TryCode` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Runtime.CompilerServices.RuntimeHelpers+TryCode` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public delegate void TryCode(object userData);
 
 
@@ -10062,7 +10057,7 @@ namespace System
             {
                 public System.Runtime.CompilerServices.YieldAwaitable.YieldAwaiter GetAwaiter() => throw null;
                 // Stub generator skipped constructor 
-                // Generated from `System.Runtime.CompilerServices.YieldAwaitable.YieldAwaiter` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Runtime.CompilerServices.YieldAwaitable+YieldAwaiter` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct YieldAwaiter : System.Runtime.CompilerServices.INotifyCompletion, System.Runtime.CompilerServices.ICriticalNotifyCompletion
                 {
                     public void GetResult() => throw null;
@@ -11357,7 +11352,7 @@ namespace System
             public int Capacity { get => throw null; set => throw null; }
             [System.Runtime.CompilerServices.IndexerName("Chars")]
             public System.Char this[int index] { get => throw null; set => throw null; }
-            // Generated from `System.Text.StringBuilder.ChunkEnumerator` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Text.StringBuilder+ChunkEnumerator` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct ChunkEnumerator
             {
                 // Stub generator skipped constructor 

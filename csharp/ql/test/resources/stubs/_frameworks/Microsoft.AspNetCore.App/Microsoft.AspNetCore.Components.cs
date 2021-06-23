@@ -388,7 +388,7 @@ namespace Microsoft
             public struct ParameterView
             {
                 public static Microsoft.AspNetCore.Components.ParameterView Empty { get => throw null; }
-                // Generated from `Microsoft.AspNetCore.Components.ParameterView.Enumerator` in `Microsoft.AspNetCore.Components, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Components.ParameterView+Enumerator` in `Microsoft.AspNetCore.Components, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public struct Enumerator
                 {
                     public Microsoft.AspNetCore.Components.ParameterValue Current { get => throw null; }

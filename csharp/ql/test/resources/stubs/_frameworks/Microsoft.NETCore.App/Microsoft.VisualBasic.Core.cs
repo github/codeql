@@ -931,7 +931,7 @@ namespace Microsoft
             public class ObjectFlowControl
             {
                 public static void CheckForSyncLockOnValueType(object Expression) => throw null;
-                // Generated from `Microsoft.VisualBasic.CompilerServices.ObjectFlowControl.ForLoopControl` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `Microsoft.VisualBasic.CompilerServices.ObjectFlowControl+ForLoopControl` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class ForLoopControl
                 {
                     public static bool ForLoopInitObj(object Counter, object Start, object Limit, object StepValue, ref object LoopForResult, ref object CounterResult) => throw null;

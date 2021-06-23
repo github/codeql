@@ -34,7 +34,7 @@ namespace System
                 public AssemblyLoadContext(string name, bool isCollectible = default(bool)) => throw null;
                 protected AssemblyLoadContext(bool isCollectible) => throw null;
                 protected AssemblyLoadContext() => throw null;
-                // Generated from `System.Runtime.Loader.AssemblyLoadContext.ContextualReflectionScope` in `System.Runtime.Loader, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Runtime.Loader.AssemblyLoadContext+ContextualReflectionScope` in `System.Runtime.Loader, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct ContextualReflectionScope : System.IDisposable
                 {
                     // Stub generator skipped constructor 

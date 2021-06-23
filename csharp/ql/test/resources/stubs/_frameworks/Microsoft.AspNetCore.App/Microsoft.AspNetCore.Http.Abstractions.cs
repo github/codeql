@@ -204,7 +204,7 @@ namespace Microsoft
                 public static Microsoft.AspNetCore.Http.EndpointMetadataCollection Empty;
                 public EndpointMetadataCollection(params object[] items) => throw null;
                 public EndpointMetadataCollection(System.Collections.Generic.IEnumerable<object> items) => throw null;
-                // Generated from `Microsoft.AspNetCore.Http.EndpointMetadataCollection.Enumerator` in `Microsoft.AspNetCore.Http.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Http.EndpointMetadataCollection+Enumerator` in `Microsoft.AspNetCore.Http.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public struct Enumerator : System.IDisposable, System.Collections.IEnumerator, System.Collections.Generic.IEnumerator<object>
                 {
                     public object Current { get => throw null; }
@@ -602,7 +602,7 @@ namespace Microsoft
                 public bool ContainsKey(string key) => throw null;
                 void System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, object>>.CopyTo(System.Collections.Generic.KeyValuePair<string, object>[] array, int arrayIndex) => throw null;
                 public int Count { get => throw null; }
-                // Generated from `Microsoft.AspNetCore.Routing.RouteValueDictionary.Enumerator` in `Microsoft.AspNetCore.Http.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Routing.RouteValueDictionary+Enumerator` in `Microsoft.AspNetCore.Http.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public struct Enumerator : System.IDisposable, System.Collections.IEnumerator, System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, object>>
                 {
                     public System.Collections.Generic.KeyValuePair<string, object> Current { get => throw null; }

@@ -283,11 +283,11 @@ namespace System
             public class FileSystemEnumerable<TResult> : System.Collections.IEnumerable, System.Collections.Generic.IEnumerable<TResult>
             {
                 public FileSystemEnumerable(string directory, System.IO.Enumeration.FileSystemEnumerable<TResult>.FindTransform transform, System.IO.EnumerationOptions options = default(System.IO.EnumerationOptions)) => throw null;
-                // Generated from `System.IO.Enumeration.FileSystemEnumerable<>.FindPredicate` in `System.IO.FileSystem, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.IO.Enumeration.FileSystemEnumerable<>+FindPredicate` in `System.IO.FileSystem, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public delegate bool FindPredicate(ref System.IO.Enumeration.FileSystemEntry entry);
 
 
-                // Generated from `System.IO.Enumeration.FileSystemEnumerable<>.FindTransform` in `System.IO.FileSystem, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.IO.Enumeration.FileSystemEnumerable<>+FindTransform` in `System.IO.FileSystem, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public delegate TResult FindTransform(ref System.IO.Enumeration.FileSystemEntry entry);
 
 

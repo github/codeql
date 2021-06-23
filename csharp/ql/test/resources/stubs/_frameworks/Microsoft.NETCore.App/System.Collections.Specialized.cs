@@ -21,7 +21,7 @@ namespace System
                 public override int GetHashCode() => throw null;
                 public int this[System.Collections.Specialized.BitVector32.Section section] { get => throw null; set => throw null; }
                 public bool this[int bit] { get => throw null; set => throw null; }
-                // Generated from `System.Collections.Specialized.BitVector32.Section` in `System.Collections.Specialized, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Collections.Specialized.BitVector32+Section` in `System.Collections.Specialized, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct Section
                 {
                     public static bool operator !=(System.Collections.Specialized.BitVector32.Section a, System.Collections.Specialized.BitVector32.Section b) => throw null;
@@ -119,7 +119,7 @@ namespace System
                 protected bool IsReadOnly { get => throw null; set => throw null; }
                 bool System.Collections.ICollection.IsSynchronized { get => throw null; }
                 public virtual System.Collections.Specialized.NameObjectCollectionBase.KeysCollection Keys { get => throw null; }
-                // Generated from `System.Collections.Specialized.NameObjectCollectionBase.KeysCollection` in `System.Collections.Specialized, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Collections.Specialized.NameObjectCollectionBase+KeysCollection` in `System.Collections.Specialized, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class KeysCollection : System.Collections.IEnumerable, System.Collections.ICollection
                 {
                     void System.Collections.ICollection.CopyTo(System.Array array, int index) => throw null;
