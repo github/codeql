@@ -289,16 +289,26 @@ private predicate overrides(Method m1, Method m2) {
   )
 }
 
+pragma[nomagic]
+private predicate overridesCandidateType(RefType tsup, string sig, RefType t, Method m) {
+  virtualMethodWithSignature(sig, t, m) and
+  t.extendsOrImplements(tsup)
+  or
+  exists(RefType mid |
+    overridesCandidateType(mid, sig, t, m) and
+    mid.extendsOrImplements(tsup) and
+    not virtualMethodWithSignature(sig, mid, _)
+  )
+}
+
 /**
  * Auxiliary predicate: whether method `m1` overrides method `m2`,
  * ignoring any access modifiers. Additionally, this predicate binds
  * `t1` to the type declaring `m1` and `t2` to the type declaring `m2`.
  */
-pragma[noopt]
 predicate overridesIgnoringAccess(Method m1, RefType t1, Method m2, RefType t2) {
   exists(string sig |
-    virtualMethodWithSignature(sig, t1, m1) and
-    t1.extendsOrImplements+(t2) and
+    overridesCandidateType(t2, sig, t1, m1) and
     virtualMethodWithSignature(sig, t2, m2)
   )
 }
