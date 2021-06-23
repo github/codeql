@@ -46,10 +46,6 @@ newtype Child =
   SynthChild(SynthKind k) or
   RealChild(AstNode n)
 
-newtype LocationOption =
-  NoneLocation() or
-  SomeLocation(Location l)
-
 private newtype TSynthesis = MkSynthesis()
 
 /** A class used for synthesizing AST nodes. */
@@ -60,10 +56,15 @@ class Synthesis extends TSynthesis {
    *
    * `i = -1` is used to represent that the synthesized node is a desugared version
    * of its parent.
-   *
-   * In case a new node is synthesized, it will have the location specified by `l`.
    */
-  predicate child(AstNode parent, int i, Child child, LocationOption l) { none() }
+  predicate child(AstNode parent, int i, Child child) { none() }
+
+  /**
+   * Holds if synthesized node `n` should have location `l`. Synthesized nodes for
+   * which this predicate does not hold, inherit their location (recursively) from
+   * their parent node.
+   */
+  predicate location(AstNode n, Location l) { none() }
 
   /**
    * Holds if a local variable, identified by `i`, should be synthesized for AST
@@ -123,39 +124,31 @@ private predicate assign(
 
 /** Holds if synthesized node `n` should have location `l`. */
 predicate synthLocation(AstNode n, Location l) {
-  exists(Synthesis s, AstNode parent, int i |
-    s.child(parent, i, _, SomeLocation(l)) and
-    n = getSynthChild(parent, i)
-  )
+  n.isSynthesized() and any(Synthesis s).location(n, l)
 }
 
-private SomeLocation getSomeLocation(AstNode n) {
-  result = SomeLocation(toGenerated(n).getLocation())
+private predicate hasLocation(AstNode n, Location l) {
+  l = toGenerated(n).getLocation()
   or
-  result = SomeLocation(any(Location l | synthLocation(n, l)))
+  synthLocation(n, l)
 }
 
 private module ImplicitSelfSynthesis {
   pragma[nomagic]
-  private predicate identifierMethodCallSelfSynthesis(
-    AstNode mc, int i, Child child, LocationOption l
-  ) {
+  private predicate identifierMethodCallSelfSynthesis(AstNode mc, int i, Child child) {
     child = SynthChild(SelfKind()) and
     mc = TIdentifierMethodCall(_) and
-    i = 0 and
-    l = NoneLocation()
+    i = 0
   }
 
   private class IdentifierMethodCallSelfSynthesis extends Synthesis {
-    final override predicate child(AstNode parent, int i, Child child, LocationOption l) {
-      identifierMethodCallSelfSynthesis(parent, i, child, l)
+    final override predicate child(AstNode parent, int i, Child child) {
+      identifierMethodCallSelfSynthesis(parent, i, child)
     }
   }
 
   pragma[nomagic]
-  private predicate regularMethodCallSelfSynthesis(
-    TRegularMethodCall mc, int i, Child child, LocationOption l
-  ) {
+  private predicate regularMethodCallSelfSynthesis(TRegularMethodCall mc, int i, Child child) {
     exists(Generated::AstNode g |
       mc = TRegularMethodCall(g) and
       // If there's no explicit receiver (or scope resolution that acts like a
@@ -165,13 +158,12 @@ private module ImplicitSelfSynthesis {
       not exists(g.(Generated::Call).getMethod().(Generated::ScopeResolution).getScope())
     ) and
     child = SynthChild(SelfKind()) and
-    i = 0 and
-    l = NoneLocation()
+    i = 0
   }
 
   private class RegularMethodCallSelfSynthesis extends Synthesis {
-    final override predicate child(AstNode parent, int i, Child child, LocationOption l) {
-      regularMethodCallSelfSynthesis(parent, i, child, l)
+    final override predicate child(AstNode parent, int i, Child child) {
+      regularMethodCallSelfSynthesis(parent, i, child)
     }
   }
 }
@@ -201,34 +193,29 @@ private module SetterDesugar {
     int getNumberOfArguments() { result = mc.getNumberOfArguments() }
 
     pragma[nomagic]
-    LocationOption getMethodCallLocation() { result = getSomeLocation(mc) }
+    Location getMethodCallLocation() { hasLocation(mc, result) }
   }
 
   pragma[nomagic]
-  private predicate setterMethodCallSynthesis(AstNode parent, int i, Child child, LocationOption l) {
+  private predicate setterMethodCallSynthesis(AstNode parent, int i, Child child) {
     exists(SetterAssignExpr sae |
       parent = sae and
       i = -1 and
-      child = SynthChild(StmtSequenceKind()) and
-      l = NoneLocation()
+      child = SynthChild(StmtSequenceKind())
       or
       exists(AstNode seq | seq = TStmtSequenceSynth(sae, -1) |
         parent = seq and
         i = 0 and
-        child = SynthChild(sae.getCallKind(true, sae.getNumberOfArguments() + 1)) and
-        l = sae.getMethodCallLocation()
+        child = SynthChild(sae.getCallKind(true, sae.getNumberOfArguments() + 1))
         or
         exists(AstNode call | call = TMethodCallSynth(seq, 0, _, _, _) |
           parent = call and
           i = 0 and
-          child = RealChild(sae.getReceiver()) and
-          l = NoneLocation()
+          child = RealChild(sae.getReceiver())
           or
           parent = call and
-          child = RealChild(sae.getArgument(i - 1)) and
-          l = NoneLocation()
+          child = RealChild(sae.getArgument(i - 1))
           or
-          l = sae.getMethodCallLocation() and
           exists(int valueIndex | valueIndex = sae.getNumberOfArguments() + 1 |
             parent = call and
             i = valueIndex and
@@ -247,8 +234,7 @@ private module SetterDesugar {
         or
         parent = seq and
         i = 1 and
-        child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(sae, 0))) and
-        l = sae.getMethodCallLocation()
+        child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(sae, 0)))
       )
     )
   }
@@ -266,8 +252,16 @@ private module SetterDesugar {
    * ```
    */
   private class SetterMethodCallSynthesis extends Synthesis {
-    final override predicate child(AstNode parent, int i, Child child, LocationOption l) {
-      setterMethodCallSynthesis(parent, i, child, l)
+    final override predicate child(AstNode parent, int i, Child child) {
+      setterMethodCallSynthesis(parent, i, child)
+    }
+
+    final override predicate location(AstNode n, Location l) {
+      exists(SetterAssignExpr sae, StmtSequence seq |
+        seq = sae.getDesugared() and
+        l = sae.getMethodCallLocation() and
+        n = seq.getAStmt()
+      )
     }
 
     final override predicate excludeFromControlFlowTree(AstNode n) {
@@ -347,35 +341,28 @@ private module AssignOperationDesugar {
   }
 
   pragma[nomagic]
-  private predicate variableAssignOperationSynthesis(
-    AstNode parent, int i, Child child, LocationOption l
-  ) {
+  private predicate variableAssignOperationSynthesis(AstNode parent, int i, Child child) {
     exists(VariableAssignOperation vao |
       parent = vao and
       i = -1 and
-      child = SynthChild(AssignExprKind()) and
-      l = NoneLocation()
+      child = SynthChild(AssignExprKind())
       or
       exists(AstNode assign | assign = TAssignExprSynth(vao, -1) |
         parent = assign and
         i = 0 and
-        child = RealChild(vao.getLeftOperand()) and
-        l = NoneLocation()
+        child = RealChild(vao.getLeftOperand())
         or
         parent = assign and
         i = 1 and
-        child = SynthChild(getKind(vao)) and
-        l = SomeLocation(getAssignOperationLocation(vao))
+        child = SynthChild(getKind(vao))
         or
         parent = getSynthChild(assign, 1) and
         (
           i = 0 and
-          child = SynthChild(vao.getVariableAccessKind()) and
-          l = getSomeLocation(vao.getLeftOperand())
+          child = SynthChild(vao.getVariableAccessKind())
           or
           i = 1 and
-          child = RealChild(vao.getRightOperand()) and
-          l = NoneLocation()
+          child = RealChild(vao.getRightOperand())
         )
       )
     )
@@ -395,8 +382,20 @@ private module AssignOperationDesugar {
    * when `x` is a variable.
    */
   private class VariableAssignOperationSynthesis extends Synthesis {
-    final override predicate child(AstNode parent, int i, Child child, LocationOption l) {
-      variableAssignOperationSynthesis(parent, i, child, l)
+    final override predicate child(AstNode parent, int i, Child child) {
+      variableAssignOperationSynthesis(parent, i, child)
+    }
+
+    final override predicate location(AstNode n, Location l) {
+      exists(VariableAssignOperation vao, BinaryOperation bo |
+        bo = vao.getDesugared().(AssignExpr).getRightOperand()
+      |
+        n = bo and
+        l = getAssignOperationLocation(vao)
+        or
+        n = bo.getLeftOperand() and
+        hasLocation(vao.getLeftOperand(), l)
+      )
     }
   }
 
@@ -424,101 +423,76 @@ private module AssignOperationDesugar {
     int getNumberOfArguments() { result = mc.getNumberOfArguments() }
 
     pragma[nomagic]
-    LocationOption getMethodCallLocation() { result = getSomeLocation(mc) }
+    Location getMethodCallLocation() { hasLocation(mc, result) }
   }
 
   pragma[nomagic]
-  private predicate methodCallAssignOperationSynthesis(
-    AstNode parent, int i, Child child, LocationOption l
-  ) {
+  private predicate methodCallAssignOperationSynthesis(AstNode parent, int i, Child child) {
     exists(SetterAssignOperation sao |
       parent = sao and
       i = -1 and
-      child = SynthChild(StmtSequenceKind()) and
-      l = NoneLocation()
+      child = SynthChild(StmtSequenceKind())
       or
-      exists(AstNode seq, AstNode receiver |
-        seq = TStmtSequenceSynth(sao, -1) and receiver = sao.getReceiver()
-      |
+      exists(AstNode seq | seq = TStmtSequenceSynth(sao, -1) |
         // `__synth__0 = foo`
-        assign(parent, i, child, TLocalVariableSynth(sao, 0), seq, 0, receiver) and
-        l = getSomeLocation(receiver)
+        assign(parent, i, child, TLocalVariableSynth(sao, 0), seq, 0, sao.getReceiver())
         or
         // `__synth__1 = bar`
         exists(Expr arg, int j | arg = sao.getArgument(j - 1) |
-          assign(parent, i, child, TLocalVariableSynth(sao, j), seq, j, arg) and
-          l = getSomeLocation(arg)
+          assign(parent, i, child, TLocalVariableSynth(sao, j), seq, j, arg)
         )
         or
         // `__synth__2 = __synth__0.[](__synth__1) + y`
         exists(int opAssignIndex | opAssignIndex = sao.getNumberOfArguments() + 1 |
           parent = seq and
           i = opAssignIndex and
-          child = SynthChild(AssignExprKind()) and
-          l = SomeLocation(getAssignOperationLocation(sao))
+          child = SynthChild(AssignExprKind())
           or
           exists(AstNode assign | assign = TAssignExprSynth(seq, opAssignIndex) |
             parent = assign and
             i = 0 and
             child =
-              SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(sao, opAssignIndex))) and
-            l = SomeLocation(getAssignOperationLocation(sao))
+              SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(sao, opAssignIndex)))
             or
             parent = assign and
             i = 1 and
-            child = SynthChild(getKind(sao)) and
-            l = SomeLocation(getAssignOperationLocation(sao))
+            child = SynthChild(getKind(sao))
             or
             // `__synth__0.[](__synth__1) + y`
             exists(AstNode op | op = getSynthChild(assign, 1) |
               parent = op and
               i = 0 and
-              child = SynthChild(sao.getCallKind(false, sao.getNumberOfArguments())) and
-              l = sao.getMethodCallLocation()
+              child = SynthChild(sao.getCallKind(false, sao.getNumberOfArguments()))
               or
               parent = TMethodCallSynth(op, 0, _, _, _) and
               child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(sao, i))) and
-              (
-                i = 0 and
-                l = getSomeLocation(receiver)
-                or
-                l = getSomeLocation(sao.getArgument(i - 1))
-              )
+              i in [0 .. sao.getNumberOfArguments()]
               or
               parent = op and
               i = 1 and
-              child = RealChild(sao.getRightOperand()) and
-              l = NoneLocation()
+              child = RealChild(sao.getRightOperand())
             )
           )
           or
           // `__synth__0.[]=(__synth__1, __synth__2);`
           parent = seq and
           i = opAssignIndex + 1 and
-          child = SynthChild(sao.getCallKind(true, opAssignIndex)) and
-          l = sao.getMethodCallLocation()
+          child = SynthChild(sao.getCallKind(true, opAssignIndex))
           or
           exists(AstNode setter | setter = TMethodCallSynth(seq, opAssignIndex + 1, _, _, _) |
             parent = setter and
             child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(sao, i))) and
-            (
-              i = 0 and
-              l = getSomeLocation(receiver)
-              or
-              l = getSomeLocation(sao.getArgument(i - 1))
-            )
+            i in [0 .. sao.getNumberOfArguments()]
             or
             parent = setter and
             i = opAssignIndex + 1 and
             child =
-              SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(sao, opAssignIndex))) and
-            l = SomeLocation(getAssignOperationLocation(sao))
+              SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(sao, opAssignIndex)))
           )
           or
           parent = seq and
           i = opAssignIndex + 2 and
-          child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(sao, opAssignIndex))) and
-          l = SomeLocation(getAssignOperationLocation(sao))
+          child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(sao, opAssignIndex)))
         )
       )
     )
@@ -540,8 +514,61 @@ private module AssignOperationDesugar {
    * ```
    */
   private class MethodCallAssignOperationSynthesis extends Synthesis {
-    final override predicate child(AstNode parent, int i, Child child, LocationOption l) {
-      methodCallAssignOperationSynthesis(parent, i, child, l)
+    final override predicate child(AstNode parent, int i, Child child) {
+      methodCallAssignOperationSynthesis(parent, i, child)
+    }
+
+    final override predicate location(AstNode n, Location l) {
+      exists(SetterAssignOperation sao, StmtSequence seq | seq = sao.getDesugared() |
+        n = seq.getStmt(0) and
+        hasLocation(sao.getReceiver(), l)
+        or
+        exists(int i |
+          n = seq.getStmt(i + 1) and
+          hasLocation(sao.getArgument(i), l)
+        )
+        or
+        exists(AssignExpr ae, int opAssignIndex |
+          opAssignIndex = sao.getNumberOfArguments() + 1 and
+          ae = seq.getStmt(opAssignIndex)
+        |
+          l = getAssignOperationLocation(sao) and
+          n = ae
+          or
+          exists(BinaryOperation bo | bo = ae.getRightOperand() |
+            n = bo.getLeftOperand() and
+            l = sao.getMethodCallLocation()
+            or
+            exists(MethodCall mc | mc = bo.getLeftOperand() |
+              n = mc.getReceiver() and
+              hasLocation(sao.getReceiver(), l)
+              or
+              exists(int i |
+                n = mc.getArgument(i) and
+                hasLocation(sao.getArgument(i), l)
+              )
+            )
+          )
+          or
+          exists(MethodCall mc | mc = seq.getStmt(opAssignIndex + 1) |
+            n = mc and
+            l = sao.getMethodCallLocation()
+            or
+            n = mc.getReceiver() and
+            hasLocation(sao.getReceiver(), l)
+            or
+            exists(int i | n = mc.getArgument(i) |
+              hasLocation(sao.getArgument(i), l)
+              or
+              i = opAssignIndex and
+              l = getAssignOperationLocation(sao)
+            )
+          )
+          or
+          n = seq.getStmt(opAssignIndex + 2) and
+          l = getAssignOperationLocation(sao)
+        )
+      )
     }
 
     final override predicate localVariable(AstNode n, int i) {
@@ -589,40 +616,32 @@ private module CompoundAssignDesugar {
       toGenerated(tp) = any(TuplePatternImpl impl | not exists(impl.getRestIndex())) and
       result = this.getNumberOfElements()
     }
-
-    pragma[nomagic]
-    SomeLocation getRightOperandLocation() { result = getSomeLocation(this.getRightOperand()) }
   }
 
   pragma[nomagic]
-  private predicate compoundAssignSynthesis(AstNode parent, int i, Child child, LocationOption l) {
+  private predicate compoundAssignSynthesis(AstNode parent, int i, Child child) {
     exists(TupleAssignExpr tae |
       parent = tae and
       i = -1 and
-      child = SynthChild(StmtSequenceKind()) and
-      l = NoneLocation()
+      child = SynthChild(StmtSequenceKind())
       or
       exists(AstNode seq | seq = TStmtSequenceSynth(tae, -1) |
         parent = seq and
         i = 0 and
-        child = SynthChild(AssignExprKind()) and
-        l = tae.getRightOperandLocation()
+        child = SynthChild(AssignExprKind())
         or
         exists(AstNode assign | assign = TAssignExprSynth(seq, 0) |
           parent = assign and
           i = 0 and
-          child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(tae, 0))) and
-          l = tae.getRightOperandLocation()
+          child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(tae, 0)))
           or
           parent = assign and
           i = 1 and
-          child = SynthChild(SplatExprKind()) and
-          l = tae.getRightOperandLocation()
+          child = SynthChild(SplatExprKind())
           or
           parent = TSplatExprSynth(assign, 1) and
           i = 0 and
-          child = RealChild(tae.getRightOperand()) and
-          l = NoneLocation()
+          child = RealChild(tae.getRightOperand())
         )
         or
         exists(Pattern p, int j, int restIndex |
@@ -631,54 +650,48 @@ private module CompoundAssignDesugar {
         |
           parent = seq and
           i = j + 1 and
-          child = SynthChild(AssignExprKind()) and
-          l = getSomeLocation(p)
+          child = SynthChild(AssignExprKind())
           or
           exists(AstNode assign | assign = TAssignExprSynth(seq, j + 1) |
             parent = assign and
             i = 0 and
-            child = RealChild(p) and
-            l = NoneLocation()
+            child = RealChild(p)
             or
             parent = assign and
             i = 1 and
-            child = SynthChild(MethodCallKind("[]", false, 1)) and
-            l = getSomeLocation(p)
+            child = SynthChild(MethodCallKind("[]", false, 1))
             or
-            l = getSomeLocation(p) and
+            parent = TMethodCallSynth(assign, 1, _, _, _) and
+            i = 0 and
+            child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(tae, 0)))
+            or
+            j < restIndex and
+            parent = TMethodCallSynth(assign, 1, _, _, _) and
+            i = 1 and
+            child = SynthChild(IntegerLiteralKind(j))
+            or
+            j = restIndex and
             (
               parent = TMethodCallSynth(assign, 1, _, _, _) and
-              i = 0 and
-              child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(tae, 0)))
-              or
-              j < restIndex and
-              parent = TMethodCallSynth(assign, 1, _, _, _) and
               i = 1 and
-              child = SynthChild(IntegerLiteralKind(j))
+              child = SynthChild(RangeLiteralKind(true))
               or
-              j = restIndex and
-              (
-                parent = TMethodCallSynth(assign, 1, _, _, _) and
-                i = 1 and
-                child = SynthChild(RangeLiteralKind(true))
+              exists(AstNode call |
+                call = TMethodCallSynth(assign, 1, _, _, _) and
+                parent = TRangeLiteralSynth(call, 1, _)
+              |
+                i = 0 and
+                child = SynthChild(IntegerLiteralKind(j))
                 or
-                exists(AstNode call |
-                  call = TMethodCallSynth(assign, 1, _, _, _) and
-                  parent = TRangeLiteralSynth(call, 1, _)
-                |
-                  i = 0 and
-                  child = SynthChild(IntegerLiteralKind(j))
-                  or
-                  i = 1 and
-                  child = SynthChild(IntegerLiteralKind(restIndex - tae.getNumberOfElements()))
-                )
+                i = 1 and
+                child = SynthChild(IntegerLiteralKind(restIndex - tae.getNumberOfElements()))
               )
-              or
-              j > restIndex and
-              parent = TMethodCallSynth(assign, 1, _, _, _) and
-              i = 1 and
-              child = SynthChild(IntegerLiteralKind(j - tae.getNumberOfElements()))
             )
+            or
+            j > restIndex and
+            parent = TMethodCallSynth(assign, 1, _, _, _) and
+            i = 1 and
+            child = SynthChild(IntegerLiteralKind(j - tae.getNumberOfElements()))
           )
         )
       )
@@ -699,8 +712,21 @@ private module CompoundAssignDesugar {
    * ```
    */
   private class CompoundAssignSynthesis extends Synthesis {
-    final override predicate child(AstNode parent, int i, Child child, LocationOption l) {
-      compoundAssignSynthesis(parent, i, child, l)
+    final override predicate child(AstNode parent, int i, Child child) {
+      compoundAssignSynthesis(parent, i, child)
+    }
+
+    final override predicate location(AstNode n, Location l) {
+      exists(TupleAssignExpr tae, StmtSequence seq | seq = tae.getDesugared() |
+        n = seq.getStmt(0) and
+        hasLocation(tae.getRightOperand(), l)
+        or
+        exists(Pattern p, int j |
+          p = tae.getElement(j) and
+          n = seq.getStmt(j + 1) and
+          hasLocation(p, l)
+        )
+      )
     }
 
     final override predicate localVariable(AstNode n, int i) {
