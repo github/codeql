@@ -81,7 +81,7 @@ private module Invoke {
     }
 
     override DataFlow::Node getCommand() {
-      result.asCfgNode() in [node.getArg(0), node.getArgByName("command")]
+      result in [this.getArg(0), this.getArgByName("command")]
     }
   }
 }

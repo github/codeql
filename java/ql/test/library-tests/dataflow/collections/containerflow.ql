@@ -9,14 +9,8 @@ class SummaryModelTest extends SummaryModelCsv {
     row =
       [
         //"package;type;overrides;name;signature;ext;inputspec;outputspec;kind",
-        ";B;false;storeArrayElement;(Object);;Argument[0];ArrayElement of ReturnValue;value",
-        ";B;false;storeElement;(Object);;Argument[0];Element of ReturnValue;value",
-        ";B;false;storeMapKey;(Object);;Argument[0];MapKey of ReturnValue;value",
-        ";B;false;storeMapValue;(Object);;Argument[0];MapValue of ReturnValue;value",
-        ";B;false;readArrayElement;(Object);;ArrayElement of Argument[0];ReturnValue;value",
-        ";B;false;readElement;(Object);;Element of Argument[0];ReturnValue;value",
-        ";B;false;readMapKey;(Object);;MapKey of Argument[0];ReturnValue;value",
-        ";B;false;readMapValue;(Object);;MapValue of Argument[0];ReturnValue;value"
+        ";B;false;readElement;(Spliterator);;Element of Argument[0];ReturnValue;value",
+        ";B;false;readElement;(Stream);;Element of Argument[0];ReturnValue;value"
       ]
   }
 }

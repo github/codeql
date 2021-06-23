@@ -5,7 +5,7 @@
  *              implicitly scaled.
  * @kind problem
  * @problem.severity warning
- * @security-severity 5.9
+ * @security-severity 8.8
  * @precision high
  * @id cpp/suspicious-add-sizeof
  * @tags security

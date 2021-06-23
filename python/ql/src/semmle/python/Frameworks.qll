@@ -23,6 +23,7 @@ private import semmle.python.frameworks.PyMySQL
 private import semmle.python.frameworks.Simplejson
 private import semmle.python.frameworks.Stdlib
 private import semmle.python.frameworks.Tornado
+private import semmle.python.frameworks.Twisted
 private import semmle.python.frameworks.Ujson
 private import semmle.python.frameworks.Yaml
 private import semmle.python.frameworks.Yarl

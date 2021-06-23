@@ -60,6 +60,11 @@ class LocalSourceNode extends Node {
   AttrRead getAnAttributeRead(string attrName) { result = getAnAttributeReference(attrName) }
 
   /**
+   * Gets a write of attribute `attrName` on this node.
+   */
+  AttrWrite getAnAttributeWrite(string attrName) { result = getAnAttributeReference(attrName) }
+
+  /**
    * Gets a reference (read or write) of any attribute on this node.
    */
   AttrRef getAnAttributeReference() {
@@ -74,9 +79,24 @@ class LocalSourceNode extends Node {
   AttrRead getAnAttributeRead() { result = getAnAttributeReference() }
 
   /**
+   * Gets a write of any attribute on this node.
+   */
+  AttrWrite getAnAttributeWrite() { result = getAnAttributeReference() }
+
+  /**
    * Gets a call to this node.
    */
   CallCfgNode getACall() { Cached::call(this, result) }
+
+  /**
+   * Gets a call to the method `methodName` on this node.
+   *
+   * Includes both calls that have the syntactic shape of a method call (as in `obj.m(...)`), and
+   * calls where the callee undergoes some additional local data flow (as in `tmp = obj.m; m(...)`).
+   */
+  MethodCallNode getAMethodCall(string methodName) {
+    result = this.getAnAttributeRead(methodName).getACall()
+  }
 
   /**
    * Gets a node that this node may flow to using one heap and/or interprocedural step.

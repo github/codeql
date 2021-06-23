@@ -4,7 +4,7 @@
  *              multiple instances of the type of the pointer may result in a buffer overflow
  * @kind problem
  * @problem.severity warning
- * @security-severity 6.4
+ * @security-severity 8.1
  * @precision medium
  * @id cpp/suspicious-allocation-size
  * @tags reliability

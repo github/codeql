@@ -5,10 +5,11 @@
  *              attacks.
  * @kind problem
  * @problem.severity error
- * @security-severity 3.6
+ * @security-severity 7.5
  * @precision high
  * @id js/redos
  * @tags security
+ *       external/cwe/cwe-1333
  *       external/cwe/cwe-730
  *       external/cwe/cwe-400
  */

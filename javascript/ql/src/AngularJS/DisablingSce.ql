@@ -3,7 +3,7 @@
  * @description Disabling strict contextual escaping (SCE) can cause security vulnerabilities.
  * @kind problem
  * @problem.severity warning
- * @security-severity 5.9
+ * @security-severity 7.8
  * @precision very-high
  * @id js/angular/disabling-sce
  * @tags security

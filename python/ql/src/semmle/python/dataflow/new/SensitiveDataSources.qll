@@ -243,7 +243,7 @@ private module SensitiveDataModeling {
     SensitiveDataClassification classification;
 
     SensitiveGetCall() {
-      this.getFunction().asCfgNode().(AttrNode).getName() = "get" and
+      this.getFunction().(DataFlow::AttrRef).getAttributeName() = "get" and
       this.getArg(0) = sensitiveLookupStringConst(classification)
     }
 

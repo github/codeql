@@ -228,11 +228,7 @@ private module CryptographyModel {
     /** Gets a reference to the encryptor of a Cipher instance using algorithm with `algorithmName`. */
     DataFlow::LocalSourceNode cipherEncryptor(DataFlow::TypeTracker t, string algorithmName) {
       t.start() and
-      exists(DataFlow::AttrRead attr |
-        result.(DataFlow::CallCfgNode).getFunction() = attr and
-        attr.getAttributeName() = "encryptor" and
-        attr.getObject() = cipherInstance(algorithmName)
-      )
+      result.(DataFlow::MethodCallNode).calls(cipherInstance(algorithmName), "encryptor")
       or
       exists(DataFlow::TypeTracker t2 | result = cipherEncryptor(t2, algorithmName).track(t2, t))
     }
@@ -249,11 +245,7 @@ private module CryptographyModel {
     /** Gets a reference to the dncryptor of a Cipher instance using algorithm with `algorithmName`. */
     DataFlow::LocalSourceNode cipherDecryptor(DataFlow::TypeTracker t, string algorithmName) {
       t.start() and
-      exists(DataFlow::AttrRead attr |
-        result.(DataFlow::CallCfgNode).getFunction() = attr and
-        attr.getAttributeName() = "decryptor" and
-        attr.getObject() = cipherInstance(algorithmName)
-      )
+      result.(DataFlow::MethodCallNode).calls(cipherInstance(algorithmName), "decryptor")
       or
       exists(DataFlow::TypeTracker t2 | result = cipherDecryptor(t2, algorithmName).track(t2, t))
     }
@@ -271,18 +263,14 @@ private module CryptographyModel {
      * An encrypt or decrypt operation from `cryptography.hazmat.primitives.ciphers`.
      */
     class CryptographyGenericCipherOperation extends Cryptography::CryptographicOperation::Range,
-      DataFlow::CallCfgNode {
+      DataFlow::MethodCallNode {
       string algorithmName;
 
       CryptographyGenericCipherOperation() {
-        exists(DataFlow::AttrRead attr |
-          this.getFunction() = attr and
-          attr.getAttributeName() = ["update", "update_into"] and
-          (
-            attr.getObject() = cipherEncryptor(algorithmName)
-            or
-            attr.getObject() = cipherDecryptor(algorithmName)
-          )
+        exists(DataFlow::Node object, string method |
+          object in [cipherEncryptor(algorithmName), cipherDecryptor(algorithmName)] and
+          method in ["update", "update_into"] and
+          this.calls(object, method)
         )
       }
 
@@ -337,16 +325,10 @@ private module CryptographyModel {
      * An hashing operation from `cryptography.hazmat.primitives.hashes`.
      */
     class CryptographyGenericHashOperation extends Cryptography::CryptographicOperation::Range,
-      DataFlow::CallCfgNode {
+      DataFlow::MethodCallNode {
       string algorithmName;
 
-      CryptographyGenericHashOperation() {
-        exists(DataFlow::AttrRead attr |
-          this.getFunction() = attr and
-          attr.getAttributeName() = "update" and
-          attr.getObject() = hashInstance(algorithmName)
-        )
-      }
+      CryptographyGenericHashOperation() { this.calls(hashInstance(algorithmName), "update") }
 
       override Cryptography::CryptographicAlgorithm getAlgorithm() {
         result.matchesName(algorithmName)

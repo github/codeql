@@ -99,7 +99,7 @@ void test_functions(void *data, size_t amount, const char *str)
 	DoDESEncryption(data, amount); // BAD [NOT DETECTED]
 	encryptDes(data, amount); // BAD [NOT DETECTED]
 	do_des_encrypt(data, amount); // BAD
-	DES_Set_Key(str); // BAD
+	DES_Set_Key(str); // BAD [NOT DETECTED]
 	DESSetKey(str); // BAD [NOT DETECTED]
 
 	Des(); // GOOD (probably nothing to do with encryption)
@@ -118,7 +118,7 @@ void my_implementation8();
 
 void test_macros2()
 {
-	INIT_ENCRYPT_WITH_DES(); // BAD
+	INIT_ENCRYPT_WITH_DES(); // BAD [NOT DETECTED]
 	INIT_ENCRYPT_WITH_AES(); // GOOD (good algorithm)
 	
 	// ...
