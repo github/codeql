@@ -316,21 +316,22 @@ module API {
         )
         or
         // Calling a method on a node that is a use of `base`
-        exists(MethodCall call, DataFlow::Node node |
+        exists(ExprNodes::MethodCallCfgNode call, DataFlow::Node node, string name |
           pred.flowsTo(node) and
-          node.asExpr().getExpr() = call.getReceiver() and
-          lbl = Label::return(call.getMethodName()) and
-          call.getMethodName() != "new" and
-          ref.asExpr().getExpr() = call
+          node.asExpr() = call.getReceiver() and
+          name = call.getExpr().getMethodName() and
+          lbl = Label::return(name) and
+          name != "new" and
+          ref.asExpr() = call
         )
         or
         // Calling the `new` method on a node that is a use of `base`, which creates a new instance
-        exists(MethodCall call, DataFlow::Node node |
+        exists(ExprNodes::MethodCallCfgNode call, DataFlow::Node node |
           pred.flowsTo(node) and
-          node.asExpr().getExpr() = call.getReceiver() and
+          node.asExpr() = call.getReceiver() and
           lbl = Label::instance() and
-          call.getMethodName() = "new" and
-          ref.asExpr().getExpr() = call
+          call.getExpr().getMethodName() = "new" and
+          ref.asExpr() = call
         )
       )
     }
