@@ -101,8 +101,9 @@ if not found_diff:
             ["gh", "pr", "close", str(already_open_pr), "-R", repo])
 else:
     utils.subprocess_run(["git", "config", "user.name",
-                         "CodeQL GitHub Actions Bot"])
-    utils.subprocess_run(["git", "config", "user.email", "<>"])
+                         "github-actions[bot]"])
+    utils.subprocess_run(["git", "config", "user.email",
+                         "41898282+github-actions[bot]@users.noreply.github.com"])
     utils.subprocess_run(["git", "add", "."])
     utils.subprocess_run(
         ["git", "commit", "-m", "Add changed framework coverage reports"])
