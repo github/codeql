@@ -111,8 +111,11 @@ where
     // access to a member variable on the stat buf
     // (morally, this should be a use-use pair, but it seems unlikely
     // that this variable will get reused in practice)
-    exists(Variable buf | exists(stat(checkPath, buf.getAnAccess())) |
-      check.(VariableAccess).getQualifier() = buf.getAnAccess()
+    exists(Expr call, Expr e, Variable v |
+      call = stat(checkPath, e) and
+      e.getAChild*().(VariableAccess).getTarget() = v and
+      check.(VariableAccess).getTarget() = v and
+      not e.getAChild*() = check // the call that writes to the pointer is not where the pointer is checked.
     )
   ) and
   // `checkPath` and `usePath` refer to the same SSA variable

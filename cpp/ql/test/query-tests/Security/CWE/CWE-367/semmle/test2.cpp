@@ -80,7 +80,7 @@ void test2_2(const char *path)
 	stat(path, &buf);
 	if (buf.foo > 0)
 	{
-		f = fopen(path, "r"); // BAD [NOT DETECTED]
+		f = fopen(path, "r"); // BAD
 	}
 
 	// ...
@@ -112,7 +112,7 @@ void test2_4(const char *path)
 	stat(path, &buf);
 	if (stat_condition(&buf))
 	{
-		f = fopen(path, "r"); // BAD [NOT DETECTED]
+		f = fopen(path, "r"); // BAD
 	}
 
 	// ...
@@ -127,7 +127,7 @@ void test2_5(const char *path)
 	stat(path, buf_ptr);
 	if (stat_condition(buf_ptr))
 	{
-		f = fopen(path, "r"); // BAD [NOT DETECTED]
+		f = fopen(path, "r"); // BAD
 	}
 
 	// ...
