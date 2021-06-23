@@ -128,6 +128,8 @@ private class IndirectType extends GeneratedType {
       this = getAContainedType(t.getAGeneratedType()).(RefType).getSourceDeclaration()
     )
     or
+    exists(GeneratedType t | this = t.(BoundedType).getATypeBound().getType())
+    or
     exists(GeneratedDeclaration decl |
       decl.(Member).getDeclaringType().getSourceDeclaration() = this
     )
@@ -209,15 +211,34 @@ private string stubTypeName(Type t) {
       if t instanceof TypeVariable
       then result = t.getName()
       else
-        if t instanceof Array
-        then result = stubTypeName(t.(Array).getElementType()) + "[]"
+        if t instanceof Wildcard
+        then result = "?" + stubTypeBound(t)
         else
-          if t instanceof RefType
-          then
-            result =
-              stubQualifier(t) + t.(RefType).getSourceDeclaration().getName() +
-                stubGenericArguments(t)
-          else result = "<error>"
+          if t instanceof Array
+          then result = stubTypeName(t.(Array).getElementType()) + "[]"
+          else
+            if t instanceof ClassOrInterface
+            then
+              result =
+                stubQualifier(t) + t.(RefType).getSourceDeclaration().getName() +
+                  stubGenericArguments(t)
+            else result = "<error>"
+}
+
+language[monotonicAggregates]
+private string stubTypeBound(BoundedType t) {
+  if not exists(t.getATypeBound())
+  then result = ""
+  else
+    exists(string kw, string bounds | result = kw + bounds |
+      (if t.(Wildcard).hasLowerBound() then kw = " super " else kw = " extends ") and
+      bounds =
+        concat(TypeBound b |
+          b = t.getATypeBound()
+        |
+          stubTypeName(b.getType()), " & " order by b.getPosition()
+        )
+    )
 }
 
 private string stubQualifier(RefType t) {
@@ -232,33 +253,33 @@ private string stubGenericArguments(RefType t) {
   then
     result =
       "<" +
-        concat(int n |
-          exists(t.(GenericType).getTypeParameter(n))
+        concat(int n, TypeVariable tv |
+          tv = t.(GenericType).getTypeParameter(n)
         |
-          t.(GenericType).getTypeParameter(n).getName(), ", " order by n
+          tv.getName() + stubTypeBound(tv), ", " order by n
         ) + ">"
   else
     if t instanceof ParameterizedType
     then
       result =
         "<" +
-          concat(int n |
-            exists(t.(ParameterizedType).getTypeArgument(n))
+          concat(int n, Type tpar |
+            tpar = t.(ParameterizedType).getTypeArgument(n)
           |
-            stubTypeName(t.(ParameterizedType).getTypeArgument(n)), ", " order by n
+            stubTypeName(tpar), ", " order by n
           ) + ">"
     else result = ""
 }
 
-private string stubGenericMethodParams(Method m) {
-  if m instanceof GenericMethod
+private string stubGenericCallableParams(Callable m) {
+  if m instanceof GenericCallable
   then
     result =
-      " <" +
+      "<" +
         concat(int n, TypeVariable param |
-          param = m.(GenericMethod).getTypeParameter(n)
+          param = m.(GenericCallable).getTypeParameter(n)
         |
-          param.getName(), ", " order by n
+          param.getName() + stubTypeBound(param), ", " order by n
         ) + "> "
   else result = ""
 }
@@ -332,14 +353,14 @@ private string stubMember(Member m) {
   then result = ""
   else (
     result =
-      "    " + stubModifiers(m) + stubGenericMethodParams(m) +
+      "    " + stubModifiers(m) + stubGenericCallableParams(m) +
         stubTypeName(m.(Method).getReturnType()) + " " + m.getName() + "(" + stubParameters(m) + ")"
         + stubImplementation(m) + "\n"
     or
     m instanceof Constructor and
     result =
-      "    " + stubModifiers(m) + m.getName() + "(" + stubParameters(m) + ")" +
-        stubImplementation(m) + "\n"
+      "    " + stubModifiers(m) + stubGenericCallableParams(m) + m.getName() + "(" +
+        stubParameters(m) + ")" + stubImplementation(m) + "\n"
     or
     result =
       "    " + stubModifiers(m) + stubTypeName(m.(Field).getType()) + " " + m.getName() + " = " +
@@ -389,6 +410,8 @@ private RefType getAReferencedType(RefType t) {
     result = t1.(ParameterizedType).getATypeArgument()
     or
     result = t1.(Array).getElementType()
+    or
+    result = t1.(BoundedType).getATypeBound().getType()
   )
 }
 

@@ -11,7 +11,9 @@ from shutil import copyfile
 
 def print_usage(exit_code=1):
     print("Usage: python3 make_stubs.py testDir stubDir\n",
-          "testDir: the directory containing the qltest to be stubbed. Should contain an `options0` file pointing to the jars to stub, and an `options1` file pointing to `stubdir`\n",
+          "testDir: the directory containing the qltest to be stubbed.\n"
+          "    Should contain an `options0` file pointing to the jars to stub, and an `options1` file pointing to `stubdir`.\n"
+          "    These files should be in the same format as a normal `options` file.\n",
           "stubDir: the directory to output the generated stubs to")
     exit(exit_code)
 
@@ -76,7 +78,7 @@ def print_javac_output():
     if not(logFiles):
         print("\nNo javac output found.")
     else:
-        logFile = os.path.join(dbDir, "log", logFiles[0])
+        logFile = logFiles[0]
         print("\nJavac output:\n")
 
         with open(logFile) as f:
