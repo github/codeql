@@ -367,25 +367,41 @@ abstract class StackVariableReachability extends string {
     )
   }
 
-  /** Holds if `cond` is a condition with a known truth value in `bb`. */
+  /**
+   * Holds if `cond` is a condition with a known truth value in `bb`.
+   *
+   * This predicate is `pragma[noopt]` as it seems difficult to get the correct join order for the
+   * recursive case otherwise:
+   * revBbSuccessorEntryReaches0(bb) -> getASuccessor -> prev_delta ->
+   * revBbSuccessorEntryReaches0(pred) -> {isLoopCondition, isDisjunctionCondition, isLoopVariantCondition}
+   */
+  pragma[noopt]
   private Condition getACondition(ControlFlowNode source, SemanticStackVariable v, BasicBlock bb) {
-    revBbSuccessorEntryReaches0(source, pragma[only_bind_into](bb), v, _, this) and
+    revBbSuccessorEntryReaches0(source, bb, v, _, this) and
     (
       result = getADirectCondition(bb) and
       (
-        result.refutesCondition(getASinkCondition(v))
+        exists(Condition c |
+          c = getASinkCondition(v) and
+          result.refutesCondition(c)
+        )
         or
-        result.impliesCondition(getABarrierCondition(v))
+        exists(Condition c |
+          c = getABarrierCondition(v) and
+          result.impliesCondition(c)
+        )
       )
       or
       exists(BasicBlock pred, LogicalCondition cond |
-        cond = getACondition(source, v, pred) and
-        result = cond and
-        revBbSuccessorEntryReaches0(source, pragma[only_bind_into](pred), v, _, this) and
         pred.getASuccessor() = bb and
-        not isLoopCondition(cond.getCondition(), pred, bb) and
-        not isDisjunctionCondition(cond.getCondition(), pred, bb) and
-        not isLoopVariantCondition(cond.getCondition(), pred, bb)
+        cond = getACondition(source, v, pred) and
+        revBbSuccessorEntryReaches0(source, pred, v, _, this) and
+        result = cond and
+        exists(LogicalGuardCondition c | c = cond.getCondition() |
+          not isLoopCondition(c, pred, bb) and
+          not isDisjunctionCondition(c, pred, bb) and
+          not isLoopVariantCondition(c, pred, bb)
+        )
       )
     )
   }
