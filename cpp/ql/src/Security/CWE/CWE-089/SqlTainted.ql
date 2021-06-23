@@ -16,7 +16,6 @@ import cpp
 import semmle.code.cpp.security.Security
 import semmle.code.cpp.security.FunctionWithWrappers
 import semmle.code.cpp.security.TaintTracking
-import semmle.code.cpp.security.Sql
 import TaintedWithPath
 
 class SQLLikeFunction extends FunctionWithWrappers {
@@ -35,10 +34,10 @@ class Configuration extends TaintTrackingConfiguration {
     or
     e.getUnspecifiedType() instanceof IntegralType
     or
-    exists(SqlFunctionality sql, int arg, Function func, FunctionInput input |
-      e = func.getACallToThisFunction().getArgument(arg) and
+    exists(SqlBarrier sqlFunc, int arg, FunctionInput input |
+      e = sqlFunc.getACallToThisFunction().getArgument(arg) and
       input.isParameterDeref(arg) and
-      sql.getAnEscapedParameter(func, input, _)
+      sqlFunc.getAnEscapedParameter(input, _)
     )
   }
 }

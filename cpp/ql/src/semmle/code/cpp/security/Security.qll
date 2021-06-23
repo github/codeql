@@ -7,7 +7,7 @@ import semmle.code.cpp.exprs.Expr
 import semmle.code.cpp.commons.Environment
 import semmle.code.cpp.security.SecurityOptions
 import semmle.code.cpp.models.interfaces.FlowSource
-private import Sql
+import semmle.code.cpp.models.interfaces.Sql
 
 /**
  * Extend this class to customize the security queries for
@@ -35,10 +35,10 @@ class SecurityOptions extends string {
    * An argument to a function that is passed to a SQL server.
    */
   predicate sqlArgument(string function, int arg) {
-    exists(Function func, FunctionInput input, SqlFunctionality sql |
-      func.hasName(function) and
+    exists(FunctionInput input, SqlSink sqlSink |
+      sqlSink.hasName(function) and
       input.isParameterDeref(arg) and
-      sql.getAnSqlParameter(func, input)
+      sqlSink.getAnSqlParameter(input)
     )
   }
 
