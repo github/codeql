@@ -97,7 +97,7 @@ private class SafeSslParametersFlowConfig extends DataFlow2::Configuration {
   override predicate isSource(DataFlow::Node source) {
     exists(MethodAccess ma |
       ma instanceof SafeSetEndpointIdentificationAlgorithm and
-      ma.getQualifier() = source.asExpr()
+      DataFlow::getInstanceArgument(ma) = source.(DataFlow::PostUpdateNode).getPreUpdateNode()
     )
   }
 
