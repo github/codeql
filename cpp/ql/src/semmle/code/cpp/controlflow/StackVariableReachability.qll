@@ -248,7 +248,7 @@ abstract class StackVariableReachability extends string {
    *
    * In addition to using a better performing implementation, this analysis
    * accounts for loops where the condition is provably true upon entry, and discards paths that require
-   * an infeasible combination of guard conditions (i.e., `if(b) { ... }` and `if(!b) { ... }`).
+   * an infeasible combination of guard conditions (for example, `if(b) { ... }` and `if(!b) { ... }`).
    */
   predicate reaches(ControlFlowNode source, SemanticStackVariable v, ControlFlowNode sink) {
     /*
