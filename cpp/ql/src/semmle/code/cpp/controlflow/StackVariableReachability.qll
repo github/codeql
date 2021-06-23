@@ -192,6 +192,77 @@ private predicate revBbSuccessorEntryReaches0(
   )
 }
 
+private predicate successorExitsLoop(BasicBlock pred, BasicBlock succ, Loop loop) {
+  pred.getASuccessor() = succ and
+  bbDominates(loop.getStmt(), pred) and
+  not bbDominates(loop.getStmt(), succ)
+}
+
+private predicate successorExitsFirstDisjunct(BasicBlock pred, BasicBlock succ) {
+  exists(LogicalOrExpr orExpr | orExpr instanceof GuardCondition |
+    pred.getAFalseSuccessor() = succ and
+    pred.contains(orExpr.getLeftOperand())
+  )
+}
+
+/**
+ * When we exit a loop, we filter out the conditions that arise from the loop's guard.
+ * To see why this is necessary, consider this example:
+ * ```
+ * (1) source();
+ * while (b) { (2) ... }
+ * (3) sink();
+ * ```
+ * If we keep all the conditions when we transition from (2) to (3) we learn that `b` is true at
+ * (3), but since we exited the loop we also learn that `b` is false at 3.
+ * Thus, when we transition from (2) to (3) we discard all those conditions that are true at (2),
+ * but NOT true at (3).
+ */
+private predicate isLoopCondition(LogicalGuardCondition cond, BasicBlock pred, BasicBlock bb) {
+  exists(Loop loop, boolean testIsTrue | successorExitsLoop(pred, bb, loop) |
+    // the resulting `Condition` holds inside the loop
+    cond.controls(pred, testIsTrue) and
+    // but not prior to the loop.
+    not cond.controls(loop.getBasicBlock(), testIsTrue)
+  )
+}
+
+/**
+ * When we leave the first disjunct we throw away the condition that says the the first disjunct is
+ * false. To see why this is necessary, consider this example:
+ * ```
+ * if((1) b1 || (2) b2) { (3) ... }
+ * ```
+ * it holds that `b1 == false` controls (2), and since (2) steps to (3) we learn that `b1 == false `
+ * holds at (3). So we filter out the conditions that we learn from leaving taking the false
+ * branch in a disjunction.
+ */
+private predicate isDisjunctionCondition(LogicalGuardCondition cond, BasicBlock pred, BasicBlock bb) {
+  exists(boolean testIsTrue | successorExitsFirstDisjunct(pred, bb) |
+    // the resulting `Condition` holds after evaluating the left-hand side
+    cond.controls(bb, testIsTrue) and
+    // but not before evaluating the left-hand side.
+    not cond.controls(pred, testIsTrue)
+  )
+}
+
+private predicate isLoopVariantCondition(LogicalGuardCondition cond, BasicBlock pred, BasicBlock bb) {
+  exists(Loop loop |
+    bb.getEnd() = loop.getCondition() and
+    pred.getASuccessor() = bb and
+    bbDominates(bb, pred) and
+    loopVariant(cond.getAChild*(), loop)
+  )
+}
+
+private predicate loopVariant(VariableAccess e, Loop loop) {
+  exists(SsaDefinition d | d.getAUse(e.getTarget()) = e |
+    d.getAnUltimateDefiningValue(e.getTarget()) = loop.getCondition().getAChild*() or
+    d.getAnUltimateDefiningValue(e.getTarget()).getEnclosingStmt().getParent*() = loop.getStmt() or
+    d.getAnUltimateDefiningValue(e.getTarget()) = loop.(ForStmt).getUpdate().getAChild*()
+  )
+}
+
 /**
  * A reachability analysis for control-flow nodes involving stack variables.
  * This defines sources, sinks, and any other configurable aspect of the
@@ -296,19 +367,6 @@ abstract class StackVariableReachability extends string {
     )
   }
 
-  private predicate successorExitsLoop(BasicBlock pred, BasicBlock succ, Loop loop) {
-    pred.getASuccessor() = succ and
-    bbDominates(loop.getStmt(), pred) and
-    not bbDominates(loop.getStmt(), succ)
-  }
-
-  private predicate successorExitsFirstDisjunct(BasicBlock pred, BasicBlock succ) {
-    exists(LogicalOrExpr orExpr | orExpr instanceof GuardCondition |
-      pred.getAFalseSuccessor() = succ and
-      pred.contains(orExpr.getLeftOperand())
-    )
-  }
-
   /** Holds if `cond` is a condition with a known truth value in `bb`. */
   private Condition getACondition(ControlFlowNode source, SemanticStackVariable v, BasicBlock bb) {
     revBbSuccessorEntryReaches0(source, pragma[only_bind_into](bb), v, _, this) and
@@ -325,37 +383,9 @@ abstract class StackVariableReachability extends string {
         result = cond and
         revBbSuccessorEntryReaches0(source, pragma[only_bind_into](pred), v, _, this) and
         pred.getASuccessor() = bb and
-        // When we exit a loop, we filter out the conditions that arise from the loop's guard.
-        // To see why this is necessary, consider this example:
-        // ```
-        // (1) source();
-        // while (b) { (2) /* ... */ }
-        // (3) sink();
-        // ```
-        // If we keep all the conditions when we transition from (2) to (3) we learn that `b` is true at
-        // (3), but since we exited the loop we also learn that `b` is false at 3.
-        // Thus, when we transition from (2) to (3) we discard all those conditions that are true at (2),
-        // but NOT true at (3).
-        not exists(Loop loop, boolean testIsTrue | successorExitsLoop(pred, bb, loop) |
-          // the resulting `Condition` holds inside the loop
-          cond.getCondition().controls(pred, testIsTrue) and
-          // but not prior to the loop.
-          not cond.getCondition().controls(loop.getBasicBlock(), testIsTrue)
-        ) and
-        // Similarly, in this example:
-        // ```
-        // if((1) b1 || (2) b2) { (3) /* ... */ }
-        // ```
-        // it holds that `b1 == false` controls (2), and since (2) steps to (3) we learn that `b1 == false `
-        // holds at (3). So we filter out the conditions that we learn from leaving taking the false
-        // branch in a disjunction.
-        not exists(boolean testIsTrue |
-          successorExitsFirstDisjunct(pred, bb) and
-          // the resulting `Condition` holds after evaluating the left-hand side
-          cond.getCondition().controls(bb, testIsTrue) and
-          // but not before evaluating the left-hand side.
-          not cond.getCondition().controls(pred, testIsTrue)
-        )
+        not isLoopCondition(cond.getCondition(), pred, bb) and
+        not isDisjunctionCondition(cond.getCondition(), pred, bb) and
+        not isLoopVariantCondition(cond.getCondition(), pred, bb)
       )
     )
   }
