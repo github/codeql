@@ -14,11 +14,10 @@ it results in remote code execution in the worst case.
 </p>
 
 <p>
-Here are examples of unsafe exporters: <code>HttpInvokerServiceExporter</code>, 
+Examples of unsafe exporters include: <code>HttpInvokerServiceExporter</code>, 
 <code>SimpleHttpInvokerServiceExporter</code>, <code>RmiServiceExporter</code>, 
 <code>HessianServiceExporter</code>.
 </p>
-
 <p>
 CVE-2016-1000027 has been assigned to this issue in the Spring Framework.
 It is regarded as a design limitation, and can be mitigated but not fixed outright.
