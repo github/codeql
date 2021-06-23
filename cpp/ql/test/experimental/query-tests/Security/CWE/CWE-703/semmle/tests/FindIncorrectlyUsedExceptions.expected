@@ -1,0 +1,2 @@
+| test.cpp:23:3:23:11 | call to funcTest1 | There is an exception in the function that requires your attention. |
+| test.cpp:24:3:24:9 | call to DllMain | DllMain contains exeption no wrapped to try..catch blocks. |
