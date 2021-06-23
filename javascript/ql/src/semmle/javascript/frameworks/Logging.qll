@@ -221,8 +221,12 @@ class AnsiColorsStep extends TaintTracking::SharedTaintStep {
 class ColorsStep extends TaintTracking::SharedTaintStep {
   override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(API::CallNode call |
-
-      call = API::moduleImport(["colors", "colors/safe" /* this variant avoids modifying the prototype methods */ ]).getAMember*().getACall()
+      call =
+        API::moduleImport([
+            "colors",
+            // the `colors/safe` variant avoids modifying the prototype methods
+            "colors/safe"
+          ]).getAMember*().getACall()
     |
       pred = call.getArgument(0) and
       succ = call
