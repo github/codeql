@@ -4,6 +4,8 @@
  */
 
 private import codeql_ruby.dataflow.internal.DataFlowPublic as DataFlow
+// Need to import since frameworks can extend `RemoteFlowSource::Range`
+private import codeql_ruby.Frameworks
 
 /**
  * A data flow source of remote user input.
