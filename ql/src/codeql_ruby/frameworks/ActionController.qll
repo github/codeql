@@ -19,7 +19,6 @@ private class ApplicationControllerAccess extends ConstantReadAccess {
   ApplicationControllerAccess() { this.getName() = "ApplicationController" }
 }
 
-// TODO: Less clumsy name for this?
 /**
  * A `ClassDeclaration` for a class that extends `ActionController::Base`.
  * For example,
