@@ -5152,6 +5152,11 @@ namespace System
         public Version() => throw null;
     }
 
+    // Generated from `System.Void` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    public struct Void
+    {
+    }
+
     // Generated from `System.WeakReference` in `System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class WeakReference : System.Runtime.Serialization.ISerializable
     {
