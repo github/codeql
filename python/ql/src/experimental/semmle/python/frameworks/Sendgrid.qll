@@ -75,6 +75,8 @@ private module Sendgrid {
     override DataFlow::Node getHtmlBody() {
       result in [sendgridMailCall().getArg(4), sendgridMailCall().getArgByName("html_content")]
       or
+      result = sendgridMailInstance().getMember("set_html").getACall().getArg(0)
+      or
       exists(DataFlow::CallCfgNode contentCall, StrConst mime |
         contentCall = sendgridMailHelper().getMember("Content").getACall() and
         mime.getText() = "text/html" and
@@ -113,7 +115,7 @@ private module Sendgrid {
       or
       result = sendgridMailHelper().getMember("Email").getACall().getArg(0)
       or
-      result = sendgridMailInstance().getMember("from_email").getACall().getArg(0)
+      result = sendgridMailInstance().getMember(["from_email", "set_from"]).getACall().getArg(0)
       or
       exists(DataFlow::AttrWrite fromWrite |
         fromWrite.getObject().getALocalSource() = sendgridMailCall() and
@@ -125,7 +127,7 @@ private module Sendgrid {
     override DataFlow::Node getSubject() {
       result in [sendgridMailCall().getArg(2), sendgridMailCall().getArgByName("subject")]
       or
-      result = sendgridMailInstance().getMember("subject").getACall().getArg(0)
+      result = sendgridMailInstance().getMember(["subject", "set_subject"]).getACall().getArg(0)
       or
       exists(DataFlow::AttrWrite subjectWrite |
         subjectWrite.getObject().getALocalSource() = sendgridMailCall() and
