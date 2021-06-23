@@ -234,3 +234,21 @@ void test17(int n, bool b) {
     use(data); // GOOD
   }
 }
+
+void test18(int* array) {
+	char* data = (char*)malloc(10 * sizeof(char));
+	for (int i = 0; i < 4; ++i) {
+  	int b = array[i];
+  	if(b) use(data); // BAD
+  	if(!b) free(data);
+	}
+}
+
+void test19(int* array) {
+	char* data = (char*)malloc(10 * sizeof(char));
+	int b = array[0];
+	for (int i = 0; i < 4; ++i) {
+  	if(b) use(data); // GOOD
+  	if(!b) free(data);
+	}
+}
