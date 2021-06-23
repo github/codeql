@@ -10,6 +10,8 @@ activeRecordSqlExecutionRanges
 | ActiveRecordInjection.rb:32:35:32:60 | "user.id = #{...}" |
 | ActiveRecordInjection.rb:45:21:45:33 | ... + ... |
 activeRecordModelClassMethodCalls
+| ActiveRecordInjection.rb:2:3:2:17 | call to has_many |
+| ActiveRecordInjection.rb:6:3:6:24 | call to belongs_to |
 | ActiveRecordInjection.rb:19:5:19:45 | call to calculate |
 | ActiveRecordInjection.rb:22:5:22:42 | call to delete_all |
 | ActiveRecordInjection.rb:25:5:25:45 | call to destroy_all |
