@@ -13,8 +13,14 @@ private import semmle.code.java.dataflow.DataFlow2
  */
 class SslConnectionInit extends DataFlow::Node {
   SslConnectionInit() {
-    this.asExpr().(MethodAccess).getMethod() instanceof CreateSslEngineMethod or
-    this.asExpr().(MethodAccess).getMethod() instanceof CreateSocketMethod
+    exists(MethodAccess ma, Method m |
+      this.asExpr() = ma and
+      ma.getMethod() = m
+    |
+      m instanceof CreateSslEngineMethod
+      or
+      m instanceof CreateSocketMethod and isSslSocket(ma)
+    )
   }
 }
 
@@ -29,20 +35,10 @@ class SslConnectionCreation extends DataFlow::Node {
       m instanceof BeginHandshakeMethod or
       m instanceof SslWrapMethod or
       m instanceof SslUnwrapMethod or
-      m instanceof SocketConnectMethod
+      m instanceof SocketGetOutputStreamMethod
     |
       ma.getMethod() = m and
       this.asExpr() = ma.getQualifier()
-    )
-    or
-    // calls to SocketFactory.createSocket with parameters immediately create the connection
-    exists(MethodAccess ma, Method m |
-      ma.getMethod() = m and
-      m instanceof CreateSocketMethod and
-      m.getNumberOfParameters() > 0 and
-      isSslSocket(ma)
-    |
-      this.asExpr() = ma
     )
   }
 }

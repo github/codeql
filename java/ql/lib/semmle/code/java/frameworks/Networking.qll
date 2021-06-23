@@ -47,6 +47,14 @@ class SocketGetInputStreamMethod extends Method {
   }
 }
 
+class SocketGetOutputStreamMethod extends Method {
+  SocketGetOutputStreamMethod() {
+    this.getDeclaringType() instanceof TypeSocket and
+    this.hasName("getOutputStream") and
+    this.hasNoParameters()
+  }
+}
+
 /** A method or constructor call that returns a new `URI`. */
 class UriCreation extends Call {
   UriCreation() {
@@ -152,7 +160,7 @@ class UrlOpenConnectionMethod extends Method {
 class CreateSocketMethod extends Method {
   CreateSocketMethod() {
     this.hasName("createSocket") and
-    this.getDeclaringType() instanceof TypeSocketFactory
+    this.getDeclaringType().getASupertype*() instanceof TypeSocketFactory
   }
 }
 
