@@ -92,36 +92,36 @@ predicate referenceTo(Expr source, Expr use) {
   )
 }
 
-from FunctionCall fc, Expr check, Expr checkUse, Expr opUse
+from Expr check, Expr checkPath, FunctionCall use, Expr usePath
 where
-  // checkUse looks like a check on a filename
+  // `check` looks like a check on a filename
   (
     // either:
     // an access check
-    check = accessCheck(checkUse)
+    check = accessCheck(checkPath)
     or
     // a stat
-    check = stat(checkUse, _)
+    check = stat(checkPath, _)
     or
     // another filename operation (null pointers can indicate errors)
-    check = filenameOperation(checkUse)
+    check = filenameOperation(checkPath)
     or
     // access to a member variable on the stat buf
     // (morally, this should be a use-use pair, but it seems unlikely
     // that this variable will get reused in practice)
-    exists(Variable buf | exists(stat(checkUse, buf.getAnAccess())) |
+    exists(Variable buf | exists(stat(checkPath, buf.getAnAccess())) |
       check.(VariableAccess).getQualifier() = buf.getAnAccess()
     )
   ) and
-  // checkUse and opUse refer to the same SSA variable
-  exists(SsaDefinition def, StackVariable v | def.getAUse(v) = checkUse and def.getAUse(v) = opUse) and
-  // opUse looks like an operation on a filename
-  fc = filenameOperation(opUse) and
-  // the return value of check is used (possibly with one step of
-  // variable indirection) in a guard which controls fc
+  // `checkPath` and `usePath` refer to the same SSA variable
+  exists(SsaDefinition def, StackVariable v | def.getAUse(v) = checkPath and def.getAUse(v) = usePath) and
+  // `op` looks like an operation on a filename
+  use = filenameOperation(usePath) and
+  // the return value of `check` is used (possibly with one step of
+  // variable indirection) in a guard which controls `use`
   exists(GuardCondition guard | referenceTo(check, guard.getAChild*()) |
-    guard.controls(fc.(ControlFlowNode).getBasicBlock(), _)
+    guard.controls(use.(ControlFlowNode).getBasicBlock(), _)
   )
-select fc,
+select use,
   "The $@ being operated upon was previously $@, but the underlying file may have been changed since then.",
-  opUse, "filename", check, "checked"
+  usePath, "filename", check, "checked"
