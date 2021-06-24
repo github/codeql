@@ -4,7 +4,7 @@
  */
 
 import java
-import semmle.code.java.dataflow.internal.DataFlowPrivate
+import semmle.code.java.dataflow.internal.DataFlowUtil
 import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.dataflow.FlowSummary
 import semmle.code.java.dataflow.internal.FlowSummaryImpl
