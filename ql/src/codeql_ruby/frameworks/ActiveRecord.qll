@@ -81,7 +81,7 @@ private Expr sqlFragmentArgument(MethodCall call) {
 
 // An expression that, if tainted by unsanitized input, should not be used as
 // part of an argument to an SQL executing method
-private predicate basicUnsafeSqlArg(Expr sqlFragmentExpr) {
+private predicate unsafeSqlExpr(Expr sqlFragmentExpr) {
   // Literals containing an interpolated value
   exists(StringInterpolationComponent interpolated |
     interpolated = sqlFragmentExpr.(StringlikeLiteral).getComponent(_)
@@ -95,13 +95,6 @@ private predicate basicUnsafeSqlArg(Expr sqlFragmentExpr) {
   or
   // Method call
   sqlFragmentExpr instanceof MethodCall
-}
-
-// An expression that, if used as an argument to an SQL executing method,
-// may be unsafe if tainted by unsanitized input
-private predicate unsafeSqlArg(Expr sqlFragmentExpr) {
-  basicUnsafeSqlArg(sqlFragmentExpr) or
-  basicUnsafeSqlArg(sqlFragmentExpr.(ArrayLiteral).getElement(0))
 }
 
 /**
@@ -126,8 +119,15 @@ class PotentiallyUnsafeSqlExecutingMethodCall extends ActiveRecordModelClassMeth
   // TODO: refine this further to account for cases where the method called has
   //       been overriden to perform validation on its arguments
   PotentiallyUnsafeSqlExecutingMethodCall() {
-    sqlFragmentExpr = sqlFragmentArgument(this) and
-    unsafeSqlArg(sqlFragmentExpr)
+    exists(Expr arg |
+      arg = sqlFragmentArgument(this) and
+      unsafeSqlExpr(sqlFragmentExpr) and
+      (
+        sqlFragmentExpr = arg
+        or
+        sqlFragmentExpr = arg.(ArrayLiteral).getElement(0)
+      )
+    )
   }
 
   Expr getSqlFragmentSinkArgument() { result = sqlFragmentExpr }
