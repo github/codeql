@@ -44,11 +44,11 @@ class BarController < ApplicationController
 
   def some_other_request_handler
     ps = params
-
     uid = ps[:id]
+    uidEq = "= #{uid}"
 
     # DELETE FROM "users" WHERE (id = #{uid})
-    User.delete_all("id = " + uid)
+    User.delete_all("id " + uidEq)
   end
 
   def sanitized_paths

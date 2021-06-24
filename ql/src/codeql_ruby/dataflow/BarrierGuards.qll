@@ -19,20 +19,20 @@ private import codeql_ruby.CFG
  */
 class StringConstCompare extends DataFlow::BarrierGuard,
   CfgNodes::ExprNodes::ComparisonOperationCfgNode {
-  private CfgNode checked_node;
+  private CfgNode checkedNode;
 
   StringConstCompare() {
-    exists(CfgNodes::ExprNodes::StringLiteralCfgNode str_lit_node |
+    exists(CfgNodes::ExprNodes::StringLiteralCfgNode strLitNode |
       this.getExpr() instanceof EqExpr or
       this.getExpr() instanceof CaseEqExpr
     |
-      this.operands(str_lit_node, checked_node)
+      this.getLeftOperand() = strLitNode and this.getRightOperand() = checkedNode
       or
-      this.operands(checked_node, str_lit_node)
+      this.getLeftOperand() = checkedNode and this.getRightOperand() = strLitNode
     )
   }
 
-  override DataFlow::Node getAGuardedNode() { result.asExpr() = checked_node }
+  override DataFlow::Node getAGuardedNode() { result.asExpr() = checkedNode }
 }
 
 /**
@@ -52,19 +52,17 @@ class StringConstCompare extends DataFlow::BarrierGuard,
 //
 class StringConstArrayInclusionCall extends DataFlow::BarrierGuard,
   CfgNodes::ExprNodes::MethodCallCfgNode {
-  private CfgNode checked_node;
+  private CfgNode checkedNode;
 
   StringConstArrayInclusionCall() {
-    exists(ArrayLiteral a_lit, MethodCall include_call |
-      include_call = this.getExpr() and
-      include_call.getMethodName() = "include?" and
-      include_call.getReceiver() = a_lit
+    exists(ArrayLiteral aLit |
+      this.getExpr().getMethodName() = "include?" and
+      this.getExpr().getReceiver() = aLit
     |
-      forall(Expr elem | elem = a_lit.getAnElement() | elem instanceof StringLiteral) and
-      include_call.getArgument(0) = checked_node.getNode() and
-      checked_node.getBasicBlock().dominates(this.getBasicBlock())
+      forall(Expr elem | elem = aLit.getAnElement() | elem instanceof StringLiteral) and
+      this.getExpr().getArgument(0) = checkedNode.getNode()
     )
   }
 
-  override DataFlow::Node getAGuardedNode() { result.asExpr() = checked_node }
+  override DataFlow::Node getAGuardedNode() { result.asExpr() = checkedNode }
 }
