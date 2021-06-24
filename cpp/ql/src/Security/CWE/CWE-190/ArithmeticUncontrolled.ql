@@ -19,6 +19,58 @@ import semmle.code.cpp.security.TaintTracking
 import TaintedWithPath
 import Bounded
 
+/**
+ * A function that outputs random data such as `std::rand`.
+ */
+abstract class RandomFunction extends Function {
+  /**
+   * Gets the `FunctionOutput` that describes how this function returns the random data.
+   */
+  FunctionOutput getFunctionOutput() { result.isReturnValue() }
+}
+
+/**
+ * The standard function `std::rand`.
+ */
+private class StdRand extends RandomFunction {
+  StdRand() {
+    this.hasGlobalOrStdOrBslName("rand") and
+    this.getNumberOfParameters() = 0
+  }
+}
+
+/**
+ * The Unix function `rand_r`.
+ */
+private class RandR extends RandomFunction {
+  RandR() {
+    this.hasGlobalName("rand_r") and
+    this.getNumberOfParameters() = 1
+  }
+}
+
+/**
+ * The Unix function `random`.
+ */
+private class Random extends RandomFunction {
+  Random() {
+    this.hasGlobalName("random") and
+    this.getNumberOfParameters() = 1
+  }
+}
+
+/**
+ * The Windows `rand_s` function.
+ */
+private class RandS extends RandomFunction {
+  RandS() {
+    this.hasGlobalName("rand_s") and
+    this.getNumberOfParameters() = 1
+  }
+
+  override FunctionOutput getFunctionOutput() { result.isParameterDeref(0) }
+}
+
 predicate isUnboundedRandCall(FunctionCall fc) {
   exists(Function func | func = fc.getTarget() |
     func.hasGlobalOrStdOrBslName("rand") and
