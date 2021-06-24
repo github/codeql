@@ -45,6 +45,7 @@ calls/calls.rb:
 #  316|             getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0__1
 #  316|         getStmt: [LocalVariableAccess] __synth__0__1
 #  316|     getStmt: [AssignExpr] ... = ...
+#  316|       getAnOperand/getLeftOperand: [MethodCall] call to bar
 #  316|       getDesugared: [StmtSequence] ...
 #  316|         getStmt: [SetterMethodCall] call to bar=
 #  316|           getReceiver: [Self] self
@@ -56,8 +57,8 @@ calls/calls.rb:
 #  316|               getReceiver: [LocalVariableAccess] __synth__0
 #  316|             getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0__1
 #  316|         getStmt: [LocalVariableAccess] __synth__0__1
-#  316|       getAnOperand/getLeftOperand: [MethodCall] call to bar
 #  316|     getStmt: [AssignExpr] ... = ...
+#  316|       getAnOperand/getLeftOperand: [ElementReference] ...[...]
 #  316|       getDesugared: [StmtSequence] ...
 #  316|         getStmt: [SetterMethodCall] call to []=
 #  316|           getReceiver: [MethodCall] call to foo
@@ -69,7 +70,6 @@ calls/calls.rb:
 #  316|             getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0__1
 #  316|           getArgument: [IntegerLiteral] 4
 #  316|         getStmt: [LocalVariableAccess] __synth__0__1
-#  316|       getAnOperand/getLeftOperand: [ElementReference] ...[...]
 #  316|     getStmt: [AssignExpr] ... = ...
 #  316|       getAnOperand/getRightOperand: [SplatExpr] * ...
 #  316|         getAnOperand/getOperand: [ArrayLiteral] [...]
@@ -86,6 +86,7 @@ calls/calls.rb:
 #  317|         getArgument: [IntegerLiteral] 0
 #  317|         getReceiver: [LocalVariableAccess] __synth__0
 #  317|     getStmt: [AssignExpr] ... = ...
+#  317|       getAnOperand/getLeftOperand: [ElementReference] ...[...]
 #  317|       getDesugared: [StmtSequence] ...
 #  317|         getStmt: [SetterMethodCall] call to []=
 #  317|           getReceiver: [MethodCall] call to foo
@@ -99,7 +100,6 @@ calls/calls.rb:
 #  317|             getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0__1
 #  317|           getArgument: [IntegerLiteral] 5
 #  317|         getStmt: [LocalVariableAccess] __synth__0__1
-#  317|       getAnOperand/getLeftOperand: [ElementReference] ...[...]
 #  317|     getStmt: [AssignExpr] ... = ...
 #  317|       getAnOperand/getRightOperand: [SplatExpr] * ...
 #  317|         getAnOperand/getOperand: [ArrayLiteral] [...]

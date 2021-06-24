@@ -19,7 +19,7 @@ module MethodName {
 }
 
 private predicate mkSynthChild(SynthKind kind, AST::AstNode parent, int i) {
-  any(Synthesis s).child(parent, i, SynthChild(kind), _)
+  any(Synthesis s).child(parent, i, SynthChild(kind))
 }
 
 cached
@@ -483,7 +483,7 @@ private module Cached {
   predicate synthChild(AST::AstNode parent, int i, AST::AstNode child) {
     child = getSynthChild(parent, i)
     or
-    any(Synthesis s).child(parent, i, RealChild(child), _)
+    any(Synthesis s).child(parent, i, RealChild(child))
   }
 
   /**
@@ -505,8 +505,11 @@ private module Cached {
   Location getLocation(AST::AstNode n) {
     synthLocation(n, result)
     or
+    n.isSynthesized() and
     not synthLocation(n, _) and
-    result = toGeneratedInclSynth(n).getLocation()
+    result = getLocation(n.getParent())
+    or
+    result = toGenerated(n).getLocation()
   }
 }
 
