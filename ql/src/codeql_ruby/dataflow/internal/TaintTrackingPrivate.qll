@@ -23,18 +23,9 @@ predicate defaultAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nod
   )
   or
   // string interpolation of `nodeFrom` into `nodeTo`
-  exists(
-    CfgNodes::ExprNodes::StringlikeLiteralCfgNode lit,
-    CfgNodes::ExprNodes::StringInterpolationComponentCfgNode sic
-  |
-    lit = nodeTo.asExpr() and
-    sic = lit.getAComponent() and
-    sic = nodeFrom.asExpr()
-  )
+  nodeFrom.asExpr() =
+    nodeTo.asExpr().(CfgNodes::ExprNodes::StringlikeLiteralCfgNode).getAComponent()
   or
   // element reference from nodeFrom
-  exists(CfgNodes::ExprNodes::ElementReferenceCfgNode ref |
-    ref = nodeTo.asExpr() and
-    ref.getReceiver() = nodeFrom.asExpr()
-  )
+  nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::ElementReferenceCfgNode).getReceiver()
 }
