@@ -337,7 +337,7 @@ module ExprNodes {
   }
 
   /** A control-flow node that wraps a `StringInterpolationComponent` AST expression. */
-  class StringInterpolationComponentCfgNode extends ExprNodes::StmtSequenceCfgNode {
+  class StringInterpolationComponentCfgNode extends StmtSequenceCfgNode {
     StringInterpolationComponentCfgNode() { this.getNode() instanceof StringInterpolationComponent }
   }
 
