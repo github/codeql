@@ -4,10 +4,10 @@
  */
 
 import java
-import semmle.code.java.dataflow.internal.DataFlowUtil
-import semmle.code.java.dataflow.ExternalFlow
-import semmle.code.java.dataflow.FlowSummary
-import semmle.code.java.dataflow.internal.FlowSummaryImpl
+private import semmle.code.java.dataflow.internal.DataFlowUtil
+private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.FlowSummary
+private import semmle.code.java.dataflow.internal.FlowSummaryImpl
 
 /**
  * A CSV row to generate tests for. Users should extend this to define which
