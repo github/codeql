@@ -9,3 +9,4 @@ cp codeql-extractor.yml, ql\src\ruby.dbscheme, ql\src\ruby.dbscheme.stats extrac
 cp -Recurse tools extractor-pack
 mkdir extractor-pack\tools\win64 | Out-Null
 cp target\release\ruby-extractor.exe extractor-pack\tools\win64\extractor.exe
+cp target\release\ruby-autobuilder.exe extractor-pack\tools\win64\autobuilder.exe
