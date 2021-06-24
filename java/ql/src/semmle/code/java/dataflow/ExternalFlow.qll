@@ -561,6 +561,7 @@ module CsvValidation {
   }
 }
 
+pragma[nomagic]
 private predicate elementSpec(
   string namespace, string type, boolean subtypes, string name, string signature, string ext
 ) {
