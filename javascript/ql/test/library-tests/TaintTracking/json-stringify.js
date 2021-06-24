@@ -25,4 +25,7 @@ function foo() {
 
   const flatted = require('flatted');
   sink(flatted.stringify(flatted.parse(source))); // NOT OK
+
+  const teleport = require('teleport-javascript');
+  sink(teleport.stringify(teleport.parse(source))); // NOT OK
 }
