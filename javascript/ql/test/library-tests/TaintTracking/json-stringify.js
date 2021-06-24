@@ -28,4 +28,8 @@ function foo() {
 
   const teleport = require('teleport-javascript');
   sink(teleport.stringify(teleport.parse(source))); // NOT OK
+
+  const Replicator = require('replicator');
+  const replicator = new Replicator();
+  sink(replicator.encode(replicator.decode(source))); // NOT OK
 }

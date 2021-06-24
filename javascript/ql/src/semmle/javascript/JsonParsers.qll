@@ -27,6 +27,7 @@ private class PlainJsonParserCall extends JsonParserCall {
     exists(DataFlow::SourceNode callee | this = callee.getACall() |
       callee = DataFlow::globalVarRef("JSON").getAPropertyRead("parse") or
       callee = DataFlow::moduleMember(["json3", "json5", "flatted", "teleport-javascript"], "parse") or
+      callee = API::moduleImport("replicator").getInstance().getMember("decode").getAnImmediateUse() or
       callee = DataFlow::moduleImport("parse-json") or
       callee = DataFlow::moduleImport("json-parse-better-errors") or
       callee = DataFlow::moduleImport("json-safe-parse") or
