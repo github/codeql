@@ -5,7 +5,7 @@ activeRecordModelClasses
 activeRecordSqlExecutionRanges
 | ActiveRecordInjection.rb:19:30:19:44 | ...[...] |
 | ActiveRecordInjection.rb:22:21:22:41 | "id = #{...}" |
-| ActiveRecordInjection.rb:25:22:25:44 | [...] |
+| ActiveRecordInjection.rb:25:23:25:43 | "id = #{...}" |
 | ActiveRecordInjection.rb:28:16:28:21 | <<-SQL |
 | ActiveRecordInjection.rb:32:35:32:60 | "user.id = #{...}" |
 | ActiveRecordInjection.rb:45:21:45:33 | ... + ... |
