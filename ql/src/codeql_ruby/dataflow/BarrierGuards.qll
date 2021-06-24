@@ -60,7 +60,7 @@ class StringConstArrayInclusionCall extends DataFlow::BarrierGuard,
       this.getExpr().getReceiver() = aLit
     |
       forall(Expr elem | elem = aLit.getAnElement() | elem instanceof StringLiteral) and
-      this.getExpr().getArgument(0) = checkedNode.getNode()
+      this.getArgument(0) = checkedNode
     )
   }
 
