@@ -296,6 +296,20 @@ module ExprNodes {
     final ExprCfgNode getBranch(boolean cond) { e.hasCfgChild(e.getBranch(cond), this, result) }
   }
 
+  private class ConstantAccessChildMapping extends ExprChildMapping, ConstantAccess {
+    override predicate relevantChild(Expr e) { e = this.getScopeExpr() }
+  }
+
+  /** A control-flow node that wraps a `ConditionalExpr` AST expression. */
+  class ConstantAccessCfgNode extends ExprCfgNode {
+    override ConstantAccessChildMapping e;
+
+    final override ConstantAccess getExpr() { result = ExprCfgNode.super.getExpr() }
+
+    /** Gets the scope expression. */
+    final ExprCfgNode getScopeExpr() { e.hasCfgChild(e.getScopeExpr(), this, result) }
+  }
+
   private class StmtSequenceChildMapping extends ExprChildMapping, StmtSequence {
     override predicate relevantChild(Expr e) { e = this.getLastStmt() }
   }
