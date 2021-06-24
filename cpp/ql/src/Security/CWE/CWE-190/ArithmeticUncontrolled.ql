@@ -97,7 +97,15 @@ class UncontrolledArithConfiguration extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) { missingGuard(sink.asExpr(), _) }
 
-  override predicate isSanitizer(DataFlow::Node barrier) { bounded(barrier.asExpr()) }
+  override predicate isSanitizer(DataFlow::Node node) {
+    bounded(node.asExpr())
+    or
+    // If this expression is part of bitwise 'and' or 'or' operation it's likely that the value is
+    // only used as a bit pattern.
+    node.asExpr() =
+      any(BinaryBitwiseOperation op | op instanceof BitwiseOrExpr or op instanceof BitwiseAndExpr)
+          .getAnOperand*()
+  }
 }
 
 Expr getExpr(DataFlow::Node node) { result = [node.asExpr(), node.asDefiningArgument()] }
