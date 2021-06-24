@@ -32,4 +32,6 @@ function foo() {
   const Replicator = require('replicator');
   const replicator = new Replicator();
   sink(replicator.encode(replicator.decode(source))); // NOT OK
+
+  sink(require("safe-stable-stringify")(source)); // NOT OK
 }
