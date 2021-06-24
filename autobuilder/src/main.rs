@@ -5,12 +5,13 @@ fn main() -> std::io::Result<()> {
     let dist = env::var("CODEQL_DIST").expect("CODEQL_DIST not set");
     let db = env::var("CODEQL_EXTRACTOR_RUBY_WIP_DATABASE")
         .expect("CODEQL_EXTRACTOR_RUBY_WIP_DATABASE not set");
-    let ext = if env::consts::OS == "windows" {
-        ".exe"
+    let codeql = if env::consts::OS == "windows" {
+        "codeql.exe"
     } else {
-        ""
+        "codeql"
     };
-    let mut cmd = Command::new(format!("{}/codeql{}", dist, ext));
+    let codeql: PathBuf = [&dist, codeql].iter().collect();
+    let mut cmd = Command::new(codeql);
     &cmd.arg("database")
         .arg("index-files")
         .arg("--include-extension=.rb")
