@@ -61,11 +61,14 @@ def comment_pr(repo, run_id):
 
     # Try storing diff for previous run:
     prev_run_id = 0
+    prev_diff_exists = False
     try:
         prev_run_id = get_previous_run_id(repo, run_id, pr_number)
         prev_diff_folder = "prev_diff"
         utils.download_artifact(repo, comparison_artifact_name,
                                 prev_diff_folder, prev_run_id)
+
+        prev_diff_exists = True
 
         if filecmp.cmp(f"{current_diff_folder}/{comparison_artifact_file_name}", f"{prev_diff_folder}/{comparison_artifact_file_name}", shallow=False):
             print(
@@ -74,7 +77,7 @@ def comment_pr(repo, run_id):
         else:
             print(f"Diff of previous run {prev_run_id} differs, commenting.")
     except Exception:
-        # this is not mecessarily a failure, it can also mean that there was no previous run yet.
+        # this is not necessarily a failure, it can also mean that there was no previous run yet.
         print("Couldn't generate diff for previous run:", sys.exc_info()[1])
 
     comment = get_comment_text(
@@ -82,9 +85,17 @@ def comment_pr(repo, run_id):
 
     if comment == None:
         if prev_run_id == 0:
-            print("Nothing to comment.")
+            print(
+                "Nothing to comment. There's no previous run, and there's no coverage change.")
             return
+
         print("Previous run found, and current run removes coverage change.")
+
+        if not prev_diff_exists:
+            print(
+                "Couldn't get the comparison artifact from previous run. Not commenting.")
+            return
+
         comment = comment_first_line + \
             "A recent commit removed the previously reported differences."
     post_comment(comment, repo, pr_number)
