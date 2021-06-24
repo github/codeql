@@ -108,6 +108,7 @@ class UncontrolledArithConfiguration extends TaintTracking::Configuration {
   }
 }
 
+/** Gets the expression that corresponds to `node`, if any. */
 Expr getExpr(DataFlow::Node node) { result = [node.asExpr(), node.asDefiningArgument()] }
 
 from
