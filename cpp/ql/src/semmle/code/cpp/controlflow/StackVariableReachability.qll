@@ -145,6 +145,17 @@ private Condition getADirectCondition(BasicBlock b) {
   result.(LogicalCondition).getCondition().controls(b, result.(LogicalCondition).getTruthValue())
 }
 
+/**
+ * Like the shared dataflow library, the reachability analysis is split into two stages:
+ * In the first stage, we compute an overapproximation of the possible control-flow paths where we don't
+ * reason about path conditions. This stage is split into phases: A forward phase (computed by the
+ * predicates prefixes with `fwd`), and a reverse phase (computed by the predicates prefixed with `rev`).
+ *
+ * The forward phease computes the set of control-flow nodes reachable from a given `source` and `v` such
+ * that `config.isSource(source, v)` holds.
+ *
+ * See the QLDoc on `revBbSuccessorEntryReaches0` for a description of what the reverse phase computes.
+ */
 private predicate fwdBbSuccessorEntryReaches0(
   ControlFlowNode source, BasicBlock bb, SemanticStackVariable v,
   boolean skipsFirstLoopAlwaysTrueUponEntry, StackVariableReachability config
@@ -162,6 +173,10 @@ private predicate fwdBbSuccessorEntryReaches0(
   )
 }
 
+/**
+ * The second phase of the first stages computes, for each `source` and `v` pair such
+ * that `config.isSource(source, v)`, which sinks are reachable from that `(source, v)` pair.
+ */
 private predicate revBbSuccessorEntryReaches0(
   ControlFlowNode source, BasicBlock bb, SemanticStackVariable v,
   boolean skipsFirstLoopAlwaysTrueUponEntry, StackVariableReachability config
@@ -368,7 +383,9 @@ abstract class StackVariableReachability extends string {
   }
 
   /**
-   * Holds if `cond` is a condition with a known truth value in `bb`.
+   * Gets a condition with a known truth value in `bb` when the control-flow starts at the source
+   * node `source` and we're tracking reachability using variable `v` (that is,
+   * `this.isSource(source, v)` holds).
    *
    * This predicate is `pragma[noopt]` as it seems difficult to get the correct join order for the
    * recursive case otherwise:
