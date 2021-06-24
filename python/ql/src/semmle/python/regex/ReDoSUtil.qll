@@ -12,8 +12,7 @@
  * states that will cause backtracking (a rejecting suffix exists).
  */
 
-import python
-import semmle.python.RegexTreeView
+import RegExpTreeView
 
 /**
  * A configuration for which parts of a regular expression should be considered relevant for
