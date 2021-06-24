@@ -91,6 +91,7 @@ typeInferenceMismatch
 | json-stringify.js:2:16:2:23 | source() | json-stringify.js:17:8:17:39 | require ... source) |
 | json-stringify.js:2:16:2:23 | source() | json-stringify.js:18:8:18:40 | require ... source) |
 | json-stringify.js:2:16:2:23 | source() | json-stringify.js:21:8:21:46 | new jso ... source) |
+| json-stringify.js:2:16:2:23 | source() | json-stringify.js:24:8:24:43 | json5.s ... ource)) |
 | json-stringify.js:3:15:3:22 | source() | json-stringify.js:8:8:8:31 | jsonStr ... (taint) |
 | nested-props.js:4:13:4:20 | source() | nested-props.js:5:10:5:14 | obj.x |
 | nested-props.js:9:18:9:25 | source() | nested-props.js:10:10:10:16 | obj.x.y |

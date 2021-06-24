@@ -11,7 +11,7 @@ class JsonStringifyCall extends DataFlow::CallNode {
   JsonStringifyCall() {
     exists(DataFlow::SourceNode callee | this = callee.getACall() |
       callee = DataFlow::globalVarRef("JSON").getAPropertyRead("stringify") or
-      callee = DataFlow::moduleMember("json3", "stringify") or
+      callee = DataFlow::moduleMember(["json3", "json5"], "stringify") or
       callee =
         DataFlow::moduleImport([
             "json-stringify-safe", "json-stable-stringify", "stringify-object",

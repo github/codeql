@@ -19,4 +19,7 @@ function foo() {
   
   const json2csv = require('json2csv');
   sink(new json2csv.Parser(opts).parse(source)); // NOT OK
+
+  const json5 = require('json5');
+  sink(json5.stringify(json5.parse(source))); // NOT OK
 }
