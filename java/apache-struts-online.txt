@@ -1,0 +1,2 @@
+There is also the full writeup at
+https://github.com/githubsatelliteworkshops/codeql/blob/master/java.md
