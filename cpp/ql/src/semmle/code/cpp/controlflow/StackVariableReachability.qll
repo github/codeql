@@ -79,7 +79,7 @@ abstract private class Condition extends TCondition {
   /** Gets the value of this `Condition`. */
   abstract boolean getTruthValue();
 
-  /** Gets the negated the expression represented by this `Condition`, if any. */
+  /** Gets the negated expression represented by this `Condition`, if any. */
   Condition negate() { none() }
 
   /**
