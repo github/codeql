@@ -304,7 +304,7 @@ module ExprNodes {
   class ConstantAccessCfgNode extends ExprCfgNode {
     override ConstantAccessChildMapping e;
 
-    final override ConstantAccess getExpr() { result = ExprCfgNode.super.getExpr() }
+    final override ConstantAccess getExpr() { result = super.getExpr() }
 
     /** Gets the scope expression. */
     final ExprCfgNode getScopeExpr() { e.hasCfgChild(e.getScopeExpr(), this, result) }
