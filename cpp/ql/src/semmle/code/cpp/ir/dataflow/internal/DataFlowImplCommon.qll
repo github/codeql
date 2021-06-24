@@ -724,7 +724,6 @@ private module Cached {
     Node node1, Content c, Node node2, DataFlowType contentType, DataFlowType containerType
   ) {
     storeStep(node1, c, node2) and
-    read(_, c, _) and
     contentType = getNodeDataFlowType(node1) and
     containerType = getNodeDataFlowType(node2)
     or
