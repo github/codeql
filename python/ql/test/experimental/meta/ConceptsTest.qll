@@ -252,6 +252,38 @@ class HttpServerHttpRedirectResponseTest extends InlineExpectationsTest {
   }
 }
 
+class HttpServerCookieWriteTest extends InlineExpectationsTest {
+  HttpServerCookieWriteTest() { this = "HttpServerCookieWriteTest" }
+
+  override string getARelevantTag() {
+    result in ["CookieWrite", "CookieRawHeader", "CookieName", "CookieValue"]
+  }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(HTTP::Server::CookieWrite cookieWrite |
+      location = cookieWrite.getLocation() and
+      (
+        element = cookieWrite.toString() and
+        value = "" and
+        tag = "CookieWrite"
+        or
+        element = cookieWrite.toString() and
+        value = prettyNodeForInlineTest(cookieWrite.getHeaderArg()) and
+        tag = "CookieRawHeader"
+        or
+        element = cookieWrite.toString() and
+        value = prettyNodeForInlineTest(cookieWrite.getNameArg()) and
+        tag = "CookieName"
+        or
+        element = cookieWrite.toString() and
+        value = prettyNodeForInlineTest(cookieWrite.getValueArg()) and
+        tag = "CookieValue"
+      )
+    )
+  }
+}
+
 class FileSystemAccessTest extends InlineExpectationsTest {
   FileSystemAccessTest() { this = "FileSystemAccessTest" }
 

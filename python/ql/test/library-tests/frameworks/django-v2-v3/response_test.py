@@ -103,3 +103,15 @@ class CustomJsonResponse(JsonResponse):
 
 def safe__custom_json_response(request):
     return CustomJsonResponse("ACME Responses", {"foo": request.GET.get("foo")})  # $HttpResponse mimetype=application/json MISSING: responseBody=Dict SPURIOUS: responseBody="ACME Responses"
+
+################################################################################
+# Cookies
+################################################################################
+
+def setting_cookie(request):
+    resp = HttpResponse() # $ HttpResponse mimetype=text/html
+    resp.set_cookie("key", "value") # $ MISSING: CookieWrite CookieName="key" CookieValue="value"
+    resp.set_cookie(key="key", value="value") # $ MISSING: CookieWrite CookieName="key" CookieValue="value"
+    resp.headers["Set-Cookie"] = "key2=value2" # $ MISSING: CookieWrite CookieRawHeader="key2=value2"
+    resp.cookies["key3"] = "value3" # $ MISSING: CookieWrite CookieName="key3" CookieValue="value3"
+    return resp

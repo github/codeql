@@ -555,6 +555,62 @@ module HTTP {
         abstract DataFlow::Node getRedirectLocation();
       }
     }
+
+    /**
+     * A data-flow node that sets a cookie in an HTTP response.
+     *
+     * Extend this class to refine existing API models. If you want to model new APIs,
+     * extend `HTTP::CookieWrite::Range` instead.
+     */
+    class CookieWrite extends DataFlow::Node {
+      CookieWrite::Range range;
+
+      CookieWrite() { this = range }
+
+      /**
+       * Gets the argument, if any, specifying the raw cookie header.
+       */
+      DataFlow::Node getHeaderArg() { result = range.getHeaderArg() }
+
+      /**
+       * Gets the argument, if any, specifying the cookie name.
+       */
+      DataFlow::Node getNameArg() { result = range.getNameArg() }
+
+      /**
+       * Gets the argument, if any, specifying the cookie value.
+       */
+      DataFlow::Node getValueArg() { result = range.getValueArg() }
+    }
+
+    /** Provides a class for modeling new cookie writes on HTTP responses. */
+    module CookieWrite {
+      /**
+       * A data-flow node that sets a cookie in an HTTP response.
+       *
+       * Note: we don't require that this redirect must be sent to a client (a kind of
+       * "if a tree falls in a forest and nobody hears it" situation).
+       *
+       * Extend this class to model new APIs. If you want to refine existing API models,
+       * extend `HttpResponse` instead.
+       */
+      abstract class Range extends DataFlow::Node {
+        /**
+         * Gets the argument, if any, specifying the raw cookie header.
+         */
+        abstract DataFlow::Node getHeaderArg();
+
+        /**
+         * Gets the argument, if any, specifying the cookie name.
+         */
+        abstract DataFlow::Node getNameArg();
+
+        /**
+         * Gets the argument, if any, specifying the cookie value.
+         */
+        abstract DataFlow::Node getValueArg();
+      }
+    }
   }
 }
 

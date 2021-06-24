@@ -185,6 +185,19 @@ def redirect_simple():  # $requestHandler
 
 
 ################################################################################
+# Cookies
+################################################################################
+
+@app.route("/setting_cookie")  # $routeSetup="/setting_cookie"
+def setting_cookie():  # $requestHandler
+    resp = make_response() # $ HttpResponse mimetype=text/html
+    resp.set_cookie("key", "value") # $ MISSING: CookieWrite CookieName="key" CookieValue="value"
+    resp.set_cookie(key="key", value="value") # $ MISSING: CookieWrite CookieName="key" CookieValue="value"
+    resp.headers.add("Set-Cookie", "key2=value2") # $ MISSING: CookieWrite CookieRawHeader="key2=value2"
+    resp.delete_cookie("key3") # $ MISSING: CookieWrite CookieName="key3"
+    return resp  # $ SPURIOUS: HttpResponse mimetype=text/html responseBody=resp
+
+################################################################################
 
 
 if __name__ == "__main__":

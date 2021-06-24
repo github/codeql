@@ -58,6 +58,18 @@ class ExampleConnectionWrite(tornado.web.RequestHandler):
             stream.write(b"foo stream") # $ MISSING: HttpResponse responseBody=b"foo stream"
             stream.close()
 
+################################################################################
+# Cookies
+################################################################################
+
+class CookieWriting(tornado.web.RequestHandler):
+    def get(self):  # $ requestHandler
+        self.write("foo") # $ HttpResponse mimetype=text/html responseBody="foo"
+        self.set_cookie("key", "value") # $ MISSING: CookieWrite CookieName="key" CookieValue="value"
+        self.set_cookie(name="key", value="value") # $ MISSING: CookieWrite CookieName="key" CookieValue="value"
+        self.set_header("Set-Cookie", "key2=value2") # $ MISSING: CookieWrite CookieRawHeader="key2=value2"
+
+
 def make_app():
     return tornado.web.Application(
         [
@@ -66,6 +78,7 @@ def make_app():
             (r"/ExampleRedirect", ExampleRedirect), # $ routeSetup="/ExampleRedirect"
             (r"/ExampleConnectionWrite", ExampleConnectionWrite), # $ routeSetup="/ExampleConnectionWrite"
             (r"/ExampleConnectionWrite/(stream)", ExampleConnectionWrite), # $ routeSetup="/ExampleConnectionWrite/(stream)"
+            (r"/CookieWriting", CookieWriting), # $ routeSetup="/CookieWriting"
         ],
         debug=True,
     )
@@ -74,6 +87,7 @@ def make_app():
 if __name__ == "__main__":
     import tornado.ioloop
 
+    print("running on http://localhost:8888/")
     app = make_app()
     app.listen(8888)
     tornado.ioloop.IOLoop.current().start()

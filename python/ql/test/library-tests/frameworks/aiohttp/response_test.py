@@ -65,6 +65,20 @@ async def redirect_302(request): # $ requestHandler
     else:
         raise web.HTTPFound(location="/logout") # $ HttpResponse HttpRedirectResponse mimetype=application/octet-stream redirectLocation="/logout"
 
+################################################################################
+# Cookies
+################################################################################
+
+@routes.get("/setting_cookie") # $ routeSetup="/setting_cookie"
+async def setting_cookie(request): # $ requestHandler
+    resp = web.Response(text="foo") # $ HttpResponse mimetype=text/plain responseBody="foo"
+    resp.cookies["key"] = "value" # $ MISSING: CookieWrite CookieName="key" CookieValue="value"
+    resp.headers["Set-Cookie"] = "key2=value2" # $ MISSING: CookieWrite CookieRawHeader="key2=value2"
+    resp.set_cookie("key3", "value3") # $ MISSING: CookieWrite CookieName="key3" CookieValue="value3"
+    resp.set_cookie(name="key3", value="value3") # $ MISSING: CookieWrite CookieName="key3" CookieValue="value3"
+    resp.del_cookie("key4") # $ MISSING: CookieWrite CookieName="key4"
+    return resp
+
 
 if __name__ == "__main__":
     app = web.Application()
