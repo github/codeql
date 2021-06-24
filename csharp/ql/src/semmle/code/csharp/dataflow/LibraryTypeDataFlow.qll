@@ -23,6 +23,7 @@ private import semmle.code.csharp.dataflow.internal.DelegateDataFlow
 private import semmle.code.csharp.frameworks.EntityFramework
 private import semmle.code.csharp.frameworks.JsonNET
 private import FlowSummary
+private import semmle.code.csharp.dataflow.ExternalFlow
 
 private newtype TAccessPath =
   TNilAccessPath() or
@@ -500,29 +501,17 @@ private module FrameworkDataFlowAdaptor {
 }
 
 /** Data flow for `System.Int32`. */
-class SystemInt32Flow extends LibraryTypeDataFlow, SystemInt32Struct {
-  override predicate callableFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
-    boolean preservesValue
-  ) {
-    methodFlow(source, sink, c) and
-    preservesValue = false
-  }
-
-  private predicate methodFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationMethod m
-  ) {
-    m = getParseMethod() and
-    source = TCallableFlowSourceArg(0) and
-    sink = TCallableFlowSinkReturn()
-    or
-    m = getTryParseMethod() and
-    source = TCallableFlowSourceArg(0) and
-    (
-      sink = TCallableFlowSinkReturn()
-      or
-      sink = TCallableFlowSinkArg(any(int i | m.getParameter(i).isOutOrRef()))
-    )
+private class SystemInt32FlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System;Int32;false;Parse;;;Argument[0];ReturnValue;taint",
+        "System;Int32;false;TryParse;;;Argument[0];ReturnValue;taint",
+        "System;Int32;false;TryParse;(System.String,System.Int32);;Argument[0];Argument[1];taint",
+        "System;Int32;false;TryParse;(System.ReadOnlySpan<System.Char>,System.Int32);;Argument[0];Argument[1];taint",
+        "System;Int32;false;TryParse;(System.String,System.Globalization.NumberStyles,System.IFormatProvider,System.Int32);;Argument[0];Argument[3];taint",
+        "System;Int32;false;TryParse;(System.ReadOnlySpan<System.Char>,System.Globalization.NumberStyles,System.IFormatProvider,System.Int32);;Argument[0];Argument[3];taint"
+      ]
   }
 }
 
