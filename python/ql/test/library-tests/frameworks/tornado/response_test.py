@@ -65,8 +65,8 @@ class ExampleConnectionWrite(tornado.web.RequestHandler):
 class CookieWriting(tornado.web.RequestHandler):
     def get(self):  # $ requestHandler
         self.write("foo") # $ HttpResponse mimetype=text/html responseBody="foo"
-        self.set_cookie("key", "value") # $ MISSING: CookieWrite CookieName="key" CookieValue="value"
-        self.set_cookie(name="key", value="value") # $ MISSING: CookieWrite CookieName="key" CookieValue="value"
+        self.set_cookie("key", "value") # $ CookieWrite CookieName="key" CookieValue="value"
+        self.set_cookie(name="key", value="value") # $ CookieWrite CookieName="key" CookieValue="value"
         self.set_header("Set-Cookie", "key2=value2") # $ MISSING: CookieWrite CookieRawHeader="key2=value2"
 
 
