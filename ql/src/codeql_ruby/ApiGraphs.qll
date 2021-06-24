@@ -203,7 +203,7 @@ module API {
       exists(string type |
         this = Impl::MkUse(_) and type = "Use "
         or
-        this = Impl::MkModuleImport(_) and type = "ModuleImport "
+        this = Impl::MkModule(_) and type = "ModuleUse "
       |
         result = type + getPath()
         or
@@ -222,7 +222,21 @@ module API {
    * you should use `.getMember` on the parent module/class. For example, for nodes corresponding to the class `Gem::Version`,
    * use `moduleImport("Gem").getMember("Version")`.
    */
-  Node moduleImport(string m) { result = Impl::MkModuleImport(m) }
+  Node moduleImport(string m) {
+    result = Impl::MkModule(m) and not m.matches("%::%")
+    or
+    result = Impl::MkUse(unresolvedModuleReference(m))
+  }
+
+  DataFlow::Node unresolvedModuleReference(string m) {
+    exists(ConstantReadAccess iexpr, DataFlow::Node node |
+      not exists(resolveScopeExpr(iexpr)) and
+      not exists(iexpr.getScopeExpr()) and
+      m = iexpr.getName() and
+      result = node and
+      node.asExpr().getExpr() = iexpr
+    )
+  }
 
   /**
    * Provides the actual implementation of API graphs, cached for performance.
@@ -253,39 +267,15 @@ module API {
       /** The root of the API graph. */
       MkRoot() or
       /** An abstract representative for imports of the module called `name`. */
-      MkModuleImport(string name) { topLevelModule(_, name) } or
+      MkModule(string name) { exists(TResolved(name)) } or
       /** A use of an API member at the node `nd`. */
-      MkUse(DataFlow::Node nd) { use(_, _, nd) }
+      MkUse(DataFlow::Node nd) {
+        use(_, _, nd)
+        or
+        nd = unresolvedModuleReference(_)
+      }
 
-    class TUse = MkModuleImport or MkUse;
-
-    /**
-     * Holds if `imp` is a data-flow node of a constant read access that refers to a top-level module by the
-     * name `name`.
-     */
-    private predicate topLevelModule(DataFlow::Node imp, string name) {
-      // Nodes of the form `::Rails`
-      exists(ConstantReadAccess iexpr |
-        imp.asExpr().getExpr() = iexpr and
-        iexpr.hasGlobalScope() and
-        name = iexpr.getName()
-      )
-      or
-      // Nodes that could be resolved to a definition
-      exists(ConstantReadAccess iexpr |
-        TResolved(name) = resolveScopeExpr(iexpr) and
-        iexpr = imp.asExpr().getExpr()
-      )
-      or
-      // Nodes like `Rails` in `Rails::View::Whatever` that couldn't be resolved to a definition.
-      // The module `Rails` could plausibly be a top-level module.
-      exists(ConstantReadAccess iexpr |
-        imp.asExpr().getExpr() = iexpr and
-        (not iexpr.hasGlobalScope() and not exists(iexpr.getScopeExpr())) and
-        name = iexpr.getName() and
-        not exists(resolveScopeExpr(iexpr))
-      )
-    }
+    class TUse = MkModule or MkUse;
 
     /**
      * Holds if `ref` is a use of a node that should have an incoming edge from `base` labeled
@@ -307,12 +297,12 @@ module API {
         // pred = `Rails` part of `Rails::Whatever`
         // lbl = `Whatever`
         // ref = `Rails::Whatever`
-        exists(ConstantAccess c, DataFlow::Node node |
-          not exists(resolveScopeExpr(c)) and
+        exists(ExprNodes::ConstantAccessCfgNode c, DataFlow::Node node |
+          not exists(resolveScopeExpr(c.getExpr())) and
           pred.flowsTo(node) and
-          node.asExpr().getExpr() = c.getScopeExpr() and
-          lbl = Label::member(c.getName()) and
-          ref.asExpr().getExpr() = c
+          node.asExpr() = c.getScopeExpr() and
+          lbl = Label::member(c.getExpr().getName()) and
+          ref.asExpr() = c
         )
         or
         // Calling a method on a node that is a use of `base`
@@ -341,9 +331,10 @@ module API {
      */
     cached
     predicate use(TApiNode nd, DataFlow::Node ref) {
-      exists(string name |
-        nd = MkModuleImport(name) and
-        topLevelModule(ref, name)
+      exists(string name, ExprNodes::ConstantAccessCfgNode access |
+        access = ref.asExpr() and
+        nd = MkModule(name) and
+        TResolved(name) = resolveScopeExpr(access.getExpr())
       )
       or
       nd = MkUse(ref)
@@ -382,18 +373,7 @@ module API {
         pred = MkRoot() and
         lbl = Label::mod(m)
       |
-        succ = MkModuleImport(m) and
-        // Only allow unqualified names to count as top-level modules.
-        not m.matches("%::%")
-      )
-      or
-      exists(ConstantReadAccess c, string name |
-        TResolved(name) = resolveScopeExpr(c) and
-        lbl = Label::member(c.getName()) and
-        succ = MkModuleImport(name)
-      |
-        use(pred, any(DataFlow::Node n | n.asExpr().getExpr() = c.getScopeExpr())) or
-        pred = MkModuleImport(name.regexpReplaceAll("::" + c.getName() + "$", ""))
+        succ = moduleImport(m)
       )
       or
       /* Every node that is a use of an API component is itself added to the API graph. */
