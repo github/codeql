@@ -15,8 +15,9 @@
 import cpp
 import semmle.code.cpp.security.Overflow
 import semmle.code.cpp.security.Security
-import semmle.code.cpp.security.TaintTracking
-import TaintedWithPath
+import semmle.code.cpp.security.FlowSources
+import semmle.code.cpp.ir.dataflow.TaintTracking
+import DataFlow::PathGraph
 import Bounded
 
 /**
@@ -71,36 +72,6 @@ private class RandS extends RandomFunction {
   override FunctionOutput getFunctionOutput() { result.isParameterDeref(0) }
 }
 
-predicate isUnboundedRandCall(FunctionCall fc) {
-  exists(Function func | func = fc.getTarget() |
-    func.hasGlobalOrStdOrBslName("rand") and
-    not bounded(fc) and
-    func.getNumberOfParameters() = 0
-  )
-}
-
-predicate isUnboundedRandCallOrParent(Expr e) {
-  isUnboundedRandCall(e)
-  or
-  isUnboundedRandCallOrParent(e.getAChild())
-}
-
-predicate isUnboundedRandValue(Expr e) {
-  isUnboundedRandCall(e)
-  or
-  exists(MacroInvocation mi |
-    e = mi.getExpr() and
-    isUnboundedRandCallOrParent(e)
-  )
-}
-
-class SecurityOptionsArith extends SecurityOptions {
-  override predicate isUserInput(Expr expr, string cause) {
-    isUnboundedRandValue(expr) and
-    cause = "rand"
-  }
-}
-
 predicate missingGuard(VariableAccess va, string effect) {
   exists(Operation op | op.getAnOperand() = va |
     missingGuardAgainstUnderflow(op, va) and effect = "underflow"
@@ -109,16 +80,35 @@ predicate missingGuard(VariableAccess va, string effect) {
   )
 }
 
-class Configuration extends TaintTrackingConfiguration {
-  override predicate isSink(Element e) { missingGuard(e, _) }
+class UncontrolledArithConfiguration extends TaintTracking::Configuration {
+  UncontrolledArithConfiguration() { this = "UncontrolledArithConfiguration" }
 
-  override predicate isBarrier(Expr e) { super.isBarrier(e) or bounded(e) }
+  override predicate isSource(DataFlow::Node source) {
+    exists(RandomFunction rand, Call call | call.getTarget() = rand |
+      rand.getFunctionOutput().isReturnValue() and
+      source.asExpr() = call
+      or
+      exists(int n |
+        source.asDefiningArgument() = call.getArgument(n) and
+        rand.getFunctionOutput().isParameterDeref(n)
+      )
+    )
+  }
+
+  override predicate isSink(DataFlow::Node sink) { missingGuard(sink.asExpr(), _) }
+
+  override predicate isSanitizer(DataFlow::Node barrier) { bounded(barrier.asExpr()) }
 }
 
-from Expr origin, VariableAccess va, string effect, PathNode sourceNode, PathNode sinkNode
+Expr getExpr(DataFlow::Node node) { result = [node.asExpr(), node.asDefiningArgument()] }
+
+from
+  UncontrolledArithConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink,
+  VariableAccess va, string effect
 where
-  taintedWithPath(origin, va, sourceNode, sinkNode) and
+  config.hasFlowPath(source, sink) and
+  sink.getNode().asExpr() = va and
   missingGuard(va, effect)
-select va, sourceNode, sinkNode,
-  "$@ flows to here and is used in arithmetic, potentially causing an " + effect + ".", origin,
-  "Uncontrolled value"
+select sink.getNode(), source, sink,
+  "$@ flows to here and is used in arithmetic, potentially causing an " + effect + ".",
+  getExpr(source.getNode()), "Uncontrolled value"

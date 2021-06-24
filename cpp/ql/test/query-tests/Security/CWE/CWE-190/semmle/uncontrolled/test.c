@@ -80,7 +80,7 @@ void randomTester() {
   {
     int r = (rand() ^ rand());
 
-    r = r - 100; // BAD [NOT DETECTED]
+    r = r - 100; // BAD
   }
 
   {
