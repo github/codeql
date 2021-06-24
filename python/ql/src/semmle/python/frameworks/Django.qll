@@ -1350,9 +1350,9 @@ private module PrivateDjango {
          * See https://docs.djangoproject.com/en/3.1/ref/request-response/#django.http.HttpResponse.write
          */
         class HttpResponseWriteCall extends HTTP::Server::HttpResponse::Range, DataFlow::CallCfgNode {
-          HTTP::Server::HttpResponse::Range instance;
+          django::http::response::HttpResponse::InstanceSource instance;
 
-          HttpResponseWriteCall() { node.getFunction() = write(instance).asCfgNode() }
+          HttpResponseWriteCall() { this.getFunction() = write(instance) }
 
           override DataFlow::Node getBody() {
             result in [this.getArg(0), this.getArgByName("content")]
