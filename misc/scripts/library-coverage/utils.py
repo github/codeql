@@ -1,14 +1,20 @@
 import subprocess
 import os
 import csv
-import sys
 import shlex
+import sys
 
 
 def subprocess_run(cmd):
     """Runs a command through subprocess.run, with a few tweaks. Raises an Exception if exit code != 0."""
     print(shlex.join(cmd))
     return subprocess.run(cmd, capture_output=True, text=True, env=os.environ.copy(), check=True)
+
+
+def subprocess_check_output(cmd):
+    """Runs a command through subprocess.check_output and returns its output"""
+    print(shlex.join(cmd))
+    return subprocess.check_output(cmd, text=True, env=os.environ.copy())
 
 
 def create_empty_database(lang, extension, database):
@@ -52,3 +58,15 @@ def read_cwes(path):
                     "label": row[2]
                 }
     return cwes
+
+
+def check_file_exists(file):
+    if not os.path.exists(file):
+        print(f"Expected file '{file}' doesn't exist.", file=sys.stderr)
+        return False
+    return True
+
+
+def download_artifact(repo, name, dir, run_id):
+    subprocess_run(["gh", "run", "download", "--repo",
+                    repo, "--name", name, "--dir", dir, str(run_id)])

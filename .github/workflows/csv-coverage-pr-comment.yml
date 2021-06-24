@@ -26,40 +26,9 @@ jobs:
       with:
         python-version: 3.8
 
-    # download artifacts from the PR job:
-
-    - name: Download artifact - MERGE
+    - name: Check coverage difference file and comment
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         RUN_ID: ${{ github.event.workflow_run.id }}
       run: |
-        gh run download --name "csv-framework-coverage-merge" --dir "out_merge" "$RUN_ID"
-
-    - name: Download artifact - BASE
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        RUN_ID: ${{ github.event.workflow_run.id }}
-      run: |
-        gh run download --name "csv-framework-coverage-base" --dir "out_base" "$RUN_ID"
-
-    - name: Download artifact - PR
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        RUN_ID: ${{ github.event.workflow_run.id }}
-      run: |
-        gh run download --name "pr" --dir "pr" "$RUN_ID"
-
-    - name: Check coverage files
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        RUN_ID: ${{ github.event.workflow_run.id }}
-      run: |
-        PR=$(cat "pr/NR")
-        python misc/scripts/library-coverage/compare-files-comment-pr.py \
-          out_base out_merge comparison.md "$GITHUB_REPOSITORY" "$PR" "$RUN_ID"
-    - name: Upload comparison results
-      uses: actions/upload-artifact@v2
-      with:
-        name: comparison
-        path: |
-          comparison.md
+        python misc/scripts/library-coverage/comment-pr.py "$GITHUB_REPOSITORY" "$RUN_ID"
