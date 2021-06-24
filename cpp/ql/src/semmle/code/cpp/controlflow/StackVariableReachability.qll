@@ -6,10 +6,6 @@
 private import semmle.code.cpp.controlflow.Guards
 private import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 
-private newtype TCondition =
-  TTrue() or
-  TLogicalCondition(LogicalGuardCondition guard, boolean testIsTrue) { testIsTrue = [false, true] }
-
 /** A `GuardCondition` which appear in a control-flow path to a sink. */
 abstract private class LogicalGuardCondition extends GuardCondition {
   LogicalGuardCondition() {
@@ -65,60 +61,30 @@ private class NotGuardCondition extends LogicalGuardCondition, NotExpr {
   }
 }
 
-/** A condition that either the trivial `True` condition, or a complex `LogicalCondition`. */
-abstract private class Condition extends TCondition {
-  abstract string toString();
+private newtype TCondition =
+  MkCondition(LogicalGuardCondition guard, boolean testIsTrue) { testIsTrue = [false, true] }
+
+private class Condition extends MkCondition {
+  boolean testIsTrue;
+  LogicalGuardCondition guard;
+
+  Condition() { this = MkCondition(guard, testIsTrue) }
 
   /**
    * Holds if this condition having the value `this.getTruthValue()` implies that `cond` has truth
    * value `cond.getTruthValue()`.
    */
-  pragma[nomagic]
-  abstract predicate impliesCondition(Condition cond);
+  string toString() { result = guard.toString() + " == " + testIsTrue.toString() }
 
   /** Gets the value of this `Condition`. */
-  abstract boolean getTruthValue();
-
-  /** Gets the negated expression represented by this `Condition`, if any. */
-  Condition negate() { none() }
-
-  /**
-   * Holds if this condition having the value `this.getTruthValue()` implies that `cond` cannot have
-   * the truth value `cond.getTruthValue()`.
-   */
-  final predicate refutesCondition(Condition cond) { this.impliesCondition(cond.negate()) }
-
-  /** Gets the `Location` of the expression that generated this `Condition`, if any. */
-  Location getLocation() { none() }
-}
-
-private class True extends Condition, TTrue {
-  True() { this = TTrue() }
-
-  override string toString() { result = "True" }
-
-  override boolean getTruthValue() { result = true }
-
-  override predicate impliesCondition(Condition cond) { cond instanceof True }
-}
-
-private class LogicalCondition extends Condition, TLogicalCondition {
-  boolean testIsTrue;
-  LogicalGuardCondition guard;
-
-  LogicalCondition() { this = TLogicalCondition(guard, testIsTrue) }
-
-  override string toString() { result = guard.toString() + " == " + testIsTrue.toString() }
-
-  override boolean getTruthValue() { result = testIsTrue }
+  boolean getTruthValue() { result = testIsTrue }
 
   LogicalGuardCondition getCondition() { result = guard }
 
-  override predicate impliesCondition(Condition cond) {
-    cond instanceof True
-    or
+  pragma[nomagic]
+  predicate impliesCondition(Condition cond) {
     exists(LogicalGuardCondition other |
-      other = cond.(LogicalCondition).getCondition() and
+      other = cond.getCondition() and
       this.getCondition()
           .impliesCondition(globalValueNumber(other).getAnExpr(),
             pragma[only_bind_into](pragma[only_bind_out](testIsTrue)),
@@ -126,23 +92,27 @@ private class LogicalCondition extends Condition, TLogicalCondition {
     )
   }
 
-  override LogicalCondition negate() {
+  /** Gets the negated expression represented by this `Condition`, if any. */
+  private Condition negate() {
     result.getCondition() = guard and
     result.getTruthValue() = testIsTrue.booleanNot()
   }
 
-  override Location getLocation() { result = guard.getLocation() }
+  /**
+   * Holds if this condition having the value `this.getTruthValue()` implies that `cond` cannot have
+   * the truth value `cond.getTruthValue()`.
+   */
+  final predicate refutesCondition(Condition cond) { this.impliesCondition(cond.negate()) }
+
+  /** Gets the `Location` of the expression that generated this `Condition`. */
+  Location getLocation() { result = guard.getLocation() }
 }
 
 /**
- * Gets a `Condition` that controls `b`.
- *
- * Note: The trivial `True` condition always controls `b`.
+ * Gets a `Condition` that controls `b`. That is, to enter `b` the condition must hold.
  */
 private Condition getADirectCondition(BasicBlock b) {
-  result instanceof True
-  or
-  result.(LogicalCondition).getCondition().controls(b, result.(LogicalCondition).getTruthValue())
+  result.getCondition().controls(b, result.getTruthValue())
 }
 
 /**
@@ -365,20 +335,14 @@ abstract class StackVariableReachability extends string {
   private Condition getASinkCondition(SemanticStackVariable v) {
     exists(BasicBlock bb |
       revBbEntryReachesLocally(bb, v, _, this) and
-      result
-          .(LogicalCondition)
-          .getCondition()
-          .controls(bb, result.(LogicalCondition).getTruthValue())
+      result.getCondition().controls(bb, result.getTruthValue())
     )
   }
 
   private Condition getABarrierCondition(SemanticStackVariable v) {
     exists(BasicBlock bb |
       isBarrier(bb.getANode(), v) and
-      result
-          .(LogicalCondition)
-          .getCondition()
-          .controls(bb, result.(LogicalCondition).getTruthValue())
+      result.getCondition().controls(bb, result.getTruthValue())
     )
   }
 
@@ -409,12 +373,11 @@ abstract class StackVariableReachability extends string {
         )
       )
       or
-      exists(BasicBlock pred, LogicalCondition cond |
+      exists(BasicBlock pred |
         pred.getASuccessor() = bb and
-        cond = getACondition(source, v, pred) and
+        result = getACondition(source, v, pred) and
         revBbSuccessorEntryReaches0(source, pred, v, _, this) and
-        result = cond and
-        exists(LogicalGuardCondition c | c = cond.getCondition() |
+        exists(LogicalGuardCondition c | c = result.getCondition() |
           not isLoopCondition(c, pred, bb) and
           not isDisjunctionCondition(c, pred, bb) and
           not isLoopVariantCondition(c, pred, bb)
@@ -451,14 +414,14 @@ abstract class StackVariableReachability extends string {
       // another path condition that refutes that the condition is true.
       succ = pred.getATrueSuccessor() and
       not exists(Condition cond | cond = getACondition(source, v, pred) |
-        cond.refutesCondition(TLogicalCondition(pred.getEnd(), true))
+        cond.refutesCondition(MkCondition(pred.getEnd(), true))
       )
       or
       // If we picked the successor edge corresponding to a condition being false, there must not be
       // another path condition that refutes that the condition is false.
       succ = pred.getAFalseSuccessor() and
       not exists(Condition cond | cond = getACondition(source, v, pred) |
-        cond.refutesCondition(TLogicalCondition(pred.getEnd(), false))
+        cond.refutesCondition(MkCondition(pred.getEnd(), false))
       )
       or
       // If it wasn't a conditional successor edge we require nothing.
