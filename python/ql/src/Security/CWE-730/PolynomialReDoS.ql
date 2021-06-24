@@ -16,10 +16,6 @@ import SuperlinearBackTracking
 import semmle.python.security.dataflow.PolynomialReDoS
 import DataFlow::PathGraph
 
-predicate testSink(PolynomialReDoSSink sinkNode, PolynomialBackTrackingTerm regexp) {
-  regexp.getRootTerm() = sinkNode.getRegExp()
-}
-
 from
   PolynomialReDoSConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink,
   PolynomialReDoSSink sinkNode, PolynomialBackTrackingTerm regexp
