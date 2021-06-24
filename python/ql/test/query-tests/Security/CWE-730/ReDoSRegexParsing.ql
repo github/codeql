@@ -1,5 +1,5 @@
 import python
-import semmle.python.RegexTreeViewBindOld
+import semmle.python.RegexTreeView
 
 predicate kind(RegExpTerm term, string kind) {
   // kind = "term"  // consider this for completeness

@@ -1,5 +1,5 @@
 import python
-import semmle.python.RegexTreeViewBindOld
+import semmle.python.RegexTreeView
 
 query predicate seqChild(RegExpSequence s, RegExpTerm r, int i) { r = s.getChild(i) }
 
