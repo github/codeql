@@ -52,7 +52,7 @@ public class Test {
 	Object source() { return null; }
 	void sink(Object o) { }
 
-	public void test() {
+	public void test() throws Exception {
 
 		{
 			// "org.springframework.util;AntPathMatcher;false;combine;;;Argument[0..1];ReturnValue;taint"
@@ -97,7 +97,7 @@ public class Test {
 			// "org.springframework.util;AutoPopulatingList;false;AutoPopulatingList;(java.util.List,org.springframework.util.AutoPopulatingList.ElementFactory);;Element of Argument[0];Element of Argument[-1];value"
 			AutoPopulatingList out = null;
 			List in = (List)newWithElement(source());
-			out = new AutoPopulatingList(in, (AutoPopulatingList<>.ElementFactory)null);
+			out = new AutoPopulatingList(in, (AutoPopulatingList.ElementFactory)null);
 			sink(getElement(out)); // $hasValueFlow
 		}
 		{
