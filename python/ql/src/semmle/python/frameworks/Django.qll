@@ -1364,6 +1364,74 @@ private module PrivateDjango {
 
           override string getMimetypeDefault() { result = instance.getMimetypeDefault() }
         }
+
+        /**
+         * A call to `set_cookie` on a HTTP Response.
+         */
+        class DjangoResponseSetCookieCall extends HTTP::Server::CookieWrite::Range,
+          DataFlow::MethodCallNode {
+          DjangoResponseSetCookieCall() {
+            this.calls(django::http::response::HttpResponse::instance(), "set_cookie")
+          }
+
+          override DataFlow::Node getHeaderArg() { none() }
+
+          override DataFlow::Node getNameArg() {
+            result in [this.getArg(0), this.getArgByName("key")]
+          }
+
+          override DataFlow::Node getValueArg() {
+            result in [this.getArg(1), this.getArgByName("value")]
+          }
+        }
+
+        /**
+         * A call to `delete_cookie` on a HTTP Response.
+         */
+        class DjangoResponseDeleteCookieCall extends HTTP::Server::CookieWrite::Range,
+          DataFlow::MethodCallNode {
+          DjangoResponseDeleteCookieCall() {
+            this.calls(django::http::response::HttpResponse::instance(), "delete_cookie")
+          }
+
+          override DataFlow::Node getHeaderArg() { none() }
+
+          override DataFlow::Node getNameArg() {
+            result in [this.getArg(0), this.getArgByName("key")]
+          }
+
+          override DataFlow::Node getValueArg() { none() }
+        }
+
+        /**
+         * A dict-like write to an item of the `cookies` attribute on a HTTP response, such as
+         * `response.cookies[name] = value`.
+         */
+        class DjangoResponseCookieSubscriptWrite extends HTTP::Server::CookieWrite::Range {
+          DataFlow::Node index;
+          DataFlow::Node value;
+
+          DjangoResponseCookieSubscriptWrite() {
+            exists(Assign assign, Subscript subscript, DataFlow::AttrRead cookieLookup |
+              // there doesn't seem to be any _good_ choice for `this`, so just picking the
+              // whole subscript...
+              this.asExpr() = subscript
+            |
+              cookieLookup.getAttributeName() = "cookies" and
+              cookieLookup.getObject() = django::http::response::HttpResponse::instance() and
+              assign.getATarget() = subscript and
+              cookieLookup.flowsTo(DataFlow::exprNode(subscript.getObject())) and
+              index.asExpr() = subscript.getIndex() and
+              value.asExpr() = assign.getValue()
+            )
+          }
+
+          override DataFlow::Node getHeaderArg() { none() }
+
+          override DataFlow::Node getNameArg() { result = index }
+
+          override DataFlow::Node getValueArg() { result = value }
+        }
       }
     }
 

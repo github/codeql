@@ -110,8 +110,10 @@ def safe__custom_json_response(request):
 
 def setting_cookie(request):
     resp = HttpResponse() # $ HttpResponse mimetype=text/html
-    resp.set_cookie("key", "value") # $ MISSING: CookieWrite CookieName="key" CookieValue="value"
-    resp.set_cookie(key="key", value="value") # $ MISSING: CookieWrite CookieName="key" CookieValue="value"
+    resp.set_cookie("key", "value") # $ CookieWrite CookieName="key" CookieValue="value"
+    resp.set_cookie(key="key", value="value") # $ CookieWrite CookieName="key" CookieValue="value"
     resp.headers["Set-Cookie"] = "key2=value2" # $ MISSING: CookieWrite CookieRawHeader="key2=value2"
-    resp.cookies["key3"] = "value3" # $ MISSING: CookieWrite CookieName="key3" CookieValue="value3"
+    resp.cookies["key3"] = "value3" # $ CookieWrite CookieName="key3" CookieValue="value3"
+    resp.delete_cookie("key4") # $ CookieWrite CookieName="key4"
+    resp.delete_cookie(key="key4") # $ CookieWrite CookieName="key4"
     return resp
