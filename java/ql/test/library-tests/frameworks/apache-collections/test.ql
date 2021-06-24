@@ -9,12 +9,8 @@ class SummaryModelTest extends SummaryModelCsv {
     row =
       [
         //"package;type;overrides;name;signature;ext;inputspec;outputspec;kind",
-        "generatedtest;Test;false;getMapValue;;;MapValue of Argument[0];ReturnValue;value",
-        "generatedtest;Test;false;getMapKey;;;MapKey of Argument[0];ReturnValue;value",
-        "generatedtest;Test;false;newWithMapValue;;;Argument[0];MapValue of ReturnValue;value",
-        "generatedtest;Test;false;newWithElement;;;Argument[0];Element of ReturnValue;value",
-        "generatedtest;Test;false;newWithArrayElement;;;Argument[0];ArrayElement of ReturnValue;value",
-        "generatedtest;Test;false;newWithMapKey;;;Argument[0];MapKey of ReturnValue;value"
+        "generatedtest;Test;false;newRBWithMapValue;;;Argument[0];MapValue of ReturnValue;value",
+        "generatedtest;Test;false;newRBWithMapKey;;;Argument[0];MapKey of ReturnValue;value"
       ]
   }
 }
@@ -29,6 +25,8 @@ class ValueFlowConf extends DataFlow::Configuration {
   override predicate isSink(DataFlow::Node n) {
     n.asExpr().(Argument).getCall().getCallee().hasName("sink")
   }
+
+  override int fieldFlowBranchLimit() { result = 1000 }
 }
 
 class TaintFlowConf extends TaintTracking::Configuration {
@@ -41,6 +39,8 @@ class TaintFlowConf extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node n) {
     n.asExpr().(Argument).getCall().getCallee().hasName("sink")
   }
+
+  override int fieldFlowBranchLimit() { result = 1000 }
 }
 
 class HasFlowTest extends InlineExpectationsTest {
