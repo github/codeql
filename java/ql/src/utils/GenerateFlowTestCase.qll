@@ -1,3 +1,8 @@
+/**
+ * Test-case generator for flow summaries. See the accompanying `GenerateFlowTestCase.py` for full
+ * documentation and usage information.
+ */
+
 import java
 import semmle.code.java.dataflow.internal.DataFlowPrivate
 import semmle.code.java.dataflow.ExternalFlow
@@ -9,6 +14,9 @@ import semmle.code.java.dataflow.internal.FlowSummaryImpl
  * tests to generate. Rows specified here should also satisfy `SummaryModelCsv.row`.
  */
 class TargetSummaryModelCsv extends Unit {
+  /**
+   * Holds if a test should be generated for `row`.
+   */
   abstract predicate row(string r);
 }
 
@@ -163,7 +171,7 @@ Type getRootSourceDeclaration(Type t) {
  * from `input` to `output`). Usually there is one of these per CSV row (`row`), but there may be more if `row` describes more than one
  * override or overload of a particular method, or if the input or output specifications cover more than one argument.
  */
-newtype TTestCase =
+private newtype TTestCase =
   MkTestCase(
     CallableToTest callable, SummaryComponentStack input, SummaryComponentStack output, string kind,
     string row
@@ -199,6 +207,9 @@ class TestCase extends TTestCase {
     baseOutput = output.drop(output.length() - 1)
   }
 
+  /**
+   * Returns a representation of this test case's parameters suitable for debugging.
+   */
   string toString() {
     result =
       row + " / " + callable + " / " + input + " / " + output + " / " + baseInput + " / " +
