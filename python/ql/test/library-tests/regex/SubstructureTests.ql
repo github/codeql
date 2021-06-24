@@ -37,3 +37,39 @@ class CharacterRangeTest extends InlineExpectationsTest {
     )
   }
 }
+
+class EscapeTest extends InlineExpectationsTest {
+  EscapeTest() { this = "EscapeTest" }
+
+  override string getARelevantTag() { result = "escapedCharacter" }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    location.getFile().getBaseName() = "escapedCharacterTest.py" and
+    exists(Regex re, int start, int end |
+      re.escapedCharacter(start, end) and
+      location = re.getLocation() and
+      element = re.toString().substring(start, end) and
+      value = start + ":" + end and
+      tag = "escapedCharacter"
+    )
+  }
+}
+
+class GroupTest extends InlineExpectationsTest {
+  GroupTest() { this = "GroupTest" }
+
+  override string getARelevantTag() { result = "group" }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    location.getFile().getBaseName() = "groupTest.py" and
+    exists(Regex re, int start, int end |
+      re.group(start, end) and
+      location = re.getLocation() and
+      element = re.toString().substring(start, end) and
+      value = start + ":" + end and
+      tag = "group"
+    )
+  }
+}
