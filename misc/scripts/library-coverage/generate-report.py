@@ -110,7 +110,9 @@ if len(sys.argv) > 2:
 # Languages for which we want to generate coverage reports.
 configs = [
     utils.LanguageConfig(
-        "java", "Java", ".java", query_prefix + "java/ql/src/meta/frameworks/Coverage.ql")
+        "java", "Java", ".java", query_prefix + "java/ql/src/meta/frameworks/Coverage.ql"),
+    utils.LanguageConfig(
+        "csharp", "C#", ".cs", query_prefix + "csharp/ql/src/meta/frameworks/Coverage.ql")
 ]
 
 # The names of input and output files. The placeholder {language} is replaced with the language name.
@@ -125,8 +127,8 @@ else:
     output_rst = settings.generated_output_rst
     output_csv = settings.generated_output_csv
 
-for config in configs:
-    lang = config.lang
+for lang in settings.languages:
+    config = [c for c in configs if c.lang == lang][0]
     db = "empty-" + lang
     ql_output = output_ql_csv.format(language=lang)
     utils.create_empty_database(lang, config.ext, db)

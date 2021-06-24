@@ -71,13 +71,16 @@ else:
 
 configs = [
     utils.LanguageConfig(
-        "java", "Java", ".java", "java/ql/src/meta/frameworks/Coverage.ql")
+        "java", "Java", ".java", "java/ql/src/meta/frameworks/Coverage.ql"),
+    utils.LanguageConfig(
+        "csharp", "C#", ".cs", "csharp/ql/src/meta/frameworks/Coverage.ql")
 ]
 
 # todo: change this when we cover multiple languages. We should compute the SHAs
 # only once and not per language
 output_prefix = "framework-coverage-timeseries-"
-for config in configs:
+for lang in settings.languages:
+    config = [c for c in configs if c.lang == lang][0]
     with open(output_prefix + config.lang + ".csv", 'w', newline='') as csvfile_total:
         with open(output_prefix + config.lang + "-packages.csv", 'w', newline='') as csvfile_packages:
             csvwriter_total = csv.writer(csvfile_total)
