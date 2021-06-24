@@ -297,12 +297,13 @@ module API {
         // pred = `Rails` part of `Rails::Whatever`
         // lbl = `Whatever`
         // ref = `Rails::Whatever`
-        exists(ExprNodes::ConstantAccessCfgNode c, DataFlow::Node node |
-          not exists(resolveScopeExpr(c.getExpr())) and
+        exists(ExprNodes::ConstantAccessCfgNode c, DataFlow::Node node, ConstantReadAccess read |
+          not exists(resolveScopeExpr(read)) and
           pred.flowsTo(node) and
           node.asExpr() = c.getScopeExpr() and
-          lbl = Label::member(c.getExpr().getName()) and
-          ref.asExpr() = c
+          lbl = Label::member(read.getName()) and
+          ref.asExpr() = c and
+          read = c.getExpr()
         )
         or
         // Calling a method on a node that is a use of `base`
@@ -331,10 +332,11 @@ module API {
      */
     cached
     predicate use(TApiNode nd, DataFlow::Node ref) {
-      exists(string name, ExprNodes::ConstantAccessCfgNode access |
+      exists(string name, ExprNodes::ConstantAccessCfgNode access, ConstantReadAccess read |
         access = ref.asExpr() and
         nd = MkModule(name) and
-        TResolved(name) = resolveScopeExpr(access.getExpr())
+        read = access.getExpr() and
+        TResolved(name) = resolveScopeExpr(read)
       )
       or
       nd = MkUse(ref)
