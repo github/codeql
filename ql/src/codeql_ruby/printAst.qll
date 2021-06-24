@@ -39,13 +39,18 @@ class PrintAstConfiguration extends string {
     )
   }
 
-  predicate shouldPrintEdge(RETV::RegExpParent parent, string edgeName, RETV::RegExpParent child) {
-    edgeName = any(int i | child = parent.getChild(i)).toString()
+  predicate shouldPrintAstEdge(AstNode parent, string edgeName, AstNode child) {
+    child = parent.getAChild(edgeName) and
+    not child = parent.getDesugared()
   }
 }
 
 private predicate shouldPrintNode(AstNode n) {
   any(PrintAstConfiguration config).shouldPrintNode(n)
+}
+
+private predicate shouldPrintAstEdge(AstNode parent, string edgeName, AstNode child) {
+  any(PrintAstConfiguration config).shouldPrintAstEdge(parent, edgeName, child)
 }
 
 newtype TPrintNode =
@@ -105,9 +110,7 @@ class PrintRegularAstNode extends PrintAstNode, TPrintRegularAstNode {
   }
 
   override PrintAstNode getChild(string edgeName) {
-    exists(AstNode child |
-      child = astNode.getAChild(edgeName) and not child = astNode.getDesugared()
-    |
+    exists(AstNode child | shouldPrintAstEdge(astNode, edgeName, child) |
       result = TPrintRegularAstNode(child)
     )
     or

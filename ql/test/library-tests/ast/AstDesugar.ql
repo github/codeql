@@ -2,6 +2,7 @@
  * @kind graph
  */
 
+import codeql_ruby.AST
 import codeql_ruby.printAst
 import codeql_ruby.ast.internal.Synthesis
 
@@ -12,8 +13,8 @@ class DesugarPrintAstConfiguration extends PrintAstConfiguration {
     exists(n.getDesugared())
   }
 
-  override predicate shouldPrintEdge(AstNode parent, string edgeName, AstNode child) {
-    super.shouldPrintEdge(parent, edgeName, child) and
+  override predicate shouldPrintAstEdge(AstNode parent, string edgeName, AstNode child) {
+    super.shouldPrintAstEdge(parent, edgeName, child) and
     desugarLevel(parent) = desugarLevel(child)
     or
     child = parent.getDesugared() and

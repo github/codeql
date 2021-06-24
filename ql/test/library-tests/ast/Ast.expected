@@ -1153,10 +1153,28 @@ literals/literals.rb:
 #  129|         getAnOperand/getRightOperand: [IntegerLiteral] 4
 #  132|   getStmt: [RegExpLiteral] //
 #  133|   getStmt: [RegExpLiteral] /foo/
+#  133|     getParsed: [RegExpSequence] foo
+#  133|       0: [RegExpConstant, RegExpNormalChar] f
+#  133|       1: [RegExpConstant, RegExpNormalChar] o
+#  133|       2: [RegExpConstant, RegExpNormalChar] o
 #  133|     getComponent: [StringTextComponent] foo
 #  134|   getStmt: [RegExpLiteral] /foo/
+#  134|     getParsed: [RegExpSequence] foo
+#  134|       0: [RegExpConstant, RegExpNormalChar] f
+#  134|       1: [RegExpConstant, RegExpNormalChar] o
+#  134|       2: [RegExpConstant, RegExpNormalChar] o
 #  134|     getComponent: [StringTextComponent] foo
 #  135|   getStmt: [RegExpLiteral] /foo+\sbar\S/
+#  135|     getParsed: [RegExpSequence] foo+\sbar\S
+#  135|       0: [RegExpConstant, RegExpNormalChar] f
+#  135|       1: [RegExpConstant, RegExpNormalChar] o
+#  135|       2: [RegExpPlus] o+
+#  135|         0: [RegExpConstant, RegExpNormalChar] o
+#  135|       3: [RegExpCharacterClassEscape] \s
+#  135|       4: [RegExpConstant, RegExpNormalChar] b
+#  135|       5: [RegExpConstant, RegExpNormalChar] a
+#  135|       6: [RegExpConstant, RegExpNormalChar] r
+#  135|       7: [RegExpCharacterClassEscape] \S
 #  135|     getComponent: [StringTextComponent] foo+
 #  135|     getComponent: [StringEscapeSequenceComponent] \s
 #  135|     getComponent: [StringTextComponent] bar
@@ -1169,13 +1187,35 @@ literals/literals.rb:
 #  136|         getAnOperand/getRightOperand: [IntegerLiteral] 1
 #  136|     getComponent: [StringTextComponent] bar
 #  137|   getStmt: [RegExpLiteral] /foo/
+#  137|     getParsed: [RegExpSequence] foo
+#  137|       0: [RegExpConstant, RegExpNormalChar] f
+#  137|       1: [RegExpConstant, RegExpNormalChar] o
+#  137|       2: [RegExpConstant, RegExpNormalChar] o
 #  137|     getComponent: [StringTextComponent] foo
 #  138|   getStmt: [RegExpLiteral] //
 #  139|   getStmt: [RegExpLiteral] /foo/
+#  139|     getParsed: [RegExpSequence] foo
+#  139|       0: [RegExpConstant, RegExpNormalChar] f
+#  139|       1: [RegExpConstant, RegExpNormalChar] o
+#  139|       2: [RegExpConstant, RegExpNormalChar] o
 #  139|     getComponent: [StringTextComponent] foo
 #  140|   getStmt: [RegExpLiteral] /foo/
+#  140|     getParsed: [RegExpSequence] foo
+#  140|       0: [RegExpConstant, RegExpNormalChar] f
+#  140|       1: [RegExpConstant, RegExpNormalChar] o
+#  140|       2: [RegExpConstant, RegExpNormalChar] o
 #  140|     getComponent: [StringTextComponent] foo
 #  141|   getStmt: [RegExpLiteral] /foo+\sbar\S/
+#  141|     getParsed: [RegExpSequence] foo+\sbar\S
+#  141|       0: [RegExpConstant, RegExpNormalChar] f
+#  141|       1: [RegExpConstant, RegExpNormalChar] o
+#  141|       2: [RegExpPlus] o+
+#  141|         0: [RegExpConstant, RegExpNormalChar] o
+#  141|       3: [RegExpCharacterClassEscape] \s
+#  141|       4: [RegExpConstant, RegExpNormalChar] b
+#  141|       5: [RegExpConstant, RegExpNormalChar] a
+#  141|       6: [RegExpConstant, RegExpNormalChar] r
+#  141|       7: [RegExpCharacterClassEscape] \S
 #  141|     getComponent: [StringTextComponent] foo+
 #  141|     getComponent: [StringEscapeSequenceComponent] \s
 #  141|     getComponent: [StringTextComponent] bar
@@ -1188,6 +1228,10 @@ literals/literals.rb:
 #  142|         getAnOperand/getRightOperand: [IntegerLiteral] 1
 #  142|     getComponent: [StringTextComponent] bar
 #  143|   getStmt: [RegExpLiteral] /foo/
+#  143|     getParsed: [RegExpSequence] foo
+#  143|       0: [RegExpConstant, RegExpNormalChar] f
+#  143|       1: [RegExpConstant, RegExpNormalChar] o
+#  143|       2: [RegExpConstant, RegExpNormalChar] o
 #  143|     getComponent: [StringTextComponent] foo
 #  146|   getStmt: [StringLiteral] "abcdefghijklmnopqrstuvwxyzabcdef"
 #  146|     getComponent: [StringTextComponent] abcdefghijklmnopqrstuvwxyzabcdef
@@ -1707,10 +1751,22 @@ operations/operations.rb:
 #   65|   getStmt: [RegExpMatchExpr] ... =~ ...
 #   65|     getAnOperand/getLeftOperand: [LocalVariableAccess] name
 #   65|     getAnOperand/getRightOperand: [RegExpLiteral] /foo.*/
+#   65|       getParsed: [RegExpSequence] foo.*
+#   65|         0: [RegExpConstant, RegExpNormalChar] f
+#   65|         1: [RegExpConstant, RegExpNormalChar] o
+#   65|         2: [RegExpConstant, RegExpNormalChar] o
+#   65|         3: [RegExpStar] .*
+#   65|           0: [RegExpDot] .
 #   65|       getComponent: [StringTextComponent] foo.*
 #   66|   getStmt: [NoRegExpMatchExpr] ... !~ ...
 #   66|     getAnOperand/getLeftOperand: [LocalVariableAccess] handle
 #   66|     getAnOperand/getRightOperand: [RegExpLiteral] /.*bar/
+#   66|       getParsed: [RegExpSequence] .*bar
+#   66|         0: [RegExpStar] .*
+#   66|           0: [RegExpDot] .
+#   66|         1: [RegExpConstant, RegExpNormalChar] b
+#   66|         2: [RegExpConstant, RegExpNormalChar] a
+#   66|         3: [RegExpConstant, RegExpNormalChar] r
 #   66|       getComponent: [StringTextComponent] .*bar
 #   69|   getStmt: [AssignAddExpr] ... += ...
 #   69|     getAnOperand/getLeftOperand: [LocalVariableAccess] x
