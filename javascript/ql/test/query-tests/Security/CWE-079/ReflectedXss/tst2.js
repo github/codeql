@@ -50,3 +50,16 @@ app.get('/baz', function(req, res) {
 
   res.send(unsafe); // NOT OK
 });
+
+const fclone = require('fclone');
+
+app.get('/baz', function(req, res) {
+  let { p } = req.params;
+
+  var obj = {};
+  obj.p = p;
+  var other = fclone(obj);
+
+  res.send(p); // NOT OK
+  res.send(other.p); // NOT OK
+});
