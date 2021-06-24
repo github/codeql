@@ -164,6 +164,7 @@ Python built-in support
    fabric, Utility library
    idna, Utility library
    invoke, Utility library
+   jmespath, Utility library
    multidict, Utility library
    yarl, Utility library
    aioch, Database
