@@ -85,6 +85,7 @@ private import internal.FlowSummaryImplSpecific
  */
 private module Frameworks {
   private import semmle.code.csharp.security.dataflow.flowsources.Local
+  private import semmle.code.csharp.security.dataflow.flowsinks.Html
 }
 
 /**
