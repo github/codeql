@@ -13,7 +13,7 @@
  */
 
 import python
-import semmle.python.RegexTreeViewBindOld
+import semmle.python.RegexTreeView
 
 /**
  * A configuration for which parts of a regular expression should be considered relevant for
