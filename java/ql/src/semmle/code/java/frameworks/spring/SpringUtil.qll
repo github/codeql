@@ -11,6 +11,14 @@ module SpringUtil {
   private class FlowSummaries extends SummaryModelCsv {
     override predicate row(string row) {
       row = [
+        "org.springframework.util;AntPathMatcher;false;combine;;;Argument[0..1];ReturnValue;taint",
+        "org.springframework.util;AntPathMatcher;false;doMatch;;;Argument[0];MapValue of Argument[2];taint",
+        "org.springframework.util;AntPathMatcher;false;extractPathWithinPattern;;;Argument[1];ReturnValue;taint",
+        "org.springframework.util;AntPathMatcher;false;extractUriTemplateVariables;;;Argument[1];MapValue of ReturnValue;taint",
+        // Return values here are arrays, but there's no value in adding `ArrayValue of` for taint, right?
+        "org.springframework.util;AntPathMatcher;false;tokenizePath;;;Argument[0];ReturnValue;taint",
+        "org.springframework.util;AntPathMatcher;false;tokenizePattern;;;Argument[0];ReturnValue;taint",
+        "org.springframework.util.AntPathMatcher;AntPathStringMatcher;false;matchStrings;;;Argument[0];MapValue of Argument[1];taint",
         "org.springframework.util;AutoPopulatingList;false;AutoPopulatingList;(java.util.List,org.springframework.util.AutoPopulatingList.ElementFactory);;Element of Argument[0];Element of Argument[-1];value",
         "org.springframework.util;AutoPopulatingList;false;AutoPopulatingList;(java.util.List,java.lang.Class);;Element of Argument[0];Element of Argument[-1];value",
         "org.springframework.util;Base64Utils;false;decode;;;Argument[0];ReturnValue;taint",
