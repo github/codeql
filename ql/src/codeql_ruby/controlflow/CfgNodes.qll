@@ -118,11 +118,6 @@ class StringComponentCfgNode extends AstCfgNode {
   StringComponentCfgNode() { this.getNode() instanceof StringComponent }
 }
 
-/** A control-flow node that wraps a `StringInterpolationComponent` AST expression. */
-class StringInterpolationComponentCfgNode extends StringComponentCfgNode {
-  StringInterpolationComponentCfgNode() { this.getNode() instanceof StringInterpolationComponent }
-}
-
 private Expr desugar(Expr n) {
   result = n.getDesugared()
   or
@@ -339,6 +334,11 @@ module ExprNodes {
     override VariableReadAccess e;
 
     final override VariableReadAccess getExpr() { result = ExprCfgNode.super.getExpr() }
+  }
+
+  /** A control-flow node that wraps a `StringInterpolationComponent` AST expression. */
+  class StringInterpolationComponentCfgNode extends ExprNodes::StmtSequenceCfgNode {
+    StringInterpolationComponentCfgNode() { this.getNode() instanceof StringInterpolationComponent }
   }
 
   private class StringlikeLiteralChildMapping extends ExprChildMapping, StringlikeLiteral {
