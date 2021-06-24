@@ -75,9 +75,9 @@ class RegExp extends AST::RegExpLiteral {
       not this.charSetStart(_, start)
     |
       end = innerEnd + 1 and
-      innerEnd > innerStart and
       innerEnd =
         min(int e |
+          e > innerStart and
           this.nonEscapedCharAt(e) = "]" and
           not exists(int x, int y |
             this.posixStyleNamedCharacterProperty(x, y, _) and e >= x and e < y
