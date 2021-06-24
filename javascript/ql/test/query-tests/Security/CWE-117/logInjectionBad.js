@@ -57,3 +57,11 @@ const server2 = http.createServer((req, res) => {
     console.log(chalk.underline.bgBlue(username)); // NOT OK
     console.log(stripAnsi(chalk.underline.bgBlue(username))); // NOT OK
 });
+
+var prettyjson = require('prettyjson');
+const server3 = http.createServer((req, res) => {
+    let q = url.parse(req.url, true);
+    let username = q.query.username;
+
+    console.log(prettyjson.render(username)); // NOT OK
+});
