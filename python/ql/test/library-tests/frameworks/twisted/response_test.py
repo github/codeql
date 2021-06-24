@@ -51,9 +51,10 @@ class CookieWriting(Resource):
     """Examples of providing values in response that is not in the body
     """
     def render_GET(self, request: Request): # $ requestHandler
-        request.addCookie("key", "value") # $ MISSING: CookieWrite CookieName="key" CookieValue="value"
-        request.addCookie(k="key", v="value") # $ MISSING: CookieWrite CookieName="key" CookieValue="value"
-        request.cookies.append("key2=value") # $ MISSING: CookieWrite CookieRawHeader="key2=value2"
+        request.addCookie("key", "value") # $ CookieWrite CookieName="key" CookieValue="value"
+        request.addCookie(k="key", v="value") # $ CookieWrite CookieName="key" CookieValue="value"
+        val = "key2=value"
+        request.cookies.append(val) # $ CookieWrite CookieRawHeader=val
 
         request.responseHeaders.addRawHeader("key", "value")
         request.setHeader("Set-Cookie", "key3=value3") # $ MISSING: CookieWrite CookieRawHeader="key3=value3"
