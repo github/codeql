@@ -32,6 +32,6 @@ predicate defaultAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nod
   // element reference from nodeFrom
   exists(CfgNodes::ExprNodes::ElementReferenceCfgNode ref |
     ref = nodeTo.asExpr() and
-    ref.getExpr().getReceiver() = nodeFrom.asExpr().getExpr()
+    ref.getReceiver() = nodeFrom.asExpr()
   )
 }

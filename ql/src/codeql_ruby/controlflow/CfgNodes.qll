@@ -362,9 +362,9 @@ module ExprNodes {
   }
 
   /** A control-flow node that wraps an `ElementReference` AST expression. */
-  class ElementReferenceCfgNode extends ExprCfgNode {
-    override ElementReference e;
+  class ElementReferenceCfgNode extends MethodCallCfgNode {
+    ElementReferenceCfgNode() { e instanceof ElementReference }
 
-    final override ElementReference getExpr() { result = ExprCfgNode.super.getExpr() }
+    final override ElementReference getExpr() { result = super.getExpr() }
   }
 }
