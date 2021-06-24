@@ -34,3 +34,22 @@ class JsonStringifyCall extends DataFlow::CallNode {
    */
   DataFlow::SourceNode getOutput() { result = this }
 }
+
+/**
+ * A taint step through the [`json2csv`](https://www.npmjs.com/package/json2csv) library.
+ */
+class JSON2CSVTaintStep extends TaintTracking::SharedTaintStep {
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(API::CallNode call |
+      call =
+        API::moduleImport("json2csv")
+            .getMember("Parser")
+            .getInstance()
+            .getMember("parse")
+            .getACall()
+    |
+      pred = call.getArgument(0) and
+      succ = call
+    )
+  }
+}

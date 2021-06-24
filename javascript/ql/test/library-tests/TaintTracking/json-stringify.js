@@ -16,4 +16,7 @@ function foo() {
   sink(require("util").inspect(source)); // NOT OK
   sink(require("pretty-format")(source)); // NOT OK
   sink(require("object-inspect")(source)); // NOT OK
+  
+  const json2csv = require('json2csv');
+  sink(new json2csv.Parser(opts).parse(source)); // NOT OK
 }
