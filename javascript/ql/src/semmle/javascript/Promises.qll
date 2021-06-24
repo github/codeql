@@ -59,6 +59,43 @@ private predicate hasHandler(DataFlow::InvokeNode promise, string m, int i) {
 }
 
 /**
+ * Gets a reference to the `Promise` object.
+ * Either from the standard library, a polyfill import, or a polyfill that defines the global `Promise` variable.
+ */
+private DataFlow::SourceNode getAPromiseObject() {
+  // Standard library, or polyfills like [es6-shim](https://npmjs.org/package/es6-shim).
+  result = DataFlow::globalVarRef("Promise")
+  or
+  // polyfills from the [`promise`](https://npmjs.org/package/promise) library.
+  result =
+    DataFlow::moduleImport([
+        "promise", "promise/domains", "promise/setimmediate", "promise/lib/es6-extensions",
+        "promise/domains/es6-extensions", "promise/setimmediate/es6-extensions"
+      ])
+  or
+  // polyfill from the [`promise-polyfill`](https://npmjs.org/package/promise-polyfill) library.
+  result = DataFlow::moduleMember(["promise-polyfill", "promise-polyfill/src/polyfill"], "default")
+  or
+  result = DataFlow::moduleImport(["promise-polyfill", "promise-polyfill/src/polyfill"])
+  or
+  result = DataFlow::moduleMember(["es6-promise", "rsvp"], "Promise")
+  or
+  result = DataFlow::moduleImport("native-promise-only")
+  or
+  result = DataFlow::moduleImport("when")
+  or
+  result = DataFlow::moduleImport("pinkie-promise")
+  or
+  result = DataFlow::moduleImport("pinkie")
+  or
+  result = DataFlow::moduleMember("synchronous-promise", "SynchronousPromise")
+  or
+  result = DataFlow::moduleImport("any-promise")
+  or
+  result = DataFlow::moduleImport("lie")
+}
+
+/**
  * A call that looks like a Promise.
  *
  * For example, this could be the call `promise(f).then(function(v){...})`
@@ -72,10 +109,11 @@ class PromiseCandidate extends DataFlow::InvokeNode {
 }
 
 /**
- * A promise object created by the standard ECMAScript 2015 `Promise` constructor.
+ * A promise object created by the standard ECMAScript 2015 `Promise` constructor,
+ * or a polyfill implementing a superset of the ECMAScript 2015 `Promise` API.
  */
-private class ES2015PromiseDefinition extends PromiseDefinition, DataFlow::NewNode {
-  ES2015PromiseDefinition() { this = DataFlow::globalVarRef("Promise").getAnInstantiation() }
+private class ES2015PromiseDefinition extends PromiseDefinition, DataFlow::InvokeNode {
+  ES2015PromiseDefinition() { this = getAPromiseObject().getAnInvocation() }
 
   override DataFlow::FunctionNode getExecutor() { result = getCallback(0) }
 }
@@ -109,9 +147,7 @@ abstract class PromiseAllCreation extends PromiseCreationCall {
  * A resolved promise created by the standard ECMAScript 2015 `Promise.resolve` function.
  */
 class ResolvedES2015PromiseDefinition extends ResolvedPromiseDefinition {
-  ResolvedES2015PromiseDefinition() {
-    this = DataFlow::globalVarRef("Promise").getAMemberCall("resolve")
-  }
+  ResolvedES2015PromiseDefinition() { this = getAPromiseObject().getAMemberCall("resolve") }
 
   override DataFlow::Node getValue() { result = getArgument(0) }
 }
@@ -121,9 +157,11 @@ class ResolvedES2015PromiseDefinition extends ResolvedPromiseDefinition {
  */
 class AggregateES2015PromiseDefinition extends PromiseCreationCall {
   AggregateES2015PromiseDefinition() {
-    exists(string m | m = "all" or m = "race" or m = "any" |
-      this = DataFlow::globalVarRef("Promise").getAMemberCall(m)
+    exists(string m | m = "all" or m = "race" or m = "any" or m = "allSettled" |
+      this = getAPromiseObject().getAMemberCall(m)
     )
+    or
+    this = DataFlow::moduleImport("promise.allsettled").getACall()
   }
 
   override DataFlow::Node getValue() {
@@ -562,14 +600,14 @@ module Bluebird {
 }
 
 /**
- * Provides classes for working with the `q` library (https://github.com/kriskowal/q).
+ * Provides classes for working with the `q` library (https://github.com/kriskowal/q) and the compatible `kew` library (https://github.com/Medium/kew).
  */
 module Q {
   /**
    * A promise object created by the q `Promise` constructor.
    */
   private class QPromiseDefinition extends PromiseDefinition, DataFlow::CallNode {
-    QPromiseDefinition() { this = DataFlow::moduleMember("q", "Promise").getACall() }
+    QPromiseDefinition() { this = DataFlow::moduleMember(["q", "kew"], "Promise").getACall() }
 
     override DataFlow::FunctionNode getExecutor() { result = getCallback(0) }
   }
