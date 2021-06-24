@@ -646,5 +646,19 @@ namespace Semmle.Extraction.CSharp
         /// </summary>
         public static IEnumerable<AnnotatedTypeSymbol> GetAnnotatedTypeArguments(this INamedTypeSymbol symbol) =>
             symbol.TypeArguments.Zip(symbol.TypeArgumentNullableAnnotations, (t, a) => new AnnotatedTypeSymbol(t, a));
+
+        /// <summary>
+        /// Gets the span of this symbol. If the symbol is not defined in source code, it
+        /// gets the span `(0, 0)`.
+        /// </summary>
+        public static (int Start, int End) GetSpan(this ISymbol symbol, Context cx)
+        {
+            var syntaxes = symbol.DeclaringSyntaxReferences.Where(s => s.SyntaxTree == cx.SourceTree).ToArray();
+            if (syntaxes.Length is 0)
+                return (0, 0);
+            var start = syntaxes.Aggregate(int.MaxValue, (x, s) => Math.Min(x, s.Span.Start));
+            var end = syntaxes.Aggregate(int.MinValue, (x, s) => Math.Max(x, s.Span.End));
+            return (start, end);
+        }
     }
 }

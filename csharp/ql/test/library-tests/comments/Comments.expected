@@ -84,6 +84,11 @@ singlelineComment
 | trivia.cs:55:27:55:75 | // ... | trivia.cs:55:27:55:75 | // ... | 1 | Sets the nullable warning context to disabled. | // Sets the nullable warning context to disabled. |
 | trivia.cs:56:26:56:73 | // ... | trivia.cs:56:26:56:73 | // ... | 1 | Sets the nullable warning context to enabled. | // Sets the nullable warning context to enabled. |
 | trivia.cs:57:27:57:87 | // ... | trivia.cs:57:27:57:87 | // ... | 1 | Restores the nullable warning context to project settings. | // Restores the nullable warning context to project settings. |
+| trivia.cs:63:22:63:37 | // ... | trivia.cs:63:22:63:37 | // ... | 1 | no TRAP stack | // no TRAP stack |
+| trivia.cs:83:22:83:37 | // ... | trivia.cs:83:22:83:37 | // ... | 1 | no TRAP stack | // no TRAP stack |
+| trivia.cs:92:19:92:34 | // ... | trivia.cs:92:19:92:34 | // ... | 1 | no TRAP stack | // no TRAP stack |
+| trivia.cs:100:19:100:34 | // ... | trivia.cs:100:19:100:34 | // ... | 1 | no TRAP stack | // no TRAP stack |
+| trivia.cs:104:14:104:29 | // ... | trivia.cs:104:14:104:29 | // ... | 1 | no TRAP stack | // no TRAP stack |
 multilineComment
 | comments1.cs:11:1:11:25 | /* ... */ | comments1.cs:11:1:11:25 | /* ... */ | 1 | A multiline comment | /* A multiline comment */ |
 | comments1.cs:25:1:25:43 | /* ... */ | comments1.cs:25:1:25:15 | /* ... */ | 2 | This is a | /* This is a */ |

@@ -184,3 +184,25 @@ trivia.cs:
 #   88|   6: [Method] M2
 #   88|     -1: [TypeMention] Void
 #   89|     4: [BlockStmt] {...}
+#   92|   7: [Field] F1
+#   92|     -1: [TypeMention] int
+#   92|     1: [AssignExpr] ... = ...
+#   92|       0: [FieldAccess] access to field F1
+#   94|       1: [IntLiteral] 10
+#   98|   8: [Field] F2
+#   98|     -1: [TypeMention] int
+#   98|     1: [AssignExpr] ... = ...
+#   98|       0: [FieldAccess] access to field F2
+#   98|       1: [IntLiteral] 0
+#  100|   9: [Property] P1
+#  100|     -1: [TypeMention] int
+#  102|     3: [Getter] get_P1
+#  104|     4: [Setter] set_P1
+#-----|       2: (Parameters)
+#  104|         0: [Parameter] value
+#  108|   10: [Property] P2
+#  108|     -1: [TypeMention] int
+#  108|     3: [Getter] get_P2
+#  108|     4: [Setter] set_P2
+#-----|       2: (Parameters)
+#  108|         0: [Parameter] value

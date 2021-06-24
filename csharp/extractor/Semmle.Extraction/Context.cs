@@ -290,6 +290,12 @@ namespace Semmle.Extraction
                     break;
                 case PushesLabel push:
                     duplicationGuard = UseTrapStack(push);
+                    if (!duplicationGuard)
+                    {
+                        var msg = new Message("Disabling TRAP stack", entity.Label.ToString(), CreateLocation(entity.ReportingLocation), severity: Severity.Debug);
+                        new ExtractionMessage(this, msg);
+                        Extractor.Message(msg);
+                    }
                     deferred = duplicationGuard && tagStack.Any();
                     break;
                 default:

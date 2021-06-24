@@ -60,7 +60,7 @@ class Tr3
 
 class Tr4
 {
-    static void M1()
+    static void M1() // no TRAP stack
     {
 #if DEBUG
 #error DEBUG is defined
@@ -80,7 +80,7 @@ class Tr4
 class Tr5
 {
 #if DEBUG2
-    static void M1()
+    static void M1() // no TRAP stack
     {
     }
 #endif
@@ -88,4 +88,22 @@ class Tr5
     static void M2()
     {
     }
+
+    public int F1 // no TRAP stack
+#if DEBUG2
+= 10
+#endif
+;
+
+    public int F2 = 0;
+
+    public int P1 // no TRAP stack
+    {
+        get;
+#if DEBUG2
+        set; // no TRAP stack
+#endif
+    }
+
+    public int P2 { get; set; }
 }

@@ -25,18 +25,6 @@ namespace Semmle.Extraction.CSharp.Entities
         public override bool NeedsPopulation =>
             (base.NeedsPopulation && !Symbol.IsImplicitlyDeclared) || Symbol.ContainingType.IsTupleType;
 
-        private IEnumerable<VariableDeclaratorSyntax> GetVariableDeclarators() =>
-            Symbol.DeclaringSyntaxReferences
-                .Select(n => n.GetSyntax())
-                .OfType<VariableDeclaratorSyntax>()
-                .Where(n => n.Initializer is not null);
-
-        private IEnumerable<EnumMemberDeclarationSyntax> GetEnumDeclarations() =>
-            Symbol.DeclaringSyntaxReferences
-                .Select(n => n.GetSyntax())
-                .OfType<EnumMemberDeclarationSyntax>()
-                .Where(n => n.EqualsValue is not null);
-
         public override void Populate(TextWriter trapFile)
         {
             PopulateMetadataHandle(trapFile);
@@ -71,7 +59,10 @@ namespace Semmle.Extraction.CSharp.Entities
             Context.BindComments(this, Location.Symbol);
 
             var child = 0;
-            foreach (var initializer in GetVariableDeclarators())
+            foreach (var initializer in Symbol.DeclaringSyntaxReferences
+                .Select(n => n.GetSyntax())
+                .OfType<VariableDeclaratorSyntax>()
+                .Where(n => n.Initializer is not null))
             {
                 Context.PopulateLater(() =>
                 {
@@ -86,7 +77,10 @@ namespace Semmle.Extraction.CSharp.Entities
                 });
             }
 
-            foreach (var initializer in GetEnumDeclarations())
+            foreach (var initializer in Symbol.DeclaringSyntaxReferences
+                .Select(n => n.GetSyntax())
+                .OfType<EnumMemberDeclarationSyntax>()
+                .Where(n => n.EqualsValue is not null))
             {
                 // Mark fields that have explicit initializers.
                 var constValue = Symbol.HasConstantValue
@@ -147,17 +141,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             get
             {
-                var start = ReportingLocation?.SourceSpan.Start ?? 0;
-                var end = 0;
-                foreach (var initializer in GetVariableDeclarators())
-                {
-                    end = Math.Max(end, initializer.FullSpan.End);
-                }
-
-                foreach (var initializer in GetEnumDeclarations())
-                {
-                    end = Math.Max(end, initializer.FullSpan.End);
-                }
+                var (start, end) = Symbol.GetSpan(Context);
                 return new PushesLabel(start, end);
             }
         }

@@ -360,8 +360,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             get
             {
-                var start = ReportingLocation?.SourceSpan.Start ?? 0;
-                var end = Block is BlockSyntax block ? block.FullSpan.End : ExpressionBody is ExpressionSyntax body ? body.FullSpan.End : 0;
+                var (start, end) = BodyDeclaringSymbol.GetSpan(Context);
                 return new PushesLabel(start, end);
             }
         }
