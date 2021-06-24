@@ -22,4 +22,7 @@ function foo() {
 
   const json5 = require('json5');
   sink(json5.stringify(json5.parse(source))); // NOT OK
+
+  const flatted = require('flatted');
+  sink(flatted.stringify(flatted.parse(source))); // NOT OK
 }
