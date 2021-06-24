@@ -190,8 +190,8 @@ abstract private class ConfigurationRecursionPrevention extends Configuration {
 
 private newtype TNodeEx =
   TNodeNormal(Node n) or
-  TNodeImplicitRead(Node n, boolean b) {
-    any(Configuration c).allowImplicitRead(n, _) and b = [false, true]
+  TNodeImplicitRead(Node n, boolean hasRead) {
+    any(Configuration c).allowImplicitRead(n, _) and hasRead = [false, true]
   }
 
 private class NodeEx extends TNodeEx {
@@ -203,12 +203,27 @@ private class NodeEx extends TNodeEx {
 
   Node asNode() { this = TNodeNormal(result) }
 
-  predicate isImplicitReadNode(Node n, boolean b) { this = TNodeImplicitRead(n, b) }
+  predicate isImplicitReadNode(Node n, boolean hasRead) { this = TNodeImplicitRead(n, hasRead) }
 
   Node projectToNode() { this = TNodeNormal(result) or this = TNodeImplicitRead(result, _) }
 
   pragma[nomagic]
-  DataFlowCallable getEnclosingCallable() { nodeEnclosingCallable(this.projectToNode(), result) }
+  private DataFlowCallable getEnclosingCallable0() {
+    nodeEnclosingCallable(this.projectToNode(), result)
+  }
+
+  pragma[inline]
+  DataFlowCallable getEnclosingCallable() {
+    pragma[only_bind_out](this).getEnclosingCallable0() = pragma[only_bind_into](result)
+  }
+
+  pragma[nomagic]
+  private DataFlowType getDataFlowType0() { nodeDataFlowType(this.asNode(), result) }
+
+  pragma[inline]
+  DataFlowType getDataFlowType() {
+    pragma[only_bind_out](this).getDataFlowType0() = pragma[only_bind_into](result)
+  }
 
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
@@ -237,19 +252,6 @@ private class RetNodeEx extends NodeEx {
   ReturnPosition getReturnPosition() { result = getReturnPosition(this.asNode()) }
 
   ReturnKindExt getKind() { result = this.asNode().(ReturnNodeExt).getKind() }
-}
-
-pragma[inline]
-private DataFlowCallable getEnclosingCallable(NodeEx n) {
-  pragma[only_bind_out](n).getEnclosingCallable() = pragma[only_bind_into](result)
-}
-
-pragma[nomagic]
-private DataFlowType getDataFlowType0(NodeEx n) { nodeDataFlowType(n.asNode(), result) }
-
-pragma[inline]
-private DataFlowType getDataFlowType(NodeEx n) {
-  getDataFlowType0(pragma[only_bind_out](n)) = pragma[only_bind_into](result)
 }
 
 private predicate inBarrier(NodeEx node, Configuration config) {
@@ -727,7 +729,7 @@ private module Stage1 {
   ) {
     exists(RetNodeEx ret |
       throughFlowNodeCand(ret, config) and
-      callable = getEnclosingCallable(ret) and
+      callable = ret.getEnclosingCallable() and
       kind = ret.getKind()
     )
   }
@@ -740,7 +742,7 @@ private module Stage1 {
     exists(ReturnKindExt kind |
       throughFlowNodeCand(p, config) and
       returnFlowCallableNodeCand(c, kind, config) and
-      getEnclosingCallable(p) = c and
+      p.getEnclosingCallable() = c and
       exists(ap) and
       // we don't expect a parameter to return stored in itself
       not kind.(ParamUpdateReturnKind).getPosition() = p.getPosition()
@@ -984,7 +986,7 @@ private module Stage2 {
   ) {
     flowOutOfCall(call, ret, out, allowsFieldFlow, pragma[only_bind_into](config)) and
     PrevStage::callMayFlowThroughRev(call, pragma[only_bind_into](config)) and
-    PrevStage::parameterMayFlowThrough(_, getEnclosingCallable(ret), _,
+    PrevStage::parameterMayFlowThrough(_, ret.getEnclosingCallable(), _,
       pragma[only_bind_into](config))
   }
 
@@ -1103,7 +1105,7 @@ private module Stage2 {
     exists(ArgNodeEx arg, boolean allowsFieldFlow |
       fwdFlow(arg, outercc, argAp, ap, config) and
       flowIntoCall(call, arg, p, allowsFieldFlow, config) and
-      innercc = getCallContextCall(call, getEnclosingCallable(p), outercc)
+      innercc = getCallContextCall(call, p.getEnclosingCallable(), outercc)
     |
       ap instanceof ApNil or allowsFieldFlow = true
     )
@@ -1119,7 +1121,7 @@ private module Stage2 {
     |
       fwdFlow(ret, innercc, argAp, ap, config) and
       flowOutOfCall(call, ret, out, allowsFieldFlow, config) and
-      inner = getEnclosingCallable(ret) and
+      inner = ret.getEnclosingCallable() and
       checkCallContextReturn(innercc, inner, call) and
       ccOut = getCallContextReturn(inner, call)
     |
@@ -1384,13 +1386,13 @@ private module Stage2 {
     ParamNodeEx p, Ap ap, Ap ap0, DataFlowCallable c, Configuration config
   ) {
     revFlow(p, true, apSome(ap0), ap, config) and
-    c = getEnclosingCallable(p)
+    c = p.getEnclosingCallable()
   }
 
   predicate parameterMayFlowThrough(ParamNodeEx p, DataFlowCallable c, Ap ap, Configuration config) {
     exists(RetNodeEx ret, Ap ap0, ReturnKindExt kind, int pos |
       parameterFlow(p, ap, ap0, c, config) and
-      c = getEnclosingCallable(ret) and
+      c = ret.getEnclosingCallable() and
       revFlow(ret, true, apSome(_), ap0, config) and
       fwdFlow(ret, any(CcCall ccc), apSome(ap), ap0, config) and
       kind = ret.getKind() and
@@ -1520,14 +1522,14 @@ private module LocalFlowBigStep {
       (
         localFlowStepNodeCand1(node1, node2, config) and
         preservesValue = true and
-        t = getDataFlowType(node1) // irrelevant dummy value
+        t = node1.getDataFlowType() // irrelevant dummy value
         or
         additionalLocalFlowStepNodeCand2(node1, node2, config) and
         preservesValue = false and
-        t = getDataFlowType(node2)
+        t = node2.getDataFlowType()
       ) and
       node1 != node2 and
-      cc.relevantFor(getEnclosingCallable(node1)) and
+      cc.relevantFor(node1.getEnclosingCallable()) and
       not isUnreachableInCallCached(node1.asNode(), cc.(LocalCallContextSpecificCall).getCall()) and
       Stage2::revFlow(node2, pragma[only_bind_into](config))
       or
@@ -1543,7 +1545,7 @@ private module LocalFlowBigStep {
         additionalLocalFlowStepNodeCand2(mid, node2, config) and
         not mid instanceof FlowCheckNode and
         preservesValue = false and
-        t = getDataFlowType(node2) and
+        t = node2.getDataFlowType() and
         Stage2::revFlow(node2, pragma[only_bind_into](config))
       )
     )
@@ -1577,7 +1579,7 @@ private module Stage3 {
   private ApApprox getApprox(Ap ap) { result = ap.toBoolNonEmpty() }
 
   private ApNil getApNil(NodeEx node) {
-    PrevStage::revFlow(node, _) and result = TFrontNil(getDataFlowType(node))
+    PrevStage::revFlow(node, _) and result = TFrontNil(node.getDataFlowType())
   }
 
   bindingset[tc, tail]
@@ -1642,7 +1644,7 @@ private module Stage3 {
   bindingset[node, ap]
   private predicate filter(NodeEx node, Ap ap) {
     not clear(node, ap) and
-    if castingNodeEx(node) then compatibleTypes(getDataFlowType(node), ap.getType()) else any()
+    if castingNodeEx(node) then compatibleTypes(node.getDataFlowType(), ap.getType()) else any()
   }
 
   bindingset[ap, contentType]
@@ -1670,7 +1672,7 @@ private module Stage3 {
   ) {
     flowOutOfCall(call, ret, out, allowsFieldFlow, pragma[only_bind_into](config)) and
     PrevStage::callMayFlowThroughRev(call, pragma[only_bind_into](config)) and
-    PrevStage::parameterMayFlowThrough(_, getEnclosingCallable(ret), _,
+    PrevStage::parameterMayFlowThrough(_, ret.getEnclosingCallable(), _,
       pragma[only_bind_into](config))
   }
 
@@ -1796,7 +1798,7 @@ private module Stage3 {
     exists(ArgNodeEx arg, boolean allowsFieldFlow |
       fwdFlow(arg, outercc, argAp, ap, config) and
       flowIntoCall(call, arg, p, allowsFieldFlow, config) and
-      innercc = getCallContextCall(call, getEnclosingCallable(p), outercc)
+      innercc = getCallContextCall(call, p.getEnclosingCallable(), outercc)
     |
       ap instanceof ApNil or allowsFieldFlow = true
     )
@@ -1812,7 +1814,7 @@ private module Stage3 {
     |
       fwdFlow(ret, innercc, argAp, ap, config) and
       flowOutOfCall(call, ret, out, allowsFieldFlow, config) and
-      inner = getEnclosingCallable(ret) and
+      inner = ret.getEnclosingCallable() and
       checkCallContextReturn(innercc, inner, call) and
       ccOut = getCallContextReturn(inner, call)
     |
@@ -2077,13 +2079,13 @@ private module Stage3 {
     ParamNodeEx p, Ap ap, Ap ap0, DataFlowCallable c, Configuration config
   ) {
     revFlow(p, true, apSome(ap0), ap, config) and
-    c = getEnclosingCallable(p)
+    c = p.getEnclosingCallable()
   }
 
   predicate parameterMayFlowThrough(ParamNodeEx p, DataFlowCallable c, Ap ap, Configuration config) {
     exists(RetNodeEx ret, Ap ap0, ReturnKindExt kind, int pos |
       parameterFlow(p, ap, ap0, c, config) and
-      c = getEnclosingCallable(ret) and
+      c = ret.getEnclosingCallable() and
       revFlow(ret, true, apSome(_), ap0, config) and
       fwdFlow(ret, any(CcCall ccc), apSome(ap), ap0, config) and
       kind = ret.getKind() and
@@ -2333,7 +2335,7 @@ private module Stage4 {
   private ApApprox getApprox(Ap ap) { result = ap.getFront() }
 
   private ApNil getApNil(NodeEx node) {
-    PrevStage::revFlow(node, _) and result = TNil(getDataFlowType(node))
+    PrevStage::revFlow(node, _) and result = TNil(node.getDataFlowType())
   }
 
   bindingset[tc, tail]
@@ -2379,7 +2381,7 @@ private module Stage4 {
     localFlowEntry(node, config) and
     result =
       getLocalCallContext(pragma[only_bind_into](pragma[only_bind_out](cc)),
-        getEnclosingCallable(node))
+        node.getEnclosingCallable())
   }
 
   private predicate localStep(
@@ -2432,7 +2434,7 @@ private module Stage4 {
   ) {
     flowOutOfCall(call, ret, out, allowsFieldFlow, pragma[only_bind_into](config)) and
     PrevStage::callMayFlowThroughRev(call, pragma[only_bind_into](config)) and
-    PrevStage::parameterMayFlowThrough(_, getEnclosingCallable(ret), _,
+    PrevStage::parameterMayFlowThrough(_, ret.getEnclosingCallable(), _,
       pragma[only_bind_into](config))
   }
 
@@ -2558,7 +2560,7 @@ private module Stage4 {
     exists(ArgNodeEx arg, boolean allowsFieldFlow |
       fwdFlow(arg, outercc, argAp, ap, config) and
       flowIntoCall(call, arg, p, allowsFieldFlow, config) and
-      innercc = getCallContextCall(call, getEnclosingCallable(p), outercc)
+      innercc = getCallContextCall(call, p.getEnclosingCallable(), outercc)
     |
       ap instanceof ApNil or allowsFieldFlow = true
     )
@@ -2574,7 +2576,7 @@ private module Stage4 {
     |
       fwdFlow(ret, innercc, argAp, ap, config) and
       flowOutOfCall(call, ret, out, allowsFieldFlow, config) and
-      inner = getEnclosingCallable(ret) and
+      inner = ret.getEnclosingCallable() and
       checkCallContextReturn(innercc, inner, call) and
       ccOut = getCallContextReturn(inner, call)
     |
@@ -2839,13 +2841,13 @@ private module Stage4 {
     ParamNodeEx p, Ap ap, Ap ap0, DataFlowCallable c, Configuration config
   ) {
     revFlow(p, true, apSome(ap0), ap, config) and
-    c = getEnclosingCallable(p)
+    c = p.getEnclosingCallable()
   }
 
   predicate parameterMayFlowThrough(ParamNodeEx p, DataFlowCallable c, Ap ap, Configuration config) {
     exists(RetNodeEx ret, Ap ap0, ReturnKindExt kind, int pos |
       parameterFlow(p, ap, ap0, c, config) and
-      c = getEnclosingCallable(ret) and
+      c = ret.getEnclosingCallable() and
       revFlow(ret, true, apSome(_), ap0, config) and
       fwdFlow(ret, any(CcCall ccc), apSome(ap), ap0, config) and
       kind = ret.getKind() and
@@ -2890,7 +2892,7 @@ private predicate nodeMayUseSummary(NodeEx n, AccessPathApprox apa, Configuratio
     Stage4::parameterMayFlowThrough(_, c, apa, _) and
     Stage4::revFlow(n, true, _, apa0, config) and
     Stage4::fwdFlow(n, any(CallContextCall ccc), TAccessPathApproxSome(apa), apa0, config) and
-    getEnclosingCallable(n) = c
+    n.getEnclosingCallable() = c
   )
 }
 
@@ -3050,7 +3052,7 @@ private newtype TPathNode =
     sourceNode(node, config) and
     cc instanceof CallContextAny and
     sc instanceof SummaryCtxNone and
-    ap = TAccessPathNil(getDataFlowType(node))
+    ap = TAccessPathNil(node.getDataFlowType())
     or
     // ... or a step from an existing PathNode to another node.
     exists(PathNodeMid mid |
@@ -3430,7 +3432,7 @@ private predicate pathStep(
     sc = mid.getSummaryCtx() and
     localCC =
       getLocalCallContext(pragma[only_bind_into](pragma[only_bind_out](cc)),
-        getEnclosingCallable(midnode)) and
+        midnode.getEnclosingCallable()) and
     ap0 = mid.getAp()
   |
     localFlowBigStep(midnode, node, true, _, conf, localCC) and
@@ -3449,7 +3451,7 @@ private predicate pathStep(
   cc instanceof CallContextAny and
   sc instanceof SummaryCtxNone and
   mid.getAp() instanceof AccessPathNil and
-  ap = TAccessPathNil(getDataFlowType(node))
+  ap = TAccessPathNil(node.getDataFlowType())
   or
   exists(TypedContent tc | pathStoreStep(mid, node, ap.pop(tc), tc, cc)) and
   sc = mid.getSummaryCtx()
@@ -3716,8 +3718,8 @@ private module FlowExploration {
       // flow out of a callable
       viableReturnPosOutEx(_, node1.(RetNodeEx).getReturnPosition(), node2)
     |
-      c1 = getEnclosingCallable(node1) and
-      c2 = getEnclosingCallable(node2) and
+      c1 = node1.getEnclosingCallable() and
+      c2 = node2.getEnclosingCallable() and
       c1 != c2
     )
   }
@@ -3892,12 +3894,12 @@ private module FlowExploration {
       cc instanceof CallContextAny and
       sc1 = TSummaryCtx1None() and
       sc2 = TSummaryCtx2None() and
-      ap = TPartialNil(getDataFlowType(node)) and
+      ap = TPartialNil(node.getDataFlowType()) and
       not fullBarrier(node, config) and
       exists(config.explorationLimit())
       or
       partialPathNodeMk0(node, cc, sc1, sc2, ap, config) and
-      distSrc(getEnclosingCallable(node), config) <= config.explorationLimit()
+      distSrc(node.getEnclosingCallable(), config) <= config.explorationLimit()
     } or
     TPartialPathNodeRev(
       NodeEx node, TRevSummaryCtx1 sc1, TRevSummaryCtx2 sc2, RevPartialAccessPath ap,
@@ -3914,7 +3916,7 @@ private module FlowExploration {
         revPartialPathStep(mid, node, sc1, sc2, ap, config) and
         not clearsContentCached(node.asNode(), ap.getHead()) and
         not fullBarrier(node, config) and
-        distSink(getEnclosingCallable(node), config) <= config.explorationLimit()
+        distSink(node.getEnclosingCallable(), config) <= config.explorationLimit()
       )
     }
 
@@ -3928,7 +3930,7 @@ private module FlowExploration {
       not fullBarrier(node, config) and
       not clearsContentCached(node.asNode(), ap.getHead().getContent()) and
       if node.asNode() instanceof CastingNode
-      then compatibleTypes(getDataFlowType(node), ap.getType())
+      then compatibleTypes(node.getDataFlowType(), ap.getType())
       else any()
     )
   }
@@ -3980,7 +3982,7 @@ private module FlowExploration {
      * of interprocedural steps.
      */
     int getSourceDistance() {
-      result = distSrc(getEnclosingCallable(this.getNodeEx()), this.getConfiguration())
+      result = distSrc(this.getNodeEx().getEnclosingCallable(), this.getConfiguration())
     }
 
     /**
@@ -3988,7 +3990,7 @@ private module FlowExploration {
      * of interprocedural steps.
      */
     int getSinkDistance() {
-      result = distSink(getEnclosingCallable(this.getNodeEx()), this.getConfiguration())
+      result = distSink(this.getNodeEx().getEnclosingCallable(), this.getConfiguration())
     }
 
     private string ppAp() {
@@ -4105,7 +4107,7 @@ private module FlowExploration {
       sc1 = mid.getSummaryCtx1() and
       sc2 = mid.getSummaryCtx2() and
       mid.getAp() instanceof PartialAccessPathNil and
-      ap = TPartialNil(getDataFlowType(node)) and
+      ap = TPartialNil(node.getDataFlowType()) and
       config = mid.getConfiguration()
     )
     or
@@ -4121,7 +4123,7 @@ private module FlowExploration {
     sc1 = TSummaryCtx1None() and
     sc2 = TSummaryCtx2None() and
     mid.getAp() instanceof PartialAccessPathNil and
-    ap = TPartialNil(getDataFlowType(node)) and
+    ap = TPartialNil(node.getDataFlowType()) and
     config = mid.getConfiguration()
     or
     partialPathStoreStep(mid, _, _, node, ap) and
