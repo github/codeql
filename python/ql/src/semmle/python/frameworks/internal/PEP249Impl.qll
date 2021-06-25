@@ -79,6 +79,31 @@ module PEP249 {
    * See https://www.python.org/dev/peps/pep-0249/#cursor.
    */
   module cursor {
+    /**
+     * A source of database cursors (following PEP 249), extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by external
+     * libraries.
+     *
+     * Use the predicate `Connection::instance()` to get references database cursors (following PEP 249).
+     *
+     * Extend this class if the module implementing PEP 249 offers more direct ways to obtain
+     * a connection than going through `connect`.
+     */
+    abstract class InstanceSource extends DataFlow::LocalSourceNode { }
+
+    /** Gets a reference to a database cursor. */
+    private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to a database cursor. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
     /** Gets a reference to the `cursor` method on a database connection. */
     private DataFlow::LocalSourceNode methodRef(DataFlow::TypeTracker t) {
       t.startInAttr("cursor") and
@@ -90,6 +115,11 @@ module PEP249 {
     /** Gets a reference to the `cursor` method on a database connection. */
     DataFlow::Node methodRef() { methodRef(DataFlow::TypeTracker::end()).flowsTo(result) }
 
+    /** A call to the `cursor` method on a database connection */
+    private class CursorCall extends InstanceSource, DataFlow::CallCfgNode {
+      CursorCall() { this.getFunction() = methodRef() }
+    }
+
     /** Gets a reference to a result of calling the `cursor` method on a database connection. */
     private DataFlow::LocalSourceNode methodResult(DataFlow::TypeTracker t) {
       t.start() and
@@ -98,8 +128,14 @@ module PEP249 {
       exists(DataFlow::TypeTracker t2 | result = methodResult(t2).track(t2, t))
     }
 
-    /** Gets a reference to a result of calling the `cursor` method on a database connection. */
-    DataFlow::Node methodResult() { methodResult(DataFlow::TypeTracker::end()).flowsTo(result) }
+    /**
+     * DEPRECATED: Use `Cursor::instance()` to get references to database cursors instead.
+     *
+     * Gets a reference to a result of calling the `cursor` method on a database connection.
+     */
+    deprecated DataFlow::Node methodResult() {
+      methodResult(DataFlow::TypeTracker::end()).flowsTo(result)
+    }
   }
 
   /**
@@ -112,7 +148,7 @@ module PEP249 {
    */
   private DataFlow::LocalSourceNode execute(DataFlow::TypeTracker t) {
     t.startInAttr("execute") and
-    result in [cursor::methodResult(), Connection::instance()]
+    result in [cursor::instance(), Connection::instance()]
     or
     exists(DataFlow::TypeTracker t2 | result = execute(t2).track(t2, t))
   }
