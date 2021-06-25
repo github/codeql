@@ -1,4 +1,4 @@
-/*
+/**
  * This library implements the analysis described in the following two papers:
  *
  *   James Kirrage, Asiri Rathnayake, Hayo Thielecke: Static Analysis for
@@ -269,6 +269,7 @@ private newtype TTrace =
  * starting from some fork state.
  */
 class Trace extends TTrace {
+  /** Gets a textual representation of this element. */
   string toString() {
     this = Nil() and result = "Nil()"
     or
