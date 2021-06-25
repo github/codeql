@@ -5,6 +5,7 @@
  */
 
 private import codeql_ruby.DataFlow
+private import codeql_ruby.Frameworks
 
 /**
  * A data-flow node that executes SQL statements.

@@ -62,6 +62,8 @@ jobs:
         with:
           name: extractor-${{ matrix.os }}
           path: |
+            target/release/ruby-autobuilder
+            target/release/ruby-autobuilder.exe
             target/release/ruby-extractor
             target/release/ruby-extractor.exe
           retention-days: 1
@@ -82,7 +84,7 @@ jobs:
         run: |
           codeql/codeql pack create ql/src --output target/packs
           PACK_FOLDER=$(readlink -f target/packs/github/codeql-ruby/*)
-          (cd ql/src; find queries \( -name '*.qhelp' -o -name '*.rb' -o -name '*.erb' \) -exec cp "{}" "${PACK_FOLDER}/{}" \;)
+          (cd ql/src; find queries \( -name '*.qhelp' -o -name '*.rb' -o -name '*.erb' \) -exec bash -c 'mkdir -p "'"${PACK_FOLDER}"'/$(dirname "{}")"' \; -exec cp "{}" "${PACK_FOLDER}/{}" \;)
       - name: Compile with previous CodeQL versions
         run: |
           for version in  $(gh release list --repo https://github.com/github/codeql-cli-binaries | cut -f 1 | sort --version-sort | tail -3 | head -2); do
@@ -125,10 +127,13 @@ jobs:
           mkdir -p ruby
           cp -r codeql-extractor.yml tools ql/src/ruby.dbscheme.stats ruby/
           mkdir -p ruby/tools/{linux64,osx64,win64}
+          cp linux64/ruby-autobuilder ruby/tools/linux64/autobuilder
+          cp osx64/ruby-autobuilder ruby/tools/osx64/autobuilder
+          cp win64/ruby-autobuilder.exe ruby/tools/win64/autobuilder.exe
           cp linux64/ruby-extractor ruby/tools/linux64/extractor
           cp osx64/ruby-extractor ruby/tools/osx64/extractor
           cp win64/ruby-extractor.exe ruby/tools/win64/extractor.exe
-          chmod +x ruby/tools/{linux64,osx64}/extractor
+          chmod +x ruby/tools/{linux64,osx64}/{autobuilder,extractor}
           zip -rq codeql-ruby.zip ruby
       - uses: actions/upload-artifact@v2
         with:

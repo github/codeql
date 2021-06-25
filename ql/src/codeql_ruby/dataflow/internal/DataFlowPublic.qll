@@ -140,8 +140,6 @@ class Content extends TContent {
 /**
  * A guard that validates some expression.
  */
-class BarrierGuard extends CfgNodes::ExprCfgNode {
-  BarrierGuard() { none() }
-
+abstract class BarrierGuard extends CfgNodes::ExprCfgNode {
   Node getAGuardedNode() { none() }
 }

@@ -52,18 +52,49 @@ class ActiveRecordModelClassMethodCall extends MethodCall {
     or
     // e.g. Foo.joins(:bars).where(...)
     this.getReceiver() instanceof ActiveRecordModelClassMethodCall
+    or
+    // e.g. self.where(...) within an ActiveRecordModelClass
+    this.getReceiver() instanceof Self and
+    this.getEnclosingModule() instanceof ActiveRecordModelClass
   }
 }
 
-private predicate methodWithSqlFragmentArg(string methodName, int argIndex) {
-  methodName =
-    [
-      "delete_all", "destroy_all", "exists?", "find_by", "find_by_sql", "from", "group", "having",
-      "joins", "lock", "not", "order", "pluck", "where"
-    ] and
-  argIndex = 0
+private Expr sqlFragmentArgument(MethodCall call) {
+  exists(string methodName |
+    methodName = call.getMethodName() and
+    (
+      methodName =
+        [
+          "delete_all", "destroy_all", "exists?", "find_by", "find_by_sql", "from", "group",
+          "having", "joins", "lock", "not", "order", "pluck", "where"
+        ] and
+      result = call.getArgument(0)
+      or
+      methodName = "calculate" and result = call.getArgument(1)
+      or
+      // This format was supported until Rails 2.3.8
+      methodName = ["all", "find", "first", "last"] and
+      result = call.getKeywordArgument("conditions")
+    )
+  )
+}
+
+// An expression that, if tainted by unsanitized input, should not be used as
+// part of an argument to an SQL executing method
+private predicate unsafeSqlExpr(Expr sqlFragmentExpr) {
+  // Literals containing an interpolated value
+  exists(StringInterpolationComponent interpolated |
+    interpolated = sqlFragmentExpr.(StringlikeLiteral).getComponent(_)
+  )
   or
-  methodName = "calculate" and argIndex = 1
+  // String concatenations
+  sqlFragmentExpr instanceof AddExpr
+  or
+  // Variable reads
+  sqlFragmentExpr instanceof VariableReadAccess
+  or
+  // Method call
+  sqlFragmentExpr instanceof MethodCall
 }
 
 /**
@@ -81,29 +112,21 @@ private predicate methodWithSqlFragmentArg(string methodName, int argIndex) {
  * rather than just one with a matching name.
  */
 class PotentiallyUnsafeSqlExecutingMethodCall extends ActiveRecordModelClassMethodCall {
-  // The name of the method invoked
-  private string methodName;
-  // The zero-indexed position of the SQL fragment sink argument
-  private int sqlFragmentArgumentIndex;
   // The SQL fragment argument itself
   private Expr sqlFragmentExpr;
 
   // TODO: `find` with `lock:` option also takes an SQL fragment
+  // TODO: refine this further to account for cases where the method called has
+  //       been overriden to perform validation on its arguments
   PotentiallyUnsafeSqlExecutingMethodCall() {
-    methodName = this.getMethodName() and
-    sqlFragmentExpr = this.getArgument(sqlFragmentArgumentIndex) and
-    methodWithSqlFragmentArg(methodName, sqlFragmentArgumentIndex) and
-    (
-      // select only literals containing an interpolated value...
-      exists(StringInterpolationComponent interpolated |
-        interpolated = sqlFragmentExpr.(StringlikeLiteral).getComponent(_)
+    exists(Expr arg |
+      arg = sqlFragmentArgument(this) and
+      unsafeSqlExpr(sqlFragmentExpr) and
+      (
+        sqlFragmentExpr = arg
+        or
+        sqlFragmentExpr = arg.(ArrayLiteral).getElement(0)
       )
-      or
-      // ...or string concatenations...
-      sqlFragmentExpr instanceof AddExpr
-      or
-      // ...or variable reads
-      sqlFragmentExpr instanceof VariableReadAccess
     )
   }
 
@@ -124,3 +147,5 @@ class ActiveRecordSqlExecutionRange extends SqlExecution::Range {
 
   override DataFlow::Node getSql() { result = this }
 }
+// TODO: model `ActiveRecord` sanitizers
+// https://api.rubyonrails.org/classes/ActiveRecord/Sanitization/ClassMethods.html
