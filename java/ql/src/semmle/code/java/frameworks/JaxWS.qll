@@ -283,6 +283,19 @@ class MessageBodyReaderRead extends Method {
   }
 }
 
+private string getContentTypeString(Expr e) {
+  result = e.(CompileTimeConstantExpr).getStringValue()
+  or
+  exists(Field jaxMediaType |
+    // Accesses to static fields on `MediaType` class do not have constant strings in the database
+    // so convert the field name to a content type string
+    jaxMediaType.getDeclaringType().hasQualifiedName(getAJaxRsPackage("core"), "MediaType") and
+    jaxMediaType.getAnAccess() = e and
+    // e.g. MediaType.TEXT_PLAIN => text/plain
+    result = jaxMediaType.getName().toLowerCase().replaceAll("_value", "").replaceAll("_", "/")
+  )
+}
+
 /** An `@Produces` annotation that describes which content types can be produced by this resource. */
 class JaxRSProducesAnnotation extends JaxRSAnnotation {
   JaxRSProducesAnnotation() { this.getType().hasQualifiedName(getAJaxRsPackage(), "Produces") }
@@ -290,16 +303,11 @@ class JaxRSProducesAnnotation extends JaxRSAnnotation {
   /**
    * Gets a declared content type that can be produced by this resource.
    */
-  string getADeclaredContentType() {
-    result = this.getAValue().(CompileTimeConstantExpr).getStringValue()
-    or
-    exists(Field jaxMediaType |
-      // Accesses to static fields on `MediaType` class do not have constant strings in the database
-      // so convert the field name to a content type string
-      jaxMediaType.getDeclaringType().hasQualifiedName(getAJaxRsPackage("core"), "MediaType") and
-      jaxMediaType.getAnAccess() = this.getAValue() and
-      // e.g. MediaType.TEXT_PLAIN => text/plain
-      result = jaxMediaType.getName().toLowerCase().replaceAll("_", "/")
+  Expr getADeclaredContentTypeExpr() {
+    (
+      result = this.getAValue() and not result instanceof ArrayInit
+      or
+      result = this.getAValue().(ArrayInit).getAnInit()
     )
   }
 }
@@ -319,7 +327,8 @@ private class JaxRSXssSink extends XssSink {
     |
       not exists(resourceMethod.getProducesAnnotation())
       or
-      resourceMethod.getProducesAnnotation().getADeclaredContentType() = "text/plain"
+      getContentTypeString(resourceMethod.getProducesAnnotation().getADeclaredContentTypeExpr()) =
+        "text/plain"
     )
   }
 }
