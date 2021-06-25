@@ -198,13 +198,9 @@ module API {
   }
 
   /** A node corresponding to the use of an API component. */
-  class Use extends Node, Impl::TUse {
+  class Use extends Node, Impl::MkUse {
     override string toString() {
-      exists(string type |
-        this = Impl::MkUse(_) and type = "Use "
-        or
-        this = Impl::MkModule(_) and type = "ModuleUse "
-      |
+      exists(string type | this = Impl::MkUse(_) and type = "Use " |
         result = type + getPath()
         or
         not exists(this.getPath()) and result = type + "with no path"
@@ -216,27 +212,13 @@ module API {
   Root root() { any() }
 
   /**
-   * Gets a node corresponding to an import of module `m`.
+   * Gets a node corresponding to an import of top-level module `m`.
    *
    * Note: You should only use this predicate for top level modules or classes. If you want nodes corresponding to a nested module or class,
    * you should use `.getMember` on the parent module/class. For example, for nodes corresponding to the class `Gem::Version`,
    * use `moduleImport("Gem").getMember("Version")`.
    */
-  Node moduleImport(string m) {
-    result = Impl::MkModule(m) and not m.matches("%::%")
-    or
-    result = Impl::MkUse(unresolvedModuleReference(m))
-  }
-
-  DataFlow::Node unresolvedModuleReference(string m) {
-    exists(ConstantReadAccess iexpr, DataFlow::Node node |
-      not exists(resolveScopeExpr(iexpr)) and
-      not exists(iexpr.getScopeExpr()) and
-      m = iexpr.getName() and
-      result = node and
-      node.asExpr().getExpr() = iexpr
-    )
-  }
+  Node moduleImport(string m) { result = root().getMember(m) }
 
   /**
    * Provides the actual implementation of API graphs, cached for performance.
@@ -266,16 +248,8 @@ module API {
     newtype TApiNode =
       /** The root of the API graph. */
       MkRoot() or
-      /** An abstract representative for imports of the module called `name`. */
-      MkModule(string name) { exists(TResolved(name)) } or
       /** A use of an API member at the node `nd`. */
-      MkUse(DataFlow::Node nd) {
-        use(_, _, nd)
-        or
-        nd = unresolvedModuleReference(_)
-      }
-
-    class TUse = MkModule or MkUse;
+      MkUse(DataFlow::Node nd) { use(_, _, nd) }
 
     /**
      * Holds if `ref` is a use of a node that should have an incoming edge from `base` labeled
@@ -283,6 +257,21 @@ module API {
      */
     cached
     predicate use(TApiNode base, string lbl, DataFlow::Node ref) {
+      base = MkRoot() and
+      exists(string name, ExprNodes::ConstantAccessCfgNode access, ConstantReadAccess read |
+        access = ref.asExpr() and
+        lbl = Label::member(read.getName()) and
+        read = access.getExpr()
+      |
+        TResolved(name) = resolveScopeExpr(read) and
+        not name.matches("%::%")
+        or
+        name = read.getName() and
+        not exists(resolveScopeExpr(read)) and
+        not exists(read.getScopeExpr()) and
+        not exists(read.getValue())
+      )
+      or
       exists(DataFlow::LocalSourceNode src, DataFlow::LocalSourceNode pred |
         // First, we find a predecessor of the node `ref` that we want to determine. The predecessor
         // is any node that is a type-tracked use of a data flow node (`src`), which is itself a
@@ -331,16 +320,7 @@ module API {
      * Holds if `ref` is a use of node `nd`.
      */
     cached
-    predicate use(TApiNode nd, DataFlow::Node ref) {
-      exists(string name, ExprNodes::ConstantAccessCfgNode access, ConstantReadAccess read |
-        access = ref.asExpr() and
-        nd = MkModule(name) and
-        read = access.getExpr() and
-        TResolved(name) = resolveScopeExpr(read)
-      )
-      or
-      nd = MkUse(ref)
-    }
+    predicate use(TApiNode nd, DataFlow::Node ref) { nd = MkUse(ref) }
 
     /**
      * Gets a data-flow node to which `src`, which is a use of an API-graph node, flows.
@@ -370,14 +350,6 @@ module API {
      */
     cached
     predicate edge(TApiNode pred, string lbl, TApiNode succ) {
-      /* There's an edge from the root node for each imported module. */
-      exists(string m |
-        pred = MkRoot() and
-        lbl = Label::mod(m)
-      |
-        succ = moduleImport(m)
-      )
-      or
       /* Every node that is a use of an API component is itself added to the API graph. */
       exists(DataFlow::LocalSourceNode ref |
         use(pred, lbl, ref) and
@@ -397,11 +369,6 @@ module API {
 }
 
 private module Label {
-  /** Gets the edge label for the module `m`. */
-  bindingset[m]
-  bindingset[result]
-  string mod(string m) { result = "moduleImport(\"" + m + "\")" }
-
   /** Gets the `member` edge label for member `m`. */
   bindingset[m]
   bindingset[result]
