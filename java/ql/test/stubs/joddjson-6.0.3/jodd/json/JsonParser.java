@@ -122,7 +122,7 @@ public class JsonParser extends JsonParserBase {
 	 * <p>
 	 * Note that by using the class meta-data name you may expose a security hole in case untrusted source
 	 * manages to specify a class that is accessible through class loader and exposes set of methods and/or fields,
-	 * access of which opens an actual security hole. Such classes are known as “deserialization gadget”s.
+	 * access of which opens an actual security hole. Such classes are known as deserialization gadgets.
 	 *
 	 * Because of this, use of "default typing" is not encouraged in general, and in particular is recommended against
 	 * if the source of content is not trusted. Conversely, default typing may be used for processing content in

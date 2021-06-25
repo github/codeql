@@ -38,10 +38,10 @@ class GsonDeserializeMethod extends Method {
   }
 }
 
-/** The `toJson​` serialization method. */
+/** The `toJson` serialization method. */
 class GsonSerializeMethod extends Method {
   GsonSerializeMethod() {
     this.getDeclaringType() instanceof Gson and
-    this.hasName("toJson​")
+    this.hasName("toJson")
   }
 }
