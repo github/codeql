@@ -386,6 +386,27 @@ abstract class StackVariableReachability extends string {
     )
   }
 
+  pragma[nomagic]
+  private predicate bbSuccessorEntryReachesLoopInvariantSucc(
+    ControlFlowNode source, BasicBlock pred, SemanticStackVariable v, BasicBlock succ,
+    boolean predSkipsFirstLoopAlwaysTrueUponEntry
+  ) {
+    revBbSuccessorEntryReaches0(source, pragma[only_bind_into](pred), v,
+      predSkipsFirstLoopAlwaysTrueUponEntry, this) and
+    pred.getASuccessor() = succ
+  }
+
+  pragma[nomagic]
+  private predicate bbSuccessorEntryReachesLoopInvariantCand(
+    ControlFlowNode source, BasicBlock pred, SemanticStackVariable v, BasicBlock succ,
+    boolean predSkipsFirstLoopAlwaysTrueUponEntry, boolean succSkipsFirstLoopAlwaysTrueUponEntry
+  ) {
+    bbSuccessorEntryReachesLoopInvariantSucc(source, pragma[only_bind_into](pred), v, succ,
+      predSkipsFirstLoopAlwaysTrueUponEntry) and
+    bbSuccessorEntryReachesLoopInvariant0(pred, succ, predSkipsFirstLoopAlwaysTrueUponEntry,
+      succSkipsFirstLoopAlwaysTrueUponEntry)
+  }
+
   /**
    * Holds if `pred`, `succ`, `predSkipsFirstLoopAlwaysTrueUponEntry` and
    * `succSkipsFirstLoopAlwaysTrueUponEntry` satisfy the loop invariants specified in the QLDoc
@@ -396,36 +417,32 @@ abstract class StackVariableReachability extends string {
    * 2. Refines the successor relation when the edge `pred -> succ` is a conditional edge whose truth
    *    value is known.
    */
+  pragma[nomagic]
   private predicate bbSuccessorEntryReachesLoopInvariant(
     ControlFlowNode source, BasicBlock pred, SemanticStackVariable v, BasicBlock succ,
     boolean predSkipsFirstLoopAlwaysTrueUponEntry, boolean succSkipsFirstLoopAlwaysTrueUponEntry
   ) {
-    not exists(Condition cond |
+    bbSuccessorEntryReachesLoopInvariantCand(source, pred, v, succ,
+      predSkipsFirstLoopAlwaysTrueUponEntry, succSkipsFirstLoopAlwaysTrueUponEntry) and
+    not exists(Condition cond, Condition direct |
       cond = getACondition(source, v, pred) and
-      cond.refutesCondition(getADirectCondition(succ))
+      direct = pragma[only_bind_out](getADirectCondition(succ)) and
+      cond.refutesCondition(direct)
     ) and
-    pred.getASuccessor() = succ and
-    revBbSuccessorEntryReaches0(source, pragma[only_bind_into](pred), v,
-      predSkipsFirstLoopAlwaysTrueUponEntry, this) and
-    bbSuccessorEntryReachesLoopInvariant0(pred, succ, predSkipsFirstLoopAlwaysTrueUponEntry,
-      succSkipsFirstLoopAlwaysTrueUponEntry) and
     (
       // If we picked the successor edge corresponding to a condition being true, there must not be
       // another path condition that refutes that the condition is true.
-      succ = pred.getATrueSuccessor() and
       not exists(Condition cond | cond = getACondition(source, v, pred) |
-        cond.refutesCondition(MkCondition(pred.getEnd(), true))
+        succ = pred.getATrueSuccessor() and
+        cond.refutesCondition(pragma[only_bind_out](MkCondition(pred.getEnd(), true)))
       )
       or
       // If we picked the successor edge corresponding to a condition being false, there must not be
       // another path condition that refutes that the condition is false.
-      succ = pred.getAFalseSuccessor() and
       not exists(Condition cond | cond = getACondition(source, v, pred) |
-        cond.refutesCondition(MkCondition(pred.getEnd(), false))
+        succ = pred.getAFalseSuccessor() and
+        cond.refutesCondition(pragma[only_bind_out](MkCondition(pred.getEnd(), false)))
       )
-      or
-      // If it wasn't a conditional successor edge we require nothing.
-      not succ = [pred.getATrueSuccessor(), pred.getAFalseSuccessor()]
     )
   }
 
