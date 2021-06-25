@@ -62,6 +62,7 @@ def get_packages(lang, query):
             shutil.rmtree(db)
 
 
+current_dir = os.getcwd()
 working_dir = ""
 if len(sys.argv) > 1:
     working_dir = sys.argv[1]
@@ -80,6 +81,7 @@ configs = [
 # only once and not per language
 output_prefix = "framework-coverage-timeseries-"
 for lang in settings.languages:
+    os.chdir(current_dir)
     config = [c for c in configs if c.lang == lang][0]
     with open(output_prefix + config.lang + ".csv", 'w', newline='') as csvfile_total:
         with open(output_prefix + config.lang + "-packages.csv", 'w', newline='') as csvfile_packages:
