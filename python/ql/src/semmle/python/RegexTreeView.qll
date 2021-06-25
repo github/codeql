@@ -28,6 +28,8 @@ class RegExpLiteral extends TRegExpLiteral, RegExpParent {
   predicate isDotAll() { re.getAMode() = "DOTALL" }
 
   override Regex getRegex() { result = re }
+
+  string getPrimaryQLClass() { result = "RegExpLiteral" }
 }
 
 class RegExpTerm extends RegExpParent {

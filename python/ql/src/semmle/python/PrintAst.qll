@@ -7,7 +7,7 @@
  */
 
 import python
-import semmle.python.RegexTreeViewBindOld
+import semmle.python.RegexTreeView
 
 private newtype TPrintAstConfiguration = MkPrintAstConfiguration()
 
