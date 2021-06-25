@@ -52,8 +52,10 @@ def collect_package_stats(packages: pack.PackageCollection, cwes, filter):
             sinks += package.get_part_count("sink")
 
             for cwe in cwes:
-                sink = "sink:" + cwes[cwe]["sink"]
-                count = package.get_kind_count(sink)
+                count = 0
+                for sink in cwes[cwe]["sink"].split(" "):
+                    sink = "sink:" + sink
+                    count += package.get_kind_count(sink)
                 if count > 0:
                     if cwe not in framework_cwes:
                         framework_cwes[cwe] = 0
