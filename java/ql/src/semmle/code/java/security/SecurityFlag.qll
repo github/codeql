@@ -15,32 +15,34 @@ abstract class FlagKind extends string {
   FlagKind() { any() }
 
   /**
-   * Returns a flag name of this type.
+   * Gets a flag name of this type.
    */
   bindingset[result]
   abstract string getAFlagName();
 
   /** Gets a node representing a (likely) security flag. */
   DataFlow::Node getAFlag() {
-    exists(VarAccess v | v.getVariable().getName() = getAFlagName() |
-      result.asExpr() = v and v.getType() instanceof FlagType
+    exists(DataFlow::Node flag |
+      exists(VarAccess v | v.getVariable().getName() = getAFlagName() |
+        flag.asExpr() = v and v.getType() instanceof FlagType
+      )
+      or
+      exists(StringLiteral s | s.getRepresentedString() = getAFlagName() | flag.asExpr() = s)
+      or
+      exists(MethodAccess ma | ma.getMethod().getName() = getAFlagName() |
+        flag.asExpr() = ma and
+        ma.getType() instanceof FlagType
+      )
+    |
+      flagFlowStep*(flag, result)
     )
-    or
-    exists(StringLiteral s | s.getRepresentedString() = getAFlagName() | result.asExpr() = s)
-    or
-    exists(MethodAccess ma | ma.getMethod().getName() = getAFlagName() |
-      result.asExpr() = ma and
-      ma.getType() instanceof FlagType
-    )
-    or
-    flagFlowStep*(getAFlag(), result)
   }
 }
 
 /**
  * Flags suggesting an optional feature, perhaps deliberately insecure.
  */
-class SecurityFeatureFlag extends FlagKind {
+private class SecurityFeatureFlag extends FlagKind {
   SecurityFeatureFlag() { this = "SecurityFeatureFlag" }
 
   bindingset[result]
