@@ -12,7 +12,7 @@
  */
 
 import python
-import SuperlinearBackTracking
+import semmle.python.regex.SuperlinearBackTracking
 import semmle.python.security.dataflow.PolynomialReDoS
 import DataFlow::PathGraph
 

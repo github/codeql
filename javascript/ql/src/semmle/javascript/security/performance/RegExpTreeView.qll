@@ -6,5 +6,9 @@
 
 import javascript
 
-// pragmatic performance optimization: ignore minified files.
+/**
+ * Holds if the regular expression should not be considered.
+ *
+ * For javascript we make the pragmatic performance optimization to ignore minified files.
+ */
 predicate isExcluded(RegExpParent parent) { parent.(Expr).getTopLevel().isMinified() }

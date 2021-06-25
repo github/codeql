@@ -5,7 +5,11 @@
 import python
 import semmle.python.RegexTreeView
 
-// pragmatic performance optimization: ignore files we did not extract.
+/**
+ * Holds if the regular expression should not be considered.
+ *
+ * For javascript we make the pragmatic performance optimization to ignore files we did not extract.
+ */
 predicate isExcluded(RegExpParent parent) {
   not exists(parent.getRegex().getLocation().getFile().getRelativePath())
 }

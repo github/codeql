@@ -1,5 +1,3 @@
-import ReDoSUtil
-
 /*
  * This library implements the analysis described in the following two papers:
  *
@@ -64,6 +62,8 @@ import ReDoSUtil
  *     a suffix `x` (possible empty) that is most likely __not__ accepted.
  */
 
+import ReDoSUtil
+
 /**
  * Holds if state `s` might be inside a backtracking repetition.
  */
@@ -88,18 +88,19 @@ class MaybeBacktrackingRepetition extends InfiniteRepetitionQuantifier {
 
 /**
  * A state in the product automaton.
- *
- * We lazily only construct those states that we are actually
- * going to need: `(q, q)` for every fork state `q`, and any
- * pair of states that can be reached from a pair that we have
- * already constructed. To cut down on the number of states,
- * we only represent states `(q1, q2)` where `q1` is lexicographically
- * no bigger than `q2`.
- *
- * States are only constructed if both states in the pair are
- * inside a repetition that might backtrack.
  */
 newtype TStatePair =
+  /**
+   * We lazily only construct those states that we are actually
+   * going to need: `(q, q)` for every fork state `q`, and any
+   * pair of states that can be reached from a pair that we have
+   * already constructed. To cut down on the number of states,
+   * we only represent states `(q1, q2)` where `q1` is lexicographically
+   * no bigger than `q2`.
+   *
+   * States are only constructed if both states in the pair are
+   * inside a repetition that might backtrack.
+   */
   MkStatePair(State q1, State q2) {
     isFork(q1, _, _, _, _) and q2 = q1
     or
@@ -120,21 +121,38 @@ int rankState(State state) {
     )
 }
 
+/**
+ * A state in the product automaton.
+ */
 class StatePair extends TStatePair {
   State q1;
   State q2;
 
   StatePair() { this = MkStatePair(q1, q2) }
 
+  /** Gets a textual representation of this element. */
   string toString() { result = "(" + q1 + ", " + q2 + ")" }
 
+  /** Gets the first component of the state pair. */
   State getLeft() { result = q1 }
 
+  /** Gets the second component of the state pair. */
   State getRight() { result = q2 }
 }
 
+/**
+ * Holds for all constructed state pairs.
+ *
+ * Used in `statePairDist`
+ */
 predicate isStatePair(StatePair p) { any() }
 
+/**
+ * Holds if there are transitions from the components of `q` to the corresponding
+ * components of `r`.
+ *
+ * Used in `statePairDist`
+ */
 predicate delta2(StatePair q, StatePair r) { step(q, _, _, r) }
 
 /**
