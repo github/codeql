@@ -2,34 +2,42 @@
   "-//Semmle//qhelp//EN"
   "qhelp.dtd">
 <qhelp>
+
 <overview>
-<p>An improperly set environment variable during the creation of an RMI or JMX server can lead 
-to an unauthenticated remote code execution vulnerability. This is because the
-RMI/JMX server environment allows attackers to supply arbitrary objects to the authentication 
-method, resulting in the attempted deserialization of an attacker-controlled object.
+<p>For special use cases some applications may implement a custom service which handles JMX-RMI connections.</p>
+
+<p>When creating such a custom service, a developer should pass a certain environment configuration to the JMX-RMI server initalisation, 
+as otherwise the JMX-RMI service is susceptible to an unsafe deserialization vulnerability.</p>
+
+<p>This is because the JMX-RMI service allows attackers to supply arbitrary objects to the service authentication 
+method, resulting in the attempted deserialization of an attacker-controlled object. 
+In the worst case scenario this could allow an attacker to achieve remote code execution within the context of the application server.</p>
+
+<p>By setting the appropriate environment, the deserialization can be controlled via a deserialization filter.</p>
+
 </overview>
 
 <recommendation>
-<p>During the creation/initialization of an RMI or JMX server an environment should be supplied that sets a deserialization filter.
-Ideally this filter only allows the deserialization of <code>java.lang.String</code>.
+<p>During the creation of a custom JMX-RMI service an environment should be supplied that sets a deserialization filter.
+Ideally this filter should be as restrictive as possible, for example to only allow the deserialization of <code>java.lang.String</code>.</p>
 
-The filter can be configured by setting the key <code>jmx.remote.rmi.server.credentials.filter.pattern</code> (given by the constant <code>RMIConnectorServer.CREDENTIALS_FILTER_PATTERN</code>).
-The filter should (ideally) only allow java.lang.String and disallow all other classes for deserialization: (<code>"java.lang.String;!*"</code>).
+<p>The filter can be configured by setting the key <code>jmx.remote.rmi.server.credentials.filter.pattern</code> (given by the constant <code>RMIConnectorServer.CREDENTIALS_FILTER_PATTERN</code>).
+The filter should (ideally) only allow java.lang.String and disallow all other classes for deserialization: (<code>"java.lang.String;!*"</code>).</p>
 
-The key-value pair can be set as following:
+<p>The key-value pair can be set as following:</p>
 
 <code>
 String stringsOnlyFilter = "java.lang.String;!*"; // Deny everything but java.lang.String
 
-Map<String, Object> env = new HashMap<String, Object>;
+Map&lt;String, Object&gt; env = new HashMap&lt;String, Object&gt;;
 env.put(RMIConnectorServer.CREDENTIALS_FILTER_PATTERN, stringsOnlyFilter);
 </code>
 
-For applications using Java 9 or below:
+<p>For applications using Java 6u113 to 9:</p>
 
 <code>
 // This is deprecated in Java 10+ !
-Map<String, Object> env = new HashMap<String, Object>;
+Map&lt;String, Object&gt; env = new HashMap&lt;String, Object&gt;;
 env.put ( 
   "jmx.remote.rmi.server.credential.types",
     new String[]{
@@ -39,20 +47,20 @@ env.put (
  );
 </code>
 
-Please note that the authentication implementation is vulnerable by default.
-For this reason an initialization with a <code>null</code> environment is also vulnerable.
+<p>Please note that the JMX-RMI service is vulnerable in the default configuration.
+For this reason an initialization with a <code>null</code> environment is also vulnerable.</p>
 </recommendation>
 
 <example>
-<p>The following examples show how an RMI or JMX server can be initialized securely.
+<p>The following examples show how an JMX-RMI service can be initialized securely.</p>
 
-<p>The first example shows how an RMI server can be initialized with a secure environment.</p>
+<p>The first example shows how an JMX server is initialized securely with the <code>JMXConnectorServerFactory.newJMXConnectorServer()</code> call.</p>
 
-<sample src="CorrectRmiInitialisation.java">
+<sample src="CorrectJmxInitialisation.java" />
 
-<p>The second example shows how the environment for a JMX server can be initialized securely.</p>
+<p>The second example shows how a JMX Server is initialized securely if the <code>RMIConnectorServer</code> class is used.</p>
 
-<sample src="CorrectJmxInitialisation.java">
+<sample src="CorrectRmiInitialisation.java" />
 
 </example>
 
@@ -63,4 +71,5 @@ For this reason an initialization with a <code>null</code> environment is also v
 <li>Java 10 API specification for <a href="https://docs.oracle.com/javase/10/docs/api/javax/management/remote/rmi/RMIConnectorServer.html#CREDENTIALS_FILTER_PATTERN">RMIConnectorServer.CREDENTIALS_FILTER_PATTERN</a></li>
 <li>The Java API specification for <a href="https://docs.oracle.com/javase/10/docs/api/javax/management/remote/rmi/RMIConnectorServer.html#CREDENTIAL_TYPES">RMIConnectorServer.CREDENTIAL_TYPES</a>. Please note that this field is deprecated since Java 10.</li>
 </references>
+
 </qhelp>
