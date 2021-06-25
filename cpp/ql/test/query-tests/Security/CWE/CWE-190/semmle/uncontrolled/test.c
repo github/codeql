@@ -113,9 +113,9 @@ void add_100(int r) {
 
 void randomTester2(int bound, int min, int max) {
   int r1 = rand() % bound;
-  r1 += 100; // GOOD [FALSE POSITIVE] (`bound` may possibly be MAX_INT in which case this could
-             //                        still overflow, but it's most likely fine)
+  r1 += 100; // GOOD (`bound` may possibly be MAX_INT in which case this could
+             //       still overflow, but it's most likely fine)
 
   int r2 = (rand() % (max - min + 1)) + min;
-  r2 += 100; // GOOD [FALSE POSITIVE] (This is a common way to clamp the random value between [min, max])
+  r2 += 100; // GOOD (This is a common way to clamp the random value between [min, max])
 }
