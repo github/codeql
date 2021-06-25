@@ -37,18 +37,18 @@ public class JaxXSS {
     else {
       if(chainDirectly) {
         if(contentTypeFirst)
-          return builder.type(MediaType.APPLICATION_JSON).entity(userControlled).build(); // $xss
+          return builder.type(MediaType.APPLICATION_JSON).entity(userControlled).build();
         else
-          return builder.entity(userControlled).type(MediaType.APPLICATION_JSON).build(); // $xss
+          return builder.entity(userControlled).type(MediaType.APPLICATION_JSON).build();
       }
       else {
         if(contentTypeFirst) {
           Response.ResponseBuilder builder2 = builder.type(MediaType.APPLICATION_JSON);
-          return builder2.entity(userControlled).build(); // $xss
+          return builder2.entity(userControlled).build();
         }
         else {
           Response.ResponseBuilder builder2 = builder.entity(userControlled);
-          return builder2.type(MediaType.APPLICATION_JSON).build(); // $xss
+          return builder2.type(MediaType.APPLICATION_JSON).build();
         }
       }
     }
@@ -188,7 +188,7 @@ public class JaxXSS {
 
   @Path("/abc")
   @Produces({"application/json"})
-  private static class ClassContentTypeSafe {
+  public static class ClassContentTypeSafe {
     @GET
     public Response test(String userControlled) {
       return Response.ok(userControlled).build();
@@ -212,7 +212,7 @@ public class JaxXSS {
 
   @Path("/abc")
   @Produces({"text/html"})
-  private static class ClassContentTypeUnsafe {
+  public static class ClassContentTypeUnsafe {
     @GET
     public Response test(String userControlled) {
       return Response.ok(userControlled).build(); // $MISSING: xss
