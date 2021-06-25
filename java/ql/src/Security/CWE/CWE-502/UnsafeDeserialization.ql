@@ -74,12 +74,13 @@ class UnsafeDeserializationConfig extends TaintTracking::Configuration {
       ) and
       node.asExpr() = ma.getArgument(0) and
       (
-        exists(
-          TypeLiteral tl // Final class
-        |
-          ma.getArgument(1) = tl and
-          tl.getType().(ParameterizedType).getATypeArgument().(Class).isFinal()
-        )
+        ma.getArgument(1)
+            .(TypeLiteral)
+            .getType()
+            .(ParameterizedType)
+            .getATypeArgument()
+            .(Class)
+            .isFinal()
         or
         exists(
           MethodAccess dma // Specified class type
