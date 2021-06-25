@@ -32,6 +32,7 @@
 /\s\S/
 /\d\D/
 /\h\H/
+/\n\r\t/
 
 # Groups
 /(foo)*bar/

@@ -323,11 +323,13 @@ class RegExpEscape extends RegExpNormalChar {
     or
     this.getUnescaped() = "r" and result = "\r"
     or
+    this.getUnescaped() = "t" and result = "\t"
+    or
     isUnicode() and
     result = getUnicode()
   }
 
-  predicate isIdentityEscape() { not this.getUnescaped() in ["n", "r"] }
+  predicate isIdentityEscape() { not this.getUnescaped() in ["n", "r", "t"] }
 
   /**
    * Gets the text for this escape. That is e.g. "\w".
