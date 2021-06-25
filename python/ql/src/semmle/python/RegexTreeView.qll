@@ -433,11 +433,9 @@ class RegExpEscape extends RegExpNormalChar {
    * E.g. for `\u0061` this returns "a".
    */
   private string getUnicode() {
-    // TODO: Enable this once we have support for `toUnicode`.
-    // exists(int codepoint | codepoint = sum(getHexValueFromUnicode(_)) |
-    //   result = codepoint.toUnicode()
-    // )
-    none()
+    exists(int codepoint | codepoint = sum(getHexValueFromUnicode(_)) |
+      result = codepoint.toUnicode()
+    )
   }
 
   /**
