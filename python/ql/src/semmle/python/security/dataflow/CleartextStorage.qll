@@ -21,8 +21,7 @@ module CleartextStorage {
   import CleartextStorageCustomizations::CleartextStorage
 
   /**
-   * A taint-tracking configuration for detecting use of a broken or weak
-   * cryptographic hashing algorithm on sensitive data.
+   * A taint-tracking configuration for detecting "Clear-text storage of sensitive information".
    */
   class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "CleartextStorage" }
