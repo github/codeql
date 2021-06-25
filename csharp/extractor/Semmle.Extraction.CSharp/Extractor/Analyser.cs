@@ -154,7 +154,6 @@ namespace Semmle.Extraction.CSharp
                     if (c.GetAssemblyOrModuleSymbol(r) is IAssemblySymbol assembly)
                     {
                         var cx = new Context(extractor, c, trapWriter, new AssemblyScope(assembly, assemblyPath), addAssemblyTrapPrefix);
-                        cx.UseTrapStack = _ => true;
 
                         foreach (var module in assembly.Modules)
                         {
@@ -215,7 +214,10 @@ namespace Semmle.Extraction.CSharp
                         var csNode = (CSharpSyntaxNode)root;
                         var directiveVisitor = new DirectiveVisitor(cx);
                         csNode.Accept(directiveVisitor);
-                        cx.UseTrapStack = push => !directiveVisitor.AffectedByCondition(push);
+                        foreach (var condition in directiveVisitor.ActiveConditions)
+                        {
+                            cx.TrapStackSuffix.Add(condition);
+                        }
                         csNode.Accept(new CompilationUnitVisitor(cx));
                         cx.PopulateAll();
                         CommentPopulator.ExtractCommentBlocks(cx, cx.CommentGenerator);

@@ -130,13 +130,6 @@ namespace Semmle.Extraction.CSharp.Entities
             public override Property Create(Context cx, IPropertySymbol init) => new Property(cx, init);
         }
 
-        public override TrapStackBehaviour TrapStackBehaviour
-        {
-            get
-            {
-                var (start, end) = Symbol.GetSpan(Context);
-                return new PushesLabel(start, end);
-            }
-        }
+        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.PushesLabel;
     }
 }

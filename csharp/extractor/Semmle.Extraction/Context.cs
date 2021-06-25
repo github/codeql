@@ -30,7 +30,7 @@ namespace Semmle.Extraction
         /// </summary>
         public bool ShouldAddAssemblyTrapPrefix { get; }
 
-        public Predicate<PushesLabel> UseTrapStack { get; set; } = _ => true;
+        public IList<object> TrapStackSuffix { get; } = new List<object>();
 
         private int GetNewId() => TrapWriter.IdCounter++;
 
@@ -276,26 +276,22 @@ namespace Semmle.Extraction
 
             switch (entity.TrapStackBehaviour)
             {
-                case NeedsLabel:
+                case TrapStackBehaviour.NeedsLabel:
+                    if (!tagStack.Any())
+                        ExtractionError("TagStack unexpectedly empty", optionalSymbol, entity);
                     duplicationGuard = false;
                     deferred = false;
                     break;
-                case NoLabel:
+                case TrapStackBehaviour.NoLabel:
                     duplicationGuard = false;
                     deferred = tagStack.Any();
                     break;
-                case OptionalLabel:
+                case TrapStackBehaviour.OptionalLabel:
                     duplicationGuard = false;
                     deferred = false;
                     break;
-                case PushesLabel push:
-                    duplicationGuard = UseTrapStack(push);
-                    if (!duplicationGuard)
-                    {
-                        var msg = new Message("Disabling TRAP stack", entity.Label.ToString(), CreateLocation(entity.ReportingLocation), severity: Severity.Debug);
-                        new ExtractionMessage(this, msg);
-                        Extractor.Message(msg);
-                    }
+                case TrapStackBehaviour.PushesLabel:
+                    duplicationGuard = true;
                     deferred = duplicationGuard && tagStack.Any();
                     break;
                 default:
@@ -303,7 +299,17 @@ namespace Semmle.Extraction
             }
 
             var a = duplicationGuard && IsEntityDuplicationGuarded(entity, out var loc)
-                ? (Action)(() => WithDuplicationGuard(new Key(entity, loc), () => entity.Populate(TrapWriter.Writer)))
+                ? (() =>
+                {
+                    var args = new object[TrapStackSuffix.Count + 2];
+                    args[0] = entity;
+                    args[1] = loc;
+                    for (var i = 0; i < TrapStackSuffix.Count; i++)
+                    {
+                        args[i + 2] = TrapStackSuffix[i];
+                    }
+                    WithDuplicationGuard(new Key(args), () => entity.Populate(TrapWriter.Writer));
+                })
                 : (Action)(() => this.Try(null, optionalSymbol, () => entity.Populate(TrapWriter.Writer)));
 
             if (deferred)
@@ -340,6 +346,28 @@ namespace Semmle.Extraction
         protected Key? GetCurrentTagStackKey() => tagStack.Count > 0
             ? tagStack.Peek()
             : null;
+
+        /// <summary>
+        /// Log an extraction error.
+        /// </summary>
+        /// <param name="message">The text of the message.</param>
+        /// <param name="optionalSymbol">The symbol of the error, or null.</param>
+        /// <param name="optionalEntity">The entity of the error, or null.</param>
+        private void ExtractionError(string message, ISymbol? optionalSymbol, Entity optionalEntity)
+        {
+            if (!(optionalSymbol is null))
+            {
+                ExtractionError(message, optionalSymbol.ToDisplayString(), CreateLocation(optionalSymbol.Locations.FirstOrDefault()));
+            }
+            else if (!(optionalEntity is null))
+            {
+                ExtractionError(message, optionalEntity.Label.ToString(), CreateLocation(optionalEntity.ReportingLocation));
+            }
+            else
+            {
+                ExtractionError(message, null, CreateLocation());
+            }
+        }
 
         /// <summary>
         /// Log an extraction error.

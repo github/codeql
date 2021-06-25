@@ -9,7 +9,13 @@ namespace Semmle.Extraction.CSharp.Populators
     internal class DirectiveVisitor : CSharpSyntaxWalker
     {
         private readonly Context cx;
-        private readonly List<(int Start, int End)> conditionSpans = new();
+        private readonly List<IEntity> activeConditions = new();
+
+        /// <summary>
+        /// Gets a list of `#if` and `#elif` entities that are active, and where
+        /// the condition is `true`.
+        /// </summary>
+        public IEnumerable<IEntity> ActiveConditions => activeConditions;
 
         public DirectiveVisitor(Context cx) : base(SyntaxWalkerDepth.StructuredTrivia)
         {
@@ -18,49 +24,49 @@ namespace Semmle.Extraction.CSharp.Populators
 
         public override void VisitPragmaWarningDirectiveTrivia(PragmaWarningDirectiveTriviaSyntax node)
         {
-            new Entities.PragmaWarningDirective(cx, node);
+            Entities.PragmaWarningDirective.Create(cx, node);
         }
 
         public override void VisitPragmaChecksumDirectiveTrivia(PragmaChecksumDirectiveTriviaSyntax node)
         {
-            new Entities.PragmaChecksumDirective(cx, node);
+            Entities.PragmaChecksumDirective.Create(cx, node);
         }
 
         public override void VisitDefineDirectiveTrivia(DefineDirectiveTriviaSyntax node)
         {
-            new Entities.DefineDirective(cx, node);
+            Entities.DefineDirective.Create(cx, node);
         }
 
         public override void VisitUndefDirectiveTrivia(UndefDirectiveTriviaSyntax node)
         {
-            new Entities.UndefineDirective(cx, node);
+            Entities.UndefineDirective.Create(cx, node);
         }
 
         public override void VisitWarningDirectiveTrivia(WarningDirectiveTriviaSyntax node)
         {
-            new Entities.WarningDirective(cx, node);
+            Entities.WarningDirective.Create(cx, node);
         }
 
         public override void VisitErrorDirectiveTrivia(ErrorDirectiveTriviaSyntax node)
         {
-            new Entities.ErrorDirective(cx, node);
+            Entities.ErrorDirective.Create(cx, node);
         }
 
         public override void VisitNullableDirectiveTrivia(NullableDirectiveTriviaSyntax node)
         {
-            new Entities.NullableDirective(cx, node);
+            Entities.NullableDirective.Create(cx, node);
         }
 
         public override void VisitLineDirectiveTrivia(LineDirectiveTriviaSyntax node)
         {
-            new Entities.LineDirective(cx, node);
+            Entities.LineDirective.Create(cx, node);
         }
 
         private readonly Stack<Entities.RegionDirective> regionStarts = new Stack<Entities.RegionDirective>();
 
         public override void VisitRegionDirectiveTrivia(RegionDirectiveTriviaSyntax node)
         {
-            var region = new Entities.RegionDirective(cx, node);
+            var region = Entities.RegionDirective.Create(cx, node);
             regionStarts.Push(region);
         }
 
@@ -74,7 +80,7 @@ namespace Semmle.Extraction.CSharp.Populators
             }
 
             var start = regionStarts.Pop();
-            new Entities.EndRegionDirective(cx, node, start);
+            Entities.EndRegionDirective.Create(cx, node, start);
         }
 
         private class IfDirectiveStackElement
@@ -93,8 +99,10 @@ namespace Semmle.Extraction.CSharp.Populators
 
         public override void VisitIfDirectiveTrivia(IfDirectiveTriviaSyntax node)
         {
-            var ifStart = new Entities.IfDirective(cx, node);
+            var ifStart = Entities.IfDirective.Create(cx, node);
             ifStarts.Push(new IfDirectiveStackElement(ifStart));
+            if (node.IsActive && node.ConditionValue)
+                activeConditions.Add(ifStart);
         }
 
         public override void VisitEndIfDirectiveTrivia(EndIfDirectiveTriviaSyntax node)
@@ -107,8 +115,7 @@ namespace Semmle.Extraction.CSharp.Populators
             }
 
             var start = ifStarts.Pop();
-            var endIf = new Entities.EndIfDirective(cx, node, start.Entity);
-            conditionSpans.Add((start.Entity.ReportingLocation.SourceSpan.Start, endIf.ReportingLocation.SourceSpan.End));
+            Entities.EndIfDirective.Create(cx, node, start.Entity);
         }
 
         public override void VisitElifDirectiveTrivia(ElifDirectiveTriviaSyntax node)
@@ -121,7 +128,9 @@ namespace Semmle.Extraction.CSharp.Populators
             }
 
             var start = ifStarts.Peek();
-            new Entities.ElifDirective(cx, node, start.Entity, start.SiblingCount++);
+            var elIf = Entities.ElifDirective.Create(cx, node, start.Entity, start.SiblingCount++);
+            if (node.IsActive && node.ConditionValue)
+                activeConditions.Add(elIf);
         }
 
         public override void VisitElseDirectiveTrivia(ElseDirectiveTriviaSyntax node)
@@ -134,16 +143,7 @@ namespace Semmle.Extraction.CSharp.Populators
             }
 
             var start = ifStarts.Peek();
-            new Entities.ElseDirective(cx, node, start.Entity, start.SiblingCount++);
+            Entities.ElseDirective.Create(cx, node, start.Entity, start.SiblingCount++);
         }
-
-        /// <summary>
-        /// Whether an entity specified to push a TRAP stack label may be affected
-        /// by a preprocessor condition. In such cases, the TRAP stack should not
-        /// be used, as we want to include multiple implementations in the case where
-        /// the file is compiled multiple times.
-        /// </summary>
-        public bool AffectedByCondition(PushesLabel push) =>
-            conditionSpans.Any(span => span.Start <= push.End && span.End >= push.Start);
     }
 }

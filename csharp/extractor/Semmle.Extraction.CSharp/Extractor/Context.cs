@@ -51,7 +51,7 @@ namespace Semmle.Extraction.CSharp
 
         public bool IsAssemblyScope => scope is AssemblyScope;
 
-        public SyntaxTree? SourceTree => scope is SourceScope sc ? sc.SourceTree : null;
+        private SyntaxTree? SourceTree => scope is SourceScope sc ? sc.SourceTree : null;
 
         /// <summary>
         ///     Whether the given symbol needs to be defined in this context.

@@ -2,7 +2,6 @@ using Microsoft.CodeAnalysis;
 using System.Linq;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
-using System.Collections.Generic;
 using Semmle.Extraction.Entities;
 using Semmle.Extraction.Kinds;
 using Semmle.Extraction.CSharp.Entities.Expressions;
@@ -137,13 +136,6 @@ namespace Semmle.Extraction.CSharp.Entities
 
             public override Field Create(Context cx, IFieldSymbol init) => new Field(cx, init);
         }
-        public override TrapStackBehaviour TrapStackBehaviour
-        {
-            get
-            {
-                var (start, end) = Symbol.GetSpan(Context);
-                return new PushesLabel(start, end);
-            }
-        }
+        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.PushesLabel;
     }
 }

@@ -57,8 +57,3 @@
 | trivia.cs:55:27:55:75 | // ... | trivia.cs:48:5:58:5 | {...} | Sets the nullable warning context to disabled. |
 | trivia.cs:56:26:56:73 | // ... | trivia.cs:48:5:58:5 | {...} | Sets the nullable warning context to enabled. |
 | trivia.cs:57:27:57:87 | // ... | trivia.cs:48:5:58:5 | {...} | Restores the nullable warning context to project settings. |
-| trivia.cs:63:22:63:37 | // ... | trivia.cs:61:7:61:9 | Tr4 | no TRAP stack |
-| trivia.cs:83:22:83:37 | // ... | trivia.cs:80:7:80:9 | Tr5 | no TRAP stack |
-| trivia.cs:92:19:92:34 | // ... | trivia.cs:80:7:80:9 | Tr5 | no TRAP stack |
-| trivia.cs:100:19:100:34 | // ... | trivia.cs:100:16:100:17 | P1 | no TRAP stack |
-| trivia.cs:104:14:104:29 | // ... | trivia.cs:100:16:100:17 | P1 | no TRAP stack |
