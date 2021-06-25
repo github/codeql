@@ -28,9 +28,9 @@ deprecated class PEP249ModuleApiNode = PEP249::PEP249ModuleApiNode;
 deprecated module Connection = PEP249::Connection;
 
 /**
- * DEPRECATED: Use `PEP249::cursor` instead.
+ * DEPRECATED: Use `PEP249::Cursor` instead.
  */
-deprecated module cursor = PEP249::cursor;
+deprecated module cursor = PEP249::Cursor;
 
 /**
  * DEPRECATED: Use `PEP249::execute` instead.

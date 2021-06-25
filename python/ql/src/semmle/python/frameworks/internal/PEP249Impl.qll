@@ -78,7 +78,7 @@ module PEP249 {
    * These are are returned by the `cursor` method on a database connection.
    * See https://www.python.org/dev/peps/pep-0249/#cursor.
    */
-  module cursor {
+  module Cursor {
     /**
      * A source of database cursors (following PEP 249), extend this class to model new instances.
      *
@@ -148,7 +148,7 @@ module PEP249 {
    */
   private DataFlow::LocalSourceNode execute(DataFlow::TypeTracker t) {
     t.startInAttr("execute") and
-    result in [cursor::instance(), Connection::instance()]
+    result in [Cursor::instance(), Connection::instance()]
     or
     exists(DataFlow::TypeTracker t2 | result = execute(t2).track(t2, t))
   }
