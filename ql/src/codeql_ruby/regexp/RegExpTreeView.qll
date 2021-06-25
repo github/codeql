@@ -399,12 +399,7 @@ class RegExpEscape extends RegExpNormalChar {
  * ```
  */
 class RegExpCharacterClassEscape extends RegExpEscape {
-  // string value;
-  RegExpCharacterClassEscape() {
-    // value = re.getText().substring(start + 1, end) and
-    // value in ["d", "D", "s", "S", "w", "W"]
-    this.getValue() in ["d", "D", "s", "S", "w", "W"]
-  }
+  RegExpCharacterClassEscape() { this.getValue() in ["d", "D", "s", "S", "w", "W", "h", "H"] }
 
   /** Gets the name of the character class; for example, `w` for `\w`. */
   // override string getValue() { result = value }

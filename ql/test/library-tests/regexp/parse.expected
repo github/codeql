@@ -216,7 +216,7 @@ regexp.rb:
 
 #   33| [RegExpCharacterClassEscape] \d
 
-#   34| [RegExpConstant, RegExpEscape] \h
+#   34| [RegExpCharacterClassEscape] \h
 
 #   37| [RegExpConstant, RegExpNormalChar] f
 
@@ -291,8 +291,8 @@ regexp.rb:
 #-----| 1 -> [RegExpCharacterClassEscape] \D
 
 #   34| [RegExpSequence] \h\H
-#-----| 0 -> [RegExpConstant, RegExpEscape] \h
-#-----| 1 -> [RegExpConstant, RegExpEscape] \H
+#-----| 0 -> [RegExpCharacterClassEscape] \h
+#-----| 1 -> [RegExpCharacterClassEscape] \H
 
 #   37| [RegExpSequence] (foo)*bar
 #-----| 0 -> [RegExpStar] (foo)*
@@ -388,7 +388,7 @@ regexp.rb:
 
 #   33| [RegExpCharacterClassEscape] \D
 
-#   34| [RegExpConstant, RegExpEscape] \H
+#   34| [RegExpCharacterClassEscape] \H
 
 #   37| [RegExpConstant, RegExpNormalChar] o
 
