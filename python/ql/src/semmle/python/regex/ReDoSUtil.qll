@@ -99,9 +99,9 @@ class RegExpRoot extends RegExpTerm {
     // there are no lookbehinds
     not exists(RegExpLookbehind lbh | getRoot(lbh) = this) and
     // is actually used as a RegExp
-    isUsedAsRegExp() //and
-    // // pragmatic performance optimization: ignore minified files.
-    // not getRootTerm().getParent().(Expr).getTopLevel().isMinified()
+    isUsedAsRegExp() and
+    // not excluded for library specific reasons
+    not isExcluded(getRootTerm().getParent())
   }
 }
 
@@ -1022,7 +1022,6 @@ private predicate isReDoSAttackable(RegExpTerm term, string pump, State s) {
  * `prefixMsg` contains a friendly message for a prefix that reaches `s` (or `prefixMsg` is the empty string if the prefix is empty or if no prefix could be found).
  */
 predicate hasReDoSResult(RegExpTerm t, string pump, State s, string prefixMsg) {
-  not t.getRegex().getAMode() = "VERBOSE" and // exclude verbose mode regexes
   isReDoSAttackable(t, pump, s) and
   (
     prefixMsg = "starting with '" + escape(PrefixConstruction::prefix(s)) + "' and " and

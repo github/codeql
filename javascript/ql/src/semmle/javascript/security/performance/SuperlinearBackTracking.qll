@@ -3,7 +3,6 @@
  * perform backtracking in superlinear time.
  */
 
-import javascript
 import ReDoSUtil
 
 /*

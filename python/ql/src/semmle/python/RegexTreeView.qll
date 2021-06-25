@@ -14,6 +14,8 @@ class RegExpParent extends TRegExpParent {
   RegExpTerm getAChild() { result = getChild(_) }
 
   int getNumChild() { result = count(getAChild()) }
+
+  abstract Regex getRegex();
 }
 
 class RegExpLiteral extends TRegExpLiteral, RegExpParent {
@@ -24,6 +26,8 @@ class RegExpLiteral extends TRegExpLiteral, RegExpParent {
   override RegExpTerm getChild(int i) { i = 0 and result.getRegex() = re and result.isRootTerm() }
 
   predicate isDotAll() { re.getAMode() = "DOTALL" }
+
+  override Regex getRegex() { result = re }
 }
 
 class RegExpTerm extends RegExpParent {
@@ -84,7 +88,7 @@ class RegExpTerm extends RegExpParent {
 
   RegExpParent getParent() { result.getAChild() = this }
 
-  Regex getRegex() { result = re }
+  override Regex getRegex() { result = re }
 
   int getStart() { result = start }
 

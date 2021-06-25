@@ -12,7 +12,7 @@
  * states that will cause backtracking (a rejecting suffix exists).
  */
 
-import javascript
+import RegExpTreeView
 
 /**
  * A configuration for which parts of a regular expression should be considered relevant for
@@ -100,8 +100,8 @@ class RegExpRoot extends RegExpTerm {
     not exists(RegExpLookbehind lbh | getRoot(lbh) = this) and
     // is actually used as a RegExp
     isUsedAsRegExp() and
-    // pragmatic performance optimization: ignore minified files.
-    not getRootTerm().getParent().(Expr).getTopLevel().isMinified()
+    // not excluded for library specific reasons
+    not isExcluded(getRootTerm().getParent())
   }
 }
 

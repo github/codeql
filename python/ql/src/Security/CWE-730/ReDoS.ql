@@ -16,7 +16,10 @@ import python
 import semmle.python.regex.ExponentialBackTracking
 
 from RegExpTerm t, string pump, State s, string prefixMsg
-where hasReDoSResult(t, pump, s, prefixMsg)
+where
+  hasReDoSResult(t, pump, s, prefixMsg) and
+  // exclude verbose mode regexes for now
+  not t.getRegex().getAMode() = "VERBOSE"
 select t,
   "This part of the regular expression may cause exponential backtracking on strings " + prefixMsg +
     "containing many repetitions of '" + pump + "'."
