@@ -284,7 +284,8 @@ class MessageBodyReaderRead extends Method {
 }
 
 private string getContentTypeString(Expr e) {
-  result = e.(CompileTimeConstantExpr).getStringValue()
+  result = e.(CompileTimeConstantExpr).getStringValue() and
+  result != ""
   or
   exists(Field jaxMediaType |
     // Accesses to static fields on `MediaType` class do not have constant strings in the database
@@ -327,8 +328,9 @@ private class JaxRSXssSink extends XssSink {
     |
       not exists(resourceMethod.getProducesAnnotation())
       or
-      getContentTypeString(resourceMethod.getProducesAnnotation().getADeclaredContentTypeExpr()) =
-        "text/plain"
+      isXssVulnerableContentType(getContentTypeString(resourceMethod
+              .getProducesAnnotation()
+              .getADeclaredContentTypeExpr()))
     )
   }
 }
@@ -803,5 +805,152 @@ private class JaxRsUrlOpenSink extends SinkModelCsv {
         "javax.ws.rs.client;Client;true;target;;;Argument[0];open-url",
         "jakarta.ws.rs.client;Client;true;target;;;Argument[0];open-url"
       ]
+  }
+}
+
+private predicate isXssVulnerableContentTypeExpr(Expr e) {
+  isXssVulnerableContentType(getContentTypeString(e))
+}
+
+private predicate isXssSafeContentTypeExpr(Expr e) { isXssSafeContentType(getContentTypeString(e)) }
+
+/**
+ * Gets a builder expression or related type that is configured to use the given `contentType`.
+ *
+ * This could be an instance of `Response.ResponseBuilder`, `Variant`, `Variant.VariantListBuilder` or
+ * a `List<Variant>`.
+ *
+ * This routine is used to search forwards for response entities set after the content-type is configured.
+ * It does not need to consider cases where the entity is set in the same call, or the entity has already
+ * been set: these are handled by simple sanitization below.
+ */
+private DataFlow::Node getABuilderWithExplicitContentType(Expr contentType) {
+  // Base case: ResponseBuilder.type(contentType)
+  result.asExpr() =
+    any(MethodAccess ma |
+      ma.getCallee().hasQualifiedName(getAJaxRsPackage("core"), "Response$ResponseBuilder", "type") and
+      contentType = ma.getArgument(0)
+    )
+  or
+  // Base case: new Variant(contentType, ...)
+  result.asExpr() =
+    any(ClassInstanceExpr cie |
+      cie.getConstructedType().hasQualifiedName(getAJaxRsPackage("core"), "Variant") and
+      contentType = cie.getArgument(0)
+    )
+  or
+  // Base case: Variant[.VariantListBuilder].mediaTypes(...)
+  result.asExpr() =
+    any(MethodAccess ma |
+      ma.getCallee()
+          .hasQualifiedName(getAJaxRsPackage("core"), ["Variant", "Variant$VariantListBuilder"],
+            "mediaTypes") and
+      contentType = ma.getAnArgument()
+    )
+  or
+  // Recursive case: propagate through variant list building:
+  result.asExpr() =
+    any(MethodAccess ma |
+      (
+        ma.getType()
+            .(RefType)
+            .hasQualifiedName(getAJaxRsPackage("core"), "Variant$VariantListBuilder")
+        or
+        ma.getMethod()
+            .hasQualifiedName(getAJaxRsPackage("core"), "Variant$VariantListBuilder", "build")
+      ) and
+      [ma.getAnArgument(), ma.getQualifier()] =
+        getABuilderWithExplicitContentType(contentType).asExpr()
+    )
+  or
+  // Recursive case: propagate through a List.get operation
+  result.asExpr() =
+    any(MethodAccess ma |
+      ma.getMethod().hasQualifiedName("java.util", "List<Variant>", "get") and
+      ma.getQualifier() = getABuilderWithExplicitContentType(contentType).asExpr()
+    )
+  or
+  // Recursive case: propagate through Response.ResponseBuilder operations, including the `variant(...)` operation.
+  result.asExpr() =
+    any(MethodAccess ma |
+      ma.getType().(RefType).hasQualifiedName(getAJaxRsPackage("core"), "Response$ResponseBuilder") and
+      [ma.getQualifier(), ma.getArgument(0)] =
+        getABuilderWithExplicitContentType(contentType).asExpr()
+    )
+  or
+  // Recursive case: ordinary local dataflow
+  DataFlow::localFlow(getABuilderWithExplicitContentType(contentType), result)
+}
+
+private DataFlow::Node getASanitizedBuilder() {
+  result = getABuilderWithExplicitContentType(any(Expr e | isXssSafeContentTypeExpr(e)))
+}
+
+private DataFlow::Node getAVulnerableBuilder() {
+  result = getABuilderWithExplicitContentType(any(Expr e | isXssVulnerableContentTypeExpr(e)))
+}
+
+/**
+ * A response builder sanitized by setting a safe content type.
+ *
+ * The content type could be set before the `entity(...)` call that needs sanitizing
+ * (e.g. `Response.ok().type("application/json").entity(sanitizeMe)`)
+ * or at the same time (e.g. `Response.ok(sanitizeMe, "application/json")`
+ * or the content-type could be set afterwards (e.g. `Response.ok().entity(userControlled).type("application/json")`)
+ *
+ * This differs from `getASanitizedBuilder` in that we also include functions that must set the entity
+ * at the same time, or the entity must already have been set, so propagating forwards to sanitize future
+ * build steps is not necessary.
+ */
+private class SanitizedResponseBuilder extends XssSanitizer {
+  SanitizedResponseBuilder() {
+    // e.g. sanitizeMe.type("application/json")
+    this = getASanitizedBuilder()
+    or
+    this.asExpr() =
+      any(MethodAccess ma |
+        ma.getMethod().hasQualifiedName(getAJaxRsPackage("core"), "Response", "ok") and
+        (
+          // e.g. Response.ok(sanitizeMe, new Variant("application/json", ...))
+          ma.getArgument(1) = getASanitizedBuilder().asExpr()
+          or
+          // e.g. Response.ok(sanitizeMe, "application/json")
+          isXssSafeContentTypeExpr(ma.getArgument(1))
+        )
+      )
+  }
+}
+
+/**
+ * An entity call that serves as a sink and barrier because it has a vulnerable content-type set.
+ *
+ * We flag these as direct sinks because otherwise it may be sanitized when it reaches a resource
+ * method with a safe-looking `@Produces` annotation. They are barriers because otherwise if the
+ * resource method does *not* have a safe-looking `@Produces` annotation then it would be doubly
+ * reported, once at the `entity(...)` call and once on return from the resource method.
+ */
+private class VulnerableEntity extends XssSinkBarrier {
+  VulnerableEntity() {
+    this.asExpr() =
+      any(MethodAccess ma |
+        (
+          // Vulnerable content-type already set:
+          ma.getQualifier() = getAVulnerableBuilder().asExpr()
+          or
+          // Vulnerable content-type set in the future:
+          getAVulnerableBuilder().asExpr().(MethodAccess).getQualifier*() = ma
+        ) and
+        ma.getMethod().hasName("entity")
+      ).getArgument(0)
+    or
+    this.asExpr() =
+      any(MethodAccess ma |
+        (
+          isXssVulnerableContentTypeExpr(ma.getArgument(1))
+          or
+          ma.getArgument(1) = getAVulnerableBuilder().asExpr()
+        ) and
+        ma.getMethod().hasName("ok")
+      ).getArgument(0)
   }
 }

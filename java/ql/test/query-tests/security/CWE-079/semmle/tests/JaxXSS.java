@@ -63,39 +63,43 @@ public class JaxXSS {
     if(safeContentType) {
       if(route == 0) {
         // via ok, as a string literal:
-        return Response.ok(userControlled, "application/json").build(); // $SPURIOUS: xss
+        return Response.ok(userControlled, "application/json").build();
       }
       else if(route == 1) {
         // via ok, as a string constant:
-        return Response.ok(userControlled, MediaType.APPLICATION_JSON).build(); // $SPURIOUS: xss
+        return Response.ok(userControlled, MediaType.APPLICATION_JSON).build();
       }
       else if(route == 2) {
         // via ok, as a MediaType constant:
-        return Response.ok(userControlled, MediaType.APPLICATION_JSON_TYPE).build(); // $SPURIOUS: xss
+        return Response.ok(userControlled, MediaType.APPLICATION_JSON_TYPE).build();
       }
       else if(route == 3) {
         // via ok, as a Variant, via constructor:
-        return Response.ok(userControlled, new Variant(MediaType.APPLICATION_JSON_TYPE, "language", "encoding")).build(); // $SPURIOUS: xss
+        return Response.ok(userControlled, new Variant(MediaType.APPLICATION_JSON_TYPE, "language", "encoding")).build();
       }
       else if(route == 4) {
         // via ok, as a Variant, via static method:
-        return Response.ok(userControlled, Variant.mediaTypes(MediaType.APPLICATION_JSON_TYPE).build().get(0)).build(); // $SPURIOUS: xss
+        return Response.ok(userControlled, Variant.mediaTypes(MediaType.APPLICATION_JSON_TYPE).build().get(0)).build();
+      }
+      else if(route == -4) {
+        // via ok, as a Variant, via static method (testing multiple media types):
+        return Response.ok(userControlled, Variant.mediaTypes(MediaType.APPLICATION_JSON_TYPE, MediaType.APPLICATION_OCTET_STREAM_TYPE).build().get(0)).build();
       }
       else if(route == 5) {
         // via ok, as a Variant, via instance method:
-        return Response.ok(userControlled, Variant.languages(Locale.UK).mediaTypes(MediaType.APPLICATION_JSON_TYPE).build().get(0)).build(); // $SPURIOUS: xss
+        return Response.ok(userControlled, Variant.languages(Locale.UK).mediaTypes(MediaType.APPLICATION_JSON_TYPE).build().get(0)).build();
       }
       else if(route == 6) {
         // via builder variant, before entity:
-        return Response.ok().variant(new Variant(MediaType.APPLICATION_JSON_TYPE, "language", "encoding")).entity(userControlled).build(); // $SPURIOUS: xss
+        return Response.ok().variant(new Variant(MediaType.APPLICATION_JSON_TYPE, "language", "encoding")).entity(userControlled).build();
       }
       else if(route == 7) {
         // via builder variant, after entity:
-        return Response.ok().entity(userControlled).variant(new Variant(MediaType.APPLICATION_JSON_TYPE, "language", "encoding")).build(); // $SPURIOUS: xss
+        return Response.ok().entity(userControlled).variant(new Variant(MediaType.APPLICATION_JSON_TYPE, "language", "encoding")).build();
       }
       else if(route == 8) {
         // provide entity via ok, then content-type via builder:
-        return Response.ok(userControlled).type(MediaType.APPLICATION_JSON_TYPE).build(); // $SPURIOUS: xss
+        return Response.ok(userControlled).type(MediaType.APPLICATION_JSON_TYPE).build();
       }
     }
     else {
@@ -158,27 +162,27 @@ public class JaxXSS {
 
   @GET @Produces(MediaType.TEXT_HTML)
   public static Response methodContentTypeUnsafe(String userControlled) {
-    return Response.ok(userControlled).build(); // $MISSING: xss
+    return Response.ok(userControlled).build(); // $xss
   }
 
   @POST @Produces(MediaType.TEXT_HTML)
   public static Response methodContentTypeUnsafePost(String userControlled) {
-    return Response.ok(userControlled).build(); // $MISSING: xss
+    return Response.ok(userControlled).build(); // $xss
   }
 
   @GET @Produces("text/html")
   public static Response methodContentTypeUnsafeStringLiteral(String userControlled) {
-    return Response.ok(userControlled).build(); // $MISSING: xss
+    return Response.ok(userControlled).build(); // $xss
   }
 
   @GET @Produces({MediaType.TEXT_HTML, MediaType.APPLICATION_JSON})
   public static Response methodContentTypeMaybeSafe(String userControlled) {
-    return Response.ok(userControlled).build(); // $MISSING: xss
+    return Response.ok(userControlled).build(); // $xss
   }
 
   @GET @Produces(MediaType.APPLICATION_JSON)
   public static Response methodContentTypeSafeOverriddenWithUnsafe(String userControlled) {
-    return Response.ok().type(MediaType.TEXT_HTML).entity(userControlled).build(); // $MISSING: xss
+    return Response.ok().type(MediaType.TEXT_HTML).entity(userControlled).build(); // $xss
   }
 
   @GET @Produces(MediaType.TEXT_HTML)
@@ -201,12 +205,12 @@ public class JaxXSS {
 
     @GET @Produces({"text/html"})
     public Response overridesWithUnsafe(String userControlled) {
-      return Response.ok(userControlled).build(); // $MISSING: xss
+      return Response.ok(userControlled).build(); // $xss
     }
 
     @GET
     public Response overridesWithUnsafe2(String userControlled) {
-      return Response.ok().type(MediaType.TEXT_HTML).entity(userControlled).build(); // $MISSING: xss
+      return Response.ok().type(MediaType.TEXT_HTML).entity(userControlled).build(); // $xss
     }
   }
 
@@ -215,12 +219,12 @@ public class JaxXSS {
   public static class ClassContentTypeUnsafe {
     @GET
     public Response test(String userControlled) {
-      return Response.ok(userControlled).build(); // $MISSING: xss
+      return Response.ok(userControlled).build(); // $xss
     }
 
     @GET
     public String testDirectReturn(String userControlled) {
-      return userControlled; // $MISSING: xss
+      return userControlled; // $xss
     }
 
     @GET @Produces({"application/json"})
