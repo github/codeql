@@ -60,7 +60,7 @@ class SafeFlow extends DataFlow::Configuration {
           .(FieldAccess)
           .getField()
           .hasQualifiedName("javax.management.remote.rmi", "RMIConnectorServer",
-            ["CREDENTIAL_TYPES", "CREDENTIALS_FILTER_PATTERN", "SERIAL_FILTER_PATTERN"])
+            ["CREDENTIAL_TYPES", "CREDENTIALS_FILTER_PATTERN"])
     |
       put.getQualifier() = qualifier and
       put.getMethod().(MapMethod).getReceiverKeyType() instanceof TypeString and
