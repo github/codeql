@@ -113,6 +113,11 @@ class ReturningCfgNode extends AstCfgNode {
   }
 }
 
+/** A control-flow node that wraps a `StringComponent` AST expression. */
+class StringComponentCfgNode extends AstCfgNode {
+  StringComponentCfgNode() { this.getNode() instanceof StringComponent }
+}
+
 private Expr desugar(Expr n) {
   result = n.getDesugared()
   or
@@ -197,7 +202,7 @@ module ExprNodes {
 
     BinaryOperationCfgNode() { e = bo }
 
-    final override BinaryOperation getExpr() { result = super.getExpr() }
+    override BinaryOperation getExpr() { result = super.getExpr() }
 
     /** Gets the left operand of this binary operation. */
     final ExprCfgNode getLeftOperand() { e.hasCfgChild(bo.getLeftOperand(), this, result) }
@@ -253,7 +258,7 @@ module ExprNodes {
   class MethodCallCfgNode extends CallCfgNode {
     MethodCallCfgNode() { super.getExpr() instanceof MethodCall }
 
-    final override MethodCall getExpr() { result = super.getExpr() }
+    override MethodCall getExpr() { result = super.getExpr() }
   }
 
   /** A control-flow node that wraps a `CaseExpr` AST expression. */
@@ -329,5 +334,45 @@ module ExprNodes {
     override VariableReadAccess e;
 
     final override VariableReadAccess getExpr() { result = ExprCfgNode.super.getExpr() }
+  }
+
+  /** A control-flow node that wraps a `StringInterpolationComponent` AST expression. */
+  class StringInterpolationComponentCfgNode extends StmtSequenceCfgNode {
+    StringInterpolationComponentCfgNode() { this.getNode() instanceof StringInterpolationComponent }
+  }
+
+  private class StringlikeLiteralChildMapping extends ExprChildMapping, StringlikeLiteral {
+    override predicate relevantChild(Expr e) { e = this.getComponent(_) }
+  }
+
+  /** A control-flow node that wraps a `StringlikeLiteral` AST expression. */
+  class StringlikeLiteralCfgNode extends ExprCfgNode {
+    override StringlikeLiteralChildMapping e;
+
+    final override StringlikeLiteral getExpr() { result = super.getExpr() }
+
+    /** Gets a component of this `StringlikeLiteral` */
+    StringComponentCfgNode getAComponent() { e.hasCfgChild(e.getComponent(_), this, result) }
+  }
+
+  /** A control-flow node that wraps a `StringLiteral` AST expression. */
+  class StringLiteralCfgNode extends ExprCfgNode {
+    override StringLiteral e;
+
+    final override StringLiteral getExpr() { result = super.getExpr() }
+  }
+
+  /** A control-flow node that wraps a `ComparisonOperation` AST expression. */
+  class ComparisonOperationCfgNode extends BinaryOperationCfgNode {
+    ComparisonOperationCfgNode() { e instanceof ComparisonOperation }
+
+    final override ComparisonOperation getExpr() { result = super.getExpr() }
+  }
+
+  /** A control-flow node that wraps an `ElementReference` AST expression. */
+  class ElementReferenceCfgNode extends MethodCallCfgNode {
+    ElementReferenceCfgNode() { e instanceof ElementReference }
+
+    final override ElementReference getExpr() { result = super.getExpr() }
   }
 }

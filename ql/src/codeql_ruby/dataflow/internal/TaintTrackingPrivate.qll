@@ -15,9 +15,17 @@ predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
  */
 cached
 predicate defaultAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+  // operation involving `nodeFrom`
   exists(CfgNodes::ExprNodes::OperationCfgNode op |
     op = nodeTo.asExpr() and
     op.getAnOperand() = nodeFrom.asExpr() and
     not op.getExpr() instanceof AssignExpr
   )
+  or
+  // string interpolation of `nodeFrom` into `nodeTo`
+  nodeFrom.asExpr() =
+    nodeTo.asExpr().(CfgNodes::ExprNodes::StringlikeLiteralCfgNode).getAComponent()
+  or
+  // element reference from nodeFrom
+  nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::ElementReferenceCfgNode).getReceiver()
 }
