@@ -25,7 +25,7 @@ private module MySQLdb {
   // MySQLdb
   // ---------------------------------------------------------------------------
   /** MySQLdb implements PEP 249, providing ways to execute SQL statements against a database. */
-  class MySQLdb extends PEP249ModuleApiNode {
+  class MySQLdb extends PEP249::PEP249ModuleApiNode {
     MySQLdb() { this = API::moduleImport("MySQLdb") }
   }
 }
