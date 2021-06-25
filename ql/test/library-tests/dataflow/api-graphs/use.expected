@@ -1,2 +1,0 @@
-| test1.rb:8:28:8:128 | #$ use=moduleImport("AttributeError") // missing because there is no dataflow Node for AttributeError | Missing result:use=moduleImport("AttributeError") |
-| test1.rb:9:22:9:69 | #$ use=moduleImport("Kernel").getReturn("print") | Missing result:use=moduleImport("Kernel").getReturn("print") |

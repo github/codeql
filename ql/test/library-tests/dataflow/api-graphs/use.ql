@@ -32,4 +32,4 @@ class ApiUseTest extends InlineExpectationsTest {
   }
 }
 
-private int size(AstNode n) { result = count(n.getAChild*()) }
+private int size(AstNode n) { not n instanceof StmtSequence and result = count(n.getAChild*()) }
