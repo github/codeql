@@ -52,9 +52,10 @@ class SafeFlow extends DataFlow::Configuration {
   private predicate putsCredentialtypesKey(Expr qualifier) {
     exists(MapPutCall put |
       put.getKey().(CompileTimeConstantExpr).getStringValue() =
-        "jmx.remote.rmi.server.credential.types" or
-      put.getKey().(CompileTimeConstantExpr).getStringValue() =
-        "jmx.remote.rmi.server.credentials.filter.pattern" or
+        ["jmx.remote.rmi.server.credential.types",
+        "jmx.remote.rmi.server.credentials.filter.pattern"]
+         
+         or
       put.getKey()
           .(FieldAccess)
           .getField()
