@@ -13,9 +13,10 @@ craft a nested combination of objects on which the executed initialization code
 may have unforeseen effects, such as the execution of arbitrary code.
 </p>
 <p>
-There are many different serialization frameworks.  This query currently
-supports Kryo, XmlDecoder, XStream, SnakeYaml, JYaml, JsonIO, YAMLBeans, HessianBurlap, Castor, Burlap 
-and Java IO serialization through <code>ObjectInputStream</code>/<code>ObjectOutputStream</code>.
+There are many different serialization frameworks.  This query currently supports
+Kryo, XmlDecoder, XStream, SnakeYaml, JYaml, JsonIO, YAMLBeans, HessianBurlap, Castor, Burlap,
+Gson, Flexjson, JoddJson, Jabsorb, and Java IO serialization through
+<code>ObjectInputStream</code>/<code>ObjectOutputStream</code>.
 </p>
 </overview>
 
@@ -90,6 +91,10 @@ Remote code execution in JYaml library:
 <li>
 JsonIO deserialization vulnerabilities:
 <a href="https://klezvirus.github.io/Advanced-Web-Hacking/Serialisation/">JsonIO deserialization</a>.
+</li>
+<li>
+JoddJson documentation on deserialization:
+<a href="https://json.jodd.org/parser">JoddJson Parser</a>.
 </li>
 </references>
 

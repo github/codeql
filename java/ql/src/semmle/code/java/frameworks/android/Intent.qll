@@ -52,3 +52,13 @@ class BundleGetterMethod extends Method, TaintPreservingCallable {
 
   override predicate returnsTaintFrom(int arg) { arg = -1 }
 }
+
+/** A reader method on `android.os.Parcel`. */
+class ParcelReaderMethod extends Method, TaintPreservingCallable {
+  ParcelReaderMethod() {
+    getDeclaringType().hasQualifiedName("android.os", "Parcel") and
+    getName().matches("read%")
+  }
+
+  override predicate returnsTaintFrom(int arg) { arg = -1 }
+}

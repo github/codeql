@@ -1,3 +1,6 @@
+import semmle.code.java.Reflection
+import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.dataflow.TaintTracking2
 import semmle.code.java.frameworks.Kryo
 import semmle.code.java.frameworks.XStream
 import semmle.code.java.frameworks.SnakeYaml
@@ -8,6 +11,10 @@ import semmle.code.java.frameworks.YamlBeans
 import semmle.code.java.frameworks.HessianBurlap
 import semmle.code.java.frameworks.Castor
 import semmle.code.java.frameworks.apache.Lang
+import semmle.code.java.frameworks.google.Gson
+import semmle.code.java.frameworks.Flexjson
+import semmle.code.java.frameworks.JoddJson
+import semmle.code.java.frameworks.Jabsorb
 
 class ObjectInputStreamReadObjectMethod extends Method {
   ObjectInputStreamReadObjectMethod() {
@@ -114,6 +121,116 @@ class SafeKryo extends DataFlow2::Configuration {
   }
 }
 
+/**
+ * A method that overrides `android.os.Parcelable.Creator.createFromParcel`.
+ */
+class CreateFromParcelMethod extends Method {
+  CreateFromParcelMethod() {
+    this.hasName("createFromParcel") and
+    this.getEnclosingCallable().getDeclaringType().getASupertype*() instanceof TypeParcelable
+  }
+}
+
+/** Unsafe Gson configuration with dynamic type. */
+class UnsafeGsonConfig extends TaintTracking2::Configuration {
+  UnsafeGsonConfig() { this = "UnsafeDeserialization::UnsafeGsonConfig" }
+
+  override predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
+
+  override predicate isSink(DataFlow::Node sink) {
+    exists(MethodAccess ma |
+      ma.getMethod() instanceof GsonDeserializeMethod and
+      sink.asExpr() = ma.getArgument(1) // The class type argument
+    )
+  }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+    exists(ReflectiveClassIdentifierMethodAccess ma |
+      node1.asExpr() = ma.getArgument(0) and
+      node2.asExpr() = ma
+    )
+    or
+    exists(CreateFromParcelMethod m, Variable v |
+      m.getEnclosingCallable().getDeclaringType() = v.getType() and
+      node1.asExpr() = v.getAnAssignedValue() and
+      node2.asExpr() = m.getAParameter().getAnAccess()
+    )
+  }
+}
+
+/** Unsafe JoddJson configuration with dynamic type. */
+class UnsafeDynamicJoddJsonConfig extends DataFlow2::Configuration {
+  UnsafeDynamicJoddJsonConfig() { this = "UnsafeDeserialization::UnsafeDynamicJoddJsonConfig" }
+
+  override predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
+
+  override predicate isSink(DataFlow::Node sink) {
+    exists(MethodAccess ma |
+      ma.getMethod() instanceof JoddJsonParseMethod and
+      sink.asExpr() = ma.getArgument(1) // The class type argument
+    )
+  }
+
+  override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    exists(ReflectiveClassIdentifierMethodAccess ma |
+      node1.asExpr() = ma.getArgument(0) and
+      node2.asExpr() = ma
+    )
+  }
+}
+
+/** Source of enabling class metadata. */
+class EnableClassMetadataSource extends DataFlow::ExprNode {
+  EnableClassMetadataSource() {
+    exists(MethodAccess ma | ma.getQualifier() = this.asExpr() |
+      enablesClassMetadata(ma)
+      or
+      ma.getMethod() instanceof SetClassMetadataNameMethod
+    )
+  }
+}
+
+/** Unsafe JoddJson configuration allowing class metadata. */
+class UnsafeJoddJsonWithClassMetadataConfig extends DataFlow2::Configuration {
+  UnsafeJoddJsonWithClassMetadataConfig() {
+    this = "UnsafeDeserialization::UnsafeJoddJsonWithClassMetadataConfig"
+  }
+
+  override predicate isSource(DataFlow::Node src) { src instanceof EnableClassMetadataSource }
+
+  override predicate isSink(DataFlow::Node sink) {
+    exists(MethodAccess ma |
+      ma.getMethod() instanceof JoddJsonParseMethod and
+      sink.asExpr() = ma.getQualifier() // The class type argument
+    )
+  }
+
+  override predicate isBarrier(DataFlow::Node node) {
+    exists(SetWhitelistClasses sc | node.asExpr() = sc.getQualifier())
+  }
+}
+
+/** Unsafe Jabsorb configuration with dynamic type. */
+class UnsafeJabsorbConfig extends TaintTracking2::Configuration {
+  UnsafeJabsorbConfig() { this = "UnsafeDeserialization::UnsafeJabsorbConfig" }
+
+  override predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
+
+  override predicate isSink(DataFlow::Node sink) {
+    exists(MethodAccess ma |
+      ma.getMethod() instanceof JabsorbDeserializeMethod and
+      sink.asExpr() = ma.getArgument(1) // The class type argument
+    )
+  }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+    exists(ReflectiveClassIdentifierMethodAccess ma |
+      node1.asExpr() = ma.getArgument(0) and
+      node2.asExpr() = ma
+    )
+  }
+}
+
 predicate unsafeDeserialization(MethodAccess ma, Expr sink) {
   exists(Method m | m = ma.getMethod() |
     m instanceof ObjectInputStreamReadObjectMethod and
@@ -162,6 +279,24 @@ predicate unsafeDeserialization(MethodAccess ma, Expr sink) {
     ma.getMethod() instanceof CastorUnmarshalMethod and sink = ma.getAnArgument()
     or
     ma.getMethod() instanceof BurlapInputReadObjectMethod and sink = ma.getQualifier()
+    or
+    m instanceof GsonDeserializeMethod and
+    sink = ma.getArgument(0) and
+    exists(UnsafeGsonConfig usg | usg.hasFlowToExpr(ma.getArgument(1)))
+    or
+    m instanceof FlexjsonDeserializeMethod and
+    sink = ma.getArgument(0)
+    or
+    m instanceof JoddJsonParseMethod and
+    sink = ma.getArgument(0) and
+    (
+      exists(UnsafeDynamicJoddJsonConfig usg | usg.hasFlowToExpr(ma.getArgument(1))) or
+      exists(UnsafeJoddJsonWithClassMetadataConfig sg | sg.hasFlowToExpr(ma.getQualifier()))
+    )
+    or
+    m instanceof JabsorbDeserializeMethod and
+    sink = ma.getArgument(2) and
+    exists(UnsafeJabsorbConfig ujg | ujg.hasFlowToExpr(ma.getArgument(1)))
   )
 }
 

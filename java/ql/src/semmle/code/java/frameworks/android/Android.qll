@@ -77,3 +77,8 @@ class AndroidContentResolver extends AndroidComponent {
     this.getASupertype*().hasQualifiedName("android.content", "ContentResolver")
   }
 }
+
+/** Interface for classes whose instances can be written to and restored from a Parcel. */
+class TypeParcelable extends Interface {
+  TypeParcelable() { this.hasQualifiedName("android.os", "Parcelable") }
+}

@@ -40,6 +40,18 @@ class UnsafeDeserializationConfig extends TaintTracking::Configuration {
       ma.getArgument(0) = pred.asExpr() and
       ma.getQualifier() = succ.asExpr()
     )
+    or
+    exists(CreateFromParcelMethod m, Variable v |
+      m.getEnclosingCallable().getDeclaringType() = v.getType() and
+      pred.asExpr() = v.getAnAssignedValue() and
+      succ.asExpr() = m.getAParameter().getAnAccess()
+    )
+    or
+    exists(ConstructorCall cc |
+      cc.getConstructedType().getASupertype*().hasQualifiedName("org.json", "JSONObject") and
+      pred.asExpr() = cc.getAnArgument() and
+      succ.asExpr() = cc
+    )
   }
 
   override predicate isSanitizer(DataFlow::Node node) {
@@ -53,6 +65,32 @@ class UnsafeDeserializationConfig extends TaintTracking::Configuration {
       ma.getMethod() instanceof JsonIoJsonToJavaMethod and
       ma.getArgument(0) = node.asExpr() and
       exists(SafeJsonIoConfig sji | sji.hasFlowToExpr(ma.getArgument(1)))
+    )
+    or
+    exists(MethodAccess ma |
+      (
+        ma.getMethod() instanceof FlexjsonDeserializeMethod or
+        ma.getMethod() instanceof JoddJsonParseMethod
+      ) and
+      node.asExpr() = ma.getArgument(0) and
+      (
+        exists(
+          TypeLiteral tl // Final class
+        |
+          ma.getArgument(1) = tl and
+          tl.getType().(ParameterizedType).getATypeArgument().(Class).isFinal()
+        )
+        or
+        exists(
+          MethodAccess dma // Specified class type
+        |
+          dma.getMethod() instanceof DeserializerUseMethod and
+          (
+            ma.getQualifier() = dma or
+            ma.getQualifier().(VarAccess).getVariable().getAnAccess() = dma.getQualifier()
+          )
+        )
+      )
     )
   }
 }
