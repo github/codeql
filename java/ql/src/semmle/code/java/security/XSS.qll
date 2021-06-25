@@ -16,6 +16,12 @@ abstract class XssSink extends DataFlow::Node { }
 abstract class XssSanitizer extends DataFlow::Node { }
 
 /**
+ * A sink that represent a method that outputs data without applying contextual output encoding,
+ * and which should truncate flow paths such that downstream sinks are not flagged as well.
+ */
+abstract class XssSinkBarrier extends XssSink { }
+
+/**
  * A unit class for adding additional taint steps.
  *
  * Extend this class to add additional taint steps that should apply to the XSS
