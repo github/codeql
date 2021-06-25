@@ -1,5 +1,34 @@
+/** Provides a class hierarchy corresponding to a parse tree of regular expressions. */
+
 import python
 private import semmle.python.regex
+
+/**
+ * An element containing a regular expression term, that is, either
+ * a string literal (parsed as a regular expression)
+ * or another regular expression term.
+ */
+newtype TRegExpParent =
+  /** A string literal used as a regular expression */
+  TRegExpLiteral(Regex re) or
+  /** A quantified term */
+  TRegExpQuantifier(Regex re, int start, int end) { re.qualifiedItem(start, end, _, _) } or
+  /** A sequence term */
+  TRegExpSequence(Regex re, int start, int end) { re.sequence(start, end) } or
+  /** An alternatio term */
+  TRegExpAlt(Regex re, int start, int end) { re.alternation(start, end) } or
+  /** A character class term */
+  TRegExpCharacterClass(Regex re, int start, int end) { re.charSet(start, end) } or
+  /** A character range term */
+  TRegExpCharacterRange(Regex re, int start, int end) { re.charRange(_, start, _, _, end) } or
+  /** A group term */
+  TRegExpGroup(Regex re, int start, int end) { re.group(start, end) } or
+  /** A special character */
+  TRegExpSpecialChar(Regex re, int start, int end) { re.specialCharacter(start, end, _) } or
+  /** A normal character */
+  TRegExpNormalChar(Regex re, int start, int end) { re.normalCharacter(start, end) } or
+  /** A back reference */
+  TRegExpBackRef(Regex re, int start, int end) { re.backreference(start, end) }
 
 /**
  * An element containing a regular expression term, that is, either
@@ -18,6 +47,7 @@ class RegExpParent extends TRegExpParent {
   abstract Regex getRegex();
 }
 
+/** A string literal used as a regular expression */
 class RegExpLiteral extends TRegExpLiteral, RegExpParent {
   Regex re;
 
@@ -32,6 +62,9 @@ class RegExpLiteral extends TRegExpLiteral, RegExpParent {
   string getPrimaryQLClass() { result = "RegExpLiteral" }
 }
 
+/**
+ * A regular expression term, that is, a syntactic part of a regular expression.
+ */
 class RegExpTerm extends RegExpParent {
   Regex re;
   int start;
@@ -141,18 +174,15 @@ class RegExpTerm extends RegExpParent {
   string getPrimaryQLClass() { result = "RegExpTerm" }
 }
 
-newtype TRegExpParent =
-  TRegExpLiteral(Regex re) or
-  TRegExpQuantifier(Regex re, int start, int end) { re.qualifiedItem(start, end, _, _) } or
-  TRegExpSequence(Regex re, int start, int end) { re.sequence(start, end) } or
-  TRegExpAlt(Regex re, int start, int end) { re.alternation(start, end) } or
-  TRegExpCharacterClass(Regex re, int start, int end) { re.charSet(start, end) } or
-  TRegExpCharacterRange(Regex re, int start, int end) { re.charRange(_, start, _, _, end) } or
-  TRegExpGroup(Regex re, int start, int end) { re.group(start, end) } or
-  TRegExpSpecialChar(Regex re, int start, int end) { re.specialCharacter(start, end, _) } or
-  TRegExpNormalChar(Regex re, int start, int end) { re.normalCharacter(start, end) } or
-  TRegExpBackRef(Regex re, int start, int end) { re.backreference(start, end) }
-
+/**
+ * A quantified regular expression term.
+ *
+ * Example:
+ *
+ * ```
+ * ((ECMA|Java)[sS]cript)*
+ * ```
+ */
 class RegExpQuantifier extends RegExpTerm, TRegExpQuantifier {
   int part_end;
   boolean maybe_empty;
@@ -177,28 +207,69 @@ class RegExpQuantifier extends RegExpTerm, TRegExpQuantifier {
   override string getPrimaryQLClass() { result = "RegExpQuantifier" }
 }
 
+/**
+ * A regular expression term that permits unlimited repetitions.
+ */
 class InfiniteRepetitionQuantifier extends RegExpQuantifier {
   InfiniteRepetitionQuantifier() { this.mayRepeatForever() }
 }
 
+/**
+ * A star-quantified term.
+ *
+ * Example:
+ *
+ * ```
+ * \w*
+ * ```
+ */
 class RegExpStar extends InfiniteRepetitionQuantifier {
   RegExpStar() { this.getQualifier().charAt(0) = "*" }
 
   override string getPrimaryQLClass() { result = "RegExpStar" }
 }
 
+/**
+ * A plus-quantified term.
+ *
+ * Example:
+ *
+ * ```
+ * \w+
+ * ```
+ */
 class RegExpPlus extends InfiniteRepetitionQuantifier {
   RegExpPlus() { this.getQualifier().charAt(0) = "+" }
 
   override string getPrimaryQLClass() { result = "RegExpPlus" }
 }
 
+/**
+ * An optional term.
+ *
+ * Example:
+ *
+ * ```
+ * ;?
+ * ```
+ */
 class RegExpOpt extends RegExpQuantifier {
   RegExpOpt() { this.getQualifier().charAt(0) = "?" }
 
   override string getPrimaryQLClass() { result = "RegExpOpt" }
 }
 
+/**
+ * A range-quantified term
+ *
+ * Examples:
+ *
+ * ```
+ * \w{2,4}
+ * \w{2,}
+ * \w{2}
+ * ```
+ */
 class RegExpRange extends RegExpQuantifier {
   string upper;
   string lower;
@@ -224,6 +295,17 @@ class RegExpRange extends RegExpQuantifier {
   override string getPrimaryQLClass() { result = "RegExpRange" }
 }
 
+/**
+ * A sequence term.
+ *
+ * Example:
+ *
+ * ```
+ * (ECMA|Java)Script
+ * ```
+ *
+ * This is a sequence with the elements `(ECMA|Java)` and `Script`.
+ */
 class RegExpSequence extends RegExpTerm, TRegExpSequence {
   RegExpSequence() {
     this = TRegExpSequence(re, start, end) and
@@ -267,6 +349,15 @@ private RegExpTerm seqChild(Regex re, int start, int end, int i) {
   )
 }
 
+/**
+ * An alternative term, that is, a term of the form `a|b`.
+ *
+ * Example:
+ *
+ * ```
+ * ECMA|Java
+ * ```
+ */
 class RegExpAlt extends RegExpTerm, TRegExpAlt {
   RegExpAlt() { this = TRegExpAlt(re, start, end) }
 
@@ -292,6 +383,17 @@ class RegExpAlt extends RegExpTerm, TRegExpAlt {
   override string getPrimaryQLClass() { result = "RegExpAlt" }
 }
 
+/**
+ * An escaped regular expression term, that is, a regular expression
+ * term starting with a backslash, which is not a backreference.
+ *
+ * Example:
+ *
+ * ```
+ * \.
+ * \w
+ * ```
+ */
 class RegExpEscape extends RegExpNormalChar {
   RegExpEscape() { re.escapedCharacter(start, end) }
 
@@ -397,6 +499,16 @@ class RegExpCharacterClassEscape extends RegExpEscape {
   override string getPrimaryQLClass() { result = "RegExpCharacterClassEscape" }
 }
 
+/**
+ * A character class in a regular expression.
+ *
+ * Examples:
+ *
+ * ```
+ * [a-z_]
+ * [^<>&]
+ * ```
+ */
 class RegExpCharacterClass extends RegExpTerm, TRegExpCharacterClass {
   RegExpCharacterClass() { this = TRegExpCharacterClass(re, start, end) }
 
@@ -439,6 +551,15 @@ class RegExpCharacterClass extends RegExpTerm, TRegExpCharacterClass {
   override string getPrimaryQLClass() { result = "RegExpCharacterClass" }
 }
 
+/**
+ * A character range in a character class in a regular expression.
+ *
+ * Example:
+ *
+ * ```
+ * a-z
+ * ```
+ */
 class RegExpCharacterRange extends RegExpTerm, TRegExpCharacterRange {
   int lower_end;
   int upper_start;
@@ -468,6 +589,16 @@ class RegExpCharacterRange extends RegExpTerm, TRegExpCharacterRange {
   override string getPrimaryQLClass() { result = "RegExpCharacterRange" }
 }
 
+/**
+ * A normal character in a regular expression, that is, a character
+ * without special meaning. This includes escaped characters.
+ *
+ * Examples:
+ * ```
+ * t
+ * \t
+ * ```
+ */
 class RegExpNormalChar extends RegExpTerm, TRegExpNormalChar {
   RegExpNormalChar() { this = TRegExpNormalChar(re, start, end) }
 
@@ -480,6 +611,16 @@ class RegExpNormalChar extends RegExpTerm, TRegExpNormalChar {
   override string getPrimaryQLClass() { result = "RegExpNormalChar" }
 }
 
+/**
+ * A constant regular expression term, that is, a regular expression
+ * term matching a single string. Currently, this will always be a single character.
+ *
+ * Example:
+ *
+ * ```
+ * a
+ * ```
+ */
 class RegExpConstant extends RegExpTerm {
   string value;
 
@@ -492,10 +633,11 @@ class RegExpConstant extends RegExpTerm {
       qstart <= start and end <= qend
     ) and
     value = this.(RegExpNormalChar).getValue()
-    or
-    this = TRegExpSpecialChar(re, start, end) and
-    re.inCharSet(start) and
-    value = this.(RegExpSpecialChar).getChar()
+    // This will never hold
+    // or
+    // this = TRegExpSpecialChar(re, start, end) and
+    // re.inCharSet(start) and
+    // value = this.(RegExpSpecialChar).getChar()
   }
 
   predicate isCharacter() { any() }
@@ -507,6 +649,17 @@ class RegExpConstant extends RegExpTerm {
   override string getPrimaryQLClass() { result = "RegExpConstant" }
 }
 
+/**
+ * A grouped regular expression.
+ *
+ * Examples:
+ *
+ * ```
+ * (ECMA|Java)
+ * (?:ECMA|Java)
+ * (?<quote>['"])
+ * ```
+ */
 class RegExpGroup extends RegExpTerm, TRegExpGroup {
   RegExpGroup() { this = TRegExpGroup(re, start, end) }
 
@@ -540,6 +693,16 @@ class RegExpGroup extends RegExpTerm, TRegExpGroup {
   override string getPrimaryQLClass() { result = "RegExpGroup" }
 }
 
+/**
+ * A special character in a regular expression.
+ *
+ * Examples:
+ * ```
+ * ^
+ * $
+ * .
+ * ```
+ */
 class RegExpSpecialChar extends RegExpTerm, TRegExpSpecialChar {
   string char;
 
@@ -557,24 +720,60 @@ class RegExpSpecialChar extends RegExpTerm, TRegExpSpecialChar {
   override string getPrimaryQLClass() { result = "RegExpSpecialChar" }
 }
 
+/**
+ * A dot regular expression.
+ *
+ * Example:
+ *
+ * ```
+ * .
+ * ```
+ */
 class RegExpDot extends RegExpSpecialChar {
   RegExpDot() { this.getChar() = "." }
 
   override string getPrimaryQLClass() { result = "RegExpDot" }
 }
 
+/**
+ * A dollar assertion `$` matching the end of a line.
+ *
+ * Example:
+ *
+ * ```
+ * $
+ * ```
+ */
 class RegExpDollar extends RegExpSpecialChar {
   RegExpDollar() { this.getChar() = "$" }
 
   override string getPrimaryQLClass() { result = "RegExpDollar" }
 }
 
+/**
+ * A caret assertion `^` matching the beginning of a line.
+ *
+ * Example:
+ *
+ * ```
+ * ^
+ * ```
+ */
 class RegExpCaret extends RegExpSpecialChar {
   RegExpCaret() { this.getChar() = "^" }
 
   override string getPrimaryQLClass() { result = "RegExpCaret" }
 }
 
+/**
+ * A zero-width match, that is, either an empty group or an assertion.
+ *
+ * Examples:
+ * ```
+ * ()
+ * (?=\w)
+ * ```
+ */
 class RegExpZeroWidthMatch extends RegExpGroup {
   RegExpZeroWidthMatch() { re.zeroWidthMatch(start, end) }
 
@@ -601,34 +800,101 @@ class RegExpSubPattern extends RegExpZeroWidthMatch {
   RegExpSubPattern() { not re.emptyGroup(start, end) }
 }
 
+/**
+ * A zero-width lookahead assertion.
+ *
+ * Examples:
+ *
+ * ```
+ * (?=\w)
+ * (?!\n)
+ * ```
+ */
 abstract class RegExpLookahead extends RegExpSubPattern { }
 
+/**
+ * A positive-lookahead assertion.
+ *
+ * Examples:
+ *
+ * ```
+ * (?=\w)
+ * ```
+ */
 class RegExpPositiveLookahead extends RegExpLookahead {
   RegExpPositiveLookahead() { re.positiveLookaheadAssertionGroup(start, end) }
 
   override string getPrimaryQLClass() { result = "RegExpPositiveLookahead" }
 }
 
+/**
+ * A negative-lookahead assertion.
+ *
+ * Examples:
+ *
+ * ```
+ * (?!\n)
+ * ```
+ */
 class RegExpNegativeLookahead extends RegExpLookahead {
   RegExpNegativeLookahead() { re.negativeLookaheadAssertionGroup(start, end) }
 
   override string getPrimaryQLClass() { result = "RegExpNegativeLookahead" }
 }
 
+/**
+ * A zero-width lookbehind assertion.
+ *
+ * Examples:
+ *
+ * ```
+ * (?<=\.)
+ * (?<!\\)
+ * ```
+ */
 abstract class RegExpLookbehind extends RegExpSubPattern { }
 
+/**
+ * A positive-lookbehind assertion.
+ *
+ * Examples:
+ *
+ * ```
+ * (?<=\.)
+ * ```
+ */
 class RegExpPositiveLookbehind extends RegExpLookbehind {
   RegExpPositiveLookbehind() { re.positiveLookbehindAssertionGroup(start, end) }
 
   override string getPrimaryQLClass() { result = "RegExpPositiveLookbehind" }
 }
 
+/**
+ * A negative-lookbehind assertion.
+ *
+ * Examples:
+ *
+ * ```
+ * (?<!\\)
+ * ```
+ */
 class RegExpNegativeLookbehind extends RegExpLookbehind {
   RegExpNegativeLookbehind() { re.negativeLookbehindAssertionGroup(start, end) }
 
   override string getPrimaryQLClass() { result = "RegExpNegativeLookbehind" }
 }
 
+/**
+ * A back reference, that is, a term of the form `\i` or `\k<name>`
+ * in a regular expression.
+ *
+ * Examples:
+ *
+ * ```
+ * \1
+ * (?P=quote)
+ * ```
+ */
 class RegExpBackRef extends RegExpTerm, TRegExpBackRef {
   RegExpBackRef() { this = TRegExpBackRef(re, start, end) }
 
@@ -656,4 +922,5 @@ class RegExpBackRef extends RegExpTerm, TRegExpBackRef {
   override string getPrimaryQLClass() { result = "RegExpBackRef" }
 }
 
+/** Gets the parse tree resulting from parsing `re`, if such has been constructed. */
 RegExpTerm getParsedRegExp(StrConst re) { result.getRegex() = re and result.isRootTerm() }

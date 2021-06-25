@@ -13,6 +13,7 @@ import semmle.python.dataflow.new.BarrierGuards
 import semmle.python.RegexTreeView
 import semmle.python.ApiGraphs
 
+/** A configuration for finding uses of compiled regexes. */
 class RegexDefinitionConfiguration extends DataFlow2::Configuration {
   RegexDefinitionConfiguration() { this = "RegexDefinitionConfiguration" }
 
@@ -21,6 +22,7 @@ class RegexDefinitionConfiguration extends DataFlow2::Configuration {
   override predicate isSink(DataFlow::Node sink) { sink instanceof RegexDefinitionSink }
 }
 
+/** A regex compilation. */
 class RegexDefinitonSource extends DataFlow::CallCfgNode {
   DataFlow::Node regexNode;
 
@@ -29,11 +31,14 @@ class RegexDefinitonSource extends DataFlow::CallCfgNode {
     regexNode in [this.getArg(0), this.getArgByName("pattern")]
   }
 
+  /** Gets the regex that is being compiled by this node. */
   RegExpTerm getRegExp() { result.getRegex() = regexNode.asExpr() and result.isRootTerm() }
 
+  /** Gets the data flow node for the regex being compiled by this node. */
   DataFlow::Node getRegexNode() { result = regexNode }
 }
 
+/** A use of a compiled regex. */
 class RegexDefinitionSink extends DataFlow::Node {
   RegexExecutionMethod method;
   DataFlow::CallCfgNode executingCall;
@@ -46,16 +51,11 @@ class RegexDefinitionSink extends DataFlow::Node {
     )
   }
 
+  /** Gets the method used to execute the regex. */
   RegexExecutionMethod getMethod() { result = method }
 
+  /** Gets the data flow node for the executing call. */
   DataFlow::CallCfgNode getExecutingCall() { result = executingCall }
-}
-
-predicate rearg(RegExpTerm t, DataFlow::Node arg) {
-  exists(RegexDefinitionConfiguration conf, RegexDefinitonSource source |
-    conf.hasFlow(source, arg) and
-    t = source.getRegExp()
-  )
 }
 
 /**
@@ -69,7 +69,9 @@ class PolynomialReDoSConfiguration extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { sink instanceof PolynomialReDoSSink }
 }
 
+/** A data flow node executing a regex. */
 abstract class RegexExecution extends DataFlow::Node {
+  /** Gets the data flow node for the regex being compiled by this node. */
   abstract DataFlow::Node getRegexNode();
 
   /** Gets a dataflow node for the string to be searched or matched against. */
@@ -82,6 +84,7 @@ private class RegexExecutionMethod extends string {
   }
 }
 
+/** Gets the index of the argument representing the string to be searched by a regex. */
 int stringArg(RegexExecutionMethod method) {
   method in ["match", "fullmatch", "search", "split", "findall", "finditer"] and
   result = 1

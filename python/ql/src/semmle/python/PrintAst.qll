@@ -445,6 +445,7 @@ class RegExpTermNode extends TRegExpTermNode, PrintAstNode {
 
   RegExpTermNode() { this = TRegExpTermNode(term) }
 
+  /** Gets the `RegExpTerm` for this node. */
   RegExpTerm getTerm() { result = term }
 
   override PrintAstNode getChild(int childIndex) {
