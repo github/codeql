@@ -7,13 +7,13 @@ db = peewee.MySQLDatabase()
 
 conn = db.connection()
 cursor = conn.cursor()
-cursor.execute("sql")  # $ MISSING: getSql="sql"
+cursor.execute("sql")  # $ getSql="sql"
 
 cursor = db.cursor()
-cursor.execute("sql")  # $ MISSING: getSql="sql"
+cursor.execute("sql")  # $ getSql="sql"
 
-db.execute_sql("sql")  # $ MISSING: getSql="sql"
+db.execute_sql("sql")  # $ getSql="sql"
 
 # Pool extension
 pool = playhouse.pool.PooledMySQLDatabase(...)
-pool.execute_sql("sql")  # $ MISSING: getSql="sql"
+pool.execute_sql("sql")  # $ getSql="sql"
