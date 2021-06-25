@@ -1142,118 +1142,118 @@ private module Stdlib {
       )
     }
   }
-}
 
-// ---------------------------------------------------------------------------
-// hashlib
-// ---------------------------------------------------------------------------
-/** Gets a call to `hashlib.new` with `algorithmName` as the first argument. */
-private DataFlow::CallCfgNode hashlibNewCall(string algorithmName) {
-  exists(DataFlow::Node nameArg |
-    result = API::moduleImport("hashlib").getMember("new").getACall() and
-    nameArg in [result.getArg(0), result.getArgByName("name")] and
-    exists(StrConst str |
-      nameArg.getALocalSource() = DataFlow::exprNode(str) and
-      algorithmName = str.getText()
-    )
-  )
-}
-
-/** Gets a reference to the result of calling `hashlib.new` with `algorithmName` as the first argument. */
-private DataFlow::LocalSourceNode hashlibNewResult(DataFlow::TypeTracker t, string algorithmName) {
-  t.start() and
-  result = hashlibNewCall(algorithmName)
-  or
-  exists(DataFlow::TypeTracker t2 | result = hashlibNewResult(t2, algorithmName).track(t2, t))
-}
-
-/** Gets a reference to the result of calling `hashlib.new` with `algorithmName` as the first argument. */
-DataFlow::Node hashlibNewResult(string algorithmName) {
-  hashlibNewResult(DataFlow::TypeTracker::end(), algorithmName).flowsTo(result)
-}
-
-/**
- * A hashing operation by supplying initial data when calling the `hashlib.new` function.
- */
-class HashlibNewCall extends Cryptography::CryptographicOperation::Range, DataFlow::CallCfgNode {
-  string hashName;
-
-  HashlibNewCall() {
-    this = hashlibNewCall(hashName) and
-    exists([this.getArg(1), this.getArgByName("data")])
-  }
-
-  override Cryptography::CryptographicAlgorithm getAlgorithm() { result.matchesName(hashName) }
-
-  override DataFlow::Node getAnInput() { result in [this.getArg(1), this.getArgByName("data")] }
-}
-
-/**
- * A hashing operation by using the `update` method on the result of calling the `hashlib.new` function.
- */
-class HashlibNewUpdateCall extends Cryptography::CryptographicOperation::Range,
-  DataFlow::CallCfgNode {
-  string hashName;
-
-  HashlibNewUpdateCall() {
-    exists(DataFlow::AttrRead attr |
-      attr.getObject() = hashlibNewResult(hashName) and
-      this.getFunction() = attr and
-      attr.getAttributeName() = "update"
+  // ---------------------------------------------------------------------------
+  // hashlib
+  // ---------------------------------------------------------------------------
+  /** Gets a call to `hashlib.new` with `algorithmName` as the first argument. */
+  private DataFlow::CallCfgNode hashlibNewCall(string algorithmName) {
+    exists(DataFlow::Node nameArg |
+      result = API::moduleImport("hashlib").getMember("new").getACall() and
+      nameArg in [result.getArg(0), result.getArgByName("name")] and
+      exists(StrConst str |
+        nameArg.getALocalSource() = DataFlow::exprNode(str) and
+        algorithmName = str.getText()
+      )
     )
   }
 
-  override Cryptography::CryptographicAlgorithm getAlgorithm() { result.matchesName(hashName) }
-
-  override DataFlow::Node getAnInput() { result = this.getArg(0) }
-}
-
-/**
- * A hashing operation from the `hashlib` package using one of the predefined classes
- * (such as `hashlib.md5`). `hashlib.new` is not included, since it is handled by
- * `HashlibNewCall` and `HashlibNewUpdateCall`.
- */
-abstract class HashlibGenericHashOperation extends Cryptography::CryptographicOperation::Range,
-  DataFlow::CallCfgNode {
-  string hashName;
-  API::Node hashClass;
-
-  bindingset[this]
-  HashlibGenericHashOperation() {
-    not hashName = "new" and
-    hashClass = API::moduleImport("hashlib").getMember(hashName)
-  }
-
-  override Cryptography::CryptographicAlgorithm getAlgorithm() { result.matchesName(hashName) }
-}
-
-/**
- * A hashing operation from the `hashlib` package using one of the predefined classes
- * (such as `hashlib.md5`), by calling its' `update` mehtod.
- */
-class HashlibHashClassUpdateCall extends HashlibGenericHashOperation {
-  HashlibHashClassUpdateCall() { this = hashClass.getReturn().getMember("update").getACall() }
-
-  override DataFlow::Node getAnInput() { result = this.getArg(0) }
-}
-
-/**
- * A hashing operation from the `hashlib` package using one of the predefined classes
- * (such as `hashlib.md5`), by passing data to when instantiating the class.
- */
-class HashlibDataPassedToHashClass extends HashlibGenericHashOperation {
-  HashlibDataPassedToHashClass() {
-    // we only want to model calls to classes such as `hashlib.md5()` if initial data
-    // is passed as an argument
-    this = hashClass.getACall() and
-    exists([this.getArg(0), this.getArgByName("string")])
-  }
-
-  override DataFlow::Node getAnInput() {
-    result = this.getArg(0)
+  /** Gets a reference to the result of calling `hashlib.new` with `algorithmName` as the first argument. */
+  private DataFlow::LocalSourceNode hashlibNewResult(DataFlow::TypeTracker t, string algorithmName) {
+    t.start() and
+    result = hashlibNewCall(algorithmName)
     or
-    // in Python 3.9, you are allowed to use `hashlib.md5(string=<bytes-like>)`.
-    result = this.getArgByName("string")
+    exists(DataFlow::TypeTracker t2 | result = hashlibNewResult(t2, algorithmName).track(t2, t))
+  }
+
+  /** Gets a reference to the result of calling `hashlib.new` with `algorithmName` as the first argument. */
+  DataFlow::Node hashlibNewResult(string algorithmName) {
+    hashlibNewResult(DataFlow::TypeTracker::end(), algorithmName).flowsTo(result)
+  }
+
+  /**
+   * A hashing operation by supplying initial data when calling the `hashlib.new` function.
+   */
+  class HashlibNewCall extends Cryptography::CryptographicOperation::Range, DataFlow::CallCfgNode {
+    string hashName;
+
+    HashlibNewCall() {
+      this = hashlibNewCall(hashName) and
+      exists([this.getArg(1), this.getArgByName("data")])
+    }
+
+    override Cryptography::CryptographicAlgorithm getAlgorithm() { result.matchesName(hashName) }
+
+    override DataFlow::Node getAnInput() { result in [this.getArg(1), this.getArgByName("data")] }
+  }
+
+  /**
+   * A hashing operation by using the `update` method on the result of calling the `hashlib.new` function.
+   */
+  class HashlibNewUpdateCall extends Cryptography::CryptographicOperation::Range,
+    DataFlow::CallCfgNode {
+    string hashName;
+
+    HashlibNewUpdateCall() {
+      exists(DataFlow::AttrRead attr |
+        attr.getObject() = hashlibNewResult(hashName) and
+        this.getFunction() = attr and
+        attr.getAttributeName() = "update"
+      )
+    }
+
+    override Cryptography::CryptographicAlgorithm getAlgorithm() { result.matchesName(hashName) }
+
+    override DataFlow::Node getAnInput() { result = this.getArg(0) }
+  }
+
+  /**
+   * A hashing operation from the `hashlib` package using one of the predefined classes
+   * (such as `hashlib.md5`). `hashlib.new` is not included, since it is handled by
+   * `HashlibNewCall` and `HashlibNewUpdateCall`.
+   */
+  abstract class HashlibGenericHashOperation extends Cryptography::CryptographicOperation::Range,
+    DataFlow::CallCfgNode {
+    string hashName;
+    API::Node hashClass;
+
+    bindingset[this]
+    HashlibGenericHashOperation() {
+      not hashName = "new" and
+      hashClass = API::moduleImport("hashlib").getMember(hashName)
+    }
+
+    override Cryptography::CryptographicAlgorithm getAlgorithm() { result.matchesName(hashName) }
+  }
+
+  /**
+   * A hashing operation from the `hashlib` package using one of the predefined classes
+   * (such as `hashlib.md5`), by calling its' `update` mehtod.
+   */
+  class HashlibHashClassUpdateCall extends HashlibGenericHashOperation {
+    HashlibHashClassUpdateCall() { this = hashClass.getReturn().getMember("update").getACall() }
+
+    override DataFlow::Node getAnInput() { result = this.getArg(0) }
+  }
+
+  /**
+   * A hashing operation from the `hashlib` package using one of the predefined classes
+   * (such as `hashlib.md5`), by passing data to when instantiating the class.
+   */
+  class HashlibDataPassedToHashClass extends HashlibGenericHashOperation {
+    HashlibDataPassedToHashClass() {
+      // we only want to model calls to classes such as `hashlib.md5()` if initial data
+      // is passed as an argument
+      this = hashClass.getACall() and
+      exists([this.getArg(0), this.getArgByName("string")])
+    }
+
+    override DataFlow::Node getAnInput() {
+      result = this.getArg(0)
+      or
+      // in Python 3.9, you are allowed to use `hashlib.md5(string=<bytes-like>)`.
+      result = this.getArgByName("string")
+    }
   }
 }
 
