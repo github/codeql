@@ -93,6 +93,23 @@ class EncodingTest extends InlineExpectationsTest {
   }
 }
 
+class LoggingTest extends InlineExpectationsTest {
+  LoggingTest() { this = "LoggingTest" }
+
+  override string getARelevantTag() { result in ["loggingInput"] }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(Logging logging, DataFlow::Node data |
+      location = data.getLocation() and
+      element = data.toString() and
+      value = prettyNodeForInlineTest(data) and
+      data = logging.getAnInput() and
+      tag = "loggingInput"
+    )
+  }
+}
+
 class CodeExecutionTest extends InlineExpectationsTest {
   CodeExecutionTest() { this = "CodeExecutionTest" }
 
