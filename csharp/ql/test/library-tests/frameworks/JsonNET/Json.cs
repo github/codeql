@@ -34,7 +34,7 @@ namespace JsonTest
 
             Object taintedPopulatedObject = new Object();
             JsonConvert.PopulateObject(t, taintedPopulatedObject);
-            Sink(taintedPopulatedObject.tainted);  // False negative
+            Sink(taintedPopulatedObject.tainted);
 
             Object untaintedObject = JsonConvert.DeserializeObject<Object>(u);
             Sink(untaintedObject);

@@ -383,7 +383,7 @@ private module FrameworkDataFlowAdaptor {
     or
     exists(int i |
       result = TCallableFlowSinkArg(i) and
-      output = SummaryComponentStack::outArgument(i)
+      output = SummaryComponentStack::argument(i)
     )
     or
     exists(int i, int j | result = TCallableFlowSinkDelegateArg(i, j) |

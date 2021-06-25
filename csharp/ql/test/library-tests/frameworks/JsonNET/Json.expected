@@ -5,6 +5,7 @@
 | Json.cs:18:24:18:32 | "tainted" | Json.cs:28:18:28:49 | access to indexer |
 | Json.cs:18:24:18:32 | "tainted" | Json.cs:29:18:29:46 | access to array element |
 | Json.cs:18:24:18:32 | "tainted" | Json.cs:32:18:32:39 | (...) ... |
+| Json.cs:18:24:18:32 | "tainted" | Json.cs:37:18:37:47 | (...) ... |
 | Json.cs:18:24:18:32 | "tainted" | Json.cs:44:18:44:24 | access to local variable jobject |
 | Json.cs:18:24:18:32 | "tainted" | Json.cs:45:18:45:29 | access to indexer |
 | Json.cs:18:24:18:32 | "tainted" | Json.cs:46:18:46:34 | access to indexer |
