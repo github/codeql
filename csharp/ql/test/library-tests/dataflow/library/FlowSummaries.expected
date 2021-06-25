@@ -1222,10 +1222,10 @@
 | System.Int32.Parse(string, IFormatProvider) | argument 0 -> return (normal) | false |
 | System.Int32.Parse(string, NumberStyles) | argument 0 -> return (normal) | false |
 | System.Int32.Parse(string, NumberStyles, IFormatProvider) | argument 0 -> return (normal) | false |
-| System.Int32.TryParse(ReadOnlySpan<Char>, NumberStyles, IFormatProvider, out int) | argument 0 -> argument 3 | false |
 | System.Int32.TryParse(ReadOnlySpan<Char>, NumberStyles, IFormatProvider, out int) | argument 0 -> return (normal) | false |
-| System.Int32.TryParse(ReadOnlySpan<Char>, out int) | argument 0 -> argument 1 | false |
+| System.Int32.TryParse(ReadOnlySpan<Char>, NumberStyles, IFormatProvider, out int) | element of argument 0 -> argument 3 | false |
 | System.Int32.TryParse(ReadOnlySpan<Char>, out int) | argument 0 -> return (normal) | false |
+| System.Int32.TryParse(ReadOnlySpan<Char>, out int) | element of argument 0 -> argument 1 | false |
 | System.Int32.TryParse(string, NumberStyles, IFormatProvider, out int) | argument 0 -> argument 3 | false |
 | System.Int32.TryParse(string, NumberStyles, IFormatProvider, out int) | argument 0 -> return (normal) | false |
 | System.Int32.TryParse(string, out int) | argument 0 -> argument 1 | false |

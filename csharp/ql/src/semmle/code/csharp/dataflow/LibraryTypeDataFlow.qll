@@ -508,9 +508,9 @@ private class SystemInt32FlowModelCsv extends SummaryModelCsv {
         "System;Int32;false;Parse;;;Argument[0];ReturnValue;taint",
         "System;Int32;false;TryParse;;;Argument[0];ReturnValue;taint",
         "System;Int32;false;TryParse;(System.String,System.Int32);;Argument[0];Argument[1];taint",
-        "System;Int32;false;TryParse;(System.ReadOnlySpan<System.Char>,System.Int32);;Argument[0];Argument[1];taint",
+        "System;Int32;false;TryParse;(System.ReadOnlySpan<System.Char>,System.Int32);;Element of Argument[0];Argument[1];taint",
         "System;Int32;false;TryParse;(System.String,System.Globalization.NumberStyles,System.IFormatProvider,System.Int32);;Argument[0];Argument[3];taint",
-        "System;Int32;false;TryParse;(System.ReadOnlySpan<System.Char>,System.Globalization.NumberStyles,System.IFormatProvider,System.Int32);;Argument[0];Argument[3];taint"
+        "System;Int32;false;TryParse;(System.ReadOnlySpan<System.Char>,System.Globalization.NumberStyles,System.IFormatProvider,System.Int32);;Element of Argument[0];Argument[3];taint"
       ]
   }
 }
