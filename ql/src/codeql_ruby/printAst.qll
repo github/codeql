@@ -81,8 +81,17 @@ class PrintAstNode extends TPrintNode {
   /** Gets the parent of this node, if any. */
   final PrintAstNode getParent() { result.getAChild() = this }
 
-  /** Gets the location of this node in the source code. */
-  Location getLocation() { none() }
+  /**
+   * Holds if this node is at the specified location. The location spans column
+   * `startcolumn` of line `startline` to column `endcolumn` of line `endline`
+   * in file `filepath`. For more information, see
+   * [LGTM locations](https://lgtm.com/help/ql/locations).
+   */
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    none()
+  }
 
   /** Gets a value used to order this node amongst its siblings. */
   int getOrder() { none() }
@@ -123,7 +132,7 @@ class PrintRegularAstNode extends PrintAstNode, TPrintRegularAstNode {
 
   override int getOrder() {
     this =
-      rank[result](PrintAstNode p, Location l, File f |
+      rank[result](PrintRegularAstNode p, Location l, File f |
         l = p.getLocation() and
         f = l.getFile()
       |
@@ -131,7 +140,14 @@ class PrintRegularAstNode extends PrintAstNode, TPrintRegularAstNode {
       )
   }
 
-  override Location getLocation() { result = astNode.getLocation() }
+  /** Gets the location of this node. */
+  Location getLocation() { result = astNode.getLocation() }
+
+  override predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    astNode.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
 }
 
 /** A parsed regexp node in the output tree. */
@@ -151,7 +167,11 @@ class PrintRegExpNode extends PrintAstNode, TPrintRegExpNode {
 
   override int getOrder() { exists(RETV::RegExpTerm p | p.getChild(result) = regexNode) }
 
-  override Location getLocation() { result = regexNode.getLocation() }
+  override predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    regexNode.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
 }
 
 /**
