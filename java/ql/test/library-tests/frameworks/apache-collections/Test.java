@@ -35,14 +35,14 @@ public class Test {
 	static Object getMapValue(Map container) { return container.get(null); }
 
 	Object[] newWithArrayElement(Object element) { return new Object[] {element}; }
-	Object newWithElement(Object element) { Vector<String> v = new Vector<String>(); v.add((String)element); return v; }
+	Iterable<String> newWithElement(String element) { Vector<String> v = new Vector<String>(); v.add(element); return v; }
 
 	MyAbstractKeyValue newMAKVWithMapKey(Object element) { return new MyAbstractKeyValue(element,null); }
 	DefaultKeyValue newDKVWithMapKey(Object element) { return new DefaultKeyValue(element,null); }
 	MyAbstractMapEntry newMAMEWithMapKey(Object element) { return new MyAbstractMapEntry(element,null); }
 	MyAbstractMapEntryDecorator newMAMEDWithMapKey(Object element) { return new MyAbstractMapEntryDecorator(newMAMEWithMapKey(element)); }
 	ResourceBundle newRBWithMapKey(Object element) { return (ResourceBundle)null; }
-	Map newTreeMapWithMapKey(Object element) { Map m = new TreeMap(); m.put(element,null); return m; }
+	SortedMap newTreeMapWithMapKey(Object element) { SortedMap m = new TreeMap(); m.put(element,null); return m; }
 	TiedMapEntry newTMEWithMapKey(Object element) { return new TiedMapEntry(newTreeMapWithMapKey(element),element); }
 	
 	MyAbstractKeyValue newMAKVWithMapValue(Object element) { return new MyAbstractKeyValue(null,element); }
@@ -50,7 +50,7 @@ public class Test {
 	MyAbstractMapEntry newMAMEWithMapValue(Object element) { return new MyAbstractMapEntry(null,element); }
 	MyAbstractMapEntryDecorator newMAMEDWithMapValue(Object element) { return new MyAbstractMapEntryDecorator(newMAMEWithMapValue(element)); }
 	ResourceBundle newRBWithMapValue(Object element) { return (ResourceBundle)null; }
-	Map newTreeMapWithMapValue(Object element) { Map m = new TreeMap(); m.put(null,element); return m; }
+	SortedMap newTreeMapWithMapValue(Object element) { SortedMap m = new TreeMap(); m.put(null,element); return m; }
 	TiedMapEntry newTMEWithMapValue(Object element) { return new TiedMapEntry(newTreeMapWithMapValue(element),null); }
 	UnmodifiableMapEntry newUMEWithMapValue(Object element) { return new UnmodifiableMapEntry(null,element); }
 	
@@ -96,399 +96,399 @@ public class Test {
 		{
 			// "org.apache.commons.collections4.keyvalue;AbstractKeyValue;true;AbstractKeyValue;;;Argument[0];MapKey of Argument[-1];value"
 			AbstractKeyValue out = null;
-			Object in = (Object)source();
+			Object in = source();
 			out = new MyAbstractKeyValue(in, null);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;AbstractKeyValue;true;AbstractKeyValue;;;Argument[1];MapValue of Argument[-1];value"
 			AbstractKeyValue out = null;
-			Object in = (Object)source();
+			Object in = source();
 			out = new MyAbstractKeyValue(null, in);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;AbstractKeyValue;true;setKey;;;Argument[0];MapKey of Argument[-1];value"
 			DefaultKeyValue out = null;
-			Object in = (Object)source();
+			Object in = source();
 			out.setKey(in);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;AbstractKeyValue;true;setKey;;;Argument[0];MapKey of Argument[-1];value"
 			MyAbstractKeyValue out = null;
-			Object in = (Object)source();
+			Object in = source();
 			out.mySetKey(in);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;AbstractKeyValue;true;setKey;;;MapValue of Argument[-1];ReturnValue;value"
 			Object out = null;
-			DefaultKeyValue in = (DefaultKeyValue)newDKVWithMapValue(source());
+			DefaultKeyValue in = newDKVWithMapValue(source());
 			out = in.setKey(null);
 			sink(out); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;AbstractKeyValue;true;setKey;;;MapValue of Argument[-1];ReturnValue;value"
 			Object out = null;
-			MyAbstractKeyValue in = (MyAbstractKeyValue)newMAKVWithMapValue(source());
+			MyAbstractKeyValue in = newMAKVWithMapValue(source());
 			out = in.mySetKey(null);
 			sink(out); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;AbstractKeyValue;true;setKey;;;MapValue of Argument[-1];ReturnValue;value"
 			Object out = null;
-			MyAbstractKeyValue in = (MyAbstractKeyValue)newMAKVWithMapValue(source());
+			MyAbstractKeyValue in = newMAKVWithMapValue(source());
 			out = in.mySetKey((Object)null);
 			sink(out); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;AbstractKeyValue;true;setValue;;;Argument[0];MapValue of Argument[-1];value"
 			UnmodifiableMapEntry out = null;
-			Object in = (Object)source();
+			Object in = source();
 			out.setValue(in);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;AbstractKeyValue;true;setValue;;;Argument[0];MapValue of Argument[-1];value"
 			DefaultKeyValue out = null;
-			Object in = (Object)source();
+			Object in = source();
 			out.setValue(in);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;AbstractKeyValue;true;setValue;;;Argument[0];MapValue of Argument[-1];value"
 			AbstractMapEntry out = null;
-			Object in = (Object)source();
+			Object in = source();
 			out.setValue(in);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;AbstractKeyValue;true;setValue;;;Argument[0];MapValue of Argument[-1];value"
 			MyAbstractKeyValue out = null;
-			Object in = (Object)source();
+			Object in = source();
 			out.mySetValue(in);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;AbstractKeyValue;true;setValue;;;MapValue of Argument[-1];ReturnValue;value"
 			Object out = null;
-			UnmodifiableMapEntry in = (UnmodifiableMapEntry)newUMEWithMapValue(source());
+			UnmodifiableMapEntry in = newUMEWithMapValue(source());
 			out = in.setValue(null);
 			sink(out); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;AbstractKeyValue;true;setValue;;;MapValue of Argument[-1];ReturnValue;value"
 			Object out = null;
-			DefaultKeyValue in = (DefaultKeyValue)newDKVWithMapValue(source());
+			DefaultKeyValue in = newDKVWithMapValue(source());
 			out = in.setValue(null);
 			sink(out); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;AbstractKeyValue;true;setValue;;;MapValue of Argument[-1];ReturnValue;value"
 			Object out = null;
-			AbstractMapEntry in = (MyAbstractMapEntry)newMAMEWithMapValue(source());
+			AbstractMapEntry in = newMAMEWithMapValue(source());
 			out = in.setValue(null);
 			sink(out); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;AbstractKeyValue;true;setValue;;;MapValue of Argument[-1];ReturnValue;value"
 			Object out = null;
-			AbstractMapEntry in = (MyAbstractMapEntry)newMAMEWithMapValue(source());
-			out = in.setValue((Object)null);
+			AbstractMapEntry in = newMAMEWithMapValue(source());
+			out = in.setValue(null);
 			sink(out); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;AbstractKeyValue;true;setValue;;;MapValue of Argument[-1];ReturnValue;value"
 			Object out = null;
-			MyAbstractKeyValue in = (MyAbstractKeyValue)newMAKVWithMapValue(source());
+			MyAbstractKeyValue in = newMAKVWithMapValue(source());
 			out = in.mySetValue(null);
 			sink(out); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;AbstractKeyValue;true;setValue;;;MapValue of Argument[-1];ReturnValue;value"
 			Object out = null;
-			MyAbstractKeyValue in = (MyAbstractKeyValue)newMAKVWithMapValue(source());
-			out = in.mySetValue((Object)null);
+			MyAbstractKeyValue in = newMAKVWithMapValue(source());
+			out = in.mySetValue(null);
 			sink(out); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;AbstractKeyValue;true;toString;;;MapKey of Argument[-1];ReturnValue;taint"
 			String out = null;
-			AbstractKeyValue in = (MyAbstractKeyValue)newMAKVWithMapKey(source());
+			AbstractKeyValue in = newMAKVWithMapKey(source());
 			out = in.toString();
 			sink(out); // $hasTaintFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;AbstractKeyValue;true;toString;;;MapValue of Argument[-1];ReturnValue;taint"
 			String out = null;
-			AbstractKeyValue in = (MyAbstractKeyValue)newMAKVWithMapValue(source());
+			AbstractKeyValue in = newMAKVWithMapValue(source());
 			out = in.toString();
 			sink(out); // $hasTaintFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;AbstractMapEntry;true;AbstractMapEntry;;;Argument[0];MapKey of Argument[-1];value"
 			AbstractMapEntry out = null;
-			Object in = (Object)source();
+			Object in = source();
 			out = new MyAbstractMapEntry(in, null);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;AbstractMapEntry;true;AbstractMapEntry;;;Argument[1];MapValue of Argument[-1];value"
 			AbstractMapEntry out = null;
-			Object in = (Object)source();
+			Object in = source();
 			out = new MyAbstractMapEntry(null, in);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;AbstractMapEntryDecorator;true;AbstractMapEntryDecorator;;;MapKey of Argument[0];MapKey of Argument[-1];value"
 			AbstractMapEntryDecorator out = null;
-			Map.Entry<String,String> in = (Map.Entry<String,String>)newMAKVWithMapKey(source());
+			Map.Entry<String,String> in = newMAMEWithMapKey(source());
 			out = new MyAbstractMapEntryDecorator(in);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;AbstractMapEntryDecorator;true;AbstractMapEntryDecorator;;;MapValue of Argument[0];MapValue of Argument[-1];value"
 			AbstractMapEntryDecorator out = null;
-			Map.Entry<String,String> in = (Map.Entry<String,String>)newMAKVWithMapValue(source());
+			Map.Entry<String,String> in = newMAMEWithMapValue(source());
 			out = new MyAbstractMapEntryDecorator(in);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;AbstractMapEntryDecorator;true;getMapEntry;;;MapKey of Argument[-1];MapKey of ReturnValue;value"
 			Map.Entry<String,String> out = null;
-			MyAbstractMapEntryDecorator in = (MyAbstractMapEntryDecorator)newMAMEDWithMapKey(source());
+			MyAbstractMapEntryDecorator in = newMAMEDWithMapKey(source());
 			out = in.myGetMapEntry();
 			sink(getMapKeyFromEntry(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;AbstractMapEntryDecorator;true;getMapEntry;;;MapValue of Argument[-1];MapValue of ReturnValue;value"
 			Map.Entry<String,String> out = null;
-			MyAbstractMapEntryDecorator in = (MyAbstractMapEntryDecorator)newMAMEDWithMapValue(source());
+			MyAbstractMapEntryDecorator in = newMAMEDWithMapValue(source());
 			out = in.myGetMapEntry();
 			sink(getMapValueFromEntry(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;AbstractMapEntryDecorator;true;toString;;;MapKey of Argument[-1];ReturnValue;taint"
 			String out = null;
-			AbstractMapEntryDecorator in = (MyAbstractMapEntryDecorator)newMAMEDWithMapKey(source());
+			AbstractMapEntryDecorator in = newMAMEDWithMapKey(source());
 			out = in.toString();
 			sink(out); // $hasTaintFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;AbstractMapEntryDecorator;true;toString;;;MapValue of Argument[-1];ReturnValue;taint"
 			String out = null;
-			AbstractMapEntryDecorator in = (MyAbstractMapEntryDecorator)newMAMEDWithMapValue(source());
+			AbstractMapEntryDecorator in = newMAMEDWithMapValue(source());
 			out = in.toString();
 			sink(out); // $hasTaintFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;DefaultKeyValue;true;DefaultKeyValue;(Entry);;MapKey of Argument[0];MapKey of Argument[-1];value"
 			DefaultKeyValue out = null;
-			Map.Entry<String,String> in = (Map.Entry<String,String>)newMAKVWithMapKey(source());
+			Map.Entry<String,String> in = newMAMEWithMapKey(source());
 			out = new DefaultKeyValue(in);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;DefaultKeyValue;true;DefaultKeyValue;(Entry);;MapValue of Argument[0];MapValue of Argument[-1];value"
 			DefaultKeyValue out = null;
-			Map.Entry<String,String> in = (Map.Entry<String,String>)newMAKVWithMapValue(source());
+			Map.Entry<String,String> in = newMAMEWithMapValue(source());
 			out = new DefaultKeyValue(in);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;DefaultKeyValue;true;DefaultKeyValue;(KeyValue);;MapKey of Argument[0];MapKey of Argument[-1];value"
 			DefaultKeyValue out = null;
-			KeyValue in = (KeyValue)newMAKVWithMapKey(source());
+			KeyValue in = newMAKVWithMapKey(source());
 			out = new DefaultKeyValue(in);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;DefaultKeyValue;true;DefaultKeyValue;(KeyValue);;MapValue of Argument[0];MapValue of Argument[-1];value"
 			DefaultKeyValue out = null;
-			KeyValue in = (KeyValue)newMAKVWithMapValue(source());
+			KeyValue in = newMAKVWithMapValue(source());
 			out = new DefaultKeyValue(in);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;DefaultKeyValue;true;DefaultKeyValue;(Object,Object);;Argument[0];MapKey of Argument[-1];value"
 			DefaultKeyValue out = null;
-			Object in = (Object)source();
+			Object in = source();
 			out = new DefaultKeyValue(in, null);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;DefaultKeyValue;true;DefaultKeyValue;(Object,Object);;Argument[1];MapValue of Argument[-1];value"
 			DefaultKeyValue out = null;
-			Object in = (Object)source();
+			Object in = source();
 			out = new DefaultKeyValue(null, in);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;DefaultKeyValue;true;toMapEntry;;;MapKey of Argument[-1];MapKey of ReturnValue;value"
 			Map.Entry<String,String> out = null;
-			DefaultKeyValue in = (DefaultKeyValue)newDKVWithMapKey(source());
+			DefaultKeyValue in = newDKVWithMapKey(source());
 			out = in.toMapEntry();
 			sink(getMapKeyFromEntry(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;DefaultKeyValue;true;toMapEntry;;;MapValue of Argument[-1];MapValue of ReturnValue;value"
 			Map.Entry<String,String> out = null;
-			DefaultKeyValue in = (DefaultKeyValue)newDKVWithMapValue(source());
+			DefaultKeyValue in = newDKVWithMapValue(source());
 			out = in.toMapEntry();
 			sink(getMapValueFromEntry(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;DefaultMapEntry;true;DefaultMapEntry;(Entry);;MapKey of Argument[0];MapKey of Argument[-1];value"
 			DefaultMapEntry out = null;
-			Map.Entry<String,String> in = (Map.Entry<String,String>)newMAKVWithMapKey(source());
+			Map.Entry<String,String> in = newMAMEWithMapKey(source());
 			out = new DefaultMapEntry(in);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;DefaultMapEntry;true;DefaultMapEntry;(Entry);;MapValue of Argument[0];MapValue of Argument[-1];value"
 			DefaultMapEntry out = null;
-			Map.Entry<String,String> in = (Map.Entry<String,String>)newMAKVWithMapValue(source());
+			Map.Entry<String,String> in = newMAMEWithMapValue(source());
 			out = new DefaultMapEntry(in);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;DefaultMapEntry;true;DefaultMapEntry;(KeyValue);;MapKey of Argument[0];MapKey of Argument[-1];value"
 			DefaultMapEntry out = null;
-			KeyValue in = (KeyValue)newMAKVWithMapKey(source());
+			KeyValue in = newMAKVWithMapKey(source());
 			out = new DefaultMapEntry(in);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;DefaultMapEntry;true;DefaultMapEntry;(KeyValue);;MapValue of Argument[0];MapValue of Argument[-1];value"
 			DefaultMapEntry out = null;
-			KeyValue in = (KeyValue)newMAKVWithMapValue(source());
+			KeyValue in = newMAKVWithMapValue(source());
 			out = new DefaultMapEntry(in);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;DefaultMapEntry;true;DefaultMapEntry;(Object,Object);;Argument[0];MapKey of Argument[-1];value"
 			DefaultMapEntry out = null;
-			Object in = (Object)source();
+			Object in = source();
 			out = new DefaultMapEntry(in, null);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;DefaultMapEntry;true;DefaultMapEntry;(Object,Object);;Argument[1];MapValue of Argument[-1];value"
 			DefaultMapEntry out = null;
-			Object in = (Object)source();
+			Object in = source();
 			out = new DefaultMapEntry(null, in);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;TiedMapEntry;true;TiedMapEntry;;;Argument[1];MapKey of Argument[-1];value"
 			TiedMapEntry out = null;
-			Object in = (Object)source();
+			Object in = source();
 			out = new TiedMapEntry(null, in);
 			sink(getMapKeyFromEntry(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;TiedMapEntry;true;TiedMapEntry;;;MapValue of Argument[0];MapValue of Argument[-1];value"
 			TiedMapEntry out = null;
-			Map in = (Map)newTreeMapWithMapValue(source());
+			Map in = newTreeMapWithMapValue(source());
 			out = new TiedMapEntry(in, null);
 			sink(getMapValueFromEntry(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;UnmodifiableMapEntry;true;UnmodifiableMapEntry;(Entry);;MapKey of Argument[0];MapKey of Argument[-1];value"
 			UnmodifiableMapEntry out = null;
-			Map.Entry<String,String> in = (Map.Entry<String,String>)newMAKVWithMapKey(source());
+			Map.Entry<String,String> in = newMAMEWithMapKey(source());
 			out = new UnmodifiableMapEntry(in);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;UnmodifiableMapEntry;true;UnmodifiableMapEntry;(Entry);;MapValue of Argument[0];MapValue of Argument[-1];value"
 			UnmodifiableMapEntry out = null;
-			Map.Entry<String,String> in = (Map.Entry<String,String>)newMAKVWithMapValue(source());
+			Map.Entry<String,String> in = newMAMEWithMapValue(source());
 			out = new UnmodifiableMapEntry(in);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;UnmodifiableMapEntry;true;UnmodifiableMapEntry;(KeyValue);;MapKey of Argument[0];MapKey of Argument[-1];value"
 			UnmodifiableMapEntry out = null;
-			KeyValue in = (KeyValue)newMAKVWithMapKey(source());
+			KeyValue in = newMAKVWithMapKey(source());
 			out = new UnmodifiableMapEntry(in);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;UnmodifiableMapEntry;true;UnmodifiableMapEntry;(KeyValue);;MapValue of Argument[0];MapValue of Argument[-1];value"
 			UnmodifiableMapEntry out = null;
-			KeyValue in = (KeyValue)newMAKVWithMapValue(source());
+			KeyValue in = newMAKVWithMapValue(source());
 			out = new UnmodifiableMapEntry(in);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;UnmodifiableMapEntry;true;UnmodifiableMapEntry;(Object,Object);;Argument[0];MapKey of Argument[-1];value"
 			UnmodifiableMapEntry out = null;
-			Object in = (Object)source();
+			Object in = source();
 			out = new UnmodifiableMapEntry(in, null);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4.keyvalue;UnmodifiableMapEntry;true;UnmodifiableMapEntry;(Object,Object);;Argument[1];MapValue of Argument[-1];value"
 			UnmodifiableMapEntry out = null;
-			Object in = (Object)source();
+			Object in = source();
 			out = new UnmodifiableMapEntry(null, in);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;KeyValue;true;getKey;;;MapKey of Argument[-1];ReturnValue;value"
 			Object out = null;
-			TiedMapEntry in = (TiedMapEntry)newTMEWithMapKey(source());
+			TiedMapEntry in = newTMEWithMapKey(source());
 			out = in.getKey();
 			sink(out); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;KeyValue;true;getKey;;;MapKey of Argument[-1];ReturnValue;value"
 			Object out = null;
-			KeyValue in = (KeyValue)newMAKVWithMapKey(source());
+			KeyValue in = newMAKVWithMapKey(source());
 			out = in.getKey();
 			sink(out); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;KeyValue;true;getKey;;;MapKey of Argument[-1];ReturnValue;value"
 			Object out = null;
-			AbstractMapEntryDecorator in = (MyAbstractMapEntryDecorator)newMAMEDWithMapKey(source());
+			AbstractMapEntryDecorator in = newMAMEDWithMapKey(source());
 			out = in.getKey();
 			sink(out); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;KeyValue;true;getKey;;;MapKey of Argument[-1];ReturnValue;value"
 			Object out = null;
-			AbstractKeyValue in = (MyAbstractKeyValue)newMAKVWithMapKey(source());
+			AbstractKeyValue in = newMAKVWithMapKey(source());
 			out = in.getKey();
 			sink(out); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;KeyValue;true;getValue;;;MapValue of Argument[-1];ReturnValue;value"
 			Object out = null;
-			TiedMapEntry in = (TiedMapEntry)newTMEWithMapValue(source());
+			TiedMapEntry in = newTMEWithMapValue(source());
 			out = in.getValue();
 			sink(out); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;KeyValue;true;getValue;;;MapValue of Argument[-1];ReturnValue;value"
 			Object out = null;
-			KeyValue in = (KeyValue)newMAKVWithMapValue(source());
+			KeyValue in = newMAKVWithMapValue(source());
 			out = in.getValue();
 			sink(out); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;KeyValue;true;getValue;;;MapValue of Argument[-1];ReturnValue;value"
 			Object out = null;
-			AbstractMapEntryDecorator in = (MyAbstractMapEntryDecorator)newMAMEDWithMapValue(source());
+			AbstractMapEntryDecorator in = newMAMEDWithMapValue(source());
 			out = in.getValue();
 			sink(out); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;KeyValue;true;getValue;;;MapValue of Argument[-1];ReturnValue;value"
 			Object out = null;
-			AbstractKeyValue in = (MyAbstractKeyValue)newMAKVWithMapValue(source());
+			AbstractKeyValue in = newMAKVWithMapValue(source());
 			out = in.getValue();
 			sink(out); // $hasValueFlow
 		}
@@ -502,28 +502,28 @@ public class Test {
 		{
 			// "org.apache.commons.collections4;MapUtils;true;fixedSizeMap;;;MapKey of Argument[0];MapKey of ReturnValue;value"
 			IterableMap out = null;
-			Map in = (Map)newTreeMapWithMapKey(source());
+			Map in = newTreeMapWithMapKey(source());
 			out = MapUtils.fixedSizeMap(in);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;fixedSizeMap;;;MapValue of Argument[0];MapValue of ReturnValue;value"
 			IterableMap out = null;
-			Map in = (Map)newTreeMapWithMapValue(source());
+			Map in = newTreeMapWithMapValue(source());
 			out = MapUtils.fixedSizeMap(in);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;fixedSizeSortedMap;;;MapKey of Argument[0];MapKey of ReturnValue;value"
 			SortedMap out = null;
-			SortedMap in = (SortedMap)newTreeMapWithMapKey(source());
+			SortedMap in = newTreeMapWithMapKey(source());
 			out = MapUtils.fixedSizeSortedMap(in);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;fixedSizeSortedMap;;;MapValue of Argument[0];MapValue of ReturnValue;value"
 			SortedMap out = null;
-			SortedMap in = (SortedMap)newTreeMapWithMapValue(source());
+			SortedMap in = newTreeMapWithMapValue(source());
 			out = MapUtils.fixedSizeSortedMap(in);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
@@ -537,35 +537,35 @@ public class Test {
 		{
 			// "org.apache.commons.collections4;MapUtils;true;getMap;;;MapValue of Argument[0];ReturnValue;value"
 			Map out = null;
-			Map in = (Map)newTreeMapWithMapValue(source());
+			Map in = newTreeMapWithMapValue(source());
 			out = MapUtils.getMap(in, null, null);
 			sink(out); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;getMap;;;MapValue of Argument[0];ReturnValue;value"
 			Map out = null;
-			Map in = (Map)newTreeMapWithMapValue(source());
+			Map in = newTreeMapWithMapValue(source());
 			out = MapUtils.getMap(in, null);
 			sink(out); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;getObject;;;Argument[2];ReturnValue;value"
 			Object out = null;
-			Object in = (Object)source();
+			Object in = source();
 			out = MapUtils.getObject(null, null, in);
 			sink(out); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;getObject;;;MapValue of Argument[0];ReturnValue;value"
 			Object out = null;
-			Map in = (Map)newTreeMapWithMapValue(source());
+			Map in = newTreeMapWithMapValue(source());
 			out = MapUtils.getObject(in, null, null);
 			sink(out); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;getObject;;;MapValue of Argument[0];ReturnValue;value"
 			Object out = null;
-			Map in = (Map)newTreeMapWithMapValue(source());
+			Map in = newTreeMapWithMapValue(source());
 			out = MapUtils.getObject(in, null);
 			sink(out); // $hasValueFlow
 		}
@@ -579,175 +579,175 @@ public class Test {
 		{
 			// "org.apache.commons.collections4;MapUtils;true;getString;;;MapValue of Argument[0];ReturnValue;value"
 			String out = null;
-			Map in = (Map)newTreeMapWithMapValue(source());
+			Map in = newTreeMapWithMapValue(source());
 			out = MapUtils.getString(in, null, null);
 			sink(out); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;getString;;;MapValue of Argument[0];ReturnValue;value"
 			String out = null;
-			Map in = (Map)newTreeMapWithMapValue(source());
+			Map in = newTreeMapWithMapValue(source());
 			out = MapUtils.getString(in, null);
 			sink(out); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;invertMap;;;MapKey of Argument[0];MapValue of ReturnValue;value"
 			Map out = null;
-			Map in = (Map)newTreeMapWithMapKey(source());
+			Map in = newTreeMapWithMapKey(source());
 			out = MapUtils.invertMap(in);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;invertMap;;;MapValue of Argument[0];MapKey of ReturnValue;value"
 			Map out = null;
-			Map in = (Map)newTreeMapWithMapValue(source());
+			Map in = newTreeMapWithMapValue(source());
 			out = MapUtils.invertMap(in);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;iterableMap;;;MapKey of Argument[0];MapKey of ReturnValue;value"
 			IterableMap out = null;
-			Map in = (Map)newTreeMapWithMapKey(source());
+			Map in = newTreeMapWithMapKey(source());
 			out = MapUtils.iterableMap(in);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;iterableMap;;;MapValue of Argument[0];MapValue of ReturnValue;value"
 			IterableMap out = null;
-			Map in = (Map)newTreeMapWithMapValue(source());
+			Map in = newTreeMapWithMapValue(source());
 			out = MapUtils.iterableMap(in);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;iterableSortedMap;;;MapKey of Argument[0];MapKey of ReturnValue;value"
 			IterableSortedMap out = null;
-			SortedMap in = (SortedMap)newTreeMapWithMapKey(source());
+			SortedMap in = newTreeMapWithMapKey(source());
 			out = MapUtils.iterableSortedMap(in);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;iterableSortedMap;;;MapValue of Argument[0];MapValue of ReturnValue;value"
 			IterableSortedMap out = null;
-			SortedMap in = (SortedMap)newTreeMapWithMapValue(source());
+			SortedMap in = newTreeMapWithMapValue(source());
 			out = MapUtils.iterableSortedMap(in);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;lazyMap;;;MapKey of Argument[0];MapKey of ReturnValue;value"
 			IterableMap out = null;
-			Map in = (Map)newTreeMapWithMapKey(source());
+			Map in = newTreeMapWithMapKey(source());
 			out = MapUtils.lazyMap(in, (Transformer)null);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;lazyMap;;;MapKey of Argument[0];MapKey of ReturnValue;value"
 			IterableMap out = null;
-			Map in = (Map)newTreeMapWithMapKey(source());
+			Map in = newTreeMapWithMapKey(source());
 			out = MapUtils.lazyMap(in, (Factory)null);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;lazyMap;;;MapValue of Argument[0];MapValue of ReturnValue;value"
 			IterableMap out = null;
-			Map in = (Map)newTreeMapWithMapValue(source());
+			Map in = newTreeMapWithMapValue(source());
 			out = MapUtils.lazyMap(in, (Transformer)null);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;lazyMap;;;MapValue of Argument[0];MapValue of ReturnValue;value"
 			IterableMap out = null;
-			Map in = (Map)newTreeMapWithMapValue(source());
+			Map in = newTreeMapWithMapValue(source());
 			out = MapUtils.lazyMap(in, (Factory)null);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;lazySortedMap;;;MapKey of Argument[0];MapKey of ReturnValue;value"
 			SortedMap out = null;
-			SortedMap in = (SortedMap)newTreeMapWithMapKey(source());
+			SortedMap in = newTreeMapWithMapKey(source());
 			out = MapUtils.lazySortedMap(in, (Transformer)null);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;lazySortedMap;;;MapKey of Argument[0];MapKey of ReturnValue;value"
 			SortedMap out = null;
-			SortedMap in = (SortedMap)newTreeMapWithMapKey(source());
+			SortedMap in = newTreeMapWithMapKey(source());
 			out = MapUtils.lazySortedMap(in, (Factory)null);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;lazySortedMap;;;MapValue of Argument[0];MapValue of ReturnValue;value"
 			SortedMap out = null;
-			SortedMap in = (SortedMap)newTreeMapWithMapValue(source());
+			SortedMap in = newTreeMapWithMapValue(source());
 			out = MapUtils.lazySortedMap(in, (Transformer)null);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;lazySortedMap;;;MapValue of Argument[0];MapValue of ReturnValue;value"
 			SortedMap out = null;
-			SortedMap in = (SortedMap)newTreeMapWithMapValue(source());
+			SortedMap in = newTreeMapWithMapValue(source());
 			out = MapUtils.lazySortedMap(in, (Factory)null);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;multiValueMap;;;MapKey of Argument[0];MapKey of ReturnValue;value"
 			MultiValueMap out = null;
-			Map in = (Map)newTreeMapWithMapKey(source());
+			Map in = newTreeMapWithMapKey(source());
 			out = MapUtils.multiValueMap(in, (Factory)null);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;multiValueMap;;;MapKey of Argument[0];MapKey of ReturnValue;value"
 			MultiValueMap out = null;
-			Map in = (Map)newTreeMapWithMapKey(source());
+			Map in = newTreeMapWithMapKey(source());
 			out = MapUtils.multiValueMap(in, (Class)null);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;multiValueMap;;;MapKey of Argument[0];MapKey of ReturnValue;value"
 			MultiValueMap out = null;
-			Map in = (Map)newTreeMapWithMapKey(source());
+			Map in = newTreeMapWithMapKey(source());
 			out = MapUtils.multiValueMap(in);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;multiValueMap;;;MapValue of Argument[0];MapValue of ReturnValue;value"
 			MultiValueMap out = null;
-			Map in = (Map)newTreeMapWithMapValue(source());
+			Map in = newTreeMapWithMapValue(source());
 			out = MapUtils.multiValueMap(in, (Factory)null);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;multiValueMap;;;MapValue of Argument[0];MapValue of ReturnValue;value"
 			MultiValueMap out = null;
-			Map in = (Map)newTreeMapWithMapValue(source());
+			Map in = newTreeMapWithMapValue(source());
 			out = MapUtils.multiValueMap(in, (Class)null);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;multiValueMap;;;MapValue of Argument[0];MapValue of ReturnValue;value"
 			MultiValueMap out = null;
-			Map in = (Map)newTreeMapWithMapValue(source());
+			Map in = newTreeMapWithMapValue(source());
 			out = MapUtils.multiValueMap(in);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;orderedMap;;;MapKey of Argument[0];MapKey of ReturnValue;value"
 			OrderedMap out = null;
-			Map in = (Map)newTreeMapWithMapKey(source());
+			Map in = newTreeMapWithMapKey(source());
 			out = MapUtils.orderedMap(in);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;orderedMap;;;MapValue of Argument[0];MapValue of ReturnValue;value"
 			OrderedMap out = null;
-			Map in = (Map)newTreeMapWithMapValue(source());
+			Map in = newTreeMapWithMapValue(source());
 			out = MapUtils.orderedMap(in);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;populateMap;(Map,Iterable,Transformer);;Element of Argument[1];MapValue of Argument[0];value"
 			Map out = null;
-			Iterable in = (Iterable)newWithElement(source());
+			Iterable in = newWithElement((String)source());
 			MapUtils.populateMap(out, in, (Transformer)null);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
@@ -756,231 +756,231 @@ public class Test {
 			// which overload it should choose unless you put the generic types in correctly
 			// "org.apache.commons.collections4;MapUtils;true;populateMap;(MultiMap,Iterable,Transformer);;Element of Argument[1];MapValue of Argument[0];value"
 			MultiMap<Integer, String> out = null;
-			Iterable<String> in = (Iterable<String>)newWithElement(source());
+			Iterable<String> in = newWithElement((String)source());
 			MapUtils.populateMap(out, in, (Transformer<String, Integer>)null);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;predicatedMap;;;MapKey of Argument[0];MapKey of ReturnValue;value"
 			IterableMap out = null;
-			Map in = (Map)newTreeMapWithMapKey(source());
+			Map in = newTreeMapWithMapKey(source());
 			out = MapUtils.predicatedMap(in, null, null);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;predicatedMap;;;MapValue of Argument[0];MapValue of ReturnValue;value"
 			IterableMap out = null;
-			Map in = (Map)newTreeMapWithMapValue(source());
+			Map in = newTreeMapWithMapValue(source());
 			out = MapUtils.predicatedMap(in, null, null);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;predicatedSortedMap;;;MapKey of Argument[0];MapKey of ReturnValue;value"
 			SortedMap out = null;
-			SortedMap in = (SortedMap)newTreeMapWithMapKey(source());
+			SortedMap in = newTreeMapWithMapKey(source());
 			out = MapUtils.predicatedSortedMap(in, null, null);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;predicatedSortedMap;;;MapValue of Argument[0];MapValue of ReturnValue;value"
 			SortedMap out = null;
-			SortedMap in = (SortedMap)newTreeMapWithMapValue(source());
+			SortedMap in = newTreeMapWithMapValue(source());
 			out = MapUtils.predicatedSortedMap(in, null, null);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;putAll;;;ArrayElement of Argument[1];MapKey of Argument[0];value"
 			Map out = null;
-			Object[] in = (Object[])newWithArrayElement(source());
+			Object[] in = newWithArrayElement(source());
 			MapUtils.putAll(out, in);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;putAll;;;ArrayElement of Argument[1];MapKey of ReturnValue;value"
 			Map out = null;
-			Object[] in = (Object[])newWithArrayElement(source());
+			Object[] in = newWithArrayElement(source());
 			out = MapUtils.putAll(null, in);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;putAll;;;ArrayElement of Argument[1];MapValue of Argument[0];value"
 			Map out = null;
-			Object[] in = (Object[])newWithArrayElement(source());
+			Object[] in = newWithArrayElement(source());
 			MapUtils.putAll(out, in);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;putAll;;;ArrayElement of Argument[1];MapValue of ReturnValue;value"
 			Map out = null;
-			Object[] in = (Object[])newWithArrayElement(source());
+			Object[] in = newWithArrayElement(source());
 			out = MapUtils.putAll(null, in);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;putAll;;;ArrayElement of ArrayElement of Argument[1];MapKey of Argument[0];value"
 			Map out = null;
-			Object[] in = (Object[])newWithArrayElement(newWithArrayElement(source()));
+			Object[] in = newWithArrayElement(newWithArrayElement(source()));
 			MapUtils.putAll(out, in);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;putAll;;;ArrayElement of ArrayElement of Argument[1];MapKey of ReturnValue;value"
 			Map out = null;
-			Object[] in = (Object[])newWithArrayElement(newWithArrayElement(source()));
+			Object[] in = newWithArrayElement(newWithArrayElement(source()));
 			out = MapUtils.putAll(null, in);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;putAll;;;ArrayElement of ArrayElement of Argument[1];MapValue of Argument[0];value"
 			Map out = null;
-			Object[] in = (Object[])newWithArrayElement(newWithArrayElement(source()));
+			Object[] in = newWithArrayElement(newWithArrayElement(source()));
 			MapUtils.putAll(out, in);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;putAll;;;ArrayElement of ArrayElement of Argument[1];MapValue of ReturnValue;value"
 			Map out = null;
-			Object[] in = (Object[])newWithArrayElement(newWithArrayElement(source()));
+			Object[] in = newWithArrayElement(newWithArrayElement(source()));
 			out = MapUtils.putAll(null, in);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;putAll;;;MapKey of ArrayElement of Argument[1];MapKey of Argument[0];value"
 			Map out = null;
-			Object[] in = (Object[])newWithArrayElement(newMAKVWithMapKey(source()));
+			Object[] in = newWithArrayElement(newMAKVWithMapKey(source()));
 			MapUtils.putAll(out, in);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;putAll;;;MapKey of ArrayElement of Argument[1];MapKey of ReturnValue;value"
 			Map out = null;
-			Object[] in = (Object[])newWithArrayElement(newMAKVWithMapKey(source()));
+			Object[] in = newWithArrayElement(newMAKVWithMapKey(source()));
 			out = MapUtils.putAll(null, in);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;putAll;;;MapValue of ArrayElement of Argument[1];MapValue of Argument[0];value"
 			Map out = null;
-			Object[] in = (Object[])newWithArrayElement(newMAKVWithMapValue(source()));
+			Object[] in = newWithArrayElement(newMAKVWithMapValue(source()));
 			MapUtils.putAll(out, in);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;putAll;;;MapValue of ArrayElement of Argument[1];MapValue of ReturnValue;value"
 			Map out = null;
-			Object[] in = (Object[])newWithArrayElement(newMAKVWithMapValue(source()));
+			Object[] in = newWithArrayElement(newMAKVWithMapValue(source()));
 			out = MapUtils.putAll(null, in);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;safeAddToMap;;;Argument[1];MapKey of Argument[0];value"
 			Map out = null;
-			Object in = (Object)source();
+			Object in = source();
 			MapUtils.safeAddToMap(out, in, null);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;safeAddToMap;;;Argument[2];MapValue of Argument[0];value"
 			Map out = null;
-			Object in = (Object)source();
+			Object in = source();
 			MapUtils.safeAddToMap(out, null, in);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;synchronizedMap;;;MapKey of Argument[0];MapKey of ReturnValue;value"
 			Map out = null;
-			Map in = (Map)newTreeMapWithMapKey(source());
+			Map in = newTreeMapWithMapKey(source());
 			out = MapUtils.synchronizedMap(in);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;synchronizedMap;;;MapValue of Argument[0];MapValue of ReturnValue;value"
 			Map out = null;
-			Map in = (Map)newTreeMapWithMapValue(source());
+			Map in = newTreeMapWithMapValue(source());
 			out = MapUtils.synchronizedMap(in);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;synchronizedSortedMap;;;MapKey of Argument[0];MapKey of ReturnValue;value"
 			SortedMap out = null;
-			SortedMap in = (SortedMap)newTreeMapWithMapKey(source());
+			SortedMap in = newTreeMapWithMapKey(source());
 			out = MapUtils.synchronizedSortedMap(in);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;synchronizedSortedMap;;;MapValue of Argument[0];MapValue of ReturnValue;value"
 			SortedMap out = null;
-			SortedMap in = (SortedMap)newTreeMapWithMapValue(source());
+			SortedMap in = newTreeMapWithMapValue(source());
 			out = MapUtils.synchronizedSortedMap(in);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;toMap;;;MapKey of Argument[0];MapKey of ReturnValue;value"
 			Map out = null;
-			ResourceBundle in = (ResourceBundle)newRBWithMapKey(source());
+			ResourceBundle in = newRBWithMapKey(source());
 			out = MapUtils.toMap(in);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;toMap;;;MapValue of Argument[0];MapValue of ReturnValue;value"
 			Map out = null;
-			ResourceBundle in = (ResourceBundle)newRBWithMapValue(source());
+			ResourceBundle in = newRBWithMapValue(source());
 			out = MapUtils.toMap(in);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;transformedMap;;;MapKey of Argument[0];MapKey of ReturnValue;value"
 			IterableMap out = null;
-			Map in = (Map)newTreeMapWithMapKey(source());
+			Map in = newTreeMapWithMapKey(source());
 			out = MapUtils.transformedMap(in, null, null);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;transformedMap;;;MapValue of Argument[0];MapValue of ReturnValue;value"
 			IterableMap out = null;
-			Map in = (Map)newTreeMapWithMapValue(source());
+			Map in = newTreeMapWithMapValue(source());
 			out = MapUtils.transformedMap(in, null, null);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;transformedSortedMap;;;MapKey of Argument[0];MapKey of ReturnValue;value"
 			SortedMap out = null;
-			SortedMap in = (SortedMap)newTreeMapWithMapKey(source());
+			SortedMap in = newTreeMapWithMapKey(source());
 			out = MapUtils.transformedSortedMap(in, null, null);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;transformedSortedMap;;;MapValue of Argument[0];MapValue of ReturnValue;value"
 			SortedMap out = null;
-			SortedMap in = (SortedMap)newTreeMapWithMapValue(source());
+			SortedMap in = newTreeMapWithMapValue(source());
 			out = MapUtils.transformedSortedMap(in, null, null);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;unmodifiableMap;;;MapKey of Argument[0];MapKey of ReturnValue;value"
 			Map out = null;
-			Map in = (Map)newTreeMapWithMapKey(source());
+			Map in = newTreeMapWithMapKey(source());
 			out = MapUtils.unmodifiableMap(in);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;unmodifiableMap;;;MapValue of Argument[0];MapValue of ReturnValue;value"
 			Map out = null;
-			Map in = (Map)newTreeMapWithMapValue(source());
+			Map in = newTreeMapWithMapValue(source());
 			out = MapUtils.unmodifiableMap(in);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;unmodifiableSortedMap;;;MapKey of Argument[0];MapKey of ReturnValue;value"
 			SortedMap out = null;
-			SortedMap in = (SortedMap)newTreeMapWithMapKey(source());
+			SortedMap in = newTreeMapWithMapKey(source());
 			out = MapUtils.unmodifiableSortedMap(in);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;unmodifiableSortedMap;;;MapValue of Argument[0];MapValue of ReturnValue;value"
 			SortedMap out = null;
-			SortedMap in = (SortedMap)newTreeMapWithMapValue(source());
+			SortedMap in = newTreeMapWithMapValue(source());
 			out = MapUtils.unmodifiableSortedMap(in);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
