@@ -26,26 +26,11 @@ The filter should (ideally) only allow java.lang.String and disallow all other c
 
 <p>The key-value pair can be set as following:</p>
 
-<code>
-String stringsOnlyFilter = "java.lang.String;!*"; // Deny everything but java.lang.String
-
-Map&lt;String, Object&gt; env = new HashMap&lt;String, Object&gt;;
-env.put(RMIConnectorServer.CREDENTIALS_FILTER_PATTERN, stringsOnlyFilter);
-</code>
+<sample src="example_filter_java_10.java" />
 
 <p>For applications using Java 6u113 to 9:</p>
 
-<code>
-// This is deprecated in Java 10+ !
-Map&lt;String, Object&gt; env = new HashMap&lt;String, Object&gt;;
-env.put ( 
-  "jmx.remote.rmi.server.credential.types",
-    new String[]{
-     String[].class.getName(),
-     String.class.getName()
-   }
- );
-</code>
+<sample src="example_filter_java_9.java" />
 
 <p>Please note that the JMX-RMI service is vulnerable in the default configuration.
 For this reason an initialization with a <code>null</code> environment is also vulnerable.</p>
@@ -56,11 +41,11 @@ For this reason an initialization with a <code>null</code> environment is also v
 
 <p>The first example shows how an JMX server is initialized securely with the <code>JMXConnectorServerFactory.newJMXConnectorServer()</code> call.</p>
 
-<sample src="CorrectJmxInitialisation.java" />
+<sample src="CorrectJMXConnectorServerFactoryEnvironmentInitialisation.java" />
 
 <p>The second example shows how a JMX Server is initialized securely if the <code>RMIConnectorServer</code> class is used.</p>
 
-<sample src="CorrectRmiInitialisation.java" />
+<sample src="CorrectRMIConnectorServerEnvironmentInitalisation.java" />
 
 </example>
 
