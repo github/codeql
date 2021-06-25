@@ -150,3 +150,20 @@ class ServletWriterSource extends MethodAccess {
     )
   }
 }
+
+/**
+ * Holds if `s` is an HTTP Content-Type vulnerable to XSS.
+ */
+bindingset[s]
+predicate isXssVulnerableContentType(string s) {
+  s.regexpMatch("(?i)text/(html|xml|xsl|rdf|vtt|cache-manifest).*") or
+  s.regexpMatch("(?i)application/(.*\\+)?xml.*") or
+  s.regexpMatch("(?i)cache-manifest.*") or
+  s.regexpMatch("(?i)image/svg\\+xml.*")
+}
+
+/**
+ * Holds if `s` is an HTTP Content-Type that is not vulnerable to XSS.
+ */
+bindingset[s]
+predicate isXssSafeContentType(string s) { not isXssVulnerableContentType(s) }
