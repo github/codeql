@@ -234,7 +234,8 @@ for lang in settings.languages:
         row[1] = ", ".join("``{0}``".format(p.name)
                            for p in sorted(other_packages, key=lambda x: x.name))
 
-        csvwriter.writerow(row)
+        if any(other_packages):
+            csvwriter.writerow(row)
 
         # Collect statistics on all packages
         row = [row_prefix + "Totals", None]
