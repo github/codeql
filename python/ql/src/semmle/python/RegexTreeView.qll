@@ -38,12 +38,16 @@ newtype TRegExpParent =
 class RegExpParent extends TRegExpParent {
   string toString() { result = "RegExpParent" }
 
+  /** Gets the `i`th child term. */
   abstract RegExpTerm getChild(int i);
 
+  /** Gets a child term . */
   RegExpTerm getAChild() { result = getChild(_) }
 
+  /** Gets the number of child terms. */
   int getNumChild() { result = count(getAChild()) }
 
+  /** Gets the associated regex. */
   abstract Regex getRegex();
 }
 
@@ -91,14 +95,24 @@ class RegExpTerm extends RegExpParent {
     this = TRegExpSpecialChar(re, start, end)
   }
 
+  /**
+   * Gets the outermost term of this regular expression.
+   */
   RegExpTerm getRootTerm() {
     this.isRootTerm() and result = this
     or
     result = getParent().(RegExpTerm).getRootTerm()
   }
 
+  /**
+   * Holds if this term is part of a string literal
+   * that is interpreted as a regular expression.
+   */
   predicate isUsedAsRegExp() { any() }
 
+  /**
+   * Holds if this is the root term of a regular expression.
+   */
   predicate isRootTerm() { start = 0 and end = re.getText().length() }
 
   override RegExpTerm getChild(int i) {
@@ -121,18 +135,30 @@ class RegExpTerm extends RegExpParent {
     result = this.(RegExpSpecialChar).getChild(i)
   }
 
+  /**
+   * Gets the parent term of this regular expression term, or the
+   * regular expression literal if this is the root term.
+   */
   RegExpParent getParent() { result.getAChild() = this }
 
   override Regex getRegex() { result = re }
 
+  /** Gets the offset at which this term starts. */
   int getStart() { result = start }
 
+  /** Gets the offset at which this term ends. */
   int getEnd() { result = end }
 
   override string toString() { result = re.getText().substring(start, end) }
 
+  /**
+   * Gets the location of the surrounding regex, as locations inside the regex do not exist.
+   * To get location information corresponding to the term inside the regex,
+   * use `hasLocationInfo`.
+   */
   Location getLocation() { result = re.getLocation() }
 
+  /** Holds if this term is found at the specified location offsets. */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
@@ -143,10 +169,13 @@ class RegExpTerm extends RegExpParent {
     )
   }
 
+  /** Gets the file in which this term is found. */
   File getFile() { result = this.getLocation().getFile() }
 
+  /** Gets the raw source text of this term. */
   string getRawValue() { result = this.toString() }
 
+  /** Gets the string literal in which this term is found. */
   RegExpLiteral getLiteral() { result = TRegExpLiteral(re) }
 
   /** Gets the regular expression term that is matched (textually) before this one, if any. */
@@ -171,6 +200,7 @@ class RegExpTerm extends RegExpParent {
     )
   }
 
+  /** Gets the primary QL class for this term. */
   string getPrimaryQLClass() { result = "RegExpTerm" }
 }
 

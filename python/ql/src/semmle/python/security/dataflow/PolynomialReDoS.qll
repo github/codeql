@@ -167,6 +167,7 @@ class PolynomialReDoSSink extends DataFlow::Node {
     t.isRootTerm()
   }
 
+  /** Gets the regex that is being executed by this node. */
   RegExpTerm getRegExp() { result = t }
 
   /**
