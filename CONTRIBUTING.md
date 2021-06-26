@@ -13,11 +13,7 @@ If you have an idea for a query that you would like to share with other CodeQL u
 
     There are five language-specific query directories in this repository:
 
-      * C/C++: `cpp/ql/src`
-      * C#: `csharp/ql/src`
-      * Java: `java/ql/src`
-      * JavaScript: `javascript/ql/src`
-      * Python: `python/ql/src`
+
 
     Each language-specific directory contains further subdirectories that group queries based on their `@tags` or purpose.
     - Experimental queries and libraries are stored in the `experimental` subdirectory within each language-specific directory in the [CodeQL repository](https://github.com/github/codeql). For example, experimental Java queries and libraries are stored in `java/ql/src/experimental` and any corresponding tests in `java/ql/test/experimental`.
