@@ -479,11 +479,6 @@ implInterface(
   int id2: @interface ref
 );
 
-permits(
-  int id1: @classorinterface ref,
-  int id2: @classorinterface ref
-);
-
 hasModifier(
   int id1: @modifiable ref,
   int id2: @modifier ref
