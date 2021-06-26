@@ -1,6 +1,6 @@
 /**
- * @name Using a non-constant time algorithm for comparing results of a cryptographic operation
- * @description When comparing results of a cryptographic operation, a constant time algorithm should be used.
+ * @name Using a non-constant-time algorithm for comparing results of a cryptographic operation
+ * @description When comparing results of a cryptographic operation, a constant-time algorithm should be used.
  *              Otherwise, attackers may be able to implement a timing attack if they can control input.
  *              A successful attack may result in leaking secrets or authentication bypass.
  * @kind path-problem
@@ -12,6 +12,7 @@
  */
 
 import java
+import semmle.code.java.controlflow.Guards
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.TaintTracking2
 import semmle.code.java.dataflow.FlowSources
@@ -146,7 +147,7 @@ private class NonConstantTimeComparisonCall extends StaticMethodAccess {
 
 /**
  * A config that tracks data flow from remote user input to methods
- * that compare inputs using a non-constant time algorithm.
+ * that compare inputs using a non-constant-time algorithm.
  */
 private class UserInputInComparisonConfig extends TaintTracking2::Configuration {
   UserInputInComparisonConfig() { this = "UserInputInComparisonConfig" }
@@ -169,25 +170,69 @@ private predicate looksLikeConstant(Expr expr) {
   expr.(VarAccess).getVariable().isFinal() and expr.getType() instanceof TypeString
 }
 
-/** A sink that compares input using a non-constant time algorithm. */
+/**
+ * Holds if `firstObject` and `secondObject` are compared using a method
+ * that does not use a constant-time algorithm, for example, `String.equals()`.
+ */
+private predicate isNonConstantEqualsCall(Expr firstObject, Expr secondObject) {
+  exists(NonConstantTimeEqualsCall call |
+    firstObject = call.getQualifier() and
+    secondObject = call.getAnArgument()
+    or
+    firstObject = call.getAnArgument() and
+    secondObject = call.getQualifier()
+  )
+}
+
+/**
+ * Holds if `firstInput` and `secondInput` are compared using a static method
+ * that does not use a constant-time algorithm, for example, `Arrays.equals()`.
+ */
+private predicate isNonConstantTimeComparisonCall(Expr firstInput, Expr secondInput) {
+  exists(NonConstantTimeComparisonCall call |
+    firstInput = call.getArgument(0) and secondInput = call.getArgument(1)
+    or
+    firstInput = call.getArgument(1) and secondInput = call.getArgument(0)
+  )
+}
+
+/**
+ * Holds if there is a fast-fail check while comparing `firstArray` and `secondArray`.
+ */
+private predicate existsFailFastCheck(Expr firstArray, Expr secondArray) {
+  exists(
+    Guard guard, EqualityTest eqTest, boolean branch, Stmt fastFailingStmt,
+    ArrayAccess firstArrayAccess, ArrayAccess secondArrayAccess
+  |
+    guard = eqTest and
+    // For `==` false branch is fail fast; for `!=` true branch is fail fast
+    branch = eqTest.polarity().booleanNot() and
+    (
+      fastFailingStmt instanceof ReturnStmt or
+      fastFailingStmt instanceof BreakStmt or
+      fastFailingStmt instanceof ThrowStmt
+    ) and
+    guard.controls(fastFailingStmt.getBasicBlock(), branch) and
+    DataFlow::localExprFlow(firstArrayAccess, eqTest.getLeftOperand()) and
+    DataFlow::localExprFlow(secondArrayAccess, eqTest.getRightOperand())
+  |
+    firstArrayAccess.getArray() = firstArray and secondArray = secondArrayAccess
+    or
+    secondArrayAccess.getArray() = firstArray and secondArray = firstArrayAccess
+  )
+}
+
+/** A sink that compares input using a non-constant-time algorithm. */
 private class NonConstantTimeComparisonSink extends DataFlow::Node {
   Expr anotherParameter;
 
   NonConstantTimeComparisonSink() {
     (
-      exists(NonConstantTimeEqualsCall call |
-        this.asExpr() = call.getQualifier() and
-        anotherParameter = call.getAnArgument()
-        or
-        this.asExpr() = call.getAnArgument() and
-        anotherParameter = call.getQualifier()
-      )
+      isNonConstantEqualsCall(this.asExpr(), anotherParameter)
       or
-      exists(NonConstantTimeComparisonCall call | call.getAnArgument() = this.asExpr() |
-        this.asExpr() = call.getArgument(0) and anotherParameter = call.getArgument(1)
-        or
-        this.asExpr() = call.getArgument(1) and anotherParameter = call.getArgument(0)
-      )
+      isNonConstantTimeComparisonCall(this.asExpr(), anotherParameter)
+      or
+      existsFailFastCheck(this.asExpr(), anotherParameter)
     ) and
     not looksLikeConstant(anotherParameter)
   }
@@ -202,7 +247,7 @@ private class NonConstantTimeComparisonSink extends DataFlow::Node {
 
 /**
  * A configuration that tracks data flow from cryptographic operations
- * to methods that compare data using a non-constant time algorithm.
+ * to methods that compare data using a non-constant-time algorithm.
  */
 private class NonConstantTimeCryptoComparisonConfig extends TaintTracking::Configuration {
   NonConstantTimeCryptoComparisonConfig() { this = "NonConstantTimeCryptoComparisonConfig" }
@@ -220,4 +265,4 @@ where
     sink.getNode().(NonConstantTimeComparisonSink).includesUserInput()
   )
 select sink.getNode(), source, sink,
-  "Using a non-constant time algorithm for comparing results of a cryptographic operation."
+  "Using a non-constant-time algorithm for comparing results of a cryptographic operation."
