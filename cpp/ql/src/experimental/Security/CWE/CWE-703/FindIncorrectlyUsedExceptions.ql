@@ -34,7 +34,10 @@ where
   )
   or
   fc.getTarget() instanceof Constructor and
-  fc.getTargetType().(Class).getABaseClass+().hasGlobalOrStdName("exception") and
+  (
+    fc.getTargetType().(Class).getABaseClass+().hasGlobalOrStdName("exception") or
+    fc.getTargetType().(Class).getABaseClass+().hasGlobalOrStdName("CException")
+  ) and
   not fc.isInMacroExpansion() and
   not exists(ThrowExpr texp | fc.getEnclosingStmt() = texp.getEnclosingStmt()) and
   not exists(FunctionCall fctmp | fctmp.getAnArgument() = fc) and
