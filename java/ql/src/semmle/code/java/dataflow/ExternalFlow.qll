@@ -217,6 +217,12 @@ private predicate sinkModelCsv(string row) {
       "java.net;URL;false;openStream;;;Argument[-1];open-url",
       "java.net.http;HttpRequest;false;newBuilder;;;Argument[0];open-url",
       "java.net.http;HttpRequest$Builder;false;uri;;;Argument[0];open-url",
+      "java.net;URLClassLoader;false;URLClassLoader;(URL[]);;Argument[0];open-url",
+      "java.net;URLClassLoader;false;URLClassLoader;(URL[],ClassLoader);;Argument[0];open-url",
+      "java.net;URLClassLoader;false;URLClassLoader;(URL[],ClassLoader,URLStreamHandlerFactory);;Argument[0];open-url",
+      "java.net;URLClassLoader;false;URLClassLoader;(String,URL[],ClassLoader);;Argument[1];open-url",
+      "java.net;URLClassLoader;false;URLClassLoader;(String,URL[],ClassLoader,URLStreamHandlerFactory);;Argument[1];open-url",
+      "java.net;URLClassLoader;false;newInstance;;;Argument[0];open-url",
       // Create file
       "java.io;FileOutputStream;false;FileOutputStream;;;Argument[0];create-file",
       "java.io;RandomAccessFile;false;RandomAccessFile;;;Argument[0];create-file",
