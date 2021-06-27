@@ -235,11 +235,9 @@ module Xorm {
   /** A model for sinks of XORM. */
   private class XormSink extends SQL::QueryString::Range {
     XormSink() {
-      exists(Method meth, string package, string type, string name, int n |
-        meth.hasQualifiedName(package, type, name) and
+      exists(Method meth, string type, string name, int n |
+        meth.hasQualifiedName(Xorm::packagePath(), type, name) and
         this = meth.getACall().getArgument(n) and
-        this.getType().getUnderlyingType() instanceof StringType and
-        package = Xorm::packagePath() and
         type = ["Engine", "Session"]
       |
         name =
