@@ -391,6 +391,8 @@ func (_ *Engine) SetTZLocation(_ *time.Location) {}
 
 func (_ *Engine) SetTableMapper(_ interface{}) {}
 
+func (_ *Engine) SetTagIdentifier(_ string) {}
+
 func (_ *Engine) ShowSQL(_ ...bool) {}
 
 func (_ *Engine) StoreEngine(_ string) *Session {
@@ -654,6 +656,10 @@ func (_ *Session) InsertOne(_ interface{}) (int64, error) {
 }
 
 func (_ *Session) IsClosed() bool {
+	return false
+}
+
+func (_ *Session) IsInTx() bool {
 	return false
 }
 
