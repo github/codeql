@@ -1,7 +1,7 @@
 /**
  * @name Failed extractor invocations
  * @description Gives the command line of compilations for which extraction did not run to completion.
- * @kind diagnostic
+ * @kind table
  * @id cpp/diagnostics/failed-extractor-invocations
  */
 
@@ -19,4 +19,4 @@ string describe(Compilation c) {
 
 from Compilation c
 where not c.normalTermination()
-select c, "Extraction aborted for " + describe(c), 2
+select c, "Extraction aborted for " + describe(c)
