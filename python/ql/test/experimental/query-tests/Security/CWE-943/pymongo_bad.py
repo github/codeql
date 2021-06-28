@@ -11,7 +11,7 @@ def home_page():
     unsafe_search = request.args['search']
     json_search = json.loads(unsafe_search)
 
-    data = client.db.collection.find_one({'data': json_search})
+    return client.db.collection.find_one({'data': json_search})
 
 # if __name__ == "__main__":
 #     app.run(debug=True)

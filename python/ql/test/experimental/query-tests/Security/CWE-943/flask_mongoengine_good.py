@@ -30,7 +30,7 @@ def get_db_find():
     safe_search = sanitize(json_search)
 
     retrieved_db = db.get_db()
-    data = retrieved_db["Movie"].find({'name': safe_search})
+    return retrieved_db["Movie"].find({'name': safe_search})
 
 # if __name__ == "__main__":
 #     app.run(debug=True)

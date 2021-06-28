@@ -13,7 +13,7 @@ def home_page():
     json_search = json.loads(unsafe_search)
     safe_search = sanitize(json_search)
 
-    data = mongo.db.user.find({'name': safe_search})
+    return mongo.db.user.find({'name': safe_search})
 
 # if __name__ == "__main__":
 #    app.run(debug=True)

@@ -11,7 +11,7 @@ def home_page():
     unsafe_search = request.args['search']
     json_search = json.loads(unsafe_search)
 
-    data = mongo.db.user.find({'name': json_search})
+    return mongo.db.user.find({'name': json_search})
 
 # if __name__ == "__main__":
 #     app.run(debug=True)

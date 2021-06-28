@@ -23,15 +23,6 @@ def connect_find():
     db = me.connect('mydb')  
     return db.movie.find({'name': json_search})
 
-@app.route("/connection_connect_find")
-def connection_connect_find():
-    unsafe_search = request.args['search']
-    json_search = json.loads(unsafe_search)
-    safe_search = sanitize(json_search)
-
-    db = connect('mydb')
-    return db.movie.find({'name': json_search})
-
 @app.route("/subclass_objects")
 def subclass_objects():
     unsafe_search = request.args['search']
@@ -39,15 +30,6 @@ def subclass_objects():
     safe_search = sanitize(json_search)
 
     return Movie.objects(__raw__=safe_search)
-
-@app.route("/get_db_find")
-def get_db_find():
-    unsafe_search = request.args['search']
-    json_search = json.loads(unsafe_search)
-    safe_search = sanitize(json_search)
-
-    db = me.get_db()
-    return db.movie.find({'name': safe_search})
 
 @app.route("/connection_get_db_find")
 def connection_get_db_find():
