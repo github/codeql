@@ -12,7 +12,6 @@ import semmle.code.java.frameworks.spring.SpringConstructorArg
 import semmle.code.java.frameworks.spring.SpringController
 import semmle.code.java.frameworks.spring.SpringDescription
 import semmle.code.java.frameworks.spring.SpringEntry
-import semmle.code.java.frameworks.spring.SpringErrors
 import semmle.code.java.frameworks.spring.SpringFlex
 import semmle.code.java.frameworks.spring.SpringIdRef
 import semmle.code.java.frameworks.spring.SpringImport
@@ -34,6 +33,7 @@ import semmle.code.java.frameworks.spring.SpringRef
 import semmle.code.java.frameworks.spring.SpringReplacedMethod
 import semmle.code.java.frameworks.spring.SpringSet
 import semmle.code.java.frameworks.spring.SpringUtil
+import semmle.code.java.frameworks.spring.SpringValidation
 import semmle.code.java.frameworks.spring.SpringValue
 import semmle.code.java.frameworks.spring.SpringXMLElement
 import semmle.code.java.frameworks.spring.metrics.MetricSpringBean
