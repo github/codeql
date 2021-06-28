@@ -5,7 +5,8 @@
  * @kind path-problem
  * @problem.severity error
  * @precision high
- * @id java/command-line-injection
+ * @deprecated use java/command-line-injection instead. This query exists to test some experimental sinks.
+ * @id java/experimental/command-line-injection
  * @tags security
  *       external/cwe/cwe-078
  *       external/cwe/cwe-088
