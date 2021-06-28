@@ -48,6 +48,19 @@ def bind_s_example():
     ldap_connection.bind_s('cn=root', None)
     user = ldap_connection.search_s(dn, ldap.SCOPE_SUBTREE, search_filter)
 
+@app.route("/bind_s_example")
+def bind_s_example_kwargs():
+    """
+    A RemoteFlowSource is used directly as DN and search filter while the bind's password
+    is set to None
+    """
+
+    dn = request.args['dc']
+    search_filter = request.args['search']
+
+    ldap_connection = ldap.initialize("ldap://127.0.0.1:1337")
+    ldap_connection.bind_s(who='cn=root', cred=None)
+    user = ldap_connection.search_s(dn, ldap.SCOPE_SUBTREE, search_filter)
 
 @app.route("/bind_example")
 def bind_example():
@@ -61,6 +74,21 @@ def bind_example():
 
     ldap_connection = ldap.initialize("ldap://127.0.0.1:1337")
     ldap_connection.bind('cn=root', "")
+    user = ldap_connection.search_s(dn, ldap.SCOPE_SUBTREE, search_filter)
+
+
+@app.route("/bind_example")
+def bind_example():
+    """
+    A RemoteFlowSource is used directly as DN and search filter while the bind's password
+    is set to None
+    """
+
+    dn = request.args['dc']
+    search_filter = request.args['search']
+
+    ldap_connection = ldap.initialize("ldap://127.0.0.1:1337")
+    ldap_connection.bind(who='cn=root', cred="")
     user = ldap_connection.search_s(dn, ldap.SCOPE_SUBTREE, search_filter)
 
 

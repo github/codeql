@@ -82,7 +82,9 @@ private module LDAP {
     private class LDAP2Bind extends DataFlow::CallCfgNode, LDAPBind::Range {
       LDAP2Bind() { this.getFunction() = ldapBind() }
 
-      override DataFlow::Node getPassword() { result = this.getArg(1) }
+      override DataFlow::Node getPassword() {
+        result in [this.getArg(1), this.getArgByName("cred")]
+      }
     }
 
     /**
@@ -147,7 +149,9 @@ private module LDAP {
     class LDAP3Bind extends DataFlow::CallCfgNode, LDAPBind::Range {
       LDAP3Bind() { this = ldap3Connection().getACall() }
 
-      override DataFlow::Node getPassword() { result = this.getArgByName("password") }
+      override DataFlow::Node getPassword() {
+        result in [this.getArg(2), this.getArgByName("password")]
+      }
     }
 
     /**

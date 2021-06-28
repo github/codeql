@@ -1,7 +1,10 @@
 | The following LDAP bind operation is executed without authentication | auth_bad_2.py:18:5:18:42 | ControlFlowNode for Attribute() |
 | The following LDAP bind operation is executed without authentication | auth_bad_2.py:33:5:33:44 | ControlFlowNode for Attribute() |
 | The following LDAP bind operation is executed without authentication | auth_bad_2.py:48:5:48:43 | ControlFlowNode for Attribute() |
-| The following LDAP bind operation is executed without authentication | auth_bad_2.py:63:5:63:39 | ControlFlowNode for Attribute() |
-| The following LDAP bind operation is executed without authentication | auth_bad_3.py:18:12:18:57 | ControlFlowNode for Connection() |
-| The following LDAP bind operation is executed without authentication | auth_bad_3.py:33:12:33:55 | ControlFlowNode for Connection() |
-| The following LDAP bind operation is executed without authentication | auth_bad_3.py:48:12:48:42 | ControlFlowNode for Connection() |
+| The following LDAP bind operation is executed without authentication | auth_bad_2.py:62:5:62:52 | ControlFlowNode for Attribute() |
+| The following LDAP bind operation is executed without authentication | auth_bad_2.py:76:5:76:39 | ControlFlowNode for Attribute() |
+| The following LDAP bind operation is executed without authentication | auth_bad_2.py:91:5:91:48 | ControlFlowNode for Attribute() |
+| The following LDAP bind operation is executed without authentication | auth_bad_3.py:18:12:18:43 | ControlFlowNode for Connection() |
+| The following LDAP bind operation is executed without authentication | auth_bad_3.py:33:12:33:57 | ControlFlowNode for Connection() |
+| The following LDAP bind operation is executed without authentication | auth_bad_3.py:47:12:47:55 | ControlFlowNode for Connection() |
+| The following LDAP bind operation is executed without authentication | auth_bad_3.py:62:12:62:42 | ControlFlowNode for Connection() |
