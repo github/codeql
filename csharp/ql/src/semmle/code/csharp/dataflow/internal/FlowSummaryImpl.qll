@@ -650,7 +650,7 @@ module Private {
       interpretSpec(spec, 0, stack)
     }
 
-    predicate interpretSpec(string spec, int idx, SummaryComponentStack stack) {
+    private predicate interpretSpec(string spec, int idx, SummaryComponentStack stack) {
       exists(string c |
         relevantSpec(spec) and
         specLength(spec, idx + 1) and
