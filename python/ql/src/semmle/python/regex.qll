@@ -143,6 +143,26 @@ abstract class RegexString extends Expr {
     )
   }
 
+  /**
+   * Holds if the character set starting at `charset_start` contains a character range
+   * with lower bound found between `start` and `lower_end`
+   * and upper bound found between `upper_start` and `end`.
+   */
+  predicate charRange(int charset_start, int start, int lower_end, int upper_start, int end) {
+    // mirror logic from `simpleCharacter`
+    exists(int x, int y |
+      this.charSet(charset_start, y) and
+      this.char_set_start(charset_start, x)
+    |
+      x <= start and
+      this.simpleCharacter(start, lower_end) and
+      this.nonEscapedCharAt(lower_end) = "-" and
+      lower_end + 1 = upper_start and
+      this.simpleCharacter(upper_start, end) and
+      end < y
+    )
+  }
+
   predicate escapingChar(int pos) { this.escaping(pos) = true }
 
   private boolean escaping(int pos) {
@@ -192,7 +212,12 @@ abstract class RegexString extends Expr {
     not exists(int i | start + 2 < i and i < end - 1 | this.getChar(i) = "}")
   }
 
-  private predicate escapedCharacter(int start, int end) {
+  /**
+   * Holds if an escaped character is found between `start` and `end`.
+   * Escaped characters include hex values, octal values and named escapes,
+   * but excludes backreferences.
+   */
+  predicate escapedCharacter(int start, int end) {
     this.escapingChar(start) and
     not exists(this.getText().substring(start + 1, end + 1).toInt()) and
     (
@@ -221,10 +246,9 @@ abstract class RegexString extends Expr {
     exists(int x, int y | this.charSet(x, y) and index in [x + 1 .. y - 2])
   }
 
-  /*
+  /**
    * 'simple' characters are any that don't alter the parsing of the regex.
    */
-
   private predicate simpleCharacter(int start, int end) {
     end = start + 1 and
     not this.charSet(start, _) and
