@@ -1,0 +1,15 @@
+edges
+| CrlfInjection.java:30:19:30:32 | subject : String | CrlfInjection.java:47:19:47:25 | subject |
+| CrlfInjection.java:62:19:62:32 | subject : String | CrlfInjection.java:72:21:72:27 | subject |
+| CrlfInjection.java:82:19:82:32 | subject : String | CrlfInjection.java:83:15:83:21 | subject |
+nodes
+| CrlfInjection.java:30:19:30:32 | subject : String | semmle.label | subject : String |
+| CrlfInjection.java:47:19:47:25 | subject | semmle.label | subject |
+| CrlfInjection.java:62:19:62:32 | subject : String | semmle.label | subject : String |
+| CrlfInjection.java:72:21:72:27 | subject | semmle.label | subject |
+| CrlfInjection.java:82:19:82:32 | subject : String | semmle.label | subject : String |
+| CrlfInjection.java:83:15:83:21 | subject | semmle.label | subject |
+#select
+| CrlfInjection.java:47:19:47:25 | subject | CrlfInjection.java:30:19:30:32 | subject : String | CrlfInjection.java:47:19:47:25 | subject | CRLF injection from $@. | CrlfInjection.java:30:19:30:32 | subject | this user input |
+| CrlfInjection.java:72:21:72:27 | subject | CrlfInjection.java:62:19:62:32 | subject : String | CrlfInjection.java:72:21:72:27 | subject | CRLF injection from $@. | CrlfInjection.java:62:19:62:32 | subject | this user input |
+| CrlfInjection.java:83:15:83:21 | subject | CrlfInjection.java:82:19:82:32 | subject : String | CrlfInjection.java:83:15:83:21 | subject | CRLF injection from $@. | CrlfInjection.java:82:19:82:32 | subject | this user input |
