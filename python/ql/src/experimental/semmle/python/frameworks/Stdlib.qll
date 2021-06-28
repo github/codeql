@@ -119,27 +119,5 @@ private class XmlToDictParseCall extends Decoding::Range, DataFlow::CallCfgNode 
 
   override DataFlow::Node getOutput() { result = this }
 
-  override string getFormat() { result = "JSON" }
-}
-
-// ---------------------------------------------------------------------------
-// ujson
-// ---------------------------------------------------------------------------
-/** Gets a reference to the `ujson` module. */
-API::Node ujson() { result = API::moduleImport("ujson") }
-
-/**
- * A call to `ujson.loads`
- * See https://pypi.org/project/ujson/#usage
- */
-private class UltraJsonLoadsCall extends Decoding::Range, DataFlow::CallCfgNode {
-  UltraJsonLoadsCall() { this = ujson().getMember("loads").getACall() }
-
-  override predicate mayExecuteInput() { none() }
-
-  override DataFlow::Node getAnInput() { result = this.getArg(0) }
-
-  override DataFlow::Node getOutput() { result = this }
-
-  override string getFormat() { result = "JSON" }
+  override string getFormat() { result = "XML" }
 }
