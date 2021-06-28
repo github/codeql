@@ -9,35 +9,37 @@ import org.springframework.beans.PropertyValues;
 
 
 public class Test {
-    Object getMapKey(Object container) {
-        return null;
+    Object getMapKey(PropertyValue container) {
+        return container.getName();
     }
 
-    Object getMapValue(Object container) {
-        return null;
+    Object getMapValue(PropertyValue container) {
+        return container.getValue();
     }
 
-    Object getElement(Object container) {
-        return null;
+    PropertyValue getElement(Iterable<PropertyValue> container) {
+        return container.iterator().next();
     }
 
-    Object getArrayElement(Object container) {
-        return null;
+    PropertyValue getArrayElement(PropertyValue[] container) {
+        return container[0];
     }
 
-    Object newWithMapKey(Object element) {
-        return null;
+    PropertyValue newWithMapKey(String element) {
+        return new PropertyValue(element, null);
     }
 
-    Object newWithMapValue(Object element) {
-        return null;
+    PropertyValue newWithMapValue(String element) {
+        return new PropertyValue("", element);
     }
 
-    Object newWithElement(Object element) {
-        return null;
+    MutablePropertyValues newWithElement(PropertyValue element) {
+        MutablePropertyValues pv = new MutablePropertyValues();
+        pv.addPropertyValue(element);
+        return pv;
     }
 
-    Object source() {
+    String source() {
         return null;
     }
 
@@ -97,12 +99,12 @@ public class Test {
         }
         // "org.springframework.beans;PropertyValues;true;getPropertyValue;;;MapValue of Element of Argument[-1];ReturnValue;value",
         {
-            PropertyValues pv = (PropertyValues) newWithElement(newWithMapValue(source()));
-            sink(pv.getPropertyValue("safe")); // $hasValueFlow
+            PropertyValues pv = newWithElement(newWithMapValue(source()));
+            sink(pv.getPropertyValue("safe").getValue()); // $hasValueFlow
         }
         // "org.springframework.beans;PropertyValues;true;getPropertyValues;;;Element of Argument[-1];ArrayElement of ReturnValue;value",
         {
-            PropertyValues pv = (PropertyValues) newWithElement(newWithMapValue(source()));
+            PropertyValues pv = newWithElement(newWithMapValue(source()));
             PropertyValue[] vs = pv.getPropertyValues();
             sink(getMapKey(getArrayElement(vs))); // Safe
             sink(getMapValue(getArrayElement(vs))); // $hasValueFlow
@@ -117,8 +119,8 @@ public class Test {
         // "org.springframework.beans;MutablePropertyValues;true;add;(String,Object);;Argument[0];MapKey of Element of ReturnValue;value",
         {
             MutablePropertyValues pv = new MutablePropertyValues();
-            sink(getMapKey(getElement(pv.add((String) source(), null)))); // $hasValueFlow
-            sink(getMapValue(getElement(pv.add((String) source(), null)))); // Safe
+            sink(getMapKey(getElement(pv.add(source(), null)))); // $hasValueFlow
+            sink(getMapValue(getElement(pv.add(source(), null)))); // Safe
         }
         // "org.springframework.beans;MutablePropertyValues;true;add;(String,Object);;Argument[1];MapValue of Element of Argument[-1];value",
         {
@@ -136,13 +138,13 @@ public class Test {
         // "org.springframework.beans;MutablePropertyValues;true;addPropertyValue;(PropertyValue);;Argument[0];Element of Argument[-1];value",
         {
             MutablePropertyValues pv1 = new MutablePropertyValues();
-            PropertyValue v1 = (PropertyValue) newWithMapKey(source());
+            PropertyValue v1 = newWithMapKey(source());
             pv1.addPropertyValue(v1);
             sink(getMapKey(getElement(pv1))); // $hasValueFlow
             sink(getMapValue(getElement(pv1))); // Safe
 
             MutablePropertyValues pv2 = new MutablePropertyValues();
-            PropertyValue v2 = (PropertyValue) newWithMapValue(source());
+            PropertyValue v2 = newWithMapValue(source());
             pv2.addPropertyValue(v2);
             sink(getMapKey(getElement(pv2))); // Safe
             sink(getMapValue(getElement(pv2))); // $hasValueFlow
@@ -150,13 +152,13 @@ public class Test {
         // "org.springframework.beans;MutablePropertyValues;true;addPropertyValue;(PropertyValue);;Argument[0];Element of ReturnValue;value",
         {
             MutablePropertyValues pv1 = new MutablePropertyValues();
-            PropertyValue v1 = (PropertyValue) newWithMapKey(source());
+            PropertyValue v1 = newWithMapKey(source());
             PropertyValues pv2 = pv1.addPropertyValue(v1);
             sink(getMapKey(getElement(pv2))); // $hasValueFlow
             sink(getMapValue(getElement(pv2))); // Safe
 
             MutablePropertyValues pv3 = new MutablePropertyValues();
-            PropertyValue v2 = (PropertyValue) newWithMapValue(source());
+            PropertyValue v2 = newWithMapValue(source());
             PropertyValues pv4 = pv3.addPropertyValue(v2);
             sink(getMapKey(getElement(pv4))); // Safe
             sink(getMapValue(getElement(pv4))); // $hasValueFlow
@@ -178,7 +180,8 @@ public class Test {
         // "org.springframework.beans;MutablePropertyValues;true;addPropertyValues;(Map);;MapKey of Argument[0];MapKey of Element of Argument[-1];value",
         {
             MutablePropertyValues pv = new MutablePropertyValues();
-            Map<String, Object> values = (Map<String, Object>) newWithMapKey(source());
+            Map<String, Object> values = new HashMap<String, Object>();
+            values.put(source(), null);
             pv.addPropertyValues(values);
             sink(getMapKey(getElement(pv))); // $hasValueFlow
             sink(getMapValue(getElement(pv))); // Safe
@@ -186,7 +189,8 @@ public class Test {
         // "org.springframework.beans;MutablePropertyValues;true;addPropertyValues;(Map);;MapKey of Argument[0];MapKey of Element of ReturnValue;value",
         {
             MutablePropertyValues pv = new MutablePropertyValues();
-            Map<String, Object> values = (Map<String, Object>) newWithMapKey(source());
+            Map<String, Object> values = new HashMap<String, Object>();
+            values.put(source(), null);
             PropertyValues pv2 = pv.addPropertyValues(values);
             sink(getMapKey(getElement(pv2))); // $hasValueFlow
             sink(getMapValue(getElement(pv2))); // Safe
@@ -194,7 +198,8 @@ public class Test {
         // "org.springframework.beans;MutablePropertyValues;true;addPropertyValues;(Map);;MapValue of Argument[0];MapValue of Element of Argument[-1];value",
         {
             MutablePropertyValues pv = new MutablePropertyValues();
-            Map<String, Object> values = (Map<String, Object>) newWithMapValue(source());
+            Map<String, Object> values = new HashMap<String, Object>();
+            values.put("", source());
             pv.addPropertyValues(values);
             sink(getMapKey(getElement(pv))); // Safe
             sink(getMapValue(getElement(pv))); // $hasValueFlow
@@ -202,7 +207,8 @@ public class Test {
         // "org.springframework.beans;MutablePropertyValues;true;addPropertyValues;(Map);;MapValue of Argument[0];MapValue of Element of ReturnValue;value",
         {
             MutablePropertyValues pv = new MutablePropertyValues();
-            Map<String, Object> values = (Map<String, Object>) newWithMapValue(source());
+            Map<String, Object> values = new HashMap<String, Object>();
+            values.put("", source());
             PropertyValues pv2 = pv.addPropertyValues(values);
             sink(getMapKey(getElement(pv2))); // Safe
             sink(getMapValue(getElement(pv2))); // $hasValueFlow
@@ -210,7 +216,7 @@ public class Test {
         // "org.springframework.beans;MutablePropertyValues;true;addPropertyValues;(PropertyValues);;MapKey of Element of Argument[0];MapKey of Element of Argument[-1];value",
         {
             MutablePropertyValues pv = new MutablePropertyValues();
-            PropertyValues values = (PropertyValues) newWithElement(newWithMapKey(source()));
+            PropertyValues values = newWithElement(newWithMapKey(source()));
             pv.addPropertyValues(values);
             sink(getMapKey(getElement(pv))); // $hasValueFlow
             sink(getMapValue(getElement(pv))); // Safe
@@ -218,7 +224,7 @@ public class Test {
         // "org.springframework.beans;MutablePropertyValues;true;addPropertyValues;(PropertyValues);;MapKey of Element of Argument[0];MapKey of Element of ReturnValue;value",
         {
             MutablePropertyValues pv = new MutablePropertyValues();
-            PropertyValues values = (PropertyValues) newWithElement(newWithMapKey(source()));
+            PropertyValues values = newWithElement(newWithMapKey(source()));
             PropertyValues pv2 = pv.addPropertyValues(values);
             sink(getMapKey(getElement(pv2))); // $hasValueFlow
             sink(getMapValue(getElement(pv2))); // Safe
@@ -226,7 +232,7 @@ public class Test {
         // "org.springframework.beans;MutablePropertyValues;true;addPropertyValues;(PropertyValues);;MapValue of Element of Argument[0];MapValue of Element of Argument[-1];value",
         {
             MutablePropertyValues pv = new MutablePropertyValues();
-            PropertyValues values = (PropertyValues) newWithElement(newWithMapValue(source()));
+            PropertyValues values = newWithElement(newWithMapValue(source()));
             pv.addPropertyValues(values);
             sink(getMapKey(getElement(pv))); // Safe
             sink(getMapValue(getElement(pv))); // $hasValueFlow
@@ -234,46 +240,46 @@ public class Test {
         // "org.springframework.beans;MutablePropertyValues;true;addPropertyValues;(PropertyValues);;MapValue of Element of Argument[0];MapValue of Element of ReturnValue;value",
         {
             MutablePropertyValues pv = new MutablePropertyValues();
-            PropertyValues values = (PropertyValues) newWithElement(newWithMapValue(source()));
+            PropertyValues values = newWithElement(newWithMapValue(source()));
             PropertyValues pv2 = pv.addPropertyValues(values);
             sink(getMapKey(getElement(pv2))); // Safe
             sink(getMapValue(getElement(pv2))); // $hasValueFlow
         }
         // "org.springframework.beans;MutablePropertyValues;true;get;;;MapValue of Element of Argument[-1];ReturnValue;value",
         {
-            MutablePropertyValues pv = (MutablePropertyValues) newWithElement(newWithMapValue(source()));
+            MutablePropertyValues pv = newWithElement(newWithMapValue(source()));
             sink(pv.get("something")); // $hasValueFlow
         }
         // "org.springframework.beans;MutablePropertyValues;true;getPropertyValue;;;Element of Argument[-1];ReturnValue;value",
         {
-            MutablePropertyValues pv1 = (MutablePropertyValues) newWithElement(newWithMapKey(source()));
+            MutablePropertyValues pv1 = newWithElement(newWithMapKey(source()));
             sink(pv1.getPropertyValue("something").getName()); // $hasValueFlow
             sink(pv1.getPropertyValue("something").getValue()); // Safe
 
-            MutablePropertyValues pv2 = (MutablePropertyValues) newWithElement(newWithMapValue(source()));
+            MutablePropertyValues pv2 = newWithElement(newWithMapValue(source()));
             sink(pv2.getPropertyValue("something").getName()); // Safe
             sink(pv2.getPropertyValue("something").getValue()); // $hasValueFlow
         }
         // "org.springframework.beans;MutablePropertyValues;true;getPropertyValueList;;;Element of Argument[-1];Element of ReturnValue;value",
         {
-            MutablePropertyValues pv1 = (MutablePropertyValues) newWithElement(newWithMapKey(source()));
+            MutablePropertyValues pv1 = newWithElement(newWithMapKey(source()));
             List<PropertyValue> pvl1 = pv1.getPropertyValueList();
             sink(getMapKey(getElement(pvl1))); // $hasValueFlow
             sink(getMapValue(getElement(pvl1))); // Safe
 
-            MutablePropertyValues pv2 = (MutablePropertyValues) newWithElement(newWithMapValue(source()));
+            MutablePropertyValues pv2 = newWithElement(newWithMapValue(source()));
             List<PropertyValue> pvl2 = pv2.getPropertyValueList();
             sink(getMapKey(getElement(pvl2))); // Safe
             sink(getMapValue(getElement(pvl2))); // $hasValueFlow
         }
         // "org.springframework.beans;MutablePropertyValues;true;getPropertyValues;;;Element of Argument[-1];ArrayElement of ReturnValue;value",
         {
-            MutablePropertyValues pv1 = (MutablePropertyValues) newWithElement(newWithMapKey(source()));
+            MutablePropertyValues pv1 = newWithElement(newWithMapKey(source()));
             PropertyValue[] pvl1 = pv1.getPropertyValues();
             sink(getMapKey(getArrayElement(pvl1))); // $hasValueFlow
             sink(getMapValue(getArrayElement(pvl1))); // Safe
 
-            MutablePropertyValues pv2 = (MutablePropertyValues) newWithElement(newWithMapValue(source()));
+            MutablePropertyValues pv2 = newWithElement(newWithMapValue(source()));
             PropertyValue[] pvl2 = pv2.getPropertyValues();
             sink(getMapKey(getArrayElement(pvl2))); // Safe
             sink(getMapValue(getArrayElement(pvl2))); // $hasValueFlow
@@ -281,13 +287,13 @@ public class Test {
         // "org.springframework.beans;MutablePropertyValues;true;setPropertyValueAt;;;Argument[0];Element of Argument[-1];value"
         {
             MutablePropertyValues pv1 = new MutablePropertyValues();
-            PropertyValue v1 = (PropertyValue) newWithMapKey(source());
+            PropertyValue v1 = newWithMapKey(source());
             pv1.setPropertyValueAt(v1, 0);
             sink(getMapKey(getElement(pv1))); // $hasValueFlow
             sink(getMapValue(getElement(pv1))); // Safe
 
             MutablePropertyValues pv2 = new MutablePropertyValues();
-            PropertyValue v2 = (PropertyValue) newWithMapValue(source());
+            PropertyValue v2 = newWithMapValue(source());
             pv2.setPropertyValueAt(v2, 0);
             sink(getMapKey(getElement(pv2))); // Safe
             sink(getMapValue(getElement(pv2))); // $hasValueFlow
