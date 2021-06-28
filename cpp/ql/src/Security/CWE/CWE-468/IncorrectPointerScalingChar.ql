@@ -5,6 +5,7 @@
  * @kind problem
  * @id cpp/incorrect-pointer-scaling-char
  * @problem.severity warning
+ * @security-severity 8.8
  * @precision low
  * @tags security
  *       external/cwe/cwe-468

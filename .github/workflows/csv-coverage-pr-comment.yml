@@ -1,0 +1,34 @@
+name: Comment on PR with framework coverage changes
+
+on:
+  workflow_run:
+    workflows: ["Check framework coverage changes"]
+    types:
+      - completed
+
+jobs:
+  check:
+    name: Check framework coverage differences and comment
+    runs-on: ubuntu-latest
+    if: >
+      ${{ github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+    - name: Dump GitHub context
+      env:
+        GITHUB_CONTEXT: ${{ toJSON(github.event) }}
+      run: echo "$GITHUB_CONTEXT"
+    - name: Clone self (github/codeql)
+      uses: actions/checkout@v2
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Check coverage difference file and comment
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        RUN_ID: ${{ github.event.workflow_run.id }}
+      run: |
+        python misc/scripts/library-coverage/comment-pr.py "$GITHUB_REPOSITORY" "$RUN_ID"

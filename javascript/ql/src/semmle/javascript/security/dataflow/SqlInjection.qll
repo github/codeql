@@ -1,6 +1,6 @@
 /**
- * Provides a taint tracking configuration for reasoning about SQL
- * injection vulnerabilities
+ * Provides a taint tracking configuration for reasoning about string based
+ * query injection vulnerabilities
  *
  * Note, for performance reasons: only import this file if
  * `SqlInjection::Configuration` is needed, otherwise
@@ -13,7 +13,7 @@ module SqlInjection {
   import SqlInjectionCustomizations::SqlInjection
 
   /**
-   * A taint-tracking configuration for reasoning about SQL injection vulnerabilities.
+   * A taint-tracking configuration for reasoning about string based query injection vulnerabilities.
    */
   class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "SqlInjection" }

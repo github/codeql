@@ -289,7 +289,7 @@ namespace Semmle.BuildAnalyser
 
             try
             {
-                var csProj = new CsProjFile(project);
+                var csProj = new Extraction.CSharp.CsProjFile(project);
 
                 foreach (var @ref in csProj.References)
                 {

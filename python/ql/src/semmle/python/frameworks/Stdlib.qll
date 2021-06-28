@@ -9,7 +9,7 @@ private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
-private import PEP249
+private import semmle.python.frameworks.PEP249
 
 /** Provides models for the Python standard library. */
 private module Stdlib {
@@ -38,9 +38,7 @@ private module Stdlib {
   private class OsPathNormpathCall extends Path::PathNormalization::Range, DataFlow::CallCfgNode {
     OsPathNormpathCall() { this = os::path().getMember("normpath").getACall() }
 
-    DataFlow::Node getPathArg() {
-      result.asCfgNode() in [node.getArg(0), node.getArgByName("path")]
-    }
+    DataFlow::Node getPathArg() { result in [this.getArg(0), this.getArgByName("path")] }
   }
 
   /** An additional taint step for calls to `os.path.normpath` */
@@ -60,9 +58,7 @@ private module Stdlib {
   private class OsPathAbspathCall extends Path::PathNormalization::Range, DataFlow::CallCfgNode {
     OsPathAbspathCall() { this = os::path().getMember("abspath").getACall() }
 
-    DataFlow::Node getPathArg() {
-      result.asCfgNode() in [node.getArg(0), node.getArgByName("path")]
-    }
+    DataFlow::Node getPathArg() { result in [this.getArg(0), this.getArgByName("path")] }
   }
 
   /** An additional taint step for calls to `os.path.abspath` */
@@ -82,9 +78,7 @@ private module Stdlib {
   private class OsPathRealpathCall extends Path::PathNormalization::Range, DataFlow::CallCfgNode {
     OsPathRealpathCall() { this = os::path().getMember("realpath").getACall() }
 
-    DataFlow::Node getPathArg() {
-      result.asCfgNode() in [node.getArg(0), node.getArgByName("path")]
-    }
+    DataFlow::Node getPathArg() { result in [this.getArg(0), this.getArgByName("path")] }
   }
 
   /** An additional taint step for calls to `os.path.realpath` */
@@ -104,7 +98,7 @@ private module Stdlib {
   private class OsSystemCall extends SystemCommandExecution::Range, DataFlow::CallCfgNode {
     OsSystemCall() { this = os().getMember("system").getACall() }
 
-    override DataFlow::Node getCommand() { result.asCfgNode() = node.getArg(0) }
+    override DataFlow::Node getCommand() { result = this.getArg(0) }
   }
 
   /**
@@ -124,10 +118,10 @@ private module Stdlib {
     }
 
     override DataFlow::Node getCommand() {
-      result.asCfgNode() = node.getArg(0)
+      result = this.getArg(0)
       or
       not name = "popen" and
-      result.asCfgNode() = node.getArgByName("cmd")
+      result = this.getArgByName("cmd")
     }
   }
 
@@ -143,7 +137,7 @@ private module Stdlib {
       )
     }
 
-    override DataFlow::Node getCommand() { result.asCfgNode() = node.getArg(0) }
+    override DataFlow::Node getCommand() { result = this.getArg(0) }
   }
 
   /**
@@ -160,7 +154,7 @@ private module Stdlib {
       )
     }
 
-    override DataFlow::Node getCommand() { result.asCfgNode() = node.getArg(1) }
+    override DataFlow::Node getCommand() { result = this.getArg(1) }
   }
 
   /**
@@ -170,7 +164,7 @@ private module Stdlib {
   private class OsPosixSpawnCall extends SystemCommandExecution::Range, DataFlow::CallCfgNode {
     OsPosixSpawnCall() { this = os().getMember(["posix_spawn", "posix_spawnp"]).getACall() }
 
-    override DataFlow::Node getCommand() { result.asCfgNode() = node.getArg(0) }
+    override DataFlow::Node getCommand() { result = this.getArg(0) }
   }
 
   /** An additional taint step for calls to `os.path.join` */
@@ -204,22 +198,22 @@ private module Stdlib {
     }
 
     /** Gets the ControlFlowNode for the `args` argument, if any. */
-    private ControlFlowNode get_args_arg() { result in [node.getArg(0), node.getArgByName("args")] }
+    private DataFlow::Node get_args_arg() { result in [this.getArg(0), this.getArgByName("args")] }
 
     /** Gets the ControlFlowNode for the `shell` argument, if any. */
-    private ControlFlowNode get_shell_arg() {
-      result in [node.getArg(8), node.getArgByName("shell")]
+    private DataFlow::Node get_shell_arg() {
+      result in [this.getArg(8), this.getArgByName("shell")]
     }
 
     private boolean get_shell_arg_value() {
       not exists(this.get_shell_arg()) and
       result = false
       or
-      exists(ControlFlowNode shell_arg | shell_arg = this.get_shell_arg() |
-        result = shell_arg.getNode().(ImmutableLiteral).booleanValue()
+      exists(DataFlow::Node shell_arg | shell_arg = this.get_shell_arg() |
+        result = shell_arg.asCfgNode().getNode().(ImmutableLiteral).booleanValue()
         or
         // TODO: Track the "shell" argument to determine possible values
-        not shell_arg.getNode() instanceof ImmutableLiteral and
+        not shell_arg.asCfgNode().getNode() instanceof ImmutableLiteral and
         (
           result = true
           or
@@ -229,16 +223,16 @@ private module Stdlib {
     }
 
     /** Gets the ControlFlowNode for the `executable` argument, if any. */
-    private ControlFlowNode get_executable_arg() {
-      result in [node.getArg(2), node.getArgByName("executable")]
+    private DataFlow::Node get_executable_arg() {
+      result in [this.getArg(2), this.getArgByName("executable")]
     }
 
     override DataFlow::Node getCommand() {
       // TODO: Track arguments ("args" and "shell")
       // TODO: Handle using `args=["sh", "-c", <user-input>]`
-      result.asCfgNode() = this.get_executable_arg()
+      result = this.get_executable_arg()
       or
-      exists(ControlFlowNode arg_args, boolean shell |
+      exists(DataFlow::Node arg_args, boolean shell |
         arg_args = get_args_arg() and
         shell = get_shell_arg_value()
       |
@@ -254,14 +248,14 @@ private module Stdlib {
           // run, so if we're able to, we only mark the first element as the command
           // (and not the arguments to the command).
           //
-          result.asCfgNode() = arg_args.(SequenceNode).getElement(0)
+          result.asCfgNode() = arg_args.asCfgNode().(SequenceNode).getElement(0)
           or
           // Either the "args" argument is not a sequence (which is valid) or we where
           // just not able to figure it out. Simply mark the "args" argument as the
           // command.
           //
-          not arg_args instanceof SequenceNode and
-          result.asCfgNode() = arg_args
+          not arg_args.asCfgNode() instanceof SequenceNode and
+          result = arg_args
         )
       )
     }
@@ -334,9 +328,7 @@ private module Stdlib {
       )
     }
 
-    override DataFlow::Node getCommand() {
-      result.asCfgNode() in [node.getArg(0), node.getArgByName("cmd")]
-    }
+    override DataFlow::Node getCommand() { result in [this.getArg(0), this.getArgByName("cmd")] }
   }
 
   // ---------------------------------------------------------------------------
@@ -352,9 +344,7 @@ private module Stdlib {
   private class PlatformPopenCall extends SystemCommandExecution::Range, DataFlow::CallCfgNode {
     PlatformPopenCall() { this = platform().getMember("popen").getACall() }
 
-    override DataFlow::Node getCommand() {
-      result.asCfgNode() in [node.getArg(0), node.getArgByName("cmd")]
-    }
+    override DataFlow::Node getCommand() { result in [this.getArg(0), this.getArgByName("cmd")] }
   }
 
   // ---------------------------------------------------------------------------
@@ -442,7 +432,7 @@ private module Stdlib {
       this = base64().getMember(name).getACall()
     }
 
-    override DataFlow::Node getAnInput() { result.asCfgNode() = node.getArg(0) }
+    override DataFlow::Node getAnInput() { result = this.getArg(0) }
 
     override DataFlow::Node getOutput() { result = this }
 
@@ -476,7 +466,7 @@ private module Stdlib {
 
     override predicate mayExecuteInput() { none() }
 
-    override DataFlow::Node getAnInput() { result.asCfgNode() = node.getArg(0) }
+    override DataFlow::Node getAnInput() { result = this.getArg(0) }
 
     override DataFlow::Node getOutput() { result = this }
 
@@ -1097,7 +1087,7 @@ private DataFlow::CallCfgNode hashlibNewCall(string algorithmName) {
     result = API::moduleImport("hashlib").getMember("new").getACall() and
     nameArg in [result.getArg(0), result.getArgByName("name")] and
     exists(StrConst str |
-      DataFlow::exprNode(str).(DataFlow::LocalSourceNode).flowsTo(nameArg) and
+      nameArg.getALocalSource() = DataFlow::exprNode(str) and
       algorithmName = str.getText()
     )
   )

@@ -11,6 +11,8 @@ private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.PEP249
 private import semmle.python.regex
+private import semmle.python.frameworks.internal.PoorMansFunctionResolution
+private import semmle.python.frameworks.internal.SelfRefMixin
 
 /**
  * Provides models for the `django` PyPI package.
@@ -399,11 +401,11 @@ private module PrivateDjango {
              * Gets an instance of the `django.db.models.expressions.RawSQL` class,
              * that was initiated with the SQL represented by `sql`.
              */
-            private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t, ControlFlowNode sql) {
+            private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t, DataFlow::Node sql) {
               t.start() and
               exists(DataFlow::CallCfgNode c | result = c |
                 c = classRef().getACall() and
-                c.getArg(0).asCfgNode() = sql
+                c.getArg(0) = sql
               )
               or
               exists(DataFlow::TypeTracker t2 | result = instance(t2, sql).track(t2, t))
@@ -413,7 +415,7 @@ private module PrivateDjango {
              * Gets an instance of the `django.db.models.expressions.RawSQL` class,
              * that was initiated with the SQL represented by `sql`.
              */
-            DataFlow::Node instance(ControlFlowNode sql) {
+            DataFlow::Node instance(DataFlow::Node sql) {
               instance(DataFlow::TypeTracker::end(), sql).flowsTo(result)
             }
           }
@@ -429,7 +431,7 @@ private module PrivateDjango {
      * See https://docs.djangoproject.com/en/3.1/ref/models/querysets/#annotate
      */
     private class ObjectsAnnotate extends SqlExecution::Range, DataFlow::CallCfgNode {
-      ControlFlowNode sql;
+      DataFlow::Node sql;
 
       ObjectsAnnotate() {
         this = django::db::models::querySetReturningMethod("annotate").getACall() and
@@ -438,7 +440,7 @@ private module PrivateDjango {
           ]
       }
 
-      override DataFlow::Node getSql() { result.asCfgNode() = sql }
+      override DataFlow::Node getSql() { result = sql }
     }
 
     /**
@@ -447,7 +449,7 @@ private module PrivateDjango {
      * See https://docs.djangoproject.com/en/3.2/ref/models/querysets/#alias
      */
     private class ObjectsAlias extends SqlExecution::Range, DataFlow::CallCfgNode {
-      ControlFlowNode sql;
+      DataFlow::Node sql;
 
       ObjectsAlias() {
         this = django::db::models::querySetReturningMethod("alias").getACall() and
@@ -456,7 +458,7 @@ private module PrivateDjango {
           ]
       }
 
-      override DataFlow::Node getSql() { result.asCfgNode() = sql }
+      override DataFlow::Node getSql() { result = sql }
     }
 
     /**
@@ -629,12 +631,12 @@ private module PrivateDjango {
             ClassInstantiation() { this = classRef().getACall() }
 
             override DataFlow::Node getBody() {
-              result.asCfgNode() in [node.getArg(0), node.getArgByName("content")]
+              result in [this.getArg(0), this.getArgByName("content")]
             }
 
             // How to support the `headers` argument here?
             override DataFlow::Node getMimetypeOrContentTypeArg() {
-              result.asCfgNode() in [node.getArg(1), node.getArgByName("content_type")]
+              result in [this.getArg(1), this.getArgByName("content_type")]
             }
 
             override string getMimetypeDefault() { result = "text/html" }
@@ -693,11 +695,11 @@ private module PrivateDjango {
               // note that even though browsers like Chrome usually doesn't fetch the
               // content of a redirect, it is possible to observe the body (for example,
               // with cURL).
-              result.asCfgNode() in [node.getArg(1), node.getArgByName("content")]
+              result in [this.getArg(1), this.getArgByName("content")]
             }
 
             override DataFlow::Node getRedirectLocation() {
-              result.asCfgNode() in [node.getArg(0), node.getArgByName("redirect_to")]
+              result in [this.getArg(0), this.getArgByName("redirect_to")]
             }
 
             // How to support the `headers` argument here?
@@ -755,11 +757,11 @@ private module PrivateDjango {
               // note that even though browsers like Chrome usually doesn't fetch the
               // content of a redirect, it is possible to observe the body (for example,
               // with cURL).
-              result.asCfgNode() in [node.getArg(1), node.getArgByName("content")]
+              result in [this.getArg(1), this.getArgByName("content")]
             }
 
             override DataFlow::Node getRedirectLocation() {
-              result.asCfgNode() in [node.getArg(0), node.getArgByName("redirect_to")]
+              result in [this.getArg(0), this.getArgByName("redirect_to")]
             }
 
             // How to support the `headers` argument here?
@@ -866,7 +868,7 @@ private module PrivateDjango {
             ClassInstantiation() { this = classRef().getACall() }
 
             override DataFlow::Node getBody() {
-              result.asCfgNode() in [node.getArg(0), node.getArgByName("content")]
+              result in [this.getArg(0), this.getArgByName("content")]
             }
 
             // How to support the `headers` argument here?
@@ -920,7 +922,7 @@ private module PrivateDjango {
             ClassInstantiation() { this = classRef().getACall() }
 
             override DataFlow::Node getBody() {
-              result.asCfgNode() in [node.getArg(0), node.getArgByName("content")]
+              result in [this.getArg(0), this.getArgByName("content")]
             }
 
             // How to support the `headers` argument here?
@@ -974,7 +976,7 @@ private module PrivateDjango {
             ClassInstantiation() { this = classRef().getACall() }
 
             override DataFlow::Node getBody() {
-              result.asCfgNode() in [node.getArg(0), node.getArgByName("content")]
+              result in [this.getArg(0), this.getArgByName("content")]
             }
 
             // How to support the `headers` argument here?
@@ -1029,7 +1031,7 @@ private module PrivateDjango {
 
             override DataFlow::Node getBody() {
               // First argument is permitted methods
-              result.asCfgNode() in [node.getArg(1), node.getArgByName("content")]
+              result in [this.getArg(1), this.getArgByName("content")]
             }
 
             // How to support the `headers` argument here?
@@ -1083,7 +1085,7 @@ private module PrivateDjango {
             ClassInstantiation() { this = classRef().getACall() }
 
             override DataFlow::Node getBody() {
-              result.asCfgNode() in [node.getArg(0), node.getArgByName("content")]
+              result in [this.getArg(0), this.getArgByName("content")]
             }
 
             // How to support the `headers` argument here?
@@ -1137,7 +1139,7 @@ private module PrivateDjango {
             ClassInstantiation() { this = classRef().getACall() }
 
             override DataFlow::Node getBody() {
-              result.asCfgNode() in [node.getArg(0), node.getArgByName("content")]
+              result in [this.getArg(0), this.getArgByName("content")]
             }
 
             // How to support the `headers` argument here?
@@ -1191,7 +1193,7 @@ private module PrivateDjango {
             ClassInstantiation() { this = classRef().getACall() }
 
             override DataFlow::Node getBody() {
-              result.asCfgNode() in [node.getArg(0), node.getArgByName("data")]
+              result in [this.getArg(0), this.getArgByName("data")]
             }
 
             // How to support the `headers` argument here?
@@ -1248,7 +1250,7 @@ private module PrivateDjango {
             ClassInstantiation() { this = classRef().getACall() }
 
             override DataFlow::Node getBody() {
-              result.asCfgNode() in [node.getArg(0), node.getArgByName("streaming_content")]
+              result in [this.getArg(0), this.getArgByName("streaming_content")]
             }
 
             // How to support the `headers` argument here?
@@ -1302,7 +1304,7 @@ private module PrivateDjango {
             ClassInstantiation() { this = classRef().getACall() }
 
             override DataFlow::Node getBody() {
-              result.asCfgNode() in [node.getArg(0), node.getArgByName("streaming_content")]
+              result in [this.getArg(0), this.getArgByName("streaming_content")]
             }
 
             // How to support the `headers` argument here?
@@ -1347,14 +1349,13 @@ private module PrivateDjango {
          *
          * See https://docs.djangoproject.com/en/3.1/ref/request-response/#django.http.HttpResponse.write
          */
-        class HttpResponseWriteCall extends HTTP::Server::HttpResponse::Range, DataFlow::CfgNode {
-          override CallNode node;
+        class HttpResponseWriteCall extends HTTP::Server::HttpResponse::Range, DataFlow::CallCfgNode {
           HTTP::Server::HttpResponse::Range instance;
 
           HttpResponseWriteCall() { node.getFunction() = write(instance).asCfgNode() }
 
           override DataFlow::Node getBody() {
-            result.asCfgNode() in [node.getArg(0), node.getArgByName("content")]
+            result in [this.getArg(0), this.getArgByName("content")]
           }
 
           override DataFlow::Node getMimetypeOrContentTypeArg() {
@@ -1386,40 +1387,6 @@ private module PrivateDjango {
   // ---------------------------------------------------------------------------
   // Helpers
   // ---------------------------------------------------------------------------
-  /**
-   * Gets the last decorator call for the function `func`, if `func` has decorators.
-   */
-  private Expr lastDecoratorCall(Function func) {
-    result = func.getDefinition().(FunctionExpr).getADecoratorCall() and
-    not exists(Call other_decorator | other_decorator.getArg(0) = result)
-  }
-
-  /** Adds the `getASelfRef` member predicate when modeling a class. */
-  abstract private class SelfRefMixin extends Class {
-    /**
-     * Gets a reference to instances of this class, originating from a self parameter of
-     * a method defined on this class.
-     *
-     * Note: TODO: This doesn't take MRO into account
-     * Note: TODO: This doesn't take staticmethod/classmethod into account
-     */
-    private DataFlow::LocalSourceNode getASelfRef(DataFlow::TypeTracker t) {
-      t.start() and
-      result.(DataFlow::ParameterNode).getParameter() = this.getAMethod().getArg(0)
-      or
-      exists(DataFlow::TypeTracker t2 | result = this.getASelfRef(t2).track(t2, t))
-    }
-
-    /**
-     * Gets a reference to instances of this class, originating from a self parameter of
-     * a method defined on this class.
-     *
-     * Note: TODO: This doesn't take MRO into account
-     * Note: TODO: This doesn't take staticmethod/classmethod into account
-     */
-    DataFlow::Node getASelfRef() { this.getASelfRef(DataFlow::TypeTracker::end()).flowsTo(result) }
-  }
-
   // ---------------------------------------------------------------------------
   // Form and form field modeling
   // ---------------------------------------------------------------------------
@@ -1487,46 +1454,6 @@ private module PrivateDjango {
   // ---------------------------------------------------------------------------
   // routing modeling
   // ---------------------------------------------------------------------------
-  /**
-   * Gets a reference to the Function `func`.
-   *
-   * The idea is that this function should be used as a route handler when setting up a
-   * route, but currently it just tracks all functions, since we can't do type-tracking
-   * backwards yet (TODO).
-   */
-  private DataFlow::LocalSourceNode djangoRouteHandlerFunctionTracker(
-    DataFlow::TypeTracker t, Function func
-  ) {
-    t.start() and
-    (
-      not exists(func.getADecorator()) and
-      result.asExpr() = func.getDefinition()
-      or
-      // If the function has decorators, we still want to model the function as being
-      // the request handler for a route setup. In such situations, we must track the
-      // last decorator call instead of the function itself.
-      //
-      // Note that this means that we blindly ignore what the decorator actually does to
-      // the function, which seems like an OK tradeoff.
-      result.asExpr() = lastDecoratorCall(func)
-    )
-    or
-    exists(DataFlow::TypeTracker t2 |
-      result = djangoRouteHandlerFunctionTracker(t2, func).track(t2, t)
-    )
-  }
-
-  /**
-   * Gets a reference to the Function `func`.
-   *
-   * The idea is that this function should be used as a route handler when setting up a
-   * route, but currently it just tracks all functions, since we can't do type-tracking
-   * backwards yet (TODO).
-   */
-  private DataFlow::Node djangoRouteHandlerFunctionTracker(Function func) {
-    djangoRouteHandlerFunctionTracker(DataFlow::TypeTracker::end(), func).flowsTo(result)
-  }
-
   /**
    * In order to recognize a class as being a django view class, based on the `as_view`
    * call, we need to be able to track such calls on _any_ class. This is provided by
@@ -1613,7 +1540,7 @@ private module PrivateDjango {
    */
   private class DjangoRouteHandler extends Function {
     DjangoRouteHandler() {
-      exists(DjangoRouteSetup route | route.getViewArg() = djangoRouteHandlerFunctionTracker(this))
+      exists(DjangoRouteSetup route | route.getViewArg() = poorMansFunctionTracker(this))
       or
       any(DjangoViewClass vc).getARequestHandler() = this
     }
@@ -1663,7 +1590,7 @@ private module PrivateDjango {
     abstract DataFlow::Node getViewArg();
 
     final override DjangoRouteHandler getARequestHandler() {
-      djangoRouteHandlerFunctionTracker(result) = getViewArg()
+      poorMansFunctionTracker(result) = getViewArg()
       or
       exists(DjangoViewClass vc |
         getViewArg() = vc.asViewResult() and
@@ -1711,12 +1638,10 @@ private module PrivateDjango {
     DjangoUrlsPathCall() { this = django::urls::path().getACall() }
 
     override DataFlow::Node getUrlPatternArg() {
-      result.asCfgNode() = [node.getArg(0), node.getArgByName("route")]
+      result in [this.getArg(0), this.getArgByName("route")]
     }
 
-    override DataFlow::Node getViewArg() {
-      result.asCfgNode() in [node.getArg(1), node.getArgByName("view")]
-    }
+    override DataFlow::Node getViewArg() { result in [this.getArg(1), this.getArgByName("view")] }
 
     override Parameter getARoutedParameter() {
       // If we don't know the URL pattern, we simply mark all parameters as a routed
@@ -1780,7 +1705,7 @@ private module PrivateDjango {
 
     DjangoRouteRegex() {
       this instanceof StrConst and
-      DataFlow::exprNode(this).(DataFlow::LocalSourceNode).flowsTo(rePathCall.getUrlPatternArg())
+      rePathCall.getUrlPatternArg().getALocalSource() = DataFlow::exprNode(this)
     }
 
     DjangoRegexRouteSetup getRouteSetup() { result = rePathCall }
@@ -1811,12 +1736,10 @@ private module PrivateDjango {
     }
 
     override DataFlow::Node getUrlPatternArg() {
-      result.asCfgNode() = [node.getArg(0), node.getArgByName("route")]
+      result in [this.getArg(0), this.getArgByName("route")]
     }
 
-    override DataFlow::Node getViewArg() {
-      result.asCfgNode() in [node.getArg(1), node.getArgByName("view")]
-    }
+    override DataFlow::Node getViewArg() { result in [this.getArg(1), this.getArgByName("view")] }
   }
 
   /**
@@ -1828,12 +1751,10 @@ private module PrivateDjango {
     DjangoConfUrlsUrlCall() { this = django::conf::conf_urls::url().getACall() }
 
     override DataFlow::Node getUrlPatternArg() {
-      result.asCfgNode() = [node.getArg(0), node.getArgByName("regex")]
+      result in [this.getArg(0), this.getArgByName("regex")]
     }
 
-    override DataFlow::Node getViewArg() {
-      result.asCfgNode() in [node.getArg(1), node.getArgByName("view")]
-    }
+    override DataFlow::Node getViewArg() { result in [this.getArg(1), this.getArgByName("view")] }
   }
 
   // ---------------------------------------------------------------------------
@@ -1944,7 +1865,7 @@ private module PrivateDjango {
      * a string identifying a view, or a Django model.
      */
     override DataFlow::Node getRedirectLocation() {
-      result.asCfgNode() in [node.getArg(0), node.getArgByName("to")]
+      result in [this.getArg(0), this.getArgByName("to")]
     }
 
     override DataFlow::Node getBody() { none() }

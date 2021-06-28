@@ -5,19 +5,19 @@ def test():
     ts = TAINTED_STRING
     tainted_obj = {"foo": ts}
 
-    encoded = ujson.dumps(tainted_obj) # $ encodeOutput=Attribute() encodeFormat=JSON encodeInput=tainted_obj
+    encoded = ujson.dumps(tainted_obj) # $ encodeOutput=ujson.dumps(..) encodeFormat=JSON encodeInput=tainted_obj
 
     ensure_tainted(
         encoded, # $ tainted
-        ujson.dumps(tainted_obj), # $ tainted encodeOutput=Attribute() encodeFormat=JSON encodeInput=tainted_obj
-        ujson.dumps(obj=tainted_obj), # $ tainted encodeOutput=Attribute() encodeFormat=JSON encodeInput=tainted_obj
-        ujson.loads(encoded), # $ tainted decodeOutput=Attribute() decodeFormat=JSON decodeInput=encoded
-        ujson.loads(obj=encoded), # $ tainted decodeOutput=Attribute() decodeFormat=JSON decodeInput=encoded
+        ujson.dumps(tainted_obj), # $ tainted encodeOutput=ujson.dumps(..) encodeFormat=JSON encodeInput=tainted_obj
+        ujson.dumps(obj=tainted_obj), # $ tainted encodeOutput=ujson.dumps(..) encodeFormat=JSON encodeInput=tainted_obj
+        ujson.loads(encoded), # $ tainted decodeOutput=ujson.loads(..) decodeFormat=JSON decodeInput=encoded
+        ujson.loads(obj=encoded), # $ tainted decodeOutput=ujson.loads(..) decodeFormat=JSON decodeInput=encoded
 
-        ujson.encode(tainted_obj), # $ tainted encodeOutput=Attribute() encodeFormat=JSON encodeInput=tainted_obj
-        ujson.encode(obj=tainted_obj), # $ tainted encodeOutput=Attribute() encodeFormat=JSON encodeInput=tainted_obj
-        ujson.decode(encoded), # $ tainted decodeOutput=Attribute() decodeFormat=JSON decodeInput=encoded
-        ujson.decode(obj=encoded), # $ tainted decodeOutput=Attribute() decodeFormat=JSON decodeInput=encoded
+        ujson.encode(tainted_obj), # $ tainted encodeOutput=ujson.encode(..) encodeFormat=JSON encodeInput=tainted_obj
+        ujson.encode(obj=tainted_obj), # $ tainted encodeOutput=ujson.encode(..) encodeFormat=JSON encodeInput=tainted_obj
+        ujson.decode(encoded), # $ tainted decodeOutput=ujson.decode(..) decodeFormat=JSON decodeInput=encoded
+        ujson.decode(obj=encoded), # $ tainted decodeOutput=ujson.decode(..) decodeFormat=JSON decodeInput=encoded
     )
 
     # load/dump with file-like
@@ -27,7 +27,7 @@ def test():
     tainted_filelike.seek(0)
     ensure_tainted(
         tainted_filelike, # $ MISSING: tainted
-        ujson.load(tainted_filelike), # $ decodeOutput=Attribute() decodeFormat=JSON decodeInput=tainted_filelike MISSING: tainted
+        ujson.load(tainted_filelike), # $ decodeOutput=ujson.load(..) decodeFormat=JSON decodeInput=tainted_filelike MISSING: tainted
     )
 
     # load/dump with file-like using keyword-args does not work in `ujson`

@@ -47,7 +47,10 @@ namespace Semmle.Extraction.CSharp.Entities
                     var baseType = Symbol.ContainingType.BaseType;
                     if (baseType is null)
                     {
-                        Context.ModelError(Symbol, "Unable to resolve base type in implicit constructor initializer");
+                        if (Symbol.ContainingType.SpecialType != SpecialType.System_Object)
+                        {
+                            Context.ModelError(Symbol, "Unable to resolve base type in implicit constructor initializer");
+                        }
                         return;
                     }
 

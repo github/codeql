@@ -4,6 +4,7 @@
  *              user to change the meaning of the command.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 9.8
  * @precision medium
  * @id cs/stored-command-line-injection
  * @tags correctness

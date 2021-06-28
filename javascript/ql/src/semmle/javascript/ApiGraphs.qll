@@ -686,9 +686,7 @@ module API {
       promisified = false and
       boundArgs = 0
       or
-      exists(DataFlow::CallNode promisify |
-        promisify = DataFlow::moduleImport(["util", "bluebird"]).getAMemberCall("promisify")
-      |
+      exists(Promisify::PromisifyCall promisify |
         trackUseNode(nd, false, boundArgs, t.continue()).flowsTo(promisify.getArgument(0)) and
         promisified = true and
         result = promisify

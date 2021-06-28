@@ -57,7 +57,7 @@ module Shared {
 
   /**
    * A call to `serialize-javascript`, which prevents XSS vulnerabilities unless
-   * the `unsafe` option is set.t
+   * the `unsafe` option is set to `true`.
    */
   class SerializeJavascriptSanitizer extends Sanitizer, DataFlow::CallNode {
     SerializeJavascriptSanitizer() {
@@ -617,6 +617,8 @@ module ExceptionXss {
   private class JsonSchemaValidationError extends Source {
     JsonSchemaValidationError() {
       this = any(JsonSchema::Ajv::Instance i).getAValidationError().getAnImmediateUse()
+      or
+      this = any(JsonSchema::Joi::JoiValidationErrorRead r).getAValidationResultAccess(_)
     }
 
     override string getDescription() { result = "JSON schema validation error" }

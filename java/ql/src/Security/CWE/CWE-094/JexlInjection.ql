@@ -4,6 +4,7 @@
  *              may lead to arbitrary code execution.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 9.3
  * @precision high
  * @id java/jexl-expression-injection
  * @tags security

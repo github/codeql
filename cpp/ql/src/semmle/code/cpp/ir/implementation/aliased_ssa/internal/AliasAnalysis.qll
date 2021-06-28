@@ -411,7 +411,7 @@ predicate addressOperandAllocationAndOffset(
     allocation.getABaseInstruction() = base and
     hasBaseAndOffset(addrOperand, base, bitOffset) and
     not exists(Instruction previousBase |
-      hasBaseAndOffset(addrOperand, previousBase, _) and
+      hasBaseAndOffset(addrOperand, pragma[only_bind_out](previousBase), _) and
       previousBase = base.getAnOperand().getDef()
     )
   )

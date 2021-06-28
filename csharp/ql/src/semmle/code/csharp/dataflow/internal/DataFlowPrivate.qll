@@ -1258,10 +1258,31 @@ private module ReturnNodes {
     SummaryReturnNode() {
       FlowSummaryImpl::Private::summaryReturnNode(this, rk) and
       not rk instanceof JumpReturnKind
+      or
+      exists(Parameter p, int pos |
+        summaryPostUpdateNodeIsOutOrRef(this, p) and
+        pos = p.getPosition()
+      |
+        p.isOut() and rk.(OutReturnKind).getPosition() = pos
+        or
+        p.isRef() and rk.(RefReturnKind).getPosition() = pos
+      )
     }
 
     override ReturnKind getKind() { result = rk }
   }
+}
+
+/**
+ * Holds if summary node `n` is a post-update node for `out`/`ref` parameter `p`.
+ * In this case we adjust it to instead be a return node.
+ */
+private predicate summaryPostUpdateNodeIsOutOrRef(SummaryNode n, Parameter p) {
+  exists(ParameterNode pn |
+    FlowSummaryImpl::Private::summaryPostUpdateNode(n, pn) and
+    pn.getParameter() = p and
+    p.isOutOrRef()
+  )
 }
 
 import ReturnNodes
@@ -1841,7 +1862,10 @@ private module PostUpdateNodes {
   }
 
   private class SummaryPostUpdateNode extends SummaryNode, PostUpdateNode {
-    SummaryPostUpdateNode() { FlowSummaryImpl::Private::summaryPostUpdateNode(this, _) }
+    SummaryPostUpdateNode() {
+      FlowSummaryImpl::Private::summaryPostUpdateNode(this, _) and
+      not summaryPostUpdateNodeIsOutOrRef(this, _)
+    }
 
     override Node getPreUpdateNode() {
       FlowSummaryImpl::Private::summaryPostUpdateNode(this, result)

@@ -2,19 +2,7 @@ import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.Concepts
 import TestUtilities.InlineExpectationsTest
-
-string value_from_expr(Expr e) {
-  // TODO: This one is starting to look like `repr` predicate from TestTaintLib
-  result =
-    e.(StrConst).getPrefix() + e.(StrConst).getText() +
-      e.(StrConst).getPrefix().regexpReplaceAll("[a-zA-Z]+", "")
-  or
-  result = e.(Name).getId()
-  or
-  not e instanceof StrConst and
-  not e instanceof Name and
-  result = e.toString()
-}
+import experimental.dataflow.TestUtil.PrintNode
 
 class SystemCommandExecutionTest extends InlineExpectationsTest {
   SystemCommandExecutionTest() { this = "SystemCommandExecutionTest" }
@@ -27,7 +15,7 @@ class SystemCommandExecutionTest extends InlineExpectationsTest {
       command = sce.getCommand() and
       location = command.getLocation() and
       element = command.toString() and
-      value = value_from_expr(command.asExpr()) and
+      value = prettyNodeForInlineTest(command) and
       tag = "getCommand"
     )
   }
@@ -46,7 +34,7 @@ class DecodingTest extends InlineExpectationsTest {
       exists(DataFlow::Node data |
         location = data.getLocation() and
         element = data.toString() and
-        value = value_from_expr(data.asExpr()) and
+        value = prettyNodeForInlineTest(data) and
         (
           data = d.getAnInput() and
           tag = "decodeInput"
@@ -84,7 +72,7 @@ class EncodingTest extends InlineExpectationsTest {
       exists(DataFlow::Node data |
         location = data.getLocation() and
         element = data.toString() and
-        value = value_from_expr(data.asExpr()) and
+        value = prettyNodeForInlineTest(data) and
         (
           data = e.getAnInput() and
           tag = "encodeInput"
@@ -117,7 +105,7 @@ class CodeExecutionTest extends InlineExpectationsTest {
       code = ce.getCode() and
       location = code.getLocation() and
       element = code.toString() and
-      value = value_from_expr(code.asExpr()) and
+      value = prettyNodeForInlineTest(code) and
       tag = "getCode"
     )
   }
@@ -135,7 +123,7 @@ class SqlExecutionTest extends InlineExpectationsTest {
       sql = e.getSql() and
       location = e.getLocation() and
       element = sql.toString() and
-      value = value_from_expr(sql.asExpr()) and
+      value = prettyNodeForInlineTest(sql) and
       tag = "getSql"
     )
   }
@@ -218,7 +206,7 @@ class HttpServerHttpResponseTest extends InlineExpectationsTest {
       exists(HTTP::Server::HttpResponse response |
         location = response.getLocation() and
         element = response.toString() and
-        value = value_from_expr(response.getBody().asExpr()) and
+        value = prettyNodeForInlineTest(response.getBody()) and
         tag = "responseBody"
       )
       or
@@ -257,7 +245,7 @@ class HttpServerHttpRedirectResponseTest extends InlineExpectationsTest {
       exists(HTTP::Server::HttpRedirectResponse redirect |
         location = redirect.getLocation() and
         element = redirect.toString() and
-        value = value_from_expr(redirect.getRedirectLocation().asExpr()) and
+        value = prettyNodeForInlineTest(redirect.getRedirectLocation()) and
         tag = "redirectLocation"
       )
     )
@@ -275,7 +263,7 @@ class FileSystemAccessTest extends InlineExpectationsTest {
       path = a.getAPathArgument() and
       location = a.getLocation() and
       element = path.toString() and
-      value = value_from_expr(path.asExpr()) and
+      value = prettyNodeForInlineTest(path) and
       tag = "getAPathArgument"
     )
   }
@@ -309,7 +297,7 @@ class SafeAccessCheckTest extends InlineExpectationsTest {
       location = c.getLocation() and
       (
         element = checks.toString() and
-        value = value_from_expr(checks.asExpr()) and
+        value = prettyNodeForInlineTest(checks) and
         tag = "checks"
         or
         element = branch.toString() and
@@ -361,7 +349,7 @@ class CryptographicOperationTest extends InlineExpectationsTest {
         tag = "CryptographicOperation"
         or
         element = cryptoOperation.toString() and
-        value = value_from_expr(cryptoOperation.getAnInput().asExpr()) and
+        value = prettyNodeForInlineTest(cryptoOperation.getAnInput()) and
         tag = "CryptographicOperationInput"
         or
         element = cryptoOperation.toString() and

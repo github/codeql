@@ -61,15 +61,16 @@ private module Cached {
     localAdditionalTaintUpdateStep(src.asExpr(),
       sink.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr())
     or
-    exists(Content f |
+    exists(DataFlow::Content f |
       readStep(src, f, sink) and
       not sink.getTypeBound() instanceof PrimitiveType and
       not sink.getTypeBound() instanceof BoxedType and
       not sink.getTypeBound() instanceof NumberType
     |
-      f instanceof ArrayContent or
-      f instanceof CollectionContent or
-      f instanceof MapValueContent
+      f instanceof DataFlow::ArrayContent or
+      f instanceof DataFlow::CollectionContent or
+      f instanceof DataFlow::MapKeyContent or
+      f instanceof DataFlow::MapValueContent
     )
     or
     FlowSummaryImpl::Private::Steps::summaryLocalStep(src, sink, false)
@@ -99,90 +100,31 @@ private module Cached {
 
 import Cached
 
+private RefType getElementType(RefType container) {
+  result = container.(Array).getComponentType() or
+  result = container.(CollectionType).getElementType() or
+  result = container.(MapType).getValueType()
+}
+
 /**
- * These configurations add a number of configuration-dependent additional taint
- * steps to all taint configurations. For each sink or additional step provided
- * by a given configuration the types are inspected to find those implicit
- * collection or array read steps that might be required at the sink or step
- * input. The corresponding store steps are then added as additional taint steps
- * to provide backwards-compatible taint flow to such sinks and steps.
- *
- * This is a temporary measure until support is added for such sinks that
- * require implicit read steps.
+ * Holds if default `TaintTracking::Configuration`s should allow implicit reads
+ * of `c` at sinks and inputs to additional taint steps.
  */
-private module StoreTaintSteps {
-  private import semmle.code.java.dataflow.TaintTracking
-  private import semmle.code.java.dataflow.TaintTracking2
-
-  private class StoreTaintConfig extends TaintTracking::Configuration {
-    StoreTaintConfig() { this instanceof TaintTracking::Configuration or none() }
-
-    override predicate isSource(DataFlow::Node n) { none() }
-
-    override predicate isSink(DataFlow::Node n) { none() }
-
-    private predicate needsTaintStore(RefType container, Type elem, Content f) {
-      exists(DataFlow::Node arg |
-        (isSink(arg) or isAdditionalTaintStep(arg, _)) and
-        (arg.asExpr() instanceof Argument or arg instanceof ArgumentNode) and
-        arg.getType() = container
-        or
-        needsTaintStore(_, container, _)
-      |
-        container.(Array).getComponentType() = elem and
-        f instanceof ArrayContent
-        or
-        container.(CollectionType).getElementType() = elem and
-        f instanceof CollectionContent
-        or
-        container.(MapType).getValueType() = elem and
-        f instanceof MapValueContent
-      )
-    }
-
-    override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-      exists(Content f, Type elem |
-        storeStep(node1, f, node2) and
-        needsTaintStore(_, elem, f) and
-        not exists(Type srctyp | srctyp = node1.getTypeBound() | not compatibleTypes(srctyp, elem))
-      )
-    }
-  }
-
-  private class StoreTaintConfig2 extends TaintTracking2::Configuration {
-    StoreTaintConfig2() { this instanceof TaintTracking2::Configuration or none() }
-
-    override predicate isSource(DataFlow::Node n) { none() }
-
-    override predicate isSink(DataFlow::Node n) { none() }
-
-    private predicate needsTaintStore(RefType container, Type elem, Content f) {
-      exists(DataFlow::Node arg |
-        (isSink(arg) or isAdditionalTaintStep(arg, _)) and
-        (arg.asExpr() instanceof Argument or arg instanceof ArgumentNode) and
-        arg.getType() = container
-        or
-        needsTaintStore(_, container, _)
-      |
-        container.(Array).getComponentType() = elem and
-        f instanceof ArrayContent
-        or
-        container.(CollectionType).getElementType() = elem and
-        f instanceof CollectionContent
-        or
-        container.(MapType).getValueType() = elem and
-        f instanceof MapValueContent
-      )
-    }
-
-    override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-      exists(Content f, Type elem |
-        storeStep(node1, f, node2) and
-        needsTaintStore(_, elem, f) and
-        not exists(Type srctyp | srctyp = node1.getTypeBound() | not compatibleTypes(srctyp, elem))
-      )
-    }
-  }
+bindingset[node]
+predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::Content c) {
+  exists(RefType container |
+    (node.asExpr() instanceof Argument or node instanceof ArgumentNode) and
+    getElementType*(node.getType()) = container
+  |
+    container instanceof Array and
+    c instanceof DataFlow::ArrayContent
+    or
+    container instanceof CollectionType and
+    c instanceof DataFlow::CollectionContent
+    or
+    container instanceof MapType and
+    c instanceof DataFlow::MapValueContent
+  )
 }
 
 /**

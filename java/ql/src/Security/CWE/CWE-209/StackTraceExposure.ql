@@ -5,6 +5,7 @@
  *              that are useful to an attacker for developing a subsequent exploit.
  * @kind problem
  * @problem.severity error
+ * @security-severity 5.4
  * @precision high
  * @id java/stack-trace-exposure
  * @tags security

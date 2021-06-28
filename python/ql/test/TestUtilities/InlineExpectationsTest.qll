@@ -181,14 +181,14 @@ private int getEndOfColumnPosition(int start, string content) {
     min(string name, int cand |
       exists(TNamedColumn(name)) and
       cand = content.indexOf(name + ":") and
-      cand > start
+      cand >= start
     |
       cand
     )
   or
   not exists(string name |
     exists(TNamedColumn(name)) and
-    content.indexOf(name + ":") > start
+    content.indexOf(name + ":") >= start
   ) and
   result = content.length()
 }

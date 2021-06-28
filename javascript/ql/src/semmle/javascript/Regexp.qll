@@ -923,6 +923,36 @@ private predicate isNativeStringMethod(Function func, string name) {
 }
 
 /**
+ * Holds if `name` is the name of a property on a Match object returned by `String.prototype.match`,
+ * not including array indices.
+ */
+private predicate isMatchObjectProperty(string name) {
+  any(ExternalInstanceMemberDecl decl).hasQualifiedName("Array", name)
+  or
+  name in ["length", "index", "input", "groups"]
+}
+
+/** Holds if `call` is a call to `match` whose result is used in a way that is incompatible with Match objects. */
+private predicate isUsedAsNonMatchObject(DataFlow::MethodCallNode call) {
+  call.getMethodName() = "match" and
+  call.getNumArgument() = 1 and
+  (
+    // Accessing a property that is absent on Match objects
+    exists(string propName |
+      exists(call.getAPropertyRead(propName)) and
+      not isMatchObjectProperty(propName) and
+      not exists(propName.toInt())
+    )
+    or
+    // Awaiting the result
+    call.flowsToExpr(any(AwaitExpr await).getOperand())
+    or
+    // Result is obviously unused
+    call.asExpr() = any(ExprStmt stmt).getExpr()
+  )
+}
+
+/**
  * Holds if `source` may be interpreted as a regular expression.
  */
 predicate isInterpretedAsRegExp(DataFlow::Node source) {
@@ -939,7 +969,10 @@ predicate isInterpretedAsRegExp(DataFlow::Node source) {
         not isNativeStringMethod(func, methodName)
       )
     |
-      methodName = "match" and source = mce.getArgument(0) and mce.getNumArgument() = 1
+      methodName = "match" and
+      source = mce.getArgument(0) and
+      mce.getNumArgument() = 1 and
+      not isUsedAsNonMatchObject(mce)
       or
       methodName = "search" and
       source = mce.getArgument(0) and
@@ -1237,8 +1270,18 @@ module RegExp {
     }
   }
 
-  private class DefaultMetaCharacter extends MetaCharacter {
-    DefaultMetaCharacter() { this = ["<", "'", "\""] }
+  /**
+   * A meta character used by HTML.
+   */
+  private class HTMLMetaCharacter extends MetaCharacter {
+    HTMLMetaCharacter() { this = ["<", "'", "\""] }
+  }
+
+  /**
+   * A meta character used by regular expressions.
+   */
+  private class RegexpMetaChars extends RegExp::MetaCharacter {
+    RegexpMetaChars() { this = ["{", "[", "+"] }
   }
 
   /**
