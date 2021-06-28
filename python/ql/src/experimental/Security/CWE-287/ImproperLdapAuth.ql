@@ -11,7 +11,20 @@
 
 // Determine precision above
 import python
-import experimental.semmle.python.security.LDAPImproperAuth
+import experimental.semmle.python.Concepts
+import semmle.python.dataflow.new.DataFlow
+
+predicate authenticatesImproperly(LDAPBind ldapBind) {
+  (
+    DataFlow::localFlow(DataFlow::exprNode(any(None noneName)), ldapBind.getPassword()) or
+    not exists(ldapBind.getPassword())
+  )
+  or
+  exists(StrConst emptyString |
+    emptyString.getText() = "" and
+    DataFlow::localFlow(DataFlow::exprNode(emptyString), ldapBind.getPassword())
+  )
+}
 
 from LDAPBind ldapBind
 where authenticatesImproperly(ldapBind)
