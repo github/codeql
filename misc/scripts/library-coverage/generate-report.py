@@ -47,7 +47,7 @@ def collect_package_stats(packages: pack.PackageCollection, cwes, filter):
         package: pack.Package = package
         if filter(package):
             processed_packages.add(package)
-            sources += package.get_kind_count("source:remote")
+            sources += package.get_part_count("source")
             steps += package.get_part_count("summary")
             sinks += package.get_part_count("sink")
 
@@ -188,7 +188,7 @@ for lang in settings.languages:
         # Write CSV header.
         headers = [row_prefix + "Framework / library",
                    "Package",
-                   "Remote flow sources",
+                   "Flow sources",
                    "Taint & value steps",
                    "Sinks (total)"]
         for cwe in sorted_cwes:
