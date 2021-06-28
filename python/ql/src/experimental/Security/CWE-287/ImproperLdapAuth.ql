@@ -15,4 +15,4 @@ import experimental.semmle.python.security.LDAPImproperAuth
 
 from LDAPBind ldapBind
 where authenticatesImproperly(ldapBind)
-select "The following LDAP bind operation is executed without authentication", ldapBind
+select ldapBind, "The following LDAP bind operation is executed without authentication"
