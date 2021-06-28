@@ -62,7 +62,6 @@ def get_packages(lang, query):
             shutil.rmtree(db)
 
 
-current_dir = os.getcwd()
 working_dir = ""
 if len(sys.argv) > 1:
     working_dir = sys.argv[1]
@@ -77,101 +76,150 @@ configs = [
         "csharp", "C#", ".cs", "csharp/ql/src/meta/frameworks/Coverage.ql")
 ]
 
-# todo: change this when we cover multiple languages. We should compute the SHAs
-# only once and not per language
 output_prefix = "framework-coverage-timeseries-"
+
+languages_to_process = set()
+language_utils = {}
+
+# Try to create output files for each language:
 for lang in settings.languages:
-    os.chdir(current_dir)
-    config = [c for c in configs if c.lang == lang][0]
-    with open(output_prefix + config.lang + ".csv", 'w', newline='') as csvfile_total:
-        with open(output_prefix + config.lang + "-packages.csv", 'w', newline='') as csvfile_packages:
-            csvwriter_total = csv.writer(csvfile_total)
-            csvwriter_packages = csv.writer(csvfile_packages)
-            csvwriter_total.writerow(
-                ["SHA", "Date", "Sources", "Sinks", "Summaries"])
-            csvwriter_packages.writerow(
-                ["SHA", "Date", "Framework", "Package", "Sources", "Sinks", "Summaries"])
+    try:
+        file_total = open(output_prefix + lang + ".csv", 'w', newline='')
+        file_packages = open(output_prefix + lang +
+                             "-packages.csv", 'w', newline='')
+        csvwriter_total = csv.writer(file_total)
+        csvwriter_packages = csv.writer(file_packages)
+    except:
+        print(
+            f"Unexpected error while opening files for {lang}:", sys.exc_info()[0])
+        if file_total is not None:
+            file_total.close()
+        if file_packages is not None:
+            file_packages.close()
+    else:
+        languages_to_process.add(lang)
+        language_utils[lang] = {
+            "file_total": file_total,
+            "file_packages": file_packages,
+            "csvwriter_total": csvwriter_total,
+            "csvwriter_packages": csvwriter_packages
+        }
 
-            os.chdir(working_dir)
+try:
+    # Write headers
+    for lang in languages_to_process:
+        csvwriter_total = language_utils[lang]["csvwriter_total"]
+        csvwriter_packages = language_utils[lang]["csvwriter_packages"]
+        csvwriter_total.writerow(
+            ["SHA", "Date", "Sources", "Sinks", "Summaries"])
+        csvwriter_packages.writerow(
+            ["SHA", "Date", "Framework", "Package", "Sources", "Sinks", "Summaries"])
 
-            utils.subprocess_run(["git", "checkout", "main"])
+    os.chdir(working_dir)
 
-            current_sha = Git.get_output(["git", "rev-parse", "HEAD"])
-            current_date = Git.get_date(current_sha)
+    utils.subprocess_run(["git", "checkout", "main"])
 
-            # Read the additional framework data, such as URL, friendly name from the latest commit
-            input_framework_csv = settings.documentation_folder_no_prefix + "frameworks.csv"
-            frameworks = fr.FrameworkCollection(
-                input_framework_csv.format(language=config.lang))
+    current_sha = Git.get_output(["git", "rev-parse", "HEAD"])
+    current_date = Git.get_date(current_sha)
 
-            while True:
-                print("Getting stats for " + current_sha)
-                utils.subprocess_run(["git", "checkout", current_sha])
+    # Read the additional framework data, such as URL, friendly name from the latest commit
+    for lang in languages_to_process:
+        input_framework_csv = settings.documentation_folder_no_prefix + "frameworks.csv"
+        language_utils[lang]["frameworks"] = fr.FrameworkCollection(
+            input_framework_csv.format(language=lang))
+        language_utils[lang]["config"] = [
+            c for c in configs if c.lang == lang][0]
 
-                try:
-                    packages = get_packages(config.lang, config.ql_path)
+    while True:
+        utils.subprocess_run(["git", "checkout", current_sha])
+        for lang in languages_to_process.copy():
+            try:
+                print(
+                    f"Getting stats for {lang} at {current_sha} on {current_date.isoformat()}")
 
-                    csvwriter_total.writerow([
-                        current_sha,
-                        current_date,
-                        packages.get_part_count("source"),
-                        packages.get_part_count("sink"),
-                        packages.get_part_count("summary")])
+                config: utils.LanguageConfig = language_utils[lang]["config"]
+                frameworks: fr.FrameworkCollection = language_utils[lang]["frameworks"]
+                csvwriter_total = language_utils[lang]["csvwriter_total"]
+                csvwriter_packages = language_utils[lang]["csvwriter_packages"]
 
-                    matched_packages = set()
+                packages = get_packages(lang, config.ql_path)
 
-                    for framework in frameworks.get_frameworks():
-                        framework: fr.Framework = framework
+                csvwriter_total.writerow([
+                    current_sha,
+                    current_date,
+                    packages.get_part_count("source"),
+                    packages.get_part_count("sink"),
+                    packages.get_part_count("summary")])
 
-                        row = [current_sha, current_date,
-                               framework.name, framework.package_pattern]
+                matched_packages = set()
 
-                        sources = 0
-                        sinks = 0
-                        summaries = 0
+                # Getting stats for frameworks:
+                for framework in frameworks.get_frameworks():
+                    framework: fr.Framework = framework
 
-                        for package in packages.get_packages():
-                            if frameworks.get_package_filter(framework)(package):
-                                sources += package.get_part_count("source")
-                                sinks += package.get_part_count("sink")
-                                summaries += package.get_part_count("summary")
-                                matched_packages.add(package.name)
-
-                        row.append(sources)
-                        row.append(sinks)
-                        row.append(summaries)
-
-                        csvwriter_packages.writerow(row)
-
-                    row = [current_sha, current_date, "Others"]
+                    row = [current_sha, current_date,
+                           framework.name, framework.package_pattern]
 
                     sources = 0
                     sinks = 0
                     summaries = 0
-                    other_packages = set()
 
                     for package in packages.get_packages():
-                        if not package.name in matched_packages:
+                        if frameworks.get_package_filter(framework)(package):
                             sources += package.get_part_count("source")
                             sinks += package.get_part_count("sink")
                             summaries += package.get_part_count("summary")
-                            other_packages.add(package.name)
+                            matched_packages.add(package.name)
 
-                    row.append(", ".join(sorted(other_packages)))
                     row.append(sources)
                     row.append(sinks)
                     row.append(summaries)
 
                     csvwriter_packages.writerow(row)
 
-                    print("Collected stats for " + current_sha +
-                          " at " + current_date.isoformat())
-                except:
-                    print("Error getting stats for " +
-                          current_sha + ". Stopping iteration.")
-                    break
+                # Getting stats for packages not included in frameworks:
+                row = [current_sha, current_date, "Others"]
 
-                current_sha, current_date = Git.get_previous_sha(
-                    current_sha, current_date)
+                sources = 0
+                sinks = 0
+                summaries = 0
+                other_packages = set()
 
+                for package in packages.get_packages():
+                    if not package.name in matched_packages:
+                        sources += package.get_part_count("source")
+                        sinks += package.get_part_count("sink")
+                        summaries += package.get_part_count("summary")
+                        other_packages.add(package.name)
+
+                row.append(", ".join(sorted(other_packages)))
+                row.append(sources)
+                row.append(sinks)
+                row.append(summaries)
+
+                csvwriter_packages.writerow(row)
+
+                print(
+                    f"Collected stats for {lang} at {current_sha} on {current_date.isoformat()}")
+
+            except:
+                print(
+                    f"Error getting stats for {lang} at {current_sha}. Stopping iteration for language.")
+                languages_to_process.remove(lang)
+        if len(languages_to_process) == 0:
+            break
+
+        current_sha, current_date = Git.get_previous_sha(
+            current_sha, current_date)
+
+finally:
     utils.subprocess_run(["git", "checkout", "main"])
+
+    # Close files:
+    for lang in settings.languages:
+        file_total = language_utils[lang]["file_total"]
+        file_packages = language_utils[lang]["file_packages"]
+        if file_total is not None:
+            file_total.close()
+        if file_packages is not None:
+            file_packages.close()
