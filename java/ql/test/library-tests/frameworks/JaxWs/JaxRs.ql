@@ -24,8 +24,16 @@ class JaxRsTest extends InlineExpectationsTest {
       resourceMethod.getLocation() = location and
       element = resourceMethod.toString() and
       if exists(resourceMethod.getProducesAnnotation())
-      then value = resourceMethod.getProducesAnnotation().getADeclaredContentType()
-      else value = ""
+      then
+        value = resourceMethod.getProducesAnnotation().getADeclaredContentType() and
+        value != ""
+      else
+        // Filter out empty strings that stem from using stubs.
+        // If we built the test against the real JAR then the field
+        // access against e.g. MediaType.APPLICATION_JSON wouldn't
+        // be a CompileTimeConstantExpr at all, whereas in the stubs
+        // it is and is defined empty.
+        value = ""
     )
     or
     tag = "RootResourceClass" and
@@ -135,7 +143,13 @@ class JaxRsTest extends InlineExpectationsTest {
     exists(JaxRSProducesAnnotation producesAnnotation |
       producesAnnotation.getLocation() = location and
       element = producesAnnotation.toString() and
-      value = producesAnnotation.getADeclaredContentType()
+      value = producesAnnotation.getADeclaredContentType() and
+      value != ""
+      // Filter out empty strings that stem from using stubs.
+      // If we built the test against the real JAR then the field
+      // access against e.g. MediaType.APPLICATION_JSON wouldn't
+      // be a CompileTimeConstantExpr at all, whereas in the stubs
+      // it is and is defined empty.
     )
     or
     tag = "ConsumesAnnotation" and
