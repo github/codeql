@@ -8,7 +8,7 @@ to result in a successful authentication.</p>
 </overview>
 
 <recommendation>
-<p>Use a strong password while establishing a LDAP connection to execute a query a user controls.</p>
+<p>Use a non-empty password while establishing an LDAP connection.</p>
 </recommendation>
 
 <example>
@@ -17,7 +17,7 @@ to result in a successful authentication.</p>
 <sample src="examples/auth_bad_2.py" />
 <sample src="examples/auth_bad_3.py" />
 
-<p>In the third and fourth examples, the authentication is established using a password from a secure source such as environment variables.</p>
+<p>In the third and fourth examples, the authentication is established using a password.</p>
 
 <sample src="examples/auth_good_2.py" />
 <sample src="examples/auth_good_3.py" />
