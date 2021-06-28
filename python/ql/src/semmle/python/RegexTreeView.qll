@@ -438,11 +438,15 @@ class RegExpEscape extends RegExpNormalChar {
     or
     this.getUnescaped() = "r" and result = "\r"
     or
+    this.getUnescaped() = "t" and result = "\t"
+    or
+    this.getUnescaped() = "f" and result = ""
+    or
     isUnicode() and
     result = getUnicode()
   }
 
-  predicate isIdentityEscape() { not this.getUnescaped() in ["n", "r"] }
+  predicate isIdentityEscape() { not this.getUnescaped() in ["n", "r", "t", "f"] }
 
   override string getPrimaryQLClass() { result = "RegExpEscape" }
 
