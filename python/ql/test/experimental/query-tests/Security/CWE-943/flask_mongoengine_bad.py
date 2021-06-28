@@ -14,13 +14,20 @@ class Movie(db.Document):
 Movie(title='test').save()
 
 
-@app.route("/")
-def home_page():
+@app.route("/subclass_objects")
+def subclass_objects():
+    unsafe_search = request.args['search']
+    json_search = json.loads(unsafe_search)
+
+    return Movie.objects(__raw__=json_search)
+
+@app.route("/get_db_find")
+def get_db_find():
     unsafe_search = request.args['search']
     json_search = json.loads(unsafe_search)
 
     retrieved_db = db.get_db()
-    data = retrieved_db["Movie"].find({'name': json_search})
+    return retrieved_db["Movie"].find({'name': json_search})
 
 # if __name__ == "__main__":
 #     app.run(debug=True)
