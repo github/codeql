@@ -24,8 +24,6 @@ class UnsafeCertTrustTest extends InlineExpectationsTest {
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasUnsafeCertTrust" and
     exists(Expr unsafeTrust |
-      unsafeTrust instanceof X509TrustAllManagerInit
-      or
       unsafeTrust instanceof RabbitMQEnableHostnameVerificationNotSet
       or
       exists(Conf config | config.hasFlowTo(DataFlow::exprNode(unsafeTrust)))
