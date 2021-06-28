@@ -448,5 +448,17 @@
   "SensitiveDataHeuristics Python/JS": [
     "javascript/ql/src/semmle/javascript/security/internal/SensitiveDataHeuristics.qll",
     "python/ql/src/semmle/python/security/internal/SensitiveDataHeuristics.qll"
+  ],
+  "ReDoS Util Python/JS": [
+    "javascript/ql/src/semmle/javascript/security/performance/ReDoSUtil.qll",
+    "python/ql/src/semmle/python/regex/ReDoSUtil.qll"
+  ],
+  "ReDoS Exponential Python/JS": [
+    "javascript/ql/src/semmle/javascript/security/performance/ExponentialBackTracking.qll",
+    "python/ql/src/semmle/python/regex/ExponentialBackTracking.qll"
+  ],
+  "ReDoS Polynomial Python/JS": [
+    "javascript/ql/src/semmle/javascript/security/performance/SuperlinearBackTracking.qll",
+    "python/ql/src/semmle/python/regex/SuperlinearBackTracking.qll"
   ]
 }
