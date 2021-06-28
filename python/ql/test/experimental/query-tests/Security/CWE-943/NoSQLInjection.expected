@@ -31,37 +31,23 @@ edges
 | mongoengine_bad.py:34:21:34:27 | ControlFlowNode for request | mongoengine_bad.py:34:21:34:32 | ControlFlowNode for Attribute |
 | mongoengine_bad.py:34:21:34:32 | ControlFlowNode for Attribute | mongoengine_bad.py:34:21:34:42 | ControlFlowNode for Subscript |
 | mongoengine_bad.py:34:21:34:42 | ControlFlowNode for Subscript | mongoengine_bad.py:35:19:35:43 | ControlFlowNode for Attribute() |
-| mongoengine_bad.py:35:19:35:43 | ControlFlowNode for Attribute() | mongoengine_bad.py:38:26:38:46 | ControlFlowNode for Dict |
-| mongoengine_bad.py:42:21:42:27 | ControlFlowNode for request | mongoengine_bad.py:42:21:42:32 | ControlFlowNode for Attribute |
-| mongoengine_bad.py:42:21:42:32 | ControlFlowNode for Attribute | mongoengine_bad.py:42:21:42:42 | ControlFlowNode for Subscript |
-| mongoengine_bad.py:42:21:42:42 | ControlFlowNode for Subscript | mongoengine_bad.py:43:19:43:43 | ControlFlowNode for Attribute() |
-| mongoengine_bad.py:43:19:43:43 | ControlFlowNode for Attribute() | mongoengine_bad.py:46:26:46:46 | ControlFlowNode for Dict |
-| mongoengine_bad.py:50:21:50:27 | ControlFlowNode for request | mongoengine_bad.py:50:21:50:32 | ControlFlowNode for Attribute |
-| mongoengine_bad.py:50:21:50:32 | ControlFlowNode for Attribute | mongoengine_bad.py:50:21:50:42 | ControlFlowNode for Subscript |
-| mongoengine_bad.py:50:21:50:42 | ControlFlowNode for Subscript | mongoengine_bad.py:51:19:51:43 | ControlFlowNode for Attribute() |
-| mongoengine_bad.py:51:19:51:43 | ControlFlowNode for Attribute() | mongoengine_bad.py:53:34:53:44 | ControlFlowNode for json_search |
-| mongoengine_bad.py:57:21:57:27 | ControlFlowNode for request | mongoengine_bad.py:57:21:57:32 | ControlFlowNode for Attribute |
-| mongoengine_bad.py:57:21:57:32 | ControlFlowNode for Attribute | mongoengine_bad.py:57:21:57:42 | ControlFlowNode for Subscript |
-| mongoengine_bad.py:57:21:57:42 | ControlFlowNode for Subscript | mongoengine_bad.py:58:19:58:43 | ControlFlowNode for Attribute() |
-| mongoengine_bad.py:58:19:58:43 | ControlFlowNode for Attribute() | mongoengine_bad.py:61:29:61:49 | ControlFlowNode for Dict |
+| mongoengine_bad.py:35:19:35:43 | ControlFlowNode for Attribute() | mongoengine_bad.py:37:34:37:44 | ControlFlowNode for json_search |
+| mongoengine_bad.py:41:21:41:27 | ControlFlowNode for request | mongoengine_bad.py:41:21:41:32 | ControlFlowNode for Attribute |
+| mongoengine_bad.py:41:21:41:32 | ControlFlowNode for Attribute | mongoengine_bad.py:41:21:41:42 | ControlFlowNode for Subscript |
+| mongoengine_bad.py:41:21:41:42 | ControlFlowNode for Subscript | mongoengine_bad.py:42:19:42:43 | ControlFlowNode for Attribute() |
+| mongoengine_bad.py:42:19:42:43 | ControlFlowNode for Attribute() | mongoengine_bad.py:45:29:45:49 | ControlFlowNode for Dict |
 | mongoengine_good.py:19:21:19:27 | ControlFlowNode for request | mongoengine_good.py:19:21:19:32 | ControlFlowNode for Attribute |
 | mongoengine_good.py:19:21:19:32 | ControlFlowNode for Attribute | mongoengine_good.py:19:21:19:42 | ControlFlowNode for Subscript |
 | mongoengine_good.py:19:21:19:42 | ControlFlowNode for Subscript | mongoengine_good.py:20:19:20:43 | ControlFlowNode for Attribute() |
 | mongoengine_good.py:28:21:28:27 | ControlFlowNode for request | mongoengine_good.py:28:21:28:32 | ControlFlowNode for Attribute |
 | mongoengine_good.py:28:21:28:32 | ControlFlowNode for Attribute | mongoengine_good.py:28:21:28:42 | ControlFlowNode for Subscript |
 | mongoengine_good.py:28:21:28:42 | ControlFlowNode for Subscript | mongoengine_good.py:29:19:29:43 | ControlFlowNode for Attribute() |
-| mongoengine_good.py:37:21:37:27 | ControlFlowNode for request | mongoengine_good.py:37:21:37:32 | ControlFlowNode for Attribute |
-| mongoengine_good.py:37:21:37:32 | ControlFlowNode for Attribute | mongoengine_good.py:37:21:37:42 | ControlFlowNode for Subscript |
-| mongoengine_good.py:37:21:37:42 | ControlFlowNode for Subscript | mongoengine_good.py:38:19:38:43 | ControlFlowNode for Attribute() |
+| mongoengine_good.py:36:21:36:27 | ControlFlowNode for request | mongoengine_good.py:36:21:36:32 | ControlFlowNode for Attribute |
+| mongoengine_good.py:36:21:36:32 | ControlFlowNode for Attribute | mongoengine_good.py:36:21:36:42 | ControlFlowNode for Subscript |
+| mongoengine_good.py:36:21:36:42 | ControlFlowNode for Subscript | mongoengine_good.py:37:19:37:43 | ControlFlowNode for Attribute() |
 | mongoengine_good.py:45:21:45:27 | ControlFlowNode for request | mongoengine_good.py:45:21:45:32 | ControlFlowNode for Attribute |
 | mongoengine_good.py:45:21:45:32 | ControlFlowNode for Attribute | mongoengine_good.py:45:21:45:42 | ControlFlowNode for Subscript |
 | mongoengine_good.py:45:21:45:42 | ControlFlowNode for Subscript | mongoengine_good.py:46:19:46:43 | ControlFlowNode for Attribute() |
-| mongoengine_good.py:54:21:54:27 | ControlFlowNode for request | mongoengine_good.py:54:21:54:32 | ControlFlowNode for Attribute |
-| mongoengine_good.py:54:21:54:32 | ControlFlowNode for Attribute | mongoengine_good.py:54:21:54:42 | ControlFlowNode for Subscript |
-| mongoengine_good.py:54:21:54:42 | ControlFlowNode for Subscript | mongoengine_good.py:55:19:55:43 | ControlFlowNode for Attribute() |
-| mongoengine_good.py:63:21:63:27 | ControlFlowNode for request | mongoengine_good.py:63:21:63:32 | ControlFlowNode for Attribute |
-| mongoengine_good.py:63:21:63:32 | ControlFlowNode for Attribute | mongoengine_good.py:63:21:63:42 | ControlFlowNode for Subscript |
-| mongoengine_good.py:63:21:63:42 | ControlFlowNode for Subscript | mongoengine_good.py:64:19:64:43 | ControlFlowNode for Attribute() |
 | pymongo_bad.py:11:21:11:27 | ControlFlowNode for request | pymongo_bad.py:11:21:11:32 | ControlFlowNode for Attribute |
 | pymongo_bad.py:11:21:11:32 | ControlFlowNode for Attribute | pymongo_bad.py:11:21:11:42 | ControlFlowNode for Subscript |
 | pymongo_bad.py:11:21:11:42 | ControlFlowNode for Subscript | pymongo_bad.py:12:19:12:43 | ControlFlowNode for Attribute() |
@@ -111,22 +97,12 @@ nodes
 | mongoengine_bad.py:34:21:34:32 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | mongoengine_bad.py:34:21:34:42 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | mongoengine_bad.py:35:19:35:43 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| mongoengine_bad.py:38:26:38:46 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
-| mongoengine_bad.py:42:21:42:27 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| mongoengine_bad.py:42:21:42:32 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| mongoengine_bad.py:42:21:42:42 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
-| mongoengine_bad.py:43:19:43:43 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| mongoengine_bad.py:46:26:46:46 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
-| mongoengine_bad.py:50:21:50:27 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| mongoengine_bad.py:50:21:50:32 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| mongoengine_bad.py:50:21:50:42 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
-| mongoengine_bad.py:51:19:51:43 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| mongoengine_bad.py:53:34:53:44 | ControlFlowNode for json_search | semmle.label | ControlFlowNode for json_search |
-| mongoengine_bad.py:57:21:57:27 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| mongoengine_bad.py:57:21:57:32 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| mongoengine_bad.py:57:21:57:42 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
-| mongoengine_bad.py:58:19:58:43 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| mongoengine_bad.py:61:29:61:49 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
+| mongoengine_bad.py:37:34:37:44 | ControlFlowNode for json_search | semmle.label | ControlFlowNode for json_search |
+| mongoengine_bad.py:41:21:41:27 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| mongoengine_bad.py:41:21:41:32 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| mongoengine_bad.py:41:21:41:42 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| mongoengine_bad.py:42:19:42:43 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| mongoengine_bad.py:45:29:45:49 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
 | mongoengine_good.py:19:21:19:27 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | mongoengine_good.py:19:21:19:32 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | mongoengine_good.py:19:21:19:42 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
@@ -135,22 +111,14 @@ nodes
 | mongoengine_good.py:28:21:28:32 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | mongoengine_good.py:28:21:28:42 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | mongoengine_good.py:29:19:29:43 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| mongoengine_good.py:37:21:37:27 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| mongoengine_good.py:37:21:37:32 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| mongoengine_good.py:37:21:37:42 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
-| mongoengine_good.py:38:19:38:43 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| mongoengine_good.py:36:21:36:27 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| mongoengine_good.py:36:21:36:32 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| mongoengine_good.py:36:21:36:42 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| mongoengine_good.py:37:19:37:43 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | mongoengine_good.py:45:21:45:27 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | mongoengine_good.py:45:21:45:32 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | mongoengine_good.py:45:21:45:42 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | mongoengine_good.py:46:19:46:43 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| mongoengine_good.py:54:21:54:27 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| mongoengine_good.py:54:21:54:32 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| mongoengine_good.py:54:21:54:42 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
-| mongoengine_good.py:55:19:55:43 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| mongoengine_good.py:63:21:63:27 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| mongoengine_good.py:63:21:63:32 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| mongoengine_good.py:63:21:63:42 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
-| mongoengine_good.py:64:19:64:43 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | pymongo_bad.py:11:21:11:27 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | pymongo_bad.py:11:21:11:32 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | pymongo_bad.py:11:21:11:42 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
@@ -166,8 +134,6 @@ nodes
 | flask_pymongo_bad.py:14:31:14:51 | ControlFlowNode for Dict | flask_pymongo_bad.py:11:21:11:27 | ControlFlowNode for request | flask_pymongo_bad.py:14:31:14:51 | ControlFlowNode for Dict | $@ NoSQL query contains an unsanitized $@ | flask_pymongo_bad.py:14:31:14:51 | ControlFlowNode for Dict | This | flask_pymongo_bad.py:11:21:11:27 | ControlFlowNode for request | user-provided value |
 | mongoengine_bad.py:22:26:22:46 | ControlFlowNode for Dict | mongoengine_bad.py:18:21:18:27 | ControlFlowNode for request | mongoengine_bad.py:22:26:22:46 | ControlFlowNode for Dict | $@ NoSQL query contains an unsanitized $@ | mongoengine_bad.py:22:26:22:46 | ControlFlowNode for Dict | This | mongoengine_bad.py:18:21:18:27 | ControlFlowNode for request | user-provided value |
 | mongoengine_bad.py:30:26:30:46 | ControlFlowNode for Dict | mongoengine_bad.py:26:21:26:27 | ControlFlowNode for request | mongoengine_bad.py:30:26:30:46 | ControlFlowNode for Dict | $@ NoSQL query contains an unsanitized $@ | mongoengine_bad.py:30:26:30:46 | ControlFlowNode for Dict | This | mongoengine_bad.py:26:21:26:27 | ControlFlowNode for request | user-provided value |
-| mongoengine_bad.py:38:26:38:46 | ControlFlowNode for Dict | mongoengine_bad.py:34:21:34:27 | ControlFlowNode for request | mongoengine_bad.py:38:26:38:46 | ControlFlowNode for Dict | $@ NoSQL query contains an unsanitized $@ | mongoengine_bad.py:38:26:38:46 | ControlFlowNode for Dict | This | mongoengine_bad.py:34:21:34:27 | ControlFlowNode for request | user-provided value |
-| mongoengine_bad.py:46:26:46:46 | ControlFlowNode for Dict | mongoengine_bad.py:42:21:42:27 | ControlFlowNode for request | mongoengine_bad.py:46:26:46:46 | ControlFlowNode for Dict | $@ NoSQL query contains an unsanitized $@ | mongoengine_bad.py:46:26:46:46 | ControlFlowNode for Dict | This | mongoengine_bad.py:42:21:42:27 | ControlFlowNode for request | user-provided value |
-| mongoengine_bad.py:53:34:53:44 | ControlFlowNode for json_search | mongoengine_bad.py:50:21:50:27 | ControlFlowNode for request | mongoengine_bad.py:53:34:53:44 | ControlFlowNode for json_search | $@ NoSQL query contains an unsanitized $@ | mongoengine_bad.py:53:34:53:44 | ControlFlowNode for json_search | This | mongoengine_bad.py:50:21:50:27 | ControlFlowNode for request | user-provided value |
-| mongoengine_bad.py:61:29:61:49 | ControlFlowNode for Dict | mongoengine_bad.py:57:21:57:27 | ControlFlowNode for request | mongoengine_bad.py:61:29:61:49 | ControlFlowNode for Dict | $@ NoSQL query contains an unsanitized $@ | mongoengine_bad.py:61:29:61:49 | ControlFlowNode for Dict | This | mongoengine_bad.py:57:21:57:27 | ControlFlowNode for request | user-provided value |
+| mongoengine_bad.py:37:34:37:44 | ControlFlowNode for json_search | mongoengine_bad.py:34:21:34:27 | ControlFlowNode for request | mongoengine_bad.py:37:34:37:44 | ControlFlowNode for json_search | $@ NoSQL query contains an unsanitized $@ | mongoengine_bad.py:37:34:37:44 | ControlFlowNode for json_search | This | mongoengine_bad.py:34:21:34:27 | ControlFlowNode for request | user-provided value |
+| mongoengine_bad.py:45:29:45:49 | ControlFlowNode for Dict | mongoengine_bad.py:41:21:41:27 | ControlFlowNode for request | mongoengine_bad.py:45:29:45:49 | ControlFlowNode for Dict | $@ NoSQL query contains an unsanitized $@ | mongoengine_bad.py:45:29:45:49 | ControlFlowNode for Dict | This | mongoengine_bad.py:41:21:41:27 | ControlFlowNode for request | user-provided value |
 | pymongo_bad.py:14:42:14:62 | ControlFlowNode for Dict | pymongo_bad.py:11:21:11:27 | ControlFlowNode for request | pymongo_bad.py:14:42:14:62 | ControlFlowNode for Dict | $@ NoSQL query contains an unsanitized $@ | pymongo_bad.py:14:42:14:62 | ControlFlowNode for Dict | This | pymongo_bad.py:11:21:11:27 | ControlFlowNode for request | user-provided value |

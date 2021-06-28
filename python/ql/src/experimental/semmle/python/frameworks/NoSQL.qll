@@ -11,35 +11,49 @@ private import experimental.semmle.python.Concepts
 private import semmle.python.ApiGraphs
 
 private module NoSQL {
-  /** API Nodes returning `Mongo` instances. */
+  // API Nodes returning `Mongo` instances.
+  /** Gets a reference to `pymongo.MongoClient` */
   private API::Node pyMongo() {
     result = API::moduleImport("pymongo").getMember("MongoClient").getReturn()
   }
 
+  /** Gets a reference to `flask_pymongo.PyMongo` */
   private API::Node flask_PyMongo() {
     result = API::moduleImport("flask_pymongo").getMember("PyMongo").getReturn()
   }
 
+  /** Gets a reference to `mongoengine` */
   private API::Node mongoEngine() { result = API::moduleImport("mongoengine") }
 
+  /** Gets a reference to `flask_mongoengine.MongoEngine` */
   private API::Node flask_MongoEngine() {
     result = API::moduleImport("flask_mongoengine").getMember("MongoEngine").getReturn()
   }
 
-  /** Gets a reference to a initialized `Mongo` instance. */
+  /**
+   * Gets a reference to a initialized `Mongo` instance.
+   * See `pyMongo()`, `flask_PyMongo()`
+   */
   private API::Node mongoInstance() {
     result = pyMongo() or
     result = flask_PyMongo()
   }
 
-  /** Gets a reference to a initialized `Mongo` DB instance. */
+  /**
+   * Gets a reference to a initialized `Mongo` DB instance.
+   * See `mongoEngine()`, `flask_MongoEngine()`
+   */
   private API::Node mongoDBInstance() {
     result = mongoEngine().getMember(["get_db", "connect"]).getReturn() or
     result = mongoEngine().getMember("connection").getMember(["get_db", "connect"]).getReturn() or
     result = flask_MongoEngine().getMember("get_db").getReturn()
   }
 
-  /** Gets a reference to a `Mongo` DB use. */
+  /**
+   * Gets a reference to a `Mongo` DB use.
+   *
+   * See `mongoInstance()`, `mongoDBInstance()`.
+   */
   private DataFlow::LocalSourceNode mongoDB(DataFlow::TypeTracker t) {
     t.start() and
     (
@@ -56,10 +70,24 @@ private module NoSQL {
     exists(DataFlow::TypeTracker t2 | result = mongoDB(t2).track(t2, t))
   }
 
-  /** Gets a reference to a `Mongo` DB use. */
+  /**
+   * Gets a reference to a `Mongo` DB use.
+   *
+   * ```py
+   * from flask_pymongo import PyMongo
+   * mongo = PyMongo(app)
+   * mongo.db.user.find({'name': safe_search})
+   * ```
+   *
+   * `mongo.db` would be a `use` of a `Mongo` instance, and so the result.
+   */
   private DataFlow::Node mongoDB() { mongoDB(DataFlow::TypeTracker::end()).flowsTo(result) }
 
-  /** Gets a reference to a `Mongo` collection use. */
+  /**
+   * Gets a reference to a `Mongo` collection use.
+   *
+   * See `mongoDB()`.
+   */
   private DataFlow::LocalSourceNode mongoCollection(DataFlow::TypeTracker t) {
     t.start() and
     (
@@ -73,7 +101,17 @@ private module NoSQL {
     exists(DataFlow::TypeTracker t2 | result = mongoCollection(t2).track(t2, t))
   }
 
-  /** Gets a reference to a `Mongo` collection use. */
+  /**
+   * Gets a reference to a `Mongo` collection use.
+   *
+   * ```py
+   * from flask_pymongo import PyMongo
+   * mongo = PyMongo(app)
+   * mongo.db.user.find({'name': safe_search})
+   * ```
+   *
+   * `mongo.db.user` would be a `use` of a `Mongo` collection, and so the result.
+   */
   private DataFlow::Node mongoCollection() {
     mongoCollection(DataFlow::TypeTracker::end()).flowsTo(result)
   }
@@ -88,19 +126,54 @@ private module NoSQL {
     }
   }
 
-  /** Gets a reference to a `Mongo` collection method. */
+  /**
+   * Gets a reference to a `Mongo` collection method.
+   *
+   * ```py
+   * from flask_pymongo import PyMongo
+   * mongo = PyMongo(app)
+   * mongo.db.user.find({'name': safe_search})
+   * ```
+   *
+   * `mongo.db.user.find` would be a collection method, and so the result.
+   */
   private DataFlow::Node mongoCollectionMethod() {
-    mongoCollection() in [result.(DataFlow::AttrRead), result.(DataFlow::AttrRead).getObject()] and
+    mongoCollection() = result.(DataFlow::AttrRead).getObject() and
     result.(DataFlow::AttrRead).getAttributeName() instanceof MongoCollectionMethodNames
   }
 
-  /** Gets a reference to a `Mongo` collection method call */
+  /**
+   * Gets a reference to a `Mongo` collection method call
+   *
+   * ```py
+   * from flask_pymongo import PyMongo
+   * mongo = PyMongo(app)
+   * mongo.db.user.find({'name': safe_search})
+   * ```
+   *
+   * `mongo.db.user.find({'name': safe_search})` would be a collection method call, and so the result.
+   */
   private class MongoCollectionCall extends DataFlow::CallCfgNode, NoSQLQuery::Range {
     MongoCollectionCall() { this.getFunction() = mongoCollectionMethod() }
 
     override DataFlow::Node getQuery() { result = this.getArg(0) }
   }
 
+  /**
+   * Gets a reference to a call from a class whose base is a reference to `mongoEngine()` or `flask_MongoEngine()`'s
+   * `Document` or `EmbeddedDocument` objects and its attribute is `objects`.
+   *
+   * ```py
+   * from flask_mongoengine import MongoEngine
+   * db = MongoEngine(app)
+   * class Movie(db.Document):
+   *     title = db.StringField(required=True)
+   *
+   * Movie.objects(__raw__=json_search)
+   * ```
+   *
+   * `Movie.objects(__raw__=json_search)` would be the result.
+   */
   private class MongoEngineObjectsCall extends DataFlow::CallCfgNode, NoSQLQuery::Range {
     MongoEngineObjectsCall() {
       this =
@@ -114,6 +187,7 @@ private module NoSQL {
     override DataFlow::Node getQuery() { result = this.getArgByName(_) }
   }
 
+  /** Gets a reference to `mongosanitizer.sanitizer.sanitize` */
   private class MongoSanitizerCall extends DataFlow::CallCfgNode, NoSQLSanitizer::Range {
     MongoSanitizerCall() {
       this =
