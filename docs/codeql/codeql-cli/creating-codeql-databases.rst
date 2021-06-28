@@ -17,8 +17,10 @@ Before you generate a CodeQL database, you need to:
 - Check out the version of your codebase you want to analyze. The directory
   should be ready to build, with all dependencies already installed.
 
-For information about using the CodeQL CLI in a CI system to create results
+For information about using the CodeQL CLI in a third-party CI system to create results
 to display in GitHub as code scanning alerts, see `Configuring CodeQL CLI in your CI system <https://docs.github.com/en/code-security/secure-coding/using-codeql-code-scanning-with-your-existing-ci-system/configuring-codeql-cli-in-your-ci-system>`__ 
+in the GitHub documentation. For information about enabling CodeQL code scanning using GitHub Actions,
+see `Setting up code scanning for a repository <https://docs.github.com/en/code-security/secure-coding/automatically-scanning-your-code-for-vulnerabilities-and-errors/setting-up-code-scanning-for-a-repository>`__ 
 in the GitHub documentation.
 
 Running ``codeql database create``
