@@ -12,7 +12,7 @@
  * states that will cause backtracking (a rejecting suffix exists).
  */
 
-import javascript
+import RegExpTreeView
 
 /**
  * A configuration for which parts of a regular expression should be considered relevant for
@@ -100,8 +100,8 @@ class RegExpRoot extends RegExpTerm {
     not exists(RegExpLookbehind lbh | getRoot(lbh) = this) and
     // is actually used as a RegExp
     isUsedAsRegExp() and
-    // pragmatic performance optimization: ignore minified files.
-    not getRootTerm().getParent().(Expr).getTopLevel().isMinified()
+    // not excluded for library specific reasons
+    not isExcluded(getRootTerm().getParent())
   }
 }
 
@@ -725,7 +725,10 @@ private module PrefixConstruction {
         max(State s, Location l |
           isStartState(s) and getRoot(s.getRepr()) = root and l = s.getRepr().getLocation()
         |
-          s order by l.getStartLine(), l.getStartColumn()
+          s
+          order by
+            l.getStartLine(), l.getStartColumn(), s.getRepr().toString(), l.getEndColumn(),
+            l.getEndLine()
         )
     )
   }
@@ -767,7 +770,10 @@ private module PrefixConstruction {
           loc = s.getRepr().getLocation() and
           delta(s, _, state)
         |
-          s order by loc.getStartLine(), loc.getStartColumn(), loc.getEndLine(), loc.getEndColumn()
+          s
+          order by
+            loc.getStartLine(), loc.getStartColumn(), loc.getEndLine(), loc.getEndColumn(),
+            s.getRepr().toString()
         )
     |
       // greedy search for the shortest prefix
