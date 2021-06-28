@@ -17,7 +17,7 @@ class RFSToDictConfig extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(Decoding decoding | decoding.getFormat() = "JSON" and sink = decoding)
+    exists(Decoding decoding | decoding.getFormat() = "JSON" and sink = decoding.getOutput())
   }
 
   override predicate isSanitizer(DataFlow::Node sanitizer) {
@@ -32,7 +32,7 @@ class FromDataDictToSink extends TaintTracking2::Configuration {
   FromDataDictToSink() { this = "FromDataDictToSink" }
 
   override predicate isSource(DataFlow::Node source) {
-    exists(Decoding decoding | decoding.getFormat() = "JSON" and source = decoding)
+    exists(Decoding decoding | decoding.getFormat() = "JSON" and source = decoding.getOutput())
   }
 
   override predicate isSink(DataFlow::Node sink) { sink = any(NoSQLQuery noSQLQuery).getQuery() }
