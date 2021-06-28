@@ -6,7 +6,7 @@ C# framework & library support
    :class: fullWidthTable
    :widths: auto
 
-   Framework / library,Package,Remote flow sources,Taint & value steps,Sinks (total),`CWE-079` :sub:`Cross-site scripting`
-   System,"``System.*``, ``System``",,6,5,5
-   Totals,,,6,5,5
+   Framework / library,Package,Flow sources,Taint & value steps,Sinks (total),`CWE-079` :sub:`Cross-site scripting`
+   System,"``System.*``, ``System``",3,6,5,5
+   Totals,,3,6,5,5
 
