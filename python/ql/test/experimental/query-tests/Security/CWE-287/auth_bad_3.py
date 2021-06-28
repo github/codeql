@@ -1,5 +1,7 @@
 from ldap3 import Server, Connection, ALL
 from flask import request, Flask
+from ldap3.utils.dn import escape_rdn
+from ldap3.utils.conv import escape_filter_chars
 
 app = Flask(__name__)
 
@@ -7,12 +9,11 @@ app = Flask(__name__)
 @app.route("/passwordNone")
 def passwordNone():
     """
-    A RemoteFlowSource is used directly as DN and search filter while the connection's password
-    is set to None
+    The bind's password argument is set to None
     """
 
-    dn = request.args['dc']
-    search_filter = request.args['search']
+    dn = "dc={}".format(escape_rdn(request.args['dc']))
+    search_filter = "(user={})".format(escape_filter_chars(request.args['search']))
 
     srv = Server('servername', get_info=ALL)
     conn = Connection(srv, 'user_dn', None)
@@ -22,12 +23,11 @@ def passwordNone():
 @app.route("/passwordNone")
 def passwordNoneKwargs():
     """
-    A RemoteFlowSource is used directly as DN and search filter while the connection's password
-    is set to None
+    The bind's password argument is set to None
     """
 
-    dn = request.args['dc']
-    search_filter = request.args['search']
+    dn = "dc={}".format(escape_rdn(request.args['dc']))
+    search_filter = "(user={})".format(escape_filter_chars(request.args['search']))
 
     srv = Server('servername', get_info=ALL)
     conn = Connection(srv, user='user_dn', password=None)
@@ -36,12 +36,11 @@ def passwordNoneKwargs():
 @app.route("/passwordEmpty")
 def passwordEmpty():
     """
-    A RemoteFlowSource is used directly as DN and search filter while the connection's password
-    is empty
+    The bind's password argument is an empty string
     """
 
-    dn = request.args['dc']
-    search_filter = request.args['search']
+    dn = "dc={}".format(escape_rdn(request.args['dc']))
+    search_filter = "(user={})".format(escape_filter_chars(request.args['search']))
 
     srv = Server('servername', get_info=ALL)
     conn = Connection(srv, user='user_dn', password="")
@@ -51,12 +50,11 @@ def passwordEmpty():
 @app.route("/notPassword")
 def notPassword():
     """
-    A RemoteFlowSource is used directly as DN and search filter while the connection's password
-    is not set
+    The bind's password argument is not set
     """
 
-    dn = request.args['dc']
-    search_filter = request.args['search']
+    dn = "dc={}".format(escape_rdn(request.args['dc']))
+    search_filter = "(user={})".format(escape_filter_chars(request.args['search']))
 
     srv = Server('servername', get_info=ALL)
     conn = Connection(srv, user='user_dn')
