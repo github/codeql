@@ -283,7 +283,10 @@ class MessageBodyReaderRead extends Method {
   }
 }
 
-private string getContentTypeString(Expr e) {
+/**
+ * Gets a constant content-type described by expression `e` (either a string constant or a Jax-RS MediaType field access).
+ */
+string getContentTypeString(Expr e) {
   result = e.(CompileTimeConstantExpr).getStringValue() and
   result != ""
   or
