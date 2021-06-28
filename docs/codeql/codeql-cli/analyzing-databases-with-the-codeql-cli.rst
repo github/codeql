@@ -111,12 +111,12 @@ see ":doc:`Using custom queries with the CodeQL CLI <using-custom-queries-with-t
 Running GitHub code scanning suites
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To run the GitHub code scanning suite of queries over a CodeQL datbase for a C/C++ codebase, 
+To run the GitHub code scanning suite of queries over a CodeQL database for a C/C++ codebase, 
 you could use the following command from the directory containing your database::
 
-   codeql database analyze <cpp-database> cpp-code-scanning.qls --format=sarifv2.1.0 --output=cpp-analysis/cpp-results.sarif
+   codeql database analyze <cpp-database> cpp-code-scanning.qls --format=sarifv2.1.0 --output=cpp-results.sarif
 
-The analysis generates a file in the v2.1 SARIF format that is supported by all versions of GitHub.
+The analysis generates a file in the v2.1.0 SARIF format that is supported by all versions of GitHub.
 This file can be uploaded to GitHub using ``github upload-results`` or the code scanning API.
 For more information, see `Analyzing a CodeQL database <https://docs.github.com/en/code-security/secure-coding/configuring-codeql-cli-in-your-ci-system#analyzing-a-codeql-database>`__ 
 or `Code scanning API <https://docs.github.com/en/rest/reference/code-scanning>`__ in the GitHub documentation.

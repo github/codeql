@@ -53,7 +53,7 @@ more than one language:
 - ``--db-cluster``: use for multi-language codebases when you want to create
   databases for more than one language. 
 - ``--command``: used when you create a database for one or more compiled languages,
-  omit if the only langauges requested are Python and JavaScript. 
+  omit if the only languages requested are Python and JavaScript. 
   This specifies the build commands needed to invoke the compiler. 
   Commands are run from the current folder, or ``--source-root``
   if specified. If you don't include a ``--command``, CodeQL will attempt to
@@ -76,7 +76,7 @@ build system.
 
 When the database is successfully created, you'll find a new directory at the
 path specified in the command. If you used the ``--db-cluster`` option to create
-more than one database, a subdirectory is created for each langauge.
+more than one database, a subdirectory is created for each language.
 Each CodeQL database directory contains a number of
 subdirectories, including the relational data (required for analysis) and a
 source archive---a copy of the source files made at the time the database was
@@ -98,8 +98,7 @@ are available.
    specify a ``--command`` option. Otherwise this overrides the normal
    extractor invocation, which will create an empty database. If you create
    databases for multiple languages and one of them is a compiled language,
-   use the ``--no-run-unnecessary-builds`` option to skip the command for these
-   languages.
+   use the ``--no-run-unnecessary-builds`` option to skip the command for the languages that don't need to be compiled.
 
 JavaScript and TypeScript
 ~~~~~~~~~~~~~~~~~~~~~~~~~
