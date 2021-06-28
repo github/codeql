@@ -64,7 +64,7 @@ private module LDAP {
       LDAP2Query() { this.getFunction() = ldapQuery() }
 
       override DataFlow::Node getQuery() {
-        result in [this.getArg(0), [this.getArg(2), this.getArgByName("filterstr")]]
+        result in [this.getArg(0), this.getArg(2), this.getArgByName("filterstr")]
       }
     }
 
