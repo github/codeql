@@ -382,7 +382,7 @@ abstract class RegexString extends Expr {
       not c = "[" and
       not c = ")" and
       not c = "|" and
-      not this.qualifier(start, _, _)
+      not this.qualifier(start, _, _, _)
     )
   }
 
@@ -688,41 +688,51 @@ abstract class RegexString extends Expr {
     this.backreference(start, end)
   }
 
-  private predicate qualifier(int start, int end, boolean maybe_empty) {
-    this.short_qualifier(start, end, maybe_empty) and not this.getChar(end) = "?"
+  private predicate qualifier(int start, int end, boolean maybe_empty, boolean may_repeat_forever) {
+    this.short_qualifier(start, end, maybe_empty, may_repeat_forever) and
+    not this.getChar(end) = "?"
     or
-    exists(int short_end | this.short_qualifier(start, short_end, maybe_empty) |
+    exists(int short_end | this.short_qualifier(start, short_end, maybe_empty, may_repeat_forever) |
       if this.getChar(short_end) = "?" then end = short_end + 1 else end = short_end
     )
   }
 
-  private predicate short_qualifier(int start, int end, boolean maybe_empty) {
+  private predicate short_qualifier(
+    int start, int end, boolean maybe_empty, boolean may_repeat_forever
+  ) {
     (
-      this.getChar(start) = "+" and maybe_empty = false
+      this.getChar(start) = "+" and maybe_empty = false and may_repeat_forever = true
       or
-      this.getChar(start) = "*" and maybe_empty = true
+      this.getChar(start) = "*" and maybe_empty = true and may_repeat_forever = true
       or
-      this.getChar(start) = "?" and maybe_empty = true
+      this.getChar(start) = "?" and maybe_empty = true and may_repeat_forever = false
     ) and
     end = start + 1
     or
-    exists(int endin | end = endin + 1 |
-      this.getChar(start) = "{" and
-      this.getChar(endin) = "}" and
-      end > start and
-      exists(string multiples | multiples = this.getText().substring(start + 1, endin) |
-        multiples.regexpMatch("0+") and maybe_empty = true
-        or
-        multiples.regexpMatch("0*,[0-9]*") and maybe_empty = true
-        or
-        multiples.regexpMatch("0*[1-9][0-9]*") and maybe_empty = false
-        or
-        multiples.regexpMatch("0*[1-9][0-9]*,[0-9]*") and maybe_empty = false
-      ) and
-      not exists(int mid |
-        this.getChar(mid) = "}" and
-        mid > start and
-        mid < endin
+    exists(string lower, string upper |
+      this.multiples(start, end, lower, upper) and
+      (if lower = "" or lower.toInt() = 0 then maybe_empty = true else maybe_empty = false) and
+      if upper = "" then may_repeat_forever = true else may_repeat_forever = false
+    )
+  }
+
+  /**
+   * Holds if a repetition quantifier is found between `start` and `end`,
+   * with the given lower and upper bounds. If a bound is omitted, the corresponding
+   * string is empty.
+   */
+  predicate multiples(int start, int end, string lower, string upper) {
+    this.getChar(start) = "{" and
+    this.getChar(end - 1) = "}" and
+    exists(string inner | inner = this.getText().substring(start + 1, end - 1) |
+      inner.regexpMatch("[0-9]+") and
+      lower = inner and
+      upper = lower
+      or
+      inner.regexpMatch("[0-9]*,[0-9]*") and
+      exists(int commaIndex | commaIndex = inner.indexOf(",") |
+        lower = inner.prefix(commaIndex) and
+        upper = inner.suffix(commaIndex + 1)
       )
     )
   }
@@ -731,19 +741,29 @@ abstract class RegexString extends Expr {
    * Whether the text in the range start,end is a qualified item, where item is a character,
    * a character set or a group.
    */
-  predicate qualifiedItem(int start, int end, boolean maybe_empty) {
-    this.qualifiedPart(start, _, end, maybe_empty)
+  predicate qualifiedItem(int start, int end, boolean maybe_empty, boolean may_repeat_forever) {
+    this.qualifiedPart(start, _, end, maybe_empty, may_repeat_forever)
   }
 
-  private predicate qualifiedPart(int start, int part_end, int end, boolean maybe_empty) {
+  /**
+   * Holds if a qualified part is found between `start` and `part_end` and the qualifier is
+   * found between `part_end` and `end`.
+   *
+   * `maybe_empty` is true if the part is optional.
+   * `may_repeat_forever` is true if the part may be repeated unboundedly.
+   */
+  predicate qualifiedPart(
+    int start, int part_end, int end, boolean maybe_empty, boolean may_repeat_forever
+  ) {
     this.baseItem(start, part_end) and
-    this.qualifier(part_end, end, maybe_empty)
+    this.qualifier(part_end, end, maybe_empty, may_repeat_forever)
   }
 
-  private predicate item(int start, int end) {
-    this.qualifiedItem(start, end, _)
+  /** Holds if the range `start`, `end` contains a character, a quantifier, a character set or a group. */
+  predicate item(int start, int end) {
+    this.qualifiedItem(start, end, _, _)
     or
-    this.baseItem(start, end) and not this.qualifier(end, _, _)
+    this.baseItem(start, end) and not this.qualifier(end, _, _, _)
   }
 
   private predicate subsequence(int start, int end) {
@@ -766,7 +786,7 @@ abstract class RegexString extends Expr {
    */
   predicate sequence(int start, int end) {
     this.sequenceOrQualified(start, end) and
-    not this.qualifiedItem(start, end, _)
+    not this.qualifiedItem(start, end, _, _)
   }
 
   private predicate sequenceOrQualified(int start, int end) {
@@ -777,7 +797,8 @@ abstract class RegexString extends Expr {
   private predicate item_start(int start) {
     this.character(start, _) or
     this.isGroupStart(start) or
-    this.charSet(start, _)
+    this.charSet(start, _) or
+    this.backreference(start, _)
   }
 
   private predicate item_end(int end) {
@@ -787,7 +808,7 @@ abstract class RegexString extends Expr {
     or
     this.charSet(_, end)
     or
-    this.qualifier(_, end, _)
+    this.qualifier(_, end, _, _)
   }
 
   private predicate top_level(int start, int end) {
@@ -839,14 +860,14 @@ abstract class RegexString extends Expr {
     or
     exists(int x | this.firstPart(x, end) |
       this.emptyMatchAtStartGroup(x, start) or
-      this.qualifiedItem(x, start, true) or
+      this.qualifiedItem(x, start, true, _) or
       this.specialCharacter(x, start, "^")
     )
     or
     exists(int y | this.firstPart(start, y) |
       this.item(start, end)
       or
-      this.qualifiedPart(start, end, y, _)
+      this.qualifiedPart(start, end, y, _, _)
     )
     or
     exists(int x, int y | this.firstPart(x, y) |
@@ -863,7 +884,7 @@ abstract class RegexString extends Expr {
     exists(int y | this.lastPart(start, y) |
       this.emptyMatchAtEndGroup(end, y)
       or
-      this.qualifiedItem(end, y, true)
+      this.qualifiedItem(end, y, true, _)
       or
       this.specialCharacter(end, y, "$")
       or
@@ -875,7 +896,7 @@ abstract class RegexString extends Expr {
       this.item(start, end)
     )
     or
-    exists(int y | this.lastPart(start, y) | this.qualifiedPart(start, end, y, _))
+    exists(int y | this.lastPart(start, y) | this.qualifiedPart(start, end, y, _, _))
     or
     exists(int x, int y | this.lastPart(x, y) |
       this.groupContents(x, y, start, end)
@@ -892,7 +913,7 @@ abstract class RegexString extends Expr {
     (
       this.character(start, end)
       or
-      this.qualifiedItem(start, end, _)
+      this.qualifiedItem(start, end, _, _)
       or
       this.charSet(start, end)
     ) and
@@ -907,7 +928,7 @@ abstract class RegexString extends Expr {
     (
       this.character(start, end)
       or
-      this.qualifiedItem(start, end, _)
+      this.qualifiedItem(start, end, _, _)
       or
       this.charSet(start, end)
     ) and
