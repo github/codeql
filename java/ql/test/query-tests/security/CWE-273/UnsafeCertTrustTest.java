@@ -122,10 +122,21 @@ public class UnsafeCertTrustTest {
 		SSLSocket socket = (SSLSocket) socketFactory.createSocket();
 		if (safe) {
 			SSLParameters sslParameters = socket.getSSLParameters();
-			onSetSSLParameters(sslParameters);
+			sslParameters.setEndpointIdentificationAlgorithm("HTTPS");
 			socket.setSSLParameters(sslParameters);
 		}
 		socket.getOutputStream(); // Safe
+	}
+
+	public void testSSLSocketEndpointIdSafeWithSanitizerInCast(boolean safe) throws Exception {
+		SSLContext sslContext = SSLContext.getInstance("TLS");
+		SSLSocketFactory socketFactory = sslContext.getSocketFactory();
+		Socket socket = socketFactory.createSocket();
+		SSLSocket sslSocket = (SSLSocket) socket;
+		SSLParameters sslParameters = sslSocket.getSSLParameters();
+		sslParameters.setEndpointIdentificationAlgorithm("HTTPS");
+		sslSocket.setSSLParameters(sslParameters);
+		socket.getOutputStream(); // $ SPURIOUS: hasUnsafeCertTrust
 	}
 
 	public void testSocketEndpointIdNotSet() throws Exception {
