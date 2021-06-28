@@ -1,10 +1,189 @@
 seqChild
+| KnownCVEs.py:5:28:5:48 | \\s*(\\d+)\\s*(\\S+) (.*) | KnownCVEs.py:5:28:5:30 | \\s* | 0 |
+| KnownCVEs.py:5:28:5:48 | \\s*(\\d+)\\s*(\\S+) (.*) | KnownCVEs.py:5:31:5:35 | (\\d+) | 1 |
+| KnownCVEs.py:5:28:5:48 | \\s*(\\d+)\\s*(\\S+) (.*) | KnownCVEs.py:5:36:5:38 | \\s* | 2 |
+| KnownCVEs.py:5:28:5:48 | \\s*(\\d+)\\s*(\\S+) (.*) | KnownCVEs.py:5:39:5:43 | (\\S+) | 3 |
+| KnownCVEs.py:5:28:5:48 | \\s*(\\d+)\\s*(\\S+) (.*) | KnownCVEs.py:5:44:5:44 |   | 4 |
+| KnownCVEs.py:5:28:5:48 | \\s*(\\d+)\\s*(\\S+) (.*) | KnownCVEs.py:5:45:5:48 | (.*) | 5 |
+| KnownCVEs.py:15:16:15:33 | [+-]?(\\d+)*\\.\\d+%? | KnownCVEs.py:15:16:15:20 | [+-]? | 0 |
+| KnownCVEs.py:15:16:15:33 | [+-]?(\\d+)*\\.\\d+%? | KnownCVEs.py:15:21:15:26 | (\\d+)* | 1 |
+| KnownCVEs.py:15:16:15:33 | [+-]?(\\d+)*\\.\\d+%? | KnownCVEs.py:15:27:15:28 | \\. | 2 |
+| KnownCVEs.py:15:16:15:33 | [+-]?(\\d+)*\\.\\d+%? | KnownCVEs.py:15:29:15:31 | \\d+ | 3 |
+| KnownCVEs.py:15:16:15:33 | [+-]?(\\d+)*\\.\\d+%? | KnownCVEs.py:15:32:15:33 | %? | 4 |
+| KnownCVEs.py:16:16:16:37 | """\\s+(?:.\|\\n)*?\\s+""" | KnownCVEs.py:16:16:16:16 | " | 0 |
+| KnownCVEs.py:16:16:16:37 | """\\s+(?:.\|\\n)*?\\s+""" | KnownCVEs.py:16:17:16:17 | " | 1 |
+| KnownCVEs.py:16:16:16:37 | """\\s+(?:.\|\\n)*?\\s+""" | KnownCVEs.py:16:18:16:18 | " | 2 |
+| KnownCVEs.py:16:16:16:37 | """\\s+(?:.\|\\n)*?\\s+""" | KnownCVEs.py:16:19:16:21 | \\s+ | 3 |
+| KnownCVEs.py:16:16:16:37 | """\\s+(?:.\|\\n)*?\\s+""" | KnownCVEs.py:16:22:16:31 | (?:.\|\\n)*? | 4 |
+| KnownCVEs.py:16:16:16:37 | """\\s+(?:.\|\\n)*?\\s+""" | KnownCVEs.py:16:32:16:34 | \\s+ | 5 |
+| KnownCVEs.py:16:16:16:37 | """\\s+(?:.\|\\n)*?\\s+""" | KnownCVEs.py:16:35:16:35 | " | 6 |
+| KnownCVEs.py:16:16:16:37 | """\\s+(?:.\|\\n)*?\\s+""" | KnownCVEs.py:16:36:16:36 | " | 7 |
+| KnownCVEs.py:16:16:16:37 | """\\s+(?:.\|\\n)*?\\s+""" | KnownCVEs.py:16:37:16:37 | " | 8 |
+| KnownCVEs.py:17:16:17:44 | (\\{\\s+)(\\S+)(\\s+[^}]+\\s+\\}\\s) | KnownCVEs.py:17:16:17:22 | (\\{\\s+) | 0 |
+| KnownCVEs.py:17:16:17:44 | (\\{\\s+)(\\S+)(\\s+[^}]+\\s+\\}\\s) | KnownCVEs.py:17:23:17:27 | (\\S+) | 1 |
+| KnownCVEs.py:17:16:17:44 | (\\{\\s+)(\\S+)(\\s+[^}]+\\s+\\}\\s) | KnownCVEs.py:17:28:17:44 | (\\s+[^}]+\\s+\\}\\s) | 2 |
+| KnownCVEs.py:17:17:17:21 | \\{\\s+ | KnownCVEs.py:17:17:17:18 | \\{ | 0 |
+| KnownCVEs.py:17:17:17:21 | \\{\\s+ | KnownCVEs.py:17:19:17:21 | \\s+ | 1 |
+| KnownCVEs.py:17:29:17:43 | \\s+[^}]+\\s+\\}\\s | KnownCVEs.py:17:29:17:31 | \\s+ | 0 |
+| KnownCVEs.py:17:29:17:43 | \\s+[^}]+\\s+\\}\\s | KnownCVEs.py:17:32:17:36 | [^}]+ | 1 |
+| KnownCVEs.py:17:29:17:43 | \\s+[^}]+\\s+\\}\\s | KnownCVEs.py:17:37:17:39 | \\s+ | 2 |
+| KnownCVEs.py:17:29:17:43 | \\s+[^}]+\\s+\\}\\s | KnownCVEs.py:17:40:17:41 | \\} | 3 |
+| KnownCVEs.py:17:29:17:43 | \\s+[^}]+\\s+\\}\\s | KnownCVEs.py:17:42:17:43 | \\s | 4 |
+| KnownCVEs.py:18:16:18:27 | ".*``.*``.*" | KnownCVEs.py:18:16:18:16 | " | 0 |
+| KnownCVEs.py:18:16:18:27 | ".*``.*``.*" | KnownCVEs.py:18:17:18:18 | .* | 1 |
+| KnownCVEs.py:18:16:18:27 | ".*``.*``.*" | KnownCVEs.py:18:19:18:19 | ` | 2 |
+| KnownCVEs.py:18:16:18:27 | ".*``.*``.*" | KnownCVEs.py:18:20:18:20 | ` | 3 |
+| KnownCVEs.py:18:16:18:27 | ".*``.*``.*" | KnownCVEs.py:18:21:18:22 | .* | 4 |
+| KnownCVEs.py:18:16:18:27 | ".*``.*``.*" | KnownCVEs.py:18:23:18:23 | ` | 5 |
+| KnownCVEs.py:18:16:18:27 | ".*``.*``.*" | KnownCVEs.py:18:24:18:24 | ` | 6 |
+| KnownCVEs.py:18:16:18:27 | ".*``.*``.*" | KnownCVEs.py:18:25:18:26 | .* | 7 |
+| KnownCVEs.py:18:16:18:27 | ".*``.*``.*" | KnownCVEs.py:18:27:18:27 | " | 8 |
+| KnownCVEs.py:19:16:19:63 | (\\s*)(?:(.+)(\\s*)(=)(\\s*))?(.+)(\\()(.*)(\\))(\\s*) | KnownCVEs.py:19:16:19:20 | (\\s*) | 0 |
+| KnownCVEs.py:19:16:19:63 | (\\s*)(?:(.+)(\\s*)(=)(\\s*))?(.+)(\\()(.*)(\\))(\\s*) | KnownCVEs.py:19:21:19:42 | (?:(.+)(\\s*)(=)(\\s*))? | 1 |
+| KnownCVEs.py:19:16:19:63 | (\\s*)(?:(.+)(\\s*)(=)(\\s*))?(.+)(\\()(.*)(\\))(\\s*) | KnownCVEs.py:19:43:19:46 | (.+) | 2 |
+| KnownCVEs.py:19:16:19:63 | (\\s*)(?:(.+)(\\s*)(=)(\\s*))?(.+)(\\()(.*)(\\))(\\s*) | KnownCVEs.py:19:47:19:50 | (\\() | 3 |
+| KnownCVEs.py:19:16:19:63 | (\\s*)(?:(.+)(\\s*)(=)(\\s*))?(.+)(\\()(.*)(\\))(\\s*) | KnownCVEs.py:19:51:19:54 | (.*) | 4 |
+| KnownCVEs.py:19:16:19:63 | (\\s*)(?:(.+)(\\s*)(=)(\\s*))?(.+)(\\()(.*)(\\))(\\s*) | KnownCVEs.py:19:55:19:58 | (\\)) | 5 |
+| KnownCVEs.py:19:16:19:63 | (\\s*)(?:(.+)(\\s*)(=)(\\s*))?(.+)(\\()(.*)(\\))(\\s*) | KnownCVEs.py:19:59:19:63 | (\\s*) | 6 |
+| KnownCVEs.py:19:24:19:40 | (.+)(\\s*)(=)(\\s*) | KnownCVEs.py:19:24:19:27 | (.+) | 0 |
+| KnownCVEs.py:19:24:19:40 | (.+)(\\s*)(=)(\\s*) | KnownCVEs.py:19:28:19:32 | (\\s*) | 1 |
+| KnownCVEs.py:19:24:19:40 | (.+)(\\s*)(=)(\\s*) | KnownCVEs.py:19:33:19:35 | (=) | 2 |
+| KnownCVEs.py:19:24:19:40 | (.+)(\\s*)(=)(\\s*) | KnownCVEs.py:19:36:19:40 | (\\s*) | 3 |
+| KnownCVEs.py:20:16:20:63 | (%config)(\\s*\\(\\s*)(\\w+)(\\s*=\\s*)(.*?)(\\s*\\)\\s*) | KnownCVEs.py:20:16:20:24 | (%config) | 0 |
+| KnownCVEs.py:20:16:20:63 | (%config)(\\s*\\(\\s*)(\\w+)(\\s*=\\s*)(.*?)(\\s*\\)\\s*) | KnownCVEs.py:20:25:20:34 | (\\s*\\(\\s*) | 1 |
+| KnownCVEs.py:20:16:20:63 | (%config)(\\s*\\(\\s*)(\\w+)(\\s*=\\s*)(.*?)(\\s*\\)\\s*) | KnownCVEs.py:20:35:20:39 | (\\w+) | 2 |
+| KnownCVEs.py:20:16:20:63 | (%config)(\\s*\\(\\s*)(\\w+)(\\s*=\\s*)(.*?)(\\s*\\)\\s*) | KnownCVEs.py:20:40:20:48 | (\\s*=\\s*) | 3 |
+| KnownCVEs.py:20:16:20:63 | (%config)(\\s*\\(\\s*)(\\w+)(\\s*=\\s*)(.*?)(\\s*\\)\\s*) | KnownCVEs.py:20:49:20:53 | (.*?) | 4 |
+| KnownCVEs.py:20:16:20:63 | (%config)(\\s*\\(\\s*)(\\w+)(\\s*=\\s*)(.*?)(\\s*\\)\\s*) | KnownCVEs.py:20:54:20:63 | (\\s*\\)\\s*) | 5 |
+| KnownCVEs.py:20:17:20:23 | %config | KnownCVEs.py:20:17:20:17 | % | 0 |
+| KnownCVEs.py:20:17:20:23 | %config | KnownCVEs.py:20:18:20:18 | c | 1 |
+| KnownCVEs.py:20:17:20:23 | %config | KnownCVEs.py:20:19:20:19 | o | 2 |
+| KnownCVEs.py:20:17:20:23 | %config | KnownCVEs.py:20:20:20:20 | n | 3 |
+| KnownCVEs.py:20:17:20:23 | %config | KnownCVEs.py:20:21:20:21 | f | 4 |
+| KnownCVEs.py:20:17:20:23 | %config | KnownCVEs.py:20:22:20:22 | i | 5 |
+| KnownCVEs.py:20:17:20:23 | %config | KnownCVEs.py:20:23:20:23 | g | 6 |
+| KnownCVEs.py:20:26:20:33 | \\s*\\(\\s* | KnownCVEs.py:20:26:20:28 | \\s* | 0 |
+| KnownCVEs.py:20:26:20:33 | \\s*\\(\\s* | KnownCVEs.py:20:29:20:30 | \\( | 1 |
+| KnownCVEs.py:20:26:20:33 | \\s*\\(\\s* | KnownCVEs.py:20:31:20:33 | \\s* | 2 |
+| KnownCVEs.py:20:41:20:47 | \\s*=\\s* | KnownCVEs.py:20:41:20:43 | \\s* | 0 |
+| KnownCVEs.py:20:41:20:47 | \\s*=\\s* | KnownCVEs.py:20:44:20:44 | = | 1 |
+| KnownCVEs.py:20:41:20:47 | \\s*=\\s* | KnownCVEs.py:20:45:20:47 | \\s* | 2 |
+| KnownCVEs.py:20:55:20:62 | \\s*\\)\\s* | KnownCVEs.py:20:55:20:57 | \\s* | 0 |
+| KnownCVEs.py:20:55:20:62 | \\s*\\)\\s* | KnownCVEs.py:20:58:20:59 | \\) | 1 |
+| KnownCVEs.py:20:55:20:62 | \\s*\\)\\s* | KnownCVEs.py:20:60:20:62 | \\s* | 2 |
+| KnownCVEs.py:21:16:21:45 | (%new)(\\s*)(\\()(\\s*.*?\\s*)(\\)) | KnownCVEs.py:21:16:21:21 | (%new) | 0 |
+| KnownCVEs.py:21:16:21:45 | (%new)(\\s*)(\\()(\\s*.*?\\s*)(\\)) | KnownCVEs.py:21:22:21:26 | (\\s*) | 1 |
+| KnownCVEs.py:21:16:21:45 | (%new)(\\s*)(\\()(\\s*.*?\\s*)(\\)) | KnownCVEs.py:21:27:21:30 | (\\() | 2 |
+| KnownCVEs.py:21:16:21:45 | (%new)(\\s*)(\\()(\\s*.*?\\s*)(\\)) | KnownCVEs.py:21:31:21:41 | (\\s*.*?\\s*) | 3 |
+| KnownCVEs.py:21:16:21:45 | (%new)(\\s*)(\\()(\\s*.*?\\s*)(\\)) | KnownCVEs.py:21:42:21:45 | (\\)) | 4 |
+| KnownCVEs.py:21:17:21:20 | %new | KnownCVEs.py:21:17:21:17 | % | 0 |
+| KnownCVEs.py:21:17:21:20 | %new | KnownCVEs.py:21:18:21:18 | n | 1 |
+| KnownCVEs.py:21:17:21:20 | %new | KnownCVEs.py:21:19:21:19 | e | 2 |
+| KnownCVEs.py:21:17:21:20 | %new | KnownCVEs.py:21:20:21:20 | w | 3 |
+| KnownCVEs.py:21:32:21:40 | \\s*.*?\\s* | KnownCVEs.py:21:32:21:34 | \\s* | 0 |
+| KnownCVEs.py:21:32:21:40 | \\s*.*?\\s* | KnownCVEs.py:21:35:21:37 | .*? | 1 |
+| KnownCVEs.py:21:32:21:40 | \\s*.*?\\s* | KnownCVEs.py:21:38:21:40 | \\s* | 2 |
+| KnownCVEs.py:22:16:22:70 | (\\$)(evoque\|overlay)(\\{(%)?)(\\s*[#\\w\\-"\\'.]+[^=,%}]+?)? | KnownCVEs.py:22:16:22:19 | (\\$) | 0 |
+| KnownCVEs.py:22:16:22:70 | (\\$)(evoque\|overlay)(\\{(%)?)(\\s*[#\\w\\-"\\'.]+[^=,%}]+?)? | KnownCVEs.py:22:20:22:35 | (evoque\|overlay) | 1 |
+| KnownCVEs.py:22:16:22:70 | (\\$)(evoque\|overlay)(\\{(%)?)(\\s*[#\\w\\-"\\'.]+[^=,%}]+?)? | KnownCVEs.py:22:36:22:43 | (\\{(%)?) | 2 |
+| KnownCVEs.py:22:16:22:70 | (\\$)(evoque\|overlay)(\\{(%)?)(\\s*[#\\w\\-"\\'.]+[^=,%}]+?)? | KnownCVEs.py:22:44:22:70 | (\\s*[#\\w\\-"\\'.]+[^=,%}]+?)? | 3 |
+| KnownCVEs.py:22:21:22:26 | evoque | KnownCVEs.py:22:21:22:21 | e | 0 |
+| KnownCVEs.py:22:21:22:26 | evoque | KnownCVEs.py:22:22:22:22 | v | 1 |
+| KnownCVEs.py:22:21:22:26 | evoque | KnownCVEs.py:22:23:22:23 | o | 2 |
+| KnownCVEs.py:22:21:22:26 | evoque | KnownCVEs.py:22:24:22:24 | q | 3 |
+| KnownCVEs.py:22:21:22:26 | evoque | KnownCVEs.py:22:25:22:25 | u | 4 |
+| KnownCVEs.py:22:21:22:26 | evoque | KnownCVEs.py:22:26:22:26 | e | 5 |
+| KnownCVEs.py:22:28:22:34 | overlay | KnownCVEs.py:22:28:22:28 | o | 0 |
+| KnownCVEs.py:22:28:22:34 | overlay | KnownCVEs.py:22:29:22:29 | v | 1 |
+| KnownCVEs.py:22:28:22:34 | overlay | KnownCVEs.py:22:30:22:30 | e | 2 |
+| KnownCVEs.py:22:28:22:34 | overlay | KnownCVEs.py:22:31:22:31 | r | 3 |
+| KnownCVEs.py:22:28:22:34 | overlay | KnownCVEs.py:22:32:22:32 | l | 4 |
+| KnownCVEs.py:22:28:22:34 | overlay | KnownCVEs.py:22:33:22:33 | a | 5 |
+| KnownCVEs.py:22:28:22:34 | overlay | KnownCVEs.py:22:34:22:34 | y | 6 |
+| KnownCVEs.py:22:37:22:42 | \\{(%)? | KnownCVEs.py:22:37:22:38 | \\{ | 0 |
+| KnownCVEs.py:22:37:22:42 | \\{(%)? | KnownCVEs.py:22:39:22:42 | (%)? | 1 |
+| KnownCVEs.py:22:45:22:68 | \\s*[#\\w\\-"\\'.]+[^=,%}]+? | KnownCVEs.py:22:45:22:47 | \\s* | 0 |
+| KnownCVEs.py:22:45:22:68 | \\s*[#\\w\\-"\\'.]+[^=,%}]+? | KnownCVEs.py:22:48:22:59 | [#\\w\\-"\\'.]+ | 1 |
+| KnownCVEs.py:22:45:22:68 | \\s*[#\\w\\-"\\'.]+[^=,%}]+? | KnownCVEs.py:22:60:22:68 | [^=,%}]+? | 2 |
+| KnownCVEs.py:23:16:23:46 | (\\.\\w+\\b)(\\s*=\\s*)([^;]*)(\\s*;) | KnownCVEs.py:23:16:23:24 | (\\.\\w+\\b) | 0 |
+| KnownCVEs.py:23:16:23:46 | (\\.\\w+\\b)(\\s*=\\s*)([^;]*)(\\s*;) | KnownCVEs.py:23:25:23:33 | (\\s*=\\s*) | 1 |
+| KnownCVEs.py:23:16:23:46 | (\\.\\w+\\b)(\\s*=\\s*)([^;]*)(\\s*;) | KnownCVEs.py:23:34:23:40 | ([^;]*) | 2 |
+| KnownCVEs.py:23:16:23:46 | (\\.\\w+\\b)(\\s*=\\s*)([^;]*)(\\s*;) | KnownCVEs.py:23:41:23:46 | (\\s*;) | 3 |
+| KnownCVEs.py:23:17:23:23 | \\.\\w+\\b | KnownCVEs.py:23:17:23:18 | \\. | 0 |
+| KnownCVEs.py:23:17:23:23 | \\.\\w+\\b | KnownCVEs.py:23:19:23:21 | \\w+ | 1 |
+| KnownCVEs.py:23:17:23:23 | \\.\\w+\\b | KnownCVEs.py:23:22:23:23 | \\b | 2 |
+| KnownCVEs.py:23:26:23:32 | \\s*=\\s* | KnownCVEs.py:23:26:23:28 | \\s* | 0 |
+| KnownCVEs.py:23:26:23:32 | \\s*=\\s* | KnownCVEs.py:23:29:23:29 | = | 1 |
+| KnownCVEs.py:23:26:23:32 | \\s*=\\s* | KnownCVEs.py:23:30:23:32 | \\s* | 2 |
+| KnownCVEs.py:23:42:23:45 | \\s*; | KnownCVEs.py:23:42:23:44 | \\s* | 0 |
+| KnownCVEs.py:23:42:23:45 | \\s*; | KnownCVEs.py:23:45:23:45 | ; | 1 |
+| KnownCVEs.py:27:34:27:71 | ^\\S+@[a-zA-Z0-9._-]+\\.[a-zA-Z0-9._-]+$ | KnownCVEs.py:27:34:27:34 | ^ | 0 |
+| KnownCVEs.py:27:34:27:71 | ^\\S+@[a-zA-Z0-9._-]+\\.[a-zA-Z0-9._-]+$ | KnownCVEs.py:27:35:27:37 | \\S+ | 1 |
+| KnownCVEs.py:27:34:27:71 | ^\\S+@[a-zA-Z0-9._-]+\\.[a-zA-Z0-9._-]+$ | KnownCVEs.py:27:38:27:38 | @ | 2 |
+| KnownCVEs.py:27:34:27:71 | ^\\S+@[a-zA-Z0-9._-]+\\.[a-zA-Z0-9._-]+$ | KnownCVEs.py:27:39:27:53 | [a-zA-Z0-9._-]+ | 3 |
+| KnownCVEs.py:27:34:27:71 | ^\\S+@[a-zA-Z0-9._-]+\\.[a-zA-Z0-9._-]+$ | KnownCVEs.py:27:54:27:55 | \\. | 4 |
+| KnownCVEs.py:27:34:27:71 | ^\\S+@[a-zA-Z0-9._-]+\\.[a-zA-Z0-9._-]+$ | KnownCVEs.py:27:56:27:70 | [a-zA-Z0-9._-]+ | 5 |
+| KnownCVEs.py:27:34:27:71 | ^\\S+@[a-zA-Z0-9._-]+\\.[a-zA-Z0-9._-]+$ | KnownCVEs.py:27:71:27:71 | $ | 6 |
+| KnownCVEs.py:30:21:31:69 | (?:.*,)*[ \t]*([^ \t]+)[ \t]+realm=(["']?)([^"']*)\\2 | KnownCVEs.py:30:21:31:28 | (?:.*,)* | 0 |
+| KnownCVEs.py:30:21:31:69 | (?:.*,)*[ \t]*([^ \t]+)[ \t]+realm=(["']?)([^"']*)\\2 | KnownCVEs.py:30:29:31:33 | [ \t]* | 1 |
+| KnownCVEs.py:30:21:31:69 | (?:.*,)*[ \t]*([^ \t]+)[ \t]+realm=(["']?)([^"']*)\\2 | KnownCVEs.py:30:34:31:41 | ([^ \t]+) | 2 |
+| KnownCVEs.py:30:21:31:69 | (?:.*,)*[ \t]*([^ \t]+)[ \t]+realm=(["']?)([^"']*)\\2 | KnownCVEs.py:30:42:31:46 | [ \t]+ | 3 |
+| KnownCVEs.py:30:21:31:69 | (?:.*,)*[ \t]*([^ \t]+)[ \t]+realm=(["']?)([^"']*)\\2 | KnownCVEs.py:30:47:31:47 | r | 4 |
+| KnownCVEs.py:30:21:31:69 | (?:.*,)*[ \t]*([^ \t]+)[ \t]+realm=(["']?)([^"']*)\\2 | KnownCVEs.py:30:48:31:48 | e | 5 |
+| KnownCVEs.py:30:21:31:69 | (?:.*,)*[ \t]*([^ \t]+)[ \t]+realm=(["']?)([^"']*)\\2 | KnownCVEs.py:30:49:31:49 | a | 6 |
+| KnownCVEs.py:30:21:31:69 | (?:.*,)*[ \t]*([^ \t]+)[ \t]+realm=(["']?)([^"']*)\\2 | KnownCVEs.py:30:50:31:50 | l | 7 |
+| KnownCVEs.py:30:21:31:69 | (?:.*,)*[ \t]*([^ \t]+)[ \t]+realm=(["']?)([^"']*)\\2 | KnownCVEs.py:30:51:31:51 | m | 8 |
+| KnownCVEs.py:30:21:31:69 | (?:.*,)*[ \t]*([^ \t]+)[ \t]+realm=(["']?)([^"']*)\\2 | KnownCVEs.py:30:52:31:52 | = | 9 |
+| KnownCVEs.py:30:21:31:69 | (?:.*,)*[ \t]*([^ \t]+)[ \t]+realm=(["']?)([^"']*)\\2 | KnownCVEs.py:30:53:31:59 | (["']?) | 10 |
+| KnownCVEs.py:30:21:31:69 | (?:.*,)*[ \t]*([^ \t]+)[ \t]+realm=(["']?)([^"']*)\\2 | KnownCVEs.py:30:60:31:67 | ([^"']*) | 11 |
+| KnownCVEs.py:30:21:31:69 | (?:.*,)*[ \t]*([^ \t]+)[ \t]+realm=(["']?)([^"']*)\\2 | KnownCVEs.py:30:68:31:69 | \\2 | 12 |
+| KnownCVEs.py:30:24:31:26 | .*, | KnownCVEs.py:30:24:31:25 | .* | 0 |
+| KnownCVEs.py:30:24:31:26 | .*, | KnownCVEs.py:30:26:31:26 | , | 1 |
+| KnownCVEs.py:35:17:35:82 | ^([-/:,#%.'"\\s!\\w]\|\\w-\\w\|'[\\s\\w]+'\\s*\|"[\\s\\w]+"\|\\([\\d,%\\.\\s]+\\))*$ | KnownCVEs.py:35:17:35:17 | ^ | 0 |
+| KnownCVEs.py:35:17:35:82 | ^([-/:,#%.'"\\s!\\w]\|\\w-\\w\|'[\\s\\w]+'\\s*\|"[\\s\\w]+"\|\\([\\d,%\\.\\s]+\\))*$ | KnownCVEs.py:35:18:35:81 | ([-/:,#%.'"\\s!\\w]\|\\w-\\w\|'[\\s\\w]+'\\s*\|"[\\s\\w]+"\|\\([\\d,%\\.\\s]+\\))* | 1 |
+| KnownCVEs.py:35:17:35:82 | ^([-/:,#%.'"\\s!\\w]\|\\w-\\w\|'[\\s\\w]+'\\s*\|"[\\s\\w]+"\|\\([\\d,%\\.\\s]+\\))*$ | KnownCVEs.py:35:82:35:82 | $ | 2 |
+| KnownCVEs.py:35:36:35:40 | \\w-\\w | KnownCVEs.py:35:36:35:37 | \\w | 0 |
+| KnownCVEs.py:35:36:35:40 | \\w-\\w | KnownCVEs.py:35:38:35:38 | - | 1 |
+| KnownCVEs.py:35:36:35:40 | \\w-\\w | KnownCVEs.py:35:39:35:40 | \\w | 2 |
+| KnownCVEs.py:35:42:35:53 | '[\\s\\w]+'\\s* | KnownCVEs.py:35:42:35:42 | ' | 0 |
+| KnownCVEs.py:35:42:35:53 | '[\\s\\w]+'\\s* | KnownCVEs.py:35:43:35:49 | [\\s\\w]+ | 1 |
+| KnownCVEs.py:35:42:35:53 | '[\\s\\w]+'\\s* | KnownCVEs.py:35:50:35:50 | ' | 2 |
+| KnownCVEs.py:35:42:35:53 | '[\\s\\w]+'\\s* | KnownCVEs.py:35:51:35:53 | \\s* | 3 |
+| KnownCVEs.py:35:55:35:63 | "[\\s\\w]+" | KnownCVEs.py:35:55:35:55 | " | 0 |
+| KnownCVEs.py:35:55:35:63 | "[\\s\\w]+" | KnownCVEs.py:35:56:35:62 | [\\s\\w]+ | 1 |
+| KnownCVEs.py:35:55:35:63 | "[\\s\\w]+" | KnownCVEs.py:35:63:35:63 | " | 2 |
+| KnownCVEs.py:35:65:35:79 | \\([\\d,%\\.\\s]+\\) | KnownCVEs.py:35:65:35:66 | \\( | 0 |
+| KnownCVEs.py:35:65:35:79 | \\([\\d,%\\.\\s]+\\) | KnownCVEs.py:35:67:35:77 | [\\d,%\\.\\s]+ | 1 |
+| KnownCVEs.py:35:65:35:79 | \\([\\d,%\\.\\s]+\\) | KnownCVEs.py:35:78:35:79 | \\) | 2 |
+| KnownCVEs.py:80:9:83:185 | ^(:?(([a-zA-Z]{1})\|([a-zA-Z]{1}[a-zA-Z]{1})\|([a-zA-Z]{1}[0-9]{1})\|([0-9]{1}[a-zA-Z]{1})\|([a-zA-Z0-9][-_a-zA-Z0-9]{0,61}[a-zA-Z0-9]))\\.)+([a-zA-Z]{2,13}\|(xn--[a-zA-Z0-9]{2,30}))$ | KnownCVEs.py:80:9:83:9 | ^ | 0 |
+| KnownCVEs.py:80:9:83:185 | ^(:?(([a-zA-Z]{1})\|([a-zA-Z]{1}[a-zA-Z]{1})\|([a-zA-Z]{1}[0-9]{1})\|([0-9]{1}[a-zA-Z]{1})\|([a-zA-Z0-9][-_a-zA-Z0-9]{0,61}[a-zA-Z0-9]))\\.)+([a-zA-Z]{2,13}\|(xn--[a-zA-Z0-9]{2,30}))$ | KnownCVEs.py:80:10:83:144 | (:?(([a-zA-Z]{1})\|([a-zA-Z]{1}[a-zA-Z]{1})\|([a-zA-Z]{1}[0-9]{1})\|([0-9]{1}[a-zA-Z]{1})\|([a-zA-Z0-9][-_a-zA-Z0-9]{0,61}[a-zA-Z0-9]))\\.)+ | 1 |
+| KnownCVEs.py:80:9:83:185 | ^(:?(([a-zA-Z]{1})\|([a-zA-Z]{1}[a-zA-Z]{1})\|([a-zA-Z]{1}[0-9]{1})\|([0-9]{1}[a-zA-Z]{1})\|([a-zA-Z0-9][-_a-zA-Z0-9]{0,61}[a-zA-Z0-9]))\\.)+([a-zA-Z]{2,13}\|(xn--[a-zA-Z0-9]{2,30}))$ | KnownCVEs.py:80:145:83:184 | ([a-zA-Z]{2,13}\|(xn--[a-zA-Z0-9]{2,30})) | 2 |
+| KnownCVEs.py:80:9:83:185 | ^(:?(([a-zA-Z]{1})\|([a-zA-Z]{1}[a-zA-Z]{1})\|([a-zA-Z]{1}[0-9]{1})\|([0-9]{1}[a-zA-Z]{1})\|([a-zA-Z0-9][-_a-zA-Z0-9]{0,61}[a-zA-Z0-9]))\\.)+([a-zA-Z]{2,13}\|(xn--[a-zA-Z0-9]{2,30}))$ | KnownCVEs.py:80:185:83:185 | $ | 3 |
+| KnownCVEs.py:80:11:83:142 | :?(([a-zA-Z]{1})\|([a-zA-Z]{1}[a-zA-Z]{1})\|([a-zA-Z]{1}[0-9]{1})\|([0-9]{1}[a-zA-Z]{1})\|([a-zA-Z0-9][-_a-zA-Z0-9]{0,61}[a-zA-Z0-9]))\\. | KnownCVEs.py:80:11:83:12 | :? | 0 |
+| KnownCVEs.py:80:11:83:142 | :?(([a-zA-Z]{1})\|([a-zA-Z]{1}[a-zA-Z]{1})\|([a-zA-Z]{1}[0-9]{1})\|([0-9]{1}[a-zA-Z]{1})\|([a-zA-Z0-9][-_a-zA-Z0-9]{0,61}[a-zA-Z0-9]))\\. | KnownCVEs.py:80:13:83:140 | (([a-zA-Z]{1})\|([a-zA-Z]{1}[a-zA-Z]{1})\|([a-zA-Z]{1}[0-9]{1})\|([0-9]{1}[a-zA-Z]{1})\|([a-zA-Z0-9][-_a-zA-Z0-9]{0,61}[a-zA-Z0-9])) | 1 |
+| KnownCVEs.py:80:11:83:142 | :?(([a-zA-Z]{1})\|([a-zA-Z]{1}[a-zA-Z]{1})\|([a-zA-Z]{1}[0-9]{1})\|([0-9]{1}[a-zA-Z]{1})\|([a-zA-Z0-9][-_a-zA-Z0-9]{0,61}[a-zA-Z0-9]))\\. | KnownCVEs.py:80:141:83:142 | \\. | 2 |
+| KnownCVEs.py:80:29:83:50 | [a-zA-Z]{1}[a-zA-Z]{1} | KnownCVEs.py:80:29:83:39 | [a-zA-Z]{1} | 0 |
+| KnownCVEs.py:80:29:83:50 | [a-zA-Z]{1}[a-zA-Z]{1} | KnownCVEs.py:80:40:83:50 | [a-zA-Z]{1} | 1 |
+| KnownCVEs.py:80:54:83:72 | [a-zA-Z]{1}[0-9]{1} | KnownCVEs.py:80:54:83:64 | [a-zA-Z]{1} | 0 |
+| KnownCVEs.py:80:54:83:72 | [a-zA-Z]{1}[0-9]{1} | KnownCVEs.py:80:65:83:72 | [0-9]{1} | 1 |
+| KnownCVEs.py:80:76:83:94 | [0-9]{1}[a-zA-Z]{1} | KnownCVEs.py:80:76:83:83 | [0-9]{1} | 0 |
+| KnownCVEs.py:80:76:83:94 | [0-9]{1}[a-zA-Z]{1} | KnownCVEs.py:80:84:83:94 | [a-zA-Z]{1} | 1 |
+| KnownCVEs.py:80:98:83:138 | [a-zA-Z0-9][-_a-zA-Z0-9]{0,61}[a-zA-Z0-9] | KnownCVEs.py:80:98:83:108 | [a-zA-Z0-9] | 0 |
+| KnownCVEs.py:80:98:83:138 | [a-zA-Z0-9][-_a-zA-Z0-9]{0,61}[a-zA-Z0-9] | KnownCVEs.py:80:109:83:127 | [-_a-zA-Z0-9]{0,61} | 1 |
+| KnownCVEs.py:80:98:83:138 | [a-zA-Z0-9][-_a-zA-Z0-9]{0,61}[a-zA-Z0-9] | KnownCVEs.py:80:128:83:138 | [a-zA-Z0-9] | 2 |
+| KnownCVEs.py:80:162:83:182 | xn--[a-zA-Z0-9]{2,30} | KnownCVEs.py:80:162:83:162 | x | 0 |
+| KnownCVEs.py:80:162:83:182 | xn--[a-zA-Z0-9]{2,30} | KnownCVEs.py:80:163:83:163 | n | 1 |
+| KnownCVEs.py:80:162:83:182 | xn--[a-zA-Z0-9]{2,30} | KnownCVEs.py:80:164:83:164 | - | 2 |
+| KnownCVEs.py:80:162:83:182 | xn--[a-zA-Z0-9]{2,30} | KnownCVEs.py:80:165:83:165 | - | 3 |
+| KnownCVEs.py:80:162:83:182 | xn--[a-zA-Z0-9]{2,30} | KnownCVEs.py:80:166:83:182 | [a-zA-Z0-9]{2,30} | 4 |
 | redos.py:6:23:6:46 | ^\\b_((?:__\|[\\s\\S])+?)_\\b | redos.py:6:23:6:23 | ^ | 0 |
 | redos.py:6:23:6:46 | ^\\b_((?:__\|[\\s\\S])+?)_\\b | redos.py:6:24:6:25 | \\b | 1 |
 | redos.py:6:23:6:46 | ^\\b_((?:__\|[\\s\\S])+?)_\\b | redos.py:6:26:6:26 | _ | 2 |
 | redos.py:6:23:6:46 | ^\\b_((?:__\|[\\s\\S])+?)_\\b | redos.py:6:27:6:43 | ((?:__\|[\\s\\S])+?) | 3 |
 | redos.py:6:23:6:46 | ^\\b_((?:__\|[\\s\\S])+?)_\\b | redos.py:6:44:6:44 | _ | 4 |
 | redos.py:6:23:6:46 | ^\\b_((?:__\|[\\s\\S])+?)_\\b | redos.py:6:45:6:46 | \\b | 5 |
+| redos.py:6:31:6:32 | __ | redos.py:6:31:6:31 | _ | 0 |
+| redos.py:6:31:6:32 | __ | redos.py:6:32:6:32 | _ | 1 |
 | redos.py:6:48:6:77 | ^\\*((?:\\*\\*\|[\\s\\S])+?)\\*(?!\\*) | redos.py:6:48:6:48 | ^ | 0 |
 | redos.py:6:48:6:77 | ^\\*((?:\\*\\*\|[\\s\\S])+?)\\*(?!\\*) | redos.py:6:49:6:50 | \\* | 1 |
 | redos.py:6:48:6:77 | ^\\*((?:\\*\\*\|[\\s\\S])+?)\\*(?!\\*) | redos.py:6:51:6:69 | ((?:\\*\\*\|[\\s\\S])+?) | 2 |
@@ -18,6 +197,8 @@ seqChild
 | redos.py:11:24:11:45 | ^\\b_((?:__\|[^_])+?)_\\b | redos.py:11:28:11:42 | ((?:__\|[^_])+?) | 3 |
 | redos.py:11:24:11:45 | ^\\b_((?:__\|[^_])+?)_\\b | redos.py:11:43:11:43 | _ | 4 |
 | redos.py:11:24:11:45 | ^\\b_((?:__\|[^_])+?)_\\b | redos.py:11:44:11:45 | \\b | 5 |
+| redos.py:11:32:11:33 | __ | redos.py:11:32:11:32 | _ | 0 |
+| redos.py:11:32:11:33 | __ | redos.py:11:33:11:33 | _ | 1 |
 | redos.py:11:47:11:74 | ^\\*((?:\\*\\*\|[^*])+?)\\*(?!\\*) | redos.py:11:47:11:47 | ^ | 0 |
 | redos.py:11:47:11:74 | ^\\*((?:\\*\\*\|[^*])+?)\\*(?!\\*) | redos.py:11:48:11:49 | \\* | 1 |
 | redos.py:11:47:11:74 | ^\\*((?:\\*\\*\|[^*])+?)\\*(?!\\*) | redos.py:11:50:11:66 | ((?:\\*\\*\|[^*])+?) | 2 |
@@ -196,14 +377,10 @@ seqChild
 | redos.py:82:24:82:31 | (.\|\\n)*! | redos.py:82:31:82:31 | ! | 1 |
 | redos.py:85:24:85:31 | (.\|\\n)*! | redos.py:85:24:85:30 | (.\|\\n)* | 0 |
 | redos.py:85:24:85:31 | (.\|\\n)*! | redos.py:85:31:85:31 | ! | 1 |
-| redos.py:91:35:91:43 | (a\|aa?)*b | redos.py:91:35:91:42 | (a\|aa?)* | 0 |
-| redos.py:91:35:91:43 | (a\|aa?)*b | redos.py:91:43:91:43 | b | 1 |
-| redos.py:91:38:91:40 | aa? | redos.py:91:38:91:38 | a | 0 |
-| redos.py:91:38:91:40 | aa? | redos.py:91:39:91:40 | a? | 1 |
-| redos.py:94:24:94:32 | (a\|aa?)*b | redos.py:94:24:94:31 | (a\|aa?)* | 0 |
-| redos.py:94:24:94:32 | (a\|aa?)*b | redos.py:94:32:94:32 | b | 1 |
-| redos.py:94:27:94:29 | aa? | redos.py:94:27:94:27 | a | 0 |
-| redos.py:94:27:94:29 | aa? | redos.py:94:28:94:29 | a? | 1 |
+| redos.py:91:24:91:32 | (a\|aa?)*b | redos.py:91:24:91:31 | (a\|aa?)* | 0 |
+| redos.py:91:24:91:32 | (a\|aa?)*b | redos.py:91:32:91:32 | b | 1 |
+| redos.py:91:27:91:29 | aa? | redos.py:91:27:91:27 | a | 0 |
+| redos.py:91:27:91:29 | aa? | redos.py:91:28:91:29 | a? | 1 |
 | redos.py:97:24:97:40 | (([\\s\\S]\|[^a])*)" | redos.py:97:24:97:39 | (([\\s\\S]\|[^a])*) | 0 |
 | redos.py:97:24:97:40 | (([\\s\\S]\|[^a])*)" | redos.py:97:40:97:40 | " | 1 |
 | redos.py:103:24:103:35 | ((.\|[^a])*)" | redos.py:103:24:103:34 | ((.\|[^a])*) | 0 |
@@ -265,6 +442,8 @@ seqChild
 | redos.py:166:24:166:36 | ((\\S\|[\\w])*)" | redos.py:166:36:166:36 | " | 1 |
 | redos.py:169:24:169:39 | ((1s\|[\\da-z])*)" | redos.py:169:24:169:38 | ((1s\|[\\da-z])*) | 0 |
 | redos.py:169:24:169:39 | ((1s\|[\\da-z])*)" | redos.py:169:39:169:39 | " | 1 |
+| redos.py:169:26:169:27 | 1s | redos.py:169:26:169:26 | 1 | 0 |
+| redos.py:169:26:169:27 | 1s | redos.py:169:27:169:27 | s | 1 |
 | redos.py:172:24:172:35 | ((0\|[\\d])*)" | redos.py:172:24:172:34 | ((0\|[\\d])*) | 0 |
 | redos.py:172:24:172:35 | ((0\|[\\d])*)" | redos.py:172:35:172:35 | " | 1 |
 | redos.py:175:24:175:34 | (([\\d]+)*)" | redos.py:175:24:175:33 | (([\\d]+)*) | 0 |
@@ -327,14 +506,24 @@ seqChild
 | redos.py:202:27:202:30 | a+a? | redos.py:202:27:202:28 | a+ | 0 |
 | redos.py:202:27:202:30 | a+a? | redos.py:202:29:202:30 | a? | 1 |
 | redos.py:205:24:205:32 | (a+)+bbbb | redos.py:205:24:205:28 | (a+)+ | 0 |
-| redos.py:205:24:205:32 | (a+)+bbbb | redos.py:205:29:205:32 | bbbb | 1 |
+| redos.py:205:24:205:32 | (a+)+bbbb | redos.py:205:29:205:29 | b | 1 |
+| redos.py:205:24:205:32 | (a+)+bbbb | redos.py:205:30:205:30 | b | 2 |
+| redos.py:205:24:205:32 | (a+)+bbbb | redos.py:205:31:205:31 | b | 3 |
+| redos.py:205:24:205:32 | (a+)+bbbb | redos.py:205:32:205:32 | b | 4 |
 | redos.py:208:25:208:37 | (a+)+aaaaa*a+ | redos.py:208:25:208:29 | (a+)+ | 0 |
-| redos.py:208:25:208:37 | (a+)+aaaaa*a+ | redos.py:208:30:208:33 | aaaa | 1 |
-| redos.py:208:25:208:37 | (a+)+aaaaa*a+ | redos.py:208:34:208:35 | a* | 2 |
-| redos.py:208:25:208:37 | (a+)+aaaaa*a+ | redos.py:208:36:208:37 | a+ | 3 |
+| redos.py:208:25:208:37 | (a+)+aaaaa*a+ | redos.py:208:30:208:30 | a | 1 |
+| redos.py:208:25:208:37 | (a+)+aaaaa*a+ | redos.py:208:31:208:31 | a | 2 |
+| redos.py:208:25:208:37 | (a+)+aaaaa*a+ | redos.py:208:32:208:32 | a | 3 |
+| redos.py:208:25:208:37 | (a+)+aaaaa*a+ | redos.py:208:33:208:33 | a | 4 |
+| redos.py:208:25:208:37 | (a+)+aaaaa*a+ | redos.py:208:34:208:35 | a* | 5 |
+| redos.py:208:25:208:37 | (a+)+aaaaa*a+ | redos.py:208:36:208:37 | a+ | 6 |
 | redos.py:211:24:211:34 | (a+)+aaaaa$ | redos.py:211:24:211:28 | (a+)+ | 0 |
-| redos.py:211:24:211:34 | (a+)+aaaaa$ | redos.py:211:29:211:33 | aaaaa | 1 |
-| redos.py:211:24:211:34 | (a+)+aaaaa$ | redos.py:211:34:211:34 | $ | 2 |
+| redos.py:211:24:211:34 | (a+)+aaaaa$ | redos.py:211:29:211:29 | a | 1 |
+| redos.py:211:24:211:34 | (a+)+aaaaa$ | redos.py:211:30:211:30 | a | 2 |
+| redos.py:211:24:211:34 | (a+)+aaaaa$ | redos.py:211:31:211:31 | a | 3 |
+| redos.py:211:24:211:34 | (a+)+aaaaa$ | redos.py:211:32:211:32 | a | 4 |
+| redos.py:211:24:211:34 | (a+)+aaaaa$ | redos.py:211:33:211:33 | a | 5 |
+| redos.py:211:24:211:34 | (a+)+aaaaa$ | redos.py:211:34:211:34 | $ | 6 |
 | redos.py:214:25:214:34 | (\\n+)+\\n\\n | redos.py:214:25:214:30 | (\\n+)+ | 0 |
 | redos.py:214:25:214:34 | (\\n+)+\\n\\n | redos.py:214:31:214:32 | \\n | 1 |
 | redos.py:214:25:214:34 | (\\n+)+\\n\\n | redos.py:214:33:214:34 | \\n | 2 |
@@ -361,13 +550,33 @@ seqChild
 | redos.py:229:38:229:42 | [^X]c | redos.py:229:38:229:41 | [^X] | 0 |
 | redos.py:229:38:229:42 | [^X]c | redos.py:229:42:229:42 | c | 1 |
 | redos.py:232:25:232:38 | ((ab)+)*ababab | redos.py:232:25:232:32 | ((ab)+)* | 0 |
-| redos.py:232:25:232:38 | ((ab)+)*ababab | redos.py:232:33:232:38 | ababab | 1 |
+| redos.py:232:25:232:38 | ((ab)+)*ababab | redos.py:232:33:232:33 | a | 1 |
+| redos.py:232:25:232:38 | ((ab)+)*ababab | redos.py:232:34:232:34 | b | 2 |
+| redos.py:232:25:232:38 | ((ab)+)*ababab | redos.py:232:35:232:35 | a | 3 |
+| redos.py:232:25:232:38 | ((ab)+)*ababab | redos.py:232:36:232:36 | b | 4 |
+| redos.py:232:25:232:38 | ((ab)+)*ababab | redos.py:232:37:232:37 | a | 5 |
+| redos.py:232:25:232:38 | ((ab)+)*ababab | redos.py:232:38:232:38 | b | 6 |
+| redos.py:232:27:232:28 | ab | redos.py:232:27:232:27 | a | 0 |
+| redos.py:232:27:232:28 | ab | redos.py:232:28:232:28 | b | 1 |
 | redos.py:235:25:235:46 | ((ab)+)*abab(ab)*(ab)+ | redos.py:235:25:235:32 | ((ab)+)* | 0 |
-| redos.py:235:25:235:46 | ((ab)+)*abab(ab)*(ab)+ | redos.py:235:33:235:36 | abab | 1 |
-| redos.py:235:25:235:46 | ((ab)+)*abab(ab)*(ab)+ | redos.py:235:37:235:41 | (ab)* | 2 |
-| redos.py:235:25:235:46 | ((ab)+)*abab(ab)*(ab)+ | redos.py:235:42:235:46 | (ab)+ | 3 |
+| redos.py:235:25:235:46 | ((ab)+)*abab(ab)*(ab)+ | redos.py:235:33:235:33 | a | 1 |
+| redos.py:235:25:235:46 | ((ab)+)*abab(ab)*(ab)+ | redos.py:235:34:235:34 | b | 2 |
+| redos.py:235:25:235:46 | ((ab)+)*abab(ab)*(ab)+ | redos.py:235:35:235:35 | a | 3 |
+| redos.py:235:25:235:46 | ((ab)+)*abab(ab)*(ab)+ | redos.py:235:36:235:36 | b | 4 |
+| redos.py:235:25:235:46 | ((ab)+)*abab(ab)*(ab)+ | redos.py:235:37:235:41 | (ab)* | 5 |
+| redos.py:235:25:235:46 | ((ab)+)*abab(ab)*(ab)+ | redos.py:235:42:235:46 | (ab)+ | 6 |
+| redos.py:235:27:235:28 | ab | redos.py:235:27:235:27 | a | 0 |
+| redos.py:235:27:235:28 | ab | redos.py:235:28:235:28 | b | 1 |
+| redos.py:235:38:235:39 | ab | redos.py:235:38:235:38 | a | 0 |
+| redos.py:235:38:235:39 | ab | redos.py:235:39:235:39 | b | 1 |
+| redos.py:235:43:235:44 | ab | redos.py:235:43:235:43 | a | 0 |
+| redos.py:235:43:235:44 | ab | redos.py:235:44:235:44 | b | 1 |
+| redos.py:238:27:238:28 | ab | redos.py:238:27:238:27 | a | 0 |
+| redos.py:238:27:238:28 | ab | redos.py:238:28:238:28 | b | 1 |
 | redos.py:241:24:241:32 | ((ab)+)*$ | redos.py:241:24:241:31 | ((ab)+)* | 0 |
 | redos.py:241:24:241:32 | ((ab)+)*$ | redos.py:241:32:241:32 | $ | 1 |
+| redos.py:241:26:241:27 | ab | redos.py:241:26:241:26 | a | 0 |
+| redos.py:241:26:241:27 | ab | redos.py:241:27:241:27 | b | 1 |
 | redos.py:244:25:244:56 | ((ab)+)*[a1][b1][a2][b2][a3][b3] | redos.py:244:25:244:32 | ((ab)+)* | 0 |
 | redos.py:244:25:244:56 | ((ab)+)*[a1][b1][a2][b2][a3][b3] | redos.py:244:33:244:36 | [a1] | 1 |
 | redos.py:244:25:244:56 | ((ab)+)*[a1][b1][a2][b2][a3][b3] | redos.py:244:37:244:40 | [b1] | 2 |
@@ -375,6 +584,8 @@ seqChild
 | redos.py:244:25:244:56 | ((ab)+)*[a1][b1][a2][b2][a3][b3] | redos.py:244:45:244:48 | [b2] | 4 |
 | redos.py:244:25:244:56 | ((ab)+)*[a1][b1][a2][b2][a3][b3] | redos.py:244:49:244:52 | [a3] | 5 |
 | redos.py:244:25:244:56 | ((ab)+)*[a1][b1][a2][b2][a3][b3] | redos.py:244:53:244:56 | [b3] | 6 |
+| redos.py:244:27:244:28 | ab | redos.py:244:27:244:27 | a | 0 |
+| redos.py:244:27:244:28 | ab | redos.py:244:28:244:28 | b | 1 |
 | redos.py:247:24:247:36 | ([\\n\\s]+)*(.) | redos.py:247:24:247:33 | ([\\n\\s]+)* | 0 |
 | redos.py:247:24:247:36 | ([\\n\\s]+)*(.) | redos.py:247:34:247:36 | (.) | 1 |
 | redos.py:250:26:250:30 | A*A*X | redos.py:250:26:250:27 | A* | 0 |
@@ -383,37 +594,341 @@ seqChild
 | redos.py:256:24:256:102 | (\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w*)+- | redos.py:256:24:256:101 | (\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w*)+ | 0 |
 | redos.py:256:24:256:102 | (\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w*)+- | redos.py:256:102:256:102 | - | 1 |
 | redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:25:256:27 | \\w* | 0 |
-| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:28:256:36 | foobarbaz | 1 |
-| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:37:256:39 | \\w* | 2 |
-| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:40:256:48 | foobarbaz | 3 |
-| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:49:256:51 | \\w* | 4 |
-| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:52:256:60 | foobarbaz | 5 |
-| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:61:256:63 | \\w* | 6 |
-| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:64:256:72 | foobarbaz | 7 |
-| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:73:256:75 | \\s* | 8 |
-| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:76:256:84 | foobarbaz | 9 |
-| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:85:256:87 | \\d* | 10 |
-| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:88:256:96 | foobarbaz | 11 |
-| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:97:256:99 | \\w* | 12 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:28:256:28 | f | 1 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:29:256:29 | o | 2 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:30:256:30 | o | 3 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:31:256:31 | b | 4 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:32:256:32 | a | 5 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:33:256:33 | r | 6 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:34:256:34 | b | 7 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:35:256:35 | a | 8 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:36:256:36 | z | 9 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:37:256:39 | \\w* | 10 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:40:256:40 | f | 11 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:41:256:41 | o | 12 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:42:256:42 | o | 13 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:43:256:43 | b | 14 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:44:256:44 | a | 15 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:45:256:45 | r | 16 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:46:256:46 | b | 17 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:47:256:47 | a | 18 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:48:256:48 | z | 19 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:49:256:51 | \\w* | 20 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:52:256:52 | f | 21 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:53:256:53 | o | 22 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:54:256:54 | o | 23 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:55:256:55 | b | 24 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:56:256:56 | a | 25 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:57:256:57 | r | 26 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:58:256:58 | b | 27 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:59:256:59 | a | 28 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:60:256:60 | z | 29 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:61:256:63 | \\w* | 30 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:64:256:64 | f | 31 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:65:256:65 | o | 32 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:66:256:66 | o | 33 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:67:256:67 | b | 34 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:68:256:68 | a | 35 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:69:256:69 | r | 36 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:70:256:70 | b | 37 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:71:256:71 | a | 38 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:72:256:72 | z | 39 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:73:256:75 | \\s* | 40 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:76:256:76 | f | 41 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:77:256:77 | o | 42 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:78:256:78 | o | 43 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:79:256:79 | b | 44 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:80:256:80 | a | 45 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:81:256:81 | r | 46 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:82:256:82 | b | 47 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:83:256:83 | a | 48 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:84:256:84 | z | 49 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:85:256:87 | \\d* | 50 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:88:256:88 | f | 51 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:89:256:89 | o | 52 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:90:256:90 | o | 53 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:91:256:91 | b | 54 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:92:256:92 | a | 55 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:93:256:93 | r | 56 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:94:256:94 | b | 57 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:95:256:95 | a | 58 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:96:256:96 | z | 59 |
+| redos.py:256:25:256:99 | \\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\w*foobarbaz\\s*foobarbaz\\d*foobarbaz\\w* | redos.py:256:97:256:99 | \\w* | 60 |
 | redos.py:259:24:259:127 | (.thisisagoddamnlongstringforstresstestingthequery\|\\sthisisagoddamnlongstringforstresstestingthequery)*- | redos.py:259:24:259:126 | (.thisisagoddamnlongstringforstresstestingthequery\|\\sthisisagoddamnlongstringforstresstestingthequery)* | 0 |
 | redos.py:259:24:259:127 | (.thisisagoddamnlongstringforstresstestingthequery\|\\sthisisagoddamnlongstringforstresstestingthequery)*- | redos.py:259:127:259:127 | - | 1 |
 | redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:25:259:25 | . | 0 |
-| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:26:259:73 | thisisagoddamnlongstringforstresstestingthequery | 1 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:26:259:26 | t | 1 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:27:259:27 | h | 2 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:28:259:28 | i | 3 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:29:259:29 | s | 4 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:30:259:30 | i | 5 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:31:259:31 | s | 6 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:32:259:32 | a | 7 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:33:259:33 | g | 8 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:34:259:34 | o | 9 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:35:259:35 | d | 10 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:36:259:36 | d | 11 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:37:259:37 | a | 12 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:38:259:38 | m | 13 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:39:259:39 | n | 14 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:40:259:40 | l | 15 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:41:259:41 | o | 16 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:42:259:42 | n | 17 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:43:259:43 | g | 18 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:44:259:44 | s | 19 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:45:259:45 | t | 20 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:46:259:46 | r | 21 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:47:259:47 | i | 22 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:48:259:48 | n | 23 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:49:259:49 | g | 24 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:50:259:50 | f | 25 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:51:259:51 | o | 26 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:52:259:52 | r | 27 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:53:259:53 | s | 28 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:54:259:54 | t | 29 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:55:259:55 | r | 30 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:56:259:56 | e | 31 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:57:259:57 | s | 32 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:58:259:58 | s | 33 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:59:259:59 | t | 34 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:60:259:60 | e | 35 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:61:259:61 | s | 36 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:62:259:62 | t | 37 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:63:259:63 | i | 38 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:64:259:64 | n | 39 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:65:259:65 | g | 40 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:66:259:66 | t | 41 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:67:259:67 | h | 42 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:68:259:68 | e | 43 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:69:259:69 | q | 44 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:70:259:70 | u | 45 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:71:259:71 | e | 46 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:72:259:72 | r | 47 |
+| redos.py:259:25:259:73 | .thisisagoddamnlongstringforstresstestingthequery | redos.py:259:73:259:73 | y | 48 |
 | redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:75:259:76 | \\s | 0 |
-| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:77:259:124 | thisisagoddamnlongstringforstresstestingthequery | 1 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:77:259:77 | t | 1 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:78:259:78 | h | 2 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:79:259:79 | i | 3 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:80:259:80 | s | 4 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:81:259:81 | i | 5 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:82:259:82 | s | 6 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:83:259:83 | a | 7 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:84:259:84 | g | 8 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:85:259:85 | o | 9 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:86:259:86 | d | 10 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:87:259:87 | d | 11 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:88:259:88 | a | 12 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:89:259:89 | m | 13 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:90:259:90 | n | 14 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:91:259:91 | l | 15 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:92:259:92 | o | 16 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:93:259:93 | n | 17 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:94:259:94 | g | 18 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:95:259:95 | s | 19 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:96:259:96 | t | 20 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:97:259:97 | r | 21 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:98:259:98 | i | 22 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:99:259:99 | n | 23 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:100:259:100 | g | 24 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:101:259:101 | f | 25 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:102:259:102 | o | 26 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:103:259:103 | r | 27 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:104:259:104 | s | 28 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:105:259:105 | t | 29 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:106:259:106 | r | 30 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:107:259:107 | e | 31 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:108:259:108 | s | 32 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:109:259:109 | s | 33 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:110:259:110 | t | 34 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:111:259:111 | e | 35 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:112:259:112 | s | 36 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:113:259:113 | t | 37 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:114:259:114 | i | 38 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:115:259:115 | n | 39 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:116:259:116 | g | 40 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:117:259:117 | t | 41 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:118:259:118 | h | 42 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:119:259:119 | e | 43 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:120:259:120 | q | 44 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:121:259:121 | u | 45 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:122:259:122 | e | 46 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:123:259:123 | r | 47 |
+| redos.py:259:75:259:124 | \\sthisisagoddamnlongstringforstresstestingthequery | redos.py:259:124:259:124 | y | 48 |
 | redos.py:262:24:262:88 | (thisisagoddamnlongstringforstresstestingthequery\|this\\w+query)*- | redos.py:262:24:262:87 | (thisisagoddamnlongstringforstresstestingthequery\|this\\w+query)* | 0 |
 | redos.py:262:24:262:88 | (thisisagoddamnlongstringforstresstestingthequery\|this\\w+query)*- | redos.py:262:88:262:88 | - | 1 |
-| redos.py:262:74:262:85 | this\\w+query | redos.py:262:74:262:77 | this | 0 |
-| redos.py:262:74:262:85 | this\\w+query | redos.py:262:78:262:80 | \\w+ | 1 |
-| redos.py:262:74:262:85 | this\\w+query | redos.py:262:81:262:85 | query | 2 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:25:262:25 | t | 0 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:26:262:26 | h | 1 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:27:262:27 | i | 2 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:28:262:28 | s | 3 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:29:262:29 | i | 4 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:30:262:30 | s | 5 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:31:262:31 | a | 6 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:32:262:32 | g | 7 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:33:262:33 | o | 8 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:34:262:34 | d | 9 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:35:262:35 | d | 10 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:36:262:36 | a | 11 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:37:262:37 | m | 12 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:38:262:38 | n | 13 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:39:262:39 | l | 14 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:40:262:40 | o | 15 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:41:262:41 | n | 16 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:42:262:42 | g | 17 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:43:262:43 | s | 18 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:44:262:44 | t | 19 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:45:262:45 | r | 20 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:46:262:46 | i | 21 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:47:262:47 | n | 22 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:48:262:48 | g | 23 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:49:262:49 | f | 24 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:50:262:50 | o | 25 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:51:262:51 | r | 26 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:52:262:52 | s | 27 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:53:262:53 | t | 28 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:54:262:54 | r | 29 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:55:262:55 | e | 30 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:56:262:56 | s | 31 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:57:262:57 | s | 32 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:58:262:58 | t | 33 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:59:262:59 | e | 34 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:60:262:60 | s | 35 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:61:262:61 | t | 36 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:62:262:62 | i | 37 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:63:262:63 | n | 38 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:64:262:64 | g | 39 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:65:262:65 | t | 40 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:66:262:66 | h | 41 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:67:262:67 | e | 42 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:68:262:68 | q | 43 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:69:262:69 | u | 44 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:70:262:70 | e | 45 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:71:262:71 | r | 46 |
+| redos.py:262:25:262:72 | thisisagoddamnlongstringforstresstestingthequery | redos.py:262:72:262:72 | y | 47 |
+| redos.py:262:74:262:85 | this\\w+query | redos.py:262:74:262:74 | t | 0 |
+| redos.py:262:74:262:85 | this\\w+query | redos.py:262:75:262:75 | h | 1 |
+| redos.py:262:74:262:85 | this\\w+query | redos.py:262:76:262:76 | i | 2 |
+| redos.py:262:74:262:85 | this\\w+query | redos.py:262:77:262:77 | s | 3 |
+| redos.py:262:74:262:85 | this\\w+query | redos.py:262:78:262:80 | \\w+ | 4 |
+| redos.py:262:74:262:85 | this\\w+query | redos.py:262:81:262:81 | q | 5 |
+| redos.py:262:74:262:85 | this\\w+query | redos.py:262:82:262:82 | u | 6 |
+| redos.py:262:74:262:85 | this\\w+query | redos.py:262:83:262:83 | e | 7 |
+| redos.py:262:74:262:85 | this\\w+query | redos.py:262:84:262:84 | r | 8 |
+| redos.py:262:74:262:85 | this\\w+query | redos.py:262:85:262:85 | y | 9 |
 | redos.py:265:25:265:128 | (thisisagoddamnlongstringforstresstestingthequery\|imanotherbutunrelatedstringcomparedtotheotherstring)*- | redos.py:265:25:265:127 | (thisisagoddamnlongstringforstresstestingthequery\|imanotherbutunrelatedstringcomparedtotheotherstring)* | 0 |
 | redos.py:265:25:265:128 | (thisisagoddamnlongstringforstresstestingthequery\|imanotherbutunrelatedstringcomparedtotheotherstring)*- | redos.py:265:128:265:128 | - | 1 |
-| redos.py:268:25:268:62 | foo([\\uDC66\\uDC67]\|[\\uDC68\\uDC69])*foo | redos.py:268:25:268:27 | foo | 0 |
-| redos.py:268:25:268:62 | foo([\\uDC66\\uDC67]\|[\\uDC68\\uDC69])*foo | redos.py:268:28:268:59 | ([\\uDC66\\uDC67]\|[\\uDC68\\uDC69])* | 1 |
-| redos.py:268:25:268:62 | foo([\\uDC66\\uDC67]\|[\\uDC68\\uDC69])*foo | redos.py:268:60:268:62 | foo | 2 |
-| redos.py:271:25:271:64 | foo((\\uDC66\|\\uDC67)\|(\\uDC68\|\\uDC69))*foo | redos.py:271:25:271:27 | foo | 0 |
-| redos.py:271:25:271:64 | foo((\\uDC66\|\\uDC67)\|(\\uDC68\|\\uDC69))*foo | redos.py:271:28:271:61 | ((\\uDC66\|\\uDC67)\|(\\uDC68\|\\uDC69))* | 1 |
-| redos.py:271:25:271:64 | foo((\\uDC66\|\\uDC67)\|(\\uDC68\|\\uDC69))*foo | redos.py:271:62:271:64 | foo | 2 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:26:265:26 | t | 0 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:27:265:27 | h | 1 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:28:265:28 | i | 2 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:29:265:29 | s | 3 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:30:265:30 | i | 4 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:31:265:31 | s | 5 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:32:265:32 | a | 6 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:33:265:33 | g | 7 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:34:265:34 | o | 8 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:35:265:35 | d | 9 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:36:265:36 | d | 10 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:37:265:37 | a | 11 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:38:265:38 | m | 12 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:39:265:39 | n | 13 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:40:265:40 | l | 14 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:41:265:41 | o | 15 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:42:265:42 | n | 16 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:43:265:43 | g | 17 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:44:265:44 | s | 18 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:45:265:45 | t | 19 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:46:265:46 | r | 20 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:47:265:47 | i | 21 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:48:265:48 | n | 22 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:49:265:49 | g | 23 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:50:265:50 | f | 24 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:51:265:51 | o | 25 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:52:265:52 | r | 26 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:53:265:53 | s | 27 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:54:265:54 | t | 28 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:55:265:55 | r | 29 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:56:265:56 | e | 30 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:57:265:57 | s | 31 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:58:265:58 | s | 32 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:59:265:59 | t | 33 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:60:265:60 | e | 34 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:61:265:61 | s | 35 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:62:265:62 | t | 36 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:63:265:63 | i | 37 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:64:265:64 | n | 38 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:65:265:65 | g | 39 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:66:265:66 | t | 40 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:67:265:67 | h | 41 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:68:265:68 | e | 42 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:69:265:69 | q | 43 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:70:265:70 | u | 44 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:71:265:71 | e | 45 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:72:265:72 | r | 46 |
+| redos.py:265:26:265:73 | thisisagoddamnlongstringforstresstestingthequery | redos.py:265:73:265:73 | y | 47 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:75:265:75 | i | 0 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:76:265:76 | m | 1 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:77:265:77 | a | 2 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:78:265:78 | n | 3 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:79:265:79 | o | 4 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:80:265:80 | t | 5 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:81:265:81 | h | 6 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:82:265:82 | e | 7 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:83:265:83 | r | 8 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:84:265:84 | b | 9 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:85:265:85 | u | 10 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:86:265:86 | t | 11 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:87:265:87 | u | 12 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:88:265:88 | n | 13 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:89:265:89 | r | 14 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:90:265:90 | e | 15 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:91:265:91 | l | 16 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:92:265:92 | a | 17 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:93:265:93 | t | 18 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:94:265:94 | e | 19 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:95:265:95 | d | 20 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:96:265:96 | s | 21 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:97:265:97 | t | 22 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:98:265:98 | r | 23 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:99:265:99 | i | 24 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:100:265:100 | n | 25 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:101:265:101 | g | 26 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:102:265:102 | c | 27 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:103:265:103 | o | 28 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:104:265:104 | m | 29 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:105:265:105 | p | 30 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:106:265:106 | a | 31 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:107:265:107 | r | 32 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:108:265:108 | e | 33 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:109:265:109 | d | 34 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:110:265:110 | t | 35 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:111:265:111 | o | 36 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:112:265:112 | t | 37 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:113:265:113 | h | 38 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:114:265:114 | e | 39 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:115:265:115 | o | 40 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:116:265:116 | t | 41 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:117:265:117 | h | 42 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:118:265:118 | e | 43 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:119:265:119 | r | 44 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:120:265:120 | s | 45 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:121:265:121 | t | 46 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:122:265:122 | r | 47 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:123:265:123 | i | 48 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:124:265:124 | n | 49 |
+| redos.py:265:75:265:125 | imanotherbutunrelatedstringcomparedtotheotherstring | redos.py:265:125:265:125 | g | 50 |
+| redos.py:268:25:268:62 | foo([\\uDC66\\uDC67]\|[\\uDC68\\uDC69])*foo | redos.py:268:25:268:25 | f | 0 |
+| redos.py:268:25:268:62 | foo([\\uDC66\\uDC67]\|[\\uDC68\\uDC69])*foo | redos.py:268:26:268:26 | o | 1 |
+| redos.py:268:25:268:62 | foo([\\uDC66\\uDC67]\|[\\uDC68\\uDC69])*foo | redos.py:268:27:268:27 | o | 2 |
+| redos.py:268:25:268:62 | foo([\\uDC66\\uDC67]\|[\\uDC68\\uDC69])*foo | redos.py:268:28:268:59 | ([\\uDC66\\uDC67]\|[\\uDC68\\uDC69])* | 3 |
+| redos.py:268:25:268:62 | foo([\\uDC66\\uDC67]\|[\\uDC68\\uDC69])*foo | redos.py:268:60:268:60 | f | 4 |
+| redos.py:268:25:268:62 | foo([\\uDC66\\uDC67]\|[\\uDC68\\uDC69])*foo | redos.py:268:61:268:61 | o | 5 |
+| redos.py:268:25:268:62 | foo([\\uDC66\\uDC67]\|[\\uDC68\\uDC69])*foo | redos.py:268:62:268:62 | o | 6 |
+| redos.py:271:25:271:64 | foo((\\uDC66\|\\uDC67)\|(\\uDC68\|\\uDC69))*foo | redos.py:271:25:271:25 | f | 0 |
+| redos.py:271:25:271:64 | foo((\\uDC66\|\\uDC67)\|(\\uDC68\|\\uDC69))*foo | redos.py:271:26:271:26 | o | 1 |
+| redos.py:271:25:271:64 | foo((\\uDC66\|\\uDC67)\|(\\uDC68\|\\uDC69))*foo | redos.py:271:27:271:27 | o | 2 |
+| redos.py:271:25:271:64 | foo((\\uDC66\|\\uDC67)\|(\\uDC68\|\\uDC69))*foo | redos.py:271:28:271:61 | ((\\uDC66\|\\uDC67)\|(\\uDC68\|\\uDC69))* | 3 |
+| redos.py:271:25:271:64 | foo((\\uDC66\|\\uDC67)\|(\\uDC68\|\\uDC69))*foo | redos.py:271:62:271:62 | f | 4 |
+| redos.py:271:25:271:64 | foo((\\uDC66\|\\uDC67)\|(\\uDC68\|\\uDC69))*foo | redos.py:271:63:271:63 | o | 5 |
+| redos.py:271:25:271:64 | foo((\\uDC66\|\\uDC67)\|(\\uDC68\|\\uDC69))*foo | redos.py:271:64:271:64 | o | 6 |
 | redos.py:274:24:274:35 | a{2,3}(b+)+X | redos.py:274:24:274:29 | a{2,3} | 0 |
 | redos.py:274:24:274:35 | a{2,3}(b+)+X | redos.py:274:30:274:34 | (b+)+ | 1 |
 | redos.py:274:24:274:35 | a{2,3}(b+)+X | redos.py:274:35:274:35 | X | 2 |
@@ -475,9 +990,10 @@ seqChild
 | redos.py:301:24:301:104 | (^\|;)(0\|1)(0\|1)(0\|1)(0\|1)(0\|1)(0\|1)(0\|1)(0\|1)(0\|1)(0\|1)(0\|1)(0\|1)(0\|1)(0\|1)(e+)+f | redos.py:301:99:301:103 | (e+)+ | 15 |
 | redos.py:301:24:301:104 | (^\|;)(0\|1)(0\|1)(0\|1)(0\|1)(0\|1)(0\|1)(0\|1)(0\|1)(0\|1)(0\|1)(0\|1)(0\|1)(0\|1)(0\|1)(e+)+f | redos.py:301:104:301:104 | f | 16 |
 | redos.py:304:24:304:32 | ^ab(c+)+$ | redos.py:304:24:304:24 | ^ | 0 |
-| redos.py:304:24:304:32 | ^ab(c+)+$ | redos.py:304:25:304:26 | ab | 1 |
-| redos.py:304:24:304:32 | ^ab(c+)+$ | redos.py:304:27:304:31 | (c+)+ | 2 |
-| redos.py:304:24:304:32 | ^ab(c+)+$ | redos.py:304:32:304:32 | $ | 3 |
+| redos.py:304:24:304:32 | ^ab(c+)+$ | redos.py:304:25:304:25 | a | 1 |
+| redos.py:304:24:304:32 | ^ab(c+)+$ | redos.py:304:26:304:26 | b | 2 |
+| redos.py:304:24:304:32 | ^ab(c+)+$ | redos.py:304:27:304:31 | (c+)+ | 3 |
+| redos.py:304:24:304:32 | ^ab(c+)+$ | redos.py:304:32:304:32 | $ | 4 |
 | redos.py:307:25:307:32 | \\d(\\s+)* | redos.py:307:25:307:26 | \\d | 0 |
 | redos.py:307:25:307:32 | \\d(\\s+)* | redos.py:307:27:307:32 | (\\s+)* | 1 |
 | redos.py:310:25:310:48 | (([^/]\|X)+)(\\/[\\s\\S]*)*$ | redos.py:310:25:310:35 | (([^/]\|X)+) | 0 |
@@ -493,11 +1009,17 @@ seqChild
 | redos.py:313:28:313:36 | x([^Y]+)? | redos.py:313:29:313:36 | ([^Y]+)? | 1 |
 | redos.py:316:24:316:29 | (a*)+b | redos.py:316:24:316:28 | (a*)+ | 0 |
 | redos.py:316:24:316:29 | (a*)+b | redos.py:316:29:316:29 | b | 1 |
-| redos.py:319:24:319:38 | foo([\\w-]*)+bar | redos.py:319:24:319:26 | foo | 0 |
-| redos.py:319:24:319:38 | foo([\\w-]*)+bar | redos.py:319:27:319:35 | ([\\w-]*)+ | 1 |
-| redos.py:319:24:319:38 | foo([\\w-]*)+bar | redos.py:319:36:319:38 | bar | 2 |
+| redos.py:319:24:319:38 | foo([\\w-]*)+bar | redos.py:319:24:319:24 | f | 0 |
+| redos.py:319:24:319:38 | foo([\\w-]*)+bar | redos.py:319:25:319:25 | o | 1 |
+| redos.py:319:24:319:38 | foo([\\w-]*)+bar | redos.py:319:26:319:26 | o | 2 |
+| redos.py:319:24:319:38 | foo([\\w-]*)+bar | redos.py:319:27:319:35 | ([\\w-]*)+ | 3 |
+| redos.py:319:24:319:38 | foo([\\w-]*)+bar | redos.py:319:36:319:36 | b | 4 |
+| redos.py:319:24:319:38 | foo([\\w-]*)+bar | redos.py:319:37:319:37 | a | 5 |
+| redos.py:319:24:319:38 | foo([\\w-]*)+bar | redos.py:319:38:319:38 | r | 6 |
 | redos.py:322:24:322:32 | ((ab)*)+c | redos.py:322:24:322:31 | ((ab)*)+ | 0 |
 | redos.py:322:24:322:32 | ((ab)*)+c | redos.py:322:32:322:32 | c | 1 |
+| redos.py:322:26:322:27 | ab | redos.py:322:26:322:26 | a | 0 |
+| redos.py:322:26:322:27 | ab | redos.py:322:27:322:27 | b | 1 |
 | redos.py:325:24:325:31 | (a?a?)*b | redos.py:325:24:325:30 | (a?a?)* | 0 |
 | redos.py:325:24:325:31 | (a?a?)*b | redos.py:325:31:325:31 | b | 1 |
 | redos.py:325:25:325:28 | a?a? | redos.py:325:25:325:26 | a? | 0 |
@@ -514,9 +1036,11 @@ seqChild
 | redos.py:337:24:337:31 | (a?b?)*$ | redos.py:337:31:337:31 | $ | 1 |
 | redos.py:337:25:337:28 | a?b? | redos.py:337:25:337:26 | a? | 0 |
 | redos.py:337:25:337:28 | a?b? | redos.py:337:27:337:28 | b? | 1 |
-| redos.py:340:24:340:69 | PRE(([a-c]\|[c-d])T(e?e?e?e?\|X))+(cTcT\|cTXcTX$) | redos.py:340:24:340:26 | PRE | 0 |
-| redos.py:340:24:340:69 | PRE(([a-c]\|[c-d])T(e?e?e?e?\|X))+(cTcT\|cTXcTX$) | redos.py:340:27:340:55 | (([a-c]\|[c-d])T(e?e?e?e?\|X))+ | 1 |
-| redos.py:340:24:340:69 | PRE(([a-c]\|[c-d])T(e?e?e?e?\|X))+(cTcT\|cTXcTX$) | redos.py:340:56:340:69 | (cTcT\|cTXcTX$) | 2 |
+| redos.py:340:24:340:69 | PRE(([a-c]\|[c-d])T(e?e?e?e?\|X))+(cTcT\|cTXcTX$) | redos.py:340:24:340:24 | P | 0 |
+| redos.py:340:24:340:69 | PRE(([a-c]\|[c-d])T(e?e?e?e?\|X))+(cTcT\|cTXcTX$) | redos.py:340:25:340:25 | R | 1 |
+| redos.py:340:24:340:69 | PRE(([a-c]\|[c-d])T(e?e?e?e?\|X))+(cTcT\|cTXcTX$) | redos.py:340:26:340:26 | E | 2 |
+| redos.py:340:24:340:69 | PRE(([a-c]\|[c-d])T(e?e?e?e?\|X))+(cTcT\|cTXcTX$) | redos.py:340:27:340:55 | (([a-c]\|[c-d])T(e?e?e?e?\|X))+ | 3 |
+| redos.py:340:24:340:69 | PRE(([a-c]\|[c-d])T(e?e?e?e?\|X))+(cTcT\|cTXcTX$) | redos.py:340:56:340:69 | (cTcT\|cTXcTX$) | 4 |
 | redos.py:340:28:340:53 | ([a-c]\|[c-d])T(e?e?e?e?\|X) | redos.py:340:28:340:40 | ([a-c]\|[c-d]) | 0 |
 | redos.py:340:28:340:53 | ([a-c]\|[c-d])T(e?e?e?e?\|X) | redos.py:340:41:340:41 | T | 1 |
 | redos.py:340:28:340:53 | ([a-c]\|[c-d])T(e?e?e?e?\|X) | redos.py:340:42:340:53 | (e?e?e?e?\|X) | 2 |
@@ -524,8 +1048,17 @@ seqChild
 | redos.py:340:43:340:50 | e?e?e?e? | redos.py:340:45:340:46 | e? | 1 |
 | redos.py:340:43:340:50 | e?e?e?e? | redos.py:340:47:340:48 | e? | 2 |
 | redos.py:340:43:340:50 | e?e?e?e? | redos.py:340:49:340:50 | e? | 3 |
-| redos.py:340:62:340:68 | cTXcTX$ | redos.py:340:62:340:67 | cTXcTX | 0 |
-| redos.py:340:62:340:68 | cTXcTX$ | redos.py:340:68:340:68 | $ | 1 |
+| redos.py:340:57:340:60 | cTcT | redos.py:340:57:340:57 | c | 0 |
+| redos.py:340:57:340:60 | cTcT | redos.py:340:58:340:58 | T | 1 |
+| redos.py:340:57:340:60 | cTcT | redos.py:340:59:340:59 | c | 2 |
+| redos.py:340:57:340:60 | cTcT | redos.py:340:60:340:60 | T | 3 |
+| redos.py:340:62:340:68 | cTXcTX$ | redos.py:340:62:340:62 | c | 0 |
+| redos.py:340:62:340:68 | cTXcTX$ | redos.py:340:63:340:63 | T | 1 |
+| redos.py:340:62:340:68 | cTXcTX$ | redos.py:340:64:340:64 | X | 2 |
+| redos.py:340:62:340:68 | cTXcTX$ | redos.py:340:65:340:65 | c | 3 |
+| redos.py:340:62:340:68 | cTXcTX$ | redos.py:340:66:340:66 | T | 4 |
+| redos.py:340:62:340:68 | cTXcTX$ | redos.py:340:67:340:67 | X | 5 |
+| redos.py:340:62:340:68 | cTXcTX$ | redos.py:340:68:340:68 | $ | 6 |
 | redos.py:343:24:343:34 | ^((a)+\\w)+$ | redos.py:343:24:343:24 | ^ | 0 |
 | redos.py:343:24:343:34 | ^((a)+\\w)+$ | redos.py:343:25:343:33 | ((a)+\\w)+ | 1 |
 | redos.py:343:24:343:34 | ^((a)+\\w)+$ | redos.py:343:34:343:34 | $ | 2 |
@@ -553,7 +1086,7 @@ seqChild
 | redos.py:362:24:362:42 | ^((?:a{\|-)\|\\w\\{)+X$ | redos.py:362:41:362:41 | X | 2 |
 | redos.py:362:24:362:42 | ^((?:a{\|-)\|\\w\\{)+X$ | redos.py:362:42:362:42 | $ | 3 |
 | redos.py:362:29:362:30 | a{ | redos.py:362:29:362:29 | a | 0 |
-| redos.py:362:29:362:30 | a{ | redos.py:362:29:362:30 | a{ | 1 |
+| redos.py:362:29:362:30 | a{ | redos.py:362:30:362:30 | { | 1 |
 | redos.py:362:35:362:38 | \\w\\{ | redos.py:362:35:362:36 | \\w | 0 |
 | redos.py:362:35:362:38 | \\w\\{ | redos.py:362:37:362:38 | \\{ | 1 |
 | redos.py:363:24:363:45 | ^((?:a{0\|-)\|\\w\\{\\d)+X$ | redos.py:363:24:363:24 | ^ | 0 |
@@ -561,7 +1094,8 @@ seqChild
 | redos.py:363:24:363:45 | ^((?:a{0\|-)\|\\w\\{\\d)+X$ | redos.py:363:44:363:44 | X | 2 |
 | redos.py:363:24:363:45 | ^((?:a{0\|-)\|\\w\\{\\d)+X$ | redos.py:363:45:363:45 | $ | 3 |
 | redos.py:363:29:363:31 | a{0 | redos.py:363:29:363:29 | a | 0 |
-| redos.py:363:29:363:31 | a{0 | redos.py:363:29:363:31 | a{0 | 1 |
+| redos.py:363:29:363:31 | a{0 | redos.py:363:30:363:30 | { | 1 |
+| redos.py:363:29:363:31 | a{0 | redos.py:363:31:363:31 | 0 | 2 |
 | redos.py:363:36:363:41 | \\w\\{\\d | redos.py:363:36:363:37 | \\w | 0 |
 | redos.py:363:36:363:41 | \\w\\{\\d | redos.py:363:38:363:39 | \\{ | 1 |
 | redos.py:363:36:363:41 | \\w\\{\\d | redos.py:363:40:363:41 | \\d | 2 |
@@ -570,7 +1104,9 @@ seqChild
 | redos.py:364:24:364:47 | ^((?:a{0,\|-)\|\\w\\{\\d,)+X$ | redos.py:364:46:364:46 | X | 2 |
 | redos.py:364:24:364:47 | ^((?:a{0,\|-)\|\\w\\{\\d,)+X$ | redos.py:364:47:364:47 | $ | 3 |
 | redos.py:364:29:364:32 | a{0, | redos.py:364:29:364:29 | a | 0 |
-| redos.py:364:29:364:32 | a{0, | redos.py:364:29:364:32 | a{0, | 1 |
+| redos.py:364:29:364:32 | a{0, | redos.py:364:30:364:30 | { | 1 |
+| redos.py:364:29:364:32 | a{0, | redos.py:364:31:364:31 | 0 | 2 |
+| redos.py:364:29:364:32 | a{0, | redos.py:364:32:364:32 | , | 3 |
 | redos.py:364:37:364:43 | \\w\\{\\d, | redos.py:364:37:364:38 | \\w | 0 |
 | redos.py:364:37:364:43 | \\w\\{\\d, | redos.py:364:39:364:40 | \\{ | 1 |
 | redos.py:364:37:364:43 | \\w\\{\\d, | redos.py:364:41:364:42 | \\d | 2 |
@@ -580,7 +1116,10 @@ seqChild
 | redos.py:365:24:365:50 | ^((?:a{0,2\|-)\|\\w\\{\\d,\\d)+X$ | redos.py:365:49:365:49 | X | 2 |
 | redos.py:365:24:365:50 | ^((?:a{0,2\|-)\|\\w\\{\\d,\\d)+X$ | redos.py:365:50:365:50 | $ | 3 |
 | redos.py:365:29:365:33 | a{0,2 | redos.py:365:29:365:29 | a | 0 |
-| redos.py:365:29:365:33 | a{0,2 | redos.py:365:29:365:33 | a{0,2 | 1 |
+| redos.py:365:29:365:33 | a{0,2 | redos.py:365:30:365:30 | { | 1 |
+| redos.py:365:29:365:33 | a{0,2 | redos.py:365:31:365:31 | 0 | 2 |
+| redos.py:365:29:365:33 | a{0,2 | redos.py:365:32:365:32 | , | 3 |
+| redos.py:365:29:365:33 | a{0,2 | redos.py:365:33:365:33 | 2 | 4 |
 | redos.py:365:38:365:46 | \\w\\{\\d,\\d | redos.py:365:38:365:39 | \\w | 0 |
 | redos.py:365:38:365:46 | \\w\\{\\d,\\d | redos.py:365:40:365:41 | \\{ | 1 |
 | redos.py:365:38:365:46 | \\w\\{\\d,\\d | redos.py:365:42:365:43 | \\d | 2 |
@@ -596,7 +1135,33 @@ seqChild
 | redos.py:368:40:368:50 | \\w\\{\\d,\\d\\} | redos.py:368:46:368:46 | , | 3 |
 | redos.py:368:40:368:50 | \\w\\{\\d,\\d\\} | redos.py:368:47:368:48 | \\d | 4 |
 | redos.py:368:40:368:50 | \\w\\{\\d,\\d\\} | redos.py:368:49:368:50 | \\} | 5 |
+| unittests.py:4:16:4:28 | X([^\\.]\|\\.)*$ | unittests.py:4:16:4:16 | X | 0 |
+| unittests.py:4:16:4:28 | X([^\\.]\|\\.)*$ | unittests.py:4:17:4:27 | ([^\\.]\|\\.)* | 1 |
+| unittests.py:4:16:4:28 | X([^\\.]\|\\.)*$ | unittests.py:4:28:4:28 | $ | 2 |
+| unittests.py:5:16:5:24 | X(\u00c6\|\\\u00c6)+$ | unittests.py:5:16:5:16 | X | 0 |
+| unittests.py:5:16:5:24 | X(\u00c6\|\\\u00c6)+$ | unittests.py:5:17:5:23 | (\u00c6\|\\\u00c6)+ | 1 |
+| unittests.py:5:16:5:24 | X(\u00c6\|\\\u00c6)+$ | unittests.py:5:24:5:24 | $ | 2 |
+| unittests.py:8:16:8:25 | (?:.\|\\n)*b | unittests.py:8:16:8:24 | (?:.\|\\n)* | 0 |
+| unittests.py:8:16:8:25 | (?:.\|\\n)*b | unittests.py:8:25:8:25 | b | 1 |
+| unittests.py:9:16:9:25 | (?:.\|\\n)*b | unittests.py:9:16:9:24 | (?:.\|\\n)* | 0 |
+| unittests.py:9:16:9:25 | (?:.\|\\n)*b | unittests.py:9:25:9:25 | b | 1 |
 orChild
+| KnownCVEs.py:16:25:16:28 | .\|\\n | KnownCVEs.py:16:25:16:25 | . | 0 |
+| KnownCVEs.py:16:25:16:28 | .\|\\n | KnownCVEs.py:16:27:16:28 | \\n | 1 |
+| KnownCVEs.py:22:21:22:34 | evoque\|overlay | KnownCVEs.py:22:21:22:26 | evoque | 0 |
+| KnownCVEs.py:22:21:22:34 | evoque\|overlay | KnownCVEs.py:22:28:22:34 | overlay | 1 |
+| KnownCVEs.py:35:19:35:79 | [-/:,#%.'"\\s!\\w]\|\\w-\\w\|'[\\s\\w]+'\\s*\|"[\\s\\w]+"\|\\([\\d,%\\.\\s]+\\) | KnownCVEs.py:35:19:35:34 | [-/:,#%.'"\\s!\\w] | 0 |
+| KnownCVEs.py:35:19:35:79 | [-/:,#%.'"\\s!\\w]\|\\w-\\w\|'[\\s\\w]+'\\s*\|"[\\s\\w]+"\|\\([\\d,%\\.\\s]+\\) | KnownCVEs.py:35:36:35:40 | \\w-\\w | 1 |
+| KnownCVEs.py:35:19:35:79 | [-/:,#%.'"\\s!\\w]\|\\w-\\w\|'[\\s\\w]+'\\s*\|"[\\s\\w]+"\|\\([\\d,%\\.\\s]+\\) | KnownCVEs.py:35:42:35:53 | '[\\s\\w]+'\\s* | 2 |
+| KnownCVEs.py:35:19:35:79 | [-/:,#%.'"\\s!\\w]\|\\w-\\w\|'[\\s\\w]+'\\s*\|"[\\s\\w]+"\|\\([\\d,%\\.\\s]+\\) | KnownCVEs.py:35:55:35:63 | "[\\s\\w]+" | 3 |
+| KnownCVEs.py:35:19:35:79 | [-/:,#%.'"\\s!\\w]\|\\w-\\w\|'[\\s\\w]+'\\s*\|"[\\s\\w]+"\|\\([\\d,%\\.\\s]+\\) | KnownCVEs.py:35:65:35:79 | \\([\\d,%\\.\\s]+\\) | 4 |
+| KnownCVEs.py:80:14:83:139 | ([a-zA-Z]{1})\|([a-zA-Z]{1}[a-zA-Z]{1})\|([a-zA-Z]{1}[0-9]{1})\|([0-9]{1}[a-zA-Z]{1})\|([a-zA-Z0-9][-_a-zA-Z0-9]{0,61}[a-zA-Z0-9]) | KnownCVEs.py:80:14:83:26 | ([a-zA-Z]{1}) | 0 |
+| KnownCVEs.py:80:14:83:139 | ([a-zA-Z]{1})\|([a-zA-Z]{1}[a-zA-Z]{1})\|([a-zA-Z]{1}[0-9]{1})\|([0-9]{1}[a-zA-Z]{1})\|([a-zA-Z0-9][-_a-zA-Z0-9]{0,61}[a-zA-Z0-9]) | KnownCVEs.py:80:28:83:51 | ([a-zA-Z]{1}[a-zA-Z]{1}) | 1 |
+| KnownCVEs.py:80:14:83:139 | ([a-zA-Z]{1})\|([a-zA-Z]{1}[a-zA-Z]{1})\|([a-zA-Z]{1}[0-9]{1})\|([0-9]{1}[a-zA-Z]{1})\|([a-zA-Z0-9][-_a-zA-Z0-9]{0,61}[a-zA-Z0-9]) | KnownCVEs.py:80:53:83:73 | ([a-zA-Z]{1}[0-9]{1}) | 2 |
+| KnownCVEs.py:80:14:83:139 | ([a-zA-Z]{1})\|([a-zA-Z]{1}[a-zA-Z]{1})\|([a-zA-Z]{1}[0-9]{1})\|([0-9]{1}[a-zA-Z]{1})\|([a-zA-Z0-9][-_a-zA-Z0-9]{0,61}[a-zA-Z0-9]) | KnownCVEs.py:80:75:83:95 | ([0-9]{1}[a-zA-Z]{1}) | 3 |
+| KnownCVEs.py:80:14:83:139 | ([a-zA-Z]{1})\|([a-zA-Z]{1}[a-zA-Z]{1})\|([a-zA-Z]{1}[0-9]{1})\|([0-9]{1}[a-zA-Z]{1})\|([a-zA-Z0-9][-_a-zA-Z0-9]{0,61}[a-zA-Z0-9]) | KnownCVEs.py:80:97:83:139 | ([a-zA-Z0-9][-_a-zA-Z0-9]{0,61}[a-zA-Z0-9]) | 4 |
+| KnownCVEs.py:80:146:83:183 | [a-zA-Z]{2,13}\|(xn--[a-zA-Z0-9]{2,30}) | KnownCVEs.py:80:146:83:159 | [a-zA-Z]{2,13} | 0 |
+| KnownCVEs.py:80:146:83:183 | [a-zA-Z]{2,13}\|(xn--[a-zA-Z0-9]{2,30}) | KnownCVEs.py:80:161:83:183 | (xn--[a-zA-Z0-9]{2,30}) | 1 |
 | redos.py:6:23:6:77 | ^\\b_((?:__\|[\\s\\S])+?)_\\b\|^\\*((?:\\*\\*\|[\\s\\S])+?)\\*(?!\\*) | redos.py:6:23:6:46 | ^\\b_((?:__\|[\\s\\S])+?)_\\b | 0 |
 | redos.py:6:23:6:77 | ^\\b_((?:__\|[\\s\\S])+?)_\\b\|^\\*((?:\\*\\*\|[\\s\\S])+?)\\*(?!\\*) | redos.py:6:48:6:77 | ^\\*((?:\\*\\*\|[\\s\\S])+?)\\*(?!\\*) | 1 |
 | redos.py:6:31:6:39 | __\|[\\s\\S] | redos.py:6:31:6:32 | __ | 0 |
@@ -660,10 +1225,8 @@ orChild
 | redos.py:82:25:82:28 | .\|\\n | redos.py:82:27:82:28 | \\n | 1 |
 | redos.py:85:25:85:28 | .\|\\n | redos.py:85:25:85:25 | . | 0 |
 | redos.py:85:25:85:28 | .\|\\n | redos.py:85:27:85:28 | \\n | 1 |
-| redos.py:91:36:91:40 | a\|aa? | redos.py:91:36:91:36 | a | 0 |
-| redos.py:91:36:91:40 | a\|aa? | redos.py:91:38:91:40 | aa? | 1 |
-| redos.py:94:25:94:29 | a\|aa? | redos.py:94:25:94:25 | a | 0 |
-| redos.py:94:25:94:29 | a\|aa? | redos.py:94:27:94:29 | aa? | 1 |
+| redos.py:91:25:91:29 | a\|aa? | redos.py:91:25:91:25 | a | 0 |
+| redos.py:91:25:91:29 | a\|aa? | redos.py:91:27:91:29 | aa? | 1 |
 | redos.py:97:26:97:36 | [\\s\\S]\|[^a] | redos.py:97:26:97:31 | [\\s\\S] | 0 |
 | redos.py:97:26:97:36 | [\\s\\S]\|[^a] | redos.py:97:33:97:36 | [^a] | 1 |
 | redos.py:103:26:103:31 | .\|[^a] | redos.py:103:26:103:26 | . | 0 |
@@ -826,7 +1389,93 @@ orChild
 | redos.py:368:27:368:50 | (?:a{0,2}\|-)\|\\w\\{\\d,\\d\\} | redos.py:368:40:368:50 | \\w\\{\\d,\\d\\} | 1 |
 | redos.py:368:30:368:37 | a{0,2}\|- | redos.py:368:30:368:35 | a{0,2} | 0 |
 | redos.py:368:30:368:37 | a{0,2}\|- | redos.py:368:37:368:37 | - | 1 |
+| unittests.py:4:18:4:25 | [^\\.]\|\\. | unittests.py:4:18:4:22 | [^\\.] | 0 |
+| unittests.py:4:18:4:25 | [^\\.]\|\\. | unittests.py:4:24:4:25 | \\. | 1 |
+| unittests.py:5:18:5:21 | \u00c6\|\\\u00c6 | unittests.py:5:18:5:18 | \u00c6 | 0 |
+| unittests.py:5:18:5:21 | \u00c6\|\\\u00c6 | unittests.py:5:20:5:21 | \\\u00c6 | 1 |
+| unittests.py:8:19:8:22 | .\|\\n | unittests.py:8:19:8:19 | . | 0 |
+| unittests.py:8:19:8:22 | .\|\\n | unittests.py:8:21:8:22 | \\n | 1 |
+| unittests.py:9:19:9:22 | .\|\\n | unittests.py:9:19:9:19 | . | 0 |
+| unittests.py:9:19:9:22 | .\|\\n | unittests.py:9:21:9:22 | \\n | 1 |
 quantifierChild
+| KnownCVEs.py:5:28:5:30 | \\s* | KnownCVEs.py:5:28:5:29 | \\s | 0 |
+| KnownCVEs.py:5:32:5:34 | \\d+ | KnownCVEs.py:5:32:5:33 | \\d | 0 |
+| KnownCVEs.py:5:36:5:38 | \\s* | KnownCVEs.py:5:36:5:37 | \\s | 0 |
+| KnownCVEs.py:5:40:5:42 | \\S+ | KnownCVEs.py:5:40:5:41 | \\S | 0 |
+| KnownCVEs.py:5:46:5:47 | .* | KnownCVEs.py:5:46:5:46 | . | 0 |
+| KnownCVEs.py:15:16:15:20 | [+-]? | KnownCVEs.py:15:16:15:19 | [+-] | 0 |
+| KnownCVEs.py:15:21:15:26 | (\\d+)* | KnownCVEs.py:15:21:15:25 | (\\d+) | 0 |
+| KnownCVEs.py:15:22:15:24 | \\d+ | KnownCVEs.py:15:22:15:23 | \\d | 0 |
+| KnownCVEs.py:15:29:15:31 | \\d+ | KnownCVEs.py:15:29:15:30 | \\d | 0 |
+| KnownCVEs.py:15:32:15:33 | %? | KnownCVEs.py:15:32:15:32 | % | 0 |
+| KnownCVEs.py:16:19:16:21 | \\s+ | KnownCVEs.py:16:19:16:20 | \\s | 0 |
+| KnownCVEs.py:16:22:16:31 | (?:.\|\\n)*? | KnownCVEs.py:16:22:16:29 | (?:.\|\\n) | 0 |
+| KnownCVEs.py:16:32:16:34 | \\s+ | KnownCVEs.py:16:32:16:33 | \\s | 0 |
+| KnownCVEs.py:17:19:17:21 | \\s+ | KnownCVEs.py:17:19:17:20 | \\s | 0 |
+| KnownCVEs.py:17:24:17:26 | \\S+ | KnownCVEs.py:17:24:17:25 | \\S | 0 |
+| KnownCVEs.py:17:29:17:31 | \\s+ | KnownCVEs.py:17:29:17:30 | \\s | 0 |
+| KnownCVEs.py:17:32:17:36 | [^}]+ | KnownCVEs.py:17:32:17:35 | [^}] | 0 |
+| KnownCVEs.py:17:37:17:39 | \\s+ | KnownCVEs.py:17:37:17:38 | \\s | 0 |
+| KnownCVEs.py:18:17:18:18 | .* | KnownCVEs.py:18:17:18:17 | . | 0 |
+| KnownCVEs.py:18:21:18:22 | .* | KnownCVEs.py:18:21:18:21 | . | 0 |
+| KnownCVEs.py:18:25:18:26 | .* | KnownCVEs.py:18:25:18:25 | . | 0 |
+| KnownCVEs.py:19:17:19:19 | \\s* | KnownCVEs.py:19:17:19:18 | \\s | 0 |
+| KnownCVEs.py:19:21:19:42 | (?:(.+)(\\s*)(=)(\\s*))? | KnownCVEs.py:19:21:19:41 | (?:(.+)(\\s*)(=)(\\s*)) | 0 |
+| KnownCVEs.py:19:25:19:26 | .+ | KnownCVEs.py:19:25:19:25 | . | 0 |
+| KnownCVEs.py:19:29:19:31 | \\s* | KnownCVEs.py:19:29:19:30 | \\s | 0 |
+| KnownCVEs.py:19:37:19:39 | \\s* | KnownCVEs.py:19:37:19:38 | \\s | 0 |
+| KnownCVEs.py:19:44:19:45 | .+ | KnownCVEs.py:19:44:19:44 | . | 0 |
+| KnownCVEs.py:19:52:19:53 | .* | KnownCVEs.py:19:52:19:52 | . | 0 |
+| KnownCVEs.py:19:60:19:62 | \\s* | KnownCVEs.py:19:60:19:61 | \\s | 0 |
+| KnownCVEs.py:20:26:20:28 | \\s* | KnownCVEs.py:20:26:20:27 | \\s | 0 |
+| KnownCVEs.py:20:31:20:33 | \\s* | KnownCVEs.py:20:31:20:32 | \\s | 0 |
+| KnownCVEs.py:20:36:20:38 | \\w+ | KnownCVEs.py:20:36:20:37 | \\w | 0 |
+| KnownCVEs.py:20:41:20:43 | \\s* | KnownCVEs.py:20:41:20:42 | \\s | 0 |
+| KnownCVEs.py:20:45:20:47 | \\s* | KnownCVEs.py:20:45:20:46 | \\s | 0 |
+| KnownCVEs.py:20:50:20:52 | .*? | KnownCVEs.py:20:50:20:50 | . | 0 |
+| KnownCVEs.py:20:55:20:57 | \\s* | KnownCVEs.py:20:55:20:56 | \\s | 0 |
+| KnownCVEs.py:20:60:20:62 | \\s* | KnownCVEs.py:20:60:20:61 | \\s | 0 |
+| KnownCVEs.py:21:23:21:25 | \\s* | KnownCVEs.py:21:23:21:24 | \\s | 0 |
+| KnownCVEs.py:21:32:21:34 | \\s* | KnownCVEs.py:21:32:21:33 | \\s | 0 |
+| KnownCVEs.py:21:35:21:37 | .*? | KnownCVEs.py:21:35:21:35 | . | 0 |
+| KnownCVEs.py:21:38:21:40 | \\s* | KnownCVEs.py:21:38:21:39 | \\s | 0 |
+| KnownCVEs.py:22:39:22:42 | (%)? | KnownCVEs.py:22:39:22:41 | (%) | 0 |
+| KnownCVEs.py:22:44:22:70 | (\\s*[#\\w\\-"\\'.]+[^=,%}]+?)? | KnownCVEs.py:22:44:22:69 | (\\s*[#\\w\\-"\\'.]+[^=,%}]+?) | 0 |
+| KnownCVEs.py:22:45:22:47 | \\s* | KnownCVEs.py:22:45:22:46 | \\s | 0 |
+| KnownCVEs.py:22:48:22:59 | [#\\w\\-"\\'.]+ | KnownCVEs.py:22:48:22:58 | [#\\w\\-"\\'.] | 0 |
+| KnownCVEs.py:22:60:22:68 | [^=,%}]+? | KnownCVEs.py:22:60:22:66 | [^=,%}] | 0 |
+| KnownCVEs.py:23:19:23:21 | \\w+ | KnownCVEs.py:23:19:23:20 | \\w | 0 |
+| KnownCVEs.py:23:26:23:28 | \\s* | KnownCVEs.py:23:26:23:27 | \\s | 0 |
+| KnownCVEs.py:23:30:23:32 | \\s* | KnownCVEs.py:23:30:23:31 | \\s | 0 |
+| KnownCVEs.py:23:35:23:39 | [^;]* | KnownCVEs.py:23:35:23:38 | [^;] | 0 |
+| KnownCVEs.py:23:42:23:44 | \\s* | KnownCVEs.py:23:42:23:43 | \\s | 0 |
+| KnownCVEs.py:27:35:27:37 | \\S+ | KnownCVEs.py:27:35:27:36 | \\S | 0 |
+| KnownCVEs.py:27:39:27:53 | [a-zA-Z0-9._-]+ | KnownCVEs.py:27:39:27:52 | [a-zA-Z0-9._-] | 0 |
+| KnownCVEs.py:27:56:27:70 | [a-zA-Z0-9._-]+ | KnownCVEs.py:27:56:27:69 | [a-zA-Z0-9._-] | 0 |
+| KnownCVEs.py:30:21:31:28 | (?:.*,)* | KnownCVEs.py:30:21:31:27 | (?:.*,) | 0 |
+| KnownCVEs.py:30:24:31:25 | .* | KnownCVEs.py:30:24:31:24 | . | 0 |
+| KnownCVEs.py:30:29:31:33 | [ \t]* | KnownCVEs.py:30:29:31:32 | [ \t] | 0 |
+| KnownCVEs.py:30:35:31:40 | [^ \t]+ | KnownCVEs.py:30:35:31:39 | [^ \t] | 0 |
+| KnownCVEs.py:30:42:31:46 | [ \t]+ | KnownCVEs.py:30:42:31:45 | [ \t] | 0 |
+| KnownCVEs.py:30:54:31:58 | ["']? | KnownCVEs.py:30:54:31:57 | ["'] | 0 |
+| KnownCVEs.py:30:61:31:66 | [^"']* | KnownCVEs.py:30:61:31:65 | [^"'] | 0 |
+| KnownCVEs.py:35:18:35:81 | ([-/:,#%.'"\\s!\\w]\|\\w-\\w\|'[\\s\\w]+'\\s*\|"[\\s\\w]+"\|\\([\\d,%\\.\\s]+\\))* | KnownCVEs.py:35:18:35:80 | ([-/:,#%.'"\\s!\\w]\|\\w-\\w\|'[\\s\\w]+'\\s*\|"[\\s\\w]+"\|\\([\\d,%\\.\\s]+\\)) | 0 |
+| KnownCVEs.py:35:43:35:49 | [\\s\\w]+ | KnownCVEs.py:35:43:35:48 | [\\s\\w] | 0 |
+| KnownCVEs.py:35:51:35:53 | \\s* | KnownCVEs.py:35:51:35:52 | \\s | 0 |
+| KnownCVEs.py:35:56:35:62 | [\\s\\w]+ | KnownCVEs.py:35:56:35:61 | [\\s\\w] | 0 |
+| KnownCVEs.py:35:67:35:77 | [\\d,%\\.\\s]+ | KnownCVEs.py:35:67:35:76 | [\\d,%\\.\\s] | 0 |
+| KnownCVEs.py:80:10:83:144 | (:?(([a-zA-Z]{1})\|([a-zA-Z]{1}[a-zA-Z]{1})\|([a-zA-Z]{1}[0-9]{1})\|([0-9]{1}[a-zA-Z]{1})\|([a-zA-Z0-9][-_a-zA-Z0-9]{0,61}[a-zA-Z0-9]))\\.)+ | KnownCVEs.py:80:10:83:143 | (:?(([a-zA-Z]{1})\|([a-zA-Z]{1}[a-zA-Z]{1})\|([a-zA-Z]{1}[0-9]{1})\|([0-9]{1}[a-zA-Z]{1})\|([a-zA-Z0-9][-_a-zA-Z0-9]{0,61}[a-zA-Z0-9]))\\.) | 0 |
+| KnownCVEs.py:80:11:83:12 | :? | KnownCVEs.py:80:11:83:11 | : | 0 |
+| KnownCVEs.py:80:15:83:25 | [a-zA-Z]{1} | KnownCVEs.py:80:15:83:22 | [a-zA-Z] | 0 |
+| KnownCVEs.py:80:29:83:39 | [a-zA-Z]{1} | KnownCVEs.py:80:29:83:36 | [a-zA-Z] | 0 |
+| KnownCVEs.py:80:40:83:50 | [a-zA-Z]{1} | KnownCVEs.py:80:40:83:47 | [a-zA-Z] | 0 |
+| KnownCVEs.py:80:54:83:64 | [a-zA-Z]{1} | KnownCVEs.py:80:54:83:61 | [a-zA-Z] | 0 |
+| KnownCVEs.py:80:65:83:72 | [0-9]{1} | KnownCVEs.py:80:65:83:69 | [0-9] | 0 |
+| KnownCVEs.py:80:76:83:83 | [0-9]{1} | KnownCVEs.py:80:76:83:80 | [0-9] | 0 |
+| KnownCVEs.py:80:84:83:94 | [a-zA-Z]{1} | KnownCVEs.py:80:84:83:91 | [a-zA-Z] | 0 |
+| KnownCVEs.py:80:109:83:127 | [-_a-zA-Z0-9]{0,61} | KnownCVEs.py:80:109:83:121 | [-_a-zA-Z0-9] | 0 |
+| KnownCVEs.py:80:146:83:159 | [a-zA-Z]{2,13} | KnownCVEs.py:80:146:83:153 | [a-zA-Z] | 0 |
+| KnownCVEs.py:80:166:83:182 | [a-zA-Z0-9]{2,30} | KnownCVEs.py:80:166:83:176 | [a-zA-Z0-9] | 0 |
 | redos.py:6:28:6:42 | (?:__\|[\\s\\S])+? | redos.py:6:28:6:40 | (?:__\|[\\s\\S]) | 0 |
 | redos.py:6:52:6:68 | (?:\\*\\*\|[\\s\\S])+? | redos.py:6:52:6:66 | (?:\\*\\*\|[\\s\\S]) | 0 |
 | redos.py:11:29:11:41 | (?:__\|[^_])+? | redos.py:11:29:11:39 | (?:__\|[^_]) | 0 |
@@ -912,10 +1561,8 @@ quantifierChild
 | redos.py:85:24:85:30 | (.\|\\n)* | redos.py:85:24:85:29 | (.\|\\n) | 0 |
 | redos.py:88:24:88:32 | ([\\w.]+)* | redos.py:88:24:88:31 | ([\\w.]+) | 0 |
 | redos.py:88:25:88:30 | [\\w.]+ | redos.py:88:25:88:29 | [\\w.] | 0 |
-| redos.py:91:35:91:42 | (a\|aa?)* | redos.py:91:35:91:41 | (a\|aa?) | 0 |
-| redos.py:91:39:91:40 | a? | redos.py:91:39:91:39 | a | 0 |
-| redos.py:94:24:94:31 | (a\|aa?)* | redos.py:94:24:94:30 | (a\|aa?) | 0 |
-| redos.py:94:28:94:29 | a? | redos.py:94:28:94:28 | a | 0 |
+| redos.py:91:24:91:31 | (a\|aa?)* | redos.py:91:24:91:30 | (a\|aa?) | 0 |
+| redos.py:91:28:91:29 | a? | redos.py:91:28:91:28 | a | 0 |
 | redos.py:97:25:97:38 | ([\\s\\S]\|[^a])* | redos.py:97:25:97:37 | ([\\s\\S]\|[^a]) | 0 |
 | redos.py:100:25:100:33 | ([^"']+)* | redos.py:100:25:100:32 | ([^"']+) | 0 |
 | redos.py:100:26:100:31 | [^"']+ | redos.py:100:26:100:30 | [^"'] | 0 |
@@ -1134,7 +1781,96 @@ quantifierChild
 | redos.py:365:25:365:48 | ((?:a{0,2\|-)\|\\w\\{\\d,\\d)+ | redos.py:365:25:365:47 | ((?:a{0,2\|-)\|\\w\\{\\d,\\d) | 0 |
 | redos.py:368:26:368:52 | ((?:a{0,2}\|-)\|\\w\\{\\d,\\d\\})+ | redos.py:368:26:368:51 | ((?:a{0,2}\|-)\|\\w\\{\\d,\\d\\}) | 0 |
 | redos.py:368:30:368:35 | a{0,2} | redos.py:368:30:368:30 | a | 0 |
+| unittests.py:4:17:4:27 | ([^\\.]\|\\.)* | unittests.py:4:17:4:26 | ([^\\.]\|\\.) | 0 |
+| unittests.py:5:17:5:23 | (\u00c6\|\\\u00c6)+ | unittests.py:5:17:5:22 | (\u00c6\|\\\u00c6) | 0 |
+| unittests.py:8:16:8:24 | (?:.\|\\n)* | unittests.py:8:16:8:23 | (?:.\|\\n) | 0 |
+| unittests.py:9:16:9:24 | (?:.\|\\n)* | unittests.py:9:16:9:23 | (?:.\|\\n) | 0 |
 classChild
+| KnownCVEs.py:15:16:15:19 | [+-] | KnownCVEs.py:15:17:15:17 | + | 0 | false | false |
+| KnownCVEs.py:15:16:15:19 | [+-] | KnownCVEs.py:15:18:15:18 | - | 1 | false | false |
+| KnownCVEs.py:17:32:17:35 | [^}] | KnownCVEs.py:17:34:17:34 | } | 0 | true | false |
+| KnownCVEs.py:22:48:22:58 | [#\\w\\-"\\'.] | KnownCVEs.py:22:49:22:49 | # | 0 | false | false |
+| KnownCVEs.py:22:48:22:58 | [#\\w\\-"\\'.] | KnownCVEs.py:22:50:22:51 | \\w | 1 | false | false |
+| KnownCVEs.py:22:48:22:58 | [#\\w\\-"\\'.] | KnownCVEs.py:22:52:22:53 | \\- | 2 | false | false |
+| KnownCVEs.py:22:48:22:58 | [#\\w\\-"\\'.] | KnownCVEs.py:22:54:22:54 | " | 3 | false | false |
+| KnownCVEs.py:22:48:22:58 | [#\\w\\-"\\'.] | KnownCVEs.py:22:55:22:56 | \\' | 4 | false | false |
+| KnownCVEs.py:22:48:22:58 | [#\\w\\-"\\'.] | KnownCVEs.py:22:57:22:57 | . | 5 | false | false |
+| KnownCVEs.py:22:60:22:66 | [^=,%}] | KnownCVEs.py:22:62:22:62 | = | 0 | true | false |
+| KnownCVEs.py:22:60:22:66 | [^=,%}] | KnownCVEs.py:22:63:22:63 | , | 1 | true | false |
+| KnownCVEs.py:22:60:22:66 | [^=,%}] | KnownCVEs.py:22:64:22:64 | % | 2 | true | false |
+| KnownCVEs.py:22:60:22:66 | [^=,%}] | KnownCVEs.py:22:65:22:65 | } | 3 | true | false |
+| KnownCVEs.py:23:35:23:38 | [^;] | KnownCVEs.py:23:37:23:37 | ; | 0 | true | false |
+| KnownCVEs.py:27:39:27:52 | [a-zA-Z0-9._-] | KnownCVEs.py:27:40:27:42 | a-z | 0 | false | false |
+| KnownCVEs.py:27:39:27:52 | [a-zA-Z0-9._-] | KnownCVEs.py:27:43:27:45 | A-Z | 1 | false | false |
+| KnownCVEs.py:27:39:27:52 | [a-zA-Z0-9._-] | KnownCVEs.py:27:46:27:48 | 0-9 | 2 | false | false |
+| KnownCVEs.py:27:39:27:52 | [a-zA-Z0-9._-] | KnownCVEs.py:27:49:27:49 | . | 3 | false | false |
+| KnownCVEs.py:27:39:27:52 | [a-zA-Z0-9._-] | KnownCVEs.py:27:50:27:50 | _ | 4 | false | false |
+| KnownCVEs.py:27:39:27:52 | [a-zA-Z0-9._-] | KnownCVEs.py:27:51:27:51 | - | 5 | false | false |
+| KnownCVEs.py:27:56:27:69 | [a-zA-Z0-9._-] | KnownCVEs.py:27:57:27:59 | a-z | 0 | false | false |
+| KnownCVEs.py:27:56:27:69 | [a-zA-Z0-9._-] | KnownCVEs.py:27:60:27:62 | A-Z | 1 | false | false |
+| KnownCVEs.py:27:56:27:69 | [a-zA-Z0-9._-] | KnownCVEs.py:27:63:27:65 | 0-9 | 2 | false | false |
+| KnownCVEs.py:27:56:27:69 | [a-zA-Z0-9._-] | KnownCVEs.py:27:66:27:66 | . | 3 | false | false |
+| KnownCVEs.py:27:56:27:69 | [a-zA-Z0-9._-] | KnownCVEs.py:27:67:27:67 | _ | 4 | false | false |
+| KnownCVEs.py:27:56:27:69 | [a-zA-Z0-9._-] | KnownCVEs.py:27:68:27:68 | - | 5 | false | false |
+| KnownCVEs.py:30:29:31:32 | [ \t] | KnownCVEs.py:30:30:31:30 |   | 0 | false | false |
+| KnownCVEs.py:30:29:31:32 | [ \t] | KnownCVEs.py:30:31:31:31 | \t | 1 | false | false |
+| KnownCVEs.py:30:35:31:39 | [^ \t] | KnownCVEs.py:30:37:31:37 |   | 0 | true | false |
+| KnownCVEs.py:30:35:31:39 | [^ \t] | KnownCVEs.py:30:38:31:38 | \t | 1 | true | false |
+| KnownCVEs.py:30:42:31:45 | [ \t] | KnownCVEs.py:30:43:31:43 |   | 0 | false | false |
+| KnownCVEs.py:30:42:31:45 | [ \t] | KnownCVEs.py:30:44:31:44 | \t | 1 | false | false |
+| KnownCVEs.py:30:54:31:57 | ["'] | KnownCVEs.py:30:55:31:55 | " | 0 | false | false |
+| KnownCVEs.py:30:54:31:57 | ["'] | KnownCVEs.py:30:56:31:56 | ' | 1 | false | false |
+| KnownCVEs.py:30:61:31:65 | [^"'] | KnownCVEs.py:30:63:31:63 | " | 0 | true | false |
+| KnownCVEs.py:30:61:31:65 | [^"'] | KnownCVEs.py:30:64:31:64 | ' | 1 | true | false |
+| KnownCVEs.py:35:19:35:34 | [-/:,#%.'"\\s!\\w] | KnownCVEs.py:35:20:35:20 | - | 0 | false | false |
+| KnownCVEs.py:35:19:35:34 | [-/:,#%.'"\\s!\\w] | KnownCVEs.py:35:21:35:21 | / | 1 | false | false |
+| KnownCVEs.py:35:19:35:34 | [-/:,#%.'"\\s!\\w] | KnownCVEs.py:35:22:35:22 | : | 2 | false | false |
+| KnownCVEs.py:35:19:35:34 | [-/:,#%.'"\\s!\\w] | KnownCVEs.py:35:23:35:23 | , | 3 | false | false |
+| KnownCVEs.py:35:19:35:34 | [-/:,#%.'"\\s!\\w] | KnownCVEs.py:35:24:35:24 | # | 4 | false | false |
+| KnownCVEs.py:35:19:35:34 | [-/:,#%.'"\\s!\\w] | KnownCVEs.py:35:25:35:25 | % | 5 | false | false |
+| KnownCVEs.py:35:19:35:34 | [-/:,#%.'"\\s!\\w] | KnownCVEs.py:35:26:35:26 | . | 6 | false | false |
+| KnownCVEs.py:35:19:35:34 | [-/:,#%.'"\\s!\\w] | KnownCVEs.py:35:27:35:27 | ' | 7 | false | false |
+| KnownCVEs.py:35:19:35:34 | [-/:,#%.'"\\s!\\w] | KnownCVEs.py:35:28:35:28 | " | 8 | false | false |
+| KnownCVEs.py:35:19:35:34 | [-/:,#%.'"\\s!\\w] | KnownCVEs.py:35:29:35:30 | \\s | 9 | false | false |
+| KnownCVEs.py:35:19:35:34 | [-/:,#%.'"\\s!\\w] | KnownCVEs.py:35:31:35:31 | ! | 10 | false | false |
+| KnownCVEs.py:35:19:35:34 | [-/:,#%.'"\\s!\\w] | KnownCVEs.py:35:32:35:33 | \\w | 11 | false | false |
+| KnownCVEs.py:35:43:35:48 | [\\s\\w] | KnownCVEs.py:35:44:35:45 | \\s | 0 | false | false |
+| KnownCVEs.py:35:43:35:48 | [\\s\\w] | KnownCVEs.py:35:46:35:47 | \\w | 1 | false | false |
+| KnownCVEs.py:35:56:35:61 | [\\s\\w] | KnownCVEs.py:35:57:35:58 | \\s | 0 | false | false |
+| KnownCVEs.py:35:56:35:61 | [\\s\\w] | KnownCVEs.py:35:59:35:60 | \\w | 1 | false | false |
+| KnownCVEs.py:35:67:35:76 | [\\d,%\\.\\s] | KnownCVEs.py:35:68:35:69 | \\d | 0 | false | false |
+| KnownCVEs.py:35:67:35:76 | [\\d,%\\.\\s] | KnownCVEs.py:35:70:35:70 | , | 1 | false | false |
+| KnownCVEs.py:35:67:35:76 | [\\d,%\\.\\s] | KnownCVEs.py:35:71:35:71 | % | 2 | false | false |
+| KnownCVEs.py:35:67:35:76 | [\\d,%\\.\\s] | KnownCVEs.py:35:72:35:73 | \\. | 3 | false | false |
+| KnownCVEs.py:35:67:35:76 | [\\d,%\\.\\s] | KnownCVEs.py:35:74:35:75 | \\s | 4 | false | false |
+| KnownCVEs.py:80:15:83:22 | [a-zA-Z] | KnownCVEs.py:80:16:83:18 | a-z | 0 | false | false |
+| KnownCVEs.py:80:15:83:22 | [a-zA-Z] | KnownCVEs.py:80:19:83:21 | A-Z | 1 | false | false |
+| KnownCVEs.py:80:29:83:36 | [a-zA-Z] | KnownCVEs.py:80:30:83:32 | a-z | 0 | false | false |
+| KnownCVEs.py:80:29:83:36 | [a-zA-Z] | KnownCVEs.py:80:33:83:35 | A-Z | 1 | false | false |
+| KnownCVEs.py:80:40:83:47 | [a-zA-Z] | KnownCVEs.py:80:41:83:43 | a-z | 0 | false | false |
+| KnownCVEs.py:80:40:83:47 | [a-zA-Z] | KnownCVEs.py:80:44:83:46 | A-Z | 1 | false | false |
+| KnownCVEs.py:80:54:83:61 | [a-zA-Z] | KnownCVEs.py:80:55:83:57 | a-z | 0 | false | false |
+| KnownCVEs.py:80:54:83:61 | [a-zA-Z] | KnownCVEs.py:80:58:83:60 | A-Z | 1 | false | false |
+| KnownCVEs.py:80:65:83:69 | [0-9] | KnownCVEs.py:80:66:83:68 | 0-9 | 0 | false | false |
+| KnownCVEs.py:80:76:83:80 | [0-9] | KnownCVEs.py:80:77:83:79 | 0-9 | 0 | false | false |
+| KnownCVEs.py:80:84:83:91 | [a-zA-Z] | KnownCVEs.py:80:85:83:87 | a-z | 0 | false | false |
+| KnownCVEs.py:80:84:83:91 | [a-zA-Z] | KnownCVEs.py:80:88:83:90 | A-Z | 1 | false | false |
+| KnownCVEs.py:80:98:83:108 | [a-zA-Z0-9] | KnownCVEs.py:80:99:83:101 | a-z | 0 | false | false |
+| KnownCVEs.py:80:98:83:108 | [a-zA-Z0-9] | KnownCVEs.py:80:102:83:104 | A-Z | 1 | false | false |
+| KnownCVEs.py:80:98:83:108 | [a-zA-Z0-9] | KnownCVEs.py:80:105:83:107 | 0-9 | 2 | false | false |
+| KnownCVEs.py:80:109:83:121 | [-_a-zA-Z0-9] | KnownCVEs.py:80:110:83:110 | - | 0 | false | false |
+| KnownCVEs.py:80:109:83:121 | [-_a-zA-Z0-9] | KnownCVEs.py:80:111:83:111 | _ | 1 | false | false |
+| KnownCVEs.py:80:109:83:121 | [-_a-zA-Z0-9] | KnownCVEs.py:80:112:83:114 | a-z | 2 | false | false |
+| KnownCVEs.py:80:109:83:121 | [-_a-zA-Z0-9] | KnownCVEs.py:80:115:83:117 | A-Z | 3 | false | false |
+| KnownCVEs.py:80:109:83:121 | [-_a-zA-Z0-9] | KnownCVEs.py:80:118:83:120 | 0-9 | 4 | false | false |
+| KnownCVEs.py:80:128:83:138 | [a-zA-Z0-9] | KnownCVEs.py:80:129:83:131 | a-z | 0 | false | false |
+| KnownCVEs.py:80:128:83:138 | [a-zA-Z0-9] | KnownCVEs.py:80:132:83:134 | A-Z | 1 | false | false |
+| KnownCVEs.py:80:128:83:138 | [a-zA-Z0-9] | KnownCVEs.py:80:135:83:137 | 0-9 | 2 | false | false |
+| KnownCVEs.py:80:146:83:153 | [a-zA-Z] | KnownCVEs.py:80:147:83:149 | a-z | 0 | false | false |
+| KnownCVEs.py:80:146:83:153 | [a-zA-Z] | KnownCVEs.py:80:150:83:152 | A-Z | 1 | false | false |
+| KnownCVEs.py:80:166:83:176 | [a-zA-Z0-9] | KnownCVEs.py:80:167:83:169 | a-z | 0 | false | false |
+| KnownCVEs.py:80:166:83:176 | [a-zA-Z0-9] | KnownCVEs.py:80:170:83:172 | A-Z | 1 | false | false |
+| KnownCVEs.py:80:166:83:176 | [a-zA-Z0-9] | KnownCVEs.py:80:173:83:175 | 0-9 | 2 | false | false |
 | redos.py:6:34:6:39 | [\\s\\S] | redos.py:6:35:6:36 | \\s | 0 | false | true |
 | redos.py:6:34:6:39 | [\\s\\S] | redos.py:6:37:6:38 | \\S | 1 | false | true |
 | redos.py:6:60:6:65 | [\\s\\S] | redos.py:6:61:6:62 | \\s | 0 | false | true |
@@ -1378,3 +2114,4 @@ classChild
 | redos.py:359:28:359:49 | [\\s;,"'<>(){}\|[\\]@=+*] | redos.py:359:48:359:48 | * | 17 | false | false |
 | redos.py:359:55:359:59 | [/\\\\] | redos.py:359:56:359:56 | / | 0 | false | false |
 | redos.py:359:55:359:59 | [/\\\\] | redos.py:359:57:359:58 | \\\\ | 1 | false | false |
+| unittests.py:4:18:4:22 | [^\\.] | unittests.py:4:20:4:21 | \\. | 0 | true | false |
