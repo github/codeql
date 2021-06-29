@@ -275,28 +275,28 @@ public class Test {
 		}
 		{
 			// "org.springframework.util;CollectionUtils;false;toMultiValueMap;;;Element of MapValue of Argument[0];Element of MapValue of ReturnValue;value"
-			MultiValueMap out = null;
+			MultiValueMap<Object, Object> out = null;
 			Map in = Map.of(null, List.of(source()));
 			out = CollectionUtils.toMultiValueMap(in);
-			sink(getElement((List)getMapValue(out))); // $hasValueFlow
+			sink(getElement(getMapValue(out))); // $hasValueFlow
 		}
 		{
 			// "org.springframework.util;CollectionUtils;false;toMultiValueMap;;;MapKey of Argument[0];MapKey of ReturnValue;value"
-			MultiValueMap out = null;
+			MultiValueMap<Object, Object> out = null;
 			Map in = Map.of(source(), null);
 			out = CollectionUtils.toMultiValueMap(in);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.springframework.util;CollectionUtils;false;unmodifiableMultiValueMap;;;MapKey of Argument[0];MapKey of ReturnValue;value"
-			MultiValueMap out = null;
+			MultiValueMap<Object, Object> out = null;
 			MultiValueMap in = new LinkedMultiValueMap(Map.of(source(), null));
 			out = CollectionUtils.unmodifiableMultiValueMap(in);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.springframework.util;CollectionUtils;false;unmodifiableMultiValueMap;;;MapValue of Argument[0];MapValue of ReturnValue;value"
-			MultiValueMap out = null;
+			MultiValueMap<Object, Object> out = null;
 			MultiValueMap in = new LinkedMultiValueMap();
       in.put(null, source());
 			out = CollectionUtils.unmodifiableMultiValueMap(in);
@@ -424,126 +424,126 @@ public class Test {
 		}
 		{
 			// "org.springframework.util;LinkedMultiValueMap;false;LinkedMultiValueMap;(java.util.Map);;Element of MapValue of Argument[0];Element of MapValue of Argument[-1];value"
-			LinkedMultiValueMap out = null;
+			LinkedMultiValueMap<Object, Object> out = null;
 			Map in = Map.of(null, List.of(source()));
 			out = new LinkedMultiValueMap(in);
-			sink(getElement((List)getMapValue(out))); // $hasValueFlow
+			sink(getElement(getMapValue(out))); // $hasValueFlow
 		}
 		{
 			// "org.springframework.util;LinkedMultiValueMap;false;LinkedMultiValueMap;(java.util.Map);;MapKey of Argument[0];MapKey of Argument[-1];value"
-			LinkedMultiValueMap out = null;
+			LinkedMultiValueMap<Object, Object> out = null;
 			Map in = Map.of(source(), null);
 			out = new LinkedMultiValueMap(in);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.springframework.util;LinkedMultiValueMap;false;deepCopy;;;MapKey of Argument[-1];MapValue of ReturnValue;value"
-			LinkedMultiValueMap out = null;
+			LinkedMultiValueMap<Object, Object> out = null;
 			LinkedMultiValueMap in = (LinkedMultiValueMap)Map.of(source(), null);
 			out = in.deepCopy();
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "org.springframework.util;LinkedMultiValueMap;false;deepCopy;;;MapValue of Argument[-1];MapValue of ReturnValue;value"
-			LinkedMultiValueMap out = null;
+			LinkedMultiValueMap<Object, Object> out = null;
 			LinkedMultiValueMap in = (LinkedMultiValueMap)Map.of(null, source());
 			out = in.deepCopy();
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "org.springframework.util;MultiValueMap;true;add;;;Argument[0];MapKey of Argument[-1];value"
-			MultiValueMapAdapter out = null;
+			MultiValueMapAdapter<Object, Object> out = null;
 			Object in = source();
 			out.add(in, null);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.springframework.util;MultiValueMap;true;add;;;Argument[0];MapKey of Argument[-1];value"
-			MultiValueMap out = null;
+			MultiValueMap<Object, Object> out = null;
 			Object in = source();
 			out.add(in, null);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.springframework.util;MultiValueMap;true;add;;;Argument[0];MapKey of Argument[-1];value"
-			MultiValueMap out = null;
+			MultiValueMap<Object, Object> out = null;
 			Object in = source();
 			out.add(in, (Object)null);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.springframework.util;MultiValueMap;true;add;;;Argument[1];Element of MapValue of Argument[-1];value"
-			MultiValueMapAdapter out = null;
+			MultiValueMapAdapter<Object, Object> out = null;
 			Object in = source();
 			out.add(null, in);
-			sink(getElement((List)getMapValue(out))); // $hasValueFlow
+			sink(getElement(getMapValue(out))); // $hasValueFlow
 		}
 		{
 			// "org.springframework.util;MultiValueMap;true;add;;;Argument[1];Element of MapValue of Argument[-1];value"
-			MultiValueMap out = null;
+			MultiValueMap<Object, Object> out = null;
 			Object in = source();
 			out.add(null, in);
-			sink(getElement((List)getMapValue(out))); // $hasValueFlow
+			sink(getElement(getMapValue(out))); // $hasValueFlow
 		}
 		{
 			// "org.springframework.util;MultiValueMap;true;add;;;Argument[1];Element of MapValue of Argument[-1];value"
-			MultiValueMap out = null;
+			MultiValueMap<Object, Object> out = null;
 			Object in = source();
 			out.add((Object)null, in);
-			sink(getElement((List)getMapValue(out))); // $hasValueFlow
+			sink(getElement(getMapValue(out))); // $hasValueFlow
 		}
 		{
 			// "org.springframework.util;MultiValueMap;true;addAll;(java.lang.Object,java.util.List);;Element of Argument[1];Element of MapValue of Argument[-1];value"
-			MultiValueMapAdapter out = null;
+			MultiValueMapAdapter<Object, Object> out = null;
 			List in = List.of(source());
 			out.addAll(null, in);
-			sink(getElement((List)getMapValue(out))); // $hasValueFlow
+			sink(getElement(getMapValue(out))); // $hasValueFlow
 		}
 		{
 			// "org.springframework.util;MultiValueMap;true;addAll;(java.lang.Object,java.util.List);;Element of Argument[1];Element of MapValue of Argument[-1];value"
-			MultiValueMap out = null;
+			MultiValueMap<Object, Object> out = null;
 			List in = List.of(source());
 			out.addAll(null, in);
-			sink(getElement((List)getMapValue(out))); // $hasValueFlow
+			sink(getElement(getMapValue(out))); // $hasValueFlow
 		}
 		{
 			// "org.springframework.util;MultiValueMap;true;addAll;(java.lang.Object,java.util.List);;Element of Argument[1];Element of MapValue of Argument[-1];value"
-			MultiValueMap out = null;
+			MultiValueMap<Object, Object> out = null;
 			List in = List.of(source());
 			out.addAll((Object)null, in);
-			sink(getElement((List)getMapValue(out))); // $hasValueFlow
+			sink(getElement(getMapValue(out))); // $hasValueFlow
 		}
 		{
 			// "org.springframework.util;MultiValueMap;true;addAll;(org.springframework.util.MultiValueMap);;Element of MapValue of Argument[0];Element of MapValue of Argument[-1];value"
-			MultiValueMapAdapter out = null;
+			MultiValueMapAdapter<Object, Object> out = null;
 			MultiValueMap in = (MultiValueMap)Map.of(null, List.of(source()));
 			out.addAll(in);
-			sink(getElement((List)getMapValue(out))); // $hasValueFlow
+			sink(getElement(getMapValue(out))); // $hasValueFlow
 		}
 		{
 			// "org.springframework.util;MultiValueMap;true;addAll;(org.springframework.util.MultiValueMap);;Element of MapValue of Argument[0];Element of MapValue of Argument[-1];value"
-			MultiValueMap out = null;
+			MultiValueMap<Object, Object> out = null;
 			MultiValueMap in = (MultiValueMap)Map.of(null, List.of(source()));
 			out.addAll(in);
-			sink(getElement((List)getMapValue(out))); // $hasValueFlow
+			sink(getElement(getMapValue(out))); // $hasValueFlow
 		}
 		{
 			// "org.springframework.util;MultiValueMap;true;addAll;;;Argument[0];MapKey of Argument[-1];value"
-			MultiValueMapAdapter out = null;
+			MultiValueMapAdapter<Object, Object> out = null;
 			Object in = source();
 			out.addAll(in, null);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.springframework.util;MultiValueMap;true;addAll;;;Argument[0];MapKey of Argument[-1];value"
-			MultiValueMap out = null;
+			MultiValueMap<Object, Object> out = null;
 			Object in = source();
 			out.addAll(in, (List)null);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.springframework.util;MultiValueMap;true;addAll;;;Argument[0];MapKey of Argument[-1];value"
-			MultiValueMapAdapter out = null;
+			MultiValueMapAdapter<Object, Object> out = null;
 			MultiValueMap<Object, Object> mvm = null;
 			mvm.set(source(), "someValue");
 			out.addAll(mvm);
@@ -551,7 +551,7 @@ public class Test {
 		}
 		{
 			// "org.springframework.util;MultiValueMap;true;addAll;;;Argument[0];MapKey of Argument[-1];value"
-			MultiValueMap out = null;
+			MultiValueMap<Object, Object> out = null;
 			MultiValueMap<Object, Object> mvm = null;
 			mvm.set(source(), "someValue");
 			out.addAll(mvm);
@@ -559,31 +559,31 @@ public class Test {
 		}
 		{
 			// "org.springframework.util;MultiValueMap;true;addIfAbsent;;;Argument[0];MapKey of Argument[-1];value"
-			MultiValueMap out = null;
+			MultiValueMap<Object, Object> out = null;
 			Object in = source();
 			out.addIfAbsent(in, null);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.springframework.util;MultiValueMap;true;addIfAbsent;;;Argument[0];MapKey of Argument[-1];value"
-			MultiValueMap out = null;
+			MultiValueMap<Object, Object> out = null;
 			Object in = source();
 			out.addIfAbsent(in, (Object)null);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.springframework.util;MultiValueMap;true;addIfAbsent;;;Argument[1];Element of MapValue of Argument[-1];value"
-			MultiValueMap out = null;
+			MultiValueMap<Object, Object> out = null;
 			Object in = source();
 			out.addIfAbsent(null, in);
-			sink(getElement((List)getMapValue(out))); // $hasValueFlow
+			sink(getElement(getMapValue(out))); // $hasValueFlow
 		}
 		{
 			// "org.springframework.util;MultiValueMap;true;addIfAbsent;;;Argument[1];Element of MapValue of Argument[-1];value"
-			MultiValueMap out = null;
+			MultiValueMap<Object, Object> out = null;
 			Object in = source();
 			out.addIfAbsent((Object)null, in);
-			sink(getElement((List)getMapValue(out))); // $hasValueFlow
+			sink(getElement(getMapValue(out))); // $hasValueFlow
 		}
 		{
 			// "org.springframework.util;MultiValueMap;true;getFirst;;;Element of MapValue of Argument[-1];ReturnValue;value"
@@ -608,73 +608,73 @@ public class Test {
 		}
 		{
 			// "org.springframework.util;MultiValueMap;true;set;;;Argument[0];MapKey of Argument[-1];value"
-			MultiValueMapAdapter out = null;
+			MultiValueMapAdapter<Object, Object> out = null;
 			Object in = source();
 			out.set(in, null);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.springframework.util;MultiValueMap;true;set;;;Argument[0];MapKey of Argument[-1];value"
-			MultiValueMap out = null;
+			MultiValueMap<Object, Object> out = null;
 			Object in = source();
 			out.set(in, null);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.springframework.util;MultiValueMap;true;set;;;Argument[0];MapKey of Argument[-1];value"
-			MultiValueMap out = null;
+			MultiValueMap<Object, Object> out = null;
 			Object in = source();
 			out.set(in, (Object)null);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.springframework.util;MultiValueMap;true;set;;;Argument[1];Element of MapValue of Argument[-1];value"
-			MultiValueMapAdapter out = null;
+			MultiValueMapAdapter<Object, Object> out = null;
 			Object in = source();
 			out.set(null, in);
-			sink(getElement((List)getMapValue(out))); // $hasValueFlow
+			sink(getElement(getMapValue(out))); // $hasValueFlow
 		}
 		{
 			// "org.springframework.util;MultiValueMap;true;set;;;Argument[1];Element of MapValue of Argument[-1];value"
-			MultiValueMap out = null;
+			MultiValueMap<Object, Object> out = null;
 			Object in = source();
 			out.set(null, in);
-			sink(getElement((List)getMapValue(out))); // $hasValueFlow
+			sink(getElement(getMapValue(out))); // $hasValueFlow
 		}
 		{
 			// "org.springframework.util;MultiValueMap;true;set;;;Argument[1];Element of MapValue of Argument[-1];value"
-			MultiValueMap out = null;
+			MultiValueMap<Object, Object> out = null;
 			Object in = source();
 			out.set((Object)null, in);
-			sink(getElement((List)getMapValue(out))); // $hasValueFlow
+			sink(getElement(getMapValue(out))); // $hasValueFlow
 		}
 		{
 			// "org.springframework.util;MultiValueMap;true;setAll;;;MapKey of Argument[0];MapKey of Argument[-1];value"
-			MultiValueMapAdapter out = null;
+			MultiValueMapAdapter<Object, Object> out = null;
 			Map in = Map.of(source(), null);
 			out.setAll(in);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.springframework.util;MultiValueMap;true;setAll;;;MapKey of Argument[0];MapKey of Argument[-1];value"
-			MultiValueMap out = null;
+			MultiValueMap<Object, Object> out = null;
 			Map in = Map.of(source(), null);
 			out.setAll(in);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.springframework.util;MultiValueMap;true;setAll;;;MapValue of Argument[0];Element of MapValue of Argument[-1];value"
-			MultiValueMapAdapter out = null;
+			MultiValueMapAdapter<Object, Object> out = null;
 			Map in = Map.of(null, source());
 			out.setAll(in);
-			sink(getElement((List)getMapValue(out))); // $hasValueFlow
+			sink(getElement(getMapValue(out))); // $hasValueFlow
 		}
 		{
 			// "org.springframework.util;MultiValueMap;true;setAll;;;MapValue of Argument[0];Element of MapValue of Argument[-1];value"
-			MultiValueMap out = null;
+			MultiValueMap<Object, Object> out = null;
 			Map in = Map.of(null, source());
 			out.setAll(in);
-			sink(getElement((List)getMapValue(out))); // $hasValueFlow
+			sink(getElement(getMapValue(out))); // $hasValueFlow
 		}
 		{
 			// "org.springframework.util;MultiValueMap;true;toSingleValueMap;;;Element of MapValue of Argument[-1];MapValue of ReturnValue;value"
@@ -706,14 +706,14 @@ public class Test {
 		}
 		{
 			// "org.springframework.util;MultiValueMapAdapter;false;MultiValueMapAdapter;;;Element of MapValue of Argument[0];Element of MapValue of Argument[-1];value"
-			MultiValueMapAdapter out = null;
+			MultiValueMapAdapter<Object, Object> out = null;
 			Map in = Map.of(null, List.of(source()));
 			out = new MultiValueMapAdapter(in);
-			sink(getElement((List)getMapValue(out))); // $hasValueFlow
+			sink(getElement(getMapValue(out))); // $hasValueFlow
 		}
 		{
 			// "org.springframework.util;MultiValueMapAdapter;false;MultiValueMapAdapter;;;MapKey of Argument[0];MapKey of Argument[-1];value"
-			MultiValueMapAdapter out = null;
+			MultiValueMapAdapter<Object, Object> out = null;
 			Map in = Map.of(source(), null);
 			out = new MultiValueMapAdapter(in);
 			sink(getMapKey(out)); // $hasValueFlow
