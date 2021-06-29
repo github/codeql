@@ -70,6 +70,37 @@
 
    Then add this database directory to your VS Code =DATABASES= tab.
 
+
+** Build codeql database in steps
+   For larger projects, using a single command to build everything is costly when
+   any part of the build fails.
+   
+   To build a database in steps, use the following sequence, adjusting paths to
+   your setup:
+   #+BEGIN_SRC sh
+     # Build the db with source commit id.
+     export PATH=$HOME/local/vmsync/codeql250:"$PATH"
+     SRCDIR=$HOME/local/codeql-training-material.cpp-sqli/cpp/codeql-dataflow-sql-injection
+     DB=$SRCDIR/cpp-sqli-$(cd $SRCDIR && git rev-parse --short HEAD)
+
+     # Check paths
+     echo $DB
+     echo $SRCDIR
+
+     # Prepare db directory
+     test -d "$DB" && rm -fR "$DB"
+     mkdir -p "$DB"
+
+     # Run the build
+     cd $SRCDIR
+     codeql database init --language=cpp -s . -v $DB
+     # Repeat trace-command as needed to cover all targets
+     codeql database trace-command -v $DB -- make 
+     codeql database finalize -j4 $DB
+   #+END_SRC
+
+   Then add this database directory to your VS Code =DATABASES= tab.
+
 ** Develop the query bottom-up
    1. Identify the /source/ part of the 
       : read(STDIN_FILENO, buf, BUFSIZE - 1);
