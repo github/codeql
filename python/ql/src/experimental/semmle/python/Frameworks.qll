@@ -3,3 +3,4 @@
  */
 
 private import experimental.semmle.python.frameworks.Stdlib
+private import experimental.semmle.python.frameworks.LDAP

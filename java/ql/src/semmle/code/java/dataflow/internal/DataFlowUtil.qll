@@ -9,9 +9,11 @@ private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSteps
 private import semmle.code.java.dataflow.FlowSummary
-import semmle.code.java.dataflow.InstanceAccess
+private import semmle.code.java.dataflow.InstanceAccess
 private import FlowSummaryImpl as FlowSummaryImpl
+private import TaintTrackingUtil as TaintTrackingUtil
 import DataFlowNodes::Public
+import semmle.code.Unit
 
 /** Holds if `n` is an access to an unqualified `this` at `cfgnode`. */
 private predicate thisAccess(Node n, ControlFlowNode cfgnode) {
@@ -112,6 +114,7 @@ predicate localFlowStep(Node node1, Node node2) {
  */
 cached
 predicate simpleLocalFlowStep(Node node1, Node node2) {
+  TaintTrackingUtil::forceCachingInSameStage() and
   // Variable flow steps through adjacent def-use and use-use pairs.
   exists(SsaExplicitUpdate upd |
     upd.getDefiningExpr().(VariableAssign).getSource() = node1.asExpr() or
@@ -142,7 +145,7 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
   or
   node2.asExpr().(AssignExpr).getSource() = node1.asExpr()
   or
-  summaryStep(node1, node2, "value")
+  node2.asExpr().(ArrayCreationExpr).getInit() = node1.asExpr()
   or
   exists(MethodAccess ma, ValuePreservingMethod m, int argNo |
     ma.getCallee().getSourceDeclaration() = m and m.returnsValue(argNo)
@@ -152,6 +155,62 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
   )
   or
   FlowSummaryImpl::Private::Steps::summaryLocalStep(node1, node2, true)
+}
+
+private newtype TContent =
+  TFieldContent(InstanceField f) or
+  TArrayContent() or
+  TCollectionContent() or
+  TMapKeyContent() or
+  TMapValueContent()
+
+/**
+ * A description of the way data may be stored inside an object. Examples
+ * include instance fields, the contents of a collection object, or the contents
+ * of an array.
+ */
+class Content extends TContent {
+  /** Gets a textual representation of this element. */
+  abstract string toString();
+
+  predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
+    path = "" and sl = 0 and sc = 0 and el = 0 and ec = 0
+  }
+}
+
+/** A reference through an instance field. */
+class FieldContent extends Content, TFieldContent {
+  InstanceField f;
+
+  FieldContent() { this = TFieldContent(f) }
+
+  InstanceField getField() { result = f }
+
+  override string toString() { result = f.toString() }
+
+  override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
+    f.getLocation().hasLocationInfo(path, sl, sc, el, ec)
+  }
+}
+
+/** A reference through an array. */
+class ArrayContent extends Content, TArrayContent {
+  override string toString() { result = "[]" }
+}
+
+/** A reference through the contents of some collection-like container. */
+class CollectionContent extends Content, TCollectionContent {
+  override string toString() { result = "<element>" }
+}
+
+/** A reference through a map key. */
+class MapKeyContent extends Content, TMapKeyContent {
+  override string toString() { result = "<map.key>" }
+}
+
+/** A reference through a map value. */
+class MapValueContent extends Content, TMapValueContent {
+  override string toString() { result = "<map.value>" }
 }
 
 /**

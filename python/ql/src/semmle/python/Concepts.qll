@@ -345,7 +345,7 @@ module HTTP {
         /** Gets the URL pattern for this route, if it can be statically determined. */
         string getUrlPattern() {
           exists(StrConst str |
-            DataFlow::exprNode(str).(DataFlow::LocalSourceNode).flowsTo(this.getUrlPatternArg()) and
+            this.getUrlPatternArg().getALocalSource() = DataFlow::exprNode(str) and
             result = str.getText()
           )
         }
@@ -478,9 +478,7 @@ module HTTP {
         /** Gets the mimetype of this HTTP response, if it can be statically determined. */
         string getMimetype() {
           exists(StrConst str |
-            DataFlow::exprNode(str)
-                .(DataFlow::LocalSourceNode)
-                .flowsTo(this.getMimetypeOrContentTypeArg()) and
+            this.getMimetypeOrContentTypeArg().getALocalSource() = DataFlow::exprNode(str) and
             result = str.getText().splitAt(";", 0)
           )
           or
@@ -527,7 +525,14 @@ module HTTP {
   }
 }
 
-/** Provides models for cryptographic things. */
+/**
+ * Provides models for cryptographic things.
+ *
+ * Note: The `CryptographicAlgorithm` class currently doesn't take weak keys into
+ * consideration for the `isWeak` member predicate. So RSA is always considered
+ * secure, although using a low number of bits will actually make it insecure. We plan
+ * to improve our libraries in the future to more precisely capture this aspect.
+ */
 module Cryptography {
   /** Provides models for public-key cryptography, also called asymmetric cryptography. */
   module PublicKey {
@@ -570,21 +575,7 @@ module Cryptography {
         arg = any(KeyGeneration::Range r).getKeySizeArg() and
         result = arg.getALocalSource()
         or
-        // Due to bad performance when using normal setup with we have inlined that code and forced a join
-        exists(DataFlow::TypeBackTracker t2 |
-          exists(DataFlow::StepSummary summary |
-            keysizeBacktracker_first_join(t2, arg, result, summary) and
-            t = t2.prepend(summary)
-          )
-        )
-      }
-
-      pragma[nomagic]
-      private predicate keysizeBacktracker_first_join(
-        DataFlow::TypeBackTracker t2, DataFlow::Node arg, DataFlow::Node res,
-        DataFlow::StepSummary summary
-      ) {
-        DataFlow::StepSummary::step(res, keysizeBacktracker(t2, arg), summary)
+        exists(DataFlow::TypeBackTracker t2 | result = keysizeBacktracker(t2, arg).backtrack(t2, t))
       }
 
       /** Gets a back-reference to the keysize argument `arg` that was used to generate a new key-pair. */
@@ -638,6 +629,45 @@ module Cryptography {
 
         final override int minimumSecureKeySize() { result = 224 }
       }
+    }
+  }
+
+  import semmle.python.concepts.CryptoAlgorithms
+
+  /**
+   * A data-flow node that is an application of a cryptographic algorithm. For example,
+   * encryption, decryption, signature-validation.
+   *
+   * Extend this class to refine existing API models. If you want to model new APIs,
+   * extend `CryptographicOperation::Range` instead.
+   */
+  class CryptographicOperation extends DataFlow::Node {
+    CryptographicOperation::Range range;
+
+    CryptographicOperation() { this = range }
+
+    /** Gets the algorithm used, if it matches a known `CryptographicAlgorithm`. */
+    CryptographicAlgorithm getAlgorithm() { result = range.getAlgorithm() }
+
+    /** Gets an input the algorithm is used on, for example the plain text input to be encrypted. */
+    DataFlow::Node getAnInput() { result = range.getAnInput() }
+  }
+
+  /** Provides classes for modeling new applications of a cryptographic algorithms. */
+  module CryptographicOperation {
+    /**
+     * A data-flow node that is an application of a cryptographic algorithm. For example,
+     * encryption, decryption, signature-validation.
+     *
+     * Extend this class to model new APIs. If you want to refine existing API models,
+     * extend `CryptographicOperation` instead.
+     */
+    abstract class Range extends DataFlow::Node {
+      /** Gets the algorithm used, if it matches a known `CryptographicAlgorithm`. */
+      abstract CryptographicAlgorithm getAlgorithm();
+
+      /** Gets an input the algorithm is used on, for example the plain text input to be encrypted. */
+      abstract DataFlow::Node getAnInput();
     }
   }
 }

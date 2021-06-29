@@ -50,4 +50,11 @@ http.createServer(function(req, res) {
 
   fs.readFileSync(path); // NOT OK
   asyncFS.readFileSync(path); // NOT OK
+
+  require("pify")(fs.readFileSync)(path); // NOT OK
+  require("pify")(fs).readFileSync(path); // NOT OK
+
+  require('util.promisify')(fs.readFileSync)(path); // NOT OK
+
+  require("thenify")(fs.readFileSync)(path); // NOT OK
 });

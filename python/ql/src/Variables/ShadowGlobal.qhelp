@@ -26,9 +26,8 @@ variable should be renamed to make the code easier to interpret.</p>
 </example>
 <references>
 
-<li>J. Lusth, <i>The Art and Craft of Programming - Python Edition</i>, Section: Scope. University of Alabama, 2012. (<a href="http://troll.cs.ua.edu/ACP-PY/index_13.html">Published online</a>).</li>
-<li>New Mexico Tech Computer Center: <a href="http://infohost.nmt.edu/tcc/help/pubs/python/web/global-statement.html">The global
-statement: Declare access to a global name</a>.</li>
+<li>J. Lusth, <i>The Art and Craft of Programming - Python Edition</i>, Section: Scope. University of Alabama, 2012. (<a href="https://web.archive.org/web/20190919091129/http://troll.cs.ua.edu/ACP-PY/index_13.html">Published online</a>).</li>
+<li>Python Language Reference: <a href="http://docs.python.org/reference/simple_stmts.html#the-global-statement">The global statement</a>.</li>
 
 
 

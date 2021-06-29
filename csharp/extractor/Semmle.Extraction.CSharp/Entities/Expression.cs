@@ -170,7 +170,8 @@ namespace Semmle.Extraction.CSharp.Entities
         public static Expression? CreateGenerated(Context cx, IParameterSymbol parameter, IExpressionParentEntity parent,
             int childIndex, Extraction.Entities.Location location)
         {
-            if (!parameter.HasExplicitDefaultValue)
+            if (!parameter.HasExplicitDefaultValue ||
+                parameter.Type is IErrorTypeSymbol)
             {
                 return null;
             }
@@ -191,6 +192,16 @@ namespace Semmle.Extraction.CSharp.Entities
                 // = null, = default, = default(T), = new MyStruct()
                 // we're generating a default expression:
                 return Default.CreateGenerated(cx, parent, childIndex, location, parameter.Type.IsReferenceType ? ValueAsString(null) : null);
+            }
+
+            if (parameter.Type.SpecialType == SpecialType.System_Object)
+            {
+                // this can happen in VB.NET
+                cx.ExtractionError($"Extracting default argument value 'object {parameter.Name} = default' instead of 'object {parameter.Name} = {defaultValue}'. The latter is not supported in C#.",
+                    null, null, severity: Util.Logging.Severity.Warning);
+
+                // we're generating a default expression:
+                return Default.CreateGenerated(cx, parent, childIndex, location, ValueAsString(null));
             }
 
             // const literal:

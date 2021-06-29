@@ -6,6 +6,7 @@ from cryptography.exceptions import InvalidSignature
 
 
 private_key = ec.generate_private_key(curve=ec.SECP384R1()) # $ PublicKeyGeneration keySize=384
+private_key = ec.generate_private_key(curve=ec.SECP384R1) # $ PublicKeyGeneration keySize=384
 public_key = private_key.public_key()
 
 HASH_ALGORITHM = hashes.SHA256()

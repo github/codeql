@@ -3,6 +3,7 @@
  */
 
 import Member
+import semmle.code.java.security.ExternalProcess
 
 // --- Standard types ---
 /** The class `java.lang.Object`. */
@@ -177,23 +178,36 @@ class TypeFile extends Class {
 
 // --- Standard methods ---
 /**
+ * Any constructor of class `java.lang.ProcessBuilder`.
+ */
+class ProcessBuilderConstructor extends Constructor, ExecCallable {
+  ProcessBuilderConstructor() { this.getDeclaringType() instanceof TypeProcessBuilder }
+
+  override int getAnExecutedArgument() { result = 0 }
+}
+
+/**
  * Any of the methods named `command` on class `java.lang.ProcessBuilder`.
  */
-class MethodProcessBuilderCommand extends Method {
+class MethodProcessBuilderCommand extends Method, ExecCallable {
   MethodProcessBuilderCommand() {
     hasName("command") and
     getDeclaringType() instanceof TypeProcessBuilder
   }
+
+  override int getAnExecutedArgument() { result = 0 }
 }
 
 /**
  * Any method named `exec` on class `java.lang.Runtime`.
  */
-class MethodRuntimeExec extends Method {
+class MethodRuntimeExec extends Method, ExecCallable {
   MethodRuntimeExec() {
     hasName("exec") and
     getDeclaringType() instanceof TypeRuntime
   }
+
+  override int getAnExecutedArgument() { result = 0 }
 }
 
 /**

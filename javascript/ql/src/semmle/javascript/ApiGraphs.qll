@@ -184,6 +184,11 @@ module API {
     Node getPromised() { result = getASuccessor(Label::promised()) }
 
     /**
+     * Gets a node representing the error wrapped in the `Promise` object represented by this node.
+     */
+    Node getPromisedError() { result = getASuccessor(Label::promisedError()) }
+
+    /**
      * Gets a string representation of the lexicographically least among all shortest access paths
      * from the root to this node.
      */
@@ -468,6 +473,9 @@ module API {
           or
           lbl = Label::promised() and
           PromiseFlow::storeStep(rhs, pred, Promises::valueProp())
+          or
+          lbl = Label::promisedError() and
+          PromiseFlow::storeStep(rhs, pred, Promises::errorProp())
         )
         or
         exists(DataFlow::ClassNode cls, string name |
@@ -480,6 +488,12 @@ module API {
           base = MkAsyncFuncResult(f) and
           lbl = Label::promised() and
           rhs = f.getAReturn()
+        )
+        or
+        exists(DataFlow::FunctionNode f |
+          base = MkAsyncFuncResult(f) and
+          lbl = Label::promisedError() and
+          rhs = f.getExceptionalReturn()
         )
         or
         exists(int i |
@@ -559,6 +573,9 @@ module API {
           or
           lbl = Label::promised() and
           PromiseFlow::loadStep(pred, ref, Promises::valueProp())
+          or
+          lbl = Label::promisedError() and
+          PromiseFlow::loadStep(pred, ref, Promises::errorProp())
         )
         or
         exists(DataFlow::Node def, DataFlow::FunctionNode fn |
@@ -669,9 +686,7 @@ module API {
       promisified = false and
       boundArgs = 0
       or
-      exists(DataFlow::CallNode promisify |
-        promisify = DataFlow::moduleImport(["util", "bluebird"]).getAMemberCall("promisify")
-      |
+      exists(Promisify::PromisifyCall promisify |
         trackUseNode(nd, false, boundArgs, t.continue()).flowsTo(promisify.getArgument(0)) and
         promisified = true and
         result = promisify
@@ -962,6 +977,9 @@ private module Label {
 
   /** Gets the `promised` edge label connecting a promise to its contained value. */
   string promised() { result = "promised" }
+
+  /** Gets the `promisedError` edge label connecting a promise to its rejected value. */
+  string promisedError() { result = "promisedError" }
 }
 
 private class NodeModuleSourcesNodes extends DataFlow::SourceNode::Range {

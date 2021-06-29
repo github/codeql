@@ -4,6 +4,7 @@
  *              to an attacker.
  * @kind problem
  * @problem.severity warning
+ * @security-severity 7.5
  * @precision medium
  * @id cpp/cleartext-storage-file
  * @tags security

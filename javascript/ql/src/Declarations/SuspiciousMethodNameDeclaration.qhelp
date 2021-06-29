@@ -48,8 +48,8 @@ in the first place.
 </example>
 <references>
 
-<li>TypeScript specification: <a href="https://github.com/microsoft/TypeScript/blob/master/doc/spec.md#3.8.9">Constructor Type Literals</a>.</li>
-<li>TypeScript specification: <a href="https://github.com/microsoft/TypeScript/blob/master/doc/spec.md#8.3.1">Constructor Parameters</a>.</li>
+<li>TypeScript specification: <a href="https://github.com/microsoft/TypeScript/blob/30cb20434a6b117e007a4959b2a7c16489f86069/doc/spec-ARCHIVED.md#3.8.9">Constructor Type Literals</a>.</li>
+<li>TypeScript specification: <a href="https://github.com/microsoft/TypeScript/blob/30cb20434a6b117e007a4959b2a7c16489f86069/doc/spec-ARCHIVED.md#8.3.1">Constructor Parameters</a>.</li>
 
 </references>
 </qhelp>

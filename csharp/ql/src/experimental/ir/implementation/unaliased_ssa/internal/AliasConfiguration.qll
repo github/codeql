@@ -14,3 +14,5 @@ class Allocation extends IRAutomaticVariable {
     none()
   }
 }
+
+predicate phaseNeedsSoundEscapeAnalysis() { any() }

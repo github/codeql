@@ -25,14 +25,14 @@ initially_tainted = NOT_TAINTED
 ensure_not_tainted(initially_tainted)
 
 def use_of_initially_tainted():
-    ensure_not_tainted(initially_tainted) # FP
+    ensure_not_tainted(initially_tainted) # $ SPURIOUS: tainted
 
 
 # A very similar case to the above, but here we _do_ want taint flow, because the initially tainted
-# value is actually used before it gets reassigned to an untainted value. 
+# value is actually used before it gets reassigned to an untainted value.
 
 def use_of_initially_tainted2():
-    ensure_tainted(initially_tainted2)
+    ensure_tainted(initially_tainted2) # $ tainted
 
 initially_tainted2 = TAINTED_STRING
 use_of_initially_tainted2()
@@ -47,7 +47,7 @@ def write_tainted():
     g = TAINTED_STRING
 
 def sink_global():
-    ensure_tainted(g)
+    ensure_tainted(g) # $ tainted
 
 write_global()
 write_tainted()

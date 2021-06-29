@@ -77,7 +77,7 @@ severely affect performance, and you should avoid defining <code>finalize</code>
 </li>
 <li>
   IBM developerWorks:
-  <a href="https://www.ibm.com/developerworks/java/library/j-jtp01274/index.html#3.2">Java theory and practice: Explicit nulling</a>.
+  <a href="https://web.archive.org/web/20201111184342/https://www.ibm.com/developerworks/java/library/j-jtp01274/index.html#3.2">Java theory and practice: Explicit nulling</a>.
 </li>
 <li>
   Oracle Technology Network:

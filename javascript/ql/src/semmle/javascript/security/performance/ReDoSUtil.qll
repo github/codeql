@@ -54,19 +54,6 @@ private predicate isReDoSCandidate(State state, string pump) {
 }
 
 /**
- * A regular expression term that permits unlimited repetitions.
- */
-class InfiniteRepetitionQuantifier extends RegExpQuantifier {
-  InfiniteRepetitionQuantifier() {
-    this instanceof RegExpPlus
-    or
-    this instanceof RegExpStar
-    or
-    this instanceof RegExpRange and not exists(this.(RegExpRange).getUpperBound())
-  }
-}
-
-/**
  * Gets the char after `c` (from a simplified ASCII table).
  */
 private string nextChar(string c) { exists(int code | code = ascii(c) | code + 1 = ascii(result)) }

@@ -383,7 +383,7 @@ private module FrameworkDataFlowAdaptor {
     or
     exists(int i |
       result = TCallableFlowSinkArg(i) and
-      output = SummaryComponentStack::outArgument(i)
+      output = SummaryComponentStack::argument(i)
     )
     or
     exists(int i, int j | result = TCallableFlowSinkDelegateArg(i, j) |
@@ -807,17 +807,29 @@ class SystemTextStringBuilderFlow extends LibraryTypeDataFlow, SystemTextStringB
       sinkAp = AccessPath::empty() and
       preservesValue = false
       or
-      exists(int i, Type t |
-        name.regexpMatch("Append(Format|Line)?") and
-        t = m.getParameter(i).getType() and
-        source = TCallableFlowSourceArg(i) and
+      name.regexpMatch("Append(Format|Line|Join)?") and
+      preservesValue = true and
+      (
+        exists(int i, Type t |
+          t = m.getParameter(i).getType() and
+          source = TCallableFlowSourceArg(i) and
+          sink = TCallableFlowSinkQualifier() and
+          sinkAp = AccessPath::element()
+        |
+          (
+            t instanceof StringType or
+            t instanceof ObjectType
+          ) and
+          sourceAp = AccessPath::empty()
+          or
+          isCollectionType(t) and
+          sourceAp = AccessPath::element()
+        )
+        or
+        source = TCallableFlowSourceQualifier() and
         sourceAp = AccessPath::empty() and
-        sink = [TCallableFlowSinkQualifier().(TCallableFlowSink), TCallableFlowSinkReturn()] and
-        sinkAp = AccessPath::element() and
-        preservesValue = true
-      |
-        t instanceof StringType or
-        t instanceof ObjectType
+        sink = TCallableFlowSinkReturn() and
+        sinkAp = AccessPath::empty()
       )
     )
   }
@@ -1836,8 +1848,15 @@ class SystemTupleFlow extends LibraryTypeDataFlow, ValueOrRefType {
         c.(Constructor).getDeclaringType() = this and
         t = this
         or
-        c = this.getAMethod(any(string name | name.regexpMatch("Create(<,*>)?"))) and
-        t = c.getReturnType().getUnboundDeclaration()
+        exists(ValueOrRefType namedType |
+          namedType = this or namedType = this.(TupleType).getUnderlyingType()
+        |
+          c = namedType.getAMethod(any(string name | name.regexpMatch("Create(<,*>)?"))) and
+          (
+            t = c.getReturnType().getUnboundDeclaration() or
+            t = c.getReturnType().(TupleType).getUnderlyingType().getUnboundDeclaration()
+          )
+        )
       )
       or
       c =

@@ -34,7 +34,9 @@ module InsufficientPasswordHash {
   class CleartextPasswordSource extends Source, DataFlow::ValueNode {
     override SensitiveExpr astNode;
 
-    CleartextPasswordSource() { astNode.getClassification() = SensitiveExpr::password() }
+    CleartextPasswordSource() {
+      astNode.getClassification() = SensitiveDataClassification::password()
+    }
 
     override string describe() { result = astNode.describe() }
   }

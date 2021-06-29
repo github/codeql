@@ -87,6 +87,7 @@ class NamedElement extends Element, @dotnet_named_element {
   final predicate hasQualifiedName(string qualifiedName) { qualifiedName = this.getQualifiedName() }
 
   /** Holds if this element has the qualified name `qualifier`.`name`. */
+  cached
   predicate hasQualifiedName(string qualifier, string name) {
     qualifier = "" and name = this.getName()
   }

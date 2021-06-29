@@ -1,4 +1,6 @@
 | file://:0:0:0:0 |  | Other |
+| file://:0:0:0:0 | & | Other |
+| file://:0:0:0:0 | && | Other |
 | file://:0:0:0:0 | (global namespace) | Other |
 | file://:0:0:0:0 | (unnamed global/namespace variable) | Other |
 | file://:0:0:0:0 | _Complex __float128 | Other |

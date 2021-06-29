@@ -120,22 +120,6 @@ class Node extends TNode {
   Expr asExpr() { none() }
 
   /**
-   * Gets a node that this node may flow to using one heap and/or interprocedural step.
-   *
-   * See `TypeTracker` for more details about how to use this.
-   */
-  pragma[inline]
-  Node track(TypeTracker t2, TypeTracker t) { t = t2.step(this, result) }
-
-  /**
-   * Gets a node that may flow into this one using one heap and/or interprocedural step.
-   *
-   * See `TypeBackTracker` for more details about how to use this.
-   */
-  pragma[inline]
-  LocalSourceNode backtrack(TypeBackTracker t2, TypeBackTracker t) { t2 = t.step(result, this) }
-
-  /**
    * Gets a local source node from which data may flow to this node in zero or more local data-flow steps.
    */
   LocalSourceNode getALocalSource() { result.flowsTo(this) }
@@ -194,6 +178,45 @@ class CallCfgNode extends CfgNode, LocalSourceNode {
 
   /** Gets the data-flow node corresponding to the named argument of the call corresponding to this data-flow node */
   Node getArgByName(string name) { result.asCfgNode() = node.getArgByName(name) }
+}
+
+/**
+ * A data-flow node corresponding to a method call, that is `foo.bar(...)`.
+ *
+ * Also covers the case where the method lookup is done separately from the call itself, as in
+ * `temp = foo.bar; temp(...)`. Note that this is only tracked through local scope.
+ */
+class MethodCallNode extends CallCfgNode {
+  AttrRead method_lookup;
+
+  MethodCallNode() { method_lookup = this.getFunction().getALocalSource() }
+
+  /**
+   * Gets the name of the method being invoked (the `bar` in `foo.bar(...)`) if it can be determined.
+   *
+   * Note that this method may have multiple results if a single call node represents calls to
+   * multiple different objects and methods. If you want to link up objects and method names
+   * accurately, use the `calls` method instead.
+   */
+  string getMethodName() { result = method_lookup.getAttributeName() }
+
+  /**
+   * Gets the data-flow node corresponding to the object receiving this call. That is, the `foo` in
+   * `foo.bar(...)`.
+   *
+   * Note that this method may have multiple results if a single call node represents calls to
+   * multiple different objects and methods. If you want to link up objects and method names
+   * accurately, use the `calls` method instead.
+   */
+  Node getObject() { result = method_lookup.getObject() }
+
+  /** Holds if this data-flow node calls method `methodName` on the object node `object`. */
+  predicate calls(Node object, string methodName) {
+    // As `getObject` and `getMethodName` may both have multiple results, we must look up the object
+    // and method name directly on `method_lookup`.
+    object = method_lookup.getObject() and
+    methodName = method_lookup.getAttributeName()
+  }
 }
 
 /**

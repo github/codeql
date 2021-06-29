@@ -3,7 +3,8 @@ edges
 | SensitiveBroadcast.java:13:41:13:52 | refreshToken : String | SensitiveBroadcast.java:14:31:14:36 | intent |
 | SensitiveBroadcast.java:25:32:25:39 | password : String | SensitiveBroadcast.java:26:31:26:36 | intent |
 | SensitiveBroadcast.java:36:35:36:39 | email : String | SensitiveBroadcast.java:38:31:38:36 | intent |
-| SensitiveBroadcast.java:50:22:50:29 | password : String | SensitiveBroadcast.java:52:31:52:36 | intent |
+| SensitiveBroadcast.java:50:9:50:16 | userinfo [post update] [<element>] : String | SensitiveBroadcast.java:52:31:52:36 | intent |
+| SensitiveBroadcast.java:50:22:50:29 | password : String | SensitiveBroadcast.java:50:9:50:16 | userinfo [post update] [<element>] : String |
 | SensitiveBroadcast.java:97:35:97:40 | ticket : String | SensitiveBroadcast.java:98:54:98:59 | intent |
 | SensitiveBroadcast.java:109:32:109:39 | passcode : String | SensitiveBroadcast.java:111:54:111:59 | intent |
 | SensitiveBroadcast.java:136:33:136:38 | passwd : String | SensitiveBroadcast.java:140:54:140:59 | intent |
@@ -15,6 +16,7 @@ nodes
 | SensitiveBroadcast.java:26:31:26:36 | intent | semmle.label | intent |
 | SensitiveBroadcast.java:36:35:36:39 | email : String | semmle.label | email : String |
 | SensitiveBroadcast.java:38:31:38:36 | intent | semmle.label | intent |
+| SensitiveBroadcast.java:50:9:50:16 | userinfo [post update] [<element>] : String | semmle.label | userinfo [post update] [<element>] : String |
 | SensitiveBroadcast.java:50:22:50:29 | password : String | semmle.label | password : String |
 | SensitiveBroadcast.java:52:31:52:36 | intent | semmle.label | intent |
 | SensitiveBroadcast.java:97:35:97:40 | ticket : String | semmle.label | ticket : String |

@@ -4,6 +4,7 @@
  *              malicious LDAP code by the user.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 9.8
  * @precision high
  * @id cs/ldap-injection
  * @tags security

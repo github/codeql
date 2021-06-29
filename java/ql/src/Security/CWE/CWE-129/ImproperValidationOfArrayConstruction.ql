@@ -3,6 +3,7 @@
  * @description Using unvalidated external input as the argument to a construction of an array can lead to index out of bound exceptions.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 8.8
  * @precision medium
  * @id java/improper-validation-of-array-construction
  * @tags security

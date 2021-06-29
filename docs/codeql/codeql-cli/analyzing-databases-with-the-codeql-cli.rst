@@ -24,11 +24,12 @@ Before starting an analysis you must:
 Running ``codeql database analyze``
 ------------------------------------
 
-When you run ``database analyze``, it does two things:
+When you run ``database analyze``, it:
 
 #. Executes one or more query files, by running them over a CodeQL database.
 #. Interprets the results, based on certain query metadata, so that alerts can be
    displayed in the correct location in the source code.
+#. Reports the results of any diagnostic and summary queries to standard output.
 
 You can analyze a database by running the following command::
 
@@ -101,41 +102,53 @@ You can also run your own custom queries with the ``database analyze`` command.
 For more information about preparing your queries to use with the CodeQL CLI,
 see ":doc:`Using custom queries with the CodeQL CLI <using-custom-queries-with-the-codeql-cli>`."
 
-
-Running LGTM.com query suites
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Running GitHub code scanning suites
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The CodeQL repository also includes query suites, which can be run over your
 code as part of a broader code review. CodeQL query suites are ``.qls`` files
 that use directives to select queries to run based on certain metadata
 properties.
 
-The query suites included in the CodeQL repository select the same set of
-queries that are run by default on `LGTM.com <https://lgtm.com>`__. The queries
-are selected to highlight the most relevant and useful results for each
-language. 
-
-The language-specific LGTM query suites are located at the following paths in
+The CodeQL repository includes query suites that are used by the CodeQL action on 
+`GitHub.com <https://github.com>`__. The query suites are located at the following paths in
 the CodeQL repository::
 
-   ql/<language>/ql/src/codeql-suites/<language>-lgtm.qls
+   ql/<language>/ql/src/codeql-suites/<language>-code-scanning.qls
 
 and at the following path in the CodeQL for Go repository::
 
-   ql/src/codeql-suites/go-lgtm.qls
+   ql/src/codeql-suites/go-code-scanning.qls
 
 These locations are specified in the metadata included in the standard QL packs.
-This means that CodeQL knows where to find the suite files automatically, and
+This means that the CodeQL CLI knows where to find the suite files automatically, and
 you don't have to specify the full path on the command line when running an
 analysis. For more information, see ":ref:`About QL packs <standard-ql-packs>`."
 
-For example, to run the LGTM.com query suite on a C++ codebase (generating
-results in the latest SARIF format), you would run::
+.. pull-quote::
 
-   codeql database analyze <cpp-database> cpp-lgtm.qls --format=sarif-latest --output=cpp-analysis/cpp-results.sarif
-   
+   Important
+
+   If you plan to upload the results to GitHub, you must generate SARIF results.
+   For more information, see `Analyzing a CodeQL database <https://docs.github.com/en/code-security/secure-coding/running-codeql-cli-in-your-ci-system#analyzing-a-codeql-database>`__ in the GitHub documentation.
+
+For example, to run the code scanning query suite on a C++ codebase and generate
+results in the v2.1 SARIF format supported by all versions of GitHub, you would run::
+
+   codeql database analyze <cpp-database> cpp-code-scanning.qls --format=sarifv2.1.0 --output=cpp-analysis/cpp-results.sarif
+
+The repository also includes the query suites used by `LGTM.com <https://lgtm.com>`__.
+These are stored alongside the code scanning suites with names of the form: ``<language>-lgtm.qls``.
+
 For information about creating custom query suites, see ":doc:`Creating
 CodeQL query suites <creating-codeql-query-suites>`."
+
+Diagnostic and summary information
+..................................
+
+When you create a CodeQL database, the extractor stores diagnostic data in the database. The code scanning query suites include additional queries to report on this diagnostic data and calculate summary metrics. When the ``database analyze`` command completes, the CLI generates the results file and reports any diagnostic and summary data to standard output. If you choose to generate SARIF output, the additional data is also included in the SARIF file.
+
+If the analysis found fewer results for standard queries than you expected, review the results of the diagnostic and summary queries to check whether the CodeQL database is likely to be a good representation of the codebase that you want to analyze.
 
 Running all queries in a directory
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

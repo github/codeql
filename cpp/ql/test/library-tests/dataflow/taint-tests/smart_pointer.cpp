@@ -9,7 +9,7 @@ template<typename T> void sink(std::unique_ptr<T>&);
 
 void test_make_shared() {
     std::shared_ptr<int> p = std::make_shared<int>(source());
-    sink(*p); // $ ast MISSING: ir
+    sink(*p); // $ ast,ir
     sink(p); // $ ast,ir
 }
 
@@ -21,7 +21,7 @@ void test_make_shared_array() {
 
 void test_make_unique() {
     std::unique_ptr<int> p = std::make_unique<int>(source());
-    sink(*p); // $ ast MISSING: ir
+    sink(*p); // $ ast,ir
     sink(p); // $ ast,ir
 }
 
@@ -101,7 +101,7 @@ void taint_x(A* pa) {
 void reverse_taint_smart_pointer() {
   std::unique_ptr<A> p = std::unique_ptr<A>(new A);
   taint_x(p.get());
-  sink(p->x); // $ ast MISSING: ir
+  sink(p->x); // $ ast,ir
 }
 
 struct C {

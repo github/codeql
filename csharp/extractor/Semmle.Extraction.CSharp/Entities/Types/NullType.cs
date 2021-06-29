@@ -13,7 +13,7 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.types(this, Kinds.TypeKind.NULL, "null");
         }
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             trapFile.Write("<null>;type");
         }

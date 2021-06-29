@@ -106,7 +106,7 @@ private module DispatchImpl {
       mayBenefitFromCallContext(ma, c, i) and
       c = viableCallable(ctx) and
       contextArgHasType(ctx, i, t, exact) and
-      ma.getMethod() = def
+      ma.getMethod().getSourceDeclaration() = def
     |
       exact = true and result = VirtualDispatch::exactMethodImpl(def, t.getSourceDeclaration())
       or

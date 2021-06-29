@@ -10,35 +10,48 @@ private import semmle.python.dataflow.new.internal.TaintTrackingPublic
 predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
 
 /**
- * Holds if the additional step from `nodeFrom` to `nodeTo` should be included in all
- * global taint flow configurations.
+ * Holds if default `TaintTracking::Configuration`s should allow implicit reads
+ * of `c` at sinks and inputs to additional taint steps.
  */
-predicate defaultAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-  localAdditionalTaintStep(nodeFrom, nodeTo)
-  or
-  any(AdditionalTaintStep a).step(nodeFrom, nodeTo)
+bindingset[node]
+predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::Content c) { none() }
+
+private module Cached {
+  /**
+   * Holds if the additional step from `nodeFrom` to `nodeTo` should be included in all
+   * global taint flow configurations.
+   */
+  cached
+  predicate defaultAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    localAdditionalTaintStep(nodeFrom, nodeTo)
+    or
+    any(AdditionalTaintStep a).step(nodeFrom, nodeTo)
+  }
+
+  /**
+   * Holds if taint can flow in one local step from `nodeFrom` to `nodeTo` excluding
+   * local data flow steps. That is, `nodeFrom` and `nodeTo` are likely to represent
+   * different objects.
+   */
+  cached
+  predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    concatStep(nodeFrom, nodeTo)
+    or
+    subscriptStep(nodeFrom, nodeTo)
+    or
+    stringManipulation(nodeFrom, nodeTo)
+    or
+    containerStep(nodeFrom, nodeTo)
+    or
+    copyStep(nodeFrom, nodeTo)
+    or
+    forStep(nodeFrom, nodeTo)
+    or
+    unpackingAssignmentStep(nodeFrom, nodeTo)
+  }
 }
 
-/**
- * Holds if taint can flow in one local step from `nodeFrom` to `nodeTo` excluding
- * local data flow steps. That is, `nodeFrom` and `nodeTo` are likely to represent
- * different objects.
- */
-predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-  concatStep(nodeFrom, nodeTo)
-  or
-  subscriptStep(nodeFrom, nodeTo)
-  or
-  stringManipulation(nodeFrom, nodeTo)
-  or
-  containerStep(nodeFrom, nodeTo)
-  or
-  copyStep(nodeFrom, nodeTo)
-  or
-  forStep(nodeFrom, nodeTo)
-  or
-  unpackingAssignmentStep(nodeFrom, nodeTo)
-}
+import Cached
 
 /**
  * Holds if taint can flow from `nodeFrom` to `nodeTo` with a step related to concatenation.

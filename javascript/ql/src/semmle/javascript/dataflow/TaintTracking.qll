@@ -550,7 +550,8 @@ module TaintTracking {
       // reading from a tainted object yields a tainted result
       succ.(DataFlow::PropRead).getBase() = pred and
       not AccessPath::DominatingPaths::hasDominatingWrite(succ) and
-      not isSafeClientSideUrlProperty(succ)
+      not isSafeClientSideUrlProperty(succ) and
+      not ClassValidator::isAccessToSanitizedField(succ)
       or
       // iterating over a tainted iterator taints the loop variable
       exists(ForOfStmt fos |

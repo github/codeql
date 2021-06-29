@@ -341,18 +341,28 @@ private module Sqlite {
     result = sqlite().getMember("verbose").getReturn()
   }
 
-  /** Gets an expression that constructs a Sqlite database instance. */
+  /** Gets an expression that constructs or returns a Sqlite database instance. */
   API::Node database() {
     // new require('sqlite3').Database()
     result = sqlite().getMember("Database").getInstance()
     or
+    // chained call
+    result = getAChainingQueryCall()
+    or
     result = API::Node::ofType("sqlite3", "Database")
+  }
+
+  /** A call to a query method on a Sqlite database instance that returns the same instance. */
+  private API::Node getAChainingQueryCall() {
+    result = database().getMember(["all", "each", "exec", "get", "run"]).getReturn()
   }
 
   /** A call to a Sqlite query method. */
   private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
     QueryCall() {
-      this = database().getMember(["all", "each", "exec", "get", "prepare", "run"]).getACall()
+      this = getAChainingQueryCall().getAnImmediateUse()
+      or
+      this = database().getMember("prepare").getACall()
     }
 
     override DataFlow::Node getAQueryArgument() { result = getArgument(0) }

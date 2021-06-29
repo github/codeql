@@ -32,8 +32,8 @@ def test_additional_taint():
     cmd3 = builtins.compile(src, "<filename>", "exec")
 
     ensure_tainted(
-        src,
-        cmd1,
-        cmd2,
-        cmd3,
+        src, # $ tainted
+        cmd1, # $ tainted
+        cmd2, # $ tainted
+        cmd3, # $ tainted
     )

@@ -23,7 +23,7 @@ secret_message = b"secret message"
 
 encrypt_cipher = PKCS1_OAEP.new(public_key)
 
-encrypted = encrypt_cipher.encrypt(secret_message)
+encrypted = encrypt_cipher.encrypt(secret_message) # $ CryptographicOperation CryptographicOperationInput=secret_message # MISSING: CryptographicOperationAlgorithm=RSA-OAEP?
 
 print("encrypted={}".format(encrypted))
 
@@ -31,9 +31,7 @@ print()
 
 decrypt_cipher = PKCS1_OAEP.new(private_key)
 
-decrypted = decrypt_cipher.decrypt(
-    encrypted,
-)
+decrypted = decrypt_cipher.decrypt(encrypted) # $ CryptographicOperation CryptographicOperationInput=encrypted # MISSING: CryptographicOperationAlgorithm=RSA-OAEP?
 
 print("decrypted={}".format(decrypted))
 assert decrypted == secret_message
@@ -51,23 +49,23 @@ message = b"message"
 
 signer = pss.new(private_key)
 
-hasher = SHA256.new(message)
-signature = signer.sign(hasher)
+hasher = SHA256.new(message) # $ CryptographicOperation CryptographicOperationAlgorithm=SHA256 CryptographicOperationInput=message
+signature = signer.sign(hasher) # $ CryptographicOperation CryptographicOperationInput=hasher # MISSING: CryptographicOperationAlgorithm=RSA-PSS?
 
 print("signature={}".format(signature))
 
 print()
 
-
 verifier = pss.new(public_key)
-hasher = SHA256.new(message)
-verifier.verify(hasher, signature)
+
+hasher = SHA256.new(message) # $ CryptographicOperation CryptographicOperationAlgorithm=SHA256 CryptographicOperationInput=message
+verifier.verify(hasher, signature) # $ CryptographicOperation CryptographicOperationInput=hasher CryptographicOperationInput=signature # MISSING: CryptographicOperationAlgorithm=RSA-PSS?
 print("Signature verified (as expected)")
 
 try:
     verifier = pss.new(public_key)
-    hasher = SHA256.new(b"other message")
-    verifier.verify(hasher, signature)
+    hasher = SHA256.new(b"other message") # $ CryptographicOperation CryptographicOperationAlgorithm=SHA256 CryptographicOperationInput=b"other message"
+    verifier.verify(hasher, signature) # $ CryptographicOperation CryptographicOperationInput=hasher CryptographicOperationInput=signature # MISSING: CryptographicOperationAlgorithm=RSA-PSS?
     raise Exception("Signature verified (unexpected)")
 except ValueError:
     print("Signature mismatch (as expected)")

@@ -4,6 +4,7 @@
  *              overflows.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 8.6
  * @precision medium
  * @id java/uncontrolled-arithmetic
  * @tags security

@@ -5,6 +5,7 @@
  * @kind path-problem
  * @id cs/unsafe-deserialization-untrusted-input
  * @problem.severity error
+ * @security-severity 9.8
  * @precision high
  * @tags security
  *       external/cwe/cwe-502

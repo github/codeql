@@ -81,22 +81,45 @@ namespace Semmle.Extraction.CSharp.Entities
             Symbol.BuildDisplayName(Context, trapFile, constructUnderlyingTupleType);
             trapFile.WriteLine("\")");
 
+            var baseTypes = GetBaseTypeDeclarations();
+
             // Visit base types
-            var baseTypes = new List<Type>();
             if (Symbol.GetNonObjectBaseType(Context) is INamedTypeSymbol @base)
             {
-                var baseKey = Create(Context, @base);
-                trapFile.extend(this, baseKey.TypeRef);
-                if (Symbol.TypeKind != TypeKind.Struct)
-                    baseTypes.Add(baseKey);
+                var bts = GetBaseTypeDeclarations(baseTypes, @base);
+
+                Context.PopulateLater(() =>
+                {
+                    var baseKey = Create(Context, @base);
+                    trapFile.extend(this, baseKey.TypeRef);
+
+                    if (Symbol.TypeKind != TypeKind.Struct)
+                    {
+                        foreach (var bt in bts)
+                        {
+                            TypeMention.Create(Context, bt.Type, this, baseKey);
+                        }
+                    }
+                });
             }
 
+            // Visit implemented interfaces
             if (!(base.Symbol is IArrayTypeSymbol))
             {
-                foreach (var t in base.Symbol.Interfaces.Select(i => Create(Context, i)))
+                foreach (var i in base.Symbol.Interfaces)
                 {
-                    trapFile.implement(this, t.TypeRef);
-                    baseTypes.Add(t);
+                    var bts = GetBaseTypeDeclarations(baseTypes, i);
+
+                    Context.PopulateLater(() =>
+                    {
+                        var interfaceKey = Create(Context, i);
+                        trapFile.implement(this, interfaceKey.TypeRef);
+
+                        foreach (var bt in bts)
+                        {
+                            TypeMention.Create(Context, bt.Type, this, interfaceKey);
+                        }
+                    });
                 }
             }
 
@@ -145,23 +168,30 @@ namespace Semmle.Extraction.CSharp.Entities
             }
 
             Modifier.ExtractModifiers(Context, trapFile, this, Symbol);
+        }
 
-            if (IsSourceDeclaration && Symbol.FromSource())
+        private IEnumerable<BaseTypeSyntax> GetBaseTypeDeclarations()
+        {
+            if (!IsSourceDeclaration || !Symbol.FromSource())
             {
-                var declSyntaxReferences = Symbol.DeclaringSyntaxReferences.Select(d => d.GetSyntax()).ToArray();
-
-                var baseLists = declSyntaxReferences.OfType<ClassDeclarationSyntax>().Select(c => c.BaseList);
-                baseLists = baseLists.Concat(declSyntaxReferences.OfType<InterfaceDeclarationSyntax>().Select(c => c.BaseList));
-                baseLists = baseLists.Concat(declSyntaxReferences.OfType<StructDeclarationSyntax>().Select(c => c.BaseList));
-
-                baseLists
-                    .Where(bl => bl is not null)
-                    .SelectMany(bl => bl!.Types)
-                    .Zip(
-                        baseTypes.Where(bt => bt.Symbol.SpecialType != SpecialType.System_Object),
-                        (s, t) => TypeMention.Create(Context, s.Type, this, t))
-                    .Enumerate();
+                return Enumerable.Empty<BaseTypeSyntax>();
             }
+
+            var declSyntaxReferences = Symbol.DeclaringSyntaxReferences.Select(d => d.GetSyntax()).ToArray();
+
+            var baseLists = declSyntaxReferences.OfType<ClassDeclarationSyntax>().Select(c => c.BaseList);
+            baseLists = baseLists.Concat(declSyntaxReferences.OfType<InterfaceDeclarationSyntax>().Select(c => c.BaseList));
+            baseLists = baseLists.Concat(declSyntaxReferences.OfType<StructDeclarationSyntax>().Select(c => c.BaseList));
+
+            return baseLists
+                .Where(bl => bl is not null)
+                .SelectMany(bl => bl!.Types)
+                .ToList();
+        }
+
+        private IEnumerable<BaseTypeSyntax> GetBaseTypeDeclarations(IEnumerable<BaseTypeSyntax> baseTypes, INamedTypeSymbol type)
+        {
+            return baseTypes.Where(bt => SymbolEqualityComparer.Default.Equals(Context.GetModel(bt).GetTypeInfo(bt.Type).Type, type));
         }
 
         private void ExtractParametersForDelegateLikeType(TextWriter trapFile, IMethodSymbol invokeMethod, Action<Type> storeReturnType)
