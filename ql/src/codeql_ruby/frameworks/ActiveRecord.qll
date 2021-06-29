@@ -44,19 +44,22 @@ class ActiveRecordModelClass extends ClassDeclaration {
 
 /** A class method call whose receiver is an `ActiveRecordModelClass`. */
 class ActiveRecordModelClassMethodCall extends MethodCall {
+  private ActiveRecordModelClass recvCls;
+
   ActiveRecordModelClassMethodCall() {
     // e.g. Foo.where(...)
-    exists(ActiveRecordModelClass recvCls |
-      recvCls.getModule() = resolveScopeExpr(this.getReceiver())
-    )
+    recvCls.getModule() = resolveScopeExpr(this.getReceiver())
     or
     // e.g. Foo.joins(:bars).where(...)
-    this.getReceiver() instanceof ActiveRecordModelClassMethodCall
+    recvCls = this.getReceiver().(ActiveRecordModelClassMethodCall).getReceiverClass()
     or
     // e.g. self.where(...) within an ActiveRecordModelClass
     this.getReceiver() instanceof Self and
-    this.getEnclosingModule() instanceof ActiveRecordModelClass
+    this.getEnclosingModule() = recvCls
   }
+
+  /** The `ActiveRecordModelClass` of the receiver of this method. */
+  ActiveRecordModelClass getReceiverClass() { result = recvCls }
 }
 
 private Expr sqlFragmentArgument(MethodCall call) {
@@ -116,8 +119,6 @@ class PotentiallyUnsafeSqlExecutingMethodCall extends ActiveRecordModelClassMeth
   private Expr sqlFragmentExpr;
 
   // TODO: `find` with `lock:` option also takes an SQL fragment
-  // TODO: refine this further to account for cases where the method called has
-  //       been overriden to perform validation on its arguments
   PotentiallyUnsafeSqlExecutingMethodCall() {
     exists(Expr arg |
       arg = sqlFragmentArgument(this) and
@@ -126,6 +127,11 @@ class PotentiallyUnsafeSqlExecutingMethodCall extends ActiveRecordModelClassMeth
         sqlFragmentExpr = arg
         or
         sqlFragmentExpr = arg.(ArrayLiteral).getElement(0)
+      ) and
+      // Check that method has not been overridden
+      not exists(SingletonMethod m |
+        m.getName() = this.getMethodName() and
+        m.getOuterScope() = this.getReceiverClass()
       )
     )
   }

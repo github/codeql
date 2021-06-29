@@ -9,9 +9,19 @@ class User < ApplicationRecord
     # BAD: possible untrusted input interpolated into SQL fragment
     find(:first, :conditions => "name='#{name}' and pass='#{pass}'")
   end
+
+  def self.from(user_group_id)
+    # GOOD: `find_by` with hash argument
+    UserGroup.find_by(id: user_group_id).users
+  end
 end
 
 class Admin < User
+  def self.delete_all(condition = nil)
+    # BAD: `delete_all` overrides an ActiveRecord method, but doesn't perform
+    # any validation before passing its arguments on to another ActiveRecord method
+    destroy_all(condition)
+  end
 end
 
 class FooController < ActionController::Base
@@ -47,9 +57,7 @@ class FooController < ActionController::Base
   end
 end
 
-
 class BarController < ApplicationController
-
   def some_other_request_handler
     ps = params
     uid = ps[:id]
@@ -60,8 +68,7 @@ class BarController < ApplicationController
     User.delete_all("id " + uidEq)
   end
 
-  def sanitized_paths
-
+  def safe_paths
     dir = params[:order]
     # GOOD: barrier guard prevents taint flow
     dir = "DESC" unless dir == "ASC"
@@ -76,8 +83,14 @@ class BarController < ApplicationController
     name = params[:user_name]
     # GOOD: hash arguments are sanitized by ActiveRecord
     User.find_by(user_name: name)
+
+    # OK: `find` method is overridden in `User`
+    User.find(params[:user_group])
   end
 end
 
 class BazController < BarController
+  def yet_another_handler
+    Admin.delete_all(params[:admin_condition])
+  end
 end
