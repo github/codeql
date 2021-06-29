@@ -23,14 +23,5 @@ def subclass_objects():
 
     return Movie.objects(__raw__=safe_search)
 
-@app.route("/get_db_find")
-def get_db_find():
-    unsafe_search = request.args['search']
-    json_search = json.loads(unsafe_search)
-    safe_search = sanitize(json_search)
-
-    retrieved_db = db.get_db()
-    return retrieved_db["Movie"].find({'name': safe_search})
-
 # if __name__ == "__main__":
 #     app.run(debug=True)
