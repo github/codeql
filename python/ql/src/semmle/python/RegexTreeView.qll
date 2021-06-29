@@ -445,7 +445,7 @@ class RegExpEscape extends RegExpNormalChar {
     or
     this.getUnescaped() = "t" and result = "\t"
     or
-    this.getUnescaped() = "f" and result = "\f"
+    this.getUnescaped() = "f" and result = ""
     or
     isUnicode() and
     result = getUnicode()
