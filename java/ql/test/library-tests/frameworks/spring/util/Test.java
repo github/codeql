@@ -12,6 +12,7 @@ import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -54,8 +55,37 @@ public class Test {
   Properties newPropertiesWithMapKey(Object element) { Properties p = new Properties(); p.put(element, null); return p; }
 	// Object newWithMapValue(Object element) { return null; }
   Properties newPropertiesWithMapValue(Object element) { Properties p = new Properties(); p.put(null, element); return p; }
-	Object source() { return null; }
-	void sink(Object o) { }
+	static Object source() { return null; }
+	static void sink(Object o) { }
+
+	// Test AntPathMatcher's protected methods:
+	private static class AntPathMatcherTest extends AntPathMatcher {
+
+		public void test() throws Exception {
+			{
+				// "org.springframework.util;AntPathMatcher;false;doMatch;;;Argument[1];MapValue of Argument[3];taint"
+				Map<String, String> out = new HashMap<>();
+				String in = (String)source();
+				this.doMatch("somePattern", in, true, out);
+				sink(out.get("someKey")); // $hasTaintFlow
+			}
+			{
+        // "org.springframework.util;AntPathMatcher;false;tokenizePath;;;Argument[0];ArrayValue of ReturnValue;taint",
+				String[] out = null;
+				String in = (String)source();
+				out = this.tokenizePath(in);
+				sink(out[0]); // $hasTaintFlow
+			}
+			{
+        // "org.springframework.util;AntPathMatcher;false;tokenizePattern;;;Argument[0];ArrayValue of ReturnValue;taint",
+				String[] out = null;
+				String in = (String)source();
+				out = this.tokenizePattern(in);
+				sink(out[0]); // $hasTaintFlow
+			}
+		}
+
+	}
 
 	public void test() throws Exception {
 
