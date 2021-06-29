@@ -1,0 +1,8 @@
+CWE,Sink identifier,Label
+CWE‑089,sql,SQL injection
+CWE‑022,create-file,Path injection
+CWE‑036,url-open-stream,Path traversal
+CWE‑094,bean-validation,Code injection
+CWE‑319,open-url,Cleartext transmission
+CWE‑079,xss,Cross-site scripting
+CWE‑090,ldap,LDAP injection

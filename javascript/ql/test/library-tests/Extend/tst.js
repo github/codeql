@@ -79,3 +79,8 @@ checkShallow(require('lodash').extend(base(), arg()));
 checkShallow(require("xtend")(base(), arg()));
 checkShallow(require("xtend/immutable")(base(), arg()));
 checkShallow(require("ramda").merge(base(), arg()));
+
+// webpack-merge. deep. 
+const webpackMerge = require('webpack-merge');
+checkDeep(webpackMerge.merge(base(), arg()));
+checkDeep(webpackMerge.mergeWithCustomize({})(base(), arg()));

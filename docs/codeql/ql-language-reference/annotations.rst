@@ -259,8 +259,6 @@ This means that it is part of the output of the QL program.
 Compiler pragmas
 ================
 
-**Available for**: |characteristic predicates|, |member predicates|, |non-member predicates|
-
 The following compiler pragmas affect the compilation and optimization of queries. You
 should avoid using these annotations unless you experience significant performance issues.
 
@@ -284,6 +282,8 @@ predicates.
 ``pragma[inline]``
 ------------------
 
+**Available for**: |characteristic predicates|, |member predicates|, |non-member predicates|
+
 The ``pragma[inline]`` annotation tells the QL optimizer to always inline the annotated predicate
 into the places where it is called. This can be useful when a predicate body is very expensive to 
 compute entirely, as it ensures that the predicate is evaluated with the other contextual information
@@ -291,6 +291,8 @@ at the places where it is called.
 
 ``pragma[noinline]``
 --------------------
+
+**Available for**: |characteristic predicates|, |member predicates|, |non-member predicates|
 
 The ``pragma[noinline]`` annotation is used to prevent a predicate from being inlined into the
 place where it is called. In practice, this annotation is useful when you've already grouped 
@@ -300,6 +302,8 @@ work of the helper predicate, so it's a good idea to annotate it with ``pragma[n
 
 ``pragma[nomagic]``
 -------------------
+
+**Available for**: |characteristic predicates|, |member predicates|, |non-member predicates|
 
 The ``pragma[nomagic]`` annotation is used to prevent the QL optimizer from performing the "magic sets"
 optimization on a predicate. 
@@ -313,6 +317,8 @@ Note that ``nomagic`` implies ``noinline``.
 
 ``pragma[noopt]``
 -----------------
+
+**Available for**: |characteristic predicates|, |member predicates|, |non-member predicates|
 
 The ``pragma[noopt]`` annotation is used to prevent the QL optimizer from optimizing a
 predicate, except when it's absolutely necessary for compilation and evaluation to work.
@@ -364,7 +370,33 @@ When you use this annotation, be aware of the following issues:
            succ.getSucc() = 3
          )
        }
-   
+
+``pragma[only_bind_out]``
+-------------------------
+
+**Available for**: |expressions|
+
+The ``pragma[only_bind_out]`` annotation lets you specify the direction in which the QL compiler should bind expressions.
+This can be useful to improve performance in rare cases where the QL optimizer orders parts of the QL program in an inefficient way.
+
+For example, ``x = pragma[only_bind_out](y)`` is semantically equivalent to ``x = y``, but has different binding behavior. 
+``x = y`` binds ``x`` from ``y`` and vice versa, while ``x = pragma[only_bind_out](y)`` only binds ``x`` from ``y``.
+
+For more information, see ":ref:`Binding <binding>`."
+
+``pragma[only_bind_into]``
+--------------------------
+
+**Available for**: |expressions|
+
+The ``pragma[only_bind_into]`` annotation lets you specify the direction in which the QL compiler should bind expressions.
+This can be useful to improve performance in rare cases where the QL optimizer orders parts of the QL program in an inefficient way.
+
+For example, ``x = pragma[only_bind_into](y)`` is semantically equivalent to ``x = y``, but has different binding behavior. 
+``x = y`` binds ``x`` from ``y`` and vice versa, while ``x = pragma[only_bind_into](y)`` only binds ``y`` from ``x``.
+
+For more information, see ":ref:`Binding <binding>`."
+
 .. _language:
 
 Language pragmas
@@ -414,3 +446,4 @@ The ``bindingset`` annotation takes a comma-separated list of variables.
 .. |modules|                   replace:: :ref:`modules <modules>`
 .. |aliases|                   replace:: :ref:`aliases <aliases>`
 .. |algebraic datatypes|       replace:: :ref:`algebraic datatypes <algebraic-datatypes>`
+.. |expressions|               replace:: :ref:`expressions <expressions>`

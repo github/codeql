@@ -25,7 +25,7 @@ namespace Semmle.Extraction.CIL.Entities
             return type.GetHashCode() * 13 + index;
         }
 
-        public override void WriteId(TextWriter trapFile, bool inContext)
+        public override void WriteId(EscapingTextWriter trapFile, bool inContext)
         {
             type.WriteId(trapFile, inContext);
             trapFile.Write('!');

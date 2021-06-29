@@ -526,7 +526,6 @@ predicate localFlowStep(Node nodeFrom, Node nodeTo) {
  * This is the local flow predicate that's used as a building block in global
  * data flow. It may have less flow than the `localFlowStep` predicate.
  */
-cached
 predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   // Expr -> Expr
   exprToExprStep_nocfg(nodeFrom.asExpr(), nodeTo.asExpr())
@@ -694,7 +693,12 @@ private predicate exprToExprStep_nocfg(Expr fromExpr, Expr toExpr) {
           fromExpr = call.getQualifier()
         ) and
         call.getTarget() = f and
-        outModel.isReturnValue()
+        // AST dataflow treats a reference as if it were the referred-to object, while the dataflow
+        // models treat references as pointers. If the return type of the call is a reference, then
+        // look for data flow the the referred-to object, rather than the reference itself.
+        if call.getType().getUnspecifiedType() instanceof ReferenceType
+        then outModel.isReturnValueDeref()
+        else outModel.isReturnValue()
       )
     )
 }
@@ -762,6 +766,50 @@ VariableAccess getAnAccessToAssignedVariable(Expr assign) {
     var.definedByExpr(_, assign) and
     result = var.getAnAccess()
   )
+}
+
+private newtype TContent =
+  TFieldContent(Field f) or
+  TCollectionContent() or
+  TArrayContent()
+
+/**
+ * A description of the way data may be stored inside an object. Examples
+ * include instance fields, the contents of a collection object, or the contents
+ * of an array.
+ */
+class Content extends TContent {
+  /** Gets a textual representation of this element. */
+  abstract string toString();
+
+  predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
+    path = "" and sl = 0 and sc = 0 and el = 0 and ec = 0
+  }
+}
+
+/** A reference through an instance field. */
+class FieldContent extends Content, TFieldContent {
+  Field f;
+
+  FieldContent() { this = TFieldContent(f) }
+
+  Field getField() { result = f }
+
+  override string toString() { result = f.toString() }
+
+  override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
+    f.getLocation().hasLocationInfo(path, sl, sc, el, ec)
+  }
+}
+
+/** A reference through an array. */
+private class ArrayContent extends Content, TArrayContent {
+  override string toString() { result = "[]" }
+}
+
+/** A reference through the contents of some collection-like container. */
+private class CollectionContent extends Content, TCollectionContent {
+  override string toString() { result = "<element>" }
 }
 
 /**

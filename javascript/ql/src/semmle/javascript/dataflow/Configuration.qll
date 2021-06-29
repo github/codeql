@@ -2068,3 +2068,14 @@ class VarAccessBarrier extends DataFlow::Node {
     )
   }
 }
+
+/**
+ *  Holds if there is a path without unmatched return steps from `source` to `sink`.
+ */
+predicate hasPathWithoutUnmatchedReturn(SourcePathNode source, SinkPathNode sink) {
+  exists(MidPathNode mid |
+    source.getASuccessor*() = mid and
+    sink = mid.getASuccessor() and
+    mid.getPathSummary().hasReturn() = false
+  )
+}

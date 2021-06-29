@@ -11,7 +11,7 @@ namespace Semmle.Extraction.CSharp.Entities
             PointedAtType = Create(cx, Symbol.PointedAtType);
         }
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             trapFile.WriteSubId(PointedAtType);
             trapFile.Write("*;type");

@@ -1,6 +1,7 @@
 private import csharp
 private import cil
 private import dotnet
+private import DataFlowImplCommon as DataFlowImplCommon
 private import DataFlowPublic
 private import DataFlowPrivate
 private import FlowSummaryImpl as FlowSummaryImpl
@@ -67,33 +68,30 @@ private predicate transitiveCapturedCallTarget(ControlFlow::Nodes::ElementNode c
   )
 }
 
-cached
+newtype TReturnKind =
+  TNormalReturnKind() or
+  TOutReturnKind(int i) { i = any(Parameter p | p.isOut()).getPosition() } or
+  TRefReturnKind(int i) { i = any(Parameter p | p.isRef()).getPosition() } or
+  TImplicitCapturedReturnKind(LocalScopeVariable v) {
+    exists(Ssa::ExplicitDefinition def | def.isCapturedVariableDefinitionFlowOut(_, _) |
+      v = def.getSourceVariable().getAssignable()
+    )
+  } or
+  TJumpReturnKind(DataFlowCallable target, ReturnKind rk) {
+    rk instanceof NormalReturnKind and
+    (
+      target instanceof Constructor or
+      not target.getReturnType() instanceof VoidType
+    )
+    or
+    exists(target.getParameter(rk.(OutRefReturnKind).getPosition()))
+  }
+
 private module Cached {
-  private import semmle.code.csharp.Caching
-
-  cached
-  newtype TReturnKind =
-    TNormalReturnKind() { Stages::DataFlowStage::forceCachingInSameStage() } or
-    TOutReturnKind(int i) { i = any(Parameter p | p.isOut()).getPosition() } or
-    TRefReturnKind(int i) { i = any(Parameter p | p.isRef()).getPosition() } or
-    TImplicitCapturedReturnKind(LocalScopeVariable v) {
-      exists(Ssa::ExplicitDefinition def | def.isCapturedVariableDefinitionFlowOut(_, _) |
-        v = def.getSourceVariable().getAssignable()
-      )
-    } or
-    TJumpReturnKind(DataFlowCallable target, ReturnKind rk) {
-      rk instanceof NormalReturnKind and
-      (
-        target instanceof Constructor or
-        not target.getReturnType() instanceof VoidType
-      )
-      or
-      exists(target.getParameter(rk.(OutRefReturnKind).getPosition()))
-    }
-
   cached
   newtype TDataFlowCall =
     TNonDelegateCall(ControlFlow::Nodes::ElementNode cfn, DispatchCall dc) {
+      DataFlowImplCommon::forceCachingInSameStage() and
       cfn.getElement() = dc.getCall()
     } or
     TExplicitDelegateLikeCall(ControlFlow::Nodes::ElementNode cfn, DelegateLikeCall dc) {

@@ -34,6 +34,7 @@ getPathArgument
 | tst-file-names.js:44:12:44:49 | globule ... o.js"]) | tst-file-names.js:44:39:44:48 | ["foo.js"] |
 | tst-file-names.js:46:12:46:51 | globule ... .js"]}) | tst-file-names.js:46:34:46:49 | ["a.js", "b.js"] |
 | tst-file-names.js:47:12:47:52 | globule ... b.js"]) | tst-file-names.js:47:28:47:51 | ["foo/a ... /b.js"] |
+| tst-file-names.js:55:1:55:19 | chokidar.watch('.') | tst-file-names.js:55:16:55:18 | '.' |
 getReadNode
 | file-access.js:25:1:25:59 | jsonfil ... bj) {}) | file-access.js:25:52:25:54 | obj |
 | file-access.js:26:1:26:39 | jsonfil ... .json') | file-access.js:26:1:26:39 | jsonfil ... .json') |
@@ -78,6 +79,9 @@ fileNameSource
 | tst-file-names.js:46:12:46:51 | globule ... .js"]}) |
 | tst-file-names.js:47:12:47:52 | globule ... b.js"]) |
 | tst-file-names.js:51:15:51:23 | await foo |
+| tst-file-names.js:56:22:56:25 | path |
+| tst-file-names.js:59:17:59:20 | path |
+| tst-file-names.js:62:16:62:19 | path |
 persistentReadAccess_getAWrite
 | persistence.js:3:5:3:33 | localSt ... prop1') | persistence.js:2:5:2:37 | localSt ... 1', v1) |
 | persistence.js:6:5:6:35 | session ... prop2') | persistence.js:5:5:5:39 | session ... 2', v2) |

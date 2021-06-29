@@ -12,14 +12,18 @@ void workFunction_0(char *s) {
 void workFunction_1(char *s) {
   int intA,intB;
 
-  if(intA + intB) return; // BAD [NOT DETECTED]
+  if(intA + intB) return; // BAD
   if(intA + intB>4) return; // GOOD
-  if(intA>0 && (intA + intB)) return; // BAD [NOT DETECTED]
+  if(intA>0 && (intA + intB)) return; // BAD
   while(intA>0)
   {
     if(intB - intA<10) break;
     intA--;
-  }while(intA>0); // BAD [NOT DETECTED]
+  }while(intA>0); // BAD
+  for(intA=100; intA>0; intA--)
+  {
+    if(intB - intA<10) break;
+  }while(intA>0); // BAD
   while(intA>0)
   {
     if(intB - intA<10) break;

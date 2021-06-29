@@ -7,7 +7,7 @@ class SourceModelTest extends SourceModelCsv {
   override predicate row(string row) {
     row =
       [
-        //"package;type;overrides;name;signature;ext;spec;kind",
+        //`namespace; type; subtypes; name; signature; ext; output; kind`
         "my.qltest;A;false;src1;();;ReturnValue;qltest",
         "my.qltest;A;false;src1;(String);;ReturnValue;qltest",
         "my.qltest;A;false;src1;(java.lang.String);;ReturnValue;qltest-alt",

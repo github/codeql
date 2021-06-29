@@ -47,6 +47,9 @@ class ParameterNode extends DataFlow::SourceNode {
 
   /** Holds if this parameter is a rest parameter. */
   predicate isRestParameter() { p.isRestParameter() }
+
+  /** Gets the data flow node for an expression that is applied to this decorator. */
+  DataFlow::Node getADecorator() { result = getParameter().getADecorator().getExpression().flow() }
 }
 
 /**
@@ -1078,35 +1081,42 @@ module ClassNode {
    * Subclass this to introduce new kinds of class nodes. If you want to refine
    * the definition of existing class nodes, subclass `DataFlow::ClassNode` instead.
    */
+  cached
   abstract class Range extends DataFlow::SourceNode {
     /**
      * Gets the name of the class, if it has one.
      */
+    cached
     abstract string getName();
 
     /**
      * Gets a description of the class.
      */
+    cached
     abstract string describe();
 
     /**
      * Gets the constructor function of this class.
      */
+    cached
     abstract FunctionNode getConstructor();
 
     /**
      * Gets the instance member with the given name and kind.
      */
+    cached
     abstract FunctionNode getInstanceMember(string name, MemberKind kind);
 
     /**
      * Gets an instance member with the given kind.
      */
+    cached
     abstract FunctionNode getAnInstanceMember(MemberKind kind);
 
     /**
      * Gets the static method of this class with the given name.
      */
+    cached
     abstract FunctionNode getStaticMethod(string name);
 
     /**
@@ -1114,20 +1124,24 @@ module ClassNode {
      *
      * The constructor is not considered a static method.
      */
+    cached
     abstract FunctionNode getAStaticMethod();
 
     /**
      * Gets a dataflow node representing a class to be used as the super-class
      * of this node.
      */
+    cached
     abstract DataFlow::Node getASuperClassNode();
 
     /**
      * Gets the type annotation for the field `fieldName`, if any.
      */
+    cached
     TypeAnnotation getFieldTypeAnnotation(string fieldName) { none() }
 
     /** Gets a decorator applied to this class. */
+    cached
     DataFlow::Node getADecorator() { none() }
   }
 

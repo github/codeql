@@ -3,6 +3,7 @@
  * @description Using external input as an index to an array, without proper validation, can lead to index out of bound exceptions.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 8.8
  * @precision medium
  * @id java/improper-validation-of-array-index
  * @tags security

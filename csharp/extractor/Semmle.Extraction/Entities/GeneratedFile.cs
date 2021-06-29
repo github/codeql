@@ -13,7 +13,7 @@ namespace Semmle.Extraction.Entities
             trapFile.files(this, "", "", "");
         }
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             trapFile.Write("GENERATED;sourcefile");
         }

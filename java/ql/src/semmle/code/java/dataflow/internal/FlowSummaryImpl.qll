@@ -9,6 +9,7 @@
 private import FlowSummaryImplSpecific
 private import DataFlowImplSpecific::Private
 private import DataFlowImplSpecific::Public
+private import DataFlowImplCommon as DataFlowImplCommon
 
 /** Provides classes and predicates for defining flow summaries. */
 module Public {
@@ -178,7 +179,6 @@ module Public {
  */
 module Private {
   private import Public
-  private import DataFlowImplCommon as DataFlowImplCommon
 
   newtype TSummaryComponent =
     TContentSummaryComponent(Content c) or
@@ -446,7 +446,19 @@ module Private {
         summary(c, inputContents, outputContents, preservesValue) and
         pred = summaryNodeInputState(c, inputContents) and
         succ = summaryNodeOutputState(c, outputContents)
+      |
+        preservesValue = true
+        or
+        preservesValue = false and not summary(c, inputContents, outputContents, true)
       )
+      or
+      // If flow through a method updates a parameter from some input A, and that
+      // parameter also is returned through B, then we'd like a combined flow from A
+      // to B as well. As an example, this simplifies modeling of fluent methods:
+      // for `StringBuilder.append(x)` with a specified value flow from qualifier to
+      // return value and taint flow from argument 0 to the qualifier, then this
+      // allows us to infer taint flow from argument 0 to the return value.
+      summaryPostUpdateNode(pred, succ) and preservesValue = true
     }
 
     /**
@@ -568,87 +580,226 @@ module Private {
    * summaries into a `SummarizedCallable`s.
    */
   module External {
-    /**
-     * Provides a means of translating an externally (e.g., CSV) defined flow
-     * summary into a `SummarizedCallable`.
-     */
-    abstract class ExternalSummaryCompilation extends string {
-      bindingset[this]
-      ExternalSummaryCompilation() { any() }
-
-      /** Holds if this flow summary is for callable `c`. */
-      abstract predicate callable(DataFlowCallable c, boolean preservesValue);
-
-      /** Holds if the `i`th input component is `c`. */
-      abstract predicate input(int i, SummaryComponent c);
-
-      /** Holds if the `i`th output component is `c`. */
-      abstract predicate output(int i, SummaryComponent c);
-
-      /**
-       * Holds if the input components starting from index `i` translate into `suffix`.
-       */
-      final predicate translateInput(int i, SummaryComponentStack suffix) {
-        exists(SummaryComponent comp | this.input(i, comp) |
-          i = max(int j | this.input(j, _)) and
-          suffix = TSingletonSummaryComponentStack(comp)
-          or
-          exists(TSummaryComponent head, SummaryComponentStack tail |
-            this.translateInputCons(i, head, tail) and
-            suffix = TConsSummaryComponentStack(head, tail)
-          )
-        )
-      }
-
-      final predicate translateInputCons(int i, SummaryComponent head, SummaryComponentStack tail) {
-        this.input(i, head) and
-        this.translateInput(i + 1, tail)
-      }
-
-      /**
-       * Holds if the output components starting from index `i` translate into `suffix`.
-       */
-      predicate translateOutput(int i, SummaryComponentStack suffix) {
-        exists(SummaryComponent comp | this.output(i, comp) |
-          i = max(int j | this.output(j, _)) and
-          suffix = TSingletonSummaryComponentStack(comp)
-          or
-          exists(TSummaryComponent head, SummaryComponentStack tail |
-            this.translateOutputCons(i, head, tail) and
-            suffix = TConsSummaryComponentStack(head, tail)
-          )
-        )
-      }
-
-      predicate translateOutputCons(int i, SummaryComponent head, SummaryComponentStack tail) {
-        this.output(i, head) and
-        this.translateOutput(i + 1, tail)
-      }
+    /** Holds if `spec` is a relevant external specification. */
+    private predicate relevantSpec(string spec) {
+      summaryElement(_, spec, _, _) or
+      summaryElement(_, _, spec, _) or
+      sourceElement(_, spec, _) or
+      sinkElement(_, spec, _)
     }
 
-    private class ExternalRequiredSummaryComponentStack extends RequiredSummaryComponentStack {
-      private SummaryComponent head;
+    /** Holds if the `n`th component of specification `s` is `c`. */
+    predicate specSplit(string s, string c, int n) { relevantSpec(s) and s.splitAt(" of ", n) = c }
 
-      ExternalRequiredSummaryComponentStack() {
-        any(ExternalSummaryCompilation s).translateInputCons(_, head, this) or
-        any(ExternalSummaryCompilation s).translateOutputCons(_, head, this)
-      }
+    /** Holds if specification `s` has length `len`. */
+    predicate specLength(string s, int len) { len = 1 + max(int n | specSplit(s, _, n)) }
 
-      override predicate required(SummaryComponent c) { c = head }
+    /** Gets the last component of specification `s`. */
+    string specLast(string s) {
+      exists(int len |
+        specLength(s, len) and
+        specSplit(s, result, len - 1)
+      )
     }
 
-    class ExternalSummarizedCallableAdaptor extends SummarizedCallable {
-      ExternalSummarizedCallableAdaptor() { any(ExternalSummaryCompilation s).callable(this, _) }
+    /** Holds if specification component `c` parses as parameter `n`. */
+    predicate parseParam(string c, int n) {
+      specSplit(_, c, _) and
+      (
+        c.regexpCapture("Parameter\\[([-0-9]+)\\]", 1).toInt() = n
+        or
+        exists(int n1, int n2 |
+          c.regexpCapture("Parameter\\[([-0-9]+)\\.\\.([0-9]+)\\]", 1).toInt() = n1 and
+          c.regexpCapture("Parameter\\[([-0-9]+)\\.\\.([0-9]+)\\]", 2).toInt() = n2 and
+          n = [n1 .. n2]
+        )
+      )
+    }
+
+    /** Holds if specification component `c` parses as argument `n`. */
+    predicate parseArg(string c, int n) {
+      specSplit(_, c, _) and
+      (
+        c.regexpCapture("Argument\\[([-0-9]+)\\]", 1).toInt() = n
+        or
+        exists(int n1, int n2 |
+          c.regexpCapture("Argument\\[([-0-9]+)\\.\\.([0-9]+)\\]", 1).toInt() = n1 and
+          c.regexpCapture("Argument\\[([-0-9]+)\\.\\.([0-9]+)\\]", 2).toInt() = n2 and
+          n = [n1 .. n2]
+        )
+      )
+    }
+
+    private SummaryComponent interpretComponent(string c) {
+      specSplit(_, c, _) and
+      (
+        exists(int pos | parseArg(c, pos) and result = SummaryComponent::argument(pos))
+        or
+        exists(int pos | parseParam(c, pos) and result = SummaryComponent::parameter(pos))
+        or
+        c = "ReturnValue" and result = SummaryComponent::return(getReturnValueKind())
+        or
+        result = interpretComponentSpecific(c)
+      )
+    }
+
+    private predicate interpretSpec(string spec, int idx, SummaryComponentStack stack) {
+      exists(string c |
+        relevantSpec(spec) and
+        specLength(spec, idx + 1) and
+        specSplit(spec, c, idx) and
+        stack = SummaryComponentStack::singleton(interpretComponent(c))
+      )
+      or
+      exists(SummaryComponent head, SummaryComponentStack tail |
+        interpretSpec(spec, idx, head, tail) and
+        stack = SummaryComponentStack::push(head, tail)
+      )
+    }
+
+    private predicate interpretSpec(
+      string output, int idx, SummaryComponent head, SummaryComponentStack tail
+    ) {
+      exists(string c |
+        interpretSpec(output, idx + 1, tail) and
+        specSplit(output, c, idx) and
+        head = interpretComponent(c)
+      )
+    }
+
+    private class MkStack extends RequiredSummaryComponentStack {
+      MkStack() { interpretSpec(_, _, _, this) }
+
+      override predicate required(SummaryComponent c) { interpretSpec(_, _, c, this) }
+    }
+
+    private class SummarizedCallableExternal extends SummarizedCallable {
+      SummarizedCallableExternal() { summaryElement(this, _, _, _) }
 
       override predicate propagatesFlow(
         SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
       ) {
-        exists(ExternalSummaryCompilation s |
-          s.callable(this, preservesValue) and
-          s.translateInput(0, input) and
-          s.translateOutput(0, output)
+        exists(string inSpec, string outSpec, string kind |
+          summaryElement(this, inSpec, outSpec, kind) and
+          interpretSpec(inSpec, 0, input) and
+          interpretSpec(outSpec, 0, output)
+        |
+          kind = "value" and preservesValue = true
+          or
+          kind = "taint" and preservesValue = false
         )
       }
+    }
+
+    /** Holds if component `c` of specification `spec` cannot be parsed. */
+    predicate invalidSpecComponent(string spec, string c) {
+      specSplit(spec, c, _) and
+      not exists(interpretComponent(c))
+    }
+
+    private predicate inputNeedsReference(string c) {
+      c = "Argument" or
+      parseArg(c, _)
+    }
+
+    private predicate outputNeedsReference(string c) {
+      c = "Argument" or
+      parseArg(c, _) or
+      c = "ReturnValue"
+    }
+
+    private predicate sourceElementRef(InterpretNode ref, string output, string kind) {
+      exists(SourceOrSinkElement e |
+        sourceElement(e, output, kind) and
+        if outputNeedsReference(specLast(output))
+        then e = ref.getCallTarget()
+        else e = ref.asElement()
+      )
+    }
+
+    private predicate sinkElementRef(InterpretNode ref, string input, string kind) {
+      exists(SourceOrSinkElement e |
+        sinkElement(e, input, kind) and
+        if inputNeedsReference(specLast(input))
+        then e = ref.getCallTarget()
+        else e = ref.asElement()
+      )
+    }
+
+    private predicate interpretOutput(string output, int idx, InterpretNode ref, InterpretNode node) {
+      sourceElementRef(ref, output, _) and
+      specLength(output, idx) and
+      node = ref
+      or
+      exists(InterpretNode mid, string c |
+        interpretOutput(output, idx + 1, ref, mid) and
+        specSplit(output, c, idx)
+      |
+        exists(int pos |
+          node.asNode()
+              .(PostUpdateNode)
+              .getPreUpdateNode()
+              .(ArgumentNode)
+              .argumentOf(mid.asCall(), pos)
+        |
+          c = "Argument" or parseArg(c, pos)
+        )
+        or
+        exists(int pos | node.asNode().(ParameterNode).isParameterOf(mid.asCallable(), pos) |
+          c = "Parameter" or parseParam(c, pos)
+        )
+        or
+        c = "ReturnValue" and
+        node.asNode() = getAnOutNode(mid.asCall(), getReturnValueKind())
+        or
+        interpretOutputSpecific(c, mid, node)
+      )
+    }
+
+    private predicate interpretInput(string input, int idx, InterpretNode ref, InterpretNode node) {
+      sinkElementRef(ref, input, _) and
+      specLength(input, idx) and
+      node = ref
+      or
+      exists(InterpretNode mid, string c |
+        interpretInput(input, idx + 1, ref, mid) and
+        specSplit(input, c, idx)
+      |
+        exists(int pos | node.asNode().(ArgumentNode).argumentOf(mid.asCall(), pos) |
+          c = "Argument" or parseArg(c, pos)
+        )
+        or
+        exists(ReturnNode ret |
+          c = "ReturnValue" and
+          ret = node.asNode() and
+          ret.getKind() = getReturnValueKind() and
+          mid.asCallable() = DataFlowImplCommon::getNodeEnclosingCallable(ret)
+        )
+        or
+        interpretInputSpecific(c, mid, node)
+      )
+    }
+
+    /**
+     * Holds if `node` is specified as a source with the given kind in a CSV flow
+     * model.
+     */
+    predicate isSourceNode(InterpretNode node, string kind) {
+      exists(InterpretNode ref, string output |
+        sourceElementRef(ref, output, kind) and
+        interpretOutput(output, 0, ref, node)
+      )
+    }
+
+    /**
+     * Holds if `node` is specified as a sink with the given kind in a CSV flow
+     * model.
+     */
+    predicate isSinkNode(InterpretNode node, string kind) {
+      exists(InterpretNode ref, string input |
+        sinkElementRef(ref, input, kind) and
+        interpretInput(input, 0, ref, node)
+      )
     }
   }
 

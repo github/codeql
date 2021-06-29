@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.dataflow.DefUse
-import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.DataFlow6
 
 /**
  * The `java.security.SecureRandom` class.
@@ -166,16 +166,16 @@ private predicate isSeeded(RValue use) {
   )
 }
 
-private class PredictableSeedFlowConfiguration extends DataFlow::Configuration {
+private class PredictableSeedFlowConfiguration extends DataFlow6::Configuration {
   PredictableSeedFlowConfiguration() { this = "Random::PredictableSeedFlowConfiguration" }
 
-  override predicate isSource(DataFlow::Node source) {
+  override predicate isSource(DataFlow6::Node source) {
     source.asExpr() instanceof PredictableSeedExpr
   }
 
-  override predicate isSink(DataFlow::Node sink) { isSeeding(sink.asExpr(), _) }
+  override predicate isSink(DataFlow6::Node sink) { isSeeding(sink.asExpr(), _) }
 
-  override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+  override predicate isAdditionalFlowStep(DataFlow6::Node node1, DataFlow6::Node node2) {
     predictableCalcStep(node1.asExpr(), node2.asExpr())
   }
 }
@@ -252,7 +252,7 @@ private predicate isSeeding(Expr arg, RValue use) {
 private predicate isSeedingSource(Expr arg, RValue use, Expr source) {
   isSeeding(arg, use) and
   exists(PredictableSeedFlowConfiguration conf |
-    conf.hasFlow(DataFlow::exprNode(source), DataFlow::exprNode(arg))
+    conf.hasFlow(DataFlow6::exprNode(source), DataFlow6::exprNode(arg))
   )
 }
 

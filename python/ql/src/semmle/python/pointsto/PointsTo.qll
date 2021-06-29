@@ -1853,8 +1853,10 @@ module Expressions {
   private boolean isinstanceEvaluatesTo(
     CallNode call, PointsToContext context, ControlFlowNode use, ObjectInternal val
   ) {
-    exists(ObjectInternal cls | isinstance_call(call, use, context, val, cls) |
-      result = Types::improperSubclass(val.getClass(), cls)
+    exists(ObjectInternal cls, ObjectInternal val_cls |
+      isinstance_call(call, use, context, val, val_cls, cls)
+    |
+      result = Types::improperSubclass(val_cls, cls)
       or
       val = ObjectInternal::unknown() and result = maybe()
       or
@@ -1866,12 +1868,13 @@ module Expressions {
 
   private predicate isinstance_call(
     CallNode call, ControlFlowNode use, PointsToContext context, ObjectInternal val,
-    ObjectInternal cls
+    ObjectInternal val_cls, ObjectInternal cls
   ) {
     exists(ControlFlowNode func, ControlFlowNode arg1 |
       call2(call, func, use, arg1) and
       points_to_isinstance(func, context) and
       PointsToInternal::pointsTo(use, context, val, _) and
+      val_cls = val.getClass() and
       PointsToInternal::pointsTo(arg1, context, cls, _)
     )
   }
@@ -1993,10 +1996,7 @@ module Expressions {
     exists(ObjectInternal sup_or_tuple |
       issubclass_call(_, _, _, sub, sup_or_tuple) and sub.isClass() = true
       or
-      exists(ObjectInternal val |
-        isinstance_call(_, _, _, val, sup_or_tuple) and
-        sub = val.getClass()
-      )
+      exists(ObjectInternal val | isinstance_call(_, _, _, val, sub, sup_or_tuple))
     |
       sup = sup_or_tuple
       or

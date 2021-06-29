@@ -3,6 +3,7 @@
  * @description An object that was allocated with 'malloc' or 'new' is being freed using a mismatching 'free' or 'delete'.
  * @kind problem
  * @problem.severity warning
+ * @security-severity 7.5
  * @precision high
  * @id cpp/new-free-mismatch
  * @tags reliability

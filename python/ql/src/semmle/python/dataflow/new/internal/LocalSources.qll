@@ -10,23 +10,37 @@ import python
 import DataFlowPublic
 private import DataFlowPrivate
 
-private predicate comes_from_cfgnode(Node node) {
-  exists(CfgNode first, Node second |
-    simpleLocalFlowStep(first, second) and
-    simpleLocalFlowStep*(second, node)
-  )
-}
-
 /**
  * A data flow node that is a source of local flow. This includes things like
  * - Expressions
  * - Function parameters
+ *
+ *
+ * Local source nodes and the `flowsTo` relation should be thought of in terms of the reference
+ * semantics of the underlying object. For instance, in the following snippet of code
+ *
+ * ```python
+ *     x = []
+ *     x.append(1)
+ *     x.append(2)
+ * ```
+ *
+ * the local source node corresponding to the occurrences of `x` is the empty list that is assigned to `x`
+ * originally. Even though the two `append` calls modify the value of `x`, they do not change the fact that
+ * `x` still points to the same object. If, however, we next do `x = x + [3]`, then the expression `x + [3]`
+ * will be the new local source of what `x` now points to.
  */
 class LocalSourceNode extends Node {
   cached
   LocalSourceNode() {
-    not comes_from_cfgnode(this) and
-    not this instanceof ModuleVariableNode
+    not simpleLocalFlowStep(_, this) and
+    // Currently, we create synthetic post-update nodes for
+    // - arguments to calls that may modify said argument
+    // - direct reads a writes of object attributes
+    // Both of these preserve the identity of the underlying pointer, and hence we exclude these as
+    // local source nodes.
+    // We do, however, allow the post-update nodes that arise from object creation (which are non-synthetic).
+    not this instanceof SyntheticPostUpdateNode
     or
     this = any(ModuleVariableNode mvn).getARead()
   }
@@ -46,6 +60,11 @@ class LocalSourceNode extends Node {
   AttrRead getAnAttributeRead(string attrName) { result = getAnAttributeReference(attrName) }
 
   /**
+   * Gets a write of attribute `attrName` on this node.
+   */
+  AttrWrite getAnAttributeWrite(string attrName) { result = getAnAttributeReference(attrName) }
+
+  /**
    * Gets a reference (read or write) of any attribute on this node.
    */
   AttrRef getAnAttributeReference() {
@@ -60,9 +79,40 @@ class LocalSourceNode extends Node {
   AttrRead getAnAttributeRead() { result = getAnAttributeReference() }
 
   /**
+   * Gets a write of any attribute on this node.
+   */
+  AttrWrite getAnAttributeWrite() { result = getAnAttributeReference() }
+
+  /**
    * Gets a call to this node.
    */
   CallCfgNode getACall() { Cached::call(this, result) }
+
+  /**
+   * Gets a call to the method `methodName` on this node.
+   *
+   * Includes both calls that have the syntactic shape of a method call (as in `obj.m(...)`), and
+   * calls where the callee undergoes some additional local data flow (as in `tmp = obj.m; m(...)`).
+   */
+  MethodCallNode getAMethodCall(string methodName) {
+    result = this.getAnAttributeRead(methodName).getACall()
+  }
+
+  /**
+   * Gets a node that this node may flow to using one heap and/or interprocedural step.
+   *
+   * See `TypeTracker` for more details about how to use this.
+   */
+  pragma[inline]
+  LocalSourceNode track(TypeTracker t2, TypeTracker t) { t = t2.step(this, result) }
+
+  /**
+   * Gets a node that may flow into this one using one heap and/or interprocedural step.
+   *
+   * See `TypeBackTracker` for more details about how to use this.
+   */
+  pragma[inline]
+  LocalSourceNode backtrack(TypeBackTracker t2, TypeBackTracker t) { t2 = t.step(result, this) }
 }
 
 cached

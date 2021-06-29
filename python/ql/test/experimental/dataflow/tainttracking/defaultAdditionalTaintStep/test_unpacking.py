@@ -13,13 +13,13 @@ if TYPE_CHECKING:
 def unpacking():
     l = TAINTED_LIST[0:3]
     a, b, c = l
-    ensure_tainted(a, b, c)
+    ensure_tainted(a, b, c) # $ tainted
 
 
 def unpacking_to_list():
     l = TAINTED_LIST[0:3]
     [a, b, c] = l
-    ensure_tainted(a, b, c)
+    ensure_tainted(a, b, c) # $ tainted
 
 
 def nested():
@@ -28,22 +28,22 @@ def nested():
 
     # list
     [[a1, a2, a3], b, c] = ll
-    ensure_tainted(a1, a2, a3, b, c)
+    ensure_tainted(a1, a2, a3, b, c) # $ tainted
 
     # tuple
     ((a1, a2, a3), b, c) = ll
-    ensure_tainted(a1, a2, a3, b, c)
+    ensure_tainted(a1, a2, a3, b, c) # $ tainted
 
     # mixed
     [(a1, a2, a3), b, c] = ll
-    ensure_tainted(a1, a2, a3, b, c)
+    ensure_tainted(a1, a2, a3, b, c) # $ tainted
 
 
 def unpack_from_set():
     # no guarantee on ordering ... don't know why you would ever do this
     a, b, c = {"foo", "bar", TAINTED_STRING}
     # either all should be tainted, or none of them
-    ensure_tainted(a, b, c)
+    ensure_tainted(a, b, c) # $ tainted
 
 
 def contrived_1():
@@ -52,8 +52,8 @@ def contrived_1():
     no_taint_list = [1,2,3]
 
     (a, b, c), (d, e, f) = tainted_list, no_taint_list
-    ensure_tainted(a, b, c)
-    ensure_not_tainted(d, e, f) # FP: we mark `d`, `e` and `f` as tainted.
+    ensure_tainted(a, b, c) # $ tainted
+    ensure_not_tainted(d, e, f) # $ SPURIOUS: tainted
 
 
 def contrived_2():
@@ -62,7 +62,7 @@ def contrived_2():
     # Old taint tracking was only able to handle taint nested 2 levels in sequences,
     # so would not mark a, b, c as tainted
     [[[ (a, b, c) ]]] = [[[ TAINTED_LIST[0:3] ]]]
-    ensure_tainted(a, b, c)
+    ensure_tainted(a, b, c) # $ tainted
 
 
 # Make tests runable

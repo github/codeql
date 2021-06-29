@@ -4,6 +4,7 @@
  *              of private information.
  * @kind problem
  * @problem.severity warning
+ * @security-severity 6.5
  * @id js/exposure-of-private-files
  * @tags security
  *       external/cwe/cwe-200
@@ -126,8 +127,27 @@ DataFlow::CallNode servesAPrivateFolder(string description) {
   result.getArgument(0) = getAPrivateFolderPath(description)
 }
 
-from Express::RouteSetup setup, string path
+/**
+ * Gets an [`express`](https://npmjs.com/package/express) route-setup
+ * that exposes a private folder described by `path`.
+ */
+Express::RouteSetup getAnExposingExpressSetup(string path) {
+  result.isUseCall() and
+  result.getArgument([0 .. 1]) = servesAPrivateFolder(path).getEnclosingExpr()
+}
+
+/**
+ * Gets a call to [`serve-handler`](https://npmjs.com/package/serve-handler)
+ * that exposes a private folder described by `path`.
+ */
+DataFlow::CallNode getAnExposingServeSetup(string path) {
+  result = DataFlow::moduleImport("serve-handler").getACall() and
+  result.getOptionArgument(2, "public") = getAPrivateFolderPath(path)
+}
+
+from DataFlow::Node node, string path
 where
-  setup.isUseCall() and
-  setup.getArgument([0 .. 1]) = servesAPrivateFolder(path).getEnclosingExpr()
-select setup, "Serves " + path + ", which can contain private information."
+  node = getAnExposingExpressSetup(path).flow()
+  or
+  node = getAnExposingServeSetup(path)
+select node, "Serves " + path + ", which can contain private information."

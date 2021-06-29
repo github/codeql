@@ -15,7 +15,7 @@ namespace Semmle.Extraction.Entities
 
         public override bool NeedsPopulation => true;
 
-        public override void WriteId(System.IO.TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             trapFile.Write(Symbol.DatabaseId);
             trapFile.Write(";folder");

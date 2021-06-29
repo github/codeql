@@ -578,6 +578,17 @@ module TaintedPath {
   }
 
   /**
+   * An expression whose value is resolved to a module using the [resolve](http://npmjs.com/package/resolve) library.
+   */
+  class ResolveModuleSink extends Sink {
+    ResolveModuleSink() {
+      this = API::moduleImport("resolve").getACall().getArgument(0)
+      or
+      this = API::moduleImport("resolve").getMember("sync").getACall().getArgument(0)
+    }
+  }
+
+  /**
    * A path argument to a file system access.
    */
   class FsPathSink extends Sink, DataFlow::ValueNode {
@@ -646,6 +657,27 @@ module TaintedPath {
             .getMember(["pdf", "screenshot"])
             .getParameter(0)
             .getMember("path")
+            .getARhs()
+    }
+  }
+
+  /**
+   * An argument given to the `prettier` library specifying the location of a config file.
+   */
+  private class PrettierFileSink extends TaintedPath::Sink {
+    PrettierFileSink() {
+      this =
+        API::moduleImport("prettier")
+            .getMember(["resolveConfig", "resolveConfigFile", "getFileInfo"])
+            .getACall()
+            .getArgument(0)
+      or
+      this =
+        API::moduleImport("prettier")
+            .getMember("resolveConfig")
+            .getACall()
+            .getParameter(1)
+            .getMember("config")
             .getARhs()
     }
   }

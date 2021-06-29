@@ -3,7 +3,7 @@ app = Flask(__name__)
 
 @app.route("/test_taint/<name>/<int:number>")  # $routeSetup="/test_taint/<name>/<int:number>"
 def test_taint(name = "World!", number="0", foo="foo"):  # $requestHandler routedParameter=name routedParameter=number
-    ensure_tainted(name, number)
+    ensure_tainted(name, number) # $ tainted
     ensure_not_tainted(foo)
 
     # Manually inspected all fields of the Request object
@@ -11,127 +11,136 @@ def test_taint(name = "World!", number="0", foo="foo"):  # $requestHandler route
 
     ensure_tainted(
 
-        request.environ,
-        request.environ.get('HTTP_AUTHORIZATION'),
+        request.environ, # $ tainted
+        request.environ.get('HTTP_AUTHORIZATION'), # $ tainted
 
-        request.path,
-        request.full_path,
-        request.base_url,
-        request.url,
+        request.path, # $ tainted
+        request.full_path, # $ tainted
+        request.base_url, # $ tainted
+        request.url, # $ tainted
 
         # These request.accept_* properties are instances of subclasses of werkzeug.datastructures.Accept
-        request.accept_charsets.best,
-        request.accept_charsets.best_match(["utf-8", "utf-16"]),
-        request.accept_charsets[0],
-        request.accept_encodings,
-        request.accept_languages,
-        request.accept_mimetypes,
+        request.accept_charsets.best, # $ MISSING: tainted
+        request.accept_charsets.best_match(["utf-8", "utf-16"]), # $ MISSING: tainted
+        request.accept_charsets[0], # $ tainted
+        request.accept_encodings, # $ tainted
+        request.accept_languages, # $ tainted
+        request.accept_mimetypes, # $ tainted
 
         # werkzeug.datastructures.HeaderSet (subclass of collections_abc.MutableSet)
-        request.access_control_request_headers,
+        request.access_control_request_headers, # $ tainted
 
-        request.access_control_request_method,
+        request.access_control_request_method, # $ tainted
 
-        request.access_route,
-        request.access_route[0],
+        request.access_route, # $ tainted
+        request.access_route[0], # $ tainted
 
         # By default werkzeug.datastructures.ImmutableMultiDict -- although can be changed :\
-        request.args,
-        request.args['key'],
-        request.args.getlist('key'),
+        request.args, # $ tainted
+        request.args['key'], # $ tainted
+        request.args.get('key'), # $ tainted
+        request.args.getlist('key'), # $ tainted
 
         # werkzeug.datastructures.Authorization (a dict, with some properties)
-        request.authorization,
-        request.authorization['username'],
-        request.authorization.username,
+        request.authorization, # $ tainted
+        request.authorization['username'], # $ tainted
+        request.authorization.username, # $ MISSING: tainted
 
         # werkzeug.datastructures.RequestCacheControl
-        request.cache_control,
+        request.cache_control, # $ tainted
         # These should be `int`s, but can be strings... see debug method below
-        request.cache_control.max_age,
-        request.cache_control.max_stale,
-        request.cache_control.min_fresh,
+        request.cache_control.max_age, # $ MISSING: tainted
+        request.cache_control.max_stale, # $ MISSING: tainted
+        request.cache_control.min_fresh, # $ MISSING: tainted
 
-        request.content_encoding,
+        request.content_encoding, # $ tainted
 
-        request.content_md5,
+        request.content_md5, # $ tainted
 
-        request.content_type,
+        request.content_type, # $ tainted
 
         # werkzeug.datastructures.ImmutableTypeConversionDict (which is basically just a dict)
-        request.cookies,
-        request.cookies['key'],
+        request.cookies, # $ tainted
+        request.cookies['key'], # $ tainted
 
-        request.data,
+        request.data, # $ tainted
 
         # a werkzeug.datastructures.MultiDict, mapping [str, werkzeug.datastructures.FileStorage]
-        request.files,
-        request.files['key'],
-        request.files['key'].filename,
-        request.files['key'].stream,
-        request.files.getlist('key'),
-        request.files.getlist('key')[0].filename,
-        request.files.getlist('key')[0].stream,
+        request.files, # $ tainted
+        request.files['key'], # $ tainted
+        request.files['key'].filename, # $ MISSING: tainted
+        request.files['key'].stream, # $ MISSING: tainted
+        request.files.get('key'), # $ tainted
+        request.files.get('key').filename, # $ MISSING: tainted
+        request.files.get('key').stream, # $ MISSING: tainted
+        request.files.getlist('key'), # $ tainted
+        request.files.getlist('key')[0].filename, # $ MISSING: tainted
+        request.files.getlist('key')[0].stream, # $ MISSING: tainted
 
         # By default werkzeug.datastructures.ImmutableMultiDict -- although can be changed :\
-        request.form,
-        request.form['key'],
-        request.form.getlist('key'),
+        request.form, # $ tainted
+        request.form['key'], # $ tainted
+        request.form.get('key'), # $ tainted
+        request.form.getlist('key'), # $ tainted
 
-        request.get_data(),
+        request.get_data(), # $ tainted
 
-        request.get_json(),
-        request.get_json()['foo'],
-        request.get_json()['foo']['bar'],
+        request.get_json(), # $ tainted
+        request.get_json()['foo'], # $ tainted
+        request.get_json()['foo']['bar'], # $ tainted
 
         # werkzeug.datastructures.EnvironHeaders,
         # which has same interface as werkzeug.datastructures.Headers
-        request.headers,
-        request.headers['key'],
-        request.headers.get_all('key'),
-        request.headers.getlist('key'),
-        list(request.headers), # (k, v) list
-        request.headers.to_wsgi_list(), # (k, v) list
+        request.headers, # $ tainted
+        request.headers['key'], # $ tainted
+        request.headers.get('key'), # $ tainted
+        request.headers.get_all('key'), # $ MISSING: tainted
+        request.headers.getlist('key'), # $ MISSING: tainted
+        # two ways to get (k, v) lists
+        list(request.headers), # $ tainted
+        request.headers.to_wsgi_list(), # $ MISSING: tainted
 
-        request.json,
-        request.json['foo'],
-        request.json['foo']['bar'],
+        request.json, # $ tainted
+        request.json['foo'], # $ tainted
+        request.json['foo']['bar'], # $ tainted
 
-        request.method,
+        request.method, # $ tainted
 
-        request.mimetype,
+        request.mimetype, # $ tainted
 
-        request.mimetype_params,
+        request.mimetype_params, # $ tainted
 
-        request.origin,
+        request.origin, # $ tainted
 
         # werkzeug.datastructures.HeaderSet (subclass of collections_abc.MutableSet)
-        request.pragma,
+        request.pragma, # $ tainted
 
-        request.query_string,
+        request.query_string, # $ tainted
 
-        request.referrer,
+        request.referrer, # $ tainted
 
-        request.remote_addr,
+        request.remote_addr, # $ tainted
 
-        request.remote_user,
+        request.remote_user, # $ tainted
 
         # file-like object
-        request.stream,
-        request.input_stream,
+        request.stream, # $ tainted
+        request.input_stream, # $ tainted
 
-        request.url,
+        request.url, # $ tainted
 
-        request.user_agent,
+        request.user_agent, # $ tainted
 
         # werkzeug.datastructures.CombinedMultiDict, which is basically just a werkzeug.datastructures.MultiDict
-        request.values,
-        request.values['key'],
-        request.values.getlist('key'),
+        request.values, # $ tainted
+        request.values['key'], # $ tainted
+        request.values.get('key'), # $ tainted
+        request.values.getlist('key'), # $ tainted
 
         # dict
-        request.view_args,
-        request.view_args['key'],
+        request.view_args, # $ tainted
+        request.view_args['key'], # $ tainted
+        request.view_args.get('key'), # $ tainted
     )
 
     ensure_not_tainted(
@@ -166,26 +175,26 @@ def test_taint(name = "World!", number="0", foo="foo"):  # $requestHandler route
     b = a
     gl = b.getlist
     ensure_tainted(
-        request.args,
-        a,
-        b,
+        request.args, # $ tainted
+        a, # $ tainted
+        b, # $ tainted
 
-        request.args['key'],
-        a['key'],
-        b['key'],
+        request.args['key'], # $ tainted
+        a['key'], # $ tainted
+        b['key'], # $ tainted
 
-        request.args.getlist('key'),
-        a.getlist('key'),
-        b.getlist('key'),
-        gl('key'),
+        request.args.getlist('key'), # $ tainted
+        a.getlist('key'), # $ tainted
+        b.getlist('key'), # $ tainted
+        gl('key'), # $ tainted
     )
 
     # aliasing tests
     req = request
     gd = request.get_data
     ensure_tainted(
-        req.path,
-        gd(),
+        req.path, # $ tainted
+        gd(), # $ tainted
     )
 
 

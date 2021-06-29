@@ -47,3 +47,15 @@
 | SpringMultiPart.java:21:3:21:26 | getFiles(...) | SpringMultiPart.java:21:3:21:26 | getFiles(...) |
 | SpringMultiPart.java:22:3:22:27 | getMultiFileMap(...) | SpringMultiPart.java:22:3:22:27 | getMultiFileMap(...) |
 | SpringMultiPart.java:23:3:23:41 | getMultipartContentType(...) | SpringMultiPart.java:23:3:23:41 | getMultipartContentType(...) |
+| SpringSavedRequest.java:8:3:8:21 | getRedirectUrl(...) | SpringSavedRequest.java:8:3:8:21 | getRedirectUrl(...) |
+| SpringSavedRequest.java:9:3:9:17 | getCookies(...) | SpringSavedRequest.java:9:3:9:17 | getCookies(...) |
+| SpringSavedRequest.java:10:3:10:28 | getHeaderValues(...) | SpringSavedRequest.java:10:3:10:28 | getHeaderValues(...) |
+| SpringSavedRequest.java:11:3:11:21 | getHeaderNames(...) | SpringSavedRequest.java:11:3:11:21 | getHeaderNames(...) |
+| SpringSavedRequest.java:12:3:12:31 | getParameterValues(...) | SpringSavedRequest.java:12:3:12:31 | getParameterValues(...) |
+| SpringSavedRequest.java:13:3:13:22 | getParameterMap(...) | SpringSavedRequest.java:13:3:13:22 | getParameterMap(...) |
+| SpringSavedRequest.java:19:3:19:22 | getRedirectUrl(...) | SpringSavedRequest.java:19:3:19:22 | getRedirectUrl(...) |
+| SpringSavedRequest.java:20:3:20:18 | getCookies(...) | SpringSavedRequest.java:20:3:20:18 | getCookies(...) |
+| SpringSavedRequest.java:21:3:21:29 | getHeaderValues(...) | SpringSavedRequest.java:21:3:21:29 | getHeaderValues(...) |
+| SpringSavedRequest.java:22:3:22:22 | getHeaderNames(...) | SpringSavedRequest.java:22:3:22:22 | getHeaderNames(...) |
+| SpringSavedRequest.java:23:3:23:32 | getParameterValues(...) | SpringSavedRequest.java:23:3:23:32 | getParameterValues(...) |
+| SpringSavedRequest.java:24:3:24:23 | getParameterMap(...) | SpringSavedRequest.java:24:3:24:23 | getParameterMap(...) |

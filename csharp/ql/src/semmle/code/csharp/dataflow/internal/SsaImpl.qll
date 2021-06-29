@@ -268,56 +268,146 @@ private module CallGraph {
         )
     }
 
+    /**
+     * A simple flow step that does not take flow through fields or flow out
+     * of callables into account.
+     */
+    pragma[nomagic]
     private predicate delegateFlowStep(Expr pred, Expr succ) {
       Steps::stepClosed(pred, succ)
       or
-      exists(Call call, Callable callable |
-        callable.getUnboundDeclaration().canReturn(pred) and
-        call = succ
-      |
-        callable = call.getTarget() or
-        callable = call.getTarget().(Method).getAnOverrider+() or
-        callable = call.getTarget().(Method).getAnUltimateImplementor() or
-        callable = getARuntimeDelegateTarget(call, false)
-      )
-      or
       pred = succ.(DelegateCreation).getArgument()
-      or
-      exists(AssignableDefinition def, Assignable a |
-        a instanceof Field or
-        a instanceof Property
-      |
-        a = def.getTarget() and
-        succ.(AssignableRead) = a.getAnAccess() and
-        pred = def.getSource()
-      )
       or
       exists(AddEventExpr ae | succ.(EventAccess).getTarget() = ae.getTarget() |
         pred = ae.getRValue()
       )
     }
 
-    private predicate reachesDelegateCall(Expr e) {
-      delegateCall(_, e, _)
+    private predicate delegateCreationReaches(Callable c, Expr e) {
+      delegateCreation(e, c, _)
       or
-      exists(Expr mid | reachesDelegateCall(mid) | delegateFlowStep(e, mid))
+      exists(Expr mid |
+        delegateCreationReaches(c, mid) and
+        delegateFlowStep(mid, e)
+      )
     }
 
-    pragma[nomagic]
-    private predicate delegateFlowStepReaches(Expr pred, Expr succ) {
-      delegateFlowStep(pred, succ) and
-      reachesDelegateCall(succ)
+    private predicate reachesDelegateCall(Expr e, Call c, boolean libraryDelegateCall) {
+      delegateCall(c, e, libraryDelegateCall)
+      or
+      exists(Expr mid |
+        reachesDelegateCall(mid, c, libraryDelegateCall) and
+        delegateFlowStep(e, mid)
+      )
     }
 
-    private Expr delegateCallSource(Callable c) {
-      delegateCreation(result, c, _)
-      or
-      delegateFlowStepReaches(delegateCallSource(c), result)
+    /**
+     * A "busy" flow element, that is, a node in the data-flow graph that typically
+     * has a large fan-in or a large fan-out (or both).
+     *
+     * For such busy elements, we do not track flow directly from all delegate
+     * creations, but instead we first perform a flow analysis between busy elements,
+     * and then only in the end join up with delegate creations and delegate calls.
+     */
+    abstract private class BusyFlowElement extends Element {
+      pragma[nomagic]
+      abstract Expr getAnInput();
+
+      pragma[nomagic]
+      abstract Expr getAnOutput();
+
+      /** Holds if this element can be reached from expression `e`. */
+      pragma[nomagic]
+      private predicate exprReaches(Expr e) {
+        this.reachesCall(_) and
+        e = this.getAnInput()
+        or
+        exists(Expr mid |
+          this.exprReaches(mid) and
+          delegateFlowStep(e, mid)
+        )
+      }
+
+      /**
+       * Holds if this element can reach a delegate call `c` directly without
+       * passing through another busy element.
+       */
+      pragma[nomagic]
+      predicate delegateCall(Call c, boolean libraryDelegateCall) {
+        reachesDelegateCall(this.getAnOutput(), c, libraryDelegateCall)
+      }
+
+      pragma[nomagic]
+      private BusyFlowElement getASuccessor() { result.exprReaches(this.getAnOutput()) }
+
+      /**
+       * Holds if this element reaches another busy element `other`,
+       * which can reach a delegate call directly without passing
+       * through another busy element.
+       */
+      pragma[nomagic]
+      private predicate reachesCall(BusyFlowElement other) {
+        this = other and
+        other.delegateCall(_, _)
+        or
+        this.getASuccessor().reachesCall(other)
+      }
+
+      /** Holds if this element is reached by a delegate creation for `c`. */
+      pragma[nomagic]
+      predicate isReachedBy(Callable c) {
+        exists(BusyFlowElement pred |
+          pred.reachesCall(this) and
+          delegateCreationReaches(c, pred.getAnInput())
+        )
+      }
+    }
+
+    private class TFieldOrProperty = @field or @property;
+
+    private class FieldOrPropertyFlow extends BusyFlowElement, Assignable, TFieldOrProperty {
+      final override Expr getAnInput() {
+        exists(Assignable target |
+          target = this.getUnboundDeclaration() and
+          result = target.getAnAssignedValue()
+        )
+      }
+
+      final override AssignableRead getAnOutput() {
+        exists(Assignable target |
+          target = this.getUnboundDeclaration() and
+          result = target.getAnAccess()
+        )
+      }
+    }
+
+    private class CallOutputFlow extends BusyFlowElement, Callable {
+      final override Expr getAnInput() { this.canReturn(result) }
+
+      final override Call getAnOutput() {
+        exists(Callable target | this = target.getUnboundDeclaration() |
+          target = result.getTarget() or
+          target = result.getTarget().(Method).getAnOverrider+() or
+          target = result.getTarget().(Method).getAnUltimateImplementor() or
+          target = getARuntimeDelegateTarget(result, false)
+        )
+      }
     }
 
     /** Gets a run-time target for the delegate call `c`. */
+    pragma[nomagic]
     Callable getARuntimeDelegateTarget(Call c, boolean libraryDelegateCall) {
-      delegateCall(c, delegateCallSource(result), libraryDelegateCall)
+      // directly resolvable without going through a "busy" element
+      exists(Expr e |
+        delegateCreationReaches(result, e) and
+        delegateCall(c, e, libraryDelegateCall)
+      )
+      or
+      // resolvable by going through one or more "busy" elements
+      exists(BusyFlowElement busy |
+        busy.isReachedBy(result) and
+        busy.delegateCall(c, libraryDelegateCall)
+      )
     }
   }
 

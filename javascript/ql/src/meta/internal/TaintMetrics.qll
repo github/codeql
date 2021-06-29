@@ -75,16 +75,9 @@ DataFlow::Node relevantTaintSink(string kind) {
 DataFlow::Node relevantTaintSink() { result = relevantTaintSink(_) }
 
 /**
- * Gets a remote flow source or `document.location` source.
+ * Gets a relevant remote flow source.
  */
-DataFlow::Node relevantTaintSource() {
-  not result.getFile() instanceof IgnoredFile and
-  (
-    result instanceof RemoteFlowSource
-    or
-    result = DOM::locationSource()
-  )
-}
+RemoteFlowSource relevantTaintSource() { not result.getFile() instanceof IgnoredFile }
 
 /**
  * Gets the output of a call that shows intent to sanitize a value

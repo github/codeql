@@ -4,6 +4,7 @@
  * @kind problem
  * @id cpp/inconsistent-nullness-testing
  * @problem.severity warning
+ * @security-severity 7.5
  * @tags reliability
  *       security
  *       external/cwe/cwe-476

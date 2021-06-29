@@ -5,6 +5,7 @@
     "java/ql/src/semmle/code/java/dataflow/internal/DataFlowImpl3.qll",
     "java/ql/src/semmle/code/java/dataflow/internal/DataFlowImpl4.qll",
     "java/ql/src/semmle/code/java/dataflow/internal/DataFlowImpl5.qll",
+    "java/ql/src/semmle/code/java/dataflow/internal/DataFlowImpl6.qll",
     "cpp/ql/src/semmle/code/cpp/dataflow/internal/DataFlowImpl.qll",
     "cpp/ql/src/semmle/code/cpp/dataflow/internal/DataFlowImpl2.qll",
     "cpp/ql/src/semmle/code/cpp/dataflow/internal/DataFlowImpl3.qll",
@@ -249,6 +250,10 @@
     "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/internal/AliasAnalysis.qll",
     "csharp/ql/src/experimental/ir/implementation/unaliased_ssa/internal/AliasAnalysis.qll"
   ],
+  "SSA PrintAliasAnalysis": [
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/PrintAliasAnalysis.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/internal/PrintAliasAnalysis.qll"
+  ],
   "C++ SSA AliasAnalysisImports": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/AliasAnalysisImports.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/internal/AliasAnalysisImports.qll"
@@ -438,6 +443,10 @@
   ],
   "CryptoAlgorithms Python/JS": [
     "javascript/ql/src/semmle/javascript/security/CryptoAlgorithms.qll",
-    "python/ql/src/semmle/crypto/Crypto.qll"
+    "python/ql/src/semmle/python/concepts/CryptoAlgorithms.qll"
+  ],
+  "SensitiveDataHeuristics Python/JS": [
+    "javascript/ql/src/semmle/javascript/security/internal/SensitiveDataHeuristics.qll",
+    "python/ql/src/semmle/python/security/internal/SensitiveDataHeuristics.qll"
   ]
 }

@@ -124,11 +124,12 @@ Certain special predicates should be documented consistently.
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [Locations](https://help.semmle.com/QL/learn-ql/locations.html).
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
 
   predicate hasLocationInfo(string filepath, int startline, int startcolumn, int endline, int endcolumn) { ... }
   ```
+
 ## QLDoc for classes
 
 1. Document classes using a noun phrase of the form `A <domain element> that <has property>.`

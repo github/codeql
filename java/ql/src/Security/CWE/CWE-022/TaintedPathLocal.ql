@@ -3,6 +3,7 @@
  * @description Accessing paths influenced by users can allow an attacker to access unexpected resources.
  * @kind path-problem
  * @problem.severity recommendation
+ * @security-severity 7.5
  * @precision medium
  * @id java/path-injection-local
  * @tags security

@@ -7,6 +7,8 @@ namespace Semmle.Extraction.CSharp
     {
         public static int Main(string[] args)
         {
+            Extractor.SetInvariantCulture();
+
             return (int)Extractor.Run(args);
         }
     }

@@ -33,7 +33,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override void WriteAssemblyPrefix(TextWriter trapFile) => throw new NotImplementedException();
 
-        public override void WriteId(TextWriter trapFile, bool inContext)
+        public override void WriteId(EscapingTextWriter trapFile, bool inContext)
         {
             ElementType.WriteId(trapFile, inContext);
             trapFile.Write('&');
