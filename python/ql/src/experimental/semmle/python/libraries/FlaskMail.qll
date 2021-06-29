@@ -21,6 +21,9 @@ private module FlaskMail {
   private DataFlow::CallCfgNode flaskMessageCall() { result = flaskMessageInstance().getACall() }
 
   private DataFlow::Node getFlaskMailArgument(int argumentPosition, string argumentName) {
+    // 'argumentPosition' is not bound to a value.
+    argumentName in ["body", "html", "recipients", "sender", "subject"] and
+    argumentPosition in [0 .. 5] and
     result in [
         flaskMessageCall().getArg(argumentPosition), flaskMessageCall().getArgByName(argumentName)
       ]
