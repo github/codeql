@@ -5,10 +5,13 @@
 <qhelp>
 
 <overview>
-
-<p>If unprocessed user input is directly added to email headers or written to logs, malicious users can carry out email or 
-log injection attacks.</p>
-
+<p>
+CRLF is the abbreviation of "carriage return + line feed" (\r\n). CRLF is used as line termination in HTTP protocol, logging, and SMTP protocol. 
+If you add unprocessed user input directly to HTTP Header, log Log injection, http header injection, and email header injection are easy to cause in records or emails.
+</p>
+<p>
+This taint tracking configuration supports querying whether there are Log injection and email header injection in your code.
+</p>
 </overview>
 
 <recommendation>
@@ -19,22 +22,19 @@ User input should be verified before it is added to email headers or written to 
 To avoid header injection vulnerabilities and many other vulnerabilities, programmers must never trust any user input. Especially to avoid email injection or 
 log injection, you cannot allow any line breaks in the contact form input, because they will allow the attacker to append the email header or log content
 </p>
-
 </recommendation>
 
 <example>
-
 <p>The following examples show the bad case and the good case respectively. In <code>bad1</code> method and code>bad2</code> method, the user input is sent 
 as the email header content, and the malicious user may introduce additional headers in the email to indicate that the mail server's behavior is different 
 from expected. In <code>bad3</code> method, user input is used as the output of the log content, and malicious users may forge the log content. 
 In <code>good1</code> method, the program determines whether the user input contains <code>\r\n or \n</code> through <code>contains</code> to prevent crlf injection.
 In <code>good2</code> method, use string replacement method to replace <code>\r\n or \n</code> in the string with spaces.</p>
-
 <sample src="CrlfInjection.java" />
 </example>
 
 <references>
-<li>Acunetix: <a href="https://www.acunetix.com/blog/articles/email-header-injection/">Email Header Injection</a>.</li>
+<li>Acunetix: <a href="https://www.acunetix.com/blog/articles/email-header-injection">Email Header Injection</a>.</li>
 <li>OWASP: <a href="https://owasp.org/www-community/vulnerabilities/CRLF_Injection">CRLF Injection</a>.</li>
 </references>
 </qhelp>
