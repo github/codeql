@@ -1413,8 +1413,9 @@ private module PrivateDjango {
 
           DjangoResponseCookieSubscriptWrite() {
             exists(Assign assign, Subscript subscript, DataFlow::AttrRead cookieLookup |
-              // there doesn't seem to be any _good_ choice for `this`, so just picking the
-              // whole subscript...
+              // Since there is no `DataFlow::Node` for the assign (since it's a statement,
+              // and not an expression) there doesn't seem to be any _good_ choice for `this`,
+              // so just picking the whole subscript...
               this.asExpr() = subscript
             |
               cookieLookup.getAttributeName() = "cookies" and
