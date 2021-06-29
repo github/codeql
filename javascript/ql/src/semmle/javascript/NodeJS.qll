@@ -412,7 +412,7 @@ private class JoinedPath extends PathExpr, @call_expr {
   JoinedPath() {
     exists(MethodCallExpr call | call = this |
       call.getReceiver().(VarAccess).getName() = "path" and
-      call.getMethodName() = "join" and
+      call.getMethodName() = ["join", "resolve"] and
       call.getNumArgument() = 2 and
       call.getArgument(0) instanceof PathExpr and
       call.getArgument(1) instanceof ConstantString
