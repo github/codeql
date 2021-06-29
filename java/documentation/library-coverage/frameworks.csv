@@ -1,6 +1,6 @@
 Framework name,URL,Package prefixes
 Java Standard Library,,java.*
-Java extensions,,javax.*
+Java extensions,,javax.* jakarta.*
 Google Guava,https://guava.dev/,com.google.common.*
 Apache Commons Collections,https://commons.apache.org/proper/commons-collections/,org.apache.commons.collections org.apache.commons.collections4
 Apache Commons IO,https://commons.apache.org/proper/commons-io/,org.apache.commons.io
