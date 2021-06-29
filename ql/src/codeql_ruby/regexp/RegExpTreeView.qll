@@ -263,6 +263,11 @@ class RegExpSequence extends RegExpTerm, TRegExpSequence {
   override string getAPrimaryQlClass() { result = "RegExpSequence" }
 }
 
+pragma[nomagic]
+private int seqChildEnd(RegExp re, int start, int end, int i) {
+  result = seqChild(re, start, end, i).getEnd()
+}
+
 // moved out so we can use it in the charpred
 private RegExpTerm seqChild(RegExp re, int start, int end, int i) {
   re.sequence(start, end) and
@@ -277,7 +282,7 @@ private RegExpTerm seqChild(RegExp re, int start, int end, int i) {
     or
     i > 0 and
     result.getRegExp() = re and
-    exists(int itemStart | itemStart = seqChild(re, start, end, i - 1).getEnd() |
+    exists(int itemStart | itemStart = seqChildEnd(re, start, end, i - 1) |
       result.getStart() = itemStart and
       re.item(itemStart, result.getEnd())
     )
