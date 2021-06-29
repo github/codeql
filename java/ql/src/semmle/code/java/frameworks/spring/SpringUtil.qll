@@ -26,6 +26,7 @@ private class FlowSummaries extends SummaryModelCsv {
         "org.springframework.util;Base64Utils;false;encodeToUrlSafeString;;;Argument[0];ReturnValue;taint",
         "org.springframework.util;Base64Utils;false;encodeUrlSafe;;;Argument[0];ReturnValue;taint",
         "org.springframework.util;CollectionUtils;false;arrayToList;;;ArrayElement of Argument[0];Element of ReturnValue;value",
+        "org.springframework.util;CollectionUtils;false;findFirstMatch;;;Element of Argument[0];ReturnValue;value",
         "org.springframework.util;CollectionUtils;false;findValueOfType;;;Element of Argument[0];ReturnValue;value",
         "org.springframework.util;CollectionUtils;false;firstElement;;;Element of Argument[0];ReturnValue;value",
         "org.springframework.util;CollectionUtils;false;lastElement;;;Element of Argument[0];ReturnValue;value",

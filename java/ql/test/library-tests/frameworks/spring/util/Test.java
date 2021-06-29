@@ -199,6 +199,13 @@ public class Test {
 			sink(getElement(out)); // $hasValueFlow
 		}
 		{
+			// "org.springframework.util;CollectionUtils;false;findFirstMatch;;;Element of Argument[0];ReturnValue;value"
+			Object out = null;
+			Collection in = List.of(source());
+			out = CollectionUtils.findFirstMatch(in, null);
+			sink(out); // $hasValueFlow
+		}
+		{
 			// "org.springframework.util;CollectionUtils;false;findValueOfType;;;Element of Argument[0];ReturnValue;value"
 			Object out = null;
 			Collection in = List.of(source());
