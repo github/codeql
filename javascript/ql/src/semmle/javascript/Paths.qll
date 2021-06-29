@@ -475,6 +475,32 @@ private class ConcatPath extends PathExpr {
   }
 }
 
+/** Gets the value of the given SSA definition if it refers to a PathExpr. */
+pragma[noinline]
+string getValueOfSsaDefinition(SsaExplicitDefinition def) {
+  result = def.getDef().getSource().(PathExpr).getValue()
+}
+
+/** Gets the value of the given variable use, if its SSA definition refers to a PathExpr. */
+pragma[noinline]
+string getValueOfSsaDefinitionUse(VarUse e) {
+  exists(SsaExplicitDefinition def |
+    result = getValueOfSsaDefinition(def) and
+    e = def.getVariable().getAUse()
+  )
+}
+
+/** A variable that is an alias for a PathExpr, itself seen as a PathExpr. */
+private class AliasedPathExpr extends PathExpr, VarUse {
+  AliasedPathExpr() {
+    exists(getValueOfSsaDefinitionUse(this))
+  }
+
+  override string getValue() {
+    result = getValueOfSsaDefinitionUse(this)
+  }
+}
+
 /**
  * An expression that appears in a syntactic position where it may represent a path.
  *
