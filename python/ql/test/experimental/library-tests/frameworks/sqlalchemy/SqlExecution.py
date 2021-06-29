@@ -34,23 +34,24 @@ session.add(ed_user2)
 session.commit()
 
 # Injection without requiring the text() taint-step
-session.query(User).filter_by(name="some sql")  # $getSql="some sql"
-session.scalar("some sql")  # $getSql="some sql"
-engine.scalar("some sql")  # $getSql="some sql"
-session.execute("some sql")  # $getSql="some sql"
+session.query(User).filter_by(name="some sql")  # $ MISSING: getSql="some sql"
+session.scalar("some sql")  # $ getSql="some sql"
+engine.scalar("some sql")  # $ getSql="some sql"
+session.execute("some sql")  # $ getSql="some sql"
 
 with engine.connect() as connection:
-    connection.execute("some sql")  # $getSql="some sql"
+    connection.execute("some sql")  # $ getSql="some sql"
 
 with engine.begin() as connection:
-    connection.execute("some sql")  # $getSql="some sql"
+    connection.execute("some sql")  # $ getSql="some sql"
 
 # Injection requiring the text() taint-step
-session.query(User).filter(text("some sql"))  # $getSql="some sql"
-session.query(User).group_by( User.id ).having(text("some sql"))  # $getSql="some sql"
-session.query(User).group_by(text("name='some sql'")).first()  # $getSql="some sql"
-session.query(User).order_by(text("name='some sql'")).first()  # $getSql="some sql"
+t = text("some sql")
+session.query(User).filter(t)  # $ getSql=t
+session.query(User).group_by(User.id).having(t)  # $ getSql=Attribute MISSING: getSql=t
+session.query(User).group_by(t).first()  # $ getSql=t
+session.query(User).order_by(t).first()  # $ getSql=t
 
-query = select(User).where(User.name == text("some sql"))  # $getSql="some sql"
+query = select(User).where(User.name == t)  # $ MISSING: getSql=t
 with engine.connect() as conn:
-    conn.execute(query)
+    conn.execute(query) # $ getSql=query
