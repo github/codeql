@@ -870,6 +870,33 @@ class FormatLiteral extends Literal {
   }
 
   /**
+   * Gets an alternate argument type that would be required by the nth
+   * conversion specifier on a Microsoft or non-Microsoft platform, opposite
+   * to that of the snapshot. This may be useful for answering 'what might
+   * happen' questions.
+   */
+  Type getConversionTypeAlternate(int n) {
+    exists(string len, string conv |
+      this.parseConvSpec(n, _, _, _, _, _, len, conv) and
+      (len != "l" and len != "w" and len != "h") and
+      getUse().getTarget().(FormattingFunction).getFormatCharType().getSize() > 1 and // wide function
+      (
+        conv = "c" and
+        result = getNonDefaultCharType()
+        or
+        conv = "C" and
+        result = getDefaultCharType()
+        or
+        conv = "s" and
+        result.(PointerType).getBaseType() = getNonDefaultCharType()
+        or
+        conv = "S" and
+        result.(PointerType).getBaseType() = getDefaultCharType()
+      )
+    )
+  }
+
+  /**
    * Holds if the nth conversion specifier of this format string (if `mode = 2`), it's
    * minimum field width (if `mode = 0`) or it's precision (if `mode = 1`) requires a
    * format argument.

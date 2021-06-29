@@ -34,6 +34,24 @@ private predicate formattingFunctionCallExpectedType(
 
 /**
  * Holds if the argument corresponding to the `pos` conversion specifier
+ * of `ffc` could alternatively have type `expected`, for example on a different
+ * platform.
+ */
+pragma[noopt]
+private predicate formattingFunctionCallAlternateType(
+  FormattingFunctionCall ffc, int pos, Type expected
+) {
+  exists(FormattingFunction f, int i, FormatLiteral fl |
+    ffc instanceof FormattingFunctionCall and
+    ffc.getTarget() = f and
+    f.getFormatParameterIndex() = i and
+    ffc.getArgument(i) = fl and
+    fl.getConversionTypeAlternate(pos) = expected
+  )
+}
+
+/**
+ * Holds if the argument corresponding to the `pos` conversion specifier
  * of `ffc` is expected to have type `expected` and the corresponding
  * argument `arg` has type `actual`.
  */
@@ -73,6 +91,7 @@ class ExpectedType extends Type {
     exists(Type t |
       (
         formatArgType(_, _, t, _, _) or
+        formattingFunctionCallAlternateType(_, _, t) or
         formatOtherArgType(_, _, t, _, _)
       ) and
       this = t.getUnspecifiedType()
@@ -91,7 +110,11 @@ class ExpectedType extends Type {
  */
 predicate trivialConversion(ExpectedType expected, Type actual) {
   exists(Type exp, Type act |
-    formatArgType(_, _, exp, _, act) and
+    (
+      formatArgType(_, _, exp, _, _) or
+      formattingFunctionCallAlternateType(_, _, exp)
+    ) and
+    formatArgType(_, _, _, _, act) and
     expected = exp.getUnspecifiedType() and
     actual = act.getUnspecifiedType()
   ) and
@@ -148,7 +171,10 @@ where
   (
     formatArgType(ffc, n, expected, arg, actual) and
     not exists(Type anyExpected |
-      formatArgType(ffc, n, anyExpected, arg, actual) and
+      (
+        formatArgType(ffc, n, anyExpected, arg, actual) or
+        formattingFunctionCallAlternateType(ffc, n, anyExpected)
+      ) and
       trivialConversion(anyExpected.getUnspecifiedType(), actual.getUnspecifiedType())
     )
     or
