@@ -21,22 +21,13 @@ import org.springframework.lang.Nullable;
 
 public class ObjectError extends DefaultMessageSourceResolvable {
 
-  private final String objectName;
-
-  @Nullable private transient Object source;
-
-  public ObjectError(String objectName, String defaultMessage) {
-    super("");
-    this.objectName = objectName;
-  }
+  public ObjectError(String objectName, String defaultMessage) { super(""); }
 
   public ObjectError(
       String objectName,
       @Nullable String[] codes,
       @Nullable Object[] arguments,
-      @Nullable String defaultMessage) {
-    this(objectName, defaultMessage);
-  }
+      @Nullable String defaultMessage) { super(""); }
 
   public String getObjectName() {
     return null;
@@ -54,23 +45,16 @@ public class ObjectError extends DefaultMessageSourceResolvable {
 
   @Override
   public boolean equals(@Nullable Object other) {
-    if (this == other) {
-      return true;
-    }
-    if (other == null || other.getClass() != getClass() || !super.equals(other)) {
-      return false;
-    }
-    ObjectError otherError = (ObjectError) other;
-    return getObjectName().equals(otherError.getObjectName());
+    return false;
   }
 
   @Override
   public int hashCode() {
-    return (29 * super.hashCode() + getObjectName().hashCode());
+    return 0;
   }
 
   @Override
   public String toString() {
-    return "Error in object '" + this.objectName + "': " + resolvableToString();
+    return "";
   }
 }

@@ -19,16 +19,7 @@ package org.springframework.validation;
 import org.springframework.lang.Nullable;
 
 public class FieldError extends ObjectError {
-
-  private final String field;
-
-  @Nullable private final Object rejectedValue;
-
-  private final boolean bindingFailure;
-
-  public FieldError(String objectName, String field, String defaultMessage) {
-    this(objectName, field, null, false, null, null, defaultMessage);
-  }
+  public FieldError(String objectName, String field, String defaultMessage) { super("", ""); }
 
   public FieldError(
       String objectName,
@@ -37,12 +28,7 @@ public class FieldError extends ObjectError {
       boolean bindingFailure,
       @Nullable String[] codes,
       @Nullable Object[] arguments,
-      @Nullable String defaultMessage) {
-    super(objectName, "");
-    this.field = field;
-    this.rejectedValue = rejectedValue;
-    this.bindingFailure = bindingFailure;
-  }
+      @Nullable String defaultMessage) { super("", ""); }
 
   public String getField() {
     return null;
