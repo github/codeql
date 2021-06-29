@@ -82,6 +82,7 @@ private module Frameworks {
   private import semmle.code.java.frameworks.apache.Lang
   private import semmle.code.java.frameworks.guava.Guava
   private import semmle.code.java.frameworks.jackson.JacksonSerializability
+  private import semmle.code.java.frameworks.JavaxJson
   private import semmle.code.java.frameworks.JaxWS
   private import semmle.code.java.frameworks.Optional
   private import semmle.code.java.frameworks.spring.SpringHttp
