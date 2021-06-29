@@ -37,18 +37,18 @@ public class JaxXSS {
     else {
       if(chainDirectly) {
         if(contentTypeFirst)
-          return builder.type(MediaType.APPLICATION_JSON).entity(userControlled).build(); // $SPURIOUS: xss
+          return builder.type(MediaType.APPLICATION_JSON).entity(userControlled).build();
         else
-          return builder.entity(userControlled).type(MediaType.APPLICATION_JSON).build(); // $SPURIOUS: xss
+          return builder.entity(userControlled).type(MediaType.APPLICATION_JSON).build();
       }
       else {
         if(contentTypeFirst) {
           Response.ResponseBuilder builder2 = builder.type(MediaType.APPLICATION_JSON);
-          return builder2.entity(userControlled).build(); // $SPURIOUS: xss
+          return builder2.entity(userControlled).build();
         }
         else {
           Response.ResponseBuilder builder2 = builder.entity(userControlled);
-          return builder2.type(MediaType.APPLICATION_JSON).build(); // $SPURIOUS: xss
+          return builder2.type(MediaType.APPLICATION_JSON).build();
         }
       }
     }
