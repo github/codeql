@@ -12,11 +12,11 @@ def send():
   msg = Message(subject="Subject",
                 sender="from@example.com",
                 recipients=["to@example.com"],
-                body="body",
+                body="plain-text body",
                 html=request.args["html"])
 
   # The message can contain a body and/or HTML:
-  msg.body = "body"
+  msg.body = "plain-text body"
   msg.html = request.args["html"]
 
   mail.send(msg)
