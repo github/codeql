@@ -31,7 +31,7 @@ private module NoSQL {
   }
 
   /**
-   * Gets a reference to a initialized `Mongo` instance.
+   * Gets a reference to an initialized `Mongo` instance.
    * See `pyMongo()`, `flask_PyMongo()`
    */
   private API::Node mongoInstance() {
@@ -40,7 +40,7 @@ private module NoSQL {
   }
 
   /**
-   * Gets a reference to a initialized `Mongo` DB instance.
+   * Gets a reference to an initialized `Mongo` DB instance.
    * See `mongoEngine()`, `flask_MongoEngine()`
    */
   private API::Node mongoDBInstance() {
@@ -79,7 +79,7 @@ private module NoSQL {
    * mongo.db.user.find({'name': safe_search})
    * ```
    *
-   * `mongo.db` would be a `use` of a `Mongo` instance, and so the result.
+   * `mongo.db` would be a use of a `Mongo` instance, and so the result.
    */
   private DataFlow::Node mongoDB() { mongoDB(DataFlow::TypeTracker::end()).flowsTo(result) }
 
@@ -110,7 +110,7 @@ private module NoSQL {
    * mongo.db.user.find({'name': safe_search})
    * ```
    *
-   * `mongo.db.user` would be a `use` of a `Mongo` collection, and so the result.
+   * `mongo.db.user` would be a use of a `Mongo` collection, and so the result.
    */
   private DataFlow::Node mongoCollection() {
     mongoCollection(DataFlow::TypeTracker::end()).flowsTo(result)
