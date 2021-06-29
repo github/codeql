@@ -19,17 +19,10 @@ import cpp
  * Holds if the argument corresponding to the `pos` conversion specifier
  * of `ffc` is expected to have type `expected`.
  */
-pragma[noopt]
 private predicate formattingFunctionCallExpectedType(
   FormattingFunctionCall ffc, int pos, Type expected
 ) {
-  exists(FormattingFunction f, int i, FormatLiteral fl |
-    ffc instanceof FormattingFunctionCall and
-    ffc.getTarget() = f and
-    f.getFormatParameterIndex() = i and
-    ffc.getArgument(i) = fl and
-    fl.getConversionType(pos) = expected
-  )
+  ffc.getFormat().(FormatLiteral).getConversionType(pos) = expected
 }
 
 /**
@@ -37,17 +30,10 @@ private predicate formattingFunctionCallExpectedType(
  * of `ffc` could alternatively have type `expected`, for example on a different
  * platform.
  */
-pragma[noopt]
 private predicate formattingFunctionCallAlternateType(
   FormattingFunctionCall ffc, int pos, Type expected
 ) {
-  exists(FormattingFunction f, int i, FormatLiteral fl |
-    ffc instanceof FormattingFunctionCall and
-    ffc.getTarget() = f and
-    f.getFormatParameterIndex() = i and
-    ffc.getArgument(i) = fl and
-    fl.getConversionTypeAlternate(pos) = expected
-  )
+  ffc.getFormat().(FormatLiteral).getConversionTypeAlternate(pos) = expected
 }
 
 /**
