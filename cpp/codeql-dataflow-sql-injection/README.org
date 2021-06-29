@@ -172,3 +172,52 @@
      where conf.hasFlowPath(source, sink)
      select sink, source, sink, "Possible SQL injection"
    #+END_SRC
+
+** Optional: sarif file review of the results
+   Query results are available in several output formats using the cli.  The
+   following produces the sarif format, a json-based result description.
+
+   #+BEGIN_SRC sh
+     # The setup information from before
+     export PATH=$HOME/local/vmsync/codeql250:"$PATH"
+     SRCDIR=$HOME/local/codeql-training-material.cpp-sqli/cpp/codeql-dataflow-sql-injection
+     DB=$SRCDIR/cpp-sqli-$(cd $SRCDIR && git rev-parse --short HEAD)
+
+     # Check paths
+     echo $DB
+     echo $SRCDIR
+
+     # To see the help
+     codeql database analyze -h
+
+     # Run a query
+     codeql database analyze                         \
+            -v                                       \
+            --ram=14000                              \
+            -j12                                     \
+            --rerun                                  \
+            --search-path ~/local/vmsync/ql          \
+            --format=sarif-latest                    \
+            --output cpp-sqli.sarif                  \
+            --                                       \
+            $DB                                      \
+            $SRCDIR/SqlInjection.ql
+
+     # Examine the file in an editor
+     edit cpp-sqli.sarif
+   #+END_SRC
+
+   An example of using the sarif data is in the the jq script [[./sarif-summary.jq]].
+   When run against the sarif input via 
+   #+BEGIN_SRC sh
+     jq --raw-output --join-output  -f sarif-summary.jq < cpp-sqli.sarif > cpp-sqli.txt
+   #+END_SRC
+   it produces output in a form close to that of compiler error messages:
+   #+BEGIN_SRC text
+     query-id: message line 
+         Path
+            ...
+         Path
+            ...
+   #+END_SRC
+   
