@@ -80,16 +80,27 @@ public class CrlfInjection {
 	@RequestMapping(value = "/crlf3", method = RequestMethod.GET)
 	@ResponseBody
 	public void bad3(String subject) {
+		//Bad
 		logger.info(subject);
 	}
 
 	@RequestMapping(value = "/crlf4", method = RequestMethod.GET)
 	@ResponseBody
 	public void good1(String subject) throws Exception {
-		//good
+		//Good
+		//Check whether the string contains \r\n or \n dangerous characters
 		if (subject.contains("\r\n") || subject.contains("\n")) {
 			throw new Exception("error");
 		}
 		logger.info(subject);
+	}
+
+	@RequestMapping(value = "/crlf5", method = RequestMethod.GET)
+	@ResponseBody
+	public void good2(String subject){
+		//Good
+		//Replace \r\n or \n with spaces
+		String infoMes = subject.replace("\r\n","").replace("\n","");
+		logger.info(infoMes);
 	}
 }

@@ -20,11 +20,7 @@ private class ContainsSanitizer extends DataFlow::BarrierGuard {
     this.(MethodAccess).getMethod().hasName("contains") and
     this.(MethodAccess).getMethod().getNumberOfParameters() = 1 and
     this.(MethodAccess).getMethod().getDeclaringType() instanceof TypeString and
-    (
-      this.(MethodAccess).getAnArgument().(CompileTimeConstantExpr).getStringValue() = "\r\n"
-      or
-      this.(MethodAccess).getAnArgument().(CompileTimeConstantExpr).getStringValue() = "\n"
-    )
+    this.(MethodAccess).getAnArgument().(CompileTimeConstantExpr).getStringValue() = ["\r\n", "\n"]
   }
 
   override predicate checks(Expr e, boolean branch) {
@@ -42,8 +38,28 @@ class CrlfInjectionConfiguration extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof CrlfInjectionSink }
 
+  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+    exists(MethodAccess ma, Method m | m = ma.getMethod() |
+      m instanceof ReplaceMethod and
+      ma.getQualifier() = node1.asExpr() and
+      ma = node2.asExpr()
+    )
+  }
+
   override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
     guard instanceof ContainsSanitizer
+  }
+
+  override predicate isSanitizer(DataFlow::Node node) {
+    exists(MethodAccess ma, Method m | m = ma.getMethod() |
+      m instanceof ReplaceMethod and
+      ma.getArgument(0).(CompileTimeConstantExpr).getStringValue() = ["\r\n", "\n"] and
+      ma.getQualifier() = node.asExpr()
+    )
+    or
+    node.getType() instanceof BoxedType
+    or
+    node.getType() instanceof PrimitiveType
   }
 }
 

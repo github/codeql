@@ -27,7 +27,8 @@ log injection, you cannot allow any line breaks in the contact form input, becau
 <p>The following examples show the bad case and the good case respectively. In <code>bad1</code> method and code>bad2</code> method, the user input is sent 
 as the email header content, and the malicious user may introduce additional headers in the email to indicate that the mail server's behavior is different 
 from expected. In <code>bad3</code> method, user input is used as the output of the log content, and malicious users may forge the log content. 
-In <code>good1</code> method, the program determines whether the user input contains <code>\r\n or \n</code> through <code>contains</code> to prevent crlf injection.</p>
+In <code>good1</code> method, the program determines whether the user input contains <code>\r\n or \n</code> through <code>contains</code> to prevent crlf injection.
+In <code>good2</code> method, use string replacement method to replace <code>\r\n or \n</code> in the string with spaces.</p>
 
 <sample src="CrlfInjection.java" />
 </example>

@@ -3,6 +3,17 @@ import DataFlow
 import experimental.semmle.code.java.Logging
 import semmle.code.java.dataflow.FlowSources
 
+/**
+ * A String replacement method. This is either `String.replace` or `String.replaceAll`.
+ */
+class ReplaceMethod extends Method {
+  ReplaceMethod() {
+    this.getName() in ["replace", "replaceAll"] and
+    this.getDeclaringType() instanceof TypeString and
+    this.getNumberOfParameters() = 2
+  }
+}
+
 /** The method `org.apache.commons.mail.Email.setSubject`. */
 class EmailSetSubjectMethod extends Method {
   EmailSetSubjectMethod() {
