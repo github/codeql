@@ -15,7 +15,6 @@ private class FlowSummaries extends SummaryModelCsv {
         "org.springframework.util;AntPathMatcher;false;extractUriTemplateVariables;;;Argument[1];MapValue of ReturnValue;taint",
         "org.springframework.util;AntPathMatcher;false;tokenizePath;;;Argument[0];ArrayElement of ReturnValue;taint",
         "org.springframework.util;AntPathMatcher;false;tokenizePattern;;;Argument[0];ArrayElement of ReturnValue;taint",
-        "org.springframework.util.AntPathMatcher;AntPathStringMatcher;false;matchStrings;;;Argument[0];MapValue of Argument[1];taint",
         "org.springframework.util;AutoPopulatingList;false;AutoPopulatingList;(java.util.List,org.springframework.util.AutoPopulatingList.ElementFactory);;Element of Argument[0];Element of Argument[-1];value",
         "org.springframework.util;AutoPopulatingList;false;AutoPopulatingList;(java.util.List,java.lang.Class);;Element of Argument[0];Element of Argument[-1];value",
         "org.springframework.util;Base64Utils;false;decode;;;Argument[0];ReturnValue;taint",
