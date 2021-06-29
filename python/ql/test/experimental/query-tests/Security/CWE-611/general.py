@@ -6,6 +6,13 @@ import xml.dom.minidom, xml.dom.pulldom
 import xmltodict
 
 '''
+TO-DO
+
+Extend tests
+Model xmltodict and xml.dom
+Write StringIO/BytesIO additional tain steps
+
+
 XML Parsers:
   xml.etree.ElementTree.XMLParser() - no options, vuln by default
   lxml.etree.XMLParser() - no_network=True huge_tree=False resolve_entities=True
