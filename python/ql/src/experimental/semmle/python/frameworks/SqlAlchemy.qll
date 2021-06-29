@@ -83,4 +83,38 @@ private module SqlAlchemy {
 
     override DataFlow::Node getSql() { result = this.getArg(0) }
   }
+
+  /**
+   * Additional taint-steps for `sqlalchemy.text()`
+   *
+   * See https://docs.sqlalchemy.org/en/14/core/sqlelement.html#sqlalchemy.sql.expression.text
+   * See https://docs.sqlalchemy.org/en/14/core/sqlelement.html#sqlalchemy.sql.expression.TextClause
+   */
+  class SqlAlchemyTextAdditionalTaintSteps extends TaintTracking::AdditionalTaintStep {
+    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+      exists(DataFlow::CallCfgNode call |
+        (
+          call = API::moduleImport("sqlalchemy").getMember("text").getACall()
+          or
+          call = API::moduleImport("sqlalchemy").getMember("sql").getMember("text").getACall()
+          or
+          call =
+            API::moduleImport("sqlalchemy")
+                .getMember("sql")
+                .getMember("expression")
+                .getMember("text")
+                .getACall()
+          or
+          call =
+            API::moduleImport("sqlalchemy")
+                .getMember("sql")
+                .getMember("expression")
+                .getMember("TextClause")
+                .getACall()
+        ) and
+        nodeFrom in [call.getArg(0), call.getArgByName("text")] and
+        nodeTo = call
+      )
+    }
+  }
 }

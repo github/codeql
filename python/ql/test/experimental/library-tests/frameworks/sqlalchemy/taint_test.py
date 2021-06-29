@@ -5,8 +5,8 @@ def test_taint():
 
     ensure_tainted(
         ts, # $ tainted
-        sqlalchemy.text(ts), # $ MISSING: tainted
-        sqlalchemy.sql.text(ts),# $ MISSING: tainted
-        sqlalchemy.sql.expression.text(ts),# $ MISSING: tainted
-        sqlalchemy.sql.expression.TextClause(ts),# $ MISSING: tainted
+        sqlalchemy.text(ts), # $ tainted
+        sqlalchemy.sql.text(ts),# $ tainted
+        sqlalchemy.sql.expression.text(ts),# $ tainted
+        sqlalchemy.sql.expression.TextClause(ts),# $ tainted
     )
