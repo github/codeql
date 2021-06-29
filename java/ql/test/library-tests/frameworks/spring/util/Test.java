@@ -51,8 +51,8 @@ public class Test {
 	<K, V> K getMapKey(Map<K, V> container) { return container.keySet().iterator().next(); }
 	<K, V> V getMapValue(Map<K, V> container) { return container.get(null); }
 	Object[] newWithArrayElement(Object element) { return new Object[] {element}; }
-  Properties newPropertiesWithMapKey(Object element) { Properties p = new Properties(); p.put(element, null); return p; }
-  Properties newPropertiesWithMapValue(Object element) { Properties p = new Properties(); p.put(null, element); return p; }
+	Properties newPropertiesWithMapKey(Object element) { Properties p = new Properties(); p.put(element, null); return p; }
+	Properties newPropertiesWithMapValue(Object element) { Properties p = new Properties(); p.put(null, element); return p; }
 	static Object source() { return null; }
 	static void sink(Object o) { }
 
@@ -68,14 +68,14 @@ public class Test {
 				sink(out.get("someKey")); // $hasTaintFlow
 			}
 			{
-        // "org.springframework.util;AntPathMatcher;false;tokenizePath;;;Argument[0];ArrayValue of ReturnValue;taint",
+				// "org.springframework.util;AntPathMatcher;false;tokenizePath;;;Argument[0];ArrayValue of ReturnValue;taint",
 				String[] out = null;
 				String in = (String)source();
 				out = this.tokenizePath(in);
 				sink(out[0]); // $hasTaintFlow
 			}
 			{
-        // "org.springframework.util;AntPathMatcher;false;tokenizePattern;;;Argument[0];ArrayValue of ReturnValue;taint",
+				// "org.springframework.util;AntPathMatcher;false;tokenizePattern;;;Argument[0];ArrayValue of ReturnValue;taint",
 				String[] out = null;
 				String in = (String)source();
 				out = this.tokenizePattern(in);
@@ -298,7 +298,7 @@ public class Test {
 			// "org.springframework.util;CollectionUtils;false;unmodifiableMultiValueMap;;;MapValue of Argument[0];MapValue of ReturnValue;value"
 			MultiValueMap<Object, Object> out = null;
 			MultiValueMap in = new LinkedMultiValueMap();
-      in.put(null, source());
+			in.put(null, source());
 			out = CollectionUtils.unmodifiableMultiValueMap(in);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
@@ -313,7 +313,7 @@ public class Test {
 			// "org.springframework.util;CompositeIterator;false;next;;;Element of Argument[-1];ReturnValue;value"
 			Object out = null;
 			CompositeIterator in = new CompositeIterator();
-      in.add(List.of(source()).iterator());
+			in.add(List.of(source()).iterator());
 			out = in.next();
 			sink(out); // $hasValueFlow
 		}
@@ -1061,7 +1061,7 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-      // "org.springframework.util;StringUtils;false;arrayToCommaDelimitedString;;;ArrayElement of Argument[0];ReturnValue;taint",
+			// "org.springframework.util;StringUtils;false;arrayToCommaDelimitedString;;;ArrayElement of Argument[0];ReturnValue;taint",
 			String out = null;
 			Object[] in = { source() };
 			out = StringUtils.arrayToCommaDelimitedString(in);
@@ -1075,7 +1075,7 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-      // "org.springframework.util;StringUtils;false;arrayToDelimitedString;;;ArrayElement of Argument[0];ReturnValue;taint",
+			// "org.springframework.util;StringUtils;false;arrayToDelimitedString;;;ArrayElement of Argument[0];ReturnValue;taint",
 			String out = null;
 			Object[] in = { source() };
 			out = StringUtils.arrayToDelimitedString(in, null);
@@ -1278,14 +1278,14 @@ public class Test {
 			sink(getArrayElement(out)); // $hasTaintFlow
 		}
 		{
-      // "org.springframework.util;StringUtils;false;splitArrayElementsIntoProperties;;;ArrayElement of Argument[0];MapKey of ReturnValue;taint",
+			// "org.springframework.util;StringUtils;false;splitArrayElementsIntoProperties;;;ArrayElement of Argument[0];MapKey of ReturnValue;taint",
 			Properties out = null;
 			String[] in = { (String)source() };
 			out = StringUtils.splitArrayElementsIntoProperties(in, null, null);
 			sink(getMapKey(out)); // $hasTaintFlow
 		}
 		{
-      // "org.springframework.util;StringUtils;false;splitArrayElementsIntoProperties;;;ArrayElement of Argument[0];MapValue of ReturnValue;taint",
+			// "org.springframework.util;StringUtils;false;splitArrayElementsIntoProperties;;;ArrayElement of Argument[0];MapValue of ReturnValue;taint",
 			Properties out = null;
 			String[] in = { (String)source() };
 			out = StringUtils.splitArrayElementsIntoProperties(in, null, null);
@@ -1306,14 +1306,14 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-      // "org.springframework.util;StringUtils;false;toStringArray;;;Element of Argument[0];ArrayElement of ReturnValue;value",
+			// "org.springframework.util;StringUtils;false;toStringArray;;;Element of Argument[0];ArrayElement of ReturnValue;value",
 			String[] out = null;
 			Enumeration in = Collections.enumeration(List.of(source()));;
 			out = StringUtils.toStringArray(in);
 			sink(getArrayElement(out)); // $hasValueFlow
 		}
 		{
-      // "org.springframework.util;StringUtils;false;toStringArray;;;Element of Argument[0];ArrayElement of ReturnValue;value",
+			// "org.springframework.util;StringUtils;false;toStringArray;;;Element of Argument[0];ArrayElement of ReturnValue;value",
 			String[] out = null;
 			Collection in = List.of(source());
 			out = StringUtils.toStringArray(in);
