@@ -41,13 +41,14 @@ class Git:
         return (parent_sha, parent_date)
 
 
-def get_packages(lang, query):
+def get_packages(lang, query, search_path):
     try:
         db = "empty_" + lang
         ql_output = "output-" + lang + ".csv"
         if os.path.isdir(db):
             shutil.rmtree(db)
         utils.create_empty_database(lang, ".java", db)
+        utils.upgrade_codeql_database(db, search_path)
         utils.run_codeql_query(query, db, ql_output)
 
         return pack.PackageCollection(ql_output)
@@ -142,7 +143,7 @@ try:
                 csvwriter_total = language_utils[lang]["csvwriter_total"]
                 csvwriter_packages = language_utils[lang]["csvwriter_packages"]
 
-                packages = get_packages(lang, config.ql_path)
+                packages = get_packages(lang, config.ql_path, ".")
 
                 csvwriter_total.writerow([
                     current_sha,

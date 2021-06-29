@@ -27,6 +27,11 @@ def create_empty_database(lang, extension, database):
                    database, "--no-pre-finalize"])
 
 
+def upgrade_codeql_database(database, search_path):
+    subprocess_run(["codeql", "database", "upgrade", database,
+                   "--search-path", search_path])
+
+
 def run_codeql_query(query, database, output):
     """Runs a codeql query on the given database."""
     subprocess_run(["codeql", "query", "run", query,
