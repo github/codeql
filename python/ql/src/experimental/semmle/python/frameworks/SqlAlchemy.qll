@@ -8,6 +8,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.ApiGraphs
 private import semmle.python.Concepts
+private import experimental.semmle.python.Concepts
 
 private module SqlAlchemy {
   /**
@@ -116,5 +117,18 @@ private module SqlAlchemy {
         nodeTo = call
       )
     }
+  }
+
+  /**
+   * Gets a reference to `sqlescapy.sqlescape`.
+   *
+   * See https://pypi.org/project/sqlescapy/
+   */
+  class SQLEscapySanitizerCall extends DataFlow::CallCfgNode, SQLEscape::Range {
+    SQLEscapySanitizerCall() {
+      this = API::moduleImport("sqlescapy").getMember("sqlescape").getACall()
+    }
+
+    override DataFlow::Node getAnInput() { result = this.getArg(0) }
   }
 }
