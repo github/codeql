@@ -68,16 +68,30 @@ private module LDAP {
       }
     }
 
+    /**
+     * List of `ldap` methods used for binding.
+     *
+     * See https://www.python-ldap.org/en/python-ldap-3.3.0/reference/ldap.html#functions
+     */
+    private class LDAP2BindMethods extends string {
+      LDAP2BindMethods() {
+        this in [
+            "bind", "bind_s", "simple_bind", "simple_bind_s", "sasl_interactive_bind_s",
+            "sasl_non_interactive_bind_s", "sasl_external_bind_s", "sasl_gssapi_bind_s"
+          ]
+      }
+    }
+
     /** Gets a reference to a `ldap` bind. */
     private DataFlow::Node ldapBind() {
       result = ldapOperation() and
-      result.(DataFlow::AttrRead).getAttributeName().matches("%bind%")
+      result.(DataFlow::AttrRead).getAttributeName() instanceof LDAP2BindMethods
     }
 
     /**
      * A class to find `ldap` methods binding a connection.
      *
-     * See `LDAP2QueryMethods`
+     * See `LDAP2BindMethods`
      */
     private class LDAP2Bind extends DataFlow::CallCfgNode, LDAPBind::Range {
       LDAP2Bind() { this.getFunction() = ldapBind() }
