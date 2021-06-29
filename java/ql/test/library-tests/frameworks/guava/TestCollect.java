@@ -59,9 +59,9 @@ class TestCollect {
     void test2() {
         sink(element(ImmutableList.of(taint(), taint(), taint(), taint(),taint(), taint(), taint(), taint(),taint(), taint(), taint(), taint(),taint(), taint(), taint(), taint()))); // $numValueFlow=16
         sink(element(ImmutableSet.of(taint(), taint(), taint(), taint(),taint(), taint(), taint(), taint(),taint(), taint(), taint(), taint(),taint(), taint(), taint(), taint()))); // $numValueFlow=16
-        sink(mapKey(ImmutableMap.of(taint(), taint(), taint(), taint())));  // $numValueFlow=2 SPURIOUS:numTaintFlow=4
+        sink(mapKey(ImmutableMap.of(taint(), taint(), taint(), taint())));  // $numValueFlow=2
         sink(mapValue(ImmutableMap.of(taint(), taint(), taint(), taint())));  // $numValueFlow=2
-        sink(multimapKey(ImmutableMultimap.of(taint(), taint(), taint(), taint())));  // $numValueFlow=2 SPURIOUS:numTaintFlow=4
+        sink(multimapKey(ImmutableMultimap.of(taint(), taint(), taint(), taint())));  // $numValueFlow=2
         sink(multimapValue(ImmutableMultimap.of(taint(), taint(), taint(), taint())));  // $numValueFlow=2
         sink(tableRow(ImmutableTable.of(taint(), taint(), taint())));  // $numValueFlow=1
         sink(tableColumn(ImmutableTable.of(taint(), taint(), taint())));  // $numValueFlow=1
