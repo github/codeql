@@ -9,13 +9,13 @@ namespace Semmle.Extraction.CSharp.Populators
     internal class DirectiveVisitor : CSharpSyntaxWalker
     {
         private readonly Context cx;
-        private readonly List<IEntity> activeConditions = new();
+        private readonly List<IEntity> branchesTaken = new();
 
         /// <summary>
-        /// Gets a list of `#if` and `#elif` entities that are active, and where
-        /// the condition is `true`.
+        /// Gets a list of `#if`, `#elif`, and `#else` entities where the branch
+        /// is taken.
         /// </summary>
-        public IEnumerable<IEntity> ActiveConditions => activeConditions;
+        public IEnumerable<IEntity> BranchesTaken => branchesTaken;
 
         public DirectiveVisitor(Context cx) : base(SyntaxWalkerDepth.StructuredTrivia)
         {
@@ -101,8 +101,8 @@ namespace Semmle.Extraction.CSharp.Populators
         {
             var ifStart = Entities.IfDirective.Create(cx, node);
             ifStarts.Push(new IfDirectiveStackElement(ifStart));
-            if (node.IsActive && node.ConditionValue)
-                activeConditions.Add(ifStart);
+            if (node.BranchTaken)
+                branchesTaken.Add(ifStart);
         }
 
         public override void VisitEndIfDirectiveTrivia(EndIfDirectiveTriviaSyntax node)
@@ -129,8 +129,8 @@ namespace Semmle.Extraction.CSharp.Populators
 
             var start = ifStarts.Peek();
             var elIf = Entities.ElifDirective.Create(cx, node, start.Entity, start.SiblingCount++);
-            if (node.IsActive && node.ConditionValue)
-                activeConditions.Add(elIf);
+            if (node.BranchTaken)
+                branchesTaken.Add(elIf);
         }
 
         public override void VisitElseDirectiveTrivia(ElseDirectiveTriviaSyntax node)
@@ -143,7 +143,9 @@ namespace Semmle.Extraction.CSharp.Populators
             }
 
             var start = ifStarts.Peek();
-            Entities.ElseDirective.Create(cx, node, start.Entity, start.SiblingCount++);
+            var @else = Entities.ElseDirective.Create(cx, node, start.Entity, start.SiblingCount++);
+            if (node.BranchTaken)
+                branchesTaken.Add(@else);
         }
     }
 }

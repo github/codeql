@@ -22,6 +22,8 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.WriteSubId(Context.CreateLocation(ReportingLocation));
             trapFile.Write(Symbol.IsActive);
             trapFile.Write(',');
+            trapFile.Write(Symbol.BranchTaken);
+            trapFile.Write(',');
             trapFile.Write(Symbol.ConditionValue);
             trapFile.Write(";trivia");
         }

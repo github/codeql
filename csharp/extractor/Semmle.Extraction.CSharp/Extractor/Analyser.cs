@@ -214,9 +214,9 @@ namespace Semmle.Extraction.CSharp
                         var csNode = (CSharpSyntaxNode)root;
                         var directiveVisitor = new DirectiveVisitor(cx);
                         csNode.Accept(directiveVisitor);
-                        foreach (var condition in directiveVisitor.ActiveConditions)
+                        foreach (var branch in directiveVisitor.BranchesTaken)
                         {
-                            cx.TrapStackSuffix.Add(condition);
+                            cx.TrapStackSuffix.Add(branch);
                         }
                         csNode.Accept(new CompilationUnitVisitor(cx));
                         cx.PopulateAll();

@@ -15,6 +15,15 @@ namespace Semmle.Extraction.CSharp.Entities
             this.index = index;
         }
 
+        public override void WriteId(EscapingTextWriter trapFile)
+        {
+            trapFile.WriteSubId(Context.CreateLocation(ReportingLocation));
+            trapFile.Write(Symbol.IsActive);
+            trapFile.Write(',');
+            trapFile.Write(Symbol.BranchTaken);
+            trapFile.Write(";trivia");
+        }
+
         protected override void PopulatePreprocessor(TextWriter trapFile)
         {
             trapFile.directive_elses(this, Symbol.BranchTaken, start, index);
