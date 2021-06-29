@@ -34,10 +34,12 @@ class SSLSession extends RefType {
   SSLSession() { hasQualifiedName("javax.net.ssl", "SSLSession") }
 }
 
+/** The `javax.net.ssl.SSLEngine` class. */
 class SSLEngine extends RefType {
   SSLEngine() { this.hasQualifiedName("javax.net.ssl", "SSLEngine") }
 }
 
+/** The `javax.net.ssl.SSLSocket` class. */
 class SSLSocket extends RefType {
   SSLSocket() { this.hasQualifiedName("javax.net.ssl", "SSLSocket") }
 }
