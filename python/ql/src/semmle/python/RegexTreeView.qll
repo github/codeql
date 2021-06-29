@@ -358,6 +358,11 @@ class RegExpSequence extends RegExpTerm, TRegExpSequence {
   override string getPrimaryQLClass() { result = "RegExpSequence" }
 }
 
+pragma[nomagic]
+private int seqChildEnd(Regex re, int start, int end, int i) {
+  result = seqChild(re, start, end, i).getEnd()
+}
+
 // moved out so we can use it in the charpred
 private RegExpTerm seqChild(Regex re, int start, int end, int i) {
   re.sequence(start, end) and
@@ -372,7 +377,7 @@ private RegExpTerm seqChild(Regex re, int start, int end, int i) {
     or
     i > 0 and
     result.getRegex() = re and
-    exists(int itemStart | itemStart = seqChild(re, start, end, i - 1).getEnd() |
+    exists(int itemStart | itemStart = seqChildEnd(re, start, end, i - 1) |
       result.getStart() = itemStart and
       re.item(itemStart, result.getEnd())
     )
@@ -440,7 +445,7 @@ class RegExpEscape extends RegExpNormalChar {
     or
     this.getUnescaped() = "t" and result = "\t"
     or
-    this.getUnescaped() = "f" and result = ""
+    this.getUnescaped() = "f" and result = "\f"
     or
     isUnicode() and
     result = getUnicode()
