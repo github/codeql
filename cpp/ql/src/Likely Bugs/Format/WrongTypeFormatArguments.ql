@@ -52,13 +52,13 @@ private predicate formattingFunctionCallAlternateType(
 
 /**
  * Holds if the argument corresponding to the `pos` conversion specifier
- * of `ffc` is expected to have type `expected` and the corresponding
- * argument `arg` has type `actual`.
+ * of `ffc` is `arg` and has type `actual`.
  */
 pragma[noopt]
-predicate formatArgType(FormattingFunctionCall ffc, int pos, Type expected, Expr arg, Type actual) {
+predicate formattingFunctionCallActualType(
+  FormattingFunctionCall ffc, int pos, Expr arg, Type actual
+) {
   exists(Expr argConverted |
-    formattingFunctionCallExpectedType(ffc, pos, expected) and
     ffc.getConversionArgument(pos) = arg and
     argConverted = arg.getFullyConverted() and
     actual = argConverted.getType()
@@ -90,7 +90,7 @@ class ExpectedType extends Type {
   ExpectedType() {
     exists(Type t |
       (
-        formatArgType(_, _, t, _, _) or
+        formattingFunctionCallExpectedType(_, _, t) or
         formattingFunctionCallAlternateType(_, _, t) or
         formatOtherArgType(_, _, t, _, _)
       ) and
@@ -111,10 +111,10 @@ class ExpectedType extends Type {
 predicate trivialConversion(ExpectedType expected, Type actual) {
   exists(Type exp, Type act |
     (
-      formatArgType(_, _, exp, _, _) or
+      formattingFunctionCallExpectedType(_, _, exp) or
       formattingFunctionCallAlternateType(_, _, exp)
     ) and
-    formatArgType(_, _, _, _, act) and
+    formattingFunctionCallActualType(_, _, _, act) and
     expected = exp.getUnspecifiedType() and
     actual = act.getUnspecifiedType()
   ) and
@@ -169,10 +169,11 @@ int sizeof_IntType() { exists(IntType it | result = it.getSize()) }
 from FormattingFunctionCall ffc, int n, Expr arg, Type expected, Type actual
 where
   (
-    formatArgType(ffc, n, expected, arg, actual) and
+    formattingFunctionCallExpectedType(ffc, n, expected) and
+    formattingFunctionCallActualType(ffc, n, arg, actual) and
     not exists(Type anyExpected |
       (
-        formatArgType(ffc, n, anyExpected, arg, actual) or
+        formattingFunctionCallExpectedType(ffc, n, anyExpected) or
         formattingFunctionCallAlternateType(ffc, n, anyExpected)
       ) and
       trivialConversion(anyExpected.getUnspecifiedType(), actual.getUnspecifiedType())
