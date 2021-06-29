@@ -688,8 +688,8 @@ module Private {
       ) {
         exists(string inSpec, string outSpec, string kind |
           summaryElement(this, inSpec, outSpec, kind) and
-          interpretSpec(inSpec, 0, input) and
-          interpretSpec(outSpec, 0, output)
+          interpretSpec(inSpec, input) and
+          interpretSpec(outSpec, output)
         |
           kind = "value" and preservesValue = true
           or
