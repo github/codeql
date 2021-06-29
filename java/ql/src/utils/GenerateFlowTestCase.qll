@@ -432,19 +432,19 @@ class TestCase extends TTestCase {
    * will do the opposite.
    */
   string getASupportMethodModel() {
-    exists(SummaryComponent c, string contentSsvDescription |
-      c = input.drop(_).head() and contentSsvDescription = getComponentSpec(c)
+    exists(SummaryComponent c, string contentCsvDescription |
+      c = input.drop(_).head() and contentCsvDescription = getComponentSpec(c)
     |
       result =
         "generatedtest;Test;false;newWith" + contentToken(getContent(c)) + ";;;Argument[0];" +
-          contentSsvDescription + " of ReturnValue;value"
+          contentCsvDescription + " of ReturnValue;value"
     )
     or
-    exists(SummaryComponent c, string contentSsvDescription |
-      c = output.drop(_).head() and contentSsvDescription = getComponentSpec(c)
+    exists(SummaryComponent c, string contentCsvDescription |
+      c = output.drop(_).head() and contentCsvDescription = getComponentSpec(c)
     |
       result =
-        "generatedtest;Test;false;get" + contentToken(getContent(c)) + ";;;" + contentSsvDescription
+        "generatedtest;Test;false;get" + contentToken(getContent(c)) + ";;;" + contentCsvDescription
           + " of Argument[0];ReturnValue;value"
     )
   }
@@ -540,7 +540,7 @@ string getASupportMethod() {
 query string getASupportMethodModel() { result = any(TestCase tc).getASupportMethodModel() }
 
 /**
- * Gets a Java file body testing all requested SSV rows against whatever classes and methods they resolve against.
+ * Gets a Java file body testing all requested CSV rows against whatever classes and methods they resolve against.
  */
 query string getTestCase() {
   result =

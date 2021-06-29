@@ -13,26 +13,26 @@ import tempfile
 
 if any(s == "--help" for s in sys.argv):
   print("""Usage:
-GenerateFlowTestCase.py specsToTest.ssv projectPom.xml outdir
+GenerateFlowTestCase.py specsToTest.csv projectPom.xml outdir
 
-This generates test cases exercising function model specifications found in specsToTest.ssv
+This generates test cases exercising function model specifications found in specsToTest.csv
 producing files Test.java, test.ql and test.expected in outdir.
 
-projectPom.xml should be a Maven pom sufficient to resolve the classes named in specsToTest.ssv.
+projectPom.xml should be a Maven pom sufficient to resolve the classes named in specsToTest.csv.
 Typically this means supplying a skeleton POM <dependencies> section that retrieves whatever jars
 contain the needed classes.
 
 Requirements: `mvn` and `codeql` should both appear on your path.
 
-After test generation completes, any lines in specsToTest.ssv that didn't produce tests are output.
+After test generation completes, any lines in specsToTest.csv that didn't produce tests are output.
 If this happens, check the spelling of class and method names, and the syntax of input and output specifications.
 """)
   sys.exit(0)
 
 if len(sys.argv) != 4:
-  print("Usage: GenerateFlowTestCase.py specsToTest.ssv projectPom.xml outdir", file=sys.stderr)
-  print("specsToTest.ssv should contain SSV rows describing method taint-propagation specifications to test", file=sys.stderr)
-  print("projectPom.xml should import dependencies sufficient to resolve the types used in specsToTest.ssv", file=sys.stderr)
+  print("Usage: GenerateFlowTestCase.py specsToTest.csv projectPom.xml outdir", file=sys.stderr)
+  print("specsToTest.csv should contain CSV rows describing method taint-propagation specifications to test", file=sys.stderr)
+  print("projectPom.xml should import dependencies sufficient to resolve the types used in specsToTest.csv", file=sys.stderr)
   sys.exit(1)
 
 try:
@@ -78,7 +78,7 @@ projectTestFile = os.path.join(projectTestPkgDir, "Test.java")
 
 os.makedirs(projectTestPkgDir)
 
-def qualifiedOuterNameFromSsvRow(row):
+def qualifiedOuterNameFromCsvRow(row):
   cells = row.split(";")
   if len(cells) < 2:
     return None
@@ -88,7 +88,7 @@ with open(projectTestFile, "w") as testJava:
   testJava.write("package test;\n\npublic class Test {\n\n")
 
   for i, spec in enumerate(specs):
-    outerName = qualifiedOuterNameFromSsvRow(spec)
+    outerName = qualifiedOuterNameFromCsvRow(spec)
     if outerName is None:
       print("A taint specification has the wrong format: should be 'package;classname;methodname....'", file = sys.stderr)
       print("Mis-formatted row: " + spec, file = sys.stderr)
@@ -152,7 +152,7 @@ with open(generatedJson, "r") as f:
     print("Expected exactly two columns in parseFailureRows relation (got: %s)" % json.dumps(parseFailureRows), file = sys.stderr)
 
   if len(missingSummaryModelCsvRows) != 0:
-    print("Tests for some SSV rows were requested that were not in scope (SummaryModelCsv.row does not hold):\n" + "\n".join(r[0] for r in missingSummaryModelCsvRows))
+    print("Tests for some CSV rows were requested that were not in scope (SummaryModelCsv.row does not hold):\n" + "\n".join(r[0] for r in missingSummaryModelCsvRows))
     sys.exit(1)
   if len(parseFailureRows) != 0:
     print("The following rows failed to generate any test case. Check package, class and method name spelling, and argument and result specifications:\n%s" % "\n".join(r[0] + ": " + r[1] for r in parseFailureRows), file = sys.stderr)
