@@ -3,7 +3,6 @@ import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.dataflow.TaintTracking
 import TestUtilities.InlineExpectationsTest
-import semmle.code.java.frameworks.spring.Spring
 
 class ValueFlowConf extends DataFlow::Configuration {
   ValueFlowConf() { this = "qltest:valueFlowConf" }
