@@ -40,7 +40,6 @@ private class FlowSummaries extends SummaryModelCsv {
         "org.springframework.util;CollectionUtils;false;unmodifiableMultiValueMap;;;MapKey of Argument[0];MapKey of ReturnValue;value",
         "org.springframework.util;CollectionUtils;false;unmodifiableMultiValueMap;;;MapValue of Argument[0];MapValue of ReturnValue;value",
         "org.springframework.util;CompositeIterator;false;add;;;Element of Argument[0];Element of Argument[-1];value",
-        "org.springframework.util;CompositeIterator;false;next;;;Element of Argument[-1];ReturnValue;value",
         "org.springframework.util;ConcurrentReferenceHashMap;false;getReference;;;MapKey of Argument[-1];MapKey of ReturnValue;value",
         "org.springframework.util;ConcurrentReferenceHashMap;false;getReference;;;MapValue of Argument[-1];MapValue of ReturnValue;value",
         "org.springframework.util;ConcurrentReferenceHashMap;false;getSegment;;;MapKey of Argument[-1];MapKey of ReturnValue;value",
