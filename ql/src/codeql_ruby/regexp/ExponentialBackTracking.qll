@@ -120,21 +120,38 @@ int rankState(State state) {
     )
 }
 
+/**
+ * A state in the product automaton.
+ */
 class StatePair extends TStatePair {
   State q1;
   State q2;
 
   StatePair() { this = MkStatePair(q1, q2) }
 
+  /** Gets a textual representation of this element. */
   string toString() { result = "(" + q1 + ", " + q2 + ")" }
 
+  /** Gets the first component of the state pair. */
   State getLeft() { result = q1 }
 
+  /** Gets the second component of the state pair. */
   State getRight() { result = q2 }
 }
 
+/**
+ * Holds for all constructed state pairs.
+ *
+ * Used in `statePairDist`
+ */
 predicate isStatePair(StatePair p) { any() }
 
+/**
+ * Holds if there are transitions from the components of `q` to the corresponding
+ * components of `r`.
+ *
+ * Used in `statePairDist`
+ */
 predicate delta2(StatePair q, StatePair r) { step(q, _, _, r) }
 
 /**
@@ -251,6 +268,7 @@ private newtype TTrace =
  * starting from some fork state.
  */
 class Trace extends TTrace {
+  /** Gets a textual representation of this element. */
   string toString() {
     this = Nil() and result = "Nil()"
     or
