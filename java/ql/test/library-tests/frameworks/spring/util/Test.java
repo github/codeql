@@ -538,20 +538,6 @@ public class Test {
 		}
 		{
 			// "org.springframework.util;MultiValueMap;true;addAll;;;Argument[0];MapKey of Argument[-1];value"
-			MultiValueMapAdapter out = null;
-			MultiValueMap in = (MultiValueMap)source();
-			out.addAll(in);
-			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
-			// "org.springframework.util;MultiValueMap;true;addAll;;;Argument[0];MapKey of Argument[-1];value"
-			MultiValueMap out = null;
-			Object in = (Object)source();
-			out.addAll(in, null);
-			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
-			// "org.springframework.util;MultiValueMap;true;addAll;;;Argument[0];MapKey of Argument[-1];value"
 			MultiValueMap out = null;
 			Object in = (Object)source();
 			out.addAll(in, (List)null);
@@ -559,9 +545,18 @@ public class Test {
 		}
 		{
 			// "org.springframework.util;MultiValueMap;true;addAll;;;Argument[0];MapKey of Argument[-1];value"
+			MultiValueMapAdapter out = null;
+			MultiValueMap<Object, Object> mvm = null;
+			mvm.set(source(), "someValue");
+			out.addAll(mvm);
+			sink(getMapKey(out)); // $hasValueFlow
+		}
+		{
+			// "org.springframework.util;MultiValueMap;true;addAll;;;Argument[0];MapKey of Argument[-1];value"
 			MultiValueMap out = null;
-			MultiValueMap in = (MultiValueMap)source();
-			out.addAll(in);
+			MultiValueMap<Object, Object> mvm = null;
+			mvm.set(source(), "someValue");
+			out.addAll(mvm);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
