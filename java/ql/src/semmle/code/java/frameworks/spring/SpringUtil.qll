@@ -3,7 +3,7 @@
  */
 
 import java
-import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.ExternalFlow
 
 private class FlowSummaries extends SummaryModelCsv {
   override predicate row(string row) {
