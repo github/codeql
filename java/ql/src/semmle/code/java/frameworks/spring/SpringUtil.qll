@@ -54,7 +54,7 @@ private class FlowSummaries extends SummaryModelCsv {
         "org.springframework.util;FileSystemUtils;false;copyRecursively;(java.io.File,java.io.File);;Argument[0];Argument[1];taint",
         "org.springframework.util;LinkedMultiValueMap;false;LinkedMultiValueMap;(java.util.Map);;MapKey of Argument[0];MapKey of Argument[-1];value",
         "org.springframework.util;LinkedMultiValueMap;false;LinkedMultiValueMap;(java.util.Map);;Element of MapValue of Argument[0];Element of MapValue of Argument[-1];value",
-        "org.springframework.util;LinkedMultiValueMap;false;deepCopy;;;MapKey of Argument[-1];MapValue of ReturnValue;value",
+        "org.springframework.util;LinkedMultiValueMap;false;deepCopy;;;MapKey of Argument[-1];MapKey of ReturnValue;value",
         "org.springframework.util;LinkedMultiValueMap;false;deepCopy;;;MapValue of Argument[-1];MapValue of ReturnValue;value",
         "org.springframework.util;MultiValueMap;true;add;;;Argument[0];MapKey of Argument[-1];value",
         "org.springframework.util;MultiValueMap;true;add;;;Argument[1];Element of MapValue of Argument[-1];value",

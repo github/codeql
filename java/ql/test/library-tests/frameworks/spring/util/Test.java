@@ -439,16 +439,18 @@ public class Test {
 		{
 			// "org.springframework.util;LinkedMultiValueMap;false;deepCopy;;;MapKey of Argument[-1];MapValue of ReturnValue;value"
 			LinkedMultiValueMap<Object, Object> out = null;
-			LinkedMultiValueMap in = (LinkedMultiValueMap)Map.of(source(), null);
+			LinkedMultiValueMap in = new LinkedMultiValueMap<Object, Object>();
+			in.set(source(), null);
 			out = in.deepCopy();
-			sink(getMapValue(out)); // $hasValueFlow
+			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
 			// "org.springframework.util;LinkedMultiValueMap;false;deepCopy;;;MapValue of Argument[-1];MapValue of ReturnValue;value"
 			LinkedMultiValueMap<Object, Object> out = null;
-			LinkedMultiValueMap in = (LinkedMultiValueMap)Map.of(null, source());
+			LinkedMultiValueMap in = new LinkedMultiValueMap<Object, Object>();
+			in.set(null, source());
 			out = in.deepCopy();
-			sink(getMapValue(out)); // $hasValueFlow
+			sink(getElement(getMapValue(out))); // $hasValueFlow
 		}
 		{
 			// "org.springframework.util;MultiValueMap;true;add;;;Argument[0];MapKey of Argument[-1];value"
@@ -618,13 +620,6 @@ public class Test {
 			MultiValueMap<Object, Object> out = null;
 			Object in = source();
 			out.set(in, null);
-			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
-			// "org.springframework.util;MultiValueMap;true;set;;;Argument[0];MapKey of Argument[-1];value"
-			MultiValueMap<Object, Object> out = null;
-			Object in = source();
-			out.set(in, (Object)null);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
