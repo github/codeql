@@ -149,7 +149,7 @@ with open(resultQl, "w") as f:
     shutil.copyfileobj(header, f)
 
 # Make an empty .expected file, since this is an inline-exectations test
-with open(os.path.join(sys.argv[3], "test.expected")):
+with open(os.path.join(sys.argv[3], "test.expected"), "w"):
   pass
 
 cmd = ['codeql', 'query', 'format', '-qq', '-i', resultQl]
