@@ -62,7 +62,7 @@ private class UrlOpenSink extends SinkModelCsv {
   }
 }
 
-private class SpringHttpFlowStep extends SinkModelCsv {
+private class SpringHttpFlowStep extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
@@ -84,26 +84,26 @@ private class SpringHttpFlowStep extends SinkModelCsv {
         "org.springframework.http;ResponseEntity;true;ResponseEntity;(Object,MultiValueMap,int);;Argument[0];Argument[-1];taint",
         "org.springframework.http;ResponseEntity;true;ResponseEntity;(Object,MultiValueMap,int);;MapKey of Argument[1];Argument[-1];taint",
         "org.springframework.http;ResponseEntity;true;ResponseEntity;(Object,MultiValueMap,int);;Element of MapValue of Argument[1];Argument[-1];taint",
-        "org.springframework.http;ResponseEntity;true;of;(Optional);;Argument[0];ReturnValue;taint",
+        "org.springframework.http;ResponseEntity;true;of;(Optional);;Element of Argument[0];ReturnValue;taint",
         "org.springframework.http;ResponseEntity;true;ok;(Object);;Argument[0];ReturnValue;taint",
         "org.springframework.http;ResponseEntity;true;created;(URI);;Argument[0];ReturnValue;taint",
-        "org.springframework.http;ResponseEntity<>$BodyBuilder;true;contentLength;(long);;Argument[-1];ReturnValue;value",
-        "org.springframework.http;ResponseEntity<>$BodyBuilder;true;contentType;(MediaType);;Argument[-1];ReturnValue;value",
-        "org.springframework.http;ResponseEntity<>$BodyBuilder;true;body;(Object);;Argument[-1..0];ReturnValue;taint",
-        "org.springframework.http;ResponseEntity<>$HeadersBuilder;true;allow;(HttpMethod[]);;Argument[-1];ReturnValue;value",
-        "org.springframework.http;ResponseEntity<>$HeadersBuilder;true;eTag;(String);;Argument[-1];ReturnValue;value",
-        "org.springframework.http;ResponseEntity<>$HeadersBuilder;true;eTag;(String);;Argument[0];Argument[-1];taint",
-        "org.springframework.http;ResponseEntity<>$HeadersBuilder;true;header;(String,String[]);;Argument[-1];ReturnValue;value",
-        "org.springframework.http;ResponseEntity<>$HeadersBuilder;true;header;(String,String[]);;Argument[0];Argument[-1];taint",
-        "org.springframework.http;ResponseEntity<>$HeadersBuilder;true;header;(String,String[]);;ArrayElement of Argument[1];Argument[-1];taint",
-        "org.springframework.http;ResponseEntity<>$HeadersBuilder;true;headers;(Consumer);;Argument[-1];ReturnValue;value",
-        "org.springframework.http;ResponseEntity<>$HeadersBuilder;true;headers;(HttpHeaders);;Argument[-1];ReturnValue;value",
-        "org.springframework.http;ResponseEntity<>$HeadersBuilder;true;headers;(HttpHeaders);;Argument[0];Argument[-1];taint",
-        "org.springframework.http;ResponseEntity<>$HeadersBuilder;true;lastModified;;;Argument[-1];ReturnValue;value",
-        "org.springframework.http;ResponseEntity<>$HeadersBuilder;true;location;(URI);;Argument[-1];ReturnValue;value",
-        "org.springframework.http;ResponseEntity<>$HeadersBuilder;true;location;(URI);;Argument[0];Argument[-1];taint",
-        "org.springframework.http;ResponseEntity<>$HeadersBuilder;true;varyBy;(String[]);;Argument[-1];ReturnValue;value",
-        "org.springframework.http;ResponseEntity<>$HeadersBuilder;true;build;();;Argument[-1];ReturnValue;taint",
+        "org.springframework.http;ResponseEntity$BodyBuilder;true;contentLength;(long);;Argument[-1];ReturnValue;value",
+        "org.springframework.http;ResponseEntity$BodyBuilder;true;contentType;(MediaType);;Argument[-1];ReturnValue;value",
+        "org.springframework.http;ResponseEntity$BodyBuilder;true;body;(Object);;Argument[-1..0];ReturnValue;taint",
+        "org.springframework.http;ResponseEntity$HeadersBuilder;true;allow;(HttpMethod[]);;Argument[-1];ReturnValue;value",
+        "org.springframework.http;ResponseEntity$HeadersBuilder;true;eTag;(String);;Argument[-1];ReturnValue;value",
+        "org.springframework.http;ResponseEntity$HeadersBuilder;true;eTag;(String);;Argument[0];Argument[-1];taint",
+        "org.springframework.http;ResponseEntity$HeadersBuilder;true;header;(String,String[]);;Argument[-1];ReturnValue;value",
+        "org.springframework.http;ResponseEntity$HeadersBuilder;true;header;(String,String[]);;Argument[0];Argument[-1];taint",
+        "org.springframework.http;ResponseEntity$HeadersBuilder;true;header;(String,String[]);;ArrayElement of Argument[1];Argument[-1];taint",
+        "org.springframework.http;ResponseEntity$HeadersBuilder;true;headers;(Consumer);;Argument[-1];ReturnValue;value",
+        "org.springframework.http;ResponseEntity$HeadersBuilder;true;headers;(HttpHeaders);;Argument[-1];ReturnValue;value",
+        "org.springframework.http;ResponseEntity$HeadersBuilder;true;headers;(HttpHeaders);;Argument[0];Argument[-1];taint",
+        "org.springframework.http;ResponseEntity$HeadersBuilder;true;lastModified;;;Argument[-1];ReturnValue;value",
+        "org.springframework.http;ResponseEntity$HeadersBuilder;true;location;(URI);;Argument[-1];ReturnValue;value",
+        "org.springframework.http;ResponseEntity$HeadersBuilder;true;location;(URI);;Argument[0];Argument[-1];taint",
+        "org.springframework.http;ResponseEntity$HeadersBuilder;true;varyBy;(String[]);;Argument[-1];ReturnValue;value",
+        "org.springframework.http;ResponseEntity$HeadersBuilder;true;build;();;Argument[-1];ReturnValue;taint",
         "org.springframework.http;RequestEntity;true;getUrl;();;Argument[-1];ReturnValue;taint",
         "org.springframework.http;HttpHeaders;true;HttpHeaders;(MultiValueMap);;MapKey of Argument[0];Argument[-1];taint",
         "org.springframework.http;HttpHeaders;true;HttpHeaders;(MultiValueMap);;Element of MapValue of Argument[0];Argument[-1];taint",

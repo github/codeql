@@ -20,12 +20,12 @@ class TestHttp {
         sink(new HttpEntity(x, m1)); // $hasTaintFlow
 
         m1.add("a", taint());
-        sink(new HttpEntity("a", m1)); // $ MISSING:hasTaintFlow
-        sink(new HttpEntity<String>(m1)); // $ MISSING:hasTaintFlow
+        sink(new HttpEntity("a", m1)); // $hasTaintFlow
+        sink(new HttpEntity<String>(m1)); // $hasTaintFlow
 
         MultiValueMap<String,String> m2 = new LinkedMultiValueMap();
         m2.add(taint(), "a");
-        sink(new HttpEntity<String>(m2)); // $ MISSING:hasTaintFlow
+        sink(new HttpEntity<String>(m2)); // $hasTaintFlow
 
         HttpEntity<String> ent = taint();
         sink(ent.getBody()); // $hasTaintFlow
@@ -38,7 +38,7 @@ class TestHttp {
     void test2() {
         String x = taint();
         sink(ResponseEntity.ok(x)); // $hasTaintFlow
-        sink(ResponseEntity.of(Optional.of(x))); // $ MISSING:hasTaintFlow
+        sink(ResponseEntity.of(Optional.of(x))); // $hasTaintFlow
 
         sink(ResponseEntity.status(200).contentLength(2048).body(x)); // $hasTaintFlow
         sink(ResponseEntity.created(taint()).contentType(null).body("a")); // $hasTaintFlow
@@ -61,15 +61,15 @@ class TestHttp {
         sink(new ResponseEntity(x, m1, 200)); // $hasTaintFlow
 
         m1.add("a", taint());
-        sink(new ResponseEntity("a", m1, HttpStatus.ACCEPTED)); // $ MISSING:hasTaintFlow
-        sink(new ResponseEntity<String>(m1, HttpStatus.ACCEPTED)); // $ MISSING:hasTaintFlow
-        sink(new ResponseEntity("a", m1, 200)); // $ MISSING:hasTaintFlow
+        sink(new ResponseEntity("a", m1, HttpStatus.ACCEPTED)); // $hasTaintFlow
+        sink(new ResponseEntity<String>(m1, HttpStatus.ACCEPTED)); // $hasTaintFlow
+        sink(new ResponseEntity("a", m1, 200)); // $hasTaintFlow
 
         MultiValueMap<String,String> m2 = new LinkedMultiValueMap();
         m2.add(taint(), "a");
-        sink(new ResponseEntity("a", m2, HttpStatus.ACCEPTED)); // $ MISSING:hasTaintFlow
-        sink(new ResponseEntity<String>(m2, HttpStatus.ACCEPTED)); // $ MISSING:hasTaintFlow
-        sink(new ResponseEntity("a", m2, 200)); // $ MISSING:hasTaintFlow
+        sink(new ResponseEntity("a", m2, HttpStatus.ACCEPTED)); // $hasTaintFlow
+        sink(new ResponseEntity<String>(m2, HttpStatus.ACCEPTED)); // $hasTaintFlow
+        sink(new ResponseEntity("a", m2, 200)); // $hasTaintFlow
 
         ResponseEntity<String> ent = taint();
         sink(ent.getBody()); // $hasTaintFlow
@@ -79,11 +79,11 @@ class TestHttp {
     void test4() {
         MultiValueMap<String,String> m1 = new LinkedMultiValueMap();
         m1.add("a", taint());
-        sink(new HttpHeaders(m1)); // $ MISSING:hasTaintFlow
+        sink(new HttpHeaders(m1)); // $hasTaintFlow
 
         MultiValueMap<String,String> m2 = new LinkedMultiValueMap();
         m2.add(taint(), "a");
-        sink(new HttpHeaders(m2)); // $ MISSING:hasTaintFlow
+        sink(new HttpHeaders(m2)); // $hasTaintFlow
 
         HttpHeaders h1 = new HttpHeaders();
         h1.add(taint(), "a"); 
@@ -95,11 +95,11 @@ class TestHttp {
 
         HttpHeaders h3 = new HttpHeaders();
         h3.addAll(m1); 
-        sink(h3); // $ MISSING:hasTaintFlow
+        sink(h3); // $hasTaintFlow
 
         HttpHeaders h4 = new HttpHeaders();
         h4.addAll(m2); 
-        sink(h4); // $ MISSING:hasTaintFlow
+        sink(h4); // $hasTaintFlow
 
         HttpHeaders h5 = new HttpHeaders();
         h5.addAll(taint(), List.of()); 
@@ -109,8 +109,8 @@ class TestHttp {
         h6.addAll("a", List.of(taint())); 
         sink(h6); // $hasTaintFlow
 
-        sink(HttpHeaders.formatHeaders(m1)); // $ MISSING:hasTaintFlow
-        sink(HttpHeaders.formatHeaders(m2)); // $ MISSING:hasTaintFlow
+        sink(HttpHeaders.formatHeaders(m1)); // $hasTaintFlow
+        sink(HttpHeaders.formatHeaders(m2)); // $hasTaintFlow
 
         sink(HttpHeaders.encodeBasicAuth(taint(), "a", null)); // $hasTaintFlow
         sink(HttpHeaders.encodeBasicAuth("a", taint(), null)); // $hasTaintFlow
