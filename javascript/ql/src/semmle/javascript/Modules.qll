@@ -112,6 +112,13 @@ abstract class Module extends TopLevel {
   abstract DataFlow::Node getAnExportedValue(string name);
 
   /**
+   * Gets a value whose object properties become named exports of this module,
+   * or possibly becomes the entire exports object of the module.
+   */
+  cached
+  DataFlow::Node getABulkExportedValue() { none() }
+
+  /**
    * Gets the root folder relative to which the given import path (which must
    * appear in this module) is resolved.
    *

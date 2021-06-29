@@ -99,6 +99,13 @@ class NodeModule extends Module {
     )
   }
 
+  override DataFlow::Node getABulkExportedValue() {
+    exists(AssignExpr assign |
+      assign.getTarget().(DotExpr).accesses(getModuleVariable().getAnAccess(), "exports") and
+      result = assign.getRhs().flow()
+    )
+  }
+
   /** Gets a symbol that the module object inherits from its prototypes. */
   private string getAnImplicitlyExportedSymbol() {
     exists(ExternalConstructor ec | ec = getPrototypeOfExportedExpr() |
