@@ -157,4 +157,4 @@ struct Coord
     public static bool operator!=(Coord c1, Coord c2) => !(c1==c2);
 }
 
-// semmle-extractor-options: -langversion:latest
+

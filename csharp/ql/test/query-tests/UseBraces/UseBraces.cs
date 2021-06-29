@@ -1,4 +1,4 @@
-// semmle-extractor-options: /r:System.Runtime.Extensions.dll
+
 
 using System;
 using System.IO;

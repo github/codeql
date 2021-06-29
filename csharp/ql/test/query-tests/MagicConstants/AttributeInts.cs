@@ -27,4 +27,4 @@ class IntAttributes
 
 }
 
-// semmle-extractor-options: /r:System.ComponentModel.Primitives.dll
+

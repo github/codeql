@@ -1,4 +1,4 @@
-// semmle-extractor-options: /out:test.dll
+
 
 class C1
 {

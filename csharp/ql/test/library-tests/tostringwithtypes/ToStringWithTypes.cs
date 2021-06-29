@@ -61,4 +61,4 @@ class ToStringWithTypes
     public event Delegate<string> Event;
 }
 
-// semmle-extractor-options: /r:System.Dynamic.Runtime.dll /r:System.Linq.Expressions.dll
+

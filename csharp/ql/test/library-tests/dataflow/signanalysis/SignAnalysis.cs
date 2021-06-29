@@ -488,4 +488,4 @@ class SignAnalysis
     }
 }
 
-// semmle-extractor-options: /r:System.Linq.dll
+

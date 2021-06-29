@@ -1,4 +1,4 @@
-// semmle-extractor-options: --cil /r:System.Net.Http.dll /r:System.Runtime.Extensions.dll /r:System.Private.Xml.dll
+
 
 using System;
 

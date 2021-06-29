@@ -70,4 +70,4 @@ public class Klass
     }
 }
 
-// semmle-extractor-options: /r:System.Collections.Concurrent.dll /r:System.Threading.Thread.dll
+

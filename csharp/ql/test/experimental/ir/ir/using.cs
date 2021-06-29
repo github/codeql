@@ -27,4 +27,4 @@ class UsingStmt
     }
 }
 
-// semmle-extractor-options: /langversion:preview
+

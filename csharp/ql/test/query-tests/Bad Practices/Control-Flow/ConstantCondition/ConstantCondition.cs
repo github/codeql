@@ -1,4 +1,4 @@
-// semmle-extractor-options: /r:System.Threading.Thread.dll /r:System.Diagnostics.Debug.dll /langversion:preview
+
 
 using System;
 using System.Collections;

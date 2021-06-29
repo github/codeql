@@ -1,4 +1,4 @@
-// semmle-extractor-options: --standalone
+
 
 class Test
 {

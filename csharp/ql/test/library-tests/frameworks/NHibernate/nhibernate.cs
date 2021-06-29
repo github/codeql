@@ -1,4 +1,4 @@
-// semmle-extractor-options: /nostdlib /noconfig --load-sources-from-project:../../../resources/stubs/NHibernate/5.3.8/NHibernate.csproj
+
 
 
 using NHibernate;

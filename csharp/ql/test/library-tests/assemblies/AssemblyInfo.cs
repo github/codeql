@@ -1,4 +1,4 @@
-//  semmle-extractor-options: /out:Locations.dll
+
 
 using System.Reflection;
 

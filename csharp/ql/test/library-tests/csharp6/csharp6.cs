@@ -1,4 +1,4 @@
-﻿/*
+/*
   Testcase covering C# 6.0 features
 */
 
@@ -80,4 +80,4 @@ class IndexInitializers
     }
 }
 
-// semmle-extractor-options: /r:System.Linq.dll /langerversion:6.0
+

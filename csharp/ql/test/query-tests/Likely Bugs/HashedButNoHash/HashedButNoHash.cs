@@ -17,4 +17,4 @@ public class Test
     }
 }
 
-// semmle-extractor-options: /r:System.Runtime.Extensions.dll
+

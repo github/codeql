@@ -15,4 +15,4 @@ namespace TestAssemblies
     }
 }
 
-// semmle-extractor-options: /r:System.Runtime.Extensions.dll
+

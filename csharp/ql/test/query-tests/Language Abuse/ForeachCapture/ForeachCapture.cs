@@ -41,4 +41,4 @@ class Test
     static List<Del> actions;
 }
 
-// semmle-extractor-options: /r:System.Runtime.Extensions.dll
+

@@ -1,4 +1,4 @@
-// semmle-extractor-options: --cil /langversion:8.0 /r:System.Xml.dll /r:System.Xml.ReaderWriter.dll /r:System.Private.Xml.dll /r:System.ComponentModel.Primitives.dll /r:System.IO.Compression.dll /r:System.Runtime.Extensions.dll
+
 
 using System;
 using System.Text;

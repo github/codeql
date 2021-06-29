@@ -1,4 +1,4 @@
-// semmle-extractor-options: /r:System.Collections.Specialized.dll ${testdir}/../../../../resources/stubs/System.Web.cs ${testdir}/../../../../resources/stubs/System.Data.cs ${testdir}/../../../../resources/stubs/System.Net.cs /r:System.Data.Common.dll
+
 
 using System;
 using System.Web;

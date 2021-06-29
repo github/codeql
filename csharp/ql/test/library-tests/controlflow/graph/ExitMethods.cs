@@ -147,4 +147,4 @@ class ExitMethods
     }
 }
 
-// semmle-extractor-options: ${testdir}/../../../resources/stubs/System.Windows.cs  ${testdir}/../../../resources/stubs/Microsoft.VisualStudio.TestTools.UnitTesting.cs
+

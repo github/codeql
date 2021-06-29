@@ -33,4 +33,4 @@ struct Dispose1Struct : IDisposable
     public void Dispose() { }
 }
 
-// semmle-extractor-options: /r:System.ComponentModel.Primitives.dll
+

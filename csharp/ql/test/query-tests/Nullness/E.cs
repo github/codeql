@@ -419,4 +419,4 @@ public static class Extensions
     public static int M2(this string s) => s.Length;
 }
 
-// semmle-extractor-options: /r:System.Linq.dll /r:System.Drawing.Primitives.dll
+

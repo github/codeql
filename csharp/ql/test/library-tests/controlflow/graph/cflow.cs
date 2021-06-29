@@ -301,4 +301,4 @@ class NegationInConstructor
     }
 }
 
-// semmle-extractor-options: /r:System.Linq.dll /r:System.Runtime.Extensions.dll
+

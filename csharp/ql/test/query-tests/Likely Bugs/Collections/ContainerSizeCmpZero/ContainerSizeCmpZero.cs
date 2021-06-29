@@ -1,4 +1,4 @@
-// semmle-extractor-options: /r:System.Runtime.Extensions.dll /r:System.Collections.dll /r:System.Diagnostics.Debug.dll
+
 
 using System.Collections.Generic;
 using System.Diagnostics;

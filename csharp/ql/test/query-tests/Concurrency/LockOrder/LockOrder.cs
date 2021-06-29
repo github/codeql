@@ -63,4 +63,4 @@ class LambdaTest
     }
 }
 
-// semmle-extractor-options: /r:System.Runtime.Extensions.dll /r:System.Threading.dll /r:System.Threading.Thread.dll
+

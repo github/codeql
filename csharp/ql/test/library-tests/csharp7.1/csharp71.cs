@@ -1,4 +1,4 @@
-// semmle-extractor-options: /langversion:latest
+
 
 class DefaultLiterals
 {

@@ -108,4 +108,4 @@ class C9 : C1
     }
 }
 
-// semmle-extractor-options: /r:System.ComponentModel.Primitives.dll
+

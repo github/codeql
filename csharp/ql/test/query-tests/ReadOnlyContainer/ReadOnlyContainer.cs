@@ -169,4 +169,4 @@ class Test
     }
 }
 
-// semmle-extractor-options: /r:System.Collections.dll
+

@@ -52,4 +52,4 @@ class AssertTests
     }
 }
 
-// semmle-extractor-options: ${testdir}/../../resources/stubs/Microsoft.VisualStudio.TestTools.UnitTesting.cs
+

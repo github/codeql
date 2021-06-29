@@ -74,4 +74,4 @@ class C6 : Component
     }
 }
 
-// semmle-extractor-options: /r:System.ComponentModel.Primitives.dll
+

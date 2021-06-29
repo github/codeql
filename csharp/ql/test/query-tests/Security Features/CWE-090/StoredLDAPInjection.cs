@@ -1,4 +1,4 @@
-// semmle-extractor-options: ${testdir}/../../../resources/stubs/System.Data.cs /r:System.Data.Common.dll
+
 
 using System;
 using System.Data.SqlClient;
