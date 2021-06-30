@@ -1,12 +1,12 @@
 comments1.cs:
 #    9| [Class] C
-#   35| [Class] Foo
-#   40|   5: [Field] x
-#   40|     -1: [TypeMention] int
-#   43|   6: [Field] y
+#   34| [Class] Foo
+#   39|   5: [Field] x
+#   39|     -1: [TypeMention] int
+#   42|   6: [Field] y
+#   42|     -1: [TypeMention] int
+#   43|   7: [Field] z
 #   43|     -1: [TypeMention] int
-#   44|   7: [Field] z
-#   44|     -1: [TypeMention] int
 comments2.cs:
 #   11| [Class] C2
 #   13|   4: [Field] field1
