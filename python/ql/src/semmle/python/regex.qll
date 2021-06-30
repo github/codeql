@@ -127,7 +127,17 @@ abstract class RegexString extends Expr {
     result = this.(Unicode).getText()
   }
 
-  /** result is true for those start chars that actually mark a start of a char set. */
+  /**
+   * Helper predicate for `char_set_start(int start, int end)`.
+   *
+   * In order to identify left brackets ('[') which actually start a character class,
+   * we perform a left to right scan of the string.
+   *
+   * To avoid negative recursion we return a boolean. See `escaping`,
+   * the helper for `escapingChar`, for a clean use of this pattern.
+   *
+   * result is true for those start chars that actually mark a start of a char set.
+   */
   boolean char_set_start(int pos) {
     exists(int index |
       // is opening bracket
@@ -176,9 +186,9 @@ abstract class RegexString extends Expr {
     )
   }
 
-  /** 
-   * Helper predicate for chars that could be character-set delimiters. 
-   * Holds if the (non-escaped) char at `pos` in the string, is the (one-based) `index` occurrence of a bracket (`[` or `]`) in the string. 
+  /**
+   * Helper predicate for chars that could be character-set delimiters.
+   * Holds if the (non-escaped) char at `pos` in the string, is the (one-based) `index` occurrence of a bracket (`[` or `]`) in the string.
    * Result if `true` is the char is `[`, and `false` if the char is `]`.
    */
   boolean char_set_delimiter(int index, int pos) {
@@ -267,6 +277,13 @@ abstract class RegexString extends Expr {
     )
   }
 
+  /**
+   * Helper predicate for `charRange`.
+   * We can determine where character ranges end by a left to right sweep.
+   *
+   * To avoid negative recursion we return a boolean. See `escaping`,
+   * the helper for `escapingChar`, for a clean use of this pattern.
+   */
   private boolean charRangeEnd(int charset_start, int index) {
     this.char_set_token(charset_start, index, _, _) and
     (
@@ -290,8 +307,15 @@ abstract class RegexString extends Expr {
     )
   }
 
+  /** Holds if the character at `pos` is a "\" that is actually escaping what comes after. */
   predicate escapingChar(int pos) { this.escaping(pos) = true }
 
+  /**
+   * Helper predicate for `escapingChar`.
+   * In order to avoid negative recusrion, we return a boolean.
+   * This way, we can refer to `escaping(pos - 1).booleanNot()`
+   * rather than to a negated version of `escaping(pos)`.
+   */
   private boolean escaping(int pos) {
     pos = -1 and result = false
     or
