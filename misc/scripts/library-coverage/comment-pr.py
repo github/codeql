@@ -121,10 +121,14 @@ def get_previous_run_id(repo, run_id, pr_number):
     pr_repo = this_run["head_repository"]
 
     # Get all previous runs that match branch, repo and workflow name:
-    ids = utils.subprocess_check_output(["gh", "api", "-X", "GET", f"repos/{repo}/actions/runs", "-f", "event=pull_request", "-f", "status=success", "-f", "name=\"" + artifacts_workflow_name + "\"", "--jq",
-                                        f"[.workflow_runs.[] | select(.head_branch==\"{pr_branch}\" and .head_repository.full_name==\"{pr_repo}\") | {{ created_at: .created_at, run_id: .id}}] | sort_by(.created_at) | reverse | [.[].run_id]"])
+    output = utils.subprocess_check_output(["gh", "api", "-X", "GET", f"repos/{repo}/actions/runs", "-f", "event=pull_request", "-f", "status=success", "-f", f"branch='{pr_branch}'", "--paginate",
+                                            "--jq", f'[.workflow_runs.[] | select(.head_repository.full_name=="{pr_repo}" and .name=="{artifacts_workflow_name}")] | sort_by(.id) | reverse | [.[].id]'])
 
-    ids = json.loads(ids)
+    ids = []
+    for l in [json.loads(l) for l in output.splitlines()]:
+        for id in l:
+            ids.append(id)
+
     if ids[0] != int(run_id):
         raise Exception(
             f"Expected to find {run_id} in the list of matching runs.")
