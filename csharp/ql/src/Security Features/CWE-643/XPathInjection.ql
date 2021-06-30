@@ -4,7 +4,7 @@
  *              malicious code by the user.
  * @kind path-problem
  * @problem.severity error
- * @security-severity 5.9
+ * @security-severity 9.8
  * @precision high
  * @id cs/xml/xpath-injection
  * @tags security

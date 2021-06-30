@@ -1,4 +1,4 @@
-// semmle-extractor-options: ${testdir}/../../../resources/stubs/JsonNET.cs /r:System.Linq.dll
+// semmle-extractor-options: /nostdlib /noconfig --load-sources-from-project:../../../resources/stubs/Newtonsoft.Json/13.0.1/Newtonsoft.Json.csproj
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -34,7 +34,7 @@ namespace JsonTest
 
             Object taintedPopulatedObject = new Object();
             JsonConvert.PopulateObject(t, taintedPopulatedObject);
-            Sink(taintedPopulatedObject.tainted);  // False negative
+            Sink(taintedPopulatedObject.tainted);
 
             Object untaintedObject = JsonConvert.DeserializeObject<Object>(u);
             Sink(untaintedObject);
@@ -47,14 +47,14 @@ namespace JsonTest
             Sink((string)jobject["1"]["2"]);
 
             // Linq JToken tests
-            Sink(jobject.First(i => true));
+            Sink(jobject.First((JToken i) => true));
             Sink(jobject["2"].First(i => true));
             Sink(jobject["2"]["3"].First(i => true));
             Sink(jobject.SelectToken("Manufacturers[0].Name"));
 
             JObject untaintedJObject = JObject.Parse(u);
             Sink(untaintedJObject);
-            Sink(untaintedJObject.First(i => true));
+            Sink(untaintedJObject.First((JToken i) => true));
         }
 
         public class Object
@@ -64,7 +64,7 @@ namespace JsonTest
             [JsonIgnore]
             public int untainted;
 
-            public Dictionary<string,string> taintedValues;
+            public Dictionary<string, string> taintedValues;
 
             public string[] taintedArray;
         }

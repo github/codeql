@@ -26,10 +26,10 @@ class PlayMvcHttpRequestHeader extends RefType {
 }
 
 /**
- * A `play.mvc.BodyParser<>$Of` annotation.
+ * A `play.mvc.BodyParser$Of` annotation.
  */
 class PlayBodyParserAnnotation extends Annotation {
-  PlayBodyParserAnnotation() { this.getType().hasQualifiedName("play.mvc", "BodyParser<>$Of") }
+  PlayBodyParserAnnotation() { this.getType().hasQualifiedName("play.mvc", "BodyParser$Of") }
 }
 
 /**

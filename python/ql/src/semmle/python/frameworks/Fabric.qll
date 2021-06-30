@@ -48,7 +48,7 @@ private module FabricV1 {
         FabricApiLocalRunSudoCall() { this = api().getMember(["local", "run", "sudo"]).getACall() }
 
         override DataFlow::Node getCommand() {
-          result.asCfgNode() = [node.getArg(0), node.getArgByName("command")]
+          result = [this.getArg(0), this.getArgByName("command")]
         }
       }
     }
@@ -159,7 +159,7 @@ private module FabricV2 {
       }
 
       override DataFlow::Node getCommand() {
-        result.asCfgNode() = [node.getArg(0), node.getArgByName("command")]
+        result = [this.getArg(0), this.getArgByName("command")]
       }
     }
 
@@ -239,7 +239,7 @@ private module FabricV2 {
         FabricGroupRunCall() { this = fabric::group::Group::subclassInstanceRunMethod().getACall() }
 
         override DataFlow::Node getCommand() {
-          result.asCfgNode() = [node.getArg(0), node.getArgByName("command")]
+          result = [this.getArg(0), this.getArgByName("command")]
         }
       }
 

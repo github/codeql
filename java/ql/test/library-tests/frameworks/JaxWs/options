@@ -1,0 +1,1 @@
+//semmle-extractor-options: --javac-args -cp ${testdir}/../../../stubs/javax-ws-rs-api-2.1.1:${testdir}/../../../stubs/javax-ws-rs-api-3.0.0:${testdir}/../../../stubs/jsr311-api-1.1.1:${testdir}/../../../stubs/jsr181-api:${testdir}/../../../stubs/jaxws-api-2.0:${testdir}/../../../stubs/servlet-api-2.4

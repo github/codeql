@@ -201,3 +201,139 @@ private class DebugLoggerCall extends LoggerCall, API::CallNode {
 
   override DataFlow::Node getAMessageComponent() { result = getAnArgument() }
 }
+
+/**
+ * A step through the [`ansi-colors`](https://https://npmjs.org/package/ansi-colors) library.
+ */
+class AnsiColorsStep extends TaintTracking::SharedTaintStep {
+  override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(API::CallNode call | call = API::moduleImport("ansi-colors").getAMember*().getACall() |
+      pred = call.getArgument(0) and
+      succ = call
+    )
+  }
+}
+
+/**
+ * A step through the [`colors`](https://npmjs.org/package/colors) library.
+ * This step ignores the `String.prototype` modifying part of the `colors` library.
+ */
+class ColorsStep extends TaintTracking::SharedTaintStep {
+  override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(API::CallNode call |
+      call =
+        API::moduleImport([
+            "colors",
+            // the `colors/safe` variant avoids modifying the prototype methods
+            "colors/safe"
+          ]).getAMember*().getACall()
+    |
+      pred = call.getArgument(0) and
+      succ = call
+    )
+  }
+}
+
+/**
+ * A step through the [`wrap-ansi`](https://npmjs.org/package/wrap-ansi) library.
+ */
+class WrapAnsiStep extends TaintTracking::SharedTaintStep {
+  override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(API::CallNode call | call = API::moduleImport("wrap-ansi").getACall() |
+      pred = call.getArgument(0) and
+      succ = call
+    )
+  }
+}
+
+/**
+ * A step through the [`colorette`](https://npmjs.org/package/colorette) library.
+ */
+class ColoretteStep extends TaintTracking::SharedTaintStep {
+  override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(API::CallNode call | call = API::moduleImport("colorette").getAMember().getACall() |
+      pred = call.getArgument(0) and
+      succ = call
+    )
+  }
+}
+
+/**
+ * A step through the [`cli-highlight`](https://npmjs.org/package/cli-highlight) library.
+ */
+class CliHighlightStep extends TaintTracking::SharedTaintStep {
+  override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(API::CallNode call |
+      call = API::moduleImport("cli-highlight").getMember("highlight").getACall()
+    |
+      pred = call.getArgument(0) and
+      succ = call
+    )
+  }
+}
+
+/**
+ * A step through the [`cli-color`](https://npmjs.org/package/cli-color) library.
+ */
+class CliColorStep extends TaintTracking::SharedTaintStep {
+  override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(API::CallNode call | call = API::moduleImport("cli-color").getAMember*().getACall() |
+      pred = call.getArgument(0) and
+      succ = call
+    )
+  }
+}
+
+/**
+ * A step through the [`slice-ansi`](https://npmjs.org/package/slice-ansi) library.
+ */
+class SliceAnsiStep extends TaintTracking::SharedTaintStep {
+  override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(API::CallNode call | call = API::moduleImport("slice-ansi").getACall() |
+      pred = call.getArgument(0) and
+      succ = call
+    )
+  }
+}
+
+/**
+ * A step through the [`kleur`](https://npmjs.org/package/kleur) library.
+ */
+class KleurStep extends TaintTracking::SharedTaintStep {
+  private API::Node kleurInstance() {
+    result = API::moduleImport("kleur")
+    or
+    result = kleurInstance().getAMember().getReturn()
+  }
+
+  override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(API::CallNode call | call = kleurInstance().getAMember().getACall() |
+      pred = call.getArgument(0) and
+      succ = call
+    )
+  }
+}
+
+/**
+ * A step through the [`chalk`](https://npmjs.org/package/chalk) library.
+ */
+class ChalkStep extends TaintTracking::SharedTaintStep {
+  override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(API::CallNode call | call = API::moduleImport("chalk").getAMember*().getACall() |
+      pred = call.getArgument(0) and
+      succ = call
+    )
+  }
+}
+
+/**
+ * A step through the [`strip-ansi`](https://npmjs.org/package/strip-ansi) library.
+ */
+class StripAnsiStep extends TaintTracking::SharedTaintStep {
+  override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(API::CallNode call | call = API::moduleImport("strip-ansi").getACall() |
+      pred = call.getArgument(0) and
+      succ = call
+    )
+  }
+}

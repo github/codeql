@@ -90,11 +90,13 @@ import semmle.javascript.frameworks.EventEmitter
 import semmle.javascript.frameworks.Files
 import semmle.javascript.frameworks.Firebase
 import semmle.javascript.frameworks.FormParsers
+import semmle.javascript.frameworks.GraphQL
 import semmle.javascript.frameworks.jQuery
 import semmle.javascript.frameworks.JWT
 import semmle.javascript.frameworks.Handlebars
 import semmle.javascript.frameworks.History
 import semmle.javascript.frameworks.Immutable
+import semmle.javascript.frameworks.Knex
 import semmle.javascript.frameworks.LazyCache
 import semmle.javascript.frameworks.LodashUnderscore
 import semmle.javascript.frameworks.Logging

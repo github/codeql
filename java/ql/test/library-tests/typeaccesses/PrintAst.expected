@@ -84,7 +84,7 @@ typeaccesses/TA.java:
 #   13|         0: [ExprStmt] <Expr>;
 #   13|           0: [MethodAccess] method3(...)
 #   13|             -1: [TypeAccess] TA
-#   14|     10: [Class] Inner
+#   14|     10: [Class,GenericType,ParameterizedType] Inner
 #-----|       -2: (Generic Parameters)
 #   14|         0: [TypeVariable] T
 #   14|           0: [TypeAccess] ArrayList<TA>

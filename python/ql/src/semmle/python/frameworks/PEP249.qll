@@ -122,7 +122,5 @@ DataFlow::Node execute() { execute(DataFlow::TypeTracker::end()).flowsTo(result)
 private class ExecuteCall extends SqlExecution::Range, DataFlow::CallCfgNode {
   ExecuteCall() { this.getFunction() = execute() }
 
-  override DataFlow::Node getSql() {
-    result.asCfgNode() in [node.getArg(0), node.getArgByName("sql")]
-  }
+  override DataFlow::Node getSql() { result in [this.getArg(0), this.getArgByName("sql")] }
 }

@@ -78,9 +78,15 @@ private import FlowSummary
 private module Frameworks {
   private import internal.ContainerFlow
   private import semmle.code.java.frameworks.ApacheHttp
+  private import semmle.code.java.frameworks.apache.Collections
   private import semmle.code.java.frameworks.apache.Lang
   private import semmle.code.java.frameworks.guava.Guava
   private import semmle.code.java.frameworks.jackson.JacksonSerializability
+  private import semmle.code.java.frameworks.JaxWS
+  private import semmle.code.java.frameworks.Optional
+  private import semmle.code.java.frameworks.spring.SpringHttp
+  private import semmle.code.java.frameworks.spring.SpringUtil
+  private import semmle.code.java.frameworks.spring.SpringWebClient
   private import semmle.code.java.security.ResponseSplitting
   private import semmle.code.java.security.InformationLeak
   private import semmle.code.java.security.XSS
@@ -208,6 +214,8 @@ private predicate sinkModelCsv(string row) {
       // Open URL
       "java.net;URL;false;openConnection;;;Argument[-1];open-url",
       "java.net;URL;false;openStream;;;Argument[-1];open-url",
+      "java.net.http;HttpRequest;false;newBuilder;;;Argument[0];open-url",
+      "java.net.http;HttpRequest$Builder;false;uri;;;Argument[0];open-url",
       // Create file
       "java.io;FileOutputStream;false;FileOutputStream;;;Argument[0];create-file",
       "java.io;RandomAccessFile;false;RandomAccessFile;;;Argument[0];create-file",
@@ -247,6 +255,8 @@ private predicate summaryModelCsv(string row) {
       "javax.xml.transform.stream;StreamSource;false;getInputStream;;;Argument[-1];ReturnValue;taint",
       "java.nio;ByteBuffer;false;get;;;Argument[-1];ReturnValue;taint",
       "java.net;URI;false;toURL;;;Argument[-1];ReturnValue;taint",
+      "java.net;URI;false;toString;;;Argument[-1];ReturnValue;taint",
+      "java.net;URI;false;toAsciiString;;;Argument[-1];ReturnValue;taint",
       "java.io;File;false;toURI;;;Argument[-1];ReturnValue;taint",
       "java.io;File;false;toPath;;;Argument[-1];ReturnValue;taint",
       "java.nio.file;Path;false;toFile;;;Argument[-1];ReturnValue;taint",
@@ -553,6 +563,7 @@ module CsvValidation {
   }
 }
 
+pragma[nomagic]
 private predicate elementSpec(
   string namespace, string type, boolean subtypes, string name, string signature, string ext
 ) {

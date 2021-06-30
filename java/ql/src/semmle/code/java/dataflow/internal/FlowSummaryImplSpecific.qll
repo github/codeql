@@ -70,9 +70,22 @@ predicate summaryElement(DataFlowCallable c, string input, string output, string
   )
 }
 
+private FieldContent parseField(string c) {
+  External::specSplit(_, c, _) and
+  exists(string fieldRegex, string package, string className, string fieldName |
+    fieldRegex = "^Field\\[(.*)\\.([^.]+)\\.([^.]+)\\]$" and
+    package = c.regexpCapture(fieldRegex, 1) and
+    className = c.regexpCapture(fieldRegex, 2) and
+    fieldName = c.regexpCapture(fieldRegex, 3) and
+    result.getField().hasQualifiedName(package, className, fieldName)
+  )
+}
+
 /** Gets the summary component for specification component `c`, if any. */
 bindingset[c]
 SummaryComponent interpretComponentSpecific(string c) {
+  result = SummaryComponent::content(parseField(c))
+  or
   c = "ArrayElement" and result = SummaryComponent::content(any(ArrayContent c0))
   or
   c = "Element" and result = SummaryComponent::content(any(CollectionContent c0))
