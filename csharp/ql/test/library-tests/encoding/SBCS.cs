@@ -2,5 +2,5 @@
 
 class SBCS
 {
-    string sbcs = "ï¿½";
+    string sbcs = "’";
 }
