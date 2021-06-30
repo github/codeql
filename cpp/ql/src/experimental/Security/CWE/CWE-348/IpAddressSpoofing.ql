@@ -29,6 +29,10 @@ class StrcmpCall extends FunctionCall {
   StrcmpCall() { this.getTarget().getQualifiedName() = "strcmp" }
 }
 
+class StringParseCall extends FunctionCall {
+  StringParseCall() { this.getTarget().getQualifiedName() in ["strtok", "strtok_s", "strsep"] }
+}
+
 class ForgeableIpAddressCheck extends TaintTracking::Configuration {
   ForgeableIpAddressCheck() { this = "ForgeableIpAddressCheck" }
 
@@ -39,6 +43,10 @@ class ForgeableIpAddressCheck extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node node) {
     exists(ComparisonOperation comparison | node.asExpr() = comparison.getAnOperand()) or
     exists(StrcmpCall strcmp | node.asExpr() = strcmp.getAnArgument())
+  }
+
+  override predicate isSanitizer(DataFlow::Node node) {
+    exists(StringParseCall parse | node.asExpr() = parse.getAnArgument())
   }
 }
 
