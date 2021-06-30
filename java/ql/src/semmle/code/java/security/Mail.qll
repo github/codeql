@@ -33,7 +33,7 @@ predicate isInsecureMailPropertyConfig(VarAccess propertiesVarAccess) {
  * Holds if `ma` enables TLS/SSL with Apache Email.
  */
 predicate enablesEmailSsl(MethodAccess ma) {
-  ma.getMethod().hasName("setSSLOnConnect") and
+  ma.getMethod().hasName(["setSSLOnConnect", "setStartTLSRequired"]) and
   ma.getMethod().getDeclaringType() instanceof ApacheEmail and
   ma.getArgument(0).(BooleanLiteral).getBooleanValue() = true
 }
