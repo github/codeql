@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 # Tool to generate Java stubs for qltests
 
 import sys
@@ -10,7 +12,7 @@ from shutil import copyfile
 
 
 def print_usage(exit_code=1):
-    print("Usage: python3 make_stubs.py testDir stubDir\n",
+    print("Usage: makeStubs.py testDir stubDir\n",
           "testDir: the directory containing the qltest to be stubbed.\n"
           "    Should contain an `options0` file pointing to the jars to stub, and an `options1` file pointing to `stubdir`.\n"
           "    These files should be in the same format as a normal `options` file.\n",
