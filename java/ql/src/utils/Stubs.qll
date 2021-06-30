@@ -128,6 +128,10 @@ private class IndirectType extends GeneratedType {
       this = getAContainedType(t.getAGeneratedType()).(RefType).getSourceDeclaration()
     )
     or
+    this.getSourceDeclaration() instanceof GeneratedType
+    or
+    this = any(GeneratedType t).getSourceDeclaration()
+    or
     exists(GeneratedType t | this = t.(BoundedType).getATypeBound().getType())
     or
     exists(GeneratedDeclaration decl |

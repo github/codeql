@@ -18,6 +18,8 @@ class UsedInSource extends GeneratedDeclaration {
       this = any(Expr e | e.getEnclosingCallable().fromSource()).getType()
       or
       this = any(RefType t | t.fromSource())
+      or
+      this = any(TypeAccess ta | ta.fromSource())
     )
   }
 }
@@ -25,3 +27,21 @@ class UsedInSource extends GeneratedDeclaration {
 from GeneratedTopLevel t
 where not t.fromSource()
 select t.getQualifiedName(), t.stubFile()
+
+module Consistency {
+  query predicate noGeneratedStubs(string s) {
+    exists(GeneratedTopLevel t | s = t.getQualifiedName() |
+      not t.fromSource() and
+      not exists(t.stubFile())
+    )
+  }
+
+  query predicate multipleGeneratedStubs(string s) {
+    exists(GeneratedTopLevel t | s = t.getQualifiedName() |
+      not t.fromSource() and
+      strictcount(t.stubFile()) > 1
+    )
+  }
+}
+
+import Consistency

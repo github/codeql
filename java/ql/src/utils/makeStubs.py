@@ -120,9 +120,20 @@ if run(['codeql', 'bqrs', 'decode', outputBqrsFile, '--format=json', '--output',
 with open(outputJsonFile) as f:
     results = json.load(f)
 
-if not '#select' in results or not 'tuples' in results['#select']:
+try:
+    results['#select']['tuples']
+    results['noGeneratedStubs']['tuples']
+    results['multipleGeneratedStubs']['tuples']
+except ValueError:
     print('Unexpected JSON output - no tuples found')
     exit(1)
+
+for (typ,) in results['noGeneratedStubs']['tuples']:
+    print(f"WARNING: No stubs generated for {typ}. This is probably a bug.")
+
+for (typ,) in results['multipleGeneratedStubs']['tuples']:
+    print(
+        f"WARNING: Multiple stubs generated for {typ}. This is probably a bug. One will be chosen arbitrarily.")
 
 for (typ, stub) in results['#select']['tuples']:
     stubFile = os.path.join(stubDir, typ.replace(".", "/") + ".java")
