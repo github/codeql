@@ -1,3 +1,3 @@
 lgtm,codescanning
-* Ported _Inefficient regular expression_ (`py/redos`) query from javascript.
-* Ported _Polynomial regular expression used on uncontrolled data_ [`py/polynomial-redos`] query from javascript.
+* Added _Inefficient regular expression_ (`py/redos`) query, which is already available in JavaScript.
+* Added _Polynomial regular expression used on uncontrolled data_ (`py/polynomial-redos`), which is already available in JavaScript.
