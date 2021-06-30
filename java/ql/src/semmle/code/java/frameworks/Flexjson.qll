@@ -19,7 +19,7 @@ class FlexjsonDeserializeMethod extends Method {
   FlexjsonDeserializeMethod() {
     this.getDeclaringType().getSourceDeclaration().getASourceSupertype*() instanceof
       FlexjsonDeserializer and
-    this.getName().matches("deserialize%")
+    this.getName() = ["deserialize", "deserializeInto"]
   }
 }
 

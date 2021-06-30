@@ -72,7 +72,7 @@ class UnsafeDeserializationConfig extends TaintTracking::Configuration {
         ma.getMethod() instanceof FlexjsonDeserializeMethod or
         ma.getMethod() instanceof JoddJsonParseMethod
       ) and
-      node.asExpr() = ma.getArgument(0) and
+      node.asExpr() = ma.getAnArgument() and
       (
         ma.getArgument(1)
             .(TypeLiteral)
@@ -80,7 +80,7 @@ class UnsafeDeserializationConfig extends TaintTracking::Configuration {
             .(ParameterizedType)
             .getATypeArgument()
             .(Class)
-            .isFinal()
+            .isFinal() // jodd.json.JsonParser parser = new JsonParser(); parser.allowClass("com.example.*"); parser.setClassMetadataName("class"); User obj = parser.parse(json, User.class);
         or
         exists(
           MethodAccess dma // Specified class type
@@ -88,7 +88,7 @@ class UnsafeDeserializationConfig extends TaintTracking::Configuration {
           dma.getMethod() instanceof DeserializerUseMethod and
           (
             ma.getQualifier() = dma or
-            ma.getQualifier().(VarAccess).getVariable().getAnAccess() = dma.getQualifier()
+            ma.getQualifier().(VarAccess).getVariable().getAnAccess() = dma.getQualifier() // new flexjson.JSONDeserializer<Person>().use(null, Person.class).deserialize(json)
           )
         )
       )
