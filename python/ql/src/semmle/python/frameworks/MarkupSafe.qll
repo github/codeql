@@ -67,13 +67,8 @@ private module MarkupSafeModel {
     }
 
     /** A string format with `markupsafe.Markup` as the format string. */
-    class StringFormat extends Markup::InstanceSource, DataFlow::CallCfgNode {
-      StringFormat() {
-        exists(DataFlow::AttrRead attr | this.getFunction() = attr |
-          attr.getAttributeName() = "format" and
-          attr.getObject() = instance()
-        )
-      }
+    class StringFormat extends Markup::InstanceSource, DataFlow::MethodCallNode {
+      StringFormat() { this.calls(instance(), "format") }
     }
 
     /** Taint propagation for `markupsafe.Markup`. */
