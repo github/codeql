@@ -296,6 +296,36 @@ module AiohttpWebModel {
   }
 
   /**
+   * Provides models for the `aiohttp.web.Response` class
+   *
+   * See https://docs.aiohttp.org/en/stable/web_reference.html#response-classes
+   */
+  module Response {
+    /**
+     * A source of instances of `aiohttp.web.Response`, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use `Response::instance()` predicate to get
+     * references to instances of `aiohttp.web.Response`.
+     */
+    abstract class InstanceSource extends DataFlow::LocalSourceNode { }
+
+    /** Gets a reference to an instance of `aiohttp.web.Response`. */
+    private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an instance of `aiohttp.web.Response`. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+  }
+
+  /**
    * Provides models for the `aiohttp.StreamReader` class
    *
    * See https://docs.aiohttp.org/en/stable/streams.html#aiohttp.StreamReader
@@ -488,34 +518,45 @@ module AiohttpWebModel {
    * - https://docs.aiohttp.org/en/stable/web_quickstart.html#aiohttp-web-exceptions
    */
   class AiohttpWebResponseInstantiation extends HTTP::Server::HttpResponse::Range,
-    DataFlow::CallCfgNode {
+    Response::InstanceSource, DataFlow::CallCfgNode {
+    API::Node apiNode;
+
     AiohttpWebResponseInstantiation() {
-      this = API::moduleImport("aiohttp").getMember("web").getMember("Response").getACall()
-      or
-      exists(string httpExceptionClassName |
-        httpExceptionClassName in [
-            "HTTPException", "HTTPSuccessful", "HTTPOk", "HTTPCreated", "HTTPAccepted",
-            "HTTPNonAuthoritativeInformation", "HTTPNoContent", "HTTPResetContent",
-            "HTTPPartialContent", "HTTPRedirection", "HTTPMultipleChoices", "HTTPMovedPermanently",
-            "HTTPFound", "HTTPSeeOther", "HTTPNotModified", "HTTPUseProxy", "HTTPTemporaryRedirect",
-            "HTTPPermanentRedirect", "HTTPError", "HTTPClientError", "HTTPBadRequest",
-            "HTTPUnauthorized", "HTTPPaymentRequired", "HTTPForbidden", "HTTPNotFound",
-            "HTTPMethodNotAllowed", "HTTPNotAcceptable", "HTTPProxyAuthenticationRequired",
-            "HTTPRequestTimeout", "HTTPConflict", "HTTPGone", "HTTPLengthRequired",
-            "HTTPPreconditionFailed", "HTTPRequestEntityTooLarge", "HTTPRequestURITooLong",
-            "HTTPUnsupportedMediaType", "HTTPRequestRangeNotSatisfiable", "HTTPExpectationFailed",
-            "HTTPMisdirectedRequest", "HTTPUnprocessableEntity", "HTTPFailedDependency",
-            "HTTPUpgradeRequired", "HTTPPreconditionRequired", "HTTPTooManyRequests",
-            "HTTPRequestHeaderFieldsTooLarge", "HTTPUnavailableForLegalReasons", "HTTPServerError",
-            "HTTPInternalServerError", "HTTPNotImplemented", "HTTPBadGateway",
-            "HTTPServiceUnavailable", "HTTPGatewayTimeout", "HTTPVersionNotSupported",
-            "HTTPVariantAlsoNegotiates", "HTTPInsufficientStorage", "HTTPNotExtended",
-            "HTTPNetworkAuthenticationRequired"
-          ] and
-        this =
-          API::moduleImport("aiohttp").getMember("web").getMember(httpExceptionClassName).getACall()
+      this = apiNode.getACall() and
+      (
+        apiNode = API::moduleImport("aiohttp").getMember("web").getMember("Response")
+        or
+        exists(string httpExceptionClassName |
+          httpExceptionClassName in [
+              "HTTPException", "HTTPSuccessful", "HTTPOk", "HTTPCreated", "HTTPAccepted",
+              "HTTPNonAuthoritativeInformation", "HTTPNoContent", "HTTPResetContent",
+              "HTTPPartialContent", "HTTPRedirection", "HTTPMultipleChoices",
+              "HTTPMovedPermanently", "HTTPFound", "HTTPSeeOther", "HTTPNotModified",
+              "HTTPUseProxy", "HTTPTemporaryRedirect", "HTTPPermanentRedirect", "HTTPError",
+              "HTTPClientError", "HTTPBadRequest", "HTTPUnauthorized", "HTTPPaymentRequired",
+              "HTTPForbidden", "HTTPNotFound", "HTTPMethodNotAllowed", "HTTPNotAcceptable",
+              "HTTPProxyAuthenticationRequired", "HTTPRequestTimeout", "HTTPConflict", "HTTPGone",
+              "HTTPLengthRequired", "HTTPPreconditionFailed", "HTTPRequestEntityTooLarge",
+              "HTTPRequestURITooLong", "HTTPUnsupportedMediaType", "HTTPRequestRangeNotSatisfiable",
+              "HTTPExpectationFailed", "HTTPMisdirectedRequest", "HTTPUnprocessableEntity",
+              "HTTPFailedDependency", "HTTPUpgradeRequired", "HTTPPreconditionRequired",
+              "HTTPTooManyRequests", "HTTPRequestHeaderFieldsTooLarge",
+              "HTTPUnavailableForLegalReasons", "HTTPServerError", "HTTPInternalServerError",
+              "HTTPNotImplemented", "HTTPBadGateway", "HTTPServiceUnavailable",
+              "HTTPGatewayTimeout", "HTTPVersionNotSupported", "HTTPVariantAlsoNegotiates",
+              "HTTPInsufficientStorage", "HTTPNotExtended", "HTTPNetworkAuthenticationRequired"
+            ] and
+          apiNode = API::moduleImport("aiohttp").getMember("web").getMember(httpExceptionClassName)
+        )
       )
     }
+
+    /**
+     * INTERNAL: Do not use.
+     *
+     * Get the internal `API::Node` that this is call of.
+     */
+    API::Node getApiNode() { result = apiNode }
 
     override DataFlow::Node getBody() {
       result in [this.getArgByName("text"), this.getArgByName("body")]
@@ -532,6 +573,11 @@ module AiohttpWebModel {
       not exists(this.getArgByName("text")) and
       result = "application/octet-stream"
     }
+  }
+
+  /** Gets an HTTP response instance. */
+  private API::Node aiohttpResponseInstance() {
+    result = any(AiohttpWebResponseInstantiation call).getApiNode().getReturn()
   }
 
   /**
@@ -558,5 +604,62 @@ module AiohttpWebModel {
     override DataFlow::Node getRedirectLocation() {
       result in [this.getArg(0), this.getArgByName("location")]
     }
+  }
+
+  /**
+   * A call to `set_cookie` on a HTTP Response.
+   */
+  class AiohttpResponseSetCookieCall extends HTTP::Server::CookieWrite::Range, DataFlow::CallCfgNode {
+    AiohttpResponseSetCookieCall() {
+      this = aiohttpResponseInstance().getMember("set_cookie").getACall()
+    }
+
+    override DataFlow::Node getHeaderArg() { none() }
+
+    override DataFlow::Node getNameArg() { result in [this.getArg(0), this.getArgByName("name")] }
+
+    override DataFlow::Node getValueArg() { result in [this.getArg(1), this.getArgByName("value")] }
+  }
+
+  /**
+   * A call to `del_cookie` on a HTTP Response.
+   */
+  class AiohttpResponseDelCookieCall extends HTTP::Server::CookieWrite::Range, DataFlow::CallCfgNode {
+    AiohttpResponseDelCookieCall() {
+      this = aiohttpResponseInstance().getMember("del_cookie").getACall()
+    }
+
+    override DataFlow::Node getHeaderArg() { none() }
+
+    override DataFlow::Node getNameArg() { result in [this.getArg(0), this.getArgByName("name")] }
+
+    override DataFlow::Node getValueArg() { none() }
+  }
+
+  /**
+   * A dict-like write to an item of the `cookies` attribute on a HTTP response, such as
+   * `response.cookies[name] = value`.
+   */
+  class AiohttpResponseCookieSubscriptWrite extends HTTP::Server::CookieWrite::Range {
+    DataFlow::Node index;
+    DataFlow::Node value;
+
+    AiohttpResponseCookieSubscriptWrite() {
+      exists(SubscriptNode subscript |
+        // To give `this` a value, we need to choose between either LHS or RHS,
+        // and just go with the LHS
+        this.asCfgNode() = subscript
+      |
+        subscript.getObject() = aiohttpResponseInstance().getMember("cookies").getAUse().asCfgNode() and
+        value.asCfgNode() = subscript.(DefinitionNode).getValue() and
+        index.asCfgNode() = subscript.getIndex()
+      )
+    }
+
+    override DataFlow::Node getHeaderArg() { none() }
+
+    override DataFlow::Node getNameArg() { result = index }
+
+    override DataFlow::Node getValueArg() { result = value }
   }
 }

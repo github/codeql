@@ -72,6 +72,39 @@ module FileSystemAccess {
   }
 }
 
+/**
+ * A data flow node that writes data to the file system access.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `FileSystemWriteAccess::Range` instead.
+ */
+class FileSystemWriteAccess extends FileSystemAccess {
+  override FileSystemWriteAccess::Range range;
+
+  /**
+   * Gets a node that represents data to be written to the file system (possibly with
+   * some transformation happening before it is written, like JSON encoding).
+   */
+  DataFlow::Node getADataNode() { result = range.getADataNode() }
+}
+
+/** Provides a class for modeling new file system writes. */
+module FileSystemWriteAccess {
+  /**
+   * A data flow node that writes data to the file system access.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `FileSystemWriteAccess` instead.
+   */
+  abstract class Range extends FileSystemAccess::Range {
+    /**
+     * Gets a node that represents data to be written to the file system (possibly with
+     * some transformation happening before it is written, like JSON encoding).
+     */
+    abstract DataFlow::Node getADataNode();
+  }
+}
+
 /** Provides classes for modeling path-related APIs. */
 module Path {
   /**
@@ -232,6 +265,35 @@ private class EncodingAdditionalTaintStep extends TaintTracking::AdditionalTaint
       nodeFrom = encoding.getAnInput() and
       nodeTo = encoding.getOutput()
     )
+  }
+}
+
+/**
+ * A data-flow node that logs data.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `Logging::Range` instead.
+ */
+class Logging extends DataFlow::Node {
+  Logging::Range range;
+
+  Logging() { this = range }
+
+  /** Gets an input that is logged. */
+  DataFlow::Node getAnInput() { result = range.getAnInput() }
+}
+
+/** Provides a class for modeling new logging mechanisms. */
+module Logging {
+  /**
+   * A data-flow node that logs data.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `Logging` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets an input that is logged. */
+    abstract DataFlow::Node getAnInput();
   }
 }
 
@@ -592,6 +654,62 @@ module HTTP {
       abstract class Range extends HTTP::Server::HttpResponse::Range {
         /** Gets the data-flow node that specifies the location of this HTTP redirect response. */
         abstract DataFlow::Node getRedirectLocation();
+      }
+    }
+
+    /**
+     * A data-flow node that sets a cookie in an HTTP response.
+     *
+     * Extend this class to refine existing API models. If you want to model new APIs,
+     * extend `HTTP::CookieWrite::Range` instead.
+     */
+    class CookieWrite extends DataFlow::Node {
+      CookieWrite::Range range;
+
+      CookieWrite() { this = range }
+
+      /**
+       * Gets the argument, if any, specifying the raw cookie header.
+       */
+      DataFlow::Node getHeaderArg() { result = range.getHeaderArg() }
+
+      /**
+       * Gets the argument, if any, specifying the cookie name.
+       */
+      DataFlow::Node getNameArg() { result = range.getNameArg() }
+
+      /**
+       * Gets the argument, if any, specifying the cookie value.
+       */
+      DataFlow::Node getValueArg() { result = range.getValueArg() }
+    }
+
+    /** Provides a class for modeling new cookie writes on HTTP responses. */
+    module CookieWrite {
+      /**
+       * A data-flow node that sets a cookie in an HTTP response.
+       *
+       * Note: we don't require that this redirect must be sent to a client (a kind of
+       * "if a tree falls in a forest and nobody hears it" situation).
+       *
+       * Extend this class to model new APIs. If you want to refine existing API models,
+       * extend `HttpResponse` instead.
+       */
+      abstract class Range extends DataFlow::Node {
+        /**
+         * Gets the argument, if any, specifying the raw cookie header.
+         */
+        abstract DataFlow::Node getHeaderArg();
+
+        /**
+         * Gets the argument, if any, specifying the cookie name.
+         */
+        abstract DataFlow::Node getNameArg();
+
+        /**
+         * Gets the argument, if any, specifying the cookie value.
+         */
+        abstract DataFlow::Node getValueArg();
       }
     }
   }
