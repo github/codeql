@@ -43,7 +43,7 @@ abstract private class GeneratedType extends RefType {
   final string getStub() {
     result =
       this.stubAbstractModifier() + this.stubStaticModifier() + this.stubAccessibilityModifier() +
-        this.stubKeyword() + " " + this.getName() + stubGenericArguments(this) +
+        this.stubKeyword() + " " + this.getName() + stubGenericArguments(this, true) +
         stubBaseTypesString() + "\n{\n" + stubMembers() + "}"
   }
 
@@ -225,7 +225,7 @@ private string stubTypeName(Type t) {
             then
               result =
                 stubQualifier(t) + t.(RefType).getSourceDeclaration().getName() +
-                  stubGenericArguments(t)
+                  stubGenericArguments(t, false)
             else result = "<error>"
 }
 
@@ -245,14 +245,26 @@ private string stubTypeBound(BoundedType t) {
     )
 }
 
+private string maybeStubTypeBound(BoundedType t, boolean typeVarBounds) {
+  typeVarBounds = true and
+  result = stubTypeBound(t)
+  or
+  typeVarBounds = false and
+  result = ""
+}
+
 private string stubQualifier(RefType t) {
   if t instanceof NestedType
-  then result = stubTypeName(t.(NestedType).getEnclosingType()) + "."
+  then
+    exists(RefType et | et = t.(NestedType).getEnclosingType().getSourceDeclaration() |
+      result = stubQualifier(et) + et.getName() + "."
+    )
   else result = ""
 }
 
 language[monotonicAggregates]
-private string stubGenericArguments(RefType t) {
+private string stubGenericArguments(RefType t, boolean typeVarBounds) {
+  typeVarBounds = [true, false] and
   if t instanceof GenericType
   then
     result =
@@ -260,7 +272,7 @@ private string stubGenericArguments(RefType t) {
         concat(int n, TypeVariable tv |
           tv = t.(GenericType).getTypeParameter(n)
         |
-          tv.getName() + stubTypeBound(tv), ", " order by n
+          tv.getName() + maybeStubTypeBound(tv, typeVarBounds), ", " order by n
         ) + ">"
   else
     if t instanceof ParameterizedType
