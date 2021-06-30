@@ -253,6 +253,13 @@ class FormattingFunctionCall extends Expr {
     // format arguments must be known
     exists(getTarget().(FormattingFunction).getFirstFormatArgumentIndex())
   }
+
+  /**
+   * 
+   */
+  Expr getOutputArgument(boolean isStream) {
+    result = this.(Call).getArgument(this.(Call).getTarget().(FormattingFunction).getOutputParameterIndex(isStream))
+  }
 }
 
 /**
