@@ -13,7 +13,7 @@ class CharacterSetTest extends InlineExpectationsTest {
     exists(Regex re, int start, int end |
       re.charSet(start, end) and
       location = re.getLocation() and
-      element = re.toString().substring(start, end) and
+      element = re.getText().substring(start, end) and
       value = start + ":" + end and
       tag = "charSet"
     )
@@ -31,7 +31,7 @@ class CharacterRangeTest extends InlineExpectationsTest {
     exists(Regex re, int start, int lower_end, int upper_start, int end |
       re.charRange(_, start, lower_end, upper_start, end) and
       location = re.getLocation() and
-      element = re.toString().substring(start, end) and
+      element = re.getText().substring(start, end) and
       value = start + ":" + lower_end + "-" + upper_start + ":" + end and
       tag = "charRange"
     )
@@ -49,7 +49,7 @@ class EscapeTest extends InlineExpectationsTest {
     exists(Regex re, int start, int end |
       re.escapedCharacter(start, end) and
       location = re.getLocation() and
-      element = re.toString().substring(start, end) and
+      element = re.getText().substring(start, end) and
       value = start + ":" + end and
       tag = "escapedCharacter"
     )
@@ -67,7 +67,7 @@ class GroupTest extends InlineExpectationsTest {
     exists(Regex re, int start, int end |
       re.group(start, end) and
       location = re.getLocation() and
-      element = re.toString().substring(start, end) and
+      element = re.getText().substring(start, end) and
       value = start + ":" + end and
       tag = "group"
     )

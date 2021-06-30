@@ -1,4 +1,2 @@
-| test.py:22:12:22:29 | (P<name>[\\w]+) | Regular expression is missing '?' in named group. |
 | test.py:22:12:22:29 | Str | Regular expression is missing '?' in named group. |
-| test.py:23:12:23:33 | (_(P<name>[\\w]+)\|) | Regular expression is missing '?' in named group. |
 | test.py:23:12:23:33 | Str | Regular expression is missing '?' in named group. |

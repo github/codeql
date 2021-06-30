@@ -121,12 +121,6 @@ deprecated string mode_from_mode_object(Value obj) {
 abstract class RegexString extends Expr {
   RegexString() { (this instanceof Bytes or this instanceof Unicode) }
 
-  override string toString() {
-    result = this.(Bytes).getText()
-    or
-    result = this.(Unicode).getText()
-  }
-
   /**
    * Helper predicate for `char_set_start(int start, int end)`.
    *
