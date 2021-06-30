@@ -493,26 +493,26 @@ class RegExpEscape extends RegExpNormalChar {
   // }
 }
 
-/**
- * Gets the hex number for the `hex` char.
- */
-private int toHex(string hex) {
-  hex = [0 .. 9].toString() and
-  result = hex.toInt()
-  or
-  result = 10 and hex = ["a", "A"]
-  or
-  result = 11 and hex = ["b", "B"]
-  or
-  result = 12 and hex = ["c", "C"]
-  or
-  result = 13 and hex = ["d", "D"]
-  or
-  result = 14 and hex = ["e", "E"]
-  or
-  result = 15 and hex = ["f", "F"]
-}
-
+// TODO: Enable this once a supporting CLI is released.
+// /**
+//  * Gets the hex number for the `hex` char.
+//  */
+// private int toHex(string hex) {
+//   hex = [0 .. 9].toString() and
+//   result = hex.toInt()
+//   or
+//   result = 10 and hex = ["a", "A"]
+//   or
+//   result = 11 and hex = ["b", "B"]
+//   or
+//   result = 12 and hex = ["c", "C"]
+//   or
+//   result = 13 and hex = ["d", "D"]
+//   or
+//   result = 14 and hex = ["e", "E"]
+//   or
+//   result = 15 and hex = ["f", "F"]
+// }
 /**
  * A character class escape in a regular expression.
  * That is, an escaped charachter that denotes multiple characters.
