@@ -3,6 +3,7 @@ package generatedtest;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -70,6 +71,8 @@ import org.apache.commons.collections4.keyvalue.DefaultKeyValue;
 import org.apache.commons.collections4.keyvalue.DefaultMapEntry;
 import org.apache.commons.collections4.keyvalue.TiedMapEntry;
 import org.apache.commons.collections4.keyvalue.UnmodifiableMapEntry;
+import org.apache.commons.collections4.map.AbstractIterableMap;
+import org.apache.commons.collections4.map.AbstractMapDecorator;
 import org.apache.commons.collections4.map.HashedMap;
 import org.apache.commons.collections4.map.LinkedMap;
 import org.apache.commons.collections4.map.MultiValueMap;
@@ -120,7 +123,8 @@ public class Test {
 	HashedMap newHashedMapWithMapKey(Object element) { HashedMap m = new HashedMap(); m.put(element,null); return m; }
 	MyAbstractMapEntry newMAMEWithMapKey(Object element) { return new MyAbstractMapEntry(element,null); }
 	MyAbstractMapEntryDecorator newMAMEDWithMapKey(Object element) { return new MyAbstractMapEntryDecorator(newMAMEWithMapKey(element)); }
-	MultiValuedMap newMVMWithMapKey(Object element) { MultiValuedMap m = new ArrayListValuedHashMap(); m.put(element,null); return m; }
+	MultiValueMap newMVMWithMapKey(Object element) { MultiValueMap m = new MultiValueMap(); m.put(element,null); return m; }
+	MultiValuedMap newMVdMWithMapKey(Object element) { MultiValuedMap m = new ArrayListValuedHashMap(); m.put(element,null); return m; }
 	OrderedMapIterator newOMIWithElement(Object element) { LinkedMap m = new LinkedMap(); m.put(element,null); return m.mapIterator(); }
 	ResourceBundle newRBWithMapKey(Object element) { return (ResourceBundle)null; }
 	SortedMap newTreeMapWithMapKey(Object element) { SortedMap m = new TreeMap(); m.put(element,null); return m; }
@@ -133,6 +137,7 @@ public class Test {
 	HashedMap newHashedMapWithMapValue(Object element) { HashedMap m = new HashedMap(); m.put(null,element); return m; }
 	MyAbstractMapEntry newMAMEWithMapValue(Object element) { return new MyAbstractMapEntry(null,element); }
 	MyAbstractMapEntryDecorator newMAMEDWithMapValue(Object element) { return new MyAbstractMapEntryDecorator(newMAMEWithMapValue(element)); }
+	MultiValueMap newMVMWithMapValue(Object element) { MultiValueMap m = new MultiValueMap(); m.put(null,element); return m; }
 	MultiMap newMMWithMapValue(Object element) { MultiMap m = new MultiValueMap(); m.put(null,element); return m; }
 	ArrayListValuedHashMap newALVHMWithMapValue(Object element) { ArrayListValuedHashMap m = new ArrayListValuedHashMap(); m.put(null,element); return m; }
 	HashSetValuedHashMap newHSVHMWithMapValue(Object element) { HashSetValuedHashMap m = new HashSetValuedHashMap(); m.put(null,element); return m; }
@@ -307,7 +312,7 @@ public class Test {
 			// "org.apache.commons.collections4.keyvalue;AbstractKeyValue;true;setValue;;;MapValue of Argument[-1];ReturnValue;value"
 			Object out = null;
 			MyAbstractKeyValue in = newMAKVWithMapValue((String)source());
-			out = in.mySetValue(null);
+			out = in.mySetValue((Object)null);
 			sink(out); // $ hasValueFlow
 		}
 		{
@@ -1356,6 +1361,13 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
+			// "org.apache.commons.collections4;CollectionUtils;true;get;(Iterable,int);;Element of Argument[0];ReturnValue;value"
+			Object out = null;
+			Iterable in = newVectorWithElement((String)source());
+			out = CollectionUtils.get(in, 0);
+			sink(out); // $ hasValueFlow
+		}
+		{
 			// "org.apache.commons.collections4;CollectionUtils;true;get;(Map,int);;MapKey of Argument[0];MapKey of ReturnValue;value"
 			Map.Entry out = null;
 			Map in = (Map)newTreeMapWithMapKey((String)source());
@@ -1609,6 +1621,14 @@ public class Test {
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
+			// "org.apache.commons.collections4;FluentIterable;true;append;(Object[]);;ArrayElement of Argument[0];Element of ReturnValue;value"
+			FluentIterable out = null;
+			Object in = source();
+			FluentIterable instance = null;
+			out = instance.append(in);
+			sink(getElement(out)); // $ hasValueFlow
+		}
+		{
 			// "org.apache.commons.collections4;FluentIterable;true;append;(Object[]);;Element of Argument[-1];Element of ReturnValue;value"
 			FluentIterable out = null;
 			FluentIterable in = newFluentIterableWithElement((String)source());
@@ -1730,6 +1750,13 @@ public class Test {
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
+			// "org.apache.commons.collections4;FluentIterable;true;toArray;;;Element of Argument[-1];ArrayElement of ReturnValue;value"
+			Object[] out = null;
+			FluentIterable in = newFluentIterableWithElement((String)source());
+			out = in.toArray(null);
+			sink(getArrayElement(out)); // $ hasValueFlow
+		}
+		{
 			// "org.apache.commons.collections4;FluentIterable;true;toList;;;Element of Argument[-1];Element of ReturnValue;value"
 			List out = null;
 			FluentIterable in = newFluentIterableWithElement((String)source());
@@ -1773,6 +1800,28 @@ public class Test {
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
+			// "org.apache.commons.collections4;FluentIterable;true;zip;(Iterable[]);;Element of Argument[-1];Element of ReturnValue;value"
+			FluentIterable out = null;
+			FluentIterable in = newFluentIterableWithElement((String)source());
+			out = in.zip((Iterable)null, (Iterable)null);
+			sink(getElement(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4;FluentIterable;true;zip;(Iterable[]);;Element of ArrayElement of Argument[0];Element of ReturnValue;value"
+			FluentIterable out = null;
+			Iterable in = newVectorWithElement((String)source());
+			FluentIterable instance = null;
+			out = instance.zip(in, (Iterable)null);
+			sink(getElement(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4;Get;true;entrySet;;;MapKey of Argument[-1];MapKey of Element of ReturnValue;value"
+			Set<Map.Entry> out = null;
+			MultiValueMap in = newMVMWithMapKey((String)source());
+			out = in.entrySet();
+			sink(getMapKeyFromEntry(getElement(out))); // $ hasValueFlow
+		}
+		{
 			// "org.apache.commons.collections4;Get;true;entrySet;;;MapKey of Argument[-1];MapKey of Element of ReturnValue;value"
 			Set<Map.Entry> out = null;
 			Get in = newTrieWithMapKey((String)source());
@@ -1780,9 +1829,30 @@ public class Test {
 			sink(getMapKeyFromEntry(getElement(out))); // $ hasValueFlow
 		}
 		{
+			// "org.apache.commons.collections4;Get;true;entrySet;;;MapKey of Argument[-1];MapKey of Element of ReturnValue;value"
+			Set<Map.Entry> out = null;
+			AbstractMapDecorator in = newMVMWithMapKey((String)source());
+			out = in.entrySet();
+			sink(getMapKeyFromEntry(getElement(out))); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4;Get;true;entrySet;;;MapValue of Argument[-1];MapValue of Element of ReturnValue;value"
+			Set<Map.Entry> out = null;
+			MultiValueMap in = newMVMWithMapValue((String)source());
+			out = in.entrySet();
+			sink(getMapValueFromEntry(getElement(out))); // $ hasValueFlow
+		}
+		{
 			// "org.apache.commons.collections4;Get;true;entrySet;;;MapValue of Argument[-1];MapValue of Element of ReturnValue;value"
 			Set<Map.Entry> out = null;
 			Get in = newTrieWithMapValue((String)source());
+			out = in.entrySet();
+			sink(getMapValueFromEntry(getElement(out))); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4;Get;true;entrySet;;;MapValue of Argument[-1];MapValue of Element of ReturnValue;value"
+			Set<Map.Entry> out = null;
+			AbstractMapDecorator in = newMVMWithMapValue((String)source());
 			out = in.entrySet();
 			sink(getMapValueFromEntry(getElement(out))); // $ hasValueFlow
 		}
@@ -1801,9 +1871,23 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
+			// "org.apache.commons.collections4;Get;true;get;;;MapValue of Argument[-1];ReturnValue;value"
+			Object out = null;
+			AbstractMapDecorator in = newMVMWithMapValue((String)source());
+			out = in.get(null);
+			sink(out); // $ hasValueFlow
+		}
+		{
 			// "org.apache.commons.collections4;Get;true;keySet;();;MapKey of Argument[-1];Element of ReturnValue;value"
 			Set out = null;
 			Get in = newTrieWithMapKey((String)source());
+			out = in.keySet();
+			sink(getElement(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4;Get;true;keySet;();;MapKey of Argument[-1];Element of ReturnValue;value"
+			Set out = null;
+			AbstractMapDecorator in = newMVMWithMapKey((String)source());
 			out = in.keySet();
 			sink(getElement(out)); // $ hasValueFlow
 		}
@@ -1822,9 +1906,23 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
+			// "org.apache.commons.collections4;Get;true;remove;(Object);;MapValue of Argument[-1];ReturnValue;value"
+			Object out = null;
+			AbstractMapDecorator in = newMVMWithMapValue((String)source());
+			out = in.remove(null);
+			sink(out); // $ hasValueFlow
+		}
+		{
 			// "org.apache.commons.collections4;Get;true;values;();;MapValue of Argument[-1];Element of ReturnValue;value"
 			Set out = null;
 			BidiMap in = newTreeBidiMapWithMapValue((String)source());
+			out = in.values();
+			sink(getElement(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4;Get;true;values;();;MapValue of Argument[-1];Element of ReturnValue;value"
+			Collection out = null;
+			MultiValueMap in = newMVMWithMapValue((String)source());
 			out = in.values();
 			sink(getElement(out)); // $ hasValueFlow
 		}
@@ -1843,6 +1941,20 @@ public class Test {
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
+			// "org.apache.commons.collections4;Get;true;values;();;MapValue of Argument[-1];Element of ReturnValue;value"
+			Collection out = null;
+			AbstractMapDecorator in = newMVMWithMapValue((String)source());
+			out = in.values();
+			sink(getElement(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4;IterableGet;true;mapIterator;;;MapKey of Argument[-1];Element of ReturnValue;value"
+			OrderedMapIterator out = null;
+			OrderedMap in = newTreeBidiMapWithMapKey((String)source());
+			out = in.mapIterator();
+			sink(getElement(out)); // $ hasValueFlow
+		}
+		{
 			// "org.apache.commons.collections4;IterableGet;true;mapIterator;;;MapKey of Argument[-1];Element of ReturnValue;value"
 			MapIterator out = null;
 			IterableGet in = newHashedMapWithMapKey((String)source());
@@ -1850,9 +1962,30 @@ public class Test {
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
+			// "org.apache.commons.collections4;IterableGet;true;mapIterator;;;MapKey of Argument[-1];Element of ReturnValue;value"
+			MapIterator out = null;
+			AbstractIterableMap in = newMVMWithMapKey((String)source());
+			out = in.mapIterator();
+			sink(getElement(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4;IterableGet;true;mapIterator;;;MapValue of Argument[-1];MapValue of ReturnValue;value"
+			OrderedMapIterator out = null;
+			OrderedMap in = newTreeBidiMapWithMapValue((String)source());
+			out = in.mapIterator();
+			sink(getMapValue(out)); // $ hasValueFlow
+		}
+		{
 			// "org.apache.commons.collections4;IterableGet;true;mapIterator;;;MapValue of Argument[-1];MapValue of ReturnValue;value"
 			MapIterator out = null;
 			IterableGet in = newHashedMapWithMapValue((String)source());
+			out = in.mapIterator();
+			sink(getMapValue(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4;IterableGet;true;mapIterator;;;MapValue of Argument[-1];MapValue of ReturnValue;value"
+			MapIterator out = null;
+			AbstractIterableMap in = newMVMWithMapValue((String)source());
 			out = in.mapIterator();
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
@@ -1867,7 +2000,7 @@ public class Test {
 			// "org.apache.commons.collections4;IterableUtils;true;chainedIterable;(Iterable[]);;Element of ArrayElement of Argument[0];Element of ReturnValue;value"
 			Iterable out = null;
 			Iterable in = newVectorWithElement((String)source());
-			out = IterableUtils.chainedIterable(in);
+			out = IterableUtils.chainedIterable(in, (Iterable)null);
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
@@ -2007,21 +2140,21 @@ public class Test {
 			// "org.apache.commons.collections4;IterableUtils;true;partition;;;Element of Argument[0];Element of Element of ReturnValue;value"
 			List out = null;
 			Iterable in = newVectorWithElement((String)source());
-			out = IterableUtils.partition(in, null, (Predicate<? super Object>[])null);
+			out = IterableUtils.partition(in, (Factory)null, (Predicate)null, (Predicate)null);
 			sink(getElement((Iterable)getElement(out))); // $ hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;IterableUtils;true;partition;;;Element of Argument[0];Element of Element of ReturnValue;value"
 			List out = null;
 			Iterable in = newVectorWithElement((String)source());
-			out = IterableUtils.partition(in, (Predicate<? super Object>[])null);
+			out = IterableUtils.partition(in, (Predicate)null, (Predicate)null);
 			sink(getElement((Iterable)getElement(out))); // $ hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;IterableUtils;true;partition;;;Element of Argument[0];Element of Element of ReturnValue;value"
 			List out = null;
 			Iterable in = newVectorWithElement((String)source());
-			out = IterableUtils.partition(in, (Predicate)null);
+			out = IterableUtils.partition(in, (Predicate)null, (Predicate)null);
 			sink(getElement((Iterable)getElement(out))); // $ hasValueFlow
 		}
 		{
@@ -2067,6 +2200,27 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
+			// "org.apache.commons.collections4;IterableUtils;true;toString;;;Argument[2];ReturnValue;taint"
+			String out = null;
+			String in = (String)source();
+			out = IterableUtils.toString(null, null, in, null, null);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "org.apache.commons.collections4;IterableUtils;true;toString;;;Argument[3];ReturnValue;taint"
+			String out = null;
+			String in = (String)source();
+			out = IterableUtils.toString(null, null, null, in, null);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "org.apache.commons.collections4;IterableUtils;true;toString;;;Argument[4];ReturnValue;taint"
+			String out = null;
+			String in = (String)source();
+			out = IterableUtils.toString(null, null, null, null, in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
 			// "org.apache.commons.collections4;IterableUtils;true;uniqueIterable;;;Element of Argument[0];Element of ReturnValue;value"
 			Iterable out = null;
 			Iterable in = newVectorWithElement((String)source());
@@ -2098,14 +2252,35 @@ public class Test {
 			// "org.apache.commons.collections4;IterableUtils;true;zippingIterable;;;Element of Argument[0];Element of ReturnValue;value"
 			Iterable out = null;
 			Iterable in = newVectorWithElement((String)source());
-			out = IterableUtils.zippingIterable(in, (Iterable)null);
+			out = IterableUtils.zippingIterable(in, (Iterable)null, (Iterable)null);
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;IterableUtils;true;zippingIterable;;;Element of Argument[0];Element of ReturnValue;value"
 			Iterable out = null;
 			Iterable in = newVectorWithElement((String)source());
-			out = IterableUtils.zippingIterable(in);
+			out = IterableUtils.zippingIterable(in, (Iterable)null);
+			sink(getElement(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4;IteratorUtils;true;arrayIterator;;;ArrayElement of Argument[0];Element of ReturnValue;value"
+			ResettableIterator out = null;
+			Object[] in = newWithArrayElement((String)source());
+			out = IteratorUtils.arrayIterator(in, 0, 0);
+			sink(getElement(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4;IteratorUtils;true;arrayIterator;;;ArrayElement of Argument[0];Element of ReturnValue;value"
+			ResettableIterator out = null;
+			Object[] in = newWithArrayElement((String)source());
+			out = IteratorUtils.arrayIterator(in, 0);
+			sink(getElement(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4;IteratorUtils;true;arrayIterator;;;ArrayElement of Argument[0];Element of ReturnValue;value"
+			ResettableIterator out = null;
+			Object in = source();
+			out = IteratorUtils.arrayIterator(in, (Object)null);
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
@@ -2127,6 +2302,27 @@ public class Test {
 			ResettableIterator out = null;
 			Object in = (Object)newWithArrayElement((String)source());
 			out = IteratorUtils.arrayIterator(in);
+			sink(getElement(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4;IteratorUtils;true;arrayListIterator;;;ArrayElement of Argument[0];Element of ReturnValue;value"
+			ResettableListIterator out = null;
+			Object[] in = newWithArrayElement((String)source());
+			out = IteratorUtils.arrayListIterator(in, 0, 0);
+			sink(getElement(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4;IteratorUtils;true;arrayListIterator;;;ArrayElement of Argument[0];Element of ReturnValue;value"
+			ResettableListIterator out = null;
+			Object[] in = newWithArrayElement((String)source());
+			out = IteratorUtils.arrayListIterator(in, 0);
+			sink(getElement(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4;IteratorUtils;true;arrayListIterator;;;ArrayElement of Argument[0];Element of ReturnValue;value"
+			ResettableListIterator out = null;
+			Object in = source();
+			out = IteratorUtils.arrayListIterator(in, (Object)null);
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
@@ -2204,6 +2400,13 @@ public class Test {
 			Iterator out = null;
 			Collection in = (Collection)newVectorWithElement(newVectorWithElement((String)source()));
 			out = IteratorUtils.chainedIterator(in);
+			sink(getElement(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4;IteratorUtils;true;chainedIterator;(Iterator[]);;Element of ArrayElement of Argument[0];Element of ReturnValue;value"
+			Iterator out = null;
+			Iterator in = newListIteratorWithElement((String)source());
+			out = IteratorUtils.chainedIterator(in, (Iterator)null);
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
@@ -2364,27 +2567,34 @@ public class Test {
 			// "org.apache.commons.collections4;IteratorUtils;true;toArray;;;Element of Argument[0];ArrayElement of ReturnValue;value"
 			Object[] out = null;
 			Iterator in = newListIteratorWithElement((String)source());
+			out = IteratorUtils.toArray(in, null);
+			sink(getArrayElement(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4;IteratorUtils;true;toArray;;;Element of Argument[0];ArrayElement of ReturnValue;value"
+			Object[] out = null;
+			Iterator in = newListIteratorWithElement((String)source());
 			out = IteratorUtils.toArray(in);
 			sink(getArrayElement(out)); // $ hasValueFlow
 		}
 		{
-			// "org.apache.commons.collections4;IteratorUtils;true;toList;;;Argument[0];Element of ReturnValue;value"
+			// "org.apache.commons.collections4;IteratorUtils;true;toList;;;Element of Argument[0];Element of ReturnValue;value"
 			List out = null;
-			Iterator in = (Iterator)source();
+			Iterator in = newListIteratorWithElement((String)source());
 			out = IteratorUtils.toList(in, 0);
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
-			// "org.apache.commons.collections4;IteratorUtils;true;toList;;;Argument[0];Element of ReturnValue;value"
+			// "org.apache.commons.collections4;IteratorUtils;true;toList;;;Element of Argument[0];Element of ReturnValue;value"
 			List out = null;
-			Iterator in = (Iterator)source();
+			Iterator in = newListIteratorWithElement((String)source());
 			out = IteratorUtils.toList(in);
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
-			// "org.apache.commons.collections4;IteratorUtils;true;toListIterator;;;Argument[0];Element of ReturnValue;value"
+			// "org.apache.commons.collections4;IteratorUtils;true;toListIterator;;;Element of Argument[0];Element of ReturnValue;value"
 			ListIterator out = null;
-			Iterator in = (Iterator)source();
+			Iterator in = newListIteratorWithElement((String)source());
 			out = IteratorUtils.toListIterator(in);
 			sink(getElement(out)); // $ hasValueFlow
 		}
@@ -2410,6 +2620,27 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
+			// "org.apache.commons.collections4;IteratorUtils;true;toString;;;Argument[2];ReturnValue;taint"
+			String out = null;
+			String in = (String)source();
+			out = IteratorUtils.toString(null, null, in, null, null);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "org.apache.commons.collections4;IteratorUtils;true;toString;;;Argument[3];ReturnValue;taint"
+			String out = null;
+			String in = (String)source();
+			out = IteratorUtils.toString(null, null, null, in, null);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "org.apache.commons.collections4;IteratorUtils;true;toString;;;Argument[4];ReturnValue;taint"
+			String out = null;
+			String in = (String)source();
+			out = IteratorUtils.toString(null, null, null, null, in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
 			// "org.apache.commons.collections4;IteratorUtils;true;unmodifiableIterator;;;Element of Argument[0];Element of ReturnValue;value"
 			Iterator out = null;
 			Iterator in = newListIteratorWithElement((String)source());
@@ -2428,7 +2659,7 @@ public class Test {
 			MapIterator out = null;
 			MapIterator in = newOMIWithElement((String)source());
 			out = IteratorUtils.unmodifiableMapIterator(in);
-			sink(getElement((Iterator)out)); // $ hasValueFlow
+			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;IteratorUtils;true;unmodifiableMapIterator;;;MapValue of Argument[0];MapValue of ReturnValue;value"
@@ -2480,6 +2711,13 @@ public class Test {
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
+			// "org.apache.commons.collections4;ListUtils;true;defaultIfNull;;;Argument[0];ReturnValue;value"
+			List out = null;
+			List in = (List)source();
+			out = ListUtils.defaultIfNull(in, null);
+			sink(out); // $ hasValueFlow
+		}
+		{
 			// "org.apache.commons.collections4;ListUtils;true;defaultIfNull;;;Argument[1];ReturnValue;value"
 			List out = null;
 			List in = (List)source();
@@ -2492,6 +2730,13 @@ public class Test {
 			List in = (List)source();
 			out = ListUtils.emptyIfNull(in);
 			sink(out); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4;ListUtils;true;fixedSizeList;;;Element of Argument[0];Element of ReturnValue;value"
+			List out = null;
+			List in = (List)newVectorWithElement((String)source());
+			out = ListUtils.fixedSizeList(in);
+			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;ListUtils;true;intersection;;;Element of Argument[0];Element of ReturnValue;value"
@@ -2698,6 +2943,13 @@ public class Test {
 		}
 		{
 			// "org.apache.commons.collections4;MultiMap;true;put;;;Argument[0];MapKey of Argument[-1];value"
+			MultiValueMap out = null;
+			Object in = source();
+			out.put(in, null);
+			sink(getMapKey(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4;MultiMap;true;put;;;Argument[0];MapKey of Argument[-1];value"
 			MultiMap out = null;
 			Object in = (Object)source();
 			out.put(in, null);
@@ -2705,10 +2957,24 @@ public class Test {
 		}
 		{
 			// "org.apache.commons.collections4;MultiMap;true;put;;;Argument[1];Element of MapValue of Argument[-1];value"
+			MultiValueMap out = null;
+			Object in = source();
+			out.put(null, in);
+			sink(getElement((Collection)getMapValue(out))); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4;MultiMap;true;put;;;Argument[1];Element of MapValue of Argument[-1];value"
 			MultiMap out = null;
 			Object in = (Object)source();
 			out.put(null, in);
 			sink(getElement((Collection)getMapValue(out))); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4;MultiMap;true;values;;;Element of MapValue of Argument[-1];Element of ReturnValue;value"
+			Collection out = null;
+			MultiValueMap in = newMVMWithMapValue((String)source());
+			out = in.values();
+			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MultiMap;true;values;;;Element of MapValue of Argument[-1];Element of ReturnValue;value"
@@ -2755,7 +3021,7 @@ public class Test {
 		{
 			// "org.apache.commons.collections4;MultiMapUtils;true;transformedMultiValuedMap;;;MapKey of Argument[0];MapKey of ReturnValue;value"
 			MultiValuedMap out = null;
-			MultiValuedMap in = newMVMWithMapKey((String)source());
+			MultiValuedMap in = newMVdMWithMapKey((String)source());
 			out = MultiMapUtils.transformedMultiValuedMap(in, null, null);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
@@ -2769,7 +3035,7 @@ public class Test {
 		{
 			// "org.apache.commons.collections4;MultiMapUtils;true;unmodifiableMultiValuedMap;;;MapKey of Argument[0];MapKey of ReturnValue;value"
 			MultiValuedMap out = null;
-			MultiValuedMap in = newMVMWithMapKey((String)source());
+			MultiValuedMap in = newMVdMWithMapKey((String)source());
 			out = MultiMapUtils.unmodifiableMultiValuedMap(in);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
@@ -2846,7 +3112,7 @@ public class Test {
 		{
 			// "org.apache.commons.collections4;MultiValuedMap;true;asMap;;;MapKey of Argument[-1];MapKey of ReturnValue;value"
 			Map out = null;
-			MultiValuedMap in = newMVMWithMapKey((String)source());
+			MultiValuedMap in = newMVdMWithMapKey((String)source());
 			out = in.asMap();
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
@@ -2874,14 +3140,14 @@ public class Test {
 		{
 			// "org.apache.commons.collections4;MultiValuedMap;true;keySet;;;MapKey of Argument[-1];Element of ReturnValue;value"
 			Set out = null;
-			MultiValuedMap in = newMVMWithMapKey((String)source());
+			MultiValuedMap in = newMVdMWithMapKey((String)source());
 			out = in.keySet();
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MultiValuedMap;true;keys;;;MapKey of Argument[-1];Element of ReturnValue;value"
 			MultiSet out = null;
-			MultiValuedMap in = newMVMWithMapKey((String)source());
+			MultiValuedMap in = newMVdMWithMapKey((String)source());
 			out = in.keys();
 			sink(getElement(out)); // $ hasValueFlow
 		}
@@ -2895,7 +3161,7 @@ public class Test {
 		{
 			// "org.apache.commons.collections4;MultiValuedMap;true;mapIterator;;;MapKey of Argument[-1];Element of ReturnValue;value"
 			MapIterator out = null;
-			MultiValuedMap in = newMVMWithMapKey((String)source());
+			MultiValuedMap in = newMVdMWithMapKey((String)source());
 			out = in.mapIterator();
 			sink(getElement(out)); // $ hasValueFlow
 		}
@@ -2937,7 +3203,7 @@ public class Test {
 		{
 			// "org.apache.commons.collections4;MultiValuedMap;true;putAll;(MultiValuedMap);;MapKey of Argument[0];MapKey of Argument[-1];value"
 			MultiValuedMap out = null;
-			MultiValuedMap in = newMVMWithMapKey((String)source());
+			MultiValuedMap in = newMVdMWithMapKey((String)source());
 			out.putAll(in);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
@@ -2954,6 +3220,27 @@ public class Test {
 			Iterable in = newFluentIterableWithElement((String)source());
 			out.putAll(null, in);
 			sink(getElement(getMapValue(out))); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4;MultiValuedMap;true;remove;;;Element of MapValue of Argument[-1];Element of ReturnValue;value"
+			Set out = null;
+			SetValuedMap in = newHSVHMWithMapValue((String)source());
+			out = in.remove(null);
+			sink(getElement(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4;MultiValuedMap;true;remove;;;Element of MapValue of Argument[-1];Element of ReturnValue;value"
+			List out = null;
+			ListValuedMap in = newALVHMWithMapValue((String)source());
+			out = in.remove(null);
+			sink(getElement(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4;MultiValuedMap;true;remove;;;Element of MapValue of Argument[-1];Element of ReturnValue;value"
+			Collection out = null;
+			MultiValuedMap in = newALVHMWithMapValue((String)source());
+			out = in.remove(null);
+			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MultiValuedMap;true;values;;;Element of MapValue of Argument[-1];Element of ReturnValue;value"
@@ -3013,6 +3300,13 @@ public class Test {
 		}
 		{
 			// "org.apache.commons.collections4;Put;true;put;;;Argument[0];MapKey of Argument[-1];value"
+			MultiValueMap out = null;
+			Object in = source();
+			out.put(in, null);
+			sink(getMapKey(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4;Put;true;put;;;Argument[0];MapKey of Argument[-1];value"
 			MultiMap out = null;
 			Object in = (Object)source();
 			out.put(in, null);
@@ -3026,11 +3320,25 @@ public class Test {
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
+			// "org.apache.commons.collections4;Put;true;put;;;Argument[0];MapKey of Argument[-1];value"
+			AbstractMapDecorator out = null;
+			Object in = source();
+			out.put(in, null);
+			sink(getMapKey(out)); // $ hasValueFlow
+		}
+		{
 			// "org.apache.commons.collections4;Put;true;put;;;Argument[1];MapValue of Argument[-1];value"
 			Put out = null;
 			Object in = (Object)source();
 			out.put(null, in);
 			sink(getMapValueFromPut(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4;Put;true;put;;;Argument[1];MapValue of Argument[-1];value"
+			MultiValueMap out = null;
+			Object in = source();
+			out.put(null, in);
+			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;Put;true;put;;;Argument[1];MapValue of Argument[-1];value"
@@ -3047,9 +3355,23 @@ public class Test {
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
+			// "org.apache.commons.collections4;Put;true;put;;;Argument[1];MapValue of Argument[-1];value"
+			AbstractMapDecorator out = null;
+			Object in = source();
+			out.put(null, in);
+			sink(getMapValue(out)); // $ hasValueFlow
+		}
+		{
 			// "org.apache.commons.collections4;Put;true;put;;;MapValue of Argument[-1];ReturnValue;value"
 			Object out = null;
 			Put in = newHashedMapWithMapValue((String)source());
+			out = in.put(null, null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4;Put;true;put;;;MapValue of Argument[-1];ReturnValue;value"
+			Object out = null;
+			MultiValueMap in = newMVMWithMapValue((String)source());
 			out = in.put(null, null);
 			sink(out); // $ hasValueFlow
 		}
@@ -3068,6 +3390,13 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
+			// "org.apache.commons.collections4;Put;true;put;;;MapValue of Argument[-1];ReturnValue;value"
+			Object out = null;
+			AbstractMapDecorator in = newMVMWithMapValue((String)source());
+			out = in.put(null, null);
+			sink(out); // $ hasValueFlow
+		}
+		{
 			// "org.apache.commons.collections4;Put;true;putAll;(Map);;MapKey of Argument[0];MapKey of Argument[-1];value"
 			Put out = null;
 			Map in = newTreeMapWithMapKey((String)source());
@@ -3075,11 +3404,39 @@ public class Test {
 			sink(getMapKeyFromPut(out)); // $ hasValueFlow
 		}
 		{
+			// "org.apache.commons.collections4;Put;true;putAll;(Map);;MapKey of Argument[0];MapKey of Argument[-1];value"
+			MultiValueMap out = null;
+			Map in = newTreeMapWithMapKey((String)source());
+			out.putAll(in);
+			sink(getMapKey(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4;Put;true;putAll;(Map);;MapKey of Argument[0];MapKey of Argument[-1];value"
+			AbstractMapDecorator out = null;
+			Map in = newTreeMapWithMapKey((String)source());
+			out.putAll(in);
+			sink(getMapKey(out)); // $ hasValueFlow
+		}
+		{
 			// "org.apache.commons.collections4;Put;true;putAll;(Map);;MapValue of Argument[0];MapValue of Argument[-1];value"
 			Put out = null;
 			Map in = newTreeMapWithMapValue((String)source());
 			out.putAll(in);
 			sink(getMapValueFromPut(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4;Put;true;putAll;(Map);;MapValue of Argument[0];MapValue of Argument[-1];value"
+			MultiValueMap out = null;
+			Map in = newTreeMapWithMapValue((String)source());
+			out.putAll(in);
+			sink(getMapValue(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4;Put;true;putAll;(Map);;MapValue of Argument[0];MapValue of Argument[-1];value"
+			AbstractMapDecorator out = null;
+			Map in = newTreeMapWithMapValue((String)source());
+			out.putAll(in);
+			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;QueueUtils;true;predicatedQueue;;;Element of Argument[0];Element of ReturnValue;value"
@@ -3124,6 +3481,13 @@ public class Test {
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
+			// "org.apache.commons.collections4;SetUtils$SetView;true;toSet;;;Element of Argument[-1];Element of ReturnValue;value"
+			Set out = null;
+			MySetView in = newSetViewWithElement((String)source());
+			out = in.toSet();
+			sink(getElement(out)); // $ hasValueFlow
+		}
+		{
 			// "org.apache.commons.collections4;SetUtils;true;difference;;;Element of Argument[0];Element of ReturnValue;value"
 			SetUtils.SetView out = null;
 			Set in = newTreeSetWithElement((String)source());
@@ -3131,10 +3495,17 @@ public class Test {
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
-			// "org.apache.commons.collections4;SetUtils;true;difference;;;Element of Argument[1];Element of ReturnValue;value"
+			// "org.apache.commons.collections4;SetUtils;true;disjunction;;;Element of Argument[0];Element of ReturnValue;value"
 			SetUtils.SetView out = null;
 			Set in = newTreeSetWithElement((String)source());
-			out = SetUtils.difference(null, in);
+			out = SetUtils.disjunction(in, null);
+			sink(getElement(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4;SetUtils;true;disjunction;;;Element of Argument[1];Element of ReturnValue;value"
+			SetUtils.SetView out = null;
+			Set in = newTreeSetWithElement((String)source());
+			out = SetUtils.disjunction(null, in);
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
@@ -3247,6 +3618,13 @@ public class Test {
 			SortedSet out = null;
 			NavigableSet in = newTreeSetWithElement((String)source());
 			out = SetUtils.unmodifiableNavigableSet(in);
+			sink(getElement(out)); // $ hasValueFlow
+		}
+		{
+			// "org.apache.commons.collections4;SetUtils;true;unmodifiableSet;(Object[]);;ArrayElement of Argument[0];Element of ReturnValue;value"
+			Set out = null;
+			Object in = source();
+			out = SetUtils.unmodifiableSet(in, null);
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
