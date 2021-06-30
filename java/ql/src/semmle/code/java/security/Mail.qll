@@ -56,9 +56,7 @@ predicate hasSslCertificateCheck(VarAccess va) {
 private string getStringValue(Expr expr) {
   result = expr.(CompileTimeConstantExpr).getStringValue()
   or
-  result = getStringValue(expr.(AddExpr).getLeftOperand())
-  or
-  result = getStringValue(expr.(AddExpr).getRightOperand())
+  result = getStringValue(expr.(AddExpr).getAnOperand())
 }
 
 /**
