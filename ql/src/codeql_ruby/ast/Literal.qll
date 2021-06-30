@@ -1,4 +1,5 @@
 private import codeql_ruby.AST
+private import codeql_ruby.regexp.RegExpTreeView as RETV
 private import internal.AST
 private import internal.Scope
 private import internal.TreeSitter
@@ -482,6 +483,33 @@ class RegExpLiteral extends StringlikeLiteral, TRegExpLiteral {
    * ```
    */
   final predicate hasCaseInsensitiveFlag() { this.getFlagString().charAt(_) = "i" }
+
+  /**
+   * Holds if the regex was specified using the `m` flag to indicate multiline
+   * mode. For example:
+   *
+   * ```rb
+   * /foo/m
+   * ```
+   */
+  final predicate hasMultilineFlag() { this.getFlagString().charAt(_) = "m" }
+
+  /**
+   * Holds if the regex was specified using the `x` flag to indicate
+   * 'free-spacing' mode (also known as 'extended' mode), meaning that
+   * whitespace and comments in the pattern are ignored. For example:
+   *
+   * ```rb
+   * %r{
+   *   [a-zA-Z_] # starts with a letter or underscore
+   *   \w*       # and then zero or more letters/digits/underscores
+   * }/x
+   * ```
+   */
+  final predicate hasFreeSpacingFlag() { this.getFlagString().charAt(_) = "x" }
+
+  /** Returns the root node of the parse tree of this regular expression. */
+  final RETV::RegExpTerm getParsed() { result = RETV::getParsedRegExp(this) }
 }
 
 /**

@@ -6,7 +6,8 @@
  * to hold for only the AST nodes you wish to view.
  */
 
-import AST
+private import AST
+private import codeql_ruby.regexp.RegExpTreeView as RETV
 
 /** Holds if `n` appears in the desugaring of some other node. */
 predicate isDesugared(AstNode n) {
@@ -38,47 +39,139 @@ class PrintAstConfiguration extends string {
     )
   }
 
-  predicate shouldPrintEdge(AstNode parent, string edgeName, AstNode child) {
+  predicate shouldPrintAstEdge(AstNode parent, string edgeName, AstNode child) {
     child = parent.getAChild(edgeName) and
     not child = parent.getDesugared()
   }
-}
-
-/**
- * A node in the output tree.
- */
-class PrintAstNode extends AstNode {
-  PrintAstNode() { shouldPrintNode(this) }
-
-  string getProperty(string key) {
-    key = "semmle.label" and
-    result = "[" + concat(this.getAPrimaryQlClass(), ", ") + "] " + this.toString()
-    or
-    key = "semmle.order" and
-    result =
-      any(int i |
-        this =
-          rank[i](PrintAstNode p, Location l, File f |
-            l = p.getLocation() and
-            f = l.getFile()
-          |
-            p order by f.getBaseName(), f.getAbsolutePath(), l.getStartLine(), l.getStartColumn()
-          )
-      ).toString()
-  }
-
-  /**
-   * Gets the child node that is accessed using the predicate `edgeName`.
-   */
-  PrintAstNode getChild(string edgeName) { shouldPrintEdge(this, edgeName, result) }
 }
 
 private predicate shouldPrintNode(AstNode n) {
   any(PrintAstConfiguration config).shouldPrintNode(n)
 }
 
-private predicate shouldPrintEdge(PrintAstNode parent, string edgeName, PrintAstNode child) {
-  any(PrintAstConfiguration config).shouldPrintEdge(parent, edgeName, child)
+private predicate shouldPrintAstEdge(AstNode parent, string edgeName, AstNode child) {
+  any(PrintAstConfiguration config).shouldPrintAstEdge(parent, edgeName, child)
+}
+
+newtype TPrintNode =
+  TPrintRegularAstNode(AstNode n) { shouldPrintNode(n) } or
+  TPrintRegExpNode(RETV::RegExpTerm term) {
+    exists(RegExpLiteral literal |
+      shouldPrintNode(literal) and
+      term.getRootTerm() = literal.getParsed()
+    )
+  }
+
+/**
+ * A node in the output tree.
+ */
+class PrintAstNode extends TPrintNode {
+  /** Gets a textual representation of this node in the PrintAst output tree. */
+  string toString() { none() }
+
+  /**
+   * Gets the child node with name `edgeName`. Typically this is the name of the
+   * predicate used to access the child.
+   */
+  PrintAstNode getChild(string edgeName) { none() }
+
+  /** Gets a child of this node. */
+  final PrintAstNode getAChild() { result = getChild(_) }
+
+  /** Gets the parent of this node, if any. */
+  final PrintAstNode getParent() { result.getAChild() = this }
+
+  /**
+   * Holds if this node is at the specified location. The location spans column
+   * `startcolumn` of line `startline` to column `endcolumn` of line `endline`
+   * in file `filepath`. For more information, see
+   * [LGTM locations](https://lgtm.com/help/ql/locations).
+   */
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    none()
+  }
+
+  /** Gets a value used to order this node amongst its siblings. */
+  int getOrder() { none() }
+
+  /**
+   * Gets the value of the property of this node, where the name of the property
+   * is `key`.
+   */
+  final string getProperty(string key) {
+    key = "semmle.label" and
+    result = this.toString()
+    or
+    key = "semmle.order" and result = this.getOrder().toString()
+  }
+}
+
+/** An `AstNode` in the output tree. */
+class PrintRegularAstNode extends PrintAstNode, TPrintRegularAstNode {
+  AstNode astNode;
+
+  PrintRegularAstNode() { this = TPrintRegularAstNode(astNode) }
+
+  override string toString() {
+    result = "[" + concat(astNode.getAPrimaryQlClass(), ", ") + "] " + astNode.toString()
+  }
+
+  override PrintAstNode getChild(string edgeName) {
+    exists(AstNode child | shouldPrintAstEdge(astNode, edgeName, child) |
+      result = TPrintRegularAstNode(child)
+    )
+    or
+    // If this AST node is a regexp literal, add the parsed regexp tree as a
+    // child.
+    exists(RETV::RegExpTerm t | t = astNode.(RegExpLiteral).getParsed() |
+      result = TPrintRegExpNode(t) and edgeName = "getParsed"
+    )
+  }
+
+  override int getOrder() {
+    this =
+      rank[result](PrintRegularAstNode p, Location l, File f |
+        l = p.getLocation() and
+        f = l.getFile()
+      |
+        p order by f.getBaseName(), f.getAbsolutePath(), l.getStartLine(), l.getStartColumn()
+      )
+  }
+
+  /** Gets the location of this node. */
+  Location getLocation() { result = astNode.getLocation() }
+
+  override predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    astNode.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
+}
+
+/** A parsed regexp node in the output tree. */
+class PrintRegExpNode extends PrintAstNode, TPrintRegExpNode {
+  RETV::RegExpTerm regexNode;
+
+  PrintRegExpNode() { this = TPrintRegExpNode(regexNode) }
+
+  override string toString() {
+    result = "[" + concat(regexNode.getAPrimaryQlClass(), ", ") + "] " + regexNode.toString()
+  }
+
+  override PrintAstNode getChild(string edgeName) {
+    // Use the child index as an edge name.
+    exists(int i | result = TPrintRegExpNode(regexNode.getChild(i)) and edgeName = i.toString())
+  }
+
+  override int getOrder() { exists(RETV::RegExpTerm p | p.getChild(result) = regexNode) }
+
+  override predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    regexNode.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
 }
 
 /**
