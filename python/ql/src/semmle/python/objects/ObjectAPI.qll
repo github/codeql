@@ -105,6 +105,7 @@ class Value extends TObject {
   final string getName() { result = this.(ObjectInternal).getName() }
 
   /** Holds if this value has the attribute `name` */
+  pragma[nomagic]
   predicate hasAttribute(string name) { this.(ObjectInternal).hasAttribute(name) }
 
   /** Whether this value is absent from the database, but has been inferred to likely exist */
@@ -635,6 +636,7 @@ class ClassValue extends Value {
    * Holds if this class has the attribute `name`, including attributes
    * declared by super classes.
    */
+  pragma[nomagic]
   override predicate hasAttribute(string name) { this.getMro().declares(name) }
 
   /**
