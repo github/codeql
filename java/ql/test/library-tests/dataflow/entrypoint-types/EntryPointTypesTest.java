@@ -23,6 +23,16 @@ public class EntryPointTypesTest {
         }
     }
 
+    static class ParameterizedTestObject<T, K> {
+        public String field6;
+        public T field7;
+        private K field8;
+
+        public K getField8() {
+            return field8;
+        }
+    }
+
     private static void sink(String sink) {}
 
     public static void test(TestObject source) {
@@ -30,5 +40,14 @@ public class EntryPointTypesTest {
         sink(source.getField2()); // $hasTaintFlow
         sink(source.getField3().field4); // $hasTaintFlow
         sink(source.getField3().getField5()); // $hasTaintFlow
+    }
+
+    public static void testParameterized(
+            ParameterizedTestObject<String, AnotherTestObject> source) {
+        sink(source.field6); // $hasTaintFlow
+        sink(source.getField7().field1); // $hasTaintFlow
+        sink(source.getField7().getField2()); // $hasTaintFlow
+        sink(source.getField8().field4); // $hasTaintFlow
+        sink(source.getField8().getField5()); // $hasTaintFlow
     }
 }
