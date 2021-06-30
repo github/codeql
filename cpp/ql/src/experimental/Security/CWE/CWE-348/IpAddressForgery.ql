@@ -1,5 +1,18 @@
+/**
+ * @name IP address spoofing
+ * @description A remote endpoint identifier is read from an HTTP header.
+ *              Attackers can modify the value of the identifier to forge the client IP.
+ * @kind path-problem
+ * @problem.severity error
+ * @precision high
+ * @id cpp/ip-address-spoofing
+ * @tags security
+ *       external/cwe/cwe-348
+ */
+
 import cpp
 import semmle.code.cpp.dataflow.TaintTracking
+import DataFlow::PathGraph
 
 class ForgeableIpAddressRead extends FunctionCall {
   ForgeableIpAddressRead() {
@@ -29,6 +42,6 @@ class ForgeableIpAddressCheck extends TaintTracking::Configuration {
   }
 }
 
-from ForgeableIpAddressCheck forgeableCheck, DataFlow::Node source, DataFlow::Node sink
-where forgeableCheck.hasFlow(source, sink)
-select source, sink
+from ForgeableIpAddressCheck forgeableCheck, DataFlow::PathNode source, DataFlow::PathNode sink
+where forgeableCheck.hasFlowPath(source, sink)
+select sink, source, sink, "Potentially spoofed IP address from $@ used in this check.", source, "here"
