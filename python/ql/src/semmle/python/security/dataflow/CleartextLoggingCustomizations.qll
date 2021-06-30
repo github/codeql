@@ -51,7 +51,7 @@ module CleartextLogging {
   }
 
   /** A piece of data printed, considered as a flow sink. */
-  class PrintedDataAsSink extends Sink, DataFlow::CallCfgNode {
+  class PrintedDataAsSink extends Sink {
     PrintedDataAsSink() {
       this = API::builtin("print").getACall().getArg(_)
       or
