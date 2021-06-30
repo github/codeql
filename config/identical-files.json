@@ -451,14 +451,14 @@
   ],
   "ReDoS Util Python/JS": [
     "javascript/ql/src/semmle/javascript/security/performance/ReDoSUtil.qll",
-    "python/ql/src/semmle/python/regex/ReDoSUtil.qll"
+    "python/ql/src/semmle/python/security/performance/ReDoSUtil.qll"
   ],
   "ReDoS Exponential Python/JS": [
     "javascript/ql/src/semmle/javascript/security/performance/ExponentialBackTracking.qll",
-    "python/ql/src/semmle/python/regex/ExponentialBackTracking.qll"
+    "python/ql/src/semmle/python/security/performance/ExponentialBackTracking.qll"
   ],
   "ReDoS Polynomial Python/JS": [
     "javascript/ql/src/semmle/javascript/security/performance/SuperlinearBackTracking.qll",
-    "python/ql/src/semmle/python/regex/SuperlinearBackTracking.qll"
+    "python/ql/src/semmle/python/security/performance/SuperlinearBackTracking.qll"
   ]
 }

@@ -1,5 +1,5 @@
 import python
-import semmle.python.regex.SuperlinearBackTracking
+import semmle.python.security.performance.SuperlinearBackTracking
 
 from PolynomialBackTrackingTerm t
 where t.getLocation().getFile().getBaseName() = "KnownCVEs.py"

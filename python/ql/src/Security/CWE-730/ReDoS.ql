@@ -13,7 +13,7 @@
  */
 
 import python
-import semmle.python.regex.ExponentialBackTracking
+import semmle.python.security.performance.ExponentialBackTracking
 
 from RegExpTerm t, string pump, State s, string prefixMsg
 where
