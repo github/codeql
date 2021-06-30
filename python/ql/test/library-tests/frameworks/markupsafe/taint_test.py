@@ -8,9 +8,9 @@ def ensure_not_tainted(*args):
     print("ensure_not_tainted")
     for x in args: print(" ", x)
 
-# these contain `{}` so we can use .format
-TAINTED_STRING = '<"TAINTED_STRING" {}>'
-SAFE = "SAFE {}"
+# these contain `{}` so we can use .format, and `%s` so we can use %-style formatting
+TAINTED_STRING = '<"TAINTED_STRING" {} %s>'
+SAFE = "SAFE {} %s"
 
 def test():
     ts = TAINTED_STRING
@@ -36,9 +36,11 @@ def test():
         m_unsafe + SAFE, # $ escapeInput=SAFE escapeKind=html escapeOutput=BinaryExpr MISSING: tainted
         SAFE + m_unsafe, # $ escapeInput=SAFE escapeKind=html escapeOutput=BinaryExpr MISSING: tainted
         m_unsafe.format(SAFE), # $ escapeInput=SAFE escapeKind=html escapeOutput=m_unsafe.format(..) MISSING: tainted
+        m_unsafe % SAFE, # $ tainted MISSING: escapeInput=ts escapeKind=html escapeOutput=BinaryExpr
         m_unsafe + ts, # $ escapeInput=ts escapeKind=html escapeOutput=BinaryExpr MISSING: tainted
 
         m_safe.format(m_unsafe), # $ tainted
+        m_safe % m_unsafe, # $ tainted
 
         escape(ts).unescape(), # $ escapeInput=ts escapeKind=html escapeOutput=escape(..) MISSING: tainted
         escape_silent(ts).unescape(), # $ escapeInput=ts escapeKind=html escapeOutput=escape_silent(..) MISSING: tainted
@@ -54,6 +56,7 @@ def test():
         m_safe + ts, # $ escapeInput=ts escapeKind=html escapeOutput=BinaryExpr
         ts + m_safe, # $ escapeInput=ts escapeKind=html escapeOutput=BinaryExpr
         m_safe.format(ts), # $ escapeInput=ts escapeKind=html escapeOutput=m_safe.format(..)
+        m_safe % ts, # $ SPURIOUS: tainted MISSING: escapeInput=ts escapeKind=html escapeOutput=BinaryExpr
 
         escape(ts) + ts, # $ escapeInput=ts escapeKind=html escapeOutput=BinaryExpr escapeOutput=escape(..)
         escape_silent(ts) + ts, # $ escapeInput=ts escapeKind=html escapeOutput=BinaryExpr escapeOutput=escape_silent(..)
