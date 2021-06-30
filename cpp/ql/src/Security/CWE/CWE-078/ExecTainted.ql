@@ -31,6 +31,12 @@ Expr sinkAsArgumentIndirection(DataFlow::Node sink) {
         .getUnconvertedResultExpression()
 }
 
+/**
+ * Holds if `fst` is a string that is used in a format or concatenation function resulting in `snd`,
+ * and is *not* placed at the start of the resulting string. This indicates that the author did not
+ * expect `fst` to control what program is run if the resulting string is eventually interpreted as
+ * a command line, for example as an argument to `system`.
+ */
 predicate interestingConcatenation(DataFlow::Node fst, DataFlow::Node snd) {
   exists(FormattingFunctionCall call, int index, FormatLiteral literal |
     sinkAsArgumentIndirection(fst) = call.getConversionArgument(index) and
