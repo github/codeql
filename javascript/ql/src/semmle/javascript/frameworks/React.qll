@@ -777,6 +777,8 @@ private DataFlow::SourceNode higherOrderComponentBuilder() {
   or
   result = DataFlow::moduleMember("redux-form", "reduxForm").getACall()
   or
+  result = DataFlow::moduleMember("recompose", _).getACall()
+  or
   result = reactRouterDom().getAPropertyRead("withRouter")
   or
   exists(FunctionCompositionCall compose |
