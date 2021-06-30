@@ -1,0 +1,10 @@
+edges
+| IpAddressSpoofing.c:5:23:5:28 | call to getenv | IpAddressSpoofing.c:6:9:6:10 | ip |
+| IpAddressSpoofing.c:5:23:5:28 | call to getenv | IpAddressSpoofing.c:7:16:7:17 | ip |
+nodes
+| IpAddressSpoofing.c:5:23:5:28 | call to getenv | semmle.label | call to getenv |
+| IpAddressSpoofing.c:6:9:6:10 | ip | semmle.label | ip |
+| IpAddressSpoofing.c:7:16:7:17 | ip | semmle.label | ip |
+#select
+| IpAddressSpoofing.c:6:9:6:10 | ip | IpAddressSpoofing.c:5:23:5:28 | call to getenv | IpAddressSpoofing.c:6:9:6:10 | ip | Potentially spoofed IP address from $@ used in this check. | IpAddressSpoofing.c:5:23:5:28 | call to getenv | here |
+| IpAddressSpoofing.c:7:16:7:17 | ip | IpAddressSpoofing.c:5:23:5:28 | call to getenv | IpAddressSpoofing.c:7:16:7:17 | ip | Potentially spoofed IP address from $@ used in this check. | IpAddressSpoofing.c:5:23:5:28 | call to getenv | here |
