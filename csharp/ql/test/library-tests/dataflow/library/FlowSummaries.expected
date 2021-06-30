@@ -1217,15 +1217,15 @@
 | System.IO.UnmanagedMemoryStreamWrapper.ToArray() | argument -1 -> return (normal) | false |
 | System.IO.UnmanagedMemoryStreamWrapper.Write(Byte[], int, int) | argument 0 -> argument -1 | false |
 | System.IO.UnmanagedMemoryStreamWrapper.WriteAsync(Byte[], int, int, CancellationToken) | argument 0 -> argument -1 | false |
-| System.Int32.Parse(ReadOnlySpan<Char>, NumberStyles, IFormatProvider) | argument 0 -> return (normal) | false |
+| System.Int32.Parse(ReadOnlySpan<Char>, NumberStyles, IFormatProvider) | element of argument 0 -> return (normal) | false |
 | System.Int32.Parse(string) | argument 0 -> return (normal) | false |
 | System.Int32.Parse(string, IFormatProvider) | argument 0 -> return (normal) | false |
 | System.Int32.Parse(string, NumberStyles) | argument 0 -> return (normal) | false |
 | System.Int32.Parse(string, NumberStyles, IFormatProvider) | argument 0 -> return (normal) | false |
-| System.Int32.TryParse(ReadOnlySpan<Char>, NumberStyles, IFormatProvider, out int) | argument 0 -> return (normal) | false |
 | System.Int32.TryParse(ReadOnlySpan<Char>, NumberStyles, IFormatProvider, out int) | element of argument 0 -> argument 3 | false |
-| System.Int32.TryParse(ReadOnlySpan<Char>, out int) | argument 0 -> return (normal) | false |
+| System.Int32.TryParse(ReadOnlySpan<Char>, NumberStyles, IFormatProvider, out int) | element of argument 0 -> return (normal) | false |
 | System.Int32.TryParse(ReadOnlySpan<Char>, out int) | element of argument 0 -> argument 1 | false |
+| System.Int32.TryParse(ReadOnlySpan<Char>, out int) | element of argument 0 -> return (normal) | false |
 | System.Int32.TryParse(string, NumberStyles, IFormatProvider, out int) | argument 0 -> argument 3 | false |
 | System.Int32.TryParse(string, NumberStyles, IFormatProvider, out int) | argument 0 -> return (normal) | false |
 | System.Int32.TryParse(string, out int) | argument 0 -> argument 1 | false |
