@@ -43,10 +43,10 @@ public class EntryPointTypesTest {
     }
 
     public static void testParameterized(
-            ParameterizedTestObject<String, AnotherTestObject> source) {
+            ParameterizedTestObject<TestObject, AnotherTestObject> source) {
         sink(source.field6); // $hasTaintFlow
-        sink(source.getField7().field1); // $hasTaintFlow
-        sink(source.getField7().getField2()); // $hasTaintFlow
+        sink(source.field7.field1); // $hasTaintFlow
+        sink(source.field7.getField2()); // $hasTaintFlow
         sink(source.getField8().field4); // $hasTaintFlow
         sink(source.getField8().getField5()); // $hasTaintFlow
     }
