@@ -129,6 +129,38 @@ class SqlExecutionTest extends InlineExpectationsTest {
   }
 }
 
+class EscapingTest extends InlineExpectationsTest {
+  EscapingTest() { this = "EscapingTest" }
+
+  override string getARelevantTag() { result in ["escapeInput", "escapeOutput", "escapeKind"] }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(Escaping esc |
+      exists(DataFlow::Node data |
+        location = data.getLocation() and
+        element = data.toString() and
+        value = prettyNodeForInlineTest(data) and
+        (
+          data = esc.getAnInput() and
+          tag = "escapeInput"
+          or
+          data = esc.getOutput() and
+          tag = "escapeOutput"
+        )
+      )
+      or
+      exists(string format |
+        location = esc.getLocation() and
+        element = format and
+        value = format and
+        format = esc.getKind() and
+        tag = "escapeKind"
+      )
+    )
+  }
+}
+
 class HttpServerRouteSetupTest extends InlineExpectationsTest {
   HttpServerRouteSetupTest() { this = "HttpServerRouteSetupTest" }
 

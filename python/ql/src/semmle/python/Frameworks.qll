@@ -16,6 +16,7 @@ private import semmle.python.frameworks.Flask
 private import semmle.python.frameworks.Idna
 private import semmle.python.frameworks.Invoke
 private import semmle.python.frameworks.Jmespath
+private import semmle.python.frameworks.MarkupSafe
 private import semmle.python.frameworks.Multidict
 private import semmle.python.frameworks.Mysql
 private import semmle.python.frameworks.MySQLdb

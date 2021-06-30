@@ -293,6 +293,78 @@ module SqlExecution {
   }
 }
 
+/**
+ * A data-flow node that escapes meta-characters, which could be used to prevent
+ * injection attacks.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `Escaping::Range` instead.
+ */
+class Escaping extends DataFlow::Node {
+  Escaping::Range range;
+
+  Escaping() {
+    this = range and
+    // escapes that don't have _both_ input/output defined are not valid
+    exists(range.getAnInput()) and
+    exists(range.getOutput())
+  }
+
+  /** Gets an input that will be escaped. */
+  DataFlow::Node getAnInput() { result = range.getAnInput() }
+
+  /** Gets the output that contains the escaped data. */
+  DataFlow::Node getOutput() { result = range.getOutput() }
+
+  /**
+   * Gets the context that this function escapes for, such as `html`, or `url`.
+   */
+  string getKind() { result = range.getKind() }
+}
+
+/** Provides a class for modeling new escaping APIs. */
+module Escaping {
+  /**
+   * A data-flow node that escapes meta-characters, which could be used to prevent
+   * injection attacks.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `Escaping` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets an input that will be escaped. */
+    abstract DataFlow::Node getAnInput();
+
+    /** Gets the output that contains the escaped data. */
+    abstract DataFlow::Node getOutput();
+
+    /**
+     * Gets the context that this function escapes for.
+     *
+     * While kinds are represented as strings, this should not be relied upon. Use the
+     * predicates in  the `Escaping` module, such as `getHtmlKind`.
+     */
+    abstract string getKind();
+  }
+
+  /** Gets the escape-kind for escaping a string so it can safely be included in HTML. */
+  string getHtmlKind() { result = "html" }
+  // TODO: If adding an XML kind, update the modeling of the `MarkupSafe` PyPI package.
+  //
+  // Technically it claims to escape for both HTML and XML, but for now we don't have
+  // anything that relies on XML escaping, so I'm going to defer deciding whether they
+  // should be the same kind, or whether they deserve to be treated differently.
+}
+
+/**
+ * An escape of a string so it can be safely included in
+ * the body of an HTML element, for example, replacing `{}` in
+ * `<p>{}</p>`.
+ */
+class HtmlEscaping extends Escaping {
+  HtmlEscaping() { range.getKind() = Escaping::getHtmlKind() }
+}
+
 /** Provides classes for modeling HTTP-related APIs. */
 module HTTP {
   import semmle.python.web.HttpConstants
