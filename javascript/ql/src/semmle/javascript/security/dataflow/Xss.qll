@@ -331,7 +331,7 @@ module DomBasedXss {
    * A write to the `template` option of a Vue instance, viewed as an XSS sink.
    */
   class VueTemplateSink extends DomBasedXss::Sink {
-    VueTemplateSink() { this = any(Vue::Instance i).getTemplate() }
+    VueTemplateSink() { this = any(Vue::Instance i).getOption("template") }
   }
 
   /**
