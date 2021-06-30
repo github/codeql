@@ -266,7 +266,10 @@ ParameterNode parameterNode(Parameter p) { result.getParameter() = p }
 
 /** A data flow node that represents a call argument. */
 class ArgumentNode extends Node {
-  ArgumentNode() { this = any(DataFlowCall c).getArg(_) }
+  ArgumentNode() {
+    this = any(DataFlowCall c).getArg(_) and
+    this.(CfgNode).getNode() = any(CallNode c).getArg(_)
+  }
 
   /** Holds if this argument occurs at the given position in the given call. */
   predicate argumentOf(DataFlowCall call, int pos) { this = call.getArg(pos) }
