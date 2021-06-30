@@ -7,6 +7,7 @@
  */
 
 import python
+import semmle.python.RegexTreeView
 
 private newtype TPrintAstConfiguration = MkPrintAstConfiguration()
 
@@ -53,6 +54,9 @@ private newtype TPrintAstNode =
     not list = any(Module mod).getBody() and
     not forall(AstNode child | child = list.getAnItem() | isNotNeeded(child)) and
     exists(list.getAnItem())
+  } or
+  TRegExpTermNode(RegExpTerm term) {
+    exists(StrConst str | term.getRootTerm() = getParsedRegExp(str) and shouldPrint(str, _))
   }
 
 /**
@@ -420,6 +424,42 @@ class ParameterNode extends AstElementNode {
 }
 
 /**
+ * A print node for a `StrConst`.
+ *
+ * The string has a child, if the child is used as a regular expression,
+ * which is the root of the regular expression.
+ */
+class StrConstNode extends AstElementNode {
+  override StrConst element;
+
+  override PrintAstNode getChild(int childIndex) {
+    childIndex = 0 and result.(RegExpTermNode).getTerm() = getParsedRegExp(element)
+  }
+}
+
+/**
+ * A print node for a regular expression term.
+ */
+class RegExpTermNode extends TRegExpTermNode, PrintAstNode {
+  RegExpTerm term;
+
+  RegExpTermNode() { this = TRegExpTermNode(term) }
+
+  /** Gets the `RegExpTerm` for this node. */
+  RegExpTerm getTerm() { result = term }
+
+  override PrintAstNode getChild(int childIndex) {
+    result.(RegExpTermNode).getTerm() = term.getChild(childIndex)
+  }
+
+  override string toString() {
+    result = "[" + strictconcat(term.getPrimaryQLClass(), " | ") + "] " + term.toString()
+  }
+
+  override Location getLocation() { result = term.getLocation() }
+}
+
+/**
  * Gets the `i`th child from `node` ordered by location.
  */
 private AstNode getChild(AstNode node, int i) {
@@ -447,7 +487,7 @@ private module PrettyPrinting {
   string getQlClass(AstNode a) {
     shouldPrint(a, _) and
     (
-      not exists(getQlCustomClass(a)) and result = a.toString()
+      not exists(getQlCustomClass(a)) and result = strictconcat(a.toString(), " | ")
       or
       result = strictconcat(getQlCustomClass(a), " | ")
     )
