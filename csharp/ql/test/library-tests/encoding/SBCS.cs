@@ -1,5 +1,3 @@
-
-
 class SBCS
 {
     string sbcs = "’";

@@ -168,5 +168,3 @@ class Test
         public int Prop { get { return 0; } set { Add(value); } }
     }
 }
-
-

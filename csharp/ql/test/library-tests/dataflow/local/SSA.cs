@@ -180,5 +180,3 @@ public class Ssa
         Check(ssaSink5);
     }
 }
-
-

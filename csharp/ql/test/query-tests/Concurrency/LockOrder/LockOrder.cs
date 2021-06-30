@@ -62,5 +62,3 @@ class LambdaTest
         lock(b) lock_a();
     }
 }
-
-

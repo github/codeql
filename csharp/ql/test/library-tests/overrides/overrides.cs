@@ -287,5 +287,3 @@ namespace overrides
         class A11 : A10, I6 { }
     }
 }
-
-

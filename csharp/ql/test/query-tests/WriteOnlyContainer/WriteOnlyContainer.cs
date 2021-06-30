@@ -308,5 +308,3 @@ public class ContainerTest
         Out(out var strings); // BAD: but allow for now (only C# 7 allows discards)
     }
 }
-
-

@@ -14,5 +14,3 @@ namespace TestAssemblies
         Locations.Test l = new Locations.Test();
     }
 }
-
-

@@ -1,6 +1,3 @@
-
-
-
 using NHibernate;
 using NHibernate.SqlCommand;
 

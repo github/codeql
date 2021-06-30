@@ -73,5 +73,3 @@ class C6 : Component
         }
     }
 }
-
-

@@ -121,5 +121,3 @@ class FormatInvalid
 
     System.IO.StringWriter sw;
 }
-
-

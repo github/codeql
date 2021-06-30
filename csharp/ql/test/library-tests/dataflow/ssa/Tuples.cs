@@ -35,5 +35,3 @@ class Tuples
 
     static void Use<T>(T u) { }
 }
-
-

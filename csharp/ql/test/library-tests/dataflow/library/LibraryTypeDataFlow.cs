@@ -1,4 +1,3 @@
-
 using System;
 using System.IO;
 using System.Text;
@@ -95,4 +94,3 @@ public class LibraryTypeDataFlow
         public string AString { get; set; }
     }
 }
-

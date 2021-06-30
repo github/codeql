@@ -13,5 +13,3 @@ public class InsecureRandomnessTest
         Random r = new Random();
     }
 }
-
-

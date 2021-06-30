@@ -40,5 +40,3 @@ class Test
 
     static List<Del> actions;
 }
-
-

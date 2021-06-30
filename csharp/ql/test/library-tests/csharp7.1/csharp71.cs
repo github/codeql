@@ -1,5 +1,3 @@
-
-
 class DefaultLiterals
 {
     void f()

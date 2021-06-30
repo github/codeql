@@ -56,5 +56,3 @@ public class HardCodedCredentialsTest
         Moq.Language.TestReturn.Returns(() => mockUser);
     }
 }
-
-

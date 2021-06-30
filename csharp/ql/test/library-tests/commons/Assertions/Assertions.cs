@@ -51,5 +51,3 @@ class Assertions
         Contract.Assume(s != null, "s is non-null");
     }
 }
-
-

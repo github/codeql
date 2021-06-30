@@ -1,5 +1,3 @@
-
-
 class ObjectComparisonTest
 {
     UnknownType unknownValue;

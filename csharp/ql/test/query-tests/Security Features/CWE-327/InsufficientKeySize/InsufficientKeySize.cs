@@ -28,5 +28,3 @@ public class InsufficientKeySize
         RSACryptoServiceProvider rsaGood2 = new RSACryptoServiceProvider(2048);
     }
 }
-
-

@@ -60,5 +60,3 @@ class ToStringWithTypes
 
     public event Delegate<string> Event;
 }
-
-

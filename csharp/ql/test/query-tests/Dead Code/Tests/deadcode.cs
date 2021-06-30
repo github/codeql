@@ -92,5 +92,3 @@ public class VisualStudioTests
     [Microsoft.VisualStudio.TestTools.UnitTesting.TestInitialize]
     public void Setup() { } // not dead
 }
-
-

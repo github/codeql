@@ -1,4 +1,3 @@
-
 using System;
 
 class PersistentCookie

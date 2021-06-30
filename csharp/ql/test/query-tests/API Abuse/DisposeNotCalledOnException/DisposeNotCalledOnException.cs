@@ -1,5 +1,3 @@
-
-
 using System;
 using System.Data.SqlClient;
 
@@ -87,5 +85,3 @@ class Test
         return sc == null ? throw new Exception() : sc;
     }
 }
-
-

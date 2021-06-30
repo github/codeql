@@ -1,7 +1,5 @@
 /*
   Global statements are not allowed in 'library' target.
-
-
 */
 
 using System;

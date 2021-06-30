@@ -146,5 +146,3 @@ class ExitMethods
         Console.WriteLine("dead");
     }
 }
-
-

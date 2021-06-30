@@ -69,5 +69,3 @@ public class Klass
         string val = dict["foo"];
     }
 }
-
-

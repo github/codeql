@@ -68,5 +68,3 @@ class Queries
 
     class C : List<int> { }
 }
-
-

@@ -74,5 +74,3 @@ public class InsecureRandomness
         return result;
     }
 }
-
-

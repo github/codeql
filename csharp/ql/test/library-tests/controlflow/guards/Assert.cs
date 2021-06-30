@@ -94,5 +94,3 @@ class AssertTests
         return b1 && !b2;
     }
 }
-
-

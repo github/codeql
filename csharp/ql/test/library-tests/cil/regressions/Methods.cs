@@ -4,8 +4,6 @@
  * 2 constructed methods of F<T>.
  */
 
-
-
 namespace Methods
 {
     public class Class1

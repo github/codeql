@@ -1,5 +1,3 @@
-
-
 class C1
 {
     public int P1 => 0;

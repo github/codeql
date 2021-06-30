@@ -1,5 +1,3 @@
-
-
 class C1
 {
     void QualifierAccess()

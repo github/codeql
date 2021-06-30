@@ -54,5 +54,3 @@ namespace Semmle
         }
     }
 }
-
-

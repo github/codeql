@@ -1,6 +1,4 @@
 /*
-
-
   Class is defined in three places, and requires the alias to disambiguate them.
 */
 

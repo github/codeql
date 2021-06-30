@@ -1,5 +1,3 @@
-
-
 using Microsoft.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 using System;

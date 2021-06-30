@@ -26,5 +26,3 @@ class UsingStmt
         o3.DoSomething();
     }
 }
-
-
