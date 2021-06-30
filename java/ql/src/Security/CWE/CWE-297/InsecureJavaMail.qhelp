@@ -20,8 +20,16 @@ credentials are sent in an SSL session without certificate validation. In the 'G
 
   <references>
     <li>
+      Jakarta Mail:
+      <a href="https://eclipse-ee4j.github.io/mail/docs/SSLNOTES.txt">SSL Notes</a>.
+    </li>
+    <li>
+      Apache Commons:
+      <a href="https://commons.apache.org/proper/commons-email/userguide.html#Security">Email security</a>.
+    </li>
+    <li>
       Log4j2:
-      <a href="https://issues.apache.org/jira/browse/LOG4J2-2819">Add support for specifying an SSL configuration for SmtpAppender (CVE-2020-9488)</a>
+      <a href="https://issues.apache.org/jira/browse/LOG4J2-2819">Add support for specifying an SSL configuration for SmtpAppender (CVE-2020-9488)</a>.
     </li>
   </references>
 </qhelp>
