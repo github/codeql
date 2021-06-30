@@ -71,6 +71,16 @@ private module MarkupSafeModel {
       StringFormat() { this.calls(instance(), "format") }
     }
 
+    /** A %-style string format with `markupsafe.Markup` as the format string. */
+    class PercentStringFormat extends Markup::InstanceSource, DataFlow::CfgNode {
+      override BinaryExprNode node;
+
+      PercentStringFormat() {
+        node.getOp() instanceof Mod and
+        instance().asCfgNode() = node.getLeft()
+      }
+    }
+
     /** Taint propagation for `markupsafe.Markup`. */
     class AddtionalTaintSteps extends TaintTracking::AdditionalTaintStep {
       override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
@@ -122,6 +132,17 @@ private module MarkupSafeModel {
   private class MarkupEscapeFromStringFormat extends MarkupSafeEscape, Markup::StringFormat {
     override DataFlow::Node getAnInput() {
       result in [this.getArg(_), this.getArgByName(_)] and
+      not result = Markup::instance()
+    }
+
+    override DataFlow::Node getOutput() { result = this }
+  }
+
+  /** A escape from %-style string format with `markupsafe.Markup` as the format string. */
+  private class MarkupEscapeFromPercentStringFormat extends MarkupSafeEscape,
+    Markup::PercentStringFormat {
+    override DataFlow::Node getAnInput() {
+      result.asCfgNode() = node.getRight() and
       not result = Markup::instance()
     }
 

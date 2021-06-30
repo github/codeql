@@ -36,7 +36,7 @@ def test():
         m_unsafe + SAFE, # $ escapeInput=SAFE escapeKind=html escapeOutput=BinaryExpr MISSING: tainted
         SAFE + m_unsafe, # $ escapeInput=SAFE escapeKind=html escapeOutput=BinaryExpr MISSING: tainted
         m_unsafe.format(SAFE), # $ escapeInput=SAFE escapeKind=html escapeOutput=m_unsafe.format(..) MISSING: tainted
-        m_unsafe % SAFE, # $ tainted MISSING: escapeInput=ts escapeKind=html escapeOutput=BinaryExpr
+        m_unsafe % SAFE, # $ escapeInput=SAFE escapeKind=html escapeOutput=BinaryExpr MISSING: tainted
         m_unsafe + ts, # $ escapeInput=ts escapeKind=html escapeOutput=BinaryExpr MISSING: tainted
 
         m_safe.format(m_unsafe), # $ tainted
@@ -56,7 +56,7 @@ def test():
         m_safe + ts, # $ escapeInput=ts escapeKind=html escapeOutput=BinaryExpr
         ts + m_safe, # $ escapeInput=ts escapeKind=html escapeOutput=BinaryExpr
         m_safe.format(ts), # $ escapeInput=ts escapeKind=html escapeOutput=m_safe.format(..)
-        m_safe % ts, # $ SPURIOUS: tainted MISSING: escapeInput=ts escapeKind=html escapeOutput=BinaryExpr
+        m_safe % ts, # $ escapeInput=ts escapeKind=html escapeOutput=BinaryExpr
 
         escape(ts) + ts, # $ escapeInput=ts escapeKind=html escapeOutput=BinaryExpr escapeOutput=escape(..)
         escape_silent(ts) + ts, # $ escapeInput=ts escapeKind=html escapeOutput=BinaryExpr escapeOutput=escape_silent(..)
