@@ -134,8 +134,7 @@ for lang in settings.languages:
     db = "empty-" + lang
     ql_output = output_ql_csv.format(language=lang)
     utils.create_empty_database(lang, config.ext, db)
-    utils.upgrade_codeql_database(db, query_prefix)
-    utils.run_codeql_query(config.ql_path, db, ql_output)
+    utils.run_codeql_query(config.ql_path, db, ql_output, query_prefix)
     shutil.rmtree(db)
 
     packages = pack.PackageCollection(ql_output)

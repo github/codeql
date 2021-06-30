@@ -48,8 +48,7 @@ def get_packages(lang, query, search_path):
         if os.path.isdir(db):
             shutil.rmtree(db)
         utils.create_empty_database(lang, ".java", db)
-        utils.upgrade_codeql_database(db, search_path)
-        utils.run_codeql_query(query, db, ql_output)
+        utils.run_codeql_query(query, db, ql_output, search_path)
 
         return pack.PackageCollection(ql_output)
     except:
