@@ -1,13 +1,26 @@
 import re
 
-re.compile(r'[]-[]') #$ charRange=1:2-3:4
+
+re.compile(r'[A-Z]') #$ charRange=1:2-3:4
+
+try:
+    re.compile(r'[]-[]') #$ SPURIOUS: charRange=1:2-3:4
+    raise Exception("this should not be reached")
+except re.error:
+    pass
+
 re.compile(r'[---]') #$ charRange=1:2-3:4
 re.compile(r'[\---]') #$ charRange=1:3-4:5
 re.compile(r'[--\-]') #$ charRange=1:2-3:5
 re.compile(r'[\--\-]') #$ charRange=1:3-4:6
 re.compile(r'[0-9-A-Z]') #$ charRange=1:2-3:4 charRange=5:6-7:8
 re.compile(r'[0\-9-A-Z]') #$ charRange=4:5-6:7
-re.compile(r'[0--9-A-Z]') #$ charRange=1:2-3:4 charRange=4:5-6:7
+
+try:
+    re.compile(r'[0--9-A-Z]') #$ SPURIOUS: charRange=1:2-3:4 charRange=4:5-6:7
+    raise Exception("this should not be reached")
+except re.error:
+    pass
 
 re.compile(r'[^A-Z]') #$ charRange=2:3-4:5
 

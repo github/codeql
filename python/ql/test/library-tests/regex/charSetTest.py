@@ -10,8 +10,18 @@ re.compile("[.][.]") #$ charSet=0:3 charSet=3:6
 re.compile("[[]]") #$ charSet=0:3
 re.compile("[^]]") #$ charSet=0:4
 re.compile("[^-]") #$ charSet=0:4
-re.compile("[]-[]") #$ charSet=0:5
-re.compile("[^]-[]") #$ charSet=0:6
+
+try:
+    re.compile("[]-[]") #$ SPURIOUS: charSet=0:5
+    raise Exception("this should not be reached")
+except re.error:
+    pass
+
+try:
+    re.compile("[^]-[]") #$ SPURIOUS: charSet=0:6
+    raise Exception("this should not be reached")
+except re.error:
+    pass
 
 re.compile("]]][[[[]") #$ charSet=3:8
 
