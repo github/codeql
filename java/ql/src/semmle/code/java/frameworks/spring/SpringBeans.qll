@@ -20,7 +20,7 @@ private class FlowSummaries extends SummaryModelCsv {
         "org.springframework.beans;PropertyValue;false;PropertyValue;(PropertyValue,Object);;Argument[1];MapValue of Argument[-1];value",
         "org.springframework.beans;PropertyValue;false;getName;;;MapKey of Argument[-1];ReturnValue;value",
         "org.springframework.beans;PropertyValue;false;getValue;;;MapValue of Argument[-1];ReturnValue;value",
-        "org.springframework.beans;PropertyValues;true;getPropertyValue;;;MapValue of Element of Argument[-1];ReturnValue;value",
+        "org.springframework.beans;PropertyValues;true;getPropertyValue;;;Element of Argument[-1];ReturnValue;value",
         "org.springframework.beans;PropertyValues;true;getPropertyValues;;;Element of Argument[-1];ArrayElement of ReturnValue;value",
         "org.springframework.beans;MutablePropertyValues;true;add;(String,Object);;Argument[0];MapKey of Element of Argument[-1];value",
         "org.springframework.beans;MutablePropertyValues;true;add;(String,Object);;Argument[-1];ReturnValue;value",
