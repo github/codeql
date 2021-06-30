@@ -71,7 +71,5 @@ namespace Semmle.Extraction.CSharp.Entities
 
             public override Event Create(Context cx, IEventSymbol init) => new Event(cx, init);
         }
-
-        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
     }
 }
