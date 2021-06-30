@@ -479,18 +479,18 @@ class RegExpEscape extends RegExpNormalChar {
     // )
     none()
   }
-
-  /**
-   * Gets int value for the `index`th char in the hex number of the unicode escape.
-   * E.g. for `\u0061` and `index = 2` this returns 96 (the number `6` interpreted as hex).
-   */
-  private int getHexValueFromUnicode(int index) {
-    isUnicode() and
-    exists(string hex, string char | hex = getText().suffix(2) |
-      char = hex.charAt(index) and
-      result = 16.pow(hex.length() - index - 1) * toHex(char)
-    )
-  }
+  // TODO: Enable this once a supporting CLI is released.
+  // /**
+  //  * Gets int value for the `index`th char in the hex number of the unicode escape.
+  //  * E.g. for `\u0061` and `index = 2` this returns 96 (the number `6` interpreted as hex).
+  //  */
+  // private int getHexValueFromUnicode(int index) {
+  //   isUnicode() and
+  //   exists(string hex, string char | hex = getText().suffix(2) |
+  //     char = hex.charAt(index) and
+  //     result = 16.pow(hex.length() - index - 1) * toHex(char)
+  //   )
+  // }
 }
 
 /**
