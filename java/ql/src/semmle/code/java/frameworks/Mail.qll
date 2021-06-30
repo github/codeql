@@ -3,14 +3,14 @@
 import java
 
 /**
- * The class `javax.mail.Session`
+ * The class `javax.mail.Session` or `jakarta.mail.Session`.
  */
 class MailSession extends Class {
-  MailSession() { this.hasQualifiedName("javax.mail", "Session") }
+  MailSession() { this.hasQualifiedName(["javax.mail", "jakarta.mail"], "Session") }
 }
 
 /**
- * The method `getInstance` of the class `javax.mail.Session`
+ * The method `getInstance` of the classes `javax.mail.Session` or `jakarta.mail.Session`.
  */
 class MailSessionGetInstanceMethod extends Method {
   MailSessionGetInstanceMethod() {
@@ -20,7 +20,7 @@ class MailSessionGetInstanceMethod extends Method {
 }
 
 /**
- * A subtype of the class `org.apache.commons.mail.Email`
+ * A subtype of the class `org.apache.commons.mail.Email`.
  */
 class ApacheEmail extends Class {
   ApacheEmail() { this.getASupertype*().hasQualifiedName("org.apache.commons.mail", "Email") }
