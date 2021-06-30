@@ -87,6 +87,7 @@ private module Frameworks {
   private import semmle.code.java.frameworks.spring.SpringHttp
   private import semmle.code.java.frameworks.spring.SpringUtil
   private import semmle.code.java.frameworks.spring.SpringWebClient
+  private import semmle.code.java.frameworks.spring.SpringBeans
   private import semmle.code.java.security.ResponseSplitting
   private import semmle.code.java.security.InformationLeak
   private import semmle.code.java.security.XSS
