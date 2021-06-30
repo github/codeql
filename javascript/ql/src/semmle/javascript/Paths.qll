@@ -719,6 +719,10 @@ module ImportResolution {
         expr.getValue() = this and
         hasExtraSearchRoot(expr, result)
       )
+      or
+      // Absolute paths should be resolved from the root
+      charAt(0) = "/" and
+      not exists(result.getParentContainer())
     }
   }
 }
