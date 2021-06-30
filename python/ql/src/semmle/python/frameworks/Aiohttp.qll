@@ -645,16 +645,14 @@ module AiohttpWebModel {
     DataFlow::Node value;
 
     AiohttpResponseCookieSubscriptWrite() {
-      exists(Assign assign, Subscript subscript |
-        // Since there is no `DataFlow::Node` for the assign (since it's a statement,
-        // and not an expression) there doesn't seem to be any _good_ choice for `this`,
-        // so just picking the whole subscript...
-        this.asExpr() = subscript
+      exists(SubscriptNode subscript |
+        // To give `this` a value, we need to choose between either LHS or RHS,
+        // and just go with the LHS
+        this.asCfgNode() = subscript
       |
-        assign.getATarget() = subscript and
-        subscript.getObject() = aiohttpResponseInstance().getMember("cookies").getAUse().asExpr() and
-        index.asExpr() = subscript.getIndex() and
-        value.asExpr() = assign.getValue()
+        subscript.getObject() = aiohttpResponseInstance().getMember("cookies").getAUse().asCfgNode() and
+        value.asCfgNode() = subscript.(DefinitionNode).getValue() and
+        index.asCfgNode() = subscript.getIndex()
       )
     }
 

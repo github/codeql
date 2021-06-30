@@ -1412,18 +1412,20 @@ private module PrivateDjango {
           DataFlow::Node value;
 
           DjangoResponseCookieSubscriptWrite() {
-            exists(Assign assign, Subscript subscript, DataFlow::AttrRead cookieLookup |
-              // Since there is no `DataFlow::Node` for the assign (since it's a statement,
-              // and not an expression) there doesn't seem to be any _good_ choice for `this`,
-              // so just picking the whole subscript...
-              this.asExpr() = subscript
+            exists(SubscriptNode subscript, DataFlow::AttrRead cookieLookup |
+              // To give `this` a value, we need to choose between either LHS or RHS,
+              // and just go with the LHS
+              this.asCfgNode() = subscript
             |
               cookieLookup.getAttributeName() = "cookies" and
               cookieLookup.getObject() = django::http::response::HttpResponse::instance() and
-              assign.getATarget() = subscript and
-              cookieLookup.flowsTo(DataFlow::exprNode(subscript.getObject())) and
-              index.asExpr() = subscript.getIndex() and
-              value.asExpr() = assign.getValue()
+              exists(DataFlow::Node subscriptObj |
+                subscriptObj.asCfgNode() = subscript.getObject()
+              |
+                cookieLookup.flowsTo(subscriptObj)
+              ) and
+              value.asCfgNode() = subscript.(DefinitionNode).getValue() and
+              index.asCfgNode() = subscript.getIndex()
             )
           }
 
