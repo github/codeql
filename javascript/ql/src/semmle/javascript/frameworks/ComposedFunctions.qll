@@ -88,7 +88,9 @@ module FunctionCompositionCall {
     RightToLeft() {
       this = DataFlow::moduleImport(["compose-function"]).getACall()
       or
-      this = DataFlow::moduleMember(["redux", "ramda", "@reduxjs/toolkit", "recompose"], "compose").getACall()
+      this =
+        DataFlow::moduleMember(["redux", "ramda", "@reduxjs/toolkit", "recompose"], "compose")
+            .getACall()
       or
       this = LodashUnderscore::member("flowRight").getACall()
     }
