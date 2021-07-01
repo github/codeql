@@ -359,6 +359,11 @@ class File extends Container, @file {
 }
 
 /**
+ * Holds if any file was compiled by a Microsoft compiler.
+ */
+cached predicate anyFileCompiledAsMicrosoft() { any(File f).compiledAsMicrosoft() }
+
+/**
  * A C/C++ header file, as determined (mainly) by file extension.
  *
  * For the related notion of whether a file is included anywhere (using a

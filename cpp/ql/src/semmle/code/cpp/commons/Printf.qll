@@ -306,7 +306,7 @@ class FormatLiteral extends Literal {
    * Holds if this `FormatLiteral` is in a context that supports
    * Microsoft rules and extensions.
    */
-  predicate isMicrosoft() { any(File f).compiledAsMicrosoft() }
+  predicate isMicrosoft() { anyFileCompiledAsMicrosoft() }
 
   /**
    * Gets the format string, with '%%' and '%@' replaced by '_' (to avoid processing
