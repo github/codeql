@@ -33,6 +33,14 @@ public class EntryPointTypesTest {
         }
     }
 
+    static class ChildObject extends ParameterizedTestObject<TestObject, Object> {
+        public Object field9;
+    }
+
+    class UnrelatedObject {
+        public String safeField;
+    }
+
     private static void sink(String sink) {}
 
     public static void test(TestObject source) {
@@ -49,5 +57,17 @@ public class EntryPointTypesTest {
         sink(source.field7.getField2()); // $hasTaintFlow
         sink(source.getField8().field4); // $hasTaintFlow
         sink(source.getField8().getField5()); // $hasTaintFlow
+    }
+
+    public static void testSubtype(ParameterizedTestObject<?, ?> source) {
+        ChildObject subtypeSource = (ChildObject) source;
+        sink(subtypeSource.field6); // $hasTaintFlow
+        sink(subtypeSource.field7.field1); // $hasTaintFlow
+        sink(subtypeSource.field7.getField2()); // $hasTaintFlow
+        sink((String) subtypeSource.getField8()); // $hasTaintFlow
+        sink((String) subtypeSource.field9); // $hasTaintFlow
+        // Ensure that we are not tainting every subclass of Object
+        UnrelatedObject unrelated = (UnrelatedObject) subtypeSource.getField8();
+        sink(unrelated.safeField); // Safe
     }
 }
