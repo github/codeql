@@ -93,8 +93,6 @@ private module SensitiveDataModeling {
   /**
    * Gets a reference to a string constant that, if used as the key in a lookup,
    * indicates the presence of sensitive data with `classification`.
-   *
-   * Also see `extraStepForCalls`.
    */
   DataFlow::Node sensitiveLookupStringConst(SensitiveDataClassification classification) {
     sensitiveLookupStringConst(DataFlow::TypeTracker::end(), classification).flowsTo(result)
@@ -118,6 +116,8 @@ private module SensitiveDataModeling {
   /**
    * Tracks any modeled source of sensitive data (with any classification),
    * to limit the scope of `extraStepForCalls`. See it's QLDoc for more context.
+   *
+   * Also see `extraStepForCalls`.
    */
   private DataFlow::LocalSourceNode possibleSensitiveCallable(DataFlow::TypeTracker t) {
     t.start() and
@@ -129,6 +129,8 @@ private module SensitiveDataModeling {
   /**
    * Tracks any modeled source of sensitive data (with any classification),
    * to limit the scope of `extraStepForCalls`. See it's QLDoc for more context.
+   *
+   * Also see `extraStepForCalls`.
    */
   private DataFlow::Node possibleSensitiveCallable() {
     possibleSensitiveCallable(DataFlow::TypeTracker::end()).flowsTo(result)
