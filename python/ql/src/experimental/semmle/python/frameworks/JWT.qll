@@ -78,7 +78,7 @@ private module JWT {
       or
       // jwt.decode(token, verify=False)
       not isFalse(this.getArgByName("verify")) and
-      // not -> jwt.decode(token, key, options={"verify_signature": False})
+      // jwt.decode(token, key, options={"verify_signature": False})
       not exists(KeyValuePair optionsDict, NameConstant falseName |
         falseName.getId() = "False" and
         optionsDict = this.getArgByName("options").asExpr().(Dict).getItems().getAnItem() and
