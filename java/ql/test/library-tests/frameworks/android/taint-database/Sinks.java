@@ -85,7 +85,7 @@ public class Sinks {
 	public static void query(SQLiteDatabase target) {
 		boolean distinct = taint();
 		String table = taint(); // $taintReachesSink
-		String[] columns = {taint()}; // $ MISSING: taintReachesSink
+		String[] columns = {taint()}; // $taintReachesSink
 		String selection = taint(); // $taintReachesSink
 		String[] selectionArgs = {taint()};
 		String groupBy = taint(); // $taintReachesSink
@@ -98,7 +98,7 @@ public class Sinks {
 	public static void query2(SQLiteDatabase target) {
 		boolean distinct = taint();
 		String table = taint(); // $taintReachesSink
-		String[] columns = {taint()}; // $ MISSING: taintReachesSink
+		String[] columns = {taint()}; // $taintReachesSink
 		String selection = taint(); // $taintReachesSink
 		String[] selectionArgs = {taint()};
 		String groupBy = taint(); // $taintReachesSink
@@ -123,7 +123,7 @@ public class Sinks {
 
 	public static void query4(SQLiteDatabase target) {
 		String table = taint(); // $taintReachesSink
-		String[] columns = {taint()}; // $ MISSING: taintReachesSink
+		String[] columns = {taint()}; // $taintReachesSink
 		String selection = taint(); // $taintReachesSink
 		String[] selectionArgs = {taint()};
 		String groupBy = taint(); // $taintReachesSink
@@ -136,7 +136,7 @@ public class Sinks {
 	public static void query(MySQLiteQueryBuilder target) {
 		target = taint();  // $taintReachesSink
 		SQLiteDatabase db = taint();
-		String[] projectionIn = {taint()}; // $ MISSING: taintReachesSink
+		String[] projectionIn = {taint()}; // $taintReachesSink
 		String selection = taint(); // $taintReachesSink
 		String[] selectionArgs = {taint()};
 		String groupBy = taint(); // $taintReachesSink
@@ -148,7 +148,7 @@ public class Sinks {
 	public static void query2(MySQLiteQueryBuilder target) {
 		target = taint(); // $taintReachesSink
 		SQLiteDatabase db = taint();
-		String[] projectionIn = {taint()}; // $ MISSING: taintReachesSink
+		String[] projectionIn = {taint()}; // $taintReachesSink
 		String selection = taint(); // $taintReachesSink
 		String[] selectionArgs = {taint()};
 		String groupBy = taint(); // $taintReachesSink
@@ -161,7 +161,7 @@ public class Sinks {
 	public static void query3(MySQLiteQueryBuilder target) {
 		target = taint();  // $taintReachesSink
 		SQLiteDatabase db = taint();
-		String[] projectionIn = {taint()}; // $ MISSING: taintReachesSink
+		String[] projectionIn = {taint()}; // $taintReachesSink
 		String selection = taint(); // $taintReachesSink
 		String[] selectionArgs = {taint()};
 		String groupBy = taint(); // $taintReachesSink
@@ -214,7 +214,7 @@ public class Sinks {
 		SQLiteDatabase.CursorFactory cursorFactory = taint();
 		boolean distinct = taint();
 		String table = taint(); // $taintReachesSink
-		String[] columns = {taint()}; // $ MISSING: taintReachesSink
+		String[] columns = {taint()}; // $taintReachesSink
 		String selection = taint(); // $taintReachesSink
 		String[] selectionArgs = {taint()};
 		String groupBy = taint(); // $taintReachesSink
@@ -229,7 +229,7 @@ public class Sinks {
 		SQLiteDatabase.CursorFactory cursorFactory = taint();
 		boolean distinct = taint();
 		String table = taint(); // $taintReachesSink
-		String[] columns = {taint()}; // $ MISSING: taintReachesSink
+		String[] columns = {taint()}; // $taintReachesSink
 		String selection = taint(); // $taintReachesSink
 		String[] selectionArgs = {taint()};
 		String groupBy = taint(); // $taintReachesSink
