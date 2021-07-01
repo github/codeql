@@ -53,6 +53,9 @@ class AstNode extends TAstNode {
   /** Gets the location of this node. */
   Location getLocation() { result = getLocation(this) }
 
+  /** Gets the file of this node. */
+  final File getFile() { result = this.getLocation().getFile() }
+
   /** Gets a child node of this `AstNode`. */
   final AstNode getAChild() { result = this.getAChild(_) }
 

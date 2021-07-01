@@ -1,4 +1,20 @@
 calls.rb:
+#    1| Main(calls.rb)
+#-----| super -> Object
+
+hello.rb:
+#    1| Main(hello.rb)
+#-----| super -> Object
+
+modules.rb:
+#    1| Main(modules.rb)
+#-----| super -> Object
+
+private.rb:
+#    1| Main(private.rb)
+#-----| super -> Object
+
+calls.rb:
 #  102| Hash
 #-----| super -> Object
 
@@ -51,7 +67,8 @@ calls.rb:
 
 private.rb:
 #    1| C
-#-----| super -> Object
+#-----| super -> Main(calls.rb)
+#-----| super -> Main(private.rb)
 #-----| include -> M
 
 calls.rb:
@@ -59,10 +76,10 @@ calls.rb:
 #-----| super -> C
 
 #   82| String
-#-----| super -> Object
+#-----| super -> Main(calls.rb)
 
 #  144| S
-#-----| super -> Object
+#-----| super -> Main(calls.rb)
 
 #  150| A
 #-----| super -> S
@@ -74,7 +91,7 @@ hello.rb:
 #    1| EnglishWords
 
 #   11| Greeting
-#-----| super -> Object
+#-----| super -> Main(hello.rb)
 #-----| include -> EnglishWords
 
 #   18| HelloWorld
@@ -86,7 +103,7 @@ modules.rb:
 #    4| Foo
 
 #   37| Bar
-#-----| super -> Object
+#-----| super -> Main(modules.rb)
 
 #   60| MyModuleInGlobalScope
 
@@ -106,17 +123,15 @@ modules.rb:
 #  107| MM
 
 #  112| YY
-#-----| super -> Object
+#-----| super -> Main(modules.rb)
 
 #  115| XX
 
 #    5| Foo::Bar
 
 #   19| Foo::ClassInFoo
-#-----| super -> Object
 
 #   30| Foo::ClassInAnotherDefinitionOfFoo
-#-----| super -> Object
 
 #  116| XX::YY
 #-----| super -> YY
@@ -130,17 +145,14 @@ modules.rb:
 #   84| Other::Foo1
 
 #    6| Foo::Bar::ClassInFooBar
-#-----| super -> Object
 
 #   71| Test::Foo2::Foo2
 
 #  108| MM::MM
 
 #   49| Foo::Bar::ClassInAnotherDefinitionOfFooBar
-#-----| super -> Object
 
 #   66| Test::Foo1::Bar
-#-----| super -> Object
 
 #   91| Test::Foo1::Y
 
@@ -149,6 +161,5 @@ modules.rb:
 #  103| Test::Foo2::Y
 
 #   72| Test::Foo2::Foo2::Bar
-#-----| super -> Object
 
 #  120| Test::Foo1::Bar::Baz

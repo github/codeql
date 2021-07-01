@@ -84,7 +84,15 @@ class DataFlowCall extends CfgNodes::ExprNodes::CallCfgNode {
     exists(string method |
       exists(Module tp |
         this.instanceMethodCall(tp, method) and
-        result = lookupMethod(tp, method)
+        result = lookupMethod(tp, method) and
+        if result.(Method).isPrivate()
+        then
+          exists(Self self |
+            self = this.getReceiver().getExpr() and
+            pragma[only_bind_out](self.getEnclosingModule().getModule().getSuperClass*()) =
+              pragma[only_bind_out](result.getEnclosingModule().getModule())
+          )
+        else any()
       )
       or
       exists(DataFlow::LocalSourceNode sourceNode |
@@ -158,7 +166,7 @@ private DataFlow::LocalSourceNode trackInstance(Module tp, TypeTracker t) {
     exists(Self self, Toplevel enclosing |
       self = result.asExpr().getExpr() and
       enclosing = self.getEnclosingModule() and
-      tp = TResolved("Object") and
+      tp = TMain(enclosing) and
       not self.getEnclosingMethod().getEnclosingModule() = enclosing
     )
     or

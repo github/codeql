@@ -25,7 +25,8 @@ private module Cached {
       or
       qName = namespaceDeclaration(_)
     } or
-    TUnresolved(Namespace n) { not exists(namespaceDeclaration(n)) }
+    TUnresolved(Namespace n) { not exists(namespaceDeclaration(n)) } or
+    TMain(Toplevel t)
 
   cached
   string namespaceDeclaration(Namespace n) {
@@ -61,11 +62,14 @@ private module Cached {
         result = resolveScopeExpr(d.getSuperclassExpr())
       )
       or
-      result = TResolved("Object") and
       forex(ClassDeclaration d | d = cls.getADeclaration() |
         not exists(resolveScopeExpr(d.getSuperclassExpr()))
-      )
+      ) and
+      result = TMain(cls.getADeclaration().getEnclosingModule())
     )
+    or
+    cls = TMain(_) and
+    result = TResolved("Object")
   }
 
   cached
