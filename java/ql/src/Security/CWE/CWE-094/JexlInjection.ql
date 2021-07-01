@@ -13,7 +13,7 @@
 
 import java
 import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.security.JexlInjection
+import semmle.code.java.security.JexlInjectionQuery
 import DataFlow::PathGraph
 
 /**

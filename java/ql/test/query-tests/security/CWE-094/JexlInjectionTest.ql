@@ -2,7 +2,7 @@ import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.FlowSteps
 import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.security.JexlInjection
+import semmle.code.java.security.JexlInjectionQuery
 import TestUtilities.InlineExpectationsTest
 
 class Conf extends TaintTracking::Configuration {
