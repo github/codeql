@@ -15,7 +15,6 @@
 
 import cpp
 import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
-import semmle.code.cpp.commons.Exclusions
 
 /** Holds if the range contains no boundary values. */
 predicate isRealRange(Expr exp) {
@@ -36,13 +35,19 @@ predicate isRealRange(Expr exp) {
   upperBound(exp) != 32767 and
   upperBound(exp) != 255 and
   upperBound(exp) != 127 and
+  upperBound(exp) != 63 and
+  upperBound(exp) != 31 and
+  upperBound(exp) != 15 and
+  upperBound(exp) != 7 and
   lowerBound(exp) != -2147483648 and
   lowerBound(exp) != -268435456 and
   lowerBound(exp) != -33554432 and
   lowerBound(exp) != -8388608 and
   lowerBound(exp) != -65536 and
   lowerBound(exp) != -32768 and
-  lowerBound(exp) != -128
+  lowerBound(exp) != -128 and
+  lowerBound(exp) != 0 and
+  lowerBound(exp) != upperBound(exp)
   or
   lowerBound(exp) = 0 and
   upperBound(exp) = 1
@@ -124,7 +129,12 @@ predicate isCodeBeforeCase(SwitchStmt swtmp) {
 from SwitchStmt sw, string msg
 where
   isRealRange(sw.getExpr()) and
-  isRealRange(sw.getExpr().getAChild*()) and
+  not exists(Expr exptmp |
+    exptmp = sw.getExpr().getAChild*() and
+    not exptmp.isConstant() and
+    not isRealRange(exptmp)
+  ) and
+  (sw.getASwitchCase().terminatesInBreakStmt() or sw.getASwitchCase().terminatesInReturnStmt()) and
   (
     isNotAllSelected(sw) and msg = "The range of condition values is less than the selection."
     or
