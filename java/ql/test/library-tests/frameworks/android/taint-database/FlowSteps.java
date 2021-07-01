@@ -27,8 +27,8 @@ public class FlowSteps {
 	}
 
 	public static String[] appendSelectionArgs() {
-		String[] originalValues = {taint()}; // $taintReachesReturn
-		String[] newValues = {taint()}; // $taintReachesReturn
+		String[] originalValues = {taint()}; // $ MISSING: taintReachesReturn
+		String[] newValues = {taint()}; // $ MISSING: taintReachesReturn
 		return DatabaseUtils.appendSelectionArgs(originalValues, newValues);
 	}
 
@@ -42,7 +42,7 @@ public class FlowSteps {
 		target = taint();
 		boolean distinct = taint(); 
 		String tables = taint(); // $taintReachesReturn
-		String[] columns = {taint()}; // $taintReachesReturn
+		String[] columns = {taint()}; // $ MISSING: taintReachesReturn
 		String where = taint(); // $taintReachesReturn
 		String groupBy = taint(); // $taintReachesReturn
 		String having = taint(); // $taintReachesReturn
@@ -53,7 +53,7 @@ public class FlowSteps {
 
 	public static String buildQuery(MySQLiteQueryBuilder target) {
 		target = taint(); // $taintReachesReturn
-		String[] projectionIn = {taint()};// $taintReachesReturn
+		String[] projectionIn = {taint()};// $ MISSING: taintReachesReturn
 		String selection = taint(); // $taintReachesReturn
 		String groupBy = taint(); // $taintReachesReturn
 		String having = taint(); // $taintReachesReturn
@@ -64,9 +64,9 @@ public class FlowSteps {
 
 	public static String buildQuery2(MySQLiteQueryBuilder target) {
 		target = taint(); // $taintReachesReturn
-		String[] projectionIn = {taint()}; // $taintReachesReturn
+		String[] projectionIn = {taint()}; // $ MISSING: taintReachesReturn
 		String selection = taint(); // $taintReachesReturn
-		String[] selectionArgs = {taint()}; // $taintReachesReturn
+		String[] selectionArgs = {taint()}; // $ MISSING: taintReachesReturn
 		String groupBy = taint(); // $taintReachesReturn
 		String having = taint(); // $taintReachesReturn
 		String sortOrder = taint(); // $taintReachesReturn
@@ -76,7 +76,7 @@ public class FlowSteps {
 
 	public static String buildUnionQuery(MySQLiteQueryBuilder target) {
 		target = taint(); // $taintReachesReturn
-		String[] subQueries = {taint()}; // $taintReachesReturn
+		String[] subQueries = {taint()}; // $ MISSING: taintReachesReturn
 		String sortOrder = taint(); // $taintReachesReturn
 		String limit = taint(); // $taintReachesReturn
 		return target.buildUnionQuery(subQueries, sortOrder, limit);
@@ -85,12 +85,12 @@ public class FlowSteps {
 	public static String buildUnionSubQuery2(MySQLiteQueryBuilder target) {
 		target = taint(); // $taintReachesReturn
 		String typeDiscriminatorColumn = taint(); // $taintReachesReturn
-		String[] unionColumns = {taint()}; // $taintReachesReturn
+		String[] unionColumns = {taint()}; // $ MISSING: taintReachesReturn
 		Set<String> columnsPresentInTable = taint(); // $taintReachesReturn
 		int computedColumnsOffset = taint();
 		String typeDiscriminatorValue = taint(); // $taintReachesReturn
 		String selection = taint(); // $taintReachesReturn
-		String[] selectionArgs = {taint()}; // $taintReachesReturn
+		String[] selectionArgs = {taint()}; // $ MISSING: taintReachesReturn
 		String groupBy = taint(); // $taintReachesReturn
 		String having = taint(); // $taintReachesReturn
 		return target.buildUnionSubQuery(typeDiscriminatorColumn, unionColumns, columnsPresentInTable,
@@ -100,7 +100,7 @@ public class FlowSteps {
 	public static String buildUnionSubQuery3(MySQLiteQueryBuilder target) {
 		target = taint(); // $taintReachesReturn 
 		String typeDiscriminatorColumn = taint(); // $taintReachesReturn
-		String[] unionColumns = {taint()}; // $taintReachesReturn
+		String[] unionColumns = {taint()}; // $ MISSING: taintReachesReturn
 		Set<String> columnsPresentInTable = taint(); // $taintReachesReturn
 		int computedColumnsOffset = taint();
 		String typeDiscriminatorValue = taint(); // $taintReachesReturn
@@ -151,7 +151,7 @@ public class FlowSteps {
 
 	public static StringBuilder appendColumns() {
 		StringBuilder s = taint(); // $taintReachesReturn
-		String[] columns = {taint()}; // $taintReachesReturn
+		String[] columns = {taint()}; // $ MISSING: taintReachesReturn
 		SQLiteQueryBuilder.appendColumns(s, columns);
 		return s;
 	}
