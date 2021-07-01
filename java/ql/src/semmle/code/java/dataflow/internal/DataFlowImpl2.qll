@@ -1393,9 +1393,9 @@ private module Stage2 {
     exists(RetNodeEx ret, Ap ap0, ReturnKindExt kind, int pos |
       parameterFlow(p, ap, ap0, c, config) and
       c = ret.getEnclosingCallable() and
-      revFlow(ret, true, apSome(_), ap0, config) and
-      fwdFlow(ret, any(CcCall ccc), apSome(ap), pragma[only_bind_into](ap0),
+      revFlow(pragma[only_bind_into](ret), true, apSome(_), pragma[only_bind_into](ap0),
         pragma[only_bind_into](config)) and
+      fwdFlow(ret, any(CcCall ccc), apSome(ap), ap0, config) and
       kind = ret.getKind() and
       p.getPosition() = pos and
       // we don't expect a parameter to return stored in itself
@@ -2087,9 +2087,9 @@ private module Stage3 {
     exists(RetNodeEx ret, Ap ap0, ReturnKindExt kind, int pos |
       parameterFlow(p, ap, ap0, c, config) and
       c = ret.getEnclosingCallable() and
-      revFlow(ret, true, apSome(_), ap0, config) and
-      fwdFlow(ret, any(CcCall ccc), apSome(ap), pragma[only_bind_into](ap0),
+      revFlow(pragma[only_bind_into](ret), true, apSome(_), pragma[only_bind_into](ap0),
         pragma[only_bind_into](config)) and
+      fwdFlow(ret, any(CcCall ccc), apSome(ap), ap0, config) and
       kind = ret.getKind() and
       p.getPosition() = pos and
       // we don't expect a parameter to return stored in itself
@@ -2850,9 +2850,9 @@ private module Stage4 {
     exists(RetNodeEx ret, Ap ap0, ReturnKindExt kind, int pos |
       parameterFlow(p, ap, ap0, c, config) and
       c = ret.getEnclosingCallable() and
-      revFlow(ret, true, apSome(_), ap0, config) and
-      fwdFlow(ret, any(CcCall ccc), apSome(ap), pragma[only_bind_into](ap0),
+      revFlow(pragma[only_bind_into](ret), true, apSome(_), pragma[only_bind_into](ap0),
         pragma[only_bind_into](config)) and
+      fwdFlow(ret, any(CcCall ccc), apSome(ap), ap0, config) and
       kind = ret.getKind() and
       p.getPosition() = pos and
       // we don't expect a parameter to return stored in itself
