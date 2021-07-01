@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.net.URLStreamHandlerFactory;
 
 public class URLClassLoaderSSRF extends HttpServlet {
 
@@ -39,7 +40,7 @@ public class URLClassLoaderSSRF extends HttpServlet {
             String url = request.getParameter("uri");
             URI uri = new URI(url);
 
-            URLStreamHandlerFactory urlStreamHandlerFactory = TomcatURLStreamHandlerFactory.getInstance();
+            URLStreamHandlerFactory urlStreamHandlerFactory = null;
             URLClassLoader urlClassLoader = new URLClassLoader(new URL[]{uri.toURL()}, URLClassLoaderSSRF.class.getClassLoader(), urlStreamHandlerFactory); // $ SSRF
             urlClassLoader.findResource("test");
         } catch (Exception e) {
@@ -64,11 +65,11 @@ public class URLClassLoaderSSRF extends HttpServlet {
         try {
             String url = request.getParameter("uri");
             URI uri = new URI(url);
-            URLClassLoader urlClassLoader = 
-                new URLClassLoader("testClassLoader", 
-                    new URL[]{new URL[]{uri.toURL()}}, 
+            URLClassLoader urlClassLoader =
+                new URLClassLoader("testClassLoader",
+                    new URL[]{uri.toURL()}, // $ SSRF
                     URLClassLoaderSSRF.class.getClassLoader()
-                ); // $ SSRF
+                );
 
             Class<?> rceTest = urlClassLoader.loadClass("RCETest");
         } catch (Exception e) {
@@ -81,14 +82,14 @@ public class URLClassLoaderSSRF extends HttpServlet {
         try {
             String url = request.getParameter("uri");
             URI uri = new URI(url);
-            URLStreamHandlerFactory urlStreamHandlerFactory = TomcatURLStreamHandlerFactory.getInstance();
+            URLStreamHandlerFactory urlStreamHandlerFactory = null;
 
             URLClassLoader urlClassLoader =
                 new URLClassLoader("testClassLoader",
-                    new URL[]{uri.toURL()}, 
-                    URLClassLoaderSSRF.class.getClassLoader(), 
+                    new URL[]{uri.toURL()}, // $ SSRF
+                    URLClassLoaderSSRF.class.getClassLoader(),
                     urlStreamHandlerFactory
-                ); // $ SSRF
+                );
 
             Class<?> rceTest = urlClassLoader.loadClass("RCETest");
         } catch (Exception e) {
