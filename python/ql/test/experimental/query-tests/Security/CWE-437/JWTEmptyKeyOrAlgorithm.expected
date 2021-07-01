@@ -1,0 +1,4 @@
+| pyjwt.py:10:1:10:38 | ControlFlowNode for Attribute() | algorithm | is empty. |
+| pyjwt.py:10:1:10:38 | ControlFlowNode for Attribute() | key | is empty. |
+| pyjwt.py:13:1:13:49 | ControlFlowNode for Attribute() | key | is empty. |
+| pyjwt.py:14:1:14:53 | ControlFlowNode for Attribute() | key | is empty. |
