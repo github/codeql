@@ -96,10 +96,20 @@ module Vuex {
    */
   private class MapHelperCall extends API::CallNode {
     string helperName;
+    string namespace;
 
     MapHelperCall() {
-      this = vuex().getMember(helperName).getACall() and
-      helperName = ["mapActions", "mapGetters", "mapMutations", "mapState"]
+      helperName = ["mapActions", "mapGetters", "mapMutations", "mapState"] and
+      (
+        this = vuex().getMember(helperName).getACall() and
+        namespace = ""
+        or
+        exists(API::CallNode call |
+          call = vuex().getMember("createNamespacedHelpers").getACall() and
+          namespace = call.getParameter(0).getAValueReachingRhs().getStringValue() + "/" and
+          this = call.getReturn().getMember(helperName).getACall()
+        )
+      )
     }
 
     /** Gets the name of the `vuex` method being invoked, such as `mapGetters`. */
@@ -109,10 +119,10 @@ module Vuex {
     pragma[noinline]
     string getPrefix() {
       getNumArgument() = 2 and
-      result = getArgument(0).getStringValue() + "/"
+      result = namespace + getParameter(0).getAValueReachingRhs().getStringValue() + "/"
       or
       getNumArgument() = 1 and
-      result = ""
+      result = namespace
     }
 
     /**

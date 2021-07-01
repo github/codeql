@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import { mapGetters, mapState, mapMutations, mapActions } from 'vuex';
+import { mapGetters, mapState, mapMutations, mapActions, createNamespacedHelpers } from 'vuex';
 
 Vue.use(Vuex);
 
@@ -17,6 +17,9 @@ const submoduleB = {
         foo: () => 'safe',
     }
 };
+
+const { mapGetters: mapGettersA } = createNamespacedHelpers('submoduleA');
+const { mapGetters: mapGettersB } = createNamespacedHelpers('submoduleB');
 
 const store = new Vuex.Store({
     getters: {
@@ -72,8 +75,10 @@ const Component = new Vue({
             derivedUntainted: state => state.untainted,
         }),
         ...mapState(['tainted2']),
-        ...mapGetters('submoduleA', {fooA: 'foo'}),
-        ...mapGetters('submoduleB', {fooB: 'foo'}),
+        ...mapGetters('submoduleA', {fooA1: 'foo'}),
+        ...mapGettersA({fooA2: 'foo'}),
+        ...mapGetters('submoduleB', {fooB1: 'foo'}),
+        ...mapGettersB({fooB2: 'foo'}),
     },
     methods: {
         doCommitsAndActions() {
@@ -95,8 +100,10 @@ const Component = new Vue({
             sink(this.untaintedGetter); // OK
             sink(this.derivedUntainted); // OK
 
-            sink(this.fooA); // NOT OK
-            sink(this.fooB); // OK
+            sink(this.fooA1); // NOT OK
+            sink(this.fooA2); // NOT OK
+            sink(this.fooB1); // OK
+            sink(this.fooB2); // OK
         },
         ...mapMutations({ sneakyTaint3: 'setTainted3' }),
         ...mapActions({ emitTaint4: 'doTaint4' }),
