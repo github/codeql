@@ -12,8 +12,8 @@
  * states that will cause backtracking (a rejecting suffix exists).
  */
 
-import RegExpTreeView
-import codeql.Locations
+private import RegExpTreeView
+private import codeql.Locations
 
 /**
  * A configuration for which parts of a regular expression should be considered relevant for
