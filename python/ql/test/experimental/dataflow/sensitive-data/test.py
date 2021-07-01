@@ -78,3 +78,37 @@ request.args.getlist("password")[0] # $ MISSING: SensitiveDataSource=password
 
 from not_found import password2 as foo # $ SensitiveDataSource=password
 print(foo) # $ SensitiveUse=password
+
+# ------------------------------------------------------------------------------
+# cross-talk between different calls
+# ------------------------------------------------------------------------------
+
+# Case 1: providing name as argument
+
+_configuration = {"sleep_timer": 5, "mysql_password": "1234"}
+
+def get_config(key):
+    # Treating this as a SensitiveDataSource is questionable, since that will result in
+    # _all_ calls to `get_config` being treated as giving sensitive data
+    return _configuration[key] # $ SensitiveDataSource=password
+
+foo = get_config("mysql_password")
+print(foo) # $ SensitiveUse=password
+
+bar = get_config("sleep_timer")
+print(bar) # $ SPURIOUS: SensitiveUse=password
+
+# Case 2: Providing function as argument
+
+def call_wrapper(func):
+    print("Will call", func)
+    # Treating this as a SensitiveDataSource is questionable, since that will result in
+    # _all_ calls to `call_wrapper` being treated as giving sensitive data
+    return func() # $ SensitiveDataSource=password
+
+foo = call_wrapper(get_password)
+print(foo) # $ SensitiveUse=password
+
+harmless = lambda: "bar"
+bar = call_wrapper(harmless)
+print(bar) # $ SPURIOUS: SensitiveUse=password
