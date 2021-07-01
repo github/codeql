@@ -40,7 +40,16 @@ class LocalSourceNode extends Node {
     // Both of these preserve the identity of the underlying pointer, and hence we exclude these as
     // local source nodes.
     // We do, however, allow the post-update nodes that arise from object creation (which are non-synthetic).
-    not this instanceof SyntheticPostUpdateNode
+    not this instanceof SyntheticPostUpdateNode and
+    // With similar reasoning to the above, we also exclude the following synthesized nodes
+    not this instanceof SyntheticPreUpdateNode and
+    not this instanceof KwOverflowNode and
+    not this instanceof PosOverflowNode and
+    not this instanceof KwUnpackedNode and
+    not this instanceof IterableSequenceNode and
+    not this instanceof IterableElementNode and
+    // ESSA nodes are also superfluous
+    not this instanceof EssaNode
     or
     this = any(ModuleVariableNode mvn).getARead()
   }
