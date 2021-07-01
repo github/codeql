@@ -9,6 +9,7 @@ private import semmle.code.csharp.frameworks.system.data.Entity
 private import semmle.code.csharp.frameworks.system.collections.Generic
 private import semmle.code.csharp.frameworks.Sql
 private import semmle.code.csharp.dataflow.FlowSummary
+private import semmle.code.csharp.dataflow.ExternalFlow
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 
 /**
@@ -234,26 +235,29 @@ module EntityFramework {
     override Expr getSql() { result = this.getArgumentForParameter(sqlParam) }
   }
 
-  /** A call to `System.Data.Entity.DbSet.SqlQuery`. */
-  class SystemDataEntityDbSetSqlExpr extends SqlExpr, MethodCall {
-    SystemDataEntityDbSetSqlExpr() {
-      this.getTarget() = any(SystemDataEntity::DbSet dbSet).getSqlQueryMethod()
+  /** The sink method `System.Data.Entity.DbSet.SqlQuery`. */
+  private class SystemDataEntityDbSetSqlQuerySinkModelCsv extends SinkModelCsv {
+    override predicate row(string row) {
+      row =
+        ["System.Data.Entity;DbSet;false;SqlQuery;(System.String,System.Object[]);;Argument[0];sql"]
     }
-
-    override Expr getSql() { result = this.getArgumentForName("sql") }
   }
 
-  /** A call to a method in `System.Data.Entity.Database` that executes SQL. */
-  class SystemDataEntityDatabaseSqlExpr extends SqlExpr, MethodCall {
-    SystemDataEntityDatabaseSqlExpr() {
-      exists(SystemDataEntity::Database db |
-        this.getTarget() = db.getSqlQueryMethod() or
-        this.getTarget() = db.getExecuteSqlCommandMethod() or
-        this.getTarget() = db.getExecuteSqlCommandAsyncMethod()
-      )
+  /** A sink method in `System.Data.Entity.Database` that executes SQL. */
+  private class SystemDataEntityDatabaseSinkModelCsv extends SinkModelCsv {
+    override predicate row(string row) {
+      row =
+        [
+          "System.Data.Entity;Database;false;SqlQuery;(System.Type,System.String,System.Object[]);;Argument[1];sql",
+          "System.Data.Entity;Database;false;SqlQuery<>;(System.String,System.Object[]);;Argument[0];sql",
+          "System.Data.Entity;Database;false;ExecuteSqlCommand;(System.String,System.Object[]);;Argument[0];sql",
+          "System.Data.Entity;Database;false;ExecuteSqlCommand;(System.Data.Entity.TransactionalBehavior,System.String,System.Object[]);;Argument[1];sql",
+          "System.Data.Entity;Database;false;ExecuteSqlCommandAsync;(System.Data.Entity.TransactionalBehavior,System.String,System.Threading.CancellationToken,System.Object[]);;Argument[1];sql",
+          "System.Data.Entity;Database;false;ExecuteSqlCommandAsync;(System.String,System.Threading.CancellationToken,System.Object[]);;Argument[0];sql",
+          "System.Data.Entity;Database;false;ExecuteSqlCommandAsync;(System.String,System.Object[]);;Argument[0];sql",
+          "System.Data.Entity;Database;false;ExecuteSqlCommandAsync;(System.Data.Entity.TransactionalBehavior,System.String,System.Object[]);;Argument[1];sql"
+        ]
     }
-
-    override Expr getSql() { result = this.getArgumentForName("sql") }
   }
 
   /** Holds if `t` is compatible with a DB column type. */
