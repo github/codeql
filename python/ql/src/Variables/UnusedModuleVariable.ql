@@ -7,6 +7,7 @@
  *       external/cwe/cwe-563
  * @problem.severity recommendation
  * @sub-severity low
+ * @security-severity 2.0
  * @precision high
  * @id py/unused-global-variable
  */
