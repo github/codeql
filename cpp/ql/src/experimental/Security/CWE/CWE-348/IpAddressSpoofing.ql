@@ -4,7 +4,7 @@
  *              Attackers can modify the value of the identifier to forge the client IP.
  * @kind path-problem
  * @problem.severity error
- * @precision high
+ * @precision medium
  * @id cpp/ip-address-spoofing
  * @tags security
  *       external/cwe/cwe-348
