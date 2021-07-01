@@ -2,6 +2,8 @@ private import codeql_ruby.AST
 private import internal.AST
 private import internal.Call
 private import internal.TreeSitter
+private import codeql_ruby.dataflow.internal.DataFlowDispatch
+private import codeql_ruby.dataflow.internal.DataFlowImplCommon
 
 /**
  * A call.
@@ -48,6 +50,15 @@ class Call extends Expr, TCall {
    * Gets the number of arguments of this method call.
    */
   final int getNumberOfArguments() { result = this.(CallImpl).getNumberOfArgumentsImpl() }
+
+  /** Gets a potential target of this call, if any. */
+  final Callable getATarget() {
+    exists(DataFlowCall c | this = c.getExpr() |
+      result = viableCallable(c)
+      or
+      result = viableCallableLambda(c, _)
+    )
+  }
 
   override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
