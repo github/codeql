@@ -121,12 +121,12 @@ private class SafeSetEndpointIdentificationAlgorithm extends MethodAccess {
 }
 
 /**
- * A call to the method `useSslProtocol` on an instance of `com.rabbitmq.client.ConnectionFactory`
- * that doesn't set `enableHostnameVerification`.
+ * A call to a method that enables SSL (`useSslProtocol` or `setSslContextFactory`)
+ * on an instance of `com.rabbitmq.client.ConnectionFactory` that doesn't set `enableHostnameVerification`.
  */
 class RabbitMQEnableHostnameVerificationNotSet extends MethodAccess {
   RabbitMQEnableHostnameVerificationNotSet() {
-    this.getMethod().hasName("useSslProtocol") and
+    this.getMethod().hasName(["useSslProtocol", "setSslContextFactory"]) and
     this.getMethod().getDeclaringType() instanceof RabbitMQConnectionFactory and
     exists(Variable v |
       v.getType() instanceof RabbitMQConnectionFactory and

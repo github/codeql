@@ -1,5 +1,6 @@
 import java.net.Socket;
 import java.nio.ByteBuffer;
+import java.security.NoSuchAlgorithmException;
 import javax.net.SocketFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLEngine;
@@ -7,6 +8,7 @@ import javax.net.ssl.SSLParameters;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.client.SslContextFactory;
 
 public class UnsafeCertTrustTest {
 
@@ -146,13 +148,39 @@ public class UnsafeCertTrustTest {
 	}
 
 	public void testRabbitMQFactoryEnableHostnameVerificationNotSet() throws Exception {
-		ConnectionFactory connectionFactory = new ConnectionFactory();
-		connectionFactory.useSslProtocol(); // $hasUnsafeCertTrust
+		{
+			ConnectionFactory connectionFactory = new ConnectionFactory();
+			connectionFactory.useSslProtocol(SSLContext.getDefault()); // $hasUnsafeCertTrust
+		}
+		{
+			ConnectionFactory connectionFactory = new ConnectionFactory();
+			connectionFactory.setSslContextFactory(new TestSslContextFactory()); // $hasUnsafeCertTrust
+		}
 	}
 
 	public void testRabbitMQFactorySafe() throws Exception {
-		ConnectionFactory connectionFactory = new ConnectionFactory();
-		connectionFactory.useSslProtocol(); // Safe
-		connectionFactory.enableHostnameVerification();
+		{
+			ConnectionFactory connectionFactory = new ConnectionFactory();
+			connectionFactory.useSslProtocol(SSLContext.getDefault()); // Safe
+			connectionFactory.enableHostnameVerification();
+		}
+		{
+			ConnectionFactory connectionFactory = new ConnectionFactory();
+			connectionFactory.setSslContextFactory(new TestSslContextFactory()); // Safe
+			connectionFactory.enableHostnameVerification();
+		}
+	}
+
+	static class TestSslContextFactory implements SslContextFactory {
+
+		@Override
+		public SSLContext create(String name) {
+			try {
+				return SSLContext.getDefault();
+			} catch (NoSuchAlgorithmException e) {
+				return null;
+			}
+		}
+
 	}
 }

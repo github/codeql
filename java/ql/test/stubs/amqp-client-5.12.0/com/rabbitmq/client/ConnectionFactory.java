@@ -15,6 +15,7 @@
 
 package com.rabbitmq.client;
 
+import javax.net.SocketFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import java.io.IOException;
@@ -112,6 +113,12 @@ public class ConnectionFactory implements Cloneable {
 
   public void setClientProperties(Map<String, Object> clientProperties) {}
 
+  public SocketFactory getSocketFactory() {
+    return null;
+  }
+
+  public void setSocketFactory(SocketFactory factory) {}
+
   public void setSharedExecutor(ExecutorService executor) {}
 
   public void setShutdownExecutor(ExecutorService executor) {}
@@ -203,6 +210,8 @@ public class ConnectionFactory implements Cloneable {
   public int getChannelRpcTimeout() {
     return 0;
   }
+
+  public void setSslContextFactory(SslContextFactory sslContextFactory) {}
 
   public void setChannelShouldCheckRpcResponseType(boolean channelShouldCheckRpcResponseType) {}
 
