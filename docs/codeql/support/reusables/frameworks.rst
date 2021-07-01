@@ -96,6 +96,7 @@ Java built-in support
    Hibernate, Database
    iBatis / MyBatis, Database
    Java Persistence API (JPA), Database
+   JAX-RS, Rest framework
    JDBC, Database
    Protobuf, Serialization
    Kryo deserialization, Serialization
@@ -169,6 +170,8 @@ Python built-in support
    MySQLdb, Database
    psycopg2, Database
    sqlite3, Database
+   Twisted,Web framework
+   Rsa,Cryptography library
    cryptography, Cryptography library
    pycryptodome, Cryptography library
    pycryptodomex, Cryptography library
