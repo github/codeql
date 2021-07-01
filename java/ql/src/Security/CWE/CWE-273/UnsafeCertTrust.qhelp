@@ -24,6 +24,17 @@
 <a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05g-Testing-Network-Communication.md">Testing Endpoint Identify Verification (MSTG-NETWORK-3)</a>
 </li>
 <li>
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/javax/net/ssl/SSLParameters.html#setEndpointIdentificationAlgorithm(java.lang.String)">SSLParameters.setEndpointIdentificationAlgorithm documentation</a>
+</li>
+<li>
+  RabbitMQ:
+  <a href="https://rabbitmq.github.io/rabbitmq-java-client/api/current/com/rabbitmq/client/ConnectionFactory.html#enableHostnameVerification()">ConnectionFactory.enableHostnameVerification documentation</a>
+</li>
+<li>
+  RabbitMQ:
+  <a href="https://www.rabbitmq.com/ssl.html#java-client">Using TLS in the Java Client</a>
+</li>
+<li>
 <a href="https://github.com/advisories/GHSA-xvch-r4wf-h8w9">CVE-2018-17187: Apache Qpid Proton-J transport issue with hostname verification</a>
 </li>
 <li>
