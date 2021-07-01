@@ -90,13 +90,13 @@ _configuration = {"sleep_timer": 5, "mysql_password": "1234"}
 def get_config(key):
     # Treating this as a SensitiveDataSource is questionable, since that will result in
     # _all_ calls to `get_config` being treated as giving sensitive data
-    return _configuration[key] # $ SensitiveDataSource=password
+    return _configuration[key]
 
 foo = get_config("mysql_password")
-print(foo) # $ SensitiveUse=password
+print(foo) # $ MISSING: SensitiveUse=password
 
 bar = get_config("sleep_timer")
-print(bar) # $ SPURIOUS: SensitiveUse=password
+print(bar)
 
 # Case 2: Providing function as argument
 
