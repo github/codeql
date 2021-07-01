@@ -502,5 +502,3 @@ static class IEnumerableExtensions
         }
     }
 }
-
-// semmle-extractor-options: /r:System.Diagnostics.Process.dll /r:System.Linq.dll /r:System.Linq.Expressions.dll /r:System.Linq.Queryable.dll /r:System.ComponentModel.Primitives.dll

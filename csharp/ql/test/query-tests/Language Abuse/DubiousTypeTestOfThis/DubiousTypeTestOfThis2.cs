@@ -1,5 +1,3 @@
-// semmle-extractor-options: /r:System.Diagnostics.Debug.dll
-
 using System;
 using System.Diagnostics;
 
