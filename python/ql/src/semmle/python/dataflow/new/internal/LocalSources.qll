@@ -33,24 +33,15 @@ private import DataFlowPrivate
 class LocalSourceNode extends Node {
   cached
   LocalSourceNode() {
-    not simpleLocalFlowStep(_, this) and
-    // Currently, we create synthetic post-update nodes for
-    // - arguments to calls that may modify said argument
-    // - direct reads a writes of object attributes
-    // Both of these preserve the identity of the underlying pointer, and hence we exclude these as
-    // local source nodes.
-    // We do, however, allow the post-update nodes that arise from object creation (which are non-synthetic).
-    not this instanceof SyntheticPostUpdateNode and
-    // With similar reasoning to the above, we also exclude the following synthesized nodes
-    not this instanceof SyntheticPreUpdateNode and
-    not this instanceof KwOverflowNode and
-    not this instanceof PosOverflowNode and
-    not this instanceof KwUnpackedNode and
-    not this instanceof IterableSequenceNode and
-    not this instanceof IterableElementNode and
-    // ESSA nodes are also superfluous
-    not this instanceof EssaNode
+    this instanceof ExprNode and
+    not simpleLocalFlowStep(_, this)
     or
+    // Module variable nodes must be local source nodes, otherwise type trackers cannot step through
+    // them.
+    this instanceof ModuleVariableNode
+    or
+    // We explicitly include any read of a global variable, as some of these may have local flow going
+    // into them.
     this = any(ModuleVariableNode mvn).getARead()
   }
 
