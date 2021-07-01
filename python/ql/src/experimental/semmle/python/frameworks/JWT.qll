@@ -72,23 +72,19 @@ private module JWT {
       result in [this.getArg(3), this.getArgByName("options")]
     }
 
-    override boolean verifiesSignature() {
+    override predicate verifiesSignature() {
       // jwt.decode(token, "key", "HS256")
-      not exists(this.getArgByName("verify")) and not exists(this.getOptions()) and result = true
+      not exists(this.getArgByName("verify")) and not exists(this.getOptions())
       or
-      (
-        // not -> jwt.decode(token, verify=False)
-        isFalse(this.getArgByName("verify"))
-        or
-        // not -> jwt.decode(token, key, options={"verify_signature": False})
-        exists(KeyValuePair optionsDict, NameConstant falseName |
-          falseName.getId() = "False" and
-          optionsDict = this.getArgByName("options").asExpr().(Dict).getItems().getAnItem() and
-          optionsDict.getKey().(Str_).getS().matches("%verify%") and
-          falseName = optionsDict.getValue()
-        )
-      ) and
-      result = false
+      // jwt.decode(token, verify=False)
+      not isFalse(this.getArgByName("verify")) and
+      // not -> jwt.decode(token, key, options={"verify_signature": False})
+      not exists(KeyValuePair optionsDict, NameConstant falseName |
+        falseName.getId() = "False" and
+        optionsDict = this.getArgByName("options").asExpr().(Dict).getItems().getAnItem() and
+        optionsDict.getKey().(Str_).getS().matches("%verify%") and
+        falseName = optionsDict.getValue()
+      )
     }
   }
 }

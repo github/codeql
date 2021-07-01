@@ -247,7 +247,7 @@ module JWTDecoding {
     /**
      * Checks if the signature gets verified while decoding.
      */
-    abstract boolean verifiesSignature();
+    abstract predicate verifiesSignature();
   }
 }
 
@@ -290,5 +290,5 @@ class JWTDecoding extends DataFlow::Node {
   /**
    * Checks if the signature gets verified while decoding.
    */
-  boolean verifiesSignature() { result = range.verifiesSignature() }
+  predicate verifiesSignature() { range.verifiesSignature() }
 }
