@@ -168,9 +168,7 @@ module Babel {
       newPrefix = plugin.getAlias(oldPrefix)
     }
 
-    override predicate isAdditionalRoot(string root) {
-      root = plugin.getARoot()
-    }
+    override predicate isAdditionalRoot(string root) { root = plugin.getARoot() }
   }
 
   /**

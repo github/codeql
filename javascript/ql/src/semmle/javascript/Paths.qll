@@ -492,13 +492,9 @@ string getValueOfSsaDefinitionUse(VarUse e) {
 
 /** A variable that is an alias for a PathExpr, itself seen as a PathExpr. */
 private class AliasedPathExpr extends PathExpr, VarUse {
-  AliasedPathExpr() {
-    exists(getValueOfSsaDefinitionUse(this))
-  }
+  AliasedPathExpr() { exists(getValueOfSsaDefinitionUse(this)) }
 
-  override string getValue() {
-    result = getValueOfSsaDefinitionUse(this)
-  }
+  override string getValue() { result = getValueOfSsaDefinitionUse(this) }
 }
 
 /**
