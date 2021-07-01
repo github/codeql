@@ -14,6 +14,7 @@ import cpp
 import semmle.code.cpp.dataflow.TaintTracking
 import DataFlow::PathGraph
 
+/** A call that reads a forgeable IP address. */
 class ForgeableIpAddressRead extends FunctionCall {
   ForgeableIpAddressRead() {
     this.getTarget().getQualifiedName() = "getenv" and
@@ -25,14 +26,21 @@ class ForgeableIpAddressRead extends FunctionCall {
   }
 }
 
+/** A call to `strcmp()`. */
 class StrcmpCall extends FunctionCall {
   StrcmpCall() { this.getTarget().getQualifiedName() = "strcmp" }
 }
 
+/**
+ * A call that is used in string parsing.
+ * 
+ * Any of `strtok()`, `strtok_s()`, or `strsep()`.
+ */
 class StringParseCall extends FunctionCall {
   StringParseCall() { this.getTarget().getQualifiedName() in ["strtok", "strtok_s", "strsep"] }
 }
 
+/** A taint tracking configuration for string comparisons with a forgeable IP address. */
 class ForgeableIpAddressCheck extends TaintTracking::Configuration {
   ForgeableIpAddressCheck() { this = "ForgeableIpAddressCheck" }
 
