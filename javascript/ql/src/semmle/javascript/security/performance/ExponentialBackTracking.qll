@@ -62,13 +62,13 @@
  *     a suffix `x` (possible empty) that is most likely __not__ accepted.
  */
 
-import ReDoSUtil
+private import ReDoSUtil
 
 /**
  * Holds if state `s` might be inside a backtracking repetition.
  */
 pragma[noinline]
-predicate stateInsideBacktracking(State s) {
+private predicate stateInsideBacktracking(State s) {
   s.getRepr().getParent*() instanceof MaybeBacktrackingRepetition
 }
 
@@ -145,7 +145,7 @@ class StatePair extends TStatePair {
  *
  * Used in `statePairDist`
  */
-predicate isStatePair(StatePair p) { any() }
+private predicate isStatePair(StatePair p) { any() }
 
 /**
  * Holds if there are transitions from the components of `q` to the corresponding
@@ -153,7 +153,7 @@ predicate isStatePair(StatePair p) { any() }
  *
  * Used in `statePairDist`
  */
-predicate delta2(StatePair q, StatePair r) { step(q, _, _, r) }
+private predicate delta2(StatePair q, StatePair r) { step(q, _, _, r) }
 
 /**
  * Gets the minimum length of a path from `q` to `r` in the
@@ -172,7 +172,7 @@ int statePairDist(StatePair q, StatePair r) =
  * expression cannot be vulnerable to ReDoS attacks anyway).
  */
 pragma[noopt]
-predicate isFork(State q, InputSymbol s1, InputSymbol s2, State r1, State r2) {
+private predicate isFork(State q, InputSymbol s1, InputSymbol s2, State r1, State r2) {
   stateInsideBacktracking(q) and
   exists(State q1, State q2 |
     q1 = epsilonSucc*(q) and
@@ -230,7 +230,7 @@ StatePair mkStatePair(State q1, State q2) {
  * Holds if there are transitions from the components of `q` to the corresponding
  * components of `r` labelled with `s1` and `s2`, respectively.
  */
-predicate step(StatePair q, InputSymbol s1, InputSymbol s2, StatePair r) {
+private predicate step(StatePair q, InputSymbol s1, InputSymbol s2, StatePair r) {
   exists(State r1, State r2 | step(q, s1, s2, r1, r2) and r = mkStatePair(r1, r2))
 }
 
@@ -242,7 +242,7 @@ predicate step(StatePair q, InputSymbol s1, InputSymbol s2, StatePair r) {
  * inside a repetition that might backtrack.
  */
 pragma[noopt]
-predicate step(StatePair q, InputSymbol s1, InputSymbol s2, State r1, State r2) {
+private predicate step(StatePair q, InputSymbol s1, InputSymbol s2, State r1, State r2) {
   exists(State q1, State q2 | q.getLeft() = q1 and q.getRight() = q2 |
     deltaClosed(q1, s1, r1) and
     deltaClosed(q2, s2, r2) and
@@ -294,7 +294,7 @@ string concretise(Trace t) {
  * Holds if `r` is reachable from `(fork, fork)` under input `w`, and there is
  * a path from `r` back to `(fork, fork)` with `rem` steps.
  */
-predicate isReachableFromFork(State fork, StatePair r, Trace w, int rem) {
+private predicate isReachableFromFork(State fork, StatePair r, Trace w, int rem) {
   // base case
   exists(InputSymbol s1, InputSymbol s2, State q1, State q2 |
     isFork(fork, s1, s2, q1, q2) and
@@ -324,7 +324,7 @@ StatePair getAForkPair(State fork) {
 /**
  * Holds if `fork` is a pumpable fork with word `w`.
  */
-predicate isPumpable(State fork, string w) {
+private predicate isPumpable(State fork, string w) {
   exists(StatePair q, Trace t |
     isReachableFromFork(fork, q, t, _) and
     q = getAForkPair(fork) and
