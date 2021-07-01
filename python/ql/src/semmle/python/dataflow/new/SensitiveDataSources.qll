@@ -76,28 +76,16 @@ private module SensitiveDataModeling {
   }
 
   /**
-   * Gets a reference to a string constant that, if used as the key in a lookup,
-   * indicates the presence of sensitive data with `classification`.
-   */
-  private DataFlow::LocalSourceNode sensitiveLookupStringConst(
-    DataFlow::TypeTracker t, SensitiveDataClassification classification
-  ) {
-    t.start() and
-    nameIndicatesSensitiveData(result.asExpr().(StrConst).getText(), classification)
-    or
-    exists(DataFlow::TypeTracker t2 |
-      result = sensitiveLookupStringConst(t2, classification).track(t2, t)
-    )
-  }
-
-  /**
-   * Gets a reference to a string constant that, if used as the key in a lookup,
-   * indicates the presence of sensitive data with `classification`.
-   *
-   * Also see `extraStepForCalls`.
+   * Gets a reference (in local scope) to a string constant that, if used as the key in
+   * a lookup, indicates the presence of sensitive data with `classification`.
    */
   DataFlow::Node sensitiveLookupStringConst(SensitiveDataClassification classification) {
-    sensitiveLookupStringConst(DataFlow::TypeTracker::end(), classification).flowsTo(result)
+    // Note: If this is implemented with type-tracking, we will get cross-talk as
+    // illustrated in python/ql/test/experimental/dataflow/sensitive-data/test.py
+    exists(DataFlow::LocalSourceNode source |
+      nameIndicatesSensitiveData(source.asExpr().(StrConst).getText(), classification) and
+      source.flowsTo(result)
+    )
   }
 
   /** A function call that is considered a source of sensitive data. */
@@ -118,6 +106,8 @@ private module SensitiveDataModeling {
   /**
    * Tracks any modeled source of sensitive data (with any classification),
    * to limit the scope of `extraStepForCalls`. See it's QLDoc for more context.
+   *
+   * Also see `extraStepForCalls`.
    */
   private DataFlow::LocalSourceNode possibleSensitiveCallable(DataFlow::TypeTracker t) {
     t.start() and
@@ -129,6 +119,8 @@ private module SensitiveDataModeling {
   /**
    * Tracks any modeled source of sensitive data (with any classification),
    * to limit the scope of `extraStepForCalls`. See it's QLDoc for more context.
+   *
+   * Also see `extraStepForCalls`.
    */
   private DataFlow::Node possibleSensitiveCallable() {
     possibleSensitiveCallable(DataFlow::TypeTracker::end()).flowsTo(result)
