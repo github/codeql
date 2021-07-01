@@ -44,7 +44,7 @@ class SslConnectionCreation extends DataFlow::Node {
 }
 
 /**
- * An SSL object that correctly verifies hostnames, or doesn't need to (because e.g. it's a server).
+ * An SSL object that correctly verifies hostnames, or doesn't need to (for instance, because it's a server).
  *
  * This is a sanitizer for `SslEndpointIdentificationFlowConfig`.
  */
