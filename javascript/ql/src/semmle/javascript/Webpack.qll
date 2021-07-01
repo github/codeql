@@ -1,3 +1,6 @@
+/**
+ * Models the behavior of `webpack` configuration files.
+ */
 private import javascript
 
 private class WebpackConfigModule extends TopLevel {
