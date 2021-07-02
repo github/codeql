@@ -17,3 +17,15 @@ function outerMost() {
 }
 
 sink(outerMost()); // NOT OK - but missed
+
+function confuse(x) {
+    let captured;
+    function f() {
+        captured = x;
+    }
+    f();
+    return captured;
+}
+
+sink(confuse('safe')); // OK - but incorrectly flagged
+sink(confuse(source())); // NOT OK
