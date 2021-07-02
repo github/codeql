@@ -14,7 +14,7 @@
  */
 
 import csharp
-import semmle.code.csharp.security.xml.InsecureXMLQuery::InsecureXML
+import semmle.code.csharp.security.xml.InsecureXMLQuery
 
 from InsecureXmlProcessing xmlProcessing, string reason
 where xmlProcessing.isUnsafe(reason)

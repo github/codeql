@@ -18,6 +18,7 @@ private import semmle.code.csharp.dataflow.ExternalFlow
  * to the abstract class `RemoteFlowSink`.
  */
 abstract class Sink extends DataFlow::ExprNode, RemoteFlowSink {
+  /** Gets an explanation of this XSS sink. */
   string explanation() { none() }
 }
 
@@ -163,6 +164,7 @@ class AspInlineMember extends AspInlineCode {
   /** Gets the member that this inline code references. */
   Member getMember() { result = member }
 
+  /** Gets the type of this member. */
   Type getType() { result = getMemberType(getMember()) }
 }
 

@@ -4,10 +4,10 @@
  */
 
 import csharp
-import semmle.code.csharp.dataflow.flowsources.Remote
-import semmle.code.csharp.dataflow.TaintTracking
-import semmle.code.csharp.frameworks.System
-import semmle.code.csharp.dataflow.FlowSummary
+private import semmle.code.csharp.dataflow.flowsources.Remote
+private import semmle.code.csharp.dataflow.TaintTracking
+private import semmle.code.csharp.frameworks.System
+private import semmle.code.csharp.dataflow.FlowSummary
 
 /**
  * A callable that is considered a "safe" external API from a security perspective.

@@ -14,7 +14,7 @@
  */
 
 import csharp
-import semmle.code.csharp.security.dataflow.ConditionalBypassQuery::UserControlledBypassOfSensitiveMethod
+import semmle.code.csharp.security.dataflow.ConditionalBypassQuery
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink

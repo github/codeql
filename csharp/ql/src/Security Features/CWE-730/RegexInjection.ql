@@ -14,7 +14,7 @@
  */
 
 import csharp
-import semmle.code.csharp.security.dataflow.RegexInjectionQuery::RegexInjection
+import semmle.code.csharp.security.dataflow.RegexInjectionQuery
 import semmle.code.csharp.frameworks.system.text.RegularExpressions
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 

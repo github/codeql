@@ -12,7 +12,7 @@
  */
 
 import csharp
-import semmle.code.csharp.security.dataflow.SqlInjectionQuery
+import semmle.code.csharp.security.dataflow.SqlInjectionQuery as SqlInjection
 import semmle.code.csharp.security.dataflow.flowsources.Stored
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 

@@ -3,81 +3,78 @@
  */
 
 import csharp
+private import semmle.code.csharp.frameworks.system.security.cryptography.SymmetricAlgorithm
 
-module EncryptionKeyDataFlow {
-  private import semmle.code.csharp.frameworks.system.security.cryptography.SymmetricAlgorithm
+/** Array of type Byte */
+class ByteArray extends ArrayType {
+  ByteArray() { getElementType() instanceof ByteType }
+}
 
-  /** Array of type Byte */
-  class ByteArray extends ArrayType {
-    ByteArray() { getElementType() instanceof ByteType }
+/** Abstract class for all sources of keys */
+abstract class KeySource extends DataFlow::Node { }
+
+/**
+ * A symmetric encryption sink is abstract base class for all ways to set a key for symmetric encryption.
+ */
+abstract class SymmetricEncryptionKeySink extends DataFlow::Node {
+  /** override to create a meaningful description of the sink */
+  abstract string getDescription();
+}
+
+/**
+ * A sanitizer for symmetric encryption key. If present, for example, key is properly constructed or retrieved from secret storage.
+ */
+abstract class KeySanitizer extends DataFlow::ExprNode { }
+
+/**
+ * Symmetric Algorithm, 'Key' property assigned a value
+ */
+class SymmetricEncryptionKeyPropertySink extends SymmetricEncryptionKeySink {
+  SymmetricEncryptionKeyPropertySink() {
+    exists(SymmetricAlgorithm ag | asExpr() = ag.getKeyProperty().getAnAssignedValue())
   }
 
-  /** Abstract class for all sources of keys */
-  abstract class KeySource extends DataFlow::Node { }
+  override string getDescription() { result = "Key property assignment" }
+}
 
-  /**
-   * A symmetric encryption sink is abstract base class for all ways to set a key for symmetric encryption.
-   */
-  abstract class SymmetricEncryptionKeySink extends DataFlow::Node {
-    /** override to create a meaningful description of the sink */
-    abstract string getDescription();
+/**
+ * Symmetric Algorithm, CreateEncryptor method, rgbKey parameter
+ */
+class SymmetricEncryptionCreateEncryptorSink extends SymmetricEncryptionKeySink {
+  SymmetricEncryptionCreateEncryptorSink() {
+    exists(SymmetricAlgorithm ag, MethodCall mc | mc = ag.getASymmetricEncryptor() |
+      asExpr() = mc.getArgumentForName("rgbKey")
+    )
   }
 
-  /**
-   * A sanitizer for symmetric encryption key. If present, for example, key is properly constructed or retrieved from secret storage.
-   */
-  abstract class KeySanitizer extends DataFlow::ExprNode { }
+  override string getDescription() { result = "Encryptor(rgbKey, IV)" }
+}
 
-  /**
-   * Symmetric Algorithm, 'Key' property assigned a value
-   */
-  class SymmetricEncryptionKeyPropertySink extends SymmetricEncryptionKeySink {
-    SymmetricEncryptionKeyPropertySink() {
-      exists(SymmetricAlgorithm ag | asExpr() = ag.getKeyProperty().getAnAssignedValue())
-    }
-
-    override string getDescription() { result = "Key property assignment" }
+/**
+ * Symmetric Algorithm, CreateDecryptor method, rgbKey parameter
+ */
+class SymmetricEncryptionCreateDecryptorSink extends SymmetricEncryptionKeySink {
+  SymmetricEncryptionCreateDecryptorSink() {
+    exists(SymmetricAlgorithm ag, MethodCall mc | mc = ag.getASymmetricDecryptor() |
+      asExpr() = mc.getArgumentForName("rgbKey")
+    )
   }
 
-  /**
-   * Symmetric Algorithm, CreateEncryptor method, rgbKey parameter
-   */
-  class SymmetricEncryptionCreateEncryptorSink extends SymmetricEncryptionKeySink {
-    SymmetricEncryptionCreateEncryptorSink() {
-      exists(SymmetricAlgorithm ag, MethodCall mc | mc = ag.getASymmetricEncryptor() |
-        asExpr() = mc.getArgumentForName("rgbKey")
-      )
-    }
+  override string getDescription() { result = "Decryptor(rgbKey, IV)" }
+}
 
-    override string getDescription() { result = "Encryptor(rgbKey, IV)" }
-  }
+/**
+ * Symmetric Key Data Flow configuration.
+ */
+class SymmetricKeyTaintTrackingConfiguration extends TaintTracking::Configuration {
+  SymmetricKeyTaintTrackingConfiguration() { this = "SymmetricKeyTaintTracking" }
 
-  /**
-   * Symmetric Algorithm, CreateDecryptor method, rgbKey parameter
-   */
-  class SymmetricEncryptionCreateDecryptorSink extends SymmetricEncryptionKeySink {
-    SymmetricEncryptionCreateDecryptorSink() {
-      exists(SymmetricAlgorithm ag, MethodCall mc | mc = ag.getASymmetricDecryptor() |
-        asExpr() = mc.getArgumentForName("rgbKey")
-      )
-    }
+  /** Holds if the node is a key source. */
+  override predicate isSource(DataFlow::Node src) { src instanceof KeySource }
 
-    override string getDescription() { result = "Decryptor(rgbKey, IV)" }
-  }
+  /** Holds if the node is a symmetric encryption key sink. */
+  override predicate isSink(DataFlow::Node sink) { sink instanceof SymmetricEncryptionKeySink }
 
-  /**
-   * Symmetric Key Data Flow configuration.
-   */
-  class SymmetricKeyTaintTrackingConfiguration extends TaintTracking::Configuration {
-    SymmetricKeyTaintTrackingConfiguration() { this = "SymmetricKeyTaintTracking" }
-
-    /** Holds if the node is a key source. */
-    override predicate isSource(DataFlow::Node src) { src instanceof KeySource }
-
-    /** Holds if the node is a symmetric encryption key sink. */
-    override predicate isSink(DataFlow::Node sink) { sink instanceof SymmetricEncryptionKeySink }
-
-    /** Holds if the node is a key sanitizer. */
-    override predicate isSanitizer(DataFlow::Node sanitizer) { sanitizer instanceof KeySanitizer }
-  }
+  /** Holds if the node is a key sanitizer. */
+  override predicate isSanitizer(DataFlow::Node sanitizer) { sanitizer instanceof KeySanitizer }
 }

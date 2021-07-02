@@ -14,7 +14,7 @@
  */
 
 import csharp
-import semmle.code.csharp.security.dataflow.CleartextStorageQuery::CleartextStorage
+import semmle.code.csharp.security.dataflow.CleartextStorageQuery
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink

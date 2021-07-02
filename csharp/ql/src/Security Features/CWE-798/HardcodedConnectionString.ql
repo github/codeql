@@ -20,7 +20,7 @@ import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 /**
  * A string literal containing a username or password field.
  */
-class ConnectionStringPasswordOrUsername extends HardcodedCredentials::NonEmptyStringLiteral {
+class ConnectionStringPasswordOrUsername extends NonEmptyStringLiteral {
   ConnectionStringPasswordOrUsername() {
     this.getExpr().getValue().regexpMatch("(?i).*(Password|PWD|User Id|UID)=.+")
   }
@@ -41,9 +41,7 @@ class ConnectionStringTaintTrackingConfiguration extends TaintTracking::Configur
       any(SystemDataConnectionClass connection).getConnectionStringProperty().getAnAssignedValue()
   }
 
-  override predicate isSanitizer(DataFlow::Node node) {
-    node instanceof HardcodedCredentials::StringFormatSanitizer
-  }
+  override predicate isSanitizer(DataFlow::Node node) { node instanceof StringFormatSanitizer }
 }
 
 from
