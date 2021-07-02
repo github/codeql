@@ -199,7 +199,23 @@ void test2_10(int dir, const char *path, int arg)
 	// ...
 }
 
-void test2_11(const char *path, int arg)
+// --- open -> stat ---
+
+void test3_1(const char *path, int arg)
+{
+	stat_data buf;
+	int f;
+
+	f = open(path, arg);
+	if (stat(path, &buf)) // BAD??? [NOT DETECTED]
+	{
+		// ...
+	}
+
+	// ...
+}
+
+void test3_2(const char *path, int arg)
 {
 	stat_data buf;
 	int f;
