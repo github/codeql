@@ -454,6 +454,8 @@ typetrack
 | promises.js:119:3:119:25 | Promise ... source) | promises.js:119:19:119:24 | source | store $PromiseResolveField$ |
 | promises.js:125:20:125:39 | when.resolve(source) | promises.js:125:33:125:38 | source | copy $PromiseResolveField$ |
 | promises.js:125:20:125:39 | when.resolve(source) | promises.js:125:33:125:38 | source | store $PromiseResolveField$ |
+| promises.js:130:14:130:69 | new Pro ... s'); }) | promises.js:130:55:130:64 | 'unicorns' | copy $PromiseResolveField$ |
+| promises.js:130:14:130:69 | new Pro ... s'); }) | promises.js:130:55:130:64 | 'unicorns' | store $PromiseResolveField$ |
 | promises.js:135:3:137:4 | new Pro ... );\\n  }) | promises.js:136:13:136:16 | data | copy $PromiseResolveField$ |
 | promises.js:135:3:137:4 | new Pro ... );\\n  }) | promises.js:136:13:136:16 | data | store $PromiseResolveField$ |
 | promises.js:143:17:143:50 | Synchro ... source) | promises.js:143:44:143:49 | source | copy $PromiseResolveField$ |
