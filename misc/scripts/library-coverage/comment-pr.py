@@ -34,7 +34,7 @@ def get_comment_text(output_file, repo, run_id):
             comment += file.read()
     else:
         print("There's a large change in the CSV framework coverage reports")
-        comment += f"The differences can be found in the {comparison_artifact_name} artifact of this workflow run](https://github.com/{repo}/actions/runs/{run_id})."
+        comment += f"The differences can be found in the {comparison_artifact_name} [artifact of this workflow run](https://github.com/{repo}/actions/runs/{run_id})."
 
     return comment
 
