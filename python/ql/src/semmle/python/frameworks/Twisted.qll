@@ -101,7 +101,7 @@ private module Twisted {
     abstract class InstanceSource extends DataFlow::LocalSourceNode { }
 
     /** Gets a reference to an instance of `twisted.web.server.Request`. */
-    private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
       t.start() and
       result instanceof InstanceSource
       or

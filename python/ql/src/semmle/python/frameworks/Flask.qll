@@ -163,7 +163,7 @@ module Flask {
     }
 
     /** Gets a reference to an instance of `flask.Response`. */
-    private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
       t.start() and
       result instanceof InstanceSource
       or

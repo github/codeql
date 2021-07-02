@@ -404,7 +404,7 @@ private module Stdlib {
   }
 
   /** Gets a reference to an open file. */
-  private DataFlow::LocalSourceNode openFile(DataFlow::TypeTracker t, FileSystemAccess openCall) {
+  private DataFlow::TypeTrackingNode openFile(DataFlow::TypeTracker t, FileSystemAccess openCall) {
     t.start() and
     result = openCall and
     (
@@ -422,7 +422,7 @@ private module Stdlib {
   }
 
   /** Gets a reference to the `write` or `writelines` method on an open file. */
-  private DataFlow::LocalSourceNode writeMethodOnOpenFile(
+  private DataFlow::TypeTrackingNode writeMethodOnOpenFile(
     DataFlow::TypeTracker t, FileSystemAccess openCall
   ) {
     t.startInAttr(["write", "writelines"]) and
@@ -671,7 +671,7 @@ private module Stdlib {
       API::Node getlistResult() { result = getlistRef().getReturn() }
 
       /** Gets a reference to a list of fields. */
-      private DataFlow::LocalSourceNode fieldList(DataFlow::TypeTracker t) {
+      private DataFlow::TypeTrackingNode fieldList(DataFlow::TypeTracker t) {
         t.start() and
         // TODO: Should have better handling of subscripting
         result.asCfgNode().(SubscriptNode).getObject() = instance().getAUse().asCfgNode()
@@ -687,7 +687,7 @@ private module Stdlib {
       }
 
       /** Gets a reference to a field. */
-      private DataFlow::LocalSourceNode field(DataFlow::TypeTracker t) {
+      private DataFlow::TypeTrackingNode field(DataFlow::TypeTracker t) {
         t.start() and
         // TODO: Should have better handling of subscripting
         result.asCfgNode().(SubscriptNode).getObject() =
@@ -883,7 +883,7 @@ private module Stdlib {
     }
 
     /** Gets a reference to an instance of the `BaseHTTPRequestHandler` class or any subclass. */
-    private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
       t.start() and
       result instanceof InstanceSource
       or
@@ -1009,7 +1009,7 @@ private module Stdlib {
    * Gets a reference to a `pathlib.Path` object.
    * This type tracker makes the monomorphic API use assumption.
    */
-  private DataFlow::LocalSourceNode pathlibPath(DataFlow::TypeTracker t) {
+  private DataFlow::TypeTrackingNode pathlibPath(DataFlow::TypeTracker t) {
     // Type construction
     t.start() and
     result = pathlib().getMember(pathlibPathConstructor()).getACall()
@@ -1159,7 +1159,7 @@ private module Stdlib {
   }
 
   /** Gets a reference to the result of calling `hashlib.new` with `algorithmName` as the first argument. */
-  private DataFlow::LocalSourceNode hashlibNewResult(DataFlow::TypeTracker t, string algorithmName) {
+  private DataFlow::TypeTrackingNode hashlibNewResult(DataFlow::TypeTracker t, string algorithmName) {
     t.start() and
     result = hashlibNewCall(algorithmName)
     or
