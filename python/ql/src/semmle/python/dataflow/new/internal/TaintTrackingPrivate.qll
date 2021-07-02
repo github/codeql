@@ -178,7 +178,7 @@ predicate containerStep(DataFlow::CfgNode nodeFrom, DataFlow::Node nodeTo) {
   // list.append, set.add
   exists(DataFlow::MethodCallNode call, DataFlow::Node obj |
     call.calls(obj, ["append", "add"]) and
-    obj.getPostUpdateNode() = nodeTo and
+    obj = nodeTo.(DataFlow::PostUpdateNode).getPreUpdateNode() and
     call.getArg(0) = nodeFrom
   )
 }
