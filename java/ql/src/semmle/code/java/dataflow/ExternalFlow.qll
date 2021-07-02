@@ -77,6 +77,7 @@ private import FlowSummary
  */
 private module Frameworks {
   private import internal.ContainerFlow
+  private import semmle.code.java.frameworks.android.XssSinks
   private import semmle.code.java.frameworks.ApacheHttp
   private import semmle.code.java.frameworks.apache.Collections
   private import semmle.code.java.frameworks.apache.Lang
@@ -91,10 +92,9 @@ private module Frameworks {
   private import semmle.code.java.frameworks.spring.SpringBeans
   private import semmle.code.java.security.ResponseSplitting
   private import semmle.code.java.security.InformationLeak
-  private import semmle.code.java.security.XSS
+  private import semmle.code.java.security.JexlInjectionSinkModels
   private import semmle.code.java.security.LdapInjection
   private import semmle.code.java.security.XPath
-  private import semmle.code.java.security.JexlInjection
   private import semmle.code.java.frameworks.android.SQLite
   private import semmle.code.java.frameworks.Jdbc
   private import semmle.code.java.frameworks.SpringJdbc
