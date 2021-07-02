@@ -62,7 +62,7 @@
  *     a suffix `x` (possible empty) that is most likely __not__ accepted.
  */
 
-private import ReDoSUtil
+import ReDoSUtil
 
 /**
  * Holds if state `s` might be inside a backtracking repetition.
