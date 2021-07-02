@@ -192,6 +192,8 @@ module DomBasedXss {
         this = instance.getArgument(0) and
         instance.getOptionArgument(1, "runScripts").mayHaveStringValue("dangerously")
       )
+      or
+      MooTools::interpretsNodeAsHtml(this)
     }
   }
 
