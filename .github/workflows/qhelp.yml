@@ -1,0 +1,38 @@
+name: Query help preview
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "**/*.qhelp"
+
+jobs:
+  qhelp:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+      - name: Determine changed files
+        id: changes
+        run: |
+          echo "::set-output name=qhelp_files::$(git diff --name-only --diff-filter=ACMRT HEAD~1 HEAD | grep .qhelp$ | xargs)"
+      - name: Fetch CodeQL
+        run: |
+          LATEST=$(gh release list --repo https://github.com/github/codeql-cli-binaries | cut -f 1 | sort --version-sort | tail -1)
+          gh release download --repo https://github.com/github/codeql-cli-binaries --pattern codeql-linux64.zip "$LATEST"
+          unzip -q codeql-linux64.zip
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - name: QHelp preview
+        if: ${{ steps.changes.outputs.qhelp_files }}
+        run: |
+          ( echo "QHelp previews:";
+          for path in ${{ steps.changes.outputs.qhelp_files }} ; do
+            echo "<details> <summary>${path}</summary>"
+            echo
+            codeql/codeql generate query-help --format=markdown ${path}
+            echo "</details>"
+          done) | gh pr comment "${{ github.event.pull_request.number }}" -F -
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
