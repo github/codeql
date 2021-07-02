@@ -21,7 +21,7 @@ abstract class AttrRef extends Node {
    * Holds if this data flow node accesses attribute named `attrName` on object `object`.
    */
   predicate accesses(Node object, string attrName) {
-    this.getObject() = object and getAttributeName() = attrName
+    this.getObject() = object and this.getAttributeName() = attrName
   }
 
   /**
