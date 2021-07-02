@@ -14,12 +14,18 @@ class FlexjsonSerializer extends RefType {
   FlexjsonSerializer() { this.hasQualifiedName("flexjson", "JSONSerializer") }
 }
 
+/** The class `flexjson.ObjectFactory`. */
+class FlexjsonObjectFactory extends RefType {
+  FlexjsonObjectFactory() { this.hasQualifiedName("flexjson", "ObjectFactory") }
+}
+
 /** The deserialization method `deserialize`. */
 class FlexjsonDeserializeMethod extends Method {
   FlexjsonDeserializeMethod() {
     this.getDeclaringType().getSourceDeclaration().getASourceSupertype*() instanceof
       FlexjsonDeserializer and
-    this.getName() = ["deserialize", "deserializeInto"]
+    this.getName() = "deserialize" and
+    not this.getAParameter().getType() instanceof FlexjsonObjectFactory // deserialization method with specified class types in object factory is unlikely to be vulnerable
   }
 }
 
