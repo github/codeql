@@ -231,7 +231,7 @@ void test3_2(const char *path, int arg)
 
 // --- open -> chmod ---
 
-void test3_1(const char *path)
+void test4_1(const char *path)
 {
 	FILE *f = NULL;
 
@@ -248,7 +248,7 @@ void test3_1(const char *path)
 
 // --- rename -> remove / open ---
 
-void test4_1(const char *path1, const char *path2)
+void test5_1(const char *path1, const char *path2)
 {
 	if (!rename(path1, path2))
 	{
@@ -256,7 +256,7 @@ void test4_1(const char *path1, const char *path2)
 	}
 }
 
-void test4_4(const char *path1, const char *path2)
+void test5_2(const char *path1, const char *path2)
 {
 	FILE *f = NULL;
 
@@ -268,7 +268,7 @@ void test4_4(const char *path1, const char *path2)
 
 // --- access -> open ---
 
-void test5_1(const char *path)
+void test6_1(const char *path)
 {
 	FILE *f = NULL;
 
@@ -280,7 +280,7 @@ void test5_1(const char *path)
 	}
 }
 
-void test5_2(const char *path)
+void test6_2(const char *path)
 {
 	FILE *f = NULL;
 
@@ -294,7 +294,7 @@ void test5_2(const char *path)
 	// ...
 }
 
-void test5_3(const char *path)
+void test6_3(const char *path)
 {
 	FILE *f = NULL;
 
@@ -306,7 +306,7 @@ void test5_3(const char *path)
 	}
 }
 
-void test5_4(const char *path)
+void test6_4(const char *path)
 {
 	FILE *f = NULL;
 
@@ -320,7 +320,7 @@ void test5_4(const char *path)
 	}
 }
 
-void test5_5(const char *path1, const char *path2)
+void test6_5(const char *path1, const char *path2)
 {
 	FILE *f = NULL;
 
