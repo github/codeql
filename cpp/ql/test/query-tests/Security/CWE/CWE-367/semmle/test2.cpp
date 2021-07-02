@@ -230,36 +230,6 @@ void test3_1(const char *path)
 	}
 }
 
-void test3_2(const char *path)
-{
-	FILE *f = NULL;
-
-	f = fopen(path, "w");
-	if (f)
-	{
-		// ...
-
-		fclose(f);
-	}
-
-	chmod(path, 0); // GOOD (doesn't depend on the fopen)
-}
-
-void test3_3(const char *path1, const char *path2)
-{
-	FILE *f = NULL;
-
-	f = fopen(path1, "w");
-	if (f)
-	{
-		// ...
-
-		fclose(f);
-
-		chmod(path2, 0); // GOOD (different file)
-	}
-}
-
 // --- rename -> remove / open ---
 
 void test4_1(const char *path1, const char *path2)
@@ -268,26 +238,6 @@ void test4_1(const char *path1, const char *path2)
 	{
 		remove(path1); // BAD???
 	}
-}
-
-void test4_2(const char *path1, const char *path2)
-{
-	if (rename(path1, path2))
-	{
-		// ...
-	} else {
-		remove(path1); // BAD???
-	}
-}
-
-void test4_3(const char *path1, const char *path2)
-{
-	if (rename(path1, path2))
-	{
-		// ...
-	}
-
-	remove(path1); // GOOD (does not depend on the rename)
 }
 
 void test4_4(const char *path1, const char *path2)
@@ -309,6 +259,8 @@ void test5_1(const char *path)
 	if (access(path))
 	{
 		f = fopen(path, "r"); // BAD
+
+		// ...
 	}
 }
 
@@ -321,5 +273,45 @@ void test5_2(const char *path)
 		// ...
 	}
 
-	f = fopen(path, "r"); // GOOD
+	f = fopen(path, "r"); // GOOD (doesn't depend on the access check)
+
+	// ...
+}
+
+void test5_3(const char *path)
+{
+	FILE *f = NULL;
+
+	if (!access(path))
+	{
+		f = fopen(path, "r"); // BAD
+
+		// ...
+	}
+}
+
+void test5_4(const char *path)
+{
+	FILE *f = NULL;
+
+	if (access(path))
+	{
+		// ...
+	} else {
+		f = fopen(path, "r"); // BAD
+
+		// ...
+	}
+}
+
+void test5_5(const char *path1, const char *path2)
+{
+	FILE *f = NULL;
+
+	if (access(path1))
+	{
+		f = fopen(path2, "r"); // GOOD (different file)
+
+		// ...
+	}
 }
