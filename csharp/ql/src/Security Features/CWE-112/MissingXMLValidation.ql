@@ -12,7 +12,7 @@
  */
 
 import csharp
-import semmle.code.csharp.security.dataflow.MissingXMLValidation::MissingXMLValidation
+import semmle.code.csharp.security.dataflow.MissingXMLValidationQuery::MissingXMLValidation
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink

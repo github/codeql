@@ -14,7 +14,7 @@
 
 import csharp
 import semmle.code.csharp.frameworks.system.Data
-import semmle.code.csharp.security.dataflow.HardcodedCredentials
+import semmle.code.csharp.security.dataflow.HardcodedCredentialsQuery
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 /**

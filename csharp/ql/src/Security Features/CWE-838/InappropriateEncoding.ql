@@ -16,9 +16,9 @@ import semmle.code.csharp.frameworks.System
 import semmle.code.csharp.frameworks.system.Net
 import semmle.code.csharp.frameworks.system.Web
 import semmle.code.csharp.frameworks.system.web.UI
-import semmle.code.csharp.security.dataflow.SqlInjection
+import semmle.code.csharp.security.dataflow.SqlInjectionQuery
 import semmle.code.csharp.security.dataflow.flowsinks.Html
-import semmle.code.csharp.security.dataflow.UrlRedirect
+import semmle.code.csharp.security.dataflow.UrlRedirectQuery
 import semmle.code.csharp.security.Sanitizers
 import semmle.code.csharp.dataflow.DataFlow2::DataFlow2
 import semmle.code.csharp.dataflow.DataFlow2::DataFlow2::PathGraph

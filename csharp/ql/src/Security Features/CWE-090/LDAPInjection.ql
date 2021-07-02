@@ -12,7 +12,7 @@
  */
 
 import csharp
-import semmle.code.csharp.security.dataflow.LDAPInjection::LDAPInjection
+import semmle.code.csharp.security.dataflow.LDAPInjectionQuery::LDAPInjection
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink

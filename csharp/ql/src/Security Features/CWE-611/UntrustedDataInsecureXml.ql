@@ -13,7 +13,7 @@
  */
 
 import csharp
-import semmle.code.csharp.security.dataflow.XMLEntityInjection::XMLEntityInjection
+import semmle.code.csharp.security.dataflow.XMLEntityInjectionQuery::XMLEntityInjection
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink

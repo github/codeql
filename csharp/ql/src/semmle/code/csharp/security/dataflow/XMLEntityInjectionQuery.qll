@@ -8,7 +8,7 @@ module XMLEntityInjection {
   import semmle.code.csharp.security.dataflow.flowsources.Remote
   import semmle.code.csharp.frameworks.System
   import semmle.code.csharp.frameworks.system.text.RegularExpressions
-  import semmle.code.csharp.security.xml.InsecureXML
+  import semmle.code.csharp.security.xml.InsecureXMLQuery
   import semmle.code.csharp.security.Sanitizers
 
   /**

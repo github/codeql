@@ -13,7 +13,7 @@
 
 import csharp
 import semmle.code.csharp.security.dataflow.flowsources.Stored
-import semmle.code.csharp.security.dataflow.XPathInjection
+import semmle.code.csharp.security.dataflow.XPathInjectionQuery
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 class StoredTaintTrackingConfiguration extends XPathInjection::TaintTrackingConfiguration {

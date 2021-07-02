@@ -12,7 +12,7 @@
  */
 
 import csharp
-import semmle.code.csharp.security.dataflow.SqlInjection::SqlInjection
+import semmle.code.csharp.security.dataflow.SqlInjectionQuery::SqlInjection
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 string getSourceType(DataFlow::Node node) {

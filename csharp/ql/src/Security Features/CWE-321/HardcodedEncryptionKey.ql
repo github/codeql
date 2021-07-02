@@ -14,7 +14,7 @@
  */
 
 import csharp
-import semmle.code.csharp.security.cryptography.EncryptionKeyDataFlow::EncryptionKeyDataFlow
+import semmle.code.csharp.security.cryptography.EncryptionKeyDataFlowQuery::EncryptionKeyDataFlow
 
 /**
  * The creation of a literal byte array.
