@@ -109,6 +109,22 @@ DataFlow::Node getThrowTarget(DataFlow::Node thrower) {
  */
 cached
 private module CachedSteps {
+  /** Gets the nesting depth of the given container, starting with the top-level at 0. */
+  cached
+  int getContainerDepth(StmtContainer container) {
+    not exists(container.getEnclosingContainer()) and
+    result = 0
+    or
+    result = 1 + getContainerDepth(container.getEnclosingContainer())
+  }
+
+  /** Gets the nesting depth of the container declaring the given captured variable. */
+  cached
+  int getCapturedVariableDepth(LocalVariable v) {
+    v.isCaptured() and
+    result = getContainerDepth(v.getDeclaringContainer())
+  }
+
   /**
    * Holds if `f` captures the given `variable` in `cap`.
    */

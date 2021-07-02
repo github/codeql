@@ -33,6 +33,8 @@ typeInferenceMismatch
 | callbacks.js:50:18:50:25 | source() | callbacks.js:30:29:30:29 | y |
 | callbacks.js:51:18:51:25 | source() | callbacks.js:30:29:30:29 | y |
 | callbacks.js:53:23:53:30 | source() | callbacks.js:58:10:58:10 | x |
+| capture-flow.js:9:11:9:18 | source() | capture-flow.js:14:10:14:16 | outer() |
+| capture-flow.js:9:11:9:18 | source() | capture-flow.js:19:6:19:16 | outerMost() |
 | capture-flow.js:31:14:31:21 | source() | capture-flow.js:31:6:31:22 | confuse(source()) |
 | captured-sanitizer.js:25:3:25:10 | source() | captured-sanitizer.js:15:10:15:10 | x |
 | closure.js:6:15:6:22 | source() | closure.js:8:8:8:31 | string. ... (taint) |
