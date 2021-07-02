@@ -1,0 +1,11 @@
+edges
+| ClientSuppliedIpUsedInSecurityCheck.py:13:17:13:54 | ControlFlowNode for Attribute() | ClientSuppliedIpUsedInSecurityCheck.py:14:12:14:20 | ControlFlowNode for client_ip |
+| ClientSuppliedIpUsedInSecurityCheck.py:20:17:20:54 | ControlFlowNode for Attribute() | ClientSuppliedIpUsedInSecurityCheck.py:21:12:21:20 | ControlFlowNode for client_ip |
+nodes
+| ClientSuppliedIpUsedInSecurityCheck.py:13:17:13:54 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| ClientSuppliedIpUsedInSecurityCheck.py:14:12:14:20 | ControlFlowNode for client_ip | semmle.label | ControlFlowNode for client_ip |
+| ClientSuppliedIpUsedInSecurityCheck.py:20:17:20:54 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| ClientSuppliedIpUsedInSecurityCheck.py:21:12:21:20 | ControlFlowNode for client_ip | semmle.label | ControlFlowNode for client_ip |
+#select
+| ClientSuppliedIpUsedInSecurityCheck.py:14:12:14:20 | ControlFlowNode for client_ip | ClientSuppliedIpUsedInSecurityCheck.py:13:17:13:54 | ControlFlowNode for Attribute() | ClientSuppliedIpUsedInSecurityCheck.py:14:12:14:20 | ControlFlowNode for client_ip | IP address spoofing might include code from $@. | ClientSuppliedIpUsedInSecurityCheck.py:13:17:13:54 | ControlFlowNode for Attribute() | this user input |
+| ClientSuppliedIpUsedInSecurityCheck.py:21:12:21:20 | ControlFlowNode for client_ip | ClientSuppliedIpUsedInSecurityCheck.py:20:17:20:54 | ControlFlowNode for Attribute() | ClientSuppliedIpUsedInSecurityCheck.py:21:12:21:20 | ControlFlowNode for client_ip | IP address spoofing might include code from $@. | ClientSuppliedIpUsedInSecurityCheck.py:20:17:20:54 | ControlFlowNode for Attribute() | this user input |
