@@ -1,0 +1,21 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../../../vmsync/ql"
+		},
+		{
+			"name": "[cpp-sqli-89900b3 source archive]",
+			"uri": "codeql-zip-archive://0-110/Users/hohn/local/codeql-training-material.cpp-sqli/cpp/codeql-dataflow-sql-injection/cpp-sqli-89900b3/src.zip"
+		},
+		{
+			"name": "[cpp-sqli-b16c6c4 source archive]",
+			"uri": "codeql-zip-archive://0-110/Users/hohn/local/codeql-training-material.cpp-sqli/cpp/codeql-dataflow-sql-injection/cpp-sqli-b16c6c4/src.zip"
+		}
+	],
+	"settings": {
+		"codeQL.runningQueries.autoSave": true
+	}
+}
