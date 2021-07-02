@@ -16,7 +16,11 @@ jobs:
       - name: Determine changed files
         id: changes
         run: |
-          echo "::set-output name=qhelp_files::$(git diff --name-only --diff-filter=ACMRT HEAD~1 HEAD | grep .qhelp$ | xargs)"
+          echo -n "::set-output name=qhelp_files::"
+          (git diff --name-only --diff-filter=ACMRT HEAD~1 HEAD | grep .qhelp$ | grep -v .inc.qhelp;
+           git diff --name-only --diff-filter=ACMRT HEAD~1 HEAD | grep .inc.qhelp$ | xargs -rn1 basename | xargs -rn1 git grep -l) |
+           sort -u | xargs
+
       - name: Fetch CodeQL
         run: |
           LATEST=$(gh release list --repo https://github.com/github/codeql-cli-binaries | cut -f 1 | sort --version-sort | tail -1)
