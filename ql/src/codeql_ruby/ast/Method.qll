@@ -105,9 +105,7 @@ class Method extends MethodBase, TMethod {
       j > i
     )
     or
-    // Top-level methods are private members of the special "main object" (except
-    // when run through `irb`), see e.g.
-    // https://codequizzes.wordpress.com/2014/04/23/rubys-main-object-top-level-context/
+    // Top-level methods are private members of the Object class
     this.getEnclosingModule() instanceof Toplevel
   }
 

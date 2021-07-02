@@ -91,7 +91,13 @@ class DataFlowCall extends CfgNodes::ExprNodes::CallCfgNode {
             self = this.getReceiver().getExpr() and
             pragma[only_bind_out](self.getEnclosingModule().getModule().getSuperClass*()) =
               pragma[only_bind_out](result.getEnclosingModule().getModule())
-          )
+          ) and
+          // For now, we restrict the scope of top-level declarations to their file.
+          // This may remove some plausible targets, but also removes a lot of
+          // implausible targets
+          if result.getEnclosingModule() instanceof Toplevel
+          then result.getFile() = this.getFile()
+          else any()
         else any()
       )
       or
@@ -166,7 +172,7 @@ private DataFlow::LocalSourceNode trackInstance(Module tp, TypeTracker t) {
     exists(Self self, Toplevel enclosing |
       self = result.asExpr().getExpr() and
       enclosing = self.getEnclosingModule() and
-      tp = TMain(enclosing) and
+      tp = TResolved("Object") and
       not self.getEnclosingMethod().getEnclosingModule() = enclosing
     )
     or
