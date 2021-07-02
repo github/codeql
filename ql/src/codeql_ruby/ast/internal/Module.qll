@@ -376,9 +376,17 @@ private TMethodOrExpr lookupMethodOrConst0(Module m, string name) {
   )
 }
 
+private AstNode getNode(TMethodOrExpr e) { e = TMethod(result) or e = TExpr(result) }
+
 private TMethodOrExpr lookupMethodOrConst(Module m, string name) {
   result = lookupMethodOrConst0(m, name)
   or
   not exists(lookupMethodOrConst0(m, name)) and
-  result = lookupMethodOrConst(m.getSuperClass(), name)
+  result = lookupMethodOrConst(m.getSuperClass(), name) and
+  // For now, we restrict the scope of top-level declarations to their file.
+  // This may remove some plausible targets, but also removes a lot of
+  // implausible targets
+  if getNode(result).getEnclosingModule() instanceof Toplevel
+  then getNode(result).getFile() = m.getADeclaration().getFile()
+  else any()
 }

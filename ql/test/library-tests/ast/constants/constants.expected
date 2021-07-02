@@ -40,16 +40,4 @@ lookupConst
 | constants.rb:12:9:13:11 | ModuleA::ModuleB::ClassC | GREETING | constants.rb:17:12:17:64 | ... + ... |
 | constants.rb:31:1:32:3 | ModuleA::ClassD | CONST_A | constants.rb:3:19:3:27 | "const_a" |
 | constants.rb:31:1:32:3 | ModuleA::ClassD | GREETING | constants.rb:17:12:17:64 | ... + ... |
-| file://:0:0:0:0 | Array | GREETING | constants.rb:17:12:17:64 | ... + ... |
-| file://:0:0:0:0 | Class | GREETING | constants.rb:17:12:17:64 | ... + ... |
-| file://:0:0:0:0 | Complex | GREETING | constants.rb:17:12:17:64 | ... + ... |
-| file://:0:0:0:0 | FalseClass | GREETING | constants.rb:17:12:17:64 | ... + ... |
-| file://:0:0:0:0 | Float | GREETING | constants.rb:17:12:17:64 | ... + ... |
-| file://:0:0:0:0 | Hash | GREETING | constants.rb:17:12:17:64 | ... + ... |
-| file://:0:0:0:0 | Integer | GREETING | constants.rb:17:12:17:64 | ... + ... |
-| file://:0:0:0:0 | Module | GREETING | constants.rb:17:12:17:64 | ... + ... |
-| file://:0:0:0:0 | NilClass | GREETING | constants.rb:17:12:17:64 | ... + ... |
-| file://:0:0:0:0 | Numeric | GREETING | constants.rb:17:12:17:64 | ... + ... |
 | file://:0:0:0:0 | Object | GREETING | constants.rb:17:12:17:64 | ... + ... |
-| file://:0:0:0:0 | Rational | GREETING | constants.rb:17:12:17:64 | ... + ... |
-| file://:0:0:0:0 | TrueClass | GREETING | constants.rb:17:12:17:64 | ... + ... |
