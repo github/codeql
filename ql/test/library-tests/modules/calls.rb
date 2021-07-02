@@ -91,6 +91,7 @@ class Module
     def module_eval; end
     def include; end
     def prepend; end
+    def private; end
 end
 
 class Object < Module
@@ -159,3 +160,8 @@ end
 S.new.s_method
 A.new.s_method
 B.new.s_method
+
+def private_on_main
+end
+
+private_on_main

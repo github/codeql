@@ -33,6 +33,11 @@ class MethodBase extends Callable, BodyStmt, Scope, TMethodBase {
   }
 }
 
+/** A call to `private`. */
+private class Private extends MethodCall {
+  Private() { this.getMethodName() = "private" }
+}
+
 /** A normal method. */
 class Method extends MethodBase, TMethod {
   private Generated::Method g;
@@ -57,6 +62,52 @@ class Method extends MethodBase, TMethod {
    * ```
    */
   final predicate isSetter() { g.getName() instanceof Generated::Setter }
+
+  /**
+   * Holds if this method is private. All methods with the name prefix
+   * `private` are private below:
+   *
+   * ```rb
+   * class C
+   *   private def private1
+   *   end
+   *
+   *   def public
+   *   end
+   *
+   *   def private2
+   *   end
+   *   private :private2
+   *
+   *   private
+   *
+   *   def private3
+   *   end
+   *
+   *   def private4
+   *   end
+   * end
+   * ```
+   */
+  predicate isPrivate() {
+    this = any(Private p).getArgument(0)
+    or
+    exists(ClassDeclaration c, Private p, SymbolLiteral s |
+      p.getArgument(0) = s and
+      p = c.getAStmt() and
+      this.getName() = s.getValueText() and
+      this = c.getAStmt()
+    )
+    or
+    exists(ClassDeclaration c, int i, int j |
+      c.getStmt(i).(Private).getNumberOfArguments() = 0 and
+      this = c.getStmt(j) and
+      j > i
+    )
+    or
+    // Top-level methods are private members of the Object class
+    this.getEnclosingModule() instanceof Toplevel
+  }
 
   final override Parameter getParameter(int n) {
     toGenerated(result) = g.getParameters().getChild(n)

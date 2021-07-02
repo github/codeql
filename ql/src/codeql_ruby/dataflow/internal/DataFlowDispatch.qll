@@ -84,7 +84,21 @@ class DataFlowCall extends CfgNodes::ExprNodes::CallCfgNode {
     exists(string method |
       exists(Module tp |
         this.instanceMethodCall(tp, method) and
-        result = lookupMethod(tp, method)
+        result = lookupMethod(tp, method) and
+        if result.(Method).isPrivate()
+        then
+          exists(Self self |
+            self = this.getReceiver().getExpr() and
+            pragma[only_bind_out](self.getEnclosingModule().getModule().getSuperClass*()) =
+              pragma[only_bind_out](result.getEnclosingModule().getModule())
+          ) and
+          // For now, we restrict the scope of top-level declarations to their file.
+          // This may remove some plausible targets, but also removes a lot of
+          // implausible targets
+          if result.getEnclosingModule() instanceof Toplevel
+          then result.getFile() = this.getFile()
+          else any()
+        else any()
       )
       or
       exists(DataFlow::LocalSourceNode sourceNode |

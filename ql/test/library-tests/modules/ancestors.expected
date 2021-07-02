@@ -1,5 +1,5 @@
 calls.rb:
-#  101| Hash
+#  102| Hash
 #-----| super -> Object
 
 #   77| Integer
@@ -10,11 +10,11 @@ calls.rb:
 #   90| Module
 #-----| super -> Object
 
-#   96| Object
+#   97| Object
 #-----| include -> Kernel
 #-----| super -> BasicObject
 
-#  105| Array
+#  106| Array
 #-----| super -> Object
 
 #-----| BasicObject
@@ -49,23 +49,25 @@ calls.rb:
 
 #   15| M
 
-#   29| C
+private.rb:
+#    1| C
 #-----| super -> Object
 #-----| include -> M
 
+calls.rb:
 #   51| D
 #-----| super -> C
 
 #   82| String
 #-----| super -> Object
 
-#  143| S
+#  144| S
 #-----| super -> Object
 
-#  149| A
+#  150| A
 #-----| super -> S
 
-#  154| B
+#  155| B
 #-----| super -> S
 
 hello.rb:
