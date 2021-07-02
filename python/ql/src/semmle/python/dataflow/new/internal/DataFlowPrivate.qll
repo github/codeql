@@ -19,7 +19,7 @@ module syntheticPreUpdateNode {
     SyntheticPreUpdateNode() { this = TSyntheticPreUpdateNode(post) }
 
     /** Gets the node for which this is a synthetic pre-update node. */
-    override NeedsSyntheticPreUpdateNode getPostUpdateNode() { result = post }
+    Node getPostUpdateNode() { result = post }
 
     override string toString() { result = "[pre " + post.label() + "] " + post.toString() }
 
