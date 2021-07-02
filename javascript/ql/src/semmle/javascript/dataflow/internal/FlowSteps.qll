@@ -115,7 +115,8 @@ private module CachedSteps {
   cached
   predicate captures(Function f, LocalVariable variable, SsaVariableCapture cap) {
     variable = cap.getSourceVariable() and
-    f = cap.getContainer()
+    f = cap.getContainer() and
+    not f = variable.getDeclaringContainer()
   }
 
   /**
