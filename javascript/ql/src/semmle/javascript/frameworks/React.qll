@@ -248,7 +248,11 @@ abstract class ReactComponent extends ASTNode {
  * Holds if `f` always returns a JSX element or fragment, or a React element.
  */
 private predicate alwaysReturnsJSXOrReactElements(Function f) {
-  forex(Expr e | e.flow().(DataFlow::SourceNode).flowsToExpr(f.getAReturnedExpr()) |
+  forex(Expr e |
+    e.flow().(DataFlow::SourceNode).flowsToExpr(f.getAReturnedExpr()) and
+    // Allow returning string constants in addition to JSX/React elemnts.
+    not exists(e.getStringValue())
+  |
     e instanceof JSXNode or
     e instanceof ReactElementDefinition
   )
