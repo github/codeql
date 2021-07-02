@@ -226,7 +226,7 @@ void test3_1(const char *path)
 
 		fclose(f);
 
-		chmod(path, 0); // BAD
+		chmod(path, 0); // BAD???
 	}
 }
 
@@ -266,7 +266,7 @@ void test4_1(const char *path1, const char *path2)
 {
 	if (!rename(path1, path2))
 	{
-		remove(path1); // BAD
+		remove(path1); // BAD???
 	}
 }
 
@@ -276,7 +276,7 @@ void test4_2(const char *path1, const char *path2)
 	{
 		// ...
 	} else {
-		remove(path1); // BAD
+		remove(path1); // BAD???
 	}
 }
 
@@ -296,7 +296,7 @@ void test4_4(const char *path1, const char *path2)
 
 	if (rename(path1, path2))
 	{
-		f = fopen(path2, "r"); // BAD [NOT DETECTED]
+		f = fopen(path2, "r"); // BAD??? [NOT DETECTED]
 	}
 }
 
