@@ -1,8 +1,8 @@
 | comments1.cs:8:1:8:18 | /// ... | comments1.cs:9:7:9:7 | C | An XML comment |
-| comments1.cs:37:5:39:41 | /* ... */ | comments1.cs:40:9:40:9 | x |  |
-| comments1.cs:40:13:41:51 | // ... | comments1.cs:40:9:40:9 | x | as this line |
-| comments1.cs:43:15:43:36 | // ... | comments1.cs:43:9:43:9 | y | These are different |
-| comments1.cs:44:15:44:32 | // ... | comments1.cs:44:9:44:9 | z | comment blocks. |
+| comments1.cs:36:5:38:41 | /* ... */ | comments1.cs:39:9:39:9 | x |  |
+| comments1.cs:39:13:40:51 | // ... | comments1.cs:39:9:39:9 | x | as this line |
+| comments1.cs:42:15:42:36 | // ... | comments1.cs:42:9:42:9 | y | These are different |
+| comments1.cs:43:15:43:32 | // ... | comments1.cs:43:9:43:9 | z | comment blocks. |
 | comments2.cs:10:1:10:6 | /// ... | comments2.cs:11:7:11:8 | C2 | C2 |
 | comments2.cs:13:17:13:25 | // ... | comments2.cs:13:9:13:14 | field1 | field1 |
 | comments2.cs:14:17:14:25 | // ... | comments2.cs:14:9:14:14 | field2 | field2 |

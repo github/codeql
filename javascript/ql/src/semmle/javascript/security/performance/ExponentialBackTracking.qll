@@ -68,14 +68,14 @@ import ReDoSUtil
  * Holds if state `s` might be inside a backtracking repetition.
  */
 pragma[noinline]
-predicate stateInsideBacktracking(State s) {
+private predicate stateInsideBacktracking(State s) {
   s.getRepr().getParent*() instanceof MaybeBacktrackingRepetition
 }
 
 /**
  * A infinitely repeating quantifier that might backtrack.
  */
-class MaybeBacktrackingRepetition extends InfiniteRepetitionQuantifier {
+private class MaybeBacktrackingRepetition extends InfiniteRepetitionQuantifier {
   MaybeBacktrackingRepetition() {
     exists(RegExpTerm child |
       child instanceof RegExpAlt or
@@ -89,7 +89,7 @@ class MaybeBacktrackingRepetition extends InfiniteRepetitionQuantifier {
 /**
  * A state in the product automaton.
  */
-newtype TStatePair =
+private newtype TStatePair =
   /**
    * We lazily only construct those states that we are actually
    * going to need: `(q, q)` for every fork state `q`, and any
@@ -112,7 +112,7 @@ newtype TStatePair =
  * Gets a unique number for a `state`.
  * Is used to create an ordering of states, where states with the same `toString()` will be ordered differently.
  */
-int rankState(State state) {
+private int rankState(State state) {
   state =
     rank[result](State s, Location l |
       l = s.getRepr().getLocation()
@@ -124,7 +124,7 @@ int rankState(State state) {
 /**
  * A state in the product automaton.
  */
-class StatePair extends TStatePair {
+private class StatePair extends TStatePair {
   State q1;
   State q2;
 
@@ -145,7 +145,7 @@ class StatePair extends TStatePair {
  *
  * Used in `statePairDist`
  */
-predicate isStatePair(StatePair p) { any() }
+private predicate isStatePair(StatePair p) { any() }
 
 /**
  * Holds if there are transitions from the components of `q` to the corresponding
@@ -153,13 +153,13 @@ predicate isStatePair(StatePair p) { any() }
  *
  * Used in `statePairDist`
  */
-predicate delta2(StatePair q, StatePair r) { step(q, _, _, r) }
+private predicate delta2(StatePair q, StatePair r) { step(q, _, _, r) }
 
 /**
  * Gets the minimum length of a path from `q` to `r` in the
  * product automaton.
  */
-int statePairDist(StatePair q, StatePair r) =
+private int statePairDist(StatePair q, StatePair r) =
   shortestDistances(isStatePair/1, delta2/2)(q, r, result)
 
 /**
@@ -172,7 +172,7 @@ int statePairDist(StatePair q, StatePair r) =
  * expression cannot be vulnerable to ReDoS attacks anyway).
  */
 pragma[noopt]
-predicate isFork(State q, InputSymbol s1, InputSymbol s2, State r1, State r2) {
+private predicate isFork(State q, InputSymbol s1, InputSymbol s2, State r1, State r2) {
   stateInsideBacktracking(q) and
   exists(State q1, State q2 |
     q1 = epsilonSucc*(q) and
@@ -222,7 +222,7 @@ predicate isFork(State q, InputSymbol s1, InputSymbol s2, State r1, State r2) {
  * Gets the state pair `(q1, q2)` or `(q2, q1)`; note that only
  * one or the other is defined.
  */
-StatePair mkStatePair(State q1, State q2) {
+private StatePair mkStatePair(State q1, State q2) {
   result = MkStatePair(q1, q2) or result = MkStatePair(q2, q1)
 }
 
@@ -230,7 +230,7 @@ StatePair mkStatePair(State q1, State q2) {
  * Holds if there are transitions from the components of `q` to the corresponding
  * components of `r` labelled with `s1` and `s2`, respectively.
  */
-predicate step(StatePair q, InputSymbol s1, InputSymbol s2, StatePair r) {
+private predicate step(StatePair q, InputSymbol s1, InputSymbol s2, StatePair r) {
   exists(State r1, State r2 | step(q, s1, s2, r1, r2) and r = mkStatePair(r1, r2))
 }
 
@@ -242,7 +242,7 @@ predicate step(StatePair q, InputSymbol s1, InputSymbol s2, StatePair r) {
  * inside a repetition that might backtrack.
  */
 pragma[noopt]
-predicate step(StatePair q, InputSymbol s1, InputSymbol s2, State r1, State r2) {
+private predicate step(StatePair q, InputSymbol s1, InputSymbol s2, State r1, State r2) {
   exists(State q1, State q2 | q.getLeft() = q1 and q.getRight() = q2 |
     deltaClosed(q1, s1, r1) and
     deltaClosed(q2, s2, r2) and
@@ -268,7 +268,7 @@ private newtype TTrace =
  * A list of pairs of input symbols that describe a path in the product automaton
  * starting from some fork state.
  */
-class Trace extends TTrace {
+private class Trace extends TTrace {
   /** Gets a textual representation of this element. */
   string toString() {
     this = Nil() and result = "Nil()"
@@ -282,7 +282,7 @@ class Trace extends TTrace {
 /**
  * Gets a string corresponding to the trace `t`.
  */
-string concretise(Trace t) {
+private string concretise(Trace t) {
   t = Nil() and result = ""
   or
   exists(InputSymbol s1, InputSymbol s2, Trace rest | t = Step(s1, s2, rest) |
@@ -294,7 +294,7 @@ string concretise(Trace t) {
  * Holds if `r` is reachable from `(fork, fork)` under input `w`, and there is
  * a path from `r` back to `(fork, fork)` with `rem` steps.
  */
-predicate isReachableFromFork(State fork, StatePair r, Trace w, int rem) {
+private predicate isReachableFromFork(State fork, StatePair r, Trace w, int rem) {
   // base case
   exists(InputSymbol s1, InputSymbol s2, State q1, State q2 |
     isFork(fork, s1, s2, q1, q2) and
@@ -316,7 +316,7 @@ predicate isReachableFromFork(State fork, StatePair r, Trace w, int rem) {
  * Gets a state in the product automaton from which `(fork, fork)` is
  * reachable in zero or more epsilon transitions.
  */
-StatePair getAForkPair(State fork) {
+private StatePair getAForkPair(State fork) {
   isFork(fork, _, _, _, _) and
   result = MkStatePair(epsilonPred*(fork), epsilonPred*(fork))
 }
@@ -324,7 +324,7 @@ StatePair getAForkPair(State fork) {
 /**
  * Holds if `fork` is a pumpable fork with word `w`.
  */
-predicate isPumpable(State fork, string w) {
+private predicate isPumpable(State fork, string w) {
   exists(StatePair q, Trace t |
     isReachableFromFork(fork, q, t, _) and
     q = getAForkPair(fork) and

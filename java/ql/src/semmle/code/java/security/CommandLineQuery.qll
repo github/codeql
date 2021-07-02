@@ -1,3 +1,12 @@
+/**
+ * Provides classes and methods common to queries `java/command-line-injection`, `java/command-line-concatenation`
+ * and their experimental derivatives.
+ *
+ * Do not import this from a library file, in order to reduce the risk of
+ * unintentionally bringing a TaintTracking::Configuration into scope in an unrelated
+ * query.
+ */
+
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.ExternalProcess
 import semmle.code.java.security.CommandArguments

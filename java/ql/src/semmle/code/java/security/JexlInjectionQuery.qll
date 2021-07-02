@@ -2,6 +2,7 @@
 
 import java
 import semmle.code.java.dataflow.TaintTracking
+import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.ExternalFlow
 
 /**
@@ -13,46 +14,6 @@ abstract class JexlEvaluationSink extends DataFlow::ExprNode { }
 /** Default sink for JXEL injection vulnerabilities. */
 private class DefaultJexlEvaluationSink extends JexlEvaluationSink {
   DefaultJexlEvaluationSink() { sinkNode(this, "jexl") }
-}
-
-private class DefaultJexlInjectionSinkModel extends SinkModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        // JEXL2
-        "org.apache.commons.jexl2;JexlEngine;false;getProperty;(JexlContext,Object,String);;Argument[2];jexl",
-        "org.apache.commons.jexl2;JexlEngine;false;getProperty;(Object,String);;Argument[1];jexl",
-        "org.apache.commons.jexl2;JexlEngine;false;setProperty;(JexlContext,Object,String,Object);;Argument[2];jexl",
-        "org.apache.commons.jexl2;JexlEngine;false;setProperty;(Object,String,Object);;Argument[1];jexl",
-        "org.apache.commons.jexl2;Expression;false;evaluate;;;Argument[-1];jexl",
-        "org.apache.commons.jexl2;Expression;false;callable;;;Argument[-1];jexl",
-        "org.apache.commons.jexl2;JexlExpression;false;evaluate;;;Argument[-1];jexl",
-        "org.apache.commons.jexl2;JexlExpression;false;callable;;;Argument[-1];jexl",
-        "org.apache.commons.jexl2;Script;false;execute;;;Argument[-1];jexl",
-        "org.apache.commons.jexl2;Script;false;callable;;;Argument[-1];jexl",
-        "org.apache.commons.jexl2;JexlScript;false;execute;;;Argument[-1];jexl",
-        "org.apache.commons.jexl2;JexlScript;false;callable;;;Argument[-1];jexl",
-        "org.apache.commons.jexl2;UnifiedJEXL$Expression;false;evaluate;;;Argument[-1];jexl",
-        "org.apache.commons.jexl2;UnifiedJEXL$Expression;false;prepare;;;Argument[-1];jexl",
-        "org.apache.commons.jexl2;UnifiedJEXL$Template;false;evaluate;;;Argument[-1];jexl",
-        // JEXL3
-        "org.apache.commons.jexl3;JexlEngine;false;getProperty;(JexlContext,Object,String);;Argument[2];jexl",
-        "org.apache.commons.jexl3;JexlEngine;false;getProperty;(Object,String);;Argument[1];jexl",
-        "org.apache.commons.jexl3;JexlEngine;false;setProperty;(JexlContext,Object,String);;Argument[2];jexl",
-        "org.apache.commons.jexl3;JexlEngine;false;setProperty;(Object,String,Object);;Argument[1];jexl",
-        "org.apache.commons.jexl3;Expression;false;evaluate;;;Argument[-1];jexl",
-        "org.apache.commons.jexl3;Expression;false;callable;;;Argument[-1];jexl",
-        "org.apache.commons.jexl3;JexlExpression;false;evaluate;;;Argument[-1];jexl",
-        "org.apache.commons.jexl3;JexlExpression;false;callable;;;Argument[-1];jexl",
-        "org.apache.commons.jexl3;Script;false;execute;;;Argument[-1];jexl",
-        "org.apache.commons.jexl3;Script;false;callable;;;Argument[-1];jexl",
-        "org.apache.commons.jexl3;JexlScript;false;execute;;;Argument[-1];jexl",
-        "org.apache.commons.jexl3;JexlScript;false;callable;;;Argument[-1];jexl",
-        "org.apache.commons.jexl3;JxltEngine$Expression;false;evaluate;;;Argument[-1];jexl",
-        "org.apache.commons.jexl3;JxltEngine$Expression;false;prepare;;;Argument[-1];jexl",
-        "org.apache.commons.jexl3;JxltEngine$Template;false;evaluate;;;Argument[-1];jexl"
-      ]
-  }
 }
 
 /**
@@ -74,6 +35,23 @@ private class DefaultJexlInjectionAdditionalTaintStep extends JexlInjectionAddit
     createJexlScriptStep(node1, node2) or
     createJexlExpressionStep(node1, node2) or
     createJexlTemplateStep(node1, node2)
+  }
+}
+
+/**
+ * A taint-tracking configuration for unsafe user input
+ * that is used to construct and evaluate a JEXL expression.
+ * It supports both JEXL 2 and 3.
+ */
+class JexlInjectionConfig extends TaintTracking::Configuration {
+  JexlInjectionConfig() { this = "JexlInjectionConfig" }
+
+  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+
+  override predicate isSink(DataFlow::Node sink) { sink instanceof JexlEvaluationSink }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+    any(JexlInjectionAdditionalTaintStep c).step(node1, node2)
   }
 }
 

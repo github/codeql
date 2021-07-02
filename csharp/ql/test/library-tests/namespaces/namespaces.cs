@@ -44,7 +44,6 @@ namespace P1.P2
 namespace Empty
 {
 
-
 }
 
 namespace Q1.Q2

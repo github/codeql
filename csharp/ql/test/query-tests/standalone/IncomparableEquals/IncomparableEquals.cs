@@ -1,5 +1,3 @@
-// semmle-extractor-options: --standalone
-
 class Test
 {
     static void Main(string[] args)
