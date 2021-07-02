@@ -1117,6 +1117,16 @@ ReturnPosition getReturnPosition(ReturnNodeExt ret) {
   result = getReturnPosition0(ret, ret.getKind())
 }
 
+bindingset[innercc, inner, call]
+predicate checkCallContextReturn(CallContext innercc, DataFlowCallable inner, DataFlowCall call) {
+  resolveReturn(innercc, inner, call)
+}
+
+bindingset[cc, call, calltarget]
+predicate checkCallContextCall(CallContext cc, DataFlowCall call, DataFlowCallable calltarget) {
+  calltarget = resolveCall(call, cc)
+}
+
 bindingset[cc, callable]
 predicate resolveReturn(CallContext cc, DataFlowCallable callable, DataFlowCall call) {
   cc instanceof CallContextAny and callable = viableCallableExt(call)
