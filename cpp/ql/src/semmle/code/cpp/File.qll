@@ -272,20 +272,16 @@ class File extends Container, @file {
    * are compiled by a Microsoft compiler are detected by this predicate.
    */
   predicate compiledAsMicrosoft() {
-    exists(Compilation c |
-      c.getAFileCompiled() = this and
+    exists(File f, Compilation c |
+      c.getAFileCompiled() = f and
       (
         c.getAnArgument() = "--microsoft" or
         c.getAnArgument()
             .toLowerCase()
             .replaceAll("\\", "/")
             .matches(["%/cl.exe", "%/clang-cl.exe"])
-      )
-    )
-    or
-    exists(File parent |
-      parent.compiledAsMicrosoft() and
-      parent.getAnIncludedFile() = this
+      ) and
+      f.getAnIncludedFile*() = this
     )
   }
 
@@ -361,7 +357,7 @@ class File extends Container, @file {
 /**
  * Holds if any file was compiled by a Microsoft compiler.
  */
-cached predicate anyFileCompiledAsMicrosoft() { any(File f).compiledAsMicrosoft() }
+predicate anyFileCompiledAsMicrosoft() { any(File f).compiledAsMicrosoft() }
 
 /**
  * A C/C++ header file, as determined (mainly) by file extension.
