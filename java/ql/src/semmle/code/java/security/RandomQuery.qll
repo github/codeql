@@ -1,3 +1,5 @@
+/** Provides clases and methods shared by randomness-related queries. */
+
 import java
 import semmle.code.java.dataflow.DefUse
 import semmle.code.java.dataflow.DataFlow6
@@ -89,6 +91,10 @@ private predicate safelySeeded(RValue use) {
   )
 }
 
+/**
+ * Holds if predictable seed `source` is used to initialise a random-number generator
+ * used at `use`.
+ */
 predicate unsafelySeeded(RValue use, PredictableSeedExpr source) {
   isSeedingSource(_, use, source) and
   not safelySeeded(use)
@@ -131,6 +137,10 @@ private predicate isSeedingConstruction(ClassInstanceExpr c, Expr arg) {
   c.getArgument(0) = arg
 }
 
+/**
+ * A constant, call to a `ReturnsPredictableExpr` method, or an array initialiser
+ * consisting entirely of the same.
+ */
 class PredictableSeedExpr extends Expr {
   PredictableSeedExpr() {
     this.(MethodAccess).getCallee() instanceof ReturnsPredictableExpr
@@ -145,9 +155,15 @@ class PredictableSeedExpr extends Expr {
   }
 }
 
+/**
+ * A method whose return value is predictable (not necessarily constant).
+ *
+ * Extend this class in order that all randomness-related queries should consider the result
+ * of a particular method predictable when noting bad RNG seeding and related issues.
+ */
 abstract class ReturnsPredictableExpr extends Method { }
 
-class ReturnsSystemTime extends ReturnsPredictableExpr {
+private class ReturnsSystemTime extends ReturnsPredictableExpr {
   ReturnsSystemTime() {
     this.getDeclaringType().hasQualifiedName("java.lang", "System") and
     this.hasName("currentTimeMillis")
