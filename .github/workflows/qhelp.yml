@@ -18,8 +18,8 @@ jobs:
         run: |
           echo -n "::set-output name=qhelp_files::"
           (git diff --name-only --diff-filter=ACMRT HEAD~1 HEAD | grep .qhelp$ | grep -v .inc.qhelp;
-           git diff --name-only --diff-filter=ACMRT HEAD~1 HEAD | grep .inc.qhelp$ | xargs -rn1 basename | xargs -rn1 git grep -l) |
-           sort -u | xargs
+           git diff --name-only --diff-filter=ACMRT HEAD~1 HEAD | grep .inc.qhelp$ | xargs -d '\n' -rn1 basename | xargs -d '\n' -rn1 git grep -l) |
+           sort -u | xargs -d '\n' -n1 printf "'%s' "
 
       - name: Fetch CodeQL
         run: |
