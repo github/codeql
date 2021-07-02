@@ -22,5 +22,9 @@
     "TypeTracker": [
         "codeql/python/ql/src/semmle/python/dataflow/new/internal/TypeTracker.qll",
         "ql/src/codeql_ruby/typetracking/TypeTracker.qll"
-    ]
+    ],
+  "Inline Test Expectations": [
+    "codeql/python/ql/test/TestUtilities/InlineExpectationsTest.qll",
+    "ql/test/TestUtilities/InlineExpectationsTest.qll"
+  ]
 }

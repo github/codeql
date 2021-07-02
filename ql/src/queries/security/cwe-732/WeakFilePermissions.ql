@@ -12,22 +12,7 @@
 import ruby
 import codeql_ruby.DataFlow
 import DataFlow::PathGraph
-private import codeql_ruby.dataflow.SSA
-
-// TODO: account for flows through tuple assignments
-/** An expression referencing the File or FileUtils module */
-class FileModuleAccess extends Expr {
-  FileModuleAccess() {
-    this.(ConstantAccess).getName() = "File"
-    or
-    this.(ConstantAccess).getName() = "FileUtils"
-    or
-    exists(FileModuleAccess fma, Ssa::WriteDefinition def |
-      def.getARead() = this.getAControlFlowNode() and
-      def.getWriteAccess().getParent().(Assignment).getRightOperand() = fma
-    )
-  }
-}
+import codeql_ruby.ApiGraphs
 
 bindingset[p]
 int world_permission(int p) { result = p.bitAnd(7) }
@@ -58,14 +43,13 @@ class PermissivePermissionsExpr extends Expr {
 }
 
 /** A permissions argument of a call to a File/FileUtils method that may modify file permissions */
-class PermissionArgument extends Expr {
-  private MethodCall call;
-  private string methodName;
+class PermissionArgument extends DataFlow::Node {
+  private DataFlow::CallNode call;
 
   PermissionArgument() {
-    call.getReceiver() instanceof FileModuleAccess and
-    call.getMethodName() = methodName and
-    (
+    exists(string methodName |
+      call = API::moduleImport(["File", "FileUtils"]).getAMethodCall(methodName)
+    |
       methodName in ["chmod", "chmod_R", "lchmod"] and this = call.getArgument(0)
       or
       methodName = "mkfifo" and this = call.getArgument(1)
@@ -78,7 +62,7 @@ class PermissionArgument extends Expr {
     )
   }
 
-  MethodCall getCall() { result = call }
+  MethodCall getCall() { result = call.asExpr().getExpr() }
 }
 
 class PermissivePermissionsConfig extends DataFlow::Configuration {
@@ -88,14 +72,12 @@ class PermissivePermissionsConfig extends DataFlow::Configuration {
     exists(PermissivePermissionsExpr ppe | source.asExpr().getExpr() = ppe)
   }
 
-  override predicate isSink(DataFlow::Node sink) {
-    exists(PermissionArgument arg | sink.asExpr().getExpr() = arg)
-  }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof PermissionArgument }
 }
 
 from
   DataFlow::PathNode source, DataFlow::PathNode sink, PermissivePermissionsConfig conf,
   PermissionArgument arg
-where conf.hasFlowPath(source, sink) and arg = sink.getNode().asExpr().getExpr()
+where conf.hasFlowPath(source, sink) and arg = sink.getNode()
 select source.getNode(), source, sink, "Overly permissive mask in $@ sets file to $@.",
   arg.getCall(), arg.getCall().toString(), source.getNode(), source.getNode().toString()
