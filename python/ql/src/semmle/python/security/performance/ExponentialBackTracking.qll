@@ -75,7 +75,7 @@ private predicate stateInsideBacktracking(State s) {
 /**
  * A infinitely repeating quantifier that might backtrack.
  */
-class MaybeBacktrackingRepetition extends InfiniteRepetitionQuantifier {
+private class MaybeBacktrackingRepetition extends InfiniteRepetitionQuantifier {
   MaybeBacktrackingRepetition() {
     exists(RegExpTerm child |
       child instanceof RegExpAlt or
@@ -89,7 +89,7 @@ class MaybeBacktrackingRepetition extends InfiniteRepetitionQuantifier {
 /**
  * A state in the product automaton.
  */
-newtype TStatePair =
+private newtype TStatePair =
   /**
    * We lazily only construct those states that we are actually
    * going to need: `(q, q)` for every fork state `q`, and any
@@ -112,7 +112,7 @@ newtype TStatePair =
  * Gets a unique number for a `state`.
  * Is used to create an ordering of states, where states with the same `toString()` will be ordered differently.
  */
-int rankState(State state) {
+private int rankState(State state) {
   state =
     rank[result](State s, Location l |
       l = s.getRepr().getLocation()
@@ -124,7 +124,7 @@ int rankState(State state) {
 /**
  * A state in the product automaton.
  */
-class StatePair extends TStatePair {
+private class StatePair extends TStatePair {
   State q1;
   State q2;
 
@@ -159,7 +159,7 @@ private predicate delta2(StatePair q, StatePair r) { step(q, _, _, r) }
  * Gets the minimum length of a path from `q` to `r` in the
  * product automaton.
  */
-int statePairDist(StatePair q, StatePair r) =
+private int statePairDist(StatePair q, StatePair r) =
   shortestDistances(isStatePair/1, delta2/2)(q, r, result)
 
 /**
@@ -222,7 +222,7 @@ private predicate isFork(State q, InputSymbol s1, InputSymbol s2, State r1, Stat
  * Gets the state pair `(q1, q2)` or `(q2, q1)`; note that only
  * one or the other is defined.
  */
-StatePair mkStatePair(State q1, State q2) {
+private StatePair mkStatePair(State q1, State q2) {
   result = MkStatePair(q1, q2) or result = MkStatePair(q2, q1)
 }
 
@@ -268,7 +268,7 @@ private newtype TTrace =
  * A list of pairs of input symbols that describe a path in the product automaton
  * starting from some fork state.
  */
-class Trace extends TTrace {
+private class Trace extends TTrace {
   /** Gets a textual representation of this element. */
   string toString() {
     this = Nil() and result = "Nil()"
@@ -282,7 +282,7 @@ class Trace extends TTrace {
 /**
  * Gets a string corresponding to the trace `t`.
  */
-string concretise(Trace t) {
+private string concretise(Trace t) {
   t = Nil() and result = ""
   or
   exists(InputSymbol s1, InputSymbol s2, Trace rest | t = Step(s1, s2, rest) |
@@ -316,7 +316,7 @@ private predicate isReachableFromFork(State fork, StatePair r, Trace w, int rem)
  * Gets a state in the product automaton from which `(fork, fork)` is
  * reachable in zero or more epsilon transitions.
  */
-StatePair getAForkPair(State fork) {
+private StatePair getAForkPair(State fork) {
   isFork(fork, _, _, _, _) and
   result = MkStatePair(epsilonPred*(fork), epsilonPred*(fork))
 }
