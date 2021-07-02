@@ -19,8 +19,10 @@ import semmle.code.cpp.controlflow.Guards
  * An operation on a filename that is likely to modify the corresponding file
  * and may return an indication of success.
  *
- * Note: we're not interested in operations on file descriptors, as they
- * are better behaved.
+ * Note: we're not interested in operations where the file is specified by a
+ * descriptor, rather than a filename, as they are better behaved. We are
+ * interested in functions that take a filename and return a file descriptor,
+ * however.
  */
 FunctionCall filenameOperation(Expr path) {
   exists(string name | name = result.getTarget().getName() |
