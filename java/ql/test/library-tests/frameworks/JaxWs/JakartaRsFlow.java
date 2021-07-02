@@ -169,7 +169,7 @@ public class JakartaRsFlow {
 
     AbstractMultivaluedMap<String, String> amm3 = new MyAbstractMultivaluedMapJak<String, String>(null);
     amm3.put("key", list);
-    sink(amm3.get("key").get(0)); // $ MISSING: hasValueFlow
+    sink(amm3.get("key").get(0)); // $ hasValueFlow
   }
 
   void testMultivaluedHashMap(Map<String, String> map1, Map<String, String> map2,

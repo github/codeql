@@ -586,14 +586,6 @@ private predicate elementSpec(
   summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _)
 }
 
-bindingset[namespace, type, subtypes]
-private RefType interpretType(string namespace, string type, boolean subtypes) {
-  exists(RefType t |
-    t.hasQualifiedName(namespace, type) and
-    if subtypes = true then result.getASourceSupertype*() = t else result = t
-  )
-}
-
 private string paramsStringPart(Callable c, int i) {
   i = -1 and result = "("
   or
@@ -614,9 +606,13 @@ private Element interpretElement0(
   string namespace, string type, boolean subtypes, string name, string signature
 ) {
   elementSpec(namespace, type, subtypes, name, signature, _) and
-  exists(RefType t | t = interpretType(namespace, type, subtypes) |
+  exists(RefType t | t.hasQualifiedName(namespace, type) |
     exists(Member m |
-      result = m and
+      (
+        result = m
+        or
+        subtypes = true and result.(SrcMethod).overridesOrInstantiates+(m)
+      ) and
       m.getDeclaringType() = t and
       m.hasName(name)
     |
@@ -625,7 +621,7 @@ private Element interpretElement0(
       paramsString(m) = signature
     )
     or
-    result = t and
+    (if subtypes = true then result.(SrcRefType).getASourceSupertype*() = t else result = t) and
     name = "" and
     signature = ""
   )
