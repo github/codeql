@@ -10,7 +10,7 @@ import java.util.Objects;
 import javax.crypto.Cipher;
 import javax.crypto.Mac;
 
-public class NonConstantTimeCryptoComparison {
+public class NonConstantTimeCheckOnSignature {
 
     // BAD: compare MACs using a non-constant-time method
     public boolean unsafeMacCheckWithArrayEquals(Socket socket) throws Exception {
