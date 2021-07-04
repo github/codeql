@@ -3,16 +3,16 @@
 
 <overview>
 <p>
-When comparing results of cryptographic operations, such as MAC or digital signature,
-a constant-time algorithm should be used. In other words, the comparison time should not depend on
-the content of the input. Otherwise, attackers may be able to implement a timing attack
-if they can control input. A successful timing attack may result in leaking secrets or authentication bypass.
+A constant-time algorithm should be used for checking a MAC or a digital signature.
+In other words, the comparison time should not depend on the content of the input. 
+Otherwise, attackers may be able to implement a timing attack if they control inputs.
+A successful attack may uncover a valid MAC or signature that in turn can result in authentication bypass.
 </p>
 </overview>
 
 <recommendation>
 <p>
-Use <code>MessageDigest.isEqual()</code> method to compare results of cryptographic operations.
+Use <code>MessageDigest.isEqual()</code> method to check MACs and signatures.
 If this method is used, then the calculation time depends only on the length of input byte arrays,
 and does not depend on the contents of the arrays.
 </p>

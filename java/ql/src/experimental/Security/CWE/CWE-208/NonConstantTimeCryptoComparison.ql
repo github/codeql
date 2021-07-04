@@ -1,12 +1,12 @@
 /**
- * @name Using a non-constant-time algorithm for comparing results of a cryptographic operation
- * @description When comparing results of a cryptographic operation, a constant-time algorithm should be used.
- *              Otherwise, attackers may be able to implement a timing attack if they can control input.
- *              A successful attack may result in leaking secrets or authentication bypass.
+ * @name Using a non-constant-time algorithm for comparing MAC or signature
+ * @description When checking MAC or signature, a constant-time algorithm should be used.
+ *              Otherwise, attackers may be able to implement a timing attack if they control inputs.
+ *              A successful attack may uncover a valid MAC or signature that in turn can result in authentication bypass.
  * @kind path-problem
  * @problem.severity warning
  * @precision high
- * @id java/non-constant-time-crypto-comparison
+ * @id java/non-constant-time-in-signature-check
  * @tags security
  *       external/cwe/cwe-208
  */
@@ -25,6 +25,9 @@ abstract private class ProduceCryptoCall extends MethodAccess {
 
   /** Return the result of cryptographic operation. */
   Expr output() { result = output }
+
+  /** Return a type of the result of cryptographic operation such as MAC, signature or ciphertext. */
+  abstract string getResultType();
 }
 
 /** A method call that produces a MAC. */
@@ -37,6 +40,8 @@ private class ProduceMacCall extends ProduceCryptoCall {
       getMethod().hasStringSignature("doFinal(byte[], int)") and getArgument(0) = output
     )
   }
+
+  override string getResultType() { result = "MAC" }
 }
 
 /** A method call that produces a signature. */
@@ -49,6 +54,8 @@ private class ProduceSignatureCall extends ProduceCryptoCall {
       getMethod().hasStringSignature("sign(byte[], int, int)") and getArgument(0) = output
     )
   }
+
+  override string getResultType() { result = "signature" }
 }
 
 /**
@@ -98,6 +105,8 @@ private class ProduceCiphertextCall extends ProduceCryptoCall {
       config.hasFlowTo(DataFlow3::exprNode(this.getQualifier()))
     )
   }
+
+  override string getResultType() { result = "ciphertext" }
 }
 
 /** Holds if `fromNode` to `toNode` is a dataflow step that updates a cryptographic operation. */
@@ -173,13 +182,9 @@ private class UserInputInCryptoOperationConfig extends TaintTracking2::Configura
 
 /** A source that produces result of cryptographic operation. */
 private class CryptoOperationSource extends DataFlow::Node {
-  Expr cryptoOperation;
+  ProduceCryptoCall call;
 
-  CryptoOperationSource() {
-    exists(ProduceCryptoCall call | call.output() = this.asExpr() |
-      cryptoOperation = call.getQualifier()
-    )
-  }
+  CryptoOperationSource() { call.output() = this.asExpr() }
 
   /** Holds if remote user input was used in the cryptographic operation. */
   predicate includesUserInput() {
@@ -188,9 +193,11 @@ private class CryptoOperationSource extends DataFlow::Node {
     |
       config.hasFlowPath(source, sink)
     |
-      sink.getNode().asExpr() = cryptoOperation
+      sink.getNode().asExpr() = call.getQualifier()
     )
   }
+
+  ProduceCryptoCall getCall() { result = call }
 }
 
 /** Methods that use a non-constant-time algorithm for comparing inputs. */
@@ -329,8 +336,8 @@ from DataFlow::PathNode source, DataFlow::PathNode sink, NonConstantTimeCryptoCo
 where
   conf.hasFlowPath(source, sink) and
   (
-    source.getNode().(CryptoOperationSource).includesUserInput() or
+    source.getNode().(CryptoOperationSource).includesUserInput() and
     sink.getNode().(NonConstantTimeComparisonSink).includesUserInput()
   )
-select sink.getNode(), source, sink,
-  "Using a non-constant-time algorithm for comparing results of a cryptographic operation."
+select sink.getNode(), source, sink, "Using a non-constant-time method for cheching a $@.", source,
+  source.getNode().(CryptoOperationSource).getCall().getResultType()
