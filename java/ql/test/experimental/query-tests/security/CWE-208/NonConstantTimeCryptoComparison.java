@@ -79,38 +79,46 @@ public class NonConstantTimeCryptoComparison {
         return MessageDigest.isEqual(expected, signature);
     }
 
-    // BAD: compare ciphertexts using a non-constant-time method
+    // BAD: compare ciphertexts (custom MAC) using a non-constant-time method
     public boolean unsafeCheckCiphertext(Socket socket, byte[] plaintext, Key key) throws Exception {
+        byte[] hash = MessageDigest.getInstance("SHA-256").digest(plaintext);
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         cipher.init(Cipher.ENCRYPT_MODE, key);
-        byte[] tag = cipher.doFinal(plaintext);
+        byte[] tag = cipher.doFinal(hash);
         byte[] expected = socket.getInputStream().readAllBytes();
         return Objects.deepEquals(expected, tag);
     }
 
-    // BAD: compare ciphertexts using a non-constant-time method
+    // BAD: compare ciphertexts (custom MAC) using a non-constant-time method
     public boolean unsafeCheckCiphertextWithOutputArray(byte[] expected, Socket socket, Key key) throws Exception {
+        byte[] plaintext = socket.getInputStream().readAllBytes();
+        MessageDigest md = MessageDigest.getInstance("SHA-512");
+        md.update(plaintext);
+        byte[] hash = md.digest();
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         cipher.init(Cipher.ENCRYPT_MODE, key);
-        byte[] plaintext = socket.getInputStream().readAllBytes();
-        cipher.update(plaintext);
+        cipher.update(hash);
         byte[] tag = new byte[1024];
         cipher.doFinal(tag, 0);
         return Arrays.equals(expected, tag);
     }
 
-    // BAD: compare ciphertexts using a non-constant-time method
+    // BAD: compare ciphertexts (custom MAC) using a non-constant-time method
     public boolean unsafeCheckCiphertextWithByteBuffer(Socket socket, byte[] plaintext, Key key) throws Exception {
+        MessageDigest md = MessageDigest.getInstance("SHA-512");
+        md.update(plaintext);
+        byte[] hash = new byte[1024];
+        md.digest(hash, 0, hash.length);
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         cipher.init(Cipher.ENCRYPT_MODE, key);
-        cipher.update(plaintext);
+        cipher.update(hash);
         ByteBuffer tag = ByteBuffer.wrap(new byte[1024]);
         cipher.doFinal(ByteBuffer.wrap(plaintext), tag);
         byte[] expected = socket.getInputStream().readNBytes(1024);
         return Arrays.equals(expected, tag.array());
     }
 
-    // BAD: compare ciphertexts using a non-constant-time method
+    // BAD: compare ciphertexts (custom MAC) using a non-constant-time method
     public boolean unsafeCheckCiphertextWithByteBufferEquals(byte[] expected, Socket socket, Key key) throws Exception {
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         cipher.init(Cipher.ENCRYPT_MODE, key);
@@ -121,11 +129,12 @@ public class NonConstantTimeCryptoComparison {
         return ByteBuffer.wrap(expected).equals(tag);
     }
 
-    // GOOD: compare ciphertexts using a constant-time method
+    // GOOD: compare ciphertexts (custom MAC) using a constant-time method
     public boolean saferCheckCiphertext(Socket socket, byte[] plaintext, Key key) throws Exception {
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         cipher.init(Cipher.ENCRYPT_MODE, key);
-        byte[] tag = cipher.doFinal(plaintext);
+        byte[] hash = MessageDigest.getInstance("SHA-256").digest(plaintext);
+        byte[] tag = cipher.doFinal(hash);
         byte[] expected = socket.getInputStream().readAllBytes();
         return MessageDigest.isEqual(expected, tag);
     }

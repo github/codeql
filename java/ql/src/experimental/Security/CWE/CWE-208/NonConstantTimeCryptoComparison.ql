@@ -75,6 +75,55 @@ private class ProduceCiphertextCall extends ProduceCryptoCall {
   }
 }
 
+/** Holds if `fromNode` to `toNode` is a dataflow step that updates a cryptographic operation. */
+private predicate updateCryptoOperationStep(DataFlow2::Node fromNode, DataFlow2::Node toNode) {
+  exists(MethodAccess call, Method m |
+    m = call.getMethod() and
+    call.getQualifier() = toNode.asExpr() and
+    call.getArgument(0) = fromNode.asExpr()
+  |
+    m.hasQualifiedName("java.security", "Signature", "update")
+    or
+    m.hasQualifiedName("javax.crypto", ["Mac", "Cipher"], "update")
+    or
+    m.hasQualifiedName("javax.crypto", ["Mac", "Cipher"], "doFinal") and
+    not m.hasStringSignature("doFinal(byte[], int)")
+  )
+}
+
+/** Holds if `fromNode` to `toNode` is a dataflow step that creates a hash. */
+private predicate createMessageDigestStep(DataFlow2::Node fromNode, DataFlow2::Node toNode) {
+  exists(MethodAccess ma, Method m | m = ma.getMethod() |
+    m.getDeclaringType().hasQualifiedName("java.security", "MessageDigest") and
+    m.hasStringSignature("digest()") and
+    ma.getQualifier() = fromNode.asExpr() and
+    ma = toNode.asExpr()
+  )
+  or
+  exists(MethodAccess ma, Method m | m = ma.getMethod() |
+    m.getDeclaringType().hasQualifiedName("java.security", "MessageDigest") and
+    m.hasStringSignature("digest(byte[], int, int)") and
+    ma.getQualifier() = fromNode.asExpr() and
+    ma.getArgument(0) = toNode.asExpr()
+  )
+  or
+  exists(MethodAccess ma, Method m | m = ma.getMethod() |
+    m.getDeclaringType().hasQualifiedName("java.security", "MessageDigest") and
+    m.hasStringSignature("digest(byte[])") and
+    ma.getArgument(0) = fromNode.asExpr() and
+    ma = toNode.asExpr()
+  )
+}
+
+/** Holds if `fromNode` to `toNode` is a dataflow step that updates a hash. */
+private predicate updateMessageDigestStep(DataFlow2::Node fromNode, DataFlow2::Node toNode) {
+  exists(MethodAccess ma, Method m | m = ma.getMethod() |
+    m.hasQualifiedName("java.security", "MessageDigest", "update") and
+    ma.getArgument(0) = fromNode.asExpr() and
+    ma.getQualifier() = toNode.asExpr()
+  )
+}
+
 /**
  * A config that tracks data flow from remote user input to a cryptographic operation
  * such as cipher, MAC or signature.
@@ -88,20 +137,12 @@ private class UserInputInCryptoOperationConfig extends TaintTracking2::Configura
     exists(ProduceCryptoCall call | call.getQualifier() = sink.asExpr())
   }
 
-  /** Holds if `fromNode` to `toNode` is a dataflow step that updates a cryptographic operation. */
   override predicate isAdditionalTaintStep(DataFlow2::Node fromNode, DataFlow2::Node toNode) {
-    exists(MethodAccess call, Method m |
-      m = call.getMethod() and
-      call.getQualifier() = toNode.asExpr() and
-      call.getArgument(0) = fromNode.asExpr()
-    |
-      m.hasQualifiedName("java.security", "Signature", "update")
-      or
-      m.hasQualifiedName("javax.crypto", ["Mac", "Cipher"], "update")
-      or
-      m.hasQualifiedName("javax.crypto", ["Mac", "Cipher"], "doFinal") and
-      not m.hasStringSignature("doFinal(byte[], int)")
-    )
+    updateCryptoOperationStep(fromNode, toNode)
+    or
+    createMessageDigestStep(fromNode, toNode)
+    or
+    updateMessageDigestStep(fromNode, toNode)
   }
 }
 
