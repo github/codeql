@@ -15,12 +15,9 @@ import java
 import semmle.code.java.controlflow.Guards
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.TaintTracking2
+import semmle.code.java.dataflow.DataFlow3
 import semmle.code.java.dataflow.FlowSources
 import DataFlow::PathGraph
-
-private class ByteBuffer extends Class {
-  ByteBuffer() { hasQualifiedName("java.nio", "ByteBuffer") }
-}
 
 /** A method call that produces cryptographic result. */
 abstract private class ProduceCryptoCall extends MethodAccess {
@@ -54,23 +51,51 @@ private class ProduceSignatureCall extends ProduceCryptoCall {
   }
 }
 
+/**
+ * A config that tracks data flow from initializing a cipher for encryption
+ * to producing a ciphertext using this cipher.
+ */
+private class InitializeEncryptorConfig extends DataFlow3::Configuration {
+  InitializeEncryptorConfig() { this = "InitializeEncryptorConfig" }
+
+  override predicate isSource(DataFlow::Node source) {
+    exists(MethodAccess ma |
+      ma.getMethod().hasQualifiedName("javax.crypto", "Cipher", "init") and
+      ma.getArgument(0).(VarAccess).getVariable().hasName("ENCRYPT_MODE") and
+      ma.getQualifier() = source.asExpr()
+    )
+  }
+
+  override predicate isSink(DataFlow::Node sink) {
+    exists(MethodAccess ma |
+      ma.getMethod().hasQualifiedName("javax.crypto", "Cipher", "doFinal") and
+      ma.getQualifier() = sink.asExpr()
+    )
+  }
+}
+
 /** A method call that produces a ciphertext. */
 private class ProduceCiphertextCall extends ProduceCryptoCall {
   ProduceCiphertextCall() {
-    getMethod().getDeclaringType().hasQualifiedName("javax.crypto", "Cipher") and
-    (
-      getMethod().hasStringSignature(["doFinal()", "doFinal(byte[])", "doFinal(byte[], int, int)"]) and
-      this = output
-      or
-      getMethod().hasStringSignature("doFinal(byte[], int)") and getArgument(0) = output
-      or
-      getMethod()
-          .hasStringSignature([
-              "doFinal(byte[], int, int, byte[])", "doFinal(byte[], int, int, byte[], int)"
-            ]) and
-      getArgument(3) = output
-      or
-      getMethod().hasStringSignature("doFinal(ByteBuffer, ByteBuffer)") and getArgument(1) = output
+    exists(Method m | m = this.getMethod() |
+      m.getDeclaringType().hasQualifiedName("javax.crypto", "Cipher") and
+      (
+        m.hasStringSignature(["doFinal()", "doFinal(byte[])", "doFinal(byte[], int, int)"]) and
+        this = output
+        or
+        m.hasStringSignature("doFinal(byte[], int)") and getArgument(0) = output
+        or
+        m.hasStringSignature([
+            "doFinal(byte[], int, int, byte[])", "doFinal(byte[], int, int, byte[], int)"
+          ]) and
+        getArgument(3) = output
+        or
+        m.hasStringSignature("doFinal(ByteBuffer, ByteBuffer)") and
+        getArgument(1) = output
+      )
+    ) and
+    exists(InitializeEncryptorConfig config |
+      config.hasFlowTo(DataFlow3::exprNode(this.getQualifier()))
     )
   }
 }
@@ -168,6 +193,7 @@ private class CryptoOperationSource extends DataFlow::Node {
   }
 }
 
+/** Methods that use a non-constant-time algorithm for comparing inputs. */
 private class NonConstantTimeEqualsCall extends MethodAccess {
   NonConstantTimeEqualsCall() {
     getMethod()
@@ -176,6 +202,7 @@ private class NonConstantTimeEqualsCall extends MethodAccess {
   }
 }
 
+/** Static methods that use a non-constant-time algorithm for comparing inputs. */
 private class NonConstantTimeComparisonCall extends StaticMethodAccess {
   NonConstantTimeComparisonCall() {
     getMethod().hasQualifiedName("java.util", "Arrays", ["equals", "deepEquals"]) or
