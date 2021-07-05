@@ -118,63 +118,58 @@ class FlowsFromUntrusted extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) { source instanceof UntrustedFlowSource }
 
-  override predicate isSink(DataFlow::Node sink) { any() }
-}
+  override predicate isSink(DataFlow::Node sink) { isSink(sink, _) }
 
-/**
- * Holds if the provided `dst` is also destination of a `UntrustedFlowSource`.
- */
-predicate untrustedFlowsToExpr(Expr dst) {
-  exists(FlowsFromUntrusted cfg, DataFlow::PathNode source, DataFlow::PathNode sink |
-    cfg.hasFlowPath(source, sink) and
-    sink.getNode().asExpr() = dst
-  )
-}
-
-/**
- * Holds if the provided `dst` is also destination of a `UntrustedFlowSource`.
- */
-predicate untrustedFlowsTo(DataFlow::Node dst) { untrustedFlowsToExpr(dst.asExpr()) }
-
-/**
- * Holds if the provided `allowOriginHW` is guarded by a check on an `UntrustedFlowSource`
- * which (supposedly) is an `Origin` header.
- */
-predicate isGuardedByCheckOnUntrusted(HTTP::HeaderWrite allowOriginHW) {
-  exists(ControlFlow::ConditionGuardNode cgn, IfStmt ifs |
-    exists(Expr child, Expr operand |
-      child = ifs.getCond().getAChildExpr*() and
-      (
-        operand = child or
-        operand = child.(LorExpr).getAnOperand() or
-        operand = child.(LandExpr).getAnOperand()
-      ) and
-      (
-        exists(DataFlow::CallExpr call | call = operand |
-          call.getTarget().hasQualifiedName("strings", "HasSuffix") and
-          untrustedFlowsToExpr(call.getArgument(0))
-        )
-        or
-        exists(MapRead mapRead |
-          operand = mapRead.asExpr() and
-          untrustedFlowsTo(mapRead.getIndex().getAPredecessor*())
-          // TODO: add _, ok : map[untrusted]; ok
-        )
-        or
-        exists(EqlExpr comp |
-          operand = comp and
-          (
-            untrustedFlowsToExpr(comp.getLeftOperand()) and
-            not comp.getRightOperand().(StringLit).getStringValue() = ""
-            or
-            untrustedFlowsToExpr(comp.getRightOperand()) and
-            not comp.getLeftOperand().(StringLit).getStringValue() = ""
+  predicate isSink(DataFlow::Node sink, ControlFlow::ConditionGuardNode cgn) {
+    exists(IfStmt ifs |
+      exists(Expr child, Expr operand |
+        child = ifs.getCond().getAChildExpr*() and
+        (
+          operand = child or
+          operand = child.(LorExpr).getAnOperand() or
+          operand = child.(LandExpr).getAnOperand()
+        ) and
+        (
+          //
+          exists(DataFlow::CallExpr call | call = operand |
+            call.getTarget().hasQualifiedName("strings", "HasSuffix") and
+            sink.asExpr() = call.getArgument(0)
+          )
+          or
+          exists(MapRead mapRead |
+            operand = mapRead.asExpr() and
+            sink = mapRead.getIndex().getAPredecessor*()
+            // TODO: add _, ok : map[untrusted]; ok
+          )
+          or
+          exists(EqlExpr comp |
+            operand = comp and
+            (
+              sink.asExpr() = comp.getLeftOperand() and
+              not comp.getRightOperand().(StringLit).getStringValue() = ""
+              or
+              sink.asExpr() = comp.getRightOperand() and
+              not comp.getLeftOperand().(StringLit).getStringValue() = ""
+            )
           )
         )
       )
+    |
+      cgn.getCondition() = ifs.getCond()
     )
+  }
+}
+
+/**
+ * Holds if the provided `dst` is also destination of a `UntrustedFlowSource`.
+ */
+predicate flowsToGuardedByCheckOnUntrusted(HTTP::HeaderWrite allowOriginHW) {
+  exists(
+    FlowsFromUntrusted cfg, DataFlow::PathNode source, DataFlow::PathNode sink,
+    ControlFlow::ConditionGuardNode cgn
   |
-    cgn.getCondition() = ifs.getCond() and
+    cfg.hasFlowPath(source, sink) and cfg.isSink(sink.getNode(), cgn)
+  |
     cgn.dominates(allowOriginHW.getBasicBlock())
   )
 }
@@ -187,7 +182,7 @@ where
     or
     allowOriginIsNull(allowOriginHW, message)
   ) and
-  not isGuardedByCheckOnUntrusted(allowOriginHW) and
+  not flowsToGuardedByCheckOnUntrusted(allowOriginHW) and
   not exists(ControlFlow::ConditionGuardNode cgn |
     cgn.ensures(any(AllowedFlag f).getAFlag().getANode(), _)
   |
