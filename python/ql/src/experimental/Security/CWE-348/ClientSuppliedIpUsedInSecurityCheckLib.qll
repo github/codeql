@@ -46,6 +46,27 @@ private class DjangoClientSuppliedIpUsedInSecurityCheck extends ClientSuppliedIp
   }
 }
 
+private class TornadoClientSuppliedIpUsedInSecurityCheck extends ClientSuppliedIpUsedInSecurityCheck {
+  TornadoClientSuppliedIpUsedInSecurityCheck() {
+    exists(RemoteFlowSource rfs, DataFlow::LocalSourceNode lsn |
+      rfs.getSourceType() = "tornado.web.RequestHandler" and rfs.asCfgNode() = lsn.asCfgNode()
+    |
+      lsn.flowsTo(DataFlow::exprNode(this.getFunction()
+              .asExpr()
+              .(Attribute)
+              .getObject()
+              .(Attribute)
+              .getObject()
+              .(Attribute)
+              .getObject())) and
+      this.getFunction().asExpr().(Attribute).getName() in ["get", "get_list"] and
+      this.getFunction().asExpr().(Attribute).getObject().(Attribute).getName() = "headers" and
+      this.getArg(0).asCfgNode().getNode().(StrConst).getText().toLowerCase() =
+        clientIpParameterName()
+    )
+  }
+}
+
 private string clientIpParameterName() {
   result in [
       "x-forwarded-for", "x_forwarded_for", "x-real-ip", "x_real_ip", "proxy-client-ip",
