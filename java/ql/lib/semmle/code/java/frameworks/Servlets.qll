@@ -192,6 +192,18 @@ class HttpServletResponseSendErrorMethod extends Method {
 }
 
 /**
+ * The method `getRequestDispatcher(String)` declared in `javax.servlet.http.HttpServletRequest` or `javax.servlet.ServletRequest`.
+ */
+class ServletRequestGetRequestDispatcherMethod extends Method {
+  ServletRequestGetRequestDispatcherMethod() {
+    getDeclaringType() instanceof ServletRequest and
+    hasName("getRequestDispatcher") and
+    getNumberOfParameters() = 1 and
+    getParameter(0).getType() instanceof TypeString
+  }
+}
+
+/**
  * The method `sendRedirect(String)` declared in `javax.servlet.http.HttpServletResponse`.
  */
 class HttpServletResponseSendRedirectMethod extends Method {
