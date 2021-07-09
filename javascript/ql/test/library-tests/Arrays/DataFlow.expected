@@ -1,3 +1,11 @@
+| arrays-init.js | arrays-init.js:40:8:40:13 | arr[1] | arrays-init.js:25:16:25:23 | "source" |
+| arrays-init.js | arrays-init.js:45:8:45:13 | arr[6] | arrays-init.js:25:16:25:23 | "source" |
+| arrays-init.js | arrays-init.js:51:8:51:13 | arr[1] | arrays-init.js:25:16:25:23 | "source" |
+| arrays-init.js | arrays-init.js:57:8:57:13 | arr[1] | arrays-init.js:25:16:25:23 | "source" |
+| arrays-init.js | arrays-init.js:61:8:61:13 | arr[5] | arrays-init.js:25:16:25:23 | "source" |
+| arrays-init.js | arrays-init.js:66:10:66:15 | arr[i] | arrays-init.js:25:16:25:23 | "source" |
+| arrays-init.js | arrays-init.js:78:10:78:15 | arr[i] | arrays-init.js:25:16:25:23 | "source" |
+| arrays-init.js | arrays-init.js:84:10:84:13 | item | arrays-init.js:25:16:25:23 | "source" |
 | arrays.js | arrays.js:5:8:5:14 | obj.foo | arrays.js:2:16:2:23 | "source" |
 | arrays.js | arrays.js:11:10:11:15 | arr[i] | arrays.js:2:16:2:23 | "source" |
 | arrays.js | arrays.js:15:27:15:27 | e | arrays.js:2:16:2:23 | "source" |

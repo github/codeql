@@ -801,7 +801,7 @@ module PseudoProperties {
    */
   bindingset[i]
   string arrayElement(int i) {
-    i < 5 and result = i.toString()
+    result = i.toString()
     or
     result = arrayElement()
   }
