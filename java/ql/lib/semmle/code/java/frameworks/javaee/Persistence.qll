@@ -37,8 +37,7 @@ class PersistentEntity extends RefType {
    */
   string getAccessTypeFromAnnotation() {
     exists(AccessAnnotation accessType | accessType = this.getAnAnnotation() |
-      result =
-        accessType.getValue("value").(FieldRead).getField().(EnumConstant).getName().toLowerCase()
+      result = accessType.getValueEnumConstant("value").getName().toLowerCase()
     )
   }
 }

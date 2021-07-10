@@ -18,14 +18,18 @@ class OverrideAnnotation extends Annotation {
 class SuppressWarningsAnnotation extends Annotation {
   SuppressWarningsAnnotation() { this.getType().hasQualifiedName("java.lang", "SuppressWarnings") }
 
-  /** Gets the `StringLiteral` of a warning suppressed by this annotation. */
-  StringLiteral getASuppressedWarningLiteral() {
-    result = this.getAValue() or
-    result = this.getAValue().(ArrayInit).getAnInit()
-  }
+  /**
+   * Gets the `StringLiteral` of a warning suppressed by this annotation. To get the name of a suppressed
+   * warning, prefer `getASuppressedWarning()`. That predicate considers more cases because it does not
+   * restrict results to `StringLiteral`.
+   */
+  StringLiteral getASuppressedWarningLiteral() { result = this.getAValue(_) }
 
   /** Gets the name of a warning suppressed by this annotation. */
-  string getASuppressedWarning() { result = this.getASuppressedWarningLiteral().getValue() }
+  string getASuppressedWarning() {
+    // Use CompileTimeConstantExpr because that covers more than StringLiteral result of getASuppressedWarningLiteral()
+    result = this.getAValue(_).(CompileTimeConstantExpr).getStringValue()
+  }
 }
 
 /** A `@Target` annotation. */
@@ -40,10 +44,7 @@ class TargetAnnotation extends Annotation {
    */
   Expr getATargetExpression() {
     not result instanceof ArrayInit and
-    (
-      result = this.getAValue() or
-      result = this.getAValue().(ArrayInit).getAnInit()
-    )
+    result = this.getAValue(_)
   }
 
   /**
@@ -54,7 +55,7 @@ class TargetAnnotation extends Annotation {
    */
   string getATargetElementType() {
     exists(EnumConstant ec |
-      ec = this.getATargetExpression().(VarAccess).getVariable() and
+      ec = this.getATargetExpression().(FieldRead).getField() and
       ec.getDeclaringType().hasQualifiedName("java.lang.annotation", "ElementType")
     |
       result = ec.getName()
@@ -82,7 +83,7 @@ class RetentionAnnotation extends Annotation {
    */
   string getRetentionPolicy() {
     exists(EnumConstant ec |
-      ec = this.getRetentionPolicyExpression().(VarAccess).getVariable() and
+      ec = this.getRetentionPolicyExpression().(FieldRead).getField() and
       ec.getDeclaringType().hasQualifiedName("java.lang.annotation", "RetentionPolicy")
     |
       result = ec.getName()

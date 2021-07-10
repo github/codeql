@@ -50,6 +50,50 @@ class Annotation extends @annotation, Expr {
   /** Gets the value of the annotation element with the specified `name`. */
   Expr getValue(string name) { filteredAnnotValue(this, this.getAnnotationElement(name), result) }
 
+  /**
+   * If the value type of the annotation element with the specified `name` is an enum type,
+   * gets the enum constant used as value for that element.
+   */
+  EnumConstant getValueEnumConstant(string name) {
+    result = getValue(name).(FieldRead).getField()
+  }
+
+  /**
+   * If the value type of the annotation element with the specified `name` is `String`,
+   * gets the string value used for that element.
+   */
+  string getValueString(string name) {
+    // Uses CompileTimeConstantExpr instead of StringLiteral because value can
+    // be read of final variable as well
+    result = getValue(name).(CompileTimeConstantExpr).getStringValue()
+  }
+
+  /**
+   * If the value type of the annotation element with the specified `name` is `int`,
+   * gets the int value used for that element.
+   */
+  int getValueInt(string name) {
+    // Uses CompileTimeConstantExpr instead of IntegerLiteral because value can
+    // be read of final variable as well
+    result = getValue(name).(CompileTimeConstantExpr).getIntValue()
+  }
+
+  /**
+   * If the value type of the annotation element with the specified `name` is `boolean`,
+   * gets the boolean value used for that element.
+   */
+  boolean getValueBoolean(string name) {
+    // Uses CompileTimeConstantExpr instead of BooleanLiteral because value can
+    // be read of final variable as well
+    result = getValue(name).(CompileTimeConstantExpr).getBooleanValue()
+  }
+
+  /**
+   * If the annotation element with the specified `name` has a Java `Class` as value type,
+   * gets the referenced type used as value for that element.
+   */
+  Type getValueClass(string name) { result = getValue(name).(TypeLiteral).getReferencedType() }
+
   /** Gets the element being annotated. */
   Element getTarget() { result = this.getAnnotatedElement() }
 
@@ -66,10 +110,24 @@ class Annotation extends @annotation, Expr {
    * be one of the elements of that array. Otherwise, the returned value will be the single
    * expression defined for the value.
    */
-  Expr getAValue(string name) {
+  Expr getAValue(string name) { result = getAValue(name, _) }
+
+  /**
+   * Gets the value at a given index of the annotation element with the specified `name`, which must be
+   * declared as an array type.
+   *
+   * If the annotation element is defined with an array initializer, then the returned value will
+   * be the elements at the given index of that array. Otherwise, if the index is 0 the returned value
+   * will be the single expression defined for the value.
+   */
+  Expr getAValue(string name, int index) {
     this.getType().getAnnotationElement(name).getType() instanceof Array and
     exists(Expr value | value = this.getValue(name) |
-      if value instanceof ArrayInit then result = value.(ArrayInit).getAnInit() else result = value
+      if value instanceof ArrayInit
+      then result = value.(ArrayInit).getInit(index)
+      else (
+        index = 0 and result = value
+      )
     )
   }
 
