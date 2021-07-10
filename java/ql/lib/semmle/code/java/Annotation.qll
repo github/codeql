@@ -227,10 +227,43 @@ class AnnotationType extends Interface {
 
   /** Holds if this annotation type is annotated with the meta-annotation `@Inherited`. */
   predicate isInherited() {
-    exists(Annotation ann |
-      ann.getAnnotatedElement() = this and
-      ann.getType().hasQualifiedName("java.lang.annotation", "Inherited")
-    )
+    getADeclaredAnnotation().getType().hasQualifiedName("java.lang.annotation", "Inherited")
+  }
+
+  /** Holds if this annotation type is annotated with the meta-annotation `@Documented`. */
+  predicate isDocumented() {
+    getADeclaredAnnotation().getType().hasQualifiedName("java.lang.annotation", "Documented")
+  }
+
+  /**
+   * Gets the retention policy of this annotation type, that is, the name of one of the
+   * enum constants of `java.lang.annotation.RetentionPolicy`. If no explicit retention
+   * policy is specified the result is `CLASS`.
+   */
+  string getRetentionPolicy() {
+    if getADeclaredAnnotation() instanceof RetentionAnnotation
+    then result = getADeclaredAnnotation().(RetentionAnnotation).getRetentionPolicy()
+    else
+      // If not explicitly specified retention is CLASS
+      result = "CLASS"
+  }
+
+  /**
+   * Holds if the element type is a possible target for this annotation type.
+   * The `elementType` is the name of one of the `java.lang.annotation.ElementType`
+   * enum constants. If no explicit target is specified for this annotation type
+   * it is considered to be applicable to all elements.
+   */
+  // Note: Cannot use a predicate with string as result because annotation type without
+  // explicit @Target can be applied to all targets, requiring to hardcode element types here
+  bindingset[elementType]
+  predicate isATargetType(string elementType) {
+    if getADeclaredAnnotation() instanceof TargetAnnotation
+    then elementType = getADeclaredAnnotation().(TargetAnnotation).getATargetElementType()
+    else
+      // No Target annotation means "applicable to all contexts" since JDK 14, see https://bugs.openjdk.java.net/browse/JDK-8231435
+      // The compiler does not completely implement that, but pretend it did
+      any()
   }
 }
 
