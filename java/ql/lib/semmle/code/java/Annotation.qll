@@ -184,6 +184,8 @@ class Annotatable extends Element {
 
   /**
    * Gets an annotation that applies to this element, including inherited annotations.
+   * The results only include _direct_ annotations; _indirect_ annotations, that is
+   * repeated annotations in an (implicit) container annotation, are not included.
    */
   // This predicate is overridden by Class to consider inherited annotations
   cached
@@ -193,6 +195,42 @@ class Annotatable extends Element {
    * Gets an annotation that is declared on this element, excluding inherited annotations.
    */
   Annotation getADeclaredAnnotation() { result.getAnnotatedElement() = this }
+
+  /** Gets an _indirect_ (= repeated) annotation. */
+  // 'indirect' as defined by https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/reflect/AnnotatedElement.html
+  private Annotation getAnIndirectAnnotation() {
+    exists(AnnotationType t, Annotation containerAnn |
+      t = result.getType() and
+      containerAnn = getADeclaredAnnotation() and
+      containerAnn.getType() = t.getContainingAnnotationType()
+    |
+      result = containerAnn.getAValue("value")
+    )
+  }
+
+  private Annotation getAnAssociatedAnnotation(AnnotationType t) {
+    result.getType() = t and
+    // Direct or indirect annotation
+    if getADeclaredAnnotation().getType() = t or getAnIndirectAnnotation().getType() = t
+    then (
+      result = getADeclaredAnnotation() or result = getAnIndirectAnnotation()
+    ) else (
+      // Only if neither a direct nor an indirect annotation is present look for an inherited one
+      t.isInherited() and
+      // @Inherited only works for classes; cast to Annotatable is necessary because predicate is private
+      result = this.(Class).getASupertype().(Class).(Annotatable).getAnAssociatedAnnotation(t)
+    )
+  }
+
+  /**
+   * Gets an annotation _associated_ with this element, that is:
+   * - An annotation directly present on this element, or
+   * - An annotation indirectly present on this element (in the form of a repeated annotation), or
+   * - If an annotation of a type is neither directly nor indirectly present
+   *   the result is an associated inherited annotation (recursively)
+   */
+  // 'associated' as defined by https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/reflect/AnnotatedElement.html
+  Annotation getAnAssociatedAnnotation() { result = getAnAssociatedAnnotation(_) }
 
   /**
    * Holds if this or any enclosing `Annotatable` has a `@SuppressWarnings("<category>")`
@@ -264,6 +302,17 @@ class AnnotationType extends Interface {
       // No Target annotation means "applicable to all contexts" since JDK 14, see https://bugs.openjdk.java.net/browse/JDK-8231435
       // The compiler does not completely implement that, but pretend it did
       any()
+  }
+
+  /** Holds if this annotation type is annotated with the meta-annotation `@Repeatable`. */
+  predicate isRepeatable() { getADeclaredAnnotation() instanceof RepeatableAnnotation }
+
+  /**
+   * If this annotation type is annotated with the meta-annotation `@Repeatable`,
+   * gets the annotation type which acts as _containing annotation type_.
+   */
+  AnnotationType getContainingAnnotationType() {
+    result = getADeclaredAnnotation().(RepeatableAnnotation).getContainingType()
   }
 }
 
