@@ -52,7 +52,7 @@ abstract private class ReflectiveClassIdentifier extends Expr {
 
 private class ReflectiveClassIdentifierLiteral extends ReflectiveClassIdentifier, TypeLiteral {
   override RefType getReflectivelyIdentifiedClass() {
-    result = getTypeName().getType().(RefType).getSourceDeclaration()
+    result = getReferencedType().(RefType).getSourceDeclaration()
   }
 }
 

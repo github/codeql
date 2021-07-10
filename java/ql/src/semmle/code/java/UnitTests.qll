@@ -168,7 +168,7 @@ class TestNGTestMethod extends Method {
       or
       // Or the data provider class should be declared
       result.getDeclaringType() =
-        testAnnotation.getValue("dataProviderClass").(TypeLiteral).getTypeName().getType()
+        testAnnotation.getValue("dataProviderClass").(TypeLiteral).getReferencedType()
     )
   }
 }
@@ -227,7 +227,7 @@ class TestNGListenersAnnotation extends TestNGAnnotation {
    * Gets a listener defined in this annotation.
    */
   TestNGListenerImpl getAListener() {
-    result = getAValue("value").(TypeLiteral).getTypeName().getType()
+    result = getAValue("value").(TypeLiteral).getReferencedType()
   }
 }
 
@@ -303,7 +303,7 @@ class JUnitCategoryAnnotation extends Annotation {
         literal = value.(ArrayCreationExpr).getInit().getAnInit()
       )
     |
-      result = literal.getTypeName().getType()
+      result = literal.getReferencedType()
     )
   }
 }

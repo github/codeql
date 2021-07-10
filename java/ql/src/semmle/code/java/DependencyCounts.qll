@@ -80,7 +80,7 @@ predicate numDepends(RefType t, RefType dep, int value) {
         elem = l and
         l.getEnclosingCallable().getDeclaringType() = t
       |
-        usesType(l.getTypeName().getType(), dep)
+        usesType(l.getReferencedType(), dep)
       )
       or
       // the type of an annotation (or one of its element values) that annotates `t` or one of its members,
