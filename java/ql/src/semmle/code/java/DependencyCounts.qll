@@ -100,7 +100,7 @@ predicate numDepends(RefType t, RefType dep, int value) {
         elem = ioe and
         t = ioe.getEnclosingCallable().getDeclaringType()
       |
-        usesType(ioe.getTypeName().getType(), dep)
+        usesType(ioe.getCheckedType(), dep)
       )
     )
 }

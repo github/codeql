@@ -1333,6 +1333,9 @@ class InstanceOfExpr extends Expr, @instanceofexpr {
   /** Gets the access to the type on the right-hand side of the `instanceof` operator. */
   Expr getTypeName() { result.isNthChildOf(this, 1) }
 
+  /** Gets the type this `instanceof` expression checks for. */
+  RefType getCheckedType() { result = getTypeName().getType() }
+
   /** Gets a printable representation of this expression. */
   override string toString() { result = "...instanceof..." }
 
