@@ -473,46 +473,44 @@ class RegExpEscape extends RegExpNormalChar {
    * E.g. for `\u0061` this returns "a".
    */
   private string getUnicode() {
-    // TODO: Enable this once a supporting CLI is released.
-    // exists(int codepoint | codepoint = sum(getHexValueFromUnicode(_)) |
-    //   result = codepoint.toUnicode()
-    // )
-    none()
+    exists(int codepoint | codepoint = sum(getHexValueFromUnicode(_)) |
+      result = codepoint.toUnicode()
+    )
   }
-  // TODO: Enable this once a supporting CLI is released.
-  // /**
-  //  * Gets int value for the `index`th char in the hex number of the unicode escape.
-  //  * E.g. for `\u0061` and `index = 2` this returns 96 (the number `6` interpreted as hex).
-  //  */
-  // private int getHexValueFromUnicode(int index) {
-  //   isUnicode() and
-  //   exists(string hex, string char | hex = getText().suffix(2) |
-  //     char = hex.charAt(index) and
-  //     result = 16.pow(hex.length() - index - 1) * toHex(char)
-  //   )
-  // }
+
+  /**
+   * Gets int value for the `index`th char in the hex number of the unicode escape.
+   * E.g. for `\u0061` and `index = 2` this returns 96 (the number `6` interpreted as hex).
+   */
+  private int getHexValueFromUnicode(int index) {
+    isUnicode() and
+    exists(string hex, string char | hex = getText().suffix(2) |
+      char = hex.charAt(index) and
+      result = 16.pow(hex.length() - index - 1) * toHex(char)
+    )
+  }
 }
 
-// TODO: Enable this once a supporting CLI is released.
-// /**
-//  * Gets the hex number for the `hex` char.
-//  */
-// private int toHex(string hex) {
-//   hex = [0 .. 9].toString() and
-//   result = hex.toInt()
-//   or
-//   result = 10 and hex = ["a", "A"]
-//   or
-//   result = 11 and hex = ["b", "B"]
-//   or
-//   result = 12 and hex = ["c", "C"]
-//   or
-//   result = 13 and hex = ["d", "D"]
-//   or
-//   result = 14 and hex = ["e", "E"]
-//   or
-//   result = 15 and hex = ["f", "F"]
-// }
+/**
+ * Gets the hex number for the `hex` char.
+ */
+private int toHex(string hex) {
+  hex = [0 .. 9].toString() and
+  result = hex.toInt()
+  or
+  result = 10 and hex = ["a", "A"]
+  or
+  result = 11 and hex = ["b", "B"]
+  or
+  result = 12 and hex = ["c", "C"]
+  or
+  result = 13 and hex = ["d", "D"]
+  or
+  result = 14 and hex = ["e", "E"]
+  or
+  result = 15 and hex = ["f", "F"]
+}
+
 /**
  * A character class escape in a regular expression.
  * That is, an escaped charachter that denotes multiple characters.
