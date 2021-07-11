@@ -1,0 +1,15 @@
+edges
+| StaticInitializationVector.java:13:21:13:81 | new byte[] : byte[] | StaticInitializationVector.java:19:51:19:56 | ivSpec |
+| StaticInitializationVector.java:26:21:26:32 | new byte[] : byte[] | StaticInitializationVector.java:32:51:32:56 | ivSpec |
+| StaticInitializationVector.java:39:21:39:32 | new byte[] : byte[] | StaticInitializationVector.java:48:51:48:56 | ivSpec |
+nodes
+| StaticInitializationVector.java:13:21:13:81 | new byte[] : byte[] | semmle.label | new byte[] : byte[] |
+| StaticInitializationVector.java:19:51:19:56 | ivSpec | semmle.label | ivSpec |
+| StaticInitializationVector.java:26:21:26:32 | new byte[] : byte[] | semmle.label | new byte[] : byte[] |
+| StaticInitializationVector.java:32:51:32:56 | ivSpec | semmle.label | ivSpec |
+| StaticInitializationVector.java:39:21:39:32 | new byte[] : byte[] | semmle.label | new byte[] : byte[] |
+| StaticInitializationVector.java:48:51:48:56 | ivSpec | semmle.label | ivSpec |
+#select
+| StaticInitializationVector.java:19:51:19:56 | ivSpec | StaticInitializationVector.java:13:21:13:81 | new byte[] : byte[] | StaticInitializationVector.java:19:51:19:56 | ivSpec | A $@ should not be used for encryption. | StaticInitializationVector.java:13:21:13:81 | new byte[] | static initialization vector |
+| StaticInitializationVector.java:32:51:32:56 | ivSpec | StaticInitializationVector.java:26:21:26:32 | new byte[] : byte[] | StaticInitializationVector.java:32:51:32:56 | ivSpec | A $@ should not be used for encryption. | StaticInitializationVector.java:26:21:26:32 | new byte[] | static initialization vector |
+| StaticInitializationVector.java:48:51:48:56 | ivSpec | StaticInitializationVector.java:39:21:39:32 | new byte[] : byte[] | StaticInitializationVector.java:48:51:48:56 | ivSpec | A $@ should not be used for encryption. | StaticInitializationVector.java:39:21:39:32 | new byte[] | static initialization vector |
