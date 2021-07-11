@@ -52,7 +52,6 @@ class CookieOptionsTrackingConfiguration extends DataFlow::Configuration {
   override predicate isSink(DataFlow::Node sink) {
     exists(MicrosoftAspNetCoreHttpResponseCookies iResponse, MethodCall mc |
       iResponse.getAppendMethod() = mc.getTarget() and
-      mc.getNumberOfArguments() > 2 and
       mc.getArgument(2) = sink.asExpr()
     )
   }
@@ -144,7 +143,7 @@ class OnAppendCookieHttpOnlyTrackingConfig extends OnAppendCookieTrackingConfig 
 /**
  * Tracks if a callback used in `OnAppendCookie` sets a cookie property to `true`.
  */
-abstract class OnAppendCookieTrackingConfig extends DataFlow::Configuration {
+private abstract class OnAppendCookieTrackingConfig extends DataFlow::Configuration {
   bindingset[this]
   OnAppendCookieTrackingConfig() { any() }
 
