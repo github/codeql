@@ -104,23 +104,9 @@ Expr getAValueForProp(ObjectCreation create, Assignment a, string prop) {
 }
 
 /**
- * Similar to getAValueForProp, checks if the given property was explicitly set to a value.
+ * Checks if the given property was explicitly set to a value.
  */
-predicate isPropertySet(ObjectCreation oc, string prop) {
-  exists(Assignment a, PropertyAccess pa |
-    a.getLValue() = pa and
-    pa.getTarget().hasName(prop) and
-    DataFlow::localExprFlow(oc, pa.getQualifier())
-  )
-  or
-  exists(Assignment a, PropertyAccess pa, Expr src |
-    a.getLValue() = pa and
-    pa.getTarget().hasName(prop) and
-    a.getRValue() = src and
-    DataFlow::localExprFlow(src,
-      oc.getInitializer().(ObjectInitializer).getAMemberInitializer().getRValue())
-  )
-}
+predicate isPropertySet(ObjectCreation oc, string prop) { exists(getAValueForProp(oc, _, prop)) }
 
 /**
  * Tracks if a callback used in `OnAppendCookie` sets `Secure` to `true`.
@@ -143,7 +129,7 @@ class OnAppendCookieHttpOnlyTrackingConfig extends OnAppendCookieTrackingConfig 
 /**
  * Tracks if a callback used in `OnAppendCookie` sets a cookie property to `true`.
  */
-private abstract class OnAppendCookieTrackingConfig extends DataFlow::Configuration {
+abstract private class OnAppendCookieTrackingConfig extends DataFlow::Configuration {
   bindingset[this]
   OnAppendCookieTrackingConfig() { any() }
 
@@ -186,6 +172,10 @@ private abstract class OnAppendCookieTrackingConfig extends DataFlow::Configurat
   }
 
   override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    node2.asExpr() = any(PropertyRead other | other.getQualifier() = node1.asExpr())
+    node2.asExpr() =
+      any(PropertyRead pr |
+        pr.getQualifier() = node1.asExpr() and
+        pr.getProperty().getDeclaringType() instanceof MicrosoftAspNetCoreCookiePolicyAppendCookieContext
+      )
   }
 }

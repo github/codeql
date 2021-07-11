@@ -319,6 +319,13 @@ class MicrosoftAspNetCoreBuilderCookiePolicyOptions extends RefType {
   }
 }
 
+/** The `Microsoft.AspNetCore.CookiePolicy.AppendCookieContext` class. */
+class MicrosoftAspNetCoreCookiePolicyAppendCookieContext extends RefType {
+  MicrosoftAspNetCoreCookiePolicyAppendCookieContext() {
+    this.hasQualifiedName("Microsoft.AspNetCore.CookiePolicy", "AppendCookieContext")
+  }
+}
+
 /** The `Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationOptions` class. */
 class MicrosoftAspNetCoreAuthenticationCookiesCookieAuthenticationOptions extends RefType {
   MicrosoftAspNetCoreAuthenticationCookiesCookieAuthenticationOptions() {
