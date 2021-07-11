@@ -1,0 +1,37 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Directly incorporating user input into HTTP requests dispatched from the Java EE 
+<code>RequestDispatcher</code> without validating the input can allow any web 
+application resource such as configuration files and source code to be disclosed.</p>
+</overview>
+
+<recommendation>
+<p>Unsanitized user provided data must not be used to construct the path passed to 
+the <code>RequestDispatcher</code>. To guard against sensitive file and directory exposure,
+it is advisable to avoid putting user input directly into Java EE <code>RequestDispatcher</code>.
+Instead, maintain a list of authorized resources on the server; then choose from that list based
+on the user input provided.</p>
+</recommendation>
+
+<example>
+<p>The following example shows an HTTP request parameter being used directly in a request dispatcher
+without validating the input, which allows sensitive file exposure attacks.
+It also shows how to remedy the problem by validating the user input against a known fixed string.
+</p>
+<sample src="UnsafeRequestDispatch.java" />
+</example>
+
+<references>
+<li>Jakarta Javadoc: 
+  <a href="https://jakarta.ee/specifications/webprofile/9/apidocs/jakarta/servlet/servletrequest#getRequestDispatcher-java.lang.String-">Security vulnerability with unsafe usage of RequestDispatcher</a>.
+</li>
+<li>Micro Focus:
+  <a href="https://vulncat.fortify.com/en/detail?id=desc.dataflow.java.file_disclosure_j2ee">File Disclosure: J2EE</a>
+</li>  
+</references>
+</qhelp>
