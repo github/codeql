@@ -157,6 +157,12 @@ If your query is a security query, use one or more `@tags` to associate it with 
 
 When you tag a query like this, the associated CWE pages from [MITRE.org](http://cwe.mitre.org/index.html) will automatically appear in the reference section of its associated qhelp file.
 
+#### Metric/summary `@tags`
+
+Queries with the `summary` tag represent metrics or other pieces of summary information. If SARIF output is used, the results of these queries can be found at `run[].properties.metricResults`.
+
+Code Scanning may use tags to identify queries with specific meanings across languages. Currently, there is only one such tag: `lines-of-code`. The sum of the results for queries with this tag that return a single integer column ([example for JavaScript](https://github.com/github/codeql/blob/c47d680d65f09a851e41d4edad58ffa7486b5431/java/ql/src/Metrics/Summaries/LinesOfCode.ql)) is assumed by Code Scanning to be the lines of code under the source root present in the database. Each language should have exactly one query of this form.
+
 ## QL area
 
 ### Alert messages
