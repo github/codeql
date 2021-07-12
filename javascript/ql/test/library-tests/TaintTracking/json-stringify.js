@@ -34,4 +34,7 @@ function foo() {
   sink(replicator.encode(replicator.decode(source))); // NOT OK
 
   sink(require("safe-stable-stringify")(source)); // NOT OK
+
+  const jc = require('json-cycle');
+  sink(jc.stringify(jc.parse(source))); // NOT OK
 }

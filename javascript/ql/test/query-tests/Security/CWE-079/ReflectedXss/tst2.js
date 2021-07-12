@@ -63,3 +63,15 @@ app.get('/baz', function(req, res) {
   res.send(p); // NOT OK
   res.send(other.p); // NOT OK
 });
+
+const jc = require('json-cycle');
+app.get('/baz', function(req, res) {
+  let { p } = req.params;
+
+  var obj = {};
+  obj.p = p;
+  var other = jc.retrocycle(jc.decycle(obj));
+
+  res.send(p); // NOT OK
+  res.send(other.p); // NOT OK
+});
