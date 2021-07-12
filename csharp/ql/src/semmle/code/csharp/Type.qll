@@ -266,6 +266,7 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
     hasOverriddenMember(m)
   }
 
+  pragma[nomagic]
   private predicate hasNonOverriddenMember(Member m) {
     isNonOverridden(m) and
     (
