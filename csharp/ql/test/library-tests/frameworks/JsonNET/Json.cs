@@ -1,5 +1,3 @@
-// semmle-extractor-options: /nostdlib /noconfig --load-sources-from-project:../../../resources/stubs/Newtonsoft.Json/13.0.1/Newtonsoft.Json.csproj
-
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
@@ -34,7 +32,7 @@ namespace JsonTest
 
             Object taintedPopulatedObject = new Object();
             JsonConvert.PopulateObject(t, taintedPopulatedObject);
-            Sink(taintedPopulatedObject.tainted);  // False negative
+            Sink(taintedPopulatedObject.tainted);
 
             Object untaintedObject = JsonConvert.DeserializeObject<Object>(u);
             Sink(untaintedObject);

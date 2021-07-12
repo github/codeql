@@ -45,7 +45,9 @@ private class UrlOpenSink extends SinkModelCsv {
         "org.springframework.web.client;RestTemplate;false;postForEntity;;;Argument[0];open-url",
         "org.springframework.web.client;RestTemplate;false;postForLocation;;;Argument[0];open-url",
         "org.springframework.web.client;RestTemplate;false;postForObject;;;Argument[0];open-url",
-        "org.springframework.web.client;RestTemplate;false;put;;;Argument[0];open-url"
+        "org.springframework.web.client;RestTemplate;false;put;;;Argument[0];open-url",
+        "org.springframework.web.reactive.function.client;WebClient;false;create;;;Argument[0];open-url",
+        "org.springframework.web.reactive.function.client;WebClient$Builder;false;baseUrl;;;Argument[0];open-url"
       ]
   }
 }

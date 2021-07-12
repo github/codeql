@@ -1,5 +1,3 @@
-// semmle-extractor-options: /r:${testdir}/../../../resources/assemblies/System.Web.dll /r:${testdir}/../../../resources/assemblies/System.Web.ApplicationServices.dll /r:${testdir}/../../../resources/assemblies/System.Data.dll /r:System.Text.RegularExpressions.dll /r:System.Collections.Specialized.dll /r:System.Data.Common.dll /r:System.Security.Cryptography.X509Certificates.dll /r:System.Runtime.InteropServices.dll
-
 using System;
 using System.Data.SqlClient;
 using System.Web;

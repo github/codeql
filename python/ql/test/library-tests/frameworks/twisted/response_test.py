@@ -43,16 +43,21 @@ class Redirect(Resource):
         # requested with curl.
         return b"hello" # $ SPURIOUS: HttpResponse mimetype=text/html responseBody=b"hello"
 
+################################################################################
+# Cookies
+################################################################################
 
-class NonHttpBodyOutput(Resource):
+class CookieWriting(Resource):
     """Examples of providing values in response that is not in the body
     """
     def render_GET(self, request: Request): # $ requestHandler
-        request.responseHeaders.addRawHeader("key", "value")
-        request.setHeader("key2", "value")
+        request.addCookie("key", "value") # $ CookieWrite CookieName="key" CookieValue="value"
+        request.addCookie(k="key", v="value") # $ CookieWrite CookieName="key" CookieValue="value"
+        val = "key2=value"
+        request.cookies.append(val) # $ CookieWrite CookieRawHeader=val
 
-        request.addCookie("key", "value")
-        request.cookies.append(b"key2=value")
+        request.responseHeaders.addRawHeader("key", "value")
+        request.setHeader("Set-Cookie", "key3=value3") # $ MISSING: CookieWrite CookieRawHeader="key3=value3"
 
         return b"" # $ HttpResponse mimetype=text/html responseBody=b""
 
@@ -62,7 +67,7 @@ root.putChild(b"also-now", AlsoNow())
 root.putChild(b"later", Later())
 root.putChild(b"plain-text", PlainText())
 root.putChild(b"redirect", Redirect())
-root.putChild(b"non-body", NonHttpBodyOutput())
+root.putChild(b"setting_cookie", CookieWriting())
 
 
 if __name__ == "__main__":

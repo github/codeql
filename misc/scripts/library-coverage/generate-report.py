@@ -47,13 +47,15 @@ def collect_package_stats(packages: pack.PackageCollection, cwes, filter):
         package: pack.Package = package
         if filter(package):
             processed_packages.add(package)
-            sources += package.get_kind_count("source:remote")
+            sources += package.get_part_count("source")
             steps += package.get_part_count("summary")
             sinks += package.get_part_count("sink")
 
             for cwe in cwes:
-                sink = "sink:" + cwes[cwe]["sink"]
-                count = package.get_kind_count(sink)
+                count = 0
+                for sink in cwes[cwe]["sink"].split(" "):
+                    sink = "sink:" + sink
+                    count += package.get_kind_count(sink)
                 if count > 0:
                     if cwe not in framework_cwes:
                         framework_cwes[cwe] = 0
@@ -110,7 +112,9 @@ if len(sys.argv) > 2:
 # Languages for which we want to generate coverage reports.
 configs = [
     utils.LanguageConfig(
-        "java", "Java", ".java", query_prefix + "java/ql/src/meta/frameworks/Coverage.ql")
+        "java", "Java", ".java", query_prefix + "java/ql/src/meta/frameworks/Coverage.ql"),
+    utils.LanguageConfig(
+        "csharp", "C#", ".cs", query_prefix + "csharp/ql/src/meta/frameworks/Coverage.ql")
 ]
 
 # The names of input and output files. The placeholder {language} is replaced with the language name.
@@ -125,12 +129,12 @@ else:
     output_rst = settings.generated_output_rst
     output_csv = settings.generated_output_csv
 
-for config in configs:
-    lang = config.lang
+for lang in settings.languages:
+    config = [c for c in configs if c.lang == lang][0]
     db = "empty-" + lang
     ql_output = output_ql_csv.format(language=lang)
     utils.create_empty_database(lang, config.ext, db)
-    utils.run_codeql_query(config.ql_path, db, ql_output)
+    utils.run_codeql_query(config.ql_path, db, ql_output, query_prefix)
     shutil.rmtree(db)
 
     packages = pack.PackageCollection(ql_output)
@@ -184,7 +188,7 @@ for config in configs:
         # Write CSV header.
         headers = [row_prefix + "Framework / library",
                    "Package",
-                   "Remote flow sources",
+                   "Flow sources",
                    "Taint & value steps",
                    "Sinks (total)"]
         for cwe in sorted_cwes:
@@ -232,7 +236,8 @@ for config in configs:
         row[1] = ", ".join("``{0}``".format(p.name)
                            for p in sorted(other_packages, key=lambda x: x.name))
 
-        csvwriter.writerow(row)
+        if any(other_packages):
+            csvwriter.writerow(row)
 
         # Collect statistics on all packages
         row = [row_prefix + "Totals", None]

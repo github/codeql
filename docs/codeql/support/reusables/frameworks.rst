@@ -178,3 +178,4 @@ Python built-in support
    pycryptodome, Cryptography library
    pycryptodomex, Cryptography library
    rsa, Cryptography library
+   MarkupSafe, Escaping Library

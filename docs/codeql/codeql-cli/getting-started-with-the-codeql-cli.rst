@@ -22,6 +22,11 @@ follow the steps below. For macOS version 10.15 ("Catalina"), steps 1 and 4 are
 slightly different---for further details, see the sections labeled **Information
 for macOS "Catalina" users**.
 
+For information about installing the CodeQL CLI in a CI system to create results
+to display in GitHub as code scanning alerts, see 
+`Installing CodeQL CLI in your CI system <https://docs.github.com/en/code-security/secure-coding/using-codeql-code-scanning-with-your-existing-ci-system/installing-codeql-cli-in-your-ci-system>`__ 
+in the GitHub documentation.
+
 1. Download the CodeQL CLI zip package
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

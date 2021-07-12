@@ -34,7 +34,7 @@ def get_comment_text(output_file, repo, run_id):
             comment += file.read()
     else:
         print("There's a large change in the CSV framework coverage reports")
-        comment += f"The differences can be found in the {comparison_artifact_name} artifact of this workflow run](https://github.com/{repo}/actions/runs/{run_id})."
+        comment += f"The differences can be found in the {comparison_artifact_name} [artifact of this workflow run](https://github.com/{repo}/actions/runs/{run_id})."
 
     return comment
 
@@ -61,11 +61,14 @@ def comment_pr(repo, run_id):
 
     # Try storing diff for previous run:
     prev_run_id = 0
+    prev_diff_exists = False
     try:
         prev_run_id = get_previous_run_id(repo, run_id, pr_number)
         prev_diff_folder = "prev_diff"
         utils.download_artifact(repo, comparison_artifact_name,
                                 prev_diff_folder, prev_run_id)
+
+        prev_diff_exists = True
 
         if filecmp.cmp(f"{current_diff_folder}/{comparison_artifact_file_name}", f"{prev_diff_folder}/{comparison_artifact_file_name}", shallow=False):
             print(
@@ -74,7 +77,7 @@ def comment_pr(repo, run_id):
         else:
             print(f"Diff of previous run {prev_run_id} differs, commenting.")
     except Exception:
-        # this is not mecessarily a failure, it can also mean that there was no previous run yet.
+        # this is not necessarily a failure, it can also mean that there was no previous run yet.
         print("Couldn't generate diff for previous run:", sys.exc_info()[1])
 
     comment = get_comment_text(
@@ -82,9 +85,17 @@ def comment_pr(repo, run_id):
 
     if comment == None:
         if prev_run_id == 0:
-            print("Nothing to comment.")
+            print(
+                "Nothing to comment. There's no previous run, and there's no coverage change.")
             return
+
         print("Previous run found, and current run removes coverage change.")
+
+        if not prev_diff_exists:
+            print(
+                "Couldn't get the comparison artifact from previous run. Not commenting.")
+            return
+
         comment = comment_first_line + \
             "A recent commit removed the previously reported differences."
     post_comment(comment, repo, pr_number)
@@ -110,10 +121,14 @@ def get_previous_run_id(repo, run_id, pr_number):
     pr_repo = this_run["head_repository"]
 
     # Get all previous runs that match branch, repo and workflow name:
-    ids = utils.subprocess_check_output(["gh", "api", "-X", "GET", f"repos/{repo}/actions/runs", "-f", "event=pull_request", "-f", "status=success", "-f", "name=\"" + artifacts_workflow_name + "\"", "--jq",
-                                        f"[.workflow_runs.[] | select(.head_branch==\"{pr_branch}\" and .head_repository.full_name==\"{pr_repo}\") | {{ created_at: .created_at, run_id: .id}}] | sort_by(.created_at) | reverse | [.[].run_id]"])
+    output = utils.subprocess_check_output(["gh", "api", "-X", "GET", f"repos/{repo}/actions/runs", "-f", "event=pull_request", "-f", "status=success", "-f", f"branch='{pr_branch}'", "--paginate",
+                                            "--jq", f'[.workflow_runs.[] | select(.head_repository.full_name=="{pr_repo}" and .name=="{artifacts_workflow_name}")] | sort_by(.id) | reverse | [.[].id]'])
 
-    ids = json.loads(ids)
+    ids = []
+    for l in [json.loads(l) for l in output.splitlines()]:
+        for id in l:
+            ids.append(id)
+
     if ids[0] != int(run_id):
         raise Exception(
             f"Expected to find {run_id} in the list of matching runs.")

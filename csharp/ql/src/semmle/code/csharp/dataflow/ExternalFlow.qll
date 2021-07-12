@@ -84,7 +84,10 @@ private import internal.FlowSummaryImplSpecific
  * ensuring that they are visible to the taint tracking / data flow library.
  */
 private module Frameworks {
-  // TODO
+  private import semmle.code.csharp.security.dataflow.flowsources.Local
+  private import semmle.code.csharp.security.dataflow.flowsinks.Html
+  private import semmle.code.csharp.frameworks.System
+  private import semmle.code.csharp.security.dataflow.XSSSinks
 }
 
 /**

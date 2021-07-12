@@ -5,9 +5,9 @@
 | BinaryPattern.cs:12:27:12:41 | BinaryPattern u | BinaryPattern |
 | ParenthesizedPattern.cs:9:18:9:22 | Object p1 | Object |
 | ParenthesizedPattern.cs:13:19:13:23 | Object p2 | Object |
-| ParenthesizedPattern.cs:25:13:25:15 | T t | T |
-| ParenthesizedPattern.cs:26:14:26:22 | Object o1 | Object |
-| ParenthesizedPattern.cs:27:14:27:19 | access to type String | String |
+| ParenthesizedPattern.cs:24:13:24:15 | T t | T |
+| ParenthesizedPattern.cs:25:14:25:22 | Object o1 | Object |
+| ParenthesizedPattern.cs:26:14:26:19 | access to type String | String |
 | TypePattern.cs:8:19:8:21 | access to type Int32 | Int32 |
 | TypePattern.cs:8:24:8:29 | access to type String | String |
 | TypePattern.cs:11:13:11:15 | access to type Int32 | Int32 |

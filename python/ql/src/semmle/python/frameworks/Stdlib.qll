@@ -383,21 +383,72 @@ private module Stdlib {
     }
   }
 
+  /** Gets a reference to the builtin `open` function */
+  private API::Node getOpenFunctionRef() {
+    result = API::builtin("open")
+    or
+    // io.open is a special case, since it is an alias for the builtin `open`
+    result = API::moduleImport("io").getMember("open")
+  }
+
   /**
    * A call to the builtin `open` function.
    * See https://docs.python.org/3/library/functions.html#open
    */
   private class OpenCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
-    OpenCall() {
-      this = API::builtin("open").getACall()
-      or
-      // io.open is a special case, since it is an alias for the builtin `open`
-      this = API::moduleImport("io").getMember("open").getACall()
-    }
+    OpenCall() { this = getOpenFunctionRef().getACall() }
 
     override DataFlow::Node getAPathArgument() {
       result in [this.getArg(0), this.getArgByName("file")]
     }
+  }
+
+  /** Gets a reference to an open file. */
+  private DataFlow::LocalSourceNode openFile(DataFlow::TypeTracker t, FileSystemAccess openCall) {
+    t.start() and
+    result = openCall and
+    (
+      openCall instanceof OpenCall
+      or
+      openCall instanceof PathLibOpenCall
+    )
+    or
+    exists(DataFlow::TypeTracker t2 | result = openFile(t2, openCall).track(t2, t))
+  }
+
+  /** Gets a reference to an open file. */
+  private DataFlow::Node openFile(FileSystemAccess openCall) {
+    openFile(DataFlow::TypeTracker::end(), openCall).flowsTo(result)
+  }
+
+  /** Gets a reference to the `write` or `writelines` method on an open file. */
+  private DataFlow::LocalSourceNode writeMethodOnOpenFile(
+    DataFlow::TypeTracker t, FileSystemAccess openCall
+  ) {
+    t.startInAttr(["write", "writelines"]) and
+    result = openFile(openCall)
+    or
+    exists(DataFlow::TypeTracker t2 | result = writeMethodOnOpenFile(t2, openCall).track(t2, t))
+  }
+
+  /** Gets a reference to the `write` or `writelines` method on an open file. */
+  private DataFlow::Node writeMethodOnOpenFile(FileSystemAccess openCall) {
+    writeMethodOnOpenFile(DataFlow::TypeTracker::end(), openCall).flowsTo(result)
+  }
+
+  /** A call to the `write` or `writelines` method on an opened file, such as `open("foo", "w").write(...)`. */
+  private class WriteCallOnOpenFile extends FileSystemWriteAccess::Range, DataFlow::CallCfgNode {
+    FileSystemAccess openCall;
+
+    WriteCallOnOpenFile() { this.getFunction() = writeMethodOnOpenFile(openCall) }
+
+    override DataFlow::Node getAPathArgument() {
+      // best effort attempt to give the path argument, that was initially given to the
+      // `open` call.
+      result = openCall.getAPathArgument()
+    }
+
+    override DataFlow::Node getADataNode() { result in [this.getArg(0), this.getArgByName("data")] }
   }
 
   /**
@@ -1001,11 +1052,14 @@ private module Stdlib {
   /** Gets a reference to a `pathlib.Path` object. */
   DataFlow::LocalSourceNode pathlibPath() { result = pathlibPath(DataFlow::TypeTracker::end()) }
 
+  /** A file system access from a `pathlib.Path` method call. */
   private class PathlibFileAccess extends FileSystemAccess::Range, DataFlow::CallCfgNode {
     DataFlow::AttrRead fileAccess;
+    string attrbuteName;
 
     PathlibFileAccess() {
-      fileAccess.getAttributeName() in [
+      attrbuteName = fileAccess.getAttributeName() and
+      attrbuteName in [
           "stat", "chmod", "exists", "expanduser", "glob", "group", "is_dir", "is_file", "is_mount",
           "is_symlink", "is_socket", "is_fifo", "is_block_device", "is_char_device", "iter_dir",
           "lchmod", "lstat", "mkdir", "open", "owner", "read_bytes", "read_text", "readlink",
@@ -1017,6 +1071,18 @@ private module Stdlib {
     }
 
     override DataFlow::Node getAPathArgument() { result = fileAccess.getObject() }
+  }
+
+  /** A file system write from a `pathlib.Path` method call. */
+  private class PathlibFileWrites extends PathlibFileAccess, FileSystemWriteAccess::Range {
+    PathlibFileWrites() { attrbuteName in ["write_bytes", "write_text"] }
+
+    override DataFlow::Node getADataNode() { result in [this.getArg(0), this.getArgByName("data")] }
+  }
+
+  /** A call to the `open` method on a `pathlib.Path` instance. */
+  private class PathLibOpenCall extends PathlibFileAccess {
+    PathLibOpenCall() { attrbuteName = "open" }
   }
 
   /** An additional taint steps for objects of type `pathlib.Path` */
@@ -1076,118 +1142,175 @@ private module Stdlib {
       )
     }
   }
-}
 
-// ---------------------------------------------------------------------------
-// hashlib
-// ---------------------------------------------------------------------------
-/** Gets a call to `hashlib.new` with `algorithmName` as the first argument. */
-private DataFlow::CallCfgNode hashlibNewCall(string algorithmName) {
-  exists(DataFlow::Node nameArg |
-    result = API::moduleImport("hashlib").getMember("new").getACall() and
-    nameArg in [result.getArg(0), result.getArgByName("name")] and
-    exists(StrConst str |
-      nameArg.getALocalSource() = DataFlow::exprNode(str) and
-      algorithmName = str.getText()
-    )
-  )
-}
-
-/** Gets a reference to the result of calling `hashlib.new` with `algorithmName` as the first argument. */
-private DataFlow::LocalSourceNode hashlibNewResult(DataFlow::TypeTracker t, string algorithmName) {
-  t.start() and
-  result = hashlibNewCall(algorithmName)
-  or
-  exists(DataFlow::TypeTracker t2 | result = hashlibNewResult(t2, algorithmName).track(t2, t))
-}
-
-/** Gets a reference to the result of calling `hashlib.new` with `algorithmName` as the first argument. */
-DataFlow::Node hashlibNewResult(string algorithmName) {
-  hashlibNewResult(DataFlow::TypeTracker::end(), algorithmName).flowsTo(result)
-}
-
-/**
- * A hashing operation by supplying initial data when calling the `hashlib.new` function.
- */
-class HashlibNewCall extends Cryptography::CryptographicOperation::Range, DataFlow::CallCfgNode {
-  string hashName;
-
-  HashlibNewCall() {
-    this = hashlibNewCall(hashName) and
-    exists([this.getArg(1), this.getArgByName("data")])
-  }
-
-  override Cryptography::CryptographicAlgorithm getAlgorithm() { result.matchesName(hashName) }
-
-  override DataFlow::Node getAnInput() { result in [this.getArg(1), this.getArgByName("data")] }
-}
-
-/**
- * A hashing operation by using the `update` method on the result of calling the `hashlib.new` function.
- */
-class HashlibNewUpdateCall extends Cryptography::CryptographicOperation::Range,
-  DataFlow::CallCfgNode {
-  string hashName;
-
-  HashlibNewUpdateCall() {
-    exists(DataFlow::AttrRead attr |
-      attr.getObject() = hashlibNewResult(hashName) and
-      this.getFunction() = attr and
-      attr.getAttributeName() = "update"
+  // ---------------------------------------------------------------------------
+  // hashlib
+  // ---------------------------------------------------------------------------
+  /** Gets a call to `hashlib.new` with `algorithmName` as the first argument. */
+  private DataFlow::CallCfgNode hashlibNewCall(string algorithmName) {
+    exists(DataFlow::Node nameArg |
+      result = API::moduleImport("hashlib").getMember("new").getACall() and
+      nameArg in [result.getArg(0), result.getArgByName("name")] and
+      exists(StrConst str |
+        nameArg.getALocalSource() = DataFlow::exprNode(str) and
+        algorithmName = str.getText()
+      )
     )
   }
 
-  override Cryptography::CryptographicAlgorithm getAlgorithm() { result.matchesName(hashName) }
-
-  override DataFlow::Node getAnInput() { result = this.getArg(0) }
-}
-
-/**
- * A hashing operation from the `hashlib` package using one of the predefined classes
- * (such as `hashlib.md5`). `hashlib.new` is not included, since it is handled by
- * `HashlibNewCall` and `HashlibNewUpdateCall`.
- */
-abstract class HashlibGenericHashOperation extends Cryptography::CryptographicOperation::Range,
-  DataFlow::CallCfgNode {
-  string hashName;
-  API::Node hashClass;
-
-  bindingset[this]
-  HashlibGenericHashOperation() {
-    not hashName = "new" and
-    hashClass = API::moduleImport("hashlib").getMember(hashName)
-  }
-
-  override Cryptography::CryptographicAlgorithm getAlgorithm() { result.matchesName(hashName) }
-}
-
-/**
- * A hashing operation from the `hashlib` package using one of the predefined classes
- * (such as `hashlib.md5`), by calling its' `update` mehtod.
- */
-class HashlibHashClassUpdateCall extends HashlibGenericHashOperation {
-  HashlibHashClassUpdateCall() { this = hashClass.getReturn().getMember("update").getACall() }
-
-  override DataFlow::Node getAnInput() { result = this.getArg(0) }
-}
-
-/**
- * A hashing operation from the `hashlib` package using one of the predefined classes
- * (such as `hashlib.md5`), by passing data to when instantiating the class.
- */
-class HashlibDataPassedToHashClass extends HashlibGenericHashOperation {
-  HashlibDataPassedToHashClass() {
-    // we only want to model calls to classes such as `hashlib.md5()` if initial data
-    // is passed as an argument
-    this = hashClass.getACall() and
-    exists([this.getArg(0), this.getArgByName("string")])
-  }
-
-  override DataFlow::Node getAnInput() {
-    result = this.getArg(0)
+  /** Gets a reference to the result of calling `hashlib.new` with `algorithmName` as the first argument. */
+  private DataFlow::LocalSourceNode hashlibNewResult(DataFlow::TypeTracker t, string algorithmName) {
+    t.start() and
+    result = hashlibNewCall(algorithmName)
     or
-    // in Python 3.9, you are allowed to use `hashlib.md5(string=<bytes-like>)`.
-    result = this.getArgByName("string")
+    exists(DataFlow::TypeTracker t2 | result = hashlibNewResult(t2, algorithmName).track(t2, t))
+  }
+
+  /** Gets a reference to the result of calling `hashlib.new` with `algorithmName` as the first argument. */
+  DataFlow::Node hashlibNewResult(string algorithmName) {
+    hashlibNewResult(DataFlow::TypeTracker::end(), algorithmName).flowsTo(result)
+  }
+
+  /**
+   * A hashing operation by supplying initial data when calling the `hashlib.new` function.
+   */
+  class HashlibNewCall extends Cryptography::CryptographicOperation::Range, DataFlow::CallCfgNode {
+    string hashName;
+
+    HashlibNewCall() {
+      this = hashlibNewCall(hashName) and
+      exists([this.getArg(1), this.getArgByName("data")])
+    }
+
+    override Cryptography::CryptographicAlgorithm getAlgorithm() { result.matchesName(hashName) }
+
+    override DataFlow::Node getAnInput() { result in [this.getArg(1), this.getArgByName("data")] }
+  }
+
+  /**
+   * A hashing operation by using the `update` method on the result of calling the `hashlib.new` function.
+   */
+  class HashlibNewUpdateCall extends Cryptography::CryptographicOperation::Range,
+    DataFlow::CallCfgNode {
+    string hashName;
+
+    HashlibNewUpdateCall() {
+      exists(DataFlow::AttrRead attr |
+        attr.getObject() = hashlibNewResult(hashName) and
+        this.getFunction() = attr and
+        attr.getAttributeName() = "update"
+      )
+    }
+
+    override Cryptography::CryptographicAlgorithm getAlgorithm() { result.matchesName(hashName) }
+
+    override DataFlow::Node getAnInput() { result = this.getArg(0) }
+  }
+
+  /**
+   * A hashing operation from the `hashlib` package using one of the predefined classes
+   * (such as `hashlib.md5`). `hashlib.new` is not included, since it is handled by
+   * `HashlibNewCall` and `HashlibNewUpdateCall`.
+   */
+  abstract class HashlibGenericHashOperation extends Cryptography::CryptographicOperation::Range,
+    DataFlow::CallCfgNode {
+    string hashName;
+    API::Node hashClass;
+
+    bindingset[this]
+    HashlibGenericHashOperation() {
+      not hashName = "new" and
+      hashClass = API::moduleImport("hashlib").getMember(hashName)
+    }
+
+    override Cryptography::CryptographicAlgorithm getAlgorithm() { result.matchesName(hashName) }
+  }
+
+  /**
+   * A hashing operation from the `hashlib` package using one of the predefined classes
+   * (such as `hashlib.md5`), by calling its' `update` mehtod.
+   */
+  class HashlibHashClassUpdateCall extends HashlibGenericHashOperation {
+    HashlibHashClassUpdateCall() { this = hashClass.getReturn().getMember("update").getACall() }
+
+    override DataFlow::Node getAnInput() { result = this.getArg(0) }
+  }
+
+  /**
+   * A hashing operation from the `hashlib` package using one of the predefined classes
+   * (such as `hashlib.md5`), by passing data to when instantiating the class.
+   */
+  class HashlibDataPassedToHashClass extends HashlibGenericHashOperation {
+    HashlibDataPassedToHashClass() {
+      // we only want to model calls to classes such as `hashlib.md5()` if initial data
+      // is passed as an argument
+      this = hashClass.getACall() and
+      exists([this.getArg(0), this.getArgByName("string")])
+    }
+
+    override DataFlow::Node getAnInput() {
+      result = this.getArg(0)
+      or
+      // in Python 3.9, you are allowed to use `hashlib.md5(string=<bytes-like>)`.
+      result = this.getArgByName("string")
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // logging
+  // ---------------------------------------------------------------------------
+  /**
+   * Provides models for the `logging.Logger` class and subclasses.
+   *
+   * See https://docs.python.org/3.9/library/logging.html#logging.Logger.
+   */
+  module Logger {
+    /** Gets a reference to the `logging.Logger` class or any subclass. */
+    API::Node subclassRef() {
+      result = API::moduleImport("logging").getMember("Logger").getASubclass*()
+    }
+
+    /** Gets a reference to an instance of `logging.Logger` or any subclass. */
+    API::Node instance() {
+      result = subclassRef().getReturn()
+      or
+      result = API::moduleImport("logging").getMember("root")
+      or
+      result = API::moduleImport("logging").getMember("getLogger").getReturn()
+    }
+  }
+
+  /**
+   * A call to one of the logging methods from `logging` or on a `logging.Logger`
+   * subclass.
+   *
+   * See:
+   * - https://docs.python.org/3.9/library/logging.html#logging.debug
+   * - https://docs.python.org/3.9/library/logging.html#logging.Logger.debug
+   */
+  class LoggerLogCall extends Logging::Range, DataFlow::CallCfgNode {
+    /** The argument-index where the message is passed. */
+    int msgIndex;
+
+    LoggerLogCall() {
+      exists(string method |
+        method in ["critical", "fatal", "error", "warning", "warn", "info", "debug", "exception"] and
+        msgIndex = 0
+        or
+        method = "log" and
+        msgIndex = 1
+      |
+        this = Logger::instance().getMember(method).getACall()
+        or
+        this = API::moduleImport("logging").getMember(method).getACall()
+      )
+    }
+
+    override DataFlow::Node getAnInput() {
+      result = this.getArgByName("msg")
+      or
+      result = this.getArg(any(int i | i >= msgIndex))
+    }
   }
 }
 

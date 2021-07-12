@@ -1,0 +1,5 @@
+semmle-extractor-options: /nostdlib /noconfig
+semmle-extractor-options: --load-sources-from-project:../../../resources/stubs/Dapper/2.0.90/Dapper.csproj
+semmle-extractor-options: --load-sources-from-project:../../../resources/stubs/System.Data.SqlClient/4.8.2/System.Data.SqlClient.csproj
+semmle-extractor-options: ${testdir}/../../../resources/stubs/EntityFramework.cs
+semmle-extractor-options: ${testdir}/../../../resources/stubs/System.Windows.cs

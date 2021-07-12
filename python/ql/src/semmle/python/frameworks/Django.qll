@@ -1350,9 +1350,9 @@ private module PrivateDjango {
          * See https://docs.djangoproject.com/en/3.1/ref/request-response/#django.http.HttpResponse.write
          */
         class HttpResponseWriteCall extends HTTP::Server::HttpResponse::Range, DataFlow::CallCfgNode {
-          HTTP::Server::HttpResponse::Range instance;
+          django::http::response::HttpResponse::InstanceSource instance;
 
-          HttpResponseWriteCall() { node.getFunction() = write(instance).asCfgNode() }
+          HttpResponseWriteCall() { this.getFunction() = write(instance) }
 
           override DataFlow::Node getBody() {
             result in [this.getArg(0), this.getArgByName("content")]
@@ -1363,6 +1363,77 @@ private module PrivateDjango {
           }
 
           override string getMimetypeDefault() { result = instance.getMimetypeDefault() }
+        }
+
+        /**
+         * A call to `set_cookie` on a HTTP Response.
+         */
+        class DjangoResponseSetCookieCall extends HTTP::Server::CookieWrite::Range,
+          DataFlow::MethodCallNode {
+          DjangoResponseSetCookieCall() {
+            this.calls(django::http::response::HttpResponse::instance(), "set_cookie")
+          }
+
+          override DataFlow::Node getHeaderArg() { none() }
+
+          override DataFlow::Node getNameArg() {
+            result in [this.getArg(0), this.getArgByName("key")]
+          }
+
+          override DataFlow::Node getValueArg() {
+            result in [this.getArg(1), this.getArgByName("value")]
+          }
+        }
+
+        /**
+         * A call to `delete_cookie` on a HTTP Response.
+         */
+        class DjangoResponseDeleteCookieCall extends HTTP::Server::CookieWrite::Range,
+          DataFlow::MethodCallNode {
+          DjangoResponseDeleteCookieCall() {
+            this.calls(django::http::response::HttpResponse::instance(), "delete_cookie")
+          }
+
+          override DataFlow::Node getHeaderArg() { none() }
+
+          override DataFlow::Node getNameArg() {
+            result in [this.getArg(0), this.getArgByName("key")]
+          }
+
+          override DataFlow::Node getValueArg() { none() }
+        }
+
+        /**
+         * A dict-like write to an item of the `cookies` attribute on a HTTP response, such as
+         * `response.cookies[name] = value`.
+         */
+        class DjangoResponseCookieSubscriptWrite extends HTTP::Server::CookieWrite::Range {
+          DataFlow::Node index;
+          DataFlow::Node value;
+
+          DjangoResponseCookieSubscriptWrite() {
+            exists(SubscriptNode subscript, DataFlow::AttrRead cookieLookup |
+              // To give `this` a value, we need to choose between either LHS or RHS,
+              // and just go with the LHS
+              this.asCfgNode() = subscript
+            |
+              cookieLookup.getAttributeName() = "cookies" and
+              cookieLookup.getObject() = django::http::response::HttpResponse::instance() and
+              exists(DataFlow::Node subscriptObj |
+                subscriptObj.asCfgNode() = subscript.getObject()
+              |
+                cookieLookup.flowsTo(subscriptObj)
+              ) and
+              value.asCfgNode() = subscript.(DefinitionNode).getValue() and
+              index.asCfgNode() = subscript.getIndex()
+            )
+          }
+
+          override DataFlow::Node getHeaderArg() { none() }
+
+          override DataFlow::Node getNameArg() { result = index }
+
+          override DataFlow::Node getValueArg() { result = value }
         }
       }
     }

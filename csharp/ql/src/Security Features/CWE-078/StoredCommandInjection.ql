@@ -15,7 +15,7 @@
 
 import csharp
 import semmle.code.csharp.security.dataflow.flowsources.Stored
-import semmle.code.csharp.security.dataflow.CommandInjection::CommandInjection
+import semmle.code.csharp.security.dataflow.CommandInjectionQuery
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 class StoredTaintTrackingConfiguration extends TaintTrackingConfiguration {
