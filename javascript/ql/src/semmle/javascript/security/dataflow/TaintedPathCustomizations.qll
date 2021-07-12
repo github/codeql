@@ -683,6 +683,21 @@ module TaintedPath {
   }
 
   /**
+   * The `cwd` option for the `read-pkg` library.
+   */
+  private class ReadPkgCwdSink extends TaintedPath::Sink {
+    ReadPkgCwdSink() {
+      this =
+        API::moduleImport("read-pkg")
+            .getMember(["readPackageAsync", "readPackageSync"])
+            .getACall()
+            .getParameter(0)
+            .getMember("cwd")
+            .getARhs()
+    }
+  }
+
+  /**
    * Holds if there is a step `src -> dst` mapping `srclabel` to `dstlabel` relevant for path traversal vulnerabilities.
    */
   predicate isAdditionalTaintedPathFlowStep(
