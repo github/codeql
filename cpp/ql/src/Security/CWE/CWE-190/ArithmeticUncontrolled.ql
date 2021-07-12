@@ -103,8 +103,11 @@ class UncontrolledArithConfiguration extends TaintTracking::Configuration {
     // If this expression is part of bitwise 'and' or 'or' operation it's likely that the value is
     // only used as a bit pattern.
     node.asExpr() =
-      any(BinaryBitwiseOperation op | op instanceof BitwiseOrExpr or op instanceof BitwiseAndExpr)
-          .getAnOperand*()
+      any(Operation op |
+        op instanceof BitwiseOrExpr or
+        op instanceof BitwiseAndExpr or
+        op instanceof ComplementExpr
+      ).getAnOperand*()
   }
 }
 
