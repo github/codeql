@@ -40,4 +40,7 @@ function foo() {
 
   const stripper = require("strip-json-comments");
   sink(JSON.stringify(JSON.parse(stripper(source)))); // NOT OK
+
+  const fastJson = require('fast-json-stringify');
+  sink(fastJson(source)); // NOT OK
 }
