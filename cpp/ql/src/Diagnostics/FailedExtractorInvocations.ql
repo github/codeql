@@ -1,15 +1,11 @@
 /**
  * @name Failed extractor invocations
  * @description Gives the command line of compilations for which extraction did not run to completion.
- * @kind table
+ * @kind diagnostic
  * @id cpp/diagnostics/failed-extractor-invocations
  */
 
 import cpp
-
-class AnonymousCompilation extends Compilation {
-  override string toString() { result = "<compilation>" }
-}
 
 string describe(Compilation c) {
   if c.getArgument(1) = "--mimic"
@@ -19,4 +15,4 @@ string describe(Compilation c) {
 
 from Compilation c
 where not c.normalTermination()
-select c, "Extraction aborted for " + describe(c)
+select "Extraction aborted for " + describe(c)
