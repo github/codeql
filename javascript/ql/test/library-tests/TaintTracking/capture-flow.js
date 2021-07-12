@@ -16,7 +16,7 @@ function outerMost() {
     return outer();
 }
 
-sink(outerMost()); // NOT OK - but missed
+sink(outerMost()); // NOT OK
 
 function confuse(x) {
     let captured;
@@ -27,5 +27,5 @@ function confuse(x) {
     return captured;
 }
 
-sink(confuse('safe')); // OK - but incorrectly flagged
+sink(confuse('safe')); // OK
 sink(confuse(source())); // NOT OK
