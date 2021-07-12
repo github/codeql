@@ -159,10 +159,14 @@ When you tag a query like this, the associated CWE pages from [MITRE.org](http:/
 
 #### Metric/summary `@tags`
 
-Queries with the `summary` tag represent metrics or other pieces of summary information. If SARIF output is used, the results of these queries can be found at `run[].properties.metricResults`.
+Queries with `@kind metric` and the `summary` tag represent metrics or other pieces of summary information. If SARIF output is used, the results of these queries can be found at `run[].properties.metricResults`.
 
 Code Scanning may use tags to identify queries with specific meanings across languages. Currently, there is only one such tag: `lines-of-code`. The sum of the results for queries with this tag that return a single integer column ([example for JavaScript](https://github.com/github/codeql/blob/c47d680d65f09a851e41d4edad58ffa7486b5431/java/ql/src/Metrics/Summaries/LinesOfCode.ql)) is assumed by Code Scanning to be the lines of code under the source root present in the database. Each language should have exactly one query of this form.
-
+The `select` clause of a summary metric query must have one of the following result patterns:
+- Just a `number`
+  - This indicates a metric without a specific location in the codebase, for example the total lines of code in a codebase.
+- A code `entity` followed by a `number`
+  - This indicates a metric with a specific location in the codebase, for example the lines of code within a file. The `entity` here must have a valid location in the source code.
 ## QL area
 
 ### Alert messages
