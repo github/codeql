@@ -337,3 +337,28 @@ class StripAnsiStep extends TaintTracking::SharedTaintStep {
     )
   }
 }
+
+/**
+ * Provides classes and predicates for working with the `pino` library.
+ */
+private module Pino {
+  /**
+   * Gets a logger instance from the `pino` library.
+   */
+  private API::Node pino() {
+    result = API::moduleImport("pino").getReturn()
+    or
+    result = pino().getMember("child").getReturn()
+  }
+
+  /**
+   * A logging call to the `pino` library.
+   */
+  private class PinoCall extends LoggerCall {
+    PinoCall() {
+      this = pino().getMember(["trace", "debug", "info", "warn", "error", "fatal"]).getACall()
+    }
+
+    override DataFlow::Node getAMessageComponent() { result = getArgument(0) }
+  }
+}

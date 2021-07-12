@@ -57,3 +57,12 @@ const server2 = http.createServer((req, res) => {
     console.log(chalk.underline.bgBlue(username)); // NOT OK
     console.log(stripAnsi(chalk.underline.bgBlue(username))); // NOT OK
 });
+
+const pino = require('pino')()
+
+const server3 = http.createServer((req, res) => {
+    let q = url.parse(req.url, true);
+    let username = q.query.username;
+
+    pino.info(username); // NOT OK
+});

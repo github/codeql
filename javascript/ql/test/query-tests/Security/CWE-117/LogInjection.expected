@@ -65,6 +65,16 @@ nodes
 | logInjectionBad.js:58:17:58:59 | stripAn ... rname)) |
 | logInjectionBad.js:58:27:58:58 | chalk.u ... ername) |
 | logInjectionBad.js:58:50:58:57 | username |
+| logInjectionBad.js:64:9:64:36 | q |
+| logInjectionBad.js:64:13:64:36 | url.par ... , true) |
+| logInjectionBad.js:64:23:64:29 | req.url |
+| logInjectionBad.js:64:23:64:29 | req.url |
+| logInjectionBad.js:65:9:65:35 | username |
+| logInjectionBad.js:65:20:65:20 | q |
+| logInjectionBad.js:65:20:65:26 | q.query |
+| logInjectionBad.js:65:20:65:35 | q.query.username |
+| logInjectionBad.js:67:15:67:22 | username |
+| logInjectionBad.js:67:15:67:22 | username |
 edges
 | logInjectionBad.js:19:9:19:36 | q | logInjectionBad.js:20:20:20:20 | q |
 | logInjectionBad.js:19:13:19:36 | url.par ... , true) | logInjectionBad.js:19:9:19:36 | q |
@@ -130,6 +140,15 @@ edges
 | logInjectionBad.js:58:27:58:58 | chalk.u ... ername) | logInjectionBad.js:58:17:58:59 | stripAn ... rname)) |
 | logInjectionBad.js:58:27:58:58 | chalk.u ... ername) | logInjectionBad.js:58:17:58:59 | stripAn ... rname)) |
 | logInjectionBad.js:58:50:58:57 | username | logInjectionBad.js:58:27:58:58 | chalk.u ... ername) |
+| logInjectionBad.js:64:9:64:36 | q | logInjectionBad.js:65:20:65:20 | q |
+| logInjectionBad.js:64:13:64:36 | url.par ... , true) | logInjectionBad.js:64:9:64:36 | q |
+| logInjectionBad.js:64:23:64:29 | req.url | logInjectionBad.js:64:13:64:36 | url.par ... , true) |
+| logInjectionBad.js:64:23:64:29 | req.url | logInjectionBad.js:64:13:64:36 | url.par ... , true) |
+| logInjectionBad.js:65:9:65:35 | username | logInjectionBad.js:67:15:67:22 | username |
+| logInjectionBad.js:65:9:65:35 | username | logInjectionBad.js:67:15:67:22 | username |
+| logInjectionBad.js:65:20:65:20 | q | logInjectionBad.js:65:20:65:26 | q.query |
+| logInjectionBad.js:65:20:65:26 | q.query | logInjectionBad.js:65:20:65:35 | q.query.username |
+| logInjectionBad.js:65:20:65:35 | q.query.username | logInjectionBad.js:65:9:65:35 | username |
 #select
 | logInjectionBad.js:22:18:22:43 | `[INFO] ... rname}` | logInjectionBad.js:19:23:19:29 | req.url | logInjectionBad.js:22:18:22:43 | `[INFO] ... rname}` | $@ flows to log entry. | logInjectionBad.js:19:23:19:29 | req.url | User-provided value |
 | logInjectionBad.js:23:37:23:44 | username | logInjectionBad.js:19:23:19:29 | req.url | logInjectionBad.js:23:37:23:44 | username | $@ flows to log entry. | logInjectionBad.js:19:23:19:29 | req.url | User-provided value |
@@ -146,3 +165,4 @@ edges
 | logInjectionBad.js:56:17:56:55 | kleur.b ... ername) | logInjectionBad.js:46:23:46:29 | req.url | logInjectionBad.js:56:17:56:55 | kleur.b ... ername) | $@ flows to log entry. | logInjectionBad.js:46:23:46:29 | req.url | User-provided value |
 | logInjectionBad.js:57:17:57:48 | chalk.u ... ername) | logInjectionBad.js:46:23:46:29 | req.url | logInjectionBad.js:57:17:57:48 | chalk.u ... ername) | $@ flows to log entry. | logInjectionBad.js:46:23:46:29 | req.url | User-provided value |
 | logInjectionBad.js:58:17:58:59 | stripAn ... rname)) | logInjectionBad.js:46:23:46:29 | req.url | logInjectionBad.js:58:17:58:59 | stripAn ... rname)) | $@ flows to log entry. | logInjectionBad.js:46:23:46:29 | req.url | User-provided value |
+| logInjectionBad.js:67:15:67:22 | username | logInjectionBad.js:64:23:64:29 | req.url | logInjectionBad.js:67:15:67:22 | username | $@ flows to log entry. | logInjectionBad.js:64:23:64:29 | req.url | User-provided value |
