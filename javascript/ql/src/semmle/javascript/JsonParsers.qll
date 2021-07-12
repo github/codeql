@@ -78,3 +78,15 @@ private class JsonParserCallWithCallback extends JsonParserCall {
 
   override DataFlow::SourceNode getOutput() { result = getCallback(1).getParameter(1) }
 }
+
+/**
+ * A taint step through the `strip-json-comments` library.
+ */
+private class StripJsonCommentsStep extends TaintTracking::SharedTaintStep {
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(API::CallNode call | call = API::moduleImport("strip-json-comments").getACall() |
+      pred = call.getArgument(0) and
+      succ = call
+    )
+  }
+}

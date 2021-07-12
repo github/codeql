@@ -37,4 +37,7 @@ function foo() {
 
   const jc = require('json-cycle');
   sink(jc.stringify(jc.parse(source))); // NOT OK
+
+  const stripper = require("strip-json-comments");
+  sink(JSON.stringify(JSON.parse(stripper(source)))); // NOT OK
 }
