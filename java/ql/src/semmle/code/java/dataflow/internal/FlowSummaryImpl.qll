@@ -375,7 +375,9 @@ module Private {
         or
         exists(ReturnKind rk |
           head = TReturnSummaryComponent(rk) and
-          result = getCallbackReturnType(getNodeType(summaryNodeInputState(c, s.drop(1))), rk)
+          result =
+            getCallbackReturnType(getNodeType(summaryNodeInputState(pragma[only_bind_out](c),
+                  s.drop(1))), rk)
         )
       )
       or
@@ -392,7 +394,9 @@ module Private {
         )
         or
         exists(int i | head = TParameterSummaryComponent(i) |
-          result = getCallbackParameterType(getNodeType(summaryNodeOutputState(c, s.drop(1))), i)
+          result =
+            getCallbackParameterType(getNodeType(summaryNodeOutputState(pragma[only_bind_out](c),
+                  s.drop(1))), i)
         )
       )
     )
