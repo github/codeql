@@ -108,9 +108,30 @@ private class LibraryFormatter extends PrintfStyleCall {
  * A taint step through a case changing function.
  */
 private class CaseChangingStep extends TaintTracking::SharedTaintStep {
-  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+  override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(DataFlow::SourceNode callee, DataFlow::CallNode call |
-      callee = DataFlow::moduleMember("change-case", _)
+      callee = DataFlow::moduleMember("change-case", _) or
+      callee = DataFlow::moduleMember("camel-case", "camelCase") or
+      callee = DataFlow::moduleMember("pascal-case", "pascalCase") or
+      callee = DataFlow::moduleMember("snake-case", "snakeCase") or
+      callee = DataFlow::moduleImport("kebab-case") or
+      callee = DataFlow::moduleMember("kebab-case", "reverse") or
+      callee = DataFlow::moduleMember("param-case", "paramCase") or
+      callee = DataFlow::moduleMember("path-case", "pathCase") or
+      callee = DataFlow::moduleMember("sentence-case", "sentenceCase") or
+      callee = DataFlow::moduleMember("title-case", "titleCase") or
+      callee = DataFlow::moduleMember("upper-case", ["upperCase", "localeUpperCase"]) or
+      callee = DataFlow::moduleMember("lower-case", ["lowerCase", "localeLowerCase"]) or
+      callee = DataFlow::moduleMember("no-case", "noCase") or
+      callee = DataFlow::moduleMember("constant-case", "constantCase") or
+      callee = DataFlow::moduleMember("dot-case", "dotCase") or
+      callee = DataFlow::moduleMember("upper-case-first", "upperCaseFirst") or
+      callee = DataFlow::moduleMember("lower-case-first", "lowerCaseFirst") or
+      callee = DataFlow::moduleMember("header-case", "headerCase") or
+      callee = DataFlow::moduleMember("capital-case", "capitalCase") or
+      callee = DataFlow::moduleMember("swap-case", "swapCase") or
+      callee = DataFlow::moduleMember("sponge-case", "spongeCase") or
+      callee = DataFlow::moduleImport(["titleize", "camelcase", "decamelize"])
     |
       call = callee.getACall() and
       pred = call.getArgument(0) and
