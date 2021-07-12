@@ -86,6 +86,7 @@ private class FlowSummaries extends SummaryModelCsv {
           "JsonObjectBuilder;false;addAll;;;Argument[-1];ReturnValue;value",
           "JsonObjectBuilder;false;addNull;;;Argument[-1];ReturnValue;value",
           "JsonObjectBuilder;false;build;;;Argument[-1];ReturnValue;taint",
+          "JsonObjectBuilder;false;remove;;;Argument[-1];ReturnValue;value",
           "JsonParserFactory;false;createParser;;;Argument[0];ReturnValue;taint",
           "JsonPatch;false;apply;;;Argument[-1];ReturnValue;taint",
           "JsonPatch;false;apply;;;Argument[0];ReturnValue;taint",

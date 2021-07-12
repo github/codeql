@@ -1031,6 +1031,13 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
+			// "jakarta.json;JsonObjectBuilder;false;remove;;;Argument[-1];ReturnValue;value"
+			jakarta.json.JsonObjectBuilder out = null;
+			jakarta.json.JsonObjectBuilder in = (jakarta.json.JsonObjectBuilder)source();
+			out = in.remove(null);
+			sink(out); // $hasValueFlow
+		}
+		{
 			// "jakarta.json;JsonPatch;false;apply;;;Argument[-1];ReturnValue;taint"
 			jakarta.json.JsonStructure out = null;
 			jakarta.json.JsonPatch in = (jakarta.json.JsonPatch)source();
@@ -2209,6 +2216,13 @@ public class Test {
 			javax.json.JsonObjectBuilder in = (javax.json.JsonObjectBuilder)source();
 			out = in.build();
 			sink(out); // $hasTaintFlow
+		}
+		{
+			// "javax.json;JsonObjectBuilder;false;remove;;;Argument[-1];ReturnValue;value"
+			javax.json.JsonObjectBuilder out = null;
+			javax.json.JsonObjectBuilder in = (javax.json.JsonObjectBuilder)source();
+			out = in.remove(null);
+			sink(out); // $hasValueFlow
 		}
 		{
 			// "javax.json;JsonPatch;false;apply;;;Argument[-1];ReturnValue;taint"
