@@ -8,20 +8,6 @@ private import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 private import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
 
 /**
- * An operand `e` of a division expression (i.e., `e` is an operand of either a `DivExpr` or
- * a `AssignDivExpr`) is bounded when `e` is the left-hand side of the division.
- */
-pragma[inline]
-private predicate boundedDiv(Expr e, Expr left) { e = left }
-
-/**
- * An operand `e` of a remainder expression (i.e., `e` is an operand of either a `RemExpr` or
- * a `AssignRemExpr`) is bounded when `e` is the left-hand side of the remainder.
- */
-pragma[inline]
-private predicate boundedRem(Expr e, Expr left) { e = left }
-
-/**
  * An operand `e` of a bitwise and expression `andExpr` (i.e., `andExpr` is either an `BitwiseAndExpr`
  * or an `AssignAndExpr`) with operands `operand1` and `operand2` is the operand that is not `e` is upper
  * bounded by some number that is less than the maximum integer allowed by the result type of `andExpr`.
@@ -45,9 +31,10 @@ predicate bounded(Expr e) {
   ) and
   not convertedExprMightOverflow(e)
   or
-  boundedRem(e, any(RemExpr rem).getLeftOperand())
+  // Optimitically assume that a remainder expression always yields a much smaller value.
+  e = any(RemExpr rem).getLeftOperand()
   or
-  boundedRem(e, any(AssignRemExpr rem).getLValue())
+  e = any(AssignRemExpr rem).getLValue()
   or
   exists(BitwiseAndExpr andExpr |
     boundedBitwiseAnd(e, andExpr, andExpr.getAnOperand(), andExpr.getAnOperand())
@@ -58,11 +45,11 @@ predicate bounded(Expr e) {
   )
   or
   // Optimitically assume that a division always yields a much smaller value.
-  boundedDiv(e, any(DivExpr div).getLeftOperand())
+  e = any(DivExpr div).getLeftOperand()
   or
-  boundedDiv(e, any(AssignDivExpr div).getLValue())
+  e = any(AssignDivExpr div).getLValue()
   or
-  boundedDiv(e, any(RShiftExpr shift).getLeftOperand())
+  e = any(RShiftExpr shift).getLeftOperand()
   or
-  boundedDiv(e, any(AssignRShiftExpr div).getLValue())
+  e = any(AssignRShiftExpr div).getLValue()
 }
