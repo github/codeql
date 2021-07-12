@@ -104,21 +104,21 @@ class LocalSourceNode extends Node {
   }
 
   /**
+   * DEPRECATED. Use `TypeTrackingNode::track` instead.
+   *
    * Gets a node that this node may flow to using one heap and/or interprocedural step.
    *
    * See `TypeTracker` for more details about how to use this.
-   *
-   * DEPRECATED. Use `TypeTrackingNode::track` instead.
    */
   pragma[inline]
   deprecated LocalSourceNode track(TypeTracker t2, TypeTracker t) { t = t2.step(this, result) }
 
   /**
+   * DEPRECATED. Use `TypeTrackingNode::backtrack` instead.
+   *
    * Gets a node that may flow into this one using one heap and/or interprocedural step.
    *
    * See `TypeBackTracker` for more details about how to use this.
-   *
-   * DEPRECATED. Use `TypeTrackingNode::backtrack` instead.
    */
   pragma[inline]
   deprecated LocalSourceNode backtrack(TypeBackTracker t2, TypeBackTracker t) {
