@@ -435,8 +435,7 @@ abstract class StackVariableReachability extends string {
       not exists(Condition cond | cond = getACondition(source, v, pred) |
         succ = pred.getATrueSuccessor() and
         cond.refutesCondition(pragma[only_bind_out](MkCondition(pred.getEnd(), true)))
-      )
-      or
+      ) and
       // If we picked the successor edge corresponding to a condition being false, there must not be
       // another path condition that refutes that the condition is false.
       not exists(Condition cond | cond = getACondition(source, v, pred) |
