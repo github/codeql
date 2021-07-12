@@ -1,5 +1,5 @@
 /**
- * Provides models for the `javax.json` package.
+ * Provides models for the `javax.json` and `jakarta.json` packages.
  */
 
 import java
