@@ -3,7 +3,7 @@
  * @description Invoking user-controlled methods on certain objects can lead to remote code execution.
  * @kind path-problem
  * @problem.severity error
- * @security-severity 10.0
+ * @security-severity 9.3
  * @precision high
  * @id js/unsafe-dynamic-method-access
  * @tags security

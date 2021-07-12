@@ -93,6 +93,23 @@ class EncodingTest extends InlineExpectationsTest {
   }
 }
 
+class LoggingTest extends InlineExpectationsTest {
+  LoggingTest() { this = "LoggingTest" }
+
+  override string getARelevantTag() { result in ["loggingInput"] }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(Logging logging, DataFlow::Node data |
+      location = data.getLocation() and
+      element = data.toString() and
+      value = prettyNodeForInlineTest(data) and
+      data = logging.getAnInput() and
+      tag = "loggingInput"
+    )
+  }
+}
+
 class CodeExecutionTest extends InlineExpectationsTest {
   CodeExecutionTest() { this = "CodeExecutionTest" }
 
@@ -125,6 +142,38 @@ class SqlExecutionTest extends InlineExpectationsTest {
       element = sql.toString() and
       value = prettyNodeForInlineTest(sql) and
       tag = "getSql"
+    )
+  }
+}
+
+class EscapingTest extends InlineExpectationsTest {
+  EscapingTest() { this = "EscapingTest" }
+
+  override string getARelevantTag() { result in ["escapeInput", "escapeOutput", "escapeKind"] }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(Escaping esc |
+      exists(DataFlow::Node data |
+        location = data.getLocation() and
+        element = data.toString() and
+        value = prettyNodeForInlineTest(data) and
+        (
+          data = esc.getAnInput() and
+          tag = "escapeInput"
+          or
+          data = esc.getOutput() and
+          tag = "escapeOutput"
+        )
+      )
+      or
+      exists(string format |
+        location = esc.getLocation() and
+        element = format and
+        value = format and
+        format = esc.getKind() and
+        tag = "escapeKind"
+      )
     )
   }
 }
@@ -252,6 +301,38 @@ class HttpServerHttpRedirectResponseTest extends InlineExpectationsTest {
   }
 }
 
+class HttpServerCookieWriteTest extends InlineExpectationsTest {
+  HttpServerCookieWriteTest() { this = "HttpServerCookieWriteTest" }
+
+  override string getARelevantTag() {
+    result in ["CookieWrite", "CookieRawHeader", "CookieName", "CookieValue"]
+  }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(HTTP::Server::CookieWrite cookieWrite |
+      location = cookieWrite.getLocation() and
+      (
+        element = cookieWrite.toString() and
+        value = "" and
+        tag = "CookieWrite"
+        or
+        element = cookieWrite.toString() and
+        value = prettyNodeForInlineTest(cookieWrite.getHeaderArg()) and
+        tag = "CookieRawHeader"
+        or
+        element = cookieWrite.toString() and
+        value = prettyNodeForInlineTest(cookieWrite.getNameArg()) and
+        tag = "CookieName"
+        or
+        element = cookieWrite.toString() and
+        value = prettyNodeForInlineTest(cookieWrite.getValueArg()) and
+        tag = "CookieValue"
+      )
+    )
+  }
+}
+
 class FileSystemAccessTest extends InlineExpectationsTest {
   FileSystemAccessTest() { this = "FileSystemAccessTest" }
 
@@ -265,6 +346,23 @@ class FileSystemAccessTest extends InlineExpectationsTest {
       element = path.toString() and
       value = prettyNodeForInlineTest(path) and
       tag = "getAPathArgument"
+    )
+  }
+}
+
+class FileSystemWriteAccessTest extends InlineExpectationsTest {
+  FileSystemWriteAccessTest() { this = "FileSystemWriteAccessTest" }
+
+  override string getARelevantTag() { result = "fileWriteData" }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(FileSystemWriteAccess write, DataFlow::Node data |
+      data = write.getADataNode() and
+      location = data.getLocation() and
+      element = data.toString() and
+      value = prettyNodeForInlineTest(data) and
+      tag = "fileWriteData"
     )
   }
 }

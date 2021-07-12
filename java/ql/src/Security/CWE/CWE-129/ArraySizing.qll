@@ -1,7 +1,7 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.DefUse
-import semmle.code.java.security.Random
+import semmle.code.java.security.RandomDataSource
 private import BoundingChecks
 
 /**

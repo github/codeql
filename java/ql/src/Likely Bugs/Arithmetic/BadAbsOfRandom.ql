@@ -11,7 +11,7 @@
  */
 
 import java
-import semmle.code.java.security.Random
+import semmle.code.java.security.RandomQuery
 
 from MethodAccess ma, Method abs, Method nextIntOrLong, RandomDataSource nma
 where

@@ -34,7 +34,12 @@ class Declaration extends DotNet::Declaration, Element, @declaration {
    * ```
    */
   string getQualifiedNameWithTypes() {
-    result = this.getDeclaringType().getQualifiedName() + "." + this.toStringWithTypes()
+    exists(string qual |
+      qual = this.getDeclaringType().getQualifiedName() and
+      if this instanceof NestedType
+      then result = qual + "+" + this.toStringWithTypes()
+      else result = qual + "." + this.toStringWithTypes()
+    )
   }
 
   /**
@@ -86,32 +91,69 @@ class Modifiable extends Declaration, @modifiable {
   predicate isConst() { this.hasModifier("const") }
 
   /** Holds if this declaration is `unsafe`. */
-  predicate isUnsafe() { this.hasModifier("unsafe") }
+  predicate isUnsafe() {
+    this.hasModifier("unsafe") or
+    this.(Parameterizable).getAParameter().getType() instanceof PointerType or
+    this.(Property).getType() instanceof PointerType or
+    this.(Callable).getReturnType() instanceof PointerType
+  }
 
   /** Holds if this declaration is `async`. */
   predicate isAsync() { this.hasModifier("async") }
 
+  private predicate isReallyPrivate() {
+    this.isPrivate() and
+    not this.isProtected() and
+    // Rare case when a member is defined with the same name in multiple assemblies with different visibility
+    not this.isPublic()
+  }
+
   /**
-   * Holds if this declaration is effectively `private` (either directly or
-   * because one of the enclosing types is `private`).
+   * Holds if this declaration is effectively `private`. A declaration is considered
+   * effectively `private` if it can only be referenced from
+   * - the declaring and its nested types, similarly to `private` declarations, and
+   * - the enclosing types.
+   *
+   * Note that explicit interface implementations are also considered effectively
+   * `private` if the implemented interface is itself effectively `private`. Finally,
+   * `private protected` members are not considered effectively `private`, because
+   * they can be overriden within the declaring assembly.
    */
   predicate isEffectivelyPrivate() {
-    this.isPrivate() or
-    this.getDeclaringType+().isPrivate()
+    this.isReallyPrivate() or
+    this.getDeclaringType+().(Modifiable).isReallyPrivate() or
+    this.(Virtualizable).getExplicitlyImplementedInterface().isEffectivelyPrivate()
+  }
+
+  private predicate isReallyInternal() {
+    (
+      this.isInternal() and not this.isProtected()
+      or
+      this.isPrivate() and this.isProtected()
+    ) and
+    // Rare case when a member is defined with the same name in multiple assemblies with different visibility
+    not this.isPublic()
   }
 
   /**
-   * Holds if this declaration is effectively `internal` (either directly or
-   * because one of the enclosing types is `internal`).
+   * Holds if this declaration is effectively `internal`. A declaration is considered
+   * effectively `internal` if it can only be referenced from the declaring assembly.
+   *
+   * Note that friend assemblies declared in `InternalsVisibleToAttribute` are not
+   * considered. Explicit interface implementations are also considered effectively
+   * `internal` if the implemented interface is itself effectively `internal`. Finally,
+   * `internal protected` members are not considered effectively `internal`, because
+   * they can be overriden outside the declaring assembly.
    */
   predicate isEffectivelyInternal() {
-    this.isInternal() or
-    this.getDeclaringType+().isInternal()
+    this.isReallyInternal() or
+    this.getDeclaringType+().(Modifiable).isReallyInternal() or
+    this.(Virtualizable).getExplicitlyImplementedInterface().isEffectivelyInternal()
   }
 
   /**
-   * Holds if this declaration is effectively `public`, because it
-   * and all enclosing types are `public`.
+   * Holds if this declaration is effectively `public`, meaning that it can be
+   * referenced outside the declaring assembly.
    */
   predicate isEffectivelyPublic() { not isEffectivelyPrivate() and not isEffectivelyInternal() }
 }
@@ -152,6 +194,11 @@ class Virtualizable extends Member, @virtualizable {
   override predicate isPublic() {
     Member.super.isPublic() or
     implementsExplicitInterface()
+  }
+
+  override predicate isPrivate() {
+    super.isPrivate() and
+    not implementsExplicitInterface()
   }
 
   /**
@@ -284,6 +331,7 @@ class Virtualizable extends Member, @virtualizable {
    *   (An example where `getOverridee*().getImplementee()` would be incorrect.)
    * - If this member is `D.M` then `I.M = getAnUltimateImplementee()`.
    */
+  pragma[nomagic]
   Virtualizable getAnUltimateImplementee() {
     exists(Virtualizable implementation, ValueOrRefType implementationType |
       implements(implementation, result, implementationType)

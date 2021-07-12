@@ -4,7 +4,7 @@
  *              overflows.
  * @kind path-problem
  * @problem.severity warning
- * @security-severity 5.9
+ * @security-severity 8.6
  * @precision medium
  * @id java/uncontrolled-arithmetic
  * @tags security
@@ -14,7 +14,7 @@
 
 import java
 import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.security.Random
+import semmle.code.java.security.RandomQuery
 import semmle.code.java.security.SecurityTests
 import ArithmeticCommon
 import DataFlow::PathGraph

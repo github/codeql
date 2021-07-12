@@ -2,13 +2,8 @@
 
 import java
 import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.frameworks.Jdbc
-import semmle.code.java.frameworks.jOOQ
-import semmle.code.java.frameworks.android.SQLite
 import semmle.code.java.frameworks.javaee.Persistence
-import semmle.code.java.frameworks.SpringJdbc
-import semmle.code.java.frameworks.MyBatis
-import semmle.code.java.frameworks.Hibernate
+import semmle.code.java.dataflow.ExternalFlow
 
 /** A sink for database query language injection vulnerabilities. */
 abstract class QueryInjectionSink extends DataFlow::Node { }
@@ -29,28 +24,7 @@ class AdditionalQueryInjectionTaintStep extends Unit {
 
 /** A sink for SQL injection vulnerabilities. */
 private class SqlInjectionSink extends QueryInjectionSink {
-  SqlInjectionSink() {
-    this.asExpr() instanceof SqlExpr
-    or
-    exists(MethodAccess ma, Method m, int index |
-      ma.getMethod() = m and
-      if index = -1
-      then this.asExpr() = ma.getQualifier()
-      else ma.getArgument(index) = this.asExpr()
-    |
-      index = m.(SQLiteRunner).sqlIndex()
-      or
-      m instanceof BatchUpdateVarargsMethod
-      or
-      index = 0 and jdbcSqlMethod(m)
-      or
-      index = 0 and mybatisSqlMethod(m)
-      or
-      index = 0 and hibernateSqlMethod(m)
-      or
-      index = 0 and jOOQSqlMethod(m)
-    )
-  }
+  SqlInjectionSink() { sinkNode(this, "sql") }
 }
 
 /** A sink for Java Persistence Query Language injection vulnerabilities. */

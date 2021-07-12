@@ -2,6 +2,11 @@ import semmle.code.java.frameworks.Kryo
 import semmle.code.java.frameworks.XStream
 import semmle.code.java.frameworks.SnakeYaml
 import semmle.code.java.frameworks.FastJson
+import semmle.code.java.frameworks.JYaml
+import semmle.code.java.frameworks.JsonIo
+import semmle.code.java.frameworks.YamlBeans
+import semmle.code.java.frameworks.HessianBurlap
+import semmle.code.java.frameworks.Castor
 import semmle.code.java.frameworks.apache.Lang
 
 class ObjectInputStreamReadObjectMethod extends Method {
@@ -140,6 +145,23 @@ predicate unsafeDeserialization(MethodAccess ma, Expr sink) {
     ma.getMethod() instanceof FastJsonParseMethod and
     not fastJsonLooksSafe() and
     sink = ma.getArgument(0)
+    or
+    ma.getMethod() instanceof JYamlLoaderUnsafeLoadMethod and
+    sink = ma.getArgument(0)
+    or
+    ma.getMethod() instanceof JsonIoJsonToJavaMethod and
+    sink = ma.getArgument(0)
+    or
+    ma.getMethod() instanceof JsonIoReadObjectMethod and
+    sink = ma.getQualifier()
+    or
+    ma.getMethod() instanceof YamlBeansReaderReadMethod and sink = ma.getQualifier()
+    or
+    ma.getMethod() instanceof UnsafeHessianInputReadObjectMethod and sink = ma.getQualifier()
+    or
+    ma.getMethod() instanceof CastorUnmarshalMethod and sink = ma.getAnArgument()
+    or
+    ma.getMethod() instanceof BurlapInputReadObjectMethod and sink = ma.getQualifier()
   )
 }
 

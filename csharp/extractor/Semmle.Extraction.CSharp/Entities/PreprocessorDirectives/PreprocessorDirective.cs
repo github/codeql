@@ -4,25 +4,16 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    internal abstract class PreprocessorDirective<TDirective> : FreshEntity where TDirective : DirectiveTriviaSyntax
+    internal abstract class PreprocessorDirective<TDirective> : CachedEntity<TDirective> where TDirective : DirectiveTriviaSyntax
     {
-        protected readonly TDirective trivia;
+        protected PreprocessorDirective(Context cx, TDirective trivia)
+            : base(cx, trivia) { }
 
-        protected PreprocessorDirective(Context cx, TDirective trivia, bool populateFromBase = true)
-            : base(cx)
-        {
-            this.trivia = trivia;
-            if (populateFromBase)
-            {
-                TryPopulate();
-            }
-        }
-
-        protected sealed override void Populate(TextWriter trapFile)
+        public sealed override void Populate(TextWriter trapFile)
         {
             PopulatePreprocessor(trapFile);
 
-            trapFile.preprocessor_directive_active(this, trivia.IsActive);
+            trapFile.preprocessor_directive_active(this, Symbol.IsActive);
             trapFile.preprocessor_directive_location(this, Context.CreateLocation(ReportingLocation));
 
             if (!Context.Extractor.Standalone)
@@ -34,8 +25,17 @@ namespace Semmle.Extraction.CSharp.Entities
 
         protected abstract void PopulatePreprocessor(TextWriter trapFile);
 
-        public sealed override Microsoft.CodeAnalysis.Location ReportingLocation => trivia.GetLocation();
+        public sealed override Microsoft.CodeAnalysis.Location ReportingLocation => Symbol.GetLocation();
+
+        public override bool NeedsPopulation => true;
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.OptionalLabel;
+
+        public override void WriteId(EscapingTextWriter trapFile)
+        {
+            trapFile.WriteSubId(Context.CreateLocation(ReportingLocation));
+            trapFile.Write(Symbol.IsActive);
+            trapFile.Write(";trivia");
+        }
     }
 }

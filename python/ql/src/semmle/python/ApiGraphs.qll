@@ -98,6 +98,11 @@ module API {
     Node getASubclass() { result = getASuccessor(Label::subclass()) }
 
     /**
+     * Gets a node representing the result from awaiting this node.
+     */
+    Node getAwaited() { result = getASuccessor(Label::await()) }
+
+    /**
      * Gets a string representation of the lexicographically least among all shortest access paths
      * from the root to this node.
      */
@@ -469,6 +474,14 @@ module API {
         exists(DataFlow::Node superclass | pred.flowsTo(superclass) |
           ref.asExpr().(ClassExpr).getABase() = superclass.asExpr()
         )
+        or
+        // awaiting
+        exists(Await await, DataFlow::Node awaitedValue |
+          lbl = Label::await() and
+          ref.asExpr() = await and
+          await.getValue() = awaitedValue.asExpr() and
+          pred.flowsTo(awaitedValue)
+        )
       )
       or
       // Built-ins, treated as members of the module `builtins`
@@ -585,5 +598,9 @@ private module Label {
   /** Gets the `return` edge label. */
   string return() { result = "getReturn()" }
 
+  /** Gets the `subclass` edge label. */
   string subclass() { result = "getASubclass()" }
+
+  /** Gets the `await` edge label. */
+  string await() { result = "getAwaited()" }
 }

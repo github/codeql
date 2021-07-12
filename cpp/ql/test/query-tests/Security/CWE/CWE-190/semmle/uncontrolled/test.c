@@ -3,12 +3,12 @@
 
 int rand(void);
 void trySlice(int start, int end);
+void add_100(int);
 
 #define RAND() rand()
 #define RANDN(n) (rand() % n)
 #define RAND2() (rand() ^ rand())
-
-
+#define RAND_MAX 32767
 
 
 
@@ -99,4 +99,14 @@ void randomTester() {
     *ptr_r = RAND();
     r -= 100; // BAD
   }
+
+  {
+    int r = rand();
+    r = ((2.0 / (RAND_MAX + 1)) * r - 1.0);
+    add_100(r);
+  }
+}
+
+void add_100(int r) {
+  r += 100; // GOOD
 }

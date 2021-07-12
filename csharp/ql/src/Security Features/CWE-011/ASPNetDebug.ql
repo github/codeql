@@ -4,7 +4,7 @@
  *              debug builds provide additional information useful to a malicious attacker.
  * @kind problem
  * @problem.severity warning
- * @security-severity 5.9
+ * @security-severity 7.5
  * @precision very-high
  * @id cs/web/debug-binary
  * @tags security

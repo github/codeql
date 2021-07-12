@@ -192,6 +192,8 @@ module DomBasedXss {
         this = instance.getArgument(0) and
         instance.getOptionArgument(1, "runScripts").mayHaveStringValue("dangerously")
       )
+      or
+      MooTools::interpretsNodeAsHtml(this)
     }
   }
 
@@ -329,7 +331,10 @@ module DomBasedXss {
    * A write to the `template` option of a Vue instance, viewed as an XSS sink.
    */
   class VueTemplateSink extends DomBasedXss::Sink {
-    VueTemplateSink() { this = any(Vue::Instance i).getTemplate() }
+    VueTemplateSink() {
+      // Note: don't use Vue::Instance#getTemplate as it includes an unwanted getALocalSource() step
+      this = any(Vue::Instance i).getOption("template")
+    }
   }
 
   /**

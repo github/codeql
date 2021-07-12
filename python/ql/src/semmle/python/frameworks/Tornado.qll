@@ -349,7 +349,7 @@ private module Tornado {
 
     TornadoRouteRegex() {
       this instanceof StrConst and
-      DataFlow::exprNode(this).(DataFlow::LocalSourceNode).flowsTo(setup.getUrlPatternArg())
+      setup.getUrlPatternArg().getALocalSource() = DataFlow::exprNode(this)
     }
 
     TornadoRouteSetup getRouteSetup() { result = setup }
@@ -422,7 +422,7 @@ private module Tornado {
   /**
    * A call to the `tornado.web.RequestHandler.redirect` method.
    *
-   * See https://www.tornadoweb.org/en/stable/web.html?highlight=write#tornado.web.RequestHandler.redirect
+   * See https://www.tornadoweb.org/en/stable/web.html#tornado.web.RequestHandler.redirect
    */
   private class TornadoRequestHandlerRedirectCall extends HTTP::Server::HttpRedirectResponse::Range,
     DataFlow::CallCfgNode {
@@ -431,7 +431,7 @@ private module Tornado {
     }
 
     override DataFlow::Node getRedirectLocation() {
-      result.asCfgNode() in [node.getArg(0), node.getArgByName("url")]
+      result in [this.getArg(0), this.getArgByName("url")]
     }
 
     override DataFlow::Node getBody() { none() }
@@ -444,7 +444,7 @@ private module Tornado {
   /**
    * A call to the `tornado.web.RequestHandler.write` method.
    *
-   * See https://www.tornadoweb.org/en/stable/web.html?highlight=write#tornado.web.RequestHandler.write
+   * See https://www.tornadoweb.org/en/stable/web.html#tornado.web.RequestHandler.write
    */
   private class TornadoRequestHandlerWriteCall extends HTTP::Server::HttpResponse::Range,
     DataFlow::CallCfgNode {
@@ -452,12 +452,28 @@ private module Tornado {
       this.getFunction() = tornado::web::RequestHandler::writeMethod()
     }
 
-    override DataFlow::Node getBody() {
-      result.asCfgNode() in [node.getArg(0), node.getArgByName("chunk")]
-    }
+    override DataFlow::Node getBody() { result in [this.getArg(0), this.getArgByName("chunk")] }
 
     override string getMimetypeDefault() { result = "text/html" }
 
     override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+  }
+
+  /**
+   * A call to the `tornado.web.RequestHandler.set_cookie` method.
+   *
+   * See https://www.tornadoweb.org/en/stable/web.html#tornado.web.RequestHandler.set_cookie
+   */
+  class TornadoRequestHandlerSetCookieCall extends HTTP::Server::CookieWrite::Range,
+    DataFlow::MethodCallNode {
+    TornadoRequestHandlerSetCookieCall() {
+      this.calls(tornado::web::RequestHandler::instance(), "set_cookie")
+    }
+
+    override DataFlow::Node getHeaderArg() { none() }
+
+    override DataFlow::Node getNameArg() { result in [this.getArg(0), this.getArgByName("name")] }
+
+    override DataFlow::Node getValueArg() { result in [this.getArg(1), this.getArgByName("value")] }
   }
 }

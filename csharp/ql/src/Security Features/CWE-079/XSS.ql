@@ -4,7 +4,7 @@
  *              allows for a cross-site scripting vulnerability.
  * @kind path-problem
  * @problem.severity error
- * @security-severity 2.9
+ * @security-severity 6.1
  * @precision high
  * @id cs/web/xss
  * @tags security
@@ -13,7 +13,7 @@
  */
 
 import csharp
-import semmle.code.csharp.security.dataflow.XSS::XSS
+import semmle.code.csharp.security.dataflow.XSSQuery
 import PathGraph
 
 from XssNode source, XssNode sink, string message

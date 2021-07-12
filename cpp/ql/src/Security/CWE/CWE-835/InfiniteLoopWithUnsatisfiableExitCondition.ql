@@ -6,7 +6,7 @@
  * @kind problem
  * @id cpp/infinite-loop-with-unsatisfiable-exit-condition
  * @problem.severity warning
- * @security-severity 3.6
+ * @security-severity 7.5
  * @tags security
  *       external/cwe/cwe-835
  */
