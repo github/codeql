@@ -74,13 +74,13 @@ void randomTester() {
   {
     int r = RAND2();
 
-    r = r - 100; // BAD [NOT DETECTED]
+    r = r - 100; // BAD
   }
 
   {
     int r = (rand() ^ rand());
 
-    r = r - 100; // BAD [NOT DETECTED]
+    r = r - 100; // BAD
   }
 
   {
