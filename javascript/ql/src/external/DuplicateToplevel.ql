@@ -16,12 +16,9 @@
  */
 
 import javascript
-import CodeDuplication
 import semmle.javascript.RestrictedLocations
 
 from TopLevel one, TopLevel another, float percent
-where
-  duplicateContainers(one, another, percent) and
-  one.getNumLines() > 5
+where none()
 select one.(FirstLineOf), percent.floor() + "% of statements in this script are duplicated in $@.",
   another.(FirstLineOf), "another script"

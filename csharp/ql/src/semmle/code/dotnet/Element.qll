@@ -28,6 +28,9 @@ class Element extends @dotnet_element {
   /** Holds if this element is from source code. */
   predicate fromSource() { this.getFile().fromSource() }
 
+  /** Holds if this element is from an assembly. */
+  predicate fromLibrary() { this.getFile().fromLibrary() }
+
   /**
    * Gets the "language" of this program element, as defined by the extension of the filename.
    * For example, C# has language "cs", and Visual Basic has language "vb".
@@ -84,6 +87,7 @@ class NamedElement extends Element, @dotnet_named_element {
   final predicate hasQualifiedName(string qualifiedName) { qualifiedName = this.getQualifiedName() }
 
   /** Holds if this element has the qualified name `qualifier`.`name`. */
+  cached
   predicate hasQualifiedName(string qualifier, string name) {
     qualifier = "" and name = this.getName()
   }

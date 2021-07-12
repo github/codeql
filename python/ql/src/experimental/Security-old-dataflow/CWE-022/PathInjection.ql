@@ -2,6 +2,8 @@
  * @name OLD QUERY: Uncontrolled data used in path expression
  * @description Accessing paths influenced by users can allow an attacker to access unexpected resources.
  * @kind path-problem
+ * @problem.severity error
+ * @id py/old/path-injection
  */
 
 import python

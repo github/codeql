@@ -39,11 +39,13 @@ You start asking some creative questions and making notes of the answers so you 
 +------+--------------------------------------------------------------------+--------+
 | (7)  | Is the thief taller than 180cm and shorter than 190cm?             | no     |
 +------+--------------------------------------------------------------------+--------+
-| (8)  | Is the thief the tallest person in the village?                    | no     |
+| (8)  | Is the thief the oldest person in the village?                     | no     |
 +------+--------------------------------------------------------------------+--------+
-| (9)  | Is the thief shorter than the average villager?                    | yes    |
+| (9)  | Is the thief the tallest person in the village?                    | no     |
 +------+--------------------------------------------------------------------+--------+
-| (10) | Is the thief the oldest person in the eastern part of the village? | yes    |
+| (10) | Is the thief shorter than the average villager?                    | yes    |
++------+--------------------------------------------------------------------+--------+
+| (11) | Is the thief the oldest person in the eastern part of the village? | yes    |
 +------+--------------------------------------------------------------------+--------+
 
 There is too much information to search through by hand, so you decide to use your newly acquired QL skills to help you with your investigation...

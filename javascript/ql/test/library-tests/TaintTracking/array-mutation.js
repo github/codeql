@@ -34,4 +34,8 @@ function test(x, y) {
   let i = [];
   Array.prototype.unshift.apply(i, source());
   sink(i); // NOT OK
+
+  let j = [];
+  j[j.length] = source();
+  sink(j); // NOT OK
 }

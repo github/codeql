@@ -20,7 +20,7 @@ namespace Semmle.Extraction.CIL.Entities
             ed = cx.MdReader.GetEventDefinition(handle);
         }
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             parent.WriteId(trapFile);
             trapFile.Write('.');

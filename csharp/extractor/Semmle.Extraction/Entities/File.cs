@@ -17,14 +17,12 @@ namespace Semmle.Extraction.Entities
 
         public override bool NeedsPopulation => true;
 
-        public override void WriteId(System.IO.TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             trapFile.Write(TransformedPath.DatabaseId);
             trapFile.Write(";sourcefile");
         }
 
         public override Microsoft.CodeAnalysis.Location? ReportingLocation => null;
-
-        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
     }
 }

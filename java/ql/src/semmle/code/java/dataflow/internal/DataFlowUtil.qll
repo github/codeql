@@ -5,284 +5,15 @@
 private import java
 private import DataFlowPrivate
 private import semmle.code.java.dataflow.SSA
-private import semmle.code.java.dataflow.TypeFlow
 private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSteps
-import semmle.code.java.dataflow.InstanceAccess
-
-cached
-private newtype TNode =
-  TExprNode(Expr e) {
-    not e.getType() instanceof VoidType and
-    not e.getParent*() instanceof Annotation
-  } or
-  TExplicitParameterNode(Parameter p) { exists(p.getCallable().getBody()) } or
-  TImplicitVarargsArray(Call c) {
-    c.getCallee().isVarargs() and
-    not exists(Argument arg | arg.getCall() = c and arg.isExplicitVarargsArray())
-  } or
-  TInstanceParameterNode(Callable c) { exists(c.getBody()) and not c.isStatic() } or
-  TImplicitInstanceAccess(InstanceAccessExt ia) { not ia.isExplicit(_) } or
-  TMallocNode(ClassInstanceExpr cie) or
-  TExplicitExprPostUpdate(Expr e) {
-    explicitInstanceArgument(_, e)
-    or
-    e instanceof Argument and not e.getType() instanceof ImmutableType
-    or
-    exists(FieldAccess fa | fa.getField() instanceof InstanceField and e = fa.getQualifier())
-    or
-    exists(ArrayAccess aa | e = aa.getArray())
-  } or
-  TImplicitExprPostUpdate(InstanceAccessExt ia) {
-    implicitInstanceArgument(_, ia)
-    or
-    exists(FieldAccess fa |
-      fa.getField() instanceof InstanceField and ia.isImplicitFieldQualifier(fa)
-    )
-  }
-
-/**
- * An element, viewed as a node in a data flow graph. Either an expression,
- * a parameter, or an implicit varargs array creation.
- */
-class Node extends TNode {
-  /** Gets a textual representation of this element. */
-  string toString() { none() }
-
-  /** Gets the source location for this element. */
-  Location getLocation() { none() }
-
-  /** Gets the expression corresponding to this node, if any. */
-  Expr asExpr() { result = this.(ExprNode).getExpr() }
-
-  /** Gets the parameter corresponding to this node, if any. */
-  Parameter asParameter() { result = this.(ExplicitParameterNode).getParameter() }
-
-  /** Gets the type of this node. */
-  Type getType() {
-    result = this.asExpr().getType()
-    or
-    result = this.asParameter().getType()
-    or
-    exists(Parameter p |
-      result = p.getType() and
-      p.isVarargs() and
-      p = this.(ImplicitVarargsArray).getCall().getCallee().getAParameter()
-    )
-    or
-    result = this.(InstanceParameterNode).getCallable().getDeclaringType()
-    or
-    result = this.(ImplicitInstanceAccess).getInstanceAccess().getType()
-    or
-    result = this.(MallocNode).getClassInstanceExpr().getType()
-    or
-    result = this.(ImplicitPostUpdateNode).getPreUpdateNode().getType()
-  }
-
-  private Callable getEnclosingCallableImpl() {
-    result = this.asExpr().getEnclosingCallable() or
-    result = this.asParameter().getCallable() or
-    result = this.(ImplicitVarargsArray).getCall().getEnclosingCallable() or
-    result = this.(InstanceParameterNode).getCallable() or
-    result = this.(ImplicitInstanceAccess).getInstanceAccess().getEnclosingCallable() or
-    result = this.(MallocNode).getClassInstanceExpr().getEnclosingCallable() or
-    result = this.(ImplicitPostUpdateNode).getPreUpdateNode().getEnclosingCallableImpl()
-  }
-
-  /** Gets the callable in which this node occurs. */
-  Callable getEnclosingCallable() {
-    result = unique(DataFlowCallable c | c = this.getEnclosingCallableImpl() | c)
-  }
-
-  private Type getImprovedTypeBound() {
-    exprTypeFlow(this.asExpr(), result, _) or
-    result = this.(ImplicitPostUpdateNode).getPreUpdateNode().getImprovedTypeBound()
-  }
-
-  /**
-   * Gets an upper bound on the type of this node.
-   */
-  Type getTypeBound() {
-    result = getImprovedTypeBound()
-    or
-    result = getType() and not exists(getImprovedTypeBound())
-  }
-
-  /**
-   * Holds if this element is at the specified location.
-   * The location spans column `startcolumn` of line `startline` to
-   * column `endcolumn` of line `endline` in file `filepath`.
-   * For more information, see
-   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
-   */
-  predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-  }
-}
-
-/**
- * An expression, viewed as a node in a data flow graph.
- */
-class ExprNode extends Node, TExprNode {
-  Expr expr;
-
-  ExprNode() { this = TExprNode(expr) }
-
-  override string toString() { result = expr.toString() }
-
-  override Location getLocation() { result = expr.getLocation() }
-
-  /** Gets the expression corresponding to this node. */
-  Expr getExpr() { result = expr }
-}
-
-/** Gets the node corresponding to `e`. */
-ExprNode exprNode(Expr e) { result.getExpr() = e }
-
-/** An explicit or implicit parameter. */
-abstract class ParameterNode extends Node {
-  /**
-   * Holds if this node is the parameter of `c` at the specified (zero-based)
-   * position. The implicit `this` parameter is considered to have index `-1`.
-   */
-  abstract predicate isParameterOf(Callable c, int pos);
-}
-
-/**
- * A parameter, viewed as a node in a data flow graph.
- */
-class ExplicitParameterNode extends ParameterNode, TExplicitParameterNode {
-  Parameter param;
-
-  ExplicitParameterNode() { this = TExplicitParameterNode(param) }
-
-  override string toString() { result = param.toString() }
-
-  override Location getLocation() { result = param.getLocation() }
-
-  /** Gets the parameter corresponding to this node. */
-  Parameter getParameter() { result = param }
-
-  override predicate isParameterOf(Callable c, int pos) { c.getParameter(pos) = param }
-}
-
-/** Gets the node corresponding to `p`. */
-ExplicitParameterNode parameterNode(Parameter p) { result.getParameter() = p }
-
-/**
- * An implicit varargs array creation expression.
- *
- * A call `f(x1, x2)` to a method `f(A... xs)` desugars to `f(new A[]{x1, x2})`,
- * and this node corresponds to such an implicit array creation.
- */
-class ImplicitVarargsArray extends Node, TImplicitVarargsArray {
-  Call call;
-
-  ImplicitVarargsArray() { this = TImplicitVarargsArray(call) }
-
-  override string toString() { result = "new ..[] { .. }" }
-
-  override Location getLocation() { result = call.getLocation() }
-
-  /** Gets the call containing this varargs array creation argument. */
-  Call getCall() { result = call }
-}
-
-/**
- * An instance parameter for an instance method or constructor.
- */
-class InstanceParameterNode extends ParameterNode, TInstanceParameterNode {
-  Callable callable;
-
-  InstanceParameterNode() { this = TInstanceParameterNode(callable) }
-
-  override string toString() { result = "parameter this" }
-
-  override Location getLocation() { result = callable.getLocation() }
-
-  /** Gets the callable containing this `this` parameter. */
-  Callable getCallable() { result = callable }
-
-  override predicate isParameterOf(Callable c, int pos) { callable = c and pos = -1 }
-}
-
-/**
- * An implicit read of `this` or `A.this`.
- */
-class ImplicitInstanceAccess extends Node, TImplicitInstanceAccess {
-  InstanceAccessExt ia;
-
-  ImplicitInstanceAccess() { this = TImplicitInstanceAccess(ia) }
-
-  override string toString() { result = ia.toString() }
-
-  override Location getLocation() { result = ia.getLocation() }
-
-  InstanceAccessExt getInstanceAccess() { result = ia }
-}
-
-/**
- * A node that corresponds to the value of a `ClassInstanceExpr` before the
- * constructor has run.
- */
-private class MallocNode extends Node, TMallocNode {
-  ClassInstanceExpr cie;
-
-  MallocNode() { this = TMallocNode(cie) }
-
-  override string toString() { result = cie.toString() + " [pre constructor]" }
-
-  override Location getLocation() { result = cie.getLocation() }
-
-  ClassInstanceExpr getClassInstanceExpr() { result = cie }
-}
-
-/**
- * A node associated with an object after an operation that might have
- * changed its state.
- *
- * This can be either the argument to a callable after the callable returns
- * (which might have mutated the argument), or the qualifier of a field after
- * an update to the field.
- *
- * Nodes corresponding to AST elements, for example `ExprNode`, usually refer
- * to the value before the update with the exception of `ClassInstanceExpr`,
- * which represents the value after the constructor has run.
- */
-abstract class PostUpdateNode extends Node {
-  /**
-   * Gets the node before the state update.
-   */
-  abstract Node getPreUpdateNode();
-}
-
-private class NewExpr extends PostUpdateNode, TExprNode {
-  NewExpr() { exists(ClassInstanceExpr cie | this = TExprNode(cie)) }
-
-  override Node getPreUpdateNode() { this = TExprNode(result.(MallocNode).getClassInstanceExpr()) }
-}
-
-/**
- * A `PostUpdateNode` that is not a `ClassInstanceExpr`.
- */
-abstract private class ImplicitPostUpdateNode extends PostUpdateNode {
-  override Location getLocation() { result = getPreUpdateNode().getLocation() }
-
-  override string toString() { result = getPreUpdateNode().toString() + " [post update]" }
-}
-
-private class ExplicitExprPostUpdate extends ImplicitPostUpdateNode, TExplicitExprPostUpdate {
-  override Node getPreUpdateNode() { this = TExplicitExprPostUpdate(result.asExpr()) }
-}
-
-private class ImplicitExprPostUpdate extends ImplicitPostUpdateNode, TImplicitExprPostUpdate {
-  override Node getPreUpdateNode() {
-    this = TImplicitExprPostUpdate(result.(ImplicitInstanceAccess).getInstanceAccess())
-  }
-}
+private import semmle.code.java.dataflow.FlowSummary
+private import semmle.code.java.dataflow.InstanceAccess
+private import FlowSummaryImpl as FlowSummaryImpl
+private import TaintTrackingUtil as TaintTrackingUtil
+import DataFlowNodes::Public
+import semmle.code.Unit
 
 /** Holds if `n` is an access to an unqualified `this` at `cfgnode`. */
 private predicate thisAccess(Node n, ControlFlowNode cfgnode) {
@@ -367,7 +98,13 @@ predicate hasNonlocalValue(FieldRead fr) {
 /**
  * Holds if data can flow from `node1` to `node2` in one local step.
  */
-predicate localFlowStep(Node node1, Node node2) { simpleLocalFlowStep(node1, node2) }
+predicate localFlowStep(Node node1, Node node2) {
+  simpleLocalFlowStep(node1, node2)
+  or
+  // Simple flow through library code is included in the exposed local
+  // step relation, even though flow is technically inter-procedural
+  FlowSummaryImpl::Private::Steps::summaryThroughStep(node1, node2, true)
+}
 
 /**
  * INTERNAL: do not use.
@@ -377,6 +114,7 @@ predicate localFlowStep(Node node1, Node node2) { simpleLocalFlowStep(node1, nod
  */
 cached
 predicate simpleLocalFlowStep(Node node1, Node node2) {
+  TaintTrackingUtil::forceCachingInSameStage() and
   // Variable flow steps through adjacent def-use and use-use pairs.
   exists(SsaExplicitUpdate upd |
     upd.getDefiningExpr().(VariableAssign).getSource() = node1.asExpr() or
@@ -407,7 +145,7 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
   or
   node2.asExpr().(AssignExpr).getSource() = node1.asExpr()
   or
-  summaryStep(node1, node2, "value")
+  node2.asExpr().(ArrayCreationExpr).getInit() = node1.asExpr()
   or
   exists(MethodAccess ma, ValuePreservingMethod m, int argNo |
     ma.getCallee().getSourceDeclaration() = m and m.returnsValue(argNo)
@@ -415,33 +153,64 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
     node2.asExpr() = ma and
     node1.(ArgumentNode).argumentOf(ma, argNo)
   )
+  or
+  FlowSummaryImpl::Private::Steps::summaryLocalStep(node1, node2, true)
 }
+
+private newtype TContent =
+  TFieldContent(InstanceField f) or
+  TArrayContent() or
+  TCollectionContent() or
+  TMapKeyContent() or
+  TMapValueContent()
 
 /**
- * Gets the node that occurs as the qualifier of `fa`.
+ * A description of the way data may be stored inside an object. Examples
+ * include instance fields, the contents of a collection object, or the contents
+ * of an array.
  */
-Node getFieldQualifier(FieldAccess fa) {
-  fa.getField() instanceof InstanceField and
-  (
-    result.asExpr() = fa.getQualifier() or
-    result.(ImplicitInstanceAccess).getInstanceAccess().isImplicitFieldQualifier(fa)
-  )
+class Content extends TContent {
+  /** Gets a textual representation of this element. */
+  abstract string toString();
+
+  predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
+    path = "" and sl = 0 and sc = 0 and el = 0 and ec = 0
+  }
 }
 
-private predicate explicitInstanceArgument(Call call, Expr instarg) {
-  call instanceof MethodAccess and instarg = call.getQualifier() and not call.getCallee().isStatic()
+/** A reference through an instance field. */
+class FieldContent extends Content, TFieldContent {
+  InstanceField f;
+
+  FieldContent() { this = TFieldContent(f) }
+
+  InstanceField getField() { result = f }
+
+  override string toString() { result = f.toString() }
+
+  override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
+    f.getLocation().hasLocationInfo(path, sl, sc, el, ec)
+  }
 }
 
-private predicate implicitInstanceArgument(Call call, InstanceAccessExt ia) {
-  ia.isImplicitMethodQualifier(call) or
-  ia.isImplicitThisConstructorArgument(call)
+/** A reference through an array. */
+class ArrayContent extends Content, TArrayContent {
+  override string toString() { result = "[]" }
 }
 
-/** Gets the instance argument of a non-static call. */
-Node getInstanceArgument(Call call) {
-  result.(MallocNode).getClassInstanceExpr() = call or
-  explicitInstanceArgument(call, result.asExpr()) or
-  implicitInstanceArgument(call, result.(ImplicitInstanceAccess).getInstanceAccess())
+/** A reference through the contents of some collection-like container. */
+class CollectionContent extends Content, TCollectionContent {
+  override string toString() { result = "<element>" }
+}
+
+/** A reference through a map key. */
+class MapKeyContent extends Content, TMapKeyContent {
+  override string toString() { result = "<map.key>" }
+}
+
+/** A reference through a map value. */
+class MapValueContent extends Content, TMapValueContent {
+  override string toString() { result = "<map.value>" }
 }
 
 /**

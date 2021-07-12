@@ -133,46 +133,6 @@ OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
  */
 predicate jumpStep(Node n1, Node n2) { none() }
 
-private newtype TContent =
-  TFieldContent(Field f) or
-  TCollectionContent() or
-  TArrayContent()
-
-/**
- * A reference contained in an object. Examples include instance fields, the
- * contents of a collection object, or the contents of an array.
- */
-class Content extends TContent {
-  /** Gets a textual representation of this element. */
-  abstract string toString();
-
-  predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
-    path = "" and sl = 0 and sc = 0 and el = 0 and ec = 0
-  }
-}
-
-private class FieldContent extends Content, TFieldContent {
-  Field f;
-
-  FieldContent() { this = TFieldContent(f) }
-
-  Field getField() { result = f }
-
-  override string toString() { result = f.toString() }
-
-  override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
-    f.getLocation().hasLocationInfo(path, sl, sc, el, ec)
-  }
-}
-
-private class CollectionContent extends Content, TCollectionContent {
-  override string toString() { result = "collection" }
-}
-
-private class ArrayContent extends Content, TArrayContent {
-  override string toString() { result = "array" }
-}
-
 /**
  * Holds if data can flow from `node1` to `node2` via an assignment to `f`.
  * Thus, `node2` references an object with a field `f` that contains the
@@ -321,5 +281,5 @@ predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c)
 /** Holds if `call` is a lambda call of kind `kind` where `receiver` is the lambda expression. */
 predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) { none() }
 
-/** Extra data-flow steps needed for lamba flow analysis. */
+/** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }

@@ -175,6 +175,19 @@ class FormattingCall extends Call {
     )
   }
 
+  /** Gets the `i`th argument to be formatted. The index `i` is one-based. */
+  Expr getArgumentToBeFormatted(int i) {
+    i >= 1 and
+    if this.hasExplicitVarargsArray()
+    then
+      result =
+        this.getArgument(1 + this.getFormatStringIndex())
+            .(ArrayCreationExpr)
+            .getInit()
+            .getInit(i - 1)
+    else result = this.getArgument(this.getFormatStringIndex() + i)
+  }
+
   /** Holds if the varargs argument is given as an explicit array. */
   private predicate hasExplicitVarargsArray() {
     this.getNumArgument() = this.getFormatStringIndex() + 2 and
@@ -210,10 +223,7 @@ private predicate printMethod(Method m, int i) {
     (t.hasQualifiedName("java.io", "PrintWriter") or t.hasQualifiedName("java.io", "PrintStream")) and
     (m.hasName("print") or m.hasName("println"))
     or
-    (
-      t.hasQualifiedName("java.lang", "StringBuilder") or
-      t.hasQualifiedName("java.lang", "StringBuffer")
-    ) and
+    t instanceof StringBuildingType and
     (m.hasName("append") or m.hasName("insert"))
     or
     t instanceof TypeString and m.hasName("valueOf")
@@ -356,6 +366,11 @@ class FormatString extends string {
    * is not referred by any format specifier.
    */
   /*abstract*/ int getASkippedFmtSpecIndex() { none() }
+
+  /**
+   * Gets an offset (zero-based) in this format string where argument `argNo` (1-based) will be interpolated, if any.
+   */
+  int getAnArgUsageOffset(int argNo) { none() }
 }
 
 private class PrintfFormatString extends FormatString {
@@ -428,6 +443,22 @@ private class PrintfFormatString extends FormatString {
     result > count(int i | fmtSpecRefersToSequentialIndex(i)) and
     not result = fmtSpecRefersToSpecificIndex(_)
   }
+
+  private int getFmtSpecRank(int specOffset) {
+    rank[result](int i | this.fmtSpecIsRef(i)) = specOffset
+  }
+
+  override int getAnArgUsageOffset(int argNo) {
+    argNo = fmtSpecRefersToSpecificIndex(result)
+    or
+    result = rank[argNo](int i | fmtSpecRefersToSequentialIndex(i))
+    or
+    fmtSpecRefersToPrevious(result) and
+    exists(int previousOffset |
+      getFmtSpecRank(previousOffset) = getFmtSpecRank(result) - 1 and
+      previousOffset = getAnArgUsageOffset(argNo)
+    )
+  }
 }
 
 private class LoggerFormatString extends FormatString {
@@ -452,4 +483,6 @@ private class LoggerFormatString extends FormatString {
   }
 
   override int getMaxFmtSpecIndex() { result = count(int i | fmtPlaceholder(i)) }
+
+  override int getAnArgUsageOffset(int argNo) { result = rank[argNo](int i | fmtPlaceholder(i)) }
 }

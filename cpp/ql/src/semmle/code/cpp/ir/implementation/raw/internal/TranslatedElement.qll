@@ -12,6 +12,7 @@ private import TranslatedStmt
 private import TranslatedExpr
 private import IRConstruction
 private import semmle.code.cpp.models.interfaces.SideEffect
+private import SideEffects
 
 /**
  * Gets the "real" parent of `expr`. This predicate treats conversions as if
@@ -41,7 +42,8 @@ IRTempVariable getIRTempVariable(Locatable ast, TempVariableTag tag) {
  */
 predicate isIRConstant(Expr expr) { exists(expr.getValue()) }
 
-// Pulled out to work around QL-796
+// Pulled out for performance. See
+// https://github.com/github/codeql-coreql-team/issues/1044.
 private predicate isOrphan(Expr expr) { not exists(getRealParent(expr)) }
 
 /**
@@ -635,46 +637,15 @@ newtype TTranslatedElement =
   // The side effects of an allocation, i.e. `new`, `new[]` or `malloc`
   TTranslatedAllocationSideEffects(AllocationExpr expr) { not ignoreExpr(expr) } or
   // A precise side effect of an argument to a `Call`
-  TTranslatedArgumentSideEffect(Call call, Expr expr, int n, boolean isWrite) {
-    (
-      expr = call.getArgument(n).getFullyConverted()
-      or
-      expr = call.getQualifier().getFullyConverted() and
-      n = -1 and
-      // Exclude calls to static member functions. They don't modify the qualifier
-      not exists(MemberFunction func | func = call.getTarget() and func.isStatic())
-    ) and
-    (
-      call.getTarget().(SideEffectFunction).hasSpecificReadSideEffect(n, _) and
-      isWrite = false
-      or
-      call.getTarget().(SideEffectFunction).hasSpecificWriteSideEffect(n, _, _) and
-      isWrite = true
-      or
-      not call.getTarget() instanceof SideEffectFunction and
-      exists(Type t | t = expr.getUnspecifiedType() |
-        t instanceof ArrayType or
-        t instanceof PointerType or
-        t instanceof ReferenceType
-      ) and
-      (
-        isWrite = true and
-        not call.getTarget().getParameter(n).getType().isDeeplyConstBelow()
-        or
-        isWrite = false
-      )
-      or
-      not call.getTarget() instanceof SideEffectFunction and
-      n = -1 and
-      (
-        isWrite = true and
-        not call.getTarget() instanceof ConstMemberFunction
-        or
-        isWrite = false
-      )
-    ) and
+  TTranslatedArgumentSideEffect(Call call, Expr expr, int n, SideEffectOpcode opcode) {
     not ignoreExpr(expr) and
-    not ignoreExpr(call)
+    not ignoreExpr(call) and
+    (
+      n >= 0 and expr = call.getArgument(n).getFullyConverted()
+      or
+      n = -1 and expr = call.getQualifier().getFullyConverted()
+    ) and
+    opcode = getASideEffectOpcode(call, n)
   }
 
 /**

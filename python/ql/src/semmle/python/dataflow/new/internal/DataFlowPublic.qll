@@ -6,6 +6,7 @@ private import python
 private import DataFlowPrivate
 import semmle.python.dataflow.new.TypeTracker
 import Attributes
+import LocalSources
 private import semmle.python.essa.SsaCompute
 
 /**
@@ -119,23 +120,7 @@ class Node extends TNode {
   Expr asExpr() { none() }
 
   /**
-   * Gets a node that this node may flow to using one heap and/or interprocedural step.
-   *
-   * See `TypeTracker` for more details about how to use this.
-   */
-  pragma[inline]
-  Node track(TypeTracker t2, TypeTracker t) { t = t2.step(this, result) }
-
-  /**
-   * Gets a node that may flow into this one using one heap and/or interprocedural step.
-   *
-   * See `TypeBackTracker` for more details about how to use this.
-   */
-  pragma[inline]
-  LocalSourceNode backtrack(TypeBackTracker t2, TypeBackTracker t) { t2 = t.step(result, this) }
-
-  /**
-   * Gets a local source node from which data may flow to this node in zero or more local steps.
+   * Gets a local source node from which data may flow to this node in zero or more local data-flow steps.
    */
   LocalSourceNode getALocalSource() { result.flowsTo(this) }
 }
@@ -179,7 +164,7 @@ class CfgNode extends Node, TCfgNode {
 }
 
 /** A data-flow node corresponding to a `CallNode` in the control-flow graph. */
-class CallCfgNode extends CfgNode {
+class CallCfgNode extends CfgNode, LocalSourceNode {
   override CallNode node;
 
   /**
@@ -193,6 +178,45 @@ class CallCfgNode extends CfgNode {
 
   /** Gets the data-flow node corresponding to the named argument of the call corresponding to this data-flow node */
   Node getArgByName(string name) { result.asCfgNode() = node.getArgByName(name) }
+}
+
+/**
+ * A data-flow node corresponding to a method call, that is `foo.bar(...)`.
+ *
+ * Also covers the case where the method lookup is done separately from the call itself, as in
+ * `temp = foo.bar; temp(...)`. Note that this is only tracked through local scope.
+ */
+class MethodCallNode extends CallCfgNode {
+  AttrRead method_lookup;
+
+  MethodCallNode() { method_lookup = this.getFunction().getALocalSource() }
+
+  /**
+   * Gets the name of the method being invoked (the `bar` in `foo.bar(...)`) if it can be determined.
+   *
+   * Note that this method may have multiple results if a single call node represents calls to
+   * multiple different objects and methods. If you want to link up objects and method names
+   * accurately, use the `calls` method instead.
+   */
+  string getMethodName() { result = method_lookup.getAttributeName() }
+
+  /**
+   * Gets the data-flow node corresponding to the object receiving this call. That is, the `foo` in
+   * `foo.bar(...)`.
+   *
+   * Note that this method may have multiple results if a single call node represents calls to
+   * multiple different objects and methods. If you want to link up objects and method names
+   * accurately, use the `calls` method instead.
+   */
+  Node getObject() { result = method_lookup.getObject() }
+
+  /** Holds if this data-flow node calls method `methodName` on the object node `object`. */
+  predicate calls(Node object, string methodName) {
+    // As `getObject` and `getMethodName` may both have multiple results, we must look up the object
+    // and method name directly on `method_lookup`.
+    object = method_lookup.getObject() and
+    methodName = method_lookup.getAttributeName()
+  }
 }
 
 /**
@@ -215,7 +239,7 @@ ExprNode exprNode(DataFlowExpr e) { result.getNode().getNode() = e }
  * The value of a parameter at function entry, viewed as a node in a data
  * flow graph.
  */
-class ParameterNode extends CfgNode {
+class ParameterNode extends CfgNode, LocalSourceNode {
   ParameterDefinition def;
 
   ParameterNode() {
@@ -236,6 +260,9 @@ class ParameterNode extends CfgNode {
   /** Gets the `Parameter` this `ParameterNode` represents. */
   Parameter getParameter() { result = def.getParameter() }
 }
+
+/** Gets a node corresponding to parameter `p`. */
+ParameterNode parameterNode(Parameter p) { result.getParameter() = p }
 
 /** A data flow node that represents a call argument. */
 class ArgumentNode extends Node {
@@ -463,103 +490,6 @@ class BarrierGuard extends GuardNode {
       this.checks(node, branch) and
       AdjacentUses::useOfDef(def, result.asCfgNode()) and
       this.controlsBlock(result.asCfgNode().getBasicBlock(), branch)
-    )
-  }
-}
-
-/**
- * A data flow node that is a source of local flow. This includes things like
- * - Expressions
- * - Function parameters
- */
-class LocalSourceNode extends Node {
-  LocalSourceNode() {
-    not simpleLocalFlowStep+(any(CfgNode n), this) and
-    not this instanceof ModuleVariableNode
-    or
-    this = any(ModuleVariableNode mvn).getARead()
-  }
-
-  /** Holds if this `LocalSourceNode` can flow to `nodeTo` in one or more local flow steps. */
-  pragma[inline]
-  predicate flowsTo(Node nodeTo) { Cached::hasLocalSource(nodeTo, this) }
-
-  /**
-   * Gets a reference (read or write) of attribute `attrName` on this node.
-   */
-  AttrRef getAnAttributeReference(string attrName) { Cached::namedAttrRef(this, attrName, result) }
-
-  /**
-   * Gets a read of attribute `attrName` on this node.
-   */
-  AttrRead getAnAttributeRead(string attrName) { result = getAnAttributeReference(attrName) }
-
-  /**
-   * Gets a reference (read or write) of any attribute on this node.
-   */
-  AttrRef getAnAttributeReference() {
-    Cached::namedAttrRef(this, _, result)
-    or
-    Cached::dynamicAttrRef(this, result)
-  }
-
-  /**
-   * Gets a read of any attribute on this node.
-   */
-  AttrRead getAnAttributeRead() { result = getAnAttributeReference() }
-
-  /**
-   * Gets a call to this node.
-   */
-  CallCfgNode getACall() { Cached::call(this, result) }
-}
-
-cached
-private module Cached {
-  /**
-   * Holds if `source` is a `LocalSourceNode` that can reach `sink` via local flow steps.
-   *
-   * The slightly backwards parametering ordering is to force correct indexing.
-   */
-  cached
-  predicate hasLocalSource(Node sink, Node source) {
-    // Declaring `source` to be a `SourceNode` currently causes a redundant check in the
-    // recursive case, so instead we check it explicitly here.
-    source = sink and
-    source instanceof LocalSourceNode
-    or
-    exists(Node mid |
-      hasLocalSource(mid, source) and
-      simpleLocalFlowStep(mid, sink)
-    )
-  }
-
-  /**
-   * Holds if `base` flows to the base of `ref` and `ref` has attribute name `attr`.
-   */
-  cached
-  predicate namedAttrRef(LocalSourceNode base, string attr, AttrRef ref) {
-    base.flowsTo(ref.getObject()) and
-    ref.getAttributeName() = attr
-  }
-
-  /**
-   * Holds if `base` flows to the base of `ref` and `ref` has no known attribute name.
-   */
-  cached
-  predicate dynamicAttrRef(LocalSourceNode base, AttrRef ref) {
-    base.flowsTo(ref.getObject()) and
-    not exists(ref.getAttributeName())
-  }
-
-  /**
-   * Holds if `func` flows to the callee of `call`.
-   */
-  cached
-  predicate call(LocalSourceNode func, CallCfgNode call) {
-    exists(CfgNode n |
-      func.flowsTo(n) and
-      n = call.getFunction()
     )
   }
 }

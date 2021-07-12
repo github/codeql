@@ -4,6 +4,7 @@
  *              validated can cause overflows.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 8.6
  * @precision medium
  * @id cpp/uncontrolled-arithmetic
  * @tags security
@@ -16,32 +17,37 @@ import semmle.code.cpp.security.Overflow
 import semmle.code.cpp.security.Security
 import semmle.code.cpp.security.TaintTracking
 import TaintedWithPath
+import Bounded
 
-predicate isRandCall(FunctionCall fc) { fc.getTarget().getName() = "rand" }
-
-predicate isRandCallOrParent(Expr e) {
-  isRandCall(e) or
-  isRandCallOrParent(e.getAChild())
+predicate isUnboundedRandCall(FunctionCall fc) {
+  exists(Function func | func = fc.getTarget() |
+    func.hasGlobalOrStdOrBslName("rand") and
+    not bounded(fc) and
+    func.getNumberOfParameters() = 0
+  )
 }
 
-predicate isRandValue(Expr e) {
-  isRandCall(e)
+predicate isUnboundedRandCallOrParent(Expr e) {
+  isUnboundedRandCall(e)
+  or
+  isUnboundedRandCallOrParent(e.getAChild())
+}
+
+predicate isUnboundedRandValue(Expr e) {
+  isUnboundedRandCall(e)
   or
   exists(MacroInvocation mi |
     e = mi.getExpr() and
-    isRandCallOrParent(e)
+    isUnboundedRandCallOrParent(e)
   )
 }
 
 class SecurityOptionsArith extends SecurityOptions {
   override predicate isUserInput(Expr expr, string cause) {
-    isRandValue(expr) and
-    cause = "rand" and
-    not expr.getParent*() instanceof DivExpr
+    isUnboundedRandValue(expr) and
+    cause = "rand"
   }
 }
-
-predicate isDiv(VariableAccess va) { exists(AssignDivExpr div | div.getLValue() = va) }
 
 predicate missingGuard(VariableAccess va, string effect) {
   exists(Operation op | op.getAnOperand() = va |
@@ -52,29 +58,15 @@ predicate missingGuard(VariableAccess va, string effect) {
 }
 
 class Configuration extends TaintTrackingConfiguration {
-  override predicate isSink(Element e) {
-    isDiv(e)
-    or
-    missingGuard(e, _)
-  }
-}
+  override predicate isSink(Element e) { missingGuard(e, _) }
 
-/**
- * A value that undergoes division is likely to be bounded within a safe
- * range.
- */
-predicate guardedByAssignDiv(Expr origin) {
-  exists(VariableAccess va |
-    taintedWithPath(origin, va, _, _) and
-    isDiv(va)
-  )
+  override predicate isBarrier(Expr e) { super.isBarrier(e) or bounded(e) }
 }
 
 from Expr origin, VariableAccess va, string effect, PathNode sourceNode, PathNode sinkNode
 where
   taintedWithPath(origin, va, sourceNode, sinkNode) and
-  missingGuard(va, effect) and
-  not guardedByAssignDiv(origin)
+  missingGuard(va, effect)
 select va, sourceNode, sinkNode,
   "$@ flows to here and is used in arithmetic, potentially causing an " + effect + ".", origin,
   "Uncontrolled value"

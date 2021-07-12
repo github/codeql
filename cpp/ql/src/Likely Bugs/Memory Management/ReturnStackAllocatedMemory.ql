@@ -13,6 +13,7 @@
 
 import cpp
 import semmle.code.cpp.dataflow.EscapesTree
+import semmle.code.cpp.models.interfaces.PointerWrapper
 import semmle.code.cpp.dataflow.DataFlow
 
 /**
@@ -38,6 +39,10 @@ predicate hasNontrivialConversion(Expr e) {
     or
     e instanceof ParenthesisExpr
   )
+  or
+  // A smart pointer can be stack-allocated while the data it points to is heap-allocated.
+  // So we exclude such "conversions" from this predicate.
+  e = any(PointerWrapper wrapper).getAnUnwrapperFunction().getACallToThisFunction()
   or
   hasNontrivialConversion(e.getConversion())
 }

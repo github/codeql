@@ -38,7 +38,7 @@ where ``<qhelp|query|dir|suite>`` is one of:
 - the path to a ``.ql`` file.
 - the path to a directory containing queries and query help files.
 - the path to a query suite, or the name of a well-known query suite for a QL pack. 
-  For more information, see "`Creating CodeQL query suites <creating-codeql-query-suites.html#specifying-well-known-query-suites>`__."
+  For more information, see "`Creating CodeQL query suites <https://codeql.github.com/docs/codeql-cli/creating-codeql-query-suites#specifying-well-known-query-suites>`__."
 
 You must specify a ``--format`` option, which defines how the query help is rendered. 
 Currently, you must specify ``markdown`` to render the query help as markdown. 

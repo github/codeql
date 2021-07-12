@@ -1,0 +1,26 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Freeing a previously allocated resource twice can lead to various vulnerabilities in the program.</p>
+
+</overview>
+<recommendation>
+<p>We recommend that you exclude situations of possible double release. For example, use the assignment NULL to a freed variable.</p>
+
+</recommendation>
+<example>
+<p>The following example demonstrates an erroneous and corrected use of freeing a pointer.</p>
+<sample src="DoubleFree.c" />
+
+</example>
+<references>
+
+<li>
+  CERT C Coding Standard:
+  <a href="https://wiki.sei.cmu.edu/confluence/display/c/MEM30-C.+Do+not+access+freed+memory">MEM30-C. Do not access freed memory</a>.
+</li>
+
+</references>
+</qhelp>

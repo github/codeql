@@ -15,17 +15,17 @@ predicate relevantStep(DataFlow::Node pred, DataFlow::Node succ) {
   (
     TaintTracking::sharedTaintStep(pred, succ)
     or
-    any(DataFlow::AdditionalFlowStep cfg).step(pred, succ)
+    DataFlow::SharedFlowStep::step(pred, succ)
     or
-    any(DataFlow::AdditionalFlowStep cfg).step(pred, succ, _, _)
+    DataFlow::SharedFlowStep::step(pred, succ, _, _)
     or
-    any(DataFlow::AdditionalFlowStep cfg).loadStep(pred, succ, _)
+    DataFlow::SharedFlowStep::loadStep(pred, succ, _)
     or
-    any(DataFlow::AdditionalFlowStep cfg).storeStep(pred, succ, _)
+    DataFlow::SharedFlowStep::storeStep(pred, succ, _)
     or
-    any(DataFlow::AdditionalFlowStep cfg).loadStoreStep(pred, succ, _, _)
+    DataFlow::SharedFlowStep::loadStoreStep(pred, succ, _, _)
     or
-    any(DataFlow::AdditionalFlowStep cfg).loadStoreStep(pred, succ, _)
+    DataFlow::SharedFlowStep::loadStoreStep(pred, succ, _)
   ) and
   not pred.getFile() instanceof IgnoredFile and
   not succ.getFile() instanceof IgnoredFile

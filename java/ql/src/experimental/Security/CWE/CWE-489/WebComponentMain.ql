@@ -2,6 +2,8 @@
  * @name Main Method in Java EE Web Components
  * @description Java EE web applications with a main method.
  * @kind problem
+ * @problem.severity warning
+ * @precision medium
  * @id java/main-method-in-web-components
  * @tags security
  *       external/cwe-489

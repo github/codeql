@@ -6,6 +6,7 @@
 import cpp
 import semmle.code.cpp.security.TaintTrackingImpl as ASTTaintTracking
 import semmle.code.cpp.ir.dataflow.DefaultTaintTracking as IRDefaultTaintTracking
+import IRDefaultTaintTracking::TaintedWithPath as TaintedWithPath
 import TestUtilities.InlineExpectationsTest
 
 predicate isSink(Element sink) {
@@ -17,7 +18,13 @@ predicate isSink(Element sink) {
 
 predicate astTaint(Expr source, Element sink) { ASTTaintTracking::tainted(source, sink) }
 
-predicate irTaint(Expr source, Element sink) { IRDefaultTaintTracking::tainted(source, sink) }
+class SourceConfiguration extends TaintedWithPath::TaintTrackingConfiguration {
+  override predicate isSink(Element e) { any() }
+}
+
+predicate irTaint(Expr source, Element sink) {
+  TaintedWithPath::taintedWithPath(source, sink, _, _)
+}
 
 class IRDefaultTaintTrackingTest extends InlineExpectationsTest {
   IRDefaultTaintTrackingTest() { this = "IRDefaultTaintTrackingTest" }

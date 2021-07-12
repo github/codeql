@@ -1,7 +1,12 @@
 /**
  * @name Uncaught Servlet Exception
- * @description Uncaught exceptions in a servlet could leave a system in an unexpected state, possibly resulting in denial-of-service attacks or the exposure of sensitive information disclosed in stack traces.
+ * @description Uncaught exceptions in a servlet could leave a system in an
+ *              unexpected state, possibly resulting in denial-of-service
+ *              attacks or the exposure of sensitive information disclosed in
+ *              stack traces.
  * @kind path-problem
+ * @problem.severity warning
+ * @precision medium
  * @id java/uncaught-servlet-exception
  * @tags security
  *       external/cwe-600

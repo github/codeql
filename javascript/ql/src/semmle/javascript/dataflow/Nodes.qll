@@ -47,6 +47,9 @@ class ParameterNode extends DataFlow::SourceNode {
 
   /** Holds if this parameter is a rest parameter. */
   predicate isRestParameter() { p.isRestParameter() }
+
+  /** Gets the data flow node for an expression that is applied to this decorator. */
+  DataFlow::Node getADecorator() { result = getParameter().getADecorator().getExpression().flow() }
 }
 
 /**
@@ -59,18 +62,16 @@ class ParameterNode extends DataFlow::SourceNode {
  * ```
  */
 class InvokeNode extends DataFlow::SourceNode {
-  DataFlow::Impl::InvokeNodeDef impl;
-
-  InvokeNode() { this = impl }
+  InvokeNode() { this instanceof DataFlow::Impl::InvokeNodeDef }
 
   /** Gets the syntactic invoke expression underlying this function invocation. */
-  InvokeExpr getInvokeExpr() { result = impl.getInvokeExpr() }
+  InvokeExpr getInvokeExpr() { result = this.(DataFlow::Impl::InvokeNodeDef).getInvokeExpr() }
 
   /** Gets the name of the function or method being invoked, if it can be determined. */
-  string getCalleeName() { result = impl.getCalleeName() }
+  string getCalleeName() { result = this.(DataFlow::Impl::InvokeNodeDef).getCalleeName() }
 
   /** Gets the data flow node specifying the function to be called. */
-  DataFlow::Node getCalleeNode() { result = impl.getCalleeNode() }
+  DataFlow::Node getCalleeNode() { result = this.(DataFlow::Impl::InvokeNodeDef).getCalleeNode() }
 
   /**
    * Gets the data flow node corresponding to the `i`th argument of this invocation.
@@ -91,10 +92,10 @@ class InvokeNode extends DataFlow::SourceNode {
    * but the position of `z` cannot be determined, hence there are no first and second
    * argument nodes.
    */
-  DataFlow::Node getArgument(int i) { result = impl.getArgument(i) }
+  DataFlow::Node getArgument(int i) { result = this.(DataFlow::Impl::InvokeNodeDef).getArgument(i) }
 
   /** Gets the data flow node corresponding to an argument of this invocation. */
-  DataFlow::Node getAnArgument() { result = impl.getAnArgument() }
+  DataFlow::Node getAnArgument() { result = this.(DataFlow::Impl::InvokeNodeDef).getAnArgument() }
 
   /** Gets the data flow node corresponding to the last argument of this invocation. */
   DataFlow::Node getLastArgument() { result = getArgument(getNumArgument() - 1) }
@@ -111,10 +112,12 @@ class InvokeNode extends DataFlow::SourceNode {
    * ```
    *  .
    */
-  DataFlow::Node getASpreadArgument() { result = impl.getASpreadArgument() }
+  DataFlow::Node getASpreadArgument() {
+    result = this.(DataFlow::Impl::InvokeNodeDef).getASpreadArgument()
+  }
 
   /** Gets the number of arguments of this invocation, if it can be determined. */
-  int getNumArgument() { result = impl.getNumArgument() }
+  int getNumArgument() { result = this.(DataFlow::Impl::InvokeNodeDef).getNumArgument() }
 
   Function getEnclosingFunction() { result = getBasicBlock().getContainer() }
 
@@ -256,14 +259,14 @@ class InvokeNode extends DataFlow::SourceNode {
  * ```
  */
 class CallNode extends InvokeNode {
-  override DataFlow::Impl::CallNodeDef impl;
+  CallNode() { this instanceof DataFlow::Impl::CallNodeDef }
 
   /**
    * Gets the data flow node corresponding to the receiver expression of this method call.
    *
    * For example, the receiver of `x.m()` is `x`.
    */
-  DataFlow::Node getReceiver() { result = impl.getReceiver() }
+  DataFlow::Node getReceiver() { result = this.(DataFlow::Impl::CallNodeDef).getReceiver() }
 }
 
 /**
@@ -277,10 +280,10 @@ class CallNode extends InvokeNode {
  * ```
  */
 class MethodCallNode extends CallNode {
-  override DataFlow::Impl::MethodCallNodeDef impl;
+  MethodCallNode() { this instanceof DataFlow::Impl::MethodCallNodeDef }
 
   /** Gets the name of the invoked method, if it can be determined. */
-  string getMethodName() { result = impl.getMethodName() }
+  string getMethodName() { result = this.(DataFlow::Impl::MethodCallNodeDef).getMethodName() }
 
   /**
    * Holds if this data flow node calls method `methodName` on receiver node `receiver`.
@@ -300,7 +303,7 @@ class MethodCallNode extends CallNode {
  * ```
  */
 class NewNode extends InvokeNode {
-  override DataFlow::Impl::NewNodeDef impl;
+  NewNode() { this instanceof DataFlow::Impl::NewNodeDef }
 }
 
 /**
@@ -545,6 +548,16 @@ class ObjectLiteralNode extends DataFlow::ValueNode, DataFlow::SourceNode {
   /** Gets the value of a spread property of this object literal, such as `x` in `{...x}` */
   DataFlow::Node getASpreadProperty() {
     result = astNode.getAProperty().(SpreadProperty).getInit().(SpreadElement).getOperand().flow()
+  }
+
+  /** Gets the property getter of the given name, installed on this object literal. */
+  DataFlow::FunctionNode getPropertyGetter(string name) {
+    result = astNode.getPropertyByName(name).(PropertyGetter).getInit().flow()
+  }
+
+  /** Gets the property setter of the given name, installed on this object literal. */
+  DataFlow::FunctionNode getPropertySetter(string name) {
+    result = astNode.getPropertyByName(name).(PropertySetter).getInit().flow()
   }
 }
 
@@ -1068,35 +1081,42 @@ module ClassNode {
    * Subclass this to introduce new kinds of class nodes. If you want to refine
    * the definition of existing class nodes, subclass `DataFlow::ClassNode` instead.
    */
+  cached
   abstract class Range extends DataFlow::SourceNode {
     /**
      * Gets the name of the class, if it has one.
      */
+    cached
     abstract string getName();
 
     /**
      * Gets a description of the class.
      */
+    cached
     abstract string describe();
 
     /**
      * Gets the constructor function of this class.
      */
+    cached
     abstract FunctionNode getConstructor();
 
     /**
      * Gets the instance member with the given name and kind.
      */
+    cached
     abstract FunctionNode getInstanceMember(string name, MemberKind kind);
 
     /**
      * Gets an instance member with the given kind.
      */
+    cached
     abstract FunctionNode getAnInstanceMember(MemberKind kind);
 
     /**
      * Gets the static method of this class with the given name.
      */
+    cached
     abstract FunctionNode getStaticMethod(string name);
 
     /**
@@ -1104,20 +1124,24 @@ module ClassNode {
      *
      * The constructor is not considered a static method.
      */
+    cached
     abstract FunctionNode getAStaticMethod();
 
     /**
      * Gets a dataflow node representing a class to be used as the super-class
      * of this node.
      */
+    cached
     abstract DataFlow::Node getASuperClassNode();
 
     /**
      * Gets the type annotation for the field `fieldName`, if any.
      */
+    cached
     TypeAnnotation getFieldTypeAnnotation(string fieldName) { none() }
 
     /** Gets a decorator applied to this class. */
+    cached
     DataFlow::Node getADecorator() { none() }
   }
 

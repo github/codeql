@@ -24,9 +24,9 @@ module Babel {
         plugins = getPropValue("plugins") and
         result = plugins.getElementValue(_)
       |
-        result.(JSONString).getValue() = pluginName
+        result.getStringValue() = pluginName
         or
-        result.(JSONArray).getElementStringValue(0) = pluginName
+        result.getElementValue(0).getStringValue() = pluginName
       )
     }
 
@@ -67,7 +67,7 @@ module Babel {
     JSONValue getOptions() { result = this.(JSONArray).getElementValue(1) }
 
     /** Gets a named option from the option object, if present. */
-    JSONValue getOption(string name) { result = getOptions().(JSONObject).getPropValue(name) }
+    JSONValue getOption(string name) { result = getOptions().getPropValue(name) }
 
     /** Holds if this plugin applies to `tl`. */
     predicate appliesTo(TopLevel tl) { cfg.appliesTo(tl) }
@@ -186,6 +186,22 @@ module Babel {
     TransformReactJsxConfig() { pluginName = "transform-react-jsx" }
 
     /** Gets the name of the variable used to create JSX elements. */
-    string getJsxFactoryVariableName() { result = getOption("pragma").(JSONString).getValue() }
+    string getJsxFactoryVariableName() { result = getOption("pragma").getStringValue() }
+  }
+
+  /**
+   * A taint step through a call to the Babel `transform` function.
+   */
+  private class TransformTaintStep extends TaintTracking::SharedTaintStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(API::CallNode call |
+        call =
+          API::moduleImport(["@babel/standalone", "@babel/core"])
+              .getMember(["transform", "transformSync", "transformAsync"])
+              .getACall() and
+        pred = call.getArgument(0) and
+        succ = [call, call.getParameter(2).getParameter(0).getAnImmediateUse()]
+      )
+    }
   }
 }

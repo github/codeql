@@ -1618,6 +1618,20 @@ private module SimpleRangeAnalysisCached {
   }
 
   /**
+   * Holds if `e` is an expression where the concept of overflow makes sense.
+   * This predicate is used to filter out some of the unanalyzable expressions
+   * from `exprMightOverflowPositively` and `exprMightOverflowNegatively`.
+   */
+  pragma[inline]
+  private predicate exprThatCanOverflow(Expr e) {
+    e instanceof UnaryArithmeticOperation or
+    e instanceof BinaryArithmeticOperation or
+    e instanceof AssignArithmeticOperation or
+    e instanceof LShiftExpr or
+    e instanceof AssignLShiftExpr
+  }
+
+  /**
    * Holds if the expression might overflow negatively. This predicate
    * does not consider the possibility that the expression might overflow
    * due to a conversion.
@@ -1630,6 +1644,11 @@ private module SimpleRangeAnalysisCached {
     // bound of `x`, so the standard logic (above) does not work for
     // detecting whether it might overflow.
     getLowerBoundsImpl(expr.(PostfixDecrExpr)) = exprMinVal(expr)
+    or
+    // We can't conclude that any unanalyzable expression might overflow. This
+    // is because there are many expressions that the range analysis doesn't
+    // handle, but where the concept of overflow doesn't make sense.
+    exprThatCanOverflow(expr) and not analyzableExpr(expr)
   }
 
   /**
@@ -1657,6 +1676,11 @@ private module SimpleRangeAnalysisCached {
     // bound of `x`, so the standard logic (above) does not work for
     // detecting whether it might overflow.
     getUpperBoundsImpl(expr.(PostfixIncrExpr)) = exprMaxVal(expr)
+    or
+    // We can't conclude that any unanalyzable expression might overflow. This
+    // is because there are many expressions that the range analysis doesn't
+    // handle, but where the concept of overflow doesn't make sense.
+    exprThatCanOverflow(expr) and not analyzableExpr(expr)
   }
 
   /**

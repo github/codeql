@@ -1,8 +1,12 @@
 /**
  * @name Broadcasting sensitive data to all Android applications
- * @id java/sensitive-broadcast
- * @description An Android application uses implicit intents to broadcast sensitive data to all applications without specifying any receiver permission.
+ * @description An Android application uses implicit intents to broadcast
+ *              sensitive data to all applications without specifying any
+ *              receiver permission.
  * @kind path-problem
+ * @problem.severity warning
+ * @precision medium
+ * @id java/sensitive-broadcast
  * @tags security
  *       external/cwe-927
  */

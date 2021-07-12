@@ -1,181 +1,81 @@
-/**
- * Provides classes and predicates for definining flow summaries.
- */
+/** Provides classes and predicates for defining flow summaries. */
 
 import csharp
 private import internal.FlowSummaryImpl as Impl
-private import internal.FlowSummarySpecific::Private
-private import internal.DataFlowPublic as DataFlowPublic
+private import internal.DataFlowDispatch
+
 // import all instances below
-private import semmle.code.csharp.dataflow.LibraryTypeDataFlow
-private import semmle.code.csharp.frameworks.EntityFramework
+private module Summaries {
+  private import semmle.code.csharp.dataflow.LibraryTypeDataFlow
+  private import semmle.code.csharp.frameworks.EntityFramework
+}
 
-class SummarizableCallable = Impl::Public::SummarizableCallable;
+class SummaryComponent = Impl::Public::SummaryComponent;
 
-/** An unbound method. */
-class SummarizableMethod extends SummarizableCallable, Method { }
+/** Provides predicates for constructing summary components. */
+module SummaryComponent {
+  import Impl::Public::SummaryComponent
 
-class ContentList = Impl::Public::ContentList;
+  /** Gets a summary component that represents a qualifier. */
+  SummaryComponent qualifier() { result = argument(-1) }
 
-/** Provides predicates for constructing content lists. */
-module ContentList {
-  import Impl::Public::ContentList
+  /** Gets a summary component that represents an element in a collection. */
+  SummaryComponent element() { result = content(any(DataFlow::ElementContent c)) }
 
-  /** Gets the singleton "element content" content list. */
-  ContentList element() { result = singleton(any(DataFlowPublic::ElementContent c)) }
-
-  /** Gets a singleton property content list. */
-  ContentList property(Property p) {
-    result =
-      singleton(any(DataFlowPublic::PropertyContent c | c.getProperty() = p.getUnboundDeclaration()))
+  /** Gets a summary component for property `p`. */
+  SummaryComponent property(Property p) {
+    result = content(any(DataFlow::PropertyContent c | c.getProperty() = p.getUnboundDeclaration()))
   }
 
-  /** Gets a singleton field content list. */
-  ContentList field(Field f) {
+  /** Gets a summary component for field `f`. */
+  SummaryComponent field(Field f) {
+    result = content(any(DataFlow::FieldContent c | c.getField() = f.getUnboundDeclaration()))
+  }
+
+  /** Gets a summary component that represents the return value of a call. */
+  SummaryComponent return() { result = return(any(NormalReturnKind rk)) }
+
+  /** Gets a summary component that represents a jump to `c`. */
+  SummaryComponent jump(Callable c) {
     result =
-      singleton(any(DataFlowPublic::FieldContent c | c.getField() = f.getUnboundDeclaration()))
+      return(any(JumpReturnKind jrk |
+          jrk.getTarget() = c.getUnboundDeclaration() and
+          jrk.getTargetReturnKind() instanceof NormalReturnKind
+        ))
   }
 }
 
-class SummaryInput = Impl::Public::SummaryInput;
+class SummaryComponentStack = Impl::Public::SummaryComponentStack;
 
-/** Provides predicates for constructing flow-summary input specifications */
-module SummaryInput {
-  private import semmle.code.csharp.frameworks.system.Collections
+/** Provides predicates for constructing stacks of summary components. */
+module SummaryComponentStack {
+  import Impl::Public::SummaryComponentStack
 
-  /**
-   * Gets an input specification that specifies the `i`th parameter as
-   * the input.
-   */
-  SummaryInput parameter(int i) { result = TParameterSummaryInput(i) }
+  /** Gets a singleton stack representing a qualifier. */
+  SummaryComponentStack qualifier() { result = singleton(SummaryComponent::qualifier()) }
 
-  private predicate isCollectionType(ValueOrRefType t) {
-    t.getABaseType*() instanceof SystemCollectionsIEnumerableInterface and
-    not t instanceof StringType
+  /** Gets a stack representing an element of `container`. */
+  SummaryComponentStack elementOf(SummaryComponentStack container) {
+    result = push(SummaryComponent::element(), container)
   }
 
-  /**
-   * Gets an input specification that specifies the `i`th parameter as
-   * the input.
-   *
-   * `inputContents` is either empty or a singleton element content list,
-   * depending on whether the type of the `i`th parameter of `c` is a
-   * collection type.
-   */
-  SummaryInput parameter(SummarizableCallable c, int i, ContentList inputContents) {
-    result = parameter(i) and
-    exists(Parameter p |
-      p = c.getParameter(i) and
-      if isCollectionType(p.getType())
-      then inputContents = ContentList::element()
-      else inputContents = ContentList::empty()
-    )
+  /** Gets a stack representing a propery `p` of `object`. */
+  SummaryComponentStack propertyOf(Property p, SummaryComponentStack object) {
+    result = push(SummaryComponent::property(p), object)
   }
 
-  /**
-   * Gets an input specification that specifies the implicit `this` parameter
-   * as the input.
-   */
-  SummaryInput thisParameter() { result = TParameterSummaryInput(-1) }
-
-  /**
-   * Gets an input specification that specifies output from the delegate at
-   * parameter `i` as the input.
-   */
-  SummaryInput delegate(int i) { result = TDelegateSummaryInput(i) }
-
-  /**
-   * Gets an input specification that specifies output from the delegate at
-   * parameter `i` as the input.
-   *
-   * `c` must be a compatible callable, that is, a callable where the `i`th
-   * parameter is a delegate.
-   */
-  SummaryInput delegate(SummarizableCallable c, int i) {
-    result = delegate(i) and
-    hasDelegateArgumentPosition(c, i)
-  }
-}
-
-class SummaryOutput = Impl::Public::SummaryOutput;
-
-/** Provides predicates for constructing flow-summary output specifications. */
-module SummaryOutput {
-  /**
-   * Gets an output specification that specifies the return value from a call as
-   * the output.
-   */
-  SummaryOutput return() { result = TReturnSummaryOutput() }
-
-  /**
-   * Gets an output specification that specifies the `i`th parameter as the
-   * output.
-   */
-  SummaryOutput parameter(int i) { result = TParameterSummaryOutput(i) }
-
-  /**
-   * Gets an output specification that specifies the implicit `this` parameter
-   * as the output.
-   */
-  SummaryOutput thisParameter() { result = TParameterSummaryOutput(-1) }
-
-  /**
-   * Gets an output specification that specifies parameter `j` of the delegate at
-   * parameter `i` as the output.
-   */
-  SummaryOutput delegate(int i, int j) { result = TDelegateSummaryOutput(i, j) }
-
-  /**
-   * Gets an output specification that specifies parameter `j` of the delegate at
-   * parameter `i` as the output.
-   *
-   * `c` must be a compatible callable, that is, a callable where the `i`th
-   * parameter is a delegate with a parameter at position `j`.
-   */
-  SummaryOutput delegate(SummarizableCallable c, int i, int j) {
-    result = TDelegateSummaryOutput(i, j) and
-    hasDelegateArgumentPosition2(c, i, j)
+  /** Gets a stack representing a field `f` of `object`. */
+  SummaryComponentStack fieldOf(Field f, SummaryComponentStack object) {
+    result = push(SummaryComponent::field(f), object)
   }
 
-  /**
-   * Gets an output specification that specifies the `output` of `target` as the
-   * output. That is, data will flow into one callable and out of another callable
-   * (`target`).
-   *
-   * `output` is limited to (this) parameters and ordinary returns.
-   */
-  SummaryOutput jump(SummarizableCallable target, SummaryOutput output) {
-    result = TJumpSummaryOutput(target, toReturnKind(output))
-  }
+  /** Gets a singleton stack representing the return value of a call. */
+  SummaryComponentStack return() { result = singleton(SummaryComponent::return()) }
+
+  /** Gets a singleton stack representing a jump to `c`. */
+  SummaryComponentStack jump(Callable c) { result = singleton(SummaryComponent::jump(c)) }
 }
 
 class SummarizedCallable = Impl::Public::SummarizedCallable;
 
-/** Provides a query predicate for outputting a set of relevant flow summaries. */
-module TestOutput {
-  /** A flow summary to include in the `summary/3` query predicate. */
-  abstract class RelevantSummarizedCallable extends SummarizedCallable { }
-
-  /** A query predicate for outputting flow summaries in QL tests. */
-  query predicate summary(string callable, string flow, boolean preservesValue) {
-    exists(
-      RelevantSummarizedCallable c, SummaryInput input, ContentList inputContents,
-      string inputContentsString, SummaryOutput output, ContentList outputContents,
-      string outputContentsString
-    |
-      callable = c.getQualifiedNameWithTypes() and
-      Impl::Private::summary(c, input, inputContents, output, outputContents, preservesValue) and
-      (
-        if inputContents.length() = 0
-        then inputContentsString = ""
-        else inputContentsString = " [" + inputContents + "]"
-      ) and
-      (
-        if outputContents.length() = 0
-        then outputContentsString = ""
-        else outputContentsString = " [" + outputContents + "]"
-      ) and
-      flow = input + inputContentsString + " -> " + output + outputContentsString
-    )
-  }
-}
+class RequiredSummaryComponentStack = Impl::Public::RequiredSummaryComponentStack;

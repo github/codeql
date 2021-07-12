@@ -164,22 +164,15 @@ private module Immutable {
   /**
    * A dataflow step for an immutable collection.
    */
-  class ImmutableConstructionStep extends DataFlow::AdditionalFlowStep {
-    ImmutableConstructionStep() { this = [loadStep(_, _), storeStep(_, _), step(_)] }
-
+  class ImmutableConstructionStep extends DataFlow::SharedFlowStep {
     override predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
-      this = loadStep(pred, prop) and
-      succ = this
+      succ = loadStep(pred, prop)
     }
 
     override predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
-      this = storeStep(pred, prop) and
-      succ = this
+      succ = storeStep(pred, prop)
     }
 
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      this = step(pred) and
-      succ = this
-    }
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) { succ = step(pred) }
   }
 }

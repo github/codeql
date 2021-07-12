@@ -15,7 +15,7 @@
 
 import javascript
 private import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps
-private import semmle.javascript.dataflow.internal.Unit
+private import semmle.javascript.Unit
 private import semmle.javascript.dataflow.InferredTypes
 private import semmle.javascript.internal.CachedStages
 
@@ -550,7 +550,8 @@ module TaintTracking {
       // reading from a tainted object yields a tainted result
       succ.(DataFlow::PropRead).getBase() = pred and
       not AccessPath::DominatingPaths::hasDominatingWrite(succ) and
-      not isSafeClientSideUrlProperty(succ)
+      not isSafeClientSideUrlProperty(succ) and
+      not ClassValidator::isAccessToSanitizedField(succ)
       or
       // iterating over a tainted iterator taints the loop variable
       exists(ForOfStmt fos |
@@ -584,22 +585,26 @@ module TaintTracking {
 
   /**
    * A taint propagating data flow edge for assignments of the form `o[k] = v`, where
-   * `k` is not a constant and `o` refers to some object literal; in this case, we consider
-   * taint to flow from `v` to that object literal.
+   * one of the following holds:
    *
-   * The rationale for this heuristic is that if properties of `o` are accessed by
-   * computed (that is, non-constant) names, then `o` is most likely being treated as
-   * a map, not as a real object. In this case, it makes sense to consider the entire
-   * map to be tainted as soon as one of its entries is.
+   * - `k` is not a constant and `o` refers to some object literal. The rationale
+   *   here is that `o` is most likely being used like a dictionary object.
+   *
+   * - `k` refers to `o.length`, that is, the assignment is of form `o[o.length] = v`.
+   *   In this case, the assignment behaves like `o.push(v)`.
    */
-  private class DictionaryTaintStep extends SharedTaintStep {
+  private class ComputedPropWriteTaintStep extends SharedTaintStep {
     override predicate heapStep(DataFlow::Node pred, DataFlow::Node succ) {
-      exists(AssignExpr assgn, IndexExpr idx, DataFlow::ObjectLiteralNode obj |
+      exists(AssignExpr assgn, IndexExpr idx, DataFlow::SourceNode obj |
         assgn.getTarget() = idx and
         obj.flowsToExpr(idx.getBase()) and
         not exists(idx.getPropertyName()) and
         pred = DataFlow::valueNode(assgn.getRhs()) and
         succ = obj
+      |
+        obj instanceof DataFlow::ObjectLiteralNode
+        or
+        obj.getAPropertyRead("length").flowsToExpr(idx.getPropertyNameExpr())
       )
     }
   }
@@ -738,7 +743,10 @@ module TaintTracking {
   pragma[nomagic]
   private DataFlow::MethodCallNode execMethodCall() {
     result.getMethodName() = "exec" and
-    result.getReceiver().analyze().getAType() = TTRegExp()
+    exists(DataFlow::AnalyzedNode analyzed |
+      pragma[only_bind_into](analyzed) = result.getReceiver().analyze() and
+      analyzed.getAType() = TTRegExp()
+    )
   }
 
   /**
@@ -759,7 +767,10 @@ module TaintTracking {
   pragma[nomagic]
   private DataFlow::MethodCallNode matchMethodCall() {
     result.getMethodName() = "match" and
-    result.getArgument(0).analyze().getAType() = TTRegExp()
+    exists(DataFlow::AnalyzedNode analyzed |
+      pragma[only_bind_into](analyzed) = result.getArgument(0).analyze() and
+      analyzed.getAType() = TTRegExp()
+    )
   }
 
   /**
@@ -828,13 +839,13 @@ module TaintTracking {
   /**
    * A taint propagating data flow edge arising from URL parameter parsing.
    */
-  private class UrlSearchParamsTaintStep extends DataFlow::AdditionalFlowStep, DataFlow::ValueNode {
+  private class UrlSearchParamsTaintStep extends DataFlow::SharedFlowStep {
     /**
      * Holds if `succ` is a `URLSearchParams` providing access to the
      * parameters encoded in `pred`.
      */
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      isUrlSearchParams(succ, pred) and succ = this
+      isUrlSearchParams(succ, pred)
     }
 
     /**
@@ -847,17 +858,14 @@ module TaintTracking {
      *    which can be accessed using a `get` or `getAll` call. (See getableUrlPseudoProperty())
      */
     override predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
-      succ = this and
-      (
-        prop = ["searchParams", "hash", "search", hiddenUrlPseudoProperty()] and
-        exists(DataFlow::NewNode newUrl | succ = newUrl |
-          newUrl = DataFlow::globalVarRef("URL").getAnInstantiation() and
-          pred = newUrl.getArgument(0)
-        )
-        or
-        prop = getableUrlPseudoProperty() and
-        isUrlSearchParams(succ, pred)
+      prop = ["searchParams", "hash", "search", hiddenUrlPseudoProperty()] and
+      exists(DataFlow::NewNode newUrl | succ = newUrl |
+        newUrl = DataFlow::globalVarRef("URL").getAnInstantiation() and
+        pred = newUrl.getArgument(0)
       )
+      or
+      prop = getableUrlPseudoProperty() and
+      isUrlSearchParams(succ, pred)
     }
 
     /**
@@ -869,7 +877,6 @@ module TaintTracking {
     override predicate loadStoreStep(
       DataFlow::Node pred, DataFlow::Node succ, string loadProp, string storeProp
     ) {
-      succ = this and
       loadProp = hiddenUrlPseudoProperty() and
       storeProp = getableUrlPseudoProperty() and
       exists(DataFlow::PropRead read | read = succ |
@@ -884,7 +891,6 @@ module TaintTracking {
      * This step is used to load the value stored in the pseudo-property `getableUrlPseudoProperty()`.
      */
     override predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
-      succ = this and
       prop = getableUrlPseudoProperty() and
       // this is a call to `get` or `getAll` on a `URLSearchParams` object
       exists(string m, DataFlow::MethodCallNode call | call = succ |

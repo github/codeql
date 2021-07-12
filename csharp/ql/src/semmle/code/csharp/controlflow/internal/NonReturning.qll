@@ -39,8 +39,10 @@ private class ThrowingCall extends NonReturningCall {
       or
       this.(FailingAssertion).getAssertionFailure().isException(c.getExceptionClass())
       or
-      exists(CIL::Method m, CIL::Type ex |
-        this.getTarget().matchesHandle(m) and
+      exists(Callable target, CIL::Method m, CIL::Type ex |
+        target = this.getTarget() and
+        not target.hasBody() and
+        target.matchesHandle(m) and
         alwaysThrowsException(m, ex) and
         c.getExceptionClass().matchesHandle(ex) and
         not m.isVirtual()

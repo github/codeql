@@ -465,18 +465,38 @@ module NodeJSLib {
       ) and
       t.start()
       or
+      t.start() and
+      result = DataFlow::moduleMember("fs", "promises")
+      or
       exists(DataFlow::TypeTracker t2, DataFlow::SourceNode pred | pred = fsModule(t2) |
         result = pred.track(t2, t)
         or
         t.continue() = t2 and
-        exists(DataFlow::CallNode promisifyAllCall |
+        exists(Promisify::PromisifyAllCall promisifyAllCall |
           result = promisifyAllCall and
-          pred.flowsTo(promisifyAllCall.getArgument(0)) and
-          promisifyAllCall =
-            [
-              DataFlow::moduleMember("bluebird", "promisifyAll"),
-              DataFlow::moduleImport("util-promisifyall")
-            ].getACall()
+          pred.flowsTo(promisifyAllCall.getArgument(0))
+        )
+        or
+        // const fs = require('fs');
+        // let fs_copy = methods.reduce((obj, method) => {
+        //  obj[method] = fs[method];
+        //  return obj;
+        // }, {});
+        t.continue() = t2 and
+        exists(
+          DataFlow::MethodCallNode call, DataFlow::ParameterNode obj, DataFlow::SourceNode method
+        |
+          call.getMethodName() = "reduce" and
+          result = call and
+          obj = call.getABoundCallbackParameter(0, 0) and
+          obj.flowsTo(any(DataFlow::FunctionNode f).getAReturn()) and
+          exists(DataFlow::PropWrite write, DataFlow::PropRead read |
+            write = obj.getAPropertyWrite() and
+            method.flowsToExpr(write.getPropertyNameExpr()) and
+            method.flowsToExpr(read.getPropertyNameExpr()) and
+            read.getBase().getALocalSource() = fsModule(t2) and
+            write.getRhs() = maybePromisified(read)
+          )
         )
       )
     }
@@ -623,9 +643,7 @@ module NodeJSLib {
   private DataFlow::SourceNode maybePromisified(DataFlow::SourceNode callback) {
     result = callback
     or
-    exists(DataFlow::CallNode promisify |
-      promisify = DataFlow::moduleMember(["util", "bluebird"], "promisify").getACall()
-    |
+    exists(Promisify::PromisifyCall promisify |
       result = promisify and promisify.getArgument(0).getALocalSource() = callback
     )
   }
@@ -645,8 +663,6 @@ module NodeJSLib {
       )
     }
   }
-
-  private import semmle.javascript.PackageExports as Exports
 
   /**
    * A direct step from an named export to a property-read reading the exported value.

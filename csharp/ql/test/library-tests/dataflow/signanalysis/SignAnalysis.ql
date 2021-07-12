@@ -18,4 +18,5 @@ string getASignString(ControlFlow::Nodes::ExprNode e) {
 }
 
 from ControlFlow::Nodes::ExprNode e
+where not e.getExpr().fromLibrary()
 select e, strictconcat(string s | s = getASignString(e) | s, " ")

@@ -354,113 +354,148 @@ abstract class LibraryTypeDataFlow extends Type {
   }
 }
 
-private CallableFlowSource toCallableFlowSource(SummaryInput input) {
-  result = TCallableFlowSourceQualifier() and
-  input = SummaryInput::parameter(-1)
-  or
-  exists(int i |
-    result = TCallableFlowSourceArg(i) and
-    input = SummaryInput::parameter(i)
-  )
-  or
-  exists(int i |
-    result = TCallableFlowSourceDelegateArg(i) and
-    input = SummaryInput::delegate(i)
-  )
-}
-
-private CallableFlowSink toCallableFlowSink(SummaryOutput output) {
-  result = TCallableFlowSinkQualifier() and
-  output = SummaryOutput::parameter(-1)
-  or
-  result = TCallableFlowSinkReturn() and
-  output = SummaryOutput::return()
-  or
-  exists(int i |
-    result = TCallableFlowSinkArg(i) and
-    output = SummaryOutput::parameter(i)
-  )
-  or
-  exists(int i, int j |
-    result = TCallableFlowSinkDelegateArg(i, j) and
-    output = SummaryOutput::delegate(i, j)
-  )
-}
-
-private AccessPath toAccessPath(ContentList cl) {
-  cl = ContentList::empty() and
-  result = TNilAccessPath()
-  or
-  exists(Content head, ContentList tail |
-    cl = ContentList::cons(head, tail) and
-    result = TConsAccessPath(head, toAccessPath(tail))
-  )
-}
-
-private class FrameworkDataFlowAdaptor extends SummarizedCallable {
-  private LibraryTypeDataFlow ltdf;
-
-  FrameworkDataFlowAdaptor() {
-    ltdf.callableFlow(_, _, this, _) or
-    ltdf.callableFlow(_, _, _, _, this, _) or
-    ltdf.clearsContent(_, _, this)
-  }
-
-  override predicate propagatesFlow(SummaryInput input, SummaryOutput output, boolean preservesValue) {
-    ltdf.callableFlow(toCallableFlowSource(input), toCallableFlowSink(output), this, preservesValue)
-  }
-
-  override predicate propagatesFlow(
-    SummaryInput input, ContentList inputContents, SummaryOutput output, ContentList outputContents,
-    boolean preservesValue
-  ) {
-    ltdf.callableFlow(toCallableFlowSource(input), toAccessPath(inputContents),
-      toCallableFlowSink(output), toAccessPath(outputContents), this, preservesValue)
-  }
-
-  private AccessPath getAnAccessPath() {
-    ltdf.callableFlow(_, result, _, _, this, _)
+/**
+ * An internal module for translating old `LibraryTypeDataFlow`-style
+ * flow summaries into the new style.
+ */
+private module FrameworkDataFlowAdaptor {
+  private CallableFlowSource toCallableFlowSource(SummaryComponentStack input) {
+    result = TCallableFlowSourceQualifier() and
+    input = SummaryComponentStack::qualifier()
     or
-    ltdf.callableFlow(_, _, _, result, _, _)
-  }
-
-  override predicate requiresContentList(Content head, ContentList tail) {
-    exists(AccessPath ap |
-      ap = this.getAnAccessPath().drop(_) and
-      head = ap.getHead() and
-      toAccessPath(tail) = ap.getTail()
+    exists(int i |
+      result = TCallableFlowSourceArg(i) and
+      input = SummaryComponentStack::argument(i)
+    )
+    or
+    exists(int i | result = TCallableFlowSourceDelegateArg(i) |
+      input =
+        SummaryComponentStack::push(SummaryComponent::return(), SummaryComponentStack::argument(i))
     )
   }
 
-  override predicate clearsContent(SummaryInput input, Content content) {
-    ltdf.clearsContent(toCallableFlowSource(input), content, this)
-  }
-}
-
-/** Data flow for `System.Int32`. */
-class SystemInt32Flow extends LibraryTypeDataFlow, SystemInt32Struct {
-  override predicate callableFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
-    boolean preservesValue
-  ) {
-    methodFlow(source, sink, c) and
-    preservesValue = false
-  }
-
-  private predicate methodFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationMethod m
-  ) {
-    m = getParseMethod() and
-    source = TCallableFlowSourceArg(0) and
-    sink = TCallableFlowSinkReturn()
+  private CallableFlowSink toCallableFlowSink(SummaryComponentStack output) {
+    result = TCallableFlowSinkQualifier() and
+    output = SummaryComponentStack::qualifier()
     or
-    m = getTryParseMethod() and
-    source = TCallableFlowSourceArg(0) and
-    (
-      sink = TCallableFlowSinkReturn()
+    result = TCallableFlowSinkReturn() and
+    output = SummaryComponentStack::return()
+    or
+    exists(int i |
+      result = TCallableFlowSinkArg(i) and
+      output = SummaryComponentStack::argument(i)
+    )
+    or
+    exists(int i, int j | result = TCallableFlowSinkDelegateArg(i, j) |
+      output =
+        SummaryComponentStack::push(SummaryComponent::parameter(j),
+          SummaryComponentStack::argument(i))
+    )
+  }
+
+  private class FrameworkDataFlowAdaptor extends SummarizedCallable {
+    private LibraryTypeDataFlow ltdf;
+
+    FrameworkDataFlowAdaptor() {
+      ltdf.callableFlow(_, _, this, _) or
+      ltdf.callableFlow(_, _, _, _, this, _) or
+      ltdf.clearsContent(_, _, this)
+    }
+
+    predicate input(
+      CallableFlowSource source, AccessPath sourceAp, SummaryComponent head,
+      SummaryComponentStack tail, int i
+    ) {
+      ltdf.callableFlow(source, sourceAp, _, _, this, _) and
+      source = toCallableFlowSource(tail) and
+      head = SummaryComponent::content(sourceAp.getHead()) and
+      i = 0
       or
-      sink = TCallableFlowSinkArg(any(int i | m.getParameter(i).isOutOrRef()))
-    )
+      exists(SummaryComponent tailHead, SummaryComponentStack tailTail |
+        this.input(source, sourceAp, tailHead, tailTail, i - 1) and
+        head = SummaryComponent::content(sourceAp.drop(i).getHead()) and
+        tail = SummaryComponentStack::push(tailHead, tailTail)
+      )
+    }
+
+    predicate output(
+      CallableFlowSink sink, AccessPath sinkAp, SummaryComponent head, SummaryComponentStack tail,
+      int i
+    ) {
+      ltdf.callableFlow(_, _, sink, sinkAp, this, _) and
+      sink = toCallableFlowSink(tail) and
+      head = SummaryComponent::content(sinkAp.getHead()) and
+      i = 0
+      or
+      exists(SummaryComponent tailHead, SummaryComponentStack tailTail |
+        this.output(sink, sinkAp, tailHead, tailTail, i - 1) and
+        head = SummaryComponent::content(sinkAp.drop(i).getHead()) and
+        tail = SummaryComponentStack::push(tailHead, tailTail)
+      )
+    }
+
+    override predicate propagatesFlow(
+      SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
+    ) {
+      ltdf.callableFlow(toCallableFlowSource(input), toCallableFlowSink(output), this,
+        preservesValue)
+      or
+      exists(
+        CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp
+      |
+        ltdf.callableFlow(source, sourceAp, sink, sinkAp, this, preservesValue) and
+        (
+          exists(SummaryComponent head, SummaryComponentStack tail |
+            this.input(source, sourceAp, head, tail, sourceAp.length() - 1) and
+            input = SummaryComponentStack::push(head, tail)
+          )
+          or
+          sourceAp.length() = 0 and
+          source = toCallableFlowSource(input)
+        ) and
+        (
+          exists(SummaryComponent head, SummaryComponentStack tail |
+            this.output(sink, sinkAp, head, tail, sinkAp.length() - 1) and
+            output = SummaryComponentStack::push(head, tail)
+          )
+          or
+          sinkAp.length() = 0 and
+          sink = toCallableFlowSink(output)
+        )
+      )
+    }
+
+    override predicate clearsContent(int i, Content content) {
+      exists(SummaryComponentStack input |
+        ltdf.clearsContent(toCallableFlowSource(input), content, this) and
+        input = SummaryComponentStack::singleton(SummaryComponent::argument(i))
+      )
+    }
+  }
+
+  private class AdaptorRequiredSummaryComponentStack extends RequiredSummaryComponentStack {
+    private SummaryComponent head;
+
+    AdaptorRequiredSummaryComponentStack() {
+      exists(int i |
+        exists(TCallableFlowSourceDelegateArg(i)) and
+        head = SummaryComponent::return() and
+        this = SummaryComponentStack::singleton(SummaryComponent::argument(i))
+      )
+      or
+      exists(int i, int j | exists(TCallableFlowSinkDelegateArg(i, j)) |
+        head = SummaryComponent::parameter(j) and
+        this = SummaryComponentStack::singleton(SummaryComponent::argument(i))
+      )
+      or
+      exists(FrameworkDataFlowAdaptor adaptor |
+        adaptor.input(_, _, head, this, _)
+        or
+        adaptor.output(_, _, head, this, _)
+      )
+    }
+
+    override predicate required(SummaryComponent c) { c = head }
   }
 }
 
@@ -745,17 +780,29 @@ class SystemTextStringBuilderFlow extends LibraryTypeDataFlow, SystemTextStringB
       sinkAp = AccessPath::empty() and
       preservesValue = false
       or
-      exists(int i, Type t |
-        name.regexpMatch("Append(Format|Line)?") and
-        t = m.getParameter(i).getType() and
-        source = TCallableFlowSourceArg(i) and
+      name.regexpMatch("Append(Format|Line|Join)?") and
+      preservesValue = true and
+      (
+        exists(int i, Type t |
+          t = m.getParameter(i).getType() and
+          source = TCallableFlowSourceArg(i) and
+          sink = TCallableFlowSinkQualifier() and
+          sinkAp = AccessPath::element()
+        |
+          (
+            t instanceof StringType or
+            t instanceof ObjectType
+          ) and
+          sourceAp = AccessPath::empty()
+          or
+          isCollectionType(t) and
+          sourceAp = AccessPath::element()
+        )
+        or
+        source = TCallableFlowSourceQualifier() and
         sourceAp = AccessPath::empty() and
-        sink = [TCallableFlowSinkQualifier().(TCallableFlowSink), TCallableFlowSinkReturn()] and
-        sinkAp = AccessPath::element() and
-        preservesValue = true
-      |
-        t instanceof StringType or
-        t instanceof ObjectType
+        sink = TCallableFlowSinkReturn() and
+        sinkAp = AccessPath::empty()
       )
     )
   }
@@ -1774,8 +1821,15 @@ class SystemTupleFlow extends LibraryTypeDataFlow, ValueOrRefType {
         c.(Constructor).getDeclaringType() = this and
         t = this
         or
-        c = this.getAMethod(any(string name | name.regexpMatch("Create(<,*>)?"))) and
-        t = c.getReturnType().getUnboundDeclaration()
+        exists(ValueOrRefType namedType |
+          namedType = this or namedType = this.(TupleType).getUnderlyingType()
+        |
+          c = namedType.getAMethod(any(string name | name.regexpMatch("Create(<,*>)?"))) and
+          (
+            t = c.getReturnType().getUnboundDeclaration() or
+            t = c.getReturnType().(TupleType).getUnderlyingType().getUnboundDeclaration()
+          )
+        )
       )
       or
       c =
@@ -2417,20 +2471,38 @@ class StringValuesFlow extends LibraryTypeDataFlow, Struct {
   }
 }
 
+private predicate recordConstructorFlow(Constructor c, int i, Property p) {
+  c = any(Record r).getAMember() and
+  exists(string name |
+    c.getParameter(i).getName() = name and
+    c.getDeclaringType().getAMember(name) = p
+  )
+}
+
+private class RecordConstructorFlowRequiredSummaryComponentStack extends RequiredSummaryComponentStack {
+  private SummaryComponent head;
+
+  RecordConstructorFlowRequiredSummaryComponentStack() {
+    exists(Property p |
+      recordConstructorFlow(_, _, p) and
+      head = SummaryComponent::property(p) and
+      this = SummaryComponentStack::singleton(SummaryComponent::return())
+    )
+  }
+
+  override predicate required(SummaryComponent c) { c = head }
+}
+
 private class RecordConstructorFlow extends SummarizedCallable {
-  RecordConstructorFlow() { this = any(Record r).getAMember().(Constructor) }
+  RecordConstructorFlow() { recordConstructorFlow(this, _, _) }
 
   override predicate propagatesFlow(
-    SummaryInput input, ContentList inputContents, SummaryOutput output, ContentList outputContents,
-    boolean preservesValue
+    SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
   ) {
-    exists(int i, Property p, string name |
-      this.getParameter(i).getName() = name and
-      this.getDeclaringType().getAMember(name) = p and
-      input = SummaryInput::parameter(i) and
-      inputContents = ContentList::empty() and
-      output = SummaryOutput::return() and
-      outputContents = ContentList::property(p) and
+    exists(int i, Property p |
+      recordConstructorFlow(this, i, p) and
+      input = SummaryComponentStack::argument(i) and
+      output = SummaryComponentStack::propertyOf(p, SummaryComponentStack::return()) and
       preservesValue = true
     )
   }

@@ -55,12 +55,8 @@ module StringConcatenation {
     exists(DataFlow::MethodCallNode call |
       node = call and
       call.getMethodName() = "concat" and
-      not (
-        exists(DataFlow::ArrayCreationNode array |
-          array.flowsTo(call.getAnArgument()) or array.flowsTo(call.getReceiver())
-        )
-        or
-        DataFlow::reflectiveCallNode(_) = call
+      not exists(DataFlow::ArrayCreationNode array |
+        array.flowsTo(call.getAnArgument()) or array.flowsTo(call.getReceiver())
       ) and
       (
         n = 0 and

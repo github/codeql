@@ -3,6 +3,7 @@
  * @description Use of a standard library function that does not guard against buffer overflow.
  * @kind problem
  * @problem.severity error
+ * @security-severity 10.0
  * @precision very-high
  * @id cpp/dangerous-function-overflow
  * @tags reliability

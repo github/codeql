@@ -2,6 +2,8 @@
  * @name Weak encryption: Insufficient key size
  * @description Finds uses of encryption algorithms with too small a key size
  * @kind problem
+ * @problem.severity warning
+ * @precision medium
  * @id java/insufficient-key-size
  * @tags security
  *       external/cwe/cwe-326

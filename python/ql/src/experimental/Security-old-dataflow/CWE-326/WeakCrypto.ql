@@ -1,12 +1,9 @@
 /**
- * @name Use of weak cryptographic key
+ * @name OLD QUERY: Use of weak cryptographic key
  * @description Use of a cryptographic key that is too small may allow the encryption to be broken.
  * @kind problem
  * @problem.severity error
- * @precision high
- * @id py/weak-crypto-key
- * @tags security
- *       external/cwe/cwe-326
+ * @id py/old/weak-crypto-key
  */
 
 import python

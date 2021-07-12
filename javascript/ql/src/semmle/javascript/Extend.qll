@@ -174,3 +174,37 @@ private class ExtendCallTaintStep extends TaintTracking::SharedTaintStep {
     )
   }
 }
+
+private import semmle.javascript.dataflow.internal.PreCallGraphStep
+
+/**
+ * A step for the `clone` package.
+ */
+private class CloneStep extends PreCallGraphStep {
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(DataFlow::CallNode call | call = DataFlow::moduleImport("clone").getACall() |
+      pred = call.getArgument(0) and
+      succ = call
+    )
+  }
+}
+
+/**
+ * A deep extend call from the [webpack-merge](https://npmjs.org/package/webpack-merge) library.
+ */
+private class WebpackMergeDeep extends ExtendCall, DataFlow::CallNode {
+  WebpackMergeDeep() {
+    this = DataFlow::moduleMember("webpack-merge", "merge").getACall()
+    or
+    this =
+      DataFlow::moduleMember("webpack-merge", ["mergeWithCustomize", "mergeWithRules"])
+          .getACall()
+          .getACall()
+  }
+
+  override DataFlow::Node getASourceOperand() { result = getAnArgument() }
+
+  override DataFlow::Node getDestinationOperand() { none() }
+
+  override predicate isDeep() { any() }
+}

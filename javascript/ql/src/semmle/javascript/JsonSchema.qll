@@ -13,8 +13,20 @@ module JsonSchema {
     /** Gets the data flow node whose value is being validated. */
     abstract DataFlow::Node getInput();
 
-    /** Gets the return value that indicates successful validation. */
+    /**
+     * Gets the return value that indicates successful validation, if any.
+     *
+     * Has no result if the return value from this call does not directly
+     * indicate success.
+     */
     boolean getPolarity() { result = true }
+
+    /**
+     * Gets a value that indicates whether the validation was successful.
+     */
+    DataFlow::Node getAValidationResultAccess(boolean polarity) {
+      result = this and polarity = getPolarity()
+    }
   }
 
   /** A data flow node that is used a JSON schema. */
@@ -123,6 +135,57 @@ module JsonSchema {
               .getMember(["addSchema", "validate", "compile", "compileAsync"])
               .getParameter(0)
               .getARhs()
+      }
+    }
+  }
+
+  /** Provides a model for working with the [`joi`](https://npmjs.org/package/joi) library. */
+  module Joi {
+    /** A schema created using `joi.object()` or other schemas that might refer an object schema. */
+    private API::Node objectSchema() {
+      // A call that creates a schema that might be an object schema.
+      result =
+        API::moduleImport("joi")
+            .getMember([
+                "object", "alternatives", "all", "link", "compile", "allow", "valid", "when",
+                "build", "options"
+              ])
+            .getReturn()
+      or
+      // A call to a schema that returns another schema.
+      // Read from the [index.d.ts](https://github.com/sideway/joi/blob/master/lib/index.d.ts) file.
+      result =
+        objectSchema()
+            .getMember([
+                // AnySchema
+                "allow", "alter", "bind", "cache", "cast", "concat", "default", "description",
+                "disallow", "empty", "equal", "error", "example", "exist", "external", "failover",
+                "forbidden", "fork", "id", "invalid", "keep", "label", "message", "messages",
+                "meta", "not", "note", "only", "optional", "options", "prefs", "preferences",
+                "presence", "raw", "required", "rule", "shared", "strict", "strip", "tag", "tailor",
+                "unit", "valid", "warn", "warning", "when",
+                // ObjectSchema
+                "and", "append", "assert", "instance", "keys", "length", "max", "min", "nand", "or",
+                "oxor", "pattern", "ref", "regex", "rename", "schema", "unknown", "with", "without",
+                "xor"
+              ])
+            .getReturn()
+    }
+
+    /**
+     * A call to the `validate` method from the [`joi`](https://npmjs.org/package/joi) library.
+     * The `error` property in the result indicates whether the validation was successful.
+     */
+    class JoiValidationErrorRead extends ValidationCall, API::CallNode {
+      JoiValidationErrorRead() { this = objectSchema().getMember("validate").getACall() }
+
+      override DataFlow::Node getInput() { result = this.getArgument(0) }
+
+      override boolean getPolarity() { none() }
+
+      override DataFlow::Node getAValidationResultAccess(boolean polarity) {
+        result = this.getReturn().getMember("error").getAnImmediateUse() and
+        polarity = false
       }
     }
   }

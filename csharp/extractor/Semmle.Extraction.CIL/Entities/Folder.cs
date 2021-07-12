@@ -12,7 +12,7 @@ namespace Semmle.Extraction.CIL.Entities
             this.transformedPath = path;
         }
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             trapFile.Write(transformedPath.DatabaseId);
             trapFile.Write(";folder");

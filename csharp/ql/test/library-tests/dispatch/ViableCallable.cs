@@ -138,7 +138,6 @@ public class ViableCallable
         d.Event += (EventHandler<string>)(() => { });
         d.Event -= (EventHandler<string>)(() => { });
 
-
         // Viable callables: C8.M3(), C9.M3()
         d = Mock<C8>();
         d.M3();

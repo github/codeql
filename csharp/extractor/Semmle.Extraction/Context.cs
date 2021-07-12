@@ -30,17 +30,21 @@ namespace Semmle.Extraction
         /// </summary>
         public bool ShouldAddAssemblyTrapPrefix { get; }
 
+        public IList<object> TrapStackSuffix { get; } = new List<object>();
+
         private int GetNewId() => TrapWriter.IdCounter++;
 
         // A recursion guard against writing to the trap file whilst writing an id to the trap file.
         private bool writingLabel = false;
+
+        private readonly Queue<IEntity> labelQueue = new();
 
         protected void DefineLabel(IEntity entity)
         {
             if (writingLabel)
             {
                 // Don't define a label whilst writing a label.
-                PopulateLater(() => DefineLabel(entity));
+                labelQueue.Enqueue(entity);
             }
             else
             {
@@ -52,6 +56,10 @@ namespace Semmle.Extraction
                 finally
                 {
                     writingLabel = false;
+                    if (labelQueue.Any())
+                    {
+                        DefineLabel(labelQueue.Dequeue());
+                    }
                 }
             }
         }
@@ -108,7 +116,7 @@ namespace Semmle.Extraction
                     Populate(init as ISymbol, entity);
 
 #if DEBUG_LABELS
-                using var id = new StringWriter();
+                using var id = new EscapingTextWriter();
                 entity.WriteQuotedId(id);
                 CheckEntityHasUniqueLabel(id.ToString(), entity);
 #endif
@@ -264,8 +272,7 @@ namespace Semmle.Extraction
                 return;
             }
 
-            bool duplicationGuard;
-            bool deferred;
+            bool duplicationGuard, deferred;
 
             switch (entity.TrapStackBehaviour)
             {
@@ -285,14 +292,24 @@ namespace Semmle.Extraction
                     break;
                 case TrapStackBehaviour.PushesLabel:
                     duplicationGuard = true;
-                    deferred = tagStack.Any();
+                    deferred = duplicationGuard && tagStack.Any();
                     break;
                 default:
                     throw new InternalError("Unexpected TrapStackBehaviour");
             }
 
             var a = duplicationGuard && IsEntityDuplicationGuarded(entity, out var loc)
-                ? (Action)(() => WithDuplicationGuard(new Key(entity, loc), () => entity.Populate(TrapWriter.Writer)))
+                ? (() =>
+                {
+                    var args = new object[TrapStackSuffix.Count + 2];
+                    args[0] = entity;
+                    args[1] = loc;
+                    for (var i = 0; i < TrapStackSuffix.Count; i++)
+                    {
+                        args[i + 2] = TrapStackSuffix[i];
+                    }
+                    WithDuplicationGuard(new Key(args), () => entity.Populate(TrapWriter.Writer));
+                })
                 : (Action)(() => this.Try(null, optionalSymbol, () => entity.Populate(TrapWriter.Writer)));
 
             if (deferred)
@@ -376,6 +393,19 @@ namespace Semmle.Extraction
             Extractor.Message(msg);
         }
 
+        private void ExtractionError(InternalError error)
+        {
+            ExtractionError(new Message(error.Message, error.EntityText, CreateLocation(error.Location), error.StackTrace, Severity.Error));
+        }
+
+        private void ReportError(InternalError error)
+        {
+            if (!Extractor.Standalone)
+                throw error;
+
+            ExtractionError(error);
+        }
+
         /// <summary>
         /// Signal an error in the program model.
         /// </summary>
@@ -383,8 +413,7 @@ namespace Semmle.Extraction
         /// <param name="msg">The error message.</param>
         public void ModelError(SyntaxNode node, string msg)
         {
-            if (!Extractor.Standalone)
-                throw new InternalError(node, msg);
+            ReportError(new InternalError(node, msg));
         }
 
         /// <summary>
@@ -394,8 +423,7 @@ namespace Semmle.Extraction
         /// <param name="msg">The error message.</param>
         public void ModelError(ISymbol symbol, string msg)
         {
-            if (!Extractor.Standalone)
-                throw new InternalError(symbol, msg);
+            ReportError(new InternalError(symbol, msg));
         }
 
         /// <summary>
@@ -404,8 +432,7 @@ namespace Semmle.Extraction
         /// <param name="msg">The error message.</param>
         public void ModelError(string msg)
         {
-            if (!Extractor.Standalone)
-                throw new InternalError(msg);
+            ReportError(new InternalError(msg));
         }
 
         /// <summary>

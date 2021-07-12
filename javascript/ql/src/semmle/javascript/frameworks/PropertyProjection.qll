@@ -75,10 +75,6 @@ private DataFlow::SourceNode getASimplePropertyProjectionCallee(
 ) {
   singleton = false and
   (
-    result = LodashUnderscore::member("pick") and
-    objectIndex = 0 and
-    selectorIndex = [1 .. max(result.getACall().getNumArgument())]
-    or
     result = LodashUnderscore::member("pickBy") and
     objectIndex = 0 and
     selectorIndex = 1
@@ -129,6 +125,19 @@ private class SimplePropertyProjection extends PropertyProjection::Range {
   override DataFlow::Node getASelector() { result = getArgument(selectorIndex) }
 
   override predicate isSingletonProjection() { singleton = true }
+}
+
+/**
+ * A property projection with a variable number of selector indices.
+ */
+private class VarArgsPropertyProjection extends PropertyProjection::Range {
+  VarArgsPropertyProjection() { this = LodashUnderscore::member("pick").getACall() }
+
+  override DataFlow::Node getObject() { result = getArgument(0) }
+
+  override DataFlow::Node getASelector() { result = getArgument(any(int i | i > 0)) }
+
+  override predicate isSingletonProjection() { none() }
 }
 
 /**

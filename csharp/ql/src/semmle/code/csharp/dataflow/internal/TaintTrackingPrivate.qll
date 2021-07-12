@@ -1,6 +1,5 @@
 private import csharp
 private import TaintTrackingPublic
-private import DataFlowImplCommon
 private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.csharp.Caching
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
@@ -18,6 +17,13 @@ private import semmle.code.csharp.frameworks.WCF
  * but not in local taint.
  */
 predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
+
+/**
+ * Holds if default `TaintTracking::Configuration`s should allow implicit reads
+ * of `c` at sinks and inputs to additional taint steps.
+ */
+bindingset[node]
+predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::Content c) { none() }
 
 deprecated predicate localAdditionalTaintStep = defaultAdditionalTaintStep/2;
 
@@ -79,7 +85,6 @@ private class LocalTaintExprStepConfiguration extends ControlFlowReachabilityCon
 }
 
 private predicate localTaintStepCommon(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-  Stages::DataFlowStage::forceCachingInSameStage() and
   hasNodePath(any(LocalTaintExprStepConfiguration x), nodeFrom, nodeTo)
   or
   localTaintStepCil(nodeFrom, nodeTo)
@@ -87,6 +92,11 @@ private predicate localTaintStepCommon(DataFlow::Node nodeFrom, DataFlow::Node n
 
 cached
 private module Cached {
+  private import DataFlowImplCommon as DataFlowImplCommon
+
+  cached
+  predicate forceCachingInSameStage() { DataFlowImplCommon::forceCachingInSameStage() }
+
   /**
    * Holds if taint propagates from `nodeFrom` to `nodeTo` in exactly one local
    * (intra-procedural) step.
@@ -103,19 +113,19 @@ private module Cached {
     (
       // Simple flow through library code is included in the exposed local
       // step relation, even though flow is technically inter-procedural
-      FlowSummaryImpl::Private::throughStep(nodeFrom, nodeTo, false)
+      FlowSummaryImpl::Private::Steps::summaryThroughStep(nodeFrom, nodeTo, false)
       or
       // Taint collection by adding a tainted element
       exists(DataFlow::ElementContent c |
         storeStep(nodeFrom, c, nodeTo)
         or
-        FlowSummaryImpl::Private::setterStep(nodeFrom, c, nodeTo)
+        FlowSummaryImpl::Private::Steps::summarySetterStep(nodeFrom, c, nodeTo)
       )
       or
       exists(DataFlow::Content c |
         readStep(nodeFrom, c, nodeTo)
         or
-        FlowSummaryImpl::Private::getterStep(nodeFrom, c, nodeTo)
+        FlowSummaryImpl::Private::Steps::summaryGetterStep(nodeFrom, c, nodeTo)
       |
         // Taint members
         c = any(TaintedMember m).(FieldOrProperty).getContent()
@@ -142,7 +152,7 @@ private module Cached {
     // tracking configurations where the source is a collection
     readStep(nodeFrom, TElementContent(), nodeTo)
     or
-    FlowSummaryImpl::Private::localStep(nodeFrom, nodeTo, false)
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, false)
     or
     nodeTo = nodeFrom.(DataFlow::NonLocalJumpNode).getAJumpSuccessor(false)
   }

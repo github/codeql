@@ -34,26 +34,10 @@ private class DefaultXssSink extends XssSink {
   DefaultXssSink() {
     sinkNode(this, "xss")
     or
-    exists(HttpServletResponseSendErrorMethod m, MethodAccess ma |
-      ma.getMethod() = m and
-      this.asExpr() = ma.getArgument(1)
-    )
-    or
     exists(ServletWriterSourceToWritingMethodFlowConfig writer, MethodAccess ma |
       ma.getMethod() instanceof WritingMethod and
       writer.hasFlowToExpr(ma.getQualifier()) and
       this.asExpr() = ma.getArgument(_)
-    )
-    or
-    exists(Method m |
-      m.getDeclaringType() instanceof TypeWebView and
-      (
-        m.getAReference().getArgument(0) = this.asExpr() and m.getName() = "loadData"
-        or
-        m.getAReference().getArgument(0) = this.asExpr() and m.getName() = "loadUrl"
-        or
-        m.getAReference().getArgument(1) = this.asExpr() and m.getName() = "loadDataWithBaseURL"
-      )
     )
     or
     exists(SpringRequestMappingMethod requestMappingMethod, ReturnStmt rs |

@@ -31,9 +31,9 @@ following snippet demonstrates.
 
 ➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1876172022264324639/>`__.
 
-This query only selects the API graph node corresponding to the ``re`` module. To find
-where this module is referenced, you can use the ``getAUse`` method. The following query selects
-all references to the ``re`` module in the current database.
+This query selects the API graph node corresponding to the ``re`` module. This node represents the fact that the ``re`` module has been imported rather than a specific location in the program where the import happens. Therefore, there will be at most one result per project, and it will not have a useful location, so you'll have to click `Show 1 non-source result` in order to see it.
+
+To find where the ``re`` module is referenced in the program, you can use the ``getAUse`` method. The following query selects all references to the ``re`` module in the current database.
 
 .. code-block:: ql
 
@@ -102,7 +102,7 @@ where the return value of ``re.compile`` is used:
 Note that this includes all uses of the result of ``re.compile``, including those reachable via
 local flow. To get just the *calls* to ``re.compile``, you can use ``getAnImmediateUse`` instead of
 ``getAUse``. As this is a common occurrence, you can use ``getACall`` instead of
-``getReturn`` followed by ``getAnImmediateUse``. 
+``getReturn`` followed by ``getAnImmediateUse``.
 
 ➤ `See this in the query console on LGTM.com <https://lgtm.com/query/8143347716552092926/>`__.
 
@@ -131,7 +131,7 @@ all subclasses of ``View``, you must explicitly include the subclasses of ``Meth
       result =
         API::moduleImport("flask").getMember("views").getMember(["View", "MethodView"]).getASubclass*()
     }
-    
+
     select viewClass().getAUse()
 
 ➤ `See this in the query console on LGTM.com <https://lgtm.com/query/288293322319747121/>`__.

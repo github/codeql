@@ -17,7 +17,7 @@ namespace Semmle.Extraction.Entities
             trapFile.locations_default(this, generatedFile, 0, 0, 0, 0);
         }
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             trapFile.Write("loc,");
             trapFile.WriteSubId(generatedFile);

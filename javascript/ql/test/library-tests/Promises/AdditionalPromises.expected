@@ -79,3 +79,9 @@
 | promises.js:71:5:71:27 | Promise ... source) |
 | promises.js:72:5:72:41 | new Pro ... ource)) |
 | promises.js:79:19:79:41 | Promise ... source) |
+| promises.js:88:17:90:4 | Q.Promi ... );\\n  }) |
+| promises.js:112:17:112:62 | new RSV ... ct) {}) |
+| promises.js:124:19:124:30 | when(source) |
+| promises.js:130:14:130:69 | new Pro ... s'); }) |
+| promises.js:135:3:137:4 | new Pro ... );\\n  }) |
+| promises.js:148:10:148:49 | new Pro ... ect){}) |

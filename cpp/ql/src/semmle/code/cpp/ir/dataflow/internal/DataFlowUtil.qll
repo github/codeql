@@ -12,10 +12,20 @@ private import semmle.code.cpp.controlflow.IRGuards
 private import semmle.code.cpp.models.interfaces.DataFlow
 
 cached
-private newtype TIRDataFlowNode =
-  TInstructionNode(Instruction i) or
-  TOperandNode(Operand op) or
-  TVariableNode(Variable var)
+private module Cached {
+  cached
+  newtype TIRDataFlowNode =
+    TInstructionNode(Instruction i) or
+    TOperandNode(Operand op) or
+    TVariableNode(Variable var)
+
+  cached
+  predicate localFlowStepCached(Node nodeFrom, Node nodeTo) {
+    simpleLocalFlowStep(nodeFrom, nodeTo)
+  }
+}
+
+private import Cached
 
 /**
  * A node in a data flow graph.
@@ -362,15 +372,22 @@ private class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
 
 /**
  * Not every store instruction generates a chi instruction that we can attach a PostUpdateNode to.
- * For instance, an update to a field of a struct containing only one field. For these cases we
- * attach the PostUpdateNode to the store instruction. There's no obvious pre update node for this case
- * (as the entire memory is updated), so `getPreUpdateNode` is implemented as `none()`.
+ * For instance, an update to a field of a struct containing only one field. Even if the store does
+ * have a chi instruction, a subsequent use of the result of the store may be linked directly to the
+ * result of the store as an inexact definition if the store totally overlaps the use. For these
+ * cases we attach the PostUpdateNode to the store instruction. There's no obvious pre update node
+ * for this case (as the entire memory is updated), so `getPreUpdateNode` is implemented as
+ * `none()`.
  */
 private class ExplicitSingleFieldStoreQualifierNode extends PartialDefinitionNode {
   override StoreInstruction instr;
 
   ExplicitSingleFieldStoreQualifierNode() {
-    not exists(ChiInstruction chi | chi.getPartial() = instr) and
+    (
+      instr.getAUse().isDefinitionInexact()
+      or
+      not exists(ChiInstruction chi | chi.getPartial() = instr)
+    ) and
     // Without this condition any store would create a `PostUpdateNode`.
     instr.getDestinationAddress() instanceof FieldAddressInstruction
   }
@@ -583,7 +600,7 @@ Node uninitializedNode(LocalVariable v) { none() }
  * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
  * (intra-procedural) step.
  */
-predicate localFlowStep(Node nodeFrom, Node nodeTo) { simpleLocalFlowStep(nodeFrom, nodeTo) }
+predicate localFlowStep = localFlowStepCached/2;
 
 /**
  * INTERNAL: do not use.
@@ -591,7 +608,6 @@ predicate localFlowStep(Node nodeFrom, Node nodeTo) { simpleLocalFlowStep(nodeFr
  * This is the local flow predicate that's used as a building block in global
  * data flow. It may have less flow than the `localFlowStep` predicate.
  */
-cached
 predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   // Operand -> Instruction flow
   simpleInstructionLocalFlowStep(nodeFrom.asOperand(), nodeTo.asInstruction())
@@ -649,7 +665,7 @@ private predicate simpleOperandLocalFlowStep(Instruction iFrom, Operand opTo) {
   exists(LoadInstruction load |
     load.getSourceValueOperand() = opTo and
     opTo.getAnyDef() = iFrom and
-    isSingleFieldClass(iFrom.getResultType(), opTo)
+    isSingleFieldClass(pragma[only_bind_out](pragma[only_bind_out](iFrom).getResultType()), opTo)
   )
 }
 
@@ -732,14 +748,8 @@ private predicate modelFlow(Operand opFrom, Instruction iTo) {
       )
       or
       exists(int index, ReadSideEffectInstruction read |
-        modelIn.isParameterDeref(index) and
+        modelIn.isParameterDerefOrQualifierObject(index) and
         read = getSideEffectFor(call, index) and
-        opFrom = read.getSideEffectOperand()
-      )
-      or
-      exists(ReadSideEffectInstruction read |
-        modelIn.isQualifierObject() and
-        read = getSideEffectFor(call, -1) and
         opFrom = read.getSideEffectOperand()
       )
     )
@@ -777,6 +787,66 @@ predicate localInstructionFlow(Instruction e1, Instruction e2) {
  * local (intra-procedural) steps.
  */
 predicate localExprFlow(Expr e1, Expr e2) { localFlow(exprNode(e1), exprNode(e2)) }
+
+/**
+ * Gets a field corresponding to the bit range `[startBit..endBit)` of class `c`, if any.
+ */
+private Field getAField(Class c, int startBit, int endBit) {
+  result.getDeclaringType() = c and
+  startBit = 8 * result.getByteOffset() and
+  endBit = 8 * result.getType().getSize() + startBit
+  or
+  exists(Field f, Class cInner |
+    f = c.getAField() and
+    cInner = f.getUnderlyingType() and
+    result = getAField(cInner, startBit - 8 * f.getByteOffset(), endBit - 8 * f.getByteOffset())
+  )
+}
+
+private newtype TContent =
+  TFieldContent(Class c, int startBit, int endBit) { exists(getAField(c, startBit, endBit)) } or
+  TCollectionContent() or
+  TArrayContent()
+
+/**
+ * A description of the way data may be stored inside an object. Examples
+ * include instance fields, the contents of a collection object, or the contents
+ * of an array.
+ */
+class Content extends TContent {
+  /** Gets a textual representation of this element. */
+  abstract string toString();
+
+  predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
+    path = "" and sl = 0 and sc = 0 and el = 0 and ec = 0
+  }
+}
+
+/** A reference through an instance field. */
+class FieldContent extends Content, TFieldContent {
+  Class c;
+  int startBit;
+  int endBit;
+
+  FieldContent() { this = TFieldContent(c, startBit, endBit) }
+
+  // Ensure that there's just 1 result for `toString`.
+  override string toString() { result = min(Field f | f = getAField() | f.toString()) }
+
+  predicate hasOffset(Class cl, int start, int end) { cl = c and start = startBit and end = endBit }
+
+  Field getAField() { result = getAField(c, startBit, endBit) }
+}
+
+/** A reference through an array. */
+class ArrayContent extends Content, TArrayContent {
+  override string toString() { result = "[]" }
+}
+
+/** A reference through the contents of some collection-like container. */
+private class CollectionContent extends Content, TCollectionContent {
+  override string toString() { result = "<element>" }
+}
 
 /**
  * A guard that validates some instruction.

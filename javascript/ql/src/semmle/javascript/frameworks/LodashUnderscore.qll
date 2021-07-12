@@ -21,11 +21,9 @@ module LodashUnderscore {
     string name;
 
     DefaultMember() {
-      this = DataFlow::moduleMember("underscore", name)
+      this = DataFlow::moduleMember(["underscore", "lodash", "lodash-es"], name)
       or
-      this = DataFlow::moduleMember("lodash", name)
-      or
-      this = DataFlow::moduleImport("lodash/" + name)
+      this = DataFlow::moduleImport(["lodash/", "lodash-es/"] + name)
       or
       this = DataFlow::moduleImport("lodash." + name.toLowerCase()) and isLodashMember(name)
       or
@@ -360,9 +358,9 @@ module LodashUnderscore {
   /**
    * A data flow step propagating an exception thrown from a callback to a Lodash/Underscore function.
    */
-  private class ExceptionStep extends DataFlow::CallNode, DataFlow::AdditionalFlowStep {
-    ExceptionStep() {
-      exists(string name | this = member(name).getACall() |
+  private class ExceptionStep extends DataFlow::SharedFlowStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(DataFlow::CallNode call, string name |
         // Members ending with By, With, or While indicate that they are a variant of
         // another function that takes a callback.
         name.matches("%By") or
@@ -386,12 +384,11 @@ module LodashUnderscore {
         name = "replace" or
         name = "some" or
         name = "transform"
+      |
+        call = member(name).getACall() and
+        pred = call.getAnArgument().(DataFlow::FunctionNode).getExceptionalReturn() and
+        succ = call.getExceptionalReturn()
       )
-    }
-
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = getAnArgument().(DataFlow::FunctionNode).getExceptionalReturn() and
-      succ = this.getExceptionalReturn()
     }
   }
 

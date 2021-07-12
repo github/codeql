@@ -53,7 +53,12 @@ module UnsafeShellCommandConstruction {
   class ExternalInputSource extends Source, DataFlow::ParameterNode {
     ExternalInputSource() {
       this = Exports::getALibraryInputParameter() and
-      not this.getName() = ["cmd", "command"] // looks to be on purpose.
+      not (
+        // looks to be on purpose.
+        this.getName() = ["cmd", "command"]
+        or
+        this.getName().regexpMatch(".*(Cmd|Command)$") // ends with "Cmd" or "Command"
+      )
     }
   }
 
@@ -69,6 +74,12 @@ module UnsafeShellCommandConstruction {
     or
     exists(DataFlow::TypeBackTracker t2 |
       t2 = t.smallstep(result, isExecutedAsShellCommand(t2, sys))
+    )
+    or
+    exists(DataFlow::TypeBackTracker t2, StringOps::ConcatenationRoot prev |
+      t = t2.continue() and
+      isExecutedAsShellCommand(t2, sys) = prev and
+      result = prev.getALeaf()
     )
   }
 
@@ -137,6 +148,74 @@ module UnsafeShellCommandConstruction {
     }
 
     override string getSinkType() { result = "Formatted string" }
+
+    override SystemCommandExecution getCommandExecution() { result = sys }
+
+    override DataFlow::Node getAlertLocation() { result = this }
+  }
+
+  /**
+   * Gets a node that ends up in an array that is ultimately executed as a shell script by `sys`.
+   */
+  private DataFlow::SourceNode endsInShellExecutedArray(
+    DataFlow::TypeBackTracker t, SystemCommandExecution sys
+  ) {
+    t.start() and
+    result = sys.getArgumentList().getALocalSource() and
+    // the array gets joined to a string when `shell` is set to true.
+    sys.getOptionsArg()
+        .getALocalSource()
+        .getAPropertyWrite("shell")
+        .getRhs()
+        .asExpr()
+        .(BooleanLiteral)
+        .getValue() = "true"
+    or
+    exists(DataFlow::TypeBackTracker t2 |
+      result = endsInShellExecutedArray(t2, sys).backtrack(t2, t)
+    )
+  }
+
+  /**
+   * An argument to a command invocation where the `shell` option is set to true.
+   */
+  class ShellTrueCommandExecutionSink extends Sink {
+    SystemCommandExecution sys;
+
+    ShellTrueCommandExecutionSink() {
+      // `shell` is set to true. That means string-concatenation happens behind the scenes.
+      // We just assume that a `shell` option in any library means the same thing as it does in NodeJS.
+      exists(DataFlow::SourceNode arr |
+        arr = endsInShellExecutedArray(DataFlow::TypeBackTracker::end(), sys)
+      |
+        this = arr.(DataFlow::ArrayCreationNode).getAnElement()
+        or
+        this = arr.getAMethodCall(["push", "unshift"]).getAnArgument()
+      )
+    }
+
+    override string getSinkType() { result = "Shell argument" }
+
+    override SystemCommandExecution getCommandExecution() { result = sys }
+
+    override DataFlow::Node getAlertLocation() { result = this }
+  }
+
+  /**
+   * A joined path (`path.{resolve/join}(..)`) that is later executed as a shell command.
+   * Joining a path is similar to string concatenation that automatically inserts slashes.
+   */
+  class JoinedPathEndingInCommandExecutionSink extends Sink {
+    DataFlow::MethodCallNode joinCall;
+    SystemCommandExecution sys;
+
+    JoinedPathEndingInCommandExecutionSink() {
+      this = joinCall.getAnArgument() and
+      joinCall = DataFlow::moduleMember("path", ["resolve", "join"]).getACall() and
+      joinCall = isExecutedAsShellCommand(DataFlow::TypeBackTracker::end(), sys)
+    }
+
+    override string getSinkType() { result = "Path concatenation" }
 
     override SystemCommandExecution getCommandExecution() { result = sys }
 

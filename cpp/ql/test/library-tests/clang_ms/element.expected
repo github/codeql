@@ -26,6 +26,8 @@
 | clang_ms.cpp:17:1:17:32 | #pragma |
 | clang_ms.cpp:18:1:18:31 | #pragma |
 | file://:0:0:0:0 |  |
+| file://:0:0:0:0 | & |
+| file://:0:0:0:0 | && |
 | file://:0:0:0:0 | (global namespace) |
 | file://:0:0:0:0 | (unnamed parameter 0) |
 | file://:0:0:0:0 | (unnamed parameter 0) |

@@ -5,7 +5,6 @@
  * @kind treemap
  * @treemap.warnOn highValues
  * @metricType externalDependency
- * @precision medium
  * @id py/external-dependencies
  */
 

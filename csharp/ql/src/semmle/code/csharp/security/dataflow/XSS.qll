@@ -16,6 +16,7 @@ module XSS {
   import semmle.code.csharp.security.dataflow.flowsources.Remote
   private import semmle.code.csharp.dataflow.DataFlow2
   private import semmle.code.csharp.dataflow.TaintTracking2
+  private import semmle.code.csharp.dataflow.ExternalFlow
 
   /**
    * Holds if there is tainted flow from `source` to `sink` that may lead to a
@@ -117,6 +118,10 @@ module XSS {
    */
   abstract class Sink extends DataFlow::ExprNode, RemoteFlowSink {
     string explanation() { none() }
+  }
+
+  private class ExternalXssSink extends Sink {
+    ExternalXssSink() { sinkNode(this, "xss") }
   }
 
   /**
@@ -406,12 +411,9 @@ module XSS {
   /**
    * An expression passed as the `content` argument to the constructor of `StringContent`.
    */
-  private class StringContent extends Sink {
-    StringContent() {
-      this.getExpr() =
-        any(ObjectCreation oc |
-          oc.getTarget().getDeclaringType().hasQualifiedName("System.Net.Http", "StringContent")
-        ).getArgumentForName("content")
+  private class StringContentSinkModelCsv extends SinkModelCsv {
+    override predicate row(string row) {
+      row = ["System.Net.Http;StringContent;false;StringContent;;;Argument[0];xss"]
     }
   }
 }

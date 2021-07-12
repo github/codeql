@@ -26,10 +26,10 @@ class PlayMvcHttpRequestHeader extends RefType {
 }
 
 /**
- * A `play.mvc.BodyParser<>$Of` annotation.
+ * A `play.mvc.BodyParser$Of` annotation.
  */
 class PlayBodyParserAnnotation extends Annotation {
-  PlayBodyParserAnnotation() { this.getType().hasQualifiedName("play.mvc", "BodyParser<>$Of") }
+  PlayBodyParserAnnotation() { this.getType().hasQualifiedName("play.mvc", "BodyParser$Of") }
 }
 
 /**
@@ -44,14 +44,8 @@ class PlayAddCsrfTokenAnnotation extends Annotation {
 /**
  * The type `play.libs.F.Promise<Result>`.
  */
-class PlayAsyncResultPromise extends Member {
-  PlayAsyncResultPromise() {
-    exists(Class c |
-      c.hasQualifiedName("play.libs", "F") and
-      this = c.getAMember() and
-      this.getQualifiedName() = "F.Promise<Result>"
-    )
-  }
+class PlayAsyncResultPromise extends MemberType {
+  PlayAsyncResultPromise() { hasQualifiedName("play.libs", "F$Promise<Result>") }
 }
 
 /**

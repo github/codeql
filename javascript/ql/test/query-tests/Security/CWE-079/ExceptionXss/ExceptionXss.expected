@@ -2,6 +2,9 @@ nodes
 | ajv.js:11:18:11:33 | ajv.errorsText() |
 | ajv.js:11:18:11:33 | ajv.errorsText() |
 | ajv.js:11:18:11:33 | ajv.errorsText() |
+| ajv.js:24:18:24:26 | val.error |
+| ajv.js:24:18:24:26 | val.error |
+| ajv.js:24:18:24:26 | val.error |
 | exception-xss.js:2:6:2:28 | foo |
 | exception-xss.js:2:12:2:28 | document.location |
 | exception-xss.js:2:12:2:28 | document.location |
@@ -89,6 +92,7 @@ nodes
 | exception-xss.js:182:19:182:23 | error |
 edges
 | ajv.js:11:18:11:33 | ajv.errorsText() | ajv.js:11:18:11:33 | ajv.errorsText() |
+| ajv.js:24:18:24:26 | val.error | ajv.js:24:18:24:26 | val.error |
 | exception-xss.js:2:6:2:28 | foo | exception-xss.js:9:11:9:13 | foo |
 | exception-xss.js:2:6:2:28 | foo | exception-xss.js:15:9:15:11 | foo |
 | exception-xss.js:2:6:2:28 | foo | exception-xss.js:21:11:21:13 | foo |
@@ -170,6 +174,7 @@ edges
 | exception-xss.js:180:26:180:30 | error | exception-xss.js:182:19:182:23 | error |
 #select
 | ajv.js:11:18:11:33 | ajv.errorsText() | ajv.js:11:18:11:33 | ajv.errorsText() | ajv.js:11:18:11:33 | ajv.errorsText() | $@ is reinterpreted as HTML without escaping meta-characters. | ajv.js:11:18:11:33 | ajv.errorsText() | JSON schema validation error |
+| ajv.js:24:18:24:26 | val.error | ajv.js:24:18:24:26 | val.error | ajv.js:24:18:24:26 | val.error | $@ is reinterpreted as HTML without escaping meta-characters. | ajv.js:24:18:24:26 | val.error | JSON schema validation error |
 | exception-xss.js:11:18:11:18 | e | exception-xss.js:2:12:2:28 | document.location | exception-xss.js:11:18:11:18 | e | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:2:12:2:28 | document.location | Exception text |
 | exception-xss.js:17:18:17:18 | e | exception-xss.js:2:12:2:28 | document.location | exception-xss.js:17:18:17:18 | e | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:2:12:2:28 | document.location | Exception text |
 | exception-xss.js:23:18:23:18 | e | exception-xss.js:2:12:2:28 | document.location | exception-xss.js:23:18:23:18 | e | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:2:12:2:28 | document.location | Exception text |

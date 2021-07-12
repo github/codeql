@@ -3,6 +3,7 @@
 import DataFlowUtil
 import DataFlowPublic
 private import DataFlowPrivate
+private import semmle.python.types.Builtins
 
 /**
  * A data flow node that reads or writes an attribute of an object.
@@ -15,6 +16,13 @@ abstract class AttrRef extends Node {
    * Gets the data flow node corresponding to the object whose attribute is being read or written.
    */
   abstract Node getObject();
+
+  /**
+   * Holds if this data flow node accesses attribute named `attrName` on object `object`.
+   */
+  predicate accesses(Node object, string attrName) {
+    this.getObject() = object and this.getAttributeName() = attrName
+  }
 
   /**
    * Gets the expression node that defines the attribute being accessed, if any. This is
@@ -83,8 +91,6 @@ private class AttributeAssignmentAsAttrWrite extends AttrWrite, CfgNode {
 
   override string getAttributeName() { result = node.getName() }
 }
-
-import semmle.python.types.Builtins
 
 /** Represents `CallNode`s that may refer to calls to built-in functions or classes. */
 private class BuiltInCallNode extends CallNode {
@@ -192,7 +198,7 @@ private class ClassDefinitionAsAttrWrite extends AttrWrite, CfgNode {
  * - Dynamic attribute reads using `getattr`: `getattr(object, attr)`
  * - Qualified imports: `from module import attr as name`
  */
-abstract class AttrRead extends AttrRef, Node { }
+abstract class AttrRead extends AttrRef, Node, LocalSourceNode { }
 
 /** A simple attribute read, e.g. `object.attr` */
 private class AttributeReadAsAttrRead extends AttrRead, CfgNode {

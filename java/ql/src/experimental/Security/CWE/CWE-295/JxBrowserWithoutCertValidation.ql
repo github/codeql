@@ -1,7 +1,11 @@
 /**
  * @name JxBrowser with disabled certificate validation
- * @description Insecure configuration of JxBrowser disables certificate validation making the app vulnerable to man-in-the-middle attacks.
+ * @description Insecure configuration of JxBrowser disables certificate
+ *              validation making the app vulnerable to man-in-the-middle
+ *              attacks.
  * @kind problem
+ * @problem.severity warning
+ * @precision medium
  * @id java/jxbrowser/disabled-certificate-validation
  * @tags security
  *       external/cwe/cwe-295

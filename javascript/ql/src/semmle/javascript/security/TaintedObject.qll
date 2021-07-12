@@ -115,11 +115,12 @@ module TaintedObject {
    */
   private class JsonSchemaValidationGuard extends SanitizerGuard {
     JsonSchema::ValidationCall call;
+    boolean polarity;
 
-    JsonSchemaValidationGuard() { this = call }
+    JsonSchemaValidationGuard() { this = call.getAValidationResultAccess(polarity) }
 
     override predicate sanitizes(boolean outcome, Expr e, FlowLabel label) {
-      outcome = call.getPolarity() and
+      outcome = polarity and
       e = call.getInput().asExpr() and
       label = label()
     }

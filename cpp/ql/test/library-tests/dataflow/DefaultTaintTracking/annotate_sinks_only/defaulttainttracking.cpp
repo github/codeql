@@ -19,7 +19,7 @@ int main() {
 
   char untainted_buf[100] = "";
   char buf[100] = "VAR = ";
-  sink(strcat(buf, getenv("VAR"))); // $ ast,ir
+  sink(strcat(buf, getenv("VAR"))); // $ ast MISSING: ir
 
   sink(buf); // $ ast,ir
   sink(untainted_buf); // the two buffers would be conflated if we added flow through all partial chi inputs
@@ -187,10 +187,10 @@ void test_pointers1()
 	ptr4 = &ptr3;
 
 	sink(buffer); // $ ast,ir
-	sink(ptr1); // $ ast,ir
+	sink(ptr1); // $ ast MISSING: ir
 	sink(ptr2); // $ SPURIOUS: ast
 	sink(*ptr2); // $ ast MISSING: ir
-	sink(ptr3); // $ ast,ir
+	sink(ptr3); // $ ast MISSING: ir
 	sink(ptr4); // $ SPURIOUS: ast
 	sink(*ptr4); // $ ast MISSING: ir
 }
@@ -250,12 +250,12 @@ void sink(iovec);
 int test_readv_and_writev(iovec* iovs) {
   readv(0, iovs, 16);
   sink(iovs); // $ast,ir
-  sink(iovs[0]); // $ast MISSING: ir
-  sink(*iovs); // $ast MISSING: ir
+  sink(iovs[0]); // $ast,ir
+  sink(*iovs); // $ast,ir
 
   char* p = (char*)iovs[1].iov_base;
-  sink(p); // $ MISSING: ast,ir
-  sink(*p); // $ MISSING: ast,ir
+  sink(p); // $ ir MISSING: ast
+  sink(*p); // $ ir MISSING: ast
 
   writev(0, iovs, 16); // $ remote
 }

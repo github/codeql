@@ -23,7 +23,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override bool NeedsPopulation => true;
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             if (!Symbol.IsGlobalNamespace)
             {
@@ -42,8 +42,6 @@ namespace Semmle.Extraction.CSharp.Entities
 
             public override Namespace Create(Context cx, INamespaceSymbol init) => new Namespace(cx, init);
         }
-
-        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
 
         public override int GetHashCode() => QualifiedName.GetHashCode();
 

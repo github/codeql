@@ -105,7 +105,7 @@ class TestCollect {
         sink(ImmutableSortedSet.copyOf(comp, s)); // $numTaintFlow=1
 
         sorS.add(taint());
-        sink(ImmutableSortedSet.copyOfSorted(sorS)); // $numTaintFlow=1
+        sink(ImmutableSortedSet.copyOfSorted(sorS)); // $ MISSING: numTaintFlow=1
 
         sink(ImmutableList.sortedCopyOf(s)); // $numTaintFlow=1
         sink(ImmutableList.sortedCopyOf(comp, s)); // $numTaintFlow=1
@@ -117,6 +117,6 @@ class TestCollect {
         sink(ImmutableSortedMap.copyOf(m, comp)); // $numTaintFlow=1
 
         sorM.put("k", taint());
-        sink(ImmutableSortedMap.copyOfSorted(sorM)); // $numTaintFlow=1
+        sink(ImmutableSortedMap.copyOfSorted(sorM)); // $ MISSING: numTaintFlow=1
     }
 }

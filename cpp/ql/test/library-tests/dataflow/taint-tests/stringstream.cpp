@@ -32,18 +32,18 @@ void test_stringstream_string(int amount)
 	sink(ss2 << source()); // $ ast,ir
 	sink(ss3 << "123" << source()); // $ ast,ir
 	sink(ss4 << source() << "456"); // $ ast,ir
-	sink(ss5 << t); // $ ast MISSING: ir
+	sink(ss5 << t); // $ ast,ir
 
 	sink(ss1);
 	sink(ss2); // $ ast,ir
 	sink(ss3); // $ ast MISSING: ir
 	sink(ss4); // $ ast,ir
-	sink(ss5); // $ ast MISSING: ir
+	sink(ss5); // $ ast,ir
 	sink(ss1.str());
 	sink(ss2.str()); // $ ast,ir
 	sink(ss3.str()); // $ ast MISSING: ir
 	sink(ss4.str()); // $ ast,ir
-	sink(ss5.str()); // $ ast MISSING: ir
+	sink(ss5.str()); // $ ast,ir
 
 	ss6.str("abc");
 	ss6.str(source()); // (overwrites)
@@ -229,7 +229,7 @@ void test_getline()
 
 	sink(ss2.getline(b7, 1000).getline(b8, 1000)); // $ ast,ir
 	sink(b7); // $ ast,ir
-	sink(b8); // $ ast MISSING: ir
+	sink(b8); // $ ast,ir
 
 	sink(getline(ss1, s1));
 	sink(getline(ss2, s2)); // $ ast,ir
@@ -261,7 +261,7 @@ void test_chaining()
 
 	sink(ss1.get(b1, 100).unget().get(b2, 100)); // $ ast,ir
 	sink(b1); // $ ast,ir
-	sink(b2); // $ ast MISSING: ir
+	sink(b2); // $ ast,ir
 
 	sink(ss2.write("abc", 3).flush().write(source(), 3).flush().write("xyz", 3)); // $ ast MISSING: ir
 	sink(ss2); // $ ast MISSING: ir

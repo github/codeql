@@ -19,7 +19,7 @@ class MethodImplementation extends EntryPoint, @cil_method_implementation {
   override MethodImplementation getImplementation() { result = this }
 
   /** Gets the location of this implementation. */
-  Assembly getLocation() { cil_method_implementation(this, _, result) }
+  override Assembly getLocation() { cil_method_implementation(this, _, result) }
 
   /** Gets the instruction at index `index`. */
   Instruction getInstruction(int index) { cil_instruction(result, _, index, this) }

@@ -1,6 +1,8 @@
 import semmle.code.csharp.dataflow.FlowSummary
-import semmle.code.csharp.dataflow.FlowSummary::TestOutput
+import semmle.code.csharp.dataflow.internal.FlowSummaryImpl::Private::TestOutput
 
-private class IncludeEFSummarizedCallable extends RelevantSummarizedCallable {
-  IncludeEFSummarizedCallable() { this instanceof SummarizedCallable }
+private class IncludeSummarizedCallable extends RelevantSummarizedCallable {
+  IncludeSummarizedCallable() { this instanceof SummarizedCallable }
+
+  override string getFullString() { result = this.(Callable).getQualifiedNameWithTypes() }
 }

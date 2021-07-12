@@ -4,7 +4,7 @@
 
 /**
  * @fileoverview Definitions for ECMAScript 2016.
- * @see http://www.ecma-international.org/ecma-262/7.0/
+ * @see https://262.ecma-international.org/7.0/
  * @externs
  */
 

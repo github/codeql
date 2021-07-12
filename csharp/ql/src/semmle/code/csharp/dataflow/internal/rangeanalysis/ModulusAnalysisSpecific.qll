@@ -49,7 +49,7 @@ module Private {
   }
 
   int getId(PhiInputEdgeBlock bb) {
-    exists(CfgImpl::ControlFlowTree::Range t | CfgImpl::ControlFlowTree::idOf(t, result) |
+    exists(CfgImpl::ControlFlowTree::Range_ t | CfgImpl::ControlFlowTree::idOf(t, result) |
       t = bb.getFirstNode().getElement()
       or
       t = bb.(CS::ControlFlow::BasicBlocks::EntryBlock).getCallable()

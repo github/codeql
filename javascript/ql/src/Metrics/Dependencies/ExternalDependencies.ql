@@ -6,7 +6,6 @@
  * @kind treemap
  * @treemap.warnOn highValues
  * @metricType externalDependency
- * @precision medium
  * @id js/external-dependencies
  */
 

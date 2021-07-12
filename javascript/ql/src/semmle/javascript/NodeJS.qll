@@ -202,6 +202,42 @@ private class RequireVariable extends Variable {
  */
 private predicate moduleInFile(Module m, File f) { m.getFile() = f }
 
+private predicate isModuleModule(DataFlow::Node nd) {
+  exists(ImportDeclaration imp |
+    imp.getImportedPath().getValue() = "module" and
+    nd =
+      [
+        DataFlow::destructuredModuleImportNode(imp),
+        DataFlow::valueNode(imp.getASpecifier().(ImportNamespaceSpecifier))
+      ]
+  )
+  or
+  isModuleModule(nd.getAPredecessor())
+}
+
+private predicate isCreateRequire(DataFlow::Node nd) {
+  exists(PropAccess prop |
+    isModuleModule(prop.getBase().flow()) and
+    prop.getPropertyName() = "createRequire" and
+    nd = prop.flow()
+  )
+  or
+  exists(PropertyPattern prop |
+    isModuleModule(prop.getObjectPattern().flow()) and
+    prop.getName() = "createRequire" and
+    nd = prop.getValuePattern().flow()
+  )
+  or
+  exists(ImportDeclaration decl, NamedImportSpecifier spec |
+    decl.getImportedPath().getValue() = "module" and
+    spec = decl.getASpecifier() and
+    spec.getImportedName() = "createRequire" and
+    nd = spec.flow()
+  )
+  or
+  isCreateRequire(nd.getAPredecessor())
+}
+
 /**
  * Holds if `nd` may refer to `require`, either directly or modulo local data flow.
  */
@@ -215,16 +251,11 @@ private predicate isRequire(DataFlow::Node nd) {
   or
   // `import { createRequire } from 'module';`.
   // specialized to ES2015 modules to avoid recursion in the `DataFlow::moduleImport()` predicate and to avoid
-  // negative recursion between `Import.getImportedModuleNode()` and `Import.getImportedModule()`.
-  exists(ImportDeclaration imp, DataFlow::SourceNode baseObj |
-    imp.getImportedPath().getValue() = "module"
-  |
-    baseObj =
-      [
-        DataFlow::destructuredModuleImportNode(imp),
-        DataFlow::valueNode(imp.getASpecifier().(ImportNamespaceSpecifier))
-      ] and
-    nd = baseObj.getAPropertyRead("createRequire").getACall()
+  // negative recursion between `Import.getImportedModuleNode()` and `Import.getImportedModule()`, and
+  // to avoid depending on `SourceNode` as this would make `SourceNode::Range` recursive.
+  exists(CallExpr call |
+    isCreateRequire(call.getCallee().flow()) and
+    nd = call.flow()
   )
 }
 

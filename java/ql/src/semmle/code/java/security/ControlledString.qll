@@ -8,7 +8,8 @@ import semmle.code.java.Expr
 import semmle.code.java.security.Validation
 
 /**
- * Holds if `method` is a `toString()` method on a boxed type. These never return special characters.
+ * Holds if `method` is a `toString()` method on a boxed type, with or without parameters.
+ * These never return special characters.
  */
 private predicate boxedToString(Method method) {
   method.getDeclaringType() instanceof BoxedType and
@@ -44,11 +45,9 @@ private predicate controlledStringProp(Expr src, Expr dest) {
   exists(AddExpr concatOp | concatOp = dest | src = concatOp.getAnOperand())
   or
   // `toString()` on a safe string is safe.
-  exists(MethodAccess toStringCall, Method toString |
+  exists(MethodAccess toStringCall |
     src = toStringCall.getQualifier() and
-    toString = toStringCall.getMethod() and
-    toString.hasName("toString") and
-    toString.getNumberOfParameters() = 0 and
+    toStringCall.getMethod() instanceof ToStringMethod and
     dest = toStringCall
   )
 }

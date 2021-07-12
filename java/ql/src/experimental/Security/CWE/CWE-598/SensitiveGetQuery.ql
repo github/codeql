@@ -2,6 +2,8 @@
  * @name Sensitive GET Query
  * @description Use of GET request method with sensitive query strings.
  * @kind path-problem
+ * @problem.severity warning
+ * @precision medium
  * @id java/sensitive-query-with-get
  * @tags security
  *       external/cwe-598

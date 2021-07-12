@@ -6,7 +6,7 @@ import javascript
 
 /**
  * A call to a function that constructs a function composition `f(g(h(...)))` from a
- * series functions `f, g, h, ...`.
+ * series of functions `f, g, h, ...`.
  */
 class FunctionCompositionCall extends DataFlow::CallNode {
   FunctionCompositionCall::Range range;
@@ -35,7 +35,7 @@ class FunctionCompositionCall extends DataFlow::CallNode {
   }
 
   /** Gets any of the functions being composed. */
-  final DataFlow::Node getAnOperandFunction() { result = getOperandFunction(_) }
+  final DataFlow::FunctionNode getAnOperandFunction() { result = getOperandFunction(_) }
 
   /** Gets the number of functions being composed. */
   int getNumOperand() { result = range.getNumOperand() }
@@ -88,7 +88,9 @@ module FunctionCompositionCall {
     RightToLeft() {
       this = DataFlow::moduleImport(["compose-function"]).getACall()
       or
-      this = DataFlow::moduleMember(["redux", "ramda"], "compose").getACall()
+      this =
+        DataFlow::moduleMember(["redux", "ramda", "@reduxjs/toolkit", "recompose"], "compose")
+            .getACall()
       or
       this = LodashUnderscore::member("flowRight").getACall()
     }
@@ -96,7 +98,7 @@ module FunctionCompositionCall {
     override DataFlow::Node getOperandNode(int i) { result = getEffectiveArgument(i) }
   }
 
-  /** A call whose arguments are functions `f,g,h` which are composed into `f(g(h(...))` */
+  /** A call whose arguments are functions `f,g,h` which are composed into `h(g(f(...))` */
   private class LeftToRight extends WithArrayOverloading {
     LeftToRight() {
       this = DataFlow::moduleImport("just-compose").getACall()

@@ -22,6 +22,11 @@ follow the steps below. For macOS version 10.15 ("Catalina"), steps 1 and 4 are
 slightly different---for further details, see the sections labeled **Information
 for macOS "Catalina" users**.
 
+For information about installing the CodeQL CLI in a CI system to create results
+to display in GitHub as code scanning alerts, see 
+`Installing CodeQL CLI in your CI system <https://docs.github.com/en/code-security/secure-coding/using-codeql-code-scanning-with-your-existing-ci-system/installing-codeql-cli-in-your-ci-system>`__ 
+in the GitHub documentation.
+
 1. Download the CodeQL CLI zip package
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -121,24 +126,24 @@ see ":doc:`About QL packs <about-ql-packs>`."
 
    There are different versions of the CodeQL queries available for different
    users. Check out the correct version for your use case:
+
+   - For the queries used on `LGTM.com <https://lgtm.com>`__, check out the
+     ``lgtm.com`` branch. You should use this branch for databases you've built
+     using the CodeQL CLI, fetched from code scanning on GitHub, or recently downloaded from LGTM.com.
+     The queries on the ``lgtm.com`` branch are more likely to be compatible 
+     with the ``latest`` CLI, so you'll be less likely to have to upgrade 
+     newly-created databases than if you use the ``main`` branch. Older databases 
+     may need to be upgraded before you can analyze them.
    
    - For the most up to date CodeQL queries, check out the ``main`` branch. 
      This branch represents the very latest version of CodeQL's analysis. Even
      databases created using the most recent version of the CLI may have to be
      upgraded before you can analyze them. For more information, see
      ":doc:`Upgrading CodeQL databases <upgrading-codeql-databases>`."
-    
-   - For the queries used on `LGTM.com <https://lgtm.com>`__, check out the
-     ``lgtm.com`` branch. You can run these queries on databases you've recently
-     downloaded from LGTM.com. Older databases may need to be upgraded before
-     you can analyze them. The queries on the ``lgtm.com`` branch are also more
-     likely to be compatible with the ``latest`` CLI, so you'll be less likely
-     to have to upgrade newly-created databases than if you use the ``main``
-     branch.
-           
+        
    - For the queries used in a particular LGTM Enterprise release, check out the
      branch tagged with the relevant release number. For example, the branch
-     tagged ``v1.23.0`` corresponds to LGTM Enterprise 1.23. You must use this
+     tagged ``v1.27.0`` corresponds to LGTM Enterprise 1.27. You must use this
      version if you want to upload data to LGTM Enterprise. For further
      information, see `Preparing CodeQL databases to upload to LGTM 
      <https://help.semmle.com/lgtm-enterprise/admin/help/prepare-database-upload.html>`__

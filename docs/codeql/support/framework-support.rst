@@ -10,6 +10,4 @@ The libraries and queries in version |version| have been explicitly checked agai
     If you're interested in other libraries or frameworks, you can extend the analysis to cover them. 
     For example, by extending the data flow libraries to include data sources and sinks for additional libraries or frameworks.
 
-.. There is currently no built-in support for libraries or frameworks for C/C++.
-
 .. include:: reusables/frameworks.rst

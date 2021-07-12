@@ -192,7 +192,7 @@ void *memcpy(void *dest, void *src, int len);
 void test_memcpy(int *source) {
 	int x;
 	memcpy(&x, source, sizeof(int));
-	sink(x); // $ ast=192:23 MISSING: ir SPURIOUS: ast=193:6
+	sink(x); // $ ast=192:23 ir SPURIOUS: ast=193:6
 }
 
 // --- std::swap ---
@@ -369,9 +369,9 @@ void test_strdup(char *source)
 	a = strdup(source);
 	b = strdup("hello, world");
 	c = strndup(source, 100);
-	sink(a); // $ ast MISSING: ir
+	sink(a); // $ ast,ir
 	sink(b);
-	sink(c); // $ ast MISSING: ir
+	sink(c); // $ ast,ir
 }
 
 void test_strndup(int source)
@@ -388,7 +388,7 @@ void test_wcsdup(wchar_t *source)
 
 	a = wcsdup(source);
 	b = wcsdup(L"hello, world");
-	sink(a); // $ ast MISSING: ir
+	sink(a); // $ ast,ir
 	sink(b);
 }
 
@@ -518,7 +518,7 @@ void *mempcpy(void *dest, const void *src, size_t n);
 void test_mempcpy(int *source) {
 	int x;
 	mempcpy(&x, source, sizeof(int));
-	sink(x); // $ ast=518:24 MISSING: ir SPURIOUS: ast=519:6
+	sink(x); // $ ast=518:24 ir SPURIOUS: ast=519:6
 }
 
 // --- memccpy ---
@@ -528,7 +528,7 @@ void *memccpy(void *dest, const void *src, int c, size_t n);
 void test_memccpy(int *source) {
 	int dest[16];
 	memccpy(dest, source, 42, sizeof(dest));
-	sink(dest); // $ ast=528:24 MISSING: ir SPURIOUS: ast=529:6
+	sink(dest); // $ ast=528:24 ir SPURIOUS: ast=529:6
 }
 
 // --- strcat and related functions ---

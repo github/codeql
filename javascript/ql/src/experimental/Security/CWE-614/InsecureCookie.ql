@@ -11,7 +11,7 @@
  */
 
 import javascript
-import InsecureCookie::Cookie
+import experimental.semmle.javascript.security.InsecureCookie::Cookie
 
 from Cookie cookie
 where not cookie.isSecure()

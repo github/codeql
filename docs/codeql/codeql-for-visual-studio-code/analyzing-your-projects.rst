@@ -14,7 +14,7 @@ To analyze a project, you need to add a :ref:`CodeQL database <codeql-database>`
 
 #. Open the CodeQL Databases view in the sidebar.
 
-#. Hover over the **Databases** title bar and click the appropriate icon to add your database. You can add a database from a local ZIP archive or folder, from a public URL, or from a project URL on LGTM.com.
+#. Hover over the **Databases** title bar and click the appropriate icon to add your database. You can add a database from a local ZIP archive or folder, from a public URL, or from a project slug or URL on LGTM.com.
 
    .. image:: ../images/codeql-for-visual-studio-code/choose-database.png
       :width: 350

@@ -315,6 +315,11 @@ module DOM {
       )
     }
 
+    private InferredType getArgumentTypeFromJQueryMethodGet(JQuery::MethodCall call) {
+      call.getMethodName() = "get" and
+      result = call.getArgument(0).analyze().getAType()
+    }
+
     private class DefaultRange extends Range {
       DefaultRange() {
         this.asExpr().(VarAccess).getVariable() instanceof DOMGlobalVariable
@@ -344,7 +349,7 @@ module DOM {
         or
         exists(JQuery::MethodCall call | this = call and call.getMethodName() = "get" |
           call.getNumArgument() = 1 and
-          unique(InferredType t | t = call.getArgument(0).analyze().getAType()) = TTNumber()
+          unique(InferredType t | t = getArgumentTypeFromJQueryMethodGet(call)) = TTNumber()
         )
         or
         // A `this` node from a callback given to a `$().each(callback)` call.
@@ -463,6 +468,9 @@ module DOM {
   private DataFlow::SourceNode locationRef(DataFlow::TypeTracker t) {
     t.start() and
     result = locationSource()
+    or
+    t.startInProp("location") and
+    result = [DataFlow::globalObjectRef(), documentSource()]
     or
     exists(DataFlow::TypeTracker t2 | result = locationRef(t2).track(t2, t))
   }

@@ -16,8 +16,7 @@
  */
 
 import python
-import CodeDuplication
 
-from Module m, Module other, int percent, string message
-where duplicateScopes(m, other, percent, message)
+from Module m, Module other, string message
+where none()
 select m, message, other, other.getName()

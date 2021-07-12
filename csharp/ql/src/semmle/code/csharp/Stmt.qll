@@ -8,7 +8,7 @@ import Element
 import Location
 import Member
 import exprs.Expr
-private import semmle.code.csharp.Enclosing::Internal
+private import semmle.code.csharp.ExprOrStmtParent
 private import semmle.code.csharp.frameworks.System
 private import TypeRef
 

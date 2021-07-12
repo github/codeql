@@ -55,4 +55,20 @@ module RegExpInjection {
       )
     }
   }
+
+  /**
+   * A global regexp replacement involving the `{`, `[`, or `+` meta-character, viewed as a sanitizer for
+   * regexp-injection vulnerabilities.
+   */
+  class MetacharEscapeSanitizer extends Sanitizer, StringReplaceCall {
+    MetacharEscapeSanitizer() {
+      isGlobal() and
+      (
+        RegExp::alwaysMatchesMetaCharacter(getRegExp().getRoot(), ["{", "[", "+"])
+        or
+        // or it's like a wild-card.
+        RegExp::isWildcardLike(getRegExp().getRoot())
+      )
+    }
+  }
 }

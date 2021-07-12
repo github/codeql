@@ -403,7 +403,7 @@ private module JoinBlockPredecessors {
   private import semmle.code.csharp.controlflow.internal.ControlFlowGraphImpl
 
   int getId(JoinBlockPredecessor jbp) {
-    exists(ControlFlowTree::Range t | ControlFlowTree::idOf(t, result) |
+    exists(ControlFlowTree::Range_ t | ControlFlowTree::idOf(t, result) |
       t = jbp.getFirstNode().getElement()
       or
       t = jbp.(EntryBasicBlock).getCallable()

@@ -61,8 +61,8 @@ abstract class ClassObjectInternal extends ObjectInternal {
   pragma[noinline]
   override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) {
     instance = this and
-    PointsToInternal::attributeRequired(this, name) and
-    this.lookup(name, descriptor, _) and
+    PointsToInternal::attributeRequired(this, pragma[only_bind_into](name)) and
+    this.lookup(pragma[only_bind_into](name), descriptor, _) and
     descriptor.isDescriptor() = true
   }
 

@@ -59,11 +59,12 @@ Classes and member predicates in the ``DataFlow::`` module:
     - `getStringValue <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/dataflow/DataFlow.qll/predicate.DataFlow$DataFlow$Node$getStringValue.0.html>`__ -- value of this node if it's is a string constant
     - `mayHaveBooleanValue <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/dataflow/DataFlow.qll/predicate.DataFlow$DataFlow$Node$mayHaveBooleanValue.1.html>`__ -- check if the value is ``true`` or ``false``
 - `SourceNode <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/dataflow/Sources.qll/type.Sources$SourceNode.html>`__ extends `Node <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/dataflow/DataFlow.qll/type.DataFlow$DataFlow$Node.html>`__ -- function call, parameter, object creation, or reference to a property or global variable
+    - `getALocalUse <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/dataflow/Sources.qll/predicate.Sources$SourceNode$getALocalUse.0.html>`__ -- find nodes whose value came from this node
     - `getACall <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/dataflow/Sources.qll/predicate.Sources$SourceNode$getACall.0.html>`__ -- find calls with this as the callee
     - `getAnInstantiation <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/dataflow/Sources.qll/predicate.Sources$SourceNode$getAnInstantiation.0.html>`__ -- find ``new``-calls with this as the callee
     - `getAnInvocation <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/dataflow/Sources.qll/predicate.Sources$SourceNode$getAnInvocation.0.html>`__ -- find calls or ``new``-calls with this as the callee
     - `getAMethodCall <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/dataflow/Sources.qll/predicate.Sources$SourceNode$getAMethodCall.1.html>`__ -- find method calls with this as the receiver
-    - `getAMemberCall <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/dataflow/Sources.qll/predicate.Sources$SourceNode$getAMemberCall.1.html>`__ -- find calls with a member of this as the receiver
+    - `getAMemberCall <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/dataflow/Sources.qll/predicate.Sources$SourceNode$getAMemberCall.1.html>`__ -- find calls with a member of this as the callee
     - `getAPropertyRead <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/dataflow/Sources.qll/predicate.Sources$SourceNode$getAPropertyRead.1.html>`__ -- find property reads with this as the base
     - `getAPropertyWrite <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/dataflow/Sources.qll/predicate.Sources$SourceNode$getAPropertyWrite.1.html>`__ -- find property writes with this as the base
     - `getAPropertySource <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/dataflow/Sources.qll/predicate.Sources$SourceNode$getAPropertySource.1.html>`__ -- find nodes flowing into a property of this node
@@ -109,12 +110,14 @@ StringOps module
 - StringOps::`StartsWith <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/StringOps.qll/type.StringOps$StringOps$StartsWith.html>`__ -- check if a string starts with something
 - StringOps::`EndsWith <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/StringOps.qll/type.StringOps$StringOps$EndsWith.html>`__ -- check if a string ends with something
 - StringOps::`Includes <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/StringOps.qll/type.StringOps$StringOps$Includes.html>`__ -- check if a string contains something
+- StringOps::`RegExpTest <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/StringOps.qll/type.StringOps$StringOps$RegExpTest.html>`__ -- check if a string matches a RegExp
 
 Utility
 --------
 
 - `ExtendCall <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Extend.qll/type.Extend$ExtendCall.html>`__ -- call that copies properties from one object to another
 - `JsonParserCall <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/JsonParsers.qll/type.JsonParsers$JsonParserCall.html>`__ -- call that deserializes a JSON string
+- `JsonStringifyCall <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/JsonStringifiers.qll/type.JsonStringifiers$JsonStringifyCall.html>`__ -- call that serializes a JSON string
 - `PropertyProjection <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/frameworks/PropertyProjection.qll/type.PropertyProjection$PropertyProjection.html>`__ -- call that extracts nested properties by name
 
 System and Network
@@ -128,8 +131,24 @@ System and Network
     - `FileSystemWriteAccess <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Concepts.qll/type.Concepts$FileSystemWriteAccess.html>`__ -- writing to the contents of a file
 - `PersistentReadAccess <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Concepts.qll/type.Concepts$PersistentReadAccess.html>`__ -- reading from persistent storage, like cookies
 - `PersistentWriteAccess <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Concepts.qll/type.Concepts$PersistentWriteAccess.html>`__ -- writing to persistent storage
-- `RemoteFlowSource <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/security/dataflow/RemoteFlowSources.qll/type.RemoteFlowSources$RemoteFlowSource.html>`__ -- source of untrusted user input
 - `SystemCommandExecution <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Concepts.qll/type.Concepts$SystemCommandExecution.html>`__ -- execution of a system command
+
+.. _data-flow-cheat-sheet-for-javascript--untrusted-data:
+
+Untrusted data
+--------------
+
+- `RemoteFlowSource <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/security/dataflow/RemoteFlowSources.qll/type.RemoteFlowSources$Cached$RemoteFlowSource.html>`__ -- source of untrusted user input
+    - `isUserControlledObject <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/security/dataflow/RemoteFlowSources.qll/predicate.RemoteFlowSources$Cached$RemoteFlowSource$isUserControlledObject.0.html>`__ -- is the input deserialized to a JSON-like object? (as opposed to just being a string)
+- `ClientSideRemoteFlowSource <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/security/dataflow/RemoteFlowSources.qll/type.RemoteFlowSources$Cached$ClientSideRemoteFlowSource.html>`__ extends `RemoteFlowSource <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/security/dataflow/RemoteFlowSources.qll/type.RemoteFlowSources$Cached$RemoteFlowSource.html>`__ -- input specific to the browser environment
+    - `getKind <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/security/dataflow/RemoteFlowSources.qll/predicate.RemoteFlowSources$Cached$ClientSideRemoteFlowSource$getKind.0.html>`__ -- is this derived from the ``path``, ``fragment``, ``query``, ``url``, or ``name``?
+- HTTP::`RequestInputAccess <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/frameworks/HTTP.qll/type.HTTP$HTTP$RequestInputAccess.html>`__ extends `RemoteFlowSource <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/security/dataflow/RemoteFlowSources.qll/type.RemoteFlowSources$Cached$RemoteFlowSource.html>`__ -- input from an incoming HTTP request
+    - `getKind <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/frameworks/HTTP.qll/predicate.HTTP$HTTP$RequestInputAccess$getKind.0.html>`__ -- is this derived from a ``parameter``, ``header``, ``body``, ``url``, or ``cookie``?
+- HTTP::`RequestHeaderAccess <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/frameworks/HTTP.qll/type.HTTP$HTTP$RequestHeaderAccess.html>`__ extends `RequestInputAccess <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/frameworks/HTTP.qll/type.HTTP$HTTP$RequestInputAccess.html>`__ -- access to a specific header
+    - `getAHeaderName <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/frameworks/HTTP.qll/predicate.HTTP$HTTP$RequestHeaderAccess$getAHeaderName.0.html>`__ -- the name of a header being accessed
+
+Note: some `RemoteFlowSource <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/security/dataflow/RemoteFlowSources.qll/type.RemoteFlowSources$Cached$RemoteFlowSource.html>`__ instances, such as input from a web socket,
+belong to none of the specific subcategories above.
 
 Files
 -----
@@ -161,6 +180,19 @@ String matching
 -  x.\ `regexpMatch <https://codeql.github.com/codeql-standard-libraries/javascript/predicate.string$regexpMatch.1.html>`__\ ("escape.*") -- holds if x starts with "escape"
 -  x.\ `regexpMatch <https://codeql.github.com/codeql-standard-libraries/javascript/predicate.string$regexpMatch.1.html>`__\ ("(?i).*escape.*") -- holds if x contains
    "escape" (case insensitive)
+
+Access paths
+------------
+
+When multiple property accesses are chained together they form what's called an "access path".
+
+To identify nodes based on access paths, use the following predicates in `AccessPath <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/GlobalAccessPaths.qll/module.GlobalAccessPaths$AccessPath.html>`__ module:
+
+- AccessPath::`getAReferenceTo <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/GlobalAccessPaths.qll/predicate.GlobalAccessPaths$AccessPath$getAReferenceTo.2.html>`__ -- find nodes that refer to the given access path
+- AccessPath::`getAnAssignmentTo <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/GlobalAccessPaths.qll/predicate.GlobalAccessPaths$AccessPath$getAnAssignmentTo.2.html>`__ -- finds nodes that are assigned to the given access path
+- AccessPath::`getAnAliasedSourceNode <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/GlobalAccessPaths.qll/predicate.GlobalAccessPaths$AccessPath$getAnAliasedSourceNode.1.html>`__ -- finds nodes that refer to the same access path
+
+``getAReferenceTo`` and ``getAnAssignmentTo`` have a 1-argument version for global access paths, and a 2-argument version for access paths starting at a given node.
 
 Type tracking
 -------------

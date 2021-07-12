@@ -11,6 +11,7 @@ typeInferenceMismatch
 | array-mutation.js:27:16:27:23 | source() | array-mutation.js:28:8:28:8 | g |
 | array-mutation.js:31:33:31:40 | source() | array-mutation.js:32:8:32:8 | h |
 | array-mutation.js:35:36:35:43 | source() | array-mutation.js:36:8:36:8 | i |
+| array-mutation.js:39:17:39:24 | source() | array-mutation.js:40:8:40:8 | j |
 | booleanOps.js:2:11:2:18 | source() | booleanOps.js:4:8:4:8 | x |
 | booleanOps.js:2:11:2:18 | source() | booleanOps.js:13:10:13:10 | x |
 | booleanOps.js:2:11:2:18 | source() | booleanOps.js:19:10:19:10 | x |
@@ -66,6 +67,16 @@ typeInferenceMismatch
 | exceptions.js:144:9:144:16 | source() | exceptions.js:132:8:132:27 | returnThrownSource() |
 | exceptions.js:150:13:150:20 | source() | exceptions.js:153:10:153:10 | e |
 | exceptions.js:158:13:158:20 | source() | exceptions.js:161:10:161:10 | e |
+| getters-and-setters.js:6:20:6:27 | source() | getters-and-setters.js:9:10:9:18 | new C().x |
+| getters-and-setters.js:6:20:6:27 | source() | getters-and-setters.js:13:18:13:20 | c.x |
+| getters-and-setters.js:27:15:27:22 | source() | getters-and-setters.js:23:18:23:18 | v |
+| getters-and-setters.js:47:23:47:30 | source() | getters-and-setters.js:45:14:45:16 | c.x |
+| getters-and-setters.js:60:20:60:27 | source() | getters-and-setters.js:66:10:66:14 | obj.x |
+| getters-and-setters.js:67:13:67:20 | source() | getters-and-setters.js:63:18:63:22 | value |
+| getters-and-setters.js:79:20:79:27 | source() | getters-and-setters.js:88:10:88:18 | new C().x |
+| getters-and-setters.js:79:20:79:27 | source() | getters-and-setters.js:92:14:92:16 | c.x |
+| getters-and-setters.js:79:20:79:27 | source() | getters-and-setters.js:100:10:100:22 | getX(new C()) |
+| getters-and-setters.js:89:17:89:24 | source() | getters-and-setters.js:82:18:82:22 | value |
 | importedReactComponent.jsx:4:40:4:47 | source() | exportedReactComponent.jsx:2:10:2:19 | props.text |
 | indexOf.js:4:11:4:18 | source() | indexOf.js:9:10:9:10 | x |
 | json-stringify.js:2:16:2:23 | source() | json-stringify.js:5:8:5:29 | JSON.st ... source) |
@@ -98,6 +109,11 @@ typeInferenceMismatch
 | promise.js:10:24:10:31 | source() | promise.js:10:8:10:32 | Promise ... urce()) |
 | promise.js:12:20:12:27 | source() | promise.js:13:8:13:23 | resolver.promise |
 | rxjs.js:3:1:3:8 | source() | rxjs.js:10:14:10:17 | data |
+| rxjs.js:13:1:13:8 | source() | rxjs.js:17:23:17:23 | x |
+| rxjs.js:13:1:13:8 | source() | rxjs.js:18:23:18:23 | x |
+| rxjs.js:13:1:13:8 | source() | rxjs.js:22:14:22:17 | data |
+| rxjs.js:27:24:27:32 | source(x) | rxjs.js:29:23:29:23 | x |
+| rxjs.js:27:24:27:32 | source(x) | rxjs.js:34:14:34:17 | data |
 | sanitizer-function.js:12:17:12:24 | source() | sanitizer-function.js:14:10:14:14 | taint |
 | sanitizer-function.js:12:17:12:24 | source() | sanitizer-function.js:33:14:33:18 | taint |
 | sanitizer-guards.js:2:11:2:18 | source() | sanitizer-guards.js:4:8:4:8 | x |
@@ -150,8 +166,13 @@ typeInferenceMismatch
 | tst.js:2:13:2:20 | source() | tst.js:45:10:45:24 | x.map(x2 => x2) |
 | tst.js:2:13:2:20 | source() | tst.js:47:10:47:30 | Buffer. ...  'hex') |
 | tst.js:2:13:2:20 | source() | tst.js:48:10:48:22 | new Buffer(x) |
+| tst.js:2:13:2:20 | source() | tst.js:51:10:51:31 | seriali ... ript(x) |
 | xml.js:5:18:5:25 | source() | xml.js:8:14:8:17 | text |
 | xml.js:12:17:12:24 | source() | xml.js:13:14:13:19 | result |
 | xml.js:23:18:23:25 | source() | xml.js:20:14:20:17 | attr |
 | xml.js:26:27:26:34 | source() | xml.js:26:10:26:39 | convert ... (), {}) |
 | xml.js:34:18:34:25 | source() | xml.js:31:18:31:21 | name |
+| xml.js:41:15:41:22 | source() | xml.js:44:10:44:22 | gchild.text() |
+| xml.js:41:15:41:22 | source() | xml.js:49:10:49:34 | child.a ... value() |
+| xml.js:41:15:41:22 | source() | xml.js:52:10:52:34 | child2. ... .name() |
+| xml.js:41:15:41:22 | source() | xml.js:58:12:58:14 | str |

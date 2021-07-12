@@ -401,13 +401,15 @@ module Flask {
     }
   }
 
-  private class RequestAttrMultiDict extends Werkzeug::werkzeug::datastructures::MultiDict::InstanceSource {
+  private class RequestAttrMultiDict extends Werkzeug::werkzeug::datastructures::MultiDict::InstanceSourceApiNode {
     string attr_name;
 
     RequestAttrMultiDict() {
       attr_name in ["args", "values", "form", "files"] and
-      this = request().getMember(attr_name).getAnImmediateUse()
+      this = request().getMember(attr_name)
     }
+
+    override string toString() { result = this.(API::Node).toString() }
   }
 
   private class RequestAttrFiles extends RequestAttrMultiDict {
@@ -462,5 +464,40 @@ module Flask {
       // `text/html`.
       result = "text/html"
     }
+  }
+
+  // ---------------------------------------------------------------------------
+  // flask.Response related
+  // ---------------------------------------------------------------------------
+  /**
+   * A call to `set_cookie` on a Flask HTTP Response.
+   *
+   * See https://flask.palletsprojects.com/en/2.0.x/api/#flask.Response.set_cookie
+   */
+  class FlaskResponseSetCookieCall extends HTTP::Server::CookieWrite::Range,
+    DataFlow::MethodCallNode {
+    FlaskResponseSetCookieCall() { this.calls(Flask::Response::instance(), "set_cookie") }
+
+    override DataFlow::Node getHeaderArg() { none() }
+
+    override DataFlow::Node getNameArg() { result in [this.getArg(0), this.getArgByName("key")] }
+
+    override DataFlow::Node getValueArg() { result in [this.getArg(1), this.getArgByName("value")] }
+  }
+
+  /**
+   * A call to `delete_cookie` on a Flask HTTP Response.
+   *
+   * See https://flask.palletsprojects.com/en/2.0.x/api/#flask.Response.delete_cookie
+   */
+  class FlaskResponseDeleteCookieCall extends HTTP::Server::CookieWrite::Range,
+    DataFlow::MethodCallNode {
+    FlaskResponseDeleteCookieCall() { this.calls(Flask::Response::instance(), "delete_cookie") }
+
+    override DataFlow::Node getHeaderArg() { none() }
+
+    override DataFlow::Node getNameArg() { result in [this.getArg(0), this.getArgByName("key")] }
+
+    override DataFlow::Node getValueArg() { none() }
   }
 }
