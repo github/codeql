@@ -473,7 +473,7 @@ class RegExpEscape extends RegExpNormalChar {
    * E.g. for `\u0061` this returns "a".
    */
   private string getUnicode() {
-    exists(int codepoint | codepoint = sum(getHexValueFromUnicode(_)) |
+    exists(int codepoint | codepoint = sum(this.getHexValueFromUnicode(_)) |
       result = codepoint.toUnicode()
     )
   }
@@ -483,8 +483,8 @@ class RegExpEscape extends RegExpNormalChar {
    * E.g. for `\u0061` and `index = 2` this returns 96 (the number `6` interpreted as hex).
    */
   private int getHexValueFromUnicode(int index) {
-    isUnicode() and
-    exists(string hex, string char | hex = getText().suffix(2) |
+    this.isUnicode() and
+    exists(string hex, string char | hex = this.getText().suffix(2) |
       char = hex.charAt(index) and
       result = 16.pow(hex.length() - index - 1) * toHex(char)
     )
