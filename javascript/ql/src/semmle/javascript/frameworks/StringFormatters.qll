@@ -103,3 +103,18 @@ private class LibraryFormatter extends PrintfStyleCall {
 
   override predicate returnsFormatted() { returns = true }
 }
+
+/**
+ * A taint step through a case changing function.
+ */
+private class CaseChangingStep extends TaintTracking::SharedTaintStep {
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(DataFlow::SourceNode callee, DataFlow::CallNode call |
+      callee = DataFlow::moduleMember("change-case", _)
+    |
+      call = callee.getACall() and
+      pred = call.getArgument(0) and
+      succ = call
+    )
+  }
+}
