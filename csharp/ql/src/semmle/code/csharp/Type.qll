@@ -963,6 +963,11 @@ class NullableType extends ValueType, DotNet::ConstructedGeneric, @nullable_type
   override Type getTypeArgument(int p) { p = 0 and result = getUnderlyingType() }
 
   override string getAPrimaryQlClass() { result = "NullableType" }
+
+  final override predicate hasQualifiedName(string qualifier, string name) {
+    qualifier = "System" and
+    name = "Nullable<" + getUnderlyingType().getQualifiedName() + ">"
+  }
 }
 
 /**
