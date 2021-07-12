@@ -63,7 +63,7 @@ more than one language:
 - ``--no-run-unnecessary-builds``: used with ``--db-cluster`` to suppress the build 
   command for languages where the CodeQL CLI does not need to monitor the build 
   (for example, Python and JavaScript/TypeScript).
-- ``--overwrite``: use to force the CodeQL CLI to replace a existing database or database
+- ``--overwrite``: use to force the CodeQL CLI to replace an existing database or database
   cluster even if it exists on disk. 
    
 For full details of all the options you can use when creating databases,
