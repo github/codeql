@@ -41,7 +41,7 @@ class LocalSourceNode extends Node {
     // unable to track across global variables.
     //
     // Once the `track` and `backtrack` methods have been fully deprecated, this disjunct can be
-    // removed, and the entire class can extend `ExprNode`. At that point, `TypeTrackerNode` should
+    // removed, and the entire class can extend `ExprNode`. At that point, `TypeTrackingNode` should
     // be used for type tracking instead of `LocalSourceNode`.
     this instanceof ModuleVariableNode
     or
