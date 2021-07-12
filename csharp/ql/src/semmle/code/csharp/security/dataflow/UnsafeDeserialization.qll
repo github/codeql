@@ -59,7 +59,7 @@ module UnsafeDeserialization {
    * User input to object method call deserialization flow tracking.
    */
   class TaintToObjectMethodTrackingConfig extends TaintTracking::Configuration {
-    TaintToObjectMethodTrackingConfig() { this = "UnsafeDeserialization1" }
+    TaintToObjectMethodTrackingConfig() { this = "TaintToObjectMethodTrackingConfig" }
 
     override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
@@ -69,10 +69,80 @@ module UnsafeDeserialization {
   }
 
   /**
+   * User input to `JsonConvert` call deserialization flow tracking.
+   */
+  class JsonConvertTrackingConfig extends TaintTracking::Configuration {
+    JsonConvertTrackingConfig() { this = "JsonConvertTrackingConfig" }
+
+    override predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+    override predicate isSink(DataFlow::Node sink) {
+      sink instanceof NewtonsoftJsonConvertDeserializeObjectMethodSink
+    }
+
+    override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
+  }
+
+  /**
+   * Tracks unsafe `TypeNameHandling` setting to `JsonConvert` call
+   */
+  class TypeNameTrackingConfig extends DataFlow::Configuration {
+    TypeNameTrackingConfig() { this = "TypeNameTrackingConfig" }
+
+    override predicate isSource(DataFlow::Node source) {
+      (
+        source.asExpr() instanceof MemberConstantAccess and
+        source.getType() instanceof TypeNameHandlingEnum
+        or
+        source.asExpr() instanceof IntegerLiteral
+      ) and
+      source.asExpr().hasValue() and
+      not source.asExpr().getValue() = "0"
+    }
+
+    override predicate isSink(DataFlow::Node sink) {
+      exists(MethodCall mc, Method m, Expr expr |
+        m = mc.getTarget() and
+        (
+          not mc.getArgument(0).hasValue() and
+          m instanceof NewtonsoftJsonConvertClassDeserializeObjectMethod
+        ) and
+        expr = mc.getAnArgument() and
+        sink.asExpr() = expr and
+        expr.getType() instanceof JsonSerializerSettingsClass
+      )
+    }
+
+    override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+      node1.asExpr() instanceof IntegerLiteral and
+      node2.asExpr().(CastExpr).getExpr() = node1.asExpr()
+      or
+      node1.getType() instanceof TypeNameHandlingEnum and
+      exists(PropertyWrite pw, Property p, Assignment a |
+        a.getLValue() = pw and
+        pw.getProperty() = p and
+        p.getDeclaringType() instanceof JsonSerializerSettingsClass and
+        p.hasName("TypeNameHandling") and
+        (
+          node1.asExpr() = a.getRValue() and
+          node2.asExpr() = pw.getQualifier()
+          or
+          exists(ObjectInitializer oi |
+            node1.asExpr() = oi.getAMemberInitializer().getRValue() and
+            node2.asExpr() = oi
+          )
+        )
+      )
+    }
+  }
+
+  /**
    * User input to static method or constructor call deserialization flow tracking.
    */
   class TaintToConstructorOrStaticMethodTrackingConfig extends TaintTracking::Configuration {
-    TaintToConstructorOrStaticMethodTrackingConfig() { this = "UnsafeDeserialization2" }
+    TaintToConstructorOrStaticMethodTrackingConfig() {
+      this = "TaintToConstructorOrStaticMethodTrackingConfig"
+    }
 
     override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
@@ -821,6 +891,20 @@ module UnsafeDeserialization {
         (
           not mc.getArgument(0).hasValue() and
           m instanceof YamlDotNetDeserializerClasseserializeMethod
+        ) and
+        this.asExpr() = mc.getArgument(0)
+      )
+    }
+  }
+
+  /** Newtonsoft.Json.JsonConvert */
+  private class NewtonsoftJsonConvertDeserializeObjectMethodSink extends ConstructorOrStaticMethodSink {
+    NewtonsoftJsonConvertDeserializeObjectMethodSink() {
+      exists(MethodCall mc, Method m |
+        m = mc.getTarget() and
+        (
+          not mc.getArgument(0).hasValue() and
+          m instanceof NewtonsoftJsonConvertClassDeserializeObjectMethod
         ) and
         this.asExpr() = mc.getArgument(0)
       )

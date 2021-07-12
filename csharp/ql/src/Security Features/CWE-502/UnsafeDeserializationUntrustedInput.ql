@@ -46,5 +46,16 @@ where
   exists(TaintToConstructorOrStaticMethodTrackingConfig taintTracking2 |
     taintTracking2.hasFlowPath(userInput, deserializeCallArg)
   )
+  or
+  // JsonConvert static method call, but with additional unsafe typename tracking
+  exists(
+    JsonConvertTrackingConfig taintTrackingJsonConvert, TypeNameTrackingConfig typenameTracking,
+    DataFlow::PathNode settingsCallArg
+  |
+    taintTrackingJsonConvert.hasFlowPath(userInput, deserializeCallArg) and
+    typenameTracking.hasFlowPath(_, settingsCallArg) and
+    deserializeCallArg.getNode().asExpr().getParent() =
+      settingsCallArg.getNode().asExpr().getParent()
+  )
 select deserializeCallArg, userInput, deserializeCallArg, "$@ flows to unsafe deserializer.",
   userInput, "User-provided data"

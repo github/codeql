@@ -4,6 +4,7 @@
  */
 
 import csharp
+import semmle.code.csharp.frameworks.JsonNET::JsonNET
 
 /** An unsafe deserializer. */
 abstract class UnsafeDeserializer extends Callable { }
@@ -67,6 +68,8 @@ class WeakTypeDeserializer extends Class {
     this instanceof SharpSerializerClass
     or
     this instanceof YamlDotNetDeserializerClass
+    or
+    this instanceof JsonConvertClass
   }
 }
 
@@ -655,5 +658,14 @@ class YamlDotNetDeserializerClasseserializeMethod extends Method, UnsafeDeserial
       this.hasName("Deserialize") and
       c.getALocation().(Assembly).getVersion().getMajor() < 5
     )
+  }
+}
+
+/** `Newtonsoft.Json.JsonConvert.DeserializeObject` method */
+class NewtonsoftJsonConvertClassDeserializeObjectMethod extends Method, UnsafeDeserializer {
+  NewtonsoftJsonConvertClassDeserializeObjectMethod() {
+    this.getDeclaringType() instanceof JsonConvertClass and
+    this.hasName("DeserializeObject") and
+    this.isStatic()
   }
 }
