@@ -45,6 +45,9 @@ edges
 | ExternalFlow.cs:91:30:91:30 | SSA def(i) : Int32 | ExternalFlow.cs:92:18:92:18 | (...) ... |
 | ExternalFlow.cs:121:46:121:46 | s : Object | ExternalFlow.cs:60:35:60:35 | o : Object |
 | ExternalFlow.cs:123:34:123:41 | elements [element] : Object | ExternalFlow.cs:72:23:72:23 | o : Object |
+| ExternalFlow.cs:129:21:129:39 | object creation of type Nullable<Int32> : Int32? | ExternalFlow.cs:130:22:130:22 | access to local variable i : Int32? |
+| ExternalFlow.cs:130:22:130:22 | access to local variable i : Int32? | ExternalFlow.cs:130:33:130:33 | SSA def(j) : Int32 |
+| ExternalFlow.cs:130:33:130:33 | SSA def(j) : Int32 | ExternalFlow.cs:131:18:131:18 | (...) ... |
 nodes
 | ExternalFlow.cs:9:27:9:38 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
 | ExternalFlow.cs:10:18:10:33 | call to method StepArgRes | semmle.label | call to method StepArgRes |
@@ -106,6 +109,10 @@ nodes
 | ExternalFlow.cs:92:18:92:18 | (...) ... | semmle.label | (...) ... |
 | ExternalFlow.cs:121:46:121:46 | s : Object | semmle.label | s : Object |
 | ExternalFlow.cs:123:34:123:41 | elements [element] : Object | semmle.label | elements [element] : Object |
+| ExternalFlow.cs:129:21:129:39 | object creation of type Nullable<Int32> : Int32? | semmle.label | object creation of type Nullable<Int32> : Int32? |
+| ExternalFlow.cs:130:22:130:22 | access to local variable i : Int32? | semmle.label | access to local variable i : Int32? |
+| ExternalFlow.cs:130:33:130:33 | SSA def(j) : Int32 | semmle.label | SSA def(j) : Int32 |
+| ExternalFlow.cs:131:18:131:18 | (...) ... | semmle.label | (...) ... |
 invalidModelRow
 #select
 | ExternalFlow.cs:10:18:10:33 | call to method StepArgRes | ExternalFlow.cs:9:27:9:38 | object creation of type Object : Object | ExternalFlow.cs:10:18:10:33 | call to method StepArgRes | $@ | ExternalFlow.cs:9:27:9:38 | object creation of type Object : Object | object creation of type Object : Object |
@@ -123,3 +130,4 @@ invalidModelRow
 | ExternalFlow.cs:78:18:78:24 | (...) ... | ExternalFlow.cs:77:46:77:57 | object creation of type Object : Object | ExternalFlow.cs:78:18:78:24 | (...) ... | $@ | ExternalFlow.cs:77:46:77:57 | object creation of type Object : Object | object creation of type Object : Object |
 | ExternalFlow.cs:85:18:85:25 | access to array element | ExternalFlow.cs:83:32:83:43 | object creation of type Object : Object | ExternalFlow.cs:85:18:85:25 | access to array element | $@ | ExternalFlow.cs:83:32:83:43 | object creation of type Object : Object | object creation of type Object : Object |
 | ExternalFlow.cs:92:18:92:18 | (...) ... | ExternalFlow.cs:90:21:90:34 | object creation of type String : String | ExternalFlow.cs:92:18:92:18 | (...) ... | $@ | ExternalFlow.cs:90:21:90:34 | object creation of type String : String | object creation of type String : String |
+| ExternalFlow.cs:131:18:131:18 | (...) ... | ExternalFlow.cs:129:21:129:39 | object creation of type Nullable<Int32> : Int32? | ExternalFlow.cs:131:18:131:18 | (...) ... | $@ | ExternalFlow.cs:129:21:129:39 | object creation of type Nullable<Int32> : Int32? | object creation of type Nullable<Int32> : Int32? |

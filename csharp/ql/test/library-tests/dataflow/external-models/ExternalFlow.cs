@@ -124,6 +124,15 @@ namespace My.Qltest
 
         static void Parse(string s, out int i) => throw null;
 
+        void M15()
+        {
+            var i = new Nullable<int>();
+            Nullable(i, out var j);
+            Sink(j);
+        }
+
+        static void Nullable(int? i, out int j) => throw null;
+
         static void Sink(object o) { }
     }
 }
