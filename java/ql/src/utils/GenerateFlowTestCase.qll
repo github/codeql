@@ -242,13 +242,13 @@ class TestCase extends TTestCase {
     (i = -1 or exists(callable.getParameter(i))) and
     if baseInput = SummaryComponentStack::argument(i)
     then result = "in"
-    else (
+    else
       if baseOutput = SummaryComponentStack::argument(i)
       then result = "out"
-      else (
-        if i = -1 then result = "instance" else result = this.getFiller(i)
-      )
-    )
+      else
+        if i = -1
+        then result = "instance"
+        else result = this.getFiller(i)
   }
 
   /**
