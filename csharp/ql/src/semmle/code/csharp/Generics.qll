@@ -105,20 +105,28 @@ class UnboundGenericType extends ValueOrRefType, UnboundGeneric {
 
   override Location getALocation() { type_location(this, result) }
 
-  /** Gets the name of this generic type without the `<...>` brackets. */
-  string getNameWithoutBrackets() {
-    result = getName().prefix(getName().length() - getNumberOfTypeParameters() - 1)
-  }
-
-  override string toStringWithTypes() {
-    result = getNameWithoutBrackets() + "<" + this.typeParametersToString() + ">"
-  }
-
   override UnboundGenericType getUnboundDeclaration() {
     result = ValueOrRefType.super.getUnboundDeclaration()
   }
 
   final override Type getChild(int n) { result = getTypeParameter(n) }
+
+  private string getTypeParameterCommas() {
+    result = strictconcat(int i | exists(this.getTypeParameter(i)) | "", ",")
+  }
+
+  override string toStringWithTypes() {
+    result = this.getNameWithoutBrackets() + "<" + this.typeParametersToString() + ">"
+  }
+
+  final override string getName() {
+    result = this.getNameWithoutBrackets() + "<" + this.getTypeParameterCommas() + ">"
+  }
+
+  final override predicate hasQualifiedName(string qualifier, string name) {
+    super.hasQualifiedName(qualifier, _) and
+    name = this.getNameWithoutBrackets() + "<" + this.getTypeParameterCommas() + ">"
+  }
 }
 
 /**
@@ -360,21 +368,50 @@ class ConstructedType extends ValueOrRefType, ConstructedGeneric {
 
   override UnboundGenericType getUnboundGeneric() { constructed_generic(this, getTypeRef(result)) }
 
-  override string toStringWithTypes() {
-    result =
-      getUnboundGeneric().getNameWithoutBrackets() + "<" + this.getTypeArgumentsString() + ">"
-  }
-
   final override Type getChild(int n) { result = getTypeArgument(n) }
 
   language[monotonicAggregates]
   private string getTypeArgumentsString() {
     result =
-      concat(int i |
-        exists(this.getTypeArgument(i))
+      strictconcat(Type t, int i | t = this.getTypeArgument(i) | t.toString(), ", " order by i)
+  }
+
+  language[monotonicAggregates]
+  private string getTypeArgumentsNames() {
+    result =
+      strictconcat(Type t, int i | t = this.getTypeArgument(i) | t.getName(), ", " order by i)
+  }
+
+  language[monotonicAggregates]
+  private string getTypeArgumentsQualifiedNames() {
+    result =
+      strictconcat(Type t, int i |
+        t = this.getTypeArgument(i)
       |
-        this.getTypeArgument(i).toString(), ", " order by i
+        t.getQualifiedName(), "," order by i
       )
+  }
+
+  final override string toStringWithTypes() {
+    exists(string undecorated |
+      types(this, _, undecorated) and
+      result = undecorated + "<" + this.getTypeArgumentsString() + ">"
+    )
+  }
+
+  final override string getName() {
+    exists(string undecorated |
+      types(this, _, undecorated) and
+      result = undecorated + "<" + this.getTypeArgumentsNames() + ">"
+    )
+  }
+
+  final override predicate hasQualifiedName(string qualifier, string name) {
+    exists(string undecorated |
+      super.hasQualifiedName(qualifier, _) and
+      types(this, _, undecorated) and
+      name = undecorated + "<" + this.getTypeArgumentsQualifiedNames() + ">"
+    )
   }
 }
 
