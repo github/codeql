@@ -17,8 +17,8 @@ import semmle.python.security.dataflow.PolynomialReDoS
 import DataFlow::PathGraph
 
 from
-  PolynomialReDoSConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink,
-  PolynomialReDoSSink sinkNode, PolynomialBackTrackingTerm regexp
+  PolynomialReDoS::Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink,
+  PolynomialReDoS::Sink sinkNode, PolynomialBackTrackingTerm regexp
 where
   config.hasFlowPath(source, sink) and
   sinkNode = sink.getNode() and
