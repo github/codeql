@@ -690,7 +690,6 @@ module TaintedPath {
       this =
         API::moduleImport("read-pkg")
             .getMember(["readPackageAsync", "readPackageSync"])
-            .getACall()
             .getParameter(0)
             .getMember("cwd")
             .getARhs()
