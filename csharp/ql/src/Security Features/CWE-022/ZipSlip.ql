@@ -13,7 +13,7 @@
  */
 
 import csharp
-import semmle.code.csharp.security.dataflow.ZipSlip::ZipSlip
+import semmle.code.csharp.security.dataflow.ZipSlipQuery
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 from TaintTrackingConfiguration zipTaintTracking, DataFlow::PathNode source, DataFlow::PathNode sink

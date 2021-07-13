@@ -11,7 +11,7 @@
 
 import csharp
 import semmle.code.csharp.dataflow.TaintTracking
-import semmle.code.csharp.security.dataflow.ExternalAPIs
+import semmle.code.csharp.security.dataflow.ExternalAPIsQuery
 import DataFlow::PathGraph
 
 from UntrustedDataToExternalAPIConfig config, DataFlow::PathNode source, DataFlow::PathNode sink

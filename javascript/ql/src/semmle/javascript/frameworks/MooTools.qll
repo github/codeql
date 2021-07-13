@@ -4,6 +4,9 @@
 
 import javascript
 
+/**
+ * Classes and predicates for working with MooTools code.
+ */
 module MooTools {
   private class Element extends DataFlow::NewNode {
     Element() {
