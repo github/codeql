@@ -9,7 +9,7 @@
 private import FlowSummaryImplSpecific
 private import DataFlowImplSpecific::Private
 private import DataFlowImplSpecific::Public
-private import DataFlowImplCommon as DataFlowImplCommon
+private import DataFlowImplCommon
 
 /** Provides classes and predicates for defining flow summaries. */
 module Public {
@@ -295,7 +295,7 @@ module Private {
       or
       exists(int i |
         parameterReadState(c, state, i) and
-        result.(ParameterNode).isParameterOf(c, i)
+        result.(ParamNode).isParameterOf(c, i)
       )
     )
   }
@@ -421,7 +421,7 @@ module Private {
   }
 
   /** Holds if summary node `post` is a post-update node with pre-update node `pre`. */
-  predicate summaryPostUpdateNode(Node post, ParameterNode pre) {
+  predicate summaryPostUpdateNode(Node post, ParamNode pre) {
     exists(SummarizedCallable c, int i |
       isParameterPostUpdate(post, c, i) and
       pre.isParameterOf(c, i)
@@ -493,7 +493,7 @@ module Private {
      * Holds if values stored inside content `c` are cleared when passed as
      * input of type `input` in `call`.
      */
-    predicate summaryClearsContent(ArgumentNode arg, Content c) {
+    predicate summaryClearsContent(ArgNode arg, Content c) {
       exists(DataFlowCall call, int i |
         viableCallable(call).(SummarizedCallable).clearsContent(i, c) and
         arg.argumentOf(call, i)
@@ -501,9 +501,7 @@ module Private {
     }
 
     pragma[nomagic]
-    private ParameterNode summaryArgParam(
-      ArgumentNode arg, DataFlowImplCommon::ReturnKindExt rk, DataFlowImplCommon::OutNodeExt out
-    ) {
+    private ParamNode summaryArgParam(ArgNode arg, ReturnKindExt rk, OutNodeExt out) {
       exists(DataFlowCall call, int pos, SummarizedCallable callable |
         arg.argumentOf(call, pos) and
         viableCallable(call) = callable and
@@ -519,8 +517,8 @@ module Private {
      * NOTE: This step should not be used in global data-flow/taint-tracking, but may
      * be useful to include in the exposed local data-flow/taint-tracking relations.
      */
-    predicate summaryThroughStep(ArgumentNode arg, Node out, boolean preservesValue) {
-      exists(DataFlowImplCommon::ReturnKindExt rk, DataFlowImplCommon::ReturnNodeExt ret |
+    predicate summaryThroughStep(ArgNode arg, Node out, boolean preservesValue) {
+      exists(ReturnKindExt rk, ReturnNodeExt ret |
         summaryLocalStep(summaryArgParam(arg, rk, out), ret, preservesValue) and
         ret.getKind() = rk
       )
@@ -533,8 +531,8 @@ module Private {
      * NOTE: This step should not be used in global data-flow/taint-tracking, but may
      * be useful to include in the exposed local data-flow/taint-tracking relations.
      */
-    predicate summaryGetterStep(ArgumentNode arg, Content c, Node out) {
-      exists(DataFlowImplCommon::ReturnKindExt rk, Node mid, DataFlowImplCommon::ReturnNodeExt ret |
+    predicate summaryGetterStep(ArgNode arg, Content c, Node out) {
+      exists(ReturnKindExt rk, Node mid, ReturnNodeExt ret |
         summaryReadStep(summaryArgParam(arg, rk, out), c, mid) and
         summaryLocalStep(mid, ret, _) and
         ret.getKind() = rk
@@ -548,8 +546,8 @@ module Private {
      * NOTE: This step should not be used in global data-flow/taint-tracking, but may
      * be useful to include in the exposed local data-flow/taint-tracking relations.
      */
-    predicate summarySetterStep(ArgumentNode arg, Content c, Node out) {
-      exists(DataFlowImplCommon::ReturnKindExt rk, Node mid, DataFlowImplCommon::ReturnNodeExt ret |
+    predicate summarySetterStep(ArgNode arg, Content c, Node out) {
+      exists(ReturnKindExt rk, Node mid, ReturnNodeExt ret |
         summaryLocalStep(summaryArgParam(arg, rk, out), mid, _) and
         summaryStoreStep(mid, c, ret) and
         ret.getKind() = rk
@@ -563,12 +561,9 @@ module Private {
      * definition of `clearsContent()`.
      */
     predicate summaryStoresIntoArg(Content c, Node arg) {
-      exists(
-        DataFlowImplCommon::ParamUpdateReturnKind rk, DataFlowImplCommon::ReturnNodeExt ret,
-        PostUpdateNode out
-      |
+      exists(ParamUpdateReturnKind rk, ReturnNodeExt ret, PostUpdateNode out |
         exists(DataFlowCall call, SummarizedCallable callable |
-          DataFlowImplCommon::getNodeEnclosingCallable(ret) = callable and
+          getNodeEnclosingCallable(ret) = callable and
           viableCallable(call) = callable and
           summaryStoreStep(_, c, ret) and
           ret.getKind() = pragma[only_bind_into](rk) and
@@ -740,21 +735,17 @@ module Private {
         specSplit(output, c, idx)
       |
         exists(int pos |
-          node.asNode()
-              .(PostUpdateNode)
-              .getPreUpdateNode()
-              .(ArgumentNode)
-              .argumentOf(mid.asCall(), pos)
+          node.asNode().(PostUpdateNode).getPreUpdateNode().(ArgNode).argumentOf(mid.asCall(), pos)
         |
           c = "Argument" or parseArg(c, pos)
         )
         or
-        exists(int pos | node.asNode().(ParameterNode).isParameterOf(mid.asCallable(), pos) |
+        exists(int pos | node.asNode().(ParamNode).isParameterOf(mid.asCallable(), pos) |
           c = "Parameter" or parseParam(c, pos)
         )
         or
         c = "ReturnValue" and
-        node.asNode() = getAnOutNode(mid.asCall(), getReturnValueKind())
+        node.asNode() = getAnOutNodeExt(mid.asCall(), TValueReturn(getReturnValueKind()))
         or
         interpretOutputSpecific(c, mid, node)
       )
@@ -769,15 +760,15 @@ module Private {
         interpretInput(input, idx + 1, ref, mid) and
         specSplit(input, c, idx)
       |
-        exists(int pos | node.asNode().(ArgumentNode).argumentOf(mid.asCall(), pos) |
+        exists(int pos | node.asNode().(ArgNode).argumentOf(mid.asCall(), pos) |
           c = "Argument" or parseArg(c, pos)
         )
         or
-        exists(ReturnNode ret |
+        exists(ReturnNodeExt ret |
           c = "ReturnValue" and
           ret = node.asNode() and
-          ret.getKind() = getReturnValueKind() and
-          mid.asCallable() = DataFlowImplCommon::getNodeEnclosingCallable(ret)
+          ret.getKind().(ValueReturnKind).getKind() = getReturnValueKind() and
+          mid.asCallable() = getNodeEnclosingCallable(ret)
         )
         or
         interpretInputSpecific(c, mid, node)
