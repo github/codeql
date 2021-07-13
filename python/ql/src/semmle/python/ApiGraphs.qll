@@ -424,13 +424,8 @@ module API {
      * a value in the module `m`.
      */
     private predicate possible_builtin_defined_in_module(string name, Module m) {
-      exists(NameNode n |
-        not exists(LocalVariable v | n.defines(v)) and
-        n.isStore() and
-        name = n.getId() and
-        name = getBuiltInName() and
-        m = n.getEnclosingModule()
-      )
+      global_name_defined_in_module(name, m) and
+      name = getBuiltInName()
     }
 
     /**
@@ -443,6 +438,16 @@ module API {
       name = n.getId() and
       name = getBuiltInName() and
       m = n.getEnclosingModule()
+    }
+
+    /** Holds if a global variable called `name` is assigned a value in the module `m`. */
+    private predicate global_name_defined_in_module(string name, Module m) {
+      exists(NameNode n |
+        not exists(LocalVariable v | n.defines(v)) and
+        n.isStore() and
+        name = n.getId() and
+        m = n.getEnclosingModule()
+      )
     }
 
     /**
