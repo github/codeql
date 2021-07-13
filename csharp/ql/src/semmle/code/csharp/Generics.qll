@@ -124,8 +124,16 @@ class UnboundGenericType extends ValueOrRefType, UnboundGeneric {
   }
 
   final override predicate hasQualifiedName(string qualifier, string name) {
-    super.hasQualifiedName(qualifier, _) and
-    name = this.getNameWithoutBrackets() + "<" + this.getTypeParameterCommas() + ">"
+    exists(string name0 | name = name0 + "<" + this.getTypeParameterCommas() + ">" |
+      exists(string enclosing |
+        this.getDeclaringType().hasQualifiedName(qualifier, enclosing) and
+        name0 = enclosing + "+" + this.getNameWithoutBrackets()
+      )
+      or
+      not exists(this.getDeclaringType()) and
+      qualifier = this.getNamespace().getQualifiedName() and
+      name0 = this.getNameWithoutBrackets()
+    )
   }
 }
 
@@ -406,10 +414,15 @@ class ConstructedType extends ValueOrRefType, ConstructedGeneric {
   }
 
   final override predicate hasQualifiedName(string qualifier, string name) {
-    exists(string undecorated |
-      super.hasQualifiedName(qualifier, _) and
-      types(this, _, undecorated) and
-      name = undecorated + "<" + this.getTypeArgumentsQualifiedNames() + ">"
+    exists(string name0 | name = name0 + "<" + this.getTypeArgumentsQualifiedNames() + ">" |
+      exists(string enclosing |
+        this.getDeclaringType().hasQualifiedName(qualifier, enclosing) and
+        name0 = enclosing + "+" + this.getNameWithoutBrackets()
+      )
+      or
+      not exists(this.getDeclaringType()) and
+      qualifier = this.getNamespace().getQualifiedName() and
+      name0 = this.getNameWithoutBrackets()
     )
   }
 }
