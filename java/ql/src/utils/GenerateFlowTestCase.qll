@@ -269,6 +269,10 @@ class TestCase extends TTestCase {
     // out = new Type(filler, in, filler);
     // or
     // new Type(filler, in, out, filler);
+    // or
+    // in.method(filler, out, filler);
+    // or
+    // out.method(filler, in, filler);
     exists(string storePrefix, string invokePrefix, string args |
       (
         if
