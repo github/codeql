@@ -37,7 +37,7 @@ void tests(FILE *log, myStruct &s)
 		char *cpy1 = s.password;
 		char *cpy2 = crypt(s.password);
 
-		fprintf(log, "cpy1 = %s\n", cpy1); // BAD
+		fprintf(log, "cpy1 = %s\n", cpy1); // BAD [NOT DETECTED]
 		fprintf(log, "cpy2 = %s\n", cpy2); // GOOD
 	}
 
@@ -45,10 +45,9 @@ void tests(FILE *log, myStruct &s)
 		char buf[1024];
 
 		strcpy(buf, s.password);
-		fprintf(log, "buf = %s\n", buf); // BAD
+		fprintf(log, "buf = %s\n", buf); // BAD [NOT DETECTED]
 		
 		strcpy(buf, s.password_hash);
 		fprintf(log, "buf = %s\n", buf); // GOOD
 	}
 }
-

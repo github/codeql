@@ -1,9 +1,6 @@
 | test2.cpp:28:2:28:8 | call to fprintf | This write into file 'log' may contain unencrypted data from $@ | test2.cpp:28:36:28:43 | password | this source. |
 | test2.cpp:29:2:29:8 | call to fprintf | This write into file 'log' may contain unencrypted data from $@ | test2.cpp:29:37:29:45 | thepasswd | this source. |
 | test2.cpp:30:2:30:8 | call to fprintf | This write into file 'log' may contain unencrypted data from $@ | test2.cpp:30:38:30:47 | accountkey | this source. |
-| test2.cpp:31:2:31:8 | call to fprintf | This write into file 'log' may contain unencrypted data from $@ | test2.cpp:31:41:31:53 | password_hash | this source. |
-| test2.cpp:33:2:33:8 | call to fprintf | This write into file 'log' may contain unencrypted data from $@ | test2.cpp:33:41:33:53 | password_file | this source. |
-| test2.cpp:34:2:34:8 | call to fprintf | This write into file 'log' may contain unencrypted data from $@ | test2.cpp:34:41:34:53 | passwd_config | this source. |
 | test.cpp:45:3:45:7 | call to fputs | This write into file 'file' may contain unencrypted data from $@ | test.cpp:45:9:45:19 | thePassword | this source. |
 | test.cpp:70:35:70:35 | call to operator<< | This write into file 'mystream' may contain unencrypted data from $@ | test.cpp:70:38:70:48 | thePassword | this source. |
 | test.cpp:73:37:73:41 | call to write | This write into file 'mystream' may contain unencrypted data from $@ | test.cpp:73:43:73:53 | thePassword | this source. |
