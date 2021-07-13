@@ -299,9 +299,9 @@ class TestCase extends TTestCase {
    * Returns an inline test expectation appropriate to this CSV row.
    */
   string getExpectation() {
-    kind = "value" and result = "// $hasValueFlow"
+    kind = "value" and result = "// $ hasValueFlow"
     or
-    kind = "taint" and result = "// $hasTaintFlow"
+    kind = "taint" and result = "// $ hasTaintFlow"
   }
 
   /**
