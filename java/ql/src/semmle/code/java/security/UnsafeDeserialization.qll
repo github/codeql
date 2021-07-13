@@ -78,7 +78,7 @@ private class ObjectMapperReadSink extends DataFlow::ExprNode {
 
 private class SetPolymorphicTypeValidatorSource extends DataFlow::ExprNode {
   SetPolymorphicTypeValidatorSource() {
-    exists(MethodAccess ma, Method m, Expr q | m = ma.getMethod() and q = ma.getQualifier() |
+    exists(MethodAccess ma, Method m | m = ma.getMethod() |
       (
         m.getDeclaringType() instanceof ObjectMapper and
         m.hasName("setPolymorphicTypeValidator")
@@ -86,7 +86,7 @@ private class SetPolymorphicTypeValidatorSource extends DataFlow::ExprNode {
         m.getDeclaringType() instanceof MapperBuilder and
         m.hasName("polymorphicTypeValidator")
       ) and
-      this.asExpr() = q
+      this.asExpr() = ma.getQualifier()
     )
   }
 }
@@ -196,7 +196,7 @@ private class EnableJacksonDefaultTypingConfig extends DataFlow2::Configuration 
 }
 
 /**
- * Tracks flow from calls, which set a type validator, to a subsequent Jackson deserialization method call,
+ * Tracks flow from calls which set a type validator to a subsequent Jackson deserialization method call,
  * including across builder method calls.
  *
  * Such a Jackson deserialization method call is safe because validation will likely prevent instantiating unexpected types.
