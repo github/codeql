@@ -1,5 +1,5 @@
 /**
- * Provides a taint-tracking configuration for detecting "SQL Injection" vulnerabilities.
+ * Provides a taint-tracking configuration for detecting "SQL injection" vulnerabilities.
  *
  * Note, for performance reasons: only import this file if
  * `SqlInjection::Configuration` is needed, otherwise
@@ -11,13 +11,13 @@ import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 
 /**
- * Provides a taint-tracking configuration for detecting "SQL Injection" vulnerabilities.
+ * Provides a taint-tracking configuration for detecting "SQL injection" vulnerabilities.
  */
 module SqlInjection {
   import SqlInjectionCustomizations::SqlInjection
 
   /**
-   * A taint-tracking configuration for detecting "SQL Injection" vulnerabilities.
+   * A taint-tracking configuration for detecting "SQL injection" vulnerabilities.
    */
   class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "SqlInjection" }

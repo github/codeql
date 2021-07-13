@@ -1,6 +1,6 @@
 /**
  * Provides default sources, sinks and sanitizers for detecting
- * "SQL Injection"
+ * "SQL injection"
  * vulnerabilities, as well as extension points for adding your own.
  */
 
@@ -12,27 +12,27 @@ private import semmle.python.dataflow.new.BarrierGuards
 
 /**
  * Provides default sources, sinks and sanitizers for detecting
- * "SQL Injection"
+ * "SQL injection"
  * vulnerabilities, as well as extension points for adding your own.
  */
 module SqlInjection {
   /**
-   * A data flow source for "SQL Injection" vulnerabilities.
+   * A data flow source for "SQL injection" vulnerabilities.
    */
   abstract class Source extends DataFlow::Node { }
 
   /**
-   * A data flow sink for "SQL Injection" vulnerabilities.
+   * A data flow sink for "SQL injection" vulnerabilities.
    */
   abstract class Sink extends DataFlow::Node { }
 
   /**
-   * A sanitizer for "SQL Injection" vulnerabilities.
+   * A sanitizer for "SQL injection" vulnerabilities.
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
-   * A sanitizer guard for "SQL Injection" vulnerabilities.
+   * A sanitizer guard for "SQL injection" vulnerabilities.
    */
   abstract class SanitizerGuard extends DataFlow::BarrierGuard { }
 
