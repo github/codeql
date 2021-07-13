@@ -224,6 +224,20 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
+			// "jakarta.json;Json;false;decodePointer;;;Argument[0];ReturnValue;taint"
+			String out = null;
+			String in = (String)source();
+			out = jakarta.json.Json.decodePointer(in);
+			sink(out); // $hasTaintFlow
+		}
+		{
+			// "jakarta.json;Json;false;encodePointer;;;Argument[0];ReturnValue;taint"
+			String out = null;
+			String in = (String)source();
+			out = jakarta.json.Json.encodePointer(in);
+			sink(out); // $hasTaintFlow
+		}
+		{
 			// "jakarta.json;JsonArray;false;getBoolean;;;Argument[-1];ReturnValue;taint"
 			boolean out = false;
 			jakarta.json.JsonArray in = (jakarta.json.JsonArray)source();
@@ -1932,6 +1946,20 @@ public class Test {
 			javax.json.JsonWriter out = null;
 			OutputStream in = (OutputStream)source();
 			out = javax.json.Json.createWriter(in);
+			sink(out); // $hasTaintFlow
+		}
+		{
+			// "javax.json;Json;false;decodePointer;;;Argument[0];ReturnValue;taint"
+			String out = null;
+			String in = (String)source();
+			out = javax.json.Json.decodePointer(in);
+			sink(out); // $hasTaintFlow
+		}
+		{
+			// "javax.json;Json;false;encodePointer;;;Argument[0];ReturnValue;taint"
+			String out = null;
+			String in = (String)source();
+			out = javax.json.Json.encodePointer(in);
 			sink(out); // $hasTaintFlow
 		}
 		{

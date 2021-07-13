@@ -24,6 +24,8 @@ private class FlowSummaries extends SummaryModelCsv {
           ".json;Json;false;createReader;;;Argument[0];ReturnValue;taint",
           ".json;Json;false;createValue;;;Argument[0];ReturnValue;taint",
           ".json;Json;false;createWriter;;;Argument[0];ReturnValue;taint",
+          ".json;Json;false;decodePointer;;;Argument[0];ReturnValue;taint",
+          ".json;Json;false;encodePointer;;;Argument[0];ReturnValue;taint",
           ".json;JsonArray;false;getBoolean;;;Argument[-1];ReturnValue;taint",
           ".json;JsonArray;false;getBoolean;;;Argument[1];ReturnValue;value",
           ".json;JsonArray;false;getInt;;;Argument[-1];ReturnValue;taint",
