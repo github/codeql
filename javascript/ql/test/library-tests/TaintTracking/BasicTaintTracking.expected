@@ -35,6 +35,14 @@ typeInferenceMismatch
 | callbacks.js:53:23:53:30 | source() | callbacks.js:58:10:58:10 | x |
 | capture-flow.js:9:11:9:18 | source() | capture-flow.js:14:10:14:16 | outer() |
 | captured-sanitizer.js:25:3:25:10 | source() | captured-sanitizer.js:15:10:15:10 | x |
+| case.js:2:16:2:23 | source() | case.js:5:8:5:35 | changeC ... source) |
+| case.js:2:16:2:23 | source() | case.js:8:8:8:24 | camelCase(source) |
+| case.js:2:16:2:23 | source() | case.js:11:8:11:24 | kebabCase(source) |
+| case.js:2:16:2:23 | source() | case.js:12:8:12:32 | kebabCa ... source) |
+| case.js:2:16:2:23 | source() | case.js:15:8:15:24 | titleCase(source) |
+| case.js:2:16:2:23 | source() | case.js:18:8:18:23 | titleize(source) |
+| case.js:2:16:2:23 | source() | case.js:21:8:21:26 | secondCamel(source) |
+| case.js:2:16:2:23 | source() | case.js:24:8:24:25 | decamelize(source) |
 | closure.js:6:15:6:22 | source() | closure.js:8:8:8:31 | string. ... (taint) |
 | closure.js:6:15:6:22 | source() | closure.js:9:8:9:25 | string.trim(taint) |
 | closure.js:6:15:6:22 | source() | closure.js:10:8:10:33 | string. ... nt, 50) |
