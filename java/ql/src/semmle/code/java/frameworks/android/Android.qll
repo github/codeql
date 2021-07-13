@@ -3,6 +3,7 @@
  */
 
 import java
+import semmle.code.java.dataflow.FlowSteps
 import semmle.code.xml.AndroidManifest
 
 /**
@@ -81,4 +82,24 @@ class AndroidContentResolver extends AndroidComponent {
 /** Interface for classes whose instances can be written to and restored from a Parcel. */
 class TypeParcelable extends Interface {
   TypeParcelable() { this.hasQualifiedName("android.os", "Parcelable") }
+}
+
+/** A getter on `android.os.BaseBundle` or `android.os.Bundle`. */
+class BundleGetterMethod extends Method, TaintPreservingCallable {
+  BundleGetterMethod() {
+    getDeclaringType().hasQualifiedName("android.os", ["BaseBundle", "Bundle"]) and
+    getName().matches("get%")
+  }
+
+  override predicate returnsTaintFrom(int arg) { arg = -1 }
+}
+
+/** A reader method on `android.os.Parcel`. */
+class ParcelReaderMethod extends Method, TaintPreservingCallable {
+  ParcelReaderMethod() {
+    getDeclaringType().hasQualifiedName("android.os", "Parcel") and
+    getName().matches("read%")
+  }
+
+  override predicate returnsTaintFrom(int arg) { arg = -1 }
 }

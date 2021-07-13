@@ -93,6 +93,18 @@ JsonIO deserialization vulnerabilities:
 <a href="https://klezvirus.github.io/Advanced-Web-Hacking/Serialisation/">JsonIO deserialization</a>.
 </li>
 <li>
+Gson deserialization vulnerabilities:
+<a href="https://blog.oversecured.com/Exploiting-memory-corruption-vulnerabilities-on-Android/#insecure-use-of-json-parsers">Insecure use of JSON parsers</a>.
+</li>
+<li>
+RCE in Flexjson:
+<a href="https://codewhitesec.blogspot.com/2020/03/liferay-portal-json-vulns.html">Flexjson deserialization</a>.
+</li>
+<li>
+Jabsorb documentation on deserialization:
+<a href="https://github.com/Servoy/jabsorb/blob/master/src/org/jabsorb/">Jabsorb JSON Serializer</a>.
+</li>
+<li>
 JoddJson documentation on deserialization:
 <a href="https://json.jodd.org/parser">JoddJson Parser</a>.
 </li>

@@ -10,9 +10,17 @@ class JabsorbSerializer extends RefType {
 }
 
 /** The deserialization method `unmarshall`. */
-class JabsorbDeserializeMethod extends Method {
-  JabsorbDeserializeMethod() {
+class JabsorbUnmarshallMethod extends Method {
+  JabsorbUnmarshallMethod() {
     this.getDeclaringType().getASupertype*() instanceof JabsorbSerializer and
     this.getName() = "unmarshall"
+  }
+}
+
+/** The deserialization method `fromJSON`. */
+class JabsorbFromJsonMethod extends Method {
+  JabsorbFromJsonMethod() {
+    this.getDeclaringType().getASupertype*() instanceof JabsorbSerializer and
+    this.getName() = "fromJSON"
   }
 }

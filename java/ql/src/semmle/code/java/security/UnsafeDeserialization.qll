@@ -131,6 +131,13 @@ class CreateFromParcelMethod extends Method {
   }
 }
 
+private predicate isReflectiveClassIdentifierStep(DataFlow::Node node1, DataFlow::Node node2) {
+  exists(ReflectiveClassIdentifierMethodAccess ma |
+    node1.asExpr() = ma.getArgument(0) and
+    node2.asExpr() = ma
+  )
+}
+
 /** Unsafe Gson configuration with dynamic type. */
 class UnsafeGsonConfig extends TaintTracking2::Configuration {
   UnsafeGsonConfig() { this = "UnsafeDeserialization::UnsafeGsonConfig" }
@@ -145,10 +152,7 @@ class UnsafeGsonConfig extends TaintTracking2::Configuration {
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(ReflectiveClassIdentifierMethodAccess ma |
-      node1.asExpr() = ma.getArgument(0) and
-      node2.asExpr() = ma
-    )
+    isReflectiveClassIdentifierStep(node1, node2)
     or
     exists(CreateFromParcelMethod m, Variable v |
       m.getEnclosingCallable().getDeclaringType() = v.getType() and
@@ -172,10 +176,7 @@ class UnsafeDynamicJoddJsonConfig extends DataFlow2::Configuration {
   }
 
   override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(ReflectiveClassIdentifierMethodAccess ma |
-      node1.asExpr() = ma.getArgument(0) and
-      node2.asExpr() = ma
-    )
+    isReflectiveClassIdentifierStep(node1, node2)
   }
 }
 
@@ -218,16 +219,13 @@ class UnsafeJabsorbConfig extends TaintTracking2::Configuration {
 
   override predicate isSink(DataFlow::Node sink) {
     exists(MethodAccess ma |
-      ma.getMethod() instanceof JabsorbDeserializeMethod and
+      ma.getMethod() instanceof JabsorbUnmarshallMethod and
       sink.asExpr() = ma.getArgument(1) // The class type argument
     )
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(ReflectiveClassIdentifierMethodAccess ma |
-      node1.asExpr() = ma.getArgument(0) and
-      node2.asExpr() = ma
-    )
+    isReflectiveClassIdentifierStep(node1, node2)
   }
 }
 
@@ -294,9 +292,12 @@ predicate unsafeDeserialization(MethodAccess ma, Expr sink) {
       exists(UnsafeJoddJsonWithClassMetadataConfig sg | sg.hasFlowToExpr(ma.getQualifier()))
     )
     or
-    m instanceof JabsorbDeserializeMethod and
+    m instanceof JabsorbUnmarshallMethod and
     sink = ma.getArgument(2) and
     exists(UnsafeJabsorbConfig ujg | ujg.hasFlowToExpr(ma.getArgument(1)))
+    or
+    m instanceof JabsorbFromJsonMethod and
+    sink = ma.getArgument(0)
   )
 }
 

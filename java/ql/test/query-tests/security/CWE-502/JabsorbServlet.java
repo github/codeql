@@ -104,4 +104,18 @@ public class JabsorbServlet extends HttpServlet {
             throw new IOException(e.getMessage());
         }
     }
+
+    // BAD: allow explicit class type controlled by remote source in the format of "json={\"javaClass\":\"com.thirdparty.Attacker\", ...}"
+    public void doPut2(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String json = req.getParameter("json");
+
+        try {
+            JSONSerializer serializer = new JSONSerializer();
+            serializer.registerDefaultSerializers();
+
+            User user = (User) serializer.fromJSON(json);
+        } catch (Exception e) {
+            throw new IOException(e.getMessage());
+        }
+    }
 }

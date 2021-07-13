@@ -44,7 +44,7 @@ class UnsafeDeserializationConfig extends TaintTracking::Configuration {
     exists(CreateFromParcelMethod m, Variable v |
       m.getEnclosingCallable().getDeclaringType() = v.getType() and
       pred.asExpr() = v.getAnAssignedValue() and
-      succ.asExpr() = m.getAParameter().getAnAccess()
+      succ.asExpr() = m.getParameter(0).getAnAccess()
     )
     or
     exists(ConstructorCall cc |
