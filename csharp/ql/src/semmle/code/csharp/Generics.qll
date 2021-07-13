@@ -378,8 +378,7 @@ class ConstructedType extends ValueOrRefType, ConstructedGeneric {
 
   language[monotonicAggregates]
   private string getTypeArgumentsNames() {
-    result =
-      strictconcat(Type t, int i | t = this.getTypeArgument(i) | t.getName(), ", " order by i)
+    result = strictconcat(Type t, int i | t = this.getTypeArgument(i) | t.getName(), "," order by i)
   }
 
   language[monotonicAggregates]
