@@ -348,35 +348,19 @@ class TestCase extends TTestCase {
   string getInputTypeString() { result = getShortNameIfPossible(this.getInputType()) }
 
   /**
-   * Returns the next-highest stack item in `input`, treating the list as circular, so
-   * the top item's successor is `baseInput`, the bottom of the stack.
-   */
-  SummaryComponentStack nextInput(SummaryComponentStack prev) {
-    exists(SummaryComponentStack next | next.tail() = prev and next = input.drop(_) | result = next)
-    or
-    not exists(SummaryComponentStack next | next.tail() = prev and next = input.drop(_)) and
-    result = baseInput
-  }
-
-  /**
    * Returns a call to `source()` wrapped in `newWith` methods as needed according to `input`.
    * For example, if the input specification is `ArrayElement of MapValue of Argument[0]`, this
    * will return `newWithMapValue(newWithArrayElement(source()))`.
-   *
-   * This requires a slightly awkward walk, out from the element above the root (`Argument[0]` above)
-   * climbing up towards the outer `ArrayElement of...`. This is implemented by treating the stack as
-   * a circular list, walking it backwards and treating the root as a sentinel indicating we should
-   * emit `source()`.
    */
-  string getInput(SummaryComponentStack componentStack) {
-    componentStack = input.drop(_) and
+  string getInput(SummaryComponentStack stack) {
+    stack = input.drop(_) and
     (
-      if componentStack = baseInput
-      then result = "source()"
-      else
-        result =
-          "newWith" + contentToken(getContent(componentStack.head())) + "(" +
-            this.getInput(nextInput(componentStack)) + ")"
+      stack = input and result = "source()"
+      or
+      exists(SummaryComponentStack s |
+        result = "newWith" + contentToken(getContent(s.head())) + "(" + this.getInput(s) + ")" and
+        stack = s.tail()
+      )
     )
   }
 
@@ -476,9 +460,8 @@ class TestCase extends TTestCase {
     result =
       "\t\t{\n\t\t\t// \"" + row + "\"\n\t\t\t" + getShortNameIfPossible(this.getOutputType()) +
         " out = null;\n\t\t\t" + this.getInputTypeString() + " in = (" + this.getInputTypeString() +
-        ")" + this.getInput(this.nextInput(baseInput)) + ";\n\t\t\t" + this.getInstancePrefix() +
-        this.makeCall() + ";\n\t\t\t" + "sink(" + this.getOutput(output) + "); " +
-        this.getExpectation() + "\n\t\t}\n"
+        ")" + this.getInput(baseInput) + ";\n\t\t\t" + this.getInstancePrefix() + this.makeCall() +
+        ";\n\t\t\t" + "sink(" + this.getOutput(output) + "); " + this.getExpectation() + "\n\t\t}\n"
   }
 }
 
