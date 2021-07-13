@@ -14,10 +14,11 @@
 import cpp
 import semmle.code.cpp.security.SensitiveExprs
 import semmle.code.cpp.security.FileWrite
+import semmle.code.cpp.dataflow.DataFlow
 
 from FileWrite w, SensitiveExpr source, Expr dest
 where
-  source = w.getASource() and
+  DataFlow::localFlow(DataFlow::exprNode(source), DataFlow::exprNode(w.getASource())) and
   dest = w.getDest()
 select w, "This write into file '" + dest.toString() + "' may contain unencrypted data from $@",
   source, "this source."

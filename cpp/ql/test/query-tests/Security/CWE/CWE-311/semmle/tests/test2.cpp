@@ -37,7 +37,7 @@ void tests(FILE *log, myStruct &s)
 		char *cpy1 = s.password;
 		char *cpy2 = crypt(s.password);
 
-		fprintf(log, "cpy1 = %s\n", cpy1); // BAD [NOT DETECTED]
+		fprintf(log, "cpy1 = %s\n", cpy1); // BAD
 		fprintf(log, "cpy2 = %s\n", cpy2); // GOOD
 	}
 
