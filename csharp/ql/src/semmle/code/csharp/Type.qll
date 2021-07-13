@@ -1103,11 +1103,14 @@ class TupleType extends ValueType, @tuple_type {
   override string toStringWithTypes() {
     result =
       "(" +
-        concat(int i |
-          exists(getElement(i))
-        |
-          getElement(i).getType().toStringWithTypes(), ", " order by i
-        ) + ")"
+        concat(Type t, int i | t = getElement(i).getType() | t.toStringWithTypes(), ", " order by i)
+        + ")"
+  }
+
+  language[monotonicAggregates]
+  override string getName() {
+    result =
+      "(" + concat(Type t, int i | t = getElement(i).getType() | t.getName(), "," order by i) + ")"
   }
 
   override string getLabel() { result = getUnderlyingType().getLabel() }
