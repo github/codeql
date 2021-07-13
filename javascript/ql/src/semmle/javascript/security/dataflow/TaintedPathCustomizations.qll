@@ -798,6 +798,12 @@ module TaintedPath {
       srclabel instanceof Label::SplitPath and
       dstlabel.(Label::PosixPath).canContainDotDotSlash()
     )
+    or
+    exists(API::CallNode call | call = API::moduleImport("slash").getACall() |
+      src = call.getArgument(0) and
+      dst = call and
+      srclabel = dstlabel
+    )
   }
 
   /**

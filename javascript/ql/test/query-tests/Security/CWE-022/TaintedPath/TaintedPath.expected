@@ -1843,6 +1843,29 @@ nodes
 | normalizedPaths.js:363:21:363:31 | requestPath |
 | normalizedPaths.js:363:21:363:31 | requestPath |
 | normalizedPaths.js:363:21:363:31 | requestPath |
+| normalizedPaths.js:377:7:377:27 | path |
+| normalizedPaths.js:377:7:377:27 | path |
+| normalizedPaths.js:377:7:377:27 | path |
+| normalizedPaths.js:377:7:377:27 | path |
+| normalizedPaths.js:377:14:377:27 | req.query.path |
+| normalizedPaths.js:377:14:377:27 | req.query.path |
+| normalizedPaths.js:377:14:377:27 | req.query.path |
+| normalizedPaths.js:377:14:377:27 | req.query.path |
+| normalizedPaths.js:377:14:377:27 | req.query.path |
+| normalizedPaths.js:379:19:379:22 | path |
+| normalizedPaths.js:379:19:379:22 | path |
+| normalizedPaths.js:379:19:379:22 | path |
+| normalizedPaths.js:379:19:379:22 | path |
+| normalizedPaths.js:379:19:379:22 | path |
+| normalizedPaths.js:381:19:381:29 | slash(path) |
+| normalizedPaths.js:381:19:381:29 | slash(path) |
+| normalizedPaths.js:381:19:381:29 | slash(path) |
+| normalizedPaths.js:381:19:381:29 | slash(path) |
+| normalizedPaths.js:381:19:381:29 | slash(path) |
+| normalizedPaths.js:381:25:381:28 | path |
+| normalizedPaths.js:381:25:381:28 | path |
+| normalizedPaths.js:381:25:381:28 | path |
+| normalizedPaths.js:381:25:381:28 | path |
 | other-fs-libraries.js:9:7:9:48 | path |
 | other-fs-libraries.js:9:7:9:48 | path |
 | other-fs-libraries.js:9:7:9:48 | path |
@@ -6111,6 +6134,34 @@ edges
 | normalizedPaths.js:358:47:358:50 | path | normalizedPaths.js:358:21:358:51 | pathMod ... , path) |
 | normalizedPaths.js:358:47:358:50 | path | normalizedPaths.js:358:21:358:51 | pathMod ... , path) |
 | normalizedPaths.js:358:47:358:50 | path | normalizedPaths.js:358:21:358:51 | pathMod ... , path) |
+| normalizedPaths.js:377:7:377:27 | path | normalizedPaths.js:379:19:379:22 | path |
+| normalizedPaths.js:377:7:377:27 | path | normalizedPaths.js:379:19:379:22 | path |
+| normalizedPaths.js:377:7:377:27 | path | normalizedPaths.js:379:19:379:22 | path |
+| normalizedPaths.js:377:7:377:27 | path | normalizedPaths.js:379:19:379:22 | path |
+| normalizedPaths.js:377:7:377:27 | path | normalizedPaths.js:379:19:379:22 | path |
+| normalizedPaths.js:377:7:377:27 | path | normalizedPaths.js:379:19:379:22 | path |
+| normalizedPaths.js:377:7:377:27 | path | normalizedPaths.js:379:19:379:22 | path |
+| normalizedPaths.js:377:7:377:27 | path | normalizedPaths.js:379:19:379:22 | path |
+| normalizedPaths.js:377:7:377:27 | path | normalizedPaths.js:381:25:381:28 | path |
+| normalizedPaths.js:377:7:377:27 | path | normalizedPaths.js:381:25:381:28 | path |
+| normalizedPaths.js:377:7:377:27 | path | normalizedPaths.js:381:25:381:28 | path |
+| normalizedPaths.js:377:7:377:27 | path | normalizedPaths.js:381:25:381:28 | path |
+| normalizedPaths.js:377:14:377:27 | req.query.path | normalizedPaths.js:377:7:377:27 | path |
+| normalizedPaths.js:377:14:377:27 | req.query.path | normalizedPaths.js:377:7:377:27 | path |
+| normalizedPaths.js:377:14:377:27 | req.query.path | normalizedPaths.js:377:7:377:27 | path |
+| normalizedPaths.js:377:14:377:27 | req.query.path | normalizedPaths.js:377:7:377:27 | path |
+| normalizedPaths.js:377:14:377:27 | req.query.path | normalizedPaths.js:377:7:377:27 | path |
+| normalizedPaths.js:377:14:377:27 | req.query.path | normalizedPaths.js:377:7:377:27 | path |
+| normalizedPaths.js:377:14:377:27 | req.query.path | normalizedPaths.js:377:7:377:27 | path |
+| normalizedPaths.js:377:14:377:27 | req.query.path | normalizedPaths.js:377:7:377:27 | path |
+| normalizedPaths.js:381:25:381:28 | path | normalizedPaths.js:381:19:381:29 | slash(path) |
+| normalizedPaths.js:381:25:381:28 | path | normalizedPaths.js:381:19:381:29 | slash(path) |
+| normalizedPaths.js:381:25:381:28 | path | normalizedPaths.js:381:19:381:29 | slash(path) |
+| normalizedPaths.js:381:25:381:28 | path | normalizedPaths.js:381:19:381:29 | slash(path) |
+| normalizedPaths.js:381:25:381:28 | path | normalizedPaths.js:381:19:381:29 | slash(path) |
+| normalizedPaths.js:381:25:381:28 | path | normalizedPaths.js:381:19:381:29 | slash(path) |
+| normalizedPaths.js:381:25:381:28 | path | normalizedPaths.js:381:19:381:29 | slash(path) |
+| normalizedPaths.js:381:25:381:28 | path | normalizedPaths.js:381:19:381:29 | slash(path) |
 | other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:11:19:11:22 | path |
 | other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:11:19:11:22 | path |
 | other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:11:19:11:22 | path |
@@ -8535,6 +8586,8 @@ edges
 | normalizedPaths.js:346:19:346:22 | path | normalizedPaths.js:339:32:339:45 | req.query.path | normalizedPaths.js:346:19:346:22 | path | This path depends on $@. | normalizedPaths.js:339:32:339:45 | req.query.path | a user-provided value |
 | normalizedPaths.js:356:19:356:22 | path | normalizedPaths.js:354:14:354:27 | req.query.path | normalizedPaths.js:356:19:356:22 | path | This path depends on $@. | normalizedPaths.js:354:14:354:27 | req.query.path | a user-provided value |
 | normalizedPaths.js:363:21:363:31 | requestPath | normalizedPaths.js:354:14:354:27 | req.query.path | normalizedPaths.js:363:21:363:31 | requestPath | This path depends on $@. | normalizedPaths.js:354:14:354:27 | req.query.path | a user-provided value |
+| normalizedPaths.js:379:19:379:22 | path | normalizedPaths.js:377:14:377:27 | req.query.path | normalizedPaths.js:379:19:379:22 | path | This path depends on $@. | normalizedPaths.js:377:14:377:27 | req.query.path | a user-provided value |
+| normalizedPaths.js:381:19:381:29 | slash(path) | normalizedPaths.js:377:14:377:27 | req.query.path | normalizedPaths.js:381:19:381:29 | slash(path) | This path depends on $@. | normalizedPaths.js:377:14:377:27 | req.query.path | a user-provided value |
 | other-fs-libraries.js:11:19:11:22 | path | other-fs-libraries.js:9:24:9:30 | req.url | other-fs-libraries.js:11:19:11:22 | path | This path depends on $@. | other-fs-libraries.js:9:24:9:30 | req.url | a user-provided value |
 | other-fs-libraries.js:12:27:12:30 | path | other-fs-libraries.js:9:24:9:30 | req.url | other-fs-libraries.js:12:27:12:30 | path | This path depends on $@. | other-fs-libraries.js:9:24:9:30 | req.url | a user-provided value |
 | other-fs-libraries.js:13:24:13:27 | path | other-fs-libraries.js:9:24:9:30 | req.url | other-fs-libraries.js:13:24:13:27 | path | This path depends on $@. | other-fs-libraries.js:9:24:9:30 | req.url | a user-provided value |
