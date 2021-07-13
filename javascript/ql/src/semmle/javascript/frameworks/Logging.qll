@@ -343,22 +343,43 @@ class StripAnsiStep extends TaintTracking::SharedTaintStep {
  */
 private module Pino {
   /**
-   * Gets a logger instance from the `pino` library.
+   * Gets a logger instance created by importing the `pino` library.
    */
-  private API::Node pino() {
+  private API::Node pinoApi() {
     result = API::moduleImport("pino").getReturn()
     or
-    result = pino().getMember("child").getReturn()
+    result = pinoApi().getMember("child").getReturn()
+  }
+
+  /**
+   * Gets a logger instance from the `pino` library.
+   */
+  private DataFlow::SourceNode pino() {
+    result = pinoApi().getAnImmediateUse()
+    or
+    // `pino` is installed as the "log" property on the request object in `Express` and similar libraries.
+    // in `Hapi` the property is "logger".
+    exists(HTTP::RequestExpr req |
+      result = req.flow().getALocalSource().getAPropertyRead(["log", "logger"])
+    )
+  }
+
+  /**
+   * Gets a reference to a logger method from the `pino` library.
+   */
+  private DataFlow::SourceNode pinoCallee(DataFlow::TypeTracker t) {
+    t.startInProp(["trace", "debug", "info", "warn", "error", "fatal"]) and
+    result = pino()
+    or
+    exists(DataFlow::TypeTracker t2 | result = pinoCallee(t2).track(t2, t))
   }
 
   /**
    * A logging call to the `pino` library.
    */
   private class PinoCall extends LoggerCall {
-    PinoCall() {
-      this = pino().getMember(["trace", "debug", "info", "warn", "error", "fatal"]).getACall()
-    }
+    PinoCall() { this = pinoCallee(DataFlow::TypeTracker::end()).getACall() }
 
-    override DataFlow::Node getAMessageComponent() { result = getArgument(0) }
+    override DataFlow::Node getAMessageComponent() { result = getAnArgument() }
   }
 }
