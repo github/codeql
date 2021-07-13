@@ -485,18 +485,9 @@ namespace Semmle.Extraction.CSharp
 
             if (namedType.IsGenericType && namedType.TypeKind != TypeKind.Error && namedType.TypeArguments.Any())
             {
-                trapFile.Write('<');
-                trapFile.BuildList(
-                    ",",
-                    namedType.TypeArguments,
-                    p =>
-                    {
-                        if (IsReallyBound(namedType))
-                        {
-                            p.BuildDisplayName(cx, trapFile);
-                        }
-                    });
-                trapFile.Write('>');
+                var args = string.Join(',', namedType.TypeArguments.Select(ta => ta.MetadataName));
+
+                cx.Extractor.Logger.Log(Util.Logging.Severity.Debug, $"Found generic type '{namedType.MetadataName}' with type arguments '{args}', skipping type arguments in type name.");
             }
         }
 
