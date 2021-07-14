@@ -2,7 +2,7 @@
  * @name Errors Of Undefined Program Behavior
  * @description --In some situations, the code constructs used may be executed in the wrong order in which the developer designed them.
  *              --For example, if you call multiple functions as part of a single expression, and the functions have the ability to modify a shared resource, then the sequence in which the resource is changed can be unpredictable.
- *              --These code snippets look suspicious and require the developer's attentio.
+ *              --These code snippets look suspicious and require the developer's attention.
  * @kind problem
  * @id cpp/errors-of-undefined-program-behavior
  * @problem.severity warning
