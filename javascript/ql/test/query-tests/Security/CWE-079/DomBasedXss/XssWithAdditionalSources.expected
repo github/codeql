@@ -381,6 +381,13 @@ nodes
 | string-manipulations.js:10:16:10:45 | String( ... n.href) |
 | string-manipulations.js:10:23:10:44 | documen ... on.href |
 | string-manipulations.js:10:23:10:44 | documen ... on.href |
+| tooltip.jsx:6:11:6:30 | source |
+| tooltip.jsx:6:20:6:30 | window.name |
+| tooltip.jsx:6:20:6:30 | window.name |
+| tooltip.jsx:10:25:10:30 | source |
+| tooltip.jsx:10:25:10:30 | source |
+| tooltip.jsx:11:25:11:30 | source |
+| tooltip.jsx:11:25:11:30 | source |
 | translate.js:6:7:6:39 | target |
 | translate.js:6:16:6:39 | documen ... .search |
 | translate.js:6:16:6:39 | documen ... .search |
@@ -1101,6 +1108,12 @@ edges
 | string-manipulations.js:10:23:10:44 | documen ... on.href | string-manipulations.js:10:16:10:45 | String( ... n.href) |
 | string-manipulations.js:10:23:10:44 | documen ... on.href | string-manipulations.js:10:16:10:45 | String( ... n.href) |
 | string-manipulations.js:10:23:10:44 | documen ... on.href | string-manipulations.js:10:16:10:45 | String( ... n.href) |
+| tooltip.jsx:6:11:6:30 | source | tooltip.jsx:10:25:10:30 | source |
+| tooltip.jsx:6:11:6:30 | source | tooltip.jsx:10:25:10:30 | source |
+| tooltip.jsx:6:11:6:30 | source | tooltip.jsx:11:25:11:30 | source |
+| tooltip.jsx:6:11:6:30 | source | tooltip.jsx:11:25:11:30 | source |
+| tooltip.jsx:6:20:6:30 | window.name | tooltip.jsx:6:11:6:30 | source |
+| tooltip.jsx:6:20:6:30 | window.name | tooltip.jsx:6:11:6:30 | source |
 | translate.js:6:7:6:39 | target | translate.js:7:42:7:47 | target |
 | translate.js:6:16:6:39 | documen ... .search | translate.js:6:7:6:39 | target |
 | translate.js:6:16:6:39 | documen ... .search | translate.js:6:7:6:39 | target |
