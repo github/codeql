@@ -642,6 +642,13 @@ module Private {
       )
     }
 
+    /**
+     * Holds if `spec` specifies summary component stack `stack`.
+     */
+    predicate interpretSpec(string spec, SummaryComponentStack stack) {
+      interpretSpec(spec, 0, stack)
+    }
+
     private predicate interpretSpec(string spec, int idx, SummaryComponentStack stack) {
       exists(string c |
         relevantSpec(spec) and
@@ -680,8 +687,8 @@ module Private {
       ) {
         exists(string inSpec, string outSpec, string kind |
           summaryElement(this, inSpec, outSpec, kind) and
-          interpretSpec(inSpec, 0, input) and
-          interpretSpec(outSpec, 0, output)
+          interpretSpec(inSpec, input) and
+          interpretSpec(outSpec, output)
         |
           kind = "value" and preservesValue = true
           or
