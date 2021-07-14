@@ -3,16 +3,6 @@ package generatedtest;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
-import com.google.common.collect.AbstractListMultimap;
-import com.google.common.collect.AbstractMapBasedMultimap;
-import com.google.common.collect.AbstractMapBasedMultiset;
-import com.google.common.collect.AbstractMultimap;
-import com.google.common.collect.AbstractMultiset;
-import com.google.common.collect.AbstractSetMultimap;
-import com.google.common.collect.AbstractSortedKeySortedSetMultimap;
-import com.google.common.collect.AbstractSortedMultiset;
-import com.google.common.collect.AbstractSortedSetMultimap;
-import com.google.common.collect.AbstractTable;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ArrayTable;
 import com.google.common.collect.BiMap;
@@ -33,11 +23,8 @@ import com.google.common.collect.ImmutableMultiset;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.ImmutableSortedMap;
-import com.google.common.collect.ImmutableSortedMapFauxverideShim;
 import com.google.common.collect.ImmutableSortedMultiset;
-import com.google.common.collect.ImmutableSortedMultisetFauxverideShim;
 import com.google.common.collect.ImmutableSortedSet;
-import com.google.common.collect.ImmutableSortedSetFauxverideShim;
 import com.google.common.collect.ImmutableTable;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
@@ -61,10 +48,7 @@ import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Sets;
 import com.google.common.collect.SortedMapDifference;
 import com.google.common.collect.SortedMultiset;
-import com.google.common.collect.SortedMultisetBridge;
 import com.google.common.collect.SortedSetMultimap;
-import com.google.common.collect.StandardRowSortedTable;
-import com.google.common.collect.StandardTable;
 import com.google.common.collect.Table;
 import com.google.common.collect.Tables;
 import com.google.common.collect.TreeBasedTable;
@@ -117,7 +101,7 @@ public class Test {
 	Object source() { return null; }
 	void sink(Object o) { }
 
-	public void test() {
+	public void test() throws Exception {
 
 		{
 			// "com.google.common.collect;ArrayListMultimap;true;create;(Multimap);;MapKey of Argument[0];MapKey of ReturnValue;value"
@@ -1613,41 +1597,6 @@ public class Test {
 		{
 			// "com.google.common.collect;ImmutableMap;true;of;;;Argument[0];MapKey of ReturnValue;value"
 			ImmutableSortedMap out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMapFauxverideShim.of(in, null, null, null, null, null, null, null, null, null);
-			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMap;true;of;;;Argument[0];MapKey of ReturnValue;value"
-			ImmutableSortedMap out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMapFauxverideShim.of(in, null, null, null, null, null, null, null);
-			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMap;true;of;;;Argument[0];MapKey of ReturnValue;value"
-			ImmutableSortedMap out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMapFauxverideShim.of(in, null, null, null, null, null);
-			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMap;true;of;;;Argument[0];MapKey of ReturnValue;value"
-			ImmutableSortedMap out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMapFauxverideShim.of(in, null, null, null);
-			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMap;true;of;;;Argument[0];MapKey of ReturnValue;value"
-			ImmutableSortedMap out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMapFauxverideShim.of(in, null);
-			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMap;true;of;;;Argument[0];MapKey of ReturnValue;value"
-			ImmutableSortedMap out = null;
 			Comparable in = (Comparable)source();
 			out = ImmutableSortedMap.of(in, null, null, null, null, null, null, null, null, null);
 			sink(getMapKey(out)); // $hasValueFlow
@@ -1714,41 +1663,6 @@ public class Test {
 			Object in = (Object)source();
 			out = ImmutableMap.of(in, null);
 			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMap;true;of;;;Argument[1];MapValue of ReturnValue;value"
-			ImmutableSortedMap out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMapFauxverideShim.of(null, in, null, null, null, null, null, null, null, null);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMap;true;of;;;Argument[1];MapValue of ReturnValue;value"
-			ImmutableSortedMap out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMapFauxverideShim.of(null, in, null, null, null, null, null, null);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMap;true;of;;;Argument[1];MapValue of ReturnValue;value"
-			ImmutableSortedMap out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMapFauxverideShim.of(null, in, null, null, null, null);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMap;true;of;;;Argument[1];MapValue of ReturnValue;value"
-			ImmutableSortedMap out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMapFauxverideShim.of(null, in, null, null);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMap;true;of;;;Argument[1];MapValue of ReturnValue;value"
-			ImmutableSortedMap out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMapFauxverideShim.of(null, in);
-			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableMap;true;of;;;Argument[1];MapValue of ReturnValue;value"
@@ -1823,34 +1737,6 @@ public class Test {
 		{
 			// "com.google.common.collect;ImmutableMap;true;of;;;Argument[2];MapKey of ReturnValue;value"
 			ImmutableSortedMap out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMapFauxverideShim.of(null, null, in, null, null, null, null, null, null, null);
-			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMap;true;of;;;Argument[2];MapKey of ReturnValue;value"
-			ImmutableSortedMap out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMapFauxverideShim.of(null, null, in, null, null, null, null, null);
-			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMap;true;of;;;Argument[2];MapKey of ReturnValue;value"
-			ImmutableSortedMap out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMapFauxverideShim.of(null, null, in, null, null, null);
-			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMap;true;of;;;Argument[2];MapKey of ReturnValue;value"
-			ImmutableSortedMap out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMapFauxverideShim.of(null, null, in, null);
-			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMap;true;of;;;Argument[2];MapKey of ReturnValue;value"
-			ImmutableSortedMap out = null;
 			Comparable in = (Comparable)source();
 			out = ImmutableSortedMap.of(null, null, in, null, null, null, null, null, null, null);
 			sink(getMapKey(out)); // $hasValueFlow
@@ -1903,34 +1789,6 @@ public class Test {
 			Object in = (Object)source();
 			out = ImmutableMap.of(null, null, in, null);
 			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMap;true;of;;;Argument[3];MapValue of ReturnValue;value"
-			ImmutableSortedMap out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMapFauxverideShim.of(null, null, null, in, null, null, null, null, null, null);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMap;true;of;;;Argument[3];MapValue of ReturnValue;value"
-			ImmutableSortedMap out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMapFauxverideShim.of(null, null, null, in, null, null, null, null);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMap;true;of;;;Argument[3];MapValue of ReturnValue;value"
-			ImmutableSortedMap out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMapFauxverideShim.of(null, null, null, in, null, null);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMap;true;of;;;Argument[3];MapValue of ReturnValue;value"
-			ImmutableSortedMap out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMapFauxverideShim.of(null, null, null, in);
-			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableMap;true;of;;;Argument[3];MapValue of ReturnValue;value"
@@ -1991,27 +1849,6 @@ public class Test {
 		{
 			// "com.google.common.collect;ImmutableMap;true;of;;;Argument[4];MapKey of ReturnValue;value"
 			ImmutableSortedMap out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMapFauxverideShim.of(null, null, null, null, in, null, null, null, null, null);
-			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMap;true;of;;;Argument[4];MapKey of ReturnValue;value"
-			ImmutableSortedMap out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMapFauxverideShim.of(null, null, null, null, in, null, null, null);
-			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMap;true;of;;;Argument[4];MapKey of ReturnValue;value"
-			ImmutableSortedMap out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMapFauxverideShim.of(null, null, null, null, in, null);
-			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMap;true;of;;;Argument[4];MapKey of ReturnValue;value"
-			ImmutableSortedMap out = null;
 			Comparable in = (Comparable)source();
 			out = ImmutableSortedMap.of(null, null, null, null, in, null, null, null, null, null);
 			sink(getMapKey(out)); // $hasValueFlow
@@ -2050,27 +1887,6 @@ public class Test {
 			Object in = (Object)source();
 			out = ImmutableMap.of(null, null, null, null, in, null);
 			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMap;true;of;;;Argument[5];MapValue of ReturnValue;value"
-			ImmutableSortedMap out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMapFauxverideShim.of(null, null, null, null, null, in, null, null, null, null);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMap;true;of;;;Argument[5];MapValue of ReturnValue;value"
-			ImmutableSortedMap out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMapFauxverideShim.of(null, null, null, null, null, in, null, null);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMap;true;of;;;Argument[5];MapValue of ReturnValue;value"
-			ImmutableSortedMap out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMapFauxverideShim.of(null, null, null, null, null, in);
-			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableMap;true;of;;;Argument[5];MapValue of ReturnValue;value"
@@ -2117,20 +1933,6 @@ public class Test {
 		{
 			// "com.google.common.collect;ImmutableMap;true;of;;;Argument[6];MapKey of ReturnValue;value"
 			ImmutableSortedMap out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMapFauxverideShim.of(null, null, null, null, null, null, in, null, null, null);
-			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMap;true;of;;;Argument[6];MapKey of ReturnValue;value"
-			ImmutableSortedMap out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMapFauxverideShim.of(null, null, null, null, null, null, in, null);
-			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMap;true;of;;;Argument[6];MapKey of ReturnValue;value"
-			ImmutableSortedMap out = null;
 			Comparable in = (Comparable)source();
 			out = ImmutableSortedMap.of(null, null, null, null, null, null, in, null, null, null);
 			sink(getMapKey(out)); // $hasValueFlow
@@ -2155,20 +1957,6 @@ public class Test {
 			Object in = (Object)source();
 			out = ImmutableMap.of(null, null, null, null, null, null, in, null);
 			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMap;true;of;;;Argument[7];MapValue of ReturnValue;value"
-			ImmutableSortedMap out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMapFauxverideShim.of(null, null, null, null, null, null, null, in, null, null);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMap;true;of;;;Argument[7];MapValue of ReturnValue;value"
-			ImmutableSortedMap out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMapFauxverideShim.of(null, null, null, null, null, null, null, in);
-			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableMap;true;of;;;Argument[7];MapValue of ReturnValue;value"
@@ -2201,13 +1989,6 @@ public class Test {
 		{
 			// "com.google.common.collect;ImmutableMap;true;of;;;Argument[8];MapKey of ReturnValue;value"
 			ImmutableSortedMap out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMapFauxverideShim.of(null, null, null, null, null, null, null, null, in, null);
-			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMap;true;of;;;Argument[8];MapKey of ReturnValue;value"
-			ImmutableSortedMap out = null;
 			Comparable in = (Comparable)source();
 			out = ImmutableSortedMap.of(null, null, null, null, null, null, null, null, in, null);
 			sink(getMapKey(out)); // $hasValueFlow
@@ -2218,13 +1999,6 @@ public class Test {
 			Object in = (Object)source();
 			out = ImmutableMap.of(null, null, null, null, null, null, null, null, in, null);
 			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMap;true;of;;;Argument[9];MapValue of ReturnValue;value"
-			ImmutableSortedMap out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMapFauxverideShim.of(null, null, null, null, null, null, null, null, null, in);
-			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
 			// "com.google.common.collect;ImmutableMap;true;of;;;Argument[9];MapValue of ReturnValue;value"
@@ -3517,153 +3291,6 @@ public class Test {
 		{
 			// "com.google.common.collect;ImmutableMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
 			ImmutableSortedMultiset out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMultisetFauxverideShim.of(null, null, null, null, null, in, null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
-			ImmutableSortedMultiset out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMultisetFauxverideShim.of(null, null, null, null, in, null, null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
-			ImmutableSortedMultiset out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMultisetFauxverideShim.of(null, null, null, null, in);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
-			ImmutableSortedMultiset out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMultisetFauxverideShim.of(null, null, null, in, null, null, null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
-			ImmutableSortedMultiset out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMultisetFauxverideShim.of(null, null, null, in, null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
-			ImmutableSortedMultiset out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMultisetFauxverideShim.of(null, null, null, in);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
-			ImmutableSortedMultiset out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMultisetFauxverideShim.of(null, null, in, null, null, null, null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
-			ImmutableSortedMultiset out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMultisetFauxverideShim.of(null, null, in, null, null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
-			ImmutableSortedMultiset out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMultisetFauxverideShim.of(null, null, in, null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
-			ImmutableSortedMultiset out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMultisetFauxverideShim.of(null, null, in);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
-			ImmutableSortedMultiset out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMultisetFauxverideShim.of(null, in, null, null, null, null, null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
-			ImmutableSortedMultiset out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMultisetFauxverideShim.of(null, in, null, null, null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
-			ImmutableSortedMultiset out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMultisetFauxverideShim.of(null, in, null, null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
-			ImmutableSortedMultiset out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMultisetFauxverideShim.of(null, in, null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
-			ImmutableSortedMultiset out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMultisetFauxverideShim.of(null, in);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
-			ImmutableSortedMultiset out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMultisetFauxverideShim.of(in, null, null, null, null, null, null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
-			ImmutableSortedMultiset out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMultisetFauxverideShim.of(in, null, null, null, null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
-			ImmutableSortedMultiset out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMultisetFauxverideShim.of(in, null, null, null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
-			ImmutableSortedMultiset out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMultisetFauxverideShim.of(in, null, null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
-			ImmutableSortedMultiset out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMultisetFauxverideShim.of(in, null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
-			ImmutableSortedMultiset out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedMultisetFauxverideShim.of(in);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableMultiset;true;of;;;Argument[0..5];Element of ReturnValue;value"
-			ImmutableSortedMultiset out = null;
 			Comparable in = (Comparable)source();
 			out = ImmutableSortedMultiset.of(null, null, null, null, null, in, null);
 			sink(getElement(out)); // $hasValueFlow
@@ -3995,153 +3622,6 @@ public class Test {
 			ImmutableSet out = null;
 			Iterator in = (Iterator)newWithElement(source());
 			out = ImmutableSet.copyOf(in);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
-			ImmutableSortedSet out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedSetFauxverideShim.of(null, null, null, null, null, in, null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
-			ImmutableSortedSet out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedSetFauxverideShim.of(null, null, null, null, in, null, null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
-			ImmutableSortedSet out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedSetFauxverideShim.of(null, null, null, null, in);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
-			ImmutableSortedSet out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedSetFauxverideShim.of(null, null, null, in, null, null, null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
-			ImmutableSortedSet out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedSetFauxverideShim.of(null, null, null, in, null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
-			ImmutableSortedSet out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedSetFauxverideShim.of(null, null, null, in);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
-			ImmutableSortedSet out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedSetFauxverideShim.of(null, null, in, null, null, null, null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
-			ImmutableSortedSet out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedSetFauxverideShim.of(null, null, in, null, null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
-			ImmutableSortedSet out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedSetFauxverideShim.of(null, null, in, null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
-			ImmutableSortedSet out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedSetFauxverideShim.of(null, null, in);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
-			ImmutableSortedSet out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedSetFauxverideShim.of(null, in, null, null, null, null, null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
-			ImmutableSortedSet out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedSetFauxverideShim.of(null, in, null, null, null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
-			ImmutableSortedSet out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedSetFauxverideShim.of(null, in, null, null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
-			ImmutableSortedSet out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedSetFauxverideShim.of(null, in, null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
-			ImmutableSortedSet out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedSetFauxverideShim.of(null, in);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
-			ImmutableSortedSet out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedSetFauxverideShim.of(in, null, null, null, null, null, null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
-			ImmutableSortedSet out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedSetFauxverideShim.of(in, null, null, null, null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
-			ImmutableSortedSet out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedSetFauxverideShim.of(in, null, null, null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
-			ImmutableSortedSet out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedSetFauxverideShim.of(in, null, null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
-			ImmutableSortedSet out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedSetFauxverideShim.of(in, null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;ImmutableSet;true;of;;;Argument[0..5];Element of ReturnValue;value"
-			ImmutableSortedSet out = null;
-			Object in = (Object)source();
-			out = ImmutableSortedSetFauxverideShim.of(in);
 			sink(getElement(out)); // $hasValueFlow
 		}
 		{
@@ -4693,7 +4173,7 @@ public class Test {
 		{
 			// "com.google.common.collect;Iterables;false;concat;(Iterable[]);;Element of ArrayElement of Argument[0];Element of ReturnValue;value"
 			Iterable out = null;
-			Iterable<? extends T>[] in = (Iterable<? extends T>[])newWithArrayElement(newWithElement(source()));
+			Iterable[] in = (Iterable[])newWithArrayElement(newWithElement(source()));
 			out = Iterables.concat(in);
 			sink(getElement(out)); // $hasValueFlow
 		}
@@ -4959,7 +4439,7 @@ public class Test {
 		{
 			// "com.google.common.collect;Iterators;false;concat;(Iterator[]);;Element of ArrayElement of Argument[0];Element of ReturnValue;value"
 			Iterator out = null;
-			Iterator<? extends T>[] in = (Iterator<? extends T>[])newWithArrayElement(newWithElement(source()));
+			Iterator[] in = (Iterator[])newWithArrayElement(newWithElement(source()));
 			out = Iterators.concat(in);
 			sink(getElement(out)); // $hasValueFlow
 		}
@@ -5239,7 +4719,7 @@ public class Test {
 		{
 			// "com.google.common.collect;Lists;false;cartesianProduct;(List[]);;Element of ArrayElement of Argument[0];Element of Element of ReturnValue;value"
 			List out = null;
-			List<? extends B>[] in = (List<? extends B>[])newWithArrayElement(newWithElement(source()));
+			List[] in = (List[])newWithArrayElement(newWithElement(source()));
 			out = Lists.cartesianProduct(in);
 			sink(getElement(getElement(out))); // $hasValueFlow
 		}
@@ -5679,13 +5159,6 @@ public class Test {
 		}
 		{
 			// "com.google.common.collect;Multimap;true;asMap;();;MapKey of Argument[-1];MapKey of ReturnValue;value"
-			SortedMap out = null;
-			AbstractSortedKeySortedSetMultimap in = (AbstractSortedKeySortedSetMultimap)newWithMapKey(source());
-			out = in.asMap();
-			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;asMap;();;MapKey of Argument[-1];MapKey of ReturnValue;value"
 			NavigableMap out = null;
 			TreeMultimap in = (TreeMultimap)newWithMapKey(source());
 			out = in.asMap();
@@ -5721,45 +5194,10 @@ public class Test {
 		}
 		{
 			// "com.google.common.collect;Multimap;true;asMap;();;MapKey of Argument[-1];MapKey of ReturnValue;value"
-			Map out = null;
-			AbstractSortedSetMultimap in = (AbstractSortedSetMultimap)newWithMapKey(source());
-			out = in.asMap();
-			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;asMap;();;MapKey of Argument[-1];MapKey of ReturnValue;value"
-			Map out = null;
-			AbstractSetMultimap in = (AbstractSetMultimap)newWithMapKey(source());
-			out = in.asMap();
-			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;asMap;();;MapKey of Argument[-1];MapKey of ReturnValue;value"
-			Map out = null;
-			AbstractMultimap in = (AbstractMultimap)newWithMapKey(source());
-			out = in.asMap();
-			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;asMap;();;MapKey of Argument[-1];MapKey of ReturnValue;value"
-			Map out = null;
-			AbstractListMultimap in = (AbstractListMultimap)newWithMapKey(source());
-			out = in.asMap();
-			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;asMap;();;MapKey of Argument[-1];MapKey of ReturnValue;value"
 			ImmutableMap out = null;
 			ImmutableMultimap in = (ImmutableMultimap)newWithMapKey(source());
 			out = in.asMap();
 			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;asMap;();;MapValue of Argument[-1];Element of MapValue of ReturnValue;value"
-			SortedMap out = null;
-			AbstractSortedKeySortedSetMultimap in = (AbstractSortedKeySortedSetMultimap)newWithMapValue(source());
-			out = in.asMap();
-			sink(getElement(getMapValue(out))); // $hasValueFlow
 		}
 		{
 			// "com.google.common.collect;Multimap;true;asMap;();;MapValue of Argument[-1];Element of MapValue of ReturnValue;value"
@@ -5798,34 +5236,6 @@ public class Test {
 		}
 		{
 			// "com.google.common.collect;Multimap;true;asMap;();;MapValue of Argument[-1];Element of MapValue of ReturnValue;value"
-			Map out = null;
-			AbstractSortedSetMultimap in = (AbstractSortedSetMultimap)newWithMapValue(source());
-			out = in.asMap();
-			sink(getElement(getMapValue(out))); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;asMap;();;MapValue of Argument[-1];Element of MapValue of ReturnValue;value"
-			Map out = null;
-			AbstractSetMultimap in = (AbstractSetMultimap)newWithMapValue(source());
-			out = in.asMap();
-			sink(getElement(getMapValue(out))); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;asMap;();;MapValue of Argument[-1];Element of MapValue of ReturnValue;value"
-			Map out = null;
-			AbstractMultimap in = (AbstractMultimap)newWithMapValue(source());
-			out = in.asMap();
-			sink(getElement(getMapValue(out))); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;asMap;();;MapValue of Argument[-1];Element of MapValue of ReturnValue;value"
-			Map out = null;
-			AbstractListMultimap in = (AbstractListMultimap)newWithMapValue(source());
-			out = in.asMap();
-			sink(getElement(getMapValue(out))); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;asMap;();;MapValue of Argument[-1];Element of MapValue of ReturnValue;value"
 			ImmutableMap out = null;
 			ImmutableMultimap in = (ImmutableMultimap)newWithMapValue(source());
 			out = in.asMap();
@@ -5842,13 +5252,6 @@ public class Test {
 			// "com.google.common.collect;Multimap;true;entries;();;MapKey of Argument[-1];MapKey of Element of ReturnValue;value"
 			Set out = null;
 			LinkedHashMultimap in = (LinkedHashMultimap)newWithMapKey(source());
-			out = in.entries();
-			sink(getMapKey(getElement(out))); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;entries;();;MapKey of Argument[-1];MapKey of Element of ReturnValue;value"
-			Set out = null;
-			AbstractSetMultimap in = (AbstractSetMultimap)newWithMapKey(source());
 			out = in.entries();
 			sink(getMapKey(getElement(out))); // $hasValueFlow
 		}
@@ -5881,20 +5284,6 @@ public class Test {
 			sink(getMapKey(getElement(out))); // $hasValueFlow
 		}
 		{
-			// "com.google.common.collect;Multimap;true;entries;();;MapKey of Argument[-1];MapKey of Element of ReturnValue;value"
-			Collection out = null;
-			AbstractMultimap in = (AbstractMultimap)newWithMapKey(source());
-			out = in.entries();
-			sink(getMapKey(getElement(out))); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;entries;();;MapKey of Argument[-1];MapKey of Element of ReturnValue;value"
-			Collection out = null;
-			AbstractMapBasedMultimap in = (AbstractMapBasedMultimap)newWithMapKey(source());
-			out = in.entries();
-			sink(getMapKey(getElement(out))); // $hasValueFlow
-		}
-		{
 			// "com.google.common.collect;Multimap;true;entries;();;MapValue of Argument[-1];MapValue of Element of ReturnValue;value"
 			Set out = null;
 			SetMultimap in = (SetMultimap)newWithMapValue(source());
@@ -5905,13 +5294,6 @@ public class Test {
 			// "com.google.common.collect;Multimap;true;entries;();;MapValue of Argument[-1];MapValue of Element of ReturnValue;value"
 			Set out = null;
 			LinkedHashMultimap in = (LinkedHashMultimap)newWithMapValue(source());
-			out = in.entries();
-			sink(getMapValue(getElement(out))); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;entries;();;MapValue of Argument[-1];MapValue of Element of ReturnValue;value"
-			Set out = null;
-			AbstractSetMultimap in = (AbstractSetMultimap)newWithMapValue(source());
 			out = in.entries();
 			sink(getMapValue(getElement(out))); // $hasValueFlow
 		}
@@ -5944,20 +5326,6 @@ public class Test {
 			sink(getMapValue(getElement(out))); // $hasValueFlow
 		}
 		{
-			// "com.google.common.collect;Multimap;true;entries;();;MapValue of Argument[-1];MapValue of Element of ReturnValue;value"
-			Collection out = null;
-			AbstractMultimap in = (AbstractMultimap)newWithMapValue(source());
-			out = in.entries();
-			sink(getMapValue(getElement(out))); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;entries;();;MapValue of Argument[-1];MapValue of Element of ReturnValue;value"
-			Collection out = null;
-			AbstractMapBasedMultimap in = (AbstractMapBasedMultimap)newWithMapValue(source());
-			out = in.entries();
-			sink(getMapValue(getElement(out))); // $hasValueFlow
-		}
-		{
 			// "com.google.common.collect;Multimap;true;get;(Object);;MapValue of Argument[-1];Element of ReturnValue;value"
 			SortedSet out = null;
 			SortedSetMultimap in = (SortedSetMultimap)newWithMapValue(source());
@@ -5973,20 +5341,6 @@ public class Test {
 		}
 		{
 			// "com.google.common.collect;Multimap;true;get;(Object);;MapValue of Argument[-1];Element of ReturnValue;value"
-			SortedSet out = null;
-			AbstractSortedSetMultimap in = (AbstractSortedSetMultimap)newWithMapValue(source());
-			out = in.get(null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;get;(Object);;MapValue of Argument[-1];Element of ReturnValue;value"
-			SortedSet out = null;
-			AbstractSortedSetMultimap in = (AbstractSortedSetMultimap)newWithMapValue(source());
-			out = in.get((Object)null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;get;(Object);;MapValue of Argument[-1];Element of ReturnValue;value"
 			Set out = null;
 			SetMultimap in = (SetMultimap)newWithMapValue(source());
 			out = in.get(null);
@@ -5996,20 +5350,6 @@ public class Test {
 			// "com.google.common.collect;Multimap;true;get;(Object);;MapValue of Argument[-1];Element of ReturnValue;value"
 			Set out = null;
 			SetMultimap in = (SetMultimap)newWithMapValue(source());
-			out = in.get((Object)null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;get;(Object);;MapValue of Argument[-1];Element of ReturnValue;value"
-			Set out = null;
-			AbstractSetMultimap in = (AbstractSetMultimap)newWithMapValue(source());
-			out = in.get(null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;get;(Object);;MapValue of Argument[-1];Element of ReturnValue;value"
-			Set out = null;
-			AbstractSetMultimap in = (AbstractSetMultimap)newWithMapValue(source());
 			out = in.get((Object)null);
 			sink(getElement(out)); // $hasValueFlow
 		}
@@ -6039,20 +5379,6 @@ public class Test {
 			List out = null;
 			LinkedListMultimap in = (LinkedListMultimap)newWithMapValue(source());
 			out = in.get(null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;get;(Object);;MapValue of Argument[-1];Element of ReturnValue;value"
-			List out = null;
-			AbstractListMultimap in = (AbstractListMultimap)newWithMapValue(source());
-			out = in.get(null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;get;(Object);;MapValue of Argument[-1];Element of ReturnValue;value"
-			List out = null;
-			AbstractListMultimap in = (AbstractListMultimap)newWithMapValue(source());
-			out = in.get((Object)null);
 			sink(getElement(out)); // $hasValueFlow
 		}
 		{
@@ -6098,27 +5424,6 @@ public class Test {
 			sink(getElement(out)); // $hasValueFlow
 		}
 		{
-			// "com.google.common.collect;Multimap;true;get;(Object);;MapValue of Argument[-1];Element of ReturnValue;value"
-			Collection out = null;
-			AbstractMapBasedMultimap in = (AbstractMapBasedMultimap)newWithMapValue(source());
-			out = in.get(null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;get;(Object);;MapValue of Argument[-1];Element of ReturnValue;value"
-			Collection out = null;
-			AbstractMapBasedMultimap in = (AbstractMapBasedMultimap)newWithMapValue(source());
-			out = in.get((Object)null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;keySet;();;MapKey of Argument[-1];Element of ReturnValue;value"
-			SortedSet out = null;
-			AbstractSortedKeySortedSetMultimap in = (AbstractSortedKeySortedSetMultimap)newWithMapKey(source());
-			out = in.keySet();
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
 			// "com.google.common.collect;Multimap;true;keySet;();;MapKey of Argument[-1];Element of ReturnValue;value"
 			Set out = null;
 			Multimap in = (Multimap)newWithMapKey(source());
@@ -6129,13 +5434,6 @@ public class Test {
 			// "com.google.common.collect;Multimap;true;keySet;();;MapKey of Argument[-1];Element of ReturnValue;value"
 			Set out = null;
 			LinkedHashMultimap in = (LinkedHashMultimap)newWithMapKey(source());
-			out = in.keySet();
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;keySet;();;MapKey of Argument[-1];Element of ReturnValue;value"
-			Set out = null;
-			AbstractMultimap in = (AbstractMultimap)newWithMapKey(source());
 			out = in.keySet();
 			sink(getElement(out)); // $hasValueFlow
 		}
@@ -6157,13 +5455,6 @@ public class Test {
 			// "com.google.common.collect;Multimap;true;keys;();;MapKey of Argument[-1];Element of ReturnValue;value"
 			Multiset out = null;
 			Multimap in = (Multimap)newWithMapKey(source());
-			out = in.keys();
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;keys;();;MapKey of Argument[-1];Element of ReturnValue;value"
-			Multiset out = null;
-			AbstractMultimap in = (AbstractMultimap)newWithMapKey(source());
 			out = in.keys();
 			sink(getElement(out)); // $hasValueFlow
 		}
@@ -6210,62 +5501,6 @@ public class Test {
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
-			// "com.google.common.collect;Multimap;true;put;(Object,Object);;Argument[0];MapKey of Argument[-1];value"
-			AbstractSetMultimap out = null;
-			Object in = (Object)source();
-			out.put(in, null);
-			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;put;(Object,Object);;Argument[0];MapKey of Argument[-1];value"
-			AbstractSetMultimap out = null;
-			Object in = (Object)source();
-			out.put(in, (Object)null);
-			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;put;(Object,Object);;Argument[0];MapKey of Argument[-1];value"
-			AbstractMultimap out = null;
-			Object in = (Object)source();
-			out.put(in, null);
-			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;put;(Object,Object);;Argument[0];MapKey of Argument[-1];value"
-			AbstractMultimap out = null;
-			Object in = (Object)source();
-			out.put(in, (Object)null);
-			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;put;(Object,Object);;Argument[0];MapKey of Argument[-1];value"
-			AbstractMapBasedMultimap out = null;
-			Object in = (Object)source();
-			out.put(in, null);
-			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;put;(Object,Object);;Argument[0];MapKey of Argument[-1];value"
-			AbstractMapBasedMultimap out = null;
-			Object in = (Object)source();
-			out.put(in, (Object)null);
-			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;put;(Object,Object);;Argument[0];MapKey of Argument[-1];value"
-			AbstractListMultimap out = null;
-			Object in = (Object)source();
-			out.put(in, null);
-			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;put;(Object,Object);;Argument[0];MapKey of Argument[-1];value"
-			AbstractListMultimap out = null;
-			Object in = (Object)source();
-			out.put(in, (Object)null);
-			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
 			// "com.google.common.collect;Multimap;true;put;(Object,Object);;Argument[1];MapValue of Argument[-1];value"
 			Multimap out = null;
 			Object in = (Object)source();
@@ -6301,62 +5536,6 @@ public class Test {
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
-			// "com.google.common.collect;Multimap;true;put;(Object,Object);;Argument[1];MapValue of Argument[-1];value"
-			AbstractSetMultimap out = null;
-			Object in = (Object)source();
-			out.put(null, in);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;put;(Object,Object);;Argument[1];MapValue of Argument[-1];value"
-			AbstractSetMultimap out = null;
-			Object in = (Object)source();
-			out.put((Object)null, in);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;put;(Object,Object);;Argument[1];MapValue of Argument[-1];value"
-			AbstractMultimap out = null;
-			Object in = (Object)source();
-			out.put(null, in);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;put;(Object,Object);;Argument[1];MapValue of Argument[-1];value"
-			AbstractMultimap out = null;
-			Object in = (Object)source();
-			out.put((Object)null, in);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;put;(Object,Object);;Argument[1];MapValue of Argument[-1];value"
-			AbstractMapBasedMultimap out = null;
-			Object in = (Object)source();
-			out.put(null, in);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;put;(Object,Object);;Argument[1];MapValue of Argument[-1];value"
-			AbstractMapBasedMultimap out = null;
-			Object in = (Object)source();
-			out.put((Object)null, in);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;put;(Object,Object);;Argument[1];MapValue of Argument[-1];value"
-			AbstractListMultimap out = null;
-			Object in = (Object)source();
-			out.put(null, in);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;put;(Object,Object);;Argument[1];MapValue of Argument[-1];value"
-			AbstractListMultimap out = null;
-			Object in = (Object)source();
-			out.put((Object)null, in);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
 			// "com.google.common.collect;Multimap;true;putAll;(Multimap);;MapKey of Argument[0];MapKey of Argument[-1];value"
 			Multimap out = null;
 			Multimap in = (Multimap)newWithMapKey(source());
@@ -6371,13 +5550,6 @@ public class Test {
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
-			// "com.google.common.collect;Multimap;true;putAll;(Multimap);;MapKey of Argument[0];MapKey of Argument[-1];value"
-			AbstractMultimap out = null;
-			Multimap in = (Multimap)newWithMapKey(source());
-			out.putAll(in);
-			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
 			// "com.google.common.collect;Multimap;true;putAll;(Multimap);;MapValue of Argument[0];MapValue of Argument[-1];value"
 			Multimap out = null;
 			Multimap in = (Multimap)newWithMapValue(source());
@@ -6387,13 +5559,6 @@ public class Test {
 		{
 			// "com.google.common.collect;Multimap;true;putAll;(Multimap);;MapValue of Argument[0];MapValue of Argument[-1];value"
 			ImmutableMultimap out = null;
-			Multimap in = (Multimap)newWithMapValue(source());
-			out.putAll(in);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;putAll;(Multimap);;MapValue of Argument[0];MapValue of Argument[-1];value"
-			AbstractMultimap out = null;
 			Multimap in = (Multimap)newWithMapValue(source());
 			out.putAll(in);
 			sink(getMapValue(out)); // $hasValueFlow
@@ -6422,20 +5587,6 @@ public class Test {
 		{
 			// "com.google.common.collect;Multimap;true;putAll;(Object,Iterable);;Argument[0];MapKey of Argument[-1];value"
 			ImmutableMultimap out = null;
-			Object in = (Object)source();
-			out.putAll(in, (Iterable)null);
-			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;putAll;(Object,Iterable);;Argument[0];MapKey of Argument[-1];value"
-			AbstractMultimap out = null;
-			Object in = (Object)source();
-			out.putAll(in, null);
-			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;putAll;(Object,Iterable);;Argument[0];MapKey of Argument[-1];value"
-			AbstractMultimap out = null;
 			Object in = (Object)source();
 			out.putAll(in, (Iterable)null);
 			sink(getMapKey(out)); // $hasValueFlow
@@ -6464,20 +5615,6 @@ public class Test {
 		{
 			// "com.google.common.collect;Multimap;true;putAll;(Object,Iterable);;Element of Argument[1];MapValue of Argument[-1];value"
 			ImmutableMultimap out = null;
-			Iterable in = (Iterable)newWithElement(source());
-			out.putAll((Object)null, in);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;putAll;(Object,Iterable);;Element of Argument[1];MapValue of Argument[-1];value"
-			AbstractMultimap out = null;
-			Iterable in = (Iterable)newWithElement(source());
-			out.putAll(null, in);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;putAll;(Object,Iterable);;Element of Argument[1];MapValue of Argument[-1];value"
-			AbstractMultimap out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out.putAll((Object)null, in);
 			sink(getMapValue(out)); // $hasValueFlow
@@ -6498,20 +5635,6 @@ public class Test {
 		}
 		{
 			// "com.google.common.collect;Multimap;true;removeAll;(Object);;MapValue of Argument[-1];MapValue of ReturnValue;value"
-			SortedSet out = null;
-			AbstractSortedSetMultimap in = (AbstractSortedSetMultimap)newWithMapValue(source());
-			out = in.removeAll(null);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;removeAll;(Object);;MapValue of Argument[-1];MapValue of ReturnValue;value"
-			SortedSet out = null;
-			AbstractSortedSetMultimap in = (AbstractSortedSetMultimap)newWithMapValue(source());
-			out = in.removeAll((Object)null);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;removeAll;(Object);;MapValue of Argument[-1];MapValue of ReturnValue;value"
 			Set out = null;
 			SetMultimap in = (SetMultimap)newWithMapValue(source());
 			out = in.removeAll(null);
@@ -6521,20 +5644,6 @@ public class Test {
 			// "com.google.common.collect;Multimap;true;removeAll;(Object);;MapValue of Argument[-1];MapValue of ReturnValue;value"
 			Set out = null;
 			SetMultimap in = (SetMultimap)newWithMapValue(source());
-			out = in.removeAll((Object)null);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;removeAll;(Object);;MapValue of Argument[-1];MapValue of ReturnValue;value"
-			Set out = null;
-			AbstractSetMultimap in = (AbstractSetMultimap)newWithMapValue(source());
-			out = in.removeAll(null);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;removeAll;(Object);;MapValue of Argument[-1];MapValue of ReturnValue;value"
-			Set out = null;
-			AbstractSetMultimap in = (AbstractSetMultimap)newWithMapValue(source());
 			out = in.removeAll((Object)null);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
@@ -6557,20 +5666,6 @@ public class Test {
 			List out = null;
 			LinkedListMultimap in = (LinkedListMultimap)newWithMapValue(source());
 			out = in.removeAll(null);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;removeAll;(Object);;MapValue of Argument[-1];MapValue of ReturnValue;value"
-			List out = null;
-			AbstractListMultimap in = (AbstractListMultimap)newWithMapValue(source());
-			out = in.removeAll(null);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;removeAll;(Object);;MapValue of Argument[-1];MapValue of ReturnValue;value"
-			List out = null;
-			AbstractListMultimap in = (AbstractListMultimap)newWithMapValue(source());
-			out = in.removeAll((Object)null);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
@@ -6612,20 +5707,6 @@ public class Test {
 			// "com.google.common.collect;Multimap;true;removeAll;(Object);;MapValue of Argument[-1];MapValue of ReturnValue;value"
 			Collection out = null;
 			Multimap in = (Multimap)newWithMapValue(source());
-			out = in.removeAll((Object)null);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;removeAll;(Object);;MapValue of Argument[-1];MapValue of ReturnValue;value"
-			Collection out = null;
-			AbstractMapBasedMultimap in = (AbstractMapBasedMultimap)newWithMapValue(source());
-			out = in.removeAll(null);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;removeAll;(Object);;MapValue of Argument[-1];MapValue of ReturnValue;value"
-			Collection out = null;
-			AbstractMapBasedMultimap in = (AbstractMapBasedMultimap)newWithMapValue(source());
 			out = in.removeAll((Object)null);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
@@ -6728,76 +5809,6 @@ public class Test {
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
-			// "com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;Argument[0];MapKey of Argument[-1];value"
-			AbstractSortedSetMultimap out = null;
-			Object in = (Object)source();
-			out.replaceValues(in, null);
-			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;Argument[0];MapKey of Argument[-1];value"
-			AbstractSortedSetMultimap out = null;
-			Object in = (Object)source();
-			out.replaceValues(in, (Iterable)null);
-			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;Argument[0];MapKey of Argument[-1];value"
-			AbstractSetMultimap out = null;
-			Object in = (Object)source();
-			out.replaceValues(in, null);
-			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;Argument[0];MapKey of Argument[-1];value"
-			AbstractSetMultimap out = null;
-			Object in = (Object)source();
-			out.replaceValues(in, (Iterable)null);
-			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;Argument[0];MapKey of Argument[-1];value"
-			AbstractMultimap out = null;
-			Object in = (Object)source();
-			out.replaceValues(in, null);
-			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;Argument[0];MapKey of Argument[-1];value"
-			AbstractMultimap out = null;
-			Object in = (Object)source();
-			out.replaceValues(in, (Iterable)null);
-			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;Argument[0];MapKey of Argument[-1];value"
-			AbstractMapBasedMultimap out = null;
-			Object in = (Object)source();
-			out.replaceValues(in, null);
-			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;Argument[0];MapKey of Argument[-1];value"
-			AbstractMapBasedMultimap out = null;
-			Object in = (Object)source();
-			out.replaceValues(in, (Iterable)null);
-			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;Argument[0];MapKey of Argument[-1];value"
-			AbstractListMultimap out = null;
-			Object in = (Object)source();
-			out.replaceValues(in, null);
-			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;Argument[0];MapKey of Argument[-1];value"
-			AbstractListMultimap out = null;
-			Object in = (Object)source();
-			out.replaceValues(in, (Iterable)null);
-			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
 			// "com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;Element of Argument[1];MapValue of Argument[-1];value"
 			SortedSetMultimap out = null;
 			Iterable in = (Iterable)newWithElement(source());
@@ -6896,76 +5907,6 @@ public class Test {
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
-			// "com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;Element of Argument[1];MapValue of Argument[-1];value"
-			AbstractSortedSetMultimap out = null;
-			Iterable in = (Iterable)newWithElement(source());
-			out.replaceValues(null, in);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;Element of Argument[1];MapValue of Argument[-1];value"
-			AbstractSortedSetMultimap out = null;
-			Iterable in = (Iterable)newWithElement(source());
-			out.replaceValues((Object)null, in);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;Element of Argument[1];MapValue of Argument[-1];value"
-			AbstractSetMultimap out = null;
-			Iterable in = (Iterable)newWithElement(source());
-			out.replaceValues(null, in);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;Element of Argument[1];MapValue of Argument[-1];value"
-			AbstractSetMultimap out = null;
-			Iterable in = (Iterable)newWithElement(source());
-			out.replaceValues((Object)null, in);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;Element of Argument[1];MapValue of Argument[-1];value"
-			AbstractMultimap out = null;
-			Iterable in = (Iterable)newWithElement(source());
-			out.replaceValues(null, in);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;Element of Argument[1];MapValue of Argument[-1];value"
-			AbstractMultimap out = null;
-			Iterable in = (Iterable)newWithElement(source());
-			out.replaceValues((Object)null, in);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;Element of Argument[1];MapValue of Argument[-1];value"
-			AbstractMapBasedMultimap out = null;
-			Iterable in = (Iterable)newWithElement(source());
-			out.replaceValues(null, in);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;Element of Argument[1];MapValue of Argument[-1];value"
-			AbstractMapBasedMultimap out = null;
-			Iterable in = (Iterable)newWithElement(source());
-			out.replaceValues((Object)null, in);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;Element of Argument[1];MapValue of Argument[-1];value"
-			AbstractListMultimap out = null;
-			Iterable in = (Iterable)newWithElement(source());
-			out.replaceValues(null, in);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;Element of Argument[1];MapValue of Argument[-1];value"
-			AbstractListMultimap out = null;
-			Iterable in = (Iterable)newWithElement(source());
-			out.replaceValues((Object)null, in);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
 			// "com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;MapValue of Argument[-1];Element of ReturnValue;value"
 			SortedSet out = null;
 			SortedSetMultimap in = (SortedSetMultimap)newWithMapValue(source());
@@ -6976,20 +5917,6 @@ public class Test {
 			// "com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;MapValue of Argument[-1];Element of ReturnValue;value"
 			SortedSet out = null;
 			SortedSetMultimap in = (SortedSetMultimap)newWithMapValue(source());
-			out = in.replaceValues((Object)null, (Iterable)null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;MapValue of Argument[-1];Element of ReturnValue;value"
-			SortedSet out = null;
-			AbstractSortedSetMultimap in = (AbstractSortedSetMultimap)newWithMapValue(source());
-			out = in.replaceValues(null, null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;MapValue of Argument[-1];Element of ReturnValue;value"
-			SortedSet out = null;
-			AbstractSortedSetMultimap in = (AbstractSortedSetMultimap)newWithMapValue(source());
 			out = in.replaceValues((Object)null, (Iterable)null);
 			sink(getElement(out)); // $hasValueFlow
 		}
@@ -7016,20 +5943,6 @@ public class Test {
 		}
 		{
 			// "com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;MapValue of Argument[-1];Element of ReturnValue;value"
-			Set out = null;
-			AbstractSetMultimap in = (AbstractSetMultimap)newWithMapValue(source());
-			out = in.replaceValues(null, null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;MapValue of Argument[-1];Element of ReturnValue;value"
-			Set out = null;
-			AbstractSetMultimap in = (AbstractSetMultimap)newWithMapValue(source());
-			out = in.replaceValues((Object)null, (Iterable)null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;MapValue of Argument[-1];Element of ReturnValue;value"
 			List out = null;
 			ListMultimap in = (ListMultimap)newWithMapValue(source());
 			out = in.replaceValues(null, null);
@@ -7047,20 +5960,6 @@ public class Test {
 			List out = null;
 			LinkedListMultimap in = (LinkedListMultimap)newWithMapValue(source());
 			out = in.replaceValues(null, null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;MapValue of Argument[-1];Element of ReturnValue;value"
-			List out = null;
-			AbstractListMultimap in = (AbstractListMultimap)newWithMapValue(source());
-			out = in.replaceValues(null, null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;MapValue of Argument[-1];Element of ReturnValue;value"
-			List out = null;
-			AbstractListMultimap in = (AbstractListMultimap)newWithMapValue(source());
-			out = in.replaceValues((Object)null, (Iterable)null);
 			sink(getElement(out)); // $hasValueFlow
 		}
 		{
@@ -7106,34 +6005,6 @@ public class Test {
 			sink(getElement(out)); // $hasValueFlow
 		}
 		{
-			// "com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;MapValue of Argument[-1];Element of ReturnValue;value"
-			Collection out = null;
-			AbstractMultimap in = (AbstractMultimap)newWithMapValue(source());
-			out = in.replaceValues(null, null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;MapValue of Argument[-1];Element of ReturnValue;value"
-			Collection out = null;
-			AbstractMultimap in = (AbstractMultimap)newWithMapValue(source());
-			out = in.replaceValues((Object)null, (Iterable)null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;MapValue of Argument[-1];Element of ReturnValue;value"
-			Collection out = null;
-			AbstractMapBasedMultimap in = (AbstractMapBasedMultimap)newWithMapValue(source());
-			out = in.replaceValues(null, null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;replaceValues;(Object,Iterable);;MapValue of Argument[-1];Element of ReturnValue;value"
-			Collection out = null;
-			AbstractMapBasedMultimap in = (AbstractMapBasedMultimap)newWithMapValue(source());
-			out = in.replaceValues((Object)null, (Iterable)null);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
 			// "com.google.common.collect;Multimap;true;values;();;MapValue of Argument[-1];Element of ReturnValue;value"
 			List out = null;
 			LinkedListMultimap in = (LinkedListMultimap)newWithMapValue(source());
@@ -7158,27 +6029,6 @@ public class Test {
 			// "com.google.common.collect;Multimap;true;values;();;MapValue of Argument[-1];Element of ReturnValue;value"
 			Collection out = null;
 			LinkedHashMultimap in = (LinkedHashMultimap)newWithMapValue(source());
-			out = in.values();
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;values;();;MapValue of Argument[-1];Element of ReturnValue;value"
-			Collection out = null;
-			AbstractSortedSetMultimap in = (AbstractSortedSetMultimap)newWithMapValue(source());
-			out = in.values();
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;values;();;MapValue of Argument[-1];Element of ReturnValue;value"
-			Collection out = null;
-			AbstractMultimap in = (AbstractMultimap)newWithMapValue(source());
-			out = in.values();
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multimap;true;values;();;MapValue of Argument[-1];Element of ReturnValue;value"
-			Collection out = null;
-			AbstractMapBasedMultimap in = (AbstractMapBasedMultimap)newWithMapValue(source());
 			out = in.values();
 			sink(getElement(out)); // $hasValueFlow
 		}
@@ -7624,51 +6474,9 @@ public class Test {
 			sink(getElement(out)); // $hasValueFlow
 		}
 		{
-			// "com.google.common.collect;Multiset;true;add;(Object,int);;Argument[0];Element of Argument[-1];value"
-			AbstractMultiset out = null;
-			Object in = (Object)source();
-			out.add(in, 0);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multiset;true;add;(Object,int);;Argument[0];Element of Argument[-1];value"
-			AbstractMapBasedMultiset out = null;
-			Object in = (Object)source();
-			out.add(in, 0);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multiset;true;elementSet;();;Element of Argument[-1];Element of ReturnValue;value"
-			SortedSet out = null;
-			SortedMultisetBridge in = (SortedMultisetBridge)newWithElement(source());
-			out = in.elementSet();
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
 			// "com.google.common.collect;Multiset;true;elementSet;();;Element of Argument[-1];Element of ReturnValue;value"
 			Set out = null;
 			Multiset in = (Multiset)newWithElement(source());
-			out = in.elementSet();
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multiset;true;elementSet;();;Element of Argument[-1];Element of ReturnValue;value"
-			Set out = null;
-			AbstractMultiset in = (AbstractMultiset)newWithElement(source());
-			out = in.elementSet();
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multiset;true;elementSet;();;Element of Argument[-1];Element of ReturnValue;value"
-			NavigableSet out = null;
-			SortedMultiset in = (SortedMultiset)newWithElement(source());
-			out = in.elementSet();
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multiset;true;elementSet;();;Element of Argument[-1];Element of ReturnValue;value"
-			NavigableSet out = null;
-			AbstractSortedMultiset in = (AbstractSortedMultiset)newWithElement(source());
 			out = in.elementSet();
 			sink(getElement(out)); // $hasValueFlow
 		}
@@ -7702,20 +6510,6 @@ public class Test {
 		}
 		{
 			// "com.google.common.collect;Multiset;true;entrySet;();;Element of Argument[-1];Element of Element of ReturnValue;value"
-			Set out = null;
-			AbstractMultiset in = (AbstractMultiset)newWithElement(source());
-			out = in.entrySet();
-			sink(getElement(getElement(out))); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multiset;true;entrySet;();;Element of Argument[-1];Element of Element of ReturnValue;value"
-			Set out = null;
-			AbstractMapBasedMultiset in = (AbstractMapBasedMultiset)newWithElement(source());
-			out = in.entrySet();
-			sink(getElement(getElement(out))); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multiset;true;entrySet;();;Element of Argument[-1];Element of Element of ReturnValue;value"
 			ImmutableSet out = null;
 			ImmutableMultiset in = (ImmutableMultiset)newWithElement(source());
 			out = in.entrySet();
@@ -7750,20 +6544,6 @@ public class Test {
 			sink(getElement(out)); // $hasValueFlow
 		}
 		{
-			// "com.google.common.collect;Multiset;true;setCount;(Object,int);;Argument[0];Element of Argument[-1];value"
-			AbstractMultiset out = null;
-			Object in = (Object)source();
-			out.setCount(in, 0);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multiset;true;setCount;(Object,int);;Argument[0];Element of Argument[-1];value"
-			AbstractMapBasedMultiset out = null;
-			Object in = (Object)source();
-			out.setCount(in, 0);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
 			// "com.google.common.collect;Multiset;true;setCount;(Object,int,int);;Argument[0];Element of Argument[-1];value"
 			TreeMultiset out = null;
 			Object in = (Object)source();
@@ -7787,13 +6567,6 @@ public class Test {
 		{
 			// "com.google.common.collect;Multiset;true;setCount;(Object,int,int);;Argument[0];Element of Argument[-1];value"
 			ConcurrentHashMultiset out = null;
-			Object in = (Object)source();
-			out.setCount(in, 0, 0);
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Multiset;true;setCount;(Object,int,int);;Argument[0];Element of Argument[-1];value"
-			AbstractMultiset out = null;
 			Object in = (Object)source();
 			out.setCount(in, 0, 0);
 			sink(getElement(out)); // $hasValueFlow
@@ -7983,7 +6756,7 @@ public class Test {
 		{
 			// "com.google.common.collect;Sets;false;cartesianProduct;(Set[]);;Element of ArrayElement of Argument[0];Element of Element of ReturnValue;value"
 			Set out = null;
-			Set<? extends B>[] in = (Set<? extends B>[])newWithArrayElement(newWithElement(source()));
+			Set[] in = (Set[])newWithArrayElement(newWithElement(source()));
 			out = Sets.cartesianProduct(in);
 			sink(getElement(getElement(out))); // $hasValueFlow
 		}
@@ -8144,21 +6917,7 @@ public class Test {
 		{
 			// "com.google.common.collect;Table;true;cellSet;();;MapKey of Argument[-1];MapKey of Element of ReturnValue;value"
 			Set out = null;
-			StandardTable in = (StandardTable)newWithMapKey(source());
-			out = in.cellSet();
-			sink(getMapKey(getElement(out))); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Table;true;cellSet;();;MapKey of Argument[-1];MapKey of Element of ReturnValue;value"
-			Set out = null;
 			ArrayTable in = (ArrayTable)newWithMapKey(source());
-			out = in.cellSet();
-			sink(getMapKey(getElement(out))); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Table;true;cellSet;();;MapKey of Argument[-1];MapKey of Element of ReturnValue;value"
-			Set out = null;
-			AbstractTable in = (AbstractTable)newWithMapKey(source());
 			out = in.cellSet();
 			sink(getMapKey(getElement(out))); // $hasValueFlow
 		}
@@ -8179,21 +6938,7 @@ public class Test {
 		{
 			// "com.google.common.collect;Table;true;cellSet;();;MapValue of Argument[-1];MapValue of Element of ReturnValue;value"
 			Set out = null;
-			StandardTable in = (StandardTable)newWithMapValue(source());
-			out = in.cellSet();
-			sink(getMapValue(getElement(out))); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Table;true;cellSet;();;MapValue of Argument[-1];MapValue of Element of ReturnValue;value"
-			Set out = null;
 			ArrayTable in = (ArrayTable)newWithMapValue(source());
-			out = in.cellSet();
-			sink(getMapValue(getElement(out))); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Table;true;cellSet;();;MapValue of Argument[-1];MapValue of Element of ReturnValue;value"
-			Set out = null;
-			AbstractTable in = (AbstractTable)newWithMapValue(source());
 			out = in.cellSet();
 			sink(getMapValue(getElement(out))); // $hasValueFlow
 		}
@@ -8221,20 +6966,6 @@ public class Test {
 		{
 			// "com.google.common.collect;Table;true;column;(Object);;MapValue of Argument[-1];MapValue of ReturnValue;value"
 			Map out = null;
-			StandardTable in = (StandardTable)newWithMapValue(source());
-			out = in.column(null);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Table;true;column;(Object);;MapValue of Argument[-1];MapValue of ReturnValue;value"
-			Map out = null;
-			StandardTable in = (StandardTable)newWithMapValue(source());
-			out = in.column((Object)null);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Table;true;column;(Object);;MapValue of Argument[-1];MapValue of ReturnValue;value"
-			Map out = null;
 			ArrayTable in = (ArrayTable)newWithMapValue(source());
 			out = in.column(null);
 			sink(getMapValue(out)); // $hasValueFlow
@@ -8250,13 +6981,6 @@ public class Test {
 			// "com.google.common.collect;Table;true;columnMap;();;MapValue of Argument[-1];MapValue of MapValue of ReturnValue;value"
 			Map out = null;
 			Table in = (Table)newWithMapValue(source());
-			out = in.columnMap();
-			sink(getMapValue(getMapValue(out))); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Table;true;columnMap;();;MapValue of Argument[-1];MapValue of MapValue of ReturnValue;value"
-			Map out = null;
-			StandardTable in = (StandardTable)newWithMapValue(source());
 			out = in.columnMap();
 			sink(getMapValue(getMapValue(out))); // $hasValueFlow
 		}
@@ -8291,20 +7015,6 @@ public class Test {
 		{
 			// "com.google.common.collect;Table;true;get;(Object,Object);;MapValue of Argument[-1];ReturnValue;value"
 			Object out = null;
-			StandardTable in = (StandardTable)newWithMapValue(source());
-			out = in.get(null, null);
-			sink(out); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Table;true;get;(Object,Object);;MapValue of Argument[-1];ReturnValue;value"
-			Object out = null;
-			StandardTable in = (StandardTable)newWithMapValue(source());
-			out = in.get((Object)null, (Object)null);
-			sink(out); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Table;true;get;(Object,Object);;MapValue of Argument[-1];ReturnValue;value"
-			Object out = null;
 			HashBasedTable in = (HashBasedTable)newWithMapValue(source());
 			out = in.get(null, null);
 			sink(out); // $hasValueFlow
@@ -8317,20 +7027,6 @@ public class Test {
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "com.google.common.collect;Table;true;get;(Object,Object);;MapValue of Argument[-1];ReturnValue;value"
-			Object out = null;
-			AbstractTable in = (AbstractTable)newWithMapValue(source());
-			out = in.get(null, null);
-			sink(out); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Table;true;get;(Object,Object);;MapValue of Argument[-1];ReturnValue;value"
-			Object out = null;
-			AbstractTable in = (AbstractTable)newWithMapValue(source());
-			out = in.get((Object)null, (Object)null);
-			sink(out); // $hasValueFlow
-		}
-		{
 			// "com.google.common.collect;Table;true;put;(Object,Object,Object);;Argument[2];MapValue of Argument[-1];value"
 			Table out = null;
 			Object in = (Object)source();
@@ -8340,20 +7036,6 @@ public class Test {
 		{
 			// "com.google.common.collect;Table;true;put;(Object,Object,Object);;Argument[2];MapValue of Argument[-1];value"
 			Table out = null;
-			Object in = (Object)source();
-			out.put((Object)null, (Object)null, in);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Table;true;put;(Object,Object,Object);;Argument[2];MapValue of Argument[-1];value"
-			StandardTable out = null;
-			Object in = (Object)source();
-			out.put(null, null, in);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Table;true;put;(Object,Object,Object);;Argument[2];MapValue of Argument[-1];value"
-			StandardTable out = null;
 			Object in = (Object)source();
 			out.put((Object)null, (Object)null, in);
 			sink(getMapValue(out)); // $hasValueFlow
@@ -8370,20 +7052,6 @@ public class Test {
 			ArrayTable out = null;
 			Object in = (Object)source();
 			out.put(null, null, in);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Table;true;put;(Object,Object,Object);;Argument[2];MapValue of Argument[-1];value"
-			AbstractTable out = null;
-			Object in = (Object)source();
-			out.put(null, null, in);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Table;true;put;(Object,Object,Object);;Argument[2];MapValue of Argument[-1];value"
-			AbstractTable out = null;
-			Object in = (Object)source();
-			out.put((Object)null, (Object)null, in);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
@@ -8408,13 +7076,6 @@ public class Test {
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
-			// "com.google.common.collect;Table;true;putAll;(Table);;MapKey of Argument[0];MapKey of Argument[-1];value"
-			AbstractTable out = null;
-			Table in = (Table)newWithMapKey(source());
-			out.putAll(in);
-			sink(getMapKey(out)); // $hasValueFlow
-		}
-		{
 			// "com.google.common.collect;Table;true;putAll;(Table);;MapValue of Argument[0];MapValue of Argument[-1];value"
 			Table out = null;
 			Table in = (Table)newWithMapValue(source());
@@ -8431,13 +7092,6 @@ public class Test {
 		{
 			// "com.google.common.collect;Table;true;putAll;(Table);;MapValue of Argument[0];MapValue of Argument[-1];value"
 			ArrayTable out = null;
-			Table in = (Table)newWithMapValue(source());
-			out.putAll(in);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Table;true;putAll;(Table);;MapValue of Argument[0];MapValue of Argument[-1];value"
-			AbstractTable out = null;
 			Table in = (Table)newWithMapValue(source());
 			out.putAll(in);
 			sink(getMapValue(out)); // $hasValueFlow
@@ -8453,20 +7107,6 @@ public class Test {
 			// "com.google.common.collect;Table;true;remove;(Object,Object);;MapValue of Argument[-1];ReturnValue;value"
 			Object out = null;
 			Table in = (Table)newWithMapValue(source());
-			out = in.remove((Object)null, (Object)null);
-			sink(out); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Table;true;remove;(Object,Object);;MapValue of Argument[-1];ReturnValue;value"
-			Object out = null;
-			StandardTable in = (StandardTable)newWithMapValue(source());
-			out = in.remove(null, null);
-			sink(out); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Table;true;remove;(Object,Object);;MapValue of Argument[-1];ReturnValue;value"
-			Object out = null;
-			StandardTable in = (StandardTable)newWithMapValue(source());
 			out = in.remove((Object)null, (Object)null);
 			sink(out); // $hasValueFlow
 		}
@@ -8489,20 +7129,6 @@ public class Test {
 			Object out = null;
 			ArrayTable in = (ArrayTable)newWithMapValue(source());
 			out = in.remove(null, null);
-			sink(out); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Table;true;remove;(Object,Object);;MapValue of Argument[-1];ReturnValue;value"
-			Object out = null;
-			AbstractTable in = (AbstractTable)newWithMapValue(source());
-			out = in.remove(null, null);
-			sink(out); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Table;true;remove;(Object,Object);;MapValue of Argument[-1];ReturnValue;value"
-			Object out = null;
-			AbstractTable in = (AbstractTable)newWithMapValue(source());
-			out = in.remove((Object)null, (Object)null);
 			sink(out); // $hasValueFlow
 		}
 		{
@@ -8529,20 +7155,6 @@ public class Test {
 		{
 			// "com.google.common.collect;Table;true;row;(Object);;MapValue of Argument[-1];MapValue of ReturnValue;value"
 			Map out = null;
-			StandardTable in = (StandardTable)newWithMapValue(source());
-			out = in.row(null);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Table;true;row;(Object);;MapValue of Argument[-1];MapValue of ReturnValue;value"
-			Map out = null;
-			StandardTable in = (StandardTable)newWithMapValue(source());
-			out = in.row((Object)null);
-			sink(getMapValue(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Table;true;row;(Object);;MapValue of Argument[-1];MapValue of ReturnValue;value"
-			Map out = null;
 			ArrayTable in = (ArrayTable)newWithMapValue(source());
 			out = in.row(null);
 			sink(getMapValue(out)); // $hasValueFlow
@@ -8558,13 +7170,6 @@ public class Test {
 			// "com.google.common.collect;Table;true;rowMap;();;MapValue of Argument[-1];MapValue of MapValue of ReturnValue;value"
 			SortedMap out = null;
 			TreeBasedTable in = (TreeBasedTable)newWithMapValue(source());
-			out = in.rowMap();
-			sink(getMapValue(getMapValue(out))); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Table;true;rowMap;();;MapValue of Argument[-1];MapValue of MapValue of ReturnValue;value"
-			SortedMap out = null;
-			StandardRowSortedTable in = (StandardRowSortedTable)newWithMapValue(source());
 			out = in.rowMap();
 			sink(getMapValue(getMapValue(out))); // $hasValueFlow
 		}
@@ -8579,13 +7184,6 @@ public class Test {
 			// "com.google.common.collect;Table;true;rowMap;();;MapValue of Argument[-1];MapValue of MapValue of ReturnValue;value"
 			Map out = null;
 			Table in = (Table)newWithMapValue(source());
-			out = in.rowMap();
-			sink(getMapValue(getMapValue(out))); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Table;true;rowMap;();;MapValue of Argument[-1];MapValue of MapValue of ReturnValue;value"
-			Map out = null;
-			StandardTable in = (StandardTable)newWithMapValue(source());
 			out = in.rowMap();
 			sink(getMapValue(getMapValue(out))); // $hasValueFlow
 		}
@@ -8620,21 +7218,7 @@ public class Test {
 		{
 			// "com.google.common.collect;Table;true;values;();;MapValue of Argument[-1];Element of ReturnValue;value"
 			Collection out = null;
-			StandardTable in = (StandardTable)newWithMapValue(source());
-			out = in.values();
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Table;true;values;();;MapValue of Argument[-1];Element of ReturnValue;value"
-			Collection out = null;
 			ArrayTable in = (ArrayTable)newWithMapValue(source());
-			out = in.values();
-			sink(getElement(out)); // $hasValueFlow
-		}
-		{
-			// "com.google.common.collect;Table;true;values;();;MapValue of Argument[-1];Element of ReturnValue;value"
-			Collection out = null;
-			AbstractTable in = (AbstractTable)newWithMapValue(source());
 			out = in.values();
 			sink(getElement(out)); // $hasValueFlow
 		}
