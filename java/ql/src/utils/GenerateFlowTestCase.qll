@@ -353,14 +353,11 @@ class TestCase extends TTestCase {
    * will return `newWithMapValue(newWithArrayElement(source()))`.
    */
   string getInput(SummaryComponentStack stack) {
-    stack = input.drop(_) and
-    (
-      stack = input and result = "source()"
-      or
-      exists(SummaryComponentStack s |
-        result = "newWith" + contentToken(getContent(s.head())) + "(" + this.getInput(s) + ")" and
-        stack = s.tail()
-      )
+    stack = input and result = "source()"
+    or
+    exists(SummaryComponentStack s |
+      result = "newWith" + contentToken(getContent(s.head())) + "(" + this.getInput(s) + ")" and
+      stack = s.tail()
     )
   }
 
