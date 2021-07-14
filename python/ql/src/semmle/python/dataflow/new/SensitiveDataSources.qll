@@ -217,7 +217,8 @@ private module SensitiveDataModeling {
    * Returns strings (primarily the names of various program entities) that may contain sensitive data
    * with the classification `classification`.
    *
-   * This is a helper predicate, used to limit the number of regexp matches that have to be performed.
+   * This helper predicate ends up being very similar to `nameIndicatesSensitiveData`,
+   * but is performance optimized to limit the number of regexp matches that have to be performed.
    */
   pragma[nomagic]
   private string sensitiveString(SensitiveDataClassification classification) {
