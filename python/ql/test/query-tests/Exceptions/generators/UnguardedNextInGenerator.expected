@@ -1,2 +1,3 @@
 | test.py:5:15:5:22 | ControlFlowNode for next() | Call to next() in a generator |
 | test.py:10:20:10:27 | ControlFlowNode for next() | Call to next() in a generator |
+| test.py:62:19:62:28 | ControlFlowNode for next() | Call to next() in a generator |
