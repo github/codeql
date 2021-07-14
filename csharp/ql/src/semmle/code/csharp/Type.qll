@@ -56,7 +56,7 @@ private predicate isObjectClass(Class c) { c instanceof ObjectType }
  */
 class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_or_ref_type {
   /**
-   * DEPRECATED: use `getUndecoratedName()` instead
+   * DEPRECATED: use `getUndecoratedName()` instead.
    *
    * Gets the name of this type without `<...>` brackets, in case it is a generic type.
    */

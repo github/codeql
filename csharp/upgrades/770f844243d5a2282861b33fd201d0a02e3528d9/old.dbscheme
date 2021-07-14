@@ -1,13 +1,3 @@
-/* This is a dummy line to alter the dbscheme, so we can make a database upgrade
- * without actually changing any of the dbscheme predicates. It contains a date
- * to allow for such updates in the future as well.
- *
- * 2021-07-14
- *
- * DO NOT remove this comment carelessly, since it can revert the dbscheme back to a
- * previously seen state (matching a previously seen SHA), which would make the upgrade
- * mechanism not work properly.
- */
 
 /**
  * An invocation of the compiler. Note that more than one file may be
