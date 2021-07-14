@@ -194,3 +194,9 @@ var server = http.createServer(function(req, res) {
   res.write(fs.readFileSync("prefix" + path.replace(/^(\.\.[\/\\])+/, ''))); // NOT OK - not normalized
   res.write(fs.readFileSync(pathModule.normalize(path).replace(/^(\.\.[\/\\])+/, ''))); // NOT OK (can be absolute)
 });
+
+var server = http.createServer(function(req, res) {
+  // tests for a few more uri-libraries
+  const qs = require("qs");
+  res.write(fs.readFileSync(qs.parse(req.url).foo)); // NOT OK
+});

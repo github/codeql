@@ -293,6 +293,20 @@ module querystring {
 }
 
 /**
+ * A taint step through a call to [qs](https://npmjs.com/package/qs)
+ */
+private class QsStep extends TaintTracking::SharedTaintStep {
+  override predicate uriStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(API::CallNode call |
+      call = API::moduleImport("qs").getMember(["parse", "stringify"]).getACall()
+    |
+      pred = call.getArgument(0) and
+      succ = call
+    )
+  }
+}
+
+/**
  * Provides steps for the `goog.Uri` class in the closure library.
  */
 private module ClosureLibraryUri {
