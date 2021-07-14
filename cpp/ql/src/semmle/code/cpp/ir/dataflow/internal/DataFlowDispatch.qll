@@ -238,12 +238,11 @@ predicate mayBenefitFromCallContext(CallInstruction call, Function f) {
 /**
  * Holds if `call` is a call through a function pointer, and the pointer
  * value is given as the `arg`'th argument to `f`.
- *
- * Note that `f` may be several layers up through the call chain.
  */
 private predicate mayBenefitFromCallContext(
   VirtualDispatch::DataSensitiveCall call, Function f, int arg
 ) {
+  f = pragma[only_bind_out](call).getEnclosingCallable() and
   exists(InitializeParameterInstruction init |
     not exists(call.getStaticCallTarget()) and
     init.getEnclosingFunction() = f and
