@@ -366,3 +366,9 @@ bad86 = re.compile(r'''^((?:a{0,2|-)|\w\{\d,\d)+X$''')
 
 # GOOD:
 good42 = re.compile(r'''^((?:a{0,2}|-)|\w\{\d,\d\})+X$''')
+
+# NOT GOOD
+bad87 = re.compile(r'X(\u0061|a)*Y')
+
+# GOOD
+good43 = re.compile(r'X(\u0061|b)+Y')
