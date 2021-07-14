@@ -114,6 +114,14 @@ public class FileExtractor {
       public String toString() {
         return "html";
       }
+
+      @Override
+      protected boolean contains(File f, String lcExt, ExtractorConfig config) {
+        if (isBinaryFile(f, lcExt, config)) {
+          return false;
+        }
+        return super.contains(f, lcExt, config);
+      }
     },
 
     JS(".js", ".jsx", ".mjs", ".cjs", ".es6", ".es") {
@@ -151,32 +159,6 @@ public class FileExtractor {
       @Override
       public String toString() {
         return "javascript";
-      }
-
-      /** Number of bytes to read from the beginning of a ".js" file to detect if it is a binary file. */
-      private static final int fileHeaderSize = 128;
-
-      /** Computes if `f` is a binary file based on whether the initial `fileHeaderSize` bytes are printable UTF-8 chars. */
-      private boolean isBinaryFile(File f, String lcExt, ExtractorConfig config) {
-        if (!config.getDefaultEncoding().equals(StandardCharsets.UTF_8.name())) {
-          return false;
-        }
-        try (FileInputStream fis = new FileInputStream(f)) {
-          byte[] bytes = new byte[fileHeaderSize];
-          int length = fis.read(bytes);
-
-          if (length == -1) return false;
-
-          // Avoid invalid or unprintable UTF-8 files.
-          if (hasUnprintableUtf8(bytes, length)) {
-            return true;
-          }
-
-          return false;
-        } catch (IOException e) {
-          Exceptions.ignore(e, "Let extractor handle this one.");
-        }
-        return false;
       }
     },
 
@@ -233,9 +215,6 @@ public class FileExtractor {
 
         return super.contains(f, lcExt, config);
       }
-
-      /** Number of bytes to read from the beginning of a ".ts" file for sniffing its file type. */
-      private static final int fileHeaderSize = 128;
 
       private boolean hasBadFileHeader(File f, String lcExt, ExtractorConfig config) {
         if (!".ts".equals(lcExt)) {
@@ -348,6 +327,9 @@ public class FileExtractor {
       }
     };
 
+    /** Number of bytes to read from the beginning of a file to sniff its file type. */
+    private static final int fileHeaderSize = 128;
+
     /** The file extensions (lower-case, including leading dot) corresponding to this file type. */
     private final Set<String> extensions = new LinkedHashSet<String>();
 
@@ -396,6 +378,29 @@ public class FileExtractor {
      */
     public boolean isTrapCachingAllowed() {
       return true;
+    }
+
+    /** Computes if `f` is a binary file based on whether the initial `fileHeaderSize` bytes are printable UTF-8 chars. */
+    public static boolean isBinaryFile(File f, String lcExt, ExtractorConfig config) {
+      if (!config.getDefaultEncoding().equals(StandardCharsets.UTF_8.name())) {
+        return false;
+      }
+      try (FileInputStream fis = new FileInputStream(f)) {
+        byte[] bytes = new byte[fileHeaderSize];
+        int length = fis.read(bytes);
+
+        if (length == -1) return false;
+
+        // Avoid invalid or unprintable UTF-8 files.
+        if (hasUnprintableUtf8(bytes, length)) {
+          return true;
+        }
+
+        return false;
+      } catch (IOException e) {
+        Exceptions.ignore(e, "Let extractor handle this one.");
+      }
+      return false;
     }
 
     /** The names of all defined {@linkplain FileType}s. */
