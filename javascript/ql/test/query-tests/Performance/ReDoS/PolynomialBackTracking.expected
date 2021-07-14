@@ -493,3 +493,7 @@
 | tst.js:351:15:351:16 | a+ | Strings with many repetitions of 'a' can start matching anywhere after the start of the preceeding (a+)* |
 | tst.js:352:15:352:16 | a* | Strings with many repetitions of 'a' can start matching anywhere after the start of the preceeding (a*)+b |
 | tst.js:353:15:353:16 | a+ | Strings with many repetitions of 'a' can start matching anywhere after the start of the preceeding (a+)+ |
+| tst.js:372:16:372:21 | [^"]*? | Strings starting with '"' and with many repetitions of '""' can start matching anywhere after the start of the preceeding ("[^"]*?"\|[^"\\s]+)+(?=\\s*\|\\s*$)X |
+| tst.js:372:24:372:30 | [^"\\s]+ | Strings with many repetitions of '!' can start matching anywhere after the start of the preceeding ("[^"]*?"\|[^"\\s]+)+ |
+| tst.js:373:16:373:21 | [^"]*? | Strings starting with '"' and with many repetitions of '""' can start matching anywhere after the start of the preceeding ("[^"]*?"\|[^"\\s]+)+(?=X) |
+| tst.js:373:24:373:30 | [^"\\s]+ | Strings with many repetitions of '!' can start matching anywhere after the start of the preceeding ("[^"]*?"\|[^"\\s]+)+ |
