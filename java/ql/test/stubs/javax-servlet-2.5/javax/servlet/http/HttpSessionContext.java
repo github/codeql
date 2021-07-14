@@ -7,6 +7,6 @@ import javax.servlet.http.HttpSession;
 
 public interface HttpSessionContext
 {
-    Enumeration getIds();
+    Enumeration<String> getIds();
     HttpSession getSession(String p0);
 }
