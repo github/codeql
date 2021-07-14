@@ -64,7 +64,7 @@ class RelationalOperation extends ComparisonOperation, @rel_op_expr {
    * if the overall expression evaluates to `true`; for example on
    * `x <= 20` this is the `20`, and on `y > 0` it is `y`.
    */
-  abstract Expr getGreaterOperand();
+  Expr getGreaterOperand() { none() } // overridden in subclasses
 
   /**
    * Gets the operand on the "lesser" (or "lesser-or-equal") side
@@ -72,7 +72,7 @@ class RelationalOperation extends ComparisonOperation, @rel_op_expr {
    * if the overall expression evaluates to `true`; for example on
    * `x <= 20` this is `x`, and on `y > 0` it is the `0`.
    */
-  abstract Expr getLesserOperand();
+  Expr getLesserOperand() { none() } // overridden in subclasses
 }
 
 /**

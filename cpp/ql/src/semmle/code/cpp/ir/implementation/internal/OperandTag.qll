@@ -40,7 +40,17 @@ abstract class OperandTag extends TOperandTag {
   /**
    * Gets a label that will appear before the operand when the IR is printed.
    */
-  string getLabel() { result = "" }
+  final string getLabel() { if alwaysPrintLabel() then result = getId() + ":" else result = "" }
+
+  /**
+   * Gets an identifier that uniquely identifies this operand within its instruction.
+   */
+  abstract string getId();
+
+  /**
+   * Holds if the operand should always be prefixed with its label in the dump of its instruction.
+   */
+  predicate alwaysPrintLabel() { none() }
 }
 
 /**
@@ -69,7 +79,9 @@ class AddressOperandTag extends RegisterOperandTag, TAddressOperand {
 
   final override int getSortOrder() { result = 0 }
 
-  final override string getLabel() { result = "&:" }
+  final override predicate alwaysPrintLabel() { any() }
+
+  final override string getId() { result = "&" }
 }
 
 AddressOperandTag addressOperand() { result = TAddressOperand() }
@@ -82,6 +94,8 @@ class BufferSizeOperandTag extends RegisterOperandTag, TBufferSizeOperand {
   final override string toString() { result = "BufferSize" }
 
   final override int getSortOrder() { result = 1 }
+
+  final override string getId() { result = "size" }
 }
 
 BufferSizeOperandTag bufferSizeOperand() { result = TBufferSizeOperand() }
@@ -93,6 +107,8 @@ class SideEffectOperandTag extends TypedOperandTag, TSideEffectOperand {
   final override string toString() { result = "SideEffect" }
 
   final override int getSortOrder() { result = 2 }
+
+  final override string getId() { result = "side_effect" }
 }
 
 SideEffectOperandTag sideEffectOperand() { result = TSideEffectOperand() }
@@ -105,6 +121,8 @@ class LoadOperandTag extends TypedOperandTag, TLoadOperand {
   final override string toString() { result = "Load" }
 
   final override int getSortOrder() { result = 3 }
+
+  final override string getId() { result = "load" }
 }
 
 LoadOperandTag loadOperand() { result = TLoadOperand() }
@@ -116,6 +134,8 @@ class StoreValueOperandTag extends RegisterOperandTag, TStoreValueOperand {
   final override string toString() { result = "StoreValue" }
 
   final override int getSortOrder() { result = 4 }
+
+  final override string getId() { result = "store" }
 }
 
 StoreValueOperandTag storeValueOperand() { result = TStoreValueOperand() }
@@ -127,6 +147,8 @@ class UnaryOperandTag extends RegisterOperandTag, TUnaryOperand {
   final override string toString() { result = "Unary" }
 
   final override int getSortOrder() { result = 5 }
+
+  final override string getId() { result = "unary" }
 }
 
 UnaryOperandTag unaryOperand() { result = TUnaryOperand() }
@@ -138,6 +160,8 @@ class LeftOperandTag extends RegisterOperandTag, TLeftOperand {
   final override string toString() { result = "Left" }
 
   final override int getSortOrder() { result = 6 }
+
+  final override string getId() { result = "left" }
 }
 
 LeftOperandTag leftOperand() { result = TLeftOperand() }
@@ -149,6 +173,8 @@ class RightOperandTag extends RegisterOperandTag, TRightOperand {
   final override string toString() { result = "Right" }
 
   final override int getSortOrder() { result = 7 }
+
+  final override string getId() { result = "right" }
 }
 
 RightOperandTag rightOperand() { result = TRightOperand() }
@@ -160,6 +186,8 @@ class ConditionOperandTag extends RegisterOperandTag, TConditionOperand {
   final override string toString() { result = "Condition" }
 
   final override int getSortOrder() { result = 8 }
+
+  final override string getId() { result = "cond" }
 }
 
 ConditionOperandTag conditionOperand() { result = TConditionOperand() }
@@ -172,7 +200,9 @@ class CallTargetOperandTag extends RegisterOperandTag, TCallTargetOperand {
 
   final override int getSortOrder() { result = 10 }
 
-  final override string getLabel() { result = "func:" }
+  final override predicate alwaysPrintLabel() { any() }
+
+  final override string getId() { result = "func" }
 }
 
 CallTargetOperandTag callTargetOperand() { result = TCallTargetOperand() }
@@ -195,7 +225,9 @@ class ThisArgumentOperandTag extends ArgumentOperandTag, TThisArgumentOperand {
 
   final override int getSortOrder() { result = 11 }
 
-  final override string getLabel() { result = "this:" }
+  final override predicate alwaysPrintLabel() { any() }
+
+  final override string getId() { result = "this" }
 }
 
 ThisArgumentOperandTag thisArgumentOperand() { result = TThisArgumentOperand() }
@@ -212,9 +244,11 @@ class PositionalArgumentOperandTag extends ArgumentOperandTag, TPositionalArgume
 
   final override int getSortOrder() { result = 12 + argIndex }
 
-  final override string getLabel() { result = argIndex.toString() + ":" }
+  final override predicate alwaysPrintLabel() { any() }
 
   final int getArgIndex() { result = argIndex }
+
+  final override string getId() { result = argIndex.toString() }
 }
 
 PositionalArgumentOperandTag positionalArgumentOperand(int argIndex) {
@@ -228,7 +262,9 @@ class ChiTotalOperandTag extends ChiOperandTag, TChiTotalOperand {
 
   final override int getSortOrder() { result = 13 }
 
-  final override string getLabel() { result = "total:" }
+  final override predicate alwaysPrintLabel() { any() }
+
+  final override string getId() { result = "total" }
 }
 
 ChiTotalOperandTag chiTotalOperand() { result = TChiTotalOperand() }
@@ -238,7 +274,9 @@ class ChiPartialOperandTag extends ChiOperandTag, TChiPartialOperand {
 
   final override int getSortOrder() { result = 14 }
 
-  final override string getLabel() { result = "partial:" }
+  final override predicate alwaysPrintLabel() { any() }
+
+  final override string getId() { result = "partial" }
 }
 
 ChiPartialOperandTag chiPartialOperand() { result = TChiPartialOperand() }
@@ -252,7 +290,9 @@ class AsmOperandTag extends RegisterOperandTag, TAsmOperand {
 
   final override int getSortOrder() { result = 15 + index }
 
-  final override string getLabel() { result = index.toString() + ":" }
+  final override predicate alwaysPrintLabel() { any() }
+
+  final override string getId() { result = index.toString() }
 }
 
 AsmOperandTag asmOperand(int index) { result = TAsmOperand(index) }

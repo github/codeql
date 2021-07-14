@@ -4,6 +4,7 @@
  *              may be dangerous.
  * @kind problem
  * @problem.severity error
+ * @security-severity 10.0
  * @precision high
  * @id cpp/dangerous-cin
  * @tags reliability
@@ -66,10 +67,7 @@ class IFStream extends Type {
  */
 class CinVariable extends NamespaceVariable {
   CinVariable() {
-    (
-      getName() = "cin" or
-      getName() = "wcin"
-    ) and
+    getName() = ["cin", "wcin"] and
     getNamespace().getName() = "std"
   }
 }

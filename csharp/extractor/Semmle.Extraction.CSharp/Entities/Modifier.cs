@@ -1,41 +1,18 @@
 using Microsoft.CodeAnalysis;
-using System;
 using System.IO;
-using System.Reflection;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    /// <summary>
-    /// Provide a "Key" object to allow modifiers to exist as entities in the extractor
-    /// hash map. (Raw strings would work as keys but might clash with other types).
-    /// </summary>
-    class ModifierKey : Object
+    internal class Modifier : Extraction.CachedEntity<string>
     {
-        public readonly string name;
-
-        public ModifierKey(string m)
-        {
-            name = m;
-        }
-
-        public override bool Equals(Object obj)
-        {
-            return obj.GetType() == GetType() && name == ((ModifierKey)obj).name;
-        }
-
-        public override int GetHashCode() => 13 * name.GetHashCode();
-    }
-
-    class Modifier : Extraction.CachedEntity<ModifierKey>
-    {
-        Modifier(Context cx, ModifierKey init)
+        private Modifier(Context cx, string init)
             : base(cx, init) { }
 
-        public override Microsoft.CodeAnalysis.Location ReportingLocation => null;
+        public override Location? ReportingLocation => null;
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
-            trapFile.Write(symbol.name);
+            trapFile.Write(Symbol);
             trapFile.Write(";modifier");
         }
 
@@ -43,7 +20,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
-            trapFile.modifiers(Label, symbol.name);
+            trapFile.modifiers(Label, Symbol);
         }
 
         public static string AccessbilityModifier(Accessibility access)
@@ -95,30 +72,22 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static void ExtractModifiers(Context cx, TextWriter trapFile, IEntity key, ISymbol symbol)
         {
-            bool interfaceDefinition = symbol.ContainingType != null
-                && symbol.ContainingType.Kind == SymbolKind.NamedType
-                && symbol.ContainingType.TypeKind == TypeKind.Interface;
-
             HasAccessibility(cx, trapFile, key, symbol.DeclaredAccessibility);
             if (symbol.Kind == SymbolKind.ErrorType)
                 trapFile.has_modifiers(key, Modifier.Create(cx, Accessibility.Public));
 
-            if (symbol.IsAbstract && (symbol.Kind != SymbolKind.NamedType || ((INamedTypeSymbol)symbol).TypeKind != TypeKind.Interface) && !interfaceDefinition)
+            if (symbol.IsAbstract && (symbol.Kind != SymbolKind.NamedType || ((INamedTypeSymbol)symbol).TypeKind != TypeKind.Interface))
                 HasModifier(cx, trapFile, key, "abstract");
 
             if (symbol.IsSealed)
                 HasModifier(cx, trapFile, key, "sealed");
 
-            bool fromSource = symbol.DeclaringSyntaxReferences.Length > 0;
+            var fromSource = symbol.DeclaringSyntaxReferences.Length > 0;
 
             if (symbol.IsStatic && !(symbol.Kind == SymbolKind.Field && ((IFieldSymbol)symbol).IsConst && !fromSource))
                 HasModifier(cx, trapFile, key, "static");
 
             if (symbol.IsVirtual)
-                HasModifier(cx, trapFile, key, "virtual");
-
-            // For some reason, method in interfaces are "virtual", not "abstract"
-            if (symbol.IsAbstract && interfaceDefinition)
                 HasModifier(cx, trapFile, key, "virtual");
 
             if (symbol.Kind == SymbolKind.Field && ((IFieldSymbol)symbol).IsReadOnly)
@@ -138,7 +107,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             if (symbol.Kind == SymbolKind.NamedType)
             {
-                INamedTypeSymbol nt = symbol as INamedTypeSymbol;
+                var nt = symbol as INamedTypeSymbol;
                 if (nt is null)
                     throw new InternalError(symbol, "Symbol kind is inconsistent with its type");
 
@@ -152,17 +121,22 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public static Modifier Create(Context cx, string modifier) =>
-            ModifierFactory.Instance.CreateEntity(cx, new ModifierKey(modifier));
-
-        public static Modifier Create(Context cx, Accessibility access) =>
-            ModifierFactory.Instance.CreateEntity(cx, new ModifierKey(AccessbilityModifier(access)));
-
-        class ModifierFactory : ICachedEntityFactory<ModifierKey, Modifier>
+        public static Modifier Create(Context cx, string modifier)
         {
-            public static readonly ModifierFactory Instance = new ModifierFactory();
+            return ModifierFactory.Instance.CreateEntity(cx, (typeof(Modifier), modifier), modifier);
+        }
 
-            public Modifier Create(Context cx, ModifierKey init) => new Modifier(cx, init);
+        public static Modifier Create(Context cx, Accessibility access)
+        {
+            var modifier = AccessbilityModifier(access);
+            return ModifierFactory.Instance.CreateEntity(cx, (typeof(Modifier), modifier), modifier);
+        }
+
+        private class ModifierFactory : CachedEntityFactory<string, Modifier>
+        {
+            public static ModifierFactory Instance { get; } = new ModifierFactory();
+
+            public override Modifier Create(Context cx, string init) => new Modifier(cx, init);
         }
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.OptionalLabel;
     }

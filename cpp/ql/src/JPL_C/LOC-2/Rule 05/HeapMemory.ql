@@ -21,15 +21,7 @@ class Initialization extends Function {
 }
 
 class Allocation extends FunctionCall {
-  Allocation() {
-    exists(string name | name = this.getTarget().getName() |
-      name = "malloc" or
-      name = "calloc" or
-      name = "alloca" or
-      name = "sbrk" or
-      name = "valloc"
-    )
-  }
+  Allocation() { this.getTarget().getName() = ["malloc", "calloc", "alloca", "sbrk", "valloc"] }
 }
 
 from Function f, Allocation a

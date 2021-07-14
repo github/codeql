@@ -4,9 +4,12 @@
  *              unexpected behavior of directives, performance problems, and memory leaks.
  * @kind problem
  * @problem.severity warning
+ * @security-severity 8.8
  * @id js/angular/double-compilation
  * @tags reliability
  *       frameworks/angularjs
+ *       security
+ *       external/cwe/cwe-1176
  * @precision very-high
  */
 

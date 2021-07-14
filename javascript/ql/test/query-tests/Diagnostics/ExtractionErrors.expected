@@ -1,0 +1,4 @@
+| bad1.js:1:7:1:7 | Error: Unexpected token | Extraction failed in bad1.js with error Error: Unexpected token | 2 |
+| bad2.ts:1:11:1:11 | Error: Expression expected. | Extraction failed in bad2.ts with error Error: Expression expected. | 2 |
+| bad2.ts:1:13:1:13 | Error: Expression expected. | Extraction failed in bad2.ts with error Error: Expression expected. | 2 |
+| bad3.html:2:11:2:11 | Error: Unexpected token | Extraction failed in bad3.html with error Error: Unexpected token | 2 |

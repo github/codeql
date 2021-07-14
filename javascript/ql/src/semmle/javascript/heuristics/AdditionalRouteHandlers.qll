@@ -29,7 +29,7 @@ private class PromotedExpressCandidate extends Express::RouteHandler,
   HTTP::Servers::StandardRouteHandler {
   PromotedExpressCandidate() { this instanceof ConnectExpressShared::RouteHandlerCandidate }
 
-  override SimpleParameter getRouteHandlerParameter(string kind) {
+  override Parameter getRouteHandlerParameter(string kind) {
     result = ConnectExpressShared::getRouteHandlerParameter(getAstNode(), kind)
   }
 }
@@ -41,7 +41,7 @@ private class PromotedConnectCandidate extends Connect::RouteHandler,
   HTTP::Servers::StandardRouteHandler {
   PromotedConnectCandidate() { this instanceof ConnectExpressShared::RouteHandlerCandidate }
 
-  override SimpleParameter getRouteHandlerParameter(string kind) {
+  override Parameter getRouteHandlerParameter(string kind) {
     result = ConnectExpressShared::getRouteHandlerParameter(getAstNode(), kind)
   }
 }

@@ -1,4 +1,4 @@
-/** Gets an http verb */
+/** Gets an HTTP verb, in upper case */
 string httpVerb() {
   result = "GET" or
   result = "POST" or
@@ -9,5 +9,5 @@ string httpVerb() {
   result = "HEAD"
 }
 
-/** Gets an http verb, in lower case */
+/** Gets an HTTP verb, in lower case */
 string httpVerbLower() { result = httpVerb().toLowerCase() }

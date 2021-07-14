@@ -3,7 +3,7 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-  <include src="LeapYear.qhelp" />
+  <include src="LeapYear.inc.qhelp" />
   
 <p>When performing arithmetic operations on a variable that represents a year, it is important to consider that the resulting value may not be a valid date.</p>
 <p>The typical example is doing simple year arithmetic (i.e. <code>date.year++</code>) without considering if the resulting value will be a valid date or not.</p>
@@ -22,7 +22,7 @@
 </example>
 
 <references>
-  <li>U.S. Naval Observatory Website - <a href="https://aa.usno.navy.mil/faq/docs/calendars.php"> Introduction to Calendars</a></li>
+  <li>NASA / Goddard Space Flight Center - <a href="https://eclipse.gsfc.nasa.gov/SEhelp/calendars.html">Calendars</a></li>
   <li>Wikipedia - <a href="https://en.wikipedia.org/wiki/Leap_year_bug"> Leap year bug</a> </li>
   <li>Microsoft Azure blog - <a href="https://azure.microsoft.com/en-us/blog/is-your-code-ready-for-the-leap-year/"> Is your code ready for the leap year?</a> </li>
 </references>

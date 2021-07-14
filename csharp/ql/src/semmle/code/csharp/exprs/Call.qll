@@ -8,6 +8,8 @@ import Expr
 import semmle.code.csharp.Callable
 import semmle.code.csharp.dataflow.CallContext as CallContext
 private import semmle.code.csharp.dataflow.internal.DelegateDataFlow
+private import semmle.code.csharp.dataflow.internal.DataFlowDispatch
+private import semmle.code.csharp.dataflow.internal.DataFlowImplCommon
 private import semmle.code.csharp.dispatch.Dispatch
 private import dotnet
 
@@ -297,6 +299,8 @@ class MethodCall extends Call, QualifiableExpr, LateBindableExpr, @method_invoca
 
   override string toString() { result = "call to method " + concat(this.getTarget().getName()) }
 
+  override string getAPrimaryQlClass() { result = "MethodCall" }
+
   override Expr getRawArgument(int i) {
     if exists(getQualifier())
     then
@@ -405,12 +409,14 @@ class ConstructorInitializer extends Call, @constructor_init_expr {
 
   override string toString() { result = "call to constructor " + this.getTarget().getName() }
 
+  override string getAPrimaryQlClass() { result = "ConstructorInitializer" }
+
   private ValueOrRefType getTargetType() {
-    result = this.getTarget().getDeclaringType().getSourceDeclaration()
+    result = this.getTarget().getDeclaringType().getUnboundDeclaration()
   }
 
   private ValueOrRefType getConstructorType() {
-    result = this.getConstructor().getDeclaringType().getSourceDeclaration()
+    result = this.getConstructor().getDeclaringType().getUnboundDeclaration()
   }
 
   /**
@@ -493,6 +499,8 @@ class OperatorCall extends Call, LateBindableExpr, @operator_invocation_expr {
   override Operator getARuntimeTarget() { result = Call.super.getARuntimeTarget() }
 
   override string toString() { result = "call to operator " + this.getTarget().getName() }
+
+  override string getAPrimaryQlClass() { result = "OperatorCall" }
 }
 
 /**
@@ -521,6 +529,53 @@ class MutatorOperatorCall extends OperatorCall {
   predicate isPostfix() { mutator_invocation_mode(this, 2) }
 }
 
+private class DelegateLikeCall_ = @delegate_invocation_expr or @function_pointer_invocation_expr;
+
+/**
+ * A function pointer or delegate call.
+ */
+class DelegateLikeCall extends Call, DelegateLikeCall_ {
+  override Callable getTarget() { none() }
+
+  /**
+   * DEPRECATED: Use `getARuntimeTarget/0` instead.
+   *
+   * Gets a potential run-time target of this delegate or function pointer call in the given
+   * call context `cc`.
+   */
+  deprecated Callable getARuntimeTarget(CallContext::CallContext cc) {
+    exists(DelegateLikeCallExpr call |
+      this = call.getCall() and
+      result = call.getARuntimeTarget(cc)
+    )
+  }
+
+  /**
+   * Gets the delegate or function pointer expression of this call. For example, the
+   * delegate expression of `X()` on line 5 is the access to the field `X` in
+   *
+   * ```csharp
+   * class A {
+   *   Action X = () => { };
+   *
+   *   void CallX() {
+   *     X();
+   *   }
+   * }
+   * ```
+   */
+  Expr getExpr() { result = this.getChild(-1) }
+
+  final override Callable getARuntimeTarget() {
+    exists(ExplicitDelegateLikeDataFlowCall call |
+      this = call.getCall() and
+      result = viableCallableLambda(call, _)
+    )
+  }
+
+  override Expr getRuntimeArgument(int i) { result = getArgument(i) }
+}
+
 /**
  * A delegate call, for example `x()` on line 5 in
  *
@@ -534,18 +589,15 @@ class MutatorOperatorCall extends OperatorCall {
  * }
  * ```
  */
-class DelegateCall extends Call, @delegate_invocation_expr {
-  override Callable getTarget() { none() }
-
+class DelegateCall extends DelegateLikeCall, @delegate_invocation_expr {
   /**
+   * DEPRECATED: Use `getARuntimeTarget/0` instead.
+   *
    * Gets a potential run-time target of this delegate call in the given
    * call context `cc`.
    */
-  Callable getARuntimeTarget(CallContext::CallContext cc) {
-    exists(DelegateCallExpr call |
-      this = call.getDelegateCall() and
-      result = call.getARuntimeTarget(cc)
-    )
+  deprecated override Callable getARuntimeTarget(CallContext::CallContext cc) {
+    result = DelegateLikeCall.super.getARuntimeTarget(cc)
     or
     exists(AddEventSource aes, CallContext::CallContext cc2 |
       aes = this.getAnAddEventSource(_) and
@@ -560,40 +612,46 @@ class DelegateCall extends Call, @delegate_invocation_expr {
     )
   }
 
-  private AddEventSource getAnAddEventSource(Callable enclosingCallable) {
-    this.getDelegateExpr().(EventAccess).getTarget() = result.getEvent() and
+  deprecated private AddEventSource getAnAddEventSource(Callable enclosingCallable) {
+    this.getExpr().(EventAccess).getTarget() = result.getEvent() and
     enclosingCallable = result.getExpr().getEnclosingCallable()
   }
 
-  private AddEventSource getAnAddEventSourceSameEnclosingCallable() {
+  deprecated private AddEventSource getAnAddEventSourceSameEnclosingCallable() {
     result = getAnAddEventSource(this.getEnclosingCallable())
   }
 
-  private AddEventSource getAnAddEventSourceDifferentEnclosingCallable() {
+  deprecated private AddEventSource getAnAddEventSourceDifferentEnclosingCallable() {
     exists(Callable c | result = getAnAddEventSource(c) | c != this.getEnclosingCallable())
   }
 
-  override Callable getARuntimeTarget() { result = getARuntimeTarget(_) }
-
-  override Expr getRuntimeArgument(int i) { result = getArgument(i) }
-
   /**
-   * Gets the delegate expression of this delegate call. For example, the
-   * delegate expression of `X()` on line 5 is the access to the field `X` in
+   * DEPRECATED: use `getExpr` instead.
    *
-   * ```csharp
-   * class A {
-   *   Action X = () => { };
-   *
-   *   void CallX() {
-   *     X();
-   *   }
-   * }
-   * ```
+   * Gets the delegate expression of this call.
    */
-  Expr getDelegateExpr() { result = this.getChild(-1) }
+  deprecated Expr getDelegateExpr() { result = this.getExpr() }
 
   override string toString() { result = "delegate call" }
+
+  override string getAPrimaryQlClass() { result = "DelegateCall" }
+}
+
+/**
+ * A function pointer call, for example `fp(1)` on line 3 in
+ *
+ * ```csharp
+ * class A {
+ *   void Call(delegate*<int, void> fp) {
+ *     fp(1);
+ *   }
+ * }
+ * ```
+ */
+class FunctionPointerCall extends DelegateLikeCall, @function_pointer_invocation_expr {
+  override string toString() { result = "function pointer call" }
+
+  override string getAPrimaryQlClass() { result = "FunctionPointerCall" }
 }
 
 /**
@@ -638,6 +696,8 @@ class PropertyCall extends AccessorCall, PropertyAccessExpr {
   }
 
   override string toString() { result = PropertyAccessExpr.super.toString() }
+
+  override string getAPrimaryQlClass() { result = "PropertyCall" }
 }
 
 /**
@@ -673,6 +733,8 @@ class IndexerCall extends AccessorCall, IndexerAccessExpr {
   }
 
   override string toString() { result = IndexerAccessExpr.super.toString() }
+
+  override string getAPrimaryQlClass() { result = "IndexerCall" }
 }
 
 /**
@@ -717,6 +779,8 @@ class EventCall extends AccessorCall, EventAccessExpr {
   }
 
   override string toString() { result = EventAccessExpr.super.toString() }
+
+  override string getAPrimaryQlClass() { result = "EventCall" }
 }
 
 /**
@@ -736,4 +800,6 @@ class LocalFunctionCall extends Call, @local_function_invocation_expr {
   override LocalFunction getTarget() { expr_call(this, result) }
 
   override string toString() { result = "call to local function " + getTarget().getName() }
+
+  override string getAPrimaryQlClass() { result = "LocalFunctionCall" }
 }

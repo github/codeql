@@ -3,6 +3,8 @@
  */
 
 import javascript
+private import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps
+private import semmle.javascript.dataflow.internal.PreCallGraphStep
 
 /**
  * Gets a reference to the 'React' object.
@@ -48,6 +50,12 @@ abstract class ReactComponent extends ASTNode {
   abstract DataFlow::SourceNode getAComponentCreatorReference();
 
   /**
+   * Gets a reference to an instance of this component.
+   */
+  pragma[noinline]
+  DataFlow::SourceNode getAnInstanceReference() { result = ref() }
+
+  /**
    * Gets a reference to this component.
    */
   DataFlow::Node ref() { result.analyze().getAValue() = getAbstractComponent() }
@@ -68,20 +76,19 @@ abstract class ReactComponent extends ASTNode {
    * Gets an access to the `state` object of this component.
    */
   DataFlow::SourceNode getADirectStateAccess() {
-    result.(DataFlow::PropRef).accesses(ref(), "state")
+    result = getAnInstanceReference().getAPropertyReference("state")
   }
 
   /**
    * Gets a data flow node that reads a prop of this component.
    */
-  DataFlow::PropRead getAPropRead() { getADirectPropsAccess().flowsTo(result.getBase()) }
+  DataFlow::PropRead getAPropRead() { result = getADirectPropsAccess().getAPropertyRead() }
 
   /**
    * Gets a data flow node that reads prop `name` of this component.
    */
   DataFlow::PropRead getAPropRead(string name) {
-    result = getAPropRead() and
-    result.getPropertyName() = name
+    result = getADirectPropsAccess().getAPropertyRead(name)
   }
 
   /**
@@ -91,7 +98,7 @@ abstract class ReactComponent extends ASTNode {
   DataFlow::SourceNode getAStateAccess() {
     result = getADirectStateAccess()
     or
-    exists(DataFlow::PropRef prn | result = prn | getAStateAccess().flowsTo(prn.getBase()))
+    result = getAStateAccess().getAPropertyReference()
   }
 
   /**
@@ -114,18 +121,17 @@ abstract class ReactComponent extends ASTNode {
   /**
    * Gets a call to method `name` on this component.
    */
-  DataFlow::MethodCallNode getAMethodCall(string name) { result.calls(ref(), name) }
+  DataFlow::MethodCallNode getAMethodCall(string name) {
+    result = getAnInstanceReference().getAMethodCall(name)
+  }
 
   /**
    * Gets a value that will become (part of) the state
    * object of this component, for example an assignment to `this.state`.
    */
   DataFlow::SourceNode getACandidateStateSource() {
-    exists(DataFlow::PropWrite pwn, DataFlow::Node rhs |
-      // a direct definition: `this.state = o`
-      result.flowsTo(rhs) and
-      pwn.writes(ref(), "state", rhs)
-    )
+    // a direct definition: `this.state = o`
+    result = getAnInstanceReference().getAPropertySource("state")
     or
     exists(DataFlow::MethodCallNode mce, DataFlow::SourceNode arg0 |
       mce = getAMethodCall("setState") or
@@ -242,7 +248,11 @@ abstract class ReactComponent extends ASTNode {
  * Holds if `f` always returns a JSX element or fragment, or a React element.
  */
 private predicate alwaysReturnsJSXOrReactElements(Function f) {
-  forex(Expr e | e.flow().(DataFlow::SourceNode).flowsToExpr(f.getAReturnedExpr()) |
+  forex(Expr e |
+    e.flow().(DataFlow::SourceNode).flowsToExpr(f.getAReturnedExpr()) and
+    // Allow returning string constants in addition to JSX/React elemnts.
+    not exists(e.getStringValue())
+  |
     e instanceof JSXNode or
     e instanceof ReactElementDefinition
   )
@@ -312,7 +322,8 @@ abstract private class SharedReactPreactClassComponent extends ReactComponent, C
   }
 
   override DataFlow::SourceNode getADirectPropsAccess() {
-    result.(DataFlow::PropRef).accesses(ref(), "props") or
+    result = getAnInstanceReference().getAPropertyRead("props")
+    or
     result = DataFlow::parameterNode(getConstructor().getBody().getParameter(0))
   }
 
@@ -435,7 +446,7 @@ class ES5Component extends ReactComponent, ObjectExpr {
   override Function getStaticMethod(string name) { none() }
 
   override DataFlow::SourceNode getADirectPropsAccess() {
-    result.(DataFlow::PropRef).accesses(ref(), "props")
+    result = getAnInstanceReference().getAPropertyRead("props")
   }
 
   override AbstractValue getAbstractComponent() { result = TAbstractObjectLiteral(this) }
@@ -547,4 +558,307 @@ private class ReactJSXElement extends JSXElement {
    * Gets the component this element instantiates.
    */
   ReactComponent getComponent() { result = component }
+}
+
+/**
+ * Step through the state variable of a `useState` call.
+ *
+ * It returns a pair of the current state, and a callback to change the state.
+ *
+ * For example:
+ * ```js
+ * let [state, setState] = useState(initialValue);
+ * let [state, setState] = useState(() => initialValue); // lazy initial state
+ *
+ * setState(newState);
+ * setState(prevState => { ... });
+ * ```
+ */
+private class UseStateStep extends PreCallGraphStep {
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(DataFlow::CallNode call | call = react().getAMemberCall("useState") |
+      pred =
+        [
+          call.getArgument(0), // initial state
+          call.getCallback(0).getReturnNode(), // lazy initial state
+          call.getAPropertyRead("1").getACall().getArgument(0), // setState invocation
+          call.getAPropertyRead("1").getACall().getCallback(0).getReturnNode() // setState with callback
+        ] and
+      succ = call.getAPropertyRead("0")
+      or
+      // Propagate current state into the callback argument of `setState(prevState => { ... })`
+      pred = call.getAPropertyRead("0") and
+      succ = call.getAPropertyRead("1").getACall().getCallback(0).getParameter(0)
+    )
+  }
+}
+
+/**
+ * A step through a React context object.
+ *
+ * For example:
+ * ```js
+ * let MyContext = React.createContext('foo');
+ *
+ * <MyContext.Provider value={pred}>
+ *   <Foo/>
+ * </MyContext.Provider>
+ *
+ * function Foo() {
+ *   let succ = useContext(MyContext);
+ * }
+ * ```
+ */
+private class UseContextStep extends PreCallGraphStep {
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(DataFlow::CallNode context |
+      pred = getAContextInput(context) and
+      succ = getAContextOutput(context)
+    )
+  }
+}
+
+/**
+ * Gets a data flow node referring to the result of the given `createContext` call.
+ */
+private DataFlow::SourceNode getAContextRef(DataFlow::CallNode createContext) {
+  createContext = react().getAMemberCall("createContext") and
+  result = createContext
+  or
+  // Track through imports/exports, but not full type tracking, so this can be used as a PreCallGraphStep.
+  exists(DataFlow::Node mid |
+    getAContextRef(createContext).flowsTo(mid) and
+    FlowSteps::propertyFlowStep(mid, result)
+  )
+}
+
+/**
+ * Gets a data flow node whose value is provided to the given context object.
+ *
+ * For example:
+ * ```jsx
+ * React.createContext(x);
+ * <MyContext.Provider value={x}>
+ * ```
+ */
+pragma[nomagic]
+private DataFlow::Node getAContextInput(DataFlow::CallNode createContext) {
+  createContext = react().getAMemberCall("createContext") and
+  result = createContext.getArgument(0) // initial value
+  or
+  exists(JSXElement provider |
+    getAContextRef(createContext)
+        .getAPropertyRead("Provider")
+        .flowsTo(provider.getNameExpr().flow()) and
+    result = provider.getAttributeByName("value").getValue().flow()
+  )
+}
+
+/**
+ * Gets a data flow node whose value is obtained from the given context object.
+ *
+ * For example:
+ * ```js
+ * let value = useContext(MyContext);
+ * ```
+ */
+pragma[nomagic]
+private DataFlow::SourceNode getAContextOutput(DataFlow::CallNode createContext) {
+  exists(DataFlow::CallNode call |
+    call = react().getAMemberCall("useContext") and
+    getAContextRef(createContext).flowsTo(call.getArgument(0)) and
+    result = call
+  )
+  or
+  exists(DataFlow::ClassNode cls |
+    getAContextRef(createContext).flowsTo(cls.getAPropertyWrite("contextType").getRhs()) and
+    result = cls.getAReceiverNode().getAPropertyRead("context")
+  )
+}
+
+/**
+ * A step through a `useMemo` call; for example:
+ * ```js
+ * let succ = useMemo(() => pred, []);
+ * ```
+ */
+private class UseMemoStep extends PreCallGraphStep {
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(DataFlow::CallNode call | call = react().getAMemberCall("useMemo") |
+      pred = call.getCallback(0).getReturnNode() and
+      succ = call
+    )
+  }
+}
+
+private DataFlow::SourceNode reactRouterDom() {
+  result = DataFlow::moduleImport("react-router-dom")
+}
+
+private DataFlow::SourceNode reactRouterMatchObject() {
+  result = reactRouterDom().getAMemberCall(["useRouteMatch", "matchPath"])
+  or
+  exists(ReactComponent c |
+    dependedOnByReactRouterClient(c.getTopLevel()) and
+    result = c.getAPropRead("match")
+  )
+}
+
+private class ReactRouterSource extends ClientSideRemoteFlowSource {
+  ClientSideRemoteFlowKind kind;
+
+  ReactRouterSource() {
+    this = reactRouterDom().getAMemberCall("useParams") and kind.isPath()
+    or
+    exists(string prop | this = reactRouterMatchObject().getAPropertyRead(prop) |
+      prop = "params" and kind.isPath()
+      or
+      prop = "url" and kind.isUrl()
+    )
+  }
+
+  override string getSourceType() { result = "react-router path parameters" }
+
+  override ClientSideRemoteFlowKind getKind() { result = kind }
+}
+
+/**
+ * Holds if `mod` transitively depends on `react-router-dom`.
+ */
+private predicate dependsOnReactRouter(Module mod) {
+  mod.getAnImport().getImportedPath().getValue() = "react-router-dom"
+  or
+  dependsOnReactRouter(mod.getAnImportedModule())
+}
+
+/**
+ * Holds if `mod` is imported from a module that transitively depends on `react-router-dom`.
+ *
+ * We assume any React component in such a file may be used in a context where react-router
+ * injects the `location` and `match` properties in its `props` object.
+ */
+private predicate dependedOnByReactRouterClient(Module mod) {
+  dependsOnReactRouter(mod)
+  or
+  dependedOnByReactRouterClient(any(Module m | m.getAnImportedModule() = mod))
+}
+
+/**
+ * A reference to the DOM location obtained through `react-router-dom`
+ *
+ * For example:
+ * ```js
+ * let location = useLocation();
+ *
+ * function MyComponent(props) {
+ *   props.location;
+ * }
+ * export default withRouter(MyComponent);
+ */
+private class ReactRouterLocationSource extends DOM::LocationSource::Range {
+  ReactRouterLocationSource() {
+    this = reactRouterDom().getAMemberCall("useLocation")
+    or
+    exists(ReactComponent component |
+      dependedOnByReactRouterClient(component.getTopLevel()) and
+      this = component.getAPropRead("location")
+    )
+  }
+}
+
+/**
+ * Gets a reference to a function which, if called with a React component, returns wrapped
+ * version of that component, which we model as a direct reference to the underlying component.
+ */
+private DataFlow::SourceNode higherOrderComponentBuilder() {
+  // `memo(f)` returns a function that behaves as `f` but caches results
+  // It is sometimes used to wrap an entire functional component.
+  result = react().getAPropertyRead("memo")
+  or
+  result = DataFlow::moduleMember("react-redux", "connect").getACall()
+  or
+  result = DataFlow::moduleMember(["react-hot-loader", "react-hot-loader/root"], "hot").getACall()
+  or
+  result = DataFlow::moduleMember("redux-form", "reduxForm").getACall()
+  or
+  result = DataFlow::moduleMember("recompose", _).getACall()
+  or
+  result = reactRouterDom().getAPropertyRead("withRouter")
+  or
+  exists(FunctionCompositionCall compose |
+    higherOrderComponentBuilder().flowsTo(compose.getAnOperandNode()) and
+    result = compose
+  )
+}
+
+private class HigherOrderComponentStep extends PreCallGraphStep {
+  override predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    // `lazy(() => P)` returns a proxy for the component eventually returned by
+    // the promise P. We model this call as simply returning the value in P.
+    // It is primarily used for lazy-loading of React components.
+    exists(DataFlow::CallNode call |
+      call = react().getAMemberCall("lazy") and
+      pred = call.getCallback(0).getReturnNode() and
+      succ = call and
+      prop = Promises::valueProp()
+    )
+  }
+
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(DataFlow::CallNode call |
+      call = higherOrderComponentBuilder().getACall() and
+      pred = call.getArgument(0) and
+      succ = call
+    )
+    or
+    exists(TaggedTemplateExpr expr, DataFlow::CallNode call |
+      call = DataFlow::moduleImport("styled-components").getACall() and
+      pred = call.getArgument(0) and
+      call.flowsTo(expr.getTag().flow()) and
+      succ = expr.flow()
+    )
+  }
+}
+
+/**
+ * A taint propagating data flow edge for assignments of the form `c1.state.p = v`,
+ * where `c1` is an instance of React component `C`; in this case, we consider
+ * taint to flow from `v` to any read of `c2.state.p`, where `c2`
+ * also is an instance of `C`.
+ */
+private class StateTaintStep extends TaintTracking::SharedTaintStep {
+  override predicate viewComponentStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(ReactComponent c, DataFlow::PropRead prn, DataFlow::PropWrite pwn |
+      (
+        c.getACandidateStateSource().flowsTo(pwn.getBase()) or
+        c.getADirectStateAccess().flowsTo(pwn.getBase())
+      ) and
+      (
+        c.getAPreviousStateSource().flowsTo(prn.getBase()) or
+        c.getADirectStateAccess().flowsTo(prn.getBase())
+      )
+    |
+      prn.getPropertyName() = pwn.getPropertyName() and
+      succ = prn and
+      pred = pwn.getRhs()
+    )
+  }
+}
+
+/**
+ * A taint propagating data flow edge for assignments of the form `c1.props.p = v`,
+ * where `c1` is an instance of React component `C`; in this case, we consider
+ * taint to flow from `v` to any read of `c2.props.p`, where `c2`
+ * also is an instance of `C`.
+ */
+private class PropsTaintStep extends TaintTracking::SharedTaintStep {
+  override predicate viewComponentStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(ReactComponent c, string name, DataFlow::PropRead prn |
+      prn = c.getAPropRead(name) or
+      prn = c.getAPreviousPropsSource().getAPropertyRead(name)
+    |
+      pred = c.getACandidatePropsValue(name) and
+      succ = prn
+    )
+  }
 }

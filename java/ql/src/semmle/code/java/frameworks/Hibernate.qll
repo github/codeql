@@ -3,21 +3,37 @@
  */
 
 import java
+import semmle.code.java.dataflow.ExternalFlow
+
+/** The interface `org.hibernate.query.QueryProducer`. */
+class HibernateQueryProducer extends RefType {
+  HibernateQueryProducer() { this.hasQualifiedName("org.hibernate.query", "QueryProducer") }
+}
+
+/** The interface `org.hibernate.SharedSessionContract`. */
+class HibernateSharedSessionContract extends RefType {
+  HibernateSharedSessionContract() {
+    this.hasQualifiedName("org.hibernate", "SharedSessionContract")
+  }
+}
 
 /** The interface `org.hibernate.Session`. */
 class HibernateSession extends RefType {
   HibernateSession() { this.hasQualifiedName("org.hibernate", "Session") }
 }
 
-/**
- * Holds if `m` is a method on `HibernateSession` taking an SQL string as its
- * first argument.
- */
-predicate hibernateSqlMethod(Method m) {
-  m.getDeclaringType() instanceof HibernateSession and
-  m.getParameterType(0) instanceof TypeString and
-  (
-    m.hasName("createQuery") or
-    m.hasName("createSQLQuery")
-  )
+private class SqlSinkCsv extends SinkModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        //"package;type;overrides;name;signature;ext;spec;kind"
+        "org.hibernate;QueryProducer;true;createQuery;;;Argument[0];sql",
+        "org.hibernate;QueryProducer;true;createNativeQuery;;;Argument[0];sql",
+        "org.hibernate;QueryProducer;true;createSQLQuery;;;Argument[0];sql",
+        "org.hibernate;SharedSessionContract;true;createQuery;;;Argument[0];sql",
+        "org.hibernate;SharedSessionContract;true;createSQLQuery;;;Argument[0];sql",
+        "org.hibernate;Session;true;createQuery;;;Argument[0];sql",
+        "org.hibernate;Session;true;createSQLQuery;;;Argument[0];sql"
+      ]
+  }
 }

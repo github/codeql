@@ -47,7 +47,7 @@ function test(unsafe, safe) {
   try {
     throwAsync(source());
   } catch (e) {
-    sink(e); // OK - but flagged anyway
+    sink(e); // OK
   }
 
   throwAsync(source()).catch(e => {
@@ -58,7 +58,7 @@ function test(unsafe, safe) {
     try {
       await throwAsync(source());
     } catch (e) {
-      sink(e); // NOT OK
+      sink(e); // NOT OK - but not flagged
     }
   }
 }

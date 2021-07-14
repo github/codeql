@@ -207,4 +207,6 @@ class NamespaceDeclaration extends Element, @namespace_declaration {
   override Location getALocation() { namespace_declaration_location(this, result) }
 
   override string toString() { result = "namespace ... { ... }" }
+
+  override string getAPrimaryQlClass() { result = "NamespaceDeclaration" }
 }

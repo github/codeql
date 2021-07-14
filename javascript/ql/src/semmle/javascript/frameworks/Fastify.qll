@@ -114,12 +114,13 @@ module Fastify {
       if methodName = "route"
       then
         result =
-          this
-              .flow()
+          this.flow()
               .(DataFlow::MethodCallNode)
               .getOptionArgument(0,
-                ["onRequest", "preParsing", "preValidation", "preHandler", "preSerialization",
-                    "onSend", "onResponse", "handler"])
+                [
+                  "onRequest", "preParsing", "preValidation", "preHandler", "preSerialization",
+                  "onSend", "onResponse", "handler"
+                ])
       else result = getLastArgument().flow()
     }
   }
@@ -282,8 +283,7 @@ module Fastify {
     override RouteHandler getRouteHandler() { result = rh }
 
     override Expr getNameExpr() {
-      exists(DataFlow::PropWrite write |
-        this.getAHeaderSource().flowsTo(write.getBase()) and
+      exists(DataFlow::PropWrite write | getAHeaderSource().getAPropertyWrite() = write |
         result = write.getPropertyNameExpr()
       )
     }

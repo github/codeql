@@ -110,3 +110,14 @@ function l() {
     var b = g() + "str";
 });
 
+
+function m() {
+  var x = 19, y = "string";
+  
+  x %= y; // NOT OK
+  x += y; // OK 
+  x ||= y; // OK
+  x &&= y; // OK
+  x ??= y; // OK
+  x >>>= y; // NOT OK
+}

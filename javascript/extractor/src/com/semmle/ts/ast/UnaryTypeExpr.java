@@ -6,15 +6,15 @@ import com.semmle.js.ast.Visitor;
 /**
  * A unary operator applied to a type.
  *
- * <p>This can be <tt>keyof T</tt> or <tt>readonly T</tt>.
+ * <p>This can be <code>keyof T</code> or <code>readonly T</code>.
  */
 public class UnaryTypeExpr extends TypeExpression {
   private final ITypeExpression elementType;
   private final Kind kind;
 
   public enum Kind {
-    Keyof,
-    Readonly
+    KEYOF,
+    READONLY
   }
 
   public UnaryTypeExpr(SourceLocation loc, Kind kind, ITypeExpression elementType) {

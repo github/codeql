@@ -3,8 +3,8 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<include src="DeadCodeSummary.qhelp"/>
-<include src="DeadCodeDetails.qhelp"/>
+<include src="DeadCodeSummary.inc.qhelp"/>
+<include src="DeadCodeDetails.inc.qhelp"/>
 </overview>
 <recommendation>
 <p>
@@ -13,5 +13,5 @@ can see which classes, methods and fields contribute to this metric using the ru
 analysis.
 </p>
 </recommendation>
-<include src="DeadCodeReferences.qhelp" />
+<include src="DeadCodeReferences.inc.qhelp" />
 </qhelp>

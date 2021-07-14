@@ -1,4 +1,5 @@
 /**
+ * @deprecated
  * @name Mostly duplicate function
  * @description There is another function that shares a lot of the code with this one. Extract the code to a common file/superclass or delegate to improve sharing.
  * @kind problem

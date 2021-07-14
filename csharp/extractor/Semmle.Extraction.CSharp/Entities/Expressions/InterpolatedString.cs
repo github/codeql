@@ -7,9 +7,9 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    class InterpolatedString : Expression<InterpolatedStringExpressionSyntax>
+    internal class InterpolatedString : Expression<InterpolatedStringExpressionSyntax>
     {
-        InterpolatedString(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.INTERPOLATED_STRING)) { }
+        private InterpolatedString(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.INTERPOLATED_STRING)) { }
 
         public static Expression Create(ExpressionNodeInfo info) => new InterpolatedString(info).TryPopulate();
 
@@ -22,12 +22,12 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 {
                     case SyntaxKind.Interpolation:
                         var interpolation = (InterpolationSyntax)c;
-                        Create(cx, interpolation.Expression, this, child++);
+                        Create(Context, interpolation.Expression, this, child++);
                         break;
                     case SyntaxKind.InterpolatedStringText:
                         // Create a string literal
                         var interpolatedText = (InterpolatedStringTextSyntax)c;
-                        new Expression(new ExpressionInfo(cx, Type, cx.Create(c.GetLocation()), ExprKind.STRING_LITERAL, this, child++, false, interpolatedText.TextToken.Text));
+                        new Expression(new ExpressionInfo(Context, Type, Context.CreateLocation(c.GetLocation()), ExprKind.STRING_LITERAL, this, child++, false, interpolatedText.TextToken.Text));
                         break;
                     default:
                         throw new InternalError(c, $"Unhandled interpolation kind {c.Kind()}");

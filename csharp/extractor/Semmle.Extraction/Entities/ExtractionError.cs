@@ -2,9 +2,9 @@
 
 namespace Semmle.Extraction.Entities
 {
-    class ExtractionMessage : FreshEntity
+    internal class ExtractionMessage : FreshEntity
     {
-        readonly Message msg;
+        private readonly Message msg;
 
         public ExtractionMessage(Context cx, Message msg) : base(cx)
         {
@@ -14,9 +14,8 @@ namespace Semmle.Extraction.Entities
 
         protected override void Populate(TextWriter trapFile)
         {
-           trapFile.extractor_messages(this, msg.Severity, "C# extractor", msg.Text, msg.EntityText, msg.Location ?? GeneratedLocation.Create(cx), msg.StackTrace);
+            trapFile.extractor_messages(this, msg.Severity, "C# extractor", msg.Text, msg.EntityText ?? string.Empty,
+                msg.Location ?? Context.CreateLocation(), msg.StackTrace ?? string.Empty);
         }
-
-        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
     }
 }

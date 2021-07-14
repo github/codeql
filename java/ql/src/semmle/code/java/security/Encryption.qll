@@ -29,13 +29,32 @@ class SSLContext extends RefType {
   SSLContext() { hasQualifiedName("javax.net.ssl", "SSLContext") }
 }
 
+/** The `javax.net.ssl.SSLSession` class. */
+class SSLSession extends RefType {
+  SSLSession() { hasQualifiedName("javax.net.ssl", "SSLSession") }
+}
+
 class HostnameVerifier extends RefType {
   HostnameVerifier() { hasQualifiedName("javax.net.ssl", "HostnameVerifier") }
 }
 
+/** The Java class `javax.crypto.KeyGenerator`. */
+class KeyGenerator extends RefType {
+  KeyGenerator() { this.hasQualifiedName("javax.crypto", "KeyGenerator") }
+}
+
+/** The Java class `java.security.KeyPairGenerator`. */
+class KeyPairGenerator extends RefType {
+  KeyPairGenerator() { this.hasQualifiedName("java.security", "KeyPairGenerator") }
+}
+
+/** The `verify` method of the class `javax.net.ssl.HostnameVerifier`. */
 class HostnameVerifierVerify extends Method {
   HostnameVerifierVerify() {
-    hasName("verify") and getDeclaringType().getASupertype*() instanceof HostnameVerifier
+    hasName("verify") and
+    getDeclaringType().getASupertype*() instanceof HostnameVerifier and
+    getParameterType(0) instanceof TypeString and
+    getParameterType(1) instanceof SSLSession
   }
 }
 
@@ -74,6 +93,14 @@ class SetHostnameVerifierMethod extends Method {
   }
 }
 
+/** The `setDefaultHostnameVerifier` method of the class `javax.net.ssl.HttpsURLConnection`. */
+class SetDefaultHostnameVerifierMethod extends Method {
+  SetDefaultHostnameVerifierMethod() {
+    hasName("setDefaultHostnameVerifier") and
+    getDeclaringType().getASupertype*() instanceof HttpsURLConnection
+  }
+}
+
 bindingset[algorithmString]
 private string algorithmRegex(string algorithmString) {
   // Algorithms usually appear in names surrounded by characters that are not
@@ -93,11 +120,16 @@ private string algorithmRegex(string algorithmString) {
  * Gets the name of an algorithm that is known to be insecure.
  */
 string getAnInsecureAlgorithmName() {
-  result = "DES" or
-  result = "RC2" or
-  result = "RC4" or
-  result = "RC5" or
-  result = "ARCFOUR" // a variant of RC4
+  result =
+    [
+      "DES", "RC2", "RC4", "RC5",
+      // ARCFOUR is a variant of RC4
+      "ARCFOUR",
+      // Encryption mode ECB like AES/ECB/NoPadding is vulnerable to replay and other attacks
+      "ECB",
+      // CBC mode of operation with PKCS#5 or PKCS#7 padding is vulnerable to padding oracle attacks
+      "AES/CBC/PKCS[57]Padding"
+    ]
 }
 
 /**
@@ -134,14 +166,11 @@ string getInsecureAlgorithmRegex() {
  * Gets the name of an algorithm that is known to be secure.
  */
 string getASecureAlgorithmName() {
-  result = "RSA" or
-  result = "SHA256" or
-  result = "SHA512" or
-  result = "CCM" or
-  result = "GCM" or
-  result = "AES" or
-  result = "Blowfish" or
-  result = "ECIES"
+  result =
+    [
+      "RSA", "SHA256", "SHA512", "CCM", "GCM", "AES([^a-zA-Z](?!ECB|CBC/PKCS[57]Padding)).*",
+      "Blowfish", "ECIES"
+    ]
 }
 
 private string rankedSecureAlgorithm(int i) { result = rank[i](getASecureAlgorithmName()) }
@@ -229,7 +258,7 @@ class JavaxCryptoSecretKey extends JavaxCryptoAlgoSpec {
 class JavaxCryptoKeyGenerator extends JavaxCryptoAlgoSpec {
   JavaxCryptoKeyGenerator() {
     exists(Method m | m.getAReference() = this |
-      m.getDeclaringType().getQualifiedName() = "javax.crypto.KeyGenerator" and
+      m.getDeclaringType() instanceof KeyGenerator and
       m.getName() = "getInstance"
     )
   }
@@ -284,4 +313,16 @@ class JavaSecuritySignature extends JavaSecurityAlgoSpec {
   }
 
   override Expr getAlgoSpec() { result = this.(ConstructorCall).getArgument(0) }
+}
+
+/** A method call to the Java class `java.security.KeyPairGenerator`. */
+class JavaSecurityKeyPairGenerator extends JavaxCryptoAlgoSpec {
+  JavaSecurityKeyPairGenerator() {
+    exists(Method m | m.getAReference() = this |
+      m.getDeclaringType() instanceof KeyPairGenerator and
+      m.getName() = "getInstance"
+    )
+  }
+
+  override Expr getAlgoSpec() { result = this.(MethodAccess).getArgument(0) }
 }

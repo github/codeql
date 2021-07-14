@@ -7,10 +7,10 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Statements
 {
-    abstract class Case<TSyntax> : Statement<TSyntax> where TSyntax : SwitchLabelSyntax
+    internal abstract class Case<TSyntax> : Statement<TSyntax> where TSyntax : SwitchLabelSyntax
     {
         protected Case(Context cx, TSyntax node, Switch parent, int child)
-            : base(cx, node, StmtKind.CASE, parent, child, cx.Create(node.GetLocation())) { }
+            : base(cx, node, StmtKind.CASE, parent, child, cx.CreateLocation(node.GetLocation())) { }
 
         public static Statement Create(Context cx, SwitchLabelSyntax node, Switch parent, int child)
         {
@@ -28,16 +28,16 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
         }
     }
 
-    class CaseLabel : Case<CaseSwitchLabelSyntax>
+    internal class CaseLabel : Case<CaseSwitchLabelSyntax>
     {
-        CaseLabel(Context cx, CaseSwitchLabelSyntax node, Switch parent, int child)
+        private CaseLabel(Context cx, CaseSwitchLabelSyntax node, Switch parent, int child)
             : base(cx, node, parent, child) { }
 
         protected override void PopulateStatement(TextWriter trapFile)
         {
             var value = Stmt.Value;
-            Expression.Create(cx, value, this, 0);
-            Switch.LabelForValue(cx.GetModel(Stmt).GetConstantValue(value).Value);
+            Expression.Create(Context, value, this, 0);
+            Switch.LabelForValue(Context.GetModel(Stmt).GetConstantValue(value).Value);
         }
 
         public static CaseLabel Create(Context cx, CaseSwitchLabelSyntax node, Switch parent, int child)
@@ -48,9 +48,9 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
         }
     }
 
-    class CaseDefault : Case<DefaultSwitchLabelSyntax>
+    internal class CaseDefault : Case<DefaultSwitchLabelSyntax>
     {
-        CaseDefault(Context cx, DefaultSwitchLabelSyntax node, Switch parent, int child)
+        private CaseDefault(Context cx, DefaultSwitchLabelSyntax node, Switch parent, int child)
             : base(cx, node, parent, child) { }
 
         protected override void PopulateStatement(TextWriter trapFile) { }
@@ -63,62 +63,18 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
         }
     }
 
-    class CasePattern : Case<CasePatternSwitchLabelSyntax>
+    internal class CasePattern : Case<CasePatternSwitchLabelSyntax>
     {
         private CasePattern(Context cx, CasePatternSwitchLabelSyntax node, Switch parent, int child)
             : base(cx, node, parent, child) { }
 
-        private void PopulatePattern(PatternSyntax pattern, TypeSyntax optionalType, VariableDesignationSyntax designation)
-        {
-            var isVar = optionalType is null;
-            switch (designation)
-            {
-                case SingleVariableDesignationSyntax _:
-                    if (cx.GetModel(pattern).GetDeclaredSymbol(designation) is ILocalSymbol symbol)
-                    {
-                        var type = Type.Create(cx, symbol.GetAnnotatedType());
-                        Expressions.VariableDeclaration.Create(cx, symbol, type, optionalType, cx.Create(pattern.GetLocation()), isVar, this, 0);
-                    }
-                    break;
-                case DiscardDesignationSyntax discard:
-                    if (isVar)
-                        new Expressions.Discard(cx, discard, this, 0);
-                    else
-                        Expressions.TypeAccess.Create(cx, optionalType, this, 0);
-                    break;
-                case null:
-                    break;
-                case ParenthesizedVariableDesignationSyntax paren:
-                    Expressions.VariableDeclaration.CreateParenthesized(cx, (VarPatternSyntax)pattern, paren, this, 0);
-                    break;
-                default:
-                    throw new InternalError(pattern, "Unhandled designation in case statement");
-            }
-        }
-
         protected override void PopulateStatement(TextWriter trapFile)
         {
-            switch (Stmt.Pattern)
-            {
-                case VarPatternSyntax varPattern:
-                    PopulatePattern(varPattern, null, varPattern.Designation);
-                    break;
-                case DeclarationPatternSyntax declarationPattern:
-                    PopulatePattern(declarationPattern, declarationPattern.Type, declarationPattern.Designation);
-                    break;
-                case ConstantPatternSyntax pattern:
-                    Expression.Create(cx, pattern.Expression, this, 0);
-                    break;
-                case RecursivePatternSyntax recPattern:
-                    new Expressions.RecursivePattern(cx, recPattern, this, 0);
-                    break;
-                default:
-                    throw new InternalError(Stmt, "Case pattern not handled");
-            }
+            Expressions.Pattern.Create(Context, Stmt.Pattern, this, 0);
 
-            if (Stmt.WhenClause != null)
+            if (Stmt.WhenClause is not null)
             {
-                Expression.Create(cx, Stmt.WhenClause.Condition, this, 1);
+                Expression.Create(Context, Stmt.WhenClause.Condition, this, 1);
             }
         }
 

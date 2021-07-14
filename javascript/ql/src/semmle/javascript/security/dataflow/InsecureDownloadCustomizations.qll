@@ -96,8 +96,10 @@ module InsecureDownload {
    */
   string unsafeExtension() {
     result =
-      ["exe", "dmg", "pkg", "tar.gz", "zip", "sh", "bat", "cmd", "app", "apk", "msi", "dmg",
-          "tar.gz", "zip", "js", "py", "jar", "war"]
+      [
+        "exe", "dmg", "pkg", "tar.gz", "zip", "sh", "bat", "cmd", "app", "apk", "msi", "dmg",
+        "tar.gz", "zip", "js", "py", "jar", "war"
+      ]
   }
 
   /**

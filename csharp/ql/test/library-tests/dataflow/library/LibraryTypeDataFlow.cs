@@ -1,4 +1,3 @@
-// semmle-extractor-options: /r:System.Net.dll /r:System.Web.dll /r:System.Net.HttpListener.dll /r:System.Collections.Specialized.dll /r:System.Private.Uri.dll /r:System.Runtime.Extensions.dll /r:System.Linq.Parallel.dll /r:System.Collections.Concurrent.dll /r:System.Linq.Expressions.dll /r:System.Collections.dll /r:System.Linq.Queryable.dll /r:System.Linq.dll /r:System.Collections.NonGeneric.dll /r:System.ObjectModel.dll /r:System.ComponentModel.TypeConverter.dll /r:System.IO.Compression.dll /r:System.IO.Pipes.dll /r:System.Net.Primitives.dll /r:System.Net.Security.dll /r:System.Security.Cryptography.Primitives.dll /r:System.Text.RegularExpressions.dll ${testdir}/../../../resources/stubs/System.Web.cs /r:System.Runtime.Serialization.Primitives.dll
 using System;
 using System.IO;
 using System.Text;
@@ -85,7 +84,7 @@ public class LibraryTypeDataFlow
         HttpContextBase context = null;
         string name = context.Request.QueryString["name"];
 
-        var dict = new Dictionary<string, int>() { {"abc", 0 } };
+        var dict = new Dictionary<string, int>() { { "abc", 0 } };
     }
 
     [DataContract]
@@ -95,4 +94,3 @@ public class LibraryTypeDataFlow
         public string AString { get; set; }
     }
 }
-

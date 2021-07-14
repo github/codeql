@@ -30,7 +30,7 @@ that the log file is not closed. To fix this, remove the empty <code>finalize</c
 
 <li>
 Java Language Specification:
-<a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-12.html#jls-12.6">12.6 Finalization of Class Instances</a>.
+<a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-12.html#jls-12.6">12.6 Finalization of Class Instances</a>.
 </li>
 
 

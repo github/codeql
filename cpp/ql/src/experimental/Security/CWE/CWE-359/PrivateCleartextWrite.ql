@@ -16,6 +16,6 @@ import DataFlow::PathGraph
 
 from WriteConfig b, DataFlow::PathNode source, DataFlow::PathNode sink
 where b.hasFlowPath(source, sink)
-select sink.getNode(),
-  "This write into the external location '" + sink + "' may contain unencrypted data from $@",
-  source, "this source."
+select sink.getNode(), source, sink,
+  "This write into the external location '" + sink.getNode() +
+    "' may contain unencrypted data from $@", source, "this source."

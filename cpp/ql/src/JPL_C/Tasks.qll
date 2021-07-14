@@ -5,8 +5,8 @@ import cpp
  */
 class Task extends Function {
   Task() {
-    exists(FunctionCall taskCreate, string name | name = "taskCreate" or name = "taskSpawn" |
-      name = taskCreate.getTarget().getName() and
+    exists(FunctionCall taskCreate |
+      taskCreate.getTarget().getName() = ["taskCreate", "taskSpawn"] and
       this = taskCreate.getArgument(4).(AddressOfExpr).getAddressable()
     )
   }

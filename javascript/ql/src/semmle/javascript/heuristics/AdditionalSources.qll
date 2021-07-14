@@ -44,7 +44,8 @@ class RemoteServerResponse extends HeuristicSource, RemoteFlowSource {
         // exclude URLs to the current host
         r.getUrl().mayHaveStringValue(url) and
         protocolPattern = "(?[a-z+]{3,10}:)" and
-        not url.regexpMatch(protocolPattern + "?//.*")
+        not url.regexpMatch(protocolPattern + "?//.*") and
+        not url.prefix(2) = ["{{", "{%"] // look like templating
       )
     )
   }

@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Memory leak on failed call to realloc. 
+The expression <code>mem = realloc (mem, size)</code> is potentially dangerous, if the call fails, we will lose the pointer to the memory block.  
+An unsuccessful call is possible not only when trying to allocate a large amount of memory, but also when the process memory is strongly segmented.</p>
+
+<p>False positives include code in which immediately after calling the realloc function, the pointer is manipulated without first checking for validity. 
+In this case, an exception will occur in the program and it will terminate. 
+But from the point of view of safe coding, these places require the attention of developers.
+At this stage, false positives are also possible in situations where the exception handling is quite complicated and occurs outside the base block in which memory is redistributed.</p>
+
+</overview>
+<recommendation>
+
+<p>We recommend storing the result in a temporary variable and eliminating memory leak.</p>
+
+</recommendation>
+<example>
+<p>The following example demonstrates an erroneous and corrected use of the <code>realloc</code> function.</p>
+<sample src="MemoryLeakOnFailedCallToRealloc.c" />
+
+</example>
+<references>
+
+<li>
+  CERT C++ Coding Standard:
+<a href="https://wiki.sei.cmu.edu/confluence/display/cplusplus/MEM51-CPP.+Properly+deallocate+dynamically+allocated+resources">MEM51-CPP. Properly deallocate dynamically allocated resources</a>.
+</li>
+<li>
+  CERT C Coding Standard:
+  <a href="https://wiki.sei.cmu.edu/confluence/display/c/WIN30-C.+Properly+pair+allocation+and+deallocation+functions">WIN30-C. Properly pair allocation and deallocation functions</a>.
+</li>
+
+</references>
+</qhelp>

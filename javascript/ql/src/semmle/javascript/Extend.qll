@@ -34,6 +34,13 @@ abstract class ExtendCall extends DataFlow::CallNode {
   }
 }
 
+/** A version of `JQuery::dollarSource()` with fewer dependencies. */
+private DataFlow::SourceNode localDollar() {
+  result.accessesGlobal(["$", "jQuery"])
+  or
+  result = DataFlow::moduleImport("jquery")
+}
+
 /**
  * An extend call of form `extend(true/false, dst, src1, src2, ...)`, where the true/false
  * argument is possibly omitted.
@@ -47,9 +54,7 @@ private class ExtendCallWithFlag extends ExtendCall {
       name = "node.extend"
     )
     or
-    // Match $.extend using the source of `$` only, as ExtendCall should not
-    // depend on type tracking.
-    this = JQuery::dollarSource().getAMemberCall("extend")
+    this = localDollar().getAMemberCall("extend")
   }
 
   /**
@@ -160,14 +165,50 @@ private class FunctionalExtendCallShallow extends ExtendCall {
  * A taint propagating data flow edge from the objects flowing into an extend call to its return value
  * and to the source of the destination object.
  */
-private class ExtendCallTaintStep extends TaintTracking::AdditionalTaintStep {
-  ExtendCall extend;
-
-  ExtendCallTaintStep() { this = extend }
-
+private class ExtendCallTaintStep extends TaintTracking::SharedTaintStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-    pred = extend.getASourceOperand() and succ = extend.getDestinationOperand().getALocalSource()
-    or
-    pred = extend.getAnOperand() and succ = extend
+    exists(ExtendCall extend |
+      pred = extend.getASourceOperand() and succ = extend.getDestinationOperand().getALocalSource()
+      or
+      pred = extend.getAnOperand() and succ = extend
+    )
   }
+}
+
+private import semmle.javascript.dataflow.internal.PreCallGraphStep
+
+/**
+ * A step through a cloning library, such as `clone` or `fclone`.
+ */
+private class CloneStep extends PreCallGraphStep {
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(DataFlow::CallNode call |
+      call = DataFlow::moduleImport(["clone", "fclone"]).getACall()
+      or
+      call = DataFlow::moduleMember("json-cycle", ["decycle", "retrocycle"]).getACall()
+    |
+      pred = call.getArgument(0) and
+      succ = call
+    )
+  }
+}
+
+/**
+ * A deep extend call from the [webpack-merge](https://npmjs.org/package/webpack-merge) library.
+ */
+private class WebpackMergeDeep extends ExtendCall, DataFlow::CallNode {
+  WebpackMergeDeep() {
+    this = DataFlow::moduleMember("webpack-merge", "merge").getACall()
+    or
+    this =
+      DataFlow::moduleMember("webpack-merge", ["mergeWithCustomize", "mergeWithRules"])
+          .getACall()
+          .getACall()
+  }
+
+  override DataFlow::Node getASourceOperand() { result = getAnArgument() }
+
+  override DataFlow::Node getDestinationOperand() { none() }
+
+  override predicate isDeep() { any() }
 }

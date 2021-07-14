@@ -6,18 +6,20 @@
  */
 
 private import javascript
+private import semmle.javascript.internal.CachedStages
 
 cached
 private StmtContainer getStmtContainer(NodeInStmtContainer node) {
-  exprContainers(node, result)
+  Stages::Ast::ref() and
+  expr_containers(node, result)
   or
-  stmtContainers(node, result)
+  stmt_containers(node, result)
   or
   // Properties
   exists(ASTNode parent | properties(node, parent, _, _, _) |
-    exprContainers(parent, result)
+    expr_containers(parent, result)
     or
-    stmtContainers(parent, result)
+    stmt_containers(parent, result)
   )
   or
   // Synthetic CFG nodes
@@ -27,11 +29,11 @@ private StmtContainer getStmtContainer(NodeInStmtContainer node) {
   or
   exists(Expr test |
     guard_node(node, _, test) and
-    exprContainers(test, result)
+    expr_containers(test, result)
   )
   or
   // JSDoc type annotations
-  stmtContainers(node.(JSDocTypeExpr).getEnclosingStmt(), result)
+  stmt_containers(node.(JSDocTypeExpr).getEnclosingStmt(), result)
 }
 
 /**

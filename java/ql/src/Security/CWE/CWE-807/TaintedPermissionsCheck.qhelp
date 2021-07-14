@@ -37,8 +37,8 @@ not depend on data that is controlled by the user.</p>
 </example>
 <references>
 
-<li>The CERT Oracle Secure Coding Standard for Java:
-  <a href="https://www.securecoding.cert.org/confluence/display/java/SEC02-J.+Do+not+base+security+checks+on+untrusted+sources">SEC02-J. Do not base security checks on untrusted sources</a>.</li>
+<li>SEI CERT Oracle Coding Standard for Java:
+  <a href="https://wiki.sei.cmu.edu/confluence/display/java/SEC02-J.+Do+not+base+security+checks+on+untrusted+sources">SEC02-J. Do not base security checks on untrusted sources</a>.</li>
 
 
 

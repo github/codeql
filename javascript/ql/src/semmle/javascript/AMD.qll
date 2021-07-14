@@ -4,6 +4,7 @@
  */
 
 import javascript
+private import semmle.javascript.internal.CachedStages
 
 /**
  * An AMD `define` call.
@@ -113,14 +114,14 @@ class AmdModuleDefinition extends CallExpr {
   /**
    * Gets the `i`th parameter of the factory function of this module.
    */
-  private SimpleParameter getFactoryParameter(int i) {
+  private Parameter getFactoryParameter(int i) {
     getFactoryNodeInternal().asExpr().(Function).getParameter(i) = result
   }
 
   /**
    * Gets the parameter corresponding to the pseudo-dependency `require`.
    */
-  SimpleParameter getRequireParameter() {
+  Parameter getRequireParameter() {
     result = getDependencyParameter("require")
     or
     // if no dependencies are listed, the first parameter is assumed to be `require`
@@ -133,7 +134,7 @@ class AmdModuleDefinition extends CallExpr {
   /**
    * Gets the parameter corresponding to the pseudo-dependency `exports`.
    */
-  SimpleParameter getExportsParameter() {
+  Parameter getExportsParameter() {
     result = getDependencyParameter("exports")
     or
     // if no dependencies are listed, the second parameter is assumed to be `exports`
@@ -143,7 +144,7 @@ class AmdModuleDefinition extends CallExpr {
   /**
    * Gets the parameter corresponding to the pseudo-dependency `module`.
    */
-  SimpleParameter getModuleParameter() {
+  Parameter getModuleParameter() {
     result = getDependencyParameter("module")
     or
     // if no dependencies are listed, the third parameter is assumed to be `module`
@@ -155,9 +156,17 @@ class AmdModuleDefinition extends CallExpr {
    * into this module's `module.exports` property.
    */
   DefiniteAbstractValue getAModuleExportsValue() {
+    result = [getAnImplicitExportsValue(), getAnExplicitExportsValue()]
+  }
+
+  pragma[noinline, nomagic]
+  private AbstractValue getAnImplicitExportsValue() {
     // implicit exports: anything that is returned from the factory function
     result = getModuleExpr().analyze().getAValue()
-    or
+  }
+
+  pragma[noinline]
+  private AbstractValue getAnExplicitExportsValue() {
     // explicit exports: anything assigned to `module.exports`
     exists(AbstractProperty moduleExports, AmdModule m |
       this = m.getDefine() and
@@ -290,13 +299,16 @@ private class AmdDependencyImport extends Import {
  */
 class AmdModule extends Module {
   cached
-  AmdModule() { exists(unique(AmdModuleDefinition def | amdModuleTopLevel(def, this))) }
+  AmdModule() {
+    Stages::DataFlowStage::ref() and
+    exists(unique(AmdModuleDefinition def | amdModuleTopLevel(def, this)))
+  }
 
   /** Gets the definition of this module. */
   AmdModuleDefinition getDefine() { amdModuleTopLevel(result, this) }
 
-  override predicate exports(string name, ASTNode export) {
-    exists(DataFlow::PropWrite pwn | export = pwn.getAstNode() |
+  override DataFlow::Node getAnExportedValue(string name) {
+    exists(DataFlow::PropWrite pwn | result = pwn.getRhs() |
       pwn.getBase().analyze().getAValue() = getDefine().getAModuleExportsValue() and
       name = pwn.getPropertyName()
     )

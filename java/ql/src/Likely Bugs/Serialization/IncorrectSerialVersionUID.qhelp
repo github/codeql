@@ -30,11 +30,11 @@ so that it is used by the framework.</p>
 
 
 <li>
-  Java API Documentation:
-  <a href="http://docs.oracle.com/javase/1.5.0/docs/api/java/io/Serializable.html">Serializable</a>.
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/Serializable.html">Serializable</a>.
 </li>
 <li>
-  JavaWorld: <a href="http://www.javaworld.com/javaworld/jw-02-2006/jw-0227-control.html?page=1">Ensure proper version control for serialized objects</a>.
+  JavaWorld: <a href="https://www.infoworld.com/article/2071731/ensure-proper-version-control-for-serialized-objects.html">Ensure proper version control for serialized objects</a>.
 </li>
 
 

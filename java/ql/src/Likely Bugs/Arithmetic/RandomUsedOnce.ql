@@ -4,6 +4,7 @@
  *              guarantee an evenly distributed sequence of random numbers.
  * @kind problem
  * @problem.severity warning
+ * @security-severity 9.8
  * @precision medium
  * @id java/random-used-once
  * @tags reliability
@@ -12,10 +13,8 @@
  */
 
 import java
+import semmle.code.java.security.RandomQuery
 
-from MethodAccess ma, Method random
-where
-  random.getDeclaringType().hasQualifiedName("java.util", "Random") and
-  ma.getMethod() = random and
-  ma.getQualifier() instanceof ClassInstanceExpr
+from RandomDataSource ma
+where ma.getQualifier() instanceof ClassInstanceExpr
 select ma, "Random object created and used only once."

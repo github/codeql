@@ -16,6 +16,8 @@ class Conf extends DataFlow::Configuration {
       mc.getAnArgument() = sink.asExpr()
     )
   }
+
+  override int fieldFlowBranchLimit() { result = 10 }
 }
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, Conf conf

@@ -5,12 +5,13 @@
  *              scripting vulnerability.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 6.1
  * @precision high
  * @id js/incomplete-html-attribute-sanitization
  * @tags security
  *       external/cwe/cwe-079
  *       external/cwe/cwe-116
- *       external/cwe/cwe-20
+ *       external/cwe/cwe-020
  */
 
 import javascript

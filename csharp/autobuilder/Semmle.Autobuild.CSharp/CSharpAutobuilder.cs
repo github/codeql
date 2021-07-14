@@ -50,12 +50,15 @@ namespace Semmle.Autobuild.CSharp
                         BuildScript.Create(actions =>
                         {
                             foreach (var file in Extractor.GetCSharpArgsLogs())
+                            {
                                 try
                                 {
                                     actions.FileDelete(file);
                                 }
                                 catch // lgtm[cs/catch-of-all-exceptions] lgtm[cs/empty-catch-block]
                                 { }
+                            }
+
                             return 0;
                         });
                     var attemptExtractorCleanup =
@@ -85,37 +88,36 @@ namespace Semmle.Autobuild.CSharp
                     break;
             }
 
-            return
-                attempt &
-                (() => new AspBuildRule().Analyse(this, false)) &
-                (() => new XmlBuildRule().Analyse(this, false));
+            return attempt;
         }
 
         /// <summary>
         /// Gets the build strategy that the autobuilder should apply, based on the
         /// options in the `lgtm.yml` file.
         /// </summary>
-        CSharpBuildStrategy GetCSharpBuildStrategy()
+        private CSharpBuildStrategy GetCSharpBuildStrategy()
         {
-            if (Options.BuildCommand != null)
+            if (Options.BuildCommand is not null)
                 return CSharpBuildStrategy.CustomBuildCommand;
 
             if (Options.Buildless)
                 return CSharpBuildStrategy.Buildless;
 
-            if (Options.MsBuildArguments != null
-                || Options.MsBuildConfiguration != null
-                || Options.MsBuildPlatform != null
-                || Options.MsBuildTarget != null)
+            if (Options.MsBuildArguments is not null
+                || Options.MsBuildConfiguration is not null
+                || Options.MsBuildPlatform is not null
+                || Options.MsBuildTarget is not null)
+            {
                 return CSharpBuildStrategy.MSBuild;
+            }
 
-            if (Options.DotNetArguments != null || Options.DotNetVersion != null)
+            if (Options.DotNetArguments is not null || Options.DotNetVersion is not null)
                 return CSharpBuildStrategy.DotNet;
 
             return CSharpBuildStrategy.Auto;
         }
 
-        enum CSharpBuildStrategy
+        private enum CSharpBuildStrategy
         {
             CustomBuildCommand,
             Buildless,

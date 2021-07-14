@@ -1,6 +1,0 @@
-| tst.html:3:5:9:11 | <head>...</> | tst.html:2:1:13:7 | <html>...</> |
-| tst.html:4:9:4:32 | <title>...</> | tst.html:3:5:9:11 | <head>...</> |
-| tst.html:5:9:5:43 | <script>...</> | tst.html:3:5:9:11 | <head>...</> |
-| tst.html:6:9:8:17 | <script>...</> | tst.html:3:5:9:11 | <head>...</> |
-| tst.html:10:5:12:11 | <body>...</> | tst.html:2:1:13:7 | <html>...</> |
-| tst.html:11:9:11:64 | <a>...</> | tst.html:10:5:12:11 | <body>...</> |

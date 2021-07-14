@@ -59,7 +59,7 @@ actual field, for example <code>return new HashSet&lt;Item&gt;(items);</code>.</
   Addison-Wesley, 2008.
 </li>
 <li>
-  Java 7 API Documentation: <a href="http://docs.oracle.com/javase/7/docs/api/java/util/Collections.html">Collections</a>.
+  Java API Specification: <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Collections.html">Collections</a>.
 </li>
 
 

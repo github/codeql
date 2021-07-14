@@ -1,3 +1,7 @@
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
 | file://:0:0:0:0 | __va_list_tag |
 | file://:0:0:0:0 | auto |
 | file://:0:0:0:0 | fp_offset |
@@ -5,10 +9,6 @@
 | file://:0:0:0:0 | operator= |
 | file://:0:0:0:0 | operator= |
 | file://:0:0:0:0 | overflow_arg_area |
-| file://:0:0:0:0 | p#0 |
-| file://:0:0:0:0 | p#0 |
-| file://:0:0:0:0 | p#0 |
-| file://:0:0:0:0 | p#0 |
 | file://:0:0:0:0 | reg_save_area |
 | test.cpp:2:16:2:16 | T |
 | test.cpp:3:8:3:8 | operator= |

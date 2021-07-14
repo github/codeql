@@ -363,4 +363,22 @@ public class LocalDataFlow
         Span<object> span = args; // flow (library operator)
         LocalDataFlow x = args; // no flow (source code operator)
     }
+
+    void PhiFlow(bool b1, bool b2)
+    {
+        var x = "";
+
+        if (b1)
+        {
+            x = "tainted";
+            if (b2)
+            {
+                Console.WriteLine(x);
+                return;
+            }
+        }
+        else
+            x = "not tainted";
+        Check(x);
+    }
 }

@@ -1,7 +1,5 @@
 /*
   This contains various errors which would normally result in an extraction failure.
-
-  semmle-extractor-options: --standalone
 */
 
 // Error: Missing reference

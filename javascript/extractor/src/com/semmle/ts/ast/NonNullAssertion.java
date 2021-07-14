@@ -4,7 +4,7 @@ import com.semmle.js.ast.Expression;
 import com.semmle.js.ast.SourceLocation;
 import com.semmle.js.ast.Visitor;
 
-/** A TypeScript expression of form <tt>E!</tt>, asserting that <tt>E</tt> is not null. */
+/** A TypeScript expression of form <code>E!</code>, asserting that <code>E</code> is not null. */
 public class NonNullAssertion extends Expression {
   private final Expression expression;
 

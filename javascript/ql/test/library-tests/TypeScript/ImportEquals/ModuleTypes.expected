@@ -1,6 +1,0 @@
-| esDefaultExport.ts | es2015 |
-| esNamedExports.ts | es2015 |
-| nodeFullExport.ts | node |
-| nodeNamedExport.ts | node |
-| taintSource.ts | es2015 |
-| tst.ts | es2015 |

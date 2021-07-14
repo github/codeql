@@ -16,10 +16,10 @@ import csharp
 
 Member getAUsedMember(Method m) {
   exists(MemberAccess ma | ma.getEnclosingCallable() = m |
-    result = ma.getTarget().getSourceDeclaration()
+    result = ma.getTarget().getUnboundDeclaration()
   )
   or
-  exists(Call c | c.getEnclosingCallable() = m | result = c.getTarget().getSourceDeclaration())
+  exists(Call c | c.getEnclosingCallable() = m | result = c.getTarget().getUnboundDeclaration())
 }
 
 int dependencyCount(Method source, RefType target) {
@@ -50,8 +50,8 @@ predicate query(Method m, RefType targetType, int selfCount, int depCount) {
     not m instanceof ExtensionMethod and
     // Do not move up/down the class hierarchy
     not (
-      sourceType.getABaseType*().getSourceDeclaration() = targetType or
-      targetType.getABaseType*().getSourceDeclaration() = sourceType
+      sourceType.getABaseType*().getUnboundDeclaration() = targetType or
+      targetType.getABaseType*().getUnboundDeclaration() = sourceType
     ) and
     // Do not move between nested types
     not (sourceType.getDeclaringType*() = targetType or targetType.getDeclaringType*() = sourceType) and

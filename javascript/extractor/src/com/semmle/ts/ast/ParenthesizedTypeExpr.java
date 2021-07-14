@@ -3,7 +3,7 @@ package com.semmle.ts.ast;
 import com.semmle.js.ast.SourceLocation;
 import com.semmle.js.ast.Visitor;
 
-/** A type expression in parentheses, such as <tt>("foo" | "bar")</tt>. */
+/** A type expression in parentheses, such as <code>("foo" | "bar")</code>. */
 public class ParenthesizedTypeExpr extends TypeExpression {
   private final ITypeExpression elementType;
 

@@ -4,7 +4,7 @@ import com.semmle.js.ast.SourceLocation;
 import com.semmle.js.ast.Visitor;
 
 /**
- * A type of form <tt>typeof E</tt> where <tt>E</tt> is an expression that takes the form of a
+ * A type of form <code>typeof E</code> where <code>E</code> is an expression that takes the form of a
  * qualified name.
  */
 public class TypeofTypeExpr extends TypeExpression {

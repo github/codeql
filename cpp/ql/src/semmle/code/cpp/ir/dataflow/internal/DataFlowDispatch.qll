@@ -2,11 +2,14 @@ private import cpp
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.ir.dataflow.DataFlow
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate
+private import DataFlowImplCommon as DataFlowImplCommon
 
 /**
  * Gets a function that might be called by `call`.
  */
+cached
 Function viableCallable(CallInstruction call) {
+  DataFlowImplCommon::forceCachingInSameStage() and
   result = call.getStaticCallTarget()
   or
   // If the target of the call does not have a body in the snapshot, it might
@@ -43,7 +46,6 @@ private module VirtualDispatch {
     abstract DataFlow::Node getDispatchValue();
 
     /** Gets a candidate target for this call. */
-    cached
     abstract Function resolve();
 
     /**
@@ -229,10 +231,36 @@ private predicate functionSignature(Function f, string qualifiedName, int nparam
  * Holds if the set of viable implementations that can be called by `call`
  * might be improved by knowing the call context.
  */
-predicate mayBenefitFromCallContext(CallInstruction call, Function f) { none() }
+predicate mayBenefitFromCallContext(CallInstruction call, Function f) {
+  mayBenefitFromCallContext(call, f, _)
+}
+
+/**
+ * Holds if `call` is a call through a function pointer, and the pointer
+ * value is given as the `arg`'th argument to `f`.
+ *
+ * Note that `f` may be several layers up through the call chain.
+ */
+private predicate mayBenefitFromCallContext(
+  VirtualDispatch::DataSensitiveCall call, Function f, int arg
+) {
+  exists(InitializeParameterInstruction init |
+    not exists(call.getStaticCallTarget()) and
+    init.getEnclosingFunction() = f and
+    call.flowsFrom(DataFlow::instructionNode(init), _) and
+    init.getParameter().getIndex() = arg
+  )
+}
 
 /**
  * Gets a viable dispatch target of `call` in the context `ctx`. This is
  * restricted to those `call`s for which a context might make a difference.
  */
-Function viableImplInCallContext(CallInstruction call, CallInstruction ctx) { none() }
+Function viableImplInCallContext(CallInstruction call, CallInstruction ctx) {
+  result = viableCallable(call) and
+  exists(int i, Function f |
+    mayBenefitFromCallContext(pragma[only_bind_into](call), f, i) and
+    f = ctx.getStaticCallTarget() and
+    result = ctx.getArgument(i).getUnconvertedResultExpression().(FunctionAccess).getTarget()
+  )
+}

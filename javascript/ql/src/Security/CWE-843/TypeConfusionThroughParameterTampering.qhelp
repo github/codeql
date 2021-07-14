@@ -4,7 +4,7 @@
 	<overview>
 		<p>
 
-			Sanitizing untrusted HTTP request parameters is an important
+			Sanitizing untrusted HTTP request parameters is a common
 			technique for preventing injection attacks such as SQL injection or
 			path traversal. This is sometimes done by checking if the request
 			parameters contain blacklisted substrings.
@@ -35,6 +35,15 @@
 			is user-controlled.
 
 		</p>
+
+		<p>
+
+			An even safer alternative is to design the application so that sanitization is not
+			needed, for instance by using prepared statements for SQL queries.
+
+		</p>
+
+
 	</recommendation>
 
 	<example>

@@ -4,6 +4,7 @@
  *              and cause a denial of service.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 9.3
  * @precision high
  * @id cs/uncontrolled-format-string
  * @tags security
@@ -27,7 +28,7 @@ class FormatStringConfiguration extends TaintTracking::Configuration {
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    sink.asExpr() = any(FormatCall call).getFormatExpr()
+    sink.asExpr() = any(FormatCall call | call.hasInsertions()).getFormatExpr()
   }
 }
 

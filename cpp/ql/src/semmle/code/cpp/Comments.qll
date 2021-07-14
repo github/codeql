@@ -50,5 +50,5 @@ class CStyleComment extends Comment {
  * ```
  */
 class CppStyleComment extends Comment {
-  CppStyleComment() { this.getContents().prefix(2) = "//" }
+  CppStyleComment() { this.getContents().matches("//%") }
 }

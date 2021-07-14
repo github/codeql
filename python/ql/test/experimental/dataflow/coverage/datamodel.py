@@ -35,7 +35,7 @@ def SINK_F(x):
 def f(a, b):
   return a
 
-SINK(f(SOURCE, 3))
+SINK(f(SOURCE, 3)) #$ flow="SOURCE -> f(..)"
 
 # Instance methods
 # An instance method object combines a class, a class instance and any callable object (normally a user-defined function).
@@ -68,18 +68,18 @@ c = C()
 func_obj = c.method.__func__
 
 # When an instance method object is called, the underlying function (__func__) is called, inserting the class instance (__self__) in front of the argument list. For instance, when C is a class which contains a definition for a function f(), and x is an instance of C, calling x.f(1) is equivalent to calling C.f(x, 1).
-SINK(c.method(SOURCE, C))
-SINK(C.method(c, SOURCE, C))
-SINK(func_obj(c, SOURCE, C))
+SINK(c.method(SOURCE, C)) #$ flow="SOURCE -> c.method(..)"
+SINK(C.method(c, SOURCE, C)) #$ flow="SOURCE -> C.method(..)"
+SINK(func_obj(c, SOURCE, C)) #$ MISSING: flow="SOURCE -> func_obj(..)"
 
 
 # When an instance method object is created by retrieving a class method object from a class or instance, its __self__ attribute is the class itself, and its __func__ attribute is the function object underlying the class method.
 c_func_obj = C.classmethod.__func__
 
 # When an instance method object is derived from a class method object, the “class instance” stored in __self__ will actually be the class itself, so that calling either x.f(1) or C.f(1) is equivalent to calling f(C,1) where f is the underlying function.
-SINK(c.classmethod(SOURCE))
-SINK(C.classmethod(SOURCE))
-SINK(c_func_obj(C, SOURCE))
+SINK(c.classmethod(SOURCE)) #$ flow="SOURCE -> c.classmethod(..)"
+SINK(C.classmethod(SOURCE)) #$ flow="SOURCE -> C.classmethod(..)"
+SINK(c_func_obj(C, SOURCE)) #$ MISSING: flow="SOURCE -> c_func_obj(..)"
 
 # Generator functions
 # A function or method which uses the yield statement (see section The yield statement) is called a generator function. Such a function, when called, always returns an iterator object which can be used to execute the body of the function: calling the iterator’s iterator.__next__() method will cause the function to execute until it provides a value using the yield statement. When the function executes a return statement or falls off the end, a StopIteration exception is raised and the iterator will have reached the end of the set of values to be returned.
@@ -153,7 +153,7 @@ class Customized:
 
 # testing __new__ and __init__
 customized = Customized()
-SINK(Customized.a)
+SINK(Customized.a)  #$ MISSING:flow="SOURCE, l:-8 -> customized.a"
 SINK_F(Customized.b)
-SINK(customized.a)
-SINK(customized.b)
+SINK(customized.a)  #$ MISSING:flow="SOURCE, l:-10 -> customized.a"
+SINK(customized.b)  #$ flow="SOURCE, l:-7 -> customized.b"

@@ -21,13 +21,7 @@ class InstanceFieldWrite extends FieldWrite {
     not getEnclosingCallable().isStatic() and
     // Must be declared in this type or a supertype.
     getEnclosingCallable().getDeclaringType().inherits(getField()) and
-    (
-      // There must either be no qualifier - implied "this"
-      not exists(getQualifier()) or
-      // Or the qualifier implies we are accessing this or the super type
-      getQualifier() instanceof ThisAccess or
-      getQualifier() instanceof SuperAccess
-    )
+    isOwnFieldAccess()
   }
 }
 
@@ -51,9 +45,9 @@ class ImpureStmt extends Stmt {
 /**
  * Get any non-block stmt in the block, including those nested within blocks.
  */
-private Stmt getANestedStmt(Block block) {
+private Stmt getANestedStmt(BlockStmt block) {
   // Any non-block statement
-  not result instanceof Block and result = block.getAStmt()
+  not result instanceof BlockStmt and result = block.getAStmt()
   or
   // Or any statement nested in a block
   result = getANestedStmt(block.getAStmt())

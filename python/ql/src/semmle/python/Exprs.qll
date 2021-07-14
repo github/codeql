@@ -584,18 +584,40 @@ class Slice extends Slice_ {
   }
 }
 
+/**
+ * Returns all string prefixes in the database that are explicitly marked as Unicode strings.
+ *
+ * Helper predicate for `StrConst::isUnicode`.
+ */
+pragma[nomagic]
+private string unicode_prefix() {
+  result = any(Str_ s).getPrefix() and
+  result.charAt(_) in ["u", "U"]
+}
+
+/**
+ * Returns all string prefixes in the database that are _not_ explicitly marked as bytestrings.
+ *
+ * Helper predicate for `StrConst::isUnicode`.
+ */
+pragma[nomagic]
+private string non_byte_prefix() {
+  result = any(Str_ s).getPrefix() and
+  not result.charAt(_) in ["b", "B"]
+}
+
 /** A string constant. */
 class StrConst extends Str_, ImmutableLiteral {
   /* syntax: "hello" */
   predicate isUnicode() {
-    this.getPrefix().charAt(_) = "u"
+    this.getPrefix() = unicode_prefix()
     or
-    this.getPrefix().charAt(_) = "U"
-    or
-    not this.getPrefix().charAt(_) = "b" and major_version() = 3
-    or
-    not this.getPrefix().charAt(_) = "b" and
-    this.getEnclosingModule().hasFromFuture("unicode_literals")
+    this.getPrefix() = non_byte_prefix() and
+    (
+      major_version() = 3
+      or
+      this.getEnclosingModule().hasFromFuture("unicode_literals")
+    )
   }
 
   deprecated override string strValue() { result = this.getS() }

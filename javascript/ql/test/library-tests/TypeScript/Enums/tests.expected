@@ -1,0 +1,42 @@
+analysis
+| tst.ts:37:7:37:7 | x | number |
+| tst.ts:42:7:42:7 | x | number |
+| tst.ts:44:7:44:7 | A | number |
+enums
+| tst.ts:1:1:1:19 | enum E { A = 1, B } | 0 |  |  |  | tst.ts:1:6:1:6 | E | 2 | tst.ts:1:10:1:14 | A = 1 |
+| tst.ts:1:1:1:19 | enum E { A = 1, B } | 1 |  |  |  | tst.ts:1:6:1:6 | E | 2 | tst.ts:1:17:1:17 | B |
+| tst.ts:3:1:3:35 | const e ... +2, b } | 0 | const |  |  | tst.ts:3:12:3:20 | ConstEnum | 2 | tst.ts:3:24:3:30 | a = 1+2 |
+| tst.ts:3:1:3:35 | const e ... +2, b } | 1 | const |  |  | tst.ts:3:12:3:20 | ConstEnum | 2 | tst.ts:3:33:3:33 | b |
+| tst.ts:5:1:5:34 | declare ...  a, b } | 0 |  | ambient |  | tst.ts:5:14:5:25 | DeclaredEnum | 2 | tst.ts:5:29:5:29 | a |
+| tst.ts:5:1:5:34 | declare ...  a, b } | 1 |  | ambient |  | tst.ts:5:14:5:25 | DeclaredEnum | 2 | tst.ts:5:32:5:32 | b |
+| tst.ts:6:1:6:45 | declare ...  a, b } | 0 | const | ambient |  | tst.ts:6:20:6:36 | DeclaredConstEnum | 2 | tst.ts:6:40:6:40 | a |
+| tst.ts:6:1:6:45 | declare ...  a, b } | 1 | const | ambient |  | tst.ts:6:20:6:36 | DeclaredConstEnum | 2 | tst.ts:6:43:6:43 | b |
+| tst.ts:9:10:9:46 | const e ...  a, b } | 0 | const |  | exported | tst.ts:9:21:9:37 | ExportedConstEnum | 2 | tst.ts:9:41:9:41 | a |
+| tst.ts:9:10:9:46 | const e ...  a, b } | 1 | const |  | exported | tst.ts:9:21:9:37 | ExportedConstEnum | 2 | tst.ts:9:44:9:44 | b |
+| tst.ts:14:1:16:1 | enum No ...  b, c\\n} | 0 |  |  |  | tst.ts:14:6:14:19 | NoInitializers | 3 | tst.ts:15:3:15:3 | a |
+| tst.ts:14:1:16:1 | enum No ...  b, c\\n} | 1 |  |  |  | tst.ts:14:6:14:19 | NoInitializers | 3 | tst.ts:15:6:15:6 | b |
+| tst.ts:14:1:16:1 | enum No ...  b, c\\n} | 2 |  |  |  | tst.ts:14:6:14:19 | NoInitializers | 3 | tst.ts:15:9:15:9 | c |
+| tst.ts:18:1:20:1 | enum Pa ...  b, c\\n} | 0 |  |  |  | tst.ts:18:6:18:25 | PartiallyInitialized | 3 | tst.ts:19:3:19:7 | a = 1 |
+| tst.ts:18:1:20:1 | enum Pa ...  b, c\\n} | 1 |  |  |  | tst.ts:18:6:18:25 | PartiallyInitialized | 3 | tst.ts:19:10:19:10 | b |
+| tst.ts:18:1:20:1 | enum Pa ...  b, c\\n} | 2 |  |  |  | tst.ts:18:6:18:25 | PartiallyInitialized | 3 | tst.ts:19:13:19:13 | c |
+| tst.ts:22:1:27:1 | enum Co ... d = 3\\n} | 0 |  |  |  | tst.ts:22:6:22:23 | ComplexInitializer | 4 | tst.ts:23:3:23:7 | a = 1 |
+| tst.ts:22:1:27:1 | enum Co ... d = 3\\n} | 1 |  |  |  | tst.ts:22:6:22:23 | ComplexInitializer | 4 | tst.ts:24:3:24:16 | b = foo(2 + 3) |
+| tst.ts:22:1:27:1 | enum Co ... d = 3\\n} | 2 |  |  |  | tst.ts:22:6:22:23 | ComplexInitializer | 4 | tst.ts:25:3:25:7 | c = 2 |
+| tst.ts:22:1:27:1 | enum Co ... d = 3\\n} | 3 |  |  |  | tst.ts:22:6:22:23 | ComplexInitializer | 4 | tst.ts:26:3:26:7 | d = 3 |
+| tst.ts:35:1:38:1 | enum Lo ... = x+1\\n} | 0 |  |  |  | tst.ts:35:6:35:19 | LocalReference | 2 | tst.ts:36:3:36:3 | x |
+| tst.ts:35:1:38:1 | enum Lo ... = x+1\\n} | 1 |  |  |  | tst.ts:35:6:35:19 | LocalReference | 2 | tst.ts:37:3:37:9 | y = x+1 |
+| tst.ts:40:1:45:1 | enum St ... = A+1\\n} | 0 |  |  |  | tst.ts:40:6:40:25 | StringLiteralMembers | 4 | tst.ts:41:3:41:5 | "x" |
+| tst.ts:40:1:45:1 | enum St ... = A+1\\n} | 1 |  |  |  | tst.ts:40:6:40:25 | StringLiteralMembers | 4 | tst.ts:42:3:42:9 | y = x+1 |
+| tst.ts:40:1:45:1 | enum St ... = A+1\\n} | 2 |  |  |  | tst.ts:40:6:40:25 | StringLiteralMembers | 4 | tst.ts:43:3:43:8 | "\\x41" |
+| tst.ts:40:1:45:1 | enum St ... = A+1\\n} | 3 |  |  |  | tst.ts:40:6:40:25 | StringLiteralMembers | 4 | tst.ts:44:3:44:9 | z = A+1 |
+memberAccess
+| tst.ts:37:7:37:7 | x | tst.ts:36:3:36:3 | x |
+| tst.ts:42:7:42:7 | x | tst.ts:41:3:41:5 | "x" |
+| tst.ts:44:7:44:7 | A | tst.ts:43:3:43:8 | "\\x41" |
+namesspaceAccess
+| tst.ts:1:1:1:19 | enum E { A = 1, B } | tst.ts:31:17:31:17 | E | tst.ts:31:1:31:19 | var memberType: E.A |
+reachability
+typeAccess
+| tst.ts:1:1:1:19 | enum E { A = 1, B } | tst.ts:32:15:32:15 | E | tst.ts:32:1:32:15 | var enumType: E |
+variableAccess
+| tst.ts:1:1:1:19 | enum E { A = 1, B } | tst.ts:30:19:30:19 | E | tst.ts:30:1:30:21 | var val ... s = E.A |

@@ -3,6 +3,7 @@
  * @description Opening a socket after authenticating via a different channel may allow an attacker to connect to the port first.
  * @kind problem
  * @problem.severity warning
+ * @security-severity 7.2
  * @precision medium
  * @id java/socket-auth-race-condition
  * @tags security

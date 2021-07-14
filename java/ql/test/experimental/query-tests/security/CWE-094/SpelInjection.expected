@@ -1,0 +1,51 @@
+edges
+| SpelInjection.java:15:22:15:44 | getInputStream(...) : InputStream | SpelInjection.java:18:13:18:14 | in : InputStream |
+| SpelInjection.java:18:13:18:14 | in : InputStream | SpelInjection.java:18:21:18:25 | bytes [post update] : byte[] |
+| SpelInjection.java:18:21:18:25 | bytes [post update] : byte[] | SpelInjection.java:23:5:23:14 | expression |
+| SpelInjection.java:27:22:27:44 | getInputStream(...) : InputStream | SpelInjection.java:30:13:30:14 | in : InputStream |
+| SpelInjection.java:30:13:30:14 | in : InputStream | SpelInjection.java:30:21:30:25 | bytes [post update] : byte[] |
+| SpelInjection.java:30:21:30:25 | bytes [post update] : byte[] | SpelInjection.java:34:5:34:14 | expression |
+| SpelInjection.java:38:22:38:44 | getInputStream(...) : InputStream | SpelInjection.java:41:13:41:14 | in : InputStream |
+| SpelInjection.java:41:13:41:14 | in : InputStream | SpelInjection.java:41:21:41:25 | bytes [post update] : byte[] |
+| SpelInjection.java:41:21:41:25 | bytes [post update] : byte[] | SpelInjection.java:48:5:48:14 | expression |
+| SpelInjection.java:52:22:52:44 | getInputStream(...) : InputStream | SpelInjection.java:55:13:55:14 | in : InputStream |
+| SpelInjection.java:55:13:55:14 | in : InputStream | SpelInjection.java:55:21:55:25 | bytes [post update] : byte[] |
+| SpelInjection.java:55:21:55:25 | bytes [post update] : byte[] | SpelInjection.java:59:5:59:14 | expression |
+| SpelInjection.java:63:22:63:44 | getInputStream(...) : InputStream | SpelInjection.java:66:13:66:14 | in : InputStream |
+| SpelInjection.java:66:13:66:14 | in : InputStream | SpelInjection.java:66:21:66:25 | bytes [post update] : byte[] |
+| SpelInjection.java:66:21:66:25 | bytes [post update] : byte[] | SpelInjection.java:70:5:70:14 | expression |
+| SpelInjection.java:74:22:74:44 | getInputStream(...) : InputStream | SpelInjection.java:77:13:77:14 | in : InputStream |
+| SpelInjection.java:77:13:77:14 | in : InputStream | SpelInjection.java:77:21:77:25 | bytes [post update] : byte[] |
+| SpelInjection.java:77:21:77:25 | bytes [post update] : byte[] | SpelInjection.java:83:5:83:14 | expression |
+nodes
+| SpelInjection.java:15:22:15:44 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SpelInjection.java:18:13:18:14 | in : InputStream | semmle.label | in : InputStream |
+| SpelInjection.java:18:21:18:25 | bytes [post update] : byte[] | semmle.label | bytes [post update] : byte[] |
+| SpelInjection.java:23:5:23:14 | expression | semmle.label | expression |
+| SpelInjection.java:27:22:27:44 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SpelInjection.java:30:13:30:14 | in : InputStream | semmle.label | in : InputStream |
+| SpelInjection.java:30:21:30:25 | bytes [post update] : byte[] | semmle.label | bytes [post update] : byte[] |
+| SpelInjection.java:34:5:34:14 | expression | semmle.label | expression |
+| SpelInjection.java:38:22:38:44 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SpelInjection.java:41:13:41:14 | in : InputStream | semmle.label | in : InputStream |
+| SpelInjection.java:41:21:41:25 | bytes [post update] : byte[] | semmle.label | bytes [post update] : byte[] |
+| SpelInjection.java:48:5:48:14 | expression | semmle.label | expression |
+| SpelInjection.java:52:22:52:44 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SpelInjection.java:55:13:55:14 | in : InputStream | semmle.label | in : InputStream |
+| SpelInjection.java:55:21:55:25 | bytes [post update] : byte[] | semmle.label | bytes [post update] : byte[] |
+| SpelInjection.java:59:5:59:14 | expression | semmle.label | expression |
+| SpelInjection.java:63:22:63:44 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SpelInjection.java:66:13:66:14 | in : InputStream | semmle.label | in : InputStream |
+| SpelInjection.java:66:21:66:25 | bytes [post update] : byte[] | semmle.label | bytes [post update] : byte[] |
+| SpelInjection.java:70:5:70:14 | expression | semmle.label | expression |
+| SpelInjection.java:74:22:74:44 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SpelInjection.java:77:13:77:14 | in : InputStream | semmle.label | in : InputStream |
+| SpelInjection.java:77:21:77:25 | bytes [post update] : byte[] | semmle.label | bytes [post update] : byte[] |
+| SpelInjection.java:83:5:83:14 | expression | semmle.label | expression |
+#select
+| SpelInjection.java:23:5:23:14 | expression | SpelInjection.java:15:22:15:44 | getInputStream(...) : InputStream | SpelInjection.java:23:5:23:14 | expression | SpEL injection from $@. | SpelInjection.java:15:22:15:44 | getInputStream(...) | this user input |
+| SpelInjection.java:34:5:34:14 | expression | SpelInjection.java:27:22:27:44 | getInputStream(...) : InputStream | SpelInjection.java:34:5:34:14 | expression | SpEL injection from $@. | SpelInjection.java:27:22:27:44 | getInputStream(...) | this user input |
+| SpelInjection.java:48:5:48:14 | expression | SpelInjection.java:38:22:38:44 | getInputStream(...) : InputStream | SpelInjection.java:48:5:48:14 | expression | SpEL injection from $@. | SpelInjection.java:38:22:38:44 | getInputStream(...) | this user input |
+| SpelInjection.java:59:5:59:14 | expression | SpelInjection.java:52:22:52:44 | getInputStream(...) : InputStream | SpelInjection.java:59:5:59:14 | expression | SpEL injection from $@. | SpelInjection.java:52:22:52:44 | getInputStream(...) | this user input |
+| SpelInjection.java:70:5:70:14 | expression | SpelInjection.java:63:22:63:44 | getInputStream(...) : InputStream | SpelInjection.java:70:5:70:14 | expression | SpEL injection from $@. | SpelInjection.java:63:22:63:44 | getInputStream(...) | this user input |
+| SpelInjection.java:83:5:83:14 | expression | SpelInjection.java:74:22:74:44 | getInputStream(...) : InputStream | SpelInjection.java:83:5:83:14 | expression | SpEL injection from $@. | SpelInjection.java:74:22:74:44 | getInputStream(...) | this user input |

@@ -42,11 +42,11 @@
   Addison-Wesley, 2008.
 </li>
 <li>
-  Java API Documentation:
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html#notify%28%29">notify()</a>,
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html#notifyAll%28%29">notifyAll()</a>,
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html#wait%28%29">wait()</a>,
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html#wait%28long%29">wait(long)</a>.
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#notify()">Object.notify()</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#notifyAll()">Object.notifyAll()</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#wait()">Object.wait()</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#wait(long)">Object.wait(long)</a>.
 </li>
 
 

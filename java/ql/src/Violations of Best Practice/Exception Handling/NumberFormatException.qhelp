@@ -31,11 +31,11 @@ The second call does.
 
 
 <li>
-  Java Platform, Standard Edition 8, API Specification:
-  <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html#valueOf-java.lang.String-">Integer.valueOf</a>,
-  <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html#parseInt-java.lang.String-">Integer.parseInt</a>,
-  <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html#parseLong-java.lang.String-">Long.parseLong</a>,
-  <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/NumberFormatException.html">NumberFormatException</a>.
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Integer.html#valueOf(java.lang.String)">Integer.valueOf</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Integer.html#parseInt(java.lang.String)">Integer.parseInt</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Long.html#parseLong(java.lang.String)">Long.parseLong</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/NumberFormatException.html">NumberFormatException</a>.
 </li>
 
 

@@ -90,11 +90,11 @@ variables(#20030,"g",#20000)
 #20031=*
 stmts(#20031,17,#20001,0,"functio ... urce;\n}")
 hasLocation(#20031,#20029)
-stmtContainers(#20031,#20001)
+stmt_containers(#20031,#20001)
 #20032=*
 exprs(#20032,78,#20031,-1,"g")
 hasLocation(#20032,#20011)
-exprContainers(#20032,#20031)
+expr_containers(#20032,#20031)
 literals("g","g",#20032)
 decl(#20032,#20030)
 #20033=*
@@ -103,26 +103,26 @@ scopenodes(#20031,#20033)
 scopenesting(#20033,#20000)
 #20034=@"var;{arguments};{#20033}"
 variables(#20034,"arguments",#20033)
-isArgumentsObject(#20034)
+is_arguments_object(#20034)
 #20035=*
 stmts(#20035,1,#20031,-2,"{\n  new.source;\n}")
 #20036=@"loc,{#10000},1,14,3,1"
 locations_default(#20036,#10000,1,14,3,1)
 hasLocation(#20035,#20036)
-stmtContainers(#20035,#20031)
+stmt_containers(#20035,#20031)
 #20037=*
 stmts(#20037,2,#20035,0,"new.source;")
 #20038=@"loc,{#10000},2,3,2,13"
 locations_default(#20038,#10000,2,3,2,13)
 hasLocation(#20037,#20038)
-stmtContainers(#20037,#20031)
+stmt_containers(#20037,#20031)
 #20039=*
 exprs(#20039,82,#20037,0,"new.source")
 #20040=@"loc,{#10000},2,3,2,12"
 locations_default(#20040,#10000,2,3,2,12)
 hasLocation(#20039,#20040)
-enclosingStmt(#20039,#20037)
-exprContainers(#20039,#20031)
+enclosing_stmt(#20039,#20037)
+expr_containers(#20039,#20031)
 #20041=*
 entry_cfg_node(#20041,#20001)
 #20042=@"loc,{#10000},1,1,1,0"
@@ -145,7 +145,7 @@ successor(#20044,#20035)
 successor(#20032,#20031)
 successor(#20041,#20032)
 #20046=*
-jsParseErrors(#20046,#20001,"Error: The only valid meta property for new is new.target","  new.source;
+js_parse_errors(#20046,#20001,"Error: The only valid meta property for new is new.target","  new.source;
 ")
 #20047=@"loc,{#10000},2,7,2,7"
 locations_default(#20047,#10000,2,7,2,7)

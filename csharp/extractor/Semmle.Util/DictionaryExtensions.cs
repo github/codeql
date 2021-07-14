@@ -9,7 +9,7 @@ namespace Semmle.Util
         /// dictionary. If a list does not already exist, a new list is
         /// created.
         /// </summary>
-        public static void AddAnother<T1, T2>(this Dictionary<T1, List<T2>> dict, T1 key, T2 element) where T1:notnull
+        public static void AddAnother<T1, T2>(this Dictionary<T1, List<T2>> dict, T1 key, T2 element) where T1 : notnull
         {
             if (!dict.TryGetValue(key, out var list))
             {

@@ -82,4 +82,11 @@ class SelfAssigns : Super
         this.Self.Self.Self.StringProp = Self.Self.Self.StringProp;
         intArray[1] = this.intArray[1 + 0];
     }
+
+    enum Enum
+    {
+        X = 42,
+        Y = 100,
+        Z
+    }
 }

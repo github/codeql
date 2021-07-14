@@ -63,7 +63,7 @@ predicate mayEscape(LocalVariable v) {
   exists(Callable c, Expr e, Expr succ | c = getACapturingCallableAncestor(v) |
     e = getADelegateExpr(c) and
     DataFlow::localExprFlow(e, succ) and
-    not succ = any(DelegateCall dc).getDelegateExpr() and
+    not succ = any(DelegateCall dc).getExpr() and
     not succ = any(Cast cast).getExpr() and
     not succ = any(Call call | nonEscapingCall(call)).getAnArgument() and
     not succ = any(AssignableDefinition ad | ad.getTarget() instanceof LocalVariable).getSource()

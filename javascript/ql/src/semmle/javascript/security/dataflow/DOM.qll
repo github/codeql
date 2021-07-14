@@ -40,11 +40,14 @@ predicate isDocument(Expr e) { DOM::documentRef().flowsToExpr(e) }
 predicate isDocumentURL(Expr e) { e.flow() = DOM::locationSource() }
 
 /**
+ * DEPRECATED. In most cases, a sanitizer based on this predicate can be removed, as
+ * taint tracking no longer step through the properties of the location object by default.
+ *
  * Holds if `pacc` accesses a part of `document.location` that is
  * not considered user-controlled, that is, anything except
  * `href`, `hash` and `search`.
  */
-predicate isSafeLocationProperty(PropAccess pacc) {
+deprecated predicate isSafeLocationProperty(PropAccess pacc) {
   exists(string prop | pacc = DOM::locationRef().getAPropertyRead(prop).asExpr() |
     prop != "href" and prop != "hash" and prop != "search"
   )
@@ -122,11 +125,7 @@ class DomPropWriteNode extends Assignment {
    * Holds if the assigned value is interpreted as JavaScript via javascript: protocol.
    */
   predicate interpretsValueAsJavaScriptUrl() {
-    lhs.getPropertyName() = "action" or
-    lhs.getPropertyName() = "formaction" or
-    lhs.getPropertyName() = "href" or
-    lhs.getPropertyName() = "src" or
-    lhs.getPropertyName() = "data"
+    lhs.getPropertyName() = DOM::getAPropertyNameInterpretedAsJavaScriptUrl()
   }
 }
 
@@ -157,6 +156,12 @@ private module PersistentWebStorage {
     result = DataFlow::globalVarRef(kind)
   }
 
+  pragma[noinline]
+  WriteAccess getAWriteByName(string name, string kind) {
+    result.getKey() = name and
+    result.getKind() = kind
+  }
+
   /**
    * A read access.
    */
@@ -166,8 +171,10 @@ private module PersistentWebStorage {
     ReadAccess() { this = webStorage(kind).getAMethodCall("getItem") }
 
     override PersistentWriteAccess getAWrite() {
-      getArgument(0).mayHaveStringValue(result.(WriteAccess).getKey()) and
-      result.(WriteAccess).getKind() = kind
+      exists(string name |
+        getArgument(0).mayHaveStringValue(name) and
+        result = getAWriteByName(name, kind)
+      )
     }
   }
 
@@ -199,6 +206,11 @@ class PostMessageEventHandler extends Function {
       addEventListener.getArgument(0).mayHaveStringValue("message") and
       addEventListener.getArgument(1).getABoundFunctionValue(paramIndex).getFunction() = this
     )
+    or
+    exists(DataFlow::Node rhs |
+      rhs = DataFlow::globalObjectRef().getAPropertyWrite("onmessage").getRhs() and
+      rhs.getABoundFunctionValue(paramIndex).getFunction() = this
+    )
   }
 
   /**
@@ -223,7 +235,8 @@ private class PostMessageEventParameter extends RemoteFlowSource {
  * An access to `window.name`, which can be controlled by the opener of the window,
  * even if the window is opened from a foreign domain.
  */
-private class WindowNameAccess extends RemoteFlowSource {
+private class WindowNameAccess extends ClientSideRemoteFlowSource {
+  pragma[nomagic, noinline]
   WindowNameAccess() {
     this = DataFlow::globalObjectRef().getAPropertyRead("name")
     or
@@ -236,4 +249,26 @@ private class WindowNameAccess extends RemoteFlowSource {
   }
 
   override string getSourceType() { result = "Window name" }
+
+  override ClientSideRemoteFlowKind getKind() { result.isWindowName() }
+}
+
+private class WindowLocationFlowSource extends ClientSideRemoteFlowSource {
+  ClientSideRemoteFlowKind kind;
+
+  WindowLocationFlowSource() {
+    this = DOM::locationSource() and kind.isUrl()
+    or
+    // Add separate sources for the properties of window.location as they are excluded
+    // from the default taint steps.
+    this = DOM::locationRef().getAPropertyRead("hash") and kind.isFragment()
+    or
+    this = DOM::locationRef().getAPropertyRead("search") and kind.isQuery()
+    or
+    this = DOM::locationRef().getAPropertyRead("href") and kind.isUrl()
+  }
+
+  override string getSourceType() { result = "Window location" }
+
+  override ClientSideRemoteFlowKind getKind() { result = kind }
 }

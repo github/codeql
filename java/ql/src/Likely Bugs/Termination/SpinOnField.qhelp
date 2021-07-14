@@ -37,8 +37,8 @@ library to communicate between threads.
 
 
 <li>
-  The Java Language Specification:
-  <a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-17.html">Threads and Locks</a>.
+  Java Language Specification:
+  <a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-17.html">Threads and Locks</a>.
 </li>
 
 

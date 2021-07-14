@@ -33,10 +33,7 @@ namespace Semmle.Util
         /// <param name="dest">Target file.</param>
         public static void MoveOrReplace(string src, string dest)
         {
-            // Potential race condition here.
-            // .net offers the facility to either move a file, or to replace it.
-            File.Delete(dest);
-            File.Move(src, dest);
+            File.Move(src, dest, overwrite: true);
         }
 
         /// <summary>
@@ -69,7 +66,7 @@ namespace Semmle.Util
             if (Win32.IsWindows())
             {
                 var extensions = Environment.GetEnvironmentVariable("PATHEXT")?.Split(';')?.ToArray();
-                exes = extensions == null || extensions.Any(prog.EndsWith)
+                exes = extensions is null || extensions.Any(prog.EndsWith)
                     ? new[] { prog }
                     : extensions.Select(ext => prog + ext).ToArray();
             }
@@ -86,15 +83,13 @@ namespace Semmle.Util
         /// </summary>
         public static string ComputeFileHash(string filePath)
         {
-            using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-            using (var shaAlg = new SHA256Managed())
-            {
-                var sha = shaAlg.ComputeHash(fileStream);
-                var hex = new StringBuilder(sha.Length * 2);
-                foreach (var b in sha)
-                    hex.AppendFormat("{0:x2}", b);
-                return hex.ToString();
-            }
+            using var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+            using var shaAlg = new SHA256Managed();
+            var sha = shaAlg.ComputeHash(fileStream);
+            var hex = new StringBuilder(sha.Length * 2);
+            foreach (var b in sha)
+                hex.AppendFormat("{0:x2}", b);
+            return hex.ToString();
         }
     }
 }

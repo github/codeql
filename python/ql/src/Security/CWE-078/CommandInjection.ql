@@ -4,6 +4,7 @@
  *              user to change the meaning of the command.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 9.8
  * @sub-severity high
  * @precision high
  * @id py/command-line-injection
@@ -15,29 +16,10 @@
  */
 
 import python
-import semmle.python.security.Paths
-/* Sources */
-import semmle.python.web.HttpRequest
-/* Sinks */
-import semmle.python.security.injection.Command
+import semmle.python.security.dataflow.CommandInjection
+import DataFlow::PathGraph
 
-class CommandInjectionConfiguration extends TaintTracking::Configuration {
-  CommandInjectionConfiguration() { this = "Command injection configuration" }
-
-  override predicate isSource(TaintTracking::Source source) {
-    source instanceof HttpRequestTaintSource
-  }
-
-  override predicate isSink(TaintTracking::Sink sink) { sink instanceof CommandSink }
-
-  override predicate isExtension(TaintTracking::Extension extension) {
-    extension instanceof FirstElementFlow
-    or
-    extension instanceof FabricExecuteExtension
-  }
-}
-
-from CommandInjectionConfiguration config, TaintedPathSource src, TaintedPathSink sink
-where config.hasFlowPath(src, sink)
-select sink.getSink(), src, sink, "This command depends on $@.", src.getSource(),
+from CommandInjection::Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
+where config.hasFlowPath(source, sink)
+select sink.getNode(), source, sink, "This command depends on $@.", source.getNode(),
   "a user-provided value"

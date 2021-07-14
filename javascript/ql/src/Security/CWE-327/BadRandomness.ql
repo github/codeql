@@ -4,6 +4,7 @@
  *              the results and compromise security.
  * @kind problem
  * @problem.severity warning
+ * @security-severity 7.5
  * @precision high
  * @id js/biased-cryptographic-random
  * @tags security
@@ -80,18 +81,12 @@ private DataFlow::Node goodRandom(DataFlow::TypeTracker t, DataFlow::SourceNode 
     // reading a number from a Buffer.
     exists(DataFlow::MethodCallNode call | result = call |
       call.getReceiver() = goodRandom(t2, source) and
-      call
-          .getMethodName()
+      call.getMethodName()
           .regexpMatch("read(BigInt|BigUInt|Double|Float|Int|UInt)(8|16|32|64)?(BE|LE)?")
     )
   )
   or
   exists(DataFlow::TypeTracker t2 | t = t2.smallstep(goodRandom(t2, source), result))
-  or
-  // re-using the collection steps for `Set`.
-  exists(DataFlow::TypeTracker t2 |
-    result = CollectionsTypeTracking::collectionStep(goodRandom(t2, source), t, t2)
-  )
   or
   InsecureRandomness::isAdditionalTaintStep(goodRandom(t.continue(), source), result) and
   // bit shifts and multiplication by powers of two are generally used for constructing larger numbers from smaller numbers.

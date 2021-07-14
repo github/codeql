@@ -7,6 +7,7 @@
  */
 
 import csharp
+private import TypeRef
 
 private module Annotations {
   newtype TAnnotation =
@@ -230,6 +231,8 @@ private module Annotations {
       type = element.(Expr).getType()
       or
       type = element.(DelegateType).getReturnType()
+      or
+      type = element.(FunctionPointerType).getReturnType()
     )
   }
 }

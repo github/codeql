@@ -8,7 +8,7 @@ are vulnerable to brute force attack when too small a key size is used.</p>
 
 </overview>
 <recommendation>
-<p>The key should be at least 1024-bit long when using RSA encryption, and 128-bit long when using 
+<p>The key should be at least 2048-bit long when using RSA encryption, and 128-bit long when using 
 symmetric encryption.</p>
 
 </recommendation>

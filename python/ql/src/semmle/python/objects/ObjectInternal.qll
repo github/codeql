@@ -515,7 +515,7 @@ class DecoratedFunction extends ObjectInternal, TDecoratedFunction {
   override string getName() { result = this.decoratedObject().getName() }
 
   override string toString() {
-    result = "Decorated " + this.decoratedObject().toString()
+    result = "Decorated " + bounded_toString(this.decoratedObject())
     or
     not exists(this.decoratedObject()) and result = "Decorated function"
   }
@@ -591,4 +591,19 @@ boolean maybe() { result = true or result = false }
 pragma[nomagic]
 predicate receiver_type(AttrNode attr, string name, ObjectInternal value, ClassObjectInternal cls) {
   PointsToInternal::pointsTo(attr.getObject(name), _, value, _) and value.getClass() = cls
+}
+
+/**
+ * Returns a string representation of `obj`. Because some classes have (mutually) recursive
+ * `toString` implementations, this predicate acts as a stop for these classes, preventing an
+ * unbounded `toString` from being materialized.
+ */
+string bounded_toString(ObjectInternal obj) {
+  if
+    obj instanceof DecoratedFunction or
+    obj instanceof TupleObjectInternal or
+    obj instanceof SubscriptedTypeInternal or
+    obj instanceof SuperInstance
+  then result = "(...)"
+  else result = obj.toString()
 }

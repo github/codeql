@@ -17,3 +17,23 @@ class SpringNativeWebRequest extends Class {
     this.hasQualifiedName("org.springframework.web.context.request", "NativeWebRequest")
   }
 }
+
+/**
+ * A Spring `ModelAndView` class. This is either
+ * `org.springframework.web.servlet.ModelAndView` or
+ * `org.springframework.web.portlet.ModelAndView`.
+ */
+class ModelAndView extends Class {
+  ModelAndView() {
+    hasQualifiedName(["org.springframework.web.servlet", "org.springframework.web.portlet"],
+      "ModelAndView")
+  }
+}
+
+/** A call to the Spring `ModelAndView.setViewName` method. */
+class SpringModelAndViewSetViewNameCall extends MethodAccess {
+  SpringModelAndViewSetViewNameCall() {
+    getMethod().getDeclaringType() instanceof ModelAndView and
+    getMethod().hasName("setViewName")
+  }
+}

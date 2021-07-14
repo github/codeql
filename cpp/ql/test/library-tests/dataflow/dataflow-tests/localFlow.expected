@@ -7,11 +7,15 @@
 | example.c:17:19:17:22 | {...} | example.c:26:19:26:24 | coords |
 | example.c:24:2:24:7 | coords [post update] | example.c:26:2:26:7 | coords |
 | example.c:24:2:24:7 | coords [post update] | example.c:26:19:26:24 | coords |
+| example.c:24:2:24:30 | ... = ... | example.c:24:9:24:9 | x [post update] |
 | example.c:24:13:24:18 | coords [post update] | example.c:24:2:24:7 | coords |
 | example.c:24:13:24:18 | coords [post update] | example.c:26:2:26:7 | coords |
 | example.c:24:13:24:18 | coords [post update] | example.c:26:19:26:24 | coords |
 | example.c:24:13:24:30 | ... = ... | example.c:24:2:24:30 | ... = ... |
+| example.c:24:13:24:30 | ... = ... | example.c:24:20:24:20 | y [post update] |
+| example.c:24:20:24:20 | y | example.c:24:13:24:30 | ... = ... |
 | example.c:24:24:24:30 | ... + ... | example.c:24:13:24:30 | ... = ... |
+| example.c:26:2:26:25 | ... = ... | example.c:26:9:26:9 | x [post update] |
 | example.c:26:13:26:16 | call to getX | example.c:26:2:26:25 | ... = ... |
 | example.c:26:18:26:24 | ref arg & ... | example.c:26:2:26:7 | coords |
 | example.c:26:18:26:24 | ref arg & ... | example.c:26:19:26:24 | coords [inner post update] |

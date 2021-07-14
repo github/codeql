@@ -1,0 +1,15 @@
+edges
+| argumentPassing.py:73:7:73:7 | ControlFlowNode for g [Dictionary element at key g] | argumentPassing.py:82:15:82:15 | ControlFlowNode for g [Dictionary element at key g] |
+| argumentPassing.py:82:15:82:15 | ControlFlowNode for g [Dictionary element at key g] | argumentPassing.py:82:15:82:20 | ControlFlowNode for Subscript |
+| argumentPassing.py:89:5:89:81 | KwOverflowNode for argument_passing() [Dictionary element at key g] | argumentPassing.py:73:7:73:7 | ControlFlowNode for g [Dictionary element at key g] |
+| argumentPassing.py:89:59:89:80 | ControlFlowNode for Dict [Dictionary element at key g] | argumentPassing.py:89:5:89:81 | KwOverflowNode for argument_passing() [Dictionary element at key g] |
+| argumentPassing.py:89:76:89:79 | ControlFlowNode for arg7 | argumentPassing.py:89:59:89:80 | ControlFlowNode for Dict [Dictionary element at key g] |
+nodes
+| argumentPassing.py:73:7:73:7 | ControlFlowNode for g [Dictionary element at key g] | semmle.label | ControlFlowNode for g [Dictionary element at key g] |
+| argumentPassing.py:82:15:82:15 | ControlFlowNode for g [Dictionary element at key g] | semmle.label | ControlFlowNode for g [Dictionary element at key g] |
+| argumentPassing.py:82:15:82:20 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| argumentPassing.py:89:5:89:81 | KwOverflowNode for argument_passing() [Dictionary element at key g] | semmle.label | KwOverflowNode for argument_passing() [Dictionary element at key g] |
+| argumentPassing.py:89:59:89:80 | ControlFlowNode for Dict [Dictionary element at key g] | semmle.label | ControlFlowNode for Dict [Dictionary element at key g] |
+| argumentPassing.py:89:76:89:79 | ControlFlowNode for arg7 | semmle.label | ControlFlowNode for arg7 |
+#select
+| argumentPassing.py:89:76:89:79 | ControlFlowNode for arg7 | argumentPassing.py:89:76:89:79 | ControlFlowNode for arg7 | argumentPassing.py:82:15:82:20 | ControlFlowNode for Subscript | Flow found |

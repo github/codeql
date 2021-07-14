@@ -19,54 +19,106 @@ predicate localTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
  * local data flow steps. That is, `nodeFrom` and `nodeTo` are likely to represent
  * different objects.
  */
+cached
 predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-  localInstructionTaintStep(nodeFrom.asInstruction(), nodeTo.asInstruction())
+  operandToInstructionTaintStep(nodeFrom.asOperand(), nodeTo.asInstruction())
+  or
+  instructionToOperandTaintStep(nodeFrom.asInstruction(), nodeTo.asOperand())
+}
+
+private predicate instructionToOperandTaintStep(Instruction fromInstr, Operand toOperand) {
+  // Propagate flow from the definition of an operand to the operand, even when the overlap is inexact.
+  // We only do this in certain cases:
+  // 1. The instruction's result must not be conflated, and
+  // 2. The instruction's result type is one the types where we expect element-to-object flow. Currently
+  // this is array types and union types. This matches the other two cases of element-to-object flow in
+  // `DefaultTaintTracking`.
+  toOperand.getAnyDef() = fromInstr and
+  not fromInstr.isResultConflated() and
+  (
+    fromInstr.getResultType() instanceof ArrayType or
+    fromInstr.getResultType() instanceof Union
+  )
+  or
+  exists(ReadSideEffectInstruction readInstr |
+    fromInstr = readInstr.getArgumentDef() and
+    toOperand = readInstr.getSideEffectOperand()
+  )
+  or
+  toOperand.(LoadOperand).getAnyDef() = fromInstr
 }
 
 /**
  * Holds if taint propagates from `nodeFrom` to `nodeTo` in exactly one local
  * (intra-procedural) step.
  */
-private predicate localInstructionTaintStep(Instruction nodeFrom, Instruction nodeTo) {
+private predicate operandToInstructionTaintStep(Operand opFrom, Instruction instrTo) {
   // Taint can flow through expressions that alter the value but preserve
   // more than one bit of it _or_ expressions that follow data through
   // pointer indirections.
-  nodeTo.getAnOperand().getAnyDef() = nodeFrom and
+  instrTo.getAnOperand() = opFrom and
   (
-    nodeTo instanceof ArithmeticInstruction
+    instrTo instanceof ArithmeticInstruction
     or
-    nodeTo instanceof BitwiseInstruction
+    instrTo instanceof BitwiseInstruction
     or
-    nodeTo instanceof PointerArithmeticInstruction
-    or
-    nodeTo instanceof FieldAddressInstruction
+    instrTo instanceof PointerArithmeticInstruction
     or
     // The `CopyInstruction` case is also present in non-taint data flow, but
     // that uses `getDef` rather than `getAnyDef`. For taint, we want flow
     // from a definition of `myStruct` to a `myStruct.myField` expression.
-    nodeTo instanceof CopyInstruction
+    instrTo instanceof CopyInstruction
   )
   or
-  nodeTo.(LoadInstruction).getSourceAddress() = nodeFrom
-  or
-  modeledInstructionTaintStep(nodeFrom, nodeTo)
-  or
-  // Flow through partial reads of arrays and unions
-  nodeTo.(LoadInstruction).getSourceValueOperand().getAnyDef() = nodeFrom and
-  not nodeFrom.isResultConflated() and
+  // Unary instructions tend to preserve enough information in practice that we
+  // want taint to flow through.
+  // The exception is `FieldAddressInstruction`. Together with the rules below for
+  // `LoadInstruction`s and `ChiInstruction`s, flow through `FieldAddressInstruction`
+  // could cause flow into one field to come out an unrelated field.
+  // This would happen across function boundaries, where the IR would not be able to
+  // match loads to stores.
+  instrTo.(UnaryInstruction).getUnaryOperand() = opFrom and
   (
-    nodeFrom.getResultType() instanceof ArrayType or
-    nodeFrom.getResultType() instanceof Union
+    not instrTo instanceof FieldAddressInstruction
+    or
+    instrTo.(FieldAddressInstruction).getField().getDeclaringType() instanceof Union
   )
+  or
+  instrTo.(LoadInstruction).getSourceAddressOperand() = opFrom
   or
   // Flow from an element to an array or union that contains it.
-  nodeTo.(ChiInstruction).getPartial() = nodeFrom and
-  not nodeTo.isResultConflated() and
-  exists(Type t | nodeTo.getResultLanguageType().hasType(t, false) |
+  instrTo.(ChiInstruction).getPartialOperand() = opFrom and
+  not instrTo.isResultConflated() and
+  exists(Type t | instrTo.getResultLanguageType().hasType(t, false) |
     t instanceof Union
     or
     t instanceof ArrayType
   )
+  or
+  // Until we have flow through indirections across calls, we'll take flow out
+  // of the indirection and into the argument.
+  // When we get proper flow through indirections across calls, this code can be
+  // moved to `adjusedSink` or possibly into the `DataFlow::ExprNode` class.
+  exists(ReadSideEffectInstruction read |
+    read.getSideEffectOperand() = opFrom and
+    read.getArgumentDef() = instrTo
+  )
+  or
+  // Until we have from through indirections across calls, we'll take flow out
+  // of the parameter and into its indirection.
+  // `InitializeIndirectionInstruction` only has a single operand: the address of the
+  // value whose indirection we are initializing. When initializing an indirection of a parameter `p`,
+  // the IR looks like this:
+  // ```
+  // m1 = InitializeParameter[p] : &r1
+  // r2 = Load[p] : r2, m1
+  // m3 = InitializeIndirection[p] : &r2
+  // ```
+  // So by having flow from `r2` to `m3` we're enabling flow from `m1` to `m3`. This relies on the
+  // `LoadOperand`'s overlap being exact.
+  instrTo.(InitializeIndirectionInstruction).getAnOperand() = opFrom
+  or
+  modeledTaintStep(opFrom, instrTo)
 }
 
 /**
@@ -100,19 +152,35 @@ predicate defaultAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
 }
 
 /**
- * Holds if `node` should be a barrier in all global taint flow configurations
+ * Holds if default `TaintTracking::Configuration`s should allow implicit reads
+ * of `c` at sinks and inputs to additional taint steps.
+ */
+bindingset[node]
+predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::Content c) { none() }
+
+/**
+ * Holds if `node` should be a sanitizer in all global taint flow configurations
  * but not in local taint.
  */
-predicate defaultTaintBarrier(DataFlow::Node node) { none() }
+predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
 
 /**
  * Holds if taint can flow from `instrIn` to `instrOut` through a call to a
  * modeled function.
  */
-predicate modeledInstructionTaintStep(Instruction instrIn, Instruction instrOut) {
+predicate modeledTaintStep(Operand nodeIn, Instruction nodeOut) {
   exists(CallInstruction call, TaintFunction func, FunctionInput modelIn, FunctionOutput modelOut |
-    instrIn = callInput(call, modelIn) and
-    instrOut = callOutput(call, modelOut) and
+    (
+      nodeIn = callInput(call, modelIn)
+      or
+      exists(int n |
+        modelIn.isParameterDerefOrQualifierObject(n) and
+        if n = -1
+        then nodeIn = callInput(call, any(InQualifierObject inQualifier))
+        else nodeIn = callInput(call, any(InParameter inParam | inParam.getIndex() = n))
+      )
+    ) and
+    nodeOut = callOutput(call, modelOut) and
     call.getStaticCallTarget() = func and
     func.hasTaintFlow(modelIn, modelOut)
   )
@@ -126,12 +194,30 @@ predicate modeledInstructionTaintStep(Instruction instrIn, Instruction instrOut)
     CallInstruction call, Function func, FunctionInput modelIn, OutParameterDeref modelMidOut,
     int indexMid, InParameter modelMidIn, OutReturnValue modelOut
   |
-    instrIn = callInput(call, modelIn) and
-    instrOut = callOutput(call, modelOut) and
+    nodeIn = callInput(call, modelIn) and
+    nodeOut = callOutput(call, modelOut) and
     call.getStaticCallTarget() = func and
     func.(TaintFunction).hasTaintFlow(modelIn, modelMidOut) and
     func.(DataFlowFunction).hasDataFlow(modelMidIn, modelOut) and
     modelMidOut.isParameterDeref(indexMid) and
     modelMidIn.isParameter(indexMid)
+  )
+  or
+  // Taint flow from a pointer argument to an output, when the model specifies flow from the deref
+  // to that output, but the deref is not modeled in the IR for the caller.
+  exists(
+    CallInstruction call, ReadSideEffectInstruction read, Function func, FunctionInput modelIn,
+    FunctionOutput modelOut
+  |
+    read.getSideEffectOperand() = callInput(call, modelIn) and
+    read.getArgumentDef() = nodeIn.getDef() and
+    not read.getSideEffect().isResultModeled() and
+    call.getStaticCallTarget() = func and
+    (
+      func.(DataFlowFunction).hasDataFlow(modelIn, modelOut)
+      or
+      func.(TaintFunction).hasTaintFlow(modelIn, modelOut)
+    ) and
+    nodeOut = callOutput(call, modelOut)
   )
 }

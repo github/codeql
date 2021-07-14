@@ -22,10 +22,6 @@ DataFlow::SourceNode trackSource(DataFlow::TypeTracker t, DataFlow::SourceNode s
   start = result
   or
   exists(DataFlow::TypeTracker t2 | t = t2.step(trackSource(t2, start), result))
-  or
-  exists(DataFlow::TypeTracker t2 |
-    result = CollectionsTypeTracking::collectionStep(trackSource(t2, start), t, t2)
-  )
 }
 
 query DataFlow::SourceNode typeTracking(DataFlow::Node start) {

@@ -18,9 +18,9 @@ namespace Semmle.Extraction
         /// <returns>Whether inner is completely container in outer.</returns>
         public static bool Contains(this Location outer, Location inner)
         {
-            bool sameFile = outer.SourceTree == inner.SourceTree;
-            bool startsBefore = outer.SourceSpan.Start <= inner.SourceSpan.Start;
-            bool endsAfter = outer.SourceSpan.End >= inner.SourceSpan.End;
+            var sameFile = outer.SourceTree == inner.SourceTree;
+            var startsBefore = outer.SourceSpan.Start <= inner.SourceSpan.Start;
+            var endsAfter = outer.SourceSpan.End >= inner.SourceSpan.End;
             return sameFile && startsBefore && endsAfter;
         }
 
@@ -32,8 +32,8 @@ namespace Semmle.Extraction
         /// <returns>Whether 'before' comes before 'after'.</returns>
         public static bool Before(this Location before, Location after)
         {
-            bool sameFile = before.SourceTree == after.SourceTree;
-            bool endsBefore = before.SourceSpan.End <= after.SourceSpan.Start;
+            var sameFile = before.SourceTree == after.SourceTree;
+            var endsBefore = before.SourceSpan.End <= after.SourceSpan.Start;
             return sameFile && endsBefore;
         }
     }

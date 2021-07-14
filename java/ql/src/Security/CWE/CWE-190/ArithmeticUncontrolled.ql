@@ -4,6 +4,7 @@
  *              overflows.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 8.6
  * @precision medium
  * @id java/uncontrolled-arithmetic
  * @tags security
@@ -13,34 +14,14 @@
 
 import java
 import semmle.code.java.dataflow.TaintTracking
+import semmle.code.java.security.RandomQuery
 import semmle.code.java.security.SecurityTests
 import ArithmeticCommon
 import DataFlow::PathGraph
 
 class TaintSource extends DataFlow::ExprNode {
   TaintSource() {
-    // Either this is an access to a random number generating method of the right kind, ...
-    exists(Method def |
-      def = this.getExpr().(MethodAccess).getMethod() and
-      (
-        // Some random-number methods are omitted:
-        // `nextDouble` and `nextFloat` are between 0 and 1,
-        // `nextGaussian` is extremely unlikely to hit max values.
-        def.getName() = "nextInt" or
-        def.getName() = "nextLong"
-      ) and
-      def.getNumberOfParameters() = 0 and
-      def.getDeclaringType().hasQualifiedName("java.util", "Random")
-    )
-    or
-    // ... or this is the array parameter of `nextBytes`, which is filled with random bytes.
-    exists(MethodAccess m, Method def |
-      m.getAnArgument() = this.getExpr() and
-      m.getMethod() = def and
-      def.getName() = "nextBytes" and
-      def.getNumberOfParameters() = 1 and
-      def.getDeclaringType().hasQualifiedName("java.util", "Random")
-    )
+    exists(RandomDataSource m | not m.resultMayBeBounded() | m.getOutput() = this.getExpr())
   }
 }
 

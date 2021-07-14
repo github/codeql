@@ -49,6 +49,45 @@ nodes
 | tst.js:64:30:64:36 | tainted |
 | tst.js:68:30:68:36 | tainted |
 | tst.js:68:30:68:36 | tainted |
+| tst.js:74:9:74:52 | tainted |
+| tst.js:74:19:74:42 | url.par ... , true) |
+| tst.js:74:19:74:48 | url.par ... ).query |
+| tst.js:74:19:74:52 | url.par ... ery.url |
+| tst.js:74:29:74:35 | req.url |
+| tst.js:74:29:74:35 | req.url |
+| tst.js:76:19:76:25 | tainted |
+| tst.js:76:19:76:25 | tainted |
+| tst.js:83:38:83:43 | param1 |
+| tst.js:83:38:83:43 | param1 |
+| tst.js:84:19:84:24 | param1 |
+| tst.js:84:19:84:24 | param1 |
+| tst.js:90:19:90:28 | ctx.params |
+| tst.js:90:19:90:28 | ctx.params |
+| tst.js:90:19:90:32 | ctx.params.foo |
+| tst.js:90:19:90:32 | ctx.params.foo |
+| tst.js:92:19:92:28 | ctx.params |
+| tst.js:92:19:92:28 | ctx.params |
+| tst.js:92:19:92:32 | ctx.params.foo |
+| tst.js:92:19:92:32 | ctx.params.foo |
+| tst.js:98:9:98:52 | tainted |
+| tst.js:98:19:98:42 | url.par ... , true) |
+| tst.js:98:19:98:48 | url.par ... ).query |
+| tst.js:98:19:98:52 | url.par ... ery.url |
+| tst.js:98:29:98:35 | req.url |
+| tst.js:98:29:98:35 | req.url |
+| tst.js:100:19:100:25 | tainted |
+| tst.js:100:19:100:25 | tainted |
+| tst.js:108:11:108:27 | url |
+| tst.js:108:17:108:27 | request.url |
+| tst.js:108:17:108:27 | request.url |
+| tst.js:109:27:109:29 | url |
+| tst.js:109:27:109:29 | url |
+| tst.js:115:11:115:42 | url |
+| tst.js:115:17:115:42 | new URL ... , base) |
+| tst.js:115:25:115:35 | request.url |
+| tst.js:115:25:115:35 | request.url |
+| tst.js:117:27:117:29 | url |
+| tst.js:117:27:117:29 | url |
 edges
 | tst.js:14:9:14:52 | tainted | tst.js:18:13:18:19 | tainted |
 | tst.js:14:9:14:52 | tainted | tst.js:18:13:18:19 | tainted |
@@ -98,6 +137,41 @@ edges
 | tst.js:58:19:58:52 | url.par ... ery.url | tst.js:58:9:58:52 | tainted |
 | tst.js:58:29:58:35 | req.url | tst.js:58:19:58:42 | url.par ... , true) |
 | tst.js:58:29:58:35 | req.url | tst.js:58:19:58:42 | url.par ... , true) |
+| tst.js:74:9:74:52 | tainted | tst.js:76:19:76:25 | tainted |
+| tst.js:74:9:74:52 | tainted | tst.js:76:19:76:25 | tainted |
+| tst.js:74:19:74:42 | url.par ... , true) | tst.js:74:19:74:48 | url.par ... ).query |
+| tst.js:74:19:74:48 | url.par ... ).query | tst.js:74:19:74:52 | url.par ... ery.url |
+| tst.js:74:19:74:52 | url.par ... ery.url | tst.js:74:9:74:52 | tainted |
+| tst.js:74:29:74:35 | req.url | tst.js:74:19:74:42 | url.par ... , true) |
+| tst.js:74:29:74:35 | req.url | tst.js:74:19:74:42 | url.par ... , true) |
+| tst.js:83:38:83:43 | param1 | tst.js:84:19:84:24 | param1 |
+| tst.js:83:38:83:43 | param1 | tst.js:84:19:84:24 | param1 |
+| tst.js:83:38:83:43 | param1 | tst.js:84:19:84:24 | param1 |
+| tst.js:83:38:83:43 | param1 | tst.js:84:19:84:24 | param1 |
+| tst.js:90:19:90:28 | ctx.params | tst.js:90:19:90:32 | ctx.params.foo |
+| tst.js:90:19:90:28 | ctx.params | tst.js:90:19:90:32 | ctx.params.foo |
+| tst.js:90:19:90:28 | ctx.params | tst.js:90:19:90:32 | ctx.params.foo |
+| tst.js:90:19:90:28 | ctx.params | tst.js:90:19:90:32 | ctx.params.foo |
+| tst.js:92:19:92:28 | ctx.params | tst.js:92:19:92:32 | ctx.params.foo |
+| tst.js:92:19:92:28 | ctx.params | tst.js:92:19:92:32 | ctx.params.foo |
+| tst.js:92:19:92:28 | ctx.params | tst.js:92:19:92:32 | ctx.params.foo |
+| tst.js:92:19:92:28 | ctx.params | tst.js:92:19:92:32 | ctx.params.foo |
+| tst.js:98:9:98:52 | tainted | tst.js:100:19:100:25 | tainted |
+| tst.js:98:9:98:52 | tainted | tst.js:100:19:100:25 | tainted |
+| tst.js:98:19:98:42 | url.par ... , true) | tst.js:98:19:98:48 | url.par ... ).query |
+| tst.js:98:19:98:48 | url.par ... ).query | tst.js:98:19:98:52 | url.par ... ery.url |
+| tst.js:98:19:98:52 | url.par ... ery.url | tst.js:98:9:98:52 | tainted |
+| tst.js:98:29:98:35 | req.url | tst.js:98:19:98:42 | url.par ... , true) |
+| tst.js:98:29:98:35 | req.url | tst.js:98:19:98:42 | url.par ... , true) |
+| tst.js:108:11:108:27 | url | tst.js:109:27:109:29 | url |
+| tst.js:108:11:108:27 | url | tst.js:109:27:109:29 | url |
+| tst.js:108:17:108:27 | request.url | tst.js:108:11:108:27 | url |
+| tst.js:108:17:108:27 | request.url | tst.js:108:11:108:27 | url |
+| tst.js:115:11:115:42 | url | tst.js:117:27:117:29 | url |
+| tst.js:115:11:115:42 | url | tst.js:117:27:117:29 | url |
+| tst.js:115:17:115:42 | new URL ... , base) | tst.js:115:11:115:42 | url |
+| tst.js:115:25:115:35 | request.url | tst.js:115:17:115:42 | new URL ... , base) |
+| tst.js:115:25:115:35 | request.url | tst.js:115:17:115:42 | new URL ... , base) |
 #select
 | tst.js:18:5:18:20 | request(tainted) | tst.js:14:29:14:35 | req.url | tst.js:18:13:18:19 | tainted | The $@ of this request depends on $@. | tst.js:18:13:18:19 | tainted | URL | tst.js:14:29:14:35 | req.url | a user-provided value |
 | tst.js:20:5:20:24 | request.get(tainted) | tst.js:14:29:14:35 | req.url | tst.js:20:17:20:23 | tainted | The $@ of this request depends on $@. | tst.js:20:17:20:23 | tainted | URL | tst.js:14:29:14:35 | req.url | a user-provided value |
@@ -114,3 +188,10 @@ edges
 | tst.js:61:2:61:37 | client. ... inted}) | tst.js:58:29:58:35 | req.url | tst.js:61:29:61:35 | tainted | The $@ of this request depends on $@. | tst.js:61:29:61:35 | tainted | URL | tst.js:58:29:58:35 | req.url | a user-provided value |
 | tst.js:64:3:64:38 | client. ... inted}) | tst.js:58:29:58:35 | req.url | tst.js:64:30:64:36 | tainted | The $@ of this request depends on $@. | tst.js:64:30:64:36 | tainted | URL | tst.js:58:29:58:35 | req.url | a user-provided value |
 | tst.js:68:3:68:38 | client. ... inted}) | tst.js:58:29:58:35 | req.url | tst.js:68:30:68:36 | tainted | The $@ of this request depends on $@. | tst.js:68:30:68:36 | tainted | URL | tst.js:58:29:58:35 | req.url | a user-provided value |
+| tst.js:76:5:76:26 | JSDOM.f ... ainted) | tst.js:74:29:74:35 | req.url | tst.js:76:19:76:25 | tainted | The $@ of this request depends on $@. | tst.js:76:19:76:25 | tainted | URL | tst.js:74:29:74:35 | req.url | a user-provided value |
+| tst.js:84:5:84:25 | JSDOM.f ... param1) | tst.js:83:38:83:43 | param1 | tst.js:84:19:84:24 | param1 | The $@ of this request depends on $@. | tst.js:84:19:84:24 | param1 | URL | tst.js:83:38:83:43 | param1 | a user-provided value |
+| tst.js:90:5:90:33 | JSDOM.f ... ms.foo) | tst.js:90:19:90:28 | ctx.params | tst.js:90:19:90:32 | ctx.params.foo | The $@ of this request depends on $@. | tst.js:90:19:90:32 | ctx.params.foo | URL | tst.js:90:19:90:28 | ctx.params | a user-provided value |
+| tst.js:92:5:92:33 | JSDOM.f ... ms.foo) | tst.js:92:19:92:28 | ctx.params | tst.js:92:19:92:32 | ctx.params.foo | The $@ of this request depends on $@. | tst.js:92:19:92:32 | ctx.params.foo | URL | tst.js:92:19:92:28 | ctx.params | a user-provided value |
+| tst.js:100:5:100:26 | new Web ... ainted) | tst.js:98:29:98:35 | req.url | tst.js:100:19:100:25 | tainted | The $@ of this request depends on $@. | tst.js:100:19:100:25 | tainted | URL | tst.js:98:29:98:35 | req.url | a user-provided value |
+| tst.js:109:20:109:30 | new ws(url) | tst.js:108:17:108:27 | request.url | tst.js:109:27:109:29 | url | The $@ of this request depends on $@. | tst.js:109:27:109:29 | url | URL | tst.js:108:17:108:27 | request.url | a user-provided value |
+| tst.js:117:20:117:30 | new ws(url) | tst.js:115:25:115:35 | request.url | tst.js:117:27:117:29 | url | The $@ of this request depends on $@. | tst.js:117:27:117:29 | url | URL | tst.js:115:25:115:35 | request.url | a user-provided value |

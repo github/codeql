@@ -10,78 +10,36 @@ private import Imports::MemoryAccessKind
 private import Imports::IRType
 private import Imports::Overlap
 private import Imports::OperandTag
+private import Imports::TOperand
+private import internal.OperandInternal
 
-cached
-private newtype TOperand =
-  TRegisterOperand(Instruction useInstr, RegisterOperandTag tag, Instruction defInstr) {
-    defInstr = Construction::getRegisterOperandDefinition(useInstr, tag) and
-    not Construction::isInCycle(useInstr) and
-    strictcount(Construction::getRegisterOperandDefinition(useInstr, tag)) = 1
-  } or
-  TNonPhiMemoryOperand(Instruction useInstr, MemoryOperandTag tag) {
-    useInstr.getOpcode().hasOperand(tag)
-  } or
-  TPhiOperand(
-    PhiInstruction useInstr, Instruction defInstr, IRBlock predecessorBlock, Overlap overlap
-  ) {
-    defInstr = Construction::getPhiOperandDefinition(useInstr, predecessorBlock, overlap)
+/**
+ * An operand of an `Instruction` in this stage of the IR. Implemented as a union of the branches
+ * of `TOperand` that are used in this stage.
+ */
+private class TStageOperand =
+  TRegisterOperand or TNonSSAMemoryOperand or TPhiOperand or TChiOperand;
+
+/**
+ * An operand of an `Instruction`. The operand represents a use of the result of one instruction
+ * (the defining instruction) in another instruction (the use instruction)
+ */
+class Operand extends TStageOperand {
+  cached
+  Operand() {
+    // Ensure that the operand does not refer to instructions from earlier stages that are unreachable here
+    exists(Instruction use, Instruction def | this = registerOperand(use, _, def))
+    or
+    exists(Instruction use | this = nonSSAMemoryOperand(use, _))
+    or
+    exists(Instruction use, Instruction def, IRBlock predecessorBlock |
+      this = phiOperand(use, def, predecessorBlock, _) or
+      this = reusedPhiOperand(use, def, predecessorBlock, _)
+    )
+    or
+    exists(Instruction use | this = chiOperand(use, _))
   }
 
-/**
- * Base class for all register operands. This is a placeholder for the IPA union type that we will
- * eventually use for this purpose.
- */
-private class RegisterOperandBase extends TRegisterOperand {
-  /** Gets a textual representation of this element. */
-  abstract string toString();
-}
-
-/**
- * Returns the register operand with the specified parameters.
- */
-private RegisterOperandBase registerOperand(
-  Instruction useInstr, RegisterOperandTag tag, Instruction defInstr
-) {
-  result = TRegisterOperand(useInstr, tag, defInstr)
-}
-
-/**
- * Base class for all non-Phi memory operands. This is a placeholder for the IPA union type that we
- * will eventually use for this purpose.
- */
-private class NonPhiMemoryOperandBase extends TNonPhiMemoryOperand {
-  /** Gets a textual representation of this element. */
-  abstract string toString();
-}
-
-/**
- * Returns the non-Phi memory operand with the specified parameters.
- */
-private NonPhiMemoryOperandBase nonPhiMemoryOperand(Instruction useInstr, MemoryOperandTag tag) {
-  result = TNonPhiMemoryOperand(useInstr, tag)
-}
-
-/**
- * Base class for all Phi operands. This is a placeholder for the IPA union type that we will
- * eventually use for this purpose.
- */
-private class PhiOperandBase extends TPhiOperand {
-  abstract string toString();
-}
-
-/**
- * Returns the Phi operand with the specified parameters.
- */
-private PhiOperandBase phiOperand(
-  Instruction useInstr, Instruction defInstr, IRBlock predecessorBlock, Overlap overlap
-) {
-  result = TPhiOperand(useInstr, defInstr, predecessorBlock, overlap)
-}
-
-/**
- * A source operand of an `Instruction`. The operand represents a value consumed by the instruction.
- */
-class Operand extends TOperand {
   /** Gets a textual representation of this element. */
   string toString() { result = "Operand" }
 
@@ -149,6 +107,11 @@ class Operand extends TOperand {
    * Gets a prefix to use when dumping the operand in an operand list.
    */
   string getDumpLabel() { result = "" }
+
+  /**
+   * Gets a string that uniquely identifies this operand on its use instruction.
+   */
+  string getDumpId() { result = "" }
 
   /**
    * Gets a string describing this operand, suitable for display in IR dumps. This consists of the
@@ -232,9 +195,11 @@ class Operand extends TOperand {
  * An operand that consumes a memory result (e.g. the `LoadOperand` on a `Load` instruction).
  */
 class MemoryOperand extends Operand {
+  cached
   MemoryOperand() {
-    this instanceof NonPhiMemoryOperandBase or
-    this instanceof PhiOperandBase
+    this instanceof TNonSSAMemoryOperand or
+    this instanceof TPhiOperand or
+    this instanceof TChiOperand
   }
 
   /**
@@ -272,12 +237,15 @@ class NonPhiOperand extends Operand {
 
   NonPhiOperand() {
     this = registerOperand(useInstr, tag, _) or
-    this = nonPhiMemoryOperand(useInstr, tag)
+    this = nonSSAMemoryOperand(useInstr, tag) or
+    this = chiOperand(useInstr, tag)
   }
 
   final override Instruction getUse() { result = useInstr }
 
   final override string getDumpLabel() { result = tag.getLabel() }
+
+  final override string getDumpId() { result = tag.getId() }
 
   final override int getDumpSortOrder() { result = tag.getSortOrder() }
 
@@ -290,10 +258,11 @@ class NonPhiOperand extends Operand {
 /**
  * An operand that consumes a register (non-memory) result.
  */
-class RegisterOperand extends NonPhiOperand, RegisterOperandBase {
+class RegisterOperand extends NonPhiOperand, TRegisterOperand {
   override RegisterOperandTag tag;
   Instruction defInstr;
 
+  cached
   RegisterOperand() { this = registerOperand(useInstr, tag, defInstr) }
 
   final override string toString() { result = tag.toString() }
@@ -309,10 +278,15 @@ class RegisterOperand extends NonPhiOperand, RegisterOperandBase {
 /**
  * A memory operand other than the operand of a `Phi` instruction.
  */
-class NonPhiMemoryOperand extends NonPhiOperand, MemoryOperand, NonPhiMemoryOperandBase {
+class NonPhiMemoryOperand extends NonPhiOperand, MemoryOperand, TNonPhiMemoryOperand {
   override MemoryOperandTag tag;
 
-  NonPhiMemoryOperand() { this = nonPhiMemoryOperand(useInstr, tag) }
+  cached
+  NonPhiMemoryOperand() {
+    this = nonSSAMemoryOperand(useInstr, tag)
+    or
+    this = chiOperand(useInstr, tag)
+  }
 
   final override string toString() { result = tag.toString() }
 
@@ -327,6 +301,14 @@ class NonPhiMemoryOperand extends NonPhiOperand, MemoryOperand, NonPhiMemoryOper
     defInstr = Construction::getMemoryOperandDefinition(useInstr, tag, overlap) and
     not Construction::isInCycle(useInstr) and
     strictcount(Construction::getMemoryOperandDefinition(useInstr, tag, _)) = 1
+  }
+
+  /**
+   * Holds if the operand totally overlaps with its definition and consumes the
+   * bit range `[startBitOffset, endBitOffset)` relative to the start address of the definition.
+   */
+  predicate getUsedInterval(int startBitOffset, int endBitOffset) {
+    Construction::getUsedInterval(this, startBitOffset, endBitOffset)
   }
 }
 
@@ -446,13 +428,18 @@ class SideEffectOperand extends TypedOperand {
 /**
  * An operand of a `PhiInstruction`.
  */
-class PhiInputOperand extends MemoryOperand, PhiOperandBase {
+class PhiInputOperand extends MemoryOperand, TPhiOperand {
   PhiInstruction useInstr;
   Instruction defInstr;
   IRBlock predecessorBlock;
   Overlap overlap;
 
-  PhiInputOperand() { this = phiOperand(useInstr, defInstr, predecessorBlock, overlap) }
+  cached
+  PhiInputOperand() {
+    this = phiOperand(useInstr, defInstr, predecessorBlock, overlap)
+    or
+    this = reusedPhiOperand(useInstr, defInstr, predecessorBlock, overlap)
+  }
 
   override string toString() { result = "Phi" }
 
@@ -467,6 +454,8 @@ class PhiInputOperand extends MemoryOperand, PhiOperandBase {
   final override string getDumpLabel() {
     result = "from " + getPredecessorBlock().getDisplayIndex().toString() + ":"
   }
+
+  final override string getDumpId() { result = getPredecessorBlock().getDisplayIndex().toString() }
 
   /**
    * Gets the predecessor block from which this value comes.

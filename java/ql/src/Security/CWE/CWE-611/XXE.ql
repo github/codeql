@@ -4,10 +4,13 @@
  * references may lead to disclosure of confidential data or denial of service.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 9.1
  * @precision high
  * @id java/xxe
  * @tags security
  *       external/cwe/cwe-611
+ *       external/cwe/cwe-776
+ *       external/cwe/cwe-827
  */
 
 import java

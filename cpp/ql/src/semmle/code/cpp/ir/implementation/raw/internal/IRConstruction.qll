@@ -182,6 +182,20 @@ Instruction getMemoryOperandDefinition(
   none()
 }
 
+/**
+ * Holds if the partial operand of this `ChiInstruction` updates the bit range
+ * `[startBitOffset, endBitOffset)` of the total operand.
+ */
+predicate getIntervalUpdatedByChi(ChiInstruction chi, int startBit, int endBit) { none() }
+
+/**
+ * Holds if the operand totally overlaps with its definition and consumes the
+ * bit range `[startBitOffset, endBitOffset)`.
+ */
+predicate getUsedInterval(Operand operand, int startBit, int endBit) { none() }
+
+predicate chiOnlyPartiallyUpdatesLocation(ChiInstruction chi) { none() }
+
 /** Gets a non-phi instruction that defines an operand of `instr`. */
 private Instruction getNonPhiOperandDef(Instruction instr) {
   result = getRegisterOperandDefinition(instr, _)
@@ -346,8 +360,8 @@ CppType getInstructionResultType(TStageInstruction instr) {
   getInstructionTranslatedElement(instr).hasInstruction(_, getInstructionTag(instr), result)
 }
 
-Opcode getInstructionOpcode(TStageInstruction instr) {
-  getInstructionTranslatedElement(instr).hasInstruction(result, getInstructionTag(instr), _)
+predicate getInstructionOpcode(Opcode opcode, TStageInstruction instr) {
+  getInstructionTranslatedElement(instr).hasInstruction(opcode, getInstructionTag(instr), _)
 }
 
 IRFunctionBase getInstructionEnclosingIRFunction(TStageInstruction instr) {
@@ -368,8 +382,19 @@ private module CachedForDebugging {
   string getTempVariableUniqueId(IRTempVariable var) {
     exists(TranslatedElement element |
       var = element.getTempVariable(_) and
-      result = element.getId() + ":" + getTempVariableTagId(var.getTag())
+      result = element.getId().toString() + ":" + getTempVariableTagId(var.getTag())
     )
+  }
+
+  cached
+  predicate instructionHasSortKeys(Instruction instruction, int key1, int key2) {
+    key1 = getInstructionTranslatedElement(instruction).getId() and
+    getInstructionTag(instruction) =
+      rank[key2](InstructionTag tag, string tagId |
+        tagId = getInstructionTagId(tag)
+      |
+        tag order by tagId
+      )
   }
 
   cached

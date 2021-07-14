@@ -23,6 +23,8 @@ class UnaryBitwiseOperation extends BitwiseOperation, UnaryOperation, @un_bit_op
  */
 class ComplementExpr extends UnaryBitwiseOperation, @bit_not_expr {
   override string getOperator() { result = "~" }
+
+  override string getAPrimaryQlClass() { result = "ComplementExpr" }
 }
 
 /**
@@ -40,6 +42,8 @@ class BinaryBitwiseOperation extends BitwiseOperation, BinaryOperation, @bin_bit
  */
 class LShiftExpr extends BinaryBitwiseOperation, @lshift_expr {
   override string getOperator() { result = "<<" }
+
+  override string getAPrimaryQlClass() { result = "LShiftExpr" }
 }
 
 /**
@@ -47,6 +51,8 @@ class LShiftExpr extends BinaryBitwiseOperation, @lshift_expr {
  */
 class RShiftExpr extends BinaryBitwiseOperation, @rshift_expr {
   override string getOperator() { result = ">>" }
+
+  override string getAPrimaryQlClass() { result = "RShiftExpr" }
 }
 
 /**
@@ -54,6 +60,8 @@ class RShiftExpr extends BinaryBitwiseOperation, @rshift_expr {
  */
 class BitwiseAndExpr extends BinaryBitwiseOperation, @bit_and_expr {
   override string getOperator() { result = "&" }
+
+  override string getAPrimaryQlClass() { result = "BitwiseAndExpr" }
 }
 
 /**
@@ -61,6 +69,8 @@ class BitwiseAndExpr extends BinaryBitwiseOperation, @bit_and_expr {
  */
 class BitwiseOrExpr extends BinaryBitwiseOperation, @bit_or_expr {
   override string getOperator() { result = "|" }
+
+  override string getAPrimaryQlClass() { result = "BitwiseOrExpr" }
 }
 
 /**
@@ -68,4 +78,6 @@ class BitwiseOrExpr extends BinaryBitwiseOperation, @bit_or_expr {
  */
 class BitwiseXorExpr extends BinaryBitwiseOperation, @bit_xor_expr {
   override string getOperator() { result = "^" }
+
+  override string getAPrimaryQlClass() { result = "BitwiseXorExpr" }
 }

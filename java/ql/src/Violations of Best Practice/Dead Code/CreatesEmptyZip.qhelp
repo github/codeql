@@ -35,8 +35,8 @@ call to <code>write</code>, an empty ZIP file entry is written to the output str
 
 
 <li>
-Java 2 Platform Standard Edition 5.0, API Specification:
-<a href="http://docs.oracle.com/javase/1.5.0/docs/api/java/util/zip/ZipOutputStream.html">
+Java API Specification:
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/zip/ZipOutputStream.html">
 ZipOutputStream</a>.
 </li>
 

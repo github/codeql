@@ -1,5 +1,5 @@
 /**
- * Provides classes that heuristically increase the extent of `TaintTracking::AdditionalTaintStep`.
+ * Provides classes that heuristically increase the extent of `TaintTracking::SharedTaintStep`.
  *
  * Note: This module should not be a permanent part of the standard library imports.
  */
@@ -7,18 +7,22 @@
 import javascript
 
 /**
- * A heuristic additional flow step in a security query.
+ * DEPRECATED.
+ *
+ * The target of a heuristic additional flow step in a security query.
  */
-abstract class HeuristicAdditionalTaintStep extends DataFlow::ValueNode { }
+deprecated class HeuristicAdditionalTaintStep extends DataFlow::Node {
+  HeuristicAdditionalTaintStep() { any(TaintTracking::SharedTaintStep step).heuristicStep(_, this) }
+}
 
 /**
  * A call to `tainted.replace(x, y)` that preserves taint.
  */
-private class HeuristicStringManipulationTaintStep extends HeuristicAdditionalTaintStep,
-  TaintTracking::AdditionalTaintStep, DataFlow::MethodCallNode {
-  HeuristicStringManipulationTaintStep() { getMethodName() = "replace" }
-
-  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-    pred = getReceiver() and succ = this
+private class HeuristicStringManipulationTaintStep extends TaintTracking::SharedTaintStep {
+  override predicate heuristicStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(StringReplaceCall call |
+      pred = call.getReceiver() and
+      succ = call
+    )
   }
 }

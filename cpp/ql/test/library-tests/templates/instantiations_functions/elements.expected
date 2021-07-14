@@ -1,7 +1,27 @@
 | file://:0:0:0:0 |  |
+| file://:0:0:0:0 | & |
+| file://:0:0:0:0 | && |
 | file://:0:0:0:0 | (composite<int> *)... |
 | file://:0:0:0:0 | (composite<int> *)... |
 | file://:0:0:0:0 | (global namespace) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
 | file://:0:0:0:0 | ..()(..) |
 | file://:0:0:0:0 | ..()(..) |
 | file://:0:0:0:0 | ..()(..) |
@@ -88,6 +108,7 @@
 | file://:0:0:0:0 | declaration of 1st parameter |
 | file://:0:0:0:0 | declaration of 1st parameter |
 | file://:0:0:0:0 | declared_constexpr |
+| file://:0:0:0:0 | declared_constinit |
 | file://:0:0:0:0 | decltype(nullptr) |
 | file://:0:0:0:0 | definition of fp_offset |
 | file://:0:0:0:0 | definition of gp_offset |
@@ -130,24 +151,6 @@
 | file://:0:0:0:0 | optional |
 | file://:0:0:0:0 | overflow_arg_area |
 | file://:0:0:0:0 | override |
-| file://:0:0:0:0 | p#0 |
-| file://:0:0:0:0 | p#0 |
-| file://:0:0:0:0 | p#0 |
-| file://:0:0:0:0 | p#0 |
-| file://:0:0:0:0 | p#0 |
-| file://:0:0:0:0 | p#0 |
-| file://:0:0:0:0 | p#0 |
-| file://:0:0:0:0 | p#0 |
-| file://:0:0:0:0 | p#0 |
-| file://:0:0:0:0 | p#0 |
-| file://:0:0:0:0 | p#0 |
-| file://:0:0:0:0 | p#0 |
-| file://:0:0:0:0 | p#0 |
-| file://:0:0:0:0 | p#0 |
-| file://:0:0:0:0 | p#0 |
-| file://:0:0:0:0 | p#0 |
-| file://:0:0:0:0 | p#0 |
-| file://:0:0:0:0 | p#0 |
 | file://:0:0:0:0 | private |
 | file://:0:0:0:0 | protected |
 | file://:0:0:0:0 | public |
@@ -245,8 +248,8 @@
 | test.cpp:2:8:2:26 | grammar_helper_base |
 | test.cpp:3:9:3:16 | declaration of undefine |
 | test.cpp:3:9:3:16 | undefine |
+| test.cpp:3:18:3:20 | (unnamed parameter 0) |
 | test.cpp:3:18:3:20 | declaration of 1st parameter |
-| test.cpp:3:18:3:20 | p#0 |
 | test.cpp:6:20:6:20 | B |
 | test.cpp:6:20:6:20 | definition of B |
 | test.cpp:7:8:7:8 | declaration of operator= |

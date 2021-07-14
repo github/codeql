@@ -4,6 +4,7 @@
  *              an instance of the type of the pointer may result in a buffer overflow
  * @kind problem
  * @problem.severity warning
+ * @security-severity 8.1
  * @precision medium
  * @id cpp/allocation-too-small
  * @tags reliability
@@ -13,30 +14,9 @@
  */
 
 import cpp
+import semmle.code.cpp.models.Models
 
-class Allocation extends FunctionCall {
-  Allocation() {
-    exists(string name |
-      this.getTarget().hasGlobalOrStdName(name) and
-      (name = "malloc" or name = "calloc" or name = "realloc")
-    )
-  }
-
-  private string getName() { this.getTarget().hasGlobalOrStdName(result) }
-
-  int getSize() {
-    this.getName() = "malloc" and
-    this.getArgument(0).getValue().toInt() = result
-    or
-    this.getName() = "realloc" and
-    this.getArgument(1).getValue().toInt() = result
-    or
-    this.getName() = "calloc" and
-    result = this.getArgument(0).getValue().toInt() * this.getArgument(1).getValue().toInt()
-  }
-}
-
-predicate baseType(Allocation alloc, Type base) {
+predicate baseType(AllocationExpr alloc, Type base) {
   exists(PointerType pointer |
     pointer.getBaseType() = base and
     (
@@ -54,11 +34,12 @@ predicate decideOnSize(Type t, int size) {
   size = min(t.getSize())
 }
 
-from Allocation alloc, Type base, int basesize, int allocated
+from AllocationExpr alloc, Type base, int basesize, int allocated
 where
   baseType(alloc, base) and
-  allocated = alloc.getSize() and
+  allocated = alloc.getSizeBytes() and
   decideOnSize(base, basesize) and
+  alloc.(FunctionCall).getTarget() instanceof AllocationFunction and // exclude `new` and similar
   basesize > allocated
 select alloc,
   "Type '" + base.getName() + "' is " + basesize.toString() + " bytes, but only " +

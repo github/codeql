@@ -518,7 +518,31 @@ uniqueNodeLocation
 | fieldaccess.cpp:6:6:6:6 | Phi | Node should have one location but has 14. |
 | fieldaccess.cpp:6:6:6:6 | ReturnVoid | Node should have one location but has 14. |
 | fieldaccess.cpp:6:6:6:6 | SideEffect | Node should have one location but has 14. |
-| file://:0:0:0:0 | *p#2 | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 0) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 1) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 1) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 1) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 1) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 1) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 1) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 1) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 1) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 2) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 2) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 2) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 2) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 3) | Node should have one location but has 0. |
+| file://:0:0:0:0 | *(unnamed parameter 2) | Node should have one location but has 0. |
 | file://:0:0:0:0 | Address | Node should have one location but has 0. |
 | file://:0:0:0:0 | Address | Node should have one location but has 0. |
 | file://:0:0:0:0 | Address | Node should have one location but has 0. |
@@ -528,32 +552,6 @@ uniqueNodeLocation
 | file://:0:0:0:0 | ReturnIndirection | Node should have one location but has 0. |
 | file://:0:0:0:0 | SideEffect | Node should have one location but has 0. |
 | file://:0:0:0:0 | VariableAddress | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#1 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#1 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#1 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#1 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#1 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#1 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#1 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#1 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#2 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#2 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#2 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#2 | Node should have one location but has 0. |
-| file://:0:0:0:0 | p#3 | Node should have one location but has 0. |
 | forstmt.cpp:1:6:1:7 | AliasedDefinition | Node should have one location but has 2. |
 | forstmt.cpp:1:6:1:7 | AliasedUse | Node should have one location but has 2. |
 | forstmt.cpp:1:6:1:7 | Chi | Node should have one location but has 2. |
@@ -1418,7 +1416,7 @@ uniqueNodeLocation
 | whilestmt.c:39:6:39:11 | ReturnVoid | Node should have one location but has 4. |
 | whilestmt.c:39:6:39:11 | SideEffect | Node should have one location but has 4. |
 missingLocation
-| Nodes without location: 36 |
+| Nodes without location: 34 |
 uniqueNodeToString
 | break_labels.c:2:11:2:11 | i | Node should have one toString but has 2. |
 | break_labels.c:2:11:2:11 | i | Node should have one toString but has 2. |
@@ -1473,5 +1471,106 @@ postHasUniquePre
 uniquePostUpdate
 postIsInSameCallable
 reverseRead
-storeIsPostUpdate
 argHasPostUpdate
+postWithInFlow
+| aggregateinitializer.c:3:14:3:18 | Chi | PostUpdateNode should not be the target of local flow. |
+| aggregateinitializer.c:3:21:3:25 | Chi | PostUpdateNode should not be the target of local flow. |
+| allocators.cpp:3:27:3:27 | Chi | PostUpdateNode should not be the target of local flow. |
+| allocators.cpp:3:35:3:35 | Chi | PostUpdateNode should not be the target of local flow. |
+| allocators.cpp:4:11:4:23 | Chi | PostUpdateNode should not be the target of local flow. |
+| allocators.cpp:4:17:4:23 | Chi | PostUpdateNode should not be the target of local flow. |
+| assignexpr.cpp:9:2:9:12 | Store | PostUpdateNode should not be the target of local flow. |
+| bad_asts.cpp:15:10:15:12 | Store | PostUpdateNode should not be the target of local flow. |
+| builtin.c:14:26:14:26 | Chi | PostUpdateNode should not be the target of local flow. |
+| builtin.c:14:29:14:29 | Chi | PostUpdateNode should not be the target of local flow. |
+| builtin.c:14:32:14:32 | Chi | PostUpdateNode should not be the target of local flow. |
+| builtin.c:14:35:14:35 | Chi | PostUpdateNode should not be the target of local flow. |
+| condition_decls.cpp:3:5:3:22 | Chi | PostUpdateNode should not be the target of local flow. |
+| condition_decls.cpp:3:21:3:21 | Chi | PostUpdateNode should not be the target of local flow. |
+| conditional_destructors.cpp:6:13:6:19 | Chi | PostUpdateNode should not be the target of local flow. |
+| conditional_destructors.cpp:18:13:18:19 | Chi | PostUpdateNode should not be the target of local flow. |
+| cpp11.cpp:65:19:65:45 | Store | PostUpdateNode should not be the target of local flow. |
+| cpp11.cpp:82:17:82:55 | Chi | PostUpdateNode should not be the target of local flow. |
+| cpp11.cpp:82:17:82:55 | Chi | PostUpdateNode should not be the target of local flow. |
+| defdestructordeleteexpr.cpp:4:9:4:15 | Chi | PostUpdateNode should not be the target of local flow. |
+| deleteexpr.cpp:7:9:7:15 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:177:5:177:12 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:178:5:178:12 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:183:5:183:12 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:184:5:184:12 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:342:5:342:10 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:428:5:428:12 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:429:5:429:15 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:504:19:504:19 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:504:22:504:22 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:505:16:505:21 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:505:19:505:19 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:506:16:506:18 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:506:16:506:18 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:513:14:513:16 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:513:14:513:16 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:514:14:514:26 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:514:19:514:19 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:514:22:514:22 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:515:19:515:19 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:515:22:515:22 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:515:29:515:29 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:515:32:515:32 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:516:17:516:21 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:516:19:516:19 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:516:24:516:28 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:516:26:516:26 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:521:19:521:19 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:521:22:521:22 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:521:25:521:25 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:522:16:522:21 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:522:19:522:19 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:531:14:531:14 | Store | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:577:16:577:21 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:577:19:577:19 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:578:19:578:19 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:578:22:578:22 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:579:16:579:21 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:579:19:579:19 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:643:9:643:21 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:644:9:644:23 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:645:9:645:15 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:659:9:659:14 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:660:13:660:13 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:661:9:661:13 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:662:9:662:19 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:663:5:663:5 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:745:8:745:8 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:745:8:745:8 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:748:10:748:10 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:754:8:754:8 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:757:12:757:12 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:763:8:763:8 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:766:13:766:13 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:775:15:775:15 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:784:15:784:15 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:793:15:793:15 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:943:3:943:11 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:947:3:947:25 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:962:17:962:47 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:962:17:962:47 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:962:17:962:47 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:962:26:962:30 | Chi | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:962:41:962:45 | Chi | PostUpdateNode should not be the target of local flow. |
+| misc.c:130:5:130:11 | Chi | PostUpdateNode should not be the target of local flow. |
+| misc.c:131:5:131:13 | Chi | PostUpdateNode should not be the target of local flow. |
+| misc.c:154:32:154:32 | Chi | PostUpdateNode should not be the target of local flow. |
+| misc.c:154:35:154:35 | Chi | PostUpdateNode should not be the target of local flow. |
+| misc.c:154:40:154:40 | Chi | PostUpdateNode should not be the target of local flow. |
+| misc.c:154:43:154:43 | Chi | PostUpdateNode should not be the target of local flow. |
+| misc.c:157:14:157:18 | Chi | PostUpdateNode should not be the target of local flow. |
+| misc.c:158:14:158:18 | Chi | PostUpdateNode should not be the target of local flow. |
+| misc.c:160:31:160:33 | Chi | PostUpdateNode should not be the target of local flow. |
+| misc.c:160:31:160:33 | Chi | PostUpdateNode should not be the target of local flow. |
+| misc.c:220:3:223:3 | Chi | PostUpdateNode should not be the target of local flow. |
+| misc.c:221:10:221:10 | Chi | PostUpdateNode should not be the target of local flow. |
+| misc.c:222:10:222:10 | Chi | PostUpdateNode should not be the target of local flow. |
+| range_analysis.c:102:5:102:15 | Chi | PostUpdateNode should not be the target of local flow. |
+| static_init_templates.cpp:3:2:3:8 | Chi | PostUpdateNode should not be the target of local flow. |
+| static_init_templates.cpp:21:2:21:12 | Chi | PostUpdateNode should not be the target of local flow. |
+| static_init_templates.cpp:240:7:240:7 | Chi | PostUpdateNode should not be the target of local flow. |

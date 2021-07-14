@@ -3,6 +3,7 @@
  */
 
 import csharp
+private import semmle.code.csharp.dataflow.internal.SsaImpl as SsaImpl
 
 /**
  * An assignable, that is, an element that can be assigned to. Either a
@@ -83,7 +84,7 @@ class AssignableRead extends AssignableAccess {
 
   pragma[noinline]
   private ControlFlow::Node getAnAdjacentReadSameVar() {
-    Ssa::Internal::adjacentReadPairSameVar(_, this.getAControlFlowNode(), result)
+    SsaImpl::adjacentReadPairSameVar(_, this.getAControlFlowNode(), result)
   }
 
   /**
@@ -192,8 +193,8 @@ private class RefArg extends AssignableAccess {
     )
   }
 
-  private Callable getSourceDeclarationTarget(Parameter p) {
-    p = this.getParameter().getSourceDeclaration() and
+  private Callable getUnboundDeclarationTarget(Parameter p) {
+    p = this.getParameter().getUnboundDeclaration() and
     result.getAParameter() = p
   }
 
@@ -203,7 +204,7 @@ private class RefArg extends AssignableAccess {
    * source.
    */
   predicate isAnalyzable(Parameter p) {
-    exists(Callable callable | callable = this.getSourceDeclarationTarget(p) |
+    exists(Callable callable | callable = this.getUnboundDeclarationTarget(p) |
       not callable.(Virtualizable).isOverridableOrImplementable() and
       callable.hasBody()
     )
@@ -223,7 +224,7 @@ private class RefArg extends AssignableAccess {
   private predicate isNonAnalyzable() {
     call instanceof @delegate_invocation_expr
     or
-    exists(Callable callable | callable = this.getSourceDeclarationTarget(_) |
+    exists(Callable callable | callable = this.getUnboundDeclarationTarget(_) |
       callable.(Virtualizable).isOverridableOrImplementable() or
       not callable.hasBody()
     )
@@ -535,6 +536,9 @@ module AssignableDefinitions {
 
     /** Gets the underlying assignment. */
     AssignExpr getAssignment() { result = ae }
+
+    /** Gets the leaf expression. */
+    Expr getLeaf() { result = leaf }
 
     /**
      * Gets the evaluation order of this definition among the other definitions

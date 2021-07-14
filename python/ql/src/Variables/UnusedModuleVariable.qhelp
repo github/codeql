@@ -8,8 +8,8 @@
 and is not explicitly made public by inclusion in the <code>__all__</code> list.
 </p>
 
-<include src="UnusedVariableNaming.qhelp" />
-<include src="UnusedTuple.qhelp" />
+<include src="UnusedVariableNaming.inc.qhelp" />
+<include src="UnusedTuple.inc.qhelp" />
 
 </overview>
 <recommendation>

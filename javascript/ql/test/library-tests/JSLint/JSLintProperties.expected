@@ -1,5 +1,0 @@
-| tst.js:7:2:7:17 | /*properties p*/ | p |
-| tst.js:14:1:14:14 | /*property q*/ | q |
-| tst.js:15:1:15:21 | /* memb ... y, z */ | x |
-| tst.js:15:1:15:21 | /* memb ... y, z */ | y |
-| tst.js:15:1:15:21 | /* memb ... y, z */ | z |

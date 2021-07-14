@@ -445,3 +445,46 @@ bool test_mutex(data_t *data)
 
 	return true;
 }
+
+// ---
+
+struct pthread_mutex
+{
+	// ...
+};
+
+void pthread_mutex_lock(pthread_mutex *m);
+void pthread_mutex_unlock(pthread_mutex *m);
+
+class MyClass
+{
+public:
+	pthread_mutex lock;
+};
+
+bool maybe();
+
+int test_MyClass_good(MyClass *obj)
+{
+	pthread_mutex_lock(&obj->lock);
+	
+	if (maybe()) {
+		pthread_mutex_unlock(&obj->lock);
+		return -1; // GOOD
+	}
+
+	pthread_mutex_unlock(&obj->lock); // GOOD
+	return 0;
+}
+
+int test_MyClass_bad(MyClass *obj)
+{
+	pthread_mutex_lock(&obj->lock);
+
+	if (maybe()) {
+		return -1; // BAD
+	}
+
+	pthread_mutex_unlock(&obj->lock); // GOOD
+	return 0;
+}

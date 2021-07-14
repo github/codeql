@@ -58,6 +58,8 @@
 | Capture.cs:212:30:212:35 | exited | Capture.cs:212:30:212:71 | SSA def(exited) | Capture.cs:213:29:213:34 | access to local variable exited |
 | Capture.cs:229:13:229:13 | i | Capture.cs:231:9:231:49 | SSA capture def(i) | Capture.cs:231:47:231:47 | access to local variable i |
 | Capture.cs:229:13:229:13 | i | Capture.cs:236:9:236:12 | SSA call def(i) | Capture.cs:237:34:237:34 | access to local variable i |
+| Capture.cs:242:13:242:13 | i | Capture.cs:242:13:242:17 | SSA def(i) | Capture.cs:254:27:254:27 | access to local variable i |
+| Capture.cs:242:13:242:13 | i | Capture.cs:254:27:254:27 | SSA def(i) | Capture.cs:255:34:255:34 | access to local variable i |
 | Consistency.cs:7:25:7:25 | b | Consistency.cs:7:25:7:25 | SSA param(b) | Consistency.cs:11:17:11:17 | access to parameter b |
 | Consistency.cs:15:17:15:17 | i | Consistency.cs:15:17:15:21 | SSA def(i) | Consistency.cs:16:17:16:17 | access to local variable i |
 | Consistency.cs:15:17:15:17 | i | Consistency.cs:15:17:15:21 | [finally: exception(Exception)] SSA def(i) | Consistency.cs:16:17:16:17 | access to local variable i |
@@ -94,8 +96,8 @@
 | DefUse.cs:63:9:63:14 | this.Field2 | DefUse.cs:63:9:63:18 | SSA def(this.Field2) | DefUse.cs:80:37:80:42 | access to field Field2 |
 | DefUse.cs:66:9:66:14 | this.Field3 | DefUse.cs:66:9:66:18 | SSA def(this.Field3) | DefUse.cs:69:13:69:18 | access to field Field3 |
 | DefUse.cs:67:19:67:20 | tc | DefUse.cs:67:19:67:27 | SSA def(tc) | DefUse.cs:68:9:68:10 | access to local variable tc |
-| DefUse.cs:79:13:79:14 | x1 | DefUse.cs:80:16:80:46 | SSA phi(x1) | DefUse.cs:80:30:80:31 | access to local variable x1 |
 | DefUse.cs:79:13:79:14 | x1 | DefUse.cs:80:30:80:31 | SSA def(x1) | DefUse.cs:81:13:81:14 | access to local variable x1 |
+| DefUse.cs:79:13:79:14 | x1 | DefUse.cs:80:30:80:31 | SSA phi(x1) | DefUse.cs:80:30:80:31 | access to local variable x1 |
 | DefUse.cs:83:13:83:14 | x2 | DefUse.cs:83:13:83:18 | SSA def(x2) | DefUse.cs:85:15:85:16 | access to local variable x2 |
 | DefUse.cs:83:13:83:14 | x2 | DefUse.cs:85:15:85:16 | SSA def(x2) | DefUse.cs:87:13:87:14 | access to local variable x2 |
 | DefUse.cs:89:13:89:14 | x3 | DefUse.cs:89:13:89:18 | SSA def(x3) | DefUse.cs:92:15:92:16 | access to local variable x3 |
@@ -149,6 +151,8 @@
 | Fields.cs:33:19:33:22 | Fields.stat | Fields.cs:38:9:38:13 | SSA call def(Fields.stat) | Fields.cs:41:13:41:16 | access to field stat |
 | Fields.cs:33:19:33:22 | Fields.stat | Fields.cs:51:9:51:20 | SSA call def(Fields.stat) | Fields.cs:54:13:54:16 | access to field stat |
 | Fields.cs:65:24:65:32 | this.LoopField | Fields.cs:61:17:61:17 | SSA entry def(this.LoopField) | Fields.cs:65:24:65:32 | access to field LoopField |
+| Fields.cs:71:17:71:35 | this.SingleAccessedField | Fields.cs:61:17:61:17 | SSA entry def(this.SingleAccessedField) | Fields.cs:71:17:71:35 | access to field SingleAccessedField |
+| Fields.cs:76:20:76:38 | this.SingleAccessedField | Fields.cs:74:17:74:17 | SSA entry def(this.SingleAccessedField) | Fields.cs:76:20:76:38 | access to field SingleAccessedField |
 | Fields.cs:77:13:77:13 | f | Fields.cs:77:13:77:45 | SSA def(f) | Fields.cs:90:19:90:19 | access to local variable f |
 | Fields.cs:77:13:77:13 | f | Fields.cs:78:27:78:54 | SSA capture def(f) | Fields.cs:78:35:78:35 | access to local variable f |
 | Fields.cs:78:23:78:23 | a | Fields.cs:78:23:78:54 | SSA def(a) | Fields.cs:81:9:81:9 | access to local variable a |
@@ -217,6 +221,8 @@
 | Properties.cs:33:19:33:22 | Properties.stat | Properties.cs:51:9:51:24 | SSA call def(Properties.stat) | Properties.cs:54:13:54:16 | access to property stat |
 | Properties.cs:61:23:61:23 | i | Properties.cs:63:16:63:16 | SSA phi(i) | Properties.cs:63:16:63:16 | access to parameter i |
 | Properties.cs:65:24:65:31 | this.LoopProp | Properties.cs:61:17:61:17 | SSA entry def(this.LoopProp) | Properties.cs:65:24:65:31 | access to property LoopProp |
+| Properties.cs:67:21:67:38 | this.SingleAccessedProp | Properties.cs:61:17:61:17 | SSA entry def(this.SingleAccessedProp) | Properties.cs:67:21:67:38 | access to property SingleAccessedProp |
+| Properties.cs:72:20:72:37 | this.SingleAccessedProp | Properties.cs:70:17:70:17 | SSA entry def(this.SingleAccessedProp) | Properties.cs:72:20:72:37 | access to property SingleAccessedProp |
 | Properties.cs:73:13:73:13 | f | Properties.cs:73:13:73:32 | SSA def(f) | Properties.cs:86:19:86:19 | access to local variable f |
 | Properties.cs:73:13:73:13 | f | Properties.cs:74:27:74:54 | SSA capture def(f) | Properties.cs:74:35:74:35 | access to local variable f |
 | Properties.cs:74:23:74:23 | a | Properties.cs:74:23:74:54 | SSA def(a) | Properties.cs:77:9:77:9 | access to local variable a |

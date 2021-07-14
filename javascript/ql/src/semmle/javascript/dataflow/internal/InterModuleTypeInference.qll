@@ -12,7 +12,7 @@ private import AbstractPropertiesImpl
 /**
  * Flow analysis for ECMAScript 2015 imports as variable definitions.
  */
-private class AnalyzedImportSpecifier extends AnalyzedVarDef, @importspecifier {
+private class AnalyzedImportSpecifier extends AnalyzedVarDef, @import_specifier {
   ImportDeclaration id;
 
   AnalyzedImportSpecifier() { this = id.getASpecifier() and exists(id.resolveImportedPath()) }
@@ -278,7 +278,7 @@ private class AnalyzedAmdImport extends AnalyzedPropertyRead, DataFlow::Node {
 /**
  * Flow analysis for parameters corresponding to AMD imports.
  */
-private class AnalyzedAmdParameter extends AnalyzedVarDef, @vardecl {
+private class AnalyzedAmdParameter extends AnalyzedVarDef, @var_decl {
   AnalyzedAmdImport imp;
 
   AnalyzedAmdParameter() { imp = DataFlow::parameterNode(this) }
@@ -318,7 +318,12 @@ private class AnalyzedVariableExport extends AnalyzedPropertyWrite, DataFlow::Va
   override predicate writes(AbstractValue baseVal, string propName, DataFlow::AnalyzedNode source) {
     baseVal = TAbstractExportsObject(export.getEnclosingModule()) and
     propName = name and
-    source = varDef.getSource().analyze()
+    (
+      source = varDef.getSource().analyze()
+      or
+      varDef.getTarget() instanceof DestructuringPattern and
+      source = export.getSourceNode(propName)
+    )
   }
 
   override predicate writesValue(AbstractValue baseVal, string propName, AbstractValue val) {

@@ -3,7 +3,7 @@
 ## Introduction
 
 This document describes how to format the code you contribute to this repository. It covers aspects such as layout, white-space, naming, and documentation. Adhering to consistent standards makes code easier to read and maintain. Of course, these are only guidelines, and can be overridden as the need arises on a case-by-case basis. Where existing code deviates from these guidelines, prefer consistency with the surrounding code.
-Note, if you use [CodeQL for Visual Studio Code](https://help.semmle.com/codeql/codeql-for-vscode/procedures/about-codeql-for-vscode.html), you can autoformat your query in the editor.
+Note, if you use [CodeQL for Visual Studio Code](https://codeql.github.com/docs/codeql-for-visual-studio-code/about-codeql-for-visual-studio-code/), you can autoformat your query in the editor.
 
 Words in *italic* are defined in the [Glossary](#glossary).
 
@@ -166,13 +166,14 @@ private predicate foo(Expr e, Expr p) {
 ```
 
 ## Naming
-1. Use [PascalCase](http://wiki.c2.com/?PascalCase) for:
+1. Use [PascalCase](https://wiki.c2.com/?PascalCase) for:
    - `class` names
    - `module` names
    - `newtype` names
 1. Use [camelCase](https://en.wikipedia.org/wiki/Camel_case) for:
    - Predicate names
    - Variable names
+1. Acronyms *should* use normal PascalCase/camelCase. However, two-letter acronyms should have both letters capitalized.
 1. Newtype predicate names *should* begin with `T`.
 1. Predicates that have a result *should* be named `get...`
 1. Predicates that can return multiple results *should* be named `getA...` or `getAn...`
@@ -182,6 +183,7 @@ private predicate foo(Expr e, Expr p) {
 1. Short or single letter names for parameters and *quantifiers* *may* be used provided that they are sufficiently clear.
 1. Use names as they are used in the target-language specification.
 1. Use American English.
+
 
 ### Examples
 
@@ -209,6 +211,9 @@ class Type extends ... {
 
   /** ... */
   Type getATypeParameter() { ... }
+  
+  /** Gets the SSA variable ... */
+  predicate getSsaVariable() { ... }
 }
 ```
 
@@ -244,7 +249,7 @@ For more information about documenting the code that you contribute to this repo
 1. The `and` and `else` keywords *may* be placed on the same line as the closing parenthesis.
 1. The `and` and `else` keywords *may* be "cuddled": `) else (`
 1. *Always* qualify *calls* to predicates of the same class with `this`.
-2. *Prefer* postfix casts `a.(Expr)` to prefix casts `(Expr)a`.
+1. *Prefer* postfix casts `a.(Expr)` to prefix casts `(Expr)a`.
 
 ### Examples
 
@@ -345,16 +350,16 @@ For more information about documenting the code that you contribute to this repo
 
 | Phrase      | Meaning  |
 |-------------|----------|
-| *[annotation](https://help.semmle.com/QL/ql-handbook/language.html#annotations)* | An additional specifier used to modify a declaration, such as `private`, `override`, `deprecated`, `pragma`, `bindingset`, or `cached`. |
+| *[annotation](https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#annotations)* | An additional specifier used to modify a declaration, such as `private`, `override`, `deprecated`, `pragma`, `bindingset`, or `cached`. |
 | *body* | The text inside `{ }`, `( )`, or each section of an `if`-`then`-`else` or `from`-`where`-`select`. |
 | *binary operator* | An operator with two operands, such as comparison operators, `and`, `or`, `implies`, or arithmetic operators. |
 | *call* | A *formula* that invokes a predicate, e.g. `this.isStatic()` or `calls(a,b)`. |
-| *[conjunct](https://help.semmle.com/QL/ql-handbook/language.html#conjunctions)* | A formula that is an operand to an `and`. |
+| *[conjunct](https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#conjunctions)* | A formula that is an operand to an `and`. |
 | *declaration* | A class, module, predicate, field or newtype. |
-| *[disjunct](https://help.semmle.com/QL/ql-handbook/language.html#disjunctions)* | A formula that is an operand to an `or`. |
-| *[formula](https://help.semmle.com/QL/ql-handbook/language.html#formulas)* | A logical expression, such as `A = B`, a *call*, a *quantifier*, `and`, `or`, `not`, `in` or `instanceof`. |
+| *[disjunct](https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#disjunctions)* | A formula that is an operand to an `or`. |
+| *[formula](https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#formulas)* | A logical expression, such as `A = B`, a *call*, a *quantifier*, `and`, `or`, `not`, `in` or `instanceof`. |
 | *should/should not/avoid/prefer* | Adhere to this rule wherever possible, where it makes sense. |
 | *may/can* | This is a reasonable alternative, to be used with discretion. |
 | *must/always/do not* | Always adhere to this rule. |
-| *[quantifier/aggregation](https://help.semmle.com/QL/ql-handbook/language.html#aggregations)* | `exists`, `count`, `strictcount`, `any`, `forall`, `forex` and so on. |
+| *[quantifier/aggregation](https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#aggregations)* | `exists`, `count`, `strictcount`, `any`, `forall`, `forex` and so on. |
 | *variable* | A parameter to a predicate, a field, a from variable, or a variable introduced by a *quantifier* or *aggregation*. |

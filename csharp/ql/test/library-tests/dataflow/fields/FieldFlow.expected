@@ -1,518 +1,543 @@
 edges
 | A.cs:5:17:5:23 | object creation of type C : C | A.cs:6:24:6:24 | access to local variable c : C |
-| A.cs:6:17:6:25 | call to method Make [c] : C | A.cs:7:14:7:14 | access to local variable b [c] : C |
-| A.cs:6:24:6:24 | access to local variable c : C | A.cs:6:17:6:25 | call to method Make [c] : C |
-| A.cs:7:14:7:14 | access to local variable b [c] : C | A.cs:7:14:7:16 | access to field c |
-| A.cs:13:9:13:9 | [post] access to local variable b [c] : C1 | A.cs:14:14:14:14 | access to local variable b [c] : C1 |
-| A.cs:13:15:13:22 | object creation of type C1 : C1 | A.cs:13:9:13:9 | [post] access to local variable b [c] : C1 |
-| A.cs:14:14:14:14 | access to local variable b [c] : C1 | A.cs:14:14:14:20 | call to method Get |
-| A.cs:15:15:15:28 | object creation of type B [c] : C | A.cs:15:14:15:35 | call to method Get |
-| A.cs:15:21:15:27 | object creation of type C : C | A.cs:15:15:15:28 | object creation of type B [c] : C |
-| A.cs:22:14:22:33 | call to method SetOnB [c] : C2 | A.cs:24:14:24:15 | access to local variable b2 [c] : C2 |
-| A.cs:22:25:22:32 | object creation of type C2 : C2 | A.cs:22:14:22:33 | call to method SetOnB [c] : C2 |
-| A.cs:24:14:24:15 | access to local variable b2 [c] : C2 | A.cs:24:14:24:17 | access to field c |
-| A.cs:31:14:31:37 | call to method SetOnBWrap [c] : C2 | A.cs:33:14:33:15 | access to local variable b2 [c] : C2 |
-| A.cs:31:29:31:36 | object creation of type C2 : C2 | A.cs:31:14:31:37 | call to method SetOnBWrap [c] : C2 |
-| A.cs:33:14:33:15 | access to local variable b2 [c] : C2 | A.cs:33:14:33:17 | access to field c |
+| A.cs:6:17:6:25 | call to method Make [field c] : C | A.cs:7:14:7:14 | access to local variable b [field c] : C |
+| A.cs:6:24:6:24 | access to local variable c : C | A.cs:6:17:6:25 | call to method Make [field c] : C |
+| A.cs:7:14:7:14 | access to local variable b [field c] : C | A.cs:7:14:7:16 | access to field c |
+| A.cs:13:9:13:9 | [post] access to local variable b [field c] : C1 | A.cs:14:14:14:14 | access to local variable b [field c] : C1 |
+| A.cs:13:15:13:22 | object creation of type C1 : C1 | A.cs:13:9:13:9 | [post] access to local variable b [field c] : C1 |
+| A.cs:14:14:14:14 | access to local variable b [field c] : C1 | A.cs:14:14:14:20 | call to method Get |
+| A.cs:15:15:15:28 | object creation of type B [field c] : C | A.cs:15:14:15:35 | call to method Get |
+| A.cs:15:21:15:27 | object creation of type C : C | A.cs:15:15:15:28 | object creation of type B [field c] : C |
+| A.cs:22:14:22:33 | call to method SetOnB [field c] : C2 | A.cs:24:14:24:15 | access to local variable b2 [field c] : C2 |
+| A.cs:22:25:22:32 | object creation of type C2 : C2 | A.cs:22:14:22:33 | call to method SetOnB [field c] : C2 |
+| A.cs:24:14:24:15 | access to local variable b2 [field c] : C2 | A.cs:24:14:24:17 | access to field c |
+| A.cs:31:14:31:37 | call to method SetOnBWrap [field c] : C2 | A.cs:33:14:33:15 | access to local variable b2 [field c] : C2 |
+| A.cs:31:29:31:36 | object creation of type C2 : C2 | A.cs:31:14:31:37 | call to method SetOnBWrap [field c] : C2 |
+| A.cs:33:14:33:15 | access to local variable b2 [field c] : C2 | A.cs:33:14:33:17 | access to field c |
 | A.cs:55:17:55:23 | object creation of type A : A | A.cs:57:16:57:16 | access to local variable a : A |
-| A.cs:57:9:57:10 | [post] access to local variable c1 [a] : A | A.cs:58:12:58:13 | access to local variable c1 [a] : A |
-| A.cs:57:16:57:16 | access to local variable a : A | A.cs:57:9:57:10 | [post] access to local variable c1 [a] : A |
-| A.cs:58:12:58:13 | access to local variable c1 [a] : A | A.cs:60:22:60:22 | c [a] : A |
-| A.cs:60:22:60:22 | c [a] : A | A.cs:64:19:64:23 | (...) ... [a] : A |
-| A.cs:64:19:64:23 | (...) ... [a] : A | A.cs:64:18:64:26 | access to field a |
-| A.cs:83:9:83:9 | [post] access to parameter b [c] : C | A.cs:88:12:88:12 | [post] access to local variable b [c] : C |
-| A.cs:83:15:83:21 | object creation of type C : C | A.cs:83:9:83:9 | [post] access to parameter b [c] : C |
-| A.cs:88:12:88:12 | [post] access to local variable b [c] : C | A.cs:89:14:89:14 | access to local variable b [c] : C |
-| A.cs:89:14:89:14 | access to local variable b [c] : C | A.cs:89:14:89:16 | access to field c |
-| A.cs:97:13:97:13 | [post] access to parameter b [c] : C | A.cs:98:22:98:36 | ... ? ... : ... [c] : C |
-| A.cs:97:13:97:13 | [post] access to parameter b [c] : C | A.cs:105:23:105:23 | [post] access to local variable b [c] : C |
-| A.cs:97:19:97:25 | object creation of type C : C | A.cs:97:13:97:13 | [post] access to parameter b [c] : C |
-| A.cs:98:13:98:16 | [post] this access [b, c] | A.cs:105:17:105:29 | object creation of type D [b, c] |
-| A.cs:98:13:98:16 | [post] this access [b] : B | A.cs:105:17:105:29 | object creation of type D [b] : B |
-| A.cs:98:22:98:36 | ... ? ... : ... : B | A.cs:98:13:98:16 | [post] this access [b] : B |
-| A.cs:98:22:98:36 | ... ? ... : ... [c] : C | A.cs:98:13:98:16 | [post] this access [b, c] |
+| A.cs:57:9:57:10 | [post] access to local variable c1 [field a] : A | A.cs:58:12:58:13 | access to local variable c1 [field a] : A |
+| A.cs:57:16:57:16 | access to local variable a : A | A.cs:57:9:57:10 | [post] access to local variable c1 [field a] : A |
+| A.cs:58:12:58:13 | access to local variable c1 [field a] : A | A.cs:60:22:60:22 | c [field a] : A |
+| A.cs:60:22:60:22 | c [field a] : A | A.cs:64:19:64:23 | (...) ... [field a] : A |
+| A.cs:64:19:64:23 | (...) ... [field a] : A | A.cs:64:18:64:26 | access to field a |
+| A.cs:83:9:83:9 | [post] access to parameter b [field c] : C | A.cs:88:12:88:12 | [post] access to local variable b [field c] : C |
+| A.cs:83:15:83:21 | object creation of type C : C | A.cs:83:9:83:9 | [post] access to parameter b [field c] : C |
+| A.cs:88:12:88:12 | [post] access to local variable b [field c] : C | A.cs:89:14:89:14 | access to local variable b [field c] : C |
+| A.cs:89:14:89:14 | access to local variable b [field c] : C | A.cs:89:14:89:16 | access to field c |
+| A.cs:97:13:97:13 | [post] access to parameter b [field c] : C | A.cs:98:22:98:36 | ... ? ... : ... [field c] : C |
+| A.cs:97:13:97:13 | [post] access to parameter b [field c] : C | A.cs:105:23:105:23 | [post] access to local variable b [field c] : C |
+| A.cs:97:19:97:25 | object creation of type C : C | A.cs:97:13:97:13 | [post] access to parameter b [field c] : C |
+| A.cs:98:13:98:16 | [post] this access [field b, field c] : C | A.cs:105:17:105:29 | object creation of type D [field b, field c] : C |
+| A.cs:98:13:98:16 | [post] this access [field b] : B | A.cs:105:17:105:29 | object creation of type D [field b] : B |
+| A.cs:98:22:98:36 | ... ? ... : ... : B | A.cs:98:13:98:16 | [post] this access [field b] : B |
+| A.cs:98:22:98:36 | ... ? ... : ... [field c] : C | A.cs:98:13:98:16 | [post] this access [field b, field c] : C |
 | A.cs:98:30:98:36 | object creation of type B : B | A.cs:98:22:98:36 | ... ? ... : ... : B |
 | A.cs:104:17:104:23 | object creation of type B : B | A.cs:105:23:105:23 | access to local variable b : B |
-| A.cs:105:17:105:29 | object creation of type D [b, c] | A.cs:107:14:107:14 | access to local variable d [b, c] |
-| A.cs:105:17:105:29 | object creation of type D [b] : B | A.cs:106:14:106:14 | access to local variable d [b] : B |
-| A.cs:105:23:105:23 | [post] access to local variable b [c] : C | A.cs:108:14:108:14 | access to local variable b [c] : C |
-| A.cs:105:23:105:23 | access to local variable b : B | A.cs:105:17:105:29 | object creation of type D [b] : B |
-| A.cs:106:14:106:14 | access to local variable d [b] : B | A.cs:106:14:106:16 | access to field b |
-| A.cs:107:14:107:14 | access to local variable d [b, c] | A.cs:107:14:107:16 | access to field b [c] : C |
-| A.cs:107:14:107:16 | access to field b [c] : C | A.cs:107:14:107:18 | access to field c |
-| A.cs:108:14:108:14 | access to local variable b [c] : C | A.cs:108:14:108:16 | access to field c |
+| A.cs:105:17:105:29 | object creation of type D [field b, field c] : C | A.cs:107:14:107:14 | access to local variable d [field b, field c] : C |
+| A.cs:105:17:105:29 | object creation of type D [field b] : B | A.cs:106:14:106:14 | access to local variable d [field b] : B |
+| A.cs:105:23:105:23 | [post] access to local variable b [field c] : C | A.cs:108:14:108:14 | access to local variable b [field c] : C |
+| A.cs:105:23:105:23 | access to local variable b : B | A.cs:105:17:105:29 | object creation of type D [field b] : B |
+| A.cs:106:14:106:14 | access to local variable d [field b] : B | A.cs:106:14:106:16 | access to field b |
+| A.cs:107:14:107:14 | access to local variable d [field b, field c] : C | A.cs:107:14:107:16 | access to field b [field c] : C |
+| A.cs:107:14:107:16 | access to field b [field c] : C | A.cs:107:14:107:18 | access to field c |
+| A.cs:108:14:108:14 | access to local variable b [field c] : C | A.cs:108:14:108:16 | access to field c |
 | A.cs:113:17:113:23 | object creation of type B : B | A.cs:114:29:114:29 | access to local variable b : B |
-| A.cs:114:18:114:54 | object creation of type MyList [head] : B | A.cs:115:35:115:36 | access to local variable l1 [head] : B |
-| A.cs:114:29:114:29 | access to local variable b : B | A.cs:114:18:114:54 | object creation of type MyList [head] : B |
-| A.cs:115:18:115:37 | object creation of type MyList [next, head] | A.cs:116:35:116:36 | access to local variable l2 [next, head] |
-| A.cs:115:35:115:36 | access to local variable l1 [head] : B | A.cs:115:18:115:37 | object creation of type MyList [next, head] |
-| A.cs:116:18:116:37 | object creation of type MyList [next, next, ... (3)] | A.cs:119:14:119:15 | access to local variable l3 [next, next, ... (3)] |
-| A.cs:116:18:116:37 | object creation of type MyList [next, next, ... (3)] | A.cs:121:41:121:41 | access to local variable l [next, next, ... (3)] |
-| A.cs:116:35:116:36 | access to local variable l2 [next, head] | A.cs:116:18:116:37 | object creation of type MyList [next, next, ... (3)] |
-| A.cs:119:14:119:15 | access to local variable l3 [next, next, ... (3)] | A.cs:119:14:119:20 | access to field next [next, head] |
-| A.cs:119:14:119:20 | access to field next [next, head] | A.cs:119:14:119:25 | access to field next [head] : B |
-| A.cs:119:14:119:25 | access to field next [head] : B | A.cs:119:14:119:30 | access to field head |
-| A.cs:121:41:121:41 | access to local variable l [next, head] | A.cs:121:41:121:46 | access to field next [head] : B |
-| A.cs:121:41:121:41 | access to local variable l [next, next, ... (3)] | A.cs:121:41:121:46 | access to field next [next, head] |
-| A.cs:121:41:121:46 | access to field next [head] : B | A.cs:123:18:123:18 | access to local variable l [head] : B |
-| A.cs:121:41:121:46 | access to field next [next, head] | A.cs:121:41:121:41 | access to local variable l [next, head] |
-| A.cs:123:18:123:18 | access to local variable l [head] : B | A.cs:123:18:123:23 | access to field head |
+| A.cs:114:18:114:54 | object creation of type MyList [field head] : B | A.cs:115:35:115:36 | access to local variable l1 [field head] : B |
+| A.cs:114:29:114:29 | access to local variable b : B | A.cs:114:18:114:54 | object creation of type MyList [field head] : B |
+| A.cs:115:18:115:37 | object creation of type MyList [field next, field head] : B | A.cs:116:35:116:36 | access to local variable l2 [field next, field head] : B |
+| A.cs:115:35:115:36 | access to local variable l1 [field head] : B | A.cs:115:18:115:37 | object creation of type MyList [field next, field head] : B |
+| A.cs:116:18:116:37 | object creation of type MyList [field next, field next, field head] : B | A.cs:119:14:119:15 | access to local variable l3 [field next, field next, field head] : B |
+| A.cs:116:18:116:37 | object creation of type MyList [field next, field next, field head] : B | A.cs:121:41:121:41 | access to local variable l [field next, field next, field head] : B |
+| A.cs:116:35:116:36 | access to local variable l2 [field next, field head] : B | A.cs:116:18:116:37 | object creation of type MyList [field next, field next, field head] : B |
+| A.cs:119:14:119:15 | access to local variable l3 [field next, field next, field head] : B | A.cs:119:14:119:20 | access to field next [field next, field head] : B |
+| A.cs:119:14:119:20 | access to field next [field next, field head] : B | A.cs:119:14:119:25 | access to field next [field head] : B |
+| A.cs:119:14:119:25 | access to field next [field head] : B | A.cs:119:14:119:30 | access to field head |
+| A.cs:121:41:121:41 | access to local variable l [field next, field head] : B | A.cs:121:41:121:46 | access to field next [field head] : B |
+| A.cs:121:41:121:41 | access to local variable l [field next, field next, field head] : B | A.cs:121:41:121:46 | access to field next [field next, field head] : B |
+| A.cs:121:41:121:46 | access to field next [field head] : B | A.cs:123:18:123:18 | access to local variable l [field head] : B |
+| A.cs:121:41:121:46 | access to field next [field next, field head] : B | A.cs:121:41:121:41 | access to local variable l [field next, field head] : B |
+| A.cs:123:18:123:18 | access to local variable l [field head] : B | A.cs:123:18:123:23 | access to field head |
 | B.cs:5:17:5:26 | object creation of type Elem : Elem | B.cs:6:27:6:27 | access to local variable e : Elem |
-| B.cs:6:18:6:34 | object creation of type Box1 [elem1] : Elem | B.cs:7:27:7:28 | access to local variable b1 [elem1] : Elem |
-| B.cs:6:27:6:27 | access to local variable e : Elem | B.cs:6:18:6:34 | object creation of type Box1 [elem1] : Elem |
-| B.cs:7:18:7:29 | object creation of type Box2 [box1, elem1] | B.cs:8:14:8:15 | access to local variable b2 [box1, elem1] |
-| B.cs:7:27:7:28 | access to local variable b1 [elem1] : Elem | B.cs:7:18:7:29 | object creation of type Box2 [box1, elem1] |
-| B.cs:8:14:8:15 | access to local variable b2 [box1, elem1] | B.cs:8:14:8:20 | access to field box1 [elem1] : Elem |
-| B.cs:8:14:8:20 | access to field box1 [elem1] : Elem | B.cs:8:14:8:26 | access to field elem1 |
+| B.cs:6:18:6:34 | object creation of type Box1 [field elem1] : Elem | B.cs:7:27:7:28 | access to local variable b1 [field elem1] : Elem |
+| B.cs:6:27:6:27 | access to local variable e : Elem | B.cs:6:18:6:34 | object creation of type Box1 [field elem1] : Elem |
+| B.cs:7:18:7:29 | object creation of type Box2 [field box1, field elem1] : Elem | B.cs:8:14:8:15 | access to local variable b2 [field box1, field elem1] : Elem |
+| B.cs:7:27:7:28 | access to local variable b1 [field elem1] : Elem | B.cs:7:18:7:29 | object creation of type Box2 [field box1, field elem1] : Elem |
+| B.cs:8:14:8:15 | access to local variable b2 [field box1, field elem1] : Elem | B.cs:8:14:8:20 | access to field box1 [field elem1] : Elem |
+| B.cs:8:14:8:20 | access to field box1 [field elem1] : Elem | B.cs:8:14:8:26 | access to field elem1 |
 | B.cs:14:17:14:26 | object creation of type Elem : Elem | B.cs:15:33:15:33 | access to local variable e : Elem |
-| B.cs:15:18:15:34 | object creation of type Box1 [elem2] : Elem | B.cs:16:27:16:28 | access to local variable b1 [elem2] : Elem |
-| B.cs:15:33:15:33 | access to local variable e : Elem | B.cs:15:18:15:34 | object creation of type Box1 [elem2] : Elem |
-| B.cs:16:18:16:29 | object creation of type Box2 [box1, elem2] | B.cs:18:14:18:15 | access to local variable b2 [box1, elem2] |
-| B.cs:16:27:16:28 | access to local variable b1 [elem2] : Elem | B.cs:16:18:16:29 | object creation of type Box2 [box1, elem2] |
-| B.cs:18:14:18:15 | access to local variable b2 [box1, elem2] | B.cs:18:14:18:20 | access to field box1 [elem2] : Elem |
-| B.cs:18:14:18:20 | access to field box1 [elem2] : Elem | B.cs:18:14:18:26 | access to field elem2 |
-| C.cs:3:18:3:19 | [post] this access [s1] : Elem | C.cs:12:15:12:21 | object creation of type C [s1] : Elem |
-| C.cs:3:23:3:32 | object creation of type Elem : Elem | C.cs:3:18:3:19 | [post] this access [s1] : Elem |
-| C.cs:4:27:4:28 | [post] this access [s2] : Elem | C.cs:12:15:12:21 | object creation of type C [s2] : Elem |
-| C.cs:4:32:4:41 | object creation of type Elem : Elem | C.cs:4:27:4:28 | [post] this access [s2] : Elem |
+| B.cs:15:18:15:34 | object creation of type Box1 [field elem2] : Elem | B.cs:16:27:16:28 | access to local variable b1 [field elem2] : Elem |
+| B.cs:15:33:15:33 | access to local variable e : Elem | B.cs:15:18:15:34 | object creation of type Box1 [field elem2] : Elem |
+| B.cs:16:18:16:29 | object creation of type Box2 [field box1, field elem2] : Elem | B.cs:18:14:18:15 | access to local variable b2 [field box1, field elem2] : Elem |
+| B.cs:16:27:16:28 | access to local variable b1 [field elem2] : Elem | B.cs:16:18:16:29 | object creation of type Box2 [field box1, field elem2] : Elem |
+| B.cs:18:14:18:15 | access to local variable b2 [field box1, field elem2] : Elem | B.cs:18:14:18:20 | access to field box1 [field elem2] : Elem |
+| B.cs:18:14:18:20 | access to field box1 [field elem2] : Elem | B.cs:18:14:18:26 | access to field elem2 |
+| C.cs:3:18:3:19 | [post] this access [field s1] : Elem | C.cs:12:15:12:21 | object creation of type C [field s1] : Elem |
+| C.cs:3:23:3:32 | object creation of type Elem : Elem | C.cs:3:18:3:19 | [post] this access [field s1] : Elem |
+| C.cs:4:27:4:28 | [post] this access [field s2] : Elem | C.cs:12:15:12:21 | object creation of type C [field s2] : Elem |
+| C.cs:4:32:4:41 | object creation of type Elem : Elem | C.cs:4:27:4:28 | [post] this access [field s2] : Elem |
 | C.cs:6:30:6:39 | object creation of type Elem : Elem | C.cs:26:14:26:15 | access to field s4 |
-| C.cs:7:18:7:19 | [post] this access [s5] : Elem | C.cs:12:15:12:21 | object creation of type C [s5] : Elem |
-| C.cs:7:37:7:46 | object creation of type Elem : Elem | C.cs:7:18:7:19 | [post] this access [s5] : Elem |
+| C.cs:7:18:7:19 | [post] this access [property s5] : Elem | C.cs:12:15:12:21 | object creation of type C [property s5] : Elem |
+| C.cs:7:37:7:46 | object creation of type Elem : Elem | C.cs:7:18:7:19 | [post] this access [property s5] : Elem |
 | C.cs:8:30:8:39 | object creation of type Elem : Elem | C.cs:28:14:28:15 | access to property s6 |
-| C.cs:12:15:12:21 | object creation of type C [s1] : Elem | C.cs:13:9:13:9 | access to local variable c [s1] : Elem |
-| C.cs:12:15:12:21 | object creation of type C [s2] : Elem | C.cs:13:9:13:9 | access to local variable c [s2] : Elem |
-| C.cs:12:15:12:21 | object creation of type C [s3] : Elem | C.cs:13:9:13:9 | access to local variable c [s3] : Elem |
-| C.cs:12:15:12:21 | object creation of type C [s5] : Elem | C.cs:13:9:13:9 | access to local variable c [s5] : Elem |
-| C.cs:13:9:13:9 | access to local variable c [s1] : Elem | C.cs:21:17:21:18 | this [s1] : Elem |
-| C.cs:13:9:13:9 | access to local variable c [s2] : Elem | C.cs:21:17:21:18 | this [s2] : Elem |
-| C.cs:13:9:13:9 | access to local variable c [s3] : Elem | C.cs:21:17:21:18 | this [s3] : Elem |
-| C.cs:13:9:13:9 | access to local variable c [s5] : Elem | C.cs:21:17:21:18 | this [s5] : Elem |
-| C.cs:18:9:18:12 | [post] this access [s3] : Elem | C.cs:12:15:12:21 | object creation of type C [s3] : Elem |
-| C.cs:18:19:18:28 | object creation of type Elem : Elem | C.cs:18:9:18:12 | [post] this access [s3] : Elem |
-| C.cs:21:17:21:18 | this [s1] : Elem | C.cs:23:14:23:15 | this access [s1] : Elem |
-| C.cs:21:17:21:18 | this [s2] : Elem | C.cs:24:14:24:15 | this access [s2] : Elem |
-| C.cs:21:17:21:18 | this [s3] : Elem | C.cs:25:14:25:15 | this access [s3] : Elem |
-| C.cs:21:17:21:18 | this [s5] : Elem | C.cs:27:14:27:15 | this access [s5] : Elem |
-| C.cs:23:14:23:15 | this access [s1] : Elem | C.cs:23:14:23:15 | access to field s1 |
-| C.cs:24:14:24:15 | this access [s2] : Elem | C.cs:24:14:24:15 | access to field s2 |
-| C.cs:25:14:25:15 | this access [s3] : Elem | C.cs:25:14:25:15 | access to field s3 |
-| C.cs:27:14:27:15 | this access [s5] : Elem | C.cs:27:14:27:15 | access to property s5 |
+| C.cs:12:15:12:21 | object creation of type C [field s1] : Elem | C.cs:13:9:13:9 | access to local variable c [field s1] : Elem |
+| C.cs:12:15:12:21 | object creation of type C [field s2] : Elem | C.cs:13:9:13:9 | access to local variable c [field s2] : Elem |
+| C.cs:12:15:12:21 | object creation of type C [field s3] : Elem | C.cs:13:9:13:9 | access to local variable c [field s3] : Elem |
+| C.cs:12:15:12:21 | object creation of type C [property s5] : Elem | C.cs:13:9:13:9 | access to local variable c [property s5] : Elem |
+| C.cs:13:9:13:9 | access to local variable c [field s1] : Elem | C.cs:21:17:21:18 | this [field s1] : Elem |
+| C.cs:13:9:13:9 | access to local variable c [field s2] : Elem | C.cs:21:17:21:18 | this [field s2] : Elem |
+| C.cs:13:9:13:9 | access to local variable c [field s3] : Elem | C.cs:21:17:21:18 | this [field s3] : Elem |
+| C.cs:13:9:13:9 | access to local variable c [property s5] : Elem | C.cs:21:17:21:18 | this [property s5] : Elem |
+| C.cs:18:9:18:12 | [post] this access [field s3] : Elem | C.cs:12:15:12:21 | object creation of type C [field s3] : Elem |
+| C.cs:18:19:18:28 | object creation of type Elem : Elem | C.cs:18:9:18:12 | [post] this access [field s3] : Elem |
+| C.cs:21:17:21:18 | this [field s1] : Elem | C.cs:23:14:23:15 | this access [field s1] : Elem |
+| C.cs:21:17:21:18 | this [field s2] : Elem | C.cs:24:14:24:15 | this access [field s2] : Elem |
+| C.cs:21:17:21:18 | this [field s3] : Elem | C.cs:25:14:25:15 | this access [field s3] : Elem |
+| C.cs:21:17:21:18 | this [property s5] : Elem | C.cs:27:14:27:15 | this access [property s5] : Elem |
+| C.cs:23:14:23:15 | this access [field s1] : Elem | C.cs:23:14:23:15 | access to field s1 |
+| C.cs:24:14:24:15 | this access [field s2] : Elem | C.cs:24:14:24:15 | access to field s2 |
+| C.cs:25:14:25:15 | this access [field s3] : Elem | C.cs:25:14:25:15 | access to field s3 |
+| C.cs:27:14:27:15 | this access [property s5] : Elem | C.cs:27:14:27:15 | access to property s5 |
 | D.cs:29:17:29:28 | object creation of type Object : Object | D.cs:31:24:31:24 | access to local variable o : Object |
 | D.cs:29:17:29:28 | object creation of type Object : Object | D.cs:37:26:37:26 | access to local variable o : Object |
 | D.cs:29:17:29:28 | object creation of type Object : Object | D.cs:43:32:43:32 | access to local variable o : Object |
-| D.cs:31:17:31:37 | call to method Create [AutoProp] : Object | D.cs:32:14:32:14 | access to local variable d [AutoProp] : Object |
-| D.cs:31:24:31:24 | access to local variable o : Object | D.cs:31:17:31:37 | call to method Create [AutoProp] : Object |
-| D.cs:32:14:32:14 | access to local variable d [AutoProp] : Object | D.cs:32:14:32:23 | access to property AutoProp |
-| D.cs:37:13:37:33 | call to method Create [trivialPropField] : Object | D.cs:39:14:39:14 | access to local variable d [trivialPropField] : Object |
-| D.cs:37:13:37:33 | call to method Create [trivialPropField] : Object | D.cs:40:14:40:14 | access to local variable d [trivialPropField] : Object |
-| D.cs:37:13:37:33 | call to method Create [trivialPropField] : Object | D.cs:41:14:41:14 | access to local variable d [trivialPropField] : Object |
-| D.cs:37:26:37:26 | access to local variable o : Object | D.cs:37:13:37:33 | call to method Create [trivialPropField] : Object |
-| D.cs:39:14:39:14 | access to local variable d [trivialPropField] : Object | D.cs:39:14:39:26 | access to property TrivialProp |
-| D.cs:40:14:40:14 | access to local variable d [trivialPropField] : Object | D.cs:40:14:40:31 | access to field trivialPropField |
-| D.cs:41:14:41:14 | access to local variable d [trivialPropField] : Object | D.cs:41:14:41:26 | access to property ComplexProp |
-| D.cs:43:13:43:33 | call to method Create [trivialPropField] : Object | D.cs:45:14:45:14 | access to local variable d [trivialPropField] : Object |
-| D.cs:43:13:43:33 | call to method Create [trivialPropField] : Object | D.cs:46:14:46:14 | access to local variable d [trivialPropField] : Object |
-| D.cs:43:13:43:33 | call to method Create [trivialPropField] : Object | D.cs:47:14:47:14 | access to local variable d [trivialPropField] : Object |
-| D.cs:43:32:43:32 | access to local variable o : Object | D.cs:43:13:43:33 | call to method Create [trivialPropField] : Object |
-| D.cs:45:14:45:14 | access to local variable d [trivialPropField] : Object | D.cs:45:14:45:26 | access to property TrivialProp |
-| D.cs:46:14:46:14 | access to local variable d [trivialPropField] : Object | D.cs:46:14:46:31 | access to field trivialPropField |
-| D.cs:47:14:47:14 | access to local variable d [trivialPropField] : Object | D.cs:47:14:47:26 | access to property ComplexProp |
+| D.cs:31:17:31:37 | call to method Create [property AutoProp] : Object | D.cs:32:14:32:14 | access to local variable d [property AutoProp] : Object |
+| D.cs:31:24:31:24 | access to local variable o : Object | D.cs:31:17:31:37 | call to method Create [property AutoProp] : Object |
+| D.cs:32:14:32:14 | access to local variable d [property AutoProp] : Object | D.cs:32:14:32:23 | access to property AutoProp |
+| D.cs:37:13:37:33 | call to method Create [field trivialPropField] : Object | D.cs:39:14:39:14 | access to local variable d [field trivialPropField] : Object |
+| D.cs:37:13:37:33 | call to method Create [field trivialPropField] : Object | D.cs:40:14:40:14 | access to local variable d [field trivialPropField] : Object |
+| D.cs:37:13:37:33 | call to method Create [field trivialPropField] : Object | D.cs:41:14:41:14 | access to local variable d [field trivialPropField] : Object |
+| D.cs:37:26:37:26 | access to local variable o : Object | D.cs:37:13:37:33 | call to method Create [field trivialPropField] : Object |
+| D.cs:39:14:39:14 | access to local variable d [field trivialPropField] : Object | D.cs:39:14:39:26 | access to property TrivialProp |
+| D.cs:40:14:40:14 | access to local variable d [field trivialPropField] : Object | D.cs:40:14:40:31 | access to field trivialPropField |
+| D.cs:41:14:41:14 | access to local variable d [field trivialPropField] : Object | D.cs:41:14:41:26 | access to property ComplexProp |
+| D.cs:43:13:43:33 | call to method Create [field trivialPropField] : Object | D.cs:45:14:45:14 | access to local variable d [field trivialPropField] : Object |
+| D.cs:43:13:43:33 | call to method Create [field trivialPropField] : Object | D.cs:46:14:46:14 | access to local variable d [field trivialPropField] : Object |
+| D.cs:43:13:43:33 | call to method Create [field trivialPropField] : Object | D.cs:47:14:47:14 | access to local variable d [field trivialPropField] : Object |
+| D.cs:43:32:43:32 | access to local variable o : Object | D.cs:43:13:43:33 | call to method Create [field trivialPropField] : Object |
+| D.cs:45:14:45:14 | access to local variable d [field trivialPropField] : Object | D.cs:45:14:45:26 | access to property TrivialProp |
+| D.cs:46:14:46:14 | access to local variable d [field trivialPropField] : Object | D.cs:46:14:46:31 | access to field trivialPropField |
+| D.cs:47:14:47:14 | access to local variable d [field trivialPropField] : Object | D.cs:47:14:47:26 | access to property ComplexProp |
 | E.cs:22:17:22:28 | object creation of type Object : Object | E.cs:23:25:23:25 | access to local variable o : Object |
-| E.cs:23:17:23:26 | call to method CreateS [Field] : Object | E.cs:24:14:24:14 | access to local variable s [Field] : Object |
-| E.cs:23:25:23:25 | access to local variable o : Object | E.cs:23:17:23:26 | call to method CreateS [Field] : Object |
-| E.cs:24:14:24:14 | access to local variable s [Field] : Object | E.cs:24:14:24:20 | access to field Field |
+| E.cs:23:17:23:26 | call to method CreateS [field Field] : Object | E.cs:24:14:24:14 | access to local variable s [field Field] : Object |
+| E.cs:23:25:23:25 | access to local variable o : Object | E.cs:23:17:23:26 | call to method CreateS [field Field] : Object |
+| E.cs:24:14:24:14 | access to local variable s [field Field] : Object | E.cs:24:14:24:20 | access to field Field |
 | F.cs:10:17:10:28 | object creation of type Object : Object | F.cs:11:24:11:24 | access to local variable o : Object |
 | F.cs:10:17:10:28 | object creation of type Object : Object | F.cs:15:26:15:26 | access to local variable o : Object |
 | F.cs:10:17:10:28 | object creation of type Object : Object | F.cs:19:32:19:32 | access to local variable o : Object |
 | F.cs:10:17:10:28 | object creation of type Object : Object | F.cs:23:32:23:32 | access to local variable o : Object |
-| F.cs:11:17:11:31 | call to method Create [Field1] : Object | F.cs:12:14:12:14 | access to local variable f [Field1] : Object |
-| F.cs:11:24:11:24 | access to local variable o : Object | F.cs:11:17:11:31 | call to method Create [Field1] : Object |
-| F.cs:12:14:12:14 | access to local variable f [Field1] : Object | F.cs:12:14:12:21 | access to field Field1 |
-| F.cs:15:13:15:27 | call to method Create [Field2] : Object | F.cs:17:14:17:14 | access to local variable f [Field2] : Object |
-| F.cs:15:26:15:26 | access to local variable o : Object | F.cs:15:13:15:27 | call to method Create [Field2] : Object |
-| F.cs:17:14:17:14 | access to local variable f [Field2] : Object | F.cs:17:14:17:21 | access to field Field2 |
-| F.cs:19:21:19:34 | { ..., ... } [Field1] : Object | F.cs:20:14:20:14 | access to local variable f [Field1] : Object |
-| F.cs:19:32:19:32 | access to local variable o : Object | F.cs:19:21:19:34 | { ..., ... } [Field1] : Object |
-| F.cs:20:14:20:14 | access to local variable f [Field1] : Object | F.cs:20:14:20:21 | access to field Field1 |
-| F.cs:23:21:23:34 | { ..., ... } [Field2] : Object | F.cs:25:14:25:14 | access to local variable f [Field2] : Object |
-| F.cs:23:32:23:32 | access to local variable o : Object | F.cs:23:21:23:34 | { ..., ... } [Field2] : Object |
-| F.cs:25:14:25:14 | access to local variable f [Field2] : Object | F.cs:25:14:25:21 | access to field Field2 |
+| F.cs:11:17:11:31 | call to method Create [field Field1] : Object | F.cs:12:14:12:14 | access to local variable f [field Field1] : Object |
+| F.cs:11:24:11:24 | access to local variable o : Object | F.cs:11:17:11:31 | call to method Create [field Field1] : Object |
+| F.cs:12:14:12:14 | access to local variable f [field Field1] : Object | F.cs:12:14:12:21 | access to field Field1 |
+| F.cs:15:13:15:27 | call to method Create [field Field2] : Object | F.cs:17:14:17:14 | access to local variable f [field Field2] : Object |
+| F.cs:15:26:15:26 | access to local variable o : Object | F.cs:15:13:15:27 | call to method Create [field Field2] : Object |
+| F.cs:17:14:17:14 | access to local variable f [field Field2] : Object | F.cs:17:14:17:21 | access to field Field2 |
+| F.cs:19:21:19:34 | { ..., ... } [field Field1] : Object | F.cs:20:14:20:14 | access to local variable f [field Field1] : Object |
+| F.cs:19:32:19:32 | access to local variable o : Object | F.cs:19:21:19:34 | { ..., ... } [field Field1] : Object |
+| F.cs:20:14:20:14 | access to local variable f [field Field1] : Object | F.cs:20:14:20:21 | access to field Field1 |
+| F.cs:23:21:23:34 | { ..., ... } [field Field2] : Object | F.cs:25:14:25:14 | access to local variable f [field Field2] : Object |
+| F.cs:23:32:23:32 | access to local variable o : Object | F.cs:23:21:23:34 | { ..., ... } [field Field2] : Object |
+| F.cs:25:14:25:14 | access to local variable f [field Field2] : Object | F.cs:25:14:25:21 | access to field Field2 |
 | G.cs:7:18:7:27 | object creation of type Elem : Elem | G.cs:9:23:9:23 | access to local variable e : Elem |
-| G.cs:9:9:9:9 | [post] access to local variable b [Box1, Elem] | G.cs:10:18:10:18 | access to local variable b [Box1, Elem] |
-| G.cs:9:9:9:14 | [post] access to field Box1 [Elem] : Elem | G.cs:9:9:9:9 | [post] access to local variable b [Box1, Elem] |
-| G.cs:9:23:9:23 | access to local variable e : Elem | G.cs:9:9:9:14 | [post] access to field Box1 [Elem] : Elem |
-| G.cs:10:18:10:18 | access to local variable b [Box1, Elem] | G.cs:37:38:37:39 | b2 [Box1, Elem] |
+| G.cs:9:9:9:9 | [post] access to local variable b [field Box1, field Elem] : Elem | G.cs:10:18:10:18 | access to local variable b [field Box1, field Elem] : Elem |
+| G.cs:9:9:9:14 | [post] access to field Box1 [field Elem] : Elem | G.cs:9:9:9:9 | [post] access to local variable b [field Box1, field Elem] : Elem |
+| G.cs:9:23:9:23 | access to local variable e : Elem | G.cs:9:9:9:14 | [post] access to field Box1 [field Elem] : Elem |
+| G.cs:10:18:10:18 | access to local variable b [field Box1, field Elem] : Elem | G.cs:37:38:37:39 | b2 [field Box1, field Elem] : Elem |
 | G.cs:15:18:15:27 | object creation of type Elem : Elem | G.cs:17:24:17:24 | access to local variable e : Elem |
-| G.cs:17:9:17:9 | [post] access to local variable b [Box1, Elem] | G.cs:18:18:18:18 | access to local variable b [Box1, Elem] |
-| G.cs:17:9:17:14 | [post] access to field Box1 [Elem] : Elem | G.cs:17:9:17:9 | [post] access to local variable b [Box1, Elem] |
-| G.cs:17:24:17:24 | access to local variable e : Elem | G.cs:17:9:17:14 | [post] access to field Box1 [Elem] : Elem |
-| G.cs:18:18:18:18 | access to local variable b [Box1, Elem] | G.cs:37:38:37:39 | b2 [Box1, Elem] |
+| G.cs:17:9:17:9 | [post] access to local variable b [field Box1, field Elem] : Elem | G.cs:18:18:18:18 | access to local variable b [field Box1, field Elem] : Elem |
+| G.cs:17:9:17:14 | [post] access to field Box1 [field Elem] : Elem | G.cs:17:9:17:9 | [post] access to local variable b [field Box1, field Elem] : Elem |
+| G.cs:17:24:17:24 | access to local variable e : Elem | G.cs:17:9:17:14 | [post] access to field Box1 [field Elem] : Elem |
+| G.cs:18:18:18:18 | access to local variable b [field Box1, field Elem] : Elem | G.cs:37:38:37:39 | b2 [field Box1, field Elem] : Elem |
 | G.cs:23:18:23:27 | object creation of type Elem : Elem | G.cs:25:28:25:28 | access to local variable e : Elem |
-| G.cs:25:9:25:9 | [post] access to local variable b [Box1, Elem] | G.cs:26:18:26:18 | access to local variable b [Box1, Elem] |
-| G.cs:25:9:25:19 | [post] call to method GetBox1 [Elem] : Elem | G.cs:25:9:25:9 | [post] access to local variable b [Box1, Elem] |
-| G.cs:25:28:25:28 | access to local variable e : Elem | G.cs:25:9:25:19 | [post] call to method GetBox1 [Elem] : Elem |
-| G.cs:26:18:26:18 | access to local variable b [Box1, Elem] | G.cs:37:38:37:39 | b2 [Box1, Elem] |
+| G.cs:25:9:25:9 | [post] access to local variable b [field Box1, field Elem] : Elem | G.cs:26:18:26:18 | access to local variable b [field Box1, field Elem] : Elem |
+| G.cs:25:9:25:19 | [post] call to method GetBox1 [field Elem] : Elem | G.cs:25:9:25:9 | [post] access to local variable b [field Box1, field Elem] : Elem |
+| G.cs:25:28:25:28 | access to local variable e : Elem | G.cs:25:9:25:19 | [post] call to method GetBox1 [field Elem] : Elem |
+| G.cs:26:18:26:18 | access to local variable b [field Box1, field Elem] : Elem | G.cs:37:38:37:39 | b2 [field Box1, field Elem] : Elem |
 | G.cs:31:18:31:27 | object creation of type Elem : Elem | G.cs:33:29:33:29 | access to local variable e : Elem |
-| G.cs:33:9:33:9 | [post] access to local variable b [Box1, Elem] | G.cs:34:18:34:18 | access to local variable b [Box1, Elem] |
-| G.cs:33:9:33:19 | [post] call to method GetBox1 [Elem] : Elem | G.cs:33:9:33:9 | [post] access to local variable b [Box1, Elem] |
-| G.cs:33:29:33:29 | access to local variable e : Elem | G.cs:33:9:33:19 | [post] call to method GetBox1 [Elem] : Elem |
-| G.cs:34:18:34:18 | access to local variable b [Box1, Elem] | G.cs:37:38:37:39 | b2 [Box1, Elem] |
-| G.cs:37:38:37:39 | b2 [Box1, Elem] | G.cs:39:14:39:15 | access to parameter b2 [Box1, Elem] |
-| G.cs:39:14:39:15 | access to parameter b2 [Box1, Elem] | G.cs:39:14:39:25 | call to method GetBox1 [Elem] : Elem |
-| G.cs:39:14:39:25 | call to method GetBox1 [Elem] : Elem | G.cs:39:14:39:35 | call to method GetElem |
+| G.cs:33:9:33:9 | [post] access to local variable b [field Box1, field Elem] : Elem | G.cs:34:18:34:18 | access to local variable b [field Box1, field Elem] : Elem |
+| G.cs:33:9:33:19 | [post] call to method GetBox1 [field Elem] : Elem | G.cs:33:9:33:9 | [post] access to local variable b [field Box1, field Elem] : Elem |
+| G.cs:33:29:33:29 | access to local variable e : Elem | G.cs:33:9:33:19 | [post] call to method GetBox1 [field Elem] : Elem |
+| G.cs:34:18:34:18 | access to local variable b [field Box1, field Elem] : Elem | G.cs:37:38:37:39 | b2 [field Box1, field Elem] : Elem |
+| G.cs:37:38:37:39 | b2 [field Box1, field Elem] : Elem | G.cs:39:14:39:15 | access to parameter b2 [field Box1, field Elem] : Elem |
+| G.cs:39:14:39:15 | access to parameter b2 [field Box1, field Elem] : Elem | G.cs:39:14:39:25 | call to method GetBox1 [field Elem] : Elem |
+| G.cs:39:14:39:25 | call to method GetBox1 [field Elem] : Elem | G.cs:39:14:39:35 | call to method GetElem |
 | G.cs:44:18:44:27 | object creation of type Elem : Elem | G.cs:46:30:46:30 | access to local variable e : Elem |
-| G.cs:46:9:46:16 | [post] access to field boxfield [Box1, Elem] | G.cs:46:9:46:16 | [post] this access [boxfield, Box1, ... (3)] |
-| G.cs:46:9:46:16 | [post] this access [boxfield, Box1, ... (3)] | G.cs:47:9:47:13 | this access [boxfield, Box1, ... (3)] |
-| G.cs:46:9:46:21 | [post] access to field Box1 [Elem] : Elem | G.cs:46:9:46:16 | [post] access to field boxfield [Box1, Elem] |
-| G.cs:46:30:46:30 | access to local variable e : Elem | G.cs:46:9:46:21 | [post] access to field Box1 [Elem] : Elem |
-| G.cs:47:9:47:13 | this access [boxfield, Box1, ... (3)] | G.cs:50:18:50:20 | this [boxfield, Box1, ... (3)] |
-| G.cs:50:18:50:20 | this [boxfield, Box1, ... (3)] | G.cs:52:14:52:21 | this access [boxfield, Box1, ... (3)] |
-| G.cs:52:14:52:21 | access to field boxfield [Box1, Elem] | G.cs:52:14:52:26 | access to field Box1 [Elem] : Elem |
-| G.cs:52:14:52:21 | this access [boxfield, Box1, ... (3)] | G.cs:52:14:52:21 | access to field boxfield [Box1, Elem] |
-| G.cs:52:14:52:26 | access to field Box1 [Elem] : Elem | G.cs:52:14:52:31 | access to field Elem |
-| H.cs:23:9:23:9 | [post] access to local variable a [FieldA] : Object | H.cs:24:27:24:27 | access to local variable a [FieldA] : Object |
-| H.cs:23:20:23:31 | object creation of type Object : Object | H.cs:23:9:23:9 | [post] access to local variable a [FieldA] : Object |
-| H.cs:24:21:24:28 | call to method Clone [FieldA] : Object | H.cs:25:14:25:18 | access to local variable clone [FieldA] : Object |
-| H.cs:24:27:24:27 | access to local variable a [FieldA] : Object | H.cs:24:21:24:28 | call to method Clone [FieldA] : Object |
-| H.cs:25:14:25:18 | access to local variable clone [FieldA] : Object | H.cs:25:14:25:25 | access to field FieldA |
-| H.cs:43:9:43:9 | [post] access to local variable a [FieldA] : Object | H.cs:44:27:44:27 | access to local variable a [FieldA] : Object |
-| H.cs:43:20:43:31 | object creation of type Object : Object | H.cs:43:9:43:9 | [post] access to local variable a [FieldA] : Object |
-| H.cs:44:17:44:28 | call to method Transform [FieldB] : Object | H.cs:45:14:45:14 | access to local variable b [FieldB] : Object |
-| H.cs:44:27:44:27 | access to local variable a [FieldA] : Object | H.cs:44:17:44:28 | call to method Transform [FieldB] : Object |
-| H.cs:45:14:45:14 | access to local variable b [FieldB] : Object | H.cs:45:14:45:21 | access to field FieldB |
-| H.cs:63:9:63:9 | [post] access to local variable a [FieldA] : Object | H.cs:64:22:64:22 | access to local variable a [FieldA] : Object |
-| H.cs:63:20:63:31 | object creation of type Object : Object | H.cs:63:9:63:9 | [post] access to local variable a [FieldA] : Object |
-| H.cs:64:22:64:22 | access to local variable a [FieldA] : Object | H.cs:64:25:64:26 | [post] access to local variable b1 [FieldB] : Object |
-| H.cs:64:25:64:26 | [post] access to local variable b1 [FieldB] : Object | H.cs:65:14:65:15 | access to local variable b1 [FieldB] : Object |
-| H.cs:65:14:65:15 | access to local variable b1 [FieldB] : Object | H.cs:65:14:65:22 | access to field FieldB |
-| H.cs:88:17:88:17 | [post] access to local variable a [FieldA] : Object | H.cs:89:14:89:14 | access to local variable a [FieldA] : Object |
-| H.cs:88:20:88:31 | object creation of type Object : Object | H.cs:88:17:88:17 | [post] access to local variable a [FieldA] : Object |
-| H.cs:88:20:88:31 | object creation of type Object : Object | H.cs:88:34:88:35 | [post] access to local variable b1 [FieldB] : Object |
-| H.cs:88:34:88:35 | [post] access to local variable b1 [FieldB] : Object | H.cs:90:14:90:15 | access to local variable b1 [FieldB] : Object |
-| H.cs:89:14:89:14 | access to local variable a [FieldA] : Object | H.cs:89:14:89:21 | access to field FieldA |
-| H.cs:90:14:90:15 | access to local variable b1 [FieldB] : Object | H.cs:90:14:90:22 | access to field FieldB |
-| H.cs:112:9:112:9 | [post] access to local variable a [FieldA] : Object | H.cs:113:31:113:31 | access to local variable a [FieldA] : Object |
-| H.cs:112:20:112:31 | object creation of type Object : Object | H.cs:112:9:112:9 | [post] access to local variable a [FieldA] : Object |
-| H.cs:113:17:113:32 | call to method TransformWrap [FieldB] : Object | H.cs:114:14:114:14 | access to local variable b [FieldB] : Object |
-| H.cs:113:31:113:31 | access to local variable a [FieldA] : Object | H.cs:113:17:113:32 | call to method TransformWrap [FieldB] : Object |
-| H.cs:114:14:114:14 | access to local variable b [FieldB] : Object | H.cs:114:14:114:21 | access to field FieldB |
-| H.cs:130:9:130:9 | [post] access to local variable a [FieldA] : Object | H.cs:131:18:131:18 | access to local variable a [FieldA] : Object |
-| H.cs:130:20:130:31 | object creation of type Object : Object | H.cs:130:9:130:9 | [post] access to local variable a [FieldA] : Object |
-| H.cs:131:18:131:18 | access to local variable a [FieldA] : Object | H.cs:131:14:131:19 | call to method Get |
+| G.cs:46:9:46:16 | [post] access to field boxfield [field Box1, field Elem] : Elem | G.cs:46:9:46:16 | [post] this access [field boxfield, field Box1, field Elem] : Elem |
+| G.cs:46:9:46:16 | [post] this access [field boxfield, field Box1, field Elem] : Elem | G.cs:47:9:47:13 | this access [field boxfield, field Box1, field Elem] : Elem |
+| G.cs:46:9:46:21 | [post] access to field Box1 [field Elem] : Elem | G.cs:46:9:46:16 | [post] access to field boxfield [field Box1, field Elem] : Elem |
+| G.cs:46:30:46:30 | access to local variable e : Elem | G.cs:46:9:46:21 | [post] access to field Box1 [field Elem] : Elem |
+| G.cs:47:9:47:13 | this access [field boxfield, field Box1, field Elem] : Elem | G.cs:50:18:50:20 | this [field boxfield, field Box1, field Elem] : Elem |
+| G.cs:50:18:50:20 | this [field boxfield, field Box1, field Elem] : Elem | G.cs:52:14:52:21 | this access [field boxfield, field Box1, field Elem] : Elem |
+| G.cs:52:14:52:21 | access to field boxfield [field Box1, field Elem] : Elem | G.cs:52:14:52:26 | access to field Box1 [field Elem] : Elem |
+| G.cs:52:14:52:21 | this access [field boxfield, field Box1, field Elem] : Elem | G.cs:52:14:52:21 | access to field boxfield [field Box1, field Elem] : Elem |
+| G.cs:52:14:52:26 | access to field Box1 [field Elem] : Elem | G.cs:52:14:52:31 | access to field Elem |
+| H.cs:23:9:23:9 | [post] access to local variable a [field FieldA] : Object | H.cs:24:27:24:27 | access to local variable a [field FieldA] : Object |
+| H.cs:23:20:23:31 | object creation of type Object : Object | H.cs:23:9:23:9 | [post] access to local variable a [field FieldA] : Object |
+| H.cs:24:21:24:28 | call to method Clone [field FieldA] : Object | H.cs:25:14:25:18 | access to local variable clone [field FieldA] : Object |
+| H.cs:24:27:24:27 | access to local variable a [field FieldA] : Object | H.cs:24:21:24:28 | call to method Clone [field FieldA] : Object |
+| H.cs:25:14:25:18 | access to local variable clone [field FieldA] : Object | H.cs:25:14:25:25 | access to field FieldA |
+| H.cs:43:9:43:9 | [post] access to local variable a [field FieldA] : Object | H.cs:44:27:44:27 | access to local variable a [field FieldA] : Object |
+| H.cs:43:20:43:31 | object creation of type Object : Object | H.cs:43:9:43:9 | [post] access to local variable a [field FieldA] : Object |
+| H.cs:44:17:44:28 | call to method Transform [field FieldB] : Object | H.cs:45:14:45:14 | access to local variable b [field FieldB] : Object |
+| H.cs:44:27:44:27 | access to local variable a [field FieldA] : Object | H.cs:44:17:44:28 | call to method Transform [field FieldB] : Object |
+| H.cs:45:14:45:14 | access to local variable b [field FieldB] : Object | H.cs:45:14:45:21 | access to field FieldB |
+| H.cs:63:9:63:9 | [post] access to local variable a [field FieldA] : Object | H.cs:64:22:64:22 | access to local variable a [field FieldA] : Object |
+| H.cs:63:20:63:31 | object creation of type Object : Object | H.cs:63:9:63:9 | [post] access to local variable a [field FieldA] : Object |
+| H.cs:64:22:64:22 | access to local variable a [field FieldA] : Object | H.cs:64:25:64:26 | [post] access to local variable b1 [field FieldB] : Object |
+| H.cs:64:25:64:26 | [post] access to local variable b1 [field FieldB] : Object | H.cs:65:14:65:15 | access to local variable b1 [field FieldB] : Object |
+| H.cs:65:14:65:15 | access to local variable b1 [field FieldB] : Object | H.cs:65:14:65:22 | access to field FieldB |
+| H.cs:88:17:88:17 | [post] access to local variable a [field FieldA] : Object | H.cs:89:14:89:14 | access to local variable a [field FieldA] : Object |
+| H.cs:88:20:88:31 | object creation of type Object : Object | H.cs:88:17:88:17 | [post] access to local variable a [field FieldA] : Object |
+| H.cs:88:20:88:31 | object creation of type Object : Object | H.cs:88:34:88:35 | [post] access to local variable b1 [field FieldB] : Object |
+| H.cs:88:34:88:35 | [post] access to local variable b1 [field FieldB] : Object | H.cs:90:14:90:15 | access to local variable b1 [field FieldB] : Object |
+| H.cs:89:14:89:14 | access to local variable a [field FieldA] : Object | H.cs:89:14:89:21 | access to field FieldA |
+| H.cs:90:14:90:15 | access to local variable b1 [field FieldB] : Object | H.cs:90:14:90:22 | access to field FieldB |
+| H.cs:112:9:112:9 | [post] access to local variable a [field FieldA] : Object | H.cs:113:31:113:31 | access to local variable a [field FieldA] : Object |
+| H.cs:112:20:112:31 | object creation of type Object : Object | H.cs:112:9:112:9 | [post] access to local variable a [field FieldA] : Object |
+| H.cs:113:17:113:32 | call to method TransformWrap [field FieldB] : Object | H.cs:114:14:114:14 | access to local variable b [field FieldB] : Object |
+| H.cs:113:31:113:31 | access to local variable a [field FieldA] : Object | H.cs:113:17:113:32 | call to method TransformWrap [field FieldB] : Object |
+| H.cs:114:14:114:14 | access to local variable b [field FieldB] : Object | H.cs:114:14:114:21 | access to field FieldB |
+| H.cs:130:9:130:9 | [post] access to local variable a [field FieldA] : Object | H.cs:131:18:131:18 | access to local variable a [field FieldA] : Object |
+| H.cs:130:20:130:31 | object creation of type Object : Object | H.cs:130:9:130:9 | [post] access to local variable a [field FieldA] : Object |
+| H.cs:131:18:131:18 | access to local variable a [field FieldA] : Object | H.cs:131:14:131:19 | call to method Get |
 | H.cs:147:17:147:32 | call to method Through : A | H.cs:148:14:148:14 | access to local variable a |
 | H.cs:147:25:147:31 | object creation of type A : A | H.cs:147:17:147:32 | call to method Through : A |
 | H.cs:155:17:155:23 | object creation of type B : B | H.cs:156:9:156:9 | access to local variable b : B |
 | H.cs:156:9:156:9 | access to local variable b : B | H.cs:157:20:157:20 | access to local variable b : B |
-| H.cs:157:9:157:9 | [post] access to parameter a [FieldA] : B | H.cs:164:19:164:19 | [post] access to local variable a [FieldA] : B |
-| H.cs:157:20:157:20 | access to local variable b : B | H.cs:157:9:157:9 | [post] access to parameter a [FieldA] : B |
+| H.cs:157:9:157:9 | [post] access to parameter a [field FieldA] : B | H.cs:164:19:164:19 | [post] access to local variable a [field FieldA] : B |
+| H.cs:157:20:157:20 | access to local variable b : B | H.cs:157:9:157:9 | [post] access to parameter a [field FieldA] : B |
 | H.cs:163:17:163:28 | object creation of type Object : Object | H.cs:164:22:164:22 | access to local variable o : Object |
-| H.cs:164:19:164:19 | [post] access to local variable a [FieldA, FieldB] | H.cs:165:21:165:21 | access to local variable a [FieldA, FieldB] |
-| H.cs:164:19:164:19 | [post] access to local variable a [FieldA] : B | H.cs:165:21:165:21 | access to local variable a [FieldA] : B |
-| H.cs:164:22:164:22 | access to local variable o : Object | H.cs:164:19:164:19 | [post] access to local variable a [FieldA, FieldB] |
+| H.cs:164:19:164:19 | [post] access to local variable a [field FieldA, field FieldB] : Object | H.cs:165:21:165:21 | access to local variable a [field FieldA, field FieldB] : Object |
+| H.cs:164:19:164:19 | [post] access to local variable a [field FieldA] : B | H.cs:165:21:165:21 | access to local variable a [field FieldA] : B |
+| H.cs:164:22:164:22 | access to local variable o : Object | H.cs:164:19:164:19 | [post] access to local variable a [field FieldA, field FieldB] : Object |
 | H.cs:165:17:165:28 | (...) ... : B | H.cs:166:14:166:14 | access to local variable b |
-| H.cs:165:17:165:28 | (...) ... [FieldB] : Object | H.cs:167:14:167:14 | access to local variable b [FieldB] : Object |
-| H.cs:165:21:165:21 | access to local variable a [FieldA, FieldB] | H.cs:165:21:165:28 | access to field FieldA [FieldB] : Object |
-| H.cs:165:21:165:21 | access to local variable a [FieldA] : B | H.cs:165:21:165:28 | access to field FieldA : B |
+| H.cs:165:17:165:28 | (...) ... [field FieldB] : Object | H.cs:167:14:167:14 | access to local variable b [field FieldB] : Object |
+| H.cs:165:21:165:21 | access to local variable a [field FieldA, field FieldB] : Object | H.cs:165:21:165:28 | access to field FieldA [field FieldB] : Object |
+| H.cs:165:21:165:21 | access to local variable a [field FieldA] : B | H.cs:165:21:165:28 | access to field FieldA : B |
 | H.cs:165:21:165:28 | access to field FieldA : B | H.cs:165:17:165:28 | (...) ... : B |
-| H.cs:165:21:165:28 | access to field FieldA [FieldB] : Object | H.cs:165:17:165:28 | (...) ... [FieldB] : Object |
-| H.cs:167:14:167:14 | access to local variable b [FieldB] : Object | H.cs:167:14:167:21 | access to field FieldB |
-| I.cs:7:9:7:14 | [post] this access [Field1] : Object | I.cs:21:13:21:19 | object creation of type I [Field1] : Object |
-| I.cs:7:9:7:14 | [post] this access [Field1] : Object | I.cs:26:13:26:37 | [pre-initializer] object creation of type I [Field1] : Object |
-| I.cs:7:18:7:29 | object creation of type Object : Object | I.cs:7:9:7:14 | [post] this access [Field1] : Object |
+| H.cs:165:21:165:28 | access to field FieldA [field FieldB] : Object | H.cs:165:17:165:28 | (...) ... [field FieldB] : Object |
+| H.cs:167:14:167:14 | access to local variable b [field FieldB] : Object | H.cs:167:14:167:21 | access to field FieldB |
+| I.cs:7:9:7:14 | [post] this access [field Field1] : Object | I.cs:21:13:21:19 | object creation of type I [field Field1] : Object |
+| I.cs:7:9:7:14 | [post] this access [field Field1] : Object | I.cs:26:13:26:37 | [pre-initializer] object creation of type I [field Field1] : Object |
+| I.cs:7:18:7:29 | object creation of type Object : Object | I.cs:7:9:7:14 | [post] this access [field Field1] : Object |
 | I.cs:13:17:13:28 | object creation of type Object : Object | I.cs:15:20:15:20 | access to local variable o : Object |
-| I.cs:15:9:15:9 | [post] access to local variable i [Field1] : Object | I.cs:16:9:16:9 | access to local variable i [Field1] : Object |
-| I.cs:15:20:15:20 | access to local variable o : Object | I.cs:15:9:15:9 | [post] access to local variable i [Field1] : Object |
-| I.cs:16:9:16:9 | access to local variable i [Field1] : Object | I.cs:17:9:17:9 | access to local variable i [Field1] : Object |
-| I.cs:17:9:17:9 | access to local variable i [Field1] : Object | I.cs:18:14:18:14 | access to local variable i [Field1] : Object |
-| I.cs:18:14:18:14 | access to local variable i [Field1] : Object | I.cs:18:14:18:21 | access to field Field1 |
-| I.cs:21:13:21:19 | object creation of type I [Field1] : Object | I.cs:22:9:22:9 | access to local variable i [Field1] : Object |
-| I.cs:22:9:22:9 | access to local variable i [Field1] : Object | I.cs:23:14:23:14 | access to local variable i [Field1] : Object |
-| I.cs:23:14:23:14 | access to local variable i [Field1] : Object | I.cs:23:14:23:21 | access to field Field1 |
-| I.cs:26:13:26:37 | [pre-initializer] object creation of type I [Field1] : Object | I.cs:27:14:27:14 | access to local variable i [Field1] : Object |
-| I.cs:27:14:27:14 | access to local variable i [Field1] : Object | I.cs:27:14:27:21 | access to field Field1 |
+| I.cs:15:9:15:9 | [post] access to local variable i [field Field1] : Object | I.cs:16:9:16:9 | access to local variable i [field Field1] : Object |
+| I.cs:15:20:15:20 | access to local variable o : Object | I.cs:15:9:15:9 | [post] access to local variable i [field Field1] : Object |
+| I.cs:16:9:16:9 | access to local variable i [field Field1] : Object | I.cs:17:9:17:9 | access to local variable i [field Field1] : Object |
+| I.cs:17:9:17:9 | access to local variable i [field Field1] : Object | I.cs:18:14:18:14 | access to local variable i [field Field1] : Object |
+| I.cs:18:14:18:14 | access to local variable i [field Field1] : Object | I.cs:18:14:18:21 | access to field Field1 |
+| I.cs:21:13:21:19 | object creation of type I [field Field1] : Object | I.cs:22:9:22:9 | access to local variable i [field Field1] : Object |
+| I.cs:22:9:22:9 | access to local variable i [field Field1] : Object | I.cs:23:14:23:14 | access to local variable i [field Field1] : Object |
+| I.cs:23:14:23:14 | access to local variable i [field Field1] : Object | I.cs:23:14:23:21 | access to field Field1 |
+| I.cs:26:13:26:37 | [pre-initializer] object creation of type I [field Field1] : Object | I.cs:27:14:27:14 | access to local variable i [field Field1] : Object |
+| I.cs:27:14:27:14 | access to local variable i [field Field1] : Object | I.cs:27:14:27:21 | access to field Field1 |
 | I.cs:31:13:31:24 | object creation of type Object : Object | I.cs:32:20:32:20 | access to local variable o : Object |
-| I.cs:32:9:32:9 | [post] access to local variable i [Field1] : Object | I.cs:33:9:33:9 | access to local variable i [Field1] : Object |
-| I.cs:32:20:32:20 | access to local variable o : Object | I.cs:32:9:32:9 | [post] access to local variable i [Field1] : Object |
-| I.cs:33:9:33:9 | access to local variable i [Field1] : Object | I.cs:34:12:34:12 | access to local variable i [Field1] : Object |
-| I.cs:34:12:34:12 | access to local variable i [Field1] : Object | I.cs:37:23:37:23 | i [Field1] : Object |
-| I.cs:37:23:37:23 | i [Field1] : Object | I.cs:39:9:39:9 | access to parameter i [Field1] : Object |
-| I.cs:39:9:39:9 | access to parameter i [Field1] : Object | I.cs:40:14:40:14 | access to parameter i [Field1] : Object |
-| I.cs:40:14:40:14 | access to parameter i [Field1] : Object | I.cs:40:14:40:21 | access to field Field1 |
+| I.cs:32:9:32:9 | [post] access to local variable i [field Field1] : Object | I.cs:33:9:33:9 | access to local variable i [field Field1] : Object |
+| I.cs:32:20:32:20 | access to local variable o : Object | I.cs:32:9:32:9 | [post] access to local variable i [field Field1] : Object |
+| I.cs:33:9:33:9 | access to local variable i [field Field1] : Object | I.cs:34:12:34:12 | access to local variable i [field Field1] : Object |
+| I.cs:34:12:34:12 | access to local variable i [field Field1] : Object | I.cs:37:23:37:23 | i [field Field1] : Object |
+| I.cs:37:23:37:23 | i [field Field1] : Object | I.cs:39:9:39:9 | access to parameter i [field Field1] : Object |
+| I.cs:39:9:39:9 | access to parameter i [field Field1] : Object | I.cs:40:14:40:14 | access to parameter i [field Field1] : Object |
+| I.cs:40:14:40:14 | access to parameter i [field Field1] : Object | I.cs:40:14:40:21 | access to field Field1 |
+| J.cs:12:17:12:28 | object creation of type Object : Object | J.cs:13:29:13:29 | access to local variable o : Object |
+| J.cs:12:17:12:28 | object creation of type Object : Object | J.cs:21:36:21:36 | access to local variable o : Object |
+| J.cs:13:18:13:36 | object creation of type Record [property Prop1] : Object | J.cs:14:14:14:15 | access to local variable r1 [property Prop1] : Object |
+| J.cs:13:18:13:36 | object creation of type Record [property Prop1] : Object | J.cs:18:14:18:15 | access to local variable r2 [property Prop1] : Object |
+| J.cs:13:18:13:36 | object creation of type Record [property Prop1] : Object | J.cs:22:14:22:15 | access to local variable r3 [property Prop1] : Object |
+| J.cs:13:29:13:29 | access to local variable o : Object | J.cs:13:18:13:36 | object creation of type Record [property Prop1] : Object |
+| J.cs:14:14:14:15 | access to local variable r1 [property Prop1] : Object | J.cs:14:14:14:21 | access to property Prop1 |
+| J.cs:18:14:18:15 | access to local variable r2 [property Prop1] : Object | J.cs:18:14:18:21 | access to property Prop1 |
+| J.cs:21:18:21:38 | ... with { ... } [property Prop2] : Object | J.cs:23:14:23:15 | access to local variable r3 [property Prop2] : Object |
+| J.cs:21:36:21:36 | access to local variable o : Object | J.cs:21:18:21:38 | ... with { ... } [property Prop2] : Object |
+| J.cs:22:14:22:15 | access to local variable r3 [property Prop1] : Object | J.cs:22:14:22:21 | access to property Prop1 |
+| J.cs:23:14:23:15 | access to local variable r3 [property Prop2] : Object | J.cs:23:14:23:21 | access to property Prop2 |
 nodes
 | A.cs:5:17:5:23 | object creation of type C : C | semmle.label | object creation of type C : C |
-| A.cs:6:17:6:25 | call to method Make [c] : C | semmle.label | call to method Make [c] : C |
+| A.cs:6:17:6:25 | call to method Make [field c] : C | semmle.label | call to method Make [field c] : C |
 | A.cs:6:24:6:24 | access to local variable c : C | semmle.label | access to local variable c : C |
-| A.cs:7:14:7:14 | access to local variable b [c] : C | semmle.label | access to local variable b [c] : C |
+| A.cs:7:14:7:14 | access to local variable b [field c] : C | semmle.label | access to local variable b [field c] : C |
 | A.cs:7:14:7:16 | access to field c | semmle.label | access to field c |
-| A.cs:13:9:13:9 | [post] access to local variable b [c] : C1 | semmle.label | [post] access to local variable b [c] : C1 |
+| A.cs:13:9:13:9 | [post] access to local variable b [field c] : C1 | semmle.label | [post] access to local variable b [field c] : C1 |
 | A.cs:13:15:13:22 | object creation of type C1 : C1 | semmle.label | object creation of type C1 : C1 |
-| A.cs:14:14:14:14 | access to local variable b [c] : C1 | semmle.label | access to local variable b [c] : C1 |
+| A.cs:14:14:14:14 | access to local variable b [field c] : C1 | semmle.label | access to local variable b [field c] : C1 |
 | A.cs:14:14:14:20 | call to method Get | semmle.label | call to method Get |
 | A.cs:15:14:15:35 | call to method Get | semmle.label | call to method Get |
-| A.cs:15:15:15:28 | object creation of type B [c] : C | semmle.label | object creation of type B [c] : C |
+| A.cs:15:15:15:28 | object creation of type B [field c] : C | semmle.label | object creation of type B [field c] : C |
 | A.cs:15:21:15:27 | object creation of type C : C | semmle.label | object creation of type C : C |
-| A.cs:22:14:22:33 | call to method SetOnB [c] : C2 | semmle.label | call to method SetOnB [c] : C2 |
+| A.cs:22:14:22:33 | call to method SetOnB [field c] : C2 | semmle.label | call to method SetOnB [field c] : C2 |
 | A.cs:22:25:22:32 | object creation of type C2 : C2 | semmle.label | object creation of type C2 : C2 |
-| A.cs:24:14:24:15 | access to local variable b2 [c] : C2 | semmle.label | access to local variable b2 [c] : C2 |
+| A.cs:24:14:24:15 | access to local variable b2 [field c] : C2 | semmle.label | access to local variable b2 [field c] : C2 |
 | A.cs:24:14:24:17 | access to field c | semmle.label | access to field c |
-| A.cs:31:14:31:37 | call to method SetOnBWrap [c] : C2 | semmle.label | call to method SetOnBWrap [c] : C2 |
+| A.cs:31:14:31:37 | call to method SetOnBWrap [field c] : C2 | semmle.label | call to method SetOnBWrap [field c] : C2 |
 | A.cs:31:29:31:36 | object creation of type C2 : C2 | semmle.label | object creation of type C2 : C2 |
-| A.cs:33:14:33:15 | access to local variable b2 [c] : C2 | semmle.label | access to local variable b2 [c] : C2 |
+| A.cs:33:14:33:15 | access to local variable b2 [field c] : C2 | semmle.label | access to local variable b2 [field c] : C2 |
 | A.cs:33:14:33:17 | access to field c | semmle.label | access to field c |
 | A.cs:55:17:55:23 | object creation of type A : A | semmle.label | object creation of type A : A |
-| A.cs:57:9:57:10 | [post] access to local variable c1 [a] : A | semmle.label | [post] access to local variable c1 [a] : A |
+| A.cs:57:9:57:10 | [post] access to local variable c1 [field a] : A | semmle.label | [post] access to local variable c1 [field a] : A |
 | A.cs:57:16:57:16 | access to local variable a : A | semmle.label | access to local variable a : A |
-| A.cs:58:12:58:13 | access to local variable c1 [a] : A | semmle.label | access to local variable c1 [a] : A |
-| A.cs:60:22:60:22 | c [a] : A | semmle.label | c [a] : A |
+| A.cs:58:12:58:13 | access to local variable c1 [field a] : A | semmle.label | access to local variable c1 [field a] : A |
+| A.cs:60:22:60:22 | c [field a] : A | semmle.label | c [field a] : A |
 | A.cs:64:18:64:26 | access to field a | semmle.label | access to field a |
-| A.cs:64:19:64:23 | (...) ... [a] : A | semmle.label | (...) ... [a] : A |
-| A.cs:83:9:83:9 | [post] access to parameter b [c] : C | semmle.label | [post] access to parameter b [c] : C |
+| A.cs:64:19:64:23 | (...) ... [field a] : A | semmle.label | (...) ... [field a] : A |
+| A.cs:83:9:83:9 | [post] access to parameter b [field c] : C | semmle.label | [post] access to parameter b [field c] : C |
 | A.cs:83:15:83:21 | object creation of type C : C | semmle.label | object creation of type C : C |
-| A.cs:88:12:88:12 | [post] access to local variable b [c] : C | semmle.label | [post] access to local variable b [c] : C |
-| A.cs:89:14:89:14 | access to local variable b [c] : C | semmle.label | access to local variable b [c] : C |
+| A.cs:88:12:88:12 | [post] access to local variable b [field c] : C | semmle.label | [post] access to local variable b [field c] : C |
+| A.cs:89:14:89:14 | access to local variable b [field c] : C | semmle.label | access to local variable b [field c] : C |
 | A.cs:89:14:89:16 | access to field c | semmle.label | access to field c |
-| A.cs:97:13:97:13 | [post] access to parameter b [c] : C | semmle.label | [post] access to parameter b [c] : C |
+| A.cs:97:13:97:13 | [post] access to parameter b [field c] : C | semmle.label | [post] access to parameter b [field c] : C |
 | A.cs:97:19:97:25 | object creation of type C : C | semmle.label | object creation of type C : C |
-| A.cs:98:13:98:16 | [post] this access [b, c] | semmle.label | [post] this access [b, c] |
-| A.cs:98:13:98:16 | [post] this access [b] : B | semmle.label | [post] this access [b] : B |
+| A.cs:98:13:98:16 | [post] this access [field b, field c] : C | semmle.label | [post] this access [field b, field c] : C |
+| A.cs:98:13:98:16 | [post] this access [field b] : B | semmle.label | [post] this access [field b] : B |
 | A.cs:98:22:98:36 | ... ? ... : ... : B | semmle.label | ... ? ... : ... : B |
-| A.cs:98:22:98:36 | ... ? ... : ... [c] : C | semmle.label | ... ? ... : ... [c] : C |
+| A.cs:98:22:98:36 | ... ? ... : ... [field c] : C | semmle.label | ... ? ... : ... [field c] : C |
 | A.cs:98:30:98:36 | object creation of type B : B | semmle.label | object creation of type B : B |
 | A.cs:104:17:104:23 | object creation of type B : B | semmle.label | object creation of type B : B |
-| A.cs:105:17:105:29 | object creation of type D [b, c] | semmle.label | object creation of type D [b, c] |
-| A.cs:105:17:105:29 | object creation of type D [b] : B | semmle.label | object creation of type D [b] : B |
-| A.cs:105:23:105:23 | [post] access to local variable b [c] : C | semmle.label | [post] access to local variable b [c] : C |
+| A.cs:105:17:105:29 | object creation of type D [field b, field c] : C | semmle.label | object creation of type D [field b, field c] : C |
+| A.cs:105:17:105:29 | object creation of type D [field b] : B | semmle.label | object creation of type D [field b] : B |
+| A.cs:105:23:105:23 | [post] access to local variable b [field c] : C | semmle.label | [post] access to local variable b [field c] : C |
 | A.cs:105:23:105:23 | access to local variable b : B | semmle.label | access to local variable b : B |
-| A.cs:106:14:106:14 | access to local variable d [b] : B | semmle.label | access to local variable d [b] : B |
+| A.cs:106:14:106:14 | access to local variable d [field b] : B | semmle.label | access to local variable d [field b] : B |
 | A.cs:106:14:106:16 | access to field b | semmle.label | access to field b |
-| A.cs:107:14:107:14 | access to local variable d [b, c] | semmle.label | access to local variable d [b, c] |
-| A.cs:107:14:107:16 | access to field b [c] : C | semmle.label | access to field b [c] : C |
+| A.cs:107:14:107:14 | access to local variable d [field b, field c] : C | semmle.label | access to local variable d [field b, field c] : C |
+| A.cs:107:14:107:16 | access to field b [field c] : C | semmle.label | access to field b [field c] : C |
 | A.cs:107:14:107:18 | access to field c | semmle.label | access to field c |
-| A.cs:108:14:108:14 | access to local variable b [c] : C | semmle.label | access to local variable b [c] : C |
+| A.cs:108:14:108:14 | access to local variable b [field c] : C | semmle.label | access to local variable b [field c] : C |
 | A.cs:108:14:108:16 | access to field c | semmle.label | access to field c |
 | A.cs:113:17:113:23 | object creation of type B : B | semmle.label | object creation of type B : B |
-| A.cs:114:18:114:54 | object creation of type MyList [head] : B | semmle.label | object creation of type MyList [head] : B |
+| A.cs:114:18:114:54 | object creation of type MyList [field head] : B | semmle.label | object creation of type MyList [field head] : B |
 | A.cs:114:29:114:29 | access to local variable b : B | semmle.label | access to local variable b : B |
-| A.cs:115:18:115:37 | object creation of type MyList [next, head] | semmle.label | object creation of type MyList [next, head] |
-| A.cs:115:35:115:36 | access to local variable l1 [head] : B | semmle.label | access to local variable l1 [head] : B |
-| A.cs:116:18:116:37 | object creation of type MyList [next, next, ... (3)] | semmle.label | object creation of type MyList [next, next, ... (3)] |
-| A.cs:116:35:116:36 | access to local variable l2 [next, head] | semmle.label | access to local variable l2 [next, head] |
-| A.cs:119:14:119:15 | access to local variable l3 [next, next, ... (3)] | semmle.label | access to local variable l3 [next, next, ... (3)] |
-| A.cs:119:14:119:20 | access to field next [next, head] | semmle.label | access to field next [next, head] |
-| A.cs:119:14:119:25 | access to field next [head] : B | semmle.label | access to field next [head] : B |
+| A.cs:115:18:115:37 | object creation of type MyList [field next, field head] : B | semmle.label | object creation of type MyList [field next, field head] : B |
+| A.cs:115:35:115:36 | access to local variable l1 [field head] : B | semmle.label | access to local variable l1 [field head] : B |
+| A.cs:116:18:116:37 | object creation of type MyList [field next, field next, field head] : B | semmle.label | object creation of type MyList [field next, field next, field head] : B |
+| A.cs:116:35:116:36 | access to local variable l2 [field next, field head] : B | semmle.label | access to local variable l2 [field next, field head] : B |
+| A.cs:119:14:119:15 | access to local variable l3 [field next, field next, field head] : B | semmle.label | access to local variable l3 [field next, field next, field head] : B |
+| A.cs:119:14:119:20 | access to field next [field next, field head] : B | semmle.label | access to field next [field next, field head] : B |
+| A.cs:119:14:119:25 | access to field next [field head] : B | semmle.label | access to field next [field head] : B |
 | A.cs:119:14:119:30 | access to field head | semmle.label | access to field head |
-| A.cs:121:41:121:41 | access to local variable l [next, head] | semmle.label | access to local variable l [next, head] |
-| A.cs:121:41:121:41 | access to local variable l [next, next, ... (3)] | semmle.label | access to local variable l [next, next, ... (3)] |
-| A.cs:121:41:121:46 | access to field next [head] : B | semmle.label | access to field next [head] : B |
-| A.cs:121:41:121:46 | access to field next [next, head] | semmle.label | access to field next [next, head] |
-| A.cs:123:18:123:18 | access to local variable l [head] : B | semmle.label | access to local variable l [head] : B |
+| A.cs:121:41:121:41 | access to local variable l [field next, field head] : B | semmle.label | access to local variable l [field next, field head] : B |
+| A.cs:121:41:121:41 | access to local variable l [field next, field next, field head] : B | semmle.label | access to local variable l [field next, field next, field head] : B |
+| A.cs:121:41:121:46 | access to field next [field head] : B | semmle.label | access to field next [field head] : B |
+| A.cs:121:41:121:46 | access to field next [field next, field head] : B | semmle.label | access to field next [field next, field head] : B |
+| A.cs:123:18:123:18 | access to local variable l [field head] : B | semmle.label | access to local variable l [field head] : B |
 | A.cs:123:18:123:23 | access to field head | semmle.label | access to field head |
 | B.cs:5:17:5:26 | object creation of type Elem : Elem | semmle.label | object creation of type Elem : Elem |
-| B.cs:6:18:6:34 | object creation of type Box1 [elem1] : Elem | semmle.label | object creation of type Box1 [elem1] : Elem |
+| B.cs:6:18:6:34 | object creation of type Box1 [field elem1] : Elem | semmle.label | object creation of type Box1 [field elem1] : Elem |
 | B.cs:6:27:6:27 | access to local variable e : Elem | semmle.label | access to local variable e : Elem |
-| B.cs:7:18:7:29 | object creation of type Box2 [box1, elem1] | semmle.label | object creation of type Box2 [box1, elem1] |
-| B.cs:7:27:7:28 | access to local variable b1 [elem1] : Elem | semmle.label | access to local variable b1 [elem1] : Elem |
-| B.cs:8:14:8:15 | access to local variable b2 [box1, elem1] | semmle.label | access to local variable b2 [box1, elem1] |
-| B.cs:8:14:8:20 | access to field box1 [elem1] : Elem | semmle.label | access to field box1 [elem1] : Elem |
+| B.cs:7:18:7:29 | object creation of type Box2 [field box1, field elem1] : Elem | semmle.label | object creation of type Box2 [field box1, field elem1] : Elem |
+| B.cs:7:27:7:28 | access to local variable b1 [field elem1] : Elem | semmle.label | access to local variable b1 [field elem1] : Elem |
+| B.cs:8:14:8:15 | access to local variable b2 [field box1, field elem1] : Elem | semmle.label | access to local variable b2 [field box1, field elem1] : Elem |
+| B.cs:8:14:8:20 | access to field box1 [field elem1] : Elem | semmle.label | access to field box1 [field elem1] : Elem |
 | B.cs:8:14:8:26 | access to field elem1 | semmle.label | access to field elem1 |
 | B.cs:14:17:14:26 | object creation of type Elem : Elem | semmle.label | object creation of type Elem : Elem |
-| B.cs:15:18:15:34 | object creation of type Box1 [elem2] : Elem | semmle.label | object creation of type Box1 [elem2] : Elem |
+| B.cs:15:18:15:34 | object creation of type Box1 [field elem2] : Elem | semmle.label | object creation of type Box1 [field elem2] : Elem |
 | B.cs:15:33:15:33 | access to local variable e : Elem | semmle.label | access to local variable e : Elem |
-| B.cs:16:18:16:29 | object creation of type Box2 [box1, elem2] | semmle.label | object creation of type Box2 [box1, elem2] |
-| B.cs:16:27:16:28 | access to local variable b1 [elem2] : Elem | semmle.label | access to local variable b1 [elem2] : Elem |
-| B.cs:18:14:18:15 | access to local variable b2 [box1, elem2] | semmle.label | access to local variable b2 [box1, elem2] |
-| B.cs:18:14:18:20 | access to field box1 [elem2] : Elem | semmle.label | access to field box1 [elem2] : Elem |
+| B.cs:16:18:16:29 | object creation of type Box2 [field box1, field elem2] : Elem | semmle.label | object creation of type Box2 [field box1, field elem2] : Elem |
+| B.cs:16:27:16:28 | access to local variable b1 [field elem2] : Elem | semmle.label | access to local variable b1 [field elem2] : Elem |
+| B.cs:18:14:18:15 | access to local variable b2 [field box1, field elem2] : Elem | semmle.label | access to local variable b2 [field box1, field elem2] : Elem |
+| B.cs:18:14:18:20 | access to field box1 [field elem2] : Elem | semmle.label | access to field box1 [field elem2] : Elem |
 | B.cs:18:14:18:26 | access to field elem2 | semmle.label | access to field elem2 |
-| C.cs:3:18:3:19 | [post] this access [s1] : Elem | semmle.label | [post] this access [s1] : Elem |
+| C.cs:3:18:3:19 | [post] this access [field s1] : Elem | semmle.label | [post] this access [field s1] : Elem |
 | C.cs:3:23:3:32 | object creation of type Elem : Elem | semmle.label | object creation of type Elem : Elem |
-| C.cs:4:27:4:28 | [post] this access [s2] : Elem | semmle.label | [post] this access [s2] : Elem |
+| C.cs:4:27:4:28 | [post] this access [field s2] : Elem | semmle.label | [post] this access [field s2] : Elem |
 | C.cs:4:32:4:41 | object creation of type Elem : Elem | semmle.label | object creation of type Elem : Elem |
 | C.cs:6:30:6:39 | object creation of type Elem : Elem | semmle.label | object creation of type Elem : Elem |
-| C.cs:7:18:7:19 | [post] this access [s5] : Elem | semmle.label | [post] this access [s5] : Elem |
+| C.cs:7:18:7:19 | [post] this access [property s5] : Elem | semmle.label | [post] this access [property s5] : Elem |
 | C.cs:7:37:7:46 | object creation of type Elem : Elem | semmle.label | object creation of type Elem : Elem |
 | C.cs:8:30:8:39 | object creation of type Elem : Elem | semmle.label | object creation of type Elem : Elem |
-| C.cs:12:15:12:21 | object creation of type C [s1] : Elem | semmle.label | object creation of type C [s1] : Elem |
-| C.cs:12:15:12:21 | object creation of type C [s2] : Elem | semmle.label | object creation of type C [s2] : Elem |
-| C.cs:12:15:12:21 | object creation of type C [s3] : Elem | semmle.label | object creation of type C [s3] : Elem |
-| C.cs:12:15:12:21 | object creation of type C [s5] : Elem | semmle.label | object creation of type C [s5] : Elem |
-| C.cs:13:9:13:9 | access to local variable c [s1] : Elem | semmle.label | access to local variable c [s1] : Elem |
-| C.cs:13:9:13:9 | access to local variable c [s2] : Elem | semmle.label | access to local variable c [s2] : Elem |
-| C.cs:13:9:13:9 | access to local variable c [s3] : Elem | semmle.label | access to local variable c [s3] : Elem |
-| C.cs:13:9:13:9 | access to local variable c [s5] : Elem | semmle.label | access to local variable c [s5] : Elem |
-| C.cs:18:9:18:12 | [post] this access [s3] : Elem | semmle.label | [post] this access [s3] : Elem |
+| C.cs:12:15:12:21 | object creation of type C [field s1] : Elem | semmle.label | object creation of type C [field s1] : Elem |
+| C.cs:12:15:12:21 | object creation of type C [field s2] : Elem | semmle.label | object creation of type C [field s2] : Elem |
+| C.cs:12:15:12:21 | object creation of type C [field s3] : Elem | semmle.label | object creation of type C [field s3] : Elem |
+| C.cs:12:15:12:21 | object creation of type C [property s5] : Elem | semmle.label | object creation of type C [property s5] : Elem |
+| C.cs:13:9:13:9 | access to local variable c [field s1] : Elem | semmle.label | access to local variable c [field s1] : Elem |
+| C.cs:13:9:13:9 | access to local variable c [field s2] : Elem | semmle.label | access to local variable c [field s2] : Elem |
+| C.cs:13:9:13:9 | access to local variable c [field s3] : Elem | semmle.label | access to local variable c [field s3] : Elem |
+| C.cs:13:9:13:9 | access to local variable c [property s5] : Elem | semmle.label | access to local variable c [property s5] : Elem |
+| C.cs:18:9:18:12 | [post] this access [field s3] : Elem | semmle.label | [post] this access [field s3] : Elem |
 | C.cs:18:19:18:28 | object creation of type Elem : Elem | semmle.label | object creation of type Elem : Elem |
-| C.cs:21:17:21:18 | this [s1] : Elem | semmle.label | this [s1] : Elem |
-| C.cs:21:17:21:18 | this [s2] : Elem | semmle.label | this [s2] : Elem |
-| C.cs:21:17:21:18 | this [s3] : Elem | semmle.label | this [s3] : Elem |
-| C.cs:21:17:21:18 | this [s5] : Elem | semmle.label | this [s5] : Elem |
+| C.cs:21:17:21:18 | this [field s1] : Elem | semmle.label | this [field s1] : Elem |
+| C.cs:21:17:21:18 | this [field s2] : Elem | semmle.label | this [field s2] : Elem |
+| C.cs:21:17:21:18 | this [field s3] : Elem | semmle.label | this [field s3] : Elem |
+| C.cs:21:17:21:18 | this [property s5] : Elem | semmle.label | this [property s5] : Elem |
 | C.cs:23:14:23:15 | access to field s1 | semmle.label | access to field s1 |
-| C.cs:23:14:23:15 | this access [s1] : Elem | semmle.label | this access [s1] : Elem |
+| C.cs:23:14:23:15 | this access [field s1] : Elem | semmle.label | this access [field s1] : Elem |
 | C.cs:24:14:24:15 | access to field s2 | semmle.label | access to field s2 |
-| C.cs:24:14:24:15 | this access [s2] : Elem | semmle.label | this access [s2] : Elem |
+| C.cs:24:14:24:15 | this access [field s2] : Elem | semmle.label | this access [field s2] : Elem |
 | C.cs:25:14:25:15 | access to field s3 | semmle.label | access to field s3 |
-| C.cs:25:14:25:15 | this access [s3] : Elem | semmle.label | this access [s3] : Elem |
+| C.cs:25:14:25:15 | this access [field s3] : Elem | semmle.label | this access [field s3] : Elem |
 | C.cs:26:14:26:15 | access to field s4 | semmle.label | access to field s4 |
 | C.cs:27:14:27:15 | access to property s5 | semmle.label | access to property s5 |
-| C.cs:27:14:27:15 | this access [s5] : Elem | semmle.label | this access [s5] : Elem |
+| C.cs:27:14:27:15 | this access [property s5] : Elem | semmle.label | this access [property s5] : Elem |
 | C.cs:28:14:28:15 | access to property s6 | semmle.label | access to property s6 |
 | D.cs:29:17:29:28 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
-| D.cs:31:17:31:37 | call to method Create [AutoProp] : Object | semmle.label | call to method Create [AutoProp] : Object |
+| D.cs:31:17:31:37 | call to method Create [property AutoProp] : Object | semmle.label | call to method Create [property AutoProp] : Object |
 | D.cs:31:24:31:24 | access to local variable o : Object | semmle.label | access to local variable o : Object |
-| D.cs:32:14:32:14 | access to local variable d [AutoProp] : Object | semmle.label | access to local variable d [AutoProp] : Object |
+| D.cs:32:14:32:14 | access to local variable d [property AutoProp] : Object | semmle.label | access to local variable d [property AutoProp] : Object |
 | D.cs:32:14:32:23 | access to property AutoProp | semmle.label | access to property AutoProp |
-| D.cs:37:13:37:33 | call to method Create [trivialPropField] : Object | semmle.label | call to method Create [trivialPropField] : Object |
+| D.cs:37:13:37:33 | call to method Create [field trivialPropField] : Object | semmle.label | call to method Create [field trivialPropField] : Object |
 | D.cs:37:26:37:26 | access to local variable o : Object | semmle.label | access to local variable o : Object |
-| D.cs:39:14:39:14 | access to local variable d [trivialPropField] : Object | semmle.label | access to local variable d [trivialPropField] : Object |
+| D.cs:39:14:39:14 | access to local variable d [field trivialPropField] : Object | semmle.label | access to local variable d [field trivialPropField] : Object |
 | D.cs:39:14:39:26 | access to property TrivialProp | semmle.label | access to property TrivialProp |
-| D.cs:40:14:40:14 | access to local variable d [trivialPropField] : Object | semmle.label | access to local variable d [trivialPropField] : Object |
+| D.cs:40:14:40:14 | access to local variable d [field trivialPropField] : Object | semmle.label | access to local variable d [field trivialPropField] : Object |
 | D.cs:40:14:40:31 | access to field trivialPropField | semmle.label | access to field trivialPropField |
-| D.cs:41:14:41:14 | access to local variable d [trivialPropField] : Object | semmle.label | access to local variable d [trivialPropField] : Object |
+| D.cs:41:14:41:14 | access to local variable d [field trivialPropField] : Object | semmle.label | access to local variable d [field trivialPropField] : Object |
 | D.cs:41:14:41:26 | access to property ComplexProp | semmle.label | access to property ComplexProp |
-| D.cs:43:13:43:33 | call to method Create [trivialPropField] : Object | semmle.label | call to method Create [trivialPropField] : Object |
+| D.cs:43:13:43:33 | call to method Create [field trivialPropField] : Object | semmle.label | call to method Create [field trivialPropField] : Object |
 | D.cs:43:32:43:32 | access to local variable o : Object | semmle.label | access to local variable o : Object |
-| D.cs:45:14:45:14 | access to local variable d [trivialPropField] : Object | semmle.label | access to local variable d [trivialPropField] : Object |
+| D.cs:45:14:45:14 | access to local variable d [field trivialPropField] : Object | semmle.label | access to local variable d [field trivialPropField] : Object |
 | D.cs:45:14:45:26 | access to property TrivialProp | semmle.label | access to property TrivialProp |
-| D.cs:46:14:46:14 | access to local variable d [trivialPropField] : Object | semmle.label | access to local variable d [trivialPropField] : Object |
+| D.cs:46:14:46:14 | access to local variable d [field trivialPropField] : Object | semmle.label | access to local variable d [field trivialPropField] : Object |
 | D.cs:46:14:46:31 | access to field trivialPropField | semmle.label | access to field trivialPropField |
-| D.cs:47:14:47:14 | access to local variable d [trivialPropField] : Object | semmle.label | access to local variable d [trivialPropField] : Object |
+| D.cs:47:14:47:14 | access to local variable d [field trivialPropField] : Object | semmle.label | access to local variable d [field trivialPropField] : Object |
 | D.cs:47:14:47:26 | access to property ComplexProp | semmle.label | access to property ComplexProp |
 | E.cs:22:17:22:28 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
-| E.cs:23:17:23:26 | call to method CreateS [Field] : Object | semmle.label | call to method CreateS [Field] : Object |
+| E.cs:23:17:23:26 | call to method CreateS [field Field] : Object | semmle.label | call to method CreateS [field Field] : Object |
 | E.cs:23:25:23:25 | access to local variable o : Object | semmle.label | access to local variable o : Object |
-| E.cs:24:14:24:14 | access to local variable s [Field] : Object | semmle.label | access to local variable s [Field] : Object |
+| E.cs:24:14:24:14 | access to local variable s [field Field] : Object | semmle.label | access to local variable s [field Field] : Object |
 | E.cs:24:14:24:20 | access to field Field | semmle.label | access to field Field |
 | F.cs:10:17:10:28 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
-| F.cs:11:17:11:31 | call to method Create [Field1] : Object | semmle.label | call to method Create [Field1] : Object |
+| F.cs:11:17:11:31 | call to method Create [field Field1] : Object | semmle.label | call to method Create [field Field1] : Object |
 | F.cs:11:24:11:24 | access to local variable o : Object | semmle.label | access to local variable o : Object |
-| F.cs:12:14:12:14 | access to local variable f [Field1] : Object | semmle.label | access to local variable f [Field1] : Object |
+| F.cs:12:14:12:14 | access to local variable f [field Field1] : Object | semmle.label | access to local variable f [field Field1] : Object |
 | F.cs:12:14:12:21 | access to field Field1 | semmle.label | access to field Field1 |
-| F.cs:15:13:15:27 | call to method Create [Field2] : Object | semmle.label | call to method Create [Field2] : Object |
+| F.cs:15:13:15:27 | call to method Create [field Field2] : Object | semmle.label | call to method Create [field Field2] : Object |
 | F.cs:15:26:15:26 | access to local variable o : Object | semmle.label | access to local variable o : Object |
-| F.cs:17:14:17:14 | access to local variable f [Field2] : Object | semmle.label | access to local variable f [Field2] : Object |
+| F.cs:17:14:17:14 | access to local variable f [field Field2] : Object | semmle.label | access to local variable f [field Field2] : Object |
 | F.cs:17:14:17:21 | access to field Field2 | semmle.label | access to field Field2 |
-| F.cs:19:21:19:34 | { ..., ... } [Field1] : Object | semmle.label | { ..., ... } [Field1] : Object |
+| F.cs:19:21:19:34 | { ..., ... } [field Field1] : Object | semmle.label | { ..., ... } [field Field1] : Object |
 | F.cs:19:32:19:32 | access to local variable o : Object | semmle.label | access to local variable o : Object |
-| F.cs:20:14:20:14 | access to local variable f [Field1] : Object | semmle.label | access to local variable f [Field1] : Object |
+| F.cs:20:14:20:14 | access to local variable f [field Field1] : Object | semmle.label | access to local variable f [field Field1] : Object |
 | F.cs:20:14:20:21 | access to field Field1 | semmle.label | access to field Field1 |
-| F.cs:23:21:23:34 | { ..., ... } [Field2] : Object | semmle.label | { ..., ... } [Field2] : Object |
+| F.cs:23:21:23:34 | { ..., ... } [field Field2] : Object | semmle.label | { ..., ... } [field Field2] : Object |
 | F.cs:23:32:23:32 | access to local variable o : Object | semmle.label | access to local variable o : Object |
-| F.cs:25:14:25:14 | access to local variable f [Field2] : Object | semmle.label | access to local variable f [Field2] : Object |
+| F.cs:25:14:25:14 | access to local variable f [field Field2] : Object | semmle.label | access to local variable f [field Field2] : Object |
 | F.cs:25:14:25:21 | access to field Field2 | semmle.label | access to field Field2 |
 | G.cs:7:18:7:27 | object creation of type Elem : Elem | semmle.label | object creation of type Elem : Elem |
-| G.cs:9:9:9:9 | [post] access to local variable b [Box1, Elem] | semmle.label | [post] access to local variable b [Box1, Elem] |
-| G.cs:9:9:9:14 | [post] access to field Box1 [Elem] : Elem | semmle.label | [post] access to field Box1 [Elem] : Elem |
+| G.cs:9:9:9:9 | [post] access to local variable b [field Box1, field Elem] : Elem | semmle.label | [post] access to local variable b [field Box1, field Elem] : Elem |
+| G.cs:9:9:9:14 | [post] access to field Box1 [field Elem] : Elem | semmle.label | [post] access to field Box1 [field Elem] : Elem |
 | G.cs:9:23:9:23 | access to local variable e : Elem | semmle.label | access to local variable e : Elem |
-| G.cs:10:18:10:18 | access to local variable b [Box1, Elem] | semmle.label | access to local variable b [Box1, Elem] |
+| G.cs:10:18:10:18 | access to local variable b [field Box1, field Elem] : Elem | semmle.label | access to local variable b [field Box1, field Elem] : Elem |
 | G.cs:15:18:15:27 | object creation of type Elem : Elem | semmle.label | object creation of type Elem : Elem |
-| G.cs:17:9:17:9 | [post] access to local variable b [Box1, Elem] | semmle.label | [post] access to local variable b [Box1, Elem] |
-| G.cs:17:9:17:14 | [post] access to field Box1 [Elem] : Elem | semmle.label | [post] access to field Box1 [Elem] : Elem |
+| G.cs:17:9:17:9 | [post] access to local variable b [field Box1, field Elem] : Elem | semmle.label | [post] access to local variable b [field Box1, field Elem] : Elem |
+| G.cs:17:9:17:14 | [post] access to field Box1 [field Elem] : Elem | semmle.label | [post] access to field Box1 [field Elem] : Elem |
 | G.cs:17:24:17:24 | access to local variable e : Elem | semmle.label | access to local variable e : Elem |
-| G.cs:18:18:18:18 | access to local variable b [Box1, Elem] | semmle.label | access to local variable b [Box1, Elem] |
+| G.cs:18:18:18:18 | access to local variable b [field Box1, field Elem] : Elem | semmle.label | access to local variable b [field Box1, field Elem] : Elem |
 | G.cs:23:18:23:27 | object creation of type Elem : Elem | semmle.label | object creation of type Elem : Elem |
-| G.cs:25:9:25:9 | [post] access to local variable b [Box1, Elem] | semmle.label | [post] access to local variable b [Box1, Elem] |
-| G.cs:25:9:25:19 | [post] call to method GetBox1 [Elem] : Elem | semmle.label | [post] call to method GetBox1 [Elem] : Elem |
+| G.cs:25:9:25:9 | [post] access to local variable b [field Box1, field Elem] : Elem | semmle.label | [post] access to local variable b [field Box1, field Elem] : Elem |
+| G.cs:25:9:25:19 | [post] call to method GetBox1 [field Elem] : Elem | semmle.label | [post] call to method GetBox1 [field Elem] : Elem |
 | G.cs:25:28:25:28 | access to local variable e : Elem | semmle.label | access to local variable e : Elem |
-| G.cs:26:18:26:18 | access to local variable b [Box1, Elem] | semmle.label | access to local variable b [Box1, Elem] |
+| G.cs:26:18:26:18 | access to local variable b [field Box1, field Elem] : Elem | semmle.label | access to local variable b [field Box1, field Elem] : Elem |
 | G.cs:31:18:31:27 | object creation of type Elem : Elem | semmle.label | object creation of type Elem : Elem |
-| G.cs:33:9:33:9 | [post] access to local variable b [Box1, Elem] | semmle.label | [post] access to local variable b [Box1, Elem] |
-| G.cs:33:9:33:19 | [post] call to method GetBox1 [Elem] : Elem | semmle.label | [post] call to method GetBox1 [Elem] : Elem |
+| G.cs:33:9:33:9 | [post] access to local variable b [field Box1, field Elem] : Elem | semmle.label | [post] access to local variable b [field Box1, field Elem] : Elem |
+| G.cs:33:9:33:19 | [post] call to method GetBox1 [field Elem] : Elem | semmle.label | [post] call to method GetBox1 [field Elem] : Elem |
 | G.cs:33:29:33:29 | access to local variable e : Elem | semmle.label | access to local variable e : Elem |
-| G.cs:34:18:34:18 | access to local variable b [Box1, Elem] | semmle.label | access to local variable b [Box1, Elem] |
-| G.cs:37:38:37:39 | b2 [Box1, Elem] | semmle.label | b2 [Box1, Elem] |
-| G.cs:39:14:39:15 | access to parameter b2 [Box1, Elem] | semmle.label | access to parameter b2 [Box1, Elem] |
-| G.cs:39:14:39:25 | call to method GetBox1 [Elem] : Elem | semmle.label | call to method GetBox1 [Elem] : Elem |
+| G.cs:34:18:34:18 | access to local variable b [field Box1, field Elem] : Elem | semmle.label | access to local variable b [field Box1, field Elem] : Elem |
+| G.cs:37:38:37:39 | b2 [field Box1, field Elem] : Elem | semmle.label | b2 [field Box1, field Elem] : Elem |
+| G.cs:39:14:39:15 | access to parameter b2 [field Box1, field Elem] : Elem | semmle.label | access to parameter b2 [field Box1, field Elem] : Elem |
+| G.cs:39:14:39:25 | call to method GetBox1 [field Elem] : Elem | semmle.label | call to method GetBox1 [field Elem] : Elem |
 | G.cs:39:14:39:35 | call to method GetElem | semmle.label | call to method GetElem |
 | G.cs:44:18:44:27 | object creation of type Elem : Elem | semmle.label | object creation of type Elem : Elem |
-| G.cs:46:9:46:16 | [post] access to field boxfield [Box1, Elem] | semmle.label | [post] access to field boxfield [Box1, Elem] |
-| G.cs:46:9:46:16 | [post] this access [boxfield, Box1, ... (3)] | semmle.label | [post] this access [boxfield, Box1, ... (3)] |
-| G.cs:46:9:46:21 | [post] access to field Box1 [Elem] : Elem | semmle.label | [post] access to field Box1 [Elem] : Elem |
+| G.cs:46:9:46:16 | [post] access to field boxfield [field Box1, field Elem] : Elem | semmle.label | [post] access to field boxfield [field Box1, field Elem] : Elem |
+| G.cs:46:9:46:16 | [post] this access [field boxfield, field Box1, field Elem] : Elem | semmle.label | [post] this access [field boxfield, field Box1, field Elem] : Elem |
+| G.cs:46:9:46:21 | [post] access to field Box1 [field Elem] : Elem | semmle.label | [post] access to field Box1 [field Elem] : Elem |
 | G.cs:46:30:46:30 | access to local variable e : Elem | semmle.label | access to local variable e : Elem |
-| G.cs:47:9:47:13 | this access [boxfield, Box1, ... (3)] | semmle.label | this access [boxfield, Box1, ... (3)] |
-| G.cs:50:18:50:20 | this [boxfield, Box1, ... (3)] | semmle.label | this [boxfield, Box1, ... (3)] |
-| G.cs:52:14:52:21 | access to field boxfield [Box1, Elem] | semmle.label | access to field boxfield [Box1, Elem] |
-| G.cs:52:14:52:21 | this access [boxfield, Box1, ... (3)] | semmle.label | this access [boxfield, Box1, ... (3)] |
-| G.cs:52:14:52:26 | access to field Box1 [Elem] : Elem | semmle.label | access to field Box1 [Elem] : Elem |
+| G.cs:47:9:47:13 | this access [field boxfield, field Box1, field Elem] : Elem | semmle.label | this access [field boxfield, field Box1, field Elem] : Elem |
+| G.cs:50:18:50:20 | this [field boxfield, field Box1, field Elem] : Elem | semmle.label | this [field boxfield, field Box1, field Elem] : Elem |
+| G.cs:52:14:52:21 | access to field boxfield [field Box1, field Elem] : Elem | semmle.label | access to field boxfield [field Box1, field Elem] : Elem |
+| G.cs:52:14:52:21 | this access [field boxfield, field Box1, field Elem] : Elem | semmle.label | this access [field boxfield, field Box1, field Elem] : Elem |
+| G.cs:52:14:52:26 | access to field Box1 [field Elem] : Elem | semmle.label | access to field Box1 [field Elem] : Elem |
 | G.cs:52:14:52:31 | access to field Elem | semmle.label | access to field Elem |
-| H.cs:23:9:23:9 | [post] access to local variable a [FieldA] : Object | semmle.label | [post] access to local variable a [FieldA] : Object |
+| H.cs:23:9:23:9 | [post] access to local variable a [field FieldA] : Object | semmle.label | [post] access to local variable a [field FieldA] : Object |
 | H.cs:23:20:23:31 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
-| H.cs:24:21:24:28 | call to method Clone [FieldA] : Object | semmle.label | call to method Clone [FieldA] : Object |
-| H.cs:24:27:24:27 | access to local variable a [FieldA] : Object | semmle.label | access to local variable a [FieldA] : Object |
-| H.cs:25:14:25:18 | access to local variable clone [FieldA] : Object | semmle.label | access to local variable clone [FieldA] : Object |
+| H.cs:24:21:24:28 | call to method Clone [field FieldA] : Object | semmle.label | call to method Clone [field FieldA] : Object |
+| H.cs:24:27:24:27 | access to local variable a [field FieldA] : Object | semmle.label | access to local variable a [field FieldA] : Object |
+| H.cs:25:14:25:18 | access to local variable clone [field FieldA] : Object | semmle.label | access to local variable clone [field FieldA] : Object |
 | H.cs:25:14:25:25 | access to field FieldA | semmle.label | access to field FieldA |
-| H.cs:43:9:43:9 | [post] access to local variable a [FieldA] : Object | semmle.label | [post] access to local variable a [FieldA] : Object |
+| H.cs:43:9:43:9 | [post] access to local variable a [field FieldA] : Object | semmle.label | [post] access to local variable a [field FieldA] : Object |
 | H.cs:43:20:43:31 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
-| H.cs:44:17:44:28 | call to method Transform [FieldB] : Object | semmle.label | call to method Transform [FieldB] : Object |
-| H.cs:44:27:44:27 | access to local variable a [FieldA] : Object | semmle.label | access to local variable a [FieldA] : Object |
-| H.cs:45:14:45:14 | access to local variable b [FieldB] : Object | semmle.label | access to local variable b [FieldB] : Object |
+| H.cs:44:17:44:28 | call to method Transform [field FieldB] : Object | semmle.label | call to method Transform [field FieldB] : Object |
+| H.cs:44:27:44:27 | access to local variable a [field FieldA] : Object | semmle.label | access to local variable a [field FieldA] : Object |
+| H.cs:45:14:45:14 | access to local variable b [field FieldB] : Object | semmle.label | access to local variable b [field FieldB] : Object |
 | H.cs:45:14:45:21 | access to field FieldB | semmle.label | access to field FieldB |
-| H.cs:63:9:63:9 | [post] access to local variable a [FieldA] : Object | semmle.label | [post] access to local variable a [FieldA] : Object |
+| H.cs:63:9:63:9 | [post] access to local variable a [field FieldA] : Object | semmle.label | [post] access to local variable a [field FieldA] : Object |
 | H.cs:63:20:63:31 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
-| H.cs:64:22:64:22 | access to local variable a [FieldA] : Object | semmle.label | access to local variable a [FieldA] : Object |
-| H.cs:64:25:64:26 | [post] access to local variable b1 [FieldB] : Object | semmle.label | [post] access to local variable b1 [FieldB] : Object |
-| H.cs:65:14:65:15 | access to local variable b1 [FieldB] : Object | semmle.label | access to local variable b1 [FieldB] : Object |
+| H.cs:64:22:64:22 | access to local variable a [field FieldA] : Object | semmle.label | access to local variable a [field FieldA] : Object |
+| H.cs:64:25:64:26 | [post] access to local variable b1 [field FieldB] : Object | semmle.label | [post] access to local variable b1 [field FieldB] : Object |
+| H.cs:65:14:65:15 | access to local variable b1 [field FieldB] : Object | semmle.label | access to local variable b1 [field FieldB] : Object |
 | H.cs:65:14:65:22 | access to field FieldB | semmle.label | access to field FieldB |
-| H.cs:88:17:88:17 | [post] access to local variable a [FieldA] : Object | semmle.label | [post] access to local variable a [FieldA] : Object |
+| H.cs:88:17:88:17 | [post] access to local variable a [field FieldA] : Object | semmle.label | [post] access to local variable a [field FieldA] : Object |
 | H.cs:88:20:88:31 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
-| H.cs:88:34:88:35 | [post] access to local variable b1 [FieldB] : Object | semmle.label | [post] access to local variable b1 [FieldB] : Object |
-| H.cs:89:14:89:14 | access to local variable a [FieldA] : Object | semmle.label | access to local variable a [FieldA] : Object |
+| H.cs:88:34:88:35 | [post] access to local variable b1 [field FieldB] : Object | semmle.label | [post] access to local variable b1 [field FieldB] : Object |
+| H.cs:89:14:89:14 | access to local variable a [field FieldA] : Object | semmle.label | access to local variable a [field FieldA] : Object |
 | H.cs:89:14:89:21 | access to field FieldA | semmle.label | access to field FieldA |
-| H.cs:90:14:90:15 | access to local variable b1 [FieldB] : Object | semmle.label | access to local variable b1 [FieldB] : Object |
+| H.cs:90:14:90:15 | access to local variable b1 [field FieldB] : Object | semmle.label | access to local variable b1 [field FieldB] : Object |
 | H.cs:90:14:90:22 | access to field FieldB | semmle.label | access to field FieldB |
-| H.cs:112:9:112:9 | [post] access to local variable a [FieldA] : Object | semmle.label | [post] access to local variable a [FieldA] : Object |
+| H.cs:112:9:112:9 | [post] access to local variable a [field FieldA] : Object | semmle.label | [post] access to local variable a [field FieldA] : Object |
 | H.cs:112:20:112:31 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
-| H.cs:113:17:113:32 | call to method TransformWrap [FieldB] : Object | semmle.label | call to method TransformWrap [FieldB] : Object |
-| H.cs:113:31:113:31 | access to local variable a [FieldA] : Object | semmle.label | access to local variable a [FieldA] : Object |
-| H.cs:114:14:114:14 | access to local variable b [FieldB] : Object | semmle.label | access to local variable b [FieldB] : Object |
+| H.cs:113:17:113:32 | call to method TransformWrap [field FieldB] : Object | semmle.label | call to method TransformWrap [field FieldB] : Object |
+| H.cs:113:31:113:31 | access to local variable a [field FieldA] : Object | semmle.label | access to local variable a [field FieldA] : Object |
+| H.cs:114:14:114:14 | access to local variable b [field FieldB] : Object | semmle.label | access to local variable b [field FieldB] : Object |
 | H.cs:114:14:114:21 | access to field FieldB | semmle.label | access to field FieldB |
-| H.cs:130:9:130:9 | [post] access to local variable a [FieldA] : Object | semmle.label | [post] access to local variable a [FieldA] : Object |
+| H.cs:130:9:130:9 | [post] access to local variable a [field FieldA] : Object | semmle.label | [post] access to local variable a [field FieldA] : Object |
 | H.cs:130:20:130:31 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
 | H.cs:131:14:131:19 | call to method Get | semmle.label | call to method Get |
-| H.cs:131:18:131:18 | access to local variable a [FieldA] : Object | semmle.label | access to local variable a [FieldA] : Object |
+| H.cs:131:18:131:18 | access to local variable a [field FieldA] : Object | semmle.label | access to local variable a [field FieldA] : Object |
 | H.cs:147:17:147:32 | call to method Through : A | semmle.label | call to method Through : A |
 | H.cs:147:25:147:31 | object creation of type A : A | semmle.label | object creation of type A : A |
 | H.cs:148:14:148:14 | access to local variable a | semmle.label | access to local variable a |
 | H.cs:155:17:155:23 | object creation of type B : B | semmle.label | object creation of type B : B |
 | H.cs:156:9:156:9 | access to local variable b : B | semmle.label | access to local variable b : B |
-| H.cs:157:9:157:9 | [post] access to parameter a [FieldA] : B | semmle.label | [post] access to parameter a [FieldA] : B |
+| H.cs:157:9:157:9 | [post] access to parameter a [field FieldA] : B | semmle.label | [post] access to parameter a [field FieldA] : B |
 | H.cs:157:20:157:20 | access to local variable b : B | semmle.label | access to local variable b : B |
 | H.cs:163:17:163:28 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
-| H.cs:164:19:164:19 | [post] access to local variable a [FieldA, FieldB] | semmle.label | [post] access to local variable a [FieldA, FieldB] |
-| H.cs:164:19:164:19 | [post] access to local variable a [FieldA] : B | semmle.label | [post] access to local variable a [FieldA] : B |
+| H.cs:164:19:164:19 | [post] access to local variable a [field FieldA, field FieldB] : Object | semmle.label | [post] access to local variable a [field FieldA, field FieldB] : Object |
+| H.cs:164:19:164:19 | [post] access to local variable a [field FieldA] : B | semmle.label | [post] access to local variable a [field FieldA] : B |
 | H.cs:164:22:164:22 | access to local variable o : Object | semmle.label | access to local variable o : Object |
 | H.cs:165:17:165:28 | (...) ... : B | semmle.label | (...) ... : B |
-| H.cs:165:17:165:28 | (...) ... [FieldB] : Object | semmle.label | (...) ... [FieldB] : Object |
-| H.cs:165:21:165:21 | access to local variable a [FieldA, FieldB] | semmle.label | access to local variable a [FieldA, FieldB] |
-| H.cs:165:21:165:21 | access to local variable a [FieldA] : B | semmle.label | access to local variable a [FieldA] : B |
+| H.cs:165:17:165:28 | (...) ... [field FieldB] : Object | semmle.label | (...) ... [field FieldB] : Object |
+| H.cs:165:21:165:21 | access to local variable a [field FieldA, field FieldB] : Object | semmle.label | access to local variable a [field FieldA, field FieldB] : Object |
+| H.cs:165:21:165:21 | access to local variable a [field FieldA] : B | semmle.label | access to local variable a [field FieldA] : B |
 | H.cs:165:21:165:28 | access to field FieldA : B | semmle.label | access to field FieldA : B |
-| H.cs:165:21:165:28 | access to field FieldA [FieldB] : Object | semmle.label | access to field FieldA [FieldB] : Object |
+| H.cs:165:21:165:28 | access to field FieldA [field FieldB] : Object | semmle.label | access to field FieldA [field FieldB] : Object |
 | H.cs:166:14:166:14 | access to local variable b | semmle.label | access to local variable b |
-| H.cs:167:14:167:14 | access to local variable b [FieldB] : Object | semmle.label | access to local variable b [FieldB] : Object |
+| H.cs:167:14:167:14 | access to local variable b [field FieldB] : Object | semmle.label | access to local variable b [field FieldB] : Object |
 | H.cs:167:14:167:21 | access to field FieldB | semmle.label | access to field FieldB |
-| I.cs:7:9:7:14 | [post] this access [Field1] : Object | semmle.label | [post] this access [Field1] : Object |
+| I.cs:7:9:7:14 | [post] this access [field Field1] : Object | semmle.label | [post] this access [field Field1] : Object |
 | I.cs:7:18:7:29 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
 | I.cs:13:17:13:28 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
-| I.cs:15:9:15:9 | [post] access to local variable i [Field1] : Object | semmle.label | [post] access to local variable i [Field1] : Object |
+| I.cs:15:9:15:9 | [post] access to local variable i [field Field1] : Object | semmle.label | [post] access to local variable i [field Field1] : Object |
 | I.cs:15:20:15:20 | access to local variable o : Object | semmle.label | access to local variable o : Object |
-| I.cs:16:9:16:9 | access to local variable i [Field1] : Object | semmle.label | access to local variable i [Field1] : Object |
-| I.cs:17:9:17:9 | access to local variable i [Field1] : Object | semmle.label | access to local variable i [Field1] : Object |
-| I.cs:18:14:18:14 | access to local variable i [Field1] : Object | semmle.label | access to local variable i [Field1] : Object |
+| I.cs:16:9:16:9 | access to local variable i [field Field1] : Object | semmle.label | access to local variable i [field Field1] : Object |
+| I.cs:17:9:17:9 | access to local variable i [field Field1] : Object | semmle.label | access to local variable i [field Field1] : Object |
+| I.cs:18:14:18:14 | access to local variable i [field Field1] : Object | semmle.label | access to local variable i [field Field1] : Object |
 | I.cs:18:14:18:21 | access to field Field1 | semmle.label | access to field Field1 |
-| I.cs:21:13:21:19 | object creation of type I [Field1] : Object | semmle.label | object creation of type I [Field1] : Object |
-| I.cs:22:9:22:9 | access to local variable i [Field1] : Object | semmle.label | access to local variable i [Field1] : Object |
-| I.cs:23:14:23:14 | access to local variable i [Field1] : Object | semmle.label | access to local variable i [Field1] : Object |
+| I.cs:21:13:21:19 | object creation of type I [field Field1] : Object | semmle.label | object creation of type I [field Field1] : Object |
+| I.cs:22:9:22:9 | access to local variable i [field Field1] : Object | semmle.label | access to local variable i [field Field1] : Object |
+| I.cs:23:14:23:14 | access to local variable i [field Field1] : Object | semmle.label | access to local variable i [field Field1] : Object |
 | I.cs:23:14:23:21 | access to field Field1 | semmle.label | access to field Field1 |
-| I.cs:26:13:26:37 | [pre-initializer] object creation of type I [Field1] : Object | semmle.label | [pre-initializer] object creation of type I [Field1] : Object |
-| I.cs:27:14:27:14 | access to local variable i [Field1] : Object | semmle.label | access to local variable i [Field1] : Object |
+| I.cs:26:13:26:37 | [pre-initializer] object creation of type I [field Field1] : Object | semmle.label | [pre-initializer] object creation of type I [field Field1] : Object |
+| I.cs:27:14:27:14 | access to local variable i [field Field1] : Object | semmle.label | access to local variable i [field Field1] : Object |
 | I.cs:27:14:27:21 | access to field Field1 | semmle.label | access to field Field1 |
 | I.cs:31:13:31:24 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
-| I.cs:32:9:32:9 | [post] access to local variable i [Field1] : Object | semmle.label | [post] access to local variable i [Field1] : Object |
+| I.cs:32:9:32:9 | [post] access to local variable i [field Field1] : Object | semmle.label | [post] access to local variable i [field Field1] : Object |
 | I.cs:32:20:32:20 | access to local variable o : Object | semmle.label | access to local variable o : Object |
-| I.cs:33:9:33:9 | access to local variable i [Field1] : Object | semmle.label | access to local variable i [Field1] : Object |
-| I.cs:34:12:34:12 | access to local variable i [Field1] : Object | semmle.label | access to local variable i [Field1] : Object |
-| I.cs:37:23:37:23 | i [Field1] : Object | semmle.label | i [Field1] : Object |
-| I.cs:39:9:39:9 | access to parameter i [Field1] : Object | semmle.label | access to parameter i [Field1] : Object |
-| I.cs:40:14:40:14 | access to parameter i [Field1] : Object | semmle.label | access to parameter i [Field1] : Object |
+| I.cs:33:9:33:9 | access to local variable i [field Field1] : Object | semmle.label | access to local variable i [field Field1] : Object |
+| I.cs:34:12:34:12 | access to local variable i [field Field1] : Object | semmle.label | access to local variable i [field Field1] : Object |
+| I.cs:37:23:37:23 | i [field Field1] : Object | semmle.label | i [field Field1] : Object |
+| I.cs:39:9:39:9 | access to parameter i [field Field1] : Object | semmle.label | access to parameter i [field Field1] : Object |
+| I.cs:40:14:40:14 | access to parameter i [field Field1] : Object | semmle.label | access to parameter i [field Field1] : Object |
 | I.cs:40:14:40:21 | access to field Field1 | semmle.label | access to field Field1 |
+| J.cs:12:17:12:28 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
+| J.cs:13:18:13:36 | object creation of type Record [property Prop1] : Object | semmle.label | object creation of type Record [property Prop1] : Object |
+| J.cs:13:29:13:29 | access to local variable o : Object | semmle.label | access to local variable o : Object |
+| J.cs:14:14:14:15 | access to local variable r1 [property Prop1] : Object | semmle.label | access to local variable r1 [property Prop1] : Object |
+| J.cs:14:14:14:21 | access to property Prop1 | semmle.label | access to property Prop1 |
+| J.cs:18:14:18:15 | access to local variable r2 [property Prop1] : Object | semmle.label | access to local variable r2 [property Prop1] : Object |
+| J.cs:18:14:18:21 | access to property Prop1 | semmle.label | access to property Prop1 |
+| J.cs:21:18:21:38 | ... with { ... } [property Prop2] : Object | semmle.label | ... with { ... } [property Prop2] : Object |
+| J.cs:21:36:21:36 | access to local variable o : Object | semmle.label | access to local variable o : Object |
+| J.cs:22:14:22:15 | access to local variable r3 [property Prop1] : Object | semmle.label | access to local variable r3 [property Prop1] : Object |
+| J.cs:22:14:22:21 | access to property Prop1 | semmle.label | access to property Prop1 |
+| J.cs:23:14:23:15 | access to local variable r3 [property Prop2] : Object | semmle.label | access to local variable r3 [property Prop2] : Object |
+| J.cs:23:14:23:21 | access to property Prop2 | semmle.label | access to property Prop2 |
 #select
 | A.cs:7:14:7:16 | access to field c | A.cs:5:17:5:23 | object creation of type C : C | A.cs:7:14:7:16 | access to field c | $@ | A.cs:5:17:5:23 | object creation of type C : C | object creation of type C : C |
 | A.cs:14:14:14:20 | call to method Get | A.cs:13:15:13:22 | object creation of type C1 : C1 | A.cs:14:14:14:20 | call to method Get | $@ | A.cs:13:15:13:22 | object creation of type C1 : C1 | object creation of type C1 : C1 |
@@ -566,3 +591,7 @@ nodes
 | I.cs:23:14:23:21 | access to field Field1 | I.cs:7:18:7:29 | object creation of type Object : Object | I.cs:23:14:23:21 | access to field Field1 | $@ | I.cs:7:18:7:29 | object creation of type Object : Object | object creation of type Object : Object |
 | I.cs:27:14:27:21 | access to field Field1 | I.cs:7:18:7:29 | object creation of type Object : Object | I.cs:27:14:27:21 | access to field Field1 | $@ | I.cs:7:18:7:29 | object creation of type Object : Object | object creation of type Object : Object |
 | I.cs:40:14:40:21 | access to field Field1 | I.cs:31:13:31:24 | object creation of type Object : Object | I.cs:40:14:40:21 | access to field Field1 | $@ | I.cs:31:13:31:24 | object creation of type Object : Object | object creation of type Object : Object |
+| J.cs:14:14:14:21 | access to property Prop1 | J.cs:12:17:12:28 | object creation of type Object : Object | J.cs:14:14:14:21 | access to property Prop1 | $@ | J.cs:12:17:12:28 | object creation of type Object : Object | object creation of type Object : Object |
+| J.cs:18:14:18:21 | access to property Prop1 | J.cs:12:17:12:28 | object creation of type Object : Object | J.cs:18:14:18:21 | access to property Prop1 | $@ | J.cs:12:17:12:28 | object creation of type Object : Object | object creation of type Object : Object |
+| J.cs:22:14:22:21 | access to property Prop1 | J.cs:12:17:12:28 | object creation of type Object : Object | J.cs:22:14:22:21 | access to property Prop1 | $@ | J.cs:12:17:12:28 | object creation of type Object : Object | object creation of type Object : Object |
+| J.cs:23:14:23:21 | access to property Prop2 | J.cs:12:17:12:28 | object creation of type Object : Object | J.cs:23:14:23:21 | access to property Prop2 | $@ | J.cs:12:17:12:28 | object creation of type Object : Object | object creation of type Object : Object |

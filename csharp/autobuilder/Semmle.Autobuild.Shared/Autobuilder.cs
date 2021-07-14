@@ -1,4 +1,4 @@
-﻿using Semmle.Util.Logging;
+using Semmle.Util.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -48,7 +48,7 @@ namespace Semmle.Autobuild.Shared
         /// by distance in ascending order.
         /// </summary>
         public IEnumerable<(string, int)> Paths => pathsLazy.Value;
-        readonly Lazy<IEnumerable<(string, int)>> pathsLazy;
+        private readonly Lazy<IEnumerable<(string, int)>> pathsLazy;
 
         /// <summary>
         /// Gets a list of paths matching a set of extensions (including the "."),
@@ -68,7 +68,7 @@ namespace Semmle.Autobuild.Shared
         /// <param name="name">The filename to find.</param>
         /// <returns>Possibly empty sequence of paths with the given filename.</returns>
         public IEnumerable<(string, int)> GetFilename(string name) =>
-            Paths.Where(p => Path.GetFileName(p.Item1) == name);
+            Paths.Where(p => Actions.GetFileName(p.Item1) == name);
 
         /// <summary>
         /// Holds if a given path, relative to the root of the source directory
@@ -91,7 +91,7 @@ namespace Semmle.Autobuild.Shared
         /// <returns>True iff the path was found.</returns>
         public bool HasPath(string path) => Paths.Any(p => path == p.Item1);
 
-        void FindFiles(string dir, int depth, int maxDepth, IList<(string, int)> results)
+        private void FindFiles(string dir, int depth, int maxDepth, IList<(string, int)> results)
         {
             foreach (var f in Actions.EnumerateFiles(dir))
             {
@@ -110,7 +110,7 @@ namespace Semmle.Autobuild.Shared
         /// <summary>
         /// The root of the source directory.
         /// </summary>
-        string RootDirectory => Options.RootDirectory;
+        private string RootDirectory => Options.RootDirectory;
 
         /// <summary>
         /// Gets the supplied build configuration.
@@ -123,12 +123,12 @@ namespace Semmle.Autobuild.Shared
         /// </summary>
         public IBuildActions Actions { get; }
 
-        IEnumerable<IProjectOrSolution>? FindFiles(string extension, Func<string, ProjectOrSolution> create)
+        private IEnumerable<IProjectOrSolution>? FindFiles(string extension, Func<string, ProjectOrSolution> create)
         {
-            var matchingFiles = GetExtensions(extension).
-                Select(p => (ProjectOrSolution: create(p.Item1), DistanceFromRoot: p.Item2)).
-                Where(p => p.ProjectOrSolution.HasLanguage(this.Options.Language)).
-                ToArray();
+            var matchingFiles = GetExtensions(extension)
+                .Select(p => (ProjectOrSolution: create(p.Item1), DistanceFromRoot: p.Item2))
+                .Where(p => p.ProjectOrSolution.HasLanguage(this.Options.Language))
+                .ToArray();
 
             if (matchingFiles.Length == 0)
                 return null;
@@ -136,9 +136,9 @@ namespace Semmle.Autobuild.Shared
             if (Options.AllSolutions)
                 return matchingFiles.Select(p => p.ProjectOrSolution);
 
-            return matchingFiles.
-                Where(f => f.DistanceFromRoot == matchingFiles[0].DistanceFromRoot).
-                Select(f => f.ProjectOrSolution);
+            return matchingFiles
+                .Where(f => f.DistanceFromRoot == matchingFiles[0].DistanceFromRoot)
+                .Select(f => f.ProjectOrSolution);
         }
 
         /// <summary>
@@ -146,7 +146,7 @@ namespace Semmle.Autobuild.Shared
         /// solution file and tools.
         /// </summary>
         /// <param name="options">The command line options.</param>
-        public Autobuilder(IBuildActions actions, AutobuildOptions options)
+        protected Autobuilder(IBuildActions actions, AutobuildOptions options)
         {
             Actions = actions;
             Options = options;
@@ -176,12 +176,12 @@ namespace Semmle.Autobuild.Shared
 
                 // First look for `.proj` files
                 ret = FindFiles(".proj", f => new Project(this, f))?.ToList();
-                if (ret != null)
+                if (ret is not null)
                     return ret;
 
                 // Then look for `.sln` files
                 ret = FindFiles(".sln", f => new Solution(this, f, false))?.ToList();
-                if (ret != null)
+                if (ret is not null)
                     return ret;
 
                 // Finally look for language specific project files, e.g. `.csproj` files
@@ -190,18 +190,9 @@ namespace Semmle.Autobuild.Shared
             });
 
             CodeQLExtractorLangRoot = Actions.GetEnvironmentVariable($"CODEQL_EXTRACTOR_{this.Options.Language.UpperCaseName}_ROOT");
-            SemmleDist = Actions.GetEnvironmentVariable("SEMMLE_DIST");
             SemmlePlatformTools = Actions.GetEnvironmentVariable("SEMMLE_PLATFORM_TOOLS");
 
-            JavaHome =
-                Actions.GetEnvironmentVariable("CODEQL_JAVA_HOME") ??
-                Actions.GetEnvironmentVariable("SEMMLE_JAVA_HOME") ??
-                throw new InvalidEnvironmentException("The environment variable CODEQL_JAVA_HOME or SEMMLE_JAVA_HOME has not been set.");
-
-            Distribution =
-                CodeQLExtractorLangRoot ??
-                SemmleDist ??
-                throw new InvalidEnvironmentException($"The environment variable CODEQL_EXTRACTOR_{this.Options.Language.UpperCaseName}_ROOT or SEMMLE_DIST has not been set.");
+            CodeQlPlatform = Actions.GetEnvironmentVariable("CODEQL_PLATFORM");
 
             TrapDir =
                 Actions.GetEnvironmentVariable($"CODEQL_EXTRACTOR_{this.Options.Language.UpperCaseName}_TRAP_DIR") ??
@@ -218,7 +209,7 @@ namespace Semmle.Autobuild.Shared
 
         protected string SourceArchiveDir { get; }
 
-        readonly ILogger logger = new ConsoleLogger(Verbosity.Info);
+        private readonly ILogger logger = new ConsoleLogger(Verbosity.Info);
 
         /// <summary>
         /// Log a given build event to the console.
@@ -271,16 +262,7 @@ namespace Semmle.Autobuild.Shared
         /// <summary>
         /// Value of CODEQL_EXTRACTOR_<LANG>_ROOT environment variable.
         /// </summary>
-        private string? CodeQLExtractorLangRoot { get; }
-
-        /// <summary>
-        /// Value of SEMMLE_DIST environment variable.
-        /// </summary>
-        private string? SemmleDist { get; }
-
-        public string Distribution { get; }
-
-        public string JavaHome { get; }
+        public string? CodeQLExtractorLangRoot { get; }
 
         /// <summary>
         /// Value of SEMMLE_PLATFORM_TOOLS environment variable.
@@ -288,16 +270,28 @@ namespace Semmle.Autobuild.Shared
         public string? SemmlePlatformTools { get; }
 
         /// <summary>
+        /// Value of CODEQL_PLATFORM environment variable.
+        /// </summary>
+        public string? CodeQlPlatform { get; }
+
+        /// <summary>
         /// The absolute path of the odasa executable.
         /// null if we are running in CodeQL.
         /// </summary>
-        public string? Odasa => SemmleDist is null ? null : Actions.PathCombine(SemmleDist, "tools", "odasa");
+        public string? Odasa
+        {
+            get
+            {
+                var semmleDist = Actions.GetEnvironmentVariable("SEMMLE_DIST");
+                return semmleDist is null ? null : Actions.PathCombine(semmleDist, "tools", "odasa");
+            }
+        }
 
         /// <summary>
         /// Construct a command that executed the given <paramref name="cmd"/> wrapped in
         /// an <code>odasa --index</code>, unless indexing has been disabled, in which case
         /// <paramref name="cmd"/> is run directly.
         /// </summary>
-        public CommandBuilder MaybeIndex(CommandBuilder builder, string cmd) => Options.Indexing && !(Odasa is null) ? builder.IndexCommand(Odasa, cmd) : builder.RunCommand(cmd);
+        public CommandBuilder MaybeIndex(CommandBuilder builder, string cmd) => Odasa is null ? builder.RunCommand(cmd) : builder.IndexCommand(Odasa, cmd);
     }
 }

@@ -2,9 +2,14 @@ import semmle.code.cpp.Location
 import semmle.code.cpp.Element
 
 /**
- * A C/C++ preprocessor directive.
- *
- * For example: `#ifdef`, `#line`, or `#pragma`.
+ * A C/C++ preprocessor directive. For example each of the following lines of
+ * code contains a `PreprocessorDirective`:
+ * ```
+ * #pragma once
+ * #ifdef MYDEFINE
+ * #include "myfile.h"
+ * #line 1 "source.c"
+ * ```
  */
 class PreprocessorDirective extends Locatable, @preprocdirect {
   override string toString() { result = "Preprocessor directive" }
@@ -98,9 +103,9 @@ class PreprocessorBranchDirective extends PreprocessorDirective, TPreprocessorBr
  * A C/C++ preprocessor branching directive: `#if`, `#ifdef`, `#ifndef`, or
  * `#elif`.
  *
- * A branching directive can have its condition evaluated at compile-time,
- * and as a result, the preprocessor will either take the branch, or not
- * take the branch.
+ * A branching directive has a condition and that condition may be evaluated
+ * at compile-time.  As a result, the preprocessor will either take the
+ * branch, or not take the branch.
  *
  * However, there are also situations in which a branch's condition isn't
  * evaluated.  The obvious case of this is when the directive is contained
@@ -136,8 +141,13 @@ class PreprocessorBranch extends PreprocessorBranchDirective, @ppd_branch {
 }
 
 /**
- * A C/C++ preprocessor `#if` directive.
- *
+ * A C/C++ preprocessor `#if` directive. For example there is a
+ * `PreprocessorIf` on the first line of the following code:
+ * ```
+ * #if defined(MYDEFINE)
+ * // ...
+ * #endif
+ * ```
  * For the related notion of a directive which causes branching (which
  * includes `#if`, plus also `#ifdef`, `#ifndef`, and `#elif`), see
  * `PreprocessorBranch`.
@@ -147,8 +157,13 @@ class PreprocessorIf extends PreprocessorBranch, @ppd_if {
 }
 
 /**
- * A C/C++ preprocessor `#ifdef` directive.
- *
+ * A C/C++ preprocessor `#ifdef` directive. For example there is a
+ * `PreprocessorIfdef` on the first line of the following code:
+ * ```
+ * #ifdef MYDEFINE
+ * // ...
+ * #endif
+ * ```
  * The syntax `#ifdef X` is shorthand for `#if defined(X)`.
  */
 class PreprocessorIfdef extends PreprocessorBranch, @ppd_ifdef {
@@ -158,8 +173,13 @@ class PreprocessorIfdef extends PreprocessorBranch, @ppd_ifdef {
 }
 
 /**
- * A C/C++ preprocessor `#ifndef` directive.
- *
+ * A C/C++ preprocessor `#ifndef` directive. For example there is a
+ * `PreprocessorIfndef` on the first line of the following code:
+ * ```
+ * #ifndef MYDEFINE
+ * // ...
+ * #endif
+ * ```
  * The syntax `#ifndef X` is shorthand for `#if !defined(X)`.
  */
 class PreprocessorIfndef extends PreprocessorBranch, @ppd_ifndef {
@@ -167,42 +187,80 @@ class PreprocessorIfndef extends PreprocessorBranch, @ppd_ifndef {
 }
 
 /**
- * A C/C++ preprocessor `#else` directive.
+ * A C/C++ preprocessor `#else` directive. For example there is a
+ * `PreprocessorElse` on the fifth line of the following code:
+ * ```
+ * #ifdef MYDEFINE1
+ * // ...
+ * #elif MYDEFINE2
+ * // ...
+ * #else
+ * // ...
+ * #endif
+ * ```
  */
 class PreprocessorElse extends PreprocessorBranchDirective, @ppd_else {
   override string toString() { result = "#else" }
 }
 
 /**
- * A C/C++ preprocessor `#elif` directive.
+ * A C/C++ preprocessor `#elif` directive. For example there is a
+ * `PreprocessorElif` on the third line of the following code:
+ * ```
+ * #ifdef MYDEFINE1
+ * // ...
+ * #elif MYDEFINE2
+ * // ...
+ * #else
+ * // ...
+ * #endif
+ * ```
  */
 class PreprocessorElif extends PreprocessorBranch, @ppd_elif {
   override string toString() { result = "#elif " + this.getHead() }
 }
 
 /**
- * A C/C++ preprocessor `#endif` directive.
+ * A C/C++ preprocessor `#endif` directive. For example there is a
+ * `PreprocessorEndif` on the third line of the following code:
+ * ```
+ * #ifdef MYDEFINE
+ * // ...
+ * #endif
+ * ```
  */
 class PreprocessorEndif extends PreprocessorBranchDirective, @ppd_endif {
   override string toString() { result = "#endif" }
 }
 
 /**
- * A C/C++ preprocessor `#warning` directive.
+ * A C/C++ preprocessor `#warning` directive. For example:
+ * ```
+ * #warning "This configuration is not supported."
+ * ```
  */
 class PreprocessorWarning extends PreprocessorDirective, @ppd_warning {
   override string toString() { result = "#warning " + this.getHead() }
 }
 
 /**
- * A C/C++ preprocessor `#error` directive.
+ * A C/C++ preprocessor `#error` directive. For example:
+ * ```
+ * #error "This configuration is not implemented."
+ * ```
  */
 class PreprocessorError extends PreprocessorDirective, @ppd_error {
   override string toString() { result = "#error " + this.getHead() }
 }
 
 /**
- * A C/C++ preprocessor `#undef` directive.
+ * A C/C++ preprocessor `#undef` directive. For example there is a
+ * `PreprocessorUndef` on the second line of the following code:
+ * ```
+ * #ifdef MYMACRO
+ * #undef MYMACRO
+ * #endif
+ * ```
  */
 class PreprocessorUndef extends PreprocessorDirective, @ppd_undef {
   override string toString() { result = "#undef " + this.getHead() }
@@ -214,7 +272,10 @@ class PreprocessorUndef extends PreprocessorDirective, @ppd_undef {
 }
 
 /**
- * A C/C++ preprocessor `#pragma` directive.
+ * A C/C++ preprocessor `#pragma` directive. For example:
+ * ```
+ * #pragma once
+ * ```
  */
 class PreprocessorPragma extends PreprocessorDirective, @ppd_pragma {
   override string toString() {
@@ -223,7 +284,10 @@ class PreprocessorPragma extends PreprocessorDirective, @ppd_pragma {
 }
 
 /**
- * A C/C++ preprocessor `#line` directive.
+ * A C/C++ preprocessor `#line` directive. For example:
+ * ```
+ * #line 1 "source.c"
+ * ```
  */
 class PreprocessorLine extends PreprocessorDirective, @ppd_line {
   override string toString() { result = "#line " + this.getHead() }

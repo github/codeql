@@ -14,7 +14,7 @@ toplevels(#20001,0)
 locations_default(#20002,#10000,1,1,1,1)
 hasLocation(#20001,#20002)
 #20003=*
-jsParseErrors(#20003,#20001,"Error: Unexpected token","")
+js_parse_errors(#20003,#20001,"Error: Unexpected token","")
 hasLocation(#20003,#20002)
 #20004=*
 lines(#20004,#20001,"if (b) {","

@@ -7,7 +7,6 @@
 + semmlecode-javascript-queries/Declarations/UniqueParameterNames.ql: /Correctness/Declarations
 + semmlecode-javascript-queries/Declarations/UniquePropertyNames.ql: /Correctness/Declarations
 + semmlecode-javascript-queries/Declarations/IneffectiveParameterType.ql: /Correctness/Declarations
-+ semmlecode-javascript-queries/DOM/AmbiguousIdAttribute.ql: /Correctness/DOM
 + semmlecode-javascript-queries/DOM/ConflictingAttributes.ql: /Correctness/DOM
 + semmlecode-javascript-queries/DOM/MalformedIdAttribute.ql: /Correctness/DOM
 + semmlecode-javascript-queries/Expressions/ComparisonWithNaN.ql: /Correctness/Expressions

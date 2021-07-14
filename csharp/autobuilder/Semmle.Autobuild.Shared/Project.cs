@@ -23,7 +23,7 @@ namespace Semmle.Autobuild.Shared
 
         public Version ToolsVersion { get; private set; }
 
-        readonly Lazy<List<Project>> includedProjectsLazy;
+        private readonly Lazy<List<Project>> includedProjectsLazy;
         public override IEnumerable<IProjectOrSolution> IncludedProjects => includedProjectsLazy.Value;
 
         public Project(Autobuilder builder, string path) : base(builder, path)
@@ -47,7 +47,7 @@ namespace Semmle.Autobuild.Shared
 
             var root = projFile.DocumentElement;
 
-            if (root.Name == "Project")
+            if (root?.Name == "Project")
             {
                 if (root.HasAttribute("Sdk"))
                 {
@@ -77,10 +77,17 @@ namespace Semmle.Autobuild.Shared
                     // `<ProjectFile Include="X"/>` and `<ProjectFiles Include="X"/>` is valid
                     var mgr = new XmlNamespaceManager(projFile.NameTable);
                     mgr.AddNamespace("msbuild", "http://schemas.microsoft.com/developer/msbuild/2003");
-                    var projectFileIncludes = root.SelectNodes("//msbuild:Project/msbuild:ItemGroup/msbuild:ProjectFile/@Include", mgr).OfType<XmlNode>();
-                    var projectFilesIncludes = root.SelectNodes("//msbuild:Project/msbuild:ItemGroup/msbuild:ProjectFiles/@Include", mgr).OfType<XmlNode>();
+                    var projectFileIncludes = root.SelectNodes("//msbuild:Project/msbuild:ItemGroup/msbuild:ProjectFile/@Include", mgr)
+                        ?.OfType<XmlNode>() ?? Array.Empty<XmlNode>();
+                    var projectFilesIncludes = root.SelectNodes("//msbuild:Project/msbuild:ItemGroup/msbuild:ProjectFiles/@Include", mgr)
+                        ?.OfType<XmlNode>() ?? Array.Empty<XmlNode>();
                     foreach (var include in projectFileIncludes.Concat(projectFilesIncludes))
                     {
+                        if (include?.Value is null)
+                        {
+                            continue;
+                        }
+
                         var includePath = builder.Actions.PathCombine(include.Value.Split('\\', StringSplitOptions.RemoveEmptyEntries));
                         ret.Add(new Project(builder, builder.Actions.PathCombine(DirectoryName, includePath)));
                     }

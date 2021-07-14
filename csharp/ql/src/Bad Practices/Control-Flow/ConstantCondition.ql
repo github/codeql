@@ -35,7 +35,23 @@ class ConstantBooleanCondition extends ConstantCondition {
 
   override predicate isWhiteListed() {
     // E.g. `x ?? false`
-    this.(BoolLiteral) = any(NullCoalescingExpr nce).getRightOperand()
+    this.(BoolLiteral) = any(NullCoalescingExpr nce).getRightOperand() or
+    // No need to flag logical operations when the operands are constant
+    isConstantCondition(this.(LogicalNotExpr).getOperand(), _) or
+    this =
+      any(LogicalAndExpr lae |
+        isConstantCondition(lae.getAnOperand(), false)
+        or
+        isConstantCondition(lae.getLeftOperand(), true) and
+        isConstantCondition(lae.getRightOperand(), true)
+      ) or
+    this =
+      any(LogicalOrExpr loe |
+        isConstantCondition(loe.getAnOperand(), true)
+        or
+        isConstantCondition(loe.getLeftOperand(), false) and
+        isConstantCondition(loe.getRightOperand(), false)
+      )
   }
 }
 
@@ -51,7 +67,8 @@ class ConstantIfCondition extends ConstantBooleanCondition {
     or
     // It is a common pattern to use a local constant/constant field to control
     // whether code parts must be executed or not
-    this instanceof AssignableRead
+    this instanceof AssignableRead and
+    not this instanceof ParameterRead
   }
 }
 

@@ -1,6 +1,6 @@
 
 int source();
-void sink(...) {};
+void sink(...);
 
 class StructLikeClass {
 public:
@@ -32,10 +32,10 @@ void test_structlikeclass()
 		StructLikeClass s4;
 		s4 = source();
 
-		sink(s1); // tainted
-		sink(s2); // tainted
-		sink(s3); // tainted
-		sink(s4); // tainted
+		sink(s1); // $ ast,ir
+		sink(s2); // $ ast,ir
+		sink(s3); // $ ast,ir
+		sink(s4); // $ ast,ir
 	}
 
 	{
@@ -57,8 +57,8 @@ void test_structlikeclass()
 		StructLikeClass s3;
 		s2 = StructLikeClass(source());
 
-		sink(s1); // tainted
-		sink(s2); // tainted
-		sink(s3 = source()); // tainted
+		sink(s1); // $ ast,ir
+		sink(s2); // $ ast,ir
+		sink(s3 = source()); // $ ast,ir
 	}
 }

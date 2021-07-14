@@ -18,7 +18,9 @@
 | Assert.cs:16:20:16:32 | ... ? ... : ... | null | Assert.cs:16:24:16:27 | null | null |
 | Assert.cs:17:23:17:23 | access to local variable s | empty | Assert.cs:16:20:16:32 | ... ? ... : ... | empty |
 | Assert.cs:17:23:17:23 | access to local variable s | non-empty | Assert.cs:16:20:16:32 | ... ? ... : ... | non-empty |
+| Assert.cs:17:23:17:23 | access to local variable s | non-null | Assert.cs:16:20:16:20 | access to parameter b | false |
 | Assert.cs:17:23:17:23 | access to local variable s | non-null | Assert.cs:16:20:16:32 | ... ? ... : ... | non-null |
+| Assert.cs:17:23:17:23 | access to local variable s | null | Assert.cs:16:20:16:20 | access to parameter b | true |
 | Assert.cs:17:23:17:23 | access to local variable s | null | Assert.cs:16:20:16:32 | ... ? ... : ... | null |
 | Assert.cs:18:27:18:27 | access to local variable s | non-null | Assert.cs:16:20:16:32 | ... ? ... : ... | non-null |
 | Assert.cs:18:27:18:27 | access to local variable s | null | Assert.cs:16:20:16:32 | ... ? ... : ... | null |
@@ -28,7 +30,9 @@
 | Assert.cs:23:20:23:32 | ... ? ... : ... | null | Assert.cs:23:24:23:27 | null | null |
 | Assert.cs:24:26:24:26 | access to local variable s | empty | Assert.cs:23:20:23:32 | ... ? ... : ... | empty |
 | Assert.cs:24:26:24:26 | access to local variable s | non-empty | Assert.cs:23:20:23:32 | ... ? ... : ... | non-empty |
+| Assert.cs:24:26:24:26 | access to local variable s | non-null | Assert.cs:23:20:23:20 | access to parameter b | false |
 | Assert.cs:24:26:24:26 | access to local variable s | non-null | Assert.cs:23:20:23:32 | ... ? ... : ... | non-null |
+| Assert.cs:24:26:24:26 | access to local variable s | null | Assert.cs:23:20:23:20 | access to parameter b | true |
 | Assert.cs:24:26:24:26 | access to local variable s | null | Assert.cs:23:20:23:32 | ... ? ... : ... | null |
 | Assert.cs:25:27:25:27 | access to local variable s | non-null | Assert.cs:23:20:23:32 | ... ? ... : ... | non-null |
 | Assert.cs:25:27:25:27 | access to local variable s | null | Assert.cs:23:20:23:32 | ... ? ... : ... | null |
@@ -152,63 +156,67 @@
 | Assert.cs:80:24:80:37 | ... \|\| ... | false | Assert.cs:80:37:80:37 | access to parameter b | false |
 | Assert.cs:81:27:81:27 | access to local variable s | non-null | Assert.cs:79:20:79:32 | ... ? ... : ... | non-null |
 | Assert.cs:81:27:81:27 | access to local variable s | null | Assert.cs:79:20:79:32 | ... ? ... : ... | null |
-| Collections.cs:12:17:12:32 | ... == ... | false | Collections.cs:12:17:12:20 | access to parameter args | non-empty |
-| Collections.cs:12:17:12:32 | ... == ... | true | Collections.cs:12:17:12:20 | access to parameter args | empty |
-| Collections.cs:13:13:13:28 | ... == ... | true | Collections.cs:13:13:13:16 | access to parameter args | non-empty |
-| Collections.cs:14:13:14:28 | ... != ... | false | Collections.cs:14:13:14:16 | access to parameter args | empty |
-| Collections.cs:14:13:14:28 | ... != ... | true | Collections.cs:14:13:14:16 | access to parameter args | non-empty |
-| Collections.cs:15:13:15:28 | ... != ... | false | Collections.cs:15:13:15:16 | access to parameter args | non-empty |
-| Collections.cs:16:13:16:27 | ... > ... | true | Collections.cs:16:13:16:16 | access to parameter args | non-empty |
-| Collections.cs:18:13:18:28 | ... >= ... | true | Collections.cs:18:13:18:16 | access to parameter args | non-empty |
-| Collections.cs:23:17:23:31 | ... == ... | false | Collections.cs:23:17:23:20 | access to parameter args | non-empty |
-| Collections.cs:23:17:23:31 | ... == ... | true | Collections.cs:23:17:23:20 | access to parameter args | empty |
-| Collections.cs:24:13:24:27 | ... == ... | true | Collections.cs:24:13:24:16 | access to parameter args | non-empty |
-| Collections.cs:25:13:25:27 | ... != ... | false | Collections.cs:25:13:25:16 | access to parameter args | empty |
-| Collections.cs:25:13:25:27 | ... != ... | true | Collections.cs:25:13:25:16 | access to parameter args | non-empty |
-| Collections.cs:26:13:26:27 | ... != ... | false | Collections.cs:26:13:26:16 | access to parameter args | non-empty |
-| Collections.cs:27:13:27:26 | ... > ... | true | Collections.cs:27:13:27:16 | access to parameter args | non-empty |
-| Collections.cs:29:13:29:27 | ... >= ... | true | Collections.cs:29:13:29:16 | access to parameter args | non-empty |
-| Collections.cs:34:17:34:33 | ... == ... | false | Collections.cs:34:17:34:20 | access to parameter args | non-empty |
-| Collections.cs:34:17:34:33 | ... == ... | true | Collections.cs:34:17:34:20 | access to parameter args | empty |
-| Collections.cs:35:13:35:29 | ... == ... | true | Collections.cs:35:13:35:16 | access to parameter args | non-empty |
-| Collections.cs:36:13:36:29 | ... != ... | false | Collections.cs:36:13:36:16 | access to parameter args | empty |
-| Collections.cs:36:13:36:29 | ... != ... | true | Collections.cs:36:13:36:16 | access to parameter args | non-empty |
-| Collections.cs:37:13:37:29 | ... != ... | false | Collections.cs:37:13:37:16 | access to parameter args | non-empty |
-| Collections.cs:38:13:38:28 | ... > ... | true | Collections.cs:38:13:38:16 | access to parameter args | non-empty |
-| Collections.cs:40:13:40:29 | ... >= ... | true | Collections.cs:40:13:40:16 | access to parameter args | non-empty |
-| Collections.cs:45:17:45:26 | call to method Any | false | Collections.cs:45:17:45:20 | access to parameter args | empty |
-| Collections.cs:45:17:45:26 | call to method Any | true | Collections.cs:45:17:45:20 | access to parameter args | non-empty |
-| Collections.cs:50:13:50:27 | ... == ... | false | Collections.cs:50:13:50:16 | access to parameter args | non-empty |
-| Collections.cs:50:13:50:27 | ... == ... | true | Collections.cs:50:13:50:16 | access to parameter args | empty |
-| Collections.cs:56:13:56:13 | access to local variable x | empty | Collections.cs:55:13:55:41 | array creation of type String[] | empty |
-| Collections.cs:56:13:56:13 | access to local variable x | non-empty | Collections.cs:55:13:55:41 | array creation of type String[] | non-empty |
-| Collections.cs:56:13:56:13 | access to local variable x | non-null | Collections.cs:55:13:55:41 | array creation of type String[] | non-null |
-| Collections.cs:56:13:56:13 | access to local variable x | null | Collections.cs:55:13:55:41 | array creation of type String[] | null |
-| Collections.cs:58:13:58:13 | access to local variable x | empty | Collections.cs:57:13:57:25 | array creation of type String[] | empty |
-| Collections.cs:58:13:58:13 | access to local variable x | non-empty | Collections.cs:57:13:57:25 | array creation of type String[] | non-empty |
-| Collections.cs:58:13:58:13 | access to local variable x | non-null | Collections.cs:57:13:57:25 | array creation of type String[] | non-null |
-| Collections.cs:58:13:58:13 | access to local variable x | null | Collections.cs:57:13:57:25 | array creation of type String[] | null |
-| Collections.cs:64:9:64:9 | access to local variable x | empty | Collections.cs:63:17:63:54 | call to method ToList | empty |
-| Collections.cs:64:9:64:9 | access to local variable x | non-empty | Collections.cs:63:17:63:54 | call to method ToList | non-empty |
-| Collections.cs:64:9:64:9 | access to local variable x | non-null | Collections.cs:63:17:63:54 | call to method ToList | non-null |
-| Collections.cs:64:9:64:9 | access to local variable x | null | Collections.cs:63:17:63:54 | call to method ToList | null |
-| Collections.cs:65:13:65:13 | access to local variable x | non-null | Collections.cs:63:17:63:54 | call to method ToList | non-null |
-| Collections.cs:65:13:65:13 | access to local variable x | null | Collections.cs:63:17:63:54 | call to method ToList | null |
-| Collections.cs:65:13:65:24 | ... == ... | false | Collections.cs:65:13:65:13 | access to local variable x | non-empty |
-| Collections.cs:65:13:65:24 | ... == ... | true | Collections.cs:65:13:65:13 | access to local variable x | empty |
-| Collections.cs:67:13:67:13 | access to local variable x | non-null | Collections.cs:63:17:63:54 | call to method ToList | non-null |
-| Collections.cs:67:13:67:13 | access to local variable x | null | Collections.cs:63:17:63:54 | call to method ToList | null |
-| Collections.cs:68:13:68:13 | access to local variable x | non-null | Collections.cs:63:17:63:54 | call to method ToList | non-null |
-| Collections.cs:68:13:68:13 | access to local variable x | null | Collections.cs:63:17:63:54 | call to method ToList | null |
-| Collections.cs:74:35:74:41 | ... == ... | true | Collections.cs:74:35:74:35 | access to parameter s | non-null |
-| Collections.cs:74:35:74:41 | ... == ... | true | Collections.cs:74:40:74:41 | "" | non-null |
-| Collections.cs:75:17:75:33 | call to method Any | true | Collections.cs:75:17:75:20 | access to parameter args | non-empty |
-| Collections.cs:76:13:76:36 | ... == ... | false | Collections.cs:76:13:76:16 | access to parameter args | non-empty |
-| Collections.cs:77:13:77:36 | ... == ... | true | Collections.cs:77:13:77:16 | access to parameter args | non-empty |
-| Collections.cs:78:13:78:36 | ... != ... | true | Collections.cs:78:13:78:16 | access to parameter args | non-empty |
-| Collections.cs:79:13:79:36 | ... != ... | false | Collections.cs:79:13:79:16 | access to parameter args | non-empty |
-| Collections.cs:80:13:80:35 | ... > ... | true | Collections.cs:80:13:80:16 | access to parameter args | non-empty |
-| Collections.cs:82:13:82:36 | ... >= ... | true | Collections.cs:82:13:82:16 | access to parameter args | non-empty |
+| Assert.cs:94:16:94:24 | ... && ... | true | Assert.cs:94:16:94:17 | access to parameter b1 | true |
+| Assert.cs:94:16:94:24 | ... && ... | true | Assert.cs:94:22:94:24 | !... | true |
+| Assert.cs:94:22:94:24 | !... | false | Assert.cs:94:23:94:24 | access to parameter b2 | true |
+| Assert.cs:94:22:94:24 | !... | true | Assert.cs:94:23:94:24 | access to parameter b2 | false |
+| Collections.cs:11:17:11:32 | ... == ... | false | Collections.cs:11:17:11:20 | access to parameter args | non-empty |
+| Collections.cs:11:17:11:32 | ... == ... | true | Collections.cs:11:17:11:20 | access to parameter args | empty |
+| Collections.cs:12:13:12:28 | ... == ... | true | Collections.cs:12:13:12:16 | access to parameter args | non-empty |
+| Collections.cs:13:13:13:28 | ... != ... | false | Collections.cs:13:13:13:16 | access to parameter args | empty |
+| Collections.cs:13:13:13:28 | ... != ... | true | Collections.cs:13:13:13:16 | access to parameter args | non-empty |
+| Collections.cs:14:13:14:28 | ... != ... | false | Collections.cs:14:13:14:16 | access to parameter args | non-empty |
+| Collections.cs:15:13:15:27 | ... > ... | true | Collections.cs:15:13:15:16 | access to parameter args | non-empty |
+| Collections.cs:17:13:17:28 | ... >= ... | true | Collections.cs:17:13:17:16 | access to parameter args | non-empty |
+| Collections.cs:22:17:22:31 | ... == ... | false | Collections.cs:22:17:22:20 | access to parameter args | non-empty |
+| Collections.cs:22:17:22:31 | ... == ... | true | Collections.cs:22:17:22:20 | access to parameter args | empty |
+| Collections.cs:23:13:23:27 | ... == ... | true | Collections.cs:23:13:23:16 | access to parameter args | non-empty |
+| Collections.cs:24:13:24:27 | ... != ... | false | Collections.cs:24:13:24:16 | access to parameter args | empty |
+| Collections.cs:24:13:24:27 | ... != ... | true | Collections.cs:24:13:24:16 | access to parameter args | non-empty |
+| Collections.cs:25:13:25:27 | ... != ... | false | Collections.cs:25:13:25:16 | access to parameter args | non-empty |
+| Collections.cs:26:13:26:26 | ... > ... | true | Collections.cs:26:13:26:16 | access to parameter args | non-empty |
+| Collections.cs:28:13:28:27 | ... >= ... | true | Collections.cs:28:13:28:16 | access to parameter args | non-empty |
+| Collections.cs:33:17:33:33 | ... == ... | false | Collections.cs:33:17:33:20 | access to parameter args | non-empty |
+| Collections.cs:33:17:33:33 | ... == ... | true | Collections.cs:33:17:33:20 | access to parameter args | empty |
+| Collections.cs:34:13:34:29 | ... == ... | true | Collections.cs:34:13:34:16 | access to parameter args | non-empty |
+| Collections.cs:35:13:35:29 | ... != ... | false | Collections.cs:35:13:35:16 | access to parameter args | empty |
+| Collections.cs:35:13:35:29 | ... != ... | true | Collections.cs:35:13:35:16 | access to parameter args | non-empty |
+| Collections.cs:36:13:36:29 | ... != ... | false | Collections.cs:36:13:36:16 | access to parameter args | non-empty |
+| Collections.cs:37:13:37:28 | ... > ... | true | Collections.cs:37:13:37:16 | access to parameter args | non-empty |
+| Collections.cs:39:13:39:29 | ... >= ... | true | Collections.cs:39:13:39:16 | access to parameter args | non-empty |
+| Collections.cs:44:17:44:26 | call to method Any | false | Collections.cs:44:17:44:20 | access to parameter args | empty |
+| Collections.cs:44:17:44:26 | call to method Any | true | Collections.cs:44:17:44:20 | access to parameter args | non-empty |
+| Collections.cs:49:13:49:27 | ... == ... | false | Collections.cs:49:13:49:16 | access to parameter args | non-empty |
+| Collections.cs:49:13:49:27 | ... == ... | true | Collections.cs:49:13:49:16 | access to parameter args | empty |
+| Collections.cs:55:13:55:13 | access to local variable x | empty | Collections.cs:54:13:54:42 | array creation of type String[] | empty |
+| Collections.cs:55:13:55:13 | access to local variable x | non-empty | Collections.cs:54:13:54:42 | array creation of type String[] | non-empty |
+| Collections.cs:55:13:55:13 | access to local variable x | non-null | Collections.cs:54:13:54:42 | array creation of type String[] | non-null |
+| Collections.cs:55:13:55:13 | access to local variable x | null | Collections.cs:54:13:54:42 | array creation of type String[] | null |
+| Collections.cs:57:13:57:13 | access to local variable x | empty | Collections.cs:56:13:56:25 | array creation of type String[] | empty |
+| Collections.cs:57:13:57:13 | access to local variable x | non-empty | Collections.cs:56:13:56:25 | array creation of type String[] | non-empty |
+| Collections.cs:57:13:57:13 | access to local variable x | non-null | Collections.cs:56:13:56:25 | array creation of type String[] | non-null |
+| Collections.cs:57:13:57:13 | access to local variable x | null | Collections.cs:56:13:56:25 | array creation of type String[] | null |
+| Collections.cs:63:9:63:9 | access to local variable x | empty | Collections.cs:62:17:62:55 | call to method ToList | empty |
+| Collections.cs:63:9:63:9 | access to local variable x | non-empty | Collections.cs:62:17:62:55 | call to method ToList | non-empty |
+| Collections.cs:63:9:63:9 | access to local variable x | non-null | Collections.cs:62:17:62:55 | call to method ToList | non-null |
+| Collections.cs:63:9:63:9 | access to local variable x | null | Collections.cs:62:17:62:55 | call to method ToList | null |
+| Collections.cs:64:13:64:13 | access to local variable x | non-null | Collections.cs:62:17:62:55 | call to method ToList | non-null |
+| Collections.cs:64:13:64:13 | access to local variable x | null | Collections.cs:62:17:62:55 | call to method ToList | null |
+| Collections.cs:64:13:64:24 | ... == ... | false | Collections.cs:64:13:64:13 | access to local variable x | non-empty |
+| Collections.cs:64:13:64:24 | ... == ... | true | Collections.cs:64:13:64:13 | access to local variable x | empty |
+| Collections.cs:66:13:66:13 | access to local variable x | non-null | Collections.cs:62:17:62:55 | call to method ToList | non-null |
+| Collections.cs:66:13:66:13 | access to local variable x | null | Collections.cs:62:17:62:55 | call to method ToList | null |
+| Collections.cs:67:13:67:13 | access to local variable x | non-null | Collections.cs:62:17:62:55 | call to method ToList | non-null |
+| Collections.cs:67:13:67:13 | access to local variable x | null | Collections.cs:62:17:62:55 | call to method ToList | null |
+| Collections.cs:73:35:73:41 | ... == ... | true | Collections.cs:73:35:73:35 | access to parameter s | non-null |
+| Collections.cs:73:35:73:41 | ... == ... | true | Collections.cs:73:40:73:41 | "" | non-null |
+| Collections.cs:74:17:74:33 | call to method Any | true | Collections.cs:74:17:74:20 | access to parameter args | non-empty |
+| Collections.cs:75:13:75:36 | ... == ... | false | Collections.cs:75:13:75:16 | access to parameter args | non-empty |
+| Collections.cs:76:13:76:36 | ... == ... | true | Collections.cs:76:13:76:16 | access to parameter args | non-empty |
+| Collections.cs:77:13:77:36 | ... != ... | true | Collections.cs:77:13:77:16 | access to parameter args | non-empty |
+| Collections.cs:78:13:78:36 | ... != ... | false | Collections.cs:78:13:78:16 | access to parameter args | non-empty |
+| Collections.cs:79:13:79:35 | ... > ... | true | Collections.cs:79:13:79:16 | access to parameter args | non-empty |
+| Collections.cs:81:13:81:36 | ... >= ... | true | Collections.cs:81:13:81:16 | access to parameter args | non-empty |
 | Guards.cs:10:13:10:25 | !... | false | Guards.cs:10:14:10:25 | !... | true |
 | Guards.cs:10:13:10:25 | !... | true | Guards.cs:10:14:10:25 | !... | false |
 | Guards.cs:10:14:10:25 | !... | false | Guards.cs:10:16:10:24 | ... == ... | true |
@@ -397,8 +405,14 @@
 | Guards.cs:276:16:276:16 | access to parameter o | match access to type Action<Object> | Guards.cs:276:16:276:16 | access to parameter o | non-null |
 | Guards.cs:276:16:276:16 | access to parameter o | match null | Guards.cs:276:16:276:16 | access to parameter o | null |
 | Guards.cs:276:16:276:16 | access to parameter o | non-match null | Guards.cs:276:16:276:16 | access to parameter o | non-null |
+| Guards.cs:278:13:279:28 | ... => ... | true | Guards.cs:276:16:276:16 | access to parameter o | non-null |
+| Guards.cs:280:13:281:28 | ... => ... | true | Guards.cs:276:16:276:16 | access to parameter o | non-null |
 | Guards.cs:281:17:281:17 | access to local variable a | non-null | Guards.cs:276:16:276:16 | access to parameter o | non-null |
 | Guards.cs:281:17:281:17 | access to local variable a | null | Guards.cs:276:16:276:16 | access to parameter o | null |
+| Guards.cs:282:13:283:28 | ... => ... | true | Guards.cs:276:16:276:16 | access to parameter o | non-null |
+| Guards.cs:284:13:285:28 | ... => ... | false | Guards.cs:276:16:276:16 | access to parameter o | non-null |
+| Guards.cs:284:13:285:28 | ... => ... | true | Guards.cs:276:16:276:16 | access to parameter o | null |
+| Guards.cs:286:13:287:28 | ... => ... | true | Guards.cs:276:16:276:16 | access to parameter o | non-null |
 | Guards.cs:296:16:296:17 | access to local variable b2 | match true | Guards.cs:294:13:294:14 | access to parameter b1 | false |
 | Guards.cs:296:16:296:17 | access to local variable b2 | match true | Guards.cs:296:16:296:17 | access to local variable b2 | true |
 | Guards.cs:308:16:308:17 | access to local variable b2 | match true | Guards.cs:306:13:306:14 | access to parameter b1 | true |
@@ -410,6 +424,25 @@
 | Guards.cs:332:16:332:16 | access to local variable e | match access to constant B | Guards.cs:330:13:330:13 | access to parameter b | true |
 | Guards.cs:332:16:332:16 | access to local variable e | match access to constant B | Guards.cs:332:16:332:16 | access to local variable e | 1 |
 | Guards.cs:332:16:332:16 | access to local variable e | non-match access to constant B | Guards.cs:330:13:330:13 | access to parameter b | false |
+| Guards.cs:341:20:341:32 | ... ? ... : ... | non-null | Guards.cs:341:20:341:20 | access to parameter b | false |
+| Guards.cs:341:20:341:32 | ... ? ... : ... | non-null | Guards.cs:341:31:341:32 | "" | non-null |
+| Guards.cs:341:20:341:32 | ... ? ... : ... | null | Guards.cs:341:20:341:20 | access to parameter b | true |
+| Guards.cs:341:20:341:32 | ... ? ... : ... | null | Guards.cs:341:24:341:27 | null | null |
+| Guards.cs:342:13:342:13 | access to local variable s | empty | Guards.cs:341:20:341:32 | ... ? ... : ... | empty |
+| Guards.cs:342:13:342:13 | access to local variable s | non-empty | Guards.cs:341:20:341:32 | ... ? ... : ... | non-empty |
+| Guards.cs:342:13:342:13 | access to local variable s | non-null | Guards.cs:341:20:341:32 | ... ? ... : ... | non-null |
+| Guards.cs:342:13:342:13 | access to local variable s | null | Guards.cs:341:20:341:32 | ... ? ... : ... | null |
+| Guards.cs:342:13:342:21 | ... != ... | false | Guards.cs:341:20:341:20 | access to parameter b | true |
+| Guards.cs:342:13:342:21 | ... != ... | false | Guards.cs:342:13:342:13 | access to local variable s | null |
+| Guards.cs:342:13:342:21 | ... != ... | true | Guards.cs:341:20:341:20 | access to parameter b | false |
+| Guards.cs:342:13:342:21 | ... != ... | true | Guards.cs:342:13:342:13 | access to local variable s | non-null |
+| Guards.cs:342:13:342:27 | ... && ... | true | Guards.cs:342:13:342:21 | ... != ... | true |
+| Guards.cs:342:13:342:27 | ... && ... | true | Guards.cs:342:26:342:27 | !... | true |
+| Guards.cs:342:26:342:27 | !... | false | Guards.cs:342:27:342:27 | access to parameter b | true |
+| Guards.cs:342:26:342:27 | !... | true | Guards.cs:342:27:342:27 | access to parameter b | false |
+| Guards.cs:343:31:343:31 | access to local variable s | non-null | Guards.cs:341:20:341:32 | ... ? ... : ... | non-null |
+| Guards.cs:343:31:343:31 | access to local variable s | null | Guards.cs:341:20:341:32 | ... ? ... : ... | null |
+| Guards.cs:348:13:348:25 | ... is ... | true | Guards.cs:348:13:348:13 | access to parameter o | non-null |
 | Splitting.cs:12:17:12:25 | ... != ... | false | Splitting.cs:12:17:12:17 | access to parameter o | null |
 | Splitting.cs:12:17:12:25 | ... != ... | true | Splitting.cs:12:17:12:17 | access to parameter o | non-null |
 | Splitting.cs:22:17:22:25 | ... != ... | false | Splitting.cs:22:17:22:17 | access to parameter o | null |
@@ -432,7 +465,8 @@
 | Splitting.cs:105:22:105:30 | ... != ... | true | Splitting.cs:105:22:105:22 | access to parameter o | non-null |
 | Splitting.cs:116:22:116:30 | ... != ... | false | Splitting.cs:116:22:116:22 | access to parameter o | null |
 | Splitting.cs:116:22:116:30 | ... != ... | true | Splitting.cs:116:22:116:22 | access to parameter o | non-null |
-| Splitting.cs:128:17:128:25 | ... != ... | false | Splitting.cs:128:17:128:17 | access to local variable o | null |
-| Splitting.cs:128:17:128:25 | ... != ... | true | Splitting.cs:128:17:128:17 | access to local variable o | non-null |
-| Splitting.cs:133:17:133:17 | access to local variable o | non-null | Splitting.cs:132:21:132:29 | call to method M11 | non-null |
-| Splitting.cs:133:17:133:17 | access to local variable o | null | Splitting.cs:132:21:132:29 | call to method M11 | null |
+| Splitting.cs:129:17:129:25 | ... != ... | false | Splitting.cs:129:17:129:17 | access to local variable o | null |
+| Splitting.cs:129:17:129:25 | ... != ... | false | Splitting.cs:129:22:129:25 | null | non-null |
+| Splitting.cs:129:17:129:25 | ... != ... | true | Splitting.cs:129:17:129:17 | access to local variable o | non-null |
+| Splitting.cs:134:17:134:17 | access to local variable o | non-null | Splitting.cs:133:21:133:29 | call to method M11 | non-null |
+| Splitting.cs:134:17:134:17 | access to local variable o | null | Splitting.cs:133:21:133:29 | call to method M11 | null |

@@ -86,8 +86,7 @@ class CollectionType extends RefType {
     exists(RefType base | base = this.getABaseType*() |
       base.hasQualifiedName(collectionNamespaceName(), collectionTypeName())
       or
-      base
-          .(ConstructedType)
+      base.(ConstructedType)
           .getUnboundGeneric()
           .hasQualifiedName(genericCollectionNamespaceName(), genericCollectionTypeName())
     )
@@ -143,8 +142,8 @@ private predicate readonlyAccess(Access a) {
   // A read-only method call
   exists(MethodCall mc | mc.getQualifier() = a | mc.getTarget().hasName(readonlyMethodName()))
   or
-  // Any property access
-  a = any(PropertyAccess pa).getQualifier()
+  // Any property read
+  a = any(PropertyRead pr).getQualifier()
   or
   // An element read
   a = any(ElementRead er).getQualifier()

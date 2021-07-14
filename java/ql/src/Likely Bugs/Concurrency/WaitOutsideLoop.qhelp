@@ -31,8 +31,8 @@ the loop:</p>
 
 
     <li>J. Bloch, <em>Effective Java (second edition)</em>, p. 276. Addison-Wesley, 2008.</li>
-    <li>Java API Documentation: <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html#wait%28%29">Object.wait()</a>.</li>
-    <li>The Java Tutorials: <a href="http://docs.oracle.com/javase/tutorial/essential/concurrency/guardmeth.html">Guarded Blocks</a>.</li>
+    <li>Java API Specification: <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#wait()">Object.wait()</a>.</li>
+    <li>The Java Tutorials: <a href="https://docs.oracle.com/javase/tutorial/essential/concurrency/guardmeth.html">Guarded Blocks</a>.</li>
 
 
 </references>

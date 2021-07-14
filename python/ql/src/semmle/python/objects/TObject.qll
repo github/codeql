@@ -229,23 +229,32 @@ predicate class_method(
   PointsToInternal::pointsTo(instantiation.getArg(0), context, function, _)
 }
 
+/**
+ * Holds if the literal corresponding to the control flow node `n` has class `cls`.
+ *
+ * Helper predicate for `literal_instantiation`. Prevents a bad join with
+ * `PointsToContext::appliesTo` from occuring.
+ */
+pragma[nomagic]
+private predicate literal_node_class(ControlFlowNode n, ClassObjectInternal cls) {
+  n instanceof ListNode and cls = ObjectInternal::builtin("list")
+  or
+  n instanceof DictNode and cls = ObjectInternal::builtin("dict")
+  or
+  n instanceof SetNode and cls = ObjectInternal::builtin("set")
+  or
+  n.getNode() instanceof ImaginaryLiteral and cls = ObjectInternal::builtin("complex")
+  or
+  n.getNode() instanceof ListComp and cls = ObjectInternal::builtin("list")
+  or
+  n.getNode() instanceof SetComp and cls = ObjectInternal::builtin("set")
+  or
+  n.getNode() instanceof DictComp and cls = ObjectInternal::builtin("dict")
+}
+
 predicate literal_instantiation(ControlFlowNode n, ClassObjectInternal cls, PointsToContext context) {
   context.appliesTo(n) and
-  (
-    n instanceof ListNode and cls = ObjectInternal::builtin("list")
-    or
-    n instanceof DictNode and cls = ObjectInternal::builtin("dict")
-    or
-    n instanceof SetNode and cls = ObjectInternal::builtin("set")
-    or
-    n.getNode() instanceof ImaginaryLiteral and cls = ObjectInternal::builtin("complex")
-    or
-    n.getNode() instanceof ListComp and cls = ObjectInternal::builtin("list")
-    or
-    n.getNode() instanceof SetComp and cls = ObjectInternal::builtin("set")
-    or
-    n.getNode() instanceof DictComp and cls = ObjectInternal::builtin("dict")
-  )
+  literal_node_class(n, cls)
 }
 
 predicate super_instantiation(

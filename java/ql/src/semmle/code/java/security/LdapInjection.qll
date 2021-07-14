@@ -6,6 +6,7 @@ import semmle.code.java.frameworks.Jndi
 import semmle.code.java.frameworks.UnboundId
 import semmle.code.java.frameworks.SpringLdap
 import semmle.code.java.frameworks.ApacheLdap
+private import semmle.code.java.dataflow.ExternalFlow
 
 /** A data flow sink for unvalidated user input that is used to construct LDAP queries. */
 abstract class LdapInjectionSink extends DataFlow::Node { }
@@ -18,7 +19,7 @@ abstract class LdapInjectionSanitizer extends DataFlow::Node { }
  *
  * Extend this class to add additional taint steps that should apply to the `LdapInjectionFlowConfig`.
  */
-class LdapInjectionAdditionalTaintStep extends TaintTracking::Unit {
+class LdapInjectionAdditionalTaintStep extends Unit {
   /**
    * Holds if the step from `node1` to `node2` should be considered a taint
    * step for the `LdapInjectionFlowConfig` configuration.
@@ -28,68 +29,54 @@ class LdapInjectionAdditionalTaintStep extends TaintTracking::Unit {
 
 /** Default sink for LDAP injection vulnerabilities. */
 private class DefaultLdapInjectionSink extends LdapInjectionSink {
-  DefaultLdapInjectionSink() {
-    exists(MethodAccess ma, Method m, int index |
-      ma.getMethod() = m and
-      ma.getArgument(index) = this.asExpr() and
-      ldapInjectionSinkMethod(m, index)
-    )
+  DefaultLdapInjectionSink() { sinkNode(this, "ldap") }
+}
+
+private class DefaultLdapInjectionSinkModel extends SinkModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        // jndi
+        "javax.naming.directory;DirContext;true;search;;;Argument[0..1];ldap",
+        // apache
+        "org.apache.directory.ldap.client.api;LdapConnection;true;search;;;Argument[0..2];ldap",
+        // UnboundID: search
+        "com.unboundid.ldap.sdk;LDAPConnection;false;search;(ReadOnlySearchRequest);;Argument[0];ldap",
+        "com.unboundid.ldap.sdk;LDAPConnection;false;search;(SearchRequest);;Argument[0];ldap",
+        "com.unboundid.ldap.sdk;LDAPConnection;false;search;(SearchResultListener,String,SearchScope,DereferencePolicy,int,int,boolean,Filter,String[]);;Argument[0..7];ldap",
+        "com.unboundid.ldap.sdk;LDAPConnection;false;search;(SearchResultListener,String,SearchScope,DereferencePolicy,int,int,boolean,String,String[]);;Argument[0..7];ldap",
+        "com.unboundid.ldap.sdk;LDAPConnection;false;search;(SearchResultListener,String,SearchScope,Filter,String[]);;Argument[0..3];ldap",
+        "com.unboundid.ldap.sdk;LDAPConnection;false;search;(SearchResultListener,String,SearchScope,String,String[]);;Argument[0..3];ldap",
+        "com.unboundid.ldap.sdk;LDAPConnection;false;search;(String,SearchScope,DereferencePolicy,int,int,boolean,Filter,String[]);;Argument[0..6];ldap",
+        "com.unboundid.ldap.sdk;LDAPConnection;false;search;(String,SearchScope,DereferencePolicy,int,int,boolean,String,String[]);;Argument[0..6];ldap",
+        "com.unboundid.ldap.sdk;LDAPConnection;false;search;(String,SearchScope,Filter,String[]);;Argument[0..2];ldap",
+        "com.unboundid.ldap.sdk;LDAPConnection;false;search;(String,SearchScope,String,String[]);;Argument[0..2];ldap",
+        // UnboundID: searchForEntry
+        "com.unboundid.ldap.sdk;LDAPConnection;false;searchForEntry;(ReadOnlySearchRequest);;Argument[0];ldap",
+        "com.unboundid.ldap.sdk;LDAPConnection;false;searchForEntry;(SearchRequest);;Argument[0];ldap",
+        "com.unboundid.ldap.sdk;LDAPConnection;false;searchForEntry;(String,SearchScope,DereferencePolicy,int,boolean,Filter,String[]);;Argument[0..5];ldap",
+        "com.unboundid.ldap.sdk;LDAPConnection;false;searchForEntry;(String,SearchScope,DereferencePolicy,int,boolean,String,String[]);;Argument[0..5];ldap",
+        "com.unboundid.ldap.sdk;LDAPConnection;false;searchForEntry;(String,SearchScope,Filter,String[]);;Argument[0..2];ldap",
+        "com.unboundid.ldap.sdk;LDAPConnection;false;searchForEntry;(String,SearchScope,String,String[]);;Argument[0..2];ldap",
+        // UnboundID: asyncSearch
+        "com.unboundid.ldap.sdk;LDAPConnection;false;asyncSearch;;;Argument[0];ldap",
+        // Spring
+        "org.springframework.ldap.core;LdapTemplate;false;find;;;Argument[0..1];ldap",
+        "org.springframework.ldap.core;LdapTemplate;false;findOne;;;Argument[0..1];ldap",
+        "org.springframework.ldap.core;LdapTemplate;false;search;;;Argument[0..1];ldap",
+        "org.springframework.ldap.core;LdapTemplate;false;searchForContext;;;Argument[0..1];ldap",
+        "org.springframework.ldap.core;LdapTemplate;false;searchForObject;;;Argument[0..1];ldap",
+        "org.springframework.ldap.core;LdapTemplate;false;authenticate;(LdapQuery,String);;Argument[0];ldap",
+        "org.springframework.ldap.core;LdapTemplate;false;authenticate;(Name,String,String);;Argument[0..1];ldap",
+        "org.springframework.ldap.core;LdapTemplate;false;authenticate;(Name,String,String,AuthenticatedLdapEntryContextCallback);;Argument[0..1];ldap",
+        "org.springframework.ldap.core;LdapTemplate;false;authenticate;(Name,String,String,AuthenticatedLdapEntryContextCallback,AuthenticationErrorCallback);;Argument[0..1];ldap",
+        "org.springframework.ldap.core;LdapTemplate;false;authenticate;(Name,String,String,AuthenticationErrorCallback);;Argument[0..1];ldap",
+        "org.springframework.ldap.core;LdapTemplate;false;authenticate;(String,String,String);;Argument[0..1];ldap",
+        "org.springframework.ldap.core;LdapTemplate;false;authenticate;(String,String,String,AuthenticatedLdapEntryContextCallback);;Argument[0..1];ldap",
+        "org.springframework.ldap.core;LdapTemplate;false;authenticate;(String,String,String,AuthenticatedLdapEntryContextCallback,AuthenticationErrorCallback);;Argument[0..1];ldap",
+        "org.springframework.ldap.core;LdapTemplate;false;authenticate;(String,String,String,AuthenticationErrorCallback);;Argument[0..1];ldap"
+      ]
   }
-}
-
-/** Holds if the method parameter at `index` is susceptible to an LDAP injection attack. */
-private predicate ldapInjectionSinkMethod(Method m, int index) {
-  jndiLdapInjectionSinkMethod(m, index) or
-  unboundIdLdapInjectionSinkMethod(m, index) or
-  springLdapInjectionSinkMethod(m, index) or
-  apacheLdapInjectionSinkMethod(m, index)
-}
-
-/** Holds if the JNDI method parameter at `index` is susceptible to an LDAP injection attack. */
-private predicate jndiLdapInjectionSinkMethod(Method m, int index) {
-  m.getDeclaringType().getAnAncestor() instanceof TypeDirContext and
-  m.hasName("search") and
-  index in [0 .. 1]
-}
-
-/** Holds if the UnboundID method parameter at `index` is susceptible to an LDAP injection attack. */
-private predicate unboundIdLdapInjectionSinkMethod(Method m, int index) {
-  exists(Parameter param | m.getParameter(index) = param and not param.isVarargs() |
-    m instanceof MethodUnboundIdLDAPConnectionSearch or
-    m instanceof MethodUnboundIdLDAPConnectionAsyncSearch or
-    m instanceof MethodUnboundIdLDAPConnectionSearchForEntry
-  )
-}
-
-/** Holds if the Spring method parameter at `index` is susceptible to an LDAP injection attack. */
-private predicate springLdapInjectionSinkMethod(Method m, int index) {
-  // LdapTemplate.authenticate, LdapTemplate.find* or LdapTemplate.search* method
-  (
-    m instanceof MethodSpringLdapTemplateAuthenticate or
-    m instanceof MethodSpringLdapTemplateFind or
-    m instanceof MethodSpringLdapTemplateFindOne or
-    m instanceof MethodSpringLdapTemplateSearch or
-    m instanceof MethodSpringLdapTemplateSearchForContext or
-    m instanceof MethodSpringLdapTemplateSearchForObject
-  ) and
-  (
-    // Parameter index is 1 (DN or query) or 2 (filter) if method is not authenticate
-    index in [0 .. 1] and
-    not m instanceof MethodSpringLdapTemplateAuthenticate
-    or
-    // But it's not the last parameter in case of authenticate method (last param is password)
-    index in [0 .. 1] and
-    index < m.getNumberOfParameters() - 1 and
-    m instanceof MethodSpringLdapTemplateAuthenticate
-  )
-}
-
-/** Holds if the Apache LDAP API method parameter at `index` is susceptible to an LDAP injection attack. */
-private predicate apacheLdapInjectionSinkMethod(Method m, int index) {
-  exists(Parameter param | m.getParameter(index) = param and not param.isVarargs() |
-    m.getDeclaringType().getAnAncestor() instanceof TypeApacheLdapConnection and
-    m.hasName("search")
-  )
 }
 
 /** A sanitizer that clears the taint on (boxed) primitive types. */

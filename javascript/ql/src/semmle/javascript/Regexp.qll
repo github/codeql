@@ -188,7 +188,20 @@ class RegExpTerm extends Locatable, @regexpterm {
  */
 class RegExpQuantifier extends RegExpTerm, @regexp_quantifier {
   /** Holds if the quantifier of this term is a greedy quantifier. */
-  predicate isGreedy() { isGreedy(this) }
+  predicate isGreedy() { is_greedy(this) }
+}
+
+/**
+ * A regular expression term that permits unlimited repetitions.
+ */
+class InfiniteRepetitionQuantifier extends RegExpQuantifier {
+  InfiniteRepetitionQuantifier() {
+    this instanceof RegExpPlus
+    or
+    this instanceof RegExpStar
+    or
+    this instanceof RegExpRange and not exists(this.(RegExpRange).getUpperBound())
+  }
 }
 
 /**
@@ -202,7 +215,9 @@ class RegExpQuantifier extends RegExpTerm, @regexp_quantifier {
  * \w
  * ```
  */
-class RegExpEscape extends RegExpTerm, @regexp_escape { }
+class RegExpEscape extends RegExpTerm, @regexp_escape {
+  override string getAPrimaryQlClass() { result = "RegExpEscape" }
+}
 
 /**
  * A constant regular expression term, that is, a regular expression
@@ -216,7 +231,7 @@ class RegExpEscape extends RegExpTerm, @regexp_escape { }
  */
 class RegExpConstant extends RegExpTerm, @regexp_constant {
   /** Gets the string matched by this constant term. */
-  string getValue() { regexpConstValue(this, result) }
+  string getValue() { regexp_const_value(this, result) }
 
   /**
    * Holds if this constant represents a valid Unicode character (as opposed
@@ -227,6 +242,8 @@ class RegExpConstant extends RegExpTerm, @regexp_constant {
   override predicate isNullable() { none() }
 
   override string getConstantValue() { result = getValue() }
+
+  override string getAPrimaryQlClass() { result = "RegExpConstant" }
 }
 
 /**
@@ -251,6 +268,8 @@ class RegExpCharEscape extends RegExpEscape, RegExpConstant, @regexp_char_escape
       )
     )
   }
+
+  override string getAPrimaryQlClass() { result = "RegExpCharEscape" }
 }
 
 /**
@@ -272,6 +291,8 @@ class RegExpAlt extends RegExpTerm, @regexp_alt {
   override predicate isNullable() { getAlternative().isNullable() }
 
   override string getAMatchedString() { result = getAlternative().getAMatchedString() }
+
+  override string getAPrimaryQlClass() { result = "RegExpAlt" }
 }
 
 /**
@@ -319,6 +340,8 @@ class RegExpSequence extends RegExpTerm, @regexp_seq {
       result = this.getChild(i + 1)
     )
   }
+
+  override string getAPrimaryQlClass() { result = "RegExpSequence" }
 }
 
 /**
@@ -333,6 +356,8 @@ class RegExpSequence extends RegExpTerm, @regexp_seq {
  */
 class RegExpAnchor extends RegExpTerm, @regexp_anchor {
   override predicate isNullable() { any() }
+
+  override string getAPrimaryQlClass() { result = "RegExpAnchor" }
 }
 
 /**
@@ -344,7 +369,9 @@ class RegExpAnchor extends RegExpTerm, @regexp_anchor {
  * ^
  * ```
  */
-class RegExpCaret extends RegExpAnchor, @regexp_caret { }
+class RegExpCaret extends RegExpAnchor, @regexp_caret {
+  override string getAPrimaryQlClass() { result = "RegExpCaret" }
+}
 
 /**
  * A dollar assertion `$` matching the end of a line.
@@ -355,7 +382,9 @@ class RegExpCaret extends RegExpAnchor, @regexp_caret { }
  * $
  * ```
  */
-class RegExpDollar extends RegExpAnchor, @regexp_dollar { }
+class RegExpDollar extends RegExpAnchor, @regexp_dollar {
+  override string getAPrimaryQlClass() { result = "RegExpDollar" }
+}
 
 /**
  * A word boundary assertion.
@@ -368,6 +397,8 @@ class RegExpDollar extends RegExpAnchor, @regexp_dollar { }
  */
 class RegExpWordBoundary extends RegExpTerm, @regexp_wordboundary {
   override predicate isNullable() { any() }
+
+  override string getAPrimaryQlClass() { result = "RegExpWordBoundary" }
 }
 
 /**
@@ -381,6 +412,8 @@ class RegExpWordBoundary extends RegExpTerm, @regexp_wordboundary {
  */
 class RegExpNonWordBoundary extends RegExpTerm, @regexp_nonwordboundary {
   override predicate isNullable() { any() }
+
+  override string getAPrimaryQlClass() { result = "RegExpNonWordBoundary" }
 }
 
 /**
@@ -412,7 +445,9 @@ class RegExpSubPattern extends RegExpTerm, @regexp_subpattern {
  * (?!\n)
  * ```
  */
-class RegExpLookahead extends RegExpSubPattern, @regexp_lookahead { }
+class RegExpLookahead extends RegExpSubPattern, @regexp_lookahead {
+  override string getAPrimaryQlClass() { result = "RegExpLookahead" }
+}
 
 /**
  * A zero-width lookbehind assertion.
@@ -424,7 +459,9 @@ class RegExpLookahead extends RegExpSubPattern, @regexp_lookahead { }
  * (?<!\\)
  * ```
  */
-class RegExpLookbehind extends RegExpSubPattern, @regexp_lookbehind { }
+class RegExpLookbehind extends RegExpSubPattern, @regexp_lookbehind {
+  override string getAPrimaryQlClass() { result = "RegExpLookbehind" }
+}
 
 /**
  * A positive-lookahead assertion.
@@ -435,7 +472,9 @@ class RegExpLookbehind extends RegExpSubPattern, @regexp_lookbehind { }
  * (?=\w)
  * ```
  */
-class RegExpPositiveLookahead extends RegExpLookahead, @regexp_positive_lookahead { }
+class RegExpPositiveLookahead extends RegExpLookahead, @regexp_positive_lookahead {
+  override string getAPrimaryQlClass() { result = "RegExpPositiveLookahead" }
+}
 
 /**
  * A negative-lookahead assertion.
@@ -446,7 +485,9 @@ class RegExpPositiveLookahead extends RegExpLookahead, @regexp_positive_lookahea
  * (?!\n)
  * ```
  */
-class RegExpNegativeLookahead extends RegExpLookahead, @regexp_negative_lookahead { }
+class RegExpNegativeLookahead extends RegExpLookahead, @regexp_negative_lookahead {
+  override string getAPrimaryQlClass() { result = "RegExpNegativeLookahead" }
+}
 
 /**
  * A positive-lookbehind assertion.
@@ -457,7 +498,9 @@ class RegExpNegativeLookahead extends RegExpLookahead, @regexp_negative_lookahea
  * (?<=\.)
  * ```
  */
-class RegExpPositiveLookbehind extends RegExpLookbehind, @regexp_positive_lookbehind { }
+class RegExpPositiveLookbehind extends RegExpLookbehind, @regexp_positive_lookbehind {
+  override string getAPrimaryQlClass() { result = "RegExpPositiveLookbehind" }
+}
 
 /**
  * A negative-lookbehind assertion.
@@ -468,7 +511,9 @@ class RegExpPositiveLookbehind extends RegExpLookbehind, @regexp_positive_lookbe
  * (?<!\\)
  * ```
  */
-class RegExpNegativeLookbehind extends RegExpLookbehind, @regexp_negative_lookbehind { }
+class RegExpNegativeLookbehind extends RegExpLookbehind, @regexp_negative_lookbehind {
+  override string getAPrimaryQlClass() { result = "RegExpNegativeLookbehind" }
+}
 
 /**
  * A star-quantified term.
@@ -481,6 +526,8 @@ class RegExpNegativeLookbehind extends RegExpLookbehind, @regexp_negative_lookbe
  */
 class RegExpStar extends RegExpQuantifier, @regexp_star {
   override predicate isNullable() { any() }
+
+  override string getAPrimaryQlClass() { result = "RegExpStar" }
 }
 
 /**
@@ -494,6 +541,8 @@ class RegExpStar extends RegExpQuantifier, @regexp_star {
  */
 class RegExpPlus extends RegExpQuantifier, @regexp_plus {
   override predicate isNullable() { getAChild().isNullable() }
+
+  override string getAPrimaryQlClass() { result = "RegExpPlus" }
 }
 
 /**
@@ -507,6 +556,8 @@ class RegExpPlus extends RegExpQuantifier, @regexp_plus {
  */
 class RegExpOpt extends RegExpQuantifier, @regexp_opt {
   override predicate isNullable() { any() }
+
+  override string getAPrimaryQlClass() { result = "RegExpOpt" }
 }
 
 /**
@@ -522,7 +573,7 @@ class RegExpOpt extends RegExpQuantifier, @regexp_opt {
  */
 class RegExpRange extends RegExpQuantifier, @regexp_range {
   /** Gets the lower bound of the range. */
-  int getLowerBound() { rangeQuantifierLowerBound(this, result) }
+  int getLowerBound() { range_quantifier_lower_bound(this, result) }
 
   /**
    * Gets the upper bound of the range, if any.
@@ -531,12 +582,14 @@ class RegExpRange extends RegExpQuantifier, @regexp_range {
    * For a term of the form `r{lo}`, both the lower and the upper bound
    * are `lo`.
    */
-  int getUpperBound() { rangeQuantifierUpperBound(this, result) }
+  int getUpperBound() { range_quantifier_upper_bound(this, result) }
 
   override predicate isNullable() {
     getAChild().isNullable() or
     getLowerBound() = 0
   }
+
+  override string getAPrimaryQlClass() { result = "RegExpRange" }
 }
 
 /**
@@ -550,6 +603,8 @@ class RegExpRange extends RegExpQuantifier, @regexp_range {
  */
 class RegExpDot extends RegExpTerm, @regexp_dot {
   override predicate isNullable() { none() }
+
+  override string getAPrimaryQlClass() { result = "RegExpDot" }
 }
 
 /**
@@ -565,7 +620,7 @@ class RegExpDot extends RegExpTerm, @regexp_dot {
  */
 class RegExpGroup extends RegExpTerm, @regexp_group {
   /** Holds if this is a capture group. */
-  predicate isCapture() { isCapture(this, _) }
+  predicate isCapture() { is_capture(this, _) }
 
   /**
    * Gets the index of this capture group within the enclosing regular
@@ -576,19 +631,21 @@ class RegExpGroup extends RegExpTerm, @regexp_group {
    * has index 2, and the group `(?:b)` has no index, since it is
    * not a capture group.
    */
-  int getNumber() { isCapture(this, result) }
+  int getNumber() { is_capture(this, result) }
 
   /** Holds if this is a named capture group. */
-  predicate isNamed() { isNamedCapture(this, _) }
+  predicate isNamed() { is_named_capture(this, _) }
 
   /** Gets the name of this capture group, if any. */
-  string getName() { isNamedCapture(this, result) }
+  string getName() { is_named_capture(this, result) }
 
   override predicate isNullable() { getAChild().isNullable() }
 
   override string getConstantValue() { result = getAChild().getConstantValue() }
 
   override string getAMatchedString() { result = getAChild().getAMatchedString() }
+
+  override string getAPrimaryQlClass() { result = "RegExpGroup" }
 }
 
 /**
@@ -601,7 +658,9 @@ class RegExpGroup extends RegExpTerm, @regexp_group {
  * ;
  * ```
  */
-class RegExpNormalConstant extends RegExpConstant, @regexp_normal_constant { }
+class RegExpNormalConstant extends RegExpConstant, @regexp_normal_constant {
+  override string getAPrimaryQlClass() { result = "RegExpNormalConstant" }
+}
 
 /**
  * DEPRECATED. Use `RegExpNormalConstant` instead.
@@ -621,7 +680,9 @@ deprecated class RegExpNormalChar = RegExpNormalConstant;
  * \x0a
  * ```
  */
-class RegExpHexEscape extends RegExpCharEscape, @regexp_hex_escape { }
+class RegExpHexEscape extends RegExpCharEscape, @regexp_hex_escape {
+  override string getAPrimaryQlClass() { result = "RegExpHexEscape" }
+}
 
 /**
  * A unicode character escape in a regular expression.
@@ -632,7 +693,9 @@ class RegExpHexEscape extends RegExpCharEscape, @regexp_hex_escape { }
  * \u000a
  * ```
  */
-class RegExpUnicodeEscape extends RegExpCharEscape, @regexp_unicode_escape { }
+class RegExpUnicodeEscape extends RegExpCharEscape, @regexp_unicode_escape {
+  override string getAPrimaryQlClass() { result = "RegExpUnicodeEscape" }
+}
 
 /**
  * A decimal character escape in a regular expression.
@@ -643,7 +706,9 @@ class RegExpUnicodeEscape extends RegExpCharEscape, @regexp_unicode_escape { }
  * \0
  * ```
  */
-class RegExpDecimalEscape extends RegExpCharEscape, @regexp_dec_escape { }
+class RegExpDecimalEscape extends RegExpCharEscape, @regexp_dec_escape {
+  override string getAPrimaryQlClass() { result = "RegExpDecimalEscape" }
+}
 
 /**
  * An octal character escape in a regular expression.
@@ -654,7 +719,9 @@ class RegExpDecimalEscape extends RegExpCharEscape, @regexp_dec_escape { }
  * \0177
  * ```
  */
-class RegExpOctalEscape extends RegExpCharEscape, @regexp_oct_escape { }
+class RegExpOctalEscape extends RegExpCharEscape, @regexp_oct_escape {
+  override string getAPrimaryQlClass() { result = "RegExpOctalEscape" }
+}
 
 /**
  * A control character escape in a regular expression.
@@ -665,7 +732,9 @@ class RegExpOctalEscape extends RegExpCharEscape, @regexp_oct_escape { }
  * \ca
  * ```
  */
-class RegExpControlEscape extends RegExpCharEscape, @regexp_ctrl_escape { }
+class RegExpControlEscape extends RegExpCharEscape, @regexp_ctrl_escape {
+  override string getAPrimaryQlClass() { result = "RegExpControlEscape" }
+}
 
 /**
  * A character class escape in a regular expression.
@@ -679,9 +748,11 @@ class RegExpControlEscape extends RegExpCharEscape, @regexp_ctrl_escape { }
  */
 class RegExpCharacterClassEscape extends RegExpEscape, @regexp_char_class_escape {
   /** Gets the name of the character class; for example, `w` for `\w`. */
-  string getValue() { charClassEscape(this, result) }
+  string getValue() { char_class_escape(this, result) }
 
   override predicate isNullable() { none() }
+
+  override string getAPrimaryQlClass() { result = "RegExpCharacterClassEscape" }
 }
 
 /**
@@ -699,7 +770,7 @@ class RegExpUnicodePropertyEscape extends RegExpEscape, @regexp_unicode_property
    * Gets the name of this Unicode property; for example, `Number` for `\p{Number}` and
    * `Script` for `\p{Script=Greek}`.
    */
-  string getName() { unicodePropertyEscapeName(this, result) }
+  string getName() { unicode_property_escapename(this, result) }
 
   /**
    * Gets the value of this Unicode property, if any.
@@ -707,9 +778,11 @@ class RegExpUnicodePropertyEscape extends RegExpEscape, @regexp_unicode_property
    * For example, the value of Unicode property `\p{Script=Greek}` is `Greek`, while
    * `\p{Number}` does not have a value.
    */
-  string getValue() { unicodePropertyEscapeValue(this, result) }
+  string getValue() { unicode_property_escapevalue(this, result) }
 
   override predicate isNullable() { none() }
+
+  override string getAPrimaryQlClass() { result = "RegExpUnicodePropertyEscape" }
 }
 
 /**
@@ -723,7 +796,9 @@ class RegExpUnicodePropertyEscape extends RegExpEscape, @regexp_unicode_property
  * \/
  * ```
  */
-class RegExpIdentityEscape extends RegExpCharEscape, @regexp_id_escape { }
+class RegExpIdentityEscape extends RegExpCharEscape, @regexp_id_escape {
+  override string getAPrimaryQlClass() { result = "RegExpIdentityEscape" }
+}
 
 /**
  * A back reference, that is, a term of the form `\i` or `\k<name>`
@@ -745,7 +820,7 @@ class RegExpBackRef extends RegExpTerm, @regexp_backref {
   /**
    * Gets the name of the capture group this back reference refers to, if any.
    */
-  string getName() { namedBackref(this, result) }
+  string getName() { named_backref(this, result) }
 
   /** Gets the capture group this back reference refers to. */
   RegExpGroup getGroup() {
@@ -757,6 +832,8 @@ class RegExpBackRef extends RegExpTerm, @regexp_backref {
   }
 
   override predicate isNullable() { getGroup().isNullable() }
+
+  override string getAPrimaryQlClass() { result = "RegExpBackRef" }
 }
 
 /**
@@ -771,7 +848,7 @@ class RegExpBackRef extends RegExpTerm, @regexp_backref {
  */
 class RegExpCharacterClass extends RegExpTerm, @regexp_char_class {
   /** Holds if this is an inverted character class, that is, a term of the form `[^...]`. */
-  predicate isInverted() { isInverted(this) }
+  predicate isInverted() { is_inverted(this) }
 
   override predicate isNullable() { none() }
 
@@ -795,6 +872,8 @@ class RegExpCharacterClass extends RegExpTerm, @regexp_char_class {
       cce1 != cce2 and cce1.toLowerCase() = cce2.toLowerCase()
     )
   }
+
+  override string getAPrimaryQlClass() { result = "RegExpCharacterClass" }
 }
 
 /**
@@ -814,19 +893,23 @@ class RegExpCharacterRange extends RegExpTerm, @regexp_char_range {
     lo = getChild(0).(RegExpConstant).getValue() and
     hi = getChild(1).(RegExpConstant).getValue()
   }
+
+  override string getAPrimaryQlClass() { result = "RegExpCharacterRange" }
 }
 
 /** A parse error encountered while processing a regular expression literal. */
 class RegExpParseError extends Error, @regexp_parse_error {
   /** Gets the regular expression term that triggered the parse error. */
-  RegExpTerm getTerm() { regexpParseErrors(this, result, _) }
+  RegExpTerm getTerm() { regexp_parse_errors(this, result, _) }
 
   /** Gets the regular expression literal in which the parse error occurred. */
   RegExpLiteral getLiteral() { result = getTerm().getLiteral() }
 
-  override string getMessage() { regexpParseErrors(this, _, result) }
+  override string getMessage() { regexp_parse_errors(this, _, result) }
 
   override string toString() { result = getMessage() }
+
+  override predicate isFatal() { none() }
 }
 
 /**
@@ -836,6 +919,36 @@ private predicate isNativeStringMethod(Function func, string name) {
   exists(ExternalInstanceMemberDecl decl |
     decl.hasQualifiedName("String", name) and
     func = decl.getInit()
+  )
+}
+
+/**
+ * Holds if `name` is the name of a property on a Match object returned by `String.prototype.match`,
+ * not including array indices.
+ */
+private predicate isMatchObjectProperty(string name) {
+  any(ExternalInstanceMemberDecl decl).hasQualifiedName("Array", name)
+  or
+  name in ["length", "index", "input", "groups"]
+}
+
+/** Holds if `call` is a call to `match` whose result is used in a way that is incompatible with Match objects. */
+private predicate isUsedAsNonMatchObject(DataFlow::MethodCallNode call) {
+  call.getMethodName() = "match" and
+  call.getNumArgument() = 1 and
+  (
+    // Accessing a property that is absent on Match objects
+    exists(string propName |
+      exists(call.getAPropertyRead(propName)) and
+      not isMatchObjectProperty(propName) and
+      not exists(propName.toInt())
+    )
+    or
+    // Awaiting the result
+    call.flowsToExpr(any(AwaitExpr await).getOperand())
+    or
+    // Result is obviously unused
+    call.asExpr() = any(ExprStmt stmt).getExpr()
   )
 }
 
@@ -856,7 +969,10 @@ predicate isInterpretedAsRegExp(DataFlow::Node source) {
         not isNativeStringMethod(func, methodName)
       )
     |
-      methodName = "match" and source = mce.getArgument(0) and mce.getNumArgument() = 1
+      methodName = "match" and
+      source = mce.getArgument(0) and
+      mce.getNumArgument() = 1 and
+      not isUsedAsNonMatchObject(mce)
       or
       methodName = "search" and
       source = mce.getArgument(0) and
@@ -864,6 +980,17 @@ predicate isInterpretedAsRegExp(DataFlow::Node source) {
       // "search" is a common method name, and so we exclude chained accesses
       // because `String.prototype.search` returns a number
       not exists(PropAccess p | p.getBase() = mce.getEnclosingExpr())
+    )
+    or
+    exists(DataFlow::SourceNode schema | schema = JsonSchema::getAPartOfJsonSchema() |
+      source = schema.getAPropertyWrite("pattern").getRhs()
+      or
+      source =
+        schema
+            .getAPropertySource("patternProperties")
+            .getAPropertyWrite()
+            .getPropertyNameExpr()
+            .flow()
     )
   )
 }
@@ -893,7 +1020,7 @@ private DataFlow::Node regExpSource(DataFlow::Node re, DataFlow::TypeBackTracker
   exists(DataFlow::TypeBackTracker t2, DataFlow::Node succ | succ = regExpSource(re, t2) |
     t2 = t.smallstep(result, succ)
     or
-    any(TaintTracking::AdditionalTaintStep dts).step(result, succ) and
+    TaintTracking::sharedTaintStep(result, succ) and
     t = t2
   )
 }
@@ -1054,6 +1181,12 @@ module RegExp {
       not cls.isInverted() and
       cls.getAChild().(RegExpCharacterClassEscape).getValue().isUppercase()
     )
+    or
+    // an unlimited number of wildcards, is also a wildcard.
+    exists(InfiniteRepetitionQuantifier q |
+      term = q and
+      isWildcardLike(q.getAChild())
+    )
   }
 
   /**
@@ -1102,5 +1235,75 @@ module RegExp {
     result = getRegExpObjectFromNode(node)
     or
     result = node.asExpr().(StringLiteral).asRegExp()
+  }
+
+  /**
+   * A character that will be analyzed by `RegExp::alwaysMatchesMetaCharacter`.
+   *
+   * Currently only `<`, `'`, and `"` are considered to be meta-characters, but new meta-characters
+   * can be added by subclassing this class.
+   */
+  abstract class MetaCharacter extends string {
+    bindingset[this]
+    MetaCharacter() { any() }
+
+    /**
+     * Holds if the given atomic term matches this meta-character.
+     *
+     * Does not hold for derived terms like alternatives and groups.
+     *
+     * By default, `.`, `\W`, `\S`, and `\D` are considered to match any meta-character,
+     * but the predicate can be overridden for meta-characters where this is not the case.
+     */
+    predicate matchedByAtom(RegExpTerm term) {
+      term.(RegExpConstant).getConstantValue() = this
+      or
+      term instanceof RegExpDot
+      or
+      term.(RegExpCharacterClassEscape).getValue() = ["\\W", "\\S", "\\D"]
+      or
+      exists(string lo, string hi |
+        term.(RegExpCharacterRange).isRange(lo, hi) and
+        lo <= this and
+        this <= hi
+      )
+    }
+  }
+
+  /**
+   * A meta character used by HTML.
+   */
+  private class HTMLMetaCharacter extends MetaCharacter {
+    HTMLMetaCharacter() { this = ["<", "'", "\""] }
+  }
+
+  /**
+   * A meta character used by regular expressions.
+   */
+  private class RegexpMetaChars extends RegExp::MetaCharacter {
+    RegexpMetaChars() { this = ["{", "[", "+"] }
+  }
+
+  /**
+   * Holds if `term` can match any occurence of `char` within a string (not taking into account
+   * the context in which `term` appears).
+   *
+   * This predicate is under-approximate and never considers sequences to guarantee a match.
+   */
+  predicate alwaysMatchesMetaCharacter(RegExpTerm term, MetaCharacter char) {
+    not term.getParent() instanceof RegExpSequence and // restrict size of predicate
+    char.matchedByAtom(term)
+    or
+    alwaysMatchesMetaCharacter(term.(RegExpGroup).getAChild(), char)
+    or
+    alwaysMatchesMetaCharacter(term.(RegExpAlt).getAlternative(), char)
+    or
+    exists(RegExpCharacterClass class_ | term = class_ |
+      not class_.isInverted() and
+      char.matchedByAtom(class_.getAChild())
+      or
+      class_.isInverted() and
+      not char.matchedByAtom(class_.getAChild())
+    )
   }
 }

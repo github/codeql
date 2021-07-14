@@ -109,9 +109,25 @@ abstract class FormattingFunction extends ArrayFunction, TaintFunction {
   }
 
   /**
-   * Gets the position at which the output parameter, if any, occurs.
+   * Gets the position at which the output parameter, if any, occurs. If
+   * `isStream` is `true`, the output parameter is a stream (that is, this
+   * function behaves like `fprintf`). If `isStream` is `false`, the output
+   * parameter is a buffer (that is, this function behaves like `sprintf`).
    */
-  int getOutputParameterIndex() { none() }
+  int getOutputParameterIndex(boolean isStream) { none() }
+
+  /**
+   * Gets the position at which the output parameter, if any, occurs.
+   *
+   * DEPRECATED: use `getOutputParameterIndex(boolean isStream)` instead.
+   */
+  deprecated int getOutputParameterIndex() { result = getOutputParameterIndex(_) }
+
+  /**
+   * Holds if this function outputs to a global stream such as standard output,
+   * standard error or a system log. For example `printf`.
+   */
+  predicate isOutputGlobal() { none() }
 
   /**
    * Gets the position of the first format argument, corresponding with
@@ -141,18 +157,18 @@ abstract class FormattingFunction extends ArrayFunction, TaintFunction {
   }
 
   override predicate hasArrayWithVariableSize(int bufParam, int countParam) {
-    bufParam = getOutputParameterIndex() and
+    bufParam = getOutputParameterIndex(false) and
     countParam = getSizeParameterIndex()
   }
 
   override predicate hasArrayWithUnknownSize(int bufParam) {
-    bufParam = getOutputParameterIndex() and
+    bufParam = getOutputParameterIndex(false) and
     not exists(getSizeParameterIndex())
   }
 
   override predicate hasArrayInput(int bufParam) { bufParam = getFormatParameterIndex() }
 
-  override predicate hasArrayOutput(int bufParam) { bufParam = getOutputParameterIndex() }
+  override predicate hasArrayOutput(int bufParam) { bufParam = getOutputParameterIndex(false) }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     exists(int arg |
@@ -161,7 +177,20 @@ abstract class FormattingFunction extends ArrayFunction, TaintFunction {
         arg >= getFirstFormatArgumentIndex()
       ) and
       input.isParameterDeref(arg) and
-      output.isParameterDeref(getOutputParameterIndex())
+      output.isParameterDeref(getOutputParameterIndex(_))
     )
   }
+}
+
+/**
+ * The standard functions `snprintf` and `swprintf`, and their
+ * Microsoft and glib variants.
+ */
+abstract class Snprintf extends FormattingFunction {
+  /**
+   * Holds if this function returns the length of the formatted string
+   * that would have been output, regardless of the amount of space
+   * in the buffer.
+   */
+  predicate returnsFullFormatLength() { none() }
 }

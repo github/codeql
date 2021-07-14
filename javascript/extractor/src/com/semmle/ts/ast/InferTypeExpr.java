@@ -3,7 +3,7 @@ package com.semmle.ts.ast;
 import com.semmle.js.ast.SourceLocation;
 import com.semmle.js.ast.Visitor;
 
-/** A type annotation of form <tt>infer R</tt> */
+/** A type annotation of form <code>infer R</code> */
 public class InferTypeExpr extends TypeExpression {
   private TypeParameter typeParameter;
 

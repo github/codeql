@@ -8,41 +8,60 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    class NamespaceDeclaration : FreshEntity
+    internal class NamespaceDeclaration : CachedEntity<NamespaceDeclarationSyntax>
     {
-        private readonly NamespaceDeclaration Parent;
-        private readonly NamespaceDeclarationSyntax Node;
+        private readonly NamespaceDeclaration parent;
+        private readonly NamespaceDeclarationSyntax node;
 
         public NamespaceDeclaration(Context cx, NamespaceDeclarationSyntax node, NamespaceDeclaration parent)
-            : base(cx)
+            : base(cx, node)
         {
-            Node = node;
-            Parent = parent;
-            TryPopulate();
+            this.node = node;
+            this.parent = parent;
         }
 
-        protected override void Populate(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
-            var @namespace = (INamespaceSymbol) cx.GetModel(Node).GetSymbolInfo(Node.Name).Symbol;
-            var ns = Namespace.Create(cx, @namespace);
+            trapFile.WriteSubId(Context.CreateLocation(ReportingLocation));
+            trapFile.Write(";namespacedeclaration");
+        }
+
+        public override void Populate(TextWriter trapFile)
+        {
+            var @namespace = (INamespaceSymbol)Context.GetModel(node).GetSymbolInfo(node.Name).Symbol!;
+            var ns = Namespace.Create(Context, @namespace);
             trapFile.namespace_declarations(this, ns);
-            trapFile.namespace_declaration_location(this, cx.Create(Node.Name.GetLocation()));
+            trapFile.namespace_declaration_location(this, Context.CreateLocation(node.Name.GetLocation()));
 
-            var visitor = new Populators.TypeOrNamespaceVisitor(cx, trapFile, this);
+            var visitor = new Populators.TypeOrNamespaceVisitor(Context, trapFile, this);
 
-            foreach (var member in Node.Members.Cast<CSharpSyntaxNode>().Concat(Node.Usings))
+            foreach (var member in node.Members.Cast<CSharpSyntaxNode>().Concat(node.Usings))
             {
                 member.Accept(visitor);
             }
 
-            if (Parent != null)
+            if (parent is not null)
             {
-                trapFile.parent_namespace_declaration(this, Parent);
+                trapFile.parent_namespace_declaration(this, parent);
             }
         }
 
-        public static NamespaceDeclaration Create(Context cx, NamespaceDeclarationSyntax decl, NamespaceDeclaration parent) => new NamespaceDeclaration(cx, decl, parent);
+        public static NamespaceDeclaration Create(Context cx, NamespaceDeclarationSyntax decl, NamespaceDeclaration parent)
+        {
+            var init = (decl, parent);
+            return NamespaceDeclarationFactory.Instance.CreateEntity(cx, decl, init);
+        }
 
-        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
+        private class NamespaceDeclarationFactory : CachedEntityFactory<(NamespaceDeclarationSyntax decl, NamespaceDeclaration parent), NamespaceDeclaration>
+        {
+            public static readonly NamespaceDeclarationFactory Instance = new NamespaceDeclarationFactory();
+
+            public override NamespaceDeclaration Create(Context cx, (NamespaceDeclarationSyntax decl, NamespaceDeclaration parent) init) =>
+                new NamespaceDeclaration(cx, init.decl, init.parent);
+        }
+
+        public override Microsoft.CodeAnalysis.Location ReportingLocation => node.Name.GetLocation();
+
+        public override bool NeedsPopulation => true;
     }
 }

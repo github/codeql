@@ -4,6 +4,7 @@
  *              insertion of forged log entries by a malicious user.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 7.8
  * @precision high
  * @id cs/log-forging
  * @tags security
@@ -11,7 +12,7 @@
  */
 
 import csharp
-import semmle.code.csharp.security.dataflow.LogForging::LogForging
+import semmle.code.csharp.security.dataflow.LogForgingQuery
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink

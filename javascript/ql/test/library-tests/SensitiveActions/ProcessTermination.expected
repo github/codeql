@@ -1,4 +1,0 @@
-| tst.js:18:1:18:3 | e() |
-| tst.js:19:1:19:6 | exit() |
-| tst.js:23:1:23:25 | require ... .exit() |
-| tst.js:24:1:24:21 | global. ... .exit() |

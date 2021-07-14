@@ -3,6 +3,7 @@
  * @description Finds uses of encryption algorithms that are weak and obsolete
  * @kind problem
  * @problem.severity warning
+ * @security-severity 7.5
  * @precision high
  * @id cs/weak-encryption
  * @tags security
@@ -18,8 +19,7 @@ predicate incorrectUseOfDES(ObjectCreation e, string msg) {
 }
 
 predicate incorrectUseOfTripleDES(ObjectCreation e, string msg) {
-  e
-      .getType()
+  e.getType()
       .(Class)
       .hasQualifiedName("System.Security.Cryptography", "TripleDESCryptoServiceProvider") and
   msg =

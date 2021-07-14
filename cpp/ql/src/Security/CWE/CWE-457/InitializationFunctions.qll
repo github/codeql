@@ -189,8 +189,7 @@ class InitializationFunction extends Function {
       // Field wise assignment to the parameter
       any(Assignment e).getLValue() = getAFieldAccess(this.getParameter(i)) or
       i =
-        this
-            .(MemberFunction)
+        this.(MemberFunction)
             .getAnOverridingFunction+()
             .(InitializationFunction)
             .initializedParameter() or
@@ -327,52 +326,37 @@ class InitializationFunction extends Function {
       // Return value is not a success code but the output functions never fail.
       name.matches("_Interlocked%")
       or
-      // Functions that never fail, according to MSDN.
-      name = "QueryPerformanceCounter"
-      or
-      name = "QueryPerformanceFrequency"
-      or
-      // Functions that never fail post-Vista, according to MSDN.
-      name = "InitializeCriticalSectionAndSpinCount"
-      or
-      // `rand_s` writes 0 to a non-null argument if it fails, according to MSDN.
-      name = "rand_s"
-      or
-      // IntersectRect initializes the argument regardless of whether the input intersects
-      name = "IntersectRect"
-      or
-      name = "SetRect"
-      or
-      name = "UnionRect"
-      or
-      // These functions appears to have an incorrect CFG, which leads to false positives
-      name = "PhysicalToLogicalDPIPoint"
-      or
-      name = "LogicalToPhysicalDPIPoint"
-      or
-      // Sets NtProductType to default on error
-      name = "RtlGetNtProductType"
-      or
-      // Our CFG is not sophisticated enough to detect that the argument is always initialized
-      name = "StringCchLengthA"
-      or
-      // All paths init the argument, and always returns SUCCESS.
-      name = "RtlUnicodeToMultiByteSize"
-      or
-      // All paths init the argument, and always returns SUCCESS.
-      name = "RtlMultiByteToUnicodeSize"
-      or
-      // All paths init the argument, and always returns SUCCESS.
-      name = "RtlUnicodeToMultiByteN"
-      or
-      // Always initializes argument
-      name = "RtlGetFirstRange"
-      or
-      // Destination range is zeroed out on failure, assuming first two parameters are valid
-      name = "memcpy_s"
-      or
-      // This zeroes the memory unconditionally
-      name = "SeCreateAccessState"
+      name =
+        [
+          // Functions that never fail, according to MSDN.
+          "QueryPerformanceCounter", "QueryPerformanceFrequency",
+          // Functions that never fail post-Vista, according to MSDN.
+          "InitializeCriticalSectionAndSpinCount",
+          // `rand_s` writes 0 to a non-null argument if it fails, according to MSDN.
+          "rand_s",
+          // IntersectRect initializes the argument regardless of whether the input intersects
+          "IntersectRect", "SetRect", "UnionRect",
+          // These functions appears to have an incorrect CFG, which leads to false positives
+          "PhysicalToLogicalDPIPoint", "LogicalToPhysicalDPIPoint",
+          // Sets NtProductType to default on error
+          "RtlGetNtProductType",
+          // Our CFG is not sophisticated enough to detect that the argument is always initialized
+          "StringCchLengthA",
+          // All paths init the argument, and always returns SUCCESS.
+          "RtlUnicodeToMultiByteSize",
+          // All paths init the argument, and always returns SUCCESS.
+          "RtlMultiByteToUnicodeSize",
+          // All paths init the argument, and always returns SUCCESS.
+          "RtlUnicodeToMultiByteN",
+          // Always initializes argument
+          "RtlGetFirstRange",
+          // Destination range is zeroed out on failure, assuming first two parameters are valid
+          "memcpy_s",
+          // This zeroes the memory unconditionally
+          "SeCreateAccessState",
+          // Argument initialization is optional, but always succeeds
+          "KeGetCurrentProcessorNumberEx"
+        ]
     )
   }
 }
@@ -475,12 +459,9 @@ class ConditionalInitializationCall extends FunctionCall {
       fa.getASuccessor+() = result
     ) and
     result =
-      this
-          .getArgument(getTarget(this)
-                .(ConditionalInitializationFunction)
-                .conditionallyInitializedParameter(_))
-          .(AddressOfExpr)
-          .getOperand()
+      this.getArgument(getTarget(this)
+            .(ConditionalInitializationFunction)
+            .conditionallyInitializedParameter(_)).(AddressOfExpr).getOperand()
   }
 
   Variable getStatusVariable() {

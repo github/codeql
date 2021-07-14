@@ -10,33 +10,35 @@
  */
 
 import csharp
-private import semmle.code.csharp.controlflow.internal.Completion
+private import Completion
+private import ControlFlowGraphImpl
 private import semmle.code.csharp.controlflow.ControlFlowGraph::ControlFlow
-private import Internal::Successor
 
 private predicate startsBB(ControlFlowElement cfe) {
-  not cfe = succ(_, _) and
+  not succ(_, cfe, _) and
   (
-    exists(succ(cfe, _))
+    succ(cfe, _, _)
     or
-    exists(succExit(cfe, _))
+    scopeLast(_, cfe, _)
   )
   or
-  strictcount(ControlFlowElement pred, Completion c | cfe = succ(pred, c)) > 1
+  strictcount(ControlFlowElement pred, Completion c | succ(pred, cfe, c)) > 1
+  or
+  succ(_, cfe, any(ConditionalCompletion c))
   or
   exists(ControlFlowElement pred, int i |
-    cfe = succ(pred, _) and
-    i = count(ControlFlowElement succ, Completion c | succ = succ(pred, c))
+    succ(pred, cfe, _) and
+    i = count(ControlFlowElement succ, Completion c | succ(pred, succ, c))
   |
     i > 1
     or
     i = 1 and
-    exists(succExit(pred, _))
+    scopeLast(_, pred, _)
   )
 }
 
 private predicate intraBBSucc(ControlFlowElement pred, ControlFlowElement succ) {
-  succ = succ(pred, _) and
+  succ(pred, succ, _) and
   not startsBB(succ)
 }
 
@@ -45,7 +47,7 @@ private predicate bbIndex(ControlFlowElement bbStart, ControlFlowElement cfe, in
 
 private predicate succBB(PreBasicBlock pred, PreBasicBlock succ) { succ = pred.getASuccessor() }
 
-private predicate entryBB(PreBasicBlock bb) { bb = succEntry(_) }
+private predicate entryBB(PreBasicBlock bb) { scopeFirst(_, bb) }
 
 private predicate bbIDominates(PreBasicBlock dom, PreBasicBlock bb) =
   idominance(entryBB/1, succBB/2)(_, dom, bb)
@@ -54,7 +56,7 @@ class PreBasicBlock extends ControlFlowElement {
   PreBasicBlock() { startsBB(this) }
 
   PreBasicBlock getASuccessorByType(SuccessorType t) {
-    result = succ(this.getLastElement(), any(Completion c | t.matchesCompletion(c)))
+    succ(this.getLastElement(), result, any(Completion c | t = c.getAMatchingSuccessorType()))
   }
 
   PreBasicBlock getASuccessor() { result = this.getASuccessorByType(_) }
@@ -80,31 +82,36 @@ class PreBasicBlock extends ControlFlowElement {
     or
     this.strictlyDominates(bb)
   }
+}
 
-  predicate inDominanceFrontier(PreBasicBlock df) {
-    this.dominatesPredecessor(df) and
-    not this.strictlyDominates(df)
-  }
-
-  private predicate dominatesPredecessor(PreBasicBlock df) { this.dominates(df.getAPredecessor()) }
+private Completion getConditionalCompletion(ConditionalCompletion cc) {
+  result.getInnerCompletion() = cc
 }
 
 class ConditionBlock extends PreBasicBlock {
   ConditionBlock() {
-    strictcount(Completion c |
-      c.getInnerCompletion() instanceof ConditionalCompletion and
-      (
-        exists(succ(this.getLastElement(), c))
-        or
-        exists(succExit(this.getLastElement(), c))
-      )
-    ) > 1
+    exists(Completion c | c = getConditionalCompletion(_) |
+      succ(this.getLastElement(), _, c)
+      or
+      scopeLast(_, this.getLastElement(), c)
+    )
   }
 
   private predicate immediatelyControls(PreBasicBlock succ, ConditionalCompletion cc) {
-    succ = succ(this.getLastElement(), any(Completion c | c.getInnerCompletion() = cc)) and
-    forall(PreBasicBlock pred | pred = succ.getAPredecessor() and pred != this |
-      succ.dominates(pred)
+    exists(ControlFlowElement last, Completion c |
+      last = this.getLastElement() and
+      c = getConditionalCompletion(cc) and
+      succ(last, succ, c) and
+      // In the pre-CFG, we need to account for case where one predecessor node has
+      // two edges to the same successor node. Assertion expressions are examples of
+      // such nodes.
+      not exists(Completion other |
+        succ(last, succ, other) and
+        other != c
+      ) and
+      forall(PreBasicBlock pred | pred = succ.getAPredecessor() and pred != this |
+        succ.dominates(pred)
+      )
     )
   }
 
@@ -112,7 +119,7 @@ class ConditionBlock extends PreBasicBlock {
   predicate controls(PreBasicBlock controlled, SuccessorTypes::ConditionalSuccessor s) {
     exists(PreBasicBlock succ, ConditionalCompletion c | immediatelyControls(succ, c) |
       succ.dominates(controlled) and
-      s.matchesCompletion(c)
+      s = c.getAMatchingSuccessorType()
     )
   }
 }

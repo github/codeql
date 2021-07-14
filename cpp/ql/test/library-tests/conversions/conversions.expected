@@ -122,7 +122,7 @@
 | conversions.cpp:179:36:179:37 | (..:: *)... | pointer-to-member derived class conversion | prval | ..:: * | ..:: * |
 | conversions.cpp:180:10:180:47 | static_cast<..:: *>... | pointer-to-member derived class conversion | prval | ..:: * | ..:: * |
 | conversions.cpp:180:43:180:46 | (..:: *)... | pointer-to-member derived class conversion | prval | ..:: * | ..:: * |
-| conversions.cpp:190:22:190:29 | (const String)... | glvalue conversion | lval | const String | void |
+| conversions.cpp:190:22:190:29 | (const String)... | glvalue conversion | lval | const String | String |
 | conversions.cpp:193:20:193:31 | (const Base)... | glvalue conversion | lval | const Base | Base |
 | conversions.cpp:193:31:193:31 | (Base)... | base class conversion | lval | Base | Middle |
 | conversions.cpp:193:31:193:31 | (Middle)... | base class conversion | lval | Middle | Derived |

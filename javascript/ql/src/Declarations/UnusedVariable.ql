@@ -58,6 +58,16 @@ predicate isReactForJSX(UnusedLocal v) {
         plugin.getJsxFactoryVariableName() = v.getName()
       )
     )
+    or
+    exists(JSONObject tsconfig |
+      tsconfig.isTopLevel() and tsconfig.getFile().getBaseName() = "tsconfig.json"
+    |
+      v.getName() =
+        tsconfig
+            .getPropValue("compilerOptions")
+            .getPropValue(["jsxFactory", "jsxFragmentFactory"])
+            .getStringValue()
+    )
   )
 }
 

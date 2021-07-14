@@ -13,3 +13,5 @@
 | tst.js:106:5:106:7 | g() | This expression will be implicitly converted from undefined to number. |
 | tst.js:109:13:109:15 | g() | This expression will be implicitly converted from undefined to number. |
 | tst.js:110:13:110:15 | g() | This expression will be implicitly converted from undefined to string. |
+| tst.js:117:8:117:8 | y | This expression will be implicitly converted from string to number. |
+| tst.js:122:10:122:10 | y | This expression will be implicitly converted from string to number. |

@@ -5,7 +5,7 @@ class TestThrow2 {
 	{
 		try {
 			thrower();
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			;
 		}
 	}

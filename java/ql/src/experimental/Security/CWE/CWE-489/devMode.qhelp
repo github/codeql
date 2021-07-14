@@ -1,0 +1,32 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>Turning Apache Struts' development mode configuration on while deploying applications to production environments can lead to remote code execution.</p>
+
+</overview>
+<recommendation>
+
+<p>An application should disable the development mode at the time of deployment.</p>
+
+</recommendation>
+<example>
+
+<p>The following example shows a `struts.xml` file with `struts.devmode` enabled.</p>
+
+<sample src="StrutsBad.xml" />
+
+<p>This can be easily corrected by setting the value of the `struts.devmode` parameter to false.</p>
+
+<sample src="StrutsGood.xml" />
+
+</example>
+<references>
+
+<li>
+  Apache Struts:
+  <a href="https://struts.apache.org/core-developers/development-mode.html">Struts development mode configuration</a>
+</li>
+
+</references>
+</qhelp>

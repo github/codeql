@@ -7,8 +7,8 @@
 <p> A local variable is defined (by an assignment) but never used.
 </p>
 
-<include src="UnusedVariableNaming.qhelp" />
-<include src="UnusedTuple.qhelp" />
+<include src="UnusedVariableNaming.inc.qhelp" />
+<include src="UnusedTuple.inc.qhelp" />
 
 </overview>
 <recommendation>

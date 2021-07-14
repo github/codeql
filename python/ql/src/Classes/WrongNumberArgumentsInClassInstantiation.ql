@@ -1,6 +1,6 @@
 /**
  * @name Wrong number of arguments in a class instantiation
- * @description Using too many or too few arguments in a call to the __init__
+ * @description Using too many or too few arguments in a call to the `__init__`
  *              method of a class will result in a TypeError at runtime.
  * @kind problem
  * @tags reliability

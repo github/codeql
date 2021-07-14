@@ -1,6 +1,6 @@
 /**
- * @name Missing call to __init__ during object initialization
- * @description An omitted call to a super-class __init__ method may lead to objects of this class not being fully initialized.
+ * @name Missing call to `__init__` during object initialization
+ * @description An omitted call to a super-class `__init__` method may lead to objects of this class not being fully initialized.
  * @kind problem
  * @tags reliability
  *       correctness

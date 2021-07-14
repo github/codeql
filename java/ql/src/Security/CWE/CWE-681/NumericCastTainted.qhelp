@@ -38,8 +38,8 @@ to cast to type <code>int</code> it is rejected as invalid.
 </example>
 <references>
 
-<li>The CERT Oracle Secure Coding Standard for Java:
-  <a href="https://www.securecoding.cert.org/confluence/display/java/NUM12-J.+Ensure+conversions+of+numeric+types+to+narrower+types+do+not+result+in+lost+or+misinterpreted+data">NUM12-J. Ensure conversions of numeric types to narrower types do not result in lost or misinterpreted data</a>.</li>
+<li>SEI CERT Oracle Coding Standard for Java:
+  <a href="https://wiki.sei.cmu.edu/confluence/display/java/NUM12-J.+Ensure+conversions+of+numeric+types+to+narrower+types+do+not+result+in+lost+or+misinterpreted+data">NUM12-J. Ensure conversions of numeric types to narrower types do not result in lost or misinterpreted data</a>.</li>
 
 
 

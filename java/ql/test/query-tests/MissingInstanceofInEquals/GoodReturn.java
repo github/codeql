@@ -3,7 +3,7 @@ class GoodReturn {
 
   @Override
   public int hashCode() {
-    getClass().hashCode();
+    return getClass().hashCode();
   }
 
   @Override

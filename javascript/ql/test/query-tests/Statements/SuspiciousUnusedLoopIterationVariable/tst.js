@@ -133,3 +133,20 @@ function countOccurrencesDead(xs, p) {
 		a;
 	}
 });
+
+// NOT OK
+for (const [key, value] of array) {}
+
+// OK: for array-destructurings we only flag the last element
+for (const [key, value] of array) {
+	console.log(value)
+}
+
+// OK: for array-destructurings we only flag the last element
+for (const [key, key2, key3, value] of array) {
+	console.log(value)
+}
+
+// NOT OK
+for (const [key, key2, key3, value] of array) {}
+for (let i of [1, 2]) {}

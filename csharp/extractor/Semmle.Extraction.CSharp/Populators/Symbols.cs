@@ -1,13 +1,11 @@
-using System;
-using System.Linq;
 using Microsoft.CodeAnalysis;
 using Semmle.Extraction.CSharp.Entities;
 
 namespace Semmle.Extraction.CSharp.Populators
 {
-    class Symbols : SymbolVisitor<IEntity>
+    internal class Symbols : SymbolVisitor<IEntity>
     {
-        readonly Context cx;
+        private readonly Context cx;
 
         public Symbols(Context cx)
         {
@@ -39,6 +37,8 @@ namespace Semmle.Extraction.CSharp.Populators
         public override IEntity VisitTypeParameter(ITypeParameterSymbol param) => TypeParameter.Create(cx, param);
 
         public override IEntity VisitPointerType(IPointerTypeSymbol symbol) => PointerType.Create(cx, symbol);
+
+        public override IEntity VisitFunctionPointerType(IFunctionPointerTypeSymbol symbol) => FunctionPointerType.Create(cx, symbol);
 
         public override IEntity VisitDynamicType(IDynamicTypeSymbol symbol) => DynamicType.Create(cx, symbol);
     }

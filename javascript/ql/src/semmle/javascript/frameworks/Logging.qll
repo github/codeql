@@ -38,11 +38,22 @@ string getAStandardLoggerMethodName() {
  */
 private module Console {
   /**
-   * Gets a data flow source node for the console library.
+   * An API entrypoint for the global `console` variable.
    */
-  private DataFlow::SourceNode console() {
-    result = DataFlow::moduleImport("console") or
-    result = DataFlow::globalVarRef("console")
+  private class ConsoleGlobalEntry extends API::EntryPoint {
+    ConsoleGlobalEntry() { this = "ConsoleGlobalEntry" }
+
+    override DataFlow::SourceNode getAUse() { result = DataFlow::globalVarRef("console") }
+
+    override DataFlow::Node getARhs() { none() }
+  }
+
+  /**
+   * Gets a api node for the console library.
+   */
+  private API::Node console() {
+    result = API::moduleImport("console") or
+    result = API::root().getASuccessor(any(ConsoleGlobalEntry e))
   }
 
   /**
@@ -56,7 +67,7 @@ private module Console {
         name = getAStandardLoggerMethodName() or
         name = "assert"
       ) and
-      this = console().getAMemberCall(name)
+      this = console().getMember(name).getACall()
     }
 
     override DataFlow::Node getAMessageComponent() {
@@ -85,7 +96,7 @@ private module Loglevel {
    */
   class LoglevelLoggerCall extends LoggerCall {
     LoglevelLoggerCall() {
-      this = DataFlow::moduleMember("loglevel", getAStandardLoggerMethodName()).getACall()
+      this = API::moduleImport("loglevel").getMember(getAStandardLoggerMethodName()).getACall()
     }
 
     override DataFlow::Node getAMessageComponent() { result = getAnArgument() }
@@ -102,9 +113,11 @@ private module Winston {
   class WinstonLoggerCall extends LoggerCall, DataFlow::MethodCallNode {
     WinstonLoggerCall() {
       this =
-        DataFlow::moduleMember("winston", "createLogger")
+        API::moduleImport("winston")
+            .getMember("createLogger")
+            .getReturn()
+            .getMember(getAStandardLoggerMethodName())
             .getACall()
-            .getAMethodCall(getAStandardLoggerMethodName())
     }
 
     override DataFlow::Node getAMessageComponent() {
@@ -125,9 +138,11 @@ private module log4js {
   class Log4jsLoggerCall extends LoggerCall {
     Log4jsLoggerCall() {
       this =
-        DataFlow::moduleMember("log4js", "getLogger")
+        API::moduleImport("log4js")
+            .getMember("getLogger")
+            .getReturn()
+            .getMember(getAStandardLoggerMethodName())
             .getACall()
-            .getAMethodCall(getAStandardLoggerMethodName())
     }
 
     override DataFlow::Node getAMessageComponent() { result = getAnArgument() }
@@ -145,7 +160,7 @@ private module Npmlog {
     string name;
 
     Npmlog() {
-      this = DataFlow::moduleMember("npmlog", name).getACall() and
+      this = API::moduleImport("npmlog").getMember(name).getACall() and
       name = getAStandardLoggerMethodName()
     }
 
@@ -170,10 +185,155 @@ private module Fancylog {
    */
   class Fancylog extends LoggerCall {
     Fancylog() {
-      this = DataFlow::moduleMember("fancy-log", getAStandardLoggerMethodName()).getACall() or
-      this = DataFlow::moduleImport("fancy-log").getACall()
+      this = API::moduleImport("fancy-log").getMember(getAStandardLoggerMethodName()).getACall() or
+      this = API::moduleImport("fancy-log").getACall()
     }
 
     override DataFlow::Node getAMessageComponent() { result = getAnArgument() }
+  }
+}
+
+/**
+ * A class modelling [debug](https://npmjs.org/package/debug) as a logging mechanism.
+ */
+private class DebugLoggerCall extends LoggerCall, API::CallNode {
+  DebugLoggerCall() { this = API::moduleImport("debug").getReturn().getACall() }
+
+  override DataFlow::Node getAMessageComponent() { result = getAnArgument() }
+}
+
+/**
+ * A step through the [`ansi-colors`](https://https://npmjs.org/package/ansi-colors) library.
+ */
+class AnsiColorsStep extends TaintTracking::SharedTaintStep {
+  override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(API::CallNode call | call = API::moduleImport("ansi-colors").getAMember*().getACall() |
+      pred = call.getArgument(0) and
+      succ = call
+    )
+  }
+}
+
+/**
+ * A step through the [`colors`](https://npmjs.org/package/colors) library.
+ * This step ignores the `String.prototype` modifying part of the `colors` library.
+ */
+class ColorsStep extends TaintTracking::SharedTaintStep {
+  override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(API::CallNode call |
+      call =
+        API::moduleImport([
+            "colors",
+            // the `colors/safe` variant avoids modifying the prototype methods
+            "colors/safe"
+          ]).getAMember*().getACall()
+    |
+      pred = call.getArgument(0) and
+      succ = call
+    )
+  }
+}
+
+/**
+ * A step through the [`wrap-ansi`](https://npmjs.org/package/wrap-ansi) library.
+ */
+class WrapAnsiStep extends TaintTracking::SharedTaintStep {
+  override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(API::CallNode call | call = API::moduleImport("wrap-ansi").getACall() |
+      pred = call.getArgument(0) and
+      succ = call
+    )
+  }
+}
+
+/**
+ * A step through the [`colorette`](https://npmjs.org/package/colorette) library.
+ */
+class ColoretteStep extends TaintTracking::SharedTaintStep {
+  override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(API::CallNode call | call = API::moduleImport("colorette").getAMember().getACall() |
+      pred = call.getArgument(0) and
+      succ = call
+    )
+  }
+}
+
+/**
+ * A step through the [`cli-highlight`](https://npmjs.org/package/cli-highlight) library.
+ */
+class CliHighlightStep extends TaintTracking::SharedTaintStep {
+  override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(API::CallNode call |
+      call = API::moduleImport("cli-highlight").getMember("highlight").getACall()
+    |
+      pred = call.getArgument(0) and
+      succ = call
+    )
+  }
+}
+
+/**
+ * A step through the [`cli-color`](https://npmjs.org/package/cli-color) library.
+ */
+class CliColorStep extends TaintTracking::SharedTaintStep {
+  override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(API::CallNode call | call = API::moduleImport("cli-color").getAMember*().getACall() |
+      pred = call.getArgument(0) and
+      succ = call
+    )
+  }
+}
+
+/**
+ * A step through the [`slice-ansi`](https://npmjs.org/package/slice-ansi) library.
+ */
+class SliceAnsiStep extends TaintTracking::SharedTaintStep {
+  override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(API::CallNode call | call = API::moduleImport("slice-ansi").getACall() |
+      pred = call.getArgument(0) and
+      succ = call
+    )
+  }
+}
+
+/**
+ * A step through the [`kleur`](https://npmjs.org/package/kleur) library.
+ */
+class KleurStep extends TaintTracking::SharedTaintStep {
+  private API::Node kleurInstance() {
+    result = API::moduleImport("kleur")
+    or
+    result = kleurInstance().getAMember().getReturn()
+  }
+
+  override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(API::CallNode call | call = kleurInstance().getAMember().getACall() |
+      pred = call.getArgument(0) and
+      succ = call
+    )
+  }
+}
+
+/**
+ * A step through the [`chalk`](https://npmjs.org/package/chalk) library.
+ */
+class ChalkStep extends TaintTracking::SharedTaintStep {
+  override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(API::CallNode call | call = API::moduleImport("chalk").getAMember*().getACall() |
+      pred = call.getArgument(0) and
+      succ = call
+    )
+  }
+}
+
+/**
+ * A step through the [`strip-ansi`](https://npmjs.org/package/strip-ansi) library.
+ */
+class StripAnsiStep extends TaintTracking::SharedTaintStep {
+  override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(API::CallNode call | call = API::moduleImport("strip-ansi").getACall() |
+      pred = call.getArgument(0) and
+      succ = call
+    )
   }
 }

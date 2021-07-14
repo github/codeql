@@ -3,6 +3,7 @@
  */
 
 import java
+import semmle.code.java.dataflow.FlowSteps
 
 /**
  * The interface `com.google.protobuf.Parser`.
@@ -53,4 +54,20 @@ class ProtobufMessageLite extends Interface {
       )
     )
   }
+}
+
+private class TaintPreservingGetterMethod extends TaintPreservingCallable {
+  TaintPreservingGetterMethod() { this = any(ProtobufMessageLite p).getAGetterMethod() }
+
+  override predicate returnsTaintFrom(int arg) { arg = -1 }
+}
+
+private class TaintPreservingParseFromMethod extends TaintPreservingCallable {
+  TaintPreservingParseFromMethod() {
+    exists(ProtobufParser p | this = p.getAParseFromMethod())
+    or
+    exists(ProtobufMessageLite m | this = m.getAParseFromMethod())
+  }
+
+  override predicate returnsTaintFrom(int arg) { arg = 0 }
 }

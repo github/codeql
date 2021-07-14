@@ -12,6 +12,15 @@ import javascript
 module TaintedPath {
   import TaintedPathCustomizations::TaintedPath
 
+  // Materialize flow labels
+  private class ConcretePosixPath extends Label::PosixPath {
+    ConcretePosixPath() { this = this }
+  }
+
+  private class ConcreteSplitPath extends Label::SplitPath {
+    ConcreteSplitPath() { this = this }
+  }
+
   /**
    * A taint-tracking configuration for reasoning about tainted-path vulnerabilities.
    */

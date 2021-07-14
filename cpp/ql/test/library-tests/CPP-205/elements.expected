@@ -26,10 +26,10 @@
 | CPP-205.cpp:8:3:8:15 | return ... |  |
 | CPP-205.cpp:8:10:8:11 | call to fn |  |
 | CPP-205.cpp:8:13:8:13 | 0 |  |
+| file://:0:0:0:0 | (unnamed parameter 0) | parameter for __va_list_tag::operator=(__va_list_tag &&) -> __va_list_tag & |
+| file://:0:0:0:0 | (unnamed parameter 0) | parameter for __va_list_tag::operator=(const __va_list_tag &) -> __va_list_tag & |
 | file://:0:0:0:0 | __super |  |
 | file://:0:0:0:0 | __va_list_tag |  |
 | file://:0:0:0:0 | operator= | function __va_list_tag::operator=(__va_list_tag &&) -> __va_list_tag & |
 | file://:0:0:0:0 | operator= | function __va_list_tag::operator=(const __va_list_tag &) -> __va_list_tag & |
-| file://:0:0:0:0 | p#0 | parameter for __va_list_tag::operator=(__va_list_tag &&) -> __va_list_tag & |
-| file://:0:0:0:0 | p#0 | parameter for __va_list_tag::operator=(const __va_list_tag &) -> __va_list_tag & |
 | file://:0:0:0:0 | y |  |

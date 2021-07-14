@@ -574,10 +574,23 @@ module StringOps {
       not exists(getStringValue()) and
       result =
         strictconcat(StringLiteralLike leaf |
-          leaf = getALeaf().asExpr()
+          leaf = this.(SmallConcatenationRoot).getALeaf().asExpr()
         |
-          leaf.getStringValue() order by leaf.getFirstToken().getIndex()
+          leaf.getStringValue()
+          order by
+            leaf.getLocation().getStartLine(), leaf.getLocation().getStartColumn()
         )
+    }
+  }
+
+  /**
+   * A concatenation root where the combined length of the constant parts
+   * is less than 1 million chars.
+   */
+  private class SmallConcatenationRoot extends ConcatenationRoot {
+    SmallConcatenationRoot() {
+      sum(StringLiteralLike leaf | leaf = getALeaf().asExpr() | leaf.getStringValue().length()) <
+        1000 * 1000
     }
   }
 

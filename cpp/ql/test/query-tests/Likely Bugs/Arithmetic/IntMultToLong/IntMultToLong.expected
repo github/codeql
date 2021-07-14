@@ -12,3 +12,4 @@
 | IntMultToLong.c:108:14:108:78 | ... * ... | Multiplication result may overflow 'int' before it is converted to 'unsigned long'. |
 | IntMultToLong.c:119:14:119:26 | ... * ... | Multiplication result may overflow 'int' before it is converted to 'unsigned long'. |
 | IntMultToLong.c:126:14:126:32 | ... * ... | Multiplication result may overflow 'int' before it is converted to 'unsigned long'. |
+| IntMultToLong.cpp:2:10:2:14 | ... * ... | Multiplication result may overflow 'int' before it is converted to 'long'. |

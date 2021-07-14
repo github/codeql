@@ -4,16 +4,16 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    class RefValue : Expression<RefValueExpressionSyntax>
+    internal class RefValue : Expression<RefValueExpressionSyntax>
     {
-        RefValue(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.REF)) { }
+        private RefValue(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.REF)) { }
 
         public static Expression Create(ExpressionNodeInfo info) => new RefValue(info).TryPopulate();
 
         protected override void PopulateExpression(TextWriter trapFile)
         {
-            Create(cx, Syntax.Expression, this, 0);
-            Create(cx, Syntax.Type, this, 1);   // A type-access
+            Create(Context, Syntax.Expression, this, 0);
+            Create(Context, Syntax.Type, this, 1);   // A type-access
         }
     }
 }

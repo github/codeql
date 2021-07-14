@@ -20,6 +20,9 @@
 | Test.java:29:22:29:28 | tainted | 26 | Test.java:55:22:55:28 | ...[...] |
 | Test.java:29:22:29:28 | tainted | 29 | Test.java:58:4:58:27 | append(...) |
 | Test.java:29:22:29:28 | tainted | 29 | Test.java:58:19:58:26 | category |
+| Test.java:29:22:29:28 | tainted | 30 | Test.java:59:4:59:10 | querySb |
+| Test.java:29:22:29:28 | tainted | 30 | Test.java:59:4:59:37 | append(...) |
+| Test.java:29:22:29:28 | tainted | 31 | Test.java:60:29:60:35 | querySb |
 | Test.java:29:22:29:28 | tainted | 31 | Test.java:60:29:60:46 | toString(...) |
 | Test.java:29:22:29:28 | tainted | 33 | Test.java:62:47:62:61 | querySbToString |
 | Test.java:29:22:29:28 | tainted | 37 | Test.java:66:18:66:21 | args |

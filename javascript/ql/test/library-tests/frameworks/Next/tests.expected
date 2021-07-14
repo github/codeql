@@ -1,0 +1,8 @@
+remoteFlow
+| pages/[my-fallback-id].jsx:9:40:9:45 | params |
+| pages/secondpage.jsx:5:17:5:27 | ctx.req.url |
+dataFlow
+| pages/[my-fallback-id].jsx:13:20:13:27 | source() | pages/[my-fallback-id].jsx:19:10:19:14 | taint |
+| pages/[my-fallback-id].jsx:26:21:26:29 | source(2) | pages/[my-fallback-id].jsx:20:10:20:14 | stars |
+| pages/[my-fallback-id].jsx:32:19:32:27 | source(3) | pages/[my-fallback-id].jsx:21:10:21:13 | more |
+| pages/secondpage.jsx:6:51:6:59 | source(1) | pages/secondpage.jsx:10:10:10:25 | this.props.taint |

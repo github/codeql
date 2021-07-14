@@ -195,7 +195,13 @@ class MicrosoftAspNetCoreMvcController extends Class {
   /** Gets a `Redirect*` method. */
   Method getARedirectMethod() {
     result = this.getAMethod() and
-    result.getName().matches("Redirect%")
+    (
+      result.getName().matches("Redirect%")
+      or
+      result.getName().matches("Accepted%")
+      or
+      result.getName().matches("Created%")
+    )
   }
 }
 

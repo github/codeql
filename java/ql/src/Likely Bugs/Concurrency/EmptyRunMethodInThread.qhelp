@@ -44,12 +44,12 @@ constructor of the <code>Thread</code> class.
 
 
 <li>
-  Java API Documentation:
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Thread.html">Thread</a>.
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Thread.html">Thread</a>.
 </li>
 <li>
   The Java Tutorials:
-  <a href="http://docs.oracle.com/javase/tutorial/essential/concurrency/runthread.html">Defining and Starting a Thread</a>.
+  <a href="https://docs.oracle.com/javase/tutorial/essential/concurrency/runthread.html">Defining and Starting a Thread</a>.
 </li>
 
 

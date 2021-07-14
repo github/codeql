@@ -4,9 +4,6 @@
  * @kind graph
  * @id cpp/architecture/class-hierarchies
  * @graph.layout organic
- * @workingset jhotdraw
- * @result succeed 48
- * @result_ondemand succeed 48
  * @tags maintainability
  */
 

@@ -25,9 +25,17 @@ class CanonicalName extends @symbol {
   CanonicalName getParent() { symbol_parent(this, result) }
 
   /**
-   * Gets a child of this canonical name, i.e. an extension of its qualified name.
+   * Gets a child of this canonical name, that is, an extension of its qualified name.
    */
   CanonicalName getAChild() { result.getParent() = this }
+
+  /**
+   * Gets the child of this canonical name that has the given `name`, if any.
+   */
+  CanonicalName getChild(string name) {
+    result = getAChild() and
+    result.getName() = name
+  }
 
   /**
    * Gets the name without prefix.

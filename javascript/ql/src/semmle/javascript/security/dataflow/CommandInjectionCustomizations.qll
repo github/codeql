@@ -28,7 +28,10 @@ module CommandInjection {
 
   /** A source of remote user input, considered as a flow source for command injection. */
   class RemoteFlowSourceAsSource extends Source {
-    RemoteFlowSourceAsSource() { this instanceof RemoteFlowSource }
+    RemoteFlowSourceAsSource() {
+      this instanceof RemoteFlowSource and
+      not this instanceof ClientSideRemoteFlowSource
+    }
 
     override string getSourceType() { result = "a user-provided value" }
   }

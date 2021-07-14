@@ -1,3 +1,0 @@
-| T | GenericMethods.T in global scope | tst.ts:22:26:22:26 | T |
-| T | Repeated.T in global scope | tst.ts:3:20:3:20 | T |
-| T | Repeated.T in global scope | tst.ts:7:20:7:20 | T |

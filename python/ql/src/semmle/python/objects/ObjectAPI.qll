@@ -84,8 +84,7 @@ class Value extends TObject {
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    this
-        .(ObjectInternal)
+    this.(ObjectInternal)
         .getOrigin()
         .getLocation()
         .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
@@ -721,6 +720,9 @@ abstract class FunctionValue extends CallableValue {
 
   /** Gets a class that this function may return */
   abstract ClassValue getAnInferredReturnType();
+
+  /** Holds if this function represents a lambda. */
+  predicate isLambda() { this.getOrigin().getNode() instanceof Lambda }
 }
 
 /** Class representing Python functions */

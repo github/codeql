@@ -40,8 +40,8 @@ object is deserialized successfully.</p>
 
 
 <li>
-  Java API Documentation:
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/io/Externalizable.html">Externalizable</a>.
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/Externalizable.html">Externalizable</a>.
 </li>
 
 

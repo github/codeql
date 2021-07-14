@@ -47,7 +47,7 @@ continue while the child thread is waiting, so that "Main thread activity" is pr
 
 
 <li>
-  The Java Tutorials: <a href="http://docs.oracle.com/javase/tutorial/essential/concurrency/runthread.html">Defining and Starting a Thread</a>.
+  The Java Tutorials: <a href="https://docs.oracle.com/javase/tutorial/essential/concurrency/runthread.html">Defining and Starting a Thread</a>.
 </li>
 
 

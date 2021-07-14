@@ -13,38 +13,17 @@ import cpp
 import semmle.code.cpp.dataflow.DataFlow
 
 predicate whitelist(Function f) {
-  exists(string fName |
-    fName = f.getName() and
-    (
-      fName = "ceil" or
-      fName = "ceilf" or
-      fName = "ceill" or
-      fName = "floor" or
-      fName = "floorf" or
-      fName = "floorl" or
-      fName = "nearbyint" or
-      fName = "nearbyintf" or
-      fName = "nearbyintl" or
-      fName = "rint" or
-      fName = "rintf" or
-      fName = "rintl" or
-      fName = "round" or
-      fName = "roundf" or
-      fName = "roundl" or
-      fName = "trunc" or
-      fName = "truncf" or
-      fName = "truncl" or
-      fName.matches("__builtin_%")
-    )
-  )
+  f.getName() =
+    [
+      "ceil", "ceilf", "ceill", "floor", "floorf", "floorl", "nearbyint", "nearbyintf",
+      "nearbyintl", "rint", "rintf", "rintl", "round", "roundf", "roundl", "trunc", "truncf",
+      "truncl"
+    ] or
+  f.getName().matches("__builtin_%")
 }
 
 predicate whitelistPow(FunctionCall fc) {
-  (
-    fc.getTarget().getName() = "pow" or
-    fc.getTarget().getName() = "powf" or
-    fc.getTarget().getName() = "powl"
-  ) and
+  fc.getTarget().getName() = ["pow", "powf", "powl"] and
   exists(float value |
     value = fc.getArgument(0).getValue().toFloat() and
     (value.floor() - value).abs() < 0.001

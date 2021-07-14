@@ -1,10 +1,10 @@
+| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | __va_list_tag && | SemanticStackVariable |  |  |
+| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | address && | SemanticStackVariable |  |  |
+| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | const __va_list_tag & | SemanticStackVariable |  |  |
+| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | const address & | SemanticStackVariable |  |  |
 | file://:0:0:0:0 | fp_offset | file://:0:0:0:0 | unsigned int | Field |  |  |
 | file://:0:0:0:0 | gp_offset | file://:0:0:0:0 | unsigned int | Field |  |  |
 | file://:0:0:0:0 | overflow_arg_area | file://:0:0:0:0 | void * | Field |  |  |
-| file://:0:0:0:0 | p#0 | file://:0:0:0:0 | __va_list_tag && | SemanticStackVariable |  |  |
-| file://:0:0:0:0 | p#0 | file://:0:0:0:0 | address && | SemanticStackVariable |  |  |
-| file://:0:0:0:0 | p#0 | file://:0:0:0:0 | const __va_list_tag & | SemanticStackVariable |  |  |
-| file://:0:0:0:0 | p#0 | file://:0:0:0:0 | const address & | SemanticStackVariable |  |  |
 | file://:0:0:0:0 | reg_save_area | file://:0:0:0:0 | void * | Field |  |  |
 | variables.cpp:1:12:1:12 | i | file://:0:0:0:0 | int | GlobalVariable |  |  |
 | variables.cpp:1:12:1:12 | i | file://:0:0:0:0 | int | StaticStorageDurationVariable |  |  |

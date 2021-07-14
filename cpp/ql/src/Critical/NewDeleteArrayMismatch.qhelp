@@ -18,7 +18,7 @@ an array (which could have header data specifying the length of the array) and w
 element of the 'array', which would likely lead to a segfault due to the invalid header data.
 </p>
 
-<include src="pointsToWarning.qhelp" />
+<include src="pointsToWarning.inc.qhelp" />
 
 </overview>
 <recommendation>

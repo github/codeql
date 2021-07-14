@@ -293,7 +293,7 @@ private module ControlFlowGraphImpl {
     exists(ConditionalExpr condexpr |
       condexpr.getCondition() = b
       or
-      (condexpr.getTrueExpr() = b or condexpr.getFalseExpr() = b) and
+      condexpr.getABranchExpr() = b and
       inBooleanContext(condexpr)
     )
     or
@@ -338,7 +338,7 @@ private module ControlFlowGraphImpl {
 
   /** Holds if a call to `m` indicates that `m` is expected to return. */
   private predicate expectedReturn(EffectivelyNonVirtualMethod m) {
-    exists(Stmt s, Block b |
+    exists(Stmt s, BlockStmt b |
       m.getAnAccess().getEnclosingStmt() = s and
       b.getAStmt() = s and
       not b.getLastStmt() = s
@@ -352,7 +352,7 @@ private module ControlFlowGraphImpl {
     result instanceof MethodExit
     or
     not result.isOverridable() and
-    exists(Block body |
+    exists(BlockStmt body |
       body = result.getBody() and
       not exists(ReturnStmt ret | ret.getEnclosingCallable() = result)
     |
@@ -388,7 +388,7 @@ private module ControlFlowGraphImpl {
     or
     result.(ExprStmt).getExpr() = nonReturningMethodAccess()
     or
-    result.(Block).getLastStmt() = nonReturningStmt()
+    result.(BlockStmt).getLastStmt() = nonReturningStmt()
     or
     exists(IfStmt ifstmt | ifstmt = result |
       ifstmt.getThen() = nonReturningStmt() and
@@ -450,7 +450,7 @@ private module ControlFlowGraphImpl {
       or
       this instanceof SuperAccess
       or
-      this.(Block).getNumStmt() = 0
+      this.(BlockStmt).getNumStmt() = 0
       or
       this instanceof SwitchCase and not this.(SwitchCase).isRule()
       or
@@ -706,8 +706,7 @@ private module ControlFlowGraphImpl {
     or
     // The last node of a `ConditionalExpr` is in either of its branches.
     exists(ConditionalExpr condexpr | condexpr = n |
-      last(condexpr.getFalseExpr(), last, completion) or
-      last(condexpr.getTrueExpr(), last, completion)
+      last(condexpr.getABranchExpr(), last, completion)
     )
     or
     exists(InstanceOfExpr ioe | ioe.isPattern() and ioe = n |
@@ -723,7 +722,7 @@ private module ControlFlowGraphImpl {
     or
     // The last statement in a block is any statement that does not complete normally,
     // or the last statement.
-    exists(Block blk | blk = n |
+    exists(BlockStmt blk | blk = n |
       last(blk.getAStmt(), last, completion) and completion != NormalCompletion()
       or
       last(blk.getStmt(blk.getNumStmt() - 1), last, completion)
@@ -915,14 +914,10 @@ private module ControlFlowGraphImpl {
     )
     or
     // Control flows to the corresponding branch depending on the boolean completion of the condition.
-    exists(ConditionalExpr e |
+    exists(ConditionalExpr e, boolean branch |
       last(e.getCondition(), n, completion) and
-      completion = BooleanCompletion(true, _) and
-      result = first(e.getTrueExpr())
-      or
-      last(e.getCondition(), n, completion) and
-      completion = BooleanCompletion(false, _) and
-      result = first(e.getFalseExpr())
+      completion = BooleanCompletion(branch, _) and
+      result = first(e.getBranchExpr(branch))
     )
     or
     exists(InstanceOfExpr ioe | ioe.isPattern() |
@@ -943,9 +938,9 @@ private module ControlFlowGraphImpl {
     )
     or
     // Statements within a block execute sequentially.
-    result = first(n.(Block).getStmt(0)) and completion = NormalCompletion()
+    result = first(n.(BlockStmt).getStmt(0)) and completion = NormalCompletion()
     or
-    exists(Block blk, int i |
+    exists(BlockStmt blk, int i |
       last(blk.getStmt(i), n, completion) and
       completion = NormalCompletion() and
       result = first(blk.getStmt(i + 1))

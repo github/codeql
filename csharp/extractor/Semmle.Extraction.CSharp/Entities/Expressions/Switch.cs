@@ -5,7 +5,7 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    class Switch : Expression<SwitchExpressionSyntax>
+    internal class Switch : Expression<SwitchExpressionSyntax>
     {
         private Switch(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.SWITCH))
         {
@@ -13,25 +13,24 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         public static Expression Create(ExpressionNodeInfo info) => new Switch(info).TryPopulate();
 
-        public Expression SwitchedExpr { get; private set; }
-
         protected override void PopulateExpression(TextWriter trapFile)
         {
-            SwitchedExpr = Expression.Create(cx, Syntax.GoverningExpression, this, -1);
-            int child = 0;
-            foreach (var arm in Syntax.Arms)
+            Expression.Create(Context, Syntax.GoverningExpression, this, -1);
+            for (var i = 0; i < Syntax.Arms.Count; i++)
             {
-                new SwitchCase(cx, arm, this, child++);
+                new SwitchCase(Context, Syntax.Arms[i], this, i);
             }
         }
     }
 
-    class SwitchCase : Expression
+    internal class SwitchCase : Expression
     {
         internal SwitchCase(Context cx, SwitchExpressionArmSyntax arm, Switch parent, int child) :
-            base(new ExpressionInfo(cx, parent.SwitchedExpr.Type, cx.Create(arm.GetLocation()), ExprKind.SWITCH_CASE, parent, child, false, null))
+            base(new ExpressionInfo(
+                cx, cx.GetType(arm.Expression), cx.CreateLocation(arm.GetLocation()),
+                ExprKind.SWITCH_CASE, parent, child, false, null))
         {
-            cx.CreatePattern(arm.Pattern, this, 0);
+            Expressions.Pattern.Create(cx, arm.Pattern, this, 0);
             if (arm.WhenClause is WhenClauseSyntax when)
                 Expression.Create(cx, when.Condition, this, 1);
             Expression.Create(cx, arm.Expression, this, 2);

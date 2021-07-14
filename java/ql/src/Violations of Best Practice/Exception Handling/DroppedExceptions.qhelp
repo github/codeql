@@ -54,7 +54,7 @@ a string explaining the reason for ignoring it.</p>
   J. Bloch, <em>Effective Java (second edition)</em>, Item 65. Addison-Wesley, 2008.
 </li>
 <li>
-  The Java Tutorials: <a href="http://docs.oracle.com/javase/tutorial/essential/exceptions/runtime.html">Unchecked Exceptions - The Controversy</a>.
+  The Java Tutorials: <a href="https://docs.oracle.com/javase/tutorial/essential/exceptions/runtime.html">Unchecked Exceptions - The Controversy</a>.
 </li>
 
 

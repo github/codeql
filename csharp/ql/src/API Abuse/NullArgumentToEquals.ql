@@ -15,7 +15,7 @@ import semmle.code.csharp.frameworks.System
 
 from MethodCall c, EqualsMethod equals
 where
-  c.getTarget().getSourceDeclaration() = equals and
+  c.getTarget().getUnboundDeclaration() = equals and
   c.getArgument(0) instanceof NullLiteral and
   not c.getQualifier().getType() instanceof NullableType
 select c, "Equality test with 'null' will never be true, but may throw a 'NullReferenceException'."

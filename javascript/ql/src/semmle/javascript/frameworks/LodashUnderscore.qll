@@ -21,11 +21,9 @@ module LodashUnderscore {
     string name;
 
     DefaultMember() {
-      this = DataFlow::moduleMember("underscore", name)
+      this = DataFlow::moduleMember(["underscore", "lodash", "lodash-es"], name)
       or
-      this = DataFlow::moduleMember("lodash", name)
-      or
-      this = DataFlow::moduleImport("lodash/" + name)
+      this = DataFlow::moduleImport(["lodash/", "lodash-es/"] + name)
       or
       this = DataFlow::moduleImport("lodash." + name.toLowerCase()) and isLodashMember(name)
       or
@@ -360,9 +358,9 @@ module LodashUnderscore {
   /**
    * A data flow step propagating an exception thrown from a callback to a Lodash/Underscore function.
    */
-  private class ExceptionStep extends DataFlow::CallNode, DataFlow::AdditionalFlowStep {
-    ExceptionStep() {
-      exists(string name | this = member(name).getACall() |
+  private class ExceptionStep extends DataFlow::SharedFlowStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(DataFlow::CallNode call, string name |
         // Members ending with By, With, or While indicate that they are a variant of
         // another function that takes a callback.
         name.matches("%By") or
@@ -386,12 +384,62 @@ module LodashUnderscore {
         name = "replace" or
         name = "some" or
         name = "transform"
+      |
+        call = member(name).getACall() and
+        pred = call.getAnArgument().(DataFlow::FunctionNode).getExceptionalReturn() and
+        succ = call.getExceptionalReturn()
       )
     }
+  }
 
+  /**
+   * Holds if there is a taint-step involving a (non-function) underscore method from `pred` to `succ`.
+   */
+  private predicate underscoreTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(string name, DataFlow::CallNode call |
+      call = any(Member member | member.getName() = name).getACall()
+    |
+      name =
+        [
+          "find", "filter", "findWhere", "where", "reject", "pluck", "max", "min", "sortBy",
+          "shuffle", "sample", "toArray", "partition", "compact", "first", "initial", "last",
+          "rest", "flatten", "without", "difference", "uniq", "unique", "unzip", "transpose",
+          "object", "chunk", "values", "mapObject", "pick", "omit", "defaults", "clone", "tap",
+          "identity",
+          // String category
+          "camelCase", "capitalize", "deburr", "kebabCase", "lowerCase", "lowerFirst", "pad",
+          "padEnd", "padStart", "repeat", "replace", "snakeCase", "split", "startCase", "toLower",
+          "toUpper", "trim", "trimEnd", "trimStart", "truncate", "unescape", "upperCase",
+          "upperFirst", "words"
+        ] and
+      pred = call.getArgument(0) and
+      succ = call
+      or
+      name = ["union", "zip"] and
+      pred = call.getAnArgument() and
+      succ = call
+      or
+      name =
+        ["each", "map", "every", "some", "max", "min", "sortBy", "partition", "mapObject", "tap"] and
+      pred = call.getArgument(0) and
+      succ = call.getABoundCallbackParameter(1, 0)
+      or
+      name = ["reduce", "reduceRight"] and
+      pred = call.getArgument(0) and
+      succ = call.getABoundCallbackParameter(1, 1)
+      or
+      name = ["map", "reduce", "reduceRight"] and
+      pred = call.getCallback(1).getAReturn() and
+      succ = call
+    )
+  }
+
+  /**
+   * A model for taint-steps involving (non-function) underscore methods.
+   */
+  private class UnderscoreTaintStep extends TaintTracking::SharedTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = getAnArgument().(DataFlow::FunctionNode).getExceptionalReturn() and
-      succ = this.getExceptionalReturn()
+      underscoreTaintStep(pred, succ)
     }
   }
 }

@@ -12,11 +12,4 @@ module DomBasedXss {
   class RemoteFlowSourceAsSource extends Source {
     RemoteFlowSourceAsSource() { this instanceof RemoteFlowSource }
   }
-
-  /**
-   * An access of the URL of this page, or of the referrer to this page.
-   */
-  class LocationSource extends Source {
-    LocationSource() { this = DOM::locationSource() }
-  }
 }

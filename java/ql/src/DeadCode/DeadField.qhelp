@@ -7,7 +7,7 @@
 <p>
 Fields that are never read at runtime are unnecessary and should be removed.
 </p>
-<include src="DeadCodeSummary.qhelp"/>
+<include src="DeadCodeSummary.inc.qhelp"/>
 <p>
 Fields are considered dead if at runtime they are never read directly or indirectly, for example
 through a framework or a use of reflection. Any field which is not dead is considered to be "live".
@@ -15,7 +15,7 @@ through a framework or a use of reflection. Any field which is not dead is consi
 <p>
 Fields are considered to be dead if they are only written to, and never read.
 </p>
-<include src="DeadCodeDetails.qhelp"/>
+<include src="DeadCodeDetails.inc.qhelp"/>
 </overview>
 <recommendation>
 <p>
@@ -30,7 +30,7 @@ After confirming that the field is not required, remove the field. You will also
 references to this field, which may, in turn, require removing other unused classes, methods
 and fields.
 </p>
-<include src="DeadCodeExtraEntryPoints.qhelp"/>
+<include src="DeadCodeExtraEntryPoints.inc.qhelp"/>
 </recommendation>
 <section title="Example 1">
 <p>
@@ -64,5 +64,5 @@ the contents of the object in an XML file, or to construct an instance of the ob
 file. The field is therefore considered to be read at runtime, which makes the field live.
 </p>
 </section>
-<include src="DeadCodeReferences.qhelp" />
+<include src="DeadCodeReferences.inc.qhelp" />
 </qhelp>

@@ -16,7 +16,7 @@ public class ReflectionTest {
 		public int shadowedField;
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws NoSuchFieldException {
 		// Ensure the two classes are live, otherwise we might hide some results
 		new ParentClass();
 		new ChildClass();

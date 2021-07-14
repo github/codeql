@@ -8,20 +8,7 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// A CIL instruction.
     /// </summary>
-    interface IInstruction : IExtractedEntity
-    {
-        /// <summary>
-        /// Gets the extraction products for branches.
-        /// </summary>
-        /// <param name="jump_table">The map from offset to instruction.</param>
-        /// <returns>The extraction products.</returns>
-        IEnumerable<IExtractionProduct> JumpContents(Dictionary<int, IInstruction> jump_table);
-    }
-
-    /// <summary>
-    /// A CIL instruction.
-    /// </summary>
-    class Instruction : UnlabelledEntity, IInstruction
+    internal class Instruction : UnlabelledEntity
     {
         /// <summary>
         /// The additional data following the opcode, if any.
@@ -38,7 +25,7 @@ namespace Semmle.Extraction.CIL.Entities
         /// <summary>
         /// For each Payload, how many additional bytes in the bytestream need to be read.
         /// </summary>
-        internal static readonly int[] payloadSizes = {
+        private static readonly int[] payloadSizes = {
             0, 4, 4, 1, 4,
             4, 1, 1, 4, 1,
             2, 4, 8, 4, 8,
@@ -46,7 +33,7 @@ namespace Semmle.Extraction.CIL.Entities
             4, 2, 1, 4, 2, 4 };
 
         // Maps opcodes to payloads for each instruction.
-        public static readonly Dictionary<ILOpCode, Payload> opPayload = new Dictionary<ILOpCode, Payload>()
+        private static readonly Dictionary<ILOpCode, Payload> opPayload = new Dictionary<ILOpCode, Payload>()
         {
             { ILOpCode.Nop, Payload.None },
             { ILOpCode.Break, Payload.None },
@@ -268,19 +255,18 @@ namespace Semmle.Extraction.CIL.Entities
             { ILOpCode.Readonly, Payload.None }
         };
 
-        public readonly DefinitionMethod Method;
-        public readonly ILOpCode OpCode;
-        public readonly int Offset;
-        public readonly int Index;
-        readonly int PayloadValue;
-        readonly uint UnsignedPayloadValue;
+        public DefinitionMethod Method { get; }
+        public ILOpCode OpCode { get; }
+        public int Offset { get; }
+        public int Index { get; }
+        private readonly int payloadValue;
+        private readonly uint unsignedPayloadValue;
 
         public Payload PayloadType
         {
             get
             {
-                Payload result;
-                if (!opPayload.TryGetValue(OpCode, out result))
+                if (!opPayload.TryGetValue(OpCode, out var result))
                     throw new InternalError("Unknown op code " + OpCode);
                 return result;
             }
@@ -296,21 +282,16 @@ namespace Semmle.Extraction.CIL.Entities
         {
             get
             {
-                if (OpCode == ILOpCode.Switch) return 5 + 4 * PayloadValue;
+                if (OpCode == ILOpCode.Switch)
+                    return 5 + 4 * payloadValue;
 
                 return ((int)OpCode > 255 ? 2 : 1) + PayloadSize;
             }
         }
 
-        Label IEntity.Label
-        {
-            get; set;
-        }
+        private readonly byte[] data;
 
-
-        readonly byte[] data;
-
-        int PayloadSize => payloadSizes[(int)PayloadType];
+        private int PayloadSize => payloadSizes[(int)PayloadType];
 
         /// <summary>
         /// Reads the instruction from a byte stream.
@@ -338,19 +319,19 @@ namespace Semmle.Extraction.CIL.Entities
             switch (PayloadSize)
             {
                 case 0:
-                    PayloadValue = 0;
+                    payloadValue = 0;
                     break;
                 case 1:
-                    PayloadValue = (sbyte)data[offset];
-                    UnsignedPayloadValue = data[offset];
+                    payloadValue = (sbyte)data[offset];
+                    unsignedPayloadValue = data[offset];
                     break;
                 case 2:
-                    PayloadValue = BitConverter.ToInt16(data, offset);
-                    UnsignedPayloadValue = BitConverter.ToUInt16(data, offset);
+                    payloadValue = BitConverter.ToInt16(data, offset);
+                    unsignedPayloadValue = BitConverter.ToUInt16(data, offset);
                     break;
                 case -1:    // Switch
                 case 4:
-                    PayloadValue = BitConverter.ToInt32(data, offset);
+                    payloadValue = BitConverter.ToInt32(data, offset);
                     break;
                 case 8: // Not handled here.
                     break;
@@ -363,14 +344,19 @@ namespace Semmle.Extraction.CIL.Entities
         {
             get
             {
-                int offset = Offset;
+                var offset = Offset;
+
+                if (Method.Implementation is null)
+                {
+                    yield break;
+                }
 
                 yield return Tuples.cil_instruction(this, (int)OpCode, Index, Method.Implementation);
 
                 switch (PayloadType)
                 {
                     case Payload.String:
-                        yield return Tuples.cil_value(this, cx.mdReader.GetUserString(MetadataTokens.UserStringHandle(PayloadValue)));
+                        yield return Tuples.cil_value(this, Context.MdReader.GetUserString(MetadataTokens.UserStringHandle(payloadValue)));
                         break;
                     case Payload.Float32:
                         yield return Tuples.cil_value(this, BitConverter.ToSingle(data, offset).ToString());
@@ -399,36 +385,67 @@ namespace Semmle.Extraction.CIL.Entities
                     case Payload.Type:
                     case Payload.Field:
                     case Payload.ValueType:
-                        // A generic EntityHandle.
-                        var handle = MetadataTokens.EntityHandle(PayloadValue);
-                        var target = cx.CreateGeneric(Method, handle);
-                        yield return target;
-                        if (target != null)
                         {
-                            yield return Tuples.cil_access(this, target);
+                            // A generic EntityHandle.
+                            var handle = MetadataTokens.EntityHandle(payloadValue);
+                            var target = Context.CreateGeneric(Method, handle);
+                            yield return target;
+                            if (target is not null)
+                            {
+                                yield return Tuples.cil_access(this, target);
+                            }
+                            else
+                            {
+                                throw new InternalError($"Unable to create payload type {PayloadType} for opcode {OpCode}");
+                            }
+                            break;
                         }
-                        else
-                        {
-                            throw new InternalError($"Unable to create payload type {PayloadType} for opcode {OpCode}");
-                        }
-                        break;
                     case Payload.Arg8:
                     case Payload.Arg16:
-                        yield return Tuples.cil_access(this, Method.Parameters[(int)UnsignedPayloadValue]);
+                        if (Method.Parameters is not null)
+                        {
+                            yield return Tuples.cil_access(this, Method.Parameters[(int)unsignedPayloadValue]);
+                        }
                         break;
                     case Payload.Local8:
                     case Payload.Local16:
-                        yield return Tuples.cil_access(this, Method.LocalVariables[(int)UnsignedPayloadValue]);
+                        if (Method.LocalVariables is not null)
+                        {
+                            yield return Tuples.cil_access(this, Method.LocalVariables[(int)unsignedPayloadValue]);
+                        }
                         break;
                     case Payload.None:
                     case Payload.Target8:
                     case Payload.Target32:
                     case Payload.Switch:
                     case Payload.Ignore8:
-                    case Payload.CallSiteDesc:
                         // These are not handled here.
                         // Some of these are handled by JumpContents().
                         break;
+                    case Payload.CallSiteDesc:
+                        {
+                            var handle = MetadataTokens.EntityHandle(payloadValue);
+                            IExtractedEntity? target = null;
+                            try
+                            {
+                                target = Context.CreateGeneric(Method, handle);
+                            }
+                            catch (Exception exc)
+                            {
+                                Context.Extractor.Logger.Log(Util.Logging.Severity.Warning, $"Couldn't interpret payload of payload type {PayloadType} as a function pointer type. {exc.Message} {exc.StackTrace}");
+                            }
+
+                            if (target is not null)
+                            {
+                                yield return target;
+                                yield return Tuples.cil_access(this, target);
+                            }
+                            else
+                            {
+                                throw new InternalError($"Unable to create payload type {PayloadType} for opcode {OpCode}");
+                            }
+                            break;
+                        }
                     default:
                         throw new InternalError($"Unhandled payload type {PayloadType}");
                 }
@@ -436,30 +453,35 @@ namespace Semmle.Extraction.CIL.Entities
         }
 
         // Called to populate the jumps in each instruction.
-        public IEnumerable<IExtractionProduct> JumpContents(Dictionary<int, IInstruction> jump_table)
+        public IEnumerable<IExtractionProduct> JumpContents(Dictionary<int, Instruction> jump_table)
         {
             int target;
-            IInstruction inst;
+            Instruction? inst;
 
             switch (PayloadType)
             {
                 case Payload.Target8:
-                    target = Offset + PayloadValue + 2;
+                    target = Offset + payloadValue + 2;
                     break;
                 case Payload.Target32:
-                    target = Offset + PayloadValue + 5;
+                    target = Offset + payloadValue + 5;
                     break;
                 case Payload.Switch:
-                    int end = Offset + Width;
+                    var end = Offset + Width;
 
-                    int offset = Offset + 5;
+                    var offset = Offset + 5;
 
-                    for (int b = 0; b < PayloadValue; ++b, offset += 4)
+                    for (var b = 0; b < payloadValue; ++b, offset += 4)
                     {
                         target = BitConverter.ToInt32(data, offset) + end;
-                        if (!jump_table.TryGetValue(target, out inst))
+                        if (jump_table.TryGetValue(target, out inst))
+                        {
+                            yield return Tuples.cil_switch(this, b, inst);
+                        }
+                        else
+                        {
                             throw new InternalError("Invalid jump target");
-                        yield return Tuples.cil_switch(this, b, inst);
+                        }
                     }
 
                     yield break;
@@ -479,7 +501,7 @@ namespace Semmle.Extraction.CIL.Entities
                 // TODO: Find a solution to this.
 
                 // For now, just log the error
-                cx.cx.ExtractionError("A CIL instruction jumps outside the current method", "", Extraction.Entities.GeneratedLocation.Create(cx.cx), "", Util.Logging.Severity.Warning);
+                Context.ExtractionError("A CIL instruction jumps outside the current method", null, Extraction.Entities.GeneratedLocation.Create(Context), "", Util.Logging.Severity.Warning);
             }
         }
     }

@@ -59,8 +59,7 @@ class CollectionMember extends DataMember {
     // A write of a field or property can be a method call to certain methods...
     exists(MethodCall call | call = result |
       call.getQualifier() = this.getAnAccess() and
-      call
-          .getTarget()
+      call.getTarget()
           .getName()
           .regexpMatch("Add.*|Append|Clear.*|Delete|" +
               "(Try)?Dequeue|Enqueue|Insert.*|(Try)?Pop|Push|(Try?)Remove.*|Replace.*|SafeDelete|Set.*|")

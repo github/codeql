@@ -130,3 +130,40 @@ class WebListenerClass extends WebXMLElement {
    */
   Class getClass() { result.getQualifiedName() = getValue() }
 }
+
+/**
+ * An `<error-page>` element in a `web.xml` file.
+ */
+class WebErrorPage extends WebXMLElement {
+  WebErrorPage() { this.getName() = "error-page" }
+
+  /**
+   * Gets the `<exception-type>` element of this `<error-page>`.
+   */
+  WebErrorPageType getPageType() { result = getAChild() }
+
+  /**
+   * Gets the `<location>` element of this `<error-page>`.
+   */
+  WebErrorPageLocation getPageLocation() { result = getAChild() }
+}
+
+/**
+ * An `<exception-type>` element in a `web.xml` file, nested under an `<error-page>` element.
+ */
+class WebErrorPageType extends WebXMLElement {
+  WebErrorPageType() {
+    getName() = "exception-type" and
+    getParent() instanceof WebErrorPage
+  }
+}
+
+/**
+ * A `<location>` element in a `web.xml` file, nested under an `<error-page>` element.
+ */
+class WebErrorPageLocation extends WebXMLElement {
+  WebErrorPageLocation() {
+    getName() = "location" and
+    getParent() instanceof WebErrorPage
+  }
+}

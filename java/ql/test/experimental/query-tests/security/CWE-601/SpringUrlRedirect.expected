@@ -1,0 +1,35 @@
+edges
+| SpringUrlRedirect.java:13:30:13:47 | redirectUrl : String | SpringUrlRedirect.java:15:19:15:29 | redirectUrl |
+| SpringUrlRedirect.java:20:24:20:41 | redirectUrl : String | SpringUrlRedirect.java:21:36:21:46 | redirectUrl |
+| SpringUrlRedirect.java:26:30:26:47 | redirectUrl : String | SpringUrlRedirect.java:27:44:27:54 | redirectUrl |
+| SpringUrlRedirect.java:32:30:32:47 | redirectUrl : String | SpringUrlRedirect.java:33:47:33:57 | redirectUrl |
+| SpringUrlRedirect.java:37:24:37:41 | redirectUrl : String | SpringUrlRedirect.java:40:29:40:39 | redirectUrl |
+| SpringUrlRedirect.java:45:24:45:41 | redirectUrl : String | SpringUrlRedirect.java:48:30:48:40 | redirectUrl |
+| SpringUrlRedirect.java:53:24:53:41 | redirectUrl : String | SpringUrlRedirect.java:54:30:54:66 | format(...) |
+| SpringUrlRedirect.java:58:24:58:41 | redirectUrl : String | SpringUrlRedirect.java:59:30:59:76 | format(...) |
+nodes
+| SpringUrlRedirect.java:13:30:13:47 | redirectUrl : String | semmle.label | redirectUrl : String |
+| SpringUrlRedirect.java:15:19:15:29 | redirectUrl | semmle.label | redirectUrl |
+| SpringUrlRedirect.java:20:24:20:41 | redirectUrl : String | semmle.label | redirectUrl : String |
+| SpringUrlRedirect.java:21:36:21:46 | redirectUrl | semmle.label | redirectUrl |
+| SpringUrlRedirect.java:26:30:26:47 | redirectUrl : String | semmle.label | redirectUrl : String |
+| SpringUrlRedirect.java:27:44:27:54 | redirectUrl | semmle.label | redirectUrl |
+| SpringUrlRedirect.java:32:30:32:47 | redirectUrl : String | semmle.label | redirectUrl : String |
+| SpringUrlRedirect.java:33:47:33:57 | redirectUrl | semmle.label | redirectUrl |
+| SpringUrlRedirect.java:37:24:37:41 | redirectUrl : String | semmle.label | redirectUrl : String |
+| SpringUrlRedirect.java:40:29:40:39 | redirectUrl | semmle.label | redirectUrl |
+| SpringUrlRedirect.java:45:24:45:41 | redirectUrl : String | semmle.label | redirectUrl : String |
+| SpringUrlRedirect.java:48:30:48:40 | redirectUrl | semmle.label | redirectUrl |
+| SpringUrlRedirect.java:53:24:53:41 | redirectUrl : String | semmle.label | redirectUrl : String |
+| SpringUrlRedirect.java:54:30:54:66 | format(...) | semmle.label | format(...) |
+| SpringUrlRedirect.java:58:24:58:41 | redirectUrl : String | semmle.label | redirectUrl : String |
+| SpringUrlRedirect.java:59:30:59:76 | format(...) | semmle.label | format(...) |
+#select
+| SpringUrlRedirect.java:15:19:15:29 | redirectUrl | SpringUrlRedirect.java:13:30:13:47 | redirectUrl : String | SpringUrlRedirect.java:15:19:15:29 | redirectUrl | Potentially untrusted URL redirection due to $@. | SpringUrlRedirect.java:13:30:13:47 | redirectUrl | user-provided value |
+| SpringUrlRedirect.java:21:36:21:46 | redirectUrl | SpringUrlRedirect.java:20:24:20:41 | redirectUrl : String | SpringUrlRedirect.java:21:36:21:46 | redirectUrl | Potentially untrusted URL redirection due to $@. | SpringUrlRedirect.java:20:24:20:41 | redirectUrl | user-provided value |
+| SpringUrlRedirect.java:27:44:27:54 | redirectUrl | SpringUrlRedirect.java:26:30:26:47 | redirectUrl : String | SpringUrlRedirect.java:27:44:27:54 | redirectUrl | Potentially untrusted URL redirection due to $@. | SpringUrlRedirect.java:26:30:26:47 | redirectUrl | user-provided value |
+| SpringUrlRedirect.java:33:47:33:57 | redirectUrl | SpringUrlRedirect.java:32:30:32:47 | redirectUrl : String | SpringUrlRedirect.java:33:47:33:57 | redirectUrl | Potentially untrusted URL redirection due to $@. | SpringUrlRedirect.java:32:30:32:47 | redirectUrl | user-provided value |
+| SpringUrlRedirect.java:40:29:40:39 | redirectUrl | SpringUrlRedirect.java:37:24:37:41 | redirectUrl : String | SpringUrlRedirect.java:40:29:40:39 | redirectUrl | Potentially untrusted URL redirection due to $@. | SpringUrlRedirect.java:37:24:37:41 | redirectUrl | user-provided value |
+| SpringUrlRedirect.java:48:30:48:40 | redirectUrl | SpringUrlRedirect.java:45:24:45:41 | redirectUrl : String | SpringUrlRedirect.java:48:30:48:40 | redirectUrl | Potentially untrusted URL redirection due to $@. | SpringUrlRedirect.java:45:24:45:41 | redirectUrl | user-provided value |
+| SpringUrlRedirect.java:54:30:54:66 | format(...) | SpringUrlRedirect.java:53:24:53:41 | redirectUrl : String | SpringUrlRedirect.java:54:30:54:66 | format(...) | Potentially untrusted URL redirection due to $@. | SpringUrlRedirect.java:53:24:53:41 | redirectUrl | user-provided value |
+| SpringUrlRedirect.java:59:30:59:76 | format(...) | SpringUrlRedirect.java:58:24:58:41 | redirectUrl : String | SpringUrlRedirect.java:59:30:59:76 | format(...) | Potentially untrusted URL redirection due to $@. | SpringUrlRedirect.java:58:24:58:41 | redirectUrl | user-provided value |

@@ -1,5 +1,5 @@
-| CSharp7.cs:234:13:234:23 | ... is ... | Int32 | CSharp7.cs:234:18:234:23 | Int32 i1 | false |
-| CSharp7.cs:238:18:238:31 | ... is ... | String | CSharp7.cs:238:23:238:31 | String s1 | false |
-| CSharp7.cs:245:18:245:28 | ... is ... | Object | CSharp7.cs:245:23:245:28 | Object v1 | true |
-| CSharp7.cs:255:27:255:40 | ... is ... | String | CSharp7.cs:255:32:255:40 | String s4 | false |
-| CSharp7.cs:298:30:298:39 | ... is ... | Int32 | CSharp7.cs:298:35:298:39 | Int32 y | false |
+| CSharp7.cs:233:13:233:23 | ... is ... | Int32 | CSharp7.cs:233:18:233:23 | Int32 i1 | false |
+| CSharp7.cs:237:18:237:31 | ... is ... | String | CSharp7.cs:237:23:237:31 | String s1 | false |
+| CSharp7.cs:244:18:244:28 | ... is ... | Object | CSharp7.cs:244:23:244:28 | Object v1 | true |
+| CSharp7.cs:254:27:254:40 | ... is ... | String | CSharp7.cs:254:32:254:40 | String s4 | false |
+| CSharp7.cs:297:35:297:44 | ... is ... | Int32 | CSharp7.cs:297:40:297:44 | Int32 y | false |

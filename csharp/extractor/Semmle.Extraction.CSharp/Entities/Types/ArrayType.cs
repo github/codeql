@@ -1,23 +1,24 @@
+using System;
 using System.IO;
 using Microsoft.CodeAnalysis;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    class ArrayType : Type<IArrayTypeSymbol>
+    internal class ArrayType : Type<IArrayTypeSymbol>
     {
-        ArrayType(Context cx, IArrayTypeSymbol init)
+        private ArrayType(Context cx, IArrayTypeSymbol init)
             : base(cx, init)
         {
-            element = Create(cx, symbol.GetAnnotatedElementType());
+            elementLazy = new Lazy<Type>(() => Create(cx, Symbol.ElementType));
         }
 
-        readonly AnnotatedType element;
+        private readonly Lazy<Type> elementLazy;
 
-        public int Rank => symbol.Rank;
+        public int Rank => Symbol.Rank;
 
-        public override AnnotatedType ElementType => element;
+        public Type ElementType => elementLazy.Value;
 
-        public override int Dimension => 1 + element.Type.Dimension;
+        public override int Dimension => 1 + ElementType.Dimension;
 
         // All array types are extracted because they won't
         // be extracted in their defining assembly.
@@ -25,24 +26,25 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
-            trapFile.array_element_type(this, Dimension, Rank, element.Type.TypeRef);
+            trapFile.array_element_type(this, Dimension, Rank, ElementType.TypeRef);
             PopulateType(trapFile);
         }
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
-            trapFile.WriteSubId(element.Type);
-            symbol.BuildArraySuffix(trapFile);
+            trapFile.WriteSubId(ElementType);
+            Symbol.BuildArraySuffix(trapFile);
             trapFile.Write(";type");
         }
 
-        public static ArrayType Create(Context cx, IArrayTypeSymbol symbol) => ArrayTypeFactory.Instance.CreateEntity(cx, symbol);
+        public static ArrayType Create(Context cx, IArrayTypeSymbol symbol) =>
+            ArrayTypeFactory.Instance.CreateEntityFromSymbol(cx, symbol);
 
-        class ArrayTypeFactory : ICachedEntityFactory<IArrayTypeSymbol, ArrayType>
+        private class ArrayTypeFactory : CachedEntityFactory<IArrayTypeSymbol, ArrayType>
         {
-            public static readonly ArrayTypeFactory Instance = new ArrayTypeFactory();
+            public static ArrayTypeFactory Instance { get; } = new ArrayTypeFactory();
 
-            public ArrayType Create(Context cx, IArrayTypeSymbol init) => new ArrayType(cx, init);
+            public override ArrayType Create(Context cx, IArrayTypeSymbol init) => new ArrayType(cx, init);
         }
     }
 }

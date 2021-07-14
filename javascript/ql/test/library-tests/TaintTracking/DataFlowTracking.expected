@@ -22,7 +22,10 @@
 | callbacks.js:44:17:44:24 | source() | callbacks.js:41:10:41:10 | x |
 | callbacks.js:50:18:50:25 | source() | callbacks.js:30:29:30:29 | y |
 | callbacks.js:51:18:51:25 | source() | callbacks.js:30:29:30:29 | y |
+| callbacks.js:53:23:53:30 | source() | callbacks.js:58:10:58:10 | x |
 | capture-flow.js:9:11:9:18 | source() | capture-flow.js:14:10:14:16 | outer() |
+| capture-flow.js:9:11:9:18 | source() | capture-flow.js:19:6:19:16 | outerMost() |
+| capture-flow.js:31:14:31:21 | source() | capture-flow.js:31:6:31:22 | confuse(source()) |
 | captured-sanitizer.js:25:3:25:10 | source() | captured-sanitizer.js:15:10:15:10 | x |
 | constructor-calls.js:4:18:4:25 | source() | constructor-calls.js:18:8:18:14 | c.taint |
 | constructor-calls.js:4:18:4:25 | source() | constructor-calls.js:22:8:22:19 | c_safe.taint |
@@ -31,7 +34,6 @@
 | constructor-calls.js:14:15:14:22 | source() | constructor-calls.js:17:8:17:14 | c.param |
 | constructor-calls.js:14:15:14:22 | source() | constructor-calls.js:25:8:25:14 | d.param |
 | exceptions.js:3:15:3:22 | source() | exceptions.js:5:10:5:10 | e |
-| exceptions.js:48:16:48:23 | source() | exceptions.js:50:10:50:10 | e |
 | exceptions.js:59:24:59:31 | source() | exceptions.js:61:12:61:12 | e |
 | exceptions.js:88:6:88:13 | source() | exceptions.js:11:10:11:10 | e |
 | exceptions.js:93:11:93:18 | source() | exceptions.js:95:10:95:10 | e |
@@ -41,6 +43,16 @@
 | exceptions.js:144:9:144:16 | source() | exceptions.js:132:8:132:27 | returnThrownSource() |
 | exceptions.js:150:13:150:20 | source() | exceptions.js:153:10:153:10 | e |
 | exceptions.js:158:13:158:20 | source() | exceptions.js:161:10:161:10 | e |
+| getters-and-setters.js:6:20:6:27 | source() | getters-and-setters.js:9:10:9:18 | new C().x |
+| getters-and-setters.js:6:20:6:27 | source() | getters-and-setters.js:13:18:13:20 | c.x |
+| getters-and-setters.js:27:15:27:22 | source() | getters-and-setters.js:23:18:23:18 | v |
+| getters-and-setters.js:47:23:47:30 | source() | getters-and-setters.js:45:14:45:16 | c.x |
+| getters-and-setters.js:60:20:60:27 | source() | getters-and-setters.js:66:10:66:14 | obj.x |
+| getters-and-setters.js:67:13:67:20 | source() | getters-and-setters.js:63:18:63:22 | value |
+| getters-and-setters.js:79:20:79:27 | source() | getters-and-setters.js:88:10:88:18 | new C().x |
+| getters-and-setters.js:79:20:79:27 | source() | getters-and-setters.js:92:14:92:16 | c.x |
+| getters-and-setters.js:79:20:79:27 | source() | getters-and-setters.js:100:10:100:22 | getX(new C()) |
+| getters-and-setters.js:89:17:89:24 | source() | getters-and-setters.js:82:18:82:22 | value |
 | indexOf.js:4:11:4:18 | source() | indexOf.js:9:10:9:10 | x |
 | indexOf.js:4:11:4:18 | source() | indexOf.js:13:10:13:10 | x |
 | nested-props.js:4:13:4:20 | source() | nested-props.js:5:10:5:14 | obj.x |

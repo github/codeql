@@ -1,0 +1,1 @@
+console.log("I'm empty! The containing package.json determines the type.");

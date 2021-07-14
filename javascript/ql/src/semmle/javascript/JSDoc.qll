@@ -1,6 +1,7 @@
 /** Provides classes for working with JSDoc comments. */
 
 import javascript
+private import semmle.javascript.internal.CachedStages
 
 /**
  * A JSDoc comment.
@@ -57,7 +58,9 @@ class JSDoc extends @jsdoc, Locatable {
 abstract class Documentable extends ASTNode {
   /** Gets the JSDoc comment for this element, if any. */
   cached
-  JSDoc getDocumentation() { result.getComment().getNextToken() = getFirstToken() }
+  JSDoc getDocumentation() {
+    Stages::Ast::ref() and result.getComment().getNextToken() = getFirstToken()
+  }
 }
 
 /**
@@ -141,7 +144,7 @@ class JSDocParamTag extends JSDocTag {
   /** Gets the parameter this tag refers to, if it can be determined. */
   Variable getDocumentedParameter() {
     exists(Parameterized parm | parm.getDocumentation() = getParent() |
-      result = parm.getParameterVariable(getName())
+      result = pragma[only_bind_out](parm).getParameterVariable(getName())
     )
   }
 }

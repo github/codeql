@@ -42,18 +42,18 @@ Unfortunately, older versions were found to be vulnerable to a number of attacks
 </li>
 
 <li>
-  Java SE API Specification:
-  <a href="https://docs.oracle.com/javase/8/docs/api/javax/net/ssl/SSLContext.html">SSLContext</a>
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/javax/net/ssl/SSLContext.html">SSLContext</a>
 </li>
 
 <li>
-  Java SE API Specification:
-  <a href="https://docs.oracle.com/javase/8/docs/api/javax/net/ssl/SSLParameters.html">SSLParameters</a>
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/javax/net/ssl/SSLParameters.html">SSLParameters</a>
 </li>
 
 <li>
-  Java SE API Specification:
-  <a href="https://docs.oracle.com/javase/8/docs/api/javax/net/ssl/SSLSocket.html">SSLSocket</a>
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/javax/net/ssl/SSLSocket.html">SSLSocket</a>
 </li>
 
 </references>

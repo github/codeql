@@ -40,7 +40,7 @@ The solution is to rewrite the code as follows using an <code>if</code>-statemen
 
 <li>
 Java Language Specification:
-<a href="http://docs.oracle.com/javase/specs/jls/se8/html/jls-14.html">Blocks and Statements</a>.
+<a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-14.html">Blocks and Statements</a>.
 </li>
 
 </references>

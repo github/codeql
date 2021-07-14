@@ -48,7 +48,7 @@ the two conditions should be swapped:
 
 
 <li>
-Java Language Specification: <a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-15.html#jls-15.20.2">Type Comparison Operator instanceof</a>.
+Java Language Specification: <a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-15.html#jls-15.20.2">Type Comparison Operator instanceof</a>.
 </li>
 
 </references>

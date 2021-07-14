@@ -24,5 +24,6 @@ abstract class DataFlowFunction extends Function {
    * represented by `input` to the return value or buffer represented by
    * `output`
    */
+  pragma[nomagic]
   abstract predicate hasDataFlow(FunctionInput input, FunctionOutput output);
 }

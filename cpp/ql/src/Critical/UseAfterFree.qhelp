@@ -12,7 +12,7 @@ from a segfault to memory corruption that would cause subsequent calls to the dy
 erratically, to a possible security vulnerability.
 </p>
 
-<include src="pointsToWarning.qhelp" />
+<include src="pointsToWarning.inc.qhelp" />
 
 </overview>
 <recommendation>

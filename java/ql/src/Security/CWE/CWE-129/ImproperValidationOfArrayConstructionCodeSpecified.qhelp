@@ -30,7 +30,7 @@ access will not throw an <code>ArrayIndexOutOfBoundsException</code>.</p>
 
 <references>
 
-<li>Java API: <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/ArrayIndexOutOfBoundsException.html">ArrayIndexOutOfBoundsException</a>.</li>
+<li>Java API Specification: <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/ArrayIndexOutOfBoundsException.html">ArrayIndexOutOfBoundsException</a>.</li>
 
 </references>
 </qhelp>

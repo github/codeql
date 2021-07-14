@@ -45,8 +45,10 @@ test_DataCallback
 | tst.js:21:1:23:1 | functio ... ata);\\n} |
 | tst.js:30:26:30:27 | cb |
 | tst.js:33:17:33:26 | data => {} |
+| tst.js:37:1:39:1 | return of function getDataCurry |
 | tst.js:38:10:38:19 | data => {} |
 | tst.js:40:32:40:45 | getDataCurry() |
+| tst.js:45:1:47:1 | return of function identity |
 | tst.js:45:19:45:20 | cb |
 | tst.js:48:32:48:60 | identit ... llback) |
 | tst.js:51:1:51:37 | functio ... ata) {} |

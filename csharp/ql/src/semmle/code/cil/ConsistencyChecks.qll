@@ -79,7 +79,13 @@ class MissingValue extends InstructionViolation {
  * A call that does not have exactly one `getTarget()`.
  */
 class MissingCallTarget extends InstructionViolation {
-  MissingCallTarget() { exists(Call c | c = instruction | count(c.getTarget()) != 1) }
+  MissingCallTarget() {
+    exists(Call c | c = instruction |
+      count(c.getTarget()) != 1 and not c instanceof Opcodes::Calli
+      or
+      count(c.(Opcodes::Calli).getTargetType()) != 1 and c instanceof Opcodes::Calli
+    )
+  }
 
   override string getMessage() { result = "Call has invalid target" }
 }
@@ -380,7 +386,7 @@ class TypeIsBothConstructedAndUnbound extends TypeViolation {
  */
 class InconsistentTypeLocation extends TypeViolation {
   InconsistentTypeLocation() {
-    this.getType().getLocation() != this.getType().getSourceDeclaration().getLocation()
+    this.getType().getLocation() != this.getType().getUnboundDeclaration().getLocation()
   }
 
   override string getMessage() { result = "Inconsistent constructed type location" }
@@ -423,7 +429,7 @@ class MethodViolation extends ConsistencyViolation, DeclarationCheck {
  */
 class InconsistentMethodLocation extends MethodViolation {
   InconsistentMethodLocation() {
-    this.getMethod().getLocation() != this.getMethod().getSourceDeclaration().getLocation()
+    this.getMethod().getLocation() != this.getMethod().getUnboundDeclaration().getLocation()
   }
 
   override string getMessage() { result = "Inconsistent constructed method location" }
@@ -435,13 +441,13 @@ class InconsistentMethodLocation extends MethodViolation {
 class ConstructedMethodTypeParams extends MethodViolation {
   ConstructedMethodTypeParams() {
     getMethod().(ConstructedGeneric).getNumberOfTypeArguments() !=
-      getMethod().getSourceDeclaration().(UnboundGeneric).getNumberOfTypeParameters()
+      getMethod().getUnboundDeclaration().(UnboundGeneric).getNumberOfTypeParameters()
   }
 
   override string getMessage() {
     result =
       "The constructed method " + getMethod().toStringWithTypes() +
-        " does not match unbound method " + getMethod().getSourceDeclaration().toStringWithTypes()
+        " does not match unbound method " + getMethod().getUnboundDeclaration().toStringWithTypes()
   }
 }
 
@@ -473,11 +479,13 @@ class InvalidOverride extends MethodViolation {
   InvalidOverride() {
     base = getMethod().getOverriddenMethod() and
     not getMethod().getDeclaringType().getABaseType+() = base.getDeclaringType() and
-    base.getDeclaringType().isSourceDeclaration() // Bases classes of constructed types aren't extracted properly.
+    base.getDeclaringType().isUnboundDeclaration() // Bases classes of constructed types aren't extracted properly.
   }
 
   override string getMessage() {
-    result = "Overridden method from " + base.getDeclaringType() + " is not in a base type"
+    result =
+      "Overridden method from " + base.getDeclaringType().getQualifiedName() +
+        " is not in a base type"
   }
 }
 
@@ -528,7 +536,9 @@ class KindViolation extends TypeViolation {
  * unbound generic.
  */
 class InconsistentKind extends TypeViolation {
-  InconsistentKind() { typeKind(this.getType()) != typeKind(this.getType().getSourceDeclaration()) }
+  InconsistentKind() {
+    typeKind(this.getType()) != typeKind(this.getType().getUnboundDeclaration())
+  }
 
   override string getMessage() { result = "Inconsistent type kind of source declaration" }
 }
@@ -660,7 +670,7 @@ class MissingCilDeclaration extends ConsistencyViolation, MissingCSharpCheck {
   override string getMessage() {
     result =
       "Cannot locate CIL for " + getDeclaration().toStringWithTypes() + " of class " +
-        getDeclaration().getAQlClass()
+        getDeclaration().getAPrimaryQlClass()
   }
 
   override string toString() { result = getDeclaration().toStringWithTypes() }
@@ -670,7 +680,7 @@ class MissingCilDeclaration extends ConsistencyViolation, MissingCSharpCheck {
  * Holds if the C# declaration is expected to have a CIl declaration.
  */
 private predicate expectedCilDeclaration(CS::Declaration decl) {
-  decl = decl.getSourceDeclaration() and
+  decl = decl.getUnboundDeclaration() and
   not decl instanceof CS::ArrayType and
   decl.getALocation() instanceof CS::Assembly and
   not decl.(CS::Modifiable).isInternal() and
@@ -722,7 +732,7 @@ class ConstructedSourceDeclarationMethod extends MethodViolation {
 
   ConstructedSourceDeclarationMethod() {
     method = getMethod() and
-    method = method.getSourceDeclaration() and
+    method = method.getUnboundDeclaration() and
     (
       method instanceof ConstructedGeneric or
       method.getDeclaringType() instanceof ConstructedGeneric
@@ -749,7 +759,7 @@ class DeclarationWithMultipleLabels extends DeclarationViolation {
 class DeclarationWithoutLabel extends DeclarationViolation {
   DeclarationWithoutLabel() {
     exists(Declaration d | this = DeclarationCheck(d) |
-      d.isSourceDeclaration() and
+      d.isUnboundDeclaration() and
       not d instanceof TypeParameter and
       not exists(d.getLabel()) and
       (d instanceof Callable or d instanceof Type)

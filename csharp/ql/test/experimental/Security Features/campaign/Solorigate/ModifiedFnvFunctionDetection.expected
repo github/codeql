@@ -1,0 +1,1 @@
+| test.cs:39:16:39:36 | 6605813339339102567 | The variable $@ seems to be used as part of a FNV-like hash calculation, that is modified by an additional $@ expression using literal $@. | test.cs:25:9:25:11 | num | num | test.cs:39:10:39:36 | ... ^ ... | xor | test.cs:39:16:39:36 | 6605813339339102567 | 6605813339339102567 |

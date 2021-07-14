@@ -6,6 +6,7 @@ private import cpp
 private import semmle.code.cpp.dataflow.internal.FlowVar
 private import semmle.code.cpp.models.interfaces.DataFlow
 private import semmle.code.cpp.controlflow.Guards
+private import semmle.code.cpp.dataflow.internal.AddressFlow
 
 cached
 private newtype TNode =
@@ -45,18 +46,30 @@ class Node extends TNode {
   /**
    * INTERNAL: Do not use. Alternative name for `getFunction`.
    */
-  final Function getEnclosingCallable() { result = unique(Function f | f = this.getFunction() | f) }
+  final Function getEnclosingCallable() { result = this.getFunction() }
 
   /** Gets the type of this node. */
   Type getType() { none() } // overridden in subclasses
 
-  /** Gets the expression corresponding to this node, if any. */
+  /**
+   * Gets the expression corresponding to this node, if any. This predicate
+   * only has a result on nodes that represent the value of evaluating the
+   * expression. For data flowing _out of_ an expression, like when an
+   * argument is passed by reference, use `asDefiningArgument` instead of
+   * `asExpr`.
+   */
   Expr asExpr() { result = this.(ExprNode).getExpr() }
 
   /** Gets the parameter corresponding to this node, if any. */
   Parameter asParameter() { result = this.(ExplicitParameterNode).getParameter() }
 
-  /** Gets the argument that defines this `DefinitionByReferenceNode`, if any. */
+  /**
+   * Gets the argument that defines this `DefinitionByReferenceNode`, if any.
+   * This predicate should be used instead of `asExpr` when referring to the
+   * value of a reference argument _after_ the call has returned. For example,
+   * in `f(&x)`, this predicate will have `&x` as its result for the `Node`
+   * that represents the new value of `x`.
+   */
   Expr asDefiningArgument() { result = this.(DefinitionByReferenceNode).getArgument() }
 
   /**
@@ -170,27 +183,28 @@ class ImplicitParameterNode extends ParameterNode, TInstanceParameterNode {
 }
 
 /**
- * A node that represents the value of a variable after a function call that
- * may have changed the variable because it's passed by reference.
+ * INTERNAL: do not use.
  *
- * A typical example would be a call `f(&x)`. Firstly, there will be flow into
- * `x` from previous definitions of `x`. Secondly, there will be a
- * `DefinitionByReferenceNode` to represent the value of `x` after the call has
- * returned. This node will have its `getArgument()` equal to `&x`.
+ * A node that represents the value of a variable after a function call that
+ * may have changed the variable because it's passed by reference or because an
+ * iterator for it was passed by value or by reference.
  */
-class DefinitionByReferenceNode extends PartialDefinitionNode {
+class DefinitionByReferenceOrIteratorNode extends PartialDefinitionNode {
   Expr inner;
   Expr argument;
 
-  DefinitionByReferenceNode() {
-    this.getPartialDefinition().(DefinitionByReference).definesExpressions(inner, argument)
+  DefinitionByReferenceOrIteratorNode() {
+    this.getPartialDefinition().definesExpressions(inner, argument) and
+    (
+      this.getPartialDefinition() instanceof DefinitionByReference
+      or
+      this.getPartialDefinition() instanceof DefinitionByIterator
+    )
   }
 
   override Function getFunction() { result = inner.getEnclosingFunction() }
 
   override Type getType() { result = inner.getType() }
-
-  override string toString() { result = "ref arg " + argument.toString() }
 
   override Location getLocation() { result = argument.getLocation() }
 
@@ -206,6 +220,21 @@ class DefinitionByReferenceNode extends PartialDefinitionNode {
       result = call.getTarget().getParameter(i)
     )
   }
+}
+
+/**
+ * A node that represents the value of a variable after a function call that
+ * may have changed the variable because it's passed by reference.
+ *
+ * A typical example would be a call `f(&x)`. Firstly, there will be flow into
+ * `x` from previous definitions of `x`. Secondly, there will be a
+ * `DefinitionByReferenceNode` to represent the value of `x` after the call has
+ * returned. This node will have its `getArgument()` equal to `&x`.
+ */
+class DefinitionByReferenceNode extends DefinitionByReferenceOrIteratorNode {
+  override VariablePartialDefinition pd;
+
+  override string toString() { result = "ref arg " + argument.toString() }
 }
 
 /**
@@ -271,18 +300,34 @@ abstract class PostUpdateNode extends Node {
   override Location getLocation() { result = getPreUpdateNode().getLocation() }
 }
 
-private class PartialDefinitionNode extends PostUpdateNode, TPartialDefinitionNode {
+abstract private class PartialDefinitionNode extends PostUpdateNode, TPartialDefinitionNode {
   PartialDefinition pd;
 
   PartialDefinitionNode() { this = TPartialDefinitionNode(pd) }
-
-  override Node getPreUpdateNode() { pd.definesExpressions(_, result.asExpr()) }
 
   override Location getLocation() { result = pd.getActualLocation() }
 
   PartialDefinition getPartialDefinition() { result = pd }
 
   override string toString() { result = getPreUpdateNode().toString() + " [post update]" }
+}
+
+private class VariablePartialDefinitionNode extends PartialDefinitionNode {
+  override VariablePartialDefinition pd;
+
+  override Node getPreUpdateNode() { pd.definesExpressions(_, result.asExpr()) }
+}
+
+/**
+ * INTERNAL: do not use.
+ *
+ * A synthetic data flow node used for flow into a collection when an iterator
+ * write occurs in a callee.
+ */
+private class IteratorPartialDefinitionNode extends PartialDefinitionNode {
+  override IteratorPartialDefinition pd;
+
+  override Node getPreUpdateNode() { pd.definesExpressions(_, result.asExpr()) }
 }
 
 /**
@@ -383,7 +428,9 @@ class PreConstructorInitThis extends Node, TPreConstructorInitThis {
 }
 
 /**
- * Gets the `Node` corresponding to `e`.
+ * Gets the `Node` corresponding to the value of evaluating `e`. For data
+ * flowing _out of_ an expression, like when an argument is passed by
+ * reference, use `definitionByReferenceNodeFromArgument` instead.
  */
 ExprNode exprNode(Expr e) { result.getExpr() = e }
 
@@ -479,10 +526,20 @@ predicate localFlowStep(Node nodeFrom, Node nodeTo) {
  * This is the local flow predicate that's used as a building block in global
  * data flow. It may have less flow than the `localFlowStep` predicate.
  */
-cached
 predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   // Expr -> Expr
   exprToExprStep_nocfg(nodeFrom.asExpr(), nodeTo.asExpr())
+  or
+  // Assignment -> LValue post-update node
+  //
+  // This is used for assignments whose left-hand side is not a variable
+  // assignment or a storeStep but is still modeled by other means. It could be
+  // a call to `operator*` or `operator[]` where taint should flow to the
+  // post-update node of the qualifier.
+  exists(AssignExpr assign |
+    nodeFrom.asExpr() = assign and
+    nodeTo.(PostUpdateNode).getPreUpdateNode().asExpr() = assign.getLValue()
+  )
   or
   // Node -> FlowVar -> VariableAccess
   exists(FlowVar var |
@@ -513,6 +570,19 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
     def.definesExpressions(inner, outer) and
     inner = nodeTo.(InnerPartialDefinitionNode).getPreUpdateNode().asExpr() and
     outer = nodeFrom.(PartialDefinitionNode).getPreUpdateNode().asExpr()
+  )
+  or
+  // Reverse flow: data that flows from the post-update node of a reference
+  // returned by a function call, back into the qualifier of that function.
+  // This allows data to flow 'in' through references returned by a modeled
+  // function such as `operator[]`.
+  exists(DataFlowFunction f, Call call, FunctionInput inModel, FunctionOutput outModel |
+    call.getTarget() = f and
+    inModel.isReturnValueDeref() and
+    outModel.isQualifierObject() and
+    f.hasDataFlow(inModel, outModel) and
+    nodeFrom.(PostUpdateNode).getPreUpdateNode().asExpr() = call and
+    nodeTo.asDefiningArgument() = call.getQualifier()
   )
 }
 
@@ -572,6 +642,15 @@ private predicate exprToExprStep_nocfg(Expr fromExpr, Expr toExpr) {
   or
   toExpr.(AddressOfExpr).getOperand() = fromExpr
   or
+  // This rule enables flow from an array to its elements. Example: `a` to
+  // `a[i]` or `*a`, where `a` is an array type. It does not enable flow from a
+  // pointer to its indirection as in `p[i]` where `p` is a pointer type.
+  exists(Expr toConverted |
+    variablePartiallyAccessed(fromExpr, toConverted) and
+    toExpr = toConverted.getUnconverted() and
+    not toExpr = fromExpr
+  )
+  or
   toExpr.(BuiltInOperationBuiltInAddressOf).getOperand() = fromExpr
   or
   // The following case is needed to track the qualifier object for flow
@@ -591,14 +670,35 @@ private predicate exprToExprStep_nocfg(Expr fromExpr, Expr toExpr) {
   // `ClassAggregateLiteral` (`{ capture1, ..., captureN }`).
   toExpr.(LambdaExpression).getInitializer() = fromExpr
   or
+  // Data flow through a function model.
   toExpr =
     any(Call call |
-      exists(DataFlowFunction f, FunctionInput inModel, FunctionOutput outModel, int iIn |
-        call.getTarget() = f and
+      exists(DataFlowFunction f, FunctionInput inModel, FunctionOutput outModel |
         f.hasDataFlow(inModel, outModel) and
-        outModel.isReturnValue() and
-        inModel.isParameter(iIn) and
-        fromExpr = call.getArgument(iIn)
+        (
+          exists(int iIn |
+            inModel.isParameterDeref(iIn) and
+            call.passesByReference(iIn, fromExpr)
+          )
+          or
+          exists(int iIn |
+            inModel.isParameter(iIn) and
+            fromExpr = call.getArgument(iIn)
+          )
+          or
+          inModel.isQualifierObject() and
+          fromExpr = call.getQualifier()
+          or
+          inModel.isQualifierAddress() and
+          fromExpr = call.getQualifier()
+        ) and
+        call.getTarget() = f and
+        // AST dataflow treats a reference as if it were the referred-to object, while the dataflow
+        // models treat references as pointers. If the return type of the call is a reference, then
+        // look for data flow the the referred-to object, rather than the reference itself.
+        if call.getType().getUnspecifiedType() instanceof ReferenceType
+        then outModel.isReturnValueDeref()
+        else outModel.isReturnValue()
       )
     )
 }
@@ -619,6 +719,7 @@ private predicate exprToDefinitionByReferenceStep(Expr exprIn, Expr argOut) {
 }
 
 private module FieldFlow {
+  private import DataFlowImplCommon
   private import DataFlowImplLocal
   private import DataFlowPrivate
 
@@ -651,7 +752,7 @@ private module FieldFlow {
     exists(FieldConfiguration cfg | cfg.hasFlow(node1, node2)) and
     // This configuration should not be able to cross function boundaries, but
     // we double-check here just to be sure.
-    node1.getEnclosingCallable() = node2.getEnclosingCallable()
+    getNodeEnclosingCallable(node1) = getNodeEnclosingCallable(node2)
   }
 }
 
@@ -665,6 +766,50 @@ VariableAccess getAnAccessToAssignedVariable(Expr assign) {
     var.definedByExpr(_, assign) and
     result = var.getAnAccess()
   )
+}
+
+private newtype TContent =
+  TFieldContent(Field f) or
+  TCollectionContent() or
+  TArrayContent()
+
+/**
+ * A description of the way data may be stored inside an object. Examples
+ * include instance fields, the contents of a collection object, or the contents
+ * of an array.
+ */
+class Content extends TContent {
+  /** Gets a textual representation of this element. */
+  abstract string toString();
+
+  predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
+    path = "" and sl = 0 and sc = 0 and el = 0 and ec = 0
+  }
+}
+
+/** A reference through an instance field. */
+class FieldContent extends Content, TFieldContent {
+  Field f;
+
+  FieldContent() { this = TFieldContent(f) }
+
+  Field getField() { result = f }
+
+  override string toString() { result = f.toString() }
+
+  override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
+    f.getLocation().hasLocationInfo(path, sl, sc, el, ec)
+  }
+}
+
+/** A reference through an array. */
+private class ArrayContent extends Content, TArrayContent {
+  override string toString() { result = "[]" }
+}
+
+/** A reference through the contents of some collection-like container. */
+private class CollectionContent extends Content, TCollectionContent {
+  override string toString() { result = "<element>" }
 }
 
 /**

@@ -12,7 +12,7 @@ the contents of that memory become undefined after that. Clearly, using a pointe
 memory after the function has already returned will have undefined results.
 </p>
 
-<include src="pointsToWarning.qhelp" />
+<include src="pointsToWarning.inc.qhelp" />
 </overview>
 
 <recommendation>

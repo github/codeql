@@ -418,21 +418,6 @@ private module SsaImpl {
     callEdge(c1, c2) and not intraInstanceCallEdge(c1, c2)
   }
 
-  /** Holds if a call to `x.c` can change the value of `x.f`. The actual update occurs in `setter`. */
-  private predicate setsOwnFieldTransitive(Method c, Field f, Method setter) {
-    setsOwnField(setter, f) and intraInstanceCallEdge*(c, setter)
-  }
-
-  /** Holds if a call to `c` can change the value of `f` on some instance. The actual update occurs in `setter`. */
-  private predicate generalSetter(Callable c, Field f, Callable setter) {
-    exists(Method ownsetter |
-      setsOwnFieldTransitive(ownsetter, f, setter) and
-      crossInstanceCallEdge(c, ownsetter)
-    )
-    or
-    setsOtherField(c, f) and c = setter
-  }
-
   /**
    * Holds if `call` occurs in the same basic block, `b`, as `f` at index `i` and
    * `f` has an update somewhere.
@@ -487,78 +472,79 @@ private module SsaImpl {
     )
   }
 
-  /**
-   * Holds if `c` is a relevant part of the call graph for
-   * `updatesNamedFieldPart1` based on following edges in forward direction.
-   */
-  private predicate pruneFromLeft(Callable c) {
-    exists(Call call, SsaSourceField f |
-      generalSetter(_, f.getField(), _) and
-      relevantCall(call, f) and
-      c = tgt(call)
-    )
-    or
-    exists(Callable mid | pruneFromLeft(mid) and callEdge(mid, c))
-  }
-
-  /**
-   * Holds if `c` is a relevant part of the call graph for
-   * `updatesNamedFieldPart1` based on following edges in backward direction.
-   */
-  private predicate pruneFromRight(Callable c) {
-    generalSetter(c, _, _)
-    or
-    exists(Callable mid | callEdge(c, mid) and pruneFromRight(mid))
-  }
-
-  /** A restriction of the call graph to the parts that are relevant for `updatesNamedFieldPart1`. */
-  private class PrunedCallable extends Callable {
-    PrunedCallable() { pruneFromLeft(this) and pruneFromRight(this) }
-  }
-
-  private predicate callEdgePruned(PrunedCallable c1, PrunedCallable c2) { callEdge(c1, c2) }
-
-  private predicate callEdgePlus(PrunedCallable c1, PrunedCallable c2) =
-    fastTC(callEdgePruned/2)(c1, c2)
-
-  pragma[noinline]
-  private predicate updatesNamedFieldPrefix(Call call, TrackedField f, Callable c1, Field field) {
+  private predicate source(Call call, TrackedField f, Field field, Callable c, boolean fresh) {
     relevantCall(call, f) and
     field = f.getField() and
-    c1 = tgt(call)
+    c = tgt(call) and
+    if c instanceof Constructor then fresh = true else fresh = false
   }
 
-  pragma[noinline]
-  private predicate generalSetterProj(Callable c, Field f) { generalSetter(c, f, _) }
-
   /**
-   * Holds if `call` may change the value of `f` on some instance, which may or
-   * may not alias with `this`. The actual update occurs in `setter`.
+   * A callable in a potential call-chain between a source that cares about the
+   * value of some field `f` and a sink that may overwrite `f`. The boolean
+   * `fresh` indicates whether the instance `this` in `c` has been freshly
+   * allocated along the call-chain.
    */
-  pragma[noopt]
-  private predicate updatesNamedFieldPart1(Call call, TrackedField f, Callable setter) {
-    exists(Callable c1, Callable c2, Field field |
-      updatesNamedFieldPrefix(call, f, c1, field) and
-      generalSetterProj(c2, field) and
-      (c1 = c2 or callEdgePlus(c1, c2)) and
-      generalSetter(c2, field, setter)
+  private newtype TCallableNode =
+    MkCallableNode(Callable c, boolean fresh) { source(_, _, _, c, fresh) or edge(_, c, fresh) }
+
+  private predicate edge(TCallableNode n, Callable c2, boolean f2) {
+    exists(Callable c1, boolean f1 | n = MkCallableNode(c1, f1) |
+      intraInstanceCallEdge(c1, c2) and f2 = f1
+      or
+      crossInstanceCallEdge(c1, c2) and
+      if c2 instanceof Constructor then f2 = true else f2 = false
     )
   }
 
-  /** Holds if `call` may change the value of `f` on `this`. The actual update occurs in `setter`. */
-  private predicate updatesNamedFieldPart2(Call call, TrackedField f, Callable setter) {
-    relevantCall(call, f) and
-    setsOwnFieldTransitive(tgt(call), f.getField(), setter)
+  private predicate edge(TCallableNode n1, TCallableNode n2) {
+    exists(Callable c2, boolean f2 |
+      edge(n1, c2, f2) and
+      n2 = MkCallableNode(c2, f2)
+    )
   }
+
+  pragma[noinline]
+  private predicate source(Call call, TrackedField f, Field field, TCallableNode n) {
+    exists(Callable c, boolean fresh |
+      source(call, f, field, c, fresh) and
+      n = MkCallableNode(c, fresh)
+    )
+  }
+
+  private predicate sink(Callable c, Field f, TCallableNode n) {
+    setsOwnField(c, f) and n = MkCallableNode(c, false)
+    or
+    setsOtherField(c, f) and n = MkCallableNode(c, _)
+  }
+
+  private predicate prunedNode(TCallableNode n) {
+    sink(_, _, n)
+    or
+    exists(TCallableNode mid | edge(n, mid) and prunedNode(mid))
+  }
+
+  private predicate prunedEdge(TCallableNode n1, TCallableNode n2) {
+    prunedNode(n1) and
+    prunedNode(n2) and
+    edge(n1, n2)
+  }
+
+  private predicate edgePlus(TCallableNode c1, TCallableNode c2) = fastTC(prunedEdge/2)(c1, c2)
 
   /**
    * Holds if there exists a call-chain originating in `call` that can update `f` on some instance
    * where `f` and `call` share the same enclosing callable in which a
    * `FieldRead` of `f` is reachable from `call`.
    */
+  pragma[noopt]
   cached
   predicate updatesNamedField(Call call, TrackedField f, Callable setter) {
-    updatesNamedFieldPart1(call, f, setter) or updatesNamedFieldPart2(call, f, setter)
+    exists(TCallableNode src, TCallableNode sink, Field field |
+      source(call, f, field, src) and
+      sink(setter, field, sink) and
+      (src = sink or edgePlus(src, sink))
+    )
   }
 
   /** Holds if `n` might update the locally tracked variable `v`. */
@@ -770,7 +756,9 @@ private module SsaImpl {
 
     /** Holds if `v` occurs in `b` or one of `b`'s transitive successors. */
     private predicate blockPrecedesVar(TrackedVar v, BasicBlock b) {
-      varOccursInBlock(v, b.getABBSuccessor*())
+      varOccursInBlock(v, b)
+      or
+      ssaDefReachesEndOfBlock(v, _, b)
     }
 
     /**
@@ -779,7 +767,9 @@ private module SsaImpl {
      * between `b1` and `b2`.
      */
     private predicate varBlockReaches(TrackedVar v, BasicBlock b1, BasicBlock b2) {
-      varOccursInBlock(v, b1) and b2 = b1.getABBSuccessor()
+      varOccursInBlock(v, b1) and
+      b2 = b1.getABBSuccessor() and
+      blockPrecedesVar(v, b2)
       or
       exists(BasicBlock mid |
         varBlockReaches(v, b1, mid) and
@@ -802,6 +792,7 @@ private module SsaImpl {
      * Holds if `v` occurs at index `i1` in `b1` and at index `i2` in `b2` and
      * there is a path between them without any occurrence of `v`.
      */
+    pragma[nomagic]
     predicate adjacentVarRefs(TrackedVar v, BasicBlock b1, int i1, BasicBlock b2, int i2) {
       exists(int rankix |
         b1 = b2 and

@@ -50,3 +50,6 @@ x  +  x >> 1
 
 // OK
 x +   x >> 1
+
+// OK (asm.js-like)
+x = x - 1|0;

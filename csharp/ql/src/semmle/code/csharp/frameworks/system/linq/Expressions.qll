@@ -5,6 +5,7 @@
 private import csharp as csharp
 private import semmle.code.csharp.frameworks.system.Linq
 
+/** Definitions relating to the `System.Linq.Expressions` namespace. */
 module SystemLinqExpressions {
   /** The `System.Linq.Expressions` namespace. */
   class Namespace extends csharp::Namespace {

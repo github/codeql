@@ -27,7 +27,7 @@ class VarArgsExpr extends BuiltInOperation, @var_args_expr { }
  * __builtin_va_start(ap, last_named_param);
  * ```
  */
-class BuiltInVarArgsStart extends BuiltInOperation, @vastartexpr {
+class BuiltInVarArgsStart extends VarArgsExpr, @vastartexpr {
   override string toString() { result = "__builtin_va_start" }
 
   override string getAPrimaryQlClass() { result = "BuiltInVarArgsStart" }
@@ -52,7 +52,7 @@ class BuiltInVarArgsStart extends BuiltInOperation, @vastartexpr {
  * __builtin_va_end(ap);
  * ```
  */
-class BuiltInVarArgsEnd extends BuiltInOperation, @vaendexpr {
+class BuiltInVarArgsEnd extends VarArgsExpr, @vaendexpr {
   override string toString() { result = "__builtin_va_end" }
 
   override string getAPrimaryQlClass() { result = "BuiltInVarArgsEnd" }
@@ -70,7 +70,7 @@ class BuiltInVarArgsEnd extends BuiltInOperation, @vaendexpr {
  * ap = __builtin_va_arg(ap, long);
  * ```
  */
-class BuiltInVarArg extends BuiltInOperation, @vaargexpr {
+class BuiltInVarArg extends VarArgsExpr, @vaargexpr {
   override string toString() { result = "__builtin_va_arg" }
 
   override string getAPrimaryQlClass() { result = "BuiltInVarArg" }
@@ -90,7 +90,7 @@ class BuiltInVarArg extends BuiltInOperation, @vaargexpr {
  * va_copy(aq, ap);
  * ```
  */
-class BuiltInVarArgCopy extends BuiltInOperation, @vacopyexpr {
+class BuiltInVarArgCopy extends VarArgsExpr, @vacopyexpr {
   override string toString() { result = "__builtin_va_copy" }
 
   override string getAPrimaryQlClass() { result = "BuiltInVarArgCopy" }

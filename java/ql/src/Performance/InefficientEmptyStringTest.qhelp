@@ -45,9 +45,10 @@ the program.</p>
 
 
 <li>
-  Java Platform, Standard Edition 6, API Specification:
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html#length%28%29">String.length()</a>,
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html#equals%28java.lang.Object%29">String.equals()</a>.
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html#length()">String.length()</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html#isEmpty()">String.isEmpty()</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html#equals(java.lang.Object)">String.equals()</a>.
 </li>
 
 

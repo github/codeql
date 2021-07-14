@@ -1,6 +1,0 @@
-| electron.js:43:30:43:35 | 'pong' | electron.js:52:33:52:35 | arg |
-| electron.js:48:23:48:28 | 'pong' | electron.js:58:1:58:36 | ipcRend ... 'ping') |
-| electron.js:56:27:56:32 | 'ping' | electron.js:42:29:42:31 | arg |
-| electron.js:58:30:58:35 | 'ping' | electron.js:47:28:47:30 | arg |
-| electron.js:68:24:68:28 | "foo" | electron.js:67:23:67:25 | foo |
-| electron.js:69:24:69:28 | "bar" | electron.js:67:46:67:48 | bar |

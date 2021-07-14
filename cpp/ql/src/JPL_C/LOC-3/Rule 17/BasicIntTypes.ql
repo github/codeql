@@ -12,18 +12,7 @@
 import cpp
 
 predicate allowedTypedefs(TypedefType t) {
-  exists(string name | name = t.getName() |
-    name = "I64" or
-    name = "U64" or
-    name = "I32" or
-    name = "U32" or
-    name = "I16" or
-    name = "U16" or
-    name = "I8" or
-    name = "U8" or
-    name = "F64" or
-    name = "F32"
-  )
+  t.getName() = ["I64", "U64", "I32", "U32", "I16", "U16", "I8", "U8", "F64", "F32"]
 }
 
 /**

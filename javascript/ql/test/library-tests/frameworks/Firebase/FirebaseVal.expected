@@ -1,6 +1,0 @@
-| tst.js:6:3:6:9 | x.val() |
-| tst.js:11:3:11:9 | x.val() |
-| tst.js:16:3:16:9 | x.val() |
-| tst.js:21:3:21:16 | x.before.val() |
-| tst.js:22:3:22:15 | x.after.val() |
-| tst.js:61:36:61:36 | x |

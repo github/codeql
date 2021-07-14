@@ -632,7 +632,14 @@ export class TypeTable {
           ? tupleType.minLength
           : this.typeChecker.getTypeArguments(tupleReference).length;
       let hasRestElement = tupleType.hasRestElement ? 't' : 'f';
-      let prefix = `tuple;${minLength};${hasRestElement}`;
+      let restIndex = -1;
+      for (let i = 0; i < tupleType.elementFlags.length; i++) {
+        if (tupleType.elementFlags[i] & ts.ElementFlags.Rest) {
+          restIndex = i;
+          break;
+        }
+      }
+      let prefix = `tuple;${minLength};${restIndex}`;
       return this.makeTypeStringVectorFromTypeReferenceArguments(prefix, type);
     }
     if (objectFlags & ts.ObjectFlags.Anonymous) {
@@ -940,6 +947,9 @@ export class TypeTable {
    * Returns a unique string for the given call/constructor signature.
    */
   private getSignatureString(kind: ts.SignatureKind, signature: AugmentedSignature): string {
+    let modifiers : ts.ModifiersArray = signature.getDeclaration()?.modifiers;
+    let isAbstract = modifiers && modifiers.filter(modifier => modifier.kind == ts.SyntaxKind.AbstractKeyword).length > 0
+
     let parameters = signature.getParameters();
     let numberOfTypeParameters = signature.typeParameters == null
         ? 0
@@ -971,7 +981,7 @@ export class TypeTable {
     if (returnTypeId == null) {
       return null;
     }
-    let tag = `${kind};${numberOfTypeParameters};${requiredParameters};${restParameterTag};${returnTypeId}`;
+    let tag = `${kind};${isAbstract ? "t" : "f"};${numberOfTypeParameters};${requiredParameters};${restParameterTag};${returnTypeId}`;
     for (let typeParameter of signature.typeParameters || []) {
       tag += ";" + typeParameter.symbol.name;
       let constraint = typeParameter.getConstraint();

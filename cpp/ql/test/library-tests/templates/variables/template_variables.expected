@@ -1,10 +1,10 @@
+| file://:0:0:0:0 | (unnamed parameter 0) |  |  |  |
+| file://:0:0:0:0 | (unnamed parameter 0) |  |  |  |
+| file://:0:0:0:0 | (unnamed parameter 0) |  |  |  |
+| file://:0:0:0:0 | (unnamed parameter 0) |  |  |  |
 | file://:0:0:0:0 | fp_offset |  |  |  |
 | file://:0:0:0:0 | gp_offset |  |  |  |
 | file://:0:0:0:0 | overflow_arg_area |  |  |  |
-| file://:0:0:0:0 | p#0 |  |  |  |
-| file://:0:0:0:0 | p#0 |  |  |  |
-| file://:0:0:0:0 | p#0 |  |  |  |
-| file://:0:0:0:0 | p#0 |  |  |  |
 | file://:0:0:0:0 | reg_save_area |  |  |  |
 | variables.cpp:2:13:2:13 | pi | variables.cpp:25:12:25:16 | T |  |
 | variables.cpp:2:13:2:13 | pi | variables.cpp:25:12:25:16, variables.cpp:37:16:37:24 | float |  |

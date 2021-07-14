@@ -738,6 +738,7 @@ class ListNode extends SequenceNode {
   }
 }
 
+/** A control flow node corresponding to a set expression, such as `{ 1, 3, 5, 7, 9 }` */
 class SetNode extends ControlFlowNode {
   SetNode() { toAst(this) instanceof Set }
 
@@ -768,6 +769,25 @@ class DictNode extends ControlFlowNode {
   ControlFlowNode getAValue() {
     exists(Dict d | this.getNode() = d and result.getNode() = d.getAValue()) and
     result.getBasicBlock().dominates(this.getBasicBlock())
+  }
+}
+
+/**
+ * A control flow node corresponding to an iterable literal. Currently does not include
+ * dictionaries, use `DictNode` directly instead.
+ */
+class IterableNode extends ControlFlowNode {
+  IterableNode() {
+    this instanceof SequenceNode
+    or
+    this instanceof SetNode
+  }
+
+  /** Gets the control flow node for an element of this iterable. */
+  ControlFlowNode getAnElement() {
+    result = this.(SequenceNode).getAnElement()
+    or
+    result = this.(SetNode).getAnElement()
   }
 }
 

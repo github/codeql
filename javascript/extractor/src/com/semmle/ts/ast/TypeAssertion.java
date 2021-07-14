@@ -30,7 +30,7 @@ public class TypeAssertion extends Expression {
   }
 
   /**
-   * True if this is an assertion of form <tt>E as T</tt>, as opposed to the old syntax <code>
+   * True if this is an assertion of form <code>E as T</code>, as opposed to the old syntax <code>
    * &lt;T&gt; E</code>.
    */
   public boolean isAsExpression() {

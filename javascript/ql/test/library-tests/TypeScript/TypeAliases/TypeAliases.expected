@@ -3,16 +3,16 @@ rightHandSide
 | tst.ts:2:1:2:16 | type B<T> = T[]; | T[] |
 | tst.ts:8:10:8:20 | type C = A; | number |
 | tst.ts:15:1:15:23 | type Un ...  \| Two; | One \| Two |
-| tst.ts:17:1:17:36 | type Un ... mber }; | (One & { x: number; }) \| (Two & { x: number; }) |
-| tst.ts:18:1:18:21 | type Un ... Union2; | (One & { x: number; }) \| (Two & { x: number; }) |
-| tst.ts:19:1:19:21 | type Un ... Union3; | (One & { x: number; }) \| (Two & { x: number; }) |
-| tst.ts:20:1:20:30 | type Un ... number; | number \| (One & { x: number; }) \| (Two & { x: n... |
+| tst.ts:17:1:17:36 | type Un ... mber }; | Union & { x: number; } |
+| tst.ts:18:1:18:21 | type Un ... Union2; | Union & { x: number; } |
+| tst.ts:19:1:19:21 | type Un ... Union3; | Union & { x: number; } |
+| tst.ts:20:1:20:30 | type Un ... number; | number \| Union2 |
 getAliasedType
 | B<T> | T[] |
 | B<number> | number[] |
 | Union | One \| Two |
-| Union2 | (One & { x: number; }) \| (Two & { x: number; }) |
-| Union5 | number \| (One & { x: number; }) \| (Two & { x: n... |
+| Union2 | Union & { x: number; } |
+| Union5 | number \| Union2 |
 getTypeArgument
 | B<T> | 0 | T |
 | B<number> | 0 | number |

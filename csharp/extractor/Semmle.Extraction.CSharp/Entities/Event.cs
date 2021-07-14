@@ -5,29 +5,29 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    class Event : CachedSymbol<IEventSymbol>
+    internal class Event : CachedSymbol<IEventSymbol>
     {
-        Event(Context cx, IEventSymbol init)
+        private Event(Context cx, IEventSymbol init)
             : base(cx, init) { }
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
-            trapFile.WriteSubId(ContainingType);
+            trapFile.WriteSubId(ContainingType!);
             trapFile.Write('.');
-            Method.AddExplicitInterfaceQualifierToId(Context, trapFile, symbol.ExplicitInterfaceImplementations);
-            trapFile.Write(symbol.Name);
+            Method.AddExplicitInterfaceQualifierToId(Context, trapFile, Symbol.ExplicitInterfaceImplementations);
+            trapFile.Write(Symbol.Name);
             trapFile.Write(";event");
         }
 
         public override void Populate(TextWriter trapFile)
         {
-            PopulateNullability(trapFile, symbol.GetAnnotatedType());
+            PopulateNullability(trapFile, Symbol.GetAnnotatedType());
 
-            var type = Type.Create(Context, symbol.Type);
-            trapFile.events(this, symbol.GetName(), ContainingType, type.TypeRef, Create(Context, symbol.OriginalDefinition));
+            var type = Type.Create(Context, Symbol.Type);
+            trapFile.events(this, Symbol.GetName(), ContainingType!, type.TypeRef, Create(Context, Symbol.OriginalDefinition));
 
-            var adder = symbol.AddMethod;
-            var remover = symbol.RemoveMethod;
+            var adder = Symbol.AddMethod;
+            var remover = Symbol.RemoveMethod;
 
             if (!(adder is null))
                 Method.Create(Context, adder);
@@ -39,36 +39,37 @@ namespace Semmle.Extraction.CSharp.Entities
             BindComments();
 
             var declSyntaxReferences = IsSourceDeclaration
-                ? symbol.DeclaringSyntaxReferences.Select(d => d.GetSyntax()).ToArray()
+                ? Symbol.DeclaringSyntaxReferences.Select(d => d.GetSyntax()).ToArray()
                 : Enumerable.Empty<SyntaxNode>();
 
-            foreach (var explicitInterface in symbol.ExplicitInterfaceImplementations.Select(impl => Type.Create(Context, impl.ContainingType)))
+            foreach (var explicitInterface in Symbol.ExplicitInterfaceImplementations.Select(impl => Type.Create(Context, impl.ContainingType)))
             {
                 trapFile.explicitly_implements(this, explicitInterface.TypeRef);
 
                 foreach (var syntax in declSyntaxReferences.OfType<EventDeclarationSyntax>())
-                    TypeMention.Create(Context, syntax.ExplicitInterfaceSpecifier.Name, this, explicitInterface);
+                    TypeMention.Create(Context, syntax.ExplicitInterfaceSpecifier!.Name, this, explicitInterface);
             }
 
             foreach (var l in Locations)
                 trapFile.event_location(this, l);
 
-            foreach (var syntaxType in declSyntaxReferences.OfType<VariableDeclaratorSyntax>().
-                Select(d => d.Parent).
-                OfType<VariableDeclarationSyntax>().
-                Select(syntax => syntax.Type))
+            foreach (var syntaxType in declSyntaxReferences
+                .OfType<VariableDeclaratorSyntax>()
+                .Select(d => d.Parent)
+                .OfType<VariableDeclarationSyntax>()
+                .Select(syntax => syntax.Type))
+            {
                 TypeMention.Create(Context, syntaxType, this, type);
+            }
         }
 
-        public static Event Create(Context cx, IEventSymbol symbol) => EventFactory.Instance.CreateEntity(cx, symbol);
+        public static Event Create(Context cx, IEventSymbol symbol) => EventFactory.Instance.CreateEntityFromSymbol(cx, symbol);
 
-        class EventFactory : ICachedEntityFactory<IEventSymbol, Event>
+        private class EventFactory : CachedEntityFactory<IEventSymbol, Event>
         {
-            public static readonly EventFactory Instance = new EventFactory();
+            public static EventFactory Instance { get; } = new EventFactory();
 
-            public Event Create(Context cx, IEventSymbol init) => new Event(cx, init);
+            public override Event Create(Context cx, IEventSymbol init) => new Event(cx, init);
         }
-
-        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
     }
 }

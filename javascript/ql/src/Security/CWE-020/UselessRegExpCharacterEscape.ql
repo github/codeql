@@ -5,11 +5,12 @@
  *              behave unexpectedly.
  * @kind problem
  * @problem.severity error
+ * @security-severity 7.8
  * @precision high
  * @id js/useless-regexp-character-escape
  * @tags correctness
  *       security
- *       external/cwe/cwe-20
+ *       external/cwe/cwe-020
  */
 
 import javascript

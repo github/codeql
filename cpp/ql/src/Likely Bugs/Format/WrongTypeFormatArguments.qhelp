@@ -23,7 +23,7 @@ the function.
 <li>CERT C Coding
 Standard: <a href="https://www.securecoding.cert.org/confluence/display/c/FIO30-C.+Exclude+user+input+from+format+strings">FIO30-C. Exclude user input from format strings</a>.</li>
 <li>cplusplus.com: <a href="http://www.tutorialspoint.com/cplusplus/cpp_functions.htm">C++ Functions</a>.</li>
-<li>MSDN Alphabetical Function Reference: <a href="http://msdn.microsoft.com/en-us/library/wc7014hz%28VS.71%29.aspx">printf, wprintf</a>.</li>
+<li>CRT Alphabetical Function Reference: <a href="https://docs.microsoft.com/en-us/cpp/c-runtime-library/reference/printf-printf-l-wprintf-wprintf-l">printf, _printf_l, wprintf, _wprintf_l</a>.</li>
 
 
 

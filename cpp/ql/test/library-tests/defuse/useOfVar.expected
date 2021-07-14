@@ -118,6 +118,12 @@
 | pass_by_ref.cpp:46:7:46:7 | i | pass_by_ref.cpp:49:5:49:5 | i |
 | pass_by_ref.cpp:46:7:46:7 | i | pass_by_ref.cpp:53:22:53:22 | i |
 | pass_by_ref.cpp:46:7:46:7 | i | pass_by_ref.cpp:54:10:54:10 | i |
+| pass_by_ref.cpp:60:7:60:7 | x | pass_by_ref.cpp:61:35:61:35 | x |
+| pass_by_ref.cpp:60:7:60:7 | x | pass_by_ref.cpp:62:10:62:10 | x |
+| pass_by_ref.cpp:66:8:66:8 | p | pass_by_ref.cpp:67:34:67:34 | p |
+| pass_by_ref.cpp:66:8:66:8 | p | pass_by_ref.cpp:68:10:68:10 | p |
+| pass_by_ref.cpp:74:7:74:7 | x | pass_by_ref.cpp:75:36:75:36 | x |
+| pass_by_ref.cpp:74:7:74:7 | x | pass_by_ref.cpp:76:10:76:10 | x |
 | test.cpp:3:16:3:17 | a0 | test.cpp:5:7:5:8 | a0 |
 | test.cpp:3:24:3:25 | b0 | test.cpp:6:7:6:8 | b0 |
 | test.cpp:3:32:3:33 | c0 | test.cpp:7:7:7:8 | c0 |

@@ -1,0 +1,7 @@
+disable
+| trivia.cs:12:1:12:35 | #pragma warning ... |
+restore
+| trivia.cs:23:1:23:23 | #pragma warning ... |
+errorCodes
+| trivia.cs:12:1:12:35 | #pragma warning ... | 414 |
+| trivia.cs:12:1:12:35 | #pragma warning ... | CS3021 |

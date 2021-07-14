@@ -283,8 +283,7 @@ class SystemExitMethod extends Method {
     this.hasName("exit") and
     this.getNumberOfParameters() = 1 and
     this.getParameter(0).getType().(PrimitiveType).hasName("int") and
-    this
-        .getDeclaringType()
+    this.getDeclaringType()
         .getASupertype*()
         .getSourceDeclaration()
         .hasQualifiedName("java.lang", "System")
@@ -300,8 +299,7 @@ class RuntimeExitOrHaltMethod extends Method {
     (this.hasName("exit") or this.hasName("halt")) and
     this.getNumberOfParameters() = 1 and
     this.getParameter(0).getType().(PrimitiveType).hasName("int") and
-    this
-        .getDeclaringType()
+    this.getDeclaringType()
         .getASupertype*()
         .getSourceDeclaration()
         .hasQualifiedName("java.lang", "Runtime")
@@ -317,8 +315,7 @@ class RuntimeAddOrRemoveShutdownHookMethod extends Method {
     (this.hasName("addShutdownHook") or this.hasName("removeShutdownHook")) and
     this.getNumberOfParameters() = 1 and
     this.getParameter(0).getType().(RefType).hasQualifiedName("java.lang", "Thread") and
-    this
-        .getDeclaringType()
+    this.getDeclaringType()
         .getASupertype*()
         .getSourceDeclaration()
         .hasQualifiedName("java.lang", "Runtime")
@@ -334,8 +331,7 @@ class SystemSetPrintStreamMethod extends Method {
     (this.hasName("setErr") or this.hasName("setOut")) and
     this.getNumberOfParameters() = 1 and
     this.getParameter(0).getType().(RefType).hasQualifiedName("java.io", "PrintStream") and
-    this
-        .getDeclaringType()
+    this.getDeclaringType()
         .getASupertype*()
         .getSourceDeclaration()
         .hasQualifiedName("java.lang", "System")
@@ -351,8 +347,7 @@ class SystemSetInputStreamMethod extends Method {
     this.hasName("setIn") and
     this.getNumberOfParameters() = 1 and
     this.getParameter(0).getType().(RefType).hasQualifiedName("java.io", "InputStream") and
-    this
-        .getDeclaringType()
+    this.getDeclaringType()
         .getASupertype*()
         .getSourceDeclaration()
         .hasQualifiedName("java.lang", "System")
@@ -367,8 +362,7 @@ class SystemGetSecurityManagerMethod extends Method {
   SystemGetSecurityManagerMethod() {
     this.hasName("getSecurityManager") and
     this.hasNoParameters() and
-    this
-        .getDeclaringType()
+    this.getDeclaringType()
         .getASupertype*()
         .getSourceDeclaration()
         .hasQualifiedName("java.lang", "System")
@@ -384,8 +378,7 @@ class SystemSetSecurityManagerMethod extends Method {
     this.hasName("setSecurityManager") and
     this.getNumberOfParameters() = 1 and
     this.getParameter(0).getType().(RefType).hasQualifiedName("java.lang", "SecurityManager") and
-    this
-        .getDeclaringType()
+    this.getDeclaringType()
         .getASupertype*()
         .getSourceDeclaration()
         .hasQualifiedName("java.lang", "System")
@@ -400,8 +393,7 @@ class SystemInheritedChannelMethod extends Method {
   SystemInheritedChannelMethod() {
     this.hasName("inheritedChannel") and
     this.hasNoParameters() and
-    this
-        .getDeclaringType()
+    this.getDeclaringType()
         .getASupertype*()
         .getSourceDeclaration()
         .hasQualifiedName("java.lang", "System")
@@ -429,8 +421,7 @@ class EnableReplaceObjectMethod extends Method {
     this.hasName("enableReplaceObject") and
     this.getNumberOfParameters() = 1 and
     this.getParameter(0).getType().(PrimitiveType).hasName("boolean") and
-    this
-        .getDeclaringType()
+    this.getDeclaringType()
         .getASupertype*()
         .getSourceDeclaration()
         .hasQualifiedName("java.io", "ObjectOutputStream")
@@ -446,8 +437,7 @@ class ReplaceObjectMethod extends Method {
     this.hasName("replaceObject") and
     this.getNumberOfParameters() = 1 and
     this.getParameter(0).getType() instanceof TypeObject and
-    this
-        .getDeclaringType()
+    this.getDeclaringType()
         .getASupertype*()
         .getSourceDeclaration()
         .hasQualifiedName("java.io", "ObjectOutputStream")
@@ -463,8 +453,7 @@ class EnableResolveObjectMethod extends Method {
     this.hasName("enableResolveObject") and
     this.getNumberOfParameters() = 1 and
     this.getParameter(0).getType().(PrimitiveType).hasName("boolean") and
-    this
-        .getDeclaringType()
+    this.getDeclaringType()
         .getASupertype*()
         .getSourceDeclaration()
         .hasQualifiedName("java.io", "ObjectInputStream")
@@ -480,8 +469,7 @@ class ResolveObjectMethod extends Method {
     this.hasName("resolveObject") and
     this.getNumberOfParameters() = 1 and
     this.getParameter(0).getType() instanceof TypeObject and
-    this
-        .getDeclaringType()
+    this.getDeclaringType()
         .getASupertype*()
         .getSourceDeclaration()
         .hasQualifiedName("java.io", "ObjectInputStream")
@@ -497,8 +485,7 @@ class ResolveClassMethod extends Method {
     this.hasName("resolveClass") and
     this.getNumberOfParameters() = 1 and
     this.getParameter(0).getType().(RefType).hasQualifiedName("java.io", "ObjectStreamClass") and
-    this
-        .getDeclaringType()
+    this.getDeclaringType()
         .getASupertype*()
         .getSourceDeclaration()
         .hasQualifiedName("java.io", "ObjectInputStream")
@@ -513,15 +500,13 @@ class ResolveProxyClassMethod extends Method {
   ResolveProxyClassMethod() {
     this.hasName("resolveProxyClass") and
     this.getNumberOfParameters() = 1 and
-    this
-        .getParameter(0)
+    this.getParameter(0)
         .getType()
         .(Array)
         .getComponentType()
         .(RefType)
         .hasQualifiedName("java.lang", "String") and
-    this
-        .getDeclaringType()
+    this.getDeclaringType()
         .getASupertype*()
         .getSourceDeclaration()
         .hasQualifiedName("java.io", "ObjectInputStream")
@@ -545,14 +530,12 @@ class SetSocketFactoryMethod extends Method {
   SetSocketFactoryMethod() {
     this.hasName("setSocketFactory") and
     this.getNumberOfParameters() = 1 and
-    this
-        .getParameter(0)
+    this.getParameter(0)
         .getType()
         .(RefType)
         .getSourceDeclaration()
         .hasQualifiedName("java.net", "SocketImplFactory") and
-    this
-        .getDeclaringType()
+    this.getDeclaringType()
         .getASupertype*()
         .getSourceDeclaration()
         .hasQualifiedName("java.net", "ServerSocket")
@@ -567,14 +550,12 @@ class SetSocketImplFactoryMethod extends Method {
   SetSocketImplFactoryMethod() {
     this.hasName("setSocketImplFactory") and
     this.getNumberOfParameters() = 1 and
-    this
-        .getParameter(0)
+    this.getParameter(0)
         .getType()
         .(RefType)
         .getSourceDeclaration()
         .hasQualifiedName("java.net", "SocketImplFactory") and
-    this
-        .getDeclaringType()
+    this.getDeclaringType()
         .getASupertype*()
         .getSourceDeclaration()
         .hasQualifiedName("java.net", "Socket")
@@ -589,14 +570,12 @@ class SetUrlStreamHandlerFactoryMethod extends Method {
   SetUrlStreamHandlerFactoryMethod() {
     this.hasName("setURLStreamHandlerFactory") and
     this.getNumberOfParameters() = 1 and
-    this
-        .getParameter(0)
+    this.getParameter(0)
         .getType()
         .(RefType)
         .getSourceDeclaration()
         .hasQualifiedName("java.net", "URLStreamHandlerFactory") and
-    this
-        .getDeclaringType()
+    this.getDeclaringType()
         .getASupertype*()
         .getSourceDeclaration()
         .hasQualifiedName("java.net", "URL")
@@ -621,13 +600,11 @@ class SystemOrRuntimeLoadLibraryMethod extends Method {
     this.getNumberOfParameters() = 1 and
     this.getParameter(0).getType().(RefType).hasQualifiedName("java.lang", "String") and
     (
-      this
-          .getDeclaringType()
+      this.getDeclaringType()
           .getASupertype*()
           .getSourceDeclaration()
           .hasQualifiedName("java.lang", "System") or
-      this
-          .getDeclaringType()
+      this.getDeclaringType()
           .getASupertype*()
           .getSourceDeclaration()
           .hasQualifiedName("java.lang", "Runtime")
@@ -642,8 +619,7 @@ class SystemOrRuntimeLoadLibraryMethod extends Method {
 class RuntimeExecMethod extends Method {
   RuntimeExecMethod() {
     this.hasName("exec") and
-    this
-        .getDeclaringType()
+    this.getDeclaringType()
         .getASupertype*()
         .getSourceDeclaration()
         .hasQualifiedName("java.lang", "Runtime")

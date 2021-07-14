@@ -6,12 +6,7 @@ import cpp
 
 class SemaphoreCreation extends FunctionCall {
   SemaphoreCreation() {
-    exists(string name | name = this.getTarget().getName() |
-      name = "semBCreate" or
-      name = "semMCreate" or
-      name = "semCCreate" or
-      name = "semRWCreate"
-    )
+    this.getTarget().getName() = ["semBCreate", "semMCreate", "semCCreate", "semRWCreate"]
   }
 
   Variable getSemaphore() { result.getAnAccess() = this.getParent().(Assignment).getLValue() }
@@ -72,11 +67,7 @@ class SemaphoreGive extends UnlockOperation {
 }
 
 class LockingPrimitive extends FunctionCall, LockOperation {
-  LockingPrimitive() {
-    exists(string name | name = this.getTarget().getName() |
-      name = "taskLock" or name = "intLock" or name = "taskRtpLock"
-    )
-  }
+  LockingPrimitive() { this.getTarget().getName() = ["taskLock", "intLock", "taskRtpLock"] }
 
   override Function getLocked() { result = this.getTarget() }
 
@@ -89,11 +80,7 @@ class LockingPrimitive extends FunctionCall, LockOperation {
 }
 
 class UnlockingPrimitive extends FunctionCall, UnlockOperation {
-  UnlockingPrimitive() {
-    exists(string name | name = this.getTarget().getName() |
-      name = "taskUnlock" or name = "intUnlock" or name = "taskRtpUnlock"
-    )
-  }
+  UnlockingPrimitive() { this.getTarget().getName() = ["taskUnlock", "intUnlock", "taskRtpUnlock"] }
 
   Function getLocked() { result = getMatchingLock().getLocked() }
 

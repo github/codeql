@@ -1,7 +1,0 @@
-| src/lib/tst2.js:1:1:1:13 | require("..") | src/index.js:0:0:0:0 | src/index.js |
-| src/node_modules/nested/tst3.js:1:1:1:29 | require ... odule') | src/node_modules/third-party-module/fancy.js:0:0:0:0 | src/node_modules/third-party-module/fancy.js |
-| src/node_modules/nested/tst3.js:2:1:2:12 | require('a') | src/node_modules/nested/node_modules/a/index.js:0:0:0:0 | src/node_modules/nested/node_modules/a/index.js |
-| src/node_modules/tst2.js:1:1:1:38 | require ... cy.js') | src/node_modules/third-party-module/fancy.js:0:0:0:0 | src/node_modules/third-party-module/fancy.js |
-| src/tst2.js:1:1:1:12 | require(".") | src/index.js:0:0:0:0 | src/index.js |
-| src/tst.js:1:1:1:38 | require ... cy.js') | src/node_modules/third-party-module/fancy.js:0:0:0:0 | src/node_modules/third-party-module/fancy.js |
-| src/tst.js:2:1:2:37 | require ... ckage') | src/node_modules/third-party-module/package.json:0:0:0:0 | src/node_modules/third-party-module/package.json |

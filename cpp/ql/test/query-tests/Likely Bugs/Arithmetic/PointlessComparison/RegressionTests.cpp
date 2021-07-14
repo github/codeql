@@ -80,3 +80,47 @@ int containsIfDef(int x) {
 
   return result >= 0;
 }
+
+void negativeZero1(int val) {
+  if (val >= 0)
+  {
+    val = -val;
+  }
+  if (val == 0) // GOOD [NO LONGER REPORTED]
+    ;
+}
+
+void negativeZero2(int val) {
+  if (val >= 0)
+  {
+    val = 0 - val;
+  }
+  if (val == 0) // GOOD
+    ;
+}
+
+void negativeZero3(int val) {
+  if (val >= 0)
+  {
+    val *= -1;
+  }
+  if (val == 0) // GOOD [NO LONGER REPORTED]
+    ;
+}
+
+void negativeZero4(int val) {
+  if (val >= 0)
+  {
+    val = val * -1;
+  }
+  if (val == 0) // GOOD [NO LONGER REPORTED]
+    ;
+}
+
+void f(int *const &ref_to_ptr);
+
+void testTempObject() {
+  int x = 0;
+  f(&x);
+  if (x > 0) {} // GOOD [NO LONGER REPORTED]
+}

@@ -39,9 +39,9 @@ could check the underlying array directly to see if there is an element at the n
 
 
 <li>
-  Java API Documentation:  
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.html#hasNext%28%29">Iterator.hasNext()</a>,
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.html#next%28%29">Iterator.next()</a>.
+  Java API Specification:  
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Iterator.html#hasNext()">Iterator.hasNext()</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Iterator.html#next()">Iterator.next()</a>.
 </li>
 
 

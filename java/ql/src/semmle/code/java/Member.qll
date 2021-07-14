@@ -23,6 +23,14 @@ class Member extends Element, Annotatable, Modifiable, @member {
   /** Gets the qualified name of this member. */
   string getQualifiedName() { result = getDeclaringType().getName() + "." + getName() }
 
+  /**
+   * Holds if this member has the specified name and is declared in the
+   * specified package and type.
+   */
+  predicate hasQualifiedName(string package, string type, string name) {
+    this.getDeclaringType().hasQualifiedName(package, type) and this.hasName(name)
+  }
+
   /** Holds if this member is package protected, that is, neither public nor private nor protected. */
   predicate isPackageProtected() {
     not isPrivate() and
@@ -215,7 +223,7 @@ class Callable extends StmtParent, Member, @callable {
   Call getAReference() { result.getCallee() = this }
 
   /** Gets the body of this callable, if any. */
-  Block getBody() { result.getParent() = this }
+  BlockStmt getBody() { result.getParent() = this }
 
   /**
    * Gets the source declaration of this callable.
@@ -411,6 +419,8 @@ class Method extends Callable, @method {
     not isFinal() and
     not getDeclaringType().isFinal()
   }
+
+  override string getAPrimaryQlClass() { result = "Method" }
 }
 
 /** A method that is the same as its source declaration. */
@@ -504,6 +514,8 @@ class Constructor extends Callable, @constructor {
   override Constructor getSourceDeclaration() { constrs(this, _, _, _, _, result) }
 
   override string getSignature() { constrs(this, _, result, _, _, _) }
+
+  override string getAPrimaryQlClass() { result = "Constructor" }
 }
 
 /**
@@ -548,6 +560,8 @@ class FieldDeclaration extends ExprParent, @fielddecl, Annotatable {
     then result = this.getTypeAccess() + " " + this.getField(0) + ";"
     else result = this.getTypeAccess() + " " + this.getField(0) + ", ...;"
   }
+
+  override string getAPrimaryQlClass() { result = "FieldDeclaration" }
 }
 
 /** A class or instance field. */
@@ -570,9 +584,9 @@ class Field extends Member, ExprParent, @field, Variable {
     exists(AssignExpr e, InitializerMethod im |
       e.getDest() = this.getAnAccess() and
       e.getSource() = result and
-      result.getEnclosingCallable() = im and
+      pragma[only_bind_out](result).getEnclosingCallable() = im and
       // This rules out updates in explicit initializer blocks as they are nested inside the compiler generated initializer blocks.
-      e.getEnclosingStmt().getParent() = im.getBody()
+      pragma[only_bind_out](e.getEnclosingStmt().getParent()) = pragma[only_bind_out](im.getBody())
     )
   }
 
@@ -616,6 +630,8 @@ class Field extends Member, ExprParent, @field, Variable {
 
   /** Cast this field to a class that provides access to metrics information. */
   MetricField getMetrics() { result = this }
+
+  override string getAPrimaryQlClass() { result = "Field" }
 }
 
 /** An instance field. */

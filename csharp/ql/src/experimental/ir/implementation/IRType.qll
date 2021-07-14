@@ -341,7 +341,7 @@ module IRTypeConsistency {
   query predicate multipleIRTypes(Language::LanguageType type, string message) {
     strictcount(type.getIRType()) > 1 and
     message =
-      "`LanguageType` " + type.getAQlClass() + " has multiple `IRType`s: " +
+      "`LanguageType` " + type + " has multiple `IRType`s: " +
         concat(type.getIRType().toString(), ", ")
   }
 

@@ -39,7 +39,7 @@ has made. However, if the user does not choose 1, 2, or 3, execution falls throu
 
 <li>
   Java SE Documentation:
-  <a href="http://www.oracle.com/technetwork/java/javase/documentation/codeconventions-142311.html#468">7.8 switch Statements</a>.
+  <a href="https://www.oracle.com/java/technologies/javase/codeconventions-statements.html#468">7.8 switch Statements</a>.
 </li>
 
 

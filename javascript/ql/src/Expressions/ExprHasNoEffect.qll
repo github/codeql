@@ -164,5 +164,7 @@ predicate hasNoEffect(Expr e) {
     top = e.getParent().(ExprStmt).getParent() and
     top.getNumChild() = 1 and
     not exists(Function fun | fun.getEnclosingContainer() = top)
-  )
+  ) and
+  // ignore Angular templates
+  not e.getTopLevel() instanceof Angular2::TemplateTopLevel
 }

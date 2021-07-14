@@ -50,7 +50,7 @@ system's passwords.
 </example>
 
 <references>
-<li>OWASP: <a href="https://www.owasp.org/index.php/Path_traversal">Path Traversal</a>.</li>
+<li>OWASP: <a href="https://owasp.org/www-community/attacks/Path_Traversal">Path Traversal</a>.</li>
 <li>npm: <a href="https://www.npmjs.com/package/sanitize-filename">sanitize-filename</a> package.</li>
 </references>
 </qhelp>

@@ -3,6 +3,7 @@
  * @description Untrusted XML is read with an insecure resolver and DTD processing enabled.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 9.1
  * @precision high
  * @id cs/xml/insecure-dtd-handling
  * @tags security
@@ -12,7 +13,7 @@
  */
 
 import csharp
-import semmle.code.csharp.security.dataflow.XMLEntityInjection::XMLEntityInjection
+import semmle.code.csharp.security.dataflow.XMLEntityInjectionQuery
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink

@@ -176,4 +176,11 @@
 	u && (u.p, f()); // technically not OK, but it seems like an unlikely pattern
 	u && !u.p; // NOT OK
 	u && !u(); // NOT OK
+
+    
+    function hasCallbacks(success, error) {
+        if (success) success()
+        if (error) error()
+    }
+    hasCallbacks(() => {}, null);
 });

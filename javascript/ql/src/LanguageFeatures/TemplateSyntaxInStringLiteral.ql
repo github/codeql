@@ -62,8 +62,8 @@ class CandidateStringLiteral extends StringLiteral {
 }
 
 /**
- * Holds if `obj` has a property for each template variable in `lit` and they occur as arguments
- * to the same call.
+ * Holds if there exists an object that has a property for each template variable in `lit` and
+ * they occur as arguments to the same call.
  *
  * This recognises a typical pattern in which template arguments are passed along with a string,
  * for example:
@@ -73,13 +73,13 @@ class CandidateStringLiteral extends StringLiteral {
  *        { url: url, name: name } );
  * ```
  */
-predicate providesTemplateVariablesFor(ObjectExpr obj, CandidateStringLiteral lit) {
-  exists(CallExpr call | call.getAnArgument() = obj and call.getAnArgument() = lit) and
-  forex(string name | lit.getAReferencedVariable() = name | hasProperty(obj, name))
+predicate hasObjectProvidingTemplateVariables(CandidateStringLiteral lit) {
+  exists(DataFlow::CallNode call, DataFlow::ObjectLiteralNode obj |
+    call.getAnArgument().getALocalSource() = obj and
+    call.getAnArgument().asExpr() = lit and
+    forex(string name | name = lit.getAReferencedVariable() | exists(obj.getAPropertyWrite(name)))
+  )
 }
-
-/** Holds if `object` has a property with the given `name`. */
-predicate hasProperty(ObjectExpr object, string name) { name = object.getAProperty().getName() }
 
 /**
  * Gets a declaration of variable `v` in `tl`, where `v` has the given `name` and
@@ -97,7 +97,7 @@ where
   decl = getDeclIn(v, s, name, lit.getTopLevel()) and
   lit.getAReferencedVariable() = name and
   lit.isInScope(s) and
-  not exists(ObjectExpr obj | providesTemplateVariablesFor(obj, lit)) and
+  not hasObjectProvidingTemplateVariables(lit) and
   not lit.getStringValue() = "${" + name + "}"
 select lit, "This string is not a template literal, but appears to reference the variable $@.",
   decl, v.getName()

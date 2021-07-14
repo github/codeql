@@ -7,74 +7,69 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    enum Variance
+    internal enum Variance
     {
         None = 0,
         Out = 1,
         In = 2
     }
 
-    class TypeParameter : Type<ITypeParameterSymbol>
+    internal class TypeParameter : Type<ITypeParameterSymbol>
     {
-        TypeParameter(Context cx, ITypeParameterSymbol init)
+        private TypeParameter(Context cx, ITypeParameterSymbol init)
             : base(cx, init) { }
-
-        static readonly string valueTypeName = typeof(System.ValueType).ToString();
 
         public override void Populate(TextWriter trapFile)
         {
             var constraints = new TypeParameterConstraints(Context);
             trapFile.type_parameter_constraints(constraints, this);
 
-            if (symbol.HasReferenceTypeConstraint)
+            if (Symbol.HasReferenceTypeConstraint)
                 trapFile.general_type_parameter_constraints(constraints, 1);
 
-            if (symbol.HasValueTypeConstraint)
+            if (Symbol.HasValueTypeConstraint)
                 trapFile.general_type_parameter_constraints(constraints, 2);
 
-            if (symbol.HasConstructorConstraint)
+            if (Symbol.HasConstructorConstraint)
                 trapFile.general_type_parameter_constraints(constraints, 3);
 
-            if(symbol.HasUnmanagedTypeConstraint)
+            if (Symbol.HasUnmanagedTypeConstraint)
                 trapFile.general_type_parameter_constraints(constraints, 4);
 
-            ITypeSymbol baseType = symbol.HasValueTypeConstraint ?
-                    Context.Compilation.GetTypeByMetadataName(valueTypeName) :
-                    Context.Compilation.ObjectType;
-
-            if(symbol.ReferenceTypeConstraintNullableAnnotation == NullableAnnotation.Annotated)
+            if (Symbol.ReferenceTypeConstraintNullableAnnotation == NullableAnnotation.Annotated)
                 trapFile.general_type_parameter_constraints(constraints, 5);
 
-            foreach (var abase in symbol.GetAnnotatedTypeConstraints())
+            foreach (var abase in Symbol.GetAnnotatedTypeConstraints())
             {
-                if (abase.Symbol.TypeKind != TypeKind.Interface)
-                    baseType = abase.Symbol;
                 var t = Create(Context, abase.Symbol);
                 trapFile.specific_type_parameter_constraints(constraints, t.TypeRef);
                 if (!abase.HasObliviousNullability())
                     trapFile.specific_type_parameter_nullability(constraints, t.TypeRef, NullabilityEntity.Create(Context, Nullability.Create(abase)));
             }
 
-            trapFile.types(this, Kinds.TypeKind.TYPE_PARAMETER, symbol.Name);
-            trapFile.extend(this, Create(Context, baseType).TypeRef);
+            trapFile.types(this, Kinds.TypeKind.TYPE_PARAMETER, Symbol.Name);
 
-            Namespace parentNs = Namespace.Create(Context, symbol.TypeParameterKind == TypeParameterKind.Method ? Context.Compilation.GlobalNamespace : symbol.ContainingNamespace);
+            var parentNs = Namespace.Create(Context, Symbol.TypeParameterKind == TypeParameterKind.Method ? Context.Compilation.GlobalNamespace : Symbol.ContainingNamespace);
             trapFile.parent_namespace(this, parentNs);
 
-            foreach (var l in symbol.Locations)
+            foreach (var l in Symbol.Locations)
             {
-                trapFile.type_location(this, Context.Create(l));
+                trapFile.type_location(this, Context.CreateLocation(l));
             }
 
             if (IsSourceDeclaration)
             {
-                var declSyntaxReferences = symbol.DeclaringSyntaxReferences.Select(d => d.GetSyntax()).
-                    Select(s => s.Parent).Where(p => p != null).Select(p => p.Parent).ToArray();
+                var declSyntaxReferences = Symbol.DeclaringSyntaxReferences
+                    .Select(d => d.GetSyntax())
+                    .Select(s => s.Parent)
+                    .Where(p => p is not null)
+                    .Select(p => p!.Parent)
+                    .ToArray();
                 var clauses = declSyntaxReferences.OfType<MethodDeclarationSyntax>().SelectMany(m => m.ConstraintClauses);
                 clauses = clauses.Concat(declSyntaxReferences.OfType<ClassDeclarationSyntax>().SelectMany(c => c.ConstraintClauses));
                 clauses = clauses.Concat(declSyntaxReferences.OfType<InterfaceDeclarationSyntax>().SelectMany(c => c.ConstraintClauses));
                 clauses = clauses.Concat(declSyntaxReferences.OfType<StructDeclarationSyntax>().SelectMany(c => c.ConstraintClauses));
-                foreach (var clause in clauses.Where(c => c.Name.Identifier.Text == symbol.Name))
+                foreach (var clause in clauses.Where(c => c.Name.Identifier.Text == Symbol.Name))
                 {
                     TypeMention.Create(Context, clause.Name, this, this);
                     foreach (var constraint in clause.Constraints.OfType<TypeConstraintSyntax>())
@@ -87,8 +82,8 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        static public TypeParameter Create(Context cx, ITypeParameterSymbol p) =>
-            TypeParameterFactory.Instance.CreateEntity(cx, p);
+        public static TypeParameter Create(Context cx, ITypeParameterSymbol p) =>
+            TypeParameterFactory.Instance.CreateEntityFromSymbol(cx, p);
 
         /// <summary>
         /// The variance of this type parameter.
@@ -97,46 +92,46 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             get
             {
-                switch (symbol.Variance)
+                switch (Symbol.Variance)
                 {
                     case VarianceKind.None: return Variance.None;
                     case VarianceKind.Out: return Variance.Out;
                     case VarianceKind.In: return Variance.In;
                     default:
-                        throw new InternalError($"Unexpected VarianceKind {symbol.Variance}");
+                        throw new InternalError($"Unexpected VarianceKind {Symbol.Variance}");
                 }
             }
         }
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
             string kind;
             IEntity containingEntity;
-            switch (symbol.TypeParameterKind)
+            switch (Symbol.TypeParameterKind)
             {
                 case TypeParameterKind.Method:
                     kind = "methodtypeparameter";
-                    containingEntity = Method.Create(Context, (IMethodSymbol)symbol.ContainingSymbol);
+                    containingEntity = Method.Create(Context, (IMethodSymbol)Symbol.ContainingSymbol);
                     break;
                 case TypeParameterKind.Type:
                     kind = "typeparameter";
-                    containingEntity = Create(Context, symbol.ContainingType);
+                    containingEntity = Create(Context, Symbol.ContainingType);
                     break;
                 default:
-                    throw new InternalError(symbol, $"Unhandled type parameter kind {symbol.TypeParameterKind}");
+                    throw new InternalError(Symbol, $"Unhandled type parameter kind {Symbol.TypeParameterKind}");
             }
             trapFile.WriteSubId(containingEntity);
             trapFile.Write('_');
-            trapFile.Write(symbol.Ordinal);
+            trapFile.Write(Symbol.Ordinal);
             trapFile.Write(';');
             trapFile.Write(kind);
         }
 
-        class TypeParameterFactory : ICachedEntityFactory<ITypeParameterSymbol, TypeParameter>
+        private class TypeParameterFactory : CachedEntityFactory<ITypeParameterSymbol, TypeParameter>
         {
-            public static readonly TypeParameterFactory Instance = new TypeParameterFactory();
+            public static TypeParameterFactory Instance { get; } = new TypeParameterFactory();
 
-            public TypeParameter Create(Context cx, ITypeParameterSymbol init) => new TypeParameter(cx, init);
+            public override TypeParameter Create(Context cx, ITypeParameterSymbol init) => new TypeParameter(cx, init);
         }
     }
 }

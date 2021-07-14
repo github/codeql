@@ -1,7 +1,12 @@
 /**
  * @name Insecure basic authentication
- * @description Basic authentication only obfuscates username/password in Base64 encoding, which can be easily recognized and reversed. Transmission of sensitive information not over HTTPS is vulnerable to packet sniffing.
+ * @description Basic authentication only obfuscates username/password in
+ *              Base64 encoding, which can be easily recognized and reversed.
+ *              Transmission of sensitive information not over HTTPS is
+ *              vulnerable to packet sniffing.
  * @kind path-problem
+ * @problem.severity warning
+ * @precision medium
  * @id java/insecure-basic-auth
  * @tags security
  *       external/cwe-522
@@ -10,29 +15,9 @@
 
 import java
 import semmle.code.java.frameworks.Networking
+import semmle.code.java.frameworks.ApacheHttp
 import semmle.code.java.dataflow.TaintTracking
 import DataFlow::PathGraph
-
-/**
- * Gets a regular expression for matching private hosts, which only matches the host portion therefore checking for port is not necessary.
- */
-private string getPrivateHostRegex() {
-  result =
-    "(?i)localhost(?:[:/?#].*)?|127\\.0\\.0\\.1(?:[:/?#].*)?|10(?:\\.[0-9]+){3}(?:[:/?#].*)?|172\\.16(?:\\.[0-9]+){2}(?:[:/?#].*)?|192.168(?:\\.[0-9]+){2}(?:[:/?#].*)?|\\[?0:0:0:0:0:0:0:1\\]?(?:[:/?#].*)?|\\[?::1\\]?(?:[:/?#].*)?"
-}
-
-/**
- * The Java class `org.apache.http.client.methods.HttpRequestBase`. Popular subclasses include `HttpGet`, `HttpPost`, and `HttpPut`.
- * And the Java class `org.apache.http.message.BasicHttpRequest`.
- */
-class ApacheHttpRequest extends RefType {
-  ApacheHttpRequest() {
-    this
-        .getASourceSupertype*()
-        .hasQualifiedName("org.apache.http.client.methods", "HttpRequestBase") or
-    this.getASourceSupertype*().hasQualifiedName("org.apache.http.message", "BasicHttpRequest")
-  }
-}
 
 /**
  * Class of Java URL constructor.
@@ -61,7 +46,7 @@ class URLConstructor extends ClassInstanceExpr {
  * Class of Java URI constructor.
  */
 class URIConstructor extends ClassInstanceExpr {
-  URIConstructor() { this.getConstructor().getDeclaringType().hasQualifiedName("java.net", "URI") }
+  URIConstructor() { this.getConstructor().getDeclaringType() instanceof TypeUri }
 
   predicate hasHttpStringArg() {
     (
@@ -88,7 +73,7 @@ class HttpStringLiteral extends StringLiteral {
     // Match URLs with the HTTP protocol and without private IP addresses to reduce false positives.
     exists(string s | this.getRepresentedString() = s |
       s.regexpMatch("(?i)http://[\\[a-zA-Z0-9].*") and
-      not s.substring(7, s.length()).regexpMatch(getPrivateHostRegex())
+      not s.substring(7, s.length()) instanceof PrivateHostName
     )
   }
 }
@@ -113,7 +98,7 @@ predicate concatHttpString(Expr protocol, Expr host) {
       host.(VarAccess).getVariable().getAnAssignedValue().(CompileTimeConstantExpr).getStringValue()
   |
     hostString.length() = 0 or // Empty host is loopback address
-    hostString.regexpMatch(getPrivateHostRegex())
+    hostString instanceof PrivateHostName
   )
 }
 
@@ -185,7 +170,7 @@ predicate createURI(DataFlow::Node node1, DataFlow::Node node2) {
   exists(
     StaticMethodAccess ma // URI.create
   |
-    ma.getMethod().getDeclaringType().hasQualifiedName("java.net", "URI") and
+    ma.getMethod().getDeclaringType() instanceof TypeUri and
     ma.getMethod().hasName("create") and
     node1.asExpr() = ma.getArgument(0) and
     node2.asExpr() = ma
@@ -206,15 +191,6 @@ predicate urlOpen(DataFlow::Node node1, DataFlow::Node node2) {
     ma.getMethod() instanceof HttpURLOpenMethod and
     node1.asExpr() = ma.getQualifier() and
     ma = node2.asExpr()
-  )
-}
-
-/** Constructor of `BasicRequestLine` */
-predicate basicRequestLine(DataFlow::Node node1, DataFlow::Node node2) {
-  exists(ConstructorCall mcc |
-    mcc.getConstructedType().hasQualifiedName("org.apache.http.message", "BasicRequestLine") and
-    mcc.getArgument(1) = node1.asExpr() and // `BasicRequestLine(String method, String uri, ProtocolVersion version)
-    node2.asExpr() = mcc
   )
 }
 
@@ -251,7 +227,6 @@ class BasicAuthFlowConfig extends TaintTracking::Configuration {
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
     apacheHttpRequest(node1, node2) or
     createURI(node1, node2) or
-    basicRequestLine(node1, node2) or
     createURL(node1, node2) or
     urlOpen(node1, node2)
   }

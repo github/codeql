@@ -33,7 +33,13 @@ module RequestForgery {
 
   /** A source of remote user input, considered as a flow source for request forgery. */
   private class RemoteFlowSourceAsSource extends Source {
-    RemoteFlowSourceAsSource() { this instanceof RemoteFlowSource }
+    RemoteFlowSourceAsSource() {
+      // Reduce FPs by excluding sources from client-side path or URL
+      exists(RemoteFlowSource src |
+        this = src and
+        not src.(ClientSideRemoteFlowSource).getKind().isPathOrUrl()
+      )
+    }
   }
 
   /**
@@ -52,5 +58,15 @@ module RequestForgery {
     override DataFlow::Node getARequest() { result = request }
 
     override string getKind() { result = kind }
+  }
+
+  /**
+   * Holds if there is a taint step from `pred` to `succ` for request forgery.
+   */
+  predicate isAdditionalRequestForgeryStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(DataFlow::NewNode url | url = DataFlow::globalVarRef("URL").getAnInstantiation() |
+      succ = url and
+      pred = url.getArgument(0)
+    )
   }
 }

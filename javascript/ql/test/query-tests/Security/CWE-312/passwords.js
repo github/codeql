@@ -163,3 +163,9 @@ var Util = require('util');
 	console.log(password.replace(/\./g, "*")); // NOT OK!
 	console.log(password.replace(/foo/g, "*")); // NOT OK!
 })();
+
+const debug = require('debug')('test');
+(function () {
+    console.log(password.replace(/foo/g, "*")); // NOT OK
+    debug(password.replace(/foo/g, "*")); // NOT OK
+});

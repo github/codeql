@@ -59,6 +59,43 @@ private predicate hasHandler(DataFlow::InvokeNode promise, string m, int i) {
 }
 
 /**
+ * Gets a reference to the `Promise` object.
+ * Either from the standard library, a polyfill import, or a polyfill that defines the global `Promise` variable.
+ */
+private DataFlow::SourceNode getAPromiseObject() {
+  // Standard library, or polyfills like [es6-shim](https://npmjs.org/package/es6-shim).
+  result = DataFlow::globalVarRef("Promise")
+  or
+  // polyfills from the [`promise`](https://npmjs.org/package/promise) library.
+  result =
+    DataFlow::moduleImport([
+        "promise", "promise/domains", "promise/setimmediate", "promise/lib/es6-extensions",
+        "promise/domains/es6-extensions", "promise/setimmediate/es6-extensions"
+      ])
+  or
+  // polyfill from the [`promise-polyfill`](https://npmjs.org/package/promise-polyfill) library.
+  result = DataFlow::moduleMember(["promise-polyfill", "promise-polyfill/src/polyfill"], "default")
+  or
+  result = DataFlow::moduleImport(["promise-polyfill", "promise-polyfill/src/polyfill"])
+  or
+  result = DataFlow::moduleMember(["es6-promise", "rsvp"], "Promise")
+  or
+  result = DataFlow::moduleImport("native-promise-only")
+  or
+  result = DataFlow::moduleImport("when")
+  or
+  result = DataFlow::moduleImport("pinkie-promise")
+  or
+  result = DataFlow::moduleImport("pinkie")
+  or
+  result = DataFlow::moduleMember("synchronous-promise", "SynchronousPromise")
+  or
+  result = DataFlow::moduleImport("any-promise")
+  or
+  result = DataFlow::moduleImport("lie")
+}
+
+/**
  * A call that looks like a Promise.
  *
  * For example, this could be the call `promise(f).then(function(v){...})`
@@ -72,10 +109,11 @@ class PromiseCandidate extends DataFlow::InvokeNode {
 }
 
 /**
- * A promise object created by the standard ECMAScript 2015 `Promise` constructor.
+ * A promise object created by the standard ECMAScript 2015 `Promise` constructor,
+ * or a polyfill implementing a superset of the ECMAScript 2015 `Promise` API.
  */
-private class ES2015PromiseDefinition extends PromiseDefinition, DataFlow::NewNode {
-  ES2015PromiseDefinition() { this = DataFlow::globalVarRef("Promise").getAnInstantiation() }
+private class ES2015PromiseDefinition extends PromiseDefinition, DataFlow::InvokeNode {
+  ES2015PromiseDefinition() { this = getAPromiseObject().getAnInvocation() }
 
   override DataFlow::FunctionNode getExecutor() { result = getCallback(0) }
 }
@@ -109,21 +147,21 @@ abstract class PromiseAllCreation extends PromiseCreationCall {
  * A resolved promise created by the standard ECMAScript 2015 `Promise.resolve` function.
  */
 class ResolvedES2015PromiseDefinition extends ResolvedPromiseDefinition {
-  ResolvedES2015PromiseDefinition() {
-    this = DataFlow::globalVarRef("Promise").getAMemberCall("resolve")
-  }
+  ResolvedES2015PromiseDefinition() { this = getAPromiseObject().getAMemberCall("resolve") }
 
   override DataFlow::Node getValue() { result = getArgument(0) }
 }
 
 /**
- * An aggregated promise produced either by `Promise.all` or `Promise.race`.
+ * An aggregated promise produced either by `Promise.all`, `Promise.race`, or `Promise.any`.
  */
 class AggregateES2015PromiseDefinition extends PromiseCreationCall {
   AggregateES2015PromiseDefinition() {
-    exists(string m | m = "all" or m = "race" |
-      this = DataFlow::globalVarRef("Promise").getAMemberCall(m)
+    exists(string m | m = "all" or m = "race" or m = "any" or m = "allSettled" |
+      this = getAPromiseObject().getAMemberCall(m)
     )
+    or
+    this = DataFlow::moduleImport("promise.allsettled").getACall()
   }
 
   override DataFlow::Node getValue() {
@@ -214,13 +252,6 @@ module PromiseTypeTracking {
       result = PromiseTypeTracking::promiseStep(mid, summary)
     )
   }
-
-  /**
-   * A class enabling the use of the `resolveField` as a pseudo-property in type-tracking predicates.
-   */
-  private class ResolveFieldAsTypeTrackingProperty extends TypeTrackingPseudoProperty {
-    ResolveFieldAsTypeTrackingProperty() { this = Promises::valueProp() }
-  }
 }
 
 private import semmle.javascript.dataflow.internal.PreCallGraphStep
@@ -249,7 +280,7 @@ private class PromiseStep extends PreCallGraphStep {
  * This module defines how data-flow propagates into and out of a Promise.
  * The data-flow is based on pseudo-properties rather than tainting the Promise object (which is what `PromiseTaintStep` does).
  */
-private module PromiseFlow {
+module PromiseFlow {
   private predicate valueProp = Promises::valueProp/0;
 
   private predicate errorProp = Promises::errorProp/0;
@@ -299,8 +330,10 @@ private module PromiseFlow {
       or
       prop = errorProp() and
       value =
-        [promise.getRejectParameter().getACall().getArgument(0),
-            promise.getExecutor().getExceptionalReturn()]
+        [
+          promise.getRejectParameter().getACall().getArgument(0),
+          promise.getExecutor().getExceptionalReturn()
+        ]
     )
     or
     // promise creation call, e.g. `Promise.resolve`.
@@ -396,62 +429,107 @@ private module PromiseFlow {
 }
 
 /**
- * Holds if taint propagates from `pred` to `succ` through promises.
+ * DEPRECATED. Use `TaintTracking::promiseStep` instead.
  */
-predicate promiseTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-  // from `x` to `new Promise((res, rej) => res(x))`
-  pred = succ.(PromiseDefinition).getResolveParameter().getACall().getArgument(0)
-  or
-  // from `x` to `Promise.resolve(x)`
-  pred = succ.(PromiseCreationCall).getValue() and
-  not succ instanceof PromiseAllCreation
-  or
-  // from `arr` to `Promise.all(arr)`
-  pred = succ.(PromiseAllCreation).getArrayNode()
-  or
-  exists(DataFlow::MethodCallNode thn | thn.getMethodName() = "then" |
-    // from `p` to `x` in `p.then(x => ...)`
-    pred = thn.getReceiver() and
-    succ = thn.getCallback(0).getParameter(0)
+deprecated predicate promiseTaintStep = TaintTracking::promiseStep/2;
+
+private class PromiseTaintStep extends TaintTracking::SharedTaintStep {
+  override predicate promiseStep(DataFlow::Node pred, DataFlow::Node succ) {
+    // from `x` to `new Promise((res, rej) => res(x))`
+    pred = succ.(PromiseDefinition).getResolveParameter().getACall().getArgument(0)
     or
-    // from `v` to `p.then(x => return v)`
-    pred = thn.getCallback([0 .. 1]).getAReturn() and
-    succ = thn
-  )
-  or
-  exists(DataFlow::MethodCallNode catch | catch.getMethodName() = "catch" |
-    // from `p` to `p.catch(..)`
-    pred = catch.getReceiver() and
-    succ = catch
+    // from `x` to `Promise.resolve(x)`
+    pred = succ.(PromiseCreationCall).getValue() and
+    not succ instanceof PromiseAllCreation
     or
-    // from `v` to `p.catch(x => return v)`
-    pred = catch.getCallback(0).getAReturn() and
-    succ = catch
-  )
-  or
-  // from `p` to `p.finally(..)`
-  exists(DataFlow::MethodCallNode finally | finally.getMethodName() = "finally" |
-    pred = finally.getReceiver() and
-    succ = finally
-  )
-  or
-  // from `x` to `await x`
-  exists(AwaitExpr await |
-    pred.getEnclosingExpr() = await.getOperand() and
-    succ.getEnclosingExpr() = await
-  )
+    // from `arr` to `Promise.all(arr)`
+    pred = succ.(PromiseAllCreation).getArrayNode()
+    or
+    exists(DataFlow::MethodCallNode thn | thn.getMethodName() = "then" |
+      // from `p` to `x` in `p.then(x => ...)`
+      pred = thn.getReceiver() and
+      succ = thn.getCallback(0).getParameter(0)
+      or
+      // from `v` to `p.then(x => return v)`
+      pred = thn.getCallback([0 .. 1]).getAReturn() and
+      succ = thn
+    )
+    or
+    exists(DataFlow::MethodCallNode catch | catch.getMethodName() = "catch" |
+      // from `p` to `p.catch(..)`
+      pred = catch.getReceiver() and
+      succ = catch
+      or
+      // from `v` to `p.catch(x => return v)`
+      pred = catch.getCallback(0).getAReturn() and
+      succ = catch
+    )
+    or
+    // from `p` to `p.finally(..)`
+    exists(DataFlow::MethodCallNode finally | finally.getMethodName() = "finally" |
+      pred = finally.getReceiver() and
+      succ = finally
+    )
+    or
+    // from `x` to `await x`
+    exists(AwaitExpr await |
+      pred.getEnclosingExpr() = await.getOperand() and
+      succ.getEnclosingExpr() = await
+    )
+    or
+    exists(DataFlow::CallNode mapSeries |
+      mapSeries = DataFlow::moduleMember("bluebird", "mapSeries").getACall()
+    |
+      // from `xs` to `x` in `require("bluebird").mapSeries(xs, (x) => {...})`.
+      pred = mapSeries.getArgument(0) and
+      succ = mapSeries.getABoundCallbackParameter(1, 0)
+      or
+      // from `y` to `require("bluebird").mapSeries(x, x => y)`.
+      pred = mapSeries.getCallback(1).getAReturn() and
+      succ = mapSeries
+    )
+  }
 }
 
 /**
- * An additional taint step that involves promises.
+ * Defines flow steps for return on async functions.
  */
-private class PromiseTaintStep extends TaintTracking::AdditionalTaintStep {
-  DataFlow::Node source;
+private module AsyncReturnSteps {
+  private predicate valueProp = Promises::valueProp/0;
 
-  PromiseTaintStep() { promiseTaintStep(source, this) }
+  private predicate errorProp = Promises::errorProp/0;
 
-  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-    pred = source and succ = this
+  private import semmle.javascript.dataflow.internal.FlowSteps
+
+  /**
+   * A data-flow step for ordinary and exceptional returns from async functions.
+   */
+  private class AsyncReturn extends PreCallGraphStep {
+    override predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
+      exists(DataFlow::FunctionNode f | f.getFunction().isAsync() |
+        // ordinary return
+        prop = valueProp() and
+        pred = f.getAReturn() and
+        succ = f.getReturnNode()
+        or
+        // exceptional return
+        prop = errorProp() and
+        localExceptionStepWithAsyncFlag(pred, succ, true)
+      )
+    }
+  }
+
+  /**
+   * A data-flow step for ordinary return from an async function in a taint configuration.
+   */
+  private class AsyncTaintReturn extends TaintTracking::SharedTaintStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(Function f |
+        f.isAsync() and
+        returnExpr(f, pred, _) and
+        succ.(DataFlow::FunctionReturnNode).getFunction() = f
+      )
+    }
   }
 }
 
@@ -522,14 +600,14 @@ module Bluebird {
 }
 
 /**
- * Provides classes for working with the `q` library (https://github.com/kriskowal/q).
+ * Provides classes for working with the `q` library (https://github.com/kriskowal/q) and the compatible `kew` library (https://github.com/Medium/kew).
  */
 module Q {
   /**
    * A promise object created by the q `Promise` constructor.
    */
   private class QPromiseDefinition extends PromiseDefinition, DataFlow::CallNode {
-    QPromiseDefinition() { this = DataFlow::moduleMember("q", "Promise").getACall() }
+    QPromiseDefinition() { this = DataFlow::moduleMember(["q", "kew"], "Promise").getACall() }
 
     override DataFlow::FunctionNode getExecutor() { result = getCallback(0) }
   }
@@ -549,6 +627,7 @@ private module ClosurePromise {
    * A promise created by a call `goog.Promise.resolve(value)`.
    */
   private class ResolvedClosurePromiseDefinition extends ResolvedPromiseDefinition {
+    pragma[noinline]
     ResolvedClosurePromiseDefinition() {
       this = Closure::moduleImport("goog.Promise.resolve").getACall()
     }
@@ -559,14 +638,12 @@ private module ClosurePromise {
   /**
    * Taint steps through closure promise methods.
    */
-  private class ClosurePromiseTaintStep extends TaintTracking::AdditionalTaintStep {
-    DataFlow::Node pred;
-
-    ClosurePromiseTaintStep() {
+  private class ClosurePromiseTaintStep extends TaintTracking::SharedTaintStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       // static methods in goog.Promise
       exists(DataFlow::CallNode call, string name |
         call = Closure::moduleImport("goog.Promise." + name).getACall() and
-        this = call and
+        succ = call and
         pred = call.getAnArgument()
       |
         name = "all" or
@@ -578,11 +655,81 @@ private module ClosurePromise {
       // promise created through goog.promise.withResolver()
       exists(DataFlow::CallNode resolver |
         resolver = Closure::moduleImport("goog.Promise.withResolver").getACall() and
-        this = resolver.getAPropertyRead("promise") and
+        succ = resolver.getAPropertyRead("promise") and
         pred = resolver.getAMethodCall("resolve").getArgument(0)
       )
     }
+  }
+}
 
-    override predicate step(DataFlow::Node src, DataFlow::Node dst) { src = pred and dst = this }
+private module DynamicImportSteps {
+  /**
+   * A step from an export value to its uses via dynamic imports.
+   *
+   * For example:
+   * ```js
+   * // foo.js
+   * export default Foo
+   *
+   * // bar.js
+   * let Foo = await import('./foo');
+   * ```
+   */
+  class DynamicImportStep extends PreCallGraphStep {
+    override predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
+      exists(DynamicImportExpr imprt |
+        pred = imprt.getImportedModule().getAnExportedValue("default") and
+        succ = imprt.flow() and
+        prop = Promises::valueProp()
+      )
+    }
+
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      // Special-case code like `(await import(x)).Foo` to boost type tracking depth.
+      exists(
+        DynamicImportExpr imprt, string name, DataFlow::Node mid, DataFlow::SourceNode awaited
+      |
+        pred = imprt.getImportedModule().getAnExportedValue(name) and
+        mid.getALocalSource() = imprt.flow() and
+        PromiseFlow::loadStep(mid, awaited, Promises::valueProp()) and
+        succ = awaited.getAPropertyRead(name)
+      )
+    }
+  }
+}
+
+/**
+ * Provides classes modeling libraries implementing `promisify` functions.
+ * That is, functions that convert callback style functions to functions that return a promise.
+ */
+module Promisify {
+  /**
+   * Gets a call to a `promisifyAll` function.
+   * E.g. `require("bluebird").promisifyAll(...)`.
+   */
+  class PromisifyAllCall extends DataFlow::CallNode {
+    PromisifyAllCall() {
+      this =
+        [
+          DataFlow::moduleMember("bluebird", "promisifyAll"),
+          DataFlow::moduleImport(["util-promisifyall", "pify"])
+        ].getACall()
+    }
+  }
+
+  /**
+   * Gets a call to a `promisify` function.
+   * E.g. `require("util").promisify(...)`.
+   */
+  class PromisifyCall extends DataFlow::CallNode {
+    PromisifyCall() {
+      this = DataFlow::moduleImport(["util", "bluebird"]).getAMemberCall("promisify")
+      or
+      this = DataFlow::moduleImport(["pify", "util.promisify"]).getACall()
+      or
+      this = DataFlow::moduleImport("thenify").getACall()
+      or
+      this = DataFlow::moduleMember("thenify", "withCallback").getACall()
+    }
   }
 }

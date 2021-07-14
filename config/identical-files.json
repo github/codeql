@@ -5,6 +5,7 @@
     "java/ql/src/semmle/code/java/dataflow/internal/DataFlowImpl3.qll",
     "java/ql/src/semmle/code/java/dataflow/internal/DataFlowImpl4.qll",
     "java/ql/src/semmle/code/java/dataflow/internal/DataFlowImpl5.qll",
+    "java/ql/src/semmle/code/java/dataflow/internal/DataFlowImpl6.qll",
     "cpp/ql/src/semmle/code/cpp/dataflow/internal/DataFlowImpl.qll",
     "cpp/ql/src/semmle/code/cpp/dataflow/internal/DataFlowImpl2.qll",
     "cpp/ql/src/semmle/code/cpp/dataflow/internal/DataFlowImpl3.qll",
@@ -19,21 +20,24 @@
     "csharp/ql/src/semmle/code/csharp/dataflow/internal/DataFlowImpl3.qll",
     "csharp/ql/src/semmle/code/csharp/dataflow/internal/DataFlowImpl4.qll",
     "csharp/ql/src/semmle/code/csharp/dataflow/internal/DataFlowImpl5.qll",
-    "python/ql/src/experimental/dataflow/internal/DataFlowImpl.qll",
-    "python/ql/src/experimental/dataflow/internal/DataFlowImpl2.qll"
+    "python/ql/src/semmle/python/dataflow/new/internal/DataFlowImpl.qll",
+    "python/ql/src/semmle/python/dataflow/new/internal/DataFlowImpl2.qll",
+    "python/ql/src/semmle/python/dataflow/new/internal/DataFlowImpl3.qll",
+    "python/ql/src/semmle/python/dataflow/new/internal/DataFlowImpl4.qll"
   ],
   "DataFlow Java/C++/C#/Python Common": [
     "java/ql/src/semmle/code/java/dataflow/internal/DataFlowImplCommon.qll",
     "cpp/ql/src/semmle/code/cpp/dataflow/internal/DataFlowImplCommon.qll",
     "cpp/ql/src/semmle/code/cpp/ir/dataflow/internal/DataFlowImplCommon.qll",
     "csharp/ql/src/semmle/code/csharp/dataflow/internal/DataFlowImplCommon.qll",
-    "python/ql/src/experimental/dataflow/internal/DataFlowImplCommon.qll"
+    "python/ql/src/semmle/python/dataflow/new/internal/DataFlowImplCommon.qll"
   ],
   "TaintTracking::Configuration Java/C++/C#/Python": [
     "cpp/ql/src/semmle/code/cpp/dataflow/internal/tainttracking1/TaintTrackingImpl.qll",
     "cpp/ql/src/semmle/code/cpp/dataflow/internal/tainttracking2/TaintTrackingImpl.qll",
     "cpp/ql/src/semmle/code/cpp/ir/dataflow/internal/tainttracking1/TaintTrackingImpl.qll",
     "cpp/ql/src/semmle/code/cpp/ir/dataflow/internal/tainttracking2/TaintTrackingImpl.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/dataflow/internal/tainttracking3/TaintTrackingImpl.qll",
     "csharp/ql/src/semmle/code/csharp/dataflow/internal/tainttracking1/TaintTrackingImpl.qll",
     "csharp/ql/src/semmle/code/csharp/dataflow/internal/tainttracking2/TaintTrackingImpl.qll",
     "csharp/ql/src/semmle/code/csharp/dataflow/internal/tainttracking3/TaintTrackingImpl.qll",
@@ -41,14 +45,41 @@
     "csharp/ql/src/semmle/code/csharp/dataflow/internal/tainttracking5/TaintTrackingImpl.qll",
     "java/ql/src/semmle/code/java/dataflow/internal/tainttracking1/TaintTrackingImpl.qll",
     "java/ql/src/semmle/code/java/dataflow/internal/tainttracking2/TaintTrackingImpl.qll",
-    "python/ql/src/experimental/dataflow/internal/tainttracking1/TaintTrackingImpl.qll"
+    "python/ql/src/semmle/python/dataflow/new/internal/tainttracking1/TaintTrackingImpl.qll",
+    "python/ql/src/semmle/python/dataflow/new/internal/tainttracking2/TaintTrackingImpl.qll",
+    "python/ql/src/semmle/python/dataflow/new/internal/tainttracking3/TaintTrackingImpl.qll",
+    "python/ql/src/semmle/python/dataflow/new/internal/tainttracking4/TaintTrackingImpl.qll"
   ],
   "DataFlow Java/C++/C#/Python Consistency checks": [
     "java/ql/src/semmle/code/java/dataflow/internal/DataFlowImplConsistency.qll",
     "cpp/ql/src/semmle/code/cpp/dataflow/internal/DataFlowImplConsistency.qll",
     "cpp/ql/src/semmle/code/cpp/ir/dataflow/internal/DataFlowImplConsistency.qll",
     "csharp/ql/src/semmle/code/csharp/dataflow/internal/DataFlowImplConsistency.qll",
-    "python/ql/src/experimental/dataflow/internal/DataFlowImplConsistency.qll"
+    "python/ql/src/semmle/python/dataflow/new/internal/DataFlowImplConsistency.qll"
+  ],
+  "DataFlow Java/C# Flow Summaries": [
+    "java/ql/src/semmle/code/java/dataflow/internal/FlowSummaryImpl.qll",
+    "csharp/ql/src/semmle/code/csharp/dataflow/internal/FlowSummaryImpl.qll"
+  ],
+  "SsaReadPosition Java/C#": [
+    "java/ql/src/semmle/code/java/dataflow/internal/rangeanalysis/SsaReadPositionCommon.qll",
+    "csharp/ql/src/semmle/code/csharp/dataflow/internal/rangeanalysis/SsaReadPositionCommon.qll"
+  ],
+  "Sign Java/C#": [
+    "java/ql/src/semmle/code/java/dataflow/internal/rangeanalysis/Sign.qll",
+    "csharp/ql/src/semmle/code/csharp/dataflow/internal/rangeanalysis/Sign.qll"
+  ],
+  "SignAnalysis Java/C#": [
+    "java/ql/src/semmle/code/java/dataflow/internal/rangeanalysis/SignAnalysisCommon.qll",
+    "csharp/ql/src/semmle/code/csharp/dataflow/internal/rangeanalysis/SignAnalysisCommon.qll"
+  ],
+  "Bound Java/C#": [
+    "java/ql/src/semmle/code/java/dataflow/Bound.qll",
+    "csharp/ql/src/semmle/code/csharp/dataflow/Bound.qll"
+  ],
+  "ModulusAnalysis Java/C#": [
+    "java/ql/src/semmle/code/java/dataflow/ModulusAnalysis.qll",
+    "csharp/ql/src/semmle/code/csharp/dataflow/ModulusAnalysis.qll"
   ],
   "C++ SubBasicBlocks": [
     "cpp/ql/src/semmle/code/cpp/controlflow/SubBasicBlocks.qll",
@@ -87,7 +118,7 @@
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/Operand.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/Operand.qll",
     "csharp/ql/src/experimental/ir/implementation/raw/Operand.qll",
-    "csharp/ql/src/experimental/ir/implementation/unaliased_ssa/Operand.qll" 
+    "csharp/ql/src/experimental/ir/implementation/unaliased_ssa/Operand.qll"
   ],
   "IR IRType": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/IRType.qll",
@@ -109,11 +140,11 @@
     "cpp/ql/src/semmle/code/cpp/ir/implementation/internal/OperandTag.qll",
     "csharp/ql/src/experimental/ir/implementation/internal/OperandTag.qll"
   ],
-  "IR TInstruction":[
+  "IR TInstruction": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/internal/TInstruction.qll",
     "csharp/ql/src/experimental/ir/implementation/internal/TInstruction.qll"
   ],
-  "IR TIRVariable":[
+  "IR TIRVariable": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/internal/TIRVariable.qll",
     "csharp/ql/src/experimental/ir/implementation/internal/TIRVariable.qll"
   ],
@@ -218,6 +249,10 @@
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/AliasAnalysis.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/internal/AliasAnalysis.qll",
     "csharp/ql/src/experimental/ir/implementation/unaliased_ssa/internal/AliasAnalysis.qll"
+  ],
+  "SSA PrintAliasAnalysis": [
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/PrintAliasAnalysis.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/internal/PrintAliasAnalysis.qll"
   ],
   "C++ SSA AliasAnalysisImports": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/AliasAnalysisImports.qll",
@@ -325,11 +360,105 @@
     "csharp/ql/src/experimental/ir/implementation/raw/gvn/internal/ValueNumberingImports.qll",
     "csharp/ql/src/experimental/ir/implementation/unaliased_ssa/gvn/internal/ValueNumberingImports.qll"
   ],
+  "C# ControlFlowReachability": [
+    "csharp/ql/src/semmle/code/csharp/dataflow/internal/ControlFlowReachability.qll",
+    "csharp/ql/src/semmle/code/csharp/dataflow/internal/rangeanalysis/ControlFlowReachability.qll"
+  ],
+  "Inline Test Expectations": [
+    "cpp/ql/test/TestUtilities/InlineExpectationsTest.qll",
+    "java/ql/test/TestUtilities/InlineExpectationsTest.qll",
+    "python/ql/test/TestUtilities/InlineExpectationsTest.qll"
+  ],
+  "C++ ExternalAPIs": [
+    "cpp/ql/src/Security/CWE/CWE-020/ExternalAPIs.qll",
+    "cpp/ql/src/Security/CWE/CWE-020/ir/ExternalAPIs.qll"
+  ],
+  "C++ SafeExternalAPIFunction": [
+    "cpp/ql/src/Security/CWE/CWE-020/SafeExternalAPIFunction.qll",
+    "cpp/ql/src/Security/CWE/CWE-020/ir/SafeExternalAPIFunction.qll"
+  ],
   "XML": [
     "cpp/ql/src/semmle/code/cpp/XML.qll",
     "csharp/ql/src/semmle/code/csharp/XML.qll",
     "java/ql/src/semmle/code/xml/XML.qll",
     "javascript/ql/src/semmle/javascript/XML.qll",
     "python/ql/src/semmle/python/xml/XML.qll"
+  ],
+  "DuplicationProblems.inc.qhelp": [
+    "cpp/ql/src/Metrics/Files/DuplicationProblems.inc.qhelp",
+    "javascript/ql/src/Metrics/DuplicationProblems.inc.qhelp",
+    "python/ql/src/Metrics/DuplicationProblems.inc.qhelp"
+  ],
+  "CommentedOutCodeQuery.inc.qhelp": [
+    "cpp/ql/src/Documentation/CommentedOutCodeQuery.inc.qhelp",
+    "python/ql/src/Lexical/CommentedOutCodeQuery.inc.qhelp",
+    "csharp/ql/src/Bad Practices/Comments/CommentedOutCodeQuery.inc.qhelp",
+    "java/ql/src/Violations of Best Practice/Comments/CommentedOutCodeQuery.inc.qhelp",
+    "javascript/ql/src/Comments/CommentedOutCodeQuery.inc.qhelp"
+  ],
+  "FLinesOfCodeReferences.inc.qhelp": [
+    "java/ql/src/Metrics/Files/FLinesOfCodeReferences.inc.qhelp",
+    "javascript/ql/src/Metrics/FLinesOfCodeReferences.inc.qhelp"
+  ],
+  "FCommentRatioCommon.inc.qhelp": [
+    "java/ql/src/Metrics/Files/FCommentRatioCommon.inc.qhelp",
+    "javascript/ql/src/Metrics/FCommentRatioCommon.inc.qhelp"
+  ],
+  "FLinesOfCodeOverview.inc.qhelp": [
+    "java/ql/src/Metrics/Files/FLinesOfCodeOverview.inc.qhelp",
+    "javascript/ql/src/Metrics/FLinesOfCodeOverview.inc.qhelp"
+  ],
+  "CommentedOutCodeMetricOverview.inc.qhelp": [
+    "cpp/ql/src/Metrics/Files/CommentedOutCodeMetricOverview.inc.qhelp",
+    "csharp/ql/src/Metrics/Files/CommentedOutCodeMetricOverview.inc.qhelp",
+    "java/ql/src/Metrics/Files/CommentedOutCodeMetricOverview.inc.qhelp",
+    "javascript/ql/src/Comments/CommentedOutCodeMetricOverview.inc.qhelp",
+    "python/ql/src/Lexical/CommentedOutCodeMetricOverview.inc.qhelp"
+  ],
+  "FLinesOfDuplicatedCodeCommon.inc.qhelp": [
+    "cpp/ql/src/Metrics/Files/FLinesOfDuplicatedCodeCommon.inc.qhelp",
+    "java/ql/src/Metrics/Files/FLinesOfDuplicatedCodeCommon.inc.qhelp",
+    "javascript/ql/src/Metrics/FLinesOfDuplicatedCodeCommon.inc.qhelp",
+    "python/ql/src/Metrics/FLinesOfDuplicatedCodeCommon.inc.qhelp"
+  ],
+  "CommentedOutCodeReferences.inc.qhelp": [
+    "cpp/ql/src/Metrics/Files/CommentedOutCodeReferences.inc.qhelp",
+    "csharp/ql/src/Metrics/Files/CommentedOutCodeReferences.inc.qhelp",
+    "java/ql/src/Metrics/Files/CommentedOutCodeReferences.inc.qhelp",
+    "javascript/ql/src/Comments/CommentedOutCodeReferences.inc.qhelp",
+    "python/ql/src/Lexical/CommentedOutCodeReferences.inc.qhelp"
+  ],
+  "IDE Contextual Queries": [
+    "cpp/ql/src/IDEContextual.qll",
+    "csharp/ql/src/IDEContextual.qll",
+    "java/ql/src/IDEContextual.qll",
+    "javascript/ql/src/IDEContextual.qll",
+    "python/ql/src/analysis/IDEContextual.qll"
+  ],
+  "SSA C#": [
+    "csharp/ql/src/semmle/code/csharp/dataflow/internal/SsaImplCommon.qll",
+    "csharp/ql/src/semmle/code/csharp/controlflow/internal/pressa/SsaImplCommon.qll",
+    "csharp/ql/src/semmle/code/csharp/dataflow/internal/basessa/SsaImplCommon.qll",
+    "csharp/ql/src/semmle/code/cil/internal/SsaImplCommon.qll"
+  ],
+  "CryptoAlgorithms Python/JS": [
+    "javascript/ql/src/semmle/javascript/security/CryptoAlgorithms.qll",
+    "python/ql/src/semmle/python/concepts/CryptoAlgorithms.qll"
+  ],
+  "SensitiveDataHeuristics Python/JS": [
+    "javascript/ql/src/semmle/javascript/security/internal/SensitiveDataHeuristics.qll",
+    "python/ql/src/semmle/python/security/internal/SensitiveDataHeuristics.qll"
+  ],
+  "ReDoS Util Python/JS": [
+    "javascript/ql/src/semmle/javascript/security/performance/ReDoSUtil.qll",
+    "python/ql/src/semmle/python/security/performance/ReDoSUtil.qll"
+  ],
+  "ReDoS Exponential Python/JS": [
+    "javascript/ql/src/semmle/javascript/security/performance/ExponentialBackTracking.qll",
+    "python/ql/src/semmle/python/security/performance/ExponentialBackTracking.qll"
+  ],
+  "ReDoS Polynomial Python/JS": [
+    "javascript/ql/src/semmle/javascript/security/performance/SuperlinearBackTracking.qll",
+    "python/ql/src/semmle/python/security/performance/SuperlinearBackTracking.qll"
   ]
 }

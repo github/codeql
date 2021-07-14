@@ -1,2 +1,0 @@
-| tst.js:102:20:102:29 | this.dataA | tst.js:100:18:100:19 | 42 | tst.js:102:20:102:29 | this.dataA |
-| tst.js:102:20:102:29 | this.dataA | tst.js:102:20:102:23 | this | tst.js:102:20:102:29 | this.dataA |

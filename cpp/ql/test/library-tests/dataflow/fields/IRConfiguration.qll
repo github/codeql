@@ -1,8 +1,8 @@
 private import semmle.code.cpp.ir.dataflow.DataFlow
 private import DataFlow
 
-class Conf extends Configuration {
-  Conf() { this = "FieldFlowConf" }
+class IRConf extends Configuration {
+  IRConf() { this = "IRFieldFlowConf" }
 
   override predicate isSource(Node src) {
     src.asExpr() instanceof NewExpr

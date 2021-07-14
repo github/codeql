@@ -5,7 +5,7 @@
 /**
  * Provides a QL encoding of the suggested replacements for unsupported JDK-internal APIs listed at:
  *
- * http://hg.openjdk.java.net/jdk9/jdk9/langtools/file/6ba2130e87bd/src/jdk.jdeps/share/classes/com/sun/tools/jdeps/resources/jdkinternals.properties
+ * https://hg.openjdk.java.net/jdk9/jdk9/langtools/file/6ba2130e87bd/src/jdk.jdeps/share/classes/com/sun/tools/jdeps/resources/jdkinternals.properties
  */
 predicate jdkInternalReplacement(string old, string new) {
   exists(string r, int eqIdx | jdkInternalReplacement(r) and eqIdx = r.indexOf("=") |
@@ -33,10 +33,10 @@ private predicate jdkInternalReplacement(string r) {
   r = "sun.awt.CausedFocusEvent=Use java.awt.event.FocusEvent::getCause @since 9" or
   r = "sun.font.FontUtilities=See java.awt.Font.textRequiresLayout @since 9" or
   r = "sun.reflect.Reflection=Use java.lang.StackWalker @since 9" or
-  r = "sun.reflect.ReflectionFactory=See http://openjdk.java.net/jeps/260" or
-  r = "sun.misc.Unsafe=See http://openjdk.java.net/jeps/260" or
-  r = "sun.misc.Signal=See http://openjdk.java.net/jeps/260" or
-  r = "sun.misc.SignalHandler=See http://openjdk.java.net/jeps/260" or
+  r = "sun.reflect.ReflectionFactory=See https://openjdk.java.net/jeps/260" or
+  r = "sun.misc.Unsafe=See https://openjdk.java.net/jeps/260" or
+  r = "sun.misc.Signal=See https://openjdk.java.net/jeps/260" or
+  r = "sun.misc.SignalHandler=See https://openjdk.java.net/jeps/260" or
   r = "sun.security.action=Use java.security.PrivilegedAction @since 1.1" or
   r = "sun.security.krb5=Use com.sun.security.jgss" or
   r =
@@ -58,6 +58,6 @@ private predicate jdkInternalReplacement(string r) {
   r =
     "sun.misc.Cleaner=Use java.lang.ref.PhantomReference @since 1.2 or java.lang.ref.Cleaner @since 9" or
   r = "sun.misc.Service=Use java.util.ServiceLoader @since 1.6" or
-  r = "sun.misc=Removed. See http://openjdk.java.net/jeps/260" or
-  r = "sun.reflect=Removed. See http://openjdk.java.net/jeps/260"
+  r = "sun.misc=Removed. See https://openjdk.java.net/jeps/260" or
+  r = "sun.reflect=Removed. See https://openjdk.java.net/jeps/260"
 }

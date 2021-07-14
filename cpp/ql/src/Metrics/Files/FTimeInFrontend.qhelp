@@ -15,7 +15,7 @@
 <references>
 
 <li>
-  <a href="http://msdn.microsoft.com/en-us/library/36k2cdd4%28v=VS.80%29.aspx">The #include Directive</a>
+  MSDN Library: <a href="https://docs.microsoft.com/en-us/cpp/preprocessor/hash-include-directive-c-cpp">#include directive (C/C++)</a>
 </li>
 <li>
   <a href="http://gcc.gnu.org/onlinedocs/cpp/Include-Operation.html#Include-Operation">Include operation</a>

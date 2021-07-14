@@ -1,0 +1,14 @@
+| module | hash_bang/module.py:0:0:0:0 | Module module |
+| module | name_main/module.py:0:0:0:0 | Module module |
+| package | hash_bang/package:0:0:0:0 | Package package |
+| package | name_main/package:0:0:0:0 | Package package |
+| package | no_py_extension/package:0:0:0:0 | Package package |
+| package.__init__ | hash_bang/package/__init__.py:0:0:0:0 | Module package.__init__ |
+| package.__init__ | name_main/package/__init__.py:0:0:0:0 | Module package.__init__ |
+| package.__init__ | no_py_extension/package/__init__.py:0:0:0:0 | Module package.__init__ |
+| package.package_main | hash_bang/package/package_main.py:0:0:0:0 | Module package.package_main |
+| package.package_main | name_main/package/package_main.py:0:0:0:0 | Module package.package_main |
+| package.package_main | no_py_extension/package/package_main.py:0:0:0:0 | Module package.package_main |
+| package.package_module | hash_bang/package/package_module.py:0:0:0:0 | Module package.package_module |
+| package.package_module | name_main/package/package_module.py:0:0:0:0 | Module package.package_module |
+| package.package_module | no_py_extension/package/package_module.py:0:0:0:0 | Module package.package_module |

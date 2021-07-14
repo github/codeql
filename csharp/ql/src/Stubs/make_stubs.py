@@ -11,6 +11,7 @@
 import sys
 import os
 import subprocess
+import helpers
 
 print('Script to generate stub.cs files for C# qltest projects')
 
@@ -43,14 +44,9 @@ if not foundCS:
     print("Test directory does not contain .cs files. Please specify a working qltest directory.")
     exit(1)
 
-cmd = ['odasa', 'selfTest']
-print('Running ' + ' '.join(cmd))
-if subprocess.check_call(cmd):
-    print("odasa selfTest failed. Ensure odasa is on your current path.")
-    exit(1)
-
 csharpQueries = os.path.abspath(os.path.dirname(sys.argv[0]))
 outputFile = os.path.join(testDir, 'stubs.cs')
+bqrsFile = os.path.join(testDir, 'stubs.bqrs')
 
 print("Stubbing qltest in", testDir)
 
@@ -58,56 +54,42 @@ if os.path.isfile(outputFile):
     os.remove(outputFile)  # It would interfere with the test.
     print("Removed previous", outputFile)
 
-cmd = ['odasa', 'qltest', '--optimize', '--leave-temp-files', testDir]
-print('Running ' + ' '.join(cmd))
-if subprocess.check_call(cmd):
-    print("qltest failed. Please fix up the test before proceeding.")
-    exit(1)
+helpers.run_cmd(['codeql', 'test', 'run', '--keep-databases', testDir],
+                "codeql test failed. Please fix up the test before proceeding.")
 
-dbDir = os.path.join(testDir, os.path.basename(testDir) + ".testproj", "db-csharp")
+dbDir = os.path.join(testDir, os.path.basename(testDir) + ".testproj")
 
 if not os.path.isdir(dbDir):
-    print("Expected database directory " + dbDir + " not found. Please contact Semmle.")
+    print("Expected database directory " + dbDir + " not found.")
     exit(1)
 
-cmd = ['odasa', 'runQuery', '--query', os.path.join(csharpQueries, 'MinimalStubsFromSource.ql'), '--db', dbDir, '--output-file', outputFile]
+helpers.run_cmd(['codeql', 'query', 'run', os.path.join(
+    csharpQueries, 'MinimalStubsFromSource.ql'), '--database', dbDir, '--output', bqrsFile], 'Failed to run the query to generate output file.')
+
+helpers.run_cmd(['codeql', 'bqrs', 'decode', bqrsFile, '--output',
+                 outputFile, '--format=text', '--no-titles'], 'Failed to run the query to generate output file.')
+
+helpers.trim_output_file(outputFile)
+
+if os.path.isfile(bqrsFile):
+    os.remove(bqrsFile)  # Cleanup
+    print("Removed temp BQRS file", bqrsFile)
+
+cmd = ['codeql', 'test', 'run', testDir]
 print('Running ' + ' '.join(cmd))
 if subprocess.check_call(cmd):
-    print('Failed to run the query to generate output file. Please contact Semmle.')
+    print('\nTest failed. You may need to fix up', outputFile)
+    print('It may help to view', outputFile, ' in Visual Studio')
+    print("Next steps:")
+    print('1. Look at the compilation errors, and fix up',
+          outputFile, 'so that the test compiles')
+    print('2. Re-run codeql test run "' + testDir + '"')
+    print('3. git add "' + outputFile + '"')
     exit(1)
-
-# Remove the leading " and trailing " bytes from the file
-len = os.stat(outputFile).st_size
-f = open(outputFile, "rb")
-try:
-    quote = f.read(1)
-    if quote != b'"':
-        print("Unexpected character in file. Please contact Semmle.")
-    contents = f.read(len-3)
-    quote = f.read(1)
-    if quote != b'"':
-        print("Unexpected end character. Please contact Semmle.", quote)
-finally:
-    f.close()
-
-f = open(outputFile, "wb")
-f.write(contents)
-f.close()
-
-cmd = ['odasa', 'qltest', '--optimize', testDir]
-print('Running ' + ' '.join(cmd))
-if subprocess.check_call(cmd):
-  print('\nTest failed. You may need to fix up', outputFile)
-  print('It may help to view', outputFile, ' in Visual Studio')
-  print("Next steps:")
-  print('1. Look at the compilation errors, and fix up', outputFile, 'so that the test compiles')
-  print('2. Re-run odasa qltest --optimize "' + testDir + '"')
-  print('3. git add "' + outputFile + '"')
-  exit(1)
 
 print("\nStub generation successful! Next steps:")
 print('1. Edit "semmle-extractor-options" in the .cs files to remove unused references')
-print('2. Re-run odasa qltest --optimize "' + testDir + '"')
+print('2. Re-run codeql test run "' + testDir + '"')
 print('3. git add "' + outputFile + '"')
 print('4. Commit your changes.')
 

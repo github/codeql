@@ -40,7 +40,7 @@
 | flow.js:86:23:86:70 | new Pro ... ource)) |
 | flow.js:89:3:89:27 | ("foo", ...  => {}) |
 | flow.js:91:21:91:68 | new Pro ... ource)) |
-| flow.js:100:28:100:75 | new Pro ... ource)) |
+| flow.js:100:34:100:81 | new Pro ... ource)) |
 | flow.js:103:2:103:48 | new Pro ... "BLA")) |
 | flow.js:103:2:103:76 | new Pro ... ource}) |
 | flow.js:105:2:105:48 | new Pro ... "BLA")) |
@@ -79,3 +79,9 @@
 | promises.js:71:5:71:27 | Promise ... source) |
 | promises.js:72:5:72:41 | new Pro ... ource)) |
 | promises.js:79:19:79:41 | Promise ... source) |
+| promises.js:88:17:90:4 | Q.Promi ... );\\n  }) |
+| promises.js:112:17:112:62 | new RSV ... ct) {}) |
+| promises.js:124:19:124:30 | when(source) |
+| promises.js:130:14:130:69 | new Pro ... s'); }) |
+| promises.js:135:3:137:4 | new Pro ... );\\n  }) |
+| promises.js:148:10:148:49 | new Pro ... ect){}) |

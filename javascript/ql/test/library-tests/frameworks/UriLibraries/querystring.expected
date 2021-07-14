@@ -1,4 +1,0 @@
-| querystring.js:3:9:3:26 | querystring.escape |
-| querystring.js:5:5:5:21 | querystring.parse |
-| querystring.js:7:5:7:25 | queryst ... ringify |
-| querystring.js:9:5:9:24 | querystring.unescape |

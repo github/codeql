@@ -13,7 +13,7 @@ after. Otherwise, if the value is negative then the program will have failed
 before performing the test.
 </p>
 
-<include src="dataFlowWarning.qhelp" />
+<include src="dataFlowWarning.inc.qhelp" />
 </overview>
 
 <recommendation>

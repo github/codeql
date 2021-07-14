@@ -238,3 +238,15 @@
       },
     });
 })
+
+(function () {
+    import jwt from "jsonwebtoken";
+
+    var privateKey = "myHardCodedPrivateKey";
+    var token = jwt.sign({ foo: 'bar' }, privateKey, { algorithm: 'RS256'});
+
+    var publicKey = "myHardCodedPublicKey";
+    jwt.verify(token, publicKey, function(err, decoded) {
+        console.log(decoded);
+    });
+})();

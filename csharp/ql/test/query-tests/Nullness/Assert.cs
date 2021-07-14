@@ -39,7 +39,7 @@ class AssertTests
         Console.WriteLine(s.Length); // GOOD
 
         s = b ? null : "";
-        Assert.IsFalse(s == null || b);
+        Assert.IsFalse(s == null || !b);
         Console.WriteLine(s.Length); // GOOD
 
         s = b ? null : "";
@@ -47,9 +47,7 @@ class AssertTests
         Console.WriteLine(s.Length); // BAD (always)
 
         s = b ? null : "";
-        Assert.IsFalse(s != null || b);
+        Assert.IsFalse(s != null || !b);
         Console.WriteLine(s.Length); // BAD (always)
     }
 }
-
-// semmle-extractor-options: ${testdir}/../../resources/stubs/Microsoft.VisualStudio.TestTools.UnitTesting.cs

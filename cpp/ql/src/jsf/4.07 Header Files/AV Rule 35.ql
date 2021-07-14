@@ -4,7 +4,7 @@
  *              the file from being included twice). This prevents errors and
  *              inefficiencies caused by repeated inclusion.
  * @kind problem
- * @problem.severity warning
+ * @problem.severity recommendation
  * @precision high
  * @id cpp/missing-header-guard
  * @tags efficiency

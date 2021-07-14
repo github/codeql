@@ -3,6 +3,7 @@
  * @description Tracks values from an 'authKey' property into a postMessage call with unrestricted origin,
  *              indicating a leak of sensitive information.
  * @kind path-problem
+ * @problem.severity warning
  * @tags security
  * @id js/examples/information-disclosure
  */

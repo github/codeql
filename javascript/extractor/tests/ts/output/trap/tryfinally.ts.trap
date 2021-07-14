@@ -171,11 +171,11 @@ stmts(#20059,17,#20001,0,"functio ... ;\n  }\n}")
 #20060=@"loc,{#10000},1,1,7,1"
 locations_default(#20060,#10000,1,1,7,1)
 hasLocation(#20059,#20060)
-stmtContainers(#20059,#20001)
+stmt_containers(#20059,#20001)
 #20061=*
 exprs(#20061,78,#20059,-1,"foo")
 hasLocation(#20061,#20019)
-exprContainers(#20061,#20059)
+expr_containers(#20061,#20059)
 literals("foo","foo",#20061)
 decl(#20061,#20058)
 #20062=*
@@ -186,68 +186,68 @@ scopenesting(#20062,#20000)
 variables(#20063,"x",#20062)
 #20064=@"var;{arguments};{#20062}"
 variables(#20064,"arguments",#20062)
-isArgumentsObject(#20064)
+is_arguments_object(#20064)
 #20065=*
 stmts(#20065,1,#20059,-2,"{\n  var ... ;\n  }\n}")
 #20066=@"loc,{#10000},1,16,7,1"
 locations_default(#20066,#10000,1,16,7,1)
 hasLocation(#20065,#20066)
-stmtContainers(#20065,#20059)
+stmt_containers(#20065,#20059)
 #20067=*
 stmts(#20067,18,#20065,0,"var x = 5;")
 #20068=@"loc,{#10000},2,3,2,12"
 locations_default(#20068,#10000,2,3,2,12)
 hasLocation(#20067,#20068)
-stmtContainers(#20067,#20059)
+stmt_containers(#20067,#20059)
 #20069=*
 exprs(#20069,64,#20067,0,"x = 5")
 #20070=@"loc,{#10000},2,7,2,11"
 locations_default(#20070,#10000,2,7,2,11)
 hasLocation(#20069,#20070)
-enclosingStmt(#20069,#20067)
-exprContainers(#20069,#20059)
+enclosing_stmt(#20069,#20067)
+expr_containers(#20069,#20059)
 #20071=*
 exprs(#20071,78,#20069,0,"x")
 hasLocation(#20071,#20029)
-enclosingStmt(#20071,#20067)
-exprContainers(#20071,#20059)
+enclosing_stmt(#20071,#20067)
+expr_containers(#20071,#20059)
 literals("x","x",#20071)
 decl(#20071,#20063)
 #20072=*
 exprs(#20072,3,#20069,1,"5")
 hasLocation(#20072,#20033)
-enclosingStmt(#20072,#20067)
-exprContainers(#20072,#20059)
+enclosing_stmt(#20072,#20067)
+expr_containers(#20072,#20059)
 literals("5","5",#20072)
 #20073=*
 stmts(#20073,11,#20065,1,"try {\n  ...  x;\n  }")
 #20074=@"loc,{#10000},3,3,6,3"
 locations_default(#20074,#10000,3,3,6,3)
 hasLocation(#20073,#20074)
-stmtContainers(#20073,#20059)
+stmt_containers(#20073,#20059)
 #20075=*
 stmts(#20075,1,#20073,0,"{\n  }")
 #20076=@"loc,{#10000},3,7,4,3"
 locations_default(#20076,#10000,3,7,4,3)
 hasLocation(#20075,#20076)
-stmtContainers(#20075,#20059)
+stmt_containers(#20075,#20059)
 #20077=*
 stmts(#20077,1,#20073,-1,"{\n    return x;\n  }")
 #20078=@"loc,{#10000},4,13,6,3"
 locations_default(#20078,#10000,4,13,6,3)
 hasLocation(#20077,#20078)
-stmtContainers(#20077,#20059)
+stmt_containers(#20077,#20059)
 #20079=*
 stmts(#20079,9,#20077,0,"return x;")
 #20080=@"loc,{#10000},5,5,5,13"
 locations_default(#20080,#10000,5,5,5,13)
 hasLocation(#20079,#20080)
-stmtContainers(#20079,#20059)
+stmt_containers(#20079,#20059)
 #20081=*
 exprs(#20081,79,#20079,0,"x")
 hasLocation(#20081,#20049)
-enclosingStmt(#20081,#20079)
-exprContainers(#20081,#20059)
+enclosing_stmt(#20081,#20079)
+expr_containers(#20081,#20059)
 literals("x","x",#20081)
 bind(#20081,#20063)
 #20082=*

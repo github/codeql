@@ -10,7 +10,7 @@ int test1() {
   for (int i = 0; i < 10; i++) {
     x = 0;
   }
-  sink(x); // GOOD (x always overwritten)
+  sink(x); // $ SPURIOUS: ir
 }
 
 int test2(int iterations) {
@@ -18,7 +18,7 @@ int test2(int iterations) {
   for (int i = 0; i < iterations; i++) {
     x = 0;
   }
-  sink(x); // BAD
+  sink(x); // $ ast,ir
 }
 
 int test3() {
@@ -26,7 +26,7 @@ int test3() {
   for (int i = 0; i < 10; i++) {
     x = source();
   }
-  sink(x); // BAD
+  sink(x); // $ ast,ir
 }
 
 int test4() {
@@ -36,7 +36,7 @@ int test4() {
       break;
     x = 0;
   }
-  sink(x); // BAD
+  sink(x); // $ ast,ir
 }
 
 int test5() {
@@ -46,7 +46,7 @@ int test5() {
       continue;
     x = 0;
   }
-  sink(x); // BAD
+  sink(x); // $ ast,ir
 }
 
 int test6() {
@@ -54,7 +54,7 @@ int test6() {
   int x = source();
   for (int i = 0; i < 10 && (y = 1); i++) {
   }
-  sink(x); // BAD
+  sink(x); // $ ast,ir
 }
 
 int test7() {
@@ -63,7 +63,7 @@ int test7() {
   for (int i = 0; i < 10 && (y = 1); i++) {
     x = 0;
   }
-  sink(x); // GOOD
+  sink(x); // $ SPURIOUS: ir
 }
 
 int test8() {
@@ -75,7 +75,7 @@ int test8() {
   // jump out of the condition, not just the last one.
   for (int i = 0; i < 10 && (x = 1); i++) {
   }
-  sink(x); // GOOD [false positive]
+  sink(x); // $ SPURIOUS: ast,ir
 }
 
 int test9() {
@@ -83,14 +83,14 @@ int test9() {
   int x = source();
   for (int i = 0; (y = 1) && i < 10; i++) {
   }
-  sink(x); // BAD
+  sink(x); // $ ast,ir
 }
 
 int test10() {
   int x = source();
   for (int i = 0; (x = 1) && i < 10; i++) {
   }
-  sink(x); // GOOD
+  sink(x); // no flow
 }
 
 int test10(int b, int d) {
@@ -102,5 +102,5 @@ int test10(int b, int d) {
     x = 0;
     L:
   }
-  sink(x); // BAD
+  sink(x); // $ ir MISSING: ast
 }

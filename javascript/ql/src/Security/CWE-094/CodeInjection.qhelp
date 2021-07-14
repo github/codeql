@@ -30,6 +30,21 @@ for example, steal cookies containing session information.
 </p>
 
 <sample src="examples/CodeInjection.js" />
+
+<p>
+The following example shows a Pug template being constructed from user input, allowing attackers to run
+arbitrary code via a payload such as <code>#{global.process.exit(1)}</code>.
+</p>
+
+<sample src="examples/ServerSideTemplateInjection.js" />
+
+<p>
+Below is an example of how to use a template engine without any risk of template injection.
+The user input is included via an interpolation expression <code>#{username}</code> whose value is provided
+as an option to the template, instead of being part of the template string itself:
+</p>
+
+<sample src="examples/ServerSideTemplateInjectionSafe.js" />
 </example>
 
 <references>
@@ -39,6 +54,10 @@ OWASP:
 </li>
 <li>
 Wikipedia: <a href="https://en.wikipedia.org/wiki/Code_injection">Code Injection</a>.
+</li>
+<li>
+PortSwigger Research Blog:
+<a href="https://portswigger.net/research/server-side-template-injection">Server-Side Template Injection</a>.
 </li>
 </references>
 </qhelp>

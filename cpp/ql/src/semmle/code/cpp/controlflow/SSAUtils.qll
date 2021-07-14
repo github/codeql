@@ -73,8 +73,20 @@ private predicate addressTakenVariable(StackVariable var) {
   )
 }
 
+/**
+ * Holds if `v` is a stack-allocated reference-typed local variable. We don't
+ * build SSA for such variables since they are likely to change values even
+ * when not syntactically mentioned. For the same reason,
+ * `addressTakenVariable` is used to prevent tracking variables that may be
+ * aliased by such a reference.
+ *
+ * Reference-typed parameters are treated as if they weren't references.
+ * That's because it's in practice highly unlikely that they alias other data
+ * accessible from the function body.
+ */
 private predicate isReferenceVar(StackVariable v) {
-  v.getUnspecifiedType() instanceof ReferenceType
+  v.getUnspecifiedType() instanceof ReferenceType and
+  not v instanceof Parameter
 }
 
 /**

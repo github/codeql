@@ -2,6 +2,7 @@
 
 import csharp
 private import system.Reflection
+private import semmle.code.csharp.dataflow.ExternalFlow
 
 /** The `System` namespace. */
 class SystemNamespace extends Namespace {
@@ -19,6 +20,11 @@ class SystemClass extends Class {
 /** An unbound generic class in the `System` namespace. */
 class SystemUnboundGenericClass extends UnboundGenericClass {
   SystemUnboundGenericClass() { this.getNamespace() instanceof SystemNamespace }
+}
+
+/** An unbound generic struct in the `System` namespace. */
+class SystemUnboundGenericStruct extends UnboundGenericStruct {
+  SystemUnboundGenericStruct() { this.getNamespace() instanceof SystemNamespace }
 }
 
 /** An interface in the `System` namespace. */
@@ -195,6 +201,28 @@ class SystemInt32Struct extends IntType {
   }
 }
 
+/** Data flow for `System.Int32`. */
+private class SystemInt32FlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System;Int32;false;Parse;(System.String);;Argument[0];ReturnValue;taint",
+        "System;Int32;false;Parse;(System.String,System.IFormatProvider);;Argument[0];ReturnValue;taint",
+        "System;Int32;false;Parse;(System.String,System.Globalization.NumberStyles);;Argument[0];ReturnValue;taint",
+        "System;Int32;false;Parse;(System.String,System.Globalization.NumberStyles,System.IFormatProvider);;Argument[0];ReturnValue;taint",
+        "System;Int32;false;Parse;(System.ReadOnlySpan<System.Char>,System.Globalization.NumberStyles,System.IFormatProvider);;Element of Argument[0];ReturnValue;taint",
+        "System;Int32;false;TryParse;(System.String,System.Int32);;Argument[0];ReturnValue;taint",
+        "System;Int32;false;TryParse;(System.String,System.Int32);;Argument[0];Argument[1];taint",
+        "System;Int32;false;TryParse;(System.ReadOnlySpan<System.Char>,System.Int32);;Element of Argument[0];ReturnValue;taint",
+        "System;Int32;false;TryParse;(System.ReadOnlySpan<System.Char>,System.Int32);;Element of Argument[0];Argument[1];taint",
+        "System;Int32;false;TryParse;(System.String,System.Globalization.NumberStyles,System.IFormatProvider,System.Int32);;Argument[0];ReturnValue;taint",
+        "System;Int32;false;TryParse;(System.String,System.Globalization.NumberStyles,System.IFormatProvider,System.Int32);;Argument[0];Argument[3];taint",
+        "System;Int32;false;TryParse;(System.ReadOnlySpan<System.Char>,System.Globalization.NumberStyles,System.IFormatProvider,System.Int32);;Element of Argument[0];ReturnValue;taint",
+        "System;Int32;false;TryParse;(System.ReadOnlySpan<System.Char>,System.Globalization.NumberStyles,System.IFormatProvider,System.Int32);;Element of Argument[0];Argument[3];taint"
+      ]
+  }
+}
+
 /** The `System.InvalidCastException` class. */
 class SystemInvalidCastExceptionClass extends SystemClass {
   SystemInvalidCastExceptionClass() { this.hasName("InvalidCastException") }
@@ -212,6 +240,35 @@ class SystemLazyClass extends SystemUnboundGenericClass {
     result.getDeclaringType() = this and
     result.hasName("Value") and
     result.getType() = getTypeParameter(0)
+  }
+}
+
+/** The `System.Nullable<T>` struct. */
+class SystemNullableStruct extends SystemUnboundGenericStruct {
+  SystemNullableStruct() {
+    this.hasName("Nullable<>") and
+    this.getNumberOfTypeParameters() = 1
+  }
+
+  /** Gets the `Value` property. */
+  Property getValueProperty() {
+    result.getDeclaringType() = this and
+    result.hasName("Value") and
+    result.getType() = getTypeParameter(0)
+  }
+
+  /** Gets the `HasValue` property. */
+  Property getHasValueProperty() {
+    result.getDeclaringType() = this and
+    result.hasName("HasValue") and
+    result.getType() instanceof BoolType
+  }
+
+  /** Gets a `GetValueOrDefault()` method. */
+  Method getAGetValueOrDefaultMethod() {
+    result.getDeclaringType() = this and
+    result.hasName("GetValueOrDefault") and
+    result.getReturnType() = getTypeParameter(0)
   }
 }
 
@@ -410,6 +467,15 @@ class SystemStringClass extends StringType {
     result.getNumberOfParameters() = 1 and
     result.getReturnType() instanceof BoolType
   }
+
+  /** Gets the `IsNullOrWhiteSpace(string)` method. */
+  Method getIsNullOrWhiteSpaceMethod() {
+    result.getDeclaringType() = this and
+    result.hasName("IsNullOrWhiteSpace") and
+    result.isStatic() and
+    result.getNumberOfParameters() = 1 and
+    result.getReturnType() instanceof BoolType
+  }
 }
 
 /** A `ToString()` method. */
@@ -520,7 +586,7 @@ class IEquatableEqualsMethod extends Method {
   IEquatableEqualsMethod() {
     exists(Method m |
       m = any(SystemIEquatableTInterface i).getAConstructedGeneric().getAMethod() and
-      m.getSourceDeclaration() = any(SystemIEquatableTInterface i).getEqualsMethod()
+      m.getUnboundDeclaration() = any(SystemIEquatableTInterface i).getEqualsMethod()
     |
       this = m or getAnUltimateImplementee() = m
     )
@@ -545,16 +611,19 @@ predicate implementsEquals(ValueOrRefType t) { getInvokedEqualsMethod(t).getDecl
  * from the `object.Equals(object)` method inherited by `t`.
  */
 Method getInvokedEqualsMethod(ValueOrRefType t) {
-  result = getInheritedEqualsMethod(t) and
+  result = getInheritedEqualsMethod(t, _) and
   not exists(getInvokedIEquatableEqualsMethod(t, result))
   or
   exists(EqualsMethod eq |
     result = getInvokedIEquatableEqualsMethod(t, eq) and
-    getInheritedEqualsMethod(t) = eq
+    getInheritedEqualsMethod(t, _) = eq
   )
 }
 
-private EqualsMethod getInheritedEqualsMethod(ValueOrRefType t) { t.hasMethod(result) }
+pragma[noinline]
+private EqualsMethod getInheritedEqualsMethod(ValueOrRefType t, ValueOrRefType decl) {
+  t.hasMethod(result) and decl = result.getDeclaringType()
+}
 
 /**
  * Equals method `eq` is inherited by `t`, `t` overrides `IEquatable<T>.Equals(T)`
@@ -578,10 +647,9 @@ private EqualsMethod getInheritedEqualsMethod(ValueOrRefType t) { t.hasMethod(re
  */
 private IEquatableEqualsMethod getInvokedIEquatableEqualsMethod(ValueOrRefType t, EqualsMethod eq) {
   t.hasMethod(result) and
-  eq = getInheritedEqualsMethod(t.getBaseClass()) and
   exists(IEquatableEqualsMethod ieem |
     result = ieem.getAnOverrider*() and
-    eq.getDeclaringType() = ieem.getDeclaringType()
+    eq = getInheritedEqualsMethod(t.getBaseClass(), ieem.getDeclaringType())
   |
     not ieem.fromSource()
     or
@@ -592,8 +660,8 @@ private IEquatableEqualsMethod getInvokedIEquatableEqualsMethod(ValueOrRefType t
 /** Whether `eq` calls `ieem` */
 private predicate callsEqualsMethod(EqualsMethod eq, IEquatableEqualsMethod ieem) {
   exists(MethodCall callToDerivedEquals |
-    callToDerivedEquals.getEnclosingCallable() = eq.getSourceDeclaration() and
-    callToDerivedEquals.getTarget() = ieem.getSourceDeclaration()
+    callToDerivedEquals.getEnclosingCallable() = eq.getUnboundDeclaration() and
+    callToDerivedEquals.getTarget() = ieem.getUnboundDeclaration()
   )
 }
 
@@ -675,8 +743,8 @@ private DisposeBoolMethod getInvokedDiposeBoolMethod(ValueOrRefType t, DisposeMe
     not disp.fromSource()
     or
     exists(MethodCall callToDerivedDispose |
-      callToDerivedDispose.getEnclosingCallable() = disp.getSourceDeclaration() and
-      callToDerivedDispose.getTarget() = dbm.getSourceDeclaration()
+      callToDerivedDispose.getEnclosingCallable() = disp.getUnboundDeclaration() and
+      callToDerivedDispose.getTarget() = dbm.getUnboundDeclaration()
     )
   )
 }
@@ -694,4 +762,9 @@ class SystemGuid extends SystemStruct {
 /** The `System.NotImplementedException` class. */
 class SystemNotImplementedExceptionClass extends SystemClass {
   SystemNotImplementedExceptionClass() { this.hasName("NotImplementedException") }
+}
+
+/** The `System.DateTime` struct. */
+class SystemDateTimeStruct extends SystemStruct {
+  SystemDateTimeStruct() { this.hasName("DateTime") }
 }

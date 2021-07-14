@@ -21,10 +21,9 @@ import csharp
 private import ControlFlow
 private import internal.CallableReturns
 private import semmle.code.csharp.commons.Assertions
-private import semmle.code.csharp.commons.ComparisonTest
 private import semmle.code.csharp.controlflow.Guards as G
 private import semmle.code.csharp.controlflow.Guards::AbstractValues
-private import semmle.code.csharp.dataflow.SSA
+private import semmle.code.csharp.dataflow.internal.SsaImpl as SsaImpl
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.frameworks.Test
 
@@ -129,37 +128,20 @@ private predicate dereferenceAt(BasicBlock bb, int i, Ssa::Definition def, Deref
  * has abstract value `vDef`.
  */
 private predicate exprImpliesSsaDef(
-  Expr e, G::AbstractValue vExpr, Ssa::Definition def, G::AbstractValue vDef
+  G::Guard e, G::AbstractValue vExpr, Ssa::Definition def, G::AbstractValue vDef
 ) {
-  exists(G::Guard g | G::Internal::impliesSteps(e, vExpr, g, vDef) |
-    g = def.getARead()
+  vExpr = e.getAValue() and
+  vExpr = vDef and
+  (
+    e = def.getARead()
     or
-    g = def.(Ssa::ExplicitDefinition).getADefinition().getTargetAccess()
+    e = def.(Ssa::ExplicitDefinition).getADefinition().getTargetAccess()
   )
-}
-
-/**
- * Holds if the `i`th node of basic block `bb` ensures that SSA definition
- * `def` is not `null` in any subsequent uses.
- */
-private predicate ensureNotNullAt(BasicBlock bb, int i, Ssa::Definition def) {
-  exists(Expr e, G::AbstractValue v, NullValue nv |
-    G::Internal::asserts(bb.getNode(i).getElement(), e, v)
-  |
-    exprImpliesSsaDef(e, v, def, nv) and
-    nv.isNonNull()
+  or
+  exists(Expr e0, G::AbstractValue vExpr0 |
+    exprImpliesSsaDef(e0, vExpr0, def, vDef) and
+    G::Internal::impliesStep(e, vExpr, e0, vExpr0)
   )
-}
-
-/**
- * Holds if the `i`th node of basic block `bb` is a dereference `d` of SSA
- * definition `def`, and `def` may potentially be `null`.
- */
-private predicate potentialNullDereferenceAt(
-  BasicBlock bb, int i, Ssa::Definition def, Dereference d
-) {
-  dereferenceAt(bb, i, def, d) and
-  not exists(int j | ensureNotNullAt(bb, j, def) | j < i)
 }
 
 /**
@@ -179,7 +161,7 @@ private predicate isMaybeNullArgument(Ssa::ExplicitDefinition def, MaybeNullExpr
   exists(AssignableDefinitions::ImplicitParameterDefinition pdef, Parameter p |
     pdef = def.getADefinition()
   |
-    p = pdef.getParameter().getSourceDeclaration() and
+    p = pdef.getParameter().getUnboundDeclaration() and
     arg = p.getAnAssignedArgument() and
     not arg.getEnclosingCallable().getEnclosingCallable*() instanceof TestMethod
   )
@@ -189,7 +171,7 @@ private predicate isNullDefaultArgument(Ssa::ExplicitDefinition def, AlwaysNullE
   exists(AssignableDefinitions::ImplicitParameterDefinition pdef, Parameter p |
     pdef = def.getADefinition()
   |
-    p = pdef.getParameter().getSourceDeclaration() and
+    p = pdef.getParameter().getUnboundDeclaration() and
     arg = p.getDefaultValue() and
     not arg.getEnclosingCallable().getEnclosingCallable*() instanceof TestMethod
   )
@@ -203,7 +185,7 @@ private predicate defMaybeNull(Ssa::Definition def, string msg, Element reason) 
     exists(G::DereferenceableExpr de | de = def.getARead() |
       reason = de.getANullCheck(_, true) and
       msg = "as suggested by $@ null check" and
-      not de = any(Ssa::PseudoDefinition pdef).getARead() and
+      not de = any(Ssa::PhiNode phi).getARead() and
       strictcount(Element e | e = any(Ssa::Definition def0 | de = def0.getARead()).getElement()) = 1 and
       // Don't use a check as reason if there is a `null` assignment
       // or argument
@@ -231,7 +213,7 @@ private predicate defMaybeNull(Ssa::Definition def, string msg, Element reason) 
     // A variable of nullable type may be null
     exists(Dereference d | dereferenceAt(_, _, def, d) |
       d.hasNullableType() and
-      not def instanceof Ssa::PseudoDefinition and
+      not def instanceof Ssa::PhiNode and
       reason = def.getSourceVariable().getAssignable() and
       msg = "because it has a nullable type"
     )
@@ -262,16 +244,15 @@ private predicate defNullImpliesStep(
   Ssa::Definition def1, BasicBlock bb1, Ssa::Definition def2, BasicBlock bb2
 ) {
   exists(Ssa::SourceVariable v | defNullImpliesStep0(v, def1, bb1, bb2) |
-    def2.(Ssa::PseudoDefinition).getAnInput() = def1 and
+    def2.(Ssa::PhiNode).getAnInput() = def1 and
     bb2 = def2.getBasicBlock()
     or
     def2 = def1 and
-    not exists(Ssa::PseudoDefinition def |
-      def.getSourceVariable() = v and
-      bb2 = def.getBasicBlock()
+    not exists(Ssa::PhiNode phi |
+      phi.getSourceVariable() = v and
+      bb2 = phi.getBasicBlock()
     )
   ) and
-  not ensureNotNullAt(bb1, _, def1) and
   not exists(SuccessorTypes::ConditionalSuccessor s, NullValue nv |
     bb1.getLastNode() = getANullCheck(def1, s, nv).getAControlFlowNode()
   |
@@ -298,7 +279,7 @@ private predicate defMaybeNullInBlock(Ssa::Definition def, BasicBlock bb) {
  * dereference.
  */
 private predicate nullDerefCandidateVariable(Ssa::SourceVariable v) {
-  exists(Ssa::Definition def, BasicBlock bb | potentialNullDereferenceAt(bb, _, def, _) |
+  exists(Ssa::Definition def, BasicBlock bb | dereferenceAt(bb, _, def, _) |
     defMaybeNullInBlock(def, bb) and
     v = def.getSourceVariable()
   )
@@ -330,7 +311,7 @@ private newtype TPathNode =
     succNullArgument(_, def, bb)
   } or
   TSinkPathNode(Ssa::Definition def, BasicBlock bb, int i, Dereference d) {
-    potentialNullDereferenceAt(bb, i, def, d) and
+    dereferenceAt(bb, i, def, d) and
     (
       succStep(_, def, bb)
       or
@@ -453,14 +434,14 @@ module PathGraph {
 }
 
 private Ssa::Definition getAPseudoInput(Ssa::Definition def) {
-  result = def.(Ssa::PseudoDefinition).getAnInput()
+  result = def.(Ssa::PhiNode).getAnInput()
 }
 
 // `def.getAnUltimateDefinition()` includes inputs into uncertain
 // definitions, but we only want inputs into pseudo nodes
 private Ssa::Definition getAnUltimateDefinition(Ssa::Definition def) {
   result = getAPseudoInput*(def) and
-  not result instanceof Ssa::PseudoDefinition
+  not result instanceof Ssa::PhiNode
 }
 
 /**
@@ -473,7 +454,7 @@ private predicate defReaches(Ssa::Definition def, ControlFlow::Node cfn, boolean
   (always = true or always = false)
   or
   exists(ControlFlow::Node mid | defReaches(def, mid, always) |
-    Ssa::Internal::adjacentReadPairSameVar(_, mid, cfn) and
+    SsaImpl::adjacentReadPairSameVar(_, mid, cfn) and
     not mid =
       any(Dereference d |
         if always = true
@@ -525,7 +506,7 @@ class Dereference extends G::DereferenceableExpr {
         |
           pdef = def.getADefinition()
         |
-          p.getSourceDeclaration() = pdef.getParameter() and
+          p.getUnboundDeclaration() = pdef.getParameter() and
           def.getARead() instanceof Dereference
         )
       )

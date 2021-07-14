@@ -53,8 +53,10 @@ module ImproperCodeSanitization {
         |
           functionLeaf
               .getStringValue()
-              .regexpMatch([".*function( )?([a-zA-Z0-9]+)?( )?\\(.*", ".*eval\\(.*",
-                    ".*new Function\\(.*", "(^|.*[^a-zA-Z0-9])\\(.*\\)( )?=>.*"])
+              .regexpMatch([
+                  ".*function( )?([a-zA-Z0-9]+)?( )?\\(.*", ".*eval\\(.*", ".*new Function\\(.*",
+                  "(^|.*[^a-zA-Z0-9])\\(.*\\)( )?=>.*"
+                ])
         )
       )
     }

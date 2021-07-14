@@ -4,6 +4,7 @@
  *              interception.
  * @kind problem
  * @problem.severity error
+ * @security-severity 5.0
  * @precision high
  * @id java/insecure-cookie
  * @tags security

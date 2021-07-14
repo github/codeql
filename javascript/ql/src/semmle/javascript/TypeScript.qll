@@ -6,7 +6,7 @@ import javascript
  * Declarations that declare an alias for a namespace (i.e. an import) are not
  * considered to be namespace definitions.
  */
-class NamespaceDefinition extends Stmt, @namespacedefinition, AST::ValueNode {
+class NamespaceDefinition extends Stmt, @namespace_definition, AST::ValueNode {
   /**
    * DEPRECATED: Use `getIdentifier()` instead.
    *
@@ -56,7 +56,7 @@ class NamespaceDefinition extends Stmt, @namespacedefinition, AST::ValueNode {
  * For example, `declare module "X" {...}` is an external module declaration.
  * These are represented by `ExternalModuleDeclaration`.
  */
-class NamespaceDeclaration extends NamespaceDefinition, StmtContainer, @namespacedeclaration {
+class NamespaceDeclaration extends NamespaceDefinition, StmtContainer, @namespace_declaration {
   /** Gets the name of this namespace. */
   override Identifier getIdentifier() { result = getChildExpr(-1) }
 
@@ -83,11 +83,13 @@ class NamespaceDeclaration extends NamespaceDefinition, StmtContainer, @namespac
    * A namespace that is empty or only contains interfaces and type aliases is not instantiated,
    * and thus has no namespace object at runtime and is not associated with a variable.
    */
-  predicate isInstantiated() { isInstantiated(this) }
+  predicate isInstantiated() { is_instantiated(this) }
 
   override ControlFlowNode getFirstControlFlowNode() {
-    if hasDeclareKeyword(this) then result = this else result = getIdentifier()
+    if has_declare_keyword(this) then result = this else result = getIdentifier()
   }
+
+  override string getAPrimaryQlClass() { result = "NamespaceDeclaration" }
 }
 
 /**
@@ -96,7 +98,7 @@ class NamespaceDeclaration extends NamespaceDefinition, StmtContainer, @namespac
  * Note that imports and type parameters are not type definitions.  Consider using `TypeDecl` to capture
  * a wider class of type declarations.
  */
-class TypeDefinition extends ASTNode, @typedefinition {
+class TypeDefinition extends ASTNode, @type_definition {
   /**
    * Gets the identifier naming the type.
    */
@@ -122,13 +124,15 @@ class TypeDefinition extends ASTNode, @typedefinition {
    * Gets the type defined by this declaration.
    */
   Type getType() { ast_node_type(getIdentifier(), result) }
+
+  override string getAPrimaryQlClass() { result = "TypeDefinition" }
 }
 
 /**
  * A TypeScript declaration of form `declare module "X" {...}` where `X`
  * is the name of an external module.
  */
-class ExternalModuleDeclaration extends Stmt, StmtContainer, @externalmoduledeclaration {
+class ExternalModuleDeclaration extends Stmt, StmtContainer, @external_module_declaration {
   /**
    * Gets the string literal denoting the module name, such as `"fs"` in:
    * ```
@@ -158,12 +162,14 @@ class ExternalModuleDeclaration extends Stmt, StmtContainer, @externalmoduledecl
   int getNumStmt() { result = count(getAStmt()) }
 
   override StmtContainer getEnclosingContainer() { result = this.getContainer() }
+
+  override string getAPrimaryQlClass() { result = "ExternalModuleDeclaration" }
 }
 
 /**
  * A TypeScript declaration of form `declare global {...}`.
  */
-class GlobalAugmentationDeclaration extends Stmt, StmtContainer, @globalaugmentationdeclaration {
+class GlobalAugmentationDeclaration extends Stmt, StmtContainer, @global_augmentation_declaration {
   /** Gets the `i`th statement in this namespace. */
   Stmt getStmt(int i) {
     i >= 0 and
@@ -177,10 +183,12 @@ class GlobalAugmentationDeclaration extends Stmt, StmtContainer, @globalaugmenta
   int getNumStmt() { result = count(getAStmt()) }
 
   override StmtContainer getEnclosingContainer() { result = this.getContainer() }
+
+  override string getAPrimaryQlClass() { result = "GlobalAugmentationDeclaration" }
 }
 
 /** A TypeScript "import-equals" declaration. */
-class ImportEqualsDeclaration extends Stmt, @importequalsdeclaration {
+class ImportEqualsDeclaration extends Stmt, @import_equals_declaration {
   /**
    * DEPRECATED: Use `getIdentifier()` instead.
    *
@@ -195,6 +203,8 @@ class ImportEqualsDeclaration extends Stmt, @importequalsdeclaration {
   Expr getImportedEntity() { result = getChildExpr(1) }
 
   override ControlFlowNode getFirstControlFlowNode() { result = getIdentifier() }
+
+  override string getAPrimaryQlClass() { result = "ImportEqualsDeclaration" }
 }
 
 /**
@@ -207,7 +217,7 @@ class ImportEqualsDeclaration extends Stmt, @importequalsdeclaration {
  * and the compiled output depends on the `--module` flag passed to the
  * TypeScript compiler.
  */
-class ExternalModuleReference extends Expr, Import, @externalmodulereference {
+class ExternalModuleReference extends Expr, Import, @external_module_reference {
   /** Gets the expression specifying the module. */
   Expr getExpression() { result = getChildExpr(0) }
 
@@ -220,6 +230,8 @@ class ExternalModuleReference extends Expr, Import, @externalmodulereference {
   }
 
   override DataFlow::Node getImportedModuleNode() { result = DataFlow::valueNode(this) }
+
+  override string getAPrimaryQlClass() { result = "ExternalModuleReference" }
 }
 
 /** A literal path expression appearing in an external module reference. */
@@ -232,23 +244,27 @@ private class LiteralExternalModulePath extends PathExpr, ConstantString {
 }
 
 /** A TypeScript "export-assign" declaration. */
-class ExportAssignDeclaration extends Stmt, @exportassigndeclaration {
+class ExportAssignDeclaration extends Stmt, @export_assign_declaration {
   /** Gets the expression exported by this declaration. */
   Expr getExpression() { result = getChildExpr(0) }
+
+  override string getAPrimaryQlClass() { result = "ExportAssignDeclaration" }
 }
 
 /** A TypeScript export of form `export as namespace X` where `X` is an identifier. */
-class ExportAsNamespaceDeclaration extends Stmt, @exportasnamespacedeclaration {
+class ExportAsNamespaceDeclaration extends Stmt, @export_as_namespace_declaration {
   /**
    * Gets the `X` in `export as namespace X`.
    */
   Identifier getIdentifier() { result = getChildExpr(0) }
+
+  override string getAPrimaryQlClass() { result = "ExportAsNamespaceDeclaration" }
 }
 
 /**
  * A type alias declaration, that is, a statement of form `type A = T`.
  */
-class TypeAliasDeclaration extends @typealiasdeclaration, TypeParameterized, Stmt {
+class TypeAliasDeclaration extends @type_alias_declaration, TypeParameterized, Stmt {
   /** Gets the name of this type alias as a string. */
   string getName() { result = getIdentifier().getName() }
 
@@ -267,17 +283,21 @@ class TypeAliasDeclaration extends @typealiasdeclaration, TypeParameterized, Stm
    * Gets the canonical name of the type being defined.
    */
   TypeName getTypeName() { result.getADefinition() = this }
+
+  override string getAPrimaryQlClass() { result = "TypeAliasDeclaration" }
 }
 
 /**
  * A TypeScript interface declaration, inline interface type, or function type.
  */
-class InterfaceDefinition extends @interfacedefinition, ClassOrInterface {
+class InterfaceDefinition extends @interface_definition, ClassOrInterface {
   override predicate isAbstract() { any() }
+
+  override string getAPrimaryQlClass() { result = "InterfaceDefinition" }
 }
 
 /** A TypeScript interface declaration. */
-class InterfaceDeclaration extends Stmt, InterfaceDefinition, @interfacedeclaration {
+class InterfaceDeclaration extends Stmt, InterfaceDefinition, @interface_declaration {
   override Identifier getIdentifier() { result = getChildTypeExpr(0) }
 
   override TypeParameter getTypeParameter(int n) {
@@ -301,20 +321,24 @@ class InterfaceDeclaration extends Stmt, InterfaceDefinition, @interfacedeclarat
    * Gets any type from the `extends` clause of this interface.
    */
   override TypeExpr getASuperInterface() { result = InterfaceDefinition.super.getASuperInterface() }
+
+  override string getAPrimaryQlClass() { result = "InterfaceDeclaration" }
 }
 
 /** An inline TypeScript interface type, such as `{x: number; y: number}`. */
-class InterfaceTypeExpr extends TypeExpr, InterfaceDefinition, @interfacetypeexpr {
+class InterfaceTypeExpr extends TypeExpr, InterfaceDefinition, @interface_typeexpr {
   override Identifier getIdentifier() { none() }
 
   override string describe() { result = "anonymous interface" }
+
+  override string getAPrimaryQlClass() { result = "InterfaceTypeExpr" }
 }
 
 /**
  * A TypeScript function type, such as `(x: string) => number` or a
  * constructor type such as `new (x: string) => Object`.
  */
-class FunctionTypeExpr extends TypeExpr, @functiontypeexpr {
+class FunctionTypeExpr extends TypeExpr, @function_typeexpr {
   /** Holds if this is a constructor type, such as `new (x: string) => Object`. */
   predicate isConstructor() { this instanceof ConstructorTypeExpr }
 
@@ -341,13 +365,15 @@ class FunctionTypeExpr extends TypeExpr, @functiontypeexpr {
 
   /** Gets the return type of this function type, if any. */
   TypeExpr getReturnTypeAnnotation() { result = getFunction().getReturnTypeAnnotation() }
+
+  override string getAPrimaryQlClass() { result = "FunctionTypeExpr" }
 }
 
 /** A constructor type, such as `new (x: string) => Object`. */
-class ConstructorTypeExpr extends FunctionTypeExpr, @constructortypeexpr { }
+class ConstructorTypeExpr extends FunctionTypeExpr, @constructor_typeexpr { }
 
 /** A function type that is not a constructor type, such as `(x: string) => number`. */
-class PlainFunctionTypeExpr extends FunctionTypeExpr, @plainfunctiontypeexpr { }
+class PlainFunctionTypeExpr extends FunctionTypeExpr, @plain_function_typeexpr { }
 
 /** A possibly qualified identifier that declares or refers to a type. */
 abstract class TypeRef extends ASTNode { }
@@ -440,7 +466,11 @@ class LocalTypeName extends @local_type_name, LexicalName {
    * Gets the first declaration of this type name.
    */
   TypeDecl getFirstDeclaration() {
-    result = min(getADeclaration() as decl order by decl.getFirstToken().getIndex())
+    result =
+      min(getADeclaration() as decl
+        order by
+          decl.getLocation().getStartLine(), decl.getLocation().getStartColumn()
+      )
   }
 
   /** Gets a use of this type name in a type annotation. */
@@ -500,7 +530,11 @@ class LocalNamespaceName extends @local_namespace_name, LexicalName {
    * Gets the first declaration of this namespace name.
    */
   LocalNamespaceDecl getFirstDeclaration() {
-    result = min(getADeclaration() as decl order by decl.getFirstToken().getIndex())
+    result =
+      min(getADeclaration() as decl
+        order by
+          decl.getLocation().getStartLine(), decl.getLocation().getStartColumn()
+      )
   }
 
   /** Gets a use of this namespace name in a type annotation. */
@@ -508,6 +542,15 @@ class LocalNamespaceName extends @local_namespace_name, LexicalName {
 
   /** Gets a use of this namespace in an export. */
   ExportVarAccess getAnExportAccess() { namespacebind(result, this) }
+
+  /**
+   * Gets an access to a type member of this namespace alias,
+   * such as `http.ServerRequest` where `http` is a reference to this namespace.
+   */
+  QualifiedTypeAccess getAMemberAccess(string member) {
+    result.getIdentifier().getName() = member and
+    result.getQualifier() = this.getAnAccess()
+  }
 
   /** Gets an identifier that refers to this namespace name. */
   Identifier getAnAccess() { namespacebind(result, this) }
@@ -549,7 +592,7 @@ class TypeExpr extends ExprOrType, @typeexpr, TypeAnnotation {
 /**
  * Classes that are internally represented as a keyword type.
  */
-private class KeywordTypeExpr extends @keywordtypeexpr, TypeExpr {
+private class KeywordTypeExpr extends @keyword_typeexpr, TypeExpr {
   string getName() { literals(result, _, this) }
 
   override predicate isAny() { getName() = "any" }
@@ -587,6 +630,8 @@ private class KeywordTypeExpr extends @keywordtypeexpr, TypeExpr {
   override predicate isBigInt() { getName() = "bigint" }
 
   override predicate isConstKeyword() { getName() = "const" }
+
+  override string getAPrimaryQlClass() { result = "KeywordTypeExpr" }
 }
 
 /**
@@ -663,15 +708,58 @@ class TypeAccess extends @typeaccess, TypeExpr, TypeRef {
 
   override predicate hasQualifiedName(string globalName) {
     getTypeName().hasQualifiedName(globalName)
+    or
+    exists(LocalTypeAccess local | local = this |
+      not exists(local.getLocalTypeName()) and // Without a local type name, the type is looked up in the global scope.
+      globalName = local.getName()
+    )
   }
 
   override predicate hasQualifiedName(string moduleName, string exportedName) {
     getTypeName().hasQualifiedName(moduleName, exportedName)
+    or
+    exists(ImportDeclaration imprt, ImportSpecifier spec |
+      moduleName = getImportName(imprt) and
+      spec = imprt.getASpecifier()
+    |
+      spec.getImportedName() = exportedName and
+      this = spec.getLocal().(TypeDecl).getLocalTypeName().getAnAccess()
+      or
+      (spec instanceof ImportNamespaceSpecifier or spec instanceof ImportDefaultSpecifier) and
+      this =
+        spec.getLocal().(LocalNamespaceDecl).getLocalNamespaceName().getAMemberAccess(exportedName)
+    )
+    or
+    exists(ImportEqualsDeclaration imprt |
+      moduleName = getImportName(imprt.getImportedEntity()) and
+      this =
+        imprt
+            .getIdentifier()
+            .(LocalNamespaceDecl)
+            .getLocalNamespaceName()
+            .getAMemberAccess(exportedName)
+    )
   }
+
+  override string getAPrimaryQlClass() { result = "TypeAccess" }
+}
+
+/**
+ * Gets a suitable name for the library imported by `import`.
+ *
+ * For relative imports, this is the snapshot-relative path to the imported module.
+ * For non-relative imports, it is the import path itself.
+ */
+private string getImportName(Import imprt) {
+  exists(string path | path = imprt.getImportedPath().getValue() |
+    if path.regexpMatch("[./].*")
+    then result = imprt.getImportedModule().getFile().getRelativePath()
+    else result = path
+  )
 }
 
 /** An identifier that is used as part of a type, such as `Date`. */
-class LocalTypeAccess extends @localtypeaccess, TypeAccess, Identifier, LexicalAccess {
+class LocalTypeAccess extends @local_type_access, TypeAccess, Identifier, LexicalAccess {
   override predicate isStringy() { getName() = "String" }
 
   override predicate isNumbery() { getName() = "Number" }
@@ -692,12 +780,14 @@ class LocalTypeAccess extends @localtypeaccess, TypeAccess, Identifier, LexicalA
    * a local type name as it is declared in `lib.d.ts`.
    */
   LocalTypeName getLocalTypeName() { result.getAnAccess() = this }
+
+  override string getAPrimaryQlClass() { result = "LocalTypeAccess" }
 }
 
 /**
  * A qualified name that is used as part of a type, such as `http.ServerRequest`.
  */
-class QualifiedTypeAccess extends @qualifiedtypeaccess, TypeAccess {
+class QualifiedTypeAccess extends @qualified_type_access, TypeAccess {
   /**
    * Gets the qualifier in front of the name, such as `http` in `http.ServerRequest`.
    *
@@ -716,7 +806,7 @@ class QualifiedTypeAccess extends @qualifiedtypeaccess, TypeAccess {
  * For convenience, the methods for accessing type arguments are also made available
  * on the `TypeAccess` class.
  */
-class GenericTypeExpr extends @generictypeexpr, TypeExpr {
+class GenericTypeExpr extends @generic_typeexpr, TypeExpr {
   /** Gets the name of the type, such as `Array` in `Array<number>`. */
   TypeAccess getTypeAccess() { result = getChildTypeExpr(-1) }
 
@@ -736,6 +826,8 @@ class GenericTypeExpr extends @generictypeexpr, TypeExpr {
   override predicate hasQualifiedName(string moduleName, string exportedName) {
     getTypeAccess().hasQualifiedName(moduleName, exportedName)
   }
+
+  override string getAPrimaryQlClass() { result = "GenericTypeExpr" }
 }
 
 /**
@@ -743,7 +835,7 @@ class GenericTypeExpr extends @generictypeexpr, TypeExpr {
  *
  * Note that the `null` and `undefined` types are considered predefined types, not literal types.
  */
-class LiteralTypeExpr extends @literaltypeexpr, TypeExpr {
+class LiteralTypeExpr extends @literal_typeexpr, TypeExpr {
   /** Gets the value of this literal, as a string. */
   string getValue() { literals(result, _, this) }
 
@@ -752,26 +844,28 @@ class LiteralTypeExpr extends @literaltypeexpr, TypeExpr {
    * string literals.
    */
   string getRawValue() { literals(_, result, this) }
+
+  override string getAPrimaryQlClass() { result = "LiteralTypeExpr" }
 }
 
 /** A string literal used as a type. */
-class StringLiteralTypeExpr extends @stringliteraltypeexpr, LiteralTypeExpr { }
+class StringLiteralTypeExpr extends @string_literal_typeexpr, LiteralTypeExpr { }
 
 /** A number literal used as a type. */
-class NumberLiteralTypeExpr extends @numberliteraltypeexpr, LiteralTypeExpr {
+class NumberLiteralTypeExpr extends @number_literal_typeexpr, LiteralTypeExpr {
   /** Gets the integer value of this literal type. */
   int getIntValue() { result = getValue().toInt() }
 }
 
 /** A boolean literal used as a type. */
-class BooleanLiteralTypeExpr extends @booleanliteraltypeexpr, LiteralTypeExpr {
+class BooleanLiteralTypeExpr extends @boolean_literal_typeexpr, LiteralTypeExpr {
   predicate isTrue() { getValue() = "true" }
 
   predicate isFalse() { getValue() = "false" }
 }
 
 /** A bigint literal used as a TypeScript type annotation. */
-class BigIntLiteralTypeExpr extends @bigintliteraltypeexpr, LiteralTypeExpr {
+class BigIntLiteralTypeExpr extends @bigint_literal_typeexpr, LiteralTypeExpr {
   /** Gets the integer value of the bigint literal, if it can be represented as a QL integer. */
   int getIntValue() { result = getValue().toInt() }
 
@@ -789,15 +883,17 @@ class BigIntLiteralTypeExpr extends @bigintliteraltypeexpr, LiteralTypeExpr {
  * Named types such as `Array<number>` and tuple types such as `[number, string]`
  * are not array type expressions.
  */
-class ArrayTypeExpr extends @arraytypeexpr, TypeExpr {
+class ArrayTypeExpr extends @array_typeexpr, TypeExpr {
   /** Gets the type of the array elements. */
   TypeExpr getElementType() { result = getChildTypeExpr(0) }
+
+  override string getAPrimaryQlClass() { result = "ArrayTypeExpr" }
 }
 
 /**
  * A union type, such as `string|number|boolean`.
  */
-class UnionTypeExpr extends @uniontypeexpr, TypeExpr {
+class UnionTypeExpr extends @union_typeexpr, TypeExpr {
   /** Gets the `n`th type in the union, starting at 0. */
   TypeExpr getElementType(int n) { result = getChildTypeExpr(n) }
 
@@ -808,17 +904,21 @@ class UnionTypeExpr extends @uniontypeexpr, TypeExpr {
   int getNumElementType() { result = count(getAnElementType()) }
 
   override TypeExpr getAnUnderlyingType() { result = getAnElementType().getAnUnderlyingType() }
+
+  override string getAPrimaryQlClass() { result = "UnionTypeExpr" }
 }
 
 /**
  * A type of form `T[K]` where `T` and `K` are types.
  */
-class IndexedAccessTypeExpr extends @indexedaccesstypeexpr, TypeExpr {
+class IndexedAccessTypeExpr extends @indexed_access_typeexpr, TypeExpr {
   /** Gets the type `T` in `T[K]`, denoting the object type whose properties are to be extracted. */
   TypeExpr getObjectType() { result = getChildTypeExpr(0) }
 
   /** Gets the type `K` in `T[K]`, denoting the property names to extract from the object type. */
   TypeExpr getIndexType() { result = getChildTypeExpr(1) }
+
+  override string getAPrimaryQlClass() { result = "IndexedAccessTypeExpr" }
 }
 
 /**
@@ -826,7 +926,7 @@ class IndexedAccessTypeExpr extends @indexedaccesstypeexpr, TypeExpr {
  *
  * In general, there are can more than two operands to an intersection type.
  */
-class IntersectionTypeExpr extends @intersectiontypeexpr, TypeExpr {
+class IntersectionTypeExpr extends @intersection_typeexpr, TypeExpr {
   /** Gets the `n`th operand of the intersection type, starting at 0. */
   TypeExpr getElementType(int n) { result = getChildTypeExpr(n) }
 
@@ -837,47 +937,64 @@ class IntersectionTypeExpr extends @intersectiontypeexpr, TypeExpr {
   int getNumElementType() { result = count(getAnElementType()) }
 
   override TypeExpr getAnUnderlyingType() { result = getAnElementType().getAnUnderlyingType() }
+
+  override string getAPrimaryQlClass() { result = "IntersectionTypeExpr" }
 }
 
 /**
  * A type expression enclosed in parentheses.
  */
-class ParenthesizedTypeExpr extends @parenthesizedtypeexpr, TypeExpr {
+class ParenthesizedTypeExpr extends @parenthesized_typeexpr, TypeExpr {
   /** Gets the type inside the parentheses. */
   TypeExpr getElementType() { result = getChildTypeExpr(0) }
 
   override TypeExpr stripParens() { result = getElementType().stripParens() }
 
   override TypeExpr getAnUnderlyingType() { result = getElementType().getAnUnderlyingType() }
+
+  override string getAPrimaryQlClass() { result = "ParenthesizedTypeExpr" }
 }
 
 /**
  * A tuple type such as `[number, string]`.
  */
-class TupleTypeExpr extends @tupletypeexpr, TypeExpr {
+class TupleTypeExpr extends @tuple_typeexpr, TypeExpr {
   /** Gets the `n`th element type in the tuple, starting at 0. */
-  TypeExpr getElementType(int n) { result = getChildTypeExpr(n) }
+  TypeExpr getElementType(int n) { result = getChildTypeExpr(n) and n >= 0 }
 
   /** Gets any of the element types in the tuple. */
   TypeExpr getAnElementType() { result = getElementType(_) }
 
   /** Gets the number of elements in the tuple type. */
   int getNumElementType() { result = count(getAnElementType()) }
+
+  /**
+   * Gets the name of the `n`th tuple member, starting at 0.
+   * Only has a result if the tuple members are named.
+   */
+  Identifier getElementName(int n) {
+    // Type element names are at indices -1, -2, -3, ...
+    result = getChild(-(n + 1)) and n >= 0
+  }
+
+  override string getAPrimaryQlClass() { result = "TupleTypeExpr" }
 }
 
 /**
  * A type of form `keyof T` where `T` is a type.
  */
-class KeyofTypeExpr extends @keyoftypeexpr, TypeExpr {
+class KeyofTypeExpr extends @keyof_typeexpr, TypeExpr {
   /** Gets the type `T` in `keyof T`, denoting the object type whose property names are to be extracted. */
   TypeExpr getElementType() { result = getChildTypeExpr(0) }
+
+  override string getAPrimaryQlClass() { result = "KeyofTypeExpr" }
 }
 
 /**
  * A type of form `{ [K in C]: T }` where `K in C` declares a type parameter with `C`
  * as the bound, and `T` is a type that may refer to `K`.
  */
-class MappedTypeExpr extends @mappedtypeexpr, TypeParameterized, TypeExpr {
+class MappedTypeExpr extends @mapped_typeexpr, TypeParameterized, TypeExpr {
   /**
    * Gets the `K in C` part from `{ [K in C]: T }`.
    */
@@ -891,18 +1008,22 @@ class MappedTypeExpr extends @mappedtypeexpr, TypeParameterized, TypeExpr {
   TypeExpr getElementType() { result = getChildTypeExpr(1) }
 
   override string describe() { result = "mapped type" }
+
+  override string getAPrimaryQlClass() { result = "MappedTypeExpr" }
 }
 
 /**
  * A type of form `typeof E` where `E` is a possibly qualified name referring to a variable,
  * function, class, or namespace.
  */
-class TypeofTypeExpr extends @typeoftypeexpr, TypeExpr {
+class TypeofTypeExpr extends @typeof_typeexpr, TypeExpr {
   /**
    * Gets the `E` in `typeof E`, denoting the qualified the name of a
    * variable, function, class, or namespace whose type is to be extracted.
    */
   VarTypeAccess getExpressionName() { result = this.getChildTypeExpr(0) }
+
+  override string getAPrimaryQlClass() { result = "TypeofTypeExpr" }
 }
 
 /**
@@ -915,7 +1036,7 @@ class TypeofTypeExpr extends @typeoftypeexpr, TypeExpr {
  * function f(x): asserts x {}
  * ```
  */
-class PredicateTypeExpr extends @predicatetypeexpr, TypeExpr {
+class PredicateTypeExpr extends @predicate_typeexpr, TypeExpr {
   /**
    * Gets the parameter name or `this` token `E` in `E is T`.
    */
@@ -931,7 +1052,9 @@ class PredicateTypeExpr extends @predicatetypeexpr, TypeExpr {
   /**
    * Holds if this is a type of form `asserts E is T` or `asserts E`.
    */
-  predicate hasAssertsKeyword() { hasAssertsKeyword(this) }
+  predicate hasAssertsKeyword() { has_asserts_keyword(this) }
+
+  override string getAPrimaryQlClass() { result = "PredicateTypeExpr" }
 }
 
 /**
@@ -945,37 +1068,45 @@ class PredicateTypeExpr extends @predicatetypeexpr, TypeExpr {
  */
 class IsTypeExpr extends PredicateTypeExpr {
   IsTypeExpr() { exists(getPredicateType()) }
+
+  override string getAPrimaryQlClass() { result = "IsTypeExpr" }
 }
 
 /**
  * An optional type element in a tuple type, such as `number?` in `[string, number?]`.
  */
-class OptionalTypeExpr extends @optionaltypeexpr, TypeExpr {
+class OptionalTypeExpr extends @optional_typeexpr, TypeExpr {
   /** Gets the type `T` in `T?` */
   TypeExpr getElementType() { result = getChildTypeExpr(0) }
 
   override TypeExpr getAnUnderlyingType() { result = getElementType().getAnUnderlyingType() }
+
+  override string getAPrimaryQlClass() { result = "OptionalTypeExpr" }
 }
 
 /**
  * A rest element in a tuple type, such as `...string[]` in `[number, ...string[]]`.
  */
-class RestTypeExpr extends @resttypeexpr, TypeExpr {
+class RestTypeExpr extends @rest_typeexpr, TypeExpr {
   /** Gets the type `T[]` in `...T[]`, such as `string[]` in `[number, ...string[]]`. */
   TypeExpr getArrayType() { result = getChildTypeExpr(0) }
 
   /** Gets the type `T` in `...T[]`, such as `string` in `[number, ...string[]]`. */
   TypeExpr getElementType() { result = getArrayType().(ArrayTypeExpr).getElementType() }
+
+  override string getAPrimaryQlClass() { result = "RestTypeExpr" }
 }
 
 /**
  * A type of form `readonly T`, such as `readonly number[]`.
  */
-class ReadonlyTypeExpr extends @readonlytypeexpr, TypeExpr {
+class ReadonlyTypeExpr extends @readonly_typeexpr, TypeExpr {
   /** Gets the type `T` in `readonly T`. */
   TypeExpr getElementType() { result = getChildTypeExpr(0) }
 
   override TypeExpr getAnUnderlyingType() { result = getElementType().getAnUnderlyingType() }
+
+  override string getAPrimaryQlClass() { result = "ReadonlyTypeExpr" }
 }
 
 /**
@@ -994,16 +1125,20 @@ class ReadonlyTypeExpr extends @readonlytypeexpr, TypeExpr {
  *
  * In the latter two cases, this may also refer to the pseudo-variable `this`.
  */
-class VarTypeAccess extends @vartypeaccess, TypeExpr { }
+class VarTypeAccess extends @vartypeaccess, TypeExpr {
+  override string getAPrimaryQlClass() { result = "VarTypeAccess" }
+}
 
 /**
  * An identifier that refers to a variable from inside a type.
  *
  * This can occur as part of the operand to a `typeof` type or as the first operand to an `is` type.
  */
-class LocalVarTypeAccess extends @localvartypeaccess, VarTypeAccess, LexicalAccess, Identifier {
+class LocalVarTypeAccess extends @local_var_type_access, VarTypeAccess, LexicalAccess, Identifier {
   /** Gets the variable being referenced, or nothing if this is a `this` keyword. */
   Variable getVariable() { bind(this, result) }
+
+  override string getAPrimaryQlClass() { result = "LocalVarTypeAccess" }
 }
 
 /**
@@ -1014,14 +1149,16 @@ class LocalVarTypeAccess extends @localvartypeaccess, VarTypeAccess, LexicalAcce
  * interface Node { isLeaf(): this is Leaf; }
  * ```
  */
-class ThisVarTypeAccess extends @thisvartypeaccess, VarTypeAccess { }
+class ThisVarTypeAccess extends @this_var_type_access, VarTypeAccess {
+  override string getAPrimaryQlClass() { result = "ThisVarTypeAccess" }
+}
 
 /**
  * A qualified name that refers to a variable from inside a type.
  *
  * This can only occur as part of the operand to a `typeof` type.
  */
-class QualifiedVarTypeAccess extends @qualifiedvartypeaccess, VarTypeAccess {
+class QualifiedVarTypeAccess extends @qualified_var_type_access, VarTypeAccess {
   /**
    * Gets the qualifier in front of the name being accessed, such as `http` in `http.ServerRequest`.
    */
@@ -1036,7 +1173,7 @@ class QualifiedVarTypeAccess extends @qualifiedvartypeaccess, VarTypeAccess {
 /**
  * A conditional type annotation, such as `T extends any[] ? A : B`.
  */
-class ConditionalTypeExpr extends @conditionaltypeexpr, TypeExpr {
+class ConditionalTypeExpr extends @conditional_typeexpr, TypeExpr {
   /**
    * Gets the type to the left of the `extends` keyword, such as `T` in `T extends any[] ? A : B`.
    */
@@ -1056,12 +1193,14 @@ class ConditionalTypeExpr extends @conditionaltypeexpr, TypeExpr {
    * Gets the type to be used if the `extend` condition fails, such as `B` in `T extends any[] ? A : B`.
    */
   TypeExpr getFalseType() { result = getChildTypeExpr(3) }
+
+  override string getAPrimaryQlClass() { result = "ConditionalTypeExpr" }
 }
 
 /**
  * A type annotation of form `infer R`.
  */
-class InferTypeExpr extends @infertypeexpr, TypeParameterized, TypeExpr {
+class InferTypeExpr extends @infer_typeexpr, TypeParameterized, TypeExpr {
   /**
    * Gets the type parameter capturing the matched type, such as `R` in `infer R`.
    */
@@ -1070,13 +1209,38 @@ class InferTypeExpr extends @infertypeexpr, TypeParameterized, TypeExpr {
   override TypeParameter getTypeParameter(int n) { n = 0 and result = getTypeParameter() }
 
   override string describe() { result = "'infer' type " + getTypeParameter().getName() }
+
+  override string getAPrimaryQlClass() { result = "InferTypeExpr" }
+}
+
+/**
+ * A template literal used as a type.
+ */
+class TemplateLiteralTypeExpr extends @template_literal_typeexpr, TypeExpr {
+  /**
+   * Gets the `i`th element of this template literal, which may either
+   * be a type expression or a constant template element.
+   */
+  ExprOrType getElement(int i) { result = getChild(i) }
+
+  /**
+   * Gets an element of this template literal.
+   */
+  ExprOrType getAnElement() { result = getElement(_) }
+
+  /**
+   * Gets the number of elements of this template literal.
+   */
+  int getNumElement() { result = count(getAnElement()) }
+
+  override string getAPrimaryQlClass() { result = "TemplateLiteralTypeExpr" }
 }
 
 /**
  * A scope induced by a conditional type expression whose `extends` type
  * contains `infer` types.
  */
-class ConditionalTypeScope extends @conditionaltypescope, Scope {
+class ConditionalTypeScope extends @conditional_type_scope, Scope {
   /** Gets the conditional type expression that induced this scope. */
   ConditionalTypeExpr getConditionalTypeExpr() { result = Scope.super.getScopeElement() }
 }
@@ -1089,7 +1253,7 @@ class ConditionalTypeScope extends @conditionaltypescope, Scope {
  * In the above example, `List` is a concrete expression, `string` is a type annotation,
  * and `List<string>` is thus an expression with type arguments.
  */
-class ExpressionWithTypeArguments extends @expressionwithtypearguments, Expr {
+class ExpressionWithTypeArguments extends @expression_with_type_arguments, Expr {
   /**
    * Gets the expression, such as `List` in `List<string>`.
    *
@@ -1141,7 +1305,7 @@ class TypeParameterized extends @type_parameterized, ASTNode {
 /**
  * A type parameter declared on a class, interface, function, or type alias.
  */
-class TypeParameter extends @typeparameter, TypeExpr {
+class TypeParameter extends @type_parameter, TypeExpr {
   /**
    * Gets the name of the type parameter as a string.
    */
@@ -1171,13 +1335,15 @@ class TypeParameter extends @typeparameter, TypeExpr {
    * Gets the local type name declared by this type parameter.
    */
   LocalTypeName getLocalTypeName() { result = getIdentifier().(TypeDecl).getLocalTypeName() }
+
+  override string getAPrimaryQlClass() { result = "TypeParameter" }
 }
 
 /**
  * A type assertion, also known as an unchecked type cast, is a TypeScript expression
  * of form `E as T` or `<T> E` where `E` is an expression and `T` is a type.
  */
-class TypeAssertion extends Expr, @typeassertion {
+class TypeAssertion extends Expr, @type_assertion {
   /** Gets the expression whose type to assert, that is, the `E` in `E as T` or `<T> E`. */
   Expr getExpression() { result = getChildExpr(0) }
 
@@ -1191,17 +1357,19 @@ class TypeAssertion extends Expr, @typeassertion {
   override Expr getUnderlyingValue() { result = getExpression().getUnderlyingValue() }
 
   override Expr getUnderlyingReference() { result = getExpression().getUnderlyingReference() }
+
+  override string getAPrimaryQlClass() { result = "TypeAssertion" }
 }
 
 /**
  * A type assertion specifically of the form `E as T` (as opposed to the `<T> E` syntax).
  */
-class AsTypeAssertion extends TypeAssertion, @astypeassertion { }
+class AsTypeAssertion extends TypeAssertion, @as_type_assertion { }
 
 /**
  * A type assertion specifically of the form `<T> E` (as opposed to the `E as T` syntax).
  */
-class PrefixTypeAssertion extends TypeAssertion, @prefixtypeassertion { }
+class PrefixTypeAssertion extends TypeAssertion, @prefix_type_assertion { }
 
 /**
  * A TypeScript expression of form `E!`, asserting that `E` is not null.
@@ -1213,6 +1381,8 @@ class NonNullAssertion extends Expr, @non_null_assertion {
   override ControlFlowNode getFirstControlFlowNode() {
     result = getExpression().getFirstControlFlowNode()
   }
+
+  override string getAPrimaryQlClass() { result = "NonNullAssertion" }
 }
 
 /**
@@ -1260,29 +1430,34 @@ class LocalNamespaceDecl extends VarDecl, NamespaceRef {
  * *Expressions* that refer to namespaces are represented as `VarAccess` and `PropAccess` expressions,
  * as opposed to `NamespaceAccess`.
  */
-class NamespaceAccess extends TypeExpr, NamespaceRef, @namespaceaccess {
+class NamespaceAccess extends TypeExpr, NamespaceRef, @namespace_access {
   Identifier getIdentifier() { none() }
 
   /**
    * Gets the canonical name of the namespace being accessed.
    */
   Namespace getNamespace() { ast_node_symbol(this, result) }
+
+  override string getAPrimaryQlClass() { result = "NamespaceAccess" }
 }
 
 /**
  * An identifier that refers to a namespace from inside a type annotation.
  */
-class LocalNamespaceAccess extends NamespaceAccess, LexicalAccess, Identifier, @localnamespaceaccess {
+class LocalNamespaceAccess extends NamespaceAccess, LexicalAccess, Identifier,
+  @local_namespace_access {
   override Identifier getIdentifier() { result = this }
 
   /** Gets the local name being accessed. */
   LocalNamespaceName getLocalNamespaceName() { namespacebind(this, result) }
+
+  override string getAPrimaryQlClass() { result = "LocalNamespaceAccess" }
 }
 
 /**
  * A qualified name that refers to a namespace from inside a type annotation.
  */
-class QualifiedNamespaceAccess extends NamespaceAccess, @qualifiednamespaceaccess {
+class QualifiedNamespaceAccess extends NamespaceAccess, @qualified_namespace_access {
   NamespaceAccess getQualifier() { result = getChildTypeExpr(0) }
 
   override Identifier getIdentifier() { result = getChildTypeExpr(1) }
@@ -1291,7 +1466,7 @@ class QualifiedNamespaceAccess extends NamespaceAccess, @qualifiednamespaceacces
 /**
  * An import inside a type annotation, such as in `import("http").ServerRequest`.
  */
-class ImportTypeExpr extends TypeExpr, @importtypeexpr {
+class ImportTypeExpr extends TypeExpr, @import_typeexpr {
   /**
    * Gets the string literal with the imported path, such as `"http"` in `import("http")`.
    */
@@ -1303,29 +1478,37 @@ class ImportTypeExpr extends TypeExpr, @importtypeexpr {
   string getPath() { result = getPathExpr().(StringLiteralTypeExpr).getValue() }
 
   /** Holds if this import is used in the context of a type, such as in `let x: import("foo")`. */
-  predicate isTypeAccess() { this instanceof @importtypeaccess }
+  predicate isTypeAccess() { this instanceof @import_type_access }
 
   /** Holds if this import is used in the context of a namespace, such as in `let x: import("http").ServerRequest"`. */
-  predicate isNamespaceAccess() { this instanceof @importnamespaceaccess }
+  predicate isNamespaceAccess() { this instanceof @import_namespace_access }
 
   /** Holds if this import is used in the context of a variable type, such as `let x: typeof import("fs")`. */
-  predicate isVarTypeAccess() { this instanceof @importvartypeaccess }
+  predicate isVarTypeAccess() { this instanceof @import_var_type_access }
+
+  override string getAPrimaryQlClass() { result = "ImportTypeExpr" }
 }
 
 /**
  * An import used in the context of a type, such as in `let x: import("foo")`.
  */
-class ImportTypeAccess extends TypeAccess, ImportTypeExpr, @importtypeaccess { }
+class ImportTypeAccess extends TypeAccess, ImportTypeExpr, @import_type_access {
+  override string getAPrimaryQlClass() { result = "ImportTypeAccess" }
+}
 
 /**
  * An import used in the context of a namespace inside a type annotation, such as in `let x: import("http").ServerRequest`.
  */
-class ImportNamespaceAccess extends NamespaceAccess, ImportTypeExpr, @importnamespaceaccess { }
+class ImportNamespaceAccess extends NamespaceAccess, ImportTypeExpr, @import_namespace_access {
+  override string getAPrimaryQlClass() { result = "ImportNamespaceAccess" }
+}
 
 /**
  * An import used in the context of a variable type, such as in `let x: typeof import("fs")`.
  */
-class ImportVarTypeAccess extends VarTypeAccess, ImportTypeExpr, @importvartypeaccess { }
+class ImportVarTypeAccess extends VarTypeAccess, ImportTypeExpr, @import_var_type_access {
+  override string getAPrimaryQlClass() { result = "ImportVarTypeAccess" }
+}
 
 /**
  * A TypeScript enum declaration, such as the following declaration:
@@ -1333,7 +1516,7 @@ class ImportVarTypeAccess extends VarTypeAccess, ImportTypeExpr, @importvartypea
  * enum Color { red = 1, green, blue }
  * ```
  */
-class EnumDeclaration extends NamespaceDefinition, @enumdeclaration, AST::ValueNode {
+class EnumDeclaration extends NamespaceDefinition, @enum_declaration, AST::ValueNode {
   /** Gets the name of this enum, such as `E` in `enum E { A, B }`. */
   override Identifier getIdentifier() { result = getChildExpr(0) }
 
@@ -1400,9 +1583,11 @@ class EnumDeclaration extends NamespaceDefinition, @enumdeclaration, AST::ValueN
   int getNumDecorator() { result = count(getADecorator()) }
 
   /** Holds if this enumeration is declared with the `const` keyword. */
-  predicate isConst() { isConstEnum(this) }
+  predicate isConst() { is_const_enum(this) }
 
   override ControlFlowNode getFirstControlFlowNode() { result = getIdentifier() }
+
+  override string getAPrimaryQlClass() { result = "EnumDeclaration" }
 }
 
 /**
@@ -1448,6 +1633,8 @@ class EnumMember extends ASTNode, @enum_member {
    * Gets the canonical name of the type defined by this enum member.
    */
   TypeName getTypeName() { ast_node_symbol(this, result) }
+
+  override string getAPrimaryQlClass() { result = "EnumMember" }
 }
 
 /**
@@ -1455,7 +1642,7 @@ class EnumMember extends ASTNode, @enum_member {
  *
  * Interfaces that do not declare type parameters have no scope object.
  */
-class InterfaceScope extends @interfacescope, Scope {
+class InterfaceScope extends @interface_scope, Scope {
   override string toString() { result = "interface scope" }
 }
 
@@ -1464,14 +1651,14 @@ class InterfaceScope extends @interfacescope, Scope {
  *
  * Type aliases that do not declare type parameters have no scope object.
  */
-class TypeAliasScope extends @typealiasscope, Scope {
+class TypeAliasScope extends @type_alias_scope, Scope {
   override string toString() { result = "type alias scope" }
 }
 
 /**
  * Scope induced by a mapped type expression, containing the type parameter declared as part of the type.
  */
-class MappedTypeScope extends @mappedtypescope, Scope {
+class MappedTypeScope extends @mapped_type_scope, Scope {
   override string toString() { result = "mapped type scope" }
 }
 
@@ -1481,14 +1668,14 @@ class MappedTypeScope extends @mappedtypescope, Scope {
  * Initializers of enum members are resolved in this scope since they can reference
  * previously-defined enum members by their unqualified name.
  */
-class EnumScope extends @enumscope, Scope {
+class EnumScope extends @enum_scope, Scope {
   override string toString() { result = "enum scope" }
 }
 
 /**
  * Scope induced by a declaration of form `declare module "X" {...}`.
  */
-class ExternalModuleScope extends @externalmodulescope, Scope {
+class ExternalModuleScope extends @external_module_scope, Scope {
   override string toString() { result = "external module scope" }
 }
 
@@ -1857,7 +2044,7 @@ class Type extends @type {
 /**
  * A union type or intersection type, such as `string | number` or `T & U`.
  */
-class UnionOrIntersectionType extends Type, @unionorintersectiontype {
+class UnionOrIntersectionType extends Type, @union_or_intersection_type {
   /**
    * Gets the `i`th member of this union or intersection, starting at 0.
    */
@@ -1880,12 +2067,12 @@ class UnionOrIntersectionType extends Type, @unionorintersectiontype {
  * Note that the `boolean` type is represented as the union `true | false`,
  * but is still displayed as `boolean` in string representations.
  */
-class UnionType extends UnionOrIntersectionType, @uniontype { }
+class UnionType extends UnionOrIntersectionType, @union_type { }
 
 /**
  * An intersection type, such as `T & {x: number}`.
  */
-class IntersectionType extends UnionOrIntersectionType, @intersectiontype { }
+class IntersectionType extends UnionOrIntersectionType, @intersection_type { }
 
 /**
  * A type that describes a JavaScript `Array` object.
@@ -1900,7 +2087,7 @@ class IntersectionType extends UnionOrIntersectionType, @intersectiontype { }
  */
 class ArrayType extends Type {
   ArrayType() {
-    this instanceof @tupletype or
+    this instanceof @tuple_type or
     this.(TypeReference).hasQualifiedName("Array") or
     this.(TypeReference).hasQualifiedName("ReadonlyArray")
   }
@@ -1930,7 +2117,7 @@ class ReadonlyArrayType extends ArrayType, TypeReference {
 /**
  * A tuple type, such as `[number, string]`.
  */
-class TupleType extends ArrayType, @tupletype {
+class TupleType extends ArrayType, @tuple_type {
   /**
    * Gets the `i`th member of this tuple type, starting at 0.
    */
@@ -1962,49 +2149,54 @@ class TupleType extends ArrayType, @tupletype {
   int getMinimumLength() { tuple_type_min_length(this, result) }
 
   /**
-   * Holds if this tuple type ends with a rest element, such as `[number, ...string[]]`.
+   * Gets the index of the rest element.
+   * For example, for a type `[number, ...string[]]` the result is 1,
+   * or for a type `[...number[], string]` the result is 0.
    */
-  predicate hasRestElement() { tuple_type_rest(this) }
+  int getRestElementIndex() { tuple_type_rest_index(this, result) }
+
+  /**
+   * Holds if this tuple type has a rest element, such as `[number, ...string[]]` or `[...number[], string]`.
+   */
+  predicate hasRestElement() { exists(getRestElementIndex()) }
 
   /**
    * Gets the type of the rest element, if there is one.
    *
    * For example, the rest element of `[number, ...string[]]` is `string`.
    */
-  Type getRestElementType() {
-    hasRestElement() and result = getElementType(getNumElementType() - 1)
-  }
+  Type getRestElementType() { result = getElementType(getRestElementIndex()) }
 }
 
 /**
  * The predefined `any` type.
  */
-class AnyType extends Type, @anytype { }
+class AnyType extends Type, @any_type { }
 
 /**
  * The predefined `unknown` type.
  */
-class UnknownType extends Type, @unknowntype { }
+class UnknownType extends Type, @unknown_type { }
 
 /**
  * The predefined `string` type.
  */
-class StringType extends Type, @stringtype { }
+class StringType extends Type, @string_type { }
 
 /**
  * The predefined `number` type.
  */
-class NumberType extends Type, @numbertype { }
+class NumberType extends Type, @number_type { }
 
 /**
  * The predefined `bigint` type.
  */
-class BigIntType extends Type, @biginttype { }
+class BigIntType extends Type, @bigint_type { }
 
 /**
  * A boolean, number, or string literal type.
  */
-class LiteralType extends Type, @literaltype {
+class LiteralType extends Type, @literal_type {
   /**
    * Gets the string value of this literal.
    */
@@ -2014,21 +2206,21 @@ class LiteralType extends Type, @literaltype {
 /**
  * The boolean literal type `true` or `false`.
  */
-class BooleanLiteralType extends LiteralType, @booleanliteraltype {
+class BooleanLiteralType extends LiteralType, @boolean_literal_type {
   /**
    * Gets the boolean value represented by this type.
    */
-  boolean getValue() { if this instanceof @truetype then result = true else result = false }
+  boolean getValue() { if this instanceof @true_type then result = true else result = false }
 
   override string getStringValue() {
-    if this instanceof @truetype then result = "true" else result = "false"
+    if this instanceof @true_type then result = "true" else result = "false"
   }
 }
 
 /**
  * A number literal as a static type.
  */
-class NumberLiteralType extends LiteralType, @numberliteraltype {
+class NumberLiteralType extends LiteralType, @number_literal_type {
   override string getStringValue() { type_literal_value(this, result) }
 
   /**
@@ -2045,7 +2237,7 @@ class NumberLiteralType extends LiteralType, @numberliteraltype {
 /**
  * A string literal as a static type.
  */
-class StringLiteralType extends LiteralType, @stringliteraltype {
+class StringLiteralType extends LiteralType, @string_literal_type {
   override string getStringValue() { type_literal_value(this, result) }
 }
 
@@ -2071,8 +2263,8 @@ class BigIntLiteralType extends LiteralType {
  */
 class BooleanType extends UnionType {
   BooleanType() {
-    getAnElementType() instanceof @truetype and
-    getAnElementType() instanceof @falsetype and
+    getAnElementType() instanceof @true_type and
+    getAnElementType() instanceof @false_type and
     count(getAnElementType()) = 2
   }
 }
@@ -2110,37 +2302,37 @@ class BooleanLikeType extends Type {
 /**
  * The `void` type.
  */
-class VoidType extends Type, @voidtype { }
+class VoidType extends Type, @void_type { }
 
 /**
  * The `undefined` type.
  */
-class UndefinedType extends Type, @undefinedtype { }
+class UndefinedType extends Type, @undefined_type { }
 
 /**
  * The `null` type.
  */
-class NullType extends Type, @nulltype { }
+class NullType extends Type, @null_type { }
 
 /**
  * The `never` type.
  */
-class NeverType extends Type, @nevertype { }
+class NeverType extends Type, @never_type { }
 
 /**
  * The `symbol` type or a specific `unique symbol` type.
  */
-class SymbolType extends Type, @symboltype { }
+class SymbolType extends Type, @symbol_type { }
 
 /**
  * The `symbol` type.
  */
-class PlainSymbolType extends SymbolType, @plainsymboltype { }
+class PlainSymbolType extends SymbolType, @plain_symbol_type { }
 
 /**
  * A `unique symbol` type.
  */
-class UniqueSymbolType extends SymbolType, @uniquesymboltype {
+class UniqueSymbolType extends SymbolType, @unique_symbol_type {
   /**
    * Gets the canonical name of the variable exposing the symbol.
    */
@@ -2167,12 +2359,12 @@ class UniqueSymbolType extends SymbolType, @uniquesymboltype {
 /**
  * The `object` type.
  */
-class ObjectKeywordType extends Type, @objectkeywordtype { }
+class ObjectKeywordType extends Type, @objectkeyword_type { }
 
 /**
  * A type that refers to a class, interface, enum, or enum member.
  */
-class TypeReference extends Type, @typereference {
+class TypeReference extends Type, @type_reference {
   /**
    * Gets the canonical name of the type being referenced.
    */
@@ -2295,12 +2487,12 @@ class TypeAliasReference extends TypeReference {
 /**
  * An anonymous interface type, such as `{ x: number }`.
  */
-class AnonymousInterfaceType extends Type, @objecttype { }
+class AnonymousInterfaceType extends Type, @object_type { }
 
 /**
  * A type that refers to a type variable.
  */
-class TypeVariableType extends Type, @typevariabletype {
+class TypeVariableType extends Type, @typevariable_type {
   /**
    * Gets a syntactic declaration of this type variable.
    *
@@ -2340,7 +2532,7 @@ class TypeVariableType extends Type, @typevariabletype {
 /**
  * A type that refers to a type variable declared on a class, interface or function.
  */
-class CanonicalTypeVariableType extends TypeVariableType, @canonicaltypevariabletype {
+class CanonicalTypeVariableType extends TypeVariableType, @canonical_type_variable_type {
   override TypeName getHostType() { result = getCanonicalName().getParent() }
 
   override CanonicalName getCanonicalName() { type_symbol(this, result) }
@@ -2360,7 +2552,7 @@ class CanonicalTypeVariableType extends TypeVariableType, @canonicaltypevariable
  * - `<T>(x: T) => T`
  * - `<S, T>(x: S, y: T) => T`.
  */
-class LexicalTypeVariableType extends TypeVariableType, @lexicaltypevariabletype {
+class LexicalTypeVariableType extends TypeVariableType, @lexical_type_variable_type {
   override string getName() {
     types(this, _, result) // The toString value contains the name.
   }
@@ -2377,7 +2569,7 @@ class LexicalTypeVariableType extends TypeVariableType, @lexicaltypevariabletype
  * }
  * ```
  */
-class ThisType extends Type, @thistype {
+class ThisType extends Type, @this_type {
   /**
    * Gets the type containing the `this` type.
    */
@@ -2390,7 +2582,7 @@ class ThisType extends Type, @thistype {
  * The type of a named value, `typeof X`, typically denoting the type of
  * a class constructor, namespace object, enum object, or module object.
  */
-class TypeofType extends Type, @typeoftype {
+class TypeofType extends Type, @typeof_type {
   /**
    * Gets the canonical name of the named value.
    */
@@ -2602,6 +2794,11 @@ class CallSignatureType extends @signature_type {
    * For example, for the signature `(...y: string[])`, this gets the type `string[]`.
    */
   PlainArrayType getRestParameterArrayType() { signature_rest_parameter(this, result) }
+
+  /**
+   * Holds if this signature is abstract.
+   */
+  predicate isAbstract() { is_abstract_signature(this) }
 }
 
 /**

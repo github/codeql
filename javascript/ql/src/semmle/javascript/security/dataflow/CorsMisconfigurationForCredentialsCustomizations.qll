@@ -29,7 +29,10 @@ module CorsMisconfigurationForCredentials {
 
   /** A source of remote user input, considered as a flow source for CORS misconfiguration. */
   class RemoteFlowSourceAsSource extends Source {
-    RemoteFlowSourceAsSource() { this instanceof RemoteFlowSource }
+    RemoteFlowSourceAsSource() {
+      this instanceof RemoteFlowSource and
+      not this instanceof ClientSideRemoteFlowSource
+    }
   }
 
   /**

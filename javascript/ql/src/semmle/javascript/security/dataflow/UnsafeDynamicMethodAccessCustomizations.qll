@@ -43,7 +43,11 @@ module UnsafeDynamicMethodAccess {
    */
   UnsafeFunction unsafeFunction() { any() }
 
-  private class UnsafeFunction extends DataFlow::FlowLabel {
+  /**
+   * Flow label describing values that may refer to an unsafe
+   * function as a result of an attacker-controlled property name.
+   */
+  abstract class UnsafeFunction extends DataFlow::FlowLabel {
     UnsafeFunction() { this = "UnsafeFunction" }
   }
 
@@ -52,13 +56,6 @@ module UnsafeDynamicMethodAccess {
    */
   class RemoteFlowSourceAsSource extends Source {
     RemoteFlowSourceAsSource() { this instanceof RemoteFlowSource }
-  }
-
-  /**
-   * The page URL considered as a flow source for unsafe dynamic method access.
-   */
-  class DocumentUrlAsSource extends Source {
-    DocumentUrlAsSource() { this = DOM::locationSource() }
   }
 
   /**

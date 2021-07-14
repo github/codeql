@@ -24,7 +24,7 @@ as rounding errors will be more prominent when using such values.
 
 <li>
   D. Goldberg, <em>What Every Computer Scientist Should Know About Floating-Point Arithmetic</em>,
-ACM Computing Surveys, Volume 23, Issue 1, March 1991 (<a href="http://docs.sun.com/source/806-3568/ncg_goldberg.html">available online</a>).
+ACM Computing Surveys, Volume 23, Issue 1, March 1991 (<a href="https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html">available online</a>).
 </li>
 
 

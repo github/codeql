@@ -42,6 +42,8 @@ class DynamicObjectCreation extends DynamicExpr, ObjectCreation {
   override string toString() {
     result = "dynamic object creation of type " + this.getType().getName()
   }
+
+  override string getAPrimaryQlClass() { result = "DynamicObjectCreation" }
 }
 
 /**
@@ -66,6 +68,8 @@ class DynamicObjectCreation extends DynamicExpr, ObjectCreation {
  */
 class DynamicMethodCall extends DynamicExpr, MethodCall {
   override string toString() { result = "dynamic call to method " + getLateBoundTargetName() }
+
+  override string getAPrimaryQlClass() { result = "DynamicMethodCall" }
 }
 
 /**
@@ -94,6 +98,8 @@ class DynamicMethodCall extends DynamicExpr, MethodCall {
  */
 class DynamicOperatorCall extends DynamicExpr, OperatorCall {
   override string toString() { result = "dynamic call to operator " + getLateBoundTargetName() }
+
+  override string getAPrimaryQlClass() { result = "DynamicOperatorCall" }
 }
 
 /**
@@ -184,6 +190,8 @@ class DynamicAccess extends DynamicExpr {
 class DynamicMemberAccess extends DynamicAccess, MemberAccess, AssignableAccess,
   @dynamic_member_access_expr {
   override string toString() { result = "dynamic access to member " + getLateBoundTargetName() }
+
+  override string getAPrimaryQlClass() { result = "DynamicMemberAccess" }
 
   // The target is unknown when the qualifier is a `dynamic` expression
   override DynamicMember getTarget() { none() }
@@ -338,6 +346,8 @@ class DynamicAccessorCall extends DynamicAccess {
  */
 class DynamicElementAccess extends DynamicAccess, ElementAccess, @dynamic_element_access_expr {
   override string toString() { result = "dynamic access to element" }
+
+  override string getAPrimaryQlClass() { result = "DynamicElementAccess" }
 }
 
 /**

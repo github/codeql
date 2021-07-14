@@ -1,3 +1,0 @@
-| tst.js:16:2:16:42 | Import( ... rt.js") | 0 | tst.js:16:9:16:41 | "../../ ... ert.js" |
-| tst.js:27:6:29:6 | ImportJ ... \\n    }) | 0 | tst.js:27:17:27:49 | "../../ ... ert.js" |
-| tst.js:27:6:29:6 | ImportJ ... \\n    }) | 1 | tst.js:27:51:29:5 | functio ... ;\\n    } |

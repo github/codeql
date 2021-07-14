@@ -55,4 +55,15 @@ export class VirtualSourceRoot {
     }
     return null;
   }
+
+  /**
+   * Maps a path under the real source root to the corresponding path in the virtual source root.
+   */
+  public toVirtualPathIfDirectoryExists(path: string) {
+    let virtualPath = this.toVirtualPath(path);
+    if (virtualPath != null && ts.sys.directoryExists(virtualPath)) {
+        return virtualPath;
+    }
+    return null;
+  }
 }

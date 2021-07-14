@@ -67,5 +67,10 @@
 
 	} else {
 		doSomeThingWithTrustedURL(x);
-	}
+    }
+    
+    x.startsWith("https://secure.com/foo/bar"); // OK - a forward slash after the domain makes prefix checks safe.
+    x.indexOf("https://secure.com/foo/bar") >= 0 // NOT OK - the url can be anywhere in the string.
+    x.indexOf("https://secure.com") >= 0 // NOT OK
+    x.indexOf("https://secure.com/foo/bar-baz") >= 0 // NOT OK - the url can be anywhere in the string.
 });

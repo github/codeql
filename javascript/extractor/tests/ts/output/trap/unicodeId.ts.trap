@@ -55,26 +55,26 @@ variables(#20017,"才能ソЫⅨ蒤郳र्क्ड्राüışğİliيون
 #20018=*
 stmts(#20018,18,#20001,0,"var \u624d\u80fd\u30bd ... 23 = 1;")
 hasLocation(#20018,#20003)
-stmtContainers(#20018,#20001)
+stmt_containers(#20018,#20001)
 #20019=*
 exprs(#20019,64,#20018,0,"\u624d\u80fd\u30bd\u042b\u2168\u84a4\u90f3 ... 123 = 1")
 #20020=@"loc,{#10000},1,5,1,81"
 locations_default(#20020,#10000,1,5,1,81)
 hasLocation(#20019,#20020)
-enclosingStmt(#20019,#20018)
-exprContainers(#20019,#20001)
+enclosing_stmt(#20019,#20018)
+expr_containers(#20019,#20001)
 #20021=*
 exprs(#20021,78,#20019,0,"\u624d\u80fd\u30bd\u042b\u2168\u84a4\u90f3 ... Abcd123")
 hasLocation(#20021,#20007)
-enclosingStmt(#20021,#20018)
-exprContainers(#20021,#20001)
+enclosing_stmt(#20021,#20018)
+expr_containers(#20021,#20001)
 literals("才能ソЫⅨ蒤郳र्क्ड्राüışğİliيونيكودöÄüß才能ソЫⅨ蒤郳र्क्ड्राüışğİliيونيكودöÄüßAbcd123","才能ソЫⅨ蒤郳र्क्ड्राüışğİliيونيكودöÄüß才能ソЫⅨ蒤郳र्क्ड्राüışğİliيونيكودöÄüßAbcd123",#20021)
 decl(#20021,#20017)
 #20022=*
 exprs(#20022,3,#20019,1,"1")
 hasLocation(#20022,#20011)
-enclosingStmt(#20022,#20018)
-exprContainers(#20022,#20001)
+enclosing_stmt(#20022,#20018)
+expr_containers(#20022,#20001)
 literals("1","1",#20022)
 #20023=*
 entry_cfg_node(#20023,#20001)

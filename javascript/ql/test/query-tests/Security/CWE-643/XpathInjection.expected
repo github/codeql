@@ -5,8 +5,7 @@ nodes
 | XpathInjectionBad.js:9:34:9:96 | "//user ... text()" |
 | XpathInjectionBad.js:9:34:9:96 | "//user ... text()" |
 | XpathInjectionBad.js:9:66:9:73 | userName |
-| tst2.js:1:13:1:29 | document.location |
-| tst2.js:1:13:1:29 | document.location |
+| tst2.js:1:13:1:34 | documen ... on.hash |
 | tst2.js:1:13:1:34 | documen ... on.hash |
 | tst2.js:1:13:1:47 | documen ... ring(1) |
 | tst2.js:2:27:2:31 | query |
@@ -30,8 +29,7 @@ edges
 | XpathInjectionBad.js:6:18:6:38 | req.par ... rName") | XpathInjectionBad.js:6:7:6:38 | userName |
 | XpathInjectionBad.js:9:66:9:73 | userName | XpathInjectionBad.js:9:34:9:96 | "//user ... text()" |
 | XpathInjectionBad.js:9:66:9:73 | userName | XpathInjectionBad.js:9:34:9:96 | "//user ... text()" |
-| tst2.js:1:13:1:29 | document.location | tst2.js:1:13:1:34 | documen ... on.hash |
-| tst2.js:1:13:1:29 | document.location | tst2.js:1:13:1:34 | documen ... on.hash |
+| tst2.js:1:13:1:34 | documen ... on.hash | tst2.js:1:13:1:47 | documen ... ring(1) |
 | tst2.js:1:13:1:34 | documen ... on.hash | tst2.js:1:13:1:47 | documen ... ring(1) |
 | tst2.js:1:13:1:47 | documen ... ring(1) | tst2.js:2:27:2:31 | query |
 | tst2.js:1:13:1:47 | documen ... ring(1) | tst2.js:2:27:2:31 | query |
@@ -49,8 +47,8 @@ edges
 | tst.js:6:17:6:37 | req.par ... rName") | tst.js:6:7:6:37 | tainted |
 #select
 | XpathInjectionBad.js:9:34:9:96 | "//user ... text()" | XpathInjectionBad.js:6:18:6:38 | req.par ... rName") | XpathInjectionBad.js:9:34:9:96 | "//user ... text()" | $@ flows here and is used in an XPath expression. | XpathInjectionBad.js:6:18:6:38 | req.par ... rName") | User-provided value |
-| tst2.js:2:27:2:31 | query | tst2.js:1:13:1:29 | document.location | tst2.js:2:27:2:31 | query | $@ flows here and is used in an XPath expression. | tst2.js:1:13:1:29 | document.location | User-provided value |
-| tst2.js:3:19:3:23 | query | tst2.js:1:13:1:29 | document.location | tst2.js:3:19:3:23 | query | $@ flows here and is used in an XPath expression. | tst2.js:1:13:1:29 | document.location | User-provided value |
+| tst2.js:2:27:2:31 | query | tst2.js:1:13:1:34 | documen ... on.hash | tst2.js:2:27:2:31 | query | $@ flows here and is used in an XPath expression. | tst2.js:1:13:1:34 | documen ... on.hash | User-provided value |
+| tst2.js:3:19:3:23 | query | tst2.js:1:13:1:34 | documen ... on.hash | tst2.js:3:19:3:23 | query | $@ flows here and is used in an XPath expression. | tst2.js:1:13:1:34 | documen ... on.hash | User-provided value |
 | tst.js:7:15:7:21 | tainted | tst.js:6:17:6:37 | req.par ... rName") | tst.js:7:15:7:21 | tainted | $@ flows here and is used in an XPath expression. | tst.js:6:17:6:37 | req.par ... rName") | User-provided value |
 | tst.js:8:16:8:22 | tainted | tst.js:6:17:6:37 | req.par ... rName") | tst.js:8:16:8:22 | tainted | $@ flows here and is used in an XPath expression. | tst.js:6:17:6:37 | req.par ... rName") | User-provided value |
 | tst.js:9:17:9:23 | tainted | tst.js:6:17:6:37 | req.par ... rName") | tst.js:9:17:9:23 | tainted | $@ flows here and is used in an XPath expression. | tst.js:6:17:6:37 | req.par ... rName") | User-provided value |

@@ -30,7 +30,7 @@ For an array, the size is the number of elements of the array multiplied by the 
   Cplusplus.comn: <a href="http://www.cplusplus.com/reference/clibrary/cstring/memset/">memset</a>
 </li>
 <li>
-  MSDN Library: <a href="http://msdn.microsoft.com/en-us/library/aa246471%28v=VS.60%29.aspx">memset</a>, <a href="http://msdn.microsoft.com/en-us/library/4s7x1k91%28v=VS.71%29.aspx">sizeof Operator</a>
+  MSDN Library: <a href="https://docs.microsoft.com/en-us/cpp/c-runtime-library/reference/memset-wmemset">memset, wmemset</a>, <a href="https://docs.microsoft.com/en-us/cpp/cpp/sizeof-operator">sizeof Operator</a>
 </li>
 
 

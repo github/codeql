@@ -1,8 +1,4 @@
 missingOperand
-| ir.cpp:809:7:809:13 | IndirectMayWriteSideEffect: call to Base | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:799:6:799:25 | void HierarchyConversions() | void HierarchyConversions() |
-| ir.cpp:810:7:810:26 | IndirectMayWriteSideEffect: call to Base | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:799:6:799:25 | void HierarchyConversions() | void HierarchyConversions() |
-| ir.cpp:823:7:823:13 | IndirectMayWriteSideEffect: call to Base | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:799:6:799:25 | void HierarchyConversions() | void HierarchyConversions() |
-| ir.cpp:824:7:824:26 | IndirectMayWriteSideEffect: call to Base | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:799:6:799:25 | void HierarchyConversions() | void HierarchyConversions() |
 unexpectedOperand
 duplicateOperand
 missingPhiOperand
@@ -10,6 +6,7 @@ missingOperandType
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
+| ../../../include/memory.h:68:25:68:33 | CopyValue: (reference to) | Instruction 'CopyValue: (reference to)' has no successors in function '$@'. | ../../../include/memory.h:67:5:67:5 | void std::unique_ptr<int, std::default_delete<int>>::~unique_ptr() | void std::unique_ptr<int, std::default_delete<int>>::~unique_ptr() |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction
@@ -25,6 +22,8 @@ notMarkedAsConflated
 wronglyMarkedAsConflated
 invalidOverlap
 nonUniqueEnclosingIRFunction
+fieldAddressOnNonPointer
+thisArgumentIsNonPointer
 missingCanonicalLanguageType
 multipleCanonicalLanguageTypes
 missingIRType

@@ -48,6 +48,15 @@ class MemberFunction extends Function {
   /** Holds if this member is public. */
   predicate isPublic() { this.hasSpecifier("public") }
 
+  /** Holds if this declaration has the lvalue ref-qualifier */
+  predicate isLValueRefQualified() { hasSpecifier("&") }
+
+  /** Holds if this declaration has the rvalue ref-qualifier */
+  predicate isRValueRefQualified() { hasSpecifier("&&") }
+
+  /** Holds if this declaration has a ref-qualifier */
+  predicate isRefQualified() { isLValueRefQualified() or isRValueRefQualified() }
+
   /** Holds if this function overrides that function. */
   predicate overrides(MemberFunction that) {
     overrides(underlyingElement(this), unresolveElement(that))
@@ -205,12 +214,21 @@ class Constructor extends MemberFunction {
 /**
  * A function that defines an implicit conversion.
  */
-abstract class ImplicitConversionFunction extends MemberFunction {
+class ImplicitConversionFunction extends MemberFunction {
+  ImplicitConversionFunction() {
+    // ConversionOperator
+    functions(underlyingElement(this), _, 4)
+    or
+    // ConversionConstructor (deprecated)
+    strictcount(Parameter p | p = getAParameter() and not p.hasInitializer()) = 1 and
+    not hasSpecifier("explicit")
+  }
+
   /** Gets the type this `ImplicitConversionFunction` takes as input. */
-  abstract Type getSourceType();
+  Type getSourceType() { none() } // overridden in subclasses
 
   /** Gets the type this `ImplicitConversionFunction` converts to. */
-  abstract Type getDestType();
+  Type getDestType() { none() } // overridden in subclasses
 }
 
 /**

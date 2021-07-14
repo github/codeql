@@ -1,8 +1,0 @@
-| tst.js:3:1:3:106 | <a href ... */}</a> | 0 | tst.js:3:47:3:54 | Link to  |
-| tst.js:3:1:3:106 | <a href ... */}</a> | 1 | tst.js:3:56:3:59 | href |
-| tst.js:3:1:3:106 | <a href ... */}</a> | 2 | tst.js:3:61:3:62 | .  |
-| tst.js:3:1:3:106 | <a href ... */}</a> | 3 | tst.js:3:64:3:101 |  |
-| tstest.tsx:3:1:3:106 | <a href ... */}</a> | 0 | tstest.tsx:3:47:3:54 | Link to  |
-| tstest.tsx:3:1:3:106 | <a href ... */}</a> | 1 | tstest.tsx:3:56:3:59 | href |
-| tstest.tsx:3:1:3:106 | <a href ... */}</a> | 2 | tstest.tsx:3:61:3:62 | .  |
-| tstest.tsx:3:1:3:106 | <a href ... */}</a> | 3 | tstest.tsx:3:63:3:102 | {/*TODO ... text*/} |

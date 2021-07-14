@@ -17,7 +17,7 @@ import MagicConstants
 /**
  * Holds if the string is a standard system property as defined in:
  *
- * http://docs.oracle.com/javase/7/docs/api/java/lang/System.html#getProperties()
+ * https://docs.oracle.com/javase/7/docs/api/java/lang/System.html#getProperties()
  */
 predicate isSystemProperty(string e) {
   e = "java.version" or

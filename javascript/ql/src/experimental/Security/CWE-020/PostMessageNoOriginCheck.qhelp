@@ -31,7 +31,7 @@ Always verify the sender's identity of incoming messages.
 
 <references>
 
-<li><a href="https://cwe.mitre.org/data/definitions/20.html">CWE-20: Improper Input Validation</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/20.html">CWE-020: Improper Input Validation</a></li>
 <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage">Window.postMessage()</a></li>
 <li><a href="https://portswigger.net/web-security/dom-based/web-message-manipulation">Web-message manipulation</a></li>
 <li><a href="https://labs.detectify.com/2016/12/08/the-pitfalls-of-postmessage/">The pitfalls of postMessage</a></li>

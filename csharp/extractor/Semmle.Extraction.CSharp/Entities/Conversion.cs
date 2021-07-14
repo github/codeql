@@ -5,33 +5,32 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    class Conversion : UserOperator
+    internal class Conversion : UserOperator
     {
-        Conversion(Context cx, IMethodSymbol init)
+        private Conversion(Context cx, IMethodSymbol init)
             : base(cx, init) { }
 
-        public new static Conversion Create(Context cx, IMethodSymbol symbol) =>
-            ConversionFactory.Instance.CreateEntity(cx, symbol);
+        public static new Conversion Create(Context cx, IMethodSymbol symbol) =>
+            ConversionFactory.Instance.CreateEntityFromSymbol(cx, symbol);
 
-        public override Microsoft.CodeAnalysis.Location ReportingLocation
+        public override Microsoft.CodeAnalysis.Location? ReportingLocation
         {
             get
             {
-                return symbol.
-                    DeclaringSyntaxReferences.
-                    Select(r => r.GetSyntax()).
-                    OfType<ConversionOperatorDeclarationSyntax>().
-                    Select(s => s.FixedLocation()).
-                    Concat(symbol.Locations).
-                    FirstOrDefault();
+                return Symbol.DeclaringSyntaxReferences
+                    .Select(r => r.GetSyntax())
+                    .OfType<ConversionOperatorDeclarationSyntax>()
+                    .Select(s => s.FixedLocation())
+                    .Concat(Symbol.Locations)
+                    .FirstOrDefault();
             }
         }
 
-        class ConversionFactory : ICachedEntityFactory<IMethodSymbol, Conversion>
+        private class ConversionFactory : CachedEntityFactory<IMethodSymbol, Conversion>
         {
-            public static readonly ConversionFactory Instance = new ConversionFactory();
+            public static ConversionFactory Instance { get; } = new ConversionFactory();
 
-            public Conversion Create(Context cx, IMethodSymbol init) => new Conversion(cx, init);
+            public override Conversion Create(Context cx, IMethodSymbol init) => new Conversion(cx, init);
         }
     }
 }

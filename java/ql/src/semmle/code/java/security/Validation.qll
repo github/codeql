@@ -63,18 +63,3 @@ private predicate validatedAccess(VarAccess va) {
 class ValidatedVariableAccess extends VarAccess {
   ValidatedVariableAccess() { validatedAccess(this) }
 }
-
-/**
- * DEPRECATED: Use ValidatedVariableAccess instead.
- *
- * A variable that is ever passed to a string verification method.
- */
-deprecated class ValidatedVariable extends Variable {
-  ValidatedVariable() {
-    exists(MethodAccess call, int arg, VarAccess access |
-      validationMethod(call.getMethod(), arg) and
-      call.getArgument(arg) = access and
-      access.getVariable() = this
-    )
-  }
-}

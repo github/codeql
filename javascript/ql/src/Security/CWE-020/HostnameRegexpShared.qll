@@ -59,8 +59,7 @@ predicate matchesBeginningOfString(RegExpTerm term) {
  * `i` is bound to the index of the last child in the top-level domain part.
  */
 predicate hasTopLevelDomainEnding(RegExpSequence seq, int i) {
-  seq
-      .getChild(i)
+  seq.getChild(i)
       .(RegExpConstant)
       .getValue()
       .regexpMatch("(?i)" + RegExpPatterns::commonTLD() + "(:\\d+)?([/?#].*)?") and

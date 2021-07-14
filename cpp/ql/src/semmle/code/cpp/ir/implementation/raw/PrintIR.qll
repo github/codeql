@@ -50,6 +50,37 @@ private string getAdditionalBlockProperty(IRBlock block, string key) {
   exists(IRPropertyProvider provider | result = provider.getBlockProperty(block, key))
 }
 
+/**
+ * Gets the properties of an operand from any active property providers.
+ */
+private string getAdditionalOperandProperty(Operand operand, string key) {
+  exists(IRPropertyProvider provider | result = provider.getOperandProperty(operand, key))
+}
+
+/**
+ * Gets a string listing the properties of the operand and their corresponding values. If the
+ * operand has no properties, this predicate has no result.
+ */
+private string getOperandPropertyListString(Operand operand) {
+  result =
+    strictconcat(string key, string value |
+      value = getAdditionalOperandProperty(operand, key)
+    |
+      key + ":" + value, ", "
+    )
+}
+
+/**
+ * Gets a string listing the properties of the operand and their corresponding values. The list is
+ * surrounded by curly braces. If the operand has no properties, this predicate returns an empty
+ * string.
+ */
+private string getOperandPropertyString(Operand operand) {
+  result = "{" + getOperandPropertyListString(operand) + "}"
+  or
+  not exists(getOperandPropertyListString(operand)) and result = ""
+}
+
 private newtype TPrintableIRNode =
   TPrintableIRFunction(IRFunction irFunc) { shouldPrintFunction(irFunc.getFunction()) } or
   TPrintableIRBlock(IRBlock block) { shouldPrintFunction(block.getEnclosingFunction()) } or
@@ -190,7 +221,7 @@ private class PrintableInstruction extends PrintableIRNode, TPrintableInstructio
       |
         resultString = instr.getResultString() and
         operationString = instr.getOperationString() and
-        operandsString = instr.getOperandsString() and
+        operandsString = getOperandsString() and
         columnWidths(block, resultWidth, operationWidth) and
         result =
           resultString + getPaddingString(resultWidth - resultString.length()) + " = " +
@@ -209,6 +240,22 @@ private class PrintableInstruction extends PrintableIRNode, TPrintableInstructio
   override string getProperty(string key) {
     result = PrintableIRNode.super.getProperty(key) or
     result = getAdditionalInstructionProperty(instr, key)
+  }
+
+  /**
+   * Gets the string representation of the operand list. This is the same as
+   * `Instruction::getOperandsString()`, except that each operand is annotated with any properties
+   * provided by active `IRPropertyProvider` instances.
+   */
+  private string getOperandsString() {
+    result =
+      concat(Operand operand |
+        operand = instr.getAnOperand()
+      |
+        operand.getDumpString() + getOperandPropertyString(operand), ", "
+        order by
+          operand.getDumpSortOrder()
+      )
   }
 }
 

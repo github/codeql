@@ -4,6 +4,7 @@
  *              behavior.
  * @kind problem
  * @problem.severity error
+ * @security-severity 7.5
  * @precision high
  * @id cpp/wrong-type-format-argument
  * @tags reliability
@@ -155,7 +156,8 @@ where
     not actual.getUnspecifiedType().(IntegralType).getSize() = sizeof_IntType()
   ) and
   not arg.isAffectedByMacro() and
-  not arg.isFromUninstantiatedTemplate(_)
+  not arg.isFromUninstantiatedTemplate(_) and
+  not actual.getUnspecifiedType() instanceof ErroneousType
 select arg,
   "This argument should be of type '" + expected.getName() + "' but is of type '" +
     actual.getUnspecifiedType().getName() + "'"

@@ -4,6 +4,7 @@
  * @kind problem
  * @id py/insecure-temporary-file
  * @problem.severity error
+ * @security-severity 7.0
  * @sub-severity high
  * @precision high
  * @tags external/cwe/cwe-377
@@ -11,8 +12,9 @@
  */
 
 import python
+import semmle.python.ApiGraphs
 
-FunctionValue temporary_name_function(string mod, string function) {
+API::Node temporary_name_function(string mod, string function) {
   (
     mod = "tempfile" and function = "mktemp"
     or
@@ -23,9 +25,9 @@ FunctionValue temporary_name_function(string mod, string function) {
       function = "tempnam"
     )
   ) and
-  result = Module::named(mod).attr(function)
+  result = API::moduleImport(mod).getMember(function)
 }
 
 from Call c, string mod, string function
-where temporary_name_function(mod, function).getACall().getNode() = c
+where temporary_name_function(mod, function).getACall().asExpr() = c
 select c, "Call to deprecated function " + mod + "." + function + " may be insecure."

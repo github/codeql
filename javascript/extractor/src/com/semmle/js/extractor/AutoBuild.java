@@ -1,11 +1,8 @@
 package com.semmle.js.extractor;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.Reader;
-import java.io.Writer;
 import java.lang.ProcessBuilder.Redirect;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -35,19 +32,18 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonPrimitive;
+import com.semmle.js.dependencies.AsyncFetcher;
+import com.semmle.js.dependencies.DependencyResolver;
+import com.semmle.js.dependencies.packument.PackageJson;
 import com.semmle.js.extractor.ExtractorConfig.SourceType;
 import com.semmle.js.extractor.FileExtractor.FileType;
 import com.semmle.js.extractor.trapcache.DefaultTrapCache;
 import com.semmle.js.extractor.trapcache.DummyTrapCache;
 import com.semmle.js.extractor.trapcache.ITrapCache;
 import com.semmle.js.parser.ParsedProject;
-import com.semmle.js.parser.TypeScriptParser;
 import com.semmle.ts.extractor.TypeExtractor;
+import com.semmle.ts.extractor.TypeScriptParser;
 import com.semmle.ts.extractor.TypeTable;
 import com.semmle.util.data.StringUtil;
 import com.semmle.util.exception.CatastrophicError;
@@ -60,6 +56,7 @@ import com.semmle.util.io.WholeIO;
 import com.semmle.util.io.csv.CSVReader;
 import com.semmle.util.language.LegacyLanguage;
 import com.semmle.util.process.Env;
+import com.semmle.util.process.Env.OS;
 import com.semmle.util.projectstructure.ProjectLayout;
 import com.semmle.util.trap.TrapWriter;
 
@@ -120,7 +117,7 @@ import com.semmle.util.trap.TrapWriter;
  * or "metadata" becomes an exclude path. Note that there are no implicit exclude paths.
  *
  * <p>The walking phase starts at each include path in turn and recursively traverses folders and
- * files. Symlinks and hidden folders are skipped, but not hidden files. If it encounters a
+ * files. Symlinks and most hidden folders are skipped, but not hidden files. If it encounters a
  * sub-folder whose path is excluded, traversal stops. If it encounters a file, that file becomes a
  * candidate, unless its path is excluded. If the path of a file is both an include path and an
  * exclude path, the inclusion takes precedence, and the file becomes a candidate after all.
@@ -144,12 +141,13 @@ import com.semmle.util.trap.TrapWriter;
  *
  * <ul>
  *   <li>All JavaScript files, that is, files with one of the extensions supported by {@link
- *       FileType#JS} (currently ".js", ".jsx", ".mjs", ".es6", ".es").
+ *       FileType#JS} (currently ".js", ".jsx", ".mjs", ".cjs", ".es6", ".es").
  *   <li>All HTML files, that is, files with with one of the extensions supported by {@link
  *       FileType#HTML} (currently ".htm", ".html", ".xhtm", ".xhtml", ".vue").
  *   <li>All YAML files, that is, files with one of the extensions supported by {@link
  *       FileType#YAML} (currently ".raml", ".yaml", ".yml").
- *   <li>Files with base name "package.json".
+ *   <li>Files with base name "package.json" or "tsconfig.json", and files whose base name
+ *       is of the form "codeql-javascript-*.json".
  *   <li>JavaScript, JSON or YAML files whose base name starts with ".eslintrc".
  *   <li>All extension-less files.
  * </ul>
@@ -212,11 +210,10 @@ public class AutoBuild {
   private volatile boolean seenCode = false;
   private volatile boolean seenFiles = false;
   private boolean installDependencies = false;
-  private int installDependenciesTimeout;
   private final VirtualSourceRoot virtualSourceRoot;
   private ExtractorState state;
 
-  /** The default timeout when running <code>yarn</code>, in milliseconds. */
+  /** The default timeout when installing dependencies, in milliseconds. */
   public static final int INSTALL_DEPENDENCIES_DEFAULT_TIMEOUT = 10 * 60 * 1000; // 10 minutes
 
   public AutoBuild() {
@@ -228,10 +225,6 @@ public class AutoBuild {
         getEnumFromEnvVar("LGTM_INDEX_TYPESCRIPT", TypeScriptMode.class, TypeScriptMode.FULL);
     this.defaultEncoding = getEnvVar("LGTM_INDEX_DEFAULT_ENCODING");
     this.installDependencies = Boolean.valueOf(getEnvVar("LGTM_INDEX_TYPESCRIPT_INSTALL_DEPS"));
-    this.installDependenciesTimeout =
-        Env.systemEnv()
-            .getInt(
-                "LGTM_INDEX_TYPESCRIPT_INSTALL_DEPS_TIMEOUT", INSTALL_DEPENDENCIES_DEFAULT_TIMEOUT);
     this.virtualSourceRoot = makeVirtualSourceRoot();
     setupFileTypes();
     setupXmlMode();
@@ -410,10 +403,12 @@ public class AutoBuild {
     for (FileType filetype : defaultExtract)
       for (String extension : filetype.getExtensions()) patterns.add("**/*" + extension);
 
-    // include .eslintrc files, package.json files, and tsconfig.json files
+    // include .eslintrc files, package.json files, tsconfig.json files, and
+    // codeql-javascript-*.json files
     patterns.add("**/.eslintrc*");
     patterns.add("**/package.json");
-    patterns.add("**/tsconfig.json");
+    patterns.add("**/tsconfig*.json");
+    patterns.add("**/codeql-javascript-*.json");
 
     // include any explicitly specified extensions
     for (String extension : fileTypes.keySet()) patterns.add("**/*" + extension);
@@ -689,28 +684,6 @@ public class AutoBuild {
     return false;
   }
 
-  /** Returns true if yarn is installed, otherwise prints a warning and returns false. */
-  private boolean verifyYarnInstallation() {
-    ProcessBuilder pb = new ProcessBuilder(Arrays.asList("yarn", "-v"));
-    try {
-      Process process = pb.start();
-      boolean completed = process.waitFor(this.installDependenciesTimeout, TimeUnit.MILLISECONDS);
-      if (!completed) {
-        System.err.println("Yarn could not be launched. Timeout during 'yarn -v'.");
-        return false;
-      }
-      BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-      String version = reader.readLine();
-      System.out.println("Found yarn version: " + version);
-      return true;
-    } catch (IOException | InterruptedException ex) {
-      System.err.println(
-          "Yarn not found. Please put 'yarn' on the PATH for automatic dependency installation.");
-      Exceptions.ignore(ex, "Continue without dependency installation");
-      return false;
-    }
-  }
-
   /**
    * Returns an existing file named <code>dir/stem.ext</code> where <code>.ext</code> is any
    * of the given extensions, or <code>null</code> if no such file exists.
@@ -736,17 +709,6 @@ public class AutoBuild {
   }
 
   /**
-   * Gets a child of a JSON object as a string, or <code>null</code>.
-   */
-  private String getChildAsString(JsonObject obj, String name) {
-     JsonElement child = obj.get(name);
-     if (child instanceof JsonPrimitive && ((JsonPrimitive)child).isString()) {
-       return child.getAsString();
-     }
-     return null;
-  }
-
-  /**
    * Gets a relative path from <code>from</code> to <code>to</code> provided
    * the latter is contained in the former. Otherwise returns <code>null</code>.
    * @return a path or null
@@ -760,19 +722,16 @@ public class AutoBuild {
   }
 
   /**
-   * Prepares <tt>package.json</tt> files in a virtual source root, and, if enabled,
+   * Prepares <code>package.json</code> files in a virtual source root, and, if enabled,
    * installs dependencies for use by the TypeScript type checker.
    * <p>
    * Some packages must be downloaded while others exist within the same repo ("monorepos")
    * but are not in a location where TypeScript would look for it.
    * <p>
-   * Downloaded packages are intalled under <tt>SCRATCH_DIR</tt>, in a mirrored directory hierarchy
+   * Downloaded packages are intalled under <code>SCRATCH_DIR</code>, in a mirrored directory hierarchy
    * we call the "virtual source root".
-   * Each <tt>package.json</tt> file is rewritten and copied to the virtual source root,
-   * where <tt>yarn install</tt> is invoked.
    * <p>
-   * Packages that exists within the repo are stripped from the dependencies
-   * before installation, so they are not downloaded. Since they are part of the main source tree,
+   * Packages that exists within the repo are not downloaded. Since they are part of the main source tree,
    * these packages are not mirrored under the virtual source root.
    * Instead, an explicit package location mapping is passed to the TypeScript parser wrapper.
    * <p>
@@ -783,23 +742,23 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
     final Path sourceRoot = LGTM_SRC;
 
     // Read all package.json files and index them by name.
-    Map<Path, JsonObject> packageJsonFiles = new LinkedHashMap<>();
+    Map<Path, PackageJson> packageJsonFiles = new LinkedHashMap<>();
     Map<String, Path> packagesInRepo = new LinkedHashMap<>();
     Map<String, Path> packageMainFile = new LinkedHashMap<>();
     for (Path file : filesToExtract) {
       if (file.getFileName().toString().equals("package.json")) {
         try {
-          String text = new WholeIO().read(file);
-          JsonElement json = new JsonParser().parse(text);
-          if (!(json instanceof JsonObject)) continue;
-          JsonObject jsonObject = (JsonObject) json;
+          PackageJson packageJson = new Gson().fromJson(new WholeIO().read(file), PackageJson.class);
+          if (packageJson == null) {
+            continue;
+          }
           file = file.toAbsolutePath();
           if (tryRelativize(sourceRoot, file) == null) {
             continue; // Ignore package.json files outside the source root.
           }
-          packageJsonFiles.put(file, jsonObject);
+          packageJsonFiles.put(file, packageJson);
 
-          String name = getChildAsString(jsonObject, "name");
+          String name = packageJson.getName();
           if (name != null) {
             packagesInRepo.put(name, file);
           }
@@ -811,45 +770,12 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
       }
     }
 
-    // Process all package.json files now that we know the names of all local packages.
-    // - remove dependencies on local packages
-    // - guess the main file for each package
-    // Note that we ignore optional dependencies during installation, so "optionalDependencies"
-    // is ignored here as well.
-    final List<String> dependencyFields =
-        Arrays.asList("dependencies", "devDependencies", "peerDependencies");
+    // Guess the main file for each package.
     packageJsonFiles.forEach(
-        (path, packageJson) -> {
+      (path, packageJson) -> {
           Path relativePath = sourceRoot.relativize(path);
-          for (String dependencyField : dependencyFields) {
-            JsonElement dependencyElm = packageJson.get(dependencyField);
-            if (!(dependencyElm instanceof JsonObject)) continue;
-            JsonObject dependencyObj = (JsonObject) dependencyElm;
-            List<String> propsToRemove = new ArrayList<>();
-            for (String packageName : dependencyObj.keySet()) {
-              if (packagesInRepo.containsKey(packageName)) {
-                // Remove dependency on local package
-                propsToRemove.add(packageName);
-              } else {
-                // Remove file dependency on a package that doesn't exist in the checkout.
-                String dependency = getChildAsString(dependencyObj, packageName);
-                if (dependency != null && (dependency.startsWith("file:") || dependency.startsWith("./") || dependency.startsWith("../"))) {
-                    if (dependency.startsWith("file:")) {
-                      dependency = dependency.substring("file:".length());
-                    }
-                    Path resolvedPackage = path.getParent().resolve(dependency + "/package.json");
-                    if (!Files.exists(resolvedPackage)) {
-                      propsToRemove.add(packageName);
-                    }
-                }
-              }
-            }
-            for (String prop : propsToRemove) {
-              dependencyObj.remove(prop);
-            }
-          }
           // For named packages, find the main file.
-          String name = getChildAsString(packageJson, "name");
+          String name = packageJson.getName();
           if (name != null) {
             Path entryPoint = guessPackageMainFile(path, packageJson, FileType.TYPESCRIPT.getExtensions());
             if (entryPoint == null) {
@@ -865,45 +791,25 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
           }
         });
 
-    // Write the new package.json files to disk
-    for (Path file : packageJsonFiles.keySet()) {
-      Path virtualFile = virtualSourceRoot.toVirtualFile(file);
-
+    if (installDependencies) {
+      // Use more threads for dependency installation than for extraction, as this is mainly I/O bound and we want
+      // many concurrent HTTP requests.
+      ExecutorService installationThreadPool = Executors.newFixedThreadPool(50);
+      AsyncFetcher fetcher = new AsyncFetcher(installationThreadPool, err -> { System.err.println(err); });
       try {
-        Files.createDirectories(virtualFile.getParent());
-        try (Writer writer = Files.newBufferedWriter(virtualFile)) {
-          new Gson().toJson(packageJsonFiles.get(file), writer);
-        }
-      } catch (IOException e) {
-        throw new ResourceError("Could not rewrite package.json file: " + virtualFile, e);
-      }
-    }
-
-    // Install dependencies
-    if (this.installDependencies && verifyYarnInstallation()) {
-      for (Path file : packageJsonFiles.keySet()) {
-        Path virtualFile = virtualSourceRoot.toVirtualFile(file);
-        System.out.println("Installing dependencies from " + virtualFile);
-        ProcessBuilder pb =
-            new ProcessBuilder(
-                Arrays.asList(
-                    "yarn",
-                    "install",
-                    "--non-interactive",
-                    "--ignore-scripts",
-                    "--ignore-platform",
-                    "--ignore-engines",
-                    "--ignore-optional",
-                    "--no-default-rc",
-                    "--no-bin-links",
-                    "--pure-lockfile"));
-        pb.directory(virtualFile.getParent().toFile());
-        pb.redirectOutput(Redirect.INHERIT);
-        pb.redirectError(Redirect.INHERIT);
+        List<CompletableFuture<Void>> futures = new ArrayList<>();
+        packageJsonFiles.forEach((file, packageJson) -> {
+          Path virtualFile = virtualSourceRoot.toVirtualFile(file);
+          Path nodeModulesDir = virtualFile.getParent().resolve("node_modules");
+          futures.add(new DependencyResolver(fetcher, packagesInRepo.keySet()).installDependencies(packageJson, nodeModulesDir));
+        });
+        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+      } finally {
+        installationThreadPool.shutdown();
         try {
-          pb.start().waitFor(this.installDependenciesTimeout, TimeUnit.MILLISECONDS);
-        } catch (IOException | InterruptedException ex) {
-          throw new ResourceError("Could not install dependencies from " + file, ex);
+          installationThreadPool.awaitTermination(1, TimeUnit.HOURS);
+        } catch (InterruptedException e) {
+          Exceptions.ignore(e, "Awaiting termination is not essential.");
         }
       }
     }
@@ -916,7 +822,7 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
    * given package - that is, the file you get when importing the package by name
    * without any path suffix.
    */
-  private Path guessPackageMainFile(Path packageJsonFile, JsonObject packageJson, Iterable<String> extensions) {
+  private Path guessPackageMainFile(Path packageJsonFile, PackageJson packageJson, Iterable<String> extensions) {
     Path packageDir = packageJsonFile.getParent();
 
     // Try <package_dir>/index.ts.
@@ -928,7 +834,7 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
     // Get the "main" property from the package.json
     // This usually refers to the compiled output, such as `./out/foo.js` but may hint as to
     // the name of main file ("foo" in this case).
-    String mainStr = getChildAsString(packageJson, "main");
+    String mainStr = packageJson.getMain();
 
     // Look for source files `./src` if it exists
     Path sourceDir = packageDir.resolve("src");
@@ -1110,10 +1016,19 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
             return super.visitFile(file, attrs);
           }
 
+          /**
+           * Returns {@code true} if {@code dir} is a hidden directory
+           * that should be skipped by default.
+           */
+          private boolean isSkippedHiddenDirectory(Path dir) {
+            // Allow .github folders as they may contain YAML files relevant to GitHub repositories.
+            return dir.toFile().isHidden() && !dir.getFileName().toString().equals(".github");
+          }
+
           @Override
           public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
               throws IOException {
-            if (!dir.equals(currentRoot[0]) && (excludes.contains(dir) || dir.toFile().isHidden()))
+            if (!dir.equals(currentRoot[0]) && (excludes.contains(dir) || isSkippedHiddenDirectory(dir)))
               return FileVisitResult.SKIP_SUBTREE;
             if (Files.exists(dir.resolve("codeql-database.yml"))) {
               return FileVisitResult.SKIP_SUBTREE;
@@ -1239,11 +1154,29 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
   protected void extractXml() throws IOException {
     if (xmlExtensions.isEmpty()) return;
     List<String> cmd = new ArrayList<>();
-    cmd.add("odasa");
-    cmd.add("index");
-    cmd.add("--xml");
-    cmd.add("--extensions");
-    cmd.addAll(xmlExtensions);
+    if (EnvironmentVariables.getCodeQLDist() == null) {
+      // Use the legacy odasa XML extractor
+      cmd.add("odasa");
+      cmd.add("index");
+      cmd.add("--xml");
+      cmd.add("--extensions");
+      cmd.addAll(xmlExtensions);
+    } else {
+      String command = Env.getOS() == OS.WINDOWS ? "codeql.exe" : "codeql";
+      cmd.add(Paths.get(EnvironmentVariables.getCodeQLDist(), command).toString());
+      cmd.add("database");
+      cmd.add("index-files");
+      cmd.add("--language");
+      cmd.add("xml");
+      cmd.add("--size-limit");
+      cmd.add("10m");
+      for (String extension : xmlExtensions) {
+        cmd.add("--include-extension");
+        cmd.add(extension);
+      }
+      cmd.add("--");
+      cmd.add(EnvironmentVariables.getWipDatabase());
+    }
     ProcessBuilder pb = new ProcessBuilder(cmd);
     try {
       pb.redirectError(Redirect.INHERIT);

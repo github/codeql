@@ -76,20 +76,20 @@ abstract class Configuration extends DataFlow::Configuration {
 
   final override predicate isBarrier(DataFlow::Node node) {
     isSanitizer(node) or
-    defaultTaintBarrier(node)
+    defaultTaintSanitizer(node)
   }
 
-  /** Holds if data flow into `node` is prohibited. */
+  /** Holds if taint propagation into `node` is prohibited. */
   predicate isSanitizerIn(DataFlow::Node node) { none() }
 
   final override predicate isBarrierIn(DataFlow::Node node) { isSanitizerIn(node) }
 
-  /** Holds if data flow out of `node` is prohibited. */
+  /** Holds if taint propagation out of `node` is prohibited. */
   predicate isSanitizerOut(DataFlow::Node node) { none() }
 
   final override predicate isBarrierOut(DataFlow::Node node) { isSanitizerOut(node) }
 
-  /** Holds if data flow through nodes guarded by `guard` is prohibited. */
+  /** Holds if taint propagation through nodes guarded by `guard` is prohibited. */
   predicate isSanitizerGuard(DataFlow::BarrierGuard guard) { none() }
 
   final override predicate isBarrierGuard(DataFlow::BarrierGuard guard) { isSanitizerGuard(guard) }
@@ -103,6 +103,11 @@ abstract class Configuration extends DataFlow::Configuration {
   final override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     isAdditionalTaintStep(node1, node2) or
     defaultAdditionalTaintStep(node1, node2)
+  }
+
+  override predicate allowImplicitRead(DataFlow::Node node, DataFlow::Content c) {
+    (this.isSink(node) or this.isAdditionalTaintStep(node, _)) and
+    defaultImplicitTaintRead(node, c)
   }
 
   /**

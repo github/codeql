@@ -3,6 +3,7 @@
  * @description Non-HTTPS connections can be intercepted by third parties.
  * @kind path-problem
  * @problem.severity recommendation
+ * @security-severity 7.5
  * @precision medium
  * @id java/non-https-url
  * @tags security
@@ -11,10 +12,12 @@
 
 import java
 import semmle.code.java.dataflow.TaintTracking
+import semmle.code.java.frameworks.Networking
 import DataFlow::PathGraph
+private import semmle.code.java.dataflow.ExternalFlow
 
-class HTTPString extends StringLiteral {
-  HTTPString() {
+class HttpString extends StringLiteral {
+  HttpString() {
     // Avoid matching "https" here.
     exists(string s | this.getRepresentedString() = s |
       (
@@ -29,41 +32,15 @@ class HTTPString extends StringLiteral {
   }
 }
 
-class URLConstructor extends ClassInstanceExpr {
-  URLConstructor() { this.getConstructor().getDeclaringType().getQualifiedName() = "java.net.URL" }
+class HttpStringToUrlOpenMethodFlowConfig extends TaintTracking::Configuration {
+  HttpStringToUrlOpenMethodFlowConfig() { this = "HttpsUrls::HttpStringToUrlOpenMethodFlowConfig" }
 
-  Expr protocolArg() {
-    // In all cases except where the first parameter is a URL, the argument
-    // containing the protocol is the first one, otherwise it is the second.
-    if this.getConstructor().getParameter(0).getType().getName() = "URL"
-    then result = this.getArgument(1)
-    else result = this.getArgument(0)
-  }
-}
+  override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof HttpString }
 
-class URLOpenMethod extends Method {
-  URLOpenMethod() {
-    this.getDeclaringType().getQualifiedName() = "java.net.URL" and
-    (
-      this.getName() = "openConnection" or
-      this.getName() = "openStream"
-    )
-  }
-}
-
-class HTTPStringToURLOpenMethodFlowConfig extends TaintTracking::Configuration {
-  HTTPStringToURLOpenMethodFlowConfig() { this = "HttpsUrls::HTTPStringToURLOpenMethodFlowConfig" }
-
-  override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof HTTPString }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess m |
-      sink.asExpr() = m.getQualifier() and m.getMethod() instanceof URLOpenMethod
-    )
-  }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof UrlOpenSink }
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(URLConstructor u |
+    exists(UrlConstructorCall u |
       node1.asExpr() = u.protocolArg() and
       node2.asExpr() = u
     )
@@ -74,10 +51,17 @@ class HTTPStringToURLOpenMethodFlowConfig extends TaintTracking::Configuration {
   }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, MethodAccess m, HTTPString s
+/**
+ * A sink that represents a URL opening method call, such as a call to `java.net.URL.openConnection()`.
+ */
+private class UrlOpenSink extends DataFlow::Node {
+  UrlOpenSink() { sinkNode(this, "open-url") }
+}
+
+from DataFlow::PathNode source, DataFlow::PathNode sink, MethodAccess m, HttpString s
 where
   source.getNode().asExpr() = s and
   sink.getNode().asExpr() = m.getQualifier() and
-  any(HTTPStringToURLOpenMethodFlowConfig c).hasFlowPath(source, sink)
+  any(HttpStringToUrlOpenMethodFlowConfig c).hasFlowPath(source, sink)
 select m, source, sink, "URL may have been constructed with HTTP protocol, using $@.", s,
   "this source"

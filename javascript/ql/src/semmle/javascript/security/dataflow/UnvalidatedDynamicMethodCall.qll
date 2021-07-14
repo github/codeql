@@ -17,6 +17,15 @@ module UnvalidatedDynamicMethodCall {
   import UnvalidatedDynamicMethodCallCustomizations::UnvalidatedDynamicMethodCall
   private import DataFlow::FlowLabel
 
+  // Materialize flow labels
+  private class ConcreteMaybeNonFunction extends MaybeNonFunction {
+    ConcreteMaybeNonFunction() { this = this }
+  }
+
+  private class ConcreteMaybeFromProto extends MaybeFromProto {
+    ConcreteMaybeFromProto() { this = this }
+  }
+
   /**
    * A taint-tracking configuration for reasoning about unvalidated dynamic method calls.
    */

@@ -1,6 +1,6 @@
 
 int source();
-void sink(...) {};
+void sink(...);
 
 class MyCopyableClassDeclOnly {
 public:
@@ -15,7 +15,7 @@ public:
 	int v;
 };
 
-void test_copyableclass()
+void test_copyableclass_declonly()
 {
 	{
 		MyCopyableClassDeclOnly s1(1);
@@ -37,10 +37,10 @@ void test_copyableclass()
 		MyCopyableClassDeclOnly s4;
 		s4 = source();
 
-		sink(s1); // tainted
-		sink(s2); // tainted
-		sink(s3); // tainted
-		sink(s4); // tainted
+		sink(s1); // $ ast,ir
+		sink(s2); // $ ast,ir
+		sink(s3); // $ ast,ir
+		sink(s4); // $ ast,ir
 	}
 
 	{
@@ -62,8 +62,8 @@ void test_copyableclass()
 		MyCopyableClassDeclOnly s3;
 		s2 = MyCopyableClassDeclOnly(source());
 
-		sink(s1); // tainted
-		sink(s2); // tainted
-		sink(s3 = source()); // tainted
+		sink(s1); // $ ast,ir
+		sink(s2); // $ ast,ir
+		sink(s3 = source()); // $ ast MISSING: ir
 	}
 }

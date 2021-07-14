@@ -3,11 +3,12 @@
  * @description Regular expressions without anchors can be vulnerable to bypassing.
  * @kind problem
  * @problem.severity warning
+ * @security-severity 7.8
  * @precision medium
  * @id js/regex/missing-regexp-anchor
  * @tags correctness
  *       security
- *       external/cwe/cwe-20
+ *       external/cwe/cwe-020
  */
 
 import javascript

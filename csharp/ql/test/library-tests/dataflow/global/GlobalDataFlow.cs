@@ -96,6 +96,9 @@ public class DataFlow
         bool sink22;
         bool.TryParse(sink18, out sink22);
         Check(sink22);
+        int sink21b;
+        Int32.TryParse(sink18, System.Globalization.NumberStyles.None, null, out sink21b);
+        Check(sink21b);
 
         // Flow through a callable that returns the argument (non-delegate), not tainted
         var nonSink0 = Return("");
@@ -235,15 +238,17 @@ public class DataFlow
     public async void M3()
     {
         // async await, tainted
-        var sink41 = Task.Run(() => "taint source");
+        var task = Task.Run(() => "taint source");
+        var sink41 = task.Result;
         Check(sink41);
-        var sink42 = await sink41;
+        var sink42 = await task;
         Check(sink42);
 
         // async await, not tainted
-        var nonSink0 = Task.Run(() => "");
+        task = Task.Run(() => "");
+        var nonSink0 = task.Result;
         Check(nonSink0);
-        var nonSink1 = await nonSink0;
+        var nonSink1 = await task;
         Check(nonSink1);
     }
 
@@ -437,6 +442,53 @@ public class DataFlow
     {
         get { return ""; }
     }
+
+    static void AppendToStringBuilder(StringBuilder sb, string s)
+    {
+        sb.Append(s);
+    }
+
+    void TestStringBuilderFlow()
+    {
+        var sb = new StringBuilder();
+        AppendToStringBuilder(sb, "taint source");
+        var sink43 = sb.ToString();
+        Check(sink43);
+
+        sb.Clear();
+        var nonSink = sb.ToString();
+        Check(nonSink);
+    }
+
+    void TestStringFlow()
+    {
+        var sink44 = string.Join(",", "whatever", "taint source");
+        Check(sink44);
+
+        var nonSink = string.Join(",", "whatever", "not tainted");
+        Check(nonSink);
+    }
+
+    public void M4()
+    {
+        var task = Task.Run(() => "taint source");
+        var awaitable = task.ConfigureAwait(false);
+        var awaiter = awaitable.GetAwaiter();
+        var sink45 = awaiter.GetResult();
+        Check(sink45);
+    }
+
+    void M5(bool b)
+    {
+        void Inner(Action<string> a, bool b, string arg)
+        {
+            if (b)
+                a = s => Check(s);
+            a(arg);
+        }
+
+        Inner(_ => { }, b, "taint source");
+    }
 }
 
 static class IEnumerableExtensions
@@ -450,5 +502,3 @@ static class IEnumerableExtensions
         }
     }
 }
-
-// semmle-extractor-options: /r:System.Diagnostics.Process.dll /r:System.Linq.dll /r:System.Linq.Expressions.dll /r:System.Linq.Queryable.dll /r:System.ComponentModel.Primitives.dll

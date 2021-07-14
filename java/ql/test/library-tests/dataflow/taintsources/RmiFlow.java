@@ -4,5 +4,5 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 public interface RmiFlow extends Remote {
-	String listDirectory(String path);
+	String listDirectory(String path) throws java.io.IOException;
 }

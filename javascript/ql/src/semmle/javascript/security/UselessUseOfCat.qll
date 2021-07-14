@@ -239,7 +239,9 @@ module PrettyPrintCatCall {
       concat(Expr leaf |
         leaf = root.getALeaf().asExpr()
       |
-        createLeafRepresentation(leaf), " + " order by leaf.getFirstToken().getIndex()
+        createLeafRepresentation(leaf), " + "
+        order by
+          leaf.getLocation().getStartLine(), leaf.getLocation().getStartColumn()
       )
     or
     // Template string

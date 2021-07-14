@@ -47,11 +47,11 @@ required: java.lang.Object
 
 <li>
 Help - Eclipse Platform:
-<a href="http://help.eclipse.org/indigo/index.jsp?topic=%2Forg.eclipse.jdt.doc.user%2Freference%2Fpreferences%2Fjava%2Fcompiler%2Fref-preferences-errors-warnings.htm">Java Compiler Errors/Warnings Preferences</a>.
+<a href="https://help.eclipse.org/2020-12/advanced/content.jsp?topic=/org.eclipse.jdt.doc.user/reference/preferences/java/compiler/ref-preferences-errors-warnings.htm">Java Compiler Errors/Warnings Preferences</a>.
 </li>
 <li>
-Java Language Specification, Third Edition:
-<a href="https://docs.oracle.com/javase/specs/jls/se6/html/interfaces.html#9.2">9.2 Interface Members</a>.
+Java Language Specification:
+<a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-9.html#jls-9.2">9.2 Interface Members</a>.
 </li>
 
 

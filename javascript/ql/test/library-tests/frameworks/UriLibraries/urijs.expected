@@ -1,5 +1,0 @@
-| urijs.js:1:13:1:28 | require("urijs") |
-| urijs.js:2:13:2:28 | require("URIjs") |
-| urijs.js:4:5:4:7 | URI |
-| urijs.js:10:1:10:3 | URI |
-| urijs.js:12:13:12:15 | URI |

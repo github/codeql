@@ -1,4 +1,0 @@
-| persistence.js:2:5:2:37 | localSt ... 1', v1) | persistence.js:2:35:2:36 | v1 |
-| persistence.js:5:5:5:39 | session ... 2', v2) | persistence.js:5:37:5:38 | v2 |
-| persistence.js:8:5:8:37 | localSt ... 3', v3) | persistence.js:8:35:8:36 | v3 |
-| persistence.js:12:5:12:37 | localSt ... 5', v5) | persistence.js:12:35:12:36 | v5 |

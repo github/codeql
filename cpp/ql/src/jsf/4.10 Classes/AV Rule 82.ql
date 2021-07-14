@@ -45,6 +45,16 @@ predicate dereferenceThis(Expr e) {
   or
   // `*this = ...` (where `=` is not overloaded, so an `AssignExpr`)
   dereferenceThis(e.(AssignExpr).getLValue())
+  or
+  // `e ? ... : ... `
+  exists(ConditionalExpr cond |
+    cond = e and
+    dereferenceThis(cond.getThen()) and
+    dereferenceThis(cond.getElse())
+  )
+  or
+  // `..., ... `
+  dereferenceThis(e.(CommaExpr).getRightOperand())
 }
 
 /**

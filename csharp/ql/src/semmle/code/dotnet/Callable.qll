@@ -1,28 +1,17 @@
+/**
+ * Provides `Callable` classes, which are things that can be called
+ * such as methods and constructors.
+ */
+
 import Declaration
 import Variable
 import Expr
+import Parameterizable
 
 /** A .Net callable. */
-class Callable extends Declaration, @dotnet_callable {
-  /** Gets raw parameter `i`, including the `this` parameter at index 0. */
-  Parameter getRawParameter(int i) { none() }
-
-  /** Gets the `i`th parameter, excluding the `this` parameter. */
-  Parameter getParameter(int i) { none() }
-
+class Callable extends Parameterizable, @dotnet_callable {
   /** Holds if this callable has a body or an implementation. */
   predicate hasBody() { none() }
-
-  override Callable getSourceDeclaration() { result = Declaration.super.getSourceDeclaration() }
-
-  /** Gets the number of parameters of this callable. */
-  int getNumberOfParameters() { result = count(getAParameter()) }
-
-  /** Gets a parameter, if any. */
-  Parameter getAParameter() { result = getParameter(_) }
-
-  /** Gets a raw parameter (including the qualifier), if any. */
-  final Parameter getARawParameter() { result = getRawParameter(_) }
 
   /** Holds if this callable can return expression `e`. */
   predicate canReturn(Expr e) { none() }
@@ -102,3 +91,34 @@ abstract class Constructor extends Callable { }
 
 /** A destructor/finalizer. */
 abstract class Destructor extends Callable { }
+
+pragma[nomagic]
+private ValueOrRefType getARecordBaseType(ValueOrRefType t) {
+  exists(Callable c |
+    c.hasName("<Clone>$") and
+    c.getNumberOfParameters() = 0 and
+    t = c.getDeclaringType() and
+    result = t
+  )
+  or
+  result = getARecordBaseType(t).getABaseType()
+}
+
+/** A clone method on a record. */
+class RecordCloneCallable extends Callable {
+  RecordCloneCallable() {
+    this.getDeclaringType() instanceof ValueOrRefType and
+    this.hasName("<Clone>$") and
+    this.getNumberOfParameters() = 0 and
+    this.getReturnType() = getARecordBaseType(this.getDeclaringType()) and
+    this.(Member).isPublic() and
+    not this.(Member).isStatic()
+  }
+
+  /** Gets the constructor that this clone method calls. */
+  Constructor getConstructor() {
+    result.getDeclaringType() = this.getDeclaringType() and
+    result.getNumberOfParameters() = 1 and
+    result.getParameter(0).getType() = this.getDeclaringType()
+  }
+}

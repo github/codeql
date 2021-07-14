@@ -33,8 +33,8 @@ The condition should be changed as follows to correctly guard the array access.
 <references>
 
 <li>
-The Java API Specification:
-<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/ArrayIndexOutOfBoundsException.html">ArrayIndexOutOfBoundsException</a>.
+Java API Specification:
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/ArrayIndexOutOfBoundsException.html">ArrayIndexOutOfBoundsException</a>.
 </li>
 
 </references>

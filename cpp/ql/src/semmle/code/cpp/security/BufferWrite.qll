@@ -229,7 +229,7 @@ class SprintfBW extends BufferWriteCall {
     result = this.(FormattingFunctionCall).getFormatArgument(_)
   }
 
-  override Expr getDest() { result = getArgument(f.getOutputParameterIndex()) }
+  override Expr getDest() { result = getArgument(f.getOutputParameterIndex(false)) }
 
   override int getMaxData() {
     exists(FormatLiteral fl |
@@ -354,11 +354,12 @@ class SnprintfBW extends BufferWriteCall {
  */
 class GetsBW extends BufferWriteCall {
   GetsBW() {
-    exists(TopLevelFunction fn, string name | fn = getTarget() and name = fn.getName() |
-      name = "gets" or // gets(dst)
-      name = "fgets" or // fgets(dst, max_amount, src_stream)
-      name = "fgetws" // fgetws(dst, max_amount, src_stream)
-    )
+    getTarget().(TopLevelFunction).getName() =
+      [
+        "gets", // gets(dst)
+        "fgets", // fgets(dst, max_amount, src_stream)
+        "fgetws" // fgetws(dst, max_amount, src_stream)
+      ]
   }
 
   /**

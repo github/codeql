@@ -1,7 +1,0 @@
-| <D>(x: D): D | 1 | 0 | D | no bound |
-| <E>(x: () => E): E | 1 | 0 | E | no bound |
-| <E>(x: E[] \| (() => E)): E | 1 | 0 | E | no bound |
-| <E>(x: E[]): E | 1 | 0 | E | no bound |
-| <S extends any[]>(x: S, y: T[]): S | 1 | 0 | S | any[] |
-| <S>(x: S, y: S): S | 1 | 0 | S | no bound |
-| <S>(x: S, y: T): [S, T] | 1 | 0 | S | no bound |

@@ -9,6 +9,12 @@ test_ResolvedPromiseDefinition
 | flow2.js:18:33:18:79 | Promise ... urce)]) | flow2.js:18:46:18:52 | "clean" |
 | flow2.js:18:33:18:79 | Promise ... urce)]) | flow2.js:18:55:18:77 | Promise ... source) |
 | flow2.js:18:55:18:77 | Promise ... source) | flow2.js:18:71:18:76 | source |
+| flow2.js:22:23:22:70 | Promise ... urce)]) | flow2.js:22:37:22:43 | "clean" |
+| flow2.js:22:23:22:70 | Promise ... urce)]) | flow2.js:22:46:22:68 | Promise ... source) |
+| flow2.js:22:46:22:68 | Promise ... source) | flow2.js:22:62:22:67 | source |
+| flow2.js:25:23:25:69 | Promise ... urce)]) | flow2.js:25:36:25:42 | "clean" |
+| flow2.js:25:23:25:69 | Promise ... urce)]) | flow2.js:25:45:25:67 | Promise ... source) |
+| flow2.js:25:45:25:67 | Promise ... source) | flow2.js:25:61:25:66 | source |
 | flow.js:4:11:4:33 | Promise ... source) | flow.js:4:27:4:32 | source |
 | flow.js:20:2:20:24 | Promise ... source) | flow.js:20:18:20:23 | source |
 | flow.js:22:2:22:24 | Promise ... source) | flow.js:22:18:22:23 | source |
@@ -30,6 +36,15 @@ test_ResolvedPromiseDefinition
 | promises.js:62:19:62:41 | Promise ... source) | promises.js:62:35:62:40 | source |
 | promises.js:71:5:71:27 | Promise ... source) | promises.js:71:21:71:26 | source |
 | promises.js:79:19:79:41 | Promise ... source) | promises.js:79:35:79:40 | source |
+| promises.js:99:3:99:26 | Promise ... source) | promises.js:99:20:99:25 | source |
+| promises.js:100:3:100:26 | Promise ... source) | promises.js:100:20:100:25 | source |
+| promises.js:106:3:106:26 | Promise ... source) | promises.js:106:20:106:25 | source |
+| promises.js:107:3:107:26 | Promise ... source) | promises.js:107:20:107:25 | source |
+| promises.js:114:3:114:25 | Promise ... source) | promises.js:114:19:114:24 | source |
+| promises.js:119:3:119:25 | Promise ... source) | promises.js:119:19:119:24 | source |
+| promises.js:125:20:125:39 | when.resolve(source) | promises.js:125:33:125:38 | source |
+| promises.js:143:17:143:50 | Synchro ... source) | promises.js:143:44:143:49 | source |
+| promises.js:153:17:153:39 | Promise ... source) | promises.js:153:33:153:38 | source |
 test_PromiseDefinition_getARejectHandler
 | flow.js:26:2:26:49 | new Pro ... ource)) | flow.js:26:69:26:80 | y => sink(y) |
 | flow.js:32:2:32:49 | new Pro ... ource)) | flow.js:32:57:32:68 | x => sink(x) |
@@ -61,7 +76,7 @@ test_PromiseDefinition_getExecutor
 | flow.js:74:10:74:57 | new Pro ... ource)) | flow.js:74:22:74:56 | (resolv ... source) |
 | flow.js:86:23:86:70 | new Pro ... ource)) | flow.js:86:35:86:69 | (resolv ... source) |
 | flow.js:91:21:91:68 | new Pro ... ource)) | flow.js:91:33:91:67 | (resolv ... source) |
-| flow.js:100:28:100:75 | new Pro ... ource)) | flow.js:100:40:100:74 | (resolv ... source) |
+| flow.js:100:34:100:81 | new Pro ... ource)) | flow.js:100:46:100:80 | (resolv ... source) |
 | flow.js:103:2:103:48 | new Pro ... "BLA")) | flow.js:103:14:103:47 | (resolv ... ("BLA") |
 | flow.js:105:2:105:48 | new Pro ... "BLA")) | flow.js:105:14:105:47 | (resolv ... ("BLA") |
 | flow.js:107:17:107:64 | new Pro ... ource)) | flow.js:107:29:107:63 | (resolv ... source) |
@@ -76,6 +91,11 @@ test_PromiseDefinition_getExecutor
 | promises.js:10:18:17:4 | new Pro ... );\\n  }) | promises.js:10:30:17:3 | (res, r ... e);\\n  } |
 | promises.js:33:19:35:6 | new Pro ... \\n    }) | promises.js:33:31:35:5 | functio ... ;\\n    } |
 | promises.js:43:19:45:6 | Q.Promi ... \\n    }) | promises.js:43:29:45:5 | functio ... ;\\n    } |
+| promises.js:88:17:90:4 | Q.Promi ... );\\n  }) | promises.js:88:27:90:3 | functio ... e);\\n  } |
+| promises.js:112:17:112:62 | new RSV ... ct) {}) | promises.js:112:34:112:61 | functio ... ect) {} |
+| promises.js:130:14:130:69 | new Pro ... s'); }) | promises.js:130:26:130:68 | functio ... ns'); } |
+| promises.js:135:3:137:4 | new Pro ... );\\n  }) | promises.js:135:15:137:3 | functio ... a);\\n  } |
+| promises.js:148:10:148:49 | new Pro ... ect){}) | promises.js:148:22:148:48 | functio ... ject){} |
 test_PromiseDefinition_getAFinallyHandler
 | flow.js:105:2:105:48 | new Pro ... "BLA")) | flow.js:105:58:105:76 | x => {throw source} |
 | flow.js:109:2:109:48 | new Pro ... "BLA")) | flow.js:109:58:109:70 | x => rejected |
@@ -96,7 +116,7 @@ test_PromiseDefinition
 | flow.js:74:10:74:57 | new Pro ... ource)) |
 | flow.js:86:23:86:70 | new Pro ... ource)) |
 | flow.js:91:21:91:68 | new Pro ... ource)) |
-| flow.js:100:28:100:75 | new Pro ... ource)) |
+| flow.js:100:34:100:81 | new Pro ... ource)) |
 | flow.js:103:2:103:48 | new Pro ... "BLA")) |
 | flow.js:105:2:105:48 | new Pro ... "BLA")) |
 | flow.js:107:17:107:64 | new Pro ... ource)) |
@@ -111,6 +131,12 @@ test_PromiseDefinition
 | promises.js:10:18:17:4 | new Pro ... );\\n  }) |
 | promises.js:33:19:35:6 | new Pro ... \\n    }) |
 | promises.js:43:19:45:6 | Q.Promi ... \\n    }) |
+| promises.js:88:17:90:4 | Q.Promi ... );\\n  }) |
+| promises.js:112:17:112:62 | new RSV ... ct) {}) |
+| promises.js:124:19:124:30 | when(source) |
+| promises.js:130:14:130:69 | new Pro ... s'); }) |
+| promises.js:135:3:137:4 | new Pro ... );\\n  }) |
+| promises.js:148:10:148:49 | new Pro ... ect){}) |
 test_PromiseDefinition_getAResolveHandler
 | flow.js:24:2:24:49 | new Pro ... ource)) | flow.js:24:56:24:67 | x => sink(x) |
 | flow.js:26:2:26:49 | new Pro ... ource)) | flow.js:26:56:26:66 | x => foo(x) |
@@ -128,6 +154,7 @@ test_PromiseDefinition_getAResolveHandler
 | promises.js:10:18:17:4 | new Pro ... );\\n  }) | promises.js:26:20:28:3 | (v) =>  ...  v;\\n  } |
 | promises.js:33:19:35:6 | new Pro ... \\n    }) | promises.js:36:18:38:5 | functio ... ;\\n    } |
 | promises.js:43:19:45:6 | Q.Promi ... \\n    }) | promises.js:46:18:48:5 | functio ... ;\\n    } |
+| promises.js:88:17:90:4 | Q.Promi ... );\\n  }) | promises.js:91:16:93:3 | functio ... al;\\n  } |
 test_PromiseDefinition_getRejectParameter
 | flow.js:7:11:7:59 | new Pro ... ource)) | flow.js:7:33:7:38 | reject |
 | flow.js:10:11:10:58 | new Pro ... ource)) | flow.js:10:33:10:38 | reject |
@@ -143,7 +170,7 @@ test_PromiseDefinition_getRejectParameter
 | flow.js:74:10:74:57 | new Pro ... ource)) | flow.js:74:32:74:37 | reject |
 | flow.js:86:23:86:70 | new Pro ... ource)) | flow.js:86:45:86:50 | reject |
 | flow.js:91:21:91:68 | new Pro ... ource)) | flow.js:91:43:91:48 | reject |
-| flow.js:100:28:100:75 | new Pro ... ource)) | flow.js:100:50:100:55 | reject |
+| flow.js:100:34:100:81 | new Pro ... ource)) | flow.js:100:56:100:61 | reject |
 | flow.js:103:2:103:48 | new Pro ... "BLA")) | flow.js:103:24:103:29 | reject |
 | flow.js:105:2:105:48 | new Pro ... "BLA")) | flow.js:105:24:105:29 | reject |
 | flow.js:107:17:107:64 | new Pro ... ource)) | flow.js:107:39:107:44 | reject |
@@ -158,6 +185,10 @@ test_PromiseDefinition_getRejectParameter
 | promises.js:10:18:17:4 | new Pro ... );\\n  }) | promises.js:10:36:10:38 | rej |
 | promises.js:33:19:35:6 | new Pro ... \\n    }) | promises.js:33:50:33:55 | reject |
 | promises.js:43:19:45:6 | Q.Promi ... \\n    }) | promises.js:43:48:43:53 | reject |
+| promises.js:88:17:90:4 | Q.Promi ... );\\n  }) | promises.js:88:46:88:51 | reject |
+| promises.js:112:17:112:62 | new RSV ... ct) {}) | promises.js:112:52:112:57 | reject |
+| promises.js:135:3:137:4 | new Pro ... );\\n  }) | promises.js:135:34:135:39 | reject |
+| promises.js:148:10:148:49 | new Pro ... ect){}) | promises.js:148:40:148:45 | reject |
 test_PromiseDefinition_getResolveParameter
 | flow.js:7:11:7:59 | new Pro ... ource)) | flow.js:7:24:7:30 | resolve |
 | flow.js:10:11:10:58 | new Pro ... ource)) | flow.js:10:24:10:30 | resolve |
@@ -173,7 +204,7 @@ test_PromiseDefinition_getResolveParameter
 | flow.js:74:10:74:57 | new Pro ... ource)) | flow.js:74:23:74:29 | resolve |
 | flow.js:86:23:86:70 | new Pro ... ource)) | flow.js:86:36:86:42 | resolve |
 | flow.js:91:21:91:68 | new Pro ... ource)) | flow.js:91:34:91:40 | resolve |
-| flow.js:100:28:100:75 | new Pro ... ource)) | flow.js:100:41:100:47 | resolve |
+| flow.js:100:34:100:81 | new Pro ... ource)) | flow.js:100:47:100:53 | resolve |
 | flow.js:103:2:103:48 | new Pro ... "BLA")) | flow.js:103:15:103:21 | resolve |
 | flow.js:105:2:105:48 | new Pro ... "BLA")) | flow.js:105:15:105:21 | resolve |
 | flow.js:107:17:107:64 | new Pro ... ource)) | flow.js:107:30:107:36 | resolve |
@@ -188,6 +219,11 @@ test_PromiseDefinition_getResolveParameter
 | promises.js:10:18:17:4 | new Pro ... );\\n  }) | promises.js:10:31:10:33 | res |
 | promises.js:33:19:35:6 | new Pro ... \\n    }) | promises.js:33:41:33:47 | resolve |
 | promises.js:43:19:45:6 | Q.Promi ... \\n    }) | promises.js:43:39:43:45 | resolve |
+| promises.js:88:17:90:4 | Q.Promi ... );\\n  }) | promises.js:88:37:88:43 | resolve |
+| promises.js:112:17:112:62 | new RSV ... ct) {}) | promises.js:112:43:112:49 | resolve |
+| promises.js:130:14:130:69 | new Pro ... s'); }) | promises.js:130:36:130:42 | resolve |
+| promises.js:135:3:137:4 | new Pro ... );\\n  }) | promises.js:135:25:135:31 | resolve |
+| promises.js:148:10:148:49 | new Pro ... ect){}) | promises.js:148:31:148:37 | resolve |
 test_PromiseDefinition_getACatchHandler
 | flow.js:32:2:32:49 | new Pro ... ource)) | flow.js:32:57:32:68 | x => sink(x) |
 | flow.js:48:2:48:36 | new Pro ... urce }) | flow.js:48:44:48:55 | x => sink(x) |
@@ -201,6 +237,8 @@ flow
 | flow2.js:2:15:2:22 | "source" | flow2.js:6:8:6:13 | arr[0] |
 | flow2.js:2:15:2:22 | "source" | flow2.js:12:7:12:13 | tainted |
 | flow2.js:2:15:2:22 | "source" | flow2.js:16:7:16:14 | tainted2 |
+| flow2.js:2:15:2:22 | "source" | flow2.js:23:7:23:14 | tainted4 |
+| flow2.js:2:15:2:22 | "source" | flow2.js:26:7:26:14 | tainted5 |
 | flow.js:2:15:2:22 | "source" | flow.js:5:7:5:14 | await p1 |
 | flow.js:2:15:2:22 | "source" | flow.js:8:7:8:14 | await p2 |
 | flow.js:2:15:2:22 | "source" | flow.js:17:8:17:8 | e |
@@ -232,8 +270,13 @@ flow
 | flow.js:2:15:2:22 | "source" | flow.js:125:59:125:59 | x |
 | flow.js:2:15:2:22 | "source" | flow.js:129:69:129:69 | x |
 | flow.js:2:15:2:22 | "source" | flow.js:131:43:131:43 | x |
+| flow.js:136:15:136:22 | "source" | flow.js:142:7:142:19 | await async() |
+| flow.js:136:15:136:22 | "source" | flow.js:155:9:155:9 | e |
 exclusiveTaintFlow
 | flow2.js:2:15:2:22 | "source" | flow2.js:20:7:20:14 | tainted3 |
+| flow.js:136:15:136:22 | "source" | flow.js:141:7:141:13 | async() |
+| flow.js:160:15:160:22 | "source" | flow.js:164:39:164:39 | x |
+| flow.js:160:15:160:22 | "source" | flow.js:167:7:167:9 | foo |
 | interflow.js:3:18:3:25 | "source" | interflow.js:18:10:18:14 | error |
 typetrack
 | flow2.js:4:2:4:31 | Promise ... lean"]) | flow2.js:4:14:4:30 | [source, "clean"] | copy $PromiseResolveField$ |
@@ -250,6 +293,16 @@ typetrack
 | flow2.js:18:27:18:79 | await P ... urce)]) | flow2.js:18:33:18:79 | Promise ... urce)]) | load $PromiseResolveField$ |
 | flow2.js:18:33:18:79 | Promise ... urce)]) | flow2.js:18:45:18:78 | ["clean ... ource)] | copy $PromiseResolveField$ |
 | flow2.js:18:33:18:79 | Promise ... urce)]) | flow2.js:18:45:18:78 | ["clean ... ource)] | store $PromiseResolveField$ |
+| flow2.js:22:17:22:70 | await P ... urce)]) | flow2.js:22:23:22:70 | Promise ... urce)]) | load $PromiseResolveField$ |
+| flow2.js:22:23:22:70 | Promise ... urce)]) | flow2.js:22:37:22:43 | "clean" | copy $PromiseResolveField$ |
+| flow2.js:22:23:22:70 | Promise ... urce)]) | flow2.js:22:37:22:43 | "clean" | store $PromiseResolveField$ |
+| flow2.js:22:23:22:70 | Promise ... urce)]) | flow2.js:22:46:22:68 | Promise ... source) | copy $PromiseResolveField$ |
+| flow2.js:22:23:22:70 | Promise ... urce)]) | flow2.js:22:46:22:68 | Promise ... source) | store $PromiseResolveField$ |
+| flow2.js:25:17:25:69 | await P ... urce)]) | flow2.js:25:23:25:69 | Promise ... urce)]) | load $PromiseResolveField$ |
+| flow2.js:25:23:25:69 | Promise ... urce)]) | flow2.js:25:36:25:42 | "clean" | copy $PromiseResolveField$ |
+| flow2.js:25:23:25:69 | Promise ... urce)]) | flow2.js:25:36:25:42 | "clean" | store $PromiseResolveField$ |
+| flow2.js:25:23:25:69 | Promise ... urce)]) | flow2.js:25:45:25:67 | Promise ... source) | copy $PromiseResolveField$ |
+| flow2.js:25:23:25:69 | Promise ... urce)]) | flow2.js:25:45:25:67 | Promise ... source) | store $PromiseResolveField$ |
 | flow.js:20:2:20:43 | Promise ... ink(x)) | flow.js:20:36:20:42 | sink(x) | copy $PromiseResolveField$ |
 | flow.js:20:2:20:43 | Promise ... ink(x)) | flow.js:20:36:20:42 | sink(x) | store $PromiseResolveField$ |
 | flow.js:20:31:20:31 | x | flow.js:20:2:20:24 | Promise ... source) | load $PromiseResolveField$ |
@@ -266,10 +319,14 @@ typetrack
 | flow.js:26:2:26:81 | new Pro ... ink(y)) | flow.js:26:74:26:80 | sink(y) | copy $PromiseResolveField$ |
 | flow.js:26:2:26:81 | new Pro ... ink(y)) | flow.js:26:74:26:80 | sink(y) | store $PromiseResolveField$ |
 | flow.js:26:56:26:56 | x | flow.js:26:2:26:49 | new Pro ... ource)) | load $PromiseResolveField$ |
+| flow.js:28:2:28:23 | Promise ... ("foo") | flow.js:28:18:28:22 | "foo" | copy $PromiseResolveField$ |
+| flow.js:28:2:28:23 | Promise ... ("foo") | flow.js:28:18:28:22 | "foo" | store $PromiseResolveField$ |
 | flow.js:28:2:28:60 | Promise ... ink(z)) | flow.js:28:53:28:59 | sink(z) | copy $PromiseResolveField$ |
 | flow.js:28:2:28:60 | Promise ... ink(z)) | flow.js:28:53:28:59 | sink(z) | store $PromiseResolveField$ |
 | flow.js:28:30:28:30 | x | flow.js:28:2:28:23 | Promise ... ("foo") | load $PromiseResolveField$ |
 | flow.js:28:48:28:48 | z | flow.js:28:2:28:41 | Promise ... source) | load $PromiseResolveField$ |
+| flow.js:30:2:30:41 | Promise ...  "foo") | flow.js:30:36:30:40 | "foo" | copy $PromiseResolveField$ |
+| flow.js:30:2:30:41 | Promise ...  "foo") | flow.js:30:36:30:40 | "foo" | store $PromiseResolveField$ |
 | flow.js:30:2:30:60 | Promise ... ink(z)) | flow.js:30:53:30:59 | sink(z) | copy $PromiseResolveField$ |
 | flow.js:30:2:30:60 | Promise ... ink(z)) | flow.js:30:53:30:59 | sink(z) | store $PromiseResolveField$ |
 | flow.js:30:31:30:31 | x | flow.js:30:2:30:24 | Promise ... source) | load $PromiseResolveField$ |
@@ -320,6 +377,7 @@ typetrack
 | flow.js:89:3:89:47 | ("foo", ... ink(e)) | flow.js:89:3:89:27 | ("foo", ...  => {}) | copy $PromiseResolveField$ |
 | flow.js:89:3:89:47 | ("foo", ... ink(e)) | flow.js:89:40:89:46 | sink(e) | copy $PromiseResolveField$ |
 | flow.js:89:3:89:47 | ("foo", ... ink(e)) | flow.js:89:40:89:46 | sink(e) | store $PromiseResolveField$ |
+| flow.js:100:12:100:82 | await r ... urce))) | flow.js:100:18:100:82 | returns ... urce))) | load $PromiseResolveField$ |
 | flow.js:103:2:103:76 | new Pro ... ource}) | flow.js:103:2:103:48 | new Pro ... "BLA")) | copy $PromiseResolveField$ |
 | flow.js:103:2:103:95 | new Pro ... ink(x)) | flow.js:103:88:103:94 | sink(x) | copy $PromiseResolveField$ |
 | flow.js:103:2:103:95 | new Pro ... ink(x)) | flow.js:103:88:103:94 | sink(x) | store $PromiseResolveField$ |
@@ -370,6 +428,8 @@ typetrack
 | flow.js:131:2:131:45 | Promise ... ink(x)) | flow.js:131:38:131:44 | sink(x) | copy $PromiseResolveField$ |
 | flow.js:131:2:131:45 | Promise ... ink(x)) | flow.js:131:38:131:44 | sink(x) | store $PromiseResolveField$ |
 | flow.js:131:33:131:33 | x | flow.js:131:2:131:26 | Promise ... solved) | load $PromiseResolveField$ |
+| flow.js:142:7:142:19 | await async() | flow.js:142:13:142:19 | async() | load $PromiseResolveField$ |
+| flow.js:153:4:153:22 | await throwsAsync() | flow.js:153:10:153:22 | throwsAsync() | load $PromiseResolveField$ |
 | interflow.js:6:3:9:23 | loadScr ... eError) | interflow.js:6:3:8:26 | loadScr ... () { }) | copy $PromiseResolveField$ |
 | promises.js:33:19:35:6 | new Pro ... \\n    }) | promises.js:34:17:34:22 | source | copy $PromiseResolveField$ |
 | promises.js:33:19:35:6 | new Pro ... \\n    }) | promises.js:34:17:34:22 | source | store $PromiseResolveField$ |
@@ -378,3 +438,27 @@ typetrack
 | promises.js:71:34:71:36 | val | promises.js:71:5:71:27 | Promise ... source) | load $PromiseResolveField$ |
 | promises.js:72:48:72:50 | val | promises.js:72:5:72:41 | new Pro ... ource)) | load $PromiseResolveField$ |
 | promises.js:75:27:75:29 | val | promises.js:75:5:75:20 | resolver.promise | load $PromiseResolveField$ |
+| promises.js:88:17:90:4 | Q.Promi ... );\\n  }) | promises.js:89:15:89:20 | source | copy $PromiseResolveField$ |
+| promises.js:88:17:90:4 | Q.Promi ... );\\n  }) | promises.js:89:15:89:20 | source | store $PromiseResolveField$ |
+| promises.js:99:3:99:26 | Promise ... source) | promises.js:99:20:99:25 | source | copy $PromiseResolveField$ |
+| promises.js:99:3:99:26 | Promise ... source) | promises.js:99:20:99:25 | source | store $PromiseResolveField$ |
+| promises.js:100:3:100:26 | Promise ... source) | promises.js:100:20:100:25 | source | copy $PromiseResolveField$ |
+| promises.js:100:3:100:26 | Promise ... source) | promises.js:100:20:100:25 | source | store $PromiseResolveField$ |
+| promises.js:106:3:106:26 | Promise ... source) | promises.js:106:20:106:25 | source | copy $PromiseResolveField$ |
+| promises.js:106:3:106:26 | Promise ... source) | promises.js:106:20:106:25 | source | store $PromiseResolveField$ |
+| promises.js:107:3:107:26 | Promise ... source) | promises.js:107:20:107:25 | source | copy $PromiseResolveField$ |
+| promises.js:107:3:107:26 | Promise ... source) | promises.js:107:20:107:25 | source | store $PromiseResolveField$ |
+| promises.js:114:3:114:25 | Promise ... source) | promises.js:114:19:114:24 | source | copy $PromiseResolveField$ |
+| promises.js:114:3:114:25 | Promise ... source) | promises.js:114:19:114:24 | source | store $PromiseResolveField$ |
+| promises.js:119:3:119:25 | Promise ... source) | promises.js:119:19:119:24 | source | copy $PromiseResolveField$ |
+| promises.js:119:3:119:25 | Promise ... source) | promises.js:119:19:119:24 | source | store $PromiseResolveField$ |
+| promises.js:125:20:125:39 | when.resolve(source) | promises.js:125:33:125:38 | source | copy $PromiseResolveField$ |
+| promises.js:125:20:125:39 | when.resolve(source) | promises.js:125:33:125:38 | source | store $PromiseResolveField$ |
+| promises.js:130:14:130:69 | new Pro ... s'); }) | promises.js:130:55:130:64 | 'unicorns' | copy $PromiseResolveField$ |
+| promises.js:130:14:130:69 | new Pro ... s'); }) | promises.js:130:55:130:64 | 'unicorns' | store $PromiseResolveField$ |
+| promises.js:135:3:137:4 | new Pro ... );\\n  }) | promises.js:136:13:136:16 | data | copy $PromiseResolveField$ |
+| promises.js:135:3:137:4 | new Pro ... );\\n  }) | promises.js:136:13:136:16 | data | store $PromiseResolveField$ |
+| promises.js:143:17:143:50 | Synchro ... source) | promises.js:143:44:143:49 | source | copy $PromiseResolveField$ |
+| promises.js:143:17:143:50 | Synchro ... source) | promises.js:143:44:143:49 | source | store $PromiseResolveField$ |
+| promises.js:153:17:153:39 | Promise ... source) | promises.js:153:33:153:38 | source | copy $PromiseResolveField$ |
+| promises.js:153:17:153:39 | Promise ... source) | promises.js:153:33:153:38 | source | store $PromiseResolveField$ |

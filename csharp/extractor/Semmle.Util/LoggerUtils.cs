@@ -29,11 +29,11 @@ namespace Semmle.Util
             }
         }
 
-        public override void WriteLine(string? value, object?[] args)
+        public override void WriteLine(string? format, params object?[] args)
         {
-            WriteLine(value is null ? value : String.Format(value, args));
+            WriteLine(format is null ? format : string.Format(format, args));
         }
 
-        readonly object mutex = new object();
+        private readonly object mutex = new object();
     }
 }

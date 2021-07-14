@@ -20,7 +20,8 @@
  * complex | `42j` (not supported yet)
  */
 
-import experimental.dataflow.DataFlow
+private import python
+import semmle.python.dataflow.new.DataFlow
 
 class TestConfiguration extends DataFlow::Configuration {
   TestConfiguration() { this = "TestConfiguration" }
@@ -42,4 +43,8 @@ class TestConfiguration extends DataFlow::Configuration {
       node.(DataFlow::CfgNode).getNode() = call.getAnArg()
     )
   }
+
+  override predicate isBarrierIn(DataFlow::Node node) { this.isSource(node) }
+
+  override int explorationLimit() { result = 5 }
 }

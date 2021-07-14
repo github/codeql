@@ -234,3 +234,46 @@ void complexFormatSymbols(int i, const char *s)
   printf("%2$-*2$s", s, i); // BAD
   printf("%1$-*1$s", s, i); // BAD
 }
+
+void myvsnprintf(const char *format_string, char *target, size_t buffer_size, va_list args)
+{
+	// wraps vsnprintf with different parameter order
+	vsnprintf(target, buffer_size, format_string, args);
+}
+
+void mysprintf(const char *format_string, char *target, size_t buffer_size, ...)
+{
+	// wraps myvsnprintf as an snprintf-like
+	va_list args;
+
+	va_start(args, text);
+		myvsnprintf(format_string, target, buffer_size, args);
+
+		// ...
+
+	va_end(args);
+}
+
+void myprintf(const char *format_string, ...)
+{
+	// wraps myvsnprintf as an printf-like (i.e. doesn't pass in a buffer from the caller)
+	char buffer[1024];
+	va_list args;
+
+	va_start(args, text);
+		myvsnprintf(format_string, buffer, 1024, args);
+
+		// ...
+
+	va_end(args);
+}
+
+void usemyprintf(int i, char *s)
+{
+	char buffer[1024];
+
+	mysprintf("%i", buffer, 1024, i); // GOOD
+	mysprintf("%i", buffer, 1024, s); // BAD
+	myprintf("%i", i); // GOOD
+	myprintf("%i", s); // BAD
+}

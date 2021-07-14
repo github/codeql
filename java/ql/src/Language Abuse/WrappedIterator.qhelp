@@ -3,7 +3,7 @@
   "qhelp.dtd">
 <qhelp>
 
-<include src="IterableOverview.qhelp" />
+<include src="IterableOverview.inc.qhelp" />
 
 <recommendation>
 <p>
@@ -45,14 +45,14 @@ beginning.
 <references>
 
 <li>
-The Java Language Specification:
-<a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-14.html#jls-14.14.2">The enhanced for statement</a>.
+Java Language Specification:
+<a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-14.html#jls-14.14.2">The enhanced for statement</a>.
 </li>
 <li>
-The Java API Specification:
-<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Iterable.html">Interface Iterable&lt;T&gt;</a>,
-<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Iterator.html">Interface Iterator&lt;T&gt;</a>,
-<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/DirectoryStream.html">Interface DirectoryStream&lt;T&gt;</a>.
+Java API Specification:
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Iterable.html">Interface Iterable&lt;T&gt;</a>,
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Iterator.html">Interface Iterator&lt;T&gt;</a>,
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/nio/file/DirectoryStream.html">Interface DirectoryStream&lt;T&gt;</a>.
 </li>
 
 </references>

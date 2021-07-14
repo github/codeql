@@ -31,12 +31,13 @@ class ReadRefAccess extends ReadAccess, ReadRef { }
 
 /** An instruction that writes a variable. */
 class WriteAccess extends VariableAccess, @cil_write_access {
+  /** Gets the expression whose value is used in this variable write. */
   Expr getExpr() { none() }
 }
 
 /** An instruction that accesses a parameter. */
 class ParameterAccess extends StackVariableAccess, @cil_arg_access {
-  override Parameter getTarget() { result = StackVariableAccess.super.getTarget() }
+  override MethodParameter getTarget() { result = StackVariableAccess.super.getTarget() }
 }
 
 /** An instruction that reads a parameter. */

@@ -71,3 +71,16 @@ express().get('/some/path/:foo', function(req, res) {
 
     p.length < 1; // OK
 });
+
+express().get('/some/path/:foo', function(req, res) {
+    let someObject = {};
+    safeGet(someObject, req.query.path).bar = 'baz'; // prototype pollution here - but flagged in `safeGet`
+});
+
+function safeGet(obj, p) {
+    if (p === '__proto__' || // NOT OK - could be singleton array
+        p === 'constructor') { // NOT OK - could be singleton array
+        return null;
+    }
+    return obj[p];
+}

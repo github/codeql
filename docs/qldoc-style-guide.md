@@ -6,7 +6,7 @@ Valid QL comments are known as QLDoc. This document describes the recommended st
 
 ### General requirements
 
-1. Documentation must adhere to the [QLDoc specification](https://help.semmle.com/QL/ql-handbook/qldoc.html).
+1. Documentation must adhere to the [QLDoc specification](https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#qldoc).
 1. Documentation comments should be appropriate for users of the code.
 1. Documentation for maintainers of the code must use normal comments.
 1. Use `/** ... */` for documentation, even for single line comments.
@@ -124,11 +124,12 @@ Certain special predicates should be documented consistently.
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [Locations](https://help.semmle.com/QL/learn-ql/locations.html).
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
 
   predicate hasLocationInfo(string filepath, int startline, int startcolumn, int endline, int endcolumn) { ... }
   ```
+
 ## QLDoc for classes
 
 1. Document classes using a noun phrase of the form `A <domain element> that <has property>.`

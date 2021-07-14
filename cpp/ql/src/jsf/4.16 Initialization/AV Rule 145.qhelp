@@ -37,7 +37,7 @@ better to let the compiler assign values at compile time.
   MISRA C++ Rule 8-5-3, <em>Guidelines for the use of the C++ language in critical systems</em>. The Motor Industry Software Reliability Associate, 2008.
 </li>
 <li>
-  <a href="http://msdn.microsoft.com/en-us/library/2dzy4k6e%28v=vs.71%29.aspx">C++ Enumeration Declarations</a>
+  MSDN Library: <a href="https://docs.microsoft.com/en-us/cpp/cpp/enumerations-cpp">Enumerations (C++)</a>.
 </li>
 
 

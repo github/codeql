@@ -1,11 +1,12 @@
 /** Provides classes relating to declarations and type members. */
 
-import Element
-import Variable
 import Callable
+import Element
 import Modifier
-private import Implements
+import Variable
 private import dotnet
+private import Implements
+private import TypeRef
 
 /**
  * A declaration.
@@ -16,7 +17,7 @@ class Declaration extends DotNet::Declaration, Element, @declaration {
   override ValueOrRefType getDeclaringType() { none() }
 
   /** Holds if this declaration is unconstructed and in source code. */
-  predicate isSourceDeclaration() { fromSource() and this = getSourceDeclaration() }
+  final predicate isSourceDeclaration() { this.fromSource() and this.isUnboundDeclaration() }
 
   override string toString() { result = this.getName() }
 
@@ -33,7 +34,12 @@ class Declaration extends DotNet::Declaration, Element, @declaration {
    * ```
    */
   string getQualifiedNameWithTypes() {
-    result = this.getDeclaringType().getQualifiedName() + "." + this.toStringWithTypes()
+    exists(string qual |
+      qual = this.getDeclaringType().getQualifiedName() and
+      if this instanceof NestedType
+      then result = qual + "+" + this.toStringWithTypes()
+      else result = qual + "." + this.toStringWithTypes()
+    )
   }
 
   /**
@@ -85,32 +91,69 @@ class Modifiable extends Declaration, @modifiable {
   predicate isConst() { this.hasModifier("const") }
 
   /** Holds if this declaration is `unsafe`. */
-  predicate isUnsafe() { this.hasModifier("unsafe") }
+  predicate isUnsafe() {
+    this.hasModifier("unsafe") or
+    this.(Parameterizable).getAParameter().getType() instanceof PointerType or
+    this.(Property).getType() instanceof PointerType or
+    this.(Callable).getReturnType() instanceof PointerType
+  }
 
   /** Holds if this declaration is `async`. */
   predicate isAsync() { this.hasModifier("async") }
 
+  private predicate isReallyPrivate() {
+    this.isPrivate() and
+    not this.isProtected() and
+    // Rare case when a member is defined with the same name in multiple assemblies with different visibility
+    not this.isPublic()
+  }
+
   /**
-   * Holds if this declaration is effectively `private` (either directly or
-   * because one of the enclosing types is `private`).
+   * Holds if this declaration is effectively `private`. A declaration is considered
+   * effectively `private` if it can only be referenced from
+   * - the declaring and its nested types, similarly to `private` declarations, and
+   * - the enclosing types.
+   *
+   * Note that explicit interface implementations are also considered effectively
+   * `private` if the implemented interface is itself effectively `private`. Finally,
+   * `private protected` members are not considered effectively `private`, because
+   * they can be overriden within the declaring assembly.
    */
   predicate isEffectivelyPrivate() {
-    this.isPrivate() or
-    this.getDeclaringType+().isPrivate()
+    this.isReallyPrivate() or
+    this.getDeclaringType+().(Modifiable).isReallyPrivate() or
+    this.(Virtualizable).getExplicitlyImplementedInterface().isEffectivelyPrivate()
+  }
+
+  private predicate isReallyInternal() {
+    (
+      this.isInternal() and not this.isProtected()
+      or
+      this.isPrivate() and this.isProtected()
+    ) and
+    // Rare case when a member is defined with the same name in multiple assemblies with different visibility
+    not this.isPublic()
   }
 
   /**
-   * Holds if this declaration is effectively `internal` (either directly or
-   * because one of the enclosing types is `internal`).
+   * Holds if this declaration is effectively `internal`. A declaration is considered
+   * effectively `internal` if it can only be referenced from the declaring assembly.
+   *
+   * Note that friend assemblies declared in `InternalsVisibleToAttribute` are not
+   * considered. Explicit interface implementations are also considered effectively
+   * `internal` if the implemented interface is itself effectively `internal`. Finally,
+   * `internal protected` members are not considered effectively `internal`, because
+   * they can be overriden outside the declaring assembly.
    */
   predicate isEffectivelyInternal() {
-    this.isInternal() or
-    this.getDeclaringType+().isInternal()
+    this.isReallyInternal() or
+    this.getDeclaringType+().(Modifiable).isReallyInternal() or
+    this.(Virtualizable).getExplicitlyImplementedInterface().isEffectivelyInternal()
   }
 
   /**
-   * Holds if this declaration is effectively `public`, because it
-   * and all enclosing types are `public`.
+   * Holds if this declaration is effectively `public`, meaning that it can be
+   * referenced outside the declaring assembly.
    */
   predicate isEffectivelyPublic() { not isEffectivelyPrivate() and not isEffectivelyInternal() }
 }
@@ -119,6 +162,20 @@ class Modifiable extends Declaration, @modifiable {
 class Member extends DotNet::Member, Modifiable, @member {
   /** Gets an access to this member. */
   MemberAccess getAnAccess() { result.getTarget() = this }
+
+  override predicate isPublic() { Modifiable.super.isPublic() }
+
+  override predicate isProtected() { Modifiable.super.isProtected() }
+
+  override predicate isPrivate() { Modifiable.super.isPrivate() }
+
+  override predicate isInternal() { Modifiable.super.isInternal() }
+
+  override predicate isSealed() { Modifiable.super.isSealed() }
+
+  override predicate isAbstract() { Modifiable.super.isAbstract() }
+
+  override predicate isStatic() { Modifiable.super.isStatic() }
 }
 
 /**
@@ -137,6 +194,11 @@ class Virtualizable extends Member, @virtualizable {
   override predicate isPublic() {
     Member.super.isPublic() or
     implementsExplicitInterface()
+  }
+
+  override predicate isPrivate() {
+    super.isPrivate() and
+    not implementsExplicitInterface()
   }
 
   /**
@@ -269,6 +331,7 @@ class Virtualizable extends Member, @virtualizable {
    *   (An example where `getOverridee*().getImplementee()` would be incorrect.)
    * - If this member is `D.M` then `I.M = getAnUltimateImplementee()`.
    */
+  pragma[nomagic]
   Virtualizable getAnUltimateImplementee() {
     exists(Virtualizable implementation, ValueOrRefType implementationType |
       implements(implementation, result, implementationType)
@@ -312,18 +375,10 @@ class Virtualizable extends Member, @virtualizable {
  * A parameterizable declaration. Either a callable (`Callable`), a delegate
  * type (`DelegateType`), or an indexer (`Indexer`).
  */
-class Parameterizable extends Declaration, @parameterizable {
-  /** Gets a parameter of this declaration, if any. */
-  Parameter getAParameter() { result = getParameter(_) }
+class Parameterizable extends DotNet::Parameterizable, Declaration, @parameterizable {
+  override Parameter getRawParameter(int i) { params(result, _, _, i, _, this, _) }
 
-  /** Gets the `i`th parameter of this declaration. */
-  Parameter getParameter(int i) { params(result, _, _, i, _, this, _) }
-
-  /** Gets the number of parameters of this declaration. */
-  int getNumberOfParameters() { result = count(this.getAParameter()) }
-
-  /** Holds if this declaration has no parameters. */
-  predicate hasNoParameters() { not exists(this.getAParameter()) }
+  override Parameter getParameter(int i) { params(result, _, _, i, _, this, _) }
 
   /**
    * Gets the name of this parameter followed by its type, possibly prefixed

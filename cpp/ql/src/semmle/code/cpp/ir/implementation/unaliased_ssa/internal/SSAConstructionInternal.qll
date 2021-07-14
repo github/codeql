@@ -6,3 +6,4 @@ import semmle.code.cpp.ir.implementation.raw.internal.IRConstruction as RawStage
 import semmle.code.cpp.ir.implementation.internal.TInstruction::UnaliasedSSAInstructions as SSAInstructions
 import semmle.code.cpp.ir.internal.IRCppLanguage as Language
 import SimpleSSA as Alias
+import semmle.code.cpp.ir.implementation.internal.TOperand::UnaliasedSSAOperands as SSAOperands

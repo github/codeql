@@ -19,7 +19,7 @@ predicate methodInClass(ValueOrRefType t, Method m, string name) {
 predicate callIn(MethodCall mc, Method fromMethod) { fromMethod = mc.getEnclosingCallable() }
 
 predicate callTo(MethodCall mc, Method toMethod) {
-  toMethod = mc.getTarget().getSourceDeclaration()
+  toMethod = mc.getTarget().getUnboundDeclaration()
 }
 
 predicate candidates(Method forwarder, Method forwardee) {
@@ -45,6 +45,6 @@ where
   candidates(forwarder, forwardee) and
   forex(MethodCall c | callTo(c, forwardee) | callIn(c, forwarder)) and
   forex(MethodCall c | callIn(c, forwarder) | callTo(c, forwardee))
-select forwarder.getSourceDeclaration(),
+select forwarder.getUnboundDeclaration(),
   "This method is a forwarder for $@, which is not called independently - the methods can be merged.",
-  forwardee.getSourceDeclaration(), forwardee.getName()
+  forwardee.getUnboundDeclaration(), forwardee.getName()

@@ -40,7 +40,7 @@ public abstract class MemberDefinition<V extends Expression> extends Node {
     return flags;
   }
 
-  /** Returns true if this has the <tt>static</tt> modifier. */
+  /** Returns true if this has the <code>static</code> modifier. */
   public boolean isStatic() {
     return DeclarationFlags.isStatic(flags);
   }
@@ -55,7 +55,7 @@ public abstract class MemberDefinition<V extends Expression> extends Node {
     return DeclarationFlags.isAbstract(flags);
   }
 
-  /** Returns true if has the <tt>public</tt> modifier (not true for implicitly public members). */
+  /** Returns true if has the <code>public</code> modifier (not true for implicitly public members). */
   public boolean hasPublicKeyword() {
     return DeclarationFlags.isPublic(flags);
   }
@@ -75,7 +75,7 @@ public abstract class MemberDefinition<V extends Expression> extends Node {
     return DeclarationFlags.isReadonly(flags);
   }
 
-  /** Returns true if this has the <tt>declare</tt> modifier. */
+  /** Returns true if this has the <code>declare</code> modifier. */
   public boolean hasDeclareKeyword() {
     return DeclarationFlags.hasDeclareKeyword(flags);
   }

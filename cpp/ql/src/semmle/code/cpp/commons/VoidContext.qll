@@ -25,7 +25,7 @@ private predicate exprInVoidContext(Expr e) {
   (
     exists(ExprStmt s |
       s = e.getParent() and
-      not exists(StmtExpr se | s = se.getStmt().(Block).getLastStmt())
+      not exists(StmtExpr se | s = se.getStmt().(BlockStmt).getLastStmt())
     )
     or
     exists(ConditionalExpr c | c.getThen() = e and c instanceof ExprInVoidContext)

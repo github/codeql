@@ -3,7 +3,6 @@
 | A.java:33:23:33:29 | taint(...) | A.java:34:10:34:27 | toByteArray(...) |
 | A.java:46:27:46:33 | taint(...) | A.java:47:10:47:30 | toByteArray(...) |
 | A.java:55:58:55:64 | taint(...) | A.java:61:10:61:16 | dh.data |
-| A.java:72:16:72:22 | taint(...) | A.java:73:10:73:10 | b |
 | B.java:15:21:15:27 | taint(...) | B.java:18:10:18:16 | aaaargs |
 | B.java:15:21:15:27 | taint(...) | B.java:21:10:21:10 | s |
 | B.java:15:21:15:27 | taint(...) | B.java:24:10:24:15 | concat |
@@ -33,6 +32,9 @@
 | B.java:15:21:15:27 | taint(...) | B.java:126:10:126:21 | taintedArray |
 | B.java:15:21:15:27 | taint(...) | B.java:128:10:128:22 | taintedArray2 |
 | B.java:15:21:15:27 | taint(...) | B.java:130:10:130:22 | taintedArray3 |
+| B.java:15:21:15:27 | taint(...) | B.java:133:10:133:44 | toURL(...) |
+| B.java:15:21:15:27 | taint(...) | B.java:136:10:136:37 | toPath(...) |
+| B.java:15:21:15:27 | taint(...) | B.java:139:10:139:46 | toFile(...) |
 | MethodFlow.java:7:22:7:28 | taint(...) | MethodFlow.java:8:10:8:16 | tainted |
 | MethodFlow.java:9:31:9:37 | taint(...) | MethodFlow.java:10:10:10:17 | tainted2 |
 | MethodFlow.java:11:35:11:41 | taint(...) | MethodFlow.java:12:10:12:17 | tainted3 |

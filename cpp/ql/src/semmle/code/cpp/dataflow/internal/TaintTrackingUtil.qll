@@ -10,6 +10,8 @@
 
 private import semmle.code.cpp.models.interfaces.DataFlow
 private import semmle.code.cpp.models.interfaces.Taint
+private import semmle.code.cpp.models.interfaces.Iterator
+private import semmle.code.cpp.models.interfaces.PointerWrapper
 
 private module DataFlow {
   import semmle.code.cpp.dataflow.internal.DataFlowUtil
@@ -33,16 +35,24 @@ predicate defaultAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
 }
 
 /**
- * Holds if `node` should be a barrier in all global taint flow configurations
+ * Holds if default `TaintTracking::Configuration`s should allow implicit reads
+ * of `c` at sinks and inputs to additional taint steps.
+ */
+bindingset[node]
+predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::Content c) { none() }
+
+/**
+ * Holds if `node` should be a sanitizer in all global taint flow configurations
  * but not in local taint.
  */
-predicate defaultTaintBarrier(DataFlow::Node node) { none() }
+predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
 
 /**
  * Holds if taint can flow in one local step from `nodeFrom` to `nodeTo` excluding
  * local data flow steps. That is, `nodeFrom` and `nodeTo` are likely to represent
  * different objects.
  */
+cached
 predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   // Taint can flow through expressions that alter the value but preserve
   // more than one bit of it _or_ expressions that follow data through
@@ -82,6 +92,26 @@ predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeT
   exprToDefinitionByReferenceStep(nodeFrom.asExpr(), nodeTo.asDefiningArgument())
   or
   exprToPartialDefinitionStep(nodeFrom.asExpr(), nodeTo.asPartialDefinition())
+  or
+  // Reverse taint: taint that flows from the post-update node of a reference
+  // returned by a function call, back into the qualifier of that function.
+  // This allows taint to flow 'in' through references returned by a modeled
+  // function such as `operator[]`.
+  exists(TaintFunction f, Call call, FunctionInput inModel, FunctionOutput outModel |
+    call.getTarget() = f and
+    inModel.isReturnValueDeref() and
+    nodeFrom.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr() = call and
+    f.hasTaintFlow(inModel, outModel) and
+    (
+      outModel.isQualifierObject() and
+      nodeTo.asDefiningArgument() = call.getQualifier()
+      or
+      exists(int argOutIndex |
+        outModel.isParameterDeref(argOutIndex) and
+        nodeTo.asDefiningArgument() = call.getArgument(argOutIndex)
+      )
+    )
+  )
 }
 
 /**
@@ -120,7 +150,10 @@ private predicate noFlowFromChildExpr(Expr e) {
   or
   e instanceof LogicalOrExpr
   or
-  e instanceof Call
+  // Allow taint from `operator*` on smart pointers.
+  exists(Call call | e = call |
+    not call.getTarget() = any(PointerWrapper wrapper).getAnUnwrapperFunction()
+  )
   or
   e instanceof SizeofOperator
   or
@@ -235,4 +268,12 @@ private predicate exprToPartialDefinitionStep(Expr exprIn, Expr exprOut) {
       exprIn = call.getArgument(argInIndex)
     )
   )
+  or
+  exists(Assignment a |
+    iteratorDereference(exprOut) and
+    a.getLValue() = exprOut and
+    a.getRValue() = exprIn
+  )
 }
+
+private predicate iteratorDereference(Call c) { c.getTarget() instanceof IteratorReferenceFunction }

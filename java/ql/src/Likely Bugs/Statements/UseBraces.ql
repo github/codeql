@@ -15,11 +15,11 @@ import java
 
 /**
  * A control structure for which the trailing body (the syntactically last part)
- * is not a `Block`. This is either an `IfStmt` or a `LoopStmt`, but not a
+ * is not a `BlockStmt`. This is either an `IfStmt` or a `LoopStmt`, but not a
  * `DoStmt`, since do-while statements don't have a trailing body.
  */
 predicate unbracedTrailingBody(Stmt ctrlStructure, Stmt trailingBody) {
-  not trailingBody instanceof Block and
+  not trailingBody instanceof BlockStmt and
   (
     exists(IfStmt c | c = ctrlStructure |
       trailingBody = c.getElse() and not trailingBody instanceof IfStmt
@@ -33,15 +33,15 @@ predicate unbracedTrailingBody(Stmt ctrlStructure, Stmt trailingBody) {
 
 /*
  * The body of a `SwitchStmt` is a block, but it isn't represented explicitly
- * in the AST as a `Block`, so we have to take it into account directly in the
+ * in the AST as a `BlockStmt`, so we have to take it into account directly in the
  * following two predicates.
  */
 
 /**
- * Two consecutive statements in a `Block` statement or `SwitchStmt`.
+ * Two consecutive statements in a `BlockStmt` statement or `SwitchStmt`.
  */
 Stmt nextInBlock(Stmt s) {
-  exists(Block b, int i |
+  exists(BlockStmt b, int i |
     b.getStmt(i) = s and
     b.getStmt(i + 1) = result
   )
@@ -52,10 +52,10 @@ Stmt nextInBlock(Stmt s) {
   )
 }
 
-/** The `Stmt.getParent()` relation restricted to not pass through `Block`s or `SwitchStmt`s. */
+/** The `Stmt.getParent()` relation restricted to not pass through `BlockStmt`s or `SwitchStmt`s. */
 Stmt nonBlockParent(Stmt s) {
   result = s.getParent() and
-  not result instanceof Block and
+  not result instanceof BlockStmt and
   not result instanceof SwitchStmt
 }
 
@@ -64,7 +64,7 @@ predicate ifElseIf(IfStmt s, IfStmt elseif) { s.getElse() = elseif }
 
 /**
  * The statement `body` is an unbraced trailing body of a control structure and
- * `succ` is the next statement in the surrounding `Block` (or `SwitchStmt`).
+ * `succ` is the next statement in the surrounding `BlockStmt` (or `SwitchStmt`).
  */
 predicate shouldOutdent(
   Stmt ctrl, Stmt body, Stmt succ, int bodycol, int succcol, int bodyline, int succline
@@ -79,7 +79,7 @@ predicate shouldOutdent(
 
 /**
  * The statement `body` is an unbraced trailing body of a control structure and
- * `succ` is the next statement in the surrounding `Block` (or `SwitchStmt`).
+ * `succ` is the next statement in the surrounding `BlockStmt` (or `SwitchStmt`).
  * The indentation of statement `succ` is suspect because it is indented
  * the same way as `body` and thus visually suggests to be part of the same
  * syntactic scope as `body`.

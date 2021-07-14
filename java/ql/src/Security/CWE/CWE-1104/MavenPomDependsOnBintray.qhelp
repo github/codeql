@@ -1,0 +1,45 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p><a href="https://jfrog.com/blog/into-the-sunset-bintray-jcenter-gocenter-and-chartcenter/">Bintray and JCenter are shutting down on February 1st, 2022</a>.
+Relying upon repositories that are deprecated or scheduled to be shutdown can have unintended consequences;
+for example, artifacts being resolved from a different artifact server or a total failure of the CI build.</p>
+
+<p>When artifact repositories are left unmaintained for a long period of time, vulnerabilities may emerge.
+Theoretically, this could allow attackers to inject malicious code into the artifacts that you are resolving and infect build artifacts
+that are being produced. This can be used by attackers to perform a
+<a href="https://en.wikipedia.org/wiki/Supply_chain_attack">supply chain attack</a>
+against your project's users.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Always use the canonical repository for resolving your dependencies.</p>
+
+</recommendation>
+
+<example>
+
+<p>The following example shows locations in a Maven POM file where artifact repository upload/download is configured.
+The use of Bintray in any of these locations is not advised.
+</p>
+
+<sample src="bad-bintray-pom.xml" />
+
+</example>
+<references>
+<li>
+  JFrog blog:
+  <a href="https://jfrog.com/blog/into-the-sunset-bintray-jcenter-gocenter-and-chartcenter/">
+    Into the Sunset on May 1st: Bintray, JCenter, GoCenter, and ChartCenter
+  </a>
+</li>
+
+<!--  LocalWords:  CWE maven dependencies artifact jcenter bintray
+ -->
+
+</references>
+</qhelp>

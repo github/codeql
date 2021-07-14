@@ -5,7 +5,7 @@ import com.semmle.js.ast.Statement;
 import com.semmle.js.ast.Visitor;
 import java.util.List;
 
-/** A statement of form: <tt>declare global { ... }</tt> */
+/** A statement of form: <code>declare global { ... }</code> */
 public class GlobalAugmentationDeclaration extends Statement {
   private final List<Statement> body;
 

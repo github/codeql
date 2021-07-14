@@ -5,7 +5,6 @@
  * @treemap.warnOn lowValues
  * @metricType file
  * @metricAggregate avg sum max
- * @precision medium
  * @id java/tests-in-files
  * @tags maintainability
  */

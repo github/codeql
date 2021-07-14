@@ -6,7 +6,6 @@
 
 import javascript
 import semmle.javascript.security.dataflow.RemoteFlowSources
-private import UrlConcatenation
 
 module ClientSideUrlRedirect {
   private import Xss::DomBasedXss as DomBasedXss
@@ -14,7 +13,10 @@ module ClientSideUrlRedirect {
   /**
    * A data flow source for unvalidated URL redirect vulnerabilities.
    */
-  abstract class Source extends DataFlow::Node { }
+  abstract class Source extends DataFlow::Node {
+    /** Gets a flow label to associate with this source. */
+    DataFlow::FlowLabel getAFlowLabel() { result.isTaint() }
+  }
 
   /**
    * A data flow sink for unvalidated URL redirect vulnerabilities.
@@ -30,28 +32,38 @@ module ClientSideUrlRedirect {
    * A flow label for values that represent the URL of the current document, and
    * hence are only partially user-controlled.
    */
-  class DocumentUrl extends DataFlow::FlowLabel {
+  abstract class DocumentUrl extends DataFlow::FlowLabel {
     DocumentUrl() { this = "document.url" }
   }
 
   /** A source of remote user input, considered as a flow source for unvalidated URL redirects. */
   class RemoteFlowSourceAsSource extends Source {
-    RemoteFlowSourceAsSource() { this instanceof RemoteFlowSource }
+    RemoteFlowSourceAsSource() {
+      this instanceof RemoteFlowSource and
+      not this.(ClientSideRemoteFlowSource).getKind().isPath()
+    }
+
+    override DataFlow::FlowLabel getAFlowLabel() {
+      if this.(ClientSideRemoteFlowSource).getKind().isUrl()
+      then result instanceof DocumentUrl
+      else result.isTaint()
+    }
   }
 
   /**
-   * Holds if `queryAccess` is an expression that may access the query string
-   * of a URL that flows into `nd` (that is, the part after the `?`).
+   * DEPRECATED. Can usually be replaced with `untrustedUrlSubstring`.
+   * Query accesses via `location.hash` or `location.search` are now independent
+   * `RemoteFlowSource` instances, and only substrings of `location` need to be handled via steps.
    */
-  predicate queryAccess(DataFlow::Node nd, DataFlow::Node queryAccess) {
-    exists(string propertyName |
-      queryAccess.asExpr().(PropAccess).accesses(nd.asExpr(), propertyName)
-    |
-      propertyName = "search" or propertyName = "hash"
-    )
-    or
+  deprecated predicate queryAccess = untrustedUrlSubstring/2;
+
+  /**
+   * Holds if `substring` refers to a substring of `base` which is considered untrusted
+   * when `base` is the current URL.
+   */
+  predicate untrustedUrlSubstring(DataFlow::Node base, DataFlow::Node substring) {
     exists(MethodCallExpr mce, string methodName |
-      mce = queryAccess.asExpr() and mce.calls(nd.asExpr(), methodName)
+      mce = substring.asExpr() and mce.calls(base.asExpr(), methodName)
     |
       methodName = "split" and
       // exclude all splits where only the prefix is accessed, which is safe for url-redirects.
@@ -64,16 +76,11 @@ module ClientSideUrlRedirect {
     )
     or
     exists(MethodCallExpr mce |
-      queryAccess.asExpr() = mce and
-      mce = any(RegExpLiteral re).flow().(DataFlow::SourceNode).getAMethodCall("exec").asExpr() and
-      nd.asExpr() = mce.getArgument(0)
+      substring.asExpr() = mce and
+      mce = any(DataFlow::RegExpCreationNode re).getAMethodCall("exec").asExpr() and
+      base.asExpr() = mce.getArgument(0)
     )
   }
-
-  /**
-   * A sanitizer that reads the first part a location split by "?", e.g. `location.href.split('?')[0]`.
-   */
-  class QueryPrefixSanitizer extends Sanitizer, DomBasedXss::QueryPrefixSanitizer { }
 
   /**
    * A sink which is used to set the window location.
@@ -133,6 +140,15 @@ module ClientSideUrlRedirect {
   }
 
   /**
+   * An argument to `importScripts(..)` - which is used inside `WebWorker`s to import new scripts - viewed as a `ScriptUrlSink`.
+   */
+  class ImportScriptsSink extends ScriptUrlSink {
+    ImportScriptsSink() {
+      this = DataFlow::globalVarRef("importScripts").getACall().getAnArgument()
+    }
+  }
+
+  /**
    * A script or iframe `src` attribute, viewed as a `ScriptUrlSink`.
    */
   class SrcAttributeUrlSink extends ScriptUrlSink, DataFlow::ValueNode {
@@ -156,6 +172,40 @@ module ClientSideUrlRedirect {
         pw.interpretsValueAsJavaScriptUrl() and
         this = DataFlow::valueNode(pw.getRhs())
       )
+    }
+  }
+
+  /**
+   * A write to an React attribute which may execute JavaScript code.
+   */
+  class ReactAttributeWriteUrlSink extends ScriptUrlSink {
+    ReactAttributeWriteUrlSink() {
+      exists(JSXAttribute attr |
+        attr.getName() = DOM::getAPropertyNameInterpretedAsJavaScriptUrl() and
+        attr.getElement().isHTMLElement()
+        or
+        DataFlow::moduleImport("next/link").flowsToExpr(attr.getElement().getNameExpr())
+      |
+        this = attr.getValue().flow()
+      )
+    }
+  }
+
+  /**
+   * A write to the location using the [history](https://npmjs.com/package/history) library
+   */
+  class HistoryWriteUrlSink extends ScriptUrlSink {
+    HistoryWriteUrlSink() {
+      this = History::getBrowserHistory().getMember(["push", "replace"]).getACall().getArgument(0)
+    }
+  }
+
+  /**
+   * A call to change the current url with a Next.js router.
+   */
+  class NextRoutePushUrlSink extends ScriptUrlSink {
+    NextRoutePushUrlSink() {
+      this = NextJS::nextRouter().getAMemberCall(["push", "replace"]).getArgument(0)
     }
   }
 }

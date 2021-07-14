@@ -3,6 +3,7 @@
  * @description Creating a file that is world-writable can allow an attacker to write to the file.
  * @kind problem
  * @problem.severity warning
+ * @security-severity 7.8
  * @precision medium
  * @id cpp/world-writable-file-creation
  * @tags security
@@ -19,12 +20,7 @@ predicate worldWritableCreation(FileCreationExpr fc, int mode) {
 }
 
 predicate setWorldWritable(FunctionCall fc, int mode) {
-  exists(string name | fc.getTarget().getName() = name |
-    name = "chmod" or
-    name = "fchmod" or
-    name = "_chmod" or
-    name = "_wchmod"
-  ) and
+  fc.getTarget().getName() = ["chmod", "fchmod", "_chmod", "_wchmod"] and
   mode = fc.getArgument(1).getValue().toInt() and
   sets(mode, s_iwoth())
 }

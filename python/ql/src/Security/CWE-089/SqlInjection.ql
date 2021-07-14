@@ -4,6 +4,7 @@
  *              malicious SQL code by the user.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 8.8
  * @precision high
  * @id py/sql-injection
  * @tags security
@@ -12,40 +13,10 @@
  */
 
 import python
-import semmle.python.security.Paths
-/* Sources */
-import semmle.python.web.HttpRequest
-/* Sinks */
-import semmle.python.security.injection.Sql
-import semmle.python.web.django.Db
-import semmle.python.web.django.Model
+import semmle.python.security.dataflow.SqlInjection
+import DataFlow::PathGraph
 
-class SQLInjectionConfiguration extends TaintTracking::Configuration {
-  SQLInjectionConfiguration() { this = "SQL injection configuration" }
-
-  override predicate isSource(TaintTracking::Source source) {
-    source instanceof HttpRequestTaintSource
-  }
-
-  override predicate isSink(TaintTracking::Sink sink) { sink instanceof SqlInjectionSink }
-}
-
-/*
- * Additional configuration to support tracking of DB objects. Connections, cursors, etc.
- * Without this configuration (or the LegacyConfiguration), the pattern of
- * `any(MyTaintKind k).taints(control_flow_node)` used in DbConnectionExecuteArgument would not work.
- */
-
-class DbConfiguration extends TaintTracking::Configuration {
-  DbConfiguration() { this = "DB configuration" }
-
-  override predicate isSource(TaintTracking::Source source) {
-    source instanceof DjangoModelObjects or
-    source instanceof DbConnectionSource
-  }
-}
-
-from SQLInjectionConfiguration config, TaintedPathSource src, TaintedPathSink sink
-where config.hasFlowPath(src, sink)
-select sink.getSink(), src, sink, "This SQL query depends on $@.", src.getSource(),
+from SqlInjection::Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
+where config.hasFlowPath(source, sink)
+select sink.getNode(), source, sink, "This SQL query depends on $@.", source.getNode(),
   "a user-provided value"

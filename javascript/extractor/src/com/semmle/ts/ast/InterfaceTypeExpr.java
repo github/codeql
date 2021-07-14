@@ -5,7 +5,7 @@ import com.semmle.js.ast.SourceLocation;
 import com.semmle.js.ast.Visitor;
 import java.util.List;
 
-/** An inline interface type, such as <tt>{x: number; y: number}</tt>. */
+/** An inline interface type, such as <code>{x: number; y: number}</code>. */
 public class InterfaceTypeExpr extends TypeExpression {
   private final List<MemberDefinition<?>> body;
 

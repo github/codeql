@@ -49,11 +49,15 @@ module IncompleteHtmlAttributeSanitization {
    */
   class HtmlAttributeConcatenation extends StringOps::ConcatenationLeaf {
     string lhs;
+    string quote;
 
     HtmlAttributeConcatenation() {
-      lhs = this.getPreviousLeaf().getStringValue().regexpCapture("(?s)(.*)=\"[^\"]*", 1) and
+      quote = ["\"", "'"] and
+      exists(string prev | prev = this.getPreviousLeaf().getStringValue() |
+        lhs = prev.regexpCapture("(?s)(.*)=" + quote + "[^" + quote + "=<>]*", 1)
+      ) and
       (
-        this.getNextLeaf().getStringValue().regexpMatch(".*\".*") or
+        this.getNextLeaf().getStringValue().regexpMatch(".*" + quote + ".*") or
         this instanceof StringOps::HtmlConcatenationLeaf
       )
     }
@@ -62,6 +66,11 @@ module IncompleteHtmlAttributeSanitization {
      * Holds if the attribute value is interpreted as JavaScript source code.
      */
     predicate isInterpretedAsJavaScript() { lhs.regexpMatch("(?i)(.* )?on[a-z]+") }
+
+    /**
+     * Gets the quote symbol (" or ') that is used to mark the attribute value.
+     */
+    string getQuote() { result = quote }
   }
 
   /**
@@ -74,7 +83,7 @@ module IncompleteHtmlAttributeSanitization {
     override string getADangerousCharacter() {
       isInterpretedAsJavaScript() and result = "&"
       or
-      result = "\""
+      result = getQuote()
     }
   }
 

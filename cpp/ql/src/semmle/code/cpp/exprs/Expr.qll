@@ -6,7 +6,6 @@ import semmle.code.cpp.Element
 private import semmle.code.cpp.Enclosing
 private import semmle.code.cpp.internal.ResolveClass
 private import semmle.code.cpp.internal.AddressConstantExpression
-private import semmle.code.cpp.models.implementations.Allocation
 
 /**
  * A C/C++ expression.
@@ -27,7 +26,7 @@ class Expr extends StmtParent, @expr {
   Function getEnclosingFunction() { result = exprEnclosingElement(this) }
 
   /** Gets the nearest enclosing set of curly braces around this expression in the source, if any. */
-  Block getEnclosingBlock() { result = getEnclosingStmt().getEnclosingBlock() }
+  BlockStmt getEnclosingBlock() { result = getEnclosingStmt().getEnclosingBlock() }
 
   override Stmt getEnclosingStmt() {
     result = this.getParent().(Expr).getEnclosingStmt()
@@ -402,7 +401,7 @@ class Expr extends StmtParent, @expr {
    */
   predicate hasImplicitConversion() {
     exists(Expr e |
-      exprconv(underlyingElement(this), unresolveElement(e)) and e.(Cast).isImplicit()
+      exprconv(underlyingElement(this), unresolveElement(e)) and e.(Conversion).isImplicit()
     )
   }
 
@@ -414,7 +413,7 @@ class Expr extends StmtParent, @expr {
    */
   predicate hasExplicitConversion() {
     exists(Expr e |
-      exprconv(underlyingElement(this), unresolveElement(e)) and not e.(Cast).isImplicit()
+      exprconv(underlyingElement(this), unresolveElement(e)) and not e.(Conversion).isImplicit()
     )
   }
 
@@ -453,12 +452,14 @@ class Expr extends StmtParent, @expr {
    * cast from B to C. Only (1) and (2) would be included.
    */
   Expr getExplicitlyConverted() {
-    // result is this or one of its conversions
-    result = this.getConversion*() and
-    // result is not an implicit conversion - it's either the expr or an explicit cast
-    (result = this or not result.(Cast).isImplicit()) and
-    // there is no further explicit conversion after result
-    not exists(Cast other | other = result.getConversion+() and not other.isImplicit())
+    // For performance, we avoid a full transitive closure over `getConversion`.
+    // Since there can be several implicit conversions before and after an
+    // explicit conversion, use `getImplicitlyConverted` to step over them
+    // cheaply. Then, if there is an explicit conversion following the implict
+    // conversion sequence, recurse to handle multiple explicit conversions.
+    if this.getImplicitlyConverted().hasExplicitConversion()
+    then result = this.getImplicitlyConverted().getConversion().getExplicitlyConverted()
+    else result = this
   }
 
   /**
@@ -538,6 +539,17 @@ class BinaryOperation extends Operation, @bin_op_expr {
 
   /** Gets the right operand of this binary operation. */
   Expr getRightOperand() { this.hasChild(result, 1) }
+
+  /**
+   * Holds if `e1` and `e2` (in either order) are the two operands of this
+   * binary operation.
+   */
+  predicate hasOperands(Expr e1, Expr e2) {
+    exists(int i | i in [0, 1] |
+      this.hasChild(e1, i) and
+      this.hasChild(e2, 1 - i)
+    )
+  }
 
   override string toString() { result = "... " + this.getOperator() + " ..." }
 
@@ -826,7 +838,7 @@ class NewOrNewArrayExpr extends Expr, @any_new_expr {
    * For example, for `new int` the result is `int`.
    * For `new int[5]` the result is `int[5]`.
    */
-  abstract Type getAllocatedType();
+  Type getAllocatedType() { none() } // overridden in subclasses
 
   /**
    * Gets the pointer `p` if this expression is of the form `new(p) T...`.
@@ -835,10 +847,27 @@ class NewOrNewArrayExpr extends Expr, @any_new_expr {
    */
   Expr getPlacementPointer() {
     result =
-      this
-          .getAllocatorCall()
+      this.getAllocatorCall()
           .getArgument(this.getAllocator().(OperatorNewAllocationFunction).getPlacementArgument())
   }
+
+  /**
+   * For `operator new`, this gets the call or expression that initializes the allocated object, if any.
+   *
+   * As examples, for `new int(4)`, this will be `4`, and for `new std::vector(4)`, this will
+   * be a call to the constructor `std::vector::vector(size_t)` with `4` as an argument.
+   *
+   * For `operator new[]`, this gets the call or expression that initializes the first element of the
+   * array, if any.
+   *
+   * This will either be a call to the default constructor for the array's element type (as
+   * in `new std::string[10]`), or a literal zero for arrays of scalars which are zero-initialized
+   * due to extra parentheses (as in `new int[10]()`).
+   *
+   * At runtime, the constructor will be called once for each element in the array, but the
+   * constructor call only exists once in the AST.
+   */
+  final Expr getInitializer() { result = this.getChild(1) }
 }
 
 /**
@@ -860,14 +889,6 @@ class NewExpr extends NewOrNewArrayExpr, @new_expr {
   override Type getAllocatedType() {
     new_allocated_type(underlyingElement(this), unresolveElement(result))
   }
-
-  /**
-   * Gets the call or expression that initializes the allocated object, if any.
-   *
-   * As examples, for `new int(4)`, this will be `4`, and for `new std::vector(4)`, this will
-   * be a call to the constructor `std::vector::vector(size_t)` with `4` as an argument.
-   */
-  Expr getInitializer() { result = this.getChild(1) }
 }
 
 /**
@@ -897,18 +918,6 @@ class NewArrayExpr extends NewOrNewArrayExpr, @new_array_expr {
   Type getAllocatedElementType() {
     result = getType().getUnderlyingType().(PointerType).getBaseType()
   }
-
-  /**
-   * Gets the call or expression that initializes the first element of the array, if any.
-   *
-   * This will either be a call to the default constructor for the array's element type (as
-   * in `new std::string[10]`), or a literal zero for arrays of scalars which are zero-initialized
-   * due to extra parentheses (as in `new int[10]()`).
-   *
-   * At runtime, the constructor will be called once for each element in the array, but the
-   * constructor call only exists once in the AST.
-   */
-  Expr getInitializer() { result = this.getChild(1) }
 
   /**
    * Gets the extent of the non-constant array dimension, if any.
@@ -1098,7 +1107,7 @@ class StmtExpr extends Expr, @expr_stmt {
 /** Get the result expression of a statement. (Helper function for StmtExpr.) */
 private Expr getStmtResultExpr(Stmt stmt) {
   result = stmt.(ExprStmt).getExpr() or
-  result = getStmtResultExpr(stmt.(Block).getLastStmt())
+  result = getStmtResultExpr(stmt.(BlockStmt).getLastStmt())
 }
 
 /**
@@ -1131,6 +1140,40 @@ class BlockExpr extends Literal {
    * Gets the (anonymous) function associated with this code block expression.
    */
   Function getFunction() { code_block(underlyingElement(this), unresolveElement(result)) }
+}
+
+/**
+ * A C++ `throw` expression.
+ * ```
+ * throw Exc(2);
+ * ```
+ */
+class ThrowExpr extends Expr, @throw_expr {
+  /**
+   * Gets the expression that will be thrown, if any. There is no result if
+   * `this` is a `ReThrowExpr`.
+   */
+  Expr getExpr() { result = this.getChild(0) }
+
+  override string getAPrimaryQlClass() { result = "ThrowExpr" }
+
+  override string toString() { result = "throw ..." }
+
+  override int getPrecedence() { result = 1 }
+}
+
+/**
+ * A C++ `throw` expression with no argument (which causes the current exception to be re-thrown).
+ * ```
+ * throw;
+ * ```
+ */
+class ReThrowExpr extends ThrowExpr {
+  ReThrowExpr() { this.getType() instanceof VoidType }
+
+  override string getAPrimaryQlClass() { result = "ReThrowExpr" }
+
+  override string toString() { result = "re-throw exception " }
 }
 
 /**
@@ -1226,7 +1269,8 @@ private predicate convparents(Expr child, int idx, Element parent) {
   )
 }
 
-// Pulled out for performance. See QL-796.
+// Pulled out for performance. See
+// https://github.com/github/codeql-coreql-team/issues/1044.
 private predicate hasNoConversions(Expr e) { not e.hasConversion() }
 
 /**
@@ -1256,4 +1300,32 @@ class SpaceshipExpr extends BinaryOperation, @spaceshipexpr {
   override int getPrecedence() { result = 11 }
 
   override string getOperator() { result = "<=>" }
+}
+
+/**
+ * A C/C++ `co_await` expression.
+ * ```
+ * co_await foo();
+ * ```
+ */
+class CoAwaitExpr extends UnaryOperation, @co_await {
+  override string getAPrimaryQlClass() { result = "CoAwaitExpr" }
+
+  override string getOperator() { result = "co_await" }
+
+  override int getPrecedence() { result = 16 }
+}
+
+/**
+ * A C/C++ `co_yield` expression.
+ * ```
+ * co_yield 1;
+ * ```
+ */
+class CoYieldExpr extends UnaryOperation, @co_yield {
+  override string getAPrimaryQlClass() { result = "CoYieldExpr" }
+
+  override string getOperator() { result = "co_yield" }
+
+  override int getPrecedence() { result = 2 }
 }

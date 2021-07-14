@@ -66,7 +66,9 @@
 import java
 private import SSA
 private import RangeUtils
+private import semmle.code.java.dataflow.internal.rangeanalysis.SsaReadPositionCommon
 private import semmle.code.java.controlflow.internal.GuardsLogic
+private import semmle.code.java.security.RandomDataSource
 private import SignAnalysis
 private import ModulusAnalysis
 private import semmle.code.java.Reflection
@@ -252,6 +254,15 @@ private Guard boundFlowCond(SsaVariable v, Expr e, int delta, boolean upper, boo
   or
   result = eqFlowCond(v, e, delta, true, testIsTrue) and
   (upper = true or upper = false)
+  or
+  // guard that tests whether `v2` is bounded by `e + delta + d1 - d2` and
+  // exists a guard `guardEq` such that `v = v2 - d1 + d2`.
+  exists(SsaVariable v2, Guard guardEq, boolean eqIsTrue, int d1, int d2 |
+    guardEq = eqFlowCond(v, ssaRead(v2, d1), d2, true, eqIsTrue) and
+    result = boundFlowCond(v2, e, delta + d1 - d2, upper, testIsTrue) and
+    // guardEq needs to control guard
+    guardEq.directlyControls(result.getBasicBlock(), eqIsTrue)
+  )
 }
 
 private newtype TReason =
@@ -476,14 +487,17 @@ private predicate boundFlowStep(Expr e2, Expr e1, int delta, boolean upper) {
   or
   e2.(AssignOrExpr).getSource() = e1 and positive(e2) and delta = 0 and upper = false
   or
-  exists(MethodAccess ma, Method m |
-    e2 = ma and
-    ma.getMethod() = m and
-    m.hasName("nextInt") and
-    m.getDeclaringType().hasQualifiedName("java.util", "Random") and
-    e1 = ma.getAnArgument() and
-    delta = -1 and
-    upper = true
+  exists(RandomDataSource rds |
+    e2 = rds.getOutput() and
+    (
+      e1 = rds.getUpperBoundExpr() and
+      delta = -1 and
+      upper = true
+      or
+      e1 = rds.getLowerBoundExpr() and
+      delta = 0 and
+      upper = false
+    )
   )
   or
   exists(MethodAccess ma, Method m |
@@ -864,7 +878,5 @@ private predicate boundedConditionalExpr(
   ConditionalExpr cond, Bound b, boolean upper, boolean branch, int delta, boolean fromBackEdge,
   int origdelta, Reason reason
 ) {
-  branch = true and bounded(cond.getTrueExpr(), b, delta, upper, fromBackEdge, origdelta, reason)
-  or
-  branch = false and bounded(cond.getFalseExpr(), b, delta, upper, fromBackEdge, origdelta, reason)
+  bounded(cond.getBranchExpr(branch), b, delta, upper, fromBackEdge, origdelta, reason)
 }

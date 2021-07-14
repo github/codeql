@@ -278,7 +278,7 @@ private int getAccessorKind(Accessor a) {
   event_accessors(a, -result, _, _, _)
 }
 
-/** A source declared type. */
-class SourceDeclarationType extends Type {
-  SourceDeclarationType() { this = this.getSourceDeclaration() }
+/** An unbound type. */
+class UnboundDeclarationType extends Type {
+  UnboundDeclarationType() { this.isUnboundDeclaration() }
 }

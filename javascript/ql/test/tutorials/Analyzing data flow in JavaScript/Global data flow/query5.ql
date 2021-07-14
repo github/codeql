@@ -1,11 +1,12 @@
 import javascript
 
-class StepThroughResolveSymlinks extends TaintTracking::AdditionalTaintStep, DataFlow::CallNode {
-  StepThroughResolveSymlinks() { this = DataFlow::moduleImport("resolve-symlinks").getACall() }
-
+class StepThroughResolveSymlinks extends TaintTracking::SharedTaintStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-    pred = this.getArgument(0) and
-    succ = this
+    exists(DataFlow::CallNode c |
+      c = DataFlow::moduleImport("resolve-symlinks").getACall() and
+      pred = c.getArgument(0) and
+      succ = c
+    )
   }
 }
 

@@ -35,9 +35,9 @@ returns <code>true</code> because the objects contain equal values.</p>
   J. Bloch and N. Gafter, <em>Java Puzzlers: Traps, Pitfalls, and Corner Cases</em>, Puzzle 32. Addison-Wesley, 2005.
 </li>
 <li>
-  Java API Documentation:
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html#equals%28java.lang.Object%29">Object.equals()</a>,
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Integer.html#equals%28java.lang.Object%29">Integer.equals()</a>.
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)">Object.equals()</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Integer.html#equals(java.lang.Object)">Integer.equals()</a>.
 </li>
 
 

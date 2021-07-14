@@ -4,6 +4,7 @@
  */
 
 import javascript
+import IDEContextual
 private import Declarations.Declarations
 
 /**
@@ -178,11 +179,3 @@ ASTNode definitionOf(Locatable e, string kind) {
   or
   jsdocTypeLookup(e, result, kind)
 }
-
-/**
- * Returns an appropriately encoded version of a filename `name`
- * passed by the VS Code extension in order to coincide with the
- * output of `.getFile()` on locatable entities.
- */
-cached
-File getEncodedFile(string name) { result.getAbsolutePath().replaceAll(":", "_") = name }

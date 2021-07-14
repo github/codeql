@@ -5,12 +5,13 @@
  *              and conversely it has to be unescaped last to avoid double-unescaping.
  * @kind problem
  * @problem.severity warning
+ * @security-severity 7.8
  * @precision high
  * @id js/double-escaping
  * @tags correctness
  *       security
  *       external/cwe/cwe-116
- *       external/cwe/cwe-20
+ *       external/cwe/cwe-020
  */
 
 import javascript

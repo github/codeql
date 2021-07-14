@@ -5,12 +5,12 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    public sealed class Nullability
+    internal sealed class Nullability
     {
         public int Annotation { get; }
 
-        static readonly Nullability[] EmptyArray = new Nullability[0];
-        public readonly Nullability[] NullableParameters;
+        private static readonly Nullability[] emptyArray = System.Array.Empty<Nullability>();
+        public IEnumerable<Nullability> NullableParameters { get; }
 
         public static Nullability Create(AnnotatedTypeSymbol ts)
         {
@@ -30,11 +30,11 @@ namespace Semmle.Extraction.CSharp.Entities
             return new Nullability(ts);
         }
 
-        public bool IsOblivious => Annotation == 0 && NullableParameters.Length == 0;
+        public bool IsOblivious => Annotation == 0 && !NullableParameters.Any();
 
-        static readonly Nullability oblivious = new Nullability(NullableAnnotation.None);
-        static readonly Nullability annotated = new Nullability(NullableAnnotation.Annotated);
-        static readonly Nullability notannotated = new Nullability(NullableAnnotation.NotAnnotated);
+        private static readonly Nullability oblivious = new Nullability(NullableAnnotation.None);
+        private static readonly Nullability annotated = new Nullability(NullableAnnotation.Annotated);
+        private static readonly Nullability notannotated = new Nullability(NullableAnnotation.NotAnnotated);
 
         private Nullability(NullableAnnotation n)
         {
@@ -50,12 +50,12 @@ namespace Semmle.Extraction.CSharp.Entities
                     Annotation = 0;
                     break;
             }
-            NullableParameters = EmptyArray;
+            NullableParameters = emptyArray;
         }
 
         private Nullability(AnnotatedTypeSymbol ts) : this(ts.Nullability)
         {
-            NullableParameters = ts.HasConsistentNullability() ? EmptyArray : ts.GetAnnotatedTypeArguments().Select(Create).ToArray();
+            NullableParameters = ts.HasConsistentNullability() ? emptyArray : ts.GetAnnotatedTypeArguments().Select(Create).ToArray();
         }
 
         public Nullability(IMethodSymbol method)
@@ -64,14 +64,14 @@ namespace Semmle.Extraction.CSharp.Entities
             NullableParameters = method.GetAnnotatedTypeArguments().Select(a => new Nullability(a)).ToArray();
         }
 
-        public override bool Equals(object other)
+        public override bool Equals(object? other)
         {
             return other is Nullability n && Annotation == n.Annotation && NullableParameters.SequenceEqual(n.NullableParameters);
         }
 
         public override int GetHashCode()
         {
-            int h = Annotation;
+            var h = Annotation;
 
             foreach (var t in NullableParameters)
                 h = h * 5 + t.GetHashCode();
@@ -79,7 +79,7 @@ namespace Semmle.Extraction.CSharp.Entities
             return h;
         }
 
-        public void WriteId(TextWriter trapFile)
+        public void WriteId(EscapingTextWriter trapFile)
         {
             trapFile.Write(Annotation);
             trapFile.Write('(');
@@ -90,15 +90,13 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override string ToString()
         {
-            using (var w = new StringWriter())
-            {
-                WriteId(w);
-                return w.ToString();
-            }
+            using var w = new EscapingTextWriter();
+            WriteId(w);
+            return w.ToString();
         }
     }
 
-    public class NullabilityEntity : CachedEntity<Nullability>
+    internal class NullabilityEntity : CachedEntity<Nullability>
     {
         public NullabilityEntity(Context cx, Nullability init) : base(cx, init)
         {
@@ -112,28 +110,28 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
-            trapFile.nullability(this, symbol.Annotation);
+            trapFile.nullability(this, Symbol.Annotation);
 
-            int i = 0;
-            foreach (var s in symbol.NullableParameters)
+            var i = 0;
+            foreach (var s in Symbol.NullableParameters)
             {
                 trapFile.nullability_parent(Create(Context, s), i, this);
                 i++;
             }
         }
 
-        public override void WriteId(TextWriter trapFile)
+        public override void WriteId(EscapingTextWriter trapFile)
         {
-            symbol.WriteId(trapFile);
+            Symbol.WriteId(trapFile);
         }
 
-        public static NullabilityEntity Create(Context cx, Nullability init) => NullabilityFactory.Instance.CreateEntity(cx, init);
+        public static NullabilityEntity Create(Context cx, Nullability init) => NullabilityFactory.Instance.CreateEntity(cx, init, init);
 
-        class NullabilityFactory : ICachedEntityFactory<Nullability, NullabilityEntity>
+        private class NullabilityFactory : CachedEntityFactory<Nullability, NullabilityEntity>
         {
-            public static readonly NullabilityFactory Instance = new NullabilityFactory();
+            public static NullabilityFactory Instance { get; } = new NullabilityFactory();
 
-            public NullabilityEntity Create(Context cx, Nullability init) => new NullabilityEntity(cx, init);
+            public override NullabilityEntity Create(Context cx, Nullability init) => new NullabilityEntity(cx, init);
         }
     }
 

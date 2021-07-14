@@ -144,7 +144,7 @@ class OpensDirective extends Directive, @opens {
 
   /**
    * Gets a module specified in the `to` clause of this
-   * `exports` directive, if any.
+   * `opens` directive, if any.
    */
   Module getATargetModule() { opensTo(this, result) }
 

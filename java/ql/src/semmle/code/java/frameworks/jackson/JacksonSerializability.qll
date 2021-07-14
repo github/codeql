@@ -8,6 +8,8 @@ import semmle.code.java.Serializability
 import semmle.code.java.Reflection
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.DataFlow5
+import semmle.code.java.dataflow.FlowSteps
+private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A `@com.fasterxml.jackson.annotation.JsonIgnore` annoation.
@@ -27,7 +29,7 @@ abstract class JacksonSerializableType extends Type { }
  * A method used for serializing objects using Jackson. The final parameter is the object to be
  * serialized.
  */
-library class JacksonWriteValueMethod extends Method {
+private class JacksonWriteValueMethod extends Method, TaintPreservingCallable {
   JacksonWriteValueMethod() {
     (
       getDeclaringType().hasQualifiedName("com.fasterxml.jackson.databind", "ObjectWriter") or
@@ -36,10 +38,33 @@ library class JacksonWriteValueMethod extends Method {
     getName().matches("writeValue%") and
     getParameter(getNumberOfParameters() - 1).getType() instanceof TypeObject
   }
+
+  override predicate returnsTaintFrom(int arg) {
+    getNumberOfParameters() = 1 and
+    arg = 0
+  }
+
+  override predicate transfersTaint(int src, int sink) {
+    getNumberOfParameters() > 1 and
+    src = getNumberOfParameters() - 1 and
+    sink = 0
+  }
+}
+
+private class JacksonReadValueMethod extends Method, TaintPreservingCallable {
+  JacksonReadValueMethod() {
+    (
+      getDeclaringType().hasQualifiedName("com.fasterxml.jackson.databind", "ObjectReader") or
+      getDeclaringType().hasQualifiedName("com.fasterxml.jackson.databind", "ObjectMapper")
+    ) and
+    hasName(["readValue", "readValues"])
+  }
+
+  override predicate returnsTaintFrom(int arg) { arg = 0 }
 }
 
 /** A type whose values are explicitly serialized in a call to a Jackson method. */
-library class ExplicitlyWrittenJacksonSerializableType extends JacksonSerializableType {
+private class ExplicitlyWrittenJacksonSerializableType extends JacksonSerializableType {
   ExplicitlyWrittenJacksonSerializableType() {
     exists(MethodAccess ma |
       // A call to a Jackson write method...
@@ -51,7 +76,7 @@ library class ExplicitlyWrittenJacksonSerializableType extends JacksonSerializab
 }
 
 /** A type used in a `JacksonSerializableField` declaration. */
-library class FieldReferencedJacksonSerializableType extends JacksonSerializableType {
+private class FieldReferencedJacksonSerializableType extends JacksonSerializableType {
   FieldReferencedJacksonSerializableType() {
     exists(JacksonSerializableField f | usesType(f.getType(), this))
   }
@@ -84,17 +109,24 @@ private class TypeLiteralToJacksonDatabindFlowConfiguration extends DataFlow5::C
 }
 
 /** A type whose values are explicitly deserialized in a call to a Jackson method. */
-library class ExplicitlyReadJacksonDeserializableType extends JacksonDeserializableType {
+private class ExplicitlyReadJacksonDeserializableType extends JacksonDeserializableType {
   ExplicitlyReadJacksonDeserializableType() {
     exists(TypeLiteralToJacksonDatabindFlowConfiguration conf |
       usesType(conf.getSourceWithFlowToJacksonDatabind().getTypeName().getType(), this)
+    )
+    or
+    exists(MethodAccess ma |
+      // A call to a Jackson read method...
+      ma.getMethod() instanceof JacksonReadValueMethod and
+      // ...where `this` is used in the final argument, indicating that this type will be deserialized.
+      usesType(ma.getArgument(ma.getNumArgument() - 1).getType(), this)
     )
   }
 }
 
 /** A type used in a `JacksonDeserializableField` declaration. */
-library class FieldReferencedJacksonDeSerializableType extends JacksonDeserializableType {
-  FieldReferencedJacksonDeSerializableType() {
+private class FieldReferencedJacksonDeserializableType extends JacksonDeserializableType {
+  FieldReferencedJacksonDeserializableType() {
     exists(JacksonDeserializableField f | usesType(f.getType(), this))
   }
 }
@@ -120,6 +152,21 @@ class JacksonDeserializableField extends DeserializableField {
       superType.fromSource()
     ) and
     not this.getAnAnnotation() instanceof JacksonJSONIgnoreAnnotation
+  }
+}
+
+/** A call to a field that may be deserialized using the Jackson JSON framework. */
+private class JacksonDeserializableFieldAccess extends FieldAccess {
+  JacksonDeserializableFieldAccess() { getField() instanceof JacksonDeserializableField }
+}
+
+/**
+ * When an object is deserialized by the Jackson JSON framework using a tainted input source,
+ * the fields that the framework deserialized are themselves tainted input data.
+ */
+private class JacksonDeserializedTaintStep extends AdditionalTaintStep {
+  override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
+    DataFlow::getFieldQualifier(node2.asExpr().(JacksonDeserializableFieldAccess)) = node1
   }
 }
 
@@ -225,5 +272,16 @@ class JacksonMixedInCallable extends Callable {
         // Signatures should match
         result.getSignature() = getSignature()
     )
+  }
+}
+
+private class JacksonModel extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "com.fasterxml.jackson.databind;ObjectMapper;true;valueToTree;;;Argument[0];ReturnValue;taint",
+        "com.fasterxml.jackson.databind;ObjectMapper;true;valueToTree;;;MapValue of Argument[0];ReturnValue;taint",
+        "com.fasterxml.jackson.databind;ObjectMapper;true;convertValue;;;Argument[0];ReturnValue;taint"
+      ]
   }
 }

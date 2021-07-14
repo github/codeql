@@ -42,7 +42,11 @@ private predicate alwaysNullExpr(Expr expr) {
   or
   alwaysNullMethod(expr.(StaticCall).getTarget())
   or
-  forex(VariableUpdate vu | DefUse::variableUpdateUse(_, vu, expr) | alwaysNullVariableUpdate(vu))
+  forex(Ssa::Definition def |
+    expr = any(Ssa::Definition def0 | def = def0.getAnUltimateDefinition()).getARead()
+  |
+    alwaysNullVariableUpdate(def.getVariableUpdate())
+  )
 }
 
 pragma[noinline]
@@ -58,7 +62,9 @@ private predicate alwaysNotNullExpr(Expr expr) {
   or
   alwaysNotNullMethod(expr.(StaticCall).getTarget())
   or
-  forex(VariableUpdate vu | DefUse::variableUpdateUse(_, vu, expr) |
-    alwaysNotNullVariableUpdate(vu)
+  forex(Ssa::Definition def |
+    expr = any(Ssa::Definition def0 | def = def0.getAnUltimateDefinition()).getARead()
+  |
+    alwaysNotNullVariableUpdate(def.getVariableUpdate())
   )
 }

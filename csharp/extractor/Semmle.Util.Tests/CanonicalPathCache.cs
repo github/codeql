@@ -6,12 +6,11 @@ using System;
 
 namespace SemmleTests.Semmle.Util
 {
-    public class CanonicalPathCacheTest : IDisposable
+    public sealed class CanonicalPathCacheTest : IDisposable
     {
-        readonly ILogger Logger = new LoggerMock();
-        readonly string root;
-
-        CanonicalPathCache cache;
+        private readonly ILogger Logger = new LoggerMock();
+        private readonly string root;
+        private CanonicalPathCache cache;
 
         public CanonicalPathCacheTest()
         {
@@ -24,9 +23,10 @@ namespace SemmleTests.Semmle.Util
             root = Win32.IsWindows() ? @"X:\" : "/";
         }
 
-        void IDisposable.Dispose()
+        public void Dispose()
         {
             File.Delete("abc");
+            Logger.Dispose();
         }
 
         [Fact]
@@ -157,7 +157,7 @@ namespace SemmleTests.Semmle.Util
             RunAllTests();
         }
 
-        void RunAllTests()
+        private void RunAllTests()
         {
             CanonicalPathRelativeFile();
             CanonicalPathAbsoluteFile();
@@ -172,13 +172,11 @@ namespace SemmleTests.Semmle.Util
             CanonicalPathDots();
         }
 
-        class LoggerMock : ILogger
+        private sealed class LoggerMock : ILogger
         {
             public void Dispose() { }
 
             public void Log(Severity s, string text) { }
-
-            public void Log(Severity s, string text, params object[] args) { }
         }
     }
 }

@@ -3,6 +3,7 @@
  * @description Use of a standard library function that is not thread-safe.
  * @kind problem
  * @problem.severity warning
+ * @security-severity 10.0
  * @precision high
  * @id cpp/potentially-dangerous-function
  * @tags reliability
@@ -14,12 +15,7 @@ import cpp
 
 predicate potentiallyDangerousFunction(Function f, string message) {
   exists(string name | f.hasGlobalName(name) |
-    (
-      name = "gmtime" or
-      name = "localtime" or
-      name = "ctime" or
-      name = "asctime"
-    ) and
+    name = ["gmtime", "localtime", "ctime", "asctime"] and
     message = "Call to " + name + " is potentially dangerous"
   )
 }

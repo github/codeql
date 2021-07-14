@@ -22,3 +22,4 @@
 | Guards.cs:287:17:287:17 | access to parameter o | Guards.cs:276:16:276:16 | access to parameter o | Guards.cs:280:13:281:28 | ... => ... | non-match Action<String> a | false |
 | Guards.cs:287:17:287:17 | access to parameter o | Guards.cs:276:16:276:16 | access to parameter o | Guards.cs:282:13:283:28 | ... => ... | non-match "" | false |
 | Guards.cs:287:17:287:17 | access to parameter o | Guards.cs:276:16:276:16 | access to parameter o | Guards.cs:284:13:285:28 | ... => ... | non-match null | false |
+| Guards.cs:287:17:287:17 | access to parameter o | Guards.cs:276:16:276:16 | access to parameter o | Guards.cs:286:13:287:28 | ... => ... | match _ | true |

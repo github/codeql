@@ -1,6 +1,6 @@
 /**
- * @name __init__ method is a generator
- * @description __init__ method is a generator.
+ * @name `__init__` method is a generator
+ * @description `__init__` method is a generator.
  * @kind problem
  * @tags reliability
  *       correctness

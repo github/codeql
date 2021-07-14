@@ -2,6 +2,7 @@
 | file://:0:0:0:0 | operator new |
 | file://:0:0:0:0 | operator= |
 | file://:0:0:0:0 | operator= |
+| test.cpp:2:7:2:7 | A |
 | test.cpp:2:7:2:7 | operator= |
 | test.cpp:2:19:2:20 | ~A |
 | test.cpp:4:7:4:7 | X |

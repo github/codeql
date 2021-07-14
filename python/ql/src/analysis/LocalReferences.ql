@@ -15,5 +15,5 @@ external string selectedSourceFile();
 from NiceLocationExpr use, Definition defn, string kind
 where
   defn = definitionOf(use, kind) and
-  defn.getLocation().getFile() = getEncodedFile(selectedSourceFile())
+  defn.getLocation().getFile() = getFileBySourceArchiveName(selectedSourceFile())
 select use, defn, kind

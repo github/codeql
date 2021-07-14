@@ -1,7 +1,7 @@
 using System;
 using System.Text;
 
-class Class1
+class FormatInvalid
 {
     void FormatStringTests()
     {
@@ -115,9 +115,9 @@ class Class1
         System.Diagnostics.Debug.Assert(true, "Error", "}", ps);
         sw.Write("}", 0);
         System.Diagnostics.Debug.Print("}", ps);
+
+        Console.WriteLine("}"); // GOOD
     }
 
     System.IO.StringWriter sw;
 }
-
-// semmle-extractor-options: /r:System.Runtime.Extensions.dll /r:System.Diagnostics.TraceSource.dll

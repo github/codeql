@@ -47,7 +47,17 @@ class LabelLiteral extends Literal {
 }
 
 /** A character literal or a string literal. */
-abstract class TextLiteral extends Literal {
+class TextLiteral extends Literal {
+  TextLiteral() {
+    // String Literal
+    // Note that `AggregateLiteral`s can also have an array type, but they derive from
+    // @aggregateliteral rather than @literal.
+    this.getType() instanceof ArrayType
+    or
+    // Char literal
+    this.getValueText().regexpMatch("(?s)\\s*L?'.*")
+  }
+
   /** Gets a hex escape sequence that appears in the character or string literal (see [lex.ccon] in the C++ Standard). */
   string getAHexEscapeSequence(int occurrence, int offset) {
     result = getValueText().regexpFind("(?<!\\\\)\\\\x[0-9a-fA-F]+", occurrence, offset)

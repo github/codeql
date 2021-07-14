@@ -75,13 +75,25 @@ class GenericType extends RefType {
    * Gets the number of type parameters of this generic type.
    */
   int getNumberOfTypeParameters() { result = strictcount(getATypeParameter()) }
+
+  override string getAPrimaryQlClass() { result = "GenericType" }
 }
 
 /** A generic type that is a class. */
-class GenericClass extends GenericType, Class { }
+class GenericClass extends GenericType, Class {
+  override string getAPrimaryQlClass() {
+    result = Class.super.getAPrimaryQlClass() or
+    result = GenericType.super.getAPrimaryQlClass()
+  }
+}
 
 /** A generic type that is an interface. */
-class GenericInterface extends GenericType, Interface { }
+class GenericInterface extends GenericType, Interface {
+  override string getAPrimaryQlClass() {
+    result = Interface.super.getAPrimaryQlClass() or
+    result = GenericType.super.getAPrimaryQlClass()
+  }
+}
 
 /**
  * A common super-class for Java types that may have a type bound.
@@ -115,6 +127,8 @@ abstract class BoundedType extends RefType, @boundedtype {
     or
     result = getUpperBoundType().(BoundedType).getAnUltimateUpperBoundType()
   }
+
+  override string getAPrimaryQlClass() { result = "BoundedType" }
 }
 
 /**
@@ -180,6 +194,8 @@ class TypeVariable extends BoundedType, @typevariable {
     or
     result = getASuppliedType().(TypeVariable).getAnUltimatelySuppliedType()
   }
+
+  override string getAPrimaryQlClass() { result = "TypeVariable" }
 }
 
 /**
@@ -248,6 +264,8 @@ class Wildcard extends BoundedType, @wildcard {
     not hasLowerBound() and
     wildcards(this, "?", _)
   }
+
+  override string getAPrimaryQlClass() { result = "Wildcard" }
 }
 
 /**
@@ -350,13 +368,25 @@ class ParameterizedType extends RefType {
 
   /** Holds if this type originates from source code. */
   override predicate fromSource() { typeVars(_, _, _, _, this) and RefType.super.fromSource() }
+
+  override string getAPrimaryQlClass() { result = "ParameterizedType" }
 }
 
 /** A parameterized type that is a class. */
-class ParameterizedClass extends Class, ParameterizedType { }
+class ParameterizedClass extends Class, ParameterizedType {
+  override string getAPrimaryQlClass() {
+    result = Class.super.getAPrimaryQlClass() or
+    result = ParameterizedType.super.getAPrimaryQlClass()
+  }
+}
 
 /** A parameterized type that is an interface. */
-class ParameterizedInterface extends Interface, ParameterizedType { }
+class ParameterizedInterface extends Interface, ParameterizedType {
+  override string getAPrimaryQlClass() {
+    result = Interface.super.getAPrimaryQlClass() or
+    result = ParameterizedType.super.getAPrimaryQlClass()
+  }
+}
 
 /**
  * The raw version of a generic type is the type that is formed by
@@ -380,13 +410,25 @@ class RawType extends RefType {
 
   /** Holds if this type originates from source code. */
   override predicate fromSource() { not any() }
+
+  override string getAPrimaryQlClass() { result = "RawType" }
 }
 
 /** A raw type that is a class. */
-class RawClass extends Class, RawType { }
+class RawClass extends Class, RawType {
+  override string getAPrimaryQlClass() {
+    result = Class.super.getAPrimaryQlClass() or
+    result = RawType.super.getAPrimaryQlClass()
+  }
+}
 
 /** A raw type that is an interface. */
-class RawInterface extends Interface, RawType { }
+class RawInterface extends Interface, RawType {
+  override string getAPrimaryQlClass() {
+    result = Interface.super.getAPrimaryQlClass() or
+    result = RawType.super.getAPrimaryQlClass()
+  }
+}
 
 // -------- Generic callables  --------
 /**

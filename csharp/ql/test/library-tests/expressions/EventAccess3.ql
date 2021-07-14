@@ -11,7 +11,7 @@ where
   e.getTarget().getName() = "Click" and
   e.getTarget().getDeclaringType() = m.getDeclaringType() and
   d.getEnclosingCallable() = m and
-  d.getDelegateExpr() = e and
+  d.getExpr() = e and
   d.getArgument(0) instanceof ThisAccess and
   d.getArgument(1).(ParameterAccess).getTarget().hasName("e")
 select m, d, e

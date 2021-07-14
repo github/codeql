@@ -9,13 +9,14 @@
  * and its constructed generics (`ConstructedGeneric*`).
  *
  * Generics can be partially constructed if they are unbound generics contained
- * within constructed generic types. The predicate `getSourceDeclaration` refers
+ * within constructed generic types. The predicate `getUnboundDeclaration` refers
  * to the ultimate `UnboundGeneric` type/method as defined in the source code.
  */
 
 import Location
 import Namespace
 private import dotnet
+private import TypeRef
 
 /**
  * A generic declaration. Either an unbound generic (`UnboundGeneric`) or a
@@ -57,8 +58,8 @@ class ConstructedGeneric extends DotNet::ConstructedGeneric, Generic {
 
   override UnboundGeneric getUnboundGeneric() { constructed_generic(this, result) }
 
-  override UnboundGeneric getSourceDeclaration() {
-    result = getUnboundGeneric().getSourceDeclaration()
+  override UnboundGeneric getUnboundDeclaration() {
+    result = getUnboundGeneric().getUnboundDeclaration()
   }
 
   override int getNumberOfTypeArguments() { result = count(int i | type_arguments(_, i, this)) }
@@ -113,8 +114,8 @@ class UnboundGenericType extends ValueOrRefType, UnboundGeneric {
     result = getNameWithoutBrackets() + "<" + this.typeParametersToString() + ">"
   }
 
-  override UnboundGenericType getSourceDeclaration() {
-    result = ValueOrRefType.super.getSourceDeclaration()
+  override UnboundGenericType getUnboundDeclaration() {
+    result = ValueOrRefType.super.getUnboundDeclaration()
   }
 
   final override Type getChild(int n) { result = getTypeParameter(n) }
@@ -167,7 +168,7 @@ class TypeParameter extends DotNet::TypeParameter, Type, @type_parameter {
     // A<int>.B<int> is a ConstructedGenericClass.
     exists(ConstructedGeneric c, UnboundGeneric u, int tpi |
       this = u.getTypeParameter(tpi) and
-      (u = c.getUnboundGeneric() or u = c.getSourceDeclaration()) and
+      (u = c.getUnboundGeneric() or u = c.getUnboundDeclaration()) and
       result = c.getTypeArgument(tpi)
     )
   }
@@ -183,6 +184,13 @@ class TypeParameter extends DotNet::TypeParameter, Type, @type_parameter {
 
   /** Gets the generic that defines this type parameter. */
   UnboundGeneric getGeneric() { type_parameters(this, _, result, _) }
+
+  final override predicate hasQualifiedName(string qualifier, string name) {
+    qualifier = "" and
+    name = this.getName()
+  }
+
+  override string getAPrimaryQlClass() { result = "TypeParameter" }
 }
 
 /**
@@ -224,7 +232,7 @@ class TypeParameterConstraints extends Element, @type_parameter_constraints {
   predicate hasNullableRefTypeConstraint() { general_type_parameter_constraints(this, 5) }
 
   /** Gets a textual representation of these constraints. */
-  override string toString() { result = "where " + this.getTypeParameter().toString() + ": ..." }
+  override string toString() { result = "where " + this.getTypeParameter().getName() + ": ..." }
 }
 
 /**
@@ -248,8 +256,8 @@ class UnboundGenericStruct extends Struct, UnboundGenericType {
     result = UnboundGenericType.super.getAConstructedGeneric()
   }
 
-  override UnboundGenericStruct getSourceDeclaration() {
-    result = UnboundGenericType.super.getSourceDeclaration()
+  override UnboundGenericStruct getUnboundDeclaration() {
+    result = UnboundGenericType.super.getUnboundDeclaration()
   }
 }
 
@@ -271,8 +279,8 @@ class UnboundGenericClass extends Class, UnboundGenericType {
     result = UnboundGenericType.super.getAConstructedGeneric()
   }
 
-  override UnboundGenericClass getSourceDeclaration() {
-    result = UnboundGenericType.super.getSourceDeclaration()
+  override UnboundGenericClass getUnboundDeclaration() {
+    result = UnboundGenericType.super.getUnboundDeclaration()
   }
 }
 
@@ -294,8 +302,8 @@ class UnboundGenericInterface extends Interface, UnboundGenericType {
     result = UnboundGenericType.super.getAConstructedGeneric()
   }
 
-  override UnboundGenericInterface getSourceDeclaration() {
-    result = UnboundGenericType.super.getSourceDeclaration()
+  override UnboundGenericInterface getUnboundDeclaration() {
+    result = UnboundGenericType.super.getUnboundDeclaration()
   }
 }
 
@@ -318,8 +326,8 @@ class UnboundGenericDelegateType extends DelegateType, UnboundGenericType {
     result = UnboundGenericType.super.getAConstructedGeneric()
   }
 
-  override UnboundGenericDelegateType getSourceDeclaration() {
-    result = UnboundGenericType.super.getSourceDeclaration()
+  override UnboundGenericDelegateType getUnboundDeclaration() {
+    result = UnboundGenericType.super.getUnboundDeclaration()
   }
 
   override string toStringWithTypes() {
@@ -342,11 +350,11 @@ class UnboundGenericDelegateType extends DelegateType, UnboundGenericType {
  * or constructed method (`ConstructedMethod`).
  */
 class ConstructedType extends ValueOrRefType, ConstructedGeneric {
-  override UnboundGenericType getSourceDeclaration() {
-    result = ConstructedGeneric.super.getSourceDeclaration()
+  override UnboundGenericType getUnboundDeclaration() {
+    result = ConstructedGeneric.super.getUnboundDeclaration()
   }
 
-  override Location getALocation() { result = this.getSourceDeclaration().getALocation() }
+  override Location getALocation() { result = this.getUnboundDeclaration().getALocation() }
 
   override Type getTypeArgument(int n) { type_arguments(getTypeRef(result), n, getTypeRef(this)) }
 
@@ -384,8 +392,8 @@ class ConstructedType extends ValueOrRefType, ConstructedGeneric {
  * ```
  */
 class ConstructedStruct extends Struct, ConstructedType {
-  override UnboundGenericStruct getSourceDeclaration() {
-    result = ConstructedType.super.getSourceDeclaration()
+  override UnboundGenericStruct getUnboundDeclaration() {
+    result = ConstructedType.super.getUnboundDeclaration()
   }
 
   override UnboundGenericStruct getUnboundGeneric() {
@@ -407,8 +415,8 @@ class ConstructedStruct extends Struct, ConstructedType {
  * ```
  */
 class ConstructedClass extends Class, ConstructedType {
-  override UnboundGenericClass getSourceDeclaration() {
-    result = ConstructedType.super.getSourceDeclaration()
+  override UnboundGenericClass getUnboundDeclaration() {
+    result = ConstructedType.super.getUnboundDeclaration()
   }
 
   override UnboundGenericClass getUnboundGeneric() {
@@ -430,8 +438,8 @@ class ConstructedClass extends Class, ConstructedType {
  * ```
  */
 class ConstructedInterface extends Interface, ConstructedType {
-  override UnboundGenericInterface getSourceDeclaration() {
-    result = ConstructedType.super.getSourceDeclaration()
+  override UnboundGenericInterface getUnboundDeclaration() {
+    result = ConstructedType.super.getUnboundDeclaration()
   }
 
   override UnboundGenericInterface getUnboundGeneric() {
@@ -453,8 +461,8 @@ class ConstructedInterface extends Interface, ConstructedType {
  * ```
  */
 class ConstructedDelegateType extends DelegateType, ConstructedType {
-  override UnboundGenericDelegateType getSourceDeclaration() {
-    result = ConstructedType.super.getSourceDeclaration()
+  override UnboundGenericDelegateType getUnboundDeclaration() {
+    result = ConstructedType.super.getUnboundDeclaration()
   }
 
   override UnboundGenericDelegateType getUnboundGeneric() {
@@ -507,7 +515,7 @@ class UnboundGenericMethod extends Method, UnboundGeneric {
  * corresponds to `UnboundGenericType`.
  */
 class ConstructedMethod extends Method, ConstructedGeneric {
-  override Location getALocation() { result = this.getSourceDeclaration().getALocation() }
+  override Location getALocation() { result = this.getUnboundDeclaration().getALocation() }
 
   override Type getTypeArgument(int n) { type_arguments(getTypeRef(result), n, this) }
 
@@ -518,8 +526,8 @@ class ConstructedMethod extends Method, ConstructedGeneric {
       getName() + "<" + this.typeArgumentsToString() + ">" + "(" + parameterTypesToString() + ")"
   }
 
-  override UnboundGenericMethod getSourceDeclaration() {
-    result = Method.super.getSourceDeclaration()
+  override UnboundGenericMethod getUnboundDeclaration() {
+    result = Method.super.getUnboundDeclaration()
   }
 }
 
@@ -554,8 +562,8 @@ class UnboundLocalFunction extends LocalFunction, UnboundGeneric {
  * ```
  */
 class ConstructedLocalFunction extends LocalFunction, ConstructedGeneric {
-  override UnboundLocalFunction getSourceDeclaration() {
-    result = LocalFunction.super.getSourceDeclaration()
+  override UnboundLocalFunction getUnboundDeclaration() {
+    result = LocalFunction.super.getUnboundDeclaration()
   }
 
   override UnboundLocalFunction getUnboundGeneric() {

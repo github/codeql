@@ -1,5 +1,3 @@
-// semmle-extractor-options: /r:System.Runtime.Extensions.dll /r:System.Collections.Specialized.dll ${testdir}/../../../resources/stubs/System.Web.cs ${testdir}/../../../resources/stubs/System.Windows.cs
-
 using System;
 using System.IO;
 using System.Web;
@@ -21,6 +19,9 @@ public class TaintedPathHandler : IHttpHandler
 
         // GOOD: Not the format string.
         String.Format((IFormatProvider)null, "Do not do this", path);
+
+        // GOOD: Not a formatting call
+        Console.WriteLine(path);
     }
 
     System.Windows.Forms.TextBox box1;

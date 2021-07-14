@@ -14,7 +14,7 @@ public class ReflectiveAccess {
 		return classContainingAnnotation.getAnnotation(annotationClass);
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
 		Class<?> testClass = Class.forName("reflection.ReflectiveAccess$TestClass");
 
 		testClass.newInstance();

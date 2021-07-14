@@ -3,6 +3,7 @@
  */
 
 import java
+import semmle.code.java.dataflow.FlowSteps
 
 /**
  * A `@com.google.inject.servlet.RequestParameters` annotation.
@@ -32,4 +33,10 @@ class GuiceProvider extends Interface {
   Method getAnOverridingGetMethod() {
     exists(Method m | m.getSourceDeclaration() = getGetMethod() | result.overrides*(m))
   }
+}
+
+private class OverridingGetMethod extends TaintPreservingCallable {
+  OverridingGetMethod() { this = any(GuiceProvider gp).getAnOverridingGetMethod() }
+
+  override predicate returnsTaintFrom(int arg) { arg = -1 }
 }

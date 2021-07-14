@@ -43,7 +43,7 @@ module UnvalidatedDynamicMethodCall {
    * A flow label describing values read from a user-controlled property that
    * may not be functions.
    */
-  class MaybeNonFunction extends DataFlow::FlowLabel {
+  abstract class MaybeNonFunction extends DataFlow::FlowLabel {
     MaybeNonFunction() { this = "MaybeNonFunction" }
   }
 
@@ -51,7 +51,7 @@ module UnvalidatedDynamicMethodCall {
    * A flow label describing values read from a user-controlled property that
    * may originate from a prototype object.
    */
-  class MaybeFromProto extends DataFlow::FlowLabel {
+  abstract class MaybeFromProto extends DataFlow::FlowLabel {
     MaybeFromProto() { this = "MaybeFromProto" }
   }
 
@@ -98,16 +98,13 @@ module UnvalidatedDynamicMethodCall {
    */
   class FunctionCheck extends TaintTracking::LabeledSanitizerGuardNode, DataFlow::ValueNode {
     override EqualityTest astNode;
-    TypeofExpr t;
+    Expr operand;
 
-    FunctionCheck() {
-      astNode.getAnOperand().getStringValue() = "function" and
-      astNode.getAnOperand().getUnderlyingValue() = t
-    }
+    FunctionCheck() { TaintTracking::isTypeofGuard(astNode, operand, "function") }
 
     override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
       outcome = astNode.getPolarity() and
-      e = t.getOperand().getUnderlyingValue() and
+      e = operand and
       label instanceof MaybeNonFunction
     }
   }

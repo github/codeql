@@ -8,6 +8,8 @@ import Element
 class Modifier extends Element, @modifier {
   /** Gets the element to which this modifier applies. */
   Element getElement() { hasModifier(result, this) }
+
+  override string getAPrimaryQlClass() { result = "Modifier" }
 }
 
 /** An element of the Java syntax tree that may have a modifier. */
@@ -16,7 +18,9 @@ abstract class Modifiable extends Element {
    * Holds if this element has modifier `m`.
    *
    * For most purposes, the more specialized predicates `isAbstract`, `isPublic`, etc.
-   * should be used, which also take implicit modifiers into account.
+   * should be used.
+   *
+   * Both this method and those specialized predicates take implicit modifiers into account.
    * For instance, non-default instance methods in interfaces are implicitly
    * abstract, so `isAbstract()` will hold for them even if `hasModifier("abstract")`
    * does not.

@@ -1,5 +1,3 @@
-// semmle-extractor-options: /langversion:latest
-
 using System;
 
 class StackAllocs
@@ -19,6 +17,8 @@ class PinnedReference
 {
     unsafe void F()
     {
+        Span<byte> buffer = stackalloc byte[10];
+
         Span<int> t = new int[10];
         // This line should compile and generate a call to t.GetPinnableReference()
         // fixed (int * p = t)

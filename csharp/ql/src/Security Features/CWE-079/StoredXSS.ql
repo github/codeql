@@ -4,6 +4,7 @@
  *              scripting vulnerability if the data was originally user-provided.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 6.1
  * @precision medium
  * @id cs/web/stored-xss
  * @tags security
@@ -13,7 +14,8 @@
 
 import csharp
 import semmle.code.csharp.security.dataflow.flowsources.Stored
-import semmle.code.csharp.security.dataflow.XSS::XSS
+import semmle.code.csharp.security.dataflow.XSSQuery
+import semmle.code.csharp.security.dataflow.XSSSinks
 import semmle.code.csharp.dataflow.DataFlow2
 import DataFlow2::PathGraph
 

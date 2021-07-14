@@ -123,8 +123,18 @@ module Consistency {
     n.getEnclosingCallable() != call.getEnclosingCallable()
   }
 
+  // This predicate helps the compiler forget that in some languages
+  // it is impossible for a result of `getPreUpdateNode` to be an
+  // instance of `PostUpdateNode`.
+  private Node getPre(PostUpdateNode n) {
+    result = n.getPreUpdateNode()
+    or
+    none()
+  }
+
   query predicate postIsNotPre(PostUpdateNode n, string msg) {
-    n.getPreUpdateNode() = n and msg = "PostUpdateNode should not equal its pre-update node."
+    getPre(n) = n and
+    msg = "PostUpdateNode should not equal its pre-update node."
   }
 
   query predicate postHasUniquePre(PostUpdateNode n, string msg) {
@@ -152,15 +162,20 @@ module Consistency {
     msg = "Origin of readStep is missing a PostUpdateNode."
   }
 
-  query predicate storeIsPostUpdate(Node n, string msg) {
-    storeStep(_, _, n) and
-    not n instanceof PostUpdateNode and
-    msg = "Store targets should be PostUpdateNodes."
-  }
-
   query predicate argHasPostUpdate(ArgumentNode n, string msg) {
     not hasPost(n) and
     not isImmutableOrUnobservable(n) and
     msg = "ArgumentNode is missing PostUpdateNode."
+  }
+
+  // This predicate helps the compiler forget that in some languages
+  // it is impossible for a `PostUpdateNode` to be the target of
+  // `simpleLocalFlowStep`.
+  private predicate isPostUpdateNode(Node n) { n instanceof PostUpdateNode or none() }
+
+  query predicate postWithInFlow(Node n, string msg) {
+    isPostUpdateNode(n) and
+    simpleLocalFlowStep(_, n) and
+    msg = "PostUpdateNode should not be the target of local flow."
   }
 }

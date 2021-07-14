@@ -1,6 +1,6 @@
 /**
- * @name Iterator does not return self from __iter__ method
- * @description Iterator does not return self from __iter__ method, violating the iterator protocol.
+ * @name Iterator does not return self from `__iter__` method
+ * @description Iterator does not return self from `__iter__` method, violating the iterator protocol.
  * @kind problem
  * @tags reliability
  *       correctness

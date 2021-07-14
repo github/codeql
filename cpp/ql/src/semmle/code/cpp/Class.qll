@@ -236,9 +236,8 @@ class Class extends UserType {
     or
     exists(ClassDerivation cd | cd.getBaseClass() = base |
       result =
-        this
-            .accessOfBaseMemberMulti(cd.getDerivedClass(),
-              fieldInBase.accessInDirectDerived(cd.getASpecifier().(AccessSpecifier)))
+        this.accessOfBaseMemberMulti(cd.getDerivedClass(),
+          fieldInBase.accessInDirectDerived(cd.getASpecifier().(AccessSpecifier)))
     )
   }
 
@@ -977,7 +976,12 @@ class ClassTemplateInstantiation extends Class {
  * specialization - see `FullClassTemplateSpecialization` and
  * `PartialClassTemplateSpecialization`).
  */
-abstract class ClassTemplateSpecialization extends Class {
+class ClassTemplateSpecialization extends Class {
+  ClassTemplateSpecialization() {
+    isFullClassTemplateSpecialization(this) or
+    isPartialClassTemplateSpecialization(this)
+  }
+
   /**
    * Gets the primary template for the specialization, for example on
    * `S<T,int>`, the result is `S<T,U>`.
@@ -997,6 +1001,16 @@ abstract class ClassTemplateSpecialization extends Class {
   override string getAPrimaryQlClass() { result = "ClassTemplateSpecialization" }
 }
 
+private predicate isFullClassTemplateSpecialization(Class c) {
+  // This class has template arguments, but none of them involves a template parameter.
+  exists(c.getATemplateArgument()) and
+  not exists(Type ta | ta = c.getATemplateArgument() and ta.involvesTemplateParameter()) and
+  // This class does not have any instantiations.
+  not exists(c.(TemplateClass).getAnInstantiation()) and
+  // This class is not an instantiation of a class template.
+  not c instanceof ClassTemplateInstantiation
+}
+
 /**
  * A full specialization of a class template.  For example `MyTemplateClass<int>`
  * in the following code is a `FullClassTemplateSpecialization`:
@@ -1013,17 +1027,29 @@ abstract class ClassTemplateSpecialization extends Class {
  * ```
  */
 class FullClassTemplateSpecialization extends ClassTemplateSpecialization {
-  FullClassTemplateSpecialization() {
-    // This class has template arguments, but none of them involves a template parameter.
-    exists(getATemplateArgument()) and
-    not exists(Type ta | ta = getATemplateArgument() and ta.involvesTemplateParameter()) and
-    // This class does not have any instantiations.
-    not exists(this.(TemplateClass).getAnInstantiation()) and
-    // This class is not an instantiation of a class template.
-    not this instanceof ClassTemplateInstantiation
-  }
+  FullClassTemplateSpecialization() { isFullClassTemplateSpecialization(this) }
 
   override string getAPrimaryQlClass() { result = "FullClassTemplateSpecialization" }
+}
+
+private predicate isPartialClassTemplateSpecialization(Class c) {
+  /*
+   * (a) At least one of this class's template arguments involves a
+   *     template parameter in some respect, for example T, T*, etc.
+   *
+   * (b) It is not the case that the n template arguments of this class
+   *     are a set of n distinct template parameters.
+   *
+   * template <typename T,U> class X {};      // class template
+   * template <typename T> class X<T,T> {};   // partial class template specialization
+   * template <typename T> class X<T,int> {}; // partial class template specialization
+   * template <typename T> class Y {};        // class template
+   * template <typename T> class Y<T*> {};    // partial class template specialization
+   */
+
+  exists(Type ta | ta = c.getATemplateArgument() and ta.involvesTemplateParameter()) and
+  count(TemplateParameter tp | tp = c.getATemplateArgument()) !=
+    count(int i | exists(c.getTemplateArgument(i)))
 }
 
 /**
@@ -1042,25 +1068,7 @@ class FullClassTemplateSpecialization extends ClassTemplateSpecialization {
  * ```
  */
 class PartialClassTemplateSpecialization extends ClassTemplateSpecialization {
-  PartialClassTemplateSpecialization() {
-    /*
-     * (a) At least one of this class's template arguments involves a
-     *     template parameter in some respect, for example T, T*, etc.
-     *
-     * (b) It is not the case that the n template arguments of this class
-     *     are a set of n distinct template parameters.
-     *
-     * template <typename T,U> class X {};      // class template
-     * template <typename T> class X<T,T> {};   // partial class template specialization
-     * template <typename T> class X<T,int> {}; // partial class template specialization
-     * template <typename T> class Y {};        // class template
-     * template <typename T> class Y<T*> {};    // partial class template specialization
-     */
-
-    exists(Type ta | ta = getATemplateArgument() and ta.involvesTemplateParameter()) and
-    count(TemplateParameter tp | tp = getATemplateArgument()) !=
-      count(int i | exists(getTemplateArgument(i)))
-  }
+  PartialClassTemplateSpecialization() { isPartialClassTemplateSpecialization(this) }
 
   override string getAPrimaryQlClass() { result = "PartialClassTemplateSpecialization" }
 }

@@ -42,7 +42,7 @@ To fix this problem, the 'debug' flag should be set to <code>false</code>, or re
 
 <li>
 MSDN:
-<a href="https://blogs.msdn.microsoft.com/prashant_upadhyay/2011/07/14/why-debugfalse-in-asp-net-applications-in-production-environment/">Why debug=false in ASP.NET applications in production environment</a>.
+<a href="https://web.archive.org/web/20190919105353/https://blogs.msdn.microsoft.com/prashant_upadhyay/2011/07/14/why-debugfalse-in-asp-net-applications-in-production-environment/">Why debug=false in ASP.NET applications in production environment</a>.
 </li>
 <li>
 MSDN:

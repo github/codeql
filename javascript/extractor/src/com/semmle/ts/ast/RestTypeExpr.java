@@ -3,7 +3,7 @@ package com.semmle.ts.ast;
 import com.semmle.js.ast.SourceLocation;
 import com.semmle.js.ast.Visitor;
 
-/** A rest type in a tuple type, such as <tt>number[]</tt> in <tt>[string, ...number[]]</tt>. */
+/** A rest type in a tuple type, such as <code>number[]</code> in <code>[string, ...number[]]</code>. */
 public class RestTypeExpr extends TypeExpression {
   private final ITypeExpression arrayType;
 

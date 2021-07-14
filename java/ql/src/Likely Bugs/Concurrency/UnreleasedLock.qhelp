@@ -40,9 +40,9 @@ the method might not unlock, so this should be avoided.
 <references>
 
 <li>
-Java API Documentation:
-<a href="http://docs.oracle.com/javase/8/docs/api/java/util/concurrent/locks/Lock.html">java.util.concurrent.locks.Lock</a>,
-<a href="http://docs.oracle.com/javase/8/docs/api/java/util/concurrent/locks/ReentrantLock.html">java.util.concurrent.locks.ReentrantLock</a>.
+Java API Specification:
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/locks/Lock.html">java.util.concurrent.locks.Lock</a>,
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/locks/ReentrantLock.html">java.util.concurrent.locks.ReentrantLock</a>.
 </li>
 
 

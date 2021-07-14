@@ -95,8 +95,7 @@ private predicate dont_modify(File f) {
 private predicate auto_generated(File f) {
   exists(Comment c |
     c.getLocation().getFile() = f and
-    c
-        .getText()
+    c.getText()
         .regexpMatch("(?is)# *this +(code|file) +is +(auto(matically)?[ -]?generated|created automatically).*")
   )
 }

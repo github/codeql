@@ -184,11 +184,8 @@ class CompileTimeConstantExpr extends Expr {
     // Ternary conditional, with compile-time constant condition.
     exists(ConditionalExpr ce, boolean condition |
       ce = this and
-      condition = ce.getCondition().(CompileTimeConstantExpr).getBooleanValue()
-    |
-      if condition = true
-      then result = ce.getTrueExpr().(CompileTimeConstantExpr).getStringValue()
-      else result = ce.getFalseExpr().(CompileTimeConstantExpr).getStringValue()
+      condition = ce.getCondition().(CompileTimeConstantExpr).getBooleanValue() and
+      result = ce.getBranchExpr(condition).(CompileTimeConstantExpr).getStringValue()
     )
     or
     exists(Variable v | this = v.getAnAccess() |
@@ -295,11 +292,8 @@ class CompileTimeConstantExpr extends Expr {
     // Ternary expressions, where the `true` and `false` expressions are boolean compile-time constants.
     exists(ConditionalExpr ce, boolean condition |
       ce = this and
-      condition = ce.getCondition().(CompileTimeConstantExpr).getBooleanValue()
-    |
-      if condition = true
-      then result = ce.getTrueExpr().(CompileTimeConstantExpr).getBooleanValue()
-      else result = ce.getFalseExpr().(CompileTimeConstantExpr).getBooleanValue()
+      condition = ce.getCondition().(CompileTimeConstantExpr).getBooleanValue() and
+      result = ce.getBranchExpr(condition).(CompileTimeConstantExpr).getBooleanValue()
     )
     or
     // Simple or qualified names where the variable is final and the initializer is a constant.
@@ -380,11 +374,8 @@ class CompileTimeConstantExpr extends Expr {
       // Ternary conditional, with compile-time constant condition.
       exists(ConditionalExpr ce, boolean condition |
         ce = this and
-        condition = ce.getCondition().(CompileTimeConstantExpr).getBooleanValue()
-      |
-        if condition = true
-        then result = ce.getTrueExpr().(CompileTimeConstantExpr).getIntValue()
-        else result = ce.getFalseExpr().(CompileTimeConstantExpr).getIntValue()
+        condition = ce.getCondition().(CompileTimeConstantExpr).getBooleanValue() and
+        result = ce.getBranchExpr(condition).(CompileTimeConstantExpr).getIntValue()
       )
       or
       // If a `Variable` is a `CompileTimeConstantExpr`, its value is its initializer.
@@ -413,6 +404,8 @@ class ArrayAccess extends Expr, @arrayaccess {
   Expr getIndexExpr() { result.isNthChildOf(this, 1) }
 
   override string toString() { result = "...[...]" }
+
+  override string getAPrimaryQlClass() { result = "ArrayAccess" }
 }
 
 /**
@@ -436,7 +429,7 @@ class ArrayCreationExpr extends Expr, @arraycreationexpr {
     result.getIndex() = index
   }
 
-  /** Gets the initializer of this array creation expression. */
+  /** Gets the initializer of this array creation expression, if any. */
   ArrayInit getInit() { result.isNthChildOf(this, -2) }
 
   /**
@@ -444,15 +437,27 @@ class ArrayCreationExpr extends Expr, @arraycreationexpr {
    */
   int getFirstDimensionSize() {
     if exists(getInit())
-    then result = count(getInit().getAnInit())
+    then result = getInit().getSize()
     else result = getDimension(0).(CompileTimeConstantExpr).getIntValue()
   }
 
   /** Gets a printable representation of this expression. */
   override string toString() { result = "new " + this.getType().toString() }
+
+  override string getAPrimaryQlClass() { result = "ArrayCreationExpr" }
 }
 
-/** An array initializer occurs in an array creation expression. */
+/**
+ * An array initializer consisting of an opening and closing curly bracket and
+ * optionally containing expressions (which themselves can be array initializers)
+ * representing the elements of the array. For example: `{ 'a', 'b' }`.
+ *
+ * This expression type matches array initializers representing the values for
+ * annotation elements as well, despite the Java Language Specification considering
+ * them a separate type, `ElementValueArrayInitializer`. It does however not match
+ * values for an array annotation element which consist of a single element
+ * without enclosing curly brackets (as per JLS).
+ */
 class ArrayInit extends Expr, @arrayinit {
   /**
    * An expression occurring in this initializer.
@@ -465,8 +470,16 @@ class ArrayInit extends Expr, @arrayinit {
   /** Gets the initializer occurring at the specified (zero-based) position. */
   Expr getInit(int index) { result = this.getAnInit() and result.getIndex() = index }
 
+  /**
+   * Gets the number of expressions in this initializer, that is, the size the
+   * created array will have.
+   */
+  int getSize() { result = count(getAnInit()) }
+
   /** Gets a printable representation of this expression. */
   override string toString() { result = "{...}" }
+
+  override string getAPrimaryQlClass() { result = "ArrayInit" }
 }
 
 /** A common super-class that represents all varieties of assignments. */
@@ -494,7 +507,9 @@ class Assignment extends Expr, @assignment {
  *
  * For example, `x = 23`.
  */
-class AssignExpr extends Assignment, @assignexpr { }
+class AssignExpr extends Assignment, @assignexpr {
+  override string getAPrimaryQlClass() { result = "AssignExpr" }
+}
 
 /**
  * A common super-class to represent compound assignments, which include an implicit operator.
@@ -519,56 +534,78 @@ class AssignOp extends Assignment, @assignop {
 /** A compound assignment expression using the `+=` operator. */
 class AssignAddExpr extends AssignOp, @assignaddexpr {
   override string getOp() { result = "+=" }
+
+  override string getAPrimaryQlClass() { result = "AssignAddExpr" }
 }
 
 /** A compound assignment expression using the `-=` operator. */
 class AssignSubExpr extends AssignOp, @assignsubexpr {
   override string getOp() { result = "-=" }
+
+  override string getAPrimaryQlClass() { result = "AssignSubExpr" }
 }
 
 /** A compound assignment expression using the `*=` operator. */
 class AssignMulExpr extends AssignOp, @assignmulexpr {
   override string getOp() { result = "*=" }
+
+  override string getAPrimaryQlClass() { result = "AssignMulExpr" }
 }
 
 /** A compound assignment expression using the `/=` operator. */
 class AssignDivExpr extends AssignOp, @assigndivexpr {
   override string getOp() { result = "/=" }
+
+  override string getAPrimaryQlClass() { result = "AssignDivExpr" }
 }
 
 /** A compound assignment expression using the `%=` operator. */
 class AssignRemExpr extends AssignOp, @assignremexpr {
   override string getOp() { result = "%=" }
+
+  override string getAPrimaryQlClass() { result = "AssignRemExpr" }
 }
 
 /** A compound assignment expression using the `&=` operator. */
 class AssignAndExpr extends AssignOp, @assignandexpr {
   override string getOp() { result = "&=" }
+
+  override string getAPrimaryQlClass() { result = "AssignAndExpr" }
 }
 
 /** A compound assignment expression using the `|=` operator. */
 class AssignOrExpr extends AssignOp, @assignorexpr {
   override string getOp() { result = "|=" }
+
+  override string getAPrimaryQlClass() { result = "AssignOrExpr" }
 }
 
 /** A compound assignment expression using the `^=` operator. */
 class AssignXorExpr extends AssignOp, @assignxorexpr {
   override string getOp() { result = "^=" }
+
+  override string getAPrimaryQlClass() { result = "AssignXorExpr" }
 }
 
 /** A compound assignment expression using the `<<=` operator. */
 class AssignLShiftExpr extends AssignOp, @assignlshiftexpr {
   override string getOp() { result = "<<=" }
+
+  override string getAPrimaryQlClass() { result = "AssignLShiftExpr" }
 }
 
 /** A compound assignment expression using the `>>=` operator. */
 class AssignRShiftExpr extends AssignOp, @assignrshiftexpr {
   override string getOp() { result = ">>=" }
+
+  override string getAPrimaryQlClass() { result = "AssignRShiftExpr" }
 }
 
 /** A compound assignment expression using the `>>>=` operator. */
 class AssignURShiftExpr extends AssignOp, @assignurshiftexpr {
   override string getOp() { result = ">>>=" }
+
+  override string getAPrimaryQlClass() { result = "AssignURShiftExpr" }
 }
 
 /** A common super-class to represent constant literals. */
@@ -597,25 +634,88 @@ class BooleanLiteral extends Literal, @booleanliteral {
     or
     result = false and getLiteral() = "false"
   }
+
+  override string getAPrimaryQlClass() { result = "BooleanLiteral" }
 }
 
-/** An integer literal. For example, `23`. */
+/**
+ * An integer literal. For example, `23`.
+ *
+ * An integer literal can never be negative except when:
+ * - It is written in binary, octal or hexadecimal notation
+ * - It is written in decimal notation, has the value `2147483648` and is preceded
+ *   by a minus; in this case the value of the IntegerLiteral is -2147483648 and
+ *   the preceding minus will *not* be modeled as `MinusExpr`.
+ *
+ * In all other cases the preceding minus, if any, will be modeled as a separate
+ * `MinusExpr`.
+ *
+ * The last exception is necessary because `2147483648` on its own would not be
+ * a valid integer literal (and could also not be parsed as CodeQL `int`).
+ */
 class IntegerLiteral extends Literal, @integerliteral {
   /** Gets the int representation of this literal. */
   int getIntValue() { result = getValue().toInt() }
+
+  override string getAPrimaryQlClass() { result = "IntegerLiteral" }
 }
 
-/** A long literal. For example, `23l`. */
-class LongLiteral extends Literal, @longliteral { }
+/**
+ * A long literal. For example, `23L`.
+ *
+ * A long literal can never be negative except when:
+ * - It is written in binary, octal or hexadecimal notation
+ * - It is written in decimal notation, has the value `9223372036854775808` and
+ *   is preceded by a minus; in this case the value of the LongLiteral is
+ *   -9223372036854775808 and the preceding minus will *not* be modeled as
+ *   `MinusExpr`.
+ *
+ * In all other cases the preceding minus, if any, will be modeled as a separate
+ * `MinusExpr`.
+ *
+ * The last exception is necessary because `9223372036854775808` on its own
+ * would not be a valid long literal.
+ */
+class LongLiteral extends Literal, @longliteral {
+  override string getAPrimaryQlClass() { result = "LongLiteral" }
+}
 
-/** A floating point literal. For example, `4.2f`. */
-class FloatingPointLiteral extends Literal, @floatingpointliteral { }
+/**
+ * A float literal. For example, `4.2f`.
+ *
+ * A float literal is never negative; a preceding minus, if any, will always
+ * be modeled as separate `MinusExpr`.
+ */
+class FloatingPointLiteral extends Literal, @floatingpointliteral {
+  /**
+   * Gets the value of this literal as CodeQL 64-bit `float`. The value will
+   * be parsed as Java 32-bit `float` and then converted to a CodeQL `float`.
+   */
+  float getFloatValue() { result = getValue().toFloat() }
 
-/** A double literal. For example, `4.2`. */
-class DoubleLiteral extends Literal, @doubleliteral { }
+  override string getAPrimaryQlClass() { result = "FloatingPointLiteral" }
+}
+
+/**
+ * A double literal. For example, `4.2`.
+ *
+ * A double literal is never negative; a preceding minus, if any, will always
+ * be modeled as separate `MinusExpr`.
+ */
+class DoubleLiteral extends Literal, @doubleliteral {
+  /**
+   * Gets the value of this literal as CodeQL 64-bit `float`. The result will
+   * have the same effective value as the Java `double` literal.
+   */
+  float getDoubleValue() { result = getValue().toFloat() }
+
+  override string getAPrimaryQlClass() { result = "DoubleLiteral" }
+}
 
 /** A character literal. For example, `'\n'`. */
-class CharacterLiteral extends Literal, @characterliteral { }
+class CharacterLiteral extends Literal, @characterliteral {
+  override string getAPrimaryQlClass() { result = "CharacterLiteral" }
+}
 
 /** A string literal. For example, `"hello world"`. */
 class StringLiteral extends Literal, @stringliteral {
@@ -623,6 +723,8 @@ class StringLiteral extends Literal, @stringliteral {
    * Gets the literal string without the quotes.
    */
   string getRepresentedString() { result = getValue() }
+
+  override string getAPrimaryQlClass() { result = "StringLiteral" }
 }
 
 /** The null literal, written `null`. */
@@ -630,6 +732,8 @@ class NullLiteral extends Literal, @nullliteral {
   override string getLiteral() { result = "null" }
 
   override string getValue() { result = "null" }
+
+  override string getAPrimaryQlClass() { result = "NullLiteral" }
 }
 
 /** A common super-class to represent binary operator expressions. */
@@ -661,96 +765,134 @@ class BinaryExpr extends Expr, @binaryexpr {
 /** A binary expression using the `*` operator. */
 class MulExpr extends BinaryExpr, @mulexpr {
   override string getOp() { result = " * " }
+
+  override string getAPrimaryQlClass() { result = "MulExpr" }
 }
 
 /** A binary expression using the `/` operator. */
 class DivExpr extends BinaryExpr, @divexpr {
   override string getOp() { result = " / " }
+
+  override string getAPrimaryQlClass() { result = "DivExpr" }
 }
 
 /** A binary expression using the `%` operator. */
 class RemExpr extends BinaryExpr, @remexpr {
   override string getOp() { result = " % " }
+
+  override string getAPrimaryQlClass() { result = "RemExpr" }
 }
 
 /** A binary expression using the `+` operator. */
 class AddExpr extends BinaryExpr, @addexpr {
   override string getOp() { result = " + " }
+
+  override string getAPrimaryQlClass() { result = "AddExpr" }
 }
 
 /** A binary expression using the `-` operator. */
 class SubExpr extends BinaryExpr, @subexpr {
   override string getOp() { result = " - " }
+
+  override string getAPrimaryQlClass() { result = "SubExpr" }
 }
 
 /** A binary expression using the `<<` operator. */
 class LShiftExpr extends BinaryExpr, @lshiftexpr {
   override string getOp() { result = " << " }
+
+  override string getAPrimaryQlClass() { result = "LShiftExpr" }
 }
 
 /** A binary expression using the `>>` operator. */
 class RShiftExpr extends BinaryExpr, @rshiftexpr {
   override string getOp() { result = " >> " }
+
+  override string getAPrimaryQlClass() { result = "RShiftExpr" }
 }
 
 /** A binary expression using the `>>>` operator. */
 class URShiftExpr extends BinaryExpr, @urshiftexpr {
   override string getOp() { result = " >>> " }
+
+  override string getAPrimaryQlClass() { result = "URShiftExpr" }
 }
 
 /** A binary expression using the `&` operator. */
 class AndBitwiseExpr extends BinaryExpr, @andbitexpr {
   override string getOp() { result = " & " }
+
+  override string getAPrimaryQlClass() { result = "AndBitwiseExpr" }
 }
 
 /** A binary expression using the `|` operator. */
 class OrBitwiseExpr extends BinaryExpr, @orbitexpr {
   override string getOp() { result = " | " }
+
+  override string getAPrimaryQlClass() { result = "OrBitwiseExpr" }
 }
 
 /** A binary expression using the `^` operator. */
 class XorBitwiseExpr extends BinaryExpr, @xorbitexpr {
   override string getOp() { result = " ^ " }
+
+  override string getAPrimaryQlClass() { result = "XorBitwiseExpr" }
 }
 
 /** A binary expression using the `&&` operator. */
 class AndLogicalExpr extends BinaryExpr, @andlogicalexpr {
   override string getOp() { result = " && " }
+
+  override string getAPrimaryQlClass() { result = "AndLogicalExpr" }
 }
 
 /** A binary expression using the `||` operator. */
 class OrLogicalExpr extends BinaryExpr, @orlogicalexpr {
   override string getOp() { result = " || " }
+
+  override string getAPrimaryQlClass() { result = "OrLogicalExpr" }
 }
 
 /** A binary expression using the `<` operator. */
 class LTExpr extends BinaryExpr, @ltexpr {
   override string getOp() { result = " < " }
+
+  override string getAPrimaryQlClass() { result = "LTExpr" }
 }
 
 /** A binary expression using the `>` operator. */
 class GTExpr extends BinaryExpr, @gtexpr {
   override string getOp() { result = " > " }
+
+  override string getAPrimaryQlClass() { result = "GTExpr" }
 }
 
 /** A binary expression using the `<=` operator. */
 class LEExpr extends BinaryExpr, @leexpr {
   override string getOp() { result = " <= " }
+
+  override string getAPrimaryQlClass() { result = "LEExpr" }
 }
 
 /** A binary expression using the `>=` operator. */
 class GEExpr extends BinaryExpr, @geexpr {
   override string getOp() { result = " >= " }
+
+  override string getAPrimaryQlClass() { result = "GEExpr" }
 }
 
 /** A binary expression using the `==` operator. */
 class EQExpr extends BinaryExpr, @eqexpr {
   override string getOp() { result = " == " }
+
+  override string getAPrimaryQlClass() { result = "EQExpr" }
 }
 
 /** A binary expression using the `!=` operator. */
 class NEExpr extends BinaryExpr, @neexpr {
   override string getOp() { result = " != " }
+
+  override string getAPrimaryQlClass() { result = "NEExpr" }
 }
 
 /**
@@ -872,41 +1014,57 @@ class UnaryAssignExpr extends UnaryExpr, @unaryassignment { }
 /** A post-increment expression. For example, `i++`. */
 class PostIncExpr extends UnaryAssignExpr, @postincexpr {
   override string toString() { result = "...++" }
+
+  override string getAPrimaryQlClass() { result = "PostIncExpr" }
 }
 
 /** A post-decrement expression. For example, `i--`. */
 class PostDecExpr extends UnaryAssignExpr, @postdecexpr {
   override string toString() { result = "...--" }
+
+  override string getAPrimaryQlClass() { result = "PostDecExpr" }
 }
 
 /** A pre-increment expression. For example, `++i`. */
 class PreIncExpr extends UnaryAssignExpr, @preincexpr {
   override string toString() { result = "++..." }
+
+  override string getAPrimaryQlClass() { result = "PreIncExpr" }
 }
 
 /** A pre-decrement expression. For example, `--i`. */
 class PreDecExpr extends UnaryAssignExpr, @predecexpr {
   override string toString() { result = "--..." }
+
+  override string getAPrimaryQlClass() { result = "PreDecExpr" }
 }
 
 /** A unary minus expression. For example, `-i`. */
 class MinusExpr extends UnaryExpr, @minusexpr {
   override string toString() { result = "-..." }
+
+  override string getAPrimaryQlClass() { result = "MinusExpr" }
 }
 
 /** A unary plus expression. For example, `+i`. */
 class PlusExpr extends UnaryExpr, @plusexpr {
   override string toString() { result = "+..." }
+
+  override string getAPrimaryQlClass() { result = "PlusExpr" }
 }
 
 /** A bit negation expression. For example, `~x`. */
 class BitNotExpr extends UnaryExpr, @bitnotexpr {
   override string toString() { result = "~..." }
+
+  override string getAPrimaryQlClass() { result = "BitNotExpr" }
 }
 
 /** A logical negation expression. For example, `!b`. */
 class LogNotExpr extends UnaryExpr, @lognotexpr {
   override string toString() { result = "!..." }
+
+  override string getAPrimaryQlClass() { result = "LogNotExpr" }
 }
 
 /** A cast expression. */
@@ -919,6 +1077,8 @@ class CastExpr extends Expr, @castexpr {
 
   /** Gets a printable representation of this expression. */
   override string toString() { result = "(...)..." }
+
+  override string getAPrimaryQlClass() { result = "CastExpr" }
 }
 
 /** A class instance creation expression. */
@@ -985,6 +1145,8 @@ class ClassInstanceExpr extends Expr, ConstructorCall, @classinstancexpr {
 
   /** Gets a printable representation of this expression. */
   override string toString() { result = "new " + this.getConstructor().getName() + "(...)" }
+
+  override string getAPrimaryQlClass() { result = "ClassInstanceExpr" }
 }
 
 /** A functional expression is either a lambda expression or a member reference expression. */
@@ -1022,10 +1184,12 @@ class LambdaExpr extends FunctionalExpr, @lambdaexpr {
   }
 
   /** Gets the body of this lambda expression, if it is a statement. */
-  Block getStmtBody() { hasStmtBody() and result = asMethod().getBody() }
+  BlockStmt getStmtBody() { hasStmtBody() and result = asMethod().getBody() }
 
   /** Gets a printable representation of this expression. */
   override string toString() { result = "...->..." }
+
+  override string getAPrimaryQlClass() { result = "LambdaExpr" }
 }
 
 /**
@@ -1054,6 +1218,8 @@ class MemberRefExpr extends FunctionalExpr, @memberref {
 
   /** Gets a printable representation of this expression. */
   override string toString() { result = "...::..." }
+
+  override string getAPrimaryQlClass() { result = "MemberRefExpr" }
 }
 
 /** A conditional expression or a `switch` expression. */
@@ -1062,8 +1228,7 @@ class ChooseExpr extends Expr {
 
   /** Gets a result expression of this `switch` or conditional expression. */
   Expr getAResultExpr() {
-    result = this.(ConditionalExpr).getTrueExpr() or
-    result = this.(ConditionalExpr).getFalseExpr() or
+    result = this.(ConditionalExpr).getABranchExpr() or
     result = this.(SwitchExpr).getAResult()
   }
 }
@@ -1089,14 +1254,33 @@ class ConditionalExpr extends Expr, @conditionalexpr {
    */
   Expr getFalseExpr() { result.isNthChildOf(this, 2) }
 
+  /**
+   * Gets the expression that is evaluated by the specific branch of this
+   * conditional expression. If `true` that is `getTrueExpr()`, if `false`
+   * it is `getFalseExpr()`.
+   */
+  Expr getBranchExpr(boolean branch) {
+    branch = true and result = getTrueExpr()
+    or
+    branch = false and result = getFalseExpr()
+  }
+
+  /**
+   * Gets the expressions that is evaluated by one of the branches (`true`
+   * or `false` branch) of this conditional expression.
+   */
+  Expr getABranchExpr() { result = getBranchExpr(_) }
+
   /** Gets a printable representation of this expression. */
   override string toString() { result = "...?...:..." }
+
+  override string getAPrimaryQlClass() { result = "ConditionalExpr" }
 }
 
 /**
  * A `switch` expression.
  */
-class SwitchExpr extends Expr, @switchexpr {
+class SwitchExpr extends Expr, StmtParent, @switchexpr {
   /** Gets an immediate child statement of this `switch` expression. */
   Stmt getAStmt() { result.getParent() = this }
 
@@ -1130,6 +1314,8 @@ class SwitchExpr extends Expr, @switchexpr {
 
   /** Gets a printable representation of this expression. */
   override string toString() { result = "switch (...)" }
+
+  override string getAPrimaryQlClass() { result = "SwitchExpr" }
 }
 
 /**
@@ -1173,6 +1359,8 @@ class InstanceOfExpr extends Expr, @instanceofexpr {
 
   /** Gets a printable representation of this expression. */
   override string toString() { result = "...instanceof..." }
+
+  override string getAPrimaryQlClass() { result = "InstanceOfExpr" }
 }
 
 /**
@@ -1215,6 +1403,8 @@ class LocalVariableDeclExpr extends Expr, @localvariabledeclexpr {
 
   /** Gets a printable representation of this expression. */
   override string toString() { result = this.getName() }
+
+  override string getAPrimaryQlClass() { result = "LocalVariableDeclExpr" }
 }
 
 /** An update of a variable or an initialization of the variable. */
@@ -1261,6 +1451,8 @@ class TypeLiteral extends Expr, @typeliteral {
 
   /** Gets a printable representation of this expression. */
   override string toString() { result = this.getTypeName().toString() + ".class" }
+
+  override string getAPrimaryQlClass() { result = "TypeLiteral" }
 }
 
 /**
@@ -1306,6 +1498,8 @@ class ThisAccess extends InstanceAccess, @thisaccess {
   override string toString() {
     if exists(this.getQualifier()) then result = this.getQualifier() + ".this" else result = "this"
   }
+
+  override string getAPrimaryQlClass() { result = "ThisAccess" }
 }
 
 /**
@@ -1321,6 +1515,8 @@ class SuperAccess extends InstanceAccess, @superaccess {
     then result = this.getQualifier() + ".super"
     else result = "super"
   }
+
+  override string getAPrimaryQlClass() { result = "SuperAccess" }
 }
 
 /**
@@ -1380,6 +1576,8 @@ class VarAccess extends Expr, @varaccess {
     // the qualifier is either `super` or `A.super`, where `A` is the enclosing type.
     getQualifier().(InstanceAccess).isOwnInstanceAccess()
   }
+
+  override string getAPrimaryQlClass() { result = "VarAccess" }
 }
 
 /**
@@ -1472,6 +1670,8 @@ class MethodAccess extends Expr, Call, @methodaccess {
    * `t`-qualified `this` or `super`.
    */
   predicate isEnclosingMethodAccess(RefType t) { Qualifier::enclosingMemberAccess(this, t) }
+
+  override string getAPrimaryQlClass() { result = "MethodAccess" }
 }
 
 /** A type access is a (possibly qualified) reference to a type. */
@@ -1503,6 +1703,8 @@ class TypeAccess extends Expr, Annotatable, @typeaccess {
     or
     not this.hasQualifier() and result = this.getType().toString()
   }
+
+  override string getAPrimaryQlClass() { result = "TypeAccess" }
 }
 
 /** An array type access is a type access of the form `String[]`. */
@@ -1518,6 +1720,8 @@ class ArrayTypeAccess extends Expr, @arraytypeaccess {
 
   /** Gets a printable representation of this expression. */
   override string toString() { result = "...[]" }
+
+  override string getAPrimaryQlClass() { result = "ArrayTypeAccess" }
 }
 
 /**
@@ -1531,6 +1735,8 @@ class UnionTypeAccess extends Expr, @uniontypeaccess {
 
   /** Gets a printable representation of this expression. */
   override string toString() { result = "...|..." }
+
+  override string getAPrimaryQlClass() { result = "UnionTypeAccess" }
 }
 
 /**
@@ -1567,12 +1773,16 @@ class IntersectionTypeAccess extends Expr, @intersectiontypeaccess {
 
   /** Gets a printable representation of this expression. */
   override string toString() { result = "...&..." }
+
+  override string getAPrimaryQlClass() { result = "IntersectionTypeAccess" }
 }
 
 /** A package access. */
 class PackageAccess extends Expr, @packageaccess {
   /** Gets a printable representation of this expression. */
   override string toString() { result = "package" }
+
+  override string getAPrimaryQlClass() { result = "PackageAccess" }
 }
 
 /** A wildcard type access, which may have either a lower or an upper bound. */
@@ -1588,6 +1798,8 @@ class WildcardTypeAccess extends Expr, @wildcardtypeaccess {
 
   /** Gets a printable representation of this expression. */
   override string toString() { result = "? ..." }
+
+  override string getAPrimaryQlClass() { result = "WildcardTypeAccess" }
 }
 
 /**
@@ -1596,7 +1808,7 @@ class WildcardTypeAccess extends Expr, @wildcardtypeaccess {
  * This includes method calls, constructor and super constructor invocations,
  * and constructors invoked through class instantiation.
  */
-class Call extends Top, @caller {
+class Call extends ExprParent, @caller {
   /** Gets an argument supplied in this call. */
   /*abstract*/ Expr getAnArgument() { none() }
 
@@ -1774,14 +1986,10 @@ private module Qualifier {
 }
 
 /** An expression that assigns a value to a field. */
-class FieldWrite extends FieldAccess {
-  FieldWrite() { exists(Field f | f = getVariable() and isLValue()) }
-}
+class FieldWrite extends FieldAccess, LValue { }
 
 /** An expression that reads a field. */
-class FieldRead extends FieldAccess {
-  FieldRead() { exists(Field f | f = getVariable() and isRValue()) }
-}
+class FieldRead extends FieldAccess, RValue { }
 
 private predicate hasInstantiation(RefType t) {
   t instanceof TypeVariable or

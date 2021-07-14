@@ -3,9 +3,9 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Statements
 {
-    class ExpressionStatement : Statement<ExpressionStatementSyntax>
+    internal class ExpressionStatement : Statement<ExpressionStatementSyntax>
     {
-        ExpressionStatement(Context cx, ExpressionStatementSyntax node, IStatementParentEntity parent, int child)
+        private ExpressionStatement(Context cx, ExpressionStatementSyntax node, IStatementParentEntity parent, int child)
             : base(cx, node, Kinds.StmtKind.EXPR, parent, child) { }
 
         public static ExpressionStatement Create(Context cx, ExpressionStatementSyntax node, IStatementParentEntity parent, int child)
@@ -17,10 +17,10 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
 
         protected override void PopulateStatement(TextWriter trapFile)
         {
-            if (Stmt.Expression != null)
-                Expression.Create(cx, Stmt.Expression, this, 0);
+            if (Stmt.Expression is not null)
+                Expression.Create(Context, Stmt.Expression, this, 0);
             else
-                cx.ModelError(Stmt, "Invalid expression statement");
+                Context.ModelError(Stmt, "Invalid expression statement");
         }
     }
 }

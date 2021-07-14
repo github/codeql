@@ -12,18 +12,23 @@ namespace Semmle.Util
         public static int ReadOutput(this ProcessStartInfo pi, out IList<string> stdout)
         {
             stdout = new List<string>();
-            using (var process = Process.Start(pi))
+            using var process = Process.Start(pi);
+
+            if (process is null)
             {
-                string? s;
-                do
-                {
-                    s = process.StandardOutput.ReadLine();
-                    if (s != null) stdout.Add(s);
-                }
-                while (s != null);
-                process.WaitForExit();
-                return process.ExitCode;
+                return -1;
             }
+
+            string? s;
+            do
+            {
+                s = process.StandardOutput.ReadLine();
+                if (s is not null)
+                    stdout.Add(s);
+            }
+            while (s is not null);
+            process.WaitForExit();
+            return process.ExitCode;
         }
     }
 }

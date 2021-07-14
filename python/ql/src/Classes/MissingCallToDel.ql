@@ -1,6 +1,6 @@
 /**
- * @name Missing call to __del__ during object destruction
- * @description An omitted call to a super-class __del__ method may lead to class instances not being cleaned up properly.
+ * @name Missing call to `__del__` during object destruction
+ * @description An omitted call to a super-class `__del__` method may lead to class instances not being cleaned up properly.
  * @kind problem
  * @tags efficiency
  *       correctness

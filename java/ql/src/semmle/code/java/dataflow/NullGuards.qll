@@ -5,6 +5,7 @@
 import java
 import SSA
 private import semmle.code.java.controlflow.internal.GuardsLogic
+private import semmle.code.java.frameworks.apache.Collections
 private import RangeUtils
 private import IntegerGuards
 
@@ -79,6 +80,11 @@ Expr clearlyNotNullExpr(Expr reason) {
   )
   or
   exists(SsaVariable v | clearlyNotNull(v, reason) and result = v.getAUse())
+  or
+  exists(Method m | m = result.(MethodAccess).getMethod() and reason = result |
+    m.getDeclaringType().hasQualifiedName("com.google.common.base", "Strings") and
+    m.hasName("nullToEmpty")
+  )
 }
 
 /** Holds if `v` is an SSA variable that is provably not `null`. */
@@ -139,12 +145,17 @@ predicate nullCheckMethod(Method m, boolean branch, boolean isnull) {
   branch = false and
   isnull = false
   or
-  (
-    m.getDeclaringType().hasQualifiedName("org.apache.commons.collections4", "CollectionUtils") or
-    m.getDeclaringType().hasQualifiedName("org.apache.commons.collections", "CollectionUtils")
-  ) and
-  m.hasName("isNotEmpty") and
+  m instanceof MethodApacheCollectionsIsEmpty and
+  branch = false and
+  isnull = false
+  or
+  m instanceof MethodApacheCollectionsIsNotEmpty and
   branch = true and
+  isnull = false
+  or
+  m.getDeclaringType().hasQualifiedName("com.google.common.base", "Strings") and
+  m.hasName("isNullOrEmpty") and
+  branch = false and
   isnull = false
 }
 

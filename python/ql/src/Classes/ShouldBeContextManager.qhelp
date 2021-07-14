@@ -31,7 +31,7 @@ updated to use a context manager.</p>
 </example>
 <references>
 
-<li>Effbot: <a href="http://effbot.org/zone/python-with-statement.htm">Python with statement</a>.</li>
+<li>Effbot: <a href="https://web.archive.org/web/20201012110738/http://effbot.org/zone/python-with-statement.htm">Python with statement</a>.</li>
 <li>Python Standard Library: <a href="http://docs.python.org/library/stdtypes.html#context-manager-types">Context manager
 </a>.</li>
 <li>Python Language Reference: <a href="http://docs.python.org/2.7/reference/datamodel.html#with-statement-context-managers">

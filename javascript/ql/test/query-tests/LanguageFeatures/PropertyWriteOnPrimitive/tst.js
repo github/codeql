@@ -21,3 +21,9 @@ function g(b) {
   // OK: no types inferred for `z`, since this is dead code
   z.y = true;
 }
+
+function h() {
+  let tmp;
+  let obj = (tmp ||= {});
+  obj.p = 42;
+}

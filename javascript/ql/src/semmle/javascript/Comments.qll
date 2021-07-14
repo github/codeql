@@ -53,7 +53,7 @@ class Comment extends @comment, Locatable {
  * &lt;!-- an HTML line comment
  * </pre>
  */
-class LineComment extends @linecomment, Comment { }
+class LineComment extends @line_comment, Comment { }
 
 /**
  * An HTML comment start/end token interpreted as a line comment.
@@ -65,7 +65,7 @@ class LineComment extends @linecomment, Comment { }
  * --> also an HTML line comment
  * ```
  */
-class HtmlLineComment extends @htmlcomment, LineComment { }
+class HtmlLineComment extends @html_comment, LineComment { }
 
 /**
  * An HTML comment start token interpreted as a line comment.
@@ -76,7 +76,7 @@ class HtmlLineComment extends @htmlcomment, LineComment { }
  * &lt;!-- an HTML line comment
  * ```
  */
-class HtmlCommentStart extends @htmlcommentstart, HtmlLineComment { }
+class HtmlCommentStart extends @html_comment_start, HtmlLineComment { }
 
 /**
  * An HTML comment end token interpreted as a line comment.
@@ -98,7 +98,7 @@ class HtmlCommentEnd extends @htmlcommentend, HtmlLineComment { }
  * // a line comment
  * ```
  */
-class SlashSlashComment extends @slashslashcomment, LineComment { }
+class SlashSlashComment extends @slashslash_comment, LineComment { }
 
 /**
  * A block comment (which may be a JSDoc comment).
@@ -111,7 +111,7 @@ class SlashSlashComment extends @slashslashcomment, LineComment { }
  * /** a JSDoc comment *&#47;
  * </pre>
  */
-class BlockComment extends @blockcomment, Comment { }
+class BlockComment extends @block_comment, Comment { }
 
 /**
  * A C-style block comment which is not a JSDoc comment.
@@ -123,7 +123,7 @@ class BlockComment extends @blockcomment, Comment { }
  *   (but not a JSDoc comment) *&#47;
  * </pre>
  */
-class SlashStarComment extends @slashstarcomment, BlockComment { }
+class SlashStarComment extends @slashstar_comment, BlockComment { }
 
 /**
  * A JSDoc comment.
@@ -134,4 +134,4 @@ class SlashStarComment extends @slashstarcomment, BlockComment { }
  * /** a JSDoc comment *&#47;
  * </pre>
  */
-class DocComment extends @doccomment, BlockComment { }
+class DocComment extends @doc_comment, BlockComment { }

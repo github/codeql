@@ -1,5 +1,3 @@
-// semmle-extractor-options: /r:System.Data.Common.dll /r:System.Runtime.WindowsRuntime.dll /r:System.Xml.XmlSerializer.dll /r:System.Runtime.Serialization.Xml.dll /r:System.Runtime.Serialization.Xml.dll /r:System.Collections.dll /r:System.Private.Xml.dll /r:System.Private.DataContractSerialization.dll /r:System.Runtime.Extensions.dll /r:System.ComponentModel.TypeConverter.dll /r:System.Xml.ReaderWriter.dll /r:System.IO.FileSystem.dll
-
 using System;
 using System.Data;
 using System.IO;
@@ -19,9 +17,9 @@ namespace DataSetSerializationTest
         }
     }
 
-    /*  
+    /*
      *  TODO: I cannot use DataContract on a QL unit test
-     *  
+     *
     [DataContract(Name = "Customer", Namespace = "http://www.contoso.com")]
     public class PatternDataContractSerializer : XmlObjectSerializer
     {

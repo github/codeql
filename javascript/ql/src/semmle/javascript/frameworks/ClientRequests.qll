@@ -206,19 +206,14 @@ module ClientRequest {
   /**
    * A model of a URL request made using the `axios` library.
    */
-  class AxiosUrlRequest extends ClientRequest::Range {
+  class AxiosUrlRequest extends ClientRequest::Range, API::CallNode {
     string method;
 
     AxiosUrlRequest() {
-      exists(string moduleName, DataFlow::SourceNode callee | this = callee.getACall() |
-        moduleName = "axios" and
-        (
-          callee = DataFlow::moduleImport(moduleName) and method = "request"
-          or
-          callee = DataFlow::moduleMember(moduleName, method) and
-          (method = httpMethodName() or method = "request")
-        )
-      )
+      this = API::moduleImport("axios").getACall() and method = "request"
+      or
+      this = API::moduleImport("axios").getMember(method).getACall() and
+      method = [httpMethodName(), "request"]
     }
 
     private int getOptionsArgIndex() {
@@ -247,12 +242,10 @@ module ClientRequest {
       method = "request" and
       result = getOptionArgument(0, "data")
       or
-      (method = "post" or method = "put" or method = "put") and
-      (result = getArgument(1) or result = getOptionArgument(2, "data"))
+      method = ["post", "put"] and
+      result = [getArgument(1), getOptionArgument(2, "data")]
       or
-      exists(string name | name = "headers" or name = "params" |
-        result = getOptionArgument([0 .. 2], name)
-      )
+      result = getOptionArgument([0 .. 2], ["headers", "params"])
     }
 
     /** Gets the response type from the options passed in. */
@@ -275,6 +268,10 @@ module ClientRequest {
       responseType = getResponseType() and
       promise = true and
       result = this
+      or
+      responseType = getResponseType() and
+      promise = false and
+      result = getReturn().getPromisedError().getMember("response").getAnImmediateUse()
     }
   }
 
@@ -305,6 +302,8 @@ module ClientRequest {
       exists(DataFlow::SourceNode fetch |
         fetch = DataFlow::moduleImport(["node-fetch", "cross-fetch", "isomorphic-fetch"])
         or
+        fetch = DataFlow::moduleMember("whatwg-fetch", "fetch")
+        or
         fetch = DataFlow::globalVarRef("fetch") // https://fetch.spec.whatwg.org/#fetch-api
       |
         this = fetch.getACall() and
@@ -324,6 +323,85 @@ module ClientRequest {
       responseType = "fetch.response" and
       promise = true and
       result = this
+    }
+  }
+
+  /**
+   * Classes for modelling the url request library `needle`.
+   */
+  private module Needle {
+    /**
+     * A model of a URL request made using `require("needle")(...)`.
+     */
+    class PromisedNeedleRequest extends ClientRequest::Range {
+      DataFlow::Node url;
+
+      PromisedNeedleRequest() { this = DataFlow::moduleImport("needle").getACall() }
+
+      override DataFlow::Node getUrl() { result = getArgument(1) }
+
+      override DataFlow::Node getHost() { none() }
+
+      override DataFlow::Node getADataNode() {
+        result = getOptionArgument([2, 3], "headers")
+        or
+        result = getArgument(2)
+      }
+
+      override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
+        responseType = "fetch.response" and
+        promise = true and
+        result = this
+      }
+    }
+
+    /**
+     * A model of a URL request made using `require("needle")[method](...)`.
+     * E.g. `needle.get("http://example.org", (err, resp, body) => {})`.
+     *
+     * As opposed to the calls modeled in `PromisedNeedleRequest` these calls do not return promises.
+     * Instead they take an optional callback as their last argument.
+     */
+    class NeedleMethodRequest extends ClientRequest::Range {
+      boolean hasData;
+
+      NeedleMethodRequest() {
+        exists(string method |
+          method = ["get", "head"] and hasData = false
+          or
+          method = ["post", "put", "patch", "delete"] and hasData = true
+          or
+          method = "request" and hasData = [true, false]
+        |
+          this = DataFlow::moduleMember("needle", method).getACall()
+        )
+      }
+
+      override DataFlow::Node getUrl() { result = getArgument(0) }
+
+      override DataFlow::Node getHost() { none() }
+
+      override DataFlow::Node getADataNode() {
+        hasData = true and
+        (
+          result = getArgument(1)
+          or
+          result = getOptionArgument(2, "headers")
+        )
+        or
+        hasData = false and
+        result = getOptionArgument(1, "headers")
+      }
+
+      override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
+        promise = false and
+        result = this.getABoundCallbackParameter(this.getNumArgument() - 1, 1) and
+        responseType = "fetch.response"
+        or
+        promise = false and
+        result = this.getABoundCallbackParameter(this.getNumArgument() - 1, 2) and
+        responseType = "json"
+      }
     }
   }
 
@@ -386,6 +464,53 @@ module ClientRequest {
           responseType = "text" and
           promise = true
         )
+    }
+  }
+
+  /**
+   * Gets an instantiation `socket` of `require("net").Socket` type tracked using `t`.
+   */
+  private DataFlow::SourceNode netSocketInstantiation(
+    DataFlow::TypeTracker t, DataFlow::NewNode socket
+  ) {
+    t.start() and
+    socket = DataFlow::moduleMember("net", "Socket").getAnInstantiation() and
+    result = socket
+    or
+    exists(DataFlow::TypeTracker t2 | result = netSocketInstantiation(t2, socket).track(t2, t))
+  }
+
+  /**
+   * A model of a request made using `(new require("net").Socket()).connect(args);`.
+   */
+  class NetSocketRequest extends ClientRequest::Range {
+    DataFlow::NewNode socket;
+
+    NetSocketRequest() {
+      this = netSocketInstantiation(DataFlow::TypeTracker::end(), socket).getAMethodCall("connect")
+    }
+
+    override DataFlow::Node getUrl() {
+      result = getArgument([0, 1]) // there are multiple overrides of `connect`, and the URL can be in the first or second argument.
+    }
+
+    override DataFlow::Node getHost() { result = getOptionArgument(0, "host") }
+
+    override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
+      responseType = "text" and
+      promise = false and
+      exists(DataFlow::CallNode call |
+        call = netSocketInstantiation(DataFlow::TypeTracker::end(), socket).getAMemberCall("on") and
+        call.getArgument(0).mayHaveStringValue("data") and
+        result = call.getABoundCallbackParameter(1, 0)
+      )
+    }
+
+    override DataFlow::Node getADataNode() {
+      exists(DataFlow::CallNode call |
+        call = netSocketInstantiation(DataFlow::TypeTracker::end(), socket).getAMemberCall("write") and
+        result = call.getArgument(0)
+      )
     }
   }
 
@@ -666,8 +791,7 @@ module ClientRequest {
       this = cmd and
       (
         cmd.getACommandArgument().getStringValue() = "curl" or
-        cmd
-            .getACommandArgument()
+        cmd.getACommandArgument()
             .(StringOps::ConcatenationRoot)
             .getConstantStringParts()
             .regexpMatch("curl .*")
@@ -682,5 +806,71 @@ module ClientRequest {
     override DataFlow::Node getHost() { none() }
 
     override DataFlow::Node getADataNode() { none() }
+  }
+
+  /**
+   * A model of a URL request made using `jsdom.fromUrl()`.
+   */
+  class JSDOMFromUrl extends ClientRequest::Range {
+    JSDOMFromUrl() {
+      this = API::moduleImport("jsdom").getMember("JSDOM").getMember("fromURL").getACall()
+    }
+
+    override DataFlow::Node getUrl() { result = getArgument(0) }
+
+    override DataFlow::Node getHost() { none() }
+
+    override DataFlow::Node getADataNode() { none() }
+  }
+
+  /**
+   * Classes and predicates modelling the `apollo-client` library.
+   */
+  private module ApolloClient {
+    /**
+     * A function from `apollo-client` that accepts an options object that may contain a `uri` property.
+     */
+    API::Node apolloUriCallee() {
+      result = API::moduleImport("apollo-link-http").getMember(["HttpLink", "createHttpLink"])
+      or
+      result =
+        API::moduleImport(["apollo-boost", "apollo-client", "apollo-client-preset"])
+            .getMember(["ApolloClient", "HttpLink", "createNetworkInterface"])
+      or
+      result = API::moduleImport("apollo-link-ws").getMember("WebSocketLink")
+    }
+
+    /**
+     * A model of a URL request made using apollo-client.
+     */
+    class ApolloClientRequest extends ClientRequest::Range, API::InvokeNode {
+      ApolloClientRequest() { this = apolloUriCallee().getAnInvocation() }
+
+      override DataFlow::Node getUrl() { result = getParameter(0).getMember("uri").getARhs() }
+
+      override DataFlow::Node getHost() { none() }
+
+      override DataFlow::Node getADataNode() { none() }
+    }
+  }
+
+  /**
+   * A model of a URL request made using [form-data](https://www.npmjs.com/package/form-data).
+   */
+  class FormDataRequest extends ClientRequest::Range, API::InvokeNode {
+    API::Node form;
+
+    FormDataRequest() {
+      form = API::moduleImport("form-data").getInstance() and
+      this = form.getMember("submit").getACall()
+    }
+
+    override DataFlow::Node getUrl() { result = getArgument(0) }
+
+    override DataFlow::Node getHost() { result = getParameter(0).getMember("host").getARhs() }
+
+    override DataFlow::Node getADataNode() {
+      result = form.getMember("append").getACall().getParameter(1).getARhs()
+    }
   }
 }

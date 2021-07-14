@@ -29,7 +29,7 @@ class InsecureJavaMail {
 		final Session session = Session.getInstance(properties, authenticator);
 	}
 
-	public void testSimpleMail() {
+	public void testSimpleMail() throws Exception {
 		Email email = new SimpleEmail();
 		email.setHostName("config.hostName");
 		email.setSmtpPort(25);

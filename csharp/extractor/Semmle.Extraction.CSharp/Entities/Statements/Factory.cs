@@ -3,9 +3,9 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Semmle.Extraction.CSharp.Entities.Statements
 {
-    static class Factory
+    internal static class Factory
     {
-        internal static Statement Create(Context cx, StatementSyntax node, Statement parent, int child)
+        internal static Statement Create(Context cx, StatementSyntax node, IStatementParentEntity parent, int child)
         {
             switch (node.Kind())
             {

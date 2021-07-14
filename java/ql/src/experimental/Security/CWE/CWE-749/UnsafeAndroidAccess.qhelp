@@ -1,0 +1,31 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+  <overview>
+    <p>Android WebViews that allow loading URLs controlled by external inputs and whose JavaScript interface is enabled are potentially vulnerable to cross-site scripting and sensitive resource disclosure attacks.</p>
+    <p>A <code>WebView</code> whose <code>WebSettings</code> object has <code>setAllowFileAccessFromFileURLs(true)</code> or <code>setAllowUniversalAccessFromFileURLs(true)</code> called must not load any untrusted web content.</p>
+    <p>Enabling these settings allows malicious scripts loaded in a <code>file://</code> context to launch cross-site scripting attacks, either accessing arbitrary local files including WebView cookies, session tokens, private app data or even credentials used on arbitrary web sites.</p>
+    <p>This query detects the following two scenarios:</p>
+    <ol>
+      <li>Vulnerability introduced by WebViews with JavaScript enabled and remote inputs allowed.</li>
+      <li>A more severe vulnerability when allowing cross-origin resource access is also enabled. The setting was deprecated in API level 30 (Android 11), but most devices are still affected, especially given that some Android phones are updated slowly or no longer updated at all.</li>
+    </ol>
+  </overview>
+
+  <recommendation>
+    <p>Only allow trusted web content to be displayed in WebViews when JavaScript is enabled. Disallow cross-origin resource access in WebSetting to reduce the attack surface.</p>
+  </recommendation>
+
+  <example>
+    <p>The following example shows both 'BAD' and 'GOOD' configurations. In the 'BAD' configuration, setting is enabled and JavaScript is enabled while URLs are loaded from externally controlled inputs. In the 'GOOD' configuration, JavaScript is disabled or only trusted web content is allowed to be loaded.</p>
+    <sample src="UnsafeAndroidAccess.java" />
+  </example>
+
+  <references>
+    <li>
+      <a href="https://cwe.mitre.org/data/definitions/749.html">CWE-749</a>
+      <a href="https://support.google.com/faqs/answer/7668153?hl=en">Fixing a File-based XSS Vulnerability</a>
+      <a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05h-Testing-Platform-Interaction.md">OWASP - Testing WebView Protocol Handlers (MSTG-PLATFORM-5 and MSTG-PLATFORM-6)</a>
+    </li>
+  </references>
+</qhelp>

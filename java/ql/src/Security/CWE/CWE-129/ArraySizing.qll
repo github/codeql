@@ -1,6 +1,7 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.DefUse
+import semmle.code.java.security.RandomDataSource
 private import BoundingChecks
 
 /**
@@ -44,7 +45,7 @@ class PointlessLoop extends WhileStmt {
     getCondition().(BooleanLiteral).getBooleanValue() = true and
     // The only `break` must be the last statement.
     forall(BreakStmt break | break.(JumpStmt).getTarget() = this |
-      this.getStmt().(Block).getLastStmt() = break
+      this.getStmt().(BlockStmt).getLastStmt() = break
     ) and
     // No `continue` statements.
     not exists(ContinueStmt continue | continue.(JumpStmt).getTarget() = this)
@@ -124,33 +125,16 @@ abstract class BoundedFlowSource extends DataFlow::Node {
 }
 
 /**
- * Input that is constructed using a `Random` value.
+ * Input that is constructed using a random value.
  */
 class RandomValueFlowSource extends BoundedFlowSource {
-  RandomValueFlowSource() {
-    exists(RefType random, MethodAccess nextAccess |
-      random.hasQualifiedName("java.util", "Random")
-    |
-      nextAccess.getCallee().getDeclaringType().getAnAncestor() = random and
-      nextAccess.getCallee().getName().matches("next%") and
-      nextAccess = this.asExpr()
-    )
-  }
+  RandomDataSource nextAccess;
 
-  override int lowerBound() {
-    // If this call is to `nextInt()`, the lower bound is zero.
-    this.asExpr().(MethodAccess).getCallee().hasName("nextInt") and
-    this.asExpr().(MethodAccess).getNumArgument() = 1 and
-    result = 0
-  }
+  RandomValueFlowSource() { this.asExpr() = nextAccess }
 
-  override int upperBound() {
-    // If this call specified an argument to `nextInt()`, and that argument is a compile time constant,
-    // it forms the upper bound.
-    this.asExpr().(MethodAccess).getCallee().hasName("nextInt") and
-    this.asExpr().(MethodAccess).getNumArgument() = 1 and
-    result = this.asExpr().(MethodAccess).getArgument(0).(CompileTimeConstantExpr).getIntValue()
-  }
+  override int lowerBound() { result = nextAccess.getLowerBound() }
+
+  override int upperBound() { result = nextAccess.getUpperBound() }
 
   override string getDescription() { result = "Random value" }
 }

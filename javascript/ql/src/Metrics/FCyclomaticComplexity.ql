@@ -5,7 +5,6 @@
  * @treemap.warnOn highValues
  * @metricType file
  * @metricAggregate avg max
- * @precision very-high
  * @tags testability
  * @id js/cyclomatic-complexity-per-file
  */

@@ -1,10 +1,9 @@
-// semmle-extractor-options: /r:System.Collections.Specialized.dll /r:System.Collections.dll /r:System.Linq.dll
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
-
+#nullable enable
 public class Collections
 {
     void M1(string[] args)
@@ -52,7 +51,7 @@ public class Collections
         var x = args.ToArray();
         args.Clear();
         x = args.ToArray();
-        x = new string[]{ "a", "b", "c" };
+        x = new string[] { "a", "b", "c" };
         x = x;
         x = new string[0];
         x = x;
@@ -60,7 +59,7 @@ public class Collections
 
     void M6()
     {
-        var x = new string[]{ "a", "b", "c" }.ToList();
+        var x = new string[] { "a", "b", "c" }.ToList();
         x.Clear();
         if (x.Count == 0)
         {
@@ -84,10 +83,22 @@ public class Collections
 
     void M8()
     {
-        var x = new string[] {};
-        string[] y = {};
+        var x = new string[] { };
+        string[] y = { };
         x = new string[] { "a" };
         string[] z = { "a" };
     }
-}
 
+    void M9(string[] args)
+    {
+        foreach (var arg in args)
+            Console.WriteLine(args); // guarded by `args` being non-empty
+    }
+
+    void M10(string[] args)
+    {
+        foreach (var arg in args)
+            ;
+        Console.WriteLine(args);
+    }
+}

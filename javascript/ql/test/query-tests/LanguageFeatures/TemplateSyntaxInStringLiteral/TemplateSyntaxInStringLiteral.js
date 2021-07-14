@@ -28,3 +28,16 @@ function baz(x){
     log.error("${x} ");
     log.error("${y} ");
 }
+
+
+function foo1() {
+    const aTemplateLitInScope = `Connecting to ${id}`;
+    const name = 2;
+    const date = 3;
+    const foobar = 4;
+
+    const data = {name: name, date: date};
+    writer.emit("Name: ${name}, Date: ${date}.", data); // OK 
+
+    writer.emit("Name: ${name}, Date: ${date}, ${foobar}", data); // NOT OK - `foobar` is not in `data`.     
+}

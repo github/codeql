@@ -72,4 +72,9 @@ class IRPropertyProvider extends TIRPropertyProvider {
    * Gets the value of the property named `key` for the specified block.
    */
   string getBlockProperty(IRBlock block, string key) { none() }
+
+  /**
+   * Gets the value of the property named `key` for the specified operand.
+   */
+  string getOperandProperty(Operand operand, string key) { none() }
 }

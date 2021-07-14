@@ -70,9 +70,8 @@ module HardcodedSymmetricEncryptionKey {
     CreateSymmetricKeySink() {
       exists(MethodCall mc, Method m |
         mc.getTarget() = m and
-        m
-            .hasQualifiedName("Windows.Security.Cryptography.Core.SymmetricKeyAlgorithmProvider",
-              "CreateSymmetricKey") and
+        m.hasQualifiedName("Windows.Security.Cryptography.Core.SymmetricKeyAlgorithmProvider",
+          "CreateSymmetricKey") and
         this.asExpr() = mc.getArgumentForName("keyMaterial")
       )
     }

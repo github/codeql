@@ -1,6 +1,6 @@
 /**
  * @name Maybe undefined class attribute
- * @description Accessing an attribute of 'self' that is not initialized in the __init__ method may cause an AttributeError at runtime
+ * @description Accessing an attribute of `self` that is not initialized in the `__init__` method may cause an AttributeError at runtime
  * @kind problem
  * @tags reliability
  *       correctness

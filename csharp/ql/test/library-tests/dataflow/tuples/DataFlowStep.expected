@@ -1,0 +1,109 @@
+| Tuples.cs:7:13:7:56 | SSA def(x) | Tuples.cs:8:27:8:27 | access to local variable x |
+| Tuples.cs:7:13:7:56 | SSA qualifier def(x.Item1) | Tuples.cs:23:14:23:20 | access to field Item1 |
+| Tuples.cs:7:13:7:56 | SSA qualifier def(x.Item2) | Tuples.cs:25:14:25:20 | access to field Item2 |
+| Tuples.cs:7:13:7:56 | SSA qualifier def(x.Item2.Item1) | Tuples.cs:25:14:25:26 | access to field Item1 |
+| Tuples.cs:7:13:7:56 | SSA qualifier def(x.Item2.Item2) | Tuples.cs:26:14:26:26 | access to field Item2 |
+| Tuples.cs:7:17:7:56 | (..., ...) | Tuples.cs:7:13:7:56 | SSA def(x) |
+| Tuples.cs:8:9:8:27 | SSA def(a) | Tuples.cs:9:14:9:14 | access to local variable a |
+| Tuples.cs:8:9:8:27 | SSA def(b) | Tuples.cs:10:14:10:14 | access to local variable b |
+| Tuples.cs:8:9:8:27 | SSA def(c) | Tuples.cs:11:14:11:14 | access to local variable c |
+| Tuples.cs:8:27:8:27 | access to local variable x | Tuples.cs:8:9:8:23 | (..., ...) |
+| Tuples.cs:8:27:8:27 | access to local variable x | Tuples.cs:13:23:13:23 | access to local variable x |
+| Tuples.cs:13:9:13:23 | SSA def(a) | Tuples.cs:14:14:14:14 | access to local variable a |
+| Tuples.cs:13:9:13:23 | SSA def(b) | Tuples.cs:15:14:15:14 | access to local variable b |
+| Tuples.cs:13:9:13:23 | SSA def(c) | Tuples.cs:16:14:16:14 | access to local variable c |
+| Tuples.cs:13:23:13:23 | access to local variable x | Tuples.cs:13:9:13:19 | (..., ...) |
+| Tuples.cs:13:23:13:23 | access to local variable x | Tuples.cs:18:26:18:26 | access to local variable x |
+| Tuples.cs:18:9:18:26 | SSA def(p) | Tuples.cs:19:14:19:14 | access to local variable p |
+| Tuples.cs:18:9:18:26 | SSA def(q) | Tuples.cs:20:14:20:14 | access to local variable q |
+| Tuples.cs:18:9:18:26 | SSA qualifier def(q.Item1) | Tuples.cs:20:14:20:20 | access to field Item1 |
+| Tuples.cs:18:9:18:26 | SSA qualifier def(q.Item2) | Tuples.cs:21:14:21:20 | access to field Item2 |
+| Tuples.cs:18:26:18:26 | access to local variable x | Tuples.cs:18:9:18:22 | (..., ...) |
+| Tuples.cs:18:26:18:26 | access to local variable x | Tuples.cs:23:14:23:14 | access to local variable x |
+| Tuples.cs:20:14:20:14 | access to local variable q | Tuples.cs:21:14:21:14 | access to local variable q |
+| Tuples.cs:23:14:23:14 | [post] access to local variable x | Tuples.cs:24:14:24:14 | access to local variable x |
+| Tuples.cs:23:14:23:14 | access to local variable x | Tuples.cs:24:14:24:14 | access to local variable x |
+| Tuples.cs:23:14:23:20 | [post] access to field Item1 | Tuples.cs:24:14:24:16 | access to field Item1 |
+| Tuples.cs:23:14:23:20 | access to field Item1 | Tuples.cs:24:14:24:16 | access to field Item1 |
+| Tuples.cs:24:14:24:14 | [post] access to local variable x | Tuples.cs:25:14:25:14 | access to local variable x |
+| Tuples.cs:24:14:24:14 | access to local variable x | Tuples.cs:25:14:25:14 | access to local variable x |
+| Tuples.cs:25:14:25:14 | access to local variable x | Tuples.cs:26:14:26:14 | access to local variable x |
+| Tuples.cs:25:14:25:20 | access to field Item2 | Tuples.cs:26:14:26:20 | access to field Item2 |
+| Tuples.cs:31:13:31:72 | SSA def(x) | Tuples.cs:32:14:32:14 | access to local variable x |
+| Tuples.cs:31:13:31:72 | SSA qualifier def(x.Item1) | Tuples.cs:32:14:32:20 | access to field Item1 |
+| Tuples.cs:31:13:31:72 | SSA qualifier def(x.Item2) | Tuples.cs:33:14:33:20 | access to field Item2 |
+| Tuples.cs:31:13:31:72 | SSA qualifier def(x.Item10) | Tuples.cs:34:14:34:21 | access to field Item10 |
+| Tuples.cs:31:17:31:72 | (..., ...) | Tuples.cs:31:13:31:72 | SSA def(x) |
+| Tuples.cs:32:14:32:14 | [post] access to local variable x | Tuples.cs:33:14:33:14 | access to local variable x |
+| Tuples.cs:32:14:32:14 | access to local variable x | Tuples.cs:33:14:33:14 | access to local variable x |
+| Tuples.cs:33:14:33:14 | access to local variable x | Tuples.cs:34:14:34:14 | access to local variable x |
+| Tuples.cs:39:13:39:68 | SSA def(x) | Tuples.cs:40:14:40:14 | access to local variable x |
+| Tuples.cs:39:13:39:68 | SSA qualifier def(x.Item1) | Tuples.cs:40:14:40:20 | access to field Item1 |
+| Tuples.cs:39:13:39:68 | SSA qualifier def(x.Item2) | Tuples.cs:41:14:41:20 | access to field Item2 |
+| Tuples.cs:39:17:39:68 | (...) ... | Tuples.cs:39:13:39:68 | SSA def(x) |
+| Tuples.cs:39:47:39:68 | (..., ...) | Tuples.cs:39:17:39:68 | (...) ... |
+| Tuples.cs:40:14:40:14 | [post] access to local variable x | Tuples.cs:41:14:41:14 | access to local variable x |
+| Tuples.cs:40:14:40:14 | access to local variable x | Tuples.cs:41:14:41:14 | access to local variable x |
+| Tuples.cs:43:13:43:68 | SSA def(y) | Tuples.cs:44:14:44:14 | access to local variable y |
+| Tuples.cs:43:13:43:68 | SSA qualifier def(y.Item1) | Tuples.cs:44:14:44:20 | access to field Item1 |
+| Tuples.cs:43:13:43:68 | SSA qualifier def(y.Item2) | Tuples.cs:45:14:45:20 | access to field Item2 |
+| Tuples.cs:43:17:43:68 | (...) ... | Tuples.cs:43:13:43:68 | SSA def(y) |
+| Tuples.cs:43:47:43:68 | (...) ... | Tuples.cs:43:17:43:68 | (...) ... |
+| Tuples.cs:43:47:43:68 | (..., ...) | Tuples.cs:43:47:43:68 | (...) ... |
+| Tuples.cs:44:14:44:14 | [post] access to local variable y | Tuples.cs:45:14:45:14 | access to local variable y |
+| Tuples.cs:44:14:44:14 | access to local variable y | Tuples.cs:45:14:45:14 | access to local variable y |
+| Tuples.cs:48:27:48:27 | s | Tuples.cs:65:18:65:18 | access to parameter s |
+| Tuples.cs:50:13:50:56 | SSA def(x) | Tuples.cs:51:17:51:17 | access to local variable x |
+| Tuples.cs:50:17:50:56 | (..., ...) | Tuples.cs:50:13:50:56 | SSA def(x) |
+| Tuples.cs:51:17:51:17 | access to local variable x | Tuples.cs:53:18:53:57 | SSA def(t) |
+| Tuples.cs:51:17:51:17 | access to local variable x | Tuples.cs:58:18:58:35 | (..., ...) |
+| Tuples.cs:51:17:51:17 | access to local variable x | Tuples.cs:77:13:77:13 | access to local variable x |
+| Tuples.cs:53:18:53:57 | SSA def(t) | Tuples.cs:53:64:53:64 | access to local variable t |
+| Tuples.cs:53:18:53:57 | SSA qualifier def(t.Item1) | Tuples.cs:54:22:54:28 | access to field Item1 |
+| Tuples.cs:53:18:53:57 | SSA qualifier def(t.Item2) | Tuples.cs:55:22:55:28 | access to field Item2 |
+| Tuples.cs:53:18:53:57 | SSA qualifier def(t.Item2.Item1) | Tuples.cs:56:22:56:34 | access to field Item1 |
+| Tuples.cs:53:18:53:57 | SSA qualifier def(t.Item2.Item2) | Tuples.cs:55:22:55:34 | access to field Item2 |
+| Tuples.cs:53:18:53:57 | SSA qualifier def(t.Item3) | Tuples.cs:53:64:53:70 | access to field Item3 |
+| Tuples.cs:53:64:53:64 | access to local variable t | Tuples.cs:54:22:54:22 | access to local variable t |
+| Tuples.cs:54:22:54:22 | [post] access to local variable t | Tuples.cs:55:22:55:22 | access to local variable t |
+| Tuples.cs:54:22:54:22 | access to local variable t | Tuples.cs:55:22:55:22 | access to local variable t |
+| Tuples.cs:55:22:55:22 | [post] access to local variable t | Tuples.cs:56:22:56:22 | access to local variable t |
+| Tuples.cs:55:22:55:22 | access to local variable t | Tuples.cs:56:22:56:22 | access to local variable t |
+| Tuples.cs:55:22:55:28 | [post] access to field Item2 | Tuples.cs:56:22:56:28 | access to field Item2 |
+| Tuples.cs:55:22:55:28 | access to field Item2 | Tuples.cs:56:22:56:28 | access to field Item2 |
+| Tuples.cs:58:23:58:23 | SSA def(a) | Tuples.cs:59:22:59:22 | access to local variable a |
+| Tuples.cs:58:27:58:27 | SSA def(b) | Tuples.cs:61:22:61:22 | access to local variable b |
+| Tuples.cs:58:30:58:30 | SSA def(c) | Tuples.cs:60:22:60:22 | access to local variable c |
+| Tuples.cs:65:13:65:30 | SSA def(y) | Tuples.cs:66:17:66:17 | access to local variable y |
+| Tuples.cs:65:13:65:30 | SSA qualifier def(y.Item1) | Tuples.cs:69:22:69:28 | access to field Item1 |
+| Tuples.cs:65:13:65:30 | SSA qualifier def(y.Item2) | Tuples.cs:70:22:70:28 | access to field Item2 |
+| Tuples.cs:65:13:65:30 | SSA qualifier def(y.Item2.Item1) | Tuples.cs:72:22:72:34 | access to field Item1 |
+| Tuples.cs:65:13:65:30 | SSA qualifier def(y.Item2.Item2) | Tuples.cs:70:22:70:34 | access to field Item2 |
+| Tuples.cs:65:17:65:30 | (..., ...) | Tuples.cs:65:13:65:30 | SSA def(y) |
+| Tuples.cs:65:18:65:18 | access to parameter s | Tuples.cs:65:25:65:25 | access to parameter s |
+| Tuples.cs:66:17:66:17 | access to local variable y | Tuples.cs:68:35:68:44 | (..., ...) |
+| Tuples.cs:66:17:66:17 | access to local variable y | Tuples.cs:69:22:69:22 | access to local variable y |
+| Tuples.cs:68:40:68:40 | SSA def(b) | Tuples.cs:73:22:73:22 | access to local variable b |
+| Tuples.cs:68:43:68:43 | SSA def(c) | Tuples.cs:71:22:71:22 | access to local variable c |
+| Tuples.cs:69:22:69:22 | [post] access to local variable y | Tuples.cs:70:22:70:22 | access to local variable y |
+| Tuples.cs:69:22:69:22 | access to local variable y | Tuples.cs:70:22:70:22 | access to local variable y |
+| Tuples.cs:70:22:70:22 | [post] access to local variable y | Tuples.cs:72:22:72:22 | access to local variable y |
+| Tuples.cs:70:22:70:22 | access to local variable y | Tuples.cs:72:22:72:22 | access to local variable y |
+| Tuples.cs:70:22:70:28 | [post] access to field Item2 | Tuples.cs:72:22:72:28 | access to field Item2 |
+| Tuples.cs:70:22:70:28 | access to field Item2 | Tuples.cs:72:22:72:28 | access to field Item2 |
+| Tuples.cs:77:13:77:13 | access to local variable x | Tuples.cs:77:18:77:35 | (..., ...) |
+| Tuples.cs:77:23:77:23 | SSA def(p) | Tuples.cs:79:18:79:18 | access to local variable p |
+| Tuples.cs:77:27:77:27 | SSA def(q) | Tuples.cs:81:18:81:18 | access to local variable q |
+| Tuples.cs:77:30:77:30 | SSA def(r) | Tuples.cs:80:18:80:18 | access to local variable r |
+| Tuples.cs:89:13:89:41 | SSA def(r) | Tuples.cs:90:14:90:14 | access to local variable r |
+| Tuples.cs:89:13:89:41 | SSA qualifier def(r.i) | Tuples.cs:90:14:90:16 | access to property i |
+| Tuples.cs:89:17:89:41 | object creation of type R1 | Tuples.cs:89:13:89:41 | SSA def(r) |
+| Tuples.cs:90:14:90:14 | [post] access to local variable r | Tuples.cs:92:22:92:22 | access to local variable r |
+| Tuples.cs:90:14:90:14 | access to local variable r | Tuples.cs:92:22:92:22 | access to local variable r |
+| Tuples.cs:92:9:92:22 | SSA def(a) | Tuples.cs:93:14:93:14 | access to local variable a |
+| Tuples.cs:92:9:92:22 | SSA def(b) | Tuples.cs:94:14:94:14 | access to local variable b |
+| Tuples.cs:92:22:92:22 | access to local variable r | Tuples.cs:92:9:92:18 | (..., ...) |
+| Tuples.cs:92:22:92:22 | access to local variable r | Tuples.cs:96:17:96:17 | access to local variable r |
+| Tuples.cs:96:17:96:17 | access to local variable r | Tuples.cs:98:18:98:27 | (..., ...) |
+| Tuples.cs:98:23:98:23 | SSA def(x) | Tuples.cs:99:22:99:22 | access to local variable x |
+| Tuples.cs:98:26:98:26 | SSA def(y) | Tuples.cs:100:22:100:22 | access to local variable y |

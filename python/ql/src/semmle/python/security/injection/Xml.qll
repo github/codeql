@@ -32,7 +32,7 @@ private class ExpatCreateParser extends TaintSource {
 
   override predicate isSourceOf(TaintKind kind) { kind instanceof ExpatParser }
 
-  string toString() { result = "expat.create.parser" }
+  override string toString() { result = "expat.create.parser" }
 }
 
 private FunctionObject xmlFromString() {

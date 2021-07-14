@@ -55,21 +55,21 @@ hasLocation(#20001,#20003)
 #20018=*
 stmts(#20018,2,#20001,0,"[, ,1];")
 hasLocation(#20018,#20003)
-stmtContainers(#20018,#20001)
+stmt_containers(#20018,#20001)
 #20019=*
 exprs(#20019,7,#20018,0,"[, ,1]")
 #20020=@"loc,{#10000},1,1,1,6"
 locations_default(#20020,#10000,1,1,1,6)
 hasLocation(#20019,#20020)
-enclosingStmt(#20019,#20018)
-exprContainers(#20019,#20001)
+enclosing_stmt(#20019,#20018)
+expr_containers(#20019,#20001)
 #20021=*
 exprs(#20021,3,#20019,2,"1")
 hasLocation(#20021,#20011)
-enclosingStmt(#20021,#20018)
-exprContainers(#20021,#20001)
+enclosing_stmt(#20021,#20018)
+expr_containers(#20021,#20001)
 literals("1","1",#20021)
-arraySize(#20019,3)
+array_size(#20019,3)
 #20022=*
 entry_cfg_node(#20022,#20001)
 #20023=@"loc,{#10000},1,1,1,0"

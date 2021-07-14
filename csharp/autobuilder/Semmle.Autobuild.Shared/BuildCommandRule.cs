@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Semmle.Autobuild.Shared
+﻿namespace Semmle.Autobuild.Shared
 {
     /// <summary>
     /// Execute the build_command rule.
@@ -17,7 +14,7 @@ namespace Semmle.Autobuild.Shared
 
         public BuildScript Analyse(Autobuilder builder, bool auto)
         {
-            if (builder.Options.BuildCommand == null)
+            if (builder.Options.BuildCommand is null)
                 return BuildScript.Failure;
 
             // Custom build commands may require a specific .NET Core version
@@ -27,7 +24,7 @@ namespace Semmle.Autobuild.Shared
 
                     // Custom build commands may require a specific Visual Studio version
                     var vsTools = MsBuildRule.GetVcVarsBatFile(builder);
-                    if (vsTools != null)
+                    if (vsTools is not null)
                         command.CallBatFile(vsTools.Path);
                     builder.MaybeIndex(command, builder.Options.BuildCommand);
 

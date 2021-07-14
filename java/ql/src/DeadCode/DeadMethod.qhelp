@@ -7,7 +7,7 @@
 <p>
 Methods that are never called at runtime are redundant and should be removed.
 </p>
-<include src="DeadCodeSummary.qhelp"/>
+<include src="DeadCodeSummary.inc.qhelp"/>
 <p>
 Methods are considered dead if at runtime they are never called, either directly, by a method call,
 or indirectly, through a framework or use of reflection. Any method which is not dead is considered
@@ -18,7 +18,7 @@ The results can include methods, constructors and initializers. Initializers com
 instance initializers and static initializers. For each class there will be at most one dead
 initializer of each type, representing all the initialization of that type in the class.
 </p>
-<include src="DeadCodeDetails.qhelp"/>
+<include src="DeadCodeDetails.inc.qhelp"/>
 </overview>
 <recommendation>
 <p>
@@ -47,7 +47,7 @@ and initializers on instance fields are dead. In addition, the lack of instance 
 implies that the class is never constructed, which means that all instance methods and fields are
 also dead and can be removed. These methods and fields will also be reported separately.
 </p>
-<include src="DeadCodeExtraEntryPoints.qhelp"/>
+<include src="DeadCodeExtraEntryPoints.inc.qhelp"/>
 </recommendation>
 <section title="Example 1">
 <p>
@@ -77,5 +77,5 @@ framework when running the tests. <code>testCustomer</code> and <code>setUp</cod
 considered to be "live".
 </p>
 </section>
-<include src="DeadCodeReferences.qhelp" />
+<include src="DeadCodeReferences.inc.qhelp" />
 </qhelp>

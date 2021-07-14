@@ -17,5 +17,5 @@ needed.</p>
 
 </recommendation>
 
-<include src="../../DeadCode/DeadCodeReferences.qhelp" />
+<include src="../../DeadCode/DeadCodeReferences.inc.qhelp" />
 </qhelp>

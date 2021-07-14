@@ -35,5 +35,5 @@ parameter <code>name</code> is not used within the body of the method. The param
 as useless, and can be removed from the program.
 </p>
 </example>
-<include src="DeadCodeReferences.qhelp" />
+<include src="DeadCodeReferences.inc.qhelp" />
 </qhelp>

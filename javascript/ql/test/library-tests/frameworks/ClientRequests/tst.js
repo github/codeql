@@ -209,3 +209,108 @@ import {ClientRequest, net} from 'electron';
 
 	$.get("example.php").fail(function(xhr) {console.log(xhr.responseText)});
 });
+
+const net = require("net");
+(function () {
+    var data = {
+        socket: new net.Socket()
+    }
+
+    data.socket.connect({host: "myHost"});
+
+    data.socket.on("data", (data) => {});
+
+    data.socket.write("foobar");
+})();
+
+const needle = require("needle");
+(function () {
+    const options = { headers: { 'X-Custom-Header': 'Bumbaway atuna' } };
+    needle("POST", "http://example.org/foo/bar", "MyData", options).then(function(resp) { console.log(resp.body) });
+
+    needle.get("http://example.org", (err, resp, body) => {
+
+    });
+
+    needle.post("http://example.org/post", "data", options, (err, resp, body) => {
+
+    });
+})();
+
+var FormData = require('form-data');
+var request = require('request');
+
+var form = new FormData();
+
+form.append('my_field', 'my value');
+form.append('my_buffer', Buffer.from("foo"));
+form.append('my_logo', request('http://example.org/images/logo.png'));
+
+form.submit('http://example.org/', (err, res) => {
+    res.resume();
+});
+
+
+var form = new FormData();
+form.append('new_form', 'new_value');
+
+form.submit({
+    method: 'post',
+    host: 'example.org',
+    path: '/upload',
+    headers: form.getHeaders()
+});
+
+var httpProxy = require('http-proxy');
+var http = require("http");
+
+httpProxy.createProxyServer({target:'http://localhost:9000'}).listen(8000); 
+
+var proxy = httpProxy.createProxyServer(options);
+http.createServer(function(req, res) {
+  proxy.web(req, res, { target: 'http://mytarget.com:8080' });
+});
+
+httpProxy.createProxyServer({
+    target: {
+        protocol: 'https:',
+        host: 'my-domain-name',
+        port: 443,
+        pfx: fs.readFileSync('path/to/certificate.p12'),
+        passphrase: 'password',
+    },
+    changeOrigin: true
+}).listen(8000);
+
+function webSocket() {
+    const socket = new WebSocket('ws://localhost:8080');
+    socket.addEventListener('open', function (event) {
+        socket.send('Hello Server!');
+    });
+    socket.addEventListener('message', function (event) {
+        console.log("Data from server: " + event.data);
+    });
+}
+
+function moreAxios() {
+    axios({
+        method: 'GET',
+        url: "http://example.org/more-axios",
+    }).then(
+        x => res.send(x.data),
+        (err) => {
+            const status = err.response.status;
+            const data = err.response.data;
+            const agent = err.response.headers.useragent;
+        }
+    );
+}
+
+import { fetch as fetchPolyfill } from 'whatwg-fetch'
+
+function usePolyfill() {
+    return fetchPolyfill('/foo/bar')
+        .then(function (response) {
+            return response.text()
+        })
+}

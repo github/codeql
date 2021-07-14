@@ -4,92 +4,80 @@
  * @id py/insecure-protocol
  * @kind problem
  * @problem.severity warning
+ * @security-severity 7.5
  * @precision high
  * @tags security
  *       external/cwe/cwe-327
  */
 
 import python
+import semmle.python.dataflow.new.DataFlow
+import FluentApiModel
 
-private ModuleValue the_ssl_module() { result = Module::named("ssl") }
-
-FunctionValue ssl_wrap_socket() { result = the_ssl_module().attr("wrap_socket") }
-
-ClassValue ssl_Context_class() { result = the_ssl_module().attr("SSLContext") }
-
-private ModuleValue the_pyOpenSSL_module() { result = Value::named("pyOpenSSL.SSL") }
-
-ClassValue the_pyOpenSSL_Context_class() { result = Value::named("pyOpenSSL.SSL.Context") }
-
-string insecure_version_name() {
-  // For `pyOpenSSL.SSL`
-  result = "SSLv2_METHOD" or
-  result = "SSLv23_METHOD" or
-  result = "SSLv3_METHOD" or
-  result = "TLSv1_METHOD" or
-  // For the `ssl` module
-  result = "PROTOCOL_SSLv2" or
-  result = "PROTOCOL_SSLv3" or
-  result = "PROTOCOL_SSLv23" or
-  result = "PROTOCOL_TLS" or
-  result = "PROTOCOL_TLSv1"
-}
-
-/*
- * A syntactic check for cases where points-to analysis cannot infer the presence of
- * a protocol constant, e.g. if it has been removed in later versions of the `ssl`
- * library.
- */
-
-bindingset[named_argument]
-predicate probable_insecure_ssl_constant(
-  CallNode call, string insecure_version, string named_argument
-) {
-  exists(ControlFlowNode arg |
-    arg = call.getArgByName(named_argument) or
-    arg = call.getArg(0)
-  |
-    arg.(AttrNode).getObject(insecure_version).pointsTo(the_ssl_module())
+// Helper for pretty printer `configName`.
+// This is a consequence of missing pretty priting.
+// We do not want to evaluate our bespoke pretty printer
+// for all `DataFlow::Node`s so we define a sub class of interesting ones.
+class ProtocolConfiguration extends DataFlow::Node {
+  ProtocolConfiguration() {
+    unsafe_connection_creation_with_context(_, _, this, _)
     or
-    arg.(NameNode).getId() = insecure_version and
-    exists(Import imp |
-      imp.getAnImportedModuleName() = "ssl" and
-      imp.getAName().getAsname().(Name).getId() = insecure_version
-    )
-  )
-}
-
-predicate unsafe_ssl_wrap_socket_call(
-  CallNode call, string method_name, string insecure_version, string named_argument
-) {
-  (
-    call = ssl_wrap_socket().getACall() and
-    method_name = "deprecated method ssl.wrap_socket" and
-    named_argument = "ssl_version"
+    unsafe_connection_creation_without_context(this, _)
     or
-    call = ssl_Context_class().getACall() and
-    named_argument = "protocol" and
-    method_name = "ssl.SSLContext"
-  ) and
-  insecure_version = insecure_version_name() and
-  (
-    call.getArgByName(named_argument).pointsTo(the_ssl_module().attr(insecure_version))
+    unsafe_context_creation(this, _)
+  }
+
+  DataFlow::Node getNode() { result = this.(DataFlow::CallCfgNode).getFunction() }
+}
+
+// Helper for pretty printer `callName`.
+// This is a consequence of missing pretty priting.
+// We do not want to evaluate our bespoke pretty printer
+// for all `DataFlow::Node`s so we define a sub class of interesting ones.
+class Nameable extends DataFlow::Node {
+  Nameable() {
+    this = any(ProtocolConfiguration pc).getNode()
     or
-    probable_insecure_ssl_constant(call, insecure_version, named_argument)
-  )
+    this = any(Nameable attr).(DataFlow::AttrRef).getObject()
+  }
 }
 
-predicate unsafe_pyOpenSSL_Context_call(CallNode call, string insecure_version) {
-  call = the_pyOpenSSL_Context_class().getACall() and
-  insecure_version = insecure_version_name() and
-  call.getArg(0).pointsTo(the_pyOpenSSL_module().attr(insecure_version))
-}
-
-from CallNode call, string method_name, string insecure_version
-where
-  unsafe_ssl_wrap_socket_call(call, method_name, insecure_version, _)
+string callName(Nameable call) {
+  result = call.asExpr().(Name).getId()
   or
-  unsafe_pyOpenSSL_Context_call(call, insecure_version) and method_name = "pyOpenSSL.SSL.Context"
-select call,
-  "Insecure SSL/TLS protocol version " + insecure_version + " specified in call to " + method_name +
-    "."
+  exists(DataFlow::AttrRef a | a = call |
+    result = callName(a.getObject()) + "." + a.getAttributeName()
+  )
+}
+
+string configName(ProtocolConfiguration protocolConfiguration) {
+  result = "call to " + callName(protocolConfiguration.(DataFlow::CallCfgNode).getFunction())
+  or
+  not protocolConfiguration instanceof DataFlow::CallCfgNode and
+  not protocolConfiguration instanceof ContextCreation and
+  result = "context modification"
+}
+
+string verb(boolean specific) {
+  specific = true and result = "specified"
+  or
+  specific = false and result = "allowed"
+}
+
+from
+  DataFlow::Node connectionCreation, string insecure_version, DataFlow::Node protocolConfiguration,
+  boolean specific
+where
+  unsafe_connection_creation_with_context(connectionCreation, insecure_version,
+    protocolConfiguration, specific)
+  or
+  unsafe_connection_creation_without_context(connectionCreation, insecure_version) and
+  protocolConfiguration = connectionCreation and
+  specific = true
+  or
+  unsafe_context_creation(protocolConfiguration, insecure_version) and
+  connectionCreation = protocolConfiguration and
+  specific = true
+select connectionCreation,
+  "Insecure SSL/TLS protocol version " + insecure_version + " " + verb(specific) + " by $@ ",
+  protocolConfiguration, configName(protocolConfiguration)

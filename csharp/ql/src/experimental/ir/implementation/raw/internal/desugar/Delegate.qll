@@ -97,9 +97,7 @@ private class TranslatedDelegateInvokeCall extends TranslatedCompilerGeneratedCa
     )
   }
 
-  override TranslatedExprBase getQualifier() {
-    result = getTranslatedExpr(generatedBy.getDelegateExpr())
-  }
+  override TranslatedExprBase getQualifier() { result = getTranslatedExpr(generatedBy.getExpr()) }
 
   override Instruction getQualifierResult() { result = getQualifier().getResult() }
 

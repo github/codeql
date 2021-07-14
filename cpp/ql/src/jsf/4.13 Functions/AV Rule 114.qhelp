@@ -12,7 +12,7 @@ calling convention for x86, it would be whatever value was in the AX/EAX registe
 assuming the function had a non-float return type that can fit in a machine word.
 </p>
 
-<include src="dataFlowWarning.qhelp" />
+<include src="../../Critical/dataFlowWarning.inc.qhelp" />
 
 <!--/*FALSEPOSITIVE_WARNING*/-->
 
@@ -37,7 +37,7 @@ assuming the function had a non-float return type that can fit in a machine word
   MISRA C++ Rule 8-4-3, <em>Guidelines for the use of the C++ language in critical systems</em>. The Motor Industry Software Reliability Associate, 2008.
 </li>
 <li>
-  <a href="http://msdn.microsoft.com/en-US/library/k68ktdwf%28v=VS.80%29.aspx">The return Statement</a>
+  MSDN Library: <a href="https://docs.microsoft.com/en-us/cpp/cpp/return-statement-cpp">return Statement (C++)</a>.
 </li>
 
 

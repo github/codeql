@@ -34,12 +34,12 @@ correctly.</p>
 
 
 <li>
-  Java API Documentation:
-  <a href="http://docs.oracle.com/javase/6/docs/api/java/io/Serializable.html">Serializable</a>.
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/Serializable.html">Serializable</a>.
 </li>
 <li>
   Oracle Technology Network:
-  <a href="http://www.oracle.com/technetwork/articles/java/javaserial-1536170.html">Discover the secrets of the Java Serialization API</a>.
+  <a href="https://www.oracle.com/technical-resources/articles/java/serializationapi.html">Discover the secrets of the Java Serialization API</a>.
 </li>
 
 

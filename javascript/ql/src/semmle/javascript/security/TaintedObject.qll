@@ -14,22 +14,17 @@
  */
 
 import javascript
+private import semmle.javascript.dataflow.InferredTypes
 
+/** Provides classes and predicates for reasoning about deeply tainted objects. */
 module TaintedObject {
   private import DataFlow
+  import TaintedObjectCustomizations::TaintedObject
 
-  private class TaintedObjectLabel extends FlowLabel {
-    TaintedObjectLabel() { this = "tainted-object" }
+  // Materialize flow labels
+  private class ConcreteTaintedObjectLabel extends TaintedObjectLabel {
+    ConcreteTaintedObjectLabel() { this = this }
   }
-
-  /**
-   * Gets the flow label representing a deeply tainted object.
-   *
-   * A "tainted object" is an array or object whose property values are all assumed to be tainted as well.
-   *
-   * Note that the presence of the this label generally implies the presence of the `taint` label as well.
-   */
-  FlowLabel label() { result instanceof TaintedObjectLabel }
 
   /**
    * Holds for the flows steps that are relevant for tracking user-controlled JSON objects.
@@ -63,17 +58,20 @@ module TaintedObject {
       src = call.getASourceOperand() and
       trg = call.getDestinationOperand().getALocalSource()
     )
+    or
+    // Spreading into an object preserves deep object taint: `p -> { ...p }`
+    inlbl = label() and
+    outlbl = label() and
+    exists(ObjectLiteralNode obj |
+      src = obj.getASpreadProperty() and
+      trg = obj
+    )
   }
 
   /**
    * Holds if `node` is a source of JSON taint and label is the JSON taint label.
    */
   predicate isSource(Node source, FlowLabel label) { source instanceof Source and label = label() }
-
-  /**
-   * A source of a user-controlled deep object.
-   */
-  abstract class Source extends DataFlow::Node { }
 
   /** Request input accesses as a JSON source. */
   private class RequestInputAsSource extends Source {
@@ -90,25 +88,40 @@ module TaintedObject {
    */
   private class TypeTestGuard extends SanitizerGuard, ValueNode {
     override EqualityTest astNode;
-    TypeofExpr typeof;
+    Expr operand;
     boolean polarity;
 
     TypeTestGuard() {
-      astNode.getAnOperand() = typeof and
-      (
+      exists(TypeofTag tag | TaintTracking::isTypeofGuard(astNode, operand, tag) |
         // typeof x === "object" sanitizes `x` when it evaluates to false
-        astNode.getAnOperand().getStringValue() = "object" and
+        tag = "object" and
         polarity = astNode.getPolarity().booleanNot()
         or
         // typeof x === "string" sanitizes `x` when it evaluates to true
-        astNode.getAnOperand().getStringValue() != "object" and
+        tag != "object" and
         polarity = astNode.getPolarity()
       )
     }
 
     override predicate sanitizes(boolean outcome, Expr e, FlowLabel label) {
       polarity = outcome and
-      e = typeof.getOperand() and
+      e = operand and
+      label = label()
+    }
+  }
+
+  /**
+   * A sanitizer guard that validates an input against a JSON schema.
+   */
+  private class JsonSchemaValidationGuard extends SanitizerGuard {
+    JsonSchema::ValidationCall call;
+    boolean polarity;
+
+    JsonSchemaValidationGuard() { this = call.getAValidationResultAccess(polarity) }
+
+    override predicate sanitizes(boolean outcome, Expr e, FlowLabel label) {
+      outcome = polarity and
+      e = call.getInput().asExpr() and
       label = label()
     }
   }

@@ -11,3 +11,4 @@ csharp.log
 *.tlog
 .vs
 *.user
+.vscode/launch.json

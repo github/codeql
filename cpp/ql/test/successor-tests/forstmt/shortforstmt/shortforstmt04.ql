@@ -9,7 +9,7 @@ import cpp
 from ForStmt fs, ExprStmt last, Expr succ
 where
   fs.getEnclosingFunction().hasName("normal") and
-  last = fs.getStmt().(Block).getLastStmt() and
+  last = fs.getStmt().(BlockStmt).getLastStmt() and
   succ = fs.getCondition().getAChild*() and
   succ = last.getExpr().getASuccessor() and
   count(last.getExpr().getASuccessor()) = 1

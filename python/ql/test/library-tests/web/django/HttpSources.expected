@@ -39,6 +39,7 @@
 | views_2x_3x.py:44:24:44:30 | request | django.request.HttpRequest |
 | views_2x_3x.py:44:33:44:36 | arg0 | externally controlled string |
 | views_2x_3x.py:44:39:44:42 | arg1 | externally controlled string |
+| views_2x_3x.py:65:20:65:26 | request | django.request.HttpRequest |
 | views_2x_3x.py:78:17:78:23 | request | django.request.HttpRequest |
 | views_2x_3x.py:78:26:78:36 | page_number | externally controlled string |
 | views_2x_3x.py:81:17:81:23 | request | django.request.HttpRequest |

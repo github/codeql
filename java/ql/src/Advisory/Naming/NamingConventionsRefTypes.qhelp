@@ -28,11 +28,11 @@ the class name. For example, <code>HotelBooking</code>.
 </li>
 <li>
   Java Language Specification:
-  <a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-6.html#jls-6.1">6.1. Declarations</a>.
+  <a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-6.html#jls-6.1">6.1. Declarations</a>.
 </li>
 <li>
   Java SE Documentation:
-  <a href="http://www.oracle.com/technetwork/java/javase/documentation/codeconventions-135099.html#367">9 - Naming Conventions</a>.
+  <a href="https://www.oracle.com/java/technologies/javase/codeconventions-namingconventions.html">9 - Naming Conventions</a>.
 </li>
 
 

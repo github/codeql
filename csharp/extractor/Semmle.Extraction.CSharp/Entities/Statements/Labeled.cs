@@ -4,19 +4,20 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Statements
 {
-    class Labeled : Statement<LabeledStatementSyntax>
+    internal class Labeled : Statement<LabeledStatementSyntax>
     {
-        readonly Statement Parent;
-        readonly int Child;
+        private readonly IStatementParentEntity parent;
+        private readonly int child;
+        private Statement? labelledStmt;
 
-        Labeled(Context cx, LabeledStatementSyntax stmt, Statement parent, int child)
+        private Labeled(Context cx, LabeledStatementSyntax stmt, IStatementParentEntity parent, int child)
             : base(cx, stmt, StmtKind.LABEL, parent, child)
         {
-            Parent = parent;
-            Child = child;
+            this.parent = parent;
+            this.child = child;
         }
 
-        public static Labeled Create(Context cx, LabeledStatementSyntax node, Statement parent, int child)
+        public static Labeled Create(Context cx, LabeledStatementSyntax node, IStatementParentEntity parent, int child)
         {
             var ret = new Labeled(cx, node, parent, child);
             ret.TryPopulate();
@@ -27,13 +28,11 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
         {
             trapFile.exprorstmt_name(this, Stmt.Identifier.ToString());
 
-            // For compatilibty with the Mono extractor, make insert the labelled statement into the same block
+            // For compatibility with the Mono extractor, make insert the labelled statement into the same block
             // as this one. The parent MUST be a block statement.
-            labelledStmt = Statement.Create(cx, Stmt.Statement, Parent, Child + 1);
+            labelledStmt = Statement.Create(Context, Stmt.Statement, parent, child + 1);
         }
 
-        Statement labelledStmt;
-
-        public override int NumberOfStatements => 1 + labelledStmt.NumberOfStatements;
+        public override int NumberOfStatements => 1 + labelledStmt?.NumberOfStatements ?? 0;
     }
 }

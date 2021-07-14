@@ -1,0 +1,31 @@
+edges
+| UnsafeActivity1.java:31:20:31:30 | getIntent(...) : Intent | UnsafeActivity1.java:32:14:32:20 | thisUrl |
+| UnsafeActivity2.java:31:20:31:30 | getIntent(...) : Intent | UnsafeActivity2.java:32:14:32:20 | thisUrl |
+| UnsafeActivity3.java:31:20:31:30 | getIntent(...) : Intent | UnsafeActivity3.java:32:14:32:20 | thisUrl |
+| UnsafeAndroidAccess.java:31:20:31:30 | getIntent(...) : Intent | UnsafeAndroidAccess.java:32:14:32:20 | thisUrl |
+| UnsafeAndroidAccess.java:54:20:54:30 | getIntent(...) : Intent | UnsafeAndroidAccess.java:55:14:55:20 | thisUrl |
+| UnsafeAndroidAccess.java:96:20:96:30 | getIntent(...) : Intent | UnsafeAndroidAccess.java:97:14:97:20 | thisUrl |
+| UnsafeAndroidBroadcastReceiver.java:16:41:16:53 | intent : Intent | UnsafeAndroidBroadcastReceiver.java:32:14:32:20 | thisUrl |
+nodes
+| UnsafeActivity1.java:31:20:31:30 | getIntent(...) : Intent | semmle.label | getIntent(...) : Intent |
+| UnsafeActivity1.java:32:14:32:20 | thisUrl | semmle.label | thisUrl |
+| UnsafeActivity2.java:31:20:31:30 | getIntent(...) : Intent | semmle.label | getIntent(...) : Intent |
+| UnsafeActivity2.java:32:14:32:20 | thisUrl | semmle.label | thisUrl |
+| UnsafeActivity3.java:31:20:31:30 | getIntent(...) : Intent | semmle.label | getIntent(...) : Intent |
+| UnsafeActivity3.java:32:14:32:20 | thisUrl | semmle.label | thisUrl |
+| UnsafeAndroidAccess.java:31:20:31:30 | getIntent(...) : Intent | semmle.label | getIntent(...) : Intent |
+| UnsafeAndroidAccess.java:32:14:32:20 | thisUrl | semmle.label | thisUrl |
+| UnsafeAndroidAccess.java:54:20:54:30 | getIntent(...) : Intent | semmle.label | getIntent(...) : Intent |
+| UnsafeAndroidAccess.java:55:14:55:20 | thisUrl | semmle.label | thisUrl |
+| UnsafeAndroidAccess.java:96:20:96:30 | getIntent(...) : Intent | semmle.label | getIntent(...) : Intent |
+| UnsafeAndroidAccess.java:97:14:97:20 | thisUrl | semmle.label | thisUrl |
+| UnsafeAndroidBroadcastReceiver.java:16:41:16:53 | intent : Intent | semmle.label | intent : Intent |
+| UnsafeAndroidBroadcastReceiver.java:32:14:32:20 | thisUrl | semmle.label | thisUrl |
+#select
+| UnsafeActivity1.java:32:3:32:21 | loadUrl(...) | UnsafeActivity1.java:31:20:31:30 | getIntent(...) : Intent | UnsafeActivity1.java:32:14:32:20 | thisUrl | Unsafe resource fetching in Android webview due to $@. | UnsafeActivity1.java:31:20:31:30 | getIntent(...) | user input vulnerable to cross-origin and sensitive resource disclosure attacks |
+| UnsafeActivity2.java:32:3:32:21 | loadUrl(...) | UnsafeActivity2.java:31:20:31:30 | getIntent(...) : Intent | UnsafeActivity2.java:32:14:32:20 | thisUrl | Unsafe resource fetching in Android webview due to $@. | UnsafeActivity2.java:31:20:31:30 | getIntent(...) | user input vulnerable to cross-origin and sensitive resource disclosure attacks |
+| UnsafeActivity3.java:32:3:32:21 | loadUrl(...) | UnsafeActivity3.java:31:20:31:30 | getIntent(...) : Intent | UnsafeActivity3.java:32:14:32:20 | thisUrl | Unsafe resource fetching in Android webview due to $@. | UnsafeActivity3.java:31:20:31:30 | getIntent(...) | user input vulnerable to cross-origin and sensitive resource disclosure attacks |
+| UnsafeAndroidAccess.java:32:3:32:21 | loadUrl(...) | UnsafeAndroidAccess.java:31:20:31:30 | getIntent(...) : Intent | UnsafeAndroidAccess.java:32:14:32:20 | thisUrl | Unsafe resource fetching in Android webview due to $@. | UnsafeAndroidAccess.java:31:20:31:30 | getIntent(...) | user input vulnerable to cross-origin and sensitive resource disclosure attacks |
+| UnsafeAndroidAccess.java:55:3:55:21 | loadUrl(...) | UnsafeAndroidAccess.java:54:20:54:30 | getIntent(...) : Intent | UnsafeAndroidAccess.java:55:14:55:20 | thisUrl | Unsafe resource fetching in Android webview due to $@. | UnsafeAndroidAccess.java:54:20:54:30 | getIntent(...) | user input vulnerable to cross-origin and sensitive resource disclosure attacks |
+| UnsafeAndroidAccess.java:97:3:97:21 | loadUrl(...) | UnsafeAndroidAccess.java:96:20:96:30 | getIntent(...) : Intent | UnsafeAndroidAccess.java:97:14:97:20 | thisUrl | Unsafe resource fetching in Android webview due to $@. | UnsafeAndroidAccess.java:96:20:96:30 | getIntent(...) | user input vulnerable to XSS attacks |
+| UnsafeAndroidBroadcastReceiver.java:32:3:32:21 | loadUrl(...) | UnsafeAndroidBroadcastReceiver.java:16:41:16:53 | intent : Intent | UnsafeAndroidBroadcastReceiver.java:32:14:32:20 | thisUrl | Unsafe resource fetching in Android webview due to $@. | UnsafeAndroidBroadcastReceiver.java:16:41:16:53 | intent | user input vulnerable to cross-origin and sensitive resource disclosure attacks |

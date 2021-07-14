@@ -1,4 +1,3 @@
-// semmle-extractor-options: /r:System.Security.Cryptography.Csp.dll /r:System.Security.Cryptography.Algorithms.dll /r:System.Security.Cryptography.Primitives.dll /r:System.Threading.Tasks.dll /r:System.Threading.Thread.dll /r:System.Linq.dll /r:System.Collections.dll /r:System.Threading.Tasks.Parallel.dll
 using System;
 using System.Linq;
 using System.Collections.Generic;

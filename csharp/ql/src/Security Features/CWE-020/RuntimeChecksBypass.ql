@@ -4,6 +4,7 @@
  * @kind problem
  * @id cs/serialization-check-bypass
  * @problem.severity warning
+ * @security-severity 7.8
  * @precision medium
  * @tags security
  *       external/cwe/cwe-20
@@ -27,6 +28,7 @@ GuardedExpr checkedWrite(Field f, Variable v, IfStmt check) {
  * The result is an unsafe write to the field `f`, where
  * there is no check performed within the (calling) scope of the method.
  */
+pragma[nomagic]
 Expr uncheckedWrite(Callable callable, Field f) {
   result = f.getAnAssignedValue() and
   result.getEnclosingCallable() = callable and

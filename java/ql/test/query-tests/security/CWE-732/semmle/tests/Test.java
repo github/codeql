@@ -31,7 +31,7 @@ class Test {
 		new FileInputStream(f2);
 	}
 
-	public static void readFile(File f) {
+	public static void readFile(File f) throws java.io.FileNotFoundException {
 		new FileReader(f);
 	}
 

@@ -2,12 +2,13 @@
  * Provides support for intra-procedural tracking of a customizable
  * set of data flow nodes.
  *
- * Note that unlike `TrackedNodes`, this library only performs
+ * Note that unlike `TypeTracking.qll`, this library only performs
  * local tracking within a function.
  */
 
 private import javascript
 private import semmle.javascript.dataflow.TypeTracking
+private import semmle.javascript.internal.CachedStages
 
 /**
  * A source node for local data flow, that is, a node from which local data flow is tracked.
@@ -33,7 +34,11 @@ private import semmle.javascript.dataflow.TypeTracking
  * ```
  */
 class SourceNode extends DataFlow::Node {
-  SourceNode() { this instanceof SourceNode::Range }
+  SourceNode() {
+    this instanceof SourceNode::Range
+    or
+    none() and this instanceof SourceNode::Internal::RecursionGuard
+  }
 
   /**
    * Holds if this node flows into `sink` in zero or more local (that is,
@@ -46,6 +51,11 @@ class SourceNode extends DataFlow::Node {
    * intra-procedural) steps.
    */
   predicate flowsToExpr(Expr sink) { flowsTo(DataFlow::valueNode(sink)) }
+
+  /**
+   * Gets a node into which data may flow from this node in zero or more local steps.
+   */
+  DataFlow::Node getALocalUse() { flowsTo(result) }
 
   /**
    * Gets a reference (read or write) of property `propName` on this node.
@@ -220,6 +230,7 @@ private module Cached {
    */
   cached
   predicate namedPropRef(DataFlow::SourceNode base, string prop, DataFlow::PropRef ref) {
+    Stages::DataFlowStage::ref() and
     hasLocalSource(ref.getBase(), base) and
     ref.getPropertyName() = prop
   }
@@ -307,7 +318,11 @@ module SourceNode {
         astNode instanceof FunctionBindExpr or
         astNode instanceof DynamicImportExpr or
         astNode instanceof ImportSpecifier or
-        astNode instanceof ImportMetaExpr
+        astNode instanceof ImportMetaExpr or
+        astNode instanceof TaggedTemplateExpr or
+        astNode instanceof Angular2::PipeRefExpr or
+        astNode instanceof Angular2::TemplateVarRefExpr or
+        astNode instanceof StringLiteral
       )
       or
       DataFlow::parameterNode(this, _)
@@ -319,7 +334,16 @@ module SourceNode {
       this = DataFlow::destructuredModuleImportNode(_)
       or
       this = DataFlow::globalAccessPathRootPseudoNode()
+      or
+      // Include return nodes because they model the implicit Promise creation in async functions.
+      DataFlow::functionReturnNode(this, _)
     }
+  }
+
+  /** INTERNAL. DO NOT USE. */
+  module Internal {
+    /** An empty class that some tests are using to enforce that SourceNode is non-recursive. */
+    abstract class RecursionGuard extends DataFlow::Node { }
   }
 }
 

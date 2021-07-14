@@ -14,7 +14,7 @@ but not properly closed later may cause a resource leak.
 
 <p>Ensure that the resource is always closed to avoid a resource leak. Note that, because of exceptions,
 it is safest to close a resource properly in a <code>finally</code> block. (However, this is unnecessary for
-subclasses of <code>StringWriter</code> and <code>ByteArrayOutputStream</code>.)</p>
+subclasses of <code>CharArrayWriter</code>, <code>StringWriter</code> and <code>ByteArrayOutputStream</code>.)</p>
 
 <p>For Java 7 or later, the recommended way to close resources that implement <code>java.lang.AutoCloseable</code>
 is to declare them within a <code>try-with-resources</code> statement, so that they are closed implicitly.</p>
@@ -50,10 +50,10 @@ In this case, the inner expression needs to be assigned to a local variable and 
 
 
 <li>
-  IBM developerWorks: <a href="http://www.ibm.com/developerworks/java/library/j-jtp03216/index.html">Java theory and practice: Good housekeeping practices</a>. 
+  IBM developerWorks: <a href="https://web.archive.org/web/20201109041839/http://www.ibm.com/developerworks/java/library/j-jtp03216/index.html">Java theory and practice: Good housekeeping practices</a>.
 </li>
 <li>
-  The Java Tutorials: <a href="http://docs.oracle.com/javase/tutorial/essential/exceptions/tryResourceClose.html">The try-with-resources Statement</a>.
+  The Java Tutorials: <a href="https://docs.oracle.com/javase/tutorial/essential/exceptions/tryResourceClose.html">The try-with-resources Statement</a>.
 </li>
 
 

@@ -36,7 +36,10 @@ abstract class ParserConfig extends MethodAccess {
    */
   predicate disables(Expr e) {
     this.getArgument(0) = e and
-    this.getArgument(1).(BooleanLiteral).getBooleanValue() = false
+    (
+      this.getArgument(1).(BooleanLiteral).getBooleanValue() = false or
+      this.getArgument(1).(FieldAccess).getField().hasQualifiedName("java.lang", "Boolean", "FALSE")
+    )
   }
 
   /**
@@ -44,7 +47,10 @@ abstract class ParserConfig extends MethodAccess {
    */
   predicate enables(Expr e) {
     this.getArgument(0) = e and
-    this.getArgument(1).(BooleanLiteral).getBooleanValue() = true
+    (
+      this.getArgument(1).(BooleanLiteral).getBooleanValue() = true or
+      this.getArgument(1).(FieldAccess).getField().hasQualifiedName("java.lang", "Boolean", "TRUE")
+    )
   }
 }
 
@@ -481,6 +487,10 @@ class SAXParserFactoryConfig extends ParserConfig {
 class SafeSAXParserFactory extends VarAccess {
   SafeSAXParserFactory() {
     exists(Variable v | v = this.getVariable() |
+      exists(SAXParserFactoryConfig config | config.getQualifier() = v.getAnAccess() |
+        config.enables(singleSafeConfig())
+      )
+      or
       exists(SAXParserFactoryConfig config | config.getQualifier() = v.getAnAccess() |
         config
             .disables(any(ConstantStringExpr s |
@@ -1171,4 +1181,16 @@ class SimpleXMLFormatterCall extends XmlParserCall {
   override Expr getSink() { result = this.getArgument(0) }
 
   override predicate isSafe() { none() }
+}
+
+/** A configuration for secure processing. */
+Expr configSecureProcessing() {
+  result.(ConstantStringExpr).getStringValue() =
+    "http://javax.xml.XMLConstants/feature/secure-processing"
+  or
+  exists(Field f |
+    result = f.getAnAccess() and
+    f.hasName("FEATURE_SECURE_PROCESSING") and
+    f.getDeclaringType() instanceof XmlConstants
+  )
 }

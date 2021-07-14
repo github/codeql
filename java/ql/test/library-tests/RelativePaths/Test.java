@@ -1,5 +1,5 @@
 class Test {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws java.io.IOException {
 		// Relative paths
 		Runtime.getRuntime().exec("make");
 		Runtime.getRuntime().exec("m");

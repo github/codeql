@@ -135,8 +135,10 @@ module JsonNET {
   class JsonSerializerClass extends JsonClass, LibraryTypeDataFlow {
     JsonSerializerClass() { this.hasName("JsonSerializer") }
 
+    /** Gets the method for `JsonSerializer.Serialize`. */
     Method getSerializeMethod() { result = this.getAMethod("Serialize") }
 
+    /** Gets the method for `JsonSerializer.Deserialize`. */
     Method getDeserializeMethod() { result = this.getAMethod("Deserialize") }
 
     override predicate callableFlow(

@@ -25,8 +25,8 @@ public:
 
 void bar(Foo &f)
 {
-    sink(f.a()); //$ast=39:12 $ast=41:12 $ir=39:12 $ir=41:12
-    sink(f.b()); //$ast=40:12 $ast=42:12 $ir=40:12 $ir=42:12
+    sink(f.a()); // $ ast=39:12 ast=41:12 ir=39:12 ir=41:12
+    sink(f.b()); // $ ast=40:12 ast=42:12 ir=40:12 ir=42:12
 }
 
 void foo()
@@ -64,7 +64,7 @@ void single_field_test()
     A a;
     a.i = user_input();
     A a2 = a;
-    sink(a2.i); //$ast,ir
+    sink(a2.i); //$ ast,ir
 }
 
 struct C {
@@ -81,8 +81,17 @@ struct C2
 
     void m() {
         f2.f1 = user_input();
-        sink(getf2f1()); //$ast,ir
+        sink(getf2f1()); //$ ast,ir
     }
 };
+
+typedef A A_typedef;
+
+void single_field_test_typedef(A_typedef a)
+{
+    a.i = user_input();
+    A_typedef a2 = a;
+    sink(a2.i); //$ ast,ir
+}
 
 } // namespace Simple

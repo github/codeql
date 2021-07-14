@@ -62,7 +62,7 @@ namespace SemmleTests
             Assert.Equal("poke" + NL + "Until something bad broke," + NL + "And then" + NL, text.GetPortion(2, 19, 4, 8));
 
             // An invalid but recoverable range (to test that a best effort is made rather than crashing).
-            Assert.Equal(NL + "Who couldn't leave software to fester -" + NL, text.GetPortion(0, Int32.MaxValue, 1, Int32.MaxValue));
+            Assert.Equal(NL + "Who couldn't leave software to fester -" + NL, text.GetPortion(0, int.MaxValue, 1, int.MaxValue));
 
             // Some quite definitely dodgy ranges (to test that exceptions are thrown).
             Assert.Throws<Exception>(() => text.GetPortion(-1, 0, 0, 0));
@@ -70,7 +70,7 @@ namespace SemmleTests
             Assert.Throws<Exception>(() => text.GetPortion(0, 0, -1, 0));
             Assert.Throws<Exception>(() => text.GetPortion(0, 0, 0, -1));
             Assert.Throws<Exception>(() => text.GetPortion(3, 5, 2, 5));
-            Assert.Throws<Exception>(() => text.GetPortion(2, 5, Int32.MaxValue, 5));
+            Assert.Throws<Exception>(() => text.GetPortion(2, 5, int.MaxValue, 5));
         }
 
         #endregion

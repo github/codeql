@@ -7,7 +7,7 @@ import com.semmle.js.ast.Visitor;
 /**
  * A type parameter declared on a class, interface, function, or type alias.
  *
- * <p>The general form of a type parameter is: <tt>S extends T = U</tt>.
+ * <p>The general form of a type parameter is: <code>S extends T = U</code>.
  */
 public class TypeParameter extends TypeExpression {
   private final Identifier id;
@@ -29,7 +29,7 @@ public class TypeParameter extends TypeExpression {
   /**
    * Returns the bound on the type parameter, or {@code null} if there is no bound.
    *
-   * <p>For example, in <tt>T extends Array = number[]</tt> the bound is <tt>Array</tt>.
+   * <p>For example, in <code>T extends Array = number[]</code> the bound is <code>Array</code>.
    */
   public ITypeExpression getBound() {
     return bound;
@@ -38,7 +38,7 @@ public class TypeParameter extends TypeExpression {
   /**
    * Returns the type parameter default, or {@code null} if there is no default,
    *
-   * <p>For example, in <tt>T extends Array = number[]</tt> the default is <tt>number[]</tt>.
+   * <p>For example, in <code>T extends Array = number[]</code> the default is <code>number[]</code>.
    */
   public ITypeExpression getDefault() {
     return default_;

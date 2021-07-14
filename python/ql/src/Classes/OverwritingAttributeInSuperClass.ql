@@ -1,6 +1,6 @@
 /**
  * @name Overwriting attribute in super-class or sub-class
- * @description Assignment to self attribute overwrites attribute previously defined in subclass or superclass __init__ method.
+ * @description Assignment to self attribute overwrites attribute previously defined in subclass or superclass `__init__` method.
  * @kind problem
  * @tags reliability
  *       maintainability

@@ -6,6 +6,7 @@ import com.semmle.js.ast.INode;
 import com.semmle.js.ast.Identifier;
 import com.semmle.js.ast.Literal;
 import com.semmle.js.ast.MemberExpression;
+import com.semmle.js.ast.TemplateElement;
 import com.semmle.js.extractor.ASTExtractor.IdContext;
 import com.semmle.ts.ast.ArrayTypeExpr;
 import com.semmle.ts.ast.ConditionalTypeExpr;
@@ -22,6 +23,7 @@ import com.semmle.ts.ast.OptionalTypeExpr;
 import com.semmle.ts.ast.ParenthesizedTypeExpr;
 import com.semmle.ts.ast.PredicateTypeExpr;
 import com.semmle.ts.ast.RestTypeExpr;
+import com.semmle.ts.ast.TemplateLiteralTypeExpr;
 import com.semmle.ts.ast.TupleTypeExpr;
 import com.semmle.ts.ast.TypeParameter;
 import com.semmle.ts.ast.TypeofTypeExpr;
@@ -67,6 +69,7 @@ public class TypeExprKinds {
   private static final int restTypeExpr = 34;
   private static final int bigintLiteralTypeExpr = 35;
   private static final int readonlyTypeExpr = 36;
+  private static final int templateLiteralTypeExpr = 37;
 
   public static int getTypeExprKind(final INode type, final IdContext idcontext) {
     Integer kind =
@@ -75,13 +78,13 @@ public class TypeExprKinds {
               @Override
               public Integer visit(Identifier nd, Void c) {
                 switch (idcontext) {
-                  case typeDecl:
+                  case TYPE_DECL:
                     return TypeExprKinds.typeDecl;
-                  case typeBind:
+                  case TYPE_BIND:
                     return simpleTypeAccess;
-                  case varInTypeBind:
+                  case VAR_IN_TYPE_BIND:
                     return simpleVarTypeAccess;
-                  case namespaceBind:
+                  case NAMESPACE_BIND:
                     return simpleNamespaceAccess;
                   default:
                     return typeLabel;
@@ -90,7 +93,7 @@ public class TypeExprKinds {
 
               @Override
               public Integer visit(KeywordTypeExpr nd, Void c) {
-                if (idcontext == IdContext.varInTypeBind && nd.getKeyword().equals("this")) {
+                if (idcontext == IdContext.VAR_IN_TYPE_BIND && nd.getKeyword().equals("this")) {
                   return thisVarTypeAccess;
                 }
                 return keywordTypeExpr;
@@ -129,9 +132,9 @@ public class TypeExprKinds {
               @Override
               public Integer visit(UnaryTypeExpr nd, Void c) {
                 switch (nd.getKind()) {
-                  case Keyof:
+                  case KEYOF:
                     return keyofTypeExpr;
-                  case Readonly:
+                  case READONLY:
                     return readonlyTypeExpr;
                 }
                 throw new CatastrophicError("Unhandled UnaryTypeExpr kind: " + nd.getKind());
@@ -139,9 +142,9 @@ public class TypeExprKinds {
 
               @Override
               public Integer visit(MemberExpression nd, Void c) {
-                if (idcontext == IdContext.varInTypeBind) {
+                if (idcontext == IdContext.VAR_IN_TYPE_BIND) {
                   return qualifiedVarTypeAccess;
-                } else if (idcontext == IdContext.namespaceBind) {
+                } else if (idcontext == IdContext.NAMESPACE_BIND) {
                   return qualifiedNamespaceAccess;
                 } else {
                   return qualifiedTypeAccess;
@@ -221,11 +224,11 @@ public class TypeExprKinds {
               @Override
               public Integer visit(ImportTypeExpr nd, Void c) {
                 switch (idcontext) {
-                  case namespaceBind:
+                  case NAMESPACE_BIND:
                     return importNamespaceAccess;
-                  case typeBind:
+                  case TYPE_BIND:
                     return importTypeAccess;
-                  case varInTypeBind:
+                  case VAR_IN_TYPE_BIND:
                     return importVarTypeAccess;
                   default:
                     return importTypeAccess;
@@ -240,6 +243,16 @@ public class TypeExprKinds {
               @Override
               public Integer visit(RestTypeExpr nd, Void c) {
                 return restTypeExpr;
+              }
+
+              @Override
+              public Integer visit(TemplateLiteralTypeExpr nd, Void c) {
+                return templateLiteralTypeExpr;
+              }
+
+              @Override
+              public Integer visit(TemplateElement nd, Void c) {
+                return stringLiteralTypeExpr;
               }
             },
             null);

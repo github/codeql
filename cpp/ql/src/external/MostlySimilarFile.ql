@@ -1,4 +1,5 @@
 /**
+ * @deprecated
  * @name Mostly similar file
  * @description There is another file that shares a lot of the code with this file. Notice that names of variables and types may have been changed. Merge the two files to improve maintainability.
  * @kind problem

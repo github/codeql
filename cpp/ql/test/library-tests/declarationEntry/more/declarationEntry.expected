@@ -27,6 +27,7 @@
 | test.cpp:20:6:20:20 | definition of tmplProtoAndDef |
 | test.cpp:20:24:20:24 | declaration of t |
 | test.cpp:20:24:20:24 | definition of t |
+| test.cpp:22:7:22:7 | declaration of Cl |
 | test.cpp:22:7:22:7 | declaration of operator= |
 | test.cpp:22:7:22:7 | declaration of operator= |
 | test.cpp:22:7:22:8 | definition of Cl |
@@ -75,6 +76,8 @@
 | test.cpp:67:7:67:7 | declaration of operator= |
 | test.cpp:67:7:67:7 | declaration of operator= |
 | test.cpp:67:7:67:7 | declaration of operator= |
+| test.cpp:67:7:67:7 | definition of tmplInstantiatedClass |
+| test.cpp:67:7:67:7 | definition of tmplInstantiatedClass |
 | test.cpp:67:7:67:27 | definition of tmplInstantiatedClass<T> |
 | test.cpp:68:7:68:7 | definition of t |
 | test.cpp:68:7:68:7 | definition of t |

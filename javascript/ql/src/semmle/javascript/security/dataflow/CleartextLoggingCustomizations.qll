@@ -34,15 +34,11 @@ module CleartextLogging {
   /**
    * A call to `.replace()` that seems to mask sensitive information.
    */
-  class MaskingReplacer extends Barrier, DataFlow::MethodCallNode {
+  class MaskingReplacer extends Barrier, StringReplaceCall {
     MaskingReplacer() {
-      this.getCalleeName() = "replace" and
-      exists(RegExpLiteral reg |
-        reg = this.getArgument(0).getALocalSource().asExpr() and
-        reg.isGlobal() and
-        any(RegExpDot term).getLiteral() = reg
-      ) and
-      exists(this.getArgument(1).getStringValue())
+      this.isGlobal() and
+      exists(this.getRawReplacement().getStringValue()) and
+      any(RegExpDot term).getLiteral() = getRegExp().asExpr()
     }
   }
 
@@ -58,7 +54,7 @@ module CleartextLogging {
    */
   private class NameGuidedNonCleartextPassword extends NonCleartextPassword {
     NameGuidedNonCleartextPassword() {
-      exists(string name | name.regexpMatch(notSensitive()) |
+      exists(string name | name.regexpMatch(notSensitiveRegexp()) |
         this.asExpr().(VarAccess).getName() = name
         or
         this.(DataFlow::PropRead).getPropertyName() = name
@@ -67,8 +63,7 @@ module CleartextLogging {
       )
       or
       // avoid i18n strings
-      this
-          .(DataFlow::PropRead)
+      this.(DataFlow::PropRead)
           .getBase()
           .asExpr()
           .(VarRef)
@@ -99,7 +94,7 @@ module CleartextLogging {
    * A call that might obfuscate a password, for example through hashing.
    */
   private class ObfuscatorCall extends Barrier, DataFlow::InvokeNode {
-    ObfuscatorCall() { getCalleeName().regexpMatch(notSensitive()) }
+    ObfuscatorCall() { getCalleeName().regexpMatch(notSensitiveRegexp()) }
   }
 
   /**
@@ -118,7 +113,7 @@ module CleartextLogging {
     ObjectPasswordPropertySource() {
       exists(DataFlow::PropWrite write |
         name.regexpMatch(maybePassword()) and
-        not name.regexpMatch(notSensitive()) and
+        not name.regexpMatch(notSensitiveRegexp()) and
         write = this.(DataFlow::SourceNode).getAPropertyWrite(name) and
         // avoid safe values assigned to presumably unsafe names
         not write.getRhs() instanceof NonCleartextPassword
@@ -209,6 +204,7 @@ module CleartextLogging {
     |
       not exists(write.getPropertyName()) and
       not exists(read.getPropertyName()) and
+      not isFilteredPropertyName(read.getPropertyNameExpr().flow().getALocalSource()) and
       src = read.getBase() and
       trg = write.getBase().getALocalSource()
     )
@@ -220,5 +216,21 @@ module CleartextLogging {
       not call.isImprecise() and
       trg.asExpr() = f.getArgumentsVariable().getAnAccess()
     )
+  }
+
+  /**
+   * Holds if `name` is filtered by e.g. a regular-expression test or a filter call.
+   */
+  private predicate isFilteredPropertyName(DataFlow::SourceNode name) {
+    exists(DataFlow::MethodCallNode reduceCall |
+      reduceCall.getMethodName() = "reduce" and
+      reduceCall.getABoundCallbackParameter(0, 1) = name
+    |
+      reduceCall.getReceiver+().(DataFlow::MethodCallNode).getMethodName() = "filter"
+    )
+    or
+    exists(StringOps::RegExpTest test | test.getStringOperand().getALocalSource() = name)
+    or
+    exists(MembershipCandidate test | test.getAMemberNode().getALocalSource() = name)
   }
 }

@@ -10,7 +10,7 @@ This rule looks at functions that return a <code>FILE*</code>, but may return an
 This can occur when an operation performed on the open descriptor fails, and the function returns with an error before closing the open resource. An improperly handled error may cause the function to leak file descriptors.
 </p> 
 
-<include src="dataFlowWarning.qhelp" />
+<include src="dataFlowWarning.inc.qhelp" />
 
 </overview>
 <recommendation>

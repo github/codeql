@@ -46,7 +46,9 @@
 | src/tst.js:43:18:43:38 | functio ... res) {} |
 | src/tst.js:46:1:46:23 | functio ... res) {} |
 | src/tst.js:52:1:54:1 | functio ... req()\\n} |
+| src/tst.js:56:1:58:1 | functio ... s) {\\n\\n} |
 | src/tst.js:61:1:63:1 | functio ... turn;\\n} |
+| src/tst.js:65:1:67:1 | functio ... rn x;\\n} |
 | src/tst.js:70:5:72:5 | functio ... \\n\\n    } |
 | src/tst.js:74:5:76:5 | functio ... \\n\\n    } |
 | src/tst.js:79:5:81:5 | functio ... \\n\\n    } |

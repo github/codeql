@@ -207,11 +207,11 @@ variables(#20074,"f",#20000)
 #20075=*
 stmts(#20075,17,#20001,0,"functio ... esult"")")
 hasLocation(#20075,#20003)
-stmtContainers(#20075,#20001)
+stmt_containers(#20075,#20001)
 #20076=*
 exprs(#20076,78,#20075,-1,"f")
 hasLocation(#20076,#20019)
-exprContainers(#20076,#20075)
+expr_containers(#20076,#20075)
 literals("f","f",#20076)
 decl(#20076,#20074)
 #20077=*
@@ -223,40 +223,40 @@ variables(#20078,"x",#20077)
 #20079=*
 exprs(#20079,78,#20075,0,"x")
 hasLocation(#20079,#20023)
-exprContainers(#20079,#20075)
+expr_containers(#20079,#20075)
 literals("x","x",#20079)
 decl(#20079,#20078)
 #20080=@"var;{arguments};{#20077}"
 variables(#20080,"arguments",#20077)
-isArgumentsObject(#20080)
+is_arguments_object(#20080)
 #20081=*
 exprs(#20081,63,#20075,-2,"(""result"")")
 #20082=@"loc,{#10000},1,14,1,23"
 locations_default(#20082,#10000,1,14,1,23)
 hasLocation(#20081,#20082)
-exprContainers(#20081,#20075)
+expr_containers(#20081,#20075)
 #20083=*
 exprs(#20083,4,#20081,0,"""result""")
 hasLocation(#20083,#20029)
-exprContainers(#20083,#20075)
+expr_containers(#20083,#20075)
 literals("result","""result""",#20083)
 #20084=*
 regexpterm(#20084,14,#20083,0,"result")
 #20085=@"loc,{#10000},1,16,1,21"
 locations_default(#20085,#10000,1,16,1,21)
 hasLocation(#20084,#20085)
-regexpConstValue(#20084,"result")
+regexp_const_value(#20084,"result")
 #20086=*
 stmts(#20086,2,#20001,1,"functio ... )\n  }\n}")
 #20087=@"loc,{#10000},3,1,7,1"
 locations_default(#20087,#10000,3,1,7,1)
 hasLocation(#20086,#20087)
-stmtContainers(#20086,#20001)
+stmt_containers(#20086,#20001)
 #20088=*
 exprs(#20088,9,#20086,0,"functio ... )\n  }\n}")
 hasLocation(#20088,#20087)
-enclosingStmt(#20088,#20086)
-exprContainers(#20088,#20001)
+enclosing_stmt(#20088,#20086)
+expr_containers(#20088,#20001)
 #20089=*
 scopes(#20089,1)
 scopenodes(#20088,#20089)
@@ -268,29 +268,29 @@ variables(#20091,"b",#20089)
 #20092=*
 exprs(#20092,78,#20088,0,"b")
 hasLocation(#20092,#20037)
-exprContainers(#20092,#20088)
+expr_containers(#20092,#20088)
 literals("b","b",#20092)
 decl(#20092,#20091)
 #20093=@"var;{arguments};{#20089}"
 variables(#20093,"arguments",#20089)
-isArgumentsObject(#20093)
+is_arguments_object(#20093)
 #20094=*
 stmts(#20094,1,#20088,-2,"{\n  if  ... )\n  }\n}")
 #20095=@"loc,{#10000},3,13,7,1"
 locations_default(#20095,#10000,3,13,7,1)
 hasLocation(#20094,#20095)
-stmtContainers(#20094,#20088)
+stmt_containers(#20094,#20088)
 #20096=*
 stmts(#20096,3,#20094,0,"if (b)  ... t"")\n  }")
 #20097=@"loc,{#10000},4,3,6,3"
 locations_default(#20097,#10000,4,3,6,3)
 hasLocation(#20096,#20097)
-stmtContainers(#20096,#20088)
+stmt_containers(#20096,#20088)
 #20098=*
 exprs(#20098,79,#20096,0,"b")
 hasLocation(#20098,#20047)
-enclosingStmt(#20098,#20096)
-exprContainers(#20098,#20088)
+enclosing_stmt(#20098,#20096)
+expr_containers(#20098,#20088)
 literals("b","b",#20098)
 bind(#20098,#20091)
 #20099=*
@@ -298,17 +298,17 @@ stmts(#20099,1,#20096,1,"{\n    f ... t"")\n  }")
 #20100=@"loc,{#10000},4,10,6,3"
 locations_default(#20100,#10000,4,10,6,3)
 hasLocation(#20099,#20100)
-stmtContainers(#20099,#20088)
+stmt_containers(#20099,#20088)
 #20101=*
 stmts(#20101,17,#20099,0,"functio ... esult"")")
 #20102=@"loc,{#10000},5,5,5,33"
 locations_default(#20102,#10000,5,5,5,33)
 hasLocation(#20101,#20102)
-stmtContainers(#20101,#20088)
+stmt_containers(#20101,#20088)
 #20103=*
 exprs(#20103,78,#20101,-1,"g")
 hasLocation(#20103,#20055)
-exprContainers(#20103,#20101)
+expr_containers(#20103,#20101)
 literals("g","g",#20103)
 decl(#20103,#20090)
 #20104=*
@@ -320,29 +320,29 @@ variables(#20105,"y",#20104)
 #20106=*
 exprs(#20106,78,#20101,0,"y")
 hasLocation(#20106,#20059)
-exprContainers(#20106,#20101)
+expr_containers(#20106,#20101)
 literals("y","y",#20106)
 decl(#20106,#20105)
 #20107=@"var;{arguments};{#20104}"
 variables(#20107,"arguments",#20104)
-isArgumentsObject(#20107)
+is_arguments_object(#20107)
 #20108=*
 exprs(#20108,63,#20101,-2,"(""other result"")")
 #20109=@"loc,{#10000},5,18,5,33"
 locations_default(#20109,#10000,5,18,5,33)
 hasLocation(#20108,#20109)
-exprContainers(#20108,#20101)
+expr_containers(#20108,#20101)
 #20110=*
 exprs(#20110,4,#20108,0,"""other result""")
 hasLocation(#20110,#20065)
-exprContainers(#20110,#20101)
+expr_containers(#20110,#20101)
 literals("other result","""other result""",#20110)
 #20111=*
 regexpterm(#20111,14,#20110,0,"other result")
 #20112=@"loc,{#10000},5,20,5,31"
 locations_default(#20112,#10000,5,20,5,31)
 hasLocation(#20111,#20112)
-regexpConstValue(#20111,"other result")
+regexp_const_value(#20111,"other result")
 #20113=*
 entry_cfg_node(#20113,#20001)
 #20114=@"loc,{#10000},1,1,1,0"
@@ -410,7 +410,7 @@ successor(#20126,#20079)
 successor(#20076,#20075)
 successor(#20113,#20076)
 #20129=*
-jsParseErrors(#20129,#20001,"Error: Missing function name","function(b) {
+js_parse_errors(#20129,#20001,"Error: Missing function name","function(b) {
 ")
 hasLocation(#20129,#20035)
 #20130=*

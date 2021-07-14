@@ -37,10 +37,10 @@ namespace Semmle.Util
     /// </remarks>
     ///
     /// <typeparam name="T">The value type.</typeparam>
-    public class FuzzyDictionary<T> where T:class
+    public class FuzzyDictionary<T> where T : class
     {
         // All data items indexed by the "base string" (stripped of numbers)
-        readonly Dictionary<string, List<KeyValuePair<string, T>>> index = new Dictionary<string, List<KeyValuePair<string, T>>>();
+        private readonly Dictionary<string, List<KeyValuePair<string, T>>> index = new Dictionary<string, List<KeyValuePair<string, T>>>();
 
         /// <summary>
         /// Stores a new KeyValuePair in the data structure.
@@ -51,7 +51,7 @@ namespace Semmle.Util
         {
             var kv = new KeyValuePair<string, T>(k, v);
 
-            string root = StripDigits(k);
+            var root = StripDigits(k);
             index.AddAnother(root, kv);
         }
 
@@ -61,7 +61,7 @@ namespace Semmle.Util
         /// <param name="v1">Vector 1</param>
         /// <param name="v2">Vector 2</param>
         /// <returns>The Hamming Distance.</returns>
-        static int HammingDistance<U>(IEnumerable<U> v1, IEnumerable<U> v2) where U: notnull
+        private static int HammingDistance<TElement>(IEnumerable<TElement> v1, IEnumerable<TElement> v2) where TElement : notnull
         {
             return v1.Zip(v2, (x, y) => x.Equals(y) ? 0 : 1).Sum();
         }
@@ -74,7 +74,7 @@ namespace Semmle.Util
         /// <returns>The best match, or null (default).</returns>
         public T? FindMatch(string query, out int distance)
         {
-            string root = StripDigits(query);
+            var root = StripDigits(query);
             if (!index.TryGetValue(root, out var list))
             {
                 distance = 0;
@@ -92,16 +92,17 @@ namespace Semmle.Util
         /// <param name="distance">The distance function.</param>
         /// <param name="bestDistance">The distance between the query and the stored string.</param>
         /// <returns>The stored value.</returns>
-        static T? BestMatch(string query, IEnumerable<KeyValuePair<string, T>> candidates, Func<string, string, int> distance, out int bestDistance)
+        private static T? BestMatch(string query, IEnumerable<KeyValuePair<string, T>> candidates, Func<string, string, int> distance, out int bestDistance)
         {
-            T? bestMatch = default(T);
+            var bestMatch = default(T);
             bestDistance = 0;
-            bool first = true;
+            var first = true;
 
             foreach (var candidate in candidates)
             {
-                int d = distance(query, candidate.Key);
-                if (d == 0) return candidate.Value;
+                var d = distance(query, candidate.Key);
+                if (d == 0)
+                    return candidate.Value;
 
                 if (first || d < bestDistance)
                 {
@@ -119,10 +120,10 @@ namespace Semmle.Util
         /// </summary>
         /// <param name="input">The input string.</param>
         /// <returns>String with digits removed.</returns>
-        static string StripDigits(string input)
+        private static string StripDigits(string input)
         {
-            StringBuilder result = new StringBuilder();
-            foreach (char c in input.Where(c => !char.IsDigit(c)))
+            var result = new StringBuilder();
+            foreach (var c in input.Where(c => !char.IsDigit(c)))
                 result.Append(c);
             return result.ToString();
         }
@@ -132,11 +133,11 @@ namespace Semmle.Util
         /// </summary>
         /// <param name="input">The string to enumerate.</param>
         /// <returns>The sequence of integers.</returns>
-        public static IEnumerable<int> ExtractIntegers(string input)
+        private static IEnumerable<int> ExtractIntegers(string input)
         {
-            bool inNumber = false;
-            int value = 0;
-            foreach (char c in input)
+            var inNumber = false;
+            var value = 0;
+            foreach (var c in input)
             {
                 if (char.IsDigit(c))
                 {

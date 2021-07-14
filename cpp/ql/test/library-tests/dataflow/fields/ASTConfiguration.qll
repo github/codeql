@@ -1,8 +1,8 @@
 private import semmle.code.cpp.dataflow.DataFlow
 private import DataFlow
 
-class Conf extends Configuration {
-  Conf() { this = "FieldFlowConf" }
+class ASTConf extends Configuration {
+  ASTConf() { this = "ASTFieldFlowConf" }
 
   override predicate isSource(Node src) {
     src.asExpr() instanceof NewExpr

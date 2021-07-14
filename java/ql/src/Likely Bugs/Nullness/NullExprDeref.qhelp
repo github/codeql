@@ -31,7 +31,7 @@ If the method is intended to return <code>null</code>, the return type should be
 <references>
 
 <li>
-Java Tutorial:
+The Java Tutorials:
 <a href="https://docs.oracle.com/javase/tutorial/java/data/autoboxing.html">Autoboxing and Unboxing</a>.
 </li>
 

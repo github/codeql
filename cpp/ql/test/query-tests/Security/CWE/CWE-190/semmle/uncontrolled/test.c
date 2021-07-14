@@ -3,12 +3,12 @@
 
 int rand(void);
 void trySlice(int start, int end);
+void add_100(int);
 
 #define RAND() rand()
 #define RANDN(n) (rand() % n)
 #define RAND2() (rand() ^ rand())
-
-
+#define RAND_MAX 32767
 
 
 
@@ -37,7 +37,7 @@ void randomTester() {
 
   {
     int r = RANDN(100);
-    r += 100; // GOOD: The return from RANDN is bounded [FALSE POSITIVE]
+    r += 100; // GOOD: The return from RANDN is bounded
   }
 
   {
@@ -53,7 +53,7 @@ void randomTester() {
   {
     int r = rand();
     r = r / 10;
-    r += 100; // GOOD [FALSE POSITIVE]
+    r += 100; // GOOD
   }
   
   {
@@ -64,7 +64,7 @@ void randomTester() {
   
   {
     int r = rand() & 0xFF;
-    r += 100; // GOOD [FALSE POSITIVE]
+    r += 100; // GOOD
   }
 
   {
@@ -80,7 +80,7 @@ void randomTester() {
   {
     int r = (rand() ^ rand());
 
-    r = r - 100; // BAD [NOT DETECTED]
+    r = r - 100; // BAD
   }
 
   {
@@ -99,4 +99,23 @@ void randomTester() {
     *ptr_r = RAND();
     r -= 100; // BAD
   }
+
+  {
+    int r = rand();
+    r = ((2.0 / (RAND_MAX + 1)) * r - 1.0);
+    add_100(r);
+  }
+}
+
+void add_100(int r) {
+  r += 100; // GOOD
+}
+
+void randomTester2(int bound, int min, int max) {
+  int r1 = rand() % bound;
+  r1 += 100; // GOOD (`bound` may possibly be MAX_INT in which case this could
+             //       still overflow, but it's most likely fine)
+
+  int r2 = (rand() % (max - min + 1)) + min;
+  r2 += 100; // GOOD (This is a common way to clamp the random value between [min, max])
 }

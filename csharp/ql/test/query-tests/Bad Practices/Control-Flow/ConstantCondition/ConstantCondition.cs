@@ -1,5 +1,3 @@
-// semmle-extractor-options: /r:System.Threading.Thread.dll /r:System.Diagnostics.Debug.dll /langversion:preview
-
 using System;
 using System.Collections;
 using System.Diagnostics;
@@ -105,6 +103,15 @@ class ConstantMatching
             "" => " ",
             _ => o.ToString() // GOOD
         };
+    }
+
+    void M6(bool b1, bool b2) {
+        if (!b1)
+            return;
+        if (!b2)
+            return;
+        if (b1 && b2) // BAD
+            return;
     }
 }
 

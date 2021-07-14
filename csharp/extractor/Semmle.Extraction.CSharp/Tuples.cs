@@ -1,5 +1,6 @@
-using Semmle.Extraction.CommentProcessing;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.CSharp.Entities;
+using Semmle.Extraction.CSharp.Entities.Expressions;
 using Semmle.Extraction.Entities;
 using Semmle.Extraction.Kinds;
 using Semmle.Util;
@@ -16,6 +17,11 @@ namespace Semmle.Extraction.CSharp
     /// </remarks>
     internal static class Tuples
     {
+        internal static void assemblies(this System.IO.TextWriter trapFile, Assembly assembly, Extraction.Entities.File file, string identifier, string name, string version)
+        {
+            trapFile.WriteTuple("assemblies", assembly, file, identifier, name, version);
+        }
+
         internal static void accessor_location(this TextWriter trapFile, Accessor accessorKey, Location location)
         {
             trapFile.WriteTuple("accessor_location", accessorKey, location);
@@ -24,6 +30,11 @@ namespace Semmle.Extraction.CSharp
         internal static void accessors(this TextWriter trapFile, Accessor accessorKey, int kind, string name, Property propKey, Accessor unboundAccessor)
         {
             trapFile.WriteTuple("accessors", accessorKey, kind, name, propKey, unboundAccessor);
+        }
+
+        internal static void init_only_accessors(this TextWriter trapFile, Accessor accessorKey)
+        {
+            trapFile.WriteTuple("init_only_accessors", accessorKey);
         }
 
         internal static void array_element_type(this TextWriter trapFile, ArrayType array, int dimension, int rank, Type elementType)
@@ -44,6 +55,17 @@ namespace Semmle.Extraction.CSharp
         internal static void catch_type(this TextWriter trapFile, Entities.Statements.Catch @catch, Type type, bool explicityCaught)
         {
             trapFile.WriteTuple("catch_type", @catch, type, explicityCaught ? 1 : 2);
+        }
+
+        internal static void foreach_stmt_info(this TextWriter trapFile, Entities.Statements.ForEach @foreach, bool isAsync)
+        {
+            trapFile.WriteTuple("foreach_stmt_info", @foreach, isAsync ? 2 : 1);
+        }
+
+        internal static void foreach_stmt_desugar(this TextWriter trapFile, Entities.Statements.ForEach @foreach, IEntity entity,
+            Entities.Statements.ForEach.ForeachSymbolType type)
+        {
+            trapFile.WriteTuple("foreach_stmt_desugar", @foreach, entity, (int)type);
         }
 
         internal static void commentblock(this TextWriter trapFile, CommentBlock k)
@@ -106,6 +128,11 @@ namespace Semmle.Extraction.CSharp
             trapFile.WriteTuple("compilations", compilation, cwd);
         }
 
+        internal static void compilation_assembly(this TextWriter trapFile, Compilation compilation, Assembly assembly)
+        {
+            trapFile.WriteTuple("compilation_assembly", compilation, assembly);
+        }
+
         internal static void compiler_generated(this TextWriter trapFile, IEntity entity)
         {
             trapFile.WriteTuple("compiler_generated", entity);
@@ -139,6 +166,11 @@ namespace Semmle.Extraction.CSharp
         internal static void delegate_return_type(this TextWriter trapFile, Type delegateKey, Type returnType)
         {
             trapFile.WriteTuple("delegate_return_type", delegateKey, returnType);
+        }
+
+        internal static void function_pointer_return_type(this TextWriter trapFile, Type functionPointer, Type returnType)
+        {
+            trapFile.WriteTuple("function_pointer_return_type", functionPointer, returnType);
         }
 
         internal static void destructor_location(this TextWriter trapFile, Destructor destructor, Location location)
@@ -266,6 +298,11 @@ namespace Semmle.Extraction.CSharp
             trapFile.WriteTuple("extend", type, super);
         }
 
+        internal static void anonymous_types(this TextWriter trapFile, Type type)
+        {
+            trapFile.WriteTuple("anonymous_types", type);
+        }
+
         internal static void field_location(this TextWriter trapFile, Field field, Location location)
         {
             trapFile.WriteTuple("field_location", field, location);
@@ -294,6 +331,11 @@ namespace Semmle.Extraction.CSharp
         internal static void implicitly_typed_array_creation(this TextWriter trapFile, Expression array)
         {
             trapFile.WriteTuple("implicitly_typed_array_creation", array);
+        }
+
+        internal static void implicitly_typed_object_creation(this TextWriter trapFile, Expression expression)
+        {
+            trapFile.WriteTuple("implicitly_typed_object_creation", expression);
         }
 
         internal static void indexer_location(this TextWriter trapFile, Indexer indexer, Location location)
@@ -456,6 +498,16 @@ namespace Semmle.Extraction.CSharp
             trapFile.WriteTuple("specific_type_parameter_nullability", constraints, baseType, nullability);
         }
 
+        internal static void function_pointer_calling_conventions(this TextWriter trapFile, FunctionPointerType type, int kind)
+        {
+            trapFile.WriteTuple("function_pointer_calling_conventions", type, kind);
+        }
+
+        internal static void has_unmanaged_calling_conventions(this TextWriter trapFile, FunctionPointerType type, int index, Type convention)
+        {
+            trapFile.WriteTuple("has_unmanaged_calling_conventions", type, index, convention);
+        }
+
         internal static void stackalloc_array_creation(this TextWriter trapFile, Expression array)
         {
             trapFile.WriteTuple("stackalloc_array_creation", array);
@@ -554,6 +606,134 @@ namespace Semmle.Extraction.CSharp
         internal static void using_static_directives(this TextWriter trapFile, UsingDirective @using, Type type)
         {
             trapFile.WriteTuple("using_static_directives", @using, type);
+        }
+
+        internal static void preprocessor_directive_location<TDirective>(this TextWriter trapFile,
+            PreprocessorDirective<TDirective> directive, Location location)
+            where TDirective : DirectiveTriviaSyntax
+        {
+            trapFile.WriteTuple("preprocessor_directive_location", directive, location);
+        }
+
+        internal static void preprocessor_directive_compilation<TDirective>(this TextWriter trapFile,
+            PreprocessorDirective<TDirective> directive, Compilation compilation)
+            where TDirective : DirectiveTriviaSyntax
+        {
+            trapFile.WriteTuple("preprocessor_directive_compilation", directive, compilation);
+        }
+
+        internal static void preprocessor_directive_active<TDirective>(this TextWriter trapFile,
+            PreprocessorDirective<TDirective> directive, bool isActive)
+            where TDirective : DirectiveTriviaSyntax
+        {
+            trapFile.WriteTuple("preprocessor_directive_active", directive, isActive ? 1 : 0);
+        }
+
+        internal static void pragma_warnings(this TextWriter trapFile, PragmaWarningDirective pragma, int kind)
+        {
+            trapFile.WriteTuple("pragma_warnings", pragma, kind);
+        }
+
+        internal static void pragma_warning_error_codes(this TextWriter trapFile, PragmaWarningDirective pragma, string errorCode, int child)
+        {
+            trapFile.WriteTuple("pragma_warning_error_codes", pragma, errorCode, child);
+        }
+
+        internal static void pragma_checksums(this TextWriter trapFile, PragmaChecksumDirective pragma, Extraction.Entities.File file, string guid, string bytes)
+        {
+            trapFile.WriteTuple("pragma_checksums", pragma, file, guid, bytes);
+        }
+
+        internal static void directive_defines(this TextWriter trapFile, DefineDirective directive, string name)
+        {
+            trapFile.WriteTuple("directive_defines", directive, name);
+        }
+
+        internal static void directive_undefines(this TextWriter trapFile, UndefineDirective directive, string name)
+        {
+            trapFile.WriteTuple("directive_undefines", directive, name);
+        }
+
+        internal static void directive_warnings(this TextWriter trapFile, WarningDirective directive, string message)
+        {
+            trapFile.WriteTuple("directive_warnings", directive, message);
+        }
+
+        internal static void directive_errors(this TextWriter trapFile, ErrorDirective directive, string message)
+        {
+            trapFile.WriteTuple("directive_errors", directive, message);
+        }
+
+        internal static void directive_nullables(this TextWriter trapFile, NullableDirective directive, int setting, int target)
+        {
+            trapFile.WriteTuple("directive_nullables", directive, setting, target);
+        }
+
+        internal static void directive_lines(this TextWriter trapFile, LineDirective directive, int kind)
+        {
+            trapFile.WriteTuple("directive_lines", directive, kind);
+        }
+
+        internal static void directive_line_value(this TextWriter trapFile, LineDirective directive, int line)
+        {
+            trapFile.WriteTuple("directive_line_value", directive, line);
+        }
+
+        internal static void directive_line_file(this TextWriter trapFile, LineDirective directive, Extraction.Entities.File file)
+        {
+            trapFile.WriteTuple("directive_line_file", directive, file);
+        }
+
+        internal static void directive_regions(this TextWriter trapFile, RegionDirective directive, string name)
+        {
+            trapFile.WriteTuple("directive_regions", directive, name);
+        }
+
+        internal static void directive_endregions(this TextWriter trapFile, EndRegionDirective directive, RegionDirective start)
+        {
+            trapFile.WriteTuple("directive_endregions", directive, start);
+        }
+
+        internal static void regions(this TextWriter trapFile, RegionDirective start, EndRegionDirective end)
+        {
+            trapFile.WriteTuple("regions", start, end);
+        }
+
+        internal static void directive_ifs(this TextWriter trapFile, IfDirective directive, bool branchTaken, bool conditionValue)
+        {
+            trapFile.WriteTuple("directive_ifs", directive, branchTaken ? 1 : 0, conditionValue ? 1 : 0);
+        }
+
+        internal static void directive_elifs(this TextWriter trapFile, ElifDirective directive, bool branchTaken, bool conditionValue,
+            IfDirective start, int index)
+        {
+            trapFile.WriteTuple("directive_elifs", directive, branchTaken ? 1 : 0, conditionValue ? 1 : 0, start, index);
+        }
+
+        internal static void directive_elses(this TextWriter trapFile, ElseDirective directive, bool branchTaken,
+            IfDirective start, int index)
+        {
+            trapFile.WriteTuple("directive_elses", directive, branchTaken ? 1 : 0, start, index);
+        }
+
+        internal static void directive_endifs(this TextWriter trapFile, EndIfDirective directive, IfDirective start)
+        {
+            trapFile.WriteTuple("directive_endifs", directive, start);
+        }
+
+        internal static void directive_define_symbols(this TextWriter trapFile, DefineSymbol symb, string name)
+        {
+            trapFile.WriteTuple("directive_define_symbols", symb, name);
+        }
+
+        internal static void locations_mapped(this System.IO.TextWriter trapFile, NonGeneratedSourceLocation l1, Location l2)
+        {
+            trapFile.WriteTuple("locations_mapped", l1, l2);
+        }
+
+        internal static void file_extraction_mode(this System.IO.TextWriter trapFile, Entities.File file, int mode)
+        {
+            trapFile.WriteTuple("file_extraction_mode", file, mode);
         }
     }
 }
