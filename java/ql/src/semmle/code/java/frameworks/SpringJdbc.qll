@@ -24,7 +24,16 @@ private class SqlSinkCsv extends SinkModelCsv {
         "org.springframework.jdbc.core;JdbcTemplate;false;queryForMap;;;Argument[0];sql",
         "org.springframework.jdbc.core;JdbcTemplate;false;queryForObject;;;Argument[0];sql",
         "org.springframework.jdbc.core;JdbcTemplate;false;queryForRowSet;;;Argument[0];sql",
-        "org.springframework.jdbc.core;JdbcTemplate;false;queryForStream;;;Argument[0];sql"
+        "org.springframework.jdbc.core;JdbcTemplate;false;queryForStream;;;Argument[0];sql",
+        "org.springframework.jdbc.object;BatchSqlUpdate;false;BatchSqlUpdate;;;Argument[1];sql",
+        "org.springframework.jdbc.object;MappingSqlQuery;false;BatchSqlUpdate;;;Argument[1];sql",
+        "org.springframework.jdbc.object;MappingSqlQueryWithParameters;false;BatchSqlUpdate;;;Argument[1];sql",
+        "org.springframework.jdbc.object;RdbmsOperation;true;setSql;;;Argument[0];sql",
+        "org.springframework.jdbc.object;SqlCall;false;SqlCall;;;Argument[1];sql",
+        "org.springframework.jdbc.object;SqlFunction;false;SqlFunction;;;Argument[1];sql",
+        "org.springframework.jdbc.object;SqlQuery;false;SqlQuery;;;Argument[1];sql",
+        "org.springframework.jdbc.object;SqlUpdate;false;SqlUpdate;;;Argument[1];sql",
+        "org.springframework.jdbc.object;UpdatableSqlQuery;false;UpdatableSqlQuery;;;Argument[1];sql"
       ]
   }
 }
