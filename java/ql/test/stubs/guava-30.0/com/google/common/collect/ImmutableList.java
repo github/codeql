@@ -58,8 +58,18 @@ abstract public class ImmutableList<E> extends ImmutableCollection<E> implements
     public static <E> ImmutableList<E> of(E p0, E p1, E p2, E p3, E p4, E p5, E p6, E p7, E p8, E p9, E p10, E p11, E... p12){ return null; }
     public static <E> ImmutableList<E> sortedCopyOf(Comparator<? super E> p0, Iterable<? extends E> p1){ return null; }
     public void forEach(Consumer<? super E> p0){}
+<<<<<<< HEAD
     static public class Builder<E> extends ImmutableCollection.Builder<E>
     {
+=======
+    static <E> ImmutableList<E> asImmutableList(Object[] p0){ return null; }
+    static <E> ImmutableList<E> asImmutableList(Object[] p0, int p1){ return null; }
+    static public class Builder<E> extends ImmutableCollection.Builder<E>
+    {
+        Builder(int p0){}
+        ImmutableList.Builder<E> combine(ImmutableList.Builder<E> p0){ return null; }
+        Object[] contents = null;
+>>>>>>> 2bc43eb337... Generate stubs.
         public Builder(){}
         public ImmutableList.Builder<E> add(E p0){ return null; }
         public ImmutableList.Builder<E> add(E... p0){ return null; }

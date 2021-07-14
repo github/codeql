@@ -1,55 +1,24 @@
-/*
- * Copyright (C) 2008 The Guava Authors
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing permissions and limitations under
- * the License.
- */
+// Generated automatically from com.google.common.base.Converter for testing purposes
 
 package com.google.common.base;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
-public abstract class Converter<A, B> implements Function<A, B> {
-  public final @Nullable B convert(@Nullable A a) {
-    return null;
-  }
+import com.google.common.base.Function;
 
-  public Iterable<B> convertAll(final Iterable<? extends A> fromIterable) {
-    return null;
-  }
-
-  public Converter<B, A> reverse() {
-    return null;
-  }
-
-  public final <C> Converter<A, C> andThen(Converter<B, C> secondConverter) {
-    return null;
-  }
-
-  @Override
-  public final @Nullable B apply(@Nullable A a) {
-    return null;
-  }
-
-  @Override
-  public boolean equals(@Nullable Object object) {
-    return false;
-  }
-
-  public static <A, B> Converter<A, B> from(
-      Function<? super A, ? extends B> forwardFunction,
-      Function<? super B, ? extends A> backwardFunction) {
-    return null;
-  }
-
-  public static <T> Converter<T, T> identity() {
-    return null;
-  }
-
+abstract public class Converter<A, B> implements Function<A, B>
+{
+    <C> Converter<A, C> doAndThen(Converter<B, C> p0){ return null; }
+    A correctedDoBackward(B p0){ return null; }
+    B correctedDoForward(A p0){ return null; }
+    Converter(boolean p0){}
+    protected Converter(){}
+    protected abstract A doBackward(B p0);
+    protected abstract B doForward(A p0);
+    public Converter<B, A> reverse(){ return null; }
+    public Iterable<B> convertAll(Iterable<? extends A> p0){ return null; }
+    public boolean equals(Object p0){ return false; }
+    public final <C> Converter<A, C> andThen(Converter<B, C> p0){ return null; }
+    public final B apply(A p0){ return null; }
+    public final B convert(A p0){ return null; }
+    public static <A, B> Converter<A, B> from(Function<? super A, ? extends B> p0, Function<? super B, ? extends A> p1){ return null; }
+    public static <T> Converter<T, T> identity(){ return null; }
 }
