@@ -292,6 +292,19 @@ private class NormalizeUrlStep extends TaintTracking::SharedTaintStep {
 }
 
 /**
+ * A taint step through a call to [parseqs](https://npmjs.com/package/parseqs).
+ */
+private class ParseQsStep extends TaintTracking::SharedTaintStep {
+  override predicate uriStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(API::CallNode call |
+      call = API::moduleImport("parseqs").getMember(["encode", "decode"]).getACall() and
+      pred = call.getArgument(0) and
+      succ = call
+    )
+  }
+}
+
+/**
  * Provides steps for the `goog.Uri` class in the closure library.
  */
 private module ClosureLibraryUri {

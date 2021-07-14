@@ -202,4 +202,6 @@ var server = http.createServer(function(req, res) {
   const qs = require("qs");
   res.write(fs.readFileSync(qs.parse(req.url).foo)); // NOT OK
   res.write(fs.readFileSync(qs.parse(normalizeUrl(req.url)).foo)); // NOT OK
+  const parseqs = require("parseqs");
+  res.write(fs.readFileSync(parseqs.decode(req.url).foo)); // NOT OK
 });

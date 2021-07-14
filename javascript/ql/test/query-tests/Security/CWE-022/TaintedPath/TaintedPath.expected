@@ -1377,6 +1377,44 @@ nodes
 | TaintedPath.js:204:51:204:57 | req.url |
 | TaintedPath.js:204:51:204:57 | req.url |
 | TaintedPath.js:204:51:204:57 | req.url |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
+| TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:44:206:50 | req.url |
+| TaintedPath.js:206:44:206:50 | req.url |
+| TaintedPath.js:206:44:206:50 | req.url |
+| TaintedPath.js:206:44:206:50 | req.url |
+| TaintedPath.js:206:44:206:50 | req.url |
 | normalizedPaths.js:11:7:11:27 | path |
 | normalizedPaths.js:11:7:11:27 | path |
 | normalizedPaths.js:11:7:11:27 | path |
@@ -5790,6 +5828,70 @@ edges
 | TaintedPath.js:204:51:204:57 | req.url | TaintedPath.js:204:38:204:58 | normali ... eq.url) |
 | TaintedPath.js:204:51:204:57 | req.url | TaintedPath.js:204:38:204:58 | normali ... eq.url) |
 | TaintedPath.js:204:51:204:57 | req.url | TaintedPath.js:204:38:204:58 | normali ... eq.url) |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) | TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) | TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) | TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) | TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) | TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) | TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) | TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) | TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) | TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) | TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) | TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) | TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) | TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) | TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) | TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) | TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) | TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) | TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) | TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) | TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) | TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) | TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) | TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) | TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) | TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) | TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) | TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) | TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) | TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) | TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) | TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:29:206:51 | parseqs ... eq.url) | TaintedPath.js:206:29:206:55 | parseqs ... rl).foo |
+| TaintedPath.js:206:44:206:50 | req.url | TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
+| TaintedPath.js:206:44:206:50 | req.url | TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
+| TaintedPath.js:206:44:206:50 | req.url | TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
+| TaintedPath.js:206:44:206:50 | req.url | TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
+| TaintedPath.js:206:44:206:50 | req.url | TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
+| TaintedPath.js:206:44:206:50 | req.url | TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
+| TaintedPath.js:206:44:206:50 | req.url | TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
+| TaintedPath.js:206:44:206:50 | req.url | TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
+| TaintedPath.js:206:44:206:50 | req.url | TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
+| TaintedPath.js:206:44:206:50 | req.url | TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
+| TaintedPath.js:206:44:206:50 | req.url | TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
+| TaintedPath.js:206:44:206:50 | req.url | TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
+| TaintedPath.js:206:44:206:50 | req.url | TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
+| TaintedPath.js:206:44:206:50 | req.url | TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
+| TaintedPath.js:206:44:206:50 | req.url | TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
+| TaintedPath.js:206:44:206:50 | req.url | TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
+| TaintedPath.js:206:44:206:50 | req.url | TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
+| TaintedPath.js:206:44:206:50 | req.url | TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
+| TaintedPath.js:206:44:206:50 | req.url | TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
+| TaintedPath.js:206:44:206:50 | req.url | TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
+| TaintedPath.js:206:44:206:50 | req.url | TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
+| TaintedPath.js:206:44:206:50 | req.url | TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
+| TaintedPath.js:206:44:206:50 | req.url | TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
+| TaintedPath.js:206:44:206:50 | req.url | TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
+| TaintedPath.js:206:44:206:50 | req.url | TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
+| TaintedPath.js:206:44:206:50 | req.url | TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
+| TaintedPath.js:206:44:206:50 | req.url | TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
+| TaintedPath.js:206:44:206:50 | req.url | TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
+| TaintedPath.js:206:44:206:50 | req.url | TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
+| TaintedPath.js:206:44:206:50 | req.url | TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
+| TaintedPath.js:206:44:206:50 | req.url | TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
+| TaintedPath.js:206:44:206:50 | req.url | TaintedPath.js:206:29:206:51 | parseqs ... eq.url) |
 | normalizedPaths.js:11:7:11:27 | path | normalizedPaths.js:13:19:13:22 | path |
 | normalizedPaths.js:11:7:11:27 | path | normalizedPaths.js:13:19:13:22 | path |
 | normalizedPaths.js:11:7:11:27 | path | normalizedPaths.js:13:19:13:22 | path |
@@ -8913,6 +9015,7 @@ edges
 | TaintedPath.js:195:29:195:84 | pathMod ... +/, '') | TaintedPath.js:166:24:166:30 | req.url | TaintedPath.js:195:29:195:84 | pathMod ... +/, '') | This path depends on $@. | TaintedPath.js:166:24:166:30 | req.url | a user-provided value |
 | TaintedPath.js:203:29:203:49 | qs.pars ... rl).foo | TaintedPath.js:203:38:203:44 | req.url | TaintedPath.js:203:29:203:49 | qs.pars ... rl).foo | This path depends on $@. | TaintedPath.js:203:38:203:44 | req.url | a user-provided value |
 | TaintedPath.js:204:29:204:63 | qs.pars ... l)).foo | TaintedPath.js:204:51:204:57 | req.url | TaintedPath.js:204:29:204:63 | qs.pars ... l)).foo | This path depends on $@. | TaintedPath.js:204:51:204:57 | req.url | a user-provided value |
+| TaintedPath.js:206:29:206:55 | parseqs ... rl).foo | TaintedPath.js:206:44:206:50 | req.url | TaintedPath.js:206:29:206:55 | parseqs ... rl).foo | This path depends on $@. | TaintedPath.js:206:44:206:50 | req.url | a user-provided value |
 | normalizedPaths.js:13:19:13:22 | path | normalizedPaths.js:11:14:11:27 | req.query.path | normalizedPaths.js:13:19:13:22 | path | This path depends on $@. | normalizedPaths.js:11:14:11:27 | req.query.path | a user-provided value |
 | normalizedPaths.js:14:19:14:29 | './' + path | normalizedPaths.js:11:14:11:27 | req.query.path | normalizedPaths.js:14:19:14:29 | './' + path | This path depends on $@. | normalizedPaths.js:11:14:11:27 | req.query.path | a user-provided value |
 | normalizedPaths.js:15:19:15:38 | path + '/index.html' | normalizedPaths.js:11:14:11:27 | req.query.path | normalizedPaths.js:15:19:15:38 | path + '/index.html' | This path depends on $@. | normalizedPaths.js:11:14:11:27 | req.query.path | a user-provided value |
