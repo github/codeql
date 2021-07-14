@@ -55,8 +55,12 @@ private predicate isObjectClass(Class c) { c instanceof ObjectType }
  * Either a value type (`ValueType`) or a reference type (`RefType`).
  */
 class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_or_ref_type {
-  /** Gets the name of this type without `<...>` brackets, in case it is a generic type. */
-  string getNameWithoutBrackets() { types(this, _, result) }
+  /**
+   * DEPRECATED: use `getUndecoratedName()` instead
+   *
+   * Gets the name of this type without `<...>` brackets, in case it is a generic type.
+   */
+  deprecated string getNameWithoutBrackets() { types(this, _, result) }
 
   /**
    * Holds if this type has the qualified name `qualifier`.`name`.
@@ -67,12 +71,12 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
   override predicate hasQualifiedName(string qualifier, string name) {
     exists(string enclosing |
       this.getDeclaringType().hasQualifiedName(qualifier, enclosing) and
-      name = enclosing + "+" + this.getNameWithoutBrackets()
+      name = enclosing + "+" + this.getUndecoratedName()
     )
     or
     not exists(this.getDeclaringType()) and
     qualifier = this.getNamespace().getQualifiedName() and
-    name = this.getNameWithoutBrackets()
+    name = this.getUndecoratedName()
   }
 
   /** Gets the namespace containing this type. */
@@ -86,16 +90,7 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
 
   override ValueOrRefType getDeclaringType() { none() }
 
-  override string getUndecoratedName() {
-    if this.getName().indexOf("<") > 0
-    then
-      exists(string name, int p |
-        name = this.getName() and p = min(int p2 | p2 = name.indexOf("<") and p2 > 0)
-      |
-        result = name.substring(0, p)
-      )
-    else result = this.getName()
-  }
+  override string getUndecoratedName() { types(this, _, result) }
 
   /** Gets a nested child type, if any. */
   NestedType getAChildType() { nested_types(result, this, _) }

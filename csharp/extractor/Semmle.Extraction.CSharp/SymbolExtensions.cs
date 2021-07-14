@@ -482,13 +482,6 @@ namespace Semmle.Extraction.CSharp
             {
                 trapFile.Write(TrapExtensions.EncodeString(namedType.Name));
             }
-
-            if (namedType.IsGenericType && namedType.TypeKind != TypeKind.Error && namedType.TypeArguments.Any())
-            {
-                var args = string.Join(',', namedType.TypeArguments.Select(ta => ta.MetadataName));
-
-                cx.Extractor.Logger.Log(Util.Logging.Severity.Debug, $"Found generic type '{namedType.MetadataName}' with type arguments '{args}', skipping type arguments in type name.");
-            }
         }
 
         public static bool IsReallyUnbound(this INamedTypeSymbol type) =>

@@ -116,23 +116,23 @@ class UnboundGenericType extends ValueOrRefType, UnboundGeneric {
   }
 
   override string toStringWithTypes() {
-    result = this.getNameWithoutBrackets() + "<" + this.typeParametersToString() + ">"
+    result = this.getUndecoratedName() + "<" + this.typeParametersToString() + ">"
   }
 
   final override string getName() {
-    result = this.getNameWithoutBrackets() + "<" + this.getTypeParameterCommas() + ">"
+    result = this.getUndecoratedName() + "<" + this.getTypeParameterCommas() + ">"
   }
 
   final override predicate hasQualifiedName(string qualifier, string name) {
     exists(string name0 | name = name0 + "<" + this.getTypeParameterCommas() + ">" |
       exists(string enclosing |
         this.getDeclaringType().hasQualifiedName(qualifier, enclosing) and
-        name0 = enclosing + "+" + this.getNameWithoutBrackets()
+        name0 = enclosing + "+" + this.getUndecoratedName()
       )
       or
       not exists(this.getDeclaringType()) and
       qualifier = this.getNamespace().getQualifiedName() and
-      name0 = this.getNameWithoutBrackets()
+      name0 = this.getUndecoratedName()
     )
   }
 }
@@ -348,8 +348,8 @@ class UnboundGenericDelegateType extends DelegateType, UnboundGenericType {
 
   override string toStringWithTypes() {
     result =
-      getNameWithoutBrackets() + "<" + this.typeParametersToString() + ">(" +
-        parameterTypesToString() + ")"
+      getUndecoratedName() + "<" + this.typeParametersToString() + ">(" + parameterTypesToString() +
+        ")"
   }
 }
 
@@ -400,29 +400,23 @@ class ConstructedType extends ValueOrRefType, ConstructedGeneric {
   }
 
   final override string toStringWithTypes() {
-    exists(string undecorated |
-      types(this, _, undecorated) and
-      result = undecorated + "<" + this.getTypeArgumentsString() + ">"
-    )
+    result = this.getUndecoratedName() + "<" + this.getTypeArgumentsString() + ">"
   }
 
   final override string getName() {
-    exists(string undecorated |
-      types(this, _, undecorated) and
-      result = undecorated + "<" + this.getTypeArgumentsNames() + ">"
-    )
+    result = this.getUndecoratedName() + "<" + this.getTypeArgumentsNames() + ">"
   }
 
   final override predicate hasQualifiedName(string qualifier, string name) {
     exists(string name0 | name = name0 + "<" + this.getTypeArgumentsQualifiedNames() + ">" |
       exists(string enclosing |
         this.getDeclaringType().hasQualifiedName(qualifier, enclosing) and
-        name0 = enclosing + "+" + this.getNameWithoutBrackets()
+        name0 = enclosing + "+" + this.getUndecoratedName()
       )
       or
       not exists(this.getDeclaringType()) and
       qualifier = this.getNamespace().getQualifiedName() and
-      name0 = this.getNameWithoutBrackets()
+      name0 = this.getUndecoratedName()
     )
   }
 }
