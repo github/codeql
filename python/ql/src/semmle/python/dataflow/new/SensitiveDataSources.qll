@@ -195,6 +195,25 @@ private module SensitiveDataModeling {
   }
 
   /**
+   * This helper predicate serves to deduplicate the results of the preceding predicates. This
+   * means that if, say, an attribute and a function parameter have the same name, then that name will
+   * only be matched once, which greatly cuts down on the number of regexp matches that have to be
+   * performed.
+   *
+   * Under normal circumstances, deduplication is only performed when a predicate is materialized, and
+   * so to see the effect of this we must create a separate predicate that calculates the union of the
+   * preceding predicates.
+   */
+  pragma[nomagic]
+  private string sensitiveStringCandidate() {
+    result in [
+        sensitiveNameCandidate(), sensitiveAttributeNameCandidate(),
+        sensitiveParameterNameCandidate(), sensitiveFunctionNameCandidate(),
+        sensitiveStrConstCandidate()
+      ]
+  }
+
+  /**
    * Returns strings (primarily the names of various program entities) that may contain sensitive data
    * with the classification `classification`.
    *
@@ -202,11 +221,7 @@ private module SensitiveDataModeling {
    */
   pragma[nomagic]
   private string sensitiveString(SensitiveDataClassification classification) {
-    result in [
-        sensitiveNameCandidate(), sensitiveAttributeNameCandidate(),
-        sensitiveParameterNameCandidate(), sensitiveFunctionNameCandidate(),
-        sensitiveStrConstCandidate()
-      ] and
+    result = sensitiveStringCandidate() and
     result.regexpMatch(maybeSensitiveRegexp(classification))
   }
 
