@@ -130,6 +130,21 @@ private module Cached {
       )
     )
   }
+
+  cached
+  Method lookupMethod(Module m, string name) { TMethod(result) = lookupMethodOrConst(m, name) }
+
+  cached
+  Expr lookupConst(Module m, string name) {
+    TExpr(result) = lookupMethodOrConst(m, name)
+    or
+    exists(AssignExpr ae, ConstantWriteAccess w |
+      w = ae.getLeftOperand() and
+      w.getName() = name and
+      m = resolveScopeExpr(w.getScopeExpr()) and
+      result = ae.getRightOperand()
+    )
+  }
 }
 
 import Cached
@@ -340,24 +355,47 @@ private Module getAncestors(Module m) {
   result = getAncestors(m.getAPrependedModule())
 }
 
-Method getMethod(TModule owner, string name) {
-  exists(ModuleBase m | m.getModule() = owner and result = m.getMethod(name))
-}
+private newtype TMethodOrExpr =
+  TMethod(Method m) or
+  TExpr(Expr e)
 
-private Method lookupMethod0(Module m, string name) {
-  result = lookupMethod0(m.getAPrependedModule(), name)
-  or
-  not exists(getMethod(getAncestors(m.getAPrependedModule()), name)) and
-  (
-    result = getMethod(m, name)
+private TMethodOrExpr getMethodOrConst(TModule owner, string name) {
+  exists(ModuleBase m | m.getModule() = owner |
+    result = TMethod(m.getMethod(name))
     or
-    not exists(getMethod(m, name)) and result = lookupMethod0(m.getAnIncludedModule(), name)
+    result = TExpr(m.getConstant(name))
   )
 }
 
-Method lookupMethod(Module m, string name) {
-  result = lookupMethod0(m, name)
+module ExposedForTestingOnly {
+  Method getMethod(TModule owner, string name) { TMethod(result) = getMethodOrConst(owner, name) }
+
+  Expr getConst(TModule owner, string name) { TExpr(result) = getMethodOrConst(owner, name) }
+}
+
+private TMethodOrExpr lookupMethodOrConst0(Module m, string name) {
+  result = lookupMethodOrConst0(m.getAPrependedModule(), name)
   or
-  not exists(lookupMethod0(m, name)) and
-  result = lookupMethod(m.getSuperClass(), name)
+  not exists(getMethodOrConst(getAncestors(m.getAPrependedModule()), name)) and
+  (
+    result = getMethodOrConst(m, name)
+    or
+    not exists(getMethodOrConst(m, name)) and
+    result = lookupMethodOrConst0(m.getAnIncludedModule(), name)
+  )
+}
+
+private AstNode getNode(TMethodOrExpr e) { e = TMethod(result) or e = TExpr(result) }
+
+private TMethodOrExpr lookupMethodOrConst(Module m, string name) {
+  result = lookupMethodOrConst0(m, name)
+  or
+  not exists(lookupMethodOrConst0(m, name)) and
+  result = lookupMethodOrConst(m.getSuperClass(), name) and
+  // For now, we restrict the scope of top-level declarations to their file.
+  // This may remove some plausible targets, but also removes a lot of
+  // implausible targets
+  if getNode(result).getEnclosingModule() instanceof Toplevel
+  then getNode(result).getFile() = m.getADeclaration().getFile()
+  else any()
 }

@@ -74,6 +74,26 @@ class ModuleBase extends BodyStmt, Scope, TModuleBase {
     result = this.getAModule() and result.getName() = name
   }
 
+  /**
+   * Gets the value of the constant named `name`, if any.
+   *
+   * For example, the value of `CONST` is `"const"` in
+   * ```rb
+   * module M
+   *   CONST = "const"
+   * end
+   * ```
+   */
+  Expr getConstant(string name) {
+    exists(AssignExpr ae, ConstantWriteAccess w |
+      ae = this.getAStmt() and
+      w = ae.getLeftOperand() and
+      w.getName() = name and
+      not exists(w.getScopeExpr()) and
+      result = ae.getRightOperand()
+    )
+  }
+
   /** Gets the representation of the run-time value of this module or class. */
   Module getModule() { none() }
 }

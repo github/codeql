@@ -455,6 +455,8 @@ predicate jumpStep(Node pred, Node succ) {
     m = s.getEnclosingMethod() and
     m != s.getEnclosingCallable()
   )
+  or
+  succ.asExpr().getExpr().(ConstantReadAccess).getValue() = pred.asExpr().getExpr()
 }
 
 predicate storeStep(Node node1, Content c, Node node2) { none() }

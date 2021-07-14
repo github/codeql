@@ -1,6 +1,9 @@
 module ModuleA
     class ClassA
+        CONST_A = "const_a"
     end
+
+    CONST_B = "const_b"
 
     module ModuleB
         class ClassB < Base
@@ -11,7 +14,7 @@ module ModuleA
     end
 end
 
-GREETING = 'Hello'
+GREETING = 'Hello' + ModuleA::ClassA::CONST_A + ModuleA::CONST_B
 
 def foo
     Names = ['Vera', 'Chuck', 'Dave']
@@ -25,10 +28,15 @@ def foo
     Array('foo')
 end
 
-class ModuleA::ClassD
+class ModuleA::ClassD < ModuleA::ClassA
 end
 
 module ModuleA::ModuleC
 end
 
 ModuleA::ModuleB::MAX_SIZE = 1024
+
+puts ModuleA::ModuleB::MAX_SIZE
+
+puts GREETING
+puts ::GREETING

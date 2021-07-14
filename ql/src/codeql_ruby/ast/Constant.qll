@@ -1,5 +1,6 @@
 private import codeql_ruby.AST
 private import internal.AST
+private import internal.Module
 private import internal.Variable
 private import internal.TreeSitter
 
@@ -88,6 +89,35 @@ class ConstantReadAccess extends ConstantAccess {
     or
     // `X` in `X ||= 10` is considered both a read and a write
     this = any(AssignOperation a).getLeftOperand()
+  }
+
+  /**
+   * Gets the value being read, if any. For example, in
+   *
+   * ```rb
+   * module M
+   *   CONST = "const"
+   * end
+   *
+   * puts M::CONST
+   * ```
+   *
+   * the value being read at `M::CONST` is `"const"`.
+   */
+  Expr getValue() {
+    not exists(this.getScopeExpr()) and
+    result = lookupConst(this.getEnclosingModule+().getModule(), this.getName()) and
+    // For now, we restrict the scope of top-level declarations to their file.
+    // This may remove some plausible targets, but also removes a lot of
+    // implausible targets
+    if result.getEnclosingModule() instanceof Toplevel
+    then result.getFile() = this.getFile()
+    else any()
+    or
+    this.hasGlobalScope() and
+    result = lookupConst(TResolved("Object"), this.getName())
+    or
+    result = lookupConst(resolveScopeExpr(this.getScopeExpr()), this.getName())
   }
 
   final override string getAPrimaryQlClass() { result = "ConstantReadAccess" }

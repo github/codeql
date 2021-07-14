@@ -1,8 +1,18 @@
 import ruby
+import codeql_ruby.ast.internal.Module as M
 
-from ConstantAccess a, string kind
-where
-  a instanceof ConstantReadAccess and kind = "read"
-  or
-  a instanceof ConstantWriteAccess and kind = "write"
-select a, kind, a.getName(), a.getAPrimaryQlClass()
+query predicate constantAccess(ConstantAccess a, string kind, string name, string cls) {
+  (
+    a instanceof ConstantReadAccess and kind = "read"
+    or
+    a instanceof ConstantWriteAccess and kind = "write"
+  ) and
+  name = a.getName() and
+  cls = a.getAPrimaryQlClass()
+}
+
+query Expr getConst(Module m, string name) { result = M::ExposedForTestingOnly::getConst(m, name) }
+
+query Expr lookupConst(Module m, string name) { result = M::lookupConst(m, name) }
+
+query predicate constantValue(ConstantReadAccess a, Expr e) { e = a.getValue() }

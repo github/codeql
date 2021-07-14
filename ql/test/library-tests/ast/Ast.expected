@@ -803,53 +803,81 @@ constants/constants.rb:
 #    1| [Toplevel] constants.rb
 #    1|   getStmt: [ModuleDeclaration] ModuleA
 #    2|     getStmt: [ClassDeclaration] ClassA
-#    5|     getStmt: [ModuleDeclaration] ModuleB
-#    6|       getStmt: [ClassDeclaration] ClassB
-#    6|         getSuperclassExpr: [ConstantReadAccess] Base
-#    9|       getStmt: [ClassDeclaration] ClassC
-#    9|         getSuperclassExpr: [ConstantReadAccess] Z
-#    9|           getScopeExpr: [ConstantReadAccess] Y
-#    9|             getScopeExpr: [ConstantReadAccess] X
-#   14|   getStmt: [AssignExpr] ... = ...
-#   14|     getAnOperand/getLeftOperand: [ConstantAssignment] GREETING
-#   14|     getAnOperand/getRightOperand: [StringLiteral] "Hello"
-#   14|       getComponent: [StringTextComponent] Hello
-#   16|   getStmt: [Method] foo
-#   17|     getStmt: [AssignExpr] ... = ...
-#   17|       getAnOperand/getLeftOperand: [ConstantAssignment] Names
-#   17|       getAnOperand/getRightOperand: [ArrayLiteral] [...]
-#   17|         getElement: [StringLiteral] "Vera"
-#   17|           getComponent: [StringTextComponent] Vera
-#   17|         getElement: [StringLiteral] "Chuck"
-#   17|           getComponent: [StringTextComponent] Chuck
-#   17|         getElement: [StringLiteral] "Dave"
-#   17|           getComponent: [StringTextComponent] Dave
-#   19|     getStmt: [MethodCall] call to each
-#   19|       getReceiver: [ConstantReadAccess] Names
-#   19|       getBlock: [DoBlock] do ... end
-#   19|         getParameter: [SimpleParameter] name
-#   19|           getDefiningAccess: [LocalVariableAccess] name
-#   20|         getStmt: [MethodCall] call to puts
-#   20|           getReceiver: [Self] self
-#   20|           getArgument: [StringLiteral] "#{...} #{...}"
-#   20|             getComponent: [StringInterpolationComponent] #{...}
-#   20|               getStmt: [ConstantReadAccess] GREETING
-#   20|             getComponent: [StringTextComponent]  
-#   20|             getComponent: [StringInterpolationComponent] #{...}
-#   20|               getStmt: [LocalVariableAccess] name
-#   25|     getStmt: [MethodCall] call to Array
-#   25|       getReceiver: [Self] self
-#   25|       getArgument: [StringLiteral] "foo"
-#   25|         getComponent: [StringTextComponent] foo
-#   28|   getStmt: [ClassDeclaration] ClassD
-#   28|     getScopeExpr: [ConstantReadAccess] ModuleA
-#   31|   getStmt: [ModuleDeclaration] ModuleC
+#    3|       getStmt: [AssignExpr] ... = ...
+#    3|         getAnOperand/getLeftOperand: [ConstantAssignment] CONST_A
+#    3|         getAnOperand/getRightOperand: [StringLiteral] "const_a"
+#    3|           getComponent: [StringTextComponent] const_a
+#    6|     getStmt: [AssignExpr] ... = ...
+#    6|       getAnOperand/getLeftOperand: [ConstantAssignment] CONST_B
+#    6|       getAnOperand/getRightOperand: [StringLiteral] "const_b"
+#    6|         getComponent: [StringTextComponent] const_b
+#    8|     getStmt: [ModuleDeclaration] ModuleB
+#    9|       getStmt: [ClassDeclaration] ClassB
+#    9|         getSuperclassExpr: [ConstantReadAccess] Base
+#   12|       getStmt: [ClassDeclaration] ClassC
+#   12|         getSuperclassExpr: [ConstantReadAccess] Z
+#   12|           getScopeExpr: [ConstantReadAccess] Y
+#   12|             getScopeExpr: [ConstantReadAccess] X
+#   17|   getStmt: [AssignExpr] ... = ...
+#   17|     getAnOperand/getLeftOperand: [ConstantAssignment] GREETING
+#   17|     getAnOperand/getRightOperand: [AddExpr] ... + ...
+#   17|       getAnOperand/getLeftOperand: [AddExpr] ... + ...
+#   17|         getAnOperand/getLeftOperand: [StringLiteral] "Hello"
+#   17|           getComponent: [StringTextComponent] Hello
+#   17|         getAnOperand/getRightOperand: [ConstantReadAccess] CONST_A
+#   17|           getScopeExpr: [ConstantReadAccess] ClassA
+#   17|             getScopeExpr: [ConstantReadAccess] ModuleA
+#   17|       getAnOperand/getRightOperand: [ConstantReadAccess] CONST_B
+#   17|         getScopeExpr: [ConstantReadAccess] ModuleA
+#   19|   getStmt: [Method] foo
+#   20|     getStmt: [AssignExpr] ... = ...
+#   20|       getAnOperand/getLeftOperand: [ConstantAssignment] Names
+#   20|       getAnOperand/getRightOperand: [ArrayLiteral] [...]
+#   20|         getElement: [StringLiteral] "Vera"
+#   20|           getComponent: [StringTextComponent] Vera
+#   20|         getElement: [StringLiteral] "Chuck"
+#   20|           getComponent: [StringTextComponent] Chuck
+#   20|         getElement: [StringLiteral] "Dave"
+#   20|           getComponent: [StringTextComponent] Dave
+#   22|     getStmt: [MethodCall] call to each
+#   22|       getReceiver: [ConstantReadAccess] Names
+#   22|       getBlock: [DoBlock] do ... end
+#   22|         getParameter: [SimpleParameter] name
+#   22|           getDefiningAccess: [LocalVariableAccess] name
+#   23|         getStmt: [MethodCall] call to puts
+#   23|           getReceiver: [Self] self
+#   23|           getArgument: [StringLiteral] "#{...} #{...}"
+#   23|             getComponent: [StringInterpolationComponent] #{...}
+#   23|               getStmt: [ConstantReadAccess] GREETING
+#   23|             getComponent: [StringTextComponent]  
+#   23|             getComponent: [StringInterpolationComponent] #{...}
+#   23|               getStmt: [LocalVariableAccess] name
+#   28|     getStmt: [MethodCall] call to Array
+#   28|       getReceiver: [Self] self
+#   28|       getArgument: [StringLiteral] "foo"
+#   28|         getComponent: [StringTextComponent] foo
+#   31|   getStmt: [ClassDeclaration] ClassD
 #   31|     getScopeExpr: [ConstantReadAccess] ModuleA
-#   34|   getStmt: [AssignExpr] ... = ...
-#   34|     getAnOperand/getLeftOperand: [ConstantAssignment] MAX_SIZE
-#   34|       getScopeExpr: [ConstantReadAccess] ModuleB
-#   34|         getScopeExpr: [ConstantReadAccess] ModuleA
-#   34|     getAnOperand/getRightOperand: [IntegerLiteral] 1024
+#   31|     getSuperclassExpr: [ConstantReadAccess] ClassA
+#   31|       getScopeExpr: [ConstantReadAccess] ModuleA
+#   34|   getStmt: [ModuleDeclaration] ModuleC
+#   34|     getScopeExpr: [ConstantReadAccess] ModuleA
+#   37|   getStmt: [AssignExpr] ... = ...
+#   37|     getAnOperand/getLeftOperand: [ConstantAssignment] MAX_SIZE
+#   37|       getScopeExpr: [ConstantReadAccess] ModuleB
+#   37|         getScopeExpr: [ConstantReadAccess] ModuleA
+#   37|     getAnOperand/getRightOperand: [IntegerLiteral] 1024
+#   39|   getStmt: [MethodCall] call to puts
+#   39|     getReceiver: [Self] self
+#   39|     getArgument: [ConstantReadAccess] MAX_SIZE
+#   39|       getScopeExpr: [ConstantReadAccess] ModuleB
+#   39|         getScopeExpr: [ConstantReadAccess] ModuleA
+#   41|   getStmt: [MethodCall] call to puts
+#   41|     getReceiver: [Self] self
+#   41|     getArgument: [ConstantReadAccess] GREETING
+#   42|   getStmt: [MethodCall] call to puts
+#   42|     getReceiver: [Self] self
+#   42|     getArgument: [ConstantReadAccess] GREETING
 literals/literals.rb:
 #    1| [Toplevel] literals.rb
 #    2|   getStmt: [NilLiteral] nil
