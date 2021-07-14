@@ -280,6 +280,18 @@ private class QsStep extends TaintTracking::SharedTaintStep {
 }
 
 /**
+ * A taint step through a call to [normalize-url](https://npmjs.com/package/normalize-url)
+ */
+private class NormalizeUrlStep extends TaintTracking::SharedTaintStep {
+  override predicate uriStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(API::CallNode call | call = API::moduleImport("normalize-url").getACall() |
+      pred = call.getArgument(0) and
+      succ = call
+    )
+  }
+}
+
+/**
  * Provides steps for the `goog.Uri` class in the closure library.
  */
 private module ClosureLibraryUri {
