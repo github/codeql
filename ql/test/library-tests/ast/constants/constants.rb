@@ -35,3 +35,8 @@ module ModuleA::ModuleC
 end
 
 ModuleA::ModuleB::MAX_SIZE = 1024
+
+puts ModuleA::ModuleB::MAX_SIZE
+
+puts GREETING
+puts ::GREETING

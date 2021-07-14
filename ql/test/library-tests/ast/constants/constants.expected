@@ -28,6 +28,11 @@ constantAccess
 | constants.rb:37:1:37:7 | ModuleA | read | ModuleA | ConstantReadAccess |
 | constants.rb:37:1:37:16 | ModuleB | read | ModuleB | ConstantReadAccess |
 | constants.rb:37:1:37:26 | MAX_SIZE | write | MAX_SIZE | ConstantAssignment |
+| constants.rb:39:6:39:12 | ModuleA | read | ModuleA | ConstantReadAccess |
+| constants.rb:39:6:39:21 | ModuleB | read | ModuleB | ConstantReadAccess |
+| constants.rb:39:6:39:31 | MAX_SIZE | read | MAX_SIZE | ConstantReadAccess |
+| constants.rb:41:6:41:13 | GREETING | read | GREETING | ConstantReadAccess |
+| constants.rb:42:6:42:15 | GREETING | read | GREETING | ConstantReadAccess |
 getConst
 | constants.rb:1:1:15:3 | ModuleA | CONST_B | constants.rb:6:15:6:23 | "const_b" |
 | constants.rb:2:5:4:7 | ModuleA::ClassA | CONST_A | constants.rb:3:19:3:27 | "const_a" |
@@ -36,8 +41,16 @@ lookupConst
 | constants.rb:1:1:15:3 | ModuleA | CONST_B | constants.rb:6:15:6:23 | "const_b" |
 | constants.rb:2:5:4:7 | ModuleA::ClassA | CONST_A | constants.rb:3:19:3:27 | "const_a" |
 | constants.rb:2:5:4:7 | ModuleA::ClassA | GREETING | constants.rb:17:12:17:64 | ... + ... |
+| constants.rb:8:5:14:7 | ModuleA::ModuleB | MAX_SIZE | constants.rb:37:30:37:33 | 1024 |
 | constants.rb:9:9:10:11 | ModuleA::ModuleB::ClassB | GREETING | constants.rb:17:12:17:64 | ... + ... |
 | constants.rb:12:9:13:11 | ModuleA::ModuleB::ClassC | GREETING | constants.rb:17:12:17:64 | ... + ... |
 | constants.rb:31:1:32:3 | ModuleA::ClassD | CONST_A | constants.rb:3:19:3:27 | "const_a" |
 | constants.rb:31:1:32:3 | ModuleA::ClassD | GREETING | constants.rb:17:12:17:64 | ... + ... |
 | file://:0:0:0:0 | Object | GREETING | constants.rb:17:12:17:64 | ... + ... |
+constantValue
+| constants.rb:17:22:17:45 | CONST_A | constants.rb:3:19:3:27 | "const_a" |
+| constants.rb:17:49:17:64 | CONST_B | constants.rb:6:15:6:23 | "const_b" |
+| constants.rb:23:18:23:25 | GREETING | constants.rb:17:12:17:64 | ... + ... |
+| constants.rb:39:6:39:31 | MAX_SIZE | constants.rb:37:30:37:33 | 1024 |
+| constants.rb:41:6:41:13 | GREETING | constants.rb:17:12:17:64 | ... + ... |
+| constants.rb:42:6:42:15 | GREETING | constants.rb:17:12:17:64 | ... + ... |

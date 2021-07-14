@@ -14,3 +14,5 @@ query predicate constantAccess(ConstantAccess a, string kind, string name, strin
 query Expr getConst(Module m, string name) { result = M::ExposedForTestingOnly::getConst(m, name) }
 
 query Expr lookupConst(Module m, string name) { result = M::lookupConst(m, name) }
+
+query predicate constantValue(ConstantReadAccess a, Expr e) { e = a.getValue() }

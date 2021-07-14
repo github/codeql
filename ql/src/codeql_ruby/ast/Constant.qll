@@ -114,6 +114,9 @@ class ConstantReadAccess extends ConstantAccess {
     then result.getFile() = this.getFile()
     else any()
     or
+    this.hasGlobalScope() and
+    result = lookupConst(TResolved("Object"), this.getName())
+    or
     result = lookupConst(resolveScopeExpr(this.getScopeExpr()), this.getName())
   }
 

@@ -867,6 +867,17 @@ constants/constants.rb:
 #   37|       getScopeExpr: [ConstantReadAccess] ModuleB
 #   37|         getScopeExpr: [ConstantReadAccess] ModuleA
 #   37|     getAnOperand/getRightOperand: [IntegerLiteral] 1024
+#   39|   getStmt: [MethodCall] call to puts
+#   39|     getReceiver: [Self] self
+#   39|     getArgument: [ConstantReadAccess] MAX_SIZE
+#   39|       getScopeExpr: [ConstantReadAccess] ModuleB
+#   39|         getScopeExpr: [ConstantReadAccess] ModuleA
+#   41|   getStmt: [MethodCall] call to puts
+#   41|     getReceiver: [Self] self
+#   41|     getArgument: [ConstantReadAccess] GREETING
+#   42|   getStmt: [MethodCall] call to puts
+#   42|     getReceiver: [Self] self
+#   42|     getArgument: [ConstantReadAccess] GREETING
 literals/literals.rb:
 #    1| [Toplevel] literals.rb
 #    2|   getStmt: [NilLiteral] nil

@@ -135,7 +135,16 @@ private module Cached {
   Method lookupMethod(Module m, string name) { TMethod(result) = lookupMethodOrConst(m, name) }
 
   cached
-  Expr lookupConst(Module m, string name) { TExpr(result) = lookupMethodOrConst(m, name) }
+  Expr lookupConst(Module m, string name) {
+    TExpr(result) = lookupMethodOrConst(m, name)
+    or
+    exists(AssignExpr ae, ConstantWriteAccess w |
+      w = ae.getLeftOperand() and
+      w.getName() = name and
+      m = resolveScopeExpr(w.getScopeExpr()) and
+      result = ae.getRightOperand()
+    )
+  }
 }
 
 import Cached
