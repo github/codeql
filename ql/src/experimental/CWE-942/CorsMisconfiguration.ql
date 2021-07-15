@@ -122,11 +122,9 @@ class FlowsFromUntrusted extends TaintTracking::Configuration {
 
   predicate isSink(DataFlow::Node sink, ControlFlow::ConditionGuardNode cgn) {
     exists(IfStmt ifs |
-      exists(Expr child, Expr operand |
-        child = ifs.getCond().getAChildExpr*() and
-        operand = child and
+      exists(Expr operand |
+        operand = ifs.getCond().getAChildExpr*() and
         (
-          //
           exists(DataFlow::CallExpr call | call = operand |
             call.getTarget().hasQualifiedName("strings", "HasSuffix") and
             sink.asExpr() = call.getArgument(0)
