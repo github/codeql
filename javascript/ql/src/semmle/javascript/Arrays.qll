@@ -342,4 +342,15 @@ private module ArrayLibraries {
     result = DataFlow::moduleImport(["array.prototype.find", "array-find"]).getACall() and
     array = result.getArgument(0)
   }
+
+  /**
+   * A taint step through the `arrify` library, or other libraries that (maybe) convert values into arrays.
+   */
+  private class ArrayifyStep extends TaintTracking::SharedTaintStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(API::CallNode call | call = API::moduleImport(["arrify", "array-ify"]).getACall() |
+        pred = call.getArgument(0) and succ = call
+      )
+    }
+  }
 }
