@@ -86,6 +86,7 @@ abstract private class GeneratedType extends RefType {
 
   private Member getAGeneratedMember() {
     (
+      not result instanceof NestedType and
       result.getDeclaringType() = this
       or
       exists(NestedType nt | result = nt |
