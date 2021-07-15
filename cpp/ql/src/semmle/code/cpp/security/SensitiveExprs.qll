@@ -14,15 +14,12 @@ private predicate suspicious(string s) {
   (
     s.matches("%password%") or
     s.matches("%passwd%") or
-    s.matches("%account%") or
-    s.matches("%accnt%") or
     s.matches("%trusted%")
   ) and
   not (
     s.matches("%hash%") or
     s.matches("%crypt%") or
-    s.matches("%file%") or
-    s.matches("%conf%")
+    s.matches("%file%")
   )
 }
 
