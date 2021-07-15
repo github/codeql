@@ -74,6 +74,7 @@ class NamedElement extends Element, @dotnet_named_element {
    * }
    * ```
    */
+  pragma[nomagic]
   final string getQualifiedName() {
     exists(string qualifier, string name | this.hasQualifiedName(qualifier, name) |
       if qualifier = "" then result = name else result = qualifier + "." + name
