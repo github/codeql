@@ -115,7 +115,7 @@ private class SpringHttpFlowStep extends SummaryModelCsv {
         "org.springframework.http;HttpHeaders;true;getCacheControl;();;Argument[-1];ReturnValue;taint",
         "org.springframework.http;HttpHeaders;true;getConnection;();;Argument[-1];Element of ReturnValue;taint",
         "org.springframework.http;HttpHeaders;true;getETag;();;Argument[-1];ReturnValue;taint",
-        "org.springframework.http;HttpHeaders;true;getETagValuesAsList;(String);;Element of Argument[-1];ReturnValue;taint",
+        "org.springframework.http;HttpHeaders;true;getETagValuesAsList;(String);;Argument[-1];Element of ReturnValue;taint",
         "org.springframework.http;HttpHeaders;true;getFieldValues;(String);;Argument[-1];ReturnValue;taint",
         "org.springframework.http;HttpHeaders;true;getFirst;(String);;Argument[-1];ReturnValue;taint",
         "org.springframework.http;HttpHeaders;true;getIfMatch;();;Argument[-1];Element of ReturnValue;taint",
