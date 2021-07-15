@@ -55,7 +55,7 @@ private module SensitiveDataModeling {
    * Gets a reference to a function that is considered to be a sensitive source of
    * `classification`.
    */
-  private DataFlow::LocalSourceNode sensitiveFunction(
+  private DataFlow::TypeTrackingNode sensitiveFunction(
     DataFlow::TypeTracker t, SensitiveDataClassification classification
   ) {
     t.start() and
@@ -109,7 +109,7 @@ private module SensitiveDataModeling {
    *
    * Also see `extraStepForCalls`.
    */
-  private DataFlow::LocalSourceNode possibleSensitiveCallable(DataFlow::TypeTracker t) {
+  private DataFlow::TypeTrackingNode possibleSensitiveCallable(DataFlow::TypeTracker t) {
     t.start() and
     result instanceof SensitiveDataSource
     or

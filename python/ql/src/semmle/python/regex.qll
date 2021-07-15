@@ -71,7 +71,7 @@ private string canonical_name(API::Node flag) {
  * A type tracker for regular expression flag names. Holds if the result is a node that may refer
  * to the `re` flag with the canonical name `flag_name`
  */
-private DataFlow::LocalSourceNode re_flag_tracker(string flag_name, DataFlow::TypeTracker t) {
+private DataFlow::TypeTrackingNode re_flag_tracker(string flag_name, DataFlow::TypeTracker t) {
   t.start() and
   exists(API::Node flag | flag_name = canonical_name(flag) and result = flag.getAUse())
   or
