@@ -19,10 +19,17 @@ struct myStruct
 
 	// not sensitive
 	char *password_file;
+	int num_passwords;
+	bool have_passwd;
 
 	// dubious
 	char *passwd_config;
 };
+
+char *getPassword();
+char *getPasswordHash();
+int getPasswordMaxChars();
+
 void tests(FILE *log, myStruct &s)
 {
 	fprintf(log, "password = %s\n", s.password); // BAD
@@ -32,6 +39,12 @@ void tests(FILE *log, myStruct &s)
 	fprintf(log, "encrypted_passwd = %s\n", s.encrypted_passwd); // GOOD
 	fprintf(log, "password_file = %s\n", s.password_file); // GOOD
 	fprintf(log, "passwd_config = %s\n", s.passwd_config); // DUBIOUS [REPORTED]
+	fprintf(log, "num_passwords = %i\n", s.num_passwords); // GOOD [FALSE POSITIVE]
+	fprintf(log, "have_passwd = %i\n", s.have_passwd); // GOOD [FALSE POSITIVE]
+
+	fprintf(log, "getPassword() = %i\n", getPassword()); // BAD
+	fprintf(log, "getPasswordHash() = %i\n", getPasswordHash()); // GOOD
+	fprintf(log, "getPasswordMaxChars() = %i\n", getPasswordMaxChars()); // GOOD [FALSE POSITIVE]
 
 	{
 		char *cpy1 = s.password;
