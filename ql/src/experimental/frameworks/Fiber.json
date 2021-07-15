@@ -1,5 +1,6 @@
 {
    "Name": "Fiber",
+   "Preload": null,
    "Models": [
       {
          "Name": "TaintTracking",
@@ -929,17 +930,15 @@
                      }
                   },
                   {
-                     "Kind": "Func",
+                     "Kind": "Struct",
                      "Qualifier": {
                         "Path": "github.com/gofiber/fiber",
                         "Version": "v1.14.6",
-                        "ID": "TypeMethod-Ctx-Protocol",
-                        "Pos": [
-                           false,
-                           true
-                        ],
-                        "Flows": null,
-                        "Name": "Protocol"
+                        "ID": "Struct-Error",
+                        "TypeName": "Error",
+                        "Fields": {
+                           "Message": null
+                        }
                      }
                   },
                   {
@@ -1017,18 +1016,6 @@
                            "Path": null,
                            "SameSite": null,
                            "Value": null
-                        }
-                     }
-                  },
-                  {
-                     "Kind": "Struct",
-                     "Qualifier": {
-                        "Path": "github.com/gofiber/fiber",
-                        "Version": "v1.14.6",
-                        "ID": "Struct-Error",
-                        "TypeName": "Error",
-                        "Fields": {
-                           "Message": null
                         }
                      }
                   }

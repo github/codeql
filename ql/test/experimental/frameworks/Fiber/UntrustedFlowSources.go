@@ -89,12 +89,6 @@ func UntrustedFlowSources_GithubComGofiberFiberV1146() {
 				result544 := receiverCtx648.Path("")
 				sink(result544) // $untrustedFlowSource
 			}
-			// func (*Ctx).Protocol() string
-			{
-				var receiverCtx484 fiber.Ctx
-				result824 := receiverCtx484.Protocol()
-				sink(result824) // $untrustedFlowSource
-			}
 			// func (*Ctx).Query(key string, defaultValue ...string) string
 			{
 				var receiverCtx754 fiber.Ctx

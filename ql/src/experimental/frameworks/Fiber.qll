@@ -366,10 +366,6 @@ private module Fiber {
           methodName = "Path" and
           out.isResult()
           or
-          // signature: func (*Ctx).Protocol() string
-          methodName = "Protocol" and
-          out.isResult()
-          or
           // signature: func (*Ctx).Query(key string, defaultValue ...string) string
           methodName = "Query" and
           out.isResult()
