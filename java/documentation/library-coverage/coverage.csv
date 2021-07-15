@@ -1,6 +1,6 @@
 package,sink,source,summary,sink:bean-validation,sink:create-file,sink:header-splitting,sink:information-leak,sink:jexl,sink:ldap,sink:open-url,sink:set-hostname-verifier,sink:sql,sink:url-open-stream,sink:url-redirect,sink:xpath,sink:xss,source:remote,summary:taint,summary:value
-android.content,8,,,,,,,,,,,8,,,,,,,
-android.database,59,,,,,,,,,,,59,,,,,,,
+android.content,8,,4,,,,,,,,,8,,,,,,4,
+android.database,59,,30,,,,,,,,,59,,,,,,30,
 android.util,,16,,,,,,,,,,,,,,,16,,
 android.webkit,3,2,,,,,,,,,,,,,,3,2,,
 com.esotericsoftware.kryo.io,,,1,,,,,,,,,,,,,,,1,
@@ -27,7 +27,7 @@ javax.ws.rs.core,3,,143,,,1,,,,,,,,2,,,,88,55
 javax.xml.transform.sax,,,4,,,,,,,,,,,,,,,4,
 javax.xml.transform.stream,,,2,,,,,,,,,,,,,,,2,
 javax.xml.xpath,3,,,,,,,,,,,,,,3,,,,
-org.apache.commons.codec,,,2,,,,,,,,,,,,,,,2,
+org.apache.commons.codec,,,6,,,,,,,,,,,,,,,6,
 org.apache.commons.collections,,,99,,,,,,,,,,,,,,,4,95
 org.apache.commons.collections4,,,99,,,,,,,,,,,,,,,4,95
 org.apache.commons.io,,,22,,,,,,,,,,,,,,,22,
@@ -46,15 +46,17 @@ org.dom4j,20,,,,,,,,,,,,,,20,,,,
 org.hibernate,7,,,,,,,,,,,7,,,,,,,
 org.jooq,1,,,,,,,,,,,1,,,,,,,
 org.springframework.beans,,,26,,,,,,,,,,,,,,,,26
+org.springframework.cache,,,13,,,,,,,,,,,,,,,,13
 org.springframework.http,14,,,,,,,,,14,,,,,,,,,
 org.springframework.jdbc.core,10,,,,,,,,,,,10,,,,,,,
 org.springframework.ldap.core,14,,,,,,,,14,,,,,,,,,,
 org.springframework.security.web.savedrequest,,6,,,,,,,,,,,,,,,6,,
+org.springframework.ui,,,32,,,,,,,,,,,,,,,,32
 org.springframework.util,,,139,,,,,,,,,,,,,,,87,52
 org.springframework.validation,,,13,,,,,,,,,,,,,,,13,
 org.springframework.web.client,13,3,,,,,,,,13,,,,,,,3,,
 org.springframework.web.context.request,,8,,,,,,,,,,,,,,,8,,
-org.springframework.web.multipart,,12,,,,,,,,,,,,,,,12,,
+org.springframework.web.multipart,,12,13,,,,,,,,,,,,,,12,13,
 org.springframework.web.reactive.function.client,2,,,,,,,,,2,,,,,,,,,
 org.xml.sax,,,1,,,,,,,,,,,,,,,1,
 org.xmlpull.v1,,3,,,,,,,,,,,,,,,3,,
