@@ -585,35 +585,3 @@ class TableType extends RefType {
     )
   }
 }
-
-private class TableRowField extends SyntheticField {
-  override predicate fieldSpec(RefType owningType, string fieldName, Type fieldType) {
-    owningType.hasQualifiedName(guavaCollectPackage(), "Table") and
-    fieldName = "rowKey" and
-    fieldType instanceof TypeObject
-  }
-}
-
-private class TableColumnField extends SyntheticField {
-  override predicate fieldSpec(RefType owningType, string fieldName, Type fieldType) {
-    owningType.hasQualifiedName(guavaCollectPackage(), "Table") and
-    fieldName = "columnKey" and
-    fieldType instanceof TypeObject
-  }
-}
-
-private class MapDifferenceLeftField extends SyntheticField {
-  override predicate fieldSpec(RefType owningType, string fieldName, Type fieldType) {
-    owningType.hasQualifiedName(guavaCollectPackage(), "MapDifference") and
-    fieldName = "left" and
-    fieldType instanceof TypeObject
-  }
-}
-
-private class MapDifferenceRightField extends SyntheticField {
-  override predicate fieldSpec(RefType owningType, string fieldName, Type fieldType) {
-    owningType.hasQualifiedName(guavaCollectPackage(), "MapDifference") and
-    fieldName = "right" and
-    fieldType instanceof TypeObject
-  }
-}
