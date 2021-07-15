@@ -836,6 +836,13 @@ class RegExpZeroWidthMatch extends RegExpGroup {
  */
 class RegExpSubPattern extends RegExpZeroWidthMatch {
   RegExpSubPattern() { not re.emptyGroup(start, end) }
+
+  /** Gets the lookahead term. */
+  RegExpTerm getOperand() {
+    result.getRegex() = re and
+    result.getStart() = start + 3 and
+    result.getEnd() = end - 1
+  }
 }
 
 /**
