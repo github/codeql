@@ -6,4 +6,7 @@ function test() {
 
     const arrayIfy = require("array-ify");
     sink(arrayIfy(foo)); // NOT OK
+
+    const union = require("array-union");
+    sink(union(["bla"], foo)); // NOT OK
 }

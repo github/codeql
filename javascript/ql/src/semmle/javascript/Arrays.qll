@@ -323,6 +323,8 @@ private import ArrayLibraries
  * Classes and predicates modelling various libraries that work on arrays or array-like structures.
  */
 private module ArrayLibraries {
+  private import DataFlow::PseudoProperties
+
   /**
    * Gets a call to `Array.from` or a polyfill implementing the same functionality.
    */
@@ -350,6 +352,40 @@ private module ArrayLibraries {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(API::CallNode call | call = API::moduleImport(["arrify", "array-ify"]).getACall() |
         pred = call.getArgument(0) and succ = call
+      )
+    }
+  }
+
+  /**
+   * A call to a library that copies the elements of an array into another array.
+   * E.g. `array-union` that creates a union of multiple arrays, or `array-uniq` that creates an array with unique elements.
+   */
+  DataFlow::CallNode arrayCopyCall(DataFlow::Node array) {
+    result = API::moduleImport(["array-union", "array-uniq", "uniq"]).getACall() and
+    array = result.getAnArgument()
+  }
+
+  /**
+   * A taint step for a library that copies the elements of an array into another array.
+   */
+  private class ArrayCopyTaint extends TaintTracking::SharedTaintStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(DataFlow::CallNode call |
+        call = arrayCopyCall(pred) and
+        succ = call
+      )
+    }
+  }
+
+  /**
+   * A loadStoreStep for a library that copies the elements of an array into another array.
+   */
+  private class ArrayCopyLoadStore extends DataFlow::SharedFlowStep {
+    override predicate loadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+      exists(DataFlow::CallNode call |
+        call = arrayCopyCall(pred) and
+        succ = call and
+        prop = arrayElement()
       )
     }
   }

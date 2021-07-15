@@ -5,4 +5,7 @@ lgtm,codescanning
     [array.prototype.find](https://npmjs.com/package/array.prototype.find),
     [array-find](https://npmjs.com/package/array-find),
     [arrify](https://npmjs.com/package/arrify),
-    [array-ify](https://npmjs.com/package/array-ify)
+    [array-ify](https://npmjs.com/package/array-ify),
+    [array-union](https://npmjs.com/package/array-union),
+    [array-uniq](https://npmjs.com/package/array-uniq),
+    [uniq](https://npmjs.com/package/uniq)

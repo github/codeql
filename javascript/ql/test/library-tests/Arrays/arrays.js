@@ -75,4 +75,9 @@
 
   const arrayFind = require("array-find");
   sink(arrayFind(arr, someCallback)); // NOT OK
+
+  const uniq = require("uniq");
+  for (const x of uniq(arr)) {
+    sink(x); // NOT OK
+  }
 });
