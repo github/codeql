@@ -27,14 +27,20 @@ private predicate suspicious(string s) {
  * A variable that might contain a password or other sensitive information.
  */
 class SensitiveVariable extends Variable {
-  SensitiveVariable() { suspicious(getName().toLowerCase()) }
+  SensitiveVariable() {
+    suspicious(getName().toLowerCase()) and
+    not this.getUnspecifiedType() instanceof IntegralType
+  }
 }
 
 /**
  * A function that might return a password or other sensitive information.
  */
 class SensitiveFunction extends Function {
-  SensitiveFunction() { suspicious(getName().toLowerCase()) }
+  SensitiveFunction() {
+    suspicious(getName().toLowerCase()) and
+    not this.getUnspecifiedType() instanceof IntegralType
+  }
 }
 
 /**

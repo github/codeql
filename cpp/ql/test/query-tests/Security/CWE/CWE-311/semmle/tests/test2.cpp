@@ -39,12 +39,12 @@ void tests(FILE *log, myStruct &s)
 	fprintf(log, "encrypted_passwd = %s\n", s.encrypted_passwd); // GOOD
 	fprintf(log, "password_file = %s\n", s.password_file); // GOOD
 	fprintf(log, "passwd_config = %s\n", s.passwd_config); // DUBIOUS [REPORTED]
-	fprintf(log, "num_passwords = %i\n", s.num_passwords); // GOOD [FALSE POSITIVE]
-	fprintf(log, "have_passwd = %i\n", s.have_passwd); // GOOD [FALSE POSITIVE]
+	fprintf(log, "num_passwords = %i\n", s.num_passwords); // GOOD
+	fprintf(log, "have_passwd = %i\n", s.have_passwd); // GOOD
 
 	fprintf(log, "getPassword() = %i\n", getPassword()); // BAD
 	fprintf(log, "getPasswordHash() = %i\n", getPasswordHash()); // GOOD
-	fprintf(log, "getPasswordMaxChars() = %i\n", getPasswordMaxChars()); // GOOD [FALSE POSITIVE]
+	fprintf(log, "getPasswordMaxChars() = %i\n", getPasswordMaxChars()); // GOOD
 
 	{
 		char *cpy1 = s.password;
