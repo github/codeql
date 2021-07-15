@@ -124,11 +124,7 @@ class FlowsFromUntrusted extends TaintTracking::Configuration {
     exists(IfStmt ifs |
       exists(Expr child, Expr operand |
         child = ifs.getCond().getAChildExpr*() and
-        (
-          operand = child or
-          operand = child.(LorExpr).getAnOperand() or
-          operand = child.(LandExpr).getAnOperand()
-        ) and
+        operand = child and
         (
           //
           exists(DataFlow::CallExpr call | call = operand |
