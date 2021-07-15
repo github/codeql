@@ -207,7 +207,7 @@ void test3_1(const char *path, int arg)
 	int f;
 
 	f = open(path, arg);
-	if (stat(path, &buf)) // BAD??? [NOT DETECTED]
+	if (stat(path, &buf)) // BAD [NOT DETECTED]
 	{
 		// ...
 	}
@@ -242,7 +242,7 @@ void test4_1(const char *path)
 
 		fclose(f);
 
-		chmod(path, 0); // BAD???
+		chmod(path, 0); // DUBIOUS (bad but perhaps not exploitable) [REPORTED]
 	}
 }
 
@@ -252,7 +252,7 @@ void test5_1(const char *path1, const char *path2)
 {
 	if (!rename(path1, path2))
 	{
-		remove(path1); // BAD???
+		remove(path1); // DUBIOUS (bad but perhaps not exploitable) [REPORTED]
 	}
 }
 
@@ -262,7 +262,7 @@ void test5_2(const char *path1, const char *path2)
 
 	if (rename(path1, path2))
 	{
-		f = fopen(path2, "r"); // BAD??? [NOT DETECTED]
+		f = fopen(path2, "r"); // BAD [NOT DETECTED]
 	}
 }
 
@@ -289,7 +289,7 @@ void test6_2(const char *path)
 		// ...
 	}
 
-	f = fopen(path, "r"); // GOOD (doesn't depend on the access check)
+	f = fopen(path, "r"); // GOOD (appears not to be intended to depend on the access check)
 
 	// ...
 }
