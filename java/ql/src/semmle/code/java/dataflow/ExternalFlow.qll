@@ -652,6 +652,48 @@ Element interpretElement(
   )
 }
 
+private predicate parseField(string c, FieldContent f) {
+  specSplit(_, c, _) and
+  exists(string fieldRegex, string package, string className, string fieldName |
+    fieldRegex = "^Field\\[(.*)\\.([^.]+)\\.([^.]+)\\]$" and
+    package = c.regexpCapture(fieldRegex, 1) and
+    className = c.regexpCapture(fieldRegex, 2) and
+    fieldName = c.regexpCapture(fieldRegex, 3) and
+    f.getField().hasQualifiedName(package, className, fieldName)
+  )
+}
+
+/** A string representing a synthetic instance field. */
+class SyntheticField extends string {
+  SyntheticField() { parseSynthField(_, this) }
+
+  /**
+   * Gets the type of this field. The default type is `Object`, but this can be
+   * overridden.
+   */
+  Type getType() { result instanceof TypeObject }
+}
+
+private predicate parseSynthField(string c, string f) {
+  specSplit(_, c, _) and
+  c.regexpCapture("SyntheticField\\[([.a-zA-Z0-9]+)\\]", 1) = f
+}
+
+/** Holds if the specification component parses as a `Content`. */
+predicate parseContent(string component, Content content) {
+  parseField(component, content)
+  or
+  parseSynthField(component, content.(SyntheticFieldContent).getField())
+  or
+  component = "ArrayElement" and content instanceof ArrayContent
+  or
+  component = "Element" and content instanceof CollectionContent
+  or
+  component = "MapKey" and content instanceof MapKeyContent
+  or
+  component = "MapValue" and content instanceof MapValueContent
+}
+
 cached
 private module Cached {
   /**
