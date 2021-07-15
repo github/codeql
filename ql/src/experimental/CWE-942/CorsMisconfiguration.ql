@@ -37,6 +37,20 @@ string headerAllowOrigin() { result = "Access-Control-Allow-Origin".toLowerCase(
 string headerAllowCredentials() { result = "Access-Control-Allow-Credentials".toLowerCase() }
 
 /**
+ * An `Access-Control-Allow-Origin` header write.
+ */
+class AllowOriginHeaderWrite extends HTTP::HeaderWrite {
+  AllowOriginHeaderWrite() { this.getHeaderName() = headerAllowOrigin() }
+}
+
+/**
+ * An `Access-Control-Allow-Credentials` header write.
+ */
+class AllowCredentialsHeaderWrite extends HTTP::HeaderWrite {
+  AllowCredentialsHeaderWrite() { this.getHeaderName() = headerAllowCredentials() }
+}
+
+/**
  * A taint-tracking configuration for reasoning about when an UntrustedFlowSource
  * flows to a HeaderWrite that writes an `Access-Control-Allow-Origin` header's value.
  */
@@ -45,9 +59,7 @@ class FlowsUntrustedToAllowOriginHeader extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) { source instanceof UntrustedFlowSource }
 
-  predicate isSink(DataFlow::Node sink, HTTP::HeaderWrite hw) {
-    hw.getHeaderName() = headerAllowOrigin() and sink = hw.getValue()
-  }
+  predicate isSink(DataFlow::Node sink, AllowOriginHeaderWrite hw) { sink = hw.getValue() }
 
   override predicate isSanitizer(DataFlow::Node node) {
     exists(ControlFlow::ConditionGuardNode cgn |
@@ -65,9 +77,8 @@ class FlowsUntrustedToAllowOriginHeader extends TaintTracking::Configuration {
  * also has another HeaderWrite that sets a `Access-Control-Allow-Credentials`
  * header to `true`.
  */
-predicate allowCredentialsIsSetToTrue(HTTP::HeaderWrite allowOriginHW) {
-  exists(HTTP::HeaderWrite allowCredentialsHW |
-    allowCredentialsHW.getHeaderName() = headerAllowCredentials() and
+predicate allowCredentialsIsSetToTrue(AllowOriginHeaderWrite allowOriginHW) {
+  exists(AllowCredentialsHeaderWrite allowCredentialsHW |
     allowCredentialsHW.getHeaderValue().toLowerCase() = "true"
   |
     allowOriginHW.getResponseWriter() = allowCredentialsHW.getResponseWriter()
@@ -79,7 +90,7 @@ predicate allowCredentialsIsSetToTrue(HTTP::HeaderWrite allowOriginHW) {
  * UntrustedFlowSource.
  * The `message` parameter is populated with the warning message to be returned by the query.
  */
-predicate flowsFromUntrustedToAllowOrigin(HTTP::HeaderWrite allowOriginHW, string message) {
+predicate flowsFromUntrustedToAllowOrigin(AllowOriginHeaderWrite allowOriginHW, string message) {
   exists(FlowsUntrustedToAllowOriginHeader cfg, DataFlow::PathNode source, DataFlow::PathNode sink |
     cfg.hasFlowPath(source, sink) and
     cfg.isSink(sink.getNode(), allowOriginHW)
@@ -94,8 +105,7 @@ predicate flowsFromUntrustedToAllowOrigin(HTTP::HeaderWrite allowOriginHW, strin
  * Holds if the provided `allowOriginHW` HeaderWrite is for a `Access-Control-Allow-Origin`
  * header and the value is set to `null`.
  */
-predicate allowOriginIsNull(HTTP::HeaderWrite allowOriginHW, string message) {
-  allowOriginHW.getHeaderName() = headerAllowOrigin() and
+predicate allowOriginIsNull(AllowOriginHeaderWrite allowOriginHW, string message) {
   allowOriginHW.getHeaderValue().toLowerCase() = "null" and
   message =
     headerAllowOrigin() + " header is set to `" + allowOriginHW.getHeaderValue() + "`, and " +
@@ -157,7 +167,7 @@ class FlowsFromUntrusted extends TaintTracking::Configuration {
 /**
  * Holds if the provided `dst` is also destination of a `UntrustedFlowSource`.
  */
-predicate flowsToGuardedByCheckOnUntrusted(HTTP::HeaderWrite allowOriginHW) {
+predicate flowsToGuardedByCheckOnUntrusted(AllowOriginHeaderWrite allowOriginHW) {
   exists(
     FlowsFromUntrusted cfg, DataFlow::PathNode source, DataFlow::PathNode sink,
     ControlFlow::ConditionGuardNode cgn
@@ -168,7 +178,7 @@ predicate flowsToGuardedByCheckOnUntrusted(HTTP::HeaderWrite allowOriginHW) {
   )
 }
 
-from HTTP::HeaderWrite allowOriginHW, string message
+from AllowOriginHeaderWrite allowOriginHW, string message
 where
   allowCredentialsIsSetToTrue(allowOriginHW) and
   (
