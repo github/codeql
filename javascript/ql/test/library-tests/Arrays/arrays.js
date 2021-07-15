@@ -65,4 +65,9 @@
   for (const x of arr7) {
     sink(x); // NOT OK
   }
+
+  const arrayFrom = require("array-from");
+  for (const x of arrayFrom(arr)) {
+    sink(x); // NOT OK
+  }
 });

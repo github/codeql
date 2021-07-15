@@ -68,7 +68,7 @@ module ArrayTaintTracking {
     succ = call
     or
     // `e = Array.from(x)`: if `x` is tainted, then so is `e`.
-    call = DataFlow::globalVarRef("Array").getAPropertyRead("from").getACall() and
+    call = arrayFromCall() and
     pred = call.getAnArgument() and
     succ = call
     or
@@ -97,7 +97,7 @@ private module ArrayDataFlow {
       DataFlow::Node pred, DataFlow::Node succ, string fromProp, string toProp
     ) {
       exists(DataFlow::CallNode call |
-        call = DataFlow::globalVarRef("Array").getAMemberCall("from") and
+        call = arrayFromCall() and
         pred = call.getArgument(0) and
         succ = call and
         fromProp = arrayLikeElement() and
@@ -296,5 +296,21 @@ private module ArrayDataFlow {
         succ = call
       )
     }
+  }
+}
+
+private import ArrayLibraries
+
+/**
+ * Classes and predicates modelling various libraries that work on arrays or array-like structures.
+ */
+private module ArrayLibraries {
+  /**
+   * Gets a call to `Array.from` or a polyfill implementing the same functionality.
+   */
+  DataFlow::CallNode arrayFromCall() {
+    result = DataFlow::globalVarRef("Array").getAMemberCall("from")
+    or
+    result = DataFlow::moduleImport("array-from").getACall()
   }
 }
