@@ -79,6 +79,11 @@ module ArrayTaintTracking {
     call.(DataFlow::MethodCallNode).getMethodName() = "concat" and
     succ = call and
     pred = call.getAnArgument()
+    or
+    // find
+    // `e = arr.find(callback)`
+    call = arrayFindCall(pred) and
+    succ = call
   }
 }
 
@@ -297,6 +302,19 @@ private module ArrayDataFlow {
       )
     }
   }
+
+  /**
+   * A step modelling that elements from an array `arr` are received by calling `find`.
+   */
+  private class ArrayFindStep extends DataFlow::SharedFlowStep {
+    override predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+      exists(DataFlow::CallNode call |
+        call = arrayFindCall(pred) and
+        succ = call and
+        prop = arrayElement()
+      )
+    }
+  }
 }
 
 private import ArrayLibraries
@@ -312,5 +330,16 @@ private module ArrayLibraries {
     result = DataFlow::globalVarRef("Array").getAMemberCall("from")
     or
     result = DataFlow::moduleImport("array-from").getACall()
+  }
+
+  /**
+   * Gets a call to `Array.prototype.find` or a polyfill implementing the same functionality.
+   */
+  DataFlow::CallNode arrayFindCall(DataFlow::Node array) {
+    result.(DataFlow::MethodCallNode).getMethodName() = "find" and
+    array = result.getReceiver()
+    or
+    result = DataFlow::moduleImport(["array.prototype.find", "array-find"]).getACall() and
+    array = result.getArgument(0)
   }
 }

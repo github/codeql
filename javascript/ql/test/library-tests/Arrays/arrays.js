@@ -70,4 +70,9 @@
   for (const x of arrayFrom(arr)) {
     sink(x); // NOT OK
   }
+
+  sink(arr.find(someCallback)); // NOT OK
+
+  const arrayFind = require("array-find");
+  sink(arrayFind(arr, someCallback)); // NOT OK
 });
