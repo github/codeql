@@ -10,6 +10,13 @@ private import codeql_ruby.DataFlow
 predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
 
 /**
+ * Holds if default `TaintTracking::Configuration`s should allow implicit reads
+ * of `c` at sinks and inputs to additional taint steps.
+ */
+bindingset[node]
+predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::Content c) { none() }
+
+/**
  * Holds if the additional step from `nodeFrom` to `nodeTo` should be included
  * in all global taint flow configurations.
  */
