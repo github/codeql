@@ -41,17 +41,13 @@ class UnsafeDeserializationConfig extends TaintTracking::Configuration {
       ma.getQualifier() = succ.asExpr()
     )
     or
-    exists(CreateFromParcelMethod m, Variable v |
-      m.getEnclosingCallable().getDeclaringType() = v.getType() and
-      pred.asExpr() = v.getAnAssignedValue() and
-      succ.asExpr() = m.getParameter(0).getAnAccess()
-    )
-    or
     exists(ConstructorCall cc |
       cc.getConstructedType().getASupertype*().hasQualifiedName("org.json", "JSONObject") and
       pred.asExpr() = cc.getAnArgument() and
       succ.asExpr() = cc
     )
+    or
+    isReflectiveClassIdentifierStep(pred, succ)
   }
 
   override predicate isSanitizer(DataFlow::Node node) {

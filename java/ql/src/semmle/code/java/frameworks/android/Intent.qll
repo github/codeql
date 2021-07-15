@@ -42,3 +42,10 @@ class IntentGetExtraMethod extends Method, TaintPreservingCallable {
 
   override predicate returnsTaintFrom(int arg) { arg = -1 }
 }
+
+class IntentGetParcelableExtraMethod extends Method {
+  IntentGetParcelableExtraMethod() {
+    hasName("getParcelableExtra") and
+    getDeclaringType() instanceof TypeIntent
+  }
+}

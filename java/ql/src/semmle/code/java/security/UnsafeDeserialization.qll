@@ -131,10 +131,31 @@ class CreateFromParcelMethod extends Method {
   }
 }
 
-private predicate isReflectiveClassIdentifierStep(DataFlow::Node node1, DataFlow::Node node2) {
+/** Holds if it's a flow step of `ReflectiveClassIdentifierMethodAccess`. */
+predicate isReflectiveClassIdentifierStep(DataFlow::Node node1, DataFlow::Node node2) {
   exists(ReflectiveClassIdentifierMethodAccess ma |
     node1.asExpr() = ma.getArgument(0) and
     node2.asExpr() = ma
+  )
+}
+
+/**
+ * Holds if the return value of `ma` casts to a `Parcelable` object that implements an unsafe Gson sink.
+ * For example:
+ * ParcelableEntity entity = (ParcelableEntity) getIntent().getParcelableExtra("jsonEntity");
+ * public ParcelableEntity createFromParcel(Parcel parcel) { Object obj = GSON.fromJson(parcel.readString(), clazz); }
+ */
+private predicate isUnsafeAndroidGsonSink(MethodAccess ma) {
+  exists(CastExpr ce, CreateFromParcelMethod cm, Variable v |
+    ce.getExpr() = ma and
+    ce.getControlFlowNode().getASuccessor().(VariableAssign).getDestVar() = v and
+    cm.getEnclosingCallable().getDeclaringType() = v.getType() and
+    exists(MethodAccess gma, UnsafeGsonConfig gc, DataFlow::Node src, DataFlow::Node sink |
+      gma.getMethod() instanceof GsonDeserializeMethod and
+      src.asExpr() = cm.getParameter(0).getAnAccess() and
+      sink.asExpr() = gma.getAnArgument() and
+      gc.hasFlow(src, sink)
+    )
   )
 }
 
@@ -142,23 +163,24 @@ private predicate isReflectiveClassIdentifierStep(DataFlow::Node node1, DataFlow
 class UnsafeGsonConfig extends TaintTracking2::Configuration {
   UnsafeGsonConfig() { this = "UnsafeDeserialization::UnsafeGsonConfig" }
 
-  override predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
+  override predicate isSource(DataFlow::Node src) {
+    src.asExpr()
+        .(VarAccess)
+        .getVariable()
+        .getType()
+        .(RefType)
+        .hasQualifiedName("android.os", "Parcel")
+  }
 
   override predicate isSink(DataFlow::Node sink) {
     exists(MethodAccess ma |
       ma.getMethod() instanceof GsonDeserializeMethod and
-      sink.asExpr() = ma.getArgument(1) // The class type argument
+      sink.asExpr() = ma.getArgument(1)
     )
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
     isReflectiveClassIdentifierStep(node1, node2)
-    or
-    exists(CreateFromParcelMethod m, Variable v |
-      m.getEnclosingCallable().getDeclaringType() = v.getType() and
-      node1.asExpr() = v.getAnAssignedValue() and
-      node2.asExpr() = m.getAParameter().getAnAccess()
-    )
   }
 }
 
@@ -279,8 +301,11 @@ predicate unsafeDeserialization(MethodAccess ma, Expr sink) {
     ma.getMethod() instanceof BurlapInputReadObjectMethod and sink = ma.getQualifier()
     or
     m instanceof GsonDeserializeMethod and
-    sink = ma.getArgument(0) and
-    exists(UnsafeGsonConfig usg | usg.hasFlowToExpr(ma.getArgument(1)))
+    sink = ma.getArgument(1)
+    or
+    m instanceof IntentGetParcelableExtraMethod and
+    isUnsafeAndroidGsonSink(ma) and
+    sink = ma
     or
     m instanceof FlexjsonDeserializeMethod and
     sink = ma.getArgument(0)
