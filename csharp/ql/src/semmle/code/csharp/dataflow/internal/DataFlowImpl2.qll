@@ -943,13 +943,8 @@ private module Stage2 {
   bindingset[call, c, outercc]
   private CcCall getCallContextCall(DataFlowCall call, DataFlowCallable c, Cc outercc) { any() }
 
-  bindingset[call, c]
-  private CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call) { any() }
-
-  bindingset[innercc, inner, call]
-  private predicate checkCallContextReturn(Cc innercc, DataFlowCallable inner, DataFlowCall call) {
-    any()
-  }
+  bindingset[call, c, innercc]
+  private CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call, Cc innercc) { any() }
 
   bindingset[node, cc, config]
   private LocalCc getLocalCc(NodeEx node, Cc cc, Configuration config) { any() }
@@ -1122,8 +1117,7 @@ private module Stage2 {
       fwdFlow(ret, innercc, argAp, ap, config) and
       flowOutOfCall(call, ret, out, allowsFieldFlow, config) and
       inner = ret.getEnclosingCallable() and
-      checkCallContextReturn(innercc, inner, call) and
-      ccOut = getCallContextReturn(inner, call)
+      ccOut = getCallContextReturn(inner, call, innercc)
     |
       ap instanceof ApNil or allowsFieldFlow = true
     )
@@ -1615,13 +1609,8 @@ private module Stage3 {
   bindingset[call, c, outercc]
   private CcCall getCallContextCall(DataFlowCall call, DataFlowCallable c, Cc outercc) { any() }
 
-  bindingset[call, c]
-  private CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call) { any() }
-
-  bindingset[innercc, inner, call]
-  private predicate checkCallContextReturn(Cc innercc, DataFlowCallable inner, DataFlowCall call) {
-    any()
-  }
+  bindingset[call, c, innercc]
+  private CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call, Cc innercc) { any() }
 
   bindingset[node, cc, config]
   private LocalCc getLocalCc(NodeEx node, Cc cc, Configuration config) { any() }
@@ -1816,8 +1805,7 @@ private module Stage3 {
       fwdFlow(ret, innercc, argAp, ap, config) and
       flowOutOfCall(call, ret, out, allowsFieldFlow, config) and
       inner = ret.getEnclosingCallable() and
-      checkCallContextReturn(innercc, inner, call) and
-      ccOut = getCallContextReturn(inner, call)
+      ccOut = getCallContextReturn(inner, call, innercc)
     |
       ap instanceof ApNil or allowsFieldFlow = true
     )
@@ -2364,18 +2352,14 @@ private module Stage4 {
 
   bindingset[call, c, outercc]
   private CcCall getCallContextCall(DataFlowCall call, DataFlowCallable c, Cc outercc) {
-    c = resolveCall(call, outercc) and
+    checkCallContextCall(outercc, call, c) and
     if recordDataFlowCallSite(call, c) then result = TSpecificCall(call) else result = TSomeCall()
   }
 
-  bindingset[call, c]
-  private CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call) {
+  bindingset[call, c, innercc]
+  private CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call, Cc innercc) {
+    checkCallContextReturn(innercc, c, call) and
     if reducedViableImplInReturn(c, call) then result = TReturn(c, call) else result = ccNone()
-  }
-
-  bindingset[innercc, inner, call]
-  private predicate checkCallContextReturn(Cc innercc, DataFlowCallable inner, DataFlowCall call) {
-    resolveReturn(innercc, inner, call)
   }
 
   bindingset[node, cc, config]
@@ -2579,8 +2563,7 @@ private module Stage4 {
       fwdFlow(ret, innercc, argAp, ap, config) and
       flowOutOfCall(call, ret, out, allowsFieldFlow, config) and
       inner = ret.getEnclosingCallable() and
-      checkCallContextReturn(innercc, inner, call) and
-      ccOut = getCallContextReturn(inner, call)
+      ccOut = getCallContextReturn(inner, call, innercc)
     |
       ap instanceof ApNil or allowsFieldFlow = true
     )
