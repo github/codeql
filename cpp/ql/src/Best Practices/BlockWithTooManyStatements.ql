@@ -30,6 +30,6 @@ where
   n > 3 and
   complexStmt = b.getAStmt()
 select b,
-  "Block with too many statements (" + n.toString() +
+  "Test works. Block with too many statements (" + n.toString() +
     " complex statements in the block). Complex statements at: $@", complexStmt,
-  complexStmt.toString()
+  complexStmt.getEnclosingFunction().toString()
