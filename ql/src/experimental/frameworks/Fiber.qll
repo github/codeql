@@ -2,6 +2,8 @@
  * Provides classes for working with concepts from the following packages:
  * - [`github.com/gofiber/fiber@v1.14.6`](https://pkg.go.dev/github.com/gofiber/fiber@v1.14.6)
  * - [`github.com/gofiber/utils@v0.1.0`](https://pkg.go.dev/github.com/gofiber/utils@v0.1.0)
+ *
+ * Generated with `Fiber.json` spec.
  */
 
 import go
