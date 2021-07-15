@@ -117,4 +117,42 @@ module Templating {
       result = getScope().getVariable(name).getAnAccess().flow()
     }
   }
+
+  /**
+   * A place where a template is instantiated or rendered.
+   */
+  class TemplateInstantiaton extends DataFlow::Node {
+    TemplateInstantiaton::Range range;
+  
+    TemplateInstantiaton() { this = range }
+
+    /** Gets a data flow node that refers to the instantiated template string, if any. */
+    DataFlow::SourceNode getOutput() { result = range.getOutput() }
+
+    /** Gets a data flow node that refers a template file to be instantiated, if any. */
+    DataFlow::Node getTemplateFileNode() { result = range.getTemplateFileNode() }
+
+    /** Gets a data flow node that refers to the contents of the template to be instantiated, if any. */
+    DataFlow::Node getTemplateContentNode() { result = range.getTemplateContentNode() }
+
+    /** Gets a data flow node that refers to an object whose properties become variables in the template. */
+    DataFlow::Node getTemplateParamsNode() { result = range.getTemplateParamsNode() }
+  }
+
+  /** Companion module to the `TemplateInstantiation` class. */
+  module TemplateInstantiaton {
+    abstract class Range extends DataFlow::Node {
+      /** Gets a data flow node that refers to the instantiated template, if any. */
+      abstract DataFlow::SourceNode getOutput();
+  
+      /** Gets a data flow node that refers a template file to be instantiated, if any. */
+      abstract DataFlow::Node getTemplateFileNode();
+  
+      /** Gets a data flow node that refers to the contents of the template to be instantiated, if any. */
+      abstract DataFlow::Node getTemplateContentNode();
+  
+      /** Gets a data flow node that refers to an object whose properties become variables in the template. */
+      abstract DataFlow::Node getTemplateParamsNode();
+    }
+  }
 }
