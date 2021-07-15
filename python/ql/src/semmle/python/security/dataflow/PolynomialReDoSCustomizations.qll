@@ -56,7 +56,7 @@ module PolynomialReDoS {
   /**
    * A regex execution, considered as a flow sink.
    */
-  class RegexExecutionAsSink extends DataFlow::Node {
+  class RegexExecutionAsSink extends Sink {
     RegExpTerm t;
 
     RegexExecutionAsSink() {
@@ -68,7 +68,7 @@ module PolynomialReDoS {
     }
 
     /** Gets the regex that is being executed by this node. */
-    RegExpTerm getRegExp() { result = t }
+    override RegExpTerm getRegExp() { result = t }
   }
 
   /**
