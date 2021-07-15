@@ -60,7 +60,7 @@ private module SensitiveDataModeling {
   ) {
     t.start() and
     exists(Function f |
-      nameIndicatesSensitiveData(f.getName(), classification) and
+      f.getName() = sensitiveString(classification) and
       result.asExpr() = f.getDefinition()
     )
     or
@@ -83,7 +83,7 @@ private module SensitiveDataModeling {
     // Note: If this is implemented with type-tracking, we will get cross-talk as
     // illustrated in python/ql/test/experimental/dataflow/sensitive-data/test.py
     exists(DataFlow::LocalSourceNode source |
-      nameIndicatesSensitiveData(source.asExpr().(StrConst).getText(), classification) and
+      source.asExpr().(StrConst).getText() = sensitiveString(classification) and
       source.flowsTo(result)
     )
   }
@@ -97,7 +97,7 @@ private module SensitiveDataModeling {
       or
       // to cover functions that we don't have the definition for, and where the
       // reference to the function has not already been marked as being sensitive
-      nameIndicatesSensitiveData(this.getFunction().asCfgNode().(NameNode).getId(), classification)
+      this.getFunction().asCfgNode().(NameNode).getId() = sensitiveString(classification)
     }
 
     override SensitiveDataClassification getClassification() { result = classification }
@@ -164,6 +164,68 @@ private module SensitiveDataModeling {
     nodeFrom = possibleSensitiveCallable()
   }
 
+  pragma[nomagic]
+  private string sensitiveStrConstCandidate() {
+    result = any(StrConst s | not s.isDocString()).getText() and
+    not result.regexpMatch(notSensitiveRegexp())
+  }
+
+  pragma[nomagic]
+  private string sensitiveAttributeNameCandidate() {
+    result = any(DataFlow::AttrRead a).getAttributeName() and
+    not result.regexpMatch(notSensitiveRegexp())
+  }
+
+  pragma[nomagic]
+  private string sensitiveParameterNameCandidate() {
+    result = any(Parameter p).getName() and
+    not result.regexpMatch(notSensitiveRegexp())
+  }
+
+  pragma[nomagic]
+  private string sensitiveFunctionNameCandidate() {
+    result = any(Function f).getName() and
+    not result.regexpMatch(notSensitiveRegexp())
+  }
+
+  pragma[nomagic]
+  private string sensitiveNameCandidate() {
+    result = any(Name n).getId() and
+    not result.regexpMatch(notSensitiveRegexp())
+  }
+
+  /**
+   * This helper predicate serves to deduplicate the results of the preceding predicates. This
+   * means that if, say, an attribute and a function parameter have the same name, then that name will
+   * only be matched once, which greatly cuts down on the number of regexp matches that have to be
+   * performed.
+   *
+   * Under normal circumstances, deduplication is only performed when a predicate is materialized, and
+   * so to see the effect of this we must create a separate predicate that calculates the union of the
+   * preceding predicates.
+   */
+  pragma[nomagic]
+  private string sensitiveStringCandidate() {
+    result in [
+        sensitiveNameCandidate(), sensitiveAttributeNameCandidate(),
+        sensitiveParameterNameCandidate(), sensitiveFunctionNameCandidate(),
+        sensitiveStrConstCandidate()
+      ]
+  }
+
+  /**
+   * Returns strings (primarily the names of various program entities) that may contain sensitive data
+   * with the classification `classification`.
+   *
+   * This helper predicate ends up being very similar to `nameIndicatesSensitiveData`,
+   * but is performance optimized to limit the number of regexp matches that have to be performed.
+   */
+  pragma[nomagic]
+  private string sensitiveString(SensitiveDataClassification classification) {
+    result = sensitiveStringCandidate() and
+    result.regexpMatch(maybeSensitiveRegexp(classification))
+  }
+
   /**
    * Any kind of variable assignment (also including with/for) where the name indicates
    * it contains sensitive data.
@@ -182,7 +244,7 @@ private module SensitiveDataModeling {
 
     SensitiveVariableAssignment() {
       exists(DefinitionNode def |
-        nameIndicatesSensitiveData(def.(NameNode).getId(), classification) and
+        def.(NameNode).getId() = sensitiveString(classification) and
         (
           this.asCfgNode() = def.getValue()
           or
@@ -193,7 +255,7 @@ private module SensitiveDataModeling {
       )
       or
       exists(With with |
-        nameIndicatesSensitiveData(with.getOptionalVars().(Name).getId(), classification) and
+        with.getOptionalVars().(Name).getId() = sensitiveString(classification) and
         this.asExpr() = with.getContextExpr()
       )
     }
@@ -209,7 +271,7 @@ private module SensitiveDataModeling {
       // Things like `foo.<sensitive-name>` or `from <module> import <sensitive-name>`
       // I considered excluding any `from ... import something_sensitive`, but then realized that
       // we should flag up `form ... import password as ...` as a password
-      nameIndicatesSensitiveData(this.(DataFlow::AttrRead).getAttributeName(), classification)
+      this.(DataFlow::AttrRead).getAttributeName() = sensitiveString(classification)
       or
       // Things like `getattr(foo, <reference-to-string>)`
       this.(DataFlow::AttrRead).getAttributeNameExpr() = sensitiveLookupStringConst(classification)
@@ -246,9 +308,7 @@ private module SensitiveDataModeling {
   class SensitiveParameter extends SensitiveDataSource::Range, DataFlow::ParameterNode {
     SensitiveDataClassification classification;
 
-    SensitiveParameter() {
-      nameIndicatesSensitiveData(this.getParameter().getName(), classification)
-    }
+    SensitiveParameter() { this.getParameter().getName() = sensitiveString(classification) }
 
     override SensitiveDataClassification getClassification() { result = classification }
   }

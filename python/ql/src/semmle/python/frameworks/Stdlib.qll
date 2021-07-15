@@ -1207,6 +1207,13 @@ private module Stdlib {
     override DataFlow::Node getAnInput() { result = this.getArg(0) }
   }
 
+  /** Helper predicate for the `HashLibGenericHashOperation` charpred, to prevent a bad join order. */
+  pragma[nomagic]
+  private API::Node hashlibMember(string hashName) {
+    result = API::moduleImport("hashlib").getMember(hashName) and
+    hashName != "new"
+  }
+
   /**
    * A hashing operation from the `hashlib` package using one of the predefined classes
    * (such as `hashlib.md5`). `hashlib.new` is not included, since it is handled by
@@ -1218,10 +1225,7 @@ private module Stdlib {
     API::Node hashClass;
 
     bindingset[this]
-    HashlibGenericHashOperation() {
-      not hashName = "new" and
-      hashClass = API::moduleImport("hashlib").getMember(hashName)
-    }
+    HashlibGenericHashOperation() { hashClass = hashlibMember(hashName) }
 
     override Cryptography::CryptographicAlgorithm getAlgorithm() { result.matchesName(hashName) }
   }
