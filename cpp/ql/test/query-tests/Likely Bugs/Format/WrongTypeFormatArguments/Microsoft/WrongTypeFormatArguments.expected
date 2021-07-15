@@ -19,8 +19,6 @@
 | printf1.h:116:16:116:24 | myString3 | This argument should be of type '__wchar_t *' but is of type 'int *' |
 | printf1.h:117:16:117:24 | myString4 | This argument should be of type '__wchar_t *' but is of type 'int *' |
 | printf1.h:130:18:130:18 | 0 | This argument should be of type 'void *' but is of type 'int' |
-| printf1.h:153:18:153:18 | c | This argument should be of type '__wchar_t *' but is of type 'char *' |
-| printf1.h:156:18:156:19 | wc | This argument should be of type 'char *' but is of type '__wchar_t *' |
 | printf1.h:181:21:181:22 | ll | This argument should be of type 'int' but is of type 'long long' |
 | printf1.h:182:21:182:23 | ull | This argument should be of type 'unsigned int' but is of type 'unsigned long long' |
 | printf1.h:185:21:185:23 | i64 | This argument should be of type 'int' but is of type 'long long' |

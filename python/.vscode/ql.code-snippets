@@ -106,7 +106,7 @@
         "prefix": "type tracking",
         "body": [
             "/** Gets a reference to ${3:a thing}. */",
-            "private DataFlow::LocalSourceNode ${1:myType}(DataFlow::TypeTracker t) {",
+            "private DataFlow::TypeTrackingNode ${1:myType}(DataFlow::TypeTracker t) {",
             "  t.start() and",
             "  result = ${2:value}",
             "  or",

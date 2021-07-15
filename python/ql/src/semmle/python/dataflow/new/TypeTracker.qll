@@ -23,7 +23,7 @@ class OptionalAttributeName = Internal::OptionalContentName;
  * It is recommended that all uses of this type are written in the following form,
  * for tracking some type `myType`:
  * ```ql
- * DataFlow::LocalSourceNode myType(DataFlow::TypeTracker t) {
+ * DataFlow::TypeTrackingNode myType(DataFlow::TypeTracker t) {
  *   t.start() and
  *   result = < source of myType >
  *   or

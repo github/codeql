@@ -162,7 +162,8 @@ private newtype TContent =
   TArrayContent() or
   TCollectionContent() or
   TMapKeyContent() or
-  TMapValueContent()
+  TMapValueContent() or
+  TSyntheticFieldContent(SyntheticField s)
 
 /**
  * A description of the way data may be stored inside an object. Examples
@@ -170,6 +171,9 @@ private newtype TContent =
  * of an array.
  */
 class Content extends TContent {
+  /** Gets the type of the contained data for the purpose of type pruning. */
+  abstract DataFlowType getType();
+
   /** Gets a textual representation of this element. */
   abstract string toString();
 
@@ -193,6 +197,8 @@ class FieldContent extends Content, TFieldContent {
 
   InstanceField getField() { result = f }
 
+  override DataFlowType getType() { result = getErasedRepr(f.getType()) }
+
   override string toString() { result = f.toString() }
 
   override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
@@ -202,22 +208,43 @@ class FieldContent extends Content, TFieldContent {
 
 /** A reference through an array. */
 class ArrayContent extends Content, TArrayContent {
+  override DataFlowType getType() { result instanceof TypeObject }
+
   override string toString() { result = "[]" }
 }
 
 /** A reference through the contents of some collection-like container. */
 class CollectionContent extends Content, TCollectionContent {
+  override DataFlowType getType() { result instanceof TypeObject }
+
   override string toString() { result = "<element>" }
 }
 
 /** A reference through a map key. */
 class MapKeyContent extends Content, TMapKeyContent {
+  override DataFlowType getType() { result instanceof TypeObject }
+
   override string toString() { result = "<map.key>" }
 }
 
 /** A reference through a map value. */
 class MapValueContent extends Content, TMapValueContent {
+  override DataFlowType getType() { result instanceof TypeObject }
+
   override string toString() { result = "<map.value>" }
+}
+
+/** A reference through a synthetic instance field. */
+class SyntheticFieldContent extends Content, TSyntheticFieldContent {
+  SyntheticField s;
+
+  SyntheticFieldContent() { this = TSyntheticFieldContent(s) }
+
+  SyntheticField getField() { result = s }
+
+  override DataFlowType getType() { result = getErasedRepr(s.getType()) }
+
+  override string toString() { result = s.toString() }
 }
 
 /**
