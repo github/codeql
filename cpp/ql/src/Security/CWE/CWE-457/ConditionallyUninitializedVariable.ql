@@ -6,7 +6,6 @@
  * @kind problem
  * @problem.severity warning
  * @security-severity 7.8
- * @opaque-id SM02313
  * @id cpp/conditionally-uninitialized-variable
  * @tags security
  *       external/cwe/cwe-457
