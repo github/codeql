@@ -8,7 +8,7 @@ private import codeql_ruby.controlflow.CfgNodes
 
 class Node = DataFlowPublic::Node;
 
-class LocalSourceNode = DataFlowPublic::LocalSourceNode;
+class TypeTrackingNode = DataFlowPublic::LocalSourceNode;
 
 predicate simpleLocalFlowStep = DataFlowPrivate::simpleLocalFlowStep/2;
 
@@ -70,7 +70,7 @@ predicate returnStep(DataFlowPrivate::ReturnNode nodeFrom, Node nodeTo) {
  * to `z` inside `bar`, even though this content write happens _after_ `bar` is
  * called.
  */
-predicate basicStoreStep(Node nodeFrom, LocalSourceNode nodeTo, string content) {
+predicate basicStoreStep(Node nodeFrom, DataFlowPublic::LocalSourceNode nodeTo, string content) {
   // TODO: support SetterMethodCall inside TuplePattern
   exists(ExprNodes::MethodCallCfgNode call |
     content = getSetterCallAttributeName(call.getExpr()) and
