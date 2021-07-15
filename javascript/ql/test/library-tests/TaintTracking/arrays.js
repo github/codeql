@@ -9,4 +9,7 @@ function test() {
 
     const union = require("array-union");
     sink(union(["bla"], foo)); // NOT OK
+
+    const flat = require("arr-flatten");
+    sink(flat(foo)); // NOT OK
 }

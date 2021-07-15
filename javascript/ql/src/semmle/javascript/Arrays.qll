@@ -389,4 +389,21 @@ private module ArrayLibraries {
       )
     }
   }
+
+  /**
+   * A taint step through a call to `Array.prototype.flat` or a polyfill implementing array flattening.
+   */
+  private class ArrayFlatStep extends TaintTracking::SharedTaintStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(DataFlow::CallNode call | succ = call |
+        call.(DataFlow::MethodCallNode).getMethodName() = "flat" and
+        pred = call.getReceiver()
+        or
+        call =
+          API::moduleImport(["array-flatten", "arr-flatten", "flatten", "array.prototype.flat"])
+              .getACall() and
+        pred = call.getAnArgument()
+      )
+    }
+  }
 }

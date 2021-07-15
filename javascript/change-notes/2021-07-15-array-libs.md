@@ -8,4 +8,8 @@ lgtm,codescanning
     [array-ify](https://npmjs.com/package/array-ify),
     [array-union](https://npmjs.com/package/array-union),
     [array-uniq](https://npmjs.com/package/array-uniq),
-    [uniq](https://npmjs.com/package/uniq)
+    [uniq](https://npmjs.com/package/uniq),
+    [array-flatten](https://npmjs.com/package/array-flatten),
+    [arr-flatten](https://npmjs.com/package/arr-flatten),
+    [flatten](https://npmjs.com/package/flatten),
+    [array.prototype.flat](https://npmjs.com/package/array.prototype.flat)
