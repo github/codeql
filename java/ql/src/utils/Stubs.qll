@@ -163,7 +163,7 @@ abstract class ExcludedPackage extends Package { }
 
 /** Exclude types from the standard library. */
 private class DefaultLibs extends ExcludedPackage {
-  DefaultLibs() { this.getName().matches(["java.%", "javax.%", "jdk.%", "sun.%"]) }
+  DefaultLibs() { this.getName().matches(["java.%", "jdk.%", "sun.%"]) }
 }
 
 private string stubAccessibility(Member m) {
