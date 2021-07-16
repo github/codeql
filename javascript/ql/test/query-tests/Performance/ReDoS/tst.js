@@ -373,5 +373,7 @@ var bad87 = /("[^"]*?"|[^"\s]+)+(?=\s*|\s*$)X/g;
 var bad88 = /("[^"]*?"|[^"\s]+)+(?=X)/g;
 var bad89 = /(x*)+(?=$)/
 var bad90 = /(x*)+(?=$|y)/
-var bad91 = /([\s\S]*)+(?=$)/
-var bad92 = /([\s\S]*)+(?=$|y)/
+
+// GOOD - but we spuriously conclude that a rejecting suffix exists.
+var good44 = /([\s\S]*)+(?=$)/;
+var good45 = /([\s\S]*)+(?=$|y)/;
