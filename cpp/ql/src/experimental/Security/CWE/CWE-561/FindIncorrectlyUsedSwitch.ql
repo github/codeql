@@ -1,5 +1,5 @@
 /**
- * @name Operator Find Incorrectly Used Switch
+ * @name Incorrect switch statement
  * @description --Finding places the dangerous use of a switch.
  *              --For example, when the range of values for a condition does not cover all of the selection values..
  * @kind problem
