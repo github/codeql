@@ -354,31 +354,24 @@ private module Pino {
   /**
    * Gets a logger instance from the `pino` library.
    */
-  private DataFlow::SourceNode pino() {
-    result = pinoApi().getAnImmediateUse()
+  private API::Node pino() {
+    result = pinoApi()
     or
     // `pino` is installed as the "log" property on the request object in `Express` and similar libraries.
     // in `Hapi` the property is "logger".
-    exists(HTTP::RequestExpr req |
-      result = req.flow().getALocalSource().getAPropertyRead(["log", "logger"])
+    exists(HTTP::RequestExpr req, API::Node reqNode |
+      reqNode.getAnImmediateUse() = req.flow().getALocalSource() and
+      result = reqNode.getMember(["log", "logger"])
     )
-  }
-
-  /**
-   * Gets a reference to a logger method from the `pino` library.
-   */
-  private DataFlow::SourceNode pinoCallee(DataFlow::TypeTracker t) {
-    t.startInProp(["trace", "debug", "info", "warn", "error", "fatal"]) and
-    result = pino()
-    or
-    exists(DataFlow::TypeTracker t2 | result = pinoCallee(t2).track(t2, t))
   }
 
   /**
    * A logging call to the `pino` library.
    */
   private class PinoCall extends LoggerCall {
-    PinoCall() { this = pinoCallee(DataFlow::TypeTracker::end()).getACall() }
+    PinoCall() {
+      this = pino().getMember(["trace", "debug", "info", "warn", "error", "fatal"]).getACall()
+    }
 
     override DataFlow::Node getAMessageComponent() { result = getAnArgument() }
   }
