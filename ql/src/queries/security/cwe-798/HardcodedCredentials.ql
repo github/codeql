@@ -3,6 +3,7 @@
  * @description Credentials are hard coded in the source code of the application.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 9.8
  * @precision high
  * @id rb/hardcoded-credentials
  * @tags security
