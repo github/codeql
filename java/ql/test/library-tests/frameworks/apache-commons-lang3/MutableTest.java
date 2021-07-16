@@ -21,8 +21,10 @@ class MutableTest {
       sink(taintedAlias.getValue()); // $hasValueFlow
       sink(taintSet.getValue()); // $hasValueFlow
       sink(taintSetAlias.getValue()); // $hasValueFlow
-      sink(taintCleared.getValue());
-      sink(taintClearedAlias.getValue());
+      // These two cases don't work currently because synthetic fields are always weakly updated,
+      // so no taint clearing takes place.
+      sink(taintCleared.getValue()); // $SPURIOUS: hasValueFlow
+      sink(taintClearedAlias.getValue()); // $SPURIOUS: hasValueFlow
 
     }
 }
