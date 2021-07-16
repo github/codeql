@@ -24,4 +24,4 @@ class ReadFunctionCall extends FunctionCall {
 }
 
 from ReadFunctionCall call
-select call.getFile(), "message", call.getEnclosingFunction(), call
+select call.getFile(), "placeholder, $@", call.getEnclosingFunction(), call
