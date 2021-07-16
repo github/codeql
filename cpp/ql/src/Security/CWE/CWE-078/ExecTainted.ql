@@ -81,10 +81,6 @@ class TaintToConcatenationConfiguration extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) {
     interestingConcatenation(sink, _)
   }
-
-  override int explorationLimit() {
-    result = 10
-  }
 }
 
 class ExecTaintConfiguration extends TaintTracking::Configuration {
@@ -110,14 +106,6 @@ query predicate edges(DataFlow::PathNode a, DataFlow::PathNode b) {
   interestingConcatenation(a.getNode(), b.getNode()) and
   a.getConfiguration() instanceof TaintToConcatenationConfiguration and
   b.getConfiguration() instanceof ExecTaintConfiguration
-}
-
-query predicate pathExplore(DataFlow::PartialPathNode source, DataFlow::PartialPathNode node, int dist) {
-  any(TaintToConcatenationConfiguration cfg).hasPartialFlow(source, node, dist)
-}
-
-query predicate pathExploreRev(DataFlow::PartialPathNode node, DataFlow::PartialPathNode sink, int dist) {
-  any(TaintToConcatenationConfiguration cfg).hasPartialFlowRev(node, sink, dist)
 }
 
 from
