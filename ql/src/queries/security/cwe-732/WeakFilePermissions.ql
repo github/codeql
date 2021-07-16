@@ -3,6 +3,7 @@
  * @description Allowing files to be readable or writable by users other than the owner may allow sensitive information to be accessed.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 7.8
  * @id rb/overly-permissive-file
  * @tags external/cwe/cwe-732
  *       security
