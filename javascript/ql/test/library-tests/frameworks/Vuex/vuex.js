@@ -107,6 +107,14 @@ const Component = new Vue({
         },
         ...mapMutations({ sneakyTaint3: 'setTainted3' }),
         ...mapActions({ emitTaint4: 'doTaint4' }),
+        loopingState() {
+            // Make sure we do not fail by trying to compute infinitely long access paths.
+            // 'ref' can refer to state.foo, state.foo.foo, state.foo.foo.foo, and so on.
+            let ref = this.$store.state;
+            while (Math.random()) {
+                ref = ref.foo;
+            }
+        }
     }
 });
 

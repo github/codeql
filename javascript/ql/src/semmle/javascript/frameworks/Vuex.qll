@@ -53,7 +53,8 @@ module Vuex {
   bindingset[base, prop]
   private string appendToNamespace(string base, string prop) {
     result = base + prop + "/" and
-    // Allow at most two occurrences of a given property name in the path
+    // To avoid constructing infinitely long access paths,
+    // allow at most two occurrences of a given property name in the path
     // (one in the base, plus the one we're appending now).
     count(base.indexOf("/" + prop + "/")) <= 1
   }
