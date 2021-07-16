@@ -172,6 +172,7 @@ Python built-in support
    mysql-connector-python, Database
    mysql-connector, Database
    MySQL-python, Database
+   mysqlclient, Database
    psycopg2, Database
    sqlite3, Database
    cryptography, Cryptography library

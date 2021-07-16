@@ -114,7 +114,7 @@ module AiohttpWebModel {
      * Gets a reference to a class, that has been backtracked from the view-class handler
      * argument `origin` (to a route-setup for view-classes).
      */
-    private DataFlow::LocalSourceNode viewClassBackTracker(
+    private DataFlow::TypeTrackingNode viewClassBackTracker(
       DataFlow::TypeBackTracker t, DataFlow::Node origin
     ) {
       t.start() and
@@ -284,7 +284,7 @@ module AiohttpWebModel {
     abstract class InstanceSource extends DataFlow::LocalSourceNode { }
 
     /** Gets a reference to an instance of `aiohttp.web.Request`. */
-    private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
       t.start() and
       result instanceof InstanceSource
       or
@@ -314,7 +314,7 @@ module AiohttpWebModel {
     abstract class InstanceSource extends DataFlow::LocalSourceNode { }
 
     /** Gets a reference to an instance of `aiohttp.web.Response`. */
-    private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
       t.start() and
       result instanceof InstanceSource
       or
@@ -344,7 +344,7 @@ module AiohttpWebModel {
     abstract class InstanceSource extends DataFlow::LocalSourceNode { }
 
     /** Gets a reference to an instance of `aiohttp.StreamReader`. */
-    private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
       t.start() and
       result instanceof InstanceSource
       or

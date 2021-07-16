@@ -470,3 +470,16 @@ class Chokidar extends FileNameProducer, FileSystemAccess, API::CallNode {
     )
   }
 }
+
+/**
+ * A call to the [`mkdirp`](https://www.npmjs.com/package/mkdirp) library.
+ */
+private class Mkdirp extends FileSystemAccess, API::CallNode {
+  Mkdirp() {
+    this = API::moduleImport("mkdirp").getACall()
+    or
+    this = API::moduleImport("mkdirp").getMember("sync").getACall()
+  }
+
+  override DataFlow::Node getAPathArgument() { result = getArgument(0) }
+}

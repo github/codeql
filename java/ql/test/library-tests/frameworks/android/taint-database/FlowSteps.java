@@ -1,5 +1,7 @@
 import java.util.Map;
 import java.util.Set;
+import java.util.HashSet;
+import java.util.HashMap;
 
 import android.content.ContentProvider;
 import android.content.ContentResolver;
@@ -26,10 +28,10 @@ public class FlowSteps {
 		// Dummy class to test for sub classes
 	}
 
-	public static String[] appendSelectionArgs() {
-		String[] originalValues = {taint()}; // $ MISSING: taintReachesReturn
-		String[] newValues = {taint()}; // $ MISSING: taintReachesReturn
-		return DatabaseUtils.appendSelectionArgs(originalValues, newValues);
+	public static String appendSelectionArgs() {
+		String[] originalValues = {taint()}; // $taintReachesReturn
+		String[] newValues = {taint()}; // $taintReachesReturn
+		return DatabaseUtils.appendSelectionArgs(originalValues, newValues)[0];
 	}
 
 	public static String concatenateWhere() {
@@ -42,7 +44,7 @@ public class FlowSteps {
 		target = taint();
 		boolean distinct = taint(); 
 		String tables = taint(); // $taintReachesReturn
-		String[] columns = {taint()}; // $ MISSING: taintReachesReturn
+		String[] columns = {taint()}; // $taintReachesReturn
 		String where = taint(); // $taintReachesReturn
 		String groupBy = taint(); // $taintReachesReturn
 		String having = taint(); // $taintReachesReturn
@@ -53,7 +55,7 @@ public class FlowSteps {
 
 	public static String buildQuery(MySQLiteQueryBuilder target) {
 		target = taint(); // $taintReachesReturn
-		String[] projectionIn = {taint()};// $ MISSING: taintReachesReturn
+		String[] projectionIn = {taint()}; // $taintReachesReturn
 		String selection = taint(); // $taintReachesReturn
 		String groupBy = taint(); // $taintReachesReturn
 		String having = taint(); // $taintReachesReturn
@@ -64,9 +66,9 @@ public class FlowSteps {
 
 	public static String buildQuery2(MySQLiteQueryBuilder target) {
 		target = taint(); // $taintReachesReturn
-		String[] projectionIn = {taint()}; // $ MISSING: taintReachesReturn
+		String[] projectionIn = {taint()}; // $taintReachesReturn
 		String selection = taint(); // $taintReachesReturn
-		String[] selectionArgs = {taint()}; // $ MISSING: taintReachesReturn
+		String[] selectionArgs = {taint()}; 
 		String groupBy = taint(); // $taintReachesReturn
 		String having = taint(); // $taintReachesReturn
 		String sortOrder = taint(); // $taintReachesReturn
@@ -76,7 +78,7 @@ public class FlowSteps {
 
 	public static String buildUnionQuery(MySQLiteQueryBuilder target) {
 		target = taint(); // $taintReachesReturn
-		String[] subQueries = {taint()}; // $ MISSING: taintReachesReturn
+		String[] subQueries = {taint()}; // $taintReachesReturn
 		String sortOrder = taint(); // $taintReachesReturn
 		String limit = taint(); // $taintReachesReturn
 		return target.buildUnionQuery(subQueries, sortOrder, limit);
@@ -85,12 +87,13 @@ public class FlowSteps {
 	public static String buildUnionSubQuery2(MySQLiteQueryBuilder target) {
 		target = taint(); // $taintReachesReturn
 		String typeDiscriminatorColumn = taint(); // $taintReachesReturn
-		String[] unionColumns = {taint()}; // $ MISSING: taintReachesReturn
-		Set<String> columnsPresentInTable = taint(); // $taintReachesReturn
+		String[] unionColumns = {taint()}; // $taintReachesReturn
+		Set<String> columnsPresentInTable = new HashSet();
+		columnsPresentInTable.add(taint()); // $taintReachesReturn
 		int computedColumnsOffset = taint();
 		String typeDiscriminatorValue = taint(); // $taintReachesReturn
 		String selection = taint(); // $taintReachesReturn
-		String[] selectionArgs = {taint()}; // $ MISSING: taintReachesReturn
+		String[] selectionArgs = {taint()};
 		String groupBy = taint(); // $taintReachesReturn
 		String having = taint(); // $taintReachesReturn
 		return target.buildUnionSubQuery(typeDiscriminatorColumn, unionColumns, columnsPresentInTable,
@@ -100,8 +103,9 @@ public class FlowSteps {
 	public static String buildUnionSubQuery3(MySQLiteQueryBuilder target) {
 		target = taint(); // $taintReachesReturn 
 		String typeDiscriminatorColumn = taint(); // $taintReachesReturn
-		String[] unionColumns = {taint()}; // $ MISSING: taintReachesReturn
-		Set<String> columnsPresentInTable = taint(); // $taintReachesReturn
+		String[] unionColumns = {taint()}; // $taintReachesReturn
+		Set<String> columnsPresentInTable = new HashSet();
+		columnsPresentInTable.add(taint()); // $taintReachesReturn
 		int computedColumnsOffset = taint();
 		String typeDiscriminatorValue = taint(); // $taintReachesReturn
 		String selection = taint(); // $taintReachesReturn
@@ -151,14 +155,17 @@ public class FlowSteps {
 
 	public static StringBuilder appendColumns() {
 		StringBuilder s = taint(); // $taintReachesReturn
-		String[] columns = {taint()}; // $ MISSING: taintReachesReturn
+		String[] columns = {taint()}; // $taintReachesReturn
 		SQLiteQueryBuilder.appendColumns(s, columns);
 		return s;
 	}
 
 	public static SQLiteQueryBuilder setProjectionMap(MySQLiteQueryBuilder target) {
 		target = taint(); // $taintReachesReturn
-		Map<String, String> columnMap = taint(); // $taintReachesReturn
+		Map<String, String> columnMap = new HashMap(); 
+		String k = taint(); // $taintReachesReturn
+		String v = taint(); // $taintReachesReturn
+		columnMap.put(k, v);
 		target.setProjectionMap(columnMap);
 		return target;
 	}

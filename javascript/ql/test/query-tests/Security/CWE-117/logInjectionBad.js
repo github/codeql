@@ -58,9 +58,17 @@ const server2 = http.createServer((req, res) => {
     console.log(stripAnsi(chalk.underline.bgBlue(username))); // NOT OK
 });
 
-const pino = require('pino')()
-
+var prettyjson = require('prettyjson');
 const server3 = http.createServer((req, res) => {
+    let q = url.parse(req.url, true);
+    let username = q.query.username;
+
+    console.log(prettyjson.render(username)); // NOT OK
+
+});
+
+const pino = require('pino')()
+const server4 = http.createServer((req, res) => {
     let q = url.parse(req.url, true);
     let username = q.query.username;
 

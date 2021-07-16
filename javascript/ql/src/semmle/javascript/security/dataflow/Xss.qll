@@ -319,6 +319,20 @@ module DomBasedXss {
   }
 
   /**
+   * A React tooltip where the `data-html` attribute is set to `true`.
+   */
+  class TooltipSink extends Sink {
+    TooltipSink() {
+      exists(JSXElement el |
+        el.getAttributeByName("data-html").getStringValue() = "true" or
+        el.getAttributeByName("data-html").getValue().mayHaveBooleanValue(true)
+      |
+        this = el.getAttributeByName("data-tip").getValue().flow()
+      )
+    }
+  }
+
+  /**
    * The HTML body of an email, viewed as an XSS sink.
    */
   class EmailHtmlBodySink extends Sink {
