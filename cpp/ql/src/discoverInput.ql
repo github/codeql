@@ -1,10 +1,10 @@
 /**
  * @name Discovering program input
- * @description Blocks with too many consecutive statements are candidates for refactoring. Only complex statements are counted here (eg. for, while, switch ...). The top-level logic will be clearer if each complex statement is extracted to a function.
+ * @description https://securitylab.github.com/research/bug-hunting-codeql-rsyslog/
  * @kind problem
  * @problem.severity recommendation
  * @precision high
- * @id cpp/complex-block
+ * @id cpp/discover-input
  * @tags testability
  *       readability
  *       maintainability
