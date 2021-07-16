@@ -75,3 +75,16 @@ app.get('/baz', function(req, res) {
   res.send(p); // NOT OK
   res.send(other.p); // NOT OK
 });
+
+const sortKeys = require('sort-keys');
+
+app.get('/baz', function(req, res) {
+  let { p } = req.params;
+
+  var obj = {};
+  obj.p = p;
+  var other = sortKeys(obj);
+
+  res.send(p); // NOT OK
+  res.send(other.p); // NOT OK
+});

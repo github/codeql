@@ -183,7 +183,8 @@ private import semmle.javascript.dataflow.internal.PreCallGraphStep
 private class CloneStep extends PreCallGraphStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     exists(DataFlow::CallNode call |
-      call = DataFlow::moduleImport(["clone", "fclone"]).getACall()
+      // `camelcase-keys` isn't quite a cloning library. But it's pretty close.
+      call = DataFlow::moduleImport(["clone", "fclone", "sort-keys", "camelcase-keys"]).getACall()
       or
       call = DataFlow::moduleMember("json-cycle", ["decycle", "retrocycle"]).getACall()
     |
