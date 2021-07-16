@@ -861,3 +861,17 @@ private class ApacheTripleModel extends SummaryModelCsv {
       ]
   }
 }
+
+/**
+ * Value-propagating models for `MutableObject`.
+ */
+private class ApacheMutableObjectModel extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "org.apache.commons.lang3.mutable;MutableObject;false;MutableObject;;;Argument[0];SyntheticField[org.apache.commons.lang3.mutable.MutableObject.value] of Argument[-1];value",
+        "org.apache.commons.lang3.mutable;MutableObject;false;setValue;;;Argument[0];SyntheticField[org.apache.commons.lang3.mutable.MutableObject.value] of Argument[-1];value",
+        "org.apache.commons.lang3.mutable;MutableObject;false;getValue;;;SyntheticField[org.apache.commons.lang3.mutable.MutableObject.value] of Argument[-1];ReturnValue;value"
+      ]
+  }
+}
