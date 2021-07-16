@@ -1064,7 +1064,7 @@ private float getUpperBoundsImpl(Expr expr) {
       // absolute value. Since `abs(x) = max(-x,x)` this is equivalent to
       // adding `-rhsLB` to the set of upper bounds.
       exists(float rhsLB |
-        rhsLB = getFullyConvertedLowerBounds(remExpr.getAnOperand()) and
+        rhsLB = getFullyConvertedLowerBounds(remExpr.getRightOperand()) and
         not rhsLB >= 0
       |
         result = -rhsLB
