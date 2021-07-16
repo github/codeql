@@ -169,13 +169,19 @@ module CodeInjection {
   }
 
   /**
-   * The first argument to `Module.prototype._compile` from the Node.js built-in module `module`,
-   * considered as a code-injection sink.
+   * The first argument to `Module.prototype._compile`, considered as a code-injection sink.
    */
   class ModuleCompileSink extends Sink {
     ModuleCompileSink() {
+      // `require('module').prototype._compile`
       this =
         API::moduleImport("module").getInstance().getMember("_compile").getACall().getArgument(0)
+      or
+      // `module.constructor.prototype._compile`
+      exists(DataFlow::SourceNode moduleConstructor |
+        moduleConstructor = DataFlow::moduleVarNode(_).getAPropertyRead("constructor") and
+        this = moduleConstructor.getAnInstantiation().getAMethodCall("_compile").getArgument(0)
+      )
     }
   }
 

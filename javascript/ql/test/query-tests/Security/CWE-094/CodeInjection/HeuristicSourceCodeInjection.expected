@@ -101,6 +101,9 @@ nodes
 | module.js:9:16:9:29 | req.query.code |
 | module.js:9:16:9:29 | req.query.code |
 | module.js:9:16:9:29 | req.query.code |
+| module.js:11:17:11:30 | req.query.code |
+| module.js:11:17:11:30 | req.query.code |
+| module.js:11:17:11:30 | req.query.code |
 | react-native.js:7:7:7:33 | tainted |
 | react-native.js:7:17:7:33 | req.param("code") |
 | react-native.js:7:17:7:33 | req.param("code") |
@@ -229,6 +232,7 @@ edges
 | express.js:19:37:19:70 | req.par ... odule") | express.js:19:37:19:70 | req.par ... odule") |
 | express.js:21:19:21:48 | req.par ... ntext") | express.js:21:19:21:48 | req.par ... ntext") |
 | module.js:9:16:9:29 | req.query.code | module.js:9:16:9:29 | req.query.code |
+| module.js:11:17:11:30 | req.query.code | module.js:11:17:11:30 | req.query.code |
 | react-native.js:7:7:7:33 | tainted | react-native.js:8:32:8:38 | tainted |
 | react-native.js:7:7:7:33 | tainted | react-native.js:8:32:8:38 | tainted |
 | react-native.js:7:7:7:33 | tainted | react-native.js:10:23:10:29 | tainted |
