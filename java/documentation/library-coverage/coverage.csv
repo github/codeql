@@ -49,6 +49,7 @@ org.springframework.beans,,,26,,,,,,,,,,,,,,,,26
 org.springframework.cache,,,13,,,,,,,,,,,,,,,,13
 org.springframework.http,14,,,,,,,,,14,,,,,,,,,
 org.springframework.jdbc.core,10,,,,,,,,,,,10,,,,,,,
+org.springframework.jdbc.object,9,,,,,,,,,,,9,,,,,,,
 org.springframework.ldap.core,14,,,,,,,,14,,,,,,,,,,
 org.springframework.security.web.savedrequest,,6,,,,,,,,,,,,,,,6,,
 org.springframework.ui,,,32,,,,,,,,,,,,,,,,32
