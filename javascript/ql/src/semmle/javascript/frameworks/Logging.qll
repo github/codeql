@@ -337,3 +337,17 @@ class StripAnsiStep extends TaintTracking::SharedTaintStep {
     )
   }
 }
+
+/**
+ * A step through the [`ansi-to-html`](https://npmjs.org/package/ansi-to-html) library.
+ */
+class AnsiToHtmlStep extends TaintTracking::SharedTaintStep {
+  override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(API::CallNode call |
+      call = API::moduleImport("ansi-to-html").getInstance().getMember("toHtml").getACall()
+    |
+      pred = call.getArgument(0) and
+      succ = call
+    )
+  }
+}

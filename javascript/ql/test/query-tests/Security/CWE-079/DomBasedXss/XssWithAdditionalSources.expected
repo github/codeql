@@ -691,6 +691,14 @@ nodes
 | tst.js:444:44:444:49 | source |
 | tst.js:445:32:445:37 | source |
 | tst.js:445:32:445:37 | source |
+| tst.js:453:7:453:39 | source |
+| tst.js:453:16:453:39 | documen ... .search |
+| tst.js:453:16:453:39 | documen ... .search |
+| tst.js:455:18:455:23 | source |
+| tst.js:455:18:455:23 | source |
+| tst.js:456:18:456:42 | ansiToH ... source) |
+| tst.js:456:18:456:42 | ansiToH ... source) |
+| tst.js:456:36:456:41 | source |
 | typeahead.js:9:28:9:30 | loc |
 | typeahead.js:9:28:9:30 | loc |
 | typeahead.js:10:16:10:18 | loc |
@@ -1365,6 +1373,13 @@ edges
 | tst.js:436:6:436:38 | source | tst.js:445:32:445:37 | source |
 | tst.js:436:15:436:38 | documen ... .search | tst.js:436:6:436:38 | source |
 | tst.js:436:15:436:38 | documen ... .search | tst.js:436:6:436:38 | source |
+| tst.js:453:7:453:39 | source | tst.js:455:18:455:23 | source |
+| tst.js:453:7:453:39 | source | tst.js:455:18:455:23 | source |
+| tst.js:453:7:453:39 | source | tst.js:456:36:456:41 | source |
+| tst.js:453:16:453:39 | documen ... .search | tst.js:453:7:453:39 | source |
+| tst.js:453:16:453:39 | documen ... .search | tst.js:453:7:453:39 | source |
+| tst.js:456:36:456:41 | source | tst.js:456:18:456:42 | ansiToH ... source) |
+| tst.js:456:36:456:41 | source | tst.js:456:18:456:42 | ansiToH ... source) |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |
