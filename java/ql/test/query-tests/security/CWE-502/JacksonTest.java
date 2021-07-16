@@ -72,7 +72,7 @@ class UnsafePersonDeserialization {
     private static void testUnsafeDeserialization() throws Exception {
         JacksonTest.withSocket(string -> {
             ObjectMapper mapper = new ObjectMapper();
-            mapper.readValue(string, Person.class);
+            mapper.readValue(string, Person.class); // $unsafeDeserialization
         });
     }
 
@@ -81,7 +81,7 @@ class UnsafePersonDeserialization {
     private static void testUnsafeDeserializationWithExtendedClass() throws Exception {
         JacksonTest.withSocket(string -> {
             ObjectMapper mapper = new ObjectMapper();
-            mapper.readValue(string, Employee.class);
+            mapper.readValue(string, Employee.class); // $unsafeDeserialization
         });
     }
 
@@ -90,7 +90,7 @@ class UnsafePersonDeserialization {
     private static void testUnsafeDeserializationWithWrapper() throws Exception {
         JacksonTest.withSocket(string -> {
             ObjectMapper mapper = new ObjectMapper();
-            mapper.readValue(string, Task.class);
+            mapper.readValue(string, Task.class); // $unsafeDeserialization
         });
     }
 }
@@ -138,7 +138,7 @@ class UnsafeCatDeserialization {
         JacksonTest.withSocket(string -> {
             ObjectMapper mapper = new ObjectMapper();
             mapper.enableDefaultTyping();   // this enables polymorphic type handling
-            mapper.readValue(string, Cat.class);
+            mapper.readValue(string, Cat.class); // $unsafeDeserialization
         });
     }
 
@@ -147,7 +147,7 @@ class UnsafeCatDeserialization {
         JacksonTest.withSocket(string -> {
             ObjectMapper mapper = new ObjectMapper();
             mapper.enableDefaultTyping();
-            mapper.readValues(new JsonFactory().createParser(string), Cat.class).readAll();
+            mapper.readValues(new JsonFactory().createParser(string), Cat.class).readAll(); // $unsafeDeserialization
         });
     }
 
@@ -156,7 +156,7 @@ class UnsafeCatDeserialization {
         JacksonTest.withSocket(string -> {
             ObjectMapper mapper = new ObjectMapper();
             mapper.enableDefaultTyping();
-            mapper.treeToValue(mapper.readTree(string), Cat.class);
+            mapper.treeToValue(mapper.readTree(string), Cat.class); // $unsafeDeserialization
         });
     }
 
@@ -168,7 +168,7 @@ class UnsafeCatDeserialization {
             String type = parts[1];
             Class clazz = Class.forName(type);
             ObjectMapper mapper = new ObjectMapper();
-            mapper.readValue(data, clazz);
+            mapper.readValue(data, clazz); // $unsafeDeserialization
         });
     }
 
@@ -179,7 +179,7 @@ class UnsafeCatDeserialization {
             String data = parts[0];
             String type = parts[1];
             ObjectMapper mapper = new ObjectMapper();
-            mapper.readValue(data, resolveTypeImpl(type));
+            mapper.readValue(data, resolveTypeImpl(type)); // $unsafeDeserialization
         });
     }
 
