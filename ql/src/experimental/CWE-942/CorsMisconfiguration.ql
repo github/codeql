@@ -91,9 +91,9 @@ predicate allowCredentialsIsSetToTrue(AllowOriginHeaderWrite allowOriginHW) {
  * The `message` parameter is populated with the warning message to be returned by the query.
  */
 predicate flowsFromUntrustedToAllowOrigin(AllowOriginHeaderWrite allowOriginHW, string message) {
-  exists(FlowsUntrustedToAllowOriginHeader cfg, DataFlow::PathNode source, DataFlow::PathNode sink |
-    cfg.hasFlowPath(source, sink) and
-    cfg.isSink(sink.getNode(), allowOriginHW)
+  exists(FlowsUntrustedToAllowOriginHeader cfg, DataFlow::Node sink |
+    cfg.hasFlowTo(sink) and
+    cfg.isSink(sink, allowOriginHW)
   |
     message =
       headerAllowOrigin() + " header is set to a user-defined value, and " +
@@ -168,11 +168,8 @@ class FlowsFromUntrusted extends TaintTracking::Configuration {
  * Holds if the provided `dst` is also destination of a `UntrustedFlowSource`.
  */
 predicate flowsToGuardedByCheckOnUntrusted(AllowOriginHeaderWrite allowOriginHW) {
-  exists(
-    FlowsFromUntrusted cfg, DataFlow::PathNode source, DataFlow::PathNode sink,
-    ControlFlow::ConditionGuardNode cgn
-  |
-    cfg.hasFlowPath(source, sink) and cfg.isSink(sink.getNode(), cgn)
+  exists(FlowsFromUntrusted cfg, DataFlow::Node sink, ControlFlow::ConditionGuardNode cgn |
+    cfg.hasFlowTo(sink) and cfg.isSink(sink, cgn)
   |
     cgn.dominates(allowOriginHW.getBasicBlock())
   )
