@@ -662,5 +662,5 @@ void guard_bound_out_of_range(void) {
 
 void test_mod(int s) {
   int s2 = s % 5;
-  out(s2); // -4 .. 4 [BUG: is -5 .. 5]
+  out(s2); // -4 .. 4
 }
