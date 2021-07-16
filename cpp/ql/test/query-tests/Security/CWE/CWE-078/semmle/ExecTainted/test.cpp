@@ -94,7 +94,32 @@ void test7(FILE *f) {
   execl("/bin/sh", "sh", "-c", "script.sh", path);
 }
 
-// TODO: concatenations via operator+, more sinks, test for call context sensitivity at
-// concatenation site
+void test8(char *arg2) {
+  // GOOD?: the user string is the *first* part of the command, like $CC in many environments
+  std::string envCC(getenv("CC"));
+  std::string command = envCC + arg2;
+  system(command.c_str());
+}
+
+void test9(FILE *f) {
+  // BAD: the user string is injected directly into a command
+  std::string path(getenv("something"));
+  std::string command = "mv " + path;
+  system(command.c_str());
+}
+
+void test10(FILE *f) {
+  // BAD: the user string is injected directly into a command
+  std::string path(getenv("something"));
+  system(("mv " + path).c_str());
+}
+
+void test11(FILE *f) {
+  // BAD: the user string is injected directly into a command
+  std::string path(getenv("something"));
+  system(("mv " + path).data());
+}
+
+// TODO: test for call context sensitivity at concatenation site
 
 // open question: do we want to report certain sources even when they're the start of the string?

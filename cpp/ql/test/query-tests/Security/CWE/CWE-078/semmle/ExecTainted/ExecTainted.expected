@@ -59,6 +59,41 @@ edges
 | test.cpp:93:11:93:14 | strncat output argument | test.cpp:94:45:94:48 | path indirection |
 | test.cpp:93:17:93:24 | filename indirection | test.cpp:93:11:93:14 | strncat output argument |
 | test.cpp:93:17:93:24 | filename indirection | test.cpp:93:11:93:14 | strncat output argument |
+| test.cpp:99:21:99:32 | (const char *)... | test.cpp:99:21:99:32 | call to getenv indirection |
+| test.cpp:99:21:99:32 | (const char *)... | test.cpp:99:21:99:33 | call to basic_string |
+| test.cpp:99:21:99:32 | (const char *)... | test.cpp:100:25:100:29 | (reference to) |
+| test.cpp:99:21:99:32 | (const char *)... | test.cpp:100:25:100:29 | envCC indirection |
+| test.cpp:99:21:99:32 | (const char *)... | test.cpp:100:31:100:31 | call to operator+ |
+| test.cpp:99:21:99:32 | (const char *)... | test.cpp:100:31:100:31 | call to operator+ |
+| test.cpp:99:21:99:32 | (const char *)... | test.cpp:101:10:101:16 | (const basic_string<char, char_traits<char>, allocator<char>>)... |
+| test.cpp:99:21:99:32 | (const char *)... | test.cpp:101:10:101:16 | command indirection |
+| test.cpp:100:31:100:31 | call to operator+ | test.cpp:101:10:101:16 | (const basic_string<char, char_traits<char>, allocator<char>>)... |
+| test.cpp:100:31:100:31 | call to operator+ | test.cpp:101:10:101:16 | command indirection |
+| test.cpp:106:20:106:25 | call to getenv | test.cpp:107:33:107:36 | path indirection |
+| test.cpp:106:20:106:38 | (const char *)... | test.cpp:106:20:106:38 | call to getenv indirection |
+| test.cpp:106:20:106:38 | (const char *)... | test.cpp:106:20:106:39 | call to basic_string |
+| test.cpp:106:20:106:38 | (const char *)... | test.cpp:107:31:107:31 | call to operator+ |
+| test.cpp:106:20:106:38 | (const char *)... | test.cpp:107:31:107:31 | call to operator+ |
+| test.cpp:106:20:106:38 | (const char *)... | test.cpp:107:33:107:36 | (reference to) |
+| test.cpp:106:20:106:38 | (const char *)... | test.cpp:107:33:107:36 | path indirection |
+| test.cpp:106:20:106:38 | (const char *)... | test.cpp:108:10:108:16 | (const basic_string<char, char_traits<char>, allocator<char>>)... |
+| test.cpp:106:20:106:38 | (const char *)... | test.cpp:108:10:108:16 | command indirection |
+| test.cpp:107:31:107:31 | call to operator+ | test.cpp:108:10:108:16 | (const basic_string<char, char_traits<char>, allocator<char>>)... |
+| test.cpp:107:31:107:31 | call to operator+ | test.cpp:108:10:108:16 | command indirection |
+| test.cpp:113:20:113:25 | call to getenv | test.cpp:114:19:114:22 | path indirection |
+| test.cpp:113:20:113:38 | (const char *)... | test.cpp:113:20:113:38 | call to getenv indirection |
+| test.cpp:113:20:113:38 | (const char *)... | test.cpp:113:20:113:39 | call to basic_string |
+| test.cpp:113:20:113:38 | (const char *)... | test.cpp:114:10:114:23 | (const basic_string<char, char_traits<char>, allocator<char>>)... |
+| test.cpp:113:20:113:38 | (const char *)... | test.cpp:114:10:114:23 | call to operator+ indirection |
+| test.cpp:113:20:113:38 | (const char *)... | test.cpp:114:19:114:22 | (reference to) |
+| test.cpp:113:20:113:38 | (const char *)... | test.cpp:114:19:114:22 | path indirection |
+| test.cpp:119:20:119:25 | call to getenv | test.cpp:120:19:120:22 | path indirection |
+| test.cpp:119:20:119:38 | (const char *)... | test.cpp:119:20:119:38 | call to getenv indirection |
+| test.cpp:119:20:119:38 | (const char *)... | test.cpp:119:20:119:39 | call to basic_string |
+| test.cpp:119:20:119:38 | (const char *)... | test.cpp:120:10:120:23 | call to operator+ indirection |
+| test.cpp:119:20:119:38 | (const char *)... | test.cpp:120:17:120:17 | call to operator+ |
+| test.cpp:119:20:119:38 | (const char *)... | test.cpp:120:19:120:22 | (reference to) |
+| test.cpp:119:20:119:38 | (const char *)... | test.cpp:120:19:120:22 | path indirection |
 pathExplore
 | test.cpp:16:20:16:23 | argv | test.cpp:16:20:16:26 | Address | 0 |
 | test.cpp:16:20:16:23 | argv | test.cpp:16:20:16:26 | Left | 0 |
@@ -176,6 +211,90 @@ pathExplore
 | test.cpp:91:9:91:16 | fread output argument | test.cpp:94:45:94:48 | ChiTotal | 0 |
 | test.cpp:91:9:91:16 | fread output argument | test.cpp:94:45:94:48 | array to pointer conversion | 0 |
 | test.cpp:91:9:91:16 | fread output argument | test.cpp:94:45:94:48 | path indirection | 0 |
+| test.cpp:99:21:99:26 | call to getenv | test.cpp:99:21:99:32 | (const char *)... | 0 |
+| test.cpp:99:21:99:26 | call to getenv | test.cpp:99:21:99:32 | Address | 0 |
+| test.cpp:99:21:99:26 | call to getenv | test.cpp:99:21:99:32 | Unary | 0 |
+| test.cpp:99:21:99:26 | call to getenv | test.cpp:99:21:99:32 | call to getenv indirection | 0 |
+| test.cpp:99:21:99:26 | call to getenv | test.cpp:99:21:99:33 | Chi | 0 |
+| test.cpp:99:21:99:26 | call to getenv | test.cpp:99:21:99:33 | ChiPartial | 0 |
+| test.cpp:99:21:99:26 | call to getenv | test.cpp:99:21:99:33 | basic_string output argument | 0 |
+| test.cpp:99:21:99:26 | call to getenv | test.cpp:99:21:99:33 | call to basic_string | 0 |
+| test.cpp:99:21:99:26 | call to getenv | test.cpp:99:21:99:33 | call to getenv | 0 |
+| test.cpp:99:21:99:26 | call to getenv | test.cpp:100:25:100:29 | (reference to) | 0 |
+| test.cpp:99:21:99:26 | call to getenv | test.cpp:100:25:100:29 | Address | 0 |
+| test.cpp:99:21:99:26 | call to getenv | test.cpp:100:25:100:29 | envCC indirection | 0 |
+| test.cpp:99:21:99:26 | call to getenv | test.cpp:100:31:100:31 | Store | 0 |
+| test.cpp:99:21:99:26 | call to getenv | test.cpp:100:31:100:31 | StoreValue | 0 |
+| test.cpp:99:21:99:26 | call to getenv | test.cpp:100:31:100:31 | call to operator+ | 0 |
+| test.cpp:99:21:99:26 | call to getenv | test.cpp:100:31:100:31 | envCC | 0 |
+| test.cpp:99:21:99:26 | call to getenv | test.cpp:101:10:101:16 | (const basic_string<char, char_traits<char>, allocator<char>>)... | 0 |
+| test.cpp:99:21:99:26 | call to getenv | test.cpp:101:10:101:16 | Address | 0 |
+| test.cpp:99:21:99:26 | call to getenv | test.cpp:101:10:101:16 | command indirection | 0 |
+| test.cpp:99:21:99:26 | call to getenv | test.cpp:101:18:101:22 | command | 0 |
+| test.cpp:106:20:106:25 | call to getenv | test.cpp:106:20:106:38 | (const char *)... | 0 |
+| test.cpp:106:20:106:25 | call to getenv | test.cpp:106:20:106:38 | Address | 0 |
+| test.cpp:106:20:106:25 | call to getenv | test.cpp:106:20:106:38 | Unary | 0 |
+| test.cpp:106:20:106:25 | call to getenv | test.cpp:106:20:106:38 | call to getenv indirection | 0 |
+| test.cpp:106:20:106:25 | call to getenv | test.cpp:106:20:106:39 | Chi | 0 |
+| test.cpp:106:20:106:25 | call to getenv | test.cpp:106:20:106:39 | ChiPartial | 0 |
+| test.cpp:106:20:106:25 | call to getenv | test.cpp:106:20:106:39 | basic_string output argument | 0 |
+| test.cpp:106:20:106:25 | call to getenv | test.cpp:106:20:106:39 | call to basic_string | 0 |
+| test.cpp:106:20:106:25 | call to getenv | test.cpp:106:20:106:39 | call to getenv | 0 |
+| test.cpp:106:20:106:25 | call to getenv | test.cpp:107:31:107:31 | Store | 0 |
+| test.cpp:106:20:106:25 | call to getenv | test.cpp:107:31:107:31 | StoreValue | 0 |
+| test.cpp:106:20:106:25 | call to getenv | test.cpp:107:31:107:31 | call to operator+ | 0 |
+| test.cpp:106:20:106:25 | call to getenv | test.cpp:107:31:107:31 | path | 0 |
+| test.cpp:106:20:106:25 | call to getenv | test.cpp:107:33:107:36 | (reference to) | 0 |
+| test.cpp:106:20:106:25 | call to getenv | test.cpp:107:33:107:36 | Address | 0 |
+| test.cpp:106:20:106:25 | call to getenv | test.cpp:107:33:107:36 | path indirection | 0 |
+| test.cpp:106:20:106:25 | call to getenv | test.cpp:108:10:108:16 | (const basic_string<char, char_traits<char>, allocator<char>>)... | 0 |
+| test.cpp:106:20:106:25 | call to getenv | test.cpp:108:10:108:16 | Address | 0 |
+| test.cpp:106:20:106:25 | call to getenv | test.cpp:108:10:108:16 | command indirection | 0 |
+| test.cpp:106:20:106:25 | call to getenv | test.cpp:108:18:108:22 | command | 0 |
+| test.cpp:113:20:113:25 | call to getenv | test.cpp:113:20:113:38 | (const char *)... | 0 |
+| test.cpp:113:20:113:25 | call to getenv | test.cpp:113:20:113:38 | Address | 0 |
+| test.cpp:113:20:113:25 | call to getenv | test.cpp:113:20:113:38 | Unary | 0 |
+| test.cpp:113:20:113:25 | call to getenv | test.cpp:113:20:113:38 | call to getenv indirection | 0 |
+| test.cpp:113:20:113:25 | call to getenv | test.cpp:113:20:113:39 | Chi | 0 |
+| test.cpp:113:20:113:25 | call to getenv | test.cpp:113:20:113:39 | ChiPartial | 0 |
+| test.cpp:113:20:113:25 | call to getenv | test.cpp:113:20:113:39 | basic_string output argument | 0 |
+| test.cpp:113:20:113:25 | call to getenv | test.cpp:113:20:113:39 | call to basic_string | 0 |
+| test.cpp:113:20:113:25 | call to getenv | test.cpp:113:20:113:39 | call to getenv | 0 |
+| test.cpp:113:20:113:25 | call to getenv | test.cpp:114:10:114:23 | (const basic_string<char, char_traits<char>, allocator<char>>)... | 0 |
+| test.cpp:113:20:113:25 | call to getenv | test.cpp:114:10:114:23 | Address | 0 |
+| test.cpp:113:20:113:25 | call to getenv | test.cpp:114:10:114:23 | call to operator+ indirection | 0 |
+| test.cpp:113:20:113:25 | call to getenv | test.cpp:114:17:114:17 | Call | 0 |
+| test.cpp:113:20:113:25 | call to getenv | test.cpp:114:17:114:17 | Store | 0 |
+| test.cpp:113:20:113:25 | call to getenv | test.cpp:114:17:114:17 | StoreValue | 0 |
+| test.cpp:113:20:113:25 | call to getenv | test.cpp:114:17:114:17 | path | 0 |
+| test.cpp:113:20:113:25 | call to getenv | test.cpp:114:19:114:22 | (reference to) | 0 |
+| test.cpp:113:20:113:25 | call to getenv | test.cpp:114:19:114:22 | Address | 0 |
+| test.cpp:113:20:113:25 | call to getenv | test.cpp:114:19:114:22 | path indirection | 0 |
+| test.cpp:113:20:113:25 | call to getenv | test.cpp:114:25:114:29 | call to operator+ | 0 |
+| test.cpp:119:20:119:25 | call to getenv | test.cpp:119:20:119:38 | (const char *)... | 0 |
+| test.cpp:119:20:119:25 | call to getenv | test.cpp:119:20:119:38 | Address | 0 |
+| test.cpp:119:20:119:25 | call to getenv | test.cpp:119:20:119:38 | Unary | 0 |
+| test.cpp:119:20:119:25 | call to getenv | test.cpp:119:20:119:38 | call to getenv indirection | 0 |
+| test.cpp:119:20:119:25 | call to getenv | test.cpp:119:20:119:39 | Chi | 0 |
+| test.cpp:119:20:119:25 | call to getenv | test.cpp:119:20:119:39 | ChiPartial | 0 |
+| test.cpp:119:20:119:25 | call to getenv | test.cpp:119:20:119:39 | basic_string output argument | 0 |
+| test.cpp:119:20:119:25 | call to getenv | test.cpp:119:20:119:39 | call to basic_string | 0 |
+| test.cpp:119:20:119:25 | call to getenv | test.cpp:119:20:119:39 | call to getenv | 0 |
+| test.cpp:119:20:119:25 | call to getenv | test.cpp:120:10:120:23 | Address | 0 |
+| test.cpp:119:20:119:25 | call to getenv | test.cpp:120:10:120:23 | Address | 0 |
+| test.cpp:119:20:119:25 | call to getenv | test.cpp:120:10:120:23 | Chi | 0 |
+| test.cpp:119:20:119:25 | call to getenv | test.cpp:120:10:120:23 | ChiTotal | 0 |
+| test.cpp:119:20:119:25 | call to getenv | test.cpp:120:10:120:23 | call to operator+ indirection | 0 |
+| test.cpp:119:20:119:25 | call to getenv | test.cpp:120:17:120:17 | Address | 0 |
+| test.cpp:119:20:119:25 | call to getenv | test.cpp:120:17:120:17 | Call | 0 |
+| test.cpp:119:20:119:25 | call to getenv | test.cpp:120:17:120:17 | Store | 0 |
+| test.cpp:119:20:119:25 | call to getenv | test.cpp:120:17:120:17 | StoreValue | 0 |
+| test.cpp:119:20:119:25 | call to getenv | test.cpp:120:17:120:17 | call to operator+ | 0 |
+| test.cpp:119:20:119:25 | call to getenv | test.cpp:120:17:120:17 | path | 0 |
+| test.cpp:119:20:119:25 | call to getenv | test.cpp:120:19:120:22 | (reference to) | 0 |
+| test.cpp:119:20:119:25 | call to getenv | test.cpp:120:19:120:22 | Address | 0 |
+| test.cpp:119:20:119:25 | call to getenv | test.cpp:120:19:120:22 | path indirection | 0 |
+| test.cpp:119:20:119:25 | call to getenv | test.cpp:120:25:120:28 | call to operator+ | 0 |
 pathExploreRev
 | test.cpp:15:27:15:30 | *argv | test.cpp:22:45:22:52 | userName indirection | 0 |
 | test.cpp:15:27:15:30 | *argv [[]] | test.cpp:22:45:22:52 | userName indirection | 0 |
@@ -295,6 +414,71 @@ pathExploreRev
 | test.cpp:93:17:93:24 | array to pointer conversion | test.cpp:93:17:93:24 | filename indirection | 0 |
 | test.cpp:93:17:93:24 | filename | test.cpp:93:17:93:24 | filename indirection | 0 |
 | test.cpp:93:17:93:24 | filename indirection | test.cpp:93:17:93:24 | filename indirection | 0 |
+| test.cpp:97:18:97:21 | *arg2 | test.cpp:100:33:100:36 | arg2 indirection | 0 |
+| test.cpp:97:18:97:21 | Address | test.cpp:100:33:100:36 | arg2 indirection | 0 |
+| test.cpp:97:18:97:21 | Address | test.cpp:100:33:100:36 | arg2 indirection | 0 |
+| test.cpp:97:18:97:21 | Load | test.cpp:100:33:100:36 | arg2 indirection | 0 |
+| test.cpp:97:18:97:21 | Load | test.cpp:100:33:100:36 | arg2 indirection | 0 |
+| test.cpp:97:18:97:21 | VariableAddress | test.cpp:100:33:100:36 | arg2 indirection | 0 |
+| test.cpp:97:18:97:21 | arg2 | test.cpp:100:33:100:36 | arg2 indirection | 0 |
+| test.cpp:100:33:100:36 | (const char *)... | test.cpp:100:33:100:36 | arg2 indirection | 0 |
+| test.cpp:100:33:100:36 | Address | test.cpp:100:33:100:36 | arg2 indirection | 0 |
+| test.cpp:100:33:100:36 | Load | test.cpp:100:33:100:36 | arg2 indirection | 0 |
+| test.cpp:100:33:100:36 | Unary | test.cpp:100:33:100:36 | arg2 indirection | 0 |
+| test.cpp:100:33:100:36 | VariableAddress | test.cpp:100:33:100:36 | arg2 indirection | 0 |
+| test.cpp:100:33:100:36 | arg2 | test.cpp:100:33:100:36 | arg2 indirection | 0 |
+| test.cpp:100:33:100:36 | arg2 indirection | test.cpp:100:33:100:36 | arg2 indirection | 0 |
+| test.cpp:106:15:106:18 | Uninitialized | test.cpp:107:33:107:36 | path indirection | 0 |
+| test.cpp:106:20:106:25 | call to getenv | test.cpp:107:33:107:36 | path indirection | 0 |
+| test.cpp:106:20:106:38 | (const char *)... | test.cpp:107:33:107:36 | path indirection | 0 |
+| test.cpp:106:20:106:38 | Address | test.cpp:107:33:107:36 | path indirection | 0 |
+| test.cpp:106:20:106:38 | Unary | test.cpp:107:33:107:36 | path indirection | 0 |
+| test.cpp:106:20:106:38 | call to getenv indirection | test.cpp:107:33:107:36 | path indirection | 0 |
+| test.cpp:106:20:106:39 | Chi | test.cpp:107:33:107:36 | path indirection | 0 |
+| test.cpp:106:20:106:39 | ChiPartial | test.cpp:107:33:107:36 | path indirection | 0 |
+| test.cpp:106:20:106:39 | ChiTotal | test.cpp:107:33:107:36 | path indirection | 0 |
+| test.cpp:106:20:106:39 | basic_string output argument | test.cpp:107:33:107:36 | path indirection | 0 |
+| test.cpp:106:20:106:39 | call to getenv | test.cpp:107:33:107:36 | path indirection | 0 |
+| test.cpp:107:33:107:36 | (const basic_string<char, char_traits<char>, allocator<char>>)... | test.cpp:107:33:107:36 | path indirection | 0 |
+| test.cpp:107:33:107:36 | (reference to) | test.cpp:107:33:107:36 | path indirection | 0 |
+| test.cpp:107:33:107:36 | Unary | test.cpp:107:33:107:36 | path indirection | 0 |
+| test.cpp:107:33:107:36 | Unary | test.cpp:107:33:107:36 | path indirection | 0 |
+| test.cpp:107:33:107:36 | path | test.cpp:107:33:107:36 | path indirection | 0 |
+| test.cpp:107:33:107:36 | path indirection | test.cpp:107:33:107:36 | path indirection | 0 |
+| test.cpp:113:15:113:18 | Uninitialized | test.cpp:114:19:114:22 | path indirection | 0 |
+| test.cpp:113:20:113:25 | call to getenv | test.cpp:114:19:114:22 | path indirection | 0 |
+| test.cpp:113:20:113:38 | (const char *)... | test.cpp:114:19:114:22 | path indirection | 0 |
+| test.cpp:113:20:113:38 | Address | test.cpp:114:19:114:22 | path indirection | 0 |
+| test.cpp:113:20:113:38 | Unary | test.cpp:114:19:114:22 | path indirection | 0 |
+| test.cpp:113:20:113:38 | call to getenv indirection | test.cpp:114:19:114:22 | path indirection | 0 |
+| test.cpp:113:20:113:39 | Chi | test.cpp:114:19:114:22 | path indirection | 0 |
+| test.cpp:113:20:113:39 | ChiPartial | test.cpp:114:19:114:22 | path indirection | 0 |
+| test.cpp:113:20:113:39 | ChiTotal | test.cpp:114:19:114:22 | path indirection | 0 |
+| test.cpp:113:20:113:39 | basic_string output argument | test.cpp:114:19:114:22 | path indirection | 0 |
+| test.cpp:113:20:113:39 | call to getenv | test.cpp:114:19:114:22 | path indirection | 0 |
+| test.cpp:114:19:114:22 | (const basic_string<char, char_traits<char>, allocator<char>>)... | test.cpp:114:19:114:22 | path indirection | 0 |
+| test.cpp:114:19:114:22 | (reference to) | test.cpp:114:19:114:22 | path indirection | 0 |
+| test.cpp:114:19:114:22 | Unary | test.cpp:114:19:114:22 | path indirection | 0 |
+| test.cpp:114:19:114:22 | Unary | test.cpp:114:19:114:22 | path indirection | 0 |
+| test.cpp:114:19:114:22 | path | test.cpp:114:19:114:22 | path indirection | 0 |
+| test.cpp:114:19:114:22 | path indirection | test.cpp:114:19:114:22 | path indirection | 0 |
+| test.cpp:119:15:119:18 | Uninitialized | test.cpp:120:19:120:22 | path indirection | 0 |
+| test.cpp:119:20:119:25 | call to getenv | test.cpp:120:19:120:22 | path indirection | 0 |
+| test.cpp:119:20:119:38 | (const char *)... | test.cpp:120:19:120:22 | path indirection | 0 |
+| test.cpp:119:20:119:38 | Address | test.cpp:120:19:120:22 | path indirection | 0 |
+| test.cpp:119:20:119:38 | Unary | test.cpp:120:19:120:22 | path indirection | 0 |
+| test.cpp:119:20:119:38 | call to getenv indirection | test.cpp:120:19:120:22 | path indirection | 0 |
+| test.cpp:119:20:119:39 | Chi | test.cpp:120:19:120:22 | path indirection | 0 |
+| test.cpp:119:20:119:39 | ChiPartial | test.cpp:120:19:120:22 | path indirection | 0 |
+| test.cpp:119:20:119:39 | ChiTotal | test.cpp:120:19:120:22 | path indirection | 0 |
+| test.cpp:119:20:119:39 | basic_string output argument | test.cpp:120:19:120:22 | path indirection | 0 |
+| test.cpp:119:20:119:39 | call to getenv | test.cpp:120:19:120:22 | path indirection | 0 |
+| test.cpp:120:19:120:22 | (const basic_string<char, char_traits<char>, allocator<char>>)... | test.cpp:120:19:120:22 | path indirection | 0 |
+| test.cpp:120:19:120:22 | (reference to) | test.cpp:120:19:120:22 | path indirection | 0 |
+| test.cpp:120:19:120:22 | Unary | test.cpp:120:19:120:22 | path indirection | 0 |
+| test.cpp:120:19:120:22 | Unary | test.cpp:120:19:120:22 | path indirection | 0 |
+| test.cpp:120:19:120:22 | path | test.cpp:120:19:120:22 | path indirection | 0 |
+| test.cpp:120:19:120:22 | path indirection | test.cpp:120:19:120:22 | path indirection | 0 |
 #select
 | test.cpp:23:12:23:19 | command1 | test.cpp:16:20:16:23 | argv | test.cpp:23:12:23:19 | command1 indirection | This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to system(string) | test.cpp:16:20:16:23 | argv | user input (a command-line argument) | test.cpp:22:13:22:20 | sprintf output argument | sprintf output argument |
 | test.cpp:51:10:51:16 | command | test.cpp:47:21:47:26 | call to getenv | test.cpp:51:10:51:16 | command indirection | This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to system(string) | test.cpp:47:21:47:26 | call to getenv | user input (an environment variable) | test.cpp:50:11:50:17 | sprintf output argument | sprintf output argument |
@@ -390,3 +574,49 @@ nodes
 | test.cpp:94:45:94:48 | array to pointer conversion | semmle.label | array to pointer conversion |
 | test.cpp:94:45:94:48 | path indirection | semmle.label | path indirection |
 | test.cpp:94:45:94:48 | path indirection | semmle.label | path indirection |
+| test.cpp:99:21:99:26 | call to getenv | semmle.label | call to getenv |
+| test.cpp:99:21:99:32 | (const char *)... | semmle.label | (const char *)... |
+| test.cpp:99:21:99:32 | (const char *)... | semmle.label | (const char *)... |
+| test.cpp:99:21:99:32 | call to getenv indirection | semmle.label | call to getenv indirection |
+| test.cpp:99:21:99:33 | call to basic_string | semmle.label | call to basic_string |
+| test.cpp:100:25:100:29 | (reference to) | semmle.label | (reference to) |
+| test.cpp:100:25:100:29 | envCC indirection | semmle.label | envCC indirection |
+| test.cpp:100:31:100:31 | call to operator+ | semmle.label | call to operator+ |
+| test.cpp:100:31:100:31 | call to operator+ | semmle.label | call to operator+ |
+| test.cpp:101:10:101:16 | (const basic_string<char, char_traits<char>, allocator<char>>)... | semmle.label | (const basic_string<char, char_traits<char>, allocator<char>>)... |
+| test.cpp:101:10:101:16 | command indirection | semmle.label | command indirection |
+| test.cpp:106:20:106:25 | call to getenv | semmle.label | call to getenv |
+| test.cpp:106:20:106:25 | call to getenv | semmle.label | call to getenv |
+| test.cpp:106:20:106:38 | (const char *)... | semmle.label | (const char *)... |
+| test.cpp:106:20:106:38 | (const char *)... | semmle.label | (const char *)... |
+| test.cpp:106:20:106:38 | call to getenv indirection | semmle.label | call to getenv indirection |
+| test.cpp:106:20:106:39 | call to basic_string | semmle.label | call to basic_string |
+| test.cpp:107:31:107:31 | call to operator+ | semmle.label | call to operator+ |
+| test.cpp:107:31:107:31 | call to operator+ | semmle.label | call to operator+ |
+| test.cpp:107:33:107:36 | (reference to) | semmle.label | (reference to) |
+| test.cpp:107:33:107:36 | path indirection | semmle.label | path indirection |
+| test.cpp:107:33:107:36 | path indirection | semmle.label | path indirection |
+| test.cpp:108:10:108:16 | (const basic_string<char, char_traits<char>, allocator<char>>)... | semmle.label | (const basic_string<char, char_traits<char>, allocator<char>>)... |
+| test.cpp:108:10:108:16 | command indirection | semmle.label | command indirection |
+| test.cpp:113:20:113:25 | call to getenv | semmle.label | call to getenv |
+| test.cpp:113:20:113:25 | call to getenv | semmle.label | call to getenv |
+| test.cpp:113:20:113:38 | (const char *)... | semmle.label | (const char *)... |
+| test.cpp:113:20:113:38 | (const char *)... | semmle.label | (const char *)... |
+| test.cpp:113:20:113:38 | call to getenv indirection | semmle.label | call to getenv indirection |
+| test.cpp:113:20:113:39 | call to basic_string | semmle.label | call to basic_string |
+| test.cpp:114:10:114:23 | (const basic_string<char, char_traits<char>, allocator<char>>)... | semmle.label | (const basic_string<char, char_traits<char>, allocator<char>>)... |
+| test.cpp:114:10:114:23 | call to operator+ indirection | semmle.label | call to operator+ indirection |
+| test.cpp:114:19:114:22 | (reference to) | semmle.label | (reference to) |
+| test.cpp:114:19:114:22 | path indirection | semmle.label | path indirection |
+| test.cpp:114:19:114:22 | path indirection | semmle.label | path indirection |
+| test.cpp:119:20:119:25 | call to getenv | semmle.label | call to getenv |
+| test.cpp:119:20:119:25 | call to getenv | semmle.label | call to getenv |
+| test.cpp:119:20:119:38 | (const char *)... | semmle.label | (const char *)... |
+| test.cpp:119:20:119:38 | (const char *)... | semmle.label | (const char *)... |
+| test.cpp:119:20:119:38 | call to getenv indirection | semmle.label | call to getenv indirection |
+| test.cpp:119:20:119:39 | call to basic_string | semmle.label | call to basic_string |
+| test.cpp:120:10:120:23 | call to operator+ indirection | semmle.label | call to operator+ indirection |
+| test.cpp:120:17:120:17 | call to operator+ | semmle.label | call to operator+ |
+| test.cpp:120:19:120:22 | (reference to) | semmle.label | (reference to) |
+| test.cpp:120:19:120:22 | path indirection | semmle.label | path indirection |
+| test.cpp:120:19:120:22 | path indirection | semmle.label | path indirection |
