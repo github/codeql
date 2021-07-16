@@ -16,7 +16,7 @@ public class StaticInitializationVector {
         SecretKeySpec keySpec = new SecretKeySpec(key, "AES");
 
         Cipher cipher = Cipher.getInstance("AES/GCM/PKCS5PADDING");
-        cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
+        cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec); // $staticInitializationVector
         cipher.update(plaintext);
         return cipher.doFinal();
     }
@@ -29,7 +29,7 @@ public class StaticInitializationVector {
         SecretKeySpec keySpec = new SecretKeySpec(key, "AES");
 
         Cipher cipher = Cipher.getInstance("AES/GCM/PKCS5PADDING");
-        cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
+        cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec); // $staticInitializationVector
         cipher.update(plaintext);
         return cipher.doFinal();
     }
@@ -45,7 +45,7 @@ public class StaticInitializationVector {
         SecretKeySpec keySpec = new SecretKeySpec(key, "AES");
 
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
-        cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
+        cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec); // $staticInitializationVector
         cipher.update(plaintext);
         return cipher.doFinal();
     }
