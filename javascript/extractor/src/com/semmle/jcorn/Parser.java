@@ -618,6 +618,15 @@ public class Parser {
       this.skipSpace();
       return this.nextToken();
     }
+    if (next == '%' && code == '<' && this.options.allowGeneratedCodeExprs()) {
+      // `<%`, the beginning of an EJS-style template tag
+      size = 2;
+      int nextNext = charAt(this.pos + 2);
+      if (nextNext == '=' || nextNext == '-') {
+        ++size;
+      }
+      return this.finishOp(TokenType.generatedCodeDelimiterEJS, size);
+    }
     if (next == 61) size = 2;
     return this.finishOp(TokenType.relational, size);
   }
@@ -1689,6 +1698,9 @@ public class Parser {
       return this.parseNew();
     } else if (this.type == TokenType.backQuote) {
       return this.parseTemplate(false);
+    } else if (this.type == TokenType.generatedCodeDelimiterEJS) {
+      String openingDelimiter = (String) this.value;
+      return this.parseGeneratedCodeExpr(this.startLoc, openingDelimiter, "%>");
     } else {
       this.unexpected();
       return null;
