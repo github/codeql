@@ -1654,6 +1654,9 @@ module DataFlow {
       or
       (e instanceof AwaitExpr or e instanceof DynamicImportExpr) and
       cause = "await"
+      or
+      e instanceof GeneratedCodeExpr and
+      cause = "eval" // we use 'eval' here to represent code generation more broadly
     )
     or
     nd instanceof TExceptionalInvocationReturnNode and cause = "call"

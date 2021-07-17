@@ -366,6 +366,7 @@ case @expr.kind of
 | 117 = @assignlogorexpr
 | 118 = @assignnullishcoalescingexpr
 | 119 = @angular_pipe_ref
+| 120 = @generated_code_expr
 ;
 
 @varaccess = @proper_varaccess | @export_varaccess;
@@ -415,6 +416,13 @@ case @expr.kind of
 
 @e4x_xml_attribute_selector = @e4x_xml_static_attribute_selector | @e4x_xml_dynamic_attribute_selector;
 @e4x_xml_qualident = @e4x_xml_static_qualident | @e4x_xml_dynamic_qualident;
+
+generated_code_expr_info(
+  unique int expr: @generated_code_expr ref,
+  varchar(900) openingDelimiter: string ref,
+  varchar(900) closingDelimiter: string ref,
+  varchar(900) body: string ref
+);
 
 // scopes
 scopes (unique int id: @scope,

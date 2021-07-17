@@ -52,6 +52,7 @@ import com.semmle.js.ast.ForOfStatement;
 import com.semmle.js.ast.ForStatement;
 import com.semmle.js.ast.FunctionDeclaration;
 import com.semmle.js.ast.FunctionExpression;
+import com.semmle.js.ast.GeneratedCodeExpr;
 import com.semmle.js.ast.IFunction;
 import com.semmle.js.ast.INode;
 import com.semmle.js.ast.IPattern;
@@ -537,7 +538,7 @@ public class Parser {
         }
         return this.finishOp(TokenType.questionquestion, 2);
       }
-      
+
     }
     return this.finishOp(TokenType.question, 1);
   }
@@ -1929,10 +1930,16 @@ public class Parser {
   // Parse an object literal or binding pattern.
   protected Expression parseObj(boolean isPattern, DestructuringErrors refDestructuringErrors) {
     Position startLoc = this.startLoc;
+    if (!isPattern && options.allowGeneratedCodeExprs() && charAt(pos) == '{') {
+      // Parse mustache-style placeholder expression: {{ ... }} or {{{ ... }}}
+      return charAt(pos + 1) == '{'
+          ? parseGeneratedCodeExpr(startLoc, "{{{", "}}}")
+          : parseGeneratedCodeExpr(startLoc, "{{", "}}");
+    }
     boolean first = true;
     Map<String, PropInfo> propHash = new LinkedHashMap<>();
     List<Property> properties = new ArrayList<Property>();
-    this.next();
+    this.next(); // skip '{'
     while (!this.eat(TokenType.braceR)) {
       if (!first) {
         this.expect(TokenType.comma);
@@ -1947,6 +1954,42 @@ public class Parser {
     Expression node =
         isPattern ? new ObjectPattern(loc, properties) : new ObjectExpression(loc, properties);
     return this.finishNode(node);
+  }
+
+  /** Emit a token ranging from the current position until <code>endOfToken</code>. */
+  private Token generateTokenEndingAt(int endOfToken, TokenType tokenType) {
+    this.lastTokEnd = this.end;
+    this.lastTokStart = this.start;
+    this.lastTokEndLoc = this.endLoc;
+    this.lastTokStartLoc = this.startLoc;
+    this.start = this.pos;
+    this.startLoc = this.curPosition();
+    this.pos = endOfToken;
+    return finishToken(tokenType);
+  }
+
+  /** Parse a generated expression. The current token refers to the opening delimiter. */
+  protected Expression parseGeneratedCodeExpr(Position startLoc, String openingDelimiter, String closingDelimiter) {
+    // Emit a token for what's left of the opening delimiter, if there are any remaining characters
+    int startOfBody = startLoc.getOffset() + openingDelimiter.length();
+    if (this.pos != startOfBody) {
+      this.generateTokenEndingAt(startOfBody, TokenType.generatedCodeDelimiter);
+    }
+
+    // Emit a token for the generated code body
+    int endOfBody = this.input.indexOf(closingDelimiter, startOfBody);
+    if (endOfBody == -1) {
+    	this.unexpected(startLoc);
+    }
+    Token bodyToken = this.generateTokenEndingAt(endOfBody, TokenType.generatedCodeExpr);
+
+    // Emit a token for the closing delimiter
+    this.generateTokenEndingAt(endOfBody + closingDelimiter.length(), TokenType.generatedCodeDelimiter);
+
+    this.next(); // produce lookahead token
+
+    return finishNode(new GeneratedCodeExpr(new SourceLocation(startLoc), openingDelimiter, closingDelimiter,
+        bodyToken.getValue()));
   }
 
   protected Property parseProperty(

@@ -89,6 +89,8 @@ public class TokenType {
       arrow = new TokenType(new Properties("=>").beforeExpr()),
       template = new TokenType(new Properties("template")),
       invalidTemplate = new TokenType(new Properties("invalidTemplate")),
+      generatedCodeExpr = new TokenType(new Properties("generatedCodeExpr")),
+      generatedCodeDelimiter = new TokenType(new Properties("generatedCodeDelimiter")),
       ellipsis = new TokenType(new Properties("...").beforeExpr()),
       backQuote =
           new TokenType(new Properties("`").startsExpr()) {

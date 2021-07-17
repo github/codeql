@@ -45,6 +45,7 @@ import com.semmle.js.ast.ForOfStatement;
 import com.semmle.js.ast.ForStatement;
 import com.semmle.js.ast.FunctionDeclaration;
 import com.semmle.js.ast.FunctionExpression;
+import com.semmle.js.ast.GeneratedCodeExpr;
 import com.semmle.js.ast.IFunction;
 import com.semmle.js.ast.INode;
 import com.semmle.js.ast.IPattern;
@@ -1162,7 +1163,7 @@ public class ASTExtractor {
       if (!nd.isComputed() && "template".equals(tryGetIdentifierName(nd.getKey()))) {
         extractStringValueAsHtml(nd.getValue(), valueLabel);
       }
-      
+
       return propkey;
     }
 
@@ -2219,6 +2220,13 @@ public class ASTExtractor {
       Label key = super.visit(nd, c);
       visit(nd.getIdentifier(), key, 0, IdContext.LABEL);
       return key;
+    }
+
+    @Override
+    public Label visit(GeneratedCodeExpr nd, Context c) {
+        Label key = super.visit(nd, c);
+        trapwriter.addTuple("generated_code_expr_info", key, nd.getOpeningDelimiter(), nd.getClosingDelimiter(), nd.getBody());
+        return key;
     }
   }
 
