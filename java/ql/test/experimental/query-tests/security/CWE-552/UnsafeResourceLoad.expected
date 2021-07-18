@@ -1,0 +1,15 @@
+edges
+| UnsafeResourceLoad.java:23:17:23:40 | getParameter(...) : String | UnsafeResourceLoad.java:26:49:26:52 | path |
+| UnsafeResourceLoad.java:35:17:35:40 | getParameter(...) : String | UnsafeResourceLoad.java:39:68:39:71 | path |
+| UnsafeResourceLoad.java:87:17:87:40 | getParameter(...) : String | UnsafeResourceLoad.java:90:69:90:72 | path |
+nodes
+| UnsafeResourceLoad.java:23:17:23:40 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| UnsafeResourceLoad.java:26:49:26:52 | path | semmle.label | path |
+| UnsafeResourceLoad.java:35:17:35:40 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| UnsafeResourceLoad.java:39:68:39:71 | path | semmle.label | path |
+| UnsafeResourceLoad.java:87:17:87:40 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| UnsafeResourceLoad.java:90:69:90:72 | path | semmle.label | path |
+#select
+| UnsafeResourceLoad.java:26:49:26:52 | path | UnsafeResourceLoad.java:23:17:23:40 | getParameter(...) : String | UnsafeResourceLoad.java:26:49:26:52 | path | Unsafe request loading due to $@. | UnsafeResourceLoad.java:23:17:23:40 | getParameter(...) | user-provided value |
+| UnsafeResourceLoad.java:39:68:39:71 | path | UnsafeResourceLoad.java:35:17:35:40 | getParameter(...) : String | UnsafeResourceLoad.java:39:68:39:71 | path | Unsafe request loading due to $@. | UnsafeResourceLoad.java:35:17:35:40 | getParameter(...) | user-provided value |
+| UnsafeResourceLoad.java:90:69:90:72 | path | UnsafeResourceLoad.java:87:17:87:40 | getParameter(...) : String | UnsafeResourceLoad.java:90:69:90:72 | path | Unsafe request loading due to $@. | UnsafeResourceLoad.java:87:17:87:40 | getParameter(...) | user-provided value |
