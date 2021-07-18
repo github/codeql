@@ -80,9 +80,23 @@ private module SqlAlchemy {
    * See https://docs.sqlalchemy.org/en/14/orm/query.html?highlight=query#sqlalchemy.orm.Query
    */
   private class SqlAlchemyQueryCall extends DataFlow::CallCfgNode, SqlExecution::Range {
-    SqlAlchemyQueryCall() { this = getSqlAlchemyQueryInstance().getAMember().getACall() }
+    SqlAlchemyQueryCall() {
+      this =
+        getSqlAlchemyQueryInstance()
+            .getMember(any(SqlAlchemyVulnerableMethodNames methodName))
+            .getACall()
+    }
 
     override DataFlow::Node getSql() { result = this.getArg(0) }
+  }
+
+  /**
+   * This class represents a list of methods vulnerable to sql injection.
+   *
+   * See https://github.com/jty-team/codeql/pull/2#issue-611592361
+   */
+  private class SqlAlchemyVulnerableMethodNames extends string {
+    SqlAlchemyVulnerableMethodNames() { this in ["filter", "filter_by", "group_by", "order_by"] }
   }
 
   /**
