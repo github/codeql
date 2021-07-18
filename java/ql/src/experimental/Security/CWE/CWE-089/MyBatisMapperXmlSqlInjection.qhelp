@@ -1,0 +1,34 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The MyBatis Mapper XML file allows the use of the $ character to construct dynamic SQL statements.
+ Attackers can modify the meaning of statements or execute arbitrary SQL commands.</p>
+</overview>
+
+<<recommendation>
+<p>
+When writing MyBatis mapping statements, try to use the format "#{xxx}". If you have to use parameters 
+such as "${xxx}", you must manually filter to prevent SQL injection attacks.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following examples show the bad situation and the good situation respectively. In <code>bad1</code> 
+and <code>bad2</code> and <code>bad3</code> and <code>bad4</code> and <code >bad5</code>, the program 
+${ xxx} are dynamic SQL statements, these five examples of SQL injection vulnerabilities. In <code>good1</code>, 
+the program uses the ${xxx} dynamic feature SQL statement, but there are subtle restrictions on the data, 
+and there is no SQL injection vulnerability.
+</p>
+<sample src="MyBatisMapperXmlSqlInjection.xml" />
+</example>
+
+<references>
+<li>
+Fortify:
+<a href="https://vulncat.fortify.com/en/detail?id=desc.config.java.sql_injection_mybatis_mapper">SQL Injection: MyBatis Mapper</a>.
+</li>
+</references>
+</qhelp>
