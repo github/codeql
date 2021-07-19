@@ -1,0 +1,1 @@
+//semmle-extractor-options: --javac-args -cp ${testdir}/../../../stubs/javax-json-api-1.1.4:${testdir}/../../../stubs/jakarta-json-2.0.1

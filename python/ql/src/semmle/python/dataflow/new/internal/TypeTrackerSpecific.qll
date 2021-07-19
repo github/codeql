@@ -8,7 +8,7 @@ private import semmle.python.dataflow.new.internal.DataFlowPrivate as DataFlowPr
 
 class Node = DataFlowPublic::Node;
 
-class LocalSourceNode = DataFlowPublic::LocalSourceNode;
+class TypeTrackingNode = DataFlowPublic::TypeTrackingNode;
 
 predicate simpleLocalFlowStep = DataFlowPrivate::simpleLocalFlowStep/2;
 

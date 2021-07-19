@@ -59,7 +59,7 @@ private module Cached {
    * Steps contained in this predicate should _not_ depend on the call graph.
    */
   cached
-  predicate stepNoCall(LocalSourceNode nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
+  predicate stepNoCall(TypeTrackingNode nodeFrom, TypeTrackingNode nodeTo, StepSummary summary) {
     exists(Node mid | nodeFrom.flowsTo(mid) and smallstepNoCall(mid, nodeTo, summary))
   }
 
@@ -68,7 +68,7 @@ private module Cached {
    * inter-procedural step from `nodeFrom` to `nodeTo`.
    */
   cached
-  predicate stepCall(LocalSourceNode nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
+  predicate stepCall(TypeTrackingNode nodeFrom, TypeTrackingNode nodeTo, StepSummary summary) {
     exists(Node mid | nodeFrom.flowsTo(mid) and smallstepCall(mid, nodeTo, summary))
   }
 }
@@ -96,7 +96,7 @@ class StepSummary extends TStepSummary {
 }
 
 pragma[noinline]
-private predicate smallstepNoCall(Node nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
+private predicate smallstepNoCall(Node nodeFrom, TypeTrackingNode nodeTo, StepSummary summary) {
   jumpStep(nodeFrom, nodeTo) and
   summary = LevelStep()
   or
@@ -109,7 +109,7 @@ private predicate smallstepNoCall(Node nodeFrom, LocalSourceNode nodeTo, StepSum
 }
 
 pragma[noinline]
-private predicate smallstepCall(Node nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
+private predicate smallstepCall(Node nodeFrom, TypeTrackingNode nodeTo, StepSummary summary) {
   callStep(nodeFrom, nodeTo) and summary = CallStep()
   or
   returnStep(nodeFrom, nodeTo) and
@@ -129,7 +129,7 @@ module StepSummary {
    * call graph.
    */
   pragma[inline]
-  predicate step(LocalSourceNode nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
+  predicate step(TypeTrackingNode nodeFrom, TypeTrackingNode nodeTo, StepSummary summary) {
     stepNoCall(nodeFrom, nodeTo, summary)
     or
     stepCall(nodeFrom, nodeTo, summary)
@@ -143,7 +143,7 @@ module StepSummary {
    * type-preserving steps.
    */
   pragma[inline]
-  predicate smallstep(Node nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
+  predicate smallstep(Node nodeFrom, TypeTrackingNode nodeTo, StepSummary summary) {
     smallstepNoCall(nodeFrom, nodeTo, summary)
     or
     smallstepCall(nodeFrom, nodeTo, summary)
@@ -174,7 +174,7 @@ module StepSummary {
    * function. This means we will track the fact that `x.attr` can have the type of `y` into the
    * assignment to `z` inside `bar`, even though this attribute write happens _after_ `bar` is called.
    */
-  predicate localSourceStoreStep(Node nodeFrom, LocalSourceNode nodeTo, string content) {
+  predicate localSourceStoreStep(Node nodeFrom, TypeTrackingNode nodeTo, string content) {
     exists(Node obj | nodeTo.flowsTo(obj) and basicStoreStep(nodeFrom, obj, content))
   }
 }
@@ -192,7 +192,7 @@ private newtype TTypeTracker = MkTypeTracker(Boolean hasCall, OptionalContentNam
  * It is recommended that all uses of this type are written in the following form,
  * for tracking some type `myType`:
  * ```ql
- * DataFlow::LocalSourceNode myType(DataFlow::TypeTracker t) {
+ * DataFlow::TypeTrackingNode myType(DataFlow::TypeTracker t) {
  *   t.start() and
  *   result = < source of myType >
  *   or
@@ -275,7 +275,7 @@ class TypeTracker extends TTypeTracker {
    * heap and/or inter-procedural step from `nodeFrom` to `nodeTo`.
    */
   pragma[inline]
-  TypeTracker step(LocalSourceNode nodeFrom, LocalSourceNode nodeTo) {
+  TypeTracker step(TypeTrackingNode nodeFrom, TypeTrackingNode nodeTo) {
     exists(StepSummary summary |
       StepSummary::step(nodeFrom, pragma[only_bind_out](nodeTo), pragma[only_bind_into](summary)) and
       result = this.append(pragma[only_bind_into](summary))
@@ -342,7 +342,7 @@ private newtype TTypeBackTracker = MkTypeBackTracker(Boolean hasReturn, Optional
  * for back-tracking some callback type `myCallback`:
  *
  * ```ql
- * DataFlow::LocalSourceNode myCallback(DataFlow::TypeBackTracker t) {
+ * DataFlow::TypeTrackingNode myCallback(DataFlow::TypeBackTracker t) {
  *   t.start() and
  *   result = (< some API call >).getArgument(< n >).getALocalSource()
  *   or
@@ -351,7 +351,7 @@ private newtype TTypeBackTracker = MkTypeBackTracker(Boolean hasReturn, Optional
  *   )
  * }
  *
- * DataFlow::LocalSourceNode myCallback() { result = myCallback(DataFlow::TypeBackTracker::end()) }
+ * DataFlow::TypeTrackingNode myCallback() { result = myCallback(DataFlow::TypeBackTracker::end()) }
  * ```
  *
  * Instead of `result = myCallback(t2).backtrack(t2, t)`, you can also use the equivalent
@@ -418,7 +418,7 @@ class TypeBackTracker extends TTypeBackTracker {
    * heap and/or inter-procedural step from `nodeTo` to `nodeFrom`.
    */
   pragma[inline]
-  TypeBackTracker step(LocalSourceNode nodeFrom, LocalSourceNode nodeTo) {
+  TypeBackTracker step(TypeTrackingNode nodeFrom, TypeTrackingNode nodeTo) {
     exists(StepSummary summary |
       StepSummary::step(pragma[only_bind_out](nodeFrom), nodeTo, pragma[only_bind_into](summary)) and
       this = result.prepend(pragma[only_bind_into](summary))
@@ -431,7 +431,7 @@ class TypeBackTracker extends TTypeBackTracker {
    *
    * Unlike `TypeBackTracker::step`, this predicate exposes all edges
    * in the flowgraph, and not just the edges between
-   * `LocalSourceNode`s. It may therefore be less performant.
+   * `TypeTrackingNode`s. It may therefore be less performant.
    *
    * Type tracking predicates using small steps typically take the following form:
    * ```ql

@@ -11,8 +11,9 @@ edges
 | InsecureBasicAuth.java:62:21:62:26 | uriStr : String | InsecureBasicAuth.java:62:13:62:27 | new URI(...) : URI |
 | InsecureBasicAuth.java:78:47:78:52 | "http" : String | InsecureBasicAuth.java:86:3:86:6 | post |
 | InsecureBasicAuth.java:93:19:93:68 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | InsecureBasicAuth.java:102:3:102:6 | post |
-| InsecureBasicAuth.java:109:19:109:68 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | InsecureBasicAuth.java:119:3:119:6 | post |
-| InsecureBasicAuth.java:126:19:126:68 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | InsecureBasicAuth.java:129:21:129:26 | urlStr : String |
+| InsecureBasicAuth.java:109:19:109:68 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | InsecureBasicAuth.java:110:58:110:63 | uriStr : String |
+| InsecureBasicAuth.java:110:29:110:70 | new BasicRequestLine(...) : BasicRequestLine | InsecureBasicAuth.java:119:3:119:6 | post |
+| InsecureBasicAuth.java:110:58:110:63 | uriStr : String | InsecureBasicAuth.java:110:29:110:70 | new BasicRequestLine(...) : BasicRequestLine |
 | InsecureBasicAuth.java:126:19:126:68 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | InsecureBasicAuth.java:130:28:130:67 | (...)... : URLConnection |
 | InsecureBasicAuth.java:129:13:129:27 | new URL(...) : URL | InsecureBasicAuth.java:130:28:130:67 | (...)... : URLConnection |
 | InsecureBasicAuth.java:129:21:129:26 | urlStr : String | InsecureBasicAuth.java:129:13:129:27 | new URL(...) : URL |
@@ -37,6 +38,8 @@ nodes
 | InsecureBasicAuth.java:93:19:93:68 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | semmle.label | "http://www.example.com/rest/getuser.do?uid=abcdx" : String |
 | InsecureBasicAuth.java:102:3:102:6 | post | semmle.label | post |
 | InsecureBasicAuth.java:109:19:109:68 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | semmle.label | "http://www.example.com/rest/getuser.do?uid=abcdx" : String |
+| InsecureBasicAuth.java:110:29:110:70 | new BasicRequestLine(...) : BasicRequestLine | semmle.label | new BasicRequestLine(...) : BasicRequestLine |
+| InsecureBasicAuth.java:110:58:110:63 | uriStr : String | semmle.label | uriStr : String |
 | InsecureBasicAuth.java:119:3:119:6 | post | semmle.label | post |
 | InsecureBasicAuth.java:126:19:126:68 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | semmle.label | "http://www.example.com/rest/getuser.do?uid=abcdx" : String |
 | InsecureBasicAuth.java:129:13:129:27 | new URL(...) : URL | semmle.label | new URL(...) : URL |

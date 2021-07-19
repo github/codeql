@@ -7,9 +7,11 @@ private import semmle.code.csharp.frameworks.system.linq.Expressions
 private import DataFlowDispatch
 private import DataFlowPrivate
 private import DataFlowPublic
+private import DataFlowImplCommon
 private import FlowSummaryImpl::Private
 private import FlowSummaryImpl::Public
 private import semmle.code.csharp.Unification
+private import semmle.code.csharp.dataflow.ExternalFlow
 
 /** Holds is `i` is a valid parameter position. */
 predicate parameterPosition(int i) { i in [-1 .. any(Parameter p).getPosition()] }
@@ -82,7 +84,40 @@ DataFlowType getCallbackReturnType(DataFlowType t, ReturnKind rk) {
  * Holds if an external flow summary exists for `c` with input specification
  * `input`, output specification `output`, and kind `kind`.
  */
-predicate summaryElement(DataFlowCallable c, string input, string output, string kind) { none() }
+predicate summaryElement(DataFlowCallable c, string input, string output, string kind) {
+  exists(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext
+  |
+    summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind) and
+    c = interpretElement(namespace, type, subtypes, name, signature, ext)
+  )
+}
+
+/**
+ * Holds if an external source specification exists for `e` with output specification
+ * `output` and kind `kind`.
+ */
+predicate sourceElement(Element e, string output, string kind) {
+  exists(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext
+  |
+    sourceModel(namespace, type, subtypes, name, signature, ext, output, kind) and
+    e = interpretElement(namespace, type, subtypes, name, signature, ext)
+  )
+}
+
+/**
+ * Holds if an external sink specification exists for `n` with input specification
+ * `input` and kind `kind`.
+ */
+predicate sinkElement(Element e, string input, string kind) {
+  exists(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext
+  |
+    sinkModel(namespace, type, subtypes, name, signature, ext, input, kind) and
+    e = interpretElement(namespace, type, subtypes, name, signature, ext)
+  )
+}
 
 /** Gets the summary component for specification component `c`, if any. */
 bindingset[c]
@@ -101,18 +136,6 @@ SummaryComponent interpretComponentSpecific(string c) {
 }
 
 class SourceOrSinkElement = Element;
-
-/**
- * Holds if an external source specification exists for `e` with output specification
- * `output` and kind `kind`.
- */
-predicate sourceElement(Element e, string output, string kind) { none() }
-
-/**
- * Holds if an external sink specification exists for `n` with input specification
- * `input` and kind `kind`.
- */
-predicate sinkElement(Element e, string input, string kind) { none() }
 
 /** Gets the return kind corresponding to specification `"ReturnValue"`. */
 NormalReturnKind getReturnValueKind() { any() }
@@ -137,7 +160,7 @@ class InterpretNode extends TInterpretNode {
   DataFlowCallable asCallable() { result = this.asElement() }
 
   /** Gets the target of this call, if any. */
-  Callable getCallTarget() { result = this.asCall().getARuntimeTarget() }
+  Callable getCallTarget() { result = viableCallable(this.asCall()) }
 
   /** Gets a textual representation of this node. */
   string toString() {

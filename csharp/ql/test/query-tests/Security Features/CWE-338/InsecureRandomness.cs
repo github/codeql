@@ -74,5 +74,3 @@ public class InsecureRandomness
         return result;
     }
 }
-
-// semmle-extractor-options: /r:System.Security.Cryptography.Csp.dll /r:System.Security.Cryptography.Algorithms.dll

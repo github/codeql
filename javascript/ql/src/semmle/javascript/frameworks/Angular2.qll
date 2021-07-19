@@ -216,20 +216,13 @@ module Angular2 {
     }
   }
 
-  private string getInternalName(string name) {
-    exists(Identifier id |
-      result = id.getName() and
-      name = result.regexpCapture("\\u0275(DomAdapter|getDOM)", 1)
-    )
-  }
-
   /** Gets a reference to a `DomAdapter`, which provides acess to raw DOM elements. */
   private DataFlow::SourceNode domAdapter() {
     // Note: these are internal properties, prefixed with the "latin small letter barred O (U+0275)" character.
     // Despite being internal, some codebases do access them.
-    result.hasUnderlyingType("@angular/common", getInternalName("DomAdapter"))
+    result.hasUnderlyingType("@angular/common", 629.toUnicode() + "DomAdapter")
     or
-    result = DataFlow::moduleImport("@angular/common").getAMemberCall(getInternalName("getDOM"))
+    result = DataFlow::moduleImport("@angular/common").getAMemberCall(629.toUnicode() + "getDOM")
   }
 
   /** A reference to the DOM location obtained through `DomAdapter.getLocation()`. */

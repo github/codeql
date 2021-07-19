@@ -42,7 +42,6 @@ public class test_stmts
         return 0;
     }
 
-
     public static void tryCatchFinally() 
     {
         int x = 5;

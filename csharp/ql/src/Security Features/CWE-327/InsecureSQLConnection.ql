@@ -4,7 +4,7 @@
  * @kind path-problem
  * @id cs/insecure-sql-connection
  * @problem.severity error
- * @security-severity 5.2
+ * @security-severity 7.5
  * @precision medium
  * @tags security
  *       external/cwe/cwe-327

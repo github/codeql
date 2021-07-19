@@ -617,11 +617,11 @@ module API {
     cached
     predicate use(TApiNode nd, DataFlow::Node ref) {
       exists(string m, Module mod | nd = MkModuleDef(m) and mod = importableModule(m) |
-        ref.(ModuleVarNode).getModule() = mod
+        ref = DataFlow::moduleVarNode(mod)
       )
       or
       exists(string m, Module mod | nd = MkModuleExport(m) and mod = importableModule(m) |
-        ref.(ExportsVarNode).getModule() = mod
+        ref = DataFlow::exportsVarNode(mod)
         or
         exists(DataFlow::Node base | use(MkModuleDef(m), base) |
           ref = trackUseNode(base).getAPropertyRead("exports")
@@ -686,9 +686,7 @@ module API {
       promisified = false and
       boundArgs = 0
       or
-      exists(DataFlow::CallNode promisify |
-        promisify = DataFlow::moduleImport(["util", "bluebird"]).getAMemberCall("promisify")
-      |
+      exists(Promisify::PromisifyCall promisify |
         trackUseNode(nd, false, boundArgs, t.continue()).flowsTo(promisify.getArgument(0)) and
         promisified = true and
         result = promisify
@@ -744,12 +742,9 @@ module API {
       or
       // additional backwards step from `require('m')` to `exports` or `module.exports` in m
       exists(Import imp | imp.getImportedModuleNode() = trackDefNode(nd, t.continue()) |
-        result.(ExportsVarNode).getModule() = imp.getImportedModule()
+        result = DataFlow::exportsVarNode(imp.getImportedModule())
         or
-        exists(ModuleVarNode mod |
-          mod.getModule() = imp.getImportedModule() and
-          result = mod.(DataFlow::SourceNode).getAPropertyRead("exports")
-        )
+        result = DataFlow::moduleVarNode(imp.getImportedModule()).getAPropertyRead("exports")
       )
       or
       t = defStep(nd, result)
@@ -982,47 +977,4 @@ private module Label {
 
   /** Gets the `promisedError` edge label connecting a promise to its rejected value. */
   string promisedError() { result = "promisedError" }
-}
-
-private class NodeModuleSourcesNodes extends DataFlow::SourceNode::Range {
-  Variable v;
-
-  NodeModuleSourcesNodes() {
-    exists(NodeModule m |
-      this = DataFlow::ssaDefinitionNode(SSA::implicitInit(v)) and
-      v = [m.getModuleVariable(), m.getExportsVariable()]
-    )
-  }
-
-  Variable getVariable() { result = v }
-}
-
-/**
- * A CommonJS/AMD `module` variable.
- */
-private class ModuleVarNode extends DataFlow::Node {
-  Module m;
-
-  ModuleVarNode() {
-    this.(NodeModuleSourcesNodes).getVariable() = m.(NodeModule).getModuleVariable()
-    or
-    DataFlow::parameterNode(this, m.(AmdModule).getDefine().getModuleParameter())
-  }
-
-  Module getModule() { result = m }
-}
-
-/**
- * A CommonJS/AMD `exports` variable.
- */
-private class ExportsVarNode extends DataFlow::Node {
-  Module m;
-
-  ExportsVarNode() {
-    this.(NodeModuleSourcesNodes).getVariable() = m.(NodeModule).getExportsVariable()
-    or
-    DataFlow::parameterNode(this, m.(AmdModule).getDefine().getExportsParameter())
-  }
-
-  Module getModule() { result = m }
 }

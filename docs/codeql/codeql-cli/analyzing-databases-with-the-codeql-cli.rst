@@ -56,6 +56,12 @@ You must specify:
 
 You can also specify:
 
+- ``--sarif-category``: an identifying category for the results. Used when
+  you want to upload more than one set of results for a commit.
+  For example, when you use  ``github upload-results`` to send results for more than one
+  language to the GitHub code scanning API. For more information about this use case,
+  see `Configuring CodeQL CLI in your CI system <https://docs.github.com/en/code-security/secure-coding/using-codeql-code-scanning-with-your-existing-ci-system/configuring-codeql-cli-in-your-ci-system>`__ in the GitHub documentation.
+
 - .. include:: ../reusables/threads-query-execution.rst
 
 
@@ -85,8 +91,8 @@ repositories.
 Running a single query
 ~~~~~~~~~~~~~~~~~~~~~~
 
-To run a single query over a JavaScript codebase, you could use the following
-command from the directory containing your database::
+To run a single query over a CodeQL database for a JavaScript codebase,
+you could use the following command from the directory containing your database::
 
    codeql database analyze <javascript-database> ../ql/javascript/ql/src/Declarations/UnusedVariable.ql --format=csv --output=js-analysis/js-results.csv 
 
@@ -105,13 +111,23 @@ see ":doc:`Using custom queries with the CodeQL CLI <using-custom-queries-with-t
 Running GitHub code scanning suites
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The CodeQL repository also includes query suites, which can be run over your
-code as part of a broader code review. CodeQL query suites are ``.qls`` files
-that use directives to select queries to run based on certain metadata
-properties.
+To run the GitHub code scanning suite of queries over a CodeQL database for a C/C++ codebase, 
+you could use the following command from the directory containing your database::
 
-The CodeQL repository includes query suites that are used by the CodeQL action on 
-`GitHub.com <https://github.com>`__. The query suites are located at the following paths in
+   codeql database analyze <cpp-database> cpp-code-scanning.qls --format=sarifv2.1.0 --output=cpp-results.sarif
+
+The analysis generates a file in the v2.1.0 SARIF format that is supported by all versions of GitHub.
+This file can be uploaded to GitHub using ``github upload-results`` or the code scanning API.
+For more information, see `Analyzing a CodeQL database <https://docs.github.com/en/code-security/secure-coding/configuring-codeql-cli-in-your-ci-system#analyzing-a-codeql-database>`__ 
+or `Code scanning API <https://docs.github.com/en/rest/reference/code-scanning>`__ in the GitHub documentation.
+
+CodeQL query suites are ``.qls`` files that use directives to select queries to run 
+based on certain metadata properties. The standard QL packs have metadata that specify
+the location of the code scanning suites, so the CodeQL CLI knows where to find these 
+suite files automatically, and you don't have to specify the full path on the command line.
+For more information, see ":ref:`About QL packs <standard-ql-packs>`."
+
+The standard query suites are stored at the following paths in
 the CodeQL repository::
 
    ql/<language>/ql/src/codeql-suites/<language>-code-scanning.qls
@@ -119,23 +135,6 @@ the CodeQL repository::
 and at the following path in the CodeQL for Go repository::
 
    ql/src/codeql-suites/go-code-scanning.qls
-
-These locations are specified in the metadata included in the standard QL packs.
-This means that the CodeQL CLI knows where to find the suite files automatically, and
-you don't have to specify the full path on the command line when running an
-analysis. For more information, see ":ref:`About QL packs <standard-ql-packs>`."
-
-.. pull-quote::
-
-   Important
-
-   If you plan to upload the results to GitHub, you must generate SARIF results.
-   For more information, see `Analyzing a CodeQL database <https://docs.github.com/en/code-security/secure-coding/running-codeql-cli-in-your-ci-system#analyzing-a-codeql-database>`__ in the GitHub documentation.
-
-For example, to run the code scanning query suite on a C++ codebase and generate
-results in the v2.1 SARIF format supported by all versions of GitHub, you would run::
-
-   codeql database analyze <cpp-database> cpp-code-scanning.qls --format=sarifv2.1.0 --output=cpp-analysis/cpp-results.sarif
 
 The repository also includes the query suites used by `LGTM.com <https://lgtm.com>`__.
 These are stored alongside the code scanning suites with names of the form: ``<language>-lgtm.qls``.

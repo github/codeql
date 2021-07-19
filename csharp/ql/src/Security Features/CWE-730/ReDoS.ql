@@ -4,7 +4,7 @@
  *              exponential time on certain input.
  * @kind path-problem
  * @problem.severity error
- * @security-severity 3.6
+ * @security-severity 7.5
  * @precision high
  * @id cs/redos
  * @tags security
@@ -13,7 +13,7 @@
  */
 
 import csharp
-import semmle.code.csharp.security.dataflow.ReDoS::ReDoS
+import semmle.code.csharp.security.dataflow.ReDoSQuery
 import semmle.code.csharp.frameworks.system.text.RegularExpressions
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 

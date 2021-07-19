@@ -4,7 +4,7 @@
  *              may cause redirection to malicious web sites.
  * @kind path-problem
  * @problem.severity error
- * @security-severity 2.7
+ * @security-severity 6.1
  * @sub-severity low
  * @id py/url-redirection
  * @tags security
@@ -16,7 +16,7 @@ import python
 import semmle.python.security.dataflow.UrlRedirect
 import DataFlow::PathGraph
 
-from UrlRedirectConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
+from UrlRedirect::Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "Untrusted URL redirection due to $@.", source.getNode(),
   "A user-provided value"

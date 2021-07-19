@@ -20,4 +20,3 @@ public class ArrayTest {
          e[1, 1] = -1;
     }
 }
-

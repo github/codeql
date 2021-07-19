@@ -4,7 +4,7 @@
  * @kind problem
  * @id cpp/unsigned-difference-expression-compared-zero
  * @problem.severity warning
- * @security-severity 5.9
+ * @security-severity 9.8
  * @precision medium
  * @tags security
  *       correctness
