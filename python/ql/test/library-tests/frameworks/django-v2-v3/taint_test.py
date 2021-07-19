@@ -94,15 +94,15 @@ def test_taint(request: HttpRequest, foo, bar, baz=None):  # $requestHandler rou
         request.resolver_match.kwargs, # $ MISSING: tainted
         request.resolver_match.kwargs["key"], # $ MISSING: tainted
 
-        request.get_full_path(), # $ MISSING: tainted
-        request.get_full_path_info(), # $ MISSING: tainted
+        request.get_full_path(), # $ tainted
+        request.get_full_path_info(), # $ tainted
         # build_absolute_uri handled below
         # get_signed_cookie handled below
 
-        request.read(), # $ MISSING: tainted
-        request.readline(), # $ MISSING: tainted
-        request.readlines(), # $ MISSING: tainted
-        request.readlines()[0], # $ MISSING: tainted
+        request.read(), # $ tainted
+        request.readline(), # $ tainted
+        request.readlines(), # $ tainted
+        request.readlines()[0], # $ tainted
         [line for line in request], # $ MISSING: tainted
     )
 
@@ -129,9 +129,9 @@ def test_taint(request: HttpRequest, foo, bar, baz=None):  # $requestHandler rou
     # build_absolute_uri
     ####################################
     ensure_tainted(
-        request.build_absolute_uri(), # $ MISSING: tainted
-        request.build_absolute_uri(request.GET["key"]), # $ MISSING: tainted
-        request.build_absolute_uri(location=request.GET["key"]), # $ MISSING: tainted
+        request.build_absolute_uri(), # $ tainted
+        request.build_absolute_uri(request.GET["key"]), # $ tainted
+        request.build_absolute_uri(location=request.GET["key"]), # $ tainted
     )
     ensure_not_tainted(
         request.build_absolute_uri("/hardcoded/"),

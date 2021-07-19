@@ -1892,9 +1892,30 @@ private module PrivateDjango {
       // (since it allows us to at least capture the most common cases).
       nodeFrom = django::http::request::HttpRequest::instance() and
       exists(DataFlow::AttrRead attr | attr.getObject() = nodeFrom |
-        attr.getAttributeName() in ["TODO"] and
+        attr.getAttributeName() in [
+            "get_full_path", "get_full_path_info", "read", "readline", "readlines"
+          ] and
+        nodeTo.(DataFlow::CallCfgNode).getFunction() = attr
+      )
+      or
+      // special handling of the `build_absolute_uri` method, see
+      // https://docs.djangoproject.com/en/3.0/ref/request-response/#django.http.HttpRequest.build_absolute_uri
+      exists(DataFlow::AttrRead attr, DataFlow::CallCfgNode call, DataFlow::Node instance |
+        instance = django::http::request::HttpRequest::instance() and
+        attr.getObject() = instance
+      |
+        attr.getAttributeName() = "build_absolute_uri" and
         nodeTo.(DataFlow::CallCfgNode).getFunction() = attr and
-        none()
+        call = nodeTo and
+        (
+          not exists(call.getArg(_)) and
+          not exists(call.getArgByName(_)) and
+          nodeFrom = instance
+          or
+          nodeFrom = call.getArg(0)
+          or
+          nodeFrom = call.getArgByName("location")
+        )
       )
       or
       // Attributes
@@ -1920,7 +1941,6 @@ private module PrivateDjango {
           // TODO: Model ResolverMatch
           "resolver_match"
         ]
-      // TODO: Handle calls to methods
       // TODO: Handle that a HttpRequest is iterable
     }
   }
