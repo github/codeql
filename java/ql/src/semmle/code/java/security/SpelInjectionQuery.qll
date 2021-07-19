@@ -2,23 +2,10 @@
 
 import java
 import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.dataflow.FlowSources
 
 /** A data flow sink for unvalidated user input that is used to construct SpEL expressions. */
 abstract class SpelExpressionEvaluationSink extends DataFlow::ExprNode { }
-
-private class SpelExpressionEvaluationModel extends SinkModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "org.springframework.expression;Expression;true;getValue;;;Argument[-1];spel",
-        "org.springframework.expression;Expression;true;getValueTypeDescriptor;;;Argument[-1];spel",
-        "org.springframework.expression;Expression;true;getValueType;;;Argument[-1];spel",
-        "org.springframework.expression;Expression;true;setValue;;;Argument[-1];spel"
-      ]
-  }
-}
 
 /** Default sink for SpEL injection vulnerabilities. */
 private class DefaultSpelExpressionEvaluationSink extends SpelExpressionEvaluationSink {
@@ -50,6 +37,22 @@ class SpelExpressionInjectionAdditionalTaintStep extends Unit {
 private class DefaultSpelExpressionInjectionAdditionalTaintStep extends SpelExpressionInjectionAdditionalTaintStep {
   override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
     expressionParsingStep(node1, node2)
+  }
+}
+
+/**
+ * A taint-tracking configuration for unsafe user input
+ * that is used to construct and evaluate a SpEL expression.
+ */
+class SpelInjectionConfig extends TaintTracking::Configuration {
+  SpelInjectionConfig() { this = "SpelInjectionConfig" }
+
+  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+
+  override predicate isSink(DataFlow::Node sink) { sink instanceof SpelExpressionEvaluationSink }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+    any(SpelExpressionInjectionAdditionalTaintStep c).step(node1, node2)
   }
 }
 
