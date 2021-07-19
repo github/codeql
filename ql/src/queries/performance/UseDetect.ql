@@ -6,11 +6,10 @@
  * @id rb/use-detect
  * @tags performance rubocop
  * @precision high
- *
- * This is an implementation of Rubocop rule
- * https://github.com/rubocop/rubocop-performance/blob/master/lib/rubocop/cop/performance/detect.rb
  */
 
+// This is an implementation of the Rubocop rule
+// https://github.com/rubocop/rubocop-performance/blob/master/lib/rubocop/cop/performance/detect.rb
 import ruby
 import codeql_ruby.dataflow.SSA
 
