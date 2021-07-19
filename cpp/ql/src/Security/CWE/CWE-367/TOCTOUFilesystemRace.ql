@@ -116,7 +116,9 @@ where
     )
   ) and
   // `checkPath` and `usePath` refer to the same SSA variable
-  exists(SsaDefinition def, StackVariable v | def.getAUse(v) = checkPath and def.getAUse(v) = usePath) and
+  exists(SsaDefinition def, StackVariable v |
+    def.getAUse(v) = checkPath and def.getAUse(v) = usePath
+  ) and
   // `op` looks like an operation on a filename
   use = filenameOperation(usePath) and
   // the return value of `check` is used (possibly with one step of
