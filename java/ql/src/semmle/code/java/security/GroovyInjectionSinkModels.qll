@@ -2,7 +2,7 @@
 
 private import semmle.code.java.dataflow.ExternalFlow
 
-private class DefaultLdapInjectionSinkModel extends SinkModelCsv {
+private class DefaultGroovyInjectionSinkModel extends SinkModelCsv {
   override predicate row(string row) {
     row =
       [
