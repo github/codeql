@@ -25,7 +25,7 @@ Overall coverage is claimed for the most-precise CWEs, as well as for any of the
    :hidden:
    :titlesonly:
 
-   codeql-cwe-coverage-full
+   full-cwe
    cpp-cwe
    csharp-cwe
    go-cwe
