@@ -33,7 +33,7 @@ org.apache.commons.collections4,,,99,,,,,,,,,,,,,,,4,95
 org.apache.commons.io,,,22,,,,,,,,,,,,,,,22,
 org.apache.commons.jexl2,15,,,,,,,15,,,,,,,,,,,
 org.apache.commons.jexl3,15,,,,,,,15,,,,,,,,,,,
-org.apache.commons.lang3,,,420,,,,,,,,,,,,,,,292,128
+org.apache.commons.lang3,,,423,,,,,,,,,,,,,,,292,131
 org.apache.commons.text,,,272,,,,,,,,,,,,,,,220,52
 org.apache.directory.ldap.client.api,1,,,,,,,,1,,,,,,,,,,
 org.apache.hc.core5.function,,,1,,,,,,,,,,,,,,,1,
