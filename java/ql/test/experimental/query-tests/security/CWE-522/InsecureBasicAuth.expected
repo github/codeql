@@ -14,6 +14,7 @@ edges
 | InsecureBasicAuth.java:109:19:109:68 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | InsecureBasicAuth.java:110:58:110:63 | uriStr : String |
 | InsecureBasicAuth.java:110:29:110:70 | new BasicRequestLine(...) : BasicRequestLine | InsecureBasicAuth.java:119:3:119:6 | post |
 | InsecureBasicAuth.java:110:58:110:63 | uriStr : String | InsecureBasicAuth.java:110:29:110:70 | new BasicRequestLine(...) : BasicRequestLine |
+| InsecureBasicAuth.java:126:19:126:68 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | InsecureBasicAuth.java:129:21:129:26 | urlStr : String |
 | InsecureBasicAuth.java:126:19:126:68 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | InsecureBasicAuth.java:130:28:130:67 | (...)... : URLConnection |
 | InsecureBasicAuth.java:129:13:129:27 | new URL(...) : URL | InsecureBasicAuth.java:130:28:130:67 | (...)... : URLConnection |
 | InsecureBasicAuth.java:129:21:129:26 | urlStr : String | InsecureBasicAuth.java:129:13:129:27 | new URL(...) : URL |
