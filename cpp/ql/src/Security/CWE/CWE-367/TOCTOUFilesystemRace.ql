@@ -26,26 +26,14 @@ import semmle.code.cpp.controlflow.Guards
  */
 FunctionCall filenameOperation(Expr path) {
   exists(string name | name = result.getTarget().getName() |
-    (
-      name = "remove" or
-      name = "unlink" or
-      name = "rmdir" or
-      name = "rename" or
-      name = "chmod" or
-      name = "chown" or
-      name = "fopen" or
-      name = "open" or
-      name = "freopen" or
-      name = "_open" or
-      name = "_wopen" or
-      name = "_wfopen"
-    ) and
+    name =
+      [
+        "remove", "unlink", "rmdir", "rename", "chmod", "chown", "fopen", "open", "freopen",
+        "_open", "_wopen", "_wfopen"
+      ] and
     result.getArgument(0) = path
     or
-    (
-      name = "fopen_s" or
-      name = "wfopen_s"
-    ) and
+    name = ["fopen_s", "wfopen_s"] and
     result.getArgument(1) = path
   )
 }
@@ -56,11 +44,7 @@ FunctionCall filenameOperation(Expr path) {
  */
 FunctionCall accessCheck(Expr path) {
   exists(string name | name = result.getTarget().getName() |
-    name = "access" or
-    name = "_access" or
-    name = "_waccess" or
-    name = "_access_s" or
-    name = "_waccess_s"
+    name = ["access", "_access", "_waccess", "_access_s", "_waccess_s"]
   ) and
   path = result.getArgument(0)
 }
@@ -72,9 +56,7 @@ FunctionCall accessCheck(Expr path) {
  */
 FunctionCall stat(Expr path, Expr buf) {
   exists(string name | name = result.getTarget().getName() |
-    name = "stat" or
-    name = "lstat" or
-    name = "fstat" or
+    name = ["stat", "lstat", "fstat"] or
     name.matches("\\_stat%") or
     name.matches("\\_wstat%")
   ) and
