@@ -112,13 +112,16 @@ If your query checks code for a CWE weakness, you should use the `@tags` element
 
 ## Validating qhelp files
 
-Before making a pull request you should ensure the `.qhelp` file is well-formed and can be generated without problems. For example, this can be done locally with `codeql-cli` tool. In order to do so just start the `codeql-cli` with the appropriate parameters, as seen in the following example:
+Before making a pull request, please ensure the `.qhelp` files are well-formed and can be generated without errors. This can be done locally with the CodeQL CLI, as shown in the following example:
 
 ```bash
 # codeql generate query-help <path_to_your_qhelp_file> --format=<format>
 # For example:
 codeql generate query-help ./myCustomQuery.qhelp --format=markdown
 ```
+
+
+Please include the `.qhelp` files (and any associated code snippets) in your pull request, but do not commit the generated Markdown.
 
 More information on how to test your `.qhelp` files can be found [within the documentation](https://codeql.github.com/docs/codeql-cli/testing-query-help-files/)
 
