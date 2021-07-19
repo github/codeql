@@ -1883,33 +1883,45 @@ private module PrivateDjango {
     }
   }
 
-  private class DjangoHttpRequstAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+  private class DjangoHttpRequestAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
     override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+      // Methods
+      //
+      // TODO: When we have tools that make it easy, model these properly to handle
+      // `meth = obj.meth; meth()`. Until then, we'll use this more syntactic approach
+      // (since it allows us to at least capture the most common cases).
       nodeFrom = django::http::request::HttpRequest::instance() and
-      exists(DataFlow::AttrRead read | nodeTo = read and read.getObject() = nodeFrom |
-        read.getAttributeName() in [
-            // str / bytes
-            "body", "path", "path_info", "method", "encoding", "content_type",
-            // django.http.QueryDict
-            // TODO: Model QueryDict
-            "GET", "POST",
-            // dict[str, str]
-            "content_params", "COOKIES",
-            // dict[str, Any]
-            "META",
-            // HttpHeaders (case insensitive dict-like)
-            "headers",
-            // MultiValueDict[str, UploadedFile]
-            // TODO: Model MultiValueDict
-            // TODO: Model UploadedFile
-            "FILES",
-            // django.urls.ResolverMatch
-            // TODO: Model ResolverMatch
-            "resolver_match"
-          ]
-        // TODO: Handle calls to methods
-        // TODO: Handle that a HttpRequest is iterable
+      exists(DataFlow::AttrRead attr | attr.getObject() = nodeFrom |
+        attr.getAttributeName() in ["TODO"] and
+        nodeTo.(DataFlow::CallCfgNode).getFunction() = attr and
+        none()
       )
+      or
+      // Attributes
+      nodeFrom = django::http::request::HttpRequest::instance() and
+      nodeTo.(DataFlow::AttrRead).getObject() = nodeFrom and
+      nodeTo.(DataFlow::AttrRead).getAttributeName() in [
+          // str / bytes
+          "body", "path", "path_info", "method", "encoding", "content_type",
+          // django.http.QueryDict
+          // TODO: Model QueryDict
+          "GET", "POST",
+          // dict[str, str]
+          "content_params", "COOKIES",
+          // dict[str, Any]
+          "META",
+          // HttpHeaders (case insensitive dict-like)
+          "headers",
+          // MultiValueDict[str, UploadedFile]
+          // TODO: Model MultiValueDict
+          // TODO: Model UploadedFile
+          "FILES",
+          // django.urls.ResolverMatch
+          // TODO: Model ResolverMatch
+          "resolver_match"
+        ]
+      // TODO: Handle calls to methods
+      // TODO: Handle that a HttpRequest is iterable
     }
   }
 
