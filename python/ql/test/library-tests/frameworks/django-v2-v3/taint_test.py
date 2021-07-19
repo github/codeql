@@ -61,22 +61,23 @@ def test_taint(request: HttpRequest, foo, bar, baz=None):  # $requestHandler rou
         # MultiValueDict[str, UploadedFile]
         request.FILES, # $ tainted
         request.FILES["key"], # $ tainted
-        request.FILES["key"].content_type, # $ MISSING: tainted
-        request.FILES["key"].content_type_extra, # $ MISSING: tainted
-        request.FILES["key"].content_type_extra["key"], # $ MISSING: tainted
-        request.FILES["key"].charset, # $ MISSING: tainted
-        request.FILES["key"].name, # $ MISSING: tainted
-        request.FILES["key"].file, # $ MISSING: tainted
+        request.FILES["key"].content_type, # $ tainted
+        request.FILES["key"].content_type_extra, # $ tainted
+        request.FILES["key"].content_type_extra["key"], # $ tainted
+        request.FILES["key"].charset, # $ tainted
+        request.FILES["key"].name, # $ tainted
+        request.FILES["key"].file, # $ tainted
         request.FILES["key"].file.read(), # $ MISSING: tainted
 
         request.FILES.get("key"), # $ tainted
-        request.FILES.get("key").name, # $ MISSING: tainted
+        request.FILES.get("key").name, # $ tainted
         request.FILES.getlist("key"), # $ tainted
         request.FILES.getlist("key")[0], # $ tainted
-        request.FILES.getlist("key")[0].name, # $ MISSING: tainted
+        request.FILES.getlist("key")[0].name, # $ tainted
         request.FILES.dict(), # $ tainted
         request.FILES.dict()["key"], # $ tainted
-        request.FILES.dict()["key"].name, # $ MISSING: tainted
+        request.FILES.dict()["key"].name, # $ tainted
+        request.FILES.dict().get("key").name, # $ tainted
 
         # Dict[str, Any]
         request.META, # $ tainted

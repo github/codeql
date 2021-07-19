@@ -361,6 +361,67 @@ private module Django {
       }
     }
   }
+
+  /**
+   * Provides models for the `django.core.files.uploadedfile.UploadedFile` class
+   *
+   * See https://docs.djangoproject.com/en/3.0/ref/files/uploads/#django.core.files.uploadedfile.UploadedFile.
+   */
+  module UploadedFile {
+    /** Gets a reference to the `django.core.files.uploadedfile.UploadedFile` class. */
+    private API::Node classRef() {
+      result =
+        API::moduleImport("django")
+            .getMember("core")
+            .getMember("files")
+            .getMember("uploadedfile")
+            .getMember("UploadedFile")
+    }
+
+    /**
+     * A source of instances of `django.core.files.uploadedfile.UploadedFile`, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `UploadedFile::instance()` to get references to instances of `django.core.files.uploadedfile.UploadedFile`.
+     */
+    abstract class InstanceSource extends DataFlow::LocalSourceNode { }
+
+    /** A direct instantiation of `django.core.files.uploadedfile.UploadedFile`. */
+    private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
+      override CallNode node;
+
+      ClassInstantiation() { this = classRef().getACall() }
+    }
+
+    /** Gets a reference to an instance of `django.core.files.uploadedfile.UploadedFile`. */
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an instance of `django.core.files.uploadedfile.UploadedFile`. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    /**
+     * Taint propagation for `django.core.files.uploadedfile.UploadedFile`.
+     */
+    class UploadedFileAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+      override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+        // Attributes
+        nodeFrom = instance() and
+        nodeTo.(DataFlow::AttrRead).getObject() = nodeFrom and
+        nodeTo.(DataFlow::AttrRead).getAttributeName() in [
+            "content_type", "content_type_extra", "content_type_extra", "charset", "name", "file"
+          ]
+        // TODO: Model `file` with shared-filelike such that `request.FILES["key"].file.read()` works
+      }
+    }
+  }
 }
 
 /**
@@ -2002,7 +2063,6 @@ private module PrivateDjango {
           // HttpHeaders (case insensitive dict-like)
           "headers",
           // MultiValueDict[str, UploadedFile]
-          // TODO: Model UploadedFile
           "FILES",
           // django.urls.ResolverMatch
           // TODO: Model ResolverMatch
@@ -2017,6 +2077,40 @@ private module PrivateDjango {
     DjangoHttpRequestMultiValueDictInstances() {
       this.(DataFlow::AttrRead).getObject() = django::http::request::HttpRequest::instance() and
       this.(DataFlow::AttrRead).getAttributeName() in ["GET", "POST", "FILES"]
+    }
+  }
+
+  /** An `UploadedFile` instance that originates from a django request. */
+  class DjangoHttpRequestUploadedFileInstances extends Django::UploadedFile::InstanceSource {
+    DjangoHttpRequestUploadedFileInstances() {
+      // TODO: this currently only works in local-scope, since writing type-trackers for
+      // this is a little too much effort. Once API-graphs are available for more
+      // things, we can rewrite this.
+      //
+      // TODO: This approach for identifying member-access is very adhoc, and we should
+      // be able to do something more structured for providing modeling of the members
+      // of a container-object.
+      //
+      // dicts
+      exists(DataFlow::AttrRead files, DataFlow::Node dict |
+        files.accesses(django::http::request::HttpRequest::instance(), "FILES") and
+        (
+          dict = files
+          or
+          dict.(DataFlow::MethodCallNode).calls(files, "dict")
+        )
+      |
+        this.asCfgNode().(SubscriptNode).getObject() = dict.asCfgNode()
+        or
+        this.(DataFlow::MethodCallNode).calls(dict, "get")
+      )
+      or
+      // getlist
+      exists(DataFlow::AttrRead files, DataFlow::MethodCallNode getlistCall |
+        files.accesses(django::http::request::HttpRequest::instance(), "FILES") and
+        getlistCall.calls(files, "getlist") and
+        this.asCfgNode().(SubscriptNode).getObject() = getlistCall.asCfgNode()
+      )
     }
   }
 
