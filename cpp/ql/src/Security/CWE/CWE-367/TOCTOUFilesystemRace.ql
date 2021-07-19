@@ -33,7 +33,7 @@ FunctionCall filenameOperation(Expr path) {
       ] and
     result.getArgument(0) = path
     or
-    name = ["fopen_s", "wfopen_s"] and
+    name = ["fopen_s", "wfopen_s", "rename"] and
     result.getArgument(1) = path
   )
 }

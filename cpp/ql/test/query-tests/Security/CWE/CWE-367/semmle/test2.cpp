@@ -262,7 +262,7 @@ void test5_2(const char *path1, const char *path2)
 
 	if (!rename(path1, path2))
 	{
-		f = fopen(path2, "r"); // BAD [NOT DETECTED]
+		f = fopen(path2, "r"); // BAD
 	}
 }
 
