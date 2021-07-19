@@ -43,11 +43,7 @@ predicate interestingConcatenation(DataFlow::Node fst, DataFlow::Node snd) {
     snd.asDefiningArgument() = call.getOutputArgument(false) and
     literal = call.getFormat() and
     not literal.getConvSpecOffset(index) = 0 and
-    (
-      literal.getConversionType(index) instanceof CharPointerType
-      or
-      literal.getConversionType(index).(PointerType).getBaseType() instanceof Wchar_t
-    )
+    literal.getConversionChar(index) = ["s", "S"]
   )
   or
   // strcat and friends
@@ -80,6 +76,12 @@ class TaintToConcatenationConfiguration extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) {
     interestingConcatenation(sink, _)
+  }
+
+  override predicate isSanitizer(DataFlow::Node node) {
+    node.asInstruction().getResultType() instanceof IntegralType
+    or
+    node.asInstruction().getResultType() instanceof FloatingPointType
   }
 }
 
