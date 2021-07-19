@@ -183,7 +183,8 @@ private predicate unsafeDeserialization(MethodAccess ma, Expr sink) {
   )
 }
 
-private class UnsafeDeserializationSink extends DataFlow::ExprNode {
+/** A sink for unsafe deserialization. */
+class UnsafeDeserializationSink extends DataFlow::ExprNode {
   UnsafeDeserializationSink() { unsafeDeserialization(_, this.getExpr()) }
 
   /** Get a call that triggers unsafe deserialization. */
