@@ -87,9 +87,6 @@ where
     // a stat
     check = stat(checkPath, _)
     or
-    // another filename operation (null pointers can indicate errors)
-    check = filenameOperation(checkPath)
-    or
     // access to a member variable on the stat buf
     // (morally, this should be a use-use pair, but it seems unlikely
     // that this variable will get reused in practice)

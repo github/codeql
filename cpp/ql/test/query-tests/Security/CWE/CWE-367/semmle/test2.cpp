@@ -36,7 +36,7 @@ void test1_1(const char *path)
 	if (f == NULL)
 	{
 		// retry
-		f = fopen(path, "r"); // GOOD (this is just trying again) [FALSE POSITIVE]
+		f = fopen(path, "r"); // GOOD (this is just trying again)
 	}
 
 	// ...
@@ -49,7 +49,7 @@ void test1_2(const char *path)
 	// try until we succeed
 	while (f == NULL)
 	{
-		f = fopen(path, "r"); // GOOD (this is just trying again) [FALSE POSITIVE]
+		f = fopen(path, "r"); // GOOD (this is just trying again)
 
 		// ...
 	}
@@ -242,7 +242,7 @@ void test4_1(const char *path)
 
 		fclose(f);
 
-		chmod(path, 0); // DUBIOUS (bad but perhaps not exploitable) [REPORTED]
+		chmod(path, 0); // DUBIOUS (bad but perhaps not exploitable)
 	}
 }
 
@@ -252,7 +252,7 @@ void test5_1(const char *path1, const char *path2)
 {
 	if (rename(path1, path2))
 	{
-		remove(path1); // DUBIOUS (bad but perhaps not exploitable) [REPORTED]
+		remove(path1); // DUBIOUS (bad but perhaps not exploitable)
 	}
 }
 
@@ -262,7 +262,7 @@ void test5_2(const char *path1, const char *path2)
 
 	if (!rename(path1, path2))
 	{
-		f = fopen(path2, "r"); // BAD
+		f = fopen(path2, "r"); // BAD [NOT DETECTED]
 	}
 }
 
