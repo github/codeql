@@ -25,7 +25,7 @@ public class JoddJsonServlet extends HttpServlet {
     }
  
     @Override
-    // GOOD: specify a designated final class type
+    // BAD: specify a null class type
     public void doHead(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String json = req.getParameter("json");
         String clazz = req.getParameter("class");
@@ -33,7 +33,7 @@ public class JoddJsonServlet extends HttpServlet {
         JsonParser parser = new JsonParser();
         parser.allowClass("com.example.*");
         parser.setClassMetadataName("class");
-        User obj = parser.parse(json, User.class);
+        User obj = parser.parse(json, null);
     }
 
     @Override

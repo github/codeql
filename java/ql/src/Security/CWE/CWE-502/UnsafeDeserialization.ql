@@ -70,13 +70,7 @@ class UnsafeDeserializationConfig extends TaintTracking::Configuration {
       ) and
       node.asExpr() = ma.getAnArgument() and
       (
-        ma.getArgument(1)
-            .(TypeLiteral)
-            .getType()
-            .(ParameterizedType)
-            .getATypeArgument()
-            .(Class)
-            .isFinal() // jodd.json.JsonParser parser = new JsonParser(); parser.allowClass("com.example.*"); parser.setClassMetadataName("class"); User obj = parser.parse(json, User.class);
+        ma.getArgument(1).(TypeLiteral).getType() instanceof NullType // Require that the class parameter is non-null
         or
         exists(
           MethodAccess dma // Specified class type
