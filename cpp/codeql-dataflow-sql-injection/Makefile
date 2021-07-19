@@ -5,7 +5,8 @@ clean:
 	rm -f README.html add-user cpp-sqli.sarif cpp-sqli.txt users.log
 	rm -f users.sqlite *.bak *~ cpp-sqli-demo.zip
 
-ZIPLIST := Makefile				\
+ZIPLIST :=					\
+    Makefile					\
     README.org					\
     SqlInjection.ql				\
     add-user.c					\
@@ -13,10 +14,12 @@ ZIPLIST := Makefile				\
     admin					\
     build.sh					\
     codeql-dataflow-sql-injection.md		\
+    codeql-overview-for-workshop.pdf		\
     cpp-sqli.code-workspace			\
     dataflow-cropped.pdf			\
     qlpack.yml					\
-    sarif-summary.jq
+    sarif-summary.jq				\
+    session.ql
 
 demo-zip: 
 	rm -f cpp-sqli-demo.zip
