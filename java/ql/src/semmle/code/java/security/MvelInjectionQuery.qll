@@ -3,6 +3,8 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.ExternalFlow
+import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.dataflow.TaintTracking
 
 /** A data flow sink for unvalidated user input that is used to construct MVEL expressions. */
 abstract class MvelEvaluationSink extends DataFlow::Node { }
@@ -21,31 +23,6 @@ class MvelInjectionAdditionalTaintStep extends Unit {
    * step for the `MvelInjectionFlowConfig` configuration.
    */
   abstract predicate step(DataFlow::Node n1, DataFlow::Node n2);
-}
-
-private class DefaulMvelEvaluationSinkModel extends SinkModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "javax.script;CompiledScript;false;eval;;;Argument[-1];mvel",
-        "org.mvel2;MVEL;false;eval;;;Argument[0];mvel",
-        "org.mvel2;MVEL;false;executeExpression;;;Argument[0];mvel",
-        "org.mvel2;MVEL;false;evalToBoolean;;;Argument[0];mvel",
-        "org.mvel2;MVEL;false;evalToString;;;Argument[0];mvel",
-        "org.mvel2;MVEL;false;executeAllExpression;;;Argument[0];mvel",
-        "org.mvel2;MVEL;false;executeSetExpression;;;Argument[0];mvel",
-        "org.mvel2;MVELRuntime;false;execute;;;Argument[1];mvel",
-        "org.mvel2.templates;TemplateRuntime;false;eval;;;Argument[0];mvel",
-        "org.mvel2.templates;TemplateRuntime;false;execute;;;Argument[0];mvel",
-        "org.mvel2.jsr223;MvelScriptEngine;false;eval;;;Argument[0];mvel",
-        "org.mvel2.jsr223;MvelScriptEngine;false;evaluate;;;Argument[0];mvel",
-        "org.mvel2.jsr223;MvelCompiledScript;false;eval;;;Argument[-1];mvel",
-        "org.mvel2.compiler;ExecutableStatement;false;getValue;;;Argument[-1];mvel",
-        "org.mvel2.compiler;CompiledExpression;false;getDirectValue;;;Argument[-1];mvel",
-        "org.mvel2.compiler;CompiledAccExpression;false;getValue;;;Argument[-1];mvel",
-        "org.mvel2.compiler;Accessor;false;getValue;;;Argument[-1];mvel"
-      ]
-  }
 }
 
 /** Default sink for MVEL injection vulnerabilities. */
@@ -71,6 +48,26 @@ private class DefaultMvelInjectionAdditionalTaintStep extends MvelInjectionAddit
     createMvelCompiledScriptStep(node1, node2) or
     templateCompileStep(node1, node2) or
     createTemplateCompilerStep(node1, node2)
+  }
+}
+
+/**
+ * A taint-tracking configuration for unsafe user input
+ * that is used to construct and evaluate a MVEL expression.
+ */
+class MvelInjectionFlowConfig extends TaintTracking::Configuration {
+  MvelInjectionFlowConfig() { this = "MvelInjectionFlowConfig" }
+
+  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+
+  override predicate isSink(DataFlow::Node sink) { sink instanceof MvelEvaluationSink }
+
+  override predicate isSanitizer(DataFlow::Node sanitizer) {
+    sanitizer instanceof MvelInjectionSanitizer
+  }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+    any(MvelInjectionAdditionalTaintStep c).step(node1, node2)
   }
 }
 
