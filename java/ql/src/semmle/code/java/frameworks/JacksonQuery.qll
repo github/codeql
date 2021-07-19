@@ -5,7 +5,6 @@
 import java
 import semmle.code.java.Reflection
 import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.TaintTracking2
 
 private class ObjectMapper extends RefType {
