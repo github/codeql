@@ -195,8 +195,6 @@
             "",
             "  /** Gets a reference to an instance of `${TM_SELECTED_TEXT}`. */",
             "  DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }",
-            "",
-            "  DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }",
             "}",
         ],
         "description": "Type tracking class (select full class path before inserting)",
