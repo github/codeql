@@ -20,7 +20,7 @@ bool fstat(int file, stat_data *buf);
 bool lstat(const char *path, stat_data *buf);
 bool fstatat(int dir, const char *path, stat_data *buf);
 void chmod(const char *path, int setting);
-bool rename(const char *from, const char *to);
+int rename(const char *from, const char *to);
 bool remove(const char *path);
 
 bool access(const char *path);
@@ -250,7 +250,7 @@ void test4_1(const char *path)
 
 void test5_1(const char *path1, const char *path2)
 {
-	if (!rename(path1, path2))
+	if (rename(path1, path2))
 	{
 		remove(path1); // DUBIOUS (bad but perhaps not exploitable) [REPORTED]
 	}
@@ -260,7 +260,7 @@ void test5_2(const char *path1, const char *path2)
 {
 	FILE *f = NULL;
 
-	if (rename(path1, path2))
+	if (!rename(path1, path2))
 	{
 		f = fopen(path2, "r"); // BAD [NOT DETECTED]
 	}
