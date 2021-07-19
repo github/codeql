@@ -89,7 +89,7 @@ public class SpringXSS {
       case 0:
       return ResponseEntity.ok(userControlled); // $xss
       case 1:
-      return ResponseEntity.of(Optional.of(userControlled)); // $MISSING: xss
+      return ResponseEntity.of(Optional.of(userControlled)); // $xss
       case 2:
       return ResponseEntity.ok().body(userControlled); // $xss
       case 3:
