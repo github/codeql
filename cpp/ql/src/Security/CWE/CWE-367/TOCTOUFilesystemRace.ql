@@ -16,10 +16,13 @@ import cpp
 import semmle.code.cpp.controlflow.Guards
 
 /**
- * An operation on a filename.
+ * An operation on a filename that is likely to modify the corresponding file
+ * and may return an indication of success.
  *
- * Note: we're not interested in operations on file descriptors, as they
- * are better behaved.
+ * Note: we're not interested in operations where the file is specified by a
+ * descriptor, rather than a filename, as they are better behaved. We are
+ * interested in functions that take a filename and return a file descriptor,
+ * however.
  */
 FunctionCall filenameOperation(Expr path) {
   exists(string name | name = result.getTarget().getName() |
@@ -48,7 +51,8 @@ FunctionCall filenameOperation(Expr path) {
 }
 
 /**
- * A use of `access` (or similar) on a filename.
+ * An operation on a filename that returns information in the return value but
+ * does not modify the corresponding file.  For example, `access`.
  */
 FunctionCall accessCheck(Expr path) {
   exists(string name | name = result.getTarget().getName() |
@@ -62,7 +66,9 @@ FunctionCall accessCheck(Expr path) {
 }
 
 /**
- * A use of `stat` (or similar) on a filename.
+ * An operation on a filename that returns information via a pointer argument
+ * and any return value, but does not modify the corresponding file.  For
+ * example, `stat`.
  */
 FunctionCall stat(Expr path, Expr buf) {
   exists(string name | name = result.getTarget().getName() |
@@ -77,7 +83,7 @@ FunctionCall stat(Expr path, Expr buf) {
 }
 
 /**
- * Holds if `use` points to `source`, either by being the same or by
+ * Holds if `use` refers to `source`, either by being the same or by
  * one step of variable indirection.
  */
 predicate referenceTo(Expr source, Expr use) {
@@ -88,36 +94,38 @@ predicate referenceTo(Expr source, Expr use) {
   )
 }
 
-from FunctionCall fc, Expr check, Expr checkUse, Expr opUse
+from Expr check, Expr checkPath, FunctionCall use, Expr usePath
 where
-  // checkUse looks like a check on a filename
+  // `check` looks like a check on a filename
   (
     // either:
     // an access check
-    check = accessCheck(checkUse)
+    check = accessCheck(checkPath)
     or
     // a stat
-    check = stat(checkUse, _)
+    check = stat(checkPath, _)
     or
     // another filename operation (null pointers can indicate errors)
-    check = filenameOperation(checkUse)
+    check = filenameOperation(checkPath)
     or
     // access to a member variable on the stat buf
     // (morally, this should be a use-use pair, but it seems unlikely
     // that this variable will get reused in practice)
-    exists(Variable buf | exists(stat(checkUse, buf.getAnAccess())) |
+    exists(Variable buf | exists(stat(checkPath, buf.getAnAccess())) |
       check.(VariableAccess).getQualifier() = buf.getAnAccess()
     )
   ) and
-  // checkUse and opUse refer to the same SSA variable
-  exists(SsaDefinition def, StackVariable v | def.getAUse(v) = checkUse and def.getAUse(v) = opUse) and
-  // opUse looks like an operation on a filename
-  fc = filenameOperation(opUse) and
-  // the return value of check is used (possibly with one step of
-  // variable indirection) in a guard which controls fc
+  // `checkPath` and `usePath` refer to the same SSA variable
+  exists(SsaDefinition def, StackVariable v |
+    def.getAUse(v) = checkPath and def.getAUse(v) = usePath
+  ) and
+  // `op` looks like an operation on a filename
+  use = filenameOperation(usePath) and
+  // the return value of `check` is used (possibly with one step of
+  // variable indirection) in a guard which controls `use`
   exists(GuardCondition guard | referenceTo(check, guard.getAChild*()) |
-    guard.controls(fc.(ControlFlowNode).getBasicBlock(), _)
+    guard.controls(use.(ControlFlowNode).getBasicBlock(), _)
   )
-select fc,
+select use,
   "The $@ being operated upon was previously $@, but the underlying file may have been changed since then.",
-  opUse, "filename", check, "checked"
+  usePath, "filename", check, "checked"
