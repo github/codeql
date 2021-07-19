@@ -1,7 +1,7 @@
 /** Provides classes to reason about XSLT injection vulnerabilities. */
 
 import java
-import semmle.code.java.dataflow.ExternalFlow
+import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.XmlParsers
 import semmle.code.java.dataflow.DataFlow
 
@@ -10,20 +10,6 @@ import semmle.code.java.dataflow.DataFlow
  * Extend this class to add your own XSLT Injection sinks.
  */
 abstract class XsltInjectionSink extends DataFlow::Node { }
-
-private class DefaultXsltInjectionSinkModel extends SinkModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "javax.xml.transform;Transformer;false;transform;;;Argument[-1];xslt",
-        "net.sf.saxon.s9api;XsltTransformer;false;transform;;;Argument[-1];xslt",
-        "net.sf.saxon.s9api;Xslt30Transformer;false;transform;;;Argument[-1];xslt",
-        "net.sf.saxon.s9api;Xslt30Transformer;false;applyTemplates;;;Argument[-1];xslt",
-        "net.sf.saxon.s9api;Xslt30Transformer;false;callFunction;;;Argument[-1];xslt",
-        "net.sf.saxon.s9api;Xslt30Transformer;false;callTemplate;;;Argument[-1];xslt"
-      ]
-  }
-}
 
 /** A default sink representing methods susceptible to XSLT Injection attacks. */
 private class DefaultXsltInjectionSink extends XsltInjectionSink {
@@ -56,6 +42,25 @@ private class DefaultXsltInjectionAdditionalTaintStep extends XsltInjectionAddit
     xsltCompilerStep(node1, node2) or
     xsltExecutableStep(node1, node2) or
     xsltPackageStep(node1, node2)
+  }
+}
+
+/**
+ * A taint-tracking configuration for unvalidated user input that is used in XSLT transformation.
+ */
+class XsltInjectionFlowConfig extends TaintTracking::Configuration {
+  XsltInjectionFlowConfig() { this = "XsltInjectionFlowConfig" }
+
+  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+
+  override predicate isSink(DataFlow::Node sink) { sink instanceof XsltInjectionSink }
+
+  override predicate isSanitizer(DataFlow::Node node) {
+    node.getType() instanceof PrimitiveType or node.getType() instanceof BoxedType
+  }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+    any(XsltInjectionAdditionalTaintStep c).step(node1, node2)
   }
 }
 
