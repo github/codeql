@@ -120,6 +120,55 @@ void test11(FILE *f) {
   system(("mv " + path).data());
 }
 
+int atoi(char *);
+
+void test12(FILE *f) {
+  char temp[10];
+  char command[1000];
+
+  fread(temp, 1, 10, f);
+
+  int x = atoi(temp);
+  sprintf(command, "tail -n %d foo.log", x);
+  system(command); // GOOD: the user string was converted to an integer and back
+}
+
+void test13(FILE *f) {
+  char str[1000];
+  char command[1000];
+
+  fread(str, 1, 1000, f);
+
+  sprintf(command, "echo %s", str);
+  system(command); // BAD: the user string was printed into the command with the %s specifier
+}
+
+void test14(FILE *f) {
+  char str[1000];
+  char command[1000];
+
+  fread(str, 1, 1000, f);
+
+  sprintf(command, "echo %p", str);
+  system(command); // GOOD: the user string's address was printed into the command with the %p specifier
+}
+
+void test15(FILE *f) {
+  char temp[10];
+  char command[1000];
+
+  fread(temp, 1, 10, f);
+
+  int x = atoi(temp);
+  
+  char temp2[10];
+  sprintf(temp2, "%d", x);
+    sprintf(command, "tail -n %s foo.log", temp2);
+
+  system(command); // GOOD: the user string was converted to an integer and back
+}
+
+
 // TODO: test for call context sensitivity at concatenation site
 
 // open question: do we want to report certain sources even when they're the start of the string?

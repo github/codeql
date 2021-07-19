@@ -94,12 +94,62 @@ edges
 | test.cpp:119:20:119:38 | (const char *)... | test.cpp:120:17:120:17 | call to operator+ |
 | test.cpp:119:20:119:38 | (const char *)... | test.cpp:120:19:120:22 | (reference to) |
 | test.cpp:119:20:119:38 | (const char *)... | test.cpp:120:19:120:22 | path indirection |
+| test.cpp:129:9:129:12 | (void *)... | test.cpp:129:9:129:12 | temp indirection |
+| test.cpp:129:9:129:12 | fread output argument | test.cpp:131:11:131:14 | Store |
+| test.cpp:129:9:129:12 | fread output argument | test.cpp:131:11:131:14 | call to atoi |
+| test.cpp:129:9:129:12 | fread output argument | test.cpp:131:11:131:14 | call to atoi |
+| test.cpp:129:9:129:12 | fread output argument | test.cpp:131:16:131:19 | array to pointer conversion |
+| test.cpp:129:9:129:12 | fread output argument | test.cpp:131:16:131:19 | temp indirection |
+| test.cpp:129:9:129:12 | fread output argument | test.cpp:132:42:132:42 | x |
+| test.cpp:129:9:129:12 | fread output argument | test.cpp:133:10:133:16 | (const char *)... |
+| test.cpp:129:9:129:12 | fread output argument | test.cpp:133:10:133:16 | command indirection |
+| test.cpp:131:11:131:14 | call to atoi | test.cpp:131:11:131:14 | Store |
+| test.cpp:131:11:131:14 | call to atoi | test.cpp:132:42:132:42 | x |
+| test.cpp:131:11:131:14 | call to atoi | test.cpp:133:10:133:16 | (const char *)... |
+| test.cpp:131:11:131:14 | call to atoi | test.cpp:133:10:133:16 | command indirection |
+| test.cpp:140:9:140:11 | (void *)... | test.cpp:140:9:140:11 | str indirection |
+| test.cpp:140:9:140:11 | fread output argument | test.cpp:142:31:142:33 | array to pointer conversion |
+| test.cpp:140:9:140:11 | fread output argument | test.cpp:142:31:142:33 | str indirection |
+| test.cpp:140:9:140:11 | fread output argument | test.cpp:142:31:142:33 | str indirection |
+| test.cpp:140:9:140:11 | fread output argument | test.cpp:143:10:143:16 | (const char *)... |
+| test.cpp:140:9:140:11 | fread output argument | test.cpp:143:10:143:16 | command indirection |
+| test.cpp:142:11:142:17 | sprintf output argument | test.cpp:143:10:143:16 | command indirection |
+| test.cpp:142:31:142:33 | str indirection | test.cpp:142:11:142:17 | sprintf output argument |
+| test.cpp:142:31:142:33 | str indirection | test.cpp:142:11:142:17 | sprintf output argument |
+| test.cpp:150:9:150:11 | (void *)... | test.cpp:150:9:150:11 | str indirection |
+| test.cpp:150:9:150:11 | fread output argument | test.cpp:152:31:152:33 | array to pointer conversion |
+| test.cpp:150:9:150:11 | fread output argument | test.cpp:152:31:152:33 | str indirection |
+| test.cpp:150:9:150:11 | fread output argument | test.cpp:153:10:153:16 | (const char *)... |
+| test.cpp:150:9:150:11 | fread output argument | test.cpp:153:10:153:16 | command indirection |
+| test.cpp:160:9:160:12 | (void *)... | test.cpp:160:9:160:12 | temp indirection |
+| test.cpp:160:9:160:12 | fread output argument | test.cpp:162:11:162:14 | Store |
+| test.cpp:160:9:160:12 | fread output argument | test.cpp:162:11:162:14 | call to atoi |
+| test.cpp:160:9:160:12 | fread output argument | test.cpp:162:11:162:14 | call to atoi |
+| test.cpp:160:9:160:12 | fread output argument | test.cpp:162:16:162:19 | array to pointer conversion |
+| test.cpp:160:9:160:12 | fread output argument | test.cpp:162:16:162:19 | temp indirection |
+| test.cpp:160:9:160:12 | fread output argument | test.cpp:165:24:165:24 | x |
+| test.cpp:160:9:160:12 | fread output argument | test.cpp:166:44:166:48 | array to pointer conversion |
+| test.cpp:160:9:160:12 | fread output argument | test.cpp:166:44:166:48 | temp2 indirection |
+| test.cpp:160:9:160:12 | fread output argument | test.cpp:166:44:166:48 | temp2 indirection |
+| test.cpp:160:9:160:12 | fread output argument | test.cpp:168:10:168:16 | (const char *)... |
+| test.cpp:160:9:160:12 | fread output argument | test.cpp:168:10:168:16 | command indirection |
+| test.cpp:162:11:162:14 | call to atoi | test.cpp:162:11:162:14 | Store |
+| test.cpp:162:11:162:14 | call to atoi | test.cpp:165:24:165:24 | x |
+| test.cpp:162:11:162:14 | call to atoi | test.cpp:166:44:166:48 | array to pointer conversion |
+| test.cpp:162:11:162:14 | call to atoi | test.cpp:166:44:166:48 | temp2 indirection |
+| test.cpp:162:11:162:14 | call to atoi | test.cpp:168:10:168:16 | (const char *)... |
+| test.cpp:162:11:162:14 | call to atoi | test.cpp:168:10:168:16 | command indirection |
+| test.cpp:166:13:166:19 | sprintf output argument | test.cpp:168:10:168:16 | command indirection |
+| test.cpp:166:44:166:48 | temp2 indirection | test.cpp:166:13:166:19 | sprintf output argument |
+| test.cpp:166:44:166:48 | temp2 indirection | test.cpp:166:13:166:19 | sprintf output argument |
 #select
 | test.cpp:23:12:23:19 | command1 | test.cpp:16:20:16:23 | argv | test.cpp:23:12:23:19 | command1 indirection | This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to system(string) | test.cpp:16:20:16:23 | argv | user input (a command-line argument) | test.cpp:22:13:22:20 | sprintf output argument | sprintf output argument |
 | test.cpp:51:10:51:16 | command | test.cpp:47:21:47:26 | call to getenv | test.cpp:51:10:51:16 | command indirection | This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to system(string) | test.cpp:47:21:47:26 | call to getenv | user input (an environment variable) | test.cpp:50:11:50:17 | sprintf output argument | sprintf output argument |
 | test.cpp:65:10:65:16 | command | test.cpp:62:9:62:16 | fread output argument | test.cpp:65:10:65:16 | command indirection | This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to system(string) | test.cpp:62:9:62:16 | fread output argument | user input (String read by fread) | test.cpp:64:11:64:17 | strncat output argument | strncat output argument |
 | test.cpp:85:32:85:38 | command | test.cpp:82:9:82:16 | fread output argument | test.cpp:85:32:85:38 | command indirection | This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to execl | test.cpp:82:9:82:16 | fread output argument | user input (String read by fread) | test.cpp:84:11:84:17 | strncat output argument | strncat output argument |
 | test.cpp:94:45:94:48 | path | test.cpp:91:9:91:16 | fread output argument | test.cpp:94:45:94:48 | path indirection | This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to execl | test.cpp:91:9:91:16 | fread output argument | user input (String read by fread) | test.cpp:93:11:93:14 | strncat output argument | strncat output argument |
+| test.cpp:143:10:143:16 | command | test.cpp:140:9:140:11 | fread output argument | test.cpp:143:10:143:16 | command indirection | This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to system(string) | test.cpp:140:9:140:11 | fread output argument | user input (String read by fread) | test.cpp:142:11:142:17 | sprintf output argument | sprintf output argument |
+| test.cpp:168:10:168:16 | command | test.cpp:160:9:160:12 | fread output argument | test.cpp:168:10:168:16 | command indirection | This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to system(string) | test.cpp:160:9:160:12 | fread output argument | user input (String read by fread) | test.cpp:166:13:166:19 | sprintf output argument | sprintf output argument |
 nodes
 | test.cpp:16:20:16:23 | argv | semmle.label | argv |
 | test.cpp:16:20:16:23 | argv | semmle.label | argv |
@@ -235,3 +285,61 @@ nodes
 | test.cpp:120:19:120:22 | (reference to) | semmle.label | (reference to) |
 | test.cpp:120:19:120:22 | path indirection | semmle.label | path indirection |
 | test.cpp:120:19:120:22 | path indirection | semmle.label | path indirection |
+| test.cpp:129:9:129:12 | (void *)... | semmle.label | (void *)... |
+| test.cpp:129:9:129:12 | (void *)... | semmle.label | (void *)... |
+| test.cpp:129:9:129:12 | array to pointer conversion | semmle.label | array to pointer conversion |
+| test.cpp:129:9:129:12 | fread output argument | semmle.label | fread output argument |
+| test.cpp:129:9:129:12 | temp | semmle.label | temp |
+| test.cpp:129:9:129:12 | temp indirection | semmle.label | temp indirection |
+| test.cpp:131:11:131:14 | Store | semmle.label | Store |
+| test.cpp:131:11:131:14 | call to atoi | semmle.label | call to atoi |
+| test.cpp:131:11:131:14 | call to atoi | semmle.label | call to atoi |
+| test.cpp:131:16:131:19 | array to pointer conversion | semmle.label | array to pointer conversion |
+| test.cpp:131:16:131:19 | temp indirection | semmle.label | temp indirection |
+| test.cpp:132:42:132:42 | x | semmle.label | x |
+| test.cpp:133:10:133:16 | (const char *)... | semmle.label | (const char *)... |
+| test.cpp:133:10:133:16 | command indirection | semmle.label | command indirection |
+| test.cpp:140:9:140:11 | (void *)... | semmle.label | (void *)... |
+| test.cpp:140:9:140:11 | (void *)... | semmle.label | (void *)... |
+| test.cpp:140:9:140:11 | array to pointer conversion | semmle.label | array to pointer conversion |
+| test.cpp:140:9:140:11 | fread output argument | semmle.label | fread output argument |
+| test.cpp:140:9:140:11 | fread output argument | semmle.label | fread output argument |
+| test.cpp:140:9:140:11 | str | semmle.label | str |
+| test.cpp:140:9:140:11 | str indirection | semmle.label | str indirection |
+| test.cpp:142:11:142:17 | sprintf output argument | semmle.label | sprintf output argument |
+| test.cpp:142:31:142:33 | array to pointer conversion | semmle.label | array to pointer conversion |
+| test.cpp:142:31:142:33 | str indirection | semmle.label | str indirection |
+| test.cpp:142:31:142:33 | str indirection | semmle.label | str indirection |
+| test.cpp:143:10:143:16 | (const char *)... | semmle.label | (const char *)... |
+| test.cpp:143:10:143:16 | command indirection | semmle.label | command indirection |
+| test.cpp:143:10:143:16 | command indirection | semmle.label | command indirection |
+| test.cpp:150:9:150:11 | (void *)... | semmle.label | (void *)... |
+| test.cpp:150:9:150:11 | (void *)... | semmle.label | (void *)... |
+| test.cpp:150:9:150:11 | array to pointer conversion | semmle.label | array to pointer conversion |
+| test.cpp:150:9:150:11 | fread output argument | semmle.label | fread output argument |
+| test.cpp:150:9:150:11 | str | semmle.label | str |
+| test.cpp:150:9:150:11 | str indirection | semmle.label | str indirection |
+| test.cpp:152:31:152:33 | array to pointer conversion | semmle.label | array to pointer conversion |
+| test.cpp:152:31:152:33 | str indirection | semmle.label | str indirection |
+| test.cpp:153:10:153:16 | (const char *)... | semmle.label | (const char *)... |
+| test.cpp:153:10:153:16 | command indirection | semmle.label | command indirection |
+| test.cpp:160:9:160:12 | (void *)... | semmle.label | (void *)... |
+| test.cpp:160:9:160:12 | (void *)... | semmle.label | (void *)... |
+| test.cpp:160:9:160:12 | array to pointer conversion | semmle.label | array to pointer conversion |
+| test.cpp:160:9:160:12 | fread output argument | semmle.label | fread output argument |
+| test.cpp:160:9:160:12 | fread output argument | semmle.label | fread output argument |
+| test.cpp:160:9:160:12 | temp | semmle.label | temp |
+| test.cpp:160:9:160:12 | temp indirection | semmle.label | temp indirection |
+| test.cpp:162:11:162:14 | Store | semmle.label | Store |
+| test.cpp:162:11:162:14 | call to atoi | semmle.label | call to atoi |
+| test.cpp:162:11:162:14 | call to atoi | semmle.label | call to atoi |
+| test.cpp:162:16:162:19 | array to pointer conversion | semmle.label | array to pointer conversion |
+| test.cpp:162:16:162:19 | temp indirection | semmle.label | temp indirection |
+| test.cpp:165:24:165:24 | x | semmle.label | x |
+| test.cpp:166:13:166:19 | sprintf output argument | semmle.label | sprintf output argument |
+| test.cpp:166:44:166:48 | array to pointer conversion | semmle.label | array to pointer conversion |
+| test.cpp:166:44:166:48 | temp2 indirection | semmle.label | temp2 indirection |
+| test.cpp:166:44:166:48 | temp2 indirection | semmle.label | temp2 indirection |
+| test.cpp:168:10:168:16 | (const char *)... | semmle.label | (const char *)... |
+| test.cpp:168:10:168:16 | command indirection | semmle.label | command indirection |
+| test.cpp:168:10:168:16 | command indirection | semmle.label | command indirection |
