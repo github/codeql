@@ -13,7 +13,8 @@ private class ObjectMapper extends RefType {
   }
 }
 
-private class MapperBuilder extends RefType {
+/** A builder for building Jackson's `JsonMapper`. */
+class MapperBuilder extends RefType {
   MapperBuilder() {
     hasQualifiedName("com.fasterxml.jackson.databind.cfg", "MapperBuilder<JsonMapper,Builder>")
   }
@@ -27,7 +28,8 @@ private class JsonParser extends RefType {
   JsonParser() { hasQualifiedName("com.fasterxml.jackson.core", "JsonParser") }
 }
 
-private class JacksonTypeDescriptorType extends RefType {
+/** Type descriptors in Jackson libraries. */
+class JacksonTypeDescriptorType extends RefType {
   JacksonTypeDescriptorType() {
     this instanceof TypeClass or
     hasQualifiedName("com.fasterxml.jackson.databind", "JavaType") or
@@ -44,7 +46,7 @@ class ObjectMapperReadMethod extends Method {
 }
 
 /** A call that enables the default typing in `ObjectMapper`. */
-private class EnableJacksonDefaultTyping extends MethodAccess {
+class EnableJacksonDefaultTyping extends MethodAccess {
   EnableJacksonDefaultTyping() {
     this.getMethod().getDeclaringType() instanceof ObjectMapper and
     this.getMethod().hasName("enableDefaultTyping")
@@ -52,7 +54,7 @@ private class EnableJacksonDefaultTyping extends MethodAccess {
 }
 
 /** A qualifier of a call to one of the methods in `ObjectMapper` that deserialize data. */
-private class ObjectMapperReadQualifier extends DataFlow::ExprNode {
+class ObjectMapperReadQualifier extends DataFlow::ExprNode {
   ObjectMapperReadQualifier() {
     exists(MethodAccess ma | ma.getQualifier() = this.asExpr() |
       ma.getMethod() instanceof ObjectMapperReadMethod
@@ -61,7 +63,7 @@ private class ObjectMapperReadQualifier extends DataFlow::ExprNode {
 }
 
 /** A source that sets a type validator. */
-private class SetPolymorphicTypeValidatorSource extends DataFlow::ExprNode {
+class SetPolymorphicTypeValidatorSource extends DataFlow::ExprNode {
   SetPolymorphicTypeValidatorSource() {
     exists(MethodAccess ma, Method m | m = ma.getMethod() |
       (
@@ -76,82 +78,8 @@ private class SetPolymorphicTypeValidatorSource extends DataFlow::ExprNode {
   }
 }
 
-/**
- * Tracks flow from a remote source to a type descriptor (e.g. a `java.lang.Class` instance)
- * passed to a Jackson deserialization method.
- *
- * If this is user-controlled, arbitrary code could be executed while instantiating the user-specified type.
- */
-class UnsafeTypeConfig extends TaintTracking2::Configuration {
-  UnsafeTypeConfig() { this = "UnsafeTypeConfig" }
-
-  override predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma, int i, Expr arg | i > 0 and ma.getArgument(i) = arg |
-      ma.getMethod() instanceof ObjectMapperReadMethod and
-      arg.getType() instanceof JacksonTypeDescriptorType and
-      arg = sink.asExpr()
-    )
-  }
-
-  /**
-   * Holds if `fromNode` to `toNode` is a dataflow step that resolves a class
-   * or at least looks like resolving a class.
-   */
-  override predicate isAdditionalTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-    resolveClassStep(fromNode, toNode) or
-    looksLikeResolveClassStep(fromNode, toNode)
-  }
-}
-
-/**
- * Tracks flow from `enableDefaultTyping` calls to a subsequent Jackson deserialization method call.
- */
-class EnableJacksonDefaultTypingConfig extends DataFlow2::Configuration {
-  EnableJacksonDefaultTypingConfig() { this = "EnableJacksonDefaultTypingConfig" }
-
-  override predicate isSource(DataFlow::Node src) {
-    any(EnableJacksonDefaultTyping ma).getQualifier() = src.asExpr()
-  }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof ObjectMapperReadQualifier }
-}
-
-/**
- * Tracks flow from calls which set a type validator to a subsequent Jackson deserialization method call,
- * including across builder method calls.
- *
- * Such a Jackson deserialization method call is safe because validation will likely prevent instantiating unexpected types.
- */
-class SafeObjectMapperConfig extends DataFlow2::Configuration {
-  SafeObjectMapperConfig() { this = "SafeObjectMapperConfig" }
-
-  override predicate isSource(DataFlow::Node src) {
-    src instanceof SetPolymorphicTypeValidatorSource
-  }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof ObjectMapperReadQualifier }
-
-  /**
-   * Holds if `fromNode` to `toNode` is a dataflow step
-   * that configures or creates an `ObjectMapper` via a builder.
-   */
-  override predicate isAdditionalFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-    exists(MethodAccess ma, Method m | m = ma.getMethod() |
-      m.getDeclaringType() instanceof MapperBuilder and
-      m.getReturnType()
-          .(RefType)
-          .hasQualifiedName("com.fasterxml.jackson.databind.json",
-            ["JsonMapper$Builder", "JsonMapper"]) and
-      fromNode.asExpr() = ma.getQualifier() and
-      ma = toNode.asExpr()
-    )
-  }
-}
-
 /** Holds if `fromNode` to `toNode` is a dataflow step that resolves a class. s */
-private predicate resolveClassStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
+predicate resolveClassStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
   exists(ReflectiveClassIdentifierMethodAccess ma |
     ma.getArgument(0) = fromNode.asExpr() and
     ma = toNode.asExpr()
@@ -236,7 +164,7 @@ predicate hasArgumentWithUnsafeJacksonAnnotation(MethodAccess call) {
  * so methods that accept user-controlled data but sanitize it or use it for some
  * completely different purpose before returning a type descriptor could result in false positives.
  */
-private predicate looksLikeResolveClassStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
+predicate looksLikeResolveClassStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
   exists(MethodAccess ma, Method m, int i, Expr arg |
     m = ma.getMethod() and arg = ma.getArgument(i)
   |

@@ -1,3 +1,7 @@
+/**
+ * Provides classes and predicates for deserialization vulnerabilities.
+ */
+
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.frameworks.Kryo
 import semmle.code.java.frameworks.XStream
@@ -8,25 +12,25 @@ import semmle.code.java.frameworks.JsonIo
 import semmle.code.java.frameworks.YamlBeans
 import semmle.code.java.frameworks.HessianBurlap
 import semmle.code.java.frameworks.Castor
-import semmle.code.java.frameworks.JacksonQuery
+import semmle.code.java.frameworks.Jackson
 import semmle.code.java.frameworks.apache.Lang
 import semmle.code.java.Reflection
 
-class ObjectInputStreamReadObjectMethod extends Method {
+private class ObjectInputStreamReadObjectMethod extends Method {
   ObjectInputStreamReadObjectMethod() {
     this.getDeclaringType().getASourceSupertype*().hasQualifiedName("java.io", "ObjectInputStream") and
     (this.hasName("readObject") or this.hasName("readUnshared"))
   }
 }
 
-class XMLDecoderReadObjectMethod extends Method {
+private class XMLDecoderReadObjectMethod extends Method {
   XMLDecoderReadObjectMethod() {
     this.getDeclaringType().hasQualifiedName("java.beans", "XMLDecoder") and
     this.hasName("readObject")
   }
 }
 
-class SafeXStream extends DataFlow2::Configuration {
+private class SafeXStream extends DataFlow2::Configuration {
   SafeXStream() { this = "UnsafeDeserialization::SafeXStream" }
 
   override predicate isSource(DataFlow::Node src) {
@@ -42,7 +46,7 @@ class SafeXStream extends DataFlow2::Configuration {
   }
 }
 
-class SafeKryo extends DataFlow2::Configuration {
+private class SafeKryo extends DataFlow2::Configuration {
   SafeKryo() { this = "UnsafeDeserialization::SafeKryo" }
 
   override predicate isSource(DataFlow::Node src) {
@@ -117,7 +121,7 @@ class SafeKryo extends DataFlow2::Configuration {
   }
 }
 
-predicate unsafeDeserialization(MethodAccess ma, Expr sink) {
+private predicate unsafeDeserialization(MethodAccess ma, Expr sink) {
   exists(Method m | m = ma.getMethod() |
     m instanceof ObjectInputStreamReadObjectMethod and
     sink = ma.getQualifier() and
@@ -179,12 +183,16 @@ predicate unsafeDeserialization(MethodAccess ma, Expr sink) {
   )
 }
 
-class UnsafeDeserializationSink extends DataFlow::ExprNode {
+private class UnsafeDeserializationSink extends DataFlow::ExprNode {
   UnsafeDeserializationSink() { unsafeDeserialization(_, this.getExpr()) }
 
+  /** Get a call that triggers unsafe deserialization. */
   MethodAccess getMethodAccess() { unsafeDeserialization(result, this.getExpr()) }
 }
 
+/**
+ * Tracks flows from remote user input to a deserialization sink.
+ */
 class UnsafeDeserializationConfig extends TaintTracking::Configuration {
   UnsafeDeserializationConfig() { this = "UnsafeDeserializationConfig" }
 
@@ -226,6 +234,80 @@ class UnsafeDeserializationConfig extends TaintTracking::Configuration {
       ma.getMethod() instanceof JsonIoJsonToJavaMethod and
       ma.getArgument(0) = node.asExpr() and
       exists(SafeJsonIoConfig sji | sji.hasFlowToExpr(ma.getArgument(1)))
+    )
+  }
+}
+
+/**
+ * Tracks flow from a remote source to a type descriptor (e.g. a `java.lang.Class` instance)
+ * passed to a Jackson deserialization method.
+ *
+ * If this is user-controlled, arbitrary code could be executed while instantiating the user-specified type.
+ */
+class UnsafeTypeConfig extends TaintTracking2::Configuration {
+  UnsafeTypeConfig() { this = "UnsafeTypeConfig" }
+
+  override predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
+
+  override predicate isSink(DataFlow::Node sink) {
+    exists(MethodAccess ma, int i, Expr arg | i > 0 and ma.getArgument(i) = arg |
+      ma.getMethod() instanceof ObjectMapperReadMethod and
+      arg.getType() instanceof JacksonTypeDescriptorType and
+      arg = sink.asExpr()
+    )
+  }
+
+  /**
+   * Holds if `fromNode` to `toNode` is a dataflow step that resolves a class
+   * or at least looks like resolving a class.
+   */
+  override predicate isAdditionalTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
+    resolveClassStep(fromNode, toNode) or
+    looksLikeResolveClassStep(fromNode, toNode)
+  }
+}
+
+/**
+ * Tracks flow from `enableDefaultTyping` calls to a subsequent Jackson deserialization method call.
+ */
+class EnableJacksonDefaultTypingConfig extends DataFlow2::Configuration {
+  EnableJacksonDefaultTypingConfig() { this = "EnableJacksonDefaultTypingConfig" }
+
+  override predicate isSource(DataFlow::Node src) {
+    any(EnableJacksonDefaultTyping ma).getQualifier() = src.asExpr()
+  }
+
+  override predicate isSink(DataFlow::Node sink) { sink instanceof ObjectMapperReadQualifier }
+}
+
+/**
+ * Tracks flow from calls which set a type validator to a subsequent Jackson deserialization method call,
+ * including across builder method calls.
+ *
+ * Such a Jackson deserialization method call is safe because validation will likely prevent instantiating unexpected types.
+ */
+class SafeObjectMapperConfig extends DataFlow2::Configuration {
+  SafeObjectMapperConfig() { this = "SafeObjectMapperConfig" }
+
+  override predicate isSource(DataFlow::Node src) {
+    src instanceof SetPolymorphicTypeValidatorSource
+  }
+
+  override predicate isSink(DataFlow::Node sink) { sink instanceof ObjectMapperReadQualifier }
+
+  /**
+   * Holds if `fromNode` to `toNode` is a dataflow step
+   * that configures or creates an `ObjectMapper` via a builder.
+   */
+  override predicate isAdditionalFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
+    exists(MethodAccess ma, Method m | m = ma.getMethod() |
+      m.getDeclaringType() instanceof MapperBuilder and
+      m.getReturnType()
+          .(RefType)
+          .hasQualifiedName("com.fasterxml.jackson.databind.json",
+            ["JsonMapper$Builder", "JsonMapper"]) and
+      fromNode.asExpr() = ma.getQualifier() and
+      ma = toNode.asExpr()
     )
   }
 }
