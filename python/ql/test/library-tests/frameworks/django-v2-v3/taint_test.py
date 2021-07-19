@@ -35,8 +35,8 @@ def test_taint(request: HttpRequest, foo, bar, baz=None):  # $requestHandler rou
         request.GET, # $ tainted
         request.GET["key"], # $ tainted
         request.GET.get("key"), # $ tainted
-        request.GET.getlist("key"), # $ MISSING: tainted
-        request.GET.getlist("key")[0], # $ MISSING: tainted
+        request.GET.getlist("key"), # $ tainted
+        request.GET.getlist("key")[0], # $ tainted
         request.GET.pop("key"), # $ tainted
         request.GET.pop("key")[0], # $ tainted
         # key
@@ -45,9 +45,10 @@ def test_taint(request: HttpRequest, foo, bar, baz=None):  # $requestHandler rou
         request.GET.popitem()[1], # $ tainted
         # values[0]
         request.GET.popitem()[1][0], # $ tainted
-        request.GET.dict(), # $ MISSING: tainted
-        request.GET.dict()["key"], # $ MISSING: tainted
-        request.GET.urlencode(), # $ MISSING: tainted
+        request.GET.lists(), # $ tainted
+        request.GET.dict(), # $ tainted
+        request.GET.dict()["key"], # $ tainted
+        request.GET.urlencode(), # $ tainted
 
         # django.http.QueryDict (same as above, did not duplicate tests)
         request.POST, # $ tainted
@@ -70,11 +71,11 @@ def test_taint(request: HttpRequest, foo, bar, baz=None):  # $requestHandler rou
 
         request.FILES.get("key"), # $ tainted
         request.FILES.get("key").name, # $ MISSING: tainted
-        request.FILES.getlist("key"), # $ MISSING: tainted
-        request.FILES.getlist("key")[0], # $ MISSING: tainted
+        request.FILES.getlist("key"), # $ tainted
+        request.FILES.getlist("key")[0], # $ tainted
         request.FILES.getlist("key")[0].name, # $ MISSING: tainted
-        request.FILES.dict(), # $ MISSING: tainted
-        request.FILES.dict()["key"], # $ MISSING: tainted
+        request.FILES.dict(), # $ tainted
+        request.FILES.dict()["key"], # $ tainted
         request.FILES.dict()["key"].name, # $ MISSING: tainted
 
         # Dict[str, Any]

@@ -289,6 +289,78 @@ private module Django {
       API::Node subclassRef() { result = any(ModeledSubclass subclass).getASubclass*() }
     }
   }
+
+  /**
+   * Provides models for the `django.utils.datastructures.MultiValueDict` class
+   *
+   * See
+   * - https://docs.djangoproject.com/en/3.0/ref/request-response/#django.http.QueryDict (subclass that has proper docs)
+   * - https://www.kite.com/python/docs/django.utils.datastructures.MultiValueDict
+   */
+  module MultiValueDict {
+    /** Gets a reference to the `django.utils.datastructures.MultiValueDict` class. */
+    private API::Node classRef() {
+      result =
+        API::moduleImport("django")
+            .getMember("utils")
+            .getMember("datastructures")
+            .getMember("MultiValueDict")
+    }
+
+    /**
+     * A source of instances of `django.utils.datastructures.MultiValueDict`, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `MultiValueDict::instance()` to get references to instances of `django.utils.datastructures.MultiValueDict`.
+     */
+    abstract class InstanceSource extends DataFlow::LocalSourceNode { }
+
+    /** A direct instantiation of `django.utils.datastructures.MultiValueDict`. */
+    private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
+      override CallNode node;
+
+      ClassInstantiation() { this = classRef().getACall() }
+    }
+
+    /** Gets a reference to an instance of `django.utils.datastructures.MultiValueDict`. */
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an instance of `django.utils.datastructures.MultiValueDict`. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    /**
+     * Taint propagation for `django.utils.datastructures.MultiValueDict`.
+     */
+    class MultiValueDictAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+      override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+        // class instantiation
+        exists(ClassInstantiation call |
+          nodeFrom = call.getArg(0) and
+          nodeTo = call
+        )
+        or
+        // Methods
+        //
+        // TODO: When we have tools that make it easy, model these properly to handle
+        // `meth = obj.meth; meth()`. Until then, we'll use this more syntactic approach
+        // (since it allows us to at least capture the most common cases).
+        nodeFrom = instance() and
+        exists(DataFlow::AttrRead attr | attr.getObject() = nodeFrom |
+          // methods (non-async)
+          attr.getAttributeName() in ["getlist", "lists", "popitem", "dict", "urlencode"] and
+          nodeTo.(DataFlow::CallCfgNode).getFunction() = attr
+        )
+      }
+    }
+  }
 }
 
 /**
@@ -1922,7 +1994,6 @@ private module PrivateDjango {
           // str / bytes
           "body", "path", "path_info", "method", "encoding", "content_type",
           // django.http.QueryDict
-          // TODO: Model QueryDict
           "GET", "POST",
           // dict[str, str]
           "content_params", "COOKIES",
@@ -1931,7 +2002,6 @@ private module PrivateDjango {
           // HttpHeaders (case insensitive dict-like)
           "headers",
           // MultiValueDict[str, UploadedFile]
-          // TODO: Model MultiValueDict
           // TODO: Model UploadedFile
           "FILES",
           // django.urls.ResolverMatch
@@ -1939,6 +2009,14 @@ private module PrivateDjango {
           "resolver_match"
         ]
       // TODO: Handle that a HttpRequest is iterable
+    }
+  }
+
+  /** An attribute read on an django request that is a `MultiValueDict` instance. */
+  class DjangoHttpRequestMultiValueDictInstances extends Django::MultiValueDict::InstanceSource {
+    DjangoHttpRequestMultiValueDictInstances() {
+      this.(DataFlow::AttrRead).getObject() = django::http::request::HttpRequest::instance() and
+      this.(DataFlow::AttrRead).getAttributeName() in ["GET", "POST", "FILES"]
     }
   }
 
