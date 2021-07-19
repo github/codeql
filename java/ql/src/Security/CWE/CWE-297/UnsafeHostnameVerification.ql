@@ -3,7 +3,7 @@
  * @description Marking a certificate as valid for a host without checking the certificate hostname allows an attacker to perform a machine-in-the-middle attack.
  * @kind path-problem
  * @problem.severity error
- * @security-severity 4.9
+ * @security-severity 5.9
  * @precision high
  * @id java/unsafe-hostname-verification
  * @tags security
@@ -15,6 +15,7 @@ import semmle.code.java.controlflow.Guards
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.Encryption
+import semmle.code.java.security.SecurityFlag
 import DataFlow::PathGraph
 private import semmle.code.java.dataflow.ExternalFlow
 
@@ -86,71 +87,30 @@ private class HostnameVerifierSink extends DataFlow::Node {
   HostnameVerifierSink() { sinkNode(this, "set-hostname-verifier") }
 }
 
-bindingset[result]
-private string getAFlagName() {
-  result
-      .regexpMatch("(?i).*(secure|disable|selfCert|selfSign|validat|verif|trust|ignore|nocertificatecheck).*")
-}
-
 /**
- * A flag has to either be of type `String`, `boolean` or `Boolean`.
+ * Flags suggesting a deliberately unsafe `HostnameVerifier` usage.
  */
-private class FlagType extends Type {
-  FlagType() {
-    this instanceof TypeString
-    or
-    this instanceof BooleanType
+private class UnsafeHostnameVerificationFlag extends FlagKind {
+  UnsafeHostnameVerificationFlag() { this = "UnsafeHostnameVerificationFlag" }
+
+  bindingset[result]
+  override string getAFlagName() {
+    result
+        .regexpMatch("(?i).*(secure|disable|selfCert|selfSign|validat|verif|trust|ignore|nocertificatecheck).*") and
+    result != "equalsIgnoreCase"
   }
 }
 
-private predicate isEqualsIgnoreCaseMethodAccess(MethodAccess ma) {
-  ma.getMethod().hasName("equalsIgnoreCase") and
-  ma.getMethod().getDeclaringType() instanceof TypeString
+/** Gets a guard that represents a (likely) flag controlling an unsafe `HostnameVerifier` use. */
+private Guard getAnUnsafeHostnameVerifierFlagGuard() {
+  result = any(UnsafeHostnameVerificationFlag flag).getAFlag().asExpr()
 }
 
-/** Holds if `source` should is considered a flag. */
-private predicate isFlag(DataFlow::Node source) {
-  exists(VarAccess v | v.getVariable().getName() = getAFlagName() |
-    source.asExpr() = v and v.getType() instanceof FlagType
-  )
-  or
-  exists(StringLiteral s | s.getRepresentedString() = getAFlagName() | source.asExpr() = s)
-  or
-  exists(MethodAccess ma | ma.getMethod().getName() = getAFlagName() |
-    source.asExpr() = ma and
-    ma.getType() instanceof FlagType and
-    not isEqualsIgnoreCaseMethodAccess(ma)
-  )
-}
-
-/** Holds if there is flow from `node1` to `node2` either due to local flow or due to custom flow steps. */
-private predicate flagFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-  DataFlow::localFlowStep(node1, node2)
-  or
-  exists(MethodAccess ma | ma.getMethod() = any(EnvReadMethod m) |
-    ma = node2.asExpr() and ma.getAnArgument() = node1.asExpr()
-  )
-  or
-  exists(MethodAccess ma |
-    ma.getMethod().hasName("parseBoolean") and
-    ma.getMethod().getDeclaringType().hasQualifiedName("java.lang", "Boolean")
-  |
-    ma = node2.asExpr() and ma.getAnArgument() = node1.asExpr()
-  )
-}
-
-/** Gets a guard that depends on a flag. */
-private Guard getAGuard() {
-  exists(DataFlow::Node source, DataFlow::Node sink |
-    isFlag(source) and
-    flagFlowStep*(source, sink) and
-    sink.asExpr() = result
-  )
-}
-
-/** Holds if `node` is guarded by a flag that suggests an intentionally insecure feature. */
+/** Holds if `node` is guarded by a flag that suggests an intentionally insecure use. */
 private predicate isNodeGuardedByFlag(DataFlow::Node node) {
-  exists(Guard g | g.controls(node.asExpr().getBasicBlock(), _) | g = getAGuard())
+  exists(Guard g | g.controls(node.asExpr().getBasicBlock(), _) |
+    g = getASecurityFeatureFlagGuard() or g = getAnUnsafeHostnameVerifierFlagGuard()
+  )
 }
 
 from

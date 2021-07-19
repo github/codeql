@@ -1,37 +1,19 @@
 /**
- * Provides a taint-tracking configuration for detecting path injection
- * vulnerabilities.
+ * Provides taint-tracking configurations for detecting "path injection" vulnerabilities.
  *
- * We detect cases where a user-controlled path is used in an unsafe manner,
- * meaning it is not both normalized and _afterwards_ checked.
- *
- * It does so by dividing the problematic situation into two cases:
- *  1. The file path is never normalized.
- *     This is easily detected by using normalization as a sanitizer.
- *
- *  2. The file path is normalized at least once, but never checked afterwards.
- *     This is detected by finding the earliest normalization and then ensuring that
- *     no checks happen later. Since we start from the earliest normalization,
- *     we know that the absence of checks means that no normalization has a
- *     check after it. (No checks after a second normalization would be ok if
- *     there was a check between the first and the second.)
- *
- * Note that one could make the dual split on whether the file path is ever checked. This does
- * not work as nicely, however, since checking is modelled as a `BarrierGuard` rather than
- * as a `Sanitizer`. That means that only some dataflow paths out of a check will be removed,
- * and so identifying the last check is not possible simply by finding a dataflow path from it
- * to a sink.
+ * Note, for performance reasons: only import this file if
+ * the Configurations or the `pathInjection` predicate are needed, otherwise
+ * `PathInjectionCustomizations` should be imported instead.
  */
 
-import python
-import semmle.python.dataflow.new.DataFlow
-import semmle.python.dataflow.new.DataFlow2
-import semmle.python.dataflow.new.TaintTracking
-import semmle.python.dataflow.new.TaintTracking2
-import semmle.python.Concepts
-import semmle.python.dataflow.new.RemoteFlowSources
+private import python
+private import semmle.python.Concepts
+private import semmle.python.dataflow.new.DataFlow
+private import semmle.python.dataflow.new.DataFlow2
+private import semmle.python.dataflow.new.TaintTracking
+private import semmle.python.dataflow.new.TaintTracking2
 import ChainedConfigs12
-import semmle.python.dataflow.new.BarrierGuards
+import PathInjectionCustomizations::PathInjection
 
 // ---------------------------------------------------------------------------
 // Case 1. The path is never normalized.
@@ -40,16 +22,14 @@ import semmle.python.dataflow.new.BarrierGuards
 class PathNotNormalizedConfiguration extends TaintTracking::Configuration {
   PathNotNormalizedConfiguration() { this = "PathNotNormalizedConfiguration" }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-  override predicate isSink(DataFlow::Node sink) {
-    sink = any(FileSystemAccess e).getAPathArgument()
-  }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
   override predicate isSanitizer(DataFlow::Node node) { node instanceof Path::PathNormalization }
 
   override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof StringConstCompare
+    guard instanceof SanitizerGuard
   }
 }
 
@@ -68,14 +48,14 @@ predicate pathNotNormalized(CustomPathNode source, CustomPathNode sink) {
 class FirstNormalizationConfiguration extends TaintTracking::Configuration {
   FirstNormalizationConfiguration() { this = "FirstNormalizationConfiguration" }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof Path::PathNormalization }
 
   override predicate isSanitizerOut(DataFlow::Node node) { node instanceof Path::PathNormalization }
 
   override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof StringConstCompare
+    guard instanceof SanitizerGuard
   }
 }
 
@@ -85,14 +65,12 @@ class NormalizedPathNotCheckedConfiguration extends TaintTracking2::Configuratio
 
   override predicate isSource(DataFlow::Node source) { source instanceof Path::PathNormalization }
 
-  override predicate isSink(DataFlow::Node sink) {
-    sink = any(FileSystemAccess e).getAPathArgument()
-  }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
   override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
     guard instanceof Path::SafeAccessCheck
     or
-    guard instanceof StringConstCompare
+    guard instanceof SanitizerGuard
   }
 }
 

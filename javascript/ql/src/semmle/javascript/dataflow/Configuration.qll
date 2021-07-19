@@ -1183,6 +1183,13 @@ private predicate flowThroughCall(
     not cfg.isLabeledBarrier(output, summary.getEndLabel())
   )
   or
+  exists(Function f, LocalVariable variable |
+    reachableFromInput(f, _, input, output, cfg, summary) and
+    output = DataFlow::capturedVariableNode(variable) and
+    getCapturedVariableDepth(variable) < getContainerDepth(f) and // Only step outwards
+    not cfg.isLabeledBarrier(output, summary.getEndLabel())
+  )
+  or
   exists(Function f, DataFlow::Node invk, DataFlow::Node ret |
     DataFlow::exceptionalFunctionReturnNode(ret, f) and
     DataFlow::exceptionalInvocationReturnNode(output, invk.asExpr()) and

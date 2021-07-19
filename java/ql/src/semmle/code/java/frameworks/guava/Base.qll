@@ -7,7 +7,7 @@ private class GuavaBaseCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        //"package;type;overrides;name;signature;ext;inputspec;outputspec;kind",
+        //`namespace; type; subtypes; name; signature; ext; input; output; kind`
         "com.google.common.base;Strings;false;emptyToNull;(String);;Argument[0];ReturnValue;value",
         "com.google.common.base;Strings;false;nullToEmpty;(String);;Argument[0];ReturnValue;value",
         "com.google.common.base;Strings;false;padStart;(String,int,char);;Argument[0];ReturnValue;taint",

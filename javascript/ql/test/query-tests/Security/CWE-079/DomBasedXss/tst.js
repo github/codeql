@@ -431,3 +431,27 @@ function nonGlobalSanitizer() {
 
   $("#foo").html(target.replace(/<|>/g, '')); // OK
 }
+
+function mootools(){
+	var source = document.location.search;
+
+	new Element("div"); // OK
+	new Element("div", {text: source}); // OK
+	new Element("div", {html: source}); // NOT OK
+	new Element("div").set("html", source); // NOT OK
+	new Element("div").set({"html": source}); // NOT OK
+	new Element("div").setProperty("html", source); // NOT OK
+	new Element("div").setProperties({"html": source}); // NOT OK
+	new Element("div").appendHtml(source); // NOT OK
+}
+
+
+const Convert = require('ansi-to-html');
+const ansiToHtml = new Convert();
+
+function ansiToHTML() {
+  var source = document.location.search;
+
+  $("#foo").html(source); // NOT OK
+  $("#foo").html(ansiToHtml.toHtml(source)); // NOT OK
+}

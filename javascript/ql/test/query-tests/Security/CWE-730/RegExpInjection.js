@@ -37,10 +37,10 @@ app.get('/findKey', function(req, res) {
   var likelyString = x? defString: 42;
   var notString = {};
 
-  defString.match(input); // NOT OK
-  likelyString.match(input); // NOT OK
-  maybeString.match(input); // NOT OK
-  notString.match(input); // OK
+  if (defString.match(input)) {} // NOT OK
+  if (likelyString.match(input)) {} // NOT OK
+  if (maybeString.match(input)) {} // NOT OK
+  if (notString.match(input)) {} // OK
 
   defString.search(input); // NOT OK
   likelyString.search(input); // NOT OK

@@ -4,7 +4,7 @@
  * @kind path-problem
  * @id py/unsafe-deserialization
  * @problem.severity error
- * @security-severity 5.9
+ * @security-severity 9.8
  * @sub-severity high
  * @precision high
  * @tags external/cwe/cwe-502
@@ -16,6 +16,6 @@ import python
 import semmle.python.security.dataflow.UnsafeDeserialization
 import DataFlow::PathGraph
 
-from UnsafeDeserializationConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
+from UnsafeDeserialization::Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "Deserializing of $@.", source.getNode(), "untrusted input"

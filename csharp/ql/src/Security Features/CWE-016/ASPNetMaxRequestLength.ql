@@ -4,7 +4,7 @@
  *              denial-of-service attacks.
  * @kind problem
  * @problem.severity warning
- * @security-severity 6.9
+ * @security-severity 7.5
  * @id cs/web/large-max-request-length
  * @tags security
  *       frameworks/asp.net

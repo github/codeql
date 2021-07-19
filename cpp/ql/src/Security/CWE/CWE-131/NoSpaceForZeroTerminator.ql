@@ -5,7 +5,7 @@
  *              terminator can cause a buffer overrun.
  * @kind problem
  * @problem.severity error
- * @security-severity 5.9
+ * @security-severity 9.8
  * @precision high
  * @id cpp/no-space-for-terminator
  * @tags reliability

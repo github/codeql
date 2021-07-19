@@ -77,17 +77,36 @@ private import FlowSummary
  */
 private module Frameworks {
   private import internal.ContainerFlow
+  private import semmle.code.java.frameworks.android.XssSinks
   private import semmle.code.java.frameworks.ApacheHttp
+  private import semmle.code.java.frameworks.apache.Collections
   private import semmle.code.java.frameworks.apache.Lang
   private import semmle.code.java.frameworks.guava.Guava
   private import semmle.code.java.frameworks.jackson.JacksonSerializability
+  private import semmle.code.java.frameworks.JavaxJson
+  private import semmle.code.java.frameworks.JaxWS
+  private import semmle.code.java.frameworks.Optional
+  private import semmle.code.java.frameworks.spring.SpringCache
+  private import semmle.code.java.frameworks.spring.SpringHttp
+  private import semmle.code.java.frameworks.spring.SpringUtil
+  private import semmle.code.java.frameworks.spring.SpringUi
+  private import semmle.code.java.frameworks.spring.SpringValidation
+  private import semmle.code.java.frameworks.spring.SpringWebClient
+  private import semmle.code.java.frameworks.spring.SpringBeans
+  private import semmle.code.java.frameworks.spring.SpringWebMultipart
   private import semmle.code.java.security.ResponseSplitting
   private import semmle.code.java.security.InformationLeak
-  private import semmle.code.java.security.XSS
+  private import semmle.code.java.security.JexlInjectionSinkModels
   private import semmle.code.java.security.LdapInjection
-  private import semmle.code.java.security.XPath
   private import semmle.code.java.security.MvelInjection
-  private import semmle.code.java.security.JexlInjection
+  private import semmle.code.java.security.XPath
+  private import semmle.code.java.frameworks.android.SQLite
+  private import semmle.code.java.frameworks.Jdbc
+  private import semmle.code.java.frameworks.SpringJdbc
+  private import semmle.code.java.frameworks.MyBatis
+  private import semmle.code.java.frameworks.Hibernate
+  private import semmle.code.java.frameworks.jOOQ
+  private import semmle.code.java.frameworks.spring.SpringHttp
 }
 
 private predicate sourceModelCsv(string row) {
@@ -209,6 +228,14 @@ private predicate sinkModelCsv(string row) {
       // Open URL
       "java.net;URL;false;openConnection;;;Argument[-1];open-url",
       "java.net;URL;false;openStream;;;Argument[-1];open-url",
+      "java.net.http;HttpRequest;false;newBuilder;;;Argument[0];open-url",
+      "java.net.http;HttpRequest$Builder;false;uri;;;Argument[0];open-url",
+      "java.net;URLClassLoader;false;URLClassLoader;(URL[]);;Argument[0];open-url",
+      "java.net;URLClassLoader;false;URLClassLoader;(URL[],ClassLoader);;Argument[0];open-url",
+      "java.net;URLClassLoader;false;URLClassLoader;(URL[],ClassLoader,URLStreamHandlerFactory);;Argument[0];open-url",
+      "java.net;URLClassLoader;false;URLClassLoader;(String,URL[],ClassLoader);;Argument[1];open-url",
+      "java.net;URLClassLoader;false;URLClassLoader;(String,URL[],ClassLoader,URLStreamHandlerFactory);;Argument[1];open-url",
+      "java.net;URLClassLoader;false;newInstance;;;Argument[0];open-url",
       // Create file
       "java.io;FileOutputStream;false;FileOutputStream;;;Argument[0];create-file",
       "java.io;RandomAccessFile;false;RandomAccessFile;;;Argument[0];create-file",
@@ -248,10 +275,12 @@ private predicate summaryModelCsv(string row) {
       "javax.xml.transform.stream;StreamSource;false;getInputStream;;;Argument[-1];ReturnValue;taint",
       "java.nio;ByteBuffer;false;get;;;Argument[-1];ReturnValue;taint",
       "java.net;URI;false;toURL;;;Argument[-1];ReturnValue;taint",
+      "java.net;URI;false;toString;;;Argument[-1];ReturnValue;taint",
+      "java.net;URI;false;toAsciiString;;;Argument[-1];ReturnValue;taint",
       "java.io;File;false;toURI;;;Argument[-1];ReturnValue;taint",
       "java.io;File;false;toPath;;;Argument[-1];ReturnValue;taint",
       "java.nio.file;Path;false;toFile;;;Argument[-1];ReturnValue;taint",
-      "java.io;Reader;true;readLine;;;Argument[-1];ReturnValue;taint",
+      "java.io;BufferedReader;true;readLine;;;Argument[-1];ReturnValue;taint",
       "java.io;Reader;true;read;();;Argument[-1];ReturnValue;taint",
       // arg to return
       "java.util;Base64$Encoder;false;encode;(byte[]);;Argument[0];ReturnValue;taint",
@@ -262,8 +291,12 @@ private predicate summaryModelCsv(string row) {
       "java.util;Base64$Decoder;false;decode;(ByteBuffer);;Argument[0];ReturnValue;taint",
       "java.util;Base64$Decoder;false;decode;(String);;Argument[0];ReturnValue;taint",
       "java.util;Base64$Decoder;false;wrap;(InputStream);;Argument[0];ReturnValue;taint",
-      "org.apache.commons.codec;Encoder;true;encode;;;Argument[0];ReturnValue;taint",
-      "org.apache.commons.codec;Decoder;true;decode;;;Argument[0];ReturnValue;taint",
+      "org.apache.commons.codec;Encoder;true;encode;(Object);;Argument[0];ReturnValue;taint",
+      "org.apache.commons.codec;Decoder;true;decode;(Object);;Argument[0];ReturnValue;taint",
+      "org.apache.commons.codec;BinaryEncoder;true;encode;(byte[]);;Argument[0];ReturnValue;taint",
+      "org.apache.commons.codec;BinaryDecoder;true;decode;(byte[]);;Argument[0];ReturnValue;taint",
+      "org.apache.commons.codec;StringEncoder;true;encode;(String);;Argument[0];ReturnValue;taint",
+      "org.apache.commons.codec;StringDecoder;true;decode;(String);;Argument[0];ReturnValue;taint",
       "org.apache.commons.io;IOUtils;false;buffer;;;Argument[0];ReturnValue;taint",
       "org.apache.commons.io;IOUtils;false;readLines;;;Argument[0];ReturnValue;taint",
       "org.apache.commons.io;IOUtils;false;readFully;(InputStream,int);;Argument[0];ReturnValue;taint",
@@ -406,19 +439,25 @@ predicate summaryModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
   string input, string output, string kind
 ) {
-  exists(string row |
-    summaryModel(row) and
-    row.splitAt(";", 0) = namespace and
-    row.splitAt(";", 1) = type and
-    row.splitAt(";", 2) = subtypes.toString() and
-    subtypes = [true, false] and
-    row.splitAt(";", 3) = name and
-    row.splitAt(";", 4) = signature and
-    row.splitAt(";", 5) = ext and
-    row.splitAt(";", 6) = input and
-    row.splitAt(";", 7) = output and
-    row.splitAt(";", 8) = kind
-  )
+  summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, _)
+}
+
+/** Holds if a summary model `row` exists for the given parameters. */
+predicate summaryModel(
+  string namespace, string type, boolean subtypes, string name, string signature, string ext,
+  string input, string output, string kind, string row
+) {
+  summaryModel(row) and
+  row.splitAt(";", 0) = namespace and
+  row.splitAt(";", 1) = type and
+  row.splitAt(";", 2) = subtypes.toString() and
+  subtypes = [true, false] and
+  row.splitAt(";", 3) = name and
+  row.splitAt(";", 4) = signature and
+  row.splitAt(";", 5) = ext and
+  row.splitAt(";", 6) = input and
+  row.splitAt(";", 7) = output and
+  row.splitAt(";", 8) = kind
 }
 
 private predicate relevantPackage(string package) {
@@ -554,20 +593,13 @@ module CsvValidation {
   }
 }
 
+pragma[nomagic]
 private predicate elementSpec(
   string namespace, string type, boolean subtypes, string name, string signature, string ext
 ) {
   sourceModel(namespace, type, subtypes, name, signature, ext, _, _) or
   sinkModel(namespace, type, subtypes, name, signature, ext, _, _) or
   summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _)
-}
-
-bindingset[namespace, type, subtypes]
-private RefType interpretType(string namespace, string type, boolean subtypes) {
-  exists(RefType t |
-    t.hasQualifiedName(namespace, type) and
-    if subtypes = true then result.getASourceSupertype*() = t else result = t
-  )
 }
 
 private string paramsStringPart(Callable c, int i) {
@@ -590,9 +622,13 @@ private Element interpretElement0(
   string namespace, string type, boolean subtypes, string name, string signature
 ) {
   elementSpec(namespace, type, subtypes, name, signature, _) and
-  exists(RefType t | t = interpretType(namespace, type, subtypes) |
+  exists(RefType t | t.hasQualifiedName(namespace, type) |
     exists(Member m |
-      result = m and
+      (
+        result = m
+        or
+        subtypes = true and result.(SrcMethod).overridesOrInstantiates+(m)
+      ) and
       m.getDeclaringType() = t and
       m.hasName(name)
     |
@@ -601,7 +637,7 @@ private Element interpretElement0(
       paramsString(m) = signature
     )
     or
-    result = t and
+    (if subtypes = true then result.(SrcRefType).getASourceSupertype*() = t else result = t) and
     name = "" and
     signature = ""
   )
@@ -617,6 +653,48 @@ Element interpretElement(
     or
     ext = "Annotated" and result.(Annotatable).getAnAnnotation().getType() = e
   )
+}
+
+private predicate parseField(string c, FieldContent f) {
+  specSplit(_, c, _) and
+  exists(string fieldRegex, string package, string className, string fieldName |
+    fieldRegex = "^Field\\[(.*)\\.([^.]+)\\.([^.]+)\\]$" and
+    package = c.regexpCapture(fieldRegex, 1) and
+    className = c.regexpCapture(fieldRegex, 2) and
+    fieldName = c.regexpCapture(fieldRegex, 3) and
+    f.getField().hasQualifiedName(package, className, fieldName)
+  )
+}
+
+/** A string representing a synthetic instance field. */
+class SyntheticField extends string {
+  SyntheticField() { parseSynthField(_, this) }
+
+  /**
+   * Gets the type of this field. The default type is `Object`, but this can be
+   * overridden.
+   */
+  Type getType() { result instanceof TypeObject }
+}
+
+private predicate parseSynthField(string c, string f) {
+  specSplit(_, c, _) and
+  c.regexpCapture("SyntheticField\\[([.a-zA-Z0-9]+)\\]", 1) = f
+}
+
+/** Holds if the specification component parses as a `Content`. */
+predicate parseContent(string component, Content content) {
+  parseField(component, content)
+  or
+  parseSynthField(component, content.(SyntheticFieldContent).getField())
+  or
+  component = "ArrayElement" and content instanceof ArrayContent
+  or
+  component = "Element" and content instanceof CollectionContent
+  or
+  component = "MapKey" and content instanceof MapKeyContent
+  or
+  component = "MapValue" and content instanceof MapValueContent
 }
 
 cached

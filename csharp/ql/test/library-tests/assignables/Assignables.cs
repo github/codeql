@@ -138,5 +138,3 @@ class Assignables
         using var x = new System.IO.MemoryStream();
     }
 }
-
-// semmle-extractor-options: /langversion:8.0

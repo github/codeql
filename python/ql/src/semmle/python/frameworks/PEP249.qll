@@ -54,7 +54,7 @@ module Connection {
   }
 
   /** Gets a reference to an instance of `db.Connection`. */
-  private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
+  private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
     t.start() and
     result instanceof InstanceSource
     or
@@ -71,7 +71,7 @@ module Connection {
  */
 module cursor {
   /** Gets a reference to the `cursor` method on a connection. */
-  private DataFlow::LocalSourceNode methodRef(DataFlow::TypeTracker t) {
+  private DataFlow::TypeTrackingNode methodRef(DataFlow::TypeTracker t) {
     t.startInAttr("cursor") and
     result = Connection::instance()
     or
@@ -82,7 +82,7 @@ module cursor {
   DataFlow::Node methodRef() { methodRef(DataFlow::TypeTracker::end()).flowsTo(result) }
 
   /** Gets a reference to a result of calling the `cursor` method on a connection. */
-  private DataFlow::LocalSourceNode methodResult(DataFlow::TypeTracker t) {
+  private DataFlow::TypeTrackingNode methodResult(DataFlow::TypeTracker t) {
     t.start() and
     result.asCfgNode().(CallNode).getFunction() = methodRef().asCfgNode()
     or
@@ -101,7 +101,7 @@ module cursor {
  *
  * See https://www.python.org/dev/peps/pep-0249/#id15.
  */
-private DataFlow::LocalSourceNode execute(DataFlow::TypeTracker t) {
+private DataFlow::TypeTrackingNode execute(DataFlow::TypeTracker t) {
   t.startInAttr("execute") and
   result in [cursor::methodResult(), Connection::instance()]
   or
@@ -122,7 +122,5 @@ DataFlow::Node execute() { execute(DataFlow::TypeTracker::end()).flowsTo(result)
 private class ExecuteCall extends SqlExecution::Range, DataFlow::CallCfgNode {
   ExecuteCall() { this.getFunction() = execute() }
 
-  override DataFlow::Node getSql() {
-    result.asCfgNode() in [node.getArg(0), node.getArgByName("sql")]
-  }
+  override DataFlow::Node getSql() { result in [this.getArg(0), this.getArgByName("sql")] }
 }

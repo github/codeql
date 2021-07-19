@@ -156,6 +156,7 @@ Python built-in support
    Django, Web framework
    Flask, Web framework
    Tornado, Web framework
+   Twisted, Web framework
    PyYAML, Serialization
    dill, Serialization
    simplejson, Serialization
@@ -163,6 +164,7 @@ Python built-in support
    fabric, Utility library
    idna, Utility library
    invoke, Utility library
+   jmespath, Utility library
    multidict, Utility library
    yarl, Utility library
    aioch, Database
@@ -170,8 +172,11 @@ Python built-in support
    mysql-connector-python, Database
    mysql-connector, Database
    MySQL-python, Database
+   mysqlclient, Database
    psycopg2, Database
    sqlite3, Database
    cryptography, Cryptography library
    pycryptodome, Cryptography library
    pycryptodomex, Cryptography library
+   rsa, Cryptography library
+   MarkupSafe, Escaping Library

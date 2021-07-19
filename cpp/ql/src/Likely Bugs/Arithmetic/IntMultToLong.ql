@@ -4,7 +4,7 @@
  *              be a sign that the result can overflow the type converted from.
  * @kind problem
  * @problem.severity warning
- * @security-severity 5.9
+ * @security-severity 8.1
  * @precision high
  * @id cpp/integer-multiplication-cast-to-long
  * @tags reliability
