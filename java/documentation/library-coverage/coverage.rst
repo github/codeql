@@ -15,8 +15,8 @@ Java framework & library support
    `Apache HttpComponents <https://hc.apache.org/>`_,"``org.apache.hc.core5.*``, ``org.apache.http``",5,136,28,,,3,,,,25
    `Google Guava <https://guava.dev/>`_,``com.google.common.*``,,158,6,,6,,,,,
    Java Standard Library,``java.*``,3,327,30,13,,,7,,,10
-   Java extensions,"``javax.*``, ``jakarta.*``",22,294,18,,,,,1,1,2
-   `Spring <https://spring.io/>`_,``org.springframework.*``,29,236,62,,,,19,14,,29
+   Java extensions,"``javax.*``, ``jakarta.*``",22,540,18,,,,,1,1,2
+   `Spring <https://spring.io/>`_,``org.springframework.*``,29,306,62,,,,19,14,,29
    Others,"``com.esotericsoftware.kryo.io``, ``com.esotericsoftware.kryo5.io``, ``com.fasterxml.jackson.databind``, ``com.unboundid.ldap.sdk``, ``org.apache.commons.codec``, ``org.apache.commons.jexl2``, ``org.apache.commons.jexl3``, ``org.apache.directory.ldap.client.api``, ``org.apache.ibatis.jdbc``, ``org.dom4j``, ``org.hibernate``, ``org.jooq``, ``org.xml.sax``, ``org.xmlpull.v1``, ``play.mvc``",7,12,82,,,,14,18,,
-   Totals,,84,2112,296,13,6,6,107,33,1,66
+   Totals,,84,2428,296,13,6,6,107,33,1,66
 

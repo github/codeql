@@ -9,6 +9,7 @@ com.fasterxml.jackson.databind,,,3,,,,,,,,,,,,,,,3,
 com.google.common.base,,,85,,,,,,,,,,,,,,,62,23
 com.google.common.io,6,,73,,,,,,,,,,6,,,,,72,1
 com.unboundid.ldap.sdk,17,,,,,,,,17,,,,,,,,,,
+jakarta.json,,,123,,,,,,,,,,,,,,,100,23
 jakarta.ws.rs.client,1,,,,,,,,,1,,,,,,,,,
 jakarta.ws.rs.core,2,,143,,,,,,,,,,,2,,,,88,55
 java.beans,,,1,,,,,,,,,,,,,,,1,
@@ -18,6 +19,7 @@ java.net,10,3,6,,,,,,,10,,,,,,,3,6,
 java.nio,10,,2,,10,,,,,,,,,,,,,2,
 java.sql,7,,,,,,,,,,,7,,,,,,,
 java.util,,,295,,,,,,,,,,,,,,,15,280
+javax.json,,,123,,,,,,,,,,,,,,,100,23
 javax.naming.directory,1,,,,,,,,1,,,,,,,,,,
 javax.net.ssl,2,,,,,,,,,,2,,,,,,,,
 javax.servlet,4,21,2,,,3,1,,,,,,,,,,21,2,
@@ -47,7 +49,7 @@ org.hibernate,7,,,,,,,,,,,7,,,,,,,
 org.jooq,1,,,,,,,,,,,1,,,,,,,
 org.springframework.beans,,,26,,,,,,,,,,,,,,,,26
 org.springframework.cache,,,13,,,,,,,,,,,,,,,,13
-org.springframework.http,14,,,,,,,,,14,,,,,,,,,
+org.springframework.http,14,,70,,,,,,,14,,,,,,,,60,10
 org.springframework.jdbc.core,10,,,,,,,,,,,10,,,,,,,
 org.springframework.jdbc.object,9,,,,,,,,,,,9,,,,,,,
 org.springframework.ldap.core,14,,,,,,,,14,,,,,,,,,,
