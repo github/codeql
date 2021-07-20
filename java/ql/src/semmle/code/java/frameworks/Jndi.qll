@@ -27,6 +27,11 @@ class TypeDirContext extends Interface {
   TypeDirContext() { this.hasQualifiedName("javax.naming.directory", "DirContext") }
 }
 
+/** The class `javax.naming.directory.SearchControls` */
+class TypeSearchControls extends Class {
+  TypeSearchControls() { this.hasQualifiedName("javax.naming.directory", "SearchControls") }
+}
+
 /** The class `javax.naming.ldap.LdapName`. */
 class TypeLdapName extends Class {
   TypeLdapName() { this.hasQualifiedName("javax.naming.ldap", "LdapName") }

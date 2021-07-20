@@ -1,11 +1,10 @@
 /** Provides classes to reason about JNDI injection vulnerabilities. */
 
 import java
-import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.dataflow.DataFlow2
-import semmle.code.java.dataflow.ExternalFlow
-import semmle.code.java.frameworks.Jndi
-import semmle.code.java.frameworks.SpringLdap
+private import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.frameworks.Jndi
+private import semmle.code.java.frameworks.SpringLdap
 
 /** A data flow sink for unvalidated user input that is used in JNDI lookup. */
 abstract class JndiInjectionSink extends DataFlow::Node { }
@@ -49,19 +48,6 @@ private class ConditionedJndiInjectionSink extends JndiInjectionSink, DataFlow::
 }
 
 /**
- * A method that does a JNDI lookup when it receives a `SearchControls` argument with `setReturningObjFlag` = `true`
- */
-private class UnsafeSearchControlsSink extends JndiInjectionSink {
-  UnsafeSearchControlsSink() {
-    exists(UnsafeSearchControlsConf conf, MethodAccess ma |
-      conf.hasFlowTo(DataFlow::exprNode(ma.getAnArgument()))
-    |
-      this.asExpr() = ma.getArgument(0)
-    )
-  }
-}
-
-/**
  * Tainted value passed to env `Hashtable` as the provider URL by calling
  * `env.put(Context.PROVIDER_URL, tainted)` or `env.setProperty(Context.PROVIDER_URL, tainted)`.
  */
@@ -93,10 +79,10 @@ private class DefaultJndiInjectionSinkModel extends SinkModelCsv {
       [
         "javax.naming;Context;true;lookup;;;Argument[0];jndi-injection",
         "javax.naming;Context;true;lookupLink;;;Argument[0];jndi-injection",
-        "javax.naming;Context;true;doLookup;;;Argument[0];jndi-injection",
         "javax.naming;Context;true;rename;;;Argument[0];jndi-injection",
         "javax.naming;Context;true;list;;;Argument[0];jndi-injection",
         "javax.naming;Context;true;listBindings;;;Argument[0];jndi-injection",
+        "javax.naming;InitialContext;true;doLookup;;;Argument[0];jndi-injection",
         "javax.management.remote;JMXConnector;true;connect;;;Argument[-1];jndi-injection",
         "javax.management.remote;JMXConnectorFactory;false;connect;;;Argument[0];jndi-injection",
         // Spring
@@ -135,87 +121,6 @@ private class DefaultJndiInjectionSinkModel extends SinkModelCsv {
         "org.apache.shiro.jndi;JndiTemplate;false;lookup;;;Argument[0];jndi-injection"
       ]
   }
-}
-
-/**
- * Find flows between a `SearchControls` object with `setReturningObjFlag` = `true`
- * and an argument of a `LdapOperations.search` or `DirContext.search` call.
- */
-private class UnsafeSearchControlsConf extends DataFlow2::Configuration {
-  UnsafeSearchControlsConf() { this = "UnsafeSearchControlsConf" }
-
-  override predicate isSource(DataFlow2::Node source) { source instanceof UnsafeSearchControls }
-
-  override predicate isSink(DataFlow2::Node sink) { sink instanceof UnsafeSearchControlsArgument }
-}
-
-/**
- * An argument of type `SearchControls` of a a `LdapOperations.search` or `DirContext.search` call.
- */
-private class UnsafeSearchControlsArgument extends DataFlow2::ExprNode {
-  UnsafeSearchControlsArgument() {
-    exists(MethodAccess ma, Method m |
-      ma.getMethod() = m and
-      ma.getAnArgument() = this.asExpr() and
-      this.asExpr().getType() instanceof TypeSearchControls and
-      m.hasName("search")
-    |
-      m.getDeclaringType().getASourceSupertype*() instanceof TypeLdapOperations or
-      m.getDeclaringType().getASourceSupertype*() instanceof TypeDirContext
-    )
-  }
-}
-
-/**
- * A `SearchControls` object with `setReturningObjFlag` = `true`.
- */
-private class UnsafeSearchControls extends DataFlow2::ExprNode {
-  UnsafeSearchControls() {
-    exists(MethodAccess ma |
-      ma.getMethod() instanceof SetReturningObjFlagMethod and
-      ma.getArgument(0).(CompileTimeConstantExpr).getBooleanValue() = true and
-      this.asExpr() = ma.getQualifier()
-    )
-    or
-    exists(ConstructorCall cc |
-      cc.getConstructedType() instanceof TypeSearchControls and
-      cc.getArgument(4).(CompileTimeConstantExpr).getBooleanValue() = true and
-      this.asExpr() = cc
-    )
-  }
-}
-
-/**
- * The method `SearchControls.setReturningObjFlag`.
- */
-private class SetReturningObjFlagMethod extends Method {
-  SetReturningObjFlagMethod() {
-    this.getDeclaringType() instanceof TypeSearchControls and
-    this.hasName("setReturningObjFlag")
-  }
-}
-
-/**
- * The class `javax.naming.directory.SearchControls`
- */
-private class TypeSearchControls extends Class {
-  TypeSearchControls() { this.hasQualifiedName("javax.naming.directory", "SearchControls") }
-}
-
-/**
- * The interface `org.springframework.ldap.core.LdapOperations` or
- * `org.springframework.ldap.LdapOperations`
- */
-private class TypeLdapOperations extends Interface {
-  TypeLdapOperations() {
-    this.hasQualifiedName(["org.springframework.ldap.core", "org.springframework.ldap"],
-      "LdapOperations")
-  }
-}
-
-/** The class `java.util.Hashtable`. */
-private class TypeHashtable extends Class {
-  TypeHashtable() { this.getSourceDeclaration().hasQualifiedName("java.util", "Hashtable") }
 }
 
 /** A set of additional taint steps to consider when taint tracking JNDI injection related data flows. */
@@ -293,4 +198,9 @@ private predicate rmiConnectorStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2)
     n1.asExpr() = cc.getAnArgument() and
     n2.asExpr() = cc
   )
+}
+
+/** The class `java.util.Hashtable`. */
+private class TypeHashtable extends Class {
+  TypeHashtable() { this.getSourceDeclaration().hasQualifiedName("java.util", "Hashtable") }
 }
