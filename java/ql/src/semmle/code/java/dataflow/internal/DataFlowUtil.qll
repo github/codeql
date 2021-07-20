@@ -157,6 +157,96 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
   FlowSummaryImpl::Private::Steps::summaryLocalStep(node1, node2, true)
 }
 
+private newtype TContent =
+  TFieldContent(InstanceField f) or
+  TArrayContent() or
+  TCollectionContent() or
+  TMapKeyContent() or
+  TMapValueContent() or
+  TSyntheticFieldContent(SyntheticField s)
+
+/**
+ * A description of the way data may be stored inside an object. Examples
+ * include instance fields, the contents of a collection object, or the contents
+ * of an array.
+ */
+class Content extends TContent {
+  /** Gets the type of the contained data for the purpose of type pruning. */
+  abstract DataFlowType getType();
+
+  /** Gets a textual representation of this element. */
+  abstract string toString();
+
+  /**
+   * Holds if this element is at the specified location.
+   * The location spans column `startcolumn` of line `startline` to
+   * column `endcolumn` of line `endline` in file `filepath`.
+   * For more information, see
+   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   */
+  predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
+    path = "" and sl = 0 and sc = 0 and el = 0 and ec = 0
+  }
+}
+
+/** A reference through an instance field. */
+class FieldContent extends Content, TFieldContent {
+  InstanceField f;
+
+  FieldContent() { this = TFieldContent(f) }
+
+  InstanceField getField() { result = f }
+
+  override DataFlowType getType() { result = getErasedRepr(f.getType()) }
+
+  override string toString() { result = f.toString() }
+
+  override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
+    f.getLocation().hasLocationInfo(path, sl, sc, el, ec)
+  }
+}
+
+/** A reference through an array. */
+class ArrayContent extends Content, TArrayContent {
+  override DataFlowType getType() { result instanceof TypeObject }
+
+  override string toString() { result = "[]" }
+}
+
+/** A reference through the contents of some collection-like container. */
+class CollectionContent extends Content, TCollectionContent {
+  override DataFlowType getType() { result instanceof TypeObject }
+
+  override string toString() { result = "<element>" }
+}
+
+/** A reference through a map key. */
+class MapKeyContent extends Content, TMapKeyContent {
+  override DataFlowType getType() { result instanceof TypeObject }
+
+  override string toString() { result = "<map.key>" }
+}
+
+/** A reference through a map value. */
+class MapValueContent extends Content, TMapValueContent {
+  override DataFlowType getType() { result instanceof TypeObject }
+
+  override string toString() { result = "<map.value>" }
+}
+
+/** A reference through a synthetic instance field. */
+class SyntheticFieldContent extends Content, TSyntheticFieldContent {
+  SyntheticField s;
+
+  SyntheticFieldContent() { this = TSyntheticFieldContent(s) }
+
+  SyntheticField getField() { result = s }
+
+  override DataFlowType getType() { result = getErasedRepr(s.getType()) }
+
+  override string toString() { result = s.toString() }
+}
+
 /**
  * A guard that validates some expression.
  *

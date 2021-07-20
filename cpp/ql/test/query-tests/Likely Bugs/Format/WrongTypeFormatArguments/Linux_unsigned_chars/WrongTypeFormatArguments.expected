@@ -11,8 +11,6 @@
 | printf1.h:45:18:45:20 | ull | This argument should be of type 'unsigned int' but is of type 'unsigned long long' |
 | printf1.h:46:18:46:20 | ull | This argument should be of type 'unsigned int' but is of type 'unsigned long long' |
 | printf1.h:130:18:130:18 | 0 | This argument should be of type 'void *' but is of type 'int' |
-| printf1.h:154:18:154:19 | wc | This argument should be of type 'char *' but is of type 'wchar_t *' |
-| printf1.h:155:18:155:18 | c | This argument should be of type 'wchar_t *' but is of type 'char *' |
 | printf1.h:168:19:168:19 | i | This argument should be of type 'long long' but is of type 'int' |
 | printf1.h:169:19:169:20 | ui | This argument should be of type 'unsigned long long' but is of type 'unsigned int' |
 | real_world.h:61:21:61:22 | & ... | This argument should be of type 'int *' but is of type 'short *' |

@@ -3,6 +3,7 @@
  */
 
 import java
+import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * Methods annotated with this allow for generation of "plain SQL"
@@ -20,4 +21,14 @@ private class PlainSQLType extends Annotation {
 predicate jOOQSqlMethod(Method m) {
   m.getAnAnnotation() instanceof PlainSQLType and
   m.getParameterType(0) instanceof TypeString
+}
+
+private class SqlSinkCsv extends SinkModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        //"package;type;overrides;name;signature;ext;spec;kind"
+        "org.jooq;PlainSQL;false;;;Annotated;Argument[0];sql"
+      ]
+  }
 }

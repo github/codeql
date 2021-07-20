@@ -6,7 +6,7 @@ private import semmle.python.dataflow.new.TaintTracking
 /** A data-flow Node representing an instance of MyClass. */
 abstract class MyClass extends DataFlow::Node { }
 
-private DataFlow::LocalSourceNode myClassGetValue(MyClass qualifier, DataFlow::TypeTracker t) {
+private DataFlow::TypeTrackingNode myClassGetValue(MyClass qualifier, DataFlow::TypeTracker t) {
   t.startInAttr("get_value") and
   result = qualifier
   or

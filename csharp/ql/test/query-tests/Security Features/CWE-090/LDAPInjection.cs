@@ -1,5 +1,3 @@
-// semmle-extractor-options: ${testdir}/../../../resources/stubs/System.Web.cs ${testdir}/../../../resources/stubs/System.DirectoryServices.cs /r:System.ComponentModel.Primitives.dll /r:System.Collections.Specialized.dll /r:System.ComponentModel.TypeConverter.dll /r:System.Private.Xml.dll
-
 using System;
 using System.DirectoryServices;
 using System.DirectoryServices.Protocols;

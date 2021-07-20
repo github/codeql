@@ -6,7 +6,7 @@
  * @kind path-problem
  * @id java/zipslip
  * @problem.severity error
- * @security-severity 6.4
+ * @security-severity 7.5
  * @precision high
  * @tags security
  *       external/cwe/cwe-022

@@ -3,7 +3,7 @@
  * @description Using a vulnerable version of JHipster to generate random numbers makes it easier for attackers to take over accounts.
  * @kind problem
  * @problem.severity error
- * @security-severity 5.9
+ * @security-severity 7.8
  * @precision very-high
  * @id java/jhipster-prng
  * @tags security

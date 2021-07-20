@@ -5,14 +5,24 @@ namespace Semmle.Extraction.CSharp.Entities
 {
     internal class DefineDirective : PreprocessorDirective<DefineDirectiveTriviaSyntax>
     {
-        public DefineDirective(Context cx, DefineDirectiveTriviaSyntax trivia)
+        private DefineDirective(Context cx, DefineDirectiveTriviaSyntax trivia)
             : base(cx, trivia)
         {
         }
 
         protected override void PopulatePreprocessor(TextWriter trapFile)
         {
-            trapFile.directive_defines(this, trivia.Name.ToString());
+            trapFile.directive_defines(this, Symbol.Name.ToString());
+        }
+
+        public static DefineDirective Create(Context cx, DefineDirectiveTriviaSyntax def) =>
+            DefineDirectiveFactory.Instance.CreateEntity(cx, def, def);
+
+        private class DefineDirectiveFactory : CachedEntityFactory<DefineDirectiveTriviaSyntax, DefineDirective>
+        {
+            public static DefineDirectiveFactory Instance { get; } = new DefineDirectiveFactory();
+
+            public override DefineDirective Create(Context cx, DefineDirectiveTriviaSyntax init) => new(cx, init);
         }
     }
 }

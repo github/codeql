@@ -13,6 +13,7 @@ private import semmle.code.csharp.frameworks.system.web.UI
 private import semmle.code.csharp.frameworks.system.web.ui.WebControls
 private import semmle.code.csharp.frameworks.system.windows.Forms
 private import semmle.code.csharp.security.dataflow.flowsources.Remote
+private import semmle.code.csharp.dataflow.ExternalFlow
 private import semmle.code.asp.AspNet
 
 /**
@@ -21,21 +22,23 @@ private import semmle.code.asp.AspNet
  */
 abstract class HtmlSink extends DataFlow::ExprNode, RemoteFlowSink { }
 
+private class ExternalHtmlSink extends HtmlSink {
+  ExternalHtmlSink() { sinkNode(this, "html") }
+}
+
 /**
  * An expression that is used as an argument to an HTML sink method on
  * `HttpResponse`.
  */
-class HttpResponseSink extends HtmlSink {
-  HttpResponseSink() {
-    exists(Method m, SystemWebHttpResponseClass responseClass |
-      m = responseClass.getAWriteMethod() or
-      m = responseClass.getAWriteFileMethod() or
-      m = responseClass.getATransmitFileMethod() or
-      m = responseClass.getABinaryWriteMethod()
-    |
-      // Calls to these methods, or overrides of them
-      this.getExpr() = m.getAnOverrider*().getParameter(0).getAnAssignedArgument()
-    )
+private class HttpResponseSinkModelCsv extends SinkModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.Web;HttpResponse;false;Write;;;Argument[0];html",
+        "System.Web;HttpResponse;false;WriteFile;;;Argument[0];html",
+        "System.Web;HttpResponse;false;TransmitFile;;;Argument[0];html",
+        "System.Web;HttpResponse;false;BinaryWrite;;;Argument[0];html"
+      ]
   }
 }
 

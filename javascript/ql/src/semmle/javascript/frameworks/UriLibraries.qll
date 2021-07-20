@@ -96,13 +96,8 @@ module uridashjs {
    */
   private class Step extends TaintTracking::SharedTaintStep {
     override predicate uriStep(DataFlow::Node pred, DataFlow::Node succ) {
-      exists(string name, DataFlow::CallNode call |
-        name = "parse" or
-        name = "serialize" or
-        name = "resolve" or
-        name = "normalize"
-      |
-        call = uridashjsMember(name).getACall() and
+      exists(DataFlow::CallNode call |
+        call = uridashjsMember(["parse", "serialize", "resolve", "normalize"]).getACall() and
         pred = call.getAnArgument() and
         succ = call
       )
@@ -126,13 +121,8 @@ module punycode {
    */
   private class Step extends TaintTracking::SharedTaintStep {
     override predicate uriStep(DataFlow::Node pred, DataFlow::Node succ) {
-      exists(string name, DataFlow::CallNode call |
-        name = "decode" or
-        name = "encode" or
-        name = "toUnicode" or
-        name = "toASCII"
-      |
-        call = punycodeMember(name).getACall() and
+      exists(DataFlow::CallNode call |
+        call = punycodeMember(["decode", "encode", "toUnicode", "toASCII"]).getACall() and
         pred = call.getAnArgument() and
         succ = call
       )
@@ -193,11 +183,8 @@ module querystringify {
    */
   private class Step extends TaintTracking::SharedTaintStep {
     override predicate uriStep(DataFlow::Node pred, DataFlow::Node succ) {
-      exists(string name, DataFlow::CallNode call |
-        name = "parse" or
-        name = "stringify"
-      |
-        call = querystringifyMember(name).getACall() and
+      exists(DataFlow::CallNode call |
+        call = querystringifyMember(["parse", "stringify"]).getACall() and
         pred = call.getAnArgument() and
         succ = call
       )
@@ -221,13 +208,8 @@ module querydashstring {
    */
   private class Step extends TaintTracking::SharedTaintStep {
     override predicate uriStep(DataFlow::Node pred, DataFlow::Node succ) {
-      exists(string name, DataFlow::CallNode call |
-        name = "parse" or
-        name = "extract" or
-        name = "parseUrl" or
-        name = "stringify"
-      |
-        call = querydashstringMember(name).getACall() and
+      exists(DataFlow::CallNode call |
+        call = querydashstringMember(["parse", "extract", "parseUrl", "stringify"]).getACall() and
         pred = call.getAnArgument() and
         succ = call
       )
@@ -249,12 +231,8 @@ module url {
    */
   private class Step extends TaintTracking::SharedTaintStep {
     override predicate uriStep(DataFlow::Node pred, DataFlow::Node succ) {
-      exists(string name, DataFlow::CallNode call |
-        name = "parse" or
-        name = "format" or
-        name = "resolve"
-      |
-        call = urlMember(name).getACall() and
+      exists(DataFlow::CallNode call |
+        call = urlMember(["parse", "format", "resolve"]).getACall() and
         pred = call.getAnArgument() and
         succ = call
       )
@@ -278,17 +256,51 @@ module querystring {
    */
   private class Step extends TaintTracking::SharedTaintStep {
     override predicate uriStep(DataFlow::Node pred, DataFlow::Node succ) {
-      exists(string name, DataFlow::CallNode call |
-        name = "escape" or
-        name = "unescape" or
-        name = "parse" or
-        name = "stringify"
-      |
-        call = querystringMember(name).getACall() and
+      exists(DataFlow::CallNode call |
+        call = querystringMember(["escape", "unescape", "parse", "stringify"]).getACall() and
         pred = call.getAnArgument() and
         succ = call
       )
     }
+  }
+}
+
+/**
+ * A taint step through a call to [qs](https://npmjs.com/package/qs)
+ */
+private class QsStep extends TaintTracking::SharedTaintStep {
+  override predicate uriStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(API::CallNode call |
+      call = API::moduleImport("qs").getMember(["parse", "stringify"]).getACall()
+    |
+      pred = call.getArgument(0) and
+      succ = call
+    )
+  }
+}
+
+/**
+ * A taint step through a call to [normalize-url](https://npmjs.com/package/normalize-url)
+ */
+private class NormalizeUrlStep extends TaintTracking::SharedTaintStep {
+  override predicate uriStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(API::CallNode call | call = API::moduleImport("normalize-url").getACall() |
+      pred = call.getArgument(0) and
+      succ = call
+    )
+  }
+}
+
+/**
+ * A taint step through a call to [parseqs](https://npmjs.com/package/parseqs).
+ */
+private class ParseQsStep extends TaintTracking::SharedTaintStep {
+  override predicate uriStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(API::CallNode call |
+      call = API::moduleImport("parseqs").getMember(["encode", "decode"]).getACall() and
+      pred = call.getArgument(0) and
+      succ = call
+    )
   }
 }
 

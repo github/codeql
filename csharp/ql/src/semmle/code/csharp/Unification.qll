@@ -485,6 +485,7 @@ module Gvn {
   /**
    * Gets the leaf GVN inside GVN `t`, by following the path `path`, if any.
    */
+  pragma[noinline]
   private GvnType getLeafTypeAt(GvnType t, TTypePath path) {
     result = getTypeAt(t, path) and
     not result instanceof ConstructedGvnType
