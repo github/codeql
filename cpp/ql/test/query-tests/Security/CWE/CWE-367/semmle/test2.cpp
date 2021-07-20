@@ -331,3 +331,28 @@ void test6_5(const char *path1, const char *path2)
 		// ...
 	}
 }
+
+// --- open / rename -> chmod ---
+
+void test7_1(const char *path)
+{
+	FILE *f;
+
+	f = fopen(path, "wt");
+	if (f != 0)
+	{
+		// ...
+	
+		fclose(f);
+
+		chmod(path, 1234); // BAD [NOT DETECTED]
+	}
+}
+
+void test7_1(const char *path1, const char *path2)
+{
+	if (!rename(path1, path2))
+	{
+		chmod(path2, 1234); // BAD [NOT DETECTED]
+	}
+}
