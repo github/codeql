@@ -369,16 +369,6 @@ private module Django {
    * See https://docs.djangoproject.com/en/3.0/ref/files/uploads/#django.core.files.uploadedfile.UploadedFile.
    */
   module UploadedFile {
-    /** Gets a reference to the `django.core.files.uploadedfile.UploadedFile` class. */
-    private API::Node classRef() {
-      result =
-        API::moduleImport("django")
-            .getMember("core")
-            .getMember("files")
-            .getMember("uploadedfile")
-            .getMember("UploadedFile")
-    }
-
     /**
      * A source of instances of `django.core.files.uploadedfile.UploadedFile`, extend this class to model new instances.
      *
@@ -389,13 +379,6 @@ private module Django {
      * Use the predicate `UploadedFile::instance()` to get references to instances of `django.core.files.uploadedfile.UploadedFile`.
      */
     abstract class InstanceSource extends DataFlow::LocalSourceNode { }
-
-    /** A direct instantiation of `django.core.files.uploadedfile.UploadedFile`. */
-    private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
-      override CallNode node;
-
-      ClassInstantiation() { this = classRef().getACall() }
-    }
 
     /** Gets a reference to an instance of `django.core.files.uploadedfile.UploadedFile`. */
     private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
