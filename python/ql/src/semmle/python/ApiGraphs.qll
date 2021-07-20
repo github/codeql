@@ -449,7 +449,7 @@ module API {
       name = n.getId() and
       // Not already defined in an enclosing scope.
       not exists(LocalVariable v |
-        v.getId() = name and v.getScope().getEnclosingScope*() = n.getScope()
+        v.getId() = name and v.getScope() = n.getScope().getEnclosingScope*()
       ) and
       not name = getBuiltInName() and
       s = n.getScope().getEnclosingScope*() and
