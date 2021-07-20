@@ -68,16 +68,16 @@ def test_taint(name = "World!", number="0", foo="foo"):  # $requestHandler route
         # a werkzeug.datastructures.MultiDict, mapping [str, werkzeug.datastructures.FileStorage]
         request.files, # $ tainted
         request.files['key'], # $ tainted
-        request.files['key'].filename, # $ MISSING: tainted
-        request.files['key'].stream, # $ MISSING: tainted
-        request.files['key'].read(), # $ MISSING: tainted
-        request.files['key'].stream.read(), # $ MISSING: tainted
+        request.files['key'].filename, # $ tainted
+        request.files['key'].stream, # $ tainted
+        request.files['key'].read(), # $ tainted
+        request.files['key'].stream.read(), # $ tainted
         request.files.get('key'), # $ tainted
-        request.files.get('key').filename, # $ MISSING: tainted
-        request.files.get('key').stream, # $ MISSING: tainted
+        request.files.get('key').filename, # $ tainted
+        request.files.get('key').stream, # $ tainted
         request.files.getlist('key'), # $ tainted
-        request.files.getlist('key')[0].filename, # $ MISSING: tainted
-        request.files.getlist('key')[0].stream, # $ MISSING: tainted
+        request.files.getlist('key')[0].filename, # $ tainted
+        request.files.getlist('key')[0].stream, # $ tainted
 
         # By default werkzeug.datastructures.ImmutableMultiDict -- although can be changed :\
         request.form, # $ tainted

@@ -410,12 +410,26 @@ module Flask {
     }
   }
 
-  private class RequestAttrFiles extends RequestAttrMultiDict {
-    // TODO: Somehow specify that elements of `RequestAttrFiles` are
-    // Werkzeug::werkzeug::datastructures::FileStorage and should have those additional taint steps
-    // AND that the 0-indexed argument to its' save method is a sink for path-injection.
-    // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.FileStorage.save
-    RequestAttrFiles() { attr_name = "files" }
+  /** An `FileStorage` instance that originates from a flask request. */
+  private class FlaskRequestFileStorageInstances extends Werkzeug::FileStorage::InstanceSource {
+    FlaskRequestFileStorageInstances() {
+      // TODO: this currently only works in local-scope, since writing type-trackers for
+      // this is a little too much effort. Once API-graphs are available for more
+      // things, we can rewrite this.
+      //
+      // TODO: This approach for identifying member-access is very adhoc, and we should
+      // be able to do something more structured for providing modeling of the members
+      // of a container-object.
+      exists(DataFlow::AttrRead files | files.accesses(request().getAUse(), "files") |
+        this.asCfgNode().(SubscriptNode).getObject() = files.asCfgNode()
+        or
+        this.(DataFlow::MethodCallNode).calls(files, "get")
+        or
+        exists(DataFlow::MethodCallNode getlistCall | getlistCall.calls(files, "getlist") |
+          this.asCfgNode().(SubscriptNode).getObject() = getlistCall.asCfgNode()
+        )
+      )
+    }
   }
 
   // ---------------------------------------------------------------------------
