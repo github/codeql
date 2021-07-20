@@ -4,7 +4,7 @@
  *              entity expansion is vulnerable to XXE attacks.
  * @kind path-problem
  * @problem.severity error
- * @security-severity 5.9
+ * @security-severity 9.1
  * @precision high
  * @id js/xxe
  * @tags security

@@ -107,6 +107,11 @@ namespace Semmle.Extraction.CSharp
 
             try
             {
+                if (options.ProjectsToLoad.Any())
+                {
+                    AddSourceFilesFromProjects(options.ProjectsToLoad, options.CompilerArguments, logger);
+                }
+
                 var compilerVersion = new CompilerVersion(options);
 
                 if (compilerVersion.SkipExtraction)
@@ -143,6 +148,41 @@ namespace Semmle.Extraction.CSharp
             {
                 logger.Log(Severity.Error, "  Unhandled exception: {0}", ex);
                 return ExitCode.Errors;
+            }
+        }
+
+        private static void AddSourceFilesFromProjects(IEnumerable<string> projectsToLoad, IList<string> compilerArguments, ILogger logger)
+        {
+            logger.Log(Severity.Info, "  Loading referenced projects.");
+            var projects = new Queue<string>(projectsToLoad);
+            var processed = new HashSet<string>();
+            while (projects.Count > 0)
+            {
+                var project = projects.Dequeue();
+                var fi = new FileInfo(project);
+                if (processed.Contains(fi.FullName))
+                {
+                    continue;
+                }
+
+                processed.Add(fi.FullName);
+                logger.Log(Severity.Info, "  Processing referenced project: " + fi.FullName);
+
+                var csProj = new CsProjFile(fi);
+
+                foreach (var cs in csProj.Sources)
+                {
+                    if (cs.Contains("/obj/"))
+                    {
+                        continue;
+                    }
+                    compilerArguments.Add(cs);
+                }
+
+                foreach (var pr in csProj.ProjectReferences)
+                {
+                    projects.Enqueue(pr);
+                }
             }
         }
 

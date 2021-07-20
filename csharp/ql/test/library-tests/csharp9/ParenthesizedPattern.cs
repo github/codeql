@@ -15,7 +15,6 @@ class ParenthesizedPattern
         }
     }
 
-
     void M2(object o)
     {
         var r = o switch

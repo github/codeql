@@ -5,7 +5,7 @@
  * @kind problem
  * @id cpp/memset-may-be-deleted
  * @problem.severity warning
- * @security-severity 6.4
+ * @security-severity 7.8
  * @precision high
  * @tags security
  *       external/cwe/cwe-14

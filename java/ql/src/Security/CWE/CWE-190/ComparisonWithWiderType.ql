@@ -4,7 +4,7 @@
  *              to behave unexpectedly.
  * @kind problem
  * @problem.severity warning
- * @security-severity 5.9
+ * @security-severity 8.1
  * @precision medium
  * @id java/comparison-with-wider-type
  * @tags reliability

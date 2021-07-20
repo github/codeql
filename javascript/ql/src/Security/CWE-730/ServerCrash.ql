@@ -4,7 +4,7 @@
  *              attacks.
  * @kind path-problem
  * @problem.severity warning
- * @security-severity 3.6
+ * @security-severity 7.5
  * @precision high
  * @id js/server-crash
  * @tags security

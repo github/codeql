@@ -487,5 +487,3 @@ class SignAnalysis
             System.Console.WriteLine(x); // strictly negative
     }
 }
-
-// semmle-extractor-options: /r:System.Linq.dll

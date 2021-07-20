@@ -15,63 +15,63 @@ AlternateInterpolatedStrings.cs:
 #    6|         0: [StringLiteral] "C:"
 #    6|         1: [IntLiteral] 12
 AsyncStreams.cs:
-#    8| [Class] AsyncStreams
-#   10|   5: [Method] Items
-#   10|     -1: [TypeMention] IAsyncEnumerable<Int32>
-#   10|       1: [TypeMention] int
-#   10|     4: [BlockStmt] {...}
-#   11|       0: [YieldReturnStmt] yield return ...;
-#   11|         0: [IntLiteral] 1
-#   12|       1: [YieldReturnStmt] yield return ...;
-#   12|         0: [IntLiteral] 2
-#   13|       2: [ExprStmt] ...;
-#   13|         0: [AwaitExpr] await ...
-#   13|           0: [MethodCall] call to method Delay
-#   13|             -1: [TypeAccess] access to type Task
-#   13|               0: [TypeMention] Task
-#   13|             0: [IntLiteral] 1000
-#   14|       3: [YieldReturnStmt] yield return ...;
-#   14|         0: [IntLiteral] 3
-#   17|   6: [Method] F
-#   17|     -1: [TypeMention] Void
-#   18|     4: [BlockStmt] {...}
-#   19|       0: [ForeachStmt] foreach (... ... in ...) ...
-#   19|         0: [LocalVariableDeclExpr] Int32 item
-#   19|           0: [TypeMention] int
-#   19|         1: [MethodCall] call to method Items
-#   20|         2: [ExprStmt] ...;
-#   20|           0: [MethodCall] call to method WriteLine
-#   20|             -1: [TypeAccess] access to type Console
-#   20|               0: [TypeMention] Console
-#   20|             0: [LocalVariableAccess] access to local variable item
-#   24| [NamespaceDeclaration] namespace ... { ... }
-#   26|   1: [Interface] IAsyncDisposable
-#   28|     4: [Method] DisposeAsync
-#   28|       -1: [TypeMention] ValueTask
-#   32| [NamespaceDeclaration] namespace ... { ... }
-#   34|   1: [Interface] IAsyncEnumerable<>
+#    6| [Class] AsyncStreams
+#    8|   5: [Method] Items
+#    8|     -1: [TypeMention] IAsyncEnumerable<Int32>
+#    8|       1: [TypeMention] int
+#    8|     4: [BlockStmt] {...}
+#    9|       0: [YieldReturnStmt] yield return ...;
+#    9|         0: [IntLiteral] 1
+#   10|       1: [YieldReturnStmt] yield return ...;
+#   10|         0: [IntLiteral] 2
+#   11|       2: [ExprStmt] ...;
+#   11|         0: [AwaitExpr] await ...
+#   11|           0: [MethodCall] call to method Delay
+#   11|             -1: [TypeAccess] access to type Task
+#   11|               0: [TypeMention] Task
+#   11|             0: [IntLiteral] 1000
+#   12|       3: [YieldReturnStmt] yield return ...;
+#   12|         0: [IntLiteral] 3
+#   15|   6: [Method] F
+#   15|     -1: [TypeMention] Void
+#   16|     4: [BlockStmt] {...}
+#   17|       0: [ForeachStmt] foreach (... ... in ...) ...
+#   17|         0: [LocalVariableDeclExpr] Int32 item
+#   17|           0: [TypeMention] int
+#   17|         1: [MethodCall] call to method Items
+#   18|         2: [ExprStmt] ...;
+#   18|           0: [MethodCall] call to method WriteLine
+#   18|             -1: [TypeAccess] access to type Console
+#   18|               0: [TypeMention] Console
+#   18|             0: [LocalVariableAccess] access to local variable item
+#   22| [NamespaceDeclaration] namespace ... { ... }
+#   24|   1: [Interface] IAsyncDisposable
+#   26|     4: [Method] DisposeAsync
+#   26|       -1: [TypeMention] ValueTask
+#   30| [NamespaceDeclaration] namespace ... { ... }
+#   32|   1: [Interface] IAsyncEnumerable<>
 #-----|     1: (Type parameters)
-#   34|       0: [TypeParameter] T
-#   36|     4: [Method] GetAsyncEnumerator
-#   36|       -1: [TypeMention] IAsyncEnumerator<T>
-#   36|         1: [TypeMention] T
+#   32|       0: [TypeParameter] T
+#   34|     4: [Method] GetAsyncEnumerator
+#   34|       -1: [TypeMention] IAsyncEnumerator<T>
+#   34|         1: [TypeMention] T
 #-----|       2: (Parameters)
-#   36|         0: [Parameter] cancellationToken
-#   36|           -1: [TypeMention] CancellationToken
-#   36|           1: [DefaultValueExpr] default(...)
-#   36|             0: [TypeAccess] access to type CancellationToken
-#   36|               0: [TypeMention] CancellationToken
-#   39|   2: [Interface] IAsyncEnumerator<>
+#   34|         0: [Parameter] cancellationToken
+#   34|           -1: [TypeMention] CancellationToken
+#   34|           1: [DefaultValueExpr] default(...)
+#   34|             0: [TypeAccess] access to type CancellationToken
+#   34|               0: [TypeMention] CancellationToken
+#   37|   2: [Interface] IAsyncEnumerator<>
 #-----|     1: (Type parameters)
-#   39|       0: [TypeParameter] T
+#   37|       0: [TypeParameter] T
 #-----|     3: (Base types)
-#   39|       1: [TypeMention] IAsyncDisposable
-#   41|     4: [Property] Current
-#   41|       -1: [TypeMention] T
-#   41|       3: [Getter] get_Current
-#   42|     5: [Method] MoveNextAsync
-#   42|       -1: [TypeMention] ValueTask<Boolean>
-#   42|         1: [TypeMention] bool
+#   37|       1: [TypeMention] IAsyncDisposable
+#   39|     4: [Property] Current
+#   39|       -1: [TypeMention] T
+#   39|       3: [Getter] get_Current
+#   40|     5: [Method] MoveNextAsync
+#   40|       -1: [TypeMention] ValueTask<Boolean>
+#   40|         1: [TypeMention] bool
 DefaultInterfaceMethods.cs:
 #    3| [Interface] IPerson
 #    5|   4: [Property] Name
@@ -670,35 +670,35 @@ NullableRefTypes.cs:
 #  225|   13: [Field] Field
 #  225|     -1: [TypeMention] string
 StaticLocalFunctions.cs:
-#    5| [Class] StaticLocalFunctions
-#    7|   5: [Method] Fn
-#    7|     -1: [TypeMention] int
+#    3| [Class] StaticLocalFunctions
+#    5|   5: [Method] Fn
+#    5|     -1: [TypeMention] int
 #-----|     2: (Parameters)
-#    7|       0: [Parameter] x
-#    7|         -1: [TypeMention] int
-#    8|     4: [BlockStmt] {...}
-#    9|       0: [LocalFunctionStmt] I(...)
-#    9|         0: [LocalFunction] I
+#    5|       0: [Parameter] x
+#    5|         -1: [TypeMention] int
+#    6|     4: [BlockStmt] {...}
+#    7|       0: [LocalFunctionStmt] I(...)
+#    7|         0: [LocalFunction] I
 #-----|           2: (Parameters)
-#    9|             0: [Parameter] y
-#    9|               -1: [TypeMention] int
-#    9|           4: [ParameterAccess] access to parameter y
-#   10|       1: [LocalFunctionStmt] J(...)
-#   10|         0: [LocalFunction] J
+#    7|             0: [Parameter] y
+#    7|               -1: [TypeMention] int
+#    7|           4: [ParameterAccess] access to parameter y
+#    8|       1: [LocalFunctionStmt] J(...)
+#    8|         0: [LocalFunction] J
 #-----|           2: (Parameters)
-#   10|             0: [Parameter] y
-#   10|               -1: [TypeMention] int
-#   10|           4: [AddExpr] ... + ...
-#   10|             0: [ParameterAccess] access to parameter x
-#   10|             1: [ParameterAccess] access to parameter y
-#   11|       2: [ReturnStmt] return ...;
-#   11|         0: [AddExpr] ... + ...
-#   11|           0: [LocalFunctionCall] call to local function I
-#   11|             -1: [LocalFunctionAccess] access to local function I
-#   11|             0: [ParameterAccess] access to parameter x
-#   11|           1: [LocalFunctionCall] call to local function J
-#   11|             -1: [LocalFunctionAccess] access to local function J
-#   11|             0: [ParameterAccess] access to parameter x
+#    8|             0: [Parameter] y
+#    8|               -1: [TypeMention] int
+#    8|           4: [AddExpr] ... + ...
+#    8|             0: [ParameterAccess] access to parameter x
+#    8|             1: [ParameterAccess] access to parameter y
+#    9|       2: [ReturnStmt] return ...;
+#    9|         0: [AddExpr] ... + ...
+#    9|           0: [LocalFunctionCall] call to local function I
+#    9|             -1: [LocalFunctionAccess] access to local function I
+#    9|             0: [ParameterAccess] access to parameter x
+#    9|           1: [LocalFunctionCall] call to local function J
+#    9|             -1: [LocalFunctionAccess] access to local function J
+#    9|             0: [ParameterAccess] access to parameter x
 UnmanagedGenericStructs.cs:
 #    3| [Struct] S<,>
 #-----|   1: (Type parameters)
@@ -1236,97 +1236,97 @@ patterns.cs:
 #  164|       -1: [TypeMention] Void
 #  165|       4: [BlockStmt] {...}
 ranges.cs:
-#    5| [Class] Ranges
-#    7|   5: [Method] F
-#    7|     -1: [TypeMention] Void
-#    8|     4: [BlockStmt] {...}
-#    9|       0: [LocalVariableDeclStmt] ... ...;
-#    9|         0: [LocalVariableDeclAndInitExpr] Int32[] array = ...
+#    3| [Class] Ranges
+#    5|   5: [Method] F
+#    5|     -1: [TypeMention] Void
+#    6|     4: [BlockStmt] {...}
+#    7|       0: [LocalVariableDeclStmt] ... ...;
+#    7|         0: [LocalVariableDeclAndInitExpr] Int32[] array = ...
+#    7|           -1: [TypeMention] Int32[]
+#    7|           0: [LocalVariableAccess] access to local variable array
+#    7|           1: [ArrayCreation] array creation of type Int32[]
+#    7|             -2: [TypeMention] Int32[]
+#    7|               1: [TypeMention] int
+#    7|             -1: [ArrayInitializer] { ..., ... }
+#    7|               0: [IntLiteral] 1
+#    7|               1: [IntLiteral] 2
+#    7|               2: [IntLiteral] 3
+#    7|               3: [IntLiteral] 4
+#    9|       1: [LocalVariableDeclStmt] ... ...;
+#    9|         0: [LocalVariableDeclAndInitExpr] Int32[] slice1 = ...
 #    9|           -1: [TypeMention] Int32[]
-#    9|           0: [LocalVariableAccess] access to local variable array
-#    9|           1: [ArrayCreation] array creation of type Int32[]
-#    9|             -2: [TypeMention] Int32[]
-#    9|               1: [TypeMention] int
-#    9|             -1: [ArrayInitializer] { ..., ... }
-#    9|               0: [IntLiteral] 1
-#    9|               1: [IntLiteral] 2
-#    9|               2: [IntLiteral] 3
-#    9|               3: [IntLiteral] 4
-#   11|       1: [LocalVariableDeclStmt] ... ...;
-#   11|         0: [LocalVariableDeclAndInitExpr] Int32[] slice1 = ...
-#   11|           -1: [TypeMention] Int32[]
-#   11|           0: [LocalVariableAccess] access to local variable slice1
-#   11|           1: [ArrayAccess] access to array element
-#   11|             -1: [LocalVariableAccess] access to local variable array
-#   11|             0: [RangeExpr] ... .. ...
-#   11|               0: [OperatorCall] call to operator implicit conversion
-#   11|                 0: [IntLiteral] 1
-#   11|               1: [OperatorCall] call to operator implicit conversion
-#   11|                 0: [IntLiteral] 3
-#   12|       2: [LocalVariableDeclStmt] ... ...;
-#   12|         0: [LocalVariableDeclAndInitExpr] Int32[] slice2 = ...
+#    9|           0: [LocalVariableAccess] access to local variable slice1
+#    9|           1: [ArrayAccess] access to array element
+#    9|             -1: [LocalVariableAccess] access to local variable array
+#    9|             0: [RangeExpr] ... .. ...
+#    9|               0: [OperatorCall] call to operator implicit conversion
+#    9|                 0: [IntLiteral] 1
+#    9|               1: [OperatorCall] call to operator implicit conversion
+#    9|                 0: [IntLiteral] 3
+#   10|       2: [LocalVariableDeclStmt] ... ...;
+#   10|         0: [LocalVariableDeclAndInitExpr] Int32[] slice2 = ...
+#   10|           -1: [TypeMention] Int32[]
+#   10|           0: [LocalVariableAccess] access to local variable slice2
+#   10|           1: [ArrayAccess] access to array element
+#   10|             -1: [LocalVariableAccess] access to local variable array
+#   10|             0: [RangeExpr] ... .. ...
+#   10|               0: [OperatorCall] call to operator implicit conversion
+#   10|                 0: [IntLiteral] 0
+#   10|               1: [IndexExpr] ^...
+#   10|                 0: [IntLiteral] 1
+#   11|       3: [LocalVariableDeclStmt] ... ...;
+#   11|         0: [LocalVariableDeclAndInitExpr] Int32 x = ...
+#   11|           -1: [TypeMention] int
+#   11|           0: [LocalVariableAccess] access to local variable x
+#   11|           1: [IntLiteral] 2
+#   11|         1: [LocalVariableDeclAndInitExpr] Int32 y = ...
+#   11|           -1: [TypeMention] int
+#   11|           0: [LocalVariableAccess] access to local variable y
+#   11|           1: [IntLiteral] 3
+#   12|       4: [LocalVariableDeclStmt] ... ...;
+#   12|         0: [LocalVariableDeclAndInitExpr] Int32[] slice3 = ...
 #   12|           -1: [TypeMention] Int32[]
-#   12|           0: [LocalVariableAccess] access to local variable slice2
+#   12|           0: [LocalVariableAccess] access to local variable slice3
 #   12|           1: [ArrayAccess] access to array element
 #   12|             -1: [LocalVariableAccess] access to local variable array
 #   12|             0: [RangeExpr] ... .. ...
 #   12|               0: [OperatorCall] call to operator implicit conversion
-#   12|                 0: [IntLiteral] 0
-#   12|               1: [IndexExpr] ^...
-#   12|                 0: [IntLiteral] 1
-#   13|       3: [LocalVariableDeclStmt] ... ...;
-#   13|         0: [LocalVariableDeclAndInitExpr] Int32 x = ...
-#   13|           -1: [TypeMention] int
-#   13|           0: [LocalVariableAccess] access to local variable x
-#   13|           1: [IntLiteral] 2
-#   13|         1: [LocalVariableDeclAndInitExpr] Int32 y = ...
-#   13|           -1: [TypeMention] int
-#   13|           0: [LocalVariableAccess] access to local variable y
-#   13|           1: [IntLiteral] 3
-#   14|       4: [LocalVariableDeclStmt] ... ...;
-#   14|         0: [LocalVariableDeclAndInitExpr] Int32[] slice3 = ...
+#   12|                 0: [LocalVariableAccess] access to local variable x
+#   12|               1: [OperatorCall] call to operator implicit conversion
+#   12|                 0: [LocalVariableAccess] access to local variable y
+#   13|       5: [LocalVariableDeclStmt] ... ...;
+#   13|         0: [LocalVariableDeclAndInitExpr] Int32[] slice4 = ...
+#   13|           -1: [TypeMention] Int32[]
+#   13|           0: [LocalVariableAccess] access to local variable slice4
+#   13|           1: [ArrayAccess] access to array element
+#   13|             -1: [LocalVariableAccess] access to local variable array
+#   13|             0: [RangeExpr] ... .. ...
+#   13|               1: [OperatorCall] call to operator implicit conversion
+#   13|                 0: [LocalVariableAccess] access to local variable y
+#   14|       6: [LocalVariableDeclStmt] ... ...;
+#   14|         0: [LocalVariableDeclAndInitExpr] Int32[] slice5 = ...
 #   14|           -1: [TypeMention] Int32[]
-#   14|           0: [LocalVariableAccess] access to local variable slice3
+#   14|           0: [LocalVariableAccess] access to local variable slice5
 #   14|           1: [ArrayAccess] access to array element
 #   14|             -1: [LocalVariableAccess] access to local variable array
 #   14|             0: [RangeExpr] ... .. ...
 #   14|               0: [OperatorCall] call to operator implicit conversion
 #   14|                 0: [LocalVariableAccess] access to local variable x
-#   14|               1: [OperatorCall] call to operator implicit conversion
-#   14|                 0: [LocalVariableAccess] access to local variable y
-#   15|       5: [LocalVariableDeclStmt] ... ...;
-#   15|         0: [LocalVariableDeclAndInitExpr] Int32[] slice4 = ...
+#   15|       7: [LocalVariableDeclStmt] ... ...;
+#   15|         0: [LocalVariableDeclAndInitExpr] Int32[] slice6 = ...
 #   15|           -1: [TypeMention] Int32[]
-#   15|           0: [LocalVariableAccess] access to local variable slice4
+#   15|           0: [LocalVariableAccess] access to local variable slice6
 #   15|           1: [ArrayAccess] access to array element
 #   15|             -1: [LocalVariableAccess] access to local variable array
 #   15|             0: [RangeExpr] ... .. ...
-#   15|               1: [OperatorCall] call to operator implicit conversion
-#   15|                 0: [LocalVariableAccess] access to local variable y
-#   16|       6: [LocalVariableDeclStmt] ... ...;
-#   16|         0: [LocalVariableDeclAndInitExpr] Int32[] slice5 = ...
+#   16|       8: [LocalVariableDeclStmt] ... ...;
+#   16|         0: [LocalVariableDeclAndInitExpr] Int32[] slice7 = ...
 #   16|           -1: [TypeMention] Int32[]
-#   16|           0: [LocalVariableAccess] access to local variable slice5
+#   16|           0: [LocalVariableAccess] access to local variable slice7
 #   16|           1: [ArrayAccess] access to array element
 #   16|             -1: [LocalVariableAccess] access to local variable array
 #   16|             0: [RangeExpr] ... .. ...
-#   16|               0: [OperatorCall] call to operator implicit conversion
-#   16|                 0: [LocalVariableAccess] access to local variable x
-#   17|       7: [LocalVariableDeclStmt] ... ...;
-#   17|         0: [LocalVariableDeclAndInitExpr] Int32[] slice6 = ...
-#   17|           -1: [TypeMention] Int32[]
-#   17|           0: [LocalVariableAccess] access to local variable slice6
-#   17|           1: [ArrayAccess] access to array element
-#   17|             -1: [LocalVariableAccess] access to local variable array
-#   17|             0: [RangeExpr] ... .. ...
-#   18|       8: [LocalVariableDeclStmt] ... ...;
-#   18|         0: [LocalVariableDeclAndInitExpr] Int32[] slice7 = ...
-#   18|           -1: [TypeMention] Int32[]
-#   18|           0: [LocalVariableAccess] access to local variable slice7
-#   18|           1: [ArrayAccess] access to array element
-#   18|             -1: [LocalVariableAccess] access to local variable array
-#   18|             0: [RangeExpr] ... .. ...
-#   18|               0: [IndexExpr] ^...
-#   18|                 0: [IntLiteral] 10
-#   18|               1: [IndexExpr] ^...
-#   18|                 0: [IntLiteral] 5
+#   16|               0: [IndexExpr] ^...
+#   16|                 0: [IntLiteral] 10
+#   16|               1: [IndexExpr] ^...
+#   16|                 0: [IntLiteral] 5

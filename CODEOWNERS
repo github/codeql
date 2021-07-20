@@ -17,3 +17,9 @@
 /java/ql/src/semmle/code/java/dataflow/internal/DataFlowImplCommon.qll @github/codeql-java @github/codeql-go
 /java/ql/src/semmle/code/java/dataflow/internal/tainttracking1/TaintTrackingImpl.qll @github/codeql-java @github/codeql-go
 /java/ql/src/semmle/code/java/dataflow/internal/tainttracking2/TaintTrackingImpl.qll @github/codeql-java @github/codeql-go
+
+# CodeQL tools and associated docs
+/docs/codeql-cli/ @github/codeql-cli-reviewers
+/docs/codeql-for-visual-studio-code/ @github/codeql-vscode-reviewers
+/docs/ql-language-reference/ @github/codeql-frontend-reviewers
+/docs/query-*-style-guide.md @github/codeql-analysis-reviewers

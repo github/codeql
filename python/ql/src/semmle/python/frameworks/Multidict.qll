@@ -48,7 +48,7 @@ module Multidict {
     }
 
     /** Gets a reference to an instance of a `MultiDictProxy` class. */
-    private DataFlow::LocalSourceNode instance(DataFlow::TypeTracker t) {
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
       t.start() and
       result instanceof InstanceSource
       or

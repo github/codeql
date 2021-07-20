@@ -4,7 +4,7 @@
  * @kind problem
  * @id cs/hardcoded-key
  * @problem.severity error
- * @security-severity 5.9
+ * @security-severity 8.1
  * @tags security
  *       external/cwe/cwe-320
  */
@@ -14,7 +14,7 @@
  */
 
 import csharp
-import semmle.code.csharp.security.cryptography.EncryptionKeyDataFlow::EncryptionKeyDataFlow
+import semmle.code.csharp.security.cryptography.EncryptionKeyDataFlowQuery
 
 /**
  * The creation of a literal byte array.

@@ -9,7 +9,7 @@
  */
 
 import csharp
-import semmle.code.csharp.security.dataflow.ExternalAPIs
+import semmle.code.csharp.security.dataflow.ExternalAPIsQuery
 
 from ExternalAPIUsedWithUntrustedData externalAPI
 select externalAPI, count(externalAPI.getUntrustedDataNode()) as numberOfUses,

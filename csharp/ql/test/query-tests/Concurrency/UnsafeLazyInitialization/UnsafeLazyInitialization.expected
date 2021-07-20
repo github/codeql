@@ -1,7 +1,7 @@
 | UnsafeLazyInitialization.cs:17:9:26:9 | if (...) ... | Field $@ should be 'volatile' for this double-checked lock. | UnsafeLazyInitialization.cs:6:19:6:22 | obj1 | obj1 |
 | UnsafeLazyInitialization.cs:29:9:32:32 | if (...) ... | Field $@ should be 'volatile' for this double-checked lock. | UnsafeLazyInitialization.cs:6:19:6:22 | obj1 | obj1 |
-| UnsafeLazyInitialization.cs:80:9:88:9 | if (...) ... | Field $@ should be 'volatile' for this double-checked lock. | UnsafeLazyInitialization.cs:6:19:6:22 | obj1 | obj1 |
-| UnsafeLazyInitialization.cs:98:9:107:9 | if (...) ... | Field $@ should be 'volatile' for this double-checked lock. | UnsafeLazyInitialization.cs:6:19:6:22 | obj1 | obj1 |
-| UnsafeLazyInitialization.cs:110:9:120:9 | if (...) ... | Field $@ should be 'volatile' for this double-checked lock. | UnsafeLazyInitialization.cs:6:19:6:22 | obj1 | obj1 |
-| UnsafeLazyInitialization.cs:110:9:120:9 | if (...) ... | Field $@ should be 'volatile' for this double-checked lock. | UnsafeLazyInitialization.cs:8:12:8:15 | obj3 | obj3 |
-| UnsafeLazyInitialization.cs:135:9:138:34 | if (...) ... | Field $@ should be 'volatile' for this double-checked lock. | UnsafeLazyInitialization.cs:154:19:154:19 | x | x |
+| UnsafeLazyInitialization.cs:79:9:87:9 | if (...) ... | Field $@ should be 'volatile' for this double-checked lock. | UnsafeLazyInitialization.cs:6:19:6:22 | obj1 | obj1 |
+| UnsafeLazyInitialization.cs:97:9:106:9 | if (...) ... | Field $@ should be 'volatile' for this double-checked lock. | UnsafeLazyInitialization.cs:6:19:6:22 | obj1 | obj1 |
+| UnsafeLazyInitialization.cs:109:9:119:9 | if (...) ... | Field $@ should be 'volatile' for this double-checked lock. | UnsafeLazyInitialization.cs:6:19:6:22 | obj1 | obj1 |
+| UnsafeLazyInitialization.cs:109:9:119:9 | if (...) ... | Field $@ should be 'volatile' for this double-checked lock. | UnsafeLazyInitialization.cs:8:12:8:15 | obj3 | obj3 |
+| UnsafeLazyInitialization.cs:134:9:137:34 | if (...) ... | Field $@ should be 'volatile' for this double-checked lock. | UnsafeLazyInitialization.cs:153:19:153:19 | x | x |

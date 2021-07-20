@@ -321,7 +321,8 @@ module SourceNode {
         astNode instanceof ImportMetaExpr or
         astNode instanceof TaggedTemplateExpr or
         astNode instanceof Angular2::PipeRefExpr or
-        astNode instanceof Angular2::TemplateVarRefExpr
+        astNode instanceof Angular2::TemplateVarRefExpr or
+        astNode instanceof StringLiteral
       )
       or
       DataFlow::parameterNode(this, _)
@@ -345,6 +346,55 @@ module SourceNode {
     abstract class RecursionGuard extends DataFlow::Node { }
   }
 }
+
+private class NodeModuleSourcesNodes extends SourceNode::Range {
+  Variable v;
+
+  NodeModuleSourcesNodes() {
+    exists(NodeModule m |
+      this = DataFlow::ssaDefinitionNode(SSA::implicitInit(v)) and
+      v = [m.getModuleVariable(), m.getExportsVariable()]
+    )
+  }
+
+  Variable getVariable() { result = v }
+}
+
+/**
+ * A CommonJS/AMD `module` variable.
+ */
+private class ModuleVarNode extends DataFlow::Node {
+  Module m;
+
+  ModuleVarNode() {
+    this.(NodeModuleSourcesNodes).getVariable() = m.(NodeModule).getModuleVariable()
+    or
+    DataFlow::parameterNode(this, m.(AmdModule).getDefine().getModuleParameter())
+  }
+
+  Module getModule() { result = m }
+}
+
+/**
+ * A CommonJS/AMD `exports` variable.
+ */
+private class ExportsVarNode extends DataFlow::Node {
+  Module m;
+
+  ExportsVarNode() {
+    this.(NodeModuleSourcesNodes).getVariable() = m.(NodeModule).getExportsVariable()
+    or
+    DataFlow::parameterNode(this, m.(AmdModule).getDefine().getExportsParameter())
+  }
+
+  Module getModule() { result = m }
+}
+
+/** Gets the CommonJS/AMD `module` variable for module `m`. */
+SourceNode moduleVarNode(Module m) { result.(ModuleVarNode).getModule() = m }
+
+/** Gets the CommonJS/AMD `exports` variable for module `m`. */
+SourceNode exportsVarNode(Module m) { result.(ExportsVarNode).getModule() = m }
 
 deprecated class DefaultSourceNode extends SourceNode {
   DefaultSourceNode() { this instanceof SourceNode::DefaultRange }

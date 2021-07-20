@@ -28,5 +28,3 @@ class C<T>
         x10 = x9;
     }
 }
-
-// semmle-extractor-options: /r:System.Dynamic.Runtime.dll /r:System.Linq.Expressions.dll

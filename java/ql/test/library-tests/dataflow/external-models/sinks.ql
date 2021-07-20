@@ -7,7 +7,7 @@ class SinkModelTest extends SinkModelCsv {
   override predicate row(string row) {
     row =
       [
-        //"package;type;overrides;name;signature;ext;spec;kind",
+        //`namespace; type; subtypes; name; signature; ext; input; kind`
         "my.qltest;B;false;sink1;(Object);;Argument[0];qltest",
         "my.qltest;B;false;sinkMethod;();;ReturnValue;qltest",
         "my.qltest;B$Tag;false;;;Annotated;ReturnValue;qltest-retval",
