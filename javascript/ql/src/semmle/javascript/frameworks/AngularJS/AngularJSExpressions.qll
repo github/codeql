@@ -841,3 +841,37 @@ class NgDataFlowNode extends TNode {
     )
   }
 }
+
+/** Holds if everything in the given file should be considered part of an AngularJS app. */
+private predicate fileIsImplicitlyAngularJS(HTML::HtmlFile file) {
+  // The file contains ng-* attributes.
+  exists(HTML::Attribute attrib |
+    attrib.getName().regexpMatch("ng-.*") and
+    attrib.getFile() = file
+  ) and
+  // But does not contain the ng-app root element, implying that file is
+  // included from elsewhere.
+  not exists(HTML::Attribute attrib |
+    attrib.getName() = "ng-app" and
+    attrib.getFile() = file
+  )
+}
+
+/** Holds if `element` is under a `ng-non-bindable` directive, disabling interpretation by AngularJS. */
+private predicate isNonBindable(HTML::Element element) {
+  exists(element.getParent*().getAttributeByName("ng-non-bindable"))
+}
+
+/**
+ * Holds if the contents and attribute values of the given element are interpreted by AngularJS,
+ * that is, any placeholder expressions therein, such as `{{x}}`, are evaluated and inserted in the output.
+ */
+predicate isInterpretedByAngularJS(HTML::Element element) {
+  (
+    fileIsImplicitlyAngularJS(element.getFile())
+    or
+    exists(element.getParent*().getAttributeByName("ng-app"))
+  ) and
+  not isNonBindable(element) and
+  not element.getName() = "script" // script tags are never interpreted
+}

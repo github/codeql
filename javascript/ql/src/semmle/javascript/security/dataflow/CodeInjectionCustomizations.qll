@@ -66,6 +66,24 @@ module CodeInjection {
   }
 
   /**
+   * A server-side template tag occurring in the context of another template language.
+   */
+  class TemplateTagInNestedTemplateContext extends Sink {
+    string templateType;
+
+    TemplateTagInNestedTemplateContext() {
+      exists(Templating::TemplatePlaceholderTag tag |
+        tag.isInNestedTemplateContext(templateType) and
+        this = tag.asDataFlowNode()
+      )
+    }
+
+    override string getMessageSuffix() {
+      result = "here and is interpreted by " + templateType + ", which may evaluate it as code"
+    }
+  }
+
+  /**
    * Gets a reference to a `<script />` tag created using `document.createElement`.
    */
   private DataFlow::SourceNode scriptTag(DataFlow::TypeTracker t) {

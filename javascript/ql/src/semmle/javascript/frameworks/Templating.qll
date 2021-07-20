@@ -99,6 +99,16 @@ module Templating {
     /** Holds if this placeholder occurs in JS code. */
     predicate isInCodeContext() {
       isInScriptTag() or isInCodeAttribute()
+    /**
+     * Holds if this placeholder occurs in the definition of another template, which means the output
+     * is susceptible to code injection.
+     */
+    predicate isInNestedTemplateContext(string templateType) {
+      templateType = "AngularJS" and
+      AngularJS::isInterpretedByAngularJS(getParent()) and
+      // Exclude delimiters that coincide with those of AngularJS's own template engine.
+      // It's too unlikely to happen, more likely is that one of our heuristics got it wrong.
+      not getRawText().regexpMatch("(?s)\\{\\{.*\\}\\}")
     }
 
     /**
