@@ -132,7 +132,7 @@ is_nodejs (int tl: @toplevel ref);
 is_es2015_module (int tl: @toplevel ref);
 is_closure_module (int tl: @toplevel ref);
 
-@xml_node_with_code = @xmlelement | @xmlattribute;
+@xml_node_with_code = @xmlelement | @xmlattribute | @template_placeholder_tag;
 toplevel_parent_xml_node(
   unique int toplevel: @toplevel ref,
   int xmlnode: @xml_node_with_code ref);
@@ -422,6 +422,14 @@ generated_code_expr_info(
   varchar(900) openingDelimiter: string ref,
   varchar(900) closingDelimiter: string ref,
   varchar(900) body: string ref
+);
+
+@template_placeholder_tag_parent = @xmlelement | @xmlattribute | @file;
+
+template_placeholder_tag_info(
+  unique int node: @template_placeholder_tag,
+  int parentNode: @template_placeholder_tag_parent ref,
+  varchar(900) raw: string ref
 );
 
 // scopes
@@ -987,7 +995,8 @@ case @json_value.kind of
     | @jsdoc | @jsdoc_type_expr | @jsdoc_tag
     | @yaml_locatable
     | @xmllocatable
-    | @configLocatable;
+    | @configLocatable
+    | @template_placeholder_tag;
 
 hasLocation (unique int locatable: @locatable ref,
     int location: @location ref);

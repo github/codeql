@@ -2894,18 +2894,17 @@ class ImportMetaExpr extends @import_meta_expr, Expr {
  */
 class GeneratedCodeExpr extends @generated_code_expr, Expr {
   /** Gets the opening delimiter, such as `{{` or `{{{`. */
-  string getOpeningDelimiter() {
-    generated_code_expr_info(this, result, _, _)
-  }
+  string getOpeningDelimiter() { generated_code_expr_info(this, result, _, _) }
 
   /** Gets the closing delimiter, such as `}}` or `}}}`. */
-  string getClosingDelimiter() {
-    generated_code_expr_info(this, _, result, _)
-  }
+  string getClosingDelimiter() { generated_code_expr_info(this, _, result, _) }
 
   /** Gets the text between the delimiters, including any surrounding whitespace, such as the `x` in `{{x}}`. */
-  string getBody() {
-    generated_code_expr_info(this, _, _, result)
+  string getBody() { generated_code_expr_info(this, _, _, result) }
+
+  /** Gets the placeholder tag that was parsed as an expression. */
+  Templating::TemplatePlaceholderTag getPlaceholderTag() {
+    result.getLocation() = this.getLocation()
   }
 
   override string getAPrimaryQlClass() { result = "GeneratedCodeExpr" }

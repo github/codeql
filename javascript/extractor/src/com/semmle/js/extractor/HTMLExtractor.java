@@ -81,8 +81,7 @@ public class HTMLExtractor implements IExtractor {
                 source,
                 content.getBegin(),
                 isTypeScript,
-                elt,
-                context);
+                context.getNodeLabel(elt));
           }
         }
       } else {
@@ -92,6 +91,14 @@ public class HTMLExtractor implements IExtractor {
           for (Attribute attr : attributes) {
             // ignore empty attributes
             if (attr.getValue() == null || attr.getValue().isEmpty()) continue;
+
+            extractTemplateTags(
+                textualExtractor,
+                scopeManager,
+                attr.getSource(),
+                attr.getBegin(),
+                attr.getEnd(),
+                () -> context.getNodeLabel(attr));
 
             String source = attr.getValue();
             int valueStart = attr.getValueSegment().getBegin();
@@ -104,8 +111,7 @@ public class HTMLExtractor implements IExtractor {
                   source,
                   valueStart,
                   false /* isTypeScript */,
-                  attr,
-                  context);
+                  context.getNodeLabel(attr));
             } else if (isAngularTemplateAttributeName(attr.getName())) {
               // For an attribute *ngFor="let var of EXPR", start parsing at EXPR
               int offset = 0;
@@ -125,8 +131,7 @@ public class HTMLExtractor implements IExtractor {
                   source,
                   valueStart + offset,
                   false /* isTypeScript */,
-                  attr,
-                  context);
+                  context.getNodeLabel(attr));
             } else if (source.startsWith("javascript:")) {
               source = source.substring(11);
               extractSnippet(
@@ -137,11 +142,17 @@ public class HTMLExtractor implements IExtractor {
                   source,
                   valueStart + 11,
                   false /* isTypeScript */,
-                  attr,
-                  context);
+                  context.getNodeLabel(attr));
             }
           }
       }
+    }
+
+    @Override
+    public void handleText(
+        Source src, int textBegin, int textEnd, Label parentLabel, boolean isCData) {
+      extractTemplateTags(
+          textualExtractor, scopeManager, src, textBegin, textEnd, () -> parentLabel);
     }
 
     @Override
@@ -294,8 +305,7 @@ public class HTMLExtractor implements IExtractor {
       String source,
       int offset,
       boolean isTypeScript,
-      Segment parentHtmlNode,
-      HtmlPopulator.Context context) {
+      Label parentLabel) {
     TrapWriter trapWriter = textualExtractor.getTrapwriter();
     LocationManager locationManager = textualExtractor.getLocationManager();
     // JavaScript AST extraction does not currently support source maps, so just set
@@ -330,7 +340,7 @@ public class HTMLExtractor implements IExtractor {
           scriptLocationManager.getFileLabel(),
           scriptLocationManager.getStartLine(),
           scriptLocationManager.getStartColumn());
-      emitTopLevelXmlNodeBinding(parentHtmlNode, topLevelLabel, context, trapWriter);
+      emitTopLevelXmlNodeBinding(parentLabel, topLevelLabel, trapWriter);
       // Note: LoC info is accounted for later, so not added here.
       return;
     }
@@ -347,7 +357,7 @@ public class HTMLExtractor implements IExtractor {
       Pair<Label, LoCInfo> result = extractor.extract(tx, source, toplevelKind, scopeManager);
       Label toplevelLabel = result.fst();
       if (toplevelLabel != null) { // can be null when script ends up being parsed as JSON
-        emitTopLevelXmlNodeBinding(parentHtmlNode, toplevelLabel, context, trapWriter);
+        emitTopLevelXmlNodeBinding(parentLabel, toplevelLabel, trapWriter);
       }
       locInfo.add(result.snd());
     } catch (ParseError e) {
@@ -356,8 +366,88 @@ public class HTMLExtractor implements IExtractor {
     }
   }
 
-  private  void emitTopLevelXmlNodeBinding(Segment parentHtmlNode, Label topLevelLabel, HtmlPopulator.Context context, TrapWriter writer) {
-    Label htmlNodeLabel = context.getNodeLabel(parentHtmlNode);
+  private void emitTopLevelXmlNodeBinding(
+      Label htmlNodeLabel, Label topLevelLabel, TrapWriter writer) {
     writer.addTuple("toplevel_parent_xml_node", topLevelLabel, htmlNodeLabel);
+  }
+
+  private static final String MUSTACHE_TAG_DOUBLE = "\\{\\{(?!\\{)(.*?)\\}\\}"; // {{ x }}
+  private static final String MUSTACHE_TAG_TRIPLE = "\\{\\{\\{(.*?)\\}\\}\\}"; // {{{ x }}}
+  private static final String MUSTACHE_TAG_PERCENT = "\\{%(?!>)(.*?)%\\}"; // {% x %}
+  private static final String EJS_TAG = "<%(?![%<>}])[-=]?(.*?)[_-]?%>"; // <% x %>
+
+  /** Pattern for a template tag whose contents should be parsed as an expression */
+  private static final Pattern TEMPLATE_EXPR_OPENING_TAG = Pattern.compile("^(?:\\{\\{\\{?|<%[-=])"); // {{, {{{, <%=, <%-
+
+  private static final Pattern TEMPLATE_TAGS =
+      Pattern.compile(
+          StringUtil.glue(
+              "|", MUSTACHE_TAG_DOUBLE, MUSTACHE_TAG_TRIPLE, MUSTACHE_TAG_PERCENT, EJS_TAG),
+          Pattern.DOTALL);
+
+  private void extractTemplateTags(
+      TextualExtractor textualExtractor,
+      ScopeManager scopeManager,
+      Source root,
+      int start,
+      int end,
+      Supplier<Label> parentLabel) {
+    if (isEmbedded) return; // Do not extract template tags for HTML snippets embedded in a JS file
+
+    LocationManager locationManager = textualExtractor.getLocationManager();
+    TrapWriter trapwriter = textualExtractor.getTrapwriter();
+    Matcher m = TEMPLATE_TAGS.matcher(textualExtractor.getSource()).region(start, end);
+    while (m.find()) {
+      int startOffset = m.start();
+      int endOffset = m.end();
+      if (endOffset - startOffset > 10_000) {
+        // Do not extract long template strings as they're likely to be FP matches and
+        // unlikely to be parsed correctly.
+        continue;
+      }
+
+      // Emit an entity for the template tag
+      Label lbl = trapwriter.freshLabel();
+      String rawText = m.group();
+      trapwriter.addTuple("template_placeholder_tag_info", lbl, parentLabel.get(), rawText);
+
+      // Emit location
+      Position startPos = textualExtractor.getSourceMap().getStart(startOffset);
+      Position endPos = textualExtractor.getSourceMap().getEnd(endOffset - 1);
+      int endColumn = endPos.getColumn() - 1; // Convert to inclusive end position (still 1-based)
+      locationManager.emitFileLocation(
+          lbl, startPos.getLine(), startPos.getColumn(), endPos.getLine(), endColumn);
+
+      // Parse the contents as a template expression, if the delimiter expects an expression.
+      Matcher delimMatcher = TEMPLATE_EXPR_OPENING_TAG.matcher(rawText);
+      if (delimMatcher.find()) {
+        // The body of the template tag is stored in the first capture group of each pattern
+        int bodyGroup = getNonNullCaptureGroup(m);
+        if (bodyGroup != -1) {
+          extractSnippet(
+              TopLevelKind.ANGULAR_TEMPLATE,
+              config.withSourceType(SourceType.ANGULAR_TEMPLATE),
+              scopeManager,
+              textualExtractor,
+              m.group(bodyGroup),
+              m.start(bodyGroup),
+              false /* isTypeScript */,
+              lbl);  
+        }
+      }
+    }
+  }
+
+  /**
+   * Returns the index of the first capture group that captured something
+   * (apart from group zero which is the whole match).
+   */
+  private static int getNonNullCaptureGroup(Matcher m) {
+    for (int i = 1; i <= m.groupCount(); ++i) {
+      if (m.group(i) != null) {
+        return i;
+      }
+    }
+    return -1;
   }
 }

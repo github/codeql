@@ -30,4 +30,5 @@ newtype TNode =
   TFunctionReturnNode(Function f) or
   TExceptionalFunctionReturnNode(Function f) or
   TExceptionalInvocationReturnNode(InvokeExpr e) or
-  TGlobalAccessPathRoot()
+  TGlobalAccessPathRoot() or
+  TTemplatePlaceholderTag(Templating::TemplatePlaceholderTag tag)
