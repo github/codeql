@@ -1,8 +1,8 @@
 /** Provides classes to reason about OGNL injection vulnerabilities. */
 
 import java
-import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A data flow sink for unvalidated user input that is used in OGNL EL evaluation.
