@@ -531,4 +531,15 @@ module Templating {
     not file.getExtension() = any(TemplateSyntax s).getAFileExtension() and
     result = getTemplateSyntaxInFolder(file.getParentContainer())
   }
+
+  /** A step through the `safe` pipe, which bypasses HTML escaping. */
+  private class SafePipeStep extends TaintTracking::SharedTaintStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(DataFlow::CallNode call |
+        call = getAPipeCall("safe") and
+        pred = call.getArgument(0) and
+        succ = call
+      )
+    }
+  }
 }

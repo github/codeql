@@ -382,6 +382,16 @@ module DomBasedXss {
   }
 
   /**
+   * A value being piped into the `safe` pipe in a template file,
+   * disabling subsequent HTML escaping.
+   */
+  class SafePipe extends DomBasedXss::Sink {
+    SafePipe() {
+      this = Templating::getAPipeCall("safe").getArgument(0)
+    }
+  }
+
+  /**
    * A property read from a safe property is considered a sanitizer.
    */
   class SafePropertyReadSanitizer extends Sanitizer, DataFlow::Node {
