@@ -77,7 +77,8 @@ module Templating {
 
     /** Holds if this occurs in a `script` tag. */
     predicate isInScriptTag() {
-      getParent() instanceof HTML::ScriptElement
+      // We want to exclude non-code scripts like JSON.
+      toplevel_parent_xml_node(any(InlineScript scr), getParent())
     }
 
     /**
