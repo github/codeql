@@ -52,6 +52,20 @@ module CodeInjection {
   }
 
   /**
+   * A template tag occuring in JS code, viewed as a code injection sink.
+   */
+  class TemplateTagInScriptSink extends Sink {
+    TemplateTagInScriptSink() {
+      // Note: currently viewing all tags in code as sinks, but this can lead to
+      // some FPs when values are escaped correctly.
+      exists(Templating::TemplatePlaceholderTag tag |
+        tag.isInCodeContext() and
+        this = tag.asDataFlowNode()
+      )
+    }
+  }
+
+  /**
    * Gets a reference to a `<script />` tag created using `document.createElement`.
    */
   private DataFlow::SourceNode scriptTag(DataFlow::TypeTracker t) {

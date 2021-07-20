@@ -370,6 +370,18 @@ module DomBasedXss {
   class VHtmlSink extends Vue::VHtmlAttribute, DomBasedXss::Sink { }
 
   /**
+   * A raw interpolation tag in a template file, viewed as an XSS sink.
+   */
+  class TemplateSink extends DomBasedXss::Sink {
+    TemplateSink() {
+      exists(Templating::TemplatePlaceholderTag tag |
+        tag.isRawInterpolation() and
+        this = tag.asDataFlowNode()
+      )
+    }
+  }
+
+  /**
    * A property read from a safe property is considered a sanitizer.
    */
   class SafePropertyReadSanitizer extends Sanitizer, DataFlow::Node {

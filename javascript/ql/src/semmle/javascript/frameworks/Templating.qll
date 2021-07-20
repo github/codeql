@@ -66,6 +66,47 @@ module Templating {
 
     /** Gets the top-level containing the template expression to be inserted at this placeholder. */
     TemplateTopLevel getInnerTopLevel() { toplevel_parent_xml_node(result, this) }
+
+    /**
+     * Holds if this performs raw interpolation, that is, inserts its result
+     * in the output without escaping it.
+     */
+    predicate isRawInterpolation() {
+      getRawText().regexpMatch(getLikelyTemplateSyntax(getFile()).getRawInterpolationRegexp())
+    }
+
+    /** Holds if this occurs in a `script` tag. */
+    predicate isInScriptTag() {
+      getParent() instanceof HTML::ScriptElement
+    }
+
+    /**
+     * Holds if this occurs in an attribute value that is interepted as JavaScript.
+     *
+     * Unlike in script tags, HTML entities in attributes are expanded prior to JS parsing,
+     * which cancels out the benefit of HTML escaping.
+     */
+    predicate isInCodeAttribute() {
+      exists(TopLevel code |
+        code = getParent().(HTML::Attribute).getCodeInAttribute()
+      |
+        code instanceof EventHandlerCode or
+        code instanceof JavaScriptURL
+      )
+    }
+
+    /** Holds if this placeholder occurs in JS code. */
+    predicate isInCodeContext() {
+      isInScriptTag() or isInCodeAttribute()
+    }
+
+    /**
+     * Holds if this occurs in generated code as an expression or statement,
+     * that is, without being enclosed in a string literal or similar.
+     */
+    predicate isInPlainCodeContext() {
+      this = any(GeneratedCodeExpr e).getPlaceholderTag()
+    }
   }
 
   /**
@@ -386,5 +427,108 @@ module Templating {
    */
   private TemplateFile getBestMatchingTarget(TemplateFileReferenceString ref) {
     result = max(getAMatchingTarget(ref) as f order by getRankOfMatchingTarget(f, ref))
+  }
+
+  /**
+   * A syntax type implemented by one or more supported templating engines.
+   *
+   * The syntax type determines which templating tags perform implicit escaping.
+   *
+   * Since this varies between templating engines, it is important to recognize the
+   * templating engine correctly.
+   */
+  abstract class TemplateSyntax extends string {
+    bindingset[this]
+    TemplateSyntax() { this = this }
+
+    /**
+     * Gets a regular expression matching the full text of a placeholder tag
+     * using raw interpolation, that is, without HTML escaping.
+     */
+    abstract string getRawInterpolationRegexp();
+
+    /**
+     * Gets a regular expression matching the full text of a placeholder tag
+     * that performs HTML escaping on its output.
+     */
+    abstract string getEscapingInterpolationRegexp();
+
+    /** Gets a file extension that is specific to this templating engine. */
+    abstract string getAFileExtension();
+
+    /** Gets the name of an NPM package providing this templating syntax. */
+    abstract string getAPackageName();
+  }
+
+  /**
+   * Mustache-style syntax, using `{{ }}` for safe interpolation, and (in some dialects)
+   * `{{{ x }}}` for raw interpolation.
+   */
+  private class MustacheStyleSyntax extends TemplateSyntax {
+    MustacheStyleSyntax() { this = "mustache" }
+
+    override string getRawInterpolationRegexp() {
+      result = "(?s)\\{\\{\\{(.*?)\\}\\}\\}"
+    }
+
+    override string getEscapingInterpolationRegexp() {
+      result = "(?s)\\{\\{[^{](.*?)\\}\\}"
+    }
+
+    override string getAFileExtension() {
+      result = "hbs"
+    }
+
+    override string getAPackageName() {
+      result = ["mustache", "handlebars", "hbs", "express-hbs", "swig", "swig-templates", "hogan", "hogan.js", "nunjucks"]
+    }
+  }
+
+  /**
+   * EJS-style syntax, using `<%= x %>` for safe interpolation, and `<%- x %>` for
+   * unsafe interpolation.
+   */
+  private class EjsStyleSyntax extends TemplateSyntax {
+    EjsStyleSyntax() { this = "ejs" }
+
+    override string getRawInterpolationRegexp() {
+      result = "(?s)<%-(.*?)%>"
+    }
+
+    override string getEscapingInterpolationRegexp() {
+      result = "(?s)<%=(.*?)%>"
+    }
+
+    override string getAFileExtension() {
+      result = "ejs"
+    }
+
+    override string getAPackageName() {
+      result = "ejs"
+    }
+  }
+
+  private TemplateSyntax getOwnTemplateSyntaxInFolder(Folder f) {
+    exists(PackageDependencies deps |
+      deps.getADependency(result.getAPackageName(), _) and
+      f = deps.getFile().getParentContainer()
+    )
+  }
+
+  private TemplateSyntax getTemplateSyntaxInFolder(Folder f) {
+    result = getOwnTemplateSyntaxInFolder(f)
+    or
+    not exists(getOwnTemplateSyntaxInFolder(f)) and
+    result = getTemplateSyntaxInFolder(f.getParentContainer())
+  }
+
+  /**
+   * Gets a template syntax likely to be used in the given file.
+   */
+  TemplateSyntax getLikelyTemplateSyntax(TemplateFile file) {
+    result.getAFileExtension() = file.getExtension()
+    or
+    not file.getExtension() = any(TemplateSyntax s).getAFileExtension() and
+    result = getTemplateSyntaxInFolder(file.getParentContainer())
   }
 }
