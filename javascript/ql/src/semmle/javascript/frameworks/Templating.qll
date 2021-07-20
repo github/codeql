@@ -88,17 +88,15 @@ module Templating {
      * which cancels out the benefit of HTML escaping.
      */
     predicate isInCodeAttribute() {
-      exists(TopLevel code |
-        code = getParent().(HTML::Attribute).getCodeInAttribute()
-      |
+      exists(TopLevel code | code = getParent().(HTML::Attribute).getCodeInAttribute() |
         code instanceof EventHandlerCode or
         code instanceof JavaScriptURL
       )
     }
 
     /** Holds if this placeholder occurs in JS code. */
-    predicate isInCodeContext() {
-      isInScriptTag() or isInCodeAttribute()
+    predicate isInCodeContext() { isInScriptTag() or isInCodeAttribute() }
+
     /**
      * Holds if this placeholder occurs in the definition of another template, which means the output
      * is susceptible to code injection.
@@ -115,9 +113,7 @@ module Templating {
      * Holds if this occurs in generated code as an expression or statement,
      * that is, without being enclosed in a string literal or similar.
      */
-    predicate isInPlainCodeContext() {
-      this = any(GeneratedCodeExpr e).getPlaceholderTag()
-    }
+    predicate isInPlainCodeContext() { this = any(GeneratedCodeExpr e).getPlaceholderTag() }
   }
 
   /**
@@ -175,7 +171,7 @@ module Templating {
    */
   class TemplateInstantiaton extends DataFlow::Node {
     TemplateInstantiaton::Range range;
-  
+
     TemplateInstantiaton() { this = range }
 
     /** Gets a data flow node that refers to the instantiated template string, if any. */
@@ -201,13 +197,13 @@ module Templating {
     abstract class Range extends DataFlow::Node {
       /** Gets a data flow node that refers to the instantiated template, if any. */
       abstract DataFlow::SourceNode getOutput();
-  
+
       /** Gets a data flow node that refers a template file to be instantiated, if any. */
       abstract DataFlow::Node getTemplateFileNode();
-  
+
       /** Gets a data flow node that refers to the contents of the template to be instantiated, if any. */
       abstract DataFlow::Node getTemplateContentNode();
-  
+
       /** Gets a data flow node that refers to an object whose properties become variables in the template. */
       abstract DataFlow::Node getTemplateParamsNode();
     }
@@ -291,9 +287,7 @@ module Templating {
 
   /** Get file argument of a template instantiation, seen as a template file reference. */
   private class DefaultTemplateFileReference extends TemplateFileReference {
-    DefaultTemplateFileReference() {
-      this = any(TemplateInstantiaton inst).getTemplateFileNode()
-    }
+    DefaultTemplateFileReference() { this = any(TemplateInstantiaton inst).getTemplateFileNode() }
   }
 
   /**
@@ -478,20 +472,18 @@ module Templating {
   private class MustacheStyleSyntax extends TemplateSyntax {
     MustacheStyleSyntax() { this = "mustache" }
 
-    override string getRawInterpolationRegexp() {
-      result = "(?s)\\{\\{\\{(.*?)\\}\\}\\}"
-    }
+    override string getRawInterpolationRegexp() { result = "(?s)\\{\\{\\{(.*?)\\}\\}\\}" }
 
-    override string getEscapingInterpolationRegexp() {
-      result = "(?s)\\{\\{[^{](.*?)\\}\\}"
-    }
+    override string getEscapingInterpolationRegexp() { result = "(?s)\\{\\{[^{](.*?)\\}\\}" }
 
-    override string getAFileExtension() {
-      result = "hbs"
-    }
+    override string getAFileExtension() { result = "hbs" }
 
     override string getAPackageName() {
-      result = ["mustache", "handlebars", "hbs", "express-hbs", "swig", "swig-templates", "hogan", "hogan.js", "nunjucks"]
+      result =
+        [
+          "mustache", "handlebars", "hbs", "express-hbs", "swig", "swig-templates", "hogan",
+          "hogan.js", "nunjucks"
+        ]
     }
   }
 
@@ -502,21 +494,13 @@ module Templating {
   private class EjsStyleSyntax extends TemplateSyntax {
     EjsStyleSyntax() { this = "ejs" }
 
-    override string getRawInterpolationRegexp() {
-      result = "(?s)<%-(.*?)%>"
-    }
+    override string getRawInterpolationRegexp() { result = "(?s)<%-(.*?)%>" }
 
-    override string getEscapingInterpolationRegexp() {
-      result = "(?s)<%=(.*?)%>"
-    }
+    override string getEscapingInterpolationRegexp() { result = "(?s)<%=(.*?)%>" }
 
-    override string getAFileExtension() {
-      result = "ejs"
-    }
+    override string getAFileExtension() { result = "ejs" }
 
-    override string getAPackageName() {
-      result = "ejs"
-    }
+    override string getAPackageName() { result = "ejs" }
   }
 
   private TemplateSyntax getOwnTemplateSyntaxInFolder(Folder f) {

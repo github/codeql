@@ -386,9 +386,7 @@ module DomBasedXss {
    * disabling subsequent HTML escaping.
    */
   class SafePipe extends DomBasedXss::Sink {
-    SafePipe() {
-      this = Templating::getAPipeCall("safe").getArgument(0)
-    }
+    SafePipe() { this = Templating::getAPipeCall("safe").getArgument(0) }
   }
 
   /**
