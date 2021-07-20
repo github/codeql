@@ -23,3 +23,13 @@ def foo():
 def quux():
     global non_module_member
     non_module_member = 5
+
+def func1():
+    var() #$ use=moduleImport("unknown").getMember("var").getReturn()
+    def func2():
+        var = "FOO"
+
+def func3():
+    var2 = print #$ use=moduleImport("builtins").getMember("print")
+    def func4():
+        var2() #$ MISSING: use=moduleImport("builtins").getMember("print").getReturn()
