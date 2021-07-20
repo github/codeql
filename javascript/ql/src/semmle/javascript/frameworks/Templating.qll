@@ -161,8 +161,31 @@ module Templating {
     }
   }
 
+  /** Gets an API node that may flow to `succ` through a template instantiation. */
+  private API::Node getTemplateInput(DataFlow::SourceNode succ) {
+    exists(TemplateInstantiaton inst, API::Node base, string name |
+      base.getARhs() = inst.getTemplateParamsNode() and
+      result = base.getMember(name) and
+      succ = inst.getTemplateFile().getAPlaceholder().getInnerTopLevel().getAVariableUse(name)
+    )
+    or
+    exists(string prop, DataFlow::SourceNode prev |
+      result = getTemplateInput(prev).getMember(prop) and
+      succ = prev.getAPropertyRead(prop)
+    )
+  }
+
+  private class TemplateInputStep extends DataFlow::SharedFlowStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      getTemplateInput(succ).getARhs() = pred
+    }
+  }
+
   /** A file that can be referenced by a template instantiation. */
-  abstract class TemplateFile extends File { }
+  abstract class TemplateFile extends File {
+    /** Gets a placeholder tag in this file. */
+    final TemplatePlaceholderTag getAPlaceholder() { result.getFile() = this }
+  }
 
   /** Any HTML file, seen as a possible target for template instantiation. */
   private class TemplateFileByExtension extends TemplateFile {
