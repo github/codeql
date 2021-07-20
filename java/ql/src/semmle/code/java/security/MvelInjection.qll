@@ -1,8 +1,8 @@
 /** Provides classes to reason about MVEL injection attacks. */
 
 import java
-import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.dataflow.ExternalFlow
 
 /** A data flow sink for unvalidated user input that is used to construct MVEL expressions. */
 abstract class MvelEvaluationSink extends DataFlow::Node { }
@@ -184,7 +184,7 @@ private predicate templateCompileStep(DataFlow::Node node1, DataFlow::Node node2
 private class MvelScriptEngineCompilationMethod extends Method {
   MvelScriptEngineCompilationMethod() {
     getDeclaringType() instanceof MvelScriptEngine and
-    (hasName("compile") or hasName("compiledScript"))
+    hasName(["compile", "compiledScript"])
   }
 }
 
