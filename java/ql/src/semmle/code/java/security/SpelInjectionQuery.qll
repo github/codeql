@@ -1,44 +1,10 @@
-/** Provides classes to reason about SpEL injection attacks. */
+/** Provides taint tracking and dataflow configurations to be used in SpEL injection queries. */
 
 import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.FlowSources
-
-/** A data flow sink for unvalidated user input that is used to construct SpEL expressions. */
-abstract class SpelExpressionEvaluationSink extends DataFlow::ExprNode { }
-
-/** Default sink for SpEL injection vulnerabilities. */
-private class DefaultSpelExpressionEvaluationSink extends SpelExpressionEvaluationSink {
-  DefaultSpelExpressionEvaluationSink() {
-    exists(MethodAccess ma |
-      sinkNode(this, "spel") and
-      this.asExpr() = ma.getQualifier() and
-      not exists(SafeEvaluationContextFlowConfig config |
-        config.hasFlowTo(DataFlow::exprNode(ma.getArgument(0)))
-      )
-    )
-  }
-}
-
-/**
- * A unit class for adding additional taint steps.
- *
- * Extend this class to add additional taint steps that should apply to the `SpELInjectionConfig`.
- */
-class SpelExpressionInjectionAdditionalTaintStep extends Unit {
-  /**
-   * Holds if the step from `node1` to `node2` should be considered a taint
-   * step for the `SpELInjectionConfig` configuration.
-   */
-  abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);
-}
-
-/** A set of additional taint steps to consider when taint tracking SpEL related data flows. */
-private class DefaultSpelExpressionInjectionAdditionalTaintStep extends SpelExpressionInjectionAdditionalTaintStep {
-  override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
-    expressionParsingStep(node1, node2)
-  }
-}
+import semmle.code.java.frameworks.spring.SpringExpression
+import semmle.code.java.security.SpelInjection
 
 /**
  * A taint-tracking configuration for unsafe user input
@@ -53,6 +19,19 @@ class SpelInjectionConfig extends TaintTracking::Configuration {
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
     any(SpelExpressionInjectionAdditionalTaintStep c).step(node1, node2)
+  }
+}
+
+/** Default sink for SpEL injection vulnerabilities. */
+private class DefaultSpelExpressionEvaluationSink extends SpelExpressionEvaluationSink {
+  DefaultSpelExpressionEvaluationSink() {
+    exists(MethodAccess ma |
+      sinkNode(this, "spel") and
+      this.asExpr() = ma.getQualifier() and
+      not exists(SafeEvaluationContextFlowConfig config |
+        config.hasFlowTo(DataFlow::exprNode(ma.getArgument(0)))
+      )
+    )
   }
 }
 
@@ -74,6 +53,9 @@ private class SafeEvaluationContextFlowConfig extends DataFlow2::Configuration {
   override int fieldFlowBranchLimit() { result = 0 }
 }
 
+/**
+ * A `ContextSource` that is safe from SpEL injection
+ */
 private class SafeContextSource extends DataFlow::ExprNode {
   SafeContextSource() {
     isSimpleEvaluationContextConstructorCall(getExpr()) or
@@ -101,48 +83,4 @@ private predicate isSimpleEvaluationContextBuilderCall(Expr expr) {
     m.hasName("build") and
     ma = expr
   )
-}
-
-/**
- * Methods that trigger evaluation of an expression.
- */
-private class ExpressionEvaluationMethod extends Method {
-  ExpressionEvaluationMethod() {
-    this.getDeclaringType().getASupertype*() instanceof Expression and
-    this.hasName(["getValue", "getValueTypeDescriptor", "getValueType", "setValue"])
-  }
-}
-
-/**
- * Holds if `node1` to `node2` is a dataflow step that parses a SpEL expression,
- * by calling `parser.parseExpression(tainted)`.
- */
-private predicate expressionParsingStep(DataFlow::Node node1, DataFlow::Node node2) {
-  exists(MethodAccess ma, Method m | ma.getMethod() = m |
-    m.getDeclaringType().getASupertype*() instanceof ExpressionParser and
-    m.hasName(["parseExpression", "parseRaw"]) and
-    ma.getAnArgument() = node1.asExpr() and
-    node2.asExpr() = ma
-  )
-}
-
-private class SimpleEvaluationContext extends RefType {
-  SimpleEvaluationContext() {
-    hasQualifiedName("org.springframework.expression.spel.support", "SimpleEvaluationContext")
-  }
-}
-
-private class SimpleEvaluationContextBuilder extends RefType {
-  SimpleEvaluationContextBuilder() {
-    hasQualifiedName("org.springframework.expression.spel.support",
-      "SimpleEvaluationContext$Builder")
-  }
-}
-
-private class Expression extends RefType {
-  Expression() { hasQualifiedName("org.springframework.expression", "Expression") }
-}
-
-private class ExpressionParser extends RefType {
-  ExpressionParser() { hasQualifiedName("org.springframework.expression", "ExpressionParser") }
 }
