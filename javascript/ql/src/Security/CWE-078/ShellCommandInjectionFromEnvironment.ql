@@ -4,7 +4,7 @@
  *              environment may cause subtle bugs or vulnerabilities.
  * @kind path-problem
  * @problem.severity warning
- * @security-severity 5.9
+ * @security-severity 9.8
  * @precision high
  * @id js/shell-command-injection-from-environment
  * @tags correctness

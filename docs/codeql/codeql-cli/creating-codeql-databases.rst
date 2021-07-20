@@ -17,6 +17,12 @@ Before you generate a CodeQL database, you need to:
 - Check out the version of your codebase you want to analyze. The directory
   should be ready to build, with all dependencies already installed.
 
+For information about using the CodeQL CLI in a third-party CI system to create results
+to display in GitHub as code scanning alerts, see `Configuring CodeQL CLI in your CI system <https://docs.github.com/en/code-security/secure-coding/using-codeql-code-scanning-with-your-existing-ci-system/configuring-codeql-cli-in-your-ci-system>`__ 
+in the GitHub documentation. For information about enabling CodeQL code scanning using GitHub Actions,
+see `Setting up code scanning for a repository <https://docs.github.com/en/code-security/secure-coding/automatically-scanning-your-code-for-vulnerabilities-and-errors/setting-up-code-scanning-for-a-repository>`__ 
+in the GitHub documentation.
+
 Running ``codeql database create``
 ----------------------------------
 
@@ -33,21 +39,30 @@ You must specify:
   be created when you execute the command---you cannot specify an existing
   directory. 
 - ``--language``: the identifier for the language to create a database for.
+  When used with ``--db-cluster``, the option accepts a comma-separated list, 
+  or can be specified more than once.
   CodeQL supports creating databases for the following languages:
 
   .. include:: ../reusables/extractors.rst
 
-Other options may be specified depending on the location of your source file and
-the language you want to analyze:
+You can specify additional options depending on the location of your source file, 
+if the code needs to be compiled, and if you want to create CodeQL databases for 
+more than one language:
 
 - ``--source-root``: the root folder for the primary source files used in
   database creation. By default, the command assumes that the current
   directory is the source root---use this option to specify a different location.
-- ``--command``: for compiled languages only, the build commands that invoke the
-  compiler. Do not specify ``--command`` options for Python and
-  JavaScript. Commands will be run from the current folder, or ``--source-root``
+- ``--db-cluster``: use for multi-language codebases when you want to create
+  databases for more than one language. 
+- ``--command``: used when you create a database for one or more compiled languages,
+  omit if the only languages requested are Python and JavaScript. 
+  This specifies the build commands needed to invoke the compiler. 
+  Commands are run from the current folder, or ``--source-root``
   if specified. If you don't include a ``--command``, CodeQL will attempt to
   detect the build system automatically, using a built-in autobuilder. 
+- ``--no-run-unnecessary-builds``: used with ``--db-cluster`` to suppress the build 
+  command for languages where the CodeQL CLI does not need to monitor the build 
+  (for example, Python and JavaScript/TypeScript).
    
 For full details of all the options you can use when creating databases,
 see the `database create reference documentation <../manual/database-create>`__.  
@@ -62,30 +77,12 @@ it failed. For compiled languages, the console will display the output of the
 build system.
 
 When the database is successfully created, you'll find a new directory at the
-path specified in the command. This directory contains a number of
+path specified in the command. If you used the ``--db-cluster`` option to create
+more than one database, a subdirectory is created for each language.
+Each CodeQL database directory contains a number of
 subdirectories, including the relational data (required for analysis) and a
 source archive---a copy of the source files made at the time the database was
 created---which is used for displaying analysis results.
-
-Obtaining databases from LGTM.com
----------------------------------
-
-`LGTM.com <https://lgtm.com>`__ analyzes thousands of open-source projects using
-CodeQL. For each project on LGTM.com, you can download an archived CodeQL
-database corresponding to the most recently analyzed revision of the code. These
-databases can also be analyzed using the CodeQL CLI. 
-
-.. include:: ../reusables/download-lgtm-database.rst
-
-Before running an analysis, unzip the databases and try :doc:`upgrading <upgrading-codeql-databases>` the
-unzipped databases to ensure they are compatible with your local copy of the
-CodeQL queries and libraries.
-   
-.. pull-quote::
-
-   Note
-
-   .. include:: ../reusables/index-files-note.rst
 
 Creating databases for non-compiled languages
 ---------------------------------------------
@@ -99,9 +96,11 @@ are available.
 
 .. pull-quote:: Important
 
-   When running ``database create`` for JavaScript, TypeScript, and Python, you must not
-   specify a ``--command`` option. If you do, you will override the normal
-   extractor invocation, which will create an empty database.
+   When you run ``database create`` for JavaScript, TypeScript, and Python, you should not
+   specify a ``--command`` option. Otherwise this overrides the normal
+   extractor invocation, which will create an empty database. If you create
+   databases for multiple languages and one of them is a compiled language,
+   use the ``--no-run-unnecessary-builds`` option to skip the command for the languages that don't need to be compiled.
 
 JavaScript and TypeScript
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -228,6 +227,27 @@ commands that you can specify for compiled languages.
    
   This command runs a custom script that contains all of the commands required
   to build the project.
+
+Obtaining databases from LGTM.com
+---------------------------------
+
+`LGTM.com <https://lgtm.com>`__ analyzes thousands of open-source projects using
+CodeQL. For each project on LGTM.com, you can download an archived CodeQL
+database corresponding to the most recently analyzed revision of the code. These
+databases can also be analyzed using the CodeQL CLI or used with the CodeQL
+extension for Visual Studio Code. 
+
+.. include:: ../reusables/download-lgtm-database.rst
+
+Before running an analysis, unzip the databases and try :doc:`upgrading <upgrading-codeql-databases>` the
+unzipped databases to ensure they are compatible with your local copy of the
+CodeQL queries and libraries.
+   
+.. pull-quote::
+
+   Note
+
+   .. include:: ../reusables/index-files-note.rst
 
 
 Further reading

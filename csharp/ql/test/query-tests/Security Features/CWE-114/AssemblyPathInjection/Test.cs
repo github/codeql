@@ -1,5 +1,3 @@
-// semmle-extractor-options: /r:System.Collections.Specialized.dll ${testdir}/../../../../resources/stubs/System.Web.cs
-
 using System;
 using System.Web;
 using System.Reflection;

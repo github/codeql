@@ -33,15 +33,20 @@ private import DataFlowPrivate
 class LocalSourceNode extends Node {
   cached
   LocalSourceNode() {
-    not simpleLocalFlowStep(_, this) and
-    // Currently, we create synthetic post-update nodes for
-    // - arguments to calls that may modify said argument
-    // - direct reads a writes of object attributes
-    // Both of these preserve the identity of the underlying pointer, and hence we exclude these as
-    // local source nodes.
-    // We do, however, allow the post-update nodes that arise from object creation (which are non-synthetic).
-    not this instanceof SyntheticPostUpdateNode
+    this instanceof ExprNode and
+    not simpleLocalFlowStep(_, this)
     or
+    // We include all module variable nodes, as these act as stepping stones between writes and
+    // reads of global variables. Without them, type tracking based on `LocalSourceNode`s would be
+    // unable to track across global variables.
+    //
+    // Once the `track` and `backtrack` methods have been fully deprecated, this disjunct can be
+    // removed, and the entire class can extend `ExprNode`. At that point, `TypeTrackingNode` should
+    // be used for type tracking instead of `LocalSourceNode`.
+    this instanceof ModuleVariableNode
+    or
+    // We explicitly include any read of a global variable, as some of these may have local flow going
+    // into them.
     this = any(ModuleVariableNode mvn).getARead()
   }
 
@@ -60,6 +65,11 @@ class LocalSourceNode extends Node {
   AttrRead getAnAttributeRead(string attrName) { result = getAnAttributeReference(attrName) }
 
   /**
+   * Gets a write of attribute `attrName` on this node.
+   */
+  AttrWrite getAnAttributeWrite(string attrName) { result = getAnAttributeReference(attrName) }
+
+  /**
    * Gets a reference (read or write) of any attribute on this node.
    */
   AttrRef getAnAttributeReference() {
@@ -74,9 +84,71 @@ class LocalSourceNode extends Node {
   AttrRead getAnAttributeRead() { result = getAnAttributeReference() }
 
   /**
+   * Gets a write of any attribute on this node.
+   */
+  AttrWrite getAnAttributeWrite() { result = getAnAttributeReference() }
+
+  /**
    * Gets a call to this node.
    */
   CallCfgNode getACall() { Cached::call(this, result) }
+
+  /**
+   * Gets a call to the method `methodName` on this node.
+   *
+   * Includes both calls that have the syntactic shape of a method call (as in `obj.m(...)`), and
+   * calls where the callee undergoes some additional local data flow (as in `tmp = obj.m; m(...)`).
+   */
+  MethodCallNode getAMethodCall(string methodName) {
+    result = this.getAnAttributeRead(methodName).getACall()
+  }
+
+  /**
+   * DEPRECATED. Use `TypeTrackingNode::track` instead.
+   *
+   * Gets a node that this node may flow to using one heap and/or interprocedural step.
+   *
+   * See `TypeTracker` for more details about how to use this.
+   */
+  pragma[inline]
+  deprecated LocalSourceNode track(TypeTracker t2, TypeTracker t) { t = t2.step(this, result) }
+
+  /**
+   * DEPRECATED. Use `TypeTrackingNode::backtrack` instead.
+   *
+   * Gets a node that may flow into this one using one heap and/or interprocedural step.
+   *
+   * See `TypeBackTracker` for more details about how to use this.
+   */
+  pragma[inline]
+  deprecated LocalSourceNode backtrack(TypeBackTracker t2, TypeBackTracker t) {
+    t2 = t.step(result, this)
+  }
+}
+
+/**
+ * A node that can be used for type tracking or type back-tracking.
+ *
+ * All steps made during type tracking should be between instances of this class.
+ */
+class TypeTrackingNode extends Node {
+  TypeTrackingNode() {
+    this instanceof LocalSourceNode
+    or
+    this instanceof ModuleVariableNode
+  }
+
+  /**
+   * Holds if this node can flow to `nodeTo` in one or more local flow steps.
+   *
+   * For `ModuleVariableNode`s, the only "local" step is to the node itself.
+   * For `LocalSourceNode`s, this is the usual notion of local flow.
+   */
+  predicate flowsTo(Node node) {
+    this instanceof ModuleVariableNode and this = node
+    or
+    this.(LocalSourceNode).flowsTo(node)
+  }
 
   /**
    * Gets a node that this node may flow to using one heap and/or interprocedural step.
@@ -84,7 +156,7 @@ class LocalSourceNode extends Node {
    * See `TypeTracker` for more details about how to use this.
    */
   pragma[inline]
-  LocalSourceNode track(TypeTracker t2, TypeTracker t) { t = t2.step(this, result) }
+  TypeTrackingNode track(TypeTracker t2, TypeTracker t) { t = t2.step(this, result) }
 
   /**
    * Gets a node that may flow into this one using one heap and/or interprocedural step.
@@ -92,7 +164,7 @@ class LocalSourceNode extends Node {
    * See `TypeBackTracker` for more details about how to use this.
    */
   pragma[inline]
-  LocalSourceNode backtrack(TypeBackTracker t2, TypeBackTracker t) { t2 = t.step(result, this) }
+  TypeTrackingNode backtrack(TypeBackTracker t2, TypeBackTracker t) { t2 = t.step(result, this) }
 }
 
 cached

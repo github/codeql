@@ -30,7 +30,7 @@ Choosing a version of the CodeQL CLI
 
 The CodeQL extension uses the CodeQL CLI to run commands. If you already have the CLI installed and added to your ``PATH``, the extension uses that version. This might be the case if you create your own CodeQL databases instead of downloading them from LGTM.com. Otherwise, the extension automatically manages access to the executable of the CLI for you. For more information about creating databases, see ":ref:`Creating CodeQL databases <creating-codeql-databases>`" in the CLI help.
 
-To override the default behavior and use a different CLI, you can specify the CodeQL CLI **Executable Path**. Note that this is only available as a user setting, not as a workspace setting.
+To override the default behavior and use a different CLI, you can specify the CodeQL CLI **Executable Path**.
 
 Changing the labels of query history items
 --------------------------------------------

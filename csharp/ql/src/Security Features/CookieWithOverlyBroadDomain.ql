@@ -3,7 +3,7 @@
  * @description Finds cookies with an overly broad domain.
  * @kind problem
  * @problem.severity warning
- * @security-severity 6.4
+ * @security-severity 9.3
  * @precision high
  * @id cs/web/broad-cookie-domain
  * @tags security

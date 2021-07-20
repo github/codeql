@@ -1,4 +1,3 @@
-
 class MyHashCode
 {
     public override int GetHashCode()

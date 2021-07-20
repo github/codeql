@@ -383,7 +383,7 @@ private module FrameworkDataFlowAdaptor {
     or
     exists(int i |
       result = TCallableFlowSinkArg(i) and
-      output = SummaryComponentStack::outArgument(i)
+      output = SummaryComponentStack::argument(i)
     )
     or
     exists(int i, int j | result = TCallableFlowSinkDelegateArg(i, j) |
@@ -496,33 +496,6 @@ private module FrameworkDataFlowAdaptor {
     }
 
     override predicate required(SummaryComponent c) { c = head }
-  }
-}
-
-/** Data flow for `System.Int32`. */
-class SystemInt32Flow extends LibraryTypeDataFlow, SystemInt32Struct {
-  override predicate callableFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
-    boolean preservesValue
-  ) {
-    methodFlow(source, sink, c) and
-    preservesValue = false
-  }
-
-  private predicate methodFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationMethod m
-  ) {
-    m = getParseMethod() and
-    source = TCallableFlowSourceArg(0) and
-    sink = TCallableFlowSinkReturn()
-    or
-    m = getTryParseMethod() and
-    source = TCallableFlowSourceArg(0) and
-    (
-      sink = TCallableFlowSinkReturn()
-      or
-      sink = TCallableFlowSinkArg(any(int i | m.getParameter(i).isOutOrRef()))
-    )
   }
 }
 

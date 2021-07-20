@@ -43,7 +43,7 @@ import org.apache.http.RequestLine;
  * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
  *
  * @version $Revision: 618017 $
- * 
+ *
  * @since 4.0
  *
  * @deprecated Please use {@link java.net.URL#openConnection} instead. Please
@@ -54,15 +54,15 @@ import org.apache.http.RequestLine;
 @Deprecated
 public class BasicHttpEntityEnclosingRequest extends BasicHttpRequest implements HttpEntityEnclosingRequest {
     public BasicHttpEntityEnclosingRequest(final String method, final String uri) {
-        super(method, uri);
+        super(null);
     }
 
     public BasicHttpEntityEnclosingRequest(final String method, final String uri, final ProtocolVersion ver) {
-        super(method, uri, ver);
+        super(null);
     }
 
     public BasicHttpEntityEnclosingRequest(final RequestLine requestline) {
-        super(requestline);
+        super(null);
     }
 
     public HttpEntity getEntity() {

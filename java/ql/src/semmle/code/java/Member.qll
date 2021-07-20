@@ -584,9 +584,9 @@ class Field extends Member, ExprParent, @field, Variable {
     exists(AssignExpr e, InitializerMethod im |
       e.getDest() = this.getAnAccess() and
       e.getSource() = result and
-      result.getEnclosingCallable() = im and
+      pragma[only_bind_out](result).getEnclosingCallable() = im and
       // This rules out updates in explicit initializer blocks as they are nested inside the compiler generated initializer blocks.
-      e.getEnclosingStmt().getParent() = im.getBody()
+      pragma[only_bind_out](e.getEnclosingStmt().getParent()) = pragma[only_bind_out](im.getBody())
     )
   }
 

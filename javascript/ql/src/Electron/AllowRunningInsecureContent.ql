@@ -3,7 +3,7 @@
  * @description Enabling allowRunningInsecureContent can allow remote code execution.
  * @kind problem
  * @problem.severity error
- * @security-severity 5.9
+ * @security-severity 8.8
  * @precision very-high
  * @tags security
  *       frameworks/electron

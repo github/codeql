@@ -1,5 +1,3 @@
-// semmle-extractor-options: /r:System.Collections.Specialized.dll ${testdir}/../../../resources/stubs/System.Web.cs /r:${testdir}/../../../resources/assemblies/System.Data.dll /r:System.Data.Common.dll
-
 using System.Data.SqlClient;
 using System.Web;
 

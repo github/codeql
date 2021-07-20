@@ -104,6 +104,7 @@ Note, `@id` properties should be consistent for queries that highlight the same 
 
 * alerts (`@kind problem`)
 * alerts containing path information (`@kind path-problem`)
+* metrics (`@kind metric`)
 
 Alert queries (`@kind problem` or `path-problem`) support two further properties. These are added by GitHub staff after the query has been tested, prior to deployment to LGTM. The following information is for reference:
 
@@ -123,7 +124,7 @@ The values of `@precision` and `@problem.severity` assigned to a query that is p
 
 ## Query tags `@tags`
 
-The `@tags` property is used to define categories that the query relates to. Each query should belong to one (or more, if necessary) of the following four top-level categories:
+The `@tags` property is used to define categories that the query relates to. Each alert query should belong to one (or more, if necessary) of the following four top-level categories:
 
 * `@tags correctness`–for queries that detect incorrect program behavior.
 * `@tags maintainability`–for queries that detect patterns that make it harder for developers to make changes to the code.
@@ -138,6 +139,8 @@ There are also more specific `@tags` that can be added. See, the following pages
 * [Java queries](https://codeql.github.com/codeql-query-help/java/)
 * [JavaScript queries](https://codeql.github.com/codeql-query-help/javascript/)
 * [Python queries](https://codeql.github.com/codeql-query-help/python/)
+
+Metric queries (`@kind metric`) may have the `summary` tag. If SARIF output is used, the results of these queries can be found at `run[].properties.metricResults`.
 
 If necessary, you can also define your own low-level tags to categorize the queries specific to your project or organization. When creating your own tags, you should:
 
@@ -156,6 +159,11 @@ If your query is a security query, use one or more `@tags` to associate it with 
 ||`external/cwe/cwe-073` |
 
 When you tag a query like this, the associated CWE pages from [MITRE.org](https://cwe.mitre.org/index.html) will automatically appear in the reference section of its associated qhelp file.
+
+#### Metric/summary `@tags`
+
+Code Scanning may use tags to identify queries with specific meanings across languages. Currently, there is only one such tag: `lines-of-code`. The sum of the results for queries with this tag that return a single number column ([example for JavaScript](https://github.com/github/codeql/blob/c47d680d65f09a851e41d4edad58ffa7486b5431/java/ql/src/Metrics/Summaries/LinesOfCode.ql)) is interpreted by Code Scanning as the lines of code under the source root present in the database. Each language should have exactly one query of this form.
+
 
 ## QL area
 
@@ -180,3 +188,13 @@ For examples of select clauses and alert messages, see the query source files at
 * [Python queries](https://codeql.github.com/codeql-query-help/python/)
 
 For further information on query writing, see [CodeQL queries](https://codeql.github.com/docs/writing-codeql-queries/codeql-queries/). For more information on learning CodeQL, see [CodeQL documentation](https://codeql.github.com/docs/).
+
+## Metric results
+
+The `select` clause of a summary metric query must have one of the following result patterns:
+- Just a `number`
+  - This indicates a metric without a specific location in the codebase, for example the total lines of code in a codebase.
+- A code `entity` followed by a `number`
+  - This indicates a metric with a specific location in the codebase, for example the lines of code within a file. The `entity` here must have a valid location in the source code.
+
+

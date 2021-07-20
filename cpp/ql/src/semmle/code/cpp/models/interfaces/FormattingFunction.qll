@@ -50,7 +50,7 @@ abstract class FormattingFunction extends ArrayFunction, TaintFunction {
    * Holds if this `FormattingFunction` is in a context that supports
    * Microsoft rules and extensions.
    */
-  predicate isMicrosoft() { any(File f).compiledAsMicrosoft() }
+  predicate isMicrosoft() { anyFileCompiledAsMicrosoft() }
 
   /**
    * Holds if the default meaning of `%s` is a `wchar_t *`, rather than
