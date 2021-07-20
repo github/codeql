@@ -14,21 +14,8 @@
  */
 
 import java
-import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.security.InsecureBasicAuth
+import semmle.code.java.security.InsecureBasicAuthQuery
 import DataFlow::PathGraph
-
-class BasicAuthFlowConfig extends TaintTracking::Configuration {
-  BasicAuthFlowConfig() { this = "InsecureBasicAuth::BasicAuthFlowConfig" }
-
-  override predicate isSource(DataFlow::Node src) { src instanceof InsecureBasicAuthSource }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof InsecureBasicAuthSink }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    any(InsecureBasicAuthAdditionalTaintStep c).step(node1, node2)
-  }
-}
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, BasicAuthFlowConfig config
 where config.hasFlowPath(source, sink)

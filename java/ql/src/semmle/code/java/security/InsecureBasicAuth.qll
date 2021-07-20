@@ -30,7 +30,7 @@ private class DefaultInsecureBasicAuthSource extends InsecureBasicAuthSource {
 }
 
 /**
- * A sink that represents a method that set Basic Authentication.
+ * A sink that represents a method that sets Basic Authentication.
  * Extend this class to add your own Insecure Basic Authentication sinks.
  */
 abstract class InsecureBasicAuthSink extends DataFlow::Node { }
