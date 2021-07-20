@@ -12,7 +12,69 @@ private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.PEP249
 
 /** Provides models for the Python standard library. */
-private module Stdlib {
+module Stdlib {
+  /**
+   * Provides models for file-like objects,
+   * mostly to define standard set of extra taint-steps.
+   *
+   * See
+   * - https://docs.python.org/3.9/glossary.html#term-file-like-object
+   * - https://docs.python.org/3.9/library/io.html#io.IOBase
+   */
+  module FileLikeObject {
+    /**
+     * A source of a file-like object, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `like::instance()` to get references to instances of `file.like`.
+     */
+    abstract class InstanceSource extends DataFlow::LocalSourceNode { }
+
+    /** Gets a reference to a file-like object. */
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to a file-like object. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    /**
+     * Taint propagation for file-like objects.
+     */
+    class FileLikeObjectAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+      override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+        // result of method call is tainted
+        nodeFrom = instance() and
+        nodeTo.(DataFlow::MethodCallNode).calls(nodeFrom, ["read", "readline", "readlines"])
+        or
+        // taint-propagation back to instance from `foo.write(tainted_data)`
+        exists(DataFlow::AttrRead write, DataFlow::CallCfgNode call, DataFlow::Node instance_ |
+          instance_ = instance() and
+          write.accesses(instance_, "write")
+        |
+          nodeTo.(DataFlow::PostUpdateNode).getPreUpdateNode() = instance_ and
+          call.getFunction() = write and
+          nodeFrom = call.getArg(0)
+        )
+      }
+    }
+  }
+}
+
+/**
+ * Provides models for the Python standard library.
+ *
+ * This module is marked private as exposing it means committing to 1-year deprecation
+ * policy, and the code is not in a polished enough state that we want to do so -- at
+ * least not without having convincing use-cases for it :)
+ */
+private module StdlibPrivate {
   // ---------------------------------------------------------------------------
   // os
   // ---------------------------------------------------------------------------
@@ -395,7 +457,8 @@ private module Stdlib {
    * A call to the builtin `open` function.
    * See https://docs.python.org/3/library/functions.html#open
    */
-  private class OpenCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+  private class OpenCall extends FileSystemAccess::Range, Stdlib::FileLikeObject::InstanceSource,
+    DataFlow::CallCfgNode {
     OpenCall() { this = getOpenFunctionRef().getACall() }
 
     override DataFlow::Node getAPathArgument() {
@@ -1081,7 +1144,7 @@ private module Stdlib {
   }
 
   /** A call to the `open` method on a `pathlib.Path` instance. */
-  private class PathLibOpenCall extends PathlibFileAccess {
+  private class PathLibOpenCall extends PathlibFileAccess, Stdlib::FileLikeObject::InstanceSource {
     PathLibOpenCall() { attrbuteName = "open" }
   }
 

@@ -10,6 +10,7 @@ private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.PEP249
+private import semmle.python.frameworks.Stdlib
 private import semmle.python.regex
 private import semmle.python.frameworks.internal.PoorMansFunctionResolution
 private import semmle.python.frameworks.internal.SelfRefMixin
@@ -418,8 +419,12 @@ private module Django {
         nodeTo.(DataFlow::AttrRead).getAttributeName() in [
             "content_type", "content_type_extra", "content_type_extra", "charset", "name", "file"
           ]
-        // TODO: Model `file` with shared-filelike such that `request.FILES["key"].file.read()` works
       }
+    }
+
+    /** A file-like object instance that originates from a `UploadedFile`. */
+    class UploadedFileFileLikeInstances extends Stdlib::FileLikeObject::InstanceSource {
+      UploadedFileFileLikeInstances() { this.(DataFlow::AttrRead).accesses(instance(), "file") }
     }
   }
 }

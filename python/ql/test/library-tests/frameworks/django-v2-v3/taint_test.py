@@ -67,7 +67,7 @@ def test_taint(request: HttpRequest, foo, bar, baz=None):  # $requestHandler rou
         request.FILES["key"].charset, # $ tainted
         request.FILES["key"].name, # $ tainted
         request.FILES["key"].file, # $ tainted
-        request.FILES["key"].file.read(), # $ MISSING: tainted
+        request.FILES["key"].file.read(), # $ tainted
 
         request.FILES.get("key"), # $ tainted
         request.FILES.get("key").name, # $ tainted
