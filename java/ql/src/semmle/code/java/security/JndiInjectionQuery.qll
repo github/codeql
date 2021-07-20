@@ -1,3 +1,5 @@
+/** Provides taint tracking configurations to be used in JNDI injection queries. */
+
 import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.frameworks.Jndi
