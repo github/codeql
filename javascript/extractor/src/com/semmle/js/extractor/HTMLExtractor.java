@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,6 +25,7 @@ import net.htmlparser.jericho.Attributes;
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
 import net.htmlparser.jericho.Segment;
+import net.htmlparser.jericho.Source;
 
 /** Extractor for handling HTML and XHTML files. */
 public class HTMLExtractor implements IExtractor {
@@ -32,7 +34,7 @@ public class HTMLExtractor implements IExtractor {
   private class JavaScriptHTMLElementHandler implements HtmlPopulator.ElementHandler {
     private final ScopeManager scopeManager;
     private final TextualExtractor textualExtractor;
-    
+
     public JavaScriptHTMLElementHandler(TextualExtractor textualExtractor) {
       this.textualExtractor = textualExtractor;
 
@@ -169,14 +171,16 @@ public class HTMLExtractor implements IExtractor {
   }
 
   private boolean isAngularTemplateAttributeName(String name) {
-    return name.startsWith("[") && name.endsWith("]") ||
-        name.startsWith("(") && name.endsWith(")") ||
-        name.startsWith("*ng");
+    return name.startsWith("[") && name.endsWith("]")
+        || name.startsWith("(") && name.endsWith(")")
+        || name.startsWith("*ng");
   }
 
-  private static final Pattern ANGULAR_FOR_LOOP_DECL = Pattern.compile("^ *let +(\\w+) +of(?: +|(?!\\w))(.*)");
+  private static final Pattern ANGULAR_FOR_LOOP_DECL =
+      Pattern.compile("^ *let +(\\w+) +of(?: +|(?!\\w))(.*)");
 
-  private static final Pattern VALID_ATTRIBUTE_NAME = Pattern.compile("\\*?\\[?\\(?[\\w:_\\-]+\\]?\\)?");
+  private static final Pattern VALID_ATTRIBUTE_NAME =
+      Pattern.compile("\\*?\\[?\\(?[\\w:_\\-]+\\]?\\)?");
 
   /** List of HTML attributes whose value is interpreted as JavaScript. */
   private static final Pattern JS_ATTRIBUTE =
@@ -202,15 +206,17 @@ public class HTMLExtractor implements IExtractor {
   public static HTMLExtractor forEmbeddedHtml(ExtractorConfig config) {
     return new HTMLExtractor(config, null, true);
   }
-  
+
   @Override
   public LoCInfo extract(TextualExtractor textualExtractor) throws IOException {
     return extractEx(textualExtractor).snd();
   }
 
   public Pair<List<Label>, LoCInfo> extractEx(TextualExtractor textualExtractor) {
-    // Angular templates contain attribute names that are not valid HTML/XML, such as [foo], (foo), [(foo)], and *foo.
-    // Allow a large number of errors in attribute names, so the Jericho parser does not give up.
+    // Angular templates contain attribute names that are not valid HTML/XML, such
+    // as [foo], (foo), [(foo)], and *foo.
+    // Allow a large number of errors in attribute names, so the Jericho parser does
+    // not give up.
     Attributes.setDefaultMaxErrorCount(100);
     JavaScriptHTMLElementHandler eltHandler = new JavaScriptHTMLElementHandler(textualExtractor);
 
@@ -222,7 +228,8 @@ public class HTMLExtractor implements IExtractor {
             textualExtractor.getTrapwriter(),
             locationManager.getFileLabel());
 
-    // For efficiency, avoid building the source map if not needed (i.e. for plain HTML files).
+    // For efficiency, avoid building the source map if not needed (i.e. for plain
+    // HTML files).
     if (textualExtractor.hasNonTrivialSourceMap()) {
       extractor.setSourceMap(textualExtractor.getSourceMap());
     }
@@ -282,7 +289,8 @@ public class HTMLExtractor implements IExtractor {
 
   private boolean isTypeScriptTag(Element script) {
     String language = getScriptLanguage(script);
-    if ("ts".equals(language) || "tsx".equals(language) || "typescript".equals(language)) return true;
+    if ("ts".equals(language) || "tsx".equals(language) || "typescript".equals(language))
+      return true;
     String type = getAttributeValueLC(script, "type");
     if (type != null && type.contains("typescript")) return true;
     return false;
@@ -311,14 +319,16 @@ public class HTMLExtractor implements IExtractor {
     // JavaScript AST extraction does not currently support source maps, so just set
     // line/column numbers on the location manager.
     Position pos = textualExtractor.getSourceMap().getStart(offset);
-    LocationManager scriptLocationManager = locationManager.startingAt(pos.getLine(), pos.getColumn());
+    LocationManager scriptLocationManager =
+        locationManager.startingAt(pos.getLine(), pos.getColumn());
     if (isTypeScript) {
       if (isEmbedded) {
         return; // Do not extract files from HTML embedded in other files.
       }
       Path file = textualExtractor.getExtractedFile().toPath();
       FileSnippet snippet =
-          new FileSnippet(file, pos.getLine(), pos.getColumn(), toplevelKind, config.getSourceType());
+          new FileSnippet(
+              file, pos.getLine(), pos.getColumn(), toplevelKind, config.getSourceType());
       VirtualSourceRoot vroot = config.getVirtualSourceRoot();
       // Vue files are special in that they can be imported as modules, and may only
       // contain one <script> tag.
@@ -335,11 +345,12 @@ public class HTMLExtractor implements IExtractor {
         }
         state.getSnippets().put(virtualFile, snippet);
       }
-      Label topLevelLabel = ASTExtractor.makeTopLevelLabel(
-          textualExtractor.getTrapwriter(),
-          scriptLocationManager.getFileLabel(),
-          scriptLocationManager.getStartLine(),
-          scriptLocationManager.getStartColumn());
+      Label topLevelLabel =
+          ASTExtractor.makeTopLevelLabel(
+              textualExtractor.getTrapwriter(),
+              scriptLocationManager.getFileLabel(),
+              scriptLocationManager.getStartLine(),
+              scriptLocationManager.getStartColumn());
       emitTopLevelXmlNodeBinding(parentLabel, topLevelLabel, trapWriter);
       // Note: LoC info is accounted for later, so not added here.
       return;
@@ -377,7 +388,8 @@ public class HTMLExtractor implements IExtractor {
   private static final String EJS_TAG = "<%(?![%<>}])[-=]?(.*?)[_-]?%>"; // <% x %>
 
   /** Pattern for a template tag whose contents should be parsed as an expression */
-  private static final Pattern TEMPLATE_EXPR_OPENING_TAG = Pattern.compile("^(?:\\{\\{\\{?|<%[-=])"); // {{, {{{, <%=, <%-
+  private static final Pattern TEMPLATE_EXPR_OPENING_TAG =
+      Pattern.compile("^(?:\\{\\{\\{?|<%[-=])"); // {{, {{{, <%=, <%-
 
   private static final Pattern TEMPLATE_TAGS =
       Pattern.compile(
@@ -432,15 +444,15 @@ public class HTMLExtractor implements IExtractor {
               m.group(bodyGroup),
               m.start(bodyGroup),
               false /* isTypeScript */,
-              lbl);  
+              lbl);
         }
       }
     }
   }
 
   /**
-   * Returns the index of the first capture group that captured something
-   * (apart from group zero which is the whole match).
+   * Returns the index of the first capture group that captured something (apart from group zero
+   * which is the whole match).
    */
   private static int getNonNullCaptureGroup(Matcher m) {
     for (int i = 1; i <= m.groupCount(); ++i) {
