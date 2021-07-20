@@ -65,6 +65,56 @@ module Templating {
     DataFlow::TemplatePlaceholderTagNode asDataFlowNode() { result.getTag() = this }
 
     /** Gets the top-level containing the template expression to be inserted at this placeholder. */
-    Angular2::TemplateTopLevel getInnerTopLevel() { toplevel_parent_xml_node(result, this) }
+    TemplateTopLevel getInnerTopLevel() { toplevel_parent_xml_node(result, this) }
+  }
+
+  /**
+   * A reference to a pipe function, occurring in a pipe expression
+   * that has been desugared to a function call.
+   *
+   * For example, the expression `x | f: y` is desugared to `f(x, y)` where
+   * `f` is a `PipeRefExpr`.
+   */
+  class PipeRefExpr extends Expr, @template_pipe_ref {
+    /** Gets the identifier node naming the pipe. */
+    Identifier getIdentifier() { result = getChildExpr(0) }
+
+    /** Gets the name of the pipe being referenced. */
+    string getName() { result = getIdentifier().getName() }
+
+    override string getAPrimaryQlClass() { result = "Templating::PipeRefExpr" }
+  }
+
+  /**
+   * Gets an invocation of the pipe of the given name.
+   *
+   * For example, the call generated from `items | async` would be found by `getAPipeCall("async")`.
+   */
+  DataFlow::CallNode getAPipeCall(string name) {
+    result.getCalleeNode().asExpr().(PipeRefExpr).getName() = name
+  }
+
+  /**
+   * A reference to a variable in a template expression, corresponding
+   * to a value plugged into the template.
+   */
+  class TemplateVarRefExpr extends Expr {
+    TemplateVarRefExpr() { this = any(TemplateTopLevel tl).getScope().getAVariable().getAnAccess() }
+  }
+
+  /** The top-level containing the expression in a template placeholder. */
+  class TemplateTopLevel extends TopLevel, @template_toplevel {
+    /** Gets the expression in this top-level. */
+    Expr getExpression() { result = getChildStmt(0).(ExprStmt).getExpr() }
+
+    /** Gets the data flow node representing the initialization of the given variable in this scope. */
+    DataFlow::Node getVariableInit(string name) {
+      result = DataFlow::ssaDefinitionNode(SSA::implicitInit(getScope().getVariable(name)))
+    }
+
+    /** Gets a data flow node corresponding to a use of the given template variable within this top-level. */
+    DataFlow::SourceNode getAVariableUse(string name) {
+      result = getScope().getVariable(name).getAnAccess().flow()
+    }
   }
 }

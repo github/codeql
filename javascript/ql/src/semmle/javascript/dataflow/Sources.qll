@@ -320,8 +320,8 @@ module SourceNode {
         astNode instanceof ImportSpecifier or
         astNode instanceof ImportMetaExpr or
         astNode instanceof TaggedTemplateExpr or
-        astNode instanceof Angular2::PipeRefExpr or
-        astNode instanceof Angular2::TemplateVarRefExpr or
+        astNode instanceof Templating::PipeRefExpr or
+        astNode instanceof Templating::TemplateVarRefExpr or
         astNode instanceof StringLiteral
       )
       or
