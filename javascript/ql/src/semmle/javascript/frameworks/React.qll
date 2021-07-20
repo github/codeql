@@ -248,7 +248,11 @@ abstract class ReactComponent extends ASTNode {
  * Holds if `f` always returns a JSX element or fragment, or a React element.
  */
 private predicate alwaysReturnsJSXOrReactElements(Function f) {
-  forex(Expr e | e.flow().(DataFlow::SourceNode).flowsToExpr(f.getAReturnedExpr()) |
+  forex(Expr e |
+    e.flow().(DataFlow::SourceNode).flowsToExpr(f.getAReturnedExpr()) and
+    // Allow returning string constants in addition to JSX/React elemnts.
+    not exists(e.getStringValue())
+  |
     e instanceof JSXNode or
     e instanceof ReactElementDefinition
   )
@@ -776,6 +780,8 @@ private DataFlow::SourceNode higherOrderComponentBuilder() {
   result = DataFlow::moduleMember(["react-hot-loader", "react-hot-loader/root"], "hot").getACall()
   or
   result = DataFlow::moduleMember("redux-form", "reduxForm").getACall()
+  or
+  result = DataFlow::moduleMember("recompose", _).getACall()
   or
   result = reactRouterDom().getAPropertyRead("withRouter")
   or

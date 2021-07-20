@@ -51,5 +51,3 @@ class Assertions
         Contract.Assume(s != null, "s is non-null");
     }
 }
-
-// semmle-extractor-options: ${testdir}/../../../resources/stubs/Microsoft.VisualStudio.TestTools.UnitTesting.cs /r:System.Diagnostics.Contracts.dll

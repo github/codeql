@@ -3,7 +3,7 @@
  * @description Processing user-controlled object hierarchies inefficiently can lead to denial of service.
  * @kind path-problem
  * @problem.severity warning
- * @security-severity 3.6
+ * @security-severity 7.5
  * @precision high
  * @id js/resource-exhaustion-from-deep-object-traversal
  * @tags security

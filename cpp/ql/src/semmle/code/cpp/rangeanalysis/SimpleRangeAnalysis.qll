@@ -863,16 +863,16 @@ private float getLowerBoundsImpl(Expr expr) {
       result = 0
       or
       // If either input could be negative then the output could be
-      // negative. If so, the lower bound of `x%y` is `-abs(y)`, which is
-      // equal to `min(-y,y)`.
+      // negative. If so, the lower bound of `x%y` is `-abs(y) + 1`, which is
+      // equal to `min(-y + 1,y - 1)`.
       exists(float childLB |
         childLB = getFullyConvertedLowerBounds(remExpr.getAnOperand()) and
         not childLB >= 0
       |
-        result = getFullyConvertedLowerBounds(remExpr.getRightOperand())
+        result = getFullyConvertedLowerBounds(remExpr.getRightOperand()) - 1
         or
         exists(float rhsUB | rhsUB = getFullyConvertedUpperBounds(remExpr.getRightOperand()) |
-          result = -rhsUB
+          result = -rhsUB + 1
         )
       )
     )
@@ -1058,16 +1058,16 @@ private float getUpperBoundsImpl(Expr expr) {
       expr = remExpr and
       rhsUB = getFullyConvertedUpperBounds(remExpr.getRightOperand())
     |
-      result = rhsUB
+      result = rhsUB - 1
       or
       // If the right hand side could be negative then we need to take its
       // absolute value. Since `abs(x) = max(-x,x)` this is equivalent to
       // adding `-rhsLB` to the set of upper bounds.
       exists(float rhsLB |
-        rhsLB = getFullyConvertedLowerBounds(remExpr.getAnOperand()) and
+        rhsLB = getFullyConvertedLowerBounds(remExpr.getRightOperand()) and
         not rhsLB >= 0
       |
-        result = -rhsLB
+        result = -rhsLB + 1
       )
     )
     or

@@ -68,7 +68,7 @@ module ArrayTaintTracking {
     succ = call
     or
     // `e = Array.from(x)`: if `x` is tainted, then so is `e`.
-    call = DataFlow::globalVarRef("Array").getAPropertyRead("from").getACall() and
+    call = arrayFromCall() and
     pred = call.getAnArgument() and
     succ = call
     or
@@ -79,6 +79,11 @@ module ArrayTaintTracking {
     call.(DataFlow::MethodCallNode).getMethodName() = "concat" and
     succ = call and
     pred = call.getAnArgument()
+    or
+    // find
+    // `e = arr.find(callback)`
+    call = arrayFindCall(pred) and
+    succ = call
   }
 }
 
@@ -97,7 +102,7 @@ private module ArrayDataFlow {
       DataFlow::Node pred, DataFlow::Node succ, string fromProp, string toProp
     ) {
       exists(DataFlow::CallNode call |
-        call = DataFlow::globalVarRef("Array").getAMemberCall("from") and
+        call = arrayFromCall() and
         pred = call.getArgument(0) and
         succ = call and
         fromProp = arrayLikeElement() and
@@ -294,6 +299,110 @@ private module ArrayDataFlow {
         prop = arrayElement() and
         pred = call.getReceiver() and
         succ = call
+      )
+    }
+  }
+
+  /**
+   * A step modelling that elements from an array `arr` are received by calling `find`.
+   */
+  private class ArrayFindStep extends DataFlow::SharedFlowStep {
+    override predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+      exists(DataFlow::CallNode call |
+        call = arrayFindCall(pred) and
+        succ = call and
+        prop = arrayElement()
+      )
+    }
+  }
+}
+
+private import ArrayLibraries
+
+/**
+ * Classes and predicates modelling various libraries that work on arrays or array-like structures.
+ */
+private module ArrayLibraries {
+  private import DataFlow::PseudoProperties
+
+  /**
+   * Gets a call to `Array.from` or a polyfill implementing the same functionality.
+   */
+  DataFlow::CallNode arrayFromCall() {
+    result = DataFlow::globalVarRef("Array").getAMemberCall("from")
+    or
+    result = DataFlow::moduleImport("array-from").getACall()
+  }
+
+  /**
+   * Gets a call to `Array.prototype.find` or a polyfill implementing the same functionality.
+   */
+  DataFlow::CallNode arrayFindCall(DataFlow::Node array) {
+    result.(DataFlow::MethodCallNode).getMethodName() = "find" and
+    array = result.getReceiver()
+    or
+    result = DataFlow::moduleImport(["array.prototype.find", "array-find"]).getACall() and
+    array = result.getArgument(0)
+  }
+
+  /**
+   * A taint step through the `arrify` library, or other libraries that (maybe) convert values into arrays.
+   */
+  private class ArrayifyStep extends TaintTracking::SharedTaintStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(API::CallNode call | call = API::moduleImport(["arrify", "array-ify"]).getACall() |
+        pred = call.getArgument(0) and succ = call
+      )
+    }
+  }
+
+  /**
+   * A call to a library that copies the elements of an array into another array.
+   * E.g. `array-union` that creates a union of multiple arrays, or `array-uniq` that creates an array with unique elements.
+   */
+  DataFlow::CallNode arrayCopyCall(DataFlow::Node array) {
+    result = API::moduleImport(["array-union", "array-uniq", "uniq"]).getACall() and
+    array = result.getAnArgument()
+  }
+
+  /**
+   * A taint step for a library that copies the elements of an array into another array.
+   */
+  private class ArrayCopyTaint extends TaintTracking::SharedTaintStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(DataFlow::CallNode call |
+        call = arrayCopyCall(pred) and
+        succ = call
+      )
+    }
+  }
+
+  /**
+   * A loadStoreStep for a library that copies the elements of an array into another array.
+   */
+  private class ArrayCopyLoadStore extends DataFlow::SharedFlowStep {
+    override predicate loadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+      exists(DataFlow::CallNode call |
+        call = arrayCopyCall(pred) and
+        succ = call and
+        prop = arrayElement()
+      )
+    }
+  }
+
+  /**
+   * A taint step through a call to `Array.prototype.flat` or a polyfill implementing array flattening.
+   */
+  private class ArrayFlatStep extends TaintTracking::SharedTaintStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(DataFlow::CallNode call | succ = call |
+        call.(DataFlow::MethodCallNode).getMethodName() = "flat" and
+        pred = call.getReceiver()
+        or
+        call =
+          API::moduleImport(["array-flatten", "arr-flatten", "flatten", "array.prototype.flat"])
+              .getACall() and
+        pred = call.getAnArgument()
       )
     }
   }

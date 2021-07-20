@@ -28,7 +28,7 @@ int sprintf(char *dest, char *format, ...);
 void test1() {
 	WCHAR string[20];
 
-	swprintf(string, u"test %s", u"test"); // BAD: `char16_t` string parameter read as `char` string
+	swprintf(string, u"test %s", u"test"); // BAD: `char16_t` string parameter read as `char` string [NOT DETECTED; correct on Microsoft platforms]
 }
 
 void test2() {

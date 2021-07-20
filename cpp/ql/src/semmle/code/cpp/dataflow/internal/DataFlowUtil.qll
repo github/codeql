@@ -768,6 +768,50 @@ VariableAccess getAnAccessToAssignedVariable(Expr assign) {
   )
 }
 
+private newtype TContent =
+  TFieldContent(Field f) or
+  TCollectionContent() or
+  TArrayContent()
+
+/**
+ * A description of the way data may be stored inside an object. Examples
+ * include instance fields, the contents of a collection object, or the contents
+ * of an array.
+ */
+class Content extends TContent {
+  /** Gets a textual representation of this element. */
+  abstract string toString();
+
+  predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
+    path = "" and sl = 0 and sc = 0 and el = 0 and ec = 0
+  }
+}
+
+/** A reference through an instance field. */
+class FieldContent extends Content, TFieldContent {
+  Field f;
+
+  FieldContent() { this = TFieldContent(f) }
+
+  Field getField() { result = f }
+
+  override string toString() { result = f.toString() }
+
+  override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
+    f.getLocation().hasLocationInfo(path, sl, sc, el, ec)
+  }
+}
+
+/** A reference through an array. */
+private class ArrayContent extends Content, TArrayContent {
+  override string toString() { result = "[]" }
+}
+
+/** A reference through the contents of some collection-like container. */
+private class CollectionContent extends Content, TCollectionContent {
+  override string toString() { result = "<element>" }
+}
+
 /**
  * A guard that validates some expression.
  *

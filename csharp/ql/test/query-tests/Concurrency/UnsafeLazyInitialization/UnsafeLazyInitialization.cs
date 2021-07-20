@@ -54,7 +54,6 @@ class Program
             lock (mutex)
                 if (cond2) { cond2 = false; }
 
-
         // GOOD: not a double-checked lock
         if (null == obj1)
         {
@@ -156,5 +155,3 @@ struct Coord
     public static bool operator==(Coord c1, Coord c2) => c1.x==c2.x && c1.y == c2.y;
     public static bool operator!=(Coord c1, Coord c2) => !(c1==c2);
 }
-
-// semmle-extractor-options: -langversion:latest

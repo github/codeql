@@ -96,6 +96,9 @@ public class DataFlow
         bool sink22;
         bool.TryParse(sink18, out sink22);
         Check(sink22);
+        int sink21b;
+        Int32.TryParse(sink18, System.Globalization.NumberStyles.None, null, out sink21b);
+        Check(sink21b);
 
         // Flow through a callable that returns the argument (non-delegate), not tainted
         var nonSink0 = Return("");
@@ -484,7 +487,7 @@ public class DataFlow
             a(arg);
         }
 
-        Inner(_ => {}, b, "taint source");
+        Inner(_ => { }, b, "taint source");
     }
 }
 
@@ -499,5 +502,3 @@ static class IEnumerableExtensions
         }
     }
 }
-
-// semmle-extractor-options: /r:System.Diagnostics.Process.dll /r:System.Linq.dll /r:System.Linq.Expressions.dll /r:System.Linq.Queryable.dll /r:System.ComponentModel.Primitives.dll

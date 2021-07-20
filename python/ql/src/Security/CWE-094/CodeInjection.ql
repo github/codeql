@@ -4,7 +4,7 @@
  *              code execution.
  * @kind path-problem
  * @problem.severity error
- * @security-severity 10.0
+ * @security-severity 9.3
  * @sub-severity high
  * @precision high
  * @id py/code-injection
@@ -19,7 +19,7 @@ import python
 import semmle.python.security.dataflow.CodeInjection
 import DataFlow::PathGraph
 
-from CodeInjectionConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
+from CodeInjection::Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "$@ flows to here and is interpreted as code.",
   source.getNode(), "A user-provided value"

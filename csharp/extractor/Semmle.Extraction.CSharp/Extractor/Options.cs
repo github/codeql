@@ -17,6 +17,12 @@ namespace Semmle.Extraction.CSharp
         public string? Framework { get; set; }
 
         /// <summary>
+        /// Project files whose source files should be added to the compilation.
+        /// Only used in tests.
+        /// </summary>
+        public IList<string> ProjectsToLoad { get; } = new List<string>();
+
+        /// <summary>
         /// All other arguments passed to the compilation.
         /// </summary>
         public IList<string> CompilerArguments { get; } = new List<string>();
@@ -67,6 +73,9 @@ namespace Semmle.Extraction.CSharp
                     return true;
                 case "framework":
                     Framework = value;
+                    return true;
+                case "load-sources-from-project":
+                    ProjectsToLoad.Add(value);
                     return true;
                 default:
                     return base.HandleOption(key, value);

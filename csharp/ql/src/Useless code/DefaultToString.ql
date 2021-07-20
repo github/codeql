@@ -10,4 +10,4 @@
  *       maintainability
  */
 
-import DefaultToString
+import DefaultToStringQuery

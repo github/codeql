@@ -18,6 +18,13 @@ abstract class AttrRef extends Node {
   abstract Node getObject();
 
   /**
+   * Holds if this data flow node accesses attribute named `attrName` on object `object`.
+   */
+  predicate accesses(Node object, string attrName) {
+    this.getObject() = object and this.getAttributeName() = attrName
+  }
+
+  /**
    * Gets the expression node that defines the attribute being accessed, if any. This is
    * usually an identifier or literal.
    */
@@ -191,7 +198,7 @@ private class ClassDefinitionAsAttrWrite extends AttrWrite, CfgNode {
  * - Dynamic attribute reads using `getattr`: `getattr(object, attr)`
  * - Qualified imports: `from module import attr as name`
  */
-abstract class AttrRead extends AttrRef, Node { }
+abstract class AttrRead extends AttrRef, Node, LocalSourceNode { }
 
 /** A simple attribute read, e.g. `object.attr` */
 private class AttributeReadAsAttrRead extends AttrRead, CfgNode {

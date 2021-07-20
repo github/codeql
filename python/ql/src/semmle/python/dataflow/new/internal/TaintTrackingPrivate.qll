@@ -1,13 +1,21 @@
 private import python
 private import semmle.python.dataflow.new.DataFlow
-private import semmle.python.dataflow.new.internal.DataFlowPrivate
+private import semmle.python.dataflow.new.internal.DataFlowPrivate as DataFlowPrivate
 private import semmle.python.dataflow.new.internal.TaintTrackingPublic
+private import semmle.python.ApiGraphs
 
 /**
  * Holds if `node` should be a sanitizer in all global taint flow configurations
  * but not in local taint.
  */
 predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
+
+/**
+ * Holds if default `TaintTracking::Configuration`s should allow implicit reads
+ * of `c` at sinks and inputs to additional taint steps.
+ */
+bindingset[node]
+predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::Content c) { none() }
 
 private module Cached {
   /**
@@ -75,13 +83,13 @@ predicate subscriptStep(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
  */
 predicate stringManipulation(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
   // transforming something tainted into a string will make the string tainted
-  exists(CallNode call | call = nodeTo.getNode() |
-    call.getFunction().(NameNode).getId() in ["str", "bytes", "unicode"] and
+  exists(DataFlow::CallCfgNode call | call = nodeTo |
     (
-      nodeFrom.getNode() = call.getArg(0)
+      call = API::builtin(["str", "bytes", "unicode"]).getACall()
       or
-      nodeFrom.getNode() = call.getArgByName("object")
-    )
+      call.getFunction().asCfgNode().(NameNode).getId() in ["str", "bytes", "unicode"]
+    ) and
+    nodeFrom in [call.getArg(0), call.getArgByName("object")]
   )
   or
   // String methods. Note that this doesn't recognize `meth = "foo".upper; meth()`
@@ -148,39 +156,37 @@ predicate stringManipulation(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeT
 predicate containerStep(DataFlow::CfgNode nodeFrom, DataFlow::Node nodeTo) {
   // construction by literal
   // TODO: Not limiting the content argument here feels like a BIG hack, but we currently get nothing for free :|
-  storeStep(nodeFrom, _, nodeTo)
+  DataFlowPrivate::storeStep(nodeFrom, _, nodeTo)
   or
   // constructor call
-  exists(CallNode call | call = nodeTo.asCfgNode() |
-    call.getFunction().(NameNode).getId() in [
-        "list", "set", "frozenset", "dict", "defaultdict", "tuple"
-      ] and
-    call.getArg(0) = nodeFrom.getNode()
+  exists(DataFlow::CallCfgNode call | call = nodeTo |
+    call = API::builtin(["list", "set", "frozenset", "dict", "tuple"]).getACall() and
+    call.getArg(0) = nodeFrom
+    // TODO: Properly handle defaultdict/namedtuple
   )
   or
   // functions operating on collections
-  exists(CallNode call | call = nodeTo.asCfgNode() |
-    call.getFunction().(NameNode).getId() in ["sorted", "reversed", "iter", "next"] and
-    call.getArg(0) = nodeFrom.getNode()
+  exists(DataFlow::CallCfgNode call | call = nodeTo |
+    call = API::builtin(["sorted", "reversed", "iter", "next"]).getACall() and
+    call.getArg(0) = nodeFrom
   )
   or
   // methods
-  exists(CallNode call, string name | call = nodeTo.asCfgNode() |
-    name in [
+  exists(DataFlow::MethodCallNode call, string methodName | call = nodeTo |
+    methodName in [
         // general
         "copy", "pop",
         // dict
         "values", "items", "get", "popitem"
       ] and
-    call.getFunction().(AttrNode).getObject(name) = nodeFrom.asCfgNode()
+    call.calls(nodeFrom, methodName)
   )
   or
   // list.append, set.add
-  exists(CallNode call, string name |
-    name in ["append", "add"] and
-    call.getFunction().(AttrNode).getObject(name) =
-      nodeTo.(DataFlow::PostUpdateNode).getPreUpdateNode().asCfgNode() and
-    call.getArg(0) = nodeFrom.getNode()
+  exists(DataFlow::MethodCallNode call, DataFlow::Node obj |
+    call.calls(obj, ["append", "add"]) and
+    obj = nodeTo.(DataFlow::PostUpdateNode).getPreUpdateNode() and
+    call.getArg(0) = nodeFrom
   )
 }
 
@@ -188,14 +194,9 @@ predicate containerStep(DataFlow::CfgNode nodeFrom, DataFlow::Node nodeTo) {
  * Holds if taint can flow from `nodeFrom` to `nodeTo` with a step related to copying.
  */
 predicate copyStep(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
-  exists(CallNode call | call = nodeTo.getNode() |
-    // Fully qualified: copy.copy, copy.deepcopy
-    (
-      call.getFunction().(NameNode).getId() in ["copy", "deepcopy"]
-      or
-      call.getFunction().(AttrNode).getObject(["copy", "deepcopy"]).(NameNode).getId() = "copy"
-    ) and
-    call.getArg(0) = nodeFrom.getNode()
+  exists(DataFlow::CallCfgNode call | call = nodeTo |
+    call = API::moduleImport("copy").getMember(["copy", "deepcopy"]).getACall() and
+    call.getArg(0) = nodeFrom
   )
 }
 
