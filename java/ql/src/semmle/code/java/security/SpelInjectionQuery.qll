@@ -1,10 +1,10 @@
 /** Provides taint tracking and dataflow configurations to be used in SpEL injection queries. */
 
 import java
-import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.frameworks.spring.SpringExpression
-import semmle.code.java.security.SpelInjection
+private import semmle.code.java.dataflow.FlowSources
+private import semmle.code.java.dataflow.TaintTracking
+private import semmle.code.java.frameworks.spring.SpringExpression
+private import semmle.code.java.security.SpelInjection
 
 /**
  * A taint-tracking configuration for unsafe user input
@@ -26,8 +26,8 @@ class SpelInjectionConfig extends TaintTracking::Configuration {
 private class DefaultSpelExpressionEvaluationSink extends SpelExpressionEvaluationSink {
   DefaultSpelExpressionEvaluationSink() {
     exists(MethodAccess ma |
-      sinkNode(this, "spel") and
-      this.asExpr() = ma.getQualifier() and
+      ma.getMethod() instanceof ExpressionEvaluationMethod and
+      ma.getQualifier() = this.asExpr() and
       not exists(SafeEvaluationContextFlowConfig config |
         config.hasFlowTo(DataFlow::exprNode(ma.getArgument(0)))
       )

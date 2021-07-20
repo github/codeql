@@ -1,24 +1,12 @@
 /** Provides classes to reason about SpEL injection attacks. */
 
 import java
-import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.dataflow.ExternalFlow
-import semmle.code.java.frameworks.spring.SpringExpression
+private import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.frameworks.spring.SpringExpression
 
 /** A data flow sink for unvalidated user input that is used to construct SpEL expressions. */
 abstract class SpelExpressionEvaluationSink extends DataFlow::ExprNode { }
-
-private class SpelExpressionEvaluationModel extends SinkModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "org.springframework.expression;Expression;true;getValue;;;Argument[-1];spel",
-        "org.springframework.expression;Expression;true;getValueTypeDescriptor;;;Argument[-1];spel",
-        "org.springframework.expression;Expression;true;getValueType;;;Argument[-1];spel",
-        "org.springframework.expression;Expression;true;setValue;;;Argument[-1];spel"
-      ]
-  }
-}
 
 /**
  * A unit class for adding additional taint steps.

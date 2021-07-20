@@ -12,6 +12,7 @@
 
 import java
 import semmle.code.java.security.SpelInjectionQuery
+import semmle.code.java.dataflow.DataFlow
 import DataFlow::PathGraph
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, SpelInjectionConfig conf
