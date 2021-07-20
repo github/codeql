@@ -404,6 +404,7 @@ public class HTMLExtractor implements IExtractor {
       int start,
       int end,
       Supplier<Label> parentLabel) {
+    if (start >= end) return;
     if (isEmbedded) return; // Do not extract template tags for HTML snippets embedded in a JS file
 
     LocationManager locationManager = textualExtractor.getLocationManager();
