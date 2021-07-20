@@ -181,6 +181,33 @@ module Templating {
     }
   }
 
+  /**
+   * A data flow step from the expression in a placeholder tag to the tag itself,
+   * representing the value plugged into the template.
+   */
+  private class TemplatePlaceholderStep extends DataFlow::SharedFlowStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(TemplatePlaceholderTag tag |
+        pred = tag.getInnerTopLevel().getExpression().flow() and
+        succ = tag.asDataFlowNode()
+      )
+    }
+  }
+
+  /**
+   * A taint step from a `TemplatePlaceholderTag` to the corresponding `GeneratedCodeExpr`,
+   * representing that control over the generated code gives control over the expression
+   * return value.
+   */
+  private class PlaceholderToGeneratedCodeStep extends TaintTracking::SharedTaintStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(GeneratedCodeExpr expr |
+        pred = expr.getPlaceholderTag().asDataFlowNode() and
+        succ = expr.flow()
+      )
+    }
+  }
+
   /** A file that can be referenced by a template instantiation. */
   abstract class TemplateFile extends File {
     /** Gets a placeholder tag in this file. */
