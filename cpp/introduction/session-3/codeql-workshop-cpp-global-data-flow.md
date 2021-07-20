@@ -132,7 +132,7 @@ import semmle.code.cpp.dataflow.DataFlow
 import semmle.code.cpp.security.Security
 
 from SecurityOptions opts, DataFlow::Node source
-where opt.isUserInput(source.asExpr(), _)
+where opts.isUserInput(source.asExpr(), _)
 select source
 ```
 </details>
