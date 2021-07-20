@@ -96,11 +96,15 @@ def test_taint(name = "World!", number="0", foo="foo"):  # $requestHandler route
         request.headers, # $ tainted
         request.headers['key'], # $ tainted
         request.headers.get('key'), # $ tainted
-        request.headers.get_all('key'), # $ MISSING: tainted
-        request.headers.getlist('key'), # $ MISSING: tainted
+        request.headers.get_all('key'), # $ tainted
+        request.headers.getlist('key'), # $ tainted
+        # popitem returns `(key, value)`
+        request.headers.popitem(), # $ tainted
+        request.headers.popitem()[0], # $ tainted
+        request.headers.popitem()[1], # $ tainted
         # two ways to get (k, v) lists
         list(request.headers), # $ tainted
-        request.headers.to_wsgi_list(), # $ MISSING: tainted
+        request.headers.to_wsgi_list(), # $ tainted
 
         request.json, # $ tainted
         request.json['foo'], # $ tainted

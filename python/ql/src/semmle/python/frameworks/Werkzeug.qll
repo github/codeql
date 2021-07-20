@@ -49,7 +49,6 @@ module Werkzeug {
 
     private class MultiDictAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
       override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-        // See https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.Headers.getlist
         nodeFrom = instance() and
         nodeTo.(DataFlow::MethodCallNode).calls(nodeFrom, "getlist")
       }
@@ -118,6 +117,54 @@ module Werkzeug {
 
       override DataFlow::Node getAPathArgument() {
         result in [this.getArg(0), this.getArgByName("dst")]
+      }
+    }
+  }
+
+  /**
+   * Provides models for the `werkzeug.datastructures.Headers` class
+   *
+   * See https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.Headers.
+   */
+  module Headers {
+    /**
+     * A source of instances of `werkzeug.datastructures.Headers`, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `Headers::instance()` to get references to instances of `werkzeug.datastructures.Headers`.
+     */
+    abstract class InstanceSource extends DataFlow::LocalSourceNode { }
+
+    /** Gets a reference to an instance of `werkzeug.datastructures.Headers`. */
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an instance of `werkzeug.datastructures.Headers`. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    /**
+     * Taint propagation for `werkzeug.datastructures.Headers`.
+     */
+    class HeadersAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+      override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+        // Methods
+        //
+        // TODO: When we have tools that make it easy, model these properly to handle
+        // `meth = obj.meth; meth()`. Until then, we'll use this more syntactic approach
+        // (since it allows us to at least capture the most common cases).
+        nodeFrom = instance() and
+        exists(DataFlow::AttrRead attr | attr.getObject() = nodeFrom |
+          // methods (non-async)
+          attr.getAttributeName() in ["getlist", "get_all", "popitem", "to_wsgi_list"] and
+          nodeTo.(DataFlow::CallCfgNode).getFunction() = attr
+        )
       }
     }
   }

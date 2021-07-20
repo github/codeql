@@ -432,6 +432,13 @@ module Flask {
     }
   }
 
+  /** An `Headers` instance that originates from a flask request. */
+  private class FlaskRequestHeadersInstances extends Werkzeug::Headers::InstanceSource {
+    FlaskRequestHeadersInstances() {
+      this.(DataFlow::AttrRead).accesses(request().getAUse(), "headers")
+    }
+  }
+
   // ---------------------------------------------------------------------------
   // Implicit response from returns of flask request handlers
   // ---------------------------------------------------------------------------
