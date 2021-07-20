@@ -11,6 +11,9 @@ def test_taint(request: HttpRequest, foo, bar, baz=None):  # $requestHandler rou
     # Manually inspected all fields of the HttpRequest object
     # https://docs.djangoproject.com/en/3.0/ref/request-response/#httprequest-objects
 
+    import django.urls
+    django.urls.ResolverMatch
+
     ensure_tainted(
         request, # $ tainted
 
@@ -91,10 +94,10 @@ def test_taint(request: HttpRequest, foo, bar, baz=None):  # $requestHandler rou
 
         # django.urls.ResolverMatch
         request.resolver_match, # $ tainted
-        request.resolver_match.args, # $ MISSING: tainted
-        request.resolver_match.args[0], # $ MISSING: tainted
-        request.resolver_match.kwargs, # $ MISSING: tainted
-        request.resolver_match.kwargs["key"], # $ MISSING: tainted
+        request.resolver_match.args, # $ tainted
+        request.resolver_match.args[0], # $ tainted
+        request.resolver_match.kwargs, # $ tainted
+        request.resolver_match.kwargs["key"], # $ tainted
 
         request.get_full_path(), # $ tainted
         request.get_full_path_info(), # $ tainted

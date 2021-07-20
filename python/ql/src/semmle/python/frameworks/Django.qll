@@ -410,6 +410,47 @@ private module Django {
       UploadedFileFileLikeInstances() { this.(DataFlow::AttrRead).accesses(instance(), "file") }
     }
   }
+
+  /**
+   * Provides models for the `django.urls.ResolverMatch` class
+   *
+   * See https://docs.djangoproject.com/en/3.0/ref/urlresolvers/#django.urls.ResolverMatch.
+   */
+  module ResolverMatch {
+    /**
+     * A source of instances of `django.urls.ResolverMatch`, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `ResolverMatch::instance()` to get references to instances of `django.urls.ResolverMatch`.
+     */
+    abstract class InstanceSource extends DataFlow::LocalSourceNode { }
+
+    /** Gets a reference to an instance of `django.urls.ResolverMatch`. */
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an instance of `django.urls.ResolverMatch`. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    /**
+     * Taint propagation for `django.urls.ResolverMatch`.
+     */
+    class ResolverMatchAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+      override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+        // Attributes
+        nodeFrom = instance() and
+        nodeTo.(DataFlow::AttrRead).getObject() = nodeFrom and
+        nodeTo.(DataFlow::AttrRead).getAttributeName() in ["args", "kwargs"]
+      }
+    }
+  }
 }
 
 /**
@@ -2053,7 +2094,6 @@ private module PrivateDjango {
           // MultiValueDict[str, UploadedFile]
           "FILES",
           // django.urls.ResolverMatch
-          // TODO: Model ResolverMatch
           "resolver_match"
         ]
       // TODO: Handle that a HttpRequest is iterable
@@ -2065,6 +2105,14 @@ private module PrivateDjango {
     DjangoHttpRequestMultiValueDictInstances() {
       this.(DataFlow::AttrRead).getObject() = django::http::request::HttpRequest::instance() and
       this.(DataFlow::AttrRead).getAttributeName() in ["GET", "POST", "FILES"]
+    }
+  }
+
+  /** An attribute read on an django request that is a `ResolverMatch` instance. */
+  class DjangoHttpRequestResolverMatchInstances extends Django::ResolverMatch::InstanceSource {
+    DjangoHttpRequestResolverMatchInstances() {
+      this.(DataFlow::AttrRead).getObject() = django::http::request::HttpRequest::instance() and
+      this.(DataFlow::AttrRead).getAttributeName() = "resolver_match"
     }
   }
 
