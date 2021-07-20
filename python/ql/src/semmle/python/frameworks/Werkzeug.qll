@@ -18,20 +18,135 @@ private import semmle.python.frameworks.Stdlib
  * - https://werkzeug.palletsprojects.com/en/1.0.x/#werkzeug
  */
 module Werkzeug {
-  /** Provides models for the `werkzeug` module. */
-  module werkzeug {
-    /** Provides models for the `werkzeug.datastructures` module. */
-    module datastructures {
+  /**
+   * Provides models for the `werkzeug.datastructures.MultiDict` class
+   *
+   * See https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.MultiDict.
+   */
+  module MultiDict {
+    /**
+     * A source of instances of `werkzeug.datastructures.MultiDict`, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `MultiDict::instance()` to get references to instances of `werkzeug.datastructures.MultiDict`.
+     */
+    abstract class InstanceSource extends DataFlow::LocalSourceNode { }
+
+    /** Gets a reference to an instance of `werkzeug.datastructures.MultiDict`. */
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an instance of `werkzeug.datastructures.MultiDict`. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    private class MultiDictAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+      override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+        // See https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.Headers.getlist
+        nodeFrom = instance() and
+        nodeTo.(DataFlow::MethodCallNode).calls(nodeFrom, "getlist")
+      }
+    }
+  }
+
+  /**
+   * Provides models for the `werkzeug.datastructures.FileStorage` class
+   *
+   * See https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.FileStorage.
+   */
+  module FileStorage {
+    /**
+     * A source of instances of `werkzeug.datastructures.FileStorage`, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `FileStorage::instance()` to get references to instances of `werkzeug.datastructures.FileStorage`.
+     */
+    // All the attributes of the wrapper stream are proxied by the file storage so it’s
+    // possible to do storage.read() instead of the long form storage.stream.read(). So
+    // that's why InstanceSource also extends `Stdlib::FileLikeObject::InstanceSource`
+    abstract class InstanceSource extends Stdlib::FileLikeObject::InstanceSource,
+      DataFlow::LocalSourceNode { }
+
+    /** Gets a reference to an instance of `werkzeug.datastructures.FileStorage`. */
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an instance of `werkzeug.datastructures.FileStorage`. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    private class FileStorageAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+      override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+        nodeFrom = instance() and
+        exists(DataFlow::AttrRead read | nodeTo = read |
+          read.getAttributeName() in [
+              // str
+              "filename", "name", "content_type", "mimetype",
+              // file-like
+              "stream",
+              // TODO: werkzeug.datastructures.Headers
+              "headers",
+              // dict[str, str]
+              "mimetype_params"
+            ] and
+          read.getObject() = nodeFrom
+        )
+      }
+    }
+
+    /** A file-like object instance that originates from a `FileStorage`. */
+    private class FileStorageFileLikeInstances extends Stdlib::FileLikeObject::InstanceSource {
+      FileStorageFileLikeInstances() { this.(DataFlow::AttrRead).accesses(instance(), "stream") }
+    }
+  }
+
+  import WerkzeugOld
+}
+
+/**
+ * Old version that contains the deprecated modules.
+ */
+private module WerkzeugOld {
+  /**
+   * DEPRECATED: Use the modeling available directly in the `Werkzeug` module instead.
+   *
+   * Provides models for the `werkzeug` module.
+   */
+  deprecated module werkzeug {
+    /**
+     * DEPRECATED: Use the modeling available directly in the `Werkzeug` module instead.
+     *
+     * Provides models for the `werkzeug.datastructures` module.
+     */
+    deprecated module datastructures {
       /**
+       * DEPRECATED: Use `Werkzeug::MultiDict` instead.
+       *
        * Provides models for the `werkzeug.datastructures.MultiDict` class
        *
        * See https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.MultiDict.
        */
-      module MultiDict {
-        /** DEPRECATED. Use `InstanceSourceApiNode` instead. */
+      deprecated module MultiDict {
+        /**
+         * DEPRECATED. Use `Werkzeug::MultiDict::InstanceSource` instead.
+         */
         abstract deprecated class InstanceSource extends DataFlow::Node { }
 
         /**
+         * DEPRECATED. Use `Werkzeug::MultiDict::InstanceSource` instead.
+         *
          * A source of instances of `werkzeug.datastructures.MultiDict`, extend this class to model new instances.
          *
          * This can include instantiations of the class, return values from function
@@ -40,14 +155,16 @@ module Werkzeug {
          *
          * Use the predicate `MultiDict::instance()` to get references to instances of `werkzeug.datastructures.MultiDict`.
          */
-        abstract class InstanceSourceApiNode extends API::Node { }
+        abstract deprecated class InstanceSourceApiNode extends API::Node { }
 
         /**
+         * DEPRECATED
+         *
          * Gets a reference to the `getlist` method on an instance of `werkzeug.datastructures.MultiDict`.
          *
          * See https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.Headers.getlist
          */
-        DataFlow::Node getlist() {
+        deprecated DataFlow::Node getlist() {
           result = any(InstanceSourceApiNode a).getMember("getlist").getAUse()
         }
 
@@ -57,26 +174,32 @@ module Werkzeug {
             exists(DataFlow::AttrRead read |
               read.getObject() = nodeFrom and
               nodeTo = read and
-              nodeTo = werkzeug::datastructures::MultiDict::getlist()
+              nodeTo = getlist()
             )
             or
             // getlist -> getlist()
-            nodeFrom = werkzeug::datastructures::MultiDict::getlist() and
+            nodeFrom = getlist() and
             nodeTo.(DataFlow::CallCfgNode).getFunction() = nodeFrom
           }
         }
       }
 
       /**
+       * DEPRECATED: Use `Werkzeug::FileStorage` instead.
+       *
        * Provides models for the `werkzeug.datastructures.FileStorage` class
        *
        * See https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.FileStorage.
        */
-      module FileStorage {
-        /** DEPRECATED. Use `InstanceSourceApiNode` instead. */
+      deprecated module FileStorage {
+        /**
+         * DEPRECATED. Use `Werkzeug::FileStorage::InstanceSource` instead.
+         */
         abstract deprecated class InstanceSource extends DataFlow::Node { }
 
         /**
+         * DEPRECATED. Use `Werkzeug::FileStorage::InstanceSource` instead.
+         *
          * A source of instances of `werkzeug.datastructures.FileStorage`, extend this class to model new instances.
          *
          * This can include instantiations of the class, return values from function
@@ -85,14 +208,14 @@ module Werkzeug {
          *
          * Use the predicate `FileStorage::instance()` to get references to instances of `werkzeug.datastructures.FileStorage`.
          */
-        abstract class InstanceSourceApiNode extends API::Node { }
+        abstract deprecated class InstanceSourceApiNode extends API::Node { }
 
         /** Gets a reference to an instance of `werkzeug.datastructures.FileStorage`. */
-        DataFlow::Node instance() { result = any(InstanceSourceApiNode a).getAUse() }
+        deprecated DataFlow::Node instance() { result = any(InstanceSourceApiNode a).getAUse() }
 
         private class FileStorageAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
           override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-            nodeFrom = werkzeug::datastructures::FileStorage::instance() and
+            nodeFrom = instance() and
             exists(DataFlow::AttrRead read | nodeTo = read |
               read.getAttributeName() in [
                   // str
@@ -106,21 +229,6 @@ module Werkzeug {
                 ] and
               read.getObject() = nodeFrom
             )
-          }
-        }
-
-        /** A file-like object instance that originates from a `FileStorage`. */
-        class FileStorageFileLikeInstances extends Stdlib::FileLikeObject::InstanceSource {
-          FileStorageFileLikeInstances() {
-            this.(DataFlow::AttrRead).accesses(instance(), "stream")
-            or
-            // All the attributes of the wrapper stream are proxied by the file storage
-            // so it’s possible to do storage.read() instead of the long form
-            // storage.stream.read().
-            //
-            // due to the `InstanceSourceApiNode` stuff, we can't just make
-            // `InstanceSource` extend `Stdlib::FileLikeObject::InstanceSource`
-            this = any(InstanceSourceApiNode api).getAnImmediateUse()
           }
         }
       }
