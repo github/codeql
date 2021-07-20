@@ -44,7 +44,16 @@ def test_taint(name = "World!", number="0", foo="foo"):  # $requestHandler route
         # werkzeug.datastructures.Authorization (a dict, with some properties)
         request.authorization, # $ tainted
         request.authorization['username'], # $ tainted
-        request.authorization.username, # $ MISSING: tainted
+        request.authorization.username, # $ tainted
+        request.authorization.password, # $ tainted
+        request.authorization.realm, # $ tainted
+        request.authorization.nonce, # $ tainted
+        request.authorization.uri, # $ tainted
+        request.authorization.nc, # $ tainted
+        request.authorization.cnonce, # $ tainted
+        request.authorization.response, # $ tainted
+        request.authorization.opaque, # $ tainted
+        request.authorization.qop, # $ tainted
 
         # werkzeug.datastructures.RequestCacheControl
         request.cache_control, # $ tainted

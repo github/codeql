@@ -169,6 +169,50 @@ module Werkzeug {
     }
   }
 
+  /**
+   * Provides models for the `werkzeug.datastructures.Authorization` class
+   *
+   * See https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.Authorization.
+   */
+  module Authorization {
+    /**
+     * A source of instances of `werkzeug.datastructures.Authorization`, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `Authorization::instance()` to get references to instances of `werkzeug.datastructures.Authorization`.
+     */
+    abstract class InstanceSource extends DataFlow::LocalSourceNode { }
+
+    /** Gets a reference to an instance of `werkzeug.datastructures.Authorization`. */
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an instance of `werkzeug.datastructures.Authorization`. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    /**
+     * Taint propagation for `werkzeug.datastructures.Authorization`.
+     */
+    class AuthorizationAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+      override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+        // Attributes
+        nodeFrom = instance() and
+        nodeTo.(DataFlow::AttrRead).getObject() = nodeFrom and
+        nodeTo.(DataFlow::AttrRead).getAttributeName() in [
+            "username", "password", "realm", "nonce", "uri", "nc", "cnonce", "response", "opaque",
+            "qop"
+          ]
+      }
+    }
+  }
+
   import WerkzeugOld
 }
 

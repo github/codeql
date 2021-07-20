@@ -439,6 +439,13 @@ module Flask {
     }
   }
 
+  /** An `Authorization` instance that originates from a flask request. */
+  private class FlaskRequestAuthorizationInstances extends Werkzeug::Authorization::InstanceSource {
+    FlaskRequestAuthorizationInstances() {
+      this.(DataFlow::AttrRead).accesses(request().getAUse(), "authorization")
+    }
+  }
+
   // ---------------------------------------------------------------------------
   // Implicit response from returns of flask request handlers
   // ---------------------------------------------------------------------------
