@@ -96,10 +96,10 @@ private module Frameworks {
   private import semmle.code.java.frameworks.spring.SpringWebMultipart
   private import semmle.code.java.security.ResponseSplitting
   private import semmle.code.java.security.InformationLeak
+  private import semmle.code.java.security.GroovyInjection
   private import semmle.code.java.security.JexlInjectionSinkModels
   private import semmle.code.java.security.LdapInjection
   private import semmle.code.java.security.XPath
-  private import semmle.code.java.security.GroovyInjectionSinkModels
   private import semmle.code.java.frameworks.android.SQLite
   private import semmle.code.java.frameworks.Jdbc
   private import semmle.code.java.frameworks.SpringJdbc
