@@ -10,6 +10,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.Stdlib
+private import semmle.python.Concepts
 
 /**
  * Provides models for the `Werkzeug` PyPI package.
@@ -109,6 +110,15 @@ module Werkzeug {
     /** A file-like object instance that originates from a `FileStorage`. */
     private class FileStorageFileLikeInstances extends Stdlib::FileLikeObject::InstanceSource {
       FileStorageFileLikeInstances() { this.(DataFlow::AttrRead).accesses(instance(), "stream") }
+    }
+
+    /** A call to the `save` method of a `FileStorage`. */
+    private class FileStorageSaveCall extends FileSystemAccess::Range, DataFlow::MethodCallNode {
+      FileStorageSaveCall() { this.calls(instance(), "save") }
+
+      override DataFlow::Node getAPathArgument() {
+        result in [this.getArg(0), this.getArgByName("dst")]
+      }
     }
   }
 
