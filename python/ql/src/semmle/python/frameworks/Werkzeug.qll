@@ -49,6 +49,21 @@ module Werkzeug {
         DataFlow::Node getlist() {
           result = any(InstanceSourceApiNode a).getMember("getlist").getAUse()
         }
+
+        private class MultiDictAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+          override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+            // obj -> obj.getlist
+            exists(DataFlow::AttrRead read |
+              read.getObject() = nodeFrom and
+              nodeTo = read and
+              nodeTo = werkzeug::datastructures::MultiDict::getlist()
+            )
+            or
+            // getlist -> getlist()
+            nodeFrom = werkzeug::datastructures::MultiDict::getlist() and
+            nodeTo.(DataFlow::CallCfgNode).getFunction() = nodeFrom
+          }
+        }
       }
 
       /**
@@ -73,41 +88,26 @@ module Werkzeug {
 
         /** Gets a reference to an instance of `werkzeug.datastructures.FileStorage`. */
         DataFlow::Node instance() { result = any(InstanceSourceApiNode a).getAUse() }
+
+        private class FileStorageAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+          override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+            nodeFrom = werkzeug::datastructures::FileStorage::instance() and
+            exists(DataFlow::AttrRead read | nodeTo = read |
+              read.getAttributeName() in [
+                  // str
+                  "filename", "name", "content_type", "mimetype",
+                  // file-like
+                  "stream",
+                  // TODO: werkzeug.datastructures.Headers
+                  "headers",
+                  // dict[str, str]
+                  "mimetype_params"
+                ] and
+              read.getObject() = nodeFrom
+            )
+          }
+        }
       }
-    }
-  }
-
-  private class MultiDictAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
-    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-      // obj -> obj.getlist
-      exists(DataFlow::AttrRead read |
-        read.getObject() = nodeFrom and
-        nodeTo = read and
-        nodeTo = werkzeug::datastructures::MultiDict::getlist()
-      )
-      or
-      // getlist -> getlist()
-      nodeFrom = werkzeug::datastructures::MultiDict::getlist() and
-      nodeTo.(DataFlow::CallCfgNode).getFunction() = nodeFrom
-    }
-  }
-
-  private class FileStorageAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
-    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-      nodeFrom = werkzeug::datastructures::FileStorage::instance() and
-      exists(DataFlow::AttrRead read | nodeTo = read |
-        read.getAttributeName() in [
-            // str
-            "filename", "name", "content_type", "mimetype",
-            // file-like
-            "stream",
-            // TODO: werkzeug.datastructures.Headers
-            "headers",
-            // dict[str, str]
-            "mimetype_params"
-          ] and
-        read.getObject() = nodeFrom
-      )
     }
   }
 }
