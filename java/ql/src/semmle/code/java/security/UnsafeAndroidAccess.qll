@@ -3,9 +3,9 @@
  */
 
 import java
-import semmle.code.java.frameworks.android.WebView
-import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.frameworks.android.WebView
+private import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A sink that represents a method that fetches a web resource in Android.
@@ -17,17 +17,6 @@ abstract class UrlResourceSink extends DataFlow::Node {
    * Returns a description of this vulnerability,
    */
   abstract string getSinkType();
-}
-
-/** CSV sink models representing methods susceptible to Unsafe Resource Fetching attacks. */
-private class DefaultUrlResourceSinkModel extends SinkModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "android.webkit;WebView;true;loadUrl;;;Argument[0];unsafe-android-access",
-        "android.webkit;WebView;true;postUrl;;;Argument[0];unsafe-android-access"
-      ]
-  }
 }
 
 /**
@@ -57,9 +46,10 @@ private class CrossOriginUrlResourceSink extends JavaScriptEnabledUrlResourceSin
  */
 private class JavaScriptEnabledUrlResourceSink extends UrlResourceSink {
   JavaScriptEnabledUrlResourceSink() {
-    sinkNode(this, "unsafe-android-access") and
-    exists(VarAccess webviewVa, MethodAccess getSettingsMa, Variable v |
-      this.asExpr().(Argument).getCall().getQualifier() = webviewVa and
+    exists(MethodAccess loadUrl, VarAccess webviewVa, MethodAccess getSettingsMa, Variable v |
+      loadUrl.getArgument(0) = this.asExpr() and
+      loadUrl.getMethod() instanceof WebViewLoadUrlMethod and
+      loadUrl.getQualifier() = webviewVa and
       getSettingsMa.getMethod() instanceof WebViewGetSettingsMethod and
       webviewVa.getVariable().getAnAccess() = getSettingsMa.getQualifier() and
       v.getAnAssignedValue() = getSettingsMa and

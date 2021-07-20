@@ -98,7 +98,6 @@ private module Frameworks {
   private import semmle.code.java.security.InformationLeak
   private import semmle.code.java.security.JexlInjectionSinkModels
   private import semmle.code.java.security.LdapInjection
-  private import semmle.code.java.security.UnsafeAndroidAccess
   private import semmle.code.java.security.XPath
   private import semmle.code.java.frameworks.android.SQLite
   private import semmle.code.java.frameworks.Jdbc
