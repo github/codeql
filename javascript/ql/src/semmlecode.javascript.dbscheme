@@ -125,7 +125,7 @@ case @toplevel.kind of
 |  1 = @inline_script
 |  2 = @event_handler
 |  3 = @javascript_url
-|  4 = @angular_template_toplevel;
+|  4 = @template_toplevel;
 
 is_module (int tl: @toplevel ref);
 is_nodejs (int tl: @toplevel ref);
@@ -365,7 +365,7 @@ case @expr.kind of
 | 116 = @assignlogandexpr
 | 117 = @assignlogorexpr
 | 118 = @assignnullishcoalescingexpr
-| 119 = @angular_pipe_ref
+| 119 = @template_pipe_ref
 | 120 = @generated_code_expr
 ;
 

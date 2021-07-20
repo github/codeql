@@ -237,7 +237,7 @@ module Angular2 {
    * For example, the expression `x | f: y` is desugared to `f(x, y)` where
    * `f` is a `PipeRefExpr`.
    */
-  class PipeRefExpr extends Expr, @angular_pipe_ref {
+  class PipeRefExpr extends Expr, @template_pipe_ref {
     /** Gets the identifier node naming the pipe. */
     Identifier getIdentifier() { result = getChildExpr(0) }
 
@@ -256,7 +256,7 @@ module Angular2 {
   }
 
   /** The top-level containing an Angular expression. */
-  class TemplateTopLevel extends TopLevel, @angular_template_toplevel {
+  class TemplateTopLevel extends TopLevel, @template_toplevel {
     /** Gets the expression in this top-level. */
     Expr getExpression() { result = getChildStmt(0).(ExprStmt).getExpr() }
 

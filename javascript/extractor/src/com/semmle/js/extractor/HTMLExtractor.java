@@ -126,8 +126,8 @@ public class HTMLExtractor implements IExtractor {
                 }
               }
               extractSnippet(
-                  TopLevelKind.ANGULAR_TEMPLATE,
-                  config.withSourceType(SourceType.ANGULAR_TEMPLATE),
+                  TopLevelKind.ANGULAR_STYLE_TEMPLATE,
+                  config.withSourceType(SourceType.ANGULAR_STYLE_TEMPLATE),
                   scopeManager,
                   textualExtractor,
                   source,
@@ -437,8 +437,8 @@ public class HTMLExtractor implements IExtractor {
         int bodyGroup = getNonNullCaptureGroup(m);
         if (bodyGroup != -1) {
           extractSnippet(
-              TopLevelKind.ANGULAR_TEMPLATE,
-              config.withSourceType(SourceType.ANGULAR_TEMPLATE),
+              TopLevelKind.ANGULAR_STYLE_TEMPLATE,
+              config.withSourceType(SourceType.ANGULAR_STYLE_TEMPLATE),
               scopeManager,
               textualExtractor,
               m.group(bodyGroup),
