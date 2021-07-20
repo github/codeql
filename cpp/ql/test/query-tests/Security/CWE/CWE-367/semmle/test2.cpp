@@ -242,7 +242,7 @@ void test4_1(const char *path)
 
 		fclose(f);
 
-		chmod(path, 0); // DUBIOUS (bad but perhaps not exploitable)
+		chmod(path, 0); // BAD
 	}
 }
 
@@ -345,7 +345,7 @@ void test7_1(const char *path)
 	
 		fclose(f);
 
-		chmod(path, 1234); // BAD [NOT DETECTED]
+		chmod(path, 1234); // BAD
 	}
 }
 
@@ -353,6 +353,6 @@ void test7_1(const char *path1, const char *path2)
 {
 	if (!rename(path1, path2))
 	{
-		chmod(path2, 1234); // BAD [NOT DETECTED]
+		chmod(path2, 1234); // BAD
 	}
 }

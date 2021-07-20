@@ -28,13 +28,26 @@ FunctionCall filenameOperation(Expr path) {
   exists(string name | name = result.getTarget().getName() |
     name =
       [
-        "remove", "unlink", "rmdir", "rename", "chmod", "chown", "fopen", "open", "freopen",
-        "_open", "_wopen", "_wfopen", "_wfsopen"
+        "remove", "unlink", "rmdir", "rename", "fopen", "open", "freopen", "_open", "_wopen",
+        "_wfopen", "_wfsopen"
       ] and
     result.getArgument(0) = path
     or
     name = ["fopen_s", "wfopen_s", "rename"] and
     result.getArgument(1) = path
+  )
+  or
+  result = sensitiveFilenameOperation(path)
+}
+
+/**
+ * An operation on a filename that is likely to modify the security properties
+ * of the corresponding file and may return an indication of success.
+ */
+FunctionCall sensitiveFilenameOperation(Expr path) {
+  exists(string name | name = result.getTarget().getName() |
+    name = ["chmod", "chown"] and
+    result.getArgument(0) = path
   )
 }
 
@@ -80,29 +93,36 @@ from Expr check, Expr checkPath, FunctionCall use, Expr usePath
 where
   // `check` looks like a check on a filename
   (
-    // either:
-    // an access check
-    check = accessCheck(checkPath)
+    (
+      // either:
+      // an access check
+      check = accessCheck(checkPath)
+      or
+      // a stat
+      check = stat(checkPath, _)
+      or
+      // access to a member variable on the stat buf
+      // (morally, this should be a use-use pair, but it seems unlikely
+      // that this variable will get reused in practice)
+      exists(Expr call, Expr e, Variable v |
+        call = stat(checkPath, e) and
+        e.getAChild*().(VariableAccess).getTarget() = v and
+        check.(VariableAccess).getTarget() = v and
+        not e.getAChild*() = check // the call that writes to the pointer is not where the pointer is checked.
+      )
+    ) and
+    // `op` looks like an operation on a filename
+    use = filenameOperation(usePath)
     or
-    // a stat
-    check = stat(checkPath, _)
-    or
-    // access to a member variable on the stat buf
-    // (morally, this should be a use-use pair, but it seems unlikely
-    // that this variable will get reused in practice)
-    exists(Expr call, Expr e, Variable v |
-      call = stat(checkPath, e) and
-      e.getAChild*().(VariableAccess).getTarget() = v and
-      check.(VariableAccess).getTarget() = v and
-      not e.getAChild*() = check // the call that writes to the pointer is not where the pointer is checked.
-    )
+    // another filename operation (null pointers can indicate errors)
+    check = filenameOperation(checkPath) and
+    // `op` looks like a sensitive operation on a filename
+    use = sensitiveFilenameOperation(usePath)
   ) and
   // `checkPath` and `usePath` refer to the same SSA variable
   exists(SsaDefinition def, StackVariable v |
     def.getAUse(v) = checkPath and def.getAUse(v) = usePath
   ) and
-  // `op` looks like an operation on a filename
-  use = filenameOperation(usePath) and
   // the return value of `check` is used (possibly with one step of
   // variable indirection) in a guard which controls `use`
   exists(GuardCondition guard | referenceTo(check, guard.getAChild*()) |
