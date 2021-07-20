@@ -70,6 +70,8 @@ def test_taint(name = "World!", number="0", foo="foo"):  # $requestHandler route
         request.files['key'], # $ tainted
         request.files['key'].filename, # $ MISSING: tainted
         request.files['key'].stream, # $ MISSING: tainted
+        request.files['key'].read(), # $ MISSING: tainted
+        request.files['key'].stream.read(), # $ MISSING: tainted
         request.files.get('key'), # $ tainted
         request.files.get('key').filename, # $ MISSING: tainted
         request.files.get('key').stream, # $ MISSING: tainted

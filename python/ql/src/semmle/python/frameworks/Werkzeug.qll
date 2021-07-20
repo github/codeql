@@ -9,6 +9,7 @@ private import python
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.ApiGraphs
+private import semmle.python.frameworks.Stdlib
 
 /**
  * Provides models for the `Werkzeug` PyPI package.
@@ -105,6 +106,21 @@ module Werkzeug {
                 ] and
               read.getObject() = nodeFrom
             )
+          }
+        }
+
+        /** A file-like object instance that originates from a `FileStorage`. */
+        class FileStorageFileLikeInstances extends Stdlib::FileLikeObject::InstanceSource {
+          FileStorageFileLikeInstances() {
+            this.(DataFlow::AttrRead).accesses(instance(), "stream")
+            or
+            // All the attributes of the wrapper stream are proxied by the file storage
+            // so it’s possible to do storage.read() instead of the long form
+            // storage.stream.read().
+            //
+            // due to the `InstanceSourceApiNode` stuff, we can't just make
+            // `InstanceSource` extend `Stdlib::FileLikeObject::InstanceSource`
+            this = any(InstanceSourceApiNode api).getAnImmediateUse()
           }
         }
       }
