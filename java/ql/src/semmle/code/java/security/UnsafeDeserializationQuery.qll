@@ -121,7 +121,10 @@ private class SafeKryo extends DataFlow2::Configuration {
   }
 }
 
-private predicate unsafeDeserialization(MethodAccess ma, Expr sink) {
+/**
+ * Holds if `ma` is a call that triggers deserialization with tainted data from `sink`.
+ */
+predicate unsafeDeserialization(MethodAccess ma, Expr sink) {
   exists(Method m | m = ma.getMethod() |
     m instanceof ObjectInputStreamReadObjectMethod and
     sink = ma.getQualifier() and
