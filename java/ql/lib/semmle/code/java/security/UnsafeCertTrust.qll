@@ -4,7 +4,6 @@ import java
 private import semmle.code.java.frameworks.Networking
 private import semmle.code.java.security.Encryption
 private import semmle.code.java.dataflow.DataFlow
-private import semmle.code.java.dataflow.DataFlow2
 
 /**
  * The creation of an object that prepares an SSL connection.
@@ -51,19 +50,6 @@ class SslConnectionCreation extends DataFlow::Node {
 abstract class SslUnsafeCertTrustSanitizer extends DataFlow::Node { }
 
 /**
- * An SSL object that was assigned a safe `SSLParameters` object and can be considered safe.
- */
-private class SslConnectionWithSafeSslParameters extends SslUnsafeCertTrustSanitizer {
-  SslConnectionWithSafeSslParameters() {
-    exists(SafeSslParametersFlowConfig config, DataFlow::Node safe, DataFlow::Node sanitizer |
-      config.hasFlowTo(safe) and
-      sanitizer = DataFlow::exprNode(safe.asExpr().(Argument).getCall().getQualifier()) and
-      DataFlow::localFlow(sanitizer, this)
-    )
-  }
-}
-
-/**
  * An `SSLEngine` set in server mode.
  */
 private class SslEngineServerMode extends SslUnsafeCertTrustSanitizer {
@@ -90,34 +76,6 @@ private predicate isSslSocket(MethodAccess createSocket) {
   )
   or
   createSocket.getQualifier().getType().(RefType).getASupertype*() instanceof SSLSocketFactory
-}
-
-private class SafeSslParametersFlowConfig extends DataFlow2::Configuration {
-  SafeSslParametersFlowConfig() { this = "SafeSslParametersFlowConfig" }
-
-  override predicate isSource(DataFlow::Node source) {
-    exists(MethodAccess ma |
-      ma instanceof SafeSetEndpointIdentificationAlgorithm and
-      DataFlow::getInstanceArgument(ma) = source.(DataFlow::PostUpdateNode).getPreUpdateNode()
-    )
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma, RefType t | t instanceof SSLSocket or t instanceof SSLEngine |
-      ma.getMethod().hasName("setSSLParameters") and
-      ma.getMethod().getDeclaringType().getASupertype*() = t and
-      ma.getArgument(0) = sink.asExpr()
-    )
-  }
-}
-
-private class SafeSetEndpointIdentificationAlgorithm extends MethodAccess {
-  SafeSetEndpointIdentificationAlgorithm() {
-    this.getMethod().hasName("setEndpointIdentificationAlgorithm") and
-    this.getMethod().getDeclaringType() instanceof SSLParameters and
-    not this.getArgument(0) instanceof NullLiteral and
-    not this.getArgument(0).(CompileTimeConstantExpr).getStringValue().length() = 0
-  }
 }
 
 /**

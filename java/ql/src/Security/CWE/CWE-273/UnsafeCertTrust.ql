@@ -12,20 +12,7 @@
  */
 
 import java
-import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.security.UnsafeCertTrust
-
-class SslEndpointIdentificationFlowConfig extends TaintTracking::Configuration {
-  SslEndpointIdentificationFlowConfig() { this = "SslEndpointIdentificationFlowConfig" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof SslConnectionInit }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof SslConnectionCreation }
-
-  override predicate isSanitizer(DataFlow::Node sanitizer) {
-    sanitizer instanceof SslUnsafeCertTrustSanitizer
-  }
-}
+import semmle.code.java.security.UnsafeCertTrustQuery
 
 from Expr unsafeTrust
 where
