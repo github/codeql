@@ -114,7 +114,7 @@ class TestCollect {
         sink(tableValue(t3));  // $ MISSING:numValueFlow=1 // depends on aliasing
     }
 
-    void test4(Multimap<String, String> m1, Multimap<String, String> m2, Multimap<String, String> m3, 
+    void test5(Multimap<String, String> m1, Multimap<String, String> m2, Multimap<String, String> m3, 
            Multimap<String, String> m4, Multimap<String, String> m5){
         String x = taint();
         m1.put("k", x);
@@ -136,7 +136,7 @@ class TestCollect {
         sink(multimapValue(m5));  // $ MISSING:numValueFlow=1 // depends on aliasing
     }
 
-    void test5(Comparator<String> comp, SortedSet<String> sorS, SortedMap<String, String> sorM) {
+    void test6(Comparator<String> comp, SortedSet<String> sorS, SortedMap<String, String> sorM) {
         ImmutableSortedSet<String> s = ImmutableSortedSet.of(taint());
 
         sink(element(s)); // $numValueFlow=1
