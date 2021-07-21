@@ -320,8 +320,19 @@ module Templating {
      */
     string getStem() { result = getBaseName().regexpCapture("(.*?)(?:\\.([^.]*))?", 1) }
 
+    /** Gets a template string with all leading `../` sequences resolved. */
+    private TemplateFileReferenceString resolveUpwardTraversal() {
+      exists(UpwardTraversalSuffix up |
+        this = up.getOriginal() and
+        result = up.(TemplateFileReferenceString).resolveUpwardTraversal()
+      )
+      or
+      not this = any(UpwardTraversalSuffix up).getOriginal() and
+      result = this
+    }
+
     /** Gets the template file referenced by this string. */
-    final TemplateFile getTemplateFile() { result = getBestMatchingTarget(this) }
+    final TemplateFile getTemplateFile() { result = getBestMatchingTarget(this.resolveUpwardTraversal()) }
   }
 
   /** The value of a template reference node, as a template reference string. */
@@ -331,6 +342,24 @@ module Templating {
     DefaultTemplateReferenceString() { this = r.getValue().replaceAll("\\", "/") }
 
     override Folder getContextFolder() { result = r.getFile().getParentContainer() }
+  }
+
+  /** The `X` in a path of form `../X`, treated as a separate path string with a different context folder. */
+  private class UpwardTraversalSuffix extends TemplateFileReferenceString {
+    TemplateFileReferenceString original;
+
+    UpwardTraversalSuffix() {
+      original = "../" + this
+    }
+
+    override Folder getContextFolder() {
+      result = original.getContextFolder().getParentContainer()
+    }
+
+    /** Gets the original string including the `../` prefix. */
+    TemplateFileReferenceString getOriginal() {
+      result = original
+    }
   }
 
   /**
