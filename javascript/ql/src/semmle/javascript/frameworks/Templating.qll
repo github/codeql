@@ -214,7 +214,7 @@ module Templating {
     exists(TemplateInstantiaton inst, API::Node base, string name |
       base.getARhs() = inst.getTemplateParamsNode() and
       result = base.getMember(name) and
-      succ = inst.getTemplateFile().getAPlaceholder().getInnerTopLevel().getAVariableUse(name)
+      succ = inst.getTemplateFile().getAnImportedFile*().getAPlaceholder().getInnerTopLevel().getAVariableUse(name)
     )
     or
     exists(string prop, DataFlow::SourceNode prev |
@@ -260,6 +260,11 @@ module Templating {
   abstract class TemplateFile extends File {
     /** Gets a placeholder tag in this file. */
     final TemplatePlaceholderTag getAPlaceholder() { result.getFile() = this }
+
+    /** Gets a template file referenced by this one via a template inclusion tag, such as `{% include foo %}` */
+    TemplateFile getAnImportedFile() {
+      result = getAPlaceholder().(TemplateInclusionTag).getImportedFile()
+    }
   }
 
   /** Any HTML file, seen as a possible target for template instantiation. */
@@ -600,5 +605,48 @@ module Templating {
     }
 
     override DataFlow::Node getARhs() { none() }
+  }
+
+  /**
+   * A template tag which causes another template file to be instantiated using the same variables as the current one.
+   *
+   * Examples:
+   * - `{% include foo/bar %}`
+   * - `{% include "../foo/bar.html" %}`
+   * - `<% include foo/bar %>`
+   * - `{{!< foo/bar }}`
+   * - `{{> foo/bar }}`
+   */
+  class TemplateInclusionTag extends TemplatePlaceholderTag {
+    string rawPath;
+
+    TemplateInclusionTag() {
+      rawPath = getRawText().regexpCapture("[{<]% *(?:import|include|extend|require)s? *(?:[(] *)?['\"]?(.*?)['\"]? *(?:[)] *)?%[}>]", 1)
+      or
+      rawPath = getRawText().regexpCapture("\\{\\{!?[<>](.*?)\\}\\}", 1)
+    }
+
+    /** Gets the imported path (normalized). */
+    string getPath() {
+      result = rawPath.trim().replaceAll("\\", "/").regexpReplaceAll("^\\./", "")
+    }
+
+    /** Gets the file referenced by this inclusion tag. */
+    TemplateFile getImportedFile() {
+      result = getPath().(TemplateFileReferenceString).getTemplateFile()
+    }
+  }
+
+  /** The imported string from a template inclusion tag. */
+  private class TemplateInclusionPathString extends TemplateFileReferenceString {
+    TemplateInclusionTag tag;
+
+    TemplateInclusionPathString() {
+      this = tag.getPath()
+    }
+
+    override Folder getContextFolder() {
+      result = tag.getFile().getParentContainer()
+    }
   }
 }
