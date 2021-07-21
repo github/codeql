@@ -1,8 +1,8 @@
-void testFunction()
+void testFunction(int i1, int i2, int i3, bool b1, bool b2, bool b3, char c1)
 {
-  int i1,i2,i3;
-  bool b1,b2,b3;
-  char c1;
+
+
+
   
   if(b1||b2&&b3) //BAD
     return;
