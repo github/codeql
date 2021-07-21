@@ -537,4 +537,39 @@ module Templating {
       )
     }
   }
+
+  /**
+   * An EJS-style `include` call within a template tag, such as `<%- include(file, { params }) %>`.
+   */
+  private class EjsIncludeCallInTemplate extends TemplateInstantiaton::Range, DataFlow::CallNode {
+    EjsIncludeCallInTemplate() {
+      exists(TemplatePlaceholderTag tag |
+        tag.getRawText().regexpMatch("(?s)<%-.*") and
+        this = tag.getInnerTopLevel().getAVariableUse("include").getACall()
+      )
+    }
+
+    /** Gets a data flow node that refers to the instantiated template, if any. */
+    override DataFlow::SourceNode getOutput() { result = this }
+
+    /** Gets a data flow node that refers a template file to be instantiated, if any. */
+    override DataFlow::Node getTemplateFileNode() { result = getArgument(0) }
+
+    /** Gets a data flow node that refers to the contents of the template to be instantiated, if any. */
+    override DataFlow::Node getTemplateContentNode() { none() }
+
+    /** Gets a data flow node that refers to an object whose properties become variables in the template. */
+    override DataFlow::Node getTemplateParamsNode() { result = getArgument(1) }
+  }
+
+  /** The `include` function, seen as an API node, so we can treat it as a template instantiation. */
+  private class IncludeFunctionAsEntryPoint extends API::EntryPoint {
+    IncludeFunctionAsEntryPoint() { this = "IncludeFunctionAsEntryPoint" }
+
+    override DataFlow::SourceNode getAUse() {
+      result = any(TemplatePlaceholderTag tag).getInnerTopLevel().getAVariableUse("include")
+    }
+
+    override DataFlow::Node getARhs() { none() }
+  }
 }
