@@ -16,10 +16,10 @@ import cpp
 import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 
 /** Holds if `exptmp` equals expression logical or followed by logical and. */
-predicate isLogicalOrAndExpr(Expr exptmp) {
-  not exptmp.(LogicalOrExpr).getLeftOperand() instanceof BinaryOperation and
-  not exptmp.(LogicalOrExpr).getRightOperand().isParenthesised() and
-  exptmp.(LogicalOrExpr).getRightOperand() instanceof LogicalAndExpr
+predicate isLogicalOrAndExpr(LogicalOrExpr exptmp) {
+  not exptmp.getLeftOperand() instanceof BinaryOperation and
+  not exptmp.getRightOperand().isParenthesised() and
+  exptmp.getRightOperand() instanceof LogicalAndExpr
 }
 
 /** Holds if `exptmp` equals expression logical or followed by bit operation. */
@@ -158,10 +158,10 @@ predicate isDifferentResults(
 from Expr exp, string msg
 where
   isLogicalOrAndExpr(exp) and
-  msg = "Logical and has a higher priority."
+  msg = "Logical AND has a higher priority."
   or
   isLogicalOrandBitwise(exp) and
-  msg = "Binary operations has higher priority."
+  msg = "Binary operations have higher priority."
   or
   isBitwiseandBitwise(exp) and
   isDifferentSize(exp.(BinaryBitwiseOperation).getLeftOperand(),
