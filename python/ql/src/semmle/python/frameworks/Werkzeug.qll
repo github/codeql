@@ -47,7 +47,7 @@ module Werkzeug {
     /** Gets a reference to an instance of `werkzeug.datastructures.MultiDict`. */
     DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
 
-    private class MultiDictAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+    private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
       override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
         nodeFrom = instance() and
         nodeTo.(DataFlow::MethodCallNode).calls(nodeFrom, "getlist")
@@ -87,7 +87,7 @@ module Werkzeug {
     /** Gets a reference to an instance of `werkzeug.datastructures.FileStorage`. */
     DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
 
-    private class FileStorageAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+    private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
       override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
         nodeFrom = instance() and
         exists(DataFlow::AttrRead read | nodeTo = read |
@@ -152,7 +152,7 @@ module Werkzeug {
     /**
      * Taint propagation for `werkzeug.datastructures.Headers`.
      */
-    class HeadersAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+    private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
       override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
         // normal (non-async) methods
         nodeFrom = instance() and
@@ -194,7 +194,7 @@ module Werkzeug {
     /**
      * Taint propagation for `werkzeug.datastructures.Authorization`.
      */
-    class AuthorizationAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+    private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
       override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
         // Attributes
         nodeFrom = instance() and

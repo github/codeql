@@ -110,6 +110,31 @@ private module Twisted {
 
     /** Gets a reference to an instance of `twisted.web.server.Request`. */
     DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    /**
+     * Taint propagation for `twisted.web.server.Request`.
+     */
+    private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+      override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+        // normal (non-async) methods
+        nodeFrom = instance() and
+        nodeTo
+            .(DataFlow::MethodCallNode)
+            .calls(nodeFrom,
+              [
+                "getCookie", "getHeader", "getAllHeaders", "getUser", "getPassword", "getHost",
+                "getRequestHostname"
+              ])
+        or
+        // Attributes
+        nodeFrom = instance() and
+        nodeTo.(DataFlow::AttrRead).getObject() = nodeFrom and
+        nodeTo.(DataFlow::AttrRead).getAttributeName() in [
+            "uri", "path", "prepath", "postpath", "content", "args", "received_cookies",
+            "requestHeaders", "user", "password", "host"
+          ]
+      }
+    }
   }
 
   /**
@@ -123,31 +148,6 @@ private module Twisted {
     }
 
     override string getSourceType() { result = "twisted.web.server.Request" }
-  }
-
-  /**
-   * Taint propagation for `twisted.web.server.Request`.
-   */
-  private class TwistedRequestAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
-    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-      // normal (non-async) methods
-      nodeFrom = Request::instance() and
-      nodeTo
-          .(DataFlow::MethodCallNode)
-          .calls(nodeFrom,
-            [
-              "getCookie", "getHeader", "getAllHeaders", "getUser", "getPassword", "getHost",
-              "getRequestHostname"
-            ])
-      or
-      // Attributes
-      nodeFrom = Request::instance() and
-      nodeTo.(DataFlow::AttrRead).getObject() = nodeFrom and
-      nodeTo.(DataFlow::AttrRead).getAttributeName() in [
-          "uri", "path", "prepath", "postpath", "content", "args", "received_cookies",
-          "requestHeaders", "user", "password", "host"
-        ]
-    }
   }
 
   /**

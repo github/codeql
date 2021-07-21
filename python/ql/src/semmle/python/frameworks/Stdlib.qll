@@ -47,7 +47,7 @@ module Stdlib {
     /**
      * Taint propagation for file-like objects.
      */
-    class FileLikeObjectAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+    private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
       override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
         // result of method call is tainted
         nodeFrom = instance() and

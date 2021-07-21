@@ -293,6 +293,73 @@ module AiohttpWebModel {
 
     /** Gets a reference to an instance of `aiohttp.web.Request`. */
     DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    /**
+     * Taint propagation for `aiohttp.web.Request`.
+     *
+     * See https://docs.aiohttp.org/en/stable/web_reference.html#request-and-base-request
+     */
+    private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+      override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+        // normal (non-async) methods
+        nodeFrom = Request::instance() and
+        nodeTo.(DataFlow::MethodCallNode).calls(nodeFrom, ["clone", "get_extra_info"])
+        or
+        // async methods
+        exists(DataFlow::MethodCallNode call, Await await |
+          nodeTo.asExpr() = await and
+          nodeFrom = Request::instance()
+        |
+          await.getValue() = any(DataFlow::Node awaitable | call.flowsTo(awaitable)).asExpr() and
+          call.calls(nodeFrom, ["read", "text", "json", "multipart", "post"])
+        )
+        or
+        // Attributes
+        nodeFrom = Request::instance() and
+        nodeTo.(DataFlow::AttrRead).getObject() = nodeFrom and
+        nodeTo.(DataFlow::AttrRead).getAttributeName() in [
+            "url", "rel_url", "forwarded", "host", "remote", "path", "path_qs", "raw_path", "query",
+            "headers", "transport", "cookies", "content", "_payload", "content_type", "charset",
+            "http_range", "if_modified_since", "if_unmodified_since", "if_range", "match_info"
+          ]
+      }
+    }
+
+    /** An attribute read on an `aiohttp.web.Request` that is a `MultiDictProxy` instance. */
+    class AiohttpRequestMultiDictProxyInstances extends Multidict::MultiDictProxy::InstanceSource {
+      AiohttpRequestMultiDictProxyInstances() {
+        this.(DataFlow::AttrRead).getObject() = Request::instance() and
+        this.(DataFlow::AttrRead).getAttributeName() in ["query", "headers"]
+        or
+        // Handle the common case of `x = await request.post()`
+        // but don't try to handle anything else, since we don't have an easy way to do this yet.
+        // TODO: more complete handling of `await request.post()`
+        exists(Await await, DataFlow::CallCfgNode call, DataFlow::AttrRead read |
+          this.asExpr() = await
+        |
+          read.(DataFlow::AttrRead).getObject() = Request::instance() and
+          read.(DataFlow::AttrRead).getAttributeName() = "post" and
+          call.getFunction() = read and
+          await.getValue() = call.asExpr()
+        )
+      }
+    }
+
+    /** An attribute read on an `aiohttp.web.Request` that is a `yarl.URL` instance. */
+    class AiohttpRequestYarlUrlInstances extends Yarl::Url::InstanceSource {
+      AiohttpRequestYarlUrlInstances() {
+        this.(DataFlow::AttrRead).getObject() = Request::instance() and
+        this.(DataFlow::AttrRead).getAttributeName() in ["url", "rel_url"]
+      }
+    }
+
+    /** An attribute read on an `aiohttp.web.Request` that is a `aiohttp.StreamReader` instance. */
+    class AiohttpRequestStreamReaderInstances extends StreamReader::InstanceSource {
+      AiohttpRequestStreamReaderInstances() {
+        this.(DataFlow::AttrRead).getObject() = Request::instance() and
+        this.(DataFlow::AttrRead).getAttributeName() in ["content", "_payload"]
+      }
+    }
   }
 
   /**
@@ -357,7 +424,7 @@ module AiohttpWebModel {
     /**
      * Taint propagation for `aiohttp.StreamReader`.
      */
-    private class AiohttpStreamReaderAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+    private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
       override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
         // normal (non-async) methods
         nodeFrom = instance() and
@@ -422,73 +489,6 @@ module AiohttpWebModel {
 
     override string getSourceType() {
       result = "aiohttp.web.Request from self.request in View class"
-    }
-  }
-
-  /**
-   * Taint propagation for `aiohttp.web.Request`.
-   *
-   * See https://docs.aiohttp.org/en/stable/web_reference.html#request-and-base-request
-   */
-  private class AiohttpRequestAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
-    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-      // normal (non-async) methods
-      nodeFrom = Request::instance() and
-      nodeTo.(DataFlow::MethodCallNode).calls(nodeFrom, ["clone", "get_extra_info"])
-      or
-      // async methods
-      exists(DataFlow::MethodCallNode call, Await await |
-        nodeTo.asExpr() = await and
-        nodeFrom = Request::instance()
-      |
-        await.getValue() = any(DataFlow::Node awaitable | call.flowsTo(awaitable)).asExpr() and
-        call.calls(nodeFrom, ["read", "text", "json", "multipart", "post"])
-      )
-      or
-      // Attributes
-      nodeFrom = Request::instance() and
-      nodeTo.(DataFlow::AttrRead).getObject() = nodeFrom and
-      nodeTo.(DataFlow::AttrRead).getAttributeName() in [
-          "url", "rel_url", "forwarded", "host", "remote", "path", "path_qs", "raw_path", "query",
-          "headers", "transport", "cookies", "content", "_payload", "content_type", "charset",
-          "http_range", "if_modified_since", "if_unmodified_since", "if_range", "match_info"
-        ]
-    }
-  }
-
-  /** An attribute read on an `aiohttp.web.Request` that is a `MultiDictProxy` instance. */
-  class AiohttpRequestMultiDictProxyInstances extends Multidict::MultiDictProxy::InstanceSource {
-    AiohttpRequestMultiDictProxyInstances() {
-      this.(DataFlow::AttrRead).getObject() = Request::instance() and
-      this.(DataFlow::AttrRead).getAttributeName() in ["query", "headers"]
-      or
-      // Handle the common case of `x = await request.post()`
-      // but don't try to handle anything else, since we don't have an easy way to do this yet.
-      // TODO: more complete handling of `await request.post()`
-      exists(Await await, DataFlow::CallCfgNode call, DataFlow::AttrRead read |
-        this.asExpr() = await
-      |
-        read.(DataFlow::AttrRead).getObject() = Request::instance() and
-        read.(DataFlow::AttrRead).getAttributeName() = "post" and
-        call.getFunction() = read and
-        await.getValue() = call.asExpr()
-      )
-    }
-  }
-
-  /** An attribute read on an `aiohttp.web.Request` that is a `yarl.URL` instance. */
-  class AiohttpRequestYarlUrlInstances extends Yarl::Url::InstanceSource {
-    AiohttpRequestYarlUrlInstances() {
-      this.(DataFlow::AttrRead).getObject() = Request::instance() and
-      this.(DataFlow::AttrRead).getAttributeName() in ["url", "rel_url"]
-    }
-  }
-
-  /** An attribute read on an `aiohttp.web.Request` that is a `aiohttp.StreamReader` instance. */
-  class AiohttpRequestStreamReaderInstances extends StreamReader::InstanceSource {
-    AiohttpRequestStreamReaderInstances() {
-      this.(DataFlow::AttrRead).getObject() = Request::instance() and
-      this.(DataFlow::AttrRead).getAttributeName() in ["content", "_payload"]
     }
   }
 

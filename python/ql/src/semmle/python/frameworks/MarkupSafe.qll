@@ -82,7 +82,7 @@ private module MarkupSafeModel {
     }
 
     /** Taint propagation for `markupsafe.Markup`. */
-    class AddtionalTaintSteps extends TaintTracking::AdditionalTaintStep {
+    private class AddtionalTaintStep extends TaintTracking::AdditionalTaintStep {
       override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
         nodeTo.(ClassInstantiation).getArg(0) = nodeFrom
       }

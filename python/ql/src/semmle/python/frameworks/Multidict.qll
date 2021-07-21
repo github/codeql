@@ -63,7 +63,7 @@ module Multidict {
      *
      * See https://multidict.readthedocs.io/en/stable/multidict.html#multidictproxy
      */
-    class MultiDictProxyAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+    private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
       override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
         // class instantiation
         exists(ClassInstantiation call |

@@ -340,7 +340,7 @@ private module Django {
     /**
      * Taint propagation for `django.utils.datastructures.MultiValueDict`.
      */
-    class MultiValueDictAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+    private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
       override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
         // class instantiation
         exists(ClassInstantiation call |
@@ -388,7 +388,7 @@ private module Django {
     /**
      * Taint propagation for `django.core.files.uploadedfile.UploadedFile`.
      */
-    class UploadedFileAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+    private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
       override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
         // Attributes
         nodeFrom = instance() and
@@ -436,7 +436,7 @@ private module Django {
     /**
      * Taint propagation for `django.urls.ResolverMatch`.
      */
-    class ResolverMatchAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+    private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
       override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
         // Attributes
         nodeFrom = instance() and
@@ -743,6 +743,111 @@ private module PrivateDjango {
 
           /** Gets a reference to an instance of `django.http.request.HttpRequest`. */
           DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+          /**
+           * Taint propagation for `django.http.request.HttpRequest`.
+           */
+          private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+            override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+              // normal (non-async) methods
+              nodeFrom = django::http::request::HttpRequest::instance() and
+              nodeTo
+                  .(DataFlow::MethodCallNode)
+                  .calls(nodeFrom,
+                    ["get_full_path", "get_full_path_info", "read", "readline", "readlines"])
+              or
+              // special handling of the `build_absolute_uri` method, see
+              // https://docs.djangoproject.com/en/3.0/ref/request-response/#django.http.HttpRequest.build_absolute_uri
+              exists(DataFlow::AttrRead attr, DataFlow::CallCfgNode call, DataFlow::Node instance |
+                instance = django::http::request::HttpRequest::instance() and
+                attr.getObject() = instance
+              |
+                attr.getAttributeName() = "build_absolute_uri" and
+                nodeTo.(DataFlow::CallCfgNode).getFunction() = attr and
+                call = nodeTo and
+                (
+                  not exists(call.getArg(_)) and
+                  not exists(call.getArgByName(_)) and
+                  nodeFrom = instance
+                  or
+                  nodeFrom = call.getArg(0)
+                  or
+                  nodeFrom = call.getArgByName("location")
+                )
+              )
+              or
+              // Attributes
+              nodeFrom = django::http::request::HttpRequest::instance() and
+              nodeTo.(DataFlow::AttrRead).getObject() = nodeFrom and
+              nodeTo.(DataFlow::AttrRead).getAttributeName() in [
+                  // str / bytes
+                  "body", "path", "path_info", "method", "encoding", "content_type",
+                  // django.http.QueryDict
+                  "GET", "POST",
+                  // dict[str, str]
+                  "content_params", "COOKIES",
+                  // dict[str, Any]
+                  "META",
+                  // HttpHeaders (case insensitive dict-like)
+                  "headers",
+                  // MultiValueDict[str, UploadedFile]
+                  "FILES",
+                  // django.urls.ResolverMatch
+                  "resolver_match"
+                ]
+              // TODO: Handle that a HttpRequest is iterable
+            }
+          }
+
+          /** An attribute read on an django request that is a `MultiValueDict` instance. */
+          private class DjangoHttpRequestMultiValueDictInstances extends Django::MultiValueDict::InstanceSource {
+            DjangoHttpRequestMultiValueDictInstances() {
+              this.(DataFlow::AttrRead).getObject() = instance() and
+              this.(DataFlow::AttrRead).getAttributeName() in ["GET", "POST", "FILES"]
+            }
+          }
+
+          /** An attribute read on an django request that is a `ResolverMatch` instance. */
+          private class DjangoHttpRequestResolverMatchInstances extends Django::ResolverMatch::InstanceSource {
+            DjangoHttpRequestResolverMatchInstances() {
+              this.(DataFlow::AttrRead).getObject() = instance() and
+              this.(DataFlow::AttrRead).getAttributeName() = "resolver_match"
+            }
+          }
+
+          /** An `UploadedFile` instance that originates from a django request. */
+          private class DjangoHttpRequestUploadedFileInstances extends Django::UploadedFile::InstanceSource {
+            DjangoHttpRequestUploadedFileInstances() {
+              // TODO: this currently only works in local-scope, since writing type-trackers for
+              // this is a little too much effort. Once API-graphs are available for more
+              // things, we can rewrite this.
+              //
+              // TODO: This approach for identifying member-access is very adhoc, and we should
+              // be able to do something more structured for providing modeling of the members
+              // of a container-object.
+              //
+              // dicts
+              exists(DataFlow::AttrRead files, DataFlow::Node dict |
+                files.accesses(instance(), "FILES") and
+                (
+                  dict = files
+                  or
+                  dict.(DataFlow::MethodCallNode).calls(files, "dict")
+                )
+              |
+                this.asCfgNode().(SubscriptNode).getObject() = dict.asCfgNode()
+                or
+                this.(DataFlow::MethodCallNode).calls(dict, "get")
+              )
+              or
+              // getlist
+              exists(DataFlow::AttrRead files, DataFlow::MethodCallNode getlistCall |
+                files.accesses(instance(), "FILES") and
+                getlistCall.calls(files, "getlist") and
+                this.asCfgNode().(SubscriptNode).getObject() = getlistCall.asCfgNode()
+              )
+            }
+          }
         }
       }
 
@@ -2033,107 +2138,6 @@ private module PrivateDjango {
 
     override string getSourceType() {
       result = "django routed param from self.args/kwargs in View class"
-    }
-  }
-
-  private class DjangoHttpRequestAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
-    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-      // normal (non-async) methods
-      nodeFrom = django::http::request::HttpRequest::instance() and
-      nodeTo
-          .(DataFlow::MethodCallNode)
-          .calls(nodeFrom, ["get_full_path", "get_full_path_info", "read", "readline", "readlines"])
-      or
-      // special handling of the `build_absolute_uri` method, see
-      // https://docs.djangoproject.com/en/3.0/ref/request-response/#django.http.HttpRequest.build_absolute_uri
-      exists(DataFlow::AttrRead attr, DataFlow::CallCfgNode call, DataFlow::Node instance |
-        instance = django::http::request::HttpRequest::instance() and
-        attr.getObject() = instance
-      |
-        attr.getAttributeName() = "build_absolute_uri" and
-        nodeTo.(DataFlow::CallCfgNode).getFunction() = attr and
-        call = nodeTo and
-        (
-          not exists(call.getArg(_)) and
-          not exists(call.getArgByName(_)) and
-          nodeFrom = instance
-          or
-          nodeFrom = call.getArg(0)
-          or
-          nodeFrom = call.getArgByName("location")
-        )
-      )
-      or
-      // Attributes
-      nodeFrom = django::http::request::HttpRequest::instance() and
-      nodeTo.(DataFlow::AttrRead).getObject() = nodeFrom and
-      nodeTo.(DataFlow::AttrRead).getAttributeName() in [
-          // str / bytes
-          "body", "path", "path_info", "method", "encoding", "content_type",
-          // django.http.QueryDict
-          "GET", "POST",
-          // dict[str, str]
-          "content_params", "COOKIES",
-          // dict[str, Any]
-          "META",
-          // HttpHeaders (case insensitive dict-like)
-          "headers",
-          // MultiValueDict[str, UploadedFile]
-          "FILES",
-          // django.urls.ResolverMatch
-          "resolver_match"
-        ]
-      // TODO: Handle that a HttpRequest is iterable
-    }
-  }
-
-  /** An attribute read on an django request that is a `MultiValueDict` instance. */
-  class DjangoHttpRequestMultiValueDictInstances extends Django::MultiValueDict::InstanceSource {
-    DjangoHttpRequestMultiValueDictInstances() {
-      this.(DataFlow::AttrRead).getObject() = django::http::request::HttpRequest::instance() and
-      this.(DataFlow::AttrRead).getAttributeName() in ["GET", "POST", "FILES"]
-    }
-  }
-
-  /** An attribute read on an django request that is a `ResolverMatch` instance. */
-  class DjangoHttpRequestResolverMatchInstances extends Django::ResolverMatch::InstanceSource {
-    DjangoHttpRequestResolverMatchInstances() {
-      this.(DataFlow::AttrRead).getObject() = django::http::request::HttpRequest::instance() and
-      this.(DataFlow::AttrRead).getAttributeName() = "resolver_match"
-    }
-  }
-
-  /** An `UploadedFile` instance that originates from a django request. */
-  class DjangoHttpRequestUploadedFileInstances extends Django::UploadedFile::InstanceSource {
-    DjangoHttpRequestUploadedFileInstances() {
-      // TODO: this currently only works in local-scope, since writing type-trackers for
-      // this is a little too much effort. Once API-graphs are available for more
-      // things, we can rewrite this.
-      //
-      // TODO: This approach for identifying member-access is very adhoc, and we should
-      // be able to do something more structured for providing modeling of the members
-      // of a container-object.
-      //
-      // dicts
-      exists(DataFlow::AttrRead files, DataFlow::Node dict |
-        files.accesses(django::http::request::HttpRequest::instance(), "FILES") and
-        (
-          dict = files
-          or
-          dict.(DataFlow::MethodCallNode).calls(files, "dict")
-        )
-      |
-        this.asCfgNode().(SubscriptNode).getObject() = dict.asCfgNode()
-        or
-        this.(DataFlow::MethodCallNode).calls(dict, "get")
-      )
-      or
-      // getlist
-      exists(DataFlow::AttrRead files, DataFlow::MethodCallNode getlistCall |
-        files.accesses(django::http::request::HttpRequest::instance(), "FILES") and
-        getlistCall.calls(files, "getlist") and
-        this.asCfgNode().(SubscriptNode).getObject() = getlistCall.asCfgNode()
-      )
     }
   }
 

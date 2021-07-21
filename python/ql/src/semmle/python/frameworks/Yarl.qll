@@ -55,7 +55,7 @@ module Yarl {
      *
      * See https://yarl.readthedocs.io/en/stable/api.html#yarl.URL
      */
-    class YarlUrlAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+    private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
       override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
         // class instantiation
         exists(ClassInstantiation call |
