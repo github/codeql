@@ -9,12 +9,14 @@ Learn more about the files you can use when running CodeQL processes and the res
    :titlesonly:
    :hidden:
 
+   about-codeql-packs
    about-ql-packs
    query-reference-files
    sarif-output
    exit-codes
 
 
+- :doc:`About CodeQL packs <about-codeql-packs>`: CodeQL packs are created with the CodeQL package manager and are used to create, depend on, publish, and run CodeQL queries and libraries.
 - :doc:`About QL packs <about-ql-packs>`: QL packs are used to organize the files used in CodeQL analysis. They
   contain queries, library files, query suites, and important metadata. 
 - :doc:`Query reference files <query-reference-files>`: A query reference file is text file that defines the location of one query to test.
