@@ -1,4 +1,8 @@
-| pyjwt.py:10:1:10:38 | ControlFlowNode for Attribute() | algorithm | is empty. |
-| pyjwt.py:10:1:10:38 | ControlFlowNode for Attribute() | key | is empty. |
-| pyjwt.py:13:1:13:49 | ControlFlowNode for Attribute() | key | is empty. |
-| pyjwt.py:14:1:14:53 | ControlFlowNode for Attribute() | key | is empty. |
+| authlib.py:11:1:11:39 | ControlFlowNode for Attribute() | key | is empty. |
+| authlib.py:12:1:12:50 | ControlFlowNode for Attribute() | key | is empty. |
+| pyjwt.py:10:1:10:29 | ControlFlowNode for Attribute() | algorithm | is empty. |
+| pyjwt.py:10:1:10:29 | ControlFlowNode for Attribute() | key | is empty. |
+| pyjwt.py:13:1:13:40 | ControlFlowNode for Attribute() | key | is empty. |
+| pyjwt.py:14:1:14:44 | ControlFlowNode for Attribute() | key | is empty. |
+| python_jose.py:10:1:10:40 | ControlFlowNode for Attribute() | key | is empty. |
+| python_jose.py:11:1:11:44 | ControlFlowNode for Attribute() | key | is empty. |
