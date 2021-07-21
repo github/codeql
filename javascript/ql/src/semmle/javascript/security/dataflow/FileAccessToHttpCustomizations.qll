@@ -43,4 +43,23 @@ module FileAccessToHttp {
       )
     }
   }
+
+  /**
+   * A property access to `length`, seen as a sanitizer as it likely contains a number.
+   */
+  private class LengthAccessAsSanitizer extends Sanitizer {
+    LengthAccessAsSanitizer() {
+      this.(DataFlow::PropRead).getPropertyName() = "length"
+    }
+  }
+
+  /**
+   * A generated code expression, seen as a sanitizer, to block flow from a file
+   * sent to the client via a template.
+   */
+  private class GeneratedCodeAsSanitizer extends Sanitizer {
+    GeneratedCodeAsSanitizer() {
+      this.asExpr() instanceof GeneratedCodeExpr
+    }
+  }
 }
