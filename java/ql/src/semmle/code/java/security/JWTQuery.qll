@@ -53,5 +53,3 @@ private class SigningToInsecureMethodAccessDataFlow extends DataFlow::Configurat
     any(JwtParserWithInsecureParseAdditionalTaintStep c).step(node1, node2)
   }
 }
-
-
