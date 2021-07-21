@@ -154,17 +154,11 @@ module Werkzeug {
      */
     class HeadersAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
       override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-        // Methods
-        //
-        // TODO: When we have tools that make it easy, model these properly to handle
-        // `meth = obj.meth; meth()`. Until then, we'll use this more syntactic approach
-        // (since it allows us to at least capture the most common cases).
+        // normal (non-async) methods
         nodeFrom = instance() and
-        exists(DataFlow::AttrRead attr | attr.getObject() = nodeFrom |
-          // methods (non-async)
-          attr.getAttributeName() in ["getlist", "get_all", "popitem", "to_wsgi_list"] and
-          nodeTo.(DataFlow::CallCfgNode).getFunction() = attr
-        )
+        nodeTo
+            .(DataFlow::MethodCallNode)
+            .calls(nodeFrom, ["getlist", "get_all", "popitem", "to_wsgi_list"])
       }
     }
   }

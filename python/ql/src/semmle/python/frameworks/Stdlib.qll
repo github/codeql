@@ -101,17 +101,11 @@ module Stdlib {
      */
     private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
       override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-        // Methods
-        //
-        // TODO: When we have tools that make it easy, model these properly to handle
-        // `meth = obj.meth; meth()`. Until then, we'll use this more syntactic approach
-        // (since it allows us to at least capture the most common cases).
+        // normal (non-async) methods
         nodeFrom = instance() and
-        exists(DataFlow::AttrRead attr | attr.getObject() = nodeFrom |
-          // normal (non-async) methods
-          attr.getAttributeName() in ["get_all", "as_bytes", "as_string", "keys"] and
-          nodeTo.(DataFlow::CallCfgNode).getFunction() = attr
-        )
+        nodeTo
+            .(DataFlow::MethodCallNode)
+            .calls(nodeFrom, ["get_all", "as_bytes", "as_string", "keys"])
       }
     }
   }
@@ -149,17 +143,9 @@ module Stdlib {
      */
     private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
       override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-        // Methods
-        //
-        // TODO: When we have tools that make it easy, model these properly to handle
-        // `meth = obj.meth; meth()`. Until then, we'll use this more syntactic approach
-        // (since it allows us to at least capture the most common cases).
+        // normal (non-async) methods
         nodeFrom = instance() and
-        exists(DataFlow::AttrRead attr | attr.getObject() = nodeFrom |
-          // normal (non-async) methods
-          attr.getAttributeName() in ["output", "js_output"] and
-          nodeTo.(DataFlow::CallCfgNode).getFunction() = attr
-        )
+        nodeTo.(DataFlow::MethodCallNode).calls(nodeFrom, ["output", "js_output"])
         or
         // Attributes
         nodeFrom = instance() and

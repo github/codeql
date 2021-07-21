@@ -348,17 +348,11 @@ private module Django {
           nodeTo = call
         )
         or
-        // Methods
-        //
-        // TODO: When we have tools that make it easy, model these properly to handle
-        // `meth = obj.meth; meth()`. Until then, we'll use this more syntactic approach
-        // (since it allows us to at least capture the most common cases).
+        // normal (non-async) methods
         nodeFrom = instance() and
-        exists(DataFlow::AttrRead attr | attr.getObject() = nodeFrom |
-          // methods (non-async)
-          attr.getAttributeName() in ["getlist", "lists", "popitem", "dict", "urlencode"] and
-          nodeTo.(DataFlow::CallCfgNode).getFunction() = attr
-        )
+        nodeTo
+            .(DataFlow::MethodCallNode)
+            .calls(nodeFrom, ["getlist", "lists", "popitem", "dict", "urlencode"])
       }
     }
   }
@@ -2044,18 +2038,11 @@ private module PrivateDjango {
 
   private class DjangoHttpRequestAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
     override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-      // Methods
-      //
-      // TODO: When we have tools that make it easy, model these properly to handle
-      // `meth = obj.meth; meth()`. Until then, we'll use this more syntactic approach
-      // (since it allows us to at least capture the most common cases).
+      // normal (non-async) methods
       nodeFrom = django::http::request::HttpRequest::instance() and
-      exists(DataFlow::AttrRead attr | attr.getObject() = nodeFrom |
-        attr.getAttributeName() in [
-            "get_full_path", "get_full_path_info", "read", "readline", "readlines"
-          ] and
-        nodeTo.(DataFlow::CallCfgNode).getFunction() = attr
-      )
+      nodeTo
+          .(DataFlow::MethodCallNode)
+          .calls(nodeFrom, ["get_full_path", "get_full_path_info", "read", "readline", "readlines"])
       or
       // special handling of the `build_absolute_uri` method, see
       // https://docs.djangoproject.com/en/3.0/ref/request-response/#django.http.HttpRequest.build_absolute_uri

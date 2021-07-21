@@ -71,17 +71,9 @@ module Multidict {
           nodeTo = call
         )
         or
-        // Methods
-        //
-        // TODO: When we have tools that make it easy, model these properly to handle
-        // `meth = obj.meth; meth()`. Until then, we'll use this more syntactic approach
-        // (since it allows us to at least capture the most common cases).
+        // normal (non-async) methods
         nodeFrom = instance() and
-        exists(DataFlow::AttrRead attr | attr.getObject() = nodeFrom |
-          // methods (non-async)
-          attr.getAttributeName() in ["getone", "getall"] and
-          nodeTo.(DataFlow::CallCfgNode).getFunction() = attr
-        )
+        nodeTo.(DataFlow::MethodCallNode).calls(nodeFrom, ["getone", "getall"])
       }
     }
   }

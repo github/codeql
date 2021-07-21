@@ -359,27 +359,21 @@ module AiohttpWebModel {
      */
     private class AiohttpStreamReaderAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
       override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-        // Methods
-        //
-        // TODO: When we have tools that make it easy, model these properly to handle
-        // `meth = obj.meth; meth()`. Until then, we'll use this more syntactic approach
-        // (since it allows us to at least capture the most common cases).
-        nodeFrom = StreamReader::instance() and
-        exists(DataFlow::AttrRead attr | attr.getObject() = nodeFrom |
-          // normal methods
-          attr.getAttributeName() in ["read_nowait"] and
-          nodeTo.(DataFlow::CallCfgNode).getFunction() = attr
-          or
-          // async methods
-          exists(Await await, DataFlow::CallCfgNode call |
-            attr.getAttributeName() in [
-                "read", "readany", "readexactly", "readline", "readchunk", "iter_chunked",
-                "iter_any", "iter_chunks"
-              ] and
-            call.getFunction() = attr and
-            await.getValue() = call.asExpr() and
-            nodeTo.asExpr() = await
-          )
+        // normal (non-async) methods
+        nodeFrom = instance() and
+        nodeTo.(DataFlow::MethodCallNode).calls(nodeFrom, ["read_nowait"])
+        or
+        // async methods
+        exists(DataFlow::MethodCallNode call, Await await |
+          nodeTo.asExpr() = await and
+          nodeFrom = instance()
+        |
+          await.getValue() = any(DataFlow::Node awaitable | call.flowsTo(awaitable)).asExpr() and
+          call.calls(nodeFrom,
+            [
+              "read", "readany", "readexactly", "readline", "readchunk", "iter_chunked", "iter_any",
+              "iter_chunks"
+            ])
         )
       }
     }
@@ -438,24 +432,17 @@ module AiohttpWebModel {
    */
   private class AiohttpRequestAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
     override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-      // Methods
-      //
-      // TODO: When we have tools that make it easy, model these properly to handle
-      // `meth = obj.meth; meth()`. Until then, we'll use this more syntactic approach
-      // (since it allows us to at least capture the most common cases).
+      // normal (non-async) methods
       nodeFrom = Request::instance() and
-      exists(DataFlow::AttrRead attr | attr.getObject() = nodeFrom |
-        // normal methods
-        attr.getAttributeName() in ["clone", "get_extra_info"] and
-        nodeTo.(DataFlow::CallCfgNode).getFunction() = attr
-        or
-        // async methods
-        exists(Await await, DataFlow::CallCfgNode call |
-          attr.getAttributeName() in ["read", "text", "json", "multipart", "post"] and
-          call.getFunction() = attr and
-          await.getValue() = call.asExpr() and
-          nodeTo.asExpr() = await
-        )
+      nodeTo.(DataFlow::MethodCallNode).calls(nodeFrom, ["clone", "get_extra_info"])
+      or
+      // async methods
+      exists(DataFlow::MethodCallNode call, Await await |
+        nodeTo.asExpr() = await and
+        nodeFrom = Request::instance()
+      |
+        await.getValue() = any(DataFlow::Node awaitable | call.flowsTo(awaitable)).asExpr() and
+        call.calls(nodeFrom, ["read", "text", "json", "multipart", "post"])
       )
       or
       // Attributes
